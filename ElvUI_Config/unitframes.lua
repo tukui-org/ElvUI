@@ -3,22 +3,22 @@ local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule("NamePlates")
 
 local _G = _G
-local type = type
-local select = select
-local pairs = pairs
-local ipairs = ipairs
 local format = format
-local tremove = tremove
+local gsub = gsub
+local ipairs = ipairs
+local pairs = pairs
+local select = select
+local strmatch = strmatch
+local strsplit = strsplit
 local tconcat = table.concat
 local tinsert = tinsert
+local tremove = tremove
+local type = type
 local wipe = wipe
-local strsplit = strsplit
-local strmatch = strmatch
-local gsub = gsub
-local IsAddOnLoaded = IsAddOnLoaded
-local GetScreenWidth = GetScreenWidth
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local BLOCK, FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR = BLOCK, FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR
+local GetScreenWidth = GetScreenWidth
+local IsAddOnLoaded = IsAddOnLoaded
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 -- GLOBALS: MAX_BOSS_FRAMES
 -- GLOBALS: CUSTOM_CLASS_COLORS, AceGUIWidgetLSMlists

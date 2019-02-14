@@ -10,7 +10,6 @@ local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 local CanExitVehicle = CanExitVehicle
 local ClearOverrideBindings = ClearOverrideBindings
 local CreateFrame = CreateFrame
-local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
 local GetFlyoutID = GetFlyoutID
@@ -39,6 +38,7 @@ local UnitOnTaxi = UnitOnTaxi
 local UnregisterStateDriver = UnregisterStateDriver
 local VehicleExit = VehicleExit
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
+local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM

@@ -5,9 +5,9 @@ local DT = E:GetModule('DataTexts')
 local pairs = pairs
 local strfind, strjoin = strfind, strjoin
 --WoW API / Variables
-local GetNumAddOns = GetNumAddOns
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMetadata = GetAddOnMetadata
+local GetNumAddOns = GetNumAddOns
 local IsShiftKeyDown = IsShiftKeyDown
 local ReloadUI = ReloadUI
 

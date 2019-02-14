@@ -8,9 +8,9 @@ local tinsert, wipe = tinsert, wipe
 local strfind = strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local GetCVarBool = GetCVarBool
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
-local GetCVarBool = GetCVarBool
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 E.Skins = S

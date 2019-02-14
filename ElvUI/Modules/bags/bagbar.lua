@@ -167,6 +167,7 @@ function B:LoadBagBar()
 
 		bagButton.id = (i - 1)
 	end
+
 	--Hide and show to update assignment textures on first load
 	ElvUIBags:Hide()
 	ElvUIBags:Show()

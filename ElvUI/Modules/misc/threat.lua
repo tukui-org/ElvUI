@@ -6,15 +6,16 @@ local pairs, select = pairs, select
 local wipe = wipe
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local UnitReaction = UnitReaction
-local UnitClass = UnitClass
-local UnitIsPlayer = UnitIsPlayer
-local IsInGroup, IsInRaid = IsInGroup, IsInRaid
-local UnitExists = UnitExists
-local UnitName = UnitName
-local UnitIsUnit = UnitIsUnit
-local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local GetThreatStatusColor = GetThreatStatusColor
+local IsInGroup, IsInRaid = IsInGroup, IsInRaid
+local UnitClass = UnitClass
+local UnitDetailedThreatSituation = UnitDetailedThreatSituation
+local UnitExists = UnitExists
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsUnit = UnitIsUnit
+local UnitName = UnitName
+local UnitReaction = UnitReaction
+
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local UNKNOWN = UNKNOWN
 

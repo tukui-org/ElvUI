@@ -14,17 +14,6 @@ local strjoin = strjoin
 local tonumber = tonumber
 
 --WoW API / Variables
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
-local CompactUnitFrame_UnregisterEvents = CompactUnitFrame_UnregisterEvents
-local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
-local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
-local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
-local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
-local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
-local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
-local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
-local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
-local C_Timer_NewTimer = C_Timer.NewTimer
 local CreateFrame = CreateFrame
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetBattlefieldScore = GetBattlefieldScore
@@ -37,6 +26,7 @@ local GetQuestLogTitle = GetQuestLogTitle
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local hooksecurefunc = hooksecurefunc
 local IsInInstance = IsInInstance
+local Lerp = Lerp
 local RegisterUnitWatch = RegisterUnitWatch
 local SetCVar = SetCVar
 local UnitAffectingCombat = UnitAffectingCombat
@@ -53,9 +43,20 @@ local UnitName = UnitName
 local UnitPowerType = UnitPowerType
 local UnitReaction = UnitReaction
 local UnregisterUnitWatch = UnregisterUnitWatch
-local Lerp = Lerp
-local UNKNOWN = UNKNOWN
+
+local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
+local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
+local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
+local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
+local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
+local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
+local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
+local C_Timer_NewTimer = C_Timer.NewTimer
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
+local CompactUnitFrame_UnregisterEvents = CompactUnitFrame_UnregisterEvents
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local UNKNOWN = UNKNOWN
 
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 --Global variables that we don't cache, list them here for the mikk's Find Globals script

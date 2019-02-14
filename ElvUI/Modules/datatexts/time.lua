@@ -8,26 +8,26 @@ local sort, tinsert = sort, tinsert
 local date, utf8sub = date, string.utf8sub
 
 --WoW API / Variables
-local GetGameTime = GetGameTime
-local RequestRaidInfo = RequestRaidInfo
-local GetNumWorldPVPAreas = GetNumWorldPVPAreas
-local GetWorldPVPAreaInfo = GetWorldPVPAreaInfo
-local SecondsToTime = SecondsToTime
-local GetNumSavedInstances = GetNumSavedInstances
-local GetSavedInstanceInfo = GetSavedInstanceInfo
+local EJ_GetCurrentTier = EJ_GetCurrentTier
+local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
+local EJ_GetNumTiers = EJ_GetNumTiers
+local EJ_SelectTier = EJ_SelectTier
+local GetAchievementInfo = GetAchievementInfo
 local GetDifficultyInfo = GetDifficultyInfo
+local GetGameTime = GetGameTime
+local GetNumSavedInstances = GetNumSavedInstances
 local GetNumSavedWorldBosses = GetNumSavedWorldBosses
+local GetNumWorldPVPAreas = GetNumWorldPVPAreas
+local GetSavedInstanceInfo = GetSavedInstanceInfo
 local GetSavedWorldBossInfo = GetSavedWorldBossInfo
+local GetWorldPVPAreaInfo = GetWorldPVPAreaInfo
+local RequestRaidInfo = RequestRaidInfo
+local SecondsToTime = SecondsToTime
+local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
+local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
+local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
 local VOICE_CHAT_BATTLEGROUND = VOICE_CHAT_BATTLEGROUND
 local WINTERGRASP_IN_PROGRESS = WINTERGRASP_IN_PROGRESS
-local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
-local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
-local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
-local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
-local EJ_SelectTier = EJ_SelectTier
-local EJ_GetNumTiers = EJ_GetNumTiers
-local EJ_GetCurrentTier = EJ_GetCurrentTier
-local GetAchievementInfo = GetAchievementInfo
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTimeFrame

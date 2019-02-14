@@ -9,6 +9,7 @@ local strfind = strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local DoReadyCheck = DoReadyCheck
+local GameTooltip_Hide = GameTooltip_Hide
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetTexCoordsForRole = GetTexCoordsForRole
@@ -17,12 +18,12 @@ local InitiateRolePoll = InitiateRolePoll
 local IsInGroup = IsInGroup
 local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
+local SecureHandler_OnClick = SecureHandler_OnClick
 local ToggleFriendsFrame = ToggleFriendsFrame
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitIsGroupAssistant = UnitIsGroupAssistant
 local UnitIsGroupLeader = UnitIsGroupLeader
-local SecureHandler_OnClick = SecureHandler_OnClick
-local GameTooltip_Hide = GameTooltip_Hide
+
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local NUM_RAID_GROUPS = NUM_RAID_GROUPS
 

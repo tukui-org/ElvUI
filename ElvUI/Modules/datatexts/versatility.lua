@@ -4,17 +4,17 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local format, strjoin = format, strjoin
 --WoW API / Variables
+local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetVersatilityBonus = GetVersatilityBonus
-local BreakUpLargeNumbers = BreakUpLargeNumbers
 local CR_VERSATILITY_DAMAGE_DONE = CR_VERSATILITY_DAMAGE_DONE
 local CR_VERSATILITY_DAMAGE_TAKEN = CR_VERSATILITY_DAMAGE_TAKEN
-local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
-local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
-local VERSATILITY_TOOLTIP_FORMAT = VERSATILITY_TOOLTIP_FORMAT
-local STAT_VERSATILITY = STAT_VERSATILITY
 local CR_VERSATILITY_TOOLTIP = CR_VERSATILITY_TOOLTIP
+local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
+local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
+local STAT_VERSATILITY = STAT_VERSATILITY
+local VERSATILITY_TOOLTIP_FORMAT = VERSATILITY_TOOLTIP_FORMAT
 
 local displayModifierString = ''
 local lastPanel;

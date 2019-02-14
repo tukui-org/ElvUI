@@ -5,20 +5,20 @@ local DT = E:GetModule('DataTexts')
 local format = format
 local sort = sort
 --WoW API / Variables
-local C_GarrisonGetBuildings = C_Garrison.GetBuildings
-local C_GarrisonGetInProgressMissions = C_Garrison.GetInProgressMissions
-local C_GarrisonGetLandingPageShipmentInfo = C_Garrison.GetLandingPageShipmentInfo
-local C_GarrisonRequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
-local C_Garrison_HasGarrison = C_Garrison.HasGarrison
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMouseFocus = GetMouseFocus
 local HideUIPanel = HideUIPanel
 local ShowGarrisonLandingPage = ShowGarrisonLandingPage
-local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
+local C_Garrison_HasGarrison = C_Garrison.HasGarrison
+local C_GarrisonGetBuildings = C_Garrison.GetBuildings
+local C_GarrisonGetInProgressMissions = C_Garrison.GetInProgressMissions
+local C_GarrisonGetLandingPageShipmentInfo = C_Garrison.GetLandingPageShipmentInfo
+local C_GarrisonRequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
 local COMPLETE = COMPLETE
-local LE_GARRISON_TYPE_6_0 = LE_GARRISON_TYPE_6_0
+local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
 local LE_FOLLOWER_TYPE_GARRISON_6_0 = LE_FOLLOWER_TYPE_GARRISON_6_0
 local LE_FOLLOWER_TYPE_SHIPYARD_6_2 = LE_FOLLOWER_TYPE_SHIPYARD_6_2
+local LE_GARRISON_TYPE_6_0 = LE_GARRISON_TYPE_6_0
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GarrisonLandingPage

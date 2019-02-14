@@ -9,13 +9,13 @@ local assert = assert
 local tinsert = tinsert
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local UnitIsUnit = UnitIsUnit
-local UnitReaction = UnitReaction
-local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitExists = UnitExists
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsUnit = UnitIsUnit
+local UnitReaction = UnitReaction
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 function UF:FrameGlow_MouseOnUnit(frame)
 	if frame and frame:IsVisible() and UnitExists('mouseover') then

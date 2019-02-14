@@ -4,19 +4,19 @@ local LSM = E.Libs.LSM
 
 --Lua functions
 local _G = _G
-local GetTime = GetTime
-local select, unpack = select, unpack
-local tinsert = tinsert
 local floor = floor
 local format = format
+local select, unpack = select, unpack
+local tinsert = tinsert
 --WoW API / Variables
-local RegisterStateDriver = RegisterStateDriver
-local RegisterAttributeDriver = RegisterAttributeDriver
-local GetWeaponEnchantInfo = GetWeaponEnchantInfo
-local GetItemQualityColor = GetItemQualityColor
+local CreateFrame = CreateFrame
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
-local CreateFrame = CreateFrame
+local GetItemQualityColor = GetItemQualityColor
+local GetTime = GetTime
+local GetWeaponEnchantInfo = GetWeaponEnchantInfo
+local RegisterAttributeDriver = RegisterAttributeDriver
+local RegisterStateDriver = RegisterStateDriver
 local UnitAura = UnitAura
 
 local Masque = E.Masque

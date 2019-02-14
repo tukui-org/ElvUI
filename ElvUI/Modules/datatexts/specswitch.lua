@@ -16,8 +16,8 @@ local SetLootSpecialization = SetLootSpecialization
 local SetSpecialization = SetSpecialization
 local ShowUIPanel = ShowUIPanel
 local LOOT = LOOT
-local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
+local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: PlayerTalentFrame, LoadAddOn

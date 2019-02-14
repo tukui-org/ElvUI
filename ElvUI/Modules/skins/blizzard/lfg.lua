@@ -7,13 +7,13 @@ local _G = _G
 local unpack, ipairs, pairs, select = unpack, ipairs, pairs, select
 local min, strlower = min, strlower
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
-local GetLFGProposal = GetLFGProposal
 local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
-local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
+local GetLFGProposal = GetLFGProposal
+local hooksecurefunc = hooksecurefunc
+local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
-local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
+local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 
 local function LFDQueueFrameRoleButtonIconOnShow(self)

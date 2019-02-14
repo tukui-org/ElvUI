@@ -54,6 +54,8 @@ local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
 
 local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
+local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
+local PVP = PVP
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION
 local SPELL_POWER_CHI = Enum.PowerType.Chi
@@ -61,9 +63,7 @@ local SPELL_POWER_HOLY_POWER = Enum.PowerType.HolyPower
 local SPELL_POWER_MANA = Enum.PowerType.Mana
 local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
-local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
 local UNKNOWN = UNKNOWN
-local PVP = PVP
 
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 

@@ -5,19 +5,19 @@ local DT = E:GetModule('DataTexts')
 local format, strjoin = format, strjoin
 local abs = abs
 --WoW API / Variables
-local GetInventorySlotInfo = GetInventorySlotInfo
-local GetInventoryItemID = GetInventoryItemID
-local GetItemInfo = GetItemInfo
-local UnitLevel = UnitLevel
-local GetDodgeChance = GetDodgeChance
-local GetParryChance = GetParryChance
 local GetBlockChance = GetBlockChance
 local GetBonusBarOffset = GetBonusBarOffset
+local GetDodgeChance = GetDodgeChance
+local GetInventoryItemID = GetInventoryItemID
+local GetInventorySlotInfo = GetInventorySlotInfo
+local GetItemInfo = GetItemInfo
+local GetParryChance = GetParryChance
+local UnitLevel = UnitLevel
+local BLOCK_CHANCE = BLOCK_CHANCE
 local BOSS = BOSS
 local DODGE_CHANCE = DODGE_CHANCE
-local PARRY_CHANCE = PARRY_CHANCE
-local BLOCK_CHANCE = BLOCK_CHANCE
 local MISS_CHANCE = MISS_CHANCE
+local PARRY_CHANCE = PARRY_CHANCE
 
 local displayString, lastPanel
 local targetlv, playerlv

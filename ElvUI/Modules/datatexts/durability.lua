@@ -5,8 +5,8 @@ local DT = E:GetModule('DataTexts')
 local pairs = pairs
 local format, strjoin = format, strjoin
 --WoW API / Variables
-local GetInventorySlotInfo = GetInventorySlotInfo
 local GetInventoryItemDurability = GetInventoryItemDurability
+local GetInventorySlotInfo = GetInventorySlotInfo
 local ToggleCharacter = ToggleCharacter
 local DURABILITY = DURABILITY
 

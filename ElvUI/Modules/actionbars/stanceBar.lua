@@ -3,19 +3,19 @@ local AB = E:GetModule('ActionBars');
 
 --Lua functions
 local _G = _G
-local ceil = math.ceil;
+local ceil = math.ceil
 local format, strfind = format, strfind
 --WoW API / Variables
+local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
-local GetSpellInfo = GetSpellInfo
-local GetShapeshiftForm = GetShapeshiftForm
+local GetBindingKey = GetBindingKey
 local GetNumShapeshiftForms = GetNumShapeshiftForms
+local GetShapeshiftForm = GetShapeshiftForm
 local GetShapeshiftFormCooldown = GetShapeshiftFormCooldown
 local GetShapeshiftFormInfo = GetShapeshiftFormInfo
-local CooldownFrame_Set = CooldownFrame_Set
+local GetSpellInfo = GetSpellInfo
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
-local GetBindingKey = GetBindingKey
 local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 
 local Masque = E.Masque
