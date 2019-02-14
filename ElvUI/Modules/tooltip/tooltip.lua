@@ -439,7 +439,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(self.MountIDs[id])
 
 				GameTooltip:AddDoubleLine(format("%s:", LOCALE.MOUNT), name, nil, nil, nil, 1, 1, 1)
-				if sourceText and IsShiftKeyDown() then
+				if sourceText and IsControlKeyDown() then
 					GameTooltip:AddLine(sourceText, 1, 1, 1)
 				end
 				break
@@ -634,7 +634,7 @@ function TT:SetStyle(tt)
 end
 
 function TT:MODIFIER_STATE_CHANGED(_, key)
-	if((key == "LSHIFT" or key == "RSHIFT") and UnitExists("mouseover")) then
+	if((key == "LSHIFT" or key == "RSHIFT" or key == "LCTRL" or key == "RCTRL") and UnitExists("mouseover")) then
 		GameTooltip:SetUnit('mouseover')
 	end
 end
