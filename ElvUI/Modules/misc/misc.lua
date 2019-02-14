@@ -48,30 +48,15 @@ local GetCVarBool, SetCVar = GetCVarBool, SetCVar
 local IsAddOnLoaded = IsAddOnLoaded
 local C_Timer_After = C_Timer.After
 local UIErrorsFrame = UIErrorsFrame
-local GetInventoryItemLink = GetInventoryItemLink
-local GetInventoryItemTexture = GetInventoryItemTexture
-local GetItemInfo = GetItemInfo
-local GetInspectSpecialization = GetInspectSpecialization
+
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 
 local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"
-local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
-local MATCH_ENCHANT = ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.+)')
 
-local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_InspectTooltip", UIParent, "GameTooltipTemplate")
 
-local ARMOR_SLOTS = {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
-local X2_INVTYPES = {
-    INVTYPE_2HWEAPON = true,
-    INVTYPE_RANGEDRIGHT = true,
-    INVTYPE_RANGED = true,
-}
-local X2_EXCEPTIONS = {
-    [2] = 19, -- wands, use INVTYPE_RANGEDRIGHT, but are 1H
-}
 
 function M:ErrorFrameToggle(event)
 	if not E.db.general.hideErrorFrame then return end
@@ -368,63 +353,13 @@ function M:ToggleInspectInfo()
 	end
 end
 
-function M:CalculateAverageItemLevel(iLevelDB)
-	local unit = _G.InspectFrame.unit or "target"
-	local spec = GetInspectSpecialization(unit)
-	local isOK, total, link = true, 0
-
-	if not spec or spec == 0 then
-		isOK = false
-	end
-
-	-- Armour
-	for _, id in next, ARMOR_SLOTS do
-		link = GetInventoryItemLink(unit, id)
-		if link then
-			local cur = iLevelDB[id]
-			if cur and cur > 0 then
-				total = total + cur
-			end
-		elseif GetInventoryItemTexture(unit, id) then
-			isOK = false
-		end
-	end
-
-	-- Main hand
-	local mainItemLevel, mainQuality, mainEquipLoc, mainItemClass, mainItemSubClass, _ = 0
-	link = GetInventoryItemLink(unit, 16)
-	if link then
-		mainItemLevel = iLevelDB[16]
-		_, _, mainQuality, _, _, _, _, _, mainEquipLoc, _, _, mainItemClass, mainItemSubClass = GetItemInfo(link)
-	elseif GetInventoryItemTexture(unit, 16) then
-		isOK = false
-	end
-
-	-- Off hand
-	local offItemLevel, offEquipLoc = 0
-	link = GetInventoryItemLink(unit, 17)
-	if link then
-		offItemLevel = iLevelDB[17]
-		_, _, _, _, _, _, _, _, offEquipLoc = GetItemInfo(link)
-	elseif GetInventoryItemTexture(unit, 17) then
-		isOK = false
-	end
-
-	if mainQuality == 6 or (not offEquipLoc and X2_INVTYPES[mainEquipLoc] and X2_EXCEPTIONS[mainItemClass] ~= mainItemSubClass and spec ~= 72) then
-		mainItemLevel = max(mainItemLevel, offItemLevel)
-		total = total + mainItemLevel * 2
-	else
-		total = total + mainItemLevel + offItemLevel
-	end
-
-	return isOK, total / 16
-end
-
 function M:UpdateInspectInfo()
 	if not (_G.InspectFrame and _G.InspectFrame.ItemLevelText) then return end
 	local unit = _G.InspectFrame.unit or "target"
 	local iLevel = 0
 	local iLevelDB = {}
+
+	local iLvl, enchantText, textures, enchantColors, itemLevelColors
 
 	for i = 1, 17 do
 		if i ~= 4 then
@@ -432,45 +367,27 @@ function M:UpdateInspectInfo()
 			inspectItem.enchantText:SetText()
 			inspectItem.iLvlText:SetText()
 
-			ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
-			ScanTooltip:SetInventoryItem(unit, i)
-			ScanTooltip:Show()
+			iLvl, enchant, textures, enchantColors, itemLevelColors = E:GetTTGearSlotInfo(unit, i, true)
 
-			for y = 1, 10 do
-				inspectItem['textureSlot'..y]:SetTexture()
-				local texture = _G["ElvUI_InspectTooltipTexture"..y]
-				local hasTexture = texture and texture:GetTexture()
-				if hasTexture then
-					inspectItem['textureSlot'..y]:SetTexture(hasTexture)
-					texture:SetTexture()
-				end
+			iLevelDB[i] = iLvl
+
+			inspectItem.enchantText:SetText(enchant)
+			if enchantColors then
+				inspectItem.enchantText:SetTextColor(unpack(enchantColors))
 			end
 
-			for x = 1, ScanTooltip:NumLines() do
-				local line = _G["ElvUI_InspectTooltipTextLeft"..x]
-				if line then
-					local lineText = line:GetText()
-					local lr, lg, lb = line:GetTextColor()
-					local tr, tg, tb = _G.ElvUI_InspectTooltipTextLeft1:GetTextColor()
-					local iLvl = lineText:match(MATCH_ITEM_LEVEL)
-					local enchant = lineText:match(MATCH_ENCHANT)
-					if enchant then
-						inspectItem.enchantText:SetText(enchant:sub(1, 18))
-						inspectItem.enchantText:SetTextColor(lr, lg, lb)
-					end
-					if iLvl and iLvl ~= "1" then
-						inspectItem.iLvlText:SetText(iLvl)
-						inspectItem.iLvlText:SetTextColor(tr, tg, tb)
-						iLevelDB[i] = tonumber(iLvl)
-					end
-				end
+			inspectItem.iLvlText:SetText(iLvl)
+			if itemLevelColors then
+				inspectItem.iLvlText:SetTextColor(unpack(itemLevelColors))
 			end
 
-			ScanTooltip:Hide()
+			for x=1, 10 do
+				inspectItem["textureSlot"..x]:SetTexture(textures[x])
+			end
 		end
 	end
 
-	inspectOK, iLevel = self:CalculateAverageItemLevel(iLevelDB)
+	inspectOK, iLevel = E:CalculateAverageItemLevel(iLevelDB, _G.InspectFrame.unit or "target")
 
 	if inspectOK then
 		_G.InspectFrame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], iLevel)
@@ -504,7 +421,7 @@ function M:ADDON_LOADED(_, addon)
 				for u=1, 10 do
 					local offset = 8+(u*16)
 					local newX = ((justify == "BOTTOMLEFT" or i == 17) and x+offset) or x-offset
-					_G[slot]['textureSlot'..u] = M:CreateInspectTexture(slot, newX, --[[newY or]] y)
+					_G[slot]["textureSlot"..u] = M:CreateInspectTexture(slot, newX, --[[newY or]] y)
 				end
 			end
 		end
