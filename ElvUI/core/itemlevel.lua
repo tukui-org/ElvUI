@@ -134,7 +134,7 @@ end
 local iLevelDB = {}
 function E:GetUnitItemLevel(unit)
 	if UnitIsUnit("player", unit) then
-		return E:Round(select(2, GetAverageItemLevel()), 2)
+		return E:Round((select(2, GetAverageItemLevel())), 2)
 	end
 
 	wipe(iLevelDB)

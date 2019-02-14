@@ -379,7 +379,7 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b, addLines)
 
 		if addLines then
 			tooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, r, g, b)
-			tooltip:AddDoubleLine(L["Item Level:"], floor(itemLevel), nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 		end
 	else
 		NotifyInspect(unit)
