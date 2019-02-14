@@ -4,7 +4,6 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local format, strjoin = format, strjoin
 --WoW API / Variables
-local EasyMenu = EasyMenu
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecialization = GetSpecialization
@@ -133,7 +132,7 @@ local function OnClick(self, button)
 					specList[index + 1] = nil
 				end
 			end
-			EasyMenu(specList, menuFrame, "cursor", -15, -7, "MENU", 2)
+			_G.EasyMenu(specList, menuFrame, "cursor", -15, -7, "MENU", 2)
 		end
 	else
 		DT.tooltip:Hide()
@@ -150,7 +149,7 @@ local function OnClick(self, button)
 			end
 		end
 
-		EasyMenu(menuList, menuFrame, "cursor", -15, -7, "MENU", 2)
+		_G.EasyMenu(menuList, menuFrame, "cursor", -15, -7, "MENU", 2)
 	end
 end
 
