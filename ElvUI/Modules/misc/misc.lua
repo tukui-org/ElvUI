@@ -6,7 +6,6 @@ E.Misc = M;
 --Lua functions
 local _G = _G
 local format, gsub = string.format, string.gsub
-local pairs, tonumber, unpack, max = pairs, tonumber, unpack, max
 --WoW API / Variables
 local UnitGUID = UnitGUID
 local UnitInRaid = UnitInRaid
@@ -45,7 +44,6 @@ local BNGetFriendInfo = BNGetFriendInfo
 local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
 local StaticPopup_Hide = StaticPopup_Hide
 local GetCVarBool, SetCVar = GetCVarBool, SetCVar
-local IsAddOnLoaded = IsAddOnLoaded
 local C_Timer_After = C_Timer.After
 local UIErrorsFrame = UIErrorsFrame
 
@@ -55,8 +53,6 @@ local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 
 local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"
-
-
 
 function M:ErrorFrameToggle(event)
 	if not E.db.general.hideErrorFrame then return end
