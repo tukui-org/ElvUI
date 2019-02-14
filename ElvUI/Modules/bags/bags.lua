@@ -111,14 +111,11 @@ local hooksecurefunc = hooksecurefunc
 
 local ElvUIAssignBagDropdown, TooltipModule, SkinModule
 local SEARCH_STRING = ""
-
 local BAG_FILTER_ICONS = {
 	[LE_BAG_FILTER_FLAG_EQUIPMENT] = "Interface\\ICONS\\INV_Chest_Plate10",
 	[LE_BAG_FILTER_FLAG_CONSUMABLES] = "Interface\\ICONS\\INV_Potion_93",
 	[LE_BAG_FILTER_FLAG_TRADE_GOODS] = "Interface\\ICONS\\INV_Fabric_Silk_02",
 }
-
-local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_BagItemsTooltip", UIParent, "GameTooltipTemplate")
 
 function B:GetContainerFrame(arg)
 	if type(arg) == 'boolean' and (arg == true) then
@@ -518,9 +515,9 @@ function B:UpdateSlot(bagID, slotID)
 	local showItemLevel = B.db.itemLevel and clink and not professionColors
 	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON)
 	if showBindType or showItemLevel then
-		ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
-		ScanTooltip:SetBagItem(bagID, slotID)
-		ScanTooltip:Show()
+		E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+		E.ScanTooltip:SetBagItem(bagID, slotID)
+		E.ScanTooltip:Show()
 	end
 
 	if professionColors then
@@ -546,7 +543,7 @@ function B:UpdateSlot(bagID, slotID)
 			local iLvl, BoE, BoU --GetDetailedItemLevelInfo this api dont work for some time correctly for ilvl
 
 			for i = 2, bindTypeLines do
-				local line = _G["ElvUI_BagItemsTooltipTextLeft"..i]:GetText()
+				local line = _G["ElvUI_ScanTooltipTextLeft"..i]:GetText()
 				if not line or line == "" then break end
 				if canShowItemLevel and (i <= itemLevelLines) then
 					local itemLevel = line:match(MATCH_ITEM_LEVEL)
@@ -616,8 +613,7 @@ function B:UpdateSlot(bagID, slotID)
 		slot.ignoreBorderColors = nil
 	end
 
-	ScanTooltip:Hide()
-
+	E.ScanTooltip:Hide()
 	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 
 	if texture then

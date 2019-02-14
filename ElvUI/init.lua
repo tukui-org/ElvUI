@@ -125,6 +125,7 @@ function AddOn:OnInitialize()
 		end
 	end
 
+	self.ScanTooltip = CreateFrame("GameTooltip", "ElvUI_ScanTooltip", _G.UIParent, "GameTooltipTemplate")
 	self.PixelMode = self.private.general.pixelPerfect -- keep this over `UIScale`
 	self:UIScale(true)
 	self:UpdateMedia()

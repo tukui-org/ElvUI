@@ -15,7 +15,6 @@ local GetInspectSpecialization = GetInspectSpecialization
 
 local MATCH_ITEM_LEVEL = _G.ITEM_LEVEL:gsub('%%d', '(%%d+)')
 local MATCH_ENCHANT = _G.ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.+)')
-local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_GearSlotTooltip", _G.UIParent, "GameTooltipTemplate")
 local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 	INVTYPE_2HWEAPON = true,
 	INVTYPE_RANGEDRIGHT = true,
@@ -25,23 +24,24 @@ local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 }, {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
 
 function E:GetGearSlotInfo(unit, slot, deepScan)
-	ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
-	ScanTooltip:SetInventoryItem(unit, slot)
-	ScanTooltip:Show()
+	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+	E.ScanTooltip:SetInventoryItem(unit, slot)
+	E.ScanTooltip:Show()
 
 	local iLvl, enchantText, enchantColors, itemLevelColors
-	local textures = {}
+	local textures
 
 	if deepScan then
 		for i = 1, 10 do
 			local tex = _G["ElvUI_GearSlotTooltipTexture"..i]
 			local hasTexture = tex and tex:GetTexture()
 			if hasTexture then
+				if not textures then textures = {} end
 				textures[i] = hasTexture
 				tex:SetTexture()
 			end
 		end
-		for x = 1, ScanTooltip:NumLines() do
+		for x = 1, E.ScanTooltip:NumLines() do
 			local line = _G["ElvUI_GearSlotTooltipTextLeft"..x]
 			if line then
 				local lineText = line:GetText()
@@ -66,14 +66,14 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 			if line then
 				local lineText = line:GetText()
 				local itemLevel = lineText and lineText:match(MATCH_ITEM_LEVEL)
-				if itemLevel and itemLevel ~= "1" then
+				if itemLevel then
 					iLvl = tonumber(itemLevel)
 				end
 			end
 		end
 	end
 
-	ScanTooltip:Hide()
+	E.ScanTooltip:Hide()
 
 	return iLvl, enchantText, deepScan and textures, enchantColors, itemLevelColors
 end
