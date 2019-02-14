@@ -124,8 +124,11 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 	end
 end
 
-function M:TryGearAgain(unit, i, deepScan, iLevelDB, inspectItem)
+function M:TryGearAgain(frame, which, i, deepScan, iLevelDB, inspectItem)
 	E:Delay(0.05, function()
+		if which == 'Inspect' and (not frame or frame:IsShown() or not frame.unit) then return end
+
+		local unit = (which == 'Character' and 'player') or frame.unit
 		local iLvl, enchant, gems, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, deepScan)
 		if iLvl == 'tooSoon' then return end
 
@@ -135,7 +138,7 @@ end
 
 function M:UpdatePageInfo(frame, which)
 	if not (which and frame and frame.ItemLevelText) then return end
-	if frame == _G.InspectFrame and (frame:IsShown() or not frame.unit) then return end
+	if which == 'Inspect' and (not frame or frame:IsShown() or not frame.unit) then return end
 
 	local iLevelDB = {}
 	local waitForItems
@@ -145,11 +148,11 @@ function M:UpdatePageInfo(frame, which)
 			inspectItem.enchantText:SetText()
 			inspectItem.iLvlText:SetText()
 
-			local unit = frame.unit or 'player'
+			local unit = (which == 'Character' and 'player') or frame.unit
 			local iLvl, enchant, gems, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, true)
 			if iLvl == 'tooSoon' then
 				if not waitForItems then waitForItems = true end
-				M:TryGearAgain(unit, i, true, iLevelDB, inspectItem)
+				M:TryGearAgain(frame, which, i, true, iLevelDB, inspectItem)
 			else
 				M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, enchantColors, itemLevelColors)
 			end
