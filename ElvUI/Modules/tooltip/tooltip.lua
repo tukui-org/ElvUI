@@ -385,7 +385,7 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b, addLines)
             inspectGUIDCache[unitGUID].itemLevel = nil
 
             return C_Timer.After(0.33, function()
-                self:AddInspectInfo(tooltip, unit, classColorHEX, numTries + 1, r, g, b)
+                self:AddInspectInfo(tooltip, unit, numTries + 1, r, g, b, addLines)
             end)
         end
 
