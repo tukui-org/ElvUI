@@ -326,9 +326,8 @@ function TT:INSPECT_READY(event, unitGUID)
 			inspectGUIDCache[unitGUID] = {}
 		end
 
-		local iLvl = E:GetUnitItemLevel("mouseover")
 		inspectGUIDCache[unitGUID].time = GetTime()
-		inspectGUIDCache[unitGUID].itemLevel = iLvl
+		inspectGUIDCache[unitGUID].itemLevel = E:GetUnitItemLevel("mouseover")
 		inspectGUIDCache[unitGUID].specName = self:GetSpecializationInfo("mouseover")
 
 		GameTooltip:SetUnit("mouseover")
@@ -340,13 +339,7 @@ function TT:INSPECT_READY(event, unitGUID)
 end
 
 function TT:GetSpecializationInfo(unit, isPlayer)
-	local spec
-	if isPlayer then
-		spec = GetSpecialization();
-	else
-		spec = GetInspectSpecialization(unit);
-	end
-
+	local spec = (isPlayer and GetSpecialization()) or (unit and GetInspectSpecialization(unit))
 	if spec and spec > 0 then
 		if isPlayer then
 			return select(2, GetSpecializationInfo(spec))
@@ -358,9 +351,10 @@ end
 
 local lastGUID
 function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
-	if not CanInspect(unit) or numTries > 3 then return end
+	if (not unit) or (numTries > 3) or not CanInspect(unit) then return end
 
 	local unitGUID = UnitGUID(unit)
+	if not unitGUID then return end
 
 	if unitGUID == E.myguid then
 		tooltip:AddDoubleLine(_G.SPECIALIZATION..":", self:GetSpecializationInfo(unit, true), nil, nil, nil, r, g, b)
