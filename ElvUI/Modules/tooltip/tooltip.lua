@@ -320,17 +320,41 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 end
 
 local inspectGUIDCache = {}
+function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
+	inspectGUIDCache[unitGUID].time = GetTime()
+	inspectGUIDCache[unitGUID].itemLevel = itemLevel
+	inspectGUIDCache[unitGUID].specName = self:GetSpecializationInfo("mouseover")
+
+	GameTooltip:SetUnit("mouseover")
+end
+
 function TT:INSPECT_READY(event, unitGUID)
 	if UnitExists("mouseover") and UnitGUID("mouseover") == unitGUID then
 		if not inspectGUIDCache[unitGUID] then
 			inspectGUIDCache[unitGUID] = {}
 		end
 
-		inspectGUIDCache[unitGUID].time = GetTime()
-		inspectGUIDCache[unitGUID].itemLevel = E:GetUnitItemLevel("mouseover")
-		inspectGUIDCache[unitGUID].specName = self:GetSpecializationInfo("mouseover")
+		local itemLevel, retryUnit, retryTable, iLevelDB = E:GetUnitItemLevel("mouseover")
+		if itemLevel == 'tooSoon' then
+			E:Delay(0.05, function()
+				local canUpdate = true
+				for _, x in ipairs(retryTable) do
+					local iLvl = E:GetGearSlotInfo(retryUnit, x)
+					if iLvl == 'tooSoon' then
+						canUpdate = false
+					else
+						iLevelDB[x] = iLvl
+					end
+				end
 
-		GameTooltip:SetUnit("mouseover")
+				if canUpdate then
+					local calculateItemLevel = E:CalculateAverageItemLevel(iLevelDB, retryUnit)
+					TT:PopulateInspectGUIDCache(unitGUID, calculateItemLevel)
+				end
+			end)
+		else
+			TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
+		end
 	end
 
 	if event then

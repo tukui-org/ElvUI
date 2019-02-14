@@ -149,10 +149,21 @@ function E:GetUnitItemLevel(unit)
 	end
 
 	wipe(iLevelDB)
+	local tryAgain
 	for i = 1, 17 do
 		if i ~= 4 then
-			iLevelDB[i] = E:GetGearSlotInfo(unit, i)
+			local iLvl = E:GetGearSlotInfo(unit, i)
+			if iLvl == 'tooSoon' then
+				if not tryAgain then tryAgain = {} end
+				tinsert(tryAgain, i)
+			else
+				iLevelDB[i] = iLvl
+			end
 		end
+	end
+
+	if tryAgain then
+		return 'tooSoon', unit, tryAgain, iLevelDB
 	end
 
 	return E:CalculateAverageItemLevel(iLevelDB, unit)
