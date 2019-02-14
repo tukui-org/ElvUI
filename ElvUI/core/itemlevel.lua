@@ -134,7 +134,7 @@ end
 local iLevelDB = {}
 function E:GetUnitItemLevel(unit)
 	if UnitIsUnit("player", unit) then
-		return select(2, GetAverageItemLevel())
+		return select(2, GetAverageItemLevel()), nil
 	end
 
 	wipe(iLevelDB)
