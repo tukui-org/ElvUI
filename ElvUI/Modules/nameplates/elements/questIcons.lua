@@ -80,6 +80,7 @@ local QuestTypesLocalized = {
 	},
 }
 
+local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_QuestIconsTooltip", UIParent, "GameTooltipTemplate")
 local QuestTypes = QuestTypesLocalized[UsedLocale] or QuestTypesLocalized["enUS"]
 
 function mod:QUEST_ACCEPTED(_, questLogIndex, questID)
@@ -114,13 +115,13 @@ function mod:GetQuests(unitID)
 	local inInstance = IsInInstance()
 	if inInstance then return end
 
-	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
-	E.ScanTooltip:SetUnit(unitID)
-	E.ScanTooltip:Show()
+	ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+	ScanTooltip:SetUnit(unitID)
+	ScanTooltip:Show()
 
 	local QuestList, questID = {}
-	for i = 3, E.ScanTooltip:NumLines() do
-		local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
+	for i = 3, ScanTooltip:NumLines() do
+		local str = _G['ElvUI_QuestIconsTooltipTextLeft' .. i]
 		local text = str and str:GetText()
 		if not text then return end
 		if not questID then
@@ -172,7 +173,7 @@ function mod:GetQuests(unitID)
 		end
 	end
 
-	E.ScanTooltip:Hide()
+	ScanTooltip:Hide()
 	return QuestList
 end
 

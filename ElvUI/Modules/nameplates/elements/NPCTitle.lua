@@ -16,14 +16,16 @@ local LEVEL = LEVEL
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: UIParent, ElvUI_NPCTitleTextLeft2
 
+local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_NPCTitleTooltip", UIParent, "GameTooltipTemplate")
+
 function mod:UpdateElement_NPCTitle(frame, triggered)
 	if self.db.showNPCTitles and not UnitIsPlayer(frame.unit) and not UnitPlayerControlled(frame.unit) and (triggered or (not self.db.units[frame.UnitType].healthbar.enable and (not self.db.alwaysShowTargetHealth or not UnitIsUnit("target", frame.unit)))) then
-		E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
-		E.ScanTooltip:SetUnit(frame.unit)
-		E.ScanTooltip:Show()
+		ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+		ScanTooltip:SetUnit(frame.unit)
+		ScanTooltip:Show()
 
-		local title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
-		E.ScanTooltip:Hide()
+		local title = _G[format('ElvUI_NPCTitleTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
+		ScanTooltip:Hide()
 
 		if not title or title:find('^'..LEVEL) then return end
 		frame.NPCTitle:SetText(title)
