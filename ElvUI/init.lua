@@ -12,36 +12,33 @@ To load the AddOn engine inside another addon add this to the top of your file:
 
 --Cache global variables
 local _G = _G
-local wipe = wipe
-local pairs = pairs
-local unpack = unpack
-local strsplit = string.split
-local format = string.format
-local tcopy = table.copy
+local wipe = _G.wipe
+local pairs = _G.pairs
+local unpack = _G.unpack
+local strsplit = _G.strsplit
+local format = _G.format
+local tcopy = _G.table.copy
 
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
-local issecurevariable = issecurevariable
+local hooksecurefunc = _G.hooksecurefunc
+local issecurevariable = _G.issecurevariable
 
-local CreateFrame = CreateFrame
-local GetAddOnInfo = GetAddOnInfo
-local GetAddOnMetadata = GetAddOnMetadata
-local GetTime = GetTime
-local HideUIPanel = HideUIPanel
-local InCombatLockdown = InCombatLockdown
-local IsAddOnLoaded = IsAddOnLoaded
-local LoadAddOn = LoadAddOn
-local ReloadUI = ReloadUI
+local CreateFrame = _G.CreateFrame
+local GetAddOnInfo = _G.GetAddOnInfo
+local GetAddOnMetadata = _G.GetAddOnMetadata
+local GetTime = _G.GetTime
+local HideUIPanel = _G.HideUIPanel
+local InCombatLockdown = _G.InCombatLockdown
+local IsAddOnLoaded = _G.IsAddOnLoaded
+local LoadAddOn = _G.LoadAddOn
+local ReloadUI = _G.ReloadUI
 
-local GameMenuFrame = GameMenuFrame
-local GameMenuButtonAddons = GameMenuButtonAddons
-local GameMenuButtonLogout = GameMenuButtonLogout
-local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
+local GameMenuFrame = _G.GameMenuFrame
+local GameMenuButtonAddons = _G.GameMenuButtonAddons
+local GameMenuButtonLogout = _G.GameMenuButtonLogout
+local ERR_NOT_IN_COMBAT = _G.ERR_NOT_IN_COMBAT
 
--- GLOBALS: COMMUNITY_UIDD_REFRESH_PATCH_VERSION, UIDROPDOWNMENU_OPEN_MENU, UIDROPDOWNMENU_MAXLEVELS, UIDROPDOWNMENU_MAXBUTTONS, UIDROPDOWNMENU_OPEN_PATCH_VERSION, UIDROPDOWNMENU_VALUE_PATCH_VERSION
--- GLOBALS: GameTooltip, ElvData, ElvPrivateData, ElvCharacterData, ElvDB, ElvPrivateDB, ElvCharacterDB, BINDING_HEADER_ELVUI
-
-BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
+_G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
 local AceAddon = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
@@ -88,16 +85,18 @@ AddOn.LSM = AddOn.Libs.LSM
 AddOn.Masque = AddOn.Libs.Masque
 
 function AddOn:OnInitialize()
-	if not ElvCharacterDB then
-		ElvCharacterDB = {};
+	if not _G.ElvCharacterDB then
+		_G.ElvCharacterDB = {};
 	end
 
-	ElvCharacterData = nil; --Depreciated
-	ElvPrivateData = nil; --Depreciated
-	ElvData = nil; --Depreciated
+	_G.ElvCharacterData = nil; --Depreciated
+	_G.ElvPrivateData = nil; --Depreciated
+	_G.ElvData = nil; --Depreciated
 
 	self.db = tcopy(self.DF.profile, true);
 	self.global = tcopy(self.DF.global, true);
+
+	local ElvDB = _G.ElvDB
 	if ElvDB then
 		if ElvDB.global then
 			self:CopyTable(self.global, ElvDB.global)
@@ -114,6 +113,8 @@ function AddOn:OnInitialize()
 	end
 
 	self.private = tcopy(self.privateVars.profile, true);
+
+	local ElvPrivateDB = _G.ElvPrivateDB
 	if ElvPrivateDB then
 		local profileKey
 		if ElvPrivateDB.profileKeys then
@@ -204,6 +205,8 @@ end
 
 function AddOn:ResetProfile()
 	local profileKey
+
+	local ElvPrivateDB = _G.ElvPrivateDB
 	if ElvPrivateDB.profileKeys then
 		profileKey = ElvPrivateDB.profileKeys[self.myname..' - '..self.myrealm]
 	end
@@ -212,7 +215,7 @@ function AddOn:ResetProfile()
 		ElvPrivateDB.profiles[profileKey] = nil;
 	end
 
-	ElvCharacterDB = nil;
+	_G.ElvCharacterDB = nil;
 	ReloadUI()
 end
 
@@ -306,19 +309,19 @@ function AddOn:ToggleConfig(msg)
 		ACD:SelectGroup(AddOnName, unpack(pages))
 	end
 
-	GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
+	_G.GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
 end
 
 --HonorFrameLoadTaint workaround
 --credit: https://www.townlong-yak.com/bugs/afKy4k-HonorFrameLoadTaint
-if (UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
-	UIDROPDOWNMENU_VALUE_PATCH_VERSION = 2
+if (_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
+	_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION = 2
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function()
-		if UIDROPDOWNMENU_VALUE_PATCH_VERSION ~= 2 then
+		if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION ~= 2 then
 			return
 		end
-		for i=1, UIDROPDOWNMENU_MAXLEVELS do
-			for j=1, UIDROPDOWNMENU_MAXBUTTONS do
+		for i=1, _G.UIDROPDOWNMENU_MAXLEVELS do
+			for j=1, _G.UIDROPDOWNMENU_MAXBUTTONS do
 				local b = _G["DropDownList" .. i .. "Button" .. j]
 				if not (issecurevariable(b, "value") or b:IsShown()) then
 					b.value = nil
@@ -333,15 +336,15 @@ end
 
 --CommunitiesUI taint workaround
 --credit https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
-if (UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
-	UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
+if (_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
+	_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
-		if UIDROPDOWNMENU_OPEN_PATCH_VERSION ~= 1 then
+		if _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION ~= 1 then
 			return
 		end
-		if UIDROPDOWNMENU_OPEN_MENU and UIDROPDOWNMENU_OPEN_MENU ~= frame
-		   and not issecurevariable(UIDROPDOWNMENU_OPEN_MENU, "displayMode") then
-			UIDROPDOWNMENU_OPEN_MENU = nil
+		if _G.UIDROPDOWNMENU_OPEN_MENU and _G.UIDROPDOWNMENU_OPEN_MENU ~= frame
+		   and not issecurevariable(_G.UIDROPDOWNMENU_OPEN_MENU, "displayMode") then
+			_G.UIDROPDOWNMENU_OPEN_MENU = nil
 			local t, f, prefix, i = _G, issecurevariable, " \0", 1
 			repeat
 				i, t[prefix .. i] = i + 1
@@ -352,10 +355,10 @@ end
 
 --CommunitiesUI taint workaround #2
 --credit: https://www.townlong-yak.com/bugs/YhgQma-SetValueRefreshTaint
-if (COMMUNITY_UIDD_REFRESH_PATCH_VERSION or 0) < 1 then
-	COMMUNITY_UIDD_REFRESH_PATCH_VERSION = 1
+if (_G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION or 0) < 1 then
+	_G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION = 1
 	local function CleanDropdowns()
-		if COMMUNITY_UIDD_REFRESH_PATCH_VERSION ~= 1 then
+		if _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION ~= 1 then
 			return
 		end
 		local f, f2 = _G.FriendsFrame, _G.FriendsTabHeader
