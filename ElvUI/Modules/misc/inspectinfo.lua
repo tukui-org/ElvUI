@@ -5,6 +5,8 @@ local _G = _G
 local unpack = unpack
 local pairs = pairs
 
+local IsAddOnLoaded = IsAddOnLoaded
+
 local InspectItems = {
 	"InspectHeadSlot",
 	"InspectNeckSlot",
@@ -73,7 +75,7 @@ function M:UpdateInspectInfo()
 	local unit = _G.InspectFrame.unit or "target"
 	local iLevelDB = {}
 
-	local iLvl, enchantText, textures, enchantColors, itemLevelColors
+	local iLvl, enchant, textures, enchantColors, itemLevelColors
 
 	for i = 1, 17 do
 		if i ~= 4 then
