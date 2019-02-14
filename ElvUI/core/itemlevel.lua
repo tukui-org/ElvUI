@@ -86,7 +86,7 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 		isOK = false
 	end
 
-	-- Armour
+	-- Armor
 	for _, id in next, ARMOR_SLOTS do
 		link = GetInventoryItemLink(unit, id)
 		if link then
