@@ -1,14 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LO = E:NewModule('Layout', 'AceEvent-3.0');
 
---Cache global variables
 --Lua functions
 local _G = _G
 --WoW API / Variables
 local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
-
 -- GLOBALS: HideLeftChat, HideRightChat, HideBothChat
 
 local PANEL_HEIGHT = 22
