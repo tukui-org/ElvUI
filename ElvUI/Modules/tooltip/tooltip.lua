@@ -396,6 +396,11 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b, addLines)
     else
         NotifyInspect(unit)
 
+		if addLines then
+			tooltip:AddDoubleLine(_G.SPECIALIZATION..":", L["Waiting.."], nil, nil, nil, r, g, b)
+			tooltip:AddDoubleLine(L["Item Level:"], L["Waiting.."], nil, nil, nil, 1, 1, 1)
+		end
+
         self:RegisterEvent("INSPECT_READY", INSPECT_READY)
     end
 end
@@ -431,7 +436,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	
 	self:AddInspectInfo(GameTooltip, unit, 0, color.r, color.g, color.b, isShiftKeyDown)
 
-	if self.db.showMount and unit ~= "player" and UnitIsPlayer(unit) then
+	if self.db.showMount and unit ~= "player" and UnitIsPlayer(unit) and not isShiftKeyDown then
 		for i = 1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
 
