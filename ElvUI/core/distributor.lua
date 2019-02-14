@@ -1,20 +1,19 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = _G.unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0","AceSerializer-3.0")
 local LibCompress = E.Libs.Compress
 local LibBase64 = E.Libs.Base64
 
-local tonumber, type, gsub, pcall, loadstring = tonumber, type, gsub, pcall, loadstring
-local len, format, split, find = string.len, string.format, string.split, string.find
+--Lua functions
+local _G = _G
+local tonumber, type, gsub, pcall, loadstring = _G.tonumber, _G.type, _G.gsub, _G.pcall, _G.loadstring
+local len, format, split, find = _G.strlen, _G.format, _G.strsplit, _G.strfind
 --WoW API / Variables
-local CreateFrame = CreateFrame
-local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
-local IsInGroup, UnitInParty = IsInGroup, UnitInParty
-local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
-local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
-local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
-
---Global variables that we don't cache, list them here for the mikk"s Find Globals script
--- GLOBALS: ElvDB, ElvPrivateDB, ReloadUI
+local CreateFrame = _G.CreateFrame
+local IsInRaid, UnitInRaid = _G.IsInRaid, _G.UnitInRaid
+local IsInGroup, UnitInParty = _G.IsInGroup, _G.UnitInParty
+local LE_PARTY_CATEGORY_HOME = _G.LE_PARTY_CATEGORY_HOME
+local LE_PARTY_CATEGORY_INSTANCE = _G.LE_PARTY_CATEGORY_INSTANCE
+local ACCEPT, CANCEL, YES, NO = _G.ACCEPT, _G.CANCEL, _G.YES, _G.NO
 
 ----------------------------------
 -- CONSTANTS
@@ -49,14 +48,14 @@ end
 function D:Distribute(target, otherServer, isGlobal)
 	local profileKey, data
 	if not isGlobal then
-		if ElvDB.profileKeys then
-			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
+		if _G.ElvDB.profileKeys then
+			profileKey = _G.ElvDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
 
-		data = ElvDB.profiles[profileKey]
+		data = _G.ElvDB.profiles[profileKey]
 	else
 		profileKey = "global"
-		data = ElvDB.global
+		data = _G.ElvDB.global
 	end
 
 	if not data or not profileKey then return end
@@ -170,8 +169,8 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			if profileKey == "global" then
 				textString = format(L["Filter download complete from %s, would you like to apply changes now?"], sender)
 			else
-				if not ElvDB.profiles[profileKey] then
-					ElvDB.profiles[profileKey] = data
+				if not _G.ElvDB.profiles[profileKey] then
+					_G.ElvDB.profiles[profileKey] = data
 				else
 					textString = format(L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."], sender, profileKey)
 					E.PopupDialogs['DISTRIBUTOR_CONFIRM'] = {
@@ -180,13 +179,13 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 						hasEditBox = 1,
 						editBoxWidth = 350,
 						maxLetters = 127,
-						OnAccept = function(self)
-							ElvDB.profiles[self.editBox:GetText()] = data
-							E.Libs.AceAddon:GetAddon("ElvUI").data:SetProfile(self.editBox:GetText())
+						OnAccept = function(popup)
+							_G.ElvDB.profiles[popup.editBox:GetText()] = data
+							E.Libs.AceAddon:GetAddon("ElvUI").data:SetProfile(popup.editBox:GetText())
 							E:StaggeredUpdateAll(nil, true)
 							Downloads[sender] = nil
 						end,
-						OnShow = function(self) self.editBox:SetText(profileKey) self.editBox:SetFocus() end,
+						OnShow = function(popup) popup.editBox:SetText(profileKey) popup.editBox:SetFocus() end,
 						timeout = 0,
 						exclusive = 1,
 						whileDead = 1,
@@ -204,7 +203,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 				text = textString,
 				OnAccept = function()
 					if profileKey == "global" then
-						E:CopyTable(ElvDB.global, data)
+						E:CopyTable(_G.ElvDB.global, data)
 						E:StaggeredUpdateAll(nil, true)
 					else
 						E.Libs.AceAddon:GetAddon("ElvUI").data:SetProfile(profileKey)
@@ -243,38 +242,18 @@ local blacklistedKeys = {
 			["numberPrefixStyle"] = true,
 		},
 		["actionbar"] = {
-			--[[
-			["bar1"] = {
-				["paging"] = true,
-			},
-			["bar2"] = {
-				["paging"] = true,
-			},
-			["bar3"] = {
-				["paging"] = true,
-			},
-			["bar4"] = {
-				["paging"] = true,
-			},
-			["bar5"] = {
-				["paging"] = true,
-			},
-			["bar6"] = {
-				["paging"] = true,
-			},
-			["bar7"] = {
-				["paging"] = true,
-			},
-			["bar8"] = {
-				["paging"] = true,
-			},
-			["bar9"] = {
-				["paging"] = true,
-			},
-			["bar10"] = {
-				["paging"] = true,
-			},
-			--]]
+		--[[
+			["bar1"] = {["paging"] = true},
+			["bar2"] = {["paging"] = true},
+			["bar3"] = {["paging"] = true},
+			["bar4"] = {["paging"] = true},
+			["bar5"] = {["paging"] = true},
+			["bar6"] = {["paging"] = true},
+			["bar7"] = {["paging"] = true},
+			["bar8"] = {["paging"] = true},
+			["bar9"] = {["paging"] = true},
+			["bar10"] = {["paging"] = true},
+		--]]
 		},
 	},
 	["private"] = {},
@@ -305,12 +284,12 @@ local function GetProfileData(profileType)
 	local profileData = {}
 
 	if profileType == "profile" then
-		if ElvDB.profileKeys then
-			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
+		if _G.ElvDB.profileKeys then
+			profileKey = _G.ElvDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
 
 		--Copy current profile data
-		profileData = E:CopyTable(profileData , ElvDB.profiles[profileKey])
+		profileData = E:CopyTable(profileData , _G.ElvDB.profiles[profileKey])
 		--This table will also hold all default values, not just the changed settings.
 		--This makes the table huge, and will cause the WoW client to lock up for several seconds.
 		--We compare against the default table and remove all duplicates from our table. The table is now much smaller.
@@ -321,14 +300,14 @@ local function GetProfileData(profileType)
 		local privateProfileKey = E.myname..' - '..E.myrealm
 		profileKey = "private"
 
-		profileData = E:CopyTable(profileData, ElvPrivateDB.profiles[privateProfileKey])
+		profileData = E:CopyTable(profileData, _G.ElvPrivateDB.profiles[privateProfileKey])
 		profileData = E:RemoveTableDuplicates(profileData, V)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private)
 
 	elseif profileType == "global" then
 		profileKey = "global"
 
-		profileData = E:CopyTable(profileData, ElvDB.global)
+		profileData = E:CopyTable(profileData, _G.ElvDB.global)
 		profileData = E:RemoveTableDuplicates(profileData, G)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global)
 
@@ -337,16 +316,16 @@ local function GetProfileData(profileType)
 
 		profileData.unitframe = {}
 		profileData.unitframe.aurafilters = {}
-		profileData.unitframe.aurafilters = E:CopyTable(profileData.unitframe.aurafilters, ElvDB.global.unitframe.aurafilters)
+		profileData.unitframe.aurafilters = E:CopyTable(profileData.unitframe.aurafilters, _G.ElvDB.global.unitframe.aurafilters)
 		profileData.unitframe.buffwatch = {}
-		profileData.unitframe.buffwatch = E:CopyTable(profileData.unitframe.buffwatch, ElvDB.global.unitframe.buffwatch)
+		profileData.unitframe.buffwatch = E:CopyTable(profileData.unitframe.buffwatch, _G.ElvDB.global.unitframe.buffwatch)
 		profileData = E:RemoveTableDuplicates(profileData, G)
 	elseif profileType == "styleFilters" then
 		profileKey = "styleFilters"
 
 		profileData.nameplate = {}
 		profileData.nameplate.filters = {}
-		profileData.nameplate.filters = E:CopyTable(profileData.nameplate.filters, ElvDB.global.nameplate.filters)
+		profileData.nameplate.filters = E:CopyTable(profileData.nameplate.filters, _G.ElvDB.global.nameplate.filters)
 		profileData = E:RemoveTableDuplicates(profileData, G)
 	end
 
@@ -405,15 +384,15 @@ function D:GetImportStringType(dataString)
 end
 
 function D:Decode(dataString)
-	local profileInfo, profileType, profileKey, profileData, message
+	local profileInfo, profileType, profileKey, profileData
 	local stringType = self:GetImportStringType(dataString)
 
 	if stringType == "Base64" then
 		local decodedData = LibBase64:Decode(dataString)
-		local decompressedData, message = LibCompress:Decompress(decodedData)
+		local decompressedData, decompressedMessage = LibCompress:Decompress(decodedData)
 
 		if not decompressedData then
-			E:Print("Error decompressing data:", message)
+			E:Print("Error decompressing data:", decompressedMessage)
 			return
 		end
 
@@ -451,13 +430,12 @@ function D:Decode(dataString)
 		profileDataAsString = gsub(profileDataAsString, "\124\124", "\124") --Remove escape pipe characters
 		profileType, profileKey = E:SplitString(profileInfo, "::")
 
+		local profileMessage
 		local profileToTable = loadstring(format("%s %s", "return", profileDataAsString))
-		if profileToTable then
-			message, profileData = pcall(profileToTable)
-		end
+		if profileToTable then profileMessage, profileData = pcall(profileToTable) end
 
 		if not profileData or type(profileData) ~= "table" then
-			E:Print("Error converting lua string to table:", message)
+			E:Print("Error converting lua string to table:", profileMessage)
 			return
 		end
 	end
@@ -472,14 +450,14 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 
 	if profileType == "profile" then
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.profile) --Remove unwanted options from import
-		if not ElvDB.profiles[profileKey] or force then
+		if not _G.ElvDB.profiles[profileKey] or force then
 			if force and E.data.keys.profile == profileKey then
 				--Overwriting an active profile doesn't update when calling SetProfile
 				--So make it look like we use a different profile
 				local tempKey = profileKey.."_Temp"
 				E.data.keys.profile = tempKey
 			end
-			ElvDB.profiles[profileKey] = profileData
+			_G.ElvDB.profiles[profileKey] = profileData
 			--Calling SetProfile will now update all settings correctly
 			E.data:SetProfile(profileKey)
 		else
@@ -492,19 +470,19 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 		end
 	elseif profileType == "private" then
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private) --Remove unwanted options from import
-		local profileKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
-		ElvPrivateDB.profiles[profileKey] = profileData
+		local pfKey = _G.ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
+		_G.ElvPrivateDB.profiles[pfKey] = profileData
 		E:StaticPopup_Show('IMPORT_RL')
 
 	elseif profileType == "global" then
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global) --Remove unwanted options from import
-		E:CopyTable(ElvDB.global, profileData)
+		E:CopyTable(_G.ElvDB.global, profileData)
 		E:StaticPopup_Show('IMPORT_RL')
 
 	elseif profileType == "filters" then
-		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
+		E:CopyTable(_G.ElvDB.global.unitframe, profileData.unitframe)
 	elseif profileType == "styleFilters" then
-		E:CopyTable(ElvDB.global.nameplate, profileData.nameplate)
+		E:CopyTable(_G.ElvDB.global.nameplate, profileData.nameplate)
 	end
 
 	--Update all ElvUI modules
@@ -541,7 +519,7 @@ E.PopupDialogs['DISTRIBUTOR_SUCCESS'] = {
 	text = L["Your profile was successfully recieved by the player."],
 	whileDead = 1,
 	hideOnEscape = 1,
-	button1 = OKAY,
+	button1 = _G.OKAY,
 }
 
 E.PopupDialogs['DISTRIBUTOR_WAITING'] = {
@@ -555,14 +533,14 @@ E.PopupDialogs['DISTRIBUTOR_REQUEST_DENIED'] = {
 	text = L["Request was denied by user."],
 	whileDead = 1,
 	hideOnEscape = 1,
-	button1 = OKAY,
+	button1 = _G.OKAY,
 }
 
 E.PopupDialogs['DISTRIBUTOR_FAILED'] = {
 	text = L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"],
 	whileDead = 1,
 	hideOnEscape = 1,
-	button1 = OKAY,
+	button1 = _G.OKAY,
 }
 
 E.PopupDialogs['DISTRIBUTOR_RESPONSE'] = {}
@@ -599,7 +577,7 @@ E.PopupDialogs["IMPORT_RL"] = {
 	text = L["You have imported settings which may require a UI reload to take effect. Reload now?"],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = ReloadUI,
+	OnAccept = _G.ReloadUI,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,

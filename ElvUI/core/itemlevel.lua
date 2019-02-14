@@ -1,16 +1,15 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-
-local select, tonumber = select, tonumber
-local next, max, wipe = next, max, wipe
+local E, L, V, P, G = _G.unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local _G = _G
-local UnitIsUnit = UnitIsUnit
-local GetCVarBool = GetCVarBool
-local GetItemInfo = GetItemInfo
-local GetAverageItemLevel = GetAverageItemLevel
-local GetInventoryItemLink = GetInventoryItemLink
-local GetInventoryItemTexture = GetInventoryItemTexture
-local GetInspectSpecialization = GetInspectSpecialization
+local select, tonumber = _G.select, _G.tonumber
+local next, max, wipe = _G.next, _G.max, _G.wipe
+local UnitIsUnit = _G.UnitIsUnit
+local GetCVarBool = _G.GetCVarBool
+local GetItemInfo = _G.GetItemInfo
+local GetAverageItemLevel = _G.GetAverageItemLevel
+local GetInventoryItemLink = _G.GetInventoryItemLink
+local GetInventoryItemTexture = _G.GetInventoryItemTexture
+local GetInspectSpecialization = _G.GetInspectSpecialization
 
 local MATCH_ITEM_LEVEL = _G.ITEM_LEVEL:gsub('%%d', '(%%d+)')
 local MATCH_ENCHANT = _G.ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.+)')

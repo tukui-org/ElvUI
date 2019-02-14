@@ -9,11 +9,11 @@ ElvUI[2] = L
 
 --Lua functions
 local _G = _G
-local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, _G.unpack, select, tostring
-local assert, type, collectgarbage, pcall, date = assert, type, collectgarbage, pcall, _G.date
-local twipe, tinsert, tremove, next = _G.wipe, _G.tinsert, _G.tremove, next
-local floor, gsub, strmatch, strjoin = _G.floor, string.gsub, string.match, _G.strjoin
-local format, find, strrep, len, sub = string.format, string.find, _G.strrep, string.len, string.sub
+local tonumber, pairs, ipairs, error, unpack, select, tostring = _G.tonumber, _G.pairs, _G.ipairs, _G.error, _G.unpack, _G.select, _G.tostring
+local assert, type, collectgarbage, pcall, date = _G.assert, _G.type, _G.collectgarbage, _G.pcall, _G.date
+local twipe, tinsert, tremove, next = _G.wipe, _G.tinsert, _G.tremove, _G.next
+local floor, gsub, strmatch, strjoin = _G.floor, _G.gsub, _G.match, _G.strjoin
+local format, find, strrep, len, sub = _G.format, _G.strfind, _G.strrep, _G.strlen, _G.strsub
 --WoW API / Variables
 local CreateFrame = _G.CreateFrame
 local GetCVar, SetCVar, GetCVarBool = _G.GetCVar, _G.SetCVar, _G.GetCVarBool
