@@ -46,7 +46,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	E.ScanTooltip:SetInventoryItem(unit, slot)
 	E.ScanTooltip:Show()
 
-	local iLvl, enchantText, enchantColors, itemLevelColors, textures, tooSoon
+	local iLvl, enchantText, enchantColors, itemLevelColors, textures
 	if deepScan then
 		for i = 1, 10 do
 			local tex = _G["ElvUI_ScanTooltipTexture"..i]
@@ -62,8 +62,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 			if line then
 				local lineText = line:GetText()
 				if x == 1 and lineText == RETRIEVING_ITEM_INFO then
-					tooSoon = true
-					break
+					return 'tooSoon'
 				else
 					iLvl, itemLevelColors, enchantText, enchantColors = E:InspectGearSlot(line, lineText, enchantText, enchantColors, iLvl, itemLevelColors)
 				end
@@ -72,7 +71,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	else
 		local firstLine = _G.ElvUI_ScanTooltipTextLeft1:GetText()
 		if firstLine == RETRIEVING_ITEM_INFO then
-			tooSoon = true
+			return 'tooSoon'
 		end
 
 		local colorblind = GetCVarBool('colorblindmode') and 4 or 3
@@ -88,13 +87,8 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 		end
 	end
 
-	if tooSoon then
-		return 'tooSoon'
-	else
-		E.ScanTooltip:Hide()
-
-		return iLvl, enchantText, deepScan and textures, enchantColors, itemLevelColors
-	end
+	E.ScanTooltip:Hide()
+	return iLvl, enchantText, deepScan and textures, enchantColors, itemLevelColors
 end
 
 --Credit ls & Acidweb
