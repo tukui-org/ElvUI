@@ -18,7 +18,7 @@ local GetCVar, SetCVar = GetCVar, SetCVar
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 local PlayMusic, StopMusic = PlayMusic, StopMusic
 local SendChatMessage = SendChatMessage
------
+-- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, ElvUI_StanceBar
 
 --Harlem Shake (Activate with command: /harlemshake)
 --People really seemed to like this one. We got a lot of positive responses.
@@ -29,7 +29,7 @@ do
 		SetCVar("Sound_EnableAllSound", self.oldEnableAllSound)
 		SetCVar("Sound_EnableMusic", self.oldEnableMusic)
 
-		self:StopShakeHorizontal(_G.ElvUI_StaticPopup1)
+		self:StopShakeHorizontal(ElvUI_StaticPopup1)
 		for _, object in pairs(self.massiveShakeObjects) do
 			if object then
 				self:StopShake(object)
@@ -48,7 +48,7 @@ do
 
 	function E:DoTheHarlemShake()
 		E.isMassiveShaking = true
-		_G.ElvUI_StaticPopup1Button1:Enable()
+		ElvUI_StaticPopup1Button1:Enable()
 
 		for _, object in pairs(self.massiveShakeObjects) do
 			if object and not object:IsForbidden() and object:IsShown() then
@@ -62,8 +62,8 @@ do
 
 	function E:BeginHarlemShake()
 		DoEmote("Dance")
-		_G.ElvUI_StaticPopup1Button1:Disable()
-		self:ShakeHorizontal(_G.ElvUI_StaticPopup1)
+		ElvUI_StaticPopup1Button1:Disable()
+		self:ShakeHorizontal(ElvUI_StaticPopup1)
 		self.oldEnableAllSound = GetCVar("Sound_EnableAllSound")
 		self.oldEnableMusic = GetCVar("Sound_EnableMusic")
 
@@ -95,9 +95,9 @@ do
 			end
 		end
 
-		if _G.ElvUI_StanceBar then
-			for i=1, #_G.ElvUI_StanceBar.buttons do
-				tinsert(self.massiveShakeObjects, _G.ElvUI_StanceBar.buttons[i])
+		if ElvUI_StanceBar then
+			for i=1, #ElvUI_StanceBar.buttons do
+				tinsert(self.massiveShakeObjects, ElvUI_StanceBar.buttons[i])
 			end
 		end
 

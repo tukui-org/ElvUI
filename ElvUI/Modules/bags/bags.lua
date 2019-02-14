@@ -100,6 +100,7 @@ local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local SEARCH = SEARCH
+-- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame, ElvUIReagentBankFrameItem1
 
 local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
 
@@ -236,7 +237,7 @@ function B:SetSearch(query)
 		end
 	end
 
-	if _G.ElvUIReagentBankFrameItem1 then
+	if ElvUIReagentBankFrameItem1 then
 		for slotID=1, 98 do
 			local _, _, _, _, _, _, link = GetContainerItemInfo(REAGENTBANK_CONTAINER, slotID);
 			local button = _G["ElvUIReagentBankFrameItem"..slotID]
@@ -722,7 +723,7 @@ function B:ResetSlotAlphaForBags(f)
 end
 
 function B:REAGENTBANK_PURCHASED()
-	_G.ElvUIReagentBankFrame.cover:Hide()
+	ElvUIReagentBankFrame.cover:Hide()
 end
 
 --Look at ContainerFrameFilterDropDown_Initialize in FrameXML/ContainerFrame.lua
@@ -1597,7 +1598,7 @@ function B:ContructContainerFrame(name, isBank)
 	f.BagIDs = isBank and {-1, 5, 6, 7, 8, 9, 10, 11} or {0, 1, 2, 3, 4}
 	f.Bags = {}
 
-	local mover = (isBank and _G.ElvUIBankMover) or _G.ElvUIBagMover
+	local mover = (isBank and ElvUIBankMover) or ElvUIBagMover
 	if mover then
 		f:Point(mover.POINT, mover)
 		f.mover = mover
@@ -1977,8 +1978,8 @@ function B:ContructContainerFrame(name, isBank)
 
 			B:NewItemGlowBagClear(f)
 
-			if _G.ElvUIBags and _G.ElvUIBags.buttons then
-				for _, bagButton in pairs(_G.ElvUIBags.buttons) do
+			if ElvUIBags and ElvUIBags.buttons then
+				for _, bagButton in pairs(ElvUIBags.buttons) do
 					bagButton:SetChecked(false)
 				end
 			end
@@ -2184,7 +2185,7 @@ function B:UpdateContainerFrameAnchors()
 
 		if index == 1 then
 			-- First bag
-			frame:Point("BOTTOMRIGHT", _G.ElvUIBagMover, "BOTTOMRIGHT", E.Spacing, -E.Border);
+			frame:Point("BOTTOMRIGHT", ElvUIBagMover, "BOTTOMRIGHT", E.Spacing, -E.Border);
 			bagsPerColumn = bagsPerColumn + 1
 		elseif freeScreenHeight < frame:GetHeight() then
 			-- Start a new column
@@ -2440,12 +2441,12 @@ function B:Initialize()
 	_G.UIDropDownMenu_Initialize(ElvUIAssignBagDropdown, self.AssignBagFlagMenu, "MENU");
 
 	--Set some variables on movers
-	_G.ElvUIBagMover.textGrowUp = L["Bag Mover (Grow Up)"]
-	_G.ElvUIBagMover.textGrowDown = L["Bag Mover (Grow Down)"]
-	_G.ElvUIBagMover.POINT = "BOTTOM"
-	_G.ElvUIBankMover.textGrowUp = L["Bank Mover (Grow Up)"]
-	_G.ElvUIBankMover.textGrowDown = L["Bank Mover (Grow Down)"]
-	_G.ElvUIBankMover.POINT = "BOTTOM"
+	ElvUIBagMover.textGrowUp = L["Bag Mover (Grow Up)"]
+	ElvUIBagMover.textGrowDown = L["Bag Mover (Grow Down)"]
+	ElvUIBagMover.POINT = "BOTTOM"
+	ElvUIBankMover.textGrowUp = L["Bank Mover (Grow Up)"]
+	ElvUIBankMover.textGrowDown = L["Bank Mover (Grow Down)"]
+	ElvUIBankMover.POINT = "BOTTOM"
 
 	--Create Bag Frame
 	self.BagFrame = self:ContructContainerFrame('ElvUI_ContainerFrame');

@@ -14,6 +14,7 @@ local IsInGroup, UnitInParty = IsInGroup, UnitInParty
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
+-- GLOBALS: ElvDB, ElvPrivateDB
 
 ----------------------------------
 -- CONSTANTS
@@ -48,14 +49,14 @@ end
 function D:Distribute(target, otherServer, isGlobal)
 	local profileKey, data
 	if not isGlobal then
-		if _G.ElvDB.profileKeys then
-			profileKey = _G.ElvDB.profileKeys[E.myname..' - '..E.myrealm]
+		if ElvDB.profileKeys then
+			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
 
-		data = _G.ElvDB.profiles[profileKey]
+		data = ElvDB.profiles[profileKey]
 	else
 		profileKey = "global"
-		data = _G.ElvDB.global
+		data = ElvDB.global
 	end
 
 	if not data or not profileKey then return end
@@ -169,8 +170,8 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			if profileKey == "global" then
 				textString = format(L["Filter download complete from %s, would you like to apply changes now?"], sender)
 			else
-				if not _G.ElvDB.profiles[profileKey] then
-					_G.ElvDB.profiles[profileKey] = data
+				if not ElvDB.profiles[profileKey] then
+					ElvDB.profiles[profileKey] = data
 				else
 					textString = format(L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."], sender, profileKey)
 					E.PopupDialogs['DISTRIBUTOR_CONFIRM'] = {
@@ -180,7 +181,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 						editBoxWidth = 350,
 						maxLetters = 127,
 						OnAccept = function(popup)
-							_G.ElvDB.profiles[popup.editBox:GetText()] = data
+							ElvDB.profiles[popup.editBox:GetText()] = data
 							E.Libs.AceAddon:GetAddon("ElvUI").data:SetProfile(popup.editBox:GetText())
 							E:StaggeredUpdateAll(nil, true)
 							Downloads[sender] = nil
@@ -203,7 +204,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 				text = textString,
 				OnAccept = function()
 					if profileKey == "global" then
-						E:CopyTable(_G.ElvDB.global, data)
+						E:CopyTable(ElvDB.global, data)
 						E:StaggeredUpdateAll(nil, true)
 					else
 						E.Libs.AceAddon:GetAddon("ElvUI").data:SetProfile(profileKey)
@@ -284,12 +285,12 @@ local function GetProfileData(profileType)
 	local profileData = {}
 
 	if profileType == "profile" then
-		if _G.ElvDB.profileKeys then
-			profileKey = _G.ElvDB.profileKeys[E.myname..' - '..E.myrealm]
+		if ElvDB.profileKeys then
+			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
 
 		--Copy current profile data
-		profileData = E:CopyTable(profileData , _G.ElvDB.profiles[profileKey])
+		profileData = E:CopyTable(profileData , ElvDB.profiles[profileKey])
 		--This table will also hold all default values, not just the changed settings.
 		--This makes the table huge, and will cause the WoW client to lock up for several seconds.
 		--We compare against the default table and remove all duplicates from our table. The table is now much smaller.
@@ -300,14 +301,14 @@ local function GetProfileData(profileType)
 		local privateProfileKey = E.myname..' - '..E.myrealm
 		profileKey = "private"
 
-		profileData = E:CopyTable(profileData, _G.ElvPrivateDB.profiles[privateProfileKey])
+		profileData = E:CopyTable(profileData, ElvPrivateDB.profiles[privateProfileKey])
 		profileData = E:RemoveTableDuplicates(profileData, V)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private)
 
 	elseif profileType == "global" then
 		profileKey = "global"
 
-		profileData = E:CopyTable(profileData, _G.ElvDB.global)
+		profileData = E:CopyTable(profileData, ElvDB.global)
 		profileData = E:RemoveTableDuplicates(profileData, G)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global)
 
@@ -316,16 +317,16 @@ local function GetProfileData(profileType)
 
 		profileData.unitframe = {}
 		profileData.unitframe.aurafilters = {}
-		profileData.unitframe.aurafilters = E:CopyTable(profileData.unitframe.aurafilters, _G.ElvDB.global.unitframe.aurafilters)
+		profileData.unitframe.aurafilters = E:CopyTable(profileData.unitframe.aurafilters, ElvDB.global.unitframe.aurafilters)
 		profileData.unitframe.buffwatch = {}
-		profileData.unitframe.buffwatch = E:CopyTable(profileData.unitframe.buffwatch, _G.ElvDB.global.unitframe.buffwatch)
+		profileData.unitframe.buffwatch = E:CopyTable(profileData.unitframe.buffwatch, ElvDB.global.unitframe.buffwatch)
 		profileData = E:RemoveTableDuplicates(profileData, G)
 	elseif profileType == "styleFilters" then
 		profileKey = "styleFilters"
 
 		profileData.nameplate = {}
 		profileData.nameplate.filters = {}
-		profileData.nameplate.filters = E:CopyTable(profileData.nameplate.filters, _G.ElvDB.global.nameplate.filters)
+		profileData.nameplate.filters = E:CopyTable(profileData.nameplate.filters, ElvDB.global.nameplate.filters)
 		profileData = E:RemoveTableDuplicates(profileData, G)
 	end
 
@@ -450,14 +451,14 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 
 	if profileType == "profile" then
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.profile) --Remove unwanted options from import
-		if not _G.ElvDB.profiles[profileKey] or force then
+		if not ElvDB.profiles[profileKey] or force then
 			if force and E.data.keys.profile == profileKey then
 				--Overwriting an active profile doesn't update when calling SetProfile
 				--So make it look like we use a different profile
 				local tempKey = profileKey.."_Temp"
 				E.data.keys.profile = tempKey
 			end
-			_G.ElvDB.profiles[profileKey] = profileData
+			ElvDB.profiles[profileKey] = profileData
 			--Calling SetProfile will now update all settings correctly
 			E.data:SetProfile(profileKey)
 		else
@@ -470,19 +471,19 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 		end
 	elseif profileType == "private" then
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private) --Remove unwanted options from import
-		local pfKey = _G.ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
-		_G.ElvPrivateDB.profiles[pfKey] = profileData
+		local pfKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
+		ElvPrivateDB.profiles[pfKey] = profileData
 		E:StaticPopup_Show('IMPORT_RL')
 
 	elseif profileType == "global" then
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global) --Remove unwanted options from import
-		E:CopyTable(_G.ElvDB.global, profileData)
+		E:CopyTable(ElvDB.global, profileData)
 		E:StaticPopup_Show('IMPORT_RL')
 
 	elseif profileType == "filters" then
-		E:CopyTable(_G.ElvDB.global.unitframe, profileData.unitframe)
+		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
 	elseif profileType == "styleFilters" then
-		E:CopyTable(_G.ElvDB.global.nameplate, profileData.nameplate)
+		E:CopyTable(ElvDB.global.nameplate, profileData.nameplate)
 	end
 
 	--Update all ElvUI modules

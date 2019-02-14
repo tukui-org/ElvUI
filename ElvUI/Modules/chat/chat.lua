@@ -107,6 +107,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
 local SOUNDKIT = SOUNDKIT
 local UNKNOWN = UNKNOWN
+-- GLOBALS: ElvCharacterDB
 
 local msgList, msgCount, msgTime = {}, {}, {}
 local CreatedFrames = 0
@@ -466,7 +467,7 @@ function CH:StyleChat(frame)
 	editbox:HookScript("OnTextChanged", OnTextChanged)
 
 	--Work around broken SetAltArrowKeyMode API
-	editbox.historyLines = _G.ElvCharacterDB.ChatEditHistory
+	editbox.historyLines = ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
 	editbox:HookScript("OnKeyDown", OnKeyDown)
 	editbox:Hide()
@@ -490,7 +491,7 @@ function CH:StyleChat(frame)
 		editBox:Hide()
 	end)
 
-	for _, text in pairs(_G.ElvCharacterDB.ChatEditHistory) do
+	for _, text in pairs(ElvCharacterDB.ChatEditHistory) do
 		editbox:AddHistoryLine(text)
 	end
 
@@ -1896,14 +1897,14 @@ function CH:ChatEdit_AddHistory(_, line) -- editBox, line
 	if line and strlen(line) > 0 then
 		if strfind(line, '/rl') then return end
 
-		for _, text in pairs(_G.ElvCharacterDB.ChatEditHistory) do
+		for _, text in pairs(ElvCharacterDB.ChatEditHistory) do
 			if text == line then return end
 		end
 
-		tinsert(_G.ElvCharacterDB.ChatEditHistory, #_G.ElvCharacterDB.ChatEditHistory + 1, line)
+		tinsert(ElvCharacterDB.ChatEditHistory, #ElvCharacterDB.ChatEditHistory + 1, line)
 
-		if #_G.ElvCharacterDB.ChatEditHistory > 20 then
-			tremove(_G.ElvCharacterDB.ChatEditHistory, 1)
+		if #ElvCharacterDB.ChatEditHistory > 20 then
+			tremove(ElvCharacterDB.ChatEditHistory, 1)
 		end
 	end
 end
@@ -1947,7 +1948,7 @@ function CH:UpdateFading()
 end
 
 function CH:DisplayChatHistory()
-	local data, d = _G.ElvCharacterDB.ChatHistoryLog
+	local data, d = ElvCharacterDB.ChatHistoryLog
 	if not (data and next(data)) then return end
 
 	if not GetPlayerInfoByGUID(E.myguid) then
@@ -2001,7 +2002,7 @@ end
 
 function CH:SaveChatHistory(event, ...)
 	if not self.db.chatHistory then return end
-	local data = _G.ElvCharacterDB.ChatHistoryLog
+	local data = ElvCharacterDB.ChatHistoryLog
 
 	if self.db.throttleInterval ~= 0 and (event == 'CHAT_MSG_SAY' or event == 'CHAT_MSG_YELL' or event == 'CHAT_MSG_CHANNEL') then
 		self:ChatThrottleHandler(event, ...)
@@ -2341,11 +2342,11 @@ function CH:DefaultSmileys()
 end
 
 function CH:Initialize()
-	if _G.ElvCharacterDB.ChatHistory then
-		_G.ElvCharacterDB.ChatHistory = nil --Depreciated
+	if ElvCharacterDB.ChatHistory then
+		ElvCharacterDB.ChatHistory = nil --Depreciated
 	end
-	if _G.ElvCharacterDB.ChatLog then
-		_G.ElvCharacterDB.ChatLog = nil --Depreciated
+	if ElvCharacterDB.ChatLog then
+		ElvCharacterDB.ChatLog = nil --Depreciated
 	end
 
 	self.db = E.db.chat
@@ -2353,12 +2354,12 @@ function CH:Initialize()
 	self:DelayGuildMOTD() --Keep this before `is Chat Enabled` check
 	if E.private.chat.enable ~= true then return end
 
-	if not _G.ElvCharacterDB.ChatEditHistory then
-		_G.ElvCharacterDB.ChatEditHistory = {};
+	if not ElvCharacterDB.ChatEditHistory then
+		ElvCharacterDB.ChatEditHistory = {};
 	end
 
-	if not _G.ElvCharacterDB.ChatHistoryLog or not self.db.chatHistory then
-		_G.ElvCharacterDB.ChatHistoryLog = {};
+	if not ElvCharacterDB.ChatHistoryLog or not self.db.chatHistory then
+		ElvCharacterDB.ChatHistoryLog = {};
 	end
 
 	self:DefaultSmileys()

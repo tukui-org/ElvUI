@@ -71,6 +71,7 @@ local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
 local C_MountJournal_GetMountInfoExtraByID = C_MountJournal.GetMountInfoExtraByID
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
+-- GLOBALS: ElvUI_KeyBinder, ElvUI_ContainerFrame
 
 local LOCALE = {
 	PVP = _G.PVP,
@@ -152,7 +153,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		end
 	end
 
-	local ElvUI_ContainerFrame = _G.ElvUI_ContainerFrame
+	local ElvUI_ContainerFrame = ElvUI_ContainerFrame
 	local RightChatPanel = _G.RightChatPanel
 	local TooltipMover = _G.TooltipMover
 	local _, anchor = tt:GetPoint()
@@ -820,7 +821,7 @@ function TT:Initialize()
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
-	keybindFrame = _G.ElvUI_KeyBinder
+	keybindFrame = ElvUI_KeyBinder
 end
 
 local function InitializeCallback()

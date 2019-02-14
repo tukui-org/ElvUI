@@ -12,6 +12,7 @@ local InCombatLockdown = InCombatLockdown
 local IsControlKeyDown = IsControlKeyDown
 local IsAltKeyDown = IsAltKeyDown
 local RESET = RESET
+-- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
 
 local grid
 local selectedValue = 'ALL'
@@ -60,11 +61,11 @@ function E:ToggleConfigMode(override, configType)
 	if E.ConfigurationMode ~= true then
 		E:Grid_Show()
 
-		if not _G.ElvUIMoverPopupWindow then
+		if not ElvUIMoverPopupWindow then
 			E:CreateMoverPopup()
 		end
 
-		_G.ElvUIMoverPopupWindow:Show()
+		ElvUIMoverPopupWindow:Show()
 
 		if IsAddOnLoaded("ElvUI_Config") then
 			if E.Libs.AceConfigDialog then
@@ -80,8 +81,8 @@ function E:ToggleConfigMode(override, configType)
 	else
 		E:Grid_Hide()
 
-		if _G.ElvUIMoverPopupWindow then
-			_G.ElvUIMoverPopupWindow:Hide()
+		if ElvUIMoverPopupWindow then
+			ElvUIMoverPopupWindow:Hide()
 		end
 
 		E.ConfigurationMode = false
@@ -179,7 +180,7 @@ end
 local function ConfigMode_OnClick(self)
 	selectedValue = self.value
 	E:ToggleConfigMode(false, self.value)
-	_G.UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, self.value);
+	_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, self.value);
 end
 
 local function ConfigMode_Initialize()
@@ -192,11 +193,11 @@ local function ConfigMode_Initialize()
 		_G.UIDropDownMenu_AddButton(info);
 	end
 
-	_G.UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, selectedValue);
+	_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
 end
 
 function E:NudgeMover(nudgeX, nudgeY)
-	local mover = _G.ElvUIMoverNudgeWindow.child
+	local mover = ElvUIMoverNudgeWindow.child
 	local x, y, point = E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 
 	mover:ClearAllPoints()
@@ -215,7 +216,7 @@ function E:UpdateNudgeFrame(mover, x, y)
 	x = E:Round(x, 0)
 	y = E:Round(y, 0)
 
-	local ElvUIMoverNudgeWindow = _G.ElvUIMoverNudgeWindow
+	local ElvUIMoverNudgeWindow = ElvUIMoverNudgeWindow
 	ElvUIMoverNudgeWindow.xOffset:SetText(x)
 	ElvUIMoverNudgeWindow.yOffset:SetText(y)
 	ElvUIMoverNudgeWindow.xOffset.currentValue = x
@@ -224,7 +225,7 @@ function E:UpdateNudgeFrame(mover, x, y)
 end
 
 function E:AssignFrameToNudge()
-	_G.ElvUIMoverNudgeWindow.child = self;
+	ElvUIMoverNudgeWindow.child = self;
 	E:UpdateNudgeFrame(self)
 end
 
@@ -241,8 +242,8 @@ function E:CreateMoverPopup()
 	f:SetTemplate('Transparent')
 	f:Point("BOTTOM", _G.UIParent, 'CENTER', 0, 100)
 	f:SetScript('OnHide', function()
-		if _G.ElvUIMoverPopupWindowDropDown then
-			_G.UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, 'ALL');
+		if ElvUIMoverPopupWindowDropDown then
+			_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, 'ALL');
 		end
 	end)
 	f:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
@@ -297,7 +298,7 @@ function E:CreateMoverPopup()
 		end
 
 		selectedValue = 'ALL'
-		_G.UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, selectedValue);
+		_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
 	end)
 
 	local align = CreateFrame('EditBox', f:GetName()..'EditBox', f, 'InputBoxTemplate')
@@ -387,7 +388,7 @@ function E:CreateMoverPopup()
 		end
 	end)
 
-	_G.ElvUIMoverPopupWindow:HookScript('OnHide', function() _G.ElvUIMoverNudgeWindow:Hide() end)
+	ElvUIMoverPopupWindow:HookScript('OnHide', function() ElvUIMoverNudgeWindow:Hide() end)
 
 	desc = nudgeFrame:CreateFontString("ARTWORK")
 	desc:SetFontObject("GameFontHighlight")
@@ -485,8 +486,8 @@ function E:CreateMoverPopup()
 	resetButton:Point("TOP", nudgeFrame, "CENTER", 0, 2)
 	resetButton:Size(100, 25)
 	resetButton:SetScript("OnClick", function()
-		if _G.ElvUIMoverNudgeWindow.child.textString then
-			E:ResetMovers(_G.ElvUIMoverNudgeWindow.child.textString)
+		if ElvUIMoverNudgeWindow.child.textString then
+			E:ResetMovers(ElvUIMoverNudgeWindow.child.textString)
 		end
 	end)
 	S:HandleButton(resetButton)

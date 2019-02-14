@@ -36,9 +36,9 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local GameMenuButtonAddons = GameMenuButtonAddons
 local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuFrame = GameMenuFrame
------
+-- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
-BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
+_G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
 local AceAddon = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
@@ -85,18 +85,18 @@ AddOn.LSM = AddOn.Libs.LSM
 AddOn.Masque = AddOn.Libs.Masque
 
 function AddOn:OnInitialize()
-	if not _G.ElvCharacterDB then
-		_G.ElvCharacterDB = {};
+	if not ElvCharacterDB then
+		ElvCharacterDB = {};
 	end
 
-	_G.ElvCharacterData = nil; --Depreciated
-	_G.ElvPrivateData = nil; --Depreciated
-	_G.ElvData = nil; --Depreciated
+	ElvCharacterData = nil; --Depreciated
+	ElvPrivateData = nil; --Depreciated
+	ElvData = nil; --Depreciated
 
 	self.db = tcopy(self.DF.profile, true);
 	self.global = tcopy(self.DF.global, true);
 
-	local ElvDB = _G.ElvDB
+	local ElvDB = ElvDB
 	if ElvDB then
 		if ElvDB.global then
 			self:CopyTable(self.global, ElvDB.global)
@@ -114,7 +114,7 @@ function AddOn:OnInitialize()
 
 	self.private = tcopy(self.privateVars.profile, true);
 
-	local ElvPrivateDB = _G.ElvPrivateDB
+	local ElvPrivateDB = ElvPrivateDB
 	if ElvPrivateDB then
 		local profileKey
 		if ElvPrivateDB.profileKeys then
@@ -206,7 +206,7 @@ end
 function AddOn:ResetProfile()
 	local profileKey
 
-	local ElvPrivateDB = _G.ElvPrivateDB
+	local ElvPrivateDB = ElvPrivateDB
 	if ElvPrivateDB.profileKeys then
 		profileKey = ElvPrivateDB.profileKeys[self.myname..' - '..self.myrealm]
 	end
@@ -215,7 +215,7 @@ function AddOn:ResetProfile()
 		ElvPrivateDB.profiles[profileKey] = nil;
 	end
 
-	_G.ElvCharacterDB = nil;
+	ElvCharacterDB = nil;
 	ReloadUI()
 end
 

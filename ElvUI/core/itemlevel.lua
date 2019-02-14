@@ -10,6 +10,7 @@ local GetAverageItemLevel = GetAverageItemLevel
 local GetInventoryItemLink = GetInventoryItemLink
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInspectSpecialization = GetInspectSpecialization
+-- GLOBALS: ElvUI_ScanTooltipTextLeft1
 
 local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
 local MATCH_ENCHANT = ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.+)')
@@ -44,7 +45,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 			if line then
 				local lineText = line:GetText()
 				local lr, lg, lb = line:GetTextColor()
-				local tr, tg, tb = _G.ElvUI_ScanTooltipTextLeft1:GetTextColor()
+				local tr, tg, tb = ElvUI_ScanTooltipTextLeft1:GetTextColor()
 				local itemLevel = lineText and lineText:match(MATCH_ITEM_LEVEL)
 				local enchant = lineText:match(MATCH_ENCHANT)
 				if enchant then

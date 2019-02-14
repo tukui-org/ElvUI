@@ -47,6 +47,7 @@ local C_ChatInfo_GetNumActiveChannels = C_ChatInfo.GetNumActiveChannels
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local C_Timer_After = C_Timer.After
+-- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs
 
 --Constants
 E.noop = function() end
@@ -1164,8 +1165,8 @@ end
 
 function E:UpdateAuras()
 	local Auras = E:GetModule('Auras')
-	if _G.ElvUIPlayerBuffs then Auras:UpdateHeader(_G.ElvUIPlayerBuffs) end
-	if _G.ElvUIPlayerDebuffs then Auras:UpdateHeader(_G.ElvUIPlayerDebuffs) end
+	if ElvUIPlayerBuffs then Auras:UpdateHeader(ElvUIPlayerBuffs) end
+	if ElvUIPlayerDebuffs then Auras:UpdateHeader(ElvUIPlayerDebuffs) end
 
 	E.callbacks:Fire("StaggeredUpdate")
 end
@@ -1258,7 +1259,7 @@ function E:StaggeredUpdateAll(event, ignoreInstall)
 		if E.private.general.minimap.enable then
 			tinsert(staggerTable, "UpdateMinimap")
 		end
-		if _G.ElvUIPlayerBuffs or _G.ElvUIPlayerDebuffs then
+		if ElvUIPlayerBuffs or ElvUIPlayerDebuffs then
 			tinsert(staggerTable, "UpdateAuras")
 		end
 		tinsert(staggerTable, "UpdateMisc")

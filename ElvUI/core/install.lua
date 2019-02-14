@@ -30,6 +30,7 @@ local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
 local GUILD_EVENT_LOG = GUILD_EVENT_LOG
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+-- GLOBALS: ElvUIInstallFrame
 
 local CURRENT_PAGE = 0
 local MAX_PAGE = 7
@@ -465,11 +466,11 @@ local function ResetAll()
 	_G.InstallSlider.Min:SetText("")
 	_G.InstallSlider.Max:SetText("")
 	_G.InstallSlider.Cur:SetText("")
-	_G.ElvUIInstallFrame.SubTitle:SetText("")
-	_G.ElvUIInstallFrame.Desc1:SetText("")
-	_G.ElvUIInstallFrame.Desc2:SetText("")
-	_G.ElvUIInstallFrame.Desc3:SetText("")
-	_G.ElvUIInstallFrame:Size(550, 400)
+	ElvUIInstallFrame.SubTitle:SetText("")
+	ElvUIInstallFrame.Desc1:SetText("")
+	ElvUIInstallFrame.Desc2:SetText("")
+	ElvUIInstallFrame.Desc3:SetText("")
+	ElvUIInstallFrame:Size(550, 400)
 end
 
 local function SetPage(PageNum)
@@ -481,7 +482,7 @@ local function SetPage(PageNum)
 	_G.InstallStatus.text:SetText(CURRENT_PAGE.." / "..MAX_PAGE)
 
 	local r, g, b = E:ColorGradient(CURRENT_PAGE / MAX_PAGE, 1, 0, 0, 1, 1, 0, 0, 1, 0)
-	_G.ElvUIInstallFrame.Status:SetStatusBarColor(r, g, b)
+	ElvUIInstallFrame.Status:SetStatusBarColor(r, g, b)
 
 	if PageNum == MAX_PAGE then
 		_G.InstallNextButton:Disable()
@@ -500,7 +501,7 @@ local function SetPage(PageNum)
 	local InstallOption3Button = _G.InstallOption3Button
 	local InstallSlider = _G.InstallSlider
 
-	local f = _G.ElvUIInstallFrame
+	local f = ElvUIInstallFrame
 	if PageNum == 1 then
 		f.SubTitle:SetFormattedText(L["Welcome to ElvUI version %s!"], E.version)
 		f.Desc1:SetText(L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."])
@@ -595,7 +596,7 @@ local function SetPage(PageNum)
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript("OnClick", InstallComplete)
 		InstallOption2Button:SetText(L["Finished"])
-		_G.ElvUIInstallFrame:Size(550, 350)
+		ElvUIInstallFrame:Size(550, 350)
 	end
 end
 
@@ -662,7 +663,7 @@ function E:Install()
 	end
 
 	--Create Frame
-	if not _G.ElvUIInstallFrame then
+	if not ElvUIInstallFrame then
 		local f = CreateFrame("Button", "ElvUIInstallFrame", E.UIParent)
 		f.SetPage = SetPage
 		f:Size(550, 400)
@@ -808,6 +809,6 @@ function E:Install()
 		f.tutorialImage:Point('BOTTOM', 0, 70)
 	end
 
-	_G.ElvUIInstallFrame:Show()
+	ElvUIInstallFrame:Show()
 	NextPage()
 end

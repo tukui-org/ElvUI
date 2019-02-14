@@ -11,6 +11,7 @@ local InCombatLockdown = InCombatLockdown
 local IsControlKeyDown = IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
+-- GLOBALS: ElvUIMoverNudgeWindow
 
 E.CreatedMovers = {}
 E.DisabledMovers = {}
@@ -27,7 +28,7 @@ end
 
 local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
-	if not anchor then anchor = _G.ElvUIParent end
+	if not anchor then anchor = E.UIParent end
 
 	return format('%s,%s,%s,%d,%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
 end
@@ -37,8 +38,8 @@ local function UpdateCoords(self)
 	local x, y, _, nudgePoint, nudgeInversePoint = E:CalculateMoverPoints(mover)
 
 	local coordX, coordY = E:GetXYOffset(nudgeInversePoint, 1)
-	_G.ElvUIMoverNudgeWindow:ClearAllPoints()
-	_G.ElvUIMoverNudgeWindow:Point(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
+	ElvUIMoverNudgeWindow:ClearAllPoints()
+	ElvUIMoverNudgeWindow:Point(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
 	E:UpdateNudgeFrame(mover, x, y)
 end
 
@@ -160,7 +161,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 		E:SaveMoverPosition(name)
 
-		if _G.ElvUIMoverNudgeWindow then
+		if ElvUIMoverNudgeWindow then
 			E:UpdateNudgeFrame(self, x, y)
 		end
 
@@ -184,10 +185,10 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	local function OnMouseDown(self, button)
 		if button == "LeftButton" and not isDragging then
-			if _G.ElvUIMoverNudgeWindow:IsShown() then
-				_G.ElvUIMoverNudgeWindow:Hide()
+			if ElvUIMoverNudgeWindow:IsShown() then
+				ElvUIMoverNudgeWindow:Hide()
 			else
-				_G.ElvUIMoverNudgeWindow:Show()
+				ElvUIMoverNudgeWindow:Show()
 			end
 		elseif button == "RightButton" then
 			isDragging = false

@@ -11,6 +11,7 @@ local max = math.max
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
+-- GLOBALS: ElvUF_Target
 
 function UF:Construct_PlayerFrame(frame)
 	frame.ThreatIndicator = self:Construct_Threat(frame)
@@ -193,8 +194,8 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_AuraBars(frame)
 	--We need to update Target AuraBars if attached to Player AuraBars
 	--mainly because of issues when using power offset on player and switching to/from middle orientation
-	if E.db.unitframe.units.target.aurabar.attachTo == "PLAYER_AURABARS" and _G.ElvUF_Target then
-		UF:Configure_AuraBars(_G.ElvUF_Target)
+	if E.db.unitframe.units.target.aurabar.attachTo == "PLAYER_AURABARS" and ElvUF_Target then
+		UF:Configure_AuraBars(ElvUF_Target)
 	end
 
 	--PvP & Prestige Icon

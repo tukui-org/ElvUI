@@ -21,6 +21,7 @@ local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
 local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE
+-- GLOBALS: ElvUIBindPopupWindowCheckButton
 
 E.PopupDialogs = {}
 E.StaticPopup_DisplayedFrames = {}
@@ -127,8 +128,8 @@ E.PopupDialogs["CONFIRM_LOSE_BINDING_CHANGES"] = {
 		E:GetModule('ActionBars').bindingsChanged = nil;
 	end,
 	OnCancel = function()
-		local isChecked = _G.ElvUIBindPopupWindowCheckButton:GetChecked()
-		_G.ElvUIBindPopupWindowCheckButton:SetChecked(not isChecked)
+		local isChecked = ElvUIBindPopupWindowCheckButton:GetChecked()
+		ElvUIBindPopupWindowCheckButton:SetChecked(not isChecked)
 	end,
 	timeout = 0,
 	whileDead = 1,

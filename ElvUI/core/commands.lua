@@ -19,13 +19,14 @@ local UpdateAddOnCPUUsage, GetAddOnCPUUsage = UpdateAddOnCPUUsage, GetAddOnCPUUs
 local ResetCPUUsage = ResetCPUUsage
 local GetAddOnInfo = GetAddOnInfo
 local GetCVarBool = GetCVarBool
+-- GLOBALS: ElvUIGrid
 
 function E:Grid(msg)
 	msg = msg and tonumber(msg)
 	if type(msg) == "number" and (msg <= 256 and msg >= 4) then
 		E.db.gridSize = msg
 		E:Grid_Show()
-	elseif _G.ElvUIGrid and _G.ElvUIGrid:IsShown() then
+	elseif ElvUIGrid and ElvUIGrid:IsShown() then
 		E:Grid_Hide()
 	else
 		E:Grid_Show()
