@@ -522,7 +522,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 					enchantText = enchant:sub(1, 18)
 					enchantColors = {lr, lg, lb}
 				end
-				if itemLevel and itemLevel ~= "1" then
+				if itemLevel then
 					iLvl = tonumber(itemLevel)
 					itemLevelColors = {tr, tg, tb}
 				end
