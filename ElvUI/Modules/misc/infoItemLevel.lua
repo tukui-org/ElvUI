@@ -132,7 +132,7 @@ function M:UpdatePageInfo(frame, which)
 		end
 	end
 
-	local AvgItemLevel = (which == 'Inspect' and E:CalculateAverageItemLevel(iLevelDB, frame.unit)) or E:Round((select(2, GetAverageItemLevel())), 2)
+	local AvgItemLevel = (which == 'Character' and E:Round((select(2, GetAverageItemLevel())), 2)) or E:CalculateAverageItemLevel(iLevelDB, frame.unit)
 	if AvgItemLevel then
 		frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
 	else
