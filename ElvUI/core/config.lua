@@ -3,22 +3,21 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Cache global variables
 --Lua functions
 local _G = _G
+local unpack = unpack
 local type, ipairs, tonumber = type, ipairs, tonumber
 local floor, select = math.floor, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 local InCombatLockdown = InCombatLockdown
+local IsControlKeyDown = IsControlKeyDown
+local IsAltKeyDown = IsAltKeyDown
 local RESET = RESET
 
 local UIDropDownMenu_SetSelectedValue = UIDropDownMenu_SetSelectedValue
 local UIDropDownMenu_CreateInfo = UIDropDownMenu_CreateInfo
 local UIDropDownMenu_AddButton = UIDropDownMenu_AddButton
 local UIDropDownMenu_Initialize = UIDropDownMenu_Initialize
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: UIParent, GameTooltip, EditBox_ClearFocus, SquareButton_SetIcon
--- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
 
 local grid
 local selectedValue = 'ALL'
@@ -67,19 +66,19 @@ function E:ToggleConfigMode(override, configType)
 	if E.ConfigurationMode ~= true then
 		E:Grid_Show()
 
-		if not ElvUIMoverPopupWindow then
+		if not _G.ElvUIMoverPopupWindow then
 			E:CreateMoverPopup()
 		end
 
-		ElvUIMoverPopupWindow:Show()
+		_G.ElvUIMoverPopupWindow:Show()
 
 		if IsAddOnLoaded("ElvUI_Config") then
 			if E.Libs.AceConfigDialog then
 				E.Libs.AceConfigDialog:Close("ElvUI")
 			end
 
-			if not GameTooltip:IsForbidden() then
-				GameTooltip:Hide()
+			if not _G.GameTooltip:IsForbidden() then
+				_G.GameTooltip:Hide()
 			end
 		end
 
@@ -87,8 +86,8 @@ function E:ToggleConfigMode(override, configType)
 	else
 		E:Grid_Hide()
 
-		if ElvUIMoverPopupWindow then
-			ElvUIMoverPopupWindow:Hide()
+		if _G.ElvUIMoverPopupWindow then
+			_G.ElvUIMoverPopupWindow:Hide()
 		end
 
 		E.ConfigurationMode = false
@@ -186,7 +185,7 @@ end
 local function ConfigMode_OnClick(self)
 	selectedValue = self.value
 	E:ToggleConfigMode(false, self.value)
-	UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, self.value);
+	UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, self.value);
 end
 
 local function ConfigMode_Initialize()
@@ -199,11 +198,11 @@ local function ConfigMode_Initialize()
 		UIDropDownMenu_AddButton(info);
 	end
 
-	UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
+	UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, selectedValue);
 end
 
 function E:NudgeMover(nudgeX, nudgeY)
-	local mover = ElvUIMoverNudgeWindow.child
+	local mover = _G.ElvUIMoverNudgeWindow.child
 	local x, y, point = E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 
 	mover:ClearAllPoints()
@@ -222,6 +221,7 @@ function E:UpdateNudgeFrame(mover, x, y)
 	x = E:Round(x, 0)
 	y = E:Round(y, 0)
 
+	local ElvUIMoverNudgeWindow = _G.ElvUIMoverNudgeWindow
 	ElvUIMoverNudgeWindow.xOffset:SetText(x)
 	ElvUIMoverNudgeWindow.yOffset:SetText(y)
 	ElvUIMoverNudgeWindow.xOffset.currentValue = x
@@ -230,12 +230,12 @@ function E:UpdateNudgeFrame(mover, x, y)
 end
 
 function E:AssignFrameToNudge()
-	ElvUIMoverNudgeWindow.child = self;
+	_G.ElvUIMoverNudgeWindow.child = self;
 	E:UpdateNudgeFrame(self)
 end
 
 function E:CreateMoverPopup()
-	local f = CreateFrame("Frame", "ElvUIMoverPopupWindow", UIParent)
+	local f = CreateFrame("Frame", "ElvUIMoverPopupWindow", _G.UIParent)
 	f:SetFrameStrata("DIALOG")
 	f:SetToplevel(true)
 	f:EnableMouse(true)
@@ -245,10 +245,10 @@ function E:CreateMoverPopup()
 	f:Width(360)
 	f:Height(170)
 	f:SetTemplate('Transparent')
-	f:Point("BOTTOM", UIParent, 'CENTER', 0, 100)
+	f:Point("BOTTOM", _G.UIParent, 'CENTER', 0, 100)
 	f:SetScript('OnHide', function()
-		if ElvUIMoverPopupWindowDropDown then
-			UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, 'ALL');
+		if _G.ElvUIMoverPopupWindowDropDown then
+			UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, 'ALL');
 		end
 	end)
 	f:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
@@ -284,12 +284,12 @@ function E:CreateMoverPopup()
 	local snapping = CreateFrame("CheckButton", f:GetName()..'CheckButton', f, "OptionsCheckButtonTemplate")
 	_G[snapping:GetName() .. "Text"]:SetText(L["Sticky Frames"])
 
-	snapping:SetScript("OnShow", function(self)
-		self:SetChecked(E.db.general.stickyFrames)
+	snapping:SetScript("OnShow", function(cb)
+		cb:SetChecked(E.db.general.stickyFrames)
 	end)
 
-	snapping:SetScript("OnClick", function(self)
-		E.db.general.stickyFrames = self:GetChecked()
+	snapping:SetScript("OnClick", function(cb)
+		E.db.general.stickyFrames = cb:GetChecked()
 	end)
 
 	local lock = CreateFrame("Button", f:GetName()..'CloseButton', f, "OptionsButtonTemplate")
@@ -303,38 +303,38 @@ function E:CreateMoverPopup()
 		end
 
 		selectedValue = 'ALL'
-		UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
+		UIDropDownMenu_SetSelectedValue(_G.ElvUIMoverPopupWindowDropDown, selectedValue);
 	end)
 
 	local align = CreateFrame('EditBox', f:GetName()..'EditBox', f, 'InputBoxTemplate')
 	align:Width(24)
 	align:Height(17)
 	align:SetAutoFocus(false)
-	align:SetScript("OnEscapePressed", function(self)
-		self:SetText(E.db.gridSize)
-		EditBox_ClearFocus(self)
+	align:SetScript("OnEscapePressed", function(eb)
+		eb:SetText(E.db.gridSize)
+		_G.EditBox_ClearFocus(eb)
 	end)
-	align:SetScript("OnEnterPressed", function(self)
-		local text = self:GetText()
+	align:SetScript("OnEnterPressed", function(eb)
+		local text = eb:GetText()
 		if tonumber(text) then
 			if tonumber(text) <= 256 and tonumber(text) >= 4 then
 				E.db.gridSize = tonumber(text)
 			else
-				self:SetText(E.db.gridSize)
+				eb:SetText(E.db.gridSize)
 			end
 		else
-			self:SetText(E.db.gridSize)
+			eb:SetText(E.db.gridSize)
 		end
 		E:Grid_Show()
-		EditBox_ClearFocus(self)
+		_G.EditBox_ClearFocus(eb)
 	end)
-	align:SetScript("OnEditFocusLost", function(self)
-		self:SetText(E.db.gridSize)
+	align:SetScript("OnEditFocusLost", function(eb)
+		eb:SetText(E.db.gridSize)
 	end)
 	align:SetScript("OnEditFocusGained", align.HighlightText)
-	align:SetScript('OnShow', function(self)
-		EditBox_ClearFocus(self)
-		self:SetText(E.db.gridSize)
+	align:SetScript('OnShow', function(eb)
+		_G.EditBox_ClearFocus(eb)
+		eb:SetText(E.db.gridSize)
 	end)
 
 	align.text = align:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
@@ -351,9 +351,9 @@ function E:CreateMoverPopup()
 	S:HandleEditBox(align)
 
 	f:RegisterEvent('PLAYER_REGEN_DISABLED')
-	f:SetScript('OnEvent', function(self)
-		if self:IsShown() then
-			self:Hide()
+	f:SetScript('OnEvent', function(mover)
+		if mover:IsShown() then
+			mover:Hide()
 			E:Grid_Hide()
 			E:ToggleConfigMode(true)
 		end
@@ -380,7 +380,7 @@ function E:CreateMoverPopup()
 	nudgeFrame:EnableMouse(true)
 	nudgeFrame:SetClampedToScreen(true)
 	nudgeFrame:SetPropagateKeyboardInput(true)
-	nudgeFrame:SetScript("OnKeyDown", function(self, btn)
+	nudgeFrame:SetScript("OnKeyDown", function(_, btn)
 		local Mod = IsAltKeyDown() or IsControlKeyDown()
 		if btn == 'NUMPAD4' then
 			E:NudgeMover(-1 * (Mod and 10 or 1))
@@ -392,7 +392,8 @@ function E:CreateMoverPopup()
 			E:NudgeMover(nil, -1 * (Mod and 10 or 1))
 		end
 	end)
-	ElvUIMoverPopupWindow:HookScript('OnHide', function() ElvUIMoverNudgeWindow:Hide() end)
+
+	_G.ElvUIMoverPopupWindow:HookScript('OnHide', function() _G.ElvUIMoverNudgeWindow:Hide() end)
 
 	desc = nudgeFrame:CreateFontString("ARTWORK")
 	desc:SetFontObject("GameFontHighlight")
@@ -420,27 +421,27 @@ function E:CreateMoverPopup()
 	xOffset:Height(17)
 	xOffset:SetAutoFocus(false)
 	xOffset.currentValue = 0
-	xOffset:SetScript("OnEscapePressed", function(self)
-		self:SetText(E:Round(xOffset.currentValue))
-		EditBox_ClearFocus(self)
+	xOffset:SetScript("OnEscapePressed", function(eb)
+		eb:SetText(E:Round(xOffset.currentValue))
+		_G.EditBox_ClearFocus(eb)
 	end)
-	xOffset:SetScript("OnEnterPressed", function(self)
-		local num = self:GetText()
+	xOffset:SetScript("OnEnterPressed", function(eb)
+		local num = eb:GetText()
 		if tonumber(num) then
 			local diff = num - xOffset.currentValue
 			xOffset.currentValue = num
 			E:NudgeMover(diff)
 		end
-		self:SetText(E:Round(xOffset.currentValue))
-		EditBox_ClearFocus(self)
+		eb:SetText(E:Round(xOffset.currentValue))
+		_G.EditBox_ClearFocus(eb)
 	end)
-	xOffset:SetScript("OnEditFocusLost", function(self)
-		self:SetText(E:Round(xOffset.currentValue))
+	xOffset:SetScript("OnEditFocusLost", function(eb)
+		eb:SetText(E:Round(xOffset.currentValue))
 	end)
 	xOffset:SetScript("OnEditFocusGained", xOffset.HighlightText)
-	xOffset:SetScript('OnShow', function(self)
-		EditBox_ClearFocus(self)
-		self:SetText(E:Round(xOffset.currentValue))
+	xOffset:SetScript('OnShow', function(eb)
+		_G.EditBox_ClearFocus(eb)
+		eb:SetText(E:Round(xOffset.currentValue))
 	end)
 
 	xOffset.text = xOffset:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
@@ -455,27 +456,27 @@ function E:CreateMoverPopup()
 	yOffset:Height(17)
 	yOffset:SetAutoFocus(false)
 	yOffset.currentValue = 0
-	yOffset:SetScript("OnEscapePressed", function(self)
-		self:SetText(E:Round(yOffset.currentValue))
-		EditBox_ClearFocus(self)
+	yOffset:SetScript("OnEscapePressed", function(eb)
+		eb:SetText(E:Round(yOffset.currentValue))
+		_G.EditBox_ClearFocus(eb)
 	end)
-	yOffset:SetScript("OnEnterPressed", function(self)
-		local num = self:GetText()
+	yOffset:SetScript("OnEnterPressed", function(eb)
+		local num = eb:GetText()
 		if tonumber(num) then
 			local diff = num - yOffset.currentValue
 			yOffset.currentValue = num
 			E:NudgeMover(nil, diff)
 		end
-		self:SetText(E:Round(yOffset.currentValue))
-		EditBox_ClearFocus(self)
+		eb:SetText(E:Round(yOffset.currentValue))
+		_G.EditBox_ClearFocus(eb)
 	end)
-	yOffset:SetScript("OnEditFocusLost", function(self)
-		self:SetText(E:Round(yOffset.currentValue))
+	yOffset:SetScript("OnEditFocusLost", function(eb)
+		eb:SetText(E:Round(yOffset.currentValue))
 	end)
 	yOffset:SetScript("OnEditFocusGained", yOffset.HighlightText)
-	yOffset:SetScript('OnShow', function(self)
-		EditBox_ClearFocus(self)
-		self:SetText(E:Round(yOffset.currentValue))
+	yOffset:SetScript('OnShow', function(eb)
+		_G.EditBox_ClearFocus(eb)
+		eb:SetText(E:Round(yOffset.currentValue))
 	end)
 
 	yOffset.text = yOffset:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
@@ -490,8 +491,8 @@ function E:CreateMoverPopup()
 	resetButton:Point("TOP", nudgeFrame, "CENTER", 0, 2)
 	resetButton:Size(100, 25)
 	resetButton:SetScript("OnClick", function()
-		if ElvUIMoverNudgeWindow.child.textString then
-			E:ResetMovers(ElvUIMoverNudgeWindow.child.textString)
+		if _G.ElvUIMoverNudgeWindow.child.textString then
+			E:ResetMovers(_G.ElvUIMoverNudgeWindow.child.textString)
 		end
 	end)
 	S:HandleButton(resetButton)
