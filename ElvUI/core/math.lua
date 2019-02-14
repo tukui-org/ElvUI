@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Cache global variables
-local tinsert, tremove, next = tinsert, tremove, next
+local tinsert, tremove, next, wipe = tinsert, tremove, next, wipe
 local select, tonumber, assert, type, unpack = select, tonumber, assert, type, unpack
 local atan2, modf, ceil, floor, abs, sqrt, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, mod
 local format, strfind, strsub, strupper, gsub, gmatch, utf8sub = format, strfind, strsub, strupper, gsub, gmatch, string.utf8sub
@@ -509,7 +509,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 				textures[i] = hasTexture
 				tex:SetTexture()
 			end
-		end			
+		end
 		for x = 1, ScanTooltip:NumLines() do
 			local line = _G["ElvUI_GearSlotTooltipTextLeft"..x]
 			if line then
@@ -527,7 +527,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 					itemLevelColors = {tr, tg, tb}
 				end
 			end
-		end		
+		end
 	else
 		local colorblind = GetCVarBool('colorblindmode') and 4 or 3
 		for x = 2, colorblind do
@@ -603,12 +603,13 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 	return isOK, total / 16
 end
 
+local iLevelDB = {}
 function E:GetUnitItemLevel(unit)
 	if UnitIsUnit("player", unit) then
 		return floor(select(2, GetAverageItemLevel()))
 	end
 
-	local iLevelDB = {}
+	wipe(iLevelDB)
 	for i = 1, 17 do
 		if i ~= 4 then
 			iLevelDB[i] = E:GetGearSlotInfo(unit, i)
