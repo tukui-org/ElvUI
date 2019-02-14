@@ -12,7 +12,7 @@ local function LoadSkin()
 
 	local ObliterumForgeFrame = _G.ObliterumForgeFrame
 	S:HandlePortraitFrame(ObliterumForgeFrame, true)
-	ObliterumForgeFrame.ItemSlot:CreateBackdrop("Default")
+	ObliterumForgeFrame.ItemSlot:CreateBackdrop()
 	ObliterumForgeFrame.ItemSlot.Icon:SetTexCoord(unpack(E.TexCoords))
 	S:HandleButton(ObliterumForgeFrame.ObliterateButton)
 end

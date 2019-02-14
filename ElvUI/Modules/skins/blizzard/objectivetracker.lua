@@ -87,7 +87,7 @@ local function SkinProgressBars(_, _, line)
 			icon:SetTexCoord(unpack(E.TexCoords))
 
 			if not progressBar.backdrop then
-				progressBar:CreateBackdrop("Default")
+				progressBar:CreateBackdrop()
 				progressBar.backdrop:SetOutside(icon)
 				progressBar.backdrop:SetShown(icon:IsShown())
 			end

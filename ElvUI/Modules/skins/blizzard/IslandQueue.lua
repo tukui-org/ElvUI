@@ -19,7 +19,7 @@ local function LoadSkin()
 	WeeklyQuest.OverlayFrame:StripTextures()
 
 	-- StatusBar
-	StatusBar:CreateBackdrop("Default")
+	StatusBar:CreateBackdrop()
 
 	--StatusBar Icon
 	WeeklyQuest.QuestReward.Icon:SetTexCoord(unpack(E.TexCoords))

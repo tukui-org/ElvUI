@@ -226,7 +226,7 @@ local function LoadSkin()
 						frame.ring:Hide()
 						frame.icon:SetTexCoord(unpack(E.TexCoords))
 						frame.icon:SetSize(40, 40)
-						frame:CreateBackdrop("Default")
+						frame:CreateBackdrop()
 						frame.backdrop:SetOutside(frame.icon)
 					end
 				end

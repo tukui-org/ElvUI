@@ -72,7 +72,7 @@ local function SkinStatusBar(bar)
 	bar:StripTextures()
 	bar:SetStatusBarTexture(E.media.normTex)
 	bar:SetStatusBarColor(4/255, 179/255, 30/255)
-	bar:CreateBackdrop("Default")
+	bar:CreateBackdrop()
 	E:RegisterStatusBar(bar)
 
 	local StatusBarName = bar:GetName()
@@ -255,7 +255,7 @@ local function LoadSkin(event)
 	_G.AchievementFrameHeaderPoints:Point("LEFT", _G.AchievementFrameHeaderTitle, "RIGHT", 2, 0)
 
 	--Backdrops
-	_G.AchievementFrameCategoriesContainer:CreateBackdrop("Default")
+	_G.AchievementFrameCategoriesContainer:CreateBackdrop()
 	_G.AchievementFrameCategoriesContainer.backdrop:Point("TOPLEFT", 0, 4)
 	_G.AchievementFrameCategoriesContainer.backdrop:Point("BOTTOMRIGHT", -2, -3)
 	_G.AchievementFrameCategoriesContainer.backdrop:SetFrameStrata("BACKGROUND")

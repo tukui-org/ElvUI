@@ -55,7 +55,7 @@ function S:SkinAce3()
 			local checkbg = widget.checkbg
 			local highlight = widget.highlight
 
-			checkbg:CreateBackdrop('Default')
+			checkbg:CreateBackdrop()
 			checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
 			checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
 			checkbg:SetTexture()
@@ -92,7 +92,7 @@ function S:SkinAce3()
 			S:HandleNextPrevButton(button, true, nil, nil, 'system')
 
 			if not frame.backdrop then
-				frame:CreateBackdrop('Default')
+				frame:CreateBackdrop()
 			end
 
 			frame.backdrop:SetPoint('TOPLEFT', 15, -2)
@@ -122,7 +122,7 @@ function S:SkinAce3()
 			S:HandleNextPrevButton(button, true, nil, nil, 'system')
 
 			if not frame.backdrop then
-				frame:CreateBackdrop('Default')
+				frame:CreateBackdrop()
 			end
 
 			frame.label:ClearAllPoints()
@@ -207,7 +207,7 @@ function S:SkinAce3()
 			local colorSwatch = widget.colorSwatch
 
 			if not frame.backdrop then
-				frame:CreateBackdrop('Default')
+				frame:CreateBackdrop()
 			end
 
 			frame.backdrop:SetSize(24, 16)

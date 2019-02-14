@@ -223,7 +223,7 @@ local function LoadSkin()
 		local button = _G["CommunitiesFrameContainerButton"..i]
 		button:DisableDrawLayer("BACKGROUND")
 		button:DisableDrawLayer("BORDER")
-		button:CreateBackdrop("Default")
+		button:CreateBackdrop()
 
 		button.Icon:SetTexCoord(unpack(E.TexCoords))
 	end
@@ -236,7 +236,7 @@ local function LoadSkin()
 
 	for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
 		if not button.backdrop then
-			button:CreateBackdrop("Default")
+			button:CreateBackdrop()
 		end
 
 		button:SetNormalTexture("")
@@ -252,7 +252,7 @@ local function LoadSkin()
 
 		button.Icon:SetTexCoord(unpack(E.TexCoords))
 		if not button.Icon.backdrop then
-			button.Icon:CreateBackdrop("Default")
+			button.Icon:CreateBackdrop()
 			button.Icon.backdrop:SetOutside(button.Icon, 1, 1)
 			button.Icon.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel() + 1)
 		end
@@ -285,7 +285,7 @@ local function LoadSkin()
 	bg:SetPoint("TOPLEFT", 0, -3)
 	bg:SetPoint("BOTTOMRIGHT", 0, 1)
 	bg:SetFrameLevel(StatusBar:GetFrameLevel())
-	bg:CreateBackdrop("Default")
+	bg:CreateBackdrop()
 
 	-- [[ INFO TAB ]]
 	local GuildDetails = _G.CommunitiesFrameGuildDetailsFrame

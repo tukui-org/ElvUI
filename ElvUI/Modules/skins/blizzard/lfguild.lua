@@ -38,7 +38,7 @@ local function SkinLFGuild()
 	S:HandleButton(_G.LookingForGuildBrowseButton)
 	S:HandleButton(_G.LookingForGuildRequestButton)
 
-	_G.LookingForGuildCommentInputFrame:CreateBackdrop("Default")
+	_G.LookingForGuildCommentInputFrame:CreateBackdrop()
 	_G.LookingForGuildCommentInputFrame:StripTextures(false)
 
 	-- skin container buttons on browse and request page

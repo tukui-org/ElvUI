@@ -32,7 +32,7 @@ local function HandleGoldIcon(button)
 	local nameFrame = _G[button.."NameFrame"]
 	local iconTexture = _G[button.."IconTexture"]
 
-	Button:CreateBackdrop("Default")
+	Button:CreateBackdrop()
 	Button.backdrop:ClearAllPoints()
 	Button.backdrop:Point("LEFT", 1, 0)
 	Button.backdrop:Size(42)
@@ -56,7 +56,7 @@ local function SkinItemButton(parentFrame, _, index)
 	local item = _G[parentName.."Item"..index];
 
 	if item and not item.backdrop then
-		item:CreateBackdrop("Default")
+		item:CreateBackdrop()
 		item.backdrop:ClearAllPoints()
 		item.backdrop:Point("LEFT", 1, 0)
 		item.backdrop:Size(42)
@@ -426,7 +426,7 @@ local function LoadSkin()
 				tab:GetNormalTexture():SetInside()
 
 				tab.pushed = true;
-				tab:CreateBackdrop("Default")
+				tab:CreateBackdrop()
 				tab.backdrop:SetAllPoints()
 				tab:StyleButton(true)
 				hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)

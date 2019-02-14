@@ -67,7 +67,7 @@ local function LoadSkin()
 
 	local ClassTrainerFrameSkillStepButton = _G.ClassTrainerFrameSkillStepButton
 	ClassTrainerFrameSkillStepButton.icon:SetTexCoord(unpack(E.TexCoords))
-	ClassTrainerFrameSkillStepButton:CreateBackdrop("Default")
+	ClassTrainerFrameSkillStepButton:CreateBackdrop()
 	ClassTrainerFrameSkillStepButton.backdrop:SetOutside(ClassTrainerFrameSkillStepButton.icon)
 	ClassTrainerFrameSkillStepButton.icon:SetParent(ClassTrainerFrameSkillStepButton.backdrop)
 	_G.ClassTrainerFrameSkillStepButtonHighlight:SetColorTexture(1,1,1,0.3)
@@ -76,7 +76,7 @@ local function LoadSkin()
 	local ClassTrainerStatusBar = _G.ClassTrainerStatusBar
 	ClassTrainerStatusBar:StripTextures()
 	ClassTrainerStatusBar:SetStatusBarTexture(E.media.normTex)
-	ClassTrainerStatusBar:CreateBackdrop("Default")
+	ClassTrainerStatusBar:CreateBackdrop()
 	ClassTrainerStatusBar.rankText:ClearAllPoints()
 	ClassTrainerStatusBar.rankText:Point("CENTER", ClassTrainerStatusBar, "CENTER")
 	E:RegisterStatusBar(ClassTrainerStatusBar)

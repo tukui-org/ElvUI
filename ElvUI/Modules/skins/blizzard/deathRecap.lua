@@ -21,7 +21,7 @@ local function LoadSkin()
 		local icon = DeathRecapFrame["Recap"..i].SpellInfo.Icon
 		iconBorder:SetAlpha(0)
 		icon:SetTexCoord(unpack(E.TexCoords))
-		DeathRecapFrame["Recap"..i].SpellInfo:CreateBackdrop("Default")
+		DeathRecapFrame["Recap"..i].SpellInfo:CreateBackdrop()
 		DeathRecapFrame["Recap"..i].SpellInfo.backdrop:SetOutside(icon)
 		icon:SetParent(DeathRecapFrame["Recap"..i].SpellInfo.backdrop)
 	end

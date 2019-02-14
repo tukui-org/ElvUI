@@ -205,7 +205,7 @@ local function LoadSkin()
 	AuctionProgressBar.Text:Point("CENTER")
 
 	AuctionProgressBar:StripTextures()
-	AuctionProgressBar:CreateBackdrop("Default")
+	AuctionProgressBar:CreateBackdrop()
 	AuctionProgressBar:SetStatusBarTexture(E.media.normTex)
 	AuctionProgressBar:SetStatusBarColor(1, 1, 0)
 	E:RegisterStatusBar(AuctionProgressBar)
@@ -279,7 +279,7 @@ local function LoadSkin()
 	--WoW Token Category
 	local BrowseWowTokenResultsToken = _G.BrowseWowTokenResultsToken
 	S:HandleButton(_G.BrowseWowTokenResults.Buyout)
-	BrowseWowTokenResultsToken:CreateBackdrop("Default")
+	BrowseWowTokenResultsToken:CreateBackdrop()
 	S:HandleTexture(_G.BrowseWowTokenResultsTokenIconTexture)
 	BrowseWowTokenResultsToken.backdrop:SetOutside(_G.BrowseWowTokenResultsTokenIconTexture)
 	BrowseWowTokenResultsToken.backdrop:SetBackdropBorderColor(BrowseWowTokenResultsToken.IconBorder:GetVertexColor())

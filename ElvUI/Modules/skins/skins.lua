@@ -150,7 +150,7 @@ function S:SkinPVPHonorXPBar(frame)
 		XPBar:StripTextures() --XPBar
 
 		if XPBar.Bar and not XPBar.Bar.backdrop then
-			XPBar.Bar:CreateBackdrop("Default")
+			XPBar.Bar:CreateBackdrop()
 			if XPBar.Bar.Background then
 				XPBar.Bar.Background:SetInside(XPBar.Bar.backdrop)
 			end
@@ -179,7 +179,7 @@ function S:SkinPVPHonorXPBar(frame)
 
 			if not XPBar.NextAvailable.backdrop then
 				XPBar.NextAvailable:StripTextures()
-				XPBar.NextAvailable:CreateBackdrop("Default")
+				XPBar.NextAvailable:CreateBackdrop()
 				if XPBar.NextAvailable.Icon then
 					XPBar.NextAvailable.backdrop:SetPoint("TOPLEFT", XPBar.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
 					XPBar.NextAvailable.backdrop:SetPoint("BOTTOMRIGHT", XPBar.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
@@ -467,7 +467,7 @@ end
 function S:HandleEditBox(frame)
 	if frame.backdrop then return end
 
-	frame:CreateBackdrop("Default")
+	frame:CreateBackdrop()
 
 	if frame.TopLeftTex then frame.TopLeftTex:Kill() end
 	if frame.TopRightTex then frame.TopRightTex:Kill() end
@@ -526,7 +526,7 @@ function S:HandleDropDownBox(frame, width)
 		frame.Icon:SetPoint('LEFT', 23, 0)
 	end
 
-	frame:CreateBackdrop("Default")
+	frame:CreateBackdrop()
 	frame.backdrop:Point("TOPLEFT", 20, -6)
 	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 end
@@ -541,7 +541,7 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 		frame:SetTemplate()
 		frame:Size(16)
 	else
-		frame:CreateBackdrop('Default')
+		frame:CreateBackdrop()
 		frame.backdrop:SetInside(nil, 4, 4)
 	end
 
@@ -587,7 +587,7 @@ function S:HandleIcon(icon, parent)
 	parent = parent or icon:GetParent()
 
 	icon:SetTexCoord(unpack(E.TexCoords))
-	parent:CreateBackdrop('Default')
+	parent:CreateBackdrop()
 	icon:SetParent(parent.backdrop)
 	parent.backdrop:SetOutside(icon)
 end
@@ -671,7 +671,7 @@ function S:HandleSliderFrame(frame)
 	local SIZE = 12
 
 	frame:StripTextures()
-	frame:CreateBackdrop('Default')
+	frame:CreateBackdrop()
 	frame.backdrop:SetAllPoints()
 
 	hooksecurefunc(frame, "SetBackdrop", function(slider, backdrop)
@@ -952,7 +952,7 @@ function S:HandleGarrisonPortrait(portrait)
 	portrait.Level:FontTemplate(nil, 12, "OUTLINE")
 
 	if not portrait.backdrop then
-		portrait:CreateBackdrop("Default")
+		portrait:CreateBackdrop()
 		portrait.backdrop:SetPoint("TOPLEFT", portrait, "TOPLEFT", -1, 1)
 		portrait.backdrop:SetPoint("BOTTOMRIGHT", portrait, "BOTTOMRIGHT", 1, -1)
 		portrait.backdrop:SetFrameLevel(portrait:GetFrameLevel())
@@ -1081,7 +1081,7 @@ function S:HandleWorldMapDropDownMenu(frame)
 	end
 
 	frame:SetHeight(32)
-	frame:CreateBackdrop("Default")
+	frame:CreateBackdrop()
 	frame.backdrop:Point("TOPLEFT", 20, -2)
 
 	if button then
@@ -1107,7 +1107,7 @@ function S:SkinStatusBarWidget(widgetFrame)
 		if bar.BGCenter then bar.BGCenter:Hide() end
 
 		if not bar.backdrop then
-			bar:CreateBackdrop("Default")
+			bar:CreateBackdrop()
 		end
 
 		bar.backdrop:Point("TOPLEFT", -2, 2)

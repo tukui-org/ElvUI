@@ -89,7 +89,7 @@ local function SkinItemFlyouts()
 
 			if not button.backdrop then
 				button:SetFrameLevel(buttonAnchor:GetFrameLevel()+2)
-				button:CreateBackdrop("Default")
+				button:CreateBackdrop()
 				button.backdrop:SetAllPoints()
 
 				if i ~= 1 then -- dont call this intially on placeInBags button
@@ -126,7 +126,7 @@ local function FixSidebarTabCoords()
 		local tab = _G["PaperDollSidebarTab"..i]
 
 		if tab and not tab.backdrop then
-			tab:CreateBackdrop("Default")
+			tab:CreateBackdrop()
 			tab.Icon:SetAllPoints()
 			tab.Highlight:SetColorTexture(1, 1, 1, 0.3)
 			tab.Highlight:SetAllPoints()
@@ -181,7 +181,7 @@ local function UpdateFactionSkins()
 			statusbar:SetStatusBarTexture(E.media.normTex)
 
 			if not statusbar.backdrop then
-				statusbar:CreateBackdrop("Default")
+				statusbar:CreateBackdrop()
 				E:RegisterStatusBar(statusbar)
 			end
 
@@ -394,7 +394,7 @@ local function LoadSkin()
 
 	--Re-add the overlay texture which was removed right above via StripTextures
 	_G.CharacterModelFrameBackgroundOverlay:SetColorTexture(0,0,0)
-	_G.CharacterModelFrame:CreateBackdrop("Default")
+	_G.CharacterModelFrame:CreateBackdrop()
 	_G.CharacterModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	_G.CharacterModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 

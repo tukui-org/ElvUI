@@ -81,7 +81,7 @@ local function LoadSkin()
 	local NPCFriendshipStatusBar = _G.NPCFriendshipStatusBar
 	NPCFriendshipStatusBar:StripTextures()
 	NPCFriendshipStatusBar:SetStatusBarTexture(E.media.normTex)
-	NPCFriendshipStatusBar:CreateBackdrop('Default')
+	NPCFriendshipStatusBar:CreateBackdrop()
 
 	E:RegisterStatusBar(NPCFriendshipStatusBar)
 end

@@ -41,7 +41,7 @@ local function LoadSkin()
 		if statusBar and not statusBar.isSkinned then
 			statusBar:StripTextures()
 			E:RegisterStatusBar(statusBar)
-			statusBar:CreateBackdrop('Default')
+			statusBar:CreateBackdrop()
 			statusBar.isSkinned = true
 		end
 	end)

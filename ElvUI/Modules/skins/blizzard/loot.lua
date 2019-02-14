@@ -29,7 +29,7 @@ local function UpdateLoots()
 			frame.Icon:SetTexCoord(unpack(E.TexCoords))
 
 			-- create a backdrop around the icon
-			frame:CreateBackdrop("Default")
+			frame:CreateBackdrop()
 			frame.backdrop:SetOutside(frame.Icon)
 			frame.Icon:SetParent(frame.backdrop)
 

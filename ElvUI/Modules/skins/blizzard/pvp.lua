@@ -87,7 +87,7 @@ local function LoadSkin()
 		bu:SetHighlightTexture("")
 
 		bu:StripTextures()
-		bu:CreateBackdrop("Default")
+		bu:CreateBackdrop()
 		bu.backdrop:SetPoint("TOPLEFT", 2, 0)
 		bu.backdrop:SetPoint("BOTTOMRIGHT", -1, 2)
 		bu:StyleButton(nil, true)
@@ -210,7 +210,7 @@ local function LoadSkin()
 		Frame.ConquestBar.Reward.CircleMask:Hide()
 
 		if not Frame.ConquestBar.backdrop then
-			Frame.ConquestBar:CreateBackdrop("Default")
+			Frame.ConquestBar:CreateBackdrop()
 			Frame.ConquestBar.backdrop:SetOutside()
 		end
 

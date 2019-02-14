@@ -95,7 +95,7 @@ local function LoadSkin()
 
 	S:HandleNextPrevButton(_G.CalendarFilterButton, true)
 
-	_G.CalendarFilterFrame:CreateBackdrop("Default")
+	_G.CalendarFilterFrame:CreateBackdrop()
 	_G.CalendarFilterFrame.backdrop:Point("TOPLEFT", 20, 2)
 	_G.CalendarFilterFrame.backdrop:Point("BOTTOMRIGHT", _G.CalendarFilterButton, "BOTTOMRIGHT", 2, -2)
 
@@ -133,7 +133,7 @@ local function LoadSkin()
 		vline:SetHeight(548)
 		vline:SetWidth(1)
 		vline:SetPoint("TOP", _G["CalendarDayButton"..i], "TOPRIGHT")
-		vline:CreateBackdrop("Default")
+		vline:CreateBackdrop()
 	end
 
 	for i = 1, 36, 7 do
@@ -141,7 +141,7 @@ local function LoadSkin()
 		hline:SetWidth(637)
 		hline:SetHeight(1)
 		hline:SetPoint("LEFT", _G["CalendarDayButton"..i], "TOPLEFT")
-		hline:CreateBackdrop("Default")
+		hline:CreateBackdrop()
 	end
 
 	hooksecurefunc("CalendarFrame_SetToday", function()
@@ -171,7 +171,7 @@ local function LoadSkin()
 	_G.CalendarCreateEventInviteEdit:Width(_G.CalendarCreateEventInviteEdit:GetWidth() - 2)
 
 	_G.CalendarCreateEventInviteList:StripTextures()
-	_G.CalendarCreateEventInviteList:CreateBackdrop("Default")
+	_G.CalendarCreateEventInviteList:CreateBackdrop()
 
 	S:HandleEditBox(_G.CalendarCreateEventInviteEdit)
 	S:HandleEditBox(_G.CalendarCreateEventTitleEdit)
@@ -210,12 +210,12 @@ local function LoadSkin()
 	for i = 1, #CLASS_SORT_ORDER do
 		local button = _G["CalendarClassButton"..i]
 		button:StripTextures()
-		button:CreateBackdrop("Default")
+		button:CreateBackdrop()
 		button:Size(24)
 	end
 
 	_G.CalendarClassTotalsButton:StripTextures()
-	_G.CalendarClassTotalsButton:CreateBackdrop("Default")
+	_G.CalendarClassTotalsButton:CreateBackdrop()
 	_G.CalendarClassTotalsButton:Width(24)
 
 	--Texture Picker Frame

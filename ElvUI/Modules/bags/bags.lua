@@ -1835,7 +1835,7 @@ function B:ContructContainerFrame(name, isBank)
 		--Search
 		f.editBox = CreateFrame('EditBox', name..'EditBox', f);
 		f.editBox:SetFrameLevel(f.editBox:GetFrameLevel() + 2);
-		f.editBox:CreateBackdrop('Default');
+		f.editBox:CreateBackdrop();
 		f.editBox.backdrop:Point("TOPLEFT", f.editBox, "TOPLEFT", -20, 2)
 		f.editBox:Height(15);
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', (E.Border * 2) + 18, E.Border * 2 + 2);
@@ -1932,7 +1932,7 @@ function B:ContructContainerFrame(name, isBank)
 		--Search
 		f.editBox = CreateFrame('EditBox', name..'EditBox', f);
 		f.editBox:SetFrameLevel(f.editBox:GetFrameLevel() + 2);
-		f.editBox:CreateBackdrop('Default');
+		f.editBox:CreateBackdrop();
 		f.editBox.backdrop:Point("TOPLEFT", f.editBox, "TOPLEFT", -20, 2)
 		f.editBox:Height(15);
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', (E.Border * 2) + 18, E.Border * 2 + 2);

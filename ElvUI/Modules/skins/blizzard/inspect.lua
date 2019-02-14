@@ -35,7 +35,7 @@ local function LoadSkin()
 			local button = _G["TalentsTalentRow"..i.."Talent"..j]
 
 			button:StripTextures()
-			button:CreateBackdrop("Default")
+			button:CreateBackdrop()
 
 			button.icon:SetAllPoints()
 			button.icon:SetTexCoord(unpack(E.TexCoords))
@@ -66,7 +66,7 @@ local function LoadSkin()
 
 	local InspectModelFrame = _G.InspectModelFrame
 	InspectModelFrame:StripTextures()
-	InspectModelFrame:CreateBackdrop("Default")
+	InspectModelFrame:CreateBackdrop()
 	InspectModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	InspectModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 

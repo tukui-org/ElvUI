@@ -44,7 +44,7 @@ local function LoadSkin()
 		local iconBorder = button.IconBorder
 		local item = _G["MerchantItem"..i]
 		item:StripTextures(true)
-		item:CreateBackdrop("Default")
+		item:CreateBackdrop()
 
 		button:StripTextures()
 		button:StyleButton(false)

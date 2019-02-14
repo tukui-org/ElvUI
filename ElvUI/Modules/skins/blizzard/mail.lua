@@ -42,7 +42,7 @@ local function LoadSkin()
 	for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 		local bg = _G["MailItem"..i]
 		bg:StripTextures()
-		bg:CreateBackdrop("Default")
+		bg:CreateBackdrop()
 		bg.backdrop:Point("TOPLEFT", 2, 1)
 		bg.backdrop:Point("BOTTOMRIGHT", -2, 2)
 

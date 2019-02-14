@@ -285,7 +285,7 @@ local function LoadSkin()
 			bg:SetPoint("TOPLEFT")
 			bg:SetPoint("BOTTOMRIGHT", 0, 1)
 			bg:SetFrameLevel(checkbox:GetFrameLevel()-1)
-			bg:CreateBackdrop("Default")
+			bg:CreateBackdrop()
 
 			S:HandleCheckBox(_G[checkBoxName.."Check"])
 		end

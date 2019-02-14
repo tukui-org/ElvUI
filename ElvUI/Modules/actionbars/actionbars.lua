@@ -342,7 +342,7 @@ function AB:CreateBar(id)
 	local point, anchor, attachTo, x, y = split(',', self.barDefaults['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
-	bar:CreateBackdrop('Default');
+	bar:CreateBackdrop();
 	bar:SetFrameStrata("LOW")
 
 	--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect

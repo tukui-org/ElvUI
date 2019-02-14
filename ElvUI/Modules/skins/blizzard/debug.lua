@@ -29,7 +29,7 @@ local function SkinOnShow()
 	S:HandleScrollBar(_G.ScriptErrorsFrameScrollBar)
 	S:HandleCloseButton(_G.ScriptErrorsFrameClose)
 	ScriptErrorsFrame.ScrollFrame.Text:FontTemplate(nil, 13)
-	ScriptErrorsFrame.ScrollFrame:CreateBackdrop('Default')
+	ScriptErrorsFrame.ScrollFrame:CreateBackdrop()
 	ScriptErrorsFrame.ScrollFrame:SetFrameLevel(ScriptErrorsFrame.ScrollFrame:GetFrameLevel() + 2)
 
 	for i=1, #FrameTexs do

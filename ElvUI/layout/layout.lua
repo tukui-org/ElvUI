@@ -463,7 +463,7 @@ function LO:CreateChatButtonPanel()
 	QuickJoinToastButton:SetParent(ChatButtonHolder)
 	QuickJoinToastButton:SetSize(24, 32)
 
-	QuickJoinToastButton:CreateBackdrop("Default")
+	QuickJoinToastButton:CreateBackdrop()
 	QuickJoinToastButton.backdrop:SetAllPoints()
 
 	hooksecurefunc(QuickJoinToastButton, "UpdateQueueIcon", function(self)

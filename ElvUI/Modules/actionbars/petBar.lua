@@ -276,7 +276,7 @@ function AB:UpdatePetBindings()
 end
 
 function AB:CreateBarPet()
-	bar:CreateBackdrop('Default');
+	bar:CreateBackdrop();
 	bar.backdrop:SetAllPoints();
 	if self.db.bar4.enabled then
 		bar:Point('RIGHT', ElvUI_Bar4, 'LEFT', -4, 0);

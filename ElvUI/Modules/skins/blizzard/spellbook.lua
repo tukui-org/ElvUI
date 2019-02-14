@@ -21,7 +21,7 @@ local function SkinTab(tab, xOffset)
 	if not tab.isSkinned then
 		tab:StripTextures()
 		tab.pushed = true
-		tab:CreateBackdrop("Default")
+		tab:CreateBackdrop()
 		tab.backdrop:SetAllPoints()
 		tab:StyleButton()
 		tab.checked:SetAllPoints()
@@ -208,7 +208,7 @@ local function LoadSkin()
 		statusbar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(statusbar)
 		statusbar:SetStatusBarColor(0, 220/255, 0)
-		statusbar:CreateBackdrop("Default")
+		statusbar:CreateBackdrop()
 
 		statusbar.rankText:ClearAllPoints()
 		statusbar.rankText:Point("CENTER")

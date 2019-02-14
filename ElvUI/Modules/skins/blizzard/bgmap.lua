@@ -49,7 +49,7 @@ local function LoadSkin()
 	BattlefieldMapFrame:StripTextures()
 
 	refreshAlpha() -- will need this soon
-	BattlefieldMapFrame:CreateBackdrop('Default')
+	BattlefieldMapFrame:CreateBackdrop()
 	BattlefieldMapFrame:SetFrameStrata('LOW')
 	BattlefieldMapFrame.backdrop:SetOutside(BattlefieldMapFrame.ScrollContainer)
 	BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, oldAlpha)

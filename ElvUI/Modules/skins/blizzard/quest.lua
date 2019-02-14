@@ -71,7 +71,7 @@ local function LoadSkin()
 	QuestInfoSkillPointFrameIconTexture:SetDrawLayer("OVERLAY")
 	QuestInfoSkillPointFrameIconTexture:Point("TOPLEFT", 2, -2)
 	QuestInfoSkillPointFrameIconTexture:Size(QuestInfoSkillPointFrameIconTexture:GetWidth() - 2, QuestInfoSkillPointFrameIconTexture:GetHeight() - 2)
-	QuestInfoSkillPointFrame:CreateBackdrop("Default")
+	QuestInfoSkillPointFrame:CreateBackdrop()
 	_G.QuestInfoSkillPointFrameCount:SetDrawLayer("OVERLAY")
 
 	local QuestInfoItemHighlight = _G.QuestInfoItemHighlight
@@ -93,7 +93,7 @@ local function LoadSkin()
 		self.Name:SetTextColor(1, .8, .1)
 	end)
 
-	_G.QuestRewardScrollFrame:CreateBackdrop('Default')
+	_G.QuestRewardScrollFrame:CreateBackdrop()
 	_G.QuestRewardScrollFrame:Height(_G.QuestRewardScrollFrame:GetHeight() - 2)
 
 	hooksecurefunc("QuestInfo_Display", function()
@@ -177,7 +177,7 @@ local function LoadSkin()
 		end
 
 		if rewardButton and not rewardButton.backdrop then
-			rewardButton:CreateBackdrop("Default")
+			rewardButton:CreateBackdrop()
 			rewardButton.backdrop:SetOutside(rewardButton.Icon)
 		end -- HandleReward will do this on init
 
@@ -207,7 +207,7 @@ local function LoadSkin()
 	QuestInfoPlayerTitleFrame.FrameCenter:SetTexture()
 	QuestInfoPlayerTitleFrame.FrameRight:SetTexture()
 	QuestInfoPlayerTitleFrame.Icon:SetTexCoord(unpack(E.TexCoords))
-	QuestInfoPlayerTitleFrame:CreateBackdrop("Default")
+	QuestInfoPlayerTitleFrame:CreateBackdrop()
 	QuestInfoPlayerTitleFrame.backdrop:SetOutside(QuestInfoPlayerTitleFrame.Icon)
 
 	--Quest Frame
@@ -333,7 +333,7 @@ local function LoadSkin()
 	_G.QuestNPCModel:CreateBackdrop("Transparent")
 	_G.QuestNPCModel:Point("TOPLEFT", _G.QuestLogDetailFrame, "TOPRIGHT", 4, -34)
 	_G.QuestNPCModelTextFrame:StripTextures()
-	_G.QuestNPCModelTextFrame:CreateBackdrop("Default")
+	_G.QuestNPCModelTextFrame:CreateBackdrop()
 	_G.QuestNPCModelTextFrame.backdrop:Point("TOPLEFT", _G.QuestNPCModel.backdrop, "BOTTOMLEFT", 0, -2)
 
 	local QuestLogPopupDetailFrame = _G.QuestLogPopupDetailFrame
@@ -348,7 +348,7 @@ local function LoadSkin()
 
 	_G.QuestLogPopupDetailFrameScrollFrame:HookScript('OnShow', function(self)
 		if not _G.QuestLogPopupDetailFrameScrollFrame.backdrop then
-			_G.QuestLogPopupDetailFrameScrollFrame:CreateBackdrop("Default")
+			_G.QuestLogPopupDetailFrameScrollFrame:CreateBackdrop()
 			_G.QuestLogPopupDetailFrameScrollFrame:Height(self:GetHeight() - 2)
 			if not E.private.skins.parchmentRemover.enable then
 				StyleScrollFrame(_G.QuestLogPopupDetailFrameScrollFrame, 509, 630, false)
