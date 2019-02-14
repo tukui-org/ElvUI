@@ -5,7 +5,6 @@ local next, max, wipe = next, max, wipe
 
 local _G = _G
 local UnitIsUnit = UnitIsUnit
-local CreateFrame = CreateFrame
 local GetCVarBool = GetCVarBool
 local GetItemInfo = GetItemInfo
 local GetAverageItemLevel = GetAverageItemLevel
