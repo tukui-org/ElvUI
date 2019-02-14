@@ -73,15 +73,13 @@ function M:UpdateInspectInfo()
 	if _G.InspectFrame:IsShown() then return end
 
 	local iLevelDB = {}
-	local iLvl, enchant, textures, enchantColors, itemLevelColors
-
 	for i = 1, 17 do
 		if i ~= 4 then
 			local inspectItem = _G[InspectItems[i]]
 			inspectItem.enchantText:SetText()
 			inspectItem.iLvlText:SetText()
 
-			iLvl, enchant, textures, enchantColors, itemLevelColors = E:GetGearSlotInfo(_G.InspectFrame.unit, i, true)
+			local iLvl, enchant, textures, enchantColors, itemLevelColors = E:GetGearSlotInfo(_G.InspectFrame.unit, i, true)
 
 			iLevelDB[i] = iLvl
 
@@ -103,9 +101,9 @@ function M:UpdateInspectInfo()
 		end
 	end
 
-	local iLvl = E:CalculateAverageItemLevel(iLevelDB, _G.InspectFrame.unit)
-	if iLvl then
-		_G.InspectFrame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], iLvl)
+	local AvgItemLevel = E:CalculateAverageItemLevel(iLevelDB, _G.InspectFrame.unit)
+	if AvgItemLevel then
+		_G.InspectFrame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
 	else
 		_G.InspectFrame.ItemLevelText:SetText('')
 	end
