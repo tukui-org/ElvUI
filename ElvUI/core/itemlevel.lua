@@ -32,7 +32,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 
 	if deepScan then
 		for i = 1, 10 do
-			local tex = _G["ElvUI_GearSlotTooltipTexture"..i]
+			local tex = _G["ElvUI_ScanTooltipTexture"..i]
 			local hasTexture = tex and tex:GetTexture()
 			if hasTexture then
 				if not textures then textures = {} end
@@ -41,11 +41,11 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 			end
 		end
 		for x = 1, E.ScanTooltip:NumLines() do
-			local line = _G["ElvUI_GearSlotTooltipTextLeft"..x]
+			local line = _G["ElvUI_ScanTooltipTextLeft"..x]
 			if line then
 				local lineText = line:GetText()
 				local lr, lg, lb = line:GetTextColor()
-				local tr, tg, tb = _G.ElvUI_GearSlotTooltipTextLeft1:GetTextColor()
+				local tr, tg, tb = _G.ElvUI_ScanTooltipTextLeft1:GetTextColor()
 				local itemLevel = lineText and lineText:match(MATCH_ITEM_LEVEL)
 				local enchant = lineText:match(MATCH_ENCHANT)
 				if enchant then
@@ -61,7 +61,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	else
 		local colorblind = GetCVarBool('colorblindmode') and 4 or 3
 		for x = 2, colorblind do
-			local line = _G["ElvUI_GearSlotTooltipTextLeft"..x]
+			local line = _G["ElvUI_ScanTooltipTextLeft"..x]
 			if line then
 				local lineText = line:GetText()
 				local itemLevel = lineText and lineText:match(MATCH_ITEM_LEVEL)
