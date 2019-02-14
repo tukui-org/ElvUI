@@ -46,14 +46,14 @@ local UnitInRaid = UnitInRaid
 local UnitName = UnitName
 
 local C_Timer_After = C_Timer.After
-local UIErrorsFrame = UIErrorsFrame
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
+local UIErrorsFrame = UIErrorsFrame
 
-local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"
+local INTERRUPT_MSG = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"
 
 function M:ErrorFrameToggle(event)
 	if not E.db.general.hideErrorFrame then return end
@@ -84,21 +84,21 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 
 	if E.db.general.interruptAnnounce == "PARTY" then
-		SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")
+		SendChatMessage(format(INTERRUPT_MSG, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")
 	elseif E.db.general.interruptAnnounce == "RAID" then
 		if inRaid then
-			SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "RAID")
+			SendChatMessage(format(INTERRUPT_MSG, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "RAID")
 		else
-			SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")
+			SendChatMessage(format(INTERRUPT_MSG, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")
 		end
 	elseif E.db.general.interruptAnnounce == "RAID_ONLY" then
 		if inRaid then
-			SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "RAID")
+			SendChatMessage(format(INTERRUPT_MSG, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "RAID")
 		end
 	elseif E.db.general.interruptAnnounce == "SAY" then
-		SendChatMessage(format(interruptMsg, destName, spellID, spellName), "SAY")
+		SendChatMessage(format(INTERRUPT_MSG, destName, spellID, spellName), "SAY")
 	elseif E.db.general.interruptAnnounce == "EMOTE" then
-		SendChatMessage(format(interruptMsg, destName, spellID, spellName), "EMOTE")
+		SendChatMessage(format(INTERRUPT_MSG, destName, spellID, spellName), "EMOTE")
 	end
 end
 
