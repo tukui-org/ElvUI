@@ -3,7 +3,9 @@ local M = E:GetModule('Misc');
 
 local _G = _G
 local unpack = unpack
+local select = select
 local pairs = pairs
+local GetAverageItemLevel = GetAverageItemLevel
 
 local InspectItems = {
 	"HeadSlot",
