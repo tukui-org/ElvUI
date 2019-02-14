@@ -126,7 +126,7 @@ end
 
 function M:TryGearAgain(frame, which, i, deepScan, iLevelDB, inspectItem)
 	E:Delay(0.05, function()
-		if which == 'Inspect' and (not frame or frame:IsShown() or not frame.unit) then return end
+		if which == 'Inspect' and (not frame or not frame.unit) then return end
 
 		local unit = (which == 'Character' and 'player') or frame.unit
 		local iLvl, enchant, gems, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, deepScan)
