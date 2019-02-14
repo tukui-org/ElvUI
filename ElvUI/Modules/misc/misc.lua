@@ -356,7 +356,6 @@ end
 function M:UpdateInspectInfo()
 	if not (_G.InspectFrame and _G.InspectFrame.ItemLevelText) then return end
 	local unit = _G.InspectFrame.unit or "target"
-	local iLevel = 0
 	local iLevelDB = {}
 
 	local iLvl, enchantText, textures, enchantColors, itemLevelColors
@@ -387,8 +386,7 @@ function M:UpdateInspectInfo()
 		end
 	end
 
-	inspectOK, iLevel = E:CalculateAverageItemLevel(iLevelDB, _G.InspectFrame.unit or "target")
-
+	local inspectOK, iLevel = E:CalculateAverageItemLevel(iLevelDB, _G.InspectFrame.unit or "target")
 	if inspectOK then
 		_G.InspectFrame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], iLevel)
 	else

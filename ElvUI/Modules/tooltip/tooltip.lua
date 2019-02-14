@@ -333,6 +333,73 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 	return color
 end
 
+local inspectGUIDCache = {}
+function TT:INSPECT_READY(event, unitGUID)
+    if UnitExists("mouseover") and UnitGUID("mouseover") == unitGUID then
+        if not inspectGUIDCache[unitGUID] then
+            inspectGUIDCache[unitGUID] = {}
+        end
+		local isOkay, iLvl = E:GetUnitItemLevel("mouseover")
+		inspectGUIDCache[unitGUID].specName = self:GetSpecializationInfo("mouseover")
+		if isOkay then
+			inspectGUIDCache[unitGUID].time = GetTime()
+			inspectGUIDCache[unitGUID].itemLevel = iLvl
+		end
+		GameTooltip:SetUnit("mouseover")
+    end
+
+    self:UnregisterEvent("INSPECT_READY", INSPECT_READY)
+end
+
+function TT:GetSpecializationInfo(unit, isPlayer)
+	local spec
+	if isPlayer then
+		spec = GetSpecialization();
+	else
+		spec = GetInspectSpecialization(unit);
+	end
+	
+	if spec and spec > 0 then
+		if isPlayer then
+			return select(2, GetSpecializationInfo(spec))
+		else
+			return select(2, GetSpecializationInfoByID(spec))
+		end
+	end
+end
+
+function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b, addLines)
+    if not CanInspect(unit) or numTries > 3 then return end
+
+	local unitGUID = UnitGUID(unit)
+
+    if unitGUID == E.myguid and addLines then
+        tooltip:AddDoubleLine(_G.SPECIALIZATION..":", self:GetSpecializationInfo(unit, true), nil, nil, nil, r, g, b)
+		tooltip:AddDoubleLine(L["Item Level:"], E:GetUnitItemLevel(unit), nil, nil, nil, 1, 1, 1)
+    elseif inspectGUIDCache[unitGUID] and inspectGUIDCache[unitGUID].time then
+        local specName = inspectGUIDCache[unitGUID].specName
+        local itemLevel = inspectGUIDCache[unitGUID].itemLevel
+        if not (specName and itemLevel) or (GetTime() - inspectGUIDCache[unitGUID].time > 120) then
+            inspectGUIDCache[unitGUID].time = nil
+            inspectGUIDCache[unitGUID].specName = nil
+            inspectGUIDCache[unitGUID].itemLevel = nil
+
+            return C_Timer.After(0.33, function()
+                self:AddInspectInfo(tooltip, unit, classColorHEX, numTries + 1, r, g, b)
+            end)
+        end
+
+		if addLines then
+			tooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, r, g, b)
+			tooltip:AddDoubleLine(L["Item Level:"], floor(itemLevel), nil, nil, nil, 1, 1, 1)
+		end
+    else
+        NotifyInspect(unit)
+
+        self:RegisterEvent("INSPECT_READY", INSPECT_READY)
+    end
+end
+
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if tt:IsForbidden() then return end
 
@@ -361,6 +428,8 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	self:RemoveTrashLines(tt) --keep an eye on this may be buggy
 
 	local color = self:SetUnitText(tt, unit, UnitLevel(unit), isShiftKeyDown)
+	
+	self:AddInspectInfo(GameTooltip, unit, 0, color.r, color.g, color.b, isShiftKeyDown)
 
 	if self.db.showMount and unit ~= "player" and UnitIsPlayer(unit) then
 		for i = 1, 40 do
@@ -378,6 +447,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 	end
 
+	
 	local unitTarget = unit.."target"
 	if self.db.targetInfo and unit ~= "player" and UnitExists(unitTarget) then
 		local targetColor

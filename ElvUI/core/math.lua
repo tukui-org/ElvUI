@@ -604,11 +604,14 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 end
 
 function E:GetUnitItemLevel(unit)
-	local iLevelDB = {}
+	if UnitIsUnit("player", unit) then
+		return floor(select(2, GetAverageItemLevel()))
+	end
 
+	local iLevelDB = {}
 	for i = 1, 17 do
 		if i ~= 4 then
-			iLevelDB[i] = E:GetTTGearSlotInfo(unit, i)
+			iLevelDB[i] = E:GetGearSlotInfo(unit, i)
 		end
 	end
 
