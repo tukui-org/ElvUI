@@ -20,7 +20,7 @@ local GetInventoryItemTexture = GetInventoryItemTexture
 local GetItemInfo = GetItemInfo
 local GetInspectSpecialization = GetInspectSpecialization
 
-local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_GearSlotTooltip", UIParent, "GameTooltipTemplate")
+local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_GearSlotTooltip", UIParent, "GameTooltipTemplate") -- pull this out once main scantooltip is committed
 local ARMOR_SLOTS = {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
 local X2_INVTYPES = {
     INVTYPE_2HWEAPON = true,
@@ -548,7 +548,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 
 	ScanTooltip:Hide()
 
-	return iLvl, enchantText, not iLvlOnly and textures, enchantColors, itemLevelColors
+	return iLvl, enchantText, deepScan and textures, enchantColors, itemLevelColors
 end
 
 --Credit ls & Acidweb
