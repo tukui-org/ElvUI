@@ -42,21 +42,14 @@ function E:InspectGearSlot(line, lineText, enchantText, enchantColors, iLvl, ite
 end
 
 function E:GetGearSlotInfo(unit, slot, deepScan)
+	E:ScanTooltipTextures(true)
 	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	E.ScanTooltip:SetInventoryItem(unit, slot)
 	E.ScanTooltip:Show()
 
-	local iLvl, enchantText, enchantColors, itemLevelColors, textures
+	local iLvl, enchantText, enchantColors, itemLevelColors, gems
 	if deepScan then
-		for i = 1, 10 do
-			local tex = _G["ElvUI_ScanTooltipTexture"..i]
-			local hasTexture = tex and tex:GetTexture()
-			if hasTexture then
-				if not textures then textures = {} end
-				textures[i] = hasTexture
-				tex:SetTexture()
-			end
-		end
+		gems = E:ScanTooltipTextures(nil, true)
 		for x = 1, E.ScanTooltip:NumLines() do
 			local line = _G["ElvUI_ScanTooltipTextLeft"..x]
 			if line then
@@ -88,7 +81,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	end
 
 	E.ScanTooltip:Hide()
-	return iLvl, enchantText, deepScan and textures, enchantColors, itemLevelColors
+	return iLvl, enchantText, deepScan and gems, enchantColors, itemLevelColors
 end
 
 --Credit ls & Acidweb

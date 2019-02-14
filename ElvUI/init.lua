@@ -84,6 +84,25 @@ AddOn.Libs = {
 AddOn.LSM = AddOn.Libs.LSM
 AddOn.Masque = AddOn.Libs.Masque
 
+function AddOn:ScanTooltipTextures(clean, grabTextures)
+	local textures
+	for i = 1, 10 do
+		local tex = _G["ElvUI_ScanTooltipTexture"..i]
+		local hasTexture = tex and tex:GetTexture()
+		if hasTexture then
+			if grabTextures then
+				if not textures then textures = {} end
+				textures[i] = hasTexture
+			end
+			if clean then
+				tex:SetTexture()
+			end
+		end
+	end
+
+	return textures
+end
+
 function AddOn:OnInitialize()
 	if not ElvCharacterDB then
 		ElvCharacterDB = {};
