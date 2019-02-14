@@ -2,9 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local M = E:GetModule('Misc');
 
 local _G = _G
+local pairs = pairs
 local unpack = unpack
 local select = select
-local pairs = pairs
 local GetAverageItemLevel = GetAverageItemLevel
 
 local InspectItems = {
@@ -99,44 +99,67 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	end
 end
 
+function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, textures, enchantColors, itemLevelColors)
+	iLevelDB[i] = iLvl
+
+	inspectItem.enchantText:SetText(enchant)
+	if enchantColors then
+		inspectItem.enchantText:SetTextColor(unpack(enchantColors))
+	end
+
+	inspectItem.iLvlText:SetText(iLvl)
+	if itemLevelColors then
+		inspectItem.iLvlText:SetTextColor(unpack(itemLevelColors))
+	end
+
+	for x=1, 10 do
+		inspectItem["textureSlot"..x]:SetTexture(textures and textures[x])
+	end
+end
+
+function M:UpdateAverageString(frame, which, iLevelDB)
+	local AvgItemLevel = (which == 'Character' and E:Round((select(2, GetAverageItemLevel())), 2)) or E:CalculateAverageItemLevel(iLevelDB, frame.unit)
+	if AvgItemLevel then
+		frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
+	else
+		frame.ItemLevelText:SetText('')
+	end
+end
+
+function M:TryGearAgain(unit, i, deepScan, iLevelDB, inspectItem)
+	E:Delay(0.05, function()
+		local iLvl, enchant, textures, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, deepScan)
+		M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, textures, enchantColors, itemLevelColors)
+	end)
+end
+
 function M:UpdatePageInfo(frame, which)
 	if not (which and frame and frame.ItemLevelText) then return end
 	if frame == _G.InspectFrame and (frame:IsShown() or not frame.unit) then return end
 
 	local iLevelDB = {}
+	local waitForItems
 	for i = 1, 17 do
 		if i ~= 4 then
 			local inspectItem = _G[which..InspectItems[i]]
 			inspectItem.enchantText:SetText()
 			inspectItem.iLvlText:SetText()
 
-			local iLvl, enchant, textures, enchantColors, itemLevelColors = E:GetGearSlotInfo(frame.unit or "player", i, true)
-
-			iLevelDB[i] = iLvl
-
-			inspectItem.enchantText:SetText(enchant)
-			if enchantColors then
-				inspectItem.enchantText:SetTextColor(unpack(enchantColors))
-			end
-
-			inspectItem.iLvlText:SetText(iLvl)
-			if itemLevelColors then
-				inspectItem.iLvlText:SetTextColor(unpack(itemLevelColors))
-			end
-
-			if textures then
-				for x=1, 10 do
-					inspectItem["textureSlot"..x]:SetTexture(textures[x])
-				end
+			local unit = frame.unit or 'player'
+			local iLvl, enchant, textures, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, true)
+			if iLvl == 'tooSoon' then
+				if not waitForItems then waitForItems = true end
+				M:TryGearAgain(unit, i, true, iLevelDB, inspectItem)
+			else
+				M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, textures, enchantColors, itemLevelColors)
 			end
 		end
 	end
 
-	local AvgItemLevel = (which == 'Character' and E:Round((select(2, GetAverageItemLevel())), 2)) or E:CalculateAverageItemLevel(iLevelDB, frame.unit)
-	if AvgItemLevel then
-		frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
+	if waitForItems then
+		E:Delay(0.10, function() M:UpdateAverageString(frame, which, iLevelDB) end)
 	else
-		frame.ItemLevelText:SetText('')
+		M:UpdateAverageString(frame, which, iLevelDB)
 	end
 end
 
