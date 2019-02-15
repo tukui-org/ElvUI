@@ -50,10 +50,14 @@ function M:UpdateInspectInfo(_, arg1)
 	M:UpdatePageInfo(_G.InspectFrame, 'Inspect', arg1)
 end
 
-function M:UpdateCharacterInfo()
+function M:UpdateCharacterInfo(event)
 	if not E.db.general.displayCharacterInfo then return end
 
-	M:UpdatePageInfo(_G.CharacterFrame, 'Character')
+	M:UpdatePageInfo(_G.CharacterFrame, 'Character', nil, event)
+end
+
+function M:UpdateCharacterItemLevel()
+	M:UpdateAverageString(_G.CharacterFrame, 'Character')
 end
 
 function M:ClearPageInfo(frame, which)
@@ -79,13 +83,15 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	end
 
 	if E.db.general.displayCharacterInfo then
-		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterInfo')
+		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
+		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterItemLevel')
 
 		if not _G.CharacterFrame.CharacterInfoHooked then
 			_G.CharacterFrame:HookScript('OnShow', M.UpdateCharacterInfo)
 			_G.CharacterFrame.CharacterInfoHooked = true
 		end
 	else
+		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
 		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 		M:ClearPageInfo(_G.CharacterFrame, 'Character')
 	end
@@ -137,7 +143,7 @@ function M:TryGearAgain(frame, which, i, deepScan, iLevelDB, inspectItem)
 	end)
 end
 
-function M:UpdatePageInfo(frame, which, guid)
+function M:UpdatePageInfo(frame, which, guid, event)
 	if not (which and frame and frame.ItemLevelText) then return end
 	if which == 'Inspect' and (not frame or not frame.unit or (guid and frame:IsShown() and UnitGUID(frame.unit) ~= guid)) then return end
 
@@ -158,6 +164,10 @@ function M:UpdatePageInfo(frame, which, guid)
 				M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, enchantColors, itemLevelColors)
 			end
 		end
+	end
+
+	if event and event == 'PLAYER_EQUIPMENT_CHANGED' then
+		return
 	end
 
 	if waitForItems then
