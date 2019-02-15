@@ -446,10 +446,10 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if self.db.showMount and unit ~= "player" and UnitIsPlayer(unit) and not isShiftKeyDown then
 		for i = 1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
+			if not name then break end
 
 			if self.MountIDs[id] then
 				local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(self.MountIDs[id])
-
 				GameTooltip:AddDoubleLine(format("%s:", _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
 
 				if sourceText and IsControlKeyDown() then
@@ -469,6 +469,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 						end
 					end
 				end
+
 				break
 			end
 		end
