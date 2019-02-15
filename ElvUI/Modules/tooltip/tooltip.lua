@@ -322,19 +322,20 @@ end
 
 local inspectGUIDCache = {}
 function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
+	local specName = self:GetSpecializationInfo('mouseover')
+	local unitColor = inspectGUIDCache[unitGUID].unitColor
+
 	inspectGUIDCache[unitGUID].time = GetTime()
 	inspectGUIDCache[unitGUID].itemLevel = itemLevel
-	inspectGUIDCache[unitGUID].specName = self:GetSpecializationInfo("mouseover")
+	inspectGUIDCache[unitGUID].specName = specName
 
+	GameTooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, unpack(unitColor or {1,1,1}))
+	GameTooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 	GameTooltip:Show()
 end
 
 function TT:INSPECT_READY(event, unitGUID)
 	if UnitExists("mouseover") and UnitGUID("mouseover") == unitGUID then
-		if not inspectGUIDCache[unitGUID] then
-			inspectGUIDCache[unitGUID] = {}
-		end
-
 		local itemLevel, retryUnit, retryTable, iLevelDB = E:GetUnitItemLevel("mouseover")
 		if itemLevel == 'tooSoon' then
 			E:Delay(0.05, function()
@@ -391,7 +392,6 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
 			inspectGUIDCache[unitGUID].time = nil
 			inspectGUIDCache[unitGUID].specName = nil
 			inspectGUIDCache[unitGUID].itemLevel = nil
-
 			return E:Delay(0.33, function()
 				self:AddInspectInfo(tooltip, unit, numTries + 1, r, g, b)
 			end)
@@ -400,6 +400,10 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
 		tooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, r, g, b)
 		tooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 	elseif unitGUID then
+		if not inspectGUIDCache[unitGUID] then
+			inspectGUIDCache[unitGUID] = {unitColor = {r, g, b}}
+		end
+
 		if lastGUID ~= unitGUID then
 			lastGUID = unitGUID
 			NotifyInspect(unit)
@@ -439,10 +443,6 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	local color = self:SetUnitText(tt, unit, UnitLevel(unit), isShiftKeyDown)
 
-	if isShiftKeyDown then
-		self:AddInspectInfo(GameTooltip, unit, 0, color.r, color.g, color.b)
-	end
-
 	if self.db.showMount and unit ~= "player" and UnitIsPlayer(unit) and not isShiftKeyDown then
 		for i = 1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
@@ -468,7 +468,6 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			end
 		end
 	end
-
 
 	local unitTarget = unit.."target"
 	if self.db.targetInfo and unit ~= "player" and UnitExists(unitTarget) then
@@ -508,6 +507,10 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		if id and guid:match("%a+") ~= "Player" then
 			GameTooltip:AddLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id))
 		end
+	end
+
+	if isShiftKeyDown then
+		self:AddInspectInfo(GameTooltip, unit, 0, color.r, color.g, color.b)
 	end
 
 	if color then
