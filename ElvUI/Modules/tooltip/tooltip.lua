@@ -446,7 +446,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	local color = self:SetUnitText(tt, unit, UnitLevel(unit), isShiftKeyDown)
 
-	if self.db.showMount and unit ~= "player" and UnitIsPlayer(unit) and not isShiftKeyDown then
+	if self.db.showMount and not isShiftKeyDown and unit ~= "player" and UnitIsPlayer(unit) then
 		for i = 1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
 			if not name then break end
