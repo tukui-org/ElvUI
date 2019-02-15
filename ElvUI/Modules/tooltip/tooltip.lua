@@ -453,19 +453,11 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				GameTooltip:AddDoubleLine(format("%s:", _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
 
 				if sourceText and IsControlKeyDown() then
-					if not sourceText:find('.-|n') then
-						local left, right = strmatch(sourceText, '(.-|r)%s?(.+)')
+					local sourceModified = sourceText:gsub("|n", "\10")
+					for x in gmatch(sourceModified, '[^\10]+\10?') do
+						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
 						if left and right then
 							GameTooltip:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
-						else
-							GameTooltip:AddDoubleLine(_G.FROM, sourceText:match('|c%x%x%x%x%x%x%x%x(.-)|r'), nil, nil, nil, 1, 1, 1)
-						end
-					else
-						for x in gmatch(sourceText, '.-|n') do
-							local left, right = strmatch(x, '(.-|r)%s?(.+)')
-							if left and right then
-								GameTooltip:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
-							end
 						end
 					end
 				end
