@@ -79,14 +79,14 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	end
 
 	if E.db.general.displayCharacterInfo then
-		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
+		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterInfo')
 
 		if not _G.CharacterFrame.CharacterInfoHooked then
 			_G.CharacterFrame:HookScript('OnShow', M.UpdateCharacterInfo)
 			_G.CharacterFrame.CharacterInfoHooked = true
 		end
 	else
-		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
+		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 		M:ClearPageInfo(_G.CharacterFrame, 'Character')
 	end
 
