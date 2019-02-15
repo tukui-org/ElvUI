@@ -662,8 +662,11 @@ function TT:SetStyle(tt)
 end
 
 function TT:MODIFIER_STATE_CHANGED(_, key)
-	if (key == "LSHIFT" or key == "RSHIFT" or key == "LCTRL" or key == "RCTRL" or key == "LALT" or key == "RALT") and UnitExists("mouseover") then
-		GameTooltip:SetUnit('mouseover')
+	if key == "LSHIFT" or key == "RSHIFT" or key == "LCTRL" or key == "RCTRL" or key == "LALT" or key == "RALT" then
+		local owner = GameTooltip:GetOwner()
+		if not (owner and owner.spellID) and UnitExists("mouseover") then
+			GameTooltip:SetUnit('mouseover')
+		end
 	end
 end
 
