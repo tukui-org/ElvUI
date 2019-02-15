@@ -321,6 +321,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 end
 
 local inspectGUIDCache = {}
+local inspectColorFallback = {1,1,1}
 function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
 	local specName = self:GetSpecializationInfo('mouseover')
 	if specName and itemLevel then
@@ -330,7 +331,7 @@ function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
 		inspectGUIDCache[unitGUID].itemLevel = itemLevel
 		inspectGUIDCache[unitGUID].specName = specName
 
-		GameTooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, unpack(unitColor or {1,1,1}))
+		GameTooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, unpack(unitColor or inspectColorFallback))
 		GameTooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 		GameTooltip:Show()
 	end
