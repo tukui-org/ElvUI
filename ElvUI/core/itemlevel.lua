@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local _G = _G
+local format = format
 local tinsert = tinsert
 local select, tonumber = select, tonumber
 local next, max, wipe = next, max, wipe
@@ -135,11 +136,11 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 		end
 	end
 
-	return isOK and E:Round(total / 16, 2)
+	return isOK and format('%0.2f', E:Round(total / 16, 2))
 end
 
 function E:GetPlayerItemLevel()
-	return E:Round((select(2, GetAverageItemLevel())), 2)
+	return format('%0.2f', E:Round((select(2, GetAverageItemLevel())), 2))
 end
 
 local iLevelDB = {}
