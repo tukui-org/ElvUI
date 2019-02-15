@@ -194,16 +194,11 @@ function M:CreateSlotStrings(frame, which)
 
 	if which == 'Inspect' then
 		frame.ItemLevelText = _G.InspectPaperDollItemsFrame:CreateFontString(nil, "ARTWORK")
-	else
-		frame.ItemLevelText = _G.CharacterStatsPane.ItemLevelFrame:CreateFontString(nil, "ARTWORK")
-	end
-
-	if which == 'Inspect' then
 		frame.ItemLevelText:Point("BOTTOMRIGHT", -6, 6)
 	else
+		frame.ItemLevelText = _G.CharacterStatsPane.ItemLevelFrame:CreateFontString(nil, "ARTWORK")
 		frame.ItemLevelText:Point("BOTTOM", _G.CharacterStatsPane.ItemLevelFrame.Value, "BOTTOM", 0, 0)
 	end
-
 	frame.ItemLevelText:FontTemplate(nil, which == 'Inspect' and 12 or 20)
 
 	for i, s in pairs(InspectItems) do
