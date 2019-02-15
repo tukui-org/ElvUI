@@ -312,7 +312,7 @@ function M:Initialize()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 
 	if IsAddOnLoaded("Blizzard_InspectUI") then
-		M:InspectUILoaded()
+		M:SetupInspectPageInfo()
 	else
 		self:RegisterEvent("ADDON_LOADED")
 	end
