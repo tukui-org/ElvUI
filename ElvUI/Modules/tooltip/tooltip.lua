@@ -8,6 +8,7 @@ local unpack, select, ipairs = unpack, select, ipairs
 local wipe, tinsert, tconcat = wipe, tinsert, table.concat
 local floor, tonumber = floor, tonumber
 local strfind, format, strsub = strfind, format, strsub
+local strmatch, gmatch = strmatch, gmatch
 --WoW API / Variables
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
@@ -450,8 +451,23 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(self.MountIDs[id])
 
 				GameTooltip:AddDoubleLine(format("%s:", _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
+
 				if sourceText and IsControlKeyDown() then
-					GameTooltip:AddLine(sourceText, 1, 1, 1)
+					if not sourceText:find('.-|n') then
+						local left, right = strmatch(sourceText, '(.-\124r)%s?(.+)')
+						if left and right then
+							GameTooltip:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
+						else
+							GameTooltip:AddDoubleLine(_G.FROM, sourceText:match('|c%x%x%x%x%x%x%x%x(.-)|r'), nil, nil, nil, 1, 1, 1)
+						end
+					else
+						for x in gmatch(sourceText, '.-|n') do
+							local left, right = strmatch(x, '(.-\124r)%s?(.+)')
+							if left and right then
+								GameTooltip:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
+							end
+						end
+					end
 				end
 				break
 			end
@@ -645,7 +661,7 @@ function TT:SetStyle(tt)
 end
 
 function TT:MODIFIER_STATE_CHANGED(_, key)
-	if (key == "LSHIFT" or key == "RSHIFT" or key == "LCTRL" or key == "RCTRL") and UnitExists("mouseover") then
+	if (key == "LSHIFT" or key == "RSHIFT" or key == "LCTRL" or key == "RCTRL" or key == "LALT" or key == "RALT") and UnitExists("mouseover") then
 		GameTooltip:SetUnit('mouseover')
 	end
 end
