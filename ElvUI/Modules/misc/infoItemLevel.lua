@@ -84,7 +84,7 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 
 	if E.db.general.displayCharacterInfo then
 		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
-		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterItemLevel')
+		-- M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterItemLevel')
 
 		if not _G.CharacterFrame.CharacterInfoHooked then
 			_G.CharacterFrame:HookScript('OnShow', M.UpdateCharacterInfo)
@@ -92,7 +92,7 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 		end
 	else
 		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
-		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
+		-- M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 		M:ClearPageInfo(_G.CharacterFrame, 'Character')
 	end
 
@@ -166,7 +166,7 @@ function M:UpdatePageInfo(frame, which, guid, event)
 		end
 	end
 
-	if event and event == 'PLAYER_EQUIPMENT_CHANGED' then
+	if which == 'Character' --[[ event and event == 'PLAYER_EQUIPMENT_CHANGED' ]] then
 		return
 	end
 
@@ -180,8 +180,8 @@ end
 function M:CreateSlotStrings(frame, which)
 	if not (frame and which) then return end
 
-	frame.ItemLevelText = frame:CreateFontString(nil, "ARTWORK")
-	frame.ItemLevelText:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -6, 6)
+	frame.ItemLevelText = _G[(which == 'Inspect' and which or '')..'PaperDollItemsFrame']:CreateFontString(nil, "ARTWORK")
+	frame.ItemLevelText:Point("BOTTOMRIGHT", -6, 6)
 	frame.ItemLevelText:FontTemplate(nil, 12)
 
 	for i, s in pairs(InspectItems) do
