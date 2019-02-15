@@ -4,6 +4,7 @@ local M = E:GetModule('Misc');
 local _G = _G
 local pairs = pairs
 local unpack = unpack
+local UnitGUID = UnitGUID
 
 local InspectItems = {
 	"HeadSlot",
@@ -45,8 +46,8 @@ function M:GetInspectPoints(id)
 	end
 end
 
-function M:UpdateInspectInfo()
-	M:UpdatePageInfo(_G.InspectFrame, 'Inspect')
+function M:UpdateInspectInfo(_, arg1)
+	M:UpdatePageInfo(_G.InspectFrame, 'Inspect', arg1)
 end
 
 function M:UpdateCharacterInfo()
@@ -136,9 +137,9 @@ function M:TryGearAgain(frame, which, i, deepScan, iLevelDB, inspectItem)
 	end)
 end
 
-function M:UpdatePageInfo(frame, which)
+function M:UpdatePageInfo(frame, which, guid)
 	if not (which and frame and frame.ItemLevelText) then return end
-	if which == 'Inspect' and (not frame or frame:IsShown() or not frame.unit) then return end
+	if which == 'Inspect' and (not frame or not frame.unit or (guid and frame:IsShown() and UnitGUID(frame.unit) ~= guid)) then return end
 
 	local iLevelDB = {}
 	local waitForItems
