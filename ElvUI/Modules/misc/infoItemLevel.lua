@@ -84,7 +84,7 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 
 	if E.db.general.displayCharacterInfo then
 		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
-		-- M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterItemLevel')
+		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterItemLevel')
 
 		if not _G.CharacterFrame.CharacterInfoHooked then
 			_G.CharacterFrame:HookScript('OnShow', M.UpdateCharacterInfo)
@@ -92,7 +92,7 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 		end
 	else
 		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
-		-- M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
+		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 		M:ClearPageInfo(_G.CharacterFrame, 'Character')
 	end
 
@@ -123,9 +123,15 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, ench
 end
 
 function M:UpdateAverageString(frame, which, iLevelDB)
-	local AvgItemLevel = (which == 'Character' and E:GetPlayerItemLevel()) or E:CalculateAverageItemLevel(iLevelDB, frame.unit)
+	local isCharPage = which == 'Character'
+	local AvgItemLevel = (isCharPage and E:GetPlayerItemLevel()) or E:CalculateAverageItemLevel(iLevelDB, frame.unit)
 	if AvgItemLevel then
-		frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
+		if isCharPage then
+			frame.ItemLevelText:SetText(AvgItemLevel)
+			frame.ItemLevelText:SetTextColor(_G.CharacterStatsPane.ItemLevelFrame.Value:GetTextColor())
+		else
+			frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
+		end
 	else
 		frame.ItemLevelText:SetText('')
 	end
@@ -166,7 +172,7 @@ function M:UpdatePageInfo(frame, which, guid, event)
 		end
 	end
 
-	if which == 'Character' --[[ event and event == 'PLAYER_EQUIPMENT_CHANGED' ]] then
+	if event and event == 'PLAYER_EQUIPMENT_CHANGED' then
 		return
 	end
 
@@ -180,9 +186,20 @@ end
 function M:CreateSlotStrings(frame, which)
 	if not (frame and which) then return end
 
-	frame.ItemLevelText = _G[(which == 'Inspect' and which or '')..'PaperDollItemsFrame']:CreateFontString(nil, "ARTWORK")
-	frame.ItemLevelText:Point("BOTTOMRIGHT", -6, 6)
-	frame.ItemLevelText:FontTemplate(nil, 12)
+	if which == 'Inspect' then
+		frame.ItemLevelText = _G.InspectPaperDollItemsFrame:CreateFontString(nil, "ARTWORK")
+	else
+		frame.ItemLevelText = _G.CharacterStatsPane.ItemLevelFrame:CreateFontString(nil, "ARTWORK")
+	end
+
+	if which == 'Inspect' then
+		frame.ItemLevelText:Point("BOTTOMRIGHT", -6, 6)
+	else
+		frame.ItemLevelText:Point("BOTTOM", _G.CharacterStatsPane.ItemLevelFrame.Value, "BOTTOM", 0, 0)
+		_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
+	end
+
+	frame.ItemLevelText:FontTemplate(nil, which == 'Inspect' and 12 or 22)
 
 	for i, s in pairs(InspectItems) do
 		if i ~= 4 then
