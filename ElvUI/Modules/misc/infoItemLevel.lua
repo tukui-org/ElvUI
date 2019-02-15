@@ -85,14 +85,20 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	if E.db.general.displayCharacterInfo then
 		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
 		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterItemLevel')
+		_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
 
 		if not _G.CharacterFrame.CharacterInfoHooked then
 			_G.CharacterFrame:HookScript('OnShow', M.UpdateCharacterInfo)
 			_G.CharacterFrame.CharacterInfoHooked = true
 		end
+
+		if not setupCharacterPage then
+			M:UpdateCharacterInfo()
+		end
 	else
 		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
 		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
+		_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
 		M:ClearPageInfo(_G.CharacterFrame, 'Character')
 	end
 
@@ -196,10 +202,9 @@ function M:CreateSlotStrings(frame, which)
 		frame.ItemLevelText:Point("BOTTOMRIGHT", -6, 6)
 	else
 		frame.ItemLevelText:Point("BOTTOM", _G.CharacterStatsPane.ItemLevelFrame.Value, "BOTTOM", 0, 0)
-		_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
 	end
 
-	frame.ItemLevelText:FontTemplate(nil, which == 'Inspect' and 12 or 22)
+	frame.ItemLevelText:FontTemplate(nil, which == 'Inspect' and 12 or 20)
 
 	for i, s in pairs(InspectItems) do
 		if i ~= 4 then
