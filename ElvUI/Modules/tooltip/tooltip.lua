@@ -323,15 +323,17 @@ end
 local inspectGUIDCache = {}
 function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
 	local specName = self:GetSpecializationInfo('mouseover')
-	local unitColor = inspectGUIDCache[unitGUID].unitColor
+	if specName and itemLevel then
+		local unitColor = inspectGUIDCache[unitGUID].unitColor
 
-	inspectGUIDCache[unitGUID].time = GetTime()
-	inspectGUIDCache[unitGUID].itemLevel = itemLevel
-	inspectGUIDCache[unitGUID].specName = specName
+		inspectGUIDCache[unitGUID].time = GetTime()
+		inspectGUIDCache[unitGUID].itemLevel = itemLevel
+		inspectGUIDCache[unitGUID].specName = specName
 
-	GameTooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, unpack(unitColor or {1,1,1}))
-	GameTooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
-	GameTooltip:Show()
+		GameTooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, unpack(unitColor or {1,1,1}))
+		GameTooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
+		GameTooltip:Show()
+	end
 end
 
 function TT:INSPECT_READY(event, unitGUID)
