@@ -458,6 +458,8 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
 						if left and right then
 							GameTooltip:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
+						else
+							GameTooltip:AddDoubleLine(_G.FROM, sourceText:gsub('|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
 						end
 					end
 				end
