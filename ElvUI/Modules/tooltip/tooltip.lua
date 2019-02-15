@@ -454,7 +454,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 				if sourceText and IsControlKeyDown() then
 					if not sourceText:find('.-|n') then
-						local left, right = strmatch(sourceText, '(.-\124r)%s?(.+)')
+						local left, right = strmatch(sourceText, '(.-|r)%s?(.+)')
 						if left and right then
 							GameTooltip:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
 						else
@@ -462,7 +462,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 						end
 					else
 						for x in gmatch(sourceText, '.-|n') do
-							local left, right = strmatch(x, '(.-\124r)%s?(.+)')
+							local left, right = strmatch(x, '(.-|r)%s?(.+)')
 							if left and right then
 								GameTooltip:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
 							end
