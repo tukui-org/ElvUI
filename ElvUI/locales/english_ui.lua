@@ -367,7 +367,6 @@ L["You must purchase a bank slot first!"] = true
 --Tooltip
 L["Count"] = true
 L["Targeted By:"] = true
-L["Waiting.."] = true
 
 --Tutorials
 L["A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker."] = true

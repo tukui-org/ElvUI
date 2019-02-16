@@ -367,7 +367,6 @@ L["You must purchase a bank slot first!"] = "Você deve comprar um espaço no ba
 --Tooltip
 L["Count"] = "Contar"
 L["Targeted By:"] = "Sendo Alvo de:"
-L["Waiting.."] = true
 
 --Tutorials
 L["A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker."] = "A opção Marcas de Raide está disponivel pressionando Escape -> Teclas de Atalho, rolando tudo para o fundo debaixo de ElvUI e definindo uma tecla de atalho para o Raid Marker."

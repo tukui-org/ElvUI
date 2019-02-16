@@ -368,7 +368,6 @@ L["You must purchase a bank slot first!"] = "Du musst erst ein Bankfach kaufen!"
 --Tooltip
 L["Count"] = "Zähler"
 L["Targeted By:"] = "Ziel von:"
-L["Waiting.."] = "Warten.."
 
 --Tutorials
 L["A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker."] = "Ein Feature für Schlachtzugsmarkierung ist verfügbar, wenn du Escape drückst und Tastaturbelegung wählst, scrolle anschließend bis unter die Kategorie ElvUI und wähle eine Tastenbelegung für die Schlachtzugsmarkierung."

@@ -368,7 +368,6 @@ L["You must purchase a bank slot first!"] = "Сперва Вы должны пр
 --Tooltip
 L["Count"] = "Кол-во"
 L["Targeted By:"] = "Является целью:"
-L["Waiting.."] = true
 
 --Tutorials
 L["A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker."] = 'Функция рейдовых меток доступна в Escape -> Назначение клавиш. Прокрутите вниз до раздела ElvUI и назначьте клавишу для рейдовых меток.'
