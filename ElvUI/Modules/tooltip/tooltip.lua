@@ -422,11 +422,11 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	local unit = select(2, tt:GetUnit())
 	local isShiftKeyDown = IsShiftKeyDown()
-
+	local isControlKeyDown = IsControlKeyDown()
 	if((tt:GetOwner() ~= _G.UIParent) and (self.db.visibility and self.db.visibility.unitFrames ~= 'NONE')) then
 		local modifier = self.db.visibility.unitFrames
 
-		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and isShiftKeyDown) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
+		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and isShiftKeyDown) or (modifier == 'CTRL' and isControlKeyDown) or (modifier == 'ALT' and IsAltKeyDown()))) then
 			tt:Hide()
 			return
 		end
@@ -455,7 +455,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(self.MountIDs[id])
 				GameTooltip:AddDoubleLine(format("%s:", _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
 
-				if sourceText and IsControlKeyDown() then
+				if sourceText and isControlKeyDown then
 					local sourceModified = sourceText:gsub("|n", "\10")
 					for x in gmatch(sourceModified, '[^\10]+\10?') do
 						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
@@ -472,34 +472,40 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 	end
 
-	local unitTarget = unit.."target"
-	if self.db.targetInfo and unit ~= "player" and UnitExists(unitTarget) then
-		local targetColor
-		if(UnitIsPlayer(unitTarget) and not UnitHasVehicleUI(unitTarget)) then
-			local _, class = UnitClass(unitTarget)
-			targetColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-		else
-			targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[""..UnitReaction(unitTarget, "player")] or FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
+	if not isShiftKeyDown and not isControlKeyDown then
+		local unitTarget = unit.."target"
+		if self.db.targetInfo and unit ~= "player" and UnitExists(unitTarget) then
+			local targetColor
+			if(UnitIsPlayer(unitTarget) and not UnitHasVehicleUI(unitTarget)) then
+				local _, class = UnitClass(unitTarget)
+				targetColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
+			else
+				targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[""..UnitReaction(unitTarget, "player")] or FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
+			end
+
+			GameTooltip:AddDoubleLine(format("%s:", _G.TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
 		end
 
-		GameTooltip:AddDoubleLine(format("%s:", _G.TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
-	end
-
-	if self.db.targetInfo and IsInGroup() then
-		for i = 1, GetNumGroupMembers() do
-			local groupUnit = (IsInRaid() and "raid"..i or "party"..i);
-			if (UnitIsUnit(groupUnit.."target", unit)) and (not UnitIsUnit(groupUnit,"player")) then
-				local _, class = UnitClass(groupUnit);
-				local classColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-				if not classColor then classColor = RAID_CLASS_COLORS.PRIEST end
-				tinsert(targetList, format("|c%s%s|r", classColor.colorStr, UnitName(groupUnit)))
+		if self.db.targetInfo and IsInGroup() then
+			for i = 1, GetNumGroupMembers() do
+				local groupUnit = (IsInRaid() and "raid"..i or "party"..i);
+				if (UnitIsUnit(groupUnit.."target", unit)) and (not UnitIsUnit(groupUnit,"player")) then
+					local _, class = UnitClass(groupUnit);
+					local classColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
+					if not classColor then classColor = RAID_CLASS_COLORS.PRIEST end
+					tinsert(targetList, format("|c%s%s|r", classColor.colorStr, UnitName(groupUnit)))
+				end
+			end
+			local numList = #targetList
+			if (numList > 0) then
+				GameTooltip:AddLine(format("%s (|cffffffff%d|r): %s", L["Targeted By:"], numList, tconcat(targetList, ", ")), nil, nil, nil, true);
+				wipe(targetList);
 			end
 		end
-		local numList = #targetList
-		if (numList > 0) then
-			GameTooltip:AddLine(format("%s (|cffffffff%d|r): %s", L["Targeted By:"], numList, tconcat(targetList, ", ")), nil, nil, nil, true);
-			wipe(targetList);
-		end
+	end
+
+	if isShiftKeyDown then
+		self:AddInspectInfo(GameTooltip, unit, 0, color.r, color.g, color.b)
 	end
 
 	-- NPC ID's
@@ -510,10 +516,6 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		if id and guid:match("%a+") ~= "Player" then
 			GameTooltip:AddLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id))
 		end
-	end
-
-	if isShiftKeyDown then
-		self:AddInspectInfo(GameTooltip, unit, 0, color.r, color.g, color.b)
 	end
 
 	if color then
