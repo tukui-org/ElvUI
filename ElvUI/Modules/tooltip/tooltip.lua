@@ -115,20 +115,20 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 
 	if(parent) then
 		if self.db.healthBar.statusPosition == "BOTTOM" then
-			if(GameTooltipStatusBar.anchoredToTop) then
-				GameTooltipStatusBar:ClearAllPoints()
-				GameTooltipStatusBar:Point("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
-				GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
-				GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, 0)
-				GameTooltipStatusBar.anchoredToTop = nil
+			if(tt.StatusBar.anchoredToTop) then
+				tt.StatusBar:ClearAllPoints()
+				tt.StatusBar:Point("TOPLEFT", tt, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
+				tt.StatusBar:Point("TOPRIGHT", tt, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
+				tt.StatusBar.text:Point("CENTER", tt.StatusBar, 0, 0)
+				tt.StatusBar.anchoredToTop = nil
 			end
 		else
-			if(not GameTooltipStatusBar.anchoredToTop) then
-				GameTooltipStatusBar:ClearAllPoints()
-				GameTooltipStatusBar:Point("BOTTOMLEFT", GameTooltip, "TOPLEFT", E.Border, (E.Spacing * 3))
-				GameTooltipStatusBar:Point("BOTTOMRIGHT", GameTooltip, "TOPRIGHT", -E.Border, (E.Spacing * 3))
-				GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, 0)
-				GameTooltipStatusBar.anchoredToTop = true
+			if(not tt.StatusBar.anchoredToTop) then
+				tt.StatusBar:ClearAllPoints()
+				tt.StatusBar:Point("BOTTOMLEFT", tt, "TOPLEFT", E.Border, (E.Spacing * 3))
+				tt.StatusBar:Point("BOTTOMRIGHT", tt, "TOPRIGHT", -E.Border, (E.Spacing * 3))
+				tt.StatusBar.text:Point("CENTER", tt.StatusBar, 0, 0)
+				tt.StatusBar.anchoredToTop = true
 			end
 		end
 
@@ -423,6 +423,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local unit = select(2, tt:GetUnit())
 	local isShiftKeyDown = IsShiftKeyDown()
 	local isControlKeyDown = IsControlKeyDown()
+	local isPlayerUnit = UnitIsPlayer(unit)
 	if((tt:GetOwner() ~= _G.UIParent) and (self.db.visibility and self.db.visibility.unitFrames ~= 'NONE')) then
 		local modifier = self.db.visibility.unitFrames
 
@@ -446,23 +447,23 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	local color = self:SetUnitText(tt, unit, UnitLevel(unit), isShiftKeyDown)
 
-	if self.db.showMount and not isShiftKeyDown and unit ~= "player" and UnitIsPlayer(unit) then
+	if self.db.showMount and not isShiftKeyDown and unit ~= "player" and isPlayerUnit then
 		for i = 1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
 			if not name then break end
 
 			if self.MountIDs[id] then
 				local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(self.MountIDs[id])
-				GameTooltip:AddDoubleLine(format("%s:", _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
+				tt:AddDoubleLine(format("%s:", _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
 
 				if sourceText and isControlKeyDown then
 					local sourceModified = sourceText:gsub("|n", "\10")
 					for x in gmatch(sourceModified, '[^\10]+\10?') do
 						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
 						if left and right then
-							GameTooltip:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
+							tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
 						else
-							GameTooltip:AddDoubleLine(_G.FROM, sourceText:gsub('|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
+							tt:AddDoubleLine(_G.FROM, sourceText:gsub('|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
 						end
 					end
 				end
@@ -483,7 +484,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[""..UnitReaction(unitTarget, "player")] or FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
 			end
 
-			GameTooltip:AddDoubleLine(format("%s:", _G.TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
+			tt:AddDoubleLine(format("%s:", _G.TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
 		end
 
 		if self.db.targetInfo and IsInGroup() then
@@ -498,33 +499,33 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			end
 			local numList = #targetList
 			if (numList > 0) then
-				GameTooltip:AddLine(format("%s (|cffffffff%d|r): %s", L["Targeted By:"], numList, tconcat(targetList, ", ")), nil, nil, nil, true);
+				tt:AddLine(format("%s (|cffffffff%d|r): %s", L["Targeted By:"], numList, tconcat(targetList, ", ")), nil, nil, nil, true);
 				wipe(targetList);
 			end
 		end
 	end
 
-	if isShiftKeyDown then
-		self:AddInspectInfo(GameTooltip, unit, 0, color.r, color.g, color.b)
+	if isShiftKeyDown and isPlayerUnit then
+		self:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
 	end
 
 	-- NPC ID's
-	if unit and self.db.npcID then
+	if unit and self.db.npcID and not isPlayerUnit then
 		if C_PetBattles_IsInBattle() then return end
 		local guid = UnitGUID(unit) or ""
 		local id = tonumber(guid:match("%-(%d-)%-%x-$"), 10)
-		if id and guid:match("%a+") ~= "Player" then
-			GameTooltip:AddLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id))
+		if id then
+			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id))
 		end
 	end
 
 	if color then
-		GameTooltipStatusBar:SetStatusBarColor(color.r, color.g, color.b)
+		tt.StatusBar:SetStatusBarColor(color.r, color.g, color.b)
 	else
-		GameTooltipStatusBar:SetStatusBarColor(0.6, 0.6, 0.6)
+		tt.StatusBar:SetStatusBarColor(0.6, 0.6, 0.6)
 	end
 
-	local textWidth = GameTooltipStatusBar.text:GetStringWidth()
+	local textWidth = tt.StatusBar.text:GetStringWidth()
 	if textWidth then
 		tt:SetMinimumWidth(textWidth)
 	end
@@ -813,11 +814,12 @@ function TT:Initialize()
 	if E.private.tooltip.enable ~= true then return end
 	E.Tooltip = TT
 
-	GameTooltipStatusBar:Height(self.db.healthBar.height)
-	GameTooltipStatusBar:SetScript("OnValueChanged", nil) -- Do we need to unset this?
-	GameTooltipStatusBar.text = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
-	GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, 0)
-	GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch("font", self.db.healthBar.font), self.db.healthBar.fontSize, self.db.healthBar.fontOutline)
+	GameTooltip.StatusBar = GameTooltipStatusBar
+	GameTooltip.StatusBar:Height(self.db.healthBar.height)
+	GameTooltip.StatusBar:SetScript("OnValueChanged", nil) -- Do we need to unset this?
+	GameTooltip.StatusBar.text = GameTooltip.StatusBar:CreateFontString(nil, "OVERLAY")
+	GameTooltip.StatusBar.text:Point("CENTER", GameTooltip.StatusBar, 0, 0)
+	GameTooltip.StatusBar.text:FontTemplate(E.Libs.LSM:Fetch("font", self.db.healthBar.font), self.db.healthBar.fontSize, self.db.healthBar.fontOutline)
 
 	--Tooltip Fonts
 	if not GameTooltip.hasMoney then
@@ -843,7 +845,7 @@ function TT:Initialize()
 	self:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
-	self:SecureHookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
+	self:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
