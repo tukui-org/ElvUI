@@ -113,9 +113,9 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		end
 	end
 
-	if(parent) and tt.StatusBar then
+	if tt.StatusBar then
 		if self.db.healthBar.statusPosition == "BOTTOM" then
-			if(tt.StatusBar.anchoredToTop) then
+			if tt.StatusBar.anchoredToTop then
 				tt.StatusBar:ClearAllPoints()
 				tt.StatusBar:Point("TOPLEFT", tt, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
 				tt.StatusBar:Point("TOPRIGHT", tt, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
@@ -123,7 +123,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 				tt.StatusBar.anchoredToTop = nil
 			end
 		else
-			if(not tt.StatusBar.anchoredToTop) then
+			if not tt.StatusBar.anchoredToTop then
 				tt.StatusBar:ClearAllPoints()
 				tt.StatusBar:Point("BOTTOMLEFT", tt, "TOPLEFT", E.Border, (E.Spacing * 3))
 				tt.StatusBar:Point("BOTTOMRIGHT", tt, "TOPRIGHT", -E.Border, (E.Spacing * 3))
@@ -131,8 +131,10 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 				tt.StatusBar.anchoredToTop = true
 			end
 		end
+	end
 
-		if(self.db.cursorAnchor) then
+	if parent then
+		if self.db.cursorAnchor then
 			tt:SetOwner(parent, self.db.cursorAnchorType, self.db.cursorAnchorX, self.db.cursorAnchorY)
 			return
 		else
