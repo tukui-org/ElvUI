@@ -30,7 +30,8 @@ end
 
 local function UpdateAzeriteEmpoweredItem(self)
 	self.AzeriteTexture:SetAtlas("AzeriteIconFrame")
-	self.AzeriteTexture:SetAllPoints()
+	self.AzeriteTexture:SetInside()
+	self.AzeriteTexture:SetTexCoord(unpack(E.TexCoords))
 	self.AzeriteTexture:SetDrawLayer("BORDER", 1)
 end
 
