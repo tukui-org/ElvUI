@@ -113,7 +113,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		end
 	end
 
-	if(parent) then
+	if(parent) and tt.StatusBar then
 		if self.db.healthBar.statusPosition == "BOTTOM" then
 			if(tt.StatusBar.anchoredToTop) then
 				tt.StatusBar:ClearAllPoints()
