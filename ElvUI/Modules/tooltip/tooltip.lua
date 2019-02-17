@@ -84,6 +84,7 @@ local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
 local AFK_LABEL = " |cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r"
 local DND_LABEL = " |cffFFFFFF[|r|cffFFFF00"..L["DND"].."|r|cffFFFFFF]|r"
 local keybindFrame
+local mountLines = {}
 
 local classification = {
 	worldboss = format("|cffAF5050 %s|r", _G.BOSS),
@@ -463,9 +464,9 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 					for x in gmatch(sourceModified, '[^\10]+\10?') do
 						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
 						if left and right then
-							tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
+							mountLines[left] = right
 						else
-							tt:AddDoubleLine(_G.FROM, sourceText:gsub('|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
+							mountLines[_G.FROM] = sourceText:gsub('|c%x%x%x%x%x%x%x%x','')
 						end
 					end
 				end
@@ -473,6 +474,12 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				break
 			end
 		end
+
+		--fixes blizz duplicate line bug
+		for leftLine, rightLine in pairs(mountLines) do
+			tt:AddDoubleLine(leftLine, rightLine, nil, nil, nil, 1, 1, 1)
+		end
+		wipe(mountLines)
 	end
 
 	if not isShiftKeyDown and not isControlKeyDown then
