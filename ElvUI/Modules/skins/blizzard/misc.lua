@@ -60,6 +60,39 @@ local function LoadSkin()
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
 	_G.QueueStatusFrame:StripTextures()
+	hooksecurefunc("QueueStatusEntry_SetFullDisplay", function(entry, title, queuedTime, myWait, isTank, isHealer, isDPS, totalTanks, totalHealers, totalDPS, tankNeeds, healerNeeds, dpsNeeds, subTitle, extraText) 
+		local nextRoleIcon = 1;
+		if ( isDPS ) then
+			local icon = entry["RoleIcon"..nextRoleIcon];
+			icon:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+			icon:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord());
+			nextRoleIcon = nextRoleIcon + 1;
+		end
+		if ( isHealer ) then
+			local icon = entry["RoleIcon"..nextRoleIcon];
+			icon:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+			icon:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord());
+			nextRoleIcon = nextRoleIcon + 1;
+		end
+		if ( isTank ) then
+			local icon = entry["RoleIcon"..nextRoleIcon];
+			icon:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+			icon:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord());
+			nextRoleIcon = nextRoleIcon + 1;
+		end		
+	end)
+
+	_G.QueueStatusFrame:HookScript("OnShow", function(frame) 
+		frame = frame:GetChildren()
+		if frame.isSkinned then return end
+		frame.HealersFound.Texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+		frame.TanksFound.Texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+		frame.DamagersFound.Texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+		frame.HealersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+		frame.TanksFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+		frame.DamagersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+		frame.isSkinned = true
+	end)
 
 	if not IsAddOnLoaded("ConsolePortUI_Menu") then
 		-- reskin all esc/menu buttons
