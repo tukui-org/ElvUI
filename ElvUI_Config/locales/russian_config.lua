@@ -514,6 +514,7 @@ L["Displays a detailed report of every item sold when enabled."] = "Показы
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Отображать панель на нижней границе экрана. Это косметический элемент."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Отображать панель на верхней границе экрана. Это косметический элемент."
 L["Display battleground messages in the middle of the screen."] = "Отображать сообщения полей боя в центре экрана."
+L["Display Character Info"] = true
 L["Display emotion icons in chat."] = "Показывать смайлы в чате"
 L["Display Inspect Info"] = true
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = "Отображать имя юнита на облачках сообщений. Не будет работать, если фон отключен или в подземельях."

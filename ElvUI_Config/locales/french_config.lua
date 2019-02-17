@@ -515,6 +515,7 @@ L["Displays a detailed report of every item sold when enabled."] = true
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Affiche un bandeau au bas de l'écran. Option purement cosmétique."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Affiche un bandeau en haut de l'écran. Option purement cosmétique."
 L["Display battleground messages in the middle of the screen."] = "Afficher le message du champ de bataille au milieu de l'écran"
+L["Display Character Info"] = true
 L["Display emotion icons in chat."] = "Afficher les émoticônes dans le chat"
 L["Display Inspect Info"] = true
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = true

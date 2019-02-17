@@ -567,6 +567,7 @@ L["Displays a detailed report of every item sold when enabled."] = "활성화하
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "화면 하단에 꾸미기 용도의 바를 생성합니다."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "화면 상단에 꾸미기 용도의 바를 생성합니다."
 L["Display battleground messages in the middle of the screen."] = "화면 중간에 전장 메시지를 표시합니다."
+L["Display Character Info"] = true
 L["Display emotion icons in chat."] = "메시지 안에 이모티콘이 있으면 그림으로 바꿔 보여줍니다."
 L["Display Inspect Info"] = true
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = "말풍선에 화자의 이름을 표시합니다. 배경이 비활성화 돼 있거나 인스턴스 내부에 있을 때는 작동하지 않을 것입니다."

@@ -513,6 +513,7 @@ L["Displays a detailed report of every item sold when enabled."] = "启用后显
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "显示跨越屏幕底部的面板,仅仅是用于装饰."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "显示跨越屏幕顶部的面板,仅仅是用于装饰."
 L["Display battleground messages in the middle of the screen."] = "屏幕中间显示战场信息"
+L["Display Character Info"] = true
 L["Display emotion icons in chat."] = "在聊天中显示表情图标"
 L["Display Inspect Info"] = "显示观察信息"
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = "在聊天气泡上显示单位的名字. 禁用背景或者副本中时将不会工作."
