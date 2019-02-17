@@ -475,11 +475,11 @@ local function LoadSkin()
 		if icon then
 			S:HandleIcon(icon)
 			hooksecurefunc(reward.IconBorder, "SetVertexColor", function(self, r, g, b)
-				self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+				self:GetParent().icon.backdrop:SetBackdropBorderColor(r, g, b)
 				self:SetTexture()
 			end)
 			hooksecurefunc(reward.IconBorder, "Hide", function(self)
-				self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				self:GetParent().icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 		end
 		tooltip:HookScript("OnShow", function(self)
