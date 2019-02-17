@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
@@ -39,11 +38,11 @@ local function LoadSkin()
 				r, g, b = unpack(E.media.bordercolor)
 			end
 
-			if not reward.border then
-				reward.border = CreateFrame("Frame", nil, reward)
-				S:HandleIcon(reward.Icon, reward.border)
+			if not reward.Icon.backdrop then
+				S:HandleIcon(reward.Icon, true)
 			end
-			reward.border.backdrop:SetBackdropBorderColor(r, g, b)
+
+			reward.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 			index = index + 1
 		end
 	end)
@@ -89,7 +88,7 @@ local function LoadSkin()
 	S:HandleButton(GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton, true)
 	GarrisonCapacitiveDisplayFrame.Count:StripTextures()
 	S:HandleEditBox(GarrisonCapacitiveDisplayFrame.Count)
-	S:HandleNextPrevButton(GarrisonCapacitiveDisplayFrame.DecrementButton, false, true)
+	S:HandleNextPrevButton(GarrisonCapacitiveDisplayFrame.DecrementButton)
 	S:HandleNextPrevButton(GarrisonCapacitiveDisplayFrame.IncrementButton)
 	local CapacitiveDisplay = GarrisonCapacitiveDisplayFrame.CapacitiveDisplay
 	CapacitiveDisplay.IconBG:SetTexture()
@@ -103,7 +102,7 @@ local function LoadSkin()
 		for _, Reagent in ipairs(self.CapacitiveDisplay.Reagents) do
 			if not Reagent.backdrop then
 				Reagent.NameFrame:SetTexture()
-				S:HandleTexture(Reagent.Icon, Reagent)
+				S:HandleIcon(Reagent.Icon, true)
 				Reagent:CreateBackdrop()
 			end
 		end
@@ -122,7 +121,8 @@ local function LoadSkin()
 	GarrisonMissionFrame.TitleText:Show()
 	GarrisonMissionFrame:CreateBackdrop("Transparent")
 	S:HandleCloseButton(GarrisonMissionFrame.CloseButton, GarrisonMissionFrame.backdrop)
-	for i=1,2 do
+
+	for i = 1,2 do
 		S:HandleTab(_G["GarrisonMissionFrameTab"..i])
 	end
 

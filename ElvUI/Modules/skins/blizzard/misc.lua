@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs = pairs
@@ -20,8 +19,15 @@ local function SkinNavBarButtons(self)
 	if navButton and not navButton.isSkinned then
 		S:HandleButton(navButton, true)
 		if navButton.MenuArrowButton then
-			S:HandleNextPrevButton(navButton.MenuArrowButton, true)
+			navButton.MenuArrowButton:StripTextures()
+			if navButton.MenuArrowButton.Art then
+				navButton.MenuArrowButton.Art:SetTexture([[Interface\AddOns\ElvUI\media\textures\ArrowUp]])
+				navButton.MenuArrowButton.Art:SetTexCoord(0, 1, 0, 1)
+				navButton.MenuArrowButton.Art:SetRotation(3.14)
+			end
 		end
+
+		navButton.xoffset = 1
 
 		navButton.isSkinned = true
 	end
@@ -174,7 +180,7 @@ local function LoadSkin()
 		_G["StaticPopup"..i.."EditBox"].backdrop:Point("TOPLEFT", -2, -4)
 		_G["StaticPopup"..i.."EditBox"].backdrop:Point("BOTTOMRIGHT", 2, 4)
 		_G["StaticPopup"..i.."ItemFrameNameFrame"]:Kill()
-		_G["StaticPopup"..i.."ItemFrame"]:SetTemplate("Default")
+		_G["StaticPopup"..i.."ItemFrame"]:SetTemplate()
 		_G["StaticPopup"..i.."ItemFrame"]:StyleButton()
 		_G["StaticPopup"..i.."ItemFrame"].IconBorder:SetAlpha(0)
 		_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetTexCoord(unpack(E.TexCoords))
@@ -215,7 +221,7 @@ local function LoadSkin()
 		b:Point("BOTTOMRIGHT", _G.GhostFrameContentsFrameIcon, p, -p)
 		_G.GhostFrameContentsFrameIcon:SetSize(37,38)
 		_G.GhostFrameContentsFrameIcon:SetParent(b)
-		b:SetTemplate("Default")
+		b:SetTemplate()
 	end
 
 	_G.OpacityFrame:StripTextures()
@@ -266,6 +272,25 @@ local function LoadSkin()
 
 	S:HandleButton(StackSplitFrame.OkayButton)
 	S:HandleButton(StackSplitFrame.CancelButton)
+
+	local buttons = {StackSplitFrame.LeftButton, StackSplitFrame.RightButton}
+	for _, btn in pairs(buttons) do
+		btn:Size(14, 18)
+
+		btn:ClearAllPoints()
+
+		if btn == StackSplitFrame.LeftButton then
+			btn:Point('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
+		else
+			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
+		end
+
+		S:HandleNextPrevButton(btn)
+
+		if btn.SetTemplate then
+			btn:SetTemplate("NoBackdrop")
+		end
+	end
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)

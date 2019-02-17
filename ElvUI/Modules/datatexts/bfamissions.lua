@@ -1,41 +1,40 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Cache global variables
 --Lua functions
-local format = string.format
-local tsort = table.sort
+local format = format
+local sort = sort
 local ipairs = ipairs
 --WoW API / Variables
+local GetCurrencyInfo = GetCurrencyInfo
+local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
+local GetMouseFocus = GetMouseFocus
+local GetQuestObjectiveInfo = GetQuestObjectiveInfo
+local HideUIPanel = HideUIPanel
+local IsQuestFlaggedCompleted = IsQuestFlaggedCompleted
+local SecondsToTime = SecondsToTime
+local ShowGarrisonLandingPage = ShowGarrisonLandingPage
+local UnitLevel = UnitLevel
+local GREEN_FONT_COLOR = GREEN_FONT_COLOR
+local C_Garrison_GetCompleteTalent = C_Garrison.GetCompleteTalent
 local C_Garrison_GetFollowerShipments = C_Garrison.GetFollowerShipments
 local C_Garrison_GetInProgressMissions = C_Garrison.GetInProgressMissions
-local C_Garrison_RequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
 local C_Garrison_GetLandingPageShipmentInfoByContainerID = C_Garrison.GetLandingPageShipmentInfoByContainerID
 local C_Garrison_GetTalentTreeIDsByClassID = C_Garrison.GetTalentTreeIDsByClassID
 local C_Garrison_GetTalentTreeInfoForID = C_Garrison.GetTalentTreeInfoForID
-local C_Garrison_GetCompleteTalent = C_Garrison.GetCompleteTalent
 local C_Garrison_HasGarrison = C_Garrison.HasGarrison
+local C_Garrison_RequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
 local C_IslandsQueue_GetIslandsWeeklyQuestID = C_IslandsQueue.GetIslandsWeeklyQuestID
-local GetQuestObjectiveInfo = GetQuestObjectiveInfo
-local IsQuestFlaggedCompleted = IsQuestFlaggedCompleted
-local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
-local UnitLevel = UnitLevel
-local ShowGarrisonLandingPage = ShowGarrisonLandingPage
-local HideUIPanel = HideUIPanel
-local GetCurrencyInfo = GetCurrencyInfo
-local GetMouseFocus = GetMouseFocus
-local SecondsToTime = SecondsToTime
-local GOAL_COMPLETED = GOAL_COMPLETED
-local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
-local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
 local FOLLOWERLIST_LABEL_TROOPS = FOLLOWERLIST_LABEL_TROOPS
-local LE_FOLLOWER_TYPE_GARRISON_8_0 = LE_FOLLOWER_TYPE_GARRISON_8_0
-local LE_GARRISON_TYPE_8_0 = LE_GARRISON_TYPE_8_0
-local LE_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH
-local ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS
+local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
+local GOAL_COMPLETED = GOAL_COMPLETED
 local ISLANDS_HEADER = ISLANDS_HEADER
 local ISLANDS_QUEUE_FRAME_TITLE = ISLANDS_QUEUE_FRAME_TITLE
-local GREEN_FONT_COLOR = GREEN_FONT_COLOR
+local ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS
+local LE_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH
+local LE_FOLLOWER_TYPE_GARRISON_8_0 = LE_FOLLOWER_TYPE_GARRISON_8_0
+local LE_GARRISON_TYPE_8_0 = LE_GARRISON_TYPE_8_0
+local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GarrisonLandingPage
@@ -65,7 +64,7 @@ local function OnEnter(self, _, noUpdate)
 	DT.tooltip:AddLine(L["Mission(s) Report:"]) -- always show the header
 	local numMissions = #inProgressMissions
 	if(numMissions > 0) then
-		tsort(inProgressMissions, sortFunction) --Sort by time left, lowest first
+		sort(inProgressMissions, sortFunction) --Sort by time left, lowest first
 
 		firstLine = false
 		for i = 1, numMissions do

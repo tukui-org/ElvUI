@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
@@ -42,7 +41,7 @@ local function SkinSocialHeaderTab(tab)
 	end
 	tab:GetHighlightTexture():SetTexture()
 	tab.backdrop = CreateFrame("Frame", nil, tab)
-	tab.backdrop:SetTemplate("Default")
+	tab.backdrop:SetTemplate()
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
 	tab.backdrop:Point("TOPLEFT", 3, -8)
 	tab.backdrop:Point("BOTTOMRIGHT", -6, 0)
@@ -130,7 +129,7 @@ local function LoadSkin()
 	S:HandleEditBox(_G.FriendsFriendsList)
 	S:HandleDropDownBox(_G.FriendsFriendsFrameDropDown,150)
 
-	_G.FriendsTabHeaderSoRButton:SetTemplate('Default')
+	_G.FriendsTabHeaderSoRButton:SetTemplate()
 	_G.FriendsTabHeaderSoRButton:StyleButton()
 	_G.FriendsTabHeaderSoRButtonIcon:SetDrawLayer('OVERLAY')
 	_G.FriendsTabHeaderSoRButtonIcon:SetTexCoord(unpack(E.TexCoords))
@@ -141,7 +140,7 @@ local function LoadSkin()
 	SoRBg:Point("TOPLEFT", -1, 1)
 	SoRBg:Point("BOTTOMRIGHT", 1, -1)
 
-	_G.FriendsTabHeaderRecruitAFriendButton:SetTemplate("Default")
+	_G.FriendsTabHeaderRecruitAFriendButton:SetTemplate()
 	_G.FriendsTabHeaderRecruitAFriendButton:StyleButton()
 	_G.FriendsTabHeaderRecruitAFriendButtonIcon:SetDrawLayer("OVERLAY")
 	_G.FriendsTabHeaderRecruitAFriendButtonIcon:SetTexCoord(unpack(E.TexCoords))
@@ -162,7 +161,7 @@ local function LoadSkin()
 	FriendsFrameBattlenetFrame.Tag:SetParent(_G.FriendsListFrame)
 	FriendsFrameBattlenetFrame.Tag:Point("TOP", FriendsFrame, "TOP", 0, -8)
 
-	_G.FriendsFrameBroadcastInput:CreateBackdrop("Default")
+	_G.FriendsFrameBroadcastInput:CreateBackdrop()
 	_G.FriendsFrameBroadcastInput:SetWidth(259)
 
 	hooksecurefunc("FriendsFrame_CheckBattlenetStatus", function()
@@ -191,7 +190,7 @@ local function LoadSkin()
 	S:HandleEditBox(_G.AddFriendNameEditBox)
 	_G.AddFriendFrame:SetTemplate("Transparent")
 	_G.ScrollOfResurrectionSelectionFrame:SetTemplate('Transparent')
-	_G.ScrollOfResurrectionSelectionFrameList:SetTemplate('Default')
+	_G.ScrollOfResurrectionSelectionFrameList:SetTemplate()
 	S:HandleScrollBar(_G.ScrollOfResurrectionSelectionFrameListScrollFrameScrollBar, 4)
 	S:HandleEditBox(_G.ScrollOfResurrectionSelectionFrameTargetEditBox)
 	RaiseFrameLevel(_G.ScrollOfResurrectionSelectionFrameTargetEditBox)

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local select, unpack = select, unpack
@@ -44,7 +43,7 @@ local function LoadSkin()
 		local iconBorder = button.IconBorder
 		local item = _G["MerchantItem"..i]
 		item:StripTextures(true)
-		item:CreateBackdrop("Default")
+		item:CreateBackdrop()
 
 		button:StripTextures()
 		button:StyleButton(false)

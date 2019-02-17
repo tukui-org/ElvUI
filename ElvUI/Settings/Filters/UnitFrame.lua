@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
---Cache global variables
 --Lua functions
 local unpack = unpack
 local strlower = string.lower
@@ -1087,6 +1086,7 @@ G.unitframe.ChannelTicks = {
 	-- Priest
 	[64843]  = 4, -- Divine Hymn
 	[15407]  = 4, -- Mind Flay
+	[48045] = 5, -- Mind Sear
 	-- Mage
 	[5143]   = 5,  -- Arcane Missiles
 	[12051]  = 3,  -- Evocation

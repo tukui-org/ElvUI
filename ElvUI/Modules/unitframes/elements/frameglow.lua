@@ -1,23 +1,21 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Cache global variables
 local _G = _G
 --Lua functions
 local pairs = pairs
 local select = select
 local assert = assert
-local tinsert = table.insert
+local tinsert = tinsert
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local UnitIsUnit = UnitIsUnit
-local UnitReaction = UnitReaction
-local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitExists = UnitExists
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsUnit = UnitIsUnit
+local UnitReaction = UnitReaction
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
--- GLOBALS: CUSTOM_CLASS_COLORS
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 function UF:FrameGlow_MouseOnUnit(frame)
 	if frame and frame:IsVisible() and UnitExists('mouseover') then
@@ -143,14 +141,14 @@ end
 
 function UF:FrameGlow_CreateGlow(frame, mouse)
 	-- Main Glow to wrap the health frame to it's best ability
-	frame:CreateShadow('Default')
+	frame:CreateShadow()
 	local mainGlow = frame.shadow
 	mainGlow:SetFrameStrata('BACKGROUND')
 	mainGlow:Hide()
 	frame.shadow = nil
 
 	-- Secondary Glow for power frame when using power offset or mini power
-	frame:CreateShadow('Default')
+	frame:CreateShadow()
 	local powerGlow = frame.shadow
 	powerGlow:SetFrameStrata('BACKGROUND')
 	powerGlow:Hide()
@@ -198,7 +196,7 @@ function UF:FrameGlow_SetGlowColor(glow, unit, which)
 		if isPlayer then
 			local _, class = UnitClass(unit)
 			if class then
-				local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
+				local color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
 				if color then
 					r, g, b = color.r, color.g, color.b
 				end

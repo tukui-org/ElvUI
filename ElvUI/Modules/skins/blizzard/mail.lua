@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack = unpack
@@ -42,7 +41,7 @@ local function LoadSkin()
 	for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 		local bg = _G["MailItem"..i]
 		bg:StripTextures()
-		bg:CreateBackdrop("Default")
+		bg:CreateBackdrop()
 		bg.backdrop:Point("TOPLEFT", 2, 1)
 		bg.backdrop:Point("BOTTOMRIGHT", -2, 2)
 
@@ -75,7 +74,7 @@ local function LoadSkin()
 
 	-- send mail
 	_G.SendMailScrollFrame:StripTextures(true)
-	_G.SendMailScrollFrame:SetTemplate("Default")
+	_G.SendMailScrollFrame:SetTemplate()
 
 	S:HandleScrollBar(_G.SendMailScrollFrameScrollBar)
 
@@ -112,7 +111,7 @@ local function LoadSkin()
 	_G.MailFrameInset:Kill()
 
 	_G.OpenMailScrollFrame:StripTextures(true)
-	_G.OpenMailScrollFrame:SetTemplate("Default")
+	_G.OpenMailScrollFrame:SetTemplate()
 
 	S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 

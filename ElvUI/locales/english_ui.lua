@@ -156,15 +156,13 @@ L["Request was denied by user."] = true
 L["Your profile was successfully recieved by the player."] = true
 
 --Install
-L["Aura Bars & Icons"] = true
-L["Auras Set"] = true
+L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = true
 L["Auras"] = true
 L["Caster DPS"] = true
 L["Chat Set"] = true
 L["Chat"] = true
 L["Choose a theme layout you wish to use for your initial setup."] = true
 L["Classic"] = true
-L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."] = true
 L["Config Mode:"] = true
 L["CVars Set"] = true
 L["CVars"] = true
@@ -175,10 +173,7 @@ L["ElvUI Installation"] = true
 L["Finished"] = true
 L["Grid Size:"] = true
 L["Healer"] = true
-L["High Resolution"] = true
-L["high"] = true
 L["Icons Only"] = true --Also used in Bags
-L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = true
 L["Importance: |cff07D400High|r"] = true
 L["Importance: |cffD3CF00Medium|r"] = true
 L["Importance: |cffFF0000Low|r"] = true
@@ -186,39 +181,29 @@ L["Installation Complete"] = true
 L["Layout Set"] = true
 L["Layout"] = true
 L["Lock"] = true
-L["Low Resolution"] = true
-L["low"] = true
 L["Nudge"] = true
-L["Physical DPS"] = true
 L["Please click the button below so you can setup variables and ReloadUI."] = true
 L["Please click the button below to setup your CVars."] = true
 L["Please press the continue button to go onto the next step."] = true
-L["Resolution Style Set"] = true
-L["Resolution"] = true
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
+L["Preview"] = true
 L["Setup Chat"] = true
 L["Setup CVars"] = true
 L["Skip Process"] = true
 L["Sticky Frames"] = true
-L["Tank"] = true
+L["Tank / Physical DPS"] = true
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = true
 L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = true
 L["Theme Set"] = true
 L["Theme Setup"] = true
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = true
-L["This is completely optional."] = true
 L["This part of the installation process sets up your chat windows names, positions and colors."] = true
 L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."] = true
-L["This resolution doesn't require that you change settings for the UI to fit on your screen."] = true
-L["This resolution requires that you change some settings to get everything to fit on your screen."] = true
 L["This will change the layout of your unitframes and actionbars."] = true
 L["Trade"] = true
 L["Welcome to ElvUI version %s!"] = true
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = true
 L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."] = true
 L["You can now choose what layout you wish to use based on your combat role."] = true
-L["You may need to further alter these settings depending how low you resolution is."] = true
-L["Your current resolution is %s, this is considered a %s resolution."] = true
 
 --Misc
 L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
@@ -381,8 +366,6 @@ L["You must purchase a bank slot first!"] = true
 
 --Tooltip
 L["Count"] = true
-L["Item Level:"] = true
-L["Talent Specialization:"] = true
 L["Targeted By:"] = true
 
 --Tutorials

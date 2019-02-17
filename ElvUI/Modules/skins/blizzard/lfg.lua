@@ -2,20 +2,18 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 local LBG = E.Libs.ButtonGlow
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack, ipairs, pairs, select = unpack, ipairs, pairs, select
-local min, lower = math.min, string.lower
+local min, strlower = min, strlower
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
-local GetLFGProposal = GetLFGProposal
 local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
-local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
+local GetLFGProposal = GetLFGProposal
+local hooksecurefunc = hooksecurefunc
+local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
-local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
+local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 
 local function LFDQueueFrameRoleButtonIconOnShow(self)
@@ -33,7 +31,7 @@ local function HandleGoldIcon(button)
 	local nameFrame = _G[button.."NameFrame"]
 	local iconTexture = _G[button.."IconTexture"]
 
-	Button:CreateBackdrop("Default")
+	Button:CreateBackdrop()
 	Button.backdrop:ClearAllPoints()
 	Button.backdrop:Point("LEFT", 1, 0)
 	Button.backdrop:Size(42)
@@ -57,7 +55,7 @@ local function SkinItemButton(parentFrame, _, index)
 	local item = _G[parentName.."Item"..index];
 
 	if item and not item.backdrop then
-		item:CreateBackdrop("Default")
+		item:CreateBackdrop()
 		item.backdrop:ClearAllPoints()
 		item.backdrop:Point("LEFT", 1, 0)
 		item.backdrop:Size(42)
@@ -159,6 +157,21 @@ local function LoadSkin()
 		end
 	end)
 
+	hooksecurefunc("LFGDungeonReadyStatusIndividual_UpdateIcon", function(button)
+		local _, role = _G.GetLFGProposalMember(button:GetID());
+
+		button.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+		button.texture:SetAlpha(0.6)
+
+		if role == "DAMAGER" then
+			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+		elseif role == "TANK" then
+			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+		elseif role == "HEALER" then
+			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+		end		
+	end)
+
 	_G.LFDQueueFrame:StripTextures(true)
 	_G.LFDQueueFrameRoleButtonTankIncentiveIcon:SetAlpha(0)
 	_G.LFDQueueFrameRoleButtonHealerIncentiveIcon:SetAlpha(0)
@@ -209,7 +222,7 @@ local function LoadSkin()
 				roleButton.background:SetAlpha(0.65)
 
 				local buttonName = roleButton:GetName() ~= nil and roleButton:GetName() or roleButton.role
-				roleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole((lower(buttonName):find("tank") and "TANK") or (lower(buttonName):find("healer") and "HEALER") or "DAMAGER"))
+				roleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole((strlower(buttonName):find("tank") and "TANK") or (strlower(buttonName):find("healer") and "HEALER") or "DAMAGER"))
 			end
 		end
 	end
@@ -301,7 +314,7 @@ local function LoadSkin()
 		bu.icon:Size(45)
 		bu.icon:ClearAllPoints()
 		bu.icon:Point("LEFT", 10, 0)
-		S:HandleTexture(bu.icon, bu)
+		S:HandleIcon(bu.icon, true)
 	end
 
 	for i = 1, 3 do
@@ -427,7 +440,7 @@ local function LoadSkin()
 				tab:GetNormalTexture():SetInside()
 
 				tab.pushed = true;
-				tab:CreateBackdrop("Default")
+				tab:CreateBackdrop()
 				tab.backdrop:SetAllPoints()
 				tab:StyleButton(true)
 				hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
@@ -653,7 +666,7 @@ local function LoadSkin()
 		local button = self.CategoryButtons[btnIndex]
 		if(button) then
 			if not button.isSkinned then
-				button:SetTemplate("Default")
+				button:SetTemplate()
 				button.Icon:SetDrawLayer("BACKGROUND", 2)
 				button.Icon:SetTexCoord(unpack(E.TexCoords))
 				button.Icon:SetInside()
@@ -699,7 +712,7 @@ local function LoadSecondarySkin()
 				frame:GetRegions():SetAlpha(0)
 				frame:CreateBackdrop("Transparent")
 				frame.backdrop:SetAllPoints()
-				S:HandleTexture(frame.Icon, frame)
+				S:HandleIcon(frame.Icon, true)
 				frame.Icon:SetInside()
 			end
 		end

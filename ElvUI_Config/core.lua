@@ -1,8 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule("Distributor")
 
-local tsort, tinsert = table.sort, table.insert
-local format = string.format
+local format = format
+local sort, tinsert = sort, tinsert
 local DEFAULT_WIDTH = 890
 local DEFAULT_HEIGHT = 651
 
@@ -19,7 +19,7 @@ local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
 local UnitExists = UnitExists
 local GameTooltip_Hide = GameTooltip_Hide
-local GameFontHighlightSmall = _G['GameFontHighlightSmall']
+local GameFontHighlightSmall = _G.GameFontHighlightSmall
 
 E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
 E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", DEFAULT_WIDTH, DEFAULT_HEIGHT)
@@ -150,19 +150,19 @@ local TESTERS = {
 	"Catok"
 }
 
-tsort(DONATORS, function(a,b) return a < b end) --Alphabetize
+sort(DONATORS, function(a,b) return a < b end) --Alphabetize
 for _, donatorName in pairs(DONATORS) do
 	tinsert(E.CreditsList, donatorName)
 	DONATOR_STRING = DONATOR_STRING..LINE_BREAK..donatorName
 end
 
-tsort(DEVELOPERS, function(a,b) return a < b end) --Alphabetize
+sort(DEVELOPERS, function(a,b) return a < b end) --Alphabetize
 for _, devName in pairs(DEVELOPERS) do
 	tinsert(E.CreditsList, devName)
 	DEVELOPER_STRING = DEVELOPER_STRING..LINE_BREAK..devName
 end
 
-tsort(TESTERS, function(a,b) return a < b end) --Alphabetize
+sort(TESTERS, function(a,b) return a < b end) --Alphabetize
 for _, testerName in pairs(TESTERS) do
 	tinsert(E.CreditsList, testerName)
 	TESTER_STRING = TESTER_STRING..LINE_BREAK..testerName

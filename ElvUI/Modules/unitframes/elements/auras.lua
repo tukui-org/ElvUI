@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 local LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local unpack, strfind, format, tinsert, strsplit, sort, ceil = unpack, strfind, format, tinsert, strsplit, sort, ceil
 --WoW API / Variables

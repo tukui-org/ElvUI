@@ -1,28 +1,27 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Cache global variables
 --Lua functions
 local min, max = math.min, math.max
-local format, join = string.format, string.join
+local format, strjoin = string.format, strjoin
 --WoW API / Variables
-local UnitRangedAttackPower = UnitRangedAttackPower
-local UnitAttackPower = UnitAttackPower
-local GetOverrideAPBySpellPower = GetOverrideAPBySpellPower
-local GetSpellBonusDamage = GetSpellBonusDamage
-local GetSpellBonusHealing = GetSpellBonusHealing
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local ComputePetBonus = ComputePetBonus
+local GetOverrideAPBySpellPower = GetOverrideAPBySpellPower
 local GetOverrideSpellPowerByAP = GetOverrideSpellPowerByAP
-local RANGED_ATTACK_POWER = RANGED_ATTACK_POWER
-local RANGED_ATTACK_POWER_TOOLTIP = RANGED_ATTACK_POWER_TOOLTIP
+local GetSpellBonusDamage = GetSpellBonusDamage
+local GetSpellBonusHealing = GetSpellBonusHealing
+local UnitAttackPower = UnitAttackPower
+local UnitRangedAttackPower = UnitRangedAttackPower
 local ATTACK_POWER_MAGIC_NUMBER = ATTACK_POWER_MAGIC_NUMBER
-local PET_BONUS_TOOLTIP_RANGED_ATTACK_POWER = PET_BONUS_TOOLTIP_RANGED_ATTACK_POWER
-local PET_BONUS_TOOLTIP_SPELLDAMAGE = PET_BONUS_TOOLTIP_SPELLDAMAGE
+local MAX_SPELL_SCHOOLS = MAX_SPELL_SCHOOLS
 local MELEE_ATTACK_POWER = MELEE_ATTACK_POWER
 local MELEE_ATTACK_POWER_SPELL_POWER_TOOLTIP = MELEE_ATTACK_POWER_SPELL_POWER_TOOLTIP
 local MELEE_ATTACK_POWER_TOOLTIP = MELEE_ATTACK_POWER_TOOLTIP
-local MAX_SPELL_SCHOOLS = MAX_SPELL_SCHOOLS
+local PET_BONUS_TOOLTIP_RANGED_ATTACK_POWER = PET_BONUS_TOOLTIP_RANGED_ATTACK_POWER
+local PET_BONUS_TOOLTIP_SPELLDAMAGE = PET_BONUS_TOOLTIP_SPELLDAMAGE
+local RANGED_ATTACK_POWER = RANGED_ATTACK_POWER
+local RANGED_ATTACK_POWER_TOOLTIP = RANGED_ATTACK_POWER_TOOLTIP
 
 local pwr
 local displayNumberString = ''
@@ -102,7 +101,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayNumberString = join("", "%s: ", hex, "%d|r")
+	displayNumberString = strjoin("", "%s: ", hex, "%d|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

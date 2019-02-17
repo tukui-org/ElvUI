@@ -1,13 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Cache global variables
 --Lua functions
 local pairs = pairs
-local format, join = string.format, string.join
+local format, strjoin = format, strjoin
 --WoW API / Variables
-local GetInventorySlotInfo = GetInventorySlotInfo
 local GetInventoryItemDurability = GetInventoryItemDurability
+local GetInventorySlotInfo = GetInventorySlotInfo
 local ToggleCharacter = ToggleCharacter
 local DURABILITY = DURABILITY
 
@@ -64,7 +63,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = join("", DURABILITY, ": ", hex, "%d%%|r")
+	displayString = strjoin("", DURABILITY, ": ", hex, "%d%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')

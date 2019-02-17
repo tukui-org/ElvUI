@@ -2,14 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local CH = E:NewModule('Chat', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local LSM = E.Libs.LSM
 
---Cache global variables
 local _G = _G
 --Lua functions
+local gsub, strfind, gmatch, format = gsub, strfind, gmatch, format
 local ipairs, wipe, time, difftime = ipairs, wipe, time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
-local tinsert, tremove, tconcat = table.insert, table.remove, table.concat
-local gsub, strfind, gmatch, format = string.gsub, string.find, string.gmatch, string.format
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
+local tinsert, tremove, tconcat = tinsert, tremove, table.concat
 --WoW API / Variables
 local Ambiguate = Ambiguate
 local BetterDate = BetterDate
@@ -22,6 +21,7 @@ local BNGetGameAccountInfo = BNGetGameAccountInfo
 local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
 local BNGetNumFriendInvites = BNGetNumFriendInvites
 local BNGetNumFriends = BNGetNumFriends
+local Chat_GetChatCategory = Chat_GetChatCategory
 local ChatEdit_ActivateChat = ChatEdit_ActivateChat
 local ChatEdit_ChooseBoxForSend = ChatEdit_ChooseBoxForSend
 local ChatEdit_ParseText = ChatEdit_ParseText
@@ -32,27 +32,16 @@ local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
 local ChatFrame_SendTell = ChatFrame_SendTell
 local ChatFrame_SystemEventHandler = ChatFrame_SystemEventHandler
 local ChatHistory_GetAccessID = ChatHistory_GetAccessID
-local Chat_GetChatCategory = Chat_GetChatCategory
 local CreateFrame = CreateFrame
-local CreateAnimationGroup = CreateAnimationGroup
-local C_LFGList_GetActivityInfo = C_LFGList.GetActivityInfo
-local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
-local C_SocialGetLastItem = C_Social.GetLastItem
-local C_SocialIsSocialEnabled = C_Social.IsSocialEnabled
-local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
-local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
-local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
-local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
-local Voice_GetVoiceChannelNotificationColor = Voice_GetVoiceChannelNotificationColor
-local FCFManager_ShouldSuppressMessage = FCFManager_ShouldSuppressMessage
-local FCFManager_ShouldSuppressMessageFlash = FCFManager_ShouldSuppressMessageFlash
-local FCFTab_UpdateAlpha = FCFTab_UpdateAlpha
 local FCF_Close = FCF_Close
 local FCF_GetChatWindowInfo = FCF_GetChatWindowInfo
 local FCF_GetCurrentChatFrame = FCF_GetCurrentChatFrame
 local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
 local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
 local FCF_StartAlertFlash = FCF_StartAlertFlash
+local FCFManager_ShouldSuppressMessage = FCFManager_ShouldSuppressMessage
+local FCFManager_ShouldSuppressMessageFlash = FCFManager_ShouldSuppressMessageFlash
+local FCFTab_UpdateAlpha = FCFTab_UpdateAlpha
 local FlashClientIcon = FlashClientIcon
 local FloatingChatFrame_OnEvent = FloatingChatFrame_OnEvent
 local GetAchievementInfo = GetAchievementInfo
@@ -83,11 +72,10 @@ local RemoveExtraSpaces = RemoveExtraSpaces
 local RemoveNewlines = RemoveNewlines
 local ScrollFrameTemplate_OnMouseWheel = ScrollFrameTemplate_OnMouseWheel
 local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
-local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
-local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
-local SocialQueueUtil_SortGroupMembers = SocialQueueUtil_SortGroupMembers
 local Social_GetShareAchievementLink = Social_GetShareAchievementLink
 local Social_GetShareItemLink = Social_GetShareItemLink
+local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
+local SocialQueueUtil_SortGroupMembers = SocialQueueUtil_SortGroupMembers
 local StaticPopup_Visible = StaticPopup_Visible
 local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
@@ -95,19 +83,32 @@ local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitName = UnitName
 local UnitRealmRelationship = UnitRealmRelationship
-local Chat_ShouldColorChatByClass = Chat_ShouldColorChatByClass
+
+local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityChatLine
+local C_LFGList_GetActivityInfo = C_LFGList.GetActivityInfo
+local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
+local C_SocialGetLastItem = C_Social.GetLastItem
+local C_SocialIsSocialEnabled = C_Social.IsSocialEnabled
+local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
+local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
+local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
+local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
+local Chat_ShouldColorChatByClass = Chat_ShouldColorChatByClass
 local ChatFrame_ResolvePrefixedChannelName = ChatFrame_ResolvePrefixedChannelName
+local CreateAnimationGroup = CreateAnimationGroup
 local GetBNPlayerCommunityLink = GetBNPlayerCommunityLink
 local GetPlayerCommunityLink = GetPlayerCommunityLink
-local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
+local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
 local SOUNDKIT = SOUNDKIT
 local UNKNOWN = UNKNOWN
+local Voice_GetVoiceChannelNotificationColor = Voice_GetVoiceChannelNotificationColor
+-- GLOBALS: ElvCharacterDB
 
 local msgList, msgCount, msgTime = {}, {}, {}
 local CreatedFrames = 0
@@ -467,7 +468,7 @@ function CH:StyleChat(frame)
 	editbox:HookScript("OnTextChanged", OnTextChanged)
 
 	--Work around broken SetAltArrowKeyMode API
-	editbox.historyLines = _G.ElvCharacterDB.ChatEditHistory
+	editbox.historyLines = ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
 	editbox:HookScript("OnKeyDown", OnKeyDown)
 	editbox:Hide()
@@ -491,7 +492,7 @@ function CH:StyleChat(frame)
 		editBox:Hide()
 	end)
 
-	for _, text in pairs(_G.ElvCharacterDB.ChatEditHistory) do
+	for _, text in pairs(ElvCharacterDB.ChatEditHistory) do
 		editbox:AddHistoryLine(text)
 	end
 
@@ -1897,14 +1898,14 @@ function CH:ChatEdit_AddHistory(_, line) -- editBox, line
 	if line and strlen(line) > 0 then
 		if strfind(line, '/rl') then return end
 
-		for _, text in pairs(_G.ElvCharacterDB.ChatEditHistory) do
+		for _, text in pairs(ElvCharacterDB.ChatEditHistory) do
 			if text == line then return end
 		end
 
-		tinsert(_G.ElvCharacterDB.ChatEditHistory, #_G.ElvCharacterDB.ChatEditHistory + 1, line)
+		tinsert(ElvCharacterDB.ChatEditHistory, #ElvCharacterDB.ChatEditHistory + 1, line)
 
-		if #_G.ElvCharacterDB.ChatEditHistory > 20 then
-			tremove(_G.ElvCharacterDB.ChatEditHistory, 1)
+		if #ElvCharacterDB.ChatEditHistory > 20 then
+			tremove(ElvCharacterDB.ChatEditHistory, 1)
 		end
 	end
 end
@@ -1948,7 +1949,7 @@ function CH:UpdateFading()
 end
 
 function CH:DisplayChatHistory()
-	local data, d = _G.ElvCharacterDB.ChatHistoryLog
+	local data, d = ElvCharacterDB.ChatHistoryLog
 	if not (data and next(data)) then return end
 
 	if not GetPlayerInfoByGUID(E.myguid) then
@@ -2002,7 +2003,7 @@ end
 
 function CH:SaveChatHistory(event, ...)
 	if not self.db.chatHistory then return end
-	local data = _G.ElvCharacterDB.ChatHistoryLog
+	local data = ElvCharacterDB.ChatHistoryLog
 
 	if self.db.throttleInterval ~= 0 and (event == 'CHAT_MSG_SAY' or event == 'CHAT_MSG_YELL' or event == 'CHAT_MSG_CHANNEL') then
 		self:ChatThrottleHandler(event, ...)
@@ -2342,11 +2343,11 @@ function CH:DefaultSmileys()
 end
 
 function CH:Initialize()
-	if _G.ElvCharacterDB.ChatHistory then
-		_G.ElvCharacterDB.ChatHistory = nil --Depreciated
+	if ElvCharacterDB.ChatHistory then
+		ElvCharacterDB.ChatHistory = nil --Depreciated
 	end
-	if _G.ElvCharacterDB.ChatLog then
-		_G.ElvCharacterDB.ChatLog = nil --Depreciated
+	if ElvCharacterDB.ChatLog then
+		ElvCharacterDB.ChatLog = nil --Depreciated
 	end
 
 	self.db = E.db.chat
@@ -2354,12 +2355,12 @@ function CH:Initialize()
 	self:DelayGuildMOTD() --Keep this before `is Chat Enabled` check
 	if E.private.chat.enable ~= true then return end
 
-	if not _G.ElvCharacterDB.ChatEditHistory then
-		_G.ElvCharacterDB.ChatEditHistory = {};
+	if not ElvCharacterDB.ChatEditHistory then
+		ElvCharacterDB.ChatEditHistory = {};
 	end
 
-	if not _G.ElvCharacterDB.ChatHistoryLog or not self.db.chatHistory then
-		_G.ElvCharacterDB.ChatHistoryLog = {};
+	if not ElvCharacterDB.ChatHistoryLog or not self.db.chatHistory then
+		ElvCharacterDB.ChatHistoryLog = {};
 	end
 
 	self:DefaultSmileys()
@@ -2450,7 +2451,7 @@ function CH:Initialize()
 	end
 
 	local S = E:GetModule('Skins')
-	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton, true)
+	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	tinsert(_G.UISpecialFrames, "CopyChatFrame")
 	frame:SetTemplate('Transparent')

@@ -1,7 +1,6 @@
 local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Cache global variables
 --Lua functions
 local wipe = wipe
 local pairs = pairs

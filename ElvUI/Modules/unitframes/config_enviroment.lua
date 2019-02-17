@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 
---Cache global variables
 --Lua functions
 local _G = _G
 local setmetatable, getfenv, setfenv = setmetatable, getfenv, setfenv

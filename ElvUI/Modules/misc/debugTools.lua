@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local D = E:NewModule('DebugTools', 'AceEvent-3.0', 'AceHook-3.0');
 E.DebugTools = D
 
---Cache global variables
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
@@ -32,12 +31,12 @@ function D:ModifyErrorFrame()
 	ScriptErrorsFrame.ScrollFrame:SetSize(ScriptErrorsFrame:GetWidth() - 45, ScriptErrorsFrame:GetHeight() - 71)
 
 	local BUTTON_WIDTH = 75
-	local BUTTON_HEIGHT = 24
+	local BUTTON_HEIGHT = 23
 	local BUTTON_SPACING = 2
 
 	-- Add a first button
 	local firstButton = CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
-	firstButton:Point("BOTTOMRIGHT", ScriptErrorsFrame.PreviousError, "BOTTOMLEFT", -BUTTON_SPACING, 0)
+	firstButton:Point("BOTTOMLEFT", ScriptErrorsFrame.Reload, "BOTTOMRIGHT", BUTTON_SPACING, 0)
 	firstButton:SetText("First")
 	firstButton:Height(BUTTON_HEIGHT)
 	firstButton:Width(BUTTON_WIDTH)
@@ -49,7 +48,7 @@ function D:ModifyErrorFrame()
 
 	-- Also add a Last button for errors
 	local lastButton = CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
-	lastButton:Point("BOTTOMLEFT", ScriptErrorsFrame.NextError, "BOTTOMRIGHT", BUTTON_SPACING, 0)
+	lastButton:Point("BOTTOMRIGHT", ScriptErrorsFrame.Close, "BOTTOMLEFT", -BUTTON_SPACING, 0)
 	lastButton:Height(BUTTON_HEIGHT)
 	lastButton:Width(BUTTON_WIDTH)
 	lastButton:SetText("Last")

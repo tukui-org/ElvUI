@@ -1,11 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Cache global variables
 --Lua functions
-local format, join = string.format, string.join
+local format, strjoin = format, strjoin
 --WoW API / Variables
-local EasyMenu = EasyMenu
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecialization = GetSpecialization
@@ -17,16 +15,16 @@ local SetLootSpecialization = SetLootSpecialization
 local SetSpecialization = SetSpecialization
 local ShowUIPanel = ShowUIPanel
 local LOOT = LOOT
-local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
+local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: PlayerTalentFrame, LoadAddOn
 
 local lastPanel, active
 local displayString = '';
-local activeString = join("", "|cff00FF00" , ACTIVE_PETS, "|r")
-local inactiveString = join("", "|cffFF0000", FACTION_INACTIVE, "|r")
+local activeString = strjoin("", "|cff00FF00" , ACTIVE_PETS, "|r")
+local inactiveString = strjoin("", "|cffFF0000", FACTION_INACTIVE, "|r")
 local menuFrame = CreateFrame("Frame", "LootSpecializationDatatextClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{ text = SELECT_LOOT_SPECIALIZATION, isTitle = true, notCheckable = true },
@@ -81,7 +79,7 @@ local function OnEnter(self)
 	for i = 1, GetNumSpecializations() do
 		local _, name = GetSpecializationInfo(i);
 		if name then
-			DT.tooltip:AddLine(join(" ", format(displayString, name), (i == active and activeString or inactiveString)),1,1,1)
+			DT.tooltip:AddLine(strjoin(" ", format(displayString, name), (i == active and activeString or inactiveString)),1,1,1)
 		end
 	end
 
@@ -134,7 +132,7 @@ local function OnClick(self, button)
 					specList[index + 1] = nil
 				end
 			end
-			EasyMenu(specList, menuFrame, "cursor", -15, -7, "MENU", 2)
+			_G.EasyMenu(specList, menuFrame, "cursor", -15, -7, "MENU", 2)
 		end
 	else
 		DT.tooltip:Hide()
@@ -151,12 +149,12 @@ local function OnClick(self, button)
 			end
 		end
 
-		EasyMenu(menuList, menuFrame, "cursor", -15, -7, "MENU", 2)
+		_G.EasyMenu(menuList, menuFrame, "cursor", -15, -7, "MENU", 2)
 	end
 end
 
 local function ValueColorUpdate()
-	displayString = join("", "|cffFFFFFF%s:|r ")
+	displayString = strjoin("", "|cffFFFFFF%s:|r ")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

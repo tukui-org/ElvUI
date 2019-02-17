@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 local _G = _G
 --Lua functions
 local unpack = unpack
@@ -41,7 +40,7 @@ local function LoadSkin()
 		if statusBar and not statusBar.isSkinned then
 			statusBar:StripTextures()
 			E:RegisterStatusBar(statusBar)
-			statusBar:CreateBackdrop('Default')
+			statusBar:CreateBackdrop()
 			statusBar.isSkinned = true
 		end
 	end)

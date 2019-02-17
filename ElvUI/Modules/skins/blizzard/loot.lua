@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 local LBG = E.Libs.ButtonGlow
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack, select = unpack, select
@@ -29,7 +28,7 @@ local function UpdateLoots()
 			frame.Icon:SetTexCoord(unpack(E.TexCoords))
 
 			-- create a backdrop around the icon
-			frame:CreateBackdrop("Default")
+			frame:CreateBackdrop()
 			frame.backdrop:SetOutside(frame.Icon)
 			frame.Icon:SetParent(frame.backdrop)
 
@@ -118,11 +117,11 @@ local function LoadSkin()
 
 	BonusRollFrame.BlackBackgroundHoist.Background:Hide()
 	BonusRollFrame.BlackBackgroundHoist.b = CreateFrame("Frame", nil, BonusRollFrame)
-	BonusRollFrame.BlackBackgroundHoist.b:SetTemplate("Default")
+	BonusRollFrame.BlackBackgroundHoist.b:SetTemplate()
 	BonusRollFrame.BlackBackgroundHoist.b:SetOutside(BonusRollFrame.PromptFrame.Timer)
 
 	BonusRollFrame.SpecIcon.b = CreateFrame("Frame", nil, BonusRollFrame)
-	BonusRollFrame.SpecIcon.b:SetTemplate("Default")
+	BonusRollFrame.SpecIcon.b:SetTemplate()
 	BonusRollFrame.SpecIcon.b:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 2)
 	BonusRollFrame.SpecIcon.b:SetSize(BonusRollFrame.SpecIcon:GetSize())
 	BonusRollFrame.SpecIcon.b:SetFrameLevel(6)
@@ -264,7 +263,7 @@ local function LoadSkin()
 	end)
 
 	S:HandleNextPrevButton(_G.LootFrameDownButton)
-	S:HandleNextPrevButton(_G.LootFrameUpButton, true)
+	S:HandleNextPrevButton(_G.LootFrameUpButton)
 end
 
 S:AddCallback("Loot", LoadSkin)

@@ -2,39 +2,38 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local B = E:GetModule('Bags')
 local Search = E.Libs.ItemSearch
 
---Cache global variables
 --Lua functions
 local ipairs, pairs, select, unpack, pcall = ipairs, pairs, select, unpack, pcall
-local tinsert, tremove, sort, wipe = table.insert, table.remove, sort, wipe
-local tonumber, floor, band = tonumber, floor, bit.band
 local strmatch, gmatch, strfind = strmatch, gmatch, strfind
+local tinsert, tremove, sort, wipe = tinsert, tremove, sort, wipe
+local tonumber, floor, band = tonumber, floor, bit.band
 --WoW API / Variables
-local GetTime = GetTime
-local InCombatLockdown = InCombatLockdown
-local GetItemInfo = GetItemInfo
-local GetContainerItemID = GetContainerItemID
-local GetGuildBankItemInfo = GetGuildBankItemInfo
-local GetContainerItemInfo = GetContainerItemInfo
-local GetGuildBankItemLink = GetGuildBankItemLink
-local GetContainerItemLink = GetContainerItemLink
-local PickupGuildBankItem = PickupGuildBankItem
-local PickupContainerItem = PickupContainerItem
-local SplitGuildBankItem = SplitGuildBankItem
-local SplitContainerItem = SplitContainerItem
-local GetGuildBankTabInfo = GetGuildBankTabInfo
-local GetContainerNumSlots = GetContainerNumSlots
-local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local ContainerIDToInventoryID = ContainerIDToInventoryID
+local GetContainerItemID = GetContainerItemID
+local GetContainerItemInfo = GetContainerItemInfo
+local GetContainerItemLink = GetContainerItemLink
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots
+local GetContainerNumSlots = GetContainerNumSlots
+local GetCurrentGuildBankTab = GetCurrentGuildBankTab
+local GetCursorInfo = GetCursorInfo
+local GetGuildBankItemInfo = GetGuildBankItemInfo
+local GetGuildBankItemLink = GetGuildBankItemLink
+local GetGuildBankTabInfo = GetGuildBankTabInfo
 local GetInventoryItemLink = GetInventoryItemLink
 local GetItemFamily = GetItemFamily
-local GetCursorInfo = GetCursorInfo
+local GetItemInfo = GetItemInfo
+local GetTime = GetTime
+local InCombatLockdown = InCombatLockdown
+local PickupContainerItem = PickupContainerItem
+local PickupGuildBankItem = PickupGuildBankItem
 local QueryGuildBankTab = QueryGuildBankTab
-local GetCurrentGuildBankTab = GetCurrentGuildBankTab
+local SplitContainerItem = SplitContainerItem
+local SplitGuildBankItem = SplitGuildBankItem
+
 local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal.GetPetInfoBySpeciesID
+local C_Timer_After = C_Timer.After
 local LE_ITEM_CLASS_ARMOR = LE_ITEM_CLASS_ARMOR
 local LE_ITEM_CLASS_WEAPON = LE_ITEM_CLASS_WEAPON
-
-local C_Timer_After = C_Timer.After
 
 local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}

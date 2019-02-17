@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local select, unpack, pairs = select, unpack, pairs
@@ -106,7 +105,7 @@ local function SkinAbilitiesInfo()
 			S:HandleButton(header.button)
 
 			header.button.bg = CreateFrame("Frame", nil, header.button)
-			header.button.bg:SetTemplate("Default")
+			header.button.bg:SetTemplate()
 			header.button.bg:SetOutside(header.button.abilityIcon)
 			header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
 			header.button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
@@ -134,7 +133,7 @@ local function LoadSkin()
 	EJ.navBar:StripTextures(true)
 	EJ.navBar.overlay:StripTextures(true)
 
-	EJ.navBar:CreateBackdrop("Default")
+	EJ.navBar:CreateBackdrop()
 	EJ.navBar.backdrop:Point("TOPLEFT", -2, 0)
 	EJ.navBar.backdrop:Point("BOTTOMRIGHT")
 	S:HandleButton(EJ.navBar.home, true)
@@ -254,7 +253,7 @@ local function LoadSkin()
 	EncounterInfo.lootTab:GetPushedTexture():SetTexture()
 	EncounterInfo.lootTab:GetDisabledTexture():SetTexture()
 	EncounterInfo.lootTab:GetHighlightTexture():SetTexture()
-	EncounterInfo.lootTab:CreateBackdrop('Default')
+	EncounterInfo.lootTab:CreateBackdrop()
 	EncounterInfo.lootTab.backdrop:Point('TOPLEFT', 11, -8)
 	EncounterInfo.lootTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
 
@@ -262,7 +261,7 @@ local function LoadSkin()
 	EncounterInfo.bossTab:GetPushedTexture():SetTexture()
 	EncounterInfo.bossTab:GetDisabledTexture():SetTexture()
 	EncounterInfo.bossTab:GetHighlightTexture():SetTexture()
-	EncounterInfo.bossTab:CreateBackdrop('Default')
+	EncounterInfo.bossTab:CreateBackdrop()
 	EncounterInfo.bossTab.backdrop:Point('TOPLEFT', 11, -8)
 	EncounterInfo.bossTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
 
@@ -270,7 +269,7 @@ local function LoadSkin()
 	EncounterInfo.modelTab:GetPushedTexture():SetTexture()
 	EncounterInfo.modelTab:GetDisabledTexture():SetTexture()
 	EncounterInfo.modelTab:GetHighlightTexture():SetTexture()
-	EncounterInfo.modelTab:CreateBackdrop('Default')
+	EncounterInfo.modelTab:CreateBackdrop()
 	EncounterInfo.modelTab.backdrop:Point('TOPLEFT', 11, -8)
 	EncounterInfo.modelTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
 
@@ -340,7 +339,7 @@ local function LoadSkin()
 		item.IconBackdrop:SetFrameLevel(item:GetFrameLevel())
 		item.IconBackdrop:SetPoint("TOPLEFT", item.icon, -1, 1)
 		item.IconBackdrop:SetPoint("BOTTOMRIGHT", item.icon, 1, -1)
-		item.IconBackdrop:SetTemplate("Default")
+		item.IconBackdrop:SetTemplate()
 
 		item.name:ClearAllPoints()
 		item.name:Point("TOPLEFT", item.icon, "TOPRIGHT", 6, -2)
@@ -380,7 +379,7 @@ local function LoadSkin()
 
 	-- Search
 	_G.EncounterJournalSearchResults:StripTextures()
-	_G.EncounterJournalSearchResults:SetTemplate("Default")
+	_G.EncounterJournalSearchResults:SetTemplate()
 	_G.EncounterJournalSearchBox.searchPreviewContainer:StripTextures()
 
 	S:HandleCloseButton(_G.EncounterJournalSearchResultsCloseButton)

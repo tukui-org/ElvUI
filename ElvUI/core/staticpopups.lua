@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs, type, unpack, assert = pairs, type, unpack, assert
-local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, table.wipe
-local lower, format = string.lower, string.format
+local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, wipe
+local lower, format = strlower, format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
@@ -22,8 +21,6 @@ local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
 local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
 
 E.PopupDialogs = {}
@@ -131,11 +128,8 @@ E.PopupDialogs["CONFIRM_LOSE_BINDING_CHANGES"] = {
 		E:GetModule('ActionBars').bindingsChanged = nil;
 	end,
 	OnCancel = function()
-		if ( ElvUIBindPopupWindowCheckButton:GetChecked() ) then
-			ElvUIBindPopupWindowCheckButton:SetChecked();
-		else
-			ElvUIBindPopupWindowCheckButton:SetChecked(1);
-		end
+		local isChecked = ElvUIBindPopupWindowCheckButton:GetChecked()
+		ElvUIBindPopupWindowCheckButton:SetChecked(not isChecked)
 	end,
 	timeout = 0,
 	whileDead = 1,
@@ -185,13 +179,7 @@ E.PopupDialogs['UISCALE_CHANGE'] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	button3 = L["Preview Changes"],
-	OnAlt = function ()
-		E:UIScale(true) -- repopulate variables
-		E:UIScale() -- setup the scale
-		E:Delay(0.5, function()
-			E:StaticPopup_Show("UISCALE_CHANGE")
-		end)
-	end,
+	OnAlt = function () E:PixelScaleChanged('UISCALE_CHANGE') end,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
@@ -1182,7 +1170,7 @@ function E:Contruct_StaticPopups()
 		_G["ElvUI_StaticPopup"..index.."EditBox"].backdrop:Point("BOTTOMRIGHT", 2, 4)
 		_G["ElvUI_StaticPopup"..index.."ItemFrameNameFrame"]:Kill()
 		_G["ElvUI_StaticPopup"..index.."ItemFrame"]:GetNormalTexture():Kill()
-		_G["ElvUI_StaticPopup"..index.."ItemFrame"]:SetTemplate("Default")
+		_G["ElvUI_StaticPopup"..index.."ItemFrame"]:SetTemplate()
 		_G["ElvUI_StaticPopup"..index.."ItemFrame"]:StyleButton()
 		_G["ElvUI_StaticPopup"..index.."ItemFrameIconTexture"]:SetTexCoord(unpack(E.TexCoords))
 		_G["ElvUI_StaticPopup"..index.."ItemFrameIconTexture"]:SetInside()

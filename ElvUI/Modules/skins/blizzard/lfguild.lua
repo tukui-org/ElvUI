@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs = pairs
@@ -38,7 +37,7 @@ local function SkinLFGuild()
 	S:HandleButton(_G.LookingForGuildBrowseButton)
 	S:HandleButton(_G.LookingForGuildRequestButton)
 
-	_G.LookingForGuildCommentInputFrame:CreateBackdrop("Default")
+	_G.LookingForGuildCommentInputFrame:CreateBackdrop()
 	_G.LookingForGuildCommentInputFrame:StripTextures(false)
 
 	-- skin container buttons on browse and request page
@@ -59,7 +58,7 @@ local function SkinLFGuild()
 	S:HandleButton(_G.GuildFinderRequestMembershipFrameAcceptButton)
 	S:HandleButton(_G.GuildFinderRequestMembershipFrameCancelButton)
 	_G.GuildFinderRequestMembershipFrameInputFrame:StripTextures()
-	_G.GuildFinderRequestMembershipFrameInputFrame:SetTemplate("Default")
+	_G.GuildFinderRequestMembershipFrameInputFrame:SetTemplate()
 end
 
 local function LoadSkin()

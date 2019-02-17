@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
@@ -21,7 +20,7 @@ local function SkinTab(tab, xOffset)
 	if not tab.isSkinned then
 		tab:StripTextures()
 		tab.pushed = true
-		tab:CreateBackdrop("Default")
+		tab:CreateBackdrop()
 		tab.backdrop:SetAllPoints()
 		tab:StyleButton()
 		tab.checked:SetAllPoints()
@@ -60,7 +59,7 @@ local function LoadSkin()
 		_G.SpellBookPageText:SetTextColor(0.6, 0.6, 0.6)
 	else
 		local pagebackdrop = CreateFrame("Frame", nil, SpellBookFrame)
-		pagebackdrop:SetTemplate("Default")
+		pagebackdrop:SetTemplate()
 		pagebackdrop:Point("TOPLEFT", _G.SpellBookPage1, "TOPLEFT", -2, 2)
 		pagebackdrop:Point("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", -8, 4)
 		SpellBookFrame.pagebackdrop = pagebackdrop
@@ -91,7 +90,7 @@ local function LoadSkin()
 			end
 		end
 
-		S:HandleTexture(icon)
+		S:HandleIcon(icon)
 		icon:SetAllPoints()
 		E:RegisterCooldown(_G["SpellButton"..i.."Cooldown"])
 		button:CreateBackdrop("Default", true)
@@ -208,7 +207,7 @@ local function LoadSkin()
 		statusbar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(statusbar)
 		statusbar:SetStatusBarColor(0, 220/255, 0)
-		statusbar:CreateBackdrop("Default")
+		statusbar:CreateBackdrop()
 
 		statusbar.rankText:ClearAllPoints()
 		statusbar.rankText:Point("CENTER")

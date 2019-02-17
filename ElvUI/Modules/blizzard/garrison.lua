@@ -1,7 +1,6 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard')
 
---Cache global variables
 --Lua functions
 local _G = _G
 --WoW API / Variables
@@ -12,7 +11,6 @@ local CreateFrame = CreateFrame
 local HideUIPanel = HideUIPanel
 local PlaySound = PlaySound
 local StopSound = StopSound
-local EasyMenu = EasyMenu
 
 local SOUNDKIT_UI_GARRISON_GARRISON_REPORT_OPEN = SOUNDKIT.UI_GARRISON_GARRISON_REPORT_OPEN
 local SOUNDKIT_UI_GARRISON_GARRISON_REPORT_CLOSE = SOUNDKIT.UI_GARRISON_GARRISON_REPORT_CLOSE
@@ -74,7 +72,7 @@ function B:GarrisonDropDown()
 						{text = WAR_CAMPAIGN, func = ShowLanding_, arg1 = C_Garrison_GetLandingPageGarrisonType(), notCheckable = true},
 					}
 				end
-				EasyMenu(landingChoices, landingChoiceMenu, "cursor", 0, 0, "MENU", 4)
+				_G.EasyMenu(landingChoices, landingChoiceMenu, "cursor", 0, 0, "MENU", 4)
 				DropDownList1:ClearAllPoints()
 				DropDownList1:SetPoint("TOPRIGHT", self, "TOPLEFT", 10, -4)
 			elseif GarrisonLandingPage.garrTypeID == 3 then

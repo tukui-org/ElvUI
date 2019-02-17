@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs, unpack = pairs, unpack
@@ -35,7 +34,7 @@ local function LoadSkin()
 			local button = _G["TalentsTalentRow"..i.."Talent"..j]
 
 			button:StripTextures()
-			button:CreateBackdrop("Default")
+			button:CreateBackdrop()
 
 			button.icon:SetAllPoints()
 			button.icon:SetTexCoord(unpack(E.TexCoords))
@@ -66,7 +65,7 @@ local function LoadSkin()
 
 	local InspectModelFrame = _G.InspectModelFrame
 	InspectModelFrame:StripTextures()
-	InspectModelFrame:CreateBackdrop("Default")
+	InspectModelFrame:CreateBackdrop()
 	InspectModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	InspectModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
@@ -99,7 +98,7 @@ local function LoadSkin()
 
 	for _, Slot in pairs({_G.InspectPaperDollItemsFrame:GetChildren()}) do
 		if Slot:IsObjectType("Button") or Slot:IsObjectType("ItemButton") then
-			S:HandleTexture(Slot.icon)
+			S:HandleIcon(Slot.icon)
 			Slot:StripTextures()
 			Slot:SetTemplate()
 			Slot:StyleButton()

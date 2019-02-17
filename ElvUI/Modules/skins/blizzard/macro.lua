@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack = unpack
@@ -18,7 +17,7 @@ local function LoadSkin()
 	MacroFrame:Width(360)
 
 	_G.MacroFrameTextBackground:StripTextures()
-	_G.MacroFrameTextBackground:SetTemplate('Default')
+	_G.MacroFrameTextBackground:SetTemplate()
 	_G.MacroButtonScrollFrame:CreateBackdrop()
 
 	S:HandleScrollBar(_G.MacroButtonScrollFrameScrollBar)
@@ -58,7 +57,7 @@ local function LoadSkin()
 	_G.MacroFrameSelectedMacroButton:StripTextures()
 	_G.MacroFrameSelectedMacroButton:StyleButton(true)
 	_G.MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture()
-	_G.MacroFrameSelectedMacroButton:SetTemplate("Default")
+	_G.MacroFrameSelectedMacroButton:SetTemplate()
 	_G.MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
 	_G.MacroFrameSelectedMacroButtonIcon:SetPoint("TOPLEFT", E.mult, -E.mult)
 	_G.MacroFrameSelectedMacroButtonIcon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)

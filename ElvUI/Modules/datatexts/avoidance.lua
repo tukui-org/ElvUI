@@ -1,24 +1,23 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Cache global variables
 --Lua functions
-local format, join = string.format, string.join
+local format, strjoin = format, strjoin
 local abs = abs
 --WoW API / Variables
-local GetInventorySlotInfo = GetInventorySlotInfo
-local GetInventoryItemID = GetInventoryItemID
-local GetItemInfo = GetItemInfo
-local UnitLevel = UnitLevel
-local GetDodgeChance = GetDodgeChance
-local GetParryChance = GetParryChance
 local GetBlockChance = GetBlockChance
 local GetBonusBarOffset = GetBonusBarOffset
+local GetDodgeChance = GetDodgeChance
+local GetInventoryItemID = GetInventoryItemID
+local GetInventorySlotInfo = GetInventorySlotInfo
+local GetItemInfo = GetItemInfo
+local GetParryChance = GetParryChance
+local UnitLevel = UnitLevel
+local BLOCK_CHANCE = BLOCK_CHANCE
 local BOSS = BOSS
 local DODGE_CHANCE = DODGE_CHANCE
-local PARRY_CHANCE = PARRY_CHANCE
-local BLOCK_CHANCE = BLOCK_CHANCE
 local MISS_CHANCE = MISS_CHANCE
+local PARRY_CHANCE = PARRY_CHANCE
 
 local displayString, lastPanel
 local targetlv, playerlv
@@ -95,11 +94,11 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 
 	if targetlv > 1 then
-		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", L["lvl"], " ", targetlv, ")"))
+		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], strjoin("", " (", L["lvl"], " ", targetlv, ")"))
 	elseif targetlv == -1 then
-		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", BOSS, ")"))
+		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], strjoin("", " (", BOSS, ")"))
 	else
-		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", L["lvl"], " ", playerlv, ")"))
+		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], strjoin("", " (", L["lvl"], " ", playerlv, ")"))
 	end
 	DT.tooltip:AddLine' '
 	DT.tooltip:AddDoubleLine(DODGE_CHANCE, format(chanceString, dodge),1,1,1)
@@ -117,7 +116,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = join("", "%s", hex, "%.2f%%|r")
+	displayString = strjoin("", "%s", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

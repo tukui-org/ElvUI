@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Cache global variables
 local unpack = unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -10,14 +9,14 @@ function UF:Construct_Threat(frame)
 	local threat = CreateFrame("Frame", nil, frame)
 
 	--Main ThreatGlow
-	frame:CreateShadow('Default')
+	frame:CreateShadow()
 	threat.glow = frame.shadow
 	threat.glow:SetParent(frame)
 	threat.glow:Hide()
 	frame.shadow = nil
 
 	--Secondary ThreatGlow, for power frame when using power offset
-	frame:CreateShadow('Default')
+	frame:CreateShadow()
 	threat.powerGlow = frame.shadow
 	threat.powerGlow:SetParent(frame)
 	threat.powerGlow:SetFrameStrata('BACKGROUND')

@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local M = E:GetModule('Misc');
 local CH = E:GetModule("Chat");
 
---Cache global variables
 --Lua functions
 local format = string.format
 local select, unpack, pairs, wipe = select, unpack, pairs, wipe

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack = unpack
@@ -32,7 +31,7 @@ local function LoadSkin()
 
 	local TimeManagerStopwatchCheck = _G.TimeManagerStopwatchCheck
 	_G.TimeManagerStopwatchFrame:StripTextures()
-	TimeManagerStopwatchCheck:SetTemplate("Default")
+	TimeManagerStopwatchCheck:SetTemplate()
 	TimeManagerStopwatchCheck:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 	TimeManagerStopwatchCheck:GetNormalTexture():SetInside()
 

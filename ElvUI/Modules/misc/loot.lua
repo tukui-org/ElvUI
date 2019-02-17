@@ -2,11 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local LBG = E.Libs.ButtonGlow
 local M = E:GetModule('Misc')
 
---Cache global variables
 --Lua functions
+local _G = _G
 local unpack, pairs = unpack, pairs
-local tinsert = table.insert
-local max = math.max
+local tinsert = tinsert
+local max = max
 --WoW API / Variables
 local CloseLoot = CloseLoot
 local CreateFrame = CreateFrame
@@ -17,20 +17,20 @@ local GetCVarBool = GetCVarBool
 local GetLootSlotInfo = GetLootSlotInfo
 local GetLootSlotLink = GetLootSlotLink
 local GetNumLootItems = GetNumLootItems
+local HandleModifiedItemClick = HandleModifiedItemClick
 local IsFishingLoot = IsFishingLoot
 local IsModifiedClick = IsModifiedClick
+local LootSlot = LootSlot
 local LootSlotHasItem = LootSlotHasItem
 local ResetCursor = ResetCursor
 local StaticPopup_Hide = StaticPopup_Hide
 local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
+
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local LOOT = LOOT
 local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, LootFrame, LootSlot, UIParent, UISpecialFrames, HandleModifiedItemClick
 
 local coinTextureIDs = {
 	[133784] = true,
@@ -47,8 +47,8 @@ local iconSize, lootFrame, lootFrameHolder = 30
 local OnEnter = function(self)
 	local slot = self:GetID()
 	if LootSlotHasItem(slot) then
-		GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
-		GameTooltip:SetLootItem(slot)
+		_G.GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
+		_G.GameTooltip:SetLootItem(slot)
 		CursorUpdate(self)
 	end
 
@@ -64,11 +64,12 @@ local OnLeave = function(self)
 		self.drop:Hide()
 	end
 
-	GameTooltip:Hide()
+	_G.GameTooltip:Hide()
 	ResetCursor()
 end
 
 local OnClick = function(self)
+	local LootFrame = _G.LootFrame
 	LootFrame.selectedQuality = self.quality
 	LootFrame.selectedItemName = self.name:GetText()
 	LootFrame.selectedSlot = self:GetID()
@@ -84,6 +85,7 @@ local OnClick = function(self)
 end
 
 local OnShow = function(self)
+	local GameTooltip = _G.GameTooltip
 	if GameTooltip:IsOwned(self) then
 		GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
 		GameTooltip:SetLootItem(self:GetID())
@@ -126,7 +128,7 @@ local function createSlot(id)
 	iconFrame:Height(iconsize)
 	iconFrame:Width(iconsize)
 	iconFrame:Point('RIGHT', frame)
-	iconFrame:SetTemplate('Default')
+	iconFrame:SetTemplate()
 	frame.iconFrame = iconFrame
 	E.frames[iconFrame] = nil
 
@@ -208,7 +210,7 @@ function M:LOOT_OPENED(_, autoloot)
 		y = y / lootFrame:GetEffectiveScale()
 
 		lootFrame:ClearAllPoints()
-		lootFrame:Point('TOPLEFT', UIParent, 'BOTTOMLEFT', x - 40, y + 20)
+		lootFrame:Point('TOPLEFT', _G.UIParent, 'BOTTOMLEFT', x - 40, y + 20)
 		lootFrame:GetCenter()
 		lootFrame:Raise()
 		E:DisableMover('LootFrameMover')
@@ -312,7 +314,7 @@ function M:LoadLoot()
 	lootFrame:Point('TOPLEFT')
 	lootFrame:Size(256, 64)
 	lootFrame:SetTemplate('Transparent')
-	lootFrame:SetFrameStrata(LootFrame:GetFrameStrata())
+	lootFrame:SetFrameStrata(_G.LootFrame:GetFrameStrata())
 	lootFrame:SetToplevel(true)
 	lootFrame.title = lootFrame:CreateFontString(nil, 'OVERLAY')
 	lootFrame.title:FontTemplate(nil, nil, 'OUTLINE')
@@ -328,9 +330,9 @@ function M:LoadLoot()
 	self:RegisterEvent('LOOT_SLOT_CLEARED')
 	self:RegisterEvent('LOOT_CLOSED')
 
-	E:CreateMover(lootFrameHolder, 'LootFrameMover', L["Loot Frame"], nil, nil, nil, nil, nil, 'general,general')
+	E:CreateMover(lootFrameHolder, 'LootFrameMover', L["Loot Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
 
 	-- Fuzz
-	LootFrame:UnregisterAllEvents()
-	tinsert(UISpecialFrames, 'ElvLootFrame')
+	_G.LootFrame:UnregisterAllEvents()
+	tinsert(_G.UISpecialFrames, 'ElvLootFrame')
 end

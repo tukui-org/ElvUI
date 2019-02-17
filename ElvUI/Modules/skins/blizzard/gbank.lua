@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local select, unpack = select, unpack
@@ -41,7 +40,7 @@ local function LoadSkin()
 	_G.GuildBankTransactionsScrollFrame:StripTextures()
 
 	GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame)
-	GuildBankFrame.inset:SetTemplate("Default")
+	GuildBankFrame.inset:SetTemplate()
 	GuildBankFrame.inset:Point("TOPLEFT", 20, -58)
 	GuildBankFrame.inset:Point("BOTTOMRIGHT", -16, 60)
 

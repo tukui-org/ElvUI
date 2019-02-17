@@ -1,4 +1,3 @@
---Cache global variables
 --Lua functions
 local _G = _G
 local print, tostring, select = print, tostring, select

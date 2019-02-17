@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 --WoW API / Variables
@@ -32,7 +31,7 @@ local function LoadSkin()
 
 	ItemSlot:CreateBackdrop("Transparent")
 	ItemSlot.backdrop:SetBackdropColor(.6, 0, .6, .5)
-	S:HandleTexture(ItemSlot.Icon)
+	S:HandleIcon(ItemSlot.Icon)
 
 	local ButtonFrame = AzeriteRespecFrame.ButtonFrame
 	ButtonFrame:GetRegions():Hide()

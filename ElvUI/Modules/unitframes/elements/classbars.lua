@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Cache global variables
 --Lua functions
 local select, unpack = select, unpack
-local floor, max = math.floor, math.max
-local strfind, strsub, gsub = strfind, strsub, string.gsub
+local strfind, strsub, gsub = strfind, strsub, gsub
+local floor, max = floor, max
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
@@ -49,7 +48,7 @@ function UF:Configure_ClassBar(frame, cur)
 
 	local color = self.db.colors.classResources.bgColor
 	bars.backdrop.ignoreUpdates = true
-	bars.backdrop.backdropTexture:SetVertexColor(color.r, color.g, color.b)
+	bars.backdrop:SetBackdropColor(color.r, color.g, color.b)
 
 	color = E.db.unitframe.colors.borderColor
 	bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -84,7 +83,7 @@ function UF:Configure_ClassBar(frame, cur)
 
 			if i <= frame.MAX_CLASS_BAR then
 				bars[i].backdrop.ignoreUpdates = true
-				bars[i].backdrop.backdropTexture:SetVertexColor(color.r, color.g, color.b)
+				bars[i].backdrop:SetBackdropColor(color.r, color.g, color.b)
 
 				color = E.db.unitframe.colors.borderColor
 				bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)

@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Cache global variables
 --Lua functions
 local type, ipairs, pairs, select = type, ipairs, pairs, select
-local sort, next, wipe, tremove, tinsert = table.sort, next, wipe, tremove, tinsert
-local format, gsub, strfind, strjoin = string.format, string.gsub, strfind, strjoin
+local sort, next, wipe, tremove, tinsert = sort, next, wipe, tremove, tinsert
+local format, gsub, strfind, strjoin = format, gsub, strfind, strjoin
 --WoW API / Variables
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
@@ -16,11 +15,8 @@ local BNGetNumFriends = BNGetNumFriends
 local BNInviteFriend = BNInviteFriend
 local BNRequestInviteFriend = BNRequestInviteFriend
 local BNSetCustomMessage = BNSetCustomMessage
-local ChatFrame_SendBNetTell = ChatFrame_SendBNetTell
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetFriendInfo = GetFriendInfo
-local C_FriendList_GetNumFriends = C_FriendList.GetNumFriends
-local C_FriendList_GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetRealmName = GetRealmName
 local InviteToGroup = InviteToGroup
@@ -33,6 +29,9 @@ local SetItemRef = SetItemRef
 local ToggleFriendsFrame = ToggleFriendsFrame
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
+local C_FriendList_GetNumFriends = C_FriendList.GetNumFriends
+local C_FriendList_GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
+local ChatFrame_SendBNetTell = ChatFrame_SendBNetTell
 
 local AFK = AFK
 local DND = DND
@@ -41,7 +40,6 @@ local LOCALIZED_CLASS_NAMES_FEMALE = LOCALIZED_CLASS_NAMES_FEMALE
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
-local EasyMenu = EasyMenu
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 -- create a popup
@@ -415,7 +413,7 @@ local function Click(self, btn)
 			end
 		end
 
-		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		_G.EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 	else
 		ToggleFriendsFrame()
 	end

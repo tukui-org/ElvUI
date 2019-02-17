@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 --WoW API / Variables
@@ -9,19 +8,11 @@ local _G = _G
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.barber ~= true then return end
 
-
 	_G.BarberShopFrameOkayButton:Point("RIGHT", _G.BarberShopFrameSelector4, "BOTTOM", 2, -50)
 
-	local buttons = {
-		_G.BarberShopFrameOkayButton,
-		_G.BarberShopFrameCancelButton,
-		_G.BarberShopFrameResetButton,
-	}
-
-	for i = 1, #buttons do
-		buttons[i]:StripTextures()
-		S:HandleButton(buttons[i])
-	end
+	S:HandleButton(_G.BarberShopFrameOkayButton)
+	S:HandleButton(_G.BarberShopFrameCancelButton)
+	S:HandleButton(_G.BarberShopFrameResetButton)
 
 	local BarberShopFrame = _G.BarberShopFrame
 	for i = 1, #BarberShopFrame.Selector do
@@ -30,10 +21,8 @@ local function LoadSkin()
 
 		if selector then
 			selector:StripTextures()
-
-			-- Next-/Prev. Button will be fixed in 7.1 see: http://git.tukui.org/Elv/elvui-beta/issues/5#note_10079
-			--S:HandleNextPrevButton(selector.Prev)
-			--S:HandleNextPrevButton(selector.Next)
+			S:HandleNextPrevButton(selector.Prev)
+			S:HandleNextPrevButton(selector.Next)
 
 			if i ~= 1 then
 				selector:ClearAllPoints()
@@ -51,12 +40,10 @@ local function LoadSkin()
 
 	_G.BarberShopFrameMoneyFrame:StripTextures()
 	_G.BarberShopFrameMoneyFrame:CreateBackdrop()
-	-- BarberShopFrameBackground:Kill()
 
 	_G.BarberShopBannerFrameBGTexture:Kill()
 	_G.BarberShopBannerFrame:Kill()
 
-	-- Move it to the top for now
 	_G.BarberShopBannerFrameCaption:ClearAllPoints()
 	_G.BarberShopBannerFrameCaption:Point("TOP", BarberShopFrame, 0, 0)
 	_G.BarberShopBannerFrameCaption:SetParent(BarberShopFrame)

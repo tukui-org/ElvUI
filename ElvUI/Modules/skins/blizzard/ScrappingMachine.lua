@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs = pairs
@@ -21,7 +20,7 @@ local function LoadSkin()
 	for button in pairs(ItemSlots.scrapButtons.activeObjects) do
 		button:StripTextures()
 		button:SetTemplate()
-		S:HandleTexture(button.Icon)
+		S:HandleIcon(button.Icon)
 		button.IconBorder:SetAlpha(0)
 		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(_, r, g, b) button:SetBackdropBorderColor(r, g, b) end)
 		hooksecurefunc(button.IconBorder, 'Hide', function() button:SetBackdropBorderColor(E['media'].bordercolor) end)

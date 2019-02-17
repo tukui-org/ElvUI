@@ -1,7 +1,6 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
---Cache global variables
 local _G = _G
 --Lua functions
 local pairs = pairs
@@ -9,12 +8,9 @@ local ipairs = ipairs
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: AlertFrame, GroupLootContainer, AlertFrameMover
--- GLOBALS: UIPARENT_MANAGED_FRAME_POSITIONS
-
 local POSITION, ANCHOR_POINT, YOFFSET = "TOP", "BOTTOM", -10
 
+local Misc
 function E:PostAlertMove()
 	local AlertFrameMover = _G.AlertFrameMover
 	local AlertFrameHolder = _G.AlertFrameHolder
@@ -33,7 +29,12 @@ function E:PostAlertMove()
 		AlertFrameMover:SetText(AlertFrameMover.textString..' (Grow Up)')
 	end
 
-	local rollBars = E:GetModule('Misc').RollBars
+	local AlertFrame = _G.AlertFrame
+	local GroupLootContainer = _G.GroupLootContainer
+
+	if not Misc then Misc = E:GetModule('Misc') end
+	local rollBars = Misc.RollBars
+
 	if E.private.general.lootRoll then
 		local lastframe, lastShownFrame
 		for i, frame in pairs(rollBars) do
@@ -149,22 +150,22 @@ function B:AlertMovers()
 	AlertFrameHolder:Height(20)
 	AlertFrameHolder:Point("TOP", E.UIParent, "TOP", 0, -18)
 
-	GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
-	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
-	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove, nil, nil, 'general,general')
+	_G.GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
+	_G.UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
+	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove, nil, nil, 'general,blizzUIImprovements')
 
 	--Replace AdjustAnchors functions to allow alerts to grow down if needed.
 	--We will need to keep an eye on this in case it taints. It shouldn't, but you never know.
-	for _, alertFrameSubSystem in ipairs(AlertFrame.alertFrameSubSystems) do
+	for _, alertFrameSubSystem in ipairs(_G.AlertFrame.alertFrameSubSystems) do
 		AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 	end
 
 	--This should catch any alert systems that are created by other addons
-	hooksecurefunc(AlertFrame, "AddAlertFrameSubSystem", function(self, alertFrameSubSystem)
+	hooksecurefunc(_G.AlertFrame, "AddAlertFrameSubSystem", function(_, alertFrameSubSystem)
 		AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 	end)
 
-	self:SecureHook(AlertFrame, "UpdateAnchors", E.PostAlertMove)
+	self:SecureHook(_G.AlertFrame, "UpdateAnchors", E.PostAlertMove)
 	hooksecurefunc("GroupLootContainer_Update", B.GroupLootContainer_Update)
 
 	--[[ Code you can use for alert testing

@@ -1,40 +1,37 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
 
---Cache global variables
 --Lua functions
+local _G = _G
 local pairs, unpack, ipairs, next, tonumber = pairs, unpack, ipairs, next, tonumber
-local tinsert = table.insert
+local tinsert = tinsert
 --WoW API / Variables
-local CreateFrame = CreateFrame
-local RollOnLoot = RollOnLoot
-local ResetCursor = ResetCursor
-local IsShiftKeyDown = IsShiftKeyDown
-local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
-local IsModifiedClick = IsModifiedClick
-local ShowInspectCursor = ShowInspectCursor
-local CursorOnUpdate = CursorOnUpdate
-local IsControlKeyDown = IsControlKeyDown
-local DressUpItemLink = DressUpItemLink
 local ChatEdit_InsertLink = ChatEdit_InsertLink
-local GetLootRollTimeLeft = GetLootRollTimeLeft
+local CreateFrame = CreateFrame
+local CursorOnUpdate = CursorOnUpdate
+local DressUpItemLink = DressUpItemLink
+local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
 local GetLootRollItemInfo = GetLootRollItemInfo
 local GetLootRollItemLink = GetLootRollItemLink
+local GetLootRollTimeLeft = GetLootRollTimeLeft
+local IsControlKeyDown = IsControlKeyDown
+local IsModifiedClick = IsModifiedClick
+local IsShiftKeyDown = IsShiftKeyDown
+local ResetCursor = ResetCursor
+local RollOnLoot = RollOnLoot
 local SetDesaturation = SetDesaturation
+local ShowInspectCursor = ShowInspectCursor
 local UnitLevel = UnitLevel
+
 local C_LootHistoryGetItem = C_LootHistory.GetItem
 local C_LootHistoryGetPlayerInfo = C_LootHistory.GetPlayerInfo
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local NEED = NEED
 local GREED = GREED
-local ROLL_DISENCHANT = ROLL_DISENCHANT
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
+local NEED = NEED
 local PASS = PASS
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, AlertFrameHolder, WorldFrame
--- GLOBALS: MAX_PLAYER_LEVEL, UIParent, AlertFrame
--- GLOBALS: CUSTOM_CLASS_COLORS
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local ROLL_DISENCHANT = ROLL_DISENCHANT
 
 local pos = 'TOP';
 local cancelled_rolls = {}
@@ -47,17 +44,18 @@ local function ClickRoll(frame)
 	RollOnLoot(frame.parent.rollID, frame.rolltype)
 end
 
-local function HideTip() GameTooltip:Hide() end
-local function HideTip2() GameTooltip:Hide(); ResetCursor() end
+local function HideTip() _G.GameTooltip:Hide() end
+local function HideTip2() _G.GameTooltip:Hide(); ResetCursor() end
 
 local rolltypes = {[1] = "need", [2] = "greed", [3] = "disenchant", [0] = "pass"}
 local function SetTip(frame)
+	local GameTooltip = _G.GameTooltip
 	GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
 	GameTooltip:SetText(frame.tiptext)
 	if frame:IsEnabled() == 0 then GameTooltip:AddLine("|cffff3333"..L["Can't Roll"]) end
 	for name, tbl in pairs(frame.parent.rolls) do
 		if rolltypes[tbl[1]] == rolltypes[frame.rolltype] then
-			local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[tbl[2]] or RAID_CLASS_COLORS[tbl[2]]
+			local classColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[tbl[2]] or RAID_CLASS_COLORS[tbl[2]]
 			GameTooltip:AddLine(name, classColor.r, classColor.g, classColor.b)
 		end
 	end
@@ -66,8 +64,9 @@ end
 
 local function SetItemTip(frame)
 	if not frame.link then return end
-	GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT")
-	GameTooltip:SetHyperlink(frame.link)
+	_G.GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT")
+	_G.GameTooltip:SetHyperlink(frame.link)
+
 	if IsShiftKeyDown() then GameTooltip_ShowCompareItem() end
 	if IsModifiedClick("DRESSUP") then ShowInspectCursor() else ResetCursor() end
 end
@@ -126,7 +125,7 @@ end
 function M:CreateRollFrame()
 	local frame = CreateFrame("Frame", nil, E.UIParent)
 	frame:Size(FRAME_WIDTH, FRAME_HEIGHT)
-	frame:SetTemplate('Default')
+	frame:SetTemplate()
 	frame:SetScript("OnEvent", OnEvent)
 	frame:SetFrameStrata("MEDIUM")
 	frame:SetFrameLevel(10)
@@ -136,7 +135,7 @@ function M:CreateRollFrame()
 	local button = CreateFrame("Button", nil, frame)
 	button:Point("RIGHT", frame, 'LEFT', -(E.Spacing*3), 0)
 	button:Size(FRAME_HEIGHT - (E.Border * 2))
-	button:CreateBackdrop('Default')
+	button:CreateBackdrop()
 	button:SetScript("OnEnter", SetItemTip)
 	button:SetScript("OnLeave", HideTip2)
 	button:SetScript("OnUpdate", ItemOnUpdate)
@@ -207,9 +206,9 @@ local function GetFrame()
 
 	local f = M:CreateRollFrame()
 	if pos == "TOP" then
-		f:Point("TOP", next(M.RollBars) and M.RollBars[#M.RollBars] or AlertFrameHolder, "BOTTOM", 0, -4)
+		f:Point("TOP", next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, "BOTTOM", 0, -4)
 	else
-		f:Point("BOTTOM", next(M.RollBars) and M.RollBars[#M.RollBars] or AlertFrameHolder, "TOP", 0, 4)
+		f:Point("BOTTOM", next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, "TOP", 0, 4)
 	end
 	tinsert(M.RollBars, f)
 	return f
@@ -251,19 +250,19 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	f.status:SetMinMaxValues(0, time)
 	f.status:SetValue(time)
 
-	f:Point("CENTER", WorldFrame, "CENTER")
+	f:Point("CENTER", _G.WorldFrame, "CENTER")
 	f:Show()
-	AlertFrame:UpdateAnchors()
+	_G.AlertFrame:UpdateAnchors()
 
 	--Add cached roll info, if any
-	for rollID, rollTable in pairs(cachedRolls) do
-		if f.rollID == rollID then --rollID matches cached rollID
+	for rollid, rollTable in pairs(cachedRolls) do
+		if f.rollID == rollid then --rollid matches cached rollid
 			for rollerName, rollerInfo in pairs(rollTable) do
 				local rollType, class = rollerInfo[1], rollerInfo[2]
 				f.rolls[rollerName] = {rollType, class}
 				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
 			end
-			completedRolls[rollID] = true
+			completedRolls[rollid] = true
 			break
 		end
 	end
@@ -319,6 +318,6 @@ function M:LoadLootRoll()
 	self:RegisterEvent("START_LOOT_ROLL")
 	self:RegisterEvent("LOOT_ROLLS_COMPLETE")
 
-	UIParent:UnregisterEvent("START_LOOT_ROLL")
-	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
+	_G.UIParent:UnregisterEvent("START_LOOT_ROLL")
+	_G.UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
 end

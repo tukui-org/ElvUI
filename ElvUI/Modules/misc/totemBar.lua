@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local TOTEMS = E:NewModule('Totems', 'AceEvent-3.0');
 E.TotemBar = TOTEMS
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack = unpack
@@ -11,9 +10,6 @@ local CreateFrame = CreateFrame
 local GetTotemInfo = GetTotemInfo
 local CooldownFrame_Set = CooldownFrame_Set
 local MAX_TOTEMS = MAX_TOTEMS
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: LeftChatPanel
 
 function TOTEMS:Update()
 	local _, button, startTime, duration, icon
@@ -98,13 +94,13 @@ function TOTEMS:Initialize()
 	self.db = E.db.general.totems
 
 	local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
-	bar:Point('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 14, 0)
+	bar:Point('TOPLEFT', _G.LeftChatPanel, 'TOPRIGHT', 14, 0)
 	self.bar = bar;
 
 	for i=1, MAX_TOTEMS do
 		local frame = CreateFrame('Button', bar:GetName()..'Totem'..i, bar)
 		frame:SetID(i)
-		frame:SetTemplate('Default')
+		frame:SetTemplate()
 		frame:StyleButton()
 		frame:Hide()
 		frame.holder = CreateFrame('Frame', nil, frame)

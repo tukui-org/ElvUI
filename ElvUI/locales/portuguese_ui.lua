@@ -156,15 +156,13 @@ L["Request was denied by user."] = "Pedido negado pelo usuário."
 L["Your profile was successfully recieved by the player."] = "Seu perfil foi recebido com sucesso pelo jogador."
 
 --Install
-L["Aura Bars & Icons"] = true
-L["Auras Set"] = "Auras configuradas"
+L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = true
 L["Auras"] = true
 L["Caster DPS"] = "DPS Lançador"
 L["Chat Set"] = "Bate-Papo configurado"
 L["Chat"] = "Bate-papo"
 L["Choose a theme layout you wish to use for your initial setup."] = "Escolha o tema de layout que deseje usar inicialmente."
 L["Classic"] = "Clássico"
-L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."] = "Clique no botão abaixo para redimensionar os seus quadros de bate-papo, quadros de unidades, e reposicionar as suas barras de ações."
 L["Config Mode:"] = "Modo de configuração"
 L["CVars Set"] = "CVars configuradas"
 L["CVars"] = "CVars"
@@ -175,10 +173,7 @@ L["ElvUI Installation"] = "Instalação do ElvUI"
 L["Finished"] = "Terminado"
 L["Grid Size:"] = "Tamanho da Grade"
 L["Healer"] = "Curandeiro"
-L["High Resolution"] = "Alta Resolução"
-L["high"] = "alto"
 L["Icons Only"] = "Apenas Ícones"
-L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "Se existir um ícone ou uma barra de aura que você não queira ver exibida simplesmente mantenha pressionada a tecla Shift e clique no ícone com o botão direito para que o ícone/barra de aura desapareça."
 L["Importance: |cff07D400High|r"] = "Importância: |cff07D400Alta|r"
 L["Importance: |cffD3CF00Medium|r"] = "Importância: |cffD3CF00Média|r"
 L["Importance: |cffFF0000Low|r"] = "Importância: |cffFF0000Baixa|r"
@@ -186,39 +181,29 @@ L["Installation Complete"] = "Instalação Completa"
 L["Layout Set"] = "Definições do Layout"
 L["Layout"] = "Layout"
 L["Lock"] = "Travar"
-L["Low Resolution"] = "Baixa Resolução"
-L["low"] = "baixo"
 L["Nudge"] = "Ajuste fino"
-L["Physical DPS"] = "DPS Físico"
 L["Please click the button below so you can setup variables and ReloadUI."] = "Por favor, clique no botão abaixo para que possa configurar as variáveis e Recarregar a IU."
 L["Please click the button below to setup your CVars."] = "Por favor, clique no botão abaixo para configurar as suas Cvars."
 L["Please press the continue button to go onto the next step."] = "Por favor, pressione o botão Continuar para passar à próxima etapa."
-L["Resolution Style Set"] = "Estilo de Resolução defenido"
-L["Resolution"] = "Resolução"
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
+L["Preview"] = true
 L["Setup Chat"] = "Configurar Bate-papo"
 L["Setup CVars"] = "Configurar CVars"
 L["Skip Process"] = "Pular Processo"
 L["Sticky Frames"] = "Quadros Pegadiços"
-L["Tank"] = "Tanque"
+L["Tank / Physical DPS"] = "Tank / DPS Físico"
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = "As janelas de bate-papo funcionam da mesma forma das da Blizzard, você pode usar o botão direito nas guias para os arrastar, mudar o nome, etc. Por favor clique no botão abaixo para configurar as suas janelas de bate-papo"
 L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = "O modo configuração em jogo pode ser acessado escrevendo o comando /ec ou clicando no botão 'C' no minimapa. Pressione o botão abaixo se desejar pular o processo de instalação"
 L["Theme Set"] = "Tema configurado"
 L["Theme Setup"] = "Configuração do Tema"
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = "Este processo de instalação vai mostrar-lhe algumas das opções que a ElvUI tem para oferecer e também vai preparar a sua interface para ser usada."
-L["This is completely optional."] = "Isto é completamente opcional."
 L["This part of the installation process sets up your chat windows names, positions and colors."] = "Esta parte da instalação é para definir os nomes, posições e cores das suas janelas de bate-papo."
 L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."] = "Esta parte da instalação serve para definir as suas opcões padrão do WoW, é recomendado fazer isto para que tudo funcione corretamente."
-L["This resolution doesn't require that you change settings for the UI to fit on your screen."] = "Esta resolução não exige que altere as definições para que a interface caiba no seu ecrã (monitor)."
-L["This resolution requires that you change some settings to get everything to fit on your screen."] = "Esta resolução requer que altere algumas definições para que tudo caiba no seu ecrã (monitor)."
 L["This will change the layout of your unitframes and actionbars."] = true
 L["Trade"] = "Comércio"
 L["Welcome to ElvUI version %s!"] = "Bem-vindo à versão %s da ElvUI!"
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = "O processo de instalação está agora terminado. Se precisar de suporte técnico por favor visite-nos no site http://www.tukui.org."
 L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."] = "As cores e fontes da ElvUI podem ser mudadas em qualquer momento no modo de configuração demtro do jogo."
 L["You can now choose what layout you wish to use based on your combat role."] = "Pode agora escolher o layout que pretende usar baseado no seu papel."
-L["You may need to further alter these settings depending how low you resolution is."] = "Poderá ter de alterar estas definições dependendo de quão baixa for a sua resolução."
-L["Your current resolution is %s, this is considered a %s resolution."] = "A sua resolução actual é %s, esta é considerada uma resolução %s."
 
 --Misc
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]"
@@ -381,8 +366,6 @@ L["You must purchase a bank slot first!"] = "Você deve comprar um espaço no ba
 
 --Tooltip
 L["Count"] = "Contar"
-L["Item Level:"] = true
-L["Talent Specialization:"] = true
 L["Targeted By:"] = "Sendo Alvo de:"
 
 --Tutorials
