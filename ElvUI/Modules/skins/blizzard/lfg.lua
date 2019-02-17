@@ -157,6 +157,21 @@ local function LoadSkin()
 		end
 	end)
 
+	hooksecurefunc("LFGDungeonReadyStatusIndividual_UpdateIcon", function(button)
+		local _, role = _G.GetLFGProposalMember(button:GetID());
+
+		button.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+		button.texture:SetAlpha(0.6)
+
+		if role == "DAMAGER" then
+			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+		elseif role == "TANK" then
+			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+		elseif role == "HEALER" then
+			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+		end		
+	end)
+
 	_G.LFDQueueFrame:StripTextures(true)
 	_G.LFDQueueFrameRoleButtonTankIncentiveIcon:SetAlpha(0)
 	_G.LFDQueueFrameRoleButtonHealerIncentiveIcon:SetAlpha(0)
