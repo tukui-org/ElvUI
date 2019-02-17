@@ -293,6 +293,18 @@ function M:ADDON_LOADED(_, addon)
 	end
 end
 
+function M:ManageQuestObjectives()
+	local frame = CreateFrame('Frame', 'ObjectiveHider', ObjectiveTrackerFrame, 'SecureHandlerStateTemplate');
+	RegisterStateDriver(frame, "objectiveHider", "[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists] 1;0")
+	frame:SetAttribute("_onstate-objectiveHider", [[
+		if newstate == 1 then
+			self:GetParent():Hide()
+		else
+			self:GetParent():Show()
+		end
+	]])
+end
+
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadLootRoll()
@@ -311,6 +323,7 @@ function M:Initialize()
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 
+	self:ManageQuestObjectives()
 	if IsAddOnLoaded("Blizzard_InspectUI") then
 		M:SetupInspectPageInfo()
 	else
