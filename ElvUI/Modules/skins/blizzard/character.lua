@@ -473,7 +473,7 @@ local function LoadSkin()
 		local icon = reward.Icon
 		tooltip:SetTemplate("Transparent")
 		if icon then
-			S:HandleIcon(icon)
+			S:HandleIcon(icon, true)
 			hooksecurefunc(reward.IconBorder, "SetVertexColor", function(self, r, g, b)
 				self:GetParent().icon.backdrop:SetBackdropBorderColor(r, g, b)
 				self:SetTexture()
