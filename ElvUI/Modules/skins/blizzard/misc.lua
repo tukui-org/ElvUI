@@ -10,6 +10,7 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 
+local LFG_ICONS = "Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS"
 local function SkinNavBarButtons(self)
 	if (self:GetParent():GetName() == "EncounterJournal" and not E.private.skins.blizzard.encounterjournal) or (self:GetParent():GetName() == "WorldMapFrame" and not E.private.skins.blizzard.worldmap) or (self:GetParent():GetName() == "HelpFrameKnowledgebase" and not E.private.skins.blizzard.help) then
 		return
@@ -60,34 +61,40 @@ local function LoadSkin()
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
 	_G.QueueStatusFrame:StripTextures()
-	hooksecurefunc("QueueStatusEntry_SetFullDisplay", function(entry, title, queuedTime, myWait, isTank, isHealer, isDPS, totalTanks, totalHealers, totalDPS, tankNeeds, healerNeeds, dpsNeeds, subTitle, extraText) 
-		local nextRoleIcon = 1;
-		if ( isDPS ) then
+	hooksecurefunc("QueueStatusEntry_SetFullDisplay", function(entry, _, _, _, isTank, isHealer, isDPS)
+		if not entry then return end
+		local nextRoleIcon = 1
+		if isDPS then
 			local icon = entry["RoleIcon"..nextRoleIcon];
-			icon:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-			icon:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord());
-			nextRoleIcon = nextRoleIcon + 1;
+			if icon then
+				icon:SetTexture(LFG_ICONS)
+				icon:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord());
+				nextRoleIcon = nextRoleIcon + 1
+			end
 		end
-		if ( isHealer ) then
+		if isHealer then
 			local icon = entry["RoleIcon"..nextRoleIcon];
-			icon:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-			icon:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord());
-			nextRoleIcon = nextRoleIcon + 1;
+			if icon then
+				icon:SetTexture(LFG_ICONS)
+				icon:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord());
+				nextRoleIcon = nextRoleIcon + 1
+			end
 		end
-		if ( isTank ) then
+		if isTank then
 			local icon = entry["RoleIcon"..nextRoleIcon];
-			icon:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-			icon:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord());
-			nextRoleIcon = nextRoleIcon + 1;
-		end		
+			if icon then
+				icon:SetTexture(LFG_ICONS)
+				icon:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord());
+			end
+		end
 	end)
 
-	_G.QueueStatusFrame:HookScript("OnShow", function(frame) 
+	_G.QueueStatusFrame:HookScript("OnShow", function(frame)
 		frame = frame:GetChildren()
 		if frame.isSkinned then return end
-		frame.HealersFound.Texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-		frame.TanksFound.Texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-		frame.DamagersFound.Texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+		frame.HealersFound.Texture:SetTexture(LFG_ICONS)
+		frame.TanksFound.Texture:SetTexture(LFG_ICONS)
+		frame.DamagersFound.Texture:SetTexture(LFG_ICONS)
 		frame.HealersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
 		frame.TanksFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
 		frame.DamagersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
