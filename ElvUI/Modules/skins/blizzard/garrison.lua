@@ -38,11 +38,11 @@ local function LoadSkin()
 				r, g, b = unpack(E.media.bordercolor)
 			end
 
-			if not reward.border then
-				reward.border = CreateFrame("Frame", nil, reward)
-				S:HandleIcon(reward.Icon, reward.border)
+			if not reward.Icon.backdrop then
+				S:HandleIcon(reward.Icon, true)
 			end
-			reward.border.backdrop:SetBackdropBorderColor(r, g, b)
+
+			reward.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 			index = index + 1
 		end
 	end)
@@ -121,7 +121,8 @@ local function LoadSkin()
 	GarrisonMissionFrame.TitleText:Show()
 	GarrisonMissionFrame:CreateBackdrop("Transparent")
 	S:HandleCloseButton(GarrisonMissionFrame.CloseButton, GarrisonMissionFrame.backdrop)
-	for i=1,2 do
+
+	for i = 1,2 do
 		S:HandleTab(_G["GarrisonMissionFrameTab"..i])
 	end
 
