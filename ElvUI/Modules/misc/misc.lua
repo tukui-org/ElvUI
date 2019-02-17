@@ -43,6 +43,8 @@ local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitInRaid = UnitInRaid
 local UnitName = UnitName
+local CreateFrame = CreateFrame
+local RegisterStateDriver = RegisterStateDriver
 
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local C_Timer_After = C_Timer.After
@@ -294,14 +296,15 @@ function M:ADDON_LOADED(_, addon)
 end
 
 function M:ManageQuestObjectives()
-	local frame = CreateFrame('Frame', 'ObjectiveHider', ObjectiveTrackerFrame, 'SecureHandlerStateTemplate');
+	local frame = CreateFrame('Frame', 'ObjectiveHider', _G.ObjectiveTrackerFrame, 'SecureHandlerStateTemplate');
 	RegisterStateDriver(frame, "objectiveHider", "[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists] 1;0")
 	frame:SetAttribute("_onstate-objectiveHider", [[
 		local parent = self:GetParent()
+		local shown = parent:IsShown()
 
-		if newstate == 1 and parent:IsShown() then
+		if newstate == 1 and shown then
 			self:GetParent():Hide()
-		elseif not parent:IsShown()
+		elseif not shown then
 			self:GetParent():Show()
 		end
 	]])
