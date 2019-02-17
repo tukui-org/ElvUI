@@ -10,6 +10,7 @@ local hooksecurefunc = hooksecurefunc
 local BNFeaturesEnabled = BNFeaturesEnabled
 local FriendsFrameBroadcastInput_UpdateDisplay = FriendsFrameBroadcastInput_UpdateDisplay
 local FriendsFrame_CheckBattlenetStatus = FriendsFrame_CheckBattlenetStatus
+local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
 local RaiseFrameLevel = RaiseFrameLevel
 local BNConnected = BNConnected
 
@@ -210,7 +211,7 @@ local function LoadSkin()
 	hooksecurefunc("FriendsFrame_OnEvent", UpdateWhoSkins)
 
 	--Increase width of Level column slightly
-	_G.WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) --Default is 32
+	WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) --Default is 32
 	for i = 1, 17 do
 		local level = _G["WhoFrameButton"..i.."Level"]
 		if level then

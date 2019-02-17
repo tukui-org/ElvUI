@@ -10,6 +10,8 @@ local tinsert = tinsert
 local max = math.max
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local CastingBarFrame_OnLoad = CastingBarFrame_OnLoad
+local CastingBarFrame_SetUnit = CastingBarFrame_SetUnit
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 -- GLOBALS: ElvUF_Target
 
@@ -167,11 +169,11 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_Castbar(frame)
 
 	if (not db.enable and not E.private.unitframe.disabledBlizzardFrames.player) then
-		_G.CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
-		_G.CastingBarFrame_OnLoad(_G.PetCastingBarFrame)
+		CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
+		CastingBarFrame_OnLoad(_G.PetCastingBarFrame)
 	elseif not db.enable and E.private.unitframe.disabledBlizzardFrames.player or (db.enable and not db.castbar.enable) then
-		_G.CastingBarFrame_SetUnit(_G.CastingBarFrame, nil)
-		_G.CastingBarFrame_SetUnit(_G.PetCastingBarFrame, nil)
+		CastingBarFrame_SetUnit(_G.CastingBarFrame, nil)
+		CastingBarFrame_SetUnit(_G.PetCastingBarFrame, nil)
 	end
 
 	--Combat Fade

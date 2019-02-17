@@ -25,6 +25,7 @@ local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
 local FCF_SetWindowName = FCF_SetWindowName
 local FCF_StopDragging = FCF_StopDragging
 local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
+local CreateAnimationGroup = CreateAnimationGroup
 local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
@@ -706,7 +707,7 @@ function E:Install()
 		f.Status:Point("BOTTOMRIGHT", f.Next, "BOTTOMLEFT", -6, 2)
 
 		-- Setup StatusBar Animation
-		f.Status.anim = _G.CreateAnimationGroup(f.Status)
+		f.Status.anim = CreateAnimationGroup(f.Status)
 		f.Status.anim.progress = f.Status.anim:CreateAnimation("Progress")
 		f.Status.anim.progress:SetSmoothing("Out")
 		f.Status.anim.progress:SetDuration(.3)
