@@ -16,6 +16,7 @@ P['general'] = {
 	['hideErrorFrame'] = true,
 	['enhancedPvpMessages'] = true,
 	['objectiveFrameHeight'] = 480,
+	['objectiveFrameAutoHide'] = true,
 	['bonusObjectivePosition'] = 'LEFT',
 	['talkingHeadFrameScale'] = 0.9,
 	['talkingHeadFrameBackdrop'] = false,

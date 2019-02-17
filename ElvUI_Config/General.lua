@@ -483,8 +483,16 @@ E.Options.args.general = {
 					type = "header",
 					name = L["Objective Frame"],
 				},
-				objectiveFrameHeight = {
+				objectiveFrameAutoHide = {
 					order = 31,
+					type = "toggle",
+					name = L["Auto Hide"],
+					desc = L["Automatically hide the objetive frame during boss or arena fights."],
+					get = function(info) return E.db.general.objectiveFrameAutoHide end,
+					set = function(info, value) E.db.general.objectiveFrameAutoHide = value; E:GetModule('Blizzard'):SetObjectiveFrameAutoHide(); end,					
+				},
+				objectiveFrameHeight = {
+					order = 32,
 					type = 'range',
 					name = L["Objective Frame Height"],
 					desc = L["Height of the objective tracker. Increase size to be able to see more objectives."],
@@ -493,7 +501,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.objectiveFrameHeight = value; E:GetModule('Blizzard'):SetObjectiveFrameHeight(); end,
 				},
 				bonusObjectivePosition = {
-					order = 32,
+					order = 33,
 					type = 'select',
 					name = L["Bonus Reward Position"],
 					desc = L["Position of bonus quest reward frame relative to the objective tracker."],
