@@ -136,7 +136,12 @@ function B:Tooltip_Show()
 	GameTooltip:AddLine(self.ttText)
 
 	if self.ttText2 then
-		GameTooltip:AddLine(self.ttText2)
+		if self.ttText2desc then
+			GameTooltip:AddLine(' ')
+			GameTooltip:AddDoubleLine(self.ttText2, self.ttText2desc, 1, 1, 1)
+		else
+			GameTooltip:AddLine(self.ttText2)
+		end
 	end
 
 	GameTooltip:Show()
