@@ -89,8 +89,8 @@ local function LoadSkin()
 		end
 	end)
 
-	hooksecurefunc("QueueStatusFrame_Update", function() 
-		for frame in QueueStatusFrame.statusEntriesPool:EnumerateActive() do
+	hooksecurefunc("QueueStatusFrame_Update", function()
+		for frame in _G.QueueStatusFrame.statusEntriesPool:EnumerateActive() do
 			frame.HealersFound.Texture:SetTexture(LFG_ICONS)
 			frame.TanksFound.Texture:SetTexture(LFG_ICONS)
 			frame.DamagersFound.Texture:SetTexture(LFG_ICONS)
