@@ -313,7 +313,8 @@ local function LoadSkin()
 		end
 	end
 
-	-- Put back Twitter Birdy (only if your Real ID is enabled in your WoW Account)
+	_G.InterfaceOptionsFrameTab1:SetPoint('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 6, 1)
+	_G.InterfaceOptionsFrameTab2:SetPoint('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
 	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas("WoWShare-TwitterLogo")
 
 	-- Toggle Test Audio Button - Wow 8.0
