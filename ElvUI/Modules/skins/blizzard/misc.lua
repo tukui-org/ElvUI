@@ -89,16 +89,18 @@ local function LoadSkin()
 		end
 	end)
 
-	_G.QueueStatusFrame:HookScript("OnShow", function(frame)
-		frame = frame:GetChildren()
-		if frame.isSkinned then return end
-		frame.HealersFound.Texture:SetTexture(LFG_ICONS)
-		frame.TanksFound.Texture:SetTexture(LFG_ICONS)
-		frame.DamagersFound.Texture:SetTexture(LFG_ICONS)
-		frame.HealersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-		frame.TanksFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-		frame.DamagersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
-		frame.isSkinned = true
+	hooksecurefunc("QueueStatusFrame_Update", function() 
+		for frame in QueueStatusFrame.statusEntriesPool:EnumerateActive() do
+			if not frame.skinned then
+				frame.HealersFound.Texture:SetTexture(LFG_ICONS)
+				frame.TanksFound.Texture:SetTexture(LFG_ICONS)
+				frame.DamagersFound.Texture:SetTexture(LFG_ICONS)
+				frame.HealersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+				frame.TanksFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+				frame.DamagersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+				frame.skinned = true
+			end
+		end
 	end)
 
 	if not IsAddOnLoaded("ConsolePortUI_Menu") then
