@@ -31,7 +31,7 @@ local function LoadSkin()
 
 	ItemSlot:CreateBackdrop("Transparent")
 	ItemSlot.backdrop:SetBackdropColor(.6, 0, .6, .5)
-	S:HandleTexture(ItemSlot.Icon)
+	S:HandleIcon(ItemSlot.Icon)
 
 	local ButtonFrame = AzeriteRespecFrame.ButtonFrame
 	ButtonFrame:GetRegions():Hide()

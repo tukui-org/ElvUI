@@ -91,12 +91,9 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 
 	if t == 'NoBackdrop' then
 		f:SetBackdrop(nil)
-		if f.backdropTexture then
-			f.backdropTexture:SetTexture()
-		end
 	else
 		f:SetBackdrop({
-			bgFile = E.media.blankTex,
+			bgFile = glossTex and E.media.glossTex or E.media.blankTex,
 			edgeFile = E.media.blankTex,
 			tile = false, tileSize = 0, edgeSize = E.mult,
 			insets = {left = 0, right = 0, top = 0, bottom = 0}
@@ -104,16 +101,10 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 
 		if t == 'Transparent' then
 			f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
-
-			if f.backdropTexture then
-				f.backdropTexture:Hide()
-				f.backdropTexture = nil
-			end
-		elseif not f.backdropTexture then
-			local backdropTexture = f:CreateTexture(nil, 'BORDER')
-			backdropTexture:SetDrawLayer('BACKGROUND', 1)
-			f.backdropTexture = backdropTexture
+		else
+			f:SetBackdropColor(backdropr, backdropg, backdropb)
 		end
+
 
 		if not E.PixelMode and not f.forcePixelMode then
 			if not f.iborder then
@@ -139,24 +130,6 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 				})
 				border:SetBackdropBorderColor(0, 0, 0, 1)
 				f.oborder = border
-			end
-		end
-
-		if f.backdropTexture then
-			f:SetBackdropColor(0, 0, 0, backdropa)
-			f.backdropTexture:SetVertexColor(backdropr, backdropg, backdropb)
-			f.backdropTexture:SetAlpha(backdropa)
-
-			if glossTex then
-				f.backdropTexture:SetTexture(E.media.glossTex)
-			else
-				f.backdropTexture:SetTexture(E.media.blankTex)
-			end
-
-			if f.forcePixelMode or forcePixelMode then
-				f.backdropTexture:SetInside(f, E.mult, E.mult)
-			else
-				f.backdropTexture:SetInside(f)
 			end
 		end
 	end

@@ -92,7 +92,7 @@ local function LoadSkin()
 	_G.CalendarFilterButton:Point("RIGHT", _G.CalendarFilterFrame, "RIGHT", -10, 3)
 	_G.CalendarFilterButton.SetPoint = E.noop
 
-	S:HandleNextPrevButton(_G.CalendarFilterButton, true)
+	S:HandleNextPrevButton(_G.CalendarFilterButton)
 
 	_G.CalendarFilterFrame:CreateBackdrop()
 	_G.CalendarFilterFrame.backdrop:Point("TOPLEFT", 20, 2)

@@ -328,7 +328,7 @@ local function LoadSkin()
 	S:HandleEditBox(ToyBox.searchBox)
 	ToyBox.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, false, true)
+	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton)
 	S:HandleCloseButton(ToyBox.favoriteHelpBox.CloseButton)
 
 	local progressBar = ToyBox.progressBar
@@ -373,7 +373,7 @@ local function LoadSkin()
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
 	HeirloomsJournal.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, false, true)
+	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton)
 	S:HandleDropDownBox(_G.HeirloomsJournalClassDropDown)
 	S:HandleCloseButton(HeirloomsJournal.UpgradeLevelHelpBox.CloseButton)
 
@@ -472,7 +472,7 @@ local function LoadSkin()
 		end
 
 		if Frame.PagingFrame then
-			S:HandleNextPrevButton(Frame.PagingFrame.PrevPageButton, nil, true)
+			S:HandleNextPrevButton(Frame.PagingFrame.PrevPageButton)
 			S:HandleNextPrevButton(Frame.PagingFrame.NextPageButton)
 		end
 	end
@@ -540,7 +540,7 @@ local function LoadSkin()
 	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
 	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate("Transparent")
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton, nil, true)
+	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton)
 
 	-- Taken from AddOnSkins
 	for i = 1, 2 do

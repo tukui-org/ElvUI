@@ -43,18 +43,10 @@ local function LoadSkin()
 	S:HandleButton(BlackMarketFrame.BidButton)
 
 	hooksecurefunc('BlackMarketScrollFrame_Update', function()
-		local buttons = _G.BlackMarketScrollFrame.buttons;
-		local numButtons = #buttons;
-		local offset = _G.HybridScrollFrame_GetOffset(_G.BlackMarketScrollFrame);
-		local numItems = C_BlackMarket_GetNumItems();
-
-		for i = 1, numButtons do
-			local button = buttons[i];
-			local index = offset + i; -- adjust index
-
+		for _, button in pairs(_G.BlackMarketScrollFrame.buttons) do
 			if not button.skinned then
 				S:HandleItemButton(button.Item)
-				button:StripTextures('BACKGROUND')
+				button:StripTextures()
 				button:StyleButton()
 
 				local cR, cG, cB = button.Item.IconBorder:GetVertexColor()
@@ -71,13 +63,6 @@ local function LoadSkin()
 				end)
 
 				button.skinned = true
-			end
-
-			if type(numItems) == "number" and index <= numItems then
-				local name, texture = C_BlackMarket_GetItemInfoByIndex(index);
-				if name then
-					button.Item.IconTexture:SetTexture(texture);
-				end
 			end
 		end
 	end)

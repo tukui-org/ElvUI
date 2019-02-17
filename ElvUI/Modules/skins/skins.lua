@@ -312,7 +312,6 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 		Thumb.backdrop:SetPoint('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
 		Thumb.backdrop:SetPoint('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
 		Thumb.backdrop:SetFrameLevel(Thumb.backdrop:GetFrameLevel() + 2)
-		Thumb.backdrop.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
 	end
 end
 
@@ -349,20 +348,20 @@ function S:HandleTab(tab)
 	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
 end
 
-function S:HandleNextPrevButton(btn, useVertical, inverseDirection, arrowDir, color)
+function S:HandleNextPrevButton(btn, arrowDir, color)
 	if btn.isSkinned then return end
 
-	local Arrow
-	local ButtonName = btn:GetDebugName() and btn:GetDebugName():lower()
-	if ButtonName and not arrowDir then
-		if (strfind(ButtonName, 'left') or strfind(ButtonName, 'prev') or strfind(ButtonName, 'decrement') or strfind(ButtonName, 'back')) then
-			Arrow = 'left'
-		elseif (strfind(ButtonName, 'right') or strfind(ButtonName, 'next') or strfind(ButtonName, 'increment') or strfind(ButtonName, 'forward')) then
-			Arrow = 'right'
-		elseif (strfind(ButtonName, 'scrollup') or strfind(ButtonName, 'upbutton') or strfind(ButtonName, 'top') or strfind(ButtonName, 'asc') or strfind(ButtonName, 'home') or strfind(ButtonName, 'maximize')) then
-			Arrow = 'up'
-		else
-			Arrow = 'down'
+	if not arrowDir then
+		arrowDir = 'down'
+		local ButtonName = btn:GetDebugName() and btn:GetDebugName():lower()
+		if ButtonName then
+			if (strfind(ButtonName, 'left') or strfind(ButtonName, 'prev') or strfind(ButtonName, 'decrement') or strfind(ButtonName, 'backward') or strfind(ButtonName, 'back')) then
+				arrowDir = 'left'
+			elseif (strfind(ButtonName, 'right') or strfind(ButtonName, 'next') or strfind(ButtonName, 'increment') or strfind(ButtonName, 'forward')) then
+				arrowDir = 'right'
+			elseif (strfind(ButtonName, 'scrollup') or strfind(ButtonName, 'upbutton') or strfind(ButtonName, 'top') or strfind(ButtonName, 'asc') or strfind(ButtonName, 'home') or strfind(ButtonName, 'maximize')) then
+				arrowDir = 'up'
+			end
 		end
 	end
 
@@ -376,10 +375,6 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection, arrowDir, co
 	btn:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 	btn:SetDisabledTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 
-	if not Arrow and not arrowDir then
-		Arrow = useVertical and (inverseDirection and 'down' or 'up') or inverseDirection and 'left' or 'right'
-	end
-
 	local Normal, Disabled, Pushed = btn:GetNormalTexture(), btn:GetDisabledTexture(), btn:GetPushedTexture()
 
 	Normal:SetInside()
@@ -390,18 +385,11 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection, arrowDir, co
 	Pushed:SetTexCoord(0, 1, 0, 1)
 	Disabled:SetTexCoord(0, 1, 0, 1)
 
-	Arrow = arrowDir or Arrow
-	Normal:SetRotation(S.ArrowRotation[Arrow])
-	Pushed:SetRotation(S.ArrowRotation[Arrow])
-	Disabled:SetRotation(S.ArrowRotation[Arrow])
+	Normal:SetRotation(S.ArrowRotation[arrowDir])
+	Pushed:SetRotation(S.ArrowRotation[arrowDir])
+	Disabled:SetRotation(S.ArrowRotation[arrowDir])
 
-	if color == 'system' then
-		Normal:SetVertexColor(1, .8, 0)
-	elseif color == 'value' then
-		Normal:SetVertexColor(unpack(E.media.rgbvaluecolor))
-	else
-		Normal:SetVertexColor(1, 1, 1)
-	end
+	Normal:SetVertexColor(unpack(color or {1, 1, 1}))
 
 	Disabled:SetVertexColor(.3, .3, .3)
 
@@ -466,30 +454,21 @@ end
 function S:HandleEditBox(frame)
 	if frame.backdrop then return end
 
+	local EditBoxName = frame.GetName and frame:GetName()
+
+	for _, Region in pairs(S.Blizzard.Regions) do
+		if EditBoxName and _G[EditBoxName..Region] then
+			_G[EditBoxName..Region]:SetAlpha(0)
+		end
+		if frame[Region] then
+			frame[Region]:SetAlpha(0)
+		end
+	end
+
 	frame:CreateBackdrop()
 
-	if frame.TopLeftTex then frame.TopLeftTex:Kill() end
-	if frame.TopRightTex then frame.TopRightTex:Kill() end
-	if frame.TopTex then frame.TopTex:Kill() end
-	if frame.BottomLeftTex then frame.BottomLeftTex:Kill() end
-	if frame.BottomRightTex then frame.BottomRightTex:Kill() end
-	if frame.BottomTex then frame.BottomTex:Kill() end
-	if frame.LeftTex then frame.LeftTex:Kill() end
-	if frame.RightTex then frame.RightTex:Kill() end
-	if frame.MiddleTex then frame.MiddleTex:Kill() end
-	if frame.Left then frame.Left:Kill() end
-	if frame.Right then frame.Right:Kill() end
-	if frame.Middle then frame.Middle:Kill() end
-	if frame.Mid then frame.Mid:Kill() end
-
-	local frameName = frame.GetName and frame:GetName()
-	if frameName then
-		if _G[frameName.."Left"] then _G[frameName.."Left"]:Kill() end
-		if _G[frameName.."Middle"] then _G[frameName.."Middle"]:Kill() end
-		if _G[frameName.."Right"] then _G[frameName.."Right"]:Kill() end
-		if _G[frameName.."Mid"] then _G[frameName.."Mid"]:Kill() end
-
-		if strfind(frameName, "Silver") or strfind(frameName, "Copper") then
+	if EditBoxName then
+		if strfind(EditBoxName, "Silver") or strfind(EditBoxName, "Copper") then
 			frame.backdrop:Point("BOTTOMRIGHT", -12, -2)
 		end
 	end
@@ -517,7 +496,7 @@ function S:HandleDropDownBox(frame, width)
 
 	if button then
 		button:SetPoint("TOPRIGHT", -14, -8)
-		S:HandleNextPrevButton(button, true)
+		S:HandleNextPrevButton(button)
 		button:SetSize(16, 16)
 	end
 
@@ -526,8 +505,17 @@ function S:HandleDropDownBox(frame, width)
 	end
 
 	frame:CreateBackdrop()
+	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
 	frame.backdrop:Point("TOPLEFT", 20, -6)
 	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
+end
+
+function S:HandleStatusBar(frame, color)
+	frame:CreateBackrop('Transparent')
+	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
+	frame:SetStatusBarTexture(E.media.normTex)
+	frame:SetStatusBarColor(unpack(color or frame.GetStatusBarColor and { frame:GetStatusBarColor() } or {.01, .39, .1}))
+	E:RegisterStatusBar(frame)
 end
 
 function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
@@ -582,24 +570,10 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 	frame.isSkinned = true
 end
 
-function S:HandleIcon(icon, parent)
-	parent = parent or icon:GetParent()
-
+function S:HandleIcon(icon, backdrop)
 	icon:SetTexCoord(unpack(E.TexCoords))
-	parent:CreateBackdrop()
-	icon:SetParent(parent.backdrop)
-	parent.backdrop:SetOutside(icon)
-end
-
-function S:HandleTexture(icon, parent)
-	icon:SetTexCoord(unpack(E.TexCoords))
-	if parent then
-		local layer, subLevel = icon:GetDrawLayer()
-		local iconBorder = parent:CreateTexture(nil, layer, nil, subLevel - 1)
-		iconBorder:SetPoint("TOPLEFT", icon, -1, 1)
-		iconBorder:SetPoint("BOTTOMRIGHT", icon, 1, -1)
-		iconBorder:SetColorTexture(0, 0, 0)
-		return iconBorder
+	if backdrop then
+		icon:CreateBackdrop()
 	end
 end
 
@@ -709,8 +683,8 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 		for i = 1, #abilities do
 			local iconButton = abilities[i].IconButton
 			local icon = iconButton and iconButton.Icon
-			if icon and not iconButton.backdrop then
-				S:HandleIcon(icon, iconButton)
+			if icon and not icon.backdrop then
+				S:HandleIcon(icon)
 				icon:SetDrawLayer("BORDER", 0)
 				if iconButton.Border then
 					iconButton.Border:SetTexture()
@@ -723,8 +697,8 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 	if combatAllySpells then
 		for i = 1, #combatAllySpells do
 			local icon = combatAllySpells[i].iconTexture
-			if icon and not combatAllySpells[i].backdrop then
-				S:HandleIcon(icon, combatAllySpells[i])
+			if icon and not icon.backdrop then
+				S:HandleIcon(icon)
 			end
 		end
 	end
@@ -732,7 +706,7 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 	if hasItems then
 		local weapon = followerTab.ItemWeapon
 		if weapon and not weapon.backdrop then
-			S:HandleIcon(weapon.Icon, weapon)
+			S:HandleIcon(weapon.Icon)
 			if weapon.Border then
 				weapon.Border:SetTexture()
 			end
@@ -740,7 +714,7 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 
 		local armor = followerTab.ItemArmor
 		if armor and not armor.backdrop then
-			S:HandleIcon(armor.Icon, armor)
+			S:HandleIcon(armor.Icon)
 			if armor.Border then
 				armor.Border:SetTexture()
 			end
@@ -1022,70 +996,6 @@ end
 -- World Map related Skinning functions used for WoW 8.0
 function S:WorldMapMixin_AddOverlayFrame(frame, templateName)
 	S[templateName](frame.overlayFrames[#frame.overlayFrames])
-end
-
-function S:HandleWorldMapDropDownMenu(frame)
-	local left = frame.Left
-	local middle = frame.Middle
-	local right = frame.Right
-	if left then
-		left:SetAlpha(0)
-		left:SetSize(25, 64)
-		left:SetPoint("TOPLEFT", 0, 17)
-	end
-	if middle then
-		middle:SetAlpha(0)
-		middle:SetHeight(64)
-	end
-	if right then
-		right:SetAlpha(0)
-		right:SetSize(25, 64)
-	end
-
-	local button = frame.Button
-	if button then
-		button:ClearAllPoints()
-		button:Point("RIGHT", frame, "RIGHT", -10, 3)
-		button:SetSize(20, 20)
-
-		button.NormalTexture:SetTexture()
-		button.PushedTexture:SetTexture()
-		button.HighlightTexture:SetTexture()
-		hooksecurefunc(button, "SetPoint", function(btn, _, _, _, _, _, noReset)
-			if not noReset then
-				btn:ClearAllPoints()
-				btn:SetPoint("RIGHT", frame, "RIGHT", E:Scale(-10), E:Scale(3), true)
-			end
-		end)
-
-		self:HandleNextPrevButton(button, true)
-	end
-
-	local disabled = button and button.DisabledTexture
-	if disabled then
-		disabled:SetAllPoints(button)
-		disabled:SetColorTexture(0, 0, 0, .3)
-		disabled:SetDrawLayer("OVERLAY")
-	end
-
-	if right and frame.Text then
-		frame.Text:FontTemplate(nil, 10)
-		frame.Text:SetSize(0, 10)
-		frame.Text:SetPoint("RIGHT", right, -43, 2)
-	end
-
-	if middle and (not frame.noResize) then
-		frame:SetWidth(40)
-		middle:SetWidth(115)
-	end
-
-	frame:SetHeight(32)
-	frame:CreateBackdrop()
-	frame.backdrop:Point("TOPLEFT", 20, -2)
-
-	if button then
-		frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
-	end
 end
 
 function S:SkinIconAndTextWidget(widgetFrame)

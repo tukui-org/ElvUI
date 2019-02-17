@@ -278,13 +278,14 @@ local function LoadSkin()
 		btn:Size(14, 18)
 
 		btn:ClearAllPoints()
+
 		if btn == StackSplitFrame.LeftButton then
 			btn:Point('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
-			S:HandleNextPrevButton(btn, nil, true)
 		else
 			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
-			S:HandleNextPrevButton(btn)
 		end
+
+		S:HandleNextPrevButton(btn)
 
 		if btn.SetTemplate then
 			btn:SetTemplate("NoBackdrop")

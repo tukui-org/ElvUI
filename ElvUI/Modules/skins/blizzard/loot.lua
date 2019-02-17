@@ -263,7 +263,7 @@ local function LoadSkin()
 	end)
 
 	S:HandleNextPrevButton(_G.LootFrameDownButton)
-	S:HandleNextPrevButton(_G.LootFrameUpButton, true)
+	S:HandleNextPrevButton(_G.LootFrameUpButton)
 end
 
 S:AddCallback("Loot", LoadSkin)

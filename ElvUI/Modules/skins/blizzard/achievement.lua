@@ -28,6 +28,16 @@ local function SkinAchievement(Achievement, BiggerIcon)
 	Achievement.icon.texture:SetTexCoord(unpack(E.TexCoords))
 	Achievement.icon.texture:SetInside()
 
+	if Achievement.titleBar then
+		hooksecurefunc(Achievement.titleBar, 'SetTexture', function(self, texture)
+			if texture == [[Interface\AchievementFrame\AccountLevel-AchievementHeader]] then
+				Achievement.Backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
+			else
+				Achievement.Backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end
+		end)
+	end
+
 	if Achievement.highlight then
 		Achievement.highlight:StripTextures()
 		Achievement:HookScript('OnEnter', function(self) self.backdrop:SetBackdropBorderColor(1, 1, 0) end)
@@ -70,19 +80,30 @@ end
 local function SkinStatusBar(bar)
 	bar:StripTextures()
 	bar:SetStatusBarTexture(E.media.normTex)
-	bar:SetStatusBarColor(4/255, 179/255, 30/255)
+	bar:SetStatusBarColor(.01, .39, .1)
 	bar:CreateBackdrop()
 	E:RegisterStatusBar(bar)
 
-	local StatusBarName = bar:GetName()
-	if _G[StatusBarName.."Title"] then
-		_G[StatusBarName.."Title"]:Point("LEFT", 4, 0)
+	local name = bar:GetName()
+	local title, label, text = bar.title or _G[name..'Title'], bar.label or _G[name..'Label'], bar.text or _G[name..'Text']
+
+	if title then
+		title:SetPoint("LEFT", 4, 0)
+		title:SetTextColor(1, 1, 1)
 	end
-	if _G[StatusBarName.."Label"] then
-		_G[StatusBarName.."Label"]:Point("LEFT", 4, 0)
+
+	if label then
+		label:SetPoint("LEFT", 4, 0)
+		label:SetTextColor(1, 1, 1)
 	end
-	if _G[StatusBarName.."Text"] then
-		_G[StatusBarName.."Text"]:Point("RIGHT", -4, 0)
+
+	if text then
+		if not (title and label) then
+			text:SetPoint("CENTER", bar, "CENTER", 0, -1)
+		else
+			text:SetPoint("RIGHT", -4, 0)
+		end
+		text:SetTextColor(1, 1, 1)
 	end
 end
 

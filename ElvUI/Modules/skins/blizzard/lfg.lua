@@ -299,7 +299,7 @@ local function LoadSkin()
 		bu.icon:Size(45)
 		bu.icon:ClearAllPoints()
 		bu.icon:Point("LEFT", 10, 0)
-		S:HandleTexture(bu.icon, bu)
+		S:HandleIcon(bu.icon, true)
 	end
 
 	for i = 1, 3 do
@@ -697,7 +697,7 @@ local function LoadSecondarySkin()
 				frame:GetRegions():SetAlpha(0)
 				frame:CreateBackdrop("Transparent")
 				frame.backdrop:SetAllPoints()
-				S:HandleTexture(frame.Icon, frame)
+				S:HandleIcon(frame.Icon, true)
 				frame.Icon:SetInside()
 			end
 		end

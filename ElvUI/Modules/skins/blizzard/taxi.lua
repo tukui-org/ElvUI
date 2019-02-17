@@ -12,7 +12,6 @@ local function LoadSkin()
 	TaxiFrame:StripTextures()
 	TaxiFrame:CreateBackdrop("Transparent")
 	_G.TaxiRouteMap:CreateBackdrop()
-	_G.TaxiRouteMap.backdrop.backdropTexture:Hide()
 
 	S:HandleCloseButton(TaxiFrame.CloseButton)
 end

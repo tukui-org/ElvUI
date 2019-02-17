@@ -12,20 +12,22 @@ local function LoadSkin()
 	local ArchaeologyFrame = _G.ArchaeologyFrame
 	S:HandlePortraitFrame(ArchaeologyFrame, true)
 
-	S:HandleButton(_G.ArchaeologyFrameArtifactPageSolveFrameSolveButton, true)
-	S:HandleButton(_G.ArchaeologyFrameArtifactPageBackButton, true)
-	_G.ArchaeologyFrameRaceFilter:SetFrameLevel(_G.ArchaeologyFrameRaceFilter:GetFrameLevel() + 2)
-	S:HandleDropDownBox(_G.ArchaeologyFrameRaceFilter, 125)
+	S:HandleButton(ArchaeologyFrame.artifactPage.solveFrame.solveButton, true)
+	S:HandleButton(ArchaeologyFrame.artifactPage.backButton, true)
+
+	S:HandleDropDownBox(_G.ArchaeologyFrame.raceFilterDropDown)
 
 	if E.private.skins.parchmentRemover.enable then
 		_G.ArchaeologyFrameBgLeft:Kill()
 		_G.ArchaeologyFrameBgRight:Kill()
 
-		_G.ArchaeologyFrameCompletedPage.infoText:SetTextColor(1, 1, 1)
-		_G.ArchaeologyFrameHelpPageTitle:SetTextColor(1, 1, 0)
+		ArchaeologyFrame.completedPage.infoText:SetTextColor(1, 1, 1)
+		ArchaeologyFrame.helpPage.titleText:SetTextColor(1, 1, 0)
+
 		_G.ArchaeologyFrameHelpPageDigTitle:SetTextColor(1, 1, 0)
 		_G.ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(1, 1, 1)
-		_G.ArchaeologyFrameArtifactPageHistoryTitle:SetTextColor(1, 1, 0)
+
+		ArchaeologyFrame.artifactPage.historyTitle:SetTextColor(1, 1, 0)
 		_G.ArchaeologyFrameArtifactPageHistoryScrollChildText:SetTextColor(1, 1, 1)
 
 		for i = 1, _G.ARCHAEOLOGY_MAX_RACES do
@@ -34,7 +36,7 @@ local function LoadSkin()
 			frame.raceName:SetTextColor(1, 1, 1)
 
 			artifact.border:SetTexture()
-			S:HandleTexture(artifact.icon, artifact)
+			S:HandleTexture(artifact.icon, true)
 			artifact.artifactName:SetTextColor(1, .8, .1)
 			artifact.artifactSubText:SetTextColor(0.6, 0.6, 0.6)
 		end
@@ -49,31 +51,21 @@ local function LoadSkin()
 		end
 	end
 
-	S:HandleButton(_G.ArchaeologyFrameSummaryPagePrevPageButton)
-	S:HandleButton(_G.ArchaeologyFrameSummaryPageNextPageButton)
-	S:HandleButton(_G.ArchaeologyFrameCompletedPageNextPageButton)
-	S:HandleButton(_G.ArchaeologyFrameCompletedPagePrevPageButton)
+	S:HandleButton(ArchaeologyFrame.summaryPage.prevPageButton)
+	S:HandleButton(ArchaeologyFrame.summaryPage.nextPageButton)
+	S:HandleButton(ArchaeologyFrame.completedPage.prevPageButton)
+	S:HandleButton(ArchaeologyFrame.completedPage.nextPageButton)
 
-	_G.ArchaeologyFrameRankBar:StripTextures()
-	_G.ArchaeologyFrameRankBar:SetStatusBarTexture(E.media.normTex)
-	_G.ArchaeologyFrameRankBar:SetFrameLevel(_G.ArchaeologyFrameRankBar:GetFrameLevel() + 2)
-	_G.ArchaeologyFrameRankBar:CreateBackdrop()
-	E:RegisterStatusBar(_G.ArchaeologyFrameRankBar)
+	ArchaeologyFrame.rankBar:StripTextures()
+	ArchaeologyFrame.rankBar:SetStatusBarTexture(E.media.normTex)
+	ArchaeologyFrame.rankBar:CreateBackdrop()
+	E:RegisterStatusBar(ArchaeologyFrame.rankBar)
 
-	_G.ArchaeologyFrameArtifactPageSolveFrameStatusBar:StripTextures()
-	_G.ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetStatusBarTexture(E.media.normTex)
-	_G.ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetStatusBarColor(0.7, 0.2, 0)
-	_G.ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetFrameLevel(_G.ArchaeologyFrameArtifactPageSolveFrameStatusBar:GetFrameLevel() + 2)
-	_G.ArchaeologyFrameArtifactPageSolveFrameStatusBar:CreateBackdrop()
-	E:RegisterStatusBar(_G.ArchaeologyFrameArtifactPageSolveFrameStatusBar)
+	S:HandleStatusBar(ArchaeologyFrame.artifactPage.solveFrame.statusBar, {0.7, 0.2, 0})
 	S:HandleIcon(_G.ArchaeologyFrameArtifactPageIcon)
 
 	_G.ArcheologyDigsiteProgressBar:StripTextures()
-	_G.ArcheologyDigsiteProgressBar.FillBar:StripTextures()
-	_G.ArcheologyDigsiteProgressBar.FillBar:SetStatusBarTexture(E.media.normTex)
-	_G.ArcheologyDigsiteProgressBar.FillBar:SetStatusBarColor(0.7, 0.2, 0)
-	_G.ArcheologyDigsiteProgressBar.FillBar:SetFrameLevel(_G.ArchaeologyFrameArtifactPageSolveFrameStatusBar:GetFrameLevel() + 2)
-	_G.ArcheologyDigsiteProgressBar.FillBar:CreateBackdrop()
+	S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
 	_G.ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	_G.ArcheologyDigsiteProgressBar:ClearAllPoints()
 	_G.ArcheologyDigsiteProgressBar:Point("TOP", _G.UIParent, "TOP", 0, -400)

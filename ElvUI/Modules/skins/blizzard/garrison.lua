@@ -88,7 +88,7 @@ local function LoadSkin()
 	S:HandleButton(GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton, true)
 	GarrisonCapacitiveDisplayFrame.Count:StripTextures()
 	S:HandleEditBox(GarrisonCapacitiveDisplayFrame.Count)
-	S:HandleNextPrevButton(GarrisonCapacitiveDisplayFrame.DecrementButton, false, true)
+	S:HandleNextPrevButton(GarrisonCapacitiveDisplayFrame.DecrementButton)
 	S:HandleNextPrevButton(GarrisonCapacitiveDisplayFrame.IncrementButton)
 	local CapacitiveDisplay = GarrisonCapacitiveDisplayFrame.CapacitiveDisplay
 	CapacitiveDisplay.IconBG:SetTexture()
@@ -102,7 +102,7 @@ local function LoadSkin()
 		for _, Reagent in ipairs(self.CapacitiveDisplay.Reagents) do
 			if not Reagent.backdrop then
 				Reagent.NameFrame:SetTexture()
-				S:HandleTexture(Reagent.Icon, Reagent)
+				S:HandleIcon(Reagent.Icon, true)
 				Reagent:CreateBackdrop()
 			end
 		end

@@ -501,11 +501,7 @@ function E:UpdateBackdropColors()
 		if frame then
 			if not frame.ignoreBackdropColors then
 				if frame.template == 'Default' or frame.template == nil then
-					if frame.backdropTexture then
-						frame.backdropTexture:SetVertexColor(unpack(self.media.backdropcolor))
-					else
-						frame:SetBackdropColor(unpack(self.media.backdropcolor))
-					end
+					frame:SetBackdropColor(unpack(self.media.backdropcolor))
 				elseif frame.template == 'Transparent' then
 					frame:SetBackdropColor(unpack(self.media.backdropfadecolor))
 				end
@@ -519,11 +515,7 @@ function E:UpdateBackdropColors()
 		if frame then
 			if not frame.ignoreBackdropColors then
 				if frame.template == 'Default' or frame.template == nil then
-					if frame.backdropTexture then
-						frame.backdropTexture:SetVertexColor(unpack(self.media.backdropcolor))
-					else
-						frame:SetBackdropColor(unpack(self.media.backdropcolor))
-					end
+					frame:SetBackdropColor(unpack(self.media.backdropcolor))
 				elseif frame.template == 'Transparent' then
 					frame:SetBackdropColor(unpack(self.media.backdropfadecolor))
 				end

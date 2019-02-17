@@ -76,7 +76,7 @@ local function LoadSkin()
 			Button.learnedTex:SetAlpha(0)
 			Button.selectedTex:SetAlpha(0)
 			Button.specIcon:SetTexture(icon)
-			S:HandleTexture(Button.specIcon, Button)
+			S:HandleIcon(Button.specIcon, true)
 			Button:SetHighlightTexture(nil)
 
 			Button.SelectedTexture = Button:CreateTexture(nil, 'ARTWORK')
@@ -91,7 +91,7 @@ local function LoadSkin()
 		Frame.spellsScroll.child.ring:SetAlpha(0)
 		Frame.spellsScroll.child.Seperator:SetAlpha(0)
 
-		S:HandleTexture(Frame.spellsScroll.child.specIcon, Frame.spellsScroll.child)
+		S:HandleIcon(Frame.spellsScroll.child.specIcon, true)
 	end
 
 	for i = 1, _G.MAX_TALENT_TIERS do
@@ -109,7 +109,7 @@ local function LoadSkin()
 			bu:SetFrameLevel(bu:GetFrameLevel() + 5)
 			bu.knownSelection:SetAlpha(0)
 			bu.icon:SetDrawLayer("OVERLAY", 1)
-			S:HandleTexture(bu.icon, bu)
+			S:HandleIcon(bu.icon, true)
 
 			bu.bg = CreateFrame("Frame", nil, bu)
 			bu.bg:CreateBackdrop("Overlay")
@@ -251,7 +251,7 @@ local function LoadSkin()
 			end
 
 			if (slotInfo.enabled) then
-				S:HandleTexture(self.Texture)
+				S:HandleIcon(self.Texture)
 				if (not slotInfo.selectedTalentID) then
 					self.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
 					self.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
@@ -300,7 +300,7 @@ local function LoadSkin()
 
 	for _, Button in pairs(PvpTalentFrame.TalentList.ScrollFrame.buttons) do
 		Button:DisableDrawLayer("BACKGROUND")
-		S:HandleTexture(Button.Icon)
+		S:HandleIcon(Button.Icon)
 		Button:StyleButton()
 		Button:CreateBackdrop()
 		Button.Selected:SetTexture()

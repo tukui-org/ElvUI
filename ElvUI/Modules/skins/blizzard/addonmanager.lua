@@ -8,7 +8,6 @@ local _G = _G
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.addonManager ~= true then return end
 
-	--Addon List (From AddOnSkins)
 	local AddonList = _G.AddonList
 	S:HandlePortraitFrame(AddonList, true)
 	S:HandleButton(AddonList.EnableAllButton, true)
@@ -21,9 +20,9 @@ local function LoadSkin()
 	_G.AddonListForceLoad:SetSize(26, 26)
 
 	_G.AddonListScrollFrame:StripTextures()
-	--_G.AddonListScrollFrame:CreateBackdrop('Transparent')
-	--_G.AddonListScrollFrame.backdrop:SetPoint('TOPLEFT', -14, 0)
-	--_G.AddonListScrollFrame.backdrop:SetPoint('BOTTOMRIGHT', 0, -1)
+	_G.AddonListScrollFrame:CreateBackdrop('Transparent')
+	_G.AddonListScrollFrame.backdrop:SetPoint('TOPLEFT', -14, 0)
+	_G.AddonListScrollFrame.backdrop:SetPoint('BOTTOMRIGHT', 0, -1)
 
 	for i = 1, _G.MAX_ADDONS_DISPLAYED do
 		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])

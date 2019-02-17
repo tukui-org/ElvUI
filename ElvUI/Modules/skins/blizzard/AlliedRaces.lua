@@ -48,7 +48,7 @@ local function LoadSkin()
 	AlliedRacesFrame:HookScript("OnShow", function(self)
 		for button in self.abilityPool:EnumerateActive() do
 			select(3, button:GetRegions()):Hide()
-			S:HandleTexture(button.Icon, button)
+			S:HandleIcon(button.Icon, true)
 			if E.private.skins.parchmentRemover.enable then
 				button.Text:SetTextColor(1, 1, 1)
 			end

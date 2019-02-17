@@ -11,7 +11,7 @@ local function SkinRewards()
 	for reward in pairs(_G.AdventureMapQuestChoiceDialog.rewardPool.activeObjects) do
 		if not reward.isSkinned then
 			S:HandleItemButton(reward)
-			S:HandleTexture(reward.Icon)
+			S:HandleIcon(reward.Icon)
 			reward.Icon:SetDrawLayer("OVERLAY")
 			reward.isSkinned = true
 		end

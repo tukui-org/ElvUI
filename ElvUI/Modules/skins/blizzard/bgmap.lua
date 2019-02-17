@@ -53,11 +53,6 @@ local function LoadSkin()
 	BattlefieldMapFrame.backdrop:SetOutside(BattlefieldMapFrame.ScrollContainer)
 	BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, oldAlpha)
 
-	BattlefieldMapFrame.backdrop.backdropTexture:SetTexture()
-	hooksecurefunc(BattlefieldMapFrame.backdrop.backdropTexture, "SetTexture", function(self, texture)
-		if texture ~= nil then self:SetTexture() end
-	end)
-
 	BattlefieldMapFrame:EnableMouse(true)
 	BattlefieldMapFrame:SetMovable(true)
 
