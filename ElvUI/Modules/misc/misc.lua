@@ -297,9 +297,11 @@ function M:ManageQuestObjectives()
 	local frame = CreateFrame('Frame', 'ObjectiveHider', ObjectiveTrackerFrame, 'SecureHandlerStateTemplate');
 	RegisterStateDriver(frame, "objectiveHider", "[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists] 1;0")
 	frame:SetAttribute("_onstate-objectiveHider", [[
-		if newstate == 1 then
+		local parent = self:GetParent()
+
+		if newstate == 1 and parent:IsShown() then
 			self:GetParent():Hide()
-		else
+		elseif not parent:IsShown()
 			self:GetParent():Show()
 		end
 	]])
