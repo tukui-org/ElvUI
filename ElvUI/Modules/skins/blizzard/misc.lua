@@ -91,15 +91,12 @@ local function LoadSkin()
 
 	hooksecurefunc("QueueStatusFrame_Update", function() 
 		for frame in QueueStatusFrame.statusEntriesPool:EnumerateActive() do
-			if not frame.skinned then
-				frame.HealersFound.Texture:SetTexture(LFG_ICONS)
-				frame.TanksFound.Texture:SetTexture(LFG_ICONS)
-				frame.DamagersFound.Texture:SetTexture(LFG_ICONS)
-				frame.HealersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-				frame.TanksFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-				frame.DamagersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
-				frame.skinned = true
-			end
+			frame.HealersFound.Texture:SetTexture(LFG_ICONS)
+			frame.TanksFound.Texture:SetTexture(LFG_ICONS)
+			frame.DamagersFound.Texture:SetTexture(LFG_ICONS)
+			frame.HealersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+			frame.TanksFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+			frame.DamagersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
 		end
 	end)
 
