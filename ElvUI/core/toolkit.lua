@@ -93,7 +93,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 		f:SetBackdrop(nil)
 	else
 		f:SetBackdrop({
-			bgFile = glossTex and E.media.glossTex or E.media.blankTex,
+			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
 			edgeFile = E.media.blankTex,
 			tile = false, tileSize = 0, edgeSize = E.mult,
 			insets = {left = 0, right = 0, top = 0, bottom = 0}
@@ -104,7 +104,6 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 		else
 			f:SetBackdropColor(backdropr, backdropg, backdropb)
 		end
-
 
 		if not E.PixelMode and not f.forcePixelMode then
 			if not f.iborder then
