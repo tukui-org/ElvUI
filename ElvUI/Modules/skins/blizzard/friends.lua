@@ -8,6 +8,8 @@ local pairs, select, unpack = pairs, select, unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local BNFeaturesEnabled = BNFeaturesEnabled
+local FriendsFrameBroadcastInput_UpdateDisplay = FriendsFrameBroadcastInput_UpdateDisplay
+local FriendsFrame_CheckBattlenetStatus = FriendsFrame_CheckBattlenetStatus
 local RaiseFrameLevel = RaiseFrameLevel
 local BNConnected = BNConnected
 
@@ -173,11 +175,11 @@ local function LoadSkin()
 			if BNConnected() then
 				frame:Hide()
 				_G.FriendsFrameBroadcastInput:Show()
-				_G.FriendsFrameBroadcastInput_UpdateDisplay()
+				FriendsFrameBroadcastInput_UpdateDisplay()
 			end
 		end
 	end)
-	_G.FriendsFrame_CheckBattlenetStatus()
+	FriendsFrame_CheckBattlenetStatus()
 
 	hooksecurefunc("FriendsFrame_Update", function()
 		if FriendsFrame.selectedTab == 1 and _G.FriendsTabHeader.selectedTab == 1 and FriendsFrameBattlenetFrame.Tag:IsShown() then

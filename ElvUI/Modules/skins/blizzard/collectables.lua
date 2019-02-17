@@ -7,6 +7,7 @@ local select = select
 local ipairs, pairs, unpack = ipairs, pairs, unpack
 --WoW API / Variables
 local GetItemInfo = GetItemInfo
+local PlayerHasToy = PlayerHasToy
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GetItemQualityColor = GetItemQualityColor
@@ -354,7 +355,7 @@ local function LoadSkin()
 	end
 
 	hooksecurefunc("ToySpellButton_UpdateButton", function(self)
-		if _G.PlayerHasToy(self.itemID) then
+		if PlayerHasToy(self.itemID) then
 			local quality = select(3, GetItemInfo(self.itemID))
 			local r, g, b = 1, 1, 1
 			if quality then

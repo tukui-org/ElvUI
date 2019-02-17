@@ -6,6 +6,7 @@ local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local SpellBookFrame_UpdateSkillLineTabs = SpellBookFrame_UpdateSkillLineTabs
 local hooksecurefunc = hooksecurefunc
 
 local function SkinTab(tab, xOffset)
@@ -138,7 +139,7 @@ local function LoadSkin()
 
 	-- needs review
 	hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", SkinSkillLine)
-	_G.SpellBookFrame_UpdateSkillLineTabs() --This update fixes issue with tab textures being empty on first show
+	SpellBookFrame_UpdateSkillLineTabs() --This update fixes issue with tab textures being empty on first show
 
 	--Profession Tab
 	local professionbuttons = {

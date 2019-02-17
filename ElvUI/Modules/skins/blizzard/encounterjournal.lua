@@ -7,6 +7,7 @@ local select, unpack, pairs = select, unpack, pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local EJ_GetEncounterInfoByIndex = EJ_GetEncounterInfoByIndex
 
 local function SkinDungeons()
 	local b1 = _G.EncounterJournalInstanceSelectScrollFrameScrollChildInstanceButton1
@@ -32,7 +33,7 @@ end
 
 local function SkinBosses()
 	local bossIndex = 1;
-	local _, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex);
+	local _, _, bossID = EJ_GetEncounterInfoByIndex(bossIndex);
 	local bossButton;
 
 	while bossID do
@@ -45,7 +46,7 @@ local function SkinBosses()
 		end
 
 		bossIndex = bossIndex + 1;
-		_, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex);
+		_, _, bossID = EJ_GetEncounterInfoByIndex(bossIndex);
 	end
 end
 

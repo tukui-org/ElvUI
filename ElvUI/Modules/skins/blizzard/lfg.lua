@@ -9,6 +9,7 @@ local min, strlower = min, strlower
 --WoW API / Variables
 local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
 local GetLFGProposal = GetLFGProposal
+local GetLFGProposalMember = GetLFGProposalMember
 local hooksecurefunc = hooksecurefunc
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
@@ -158,7 +159,7 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc("LFGDungeonReadyStatusIndividual_UpdateIcon", function(button)
-		local _, role = _G.GetLFGProposalMember(button:GetID());
+		local _, role = GetLFGProposalMember(button:GetID());
 
 		button.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 		button.texture:SetAlpha(0.6)
