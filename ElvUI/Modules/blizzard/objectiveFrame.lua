@@ -56,13 +56,11 @@ function B:MoveObjectiveFrame()
 	B:SetObjectiveFrameHeight()
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
 
-	local function ObjectiveTrackerFrame_SetPosition(self,_, parent)
-		if parent ~= ObjectiveFrameHolder or self:GetNumPoints() ~= 1 then
-			self:ClearAllPoints()
-			self:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
-		end
-	end
-	hooksecurefunc(ObjectiveTrackerFrame,"SetPoint", ObjectiveTrackerFrame_SetPosition)
+	ObjectiveTrackerFrame:SetMovable(true)
+	ObjectiveTrackerFrame:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
+	ObjectiveTrackerFrame:ClearAllPoints()
+	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')	
+
 
 	local function RewardsFrame_SetPosition(block)
 		local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame;
@@ -81,9 +79,9 @@ function B:MoveObjectiveFrame()
 		local shown = parent:IsShown()
 
 		if newstate == 1 and shown then
-			self:GetParent():Hide()
+			self:GetParent():SetScale(0.00000001)
 		elseif not shown then
-			self:GetParent():Show()
+			self:GetParent():SetScale(1)
 		end
 	]])	
 end
