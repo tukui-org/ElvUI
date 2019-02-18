@@ -16,7 +16,7 @@ local function LoadSkin()
 
 	_G.SpecializationRing:Hide()
 	S:HandleIcon(_G.SpecializationSpecIcon, true)
-	_G.SpecializationSpecIcon:SetSize(55 , 55) -- 70, 70 default size
+	_G.SpecializationSpecIcon:SetSize(55, 55) -- 70, 70 default size
 
 	--Create portrait element for the PvP Frame so we can see prestige
 	local InspectPVPFrame = _G.InspectPVPFrame
