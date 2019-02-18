@@ -42,7 +42,6 @@ local GetNumBankSlots = GetNumBankSlots
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local HandleModifiedItemClick = HandleModifiedItemClick
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
-local IsContainerItemAnUpgrade = IsContainerItemAnUpgrade
 local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
 local IsModifiedClick = IsModifiedClick
 local IsReagentBankUnlocked = IsReagentBankUnlocked
@@ -397,7 +396,7 @@ function UpdateItemUpgradeIcon(slot)
 
 	slot.timeSinceUpgradeCheck = 0;
 
-	local itemIsUpgrade = IsContainerItemAnUpgrade(slot:GetParent():GetID(), slot:GetID());
+	local itemIsUpgrade = _G.IsContainerItemAnUpgrade(slot:GetParent():GetID(), slot:GetID());
 	if itemIsUpgrade == nil then -- nil means not all the data was available to determine if this is an upgrade.
 		slot.UpgradeIcon:SetShown(false);
 		slot:SetScript("OnUpdate", UpgradeCheck_OnUpdate);
