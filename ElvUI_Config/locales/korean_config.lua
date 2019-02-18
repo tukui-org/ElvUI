@@ -544,7 +544,6 @@ L["Attempt to support eyefinity/nvidia surround."] = "다중모니터 기술인 
 L["Auto Greed/DE"] = "자동 차비/추출 선택"
 L["Auto Hide"] = true
 L["Auto Repair"] = "자동 수리"
-L["Auto Scale"] = "UI크기 자동조절"
 L["Automatically accept invites from guild/friends."] = "길드원이나 친구가 플레이어를 파티를 초대하면 자동으로 수락합니다."
 L["Automatically hide the objetive frame during boss or arena fights."] = true
 L["Automatically repair using the following method when visiting a merchant."] = "수리가 가능한 상점을 열면 이 옵션에서 선택한 자금으로 장비를 자동 수리합니다."

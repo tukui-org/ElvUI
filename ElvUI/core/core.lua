@@ -440,6 +440,12 @@ function E:PLAYER_ENTERING_WORLD()
 		self:CancelTimer(self.BGTimer)
 		self.BGTimer = nil
 	end
+
+	if not E.global.uiScaleInformed then
+		E.clippedUiScaleCVar = E:PixelClip(GetCVar("uiScale"))
+		E:StaticPopup_Show("UI_SCALE_CHANGES_INFORM", WrapTextInColorCode(E.clippedUiScaleCVar, "fffe7b2c"))
+		E.global.uiScaleInformed = true
+	end
 end
 
 function E:ValueFuncCall()

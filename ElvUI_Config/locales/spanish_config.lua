@@ -492,7 +492,6 @@ L["Attempt to support eyefinity/nvidia surround."] = true
 L["Auto Greed/DE"] = "Codicia/Desencantar Automático"
 L["Auto Hide"] = true
 L["Auto Repair"] = "Reparación Automática"
-L["Auto Scale"] = "Escalado Automático"
 L["Automatically accept invites from guild/friends."] = "Aceptar de forma automática invitaciones de la hermandad/amigos."
 L["Automatically hide the objetive frame during boss or arena fights."] = true
 L["Automatically repair using the following method when visiting a merchant."] = "Repara de forma automática usando el siguiente método cuando visites un comerciante."

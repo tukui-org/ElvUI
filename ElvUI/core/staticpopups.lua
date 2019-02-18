@@ -173,7 +173,7 @@ E.PopupDialogs['INCOMPATIBLE_ADDON'] = {
 }
 
 E.PopupDialogs['UISCALE_CHANGE'] = {
-	text = L["The UI Scale has been changes, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."],
+	text = L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."],
 	OnAccept = function() ReloadUI(); end,
 	OnCancel = function() end,
 	button1 = ACCEPT,
@@ -510,6 +510,25 @@ E.PopupDialogs['APPLY_FONT_WARNING'] = {
 E.PopupDialogs["MODULE_COPY_CONFIRM"] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false,
+}
+
+E.PopupDialogs["UI_SCALE_CHANGES_INFORM"] = {
+	text = L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."],
+	button1 = L["Use CVar Value"],
+	button2 = L["Auto Scale"],
+	button3 = CANCEL,
+	OnAccept = function()
+		E.global.general.UIScale = E.clippedUiScaleCVar
+		E:StaticPopup_Show("UISCALE_CHANGE")
+	end,
+	OnCancel = function()
+		E.global.general.UIScale = E:PixelClip(E:PixelBestSize())
+		E:StaticPopup_Show("UISCALE_CHANGE")
+	end,
+	OnShow = function(self) self.button1:Disable(); self.button2:Disable(); self.button3:Disable(); C_Timer.After(10, function() self.button1:Enable(); self.button2:Enable(); self.button3:Enable() end) end,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,

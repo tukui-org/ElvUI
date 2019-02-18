@@ -494,7 +494,6 @@ L["Attempt to support eyefinity/nvidia surround."] = "Versucht Eyefinity/NVIDIA 
 L["Auto Greed/DE"] = "Auto-Gier/DE"
 L["Auto Hide"] = "Auto Verstecken"
 L["Auto Repair"] = "Auto-Reparatur"
-L["Auto Scale"] = "Auto-Skalierung"
 L["Automatically accept invites from guild/friends."] = "Automatisch Einladungen von Gildenmitgliedern/Freunden akzeptieren"
 L["Automatically hide the objetive frame during boss or arena fights."] = "Versteckt automatisch die Questverfolgung während eines Boss oder Arena Kampfes."
 L["Automatically repair using the following method when visiting a merchant."] = "Repariere automatisch deine Ausrüstungsgegenstände, wenn du eine der folgenden Methoden auswählst."

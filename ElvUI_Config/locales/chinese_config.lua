@@ -490,7 +490,6 @@ L["Attempt to support eyefinity/nvidia surround."] = "尝试支持eyefinity/nvid
 L["Auto Greed/DE"] = "自动贪婪/分解"
 L["Auto Hide"] = true
 L["Auto Repair"] = "自动修理"
-L["Auto Scale"] = "自动缩放"
 L["Automatically accept invites from guild/friends."] = "自动接受工会或好友的邀请"
 L["Automatically hide the objetive frame during boss or arena fights."] = true
 L["Automatically repair using the following method when visiting a merchant."] = "使用以下方式来自动修理装备"
