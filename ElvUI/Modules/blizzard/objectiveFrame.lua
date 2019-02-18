@@ -84,4 +84,6 @@ function B:MoveObjectiveFrame()
 			self:GetParent():Show()
 		end
 	]])	
+
+	self:SetObjectiveFrameAutoHide()
 end
