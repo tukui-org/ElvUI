@@ -65,26 +65,26 @@ local function LoadSkin()
 		if not entry then return end
 		local nextRoleIcon = 1
 		if isDPS then
-			local icon = entry["RoleIcon"..nextRoleIcon];
+			local icon = entry["RoleIcon"..nextRoleIcon]
 			if icon then
 				icon:SetTexture(LFG_ICONS)
-				icon:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord());
+				icon:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
 				nextRoleIcon = nextRoleIcon + 1
 			end
 		end
 		if isHealer then
-			local icon = entry["RoleIcon"..nextRoleIcon];
+			local icon = entry["RoleIcon"..nextRoleIcon]
 			if icon then
 				icon:SetTexture(LFG_ICONS)
-				icon:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord());
+				icon:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
 				nextRoleIcon = nextRoleIcon + 1
 			end
 		end
 		if isTank then
-			local icon = entry["RoleIcon"..nextRoleIcon];
+			local icon = entry["RoleIcon"..nextRoleIcon]
 			if icon then
 				icon:SetTexture(LFG_ICONS)
-				icon:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord());
+				icon:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
 			end
 		end
 	end)

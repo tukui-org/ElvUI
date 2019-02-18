@@ -52,8 +52,8 @@ local function HandleGoldIcon(button)
 end
 
 local function SkinItemButton(parentFrame, _, index)
-	local parentName = parentFrame:GetName();
-	local item = _G[parentName.."Item"..index];
+	local parentName = parentFrame:GetName()
+	local item = _G[parentName.."Item"..index]
 
 	if item and not item.backdrop then
 		item:CreateBackdrop()
@@ -139,6 +139,7 @@ local function LoadSkin()
 	_G.LFGDungeonReadyStatus:SetTemplate("Transparent")
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
+
 	hooksecurefunc("LFGDungeonReadyPopup_Update", function()
 		local _, _, _, _, _, _, role = GetLFGProposal()
 		if _G.LFGDungeonReadyDialogRoleIcon:IsShown() then
@@ -159,7 +160,7 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc("LFGDungeonReadyStatusIndividual_UpdateIcon", function(button)
-		local _, role = GetLFGProposalMember(button:GetID());
+		local _, role = GetLFGProposalMember(button:GetID())
 
 		button.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 		button.texture:SetAlpha(0.6)
@@ -170,7 +171,7 @@ local function LoadSkin()
 			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
 		elseif role == "HEALER" then
 			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-		end		
+		end
 	end)
 
 	_G.LFDQueueFrame:StripTextures(true)
@@ -239,35 +240,35 @@ local function LoadSkin()
 		checkButton:Point("BOTTOMLEFT", 0, 0)
 	end
 	hooksecurefunc("LFGListApplicationDialog_UpdateRoles", function(self) --Copy from Blizzard, we just fix position
-		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles();
+		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles()
 
-		local avail1, avail2;
+		local avail1, avail2
 		if ( availTank ) then
-			avail1 = self.TankButton;
+			avail1 = self.TankButton
 		end
 		if ( availHealer ) then
 			if ( avail1 ) then
-				avail2 = self.HealerButton;
+				avail2 = self.HealerButton
 			else
-				avail1 = self.HealerButton;
+				avail1 = self.HealerButton
 			end
 		end
 		if ( availDPS ) then
 			if ( avail1 ) then
-				avail2 = self.DamagerButton;
+				avail2 = self.DamagerButton
 			else
-				avail1 = self.DamagerButton;
+				avail1 = self.DamagerButton
 			end
 		end
 
 		if ( avail2 ) then
 			avail1:ClearAllPoints();
-			avail1:SetPoint("TOPRIGHT", self, "TOP", -40, -35);
-			avail2:ClearAllPoints();
-			avail2:SetPoint("TOPLEFT", self, "TOP", 40, -35);
+			avail1:SetPoint("TOPRIGHT", self, "TOP", -40, -35)
+			avail2:ClearAllPoints()
+			avail2:SetPoint("TOPLEFT", self, "TOP", 40, -35)
 		elseif ( avail1 ) then
-			avail1:ClearAllPoints();
-			avail1:SetPoint("TOP", self, "TOP", 0, -35);
+			avail1:ClearAllPoints()
+			avail1:SetPoint("TOP", self, "TOP", 0, -35)
 		end
 	end)
 
