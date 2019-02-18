@@ -79,9 +79,9 @@ function B:MoveObjectiveFrame()
 		local shown = parent:IsShown()
 
 		if newstate == 1 and shown then
-			self:GetParent():SetScale(0.00000001)
+			self:GetParent():Hide()
 		elseif not shown then
-			self:GetParent():SetScale(1)
+			self:GetParent():Show()
 		end
 	]])	
 end
