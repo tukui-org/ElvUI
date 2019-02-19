@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs, unpack = pairs, unpack
@@ -15,17 +14,18 @@ local function LoadSkin()
 	S:HandlePortraitFrame(InspectFrame, true)
 	S:HandleButton(_G.InspectPaperDollFrame.ViewButton)
 
+	_G.SpecializationRing:Hide()
+	S:HandleIcon(_G.SpecializationSpecIcon, true)
+	_G.SpecializationSpecIcon:SetSize(55, 55) -- 70, 70 default size
+
 	--Create portrait element for the PvP Frame so we can see prestige
 	local InspectPVPFrame = _G.InspectPVPFrame
 	local portrait = InspectPVPFrame:CreateTexture(nil, "OVERLAY")
-	portrait:SetSize(57,57);
-	portrait:SetPoint("CENTER", InspectPVPFrame.PortraitBackground, "CENTER", 0, 0);
-	--Kill background
+	portrait:SetSize(55, 55)
+	portrait:SetPoint("CENTER", InspectPVPFrame.PortraitBackground, "CENTER", 0, 0)
 	InspectPVPFrame.PortraitBackground:Kill()
-	--Reposition portrait by repositioning the background
 	InspectPVPFrame.PortraitBackground:ClearAllPoints()
 	InspectPVPFrame.PortraitBackground:SetPoint("TOPLEFT", 5, -5)
-	--Reposition the wreath
 	InspectPVPFrame.SmallWreath:ClearAllPoints()
 	InspectPVPFrame.SmallWreath:SetPoint("TOPLEFT", -2, -25)
 
@@ -35,30 +35,23 @@ local function LoadSkin()
 			local button = _G["TalentsTalentRow"..i.."Talent"..j]
 
 			button:StripTextures()
-			button:CreateBackdrop("Default")
-
-			button.icon:SetAllPoints()
-			button.icon:SetTexCoord(unpack(E.TexCoords))
+			S:HandleIcon(button.icon, true)
 		end
 	end
 
 	-- PVP Talents
-	-- Probably needs some adjustments
-	local trinketSlot = InspectPVPFrame.TrinketSlot
-	trinketSlot.Border:Hide()
-	trinketSlot.Texture:SetTexCoord(unpack(E.TexCoords))
+	local function SkinPvpTalents(slot)
+		local icon = slot.Texture
+		slot:StripTextures()
+		S:HandleIcon(icon, true)
+		slot.Border:Hide()
+	end
 
-	local talentSlot1 = InspectPVPFrame.TalentSlot1
-	talentSlot1.Border:Hide()
-	talentSlot1.Texture:SetTexCoord(unpack(E.TexCoords))
+	for i = 1, 3 do
+		SkinPvpTalents(InspectPVPFrame["TalentSlot"..i])
+	end
 
-	local talentSlot2 = InspectPVPFrame.TalentSlot2
-	talentSlot2.Border:Hide()
-	talentSlot2.Texture:SetTexCoord(unpack(E.TexCoords))
-
-	local talentSlot3 = InspectPVPFrame.TalentSlot3
-	talentSlot3.Border:Hide()
-	talentSlot3.Texture:SetTexCoord(unpack(E.TexCoords))
+	SkinPvpTalents(InspectPVPFrame.TrinketSlot)
 
 	for i = 1, 4 do
 		S:HandleTab(_G["InspectFrameTab"..i])
@@ -66,7 +59,7 @@ local function LoadSkin()
 
 	local InspectModelFrame = _G.InspectModelFrame
 	InspectModelFrame:StripTextures()
-	InspectModelFrame:CreateBackdrop("Default")
+	InspectModelFrame:CreateBackdrop()
 	InspectModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	InspectModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
@@ -99,7 +92,7 @@ local function LoadSkin()
 
 	for _, Slot in pairs({_G.InspectPaperDollItemsFrame:GetChildren()}) do
 		if Slot:IsObjectType("Button") or Slot:IsObjectType("ItemButton") then
-			S:HandleTexture(Slot.icon)
+			S:HandleIcon(Slot.icon)
 			Slot:StripTextures()
 			Slot:SetTemplate()
 			Slot:StyleButton()

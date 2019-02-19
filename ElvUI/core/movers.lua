@@ -1,20 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local Sticky = E.Libs.SimpleSticky
 
---Cache global variables
 --Lua functions
 local _G = _G
 local type, unpack, pairs, error = type, unpack, pairs, error
-local format, split, find = string.format, string.split, string.find
+local format, split, find = format, strsplit, strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local IsControlKeyDown = IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: ElvUIParent, ElvUIMoverNudgeWindow
+-- GLOBALS: ElvUIMoverNudgeWindow
 
 E.CreatedMovers = {}
 E.DisabledMovers = {}
@@ -31,7 +28,7 @@ end
 
 local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
-	if not anchor then anchor = ElvUIParent end
+	if not anchor then anchor = E.UIParent end
 
 	return format('%s,%s,%s,%d,%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
 end
@@ -188,10 +185,10 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	local function OnMouseDown(self, button)
 		if button == "LeftButton" and not isDragging then
-			if _G.ElvUIMoverNudgeWindow:IsShown() then
-				_G.ElvUIMoverNudgeWindow:Hide()
+			if ElvUIMoverNudgeWindow:IsShown() then
+				ElvUIMoverNudgeWindow:Hide()
 			else
-				_G.ElvUIMoverNudgeWindow:Show()
+				ElvUIMoverNudgeWindow:Show()
 			end
 		elseif button == "RightButton" then
 			isDragging = false

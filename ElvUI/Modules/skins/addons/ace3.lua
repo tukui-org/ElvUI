@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local select = select
@@ -55,7 +54,7 @@ function S:SkinAce3()
 			local checkbg = widget.checkbg
 			local highlight = widget.highlight
 
-			checkbg:CreateBackdrop('Default')
+			checkbg:CreateBackdrop()
 			checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
 			checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
 			checkbg:SetTexture()
@@ -89,10 +88,10 @@ function S:SkinAce3()
 			local text = widget.text
 			frame:StripTextures()
 
-			S:HandleNextPrevButton(button, true)
+			S:HandleNextPrevButton(button, nil, {1, .8, 0})
 
 			if not frame.backdrop then
-				frame:CreateBackdrop('Default')
+				frame:CreateBackdrop()
 			end
 
 			frame.backdrop:SetPoint('TOPLEFT', 15, -2)
@@ -119,10 +118,10 @@ function S:SkinAce3()
 			local text = frame.text
 			frame:StripTextures()
 
-			S:HandleNextPrevButton(button, true)
+			S:HandleNextPrevButton(button, nil, {1, .8, 0})
 
 			if not frame.backdrop then
-				frame:CreateBackdrop('Default')
+				frame:CreateBackdrop()
 			end
 
 			frame.label:ClearAllPoints()
@@ -207,7 +206,7 @@ function S:SkinAce3()
 			local colorSwatch = widget.colorSwatch
 
 			if not frame.backdrop then
-				frame:CreateBackdrop('Default')
+				frame:CreateBackdrop()
 			end
 
 			frame.backdrop:SetSize(24, 16)

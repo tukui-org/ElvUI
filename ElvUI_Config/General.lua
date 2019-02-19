@@ -483,8 +483,16 @@ E.Options.args.general = {
 					type = "header",
 					name = L["Objective Frame"],
 				},
-				objectiveFrameHeight = {
+				objectiveFrameAutoHide = {
 					order = 31,
+					type = "toggle",
+					name = L["Auto Hide"],
+					desc = L["Automatically hide the objetive frame during boss or arena fights."],
+					get = function(info) return E.db.general.objectiveFrameAutoHide end,
+					set = function(info, value) E.db.general.objectiveFrameAutoHide = value; E:GetModule('Blizzard'):SetObjectiveFrameAutoHide(); end,					
+				},
+				objectiveFrameHeight = {
+					order = 32,
 					type = 'range',
 					name = L["Objective Frame Height"],
 					desc = L["Height of the objective tracker. Increase size to be able to see more objectives."],
@@ -493,7 +501,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.objectiveFrameHeight = value; E:GetModule('Blizzard'):SetObjectiveFrameHeight(); end,
 				},
 				bonusObjectivePosition = {
-					order = 32,
+					order = 33,
 					type = 'select',
 					name = L["Bonus Reward Position"],
 					desc = L["Position of bonus quest reward frame relative to the objective tracker."],
@@ -734,19 +742,30 @@ E.Options.args.general = {
 					get = function(info) return E.private.general.voiceOverlay end,
 					set = function(info, value) E.private.general.voiceOverlay = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				displayInspectInfo = {
+				displayCharacterInfo = {
 					order = 8,
 					type = "toggle",
+					name = L["Display Character Info"],
+					desc = L["Shows item level of each item, enchants, and gems on the character page."],
+					get = function(info) return E.db.general.displayCharacterInfo end,
+					set = function(info, value)
+						E.db.general.displayCharacterInfo = value;
+						M:ToggleItemLevelInfo()
+					end
+				},
+				displayInspectInfo = {
+					order = 9,
+					type = "toggle",
 					name = L["Display Inspect Info"],
-					desc = L["Shows item level of each item, enchants, and gems when inspecting another player.\nAlso displays Gear Score on the bottom right side of the inspect frame. This is an average of each equipped item."],
+					desc = L["Shows item level of each item, enchants, and gems when inspecting another player."],
 					get = function(info) return E.db.general.displayInspectInfo end,
 					set = function(info, value)
 						E.db.general.displayInspectInfo = value;
-						M:ToggleInspectInfo()
+						M:ToggleItemLevelInfo()
 					end
 				},
 				vehicleSeatIndicatorSize = {
-					order = 9,
+					order = 10,
 					type = "range",
 					name = L["Vehicle Seat Indicator Size"],
 					min = 64, max = 128, step = 4,
@@ -754,7 +773,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.vehicleSeatIndicatorSize = value; B:UpdateVehicleFrame() end,
 				},
 				commandBarSetting = {
-					order = 10,
+					order = 11,
 					type = "select",
 					name = L["Order Hall Command Bar"],
 					get = function(info) return E.global.general.commandBarSetting end,
@@ -767,7 +786,7 @@ E.Options.args.general = {
 					},
 				},
 				disableTutorialButtons = {
-					order = 11,
+					order = 12,
 					type = 'toggle',
 					name = L["Disable Tutorial Buttons"],
 					desc = L["Disables the tutorial button found on some frames."],

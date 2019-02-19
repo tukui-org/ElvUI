@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
@@ -54,7 +53,7 @@ local function LoadSkin()
 			self.Background:Hide()
 			self:SetFrameLevel(self:GetFrameLevel()+5)
 
-			S:HandleTexture(self.Icon)
+			S:HandleIcon(self.Icon)
 			self.Icon:RemoveMaskTexture(self.CircleMask)
 			self.Icon:SetDrawLayer("OVERLAY", 1)
 			self.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -89,7 +88,7 @@ local function LoadSkin()
 		--select(13, self:GetRegions()):Hide() -- Hide the mouseover texture (needs some love)
 		self.Background:Hide()
 		self:SetFrameLevel(self:GetFrameLevel()+5)
-		S:HandleTexture(self.Icon)
+		S:HandleIcon(self.Icon)
 		self.CircleMask:Hide()
 		self.Icon:SetDrawLayer("OVERLAY", 1)
 		self.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -223,7 +222,7 @@ local function LoadSkin()
 		local button = _G["CommunitiesFrameContainerButton"..i]
 		button:DisableDrawLayer("BACKGROUND")
 		button:DisableDrawLayer("BORDER")
-		button:CreateBackdrop("Default")
+		button:CreateBackdrop()
 
 		button.Icon:SetTexCoord(unpack(E.TexCoords))
 	end
@@ -236,7 +235,7 @@ local function LoadSkin()
 
 	for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
 		if not button.backdrop then
-			button:CreateBackdrop("Default")
+			button:CreateBackdrop()
 		end
 
 		button:SetNormalTexture("")
@@ -252,7 +251,7 @@ local function LoadSkin()
 
 		button.Icon:SetTexCoord(unpack(E.TexCoords))
 		if not button.Icon.backdrop then
-			button.Icon:CreateBackdrop("Default")
+			button.Icon:CreateBackdrop()
 			button.Icon.backdrop:SetOutside(button.Icon, 1, 1)
 			button.Icon.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel() + 1)
 		end
@@ -285,7 +284,7 @@ local function LoadSkin()
 	bg:SetPoint("TOPLEFT", 0, -3)
 	bg:SetPoint("BOTTOMRIGHT", 0, 1)
 	bg:SetFrameLevel(StatusBar:GetFrameLevel())
-	bg:CreateBackdrop("Default")
+	bg:CreateBackdrop()
 
 	-- [[ INFO TAB ]]
 	local GuildDetails = _G.CommunitiesFrameGuildDetailsFrame

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
@@ -9,6 +8,9 @@ local pairs, select, unpack = pairs, select, unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local BNFeaturesEnabled = BNFeaturesEnabled
+local FriendsFrameBroadcastInput_UpdateDisplay = FriendsFrameBroadcastInput_UpdateDisplay
+local FriendsFrame_CheckBattlenetStatus = FriendsFrame_CheckBattlenetStatus
+local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
 local RaiseFrameLevel = RaiseFrameLevel
 local BNConnected = BNConnected
 
@@ -162,7 +164,7 @@ local function LoadSkin()
 	FriendsFrameBattlenetFrame.Tag:SetParent(_G.FriendsListFrame)
 	FriendsFrameBattlenetFrame.Tag:Point("TOP", FriendsFrame, "TOP", 0, -8)
 
-	_G.FriendsFrameBroadcastInput:CreateBackdrop("Default")
+	_G.FriendsFrameBroadcastInput:CreateBackdrop()
 	_G.FriendsFrameBroadcastInput:SetWidth(259)
 
 	hooksecurefunc("FriendsFrame_CheckBattlenetStatus", function()
@@ -174,11 +176,11 @@ local function LoadSkin()
 			if BNConnected() then
 				frame:Hide()
 				_G.FriendsFrameBroadcastInput:Show()
-				_G.FriendsFrameBroadcastInput_UpdateDisplay()
+				FriendsFrameBroadcastInput_UpdateDisplay()
 			end
 		end
 	end)
-	_G.FriendsFrame_CheckBattlenetStatus()
+	FriendsFrame_CheckBattlenetStatus()
 
 	hooksecurefunc("FriendsFrame_Update", function()
 		if FriendsFrame.selectedTab == 1 and _G.FriendsTabHeader.selectedTab == 1 and FriendsFrameBattlenetFrame.Tag:IsShown() then
@@ -209,7 +211,7 @@ local function LoadSkin()
 	hooksecurefunc("FriendsFrame_OnEvent", UpdateWhoSkins)
 
 	--Increase width of Level column slightly
-	_G.WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) --Default is 32
+	WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) --Default is 32
 	for i = 1, 17 do
 		local level = _G["WhoFrameButton"..i.."Level"]
 		if level then

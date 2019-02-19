@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local next, pairs, select, unpack = next, pairs, select, unpack
@@ -51,7 +50,7 @@ local function LoadSkin()
 	end
 
 	_G.GuildNewsBossModel:CreateBackdrop("Transparent")
-	_G.GuildNewsBossModelTextFrame:CreateBackdrop("Default")
+	_G.GuildNewsBossModelTextFrame:CreateBackdrop()
 	_G.GuildNewsBossModelTextFrame.backdrop:Point("TOPLEFT", _G.GuildNewsBossModel.backdrop, "BOTTOMLEFT", 0, -1)
 	_G.GuildNewsBossModel:Point("TOPLEFT", GuildFrame, "TOPRIGHT", 4, -43)
 
@@ -106,7 +105,7 @@ local function LoadSkin()
 	GuildFactionBar:StripTextures()
 	GuildFactionBar.progress:SetTexture(E.media.normTex)
 	E:RegisterStatusBar(GuildFactionBar.progress)
-	GuildFactionBar:CreateBackdrop("Default")
+	GuildFactionBar:CreateBackdrop()
 	GuildFactionBar.backdrop:Point("TOPLEFT", GuildFactionBar.progress, "TOPLEFT", -E.Border, E.Border)
 	GuildFactionBar.backdrop:Point("BOTTOMRIGHT", GuildFactionBar, "BOTTOMRIGHT", E.Spacing, E.PixelMode and 1 or 0)
 
@@ -247,7 +246,7 @@ local function LoadSkin()
 			button.icon:SetTexCoord(unpack(E.TexCoords))
 			button.icon:ClearAllPoints()
 			button.icon:Point("TOPLEFT", 2, -2)
-			button:CreateBackdrop("Default")
+			button:CreateBackdrop()
 			button.backdrop:SetOutside(button.icon)
 			button.icon:SetParent(button.backdrop)
 		end

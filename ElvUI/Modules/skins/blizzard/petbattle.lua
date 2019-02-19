@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local pairs, unpack = pairs, unpack
 --WoW API / Variables
@@ -318,15 +317,6 @@ local function LoadSkin()
 	bar:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 4)
 	bar:SetFrameLevel(0)
 	bar:SetFrameStrata('BACKGROUND')
-	bar.backdropTexture:SetDrawLayer('BACKGROUND', 0)
-	bar:SetScript('OnShow', function(self)
-		if not self.initialShow then
-			self.initialShow = true;
-			return;
-		end
-
-		self.backdropTexture:SetDrawLayer('BACKGROUND', 1)
-	end)
 
 	bf:StripTextures()
 	bf.TurnTimer:StripTextures()

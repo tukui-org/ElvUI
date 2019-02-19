@@ -2,19 +2,19 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 local LBG = E.Libs.ButtonGlow
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack, ipairs, pairs, select = unpack, ipairs, pairs, select
-local min, lower = math.min, string.lower
+local min, strlower = min, strlower
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
-local GetLFGProposal = GetLFGProposal
 local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
-local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
+local GetLFGProposal = GetLFGProposal
+local GetLFGProposalMember = GetLFGProposalMember
+local hooksecurefunc = hooksecurefunc
+local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
-local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
+local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 
 local function LFDQueueFrameRoleButtonIconOnShow(self)
@@ -32,7 +32,7 @@ local function HandleGoldIcon(button)
 	local nameFrame = _G[button.."NameFrame"]
 	local iconTexture = _G[button.."IconTexture"]
 
-	Button:CreateBackdrop("Default")
+	Button:CreateBackdrop()
 	Button.backdrop:ClearAllPoints()
 	Button.backdrop:Point("LEFT", 1, 0)
 	Button.backdrop:Size(42)
@@ -52,11 +52,11 @@ local function HandleGoldIcon(button)
 end
 
 local function SkinItemButton(parentFrame, _, index)
-	local parentName = parentFrame:GetName();
-	local item = _G[parentName.."Item"..index];
+	local parentName = parentFrame:GetName()
+	local item = _G[parentName.."Item"..index]
 
 	if item and not item.backdrop then
-		item:CreateBackdrop("Default")
+		item:CreateBackdrop()
 		item.backdrop:ClearAllPoints()
 		item.backdrop:Point("LEFT", 1, 0)
 		item.backdrop:Size(42)
@@ -139,6 +139,7 @@ local function LoadSkin()
 	_G.LFGDungeonReadyStatus:SetTemplate("Transparent")
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
+
 	hooksecurefunc("LFGDungeonReadyPopup_Update", function()
 		local _, _, _, _, _, _, role = GetLFGProposal()
 		if _G.LFGDungeonReadyDialogRoleIcon:IsShown() then
@@ -155,6 +156,21 @@ local function LoadSkin()
 	hooksecurefunc(_G.LFGDungeonReadyDialog, "SetBackdrop", function(self, backdrop)
 		if backdrop.bgFile ~= E.media.blankTex then
 			self:SetTemplate("Transparent")
+		end
+	end)
+
+	hooksecurefunc("LFGDungeonReadyStatusIndividual_UpdateIcon", function(button)
+		local _, role = GetLFGProposalMember(button:GetID())
+
+		button.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+		button.texture:SetAlpha(0.6)
+
+		if role == "DAMAGER" then
+			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+		elseif role == "TANK" then
+			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+		elseif role == "HEALER" then
+			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
 		end
 	end)
 
@@ -208,7 +224,7 @@ local function LoadSkin()
 				roleButton.background:SetAlpha(0.65)
 
 				local buttonName = roleButton:GetName() ~= nil and roleButton:GetName() or roleButton.role
-				roleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole((lower(buttonName):find("tank") and "TANK") or (lower(buttonName):find("healer") and "HEALER") or "DAMAGER"))
+				roleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole((strlower(buttonName):find("tank") and "TANK") or (strlower(buttonName):find("healer") and "HEALER") or "DAMAGER"))
 			end
 		end
 	end
@@ -224,35 +240,35 @@ local function LoadSkin()
 		checkButton:Point("BOTTOMLEFT", 0, 0)
 	end
 	hooksecurefunc("LFGListApplicationDialog_UpdateRoles", function(self) --Copy from Blizzard, we just fix position
-		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles();
+		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles()
 
-		local avail1, avail2;
+		local avail1, avail2
 		if ( availTank ) then
-			avail1 = self.TankButton;
+			avail1 = self.TankButton
 		end
 		if ( availHealer ) then
 			if ( avail1 ) then
-				avail2 = self.HealerButton;
+				avail2 = self.HealerButton
 			else
-				avail1 = self.HealerButton;
+				avail1 = self.HealerButton
 			end
 		end
 		if ( availDPS ) then
 			if ( avail1 ) then
-				avail2 = self.DamagerButton;
+				avail2 = self.DamagerButton
 			else
-				avail1 = self.DamagerButton;
+				avail1 = self.DamagerButton
 			end
 		end
 
 		if ( avail2 ) then
 			avail1:ClearAllPoints();
-			avail1:SetPoint("TOPRIGHT", self, "TOP", -40, -35);
-			avail2:ClearAllPoints();
-			avail2:SetPoint("TOPLEFT", self, "TOP", 40, -35);
+			avail1:SetPoint("TOPRIGHT", self, "TOP", -40, -35)
+			avail2:ClearAllPoints()
+			avail2:SetPoint("TOPLEFT", self, "TOP", 40, -35)
 		elseif ( avail1 ) then
-			avail1:ClearAllPoints();
-			avail1:SetPoint("TOP", self, "TOP", 0, -35);
+			avail1:ClearAllPoints()
+			avail1:SetPoint("TOP", self, "TOP", 0, -35)
 		end
 	end)
 
@@ -300,7 +316,7 @@ local function LoadSkin()
 		bu.icon:Size(45)
 		bu.icon:ClearAllPoints()
 		bu.icon:Point("LEFT", 10, 0)
-		S:HandleTexture(bu.icon, bu)
+		S:HandleIcon(bu.icon, true)
 	end
 
 	for i = 1, 3 do
@@ -426,7 +442,7 @@ local function LoadSkin()
 				tab:GetNormalTexture():SetInside()
 
 				tab.pushed = true;
-				tab:CreateBackdrop("Default")
+				tab:CreateBackdrop()
 				tab.backdrop:SetAllPoints()
 				tab:StyleButton(true)
 				hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
@@ -698,7 +714,7 @@ local function LoadSecondarySkin()
 				frame:GetRegions():SetAlpha(0)
 				frame:CreateBackdrop("Transparent")
 				frame.backdrop:SetAllPoints()
-				S:HandleTexture(frame.Icon, frame)
+				S:HandleIcon(frame.Icon, true)
 				frame.Icon:SetInside()
 			end
 		end

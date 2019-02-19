@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
---Cache global variables
 --Lua functions
 local _G = _G
 local ceil = math.ceil
@@ -20,9 +19,7 @@ local SetDesaturation = SetDesaturation
 local PetActionBar_ShowGrid = PetActionBar_ShowGrid
 local PetActionBar_UpdateCooldowns = PetActionBar_UpdateCooldowns
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ElvUI_Bar4, PetActionBarFrame, Spell
+-- GLOBALS: ElvUI_Bar4
 
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Pet Bar")
@@ -51,7 +48,7 @@ function AB:UpdatePet(event, unit)
 
 		button.isToken = isToken;
 		if spellID then
-			local spell = Spell:CreateFromSpellID(spellID);
+			local spell = _G.Spell:CreateFromSpellID(spellID);
 			button.spellDataLoadedCancelFunc = spell:ContinueWithCancelOnSpellLoad(function()
 				button.tooltipSubtext = spell:GetSpellSubtext();
 			end);
@@ -276,7 +273,7 @@ function AB:UpdatePetBindings()
 end
 
 function AB:CreateBarPet()
-	bar:CreateBackdrop('Default');
+	bar:CreateBackdrop();
 	bar.backdrop:SetAllPoints();
 	if self.db.bar4.enabled then
 		bar:Point('RIGHT', ElvUI_Bar4, 'LEFT', -4, 0);
@@ -302,7 +299,7 @@ function AB:CreateBarPet()
 		end
 	end);
 
-	PetActionBarFrame.showgrid = 1;
+	_G.PetActionBarFrame.showgrid = 1;
 	PetActionBar_ShowGrid();
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');

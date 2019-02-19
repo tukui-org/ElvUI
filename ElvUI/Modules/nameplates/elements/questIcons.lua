@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs = pairs
@@ -80,7 +79,6 @@ local QuestTypesLocalized = {
 	},
 }
 
-local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_QuestIconsTooltip", UIParent, "GameTooltipTemplate")
 local QuestTypes = QuestTypesLocalized[UsedLocale] or QuestTypesLocalized["enUS"]
 
 function mod:QUEST_ACCEPTED(_, questLogIndex, questID)
@@ -115,13 +113,13 @@ function mod:GetQuests(unitID)
 	local inInstance = IsInInstance()
 	if inInstance then return end
 
-	ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
-	ScanTooltip:SetUnit(unitID)
-	ScanTooltip:Show()
+	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+	E.ScanTooltip:SetUnit(unitID)
+	E.ScanTooltip:Show()
 
 	local QuestList, questID = {}
-	for i = 3, ScanTooltip:NumLines() do
-		local str = _G['ElvUI_QuestIconsTooltipTextLeft' .. i]
+	for i = 3, E.ScanTooltip:NumLines() do
+		local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
 		local text = str and str:GetText()
 		if not text then return end
 		if not questID then
@@ -173,7 +171,7 @@ function mod:GetQuests(unitID)
 		end
 	end
 
-	ScanTooltip:Hide()
+	E.ScanTooltip:Hide()
 	return QuestList
 end
 

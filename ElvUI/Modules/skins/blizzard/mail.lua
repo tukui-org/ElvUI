@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack = unpack
@@ -42,9 +41,6 @@ local function LoadSkin()
 	for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 		local bg = _G["MailItem"..i]
 		bg:StripTextures()
-		bg:CreateBackdrop("Default")
-		bg.backdrop:Point("TOPLEFT", 2, 1)
-		bg.backdrop:Point("BOTTOMRIGHT", -2, 2)
 
 		local btn = _G["MailItem"..i.."Button"]
 		btn:StripTextures()
@@ -64,6 +60,10 @@ local function LoadSkin()
 			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 	end
+
+	_G.MailFrame:CreateBackdrop("Transparent")
+	_G.MailFrame.backdrop:SetPoint("TOPLEFT", _G.MailItem1, "TOPLEFT")
+	_G.MailFrame.backdrop:SetPoint("BOTTOMRIGHT", _G.MailItem7, "BOTTOMRIGHT")
 
 	S:HandleNextPrevButton(_G.InboxPrevPageButton)
 	S:HandleNextPrevButton(_G.InboxNextPageButton)

@@ -3,31 +3,30 @@ local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceHook-3.
 local LSM = E.Libs.LSM
 UF.LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local _G = _G
 local select, pairs, type, unpack, assert, tostring = select, pairs, type, unpack, assert, tostring
-local min = math.min
-local tinsert = table.insert
-local find, gsub, format = string.find, string.gsub, string.format
+local min = min
+local tinsert = tinsert
+local strfind, gsub, format = strfind, gsub, format
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
-local IsAddOnLoaded = IsAddOnLoaded
-local UnitFrame_OnEnter = UnitFrame_OnEnter
-local UnitFrame_OnLeave = UnitFrame_OnLeave
-local IsInInstance = IsInInstance
-local InCombatLockdown = InCombatLockdown
 local CompactRaidFrameManager_GetSetting = CompactRaidFrameManager_GetSetting
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
-local GetInstanceInfo = GetInstanceInfo
-local UnregisterStateDriver = UnregisterStateDriver
-local RegisterStateDriver = RegisterStateDriver
-local UnregisterAttributeDriver = UnregisterAttributeDriver
 local CompactRaidFrameManager_UpdateShown = CompactRaidFrameManager_UpdateShown
+local CreateFrame = CreateFrame
+local GetInstanceInfo = GetInstanceInfo
+local hooksecurefunc = hooksecurefunc
+local InCombatLockdown = InCombatLockdown
+local IsAddOnLoaded = IsAddOnLoaded
+local IsInInstance = IsInInstance
+local RegisterStateDriver = RegisterStateDriver
+local UnitFrame_OnEnter = UnitFrame_OnEnter
+local UnitFrame_OnLeave = UnitFrame_OnLeave
+local UnregisterAttributeDriver = UnregisterAttributeDriver
+local UnregisterStateDriver = UnregisterStateDriver
 local CompactRaidFrameContainer = CompactRaidFrameContainer
-local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
+local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, ElvCharacterDB, ElvUF_Parent, oUF_RaidDebuffs, CompactRaidFrameManager
@@ -283,15 +282,15 @@ end
 function UF:GetPositionOffset(position, offset)
 	if not offset then offset = 2; end
 	local x, y = 0, 0
-	if find(position, 'LEFT') then
+	if strfind(position, 'LEFT') then
 		x = offset
-	elseif find(position, 'RIGHT') then
+	elseif strfind(position, 'RIGHT') then
 		x = -offset
 	end
 
-	if find(position, 'TOP') then
+	if strfind(position, 'TOP') then
 		y = -offset
-	elseif find(position, 'BOTTOM') then
+	elseif strfind(position, 'BOTTOM') then
 		y = offset
 	end
 
@@ -306,9 +305,9 @@ function UF:GetAuraOffset(p1, p2)
 		x = 3
 	end
 
-	if find(p1, 'TOP') and find(p2, 'BOTTOM') then
+	if strfind(p1, 'TOP') and strfind(p2, 'BOTTOM') then
 		y = -1
-	elseif find(p1, 'BOTTOM') and find(p2, 'TOP') then
+	elseif strfind(p1, 'BOTTOM') and strfind(p2, 'TOP') then
 		y = 1
 	end
 

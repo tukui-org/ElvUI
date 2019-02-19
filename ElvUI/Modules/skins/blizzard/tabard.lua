@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs = pairs
@@ -19,7 +18,7 @@ local function LoadSkin()
 	S:HandleRotateButton(_G.TabardCharacterModelRotateLeftButton)
 	S:HandleRotateButton(_G.TabardCharacterModelRotateRightButton)
 
-	_G.TabardModel:CreateBackdrop("Default")
+	_G.TabardModel:CreateBackdrop()
 	_G.TabardFrameCostFrame:StripTextures()
 	_G.TabardFrameCustomizationFrame:StripTextures()
 	_G.TabardFrameMoneyInset:Kill()

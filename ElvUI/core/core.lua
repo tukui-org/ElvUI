@@ -7,49 +7,47 @@ local Masque = E.Libs.Masque
 local L = E.Libs.ACL:GetLocale('ElvUI', false)
 ElvUI[2] = L
 
---Cache global variables
 --Lua functions
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local assert, type, collectgarbage, pcall, date = assert, type, collectgarbage, pcall, date
-local twipe, tinsert, tremove, next = table.wipe, tinsert, tremove, next
-local floor, gsub, strmatch, strjoin = floor, string.gsub, string.match, strjoin
-local format, find, strrep, len, sub = string.format, string.find, strrep, string.len, string.sub
+local twipe, tinsert, tremove, next = wipe, tinsert, tremove, next
+local floor, gsub, strmatch, strjoin = floor, gsub, match, strjoin
+local format, find, strrep, len, sub = format, strfind, strrep, strlen, strsub
 --WoW API / Variables
-local UnitGUID = UnitGUID
 local CreateFrame = CreateFrame
-local C_Timer_After = C_Timer.After
-local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
-local GetCombatRatingBonus = GetCombatRatingBonus
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
+local GetChannelName = GetChannelName
+local GetCombatRatingBonus = GetCombatRatingBonus
 local GetDodgeChance, GetParryChance = GetDodgeChance, GetParryChance
 local GetFunctionCPUUsage = GetFunctionCPUUsage
+local GetNumGroupMembers = GetNumGroupMembers
 local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGroup
 local GetSpecializationRole = GetSpecializationRole
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInInstance, IsInGuild = IsInInstance, IsInGuild
+local IsInRaid, IsInGroup = IsInRaid, IsInGroup
+local JoinChannelByName = JoinChannelByName
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
-local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
-local C_ChatInfo_GetNumActiveChannels = C_ChatInfo.GetNumActiveChannels
+local UnitFactionGroup = UnitFactionGroup
+local UnitGUID = UnitGUID
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
-local GetChannelName = GetChannelName
-local JoinChannelByName = JoinChannelByName
 local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
-local UnitFactionGroup = UnitFactionGroup
-local IsInRaid, IsInGroup = IsInRaid, IsInGroup
-local GetNumGroupMembers = GetNumGroupMembers
+local hooksecurefunc = hooksecurefunc
+local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
-local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
+local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
+local MAX_WOW_CHAT_CHANNELS = MAX_WOW_CHAT_CHANNELS
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: ElvDB, UIParent, DEFAULT_CHAT_FRAME, CUSTOM_CLASS_COLORS, OrderHallCommandBar
--- GLOBALS: MAX_PLAYER_LEVEL, CreateChatChannelList, MAX_WOW_CHAT_CHANNELS, CHAT_CONFIG_CHANNEL_LIST
--- GLOBALS: LeftChatPanel, RightChatPanel, ElvUIPlayerBuffs, ElvUIPlayerDebuffs, ScriptErrorsFrame
+local C_ChatInfo_GetNumActiveChannels = C_ChatInfo.GetNumActiveChannels
+local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
+local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
+local C_Timer_After = C_Timer.After
+-- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs
 
 --Constants
 E.noop = function() end
@@ -186,7 +184,7 @@ end
 local hexvaluecolor
 function E:Print(...)
 	hexvaluecolor = self.media.hexvaluecolor or '|cff00b3ff'
-	(_G[self.db.general.messageRedirect] or DEFAULT_CHAT_FRAME):AddMessage(strjoin('', hexvaluecolor, 'ElvUI:|r ', ...)) -- I put DEFAULT_CHAT_FRAME as a fail safe.
+	(_G[self.db.general.messageRedirect] or _G.DEFAULT_CHAT_FRAME):AddMessage(strjoin('', hexvaluecolor, 'ElvUI:|r ', ...)) -- I put DEFAULT_CHAT_FRAME as a fail safe.
 end
 
 --Workaround for people wanting to use white and it reverting to their class color.
@@ -212,7 +210,7 @@ function E:CheckClassColor(r, g, b)
 	local matchFound = false
 	for class in pairs(RAID_CLASS_COLORS) do
 		if class ~= E.myclass then
-			local colorTable = class == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
+			local colorTable = class == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
 			if colorTable.r == r and colorTable.g == g and colorTable.b == b then
 				matchFound = true
 			end
@@ -285,7 +283,7 @@ function E:UpdateMedia()
 	--Border Color
 	local border = E.db.general.bordercolor
 	if self:CheckClassColor(border.r, border.g, border.b) then
-		local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+		local classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 		E.db.general.bordercolor.r = classColor.r
 		E.db.general.bordercolor.g = classColor.g
 		E.db.general.bordercolor.b = classColor.b
@@ -296,7 +294,7 @@ function E:UpdateMedia()
 	--UnitFrame Border Color
 	border = E.db.unitframe.colors.borderColor
 	if self:CheckClassColor(border.r, border.g, border.b) then
-		local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+		local classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 		E.db.unitframe.colors.borderColor.r = classColor.r
 		E.db.unitframe.colors.borderColor.g = classColor.g
 		E.db.unitframe.colors.borderColor.b = classColor.b
@@ -313,7 +311,7 @@ function E:UpdateMedia()
 	local value = self.db.general.valuecolor
 
 	if self:CheckClassColor(value.r, value.g, value.b) then
-		value = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+		value = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 		self.db.general.valuecolor.r = value.r
 		self.db.general.valuecolor.g = value.g
 		self.db.general.valuecolor.b = value.b
@@ -322,6 +320,8 @@ function E:UpdateMedia()
 	self.media.hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
 	self.media.rgbvaluecolor = {value.r, value.g, value.b}
 
+	local LeftChatPanel = _G.LeftChatPanel
+	local RightChatPanel = _G.RightChatPanel
 	if LeftChatPanel and LeftChatPanel.tex and RightChatPanel and RightChatPanel.tex then
 		LeftChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameLeft)
 		local a = E.db.general.backdropfadecolor.a or 0.5
@@ -440,6 +440,12 @@ function E:PLAYER_ENTERING_WORLD()
 		self:CancelTimer(self.BGTimer)
 		self.BGTimer = nil
 	end
+
+	if not E.global.uiScaleInformed then
+		E.clippedUiScaleCVar = E:PixelClip(GetCVar("uiScale"))
+		E:StaticPopup_Show("UI_SCALE_CHANGES_INFORM", WrapTextInColorCode(E.clippedUiScaleCVar, "fffe7b2c"))
+		E.global.uiScaleInformed = true
+	end
 end
 
 function E:ValueFuncCall()
@@ -501,11 +507,7 @@ function E:UpdateBackdropColors()
 		if frame then
 			if not frame.ignoreBackdropColors then
 				if frame.template == 'Default' or frame.template == nil then
-					if frame.backdropTexture then
-						frame.backdropTexture:SetVertexColor(unpack(self.media.backdropcolor))
-					else
-						frame:SetBackdropColor(unpack(self.media.backdropcolor))
-					end
+					frame:SetBackdropColor(unpack(self.media.backdropcolor))
 				elseif frame.template == 'Transparent' then
 					frame:SetBackdropColor(unpack(self.media.backdropfadecolor))
 				end
@@ -519,11 +521,7 @@ function E:UpdateBackdropColors()
 		if frame then
 			if not frame.ignoreBackdropColors then
 				if frame.template == 'Default' or frame.template == nil then
-					if frame.backdropTexture then
-						frame.backdropTexture:SetVertexColor(unpack(self.media.backdropcolor))
-					else
-						frame:SetBackdropColor(unpack(self.media.backdropcolor))
-					end
+					frame:SetBackdropColor(unpack(self.media.backdropcolor))
 				elseif frame.template == 'Transparent' then
 					frame:SetBackdropColor(unpack(self.media.backdropfadecolor))
 				end
@@ -559,10 +557,10 @@ function E:UpdateStatusBars()
 end
 
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
-E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent)
-E.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
-E.UIParent:SetPoint('CENTER', UIParent, 'CENTER')
-E.UIParent:SetSize(UIParent:GetSize())
+E.UIParent = CreateFrame('Frame', 'ElvUIParent', _G.UIParent)
+E.UIParent:SetFrameLevel(_G.UIParent:GetFrameLevel())
+E.UIParent:SetPoint('CENTER', _G.UIParent, 'CENTER')
+E.UIParent:SetSize(_G.UIParent:GetSize())
 E.UIParent.origHeight = E.UIParent:GetHeight()
 E.snapBars[#E.snapBars + 1] = E.UIParent
 
@@ -994,7 +992,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 	end
 end
 
-C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
+_G.C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 
 local f = CreateFrame('Frame')
 f:RegisterEvent('CHAT_MSG_ADDON')
@@ -1315,7 +1313,7 @@ function E:AddNonPetBattleFrames()
 		if type(data) == 'table' then
 			parent, strata = data.parent, data.strata
 		elseif data == true then
-			parent = UIParent
+			parent = _G.UIParent
 		end
 		obj:SetParent(parent)
 		if strata then
@@ -1588,7 +1586,7 @@ function E:InitializeInitialModules()
 		if module and module.Initialize then
 			local _, catch = pcall(module.Initialize, module)
 			if catch and GetCVarBool('scriptErrors') == true then
-				ScriptErrorsFrame:OnError(catch, false, false)
+				_G.ScriptErrorsFrame:OnError(catch, false, false)
 			end
 		end
 	end
@@ -1615,7 +1613,7 @@ function E:InitializeModules()
 			local _, catch = pcall(module.Initialize, module)
 
 			if catch and GetCVarBool('scriptErrors') == true then
-				ScriptErrorsFrame:OnError(catch, false, false)
+				_G.ScriptErrorsFrame:OnError(catch, false, false)
 			end
 		end
 	end
@@ -1769,22 +1767,22 @@ local function SetModifiedHeight()
 		return
 	end
 	E:UnregisterEvent('PLAYER_REGEN_ENABLED')
-	local height = E.UIParent.origHeight - (OrderHallCommandBar:GetHeight() + E.Border)
+	local height = E.UIParent.origHeight - (_G.OrderHallCommandBar:GetHeight() + E.Border)
 	E.UIParent:SetHeight(height)
 end
 
 --This function handles disabling of OrderHall Bar or resizing of ElvUIParent if needed
 local function HandleCommandBar()
 	if E.global.general.commandBarSetting == 'DISABLED' then
-		local bar = OrderHallCommandBar
+		local bar = _G.OrderHallCommandBar
 		bar:UnregisterAllEvents()
 		bar:SetScript('OnShow', bar.Hide)
 		bar:Hide()
-		UIParent:UnregisterEvent('UNIT_AURA')--Only used for OrderHall Bar
+		_G.UIParent:UnregisterEvent('UNIT_AURA')--Only used for OrderHall Bar
 	elseif E.global.general.commandBarSetting == 'ENABLED_RESIZEPARENT' then
-		E.UIParent:SetPoint('BOTTOM', UIParent, 'BOTTOM')
-		OrderHallCommandBar:HookScript('OnShow', SetModifiedHeight)
-		OrderHallCommandBar:HookScript('OnHide', SetOriginalHeight)
+		E.UIParent:SetPoint('BOTTOM', _G.UIParent, 'BOTTOM')
+		_G.OrderHallCommandBar:HookScript('OnShow', SetModifiedHeight)
+		_G.OrderHallCommandBar:HookScript('OnHide', SetOriginalHeight)
 	end
 end
 
@@ -1858,7 +1856,7 @@ function E:Initialize()
 		E:Print(select(2, E:GetModule('Chat'):FindURL('CHAT_MSG_DUMMY', format(L["LOGIN_MSG"], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)))..'.')
 	end
 
-	if OrderHallCommandBar then
+	if _G.OrderHallCommandBar then
 		HandleCommandBar()
 	else
 		local frame = CreateFrame('Frame')

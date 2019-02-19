@@ -4,7 +4,6 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
---Cache global variables
 --Lua functions
 --WoW API / Variables
 local CreateFrame = CreateFrame

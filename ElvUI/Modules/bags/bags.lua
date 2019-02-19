@@ -2,13 +2,12 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 local Search = E.Libs.ItemSearch
 
---Cache global variables
---Lua functions
+--Lua functions1
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
-local tinsert, tremove, twipe, tmaxn = table.insert, table.remove, table.wipe, table.maxn
-local floor, ceil, abs = math.floor, math.ceil, math.abs
-local format, sub = string.format, string.sub
+local tinsert, tremove, twipe, tmaxn = tinsert, tremove, wipe, table.maxn
+local floor, ceil, abs = floor, ceil, abs
+local format, sub = format, strsub
 local tonumber = tonumber
 --WoW API / Variables
 local BankFrameItemButton_Update = BankFrameItemButton_Update
@@ -16,14 +15,7 @@ local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
 local ContainerIDToInventoryID = ContainerIDToInventoryID
 local CooldownFrame_Set = CooldownFrame_Set
-local CreateAnimationGroup = CreateAnimationGroup
 local CreateFrame = CreateFrame
-local C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID
-local C_Item_CanScrapItem = C_Item.CanScrapItem
-local C_Item_DoesItemExist = C_Item.DoesItemExist
-local C_NewItems_IsNewItem = C_NewItems.IsNewItem
-local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
-local C_Timer_After = C_Timer.After
 local DeleteCursorItem = DeleteCursorItem
 local DepositReagentBank = DepositReagentBank
 local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled
@@ -40,6 +32,7 @@ local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
 local GetCurrencyLink = GetCurrencyLink
 local GetCurrentGuildBankTab = GetCurrentGuildBankTab
+local GetCVarBool = GetCVarBool
 local GetGuildBankItemLink = GetGuildBankItemLink
 local GetGuildBankTabInfo = GetGuildBankTabInfo
 local GetItemInfo = GetItemInfo
@@ -47,6 +40,7 @@ local GetItemQualityColor = GetItemQualityColor
 local GetMoney = GetMoney
 local GetNumBankSlots = GetNumBankSlots
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
+local HandleModifiedItemClick = HandleModifiedItemClick
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
 local IsModifiedClick = IsModifiedClick
@@ -60,6 +54,7 @@ local SetBackpackAutosortDisabled = SetBackpackAutosortDisabled
 local SetBagSlotFlag = SetBagSlotFlag
 local SetBankAutosortDisabled = SetBankAutosortDisabled
 local SetBankBagSlotFlag = SetBankBagSlotFlag
+local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
 local SetItemButtonCount = SetItemButtonCount
 local SetItemButtonDesaturated = SetItemButtonDesaturated
 local SetItemButtonTexture = SetItemButtonTexture
@@ -69,8 +64,16 @@ local SortBankBags = SortBankBags
 local SortReagentBankBags = SortReagentBankBags
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
-local GetCVarBool = GetCVarBool
 local UseContainerItem = UseContainerItem
+
+local C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID
+local C_Item_CanScrapItem = C_Item.CanScrapItem
+local C_Item_DoesItemExist = C_Item.DoesItemExist
+local C_NewItems_IsNewItem = C_NewItems.IsNewItem
+local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
+local C_Timer_After = C_Timer.After
+local CreateAnimationGroup = CreateAnimationGroup
+local hooksecurefunc = hooksecurefunc
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
@@ -85,8 +88,8 @@ local IG_BACKPACK_OPEN = SOUNDKIT.IG_BACKPACK_OPEN
 local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
 local LE_BAG_FILTER_FLAG_IGNORE_CLEANUP = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
 local LE_BAG_FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK
-local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 local LE_ITEM_QUALITY_COMMON = LE_ITEM_QUALITY_COMMON
+local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 local MAX_CONTAINER_ITEMS = MAX_CONTAINER_ITEMS
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
@@ -97,28 +100,17 @@ local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local SEARCH = SEARCH
+-- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame, ElvUIReagentBankFrameItem1
 
 local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
-local hooksecurefunc = hooksecurefunc
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
--- GLOBALS: ContainerFrame1, RightChatToggleButton, GuildItemSearchBox, StackSplitFrame, ItemLocation
--- GLOBALS: LeftChatToggleButton, MAX_GUILDBANK_SLOTS_PER_TAB, UISpecialFrames, HandleModifiedItemClick
--- GLOBALS: ElvUIReagentBankFrame, MerchantFrame, BagItemAutoSortButton, SetInsertItemsLeftToRight
--- GLOBALS: ElvUIBankMover, ElvUIBagMover, RightChatPanel, LeftChatPanel, IsContainerItemAnUpgrade
--- GLOBALS: ToggleDropDownMenu, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton, UIDropDownMenu_Initialize
 
 local ElvUIAssignBagDropdown, TooltipModule, SkinModule
 local SEARCH_STRING = ""
-
 local BAG_FILTER_ICONS = {
-	[LE_BAG_FILTER_FLAG_EQUIPMENT] = "Interface\\ICONS\\INV_Chest_Plate10",
-	[LE_BAG_FILTER_FLAG_CONSUMABLES] = "Interface\\ICONS\\INV_Potion_93",
-	[LE_BAG_FILTER_FLAG_TRADE_GOODS] = "Interface\\ICONS\\INV_Fabric_Silk_02",
+	[_G.LE_BAG_FILTER_FLAG_EQUIPMENT] = "Interface\\ICONS\\INV_Chest_Plate10",
+	[_G.LE_BAG_FILTER_FLAG_CONSUMABLES] = "Interface\\ICONS\\INV_Potion_93",
+	[_G.LE_BAG_FILTER_FLAG_TRADE_GOODS] = "Interface\\ICONS\\INV_Fabric_Silk_02",
 }
-
-local ScanTooltip = CreateFrame("GameTooltip", "ElvUI_BagItemsTooltip", UIParent, "GameTooltipTemplate")
 
 function B:GetContainerFrame(arg)
 	if type(arg) == 'boolean' and (arg == true) then
@@ -137,23 +129,29 @@ function B:GetContainerFrame(arg)
 end
 
 function B:Tooltip_Show()
+	local GameTooltip = _G.GameTooltip
 	GameTooltip:SetOwner(self);
 	GameTooltip:ClearLines()
 	GameTooltip:AddLine(self.ttText)
 
 	if self.ttText2 then
-		GameTooltip:AddLine(self.ttText2)
+		if self.ttText2desc then
+			GameTooltip:AddLine(' ')
+			GameTooltip:AddDoubleLine(self.ttText2, self.ttText2desc, 1, 1, 1)
+		else
+			GameTooltip:AddLine(self.ttText2)
+		end
 	end
 
 	GameTooltip:Show()
 end
 
 function B:Tooltip_Hide()
-	GameTooltip:Hide()
+	_G.GameTooltip:Hide()
 end
 
 function B:DisableBlizzard()
-	BankFrame:UnregisterAllEvents();
+	_G.BankFrame:UnregisterAllEvents();
 
 	for i=1, NUM_CONTAINER_FRAMES do
 		_G['ContainerFrame'..i]:Kill();
@@ -270,12 +268,12 @@ function B:SetGuildBankSearch(query)
 		query = Search.Filters.tipPhrases.keywords[query]
 	end
 
-	if GuildBankFrame and GuildBankFrame:IsShown() then
+	if _G.GuildBankFrame and _G.GuildBankFrame:IsShown() then
 		local tab = GetCurrentGuildBankTab()
 		local _, _, isViewable = GetGuildBankTabInfo(tab)
 
 		if isViewable then
-			for slotID = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
+			for slotID = 1, _G.MAX_GUILDBANK_SLOTS_PER_TAB do
 				local link = GetGuildBankItemLink(tab, slotID)
 				--A column goes from 1-14, e.g. GuildBankColumn1Button14 (slotID 14) or GuildBankColumn2Button3 (slotID 17)
 				local col = ceil(slotID / 14)
@@ -398,7 +396,7 @@ function UpdateItemUpgradeIcon(slot)
 
 	slot.timeSinceUpgradeCheck = 0;
 
-	local itemIsUpgrade = IsContainerItemAnUpgrade(slot:GetParent():GetID(), slot:GetID());
+	local itemIsUpgrade = _G.IsContainerItemAnUpgrade(slot:GetParent():GetID(), slot:GetID());
 	if itemIsUpgrade == nil then -- nil means not all the data was available to determine if this is an upgrade.
 		slot.UpgradeIcon:SetShown(false);
 		slot:SetScript("OnUpdate", UpgradeCheck_OnUpdate);
@@ -414,7 +412,7 @@ local function UpdateItemScrapIcon(slot)
 		return
 	end
 
-	local itemLocation = ItemLocation:CreateFromBagAndSlot(slot:GetParent():GetID(), slot:GetID())
+	local itemLocation = _G.ItemLocation:CreateFromBagAndSlot(slot:GetParent():GetID(), slot:GetID())
 	if not itemLocation then return end
 
 	if itemLocation and itemLocation ~= "" then
@@ -518,9 +516,9 @@ function B:UpdateSlot(bagID, slotID)
 	local showItemLevel = B.db.itemLevel and clink and not professionColors
 	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON)
 	if showBindType or showItemLevel then
-		ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
-		ScanTooltip:SetBagItem(bagID, slotID)
-		ScanTooltip:Show()
+		E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+		E.ScanTooltip:SetBagItem(bagID, slotID)
+		E.ScanTooltip:Show()
 	end
 
 	if professionColors then
@@ -546,7 +544,7 @@ function B:UpdateSlot(bagID, slotID)
 			local iLvl, BoE, BoU --GetDetailedItemLevelInfo this api dont work for some time correctly for ilvl
 
 			for i = 2, bindTypeLines do
-				local line = _G["ElvUI_BagItemsTooltipTextLeft"..i]:GetText()
+				local line = _G["ElvUI_ScanTooltipTextLeft"..i]:GetText()
 				if not line or line == "" then break end
 				if canShowItemLevel and (i <= itemLevelLines) then
 					local itemLevel = line:match(MATCH_ITEM_LEVEL)
@@ -616,8 +614,7 @@ function B:UpdateSlot(bagID, slotID)
 		slot.ignoreBorderColors = nil
 	end
 
-	ScanTooltip:Hide()
-
+	E.ScanTooltip:Hide()
 	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 
 	if texture then
@@ -640,7 +637,7 @@ function B:UpdateSlot(bagID, slotID)
 	SetItemButtonCount(slot, count);
 	SetItemButtonDesaturated(slot, locked);
 
-	if GameTooltip:GetOwner() == slot and not slot.hasItem then
+	if _G.GameTooltip:GetOwner() == slot and not slot.hasItem then
 		B:Tooltip_Hide()
 	end
 end
@@ -741,12 +738,12 @@ function B:AssignBagFlagMenu()
 
 	if not (holder and holder.id) then return end
 
-	local info = UIDropDownMenu_CreateInfo()
+	local info = _G.UIDropDownMenu_CreateInfo()
 	if holder.id > 0 and not IsInventoryItemProfessionBag("player", ContainerIDToInventoryID(holder.id)) then -- The actual bank has ID -1, backpack has ID 0, we want to make sure we're looking at a regular or bank bag
 		info.text = BAG_FILTER_ASSIGN_TO
 		info.isTitle = 1
 		info.notCheckable = 1
-		UIDropDownMenu_AddButton(info)
+		_G.UIDropDownMenu_AddButton(info)
 
 		info.isTitle = nil
 		info.notCheckable = nil
@@ -788,7 +785,7 @@ function B:AssignBagFlagMenu()
 
 				info.disabled = nil
 				info.tooltipTitle = nil
-				UIDropDownMenu_AddButton(info)
+				_G.UIDropDownMenu_AddButton(info)
 			end
 		end
 	end
@@ -796,7 +793,7 @@ function B:AssignBagFlagMenu()
 	info.text = BAG_FILTER_CLEANUP;
 	info.isTitle = 1;
 	info.notCheckable = 1;
-	UIDropDownMenu_AddButton(info);
+	_G.UIDropDownMenu_AddButton(info);
 
 	info.isTitle = nil;
 	info.notCheckable = nil;
@@ -824,7 +821,8 @@ function B:AssignBagFlagMenu()
 	else
 		info.checked = GetBagSlotFlag(holder.id, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP);
 	end
-	UIDropDownMenu_AddButton(info);
+
+	_G.UIDropDownMenu_AddButton(info);
 end
 
 function B:GetBagAssignedInfo(holder)
@@ -891,8 +889,8 @@ function B:CreateFilterIcon(parent)
 	parent.ElvUIFilterIcon:CreateBackdrop("Transparent")
 	parent.ElvUIFilterIcon:Point("TOPLEFT", parent, "TOPLEFT", E.Border, -E.Border)
 	parent.ElvUIFilterIcon:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-	parent.ElvUIFilterIcon:SetScript("OnShow", function(self)
-		self:SetFrameLevel(self:GetParent():GetFrameLevel()+1)
+	parent.ElvUIFilterIcon:SetScript("OnShow", function(efi)
+		efi:SetFrameLevel(efi:GetParent():GetFrameLevel()+1)
 	end)
 
 	--Create the texture showing the assignment type
@@ -903,20 +901,20 @@ function B:CreateFilterIcon(parent)
 	parent.ElvUIFilterIcon.Icon:Point("CENTER")
 
 	--Re-route various mouse events to the underlying container bag icon
-	parent.ElvUIFilterIcon:SetScript("OnEnter", function(self)
-		local target = self:GetParent()
+	parent.ElvUIFilterIcon:SetScript("OnEnter", function(efi)
+		local target = efi:GetParent()
 		target:GetScript("OnEnter")(target);
 	end)
-	parent.ElvUIFilterIcon:SetScript("OnLeave", function(self)
-		local target = self:GetParent()
+	parent.ElvUIFilterIcon:SetScript("OnLeave", function(efi)
+		local target = efi:GetParent()
 		target:GetScript("OnLeave")(target);
 	end)
-	parent.ElvUIFilterIcon:SetScript("OnClick", function(self, btn)
-		local target = self:GetParent()
+	parent.ElvUIFilterIcon:SetScript("OnClick", function(efi, btn)
+		local target = efi:GetParent()
 		target:GetScript("OnClick")(target, btn);
 	end)
-	parent.ElvUIFilterIcon:SetScript("OnReceiveDrag", function(self)
-		local target = self:GetParent()
+	parent.ElvUIFilterIcon:SetScript("OnReceiveDrag", function(efi)
+		local target = efi:GetParent()
 		target:GetScript("OnReceiveDrag")(target);
 	end)
 
@@ -968,7 +966,7 @@ function B:Layout(isBank)
 					f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 						if button == "RightButton" and holder.id then
 							ElvUIAssignBagDropdown.holder = holder
-							ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
+							_G.ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
 						else
 							local inventoryID = holder:GetInventorySlot();
 							PutItemInBag(inventoryID);--Put bag on empty slot, or drop item in this bag
@@ -982,7 +980,7 @@ function B:Layout(isBank)
 						f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 							if button == "RightButton" and holder.id then
 								ElvUIAssignBagDropdown.holder = holder
-								ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
+								_G.ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
 							else
 								PutItemInBackpack();--Put bag on empty slot, or drop item in this bag
 							end
@@ -996,7 +994,7 @@ function B:Layout(isBank)
 						f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 							if button == "RightButton" and holder.id then
 								ElvUIAssignBagDropdown.holder = holder
-								ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
+								_G.ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
 							else
 								local id = holder:GetID();
 								PutItemInBag(id);--Put bag on empty slot, or drop item in this bag
@@ -1466,8 +1464,8 @@ function B:UpdateTokens()
 end
 
 function B:Token_OnEnter()
-	GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-	GameTooltip:SetBackpackToken(self:GetID());
+	_G.GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+	_G.GameTooltip:SetBackpackToken(self:GetID());
 end
 
 function B:Token_OnClick()
@@ -1525,7 +1523,7 @@ end
 
 function B:VendorGrays(delete)
 	if B.SellFrame:IsShown() then return end
-	if (not MerchantFrame or not MerchantFrame:IsShown()) and not delete then
+	if (not _G.MerchantFrame or not _G.MerchantFrame:IsShown()) and not delete then
 		E:Print(L["You must be at a vendor."])
 		return
 	end
@@ -1566,7 +1564,7 @@ function B:VendorGrayCheck()
 
 	if value == 0 then
 		E:Print(L["No gray items to delete."])
-	elseif not MerchantFrame or not MerchantFrame:IsShown() then
+	elseif not _G.MerchantFrame or not _G.MerchantFrame:IsShown() then
 		E.PopupDialogs["DELETE_GRAYS"].Money = value
 		E:StaticPopup_Show('DELETE_GRAYS')
 	else
@@ -1616,8 +1614,9 @@ function B:ContructContainerFrame(name, isBank)
 	f:SetScript("OnDragStart", function(frame) if IsShiftKeyDown() then frame:StartMoving() end end)
 	f:SetScript("OnDragStop", function(frame) frame:StopMovingOrSizing() end)
 	f:SetScript("OnClick", function(frame) if IsControlKeyDown() then B.PostBagMove(frame.mover) end end)
-	f:SetScript("OnLeave", function() GameTooltip:Hide() end)
+	f:SetScript("OnLeave", function() _G.GameTooltip:Hide() end)
 	f:SetScript("OnEnter", function(frame)
+		local GameTooltip = _G.GameTooltip
 		GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT", 0, 4)
 		GameTooltip:ClearLines()
 		GameTooltip:AddDoubleLine(L["Hold Shift + Drag:"], L["Temporary Move"], 1, 1, 1)
@@ -1697,13 +1696,13 @@ function B:ContructContainerFrame(name, isBank)
 		f.reagentToggle:SetScript("OnClick", function()
 			PlaySound(841) --IG_CHARACTER_INFO_TAB
 			if f.holderFrame:IsShown() then
-				BankFrame.selectedTab = 2
+				_G.BankFrame.selectedTab = 2
 				f.holderFrame:Hide()
 				f.reagentFrame:Show()
 				f.editBox:Point('RIGHT', f.depositButton, 'LEFT', -5, 0);
 				f.bagText:SetText(L["Reagent Bank"])
 			else
-				BankFrame.selectedTab = 1
+				_G.BankFrame.selectedTab = 1
 				f.reagentFrame:Hide()
 				f.holderFrame:Show()
 				f.editBox:Point('RIGHT', f.purchaseBagButton, 'LEFT', -5, 0);
@@ -1730,7 +1729,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.sortButton:GetDisabledTexture():SetInside()
 		f.sortButton:GetDisabledTexture():SetDesaturated(1)
 		f.sortButton:StyleButton(nil, true)
-		f.sortButton:SetScript("OnEnter", BagItemAutoSortButton:GetScript("OnEnter"))
+		f.sortButton:SetScript("OnEnter", _G.BagItemAutoSortButton:GetScript("OnEnter"))
 		f.sortButton:SetScript('OnClick', function()
 			if f.holderFrame:IsShown() then
 				if B.db.useBlizzardCleanup then
@@ -1833,7 +1832,7 @@ function B:ContructContainerFrame(name, isBank)
 		--Search
 		f.editBox = CreateFrame('EditBox', name..'EditBox', f);
 		f.editBox:SetFrameLevel(f.editBox:GetFrameLevel() + 2);
-		f.editBox:CreateBackdrop('Default');
+		f.editBox:CreateBackdrop();
 		f.editBox.backdrop:Point("TOPLEFT", f.editBox, "TOPLEFT", -20, 2)
 		f.editBox:Height(15);
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', (E.Border * 2) + 18, E.Border * 2 + 2);
@@ -1875,7 +1874,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.sortButton:GetDisabledTexture():SetInside()
 		f.sortButton:GetDisabledTexture():SetDesaturated(1)
 		f.sortButton:StyleButton(nil, true)
-		f.sortButton:SetScript("OnEnter", BagItemAutoSortButton:GetScript("OnEnter"))
+		f.sortButton:SetScript("OnEnter", _G.BagItemAutoSortButton:GetScript("OnEnter"))
 		f.sortButton:SetScript('OnClick', function()
 			if B.db.useBlizzardCleanup then
 				SortBags()
@@ -1930,7 +1929,7 @@ function B:ContructContainerFrame(name, isBank)
 		--Search
 		f.editBox = CreateFrame('EditBox', name..'EditBox', f);
 		f.editBox:SetFrameLevel(f.editBox:GetFrameLevel() + 2);
-		f.editBox:CreateBackdrop('Default');
+		f.editBox:CreateBackdrop();
 		f.editBox.backdrop:Point("TOPLEFT", f.editBox, "TOPLEFT", -20, 2)
 		f.editBox:Height(15);
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', (E.Border * 2) + 18, E.Border * 2 + 2);
@@ -1969,7 +1968,7 @@ function B:ContructContainerFrame(name, isBank)
 			f.currencyButton[i].text:FontTemplate();
 
 			f.currencyButton[i]:SetScript('OnEnter', B.Token_OnEnter);
-			f.currencyButton[i]:SetScript('OnLeave', function() GameTooltip:Hide() end);
+			f.currencyButton[i]:SetScript('OnLeave', function() _G.GameTooltip:Hide() end);
 			f.currencyButton[i]:SetScript('OnClick', B.Token_OnClick);
 			f.currencyButton[i]:Hide();
 		end
@@ -1988,7 +1987,7 @@ function B:ContructContainerFrame(name, isBank)
 		end)
 	end
 
-	tinsert(UISpecialFrames, f:GetName()) --Keep an eye on this for taints..
+	tinsert(_G.UISpecialFrames, f:GetName()) --Keep an eye on this for taints..
 	tinsert(self.BagFrames, f)
 	return f
 end
@@ -2038,7 +2037,7 @@ function B:OpenBags()
 	self.BagFrame:Show()
 
 	if not TooltipModule then TooltipModule = E:GetModule('Tooltip') end
-	TooltipModule:GameTooltip_SetDefaultAnchor(GameTooltip)
+	TooltipModule:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
 
 function B:CloseBags()
@@ -2049,7 +2048,7 @@ function B:CloseBags()
 	end
 
 	if not TooltipModule then TooltipModule = E:GetModule('Tooltip') end
-	TooltipModule:GameTooltip_SetDefaultAnchor(GameTooltip)
+	TooltipModule:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
 
 function B:OpenBank()
@@ -2060,7 +2059,7 @@ function B:OpenBank()
 	--Call :Layout first so all elements are created before we update
 	self:Layout(true)
 
-	BankFrame:Show()
+	_G.BankFrame:Show()
 	self.BankFrame:Show()
 
 	self:OpenBags()
@@ -2068,7 +2067,7 @@ function B:OpenBank()
 
 	--Allow opening reagent tab directly by holding Shift
 	if IsShiftKeyDown() then
-		BankFrame.selectedTab = 2
+		_G.BankFrame.selectedTab = 2
 		self.BankFrame.holderFrame:Hide()
 		self.BankFrame.reagentFrame:Show()
 		self.BankFrame.editBox:Point('RIGHT', self.BankFrame.depositButton, 'LEFT', -5, 0);
@@ -2087,11 +2086,12 @@ end
 function B:CloseBank()
 	if not self.BankFrame then return end -- WHY??? WHO KNOWS!
 	self.BankFrame:Hide()
-	BankFrame:Hide()
+	_G.BankFrame:Hide()
 	self.BagFrame:Hide()
 end
 
 function B:GUILDBANKFRAME_OPENED(event)
+	local GuildItemSearchBox = _G.GuildItemSearchBox
 	--[[
 		local button = CreateFrame("Button", "GuildSortButton", GuildBankFrame, "UIPanelButtonTemplate")
 		button:StripTextures()
@@ -2129,8 +2129,8 @@ function B:UpdateContainerFrameAnchors()
 	local containerScale = 1;
 	local leftLimit = 0;
 
-	if BankFrame:IsShown() then
-		leftLimit = BankFrame:GetRight() - 25;
+	if _G.BankFrame:IsShown() then
+		leftLimit = _G.BankFrame:GetRight() - 25;
 	end
 
 	while containerScale > CONTAINER_SCALE do
@@ -2143,7 +2143,7 @@ function B:UpdateContainerFrameAnchors()
 		leftMostPoint = screenWidth - xOffset;
 		column = 1;
 
-		for _, frameName in ipairs(ContainerFrame1.bags) do
+		for _, frameName in ipairs(_G.ContainerFrame1.bags) do
 			local frameHeight = _G[frameName]:GetHeight();
 
 			if freeScreenHeight < frameHeight then
@@ -2176,7 +2176,7 @@ function B:UpdateContainerFrameAnchors()
 	column = 0;
 
 	local bagsPerColumn = 0
-	for index, frameName in ipairs(ContainerFrame1.bags) do
+	for index, frameName in ipairs(_G.ContainerFrame1.bags) do
 		local frame = _G[frameName];
 		frame:SetScale(1);
 
@@ -2189,14 +2189,14 @@ function B:UpdateContainerFrameAnchors()
 			column = column + 1;
 			freeScreenHeight = screenHeight - yOffset;
 			if column > 1 then
-				frame:Point("BOTTOMRIGHT", ContainerFrame1.bags[(index - bagsPerColumn) - 1], "BOTTOMLEFT", -CONTAINER_SPACING, 0 );
+				frame:Point("BOTTOMRIGHT", _G.ContainerFrame1.bags[(index - bagsPerColumn) - 1], "BOTTOMLEFT", -CONTAINER_SPACING, 0 );
 			else
-				frame:Point("BOTTOMRIGHT", ContainerFrame1.bags[index - bagsPerColumn], "BOTTOMLEFT", -CONTAINER_SPACING, 0 );
+				frame:Point("BOTTOMRIGHT", _G.ContainerFrame1.bags[index - bagsPerColumn], "BOTTOMLEFT", -CONTAINER_SPACING, 0 );
 			end
 			bagsPerColumn = 0
 		else
 			-- Anchor to the previous bag
-			frame:Point("BOTTOMRIGHT", ContainerFrame1.bags[index - 1], "TOPRIGHT", 0, CONTAINER_SPACING);
+			frame:Point("BOTTOMRIGHT", _G.ContainerFrame1.bags[index - 1], "TOPRIGHT", 0, CONTAINER_SPACING);
 			bagsPerColumn = bagsPerColumn + 1
 		end
 
@@ -2382,7 +2382,7 @@ function B:Initialize()
 
 	if not E.private.bags.enable then
 		--Set a different default anchor
-		BagFrameHolder:Point("BOTTOMRIGHT", RightChatPanel, "BOTTOMRIGHT", -(E.Border*2), 22 + E.Border*4 - E.Spacing*2)
+		BagFrameHolder:Point("BOTTOMRIGHT", _G.RightChatPanel, "BOTTOMRIGHT", -(E.Border*2), 22 + E.Border*4 - E.Spacing*2)
 		E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 
 		self:SecureHook('UpdateContainerFrameAnchors')
@@ -2419,14 +2419,14 @@ function B:Initialize()
 	}
 
 	--Bag Mover: Set default anchor point and create mover
-	BagFrameHolder:Point("BOTTOMRIGHT", RightChatPanel, "BOTTOMRIGHT", 0, 22 + E.Border*4 - E.Spacing*2)
+	BagFrameHolder:Point("BOTTOMRIGHT", _G.RightChatPanel, "BOTTOMRIGHT", 0, 22 + E.Border*4 - E.Spacing*2)
 	E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 
 	--Bank Mover
 	local BankFrameHolder = CreateFrame("Frame", nil, E.UIParent)
 	BankFrameHolder:Width(200)
 	BankFrameHolder:Height(22)
-	BankFrameHolder:Point("BOTTOMLEFT", LeftChatPanel, "BOTTOMLEFT", 0, 22 + E.Border*4 - E.Spacing*2)
+	BankFrameHolder:Point("BOTTOMLEFT", _G.LeftChatPanel, "BOTTOMLEFT", 0, 22 + E.Border*4 - E.Spacing*2)
 	BankFrameHolder:SetFrameLevel(BankFrameHolder:GetFrameLevel() + 400)
 	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank Mover (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 
@@ -2435,7 +2435,7 @@ function B:Initialize()
 	ElvUIAssignBagDropdown:SetID(1)
 	ElvUIAssignBagDropdown:SetClampedToScreen(true)
 	ElvUIAssignBagDropdown:Hide()
-	UIDropDownMenu_Initialize(ElvUIAssignBagDropdown, self.AssignBagFlagMenu, "MENU");
+	_G.UIDropDownMenu_Initialize(ElvUIAssignBagDropdown, self.AssignBagFlagMenu, "MENU");
 
 	--Set some variables on movers
 	ElvUIBagMover.textGrowUp = L["Bag Mover (Grow Up)"]
@@ -2472,10 +2472,10 @@ function B:Initialize()
 	self:RegisterEvent("SCRAPPING_MACHINE_SHOW")
 	self:RegisterEvent("SCRAPPING_MACHINE_CLOSE")
 
-	BankFrame:SetScale(0.0001)
-	BankFrame:SetAlpha(0)
-	BankFrame:Point("TOPLEFT")
-	BankFrame:SetScript("OnShow", nil)
+	_G.BankFrame:SetScale(0.0001)
+	_G.BankFrame:SetAlpha(0)
+	_G.BankFrame:Point("TOPLEFT")
+	_G.BankFrame:SetScript("OnShow", nil)
 
 	--Enable/Disable "Loot to Leftmost Bag"
 	SetInsertItemsLeftToRight(E.db.bags.reverseLoot)

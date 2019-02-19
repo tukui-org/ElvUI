@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Cache global variables
 --Lua functions
 local select, ipairs = select, ipairs
 local format = string.format
-local tsort = table.sort
+local sort = sort
 --WoW API / Variables
+local GetCurrencyInfo = GetCurrencyInfo
+local GetMouseFocus = GetMouseFocus
+local HideUIPanel = HideUIPanel
+local ShowGarrisonLandingPage = ShowGarrisonLandingPage
 local C_Garrison_GetCompleteTalent = C_Garrison.GetCompleteTalent
 local C_Garrison_GetFollowerShipments = C_Garrison.GetFollowerShipments
 local C_Garrison_GetInProgressMissions = C_Garrison.GetInProgressMissions
@@ -16,10 +19,6 @@ local C_Garrison_GetTalentTreeIDsByClassID = C_Garrison.GetTalentTreeIDsByClassI
 local C_Garrison_GetTalentTreeInfoForID = C_Garrison.GetTalentTreeInfoForID
 local C_Garrison_HasGarrison = C_Garrison.HasGarrison
 local C_Garrison_RequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
-local GetCurrencyInfo = GetCurrencyInfo
-local GetMouseFocus = GetMouseFocus
-local HideUIPanel = HideUIPanel
-local ShowGarrisonLandingPage = ShowGarrisonLandingPage
 local CAPACITANCE_WORK_ORDERS = CAPACITANCE_WORK_ORDERS
 local COMPLETE = COMPLETE
 local FOLLOWERLIST_LABEL_TROOPS = FOLLOWERLIST_LABEL_TROOPS
@@ -54,7 +53,7 @@ local function OnEnter(self, _, noUpdate)
 	local inProgressMissions = C_Garrison_GetInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
 	local numMissions = (inProgressMissions and #inProgressMissions or 0)
 	if(numMissions > 0) then
-		tsort(inProgressMissions, sortFunction) --Sort by time left, lowest first
+		sort(inProgressMissions, sortFunction) --Sort by time left, lowest first
 
 		DT.tooltip:AddLine(ORDER_HALL_MISSIONS) -- "Class Hall Missions"
 		firstLine = false

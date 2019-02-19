@@ -4,7 +4,6 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack = unpack
@@ -12,9 +11,6 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ArenaHeaderMover
 
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', E.UIParent)
 
@@ -195,6 +191,7 @@ function UF:Update_ArenaFrames(frame, db)
 
 	frame:ClearAllPoints()
 	if frame.index == 1 then
+		local ArenaHeaderMover = _G.ArenaHeaderMover
 		if db.growthDirection == 'UP' then
 			frame:Point('BOTTOMRIGHT', ArenaHeaderMover, 'BOTTOMRIGHT')
 		elseif db.growthDirection == 'RIGHT' then

@@ -1,10 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Cache global variables
 --Lua functions
-local ipairs, select, sort, unpack, wipe, ceil = ipairs, select, table.sort, unpack, wipe, ceil
-local format, strfind, strjoin, strsplit = string.format, strfind, strjoin, strsplit
+local _G = _G
+local ipairs, select, sort, unpack, wipe, ceil = ipairs, select, sort, unpack, wipe, ceil
+local format, strfind, strjoin, strsplit = format, strfind, strjoin, strsplit
 --WoW API / Variables
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildFactionInfo = GetGuildFactionInfo
@@ -30,11 +30,6 @@ local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
 local GUILD = GUILD
 local GUILD_MOTD = GUILD_MOTD
 local REMOTE_CHAT = REMOTE_CHAT
-
-local EasyMenu = EasyMenu
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GuildFrame, CUSTOM_CLASS_COLORS
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
@@ -118,7 +113,7 @@ local eventHandlers = {
 	-- when we enter the world and guildframe is not available then
 	-- load guild frame, update guild message and guild xp
 	["PLAYER_ENTERING_WORLD"] = function()
-		if not GuildFrame and IsInGuild() then
+		if not _G.GuildFrame and IsInGuild() then
 			LoadAddOn("Blizzard_GuildUI")
 			GuildRoster()
 		end
@@ -201,7 +196,7 @@ local function Click(self, btn)
 
 		for _, info in ipairs(guildTable) do
 			if info[7] and info[1] ~= E.myname then
-				local classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[9]]) or RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
+				local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then
 					grouped = "|cffaaaaaa*|r"
 				elseif not (info[11] and info[4] == REMOTE_CHAT) then
@@ -215,7 +210,7 @@ local function Click(self, btn)
 			end
 		end
 
-		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		_G.EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 	else
 		ToggleGuildFrame()
 	end
@@ -262,7 +257,7 @@ local function OnEnter(self, _, noUpdate)
 
 		if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
 
-		local classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[9]]) or RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
+		local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
 
 		if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end
 

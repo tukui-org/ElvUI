@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack, select = unpack, select
@@ -31,7 +30,8 @@ end
 
 local function UpdateAzeriteEmpoweredItem(self)
 	self.AzeriteTexture:SetAtlas("AzeriteIconFrame")
-	self.AzeriteTexture:SetAllPoints()
+	self.AzeriteTexture:SetInside()
+	self.AzeriteTexture:SetTexCoord(unpack(E.TexCoords))
 	self.AzeriteTexture:SetDrawLayer("BORDER", 1)
 end
 
@@ -89,7 +89,7 @@ local function SkinItemFlyouts()
 
 			if not button.backdrop then
 				button:SetFrameLevel(buttonAnchor:GetFrameLevel()+2)
-				button:CreateBackdrop("Default")
+				button:CreateBackdrop()
 				button.backdrop:SetAllPoints()
 
 				if i ~= 1 then -- dont call this intially on placeInBags button
@@ -126,7 +126,7 @@ local function FixSidebarTabCoords()
 		local tab = _G["PaperDollSidebarTab"..i]
 
 		if tab and not tab.backdrop then
-			tab:CreateBackdrop("Default")
+			tab:CreateBackdrop()
 			tab.Icon:SetAllPoints()
 			tab.Highlight:SetColorTexture(1, 1, 1, 0.3)
 			tab.Highlight:SetAllPoints()
@@ -181,7 +181,7 @@ local function UpdateFactionSkins()
 			statusbar:SetStatusBarTexture(E.media.normTex)
 
 			if not statusbar.backdrop then
-				statusbar:CreateBackdrop("Default")
+				statusbar:CreateBackdrop()
 				E:RegisterStatusBar(statusbar)
 			end
 
@@ -276,7 +276,7 @@ local function LoadSkin()
 
 	for _, Slot in pairs({_G.PaperDollItemsFrame:GetChildren()}) do
 		if Slot:IsObjectType("Button") or Slot:IsObjectType("ItemButton") then
-			S:HandleTexture(Slot.icon)
+			S:HandleIcon(Slot.icon)
 			Slot:StripTextures()
 			Slot:SetTemplate()
 			Slot:StyleButton(Slot)
@@ -370,7 +370,7 @@ local function LoadSkin()
 	_G.EquipmentFlyoutFrame.NavigationFrame:SetTemplate("Transparent")
 	_G.EquipmentFlyoutFrame.NavigationFrame:Point("TOPLEFT", _G.EquipmentFlyoutFrameButtons, "BOTTOMLEFT", 0, -E.Border - E.Spacing)
 	_G.EquipmentFlyoutFrame.NavigationFrame:Point("TOPRIGHT", _G.EquipmentFlyoutFrameButtons, "BOTTOMRIGHT", 0, -E.Border - E.Spacing)
-	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton, nil, true)
+	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton)
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
 	--Swap item flyout frame (shown when holding alt over a slot)
@@ -394,7 +394,7 @@ local function LoadSkin()
 
 	--Re-add the overlay texture which was removed right above via StripTextures
 	_G.CharacterModelFrameBackgroundOverlay:SetColorTexture(0,0,0)
-	_G.CharacterModelFrame:CreateBackdrop("Default")
+	_G.CharacterModelFrame:CreateBackdrop()
 	_G.CharacterModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	_G.CharacterModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
@@ -473,13 +473,13 @@ local function LoadSkin()
 		local icon = reward.Icon
 		tooltip:SetTemplate("Transparent")
 		if icon then
-			S:HandleIcon(icon)
+			S:HandleIcon(icon, true)
 			hooksecurefunc(reward.IconBorder, "SetVertexColor", function(self, r, g, b)
-				self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+				self:GetParent().Icon.backdrop:SetBackdropBorderColor(r, g, b)
 				self:SetTexture()
 			end)
 			hooksecurefunc(reward.IconBorder, "Hide", function(self)
-				self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				self:GetParent().Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 		end
 		tooltip:HookScript("OnShow", function(self)

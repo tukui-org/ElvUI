@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local gsub = gsub
@@ -81,7 +80,7 @@ local function LoadSkin()
 	local NPCFriendshipStatusBar = _G.NPCFriendshipStatusBar
 	NPCFriendshipStatusBar:StripTextures()
 	NPCFriendshipStatusBar:SetStatusBarTexture(E.media.normTex)
-	NPCFriendshipStatusBar:CreateBackdrop('Default')
+	NPCFriendshipStatusBar:CreateBackdrop()
 
 	E:RegisterStatusBar(NPCFriendshipStatusBar)
 end

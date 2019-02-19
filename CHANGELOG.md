@@ -5,7 +5,7 @@ Added new scale options. (/ec - General - Auto Scale | UI Scale)
 Added quality border option for Bag/Bank items. (#869)  
 Added BoE/BoA text overlay in our Bag/Bank.  
 Added optional mount name for units on tooltips.  
-Added a new option to display inspect info on the inspect frame.  
+Added a new option to display Inspect Info on the Inspect and Character frames.  
 
 **Bug Fixes:**  
 Corrected more Pixel Perfect issues! :D  
@@ -13,7 +13,7 @@ Corrected more Pixel Perfect issues! :D
 **Misc. Changes:**  
 Various Skin updates.  
 Modified the bag item level code; items might actually show the correct item level now. :o  
-Removed inspect info from tooltips.  
+Improved the tooltip item level code, it should be far more accurate now! (Thanks AcidWeb and Ls- for helping us with this!) :)  
 
 ___
 ### Version 10.87 [ January 30th 2019 ]

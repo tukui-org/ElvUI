@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 --WoW API / Variables
@@ -12,8 +11,7 @@ local function LoadSkin()
 	local TaxiFrame = _G.TaxiFrame
 	TaxiFrame:StripTextures()
 	TaxiFrame:CreateBackdrop("Transparent")
-	_G.TaxiRouteMap:CreateBackdrop("Default")
-	_G.TaxiRouteMap.backdrop.backdropTexture:Hide()
+	_G.TaxiRouteMap:CreateBackdrop()
 
 	S:HandleCloseButton(TaxiFrame.CloseButton)
 end

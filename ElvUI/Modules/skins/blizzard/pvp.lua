@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs, unpack = pairs, unpack
@@ -27,7 +26,7 @@ local function LoadSkin()
 		bu.Icon:Size(45)
 		bu.Icon:ClearAllPoints()
 		bu.Icon:Point("LEFT", 10, 0)
-		S:HandleTexture(bu.Icon, bu)
+		S:HandleIcon(bu.Icon, true)
 	end
 
 	local PVPQueueFrame = _G.PVPQueueFrame
@@ -64,7 +63,7 @@ local function LoadSkin()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		reward:StripTextures()
-		S:HandleTexture(reward.Icon, reward)
+		S:HandleIcon(reward.Icon, true)
 
 		reward.EnlistmentBonus:StripTextures()
 		reward.EnlistmentBonus:SetTemplate()
@@ -87,7 +86,7 @@ local function LoadSkin()
 		bu:SetHighlightTexture("")
 
 		bu:StripTextures()
-		bu:CreateBackdrop("Default")
+		bu:CreateBackdrop()
 		bu.backdrop:SetPoint("TOPLEFT", 2, 0)
 		bu.backdrop:SetPoint("BOTTOMRIGHT", -1, 2)
 		bu:StyleButton(nil, true)
@@ -193,7 +192,7 @@ local function LoadSkin()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		reward:StripTextures()
-		S:HandleTexture(reward.Icon, reward)
+		S:HandleIcon(reward.Icon, true)
 	end
 
 	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
@@ -210,7 +209,7 @@ local function LoadSkin()
 		Frame.ConquestBar.Reward.CircleMask:Hide()
 
 		if not Frame.ConquestBar.backdrop then
-			Frame.ConquestBar:CreateBackdrop("Default")
+			Frame.ConquestBar:CreateBackdrop()
 			Frame.ConquestBar.backdrop:SetOutside()
 		end
 
@@ -218,7 +217,7 @@ local function LoadSkin()
 		Frame.ConquestBar:SetStatusBarTexture(E.media.normTex)
 		Frame.ConquestBar:SetStatusBarColor(unpack(E.myfaction == "Alliance" and {0.05, 0.15, 0.36} or {0.63, 0.09, 0.09}))
 
-		S:HandleTexture(Frame.ConquestBar.Reward.Icon)
+		S:HandleIcon(Frame.ConquestBar.Reward.Icon)
 	end
 
 	--Tutorials

@@ -7,24 +7,18 @@
 
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs = pairs
-local twipe, tinsert = table.wipe, table.insert
+local twipe, tinsert = wipe, tinsert
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local PlayMusic, StopMusic = PlayMusic, StopMusic
-local GetCVar, SetCVar = GetCVar, SetCVar
 local DoEmote = DoEmote
-local SendChatMessage = SendChatMessage
+local GetCVar, SetCVar = GetCVar, SetCVar
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: UIParent, GameTooltip, Minimap
--- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, LeftChatPanel, RightChatPanel
--- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame
--- GLOBALS: HelloKittyLeft, HelloKittyRight
+local PlayMusic, StopMusic = PlayMusic, StopMusic
+local SendChatMessage = SendChatMessage
+-- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, ElvUI_StanceBar
 
 --Harlem Shake (Activate with command: /harlemshake)
 --People really seemed to like this one. We got a lot of positive responses.
@@ -81,11 +75,11 @@ do
 		local UF = E:GetModule("UnitFrames")
 		local AB = E:GetModule("ActionBars")
 		self.massiveShakeObjects = {}
-		tinsert(self.massiveShakeObjects, GameTooltip)
-		tinsert(self.massiveShakeObjects, Minimap)
-		tinsert(self.massiveShakeObjects, ObjectiveTrackerFrame)
-		tinsert(self.massiveShakeObjects, LeftChatPanel)
-		tinsert(self.massiveShakeObjects, RightChatPanel)
+		tinsert(self.massiveShakeObjects, _G.GameTooltip)
+		tinsert(self.massiveShakeObjects, _G.Minimap)
+		tinsert(self.massiveShakeObjects, _G.ObjectiveTrackerFrame)
+		tinsert(self.massiveShakeObjects, _G.LeftChatPanel)
+		tinsert(self.massiveShakeObjects, _G.RightChatPanel)
 
 		for unit in pairs(UF.units) do
 			tinsert(self.massiveShakeObjects, UF[unit])
@@ -226,9 +220,9 @@ do
 	function E:RestoreHelloKitty()
 		--Store old settings
 		self.db.general.kittys = false
-		if(HelloKittyLeft) then
-			HelloKittyLeft:Hide()
-			HelloKittyRight:Hide()
+		if(_G.HelloKittyLeft) then
+			_G.HelloKittyLeft:Hide()
+			_G.HelloKittyRight:Hide()
 		end
 
 		if not(self.db.tempSettings) then return end
@@ -270,17 +264,17 @@ do
 	end
 
 	function E:CreateKittys()
-		if(HelloKittyLeft) then
-			HelloKittyLeft:Show()
-			HelloKittyRight:Show()
+		if(_G.HelloKittyLeft) then
+			_G.HelloKittyLeft:Show()
+			_G.HelloKittyRight:Show()
 			return
 		end
-		local helloKittyLeft = CreateFrame("Frame", "HelloKittyLeft", UIParent)
+		local helloKittyLeft = CreateFrame("Frame", "HelloKittyLeft", _G.UIParent)
 		helloKittyLeft:SetSize(120, 128)
 		helloKittyLeft:SetMovable(true)
 		helloKittyLeft:EnableMouse(true)
 		helloKittyLeft:RegisterForDrag("LeftButton")
-		helloKittyLeft:Point("BOTTOMLEFT", LeftChatPanel, "BOTTOMRIGHT", 2, -4)
+		helloKittyLeft:Point("BOTTOMLEFT", _G.LeftChatPanel, "BOTTOMRIGHT", 2, -4)
 		helloKittyLeft.tex = helloKittyLeft:CreateTexture(nil, "OVERLAY")
 		helloKittyLeft.tex:SetAllPoints()
 		helloKittyLeft.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\helloKitty")
@@ -292,12 +286,12 @@ do
 		helloKittyLeft:SetScript("OnDragStop", OnDragStop)
 		helloKittyLeft:SetScript("OnUpdate", OnUpdate)
 
-		local helloKittyRight = CreateFrame("Frame", "HelloKittyRight", UIParent)
+		local helloKittyRight = CreateFrame("Frame", "HelloKittyRight", _G.UIParent)
 		helloKittyRight:SetSize(120, 128)
 		helloKittyRight:SetMovable(true)
 		helloKittyRight:EnableMouse(true)
 		helloKittyRight:RegisterForDrag("LeftButton")
-		helloKittyRight:Point("BOTTOMRIGHT", RightChatPanel, "BOTTOMLEFT", -2, -4)
+		helloKittyRight:Point("BOTTOMRIGHT", _G.RightChatPanel, "BOTTOMLEFT", -2, -4)
 		helloKittyRight.tex = helloKittyRight:CreateTexture(nil, "OVERLAY")
 		helloKittyRight.tex:SetAllPoints()
 		helloKittyRight.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\helloKitty")
@@ -346,9 +340,9 @@ do
 		self.db.unitframe.colors.auraBarBuff = {r = c.r, g = c.g, b = c.b}
 		self.db.unitframe.colors.transparentAurabars = false
 
-		if(HelloKittyLeft) then
-			HelloKittyLeft:Hide()
-			HelloKittyRight:Hide()
+		if(_G.HelloKittyLeft) then
+			_G.HelloKittyLeft:Hide()
+			_G.HelloKittyRight:Hide()
 			self.db.general.kittys = nil
 			return
 		end
@@ -358,7 +352,7 @@ do
 	end
 
 	function E:HelloKittyToggle()
-		if(HelloKittyLeft and HelloKittyLeft:IsShown()) then
+		if(_G.HelloKittyLeft and _G.HelloKittyLeft:IsShown()) then
 			self:RestoreHelloKitty()
 		else
 			self:StaticPopup_Show("HELLO_KITTY")

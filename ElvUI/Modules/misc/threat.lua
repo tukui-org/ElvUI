@@ -1,21 +1,21 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local THREAT = E:NewModule('Threat', 'AceEvent-3.0');
 
---Cache global variables
 --Lua functions
 local pairs, select = pairs, select
-local twipe = table.wipe
+local wipe = wipe
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local UnitReaction = UnitReaction
-local UnitClass = UnitClass
-local UnitIsPlayer = UnitIsPlayer
-local IsInGroup, IsInRaid = IsInGroup, IsInRaid
-local UnitExists = UnitExists
-local UnitName = UnitName
-local UnitIsUnit = UnitIsUnit
-local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local GetThreatStatusColor = GetThreatStatusColor
+local IsInGroup, IsInRaid = IsInGroup, IsInRaid
+local UnitClass = UnitClass
+local UnitDetailedThreatSituation = UnitDetailedThreatSituation
+local UnitExists = UnitExists
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsUnit = UnitIsUnit
+local UnitName = UnitName
+local UnitReaction = UnitReaction
+
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local UNKNOWN = UNKNOWN
 
@@ -128,7 +128,7 @@ function THREAT:Update()
 		self.bar:Hide()
 	end
 
-	twipe(self.list)
+	wipe(self.list)
 end
 
 function THREAT:ToggleEnable()
@@ -156,7 +156,7 @@ function THREAT:Initialize()
 	self.bar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(self.bar)
 	self.bar:SetMinMaxValues(0, 100)
-	self.bar:CreateBackdrop('Default')
+	self.bar:CreateBackdrop()
 
 	self.bar.text = self.bar:CreateFontString(nil, 'OVERLAY')
 	self.bar.text:FontTemplate(nil, self.db.textSize, self.db.textOutline)

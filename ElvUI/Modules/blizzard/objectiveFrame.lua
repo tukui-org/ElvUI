@@ -1,7 +1,6 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
---Cache global variables
 local _G = _G
 --Lua functions
 local min = math.min
@@ -33,6 +32,14 @@ local function IsFramePositionedLeft(frame)
 	return positionedLeft;
 end
 
+function B:SetObjectiveFrameAutoHide()
+	if E.db.general.objectiveFrameAutoHide then
+		RegisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, "objectiveHider", "[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists] 1;0")
+	else
+		RegisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, "objectiveHider", "0")
+	end
+end
+
 function B:MoveObjectiveFrame()
 	local ObjectiveFrameHolder = CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
 	ObjectiveFrameHolder:Width(130)
@@ -49,13 +56,11 @@ function B:MoveObjectiveFrame()
 	B:SetObjectiveFrameHeight()
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
 
-	local function ObjectiveTrackerFrame_SetPosition(_,_, parent)
-		if parent ~= ObjectiveFrameHolder then
-			ObjectiveTrackerFrame:ClearAllPoints()
-			ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
-		end
-	end
-	hooksecurefunc(ObjectiveTrackerFrame,"SetPoint", ObjectiveTrackerFrame_SetPosition)
+	ObjectiveTrackerFrame:SetMovable(true)
+	ObjectiveTrackerFrame:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
+	ObjectiveTrackerFrame:ClearAllPoints()
+	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')	
+
 
 	local function RewardsFrame_SetPosition(block)
 		local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame;
@@ -67,4 +72,18 @@ function B:MoveObjectiveFrame()
 		end
 	end
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)
+
+	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, _G.ObjectiveTrackerFrame, 'SecureHandlerStateTemplate');
+	ObjectiveTrackerFrame.AutoHider:SetAttribute("_onstate-objectiveHider", [[
+		local parent = self:GetParent()
+		local shown = parent:IsShown()
+
+		if newstate == 1 and shown then
+			self:GetParent():Hide()
+		elseif not shown then
+			self:GetParent():Show()
+		end
+	]])	
+
+	self:SetObjectiveFrameAutoHide()
 end
