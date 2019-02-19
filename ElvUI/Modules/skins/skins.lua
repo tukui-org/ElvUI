@@ -349,54 +349,6 @@ function S:HandleTab(tab)
 	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
 end
 
-function S:HandleNextPrevButton(btn, arrowDir, color)
-	if btn.isSkinned then return end
-
-	if not arrowDir then
-		arrowDir = 'down'
-		local ButtonName = btn:GetDebugName() and btn:GetDebugName():lower()
-		if ButtonName then
-			if (strfind(ButtonName, 'left') or strfind(ButtonName, 'prev') or strfind(ButtonName, 'decrement') or strfind(ButtonName, 'backward') or strfind(ButtonName, 'back')) then
-				arrowDir = 'left'
-			elseif (strfind(ButtonName, 'right') or strfind(ButtonName, 'next') or strfind(ButtonName, 'increment') or strfind(ButtonName, 'forward')) then
-				arrowDir = 'right'
-			elseif (strfind(ButtonName, 'scrollup') or strfind(ButtonName, 'upbutton') or strfind(ButtonName, 'top') or strfind(ButtonName, 'asc') or strfind(ButtonName, 'home') or strfind(ButtonName, 'maximize')) then
-				arrowDir = 'up'
-			end
-		end
-	end
-
-	btn:StripTextures()
-	S:HandleButton(btn)
-
-	btn:SetHighlightTexture(nil)
-	btn:SetSize(18, 18)
-
-	btn:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
-	btn:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
-	btn:SetDisabledTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
-
-	local Normal, Disabled, Pushed = btn:GetNormalTexture(), btn:GetDisabledTexture(), btn:GetPushedTexture()
-
-	Normal:SetInside()
-	Pushed:SetInside()
-	Disabled:SetInside()
-
-	Normal:SetTexCoord(0, 1, 0, 1)
-	Pushed:SetTexCoord(0, 1, 0, 1)
-	Disabled:SetTexCoord(0, 1, 0, 1)
-
-	Normal:SetRotation(S.ArrowRotation[arrowDir])
-	Pushed:SetRotation(S.ArrowRotation[arrowDir])
-	Disabled:SetRotation(S.ArrowRotation[arrowDir])
-
-	Normal:SetVertexColor(unpack(color or {1, 1, 1}))
-
-	Disabled:SetVertexColor(.3, .3, .3)
-
-	btn.isSkinned = true
-end
-
 function S:HandleRotateButton(btn)
 	if btn.isSkinned then return end
 
@@ -992,6 +944,62 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 		icon:SetPoint("TOPLEFT", E.mult, -E.mult)
 		icon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
 	end
+end
+
+function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop)
+	if btn.isSkinned then return end
+
+	if not arrowDir then
+		arrowDir = 'down'
+		local ButtonName = btn:GetDebugName() and btn:GetDebugName():lower()
+		if ButtonName then
+			if (strfind(ButtonName, 'left') or strfind(ButtonName, 'prev') or strfind(ButtonName, 'decrement') or strfind(ButtonName, 'backward') or strfind(ButtonName, 'back')) then
+				arrowDir = 'left'
+			elseif (strfind(ButtonName, 'right') or strfind(ButtonName, 'next') or strfind(ButtonName, 'increment') or strfind(ButtonName, 'forward')) then
+				arrowDir = 'right'
+			elseif (strfind(ButtonName, 'scrollup') or strfind(ButtonName, 'upbutton') or strfind(ButtonName, 'top') or strfind(ButtonName, 'asc') or strfind(ButtonName, 'home') or strfind(ButtonName, 'maximize')) then
+				arrowDir = 'up'
+			end
+		end
+	end
+
+	btn:StripTextures()
+	if not noBackdrop then
+		S:HandleButton(btn)
+	end
+
+	btn:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+	btn:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+	btn:SetDisabledTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+
+	local Normal, Disabled, Pushed = btn:GetNormalTexture(), btn:GetDisabledTexture(), btn:GetPushedTexture()
+	
+	if noBackdrop then
+		btn:SetSize(20, 20)
+		Disabled:SetVertexColor(.5, .5, .5)
+		btn.Texture = Normal
+		btn:HookScript("OnEnter", handleCloseButtonOnEnter)
+		btn:HookScript("OnLeave", handleCloseButtonOnLeave)
+	else
+		btn:SetSize(18, 18)
+		Disabled:SetVertexColor(.3, .3, .3)
+	end
+
+	Normal:SetInside()
+	Pushed:SetInside()
+	Disabled:SetInside()
+	
+	Normal:SetTexCoord(0, 1, 0, 1)
+	Pushed:SetTexCoord(0, 1, 0, 1)
+	Disabled:SetTexCoord(0, 1, 0, 1)
+
+	Normal:SetRotation(S.ArrowRotation[arrowDir])
+	Pushed:SetRotation(S.ArrowRotation[arrowDir])
+	Disabled:SetRotation(S.ArrowRotation[arrowDir])
+
+	Normal:SetVertexColor(unpack(color or {1, 1, 1}))
+
+	btn.isSkinned = true
 end
 
 -- World Map related Skinning functions used for WoW 8.0
