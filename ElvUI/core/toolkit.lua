@@ -242,6 +242,33 @@ local function StripTextures(object, kill, alpha)
 	end
 end
 
+local function StripTexts(object, kill, alpha)
+	if object:IsObjectType('FontString') then
+		if kill then
+			object:Kill()
+		elseif alpha then
+			object:SetAlpha(0)
+		else
+			object:SetText()
+		end
+	else
+		if object.GetNumRegions then
+			for i = 1, object:GetNumRegions() do
+				local region = select(i, object:GetRegions())
+				if region and region.IsObjectType and region:IsObjectType('FontString') then
+					if kill then
+						region:Kill()
+					elseif alpha then
+						region:SetAlpha(0)
+					else
+						region:SetText()
+					end
+				end
+			end
+		end
+	end
+end
+
 local function FontTemplate(fs, font, fontSize, fontStyle)
 	fs.font = font
 	fs.fontSize = fontSize
@@ -342,6 +369,7 @@ local function addapi(object)
 	if not object.Height then mt.Height = Height end
 	if not object.FontTemplate then mt.FontTemplate = FontTemplate end
 	if not object.StripTextures then mt.StripTextures = StripTextures end
+	if not object.StripTexts then mt.StripTexts = StripTexts end
 	if not object.StyleButton then mt.StyleButton = StyleButton end
 	if not object.CreateCloseButton then mt.CreateCloseButton = CreateCloseButton end
 	if not object.GetNamedChild then mt.GetNamedChild = GetNamedChild end
