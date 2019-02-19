@@ -61,9 +61,9 @@ local function LoadSkin()
 		end)
 	end
 
-	_G.MailFrame:CreateBackdrop("Transparent")
-	_G.MailFrame.backdrop:SetPoint("TOPLEFT", _G.MailItem1, "TOPLEFT")
-	_G.MailFrame.backdrop:SetPoint("BOTTOMRIGHT", _G.MailItem7, "BOTTOMRIGHT")
+	_G.InboxFrame:CreateBackdrop("Transparent")
+	_G.InboxFrame.backdrop:SetPoint("TOPLEFT", _G.MailItem1, "TOPLEFT")
+	_G.InboxFrame.backdrop:SetPoint("BOTTOMRIGHT", _G.MailItem7, "BOTTOMRIGHT")
 
 	S:HandleNextPrevButton(_G.InboxPrevPageButton)
 	S:HandleNextPrevButton(_G.InboxNextPageButton)
