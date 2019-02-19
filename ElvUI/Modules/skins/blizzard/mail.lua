@@ -65,9 +65,11 @@ local function LoadSkin()
 	_G.InboxFrame.backdrop:SetPoint("TOPLEFT", _G.MailItem1, "TOPLEFT")
 	_G.InboxFrame.backdrop:SetPoint("BOTTOMRIGHT", _G.MailItem7, "BOTTOMRIGHT")
 
-	S:HandleNextPrevButton(_G.InboxPrevPageButton)
-	S:HandleNextPrevButton(_G.InboxNextPageButton)
-
+	S:HandleNextPrevButton(_G.InboxPrevPageButton, nil, nil, true)
+	S:HandleNextPrevButton(_G.InboxNextPageButton, nil, nil, true)
+	_G.InboxPrevPageButton:StripTexts()
+	_G.InboxNextPageButton:StripTexts()
+	
 	_G.MailFrameTab1:StripTextures()
 	_G.MailFrameTab2:StripTextures()
 	S:HandleTab(_G.MailFrameTab1)

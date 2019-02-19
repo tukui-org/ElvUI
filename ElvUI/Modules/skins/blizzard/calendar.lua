@@ -79,8 +79,8 @@ local function LoadSkin()
 	_G.CalendarFilterFrameMiddle:Hide()
 	_G.CalendarFilterFrameRight:Hide()
 
-	S:HandleNextPrevButton(_G.CalendarPrevMonthButton)
-	S:HandleNextPrevButton(_G.CalendarNextMonthButton)
+	S:HandleNextPrevButton(_G.CalendarPrevMonthButton, nil, nil, true)
+	S:HandleNextPrevButton(_G.CalendarNextMonthButton, nil, nil, true)
 
 	_G.CalendarFilterFrame:StripTextures()
 	_G.CalendarFilterFrame:Width(155)

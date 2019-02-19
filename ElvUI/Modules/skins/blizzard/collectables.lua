@@ -328,8 +328,8 @@ local function LoadSkin()
 	_G.ToyBoxFilterButton:Point("TOPRIGHT", ToyBox, "TOPRIGHT", -15, -34)
 	S:HandleEditBox(ToyBox.searchBox)
 	ToyBox.iconsFrame:StripTextures()
-	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton)
+	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
+	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, nil, nil, true)
 	S:HandleCloseButton(ToyBox.favoriteHelpBox.CloseButton)
 
 	local progressBar = ToyBox.progressBar
@@ -373,8 +373,8 @@ local function LoadSkin()
 	_G.HeirloomsJournalFilterButton:Point("TOPRIGHT", HeirloomsJournal, "TOPRIGHT", -15, -34)
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
 	HeirloomsJournal.iconsFrame:StripTextures()
-	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton)
+	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
+	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
 	S:HandleDropDownBox(_G.HeirloomsJournalClassDropDown)
 	S:HandleCloseButton(HeirloomsJournal.UpgradeLevelHelpBox.CloseButton)
 
@@ -473,8 +473,8 @@ local function LoadSkin()
 		end
 
 		if Frame.PagingFrame then
-			S:HandleNextPrevButton(Frame.PagingFrame.PrevPageButton)
-			S:HandleNextPrevButton(Frame.PagingFrame.NextPageButton)
+			S:HandleNextPrevButton(Frame.PagingFrame.PrevPageButton, nil, nil, true)
+			S:HandleNextPrevButton(Frame.PagingFrame.NextPageButton, nil, nil, true)
 		end
 	end
 
