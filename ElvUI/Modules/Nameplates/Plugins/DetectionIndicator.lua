@@ -16,13 +16,12 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local unit = self.displayedUnit
+	local unit = self.displayedUnit or self.unit
 	local canDetect
+
 	for i = 1, BUFF_MAX_DISPLAY do
 		local name, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, i, 'HELPFUL')
-		if (not name) then
-			break
-		elseif (spellId and DETECTION_BUFFS[spellId]) then
+		if name and (spellId and DETECTION_BUFFS[spellId]) then
 			canDetect = true
 			break
 		end
@@ -30,6 +29,8 @@ local function Update(self, event)
 
 	if canDetect then
 		self.DetectionIndicator:Show()
+		self.DetectionIndicator:SetModel("Spells\\Blackfuse_LaserTurret_GroundBurn_State_Base")
+		self.DetectionIndicator:SetPosition(3, 0, 1.5)
 	else
 		self.DetectionIndicator:Hide()
 	end
@@ -53,10 +54,8 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		if(element:IsObjectType('PlayerModel') and not element:GetTexture()) then
-			element:SetModel([[Spells\Blackfuse_LaserTurret_GroundBurn_State_Base]])
-			element:SetPosition(3, 0, 1.25)
-		end
+		self:RegisterEvent("UNIT_NAME_UPDATE", Path)
+		self:RegisterEvent("UNIT_AURA", Path)
 
 		return true
 	end

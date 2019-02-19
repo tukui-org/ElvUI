@@ -149,9 +149,9 @@ function NP:Update_TargetIndicator(nameplate)
 end
 
 function NP:Construct_Highlight(nameplate)
-	local Highlight = CreateFrame('Frame', nameplate:GetDebugName()..'Highlight', nameplate.raisedElement)
+	local Highlight = CreateFrame('Frame', nameplate:GetDebugName()..'Highlight', nameplate)
 
-	Highlight.texture = Highlight:CreateTexture(nil, 'ARTWORK', nil, 1)
+	Highlight.texture = Highlight:CreateTexture(nil, 'BACKGROUND', nil, 1)
 
 	return Highlight
 end
@@ -161,11 +161,12 @@ function NP:Update_Highlight(nameplate)
 
 	if db.health.enable then
 		nameplate.Highlight.texture:SetColorTexture(1, 1, 1, .3)
-		nameplate.Highlight.texture:Show()
-		nameplate.Highlight.texture:SetPoint('TOPLEFT', nameplate.Health, 'TOPLEFT')
-		nameplate.Highlight.texture:SetPoint('BOTTOMRIGHT', nameplate.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+		nameplate.Highlight.texture:SetAllPoints(nameplate.Health)
+		nameplate.Highlight.texture:SetAlpha(1)
 	else
-		nameplate.Highlight.texture:Hide()
+		nameplate.Highlight.texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark]])
+		nameplate.Highlight.texture:SetAllPoints(nameplate)
+		nameplate.Highlight.texture:SetAlpha(.5)
 	end
 end
 
@@ -190,6 +191,30 @@ function NP:Update_HealerSpecs(nameplate)
 	else
 		if nameplate:IsElementEnabled('HealerSpecs') then
 			nameplate:DisableElement('HealerSpecs')
+		end
+	end
+end
+
+function NP:Construct_DetectionIndicator(nameplate)
+	local model = CreateFrame("PlayerModel", nil, nameplate)
+	model:SetSize(75, 75)
+	model:Hide()
+
+	return model
+end
+
+function NP:Update_DetectionIndicator(nameplate)
+	local db = NP.db.units[nameplate.frameType]
+
+	if (nameplate.frameType == 'ENEMY_NPC') and db.detection and db.detection.enable then
+		if not nameplate:IsElementEnabled('DetectionIndicator') then
+			nameplate:EnableElement('DetectionIndicator')
+		end
+
+		nameplate.DetectionIndicator:SetPoint("BOTTOM", nameplate, "TOP", 0, 0)
+	else
+		if nameplate:IsElementEnabled('DetectionIndicator') then
+			nameplate:DisableElement('DetectionIndicator')
 		end
 	end
 end

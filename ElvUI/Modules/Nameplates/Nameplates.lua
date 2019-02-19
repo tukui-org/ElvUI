@@ -112,6 +112,8 @@ function NP:StylePlate(nameplate)
 
 	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate.RaisedElement)
 
+	nameplate.DetectionIndicator = NP:Construct_DetectionIndicator(nameplate.RaisedElement)
+
 	NP:Construct_Auras(nameplate)
 
 	if E.myclass == 'DEATHKNIGHT' then
@@ -153,6 +155,8 @@ function NP:UpdatePlate(nameplate)
 	NP:Update_HealerSpecs(nameplate)
 
 	NP:Update_Tags(nameplate)
+
+	NP:Update_DetectionIndicator(nameplate)
 
 	NP:UpdatePlateEvents(nameplate)
 
