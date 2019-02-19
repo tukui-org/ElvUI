@@ -41,9 +41,6 @@ local function LoadSkin()
 	for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 		local bg = _G["MailItem"..i]
 		bg:StripTextures()
-		bg:CreateBackdrop()
-		bg.backdrop:Point("TOPLEFT", 2, 1)
-		bg.backdrop:Point("BOTTOMRIGHT", -2, 2)
 
 		local btn = _G["MailItem"..i.."Button"]
 		btn:StripTextures()
@@ -64,10 +61,9 @@ local function LoadSkin()
 		end)
 	end
 
-	--_G.MailFrame:CreateBackdrop("Transparent")
-	--_G.MailFrame.backdrop:SetParent(_G.OpenAllMail)
-	--_G.MailFrame.backdrop:SetPoint("TOPLEFT", _G.MailItem1, "TOPLEFT")
-	--_G.MailFrame.backdrop:SetPoint("BOTTOMRIGHT", _G.MailItem7, "BOTTOMRIGHT")
+	_G.MailFrame:CreateBackdrop("Transparent")
+	_G.MailFrame.backdrop:SetPoint("TOPLEFT", _G.MailItem1, "TOPLEFT")
+	_G.MailFrame.backdrop:SetPoint("BOTTOMRIGHT", _G.MailItem7, "BOTTOMRIGHT")
 
 	S:HandleNextPrevButton(_G.InboxPrevPageButton)
 	S:HandleNextPrevButton(_G.InboxNextPageButton)
