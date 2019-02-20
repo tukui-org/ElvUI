@@ -523,6 +523,55 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 	frame.isSkinned = true
 end
 
+function S:HandleRadioButton(Button)
+	if Button.isSkinned then return end
+
+	local InsideMask = Button:CreateMaskTexture()
+	InsideMask:SetTexture([[Interface\Minimap\UI-Minimap-Background]], 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
+	InsideMask:SetSize(10, 10)
+	InsideMask:SetPoint('CENTER')
+
+	Button.InsideMask = InsideMask
+
+	local OutsideMask = Button:CreateMaskTexture()
+	OutsideMask:SetTexture([[Interface\Minimap\UI-Minimap-Background]], 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
+	OutsideMask:SetSize(13, 13)
+	OutsideMask:SetPoint('CENTER')
+
+	Button.OutsideMask = OutsideMask
+
+	Button:SetCheckedTexture(E.media.normTex)
+	Button:SetNormalTexture(E.media.normTex)
+	Button:SetHighlightTexture(E.media.normTex)
+	Button:SetDisabledTexture(E.media.normTex)
+
+	local Check, Highlight, Normal, Disabled = Button:GetCheckedTexture(), Button:GetHighlightTexture(), Button:GetNormalTexture(), Button:GetDisabledTexture()
+
+	Check:SetVertexColor(unpack(E.media.normTex))
+	Check:SetTexCoord(0, 1, 0, 1)
+	Check:SetInside()
+	Check:AddMaskTexture(InsideMask)
+
+	Highlight:SetTexCoord(0, 1, 0, 1)
+	Highlight:SetVertexColor(1, 1, 1)
+	Highlight:AddMaskTexture(InsideMask)
+
+	Normal:SetOutside()
+	Normal:SetTexCoord(0, 1, 0, 1)
+	Normal:SetVertexColor(unpack(E.media.bordercolor))
+	Normal:AddMaskTexture(OutsideMask)
+
+	Disabled:SetVertexColor(.3, .3, .3)
+	Disabled:AddMaskTexture(OutsideMask)
+
+	hooksecurefunc(Button, "SetNormalTexture", function(f, t) if t ~= "" then f:SetNormalTexture("") end end)
+	hooksecurefunc(Button, "SetPushedTexture", function(f, t) if t ~= "" then f:SetPushedTexture("") end end)
+	hooksecurefunc(Button, "SetHighlightTexture", function(f, t) if t ~= "" then f:SetHighlightTexture("") end end)
+	hooksecurefunc(Button, "SetDisabledTexture", function(f, t) if t ~= "" then f:SetDisabledTexture("") end end)
+
+	Button.isSkinned = true
+end
+
 function S:HandleIcon(icon, backdrop)
 	icon:SetTexCoord(unpack(E.TexCoords))
 	if backdrop then
