@@ -69,7 +69,7 @@ local function LoadSkin()
 	S:HandleNextPrevButton(_G.InboxNextPageButton, nil, nil, true)
 	_G.InboxPrevPageButton:StripTexts()
 	_G.InboxNextPageButton:StripTexts()
-	
+
 	_G.MailFrameTab1:StripTextures()
 	_G.MailFrameTab2:StripTextures()
 	S:HandleTab(_G.MailFrameTab1)
@@ -97,6 +97,9 @@ local function LoadSkin()
 
 	S:HandleButton(_G.SendMailMailButton)
 	S:HandleButton(_G.SendMailCancelButton)
+
+	S:HandleRadioButton(_G.SendMailSendMoneyButton)
+	S:HandleRadioButton(_G.SendMailCODButton)
 
 	-- open mail (cod)
 	_G.OpenMailFrame:StripTextures(true)
