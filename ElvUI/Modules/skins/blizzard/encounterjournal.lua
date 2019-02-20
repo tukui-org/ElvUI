@@ -31,11 +31,22 @@ local function SkinDungeons()
 	end
 end
 
+local function HandleTabs(tab)
+	tab:StripTextures()
+	tab:SetText(tab.tooltip)
+	tab:GetFontString():FontTemplate(nil, nil, "")
+	tab:CreateBackdrop()
+	tab:SetScript("OnEnter", E.noop)
+	tab:SetScript("OnLeave", E.noop)
+	tab:SetSize(70, 20)
+	tab.SetPoint = E.noop
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
-	--[[_G.E = E
+	_G.E = E
 	_G.S = S
-	_G.EJ = _G.EncounterJournal]]
+	_G.EJ = _G.EncounterJournal
 	local EJ = _G.EncounterJournal
 	S:HandlePortraitFrame(EJ, true)
 
@@ -160,44 +171,32 @@ local function LoadSkin()
 	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:SetPoint("BOTTOMRIGHT", _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), "BOTTOMRIGHT", -10, 5)
 
 	--Tabs
-	local r, g, b = 156/255, 117/255, 57/255
-	EncounterInfo.overviewTab:Point('TOPLEFT', EncounterInfo, 'TOPRIGHT', E.PixelMode and -4 or 0, -35)
-	EncounterInfo.overviewTab.SetPoint = E.noop
-	EncounterInfo.overviewTab:GetNormalTexture():SetTexture()
-	EncounterInfo.overviewTab:GetPushedTexture():SetTexture()
-	EncounterInfo.overviewTab:GetDisabledTexture():SetTexture()
-	EncounterInfo.overviewTab:GetHighlightTexture():SetTexture()
-	EncounterInfo.overviewTab:CreateBackdrop()
-	EncounterInfo.overviewTab.backdrop:SetBackdropColor(r, g, b)
-	EncounterInfo.overviewTab.backdrop:Point('TOPLEFT', 11, -8)
-	EncounterInfo.overviewTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
+	local tabs = {
+		EncounterInfo.overviewTab,
+		EncounterInfo.lootTab,
+		EncounterInfo.bossTab,
+		EncounterInfo.modelTab
+	}
 
-	EncounterInfo.lootTab:GetNormalTexture():SetTexture()
-	EncounterInfo.lootTab:GetPushedTexture():SetTexture()
-	EncounterInfo.lootTab:GetDisabledTexture():SetTexture()
-	EncounterInfo.lootTab:GetHighlightTexture():SetTexture()
-	EncounterInfo.lootTab:CreateBackdrop()
-	EncounterInfo.lootTab.backdrop:SetBackdropColor(r, g, b)
-	EncounterInfo.lootTab.backdrop:Point('TOPLEFT', 11, -8)
-	EncounterInfo.lootTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
+	for i=1, #tabs do
+		local tab = tabs[i]
 
-	EncounterInfo.bossTab:GetNormalTexture():SetTexture()
-	EncounterInfo.bossTab:GetPushedTexture():SetTexture()
-	EncounterInfo.bossTab:GetDisabledTexture():SetTexture()
-	EncounterInfo.bossTab:GetHighlightTexture():SetTexture()
-	EncounterInfo.bossTab:CreateBackdrop()
-	EncounterInfo.bossTab.backdrop:SetBackdropColor(r, g, b)
-	EncounterInfo.bossTab.backdrop:Point('TOPLEFT', 11, -8)
-	EncounterInfo.bossTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
+		tab:ClearAllPoints()
+		if i == 1 then
+			tab:SetPoint('TOPLEFT', _G.EncounterJournal, 'BOTTOM', 80, E.PixelMode and 0 or 2)
+		else
+			tab:SetPoint("LEFT", tabs[i-1], "RIGHT", 4, 0)
+		end
+		HandleTabs(tab)
+	end
 
-	EncounterInfo.modelTab:GetNormalTexture():SetTexture()
-	EncounterInfo.modelTab:GetPushedTexture():SetTexture()
-	EncounterInfo.modelTab:GetDisabledTexture():SetTexture()
-	EncounterInfo.modelTab:GetHighlightTexture():SetTexture()
-	EncounterInfo.modelTab:CreateBackdrop()
-	EncounterInfo.modelTab.backdrop:SetBackdropColor(r, g, b)
-	EncounterInfo.modelTab.backdrop:Point('TOPLEFT', 11, -8)
-	EncounterInfo.modelTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
+	hooksecurefunc("EncounterJournal_SetTabEnabled", function(tab, enabled)
+		if enabled then
+			tab:GetFontString():SetTextColor(1, 1, 1)
+		else
+			tab:GetFontString():SetTextColor(0.6, 0.6, 0.6)
+		end
+	end)
 
 
 	-- Loot buttons
