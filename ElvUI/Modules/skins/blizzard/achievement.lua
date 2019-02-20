@@ -254,13 +254,16 @@ local function LoadSkin(event)
 	_G.AchievementFrameHeaderPoints:Point("LEFT", _G.AchievementFrameHeaderTitle, "RIGHT", 2, 0)
 
 	--Backdrops
-	_G.AchievementFrameCategoriesContainer:CreateBackdrop()
+	_G.AchievementFrameCategoriesContainer:CreateBackdrop("Transparent")
 	_G.AchievementFrameCategoriesContainer.backdrop:Point("TOPLEFT", 0, 4)
 	_G.AchievementFrameCategoriesContainer.backdrop:Point("BOTTOMRIGHT", -2, -3)
-	_G.AchievementFrameCategoriesContainer.backdrop:SetFrameStrata("BACKGROUND")
+
 	_G.AchievementFrameAchievementsContainer:CreateBackdrop("Transparent")
 	_G.AchievementFrameAchievementsContainer.backdrop:Point("TOPLEFT", -2, 2)
 	_G.AchievementFrameAchievementsContainer.backdrop:Point("BOTTOMRIGHT", -2, -3)
+
+	_G.AchievementFrameGuildEmblemRight:Kill()
+	_G.AchievementFrameGuildEmblemLeft:Kill()
 
 	S:HandleCloseButton(_G.AchievementFrameCloseButton, AchievementFrame.backdrop)
 	S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
