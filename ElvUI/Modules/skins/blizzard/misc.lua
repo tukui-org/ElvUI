@@ -326,8 +326,11 @@ local function LoadSkin()
 			highlight:SetTexture([[Interface\AddOns\AddOnSkins\Media\Textures\Highlight]])
 			highlight:SetVertexColor(r, g, b)
 
-			button:CreateBackdrop()
-			if button.backdrop then
+			if not button.backdrop then
+				button:CreateBackdrop()
+			end
+
+			if button.backdrop then 
 				button.backdrop:Hide()
 			end
 
