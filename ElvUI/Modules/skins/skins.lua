@@ -547,7 +547,7 @@ function S:HandleRadioButton(Button)
 
 	local Check, Highlight, Normal, Disabled = Button:GetCheckedTexture(), Button:GetHighlightTexture(), Button:GetNormalTexture(), Button:GetDisabledTexture()
 
-	Check:SetVertexColor(unpack(E.media.normTex))
+	Check:SetVertexColor(unpack(E.media.rgbvaluecolor))
 	Check:SetTexCoord(0, 1, 0, 1)
 	Check:SetInside()
 	Check:AddMaskTexture(InsideMask)
@@ -1022,7 +1022,7 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop)
 	btn:SetDisabledTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
 
 	local Normal, Disabled, Pushed = btn:GetNormalTexture(), btn:GetDisabledTexture(), btn:GetPushedTexture()
-	
+
 	if noBackdrop then
 		btn:SetSize(20, 20)
 		Disabled:SetVertexColor(.5, .5, .5)
@@ -1037,7 +1037,7 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop)
 	Normal:SetInside()
 	Pushed:SetInside()
 	Disabled:SetInside()
-	
+
 	Normal:SetTexCoord(0, 1, 0, 1)
 	Pushed:SetTexCoord(0, 1, 0, 1)
 	Disabled:SetTexCoord(0, 1, 0, 1)
