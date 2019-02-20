@@ -290,6 +290,73 @@ local function LoadSkin()
 		end
 	end)
 
+	hooksecurefunc("UIDropDownMenu_CreateFrames", function(level, index)
+		local listFrame = _G["DropDownList"..level];
+		local listFrameName = listFrame:GetName();
+		local expandArrow = _G[listFrameName.."Button"..index.."ExpandArrow"];
+		if expandArrow then
+			expandArrow:SetNormalTexture([[Interface\AddOns\AddOnSkins\Media\Textures\Arrow]])
+			expandArrow:SetSize(12, 12)
+			expandArrow:GetNormalTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
+			expandArrow:GetNormalTexture():SetRotation(S.ArrowRotation['right'])
+		end
+	end)
+
+	hooksecurefunc("UIDropDownMenu_SetIconImage", function(icon, texture)
+		if texture:find("Divider") then
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			icon:SetColorTexture(r, g, b, 0.45)
+			icon:SetHeight(1)
+		end
+	end)
+
+	hooksecurefunc("ToggleDropDownMenu", function(level)
+		if ( not level ) then
+			level = 1;
+		end
+
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+
+		for i = 1, UIDROPDOWNMENU_MAXBUTTONS do
+			local button = _G["DropDownList"..level.."Button"..i]
+			local check = _G["DropDownList"..level.."Button"..i.."Check"]
+			local uncheck = _G["DropDownList"..level.."Button"..i.."UnCheck"]
+			local highlight = _G["DropDownList"..level.."Button"..i.."Highlight"]
+
+			highlight:SetTexture([[Interface\AddOns\AddOnSkins\Media\Textures\Highlight]])
+			highlight:SetVertexColor(r, g, b)
+
+			button:CreateBackdrop()
+			if button.backdrop then
+				button.backdrop:Hide()
+			end
+
+			if not button.notCheckable then
+				uncheck:SetTexture('')
+				local _, co = check:GetTexCoord()
+				if co == 0 then
+					check:SetTexture("Interface\\Buttons\\UI-CheckBox-Check")
+					check:SetVertexColor(r, g, b, 1)
+					check:SetSize(20, 20)
+					check:SetDesaturated(true)
+					button.backdrop:SetInside(check, 4, 4)
+				else
+					check:SetTexture(E.media.normTex)
+					check:SetVertexColor(r, g, b, 1)
+					check:SetSize(10, 10)
+					check:SetDesaturated(false)
+					button.backdrop:SetOutside(check)
+				end
+
+				button.backdrop:Show()
+				check:SetTexCoord(0, 1, 0, 1);
+			else
+				check:SetSize(16, 16)
+			end
+		end
+	end)
+
+
 	local SideDressUpFrame = _G.SideDressUpFrame
 	S:HandleCloseButton(_G.SideDressUpModelCloseButton)
 	SideDressUpFrame:StripTextures()
