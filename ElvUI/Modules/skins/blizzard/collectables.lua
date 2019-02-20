@@ -412,7 +412,7 @@ local function LoadSkin()
 		else
 			button.name:SetTextColor(0.4, 0.4, 0.4)
 			button.level:SetTextColor(0.4, 0.4, 0.4)
-			button.special:SetTextColor(0.4, 0.4, 0.4)
+			button.special:SetTextColor(0.4, 0.4, 0.4)			
 			button.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		end
 		button.SetTextColor = E.noop
@@ -422,7 +422,7 @@ local function LoadSkin()
 		for i=1, #HeirloomsJournal.heirloomHeaderFrames do
 			local header = HeirloomsJournal.heirloomHeaderFrames[i]
 			header:StripTextures()
-			header.text:FontTemplate(nil, 15)
+			header.text:FontTemplate(nil, 15, "")
 			header.text:SetTextColor(1, 1, 1)
 		end
 	end)
