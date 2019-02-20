@@ -467,7 +467,7 @@ function S:HandleStatusBar(frame, color)
 	frame:CreateBackdrop('Transparent')
 	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
 	frame:SetStatusBarTexture(E.media.normTex)
-	frame:SetStatusBarColor(unpack(color or frame.GetStatusBarColor and { frame:GetStatusBarColor() } or {.01, .39, .1}))
+	frame:SetStatusBarColor(unpack(color or {.01, .39, .1}))
 	E:RegisterStatusBar(frame)
 end
 
