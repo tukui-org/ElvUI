@@ -208,7 +208,7 @@ local StripTexturesBlizzFrames = {
 
 local STRIP_TEX = 'Texture'
 local STRIP_FONT = 'FontString'
-local StripRegion = function(which, object, kill, alpha)
+local function StripRegion(which, object, kill, alpha)
 	if kill then
 		object:Kill()
 	elseif alpha then
