@@ -3,11 +3,10 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local select, unpack, pairs = select, unpack, pairs
+local unpack = unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local EJ_GetEncounterInfoByIndex = EJ_GetEncounterInfoByIndex
 
 local function SkinDungeons()
 	local b1 = _G.EncounterJournalInstanceSelectScrollFrameScrollChildInstanceButton1
@@ -32,9 +31,16 @@ local function SkinDungeons()
 end
 
 local function HandleTabs(tab)
+	local fontString = tab.GetFontString and tab:GetFontString()
+	if fontString then
+		if tab.tooltip then
+			tab:SetText(tab.tooltip)
+		end
+
+		fontString:FontTemplate(nil, nil, "")
+	end
+
 	tab:StripTextures()
-	tab:SetText(tab.tooltip)
-	tab:GetFontString():FontTemplate(nil, nil, "")
 	tab:CreateBackdrop()
 	tab:SetScript("OnEnter", E.noop)
 	tab:SetScript("OnLeave", E.noop)
@@ -58,7 +64,7 @@ local function LoadSkin()
 	EJ.navBar.backdrop:Point("BOTTOMRIGHT")
 	S:HandleButton(EJ.navBar.home, true)
 
-	
+
 	S:HandleEditBox(EJ.searchBox)
 	EJ.searchBox:ClearAllPoints()
 	EJ.searchBox:SetPoint("TOPLEFT", EJ.navBar, "TOPRIGHT", 4, 0)
@@ -68,13 +74,13 @@ local function LoadSkin()
 
 	EJ.instanceSelect.bg:Kill()
 	S:HandleDropDownBox(InstanceSelect.tierDropDown)
-	EJ.instanceSelect.tierDropDown:HookScript("OnShow", function(self) 
+	EJ.instanceSelect.tierDropDown:HookScript("OnShow", function(self)
 		local text = self.Text
 		local a, b, c, d, e = text:GetPoint()
 		text:SetPoint(a, b, c, d + 10, e - 4)
 		text:SetWidth(self:GetWidth() / 1.4)
 	end)
- 
+
 	S:HandleScrollBar(InstanceSelect.scroll.ScrollBar, 6)
 	S:HandleTab(InstanceSelect.suggestTab)
 	S:HandleTab(InstanceSelect.dungeonsTab)
@@ -100,7 +106,7 @@ local function LoadSkin()
 
 		text:FontTemplate()
 		text:SetPoint("CENTER")
-	end		
+	end
 
 	_G.EncounterJournalEncounterFrameInfoInstanceButton:Kill()
 
@@ -150,13 +156,13 @@ local function LoadSkin()
 
 
 	S:HandleScrollBar(EncounterInfo.bossesScroll.ScrollBar, 6)
-	EncounterJournalEncounterFrameInstanceFrameBG:SetScale(0.85)
-	EncounterJournalEncounterFrameInstanceFrameBG:ClearAllPoints()
-	EncounterJournalEncounterFrameInstanceFrameBG:SetPoint("CENTER", 0, 40)	
-	EncounterJournalEncounterFrameInstanceFrameTitle:ClearAllPoints()
-	EncounterJournalEncounterFrameInstanceFrameTitle:SetPoint("TOP", 0, -105)
-	EncounterJournalEncounterFrameInstanceFrameMapButton:ClearAllPoints()
-	EncounterJournalEncounterFrameInstanceFrameMapButton:SetPoint("LEFT", 55, -56)
+	_G.EncounterJournalEncounterFrameInstanceFrameBG:SetScale(0.85)
+	_G.EncounterJournalEncounterFrameInstanceFrameBG:ClearAllPoints()
+	_G.EncounterJournalEncounterFrameInstanceFrameBG:SetPoint("CENTER", 0, 40)
+	_G.EncounterJournalEncounterFrameInstanceFrameTitle:ClearAllPoints()
+	_G.EncounterJournalEncounterFrameInstanceFrameTitle:SetPoint("TOP", 0, -105)
+	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:ClearAllPoints()
+	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:SetPoint("LEFT", 55, -56)
 
 	S:HandleScrollBar(EncounterInfo.overviewScroll.ScrollBar, 4)
 	S:HandleScrollBar(EncounterInfo.detailsScroll.ScrollBar, 4)
@@ -237,7 +243,7 @@ local function LoadSkin()
 			item:ClearAllPoints()
 			item:Point("TOPLEFT", EncounterInfo.lootScroll.scrollChild, "TOPLEFT", 5, 0)
 		end
-	end	
+	end
 
 	-- Search
 	_G.EncounterJournalSearchResults:StripTextures()
@@ -273,7 +279,7 @@ local function LoadSkin()
 
 	--Dungeon/raid selection buttons (From AddOnSkins)
 	hooksecurefunc("EncounterJournal_ListInstances", SkinDungeons)
-	_G.EncounterJournal_ListInstances()	
+	_G.EncounterJournal_ListInstances()
 
 	--CreatureButtons
 
