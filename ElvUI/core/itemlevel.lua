@@ -136,6 +136,12 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 		end
 	end
 
+	-- at the beginning of an arena match no info might be available,
+	-- so despite having equipped gear a person may appear naked
+	if total == 0 then
+		isOK = false
+	end
+
 	return isOK and format('%0.2f', E:Round(total / 16, 2))
 end
 
