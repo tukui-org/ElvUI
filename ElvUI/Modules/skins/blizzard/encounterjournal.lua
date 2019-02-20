@@ -31,16 +31,9 @@ local function SkinDungeons()
 end
 
 local function HandleTabs(tab)
-	local fontString = tab.GetFontString and tab:GetFontString()
-	if fontString then
-		if tab.tooltip then
-			tab:SetText(tab.tooltip)
-		end
-
-		fontString:FontTemplate(nil, nil, "")
-	end
-
 	tab:StripTextures()
+	tab:SetText(tab.tooltip)
+	tab:GetFontString():FontTemplate(nil, nil, "")
 	tab:CreateBackdrop()
 	tab:SetScript("OnEnter", E.noop)
 	tab:SetScript("OnLeave", E.noop)
@@ -50,9 +43,7 @@ end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
-	_G.E = E
-	_G.S = S
-	_G.EJ = _G.EncounterJournal
+
 	local EJ = _G.EncounterJournal
 	S:HandlePortraitFrame(EJ, true)
 
@@ -193,6 +184,7 @@ local function LoadSkin()
 		else
 			tab:SetPoint("LEFT", tabs[i-1], "RIGHT", 4, 0)
 		end
+
 		HandleTabs(tab)
 	end
 
