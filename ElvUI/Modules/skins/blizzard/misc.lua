@@ -330,9 +330,7 @@ local function LoadSkin()
 				button:CreateBackdrop()
 			end
 
-			if button.backdrop then 
-				button.backdrop:Hide()
-			end
+			button.backdrop:Hide()
 
 			if not button.notCheckable then
 				uncheck:SetTexture('')
