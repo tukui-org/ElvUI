@@ -206,67 +206,51 @@ local StripTexturesBlizzFrames = {
 	'FilligreeOverlay',
 }
 
-local function StripTextures(object, kill, alpha)
-	if object:IsObjectType('Texture') then
-		if kill then
-			object:Kill()
-		elseif alpha then
-			object:SetAlpha(0)
-		else
-			object:SetTexture()
-		end
-	else
-		local FrameName = object.GetName and object:GetName()
+local STRIP_TEX = 'Texture'
+local STRIP_FONT = 'FontString'
+local StripRegion = function(which, object, kill, alpha)
+	if kill then
+		object:Kill()
+	elseif alpha then
+		object:SetAlpha(0)
+	elseif which == STRIP_TEX then
+		object:SetTexture()
+	elseif which == STRIP_FONT then
+		object:SetText()
+	end
+end
 
-		for _, Blizzard in pairs(StripTexturesBlizzFrames) do
-			local BlizzFrame = object[Blizzard] or FrameName and _G[FrameName..Blizzard]
-			if BlizzFrame then
-				BlizzFrame:StripTextures(kill, alpha)
+local function StripType(which, object, kill, alpha)
+	if object:IsObjectType(which) then
+		StripRegion(which, object, kill, alpha)
+	else
+		if which == STRIP_TEX then
+			local FrameName = object.GetName and object:GetName()
+			for _, Blizzard in pairs(StripTexturesBlizzFrames) do
+				local BlizzFrame = object[Blizzard] or (FrameName and _G[FrameName..Blizzard])
+				if BlizzFrame then
+					BlizzFrame:StripTextures(kill, alpha)
+				end
 			end
 		end
 
 		if object.GetNumRegions then
 			for i = 1, object:GetNumRegions() do
 				local region = select(i, object:GetRegions())
-				if region and region.IsObjectType and region:IsObjectType('Texture') then
-					if kill then
-						region:Kill()
-					elseif alpha then
-						region:SetAlpha(0)
-					else
-						region:SetTexture()
-					end
+				if region and region.IsObjectType and region:IsObjectType(which) then
+					StripRegion(which, region, kill, alpha)
 				end
 			end
 		end
 	end
 end
 
+local function StripTextures(object, kill, alpha)
+	StripType(STRIP_TEX, object, kill, alpha)
+end
+
 local function StripTexts(object, kill, alpha)
-	if object:IsObjectType('FontString') then
-		if kill then
-			object:Kill()
-		elseif alpha then
-			object:SetAlpha(0)
-		else
-			object:SetText()
-		end
-	else
-		if object.GetNumRegions then
-			for i = 1, object:GetNumRegions() do
-				local region = select(i, object:GetRegions())
-				if region and region.IsObjectType and region:IsObjectType('FontString') then
-					if kill then
-						region:Kill()
-					elseif alpha then
-						region:SetAlpha(0)
-					else
-						region:SetText()
-					end
-				end
-			end
-		end
-	end
+	StripType(STRIP_FONT, object, kill, alpha)
 end
 
 local function FontTemplate(fs, font, fontSize, fontStyle)
