@@ -31,6 +31,7 @@ local function LoadSkin()
 	S:HandleButton(_G.QuestChoiceFrameOption2.OptionButtonsContainer.OptionButton1)
 	S:HandleButton(_G.QuestChoiceFrameOption3.OptionButtonsContainer.OptionButton1)
 	S:HandleButton(_G.QuestChoiceFrameOption4.OptionButtonsContainer.OptionButton1)
+
 	S:HandleCloseButton(QuestChoiceFrame.CloseButton)
 	QuestChoiceFrame.CloseButton:SetFrameLevel(10)
 end
