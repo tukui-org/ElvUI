@@ -32,9 +32,16 @@ local function SkinDungeons()
 end
 
 local function HandleTabs(tab)
+	local fontString = tab.GetFontString and tab:GetFontString()
+	if fontString then
+		if tab.tooltip then
+			tab:SetText(tab.tooltip)
+		end
+
+		fontString:FontTemplate()
+	end
+
 	tab:StripTextures()
-	tab:SetText(tab.tooltip)
-	tab:GetFontString():FontTemplate(nil, nil, "")
 	tab:CreateBackdrop()
 	tab:SetScript("OnEnter", E.noop)
 	tab:SetScript("OnLeave", E.noop)
