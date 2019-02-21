@@ -37,7 +37,7 @@ local function HandleTabs(tab)
 	tab:CreateBackdrop()
 	tab:SetScript("OnEnter", E.noop)
 	tab:SetScript("OnLeave", E.noop)
-	tab:SetSize(tab:GetFontString():GetStringWidth()*1.65, 20)
+	tab:SetSize(tab:GetFontString():GetStringWidth()*1.4, 20)
 	tab.SetPoint = E.noop
 end
 
