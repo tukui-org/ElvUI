@@ -37,7 +37,7 @@ local function HandleTabs(tab)
 	tab:CreateBackdrop()
 	tab:SetScript("OnEnter", E.noop)
 	tab:SetScript("OnLeave", E.noop)
-	tab:SetSize(tab:GetFontString():GetStringWidth()*1.4, 20)
+	tab:SetSize(tab:GetFontString():GetStringWidth()*1.5, 20)
 	tab.SetPoint = E.noop
 end
 
@@ -175,14 +175,17 @@ local function LoadSkin()
 		EncounterInfo.modelTab
 	}
 
+	for i=1, #tabs do --not beautiful but eh
+		tabs[i]:ClearAllPoints()
+	end	
+
 	for i=1, #tabs do
 		local tab = tabs[i]
-
-		tab:ClearAllPoints()
-		if i == 1 then
-			tab:SetPoint('TOPLEFT', _G.EncounterJournal, 'BOTTOM', 80, E.PixelMode and 0 or 2)
+		
+		if i == 4 then
+			tab:SetPoint('TOPRIGHT', _G.EncounterJournal, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
 		else
-			tab:SetPoint("LEFT", tabs[i-1], "RIGHT", 4, 0)
+			tab:SetPoint("RIGHT", tabs[i+1], "LEFT", -4, 0)
 		end
 
 		HandleTabs(tab)
