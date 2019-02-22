@@ -108,22 +108,13 @@ local function LoadSkin()
 		end
 	end)
 
-	-- needs review
+	_G.SpellBookSkillLineTab1:SetPoint('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
+
 	for i = 1, 8 do
 		local Tab = _G["SpellBookSkillLineTab"..i]
 		Tab:StripTextures()
 		Tab:SetTemplate()
-
-		Tab:HookScript("OnEnter", function(self) self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor)) end)
-		Tab:HookScript("OnLeave", function(self) if self:GetChecked() then self:SetBackdropBorderColor(1, .8, .1) else self:SetBackdropBorderColor(unpack(E.media.bordercolor)) end end)
-
-		hooksecurefunc(Tab, 'SetChecked', function(self, value)
-			if value == true then
-				self:SetBackdropBorderColor(1, .8, .1)
-			else
-				self:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-		end)
+		Tab:StyleButton()
 	end
 
 	hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", function()
