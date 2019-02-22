@@ -17,17 +17,24 @@ local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
 local C_QuestLog_GetMaxNumQuestsCanAccept = C_QuestLog.GetMaxNumQuestsCanAccept
 
 local function HandleReward(frame)
-	if frame.backdrop then return end
+	if (not frame) then return end
 
-	frame.NameFrame:SetAlpha(0)
-	frame.Icon:SetTexCoord(unpack(E.TexCoords))
-	frame:CreateBackdrop()
-	frame.backdrop:SetOutside(frame.Icon)
-	frame.Name:SetFontObject("GameFontHighlightSmall")
-	frame.Count:ClearAllPoints()
-	frame.Count:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, 0)
+	if frame.Icon then
+		S:HandleIcon(frame.Icon, true)
 
-	if frame.CircleBackground then
+		frame.Count:ClearAllPoints()
+		frame.Count:SetPoint("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, 0)
+	end
+
+	if frame.NameFrame then
+		frame.NameFrame:SetAlpha(0)
+	end
+
+	if frame.Name then
+		frame.Name:SetFontObject("GameFontHighlightSmall")
+	end
+
+	if (frame.CircleBackground) then
 		frame.CircleBackground:SetAlpha(0)
 		frame.CircleBackgroundGlow:SetAlpha(0)
 	end
@@ -149,57 +156,26 @@ local function LoadSkin()
 		end
 	end)
 
-	local rewardFrames = {
-		"MoneyFrame",
-		"XPFrame",
-		"SkillPointFrame", -- this may have extra textures.. need to check on it when possible
-		"HonorFrame",
-		"ArtifactXPFrame",
-		"TitleFrame"
-	}
+	local Rewards = { 'MoneyFrame', 'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame' }
 
-	for _, frame in ipairs(rewardFrames) do
-		if _G.MapQuestInfoRewardsFrame[frame] then
-			HandleReward(_G.MapQuestInfoRewardsFrame[frame])
-		end
+	for _, frame in pairs(Rewards) do
+		HandleReward(_G.MapQuestInfoRewardsFrame[frame])
+		HandleReward(_G.QuestInfoRewardsFrame[frame])
 	end
 
 	-- Hook for WorldQuestRewards / QuestLogRewards
 	hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
-		local rewardButton = rewardsFrame.RewardButtons[index]
-		local mapButton = _G.MapQuestInfoRewardsFrame.RewardButtons[index]
+		local RewardButton = rewardsFrame.RewardButtons[index]
 
-		if mapButton and not mapButton.IsSkinned then
-			HandleReward(mapButton)
-			mapButton.IsSkinned = true
-		end
+		if (not RewardButton.Icon.backdrop) then
+			HandleReward(RewardButton)
 
-		if rewardButton and not rewardButton.backdrop then
-			rewardButton:CreateBackdrop()
-			rewardButton.backdrop:SetOutside(rewardButton.Icon)
-		end -- HandleReward will do this on init
+			RewardButton.IconBorder:SetAlpha(0)
+			RewardButton.NameFrame:Hide()
 
-		if rewardButton and not rewardButton.isSkinned then
-			rewardButton.NameFrame:Hide()
-			rewardButton.Icon:SetTexCoord(unpack(E.TexCoords))
-			rewardButton.IconBorder:SetAlpha(0)
-			rewardButton.Icon:SetDrawLayer("OVERLAY")
-			rewardButton.Count:SetDrawLayer("OVERLAY")
-
-			hooksecurefunc(rewardButton.IconBorder, "SetVertexColor", function(self, r, g, b)
-				local button = self:GetParent()
-				if button and button.backdrop then
-					button.backdrop:SetBackdropBorderColor(r, g, b)
-				end
-
-				self:SetTexture()
-			end)
-
-			rewardButton.isSkinned = true
+			hooksecurefunc(RewardButton.IconBorder, 'SetVertexColor', function(_, r, g, b) RewardButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
 		end
 	end)
-
-	HandleReward(_G.QuestInfoRewardsFrame.HonorFrame)
 
 	--Reward: Title
 	local QuestInfoPlayerTitleFrame = _G.QuestInfoPlayerTitleFrame
