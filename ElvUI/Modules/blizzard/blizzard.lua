@@ -6,30 +6,13 @@ local select = select
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 local hooksecurefunc = hooksecurefunc
-local insert, wipe = table.insert, table.wipe
 
-local ttr = {}
 local function OnMouseDown(self, button)
 	local string = self.Text:GetText()
 	if button == "RightButton" then
 		E:GetModule("Chat"):SetChatEditBoxMessage(string)
 	elseif button == "MiddleButton" then
-		wipe(ttr)
-		string:gsub('([^%.]+)', function(x)
-			insert(ttr, x)
-		end)
-
-		local oldFrame
-		for index, frame in pairs(ttr) do
-			if index == 1 then
-				_G.FRAME = _G[frame]
-			else
-				_G.FRAME = oldFrame[frame]
-			end
-
-			oldFrame = _G.FRAME
-		end
-
+		_G.FRAME = self:GetParent():GetAttributeData().rawValue
 		E:Print("_G.FRAME set to: ", string)
 	else
 		_G.TableAttributeDisplayValueButton_OnMouseDown(self)
