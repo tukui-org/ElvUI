@@ -70,8 +70,11 @@ local function LoadSkin()
 		end
 	end
 
-	S:HandleNextPrevButton(_G.SpellBookPrevPageButton)
-	S:HandleNextPrevButton(_G.SpellBookNextPageButton)
+	S:HandleNextPrevButton(_G.SpellBookPrevPageButton, nil, nil, true)
+	S:HandleNextPrevButton(_G.SpellBookNextPageButton, nil, nil, true)
+
+	_G.SpellBookPageText:ClearAllPoints()
+	_G.SpellBookPageText:SetPoint("RIGHT", _G.SpellBookPrevPageButton, "LEFT", -5, 0)
 
 	for i = 1, _G.SPELLS_PER_PAGE do
 		local button = _G["SpellButton"..i]
