@@ -14,7 +14,7 @@ local function OnMouseDown(self, button)
 	elseif button == "MiddleButton" then
 		local rawData = self:GetParent():GetAttributeData().rawValue
 
-		if rawData:GetObjectType() == "Texture" then
+		if rawData.GetObjectType and rawData:GetObjectType() == "Texture" then
 			_G.TEX = rawData
 			E:Print("_G.TEX set to: ", string)
 		else
