@@ -23,7 +23,7 @@ local function HandleReward(frame)
 	frame.Icon:SetTexCoord(unpack(E.TexCoords))
 	frame:CreateBackdrop()
 	frame.backdrop:SetOutside(frame.Icon)
-	frame.Name:FontTemplate()
+	frame.Name:SetFontObject("GameFontHighlightSmall")
 	frame.Count:ClearAllPoints()
 	frame.Count:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, 0)
 
@@ -198,6 +198,8 @@ local function LoadSkin()
 			rewardButton.isSkinned = true
 		end
 	end)
+
+	HandleReward(_G.QuestInfoRewardsFrame.HonorFrame)
 
 	--Reward: Title
 	local QuestInfoPlayerTitleFrame = _G.QuestInfoPlayerTitleFrame
