@@ -147,6 +147,7 @@ local function LoadSkin()
 
 
 	S:HandleScrollBar(EncounterInfo.bossesScroll.ScrollBar, 6)
+	S:HandleScrollBar(_G.EncounterJournalEncounterFrameInstanceFrameLoreScrollFrameScrollBar)
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:SetScale(0.85)
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:ClearAllPoints()
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:SetPoint("CENTER", 0, 40)
@@ -177,11 +178,11 @@ local function LoadSkin()
 
 	for i=1, #tabs do --not beautiful but eh
 		tabs[i]:ClearAllPoints()
-	end	
+	end
 
 	for i=1, #tabs do
 		local tab = tabs[i]
-		
+
 		if i == 4 then
 			tab:SetPoint('TOPRIGHT', _G.EncounterJournal, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
 		else
