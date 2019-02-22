@@ -929,7 +929,7 @@ function CH:FindURL(event, msg, author, ...)
 	return false, msg, author, ...
 end
 
-local function SetChatEditBoxMessage(message)
+function CH:SetChatEditBoxMessage(message)
 	local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
 	local editBoxShown = ChatFrameEditBox:IsShown()
 	local editBoxText = ChatFrameEditBox:GetText()

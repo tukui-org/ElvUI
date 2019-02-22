@@ -5,6 +5,35 @@ E.Blizzard = B;
 --No point caching anything here, but list them here for mikk's FindGlobals script
 -- GLOBALS: IsAddOnLoaded, LossOfControlFrame, CreateFrame, LFRBrowseFrame, TalentMicroButtonAlert
 
+local function OnMouseDown(self, button)
+	if button == "RightButton" then
+		E:GetModule("Chat"):SetChatEditBoxMessage(self.Text:GetText())
+	else
+		_G.TableAttributeDisplayValueButton_OnMouseDown(self)
+	end
+end
+
+local function UpdateLines()
+	for i=1, _G.TableAttributeDisplay.LinesScrollFrame.LinesContainer:GetNumChildren() do
+		local child = select(i, _G.TableAttributeDisplay.LinesScrollFrame.LinesContainer:GetChildren())
+		if child.ValueButton and child.ValueButton:GetScript("OnMouseDown") ~= OnMouseDown then
+			child.ValueButton:SetScript("OnMouseDown", OnMouseDown)
+		end
+	end
+end
+
+function B:ADDON_LOADED()
+	if not IsAddOnLoaded("Blizzard_DebugTools") and not self.Registered then
+		self:RegisterEvent("ADDON_LOADED")
+		self.Registered = true
+	elseif IsAddOnLoaded("Blizzard_DebugTools") then
+		hooksecurefunc(_G.TableAttributeDisplay.dataProviders[2], "RefreshData", UpdateLines)
+
+		self.Registered = nil
+		self:UnregisterEvent("ADDON_LOADED")
+	end
+end
+
 function B:Initialize()
 	self:EnhanceColorPicker()
 	self:KillBlizzard()
@@ -59,6 +88,8 @@ function B:Initialize()
 			TalentMicroButtonAlert:Kill() -- Kill it, because then the blizz default will show
 		end
 	end
+
+	self:ADDON_LOADED()
 end
 
 local function InitializeCallback()
