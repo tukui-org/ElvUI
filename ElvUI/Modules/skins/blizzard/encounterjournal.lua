@@ -221,7 +221,7 @@ local function LoadSkin()
 
 		item.name:ClearAllPoints()
 		item.name:Point("TOPLEFT", item.icon, "TOPRIGHT", 6, -2)
-		item.name:FontTemplate(nil, nil, "OUTLINE")
+		item.name:SetFontObject("QuestFont_Large")
 		item.boss:ClearAllPoints()
 		item.boss:Point("BOTTOMLEFT", 4, 6)
 		item.slot:ClearAllPoints()
