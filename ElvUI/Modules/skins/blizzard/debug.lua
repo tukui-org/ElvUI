@@ -5,7 +5,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 --WoW API / Variables
 local unpack = unpack
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 local FrameTexs = {
@@ -50,15 +49,6 @@ local function SkinOnShow()
 	S:HandleNextPrevButton(ScriptErrorsFrame.NextError)
 
 	S:Unhook(ScriptErrorsFrame, 'OnShow')
-end
-
-local function dynamicScrollButtonVisibility(button, frame)
-	if not button.dynamicVisibility then
-		frame:SetShown(button:IsShown())
-		button:HookScript("OnShow", function() frame:Show() end)
-		button:HookScript("OnHide", function() frame:Hide() end)
-		button.dynamicVisibility = true
-	end
 end
 
 local function SkinTableAttributeDisplay(frame)
