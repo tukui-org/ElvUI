@@ -6,39 +6,7 @@ local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local SpellBookFrame_UpdateSkillLineTabs = SpellBookFrame_UpdateSkillLineTabs
 local hooksecurefunc = hooksecurefunc
-
-local function SkinTab(tab, xOffset)
-	-- Avoid a lua error when using the character boost. The spells are learned through "combat training" and are not ready to be skinned.
-	-- sometimes this needs to be done again; i think it has to do with leveling up, maybe, im not 100% sure.
-	local normTex = tab.GetNormalTexture and tab:GetNormalTexture()
-	if normTex then
-		normTex:SetTexCoord(unpack(E.TexCoords))
-		normTex:SetInside()
-	end
-
-	if not tab.isSkinned then
-		tab:StripTextures()
-		tab.pushed = true
-		tab:CreateBackdrop()
-		tab.backdrop:SetAllPoints()
-		tab:StyleButton()
-		tab.checked:SetAllPoints()
-		tab.hover:SetAllPoints()
-
-		local point, relatedTo, point2, _, y = tab:GetPoint()
-		tab:Point(point, relatedTo, point2, xOffset or 0, y)
-
-		tab.isSkinned = true
-	end
-end
-
-local function SkinSkillLine()
-	for i=1, _G.MAX_SKILLLINE_TABS do
-		SkinTab(_G["SpellBookSkillLineTab"..i], E.PixelMode and 0 or E.Border + E.Spacing)
-	end
-end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.spellbook ~= true then return end
@@ -141,8 +109,32 @@ local function LoadSkin()
 	end)
 
 	-- needs review
-	hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", SkinSkillLine)
-	SpellBookFrame_UpdateSkillLineTabs() --This update fixes issue with tab textures being empty on first show
+	for i = 1, 8 do
+		local Tab = _G["SpellBookSkillLineTab"..i]
+		Tab:StripTextures()
+		Tab:SetTemplate()
+
+		Tab:HookScript("OnEnter", function(self) self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor)) end)
+		Tab:HookScript("OnLeave", function(self) if self:GetChecked() then self:SetBackdropBorderColor(1, .8, .1) else self:SetBackdropBorderColor(unpack(E.media.bordercolor)) end end)
+
+		hooksecurefunc(Tab, 'SetChecked', function(self, value)
+			if value == true then
+				self:SetBackdropBorderColor(1, .8, .1)
+			else
+				self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end
+		end)
+	end
+
+	hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", function()
+		for i = 1, 8 do
+			local Tab = _G["SpellBookSkillLineTab"..i]
+			if Tab:GetNormalTexture() then
+				S:HandleIcon(Tab:GetNormalTexture())
+				Tab:GetNormalTexture():SetInside()
+			end
+		end
+	end)
 
 	--Profession Tab
 	local professionbuttons = {
