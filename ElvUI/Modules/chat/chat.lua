@@ -959,7 +959,7 @@ local function HyperLinkedCPL(data)
 				message = gsub(message, '|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
 				message = strtrim(removeIconFromLine(message))
 				if not CH:MessageIsProtected(message) then
-					SetChatEditBoxMessage(message)
+					CH:SetChatEditBoxMessage(message)
 				end
 			end
 		end
@@ -983,7 +983,7 @@ local function HyperLinkedURL(data)
 	if strsub(data, 1, 3) == "url" then
 		local currentLink = strsub(data, 5)
 		if currentLink and currentLink ~= "" then
-			SetChatEditBoxMessage(currentLink)
+			CH:SetChatEditBoxMessage(currentLink)
 		end
 	end
 end
