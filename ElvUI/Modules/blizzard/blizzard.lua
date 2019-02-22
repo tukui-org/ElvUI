@@ -1,9 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Blizzard', 'AceEvent-3.0', 'AceHook-3.0');
-E.Blizzard = B;
 
---No point caching anything here, but list them here for mikk's FindGlobals script
--- GLOBALS: IsAddOnLoaded, LossOfControlFrame, CreateFrame, LFRBrowseFrame, TalentMicroButtonAlert
+local _G = _G
+local select = select
+local CreateFrame = CreateFrame
+local IsAddOnLoaded = IsAddOnLoaded
+local hooksecurefunc = hooksecurefunc
 
 local function OnMouseDown(self, button)
 	if button == "RightButton" then
@@ -23,18 +25,21 @@ local function UpdateLines()
 end
 
 function B:ADDON_LOADED()
-	if not IsAddOnLoaded("Blizzard_DebugTools") and not self.Registered then
+	local debugTools = IsAddOnLoaded("Blizzard_DebugTools")
+	if not debugTools and not self.Registered then
 		self:RegisterEvent("ADDON_LOADED")
 		self.Registered = true
-	elseif IsAddOnLoaded("Blizzard_DebugTools") then
+	elseif debugTools then
 		hooksecurefunc(_G.TableAttributeDisplay.dataProviders[2], "RefreshData", UpdateLines)
 
-		self.Registered = nil
 		self:UnregisterEvent("ADDON_LOADED")
+		self.Registered = nil
 	end
 end
 
 function B:Initialize()
+	E.Blizzard = B
+
 	self:EnhanceColorPicker()
 	self:KillBlizzard()
 	self:AlertMovers()
@@ -57,19 +62,20 @@ function B:Initialize()
 		self:SkinAltPowerBar()
 	end
 
-	E:CreateMover(LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
+	E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 
 	-- Quick Join Bug
-	CreateFrame("Frame"):SetScript("OnUpdate", function(self)
-		if LFRBrowseFrame.timeToClear then
-			LFRBrowseFrame.timeToClear = nil
+	CreateFrame("Frame"):SetScript("OnUpdate", function()
+		if _G.LFRBrowseFrame.timeToClear then
+			_G.LFRBrowseFrame.timeToClear = nil
 		end
 	end)
 
 	-- Fix Guild Set Rank Error introduced in Patch 27326
-	GuildControlUIRankSettingsFrameRosterLabel = CreateFrame("Frame", nil, E.HiddenFrame)
+	_G.GuildControlUIRankSettingsFrameRosterLabel = CreateFrame("Frame", nil, E.HiddenFrame)
 
 	-- MicroButton Talent Alert
+	local TalentMicroButtonAlert = _G.TalentMicroButtonAlert
 	if TalentMicroButtonAlert then -- why do we need to check this?
 		if E.global.general.showMissingTalentAlert then
 			TalentMicroButtonAlert:ClearAllPoints()
