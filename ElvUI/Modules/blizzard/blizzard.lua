@@ -12,8 +12,15 @@ local function OnMouseDown(self, button)
 	if button == "RightButton" then
 		E:GetModule("Chat"):SetChatEditBoxMessage(string)
 	elseif button == "MiddleButton" then
-		_G.FRAME = self:GetParent():GetAttributeData().rawValue
-		E:Print("_G.FRAME set to: ", string)
+		local rawData = self:GetParent():GetAttributeData().rawValue
+
+		if rawData:GetObjectType() == "Texture" then
+			_G.TEX = rawData
+			E:Print("_G.TEX set to: ", string)
+		else
+			_G.FRAME = rawData
+			E:Print("_G.FRAME set to: ", string)
+		end
 	else
 		_G.TableAttributeDisplayValueButton_OnMouseDown(self)
 	end
