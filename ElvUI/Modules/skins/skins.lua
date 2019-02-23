@@ -419,6 +419,7 @@ function S:HandleEditBox(frame)
 	end
 
 	frame:CreateBackdrop()
+	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
 
 	if EditBoxName then
 		if strfind(EditBoxName, "Silver") or strfind(EditBoxName, "Copper") then

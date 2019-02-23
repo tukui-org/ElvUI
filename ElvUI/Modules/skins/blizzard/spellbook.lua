@@ -118,7 +118,7 @@ local function LoadSkin()
 		local Tab = _G["SpellBookSkillLineTab"..i]
 		Tab:StripTextures()
 		Tab:SetTemplate()
-		Tab:StyleButton()
+		Tab:StyleButton(nil, true)
 	end
 
 	hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", function()
@@ -127,8 +127,10 @@ local function LoadSkin()
 			if Tab:GetNormalTexture() then
 				S:HandleIcon(Tab:GetNormalTexture())
 				Tab:GetNormalTexture():SetInside()
-				Tab:SetPushedTexture(Tab:GetNormalTexture())
-				Tab:GetPushedTexture():SetDesaturated(true)
+			end
+			if Tab:GetPushedTexture() then
+				S:HandleIcon(Tab:GetPushedTexture())
+				Tab:GetPushedTexture():SetInside()
 			end
 		end
 	end)

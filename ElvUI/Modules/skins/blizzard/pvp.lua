@@ -48,7 +48,7 @@ local function LoadSkin()
 
 	S:HandleScrollBar(_G.HonorFrameSpecificFrameScrollBar)
 	S:HandleButton(_G.HonorFrameQueueButton, true)
-	S:HandleDropDownBox(_G.HonorFrameTypeDropDown, 180)
+	S:HandleDropDownBox(_G.HonorFrameTypeDropDown)
 
 	local BonusFrame = HonorFrame.BonusFrame
 	BonusFrame:StripTextures()
