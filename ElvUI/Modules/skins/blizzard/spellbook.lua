@@ -128,10 +128,6 @@ local function LoadSkin()
 				S:HandleIcon(Tab:GetNormalTexture())
 				Tab:GetNormalTexture():SetInside()
 			end
-			if Tab:GetPushedTexture() then
-				S:HandleIcon(Tab:GetPushedTexture())
-				Tab:GetPushedTexture():SetInside()
-			end
 		end
 	end)
 
