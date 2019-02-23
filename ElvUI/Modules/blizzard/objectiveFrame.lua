@@ -56,23 +56,15 @@ function B:MoveObjectiveFrame()
 	B:SetObjectiveFrameHeight()
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
 
+	--prevent error from occuring if another addon decides it wants to disable these functions
+	_G.ObjectiveTrackerFrame.SetMovable = nil
+	_G.ObjectiveTrackerFrame.SetUserPlaced = nil
+
 	ObjectiveTrackerFrame:SetMovable(true)
 	ObjectiveTrackerFrame:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
 	ObjectiveTrackerFrame:ClearAllPoints()
 	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')	
 
-	--just a couple checks to make sure other addons can't break it
-	hooksecurefunc(ObjectiveTrackerFrame, "SetMovable", function(self, status)
-		if status ~= true then
-			self:SetMovable(true)
-		end
-	end)
-	--just a couple checks to make sure other addons can't break it
-	hooksecurefunc(ObjectiveTrackerFrame, "SetUserPlaced", function(self, status)
-		if status ~= true then
-			self:SetUserPlaced(true)
-		end
-	end)	
 
 	local function RewardsFrame_SetPosition(block)
 		local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame;
