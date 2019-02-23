@@ -276,6 +276,8 @@ local function LoadSkin()
 			expandArrow:GetNormalTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
 			expandArrow:GetNormalTexture():SetRotation(S.ArrowRotation['right'])
 		end
+
+		 _G[listFrameName.."MenuBackdrop"]:SetTemplate("Transparent")
 	end)
 
 	hooksecurefunc("UIDropDownMenu_SetIconImage", function(icon, texture)
@@ -298,6 +300,10 @@ local function LoadSkin()
 			local check = _G["DropDownList"..level.."Button"..i.."Check"]
 			local uncheck = _G["DropDownList"..level.."Button"..i.."UnCheck"]
 			local highlight = _G["DropDownList"..level.."Button"..i.."Highlight"]
+
+			highlight:SetTexture([[Interface\QuestFrame\UI-QuestTitleHighlight]])
+			highlight:SetDrawLayer('BACKGROUND')
+			highlight:SetVertexColor(r, g, b)
 
 			if not button.backdrop then
 				button:CreateBackdrop()
