@@ -128,76 +128,35 @@ local function LoadSkin()
 	end)
 
 	--Profession Tab
-	local professionbuttons = {
-		"PrimaryProfession1SpellButtonTop",
-		"PrimaryProfession1SpellButtonBottom",
-		"PrimaryProfession2SpellButtonTop",
-		"PrimaryProfession2SpellButtonBottom",
-		"SecondaryProfession1SpellButtonLeft",
-		"SecondaryProfession1SpellButtonRight",
-		"SecondaryProfession2SpellButtonLeft",
-		"SecondaryProfession2SpellButtonRight",
-		"SecondaryProfession3SpellButtonLeft",
-		"SecondaryProfession3SpellButtonRight",
-	}
-
-	local professionheaders = {
-		"PrimaryProfession1",
-		"PrimaryProfession2",
-		"SecondaryProfession1",
-		"SecondaryProfession2",
-		"SecondaryProfession3",
-	}
-
-	for _, header in pairs(professionheaders) do
-		_G[header.."Missing"]:SetTextColor(1, 1, 0)
+	for _, Frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
+		Frame.missingHeader:SetTextColor(1, 1, 0)
 
 		if E.private.skins.parchmentRemover.enable then
-			_G[header].missingText:SetTextColor(1, 1, 1)
+			Frame.missingText:SetTextColor(1, 1, 1)
 		else
-			_G[header].missingText:SetTextColor(0, 0, 0)
-		end
-	end
-
-	for _, button in pairs(professionbuttons) do
-		button = _G[button]
-		button:StripTextures()
-		button:SetTemplate("Transparent")
-		button.iconTexture:SetTexCoord(unpack(E.TexCoords))
-		button.iconTexture:SetInside()
-		button.highlightTexture:SetInside()
-
-		if button == _G[professionbuttons[2]] then
-			button:Point("TOPLEFT", _G[professionbuttons[1]], "BOTTOMLEFT", 0, -2)
-		elseif button == _G[professionbuttons[4]] then
-			button:Point("TOPLEFT", _G[professionbuttons[3]], "BOTTOMLEFT", 0, -2)
+			Frame.missingText:SetTextColor(0, 0, 0)
 		end
 
-		hooksecurefunc(button.highlightTexture, "SetTexture", function(self, texture)
-			if texture == "Interface\\Buttons\\ButtonHilight-Square" then
-				self:SetColorTexture(1, 1, 1, 0.3)
+		S:HandleStatusBar(Frame.statusBar, {0, .86, 0})
+		Frame.statusBar.rankText:SetPoint("CENTER")
+
+		if Frame.icon then
+			Frame.professionName:SetPoint("TOPLEFT", 100, -4)
+			Frame:StripTextures()
+			S:HandleIcon(Frame.icon, true)
+			Frame.icon:SetAlpha(1)
+			Frame.icon:SetDesaturated(false)
+		end
+
+		for i = 1, 2 do
+			S:HandleButton(Frame['button'..i], true)
+			--Frame['button'..i]:StyleButton()
+
+			if Frame['button'..i].iconTexture then
+				S:HandleIcon(Frame['button'..i].iconTexture)
+				Frame['button'..i].iconTexture:SetInside()
 			end
-		end)
-	end
-
-	local professionstatusbars = {
-		"PrimaryProfession1StatusBar",
-		"PrimaryProfession2StatusBar",
-		"SecondaryProfession1StatusBar",
-		"SecondaryProfession2StatusBar",
-		"SecondaryProfession3StatusBar",
-	}
-
-	for _, statusbar in pairs(professionstatusbars) do
-		statusbar = _G[statusbar]
-		statusbar:StripTextures()
-		statusbar:SetStatusBarTexture(E.media.normTex)
-		E:RegisterStatusBar(statusbar)
-		statusbar:SetStatusBarColor(0, 220/255, 0)
-		statusbar:CreateBackdrop()
-
-		statusbar.rankText:ClearAllPoints()
-		statusbar.rankText:Point("CENTER")
+		end
 	end
 
 	--Bottom Tabs
