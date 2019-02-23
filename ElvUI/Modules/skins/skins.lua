@@ -996,7 +996,7 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	end
 end
 
-function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop)
+function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stipTexts)
 	if btn.isSkinned then return end
 
 	if not arrowDir then
@@ -1016,6 +1016,10 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop)
 	btn:StripTextures()
 	if not noBackdrop then
 		S:HandleButton(btn)
+	end
+
+	if stipTexts then
+		btn:StripTexts()
 	end
 
 	btn:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")

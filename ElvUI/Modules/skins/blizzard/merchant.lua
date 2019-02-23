@@ -108,8 +108,8 @@ local function LoadSkin()
 	_G.MerchantRepairAllIcon:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
 	_G.MerchantRepairAllIcon:SetInside()
 
-	S:HandleNextPrevButton(_G.MerchantNextPageButton)
-	S:HandleNextPrevButton(_G.MerchantPrevPageButton)
+	S:HandleNextPrevButton(_G.MerchantNextPageButton, nil, nil, true, true)
+	S:HandleNextPrevButton(_G.MerchantPrevPageButton, nil, nil, true, true)
 end
 
 S:AddCallback("Merchant", LoadSkin)
