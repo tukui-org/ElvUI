@@ -147,7 +147,7 @@ local function LoadSkin()
 		local a, b, c, _, e = Frame.statusBar:GetPoint()
 		Frame.statusBar:SetPoint(a, b, c, 0, e)
 
-		if a == 'TOPLEFT' then
+		if a == 'BOTTOMLEFT' then
 			Frame.rank:SetPoint("BOTTOMLEFT", Frame.statusBar, "TOPLEFT", 0, 4)
 		end
 
