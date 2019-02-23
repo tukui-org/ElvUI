@@ -268,34 +268,11 @@ local function LoadSkin()
 
 	--DropDownMenu
 	hooksecurefunc("UIDropDownMenu_CreateFrames", function(level, index)
-		local listFrame = _G["DropDownList"..level]
-		local listFrameName = listFrame:GetName()
-		local expandArrow = _G[listFrameName.."Button"..index.."ExpandArrow"]
-		if expandArrow then
-			expandArrow:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\ArrowRight]])
-			expandArrow:Size(18)
-			expandArrow:GetNormalTexture():SetVertexColor(_G.NORMAL_FONT_COLOR:GetRGB())
-		end
-
-		-- Skin the backdrop
-		for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
-			local menu = _G["DropDownList"..i.."MenuBackdrop"]
-			local backdrop = _G["DropDownList"..i.."Backdrop"]
-			if not backdrop.IsSkinned then
-				backdrop:SetTemplate("Transparent")
-				menu:SetTemplate("Transparent")
-
-				backdrop.IsSkinned = true
-			end
-		end
-	end)
-
-	hooksecurefunc("UIDropDownMenu_CreateFrames", function(level, index)
 		local listFrame = _G["DropDownList"..level];
 		local listFrameName = listFrame:GetName();
 		local expandArrow = _G[listFrameName.."Button"..index.."ExpandArrow"];
 		if expandArrow then
-			expandArrow:SetNormalTexture([[Interface\AddOns\AddOnSkins\Media\Textures\Arrow]])
+			expandArrow:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\ArrowRight]])
 			expandArrow:SetSize(12, 12)
 			expandArrow:GetNormalTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
 			expandArrow:GetNormalTexture():SetRotation(S.ArrowRotation['right'])
@@ -322,9 +299,6 @@ local function LoadSkin()
 			local check = _G["DropDownList"..level.."Button"..i.."Check"]
 			local uncheck = _G["DropDownList"..level.."Button"..i.."UnCheck"]
 			local highlight = _G["DropDownList"..level.."Button"..i.."Highlight"]
-
-			highlight:SetTexture([[Interface\AddOns\AddOnSkins\Media\Textures\Highlight]])
-			highlight:SetVertexColor(r, g, b)
 
 			if not button.backdrop then
 				button:CreateBackdrop()
