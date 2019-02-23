@@ -61,6 +61,18 @@ function B:MoveObjectiveFrame()
 	ObjectiveTrackerFrame:ClearAllPoints()
 	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')	
 
+	--just a couple checks to make sure other addons can't break it
+	hooksecurefunc(ObjectiveTrackerFrame, "SetMovable", function(self, status)
+		if status ~= true then
+			self:SetMovable(true)
+		end
+	end)
+	--just a couple checks to make sure other addons can't break it
+	hooksecurefunc(ObjectiveTrackerFrame, "SetUserPlaced", function(self, status)
+		if status ~= true then
+			self:SetUserPlaced(true)
+		end
+	end)	
 
 	local function RewardsFrame_SetPosition(block)
 		local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame;
