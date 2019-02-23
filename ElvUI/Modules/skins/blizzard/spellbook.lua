@@ -49,9 +49,6 @@ local function LoadSkin()
 		local icon = _G["SpellButton"..i.."IconTexture"]
 		local highlight =_G["SpellButton"..i.."Highlight"]
 
-		highlight:SetColorTexture(1, 1, 1, 0.3)
-		highlight:SetAllPoints(icon)
-
 		for j = 1, button:GetNumRegions() do
 			local region = select(j, button:GetRegions())
 			if region:IsObjectType("Texture") then
@@ -63,14 +60,14 @@ local function LoadSkin()
 		end
 
 		S:HandleIcon(icon)
-		icon:SetAllPoints()
+		icon:SetInside()
 		E:RegisterCooldown(_G["SpellButton"..i.."Cooldown"])
-		button:CreateBackdrop("Default", true)
+		button:SetTemplate("Default", true)
 
 		if button.SpellHighlightTexture then
 			button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)
 			if icon then
-				button.SpellHighlightTexture:SetOutside(button.backdrop)
+				button.SpellHighlightTexture:SetOutside(button)
 			end
 			E:Flash(button.SpellHighlightTexture, 1, true)
 		end
@@ -80,6 +77,13 @@ local function LoadSkin()
 			button.shine:Point('TOPLEFT', button, 'TOPLEFT', -3, 3)
 			button.shine:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 3, -3)
 		end
+
+		highlight:SetAllPoints(icon)
+		hooksecurefunc(highlight, "SetTexture", function(self, texture)
+			if texture == "Interface\\Buttons\\ButtonHilight-Square" then
+				self:SetColorTexture(1, 1, 1, 0.3)
+			end
+		end)
 	end
 
 	hooksecurefunc("SpellButton_UpdateButton", function()
@@ -156,6 +160,13 @@ local function LoadSkin()
 				S:HandleIcon(Frame['button'..i].iconTexture)
 				Frame['button'..i].iconTexture:SetInside()
 			end
+
+			Frame['button'..i].highlightTexture:SetInside()
+			hooksecurefunc(Frame['button'..i].highlightTexture, "SetTexture", function(self, texture)
+				if texture == "Interface\\Buttons\\ButtonHilight-Square" then
+					self:SetColorTexture(1, 1, 1, 0.3)
+				end
+			end)
 		end
 	end
 
