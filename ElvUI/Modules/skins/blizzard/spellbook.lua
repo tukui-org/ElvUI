@@ -127,6 +127,8 @@ local function LoadSkin()
 			if Tab:GetNormalTexture() then
 				S:HandleIcon(Tab:GetNormalTexture())
 				Tab:GetNormalTexture():SetInside()
+				Tab:SetPushedTexture(Tab:GetNormalTexture())
+				Tab:GetPushedTexture():SetDesaturated(true)
 			end
 		end
 	end)
