@@ -272,8 +272,7 @@ local function LoadSkin()
 		local listFrameName = listFrame:GetName();
 		local expandArrow = _G[listFrameName.."Button"..index.."ExpandArrow"];
 		if expandArrow then
-			expandArrow:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\ArrowRight]])
-			expandArrow:SetSize(12, 12)
+			expandArrow:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\ArrowUp]])
 			expandArrow:GetNormalTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
 			expandArrow:GetNormalTexture():SetRotation(S.ArrowRotation['right'])
 		end
