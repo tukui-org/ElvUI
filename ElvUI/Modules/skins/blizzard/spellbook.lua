@@ -144,6 +144,14 @@ local function LoadSkin()
 		S:HandleStatusBar(Frame.statusBar, {0, .86, 0})
 		Frame.statusBar.rankText:SetPoint("CENTER")
 
+		local a, b, c, _, e = Frame.statusBar:GetPoint()
+		if a == 'TOPLEFT' then
+			Frame.statusBar:SetPoint(a, b, c, 0, e)
+		else
+			Frame.statusBar:SetPoint(a, b, c, 0, e)
+			Frame.rank:SetPoint("BOTTOMLEFT", Frame.statusBar, "TOPLEFT", 0, 4)
+		end
+
 		if Frame.icon then
 			Frame.professionName:SetPoint("TOPLEFT", 100, -4)
 			Frame:StripTextures()
