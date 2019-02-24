@@ -385,7 +385,7 @@ Please Note:
 -You must do a complete game restart after adding a file to the folder.
 -The file type must be tga format.
 
-Example: Interface\AddOns\ElvUI\media\textures\copy
+Example: Interface\AddOns\ElvUI\Media\Textures\Copy
 
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[Укажите имя файла в папке World of Warcraft, который Вы хотите использовать в качестве фона панелей.
 
@@ -394,7 +394,7 @@ Or for most users it would be easier to simply put a tga file into your WoW fold
 -Вы должны полностью перезапустить игру после добавления нового файла в папку.
 -Тип файла должен быть tga.
 
-Пример: Interface\AddOns\ElvUI\media\textures\copy
+Пример: Interface\AddOns\ElvUI\Media\Textures\Copy
 
 Для большинства пользователей будет легче просто положить tga файл в папку игры, а затем написать имя файла здесь.]=]
 

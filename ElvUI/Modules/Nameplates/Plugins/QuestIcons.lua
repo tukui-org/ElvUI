@@ -242,7 +242,7 @@ local function Enable(self)
 
 		if (element.Skull) then
 			if (element.Skull:IsObjectType('Texture') and not element.Skull:GetTexture()) then
-				element.Skull:SetTexture([[Interface\AddOns\ElvUI\media\textures\skull_icon]])
+				element.Skull:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\Skull_icon]])
 			end
 		end
 

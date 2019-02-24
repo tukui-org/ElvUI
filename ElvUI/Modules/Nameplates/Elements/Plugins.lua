@@ -91,10 +91,10 @@ function NP:Construct_TargetIndicator(nameplate)
 		TargetIndicator[object]:Hide()
 	end
 
-	TargetIndicator.Spark:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark]])
-	TargetIndicator.TopIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator]])
-	TargetIndicator.LeftIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorLeft]])
-	TargetIndicator.RightIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorRight]])
+	TargetIndicator.Spark:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\Spark]])
+	TargetIndicator.TopIndicator:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NameplateTargetIndicator]])
+	TargetIndicator.LeftIndicator:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NameplateTargetIndicatorLeft]])
+	TargetIndicator.RightIndicator:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NameplateTargetIndicatorRight]])
 
 	return TargetIndicator
 end
@@ -164,7 +164,7 @@ function NP:Update_Highlight(nameplate)
 		nameplate.Highlight.texture:SetAllPoints(nameplate.Health)
 		nameplate.Highlight.texture:SetAlpha(1)
 	else
-		nameplate.Highlight.texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark]])
+		nameplate.Highlight.texture:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\Spark]])
 		nameplate.Highlight.texture:SetAllPoints(nameplate)
 		nameplate.Highlight.texture:SetAlpha(.5)
 	end
@@ -173,7 +173,7 @@ end
 function NP:Construct_HealerSpecs(nameplate)
 	local texture = nameplate:CreateTexture(nil, "OVERLAY")
 	texture:SetSize(40, 40)
-	texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\healer]])
+	texture:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\Healer]])
 	texture:Hide()
 
 	return texture

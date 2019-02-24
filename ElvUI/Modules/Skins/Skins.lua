@@ -265,7 +265,7 @@ function S:HandleButton(button, strip, isDeclineButton)
 		if button.Icon then button.Icon:Hide() end
 		if not button.text then
 			button.text = button:CreateFontString(nil, 'OVERLAY')
-			button.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
+			button.text:SetFont([[Interface\AddOns\ElvUI\Media\Fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
 			button.text:SetText('x')
 			button.text:SetJustifyH('CENTER')
 			button.text:Point('CENTER', button, 'CENTER')
@@ -657,7 +657,7 @@ function S:HandleSliderFrame(frame)
 		if backdrop ~= nil then slider:SetBackdrop(nil) end
 	end)
 
-	frame:SetThumbTexture([[Interface\AddOns\ElvUI\media\textures\melli]])
+	frame:SetThumbTexture([[Interface\AddOns\ElvUI\Media\Textures\Melli]])
 	frame:GetThumbTexture():SetVertexColor(1, .82, 0, 0.8)
 	frame:GetThumbTexture():Size(SIZE-2,SIZE-2)
 

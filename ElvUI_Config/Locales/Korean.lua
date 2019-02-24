@@ -435,7 +435,7 @@ Please Note:
 -You must do a complete game restart after adding a file to the folder.
 -The file type must be tga format.
 
-Example: Interface\AddOns\ElvUI\media\textures\copy
+Example: Interface\AddOns\ElvUI\Media\Textures\Copy
 
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[패널 배경에 그림을 입히고 싶으면 위치와 파일명를 이곳에 입력해야 합니다.
 

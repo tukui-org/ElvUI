@@ -104,7 +104,7 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		if (element:IsObjectType('Texture') and not element:GetTexture()) then
-			element:SetTexture([[Interface\AddOns\ElvUI\media\textures\healer]])
+			element:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\Healer]])
 		end
 
 		self:RegisterEvent("UNIT_TARGET", Path)

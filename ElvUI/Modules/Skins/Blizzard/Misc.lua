@@ -23,7 +23,7 @@ local function SkinNavBarButtons(self)
 		if navButton.MenuArrowButton then
 			navButton.MenuArrowButton:StripTextures()
 			if navButton.MenuArrowButton.Art then
-				navButton.MenuArrowButton.Art:SetTexture([[Interface\AddOns\ElvUI\media\textures\ArrowUp]])
+				navButton.MenuArrowButton.Art:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\ArrowUp]])
 				navButton.MenuArrowButton.Art:SetTexCoord(0, 1, 0, 1)
 				navButton.MenuArrowButton.Art:SetRotation(3.14)
 			end
@@ -273,7 +273,7 @@ local function LoadSkin()
 		local listFrameName = listFrame:GetName();
 		local expandArrow = _G[listFrameName.."Button"..index.."ExpandArrow"];
 		if expandArrow then
-			expandArrow:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\ArrowUp]])
+			expandArrow:SetNormalTexture([[Interface\AddOns\ElvUI\Media\Textures\ArrowUp]])
 			expandArrow:SetSize(12, 12)
 			expandArrow:GetNormalTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
 			expandArrow:GetNormalTexture():SetRotation(S.ArrowRotation['right'])
@@ -303,7 +303,7 @@ local function LoadSkin()
 			local uncheck = _G["DropDownList"..level.."Button"..i.."UnCheck"]
 			local highlight = _G["DropDownList"..level.."Button"..i.."Highlight"]
 
-			highlight:SetTexture([[Interface\AddOns\ElvUI\media\textures\Highlight]])
+			highlight:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\Highlight]])
 			highlight:SetBlendMode('BLEND')
 			highlight:SetDrawLayer('BACKGROUND')
 			highlight:SetVertexColor(r, g, b)

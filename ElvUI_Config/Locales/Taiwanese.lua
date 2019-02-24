@@ -387,7 +387,7 @@ Please Note:
 -You must do a complete game restart after adding a file to the folder.
 -The file type must be tga format.
 
-Example: Interface\AddOns\ElvUI\media\textures\copy
+Example: Interface\AddOns\ElvUI\Media\Textures\Copy
 
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[若要設定對話框背景, 請將你希望設定為背景的檔案置放於WoW 目錄底下的「Textures」資料夾中, 並指定該檔名.
 
@@ -396,7 +396,7 @@ Or for most users it would be easier to simply put a tga file into your WoW fold
 - 在此資料夾新增檔案後, 請務必重新啟動遊戲.
 - 檔案必須為 tga 格式.
 
-範例：Interface\AddOns\ElvUI\media\textures\copy
+範例：Interface\AddOns\ElvUI\Media\Textures\Copy
 
 對多數玩家來說, 較簡易的方式是將 tga 檔放入 WoW 資料夾中, 然後在此處輸入檔案名稱.]=]
 

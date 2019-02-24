@@ -9,8 +9,8 @@ local IsResting = IsResting
 
 local RestingTextures = {
 	["DEFAULT"] = [[Interface\CharacterFrame\UI-StateIcon]],
-	["RESTING"] = [[Interface\AddOns\ElvUI\media\textures\resting]],
-	["RESTING1"] = [[Interface\AddOns\ElvUI\media\textures\resting1]]
+	["RESTING"] = [[Interface\AddOns\ElvUI\Media\Textures\Resting]],
+	["RESTING1"] = [[Interface\AddOns\ElvUI\Media\Textures\Resting1]]
 }
 
 function UF:Construct_RestingIndicator(frame)

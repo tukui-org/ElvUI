@@ -386,7 +386,7 @@ Please Note:
 -You must do a complete game restart after adding a file to the folder.
 -The file type must be tga format.
 
-Example: Interface\AddOns\ElvUI\media\textures\copy
+Example: Interface\AddOns\ElvUI\Media\Textures\Copy
 
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[Especifica un archivo ubicado en el directorio texture de World of Warcraft que deseas tener establecido como fondo de panel.
 
@@ -395,7 +395,7 @@ Nota:
 -Debes reiniciar el juego completamente después de agregar un archivo a la carpeta.
 -El archivo debe ser formato tga.
 
-Ejemplo: Interface\AddOns\ElvUI\media\textures\copy
+Ejemplo: Interface\AddOns\ElvUI\Media\Textures\Copy
 
 O también puedes simplemente colocar un archivo tga en la carpeta de WoW, y escribir aquí el nombre del archivo.]=]
 

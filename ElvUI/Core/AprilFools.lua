@@ -69,7 +69,7 @@ do
 
 		SetCVar("Sound_EnableAllSound", 1)
 		SetCVar("Sound_EnableMusic", 1)
-		PlayMusic([[Interface\AddOns\ElvUI\media\sounds\harlemshake.ogg]])
+		PlayMusic([[Interface\AddOns\ElvUI\Media\Sounds\Harlemshake.ogg]])
 		E:ScheduleTimer("DoTheHarlemShake", 15.5)
 
 		local UF = E:GetModule("UnitFrames")
@@ -193,8 +193,8 @@ do
 			self.db.general.bordercolor = {r = 223/255, g = 217/255, b = 47/255}
 			self.db.general.valuecolor = {r = 223/255, g = 217/255, b = 47/255}
 
-			self.db.chat.panelBackdropNameLeft = [[Interface\AddOns\ElvUI\media\textures\helloKittyChat]]
-			self.db.chat.panelBackdropNameRight = [[Interface\AddOns\ElvUI\media\textures\helloKittyChat]]
+			self.db.chat.panelBackdropNameLeft = [[Interface\AddOns\ElvUI\Media\Textures\HelloKittyChat]]
+			self.db.chat.panelBackdropNameRight = [[Interface\AddOns\ElvUI\Media\Textures\HelloKittyChat]]
 
 			self.db.unitframe.colors.castColor = {r = 223/255, g = 76/255, b = 188/255}
 			self.db.unitframe.colors.transparentCastbar = true
@@ -207,7 +207,7 @@ do
 
 			SetCVar("Sound_EnableAllSound", 1)
 			SetCVar("Sound_EnableMusic", 1)
-			PlayMusic([[Interface\AddOns\ElvUI\media\sounds\helloKitty.ogg]])
+			PlayMusic([[Interface\AddOns\ElvUI\Media\Sounds\HelloKitty.ogg]])
 			E:StaticPopup_Show("HELLO_KITTY_END")
 
 			self.db.general.kittys = true

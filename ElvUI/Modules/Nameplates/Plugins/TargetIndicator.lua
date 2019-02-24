@@ -123,27 +123,27 @@ local function Enable(self)
 
 		if element.Spark then
 			if element.Spark:IsObjectType('Texture') and not element.Spark:GetTexture() then
-				element.Spark:SetTexture([[Interface\AddOns\ElvUI\media\textures\spark]])
+				element.Spark:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\Spark]])
 			end
 		end
 
 		if element.TopIndicator then
 			if element.TopIndicator:IsObjectType('Texture') and not element.TopIndicator:GetTexture() then
-				element.TopIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\ArrowUp]])
+				element.TopIndicator:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\ArrowUp]])
 				element.TopIndicator:SetRotation(0)
 			end
 		end
 
 		if element.LeftIndicator then
 			if element.LeftIndicator:IsObjectType('Texture') and not element.LeftIndicator:GetTexture() then
-				element.LeftIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\ArrowUp]])
+				element.LeftIndicator:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\ArrowUp]])
 				element.LeftIndicator:SetRotation(-1.57)
 			end
 		end
 
 		if element.RightIndicator then
 			if element.RightIndicator:IsObjectType('Texture') and not element.RightIndicator:GetTexture() then
-				element.RightIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\ArrowUp]])
+				element.RightIndicator:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\ArrowUp]])
 				element.RightIndicator:SetRotation(1.57)
 			end
 		end
