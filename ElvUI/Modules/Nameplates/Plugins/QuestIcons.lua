@@ -106,11 +106,11 @@ local function GetQuests(unitID)
 	local inInstance = IsInInstance()
 	if inInstance then return end
 
-	ElvUIQuestTooltip:SetUnit(unitID)
+	E.ScanTooltip:SetUnit(unitID)
 
 	local QuestList, questID = {}
-	for i = 3, ElvUIQuestTooltip:NumLines() do
-		local str = _G['ElvUIQuestTooltipTextLeft' .. i]
+	for i = 3, E.ScanTooltip:NumLines() do
+		local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
 		local text = str and str:GetText()
 		if not text then return end
 		if not questID then

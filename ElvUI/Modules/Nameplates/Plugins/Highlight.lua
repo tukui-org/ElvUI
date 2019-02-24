@@ -1,9 +1,9 @@
-local _, ns = ...
-local oUF = ns.oUF
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local oUF = E.oUF
 
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
-local C_Timer = C_Timer
+local C_Timer_After = C_Timer.After
 
 local function MouseOnUnit(frame)
 	if frame and frame:IsVisible() and UnitExists('mouseover') then
@@ -22,7 +22,7 @@ local function Update(self, event)
 
 	if MouseOnUnit(self) or UnitIsUnit("mouseover", self.unit) then
 		element:Show()
-		C_Timer.After(.1, function() element:ForceUpdate() end)
+		C_Timer_After(.1, function() element:ForceUpdate() end)
 	else
 		element:Hide()
 	end

@@ -1,9 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
-local UnitName = UnitName
 local gsub = gsub
-local PLAYER_REALM = gsub(GetRealmName(),'[%s%-]','')
+local format = format
+local UnitName = UnitName
+local GetNumBattlefieldScores = GetNumBattlefieldScores
+local GetBattlefieldScore = GetBattlefieldScore
+local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
+local GetArenaOpponentSpec = GetArenaOpponentSpec
+local GetSpecializationInfoByID = GetSpecializationInfoByID
+local IsInInstance = IsInInstance
+local UNKNOWN = UNKNOWN
 
 local healerSpecIDs = {
 	65,		--Paladin Holy
@@ -31,7 +38,7 @@ local function Event(self)
 			for i = 1, GetNumBattlefieldScores() do
 				name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 				if name then
-					name = gsub(name,'%-'..PLAYER_REALM,'') --[[ name = match(name,"([^%-]+).*") ]]
+					name = gsub(name,'%-'..gsub(E.myrealm,'[%s%-]',''),'') --[[ name = match(name,"([^%-]+).*") ]]
 					if name and self.HealerSpecs[talentSpec] then
 						Healers[name] = talentSpec
 					elseif name and self.Healers[name] then

@@ -1,5 +1,5 @@
-local _, ns = ...
-local oUF = ns.oUF
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local oUF = E.oUF
 
 local UnitClassification = UnitClassification
 

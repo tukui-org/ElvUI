@@ -3,6 +3,7 @@ local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
 local UnitIsTapDenied = UnitIsTapDenied
+local CreateFrame = CreateFrame
 local C_Timer_After = C_Timer.After
 
 function mod:UpdateElement_CutawayHealthFadeOut(frame)

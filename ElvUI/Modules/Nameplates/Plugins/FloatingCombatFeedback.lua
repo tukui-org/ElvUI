@@ -1,28 +1,28 @@
-local _, ns = ...
-local oUF = ns.oUF or oUF
-assert(oUF, "oUF FloatingCombatFeedback was unable to locate oUF install")
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local oUF = E.oUF
 
-local _G = getfenv(0)
-local pairs = _G.pairs
-local m_cos = _G.math.cos
-local m_max = _G.math.max
-local m_pi = _G.math.pi
-local m_sin = _G.math.sin
-local t_insert = _G.table.insert
-local t_remove = _G.table.remove
+local _G = _G
+local wipe = wipe
+local pairs = pairs
+local m_cos = math.cos
+local m_max = math.max
+local m_pi = math.pi
+local m_sin = math.sin
+local t_insert = table.insert
+local t_remove = table.remove
 
-local AbbreviateNumbers = _G.AbbreviateNumbers
-local BreakUpLargeNumbers = _G.BreakUpLargeNumbers
+local AbbreviateNumbers = AbbreviateNumbers
+local BreakUpLargeNumbers = BreakUpLargeNumbers
 
 -- sourced from FrameXML/Constants.lua
-local SCHOOL_MASK_NONE = _G.SCHOOL_MASK_NONE or 0x00
-local SCHOOL_MASK_PHYSICAL = _G.SCHOOL_MASK_PHYSICAL or 0x01
-local SCHOOL_MASK_HOLY = _G.SCHOOL_MASK_HOLY or 0x02
-local SCHOOL_MASK_FIRE = _G.SCHOOL_MASK_FIRE or 0x04
-local SCHOOL_MASK_NATURE = _G.SCHOOL_MASK_NATURE or 0x08
-local SCHOOL_MASK_FROST = _G.SCHOOL_MASK_FROST or 0x10
-local SCHOOL_MASK_SHADOW = _G.SCHOOL_MASK_SHADOW or 0x20
-local SCHOOL_MASK_ARCANE = _G.SCHOOL_MASK_ARCANE or 0x40
+local SCHOOL_MASK_NONE = SCHOOL_MASK_NONE or 0x00
+local SCHOOL_MASK_PHYSICAL = SCHOOL_MASK_PHYSICAL or 0x01
+local SCHOOL_MASK_HOLY = SCHOOL_MASK_HOLY or 0x02
+local SCHOOL_MASK_FIRE = SCHOOL_MASK_FIRE or 0x04
+local SCHOOL_MASK_NATURE = SCHOOL_MASK_NATURE or 0x08
+local SCHOOL_MASK_FROST = SCHOOL_MASK_FROST or 0x10
+local SCHOOL_MASK_SHADOW = SCHOOL_MASK_SHADOW or 0x20
+local SCHOOL_MASK_ARCANE = SCHOOL_MASK_ARCANE or 0x40
 
 local colors = {
 	ABSORB		= {r = 1.00, g = 1.00, b = 1.00},

@@ -9,7 +9,6 @@ local _G = _G
 local select = select
 local pairs = pairs
 local type = type
-local tonumber = tonumber
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
@@ -25,10 +24,7 @@ local UnitIsBattlePet = UnitIsBattlePet
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local IsInInstance = IsInInstance
-local GetCVar = GetCVar
-local Lerp = Lerp
 
-local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 

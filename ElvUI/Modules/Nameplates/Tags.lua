@@ -1,15 +1,31 @@
-local _, ns = ...
-local oUF = ElvUI.oUF
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local oUF = E.oUF
 
 local _G = _G
+local unpack = unpack
 local format = format
+local select = select
+local strmatch = strmatch
 
 local GetCVarBool = GetCVarBool
-local UnitIsPlayer = UnitIsPlayer
 local GetGuildInfo = GetGuildInfo
+local GetNumQuestLogEntries = GetNumQuestLogEntries
+local GetQuestDifficultyColor = GetQuestDifficultyColor
+local GetQuestLogTitle = GetQuestLogTitle
+local IsInInstance = IsInInstance
+local UnitCastingInfo = UnitCastingInfo
+local UnitChannelInfo = UnitChannelInfo
+local UnitClass = UnitClass
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsUnit = UnitIsUnit
+local UnitName = UnitName
+local UnitPVPName = UnitPVPName
 local UnitReaction = UnitReaction
-local unpack = unpack
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local LEVEL = LEVEL
+
+--GLOBALS: Hex, CUSTOM_CLASS_COLORS
 
 oUF.Tags.Events['cast:name'] = 'UNIT_SPELLCAST_START UNIT_SPELLCAST_CHANNEL_START'
 oUF.Tags.Methods['cast:name'] = function(unit)
@@ -29,7 +45,7 @@ oUF.Tags.Methods['npctitle'] = function(unit)
 		return
 	end
 
-	ElvUI[1].ScanTooltip:SetUnit(unit)
+	E.ScanTooltip:SetUnit(unit)
 
 	local reactionType = UnitReaction(unit, "player")
 	local r, g, b = 1, 1, 1
@@ -110,9 +126,9 @@ oUF.Tags.Methods['quest:title'] = function(unit)
 
 	local QuestName
 
-	if ElvUI[1].ScanTooltip:NumLines() >= 3 then
-		for i = 3, ElvUI[1].ScanTooltip:NumLines() do
-			local QuestLine = _G[ElvUI[1].ScanTooltip:GetDebugName()..'TextLeft' .. i]
+	if E.ScanTooltip:NumLines() >= 3 then
+		for i = 3, E.ScanTooltip:NumLines() do
+			local QuestLine = _G['ElvUI_ScanTooltipTextLeft' .. i]
 			local QuestLineText = QuestLine and QuestLine:GetText()
 
 			local PlayerName, ProgressText = strmatch(QuestLineText, '^ ([^ ]-) ?%- (.+)$')
@@ -142,9 +158,9 @@ oUF.Tags.Methods['quest:info'] = function(unit)
 	local ObjectiveCount = 0
 	local QuestName
 
-	if ElvUI[1].ScanTooltip:NumLines() >= 3 then
-		for i = 3, ElvUI[1].ScanTooltip:NumLines() do
-			local QuestLine = _G[ElvUI[1].ScanTooltip:GetDebugName()..'TextLeft' .. i]
+	if E.ScanTooltip:NumLines() >= 3 then
+		for i = 3, E.ScanTooltip:NumLines() do
+			local QuestLine = _G['ElvUI_ScanTooltipTextLeft' .. i]
 			local QuestLineText = QuestLine and QuestLine:GetText()
 
 			local PlayerName, ProgressText = strmatch(QuestLineText, '^ ([^ ]-) ?%- (.+)$')
