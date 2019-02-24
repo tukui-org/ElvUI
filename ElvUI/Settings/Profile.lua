@@ -329,7 +329,7 @@ P['nameplates'] = {
 		['enemy'] = false,
 	},
 	['colors'] = {
-		['glowColor'] = {r = 0.3, g = 0.7, b = 1, a = 1},
+		['glowColor'] = {r = 1, g = 1, b = 1, a = 1},
 		['castColor'] = {r = 1, g = 0.81, b = 0},
 		['castNoInterruptColor'] = {r = 0.78, g = 0.25, b = 0.25},
 		['reactions'] = {
@@ -479,7 +479,7 @@ P['nameplates'] = {
 				['height'] = 10,
 				['yOffset'] = 0,
 				['text'] = {
-					['enable'] = true,
+					['enable'] = false,
 					['format'] = '[perhp]%',
 					['position'] = 'CENTER',
 					['xOffset'] = 0,
@@ -490,7 +490,7 @@ P['nameplates'] = {
 			},
 			['name'] = {
 				['enable'] = true,
-				['format'] = '[namecolor][name:abbrev]',
+				['format'] = '[namecolor][name]',
 				['position'] = 'TOPLEFT',
 				['xOffset'] = 0,
 				['yOffset'] = -7,
