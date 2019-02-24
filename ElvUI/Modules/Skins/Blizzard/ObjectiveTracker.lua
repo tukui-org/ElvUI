@@ -134,14 +134,14 @@ local function LoadSkin()
 	minimizeButton:StripTextures()
 	minimizeButton:Size(16, 16)
 	minimizeButton.tex = minimizeButton:CreateTexture(nil, "OVERLAY")
-	minimizeButton.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+	minimizeButton.tex:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\MinusButton")
 	minimizeButton.tex:SetInside()
 	minimizeButton:SetHighlightTexture("Interface\\Buttons\\UI-PlusButton-Hilight", "ADD")
 	minimizeButton:HookScript("OnClick", function()
 		if ObjectiveTrackerFrame.collapsed then
-			minimizeButton.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+			minimizeButton.tex:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\PlusButton")
 		else
-			minimizeButton.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+			minimizeButton.tex:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\MinusButton")
 		end
 	end)
 

@@ -177,7 +177,7 @@ local rolePaths = {
 
 local specialChatIcons
 do --this can save some main file locals
-	local IconPath		= "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
+	local IconPath		= "|TInterface\\AddOns\\ElvUI\\Media\\Textures\\ChatLogos\\"
 	--local ElvPink		= IconPath.."ElvPink:13:25|t"
 	local ElvPurple		= IconPath.."ElvPurple:13:25|t"
 	local ElvBlue		= IconPath.."ElvBlue:13:25|t"
@@ -2245,7 +2245,7 @@ function CH:DefaultSmileys()
 		wipe(CH.Smileys)
 	end
 
-	local t = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatEmojis\\%s:16:16|t"
+	local t = "|TInterface\\AddOns\\ElvUI\\Media\\Textures\\ChatEmojis\\%s:16:16|t"
 
 	-- new keys
 	CH:AddSmiley(':angry:',			format(t,'angry'))

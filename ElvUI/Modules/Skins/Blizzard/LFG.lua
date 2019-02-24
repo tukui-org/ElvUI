@@ -273,13 +273,13 @@ local function LoadSkin()
 	end)
 
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon = _G.LFDQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
-	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\leader")
+	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\Leader")
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon:Point(_G.LFDQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon:Size(50)
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.6)
 
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon = _G.RaidFinderQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
-	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\leader")
+	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\Leader")
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:Point(_G.RaidFinderQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:Size(50)
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.6)
@@ -341,9 +341,9 @@ local function LoadSkin()
 	hooksecurefunc("LFGDungeonListButton_SetDungeon", function(button)
 		if button and button.expandOrCollapseButton:IsShown() then
 			if button.isCollapsed then
-				button.expandOrCollapseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton");
+				button.expandOrCollapseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\PlusButton");
 			else
-				button.expandOrCollapseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton");
+				button.expandOrCollapseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\MinusButton");
 			end
 		end
 	end)

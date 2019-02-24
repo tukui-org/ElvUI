@@ -395,10 +395,10 @@ function S:HandleMaxMinFrame(frame)
 				self:GetPushedTexture():SetVertexColor(1, 1, 1)
 			end)
 
-			button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+			button:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\ArrowUp")
 			button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
 
-			button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+			button:SetPushedTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\ArrowUp")
 			button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
 		end
 	end
@@ -631,7 +631,7 @@ function S:HandleCloseButton(f, point)
 	if not f.Texture then
 		f.Texture = f:CreateTexture(nil, 'OVERLAY')
 		f.Texture:SetPoint("CENTER")
-		f.Texture:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\close')
+		f.Texture:SetTexture('Interface\\AddOns\\ElvUI\\Media\\Textures\\Close')
 		f.Texture:SetSize(12, 12)
 		f:HookScript('OnEnter', handleCloseButtonOnEnter)
 		f:HookScript('OnLeave', handleCloseButtonOnLeave)
@@ -1025,9 +1025,9 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stipTexts)
 		btn:StripTexts()
 	end
 
-	btn:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
-	btn:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
-	btn:SetDisabledTexture("Interface\\AddOns\\ElvUI\\media\\textures\\ArrowUp")
+	btn:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\ArrowUp")
+	btn:SetPushedTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\ArrowUp")
+	btn:SetDisabledTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\ArrowUp")
 
 	local Normal, Disabled, Pushed = btn:GetNormalTexture(), btn:GetDisabledTexture(), btn:GetPushedTexture()
 

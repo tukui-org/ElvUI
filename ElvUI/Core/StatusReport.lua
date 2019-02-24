@@ -183,7 +183,7 @@ function E:CreateStatusFrame()
 	StatusFrame.TitleLogoFrame:Size(128, 64)
 	StatusFrame.TitleLogoFrame:Point("CENTER", StatusFrame, "TOP", 0, 0)
 	StatusFrame.TitleLogoFrame.Texture = StatusFrame.TitleLogoFrame:CreateTexture(nil, "ARTWORK")
-	StatusFrame.TitleLogoFrame.Texture:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\logo")
+	StatusFrame.TitleLogoFrame.Texture:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\Logo")
 	StatusFrame.TitleLogoFrame.Texture:SetAllPoints()
 
 	--Sections

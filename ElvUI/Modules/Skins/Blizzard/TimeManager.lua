@@ -8,10 +8,10 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local function SetPlayTexture()
-	_G.StopwatchPlayPauseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\play")
+	_G.StopwatchPlayPauseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\Play")
 end
 local function SetPauseTexture()
-	_G.StopwatchPlayPauseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\pause")
+	_G.StopwatchPlayPauseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\Pause")
 end
 
 local function LoadSkin()
@@ -55,7 +55,7 @@ local function LoadSkin()
 	local StopwatchResetButton = _G.StopwatchResetButton
 	StopwatchPlayPauseButton:CreateBackdrop("Default", true)
 	StopwatchPlayPauseButton:SetSize(12, 12)
-	StopwatchPlayPauseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\play")
+	StopwatchPlayPauseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\Play")
 	StopwatchPlayPauseButton:SetHighlightTexture("")
 	StopwatchPlayPauseButton.backdrop:SetOutside(StopwatchPlayPauseButton, 2, 2)
 	StopwatchPlayPauseButton:HookScript('OnEnter', S.SetModifiedBackdrop)
@@ -63,7 +63,7 @@ local function LoadSkin()
 	StopwatchPlayPauseButton:Point("RIGHT", StopwatchResetButton, "LEFT", -4, 0)
 	S:HandleButton(StopwatchResetButton)
 	StopwatchResetButton:SetSize(16,16)
-	StopwatchResetButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\reset")
+	StopwatchResetButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\Reset")
 	StopwatchResetButton:Point("BOTTOMRIGHT", StopwatchFrame, "BOTTOMRIGHT", -4, 6)
 
 	hooksecurefunc("Stopwatch_Play", SetPauseTexture)

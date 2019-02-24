@@ -277,7 +277,7 @@ do
 		helloKittyLeft:Point("BOTTOMLEFT", _G.LeftChatPanel, "BOTTOMRIGHT", 2, -4)
 		helloKittyLeft.tex = helloKittyLeft:CreateTexture(nil, "OVERLAY")
 		helloKittyLeft.tex:SetAllPoints()
-		helloKittyLeft.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\helloKitty")
+		helloKittyLeft.tex:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\HelloKitty")
 		helloKittyLeft.tex:SetTexCoord(0, 0, 0, 1, 0, 0, 0, 1)
 		helloKittyLeft.curFrame = 1
 		helloKittyLeft.countUp = true
@@ -294,7 +294,7 @@ do
 		helloKittyRight:Point("BOTTOMRIGHT", _G.RightChatPanel, "BOTTOMLEFT", -2, -4)
 		helloKittyRight.tex = helloKittyRight:CreateTexture(nil, "OVERLAY")
 		helloKittyRight.tex:SetAllPoints()
-		helloKittyRight.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\helloKitty")
+		helloKittyRight.tex:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\HelloKitty")
 		helloKittyRight.tex:SetTexCoord(0, 0, 0, 1, 0, 0, 0, 1)
 		helloKittyRight.curFrame = 10
 		helloKittyRight.countUp = false

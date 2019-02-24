@@ -170,9 +170,9 @@ local function UpdateFactionSkins()
 		if factionIndex <= numFactions then
 			if button then
 				if isCollapsed then
-					button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+					button:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\PlusButton")
 				else
-					button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+					button:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\MinusButton")
 				end
 			end
 		end
@@ -247,10 +247,10 @@ local function UpdateCurrencySkins()
 
 				if button.isHeader then
 					if button.isExpanded then
-						button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+						button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\MinusButton")
 						button.expandIcon:SetTexCoord(0,1,0,1)
 					else
-						button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+						button.expandIcon:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\PlusButton")
 						button.expandIcon:SetTexCoord(0,1,0,1)
 					end
 

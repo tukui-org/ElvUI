@@ -359,9 +359,9 @@ local function LoadSkin()
 					texture = tex:GetTexture()
 					if texture then
 						if texture:find("PlusButton") then
-							tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusButton")
+							tex:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\PlusButton")
 						else
-							tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\MinusButton")
+							tex:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\MinusButton")
 						end
 					end
 				end

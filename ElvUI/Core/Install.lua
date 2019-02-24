@@ -830,7 +830,7 @@ function E:Install()
 
 		f.tutorialImage = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
 		f.tutorialImage:Size(256, 128)
-		f.tutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\logo')
+		f.tutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\Media\\Textures\\Logo')
 		f.tutorialImage:Point('BOTTOM', 0, 70)
 	end
 
