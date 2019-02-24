@@ -528,7 +528,16 @@ E.PopupDialogs["UI_SCALE_CHANGES_INFORM"] = {
 		E.global.general.UIScale = E:PixelClip(E:PixelBestSize())
 		E:StaticPopup_Show("UISCALE_CHANGE")
 	end,
-	OnShow = function(self) self.button1:Disable(); self.button2:Disable(); self.button3:Disable(); C_Timer.After(10, function() self.button1:Enable(); self.button2:Enable(); self.button3:Enable() end) end,
+	OnShow = function(self)
+		self.button1:Disable()
+		self.button2:Disable()
+		self.button3:Disable()
+		E:Delay(10, function(popup)
+			popup.button1:Enable()
+			popup.button2:Enable()
+			popup.button3:Enable()
+		end, self)
+	end,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
