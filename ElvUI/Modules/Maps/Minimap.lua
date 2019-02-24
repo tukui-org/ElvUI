@@ -459,7 +459,7 @@ function M:Initialize()
 	_G.MinimapZoneTextButton:Hide()
 	_G.MiniMapTracking:Hide()
 	_G.MiniMapMailBorder:Hide()
-	_G.MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\Mail")
+	_G.MiniMapMailIcon:SetTexture(E.Media.Textures.Mail)
 
 	--Hide the BlopRing on Minimap
 	Minimap:SetArchBlobRingScalar(0)

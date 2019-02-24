@@ -1,5 +1,5 @@
-local _, ns = ...
-local oUF = ns.oUF
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local oUF = E.oUF
 
 --Cache global variables
 --Lua functions
@@ -242,7 +242,7 @@ local function Enable(self)
 
 		if (element.Skull) then
 			if (element.Skull:IsObjectType('Texture') and not element.Skull:GetTexture()) then
-				element.Skull:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\SkullIcon]])
+				element.Skull:SetTexture(E.Media.Textures.SkullIcon)
 			end
 		end
 

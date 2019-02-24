@@ -323,7 +323,7 @@ do
 
 		CloseButton.Texture = CloseButton:CreateTexture(nil, 'OVERLAY')
 		CloseButton.Texture:SetAllPoints()
-		CloseButton.Texture:SetTexture(texture or 'Interface\\AddOns\\ElvUI\\Media\\Textures\\Close')
+		CloseButton.Texture:SetTexture(texture or E.Media.Textures.Close)
 
 		CloseButton:SetScript('OnClick', CloseButtonOnClick)
 		CloseButton:SetScript('OnEnter', CloseButtonOnEnter)

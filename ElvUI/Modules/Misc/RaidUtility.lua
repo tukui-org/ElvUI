@@ -304,7 +304,7 @@ function RU:Initialize()
 		--frame:SetTemplate()
 
 		local texture = frame:CreateTexture(nil, "OVERLAY")
-		texture:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\UI-LFG-ICON-ROLES") --(337499)
+		texture:SetTexture(E.Media.Textures.RoleIcons) --(337499)
 		local texA, texB, texC, texD = GetTexCoordsForRole(role)
 		texture:SetTexCoord(texA, texB, texC, texD)
 		--[[if E.PixelMode then

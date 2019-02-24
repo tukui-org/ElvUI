@@ -11,9 +11,9 @@ local hooksecurefunc = hooksecurefunc
 local function SkinRecipeList(self, _, tradeSkillInfo)
 	-- +/- Buttons
 	if tradeSkillInfo.collapsed then
-		self:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\PlusButton")
+		self:SetNormalTexture(E.Media.Textures.PlusButton)
 	else
-		self:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\MinusButton")
+		self:SetNormalTexture(E.Media.Textures.MinusButton)
 	end
 
 	-- Skillbar

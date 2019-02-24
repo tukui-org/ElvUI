@@ -9,7 +9,7 @@ local UnitAffectingCombat = UnitAffectingCombat
 
 local CombatTextures = {
 	["DEFAULT"] = [[Interface\CharacterFrame\UI-StateIcon]],
-	["COMBAT"] = [[Interface\AddOns\ElvUI\Media\Textures\Combat]],
+	["COMBAT"] = E.Media.Textures.Combat,
 	["PLATINUM"] = [[Interface\Challenges\ChallengeMode_Medal_Platinum]],
 	["ATTACK"] = [[Interface\CURSOR\Attack]],
 	["ALERT"] = [[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]],

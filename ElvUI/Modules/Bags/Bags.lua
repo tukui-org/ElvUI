@@ -1089,14 +1089,14 @@ function B:Layout(isBank)
 
 					if not(f.Bags[bagID][slotID].questIcon) then
 						f.Bags[bagID][slotID].questIcon = _G[f.Bags[bagID][slotID]:GetName()..'IconQuestTexture'] or _G[f.Bags[bagID][slotID]:GetName()].IconQuestTexture
-						f.Bags[bagID][slotID].questIcon:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\BagQuestIcon");
+						f.Bags[bagID][slotID].questIcon:SetTexture(E.Media.Textures.BagQuestIcon);
 						f.Bags[bagID][slotID].questIcon:SetTexCoord(0,1,0,1);
 						f.Bags[bagID][slotID].questIcon:SetInside();
 						f.Bags[bagID][slotID].questIcon:Hide();
 					end
 
 					if f.Bags[bagID][slotID].UpgradeIcon then
-						f.Bags[bagID][slotID].UpgradeIcon:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\BagUpgradeIcon");
+						f.Bags[bagID][slotID].UpgradeIcon:SetTexture(E.Media.Textures.BagUpgradeIcon);
 						f.Bags[bagID][slotID].UpgradeIcon:SetTexCoord(0,1,0,1);
 						f.Bags[bagID][slotID].UpgradeIcon:SetInside();
 						f.Bags[bagID][slotID].UpgradeIcon:Hide();
@@ -1154,7 +1154,7 @@ function B:Layout(isBank)
 					if not f.Bags[bagID][slotID].newItemGlow then
 						local newItemGlow = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
 						newItemGlow:SetInside()
-						newItemGlow:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\BagNewItemGlow")
+						newItemGlow:SetTexture(E.Media.Textures.BagNewItemGlow)
 						newItemGlow:Hide()
 						f.Bags[bagID][slotID].newItemGlow = newItemGlow
 						f.Bags[bagID][slotID]:HookScript("OnEnter", hideNewItemGlow)
@@ -1260,7 +1260,7 @@ function B:Layout(isBank)
 				if not f.reagentFrame.slots[i].newItemGlow then
 					local newItemGlow = f.reagentFrame.slots[i]:CreateTexture(nil, "OVERLAY")
 					newItemGlow:SetInside()
-					newItemGlow:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\BagNewItemGlow")
+					newItemGlow:SetTexture(E.Media.Textures.BagNewItemGlow)
 					newItemGlow:Hide()
 					f.reagentFrame.slots[i].newItemGlow = newItemGlow
 					f.reagentFrame.slots[i]:HookScript("OnEnter", hideNewItemGlow)

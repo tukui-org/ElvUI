@@ -3650,8 +3650,8 @@ E.Options.args.unitframe.args.player = {
 					values = {
 						["CUSTOM"] = CUSTOM,
 						["DEFAULT"] = DEFAULT,
-						["RESTING"] = [[|TInterface\AddOns\ElvUI\Media\Textures\Resting:14|t]],
-						["RESTING1"] = [[|TInterface\AddOns\ElvUI\Media\Textures\Resting1:14|t]],
+						["RESTING"] = E:TextureString(E.Media.Texture.Resting, ":14"),
+						["RESTING1"] = E:TextureString(E.Media.Texture.Resting1, ":14"),
 					},
 				},
 				customTexture = {
@@ -3749,7 +3749,7 @@ E.Options.args.unitframe.args.player = {
 					values = {
 						["CUSTOM"] = CUSTOM,
 						["DEFAULT"] = DEFAULT,
-						["COMBAT"] = [[|TInterface\AddOns\ElvUI\Media\Textures\Combat:14|t]],
+						["COMBAT"] = E:TextureString(E.Media.Textures.Combat, ":14"),
 						["PLATINUM"] = [[|TInterface\Challenges\ChallengeMode_Medal_Platinum:14|t]],
 						["ATTACK"] = [[|TInterface\CURSOR\Attack:14|t]],
 						["ALERT"] = [[|TInterface\DialogFrame\UI-Dialog-Icon-AlertNew:14|t]],

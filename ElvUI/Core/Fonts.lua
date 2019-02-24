@@ -38,7 +38,7 @@ function E:UpdateBlizzardFonts()
 		SetCVar("floatingcombattextcombathealing",0)
 
 		-- set an invisible font for xp, honor kill, etc
-		COMBAT = [=[Interface\Addons\ElvUI\Media\Fonts\Invisible.ttf]=]
+		COMBAT = E.Media.Fonts.Invisible
 	end
 
 	--_G.NAMEPLATE_FONT		= NAMEFONT

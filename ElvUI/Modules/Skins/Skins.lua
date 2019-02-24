@@ -265,7 +265,7 @@ function S:HandleButton(button, strip, isDeclineButton)
 		if button.Icon then button.Icon:Hide() end
 		if not button.text then
 			button.text = button:CreateFontString(nil, 'OVERLAY')
-			button.text:SetFont([[Interface\AddOns\ElvUI\Media\Fonts\PTSansNarrow.ttf]], 16, 'OUTLINE')
+			button.text:SetFont(E.Media.Fonts.PTSansNarrow, 16, 'OUTLINE')
 			button.text:SetText('x')
 			button.text:SetJustifyH('CENTER')
 			button.text:Point('CENTER', button, 'CENTER')
@@ -395,10 +395,10 @@ function S:HandleMaxMinFrame(frame)
 				self:GetPushedTexture():SetVertexColor(1, 1, 1)
 			end)
 
-			button:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\ArrowUp")
+			button:SetNormalTexture(E.Media.Textures.ArrowUp)
 			button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
 
-			button:SetPushedTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\ArrowUp")
+			button:SetPushedTexture(E.Media.Textures.ArrowUp)
 			button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
 		end
 	end
@@ -631,7 +631,7 @@ function S:HandleCloseButton(f, point)
 	if not f.Texture then
 		f.Texture = f:CreateTexture(nil, 'OVERLAY')
 		f.Texture:SetPoint("CENTER")
-		f.Texture:SetTexture('Interface\\AddOns\\ElvUI\\Media\\Textures\\Close')
+		f.Texture:SetTexture(E.Media.Textures.Close)
 		f.Texture:SetSize(12, 12)
 		f:HookScript('OnEnter', handleCloseButtonOnEnter)
 		f:HookScript('OnLeave', handleCloseButtonOnLeave)
@@ -657,7 +657,7 @@ function S:HandleSliderFrame(frame)
 		if backdrop ~= nil then slider:SetBackdrop(nil) end
 	end)
 
-	frame:SetThumbTexture([[Interface\AddOns\ElvUI\Media\Textures\Melli]])
+	frame:SetThumbTexture(E.Media.Textures.Melli)
 	frame:GetThumbTexture():SetVertexColor(1, .82, 0, 0.8)
 	frame:GetThumbTexture():Size(SIZE-2,SIZE-2)
 
@@ -1025,9 +1025,9 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stipTexts)
 		btn:StripTexts()
 	end
 
-	btn:SetNormalTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\ArrowUp")
-	btn:SetPushedTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\ArrowUp")
-	btn:SetDisabledTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\ArrowUp")
+	btn:SetNormalTexture(E.Media.Textures.ArrowUp)
+	btn:SetPushedTexture(E.Media.Textures.ArrowUp)
+	btn:SetDisabledTexture(E.Media.Textures.ArrowUp)
 
 	local Normal, Disabled, Pushed = btn:GetNormalTexture(), btn:GetDisabledTexture(), btn:GetPushedTexture()
 

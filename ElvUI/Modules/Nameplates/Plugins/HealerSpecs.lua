@@ -1,5 +1,5 @@
-local _, ns = ...
-local oUF = ns.oUF
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local oUF = E.oUF
 
 local UnitName = UnitName
 local gsub = gsub
@@ -104,7 +104,7 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		if (element:IsObjectType('Texture') and not element:GetTexture()) then
-			element:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\Healer]])
+			element:SetTexture(E.Media.Textures.Healer)
 		end
 
 		self:RegisterEvent("UNIT_TARGET", Path)

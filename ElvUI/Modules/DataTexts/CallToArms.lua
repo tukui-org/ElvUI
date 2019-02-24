@@ -16,9 +16,9 @@ local RAID_FINDER = RAID_FINDER
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: LFDParentFrame
 
-local TANK_ICON = "|TInterface\\AddOns\\ElvUI\\Media\\Textures\\Tank:14:14|t"
-local HEALER_ICON = "|TInterface\\AddOns\\ElvUI\\Media\\Textures\\Healer:14:14|t"
-local DPS_ICON = "|TInterface\\AddOns\\ElvUI\\Media\\Textures\\Dps:14:14|t"
+local TANK_ICON = E:TextureString(E.Media.Textures.Tank, ":14:14")
+local HEALER_ICON = E:TextureString(E.Media.Textures.Healer, ":14:14")
+local DPS_ICON = E:TextureString(E.Media.Textures.DPS, ":14:14")
 local NOBONUSREWARDS = BATTLEGROUND_HOLIDAY..": N/A"
 local lastPanel
 local enteredFrame = false

@@ -69,7 +69,7 @@ do
 
 		SetCVar("Sound_EnableAllSound", 1)
 		SetCVar("Sound_EnableMusic", 1)
-		PlayMusic([[Interface\AddOns\ElvUI\Media\Sounds\HarlemShake.ogg]])
+		PlayMusic(E.Media.Sounds.HarlemShake)
 		E:ScheduleTimer("DoTheHarlemShake", 15.5)
 
 		local UF = E:GetModule("UnitFrames")
@@ -193,8 +193,8 @@ do
 			self.db.general.bordercolor = {r = 223/255, g = 217/255, b = 47/255}
 			self.db.general.valuecolor = {r = 223/255, g = 217/255, b = 47/255}
 
-			self.db.chat.panelBackdropNameLeft = [[Interface\AddOns\ElvUI\Media\Textures\HelloKittyChat]]
-			self.db.chat.panelBackdropNameRight = [[Interface\AddOns\ElvUI\Media\Textures\HelloKittyChat]]
+			self.db.chat.panelBackdropNameLeft = E.Media.Textures.HelloKittyChat
+			self.db.chat.panelBackdropNameRight = E.Media.Textures.HelloKittyChat
 
 			self.db.unitframe.colors.castColor = {r = 223/255, g = 76/255, b = 188/255}
 			self.db.unitframe.colors.transparentCastbar = true
@@ -207,7 +207,7 @@ do
 
 			SetCVar("Sound_EnableAllSound", 1)
 			SetCVar("Sound_EnableMusic", 1)
-			PlayMusic([[Interface\AddOns\ElvUI\Media\Sounds\HelloKitty.ogg]])
+			PlayMusic(E.Media.Sounds.HelloKitty)
 			E:StaticPopup_Show("HELLO_KITTY_END")
 
 			self.db.general.kittys = true
@@ -277,7 +277,7 @@ do
 		helloKittyLeft:Point("BOTTOMLEFT", _G.LeftChatPanel, "BOTTOMRIGHT", 2, -4)
 		helloKittyLeft.tex = helloKittyLeft:CreateTexture(nil, "OVERLAY")
 		helloKittyLeft.tex:SetAllPoints()
-		helloKittyLeft.tex:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\HelloKitty")
+		helloKittyLeft.tex:SetTexture(E.Media.Textures.HelloKitty)
 		helloKittyLeft.tex:SetTexCoord(0, 0, 0, 1, 0, 0, 0, 1)
 		helloKittyLeft.curFrame = 1
 		helloKittyLeft.countUp = true
@@ -294,7 +294,7 @@ do
 		helloKittyRight:Point("BOTTOMRIGHT", _G.RightChatPanel, "BOTTOMLEFT", -2, -4)
 		helloKittyRight.tex = helloKittyRight:CreateTexture(nil, "OVERLAY")
 		helloKittyRight.tex:SetAllPoints()
-		helloKittyRight.tex:SetTexture("Interface\\AddOns\\ElvUI\\Media\\Textures\\HelloKitty")
+		helloKittyRight.tex:SetTexture(E.Media.Textures.HelloKitty)
 		helloKittyRight.tex:SetTexCoord(0, 0, 0, 1, 0, 0, 0, 1)
 		helloKittyRight.curFrame = 10
 		helloKittyRight.countUp = false

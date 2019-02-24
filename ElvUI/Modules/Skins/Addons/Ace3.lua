@@ -63,7 +63,7 @@ function S:SkinAce3()
 			if E.private.skins.checkBoxSkin then
 				checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
 
-				check:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\Melli]])
+				check:SetTexture(E.Media.Textures.Melli)
 
 				hooksecurefunc(check, "SetDesaturated", function(chk, value)
 					if value == true then
@@ -283,12 +283,12 @@ function S:SkinAce3()
 						local button = buttons[i - offset]
 						if button then
 							if groupstatus[lines[i].uniquevalue] then
-								button.toggle:SetNormalTexture([[Interface\AddOns\ElvUI\Media\Textures\Minus]])
-								button.toggle:SetPushedTexture([[Interface\AddOns\ElvUI\Media\Textures\Minus]])
+								button.toggle:SetNormalTexture(E.Media.Textures.Minus)
+								button.toggle:SetPushedTexture(E.Media.Textures.Minus)
 								button.toggle:SetHighlightTexture('')
 							else
-								button.toggle:SetNormalTexture([[Interface\AddOns\ElvUI\Media\Textures\Plus]])
-								button.toggle:SetPushedTexture([[Interface\AddOns\ElvUI\Media\Textures\Plus]])
+								button.toggle:SetNormalTexture(E.Media.Textures.Plus)
+								button.toggle:SetPushedTexture(E.Media.Textures.Plus)
 								button.toggle:SetHighlightTexture('')
 							end
 						end
