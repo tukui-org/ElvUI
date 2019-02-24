@@ -1,6 +1,10 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+
+local _G = _G
+local unpack = unpack
+local CreateFrame = CreateFrame
+local UnitPowerType = UnitPowerType
 
 function NP:Construct_Power(nameplate)
 	local Power = CreateFrame('StatusBar', nameplate:GetDebugName()..'Power', nameplate)

@@ -1,6 +1,10 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+
+local _G = _G
+local unpack = unpack
+local UnitClass = UnitClass
+local UnitIsPlayer = UnitIsPlayer
 
 function NP:Construct_Portrait(nameplate)
 	local Portrait = nameplate:CreateTexture(nil, 'OVERLAY')
@@ -15,7 +19,7 @@ function NP:Construct_Portrait(nameplate)
 		if db.portrait and db.portrait.classicon and UnitIsPlayer(unit) then
 			local _, class = UnitClass(unit);
 			self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-			self:SetTexCoord(unpack(CLASS_ICON_TCOORDS[class]))
+			self:SetTexCoord(unpack(_G.CLASS_ICON_TCOORDS[class]))
 			self.backdrop:Hide()
 		else
 			self:SetTexCoord(.18, .82, .18, .82)

@@ -1,6 +1,7 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+
+local strlower = strlower
 
 function NP:Construct_PvPIndicator(nameplate)
 	local PvPIndicator = nameplate:CreateTexture(nil, 'OVERLAY')

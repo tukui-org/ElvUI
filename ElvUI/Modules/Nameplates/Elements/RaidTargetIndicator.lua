@@ -1,6 +1,9 @@
-local E, L, V, P, G = unpack(ElvUI)
-
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+
+local UnitIsUnit = UnitIsUnit
+local GetRaidTargetIndex = GetRaidTargetIndex
+local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 
 function NP:Construct_RaidTargetIndicator(nameplate)
 	local RaidTargetIndicator = nameplate:CreateTexture(nil, 'OVERLAY', 7)

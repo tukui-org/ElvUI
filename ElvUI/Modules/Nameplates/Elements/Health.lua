@@ -1,6 +1,9 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+
+local _G = _G
+local pairs = pairs
+local CreateFrame = CreateFrame
 
 function NP:Construct_Health(nameplate)
 	local Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'Health', nameplate)

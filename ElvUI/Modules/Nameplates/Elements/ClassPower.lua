@@ -1,7 +1,11 @@
-local E, L, V, P, G = unpack(ElvUI)
-local ElvUF = ElvUI.oUF
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local ElvUF = E.oUF
 
 local NP = E:GetModule('NamePlates')
+
+local unpack = unpack
+local CreateFrame = CreateFrame
+local UnitHasVehicleUI = UnitHasVehicleUI
 
 local MAX_POINTS = {
 	['PALADIN'] = 5,
