@@ -293,7 +293,7 @@ L["Zone Ability"] = "Zonen Fähigkeit"
 L["DESC_MOVERCONFIG"] = [=[Ankerpunkte entriegelt. Bewege die Ankerpunkte und klicke 'sperren', wenn du fertig bist.
 
 Options:
-  LeftClick - Toggle Nudge Frame.
+  Linksklick - Öffnet das Fenster zum Verschieben.
   Rechtsklick - Öffnet Konfigurationsbereich.
   Shift + Rechtsklick - Blendet den Anker vorübergehend aus.
   Strg + Rechtsklick - Setzt den Anker auf Ursprungsposition zurück.
