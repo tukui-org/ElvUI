@@ -1,0 +1,52 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Button name='ElvUIAuraTemplate' inherits='SecureActionButtonTemplate' virtual='true' framelevel="4">
+		<!-- framelevel 4 for Masque support -->
+		<Size x='26' y='26'/>
+		<Attributes>
+			<Attribute name='type' value='cancelaura'/>
+		</Attributes>
+		<Scripts>
+			<OnLoad>
+				ElvUI[1]:GetModule('Auras'):CreateIcon(self)
+				self:RegisterForClicks('RightButtonUp')
+			</OnLoad>
+			<OnEnter>
+				GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', -5, -5)
+				if(self:GetAttribute'index') then
+					GameTooltip:SetUnitAura(SecureButton_GetUnit(self:GetParent()), self:GetID(), self:GetParent():GetAttribute("filter"))
+				elseif(self:GetAttribute'target-slot') then
+					GameTooltip:SetInventoryItem('player', self:GetID())
+				end
+			</OnEnter>
+			<OnLeave function='GameTooltip_Hide'/>
+		</Scripts>
+	</Button>
+
+	<!-- Theres gotta be a better way to do this.. -->
+	<Button name='ElvUIAuraTemplate16' inherits='ElvUIAuraTemplate' virtual='true'><Size x='16' y='16'/></Button>
+	<Button name='ElvUIAuraTemplate18' inherits='ElvUIAuraTemplate' virtual='true'><Size x='18' y='18'/></Button>
+	<Button name='ElvUIAuraTemplate20' inherits='ElvUIAuraTemplate' virtual='true'><Size x='20' y='20'/></Button>
+	<Button name='ElvUIAuraTemplate22' inherits='ElvUIAuraTemplate' virtual='true'><Size x='22' y='22'/></Button>
+	<Button name='ElvUIAuraTemplate24' inherits='ElvUIAuraTemplate' virtual='true'><Size x='24' y='24'/></Button>
+	<Button name='ElvUIAuraTemplate26' inherits='ElvUIAuraTemplate' virtual='true'><Size x='26' y='26'/></Button>
+	<Button name='ElvUIAuraTemplate28' inherits='ElvUIAuraTemplate' virtual='true'><Size x='28' y='28'/></Button>
+	<Button name='ElvUIAuraTemplate30' inherits='ElvUIAuraTemplate' virtual='true'><Size x='30' y='30'/></Button>
+	<Button name='ElvUIAuraTemplate32' inherits='ElvUIAuraTemplate' virtual='true'><Size x='32' y='32'/></Button>
+	<Button name='ElvUIAuraTemplate34' inherits='ElvUIAuraTemplate' virtual='true'><Size x='34' y='34'/></Button>
+	<Button name='ElvUIAuraTemplate36' inherits='ElvUIAuraTemplate' virtual='true'><Size x='36' y='36'/></Button>
+	<Button name='ElvUIAuraTemplate38' inherits='ElvUIAuraTemplate' virtual='true'><Size x='38' y='38'/></Button>
+	<Button name='ElvUIAuraTemplate40' inherits='ElvUIAuraTemplate' virtual='true'><Size x='40' y='40'/></Button>
+	<Button name='ElvUIAuraTemplate42' inherits='ElvUIAuraTemplate' virtual='true'><Size x='42' y='42'/></Button>
+	<Button name='ElvUIAuraTemplate44' inherits='ElvUIAuraTemplate' virtual='true'><Size x='44' y='44'/></Button>
+	<Button name='ElvUIAuraTemplate46' inherits='ElvUIAuraTemplate' virtual='true'><Size x='46' y='46'/></Button>
+	<Button name='ElvUIAuraTemplate48' inherits='ElvUIAuraTemplate' virtual='true'><Size x='48' y='48'/></Button>
+	<Button name='ElvUIAuraTemplate50' inherits='ElvUIAuraTemplate' virtual='true'><Size x='50' y='50'/></Button>
+	<Button name='ElvUIAuraTemplate52' inherits='ElvUIAuraTemplate' virtual='true'><Size x='52' y='52'/></Button>
+	<Button name='ElvUIAuraTemplate54' inherits='ElvUIAuraTemplate' virtual='true'><Size x='54' y='54'/></Button>
+	<Button name='ElvUIAuraTemplate56' inherits='ElvUIAuraTemplate' virtual='true'><Size x='56' y='56'/></Button>
+	<Button name='ElvUIAuraTemplate58' inherits='ElvUIAuraTemplate' virtual='true'><Size x='58' y='58'/></Button>
+	<Button name='ElvUIAuraTemplate60' inherits='ElvUIAuraTemplate' virtual='true'><Size x='60' y='60'/></Button>
+
+	<!-- Oh, Look! A file we need to load.. -->
+	<Script file='Auras.lua'/>
+</Ui>
