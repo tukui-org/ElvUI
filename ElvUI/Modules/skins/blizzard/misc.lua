@@ -274,6 +274,7 @@ local function LoadSkin()
 		local expandArrow = _G[listFrameName.."Button"..index.."ExpandArrow"];
 		if expandArrow then
 			expandArrow:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\ArrowUp]])
+			expandArrow:SetSize(12, 12)
 			expandArrow:GetNormalTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
 			expandArrow:GetNormalTexture():SetRotation(S.ArrowRotation['right'])
 		end
@@ -302,7 +303,8 @@ local function LoadSkin()
 			local uncheck = _G["DropDownList"..level.."Button"..i.."UnCheck"]
 			local highlight = _G["DropDownList"..level.."Button"..i.."Highlight"]
 
-			highlight:SetTexture([[Interface\QuestFrame\UI-QuestTitleHighlight]])
+			highlight:SetTexture([[Interface\AddOns\ElvUI\media\textures\Highlight]])
+			highlight:SetBlendMode('BLEND')
 			highlight:SetDrawLayer('BACKGROUND')
 			highlight:SetVertexColor(r, g, b)
 
