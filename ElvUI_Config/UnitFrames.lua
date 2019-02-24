@@ -3650,8 +3650,8 @@ E.Options.args.unitframe.args.player = {
 					values = {
 						["CUSTOM"] = CUSTOM,
 						["DEFAULT"] = DEFAULT,
-						["RESTING"] = E:TextureString(E.Media.Texture.Resting, ":14"),
-						["RESTING1"] = E:TextureString(E.Media.Texture.Resting1, ":14"),
+						["RESTING"] = E:TextureString(E.Media.Textures.Resting, ":14"),
+						["RESTING1"] = E:TextureString(E.Media.Textures.Resting1, ":14"),
 					},
 				},
 				customTexture = {
