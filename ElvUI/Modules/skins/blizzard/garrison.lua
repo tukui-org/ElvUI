@@ -436,7 +436,7 @@ local function LoadSkin()
 	MissionFrame:CreateBackdrop("Transparent")
 
 	S:HandleCloseButton(MissionFrame.CloseButton)
-
+	S:HandleButton(MissionFrame.MissionComplete.NextMissionButton)
 	for i = 1, 3 do
 		S:HandleTab(_G["BFAMissionFrameTab"..i])
 	end
