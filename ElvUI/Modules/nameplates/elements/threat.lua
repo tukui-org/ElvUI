@@ -1,6 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
-
 local NP = E:GetModule('NamePlates')
+
+local UnitExists = UnitExists
+local UnitIsUnit = UnitIsUnit
+local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitIsPlayer = UnitIsPlayer
+local UnitReaction = UnitReaction
 
 function NP:Construct_ThreatIndicator(nameplate)
 	local ThreatIndicator = nameplate:CreateTexture(nil, 'OVERLAY')

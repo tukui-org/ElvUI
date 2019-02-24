@@ -13,6 +13,7 @@ local strfind, gsub, format = strfind, gsub, format
 local CompactRaidFrameManager_GetSetting = CompactRaidFrameManager_GetSetting
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 local CompactRaidFrameManager_UpdateShown = CompactRaidFrameManager_UpdateShown
+local SetCVar = SetCVar
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
@@ -27,11 +28,10 @@ local UnregisterStateDriver = UnregisterStateDriver
 local CompactRaidFrameContainer = CompactRaidFrameContainer
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
+local MAX_ARENA_ENEMIES = MAX_ARENA_ENEMIES
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent, ElvCharacterDB, ElvUF_Parent, oUF_RaidDebuffs, CompactRaidFrameManager
--- GLOBALS: PlayerFrame, RuneFrame, PetFrame, TargetFrame, ComboFrame, FocusFrame
--- GLOBALS: FocusFrameToT, TargetFrameToT, CompactUnitFrameProfiles, PartyMemberBackground
+local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+-- GLOBALS: ElvUF_Parent, Arena_LoadUI
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -965,7 +965,7 @@ end
 
 function UF:RegisterRaidDebuffIndicator()
 	local _, instanceType = IsInInstance();
-	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
+	local ORD = ns.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
 	if ORD then
 		ORD:ResetDebuffData()
 
@@ -1019,7 +1019,7 @@ end
 
 local function HideRaid()
 	if InCombatLockdown() then return end
-	CompactRaidFrameManager:Kill()
+	_G.CompactRaidFrameManager:Kill()
 	local compact_raid = CompactRaidFrameManager_GetSetting("IsShown")
 	if compact_raid and compact_raid ~= "0" then
 		CompactRaidFrameManager_SetSetting("IsShown", "0")
@@ -1031,10 +1031,10 @@ function UF:DisableBlizzard()
 	if not CompactRaidFrameManager_UpdateShown then
 		E:StaticPopup_Show("WARNING_BLIZZARD_ADDONS")
 	else
-		if not CompactRaidFrameManager.hookedHide then
+		if not _G.CompactRaidFrameManager.hookedHide then
 			hooksecurefunc("CompactRaidFrameManager_UpdateShown", HideRaid)
-			CompactRaidFrameManager:HookScript('OnShow', HideRaid)
-			CompactRaidFrameManager.hookedHide = true
+			_G.CompactRaidFrameManager:HookScript('OnShow', HideRaid)
+			_G.CompactRaidFrameManager.hookedHide = true
 		end
 		CompactRaidFrameContainer:UnregisterAllEvents()
 
@@ -1042,7 +1042,7 @@ function UF:DisableBlizzard()
 	end
 end
 
-local hiddenParent = CreateFrame("Frame", nil, UIParent)
+local hiddenParent = CreateFrame("Frame", nil, _G.UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
 
@@ -1092,6 +1092,7 @@ function ElvUF:DisableBlizzard(unit)
 	if(not unit) or InCombatLockdown() then return end
 
 	if (unit == 'player') and E.private.unitframe.disabledBlizzardFrames.player then
+		local PlayerFrame = _G.PlayerFrame
 		HandleFrame(PlayerFrame)
 
 		-- For the damn vehicle support:
@@ -1105,15 +1106,15 @@ function ElvUF:DisableBlizzard(unit)
 		PlayerFrame:SetUserPlaced(true)
 		PlayerFrame:SetDontSavePosition(true)
 	elseif (unit == 'pet') and E.private.unitframe.disabledBlizzardFrames.player then
-		HandleFrame(PetFrame)
+		HandleFrame(_G.PetFrame)
 	elseif (unit == 'target') and E.private.unitframe.disabledBlizzardFrames.target then
-		HandleFrame(TargetFrame)
-		HandleFrame(ComboFrame)
+		HandleFrame(_G.TargetFrame)
+		HandleFrame(_G.ComboFrame)
 	elseif (unit == 'focus') and E.private.unitframe.disabledBlizzardFrames.focus then
-		HandleFrame(FocusFrame)
-		HandleFrame(TargetofFocusFrame)
+		HandleFrame(_G.FocusFrame)
+		HandleFrame(_G.TargetofFocusFrame)
 	elseif (unit == 'targettarget') and E.private.unitframe.disabledBlizzardFrames.target then
-		HandleFrame(TargetFrameToT)
+		HandleFrame(_G.TargetFrameToT)
 	elseif (unit:match('boss%d?$')) and E.private.unitframe.disabledBlizzardFrames.boss then
 		local id = unit:match('boss(%d)')
 		if (id) then
@@ -1132,14 +1133,14 @@ function ElvUF:DisableBlizzard(unit)
 				HandleFrame(('PartyMemberFrame%d'):format(i))
 			end
 		end
-		HandleFrame(PartyMemberBackground)
+		HandleFrame(_G.PartyMemberBackground)
 	elseif (unit:match('arena%d?$')) and E.private.unitframe.disabledBlizzardFrames.arena then
 		local id = unit:match('arena(%d)')
 		if (id) then
 			HandleFrame('ArenaEnemyFrame' .. id)
 		else
 			for i = 1, MAX_ARENA_ENEMIES do
-				HandleFrame(string.format('ArenaEnemyFrame%d', i))
+				HandleFrame(format('ArenaEnemyFrame%d', i))
 			end
 		end
 
@@ -1147,7 +1148,7 @@ function ElvUF:DisableBlizzard(unit)
 		Arena_LoadUI = function() end
 		SetCVar('showArenaEnemyFrames', '0', 'SHOW_ARENA_ENEMY_FRAMES_TEXT')
 	elseif (unit:match('nameplate%d+$')) then
-		local frame = C_NamePlate.GetNamePlateForUnit(unit)
+		local frame = C_NamePlate_GetNamePlateForUnit(unit)
 		if (frame and frame.UnitFrame) then
 			HandleFrame(frame.UnitFrame)
 		end
@@ -1392,9 +1393,9 @@ function UF:Initialize()
 		--InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
 
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
-		UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE') --This may fuck shit up.. we'll see...
+		_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE') --This may fuck shit up.. we'll see...
 	else
-		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
+		_G.CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	end
 
 	if (not E.private.unitframe.disabledBlizzardFrames.party) and (not E.private.unitframe.disabledBlizzardFrames.raid) then
@@ -1411,7 +1412,7 @@ function UF:Initialize()
 		end
 	end
 
-	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
+	local ORD = ns.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
 	if not ORD then return end
 	ORD.ShowDispellableDebuff = true
 	ORD.FilterDispellableDebuff = true

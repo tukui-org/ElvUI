@@ -2,6 +2,18 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
+local floor = floor
+local unpack = unpack
+local select = select
+local strfind = strfind
+local strsplit = strsplit
+local strmatch = strmatch
+local CreateFrame = CreateFrame
+local UnitIsFriend = UnitIsFriend
+local UnitCanAttack = UnitCanAttack
+local UnitIsUnit = UnitIsUnit
+local DebuffTypeColor = DebuffTypeColor
+
 function NP:Construct_Auras(nameplate)
 	local Auras = CreateFrame('Frame', nameplate:GetDebugName()..'Auras', nameplate)
 	Auras:SetFrameStrata(nameplate:GetFrameStrata())

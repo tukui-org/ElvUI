@@ -20,11 +20,17 @@ local SetCVar, GetCVarDefault = SetCVar, GetCVarDefault
 local UnitFactionGroup = UnitFactionGroup
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
 local UnitIsFriend = UnitIsFriend
-local C_NamePlate = C_NamePlate
+local InCombatLockdown = InCombatLockdown
+local UnitIsBattlePet = UnitIsBattlePet
+local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local IsInInstance = IsInInstance
 local GetCVar = GetCVar
 local Lerp = Lerp
+
+local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
+local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
+local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 
 local function CopySettings(from, to)
 	for setting, value in pairs(from) do
@@ -267,8 +273,8 @@ function NP:ConfigureAll()
 		SetCVar('showQuestTrackingTooltips', 1)
 	end
 
-	C_NamePlate.SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
-	C_NamePlate.SetNamePlateEnemySize(NP.db.clickableWidth, NP.db.clickableHeight)
+	C_NamePlate_SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
+	C_NamePlate_SetNamePlateEnemySize(NP.db.clickableWidth, NP.db.clickableHeight)
 
 	NP:PLAYER_REGEN_ENABLED()
 

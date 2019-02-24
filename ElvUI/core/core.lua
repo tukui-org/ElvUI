@@ -35,6 +35,7 @@ local UnitFactionGroup = UnitFactionGroup
 local UnitGUID = UnitGUID
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
+local WrapTextInColorCode = WrapTextInColorCode
 local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
 local hooksecurefunc = hooksecurefunc
 local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
@@ -1790,9 +1791,6 @@ function E:Initialize()
 	twipe(self.db)
 	twipe(self.global)
 	twipe(self.private)
-
-	local AceDB = LibStub('AceDB-3.0')
-	local LibDualSpec = LibStub('LibDualSpec-1.0')
 
 	self.myguid = UnitGUID('player')
 	self.data = E.Libs.AceDB:New('ElvDB', self.DF)

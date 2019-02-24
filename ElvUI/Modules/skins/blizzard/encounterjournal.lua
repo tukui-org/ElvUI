@@ -4,6 +4,8 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local unpack = unpack
+local select = select
+local pairs = pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -146,7 +148,7 @@ local function SkinAbilitiesInfo()
 	end
 end
 
-local function ItemSetsFrame(parent, button)
+local function ItemSetsFrame(_, button)
 	local frame = button:GetParent()
 
 	if not button.Icon.backdrop then
@@ -365,7 +367,7 @@ local function LoadSkin()
 		if E.private.skins.parchmentRemover.enable then
 			item.boss:SetTextColor(1, 1, 1)
 			item.slot:SetTextColor(1, 1, 1)
-			item.armorType:SetTextColor(1, 1, 1)			
+			item.armorType:SetTextColor(1, 1, 1)
 		end
 
 
@@ -417,9 +419,7 @@ local function LoadSkin()
 
 
 	HandleButton(_G.EncounterJournal.LootJournal.ItemSetsFrame.ClassButton, true)
-
-
-	hooksecurefunc(EncounterJournal.LootJournal.ItemSetsFrame, "ConfigureItemButton", ItemSetsFrame)
+	hooksecurefunc(_G.EncounterJournal.LootJournal.ItemSetsFrame, "ConfigureItemButton", ItemSetsFrame)
 
 	if E.private.skins.parchmentRemover.enable then
 		--Boss selection buttons
@@ -432,14 +432,14 @@ local function LoadSkin()
 		hooksecurefunc("EncounterJournal_SetBullets", SkinOverviewInfoBullets)
 
 		--Abilities Info (From Aurora)
-		hooksecurefunc("EncounterJournal_ToggleHeaders", SkinAbilitiesInfo)	
-		
+		hooksecurefunc("EncounterJournal_ToggleHeaders", SkinAbilitiesInfo)
+
 		_G.EncounterJournalEncounterFrameInfoBG:Kill()
 
 		EncounterInfo.detailsScroll.child.description:SetTextColor(1, 1, 1)
 		EncounterInfo.overviewScroll.child.loreDescription:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetTextColor(1, 1, 1)
-		EncounterInfo.overviewScroll.child.overviewDescription.Text:SetTextColor(1, 1, 1)		
+		EncounterInfo.overviewScroll.child.overviewDescription.Text:SetTextColor(1, 1, 1)
 		EJ.encounter.instance.loreScroll.child.lore:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInstanceFrameBG:SetTexCoord(0.71, 0.06, 0.582, 0.08)
 		_G.EncounterJournalEncounterFrameInstanceFrameBG:SetRotation(rad(180))
@@ -456,7 +456,7 @@ local function LoadSkin()
 		HandleButton(_G.EncounterJournalEncounterFrameInstanceFrameMapButton)
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:ClearAllPoints()
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:SetPoint("CENTER")
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:SetText(SHOW_MAP)
+		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:SetText(_G.SHOW_MAP)
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:SetHeight(25)
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:SetWidth(_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:GetStringWidth()*1.5)
 

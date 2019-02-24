@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-
 local NP = E:GetModule('NamePlates')
+
+local unpack = unpack
+local CreateFrame = CreateFrame
+local UnitCanAttack = UnitCanAttack
 
 function NP:Construct_Castbar(nameplate)
 	local Castbar = CreateFrame('StatusBar', nameplate:GetDebugName()..'Castbar', nameplate)

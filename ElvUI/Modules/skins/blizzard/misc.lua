@@ -297,7 +297,7 @@ local function LoadSkin()
 
 		local r, g, b = unpack(E.media.rgbvaluecolor)
 
-		for i = 1, UIDROPDOWNMENU_MAXBUTTONS do
+		for i = 1, _G.UIDROPDOWNMENU_MAXBUTTONS do
 			local button = _G["DropDownList"..level.."Button"..i]
 			local check = _G["DropDownList"..level.."Button"..i.."Check"]
 			local uncheck = _G["DropDownList"..level.."Button"..i.."UnCheck"]

@@ -9,6 +9,7 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetScreenWidth = GetScreenWidth
 local GetScreenHeight = GetScreenHeight
+local RegisterStateDriver = RegisterStateDriver
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
@@ -63,7 +64,7 @@ function B:MoveObjectiveFrame()
 	ObjectiveTrackerFrame:SetMovable(true)
 	ObjectiveTrackerFrame:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
 	ObjectiveTrackerFrame:ClearAllPoints()
-	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')	
+	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
 
 
 	local function RewardsFrame_SetPosition(block)
@@ -87,7 +88,7 @@ function B:MoveObjectiveFrame()
 		elseif not shown then
 			self:GetParent():Show()
 		end
-	]])	
+	]])
 
 	self:SetObjectiveFrameAutoHide()
 end
