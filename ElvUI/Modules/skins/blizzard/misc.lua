@@ -19,6 +19,7 @@ local function SkinNavBarButtons(self)
 	local navButton = self.navList[#self.navList]
 	if navButton and not navButton.isSkinned then
 		S:HandleButton(navButton, true)
+		navButton:GetFontString():SetTextColor(1, 1, 1)
 		if navButton.MenuArrowButton then
 			navButton.MenuArrowButton:StripTextures()
 			if navButton.MenuArrowButton.Art then

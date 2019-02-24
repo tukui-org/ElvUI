@@ -10,10 +10,18 @@ local hooksecurefunc = hooksecurefunc
 
 local rad = math.rad
 
+local function HandleButton(btn, ...)
+	S:HandleButton(btn, ...)
+	if btn:GetFontString() then
+		btn:GetFontString():SetTextColor(1, 1, 1)
+	end
+end
+
+
 local function SkinDungeons()
 	local b1 = _G.EncounterJournalInstanceSelectScrollFrameScrollChildInstanceButton1
 	if b1 and not b1.isSkinned then
-		S:HandleButton(b1)
+		HandleButton(b1)
 		b1.bgImage:SetInside()
 		b1.bgImage:SetTexCoord(.08, .6, .08, .6)
 		b1.bgImage:SetDrawLayer("ARTWORK")
@@ -23,7 +31,7 @@ local function SkinDungeons()
 	for i = 1, 100 do
 		local b = _G["EncounterJournalInstanceSelectScrollFrameinstance"..i]
 		if b and not b.isSkinned then
-			S:HandleButton(b)
+			HandleButton(b)
 			b.bgImage:SetInside()
 			b.bgImage:SetTexCoord(0.08,.6,0.08,.6)
 			b.bgImage:SetDrawLayer("ARTWORK")
@@ -40,7 +48,7 @@ local function SkinBosses()
 	while bossID do
 		bossButton = _G["EncounterJournalBossButton"..bossIndex];
 		if bossButton and not bossButton.isSkinned then
-			S:HandleButton(bossButton)
+			HandleButton(bossButton)
 			bossButton.creature:ClearAllPoints()
 			bossButton.creature:Point("TOPLEFT", 1, -4)
 			bossButton.isSkinned = true
@@ -61,7 +69,7 @@ local function SkinOverviewInfo(self, _, index)
 			select(i, header.button:GetRegions()):SetTexture("")
 		end
 
-		S:HandleButton(header.button)
+		HandleButton(header.button)
 
 		header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
 		header.button.title.SetTextColor = E.noop
@@ -96,6 +104,7 @@ local function HandleTabs(tab)
 	tab.SetPoint = E.noop
 end
 
+
 local function SkinAbilitiesInfo()
 	local index = 1
 	local header = _G["EncounterJournalInfoHeader"..index]
@@ -115,7 +124,7 @@ local function SkinAbilitiesInfo()
 			header.button.expandedIcon:SetTextColor(1, 1, 1)
 			header.button.expandedIcon.SetTextColor = E.noop
 
-			S:HandleButton(header.button)
+			HandleButton(header.button)
 
 			header.button.bg = CreateFrame("Frame", nil, header.button)
 			header.button.bg:SetTemplate("Default")
@@ -137,6 +146,25 @@ local function SkinAbilitiesInfo()
 	end
 end
 
+local function ItemSetsFrame(parent, button)
+	local frame = button:GetParent()
+
+	if not button.Icon.backdrop then
+		S:HandleIcon(button.Icon, true)
+		button.Border:SetAlpha(0)
+
+		if E.private.skins.parchmentRemover.enable then
+			frame:StripTextures()
+			frame.ItemLevel:SetTextColor(1, 1, 1)
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:SetPoint("BOTTOMLEFT")
+			frame.backdrop:SetPoint("TOPLEFT", 10, 0)
+		end
+	end
+
+	button.Icon.backdrop:SetBackdropBorderColor(frame.SetName:GetTextColor())
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
 
@@ -149,7 +177,7 @@ local function LoadSkin()
 	EJ.navBar:CreateBackdrop()
 	EJ.navBar.backdrop:Point("TOPLEFT", -2, 0)
 	EJ.navBar.backdrop:Point("BOTTOMRIGHT")
-	S:HandleButton(EJ.navBar.home, true)
+	HandleButton(EJ.navBar.home, true)
 
 
 	S:HandleEditBox(EJ.searchBox)
@@ -179,12 +207,14 @@ local function LoadSkin()
 	InstanceSelect.LootJournalTab.backdrop:SetTemplate("Default", true)
 	InstanceSelect.suggestTab:Width(InstanceSelect.suggestTab:GetWidth() + 24)
 	InstanceSelect.dungeonsTab:Width(InstanceSelect.dungeonsTab:GetWidth() + 10)
+	InstanceSelect.suggestTab:ClearAllPoints()
+	InstanceSelect.suggestTab:SetPoint("BOTTOMLEFT", InstanceSelect, "TOPLEFT", -8, -45)
 	InstanceSelect.dungeonsTab:ClearAllPoints()
-	InstanceSelect.dungeonsTab:Point("BOTTOMLEFT", InstanceSelect.suggestTab, "BOTTOMRIGHT", 0, 0)
+	InstanceSelect.dungeonsTab:Point("BOTTOMLEFT", InstanceSelect.suggestTab, "BOTTOMRIGHT", -18, 0)
 	InstanceSelect.raidsTab:ClearAllPoints()
-	InstanceSelect.raidsTab:Point("BOTTOMLEFT", InstanceSelect.dungeonsTab, "BOTTOMRIGHT", 0, 0)
+	InstanceSelect.raidsTab:Point("BOTTOMLEFT", InstanceSelect.dungeonsTab, "BOTTOMRIGHT", -18, 0)
 	InstanceSelect.LootJournalTab:ClearAllPoints()
-	InstanceSelect.LootJournalTab:Point("BOTTOMLEFT", InstanceSelect.raidsTab, "BOTTOMRIGHT", 0, 0)
+	InstanceSelect.LootJournalTab:Point("BOTTOMLEFT", InstanceSelect.raidsTab, "BOTTOMRIGHT", -18, 0)
 
 	--Skin the tab text
 	for i = 1, #InstanceSelect.Tabs do
@@ -226,10 +256,10 @@ local function LoadSkin()
 	--buttons
 	EncounterInfo.difficulty:ClearAllPoints()
 	EncounterInfo.difficulty:SetPoint("BOTTOMRIGHT", _G.EncounterJournalEncounterFrameInfoBG, "TOPRIGHT", -1, 5)
-	S:HandleButton(EncounterInfo.reset)
-	S:HandleButton(EncounterInfo.difficulty)
-	S:HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, true)
-	S:HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle, true)
+	HandleButton(EncounterInfo.reset)
+	HandleButton(EncounterInfo.difficulty)
+	HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, true)
+	HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle, true)
 
 	_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle:ClearAllPoints()
 	_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle:SetPoint("BOTTOMLEFT", EncounterInfo.backdrop, "TOP", 0, 4)
@@ -357,11 +387,11 @@ local function LoadSkin()
 	for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
 		local suggestion = _G.EncounterJournal.suggestFrame["Suggestion"..i];
 		if i == 1 then
-			S:HandleButton(suggestion.button)
+			HandleButton(suggestion.button)
 			S:HandleNextPrevButton(suggestion.prevButton, nil, nil, true)
 			S:HandleNextPrevButton(suggestion.nextButton, nil, nil, true)
 		else
-			S:HandleButton(suggestion.centerDisplay.button)
+			HandleButton(suggestion.centerDisplay.button)
 		end
 	end
 
@@ -380,6 +410,16 @@ local function LoadSkin()
 	--Dungeon/raid selection buttons (From AddOnSkins)
 	hooksecurefunc("EncounterJournal_ListInstances", SkinDungeons)
 	_G.EncounterJournal_ListInstances()
+
+	_G.EncounterJournal.LootJournal:CreateBackdrop("Transparent")
+	local parch = _G.EncounterJournal.LootJournal:GetRegions()
+	_G.EncounterJournal.LootJournal.backdrop:SetOutside(parch)
+
+
+	HandleButton(_G.EncounterJournal.LootJournal.ItemSetsFrame.ClassButton, true)
+
+
+	hooksecurefunc(EncounterJournal.LootJournal.ItemSetsFrame, "ConfigureItemButton", ItemSetsFrame)
 
 	if E.private.skins.parchmentRemover.enable then
 		--Boss selection buttons
@@ -413,12 +453,14 @@ local function LoadSkin()
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:FontTemplate(nil, 25)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:SetAlpha(0)
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:StripTextures()
-		S:HandleButton(_G.EncounterJournalEncounterFrameInstanceFrameMapButton)
+		HandleButton(_G.EncounterJournalEncounterFrameInstanceFrameMapButton)
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:ClearAllPoints()
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:SetPoint("CENTER")
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:SetText(SHOW_MAP)
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:SetHeight(25)
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:SetWidth(_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:GetStringWidth()*1.5)
+
+		parch:Kill()
 	end
 
 end
