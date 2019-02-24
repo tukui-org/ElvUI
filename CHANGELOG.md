@@ -18,6 +18,7 @@ Added quality border option for Bag/Bank items. (#869)
 Added BoE/BoA text overlay in our Bag/Bank.  
 Added optional mount name for units on tooltips.  
 Added a new option to display Inspect Info on the Inspect and Character frames.  
+Added option to toggle Objective Tracker when boss or arena frames are shown.  
 
 **Bug Fixes:**  
 Corrected more Pixel Perfect issues! :D  
