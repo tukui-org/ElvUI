@@ -15,6 +15,7 @@ Fixed taint in CommunitiesUI preventing you from setting notes among other thing
 Various Skin updates.  
 Modified the bag item level code; items might actually show the correct item level now. :o  
 Improved the tooltip item level code, it should be far more accurate now! (Thanks AcidWeb and Ls- for helping us with this!) :)  
+The layout in the installer has been replaced with a new one.  
 
 ___
 ### Version 10.87 [ January 30th 2019 ]
