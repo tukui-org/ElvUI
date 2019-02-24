@@ -318,18 +318,6 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.movers.VehicleSeatMover = "TOPLEFT,ElvUIParent,TOPLEFT,4,-4"
 		E.db.movers.VOICECHAT = "TOPLEFT,ElvUIParent,TOPLEFT,368,-210"
 		E.db.movers.ZoneAbility = "BOTTOM,ElvUIParent,BOTTOM,-1,293"
-		--NamePlates
-		E.db.nameplates.font = "Homespun"
-		E.db.nameplates.fontOutline = "MONOCHROMEOUTLINE"
-		E.db.nameplates.fontSize = 9
-		E.db.nameplates.glowColor.b = 1
-		E.db.nameplates.glowColor.g = 1
-		E.db.nameplates.glowColor.r = 1
-		E.db.nameplates.healthFont = "Homespun"
-		E.db.nameplates.healthFontOutline = "MONOCHROMEOUTLINE"
-		E.db.nameplates.healthFontSize = 9
-		E.db.nameplates.stackFont = "Homespun"
-		E.db.nameplates.stackFontOutline = "MONOCHROMEOUTLINE"
 		--Tooltip
 		E.db.tooltip.fontSize = 10
 		E.db.tooltip.healthBar.fontOutline = "MONOCHROMEOUTLINE"
@@ -438,14 +426,13 @@ function E:SetupLayout(layout, noDataReset)
 			--Raid40
 		E.db.unitframe.units.raid40.enable = false
 		E.db.unitframe.units.raid40.rdebuffs.font = "PT Sans Narrow"
-		
 	end
 
 	--[[
 	--	Layout Tweaks will be handled below.
 	--	These are changes that deviate from the shared base layout
 	--]]
-	
+
 	--Caster Layout
 	if layout == "dpsCaster" and not noDataReset then
 		E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,243"
