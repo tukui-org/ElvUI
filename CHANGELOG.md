@@ -1,4 +1,16 @@
-### Version 10.88 [  ]
+### Version 10.89 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 10.88 [ February 24th 2019 ]
 
 **New Additions:**  
 Added new scale options. (/ec - General - Auto Scale | UI Scale)  
