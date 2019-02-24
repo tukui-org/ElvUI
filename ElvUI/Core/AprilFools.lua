@@ -69,7 +69,7 @@ do
 
 		SetCVar("Sound_EnableAllSound", 1)
 		SetCVar("Sound_EnableMusic", 1)
-		PlayMusic([[Interface\AddOns\ElvUI\Media\Sounds\Harlemshake.ogg]])
+		PlayMusic([[Interface\AddOns\ElvUI\Media\Sounds\HarlemShake.ogg]])
 		E:ScheduleTimer("DoTheHarlemShake", 15.5)
 
 		local UF = E:GetModule("UnitFrames")

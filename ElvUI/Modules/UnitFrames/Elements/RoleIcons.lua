@@ -24,7 +24,7 @@ end
 local roleIconTextures = {
 	TANK = [[Interface\AddOns\ElvUI\Media\Textures\Tank]],
 	HEALER = [[Interface\AddOns\ElvUI\Media\Textures\Healer]],
-	DAMAGER = [[Interface\AddOns\ElvUI\Media\Textures\Dps]]
+	DAMAGER = [[Interface\AddOns\ElvUI\Media\Textures\DPS]]
 }
 
 --From http://forums.wowace.com/showpost.php?p=325677&postcount=5

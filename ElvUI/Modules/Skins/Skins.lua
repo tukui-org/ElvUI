@@ -265,7 +265,7 @@ function S:HandleButton(button, strip, isDeclineButton)
 		if button.Icon then button.Icon:Hide() end
 		if not button.text then
 			button.text = button:CreateFontString(nil, 'OVERLAY')
-			button.text:SetFont([[Interface\AddOns\ElvUI\Media\Fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
+			button.text:SetFont([[Interface\AddOns\ElvUI\Media\Fonts\PTSansNarrow.ttf]], 16, 'OUTLINE')
 			button.text:SetText('x')
 			button.text:SetJustifyH('CENTER')
 			button.text:Point('CENTER', button, 'CENTER')

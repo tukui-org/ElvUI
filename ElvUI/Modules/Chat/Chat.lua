@@ -172,21 +172,21 @@ end
 local rolePaths = {
 	TANK = [[|TInterface\AddOns\ElvUI\Media\Textures\Tank:15:15:0:0:64:64:2:56:2:56|t]],
 	HEALER = [[|TInterface\AddOns\ElvUI\Media\Textures\Healer:15:15:0:0:64:64:2:56:2:56|t]],
-	DAMAGER = [[|TInterface\AddOns\ElvUI\Media\Textures\Dps:15:15|t]]
+	DAMAGER = [[|TInterface\AddOns\ElvUI\Media\Textures\DPS:15:15|t]]
 }
 
 local specialChatIcons
 do --this can save some main file locals
 	local IconPath		= "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\"
-	--local ElvPink		= IconPath.."elvui_pink:13:25|t"
-	local ElvPurple		= IconPath.."elvui_purple:13:25|t"
-	local ElvBlue		= IconPath.."elvui_blue:13:25|t"
-	local ElvGreen		= IconPath.."elvui_green:13:25|t"
-	local ElvOrange		= IconPath.."elvui_orange:13:25|t"
-	local ElvRed		= IconPath.."elvui_red:13:25|t"
-	local ElvRainbow	= IconPath.."elvui_rainbow:13:25|t"
-	local Bathrobe		= IconPath.."bathrobe:15:15|t"
-	local MrHankey		= IconPath.."mr_hankey:16:18|t"
+	--local ElvPink		= IconPath.."ElvPink:13:25|t"
+	local ElvPurple		= IconPath.."ElvPurple:13:25|t"
+	local ElvBlue		= IconPath.."ElvBlue:13:25|t"
+	local ElvGreen		= IconPath.."ElvGreen:13:25|t"
+	local ElvOrange		= IconPath.."ElvOrange:13:25|t"
+	local ElvRed		= IconPath.."ElvRed:13:25|t"
+	local ElvRainbow	= IconPath.."ElvRainbow:13:25|t"
+	local Bathrobe		= IconPath.."Bathrobe:15:15|t"
+	local MrHankey		= IconPath.."MrHankey:16:18|t"
 	specialChatIcons = {
 		-- Elv --
 		["Illidelv-Area52"]		= ElvBlue,
