@@ -34,7 +34,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: ElvUIInstallFrame
 
 local CURRENT_PAGE = 0
-local MAX_PAGE = 8
+local MAX_PAGE = 7
 
 local function SetupChat()
 	_G.InstallStepComplete.message = L["Chat Set"]
@@ -479,63 +479,6 @@ function E:SetupLayout(layout, noDataReset)
 	E:StaggeredUpdateAll(nil, true)
 end
 
-local function SetupAuras(style)
-	local UF = E:GetModule('UnitFrames')
-
-	local frame = UF.player
-	E:CopyTable(E.db.unitframe.units.player.buffs, P.unitframe.units.player.buffs)
-	E:CopyTable(E.db.unitframe.units.player.debuffs, P.unitframe.units.player.debuffs)
-	E:CopyTable(E.db.unitframe.units.player.aurabar, P.unitframe.units.player.aurabar)
-	if frame then
-		UF:Configure_Auras(frame, "Buffs")
-		UF:Configure_Auras(frame, "Debuffs")
-		UF:Configure_AuraBars(frame)
-	end
-
-	frame = UF.target
-	E:CopyTable(E.db.unitframe.units.target.buffs, P.unitframe.units.target.buffs)
-	E:CopyTable(E.db.unitframe.units.target.debuffs, P.unitframe.units.target.debuffs)
-	E:CopyTable(E.db.unitframe.units.target.aurabar, P.unitframe.units.target.aurabar)
-	if frame then
-		UF:Configure_Auras(frame, "Buffs")
-		UF:Configure_Auras(frame, "Debuffs")
-		UF:Configure_AuraBars(frame)
-	end
-
-	frame = UF.focus
-	E:CopyTable(E.db.unitframe.units.focus.buffs, P.unitframe.units.focus.buffs)
-	E:CopyTable(E.db.unitframe.units.focus.debuffs, P.unitframe.units.focus.debuffs)
-	E:CopyTable(E.db.unitframe.units.focus.aurabar, P.unitframe.units.focus.aurabar)
-	if frame then
-		UF:Configure_Auras(frame, "Buffs")
-		UF:Configure_Auras(frame, "Debuffs")
-		UF:Configure_AuraBars(frame)
-	end
-
-	if not style then
-		--PLAYER
-		E.db.unitframe.units.player.buffs.enable = true
-		E.db.unitframe.units.player.buffs.attachTo = 'FRAME'
-		E.db.unitframe.units.player.debuffs.attachTo = 'BUFFS'
-		E.db.unitframe.units.player.aurabar.enable = false
-		if E.private.unitframe.enable then
-			E:GetModule('UnitFrames'):CreateAndUpdateUF("player")
-		end
-
-		--TARGET
-		E.db.unitframe.units.target.debuffs.enable = true
-		E.db.unitframe.units.target.aurabar.enable = false
-		if E.private.unitframe.enable then
-			E:GetModule('UnitFrames'):CreateAndUpdateUF("target")
-		end
-	end
-
-	if InstallStepComplete then
-		InstallStepComplete.message = L["Auras Set"]
-		InstallStepComplete:Show()
-	end
-end
-
 local function InstallComplete()
 	E.private.install_complete = E.version
 
@@ -682,17 +625,6 @@ local function SetPage(PageNum)
 		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
 		InstallOption3Button:SetText(L["Caster DPS"])
 	elseif PageNum == 7 then
-		f.SubTitle:SetText(L["Auras"])
-		f.Desc1:SetText(L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."])
-		f.Desc2:SetText(L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."])
-		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
-		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', function() SetupAuras(true) end)
-		InstallOption1Button:SetText(L["Aura Bars & Icons"])
-		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', function() SetupAuras() end)
-		InstallOption2Button:SetText(L["Icons Only"])
-	elseif PageNum == 8 then
 		f.SubTitle:SetText(L["Installation Complete"])
 		f.Desc1:SetText(L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."])
 		f.Desc2:SetText(L["Please click the button below so you can setup variables and ReloadUI."])
@@ -813,7 +745,7 @@ function E:Install()
 		f.Status:Point("BOTTOMRIGHT", f.Next, "BOTTOMLEFT", -6, 2)
 
 		-- Setup StatusBar Animation
-		f.Status.anim = CreateAnimationGroup(f.Status)
+		f.Status.anim = _G.CreateAnimationGroup(f.Status)
 		f.Status.anim.progress = f.Status.anim:CreateAnimation("Progress")
 		f.Status.anim.progress:SetSmoothing("Out")
 		f.Status.anim.progress:SetDuration(.3)

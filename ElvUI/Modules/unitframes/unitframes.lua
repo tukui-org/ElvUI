@@ -934,6 +934,7 @@ function UF:CreateAndUpdateUF(unit)
 		self[unit].Update()
 		E:EnableMover(self[unit].mover:GetName())
 	else
+		self[unit].Update()
 		self[unit]:Disable()
 		E:DisableMover(self[unit].mover:GetName())
 	end
@@ -1041,42 +1042,48 @@ function UF:DisableBlizzard()
 	end
 end
 
-local hiddenParent = CreateFrame("Frame")
+local hiddenParent = CreateFrame("Frame", nil, UIParent)
+hiddenParent:SetAllPoints()
 hiddenParent:Hide()
 
 local HandleFrame = function(baseName)
 	local frame
-	if(type(baseName) == 'string') then
+	if (type(baseName) == 'string') then
 		frame = _G[baseName]
 	else
 		frame = baseName
 	end
 
-	if(frame) then
+	if (frame) then
 		frame:UnregisterAllEvents()
 		frame:Hide()
 
 		-- Keep frame hidden without causing taint
 		frame:SetParent(hiddenParent)
 
-		local health = frame.healthbar
-		if(health) then
+		local health = frame.healthBar or frame.healthbar
+		if (health) then
 			health:UnregisterAllEvents()
 		end
 
 		local power = frame.manabar
-		if(power) then
+		if (power) then
 			power:UnregisterAllEvents()
 		end
 
-		local spell = frame.spellbar
-		if(spell) then
+		local spell = frame.castBar or frame.spellbar
+		if (spell) then
 			spell:UnregisterAllEvents()
 		end
 
 		local altpowerbar = frame.powerBarAlt
-		if(altpowerbar) then
+		if (altpowerbar) then
 			altpowerbar:UnregisterAllEvents()
+		end
+
+		local buffFrame = frame.BuffFrame
+		if (buffFrame) then
+			buffFrame:UnregisterAllEvents()
 		end
 	end
 end
@@ -1084,42 +1091,41 @@ end
 function ElvUF:DisableBlizzard(unit)
 	if(not unit) or InCombatLockdown() then return end
 
-	if(unit == 'player') and E.private.unitframe.disabledBlizzardFrames.player then
+	if (unit == 'player') and E.private.unitframe.disabledBlizzardFrames.player then
 		HandleFrame(PlayerFrame)
 
 		-- For the damn vehicle support:
-		PlayerFrame:RegisterUnitEvent('UNIT_ENTERING_VEHICLE', "player")
-		PlayerFrame:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', "player")
-		PlayerFrame:RegisterUnitEvent('UNIT_EXITING_VEHICLE', "player")
-		PlayerFrame:RegisterUnitEvent('UNIT_EXITED_VEHICLE', "player")
 		PlayerFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+		PlayerFrame:RegisterEvent('UNIT_ENTERING_VEHICLE')
+		PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
+		PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
+		PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
 
 		-- User placed frames don't animate
 		PlayerFrame:SetUserPlaced(true)
 		PlayerFrame:SetDontSavePosition(true)
-		RuneFrame:SetParent(PlayerFrame)
-	elseif(unit == 'pet') and E.private.unitframe.disabledBlizzardFrames.player then
+	elseif (unit == 'pet') and E.private.unitframe.disabledBlizzardFrames.player then
 		HandleFrame(PetFrame)
-	elseif(unit == 'target') and E.private.unitframe.disabledBlizzardFrames.target then
+	elseif (unit == 'target') and E.private.unitframe.disabledBlizzardFrames.target then
 		HandleFrame(TargetFrame)
 		HandleFrame(ComboFrame)
-	elseif(unit == 'focus') and E.private.unitframe.disabledBlizzardFrames.focus then
+	elseif (unit == 'focus') and E.private.unitframe.disabledBlizzardFrames.focus then
 		HandleFrame(FocusFrame)
-		HandleFrame(FocusFrameToT)
-	elseif(unit == 'targettarget') and E.private.unitframe.disabledBlizzardFrames.target then
+		HandleFrame(TargetofFocusFrame)
+	elseif (unit == 'targettarget') and E.private.unitframe.disabledBlizzardFrames.target then
 		HandleFrame(TargetFrameToT)
-	elseif(unit:match'(boss)%d?$' == 'boss') and E.private.unitframe.disabledBlizzardFrames.boss then
-		local id = unit:match'boss(%d)'
-		if(id) then
+	elseif (unit:match('boss%d?$')) and E.private.unitframe.disabledBlizzardFrames.boss then
+		local id = unit:match('boss(%d)')
+		if (id) then
 			HandleFrame('Boss' .. id .. 'TargetFrame')
 		else
-			for i=1, MAX_BOSS_FRAMES do
+			for i = 1, MAX_BOSS_FRAMES do
 				HandleFrame(('Boss%dTargetFrame'):format(i))
 			end
 		end
-	elseif(unit:match'(party)%d?$' == 'party') and E.private.unitframe.disabledBlizzardFrames.party then
-		local id = unit:match'party(%d)'
-		if(id) then
+	elseif (unit:match('party%d?$')) and E.private.unitframe.disabledBlizzardFrames.party then
+		local id = unit:match('party(%d)')
+		if (id) then
 			HandleFrame('PartyMemberFrame' .. id)
 		else
 			for i=1, 4 do
@@ -1127,19 +1133,23 @@ function ElvUF:DisableBlizzard(unit)
 			end
 		end
 		HandleFrame(PartyMemberBackground)
-	elseif(unit:match'(arena)%d?$' == 'arena') and E.private.unitframe.disabledBlizzardFrames.arena then
-		local id = unit:match'arena(%d)'
-
-		if(id) then
+	elseif (unit:match('arena%d?$')) and E.private.unitframe.disabledBlizzardFrames.arena then
+		local id = unit:match('arena(%d)')
+		if (id) then
 			HandleFrame('ArenaEnemyFrame' .. id)
-			HandleFrame('ArenaPrepFrame'..id)
-			HandleFrame('ArenaEnemyFrame'..id..'PetFrame')
 		else
-			for i=1, 5 do
-				HandleFrame(('ArenaEnemyFrame%d'):format(i))
-				HandleFrame(('ArenaPrepFrame%d'):format(i))
-				HandleFrame(('ArenaEnemyFrame%dPetFrame'):format(i))
+			for i = 1, MAX_ARENA_ENEMIES do
+				HandleFrame(string.format('ArenaEnemyFrame%d', i))
 			end
+		end
+
+		-- Blizzard_ArenaUI should not be loaded
+		Arena_LoadUI = function() end
+		SetCVar('showArenaEnemyFrames', '0', 'SHOW_ARENA_ENEMY_FRAMES_TEXT')
+	elseif (unit:match('nameplate%d+$')) then
+		local frame = C_NamePlate.GetNamePlateForUnit(unit)
+		if (frame and frame.UnitFrame) then
+			HandleFrame(frame.UnitFrame)
 		end
 	end
 end

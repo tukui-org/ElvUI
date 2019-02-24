@@ -1791,6 +1791,9 @@ function E:Initialize()
 	twipe(self.global)
 	twipe(self.private)
 
+	local AceDB = LibStub('AceDB-3.0')
+	local LibDualSpec = LibStub('LibDualSpec-1.0')
+
 	self.myguid = UnitGUID('player')
 	self.data = E.Libs.AceDB:New('ElvDB', self.DF)
 	self.data.RegisterCallback(self, 'OnProfileChanged', 'StaggeredUpdateAll')
