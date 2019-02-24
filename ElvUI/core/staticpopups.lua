@@ -533,9 +533,11 @@ E.PopupDialogs["UI_SCALE_CHANGES_INFORM"] = {
 		popup.button2:Disable()
 		popup.button3:Disable()
 		E:Delay(10, function()
-			popup.button1:Enable()
-			popup.button2:Enable()
-			popup.button3:Enable()
+			if popup and popup.button1 then
+				popup.button1:Enable()
+				popup.button2:Enable()
+				popup.button3:Enable()
+			end
 		end)
 	end,
 	timeout = 0,
