@@ -2871,12 +2871,6 @@ local function GetUnitSettings(unit, name)
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
 		}
 	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
-		group.args.minions = {
-			order = 0,
-			name = L["Display Minions"],
-			desc = unit == "FRIENDLY_PLAYER" and OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS or OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS,
-			type = "toggle",
-		}
 		group.args.markHealers = {
 			type = "toggle",
 			order = 10,
@@ -2940,12 +2934,6 @@ local function GetUnitSettings(unit, name)
 			},
 		}
 		if unit == "ENEMY_NPC" then
-			group.args.minors = {
-				order = 0,
-				name = L["Display Minor Units"],
-				desc = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS,
-				type = "toggle",
-			}
 			group.args.detection = {
 				order = 11,
 				name = L["Detection"],
@@ -3897,6 +3885,7 @@ E.Options.args.nameplate = {
 					order = 226,
 					name = L["Cutaway Health"],
 					type = 'group',
+					disabled = function() return true end,
 					args = {
 						enabled = {
 							type = 'toggle',
