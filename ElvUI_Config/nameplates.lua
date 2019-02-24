@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local NP = E:GetModule('NamePlates')
 local ACD = E.Libs.AceConfigDialog
 
+local _G = _G
 local tconcat = table.concat
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
 local next, ipairs, tremove, tinsert, sort, tonumber, format = next, ipairs, tremove, tinsert, sort, tonumber, format
@@ -2318,7 +2319,7 @@ local function GetUnitSettings(unit, name)
 								name = L["Filter Priority"],
 								type = "multiselect",
 								dragdrop = true,
-								dragOnLeave = function() end, --keep this here
+								dragOnLeave = E.noop, --keep this here
 								dragOnEnter = function(info)
 									carryFilterTo = info.obj.value
 								end,
@@ -2544,7 +2545,7 @@ local function GetUnitSettings(unit, name)
 								dragdrop = true,
 								type = "multiselect",
 								name = L["Filter Priority"],
-								dragOnLeave = function() end, --keep this here
+								dragOnLeave = E.noop, --keep this here
 								dragOnEnter = function(info)
 									carryFilterTo = info.obj.value
 								end,

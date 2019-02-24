@@ -377,7 +377,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 		dragdrop = true,
 		type = "multiselect",
 		name = L["Filter Priority"],
-		dragOnLeave = function() end, --keep this here
+		dragOnLeave = E.noop, --keep this here
 		dragOnEnter = function(info)
 			carryFilterTo = info.obj.value
 		end,
@@ -648,7 +648,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 		dragdrop = true,
 		type = "multiselect",
 		name = L["Filter Priority"],
-		dragOnLeave = function() end, --keep this here
+		dragOnLeave = E.noop, --keep this here
 		dragOnEnter = function(info)
 			carryFilterTo = info.obj.value
 		end,
