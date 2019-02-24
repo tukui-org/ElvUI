@@ -243,20 +243,6 @@ end
 
 function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, IsInInstance())
-
-	-- workaround for #206
-	local friendlyWidth, friendlyHeight
-
-	if NP.InstanceType ~= 'none' then
-		local namePlateVerticalScale = tonumber(GetCVar('NamePlateVerticalScale'))
-		local horizontalScale = tonumber(GetCVar('NamePlateHorizontalScale'))
-		local zeroBasedScale = namePlateVerticalScale - 1.0
-
-		friendlyWidth = _G.NamePlateDriverFrame.baseNamePlateWidth * horizontalScale
-		friendlyHeight = _G.NamePlateDriverFrame.baseNamePlateHeight * Lerp(1.0, 1.25, zeroBasedScale)
-	end
-
-	C_NamePlate.SetNamePlateFriendlySize(friendlyWidth or NP.db.clickableWidth, friendlyHeight or NP.db.clickableHeight)
 end
 
 function NP:ConfigureAll()
