@@ -293,6 +293,7 @@ L["Zone Ability"] = true
 L["DESC_MOVERCONFIG"] = [=[Fijadores desbloqueados. Muévelos ahora y haz click en Bloquear cuando termines.
 
 Options:
+  LeftClick - Toggle Nudge Frame.
   RightClick - Open Config Section.
   Shift + RightClick - Hides mover temporarily.
   Ctrl + RightClick - Resets mover position to default.

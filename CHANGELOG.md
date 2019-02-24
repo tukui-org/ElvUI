@@ -9,6 +9,7 @@ Added a new option to display Inspect Info on the Inspect and Character frames.
 
 **Bug Fixes:**  
 Corrected more Pixel Perfect issues! :D  
+Fixed taint in CommunitiesUI preventing you from setting notes among other things. Workaround by foxlit.  
 
 **Misc. Changes:**  
 Various Skin updates.  
