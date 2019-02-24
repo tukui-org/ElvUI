@@ -1,26 +1,22 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
---Cache global variables
 --Lua functions
 local _G = _G
-local ceil = math.ceil;
-local format, find = format, string.find
+local ceil = math.ceil
+local format, strfind = format, strfind
 --WoW API / Variables
+local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
-local GetSpellInfo = GetSpellInfo
-local GetShapeshiftForm = GetShapeshiftForm
+local GetBindingKey = GetBindingKey
 local GetNumShapeshiftForms = GetNumShapeshiftForms
+local GetShapeshiftForm = GetShapeshiftForm
 local GetShapeshiftFormCooldown = GetShapeshiftFormCooldown
 local GetShapeshiftFormInfo = GetShapeshiftFormInfo
-local CooldownFrame_Set = CooldownFrame_Set
+local GetSpellInfo = GetSpellInfo
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
-local GetBindingKey = GetBindingKey
 local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: StanceBarFrame
 
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
@@ -73,7 +69,7 @@ function AB:StyleShapeShift()
 				end
 
 				if isActive then
-					StanceBarFrame.lastSelected = button:GetID();
+					_G.StanceBarFrame.lastSelected = button:GetID();
 					if numForms == 1 then
 						button.checked:SetColorTexture(1, 1, 1, 0.5)
 						button:SetChecked(true);
@@ -133,7 +129,7 @@ function AB:PositionAndSizeBarShapeShift()
 
 	--Now that we have set positionOverride for mover, convert "TOP" or "BOTTOM" to anchor points we can use
 	local position = E:GetScreenQuadrant(bar)
-	if find(position, "LEFT") or position == "TOP" or position == "BOTTOM" then
+	if strfind(position, "LEFT") or position == "TOP" or position == "BOTTOM" then
 		if point == "TOP" then
 			point = "TOPLEFT"
 		elseif point == "BOTTOM" then
@@ -338,7 +334,7 @@ function AB:UpdateStanceBindings()
 end
 
 function AB:CreateBarShapeShift()
-	bar:CreateBackdrop('Default');
+	bar:CreateBackdrop();
 	bar.backdrop:SetAllPoints();
 	bar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -4);
 	bar.buttons = {};

@@ -157,15 +157,13 @@ L["Request was denied by user."] = "Petición denegada por el jugador."
 L["Your profile was successfully recieved by the player."] = "Tu perfil ha sido recibido exitosamente por el jugador."
 
 --Install
-L["Aura Bars & Icons"] = "Barras de Auras e Iconos"
-L["Auras Set"] = "Auras Configuradas"
+L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = true
 L["Auras"] = true
 L["Caster DPS"] = "DPS Hechizos"
 L["Chat Set"] = "Chat Configurado"
 L["Chat"] = "Chat"
 L["Choose a theme layout you wish to use for your initial setup."] = "Elige un tema de distribución para usar en tu configuración inicial."
 L["Classic"] = "Clásico"
-L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."] = "Haz clic en el botón de abajo para cambiar el tamaño de los marcos de chat y de unidad, y reubicar tus barras de acción."
 L["Config Mode:"] = "Modo de Configuración"
 L["CVars Set"] = "CVars Configuradas"
 L["CVars"] = "CVars"
@@ -176,10 +174,7 @@ L["ElvUI Installation"] = "Instalación de ElvUI"
 L["Finished"] = "Terminado"
 L["Grid Size:"] = "Tamaño de la Rejilla:"
 L["Healer"] = "Sanador"
-L["High Resolution"] = "Alta Resolución"
-L["high"] = "alta"
 L["Icons Only"] = "Sólo Iconos"
-L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "Si tienes un icono o una barra de aura que no quieres ver simplemente mantén pulsado la tecla Shift y haz clic con el botón izquierdo del ratón en el icono para que desaparezca."
 L["Importance: |cff07D400High|r"] = "Importancia: |cff07D400Alta|r"
 L["Importance: |cffD3CF00Medium|r"] = "Importancia: |cffD3CF00Media|r"
 L["Importance: |cffFF0000Low|r"] = "Importancia: |cffFF0000Baja|r"
@@ -187,39 +182,29 @@ L["Installation Complete"] = "Instalación Completa"
 L["Layout Set"] = "Distribución Establecida"
 L["Layout"] = "Distribución"
 L["Lock"] = "Bloquear"
-L["Low Resolution"] = "Baja Resolución"
-L["low"] = "baja"
 L["Nudge"] = "Ajuste Fino"
-L["Physical DPS"] = "DPS Físico"
 L["Please click the button below so you can setup variables and ReloadUI."] = "Haz clic en el botón de abajo para configurar variables y recargar la interfaz."
 L["Please click the button below to setup your CVars."] = "Haz clic en el botón de abajo para configurar las CVars"
 L["Please press the continue button to go onto the next step."] = "Presiona el botón de continuar para ir al siguiente paso"
-L["Resolution Style Set"] = "Estilo de Resolución Establecido"
-L["Resolution"] = "Resolución"
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = "Selecciona el tipo de sistema de de auras que deseas utilizar con los marcos de unidad de ElvUI. Establécelo a Barras de Auras e Iconos para usar a la vez la barra de auras y los iconos, establécelo en Sólo Iconos para ver solo los iconos."
+L["Preview"] = true
 L["Setup Chat"] = "Configurar Chat"
 L["Setup CVars"] = "Configurar CVars"
 L["Skip Process"] = "Saltar Proceso"
 L["Sticky Frames"] = "Marcos Adhesivos"
-L["Tank"] = "Tanque"
+L["Tank / Physical DPS"] = "Tanque / DPS Físico"
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = "Las ventanas de chat funcionan igual que sus contrapartes estándar de Blizzard. Puedes hacer clic derecho en las pestañas y arrastrarlas, cambiarles el nombre, etc. Haz clic en el botón de abajo para configurar las ventanas de chat."
 L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = "El menú de configuración puede ser accedido mediante el comando /ec o haciendo clic en el botón 'C' del minimapa. Presiona el botón de abajo si deseas saltarte la instalación."
 L["Theme Set"] = "Establecer Tema"
 L["Theme Setup"] = "Configurar Tema"
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = "El proceso de instalación te ayudará a aprender algunas de las características de ElvUI y preparará la interfaz para su uso."
-L["This is completely optional."] = "Esto es completamente opcional."
 L["This part of the installation process sets up your chat windows names, positions and colors."] = "Esta parte de la instalación configura los nombres, posiciones y colores de las ventanas de chat."
 L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."] = "Esta parte de la instalación configura las opciones predeterminadas de World of Warcraft. Se recomienda hacer este paso para que todo funcione apropiadamente."
-L["This resolution doesn't require that you change settings for the UI to fit on your screen."] = "Esta resolución no necesita que cambies los ajustes para que quepa la interfaz en tu pantalla."
-L["This resolution requires that you change some settings to get everything to fit on your screen."] = "Esta resolución requiere que cambies algunos ajustes para que todo quepa en tu pantalla."
 L["This will change the layout of your unitframes and actionbars."] = "Ésto cambiará el diseño de los marcos de unidades y barras de acción."
 L["Trade"] = "Intercambio"
 L["Welcome to ElvUI version %s!"] = "Bienvenido(a) a ElvUI versión %s!"
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = "Ya has terminado con el proceso de instalación. Si necesitas ayuda o soporte técnico por favor visítanos en http://www.tukui.org."
 L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."] = "Siempre puedes cambiar las fuentes y colores de cualquier elemento de ElvUI desde la configuración."
 L["You can now choose what layout you wish to use based on your combat role."] = "Ahora puedes elegir qué distribución quieres basándote en tu rol de combate."
-L["You may need to further alter these settings depending how low you resolution is."] = "Puede que necesites cambiar estos ajutes dependiendo de qué tan baja sea tu resolución."
-L["Your current resolution is %s, this is considered a %s resolution."] = "Tu resolución actual es %s, esto se considera una resolución %s."
 
 --Misc
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]"
@@ -308,6 +293,7 @@ L["Zone Ability"] = true
 L["DESC_MOVERCONFIG"] = [=[Fijadores desbloqueados. Muévelos ahora y haz click en Bloquear cuando termines.
 
 Options:
+  LeftClick - Toggle Nudge Frame.
   RightClick - Open Config Section.
   Shift + RightClick - Hides mover temporarily.
   Ctrl + RightClick - Resets mover position to default.
@@ -349,6 +335,7 @@ L["Are you sure you want to apply this font to all ElvUI elements?"] = true
 L["Are you sure you want to disband the group?"] = "¿Estás seguro que quieres deshacer el grupo?"
 L["Are you sure you want to reset all the settings on this profile?"] = "¿Estás seguro que deseas restablecer todos los ajustes de este perfil?"
 L["Are you sure you want to reset every mover back to it's default position?"] = "¿Estás seguro que quieres resetear cada fijador a su posición por defecto?"
+L["Auto Scale"] = "Escalado Automático"
 L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."] = "Debido a la gran confusión causada por el nuevo sistema de auras he implementado un nuevo paso en el proceso de instalación, esto es opcional. Si quieres conservar la configuración actual de tus auras ve al último paso de la instalación y haz clic en terminar para que este mensaje no vuelva a ser mostrado. Si por alguna razón se vuelve a mostrar por favor reinicia el juego."
 L["Can't buy anymore slots!"] = "¡No puedes comprar más huecos!"
 L["Delete gray items?"] = true
@@ -368,9 +355,13 @@ L["No, Revert Changes!"] = "¡No, Revierte los Cambios!"
 L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."] = "Oh cielos, tienes ElvUI y Tukui habilitados al mismo tiempo. Elige un addon a deshabilitar"
 L["One or more of the changes you have made require a ReloadUI."] = "Uno o más de los cambios que has hecho requieren una recarga de la interfaz."
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "Uno o más de los cambios que has hecho afectaran a todos los personajes que usen este addon. Tendrás que recargar la intefaz de usuario para ver el cambio que has realizado."
+L["Preview Changes"] = true
 L["Save"] = "Guardar"
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "El perfil que has intentado importar ya existe. Elige un nuevo nombre o acepta sobreescribir el perfil existente."
+L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = true
+L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."] = true
 L["Type /hellokitty to revert to old settings."] = "Escribe /hellokitty para revertir a las opciones antiguas."
+L["Use CVar Value"] = true
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "Utilizando el diseño de sanador es altamente recomendado bajar el addon Clique si deseas tener la función de hacer clic para curar."
 L["Yes, Keep Changes!"] = "¡Sí, Mantén los cambios!"
 L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."] = "Has cambiado la opción de Tema de Border Ligero. Tendrás que completar el proceso de instalación para quitar cualquier bug gráfico."
@@ -380,8 +371,6 @@ L["You must purchase a bank slot first!"] = "¡Debes comprar un hueco del banco 
 
 --Tooltip
 L["Count"] = "Contador"
-L["Item Level:"] = "Nivel de Objeto:"
-L["Talent Specialization:"] = "Especialización de Talentos:"
 L["Targeted By:"] = "Objetivo De:"
 
 --Tutorials

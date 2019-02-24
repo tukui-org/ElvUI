@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack = unpack
@@ -52,7 +51,7 @@ local function LoadSkin()
 			player_button:StyleButton()
 			player_button.IconBorder:SetAlpha(0)
 			player_button.bg = CreateFrame("Frame", nil, player_button)
-			player_button.bg:SetTemplate("Default")
+			player_button.bg:SetTemplate()
 			player_button.bg:Point("TOPLEFT", player_button, "TOPRIGHT", 4, 0)
 			player_button.bg:Point("BOTTOMRIGHT", _G["TradePlayerItem"..i.."NameFrame"], "BOTTOMRIGHT", 0, 14)
 			player_button.bg:SetFrameLevel(player_button:GetFrameLevel() - 3)
@@ -64,7 +63,7 @@ local function LoadSkin()
 			recipient_button:StyleButton()
 			recipient_button.IconBorder:SetAlpha(0)
 			recipient_button.bg = CreateFrame("Frame", nil, recipient_button)
-			recipient_button.bg:SetTemplate("Default")
+			recipient_button.bg:SetTemplate()
 			recipient_button.bg:Point("TOPLEFT", recipient_button, "TOPRIGHT", 4, 0)
 			recipient_button.bg:Point("BOTTOMRIGHT", _G["TradeRecipientItem"..i.."NameFrame"], "BOTTOMRIGHT", 0, 14)
 			recipient_button.bg:SetFrameLevel(recipient_button:GetFrameLevel() - 3)
@@ -73,7 +72,7 @@ local function LoadSkin()
 			-- Player Icon Border
 			hooksecurefunc(player_button.IconBorder, 'SetVertexColor', function(self, r, g, b)
 				self:GetParent():SetBackdropBorderColor(r, g, b)
-				self:SetTexture("")
+				self:SetTexture()
 			end)
 			hooksecurefunc(player_button.IconBorder, 'Hide', function(self)
 				self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -81,7 +80,7 @@ local function LoadSkin()
 			-- Recipient Icon Border
 			hooksecurefunc(recipient_button.IconBorder, 'SetVertexColor', function(self, r, g, b)
 				self:GetParent():SetBackdropBorderColor(r, g, b)
-				self:SetTexture("")
+				self:SetTexture()
 			end)
 			hooksecurefunc(recipient_button.IconBorder, 'Hide', function(self)
 				self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))

@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...))
 local S = E:GetModule("Skins")
 
--- Cache global variables
 local _G = _G
--- Lua functions
--- WoW API
+--Lua functions
+--WoW API
 local hooksecurefunc = hooksecurefunc
 local C_Garrison_GetFollowerInfo = C_Garrison.GetFollowerInfo
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS

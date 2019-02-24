@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local select, unpack = select, unpack
@@ -44,7 +43,7 @@ local function LoadSkin()
 		local iconBorder = button.IconBorder
 		local item = _G["MerchantItem"..i]
 		item:StripTextures(true)
-		item:CreateBackdrop("Default")
+		item:CreateBackdrop()
 
 		button:StripTextures()
 		button:StyleButton(false)
@@ -59,7 +58,7 @@ local function LoadSkin()
 		iconBorder:SetAlpha(0)
 		hooksecurefunc(iconBorder, 'SetVertexColor', function(self, r, g, b)
 			self:GetParent():SetBackdropBorderColor(r, g, b)
-			self:SetTexture("")
+			self:SetTexture()
 		end)
 		hooksecurefunc(iconBorder, 'Hide', function(self)
 			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -82,7 +81,7 @@ local function LoadSkin()
 	_G.MerchantBuyBackItemItemButton.IconBorder:SetAlpha(0)
 	hooksecurefunc(_G.MerchantBuyBackItemItemButton.IconBorder, 'SetVertexColor', function(self, r, g, b)
 		self:GetParent():SetBackdropBorderColor(r, g, b)
-		self:SetTexture("")
+		self:SetTexture()
 	end)
 	hooksecurefunc(_G.MerchantBuyBackItemItemButton.IconBorder, 'Hide', function(self)
 		self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -109,8 +108,8 @@ local function LoadSkin()
 	_G.MerchantRepairAllIcon:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
 	_G.MerchantRepairAllIcon:SetInside()
 
-	S:HandleNextPrevButton(_G.MerchantNextPageButton)
-	S:HandleNextPrevButton(_G.MerchantPrevPageButton)
+	S:HandleNextPrevButton(_G.MerchantNextPageButton, nil, nil, true, true)
+	S:HandleNextPrevButton(_G.MerchantPrevPageButton, nil, nil, true, true)
 end
 
 S:AddCallback("Merchant", LoadSkin)

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 local _G = _G
 local select = select
 --Lua functions
@@ -20,7 +19,7 @@ local function LoadSkin()
 		scrollFrame.ScrollBar.Border:Hide()
 		scrollFrame.ScrollBar.ScrollUpBorder:Hide()
 		scrollFrame.ScrollBar.ScrollDownBorder:Hide()
-		S:HandleScrollSlider(scrollFrame.ScrollBar)
+		S:HandleScrollBar(scrollFrame.ScrollBar)
 
 		scrollFrame.Child.ObjectivesFrame:StripTextures()
 		scrollFrame.Child.ObjectivesFrame:CreateBackdrop("Transparent")
@@ -41,7 +40,7 @@ local function LoadSkin()
 		scrollFrame.ScrollBar.Border:Hide()
 		scrollFrame.ScrollBar.ScrollUpBorder:Hide()
 		scrollFrame.ScrollBar.ScrollDownBorder:Hide()
-		S:HandleScrollSlider(scrollFrame.ScrollBar)
+		S:HandleScrollBar(scrollFrame.ScrollBar)
 
 		S:HandleCloseButton(_G.AlliedRacesFrameCloseButton)
 	end
@@ -49,7 +48,7 @@ local function LoadSkin()
 	AlliedRacesFrame:HookScript("OnShow", function(self)
 		for button in self.abilityPool:EnumerateActive() do
 			select(3, button:GetRegions()):Hide()
-			S:HandleTexture(button.Icon, button)
+			S:HandleIcon(button.Icon, true)
 			if E.private.skins.parchmentRemover.enable then
 				button.Text:SetTextColor(1, 1, 1)
 			end

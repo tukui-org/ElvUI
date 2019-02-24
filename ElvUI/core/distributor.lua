@@ -3,9 +3,10 @@ local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0"
 local LibCompress = E.Libs.Compress
 local LibBase64 = E.Libs.Base64
 
---Cache global variables
+--Lua functions
+local _G = _G
 local tonumber, type, gsub, pcall, loadstring = tonumber, type, gsub, pcall, loadstring
-local len, format, split, find = string.len, string.format, string.split, string.find
+local len, format, split, find = strlen, format, strsplit, strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
@@ -13,9 +14,7 @@ local IsInGroup, UnitInParty = IsInGroup, UnitInParty
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
-
---Global variables that we don't cache, list them here for the mikk"s Find Globals script
--- GLOBALS: ElvDB, ElvPrivateDB, ReloadUI
+-- GLOBALS: ElvDB, ElvPrivateDB
 
 ----------------------------------
 -- CONSTANTS
@@ -36,7 +35,7 @@ function D:Initialize()
 
 	self.statusBar = CreateFrame("StatusBar", "ElvUI_Download", E.UIParent)
 	E:RegisterStatusBar(self.statusBar)
-	self.statusBar:CreateBackdrop('Default')
+	self.statusBar:CreateBackdrop()
 	self.statusBar:SetStatusBarTexture(E.media.normTex)
 	self.statusBar:SetStatusBarColor(0.95, 0.15, 0.15)
 	self.statusBar:Size(250, 18)
@@ -181,13 +180,13 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 						hasEditBox = 1,
 						editBoxWidth = 350,
 						maxLetters = 127,
-						OnAccept = function(self)
-							ElvDB.profiles[self.editBox:GetText()] = data
-							E.Libs.AceAddon:GetAddon("ElvUI").data:SetProfile(self.editBox:GetText())
+						OnAccept = function(popup)
+							ElvDB.profiles[popup.editBox:GetText()] = data
+							E.Libs.AceAddon:GetAddon("ElvUI").data:SetProfile(popup.editBox:GetText())
 							E:StaggeredUpdateAll(nil, true)
 							Downloads[sender] = nil
 						end,
-						OnShow = function(self) self.editBox:SetText(profileKey) self.editBox:SetFocus() end,
+						OnShow = function(popup) popup.editBox:SetText(profileKey) popup.editBox:SetFocus() end,
 						timeout = 0,
 						exclusive = 1,
 						whileDead = 1,
@@ -244,47 +243,25 @@ local blacklistedKeys = {
 			["numberPrefixStyle"] = true,
 		},
 		["actionbar"] = {
-			--[[
-			["bar1"] = {
-				["paging"] = true,
-			},
-			["bar2"] = {
-				["paging"] = true,
-			},
-			["bar3"] = {
-				["paging"] = true,
-			},
-			["bar4"] = {
-				["paging"] = true,
-			},
-			["bar5"] = {
-				["paging"] = true,
-			},
-			["bar6"] = {
-				["paging"] = true,
-			},
-			["bar7"] = {
-				["paging"] = true,
-			},
-			["bar8"] = {
-				["paging"] = true,
-			},
-			["bar9"] = {
-				["paging"] = true,
-			},
-			["bar10"] = {
-				["paging"] = true,
-			},
-			--]]
+		--[[
+			["bar1"] = {["paging"] = true},
+			["bar2"] = {["paging"] = true},
+			["bar3"] = {["paging"] = true},
+			["bar4"] = {["paging"] = true},
+			["bar5"] = {["paging"] = true},
+			["bar6"] = {["paging"] = true},
+			["bar7"] = {["paging"] = true},
+			["bar8"] = {["paging"] = true},
+			["bar9"] = {["paging"] = true},
+			["bar10"] = {["paging"] = true},
+		--]]
 		},
 	},
 	["private"] = {},
 	["global"] = {
-		["uiScale"] = true,
 		["userInformedNewChanges1"] = true,
 		["general"] = {
-			["autoScale"] = true,
-			["minUiScale"] = true,
+			["UIScale"] = true,
 			["eyefinity"] = true,
 			["disableTutorialButtons"] = true,
 			["showMissingTalentAlert"] = true,
@@ -408,15 +385,15 @@ function D:GetImportStringType(dataString)
 end
 
 function D:Decode(dataString)
-	local profileInfo, profileType, profileKey, profileData, message
+	local profileInfo, profileType, profileKey, profileData
 	local stringType = self:GetImportStringType(dataString)
 
 	if stringType == "Base64" then
 		local decodedData = LibBase64:Decode(dataString)
-		local decompressedData, message = LibCompress:Decompress(decodedData)
+		local decompressedData, decompressedMessage = LibCompress:Decompress(decodedData)
 
 		if not decompressedData then
-			E:Print("Error decompressing data:", message)
+			E:Print("Error decompressing data:", decompressedMessage)
 			return
 		end
 
@@ -454,13 +431,12 @@ function D:Decode(dataString)
 		profileDataAsString = gsub(profileDataAsString, "\124\124", "\124") --Remove escape pipe characters
 		profileType, profileKey = E:SplitString(profileInfo, "::")
 
+		local profileMessage
 		local profileToTable = loadstring(format("%s %s", "return", profileDataAsString))
-		if profileToTable then
-			message, profileData = pcall(profileToTable)
-		end
+		if profileToTable then profileMessage, profileData = pcall(profileToTable) end
 
 		if not profileData or type(profileData) ~= "table" then
-			E:Print("Error converting lua string to table:", message)
+			E:Print("Error converting lua string to table:", profileMessage)
 			return
 		end
 	end
@@ -495,8 +471,8 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 		end
 	elseif profileType == "private" then
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private) --Remove unwanted options from import
-		local profileKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
-		ElvPrivateDB.profiles[profileKey] = profileData
+		local pfKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
+		ElvPrivateDB.profiles[pfKey] = profileData
 		E:StaticPopup_Show('IMPORT_RL')
 
 	elseif profileType == "global" then
@@ -544,7 +520,7 @@ E.PopupDialogs['DISTRIBUTOR_SUCCESS'] = {
 	text = L["Your profile was successfully recieved by the player."],
 	whileDead = 1,
 	hideOnEscape = 1,
-	button1 = OKAY,
+	button1 = _G.OKAY,
 }
 
 E.PopupDialogs['DISTRIBUTOR_WAITING'] = {
@@ -558,14 +534,14 @@ E.PopupDialogs['DISTRIBUTOR_REQUEST_DENIED'] = {
 	text = L["Request was denied by user."],
 	whileDead = 1,
 	hideOnEscape = 1,
-	button1 = OKAY,
+	button1 = _G.OKAY,
 }
 
 E.PopupDialogs['DISTRIBUTOR_FAILED'] = {
 	text = L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"],
 	whileDead = 1,
 	hideOnEscape = 1,
-	button1 = OKAY,
+	button1 = _G.OKAY,
 }
 
 E.PopupDialogs['DISTRIBUTOR_RESPONSE'] = {}
@@ -602,7 +578,7 @@ E.PopupDialogs["IMPORT_RL"] = {
 	text = L["You have imported settings which may require a UI reload to take effect. Reload now?"],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = ReloadUI,
+	OnAccept = _G.ReloadUI,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,

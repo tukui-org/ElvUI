@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack = unpack
@@ -32,7 +31,7 @@ local function LoadSkin()
 	WorldMapTooltip.ItemTooltip.Count:SetPoint('BOTTOMRIGHT', WorldMapTooltip.ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
 	hooksecurefunc(WorldMapTooltip.ItemTooltip.IconBorder, 'SetVertexColor', function(self, r, g, b)
 		self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-		self:SetTexture('')
+		self:SetTexture()
 	end)
 	hooksecurefunc(WorldMapTooltip.ItemTooltip.IconBorder, 'Hide', function(self)
 		self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local select, unpack = select, unpack
@@ -41,7 +40,7 @@ local function LoadSkin()
 	_G.GuildBankTransactionsScrollFrame:StripTextures()
 
 	GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame)
-	GuildBankFrame.inset:SetTemplate("Default")
+	GuildBankFrame.inset:SetTemplate()
 	GuildBankFrame.inset:Point("TOPLEFT", 20, -58)
 	GuildBankFrame.inset:Point("BOTTOMRIGHT", -16, 60)
 
@@ -53,14 +52,14 @@ local function LoadSkin()
 			local icon = _G["GuildBankColumn"..i.."Button"..x.."IconTexture"]
 			local texture = _G["GuildBankColumn"..i.."Button"..x.."NormalTexture"]
 			if texture then
-				texture:SetTexture(nil)
+				texture:SetTexture()
 			end
 			button:StyleButton()
 			button:SetTemplate("Default", true)
 
 			hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
 				self:GetParent():SetBackdropBorderColor(r,g,b)
-				self:SetTexture("")
+				self:SetTexture()
 			end)
 			hooksecurefunc(button.IconBorder, 'Hide', function(self)
 				self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))

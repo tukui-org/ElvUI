@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Cache global variables
 --WoW API / Variables
 local CreateFrame = CreateFrame
 
@@ -14,7 +13,7 @@ function UF:Construct_Portrait(frame, type)
 		portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
 		backdrop:SetOutside(portrait)
 		backdrop:SetFrameLevel(frame:GetFrameLevel())
-		backdrop:SetTemplate('Default')
+		backdrop:SetTemplate()
 		portrait.backdrop = backdrop
 	else
 		portrait = CreateFrame("PlayerModel", nil, frame)

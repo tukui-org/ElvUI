@@ -1,13 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local select = select
 local ipairs, pairs, unpack = ipairs, pairs, unpack
 --WoW API / Variables
 local GetItemInfo = GetItemInfo
+local PlayerHasToy = PlayerHasToy
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GetItemQualityColor = GetItemQualityColor
@@ -91,7 +91,7 @@ local function LoadSkin()
 
 		bu.icon:SetPoint("LEFT", bu, -40, 0)
 		bu.icon:SetTexCoord(unpack(E.TexCoords))
-		bu.icon:CreateBackdrop("Default")
+		bu.icon:CreateBackdrop()
 		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
 
 		bu:HookScript("OnEnter", function(self)
@@ -126,9 +126,9 @@ local function LoadSkin()
 
 		bu:SetHighlightTexture(nil)
 		bu.unusable:SetAlpha(0)
-		bu.iconBorder:SetTexture('')
-		bu.background:SetTexture('')
-		bu.selectedTexture:SetTexture('')
+		bu.iconBorder:SetTexture()
+		bu.background:SetTexture()
+		bu.selectedTexture:SetTexture()
 
 		bu.factionIcon:SetDrawLayer('OVERLAY')
 		bu.factionIcon:SetPoint('TOPRIGHT', -1, -4)
@@ -180,7 +180,7 @@ local function LoadSkin()
 
 		bu.icon:SetPoint("LEFT", -40, 0)
 		bu.icon:SetTexCoord(unpack(E.TexCoords))
-		bu.icon:CreateBackdrop("Default")
+		bu.icon:CreateBackdrop()
 		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
 
 		bu:HookScript("OnEnter", function(self)
@@ -206,10 +206,10 @@ local function LoadSkin()
 		end)
 
 		bu.dragButton.ActiveTexture:SetAlpha(0)
-		bu.dragButton.levelBG:SetTexture(nil)
+		bu.dragButton.levelBG:SetTexture()
 
-		bu.iconBorder:SetTexture('')
-		bu.selectedTexture:SetTexture('')
+		bu.iconBorder:SetTexture()
+		bu.selectedTexture:SetTexture()
 
 		hooksecurefunc(bu.iconBorder, 'SetVertexColor', function(_, r, g, b)
 			bu.icon.backdrop:SetBackdropBorderColor(r, g, b)
@@ -249,11 +249,11 @@ local function LoadSkin()
 
 		petButton.setButton:StripTextures()
 		petButtonHealthFrame.healthBar:StripTextures()
-		petButtonHealthFrame.healthBar:CreateBackdrop('Default')
+		petButtonHealthFrame.healthBar:CreateBackdrop()
 		petButtonHealthFrame.healthBar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(petButtonHealthFrame.healthBar)
 		petButtonXPBar:StripTextures()
-		petButtonXPBar:CreateBackdrop('Default')
+		petButtonXPBar:CreateBackdrop()
 		petButtonXPBar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(petButtonXPBar)
 		petButtonXPBar:SetFrameLevel(petButtonXPBar:GetFrameLevel() + 2)
@@ -275,7 +275,7 @@ local function LoadSkin()
 	end
 
 	_G.PetJournalPetCard:StripTextures()
-	_G.PetJournalPetCard:SetTemplate('Default')
+	_G.PetJournalPetCard:SetTemplate()
 	_G.PetJournalPetCardInset:StripTextures()
 	_G.PetJournalPetCardPetInfoQualityBorder:SetAlpha(0)
 
@@ -287,19 +287,19 @@ local function LoadSkin()
 
 	if E.private.skins.blizzard.tooltip then
 		local tt = _G.PetJournalPrimaryAbilityTooltip
-		tt.Background:SetTexture(nil)
+		tt.Background:SetTexture()
 		if tt.Delimiter1 then
-			tt.Delimiter1:SetTexture(nil)
-			tt.Delimiter2:SetTexture(nil)
+			tt.Delimiter1:SetTexture()
+			tt.Delimiter2:SetTexture()
 		end
-		tt.BorderTop:SetTexture(nil)
-		tt.BorderTopLeft:SetTexture(nil)
-		tt.BorderTopRight:SetTexture(nil)
-		tt.BorderLeft:SetTexture(nil)
-		tt.BorderRight:SetTexture(nil)
-		tt.BorderBottom:SetTexture(nil)
-		tt.BorderBottomRight:SetTexture(nil)
-		tt.BorderBottomLeft:SetTexture(nil)
+		tt.BorderTop:SetTexture()
+		tt.BorderTopLeft:SetTexture()
+		tt.BorderTopRight:SetTexture()
+		tt.BorderLeft:SetTexture()
+		tt.BorderRight:SetTexture()
+		tt.BorderBottom:SetTexture()
+		tt.BorderBottomRight:SetTexture()
+		tt.BorderBottomLeft:SetTexture()
 		tt:SetTemplate("Transparent")
 	end
 
@@ -307,18 +307,18 @@ local function LoadSkin()
 		local frame = _G['PetJournalPetCardSpell'..i]
 		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
 		frame:DisableDrawLayer('BACKGROUND')
-		frame:CreateBackdrop('Default')
+		frame:CreateBackdrop()
 		frame.backdrop:SetAllPoints()
 		frame.icon:SetTexCoord(unpack(E.TexCoords))
 		frame.icon:SetInside(frame.backdrop)
 	end
 
 	_G.PetJournalPetCardHealthFrame.healthBar:StripTextures()
-	_G.PetJournalPetCardHealthFrame.healthBar:CreateBackdrop('Default')
+	_G.PetJournalPetCardHealthFrame.healthBar:CreateBackdrop()
 	_G.PetJournalPetCardHealthFrame.healthBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(_G.PetJournalPetCardHealthFrame.healthBar)
 	_G.PetJournalPetCardXPBar:StripTextures()
-	_G.PetJournalPetCardXPBar:CreateBackdrop('Default')
+	_G.PetJournalPetCardXPBar:CreateBackdrop()
 	_G.PetJournalPetCardXPBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(_G.PetJournalPetCardXPBar)
 
@@ -328,15 +328,15 @@ local function LoadSkin()
 	_G.ToyBoxFilterButton:Point("TOPRIGHT", ToyBox, "TOPRIGHT", -15, -34)
 	S:HandleEditBox(ToyBox.searchBox)
 	ToyBox.iconsFrame:StripTextures()
-	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, false, true)
+	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
+	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, nil, nil, true)
 	S:HandleCloseButton(ToyBox.favoriteHelpBox.CloseButton)
 
 	local progressBar = ToyBox.progressBar
 	progressBar.border:Hide()
 	progressBar:DisableDrawLayer("BACKGROUND")
 	progressBar:SetStatusBarTexture(E.media.normTex)
-	progressBar:CreateBackdrop("Default")
+	progressBar:CreateBackdrop()
 	E:RegisterStatusBar(progressBar)
 
 	for i = 1, 18 do
@@ -355,7 +355,7 @@ local function LoadSkin()
 	end
 
 	hooksecurefunc("ToySpellButton_UpdateButton", function(self)
-		if _G.PlayerHasToy(self.itemID) then
+		if PlayerHasToy(self.itemID) then
 			local quality = select(3, GetItemInfo(self.itemID))
 			local r, g, b = 1, 1, 1
 			if quality then
@@ -373,8 +373,8 @@ local function LoadSkin()
 	_G.HeirloomsJournalFilterButton:Point("TOPRIGHT", HeirloomsJournal, "TOPRIGHT", -15, -34)
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
 	HeirloomsJournal.iconsFrame:StripTextures()
-	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, false, true)
+	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
+	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
 	S:HandleDropDownBox(_G.HeirloomsJournalClassDropDown)
 	S:HandleCloseButton(HeirloomsJournal.UpgradeLevelHelpBox.CloseButton)
 
@@ -382,7 +382,7 @@ local function LoadSkin()
 	progressBar.border:Hide()
 	progressBar:DisableDrawLayer("BACKGROUND")
 	progressBar:SetStatusBarTexture(E.media.normTex)
-	progressBar:CreateBackdrop("Default")
+	progressBar:CreateBackdrop()
 	E:RegisterStatusBar(progressBar)
 
 	hooksecurefunc(HeirloomsJournal, "UpdateButton", function(_, button)
@@ -398,7 +398,7 @@ local function LoadSkin()
 			button.styled = true
 		end
 
-		button.levelBackground:SetTexture(nil)
+		button.levelBackground:SetTexture()
 
 		button.name:SetPoint('LEFT', button, 'RIGHT', 4, 8)
 		button.level:SetPoint('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
@@ -410,9 +410,21 @@ local function LoadSkin()
 			button.special:SetTextColor(1, .82, 0)
 			button.backdrop:SetBackdropBorderColor(GetItemQualityColor(7))
 		else
+			button.name:SetTextColor(0.4, 0.4, 0.4)
+			button.level:SetTextColor(0.4, 0.4, 0.4)
+			button.special:SetTextColor(0.4, 0.4, 0.4)			
 			button.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		end
 		button.SetTextColor = E.noop
+	end)
+
+	hooksecurefunc(HeirloomsJournal, "LayoutCurrentPage", function()
+		for i=1, #HeirloomsJournal.heirloomHeaderFrames do
+			local header = HeirloomsJournal.heirloomHeaderFrames[i]
+			header:StripTextures()
+			header.text:FontTemplate(nil, 15, "")
+			header.text:SetTextColor(1, 1, 1)
+		end
 	end)
 
 	-- Appearances Tab
@@ -422,7 +434,7 @@ local function LoadSkin()
 
 	--Items
 	WardrobeCollectionFrame.progressBar:StripTextures()
-	WardrobeCollectionFrame.progressBar:CreateBackdrop("Default")
+	WardrobeCollectionFrame.progressBar:CreateBackdrop()
 	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E["media"].normTex)
 
 	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
@@ -440,7 +452,7 @@ local function LoadSkin()
 		if Frame.Models then
 			for _, Model in pairs(Frame.Models) do
 				Model:SetFrameLevel(Model:GetFrameLevel() + 1)
-				Model:CreateBackdrop("Default")
+				Model:CreateBackdrop()
 				Model.backdrop:SetOutside(Model, 2, 2)
 				Model.Border:Kill()
 				Model.TransmogStateTexture:SetAlpha(0)
@@ -461,7 +473,7 @@ local function LoadSkin()
 
 		if Frame.PendingTransmogFrame then
 			Frame.PendingTransmogFrame.Glowframe:SetAtlas(nil)
-			Frame.PendingTransmogFrame.Glowframe:CreateBackdrop("Default")
+			Frame.PendingTransmogFrame.Glowframe:CreateBackdrop()
 			Frame.PendingTransmogFrame.Glowframe.backdrop:SetOutside()
 			Frame.PendingTransmogFrame.Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
 			Frame.PendingTransmogFrame.Glowframe.backdrop:SetBackdropBorderColor(1, .77, 1, 1)
@@ -473,8 +485,8 @@ local function LoadSkin()
 		end
 
 		if Frame.PagingFrame then
-			S:HandleNextPrevButton(Frame.PagingFrame.PrevPageButton, nil, true)
-			S:HandleNextPrevButton(Frame.PagingFrame.NextPageButton)
+			S:HandleNextPrevButton(Frame.PagingFrame.PrevPageButton, nil, nil, true)
+			S:HandleNextPrevButton(Frame.PagingFrame.NextPageButton, nil, nil, true)
 		end
 	end
 
@@ -525,7 +537,7 @@ local function LoadSkin()
 	for i = 1, #WardrobeTransmogFrame.Model.SlotButtons do
 		WardrobeTransmogFrame.Model.SlotButtons[i]:StripTextures()
 		WardrobeTransmogFrame.Model.SlotButtons[i]:SetFrameLevel(WardrobeTransmogFrame.Model.SlotButtons[i]:GetFrameLevel() + 2)
-		WardrobeTransmogFrame.Model.SlotButtons[i]:CreateBackdrop("Default")
+		WardrobeTransmogFrame.Model.SlotButtons[i]:CreateBackdrop()
 		WardrobeTransmogFrame.Model.SlotButtons[i].backdrop:SetAllPoints()
 		WardrobeTransmogFrame.Model.SlotButtons[i].Border:Kill()
 		WardrobeTransmogFrame.Model.SlotButtons[i].Icon:SetTexCoord(unpack(E.TexCoords))
@@ -541,13 +553,13 @@ local function LoadSkin()
 	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
 	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate("Transparent")
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton, nil, true)
+	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton)
 
 	-- Taken from AddOnSkins
 	for i = 1, 2 do
 		for j = 1, 4 do
 			WardrobeCollectionFrame.SetsTransmogFrame["ModelR"..i.."C"..j]:StripTextures()
-			WardrobeCollectionFrame.SetsTransmogFrame["ModelR"..i.."C"..j]:CreateBackdrop("Default")
+			WardrobeCollectionFrame.SetsTransmogFrame["ModelR"..i.."C"..j]:CreateBackdrop()
 		end
 	end
 

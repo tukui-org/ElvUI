@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 local LBG = E.Libs.ButtonGlow
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack, select = unpack, select
@@ -29,7 +28,7 @@ local function UpdateLoots()
 			frame.Icon:SetTexCoord(unpack(E.TexCoords))
 
 			-- create a backdrop around the icon
-			frame:CreateBackdrop("Default")
+			frame:CreateBackdrop()
 			frame.backdrop:SetOutside(frame.Icon)
 			frame.Icon:SetParent(frame.backdrop)
 
@@ -47,7 +46,11 @@ local function LoadSkin()
 	S:HandleCloseButton(LootHistoryFrame.CloseButton)
 	LootHistoryFrame:StripTextures()
 	LootHistoryFrame:SetTemplate('Transparent')
-	S:HandleCloseButton(LootHistoryFrame.ResizeButton)
+	LootHistoryFrame.ResizeButton:StripTextures()
+	LootHistoryFrame.ResizeButton.text = LootHistoryFrame.ResizeButton:CreateFontString(nil, 'OVERLAY')
+	LootHistoryFrame.ResizeButton.text:FontTemplate(nil, 16, 'OUTLINE')
+	LootHistoryFrame.ResizeButton.text:SetJustifyH('CENTER')
+	LootHistoryFrame.ResizeButton.text:Point('CENTER', LootHistoryFrame.ResizeButton)
 	LootHistoryFrame.ResizeButton.text:SetText("v v v v")
 	LootHistoryFrame.ResizeButton:SetTemplate()
 	LootHistoryFrame.ResizeButton:Width(LootHistoryFrame:GetWidth())
@@ -100,7 +103,7 @@ local function LoadSkin()
 	BonusRollFrame:StripTextures()
 	BonusRollFrame:SetTemplate('Transparent')
 
-	BonusRollFrame.SpecRing:SetTexture("")
+	BonusRollFrame.SpecRing:SetTexture()
 	BonusRollFrame.CurrentCountFrame.Text:FontTemplate()
 
 	BonusRollFrame.PromptFrame.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -114,11 +117,11 @@ local function LoadSkin()
 
 	BonusRollFrame.BlackBackgroundHoist.Background:Hide()
 	BonusRollFrame.BlackBackgroundHoist.b = CreateFrame("Frame", nil, BonusRollFrame)
-	BonusRollFrame.BlackBackgroundHoist.b:SetTemplate("Default")
+	BonusRollFrame.BlackBackgroundHoist.b:SetTemplate()
 	BonusRollFrame.BlackBackgroundHoist.b:SetOutside(BonusRollFrame.PromptFrame.Timer)
 
 	BonusRollFrame.SpecIcon.b = CreateFrame("Frame", nil, BonusRollFrame)
-	BonusRollFrame.SpecIcon.b:SetTemplate("Default")
+	BonusRollFrame.SpecIcon.b:SetTemplate()
 	BonusRollFrame.SpecIcon.b:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 2)
 	BonusRollFrame.SpecIcon.b:SetSize(BonusRollFrame.SpecIcon:GetSize())
 	BonusRollFrame.SpecIcon.b:SetFrameLevel(6)
@@ -192,10 +195,10 @@ local function LoadSkin()
 		_G["LootButton"..i.."IconQuestTexture"]:SetParent(E.HiddenFrame)
 		S:HandleItemButton(button, true)
 
-		button.IconBorder:SetTexture(nil)
+		button.IconBorder:SetTexture()
 		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
 			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-			self:SetTexture("")
+			self:SetTexture()
 		end)
 		hooksecurefunc(button.IconBorder, 'Hide', function(self)
 			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -260,7 +263,7 @@ local function LoadSkin()
 	end)
 
 	S:HandleNextPrevButton(_G.LootFrameDownButton)
-	S:HandleNextPrevButton(_G.LootFrameUpButton, true)
+	S:HandleNextPrevButton(_G.LootFrameUpButton)
 end
 
 S:AddCallback("Loot", LoadSkin)

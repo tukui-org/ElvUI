@@ -1,30 +1,23 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
---Cache global variables
+local _G = _G
 --Lua functions
 local min = math.min
 --WoW API / Variables
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetScreenWidth = GetScreenWidth
 local GetScreenHeight = GetScreenHeight
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ObjectiveTrackerFrame, ObjectiveFrameMover, ObjectiveTrackerBonusRewardsFrame
-
-local ObjectiveFrameHolder = CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
-ObjectiveFrameHolder:Width(130)
-ObjectiveFrameHolder:Height(22)
-ObjectiveFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
-
 function B:SetObjectiveFrameHeight()
-	local top = ObjectiveTrackerFrame:GetTop() or 0
+	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
 	local screenHeight = GetScreenHeight()
 	local gapFromTop = screenHeight - top
 	local maxHeight = screenHeight - gapFromTop
 	local objectiveFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
 
-	ObjectiveTrackerFrame:Height(objectiveFrameHeight)
+	_G.ObjectiveTrackerFrame:Height(objectiveFrameHeight)
 end
 
 local function IsFramePositionedLeft(frame)
@@ -39,8 +32,23 @@ local function IsFramePositionedLeft(frame)
 	return positionedLeft;
 end
 
+function B:SetObjectiveFrameAutoHide()
+	if E.db.general.objectiveFrameAutoHide then
+		RegisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, "objectiveHider", "[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists] 1;0")
+	else
+		RegisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, "objectiveHider", "0")
+	end
+end
+
 function B:MoveObjectiveFrame()
+	local ObjectiveFrameHolder = CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
+	ObjectiveFrameHolder:Width(130)
+	ObjectiveFrameHolder:Height(22)
+	ObjectiveFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
+
 	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
+	local ObjectiveFrameMover = _G.ObjectiveFrameMover
+	local ObjectiveTrackerFrame = _G.ObjectiveTrackerFrame
 	ObjectiveFrameHolder:SetAllPoints(ObjectiveFrameMover)
 
 	ObjectiveTrackerFrame:ClearAllPoints()
@@ -48,16 +56,18 @@ function B:MoveObjectiveFrame()
 	B:SetObjectiveFrameHeight()
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
 
-	local function ObjectiveTrackerFrame_SetPosition(_,_, parent)
-		if parent ~= ObjectiveFrameHolder then
-			ObjectiveTrackerFrame:ClearAllPoints()
-			ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
-		end
-	end
-	hooksecurefunc(ObjectiveTrackerFrame,"SetPoint", ObjectiveTrackerFrame_SetPosition)
+	--prevent error from occuring if another addon decides it wants to disable these functions
+	_G.ObjectiveTrackerFrame.SetMovable = nil
+	_G.ObjectiveTrackerFrame.SetUserPlaced = nil
+
+	ObjectiveTrackerFrame:SetMovable(true)
+	ObjectiveTrackerFrame:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
+	ObjectiveTrackerFrame:ClearAllPoints()
+	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')	
+
 
 	local function RewardsFrame_SetPosition(block)
-		local rewardsFrame = ObjectiveTrackerBonusRewardsFrame;
+		local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame;
 		rewardsFrame:ClearAllPoints();
 		if E.db.general.bonusObjectivePosition == "RIGHT" or (E.db.general.bonusObjectivePosition == "AUTO" and IsFramePositionedLeft(ObjectiveTrackerFrame)) then
 			rewardsFrame:Point("TOPLEFT", block, "TOPRIGHT", -10, -4);
@@ -66,4 +76,18 @@ function B:MoveObjectiveFrame()
 		end
 	end
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)
+
+	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, _G.ObjectiveTrackerFrame, 'SecureHandlerStateTemplate');
+	ObjectiveTrackerFrame.AutoHider:SetAttribute("_onstate-objectiveHider", [[
+		local parent = self:GetParent()
+		local shown = parent:IsShown()
+
+		if newstate == 1 and shown then
+			self:GetParent():Hide()
+		elseif not shown then
+			self:GetParent():Show()
+		end
+	]])	
+
+	self:SetObjectiveFrameAutoHide()
 end

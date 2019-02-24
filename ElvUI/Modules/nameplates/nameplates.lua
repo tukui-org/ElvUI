@@ -2,30 +2,18 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local select = select
 local pairs = pairs
 local type = type
 local gsub = gsub
-local twipe = table.wipe
-local format = string.format
-local match = string.match
+local wipe = wipe
+local format = format
+local strmatch = strmatch
 local strjoin = strjoin
 local tonumber = tonumber
 
 --WoW API / Variables
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
-local CompactUnitFrame_UnregisterEvents = CompactUnitFrame_UnregisterEvents
-local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
-local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
-local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
-local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
-local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
-local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
-local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
-local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
-local C_Timer_NewTimer = C_Timer.NewTimer
 local CreateFrame = CreateFrame
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetBattlefieldScore = GetBattlefieldScore
@@ -38,6 +26,7 @@ local GetQuestLogTitle = GetQuestLogTitle
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local hooksecurefunc = hooksecurefunc
 local IsInInstance = IsInInstance
+local Lerp = Lerp
 local RegisterUnitWatch = RegisterUnitWatch
 local SetCVar = SetCVar
 local UnitAffectingCombat = UnitAffectingCombat
@@ -54,9 +43,20 @@ local UnitName = UnitName
 local UnitPowerType = UnitPowerType
 local UnitReaction = UnitReaction
 local UnregisterUnitWatch = UnregisterUnitWatch
-local Lerp = Lerp
-local UNKNOWN = UNKNOWN
+
+local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
+local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
+local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
+local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
+local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
+local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
+local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
+local C_Timer_NewTimer = C_Timer.NewTimer
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
+local CompactUnitFrame_UnregisterEvents = CompactUnitFrame_UnregisterEvents
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local UNKNOWN = UNKNOWN
 
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
@@ -151,7 +151,7 @@ function mod:NamePlateDriverFrame_UpdateNamePlateOptions()
 end
 
 function mod:PLAYER_ENTERING_WORLD()
-	twipe(self.Healers)
+	wipe(self.Healers)
 
 	local inInstance, instanceType = IsInInstance()
 	local lockedInstance = instanceType and not (instanceType == "none" or instanceType == "pvp" or instanceType == "arena")
@@ -673,7 +673,7 @@ function mod:UpdateInVehicle(frame, noEvents)
 			if UnitIsUnit(frame.unit, "player") then
 				frame.displayedUnit = "vehicle"
 			else
-				local prefix, id, suffix = match(frame.unit, "(%D+)(%d*)(.*)")
+				local prefix, id, suffix = strmatch(frame.unit, "(%D+)(%d*)(.*)")
 				frame.displayedUnit = prefix.."pet"..id..suffix;
 			end
 			if not noEvents then
@@ -753,7 +753,7 @@ function mod:GetNameplateID(frame)
 	end
 
 	local plateName = frame:GetName()
-	return plateName and tonumber(match(plateName, "%d+$")), frame.namePlateUnitToken and UnitGUID(frame.namePlateUnitToken)
+	return plateName and tonumber(strmatch(plateName, "%d+$")), frame.namePlateUnitToken and UnitGUID(frame.namePlateUnitToken)
 end
 
 function mod:NAME_PLATE_CREATED(_, frame)
@@ -1294,9 +1294,6 @@ function mod:Initialize()
 	self:RegisterEvent("QUEST_ACCEPTED")
 	self:RegisterEvent("QUEST_REMOVED")
 	self:RegisterEvent("QUEST_LOG_UPDATE")
-
-	self.Tooltip = CreateFrame('GameTooltip', "ElvUIQuestTooltip", nil, 'GameTooltipTemplate')
-	self.Tooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 
 	local numEntries = GetNumQuestLogEntries();
 	for questLogIndex = 1, numEntries do

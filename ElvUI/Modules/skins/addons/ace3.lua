@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local select = select
@@ -18,7 +17,7 @@ local function SkinDropdownPullout(self)
 			self.obj.dropdown:SetTemplate('Default', true)
 
 			if self.obj.dropdown.slider then
-				self.obj.dropdown.slider:SetTemplate('Default')
+				self.obj.dropdown.slider:SetTemplate()
 				self.obj.dropdown.slider:SetThumbTexture([[Interface\Buttons\WHITE8X8]])
 				self.obj.dropdown.slider:GetThumbTexture():SetVertexColor(1, .82, 0, 0.8)
 			end
@@ -41,7 +40,7 @@ function S:SkinAce3()
 			local frame = widget.frame
 
 			if not widget.scrollBG.template then
-				widget.scrollBG:SetTemplate('Default')
+				widget.scrollBG:SetTemplate()
 			end
 
 			S:HandleButton(widget.button)
@@ -55,11 +54,11 @@ function S:SkinAce3()
 			local checkbg = widget.checkbg
 			local highlight = widget.highlight
 
-			checkbg:CreateBackdrop('Default')
+			checkbg:CreateBackdrop()
 			checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
 			checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
-			checkbg:SetTexture('')
-			highlight:SetTexture('')
+			checkbg:SetTexture()
+			highlight:SetTexture()
 
 			if E.private.skins.checkBoxSkin then
 				checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
@@ -89,10 +88,10 @@ function S:SkinAce3()
 			local text = widget.text
 			frame:StripTextures()
 
-			S:HandleNextPrevButton(button, true)
+			S:HandleNextPrevButton(button, nil, {1, .8, 0})
 
 			if not frame.backdrop then
-				frame:CreateBackdrop('Default')
+				frame:CreateBackdrop()
 			end
 
 			frame.backdrop:SetPoint('TOPLEFT', 15, -2)
@@ -119,10 +118,10 @@ function S:SkinAce3()
 			local text = frame.text
 			frame:StripTextures()
 
-			S:HandleNextPrevButton(button, true)
+			S:HandleNextPrevButton(button, nil, {1, .8, 0})
 
 			if not frame.backdrop then
-				frame:CreateBackdrop('Default')
+				frame:CreateBackdrop()
 			end
 
 			frame.label:ClearAllPoints()
@@ -183,7 +182,7 @@ function S:SkinAce3()
 
 			S:HandleSliderFrame(frame)
 
-			editbox:SetTemplate('Default')
+			editbox:SetTemplate()
 			editbox:Height(15)
 			editbox:Point('TOP', frame, 'BOTTOM', 0, -1)
 
@@ -207,7 +206,7 @@ function S:SkinAce3()
 			local colorSwatch = widget.colorSwatch
 
 			if not frame.backdrop then
-				frame:CreateBackdrop('Default')
+				frame:CreateBackdrop()
 			end
 
 			frame.backdrop:SetSize(24, 16)

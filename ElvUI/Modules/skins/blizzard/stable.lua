@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack = unpack
@@ -63,7 +62,7 @@ local function LoadSkin()
 		b:Point("BOTTOMRIGHT", PetStableSelectedPetIcon, p, -p)
 		PetStableSelectedPetIcon:SetSize(37,37)
 		PetStableSelectedPetIcon:SetParent(b)
-		b:SetTemplate("Default")
+		b:SetTemplate()
 	end
 
 	for i = 1, _G.NUM_PET_ACTIVE_SLOTS do

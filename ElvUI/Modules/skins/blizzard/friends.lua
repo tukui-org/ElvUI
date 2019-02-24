@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
@@ -9,6 +8,9 @@ local pairs, select, unpack = pairs, select, unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local BNFeaturesEnabled = BNFeaturesEnabled
+local FriendsFrameBroadcastInput_UpdateDisplay = FriendsFrameBroadcastInput_UpdateDisplay
+local FriendsFrame_CheckBattlenetStatus = FriendsFrame_CheckBattlenetStatus
+local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
 local RaiseFrameLevel = RaiseFrameLevel
 local BNConnected = BNConnected
 
@@ -38,11 +40,11 @@ local function SkinSocialHeaderTab(tab)
 	if not tab then return end
 	for _, object in pairs(tabs) do
 		local tex = _G[tab:GetName()..object]
-		tex:SetTexture(nil)
+		tex:SetTexture()
 	end
-	tab:GetHighlightTexture():SetTexture(nil)
+	tab:GetHighlightTexture():SetTexture()
 	tab.backdrop = CreateFrame("Frame", nil, tab)
-	tab.backdrop:SetTemplate("Default")
+	tab.backdrop:SetTemplate()
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
 	tab.backdrop:Point("TOPLEFT", 3, -8)
 	tab.backdrop:Point("BOTTOMRIGHT", -6, 0)
@@ -122,7 +124,7 @@ local function LoadSkin()
 	for i=1, FriendsFrame:GetNumRegions() do
 		local region = select(i, FriendsFrame:GetRegions())
 		if region:IsObjectType('Texture') then
-			region:SetTexture(nil)
+			region:SetTexture()
 			region:SetAlpha(0)
 		end
 	end
@@ -130,7 +132,7 @@ local function LoadSkin()
 	S:HandleEditBox(_G.FriendsFriendsList)
 	S:HandleDropDownBox(_G.FriendsFriendsFrameDropDown,150)
 
-	_G.FriendsTabHeaderSoRButton:SetTemplate('Default')
+	_G.FriendsTabHeaderSoRButton:SetTemplate()
 	_G.FriendsTabHeaderSoRButton:StyleButton()
 	_G.FriendsTabHeaderSoRButtonIcon:SetDrawLayer('OVERLAY')
 	_G.FriendsTabHeaderSoRButtonIcon:SetTexCoord(unpack(E.TexCoords))
@@ -141,7 +143,7 @@ local function LoadSkin()
 	SoRBg:Point("TOPLEFT", -1, 1)
 	SoRBg:Point("BOTTOMRIGHT", 1, -1)
 
-	_G.FriendsTabHeaderRecruitAFriendButton:SetTemplate("Default")
+	_G.FriendsTabHeaderRecruitAFriendButton:SetTemplate()
 	_G.FriendsTabHeaderRecruitAFriendButton:StyleButton()
 	_G.FriendsTabHeaderRecruitAFriendButtonIcon:SetDrawLayer("OVERLAY")
 	_G.FriendsTabHeaderRecruitAFriendButtonIcon:SetTexCoord(unpack(E.TexCoords))
@@ -162,7 +164,7 @@ local function LoadSkin()
 	FriendsFrameBattlenetFrame.Tag:SetParent(_G.FriendsListFrame)
 	FriendsFrameBattlenetFrame.Tag:Point("TOP", FriendsFrame, "TOP", 0, -8)
 
-	_G.FriendsFrameBroadcastInput:CreateBackdrop("Default")
+	_G.FriendsFrameBroadcastInput:CreateBackdrop()
 	_G.FriendsFrameBroadcastInput:SetWidth(259)
 
 	hooksecurefunc("FriendsFrame_CheckBattlenetStatus", function()
@@ -174,11 +176,11 @@ local function LoadSkin()
 			if BNConnected() then
 				frame:Hide()
 				_G.FriendsFrameBroadcastInput:Show()
-				_G.FriendsFrameBroadcastInput_UpdateDisplay()
+				FriendsFrameBroadcastInput_UpdateDisplay()
 			end
 		end
 	end)
-	_G.FriendsFrame_CheckBattlenetStatus()
+	FriendsFrame_CheckBattlenetStatus()
 
 	hooksecurefunc("FriendsFrame_Update", function()
 		if FriendsFrame.selectedTab == 1 and _G.FriendsTabHeader.selectedTab == 1 and FriendsFrameBattlenetFrame.Tag:IsShown() then
@@ -191,7 +193,7 @@ local function LoadSkin()
 	S:HandleEditBox(_G.AddFriendNameEditBox)
 	_G.AddFriendFrame:SetTemplate("Transparent")
 	_G.ScrollOfResurrectionSelectionFrame:SetTemplate('Transparent')
-	_G.ScrollOfResurrectionSelectionFrameList:SetTemplate('Default')
+	_G.ScrollOfResurrectionSelectionFrameList:SetTemplate()
 	S:HandleScrollBar(_G.ScrollOfResurrectionSelectionFrameListScrollFrameScrollBar, 4)
 	S:HandleEditBox(_G.ScrollOfResurrectionSelectionFrameTargetEditBox)
 	RaiseFrameLevel(_G.ScrollOfResurrectionSelectionFrameTargetEditBox)
@@ -209,7 +211,7 @@ local function LoadSkin()
 	hooksecurefunc("FriendsFrame_OnEvent", UpdateWhoSkins)
 
 	--Increase width of Level column slightly
-	_G.WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) --Default is 32
+	WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) --Default is 32
 	for i = 1, 17 do
 		local level = _G["WhoFrameButton"..i.."Level"]
 		if level then
@@ -254,9 +256,9 @@ local function LoadSkin()
 	S:HandleButton(_G.ScrollOfResurrectionFrameAcceptButton)
 	S:HandleButton(_G.ScrollOfResurrectionFrameCancelButton)
 
-	_G.ScrollOfResurrectionFrameTargetEditBoxLeft:SetTexture(nil)
-	_G.ScrollOfResurrectionFrameTargetEditBoxMiddle:SetTexture(nil)
-	_G.ScrollOfResurrectionFrameTargetEditBoxRight:SetTexture(nil)
+	_G.ScrollOfResurrectionFrameTargetEditBoxLeft:SetTexture()
+	_G.ScrollOfResurrectionFrameTargetEditBoxMiddle:SetTexture()
+	_G.ScrollOfResurrectionFrameTargetEditBoxRight:SetTexture()
 	_G.ScrollOfResurrectionFrameNoteFrame:StripTextures()
 	_G.ScrollOfResurrectionFrameNoteFrame:SetTemplate()
 	_G.ScrollOfResurrectionFrameTargetEditBox:SetTemplate()
@@ -288,9 +290,9 @@ local function LoadSkin()
 	QuickJoinFrame.JoinQueueButton:SetSize(131, 21)  --Match button on other tab
 	QuickJoinFrame.JoinQueueButton:ClearAllPoints()
 	QuickJoinFrame.JoinQueueButton:Point("BOTTOMRIGHT", QuickJoinFrame, "BOTTOMRIGHT", -6, 4)
-	_G.QuickJoinScrollFrameTop:SetTexture(nil)
-	_G.QuickJoinScrollFrameBottom:SetTexture(nil)
-	_G.QuickJoinScrollFrameMiddle:SetTexture(nil)
+	_G.QuickJoinScrollFrameTop:SetTexture()
+	_G.QuickJoinScrollFrameBottom:SetTexture()
+	_G.QuickJoinScrollFrameMiddle:SetTexture()
 	QuickJoinRoleSelectionFrame:StripTextures()
 	QuickJoinRoleSelectionFrame:SetTemplate("Transparent")
 	S:HandleButton(QuickJoinRoleSelectionFrame.AcceptButton)

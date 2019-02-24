@@ -1,22 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
---Cache global variables
 --Lua functions
-local print, unpack = print, unpack
+local unpack = unpack
 local strlower = string.lower
 --WoW API / Variables
-local GetSpellInfo = GetSpellInfo
 local IsPlayerSpell = IsPlayerSpell
-
-local function SpellName(id)
-	local name = GetSpellInfo(id)
-	if not name then
-		print('|cff1784d1ElvUI:|r SpellID is not valid: '..id..'. Please check for an updated version, if none exists report to ElvUI author.')
-		return 'Impale'
-	else
-		return name
-	end
-end
 
 local function Defaults(priorityOverride)
 	return {['enable'] = true, ['priority'] = priorityOverride or 0, ['stackThreshold'] = 0}
@@ -1092,18 +1080,19 @@ P['unitframe']['filters'] = {
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	-- Warlock
-	[SpellName(198590)] = 6, -- Drain Soul
-	[SpellName(755)]    = 6, -- Health Funnel
-	[SpellName(234153)] = 6, -- Drain Life
+	[198590] = 6, -- Drain Soul
+	[755]    = 6, -- Health Funnel
+	[234153] = 6, -- Drain Life
 	-- Priest
-	[SpellName(64843)]  = 4, -- Divine Hymn
-	[SpellName(15407)]  = 4, -- Mind Flay
+	[64843]  = 4, -- Divine Hymn
+	[15407]  = 4, -- Mind Flay
+	[48045] = 5, -- Mind Sear
 	-- Mage
-	[SpellName(5143)]   = 5,  -- Arcane Missiles
-	[SpellName(12051)]  = 3,  -- Evocation
-	[SpellName(205021)] = 10, -- Ray of Frost
+	[5143]   = 5,  -- Arcane Missiles
+	[12051]  = 3,  -- Evocation
+	[205021] = 10, -- Ray of Frost
 	--Druid
-	[SpellName(740)]    = 4, -- Tranquility
+	[740]    = 4, -- Tranquility
 }
 
 local f = CreateFrame("Frame")
@@ -1113,17 +1102,17 @@ f:SetScript("OnEvent", function()
 	if strlower(E.myclass) ~= "priest" then return end
 
 	local penanceTicks = IsPlayerSpell(193134) and 4 or 3
-	E.global.unitframe.ChannelTicks[SpellName(47540)] = penanceTicks --Penance
+	E.global.unitframe.ChannelTicks[47540] = penanceTicks --Penance
 end)
 
 G.unitframe.ChannelTicksSize = {
 	-- Warlock
-	[SpellName(198590)] = 1, -- Drain Soul
+	[198590] = 1, -- Drain Soul
 }
 
 -- Spells Effected By Haste
 G.unitframe.HastedChannelTicks = {
-	[SpellName(205021)] = true, -- Ray of Frost
+	[205021] = true, -- Ray of Frost
 }
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch

@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local ipairs = ipairs
 local tinsert = tinsert

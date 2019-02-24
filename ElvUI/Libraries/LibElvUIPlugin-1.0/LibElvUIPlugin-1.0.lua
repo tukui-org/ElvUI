@@ -2,7 +2,6 @@ local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 22
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
---Cache global variables
 --Lua functions
 local pairs, tonumber, strmatch, strsub = pairs, tonumber, strmatch, strsub
 local format, strsplit, strlen, gsub, ceil = format, strsplit, strlen, gsub, ceil

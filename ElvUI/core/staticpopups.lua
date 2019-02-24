@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs, type, unpack, assert = pairs, type, unpack, assert
-local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, table.wipe
-local lower, format = string.lower, string.format
+local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, wipe
+local lower, format = strlower, format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
@@ -22,8 +21,6 @@ local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
 local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
 
 E.PopupDialogs = {}
@@ -131,11 +128,8 @@ E.PopupDialogs["CONFIRM_LOSE_BINDING_CHANGES"] = {
 		E:GetModule('ActionBars').bindingsChanged = nil;
 	end,
 	OnCancel = function()
-		if ( ElvUIBindPopupWindowCheckButton:GetChecked() ) then
-			ElvUIBindPopupWindowCheckButton:SetChecked();
-		else
-			ElvUIBindPopupWindowCheckButton:SetChecked(1);
-		end
+		local isChecked = ElvUIBindPopupWindowCheckButton:GetChecked()
+		ElvUIBindPopupWindowCheckButton:SetChecked(not isChecked)
 	end,
 	timeout = 0,
 	whileDead = 1,
@@ -173,6 +167,19 @@ E.PopupDialogs['INCOMPATIBLE_ADDON'] = {
 		E:StaticPopup_Hide('INCOMPATIBLE_ADDON')
 		E:StaticPopup_Show('DISABLE_INCOMPATIBLE_ADDON');
 	end,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false,
+}
+
+E.PopupDialogs['UISCALE_CHANGE'] = {
+	text = L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."],
+	OnAccept = function() ReloadUI(); end,
+	OnCancel = function() end,
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	button3 = L["Preview Changes"],
+	OnAlt = function () E:PixelScaleChanged('UISCALE_CHANGE') end,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
@@ -508,6 +515,25 @@ E.PopupDialogs["MODULE_COPY_CONFIRM"] = {
 	hideOnEscape = false,
 }
 
+E.PopupDialogs["UI_SCALE_CHANGES_INFORM"] = {
+	text = L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."],
+	button1 = L["Use CVar Value"],
+	button2 = L["Auto Scale"],
+	button3 = CANCEL,
+	OnAccept = function()
+		E.global.general.UIScale = E.clippedUiScaleCVar
+		E:StaticPopup_Show("UISCALE_CHANGE")
+	end,
+	OnCancel = function()
+		E.global.general.UIScale = E:PixelClip(E:PixelBestSize())
+		E:StaticPopup_Show("UISCALE_CHANGE")
+	end,
+	OnShow = function(self) self.button1:Disable(); self.button2:Disable(); self.button3:Disable(); C_Timer.After(10, function() self.button1:Enable(); self.button2:Enable(); self.button3:Enable() end) end,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false,
+}
+
 local MAX_STATIC_POPUPS = 4
 
 function E:StaticPopup_OnShow()
@@ -783,7 +809,7 @@ function E:StaticPopup_FindVisible(which, data)
 	end
 	for index = 1, MAX_STATIC_POPUPS, 1 do
 		local frame = _G["ElvUI_StaticPopup"..index];
-		if ( frame:IsShown() and (frame.which == which) and (not info.multiple or (frame.data == data)) ) then
+		if ( frame and frame:IsShown() and (frame.which == which) and (not info.multiple or (frame.data == data)) ) then
 			return frame;
 		end
 	end
@@ -893,7 +919,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		end
 		for i = index, MAX_STATIC_POPUPS do
 			local frame = _G["ElvUI_StaticPopup"..i];
-			if ( not frame:IsShown() ) then
+			if ( frame and  not frame:IsShown() ) then
 				dialog = frame;
 				break;
 			end
@@ -903,7 +929,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		if ( not dialog and info.preferredIndex ) then
 			for i = 1, info.preferredIndex do
 				local frame = _G["ElvUI_StaticPopup"..i];
-				if ( not frame:IsShown() ) then
+				if ( frame and not frame:IsShown() ) then
 					dialog = frame;
 					break;
 				end
@@ -1163,7 +1189,7 @@ function E:Contruct_StaticPopups()
 		_G["ElvUI_StaticPopup"..index.."EditBox"].backdrop:Point("BOTTOMRIGHT", 2, 4)
 		_G["ElvUI_StaticPopup"..index.."ItemFrameNameFrame"]:Kill()
 		_G["ElvUI_StaticPopup"..index.."ItemFrame"]:GetNormalTexture():Kill()
-		_G["ElvUI_StaticPopup"..index.."ItemFrame"]:SetTemplate("Default")
+		_G["ElvUI_StaticPopup"..index.."ItemFrame"]:SetTemplate()
 		_G["ElvUI_StaticPopup"..index.."ItemFrame"]:StyleButton()
 		_G["ElvUI_StaticPopup"..index.."ItemFrameIconTexture"]:SetTexCoord(unpack(E.TexCoords))
 		_G["ElvUI_StaticPopup"..index.."ItemFrameIconTexture"]:SetInside()

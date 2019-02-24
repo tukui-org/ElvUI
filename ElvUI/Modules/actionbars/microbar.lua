@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs = pairs
@@ -14,10 +13,11 @@ local UpdateMicroButtonsParent = UpdateMicroButtonsParent
 local GetCurrentRegionName = GetCurrentRegionName
 local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
+-- GLOBALS: ElvUI_MicroBar
 
 local function onLeaveBar()
 	if AB.db.microbar.mouseover then
-		E:UIFrameFadeOut(_G.ElvUI_MicroBar, 0.2, _G.ElvUI_MicroBar:GetAlpha(), 0)
+		E:UIFrameFadeOut(ElvUI_MicroBar, 0.2, ElvUI_MicroBar:GetAlpha(), 0)
 	end
 end
 
@@ -36,10 +36,10 @@ local function onUpdate(self, elapsed)
 end
 
 local function onEnter(button)
-	if AB.db.microbar.mouseover and not _G.ElvUI_MicroBar.IsMouseOvered then
-		_G.ElvUI_MicroBar.IsMouseOvered = true
-		_G.ElvUI_MicroBar:SetScript("OnUpdate", onUpdate)
-		E:UIFrameFadeIn(_G.ElvUI_MicroBar, 0.2, _G.ElvUI_MicroBar:GetAlpha(), AB.db.microbar.alpha)
+	if AB.db.microbar.mouseover and not ElvUI_MicroBar.IsMouseOvered then
+		ElvUI_MicroBar.IsMouseOvered = true
+		ElvUI_MicroBar:SetScript("OnUpdate", onUpdate)
+		E:UIFrameFadeIn(ElvUI_MicroBar, 0.2, ElvUI_MicroBar:GetAlpha(), AB.db.microbar.alpha)
 	end
 
 	if button.backdrop then
@@ -67,7 +67,7 @@ function AB:HandleMicroButton(button)
 	f:SetOutside(button)
 	button.backdrop = f
 
-	button:SetParent(_G.ElvUI_MicroBar)
+	button:SetParent(ElvUI_MicroBar)
 	button:GetHighlightTexture():Kill()
 	button:HookScript('OnEnter', onEnter)
 	button:HookScript('OnLeave', onLeave)
@@ -75,7 +75,7 @@ function AB:HandleMicroButton(button)
 
 	if button.Flash then
 		button.Flash:SetInside()
-		button.Flash:SetTexture(nil)
+		button.Flash:SetTexture()
 	end
 
 	pushed:SetTexCoord(0.22, 0.81, 0.26, 0.82)
@@ -100,7 +100,7 @@ end
 
 function AB:UpdateMicroButtonsParent()
 	for _, x in pairs(_G.MICRO_BUTTONS) do
-		_G[x]:SetParent(_G.ElvUI_MicroBar)
+		_G[x]:SetParent(ElvUI_MicroBar)
 	end
 end
 
@@ -124,14 +124,14 @@ function AB:UpdateMicroBarVisibility()
 		visibility = visibility:gsub('[\n\r]','')
 	end
 
-	RegisterStateDriver(_G.ElvUI_MicroBar.visibility, "visibility", (self.db.microbar.enabled and visibility) or "hide");
+	RegisterStateDriver(ElvUI_MicroBar.visibility, "visibility", (self.db.microbar.enabled and visibility) or "hide");
 end
 
 function AB:UpdateMicroPositionDimensions()
-	if not _G.ElvUI_MicroBar then return end
+	if not ElvUI_MicroBar then return end
 
 	local numRows = 1
-	local prevButton = _G.ElvUI_MicroBar
+	local prevButton = ElvUI_MicroBar
 	local offset = E:Scale(E.PixelMode and 1 or 3)
 	local spacing = E:Scale(offset + self.db.microbar.buttonSpacing)
 
@@ -143,7 +143,7 @@ function AB:UpdateMicroPositionDimensions()
 		button:Size(self.db.microbar.buttonSize, self.db.microbar.buttonSize * 1.4);
 		button:ClearAllPoints();
 
-		if prevButton == _G.ElvUI_MicroBar then
+		if prevButton == ElvUI_MicroBar then
 			button:Point('TOPLEFT', prevButton, 'TOPLEFT', offset, -offset)
 		elseif (i - 1) % self.db.microbar.buttonsPerRow == 0 then
 			button:Point('TOP', lastColumnButton, 'BOTTOM', 0, -spacing);
@@ -155,21 +155,21 @@ function AB:UpdateMicroPositionDimensions()
 		prevButton = button
 	end
 
-	if AB.db.microbar.mouseover and not _G.ElvUI_MicroBar:IsMouseOver() then
-		_G.ElvUI_MicroBar:SetAlpha(0)
+	if AB.db.microbar.mouseover and not ElvUI_MicroBar:IsMouseOver() then
+		ElvUI_MicroBar:SetAlpha(0)
 	else
-		_G.ElvUI_MicroBar:SetAlpha(self.db.microbar.alpha)
+		ElvUI_MicroBar:SetAlpha(self.db.microbar.alpha)
 	end
 
 	AB.MicroWidth = (((_G["CharacterMicroButton"]:GetWidth() + spacing) * self.db.microbar.buttonsPerRow) - spacing) + (offset * 2)
 	AB.MicroHeight = (((_G["CharacterMicroButton"]:GetHeight() + spacing) * numRows) - spacing) + (offset * 2)
-	_G.ElvUI_MicroBar:Size(AB.MicroWidth, AB.MicroHeight)
+	ElvUI_MicroBar:Size(AB.MicroWidth, AB.MicroHeight)
 
-	if _G.ElvUI_MicroBar.mover then
+	if ElvUI_MicroBar.mover then
 		if self.db.microbar.enabled then
-			E:EnableMover(_G.ElvUI_MicroBar.mover:GetName())
+			E:EnableMover(ElvUI_MicroBar.mover:GetName())
 		else
-			E:DisableMover(_G.ElvUI_MicroBar.mover:GetName())
+			E:DisableMover(ElvUI_MicroBar.mover:GetName())
 		end
 	end
 

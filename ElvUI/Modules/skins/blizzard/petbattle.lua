@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local pairs, unpack = pairs, unpack
 --WoW API / Variables
@@ -37,19 +36,19 @@ local function SkinPetButton(self, bf)
 end
 
 local function SkinPetTooltip(tt)
-	tt.Background:SetTexture(nil)
+	tt.Background:SetTexture()
 	if tt.Delimiter1 then
-		tt.Delimiter1:SetTexture(nil)
-		tt.Delimiter2:SetTexture(nil)
+		tt.Delimiter1:SetTexture()
+		tt.Delimiter2:SetTexture()
 	end
-	tt.BorderTop:SetTexture(nil)
-	tt.BorderTopLeft:SetTexture(nil)
-	tt.BorderTopRight:SetTexture(nil)
-	tt.BorderLeft:SetTexture(nil)
-	tt.BorderRight:SetTexture(nil)
-	tt.BorderBottom:SetTexture(nil)
-	tt.BorderBottomRight:SetTexture(nil)
-	tt.BorderBottomLeft:SetTexture(nil)
+	tt.BorderTop:SetTexture()
+	tt.BorderTopLeft:SetTexture()
+	tt.BorderTopRight:SetTexture()
+	tt.BorderLeft:SetTexture()
+	tt.BorderRight:SetTexture()
+	tt.BorderBottom:SetTexture()
+	tt.BorderBottomRight:SetTexture()
+	tt.BorderBottomLeft:SetTexture()
 	tt:SetTemplate("Transparent")
 end
 
@@ -296,7 +295,7 @@ local function LoadSkin()
 
 		infoBar.HealthBarBackdrop = CreateFrame("Frame", nil, infoBar)
 		infoBar.HealthBarBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
-		infoBar.HealthBarBackdrop:SetTemplate("Default")
+		infoBar.HealthBarBackdrop:SetTemplate()
 		infoBar.HealthBarBackdrop:Width(infoBar.healthBarWidth + (E.Border*2))
 		infoBar.HealthBarBackdrop:Point('TOPLEFT', infoBar.ActualHealthBar, 'TOPLEFT', -E.Border, E.Border)
 		infoBar.HealthBarBackdrop:Point('BOTTOMLEFT', infoBar.ActualHealthBar, 'BOTTOMLEFT', -E.Border, -E.Spacing)
@@ -318,15 +317,6 @@ local function LoadSkin()
 	bar:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 4)
 	bar:SetFrameLevel(0)
 	bar:SetFrameStrata('BACKGROUND')
-	bar.backdropTexture:SetDrawLayer('BACKGROUND', 0)
-	bar:SetScript('OnShow', function(self)
-		if not self.initialShow then
-			self.initialShow = true;
-			return;
-		end
-
-		self.backdropTexture:SetDrawLayer('BACKGROUND', 1)
-	end)
 
 	bf:StripTextures()
 	bf.TurnTimer:StripTextures()

@@ -5,7 +5,6 @@ local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 local S = E:GetModule('Skins');
 
---Cache global variables
 local tonumber, collectgarbage = tonumber, collectgarbage
 local floor = math.floor
 local format, strsub = string.format, strsub
@@ -110,7 +109,7 @@ function B:EnhanceColorPicker()
 
 	--Skin the default frame, move default buttons into place
 	ColorPickerFrame:SetTemplate("Transparent")
-	ColorPickerFrameHeader:SetTexture("")
+	ColorPickerFrameHeader:SetTexture()
 	ColorPickerFrameHeader:ClearAllPoints()
 	ColorPickerFrameHeader:Point("TOP", ColorPickerFrame, 0, 0)
 	S:HandleButton(ColorPickerOkayButton)

@@ -2,12 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local select, unpack = select, unpack
-local tinsert, tremove = table.insert, table.remove
-local strlower, strsplit = string.lower, strsplit
-local match = string.match
+local tinsert, tremove = tinsert, tremove
+local strlower, strsplit = strlower, strsplit
+local strmatch = strmatch
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitAura = UnitAura
@@ -68,7 +67,7 @@ function mod:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBo
 	local friendCheck, filterName, filter, filterType, spellList, spell
 	for i=1, select('#', ...) do
 		filterName = select(i, ...)
-		friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
+		friendCheck = (isFriend and strmatch(filterName, "^Friendly:([^,]*)")) or (not isFriend and strmatch(filterName, "^Enemy:([^,]*)")) or nil
 		if friendCheck ~= false then
 			if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
 				filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
@@ -271,7 +270,7 @@ function mod:Auras_SizeChanged(width)
 	local numAuras = #self.icons
 	if numAuras == 0 then return end
 	local overrideWidth = self.db.widthOverride and self.db.widthOverride > 0 and self.db.widthOverride
-	local auraWidth = overrideWidth or (((width - E.mult * numAuras) / numAuras) - (E.private.general.pixelPerfect and 0 or 3))
+	local auraWidth = overrideWidth or (((width - E.mult * numAuras) / numAuras) - (E.PixelMode and 0 or 3))
 	local auraHeight = (self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1)
 
 	for i=1, numAuras do

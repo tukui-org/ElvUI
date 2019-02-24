@@ -188,9 +188,11 @@ local function SetFrequentUpdates(element, state)
 	if(element.frequentUpdates ~= state) then
 		element.frequentUpdates = state
 		if(element.frequentUpdates) then
+			element.__owner:UnregisterEvent('UNIT_HEALTH', Path)
 			element.__owner:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		else
 			element.__owner:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
+			element.__owner:RegisterEvent('UNIT_HEALTH', Path)
 		end
 	end
 end
@@ -204,13 +206,13 @@ local function Enable(self, unit)
 
 		if(element.frequentUpdates) then
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
+		else
+			self:RegisterEvent('UNIT_HEALTH', Path)
 		end
 
-		self:RegisterEvent('UNIT_HEALTH', Path)
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
 		self:RegisterEvent('UNIT_CONNECTION', Path)
 		self:RegisterEvent('UNIT_FACTION', Path) -- For tapping
-		self:RegisterEvent('UNIT_AURA', Path) -- This is the bullshit fix.. Still Blizzard's Fault
 
 		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
@@ -236,7 +238,6 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
 		self:UnregisterEvent('UNIT_CONNECTION', Path)
 		self:UnregisterEvent('UNIT_FACTION', Path)
-		self:UnregisterEvent('UNIT_AURA', Path) -- This is the bullshit fix.. Still Blizzard's Fault
 	end
 end
 

@@ -52,7 +52,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local PI = E:NewModule("PluginInstaller")
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs, unpack = pairs, unpack

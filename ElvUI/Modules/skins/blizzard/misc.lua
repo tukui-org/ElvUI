@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs = pairs
@@ -11,6 +10,7 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 
+local LFG_ICONS = "Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS"
 local function SkinNavBarButtons(self)
 	if (self:GetParent():GetName() == "EncounterJournal" and not E.private.skins.blizzard.encounterjournal) or (self:GetParent():GetName() == "WorldMapFrame" and not E.private.skins.blizzard.worldmap) or (self:GetParent():GetName() == "HelpFrameKnowledgebase" and not E.private.skins.blizzard.help) then
 		return
@@ -19,9 +19,17 @@ local function SkinNavBarButtons(self)
 	local navButton = self.navList[#self.navList]
 	if navButton and not navButton.isSkinned then
 		S:HandleButton(navButton, true)
+		navButton:GetFontString():SetTextColor(1, 1, 1)
 		if navButton.MenuArrowButton then
-			S:HandleNextPrevButton(navButton.MenuArrowButton, true)
+			navButton.MenuArrowButton:StripTextures()
+			if navButton.MenuArrowButton.Art then
+				navButton.MenuArrowButton.Art:SetTexture([[Interface\AddOns\ElvUI\media\textures\ArrowUp]])
+				navButton.MenuArrowButton.Art:SetTexCoord(0, 1, 0, 1)
+				navButton.MenuArrowButton.Art:SetRotation(3.14)
+			end
 		end
+
+		navButton.xoffset = 1
 
 		navButton.isSkinned = true
 	end
@@ -54,6 +62,44 @@ local function LoadSkin()
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
 	_G.QueueStatusFrame:StripTextures()
+	hooksecurefunc("QueueStatusEntry_SetFullDisplay", function(entry, _, _, _, isTank, isHealer, isDPS)
+		if not entry then return end
+		local nextRoleIcon = 1
+		if isDPS then
+			local icon = entry["RoleIcon"..nextRoleIcon]
+			if icon then
+				icon:SetTexture(LFG_ICONS)
+				icon:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+				nextRoleIcon = nextRoleIcon + 1
+			end
+		end
+		if isHealer then
+			local icon = entry["RoleIcon"..nextRoleIcon]
+			if icon then
+				icon:SetTexture(LFG_ICONS)
+				icon:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+				nextRoleIcon = nextRoleIcon + 1
+			end
+		end
+		if isTank then
+			local icon = entry["RoleIcon"..nextRoleIcon]
+			if icon then
+				icon:SetTexture(LFG_ICONS)
+				icon:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+			end
+		end
+	end)
+
+	hooksecurefunc("QueueStatusFrame_Update", function()
+		for frame in _G.QueueStatusFrame.statusEntriesPool:EnumerateActive() do
+			frame.HealersFound.Texture:SetTexture(LFG_ICONS)
+			frame.TanksFound.Texture:SetTexture(LFG_ICONS)
+			frame.DamagersFound.Texture:SetTexture(LFG_ICONS)
+			frame.HealersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+			frame.TanksFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+			frame.DamagersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+		end
+	end)
 
 	if not IsAddOnLoaded("ConsolePortUI_Menu") then
 		-- reskin all esc/menu buttons
@@ -86,7 +132,7 @@ local function LoadSkin()
 		S:HandleButton(_G.GameMenuFrame.ElvUI)
 
 		_G.GameMenuFrame:SetTemplate("Transparent")
-		_G.GameMenuFrameHeader:SetTexture("")
+		_G.GameMenuFrameHeader:SetTexture()
 		_G.GameMenuFrameHeader:ClearAllPoints()
 		_G.GameMenuFrameHeader:Point("TOP", _G.GameMenuFrame, 0, 7)
 	end
@@ -174,23 +220,23 @@ local function LoadSkin()
 		_G["StaticPopup"..i.."EditBox"].backdrop:Point("TOPLEFT", -2, -4)
 		_G["StaticPopup"..i.."EditBox"].backdrop:Point("BOTTOMRIGHT", 2, 4)
 		_G["StaticPopup"..i.."ItemFrameNameFrame"]:Kill()
-		_G["StaticPopup"..i.."ItemFrame"]:SetTemplate("Default")
+		_G["StaticPopup"..i.."ItemFrame"]:SetTemplate()
 		_G["StaticPopup"..i.."ItemFrame"]:StyleButton()
 		_G["StaticPopup"..i.."ItemFrame"].IconBorder:SetAlpha(0)
 		_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetTexCoord(unpack(E.TexCoords))
 		_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetInside()
 		local normTex = _G["StaticPopup"..i.."ItemFrame"]:GetNormalTexture()
 		if normTex then
-			normTex:SetTexture(nil)
+			normTex:SetTexture()
 			hooksecurefunc(normTex, "SetTexture", function(self, tex)
-				if tex ~= nil then self:SetTexture(nil) end
+				if tex ~= nil then self:SetTexture() end
 			end)
 		end
 
 		-- Quality IconBorder
 		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'SetVertexColor', function(self, r, g, b)
 			self:GetParent():SetBackdropBorderColor(r, g, b)
-			self:SetTexture("")
+			self:SetTexture()
 		end)
 		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'Hide', function(self)
 			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -215,7 +261,7 @@ local function LoadSkin()
 		b:Point("BOTTOMRIGHT", _G.GhostFrameContentsFrameIcon, p, -p)
 		_G.GhostFrameContentsFrameIcon:SetSize(37,38)
 		_G.GhostFrameContentsFrameIcon:SetParent(b)
-		b:SetTemplate("Default")
+		b:SetTemplate()
 	end
 
 	_G.OpacityFrame:StripTextures()
@@ -223,27 +269,76 @@ local function LoadSkin()
 
 	--DropDownMenu
 	hooksecurefunc("UIDropDownMenu_CreateFrames", function(level, index)
-		local listFrame = _G["DropDownList"..level]
-		local listFrameName = listFrame:GetName()
-		local expandArrow = _G[listFrameName.."Button"..index.."ExpandArrow"]
+		local listFrame = _G["DropDownList"..level];
+		local listFrameName = listFrame:GetName();
+		local expandArrow = _G[listFrameName.."Button"..index.."ExpandArrow"];
 		if expandArrow then
-			expandArrow:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\ArrowRight]])
-			expandArrow:Size(18)
-			expandArrow:GetNormalTexture():SetVertexColor(_G.NORMAL_FONT_COLOR:GetRGB())
+			expandArrow:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\ArrowUp]])
+			expandArrow:SetSize(12, 12)
+			expandArrow:GetNormalTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
+			expandArrow:GetNormalTexture():SetRotation(S.ArrowRotation['right'])
 		end
 
-		-- Skin the backdrop
-		for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
-			local menu = _G["DropDownList"..i.."MenuBackdrop"]
-			local backdrop = _G["DropDownList"..i.."Backdrop"]
-			if not backdrop.IsSkinned then
-				backdrop:SetTemplate("Transparent")
-				menu:SetTemplate("Transparent")
+		 _G[listFrameName.."MenuBackdrop"]:SetTemplate("Transparent")
+	end)
 
-				backdrop.IsSkinned = true
+	hooksecurefunc("UIDropDownMenu_SetIconImage", function(icon, texture)
+		if texture:find("Divider") then
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			icon:SetColorTexture(r, g, b, 0.45)
+			icon:SetHeight(1)
+		end
+	end)
+
+	hooksecurefunc("ToggleDropDownMenu", function(level)
+		if ( not level ) then
+			level = 1;
+		end
+
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+
+		for i = 1, UIDROPDOWNMENU_MAXBUTTONS do
+			local button = _G["DropDownList"..level.."Button"..i]
+			local check = _G["DropDownList"..level.."Button"..i.."Check"]
+			local uncheck = _G["DropDownList"..level.."Button"..i.."UnCheck"]
+			local highlight = _G["DropDownList"..level.."Button"..i.."Highlight"]
+
+			highlight:SetTexture([[Interface\AddOns\ElvUI\media\textures\Highlight]])
+			highlight:SetBlendMode('BLEND')
+			highlight:SetDrawLayer('BACKGROUND')
+			highlight:SetVertexColor(r, g, b)
+
+			if not button.backdrop then
+				button:CreateBackdrop()
+			end
+
+			button.backdrop:Hide()
+
+			if not button.notCheckable then
+				uncheck:SetTexture('')
+				local _, co = check:GetTexCoord()
+				if co == 0 then
+					check:SetTexture("Interface\\Buttons\\UI-CheckBox-Check")
+					check:SetVertexColor(r, g, b, 1)
+					check:SetSize(20, 20)
+					check:SetDesaturated(true)
+					button.backdrop:SetInside(check, 4, 4)
+				else
+					check:SetTexture(E.media.normTex)
+					check:SetVertexColor(r, g, b, 1)
+					check:SetSize(10, 10)
+					check:SetDesaturated(false)
+					button.backdrop:SetOutside(check)
+				end
+
+				button.backdrop:Show()
+				check:SetTexCoord(0, 1, 0, 1);
+			else
+				check:SetSize(16, 16)
 			end
 		end
 	end)
+
 
 	local SideDressUpFrame = _G.SideDressUpFrame
 	S:HandleCloseButton(_G.SideDressUpModelCloseButton)
@@ -266,6 +361,25 @@ local function LoadSkin()
 
 	S:HandleButton(StackSplitFrame.OkayButton)
 	S:HandleButton(StackSplitFrame.CancelButton)
+
+	local buttons = {StackSplitFrame.LeftButton, StackSplitFrame.RightButton}
+	for _, btn in pairs(buttons) do
+		btn:Size(14, 18)
+
+		btn:ClearAllPoints()
+
+		if btn == StackSplitFrame.LeftButton then
+			btn:Point('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
+		else
+			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
+		end
+
+		S:HandleNextPrevButton(btn)
+
+		if btn.SetTemplate then
+			btn:SetTemplate("NoBackdrop")
+		end
+	end
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)

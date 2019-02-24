@@ -1,14 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Cache global variables
+--Lua functions
+local _G = _G
 local tinsert = tinsert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local ToggleFrame = ToggleFrame
 local GetCursorPosition = GetCursorPosition
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: UIParent, UISpecialFrames,
 
 local PADDING = 10
 local BUTTON_HEIGHT = 16
@@ -33,7 +31,7 @@ function E:DropDown(list, frame, xOffset, yOffset)
 		frame.buttons = {}
 		frame:SetFrameStrata("DIALOG")
 		frame:SetClampedToScreen(true)
-		tinsert(UISpecialFrames, frame:GetName())
+		tinsert(_G.UISpecialFrames, frame:GetName())
 		frame:Hide()
 	end
 
@@ -56,7 +54,7 @@ function E:DropDown(list, frame, xOffset, yOffset)
 
 			frame.buttons[i].text = frame.buttons[i]:CreateFontString(nil, 'BORDER')
 			frame.buttons[i].text:SetAllPoints()
-			frame.buttons[i].text:FontTemplate()
+			frame.buttons[i].text:FontTemplate(nil, nil, "")
 			frame.buttons[i].text:SetJustifyH("LEFT")
 
 			frame.buttons[i]:SetScript("OnEnter", OnEnter)
@@ -80,12 +78,12 @@ function E:DropDown(list, frame, xOffset, yOffset)
 	frame:Height((#list * BUTTON_HEIGHT) + PADDING * 2)
 	frame:Width(BUTTON_WIDTH + PADDING * 2)
 
-	local UIScale = UIParent:GetScale();
+	local UIScale = _G.UIParent:GetScale();
 	local x, y = GetCursorPosition();
 	x = x/UIScale
 	y = y/UIScale
 	frame:ClearAllPoints()
-	frame:Point("TOPLEFT", UIParent, "BOTTOMLEFT", x + xOffset, y + yOffset)
+	frame:Point("TOPLEFT", _G.UIParent, "BOTTOMLEFT", x + xOffset, y + yOffset)
 
 	ToggleFrame(frame)
 end

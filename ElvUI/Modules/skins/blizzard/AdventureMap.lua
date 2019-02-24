@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs = pairs
@@ -12,7 +11,7 @@ local function SkinRewards()
 	for reward in pairs(_G.AdventureMapQuestChoiceDialog.rewardPool.activeObjects) do
 		if not reward.isSkinned then
 			S:HandleItemButton(reward)
-			S:HandleTexture(reward.Icon)
+			S:HandleIcon(reward.Icon)
 			reward.Icon:SetDrawLayer("OVERLAY")
 			reward.isSkinned = true
 		end

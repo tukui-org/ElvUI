@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack, type, select, getmetatable, assert, pairs = unpack, type, select, getmetatable, assert, pairs
@@ -10,9 +9,7 @@ local CreateFrame = CreateFrame
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
-E.mult = 1
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
-
 local function GetTemplate(t, isUnitFrameElement)
 	backdropa = 1
 
@@ -92,28 +89,23 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	if forcePixelMode then f.forcePixelMode = forcePixelMode end
 	if isUnitFrameElement then f.isUnitFrameElement = isUnitFrameElement end
 
-	if t ~= 'NoBackdrop' then
+	if t == 'NoBackdrop' then
+		f:SetBackdrop(nil)
+	else
 		f:SetBackdrop({
-			bgFile = E.media.blankTex,
+			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
 			edgeFile = E.media.blankTex,
 			tile = false, tileSize = 0, edgeSize = E.mult,
 			insets = {left = 0, right = 0, top = 0, bottom = 0}
 		})
 
-		if not f.backdropTexture and t ~= 'Transparent' then
-			local backdropTexture = f:CreateTexture(nil, 'BORDER')
-			backdropTexture:SetDrawLayer('BACKGROUND', 1)
-			f.backdropTexture = backdropTexture
-		elseif t == 'Transparent' then
+		if t == 'Transparent' then
 			f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
-
-			if f.backdropTexture then
-				f.backdropTexture:Hide()
-				f.backdropTexture = nil
-			end
+		else
+			f:SetBackdropColor(backdropr, backdropg, backdropb)
 		end
 
-		if not E.private.general.pixelPerfect and not f.forcePixelMode then
+		if not E.PixelMode and not f.forcePixelMode then
 			if not f.iborder then
 				local border = CreateFrame('Frame', nil, f)
 				border:SetInside(f, E.mult, E.mult)
@@ -138,29 +130,6 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 				border:SetBackdropBorderColor(0, 0, 0, 1)
 				f.oborder = border
 			end
-		end
-
-		if f.backdropTexture then
-			f:SetBackdropColor(0, 0, 0, backdropa)
-			f.backdropTexture:SetVertexColor(backdropr, backdropg, backdropb)
-			f.backdropTexture:SetAlpha(backdropa)
-
-			if glossTex then
-				f.backdropTexture:SetTexture(E.media.glossTex)
-			else
-				f.backdropTexture:SetTexture(E.media.blankTex)
-			end
-
-			if f.forcePixelMode or forcePixelMode then
-				f.backdropTexture:SetInside(f, E.mult, E.mult)
-			else
-				f.backdropTexture:SetInside(f)
-			end
-		end
-	else
-		f:SetBackdrop(nil)
-		if f.backdropTexture then
-			f.backdropTexture:SetTexture(nil)
 		end
 	end
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
@@ -197,15 +166,15 @@ local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFr
 	f.backdrop = b
 end
 
-local function CreateShadow(f)
+local function CreateShadow(f, size)
 	if f.shadow then return end
 	backdropr, backdropg, backdropb, borderr, borderg, borderb = 0, 0, 0, 0, 0, 0
 
 	local shadow = CreateFrame('Frame', nil, f)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:SetOutside(f, 3, 3)
-	shadow:SetBackdrop({edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(3)})
+	shadow:SetOutside(f, size or 3, size or 3)
+	shadow:SetBackdrop({edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(size or 3)})
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
 	f.shadow = shadow
@@ -237,40 +206,51 @@ local StripTexturesBlizzFrames = {
 	'FilligreeOverlay',
 }
 
-local function StripTextures(object, kill, alpha)
-	if object:IsObjectType('Texture') then
-		if kill then
-			object:Kill()
-		elseif alpha then
-			object:SetAlpha(0)
-		else
-			object:SetTexture(nil)
-		end
-	else
-		local FrameName = object.GetName and object:GetName()
+local STRIP_TEX = 'Texture'
+local STRIP_FONT = 'FontString'
+local function StripRegion(which, object, kill, alpha)
+	if kill then
+		object:Kill()
+	elseif alpha then
+		object:SetAlpha(0)
+	elseif which == STRIP_TEX then
+		object:SetTexture()
+	elseif which == STRIP_FONT then
+		object:SetText()
+	end
+end
 
-		for _, Blizzard in pairs(StripTexturesBlizzFrames) do
-			local BlizzFrame = object[Blizzard] or FrameName and _G[FrameName..Blizzard]
-			if BlizzFrame then
-				BlizzFrame:StripTextures(kill, alpha)
+local function StripType(which, object, kill, alpha)
+	if object:IsObjectType(which) then
+		StripRegion(which, object, kill, alpha)
+	else
+		if which == STRIP_TEX then
+			local FrameName = object.GetName and object:GetName()
+			for _, Blizzard in pairs(StripTexturesBlizzFrames) do
+				local BlizzFrame = object[Blizzard] or (FrameName and _G[FrameName..Blizzard])
+				if BlizzFrame then
+					BlizzFrame:StripTextures(kill, alpha)
+				end
 			end
 		end
 
 		if object.GetNumRegions then
 			for i = 1, object:GetNumRegions() do
 				local region = select(i, object:GetRegions())
-				if region and region.IsObjectType and region:IsObjectType('Texture') then
-					if kill then
-						region:Kill()
-					elseif alpha then
-						region:SetAlpha(0)
-					else
-						region:SetTexture(nil)
-					end
+				if region and region.IsObjectType and region:IsObjectType(which) then
+					StripRegion(which, region, kill, alpha)
 				end
 			end
 		end
 	end
+end
+
+local function StripTextures(object, kill, alpha)
+	StripType(STRIP_TEX, object, kill, alpha)
+end
+
+local function StripTexts(object, kill, alpha)
+	StripType(STRIP_FONT, object, kill, alpha)
 end
 
 local function FontTemplate(fs, font, fontSize, fontStyle)
@@ -373,6 +353,7 @@ local function addapi(object)
 	if not object.Height then mt.Height = Height end
 	if not object.FontTemplate then mt.FontTemplate = FontTemplate end
 	if not object.StripTextures then mt.StripTextures = StripTextures end
+	if not object.StripTexts then mt.StripTexts = StripTexts end
 	if not object.StyleButton then mt.StyleButton = StyleButton end
 	if not object.CreateCloseButton then mt.CreateCloseButton = CreateCloseButton end
 	if not object.GetNamedChild then mt.GetNamedChild = GetNamedChild end

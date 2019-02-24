@@ -157,15 +157,13 @@ L["Request was denied by user."] = "상대방이 전송을 거절했습니다."
 L["Your profile was successfully recieved by the player."] = "상대에게 데이터를 성공적으로 전송했습니다."
 
 --Install
-L["Aura Bars & Icons"] = "바 & 아이콘 표시"
-L["Auras Set"] = "오라설정 적용"
+L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = true
 L["Auras"] = "오라 설정"
 L["Caster DPS"] = "원거리 딜러"
 L["Chat Set"] = "대화창 설정"
 L["Chat"] = "대화창"
 L["Choose a theme layout you wish to use for your initial setup."] = "UI의 전체적인 분위기를 선택하세요."
 L["Classic"] = "클래식"
-L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."] = "원하는 해상도로 설정을 강제 적용하고자 한다면 아래에서 원하는 해상도를 선택하세요."
 L["Config Mode:"] = "표시할 프레임 계열:"
 L["CVars Set"] = "CVars 설정"
 L["CVars"] = "게임 인터페이스 설정(CVars)"
@@ -176,10 +174,7 @@ L["ElvUI Installation"] = "ElvUI 설치"
 L["Finished"] = "마침"
 L["Grid Size:"] = "격자 크기 :"
 L["Healer"] = "힐러"
-L["High Resolution"] = "고해상도 세팅"
-L["high"] = "고"
 L["Icons Only"] = "아이콘만 표시"
-L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "표시하고 싶지 않은 버프/디버프가 보이면 아이콘을 Shift 우클릭하세요. 차단 목록에 등록되어 보이지 않게 됩니다."
 L["Importance: |cff07D400High|r"] = "중요도: |cff07D400높음|r"
 L["Importance: |cffD3CF00Medium|r"] = "중요도: |cffD3CF00보통|r"
 L["Importance: |cffFF0000Low|r"] = "중요도 : |cffFF0000낮음|r"
@@ -187,39 +182,29 @@ L["Installation Complete"] = "설치 완료"
 L["Layout Set"] = "레이아웃 설정"
 L["Layout"] = "레이아웃"
 L["Lock"] = "잠금"
-L["Low Resolution"] = "저해상도 세팅"
-L["low"] = "저"
 L["Nudge"] = "미세조정"
-L["Physical DPS"] = "근접 딜러"
 L["Please click the button below so you can setup variables and ReloadUI."] = "아래 버튼을 누르면 설치를 마무리하고 UI를 재시작합니다."
 L["Please click the button below to setup your CVars."] = "ElvUI의 게임 인터페이스 설정을 적용하려면 아래 버튼을 클릭하세요."
 L["Please press the continue button to go onto the next step."] = "|cff2eb7e4[계속]|r 버튼으로 설치를 진행하세요."
-L["Resolution Style Set"] = "해상도 스타일 설정"
-L["Resolution"] = "해상도"
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = "ElvUI 유닛프레임에서 표시할 오라(버프,디버프)의 형태를 선택하세요."
+L["Preview"] = true
 L["Setup Chat"] = "대화창 설치"
 L["Setup CVars"] = "인터페이스 설정 적용"
 L["Skip Process"] = "건너뛰기"
 L["Sticky Frames"] = "자석"
-L["Tank"] = "탱커"
+L["Tank / Physical DPS"] = true
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = "보편적인 설정을 적용할 뿐이므로, 마음대로 채널표시나 색상을 변경할 수 있습니다.|n아래 버튼을 클릭하면 채팅창 설정을 적용합니다."
 L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = "게임 내 설정창은 채팅창에 /ec를 입력하시거나 미니맵 옆의 C버튼을 클릭하면 열립니다. 그냥 사용하고자 한다면 아래의 |cff2eb7e4[건너뛰기]|r 버튼을 누르세요."
 L["Theme Set"] = "테마 적용"
 L["Theme Setup"] = "테마 설정"
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = "이 설치과정을 통해 ElvUI를 좀 더 자신에게 맞게 설정하고|n몇가지 기능에 대해 알 수 있습니다."
-L["This is completely optional."] = "이것은 선택 사항입니다."
 L["This part of the installation process sets up your chat windows names, positions and colors."] = "채팅창 설정을 변경합니다. 간단한 채널설정, 색상설정 등이 포함되어 있습니다.|n자신만의 채널 설정, 색상 등을 유지하고 싶으면 설치하지 마세요."
 L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."] = "WoW의 기본 인터페이스 설정을 ElvUI에 적합하게 변경합니다. 애드온 사용에 있어 유용하니 적용할 것을 추천합니다."
-L["This resolution doesn't require that you change settings for the UI to fit on your screen."] = "현재 해상도에 알맞게 UI가 배치될 것이니 설정을 변경할 필요는 없습니다."
-L["This resolution requires that you change some settings to get everything to fit on your screen."] = "해상도에 알맞는 UI 배치를 적용하려면 몇가지 설정을 변경할 필요가 있습니다."
 L["This will change the layout of your unitframes and actionbars."] = "역할에 따라서 유닛프레임과 행동단축바의 레이아웃이 알맞게 바뀝니다."
 L["Trade"] = "거래"
 L["Welcome to ElvUI version %s!"] = "ElvUI 버전 %s에 오신 것을 환영합니다!"
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = "설치 과정이 끝났습니다.|n궁금한 점 해결이나 기술지원이 필요하면 |cff2eb7e4www.tukui.org|r 를 방문하세요."
 L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."] = "ElvUI에서 표시하는 폰트나 색상은 설정에서 언제든지 바꿀 수 있습니다."
 L["You can now choose what layout you wish to use based on your combat role."] = "게임 안에서 주로 플레이하는 전문화 역할을 선택하세요."
-L["You may need to further alter these settings depending how low you resolution is."] = "당신의 해상도가 얼마나 낮은지에 따라 설정을 더 조절해야할 수도 있습니다."
-L["Your current resolution is %s, this is considered a %s resolution."] = "현재 사용중인 해상도는 |cff2eb7e4%s|r 이며, |cff2eb7e4%s해상도|r 입니다."
 
 --Misc
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% 정도 |cff%02x%02x%02x%s|r보다 많음]"
@@ -308,6 +293,7 @@ L["Zone Ability"] = "지역 특수 능력"
 L["DESC_MOVERCONFIG"] = [=[프레임을 드래그로 원하는 위치로 이동시키세요.|n[잠금] 버튼을 누르면 이동모드가 종료됩니다.
 
 선택사항:
+  LeftClick - Toggle Nudge Frame.
   우클릭 - Open Config Section.
   Shift + 우클릭 - 조정자를 일시적으로 숨깁니다.
   Ctrl + 우클릭 - 조정자의 위치를 기본값으로 초기화합니다.
@@ -349,6 +335,7 @@ L["Are you sure you want to apply this font to all ElvUI elements?"] = "정말�
 L["Are you sure you want to disband the group?"] = "현재 그룹을 해산하시겠습니까?"
 L["Are you sure you want to reset all the settings on this profile?"] = "현재 사용중인 프로필을 초기화 하시겠습니까?"
 L["Are you sure you want to reset every mover back to it's default position?"] = "모든 프레임을 기본 위치로 초기화 하시겠습니까?"
+L["Auto Scale"] = "UI크기 자동조절"
 L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."] = "새로운 오라시스템을 혼란스러워 하는 분들이 많아 설치과정에 관련 페이지를 추가했습니다. 해도 되고 안해도 됩니다. 이미 스스로 오라시스템을 구축했으면 그냥 설치를 마지막까지 넘겨 종료하세요."
 L["Can't buy anymore slots!"] = "더 이상 가방 칸을 늘릴 수 없습니다."
 L["Delete gray items?"] = "잡템을 삭제하시겠습니까?"
@@ -368,9 +355,13 @@ L["No, Revert Changes!"] = "예전으로 돌려주세요"
 L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."] = "ElvUI 와 TukUI 를 동시에 사용하려 하고 있습니다. 하나만 선택해 주세요."
 L["One or more of the changes you have made require a ReloadUI."] = "변경 사항을 적용하려면 애드온을 리로드 해야합니다."
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "이 설정은 모든 캐릭터에게 동일하게 적용됩니다.|n|n설정 적용을 위해 리로드 하시겠습니까?"
+L["Preview Changes"] = true
 L["Save"] = "저장"
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "불러오려는 프로필이 이미 존재합니다. 새로운 이름을 지정하시거나 기존 프로필에 덮어쓸지를 선택하십시오."
+L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = true
+L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."] = true
 L["Type /hellokitty to revert to old settings."] = "/hellokitty 를 입력해서 예전 세팅으로 돌릴 수 있습니다."
+L["Use CVar Value"] = true
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "힐러 레이아웃을 사용할 거라면 Clique 애드온을 같이 써 클릭캐스팅 기능을 이용할 것을 강력히 추천합니다."
 L["Yes, Keep Changes!"] = "네! 이대로 할래요!"
 L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."] = "Thin Border Theme 선택을 바꾸었습니다. 설치과정을 끝까지 밟아 그래픽 관련 버그를 미연에 방지하는 걸 추천합니다."
@@ -380,8 +371,6 @@ L["You must purchase a bank slot first!"] = "우선 은행가방 칸을 구입�
 
 --Tooltip
 L["Count"] = "갯수"
-L["Item Level:"] = "템렙:"
-L["Talent Specialization:"] = "특성:"
 L["Targeted By:"] = "선택됨:"
 
 --Tutorials

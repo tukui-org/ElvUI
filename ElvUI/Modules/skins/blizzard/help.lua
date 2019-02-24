@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local select, unpack = select, unpack
@@ -141,7 +140,7 @@ local function LoadSkin()
 	for i=1, _G.HelpFrameGM_Response:GetNumChildren() do
 		local child = select(i, _G.HelpFrameGM_Response:GetChildren())
 		if child and child:IsObjectType('Frame') and not child:GetName() then
-			child:SetTemplate("Default")
+			child:SetTemplate()
 		end
 	end
 end

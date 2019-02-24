@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs, unpack = pairs, unpack
@@ -111,19 +110,24 @@ local function LoadSkin()
 		_G[Filter..'NormalTexture'].SetAlpha = E.noop
 	end
 
-	S:HandleCloseButton(_G.AuctionFrameCloseButton)
-	S:HandleScrollBar(_G.AuctionsScrollFrameScrollBar)
-
 	_G.BrowseFilterScrollFrame:StripTextures()
 	_G.BrowseScrollFrame:StripTextures()
 	_G.AuctionsScrollFrame:StripTextures()
 	_G.BidScrollFrame:StripTextures()
 
-	S:HandleDropDownBox(_G.BrowseDropDown)
+	S:HandleCloseButton(_G.AuctionFrameCloseButton)
+	S:HandleScrollBar(_G.AuctionsScrollFrameScrollBar)
+
+	S:HandleDropDownBox(_G.BrowseDropDown, 155)
 	S:HandleDropDownBox(_G.PriceDropDown)
 	S:HandleDropDownBox(_G.DurationDropDown)
 	S:HandleScrollBar(_G.BrowseFilterScrollFrameScrollBar)
 	S:HandleScrollBar(_G.BrowseScrollFrameScrollBar)
+
+	_G.BrowseDropDown:SetPoint('TOPLEFT', _G.BrowseMaxLevel, 'TOPRIGHT', -6, 7)
+	_G.BrowseDropDown.Text:SetPoint("RIGHT", _G.BrowseDropDownRight, "RIGHT", -43, -2)
+	_G.BrowseDropDownName:SetPoint('BOTTOMLEFT', _G.BrowseDropDown, 'TOPLEFT', 20, -2)
+	_G.BrowseLevelHyphen:SetPoint('LEFT', _G.BrowseMinLevel, 'RIGHT', 2, 1)
 
 	_G.SideDressUpFrame:StripTextures(true)
 	_G.SideDressUpFrame:SetTemplate("Transparent")
@@ -170,7 +174,7 @@ local function LoadSkin()
 	hooksecurefunc(_G.AuctionsItemButton, "SetNormalTexture", function(self)
 		if self:GetNormalTexture() then
 			self:GetNormalTexture():SetInside()
-			S:HandleTexture(self:GetNormalTexture())
+			S:HandleIcon(self:GetNormalTexture())
 		end
 	end)
 
@@ -182,7 +186,7 @@ local function LoadSkin()
 	_G.AuctionProgressFrame:StripTextures()
 	_G.AuctionProgressFrame:SetTemplate("Transparent")
 	_G.AuctionProgressFrameCancelButton:StyleButton()
-	_G.AuctionProgressFrameCancelButton:SetTemplate("Default")
+	_G.AuctionProgressFrameCancelButton:SetTemplate()
 	_G.AuctionProgressFrameCancelButton:SetHitRectInsets(0, 0, 0, 0)
 	_G.AuctionProgressFrameCancelButton:GetNormalTexture():SetInside()
 	_G.AuctionProgressFrameCancelButton:GetNormalTexture():SetTexCoord(0.67, 0.37, 0.61, 0.26)
@@ -190,20 +194,13 @@ local function LoadSkin()
 	_G.AuctionProgressFrameCancelButton:Point("LEFT", _G.AuctionProgressBar, "RIGHT", 8, 0)
 
 	local AuctionProgressBar = _G.AuctionProgressBar
-	local backdrop = CreateFrame("Frame", nil, AuctionProgressBar.Icon:GetParent())
-	AuctionProgressBar.Icon:SetTexCoord(unpack(E.TexCoords))
-	backdrop:SetOutside(AuctionProgressBar.Icon)
-	backdrop:SetTemplate("Default")
-	AuctionProgressBar.Icon:SetParent(backdrop)
+
+	S:HandleIcon(AuctionProgressBar.Icon)
 
 	AuctionProgressBar.Text:ClearAllPoints()
 	AuctionProgressBar.Text:Point("CENTER")
 
-	AuctionProgressBar:StripTextures()
-	AuctionProgressBar:CreateBackdrop("Default")
-	AuctionProgressBar:SetStatusBarTexture(E.media.normTex)
-	AuctionProgressBar:SetStatusBarColor(1, 1, 0)
-	E:RegisterStatusBar(AuctionProgressBar)
+	S:HandleStatusBar(AuctionProgressBar, {1, 1, 0})
 
 	for Frame, NumButtons in pairs({
 		['Browse'] = _G.NUM_BROWSE_TO_DISPLAY,
@@ -223,11 +220,11 @@ local function LoadSkin()
 			Button:SetHighlightTexture(E.media.blankTex)
 			Button:GetHighlightTexture():SetVertexColor(1, 1, 1, .2)
 
-			ItemButton:GetNormalTexture():SetTexture('')
+			ItemButton:GetNormalTexture():SetTexture()
 			Button:GetHighlightTexture():SetPoint("TOPLEFT", ItemButton, "TOPRIGHT", 2, 0)
 			Button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", Button, "BOTTOMRIGHT", -2, 5)
 
-			S:HandleTexture(Texture)
+			S:HandleIcon(Texture)
 			Texture:SetInside()
 
 			hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b)
@@ -274,13 +271,11 @@ local function LoadSkin()
 	--WoW Token Category
 	local BrowseWowTokenResultsToken = _G.BrowseWowTokenResultsToken
 	S:HandleButton(_G.BrowseWowTokenResults.Buyout)
-	BrowseWowTokenResultsToken:CreateBackdrop("Default")
-	S:HandleTexture(_G.BrowseWowTokenResultsTokenIconTexture)
-	BrowseWowTokenResultsToken.backdrop:SetOutside(_G.BrowseWowTokenResultsTokenIconTexture)
+	BrowseWowTokenResultsToken:CreateBackdrop()
+	S:HandleIcon(_G.BrowseWowTokenResultsTokenIconTexture, true)
 	BrowseWowTokenResultsToken.backdrop:SetBackdropBorderColor(BrowseWowTokenResultsToken.IconBorder:GetVertexColor())
-	BrowseWowTokenResultsToken.backdrop:SetFrameLevel(BrowseWowTokenResultsToken:GetFrameLevel())
-	BrowseWowTokenResultsToken.IconBorder:SetTexture(nil)
-	BrowseWowTokenResultsToken.ItemBorder:SetTexture(nil)
+	BrowseWowTokenResultsToken.IconBorder:SetTexture()
+	BrowseWowTokenResultsToken.ItemBorder:SetTexture()
 
 	--WoW Token Tutorial Frame
 	local WowTokenGameTimeTutorial = _G.WowTokenGameTimeTutorial

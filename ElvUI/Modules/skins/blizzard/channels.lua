@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 --WoW API / Variables
@@ -21,11 +20,11 @@ local function LoadSkin()
 	S:HandleButton(ChannelFrame.NewButton)
 	S:HandleButton(ChannelFrame.SettingsButton)
 
-	S:HandleScrollSlider(ChannelFrame.ChannelRoster.ScrollFrame.scrollBar)
+	S:HandleScrollBar(ChannelFrame.ChannelRoster.ScrollFrame.scrollBar)
 	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar:SetPoint('TOPLEFT', ChannelFrame.ChannelRoster.ScrollFrame, 'TOPRIGHT', 1, -13)
 	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar:SetPoint('BOTTOMLEFT', ChannelFrame.ChannelRoster.ScrollFrame, 'BOTTOMRIGHT', 1, 13)
 
-	S:HandleScrollSlider(ChannelFrame.ChannelList.ScrollBar)
+	S:HandleScrollBar(ChannelFrame.ChannelList.ScrollBar)
 	ChannelFrame.ChannelList.ScrollBar:SetPoint('BOTTOMLEFT', ChannelFrame.ChannelList, 'BOTTOMRIGHT', 0, 15)
 
 	S:HandleCloseButton(CreateChannelPopup.CloseButton)
@@ -44,7 +43,7 @@ local function LoadSkin()
 	hooksecurefunc(_G.ChannelButtonHeaderMixin, "Update", function(self)
 		self:SetTemplate("Transparent")
 
-		self.NormalTexture:SetTexture("")
+		self.NormalTexture:SetTexture()
 	end)
 end
 

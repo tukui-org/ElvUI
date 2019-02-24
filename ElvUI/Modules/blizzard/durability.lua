@@ -1,7 +1,6 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
---Cache global variables
 --Lua functions
 local _G = _G
 

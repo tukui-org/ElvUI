@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 local LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local unpack, strfind, format, tinsert, strsplit, sort, ceil = unpack, strfind, format, tinsert, strsplit, sort, ceil
 --WoW API / Variables
@@ -97,8 +96,8 @@ function UF:Construct_AuraIcon(button)
 	button.count:Point('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
 
-	button.overlay:SetTexture(nil)
-	button.stealable:SetTexture(nil)
+	button.overlay:SetTexture()
+	button.stealable:SetTexture()
 
 	button:RegisterForClicks('RightButtonUp')
 	button:SetScript('OnClick', function(btn)

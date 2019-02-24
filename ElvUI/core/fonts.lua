@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local _G = _G
 --WoW API / Variables
@@ -62,7 +61,6 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.QuestFont_Large,						NORMAL, 14)
 		SetFont(_G.SystemFont_Large,					NORMAL, 15)
 		SetFont(_G.GameFontNormalMed3,					NORMAL, 15)
-		SetFont(_G.GameFontHighlightMedium,				NORMAL, 15)
 		SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, 20, MONOCHROME.."OUTLINE") -- Raid Warning, Boss emote frame too
 		SetFont(_G.SystemFont_Med1,						NORMAL, self.db.general.fontSize)
 		SetFont(_G.SystemFont_Med3,						NORMAL, self.db.general.fontSize*1.1)
@@ -127,5 +125,6 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.DestinyFontMed,						NORMAL, 14)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Fancy12Font,							NORMAL, 12)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Fancy14Font,							NORMAL, 14)									-- Added in 7.3.5 used for ?
+		--SetFont(_G.GameFontNormalSmall,					NORMAL, 12, nil, nil, nil, nil, nil, nil, nil, unpack(E.media.rgbvaluecolor))
 	end
 end

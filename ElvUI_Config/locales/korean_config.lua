@@ -39,10 +39,10 @@ L["SEARCH_SYNTAX_DESC"] = [=[
 
     |cffceff00■|r s:세트이름 / set:세트이름
      - 입력한 글자가 포함됀 장비세트에 소속된 아이템들만 표시합니다.
-	
+
 	|cffceff00■|r r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]
      - For example, reqlvl:30 will find all items that require level 30.
-	
+
 	|cffceff00■|r tt:[search], tip:[search] or tooltip:[search]
      - For example, tt:binds will find all items that can be bound to account, on equip, or on pickup.
 
@@ -245,6 +245,7 @@ L["Bottom to Top"] = "상단 아래쪽으로 이동"
 L["Button Size (Bag)"] = "슬롯 크기 (가방)"
 L["Button Size (Bank)"] = "슬롯 크기 (은행)"
 L["Clear Search On Close"] = "닫으면 검색 칸 비우기"
+L["Colors the border according to the Quality of the Item."] = true
 L["Colors the border according to the type of items assigned to the bag."] = true
 L["Condensed"] = "간략하게"
 L["Currency Format"] = "화폐 표시방법"
@@ -283,9 +284,11 @@ L["Sell Interval"] = true
 L["Set the size of your bag buttons."] = "가방바에서 슬롯의 크기를 결정합니다."
 L["Short (Whole Numbers)"] = "골드만"
 L["Show Assigned Color"] = true
+L["Show Bind on Equip/Use Text"] = true
 L["Show Coins"] = "동전 이미지로 보기"
 L["Show Junk Icon"] = "잡템 아이콘 표시"
 L["Show New Item Glow"] = true
+L["Show Quality Color"] = true
 L["Show Scrap Icon"] = true
 L["Show Upgrade Icon"] = "강화 아이콘 표시"
 L["Smart"] = "스마트"
@@ -539,13 +542,14 @@ L["Announce Interrupts"] = "차단 성공시 알림"
 L["Announce when you interrupt a spell to the specified chat channel."] = "주문 차단에 성공하면 여기에서 설정한 채널로 차단성공을 알립니다."
 L["Attempt to support eyefinity/nvidia surround."] = "다중모니터 기술인 아이피니티 기능이나 nvidia 서라운드 기능 지원을 적용합니다."
 L["Auto Greed/DE"] = "자동 차비/추출 선택"
+L["Auto Hide"] = true
 L["Auto Repair"] = "자동 수리"
-L["Auto Scale"] = "UI크기 자동조절"
 L["Automatically accept invites from guild/friends."] = "길드원이나 친구가 플레이어를 파티를 초대하면 자동으로 수락합니다."
+L["Automatically hide the objetive frame during boss or arena fights."] = true
 L["Automatically repair using the following method when visiting a merchant."] = "수리가 가능한 상점을 열면 이 옵션에서 선택한 자금으로 장비를 자동 수리합니다."
-L["Automatically scale the User Interface based on your screen resolution"] = "현재의 화면 해상도에 따라 자동으로 UI의 크기를 조절합니다."
 L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = "녹템 주사위창이 뜨면 자동으로 차비나 마력추출을 선택합니다. 이 기능은 오로지 만렙 캐릭터에서만 동작합니다."
 L["Automatically vendor gray items when visiting a vendor."] = "상점이 열리면 잡동사니를 자동으로 판매합니다."
+L["BlizzUI Improvements"] = true
 L["Bonus Reward Position"] = "추가보상 표시 위치"
 L["Bottom Panel"] = "하단 패널 표시"
 L["Chat Bubbles Style"] = "말풍선 디자인"
@@ -564,7 +568,9 @@ L["Displays a detailed report of every item sold when enabled."] = "활성화하
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "화면 하단에 꾸미기 용도의 바를 생성합니다."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "화면 상단에 꾸미기 용도의 바를 생성합니다."
 L["Display battleground messages in the middle of the screen."] = "화면 중간에 전장 메시지를 표시합니다."
+L["Display Character Info"] = true
 L["Display emotion icons in chat."] = "메시지 안에 이모티콘이 있으면 그림으로 바꿔 보여줍니다."
+L["Display Inspect Info"] = true
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = "말풍선에 화자의 이름을 표시합니다. 배경이 비활성화 돼 있거나 인스턴스 내부에 있을 때는 작동하지 않을 것입니다."
 L["Emotion Icons"] = "이모티콘 전환"
 L["Enable + Adjust Movers"] = "활성화 + 위치 조정"
@@ -582,7 +588,7 @@ L["Log Taints"] = "Taint 에러 표시"
 L["Login Message"] = "로그인 메세지 표시"
 L["Loot Roll"] = "주사위 굴림창"
 L["Loot"] = "전리품 확인창"
-L["Lowest Allowed UI Scale"] = "최소 허용 UI 크기"
+L["Miscellaneous"] = true
 L["Missing Talent Alert"] = "안찍은 특성 알림"
 L["Multi-Monitor Support"] = "다중모니터 지원"
 L["Name Font"] = "캐릭터 이름 글꼴"
@@ -602,6 +608,8 @@ L["Reset Anchors"] = "위치 초기화"
 L["Reverse Fill Direction"] = "역방향 채우기"
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "애드온 기능이 막히는 에러도 오류확인창에 등록합니다. 이런 에러들은 중요하지 않거나 게임플레이에 영향을 미치지 않는 것들이 대부분입니다. 게다가 이런 에러들은 대부분 고칠 수 없는 것들입니다.|n|n발견되는 에러가 게임플레이에 지장이 될 경우에만 에러보고를 해주세요."
 L["Show an alert frame if you have unspend talent points."] = "미사용 특성 포인트 알림창 표시"
+L["Shows item level of each item, enchants, and gems on the character page."] = true
+L["Shows item level of each item, enchants, and gems when inspecting another player."] = true
 L["Skin Backdrop (No Borders)"] = "반투명 스킨적용(테두리없음)"
 L["Skin Backdrop"] = "반투명 스킨적용"
 L["Skin the blizzard chat bubbles."] = "말풍선에 디자인을 변경해 스킨을 입힐지, 혹은 투명하게 하여 안보이게 할지 결정합니다."
@@ -1030,23 +1038,23 @@ L["Bank Only"] = "은행 안에만"
 L["Both"] = "가방, 은행 모두"
 L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."] = "툴팁을 언제 보이게 할 지 선택합니다. 조절키를 선택하면, 해당 키를 누르고 있는 동안에만 툴팁을 표시합니다."
 L["Comparison Font Size"] = "비교 글씨 크기"
+L["Current Mount"] = true
 L["Cursor Anchor"] = "툴팁을 마우스에 표시"
 L["Cursor Anchor Offset X"] = true
 L["Cursor Anchor Offset Y"] = true
 L["Cursor Anchor Type"] = true
 L["Custom Faction Colors"] = "반응색 개인설정"
+L["Display current mount the unit is riding."] = true
 L["Display guild ranks if a unit is guilded."] = "길드명과 함께 길드 등급도 표시합니다."
 L["Display how many of a certain item you have in your possession."] = "현재 툴팁으로 보고있는 아이템을 여러개 갖고 있다면 갯수를 표시합니다."
 L["Display player titles."] = "이름에 칭호도 표시합니다."
 L["Display the npc ID when mousing over a npc tooltip."] = true
-L["Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit."] = "Shift를 누른 상태로 유저에게 마우스를 대면 특성과 아이템레벨도 표시합니다. 표시하는데 시간이 조금 필요합니다."
 L["Display the spell or item ID when mousing over a spell or item tooltip."] = "아이템과 주문 툴팁에 각각의 ID를 표시합니다."
 L["Display the unit role in the tooltip."] = true
 L["Guild Ranks"] = "길드 내 등급 표시"
 L["Header Font Size"] = "제목 글씨 크기"
 L["Health Bar"] = "생명력막대"
 L["Hide tooltip while in combat."] = "전투 중에는 툴팁을 표시하지 않게 합니다."
-L["Inspect Info"] = "특성/아이템레벨 표시"
 L["Item Count"] = "아이템 갯수 표시"
 L["Never Hide"] = "항시 표시"
 L["NPC IDs"] = true

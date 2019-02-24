@@ -1,20 +1,19 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Cache global variables
 --Lua functions
-local format, join = string.format, string.join
+local format, strjoin = format, strjoin
 --WoW API / Variables
-local GetLifesteal = GetLifesteal
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
-local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
+local GetLifesteal = GetLifesteal
+local CR_LIFESTEAL = CR_LIFESTEAL
+local CR_LIFESTEAL_TOOLTIP = CR_LIFESTEAL_TOOLTIP
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
+local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
 local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
 local STAT_LIFESTEAL = STAT_LIFESTEAL
-local CR_LIFESTEAL_TOOLTIP = CR_LIFESTEAL_TOOLTIP
-local CR_LIFESTEAL = CR_LIFESTEAL
 
 local displayModifierString = ''
 local lastPanel;
@@ -38,7 +37,7 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayModifierString = join("", "%s: ", hex, "%.2f%%|r")
+	displayModifierString = strjoin("", "%s: ", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

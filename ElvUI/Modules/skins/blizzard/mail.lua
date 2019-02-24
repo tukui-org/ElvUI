@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack = unpack
@@ -18,7 +17,7 @@ local function MailFrameSkin()
 			btn.skinned = true
 			hooksecurefunc(btn.IconBorder, 'SetVertexColor', function(self, r, g, b)
 				self:GetParent():SetBackdropBorderColor(r, g, b)
-				self:SetTexture("")
+				self:SetTexture()
 			end)
 			hooksecurefunc(btn.IconBorder, 'Hide', function(self)
 				self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -42,9 +41,6 @@ local function LoadSkin()
 	for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 		local bg = _G["MailItem"..i]
 		bg:StripTextures()
-		bg:CreateBackdrop("Default")
-		bg.backdrop:Point("TOPLEFT", 2, 1)
-		bg.backdrop:Point("BOTTOMRIGHT", -2, 2)
 
 		local btn = _G["MailItem"..i.."Button"]
 		btn:StripTextures()
@@ -58,15 +54,21 @@ local function LoadSkin()
 		local ib = _G["MailItem"..i.."ButtonIconBorder"]
 		hooksecurefunc(ib, 'SetVertexColor', function(self, r, g, b)
 			self:GetParent():SetBackdropBorderColor(r, g, b)
-			self:SetTexture("")
+			self:SetTexture()
 		end)
 		hooksecurefunc(ib, 'Hide', function(self)
 			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 	end
 
-	S:HandleNextPrevButton(_G.InboxPrevPageButton)
-	S:HandleNextPrevButton(_G.InboxNextPageButton)
+	_G.InboxFrame:CreateBackdrop("Transparent")
+	_G.InboxFrame.backdrop:SetPoint("TOPLEFT", _G.MailItem1, "TOPLEFT")
+	_G.InboxFrame.backdrop:SetPoint("BOTTOMRIGHT", _G.MailItem7, "BOTTOMRIGHT")
+
+	S:HandleNextPrevButton(_G.InboxPrevPageButton, nil, nil, true)
+	S:HandleNextPrevButton(_G.InboxNextPageButton, nil, nil, true)
+	_G.InboxPrevPageButton:StripTexts()
+	_G.InboxNextPageButton:StripTexts()
 
 	_G.MailFrameTab1:StripTextures()
 	_G.MailFrameTab2:StripTextures()
@@ -75,7 +77,7 @@ local function LoadSkin()
 
 	-- send mail
 	_G.SendMailScrollFrame:StripTextures(true)
-	_G.SendMailScrollFrame:SetTemplate("Default")
+	_G.SendMailScrollFrame:SetTemplate()
 
 	S:HandleScrollBar(_G.SendMailScrollFrameScrollBar)
 
@@ -96,6 +98,9 @@ local function LoadSkin()
 	S:HandleButton(_G.SendMailMailButton)
 	S:HandleButton(_G.SendMailCancelButton)
 
+	S:HandleRadioButton(_G.SendMailSendMoneyButton)
+	S:HandleRadioButton(_G.SendMailCODButton)
+
 	-- open mail (cod)
 	_G.OpenMailFrame:StripTextures(true)
 	_G.OpenMailFrame:SetTemplate("Transparent")
@@ -112,7 +117,7 @@ local function LoadSkin()
 	_G.MailFrameInset:Kill()
 
 	_G.OpenMailScrollFrame:StripTextures(true)
-	_G.OpenMailScrollFrame:SetTemplate("Default")
+	_G.OpenMailScrollFrame:SetTemplate()
 
 	S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 
@@ -144,7 +149,7 @@ local function LoadSkin()
 
 		hooksecurefunc(btn.IconBorder, 'SetVertexColor', function(self, r, g, b)
 			self:GetParent():SetBackdropBorderColor(r, g, b)
-			self:SetTexture("")
+			self:SetTexture()
 		end)
 		hooksecurefunc(btn.IconBorder, 'Hide', function(self)
 			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))

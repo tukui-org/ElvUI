@@ -1,12 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 --WoW API / Variables
 local unpack = unpack
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 local FrameTexs = {
@@ -29,11 +27,11 @@ local function SkinOnShow()
 	S:HandleScrollBar(_G.ScriptErrorsFrameScrollBar)
 	S:HandleCloseButton(_G.ScriptErrorsFrameClose)
 	ScriptErrorsFrame.ScrollFrame.Text:FontTemplate(nil, 13)
-	ScriptErrorsFrame.ScrollFrame:CreateBackdrop('Default')
+	ScriptErrorsFrame.ScrollFrame:CreateBackdrop()
 	ScriptErrorsFrame.ScrollFrame:SetFrameLevel(ScriptErrorsFrame.ScrollFrame:GetFrameLevel() + 2)
 
 	for i=1, #FrameTexs do
-		_G["ScriptErrorsFrame"..FrameTexs[i]]:SetTexture(nil)
+		_G["ScriptErrorsFrame"..FrameTexs[i]]:SetTexture()
 	end
 
 	-- Our Buttons
@@ -47,19 +45,10 @@ local function SkinOnShow()
 	-- Default Buttons
 	S:HandleButton(ScriptErrorsFrame.Reload)
 	S:HandleButton(ScriptErrorsFrame.Close)
-	S:HandleNextPrevButton(ScriptErrorsFrame.PreviousError, nil, true)
+	S:HandleNextPrevButton(ScriptErrorsFrame.PreviousError)
 	S:HandleNextPrevButton(ScriptErrorsFrame.NextError)
 
 	S:Unhook(ScriptErrorsFrame, 'OnShow')
-end
-
-local function dynamicScrollButtonVisibility(button, frame)
-	if not button.dynamicVisibility then
-		frame:SetShown(button:IsShown())
-		button:HookScript("OnShow", function() frame:Show() end)
-		button:HookScript("OnHide", function() frame:Hide() end)
-		button.dynamicVisibility = true
-	end
 end
 
 local function SkinTableAttributeDisplay(frame)
@@ -70,7 +59,7 @@ local function SkinTableAttributeDisplay(frame)
 	S:HandleCloseButton(frame.CloseButton)
 	frame.OpenParentButton:ClearAllPoints()
 	frame.OpenParentButton:SetPoint("TOPLEFT", frame, "TOPLEFT", 2, -2)
-	S:HandleNextPrevButton(frame.OpenParentButton, true)
+	S:HandleNextPrevButton(frame.OpenParentButton, 'up')
 	frame.OpenParentButton:Size(17)
 	frame.DuplicateButton:ClearAllPoints()
 	frame.DuplicateButton:SetPoint("LEFT", frame.NavigateForwardButton, "RIGHT")
@@ -83,52 +72,12 @@ local function SkinTableAttributeDisplay(frame)
 	frame.NavigateForwardButton:SetPoint("LEFT", frame.NavigateBackwardButton, "RIGHT", 2, 0)
 	frame.DuplicateButton:ClearAllPoints()
 	frame.DuplicateButton:SetPoint("LEFT", frame.NavigateForwardButton, "RIGHT", 2, 0)
-	S:HandleNextPrevButton(frame.DuplicateButton, true, true)
+	S:HandleNextPrevButton(frame.DuplicateButton)
 	frame.DuplicateButton:Size(17)
-	S:HandleNextPrevButton(frame.NavigateBackwardButton, nil, true)
+	S:HandleNextPrevButton(frame.NavigateBackwardButton)
 	S:HandleNextPrevButton(frame.NavigateForwardButton)
 	S:HandleEditBox(frame.FilterBox)
-
-	-- reason: UIParentScrollBar .. ???
-	if frame.LinesScrollFrame and frame.LinesScrollFrame.ScrollBar then
-		local s = frame.LinesScrollFrame.ScrollBar
-		s.ScrollUpButton:StripTextures()
-		if not s.ScrollUpButton.icon then
-			S:HandleNextPrevButton(s.ScrollUpButton, true, true)
-			s.ScrollUpButton:Size(s.ScrollUpButton:GetWidth() + 7, s.ScrollUpButton:GetHeight() + 7)
-		end
-
-		s.ScrollDownButton:StripTextures()
-		if not s.ScrollDownButton.icon then
-			S:HandleNextPrevButton(s.ScrollDownButton, true)
-			s.ScrollDownButton:Size(s.ScrollDownButton:GetWidth() + 7, s.ScrollDownButton:GetHeight() + 7)
-		end
-
-		if not s.trackbg then
-			s.trackbg = CreateFrame("Frame", "$parentTrackBG", frame.LinesScrollFrame)
-			s.trackbg:Point("TOPLEFT", s.ScrollUpButton, "BOTTOMLEFT", 0, -1)
-			s.trackbg:Point("TOPRIGHT", s.ScrollUpButton, "BOTTOMRIGHT", 0, -1)
-			s.trackbg:Point("BOTTOMLEFT", s.ScrollDownButton, "TOPLEFT", 0, 1)
-			s.trackbg:SetTemplate("Transparent")
-			dynamicScrollButtonVisibility(s.ScrollUpButton, s.trackbg) -- UpButton handles the TrackBG visibility
-		end
-
-		local t = frame.LinesScrollFrame.ScrollBar:GetThumbTexture()
-		if t then
-			t:SetTexture(nil)
-			if not s.thumbbg then
-				s.thumbbg = CreateFrame("Frame", "$parentThumbBG", frame.LinesScrollFrame)
-				s.thumbbg:Point("TOPLEFT", t, "TOPLEFT", 2, -3)
-				s.thumbbg:Point("BOTTOMRIGHT", t, "BOTTOMRIGHT", -2, 3)
-				s.thumbbg:SetTemplate("Default", true, true)
-				s.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
-				if s.trackbg then
-					s.thumbbg:SetFrameLevel(s.trackbg:GetFrameLevel()+1)
-				end
-				dynamicScrollButtonVisibility(s.ScrollDownButton, s.thumbbg) -- DownButton handles the ThumbBG visibility
-			end
-		end
-	end
+	S:HandleScrollBar(frame.LinesScrollFrame.ScrollBar)
 end
 
 local function LoadErrorFrameSkin()
@@ -159,7 +108,7 @@ local function LoadSkin()
 	end
 
 	for i=1, #FrameTexs do
-		_G["EventTraceFrame"..FrameTexs[i]]:SetTexture(nil)
+		_G["EventTraceFrame"..FrameTexs[i]]:SetTexture()
 	end
 
 	_G.EventTraceFrame:SetTemplate("Transparent")

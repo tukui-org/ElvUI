@@ -1,17 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
 
---Cache global variables
 --Lua functions
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 local ceil = math.ceil
-local format, gsub, split, strfind = string.format, string.gsub, string.split, strfind
+local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 --WoW API / Variables
 local CanExitVehicle = CanExitVehicle
 local ClearOverrideBindings = ClearOverrideBindings
 local CreateFrame = CreateFrame
-local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
 local GetFlyoutID = GetFlyoutID
@@ -40,17 +38,7 @@ local UnitOnTaxi = UnitOnTaxi
 local UnregisterStateDriver = UnregisterStateDriver
 local VehicleExit = VehicleExit
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
-
---Global variables that we don't need to cache, list them here for mikk's FindGlobals script
--- GLOBALS: MainMenuBarArtFrame, PlayerTalentFrame, StanceBarFrame, PossessBarFrame, PetActionBarFrame
--- GLOBALS: LeaveVehicleButton, StatusTrackingBarManager, MultiCastActionBarFrame
--- GLOBALS: LOCK_ACTIONBAR, UIParent, Minimap, IconIntroTracker, MainMenuBar, OverrideActionBar, ActionBarController
--- GLOBALS: SpellFlyout, SpellFlyoutBackgroundEnd, SpellFlyoutVerticalBackground, SpellFlyoutHorizontalBackground
--- GLOBALS: MultiBarBottomRight, MultiBarBottomLeft, MultiBarLeft, MultiBarRight, MicroButtonAndBagsBar
--- GLOBALS: InterfaceOptionsActionBarsPanelBottomRight, InterfaceOptionsActionBarsPanelBottomLeft
--- GLOBALS: InterfaceOptionsActionBarsPanelRightTwo, InterfaceOptionsActionBarsPanelRight
--- GLOBALS: InterfaceOptionsActionBarsPanelAlwaysShowActionBars, InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton
--- GLOBALS: InterfaceOptionsActionBarsPanelLockActionBars, InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
+local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
@@ -111,7 +99,7 @@ AB.customExitButton = {
 		end
 	end,
 	texture = "Interface\\Icons\\Spell_Shadow_SacrificialShield",
-	tooltip = LEAVE_VEHICLE,
+	tooltip = _G.LEAVE_VEHICLE,
 }
 
 function AB:PositionAndSizeBar(barName)
@@ -336,13 +324,13 @@ end
 function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate');
 	bar.vehicleFix = CreateFrame("Frame", nil, bar, "SecureHandlerStateTemplate")
-	bar:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
-	bar.vehicleFix:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
+	bar:SetFrameRef("MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
+	bar.vehicleFix:SetFrameRef("MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
 
-	local point, anchor, attachTo, x, y = split(',', self.barDefaults['bar'..id].position)
+	local point, anchor, attachTo, x, y = strsplit(',', self.barDefaults['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
-	bar:CreateBackdrop('Default');
+	bar:CreateBackdrop();
 	bar:SetFrameStrata("LOW")
 
 	--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
@@ -453,13 +441,13 @@ local function Vehicle_OnClick(self)
 end
 
 function AB:UpdateVehicleLeave()
-	local button = LeaveVehicleButton
+	local button = _G.LeaveVehicleButton
 	if not button then return; end
 
 	local pos = E.db.general.minimap.icons.vehicleLeave.position or "BOTTOMLEFT"
 	local scale = 26 * (E.db.general.minimap.icons.vehicleLeave.scale or 1)
 	button:ClearAllPoints()
-	button:Point(pos, Minimap, pos, E.db.general.minimap.icons.vehicleLeave.xOffset or 2, E.db.general.minimap.icons.vehicleLeave.yOffset or 2)
+	button:Point(pos, _G.Minimap, pos, E.db.general.minimap.icons.vehicleLeave.xOffset or 2, E.db.general.minimap.icons.vehicleLeave.yOffset or 2)
 	button:SetSize(scale, scale)
 end
 
@@ -467,11 +455,11 @@ function AB:CreateVehicleLeave()
 	local vehicle = CreateFrame("Button", 'LeaveVehicleButton', E.UIParent)
 	vehicle:Size(26)
 	vehicle:SetFrameStrata("HIGH")
-	vehicle:Point("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 2, 2)
+	vehicle:Point("BOTTOMLEFT", _G.Minimap, "BOTTOMLEFT", 2, 2)
 	vehicle:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 	vehicle:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 	vehicle:SetHighlightTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
-	vehicle:SetTemplate("Default")
+	vehicle:SetTemplate()
 	vehicle:RegisterForClicks("AnyUp")
 
 	vehicle:SetScript("OnClick", Vehicle_OnClick)
@@ -537,10 +525,10 @@ function AB:UpdateBar1Paging()
 	end
 
 	if (E.private.actionbar.enable ~= true or InCombatLockdown()) or not self.isInitialized then return; end
-	local bar2Option = InterfaceOptionsActionBarsPanelBottomRight
-	local bar3Option = InterfaceOptionsActionBarsPanelBottomLeft
-	local bar4Option = InterfaceOptionsActionBarsPanelRightTwo
-	local bar5Option = InterfaceOptionsActionBarsPanelRight
+	local bar2Option = _G.InterfaceOptionsActionBarsPanelBottomRight
+	local bar3Option = _G.InterfaceOptionsActionBarsPanelBottomLeft
+	local bar4Option = _G.InterfaceOptionsActionBarsPanelRightTwo
+	local bar5Option = _G.InterfaceOptionsActionBarsPanelRight
 
 	if (self.db.bar2.enabled and not bar2Option:GetChecked()) or (not self.db.bar2.enabled and bar2Option:GetChecked())  then
 		bar2Option:Click()
@@ -654,9 +642,9 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 		button.useMasque = useMasque;
 	end
 
-	if flash then flash:SetTexture(nil); end
-	if normal then normal:SetTexture(nil); normal:Hide(); normal:SetAlpha(0); end
-	if normal2 then normal2:SetTexture(nil); normal2:Hide(); normal2:SetAlpha(0); end
+	if flash then flash:SetTexture(); end
+	if normal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0); end
+	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0); end
 
 	if border and not button.useMasque then
 		border:Kill();
@@ -764,15 +752,15 @@ function AB:Button_OnLeave(button)
 end
 
 function AB:BlizzardOptionsPanel_OnEvent()
-	InterfaceOptionsActionBarsPanelBottomRight.Text:SetFormattedText(L["Remove Bar %d Action Page"], 2)
-	InterfaceOptionsActionBarsPanelBottomLeft.Text:SetFormattedText(L["Remove Bar %d Action Page"], 3)
-	InterfaceOptionsActionBarsPanelRightTwo.Text:SetFormattedText(L["Remove Bar %d Action Page"], 4)
-	InterfaceOptionsActionBarsPanelRight.Text:SetFormattedText(L["Remove Bar %d Action Page"], 5)
+	_G.InterfaceOptionsActionBarsPanelBottomRight.Text:SetFormattedText(L["Remove Bar %d Action Page"], 2)
+	_G.InterfaceOptionsActionBarsPanelBottomLeft.Text:SetFormattedText(L["Remove Bar %d Action Page"], 3)
+	_G.InterfaceOptionsActionBarsPanelRightTwo.Text:SetFormattedText(L["Remove Bar %d Action Page"], 4)
+	_G.InterfaceOptionsActionBarsPanelRight.Text:SetFormattedText(L["Remove Bar %d Action Page"], 5)
 
-	InterfaceOptionsActionBarsPanelBottomRight:SetScript('OnEnter', nil)
-	InterfaceOptionsActionBarsPanelBottomLeft:SetScript('OnEnter', nil)
-	InterfaceOptionsActionBarsPanelRightTwo:SetScript('OnEnter', nil)
-	InterfaceOptionsActionBarsPanelRight:SetScript('OnEnter', nil)
+	_G.InterfaceOptionsActionBarsPanelBottomRight:SetScript('OnEnter', nil)
+	_G.InterfaceOptionsActionBarsPanelBottomLeft:SetScript('OnEnter', nil)
+	_G.InterfaceOptionsActionBarsPanelRightTwo:SetScript('OnEnter', nil)
+	_G.InterfaceOptionsActionBarsPanelRight:SetScript('OnEnter', nil)
 end
 
 function AB:FadeParent_OnEvent()
@@ -790,10 +778,11 @@ function AB:FadeParent_OnEvent()
 end
 
 function AB:IconIntroTracker_Toggle()
+	local IconIntroTracker = _G.IconIntroTracker
 	if self.db.addNewSpells then
 		IconIntroTracker:RegisterEvent("SPELL_PUSHED_TO_ACTIONBAR")
 		IconIntroTracker:Show()
-		IconIntroTracker:SetParent(UIParent)
+		IconIntroTracker:SetParent(_G.UIParent)
 	else
 		IconIntroTracker:UnregisterAllEvents()
 		IconIntroTracker:Hide()
@@ -806,10 +795,10 @@ function AB:DisableBlizzard()
 	UIHider = CreateFrame("Frame")
 	UIHider:Hide()
 
-	MultiBarBottomLeft:SetParent(UIHider)
-	MultiBarBottomRight:SetParent(UIHider)
-	MultiBarLeft:SetParent(UIHider)
-	MultiBarRight:SetParent(UIHider)
+	_G.MultiBarBottomLeft:SetParent(UIHider)
+	_G.MultiBarBottomRight:SetParent(UIHider)
+	_G.MultiBarLeft:SetParent(UIHider)
+	_G.MultiBarRight:SetParent(UIHider)
 
 	-- Hide MultiBar Buttons, but keep the bars alive
 	for i=1,12 do
@@ -850,67 +839,67 @@ function AB:DisableBlizzard()
 		_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
 	end
 
-	ActionBarController:UnregisterAllEvents()
-	ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
+	_G.ActionBarController:UnregisterAllEvents()
+	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 
-	MainMenuBar:EnableMouse(false)
-	MainMenuBar:SetAlpha(0)
-	MainMenuBar:SetScale(0.00001)
-	MainMenuBar:SetFrameStrata('BACKGROUND')
-	MainMenuBar:SetFrameLevel(0)
+	_G.MainMenuBar:EnableMouse(false)
+	_G.MainMenuBar:SetAlpha(0)
+	_G.MainMenuBar:SetScale(0.00001)
+	_G.MainMenuBar:SetFrameStrata('BACKGROUND')
+	_G.MainMenuBar:SetFrameLevel(0)
 
-	MicroButtonAndBagsBar:SetScale(0.00001)
-	MicroButtonAndBagsBar:EnableMouse(false)
-	MicroButtonAndBagsBar:SetFrameStrata('BACKGROUND')
-	MicroButtonAndBagsBar:SetFrameLevel(0)
+	_G.MicroButtonAndBagsBar:SetScale(0.00001)
+	_G.MicroButtonAndBagsBar:EnableMouse(false)
+	_G.MicroButtonAndBagsBar:SetFrameStrata('BACKGROUND')
+	_G.MicroButtonAndBagsBar:SetFrameLevel(0)
 
-	MainMenuBarArtFrame:UnregisterAllEvents()
-	MainMenuBarArtFrame:Hide()
-	MainMenuBarArtFrame:SetParent(UIHider)
+	_G.MainMenuBarArtFrame:UnregisterAllEvents()
+	_G.MainMenuBarArtFrame:Hide()
+	_G.MainMenuBarArtFrame:SetParent(UIHider)
 
-	StatusTrackingBarManager:EnableMouse(false)
-	StatusTrackingBarManager:UnregisterAllEvents()
-	StatusTrackingBarManager:Hide()
+	_G.StatusTrackingBarManager:EnableMouse(false)
+	_G.StatusTrackingBarManager:UnregisterAllEvents()
+	_G.StatusTrackingBarManager:Hide()
 
-	StanceBarFrame:UnregisterAllEvents()
-	StanceBarFrame:Hide()
-	StanceBarFrame:SetParent(UIHider)
+	_G.StanceBarFrame:UnregisterAllEvents()
+	_G.StanceBarFrame:Hide()
+	_G.StanceBarFrame:SetParent(UIHider)
 
-	OverrideActionBar:UnregisterAllEvents()
-	OverrideActionBar:Hide()
-	OverrideActionBar:SetParent(UIHider)
+	_G.OverrideActionBar:UnregisterAllEvents()
+	_G.OverrideActionBar:Hide()
+	_G.OverrideActionBar:SetParent(UIHider)
 
-	PossessBarFrame:UnregisterAllEvents()
-	PossessBarFrame:Hide()
-	PossessBarFrame:SetParent(UIHider)
+	_G.PossessBarFrame:UnregisterAllEvents()
+	_G.PossessBarFrame:Hide()
+	_G.PossessBarFrame:SetParent(UIHider)
 
-	PetActionBarFrame:UnregisterAllEvents()
-	PetActionBarFrame:Hide()
-	PetActionBarFrame:SetParent(UIHider)
+	_G.PetActionBarFrame:UnregisterAllEvents()
+	_G.PetActionBarFrame:Hide()
+	_G.PetActionBarFrame:SetParent(UIHider)
 
-	MultiCastActionBarFrame:UnregisterAllEvents()
-	MultiCastActionBarFrame:Hide()
-	MultiCastActionBarFrame:SetParent(UIHider)
+	_G.MultiCastActionBarFrame:UnregisterAllEvents()
+	_G.MultiCastActionBarFrame:Hide()
+	_G.MultiCastActionBarFrame:SetParent(UIHider)
 
 	--Enable/disable functionality to automatically put spells on the actionbar.
 	self:IconIntroTracker_Toggle()
 
-	InterfaceOptionsActionBarsPanelAlwaysShowActionBars:EnableMouse(false)
-	InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
-	InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
-	InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)
-	InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
-	InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
-	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
-	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
+	_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:EnableMouse(false)
+	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
+	_G.InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
+	_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)
+	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
+	_G.InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
+	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
+	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
 	self:SecureHook('BlizzardOptionsPanel_OnEvent')
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 
-	if PlayerTalentFrame then
-		PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+	if _G.PlayerTalentFrame then
+		_G.PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	else
 		hooksecurefunc("TalentFrame_LoadUI", function()
-			PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+			_G.PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 		end)
 	end
 end
@@ -1056,7 +1045,7 @@ local function SetupFlyoutButton()
 		end
 	end
 
-	SpellFlyout:HookScript('OnEnter', function(self)
+	_G.SpellFlyout:HookScript('OnEnter', function(self)
 		local anchorButton = select(2, self:GetPoint())
 		if not AB.handledbuttons[anchorButton] then return end
 
@@ -1064,7 +1053,7 @@ local function SetupFlyoutButton()
 		AB:Bar_OnEnter(parentAnchorBar)
 	end)
 
-	SpellFlyout:HookScript('OnLeave', function(self)
+	_G.SpellFlyout:HookScript('OnLeave', function(self)
 		local anchorButton = select(2, self:GetPoint())
 		if not AB.handledbuttons[anchorButton] then return end
 
@@ -1083,9 +1072,9 @@ function AB:StyleFlyout(button)
 	button.FlyoutBorder:SetAlpha(0)
 	button.FlyoutBorderShadow:SetAlpha(0)
 
-	SpellFlyoutHorizontalBackground:SetAlpha(0)
-	SpellFlyoutVerticalBackground:SetAlpha(0)
-	SpellFlyoutBackgroundEnd:SetAlpha(0)
+	_G.SpellFlyoutHorizontalBackground:SetAlpha(0)
+	_G.SpellFlyoutVerticalBackground:SetAlpha(0)
+	_G.SpellFlyoutBackgroundEnd:SetAlpha(0)
 
 	for i=1, GetNumFlyouts() do
 		local x = GetFlyoutID(i)
@@ -1103,7 +1092,7 @@ function AB:StyleFlyout(button)
 
 	--Change arrow direction depending on what bar the button is on
 	local arrowDistance
-	if ((SpellFlyout:IsShown() and SpellFlyout:GetParent() == button) or GetMouseFocus() == button) then
+	if ((_G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == button) or GetMouseFocus() == button) then
 		arrowDistance = 5
 	else
 		arrowDistance = 2
@@ -1241,7 +1230,7 @@ function AB:Initialize()
 	if E.private.actionbar.enable ~= true then return; end
 	E.ActionBars = AB;
 
-	self.fadeParent = CreateFrame("Frame", "Elv_ABFade", UIParent)
+	self.fadeParent = CreateFrame("Frame", "Elv_ABFade", _G.UIParent)
 	self.fadeParent:SetAlpha(1 - self.db.globalFadeAlpha)
 	self.fadeParent:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self.fadeParent:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -1285,9 +1274,9 @@ function AB:Initialize()
 
 	--We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates
 	SetCVar('lockActionBars', (self.db.lockActionBars == true and 1 or 0))
-	LOCK_ACTIONBAR = (self.db.lockActionBars == true and "1" or "0") --Keep an eye on this, in case it taints
+	_G.LOCK_ACTIONBAR = (self.db.lockActionBars == true and "1" or "0") --Keep an eye on this, in case it taints
 
-	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
+	_G.SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
 
 	self:ToggleDesaturation()
 end

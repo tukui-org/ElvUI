@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 local _G = _G
 --Lua functions
 local unpack, select = unpack, select
@@ -34,7 +33,7 @@ local function SkinAchievementAlert(frame)
 	end
 
 	-- Background
-	frame.Background:SetTexture(nil)
+	frame.Background:SetTexture()
 	frame.OldAchievement:Kill()
 	frame.glow:Kill()
 	frame.shine:Kill()
@@ -54,7 +53,7 @@ local function SkinAchievementAlert(frame)
 
 	if not frame.Icon.Texture.b then
 		frame.Icon.Texture.b = CreateFrame("Frame", nil, frame)
-		frame.Icon.Texture.b:SetTemplate("Default")
+		frame.Icon.Texture.b:SetTemplate()
 		frame.Icon.Texture.b:SetOutside(frame.Icon.Texture)
 		frame.Icon.Texture:SetParent(frame.Icon.Texture.b)
 	end
@@ -85,7 +84,7 @@ local function SkinCriteriaAlert(frame)
 	-- Icon border
 	if not frame.Icon.Texture.b then
 		frame.Icon.Texture.b = CreateFrame("Frame", nil, frame)
-		frame.Icon.Texture.b:SetTemplate("Default")
+		frame.Icon.Texture.b:SetTemplate()
 		frame.Icon.Texture.b:Point("TOPLEFT", frame.Icon.Texture, "TOPLEFT", -3, 3)
 		frame.Icon.Texture.b:Point("BOTTOMRIGHT", frame.Icon.Texture, "BOTTOMRIGHT", 3, -2)
 		frame.Icon.Texture:SetParent(frame.Icon.Texture.b)
@@ -126,7 +125,7 @@ local function SkinDungeonCompletionAlert(frame)
 
 	if not frame.dungeonTexture.b then
 		frame.dungeonTexture.b = CreateFrame("Frame", nil, frame)
-		frame.dungeonTexture.b:SetTemplate("Default")
+		frame.dungeonTexture.b:SetTemplate()
 		frame.dungeonTexture.b:SetOutside(frame.dungeonTexture)
 		frame.dungeonTexture:SetParent(frame.dungeonTexture.b)
 	end
@@ -162,7 +161,7 @@ local function SkinGuildChallengeAlert(frame)
 	local EmblemIcon = frame.EmblemIcon
 	if not EmblemIcon.b then
 		EmblemIcon.b = CreateFrame("Frame", nil, frame)
-		EmblemIcon.b:SetTemplate("Default")
+		EmblemIcon.b:SetTemplate()
 		EmblemIcon.b:Point("TOPLEFT", EmblemIcon, "TOPLEFT", -3, 3)
 		EmblemIcon.b:Point("BOTTOMRIGHT", EmblemIcon, "BOTTOMRIGHT", 3, -2)
 		EmblemIcon:SetParent(EmblemIcon.b)
@@ -189,7 +188,7 @@ local function SkinInvasionAlert(frame)
 			if icon and icon:IsObjectType('Texture') then
 				if icon:GetTexture() == "Interface\\Icons\\Ability_Warlock_DemonicPower" then
 					icon.b = CreateFrame("Frame", nil, frame)
-					icon.b:SetTemplate("Default")
+					icon.b:SetTemplate()
 					icon.b:SetOutside(icon)
 					icon:SetParent(icon.b)
 					icon:SetDrawLayer("OVERLAY")
@@ -238,7 +237,7 @@ local function SkinScenarioAlert(frame)
 	-- Icon border
 	if not frame.dungeonTexture.b then
 		frame.dungeonTexture.b = CreateFrame("Frame", nil, frame)
-		frame.dungeonTexture.b:SetTemplate("Default")
+		frame.dungeonTexture.b:SetTemplate()
 		frame.dungeonTexture.b:SetOutside(frame.dungeonTexture)
 		frame.dungeonTexture:SetParent(frame.dungeonTexture.b)
 	end
@@ -267,7 +266,7 @@ local function SkinWorldQuestCompleteAlert(frame)
 		frame.QuestTexture:SetTexCoord(unpack(E.TexCoords))
 		frame.QuestTexture:SetDrawLayer("ARTWORK")
 		frame.QuestTexture.b = CreateFrame("Frame", nil, frame)
-		frame.QuestTexture.b:SetTemplate("Default")
+		frame.QuestTexture.b:SetTemplate()
 		frame.QuestTexture.b:SetOutside(frame.QuestTexture)
 		frame.QuestTexture:SetParent(frame.QuestTexture.b)
 
@@ -298,7 +297,7 @@ local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -16, 16)
 
 		frame.PortraitFrame.PortraitRing:Hide()
-		frame.PortraitFrame.PortraitRingQuality:SetTexture("")
+		frame.PortraitFrame.PortraitRingQuality:SetTexture()
 		frame.PortraitFrame.LevelBorder:SetAlpha(0)
 
 		local level = frame.PortraitFrame.Level
@@ -309,7 +308,7 @@ local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
 		squareBG:SetFrameLevel(frame.PortraitFrame:GetFrameLevel()-1)
 		squareBG:Point("TOPLEFT", 3, -3)
 		squareBG:Point("BOTTOMRIGHT", -3, 11)
-		squareBG:SetTemplate("Default")
+		squareBG:SetTemplate()
 		frame.PortraitFrame.squareBG = squareBG
 
 		local cover = frame.PortraitFrame.PortraitRingCover
@@ -355,7 +354,7 @@ local function SkinGarrisonTalentAlert(frame)
 		frame.Icon:SetTexCoord(unpack(E.TexCoords))
 		frame.Icon:SetDrawLayer("ARTWORK")
 		frame.Icon.b = CreateFrame("Frame", nil, frame)
-		frame.Icon.b:SetTemplate("Default")
+		frame.Icon.b:SetTemplate()
 		frame.Icon.b:SetOutside(frame.Icon)
 		frame.Icon:SetParent(frame.Icon.b)
 		--Create Backdrop
@@ -380,7 +379,7 @@ local function SkinGarrisonBuildingAlert(frame)
 		frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		frame.Icon:SetDrawLayer("ARTWORK")
 		frame.Icon.b = CreateFrame("Frame", nil, frame)
-		frame.Icon.b:SetTemplate("Default")
+		frame.Icon.b:SetTemplate()
 		frame.Icon.b:SetOutside(frame.Icon)
 		frame.Icon:SetParent(frame.Icon.b)
 
@@ -398,7 +397,7 @@ local function SkinGarrisonMissionAlert(frame)
 		frame.MissionType:SetTexCoord(unpack(E.TexCoords))
 		frame.MissionType:SetDrawLayer("ARTWORK")
 		frame.MissionType.b = CreateFrame("Frame", nil, frame)
-		frame.MissionType.b:SetTemplate("Default")
+		frame.MissionType.b:SetTemplate()
 		frame.MissionType.b:SetOutside(frame.MissionType)
 		frame.MissionType:SetParent(frame.MissionType.b)
 		--Create Backdrop
@@ -419,7 +418,7 @@ local function SkinGarrisonShipMissionAlert(frame)
 		frame.MissionType:SetTexCoord(unpack(E.TexCoords))
 		frame.MissionType:SetDrawLayer("ARTWORK")
 		frame.MissionType.b = CreateFrame("Frame", nil, frame)
-		frame.MissionType.b:SetTemplate("Default")
+		frame.MissionType.b:SetTemplate()
 		frame.MissionType.b:SetOutside(frame.MissionType)
 		frame.MissionType:SetParent(frame.MissionType.b)
 		--Create Backdrop
@@ -442,7 +441,7 @@ local function SkinGarrisonRandomMissionAlert(frame, _, _, _, _, _, quality)
 		frame.MissionType:SetTexCoord(unpack(E.TexCoords))
 		frame.MissionType:SetDrawLayer("ARTWORK")
 		frame.MissionType.b = CreateFrame("Frame", nil, frame)
-		frame.MissionType.b:SetTemplate("Default")
+		frame.MissionType.b:SetTemplate()
 		frame.MissionType.b:SetOutside(frame.MissionType)
 		frame.MissionType:SetParent(frame.MissionType.b)
 		--Create Backdrop
@@ -477,7 +476,7 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 		frame.Icon:SetTexCoord(unpack(E.TexCoords))
 		frame.Icon:SetDrawLayer("ARTWORK")
 		frame.Icon.b = CreateFrame("Frame", nil, frame)
-		frame.Icon.b:SetTemplate("Default")
+		frame.Icon.b:SetTemplate()
 		frame.Icon.b:SetOutside(frame.Icon)
 		frame.Icon:SetParent(frame.Icon.b)
 		--Create Backdrop
@@ -514,14 +513,14 @@ local function SkinLootWonAlert(frame)
 	frame.BGAtlas:Kill()
 	frame.PvPBackground:Kill()
 
-	frame.SpecRing:SetTexture("")
+	frame.SpecRing:SetTexture()
 	frame.SpecIcon:SetPoint("TOPLEFT", frame, "TOPLEFT", 10, -15)
 	frame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
 
 	-- Icon border
 	if not frame.Icon.b then
 		frame.Icon.b = CreateFrame("Frame", nil, frame)
-		frame.Icon.b:SetTemplate("Default")
+		frame.Icon.b:SetTemplate()
 		frame.Icon.b:SetOutside(frame.Icon)
 		frame.Icon:SetParent(frame.Icon.b)
 	end
@@ -529,7 +528,7 @@ local function SkinLootWonAlert(frame)
 	if not frame.SpecIcon.b then
 		frame.SpecIcon.b = CreateFrame("Frame", nil, frame)
 		frame.SpecIcon.b:SetFrameLevel(3)
-		frame.SpecIcon.b:SetTemplate("Default")
+		frame.SpecIcon.b:SetTemplate()
 		frame.SpecIcon.b:SetPoint("TOPLEFT", frame.SpecIcon, "TOPLEFT", -2, 2)
 		frame.SpecIcon.b:SetPoint("BOTTOMRIGHT", frame.SpecIcon, "BOTTOMRIGHT", 2, -2)
 		frame.SpecIcon:SetParent(frame.SpecIcon.b)
@@ -562,7 +561,7 @@ local function SkinLootUpgradeAlert(frame)
 	-- Icon border
 	if not frame.Icon.b then
 		frame.Icon.b = CreateFrame("Frame", nil, frame)
-		frame.Icon.b:SetTemplate("Default")
+		frame.Icon.b:SetTemplate()
 		frame.Icon.b:SetOutside(frame.Icon)
 		frame.Icon:SetParent(frame.Icon.b)
 	end
@@ -589,7 +588,7 @@ local function SkinMoneyWonAlert(frame)
 	-- Icon border
 	if not frame.Icon.b then
 		frame.Icon.b = CreateFrame("Frame", nil, frame)
-		frame.Icon.b:SetTemplate("Default")
+		frame.Icon.b:SetTemplate()
 		frame.Icon.b:SetOutside(frame.Icon)
 		frame.Icon:SetParent(frame.Icon.b)
 	end
@@ -628,7 +627,7 @@ local function SkinStorePurchaseAlert(frame)
 	-- Icon border
 	if not frame.Icon.b then
 		frame.Icon.b = CreateFrame("Frame", nil, frame)
-		frame.Icon.b:SetTemplate("Default")
+		frame.Icon.b:SetTemplate()
 		frame.Icon.b:SetPoint("TOPLEFT", frame.Icon, "TOPLEFT", -2, 2)
 		frame.Icon.b:SetPoint("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, -2)
 		frame.Icon:SetParent(frame.Icon.b)
@@ -682,7 +681,7 @@ local function SkinNewRecipeLearnedAlert(frame)
 	-- Icon border
 	if not frame.Icon.b then
 		frame.Icon.b = CreateFrame("Frame", nil, frame)
-		frame.Icon.b:SetTemplate("Default")
+		frame.Icon.b:SetTemplate()
 		frame.Icon.b:SetPoint("TOPLEFT", frame.Icon, "TOPLEFT", -2, 2)
 		frame.Icon.b:SetPoint("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, -2)
 		frame.Icon:SetParent(frame.Icon.b)
@@ -707,7 +706,7 @@ local function SkinNewPetAlert(frame)
 	-- Icon border
 	if not frame.Icon.b then
 		frame.Icon.b = CreateFrame("Frame", nil, frame)
-		frame.Icon.b:SetTemplate("Default")
+		frame.Icon.b:SetTemplate()
 		frame.Icon.b:SetPoint("TOPLEFT", frame.Icon, "TOPLEFT", -2, 2)
 		frame.Icon.b:SetPoint("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, -2)
 		frame.Icon:SetParent(frame.Icon.b)
@@ -767,7 +766,7 @@ local function LoadSkin()
 	frame.IconBorder:Kill()
 	-- Icon border
 	frame.Icon.b = CreateFrame("Frame", nil, frame)
-	frame.Icon.b:SetTemplate("Default")
+	frame.Icon.b:SetTemplate()
 	frame.Icon.b:SetOutside(frame.Icon)
 	frame.Icon:SetParent(frame.Icon.b)
 	--Create Backdrop
@@ -786,7 +785,7 @@ local function LoadSkin()
 	frame.shine:Kill()
 	-- Icon border
 	frame.Icon.b = CreateFrame("Frame", nil, frame)
-	frame.Icon.b:SetTemplate("Default")
+	frame.Icon.b:SetTemplate()
 	frame.Icon.b:SetOutside(frame.Icon)
 	frame.Icon:SetParent(frame.Icon.b)
 	--Create Backdrop

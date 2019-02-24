@@ -2,23 +2,18 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local NP = E:GetModule('NamePlates')
 local ACD = E.Libs.AceConfigDialog
 
-local next = next
-local ipairs = ipairs
-local tremove = tremove
-local tinsert = tinsert
-local tsort = table.sort
-local tonumber = tonumber
 local tconcat = table.concat
-local format = string.format
-local GetSpellInfo = GetSpellInfo
-local GetNumClasses = GetNumClasses
-local GetClassInfo = GetClassInfo
-local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
-local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
-local GetTalentInfo = GetTalentInfo
-local GetPvpTalentInfo = GetPvpTalentInfo
-local GetDifficultyInfo = GetDifficultyInfo
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
+local next, ipairs, tremove, tinsert, sort, tonumber, format = next, ipairs, tremove, tinsert, sort, tonumber, format
+
+local GetClassInfo = GetClassInfo
+local GetDifficultyInfo = GetDifficultyInfo
+local GetNumClasses = GetNumClasses
+local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
+local GetPvpTalentInfo = GetPvpTalentInfo
+local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
+local GetSpellInfo = GetSpellInfo
+local GetTalentInfo = GetTalentInfo
 local DUNGEON_DIFFICULTY, RAID_INFO_WORLD_BOSS = DUNGEON_DIFFICULTY, RAID_INFO_WORLD_BOSS
 local PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC, SPEED, DISABLE = PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC, SPEED, DISABLE
 local LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE = LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE
@@ -162,7 +157,7 @@ local function UpdateClassSection()
 			for classTag in pairs(classTable) do
 				tinsert(classIndexTable, classTag)
 			end
-			tsort(classIndexTable)
+			sort(classIndexTable)
 		end
 		classOrder = 0
 		local coloredName;

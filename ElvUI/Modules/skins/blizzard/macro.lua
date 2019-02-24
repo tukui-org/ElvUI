@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack = unpack
@@ -18,7 +17,7 @@ local function LoadSkin()
 	MacroFrame:Width(360)
 
 	_G.MacroFrameTextBackground:StripTextures()
-	_G.MacroFrameTextBackground:SetTemplate('Default')
+	_G.MacroFrameTextBackground:SetTemplate()
 	_G.MacroButtonScrollFrame:CreateBackdrop()
 
 	S:HandleScrollBar(_G.MacroButtonScrollFrameScrollBar)
@@ -57,8 +56,8 @@ local function LoadSkin()
 	-- Big icon
 	_G.MacroFrameSelectedMacroButton:StripTextures()
 	_G.MacroFrameSelectedMacroButton:StyleButton(true)
-	_G.MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture(nil)
-	_G.MacroFrameSelectedMacroButton:SetTemplate("Default")
+	_G.MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture()
+	_G.MacroFrameSelectedMacroButton:SetTemplate()
 	_G.MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
 	_G.MacroFrameSelectedMacroButtonIcon:SetPoint("TOPLEFT", E.mult, -E.mult)
 	_G.MacroFrameSelectedMacroButtonIcon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
@@ -97,9 +96,9 @@ local function LoadSkin()
 	S:HandleButton(MacroPopupFrame.BorderBox.CancelButton)
 	S:HandleScrollBar(_G.MacroPopupScrollFrameScrollBar)
 	S:HandleEditBox(_G.MacroPopupEditBox)
-	_G.MacroPopupNameLeft:SetTexture(nil)
-	_G.MacroPopupNameMiddle:SetTexture(nil)
-	_G.MacroPopupNameRight:SetTexture(nil)
+	_G.MacroPopupNameLeft:SetTexture()
+	_G.MacroPopupNameMiddle:SetTexture()
+	_G.MacroPopupNameRight:SetTexture()
 
 	S:HandleIconSelectionFrame(MacroPopupFrame, _G.NUM_MACRO_ICONS_SHOWN, "MacroPopupButton", "MacroPopup")
 

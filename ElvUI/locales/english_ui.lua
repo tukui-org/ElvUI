@@ -156,15 +156,13 @@ L["Request was denied by user."] = true
 L["Your profile was successfully recieved by the player."] = true
 
 --Install
-L["Aura Bars & Icons"] = true
-L["Auras Set"] = true
+L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = true
 L["Auras"] = true
 L["Caster DPS"] = true
 L["Chat Set"] = true
 L["Chat"] = true
 L["Choose a theme layout you wish to use for your initial setup."] = true
 L["Classic"] = true
-L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."] = true
 L["Config Mode:"] = true
 L["CVars Set"] = true
 L["CVars"] = true
@@ -175,10 +173,7 @@ L["ElvUI Installation"] = true
 L["Finished"] = true
 L["Grid Size:"] = true
 L["Healer"] = true
-L["High Resolution"] = true
-L["high"] = true
 L["Icons Only"] = true --Also used in Bags
-L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = true
 L["Importance: |cff07D400High|r"] = true
 L["Importance: |cffD3CF00Medium|r"] = true
 L["Importance: |cffFF0000Low|r"] = true
@@ -186,39 +181,29 @@ L["Installation Complete"] = true
 L["Layout Set"] = true
 L["Layout"] = true
 L["Lock"] = true
-L["Low Resolution"] = true
-L["low"] = true
 L["Nudge"] = true
-L["Physical DPS"] = true
 L["Please click the button below so you can setup variables and ReloadUI."] = true
 L["Please click the button below to setup your CVars."] = true
 L["Please press the continue button to go onto the next step."] = true
-L["Resolution Style Set"] = true
-L["Resolution"] = true
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
+L["Preview"] = true
 L["Setup Chat"] = true
 L["Setup CVars"] = true
 L["Skip Process"] = true
 L["Sticky Frames"] = true
-L["Tank"] = true
+L["Tank / Physical DPS"] = true
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = true
 L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = true
 L["Theme Set"] = true
 L["Theme Setup"] = true
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = true
-L["This is completely optional."] = true
 L["This part of the installation process sets up your chat windows names, positions and colors."] = true
 L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."] = true
-L["This resolution doesn't require that you change settings for the UI to fit on your screen."] = true
-L["This resolution requires that you change some settings to get everything to fit on your screen."] = true
 L["This will change the layout of your unitframes and actionbars."] = true
 L["Trade"] = true
 L["Welcome to ElvUI version %s!"] = true
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = true
 L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."] = true
 L["You can now choose what layout you wish to use based on your combat role."] = true
-L["You may need to further alter these settings depending how low you resolution is."] = true
-L["Your current resolution is %s, this is considered a %s resolution."] = true
 
 --Misc
 L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
@@ -307,6 +292,7 @@ L["Zone Ability"] = true
 L["DESC_MOVERCONFIG"] = [=[Movers unlocked. Move them now and click Lock when you are done.
 
 Options:
+  LeftClick - Toggle Nudge Frame.
   RightClick - Open Config Section.
   Shift + RightClick - Hides mover temporarily.
   Ctrl + RightClick - Resets mover position to default.
@@ -348,6 +334,7 @@ L["Are you sure you want to apply this font to all ElvUI elements?"] = true
 L["Are you sure you want to disband the group?"] = true
 L["Are you sure you want to reset all the settings on this profile?"] = true
 L["Are you sure you want to reset every mover back to it's default position?"] = true
+L["Auto Scale"] = true
 L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."] = true
 L["Can't buy anymore slots!"] = true
 L["Delete gray items?"] = true
@@ -367,9 +354,13 @@ L["No, Revert Changes!"] = true
 L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."] = true
 L["One or more of the changes you have made require a ReloadUI."] = true
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = true
+L["Preview Changes"] = true
 L["Save"] = true
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = true
+L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = true
+L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."] = true
 L["Type /hellokitty to revert to old settings."] = true
+L["Use CVar Value"] = true
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = true
 L["Yes, Keep Changes!"] = true
 L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."] = true
@@ -379,8 +370,6 @@ L["You must purchase a bank slot first!"] = true
 
 --Tooltip
 L["Count"] = true
-L["Item Level:"] = true
-L["Talent Specialization:"] = true
 L["Targeted By:"] = true
 
 --Tutorials

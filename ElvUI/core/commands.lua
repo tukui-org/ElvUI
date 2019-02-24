@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Cache global variables
 --Lua functions
 local _G = _G
 local tonumber, type, pairs, select = tonumber, type, pairs, select
-local lower, split, format = string.lower, string.split, format
+local lower, split, format = strlower, strsplit, format
 --WoW API / Variables
 local EnableAddOn, DisableAllAddOns = EnableAddOn, DisableAllAddOns
 local SetCVar = SetCVar
@@ -20,16 +19,14 @@ local UpdateAddOnCPUUsage, GetAddOnCPUUsage = UpdateAddOnCPUUsage, GetAddOnCPUUs
 local ResetCPUUsage = ResetCPUUsage
 local GetAddOnInfo = GetAddOnInfo
 local GetCVarBool = GetCVarBool
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: Minimap, MacroEditBox, HelloKittyLeft
+-- GLOBALS: ElvUIGrid
 
 function E:Grid(msg)
 	msg = msg and tonumber(msg)
 	if type(msg) == "number" and (msg <= 256 and msg >= 4) then
 		E.db.gridSize = msg
 		E:Grid_Show()
-	elseif _G.ElvUIGrid and _G.ElvUIGrid:IsShown() then
+	elseif ElvUIGrid and ElvUIGrid:IsShown() then
 		E:Grid_Hide()
 	else
 		E:Grid_Show()
@@ -61,7 +58,7 @@ function E:BGStats()
 end
 
 local function OnCallback(command)
-	MacroEditBox:GetScript("OnEvent")(MacroEditBox, "EXECUTE_CHAT_LINE", command)
+	_G.MacroEditBox:GetScript("OnEvent")(_G.MacroEditBox, "EXECUTE_CHAT_LINE", command)
 end
 
 function E:DelayScriptCall(msg)

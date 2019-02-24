@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local select = select
@@ -86,7 +85,7 @@ local function LoadSkin()
 			local region = select(i, self:GetRegions())
 			if region and region:IsObjectType('Texture') then
 				if not ((region == self.Background) or (self.Currency and self.Currency.Icon and region == self.Currency.Icon)) then
-					region:SetTexture(nil)
+					region:SetTexture()
 				end
 			end
 		end
@@ -114,7 +113,7 @@ local function LoadSkin()
 				child:CreateBackdrop()
 				child.Border:SetAlpha(0)
 				child.Highlight:SetAlpha(0)
-				child.AlphaIconOverlay:SetTexture(nil)
+				child.AlphaIconOverlay:SetTexture()
 				child.Icon:SetTexCoord(unpack(E.TexCoords))
 				child.Icon:SetInside(child.backdrop)
 				child.hover:SetInside(child.backdrop)

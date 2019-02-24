@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
---Cache global variables
 --Lua functions
 local _G = _G
 local format = format
@@ -16,19 +15,14 @@ local LEVEL = LEVEL
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: UIParent, ElvUI_NPCTitleTextLeft2
 
-local tooltip = CreateFrame("GameTooltip", "ElvUI_NPCTitle", UIParent, "GameTooltipTemplate")
-tooltip:SetPoint("CENTER")
-tooltip:SetSize(200, 200)
-GameTooltip_SetDefaultAnchor(tooltip, UIParent)
-
 function mod:UpdateElement_NPCTitle(frame, triggered)
 	if self.db.showNPCTitles and not UnitIsPlayer(frame.unit) and not UnitPlayerControlled(frame.unit) and (triggered or (not self.db.units[frame.UnitType].healthbar.enable and (not self.db.alwaysShowTargetHealth or not UnitIsUnit("target", frame.unit)))) then
-		tooltip:SetOwner(UIParent, "ANCHOR_NONE")
-		tooltip:SetUnit(frame.unit)
-		tooltip:Show()
+		E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+		E.ScanTooltip:SetUnit(frame.unit)
+		E.ScanTooltip:Show()
 
-		local title = _G[format('ElvUI_NPCTitleTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
-		tooltip:Hide()
+		local title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
+		E.ScanTooltip:Hide()
 
 		if not title or title:find('^'..LEVEL) then return end
 		frame.NPCTitle:SetText(title)

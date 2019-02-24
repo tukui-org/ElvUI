@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
@@ -14,49 +13,6 @@ local GetGuildRewardInfo = GetGuildRewardInfo
 local GetItemQualityColor = GetItemQualityColor
 local GetItemInfo = GetItemInfo
 local Enum = Enum
-
-local function SkinTab(tab)
-	local normTex = tab:GetNormalTexture()
-	if normTex then
-		normTex:SetTexCoord(unpack(E.TexCoords))
-		normTex:SetInside()
-	end
-
-	if not tab.isSkinned then
-		for i = 1, tab:GetNumRegions() do
-			local region = select(i, tab:GetRegions())
-			if region:IsObjectType('Texture') then
-				if region:GetTexture() == "Interface\\SpellBook\\SpellBook-SkillLineTab" then
-					region:Kill()
-				end
-			end
-		end
-
-		tab.pushed = true;
-		tab:CreateBackdrop("Default")
-		tab.backdrop:Point("TOPLEFT", -2, 2)
-		tab.backdrop:Point("BOTTOMRIGHT", 2, -2)
-		tab:StyleButton(true)
-		tab.Icon:SetTexCoord(unpack(E.TexCoords))
-
-		hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
-			if texPath ~= nil then
-				self:SetPushedTexture(nil);
-			end
-		end)
-
-		hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
-			if texPath ~= nil then
-				self:SetHighlightTexture(nil);
-			end
-		end)
-
-		local point, relatedTo, point2, _, y = tab:GetPoint()
-		tab:Point(point, relatedTo, point2, 1, y)
-	end
-
-	tab.isSkinned = true
-end
 
 local function UpdateNames(self)
 	if not self.expanded then return end
@@ -97,7 +53,7 @@ local function LoadSkin()
 			self.Background:Hide()
 			self:SetFrameLevel(self:GetFrameLevel()+5)
 
-			S:HandleTexture(self.Icon)
+			S:HandleIcon(self.Icon)
 			self.Icon:RemoveMaskTexture(self.CircleMask)
 			self.Icon:SetDrawLayer("OVERLAY", 1)
 			self.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -132,7 +88,7 @@ local function LoadSkin()
 		--select(13, self:GetRegions()):Hide() -- Hide the mouseover texture (needs some love)
 		self.Background:Hide()
 		self:SetFrameLevel(self:GetFrameLevel()+5)
-		S:HandleTexture(self.Icon)
+		S:HandleIcon(self.Icon)
 		self.CircleMask:Hide()
 		self.Icon:SetDrawLayer("OVERLAY", 1)
 		self.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -151,25 +107,30 @@ local function LoadSkin()
 		highlight:SetInside(self.bg)
 	end)
 
-	SkinTab(CommunitiesFrame.ChatTab)
-	SkinTab(CommunitiesFrame.RosterTab)
-	SkinTab(CommunitiesFrame.GuildBenefitsTab)
-	SkinTab(CommunitiesFrame.GuildInfoTab)
+	S:HandleItemButton(CommunitiesFrame.ChatTab)
+	CommunitiesFrame.ChatTab:SetPoint('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
+	S:HandleItemButton(CommunitiesFrame.RosterTab)
+	S:HandleItemButton(CommunitiesFrame.GuildBenefitsTab)
+	S:HandleItemButton(CommunitiesFrame.GuildInfoTab)
 
 	S:HandleInsetFrame(CommunitiesFrame.CommunitiesList)
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)
+	CommunitiesFrame.MaximizeMinimizeFrame:ClearAllPoints()
+	CommunitiesFrame.MaximizeMinimizeFrame:SetPoint("RIGHT", CommunitiesFrame.CloseButton, "LEFT", 12, 0)
+
+
 	S:HandleButton(CommunitiesFrame.InviteButton)
 	CommunitiesFrame.AddToChatButton:ClearAllPoints()
 	CommunitiesFrame.AddToChatButton:SetPoint("BOTTOM", CommunitiesFrame.ChatEditBox, "BOTTOMRIGHT", -5, -30) -- needs probably adjustment
 	S:HandleButton(CommunitiesFrame.AddToChatButton)
 	S:HandleButton(CommunitiesFrame.GuildFinderFrame.FindAGuildButton)
 
-	S:HandleScrollSlider(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
-	S:HandleScrollSlider(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
-	S:HandleScrollSlider(_G.CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
+	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
+	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
+	S:HandleScrollBar(_G.CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
 
-	S:HandleDropDownFrame(CommunitiesFrame.StreamDropDownMenu)
-	S:HandleDropDownFrame(CommunitiesFrame.CommunitiesListDropDownMenu)
+	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
+	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
 
 	-- [[ CHAT TAB ]]
 	CommunitiesFrame.MemberList:StripTextures()
@@ -193,7 +154,7 @@ local function LoadSkin()
 	S:HandleCloseButton(CommunitiesFrame.GuildMemberDetailFrame.CloseButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.RemoveButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.GroupInviteButton)
-	S:HandleDropDownFrame(CommunitiesFrame.GuildMemberDetailFrame.RankDropdown)
+	S:HandleDropDownBox(CommunitiesFrame.GuildMemberDetailFrame.RankDropdown)
 
 	-- [[ ROSTER TAB ]]
 	local MemberList = CommunitiesFrame.MemberList
@@ -205,7 +166,7 @@ local function LoadSkin()
 	ColumnDisplay.InsetBorderTop:Hide()
 
 	S:HandleInsetFrame(CommunitiesFrame.MemberList.InsetFrame)
-	S:HandleDropDownFrame(CommunitiesFrame.GuildMemberListDropDownMenu)
+	S:HandleDropDownBox(CommunitiesFrame.GuildMemberListDropDownMenu)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildControlButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
@@ -261,7 +222,7 @@ local function LoadSkin()
 		local button = _G["CommunitiesFrameContainerButton"..i]
 		button:DisableDrawLayer("BACKGROUND")
 		button:DisableDrawLayer("BORDER")
-		button:CreateBackdrop("Default")
+		button:CreateBackdrop()
 
 		button.Icon:SetTexCoord(unpack(E.TexCoords))
 	end
@@ -270,11 +231,11 @@ local function LoadSkin()
 
 	GuildBenefitsFrame.Rewards.Bg:Hide()
 
-	S:HandleScrollSlider(_G.CommunitiesFrameRewards.scrollBar)
+	S:HandleScrollBar(_G.CommunitiesFrameRewards.scrollBar)
 
 	for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
 		if not button.backdrop then
-			button:CreateBackdrop("Default")
+			button:CreateBackdrop()
 		end
 
 		button:SetNormalTexture("")
@@ -290,7 +251,7 @@ local function LoadSkin()
 
 		button.Icon:SetTexCoord(unpack(E.TexCoords))
 		if not button.Icon.backdrop then
-			button.Icon:CreateBackdrop("Default")
+			button.Icon:CreateBackdrop()
 			button.Icon.backdrop:SetOutside(button.Icon, 1, 1)
 			button.Icon.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel() + 1)
 		end
@@ -323,7 +284,7 @@ local function LoadSkin()
 	bg:SetPoint("TOPLEFT", 0, -3)
 	bg:SetPoint("BOTTOMRIGHT", 0, 1)
 	bg:SetFrameLevel(StatusBar:GetFrameLevel())
-	bg:CreateBackdrop("Default")
+	bg:CreateBackdrop()
 
 	-- [[ INFO TAB ]]
 	local GuildDetails = _G.CommunitiesFrameGuildDetailsFrame
@@ -386,7 +347,7 @@ local function LoadSkin()
 	_G.CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
 	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoScrollBar)
-	S:HandleScrollSlider(_G.CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
+	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
 	-- Filters Frame
@@ -474,13 +435,13 @@ local function LoadSkin()
 	NotificationSettings:CreateBackdrop("Transparent")
 	NotificationSettings.backdrop:SetAllPoints()
 
-	S:HandleDropDownFrame(CommunitiesFrame.NotificationSettingsDialog.CommunitiesListDropDownMenu)
+	S:HandleDropDownBox(CommunitiesFrame.NotificationSettingsDialog.CommunitiesListDropDownMenu)
 	S:HandleCheckBox(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.QuickJoinButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.AllButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.NoneButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.OkayButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.CancelButton)
-	S:HandleScrollSlider(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar) -- Adjust me
+	S:HandleScrollBar(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar) -- Adjust me
 
 	-- Create Channel Dialog
 	local EditStreamDialog = CommunitiesFrame.EditStreamDialog
@@ -545,10 +506,10 @@ local function LoadSkin()
 	S:HandleButton(TicketManager.Close)
 	S:HandleButton(TicketManager.GenerateLinkButton)
 
-	S:HandleDropDownFrame(TicketManager.ExpiresDropDownMenu)
-	S:HandleDropDownFrame(TicketManager.UsesDropDownMenu)
+	S:HandleDropDownBox(TicketManager.ExpiresDropDownMenu)
+	S:HandleDropDownBox(TicketManager.UsesDropDownMenu)
 
-	S:HandleScrollSlider(TicketManager.InviteManager.ListScrollFrame.scrollBar)
+	S:HandleScrollBar(TicketManager.InviteManager.ListScrollFrame.scrollBar)
 	S:HandleButton(TicketManager.MaximizeButton)
 end
 

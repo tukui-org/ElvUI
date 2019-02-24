@@ -2,20 +2,19 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 local LBG = E.Libs.ButtonGlow
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack, ipairs, pairs, select = unpack, ipairs, pairs, select
-local min, lower = math.min, string.lower
+local min, strlower = min, strlower
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
-local GetLFGProposal = GetLFGProposal
 local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
-local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
+local GetLFGProposal = GetLFGProposal
+local GetLFGProposalMember = GetLFGProposalMember
+local hooksecurefunc = hooksecurefunc
+local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
-local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
+local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 
 local function LFDQueueFrameRoleButtonIconOnShow(self)
@@ -26,52 +25,67 @@ local function LFDQueueFrameRoleButtonIconOnHide(self)
 end
 
 local function HandleGoldIcon(button)
-	_G[button.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
-	_G[button.."IconTexture"]:SetDrawLayer("OVERLAY")
-	_G[button.."Count"]:SetDrawLayer("OVERLAY")
-	_G[button.."NameFrame"]:SetTexture()
-	_G[button.."NameFrame"]:SetSize(118, 39)
+	local Button = _G[button]
+	if Button.backdrop then return end
 
-	_G[button].border = CreateFrame("Frame", nil, _G[button])
-	_G[button].border:SetTemplate()
-	_G[button].border:SetOutside(_G[button.."IconTexture"])
-	_G[button.."IconTexture"]:SetParent(_G[button].border)
-	_G[button.."Count"]:SetParent(_G[button].border)
+	local count = _G[button.."Count"]
+	local nameFrame = _G[button.."NameFrame"]
+	local iconTexture = _G[button.."IconTexture"]
+
+	Button:CreateBackdrop()
+	Button.backdrop:ClearAllPoints()
+	Button.backdrop:Point("LEFT", 1, 0)
+	Button.backdrop:Size(42)
+
+	iconTexture:SetTexCoord(unpack(E.TexCoords))
+	iconTexture:SetDrawLayer("OVERLAY")
+	iconTexture:SetParent(Button.backdrop)
+	iconTexture:SetSnapToPixelGrid(false)
+	iconTexture:SetTexelSnappingBias(0)
+	iconTexture:SetInside()
+
+	count:SetParent(Button.backdrop)
+	count:SetDrawLayer("OVERLAY")
+
+	nameFrame:SetTexture()
+	nameFrame:SetSize(118, 39)
 end
 
 local function SkinItemButton(parentFrame, _, index)
-	local parentName = parentFrame:GetName();
-	local item = _G[parentName.."Item"..index];
+	local parentName = parentFrame:GetName()
+	local item = _G[parentName.."Item"..index]
 
-	if item and not item.isSkinned then
-		item.border = CreateFrame("Frame", nil, item)
-		item.border:SetTemplate()
-		item.border:SetOutside(item.Icon)
-
-		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
-			self:GetParent().border:SetBackdropBorderColor(r, g, b)
-			self:SetTexture("")
-		end)
-		hooksecurefunc(item.IconBorder, "Hide", function(self)
-			self:GetParent().border:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
+	if item and not item.backdrop then
+		item:CreateBackdrop()
+		item.backdrop:ClearAllPoints()
+		item.backdrop:Point("LEFT", 1, 0)
+		item.backdrop:Size(42)
 
 		item.Icon:SetTexCoord(unpack(E.TexCoords))
 		item.Icon:SetDrawLayer("OVERLAY")
-		item.Icon:SetParent(item.border)
+		item.Icon:SetParent(item.backdrop)
+		item.Icon:SetSnapToPixelGrid(false)
+		item.Icon:SetTexelSnappingBias(0)
+		item.Icon:SetInside()
+
+		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
+			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+			self:SetTexture()
+		end)
+		hooksecurefunc(item.IconBorder, "Hide", function(self)
+			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
 
 		item.Count:SetDrawLayer("OVERLAY")
-		item.Count:SetParent(item.border)
+		item.Count:SetParent(item.backdrop)
 
 		item.NameFrame:SetTexture()
 		item.NameFrame:SetSize(118, 39)
 
-		item.shortageBorder:SetTexture(nil)
+		item.shortageBorder:SetTexture()
 
-		item.roleIcon1:SetParent(item.border)
-		item.roleIcon2:SetParent(item.border)
-
-		item.isSkinned = true
+		item.roleIcon1:SetParent(item.backdrop)
+		item.roleIcon2:SetParent(item.backdrop)
 	end
 end
 
@@ -82,8 +96,8 @@ end
 
 local function HandleAffixIcons(self)
 	for _, frame in ipairs(self.Affixes) do
-		frame.Border:SetTexture(nil)
-		frame.Portrait:SetTexture(nil)
+		frame.Border:SetTexture()
+		frame.Portrait:SetTexture()
 
 		if frame.info then
 			frame.Portrait:SetTexture(_G.CHALLENGE_MODE_EXTRA_AFFIX_INFO[frame.info.key].texture)
@@ -125,6 +139,7 @@ local function LoadSkin()
 	_G.LFGDungeonReadyStatus:SetTemplate("Transparent")
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
+
 	hooksecurefunc("LFGDungeonReadyPopup_Update", function()
 		local _, _, _, _, _, _, role = GetLFGProposal()
 		if _G.LFGDungeonReadyDialogRoleIcon:IsShown() then
@@ -141,6 +156,21 @@ local function LoadSkin()
 	hooksecurefunc(_G.LFGDungeonReadyDialog, "SetBackdrop", function(self, backdrop)
 		if backdrop.bgFile ~= E.media.blankTex then
 			self:SetTemplate("Transparent")
+		end
+	end)
+
+	hooksecurefunc("LFGDungeonReadyStatusIndividual_UpdateIcon", function(button)
+		local _, role = GetLFGProposalMember(button:GetID())
+
+		button.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+		button.texture:SetAlpha(0.6)
+
+		if role == "DAMAGER" then
+			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+		elseif role == "TANK" then
+			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+		elseif role == "HEALER" then
+			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
 		end
 	end)
 
@@ -194,7 +224,7 @@ local function LoadSkin()
 				roleButton.background:SetAlpha(0.65)
 
 				local buttonName = roleButton:GetName() ~= nil and roleButton:GetName() or roleButton.role
-				roleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole((lower(buttonName):find("tank") and "TANK") or (lower(buttonName):find("healer") and "HEALER") or "DAMAGER"))
+				roleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole((strlower(buttonName):find("tank") and "TANK") or (strlower(buttonName):find("healer") and "HEALER") or "DAMAGER"))
 			end
 		end
 	end
@@ -210,35 +240,35 @@ local function LoadSkin()
 		checkButton:Point("BOTTOMLEFT", 0, 0)
 	end
 	hooksecurefunc("LFGListApplicationDialog_UpdateRoles", function(self) --Copy from Blizzard, we just fix position
-		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles();
+		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles()
 
-		local avail1, avail2;
+		local avail1, avail2
 		if ( availTank ) then
-			avail1 = self.TankButton;
+			avail1 = self.TankButton
 		end
 		if ( availHealer ) then
 			if ( avail1 ) then
-				avail2 = self.HealerButton;
+				avail2 = self.HealerButton
 			else
-				avail1 = self.HealerButton;
+				avail1 = self.HealerButton
 			end
 		end
 		if ( availDPS ) then
 			if ( avail1 ) then
-				avail2 = self.DamagerButton;
+				avail2 = self.DamagerButton
 			else
-				avail1 = self.DamagerButton;
+				avail1 = self.DamagerButton
 			end
 		end
 
 		if ( avail2 ) then
 			avail1:ClearAllPoints();
-			avail1:SetPoint("TOPRIGHT", self, "TOP", -40, -35);
-			avail2:ClearAllPoints();
-			avail2:SetPoint("TOPLEFT", self, "TOP", 40, -35);
+			avail1:SetPoint("TOPRIGHT", self, "TOP", -40, -35)
+			avail2:ClearAllPoints()
+			avail2:SetPoint("TOPLEFT", self, "TOP", 40, -35)
 		elseif ( avail1 ) then
-			avail1:ClearAllPoints();
-			avail1:SetPoint("TOP", self, "TOP", 0, -35);
+			avail1:ClearAllPoints()
+			avail1:SetPoint("TOP", self, "TOP", 0, -35)
 		end
 	end)
 
@@ -286,7 +316,7 @@ local function LoadSkin()
 		bu.icon:Size(45)
 		bu.icon:ClearAllPoints()
 		bu.icon:Point("LEFT", 10, 0)
-		S:HandleTexture(bu.icon, bu)
+		S:HandleIcon(bu.icon, true)
 	end
 
 	for i = 1, 3 do
@@ -412,18 +442,18 @@ local function LoadSkin()
 				tab:GetNormalTexture():SetInside()
 
 				tab.pushed = true;
-				tab:CreateBackdrop("Default")
+				tab:CreateBackdrop()
 				tab.backdrop:SetAllPoints()
 				tab:StyleButton(true)
 				hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
 					if texPath ~= nil then
-						self:SetTexture(nil);
+						self:SetTexture();
 					end
 				end)
 
 				hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
 					if texPath ~= nil then
-						self:SetTexture(nil);
+						self:SetTexture();
 					end
 				end	)
 			end
@@ -638,7 +668,7 @@ local function LoadSkin()
 		local button = self.CategoryButtons[btnIndex]
 		if(button) then
 			if not button.isSkinned then
-				button:SetTemplate("Default")
+				button:SetTemplate()
 				button.Icon:SetDrawLayer("BACKGROUND", 2)
 				button.Icon:SetTexCoord(unpack(E.TexCoords))
 				button.Icon:SetInside()
@@ -684,7 +714,7 @@ local function LoadSecondarySkin()
 				frame:GetRegions():SetAlpha(0)
 				frame:CreateBackdrop("Transparent")
 				frame.backdrop:SetAllPoints()
-				S:HandleTexture(frame.Icon, frame)
+				S:HandleIcon(frame.Icon, true)
 				frame.Icon:SetInside()
 			end
 		end
@@ -707,6 +737,9 @@ local function LoadSecondarySkin()
 	-- New Season Frame
 	local NoticeFrame = _G.ChallengesFrame.SeasonChangeNoticeFrame
 	S:HandleButton(NoticeFrame.Leave)
+	NoticeFrame:StripTextures()
+	NoticeFrame:CreateBackdrop("Overlay")
+	NoticeFrame:SetFrameLevel(5)
 	NoticeFrame.NewSeason:SetTextColor(1, .8, 0)
 	NoticeFrame.NewSeason:SetShadowOffset(1, -1)
 	NoticeFrame.SeasonDescription:SetTextColor(1, 1, 1)

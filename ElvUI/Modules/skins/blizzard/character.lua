@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local unpack, select = unpack, select
@@ -20,7 +19,7 @@ local UNIGNORESLOT_LOCATION = 0xFFFFFFFD
 local function UpdateAzeriteItem(self)
 	if not self.styled then
 		self.AzeriteTexture:SetAlpha(0)
-		self.RankFrame.Texture:SetTexture("")
+		self.RankFrame.Texture:SetTexture()
 		self.RankFrame.Label:FontTemplate(nil, nil, "OUTLINE")
 
 		self.styled = true
@@ -31,7 +30,8 @@ end
 
 local function UpdateAzeriteEmpoweredItem(self)
 	self.AzeriteTexture:SetAtlas("AzeriteIconFrame")
-	self.AzeriteTexture:SetAllPoints()
+	self.AzeriteTexture:SetInside()
+	self.AzeriteTexture:SetTexCoord(unpack(E.TexCoords))
 	self.AzeriteTexture:SetDrawLayer("BORDER", 1)
 end
 
@@ -76,20 +76,20 @@ local function SkinItemFlyouts()
 
 	for i, button in ipairs(buttons) do
 		if buttonAnchor["bg"..i] and buttonAnchor["bg"..i]:GetTexture() ~= nil then
-			buttonAnchor["bg"..i]:SetTexture(nil)
+			buttonAnchor["bg"..i]:SetTexture()
 		end
 
 		if not button.isHooked then
 			button.isHooked = true
 			button:StyleButton(false)
-			button:GetNormalTexture():SetTexture(nil)
+			button:GetNormalTexture():SetTexture()
 
 			button.icon:SetInside()
 			button.icon:SetTexCoord(unpack(E.TexCoords))
 
 			if not button.backdrop then
 				button:SetFrameLevel(buttonAnchor:GetFrameLevel()+2)
-				button:CreateBackdrop("Default")
+				button:CreateBackdrop()
 				button.backdrop:SetAllPoints()
 
 				if i ~= 1 then -- dont call this intially on placeInBags button
@@ -105,10 +105,10 @@ local function SkinItemFlyouts()
 					end)
 				end
 
-				button.IconBorder:SetTexture("")
+				button.IconBorder:SetTexture()
 				hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
 					self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-					self:SetTexture("")
+					self:SetTexture()
 				end)
 				hooksecurefunc(button.IconBorder, 'Hide', function(self)
 					self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -126,14 +126,14 @@ local function FixSidebarTabCoords()
 		local tab = _G["PaperDollSidebarTab"..i]
 
 		if tab and not tab.backdrop then
-			tab:CreateBackdrop("Default")
+			tab:CreateBackdrop()
 			tab.Icon:SetAllPoints()
 			tab.Highlight:SetColorTexture(1, 1, 1, 0.3)
 			tab.Highlight:SetAllPoints()
 
 			-- Check for DejaCharacterStats. Lets hide the Texture if the AddOn is loaded.
 			if IsAddOnLoaded("DejaCharacterStats") then
-				tab.Hider:SetTexture("")
+				tab.Hider:SetTexture()
 			else
 				tab.Hider:SetColorTexture(0.0, 0.0, 0.0, 0.8)
 			end
@@ -181,17 +181,17 @@ local function UpdateFactionSkins()
 			statusbar:SetStatusBarTexture(E.media.normTex)
 
 			if not statusbar.backdrop then
-				statusbar:CreateBackdrop("Default")
+				statusbar:CreateBackdrop()
 				E:RegisterStatusBar(statusbar)
 			end
 
-			_G["ReputationBar"..i.."Background"]:SetTexture(nil)
-			_G["ReputationBar"..i.."ReputationBarHighlight1"]:SetTexture(nil)
-			_G["ReputationBar"..i.."ReputationBarHighlight2"]:SetTexture(nil)
-			_G["ReputationBar"..i.."ReputationBarAtWarHighlight1"]:SetTexture(nil)
-			_G["ReputationBar"..i.."ReputationBarAtWarHighlight2"]:SetTexture(nil)
-			_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetTexture(nil)
-			_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetTexture(nil)
+			_G["ReputationBar"..i.."Background"]:SetTexture()
+			_G["ReputationBar"..i.."ReputationBarHighlight1"]:SetTexture()
+			_G["ReputationBar"..i.."ReputationBarHighlight2"]:SetTexture()
+			_G["ReputationBar"..i.."ReputationBarAtWarHighlight1"]:SetTexture()
+			_G["ReputationBar"..i.."ReputationBarAtWarHighlight2"]:SetTexture()
+			_G["ReputationBar"..i.."ReputationBarLeftTexture"]:SetTexture()
+			_G["ReputationBar"..i.."ReputationBarRightTexture"]:SetTexture()
 		end
 	end
 
@@ -276,7 +276,7 @@ local function LoadSkin()
 
 	for _, Slot in pairs({_G.PaperDollItemsFrame:GetChildren()}) do
 		if Slot:IsObjectType("Button") or Slot:IsObjectType("ItemButton") then
-			S:HandleTexture(Slot.icon)
+			S:HandleIcon(Slot.icon)
 			Slot:StripTextures()
 			Slot:SetTemplate()
 			Slot:StyleButton(Slot)
@@ -370,7 +370,7 @@ local function LoadSkin()
 	_G.EquipmentFlyoutFrame.NavigationFrame:SetTemplate("Transparent")
 	_G.EquipmentFlyoutFrame.NavigationFrame:Point("TOPLEFT", _G.EquipmentFlyoutFrameButtons, "BOTTOMLEFT", 0, -E.Border - E.Spacing)
 	_G.EquipmentFlyoutFrame.NavigationFrame:Point("TOPRIGHT", _G.EquipmentFlyoutFrameButtons, "BOTTOMRIGHT", 0, -E.Border - E.Spacing)
-	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton, nil, true)
+	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton)
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
 	--Swap item flyout frame (shown when holding alt over a slot)
@@ -394,7 +394,7 @@ local function LoadSkin()
 
 	--Re-add the overlay texture which was removed right above via StripTextures
 	_G.CharacterModelFrameBackgroundOverlay:SetColorTexture(0,0,0)
-	_G.CharacterModelFrame:CreateBackdrop("Default")
+	_G.CharacterModelFrame:CreateBackdrop()
 	_G.CharacterModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	_G.CharacterModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
@@ -403,9 +403,9 @@ local function LoadSkin()
 	--Titles
 	_G.PaperDollTitlesPane:HookScript("OnShow", function()
 		for _, object in pairs(_G.PaperDollTitlesPane.buttons) do
-			object.BgTop:SetTexture(nil)
-			object.BgBottom:SetTexture(nil)
-			object.BgMiddle:SetTexture(nil)
+			object.BgTop:SetTexture()
+			object.BgBottom:SetTexture()
+			object.BgMiddle:SetTexture()
 			object.text:FontTemplate()
 			hooksecurefunc(object.text, "SetFont", function(self, font)
 				if font ~= E.media.normFont then
@@ -422,13 +422,13 @@ local function LoadSkin()
 	_G.PaperDollEquipmentManagerPaneSaveSet:Width(_G.PaperDollEquipmentManagerPaneSaveSet:GetWidth() - 8)
 	_G.PaperDollEquipmentManagerPaneEquipSet:Point("TOPLEFT", _G.PaperDollEquipmentManagerPane, "TOPLEFT", 8, 0)
 	_G.PaperDollEquipmentManagerPaneSaveSet:Point("LEFT", _G.PaperDollEquipmentManagerPaneEquipSet, "RIGHT", 4, 0)
-	_G.PaperDollEquipmentManagerPaneEquipSet.ButtonBackground:SetTexture(nil)
+	_G.PaperDollEquipmentManagerPaneEquipSet.ButtonBackground:SetTexture()
 
 	--Itemset buttons
 	for _, object in pairs(_G.PaperDollEquipmentManagerPane.buttons) do
-		object.BgTop:SetTexture(nil)
-		object.BgBottom:SetTexture(nil)
-		object.BgMiddle:SetTexture(nil)
+		object.BgTop:SetTexture()
+		object.BgBottom:SetTexture()
+		object.BgMiddle:SetTexture()
 		object.icon:Size(36, 36)
 		object.icon:SetTexCoord(unpack(E.TexCoords))
 		--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
@@ -473,13 +473,13 @@ local function LoadSkin()
 		local icon = reward.Icon
 		tooltip:SetTemplate("Transparent")
 		if icon then
-			S:HandleIcon(icon)
+			S:HandleIcon(icon, true)
 			hooksecurefunc(reward.IconBorder, "SetVertexColor", function(self, r, g, b)
-				self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-				self:SetTexture("")
+				self:GetParent().Icon.backdrop:SetBackdropBorderColor(r, g, b)
+				self:SetTexture()
 			end)
 			hooksecurefunc(reward.IconBorder, "Hide", function(self)
-				self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				self:GetParent().Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 		end
 		tooltip:HookScript("OnShow", function(self)

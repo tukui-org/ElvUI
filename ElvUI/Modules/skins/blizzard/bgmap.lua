@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 --WoW API / Variables
@@ -49,15 +48,10 @@ local function LoadSkin()
 	BattlefieldMapFrame:StripTextures()
 
 	refreshAlpha() -- will need this soon
-	BattlefieldMapFrame:CreateBackdrop('Default')
+	BattlefieldMapFrame:CreateBackdrop()
 	BattlefieldMapFrame:SetFrameStrata('LOW')
 	BattlefieldMapFrame.backdrop:SetOutside(BattlefieldMapFrame.ScrollContainer)
 	BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, oldAlpha)
-
-	BattlefieldMapFrame.backdrop.backdropTexture:SetTexture(nil)
-	hooksecurefunc(BattlefieldMapFrame.backdrop.backdropTexture, "SetTexture", function(self, texture)
-		if texture ~= nil then self:SetTexture(nil) end
-	end)
 
 	BattlefieldMapFrame:EnableMouse(true)
 	BattlefieldMapFrame:SetMovable(true)

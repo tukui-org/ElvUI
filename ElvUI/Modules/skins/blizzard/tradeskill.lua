@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local ipairs, unpack = ipairs, unpack
@@ -24,7 +23,7 @@ local function SkinRecipeList(self, _, tradeSkillInfo)
 		self.SubSkillRankBar.BorderRight:Hide()
 
 		if not self.SubSkillRankBar.backdrop then
-			self.SubSkillRankBar:CreateBackdrop("Default")
+			self.SubSkillRankBar:CreateBackdrop()
 			self.SubSkillRankBar.backdrop:SetAllPoints()
 			self.SubSkillRankBar:SetStatusBarTexture(E.media.normTex)
 			E:RegisterStatusBar(self.SubSkillRankBar)
@@ -41,7 +40,7 @@ local function LoadSkin()
 
 	TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
 	TradeSkillFrame.RankFrame:StripTextures()
-	TradeSkillFrame.RankFrame:CreateBackdrop("Default")
+	TradeSkillFrame.RankFrame:CreateBackdrop()
 	TradeSkillFrame.RankFrame:SetStatusBarTexture(E.media.normTex)
 	TradeSkillFrame.RankFrame.RankText:FontTemplate()
 	E:RegisterStatusBar(TradeSkillFrame.RankFrame)
@@ -49,7 +48,7 @@ local function LoadSkin()
 	TradeSkillFrame.LinkToButton:GetNormalTexture():SetTexCoord(0.25, 0.7, 0.37, 0.75)
 	TradeSkillFrame.LinkToButton:GetPushedTexture():SetTexCoord(0.25, 0.7, 0.45, 0.8)
 	TradeSkillFrame.LinkToButton:GetHighlightTexture():Kill()
-	TradeSkillFrame.LinkToButton:CreateBackdrop("Default")
+	TradeSkillFrame.LinkToButton:CreateBackdrop()
 	TradeSkillFrame.LinkToButton:Size(17, 14)
 	TradeSkillFrame.LinkToButton:SetPoint("BOTTOMRIGHT", TradeSkillFrame.FilterButton, "TOPRIGHT", -2, 4)
 	TradeSkillFrame.bg1 = CreateFrame("Frame", nil, TradeSkillFrame)
@@ -84,7 +83,7 @@ local function LoadSkin()
 
 	S:HandleScrollBar(TradeSkillFrame.DetailsFrame.ScrollBar)
 
-	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.DecrementButton, nil, true)
+	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.DecrementButton)
 	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton)
 	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton:Point("LEFT", TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, "RIGHT", 4, 0)
 
@@ -95,9 +94,9 @@ local function LoadSkin()
 			ResultIcon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 			ResultIcon:GetNormalTexture():SetInside()
 		end
-		ResultIcon:SetTemplate("Default")
-		ResultIcon.IconBorder:SetTexture(nil)
-		ResultIcon.ResultBorder:SetTexture(nil)
+		ResultIcon:SetTemplate()
+		ResultIcon.IconBorder:SetTexture()
+		ResultIcon.ResultBorder:SetTexture()
 
 		for i = 1, #TradeSkillFrame.DetailsFrame.Contents.Reagents do
 			local Button = TradeSkillFrame.DetailsFrame.Contents.Reagents[i]
@@ -109,7 +108,7 @@ local function LoadSkin()
 			if not Icon.backdrop then
 				Icon.backdrop = CreateFrame("Frame", nil, Button)
 				Icon.backdrop:SetFrameLevel(Button:GetFrameLevel() - 1)
-				Icon.backdrop:SetTemplate("Default")
+				Icon.backdrop:SetTemplate()
 				Icon.backdrop:SetOutside(Icon)
 			end
 
@@ -138,7 +137,7 @@ local function LoadSkin()
 	TradeSkillFrame.DetailsFrame.GuildFrame.Container:StripTextures()
 	TradeSkillFrame.DetailsFrame.GuildFrame.Container:SetTemplate("Transparent")
 	-- S:HandleScrollBar(TradeSkillFrame.DetailsFrame.GuildFrame.Container.ScrollFrame.scrollBar) --This cannot be skinned due to issues on Blizzards end.
-	S:HandleScrollSlider(TradeSkillFrame.RecipeList.scrollBar)
+	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
 end
 
 S:AddCallbackForAddon("Blizzard_TradeSkillUI", "TradeSkill", LoadSkin)

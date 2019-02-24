@@ -4,16 +4,15 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
---Cache global variables
 --Lua functions
 local _G = _G
 local tinsert = tinsert
 local max = math.max
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local CastingBarFrame_OnLoad = CastingBarFrame_OnLoad
+local CastingBarFrame_SetUnit = CastingBarFrame_SetUnit
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUF_Target
 
 function UF:Construct_PlayerFrame(frame)
@@ -168,6 +167,14 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Castbar
 	UF:Configure_Castbar(frame)
+
+	if (not db.enable and not E.private.unitframe.disabledBlizzardFrames.player) then
+		CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
+		CastingBarFrame_OnLoad(_G.PetCastingBarFrame)
+	elseif not db.enable and E.private.unitframe.disabledBlizzardFrames.player or (db.enable and not db.castbar.enable) then
+		CastingBarFrame_SetUnit(_G.CastingBarFrame, nil)
+		CastingBarFrame_SetUnit(_G.PetCastingBarFrame, nil)
+	end
 
 	--Combat Fade
 	if db.combatfade and not frame:IsElementEnabled('CombatFade') then

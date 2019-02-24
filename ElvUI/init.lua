@@ -10,15 +10,14 @@ To load the AddOn engine inside another addon add this to the top of your file:
 	local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
---Cache global variables
+--Lua functions
 local _G = _G
-local wipe = wipe
+local format = format
 local pairs = pairs
-local unpack = unpack
-local strsplit = string.split
-local format = string.format
+local strsplit = strsplit
 local tcopy = table.copy
-
+local unpack = unpack
+local wipe = wipe
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local issecurevariable = issecurevariable
@@ -33,15 +32,13 @@ local IsAddOnLoaded = IsAddOnLoaded
 local LoadAddOn = LoadAddOn
 local ReloadUI = ReloadUI
 
-local GameMenuFrame = GameMenuFrame
+local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local GameMenuButtonAddons = GameMenuButtonAddons
 local GameMenuButtonLogout = GameMenuButtonLogout
-local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
+local GameMenuFrame = GameMenuFrame
+-- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
--- GLOBALS: UIDROPDOWNMENU_OPEN_MENU, UIDROPDOWNMENU_MAXLEVELS, UIDROPDOWNMENU_MAXBUTTONS, UIDROPDOWNMENU_OPEN_PATCH_VERSION, UIDROPDOWNMENU_VALUE_PATCH_VERSION
--- GLOBALS: GameTooltip, ElvData, ElvPrivateData, ElvCharacterData, ElvDB, ElvPrivateDB, ElvCharacterDB, BINDING_HEADER_ELVUI
-
-BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
+_G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
 local AceAddon = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
@@ -78,8 +75,6 @@ AddOn.Libs = {
 	SpellRange = _G.LibStub('SpellRange-1.0'),
 	ButtonGlow = _G.LibStub('LibButtonGlow-1.0', true),
 	ItemSearch = _G.LibStub('LibItemSearch-1.2-ElvUI'),
-	ItemLevel = _G.LibStub('LibItemLevel-ElvUI'),
-	Inspect = _G.LibStub('LibInspect'),
 	Compress = _G.LibStub('LibCompress'),
 	Base64 = _G.LibStub('LibBase64-1.0-ElvUI'),
 	Masque = _G.LibStub('Masque', true)
@@ -88,6 +83,25 @@ AddOn.Libs = {
 -- backwards compatible for plugins
 AddOn.LSM = AddOn.Libs.LSM
 AddOn.Masque = AddOn.Libs.Masque
+
+function AddOn:ScanTooltipTextures(clean, grabTextures)
+	local textures
+	for i = 1, 10 do
+		local tex = _G["ElvUI_ScanTooltipTexture"..i]
+		local hasTexture = tex and tex:GetTexture()
+		if hasTexture then
+			if grabTextures then
+				if not textures then textures = {} end
+				textures[i] = hasTexture
+			end
+			if clean then
+				tex:SetTexture()
+			end
+		end
+	end
+
+	return textures
+end
 
 function AddOn:OnInitialize()
 	if not ElvCharacterDB then
@@ -100,6 +114,8 @@ function AddOn:OnInitialize()
 
 	self.db = tcopy(self.DF.profile, true);
 	self.global = tcopy(self.DF.global, true);
+
+	local ElvDB = ElvDB
 	if ElvDB then
 		if ElvDB.global then
 			self:CopyTable(self.global, ElvDB.global)
@@ -116,6 +132,8 @@ function AddOn:OnInitialize()
 	end
 
 	self.private = tcopy(self.privateVars.profile, true);
+
+	local ElvPrivateDB = ElvPrivateDB
 	if ElvPrivateDB then
 		local profileKey
 		if ElvPrivateDB.profileKeys then
@@ -127,17 +145,11 @@ function AddOn:OnInitialize()
 		end
 	end
 
-	if self.private.general.pixelPerfect then
-		self.Border = self.mult;
-		self.Spacing = 0;
-		self.PixelMode = true;
-	end
-
-	self:UIScale();
-	self:UpdateMedia();
-
+	self.ScanTooltip = CreateFrame("GameTooltip", "ElvUI_ScanTooltip", _G.UIParent, "GameTooltipTemplate")
+	self.PixelMode = self.private.general.pixelPerfect -- keep this over `UIScale`
+	self:UIScale(true)
+	self:UpdateMedia()
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
-	-- self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 	self:Contruct_StaticPopups()
 	self:InitializeInitialModules()
 
@@ -173,10 +185,10 @@ function AddOn:PositionGameMenuButton()
 	end
 end
 
-local loginFrame=CreateFrame("Frame")
-loginFrame:RegisterEvent("PLAYER_LOGIN")
-loginFrame:SetScript("OnEvent", function(self)
-	AddOn:Initialize(self)
+local LoadUI=CreateFrame("Frame")
+LoadUI:RegisterEvent("PLAYER_LOGIN")
+LoadUI:SetScript("OnEvent", function()
+	AddOn:Initialize()
 end)
 
 function AddOn:PLAYER_REGEN_ENABLED()
@@ -212,6 +224,8 @@ end
 
 function AddOn:ResetProfile()
 	local profileKey
+
+	local ElvPrivateDB = ElvPrivateDB
 	if ElvPrivateDB.profileKeys then
 		profileKey = ElvPrivateDB.profileKeys[self.myname..' - '..self.myrealm]
 	end
@@ -314,19 +328,19 @@ function AddOn:ToggleConfig(msg)
 		ACD:SelectGroup(AddOnName, unpack(pages))
 	end
 
-	GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
+	_G.GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
 end
 
 --HonorFrameLoadTaint workaround
 --credit: https://www.townlong-yak.com/bugs/afKy4k-HonorFrameLoadTaint
-if (UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
-	UIDROPDOWNMENU_VALUE_PATCH_VERSION = 2
+if (_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
+	_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION = 2
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function()
-		if UIDROPDOWNMENU_VALUE_PATCH_VERSION ~= 2 then
+		if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION ~= 2 then
 			return
 		end
-		for i=1, UIDROPDOWNMENU_MAXLEVELS do
-			for j=1, UIDROPDOWNMENU_MAXBUTTONS do
+		for i=1, _G.UIDROPDOWNMENU_MAXLEVELS do
+			for j=1, _G.UIDROPDOWNMENU_MAXBUTTONS do
 				local b = _G["DropDownList" .. i .. "Button" .. j]
 				if not (issecurevariable(b, "value") or b:IsShown()) then
 					b.value = nil
@@ -339,17 +353,17 @@ if (UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
 	end)
 end
 
---DisplayModeCommunitiesTaint workaround
---credit https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeCommunitiesTaint
-if (UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
-	UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
+--CommunitiesUI taint workaround
+--credit https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
+if (_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
+	_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
-		if UIDROPDOWNMENU_OPEN_PATCH_VERSION ~= 1 then
+		if _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION ~= 1 then
 			return
 		end
-		if UIDROPDOWNMENU_OPEN_MENU and UIDROPDOWNMENU_OPEN_MENU ~= frame
-		   and not issecurevariable(UIDROPDOWNMENU_OPEN_MENU, "displayMode") then
-			UIDROPDOWNMENU_OPEN_MENU = nil
+		if _G.UIDROPDOWNMENU_OPEN_MENU and _G.UIDROPDOWNMENU_OPEN_MENU ~= frame
+		   and not issecurevariable(_G.UIDROPDOWNMENU_OPEN_MENU, "displayMode") then
+			_G.UIDROPDOWNMENU_OPEN_MENU = nil
 			local t, f, prefix, i = _G, issecurevariable, " \0", 1
 			repeat
 				i, t[prefix .. i] = i + 1
@@ -358,4 +372,30 @@ if (UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
 	end)
 end
 
-DisableAddOn("ElvUI_EverySecondCounts")
+--CommunitiesUI taint workaround #2
+--credit: https://www.townlong-yak.com/bugs/YhgQma-SetValueRefreshTaint
+if (_G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION or 0) < 1 then
+	_G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION = 1
+	local function CleanDropdowns()
+		if _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION ~= 1 then
+			return
+		end
+		local f, f2 = _G.FriendsFrame, _G.FriendsTabHeader
+		local s = f:IsShown()
+		f:Hide()
+		f:Show()
+		if not f2:IsShown() then
+			f2:Show()
+			f2:Hide()
+		end
+		if not s then
+			f:Hide()
+		end
+	end
+	hooksecurefunc("Communities_LoadUI", CleanDropdowns)
+	hooksecurefunc("SetCVar", function(n)
+		if n == "lastSelectedClubId" then
+			CleanDropdowns()
+		end
+	end)
+end

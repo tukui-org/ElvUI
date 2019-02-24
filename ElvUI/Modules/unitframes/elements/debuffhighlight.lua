@@ -1,11 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Cache global variables
---Lua functions
-
---WoW API / Variables
-
 function UF:Construct_DebuffHighlight(frame)
 	local dbh = frame:CreateTexture(nil, "OVERLAY")
 	dbh:SetInside(frame.Health.backdrop)
@@ -16,7 +11,7 @@ function UF:Construct_DebuffHighlight(frame)
 	frame.DebuffHighlightAlpha = 0.45
 	frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
 
-	frame:CreateShadow('Default')
+	frame:CreateShadow()
 	local x = frame.shadow
 	frame.shadow = nil
 	x:Hide();

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 --WoW API / Variables
@@ -32,6 +31,7 @@ local function LoadSkin()
 	S:HandleButton(_G.QuestChoiceFrameOption2.OptionButtonsContainer.OptionButton1)
 	S:HandleButton(_G.QuestChoiceFrameOption3.OptionButtonsContainer.OptionButton1)
 	S:HandleButton(_G.QuestChoiceFrameOption4.OptionButtonsContainer.OptionButton1)
+
 	S:HandleCloseButton(QuestChoiceFrame.CloseButton)
 	QuestChoiceFrame.CloseButton:SetFrameLevel(10)
 end

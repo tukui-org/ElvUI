@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Cache global variables
 --Lua functions
 local _G = _G
 local ipairs, select, unpack = ipairs, select, unpack
@@ -9,6 +8,9 @@ local ipairs, select, unpack = ipairs, select, unpack
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+
+--GLOBALS: NORMAL_FONT_COLOR
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.calendar ~= true then return end
@@ -77,8 +79,8 @@ local function LoadSkin()
 	_G.CalendarFilterFrameMiddle:Hide()
 	_G.CalendarFilterFrameRight:Hide()
 
-	S:HandleNextPrevButton(_G.CalendarPrevMonthButton)
-	S:HandleNextPrevButton(_G.CalendarNextMonthButton)
+	S:HandleNextPrevButton(_G.CalendarPrevMonthButton, nil, nil, true)
+	S:HandleNextPrevButton(_G.CalendarNextMonthButton, nil, nil, true)
 
 	_G.CalendarFilterFrame:StripTextures()
 	_G.CalendarFilterFrame:Width(155)
@@ -90,17 +92,17 @@ local function LoadSkin()
 	_G.CalendarFilterButton:Point("RIGHT", _G.CalendarFilterFrame, "RIGHT", -10, 3)
 	_G.CalendarFilterButton.SetPoint = E.noop
 
-	S:HandleNextPrevButton(_G.CalendarFilterButton, true)
+	S:HandleNextPrevButton(_G.CalendarFilterButton)
 
-	_G.CalendarFilterFrame:CreateBackdrop("Default")
+	_G.CalendarFilterFrame:CreateBackdrop()
 	_G.CalendarFilterFrame.backdrop:Point("TOPLEFT", 20, 2)
 	_G.CalendarFilterFrame.backdrop:Point("BOTTOMRIGHT", _G.CalendarFilterButton, "BOTTOMRIGHT", 2, -2)
 
-	_G.CalendarContextMenu:SetTemplate("Default")
+	_G.CalendarContextMenu:SetTemplate()
 	_G.CalendarContextMenu.SetBackdropColor = E.noop
 	_G.CalendarContextMenu.SetBackdropBorderColor = E.noop
 
-	_G.CalendarInviteStatusContextMenu:SetTemplate("Default")
+	_G.CalendarInviteStatusContextMenu:SetTemplate()
 	_G.CalendarInviteStatusContextMenu.SetBackdropColor = E.noop
 	_G.CalendarInviteStatusContextMenu.SetBackdropBorderColor = E.noop
 
@@ -130,7 +132,7 @@ local function LoadSkin()
 		vline:SetHeight(548)
 		vline:SetWidth(1)
 		vline:SetPoint("TOP", _G["CalendarDayButton"..i], "TOPRIGHT")
-		vline:CreateBackdrop("Default")
+		vline:CreateBackdrop()
 	end
 
 	for i = 1, 36, 7 do
@@ -138,14 +140,22 @@ local function LoadSkin()
 		hline:SetWidth(637)
 		hline:SetHeight(1)
 		hline:SetPoint("LEFT", _G["CalendarDayButton"..i], "TOPLEFT")
-		hline:CreateBackdrop("Default")
+		hline:CreateBackdrop()
 	end
 
-	_G.CalendarTodayFrame:SetSize(_G.CalendarDayButton1:GetWidth(), _G.CalendarDayButton1:GetHeight())
-	_G.CalendarTodayFrame:SetBackdropBorderColor(0, 0.44, .87, 1)
-	_G.CalendarTodayFrame:SetBackdropColor(0, 0, 0, 0)
-	_G.CalendarTodayFrame:HookScript("OnUpdate", function(self) self:SetAlpha(_G.CalendarTodayTextureGlow:GetAlpha()) end)
+	hooksecurefunc("CalendarFrame_SetToday", function()
+		_G.CalendarTodayFrame:SetAllPoints()
+	end)
+
+	_G.CalendarTodayFrame:SetScript("OnUpdate", nil)
+	_G.CalendarTodayTextureGlow:Hide()
 	_G.CalendarTodayTexture:Hide()
+
+	_G.CalendarTodayFrame:SetBackdrop({
+		edgeFile = E.media.blankTex,
+		edgeSize = 2,
+	})
+	_G.CalendarTodayFrame:SetBackdropBorderColor(NORMAL_FONT_COLOR:GetRGB())
 
 	--CreateEventFrame
 	_G.CalendarCreateEventFrame:StripTextures()
@@ -160,7 +170,7 @@ local function LoadSkin()
 	_G.CalendarCreateEventInviteEdit:Width(_G.CalendarCreateEventInviteEdit:GetWidth() - 2)
 
 	_G.CalendarCreateEventInviteList:StripTextures()
-	_G.CalendarCreateEventInviteList:CreateBackdrop("Default")
+	_G.CalendarCreateEventInviteList:CreateBackdrop()
 
 	S:HandleEditBox(_G.CalendarCreateEventInviteEdit)
 	S:HandleEditBox(_G.CalendarCreateEventTitleEdit)
@@ -168,7 +178,7 @@ local function LoadSkin()
 	S:HandleDropDownBox(_G.CalendarCreateEventCommunityDropDown, 240)
 
 	_G.CalendarCreateEventDescriptionContainer:StripTextures()
-	_G.CalendarCreateEventDescriptionContainer:SetTemplate("Default")
+	_G.CalendarCreateEventDescriptionContainer:SetTemplate()
 
 	S:HandleCloseButton(_G.CalendarCreateEventCloseButton)
 
@@ -194,17 +204,17 @@ local function LoadSkin()
 		end
 	end)
 
-	_G.CalendarClassButton1:Point("TOPLEFT", _G.CalendarClassButtonContainer, "TOPLEFT", 5, 0)
+	_G.CalendarClassButton1:Point("TOPLEFT", _G.CalendarClassButtonContainer, "TOPLEFT", E.PixelMode and E.mult*4 or E.mult*8, 0)
 
 	for i = 1, #CLASS_SORT_ORDER do
 		local button = _G["CalendarClassButton"..i]
 		button:StripTextures()
-		button:CreateBackdrop("Default")
+		button:CreateBackdrop()
 		button:Size(24)
 	end
 
 	_G.CalendarClassTotalsButton:StripTextures()
-	_G.CalendarClassTotalsButton:CreateBackdrop("Default")
+	_G.CalendarClassTotalsButton:CreateBackdrop()
 	_G.CalendarClassTotalsButton:Width(24)
 
 	--Texture Picker Frame

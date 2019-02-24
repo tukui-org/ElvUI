@@ -136,7 +136,7 @@ L["Unhittable:"] = "未命中:"
 L["Waist"] = "腰"
 L["World Protocol:"] ="世界协议:"
 L["Wrist"] = "护腕"
-L["WoW Token:"] = true
+L["WoW Token:"] = "魔兽世界时光徽章:"
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFF左键点击:|r 更改当前专精"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFF右键点击:|r 更改拾取专精"
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + 左键:|r 显示专精天赋框架"
@@ -157,15 +157,13 @@ L["Request was denied by user."] = "请求被对方拒绝."
 L["Your profile was successfully recieved by the player."] = "你的配置文件已被其他玩家成功接收."
 
 --Install
-L["Aura Bars & Icons"] = "光环条与图标"
-L["Auras Set"] = "光环样式设置"
+L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = "调整UI缩放来适应你的屏幕, 点击自动缩放按钮来自动设置UI缩放."
 L["Auras"] = "光环"
 L["Caster DPS"] = "法系输出"
 L["Chat Set"] = "聊天设定"
 L["Chat"] = "聊天框"
 L["Choose a theme layout you wish to use for your initial setup."] = "为你的个人设置选择一个你喜欢的皮肤主题."
 L["Classic"] = "经典"
-L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."] = "点击下面的按钮调整聊天框、单位框架的尺寸，以及移动动作条位置"
 L["Config Mode:"] = "设置模式:"
 L["CVars Set"] = "参数设定"
 L["CVars"] = "参数"
@@ -176,10 +174,7 @@ L["ElvUI Installation"] = "安装 ElvUI"
 L["Finished"] = "完成"
 L["Grid Size:"] = "网格尺寸:"
 L["Healer"] = "治疗"
-L["High Resolution"] = "高分辨率"
-L["high"] = "高"
 L["Icons Only"] = "图标"
-L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "如果你有不想显示的图标或光环条, 你可以简单的通过按住Shift右键点击使它隐藏."
 L["Importance: |cff07D400High|r"] = "重要度: |cff07D400高|r"
 L["Importance: |cffD3CF00Medium|r"] = "重要性: |cffD3CF00中|r"
 L["Importance: |cffFF0000Low|r"] = "重要性:|cffFF0000低|r"
@@ -187,39 +182,29 @@ L["Installation Complete"] = "安装完成"
 L["Layout Set"] = "界面布局设置"
 L["Layout"] = "界面布局"
 L["Lock"] = "锁定"
-L["Low Resolution"] = "低分辨率"
-L["low"] = "低"
 L["Nudge"] = "微调"
-L["Physical DPS"] = "物理输出"
 L["Please click the button below so you can setup variables and ReloadUI."] = "请按下方按钮设定变数并重载介面。"
 L["Please click the button below to setup your CVars."] = "请按下方按钮设定参数."
 L["Please press the continue button to go onto the next step."] = "请按继续按钮到下一步"
-L["Resolution Style Set"] = "分辨率样式设置"
-L["Resolution"] = "分辨率"
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = "选择你想要在ElvUI的单位框体里使用何种光环系统. 选择光环条和图标将同时使用光环条和图标, 选择图标来仅仅显示图标."
+L["Preview"] = "预览"
 L["Setup Chat"] = "设定聊天框"
 L["Setup CVars"] = "设定参数"
 L["Skip Process"] = "跳过"
 L["Sticky Frames"] = "框架依附"
-L["Tank"] = "坦克"
+L["Tank / Physical DPS"] = "坦克/物理输出"
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = "对话窗口与 WOW 原始对话窗口的操作方式相同，你可以拖拉、移动分页或重新命名分页。请按下方按钮以设定对话窗口。"
 L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = "若要进入内建设定选单，请输入 /ec，或者按一下小地图旁的 C 按钮。若要略过安装程序，请按下方按钮。"
 L["Theme Set"] = "主题设置"
 L["Theme Setup"] = "主题安装"
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = "此安装程序有助你了解 ElvUI 部份功能，并可协助你预先设定 UI。"
-L["This is completely optional."] = "这是可选项。"
 L["This part of the installation process sets up your chat windows names, positions and colors."] = "此安装步骤将会设定聊天框的名称、位置和颜色。"
 L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."] = "此安装步骤将会设定 WOW 预设选项，建议你执行此步骤，以确保功能均可正常运作。"
-L["This resolution doesn't require that you change settings for the UI to fit on your screen."] = "这个分辨率不需要你改动任何设置以适应你的屏幕。"
-L["This resolution requires that you change some settings to get everything to fit on your screen."] = "这个分辨率需要你改变一些设置才能适应你的屏幕。"
 L["This will change the layout of your unitframes and actionbars."] = "这将会改变你单位框架和动作条的构架。"
 L["Trade"] = "交易"
 L["Welcome to ElvUI version %s!"] = "欢迎使用 ElvUI 版本 %s!"
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = "你已经完成安装过程. 如果你需要技术支持请访问http://www.tukui.org"
 L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."] = "你可以在游戏内的设定选项内更改ElvUI的字体、颜色等设定."
 L["You can now choose what layout you wish to use based on your combat role."] = "你现在可以根据你的战斗角色选择合适的布局。"
-L["You may need to further alter these settings depending how low you resolution is."] = "根据你的分辨率你可能需要改动这些设置。"
-L["Your current resolution is %s, this is considered a %s resolution."] = "你当前的分辨率是 %s, 这被认为是个 %s 分辨率。"
 
 --Misc
 L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% 以上 |cff%02x%02x%02x%s|r]'
@@ -308,6 +293,7 @@ L["Zone Ability"] = "区域技能"
 L["DESC_MOVERCONFIG"] = [=[解除框架移动锁定. 现在可以移动它们, 移好后请点击「锁定」.
 
 选项：
+  LeftClick - Toggle Nudge Frame.
   右键 - Open Config Section.
   Shift + 右键 - 暂时隐藏定位开关
   Ctrl + 右键 - 重置定位开关位置
@@ -349,6 +335,7 @@ L["Are you sure you want to apply this font to all ElvUI elements?"] = "确定�
 L["Are you sure you want to disband the group?"] = "确定要解散队伍?"
 L["Are you sure you want to reset all the settings on this profile?"] = "确定需要重置这个配置文件中的所有设置?"
 L["Are you sure you want to reset every mover back to it's default position?"] = "确定需要重置所有框架至默认位置?"
+L["Auto Scale"] = "自动缩放"
 L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."] = "由于大量的改动导致光环系统需要一个新的安装过程. 这是可选的, 最后一步将设置你的光环样式. 点击「完成」将不再提示. 如果由于某些原因反复提示, 请重新开启游戏."
 L["Can't buy anymore slots!"] = "银行背包栏位已达最大值"
 L["Delete gray items?"] = "删除灰色物品?"
@@ -361,16 +348,20 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI已过期。你可以在www.tukui.org下载到最新的版本。购买会员可以使用Tukui客户端自动更新ElvUI"
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI需要进行数据库优化，请耐性等待。"
 L["Error resetting UnitFrame."] = "重置单位框架出现错误."
-L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = true
+L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = "鼠标指向任何动作条或者技能书快捷键来绑定它. 按Esc键来清除当前动作条按钮的按键绑定."
 L["I Swear"] = '我承诺'
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "看起来你使用的一个插件使得Blizzard_CompactRaidFrames停用了。这会产生错误与问题。这个插件现在会被重新启用"
 L["No, Revert Changes!"] = "不，撤销修改！"
 L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."] = "你不能同时使用Elvui和Tukui，请选择一个禁用."
 L["One or more of the changes you have made require a ReloadUI."] = "已变更一或多个设定，需重载界面."
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "你所做的改动可能会影响到使用这个插件的所有角色，你需要重新加载界面才能使改动生效。"
+L["Preview Changes"] = "预览改动"
 L["Save"] = "储存"
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "你尝试导入的配置文件已经存在。请选择一个新的名字或者确认覆盖存在的配置文件。"
+L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = true
+L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."] = true
 L["Type /hellokitty to revert to old settings."] = "输入/hellokitty以撤销到原来的设定"
+L["Use CVar Value"] = true
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "使用治疗布局时建议你下载 Clique 插件，从而拥有点击施法功能"
 L["Yes, Keep Changes!"] = "是的，保存修改！"
 L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."] = "你选择了细边框主题选项，你必须完成安装程序来移除任何图像错误"
@@ -380,8 +371,6 @@ L["You must purchase a bank slot first!"] = "你必需购买一个银行背包�
 
 --Tooltip
 L["Count"] = "计数"
-L["Item Level:"] = "物品等级:"
-L["Talent Specialization:"] = "天赋专精:"
 L["Targeted By:"] = "同目标的有:"
 
 --Tutorials

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
 
---Cache global variables
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitExists = UnitExists
@@ -16,7 +15,7 @@ function mod:UpdateElement_Portrait(frame, trigger)
 
 	if(not UnitExists(frame.unit) or not UnitIsConnected(frame.unit) or not UnitIsVisible(frame.unit)) then
 		--frame.Portrait:SetUnit("")
-		--frame.Portrait.texture:SetTexture(nil) --this must be nil, "" will do nothing
+		--frame.Portrait.texture:SetTexture() --this must be nil, "" will do nothing
 		frame.Portrait:Hide()
 	else
 		--frame.Portrait:SetUnit(frame.unit)
