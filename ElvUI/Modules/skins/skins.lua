@@ -251,6 +251,10 @@ function S:HandleButton(button, strip, isDeclineButton)
 	if button.SetPushedTexture then button:SetPushedTexture("") end
 	if button.SetDisabledTexture then button:SetDisabledTexture("") end
 
+	if button:GetFontString() then
+		button:GetFontString():SetTextColor(1, 1, 1)
+	end
+
 	if strip then button:StripTextures() end
 
 	for _, region in pairs(S.Blizzard.Regions) do
