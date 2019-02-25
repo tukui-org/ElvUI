@@ -20,7 +20,6 @@ local PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC, SPEED, DISABLE = PLAYER_DIFFICULTY
 local LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE = LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE
 local ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS = ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS
 local BLOCK, FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = BLOCK, FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
-local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
 local FACTION_STANDING_LABEL1 = FACTION_STANDING_LABEL1
 local FACTION_STANDING_LABEL2 = FACTION_STANDING_LABEL2
 local FACTION_STANDING_LABEL3 = FACTION_STANDING_LABEL3
@@ -3556,52 +3555,52 @@ E.Options.args.nameplate = {
 							args = {
 								ENERGY = {
 									order = 1,
-									name = L["ENERGY"],
+									name = ENERGY,
 									type = 'color',
 								},
 								FOCUS = {
 									order = 2,
-									name = L["FOCUS"],
+									name = FOCUS,
 									type = 'color',
 								},
 								FURY = {
 									order = 3,
-									name = L["FURY"],
+									name = FURY,
 									type = 'color',
 								},
 								INSANITY = {
 									order = 4,
-									name = L["INSANITY"],
+									name = INSANITY,
 									type = 'color',
 								},
 								LUNAR_POWER = {
 									order = 4,
-									name = L["INSANITY"],
+									name = INSANITY,
 									type = 'color',
 								},
 								MAELSTROM = {
 									order = 6,
-									name = L["MAELSTROM"],
+									name = MAELSTROM,
 									type = 'color',
 								},
 								MANA = {
 									order = 7,
-									name = L["MANA"],
+									name = MANA,
 									type = 'color',
 								},
 								PAIN = {
 									order = 8,
-									name = L["PAIN"],
+									name = PAIN,
 									type = 'color',
 								},
 								RAGE = {
 									order = 9,
-									name = L["RAGE"],
+									name = RAGE,
 									type = 'color',
 								},
 								RUNIC_POWER = {
 									order = 10,
-									name = L["RUNIC_POWER"],
+									name = RUNIC_POWER,
 									type = 'color',
 								},
 							},

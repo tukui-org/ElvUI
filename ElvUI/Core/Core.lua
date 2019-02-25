@@ -1674,6 +1674,11 @@ function E:DBConversions()
 			E.db.unitframe.units[unit].healPrediction.enable = enabled
 		end
 	end
+
+	--Not sure how this one happens, but prevent it in any case
+	if E.global.general.UIScale <= 0 then
+		E.global.general.UIScale = G.general.UIScale
+	end
 end
 
 local CPU_USAGE = {}

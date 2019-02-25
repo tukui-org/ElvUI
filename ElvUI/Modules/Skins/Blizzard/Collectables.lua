@@ -412,7 +412,7 @@ local function LoadSkin()
 		else
 			button.name:SetTextColor(0.4, 0.4, 0.4)
 			button.level:SetTextColor(0.4, 0.4, 0.4)
-			button.special:SetTextColor(0.4, 0.4, 0.4)			
+			button.special:SetTextColor(0.4, 0.4, 0.4)
 			button.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		end
 		button.SetTextColor = E.noop

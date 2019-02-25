@@ -134,7 +134,7 @@ local function LoadSkin()
 
 	HandleRoleChecks(ConquestFrame.TankIcon, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
 	HandleRoleChecks(ConquestFrame.HealerIcon, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-	HandleRoleChecks(ConquestFrame.DPSIcon, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())	
+	HandleRoleChecks(ConquestFrame.DPSIcon, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
 
 	for _, bu in pairs({ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
 		local reward = bu.Reward

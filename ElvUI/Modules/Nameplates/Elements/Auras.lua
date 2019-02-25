@@ -35,13 +35,29 @@ function NP:Construct_Auras(nameplate)
 	local Buffs = CreateFrame('Frame', nameplate:GetDebugName()..'Buffs', nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(5)
+	Buffs:SetSize(300, 27)
 	Buffs.disableMouse = true
+	Buffs.size = 27
+	Buffs.num = 4
+	Buffs.spacing = E.Border * 2
+	Buffs.onlyShowPlayer = false
+	Buffs.initialAnchor = 'BOTTOMLEFT'
+	Buffs['growth-x'] = 'RIGHT'
+	Buffs['growth-y'] = 'UP'
 	Buffs.type = 'buffs'
 
 	local Debuffs = CreateFrame('Frame', nameplate:GetDebugName()..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(5)
+	Debuffs:SetSize(300, 27)
 	Debuffs.disableMouse = true
+	Debuffs.size = 27
+	Debuffs.num = 4
+	Debuffs.spacing = E.Border * 2
+	Debuffs.onlyShowPlayer = false
+	Debuffs.initialAnchor = 'BOTTOMLEFT'
+	Debuffs['growth-x'] = 'RIGHT'
+	Debuffs['growth-y'] = 'UP'
 	Debuffs.type = 'debuffs'
 
 	function Auras:PostCreateIcon(button)

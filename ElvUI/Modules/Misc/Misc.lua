@@ -43,8 +43,6 @@ local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitInRaid = UnitInRaid
 local UnitName = UnitName
-local CreateFrame = CreateFrame
-local RegisterStateDriver = RegisterStateDriver
 
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local C_Timer_After = C_Timer.After
