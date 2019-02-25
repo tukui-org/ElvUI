@@ -79,18 +79,22 @@ function NP:StylePlate(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
 
 	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
+	NP.FontStrings.Values[nameplate.Health.Text] = true
 
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
 
 	nameplate.Power = NP:Construct_Power(nameplate)
 
 	nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
+	NP.FontStrings.Values[nameplate.Power.Text] = true
 
 	nameplate.PowerPrediction = NP:Construct_PowerPrediction(nameplate)
 
 	nameplate.Name = NP:Construct_TagText(nameplate.RaisedElement)
+	NP.FontStrings.General[nameplate.Name] = true
 
 	nameplate.Level = NP:Construct_TagText(nameplate.RaisedElement)
+	NP.FontStrings.General[nameplate.Level] = true
 
 	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate.RaisedElement)
 
@@ -239,6 +243,12 @@ function NP:Update_StatusBars()
 end
 
 function NP:Update_Fonts()
+	for Font in pairs(NP.FontStrings.General) do
+		Font:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	end
+	for Font in pairs(NP.FontStrings.Values) do
+		Font:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	end
 end
 
 function NP:CheckGroup()
@@ -398,7 +408,10 @@ function NP:Initialize()
 
 	NP.Plates = {}
 	NP.StatusBars = {}
-
+	NP.FontStrings = {
+		General = {},
+		Values = {},
+	}
 	local BlizzPlateManaBar = _G.NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
 		BlizzPlateManaBar:Hide()

@@ -35,6 +35,7 @@ function NP:Construct_Auras(nameplate)
 	local Buffs = CreateFrame('Frame', nameplate:GetDebugName()..'Buffs', nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(5)
+	Buffs:SetSize(300, 27)
 	Buffs.disableMouse = true
 	Buffs.size = 27
 	Buffs.num = 4
@@ -48,6 +49,7 @@ function NP:Construct_Auras(nameplate)
 	local Debuffs = CreateFrame('Frame', nameplate:GetDebugName()..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(5)
+	Debuffs:SetSize(300, 27)
 	Debuffs.disableMouse = true
 	Debuffs.size = 27
 	Debuffs.num = 4
