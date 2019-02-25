@@ -57,12 +57,13 @@ function B:MoveObjectiveFrame()
 	B:SetObjectiveFrameHeight()
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
 
-	--prevent error from occuring if another addon decides it wants to disable these functions
-	_G.ObjectiveTrackerFrame.SetMovable = nil
-	_G.ObjectiveTrackerFrame.SetUserPlaced = nil
 
 	ObjectiveTrackerFrame:SetMovable(true)
-	ObjectiveTrackerFrame:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
+	
+	if ObjectiveTrackerFrame:IsMovable() then
+		ObjectiveTrackerFrame:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
+	end
+
 	ObjectiveTrackerFrame:ClearAllPoints()
 	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
 
