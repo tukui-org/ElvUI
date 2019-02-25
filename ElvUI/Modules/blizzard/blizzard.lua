@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Blizzard', 'AceEvent-3.0', 'AceHook-3.0');
+E.Blizzard = B --Deprecated, start using E:GetModule("Blizzard") for a reference to this module
 
 local _G = _G
 local select = select
