@@ -58,7 +58,7 @@ function B:MoveObjectiveFrame()
 
 
 	ObjectiveTrackerFrame:SetMovable(true)
-	
+
 	if ObjectiveTrackerFrame:IsMovable() then
 		ObjectiveTrackerFrame:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
 	end
