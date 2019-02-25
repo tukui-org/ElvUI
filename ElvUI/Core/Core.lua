@@ -445,7 +445,6 @@ function E:PLAYER_ENTERING_WORLD()
 	if not E.global.uiScaleInformed then
 		E.clippedUiScaleCVar = E:PixelClip(GetCVar("uiScale"))
 		E:StaticPopup_Show("UI_SCALE_CHANGES_INFORM", WrapTextInColorCode(E.clippedUiScaleCVar, "fffe7b2c"))
-		E.global.uiScaleInformed = true
 	end
 end
 
@@ -1674,6 +1673,9 @@ function E:DBConversions()
 			E.db.unitframe.units[unit].healPrediction.enable = enabled
 		end
 	end
+
+	--Fix issue where UIScale was incorrectly stored as string
+	E.global.general.UIScale = tonumber(E.global.general.UIScale)
 
 	--Not sure how this one happens, but prevent it in any case
 	if E.global.general.UIScale <= 0 then

@@ -522,11 +522,16 @@ E.PopupDialogs["UI_SCALE_CHANGES_INFORM"] = {
 	button3 = CANCEL,
 	OnAccept = function()
 		E.global.general.UIScale = E.clippedUiScaleCVar
+		E.global.uiScaleInformed = true
 		E:StaticPopup_Show("UISCALE_CHANGE")
 	end,
 	OnCancel = function()
 		E.global.general.UIScale = E:PixelClip(E:PixelBestSize())
+		E.global.uiScaleInformed = true
 		E:StaticPopup_Show("UISCALE_CHANGE")
+	end,
+	OnAlt = function()
+		E.global.uiScaleInformed = true
 	end,
 	OnShow = function(popup)
 		popup.button1:Disable()
