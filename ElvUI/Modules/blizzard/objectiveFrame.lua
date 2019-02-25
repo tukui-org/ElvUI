@@ -85,11 +85,19 @@ function B:MoveObjectiveFrame()
 		local shown = parent:IsShown()
 
 		if newstate == 1 and shown then
-			self:GetParent():Hide()
+			self:Hide()
 		elseif not shown then
-			self:GetParent():Show()
+			self:Show()
 		end
 	]])	
+
+	ObjectiveTrackerFrame.AutoHider:SetScript("OnHide", function() 
+		local _, _, difficulty = GetInstanceInfo(); 
+		if difficulty ~= 8 then
+			ObjectiveTracker_Collapse()
+		end
+	end)
+	ObjectiveTrackerFrame.AutoHider:SetScript("OnShow", ObjectiveTracker_Expand)
 
 	self:SetObjectiveFrameAutoHide()
 end

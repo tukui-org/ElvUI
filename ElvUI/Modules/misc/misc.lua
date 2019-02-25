@@ -288,10 +288,50 @@ function M:PLAYER_ENTERING_WORLD()
 	self:ToggleChatBubbleScript()
 end
 
+--[[local function OnValueChanged(self, value)
+	local bar = _G.ElvUI_ChallengeModeTimer
+	bar.text:SetText(self:GetParent().TimeLeft:GetText())
+	bar:SetValue(value)
+
+	local r, g, b = E:ColorGradient(value / self:GetParent().timeLimit, 1, 0, 0, 1, 1, 0, 0, 1, 0)
+	bar:SetStatusBarColor(r, g, b)
+end
+
+local function ChallengeModeTimer_Update(timerID, elapsedTime, timeLimit)
+	local block = _G.ScenarioChallengeModeBlock;
+
+	_G.ElvUI_ChallengeModeTimer:SetMinMaxValues(0, block.timeLimit)
+	_G.ElvUI_ChallengeModeTimer:Show()
+	OnValueChanged(_G.ScenarioChallengeModeBlock.StatusBar, _G.ScenarioChallengeModeBlock.StatusBar:GetValue())
+end
+
+function M:SetupChallengeTimer()
+	local bar = CreateFrame("StatusBar", "ElvUI_ChallengeModeTimer", E.UIParent)
+	bar:Size(250, 20)
+	bar:Point("TOPLEFT", E.UIParent, "TOPLEFT", 10, -10)
+	bar:CreateBackdrop("Transparent")
+	bar:SetStatusBarTexture(E.media.normTex)
+	bar.text = bar:CreateFontString(nil, "OVERLAY")
+	bar.text:SetPoint("CENTER")
+	bar.text:FontTemplate()
+
+	_G.ScenarioChallengeModeBlock.StatusBar:HookScript("OnValueChanged", OnValueChanged)
+	hooksecurefunc("Scenario_ChallengeMode_ShowBlock", ChallengeModeTimer_Update)
+end]]
+
 function M:ADDON_LOADED(_, addon)
 	if addon == "Blizzard_InspectUI" then
 		M:SetupInspectPageInfo()
-		self:UnregisterEvent("ADDON_LOADED")
+
+		--[[if IsAddOnLoaded("Blizzard_ObjectiveTracker") then
+			self:UnregisterEvent("ADDON_LOADED")
+		end]]
+	--[[elseif addon == "Blizzard_ObjectiveTracker" then
+		M:SetupChallengeTimer()
+
+		if IsAddOnLoaded("Blizzard_InspectUI") then
+			self:UnregisterEvent("ADDON_LOADED")
+		end	]]
 	end
 end
 
@@ -313,9 +353,22 @@ function M:Initialize()
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 
-	if IsAddOnLoaded("Blizzard_InspectUI") then
+	--local blizzTracker = IsAddOnLoaded("Blizzard_ObjectiveTracker")
+	local inspectUI = IsAddOnLoaded("Blizzard_InspectUI")
+
+	if inspectUI then
 		M:SetupInspectPageInfo()
-	else
+	end
+
+	--[[if blizzTracker then
+		M:SetupChallengeTimer()
+	end
+
+	if not blizzTracker or not inspectUI then
+		self:RegisterEvent("ADDON_LOADED")
+	end]]
+
+	if not inspectUI then
 		self:RegisterEvent("ADDON_LOADED")
 	end
 end
