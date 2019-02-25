@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local pairs, select, unpack = pairs, select, unpack
+local pairs, select = pairs, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
