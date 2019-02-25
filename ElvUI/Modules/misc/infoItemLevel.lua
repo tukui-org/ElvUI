@@ -239,3 +239,22 @@ end
 function M:SetupInspectPageInfo()
 	M:CreateSlotStrings(_G.InspectFrame, 'Inspect')
 end
+
+function M:UpdateInspectPageFonts(which)
+	local itemLevelFont = E.db.general.itemLevel.itemLevelFont
+	local itemLevelFontSize = E.db.general.itemLevel.itemLevelFontSize or 12
+	local itemLevelFontOutline = E.db.general.itemLevel.itemLevelFontOutline or 'OUTLINE'
+	local enchantFont = E.db.general.itemLevel.enchantFont
+	local enchantFontSize = E.db.general.itemLevel.enchantFontSize or 11
+	local enchantFontOutline = E.db.general.itemLevel.enchantFontOutline or 'OUTLINE'
+
+	for i, s in pairs(InspectItems) do
+		if i ~= 4 then
+			local slot = _G[which..s]
+			if slot then
+				slot.iLvlText:FontTemplate(LSM:Fetch("font", itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
+				slot.enchantText:FontTemplate(LSM:Fetch("font", enchantFont), enchantFontSize, enchantFontOutline)
+			end
+		end
+	end
+end

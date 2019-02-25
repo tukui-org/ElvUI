@@ -800,7 +800,7 @@ E.Options.args.general = {
 								M:ToggleItemLevelInfo()
 							end
 						},
-						fontGroup = { -- Needs an update function
+						fontGroup = {
 							order = 3,
 							type = 'group',
 							name = L["Fonts"],
@@ -810,6 +810,12 @@ E.Options.args.general = {
 									type = 'group',
 									name = L["Item Level Font"],
 									disabled = function() return not E.db.general.itemLevel.displayCharacterInfo end,
+									get = function(info) return E.db.general.itemLevel[ info[#info] ] end,
+									set = function(info, value)
+										E.db.general.itemLevel[ info[#info] ] = value
+										M:UpdateInspectPageFonts("Character")
+										M:UpdateInspectPageFonts("Inspect")
+									end,
 									args = {
 										itemLevelFont = {
 											order = 1,
@@ -817,23 +823,17 @@ E.Options.args.general = {
 											name = L["Font"],
 											dialogControl = 'LSM30_Font',
 											values = AceGUIWidgetLSMlists.font,
-											get = function(info) return E.db.general.itemLevel.itemLevelFont end,
-											set = function(info, value) E.db.general.itemLevel.itemLevelFont = value; E:StaticPopup_Show("PRIVATE_RL") end,
 										},
 										itemLevelFontSize = {
 											order = 2,
 											type = "range",
 											name = FONT_SIZE,
-											get = function(info) return E.db.general.itemLevel.itemLevelFontSize end,
-											set = function(info, value) E.db.general.itemLevel.itemLevelFontSize = value; E:StaticPopup_Show("PRIVATE_RL") end,
 											min = 4, max = 40, step = 1,
 										},
 										itemLevelFontOutline = {
 											order = 3,
 											type = "select",
 											name = L["Font Outline"],
-											get = function(info) return E.db.general.itemLevel.itemLevelFontOutline end,
-											set = function(info, value) E.db.general.itemLevel.itemLevelFontOutline = value; E:StaticPopup_Show("PRIVATE_RL") end,
 											values = {
 												["NONE"] = NONE,
 												["OUTLINE"] = "OUTLINE",
@@ -848,6 +848,12 @@ E.Options.args.general = {
 									type = 'group',
 									name = L["Enchants Font"],
 									disabled = function() return not E.db.general.itemLevel.displayInspectInfo end,
+									get = function(info) return E.db.general.itemLevel[ info[#info] ] end,
+									set = function(info, value)
+										E.db.general.itemLevel[ info[#info] ] = value
+										M:UpdateInspectPageFonts("Character")
+										M:UpdateInspectPageFonts("Inspect")
+									end,
 									args = {
 										enchantFont = {
 											order = 1,
@@ -855,23 +861,17 @@ E.Options.args.general = {
 											name = L["Font"],
 											dialogControl = 'LSM30_Font',
 											values = AceGUIWidgetLSMlists.font,
-											get = function(info) return E.db.general.itemLevel.enchantFont end,
-											set = function(info, value) E.db.general.itemLevel.enchantFont = value; E:StaticPopup_Show("PRIVATE_RL") end,
 										},
 										enchantFontSize = {
 											order = 2,
 											type = "range",
 											name = FONT_SIZE,
-											get = function(info) return E.db.general.itemLevel.enchantFontSize end,
-											set = function(info, value) E.db.general.itemLevel.enchantFontSize = value; E:StaticPopup_Show("PRIVATE_RL") end,
 											min = 4, max = 40, step = 1,
 										},
 										enchantFontOutline = {
 											order = 3,
 											type = "select",
 											name = L["Font Outline"],
-											get = function(info) return E.db.general.itemLevel.enchantFontOutline end,
-											set = function(info, value) E.db.general.itemLevel.enchantFontOutline = value; E:StaticPopup_Show("PRIVATE_RL") end,
 											values = {
 												["NONE"] = NONE,
 												["OUTLINE"] = "OUTLINE",
