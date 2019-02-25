@@ -121,9 +121,6 @@ function NP:StylePlate(nameplate)
 	if E.myclass == 'DEATHKNIGHT' then
 		nameplate.Runes = NP:Construct_Runes(nameplate)
 	end
-
-	nameplate.frameType = 'PLAYER'
-	NP:UpdatePlate(nameplate)
 end
 
 function NP:UpdatePlate(nameplate)
