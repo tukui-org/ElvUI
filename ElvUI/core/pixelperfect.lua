@@ -75,11 +75,7 @@ function E:PixelBestSize()
 end
 
 function E:PixelClip(num)
-	local str = num and tostring(num)
-	if str and strlen(str) > 4 then
-		return tonumber(strsub(str, 0, 4))
-	end
-	return tonumber(num)
+    return tonumber(string.format("%.2f", num))
 end
 
 function E:PixelScaleChanged(event, skip)
