@@ -467,9 +467,9 @@ function S:HandleDropDownBox(frame, width)
 end
 
 function S:HandleStatusBar(frame, color)
+	frame:SetFrameLevel(frame:GetFrameLevel() + 1)
 	frame:StripTextures()
 	frame:CreateBackdrop('Transparent')
-	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
 	frame:SetStatusBarTexture(E.media.normTex)
 	frame:SetStatusBarColor(unpack(color or {.01, .39, .1}))
 	E:RegisterStatusBar(frame)
