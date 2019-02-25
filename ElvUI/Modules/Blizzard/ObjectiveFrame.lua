@@ -82,8 +82,6 @@ function B:MoveObjectiveFrame()
 
 	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, _G.ObjectiveTrackerFrame, 'SecureHandlerStateTemplate');
 	ObjectiveTrackerFrame.AutoHider:SetAttribute("_onstate-objectiveHider", [[
-		local parent = self:GetParent()
-
 		if newstate == 1 then
 			self:Hide()
 		else
