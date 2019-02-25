@@ -331,13 +331,13 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlate(_G.ElvNP_Test)
 		end
 
-		if nameplate ~= _G.ElvNP_Player then
-			if (UnitIsBattlePetCompanion(unit) or UnitIsBattlePet(unit)) and nameplate:IsEnabled() then
-				nameplate:Disable()
-			elseif not nameplate:IsEnabled() then
-				nameplate:Enable()
-			end
-		end
+		--if nameplate ~= _G.ElvNP_Player then
+		--	if (UnitIsBattlePetCompanion(unit) or UnitIsBattlePet(unit)) and nameplate:IsEnabled() then
+		--		nameplate:Disable()
+		--	elseif not nameplate:IsEnabled() then
+		--		nameplate:Enable()
+		--	end
+		--end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		nameplate.isTarget = nil
 		nameplate.isTargetingMe = nil
