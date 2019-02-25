@@ -3556,52 +3556,52 @@ E.Options.args.nameplate = {
 							args = {
 								ENERGY = {
 									order = 1,
-									name = L["ENERGY"],
+									name = ENERGY,
 									type = 'color',
 								},
 								FOCUS = {
 									order = 2,
-									name = L["FOCUS"],
+									name = FOCUS,
 									type = 'color',
 								},
 								FURY = {
 									order = 3,
-									name = L["FURY"],
+									name = FURY,
 									type = 'color',
 								},
 								INSANITY = {
 									order = 4,
-									name = L["INSANITY"],
+									name = INSANITY,
 									type = 'color',
 								},
 								LUNAR_POWER = {
 									order = 4,
-									name = L["INSANITY"],
+									name = INSANITY,
 									type = 'color',
 								},
 								MAELSTROM = {
 									order = 6,
-									name = L["MAELSTROM"],
+									name = MAELSTROM,
 									type = 'color',
 								},
 								MANA = {
 									order = 7,
-									name = L["MANA"],
+									name = MANA,
 									type = 'color',
 								},
 								PAIN = {
 									order = 8,
-									name = L["PAIN"],
+									name = PAIN,
 									type = 'color',
 								},
 								RAGE = {
 									order = 9,
-									name = L["RAGE"],
+									name = RAGE,
 									type = 'color',
 								},
 								RUNIC_POWER = {
 									order = 10,
-									name = L["RUNIC_POWER"],
+									name = RUNIC_POWER,
 									type = 'color',
 								},
 							},
