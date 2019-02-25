@@ -201,6 +201,7 @@ function NP:CVarReset()
 	SetCVar('nameplateTargetBehindMaxDistance', GetCVarDefault('nameplateTargetBehindMaxDistance'))
 	SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'))
 	SetCVar('nameplateSelectedScale', 1)
+	SetCVar('nameplateMinAlpha', 1)
 end
 
 function NP:PLAYER_REGEN_DISABLED()
@@ -262,7 +263,7 @@ function NP:ConfigureAll()
 	SetCVar('nameplateShowEnemyMinions', NP.db.units.ENEMY_PLAYER.minions == true and 1 or 0)
 	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors == true and 1 or 0)
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
-	SetCVar('nameplateMinAlpha', NP.db.nonTargetTransparency)
+	SetCVar('nameplateMinAlpha', 1)
 	SetCVar('nameplateOtherTopInset', NP.db.clampToScreen and 0.08 or -1)
 	SetCVar('nameplateOtherBottomInset', NP.db.clampToScreen and 0.1 or -1)
 
@@ -354,6 +355,11 @@ NP.plateEvents = {
 	-- any registered as `true` will call noop
 	['PLAYER_TARGET_CHANGED'] = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
+		if self.isTarget or not UnitExists("target") then
+			self:SetAlpha(1)
+		else
+			self:SetAlpha(NP.db.nonTargetTransparency)
+		end
 	end,
 	['UNIT_TARGET'] = function(self, _, unit)
 		unit = unit or self.unit
