@@ -1,9 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Blizzard', 'AceEvent-3.0', 'AceHook-3.0');
 
---Keep this up here, as external addons might rely on it as soon as they load.
-E.Blizzard = B
-
 local _G = _G
 local select = select
 local CreateFrame = CreateFrame
@@ -52,6 +49,7 @@ function B:ADDON_LOADED()
 end
 
 function B:Initialize()
+	E.Blizzard = B
 
 	self:EnhanceColorPicker()
 	self:KillBlizzard()
