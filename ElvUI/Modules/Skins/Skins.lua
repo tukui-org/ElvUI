@@ -4,8 +4,7 @@ local S = E:NewModule('Skins', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 --Lua functions
 local _G = _G
 local unpack, assert, pairs, ipairs, select, type, pcall = unpack, assert, pairs, ipairs, select, type, pcall
-local tinsert, wipe = tinsert, wipe
-local strfind = strfind
+local tinsert, wipe, strfind = tinsert, wipe, strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCVarBool = GetCVarBool

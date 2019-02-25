@@ -3,6 +3,7 @@ local B = E:GetModule("Blizzard")
 local M = E:GetModule("Misc")
 
 local _G = _G
+local IsAddOnLoaded = IsAddOnLoaded
 local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
 
 local function GetChatWindowInfo()

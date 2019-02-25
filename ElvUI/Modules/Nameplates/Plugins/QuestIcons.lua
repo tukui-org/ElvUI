@@ -8,11 +8,11 @@ local pairs = pairs
 local floor = math.floor
 local match = string.match
 --WoW API / Variables
+local UnitName = UnitName
 local IsInInstance = IsInInstance
 local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
-local UnitName = UnitName
 local C_TaskQuest_GetQuestProgressBarInfo = C_TaskQuest.GetQuestProgressBarInfo
 
 local ActiveQuests = {
@@ -164,6 +164,7 @@ local function GetQuests(unitID)
 		end
 	end
 
+	E.ScanTooltip:Hide()
 	return QuestList
 end
 

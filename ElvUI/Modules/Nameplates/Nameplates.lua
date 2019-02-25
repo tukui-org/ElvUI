@@ -20,10 +20,9 @@ local UnitFactionGroup = UnitFactionGroup
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
 local UnitIsFriend = UnitIsFriend
 local InCombatLockdown = InCombatLockdown
-local UnitIsBattlePet = UnitIsBattlePet
-local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local IsInInstance = IsInInstance
+local UnitExists = UnitExists
 
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
