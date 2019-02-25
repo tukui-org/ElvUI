@@ -106,7 +106,9 @@ local function GetQuests(unitID)
 	local inInstance = IsInInstance()
 	if inInstance then return end
 
+	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	E.ScanTooltip:SetUnit(unitID)
+	E.ScanTooltip:Show()
 
 	local QuestList, questID = {}
 	for i = 3, E.ScanTooltip:NumLines() do
