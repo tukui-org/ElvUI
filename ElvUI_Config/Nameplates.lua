@@ -3166,15 +3166,14 @@ E.Options.args.nameplate = {
 								["TARGET"] = L["Only Show Target"],
 							},
 						},
-						hideBlizzardPlates = {
+						resetcvars = {
 							order = 3,
-							type = "toggle",
-							name = L["Hide Blizzard Plates"],
-							desc = L["If enabled then you will no longer see nameplates that use the default Blizzard appearance."],
-							set = function(info, value)
-								E.db.nameplates.hideBlizzardPlates = value;
-								E:StaticPopup_Show("CONFIG_RL")
+							type = "execute",
+							name = L["Reset CVars"],
+							func = function()
+								NP:CVarReset()
 							end,
+							confirm = true,
 						},
 						clampToScreen = {
 							order = 5,
