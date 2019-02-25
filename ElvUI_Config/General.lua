@@ -488,8 +488,9 @@ E.Options.args.general = {
 					type = "toggle",
 					name = L["Auto Hide"],
 					desc = L["Automatically hide the objetive frame during boss or arena fights."],
+					disabled = function() return IsAddOnLoaded("!KalielsTracker") end,
 					get = function(info) return E.db.general.objectiveFrameAutoHide end,
-					set = function(info, value) E.db.general.objectiveFrameAutoHide = value; E:GetModule('Blizzard'):SetObjectiveFrameAutoHide(); end,					
+					set = function(info, value) E.db.general.objectiveFrameAutoHide = value; E:GetModule('Blizzard'):SetObjectiveFrameAutoHide(); end,
 				},
 				objectiveFrameHeight = {
 					order = 32,
@@ -742,30 +743,8 @@ E.Options.args.general = {
 					get = function(info) return E.private.general.voiceOverlay end,
 					set = function(info, value) E.private.general.voiceOverlay = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				displayCharacterInfo = {
-					order = 8,
-					type = "toggle",
-					name = L["Display Character Info"],
-					desc = L["Shows item level of each item, enchants, and gems on the character page."],
-					get = function(info) return E.db.general.displayCharacterInfo end,
-					set = function(info, value)
-						E.db.general.displayCharacterInfo = value;
-						M:ToggleItemLevelInfo()
-					end
-				},
-				displayInspectInfo = {
-					order = 9,
-					type = "toggle",
-					name = L["Display Inspect Info"],
-					desc = L["Shows item level of each item, enchants, and gems when inspecting another player."],
-					get = function(info) return E.db.general.displayInspectInfo end,
-					set = function(info, value)
-						E.db.general.displayInspectInfo = value;
-						M:ToggleItemLevelInfo()
-					end
-				},
 				vehicleSeatIndicatorSize = {
-					order = 10,
+					order = 8,
 					type = "range",
 					name = L["Vehicle Seat Indicator Size"],
 					min = 64, max = 128, step = 4,
@@ -773,7 +752,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.vehicleSeatIndicatorSize = value; B:UpdateVehicleFrame() end,
 				},
 				commandBarSetting = {
-					order = 11,
+					order = 9,
 					type = "select",
 					name = L["Order Hall Command Bar"],
 					get = function(info) return E.global.general.commandBarSetting end,
@@ -786,12 +765,125 @@ E.Options.args.general = {
 					},
 				},
 				disableTutorialButtons = {
-					order = 12,
+					order = 10,
 					type = 'toggle',
 					name = L["Disable Tutorial Buttons"],
 					desc = L["Disables the tutorial button found on some frames."],
 					get = function(info) return E.global.general.disableTutorialButtons end,
 					set = function(info, value) E.global.general.disableTutorialButtons = value; E:StaticPopup_Show("GLOBAL_RL") end,
+				},
+				itemLevelInfo = {
+					order = 11,
+					name = L["Item Level"],
+					type = 'group',
+					guiInline = true,
+					args = {
+						displayCharacterInfo = {
+							order = 1,
+							type = "toggle",
+							name = L["Display Character Info"],
+							desc = L["Shows item level of each item, enchants, and gems on the character page."],
+							get = function(info) return E.db.general.itemLevel.displayCharacterInfo end,
+							set = function(info, value)
+								E.db.general.itemLevel.displayCharacterInfo = value;
+								M:ToggleItemLevelInfo()
+							end
+						},
+						displayInspectInfo = {
+							order = 2,
+							type = "toggle",
+							name = L["Display Inspect Info"],
+							desc = L["Shows item level of each item, enchants, and gems when inspecting another player."],
+							get = function(info) return E.db.general.itemLevel.displayInspectInfo end,
+							set = function(info, value)
+								E.db.general.itemLevel.displayInspectInfo = value;
+								M:ToggleItemLevelInfo()
+							end
+						},
+						fontGroup = { -- Needs an update function
+							order = 3,
+							type = 'group',
+							name = L["Fonts"],
+							args = {
+								level ={
+									order = 1,
+									type = 'group',
+									name = L["Item Level Font"],
+									disabled = function() return not E.db.general.itemLevel.displayCharacterInfo end,
+									args = {
+										itemLevelFont = {
+											order = 1,
+											type = "select",
+											name = L["Font"],
+											dialogControl = 'LSM30_Font',
+											values = AceGUIWidgetLSMlists.font,
+											get = function(info) return E.db.general.itemLevel.itemLevelFont end,
+											set = function(info, value) E.db.general.itemLevel.itemLevelFont = value; E:StaticPopup_Show("PRIVATE_RL") end,
+										},
+										itemLevelFontSize = {
+											order = 2,
+											type = "range",
+											name = FONT_SIZE,
+											get = function(info) return E.db.general.itemLevel.itemLevelFontSize end,
+											set = function(info, value) E.db.general.itemLevel.itemLevelFontSize = value; E:StaticPopup_Show("PRIVATE_RL") end,
+											min = 4, max = 40, step = 1,
+										},
+										itemLevelFontOutline = {
+											order = 3,
+											type = "select",
+											name = L["Font Outline"],
+											get = function(info) return E.db.general.itemLevel.itemLevelFontOutline end,
+											set = function(info, value) E.db.general.itemLevel.itemLevelFontOutline = value; E:StaticPopup_Show("PRIVATE_RL") end,
+											values = {
+												["NONE"] = NONE,
+												["OUTLINE"] = "OUTLINE",
+												["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+												["THICKOUTLINE"] = "THICKOUTLINE",
+											},
+										},
+									},
+								},
+								enchants = {
+									order = 2,
+									type = 'group',
+									name = L["Enchants Font"],
+									disabled = function() return not E.db.general.itemLevel.displayInspectInfo end,
+									args = {
+										enchantFont = {
+											order = 1,
+											type = "select",
+											name = L["Font"],
+											dialogControl = 'LSM30_Font',
+											values = AceGUIWidgetLSMlists.font,
+											get = function(info) return E.db.general.itemLevel.enchantFont end,
+											set = function(info, value) E.db.general.itemLevel.enchantFont = value; E:StaticPopup_Show("PRIVATE_RL") end,
+										},
+										enchantFontSize = {
+											order = 2,
+											type = "range",
+											name = FONT_SIZE,
+											get = function(info) return E.db.general.itemLevel.enchantFontSize end,
+											set = function(info, value) E.db.general.itemLevel.enchantFontSize = value; E:StaticPopup_Show("PRIVATE_RL") end,
+											min = 4, max = 40, step = 1,
+										},
+										enchantFontOutline = {
+											order = 3,
+											type = "select",
+											name = L["Font Outline"],
+											get = function(info) return E.db.general.itemLevel.enchantFontOutline end,
+											set = function(info, value) E.db.general.itemLevel.enchantFontOutline = value; E:StaticPopup_Show("PRIVATE_RL") end,
+											values = {
+												["NONE"] = NONE,
+												["OUTLINE"] = "OUTLINE",
+												["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+												["THICKOUTLINE"] = "THICKOUTLINE",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},

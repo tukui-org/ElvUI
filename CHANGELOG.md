@@ -1,4 +1,16 @@
-### Version 10.88 [  ]
+### Version 10.89 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 10.88 [ February 24th 2019 ]
 
 **New Additions:**  
 Added new scale options. (/ec - General - Auto Scale | UI Scale)  
@@ -6,14 +18,17 @@ Added quality border option for Bag/Bank items. (#869)
 Added BoE/BoA text overlay in our Bag/Bank.  
 Added optional mount name for units on tooltips.  
 Added a new option to display Inspect Info on the Inspect and Character frames.  
+Added option to toggle Objective Tracker when boss or arena frames are shown.  
 
 **Bug Fixes:**  
 Corrected more Pixel Perfect issues! :D  
+Fixed taint in CommunitiesUI preventing you from setting notes among other things. Workaround by foxlit.  
 
 **Misc. Changes:**  
 Various Skin updates.  
 Modified the bag item level code; items might actually show the correct item level now. :o  
 Improved the tooltip item level code, it should be far more accurate now! (Thanks AcidWeb and Ls- for helping us with this!) :)  
+The layout in the installer has been replaced with a new one.  
 
 ___
 ### Version 10.87 [ January 30th 2019 ]

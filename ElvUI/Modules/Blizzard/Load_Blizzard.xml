@@ -1,0 +1,17 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file='Blizzard.lua'/>
+	<Script file='ColorPicker.lua'/>
+	<Script file='Kill.lua'/>
+	<Script file='ObjectiveFrame.lua'/>
+	<Script file='Vehicle.lua'/>
+	<Script file='TimerTracker.lua'/>
+	<Script file='GM.lua'/>
+	<Script file='Durability.lua'/>
+	<Script file='CaptureBar.lua'/>
+	<Script file='AlertFrame.lua'/>
+	<Script file='AltPower.lua'/>
+	<Script file='TalkingHeadFrame.lua'/>
+	<Script file='LevelUpBossBanner.lua'/>
+	<Script file='WidgetsUI.lua'/>
+	<Script file='Garrison.lua'/>
+</Ui>
