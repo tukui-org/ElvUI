@@ -33,6 +33,7 @@ local function IsFramePositionedLeft(frame)
 end
 
 function B:SetObjectiveFrameAutoHide()
+	if not _G.ObjectiveTrackerFrame.AutoHider then return; end --Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
 	if E.db.general.objectiveFrameAutoHide then
 		RegisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, "objectiveHider", "[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists] 1;0")
 	else

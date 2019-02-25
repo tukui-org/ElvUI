@@ -488,6 +488,7 @@ E.Options.args.general = {
 					type = "toggle",
 					name = L["Auto Hide"],
 					desc = L["Automatically hide the objetive frame during boss or arena fights."],
+					disabled = function() return IsAddOnLoaded("!KalielsTracker") end,
 					get = function(info) return E.db.general.objectiveFrameAutoHide end,
 					set = function(info, value) E.db.general.objectiveFrameAutoHide = value; E:GetModule('Blizzard'):SetObjectiveFrameAutoHide(); end,
 				},
