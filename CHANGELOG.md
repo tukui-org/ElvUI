@@ -1,10 +1,24 @@
-### Version 10.89 [  ]
+### Version 10.90 [  ]
 
 **New Additions:**  
 
 
 **Bug Fixes:**  
 
+
+**Misc. Changes:**  
+
+
+___
+### Version 10.89 [ February 25th 2019 ]
+
+**New Additions:**  
+Added options to change font, size and outline on the new itemlevel and enchant info on Character/Inspect frame.  
+
+**Bug Fixes:**  
+Fixed an error in the archeology skin.  
+Fixed incompatibility issue(s) with Kaliel's Tracker due to a moved reference to E.Blizzard.  
+Fixed rare issue where UIScale had been stored as 0 and would cause the UI to explode.  
 
 **Misc. Changes:**  
 
