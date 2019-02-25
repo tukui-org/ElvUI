@@ -79,7 +79,7 @@ function E:PixelClip(num)
 	if str and strlen(str) > 4 then
 		return tonumber(strsub(str, 0, 4))
 	end
-	return num
+	return tonumber(num)
 end
 
 function E:PixelScaleChanged(event, skip)
