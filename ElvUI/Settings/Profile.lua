@@ -537,7 +537,6 @@ P['nameplates'] = {
 				['enable'] = true,
 				['width'] = 150,
 				['height'] = 8,
-				['yOffset'] = -10,
 				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
