@@ -2097,8 +2097,18 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
-					iconGroup = {
+					textPosition = {
 						order = 12,
+						name = L["Text Position"],
+						type = "select",
+						values = {
+							["ONBAR"] = L["On Bar"],
+							["ABOVE"] = L["Above"],
+							["BELOW"] = L["Below"]
+						},
+					},
+					iconGroup = {
+						order = 13,
 						name = L["Icon Group"],
 						type = "group",
 						get = function(info) return E.db.nameplates.units[unit].castbar[ info[#info] ] end,
