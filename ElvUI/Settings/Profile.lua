@@ -672,7 +672,7 @@ P['nameplates'] = {
 				['iconOffsetX'] = 3,
 				['iconOffsetY'] = 5,
 				['showIcon'] = true,
-				['yOffset'] = -10,
+				['yOffset'] = -12,
 			},
 			['auras'] = {
 				['enable'] = false,
@@ -796,7 +796,7 @@ P['nameplates'] = {
 				['iconOffsetX'] = 3,
 				['iconOffsetY'] = 5,
 				['showIcon'] = true,
-				['yOffset'] = -10,
+				['yOffset'] = -12,
 			},
 			['auras'] = {
 				['enable'] = false,
@@ -916,7 +916,7 @@ P['nameplates'] = {
 				['iconOffsetX'] = 3,
 				['iconOffsetY'] = 5,
 				['showIcon'] = true,
-				['yOffset'] = -10,
+				['yOffset'] = -12,
 			},
 			['auras'] = {
 				['enable'] = false,
@@ -1044,7 +1044,7 @@ P['nameplates'] = {
 				['iconOffsetX'] = 3,
 				['iconOffsetY'] = 5,
 				['showIcon'] = true,
-				['yOffset'] = -10,
+				['yOffset'] = -12,
 			},
 			['auras'] = {
 				['enable'] = false,
