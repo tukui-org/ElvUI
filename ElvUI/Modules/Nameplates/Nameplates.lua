@@ -73,6 +73,8 @@ function NP:StylePlate(nameplate)
 	nameplate:SetSize(self.db.clickableWidth, self.db.clickableHeight)
 	nameplate:SetScale(_G.UIParent:GetEffectiveScale())
 
+	nameplate.isChild = true -- Block Blizzard Castbar from re-enabling with the toggle
+
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
 
 	nameplate.Health = NP:Construct_Health(nameplate)
