@@ -2123,7 +2123,7 @@ local function GetUnitSettings(unit, name)
 								order = 13,
 								name = L["Icon Size"],
 								type = "range",
-								min = 4, max = 20, step = 1,
+								min = 4, max = 40, step = 1,
 							},
 							iconOffsetX = {
 								order = 14,
