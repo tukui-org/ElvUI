@@ -44,7 +44,7 @@ local function LoadSkin()
 		text:Hide()
 
 		local TimerText = mirrorTimer:CreateFontString(nil, 'OVERLAY')
-		TimerText:FontTemplate(nil, nil, "")
+		TimerText:FontTemplate()
 		TimerText:Point("CENTER", statusBar, "CENTER", 0, 0)
 		mirrorTimer.TimerText = TimerText
 
