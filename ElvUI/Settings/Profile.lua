@@ -537,8 +537,7 @@ P['nameplates'] = {
 				['enable'] = true,
 				['width'] = 150,
 				['height'] = 8,
-				['offsetX'] = 6,
-				['offsetY'] = 0,
+				['yOffset'] = -10,
 				['displayTarget'] = false,
 				['hideSpellName'] = false,
 				['hideTime'] = false,
@@ -674,7 +673,7 @@ P['nameplates'] = {
 				['iconOffsetX'] = 3,
 				['iconOffsetY'] = 5,
 				['showIcon'] = true,
-				['yOffset'] = -23,
+				['yOffset'] = -10,
 			},
 			['auras'] = {
 				['enable'] = false,
@@ -798,7 +797,7 @@ P['nameplates'] = {
 				['iconOffsetX'] = 3,
 				['iconOffsetY'] = 5,
 				['showIcon'] = true,
-				['yOffset'] = -23,
+				['yOffset'] = -10,
 			},
 			['auras'] = {
 				['enable'] = false,
@@ -918,7 +917,7 @@ P['nameplates'] = {
 				['iconOffsetX'] = 3,
 				['iconOffsetY'] = 5,
 				['showIcon'] = true,
-				['yOffset'] = -23,
+				['yOffset'] = -10,
 			},
 			['auras'] = {
 				['enable'] = false,
@@ -1046,7 +1045,7 @@ P['nameplates'] = {
 				['iconOffsetX'] = 3,
 				['iconOffsetY'] = 5,
 				['showIcon'] = true,
-				['yOffset'] = -23,
+				['yOffset'] = -10,
 			},
 			['auras'] = {
 				['enable'] = false,
