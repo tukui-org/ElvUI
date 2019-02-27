@@ -305,7 +305,8 @@ function NP:ConfigureAll()
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
-	if event == 'NAME_PLATE_UNIT_ADDED' then
+	if event == 'PLAYER_TARGET_CHANGED' then -- Here Elv
+	elseif event == 'NAME_PLATE_UNIT_ADDED' then
 		unit = unit or nameplate.unit
 		local reaction = UnitReaction('player', unit)
 
