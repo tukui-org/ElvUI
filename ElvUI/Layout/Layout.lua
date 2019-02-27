@@ -462,7 +462,7 @@ function LO:CreateChatButtonPanel()
 	ChatButtonHolder:SetPoint("RIGHT", _G.LeftChatPanel, "LEFT", -2, 0)
 	ChatButtonHolder:SetSize(30, LeftChatPanel:GetHeight()-2)
 
-	QuickJoinToastButton:SetAlpha(0) -- DONT KILL IT!!!!
+	QuickJoinToastButton:Hide() -- DONT KILL IT!!!!
 
 	ChatButtonHolder:CreateBackdrop('Transparent', nil, true)
 	ChatButtonHolder.backdrop:SetPoint('TOPLEFT', ChatButtonHolder, E.PixelMode and 1 or 3, 1)
