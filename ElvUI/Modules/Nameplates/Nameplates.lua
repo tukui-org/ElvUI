@@ -173,7 +173,7 @@ function NP:CVarReset()
 	SetCVar('nameplateGlobalScale', GetCVarDefault('nameplateGlobalScale'))
 	SetCVar('NamePlateHorizontalScale', GetCVarDefault('NamePlateHorizontalScale'))
 	SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'))
-	SetCVar('nameplateLargerScale', GetCVarDefault('nameplateLargerScale'))
+	SetCVar('nameplateLargerScale', 1)
 	SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'))
 	SetCVar('nameplateMaxAlpha', GetCVarDefault('nameplateMaxAlpha'))
 	SetCVar('nameplateMaxAlphaDistance', 40)
@@ -275,7 +275,8 @@ function NP:ConfigureAll()
 	SetCVar('nameplateMinAlpha', 1)
 	SetCVar('nameplateOtherTopInset', NP.db.clampToScreen and 0.08 or -1)
 	SetCVar('nameplateOtherBottomInset', NP.db.clampToScreen and 0.1 or -1)
-
+	SetCVar('nameplateLargerScale', 1)
+	
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
 	end
