@@ -23,7 +23,7 @@ function NP:Construct_ThreatIndicator(nameplate)
 end
 
 function NP:PreUpdateThreat(threat, unit)
-	local ROLE = UnitExists(unit..'target') and UnitGroupRolesAssigned(unit..'target') or 'NONE'
+	local ROLE = NP.IsInGroup and UnitExists(unit..'target') and UnitGroupRolesAssigned(unit..'target') or 'NONE'
 	if ROLE == 'TANK' then
 		threat.feedbackUnit = unit..'target'
 		threat.offtank = not UnitIsUnit(unit..'target', 'player')
@@ -84,7 +84,7 @@ function NP:PostUpdateThreat(threat, unit, status)
 			shouldUpdate = true
 		elseif not threat.__owner.Health.ColorOverride and (r and g and b) then
 			threat.__owner.Health.ColorOverride = {r, g, b}
-			shouldUpdate = true			
+			shouldUpdate = true
 		end
 
 		if shouldUpdate then

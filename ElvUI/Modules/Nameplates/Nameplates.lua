@@ -276,7 +276,7 @@ function NP:ConfigureAll()
 	SetCVar('nameplateOtherTopInset', NP.db.clampToScreen and 0.08 or -1)
 	SetCVar('nameplateOtherBottomInset', NP.db.clampToScreen and 0.1 or -1)
 	SetCVar('nameplateLargerScale', 1)
-	
+
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
 	end
