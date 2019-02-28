@@ -2822,6 +2822,7 @@ local function GetUnitSettings(unit, name)
 					type = "toggle",
 					name = L["Use Static Position"],
 					desc = L["When enabled the nameplate will stay visible in a locked position."],
+					disabled = function() return not E.db.nameplates.units[unit].enable end,
 					get = function(info) return E.db.nameplates.units[unit].useStaticPosition end,
 					set = function(info, value) E.db.nameplates.units[unit].useStaticPosition = value; NP:ConfigureAll() end,
 				},

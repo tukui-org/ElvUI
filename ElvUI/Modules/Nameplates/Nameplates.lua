@@ -286,7 +286,7 @@ function NP:ConfigureAll()
 
 	NP:PLAYER_REGEN_ENABLED()
 
-	if NP.db.units['PLAYER'].useStaticPosition then
+	if NP.db.units['PLAYER'].enable and NP.db.units['PLAYER'].useStaticPosition then
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_Player:UpdateAllElements('OnShow')
 	else
