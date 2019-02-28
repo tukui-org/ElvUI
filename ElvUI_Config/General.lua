@@ -156,7 +156,7 @@ E.Options.args.general = {
 					name = FONT_SIZE,
 					desc = L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"],
 					type = "range",
-					min = 4, softMax = 32, step = 1,
+					min = 4, softMax = 32, max = 32, step = 1,
 					set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
 				},
 				font = {
