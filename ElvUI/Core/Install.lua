@@ -453,6 +453,7 @@ function E:SetupLayout(layout, noDataReset)
 		E.db["movers"]["VOICECHAT"] = "TOPLEFT,ElvUIParent,TOPLEFT,250,-82"
 		E.db["unitframe"]["units"]["party"]["enable"] = false
 		E.db["unitframe"]["units"]["party"]["health"]["frequentUpdates"] = true
+		E.db["unitframe"]["units"]["raid"]["visibility"] = "[nogroup] hide;show"
 		E.db["unitframe"]["units"]["raid40"]["health"]["frequentUpdates"] = true
 	end
 
