@@ -1836,10 +1836,6 @@ function E:Initialize()
 	end
 
 	self:UpdateMedia()
-	self:UpdateFrameTemplates()
-	self:UpdateBorderColors()
-	self:UpdateBackdropColors()
-	self:UpdateStatusBars()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
 	self:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
