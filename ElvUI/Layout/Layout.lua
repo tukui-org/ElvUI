@@ -462,7 +462,7 @@ function LO:CreateChatButtonPanel()
 	ChatButtonHolder:SetPoint("RIGHT", _G.LeftChatPanel, "LEFT", -2, 0)
 	ChatButtonHolder:SetSize(30, LeftChatPanel:GetHeight()-2)
 
-	QuickJoinToastButton:Hide() -- DONT KILL IT!!!!
+	--QuickJoinToastButton:Hide() -- DONT KILL IT! If we use hide we also hide the Toasts, which are used in other Plugins.
 
 	ChatButtonHolder:CreateBackdrop('Transparent', nil, true)
 	ChatButtonHolder.backdrop:SetPoint('TOPLEFT', ChatButtonHolder, E.PixelMode and 1 or 3, 1)
@@ -480,7 +480,6 @@ function LO:CreateChatButtonPanel()
 	_G.ChatFrameChannelButton:SetParent(ChatButtonHolder)
 	_G.ChatFrameToggleVoiceDeafenButton:SetParent(ChatButtonHolder)
 	_G.ChatFrameToggleVoiceMuteButton:SetParent(ChatButtonHolder)
-	--ChatAlertFrame:SetParent(ChatButtonHolder) -- This is hacky as fuck
 
 	E:GetModule("Skins"):HandleButton(_G.ChatFrameChannelButton)
 	E:GetModule("Skins"):HandleButton(_G.ChatFrameToggleVoiceDeafenButton)
