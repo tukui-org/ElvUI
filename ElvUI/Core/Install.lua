@@ -255,7 +255,7 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.chat.panelColorConverted = true
 		E.db.chat.separateSizes = true
 		E.db.chat.panelHeight = 236
-		E.db.chat.panelWidth = 443
+		E.db.chat.panelWidth = 440
 		E.db.chat.panelHeightRight = 236
 		E.db.chat.panelWidthRight = 472
 		E.db.chat.tapFontSize = 10
@@ -321,7 +321,7 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.movers.VehicleSeatMover = "TOPLEFT,ElvUIParent,TOPLEFT,4,-4"
 		E.db.movers.VOICECHAT = "TOPLEFT,ElvUIParent,TOPLEFT,368,-210"
 		E.db.movers.ZoneAbility = "BOTTOM,ElvUIParent,BOTTOM,-1,293"
-		E.db.movers.LeftChatMover ="BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,33,4"
+		E.db.movers.LeftChatMover ="BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,36,4"
 		--Tooltip
 		E.db.tooltip.fontSize = 10
 		E.db.tooltip.healthBar.fontOutline = "MONOCHROMEOUTLINE"
