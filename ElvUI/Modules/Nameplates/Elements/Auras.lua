@@ -225,7 +225,7 @@ function NP:PostUpdateAura(unit, button)
 		end
 	else
 		if button.isStealable and not button.isFriend then
-			button:SetBackdropBorderColor(237/255, 234/255, 142/255)
+			button:SetBackdropBorderColor(0.93, 0.91, 0.55, 1.0)
 		else
 			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
 		end
@@ -334,7 +334,7 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 		return true
 	end
 
-	local isPlayer = button.isPlayer
+	local isPlayer = (caster == 'player' or caster == 'vehicle')
 	local isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 
 	button.isPlayer = isPlayer
@@ -345,8 +345,8 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	button.expiration = expiration
 	button.name = name
 	button.spellID = spellID
-	button.owner = caster --what uses this?
-	button.spell = name --what uses this? (SortAurasByName?)
+	button.owner = caster
+	button.spell = name
 	button.priority = 0
 
 	if not db[parentType].filters then
