@@ -337,6 +337,18 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	local isPlayer = button.isPlayer
 	local isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 
+	button.isPlayer = isPlayer
+	button.isFriend = isFriend
+	button.isStealable = isStealable
+	button.dtype = debuffType
+	button.duration = duration
+	button.expiration = expiration
+	button.name = name
+	button.spellID = spellID
+	button.owner = caster --what uses this?
+	button.spell = name --what uses this? (SortAurasByName?)
+	button.priority = 0
+
 	if not db[parentType].filters then
 		return true
 	end
