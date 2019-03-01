@@ -197,10 +197,6 @@ function M:CreateSlotStrings(frame, which)
 	local itemLevelFontSize = E.db.general.itemLevel.itemLevelFontSize or 12
 	local itemLevelFontOutline = E.db.general.itemLevel.itemLevelFontOutline or 'OUTLINE'
 
-	local enchantFont = E.db.general.itemLevel.enchantFont
-	local enchantFontSize = E.db.general.itemLevel.enchantFontSize or 11
-	local enchantFontOutline = E.db.general.itemLevel.enchantFontOutline or 'OUTLINE'
-
 	if which == 'Inspect' then
 		frame.ItemLevelText = _G.InspectPaperDollItemsFrame:CreateFontString(nil, "ARTWORK")
 		frame.ItemLevelText:Point("BOTTOMRIGHT", -6, 6)
@@ -219,7 +215,7 @@ function M:CreateSlotStrings(frame, which)
 			slot.iLvlText:Point("BOTTOM", slot, x, y)
 
 			slot.enchantText = slot:CreateFontString(nil, "OVERLAY")
-			slot.enchantText:FontTemplate(LSM:Fetch("font", enchantFont), enchantFontSize, enchantFontOutline)
+			slot.enchantText:FontTemplate(LSM:Fetch("font", itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
 
 			if i == 16 or i == 17 then
 				slot.enchantText:Point(i==16 and "BOTTOMRIGHT" or "BOTTOMLEFT", slot, i==16 and -40 or 40, 3)
