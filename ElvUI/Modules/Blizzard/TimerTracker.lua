@@ -1,13 +1,11 @@
-local E, L, DF = unpack(select(2, ...))
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard');
 
 --Lua functions
+local _G = _G
 local select, unpack, pairs = select, unpack, pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: TimerTracker
 
 local function SkinIt(bar)
 	for i=1, bar:GetNumRegions() do
@@ -36,7 +34,7 @@ local function SkinIt(bar)
 end
 
 function B:START_TIMER()
-	for _, b in pairs(TimerTracker.timerList) do
+	for _, b in pairs(_G.TimerTracker.timerList) do
 		if b.bar and not b.bar.skinned then
 			SkinIt(b.bar)
 			b.bar.skinned = true

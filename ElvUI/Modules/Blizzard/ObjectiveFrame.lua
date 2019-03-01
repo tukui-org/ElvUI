@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...))
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard');
 
 local _G = _G
@@ -10,6 +10,7 @@ local hooksecurefunc = hooksecurefunc
 local GetScreenWidth = GetScreenWidth
 local GetScreenHeight = GetScreenHeight
 local RegisterStateDriver = RegisterStateDriver
+local GetInstanceInfo = GetInstanceInfo
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
@@ -82,15 +83,21 @@ function B:MoveObjectiveFrame()
 
 	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, _G.ObjectiveTrackerFrame, 'SecureHandlerStateTemplate');
 	ObjectiveTrackerFrame.AutoHider:SetAttribute("_onstate-objectiveHider", [[
-		local parent = self:GetParent()
-		local shown = parent:IsShown()
-
-		if newstate == 1 and shown then
-			self:GetParent():Hide()
-		elseif not shown then
-			self:GetParent():Show()
+		if newstate == 1 then
+			self:Hide()
+		else
+			self:Show()
 		end
 	]])
+
+	ObjectiveTrackerFrame.AutoHider:SetScript("OnHide", function()
+		local _, _, difficulty = GetInstanceInfo();
+		if difficulty ~= 8 then
+			_G.ObjectiveTracker_Collapse()
+		end
+	end)
+
+	ObjectiveTrackerFrame.AutoHider:SetScript("OnShow", _G.ObjectiveTracker_Expand)
 
 	self:SetObjectiveFrameAutoHide()
 end

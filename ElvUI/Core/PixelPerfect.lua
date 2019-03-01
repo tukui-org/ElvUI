@@ -4,8 +4,7 @@ local _G = _G
 --Lua functions
 local min, max = min, max
 local abs, floor = abs, floor
-local tostring, tonumber = tostring, tonumber
-local strsub, strlen = strsub, strlen
+local format, tonumber = format, tonumber
 --WoW API / Variables
 local PixelUtil_GetNearestPixelSize = _G.PixelUtil.GetNearestPixelSize
 
@@ -75,11 +74,7 @@ function E:PixelBestSize()
 end
 
 function E:PixelClip(num)
-	local str = num and tostring(num)
-	if str and strlen(str) > 4 then
-		return tonumber(strsub(str, 0, 4))
-	end
-	return num
+    return tonumber(format("%.2f", num))
 end
 
 function E:PixelScaleChanged(event, skip)

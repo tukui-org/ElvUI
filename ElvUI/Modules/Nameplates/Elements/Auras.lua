@@ -225,7 +225,7 @@ function NP:PostUpdateAura(unit, button)
 		end
 	else
 		if button.isStealable and not button.isFriend then
-			button:SetBackdropBorderColor(237/255, 234/255, 142/255)
+			button:SetBackdropBorderColor(0.93, 0.91, 0.55, 1.0)
 		else
 			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
 		end
@@ -326,25 +326,34 @@ function NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBos
 end
 
 function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-	if not name then return nil end -- checking for an aura that is not there, pass nil to break while loop
-	local parent = button:GetParent()
-	local db = NP.db.units[parent.__owner.frameType]
-	local parentType = parent.type
-	if not (db and db[parentType]) then
-		return true
-	end
+	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
-	local isPlayer = button.isPlayer
+	local parent = button:GetParent()
+	local parentType = parent.type
+	local db = NP.db.units[parent.__owner.frameType] and NP.db.units[parent.__owner.frameType][parentType]
+	if not db then return true end
+
+	local isPlayer = (caster == 'player' or caster == 'vehicle')
 	local isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 
-	if not db[parentType].filters then
-		return true
-	end
+	-- keep these same as in `UF:AuraFilter`
+	button.isPlayer = isPlayer
+	button.isFriend = isFriend
+	button.isStealable = isStealable
+	button.dtype = debuffType
+	button.duration = duration
+	button.expiration = expiration
+	button.name = name
+	button.spellID = spellID
+	button.owner = caster
+	button.spell = name
+	button.priority = 0
 
-	local priority = db[parentType].filters.priority
+	if not db.filters then return true end
 
+	local priority = db.filters.priority
 	local noDuration = (not duration or duration == 0)
-	local allowDuration = noDuration or (duration and (duration > 0) and db[parentType].filters.maxDuration == 0 or duration <= db[parentType].filters.maxDuration) and (db[parentType].filters.minDuration == 0 or duration >= db[parentType].filters.minDuration)
+	local allowDuration = noDuration or (duration and (duration > 0) and db.filters.maxDuration == 0 or duration <= db.filters.maxDuration) and (db.filters.minDuration == 0 or duration >= db.filters.minDuration)
 	local filterCheck
 
 	if priority ~= '' then

@@ -1,4 +1,4 @@
-### Version 10.90 [  ]
+### Version 10.92 [  ]
 
 **New Additions:**  
 
@@ -8,6 +8,32 @@
 
 **Misc. Changes:**  
 
+
+___
+### Version 10.91 [ February 27th 2019 ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+Fixed issue with Objective Tracker in Mythics.  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 10.90 [ February 25th 2019 ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+Fixed issue causing UIScale value to be stored as string instead of number, resulting in an error in v10.89.  
+
+
+**Misc. Changes:**  
+Changed UIScale information popup so it will continue to pop up until an action has been taken. This is to make sure the user sees the info in case an error prevented the popup the first time.
 
 ___
 ### Version 10.89 [ February 25th 2019 ]

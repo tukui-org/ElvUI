@@ -5,12 +5,57 @@ local _G = _G
 local pairs = pairs
 local CreateFrame = CreateFrame
 
+--overrides oUF's color function
+function NP:UpdateColor(unit, cur, max)
+	local parent = self.__owner
+
+	local r, g, b, t
+
+	if(self.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
+		t = parent.colors.tapped
+	elseif self.ColorOverride then
+		t = self.ColorOverride
+	elseif(self.colorDisconnected and self.disconnected) then
+		t = parent.colors.disconnected
+	elseif(self.colorClass and UnitIsPlayer(unit)) or
+		(self.colorClassNPC and not UnitIsPlayer(unit)) or
+		(self.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
+		local _, class = UnitClass(unit)
+		t = parent.colors.class[class]
+	elseif(self.colorReaction and UnitReaction(unit, 'player')) then
+		t = parent.colors.reaction[UnitReaction(unit, 'player')]
+	elseif(self.colorSmooth) then
+		r, g, b = parent:ColorGradient(cur, max, unpack(self.smoothGradient or parent.colors.smooth))
+	elseif(self.colorHealth) then
+		t = parent.colors.health
+	end
+
+	if(t) then
+		r, g, b = t[1], t[2], t[3]
+	end
+
+	if(r or g or b) then
+		self:SetStatusBarColor(r, g, b)
+
+		local bg = self.bg
+		if(bg) then
+			local mu = bg.multiplier or 1
+			bg:SetVertexColor(r * mu, g * mu, b * mu)
+		end
+	end
+end
+
 function NP:Construct_Health(nameplate)
 	local Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'Health', nameplate)
 	Health:SetFrameStrata(nameplate:GetFrameStrata())
 	Health:SetFrameLevel(5)
 	Health:CreateBackdrop('Transparent')
 	Health:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+	Health.UpdateColor = NP.UpdateColor
+	--[[Health.bg = Health:CreateTexture(nil, "BACKGROUND")
+	Health.bg:SetAllPoints()
+	Health.bg:SetTexture(E.media.blankTex)
+	Health.bg.multiplier = 0.2]]
 	NP.StatusBars[Health] = true
 
 	local statusBarTexture = Health:GetStatusBarTexture()
@@ -21,27 +66,12 @@ function NP:Construct_Health(nameplate)
 	nameplate.FlashTexture:Point("TOPRIGHT", statusBarTexture, "TOPRIGHT")
 	nameplate.FlashTexture:Hide()
 
-	function Health:PostUpdate(unit, min, max)
-		if NP.db.DarkTheme then
-			if min ~= max then
-				self:SetStatusBarColor(_G.ElvUI.oUF:ColorGradient(min, max, 1, .1, .1, .6, .3, .3, .2, .2, .2))
-			else
-				self:SetStatusBarColor(0.2, 0.2, 0.2, 1)
-			end
-		end
-
-		Health.r, Health.g, Health.b, Health.a = self:GetStatusBarColor()
-	end
-
-	Health:SetStatusBarColor(0.29, 0.69, 0.3, 1) -- need option
-
+	Health.Smooth = true
+	Health.colorReaction = true
 	Health.frequentUpdates = true
 	Health.colorTapping = true
 	Health.colorDisconnected = false
-	Health.colorReaction = true
-
-	Health.Smooth = true
-
+		
 	return Health
 end
 

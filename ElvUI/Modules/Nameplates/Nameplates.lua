@@ -20,10 +20,9 @@ local UnitFactionGroup = UnitFactionGroup
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
 local UnitIsFriend = UnitIsFriend
 local InCombatLockdown = InCombatLockdown
-local UnitIsBattlePet = UnitIsBattlePet
-local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local IsInInstance = IsInInstance
+local UnitExists = UnitExists
 
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
@@ -174,7 +173,7 @@ function NP:CVarReset()
 	SetCVar('nameplateGlobalScale', GetCVarDefault('nameplateGlobalScale'))
 	SetCVar('NamePlateHorizontalScale', GetCVarDefault('NamePlateHorizontalScale'))
 	SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'))
-	SetCVar('nameplateLargerScale', GetCVarDefault('nameplateLargerScale'))
+	SetCVar('nameplateLargerScale', 1)
 	SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'))
 	SetCVar('nameplateMaxAlpha', GetCVarDefault('nameplateMaxAlpha'))
 	SetCVar('nameplateMaxAlphaDistance', 40)
@@ -276,6 +275,7 @@ function NP:ConfigureAll()
 	SetCVar('nameplateMinAlpha', 1)
 	SetCVar('nameplateOtherTopInset', NP.db.clampToScreen and 0.08 or -1)
 	SetCVar('nameplateOtherBottomInset', NP.db.clampToScreen and 0.1 or -1)
+	SetCVar('nameplateLargerScale', 1)
 
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
@@ -286,7 +286,7 @@ function NP:ConfigureAll()
 
 	NP:PLAYER_REGEN_ENABLED()
 
-	if NP.db.units['PLAYER'].useStaticPosition then
+	if NP.db.units['PLAYER'].enable and NP.db.units['PLAYER'].useStaticPosition then
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_Player:UpdateAllElements('OnShow')
 	else
@@ -305,7 +305,8 @@ function NP:ConfigureAll()
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
-	if event == 'NAME_PLATE_UNIT_ADDED' then
+	if event == 'PLAYER_TARGET_CHANGED' then -- Here Elv
+	elseif event == 'NAME_PLATE_UNIT_ADDED' then
 		unit = unit or nameplate.unit
 		local reaction = UnitReaction('player', unit)
 
@@ -444,7 +445,7 @@ function NP:Initialize()
 	_G.ElvNP_Player.frameType = 'PLAYER'
 
 	ElvUF:Spawn('player', 'ElvNP_Test')
-	_G.ElvNP_Test:SetPoint('BOTTOM', _G.UIParent, 'BOTTOM', 0, 150)
+	_G.ElvNP_Test:SetPoint('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
 	_G.ElvNP_Test:SetSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test.frameType = 'PLAYER'

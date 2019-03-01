@@ -82,9 +82,19 @@ function NP:Update_Castbar(nameplate)
 			nameplate.Castbar.Button:Hide()
 		end
 
-		nameplate.Castbar.Time:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT', -4, 0)
+		nameplate.Castbar.Time:ClearAllPoints()
+		nameplate.Castbar.Text:ClearAllPoints()
+		if db.castbar.textPosition == "BELOW" then
+			nameplate.Castbar.Time:SetPoint('TOPRIGHT', nameplate.Castbar, 'BOTTOMRIGHT')
+			nameplate.Castbar.Text:SetPoint('TOPLEFT', nameplate.Castbar, 'BOTTOMLEFT') 
+		elseif db.castbar.textPosition == "ABOVE" then
+			nameplate.Castbar.Time:SetPoint('BOTTOMRIGHT', nameplate.Castbar, 'TOPRIGHT')
+			nameplate.Castbar.Text:SetPoint('BOTTOMLEFT', nameplate.Castbar, 'TOPLEFT') 			
+		else
+			nameplate.Castbar.Time:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT', -4, 0)
+			nameplate.Castbar.Text:SetPoint('LEFT', nameplate.Castbar, 'LEFT', 4, 0) 
+		end
 
-		nameplate.Castbar.Text:SetPoint('LEFT', nameplate.Castbar, 'LEFT', 4, 0) -- need option
 	else
 		if nameplate:IsElementEnabled('Castbar') then
 			nameplate:DisableElement('Castbar')

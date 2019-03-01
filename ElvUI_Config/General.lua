@@ -3,6 +3,7 @@ local B = E:GetModule("Blizzard")
 local M = E:GetModule("Misc")
 
 local _G = _G
+local IsAddOnLoaded = IsAddOnLoaded
 local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
 
 local function GetChatWindowInfo()
@@ -57,6 +58,7 @@ E.Options.args.general = {
 					order = 3,
 					type = "range",
 					name = UI_SCALE,
+					min = 0.1, max = 1.25,
 					softMin = 0.40, softMax = 1.15, step = 0.01,
 					get = function(info) return E.global.general.UIScale end,
 					set = function(info, value)
@@ -155,7 +157,7 @@ E.Options.args.general = {
 					name = FONT_SIZE,
 					desc = L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"],
 					type = "range",
-					min = 4, softMax = 32, step = 1,
+					min = 4, max = 32, step = 1,
 					set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
 				},
 				font = {

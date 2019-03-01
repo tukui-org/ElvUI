@@ -4,10 +4,7 @@ local NP = E:GetModule('NamePlates')
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
-local UnitPlayerControlled = UnitPlayerControlled
-local UnitIsTapDenied = UnitIsTapDenied
-local UnitIsPlayer = UnitIsPlayer
-local UnitReaction = UnitReaction
+
 
 function NP:Construct_ThreatIndicator(nameplate)
 	local ThreatIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
@@ -39,11 +36,9 @@ function NP:PreUpdateThreat(threat, unit)
 end
 
 function NP:PostUpdateThreat(threat, unit, status)
-	if NP.db.threat and NP.db.threat.useThreatColor and NP.IsInGroup then
+	if NP.db.threat and NP.db.threat.useThreatColor then
 		local r, g, b
-		if (not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
-			r, g, b = NP.db.colors.reactions.tapped.r, NP.db.colors.reactions.tapped.g, NP.db.colors.reactions.tapped.b
-		elseif status then
+		if status then
 			if (status == 3) then --Securely Tanking
 				if threat.isTank then
 					r, g, b = NP.db.colors['threat'].goodColor.r, NP.db.colors['threat'].goodColor.g, NP.db.colors['threat'].goodColor.b
@@ -78,27 +73,32 @@ function NP:PostUpdateThreat(threat, unit, status)
 					end
 				end
 			end
-		elseif not UnitIsPlayer(unit) then
-			local reactionType = UnitReaction(unit, 'player')
-			if reactionType == 4 then
-				r, g, b = NP.db.colors.reactions.neutral.r, NP.db.colors.reactions.neutral.g, NP.db.colors.reactions.neutral.b
-			elseif reactionType > 4 then
-				r, g, b = NP.db.colors.reactions.good.r, NP.db.colors.reactions.good.g, NP.db.colors.reactions.good.b
-			else
-				r, g, b = NP.db.colors.reactions.bad.r, NP.db.colors.reactions.bad.g, NP.db.colors.reactions.bad.b
-			end
 		end
-		if r and g and b then
-			threat.__owner.Health:SetStatusBarColor(r, g, b)
+
+		local shouldUpdate
+		if threat.__owner.Health.ColorOverride and (not r or not g or not b) then
+			threat.__owner.Health.ColorOverride = nil
+			shouldUpdate = true
+		elseif threat.__owner.Health.ColorOverride and (threat.__owner.Health.ColorOverride[1] ~= r or threat.__owner.Health.ColorOverride[2] ~= g or threat.__owner.Health.ColorOverride ~= b) then
+			threat.__owner.Health.ColorOverride = {r, g, b}
+			shouldUpdate = true
+		elseif not threat.__owner.Health.ColorOverride and (r and g and b) then
+			threat.__owner.Health.ColorOverride = {r, g, b}
+			shouldUpdate = true
+		end
+
+		if shouldUpdate then
+			threat.__owner.Health:ForceUpdate()
+		end
+	else
+		if threat.__owner.Health.ColorOverride then
+			threat.__owner.Health.ColorOverride = nil
+			threat.__owner.Health:ForceUpdate()
 		end
 	end
+
 end
 
 function NP:Update_Threat(nameplate)
-	local db = NP.db.units[nameplate.frameType]
 
-	if NP.db.threat.useThreatColor then
-		nameplate.Health.colorReaction = false
-		nameplate.Health.colorClass = db.healthbar.useClassColor or false
-	end
 end

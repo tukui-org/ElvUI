@@ -2097,8 +2097,18 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
-					iconGroup = {
+					textPosition = {
 						order = 12,
+						name = L["Text Position"],
+						type = "select",
+						values = {
+							["ONBAR"] = L["On Bar"],
+							["ABOVE"] = L["Above"],
+							["BELOW"] = L["Below"]
+						},
+					},
+					iconGroup = {
+						order = 13,
 						name = L["Icon Group"],
 						type = "group",
 						get = function(info) return E.db.nameplates.units[unit].castbar[ info[#info] ] end,
@@ -2123,7 +2133,7 @@ local function GetUnitSettings(unit, name)
 								order = 13,
 								name = L["Icon Size"],
 								type = "range",
-								min = 4, max = 20, step = 1,
+								min = 4, max = 40, step = 1,
 							},
 							iconOffsetX = {
 								order = 14,
@@ -2812,6 +2822,7 @@ local function GetUnitSettings(unit, name)
 					type = "toggle",
 					name = L["Use Static Position"],
 					desc = L["When enabled the nameplate will stay visible in a locked position."],
+					disabled = function() return not E.db.nameplates.units[unit].enable end,
 					get = function(info) return E.db.nameplates.units[unit].useStaticPosition end,
 					set = function(info, value) E.db.nameplates.units[unit].useStaticPosition = value; NP:ConfigureAll() end,
 				},

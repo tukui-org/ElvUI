@@ -1,16 +1,14 @@
-local E, L, DF = unpack(select(2, ...))
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard');
 
 --Lua functions
 local _G = _G
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: NUM_EXTENDED_UI_FRAMES, hooksecurefunc
+local hooksecurefunc = hooksecurefunc
 
 local function CaptureUpdate()
-	if NUM_EXTENDED_UI_FRAMES then
+	if _G.NUM_EXTENDED_UI_FRAMES then
 		local captureBar
-		for i=1, NUM_EXTENDED_UI_FRAMES do
+		for i=1, _G.NUM_EXTENDED_UI_FRAMES do
 			captureBar = _G["WorldStateCaptureBar" .. i]
 
 			if captureBar and captureBar:IsVisible() then
