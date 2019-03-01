@@ -129,16 +129,16 @@ function B:EnhanceColorPicker()
 			_G.ColorPPBoxLabelA:Show()
 			_G.ColorPPBoxH:SetScript("OnTabPressed", function() _G.ColorPPBoxA:SetFocus() end)
 			UpdateAlphaText()
-			self:Width(405)
+			frame:Width(405)
 		else
 			_G.ColorPPBoxA:Hide()
 			_G.ColorPPBoxLabelA:Hide()
 			_G.ColorPPBoxH:SetScript("OnTabPressed", function() _G.ColorPPBoxR:SetFocus() end)
-			self:Width(345)
+			frame:Width(345)
 		end
 
 		--Set OnUpdate script to handle update limiter
-		self:SetScript("OnUpdate", HandleUpdateLimiter)
+		frame:SetScript("OnUpdate", HandleUpdateLimiter)
 	end)
 
 	--Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
