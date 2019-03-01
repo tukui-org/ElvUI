@@ -513,14 +513,10 @@ function UF:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 
 	local parent = self:GetParent()
 	local db = parent.db and parent.db[self.type]
-	if not db then
-		return true
-	end
+	if not db then return true end
 
-	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, spellPriority
-
-	isPlayer = (caster == 'player' or caster == 'vehicle')
-	isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
+	local isPlayer = (caster == 'player' or caster == 'vehicle')
+	local isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 
 	button.isPlayer = isPlayer
 	button.isFriend = isFriend
@@ -530,16 +526,17 @@ function UF:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	button.expiration = expiration
 	button.name = name
 	button.spellID = spellID
-	button.owner = caster --what uses this?
-	button.spell = name --what uses this? (SortAurasByName?)
+	button.owner = caster
+	button.spell = name
 	button.priority = 0
 
-	noDuration = (not duration or duration == 0)
-	allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
+	local noDuration = (not duration or duration == 0)
+	local allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
+	local filterCheck, spellPriority
 
 	if db.priority ~= '' then
-		isUnit = unit and caster and UnitIsUnit(unit, caster)
-		canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType))
+		local isUnit = unit and caster and UnitIsUnit(unit, caster)
+		local canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType))
 		filterCheck, spellPriority = UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", db.priority))
 		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
 	else

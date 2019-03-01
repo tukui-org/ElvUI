@@ -331,14 +331,12 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	local parent = button:GetParent()
 	local parentType = parent.type
 	local db = NP.db.units[parent.__owner.frameType] and NP.db.units[parent.__owner.frameType][parentType]
-
-	if not db then
-		return true
-	end
+	if not db then return true end
 
 	local isPlayer = (caster == 'player' or caster == 'vehicle')
 	local isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 
+	-- keep these same as in `UF:AuraFilter`
 	button.isPlayer = isPlayer
 	button.isFriend = isFriend
 	button.isStealable = isStealable
@@ -347,14 +345,13 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	button.expiration = expiration
 	button.name = name
 	button.spellID = spellID
+	button.owner = caster
+	button.spell = name
 	button.priority = 0
 
-	if not db.filters then
-		return true
-	end
+	if not db.filters then return true end
 
 	local priority = db.filters.priority
-
 	local noDuration = (not duration or duration == 0)
 	local allowDuration = noDuration or (duration and (duration > 0) and db.filters.maxDuration == 0 or duration <= db.filters.maxDuration) and (db.filters.minDuration == 0 or duration >= db.filters.minDuration)
 	local filterCheck
