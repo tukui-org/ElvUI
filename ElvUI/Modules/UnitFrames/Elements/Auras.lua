@@ -509,13 +509,14 @@ function UF:UpdateAuraTimer(elapsed)
 end
 
 function UF:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
+
 	local parent = button:GetParent()
 	local db = parent.db and parent.db[self.type]
 	if not db then
 		return true
 	end
 
-	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration, spellPriority
 
 	isPlayer = (caster == 'player' or caster == 'vehicle')
