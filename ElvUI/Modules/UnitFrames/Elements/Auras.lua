@@ -511,7 +511,7 @@ end
 function UF:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
-	local parent = button:GetParent()
+	local parent = self:GetParent()
 	local db = parent.db and parent.db[self.type]
 	if not db then
 		return true
