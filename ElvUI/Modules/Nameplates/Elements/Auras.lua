@@ -326,8 +326,6 @@ function NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBos
 end
 
 function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
-
 	local parent = button:GetParent()
 	local parentType = parent.type
 	local db = NP.db.units[parent.__owner.frameType] and NP.db.units[parent.__owner.frameType][parentType]
@@ -336,6 +334,7 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 		return true
 	end
 
+	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 	local isPlayer = (caster == 'player' or caster == 'vehicle')
 	local isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 
