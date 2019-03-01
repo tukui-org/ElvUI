@@ -9,7 +9,7 @@ local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 
 local function topCenterPosition(self, _, b)
-	local holder = _G.UIWidgetTopCenterContainerFrame
+	local holder = _G.TopCenterContainerHolder
 	if b and (b ~= holder) then
 		self:ClearAllPoints()
 		self:SetPoint('CENTER', holder)
@@ -18,7 +18,7 @@ local function topCenterPosition(self, _, b)
 end
 
 local function belowMinimapPosition(self, _, b)
-	local holder = _G.UIWidgetBelowMinimapContainerFrame
+	local holder = _G.BelowMinimapContainerHolder
 	if b and (b ~= holder) then
 		self:ClearAllPoints()
 		self:SetPoint('CENTER', holder, 'CENTER')
