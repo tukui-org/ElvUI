@@ -1,5 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local oUF = E.oUF or oUF
+local _, ns = ...
+local oUF = ns.oUF or oUF
+
+local addon = {}
+ns.oUF_RaidDebuffs = addon
+_G.oUF_RaidDebuffs = ns.oUF_RaidDebuffs
+if not _G.oUF_RaidDebuffs then
+	_G.oUF_RaidDebuffs = addon
+end
 
 local type, pairs, wipe = type, pairs, wipe
 local format, floor = format, floor
@@ -11,13 +19,6 @@ local GetTime = GetTime
 local UnitAura = UnitAura
 local UnitCanAttack = UnitCanAttack
 local UnitIsCharmed = UnitIsCharmed
-
-local addon = {}
-E.oUF_RaidDebuffs = addon
-
-if not _G.oUF_RaidDebuffs then
-	_G.oUF_RaidDebuffs = addon
-end
 
 local debuff_data = {}
 addon.DebuffData = debuff_data
