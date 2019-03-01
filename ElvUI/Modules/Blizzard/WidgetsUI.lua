@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...))
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 
 --Lua functions
@@ -8,9 +8,27 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 
+local function topCenterPosition(self, _, b)
+	local holder = _G.UIWidgetTopCenterContainerFrame
+	if b and (b ~= holder) then
+		self:ClearAllPoints()
+		self:SetPoint('CENTER', holder)
+		self:SetParent(holder)
+	end
+end
+
+local function belowMinimapPosition(self, _, b)
+	local holder = _G.UIWidgetBelowMinimapContainerFrame
+	if b and (b ~= holder) then
+		self:ClearAllPoints()
+		self:SetPoint('CENTER', holder, 'CENTER')
+		self:SetParent(holder)
+	end
+end
+
 local function UIWidgets()
-	local topCenterContainer = _G["UIWidgetTopCenterContainerFrame"]
-	local belowMiniMapcontainer = _G["UIWidgetBelowMinimapContainerFrame"]
+	local topCenterContainer = _G.UIWidgetTopCenterContainerFrame
+	local belowMiniMapcontainer = _G.UIWidgetBelowMinimapContainerFrame
 
 	local topCenterHolder = CreateFrame('Frame', 'TopCenterContainerHolder', E.UIParent)
 	topCenterHolder:Point("TOP", E.UIParent, "TOP", 0, -30)
@@ -24,26 +42,13 @@ local function UIWidgets()
 	E:CreateMover(belowMiniMapHolder, 'BelowMinimapContainerMover', L["UIWidgetBelowMinimapContainer"], nil, nil, nil,'ALL,SOLO')
 
 	topCenterContainer:ClearAllPoints()
-	belowMiniMapcontainer:ClearAllPoints()
-
 	topCenterContainer:SetPoint('CENTER', topCenterHolder)
+
+	belowMiniMapcontainer:ClearAllPoints()
 	belowMiniMapcontainer:SetPoint('CENTER', belowMiniMapHolder, 'CENTER')
 
-	hooksecurefunc(topCenterContainer, 'SetPoint', function(self, a, b, c, d, e)
-		if b ~= topCenterHolder then
-			self:ClearAllPoints()
-			self:SetPoint('CENTER', topCenterHolder)
-			self:SetParent(topCenterHolder)
-		end
-	end)
-
-	hooksecurefunc(belowMiniMapcontainer, 'SetPoint', function(self, a, b, c, d, e)
-		if b ~= belowMiniMapHolder then
-			self:ClearAllPoints()
-			self:SetPoint('CENTER', belowMiniMapHolder, 'CENTER')
-			self:SetParent(belowMiniMapHolder)
-		end
-	end)
+	hooksecurefunc(topCenterContainer, 'SetPoint', topCenterPosition)
+	hooksecurefunc(belowMiniMapcontainer, 'SetPoint', belowMinimapPosition)
 end
 
 function B:Handle_UIWidgets()

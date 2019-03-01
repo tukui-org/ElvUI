@@ -1,23 +1,29 @@
-local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
-local _, ns = ...
-local oUF = ns.oUF or oUF
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local oUF = E.oUF or oUF
+
+local type, pairs, wipe = type, pairs, wipe
+local format, floor = format, floor
+
+local GetActiveSpecGroup = GetActiveSpecGroup
+local GetSpecialization = GetSpecialization
+local GetSpellInfo = GetSpellInfo
+local GetTime = GetTime
+local UnitAura = UnitAura
+local UnitCanAttack = UnitCanAttack
+local UnitIsCharmed = UnitIsCharmed
 
 local addon = {}
-ns.oUF_RaidDebuffs = addon
-oUF_RaidDebuffs = ns.oUF_RaidDebuffs
+E.oUF_RaidDebuffs = addon
+
 if not _G.oUF_RaidDebuffs then
 	_G.oUF_RaidDebuffs = addon
 end
 
 local debuff_data = {}
 addon.DebuffData = debuff_data
-
-
 addon.ShowDispellableDebuff = true
 addon.FilterDispellableDebuff = true
 addon.MatchBySpellName = false
-
-
 addon.priority = 10
 
 local function add(spell, priority, stackThreshold)
@@ -186,7 +192,7 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 			end
 		end
 
-		if spellId and select(1, unpack(ElvUI)).ReverseTimer[spellId] then
+		if spellId and E.ReverseTimer[spellId] then
 			f.reverse = true
 		else
 			f.reverse = nil
@@ -231,7 +237,7 @@ local blackList = {
 
 local function Update(self, event, unit)
 	if unit ~= self.unit then return end
-	local _name, _icon, _count, _dtype, _duration, _endTime, _spellId
+	local _name, _icon, _count, _dtype, _duration, _endTime, _spellId, _
 	local _priority, priority = 0, 0
 	local _stackThreshold = 0
 
