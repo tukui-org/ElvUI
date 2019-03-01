@@ -459,7 +459,7 @@ function LO:CreateChatButtonPanel()
 
 	local ChatButtonHolder = CreateFrame("Frame", "ChatButtonHolder", E.UIParent)
 	ChatButtonHolder:ClearAllPoints()
-	ChatButtonHolder:SetPoint("RIGHT", _G.LeftChatPanel, "LEFT", -4, 0)
+	ChatButtonHolder:SetPoint("RIGHT", _G.LeftChatPanel, "LEFT", E.PixelMode and -2 or -4, 0)
 	ChatButtonHolder:SetSize(33, LeftChatPanel:GetHeight()-2)
 
 	--QuickJoinToastButton:Hide() -- DONT KILL IT! If we use hide we also hide the Toasts, which are used in other Plugins.
