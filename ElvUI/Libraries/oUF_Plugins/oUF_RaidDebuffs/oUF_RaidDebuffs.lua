@@ -1,7 +1,7 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local _, ns = ...
 local oUF = ns.oUF or oUF
 
+local _G = _G
 local addon = {}
 ns.oUF_RaidDebuffs = addon
 _G.oUF_RaidDebuffs = ns.oUF_RaidDebuffs
@@ -193,7 +193,7 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 			end
 		end
 
-		if spellId and E.ReverseTimer[spellId] then
+		if spellId and _G.ElvUI[1].ReverseTimer[spellId] then
 			f.reverse = true
 		else
 			f.reverse = nil
