@@ -9,8 +9,8 @@ if not _G.oUF_RaidDebuffs then
 	_G.oUF_RaidDebuffs = addon
 end
 
-local type, pairs, wipe = type, pairs, wipe
 local format, floor = format, floor
+local type, pairs, wipe = type, pairs, wipe
 
 local GetActiveSpecGroup = GetActiveSpecGroup
 local GetSpecialization = GetSpecialization
