@@ -326,11 +326,13 @@ function NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBos
 end
 
 function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-	if not name then return nil end -- checking for an aura that is not there, pass nil to break while loop
+	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
+
 	local parent = button:GetParent()
-	local db = NP.db.units[parent.__owner.frameType]
 	local parentType = parent.type
-	if not (db and db[parentType]) then
+	local db = NP.db.units[parent.__owner.frameType] and NP.db.units[parent.__owner.frameType][parentType]
+
+	if not db then
 		return true
 	end
 
@@ -347,14 +349,14 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	button.spellID = spellID
 	button.priority = 0
 
-	if not db[parentType].filters then
+	if not db.filters then
 		return true
 	end
 
-	local priority = db[parentType].filters.priority
+	local priority = db.filters.priority
 
 	local noDuration = (not duration or duration == 0)
-	local allowDuration = noDuration or (duration and (duration > 0) and db[parentType].filters.maxDuration == 0 or duration <= db[parentType].filters.maxDuration) and (db[parentType].filters.minDuration == 0 or duration >= db[parentType].filters.minDuration)
+	local allowDuration = noDuration or (duration and (duration > 0) and db.filters.maxDuration == 0 or duration <= db.filters.maxDuration) and (db.filters.minDuration == 0 or duration >= db.filters.minDuration)
 	local filterCheck
 
 	if priority ~= '' then
