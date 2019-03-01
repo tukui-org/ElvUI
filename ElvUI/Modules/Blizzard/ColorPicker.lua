@@ -143,14 +143,14 @@ function B:EnhanceColorPicker()
 
 	--Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
 	--We overwrite the OnColorSelect script and set a limit on how often we allow a call to self.func
-	_G.ColorPickerFrame:SetScript('OnColorSelect', function(_, r, g, b)
+	_G.ColorPickerFrame:SetScript('OnColorSelect', function(frame, r, g, b)
 		_G.ColorSwatch:SetColorTexture(r, g, b)
 		if not editingText then
 			UpdateColorTexts(r, g, b)
 		end
-		if self.allowUpdate then
-			self.func()
-			self.timeSinceUpdate = 0
+		if frame.allowUpdate then
+			frame.func()
+			frame.timeSinceUpdate = 0
 		end
 	end)
 
@@ -348,10 +348,10 @@ function B:EnhanceColorPicker()
 	_G.ColorPPBoxR:Point("RIGHT", "ColorPPBoxG", "LEFT", -25, 0)
 
 	-- define the order of tab cursor movement
-	_G.ColorPPBoxR:SetScript("OnTabPressed", function(box) box:SetFocus() end)
-	_G.ColorPPBoxG:SetScript("OnTabPressed", function(box) box:SetFocus() end)
-	_G.ColorPPBoxB:SetScript("OnTabPressed", function(box) box:SetFocus() end)
-	_G.ColorPPBoxA:SetScript("OnTabPressed", function(box) box:SetFocus() end)
+	_G.ColorPPBoxR:SetScript("OnTabPressed", function() _G.ColorPPBoxG:SetFocus() end)
+	_G.ColorPPBoxG:SetScript("OnTabPressed", function() _G.ColorPPBoxB:SetFocus() end)
+	_G.ColorPPBoxB:SetScript("OnTabPressed", function() _G.ColorPPBoxH:SetFocus() end)
+	_G.ColorPPBoxA:SetScript("OnTabPressed", function() _G.ColorPPBoxR:SetFocus() end)
 
 	-- make the color picker movable.
 	local mover = CreateFrame('Frame', nil, _G.ColorPickerFrame)
