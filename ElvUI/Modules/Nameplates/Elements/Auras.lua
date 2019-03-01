@@ -345,8 +345,6 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	button.expiration = expiration
 	button.name = name
 	button.spellID = spellID
-	button.owner = caster
-	button.spell = name
 	button.priority = 0
 
 	if not db[parentType].filters then
