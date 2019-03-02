@@ -305,8 +305,7 @@ function NP:ConfigureAll()
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
-	if event == 'PLAYER_TARGET_CHANGED' then -- Here Elv
-	elseif event == 'NAME_PLATE_UNIT_ADDED' then
+	if event == 'NAME_PLATE_UNIT_ADDED' then
 		unit = unit or nameplate.unit
 		local reaction = UnitReaction('player', unit)
 
@@ -342,13 +341,13 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlate(_G.ElvNP_Test)
 		end
 
-		--if nameplate ~= _G.ElvNP_Player then
-		--	if (UnitIsBattlePetCompanion(unit) or UnitIsBattlePet(unit)) and nameplate:IsEnabled() then
-		--		nameplate:Disable()
-		--	elseif not nameplate:IsEnabled() then
-		--		nameplate:Enable()
-		--	end
-		--end
+		--[[if nameplate ~= _G.ElvNP_Player then
+			if (UnitIsBattlePetCompanion(unit) or UnitIsBattlePet(unit)) and nameplate:IsEnabled() then
+				nameplate:Disable()
+			elseif not nameplate:IsEnabled() then
+				nameplate:Enable()
+			end
+		end]]
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		nameplate.isTarget = nil
 		nameplate.isTargetingMe = nil
@@ -363,7 +362,6 @@ end
 
 -- Event functions fired from the NamePlate itself
 NP.plateEvents = {
-	-- any registered as `true` will call noop
 	['PLAYER_TARGET_CHANGED'] = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
 		if self.isTarget or not UnitExists("target") then
@@ -376,17 +374,14 @@ NP.plateEvents = {
 		unit = unit or self.unit
 		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
 	end,
-	['UNIT_THREAT_LIST_UPDATE'] = true,
-	['SPELL_UPDATE_COOLDOWN'] = true
+	['UNIT_THREAT_LIST_UPDATE'] = E.noop,
+	['SPELL_UPDATE_COOLDOWN'] = E.noop
 }
 
 function NP:RegisterElementEvent(nameplate, event, func, unitless)
-	if not func then
-		func = NP.plateEvents[event]
-		if func == true then func = E.noop end
-	end
-
+	if not func then func = NP.plateEvents[event] end
 	if not func then return end
+
 	nameplate:RegisterEvent(event, func, unitless)
 end
 
