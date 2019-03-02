@@ -1,9 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
-local _G = _G
+local unpack = unpack
 local pairs = pairs
 local CreateFrame = CreateFrame
+local UnitClass = UnitClass
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitReaction = UnitReaction
 
 --overrides oUF's color function
 function NP:UpdateColor(unit, cur, max)

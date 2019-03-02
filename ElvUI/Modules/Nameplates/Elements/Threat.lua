@@ -5,7 +5,6 @@ local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 
-
 function NP:Construct_ThreatIndicator(nameplate)
 	local ThreatIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
 	ThreatIndicator:SetSize(16, 16)
