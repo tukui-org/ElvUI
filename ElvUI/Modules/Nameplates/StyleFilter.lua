@@ -227,11 +227,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if PortraitShown then
 		frame.StyleChanged = true
 		frame.PortraitShown = true
-		self:UpdateElement_Portrait(frame, true)
-		self:ConfigureElement_Portrait(frame, true)
-		if frame.RightArrow:IsShown() then
-			frame.RightArrow:SetPoint("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.Health, "LEFT", E:Scale(E.Border*2), 0)
-		end
+		self:Update_Portrait(frame, true)
 	end
 	if NameOnlyChanged then
 		frame.StyleChanged = true
@@ -324,12 +320,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if PortraitShown then
 		frame.PortraitShown = nil
-		frame.Portrait:Hide() --This could have been forced so hide it
-		self:UpdateElement_Portrait(frame) --Use the original check to determine if this should be shown
-		self:ConfigureElement_Portrait(frame)
-		if frame.RightArrow:IsShown() then
-			frame.RightArrow:SetPoint("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.Health, "LEFT", E:Scale(E.Border*2), 0)
-		end
+		self:Update_Portrait(frame)
 	end
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
