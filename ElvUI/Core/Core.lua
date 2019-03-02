@@ -963,7 +963,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 				if not E.recievedOutOfDateMessage then
 					E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
 
-					if msg and ((msg - ver) >= 0.05) then
+					if (msg and ((msg - ver) >= 0.05)) or not E.yep then
 						E:StaticPopup_Show('ELVUI_UPDATE_AVAILABLE')
 					end
 
