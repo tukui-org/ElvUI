@@ -3,6 +3,7 @@ local LO = E:NewModule('Layout', 'AceEvent-3.0');
 
 --Lua functions
 local _G = _G
+local unpack = unpack
 --WoW API / Variables
 local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
 local hooksecurefunc = hooksecurefunc
@@ -460,7 +461,7 @@ function LO:CreateChatButtonPanel()
 	local ChatButtonHolder = CreateFrame("Frame", "ChatButtonHolder", E.UIParent)
 	ChatButtonHolder:ClearAllPoints()
 	ChatButtonHolder:SetPoint("RIGHT", _G.LeftChatPanel, "LEFT", E.PixelMode and -2 or -4, 0)
-	ChatButtonHolder:SetSize(33, LeftChatPanel:GetHeight()-2)
+	ChatButtonHolder:SetSize(33, _G.LeftChatPanel:GetHeight()-2)
 
 	--QuickJoinToastButton:Hide() -- DONT KILL IT! If we use hide we also hide the Toasts, which are used in other Plugins.
 
