@@ -200,7 +200,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		end
 	end
 	if ScaleChanged then
-		--[[
+	--[[
 		frame.StyleChanged = true
 		frame.ScaleChanged = true
 		local scale = actions.scale
@@ -208,7 +208,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 			scale = scale * self.db.targetScale
 		end
 		self:SetFrameScale(frame, scale)
-		]]
+	]]
 	end
 	if AlphaChanged then
 		frame.StyleChanged = true
@@ -230,6 +230,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		self:Update_Portrait(frame, true)
 	end
 	if NameOnlyChanged then
+	--[[
 		frame.StyleChanged = true
 		frame.NameOnlyChanged = true
 		--hide the bars
@@ -254,6 +255,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		self:ConfigureElement_Portrait(frame, true)
 		--position suramar detection
 		self:ConfigureElement_Detection(frame, frame.Portrait:IsShown() and frame.Portrait)
+	]]
 	end
 end
 
