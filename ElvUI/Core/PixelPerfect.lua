@@ -1,12 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local _G = _G
---Lua functions
-local min, max = min, max
-local abs, floor = abs, floor
+local min, max, abs, floor = min, max, abs, floor
 local format, tonumber = format, tonumber
---WoW API / Variables
-local PixelUtil_GetNearestPixelSize = _G.PixelUtil.GetNearestPixelSize
 
 function E:IsEyefinity(width, height)
 	if E.global.general.eyefinity and width >= 3840 then
@@ -30,7 +26,10 @@ function E:UIScale(init)
 	local scale = E.global.general.UIScale
 	if init then --E.OnInitialize
 		--Set variables for pixel scaling
-		E.mult = PixelUtil_GetNearestPixelSize(1, scale)
+		local bestScale = E:PixelBestSize()
+		local pixelScale = 768 / E.screenheight
+
+		E.mult = (bestScale / scale) - ((bestScale - pixelScale) / scale)
 		E.Spacing = (E.PixelMode and 0) or E.mult
 		E.Border = (E.PixelMode and E.mult) or E.mult*2
 	else --E.Initialize
@@ -58,7 +57,7 @@ function E:UIScale(init)
 
 		E.UIParent:SetSize(width, height)
 		E.UIParent:ClearAllPoints()
-		E.UIParent:Point(E.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" and "BOTTOM" or "CENTER")
+		E.UIParent:Point(E.global.general.commandBarSetting == 'ENABLED_RESIZEPARENT' and 'BOTTOM' or 'BOTTOM')
 		E.UIParent.origHeight = E.UIParent:GetHeight()
 
 		--Calculate potential coordinate differences
@@ -74,7 +73,7 @@ function E:PixelBestSize()
 end
 
 function E:PixelClip(num)
-    return tonumber(format("%.5f", num))
+    return tonumber(format('%.5f', num))
 end
 
 function E:PixelScaleChanged(event, skip)
@@ -84,11 +83,10 @@ function E:PixelScaleChanged(event, skip)
 	if event == 'UISCALE_CHANGE' then
 		E:Delay(0.5, function() E:StaticPopup_Show(event) end)
 	elseif E.StaticPopupFrames and not skip then
-		E:StaticPopup_Show("UISCALE_CHANGE")
+		E:StaticPopup_Show('UISCALE_CHANGE')
 	end
 end
 
---pixel perfect script of custom ui scale.
 function E:Scale(x)
 	return E.mult * floor(x / E.mult + 0.5)
 end
