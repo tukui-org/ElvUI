@@ -559,8 +559,8 @@ end
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', _G.UIParent)
 E.UIParent:SetFrameLevel(_G.UIParent:GetFrameLevel())
-E.UIParent:SetPoint('CENTER', _G.UIParent, 'CENTER')
 E.UIParent:SetSize(_G.UIParent:GetSize())
+E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
 E.snapBars[#E.snapBars + 1] = E.UIParent
 
@@ -1788,7 +1788,6 @@ local function HandleCommandBar()
 		bar:Hide()
 		_G.UIParent:UnregisterEvent('UNIT_AURA')--Only used for OrderHall Bar
 	elseif E.global.general.commandBarSetting == 'ENABLED_RESIZEPARENT' then
-		E.UIParent:SetPoint('BOTTOM', _G.UIParent, 'BOTTOM')
 		_G.OrderHallCommandBar:HookScript('OnShow', SetModifiedHeight)
 		_G.OrderHallCommandBar:HookScript('OnHide', SetOriginalHeight)
 	end
