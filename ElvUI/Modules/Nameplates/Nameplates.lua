@@ -306,9 +306,11 @@ end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'NAME_PLATE_UNIT_ADDED' then
-		unit = unit or nameplate.unit
-		local reaction = UnitReaction('player', unit)
+		NP:ClearStyledPlate(nameplate)
 
+		unit = unit or nameplate.unit
+
+		local reaction = UnitReaction('player', unit)
 		if UnitIsUnit(unit, 'player') then
 			nameplate.frameType = 'PLAYER'
 		elseif UnitIsPVPSanctuary(unit) or (UnitIsPlayer(unit) and UnitIsFriend('player', unit) and reaction and reaction >= 5) then
@@ -321,25 +323,22 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.frameType = 'ENEMY_PLAYER'
 		end
 
-		NP:UpdatePlate(nameplate)
+		-- update player and test plate
+		if NP.db.units['PLAYER'].useStaticPosition then
+			NP:UpdatePlate(_G.ElvNP_Player)
+		end
+		if _G.ElvNP_Test:IsEnabled() then
+			NP:UpdatePlate(_G.ElvNP_Test)
+		end
 
+		-- update this plate and fade it in
+		NP:UpdatePlate(nameplate)
 		if nameplate:IsShown() then
 			E:UIFrameFadeIn(nameplate, 1, 0, 1)
 		end
 
-		if NP.db.units['PLAYER'].useStaticPosition then
-			NP:UpdatePlate(_G.ElvNP_Player)
-		end
-
 		NP.Plates[nameplate] = true
-
-		NP:StyleFilterUpdate(nameplate, event)
-
 		nameplate:UpdateTags()
-
-		if not InCombatLockdown() and _G.ElvNP_Test:IsEnabled() then
-			NP:UpdatePlate(_G.ElvNP_Test)
-		end
 
 		--[[if nameplate ~= _G.ElvNP_Player then
 			if (UnitIsBattlePetCompanion(unit) or UnitIsBattlePet(unit)) and nameplate:IsEnabled() then
@@ -348,11 +347,12 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 				nameplate:Enable()
 			end
 		end]]
-	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
-		nameplate.isTarget = nil
-		nameplate.isTargetingMe = nil
 
+		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
+	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		NP:ClearStyledPlate(nameplate)
+		nameplate.isTargetingMe = nil
+		nameplate.isTarget = nil
 	end
 end
 
