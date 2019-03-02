@@ -1568,6 +1568,7 @@ local function UpdateFilterGroup()
 					order = 1,
 					type = 'toggle',
 					name = L["Hide Frame"],
+					disabled = true,
 				},
 				usePortrait = {
 					order = 2,
@@ -1579,7 +1580,8 @@ local function UpdateFilterGroup()
 					name = L["Name Only"],
 					order = 3,
 					type = 'toggle',
-					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
+					disabled = true,
+					--disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 				},
 				spacer1 = {
 					order = 4,
@@ -1590,7 +1592,8 @@ local function UpdateFilterGroup()
 					order = 5,
 					type = "range",
 					name = L["Scale"],
-					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
+					disabled = true,
+					--disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].actions.scale or 1 end,
 					min=0.35, max = 1.5, step = 0.01,
 				},

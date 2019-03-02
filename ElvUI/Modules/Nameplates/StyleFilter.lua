@@ -147,10 +147,12 @@ end
 
 function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	if VisibilityChanged then
+		--[[
 		frame.StyleChanged = true
 		frame.VisibilityChanged = true
 		frame:Hide()
 		return --We hide it. Lets not do other things (no point)
+		]]
 	end
 	if HealthColorChanged then
 		frame.StyleChanged = true
