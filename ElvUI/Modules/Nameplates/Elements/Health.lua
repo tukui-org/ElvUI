@@ -36,6 +36,9 @@ function NP:UpdateColor(unit, cur, max)
 
 	if(r or g or b) then
 		self.r, self.g, self.b = r, g, b
+
+		if self.__owner.HealthColorChanged then return end
+
 		self:SetStatusBarColor(r, g, b)
 
 		local bg = self.bg

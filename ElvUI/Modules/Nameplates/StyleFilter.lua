@@ -363,8 +363,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	local power, maxPower, percPower, underPowerThreshold, overPowerThreshold, powerUnit;
 	local health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold, healthUnit;
 
-	local castbarShown = frame.Castbar and frame.Castbar:IsShown()
-	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
+	local isCasting = frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
 	local matchMyClass = false --Only check spec when we match the class condition
 
 	if not failed and trigger.names and next(trigger.names) then
@@ -398,10 +397,11 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	--Try to match by casting spell name or spell id
 	if not failed and (trigger.casting and trigger.casting.spells) and next(trigger.casting.spells) then
 		condition = 0
+
 		for spellName, value in pairs(trigger.casting.spells) do
 			if value == true then --only check spell that are checked
 				condition = 1
-				if castbarShown then
+				if isCasting then
 					spell = frame.Castbar.Text:GetText() --Make sure we can check spell name
 					if spell and spell ~= "" and spell ~= FAILED and spell ~= INTERRUPTED then
 						if tonumber(spellName) then
@@ -417,16 +417,14 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		end
 		if condition ~= 0 then --If we cant check spell name, we ignore this trigger when the castbar is shown
 			failed = (condition == 1)
-			castbarTriggered = (condition == 2)
 		end
 	end
 
 	--Try to match by casting interruptible
 	if not failed and (trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible)) then
 		condition = false
-		if castbarShown and ((trigger.casting.interruptible and frame.Castbar.canInterrupt) or (trigger.casting.notInterruptible and not frame.Castbar.canInterrupt)) then
+		if isCasting and ((trigger.casting.interruptible and frame.Castbar.canInterrupt) or (trigger.casting.notInterruptible and not frame.Castbar.canInterrupt)) then
 			condition = true
-			castbarTriggered = true
 		end
 		failed = not condition
 	end
@@ -709,15 +707,11 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 
 	--If failed is nil it means the filter is empty so we dont run FilterStyle
 	if failed == false then --The conditions didn't fail so pass to FilterStyle
-		self:StyleFilterPass(frame, filter.actions, castbarTriggered);
+		self:StyleFilterPass(frame, filter.actions);
 	end
 end
 
-function mod:StyleFilterPass(frame, actions, castbarTriggered)
-	if castbarTriggered then
-		frame.castbarTriggered = castbarTriggered
-	end
-
+function mod:StyleFilterPass(frame, actions)
 	local healthBarEnabled = (frame.frameType and mod.db.units[frame.frameType].health.enable) or (mod.db.displayStyle ~= "ALL") or (frame.isTarget and mod.db.alwaysShowTargetHealth)
 	local powerBarEnabled = frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable
 	local healthBarShown = healthBarEnabled and frame.Health:IsShown()
