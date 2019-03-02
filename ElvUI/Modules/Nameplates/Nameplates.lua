@@ -376,6 +376,7 @@ NP.plateEvents = {
 		unit = unit or self.unit
 		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
 	end,
+	['UNIT_THREAT_LIST_UPDATE'] = true,
 	['SPELL_UPDATE_COOLDOWN'] = true
 }
 
@@ -392,6 +393,7 @@ end
 function NP:UpdatePlateEvents(nameplate)
 	NP:RegisterElementEvent(nameplate, 'PLAYER_TARGET_CHANGED', nil, true)
 	NP:RegisterElementEvent(nameplate, 'SPELL_UPDATE_COOLDOWN', nil, true)
+	NP:RegisterElementEvent(nameplate, 'UNIT_THREAT_LIST_UPDATE')
 	NP:RegisterElementEvent(nameplate, 'UNIT_TARGET')
 
 	NP:StyleFilterEventWatch(nameplate)

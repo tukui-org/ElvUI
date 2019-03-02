@@ -182,7 +182,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.BorderChanged = true
 		mod:StyleFilterBorderColorLock(frame.Health.backdrop, true)
 		frame.Health.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
-		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].powerbar and mod.db.units[frame.frameType].powerbar.enable) then
+		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
 			mod:StyleFilterBorderColorLock(frame.Power.backdrop, true)
 			frame.Power.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		end
@@ -307,7 +307,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 		frame.BorderChanged = nil
 		mod:StyleFilterBorderColorLock(frame.Health.backdrop, false)
 		frame.Health.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].powerbar and mod.db.units[frame.frameType].powerbar.enable) then
+		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
 			mod:StyleFilterBorderColorLock(frame.Power.backdrop, false)
 			frame.Power.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
@@ -355,12 +355,12 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
-		if (frame.frameType and self.db.units[frame.frameType].healthbar.enable) or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth) then
+		if (frame.frameType and self.db.units[frame.frameType].health.enable) or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth) then
 			frame.Health:Show()
 			self:UpdateElement_Glow(frame)
-			if self.db.units[frame.frameType].powerbar and self.db.units[frame.frameType].powerbar.enable then
+			if self.db.units[frame.frameType].power and self.db.units[frame.frameType].power.enable then
 				local curValue = UnitPower(frame.unit, frame.PowerType);
-				if not (curValue == 0 and self.db.units[frame.frameType].powerbar.hideWhenEmpty) then
+				if not (curValue == 0 and self.db.units[frame.frameType].power.hideWhenEmpty) then
 					frame.Power:Show()
 				end
 			end
@@ -745,8 +745,8 @@ function mod:StyleFilterPass(frame, actions, castbarTriggered)
 		frame.castbarTriggered = castbarTriggered
 	end
 
-	local healthBarEnabled = (frame.frameType and mod.db.units[frame.frameType].healthbar.enable) or (mod.db.displayStyle ~= "ALL") or (frame.isTarget and mod.db.alwaysShowTargetHealth)
-	local powerBarEnabled = frame.frameType and mod.db.units[frame.frameType].powerbar and mod.db.units[frame.frameType].powerbar.enable
+	local healthBarEnabled = (frame.frameType and mod.db.units[frame.frameType].health.enable) or (mod.db.displayStyle ~= "ALL") or (frame.isTarget and mod.db.alwaysShowTargetHealth)
+	local powerBarEnabled = frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable
 	local healthBarShown = healthBarEnabled and frame.Health:IsShown()
 
 	self:StyleFilterSetChanges(frame, actions,
@@ -912,9 +912,7 @@ function mod:StyleFilterConfigureEvents()
 	end
 end
 
-local iWantToTestBrokenStyleFilters = false
 function mod:StyleFilterUpdate(frame, event)
-	if not iWantToTestBrokenStyleFilters then return end
 	if not (frame and self.StyleFilterTriggerEvents[event]) then return end
 
 	if self.StyleFilterTriggerEvents[event] ~= 1 then
