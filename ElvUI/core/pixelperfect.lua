@@ -77,10 +77,12 @@ end
 function E:PixelScaleChanged(event, skip)
 	E:UIScale(true) -- repopulate variables
 	E:UIScale() -- setup the scale
+	skip = skip or E.suppressScalePopup
+	if skip then return end
 
 	if event == 'UISCALE_CHANGE' then
 		E:Delay(0.5, function() E:StaticPopup_Show(event) end)
-	elseif E.StaticPopupFrames and not skip then
+	elseif E.StaticPopupFrames then
 		E:StaticPopup_Show('UISCALE_CHANGE')
 	end
 end
