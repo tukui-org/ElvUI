@@ -870,6 +870,9 @@ function E:StaticPopup_Resize(dialog, which)
 	if ( info.hasItemFrame ) then
 		height = height + 64;
 	end
+	if (info.hasCheckButton ) then
+		height = height + 32;
+	end
 
 	if ( height > maxHeightSoFar ) then
 		dialog:Height(height);
@@ -1129,6 +1132,24 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		alertIcon:Hide();
 	end
 
+	-- Show or hide the checkbox
+	local checkButton = _G[dialog:GetName().."CheckButton"];
+	local checkButtonText = _G[dialog:GetName().."CheckButtonText"];
+	if ( info.hasCheckButton ) then
+		checkButton:ClearAllPoints()
+		checkButton:Point("BOTTOMLEFT", 24, 20 + button1:GetHeight())
+
+		if ( info.checkButtonText ) then
+			checkButtonText:SetText(info.checkButtonText)
+			checkButtonText:Show()
+		else
+			checkButtonText:Hide()
+		end
+		checkButton:Show()
+	else
+		checkButton:Hide()
+	end
+
 	if ( info.StartDelay ) then
 		dialog.startDelay = info.StartDelay();
 		button1:Disable();
@@ -1165,6 +1186,20 @@ function E:StaticPopup_Hide(which, data)
 	end
 end
 
+function E:StaticPopup_CheckButtonOnClick()
+	local which = self:GetParent().which
+	local info = E.PopupDialogs[which];
+	if ( not info ) then
+		return nil;
+	end
+
+	self:SetChecked(self:GetChecked())
+
+	if (info.checkButtonOnClick) then
+		info.checkButtonOnClick(self)
+	end
+end
+
 function E:Contruct_StaticPopups()
 	E.StaticPopupFrames = {}
 
@@ -1189,12 +1224,20 @@ function E:Contruct_StaticPopups()
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
 
+		_G['ElvUI_StaticPopup'..index..'CheckButton'] = CreateFrame("CheckButton", "ElvUI_StaticPopup"..index.."CheckButton", _G["ElvUI_StaticPopup"..index], "UICheckButtonTemplate")
+		_G['ElvUI_StaticPopup'..index..'CheckButton']:SetScript("OnClick", E.StaticPopup_CheckButtonOnClick)
+
 		--Skin
 		E.StaticPopupFrames[index]:SetTemplate('Transparent')
 
 		for i = 1, 3 do
 			S:HandleButton(_G["ElvUI_StaticPopup"..index.."Button"..i])
 		end
+
+		_G['ElvUI_StaticPopup'..index..'CheckButton']:Size(24)
+		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:SetTextColor(1,0.17,0.26)
+		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:Point("LEFT", _G['ElvUI_StaticPopup'..index..'CheckButton'], "RIGHT", 4, 1)
+		S:HandleCheckBox(_G['ElvUI_StaticPopup'..index..'CheckButton'])
 
 		_G["ElvUI_StaticPopup"..index.."EditBox"]:SetFrameLevel(_G["ElvUI_StaticPopup"..index.."EditBox"]:GetFrameLevel()+1)
 		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."EditBox"])
