@@ -227,7 +227,8 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if PortraitShown then
 		frame.StyleChanged = true
 		frame.PortraitShown = true
-		self:Update_Portrait(frame, true)
+		self:Update_Portrait(frame)
+		frame.Portrait:ForceUpdate()
 	end
 	if NameOnlyChanged then
 	--[[
@@ -321,6 +322,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	if PortraitShown then
 		frame.PortraitShown = nil
 		self:Update_Portrait(frame)
+		frame.Portrait:ForceUpdate()
 	end
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
