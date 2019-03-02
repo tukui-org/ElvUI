@@ -183,6 +183,11 @@ E.PopupDialogs['UISCALE_CHANGE'] = {
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
+	hasCheckButton = true,
+	checkButtonText = L["Suppress In This Session"],
+	checkButtonOnClick = function(self) 
+		E.suppressScalePopup = self:GetChecked()
+	end,
 }
 
 E.PopupDialogs['PIXELPERFECT_CHANGED'] = {
