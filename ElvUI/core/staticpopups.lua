@@ -1240,6 +1240,7 @@ function E:Contruct_StaticPopups()
 		end
 
 		_G['ElvUI_StaticPopup'..index..'CheckButton']:Size(24)
+		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:FontTemplate()
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:SetTextColor(1,0.17,0.26)
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:Point("LEFT", _G['ElvUI_StaticPopup'..index..'CheckButton'], "RIGHT", 4, 1)
 		S:HandleCheckBox(_G['ElvUI_StaticPopup'..index..'CheckButton'])
