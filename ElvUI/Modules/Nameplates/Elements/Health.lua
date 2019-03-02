@@ -35,6 +35,7 @@ function NP:UpdateColor(unit, cur, max)
 	end
 
 	if(r or g or b) then
+		self.r, self.g, self.b = r, g, b
 		self:SetStatusBarColor(r, g, b)
 
 		local bg = self.bg
@@ -71,7 +72,7 @@ function NP:Construct_Health(nameplate)
 	Health.frequentUpdates = true
 	Health.colorTapping = true
 	Health.colorDisconnected = false
-		
+
 	return Health
 end
 

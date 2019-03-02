@@ -149,19 +149,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if VisibilityChanged then
 		frame.StyleChanged = true
 		frame.VisibilityChanged = true
-		if frame.frameType == "PLAYER" then
-			if self.db.units.PLAYER.useStaticPosition then
-				_G.ElvNP_Player:Hide()
-				if self.PlayerNamePlateAnchor then
-					self.PlayerNamePlateAnchor:Hide()
-				end
-			else
-				E:LockCVar("nameplatePersonalShowAlways", "0")
-				frame:Hide()
-			end
-		else
-			frame:Hide()
-		end
+		frame:Hide()
 		return --We hide it. Lets not do other things (no point)
 	end
 	if HealthColorChanged then
@@ -277,16 +265,6 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	frame.StyleChanged = nil
 	if VisibilityChanged then
 		frame.VisibilityChanged = nil
-		if frame.frameType == "PLAYER" then
-			if self.db.units.PLAYER.useStaticPosition then
-				_G.ElvNP_Player:Show()
-				if self.PlayerNamePlateAnchor then
-					self.PlayerNamePlateAnchor:Show()
-				end
-			else
-				E:LockCVar("nameplatePersonalShowAlways", "1")
-			end
-		end
 		frame:Show()
 	end
 	if HealthColorChanged then
@@ -298,7 +276,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if PowerColorChanged then
 		frame.PowerColorChanged = nil
-		local color = E.db.unitframe.colors.power[frame.PowerToken] or PowerBarColor[frame.PowerToken] or FallbackColor
+		local color = E.db.unitframe.colors.power[frame.Power.token] or PowerBarColor[frame.Power.token] or FallbackColor
 		if color then
 			frame.Power:SetStatusBarColor(color.r, color.g, color.b)
 		end
