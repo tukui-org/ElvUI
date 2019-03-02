@@ -56,8 +56,6 @@ function E:UIScale(init)
 		end
 
 		E.UIParent:SetSize(width, height)
-		E.UIParent:ClearAllPoints()
-		E.UIParent:Point(E.global.general.commandBarSetting == 'ENABLED_RESIZEPARENT' and 'BOTTOM' or 'BOTTOM')
 		E.UIParent.origHeight = E.UIParent:GetHeight()
 
 		--Calculate potential coordinate differences
