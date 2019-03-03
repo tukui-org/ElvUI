@@ -343,9 +343,7 @@ function S:HandleTab(tab)
 		tab:StripTextures()
 	end
 
-	tab.backdrop = CreateFrame("Frame", nil, tab)
-	tab.backdrop:SetTemplate()
-	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
+	tab:CreateBackdrop()
 	tab.backdrop:Point("TOPLEFT", 10, E.PixelMode and -1 or -3)
 	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
 end
@@ -445,9 +443,7 @@ function S:HandleDropDownBox(frame, width)
 
 	if text then
 		local a, b, c, d, e = text:GetPoint()
-		text:Point(a, b, c, d + (button and 0 or 10), e - 4)
-		text:SetWidth(frame:GetWidth() / 1.4)
-		text:SetJustifyH("RIGHT")
+		text:Point(a, b, c, d + (button and -3 or 10), e - 4)
 	end
 
 	if button then
@@ -497,10 +493,10 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 				frame:GetCheckedTexture():SetInside(frame.backdrop)
 			else
 				frame:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
-			end
 
-			if noBackdrop then
-				frame:GetCheckedTexture():SetInside(nil, -4, -4)
+				if noBackdrop then
+					frame:GetCheckedTexture():SetInside(nil, -4, -4)
+				end
 			end
 		end
 
@@ -511,9 +507,10 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 				frame:GetDisabledTexture():SetInside(frame.backdrop)
 			else
 				frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
-			end
-			if noBackdrop then
-				frame:GetDisabledTexture():SetInside(nil, -4, -4)
+
+				if noBackdrop then
+					frame:GetDisabledTexture():SetInside(nil, -4, -4)
+				end
 			end
 		end
 

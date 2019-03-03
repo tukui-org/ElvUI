@@ -171,9 +171,9 @@ function NP:Update_Auras(nameplate)
 				nameplate.Debuffs["growth-x"] = db.debuffs.growthX
 				nameplate.Debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
 
-				nameplate.Debuffs:ClearAllPoints()
 				local mult = floor(NP.db.clickableWidth / db.debuffs.size) < db.debuffs.numAuras
 				nameplate.Debuffs:SetSize(NP.db.clickableWidth, (mult and 1 or 2) * db.debuffs.size)
+				nameplate.Debuffs:ClearAllPoints()
 				nameplate.Debuffs:SetPoint(E.InversePoints[db.debuffs.anchorPoint] or 'TOPRIGHT', db.debuffs.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.debuffs.anchorPoint or 'TOPRIGHT', 0, db.debuffs.yOffset)
 				nameplate.Debuffs:Show()
 
