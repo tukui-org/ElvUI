@@ -69,8 +69,8 @@ function NP:Construct_RaisedELement(nameplate)
 end
 
 function NP:StylePlate(nameplate)
-	nameplate:SetPoint('CENTER')
-	nameplate:SetSize(self.db.clickableWidth, self.db.clickableHeight)
+	nameplate:Point('CENTER')
+	nameplate:Size(self.db.clickableWidth, self.db.clickableHeight)
 	nameplate:SetScale(_G.UIParent:GetEffectiveScale())
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
@@ -434,16 +434,16 @@ function NP:Initialize()
 	_G.ElvNP_Player:SetAttribute('*type1', 'target')
 	_G.ElvNP_Player:SetAttribute('*type2', 'togglemenu')
 	_G.ElvNP_Player:SetAttribute('toggleForVehicle', true)
-	_G.ElvNP_Player:SetPoint('TOP', _G.UIParent, 'CENTER', 0, -150)
-	_G.ElvNP_Player:SetSize(NP.db.clickableWidth, NP.db.clickableHeight)
+	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
+	_G.ElvNP_Player:Size(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_Player:SetScale(1)
 	_G.ElvNP_Player:SetScript('OnEnter', _G.UnitFrame_OnEnter)
 	_G.ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 	_G.ElvNP_Player.frameType = 'PLAYER'
 
 	ElvUF:Spawn('player', 'ElvNP_Test')
-	_G.ElvNP_Test:SetPoint('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
-	_G.ElvNP_Test:SetSize(NP.db.clickableWidth, NP.db.clickableHeight)
+	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
+	_G.ElvNP_Test:Size(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test.frameType = 'PLAYER'
 	NP:UpdatePlate(_G.ElvNP_Test)

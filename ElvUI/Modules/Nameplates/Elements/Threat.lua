@@ -7,8 +7,8 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 
 function NP:Construct_ThreatIndicator(nameplate)
 	local ThreatIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
-	ThreatIndicator:SetSize(16, 16)
-	ThreatIndicator:SetPoint('CENTER', nameplate, 'TOPRIGHT')
+	ThreatIndicator:Size(16, 16)
+	ThreatIndicator:Point('CENTER', nameplate, 'TOPRIGHT')
 
 	function ThreatIndicator:PreUpdate(unit)
 		NP:PreUpdateThreat(self, unit)

@@ -245,9 +245,9 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		--position the name and update its color
 		frame.Name:ClearAllPoints()
 		frame.Name:SetJustifyH("CENTER")
-		frame.Name:SetPoint("TOP", frame, "CENTER")
+		frame.Name:Point("TOP", frame, "CENTER")
 		frame.Level:ClearAllPoints()
-		frame.Level:SetPoint("LEFT", frame.Name, "RIGHT")
+		frame.Level:Point("LEFT", frame.Name, "RIGHT")
 		frame.Level:SetJustifyH("LEFT")
 		if not NameColorChanged then
 			self:UpdateElement_Name(frame, true)

@@ -8,25 +8,25 @@ local CreateFrame = CreateFrame
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nameplate:GetDebugName()..'QuestIcons', nameplate)
 	QuestIcons:Hide()
-	QuestIcons:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+	QuestIcons:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 
 	for _, object in pairs({'Item', 'Loot', 'Skull', 'Chat'}) do
 		QuestIcons[object] = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
-		QuestIcons[object]:SetPoint('CENTER')
-		QuestIcons[object]:SetSize(NP.db.questIconSize, NP.db.questIconSize)
+		QuestIcons[object]:Point('CENTER')
+		QuestIcons[object]:Size(NP.db.questIconSize, NP.db.questIconSize)
 		QuestIcons[object]:Hide()
 	end
 
 	QuestIcons.Item:SetTexCoord(unpack(E.TexCoords))
 
-	QuestIcons.Skull:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+	QuestIcons.Skull:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 
-	QuestIcons.Chat:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+	QuestIcons.Chat:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 	QuestIcons.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
 	QuestIcons.Chat:SetTexCoord(0, 0.5, 0.5, 1)
 
 	QuestIcons.Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
-	QuestIcons.Text:SetPoint('BOTTOMRIGHT', QuestIcons, 'BOTTOMRIGHT', 2, -0.8)
+	QuestIcons.Text:Point('BOTTOMRIGHT', QuestIcons, 'BOTTOMRIGHT', 2, -0.8)
 	QuestIcons.Text:SetFont(E.Libs.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	return QuestIcons
@@ -38,12 +38,12 @@ function NP:Update_QuestIcons(nameplate)
 			nameplate:EnableElement('QuestIcons')
 		end
 		nameplate.QuestIcons:ClearAllPoints()
-		nameplate.QuestIcons:SetPoint('LEFT', nameplate, 'RIGHT', 4, 0)
-		nameplate.QuestIcons:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
-		nameplate.QuestIcons.Item:SetSize(NP.db.questIconSize, NP.db.questIconSize)
-		nameplate.QuestIcons.Loot:SetSize(NP.db.questIconSize, NP.db.questIconSize)
-		nameplate.QuestIcons.Skull:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
-		nameplate.QuestIcons.Chat:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+		nameplate.QuestIcons:Point('LEFT', nameplate, 'RIGHT', 4, 0)
+		nameplate.QuestIcons:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+		nameplate.QuestIcons.Item:Size(NP.db.questIconSize, NP.db.questIconSize)
+		nameplate.QuestIcons.Loot:Size(NP.db.questIconSize, NP.db.questIconSize)
+		nameplate.QuestIcons.Skull:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+		nameplate.QuestIcons.Chat:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 	else
 		if nameplate:IsElementEnabled('QuestIcons') then
 			nameplate:DisableElement('QuestIcons')
@@ -66,7 +66,7 @@ function NP:Update_ClassificationIndicator(nameplate)
 		end
 
 		nameplate.ClassificationIndicator:ClearAllPoints()
-		nameplate.ClassificationIndicator:SetSize(db.eliteIcon.size, db.eliteIcon.size)
+		nameplate.ClassificationIndicator:Size(db.eliteIcon.size, db.eliteIcon.size)
 
 		if db.health.enable then
 			nameplate.ClassificationIndicator:Point(db.eliteIcon.position, nameplate.Health, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
@@ -116,13 +116,13 @@ function NP:Update_TargetIndicator(nameplate)
 			if db.showName and (nameplate.Name:GetText() ~= nil and nameplate.Name:GetText() ~= '') then
 				topArrowSpace = NP.db.fontSize + topArrowSpace
 			end
-			nameplate.TargetIndicator.TopIndicator:SetPoint('BOTTOM', nameplate.Health, 'TOP', 0, topArrowSpace)
+			nameplate.TargetIndicator.TopIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, topArrowSpace)
 			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 		end
 
 		if (nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator) and (GlowStyle == 'style4' or GlowStyle == 'style7' or GlowStyle == 'style8') then
-			nameplate.TargetIndicator.LeftIndicator:SetPoint('LEFT', nameplate.Health, 'RIGHT', -3, 0)
-			nameplate.TargetIndicator.RightIndicator:SetPoint('RIGHT', nameplate.Health, 'LEFT', 3, 0)
+			nameplate.TargetIndicator.LeftIndicator:Point('LEFT', nameplate.Health, 'RIGHT', -3, 0)
+			nameplate.TargetIndicator.RightIndicator:Point('RIGHT', nameplate.Health, 'LEFT', 3, 0)
 			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b)
 		end
@@ -144,8 +144,8 @@ function NP:Update_TargetIndicator(nameplate)
 
 			local size = (E.Border + 14) * scale;
 
-			nameplate.TargetIndicator.Spark:SetPoint('TOPLEFT', nameplate.Health, 'TOPLEFT', -(size * 2), size)
-			nameplate.TargetIndicator.Spark:SetPoint('BOTTOMRIGHT', nameplate.Health, 'BOTTOMRIGHT', size * 2, -size)
+			nameplate.TargetIndicator.Spark:Point('TOPLEFT', nameplate.Health, 'TOPLEFT', -(size * 2), size)
+			nameplate.TargetIndicator.Spark:Point('BOTTOMRIGHT', nameplate.Health, 'BOTTOMRIGHT', size * 2, -size)
 			nameplate.TargetIndicator.Spark:SetVertexColor(Color.r, Color.g, Color.b)
 		end
 	end
@@ -175,7 +175,7 @@ end
 
 function NP:Construct_HealerSpecs(nameplate)
 	local texture = nameplate:CreateTexture(nil, "OVERLAY")
-	texture:SetSize(40, 40)
+	texture:Size(40, 40)
 	texture:SetTexture(E.Media.Textures.Healer)
 	texture:Hide()
 
@@ -190,7 +190,7 @@ function NP:Update_HealerSpecs(nameplate)
 			nameplate:EnableElement('HealerSpecs')
 		end
 
-		nameplate.HealerSpecs:SetPoint("RIGHT", nameplate.Health, "LEFT", -6, 0)
+		nameplate.HealerSpecs:Point("RIGHT", nameplate.Health, "LEFT", -6, 0)
 	else
 		if nameplate:IsElementEnabled('HealerSpecs') then
 			nameplate:DisableElement('HealerSpecs')
@@ -200,7 +200,7 @@ end
 
 function NP:Construct_DetectionIndicator(nameplate)
 	local model = CreateFrame("PlayerModel", nil, nameplate)
-	model:SetSize(75, 75)
+	model:Size(75, 75)
 	model:Hide()
 
 	return model
@@ -214,7 +214,7 @@ function NP:Update_DetectionIndicator(nameplate)
 			nameplate:EnableElement('DetectionIndicator')
 		end
 
-		nameplate.DetectionIndicator:SetPoint("BOTTOM", nameplate, "TOP", 0, 0)
+		nameplate.DetectionIndicator:Point("BOTTOM", nameplate, "TOP", 0, 0)
 	else
 		if nameplate:IsElementEnabled('DetectionIndicator') then
 			nameplate:DisableElement('DetectionIndicator')

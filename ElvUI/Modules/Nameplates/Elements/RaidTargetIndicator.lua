@@ -7,7 +7,7 @@ local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 
 function NP:Construct_RaidTargetIndicator(nameplate)
 	local RaidTargetIndicator = nameplate:CreateTexture(nil, 'OVERLAY', 7)
-	RaidTargetIndicator:SetSize(24, 24)
+	RaidTargetIndicator:Size(24, 24)
 	RaidTargetIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, 24)
 
 	function RaidTargetIndicator:Override(event)

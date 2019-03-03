@@ -18,7 +18,7 @@ function NP:Construct_Auras(nameplate)
 	local Auras = CreateFrame('Frame', nameplate:GetDebugName()..'Auras', nameplate)
 	Auras:SetFrameStrata(nameplate:GetFrameStrata())
 	Auras:SetFrameLevel(5)
-	Auras:SetSize(300, 27)
+	Auras:Size(300, 27)
 
 	Auras.disableMouse = true
 	Auras.gap = true
@@ -35,7 +35,7 @@ function NP:Construct_Auras(nameplate)
 	local Buffs = CreateFrame('Frame', nameplate:GetDebugName()..'Buffs', nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(5)
-	Buffs:SetSize(300, 27)
+	Buffs:Size(300, 27)
 	Buffs.disableMouse = true
 	Buffs.size = 27
 	Buffs.num = 4
@@ -49,7 +49,7 @@ function NP:Construct_Auras(nameplate)
 	local Debuffs = CreateFrame('Frame', nameplate:GetDebugName()..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(5)
-	Debuffs:SetSize(300, 27)
+	Debuffs:Size(300, 27)
 	Debuffs.disableMouse = true
 	Debuffs.size = 27
 	Debuffs.num = 4
@@ -132,7 +132,7 @@ function NP:Construct_AuraIcon(button)
 	button.icon:SetDrawLayer('ARTWORK')
 
 	button.count:ClearAllPoints()
-	button.count:SetPoint('BOTTOMRIGHT', 1, 1)
+	button.count:Point('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
 
 	button.overlay:SetTexture(nil)
@@ -152,8 +152,8 @@ function NP:Update_Auras(nameplate)
 			--nameplate.Auras.numBuffs = db.buffs.numAuras
 
 			--if nameplate.Auras then
-				--nameplate.Auras:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
-				--nameplate.Auras:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
+				--nameplate.Auras:Point('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
+				--nameplate.Auras:Point('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
 			--end
 
 			nameplate.Debuffs:Hide()
@@ -172,9 +172,9 @@ function NP:Update_Auras(nameplate)
 				nameplate.Debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
 
 				local mult = floor(NP.db.clickableWidth / db.debuffs.size) < db.debuffs.numAuras
-				nameplate.Debuffs:SetSize(NP.db.clickableWidth, (mult and 1 or 2) * db.debuffs.size)
+				nameplate.Debuffs:Size(NP.db.clickableWidth, (mult and 1 or 2) * db.debuffs.size)
 				nameplate.Debuffs:ClearAllPoints()
-				nameplate.Debuffs:SetPoint(E.InversePoints[db.debuffs.anchorPoint] or 'TOPRIGHT', db.debuffs.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.debuffs.anchorPoint or 'TOPRIGHT', 0, db.debuffs.yOffset)
+				nameplate.Debuffs:Point(E.InversePoints[db.debuffs.anchorPoint] or 'TOPRIGHT', db.debuffs.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.debuffs.anchorPoint or 'TOPRIGHT', 0, db.debuffs.yOffset)
 				nameplate.Debuffs:Show()
 
 				nameplate.Debuffs:ForceUpdate()
@@ -192,9 +192,9 @@ function NP:Update_Auras(nameplate)
 				nameplate.Buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
 
 				local mult = floor(NP.db.clickableWidth / db.buffs.size) < db.buffs.numAuras
-				nameplate.Buffs:SetSize(NP.db.clickableWidth, (mult and 1 or 2) * db.buffs.size)
+				nameplate.Buffs:Size(NP.db.clickableWidth, (mult and 1 or 2) * db.buffs.size)
 				nameplate.Buffs:ClearAllPoints()
-				nameplate.Buffs:SetPoint(E.InversePoints[db.buffs.anchorPoint] or 'TOPLEFT', db.buffs.attachTo == 'DEBUFFS' and nameplate.Debuffs or nameplate, db.buffs.anchorPoint or 'TOPLEFT', 0, db.buffs.yOffset)
+				nameplate.Buffs:Point(E.InversePoints[db.buffs.anchorPoint] or 'TOPLEFT', db.buffs.attachTo == 'DEBUFFS' and nameplate.Debuffs or nameplate, db.buffs.anchorPoint or 'TOPLEFT', 0, db.buffs.yOffset)
 				nameplate.Buffs:Show()
 
 				nameplate.Buffs:ForceUpdate()
@@ -236,7 +236,7 @@ function NP:PostUpdateAura(unit, button)
 	local parentType = parent.type
 
 	if db and db[parentType] then
-		button:SetSize(db[parentType].size, db[parentType].size)
+		button:Size(db[parentType].size, db[parentType].size)
 	end
 
 	if button:IsShown() and button.cd then
