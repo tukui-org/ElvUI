@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 --Locked Settings, These settings are stored for your character only regardless of profile options.
 
-V['general'] = {
+V.general = {
 	['loot'] = true,
 	['lootRoll'] = true,
 	['normTex'] = 'ElvUI Norm',
@@ -26,16 +26,16 @@ V['general'] = {
 	['voiceOverlay'] = false,
 }
 
-V['bags'] = {
+V.bags = {
 	['enable'] = true,
 	['bagBar'] = false,
 }
 
-V['nameplates'] = {
+V.nameplates = {
 	['enable'] = true,
 }
 
-V['auras'] = {
+V.auras = {
 	['enable'] = true,
 	['disableBlizzard'] = true,
 
@@ -45,11 +45,11 @@ V['auras'] = {
 	},
 }
 
-V['chat'] = {
+V.chat = {
 	['enable'] = true,
 }
 
-V['skins'] = {
+V.skins = {
 	['ace3'] = {
 		['enable'] = true,
 	},
@@ -139,11 +139,11 @@ V['skins'] = {
 	},
 }
 
-V['tooltip'] = {
+V.tooltip = {
 	['enable'] = true,
 }
 
-V['unitframe'] = {
+V.unitframe = {
 	['enable'] = true,
 	['disabledBlizzardFrames'] = {
 		['player'] = true,
@@ -156,7 +156,7 @@ V['unitframe'] = {
 	},
 }
 
-V['actionbar'] = {
+V.actionbar = {
 	['enable'] = true,
 	['hideCooldownBling'] = false,
 

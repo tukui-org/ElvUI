@@ -256,7 +256,7 @@ function RU:Initialize()
 		sb:StartMoving()
 	end)
 
-	E.FrameLocks['RaidUtility_ShowButton'] = true
+	E.FrameLocks.RaidUtility_ShowButton = true
 
 	RaidUtility_ShowButton:SetScript("OnDragStop", function(sb)
 		sb:StopMovingOrSizing()

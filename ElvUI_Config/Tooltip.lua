@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local GameTooltip = _G['GameTooltip']
-local GameTooltipStatusBar = _G['GameTooltipStatusBar']
+local GameTooltip = _G.GameTooltip
+local GameTooltipStatusBar = _G.GameTooltipStatusBar
 
 E.Options.args.tooltip = {
 	type = "group",

@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Global Settings
-G['general'] = {
+G.general = {
 	['UIScale'] = 0.64,
 	['eyefinity'] = false,
 	['smallerWorldMap'] = true,
@@ -19,23 +19,23 @@ G['general'] = {
 	['commandBarSetting'] = 'ENABLED_RESIZEPARENT',
 }
 
-G['classtimer'] = {}
+G.classtimer = {}
 
-G['chat'] = {
+G.chat = {
 	['classColorMentionExcludedNames'] = {},
 }
 
-G['bags'] = {
+G.bags = {
 	['ignoredItems'] = {},
 }
 
-G['datatexts'] = {
+G.datatexts = {
 	['customCurrencies'] = {},
 }
 
-G['nameplate'] = {}
+G.nameplate = {}
 
-G['unitframe'] = {
+G.unitframe = {
 	['aurafilters'] = {},
 	['buffwatch'] = {},
 	['raidDebuffIndicator'] = {
@@ -217,7 +217,7 @@ G['unitframe'] = {
 	},
 }
 
-G["profileCopy"] = {
+G.profileCopy = {
 	--Specific values
 	["selected"] = "Minimalistic",
 	["movers"] = {},

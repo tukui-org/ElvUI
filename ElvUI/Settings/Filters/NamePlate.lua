@@ -5,7 +5,7 @@
 ]]
 local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
-G["nameplate"]["filters"] = {
+G.nameplate.filters = {
 	["Boss"] = {
 		["triggers"] = {
 			["level"] = true,
@@ -22,7 +22,7 @@ G["nameplate"]["filters"] = {
 	},
 }
 
-E["StyleFilterDefaults"] = {
+E.StyleFilterDefaults = {
 	["triggers"] = {
 		["priority"] = 1,
 		["targetMe"] = false,

@@ -40,35 +40,35 @@ function NP:PostUpdateThreat(threat, unit, status)
 		if status then
 			if (status == 3) then --Securely Tanking
 				if threat.isTank then
-					r, g, b = NP.db.colors['threat'].goodColor.r, NP.db.colors['threat'].goodColor.g, NP.db.colors['threat'].goodColor.b
+					r, g, b = NP.db.colors.threat.goodColor.r, NP.db.colors.threat.goodColor.g, NP.db.colors.threat.goodColor.b
 				else
-					r, g, b = NP.db.colors['threat'].badColor.r, NP.db.colors['threat'].badColor.g, NP.db.colors['threat'].badColor.b
+					r, g, b = NP.db.colors.threat.badColor.r, NP.db.colors.threat.badColor.g, NP.db.colors.threat.badColor.b
 				end
 			elseif (status == 2) then --insecurely tanking
 				if threat.isTank then
-					r, g, b = NP.db.colors['threat'].badTransition.r, NP.db.colors['threat'].badTransition.g, NP.db.colors['threat'].badTransition.b
+					r, g, b = NP.db.colors.threat.badTransition.r, NP.db.colors.threat.badTransition.g, NP.db.colors.threat.badTransition.b
 				else
-					r, g, b = NP.db.colors['threat'].goodTransition.r, NP.db.colors['threat'].goodTransition.g, NP.db.colors['threat'].goodTransition.b
+					r, g, b = NP.db.colors.threat.goodTransition.r, NP.db.colors.threat.goodTransition.g, NP.db.colors.threat.goodTransition.b
 				end
 			elseif (status == 1) then --not tanking but threat higher than tank
 				if threat.isTank then
-					r, g, b = NP.db.colors['threat'].goodTransition.r, NP.db.colors['threat'].goodTransition.g, NP.db.colors['threat'].goodTransition.b
+					r, g, b = NP.db.colors.threat.goodTransition.r, NP.db.colors.threat.goodTransition.g, NP.db.colors.threat.goodTransition.b
 				else
-					r, g, b = NP.db.colors['threat'].badTransition.r, NP.db.colors['threat'].badTransition.g, NP.db.colors['threat'].badTransition.b
+					r, g, b = NP.db.colors.threat.badTransition.r, NP.db.colors.threat.badTransition.g, NP.db.colors.threat.badTransition.b
 				end
 			else -- not tanking at all
 				if threat.isTank then
 					--Check if it is being tanked by an offtank.
 					if threat.offtank then
-						r, g, b = NP.db.colors['threat'].beingTankedByTankColor.r, NP.db.colors['threat'].beingTankedByTankColor.g, NP.db.colors['threat'].beingTankedByTankColor.b
+						r, g, b = NP.db.colors.threat.beingTankedByTankColor.r, NP.db.colors.threat.beingTankedByTankColor.g, NP.db.colors.threat.beingTankedByTankColor.b
 					else
-						r, g, b = NP.db.colors['threat'].badColor.r, NP.db.colors['threat'].badColor.g, NP.db.colors['threat'].badColor.b
+						r, g, b = NP.db.colors.threat.badColor.r, NP.db.colors.threat.badColor.g, NP.db.colors.threat.badColor.b
 					end
 				else
 					if threat.offtank then
-						r, g, b = NP.db.colors['threat'].beingTankedByTankColor.r, NP.db.colors['threat'].beingTankedByTankColor.g, NP.db.colors['threat'].beingTankedByTankColor.b
+						r, g, b = NP.db.colors.threat.beingTankedByTankColor.r, NP.db.colors.threat.beingTankedByTankColor.g, NP.db.colors.threat.beingTankedByTankColor.b
 					else
-						r, g, b = NP.db.colors['threat'].goodColor.r, NP.db.colors['threat'].goodColor.g, NP.db.colors['threat'].goodColor.b
+						r, g, b = NP.db.colors.threat.goodColor.r, NP.db.colors.threat.goodColor.g, NP.db.colors.threat.goodColor.b
 					end
 				end
 			end

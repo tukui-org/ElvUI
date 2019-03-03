@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local AFKString = _G["AFK"]
+local AFKString = _G.AFK
 local AFK = E:NewModule('AFK', 'AceEvent-3.0', 'AceTimer-3.0');
 local CH = E:GetModule("Chat")
 
@@ -51,7 +51,7 @@ local printKeys = {
 }
 
 if IsMacClient() then
-	printKeys[_G["KEY_PRINTSCREEN_MAC"]] = true
+	printKeys[_G.KEY_PRINTSCREEN_MAC] = true
 end
 
 function AFK:UpdateTimer()

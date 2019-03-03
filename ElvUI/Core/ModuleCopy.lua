@@ -42,8 +42,8 @@ function CP:CreateModuleConfigGroup(Name, section, pluginSection)
 				type = "execute",
 				name = L["Import Now"],
 				func = function()
-					E.PopupDialogs["MODULE_COPY_CONFIRM"].text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"], Name, E.global.profileCopy.selected, ElvDB.profileKeys[E.myname..' - '..E.myrealm])
-					E.PopupDialogs["MODULE_COPY_CONFIRM"].OnAccept = function()
+					E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"], Name, E.global.profileCopy.selected, ElvDB.profileKeys[E.myname..' - '..E.myrealm])
+					E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
 						CP:ImportFromProfile(section, pluginSection)
 					end
 					E:StaticPopup_Show('MODULE_COPY_CONFIRM')
@@ -54,8 +54,8 @@ function CP:CreateModuleConfigGroup(Name, section, pluginSection)
 				type = "execute",
 				name = L["Export Now"],
 				func = function()
-					E.PopupDialogs["MODULE_COPY_CONFIRM"].text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"], Name, ElvDB.profileKeys[E.myname..' - '..E.myrealm], E.global.profileCopy.selected)
-					E.PopupDialogs["MODULE_COPY_CONFIRM"].OnAccept = function()
+					E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"], Name, ElvDB.profileKeys[E.myname..' - '..E.myrealm], E.global.profileCopy.selected)
+					E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
 						CP:ExportToProfile(section, pluginSection)
 					end
 					E:StaticPopup_Show('MODULE_COPY_CONFIRM')
@@ -92,8 +92,8 @@ function CP:CreateMoversConfigGroup()
 			type = "execute",
 			name = L["Import Now"],
 			func = function()
-				E.PopupDialogs["MODULE_COPY_CONFIRM"].text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"], L["Movers"], E.global.profileCopy.selected, ElvDB.profileKeys[E.myname..' - '..E.myrealm])
-				E.PopupDialogs["MODULE_COPY_CONFIRM"].OnAccept = function()
+				E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"], L["Movers"], E.global.profileCopy.selected, ElvDB.profileKeys[E.myname..' - '..E.myrealm])
+				E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
 					CP:CopyMovers("import")
 				end
 				E:StaticPopup_Show('MODULE_COPY_CONFIRM')
@@ -104,8 +104,8 @@ function CP:CreateMoversConfigGroup()
 			type = "execute",
 			name = L["Export Now"],
 			func = function()
-				E.PopupDialogs["MODULE_COPY_CONFIRM"].text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"], L["Movers"], ElvDB.profileKeys[E.myname..' - '..E.myrealm], E.global.profileCopy.selected)
-				E.PopupDialogs["MODULE_COPY_CONFIRM"].OnAccept = function()
+				E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"], L["Movers"], ElvDB.profileKeys[E.myname..' - '..E.myrealm], E.global.profileCopy.selected)
+				E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
 					CP:CopyMovers("export")
 				end
 				E:StaticPopup_Show('MODULE_COPY_CONFIRM')
@@ -168,21 +168,21 @@ end
 
 --[[
 * Valid copy templates should be as follows
-G["profileCopy"][YourOptionGroupName] = {
+G.profileCopy[YourOptionGroupName] = {
 	[SubGroupName1] = true,
 	[SubGroupName2] = true,
 	...
 }
 * For example
-G["profileCopy"].auras = {
+G.profileCopy.auras = {
 	["general"] = true,
 	["buffs"] = true,
 	["debuffs"] = true,
 	["cooldown"] = true,
 }
 * "general" key can refer to a similar named subtable or all non-table variables inside your group
-* If you leave the table as G["profileCopy"][YourOptionGroupName] = {}, this will result in no valid copy template error.
-* If set to G["profileCopy"][YourOptionGroupName] = true, then this will copy everything without selecting
+* If you leave the table as G.profileCopy[YourOptionGroupName] = {}, this will result in no valid copy template error.
+* If set to G.profileCopy[YourOptionGroupName] = true, then this will copy everything without selecting
 any particular subcategory from your settings table.
 * Plugins can use "pluginSection" argument to determain their own table if they keep settings apart from core ElvUI settings.
 Examples S&L uses "sle" table, MerathilisUI uses "mui" table, BenikUI uses "benikui" and core table

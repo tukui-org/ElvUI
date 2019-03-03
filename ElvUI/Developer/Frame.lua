@@ -28,7 +28,7 @@ local LoadAddOn = LoadAddOn
 ]]
 
 SLASH_FRAME1 = "/frame"
-SlashCmdList["FRAME"] = function(arg)
+SlashCmdList.FRAME = function(arg)
 	if arg ~= "" then
 		arg = _G[arg]
 	else
@@ -47,7 +47,7 @@ SlashCmdList["FRAME"] = function(arg)
 end
 
 SLASH_FRAMELIST1 = "/framelist"
-SlashCmdList["FRAMELIST"] = function(msg)
+SlashCmdList.FRAMELIST = function(msg)
 	if(not FrameStackTooltip) then
 		UIParentLoadAddOn("Blizzard_DebugTools");
 	end
@@ -97,7 +97,7 @@ local function TextureList(frame)
 end
 
 SLASH_TEXLIST1 = "/texlist"
-SlashCmdList["TEXLIST"] = TextureList
+SlashCmdList.TEXLIST = TextureList
 
 local function GetPoint(frame)
 	if frame ~= "" then
@@ -114,10 +114,10 @@ local function GetPoint(frame)
 end
 
 SLASH_GETPOINT1 = "/getpoint"
-SlashCmdList["GETPOINT"] = GetPoint
+SlashCmdList.GETPOINT = GetPoint
 
 SLASH_DEV1 = "/dev"
-SlashCmdList["DEV"] = function()
+SlashCmdList.DEV = function()
 	if not IsAddOnLoaded("ElvUIDev") then
 		local _, _, _, loadable, reason = GetAddOnInfo("ElvUIDev")
 		if not loadable then

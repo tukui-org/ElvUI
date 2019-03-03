@@ -23,7 +23,7 @@ local function LoadSkin()
 		S:HandleIcon(button.Icon)
 		button.IconBorder:SetAlpha(0)
 		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(_, r, g, b) button:SetBackdropBorderColor(r, g, b) end)
-		hooksecurefunc(button.IconBorder, 'Hide', function() button:SetBackdropBorderColor(E['media'].bordercolor) end)
+		hooksecurefunc(button.IconBorder, 'Hide', function() button:SetBackdropBorderColor(E.media.bordercolor) end)
 	end
 
 	-- Temp mover

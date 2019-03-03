@@ -642,10 +642,10 @@ function E:CheckRole()
 end
 
 function E:IncompatibleAddOn(addon, module)
-	E.PopupDialogs['INCOMPATIBLE_ADDON'].button1 = addon
-	E.PopupDialogs['INCOMPATIBLE_ADDON'].button2 = 'ElvUI '..module
-	E.PopupDialogs['INCOMPATIBLE_ADDON'].addon = addon
-	E.PopupDialogs['INCOMPATIBLE_ADDON'].module = module
+	E.PopupDialogs.INCOMPATIBLE_ADDON.button1 = addon
+	E.PopupDialogs.INCOMPATIBLE_ADDON.button2 = 'ElvUI '..module
+	E.PopupDialogs.INCOMPATIBLE_ADDON.addon = addon
+	E.PopupDialogs.INCOMPATIBLE_ADDON.module = module
 	E:StaticPopup_Show('INCOMPATIBLE_ADDON', addon, module)
 end
 

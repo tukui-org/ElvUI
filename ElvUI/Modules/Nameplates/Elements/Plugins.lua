@@ -105,16 +105,16 @@ end
 function NP:Update_TargetIndicator(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	nameplate.TargetIndicator.style = NP['db'].targetGlow
-	nameplate.TargetIndicator.lowHealthThreshold = NP['db'].lowHealthThreshold
+	nameplate.TargetIndicator.style = NP.db.targetGlow
+	nameplate.TargetIndicator.lowHealthThreshold = NP.db.lowHealthThreshold
 
-	if NP['db'].targetGlow ~= 'none' then
-		local GlowStyle = NP['db'].targetGlow
-		local Color = NP['db'].colors.glowColor
+	if NP.db.targetGlow ~= 'none' then
+		local GlowStyle = NP.db.targetGlow
+		local Color = NP.db.colors.glowColor
 		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == 'style3' or GlowStyle == 'style5' or GlowStyle == 'style6') then
 			local topArrowSpace = -3
 			if db.showName and (nameplate.Name:GetText() ~= nil and nameplate.Name:GetText() ~= '') then
-				topArrowSpace = NP['db'].fontSize + topArrowSpace
+				topArrowSpace = NP.db.fontSize + topArrowSpace
 			end
 			nameplate.TargetIndicator.TopIndicator:SetPoint('BOTTOM', nameplate.Health, 'TOP', 0, topArrowSpace)
 			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b)
@@ -134,9 +134,9 @@ function NP:Update_TargetIndicator(nameplate)
 
 		if nameplate.TargetIndicator.Spark and (GlowStyle == 'style2' or GlowStyle == 'style6' or GlowStyle == 'style8') then
 			local scale = 1
-			if NP['db'].useTargetScale then
-				if NP['db'].targetScale >= 0.75 then
-					scale = NP['db'].targetScale
+			if NP.db.useTargetScale then
+				if NP.db.targetScale >= 0.75 then
+					scale = NP.db.targetScale
 				else
 					scale = 0.75
 				end

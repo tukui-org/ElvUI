@@ -286,7 +286,7 @@ function NP:ConfigureAll()
 
 	NP:PLAYER_REGEN_ENABLED()
 
-	if NP.db.units['PLAYER'].enable and NP.db.units['PLAYER'].useStaticPosition then
+	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_Player:UpdateAllElements('OnShow')
 	else
@@ -324,7 +324,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		-- update player and test plate
-		if NP.db.units['PLAYER'].useStaticPosition then
+		if NP.db.units.PLAYER.useStaticPosition then
 			NP:UpdatePlate(_G.ElvNP_Player)
 		end
 		if _G.ElvNP_Test:IsEnabled() then
@@ -449,7 +449,7 @@ function NP:Initialize()
 	NP:UpdatePlate(_G.ElvNP_Test)
 	_G.ElvNP_Test:Disable()
 
-	if not NP.db.units['PLAYER'].useStaticPosition then
+	if not NP.db.units.PLAYER.useStaticPosition then
 		_G.ElvNP_Player:Disable()
 	end
 

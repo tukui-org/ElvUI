@@ -276,7 +276,7 @@ local function LoadSkin()
 			expandArrow:SetNormalTexture(E.Media.Textures.ArrowUp)
 			expandArrow:SetSize(12, 12)
 			expandArrow:GetNormalTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
-			expandArrow:GetNormalTexture():SetRotation(S.ArrowRotation['right'])
+			expandArrow:GetNormalTexture():SetRotation(S.ArrowRotation.right)
 		end
 
 		 _G[listFrameName.."MenuBackdrop"]:SetTemplate("Transparent")

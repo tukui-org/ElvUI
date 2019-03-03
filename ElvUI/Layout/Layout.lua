@@ -31,7 +31,7 @@ function LO:Initialize()
 	self.BottomPanel:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOMRIGHT', 1, -1)
 	self.BottomPanel:Height(PANEL_HEIGHT)
 	self.BottomPanel:SetScript('OnShow', Panel_OnShow)
-	E.FrameLocks['ElvUI_BottomPanel'] = true;
+	E.FrameLocks.ElvUI_BottomPanel = true;
 	Panel_OnShow(self.BottomPanel)
 	self:BottomPanelVisibility()
 
@@ -42,7 +42,7 @@ function LO:Initialize()
 	self.TopPanel:Height(PANEL_HEIGHT)
 	self.TopPanel:SetScript('OnShow', Panel_OnShow)
 	Panel_OnShow(self.TopPanel)
-	E.FrameLocks['ElvUI_TopPanel'] = true;
+	E.FrameLocks.ElvUI_TopPanel = true;
 	self:TopPanelVisibility()
 end
 
@@ -489,7 +489,7 @@ function LO:CreateChatButtonPanel()
 	_G.ChatAlertFrame:SetPoint("BOTTOM", _G.ChatFrameChannelButton, "TOP", 1, 3)
 
 	-- Skin the QuickJoinToastButton
-	local QuickJoinToastButton = _G["QuickJoinToastButton"]
+	local QuickJoinToastButton = _G.QuickJoinToastButton
 	QuickJoinToastButton:SetParent(ChatButtonHolder)
 	QuickJoinToastButton:SetSize(24, 32)
 

@@ -445,16 +445,16 @@ function E:SetupLayout(layout, noDataReset)
 
 	--Healer Layout
 	if layout == "healer" and not noDataReset then
-		E.db["movers"]["ElvUF_PlayerCastbarMover"] = "BOTTOM,ElvUIParent,BOTTOM,0,243"
-		E.db["movers"]["ElvUF_TargetCastbarMover"] = "BOTTOM,ElvUIParent,BOTTOM,0,97"
-		E.db["movers"]["ElvUF_RaidMover"] = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,202,373"
-		E.db["movers"]["LootFrameMover"] = "TOPLEFT,ElvUIParent,TOPLEFT,250,-104"
-		E.db["movers"]["ShiftAB"] = "TOPLEFT,ElvUIParent,BOTTOMLEFT,4,273"
-		E.db["movers"]["VOICECHAT"] = "TOPLEFT,ElvUIParent,TOPLEFT,250,-82"
-		E.db["unitframe"]["units"]["party"]["enable"] = false
-		E.db["unitframe"]["units"]["party"]["health"]["frequentUpdates"] = true
-		E.db["unitframe"]["units"]["raid"]["visibility"] = "[nogroup] hide;show"
-		E.db["unitframe"]["units"]["raid40"]["health"]["frequentUpdates"] = true
+		E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,243"
+		E.db.movers.ElvUF_TargetCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,97"
+		E.db.movers.ElvUF_RaidMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,202,373"
+		E.db.movers.LootFrameMover = "TOPLEFT,ElvUIParent,TOPLEFT,250,-104"
+		E.db.movers.ShiftAB = "TOPLEFT,ElvUIParent,BOTTOMLEFT,4,273"
+		E.db.movers.VOICECHAT = "TOPLEFT,ElvUIParent,TOPLEFT,250,-82"
+		E.db.unitframe.units.party.enable = false
+		E.db.unitframe.units.party.health.frequentUpdates = true
+		E.db.unitframe.units.raid.visibility = "[nogroup] hide;show"
+		E.db.unitframe.units.raid40.health.frequentUpdates = true
 	end
 
 	if not noDataReset and _G.InstallStepComplete then

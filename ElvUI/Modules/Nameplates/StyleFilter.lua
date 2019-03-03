@@ -780,64 +780,64 @@ function mod:StyleFilterConfigureEvents()
 				tinsert(self.StyleFilterTriggerList, {filterName, filter.triggers.priority or 1})
 
 				-- NOTE: 0 for fake events, 1 to override StyleFilterWaitTime
-				self.StyleFilterTriggerEvents["FAKE_AuraWaitTimer"] = 0 -- for minTimeLeft and maxTimeLeft aura trigger
-				self.StyleFilterTriggerEvents["NAME_PLATE_UNIT_ADDED"] = 1
+				self.StyleFilterTriggerEvents.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
+				self.StyleFilterTriggerEvents.NAME_PLATE_UNIT_ADDED = 1
 
 				if filter.triggers.casting then
 					if next(filter.triggers.casting.spells) then
 						for _, value in pairs(filter.triggers.casting.spells) do
 							if value == true then
-								self.StyleFilterTriggerEvents["FAKE_Casting"] = 0
+								self.StyleFilterTriggerEvents.FAKE_Casting = 0
 								break
 							end
 						end
 					end
 
 					if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
-						self.StyleFilterTriggerEvents["FAKE_Casting"] = 0
+						self.StyleFilterTriggerEvents.FAKE_Casting = 0
 					end
 				end
 
 				-- real events
-				self.StyleFilterTriggerEvents["PLAYER_TARGET_CHANGED"] = true
+				self.StyleFilterTriggerEvents.PLAYER_TARGET_CHANGED = true
 
 				if filter.triggers.reactionType and filter.triggers.reactionType.enable then
-					self.StyleFilterTriggerEvents["UNIT_FACTION"] = true
+					self.StyleFilterTriggerEvents.UNIT_FACTION = true
 				end
 
 				if filter.triggers.targetMe or filter.triggers.notTargetMe then
-					self.StyleFilterTriggerEvents["UNIT_TARGET"] = true
+					self.StyleFilterTriggerEvents.UNIT_TARGET = true
 				end
 
 				if filter.triggers.healthThreshold then
-					self.StyleFilterTriggerEvents["UNIT_HEALTH"] = true
-					self.StyleFilterTriggerEvents["UNIT_MAXHEALTH"] = true
-					self.StyleFilterTriggerEvents["UNIT_HEALTH_FREQUENT"] = true
+					self.StyleFilterTriggerEvents.UNIT_HEALTH = true
+					self.StyleFilterTriggerEvents.UNIT_MAXHEALTH = true
+					self.StyleFilterTriggerEvents.UNIT_HEALTH_FREQUENT = true
 				end
 
 				if filter.triggers.powerThreshold then
-					self.StyleFilterTriggerEvents["UNIT_POWER_UPDATE"] = true
-					self.StyleFilterTriggerEvents["UNIT_POWER_FREQUENT"] = true
-					self.StyleFilterTriggerEvents["UNIT_DISPLAYPOWER"] = true
+					self.StyleFilterTriggerEvents.UNIT_POWER_UPDATE = true
+					self.StyleFilterTriggerEvents.UNIT_POWER_FREQUENT = true
+					self.StyleFilterTriggerEvents.UNIT_DISPLAYPOWER = true
 				end
 
 				if next(filter.triggers.names) then
 					for _, value in pairs(filter.triggers.names) do
 						if value == true then
-							self.StyleFilterTriggerEvents["UNIT_NAME_UPDATE"] = true
+							self.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = true
 							break
 						end
 					end
 				end
 
 				if filter.triggers.inCombat or filter.triggers.outOfCombat or filter.triggers.inCombatUnit or filter.triggers.outOfCombatUnit then
-					self.StyleFilterTriggerEvents["UNIT_THREAT_LIST_UPDATE"] = true
+					self.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
 				end
 
 				if next(filter.triggers.cooldowns.names) then
 					for _, value in pairs(filter.triggers.cooldowns.names) do
 						if value == "ONCD" or value == "OFFCD" then
-							self.StyleFilterTriggerEvents["SPELL_UPDATE_COOLDOWN"] = true
+							self.StyleFilterTriggerEvents.SPELL_UPDATE_COOLDOWN = true
 							break
 						end
 					end
@@ -846,7 +846,7 @@ function mod:StyleFilterConfigureEvents()
 				if next(filter.triggers.buffs.names) then
 					for _, value in pairs(filter.triggers.buffs.names) do
 						if value == true then
-							self.StyleFilterTriggerEvents["UNIT_AURA"] = true
+							self.StyleFilterTriggerEvents.UNIT_AURA = true
 							break
 						end
 					end
@@ -855,7 +855,7 @@ function mod:StyleFilterConfigureEvents()
 				if next(filter.triggers.debuffs.names) then
 					for _, value in pairs(filter.triggers.debuffs.names) do
 						if value == true then
-							self.StyleFilterTriggerEvents["UNIT_AURA"] = true
+							self.StyleFilterTriggerEvents.UNIT_AURA = true
 							break
 						end
 					end

@@ -13,7 +13,7 @@ end
 G.unitframe.aurafilters = {};
 
 -- These are debuffs that are some form of CC
-G.unitframe.aurafilters['CCDebuffs'] = {
+G.unitframe.aurafilters.CCDebuffs = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 	--Death Knight
@@ -173,7 +173,7 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 }
 
 -- These are buffs that can be considered "protection" buffs
-G.unitframe.aurafilters['TurtleBuffs'] = {
+G.unitframe.aurafilters.TurtleBuffs = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 	--Death Knight
@@ -302,7 +302,7 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 	},
 }
 
-G.unitframe.aurafilters['PlayerBuffs'] = {
+G.unitframe.aurafilters.PlayerBuffs = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 	--Death Knight
@@ -585,7 +585,7 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 }
 
 -- Buffs that really we dont need to see
-G.unitframe.aurafilters['Blacklist'] = {
+G.unitframe.aurafilters.Blacklist = {
 	['type'] = 'Blacklist',
 	['spells'] = {
 		[36900]  = Defaults(), -- Soul Split: Evil!
@@ -623,7 +623,7 @@ G.unitframe.aurafilters['Blacklist'] = {
 	This should be a list of important buffs that we always want to see when they are active
 	bloodlust, paladin hand spells, raid cooldowns, etc..
 ]]
-G.unitframe.aurafilters['Whitelist'] = {
+G.unitframe.aurafilters.Whitelist = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		[31821]  = Defaults(), -- Devotion Aura
@@ -639,7 +639,7 @@ G.unitframe.aurafilters['Whitelist'] = {
 }
 
 -- RAID DEBUFFS: This should be pretty self explainitory
-G.unitframe.aurafilters['RaidDebuffs'] = {
+G.unitframe.aurafilters.RaidDebuffs = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 	-- Mythic+ Dungeons
@@ -977,7 +977,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	Buffs that are provided by NPCs in raid or other PvE content.
 	This can be buffs put on other enemies or on players.
 ]]
-G.unitframe.aurafilters['RaidBuffsElvUI'] = {
+G.unitframe.aurafilters.RaidBuffsElvUI = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		--Mythic/Mythic+
@@ -1073,7 +1073,7 @@ G.unitframe.buffwatch = {
 }
 
 -- Profile specific BuffIndicator
-P['unitframe']['filters'] = {
+P.unitframe.filters = {
 	['buffwatch'] = {},
 }
 

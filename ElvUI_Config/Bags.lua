@@ -5,7 +5,7 @@ local _G = _G
 local gsub = string.gsub
 local match = string.match
 local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
-local GameTooltip = _G['GameTooltip']
+local GameTooltip = _G.GameTooltip
 
 E.Options.args.bags = {
 	type = 'group',

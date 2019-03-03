@@ -363,7 +363,7 @@ local function LoadSkin()
 			end
 			self.backdrop:SetBackdropBorderColor(r, g, b)
 		else
-			self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end)
 
@@ -413,7 +413,7 @@ local function LoadSkin()
 			button.name:SetTextColor(0.4, 0.4, 0.4)
 			button.level:SetTextColor(0.4, 0.4, 0.4)
 			button.special:SetTextColor(0.4, 0.4, 0.4)
-			button.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 		button.SetTextColor = E.noop
 	end)
@@ -435,7 +435,7 @@ local function LoadSkin()
 	--Items
 	WardrobeCollectionFrame.progressBar:StripTextures()
 	WardrobeCollectionFrame.progressBar:CreateBackdrop()
-	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E["media"].normTex)
+	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
 
 	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
 
@@ -464,7 +464,7 @@ local function LoadSkin()
 					elseif texture == "transmog-wardrobe-border-unusable" then
 						r, g, b =  1, 0, 0
 					else
-						r, g, b = unpack(E["media"].bordercolor)
+						r, g, b = unpack(E.media.bordercolor)
 					end
 					Model.backdrop:SetBackdropBorderColor(r, g, b)
 				end)

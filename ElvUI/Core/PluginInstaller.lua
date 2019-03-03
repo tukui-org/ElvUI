@@ -335,16 +335,16 @@ function PI:CreateFrame()
 	f.pending.tex:SetTexture([[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]])
 	f.pending:CreateBackdrop("Transparent")
 	f.pending:SetScript("OnEnter", function(self)
-		_G["GameTooltip"]:SetOwner(self, "ANCHOR_BOTTOMLEFT", E.PixelMode and -7 or -9);
-		_G["GameTooltip"]:AddLine(L["List of installations in queue:"], 1, 1, 1)
-		_G["GameTooltip"]:AddLine(" ")
+		_G.GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", E.PixelMode and -7 or -9);
+		_G.GameTooltip:AddLine(L["List of installations in queue:"], 1, 1, 1)
+		_G.GameTooltip:AddLine(" ")
 		for i = 1, #PI.Installs do
-			_G["GameTooltip"]:AddDoubleLine(format("%d. %s", i, (PI.Installs[i].Name or UNKNOWN)), i == 1 and format("|cff00FF00%s|r", L["In Progress"]) or format("|cffFF0000%s|r", L["Pending"]))
+			_G.GameTooltip:AddDoubleLine(format("%d. %s", i, (PI.Installs[i].Name or UNKNOWN)), i == 1 and format("|cff00FF00%s|r", L["In Progress"]) or format("|cffFF0000%s|r", L["Pending"]))
 		end
-		_G["GameTooltip"]:Show()
+		_G.GameTooltip:Show()
 	end)
 	f.pending:SetScript("OnLeave", function()
-		_G["GameTooltip"]:Hide()
+		_G.GameTooltip:Hide()
 	end)
 
 	f.tutorialImage = f:CreateTexture('PluginInstallTutorialImage', 'OVERLAY')
@@ -411,7 +411,7 @@ end
 
 function PI:RunInstall()
 	if not E.private.install_complete then return end
-	if self.Installs[1] and not PluginInstallFrame:IsShown() and not (_G["ElvUIInstallFrame"] and _G["ElvUIInstallFrame"]:IsShown()) then
+	if self.Installs[1] and not PluginInstallFrame:IsShown() and not (_G.ElvUIInstallFrame and _G.ElvUIInstallFrame:IsShown()) then
 		f.StepTitles = nil
 		f.StepTitlesColor = nil
 		f.StepTitlesColorSelected = nil

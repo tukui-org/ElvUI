@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 P.gridSize = 64
 
 --Core
-P['general'] = {
+P.general = {
 	['messageRedirect'] = DEFAULT_CHAT_FRAME:GetName(),
 	['taintLog'] = false,
 	['stickyFrames'] = true,
@@ -133,7 +133,7 @@ P['general'] = {
 	['kittys'] = false
 };
 
-P['databars'] = {
+P.databars = {
 	['experience'] = {
 		['enable'] = true,
 		['width'] = 10,
@@ -196,7 +196,7 @@ P['databars'] = {
 }
 
 --Bags
-P['bags'] = {
+P.bags = {
 	['sortInverted'] = true,
 	['bagSize'] = 34,
 	['bankSize'] = 34,
@@ -312,7 +312,7 @@ P['bags'] = {
 };
 
 --NamePlate
-P['nameplates'] = {
+P.nameplates = {
 	['alwaysShowTargetHealth'] = true,
 	['clampToScreen'] = false,
 	['cutawayHealth'] = false,
@@ -1103,7 +1103,7 @@ P['nameplates'] = {
 };
 
 --Auras
-P['auras'] = {
+P.auras = {
 	['font'] = 'Homespun',
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	['countYOffset'] = 0,
@@ -1164,7 +1164,7 @@ P['auras'] = {
 }
 
 --Chat
-P['chat'] = {
+P.chat = {
 	['lockPositions'] = true,
 	['url'] = true,
 	['shortChannels'] = true,
@@ -1213,7 +1213,7 @@ P['chat'] = {
 }
 
 --Datatexts
-P['datatexts'] = {
+P.datatexts = {
 	['font'] = 'PT Sans Narrow',
 	['fontSize'] = 12,
 	['fontOutline'] = 'NONE',
@@ -1288,7 +1288,7 @@ P['datatexts'] = {
 }
 
 --Tooltip
-P['tooltip'] = {
+P.tooltip = {
 	['cursorAnchor'] = false,
 	['cursorAnchorType'] = "ANCHOR_CURSOR",
 	['cursorAnchorX'] = 0,
@@ -1336,7 +1336,7 @@ P['tooltip'] = {
 }
 
 --UnitFrame
-P['unitframe'] = {
+P.unitframe = {
 	['smoothbars'] = false,
 	['statusbar'] = 'ElvUI Norm',
 	['font'] = 'Homespun',
@@ -3737,7 +3737,7 @@ P['unitframe'] = {
 }
 
 --Cooldown
-P['cooldown'] = {
+P.cooldown = {
 	['enable'] = true,
 	['threshold'] = 3,
 	['hideBlizzard'] = false,
@@ -3762,7 +3762,7 @@ P['cooldown'] = {
 }
 
 --Actionbar
-P['actionbar'] = {
+P.actionbar = {
 	['font'] = 'Homespun',
 	['fontSize'] = 10,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',

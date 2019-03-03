@@ -4,7 +4,7 @@ local CH = E:GetModule('Chat')
 local _G = _G
 local gsub = string.gsub
 local strlower = string.lower
-local GameTooltip = _G['GameTooltip']
+local GameTooltip = _G.GameTooltip
 
 E.Options.args.chat = {
 	type = "group",
