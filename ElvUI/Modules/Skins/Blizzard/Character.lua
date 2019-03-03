@@ -301,7 +301,7 @@ local function LoadSkin()
 		end
 	end
 
-	-- Give character frame model backdrop it's color back
+	--Give character frame model backdrop it's color back
 	for _, corner in pairs({"TopLeft","TopRight","BotLeft","BotRight"}) do
 		local bg = _G["CharacterModelFrameBackground"..corner];
 		if bg then
@@ -397,8 +397,6 @@ local function LoadSkin()
 	_G.CharacterModelFrame:CreateBackdrop()
 	_G.CharacterModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	_G.CharacterModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
-
-	CharacterFrame:SetTemplate("Transparent")
 
 	--Titles
 	_G.PaperDollTitlesPane:HookScript("OnShow", function()
