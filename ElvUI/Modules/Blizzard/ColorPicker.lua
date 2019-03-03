@@ -182,7 +182,7 @@ function B:EnhanceColorPicker()
 
 	-- add Color Swatch for the copied color
 	t = _G.ColorPickerFrame:CreateTexture("ColorPPCopyColorSwatch")
-	t:SetSize(w,h)
+	t:Size(w,h)
 	t:SetColorTexture(0,0,0)
 	t:Hide()
 

@@ -61,7 +61,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Spark_:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 	castbar.Spark_:SetBlendMode('ADD')
 	castbar.Spark_:SetVertexColor(1, 1, 1)
-	castbar.Spark_:SetSize(20, 40)
+	castbar.Spark_:Size(20, 40)
 
 	--Set to castbar.SafeZone
 	castbar.LatencyTexture = castbar:CreateTexture(nil, "OVERLAY")
@@ -153,8 +153,8 @@ function UF:Configure_Castbar(frame)
 
 	if db.castbar.spark then
 		castbar.Spark = castbar.Spark_
-		castbar.Spark:SetPoint('CENTER', castbar:GetStatusBarTexture(), 'RIGHT', 0, 0)
-		castbar.Spark:SetHeight(db.castbar.height * 2)
+		castbar.Spark:Point('CENTER', castbar:GetStatusBarTexture(), 'RIGHT', 0, 0)
+		castbar.Spark:Height(db.castbar.height * 2)
 	elseif castbar.Spark then
 		castbar.Spark:Hide()
 		castbar.Spark = nil
@@ -167,11 +167,11 @@ function UF:Configure_Castbar(frame)
 		else
 			local iconWidth = db.castbar.icon and (castbar.Icon.bg:GetWidth() - frame.BORDER) or 0
 			if(frame.ORIENTATION == "RIGHT") then
-				castbar:SetPoint("TOPLEFT", frame.InfoPanel, "TOPLEFT")
-				castbar:SetPoint("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT", -iconWidth - frame.SPACING*3, 0)
+				castbar:Point("TOPLEFT", frame.InfoPanel, "TOPLEFT")
+				castbar:Point("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT", -iconWidth - frame.SPACING*3, 0)
 			else
-				castbar:SetPoint("TOPLEFT", frame.InfoPanel, "TOPLEFT",  iconWidth + frame.SPACING*3, 0)
-				castbar:SetPoint("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT")
+				castbar:Point("TOPLEFT", frame.InfoPanel, "TOPLEFT",  iconWidth + frame.SPACING*3, 0)
+				castbar:Point("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT")
 			end
 		end
 
@@ -353,10 +353,10 @@ function UF:PostCastStart(unit)
 		E:Delay(0.05, function() -- Delay may need tweaking
 			textWidth = self:GetWidth() - self.Time:GetStringWidth() - 10
 			textStringWidth = self.Text:GetStringWidth()
-			if textWidth > 0 then self.Text:SetWidth(min(textWidth, textStringWidth)) end
+			if textWidth > 0 then self.Text:Width(min(textWidth, textStringWidth)) end
 		end)
 	else
-		self.Text:SetWidth(min(textWidth, textStringWidth))
+		self.Text:Width(min(textWidth, textStringWidth))
 	end
 
 	self.unit = unit

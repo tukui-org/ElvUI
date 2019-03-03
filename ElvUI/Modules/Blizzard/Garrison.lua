@@ -74,7 +74,7 @@ function B:GarrisonDropDown()
 				end
 				_G.EasyMenu(landingChoices, landingChoiceMenu, "cursor", 0, 0, "MENU", 4)
 				DropDownList1:ClearAllPoints()
-				DropDownList1:SetPoint("TOPRIGHT", self, "TOPLEFT", 10, -4)
+				DropDownList1:Point("TOPRIGHT", self, "TOPLEFT", 10, -4)
 			elseif GarrisonLandingPage.garrTypeID == 3 then
 				ShowLanding(2)
 				MaybeStopSound(self.closeSoundID)

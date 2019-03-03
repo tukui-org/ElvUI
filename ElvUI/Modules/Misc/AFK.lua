@@ -261,7 +261,7 @@ function AFK:Initialize()
 	self.AFKMode:SetScript("OnKeyDown", OnKeyDown)
 
 	self.AFKMode.chat = CreateFrame("ScrollingMessageFrame", nil, self.AFKMode)
-	self.AFKMode.chat:SetSize(500, 200)
+	self.AFKMode.chat:Size(500, 200)
 	self.AFKMode.chat:Point("TOPLEFT", self.AFKMode, "TOPLEFT", 4, -4)
 	self.AFKMode.chat:FontTemplate()
 	self.AFKMode.chat:SetJustifyH("LEFT")
@@ -284,7 +284,7 @@ function AFK:Initialize()
 	self.AFKMode.bottom:Height(GetScreenHeight() * (1 / 10))
 
 	self.AFKMode.bottom.logo = self.AFKMode:CreateTexture(nil, 'OVERLAY')
-	self.AFKMode.bottom.logo:SetSize(320, 150)
+	self.AFKMode.bottom.logo:Size(320, 150)
 	self.AFKMode.bottom.logo:Point("CENTER", self.AFKMode.bottom, "CENTER", 0, 50)
 	self.AFKMode.bottom.logo:SetTexture(E.Media.Textures.Logo)
 
@@ -296,7 +296,7 @@ function AFK:Initialize()
 	self.AFKMode.bottom.faction = self.AFKMode.bottom:CreateTexture(nil, 'OVERLAY')
 	self.AFKMode.bottom.faction:Point("BOTTOMLEFT", self.AFKMode.bottom, "BOTTOMLEFT", offsetX, offsetY)
 	self.AFKMode.bottom.faction:SetTexture("Interface\\Timer\\"..factionGroup.."-Logo")
-	self.AFKMode.bottom.faction:SetSize(size, size)
+	self.AFKMode.bottom.faction:Size(size, size)
 
 	self.AFKMode.bottom.name = self.AFKMode.bottom:CreateFontString(nil, 'OVERLAY')
 	self.AFKMode.bottom.name:FontTemplate(nil, 20)
@@ -318,12 +318,12 @@ function AFK:Initialize()
 
 	--Use this frame to control position of the model
 	self.AFKMode.bottom.modelHolder = CreateFrame("Frame", nil, self.AFKMode.bottom)
-	self.AFKMode.bottom.modelHolder:SetSize(150, 150)
+	self.AFKMode.bottom.modelHolder:Size(150, 150)
 	self.AFKMode.bottom.modelHolder:Point("BOTTOMRIGHT", self.AFKMode.bottom, "BOTTOMRIGHT", -200, 220)
 
 	self.AFKMode.bottom.model = CreateFrame("PlayerModel", "ElvUIAFKPlayerModel", self.AFKMode.bottom.modelHolder)
 	self.AFKMode.bottom.model:Point("CENTER", self.AFKMode.bottom.modelHolder, "CENTER")
-	self.AFKMode.bottom.model:SetSize(GetScreenWidth() * 2, GetScreenHeight() * 2) --YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
+	self.AFKMode.bottom.model:Size(GetScreenWidth() * 2, GetScreenHeight() * 2) --YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
 	self.AFKMode.bottom.model:SetCamDistanceScale(4.5) --Since the model frame is huge, we need to zoom out quite a bit.
 	self.AFKMode.bottom.model:SetFacing(6)
 	self.AFKMode.bottom.model:SetScript("OnUpdate", function(self)

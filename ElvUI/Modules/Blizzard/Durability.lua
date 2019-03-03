@@ -8,7 +8,7 @@ local hooksecurefunc = hooksecurefunc
 local function SetPosition(frame, _, parent)
 	if parent == "MinimapCluster" or parent == _G.MinimapCluster then
 		frame:ClearAllPoints()
-		frame:SetPoint("RIGHT", _G.Minimap, "RIGHT")
+		frame:Point("RIGHT", _G.Minimap, "RIGHT")
 		frame:SetScale(0.6)
 	end
 end

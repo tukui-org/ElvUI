@@ -353,7 +353,7 @@ function A:UpdateHeader(header)
 	local child = select(index, header:GetChildren())
 	while child do
 		if (floor(child:GetWidth() * 100 + 0.5) / 100) ~= db.size then
-			child:SetSize(db.size, db.size)
+			child:Size(db.size, db.size)
 		end
 
 		child.auraType = auraType -- used to update cooldown text

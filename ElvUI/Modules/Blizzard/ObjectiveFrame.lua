@@ -67,7 +67,7 @@ function B:MoveObjectiveFrame()
 	end
 
 	ObjectiveTrackerFrame:ClearAllPoints()
-	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
+	ObjectiveTrackerFrame:Point('TOP', ObjectiveFrameHolder, 'TOP')
 
 
 	local function RewardsFrame_SetPosition(block)

@@ -1114,7 +1114,7 @@ function B:Layout(isBank)
 					if not f.Bags[bagID][slotID].ScrapIcon then
 						local ScrapIcon = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
 						ScrapIcon:SetAtlas("bags-icon-scrappable")
-						ScrapIcon:SetSize(14, 12)
+						ScrapIcon:Size(14, 12)
 						ScrapIcon:Point("TOPRIGHT", -1, -1)
 						ScrapIcon:Hide()
 						f.Bags[bagID][slotID].ScrapIcon = ScrapIcon
@@ -1628,7 +1628,7 @@ function B:ContructContainerFrame(name, isBank)
 	end)
 
 	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton');
-	f.closeButton:SetPoint('TOPRIGHT', 5, 5);
+	f.closeButton:Point('TOPRIGHT', 5, 5);
 
 	SkinModule:HandleCloseButton(f.closeButton);
 
@@ -1683,7 +1683,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.bagText:SetText(L["Bank"])
 
 		f.reagentToggle = CreateFrame("Button", name..'ReagentButton', f);
-		f.reagentToggle:SetSize(16 + E.Border, 16 + E.Border)
+		f.reagentToggle:Size(16 + E.Border, 16 + E.Border)
 		f.reagentToggle:SetTemplate()
 		f.reagentToggle:Point("RIGHT", f.bagText, "LEFT", -5, E.Border * 2)
 		f.reagentToggle:SetNormalTexture("Interface\\ICONS\\INV_Enchant_DustArcane")
@@ -1718,7 +1718,7 @@ function B:ContructContainerFrame(name, isBank)
 
 		--Sort Button
 		f.sortButton = CreateFrame("Button", name..'SortButton', f);
-		f.sortButton:SetSize(16 + E.Border, 16 + E.Border)
+		f.sortButton:Size(16 + E.Border, 16 + E.Border)
 		f.sortButton:SetTemplate()
 		f.sortButton:Point("RIGHT", f.reagentToggle, "LEFT", -5, 0)
 		f.sortButton:SetNormalTexture("Interface\\ICONS\\INV_Pet_Broom")
@@ -1755,7 +1755,7 @@ function B:ContructContainerFrame(name, isBank)
 
 		--Toggle Bags Button
 		f.depositButton = CreateFrame("Button", name..'DepositButton', f.reagentFrame);
-		f.depositButton:SetSize(16 + E.Border, 16 + E.Border)
+		f.depositButton:Size(16 + E.Border, 16 + E.Border)
 		f.depositButton:SetTemplate()
 		f.depositButton:Point("RIGHT", f.sortButton, "LEFT", -5, 0)
 		f.depositButton:SetNormalTexture("Interface\\ICONS\\misc_arrowdown")
@@ -1775,7 +1775,7 @@ function B:ContructContainerFrame(name, isBank)
 
 		--Toggle Bags Button
 		f.bagsButton = CreateFrame("Button", name..'BagsButton', f.holderFrame);
-		f.bagsButton:SetSize(16 + E.Border, 16 + E.Border)
+		f.bagsButton:Size(16 + E.Border, 16 + E.Border)
 		f.bagsButton:SetTemplate()
 		f.bagsButton:Point("RIGHT", f.sortButton, "LEFT", -5, 0)
 		f.bagsButton:SetNormalTexture("Interface\\Buttons\\Button-Backpack-Up")
@@ -1800,7 +1800,7 @@ function B:ContructContainerFrame(name, isBank)
 		end)
 
 		f.purchaseBagButton = CreateFrame('Button', nil, f.holderFrame)
-		f.purchaseBagButton:SetSize(16 + E.Border, 16 + E.Border)
+		f.purchaseBagButton:Size(16 + E.Border, 16 + E.Border)
 		f.purchaseBagButton:SetTemplate()
 		f.purchaseBagButton:Point("RIGHT", f.bagsButton, "LEFT", -5, 0)
 		f.purchaseBagButton:SetNormalTexture("Interface\\ICONS\\INV_Misc_Coin_01")
@@ -1852,7 +1852,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.editBox.searchIcon = f.editBox:CreateTexture(nil, 'OVERLAY')
 		f.editBox.searchIcon:SetTexture("Interface\\Common\\UI-Searchbox-Icon")
 		f.editBox.searchIcon:Point("LEFT", f.editBox.backdrop, "LEFT", E.Border + 1, -1)
-		f.editBox.searchIcon:SetSize(15, 15)
+		f.editBox.searchIcon:Size(15, 15)
 
 	else
 		--Gold Text
@@ -1863,7 +1863,7 @@ function B:ContructContainerFrame(name, isBank)
 
 		--Sort Button
 		f.sortButton = CreateFrame("Button", name..'SortButton', f);
-		f.sortButton:SetSize(16 + E.Border, 16 + E.Border)
+		f.sortButton:Size(16 + E.Border, 16 + E.Border)
 		f.sortButton:SetTemplate()
 		f.sortButton:Point("RIGHT", f.goldText, "LEFT", -5, E.Border * 2)
 		f.sortButton:SetNormalTexture("Interface\\ICONS\\INV_Pet_Broom")
@@ -1896,7 +1896,7 @@ function B:ContructContainerFrame(name, isBank)
 
 		--Bags Button
 		f.bagsButton = CreateFrame("Button", name..'BagsButton', f);
-		f.bagsButton:SetSize(16 + E.Border, 16 + E.Border)
+		f.bagsButton:Size(16 + E.Border, 16 + E.Border)
 		f.bagsButton:SetTemplate()
 		f.bagsButton:Point("RIGHT", f.sortButton, "LEFT", -5, 0)
 		f.bagsButton:SetNormalTexture("Interface\\Buttons\\Button-Backpack-Up")
@@ -1914,7 +1914,7 @@ function B:ContructContainerFrame(name, isBank)
 
 		--Vendor Grays
 		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame)
-		f.vendorGraysButton:SetSize(16 + E.Border, 16 + E.Border)
+		f.vendorGraysButton:Size(16 + E.Border, 16 + E.Border)
 		f.vendorGraysButton:SetTemplate()
 		f.vendorGraysButton:Point("RIGHT", f.bagsButton, "LEFT", -5, 0)
 		f.vendorGraysButton:SetNormalTexture("Interface\\ICONS\\INV_Misc_Coin_01")
@@ -1949,7 +1949,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.editBox.searchIcon = f.editBox:CreateTexture(nil, 'OVERLAY')
 		f.editBox.searchIcon:SetTexture("Interface\\Common\\UI-Searchbox-Icon")
 		f.editBox.searchIcon:Point("LEFT", f.editBox.backdrop, "LEFT", E.Border + 1, -1)
-		f.editBox.searchIcon:SetSize(15, 15)
+		f.editBox.searchIcon:Size(15, 15)
 
 		--Currency
 		f.currencyButton = CreateFrame('Frame', nil, f);

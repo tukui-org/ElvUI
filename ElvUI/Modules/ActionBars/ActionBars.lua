@@ -335,8 +335,8 @@ function AB:CreateBar(id)
 
 	--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
 	local offset = E.Spacing
-	bar.backdrop:SetPoint("TOPLEFT", bar, "TOPLEFT", offset, -offset)
-	bar.backdrop:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -offset, offset)
+	bar.backdrop:Point("TOPLEFT", bar, "TOPLEFT", offset, -offset)
+	bar.backdrop:Point("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -offset, offset)
 
 	bar.buttons = {}
 	bar.bindButtons = self.barDefaults['bar'..id].bindButtons
@@ -448,7 +448,7 @@ function AB:UpdateVehicleLeave()
 	local scale = 26 * (E.db.general.minimap.icons.vehicleLeave.scale or 1)
 	button:ClearAllPoints()
 	button:Point(pos, _G.Minimap, pos, E.db.general.minimap.icons.vehicleLeave.xOffset or 2, E.db.general.minimap.icons.vehicleLeave.yOffset or 2)
-	button:SetSize(scale, scale)
+	button:Size(scale, scale)
 end
 
 function AB:CreateVehicleLeave()
@@ -1164,8 +1164,8 @@ function AB:VehicleFix()
 	else
 		--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
 		local offset = E.Spacing
-		bar.backdrop:SetPoint("TOPLEFT", bar, "TOPLEFT", offset, -offset)
-		bar.backdrop:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -offset, offset)
+		bar.backdrop:Point("TOPLEFT", bar, "TOPLEFT", offset, -offset)
+		bar.backdrop:Point("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -offset, offset)
 	end
 end
 

@@ -310,7 +310,7 @@ function M:SetupChallengeTimer()
 	bar:CreateBackdrop("Transparent")
 	bar:SetStatusBarTexture(E.media.normTex)
 	bar.text = bar:CreateFontString(nil, "OVERLAY")
-	bar.text:SetPoint("CENTER")
+	bar.text:Point("CENTER")
 	bar.text:FontTemplate()
 
 	_G.ScenarioChallengeModeBlock.StatusBar:HookScript("OnValueChanged", OnValueChanged)
