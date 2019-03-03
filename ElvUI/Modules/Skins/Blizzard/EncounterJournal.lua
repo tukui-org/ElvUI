@@ -207,6 +207,16 @@ local function LoadSkin()
 	InstanceSelect.dungeonsTab.backdrop:SetTemplate("Default", true)
 	InstanceSelect.raidsTab.backdrop:SetTemplate("Default", true)
 	InstanceSelect.LootJournalTab.backdrop:SetTemplate("Default", true)
+	InstanceSelect.suggestTab:Width(InstanceSelect.suggestTab:GetWidth() + 24)
+	InstanceSelect.dungeonsTab:Width(InstanceSelect.dungeonsTab:GetWidth() + 10)
+	InstanceSelect.suggestTab:ClearAllPoints()
+	InstanceSelect.suggestTab:SetPoint("BOTTOMLEFT", InstanceSelect, "TOPLEFT", -8, -45)
+	InstanceSelect.dungeonsTab:ClearAllPoints()
+	InstanceSelect.dungeonsTab:Point("BOTTOMLEFT", InstanceSelect.suggestTab, "BOTTOMRIGHT", -18, 0)
+	InstanceSelect.raidsTab:ClearAllPoints()
+	InstanceSelect.raidsTab:Point("BOTTOMLEFT", InstanceSelect.dungeonsTab, "BOTTOMRIGHT", -18, 0)
+	InstanceSelect.LootJournalTab:ClearAllPoints()
+	InstanceSelect.LootJournalTab:Point("BOTTOMLEFT", InstanceSelect.raidsTab, "BOTTOMRIGHT", -18, 0)
 
 	--Skin the tab text
 	for i = 1, #InstanceSelect.Tabs do
