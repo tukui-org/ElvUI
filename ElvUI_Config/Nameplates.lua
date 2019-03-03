@@ -3291,8 +3291,8 @@ E.Options.args.nameplate = {
 									order = 3,
 									type = "range",
 									isPercent = true,
-									name = L["Non-Target Transparency"],
-									desc = L["Set the transparency level of nameplates that are not the target nameplate."],
+									name = L["Non-Target Alpha"],
+									desc = L["Set the alpha level of nameplates that are not the target nameplate."],
 									min = 0, max = 1, step = 0.01,
 								},
 								spacer1 = {
