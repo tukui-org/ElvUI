@@ -2174,7 +2174,7 @@ local function GetUnitSettings(unit, name)
 					numAuras = {
 						order = 3,
 						name = L["# Displayed Auras"],
-						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
+						--desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
 						min = 1, max = 8, step = 1,
 					},
