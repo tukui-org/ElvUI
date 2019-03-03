@@ -329,7 +329,7 @@ local function LoadSkin()
 	hooksecurefunc(bf.TurnTimer.SkipButton, "SetPoint", function(_, point, _, anchorPoint, xOffset, yOffset)
 		if point ~= "BOTTOM" or anchorPoint ~= "TOP" or xOffset ~= 0 or yOffset ~= (E.PixelMode and -1 or 1) then
 			bf.TurnTimer.SkipButton:ClearAllPoints()
-			bf.TurnTimer.SkipButton:Point("BOTTOM", bar, "TOP", 0, E.PixelMode and -1 or 1)
+			bf.TurnTimer.SkipButton:SetPoint("BOTTOM", bar, "TOP", 0, E.PixelMode and -1 or 1)
 		end
 	end)
 
