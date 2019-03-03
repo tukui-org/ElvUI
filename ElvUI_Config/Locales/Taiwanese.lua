@@ -529,7 +529,6 @@ L["Hide At Max Level"] = "在最高等級時隱藏"
 L["Hide Error Text"] = "隱藏錯誤文字"
 L["Hide In Vehicle"] = "騎乘時隱藏"
 L["Hides the red error text at the top of the screen while in combat."] = "戰鬥中隱藏螢幕頂部紅字錯誤信息."
-L["Item Level"] = true
 L["Item Level Font"] = true
 L["Log Taints"] = "錯誤記錄"
 L["Login Message"] = "登入資訊"

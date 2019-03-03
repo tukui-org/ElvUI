@@ -523,7 +523,6 @@ L["Hide At Max Level"] = true
 L["Hide Error Text"] = true
 L["Hide In Vehicle"] = true
 L["Hides the red error text at the top of the screen while in combat."] = true
-L["Item Level"] = true
 L["Item Level Font"] = true
 L["Log Taints"] = true
 L["Login Message"] = true

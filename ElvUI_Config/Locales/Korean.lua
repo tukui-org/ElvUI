@@ -580,7 +580,6 @@ L["Hide At Max Level"] = "만렙시 숨김"
 L["Hide Error Text"] = "전투중 에러 숨기기"
 L["Hide In Vehicle"] = "탈것사용중 숨김"
 L["Hides the red error text at the top of the screen while in combat."] = "화면 중앙 상단에 뜨는 여러 에러메시지(ex : 사정거리 부족)를 전투 중에는 띄우지 않게 합니다."
-L["Item Level"] = true
 L["Item Level Font"] = true
 L["Log Taints"] = "Taint 에러 표시"
 L["Login Message"] = "로그인 메세지 표시"
