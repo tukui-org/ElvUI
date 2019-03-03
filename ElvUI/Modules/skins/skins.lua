@@ -492,7 +492,7 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 	if not noReplaceTextures then
 		if frame.SetCheckedTexture then
 			if E.private.skins.checkBoxSkin then
-				frame:SetCheckedTexture(E.Media.Textures.Melli)
+				frame:SetCheckedTexture([[Interface\AddOns\ElvUI\media\textures\melli]])
 				frame:GetCheckedTexture():SetVertexColor(1, .82, 0, 0.8)
 				frame:GetCheckedTexture():SetInside(frame.backdrop)
 			else
@@ -506,7 +506,7 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 
 		if frame.SetDisabledTexture then
 			if E.private.skins.checkBoxSkin then
-				frame:SetDisabledTexture(E.Media.Textures.Melli)
+				frame:SetDisabledTexture([[Interface\AddOns\ElvUI\media\textures\melli]])
 				frame:GetDisabledTexture():SetVertexColor(.6, .6, .6, .8)
 				frame:GetCheckedTexture():SetInside(frame.backdrop)
 			else
@@ -521,7 +521,7 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 			if not checkbox.SetDisabledTexture then return; end
 			if checkbox:GetChecked() then
 				if E.private.skins.checkBoxSkin then
-					checkbox:SetDisabledTexture(E.Media.Textures.Melli)
+					checkbox:SetDisabledTexture([[Interface\AddOns\ElvUI\media\textures\melli]])
 				else
 					checkbox:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
 				end
