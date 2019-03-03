@@ -87,24 +87,18 @@ local function LoadSkin()
 		self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end)
 
+	S:HandleButton(_G.MerchantRepairItemButton)
 	_G.MerchantRepairItemButton:StyleButton(false)
-	_G.MerchantRepairItemButton:SetTemplate("Default", true)
-	for i=1, _G.MerchantRepairItemButton:GetNumRegions() do
-		local region = select(i, _G.MerchantRepairItemButton:GetRegions())
+	_G.MerchantRepairItemButton:GetRegions():SetTexCoord(0.04, 0.24, 0.06, 0.5)
+	_G.MerchantRepairItemButton:GetRegions():SetInside()
 
-		if region:IsObjectType('Texture') then
-			region:SetTexCoord(0.04, 0.24, 0.06, 0.5)
-			region:SetInside()
-		end
-	end
-
+	S:HandleButton(_G.MerchantGuildBankRepairButton)
 	_G.MerchantGuildBankRepairButton:StyleButton()
-	_G.MerchantGuildBankRepairButton:SetTemplate("Default", true)
 	_G.MerchantGuildBankRepairButtonIcon:SetTexCoord(0.61, 0.82, 0.1, 0.52)
 	_G.MerchantGuildBankRepairButtonIcon:SetInside()
 
-	_G.MerchantRepairAllButton:StyleButton(false)
-	_G.MerchantRepairAllButton:SetTemplate("Default", true)
+	S:HandleButton(_G.MerchantRepairAllButton)
+	_G.MerchantRepairAllIcon:StyleButton(false)
 	_G.MerchantRepairAllIcon:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
 	_G.MerchantRepairAllIcon:SetInside()
 

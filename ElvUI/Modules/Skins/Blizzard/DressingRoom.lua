@@ -19,7 +19,6 @@ local function LoadSkin()
 	DressUpFrameOutfitDropDown.SaveButton:ClearAllPoints()
 	DressUpFrameOutfitDropDown.SaveButton:Point("RIGHT", DressUpFrameOutfitDropDown, 86, 4)
 	S:HandleDropDownBox(DressUpFrameOutfitDropDown)
-	DressUpFrameOutfitDropDown:Size(195, 34)
 
 	S:HandleMaxMinFrame(_G.MaximizeMinimizeFrame)
 	_G.DressUpFrameResetButton:Point("RIGHT", _G.DressUpFrameCancelButton, "LEFT", -2, 0)
