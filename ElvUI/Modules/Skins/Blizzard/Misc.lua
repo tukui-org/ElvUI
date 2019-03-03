@@ -38,6 +38,8 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
 
+	_G.QueueStatusFrame:StripTextures()
+
 	-- Blizzard frame we want to reskin
 	local skins = {
 		"StaticPopup1",
@@ -61,7 +63,6 @@ local function LoadSkin()
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
-	_G.QueueStatusFrame:StripTextures()
 	hooksecurefunc("QueueStatusEntry_SetFullDisplay", function(entry, _, _, _, isTank, isHealer, isDPS)
 		if not entry then return end
 		local nextRoleIcon = 1
