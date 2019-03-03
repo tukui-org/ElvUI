@@ -435,7 +435,7 @@ local function LoadSkin()
 		object.icon:Point("LEFT", object, "LEFT", 4, 0)
 		hooksecurefunc(object.icon, "SetPoint", function(self, _, _, _, _, _, isForced)
 			if isForced ~= true then
-				self:SetPoint("LEFT", object, "LEFT", 4, 0, true)
+				self:Point("LEFT", object, "LEFT", 4, 0, true)
 			end
 		end)
 		hooksecurefunc(object.icon, "SetSize", function(self, width, height)
