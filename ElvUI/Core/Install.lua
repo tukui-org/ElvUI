@@ -648,6 +648,8 @@ local function SetPage(PageNum)
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function()
 			local scale = E:PixelClip(E:PixelBestSize())
+
+			-- this is to just keep the slider in place, the values need updated again afterwards
 			InstallSlider:SetValue(scale)
 
 			-- update the values with deeper accuracy
