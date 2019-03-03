@@ -1858,6 +1858,10 @@ function E:Initialize()
 	self:RefreshModulesDB()
 	collectgarbage('collect')
 
+	if GetCVarBool("scriptProfile") then
+		E:StaticPopup_Show('SCRIPT_PROFILE')
+	end
+
 	if self.db.general.loginmessage then
 		E:Print(select(2, E:GetModule('Chat'):FindURL('CHAT_MSG_DUMMY', format(L["LOGIN_MSG"], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)))..'.')
 	end
