@@ -108,6 +108,8 @@ function S:HandlePortraitFrame(frame, setBackdrop)
 	if setBackdrop then
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:SetAllPoints()
+	else
+		frame:SetTemplate('Transparent')
 	end
 end
 
