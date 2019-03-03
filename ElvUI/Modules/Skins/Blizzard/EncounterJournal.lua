@@ -167,6 +167,13 @@ local function ItemSetsFrame(_, button)
 	button.Icon.backdrop:SetBackdropBorderColor(frame.SetName:GetTextColor())
 end
 
+local function HandleTopTabs(tab)
+	S:HandleTab(tab)
+	tab:SetTemplate("Default", true)
+	tab:Width(tab:GetFontString():GetStringWidth() * 1.5)
+	tab:SetHitRectInsets(0, 0, 0, 0)
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
 
@@ -199,24 +206,19 @@ local function LoadSkin()
 	end)
 
 	S:HandleScrollBar(InstanceSelect.scroll.ScrollBar, 6)
-	S:HandleTab(InstanceSelect.suggestTab)
-	S:HandleTab(InstanceSelect.dungeonsTab)
-	S:HandleTab(InstanceSelect.raidsTab)
-	S:HandleTab(InstanceSelect.LootJournalTab)
-	InstanceSelect.suggestTab.backdrop:SetTemplate("Default", true)
-	InstanceSelect.dungeonsTab.backdrop:SetTemplate("Default", true)
-	InstanceSelect.raidsTab.backdrop:SetTemplate("Default", true)
-	InstanceSelect.LootJournalTab.backdrop:SetTemplate("Default", true)
-	InstanceSelect.suggestTab:Width(InstanceSelect.suggestTab:GetWidth() + 24)
-	InstanceSelect.dungeonsTab:Width(InstanceSelect.dungeonsTab:GetWidth() + 10)
+	HandleTopTabs(InstanceSelect.suggestTab)
+	HandleTopTabs(InstanceSelect.dungeonsTab)
+	HandleTopTabs(InstanceSelect.raidsTab)
+	HandleTopTabs(InstanceSelect.LootJournalTab)
+
 	InstanceSelect.suggestTab:ClearAllPoints()
-	InstanceSelect.suggestTab:SetPoint("BOTTOMLEFT", InstanceSelect, "TOPLEFT", -8, -45)
+	InstanceSelect.suggestTab:SetPoint("BOTTOMLEFT", InstanceSelect, "TOPLEFT", 2, -43)
 	InstanceSelect.dungeonsTab:ClearAllPoints()
-	InstanceSelect.dungeonsTab:Point("BOTTOMLEFT", InstanceSelect.suggestTab, "BOTTOMRIGHT", -18, 0)
+	InstanceSelect.dungeonsTab:Point("BOTTOMLEFT", InstanceSelect.suggestTab, "BOTTOMRIGHT", 2, 0)
 	InstanceSelect.raidsTab:ClearAllPoints()
-	InstanceSelect.raidsTab:Point("BOTTOMLEFT", InstanceSelect.dungeonsTab, "BOTTOMRIGHT", -18, 0)
+	InstanceSelect.raidsTab:Point("BOTTOMLEFT", InstanceSelect.dungeonsTab, "BOTTOMRIGHT", 2, 0)
 	InstanceSelect.LootJournalTab:ClearAllPoints()
-	InstanceSelect.LootJournalTab:Point("BOTTOMLEFT", InstanceSelect.raidsTab, "BOTTOMRIGHT", -18, 0)
+	InstanceSelect.LootJournalTab:Point("BOTTOMLEFT", InstanceSelect.raidsTab, "BOTTOMRIGHT", 2, 0)
 
 	--Skin the tab text
 	for i = 1, #InstanceSelect.Tabs do
