@@ -6,7 +6,6 @@ local _G = _G
 local unpack, assert, pairs, ipairs, select, type, pcall = unpack, assert, pairs, ipairs, select, type, pcall
 local tinsert, wipe, strfind = tinsert, wipe, strfind
 --WoW API / Variables
-local CreateFrame = CreateFrame
 local GetCVarBool = GetCVarBool
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
@@ -444,7 +443,7 @@ function S:HandleDropDownBox(frame, width)
 	if text then
 		local a, b, c, d, e = text:GetPoint()
 		text:Point(a, b, c, d + (button and 0 or 10), e - 4)
-		text:SetWidth(frame:GetWidth() / 1.4)
+		text:Width(frame:GetWidth() / 1.4)
 		text:SetJustifyH("RIGHT")
 	end
 
