@@ -443,7 +443,9 @@ function S:HandleDropDownBox(frame, width)
 
 	if text then
 		local a, b, c, d, e = text:GetPoint()
-		text:Point(a, b, c, d + (button and -3 or 10), e - 4)
+		text:Point(a, b, c, d + (button and 0 or 10), e - 4)
+		text:SetWidth(frame:GetWidth() / 1.4)
+		text:SetJustifyH("RIGHT")
 	end
 
 	if button then
