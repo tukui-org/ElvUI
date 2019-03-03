@@ -1674,6 +1674,14 @@ function E:DBConversions()
 		end
 	end
 
+	--Tooltip FactionColors Setting
+	for i=1, 8 do
+		if E.db.tooltip.factionColors[''..i] then
+			E.db.tooltip.factionColors[i] = E.db.tooltip.factionColors[''..i]
+			E.db.tooltip.factionColors[''..i] = nil
+		end
+	end
+
 	--Fix issue where UIScale was incorrectly stored as string
 	E.global.general.UIScale = tonumber(E.global.general.UIScale)
 
