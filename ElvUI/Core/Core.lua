@@ -1677,7 +1677,7 @@ function E:DBConversions()
 	--Tooltip FactionColors Setting
 	for i=1, 8 do
 		if E.db.tooltip.factionColors[''..i] then
-			E.db.tooltip.factionColors[i] = E.db.tooltip.factionColors[''..i]
+			E.db.tooltip.factionColors[i] = E:CopyTable({}, E.db.tooltip.factionColors[''..i])
 			E.db.tooltip.factionColors[''..i] = nil
 		end
 	end
