@@ -452,9 +452,9 @@ function S:HandleDropDownBox(frame, width)
 		text:ClearAllPoints()
 
 		if right then
-			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (right and -5) or 0, 0)
+			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (right and -3) or 0, 0)
 		else
-			text:Point(a, frame.backdrop, c, (justifyH == 'LEFT' and 10) or d, e - 3)
+			text:Point(a, frame.backdrop, c, (justifyH == 'LEFT' and 10) or d, e-3)
 		end
 
 		text:Width(frame:GetWidth() / 1.4)
