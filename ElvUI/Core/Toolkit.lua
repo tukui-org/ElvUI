@@ -364,6 +364,7 @@ local object = CreateFrame('Frame')
 addapi(object)
 addapi(object:CreateTexture())
 addapi(object:CreateFontString())
+addapi(object:CreateMaskTexture())
 
 object = EnumerateFrames()
 while object do
