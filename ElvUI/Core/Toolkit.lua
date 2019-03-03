@@ -26,22 +26,22 @@ local function GetTemplate(t, isUnitFrameElement)
 	end
 end
 
-local function Size(frame, width, height)
+local function Size(frame, width, height, ...)
 	assert(width)
-	frame:SetSize(E:Scale(width), E:Scale(height or width))
+	frame:SetSize(E:Scale(width), E:Scale(height or width), ...)
 end
 
-local function Width(frame, width)
+local function Width(frame, width, ...)
 	assert(width)
-	frame:SetWidth(E:Scale(width))
+	frame:SetWidth(E:Scale(width), ...)
 end
 
-local function Height(frame, height)
+local function Height(frame, height, ...)
 	assert(height)
-	frame:SetHeight(E:Scale(height))
+	frame:SetHeight(E:Scale(height), ...)
 end
 
-local function Point(obj, arg1, arg2, arg3, arg4, arg5)
+local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
 	if arg2 == nil then arg2 = obj:GetParent() end
 
 	if type(arg2)=='number' then arg2 = E:Scale(arg2) end
@@ -49,7 +49,7 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 	if type(arg4)=='number' then arg4 = E:Scale(arg4) end
 	if type(arg5)=='number' then arg5 = E:Scale(arg5) end
 
-	obj:SetPoint(arg1, arg2, arg3, arg4, arg5)
+	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
 end
 
 local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
