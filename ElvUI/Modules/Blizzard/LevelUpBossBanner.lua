@@ -11,7 +11,7 @@ Holder:Point("TOP", E.UIParent, "TOP", 0, -120)
 local function Reanchor(frame, _, anchor)
 	if anchor and (anchor ~= Holder) then
 		frame:ClearAllPoints()
-		frame:Point("TOP", Holder)
+		frame:SetPoint("TOP", Holder)
 	end
 end
 
