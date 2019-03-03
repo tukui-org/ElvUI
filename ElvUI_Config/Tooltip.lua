@@ -206,12 +206,14 @@ E.Options.args.tooltip = {
 						},
 					},
 					get = function(info)
-						local t = E.db.tooltip.factionColors[ info[#info] ]
-						local d = P.tooltip.factionColors[ info[#info] ]
+						local v = tonumber(info[#info])
+						local t = E.db.tooltip.factionColors[v]
+						local d = P.tooltip.factionColors[v]
 						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 					end,
 					set = function(info, r, g, b)
-						local t = E.db.tooltip.factionColors[ info[#info] ]
+						local v = tonumber(info[#info])
+						local t = E.db.tooltip.factionColors[v]
 						t.r, t.g, t.b = r, g, b
 					end,
 				},

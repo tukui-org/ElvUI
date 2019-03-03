@@ -276,7 +276,6 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 			local unitReaction = UnitReaction(unit, "player")
 			if E.db.tooltip.useCustomFactionColors then
 				if unitReaction then
-					unitReaction = format("%s", unitReaction) --Cast to string because our table is indexed by string keys
 					color = E.db.tooltip.factionColors[unitReaction]
 				end
 			else
@@ -483,7 +482,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				local _, class = UnitClass(unitTarget)
 				targetColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
 			else
-				targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[""..UnitReaction(unitTarget, "player")] or FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
+				targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[UnitReaction(unitTarget, "player")] or FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
 			end
 
 			tt:AddDoubleLine(format("%s:", _G.TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
