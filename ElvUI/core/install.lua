@@ -655,8 +655,12 @@ local function SetPage(PageNum)
 		InstallSlider.Max:SetText(1.15)
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function()
-			E.global.general.UIScale = E:PixelClip(E:PixelBestSize())
-			InstallSlider:SetValue(E.global.general.UIScale)
+			local scale = E:PixelClip(E:PixelBestSize())
+			InstallSlider:SetValue(scale)
+
+			-- update the values with deeper accuracy
+			E.global.general.UIScale = scale
+			InstallSlider.Cur:SetText(E.global.general.UIScale)
 		end)
 
 		InstallOption1Button:SetText(L["Auto Scale"])
