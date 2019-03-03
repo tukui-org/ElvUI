@@ -240,8 +240,8 @@ function RU:Initialize()
 
 		raidUtil:ClearAllPoints()
 		closeButton:ClearAllPoints()
-		raidUtil:Point(raidUtilPoint, self, raidUtilPoint)
-		closeButton:Point(raidUtilPoint, raidUtil, closeButtonPoint, 0, yOffset)
+		raidUtil:SetPoint(raidUtilPoint, self, raidUtilPoint)
+		closeButton:SetPoint(raidUtilPoint, raidUtil, closeButtonPoint, 0, yOffset)
 	]=]):format(-E.Border + E.Spacing*3))
 	RaidUtility_ShowButton:SetScript("OnMouseUp", function()
 		RaidUtilityPanel.toggled = true
