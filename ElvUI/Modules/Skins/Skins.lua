@@ -481,11 +481,12 @@ function S:HandleStatusBar(frame, color)
 	E:RegisterStatusBar(frame)
 end
 
-function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
+function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, forceSaturation)
 	if frame.isSkinned then return end
 	assert(frame, 'does not exist.')
 
 	frame:StripTextures()
+	frame.forceSaturation = forceSaturation
 
 	if noBackdrop then
 		frame:SetTemplate()
@@ -499,8 +500,10 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 		if frame.SetCheckedTexture then
 			if E.private.skins.checkBoxSkin then
 				frame:SetCheckedTexture(E.Media.Textures.Melli)
-				frame:GetCheckedTexture():SetVertexColor(1, .82, 0, 0.8)
-				frame:GetCheckedTexture():SetInside(frame.backdrop)
+
+				local checkedTexture = frame:GetCheckedTexture()
+				checkedTexture:SetVertexColor(1, .82, 0, 0.8)
+				checkedTexture:SetInside(frame.backdrop)
 			else
 				frame:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
 
@@ -513,8 +516,10 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
 		if frame.SetDisabledTexture then
 			if E.private.skins.checkBoxSkin then
 				frame:SetDisabledTexture(E.Media.Textures.Melli)
-				frame:GetDisabledTexture():SetVertexColor(.6, .6, .6, .8)
-				frame:GetDisabledTexture():SetInside(frame.backdrop)
+
+				local disabledTexture = frame:GetDisabledTexture()
+				disabledTexture:SetVertexColor(.6, .6, .6, .8)
+				disabledTexture:SetInside(frame.backdrop)
 			else
 				frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
 
@@ -1327,6 +1332,18 @@ function S:Initialize()
 	end
 
 	wipe(self.nonAddonsToLoad)
+
+	hooksecurefunc("TriStateCheckbox_SetState", function(_, checkButton)
+		if checkButton.forceSaturation then
+			local tex = checkButton:GetCheckedTexture()
+			if checkButton.state == 2 then
+				tex:SetDesaturated(false)
+				tex:SetVertexColor(unpack(E.media.rgbvaluecolor))
+			elseif checkButton.state == 1 then
+				tex:SetVertexColor(1, .82, 0, 0.8)
+			end
+		end
+	end)
 end
 
 S:RegisterEvent('ADDON_LOADED')

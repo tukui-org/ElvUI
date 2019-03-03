@@ -25,7 +25,7 @@ local function LoadSkin()
 	_G.AddonListScrollFrame.backdrop:Point('BOTTOMRIGHT', 0, -1)
 
 	for i = 1, _G.MAX_ADDONS_DISPLAYED do
-		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])
+		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"], nil, nil, true)
 		S:HandleButton(_G["AddonListEntry"..i].LoadAddonButton)
 	end
 end
