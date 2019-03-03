@@ -33,7 +33,7 @@ end
 local function SkinItemButton(_, block)
 	local item = block.itemButton
 	if item and not item.skinned then
-		item:SetSize(25, 25)
+		item:Size(25, 25)
 		item:SetTemplate("Transparent")
 		item:StyleButton()
 		item:SetNormalTexture(nil)
@@ -41,7 +41,7 @@ local function SkinItemButton(_, block)
 		item.icon:SetInside()
 		item.Cooldown:SetInside()
 		item.Count:ClearAllPoints()
-		item.Count:SetPoint("TOPLEFT", 1, -1)
+		item.Count:Point("TOPLEFT", 1, -1)
 		item.Count:SetFont(E.media.normFont, 14, "OUTLINE")
 		item.Count:SetShadowOffset(5, -5)
 		E:RegisterCooldown(item.Cooldown)

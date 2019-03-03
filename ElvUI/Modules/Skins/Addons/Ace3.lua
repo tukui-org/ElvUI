@@ -94,19 +94,19 @@ function S:SkinAce3()
 				frame:CreateBackdrop()
 			end
 
-			frame.backdrop:SetPoint('TOPLEFT', 15, -2)
-			frame.backdrop:SetPoint("BOTTOMRIGHT", -21, 0)
+			frame.backdrop:Point('TOPLEFT', 15, -2)
+			frame.backdrop:Point("BOTTOMRIGHT", -21, 0)
 
 			widget.label:ClearAllPoints()
-			widget.label:SetPoint('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
+			widget.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
 
-			button:SetSize(20, 20)
+			button:Size(20, 20)
 			button:ClearAllPoints()
-			button:SetPoint('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
+			button:Point('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
 
 			text:ClearAllPoints()
 			text:SetJustifyH('RIGHT')
-			text:SetPoint('RIGHT', button, 'LEFT', -3, 0)
+			text:Point('RIGHT', button, 'LEFT', -3, 0)
 
 			button:SetParent(frame.backdrop)
 			text:SetParent(frame.backdrop)
@@ -125,27 +125,27 @@ function S:SkinAce3()
 			end
 
 			frame.label:ClearAllPoints()
-			frame.label:SetPoint('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
+			frame.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
 
 			frame.text:ClearAllPoints()
-			frame.text:SetPoint('RIGHT', button, 'LEFT', -2, 0)
+			frame.text:Point('RIGHT', button, 'LEFT', -2, 0)
 
-			button:SetSize(20, 20)
+			button:Size(20, 20)
 			button:ClearAllPoints()
-			button:SetPoint('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
+			button:Point('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
 
-			frame.backdrop:SetPoint('TOPLEFT', 0, -21)
-			frame.backdrop:SetPoint('BOTTOMRIGHT', -4, -1)
+			frame.backdrop:Point('TOPLEFT', 0, -21)
+			frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
 
 			if TYPE == 'LSM30_Sound' then
 				widget.soundbutton:SetParent(frame.backdrop)
 				widget.soundbutton:ClearAllPoints()
-				widget.soundbutton:SetPoint('LEFT', frame.backdrop, 'LEFT', 2, 0)
+				widget.soundbutton:Point('LEFT', frame.backdrop, 'LEFT', 2, 0)
 			elseif TYPE == 'LSM30_Statusbar' then
 				widget.bar:SetParent(frame.backdrop)
 				widget.bar:ClearAllPoints()
-				widget.bar:SetPoint('TOPLEFT', frame.backdrop, 'TOPLEFT', 2, -2)
-				widget.bar:SetPoint('BOTTOMRIGHT', button, 'BOTTOMLEFT', -1, 0)
+				widget.bar:Point('TOPLEFT', frame.backdrop, 'TOPLEFT', 2, -2)
+				widget.bar:Point('BOTTOMRIGHT', button, 'BOTTOMLEFT', -1, 0)
 			end
 
 			button:SetParent(frame.backdrop)
@@ -157,16 +157,16 @@ function S:SkinAce3()
 			S:HandleEditBox(frame)
 			S:HandleButton(button)
 
-			button:SetPoint('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
+			button:Point('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
 
 			hooksecurefunc(frame, 'SetPoint', function(fr, a, b, c, d, e)
 				if d == 7 then
-					fr:SetPoint(a, b, c, 0, e)
+					fr:Point(a, b, c, 0, e)
 				end
 			end)
 
-			frame.backdrop:SetPoint('TOPLEFT', 0, -2)
-			frame.backdrop:SetPoint('BOTTOMRIGHT', -1, 0)
+			frame.backdrop:Point('TOPLEFT', 0, -2)
+			frame.backdrop:Point('BOTTOMRIGHT', -1, 0)
 		elseif (TYPE == 'Button' or TYPE == 'Button-ElvUI') then
 			local frame = widget.frame
 			S:HandleButton(frame, nil, true)
@@ -200,7 +200,7 @@ function S:SkinAce3()
 			msgframe:StripTextures()
 			msgframe:SetTemplate('Transparent')
 			msgframe.msg:ClearAllPoints()
-			msgframe.msg:SetPoint('CENTER')
+			msgframe.msg:Point('CENTER')
 		elseif (TYPE == 'ColorPicker' or TYPE == 'ColorPicker-ElvUI') then
 			local frame = widget.frame
 			local colorSwatch = widget.colorSwatch
@@ -209,9 +209,9 @@ function S:SkinAce3()
 				frame:CreateBackdrop()
 			end
 
-			frame.backdrop:SetSize(24, 16)
+			frame.backdrop:Size(24, 16)
 			frame.backdrop:ClearAllPoints()
-			frame.backdrop:SetPoint('LEFT', frame, 'LEFT', 4, 0)
+			frame.backdrop:Point('LEFT', frame, 'LEFT', 4, 0)
 
 			colorSwatch:SetTexture(E.media.blankTex)
 			colorSwatch:ClearAllPoints()

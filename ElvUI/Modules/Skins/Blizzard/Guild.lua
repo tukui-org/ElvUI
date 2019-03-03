@@ -137,9 +137,9 @@ local function LoadSkin()
 	hooksecurefunc(GuildMemberDetailFrame, "SetHeight", function(_, _, breakLoop)
 		if breakLoop then return; end
 		if CanViewOfficerNote() then
-			GuildMemberDetailFrame:SetHeight(_G.GUILD_DETAIL_OFFICER_HEIGHT + 50 + GuildMemberDetailName:GetHeight() + GuildMemberDetailRankLabel:GetHeight(), true)
+			GuildMemberDetailFrame:Height(_G.GUILD_DETAIL_OFFICER_HEIGHT + 50 + GuildMemberDetailName:GetHeight() + GuildMemberDetailRankLabel:GetHeight(), true)
 		else
-			GuildMemberDetailFrame:SetHeight(_G.GUILD_DETAIL_NORM_HEIGHT + 50 + GuildMemberDetailName:GetHeight() + GuildMemberDetailRankLabel:GetHeight(), true)
+			GuildMemberDetailFrame:Height(_G.GUILD_DETAIL_NORM_HEIGHT + 50 + GuildMemberDetailName:GetHeight() + GuildMemberDetailRankLabel:GetHeight(), true)
 		end
 	end)
 

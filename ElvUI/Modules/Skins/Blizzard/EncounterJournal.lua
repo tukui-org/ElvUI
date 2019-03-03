@@ -102,7 +102,7 @@ local function HandleTabs(tab)
 	tab:CreateBackdrop()
 	tab:SetScript("OnEnter", E.noop)
 	tab:SetScript("OnLeave", E.noop)
-	tab:SetSize(tab:GetFontString():GetStringWidth()*1.5, 20)
+	tab:Size(tab:GetFontString():GetStringWidth()*1.5, 20)
 	tab.SetPoint = E.noop
 end
 
@@ -159,8 +159,8 @@ local function ItemSetsFrame(_, button)
 			frame:StripTextures()
 			frame.ItemLevel:SetTextColor(1, 1, 1)
 			frame:CreateBackdrop("Transparent")
-			frame.backdrop:SetPoint("BOTTOMLEFT")
-			frame.backdrop:SetPoint("TOPLEFT", 10, 0)
+			frame.backdrop:Point("BOTTOMLEFT")
+			frame.backdrop:Point("TOPLEFT", 10, 0)
 		end
 	end
 
@@ -184,7 +184,7 @@ local function LoadSkin()
 
 	S:HandleEditBox(EJ.searchBox)
 	EJ.searchBox:ClearAllPoints()
-	EJ.searchBox:SetPoint("TOPLEFT", EJ.navBar, "TOPRIGHT", 4, 0)
+	EJ.searchBox:Point("TOPLEFT", EJ.navBar, "TOPRIGHT", 4, 0)
 
 	local InstanceSelect = EJ.instanceSelect
 	_G.EncounterJournalEncounterFrameInfoInstanceTitle:Kill()
@@ -194,8 +194,8 @@ local function LoadSkin()
 	EJ.instanceSelect.tierDropDown:HookScript("OnShow", function(self)
 		local text = self.Text
 		local a, b, c, d, e = text:GetPoint()
-		text:SetPoint(a, b, c, d + 10, e - 4)
-		text:SetWidth(self:GetWidth() / 1.4)
+		text:Point(a, b, c, d + 10, e - 4)
+		text:Width(self:GetWidth() / 1.4)
 	end)
 
 	S:HandleScrollBar(InstanceSelect.scroll.ScrollBar, 6)
@@ -214,7 +214,7 @@ local function LoadSkin()
 		local text = tab:GetFontString()
 
 		text:FontTemplate()
-		text:SetPoint("CENTER")
+		text:Point("CENTER")
 	end
 
 	_G.EncounterJournalEncounterFrameInfoInstanceButton:Kill()
@@ -227,7 +227,7 @@ local function LoadSkin()
 	EncounterInfo.encounterTitle:Kill()
 
 	--_G.EncounterJournalEncounterFrameInfoBG:Kill()
-	_G.EncounterJournalEncounterFrameInfoBG:SetHeight(385)
+	_G.EncounterJournalEncounterFrameInfoBG:Height(385)
 	EncounterInfo.leftShadow:Kill()
 	EncounterInfo.rightShadow:Kill()
 	EncounterInfo.model.dungeonBG:Kill()
@@ -247,16 +247,16 @@ local function LoadSkin()
 
 	--buttons
 	EncounterInfo.difficulty:ClearAllPoints()
-	EncounterInfo.difficulty:SetPoint("BOTTOMRIGHT", _G.EncounterJournalEncounterFrameInfoBG, "TOPRIGHT", -1, 5)
+	EncounterInfo.difficulty:Point("BOTTOMRIGHT", _G.EncounterJournalEncounterFrameInfoBG, "TOPRIGHT", -1, 5)
 	HandleButton(EncounterInfo.reset)
 	HandleButton(EncounterInfo.difficulty)
 	HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, true)
 	HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle, true)
 
 	_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle:SetPoint("BOTTOMLEFT", EncounterInfo.backdrop, "TOP", 0, 4)
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle:Point("BOTTOMLEFT", EncounterInfo.backdrop, "TOP", 0, 4)
 	_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle:SetPoint("LEFT", _G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, "RIGHT", 4, 0)
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle:Point("LEFT", _G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, "RIGHT", 4, 0)
 
 	EncounterInfo.reset:ClearAllPoints()
 	EncounterInfo.reset:Point("TOPRIGHT", EncounterInfo.difficulty, "TOPLEFT", -10, 0)
@@ -268,23 +268,23 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.EncounterJournalEncounterFrameInstanceFrameLoreScrollFrameScrollBar)
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:SetScale(0.85)
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInstanceFrameBG:SetPoint("CENTER", 0, 40)
+	_G.EncounterJournalEncounterFrameInstanceFrameBG:Point("CENTER", 0, 40)
 	_G.EncounterJournalEncounterFrameInstanceFrameTitle:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInstanceFrameTitle:SetPoint("TOP", 0, -105)
+	_G.EncounterJournalEncounterFrameInstanceFrameTitle:Point("TOP", 0, -105)
 	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:SetPoint("LEFT", 55, -56)
+	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:Point("LEFT", 55, -56)
 
 	S:HandleScrollBar(EncounterInfo.overviewScroll.ScrollBar, 4)
 	S:HandleScrollBar(EncounterInfo.detailsScroll.ScrollBar, 4)
 	S:HandleScrollBar(EncounterInfo.lootScroll.scrollBar, 4)
 
-	EncounterInfo.detailsScroll:SetHeight(360)
-	EncounterInfo.lootScroll:SetHeight(360)
-	EncounterInfo.overviewScroll:SetHeight(360)
-	EncounterInfo.bossesScroll:SetHeight(360)
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:SetHeight(360)
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:SetPoint("TOPLEFT", _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), "TOP", 20, -70)
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:SetPoint("BOTTOMRIGHT", _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), "BOTTOMRIGHT", -10, 5)
+	EncounterInfo.detailsScroll:Height(360)
+	EncounterInfo.lootScroll:Height(360)
+	EncounterInfo.overviewScroll:Height(360)
+	EncounterInfo.bossesScroll:Height(360)
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:Height(360)
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:Point("TOPLEFT", _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), "TOP", 20, -70)
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:Point("BOTTOMRIGHT", _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), "BOTTOMRIGHT", -10, 5)
 
 	--Tabs
 	local tabs = {
@@ -302,9 +302,9 @@ local function LoadSkin()
 		local tab = tabs[i]
 
 		if i == 4 then
-			tab:SetPoint('TOPRIGHT', _G.EncounterJournal, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
+			tab:Point('TOPRIGHT', _G.EncounterJournal, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
 		else
-			tab:SetPoint("RIGHT", tabs[i+1], "LEFT", -4, 0)
+			tab:Point("RIGHT", tabs[i+1], "LEFT", -4, 0)
 		end
 
 		HandleTabs(tab)
@@ -327,15 +327,15 @@ local function LoadSkin()
 		item.bossTexture:SetAlpha(0)
 		item.bosslessTexture:SetAlpha(0)
 
-		item.icon:SetSize(32, 32)
+		item.icon:Size(32, 32)
 		item.icon:Point("TOPLEFT", E.PixelMode and 3 or 4, -(E.PixelMode and 7 or 8))
 		item.icon:SetDrawLayer("ARTWORK")
 		item.icon:SetTexCoord(unpack(E.TexCoords))
 
 		item.IconBackdrop = CreateFrame("Frame", nil, item)
 		item.IconBackdrop:SetFrameLevel(item:GetFrameLevel())
-		item.IconBackdrop:SetPoint("TOPLEFT", item.icon, -1, 1)
-		item.IconBackdrop:SetPoint("BOTTOMRIGHT", item.icon, 1, -1)
+		item.IconBackdrop:Point("TOPLEFT", item.icon, -1, 1)
+		item.IconBackdrop:Point("BOTTOMRIGHT", item.icon, 1, -1)
 		item.IconBackdrop:SetTemplate()
 
 		item.name:ClearAllPoints()
@@ -437,7 +437,7 @@ local function LoadSkin()
 		_G.EncounterJournalEncounterFrameInstanceFrameBG:CreateBackdrop()
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonShadow:SetAlpha(0)
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:ClearAllPoints()
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:SetPoint("BOTTOMLEFT", _G.EncounterJournalEncounterFrameInstanceFrameBG.backdrop, "BOTTOMLEFT", 5, 5)
+		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:Point("BOTTOMLEFT", _G.EncounterJournalEncounterFrameInstanceFrameBG.backdrop, "BOTTOMLEFT", 5, 5)
 		_G.EncounterJournalEncounterFrameInstanceFrame.titleBG:SetAlpha(0)
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:FontTemplate(nil, 25)
@@ -445,10 +445,10 @@ local function LoadSkin()
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:StripTextures()
 		HandleButton(_G.EncounterJournalEncounterFrameInstanceFrameMapButton)
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:ClearAllPoints()
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:SetPoint("CENTER")
+		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:Point("CENTER")
 		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:SetText(_G.SHOW_MAP)
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:SetHeight(25)
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:SetWidth(_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:GetStringWidth()*1.5)
+		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:Height(25)
+		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:Width(_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:GetStringWidth()*1.5)
 
 		parch:Kill()
 	end

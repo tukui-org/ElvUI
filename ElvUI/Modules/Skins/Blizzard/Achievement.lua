@@ -20,7 +20,7 @@ local function SkinAchievement(Achievement, BiggerIcon)
 	Achievement:CreateBackdrop("Default", true)
 	Achievement.backdrop:SetInside()
 	Achievement.icon:SetTemplate()
-	Achievement.icon:SetSize(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)
+	Achievement.icon:Size(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)
 	Achievement.icon:ClearAllPoints()
 	Achievement.icon:Point("TOPLEFT", 8, -8)
 	Achievement.icon.bling:Kill()
@@ -108,11 +108,11 @@ local function styleSearchPreview(preview, index)
 	local AchievementFrame = _G.AchievementFrame
 
 	if index == 1 then
-		preview:SetPoint("TOPLEFT", AchievementFrame.searchBox, "BOTTOMLEFT", 0, 1)
-		preview:SetPoint("TOPRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 80, 1)
+		preview:Point("TOPLEFT", AchievementFrame.searchBox, "BOTTOMLEFT", 0, 1)
+		preview:Point("TOPRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 80, 1)
 	else
-		preview:SetPoint("TOPLEFT", AchievementFrame.searchPreview[index - 1], "BOTTOMLEFT", 0, 1)
-		preview:SetPoint("TOPRIGHT", AchievementFrame.searchPreview[index - 1], "BOTTOMRIGHT", 0, 1)
+		preview:Point("TOPLEFT", AchievementFrame.searchPreview[index - 1], "BOTTOMLEFT", 0, 1)
+		preview:Point("TOPRIGHT", AchievementFrame.searchPreview[index - 1], "BOTTOMRIGHT", 0, 1)
 	end
 
 	preview:SetNormalTexture("")

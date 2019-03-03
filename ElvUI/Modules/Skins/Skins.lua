@@ -163,7 +163,7 @@ function S:SkinPVPHonorXPBar(frame)
 
 		if XPBar.PrestigeReward and XPBar.PrestigeReward.Accept then
 			XPBar.PrestigeReward.Accept:ClearAllPoints()
-			XPBar.PrestigeReward.Accept:SetPoint("TOP", XPBar.PrestigeReward, "BOTTOM", 0, 0)
+			XPBar.PrestigeReward.Accept:Point("TOP", XPBar.PrestigeReward, "BOTTOM", 0, 0)
 			if not XPBar.PrestigeReward.Accept.template then
 				S:HandleButton(XPBar.PrestigeReward.Accept)
 			end
@@ -172,15 +172,15 @@ function S:SkinPVPHonorXPBar(frame)
 		if XPBar.NextAvailable then
 			if XPBar.Bar then
 				XPBar.NextAvailable:ClearAllPoints()
-				XPBar.NextAvailable:SetPoint("LEFT", XPBar.Bar, "RIGHT", 0, -2)
+				XPBar.NextAvailable:Point("LEFT", XPBar.Bar, "RIGHT", 0, -2)
 			end
 
 			if not XPBar.NextAvailable.backdrop then
 				XPBar.NextAvailable:StripTextures()
 				XPBar.NextAvailable:CreateBackdrop()
 				if XPBar.NextAvailable.Icon then
-					XPBar.NextAvailable.backdrop:SetPoint("TOPLEFT", XPBar.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
-					XPBar.NextAvailable.backdrop:SetPoint("BOTTOMRIGHT", XPBar.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
+					XPBar.NextAvailable.backdrop:Point("TOPLEFT", XPBar.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
+					XPBar.NextAvailable.backdrop:Point("BOTTOMRIGHT", XPBar.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
 				end
 			end
 
@@ -234,8 +234,8 @@ function S:SkinTalentListButtons(frame)
 	if frame.Inset then
 		S:HandleInsetFrame(frame.Inset)
 
-		frame.Inset:SetPoint("TOPLEFT", 4, -60)
-		frame.Inset:SetPoint("BOTTOMRIGHT", -6, 26)
+		frame.Inset:Point("TOPLEFT", 4, -60)
+		frame.Inset:Point("BOTTOMRIGHT", -6, 26)
 	end
 end
 
@@ -293,8 +293,8 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 
 	frame:StripTextures()
 	frame:CreateBackdrop()
-	frame.backdrop:SetPoint('TOPLEFT', ScrollUpButton or frame, ScrollUpButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 0)
-	frame.backdrop:SetPoint('BOTTOMRIGHT', ScrollDownButton or frame, ScrollUpButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, 0)
+	frame.backdrop:Point('TOPLEFT', ScrollUpButton or frame, ScrollUpButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 0)
+	frame.backdrop:Point('BOTTOMRIGHT', ScrollDownButton or frame, ScrollUpButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, 0)
 	frame.backdrop:SetFrameLevel(frame.backdrop:GetFrameLevel() + 1)
 
 	for _, Button in pairs({ ScrollUpButton, ScrollDownButton }) do
@@ -308,8 +308,8 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 		Thumb:CreateBackdrop('Default', true, true)
 		if not thumbTrimY then thumbTrimY = 3 end
 		if not thumbTrimX then thumbTrimX = 2 end
-		Thumb.backdrop:SetPoint('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
-		Thumb.backdrop:SetPoint('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
+		Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
+		Thumb.backdrop:Point('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
 		Thumb.backdrop:SetFrameLevel(Thumb.backdrop:GetFrameLevel() + 2)
 		Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
 
@@ -378,9 +378,9 @@ function S:HandleMaxMinFrame(frame)
 		local button = frame[name]
 
 		if button then
-			button:SetSize(14, 14)
+			button:Size(14, 14)
 			button:ClearAllPoints()
-			button:SetPoint("CENTER")
+			button:Point("CENTER")
 			button:SetHitRectInsets(1, 1, 1, 1)
 			button:GetHighlightTexture():Kill()
 
@@ -445,17 +445,17 @@ function S:HandleDropDownBox(frame, width)
 
 	if text then
 		local a, b, c, d, e = text:GetPoint()
-		text:SetPoint(a, b, c, d + (button and -3 or 10), e - 4)
+		text:Point(a, b, c, d + (button and -3 or 10), e - 4)
 	end
 
 	if button then
-		button:SetPoint("TOPRIGHT", -14, -8)
+		button:Point("TOPRIGHT", -14, -8)
 		S:HandleNextPrevButton(button)
-		button:SetSize(16, 16)
+		button:Size(16, 16)
 	end
 
 	if frame.Icon then
-		frame.Icon:SetPoint('LEFT', 23, 0)
+		frame.Icon:Point('LEFT', 23, 0)
 	end
 
 	frame:CreateBackdrop()
@@ -547,15 +547,15 @@ function S:HandleRadioButton(Button)
 
 	local InsideMask = Button:CreateMaskTexture()
 	InsideMask:SetTexture([[Interface\Minimap\UI-Minimap-Background]], 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
-	InsideMask:SetSize(10, 10)
-	InsideMask:SetPoint('CENTER')
+	InsideMask:Size(10, 10)
+	InsideMask:Point('CENTER')
 
 	Button.InsideMask = InsideMask
 
 	local OutsideMask = Button:CreateMaskTexture()
 	OutsideMask:SetTexture([[Interface\Minimap\UI-Minimap-Background]], 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
-	OutsideMask:SetSize(13, 13)
-	OutsideMask:SetPoint('CENTER')
+	OutsideMask:Size(13, 13)
+	OutsideMask:Point('CENTER')
 
 	Button.OutsideMask = OutsideMask
 
@@ -645,9 +645,9 @@ function S:HandleCloseButton(f, point)
 
 	if not f.Texture then
 		f.Texture = f:CreateTexture(nil, 'OVERLAY')
-		f.Texture:SetPoint("CENTER")
+		f.Texture:Point("CENTER")
 		f.Texture:SetTexture(E.Media.Textures.Close)
-		f.Texture:SetSize(12, 12)
+		f.Texture:Size(12, 12)
 		f:HookScript('OnEnter', handleCloseButtonOnEnter)
 		f:HookScript('OnLeave', handleCloseButtonOnLeave)
 		f:SetHitRectInsets(6, 6, 7, 7)
@@ -760,7 +760,7 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 				-- handle its styling
 				if not equipment[i].template then
 					equipment[i]:SetTemplate()
-					equipment[i]:SetSize(48, 48)
+					equipment[i]:Size(48, 48)
 					if equipment[i].BG then
 						equipment[i].BG:SetTexture()
 					end
@@ -772,10 +772,10 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 						equipment[i].Icon:SetInside(equipment[i])
 					end
 					if equipment[i].EquipGlow then
-						equipment[i].EquipGlow:SetSize(78, 78)
+						equipment[i].EquipGlow:Size(78, 78)
 					end
 					if equipment[i].ValidSpellHighlight then
-						equipment[i].ValidSpellHighlight:SetSize(78, 78)
+						equipment[i].ValidSpellHighlight:Size(78, 78)
 					end
 				end
 
@@ -785,11 +785,11 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 					if anchor and abilityFrame.EquipmentSlotsLabel then
 						local totalWidth = equipment[i]:GetWidth() * #equipment
 						if anchor ~= abilityFrame.EquipmentSlotsLabel then
-							equipment[i]:SetPoint(point, anchor, secondaryPoint, E.Border*4, y);
+							equipment[i]:Point(point, anchor, secondaryPoint, E.Border*4, y);
 						elseif followerTab.isLandingPage then
-							equipment[i]:SetPoint("TOPLEFT", abilityFrame.EquipmentSlotsLabel, "BOTTOM", -totalWidth/2, 0);
+							equipment[i]:Point("TOPLEFT", abilityFrame.EquipmentSlotsLabel, "BOTTOM", -totalWidth/2, 0);
 						else
-							equipment[i]:SetPoint("TOPLEFT", abilityFrame.EquipmentSlotsLabel, "BOTTOM", -totalWidth/2, -20);
+							equipment[i]:Point("TOPLEFT", abilityFrame.EquipmentSlotsLabel, "BOTTOM", -totalWidth/2, -20);
 						end
 					end
 				end
@@ -834,7 +834,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 
 				if button.Category then
 					button.Category:ClearAllPoints()
-					button.Category:SetPoint("TOP", button, "TOP", 0, -4)
+					button.Category:Point("TOP", button, "TOP", 0, -4)
 				end
 
 				if button.Follower then
@@ -847,8 +847,8 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 					local hl = button.Follower:GetHighlightTexture()
 					hl:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 					hl:ClearAllPoints()
-					hl:SetPoint("TOPLEFT", 1, -1)
-					hl:SetPoint("BOTTOMRIGHT", -1, 1)
+					hl:Point("TOPLEFT", 1, -1)
+					hl:Point("BOTTOMRIGHT", -1, 1)
 
 					if button.Follower.Counters then
 						for y = 1, #button.Follower.Counters do
@@ -869,7 +869,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 					if button.Follower.PortraitFrame and not button.Follower.PortraitFrameStyled then
 						S:HandleGarrisonPortrait(button.Follower.PortraitFrame)
 						button.Follower.PortraitFrame:ClearAllPoints()
-						button.Follower.PortraitFrame:SetPoint("TOPLEFT", 3, -3)
+						button.Follower.PortraitFrame:Point("TOPLEFT", 3, -3)
 						button.Follower.PortraitFrameStyled = true
 					end
 				end
@@ -930,11 +930,11 @@ function S:HandleGarrisonPortrait(portrait)
 	if not portrait.Portrait then return end
 
 	local size = portrait.Portrait:GetSize() + 2
-	portrait:SetSize(size, size)
+	portrait:Size(size, size)
 
 	portrait.Portrait:SetTexCoord(unpack(E.TexCoords))
 	portrait.Portrait:ClearAllPoints()
-	portrait.Portrait:SetPoint("TOPLEFT", 1, -1)
+	portrait.Portrait:Point("TOPLEFT", 1, -1)
 
 	portrait.PortraitRing:Hide()
 	portrait.PortraitRingQuality:SetTexture()
@@ -942,13 +942,13 @@ function S:HandleGarrisonPortrait(portrait)
 	portrait.LevelBorder:SetAlpha(0)
 
 	portrait.Level:ClearAllPoints()
-	portrait.Level:SetPoint("BOTTOM")
+	portrait.Level:Point("BOTTOM")
 	portrait.Level:FontTemplate(nil, 12, "OUTLINE")
 
 	if not portrait.backdrop then
 		portrait:CreateBackdrop()
-		portrait.backdrop:SetPoint("TOPLEFT", portrait, "TOPLEFT", -1, 1)
-		portrait.backdrop:SetPoint("BOTTOMRIGHT", portrait, "BOTTOMRIGHT", 1, -1)
+		portrait.backdrop:Point("TOPLEFT", portrait, "TOPLEFT", -1, 1)
+		portrait.backdrop:Point("BOTTOMRIGHT", portrait, "BOTTOMRIGHT", 1, -1)
 		portrait.backdrop:SetFrameLevel(portrait:GetFrameLevel())
 	end
 end
@@ -1009,8 +1009,8 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 		button:StyleButton(true)
 
 		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetPoint("TOPLEFT", E.mult, -E.mult)
-		icon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
+		icon:Point("TOPLEFT", E.mult, -E.mult)
+		icon:Point("BOTTOMRIGHT", -E.mult, E.mult)
 	end
 end
 
@@ -1047,13 +1047,13 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stipTexts)
 	local Normal, Disabled, Pushed = btn:GetNormalTexture(), btn:GetDisabledTexture(), btn:GetPushedTexture()
 
 	if noBackdrop then
-		btn:SetSize(20, 20)
+		btn:Size(20, 20)
 		Disabled:SetVertexColor(.5, .5, .5)
 		btn.Texture = Normal
 		btn:HookScript("OnEnter", handleCloseButtonOnEnter)
 		btn:HookScript("OnLeave", handleCloseButtonOnLeave)
 	else
-		btn:SetSize(18, 18)
+		btn:Size(18, 18)
 		Disabled:SetVertexColor(.3, .3, .3)
 	end
 

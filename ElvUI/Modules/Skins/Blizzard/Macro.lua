@@ -59,8 +59,8 @@ local function LoadSkin()
 	_G.MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture()
 	_G.MacroFrameSelectedMacroButton:SetTemplate()
 	_G.MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
-	_G.MacroFrameSelectedMacroButtonIcon:SetPoint("TOPLEFT", E.mult, -E.mult)
-	_G.MacroFrameSelectedMacroButtonIcon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
+	_G.MacroFrameSelectedMacroButtonIcon:Point("TOPLEFT", E.mult, -E.mult)
+	_G.MacroFrameSelectedMacroButtonIcon:Point("BOTTOMRIGHT", -E.mult, E.mult)
 
 	-- temporarily moving this text
 	_G.MacroFrameCharLimitText:ClearAllPoints()
@@ -79,8 +79,8 @@ local function LoadSkin()
 
 		if t then
 			t:SetTexCoord(unpack(E.TexCoords))
-			t:SetPoint("TOPLEFT", E.mult, -E.mult)
-			t:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
+			t:Point("TOPLEFT", E.mult, -E.mult)
+			t:Point("BOTTOMRIGHT", -E.mult, E.mult)
 		end
 	end
 

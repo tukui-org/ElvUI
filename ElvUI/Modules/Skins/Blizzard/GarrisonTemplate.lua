@@ -29,7 +29,7 @@ local function LoadSkin()
 		end
 
 		self.XPBar:ClearAllPoints()
-		self.XPBar:SetPoint("BOTTOMLEFT", self.PortraitFrame, "BOTTOMRIGHT", 7, -15)
+		self.XPBar:Point("BOTTOMLEFT", self.PortraitFrame, "BOTTOMRIGHT", 7, -15)
 	end)
 end
 

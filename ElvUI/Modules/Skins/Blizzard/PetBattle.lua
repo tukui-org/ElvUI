@@ -311,7 +311,7 @@ local function LoadSkin()
 	---------------------------------
 
 	local bar = CreateFrame("Frame", "ElvUIPetBattleActionBar", f)
-	bar:SetSize (52*6 + 7*10, 52 * 1 + 10*2)
+	bar:Size (52*6 + 7*10, 52 * 1 + 10*2)
 	bar:EnableMouse(true)
 	bar:SetTemplate()
 	bar:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 4)
@@ -329,7 +329,7 @@ local function LoadSkin()
 	hooksecurefunc(bf.TurnTimer.SkipButton, "SetPoint", function(_, point, _, anchorPoint, xOffset, yOffset)
 		if point ~= "BOTTOM" or anchorPoint ~= "TOP" or xOffset ~= 0 or yOffset ~= (E.PixelMode and -1 or 1) then
 			bf.TurnTimer.SkipButton:ClearAllPoints()
-			bf.TurnTimer.SkipButton:SetPoint("BOTTOM", bar, "TOP", 0, E.PixelMode and -1 or 1)
+			bf.TurnTimer.SkipButton:Point("BOTTOM", bar, "TOP", 0, E.PixelMode and -1 or 1)
 		end
 	end)
 

@@ -28,7 +28,7 @@ local function LoadSkin()
 	WorldMapTooltip.ItemTooltip:CreateBackdrop()
 	WorldMapTooltip.ItemTooltip.backdrop:SetOutside(WorldMapTooltip.ItemTooltip.Icon)
 	WorldMapTooltip.ItemTooltip.Count:ClearAllPoints()
-	WorldMapTooltip.ItemTooltip.Count:SetPoint('BOTTOMRIGHT', WorldMapTooltip.ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
+	WorldMapTooltip.ItemTooltip.Count:Point('BOTTOMRIGHT', WorldMapTooltip.ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
 	hooksecurefunc(WorldMapTooltip.ItemTooltip.IconBorder, 'SetVertexColor', function(self, r, g, b)
 		self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 		self:SetTexture()
@@ -74,8 +74,8 @@ local function LoadSkin()
 	local reward = _G.EmbeddedItemTooltip.ItemTooltip
 	local icon = reward.Icon
 	if reward and reward.backdrop then
-		reward.backdrop:SetPoint("TOPLEFT", icon, "TOPLEFT", -2, 2)
-		reward.backdrop:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
+		reward.backdrop:Point("TOPLEFT", icon, "TOPLEFT", -2, 2)
+		reward.backdrop:Point("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
 	end
 
 	-- Skin GameTooltip Status Bar

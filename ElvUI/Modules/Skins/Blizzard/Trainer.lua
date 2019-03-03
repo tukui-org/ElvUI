@@ -59,7 +59,7 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.ClassTrainerScrollFrameScrollBar, 5)
 	S:HandleDropDownBox(_G.ClassTrainerFrameFilterDropDown, 155)
 
-	ClassTrainerFrame:SetHeight(ClassTrainerFrame:GetHeight() + 5)
+	ClassTrainerFrame:Height(ClassTrainerFrame:GetHeight() + 5)
 	ClassTrainerFrame:CreateBackdrop("Transparent")
 	ClassTrainerFrame.backdrop:Point("TOPLEFT", ClassTrainerFrame, "TOPLEFT")
 	ClassTrainerFrame.backdrop:Point("BOTTOMRIGHT", ClassTrainerFrame, "BOTTOMRIGHT")
