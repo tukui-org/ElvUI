@@ -436,32 +436,41 @@ function S:HandleDropDownBox(frame, width)
 	local text = FrameName and _G[FrameName..'Text'] or frame.Text
 
 	frame:StripTextures()
+	frame:CreateBackdrop()
+	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
+	frame.backdrop:Point("TOPLEFT", 20, -6)
+	frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -12, 6)
 
 	if width then
 		frame:Width(width)
 	end
 
 	if text then
-		local a, b, c, d, e = text:GetPoint()
-		text:Point(a, b, c, d + (button and 0 or 10), e - 4)
+		local justifyH = text:GetJustifyH()
+		local right = justifyH == 'RIGHT'
+
+		local a, _, c, d, e = text:GetPoint()
+		text:ClearAllPoints()
+
+		if right then
+			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (right and -5) or 0, 0)
+		else
+			text:Point(a, frame.backdrop, c, (justifyH == 'LEFT' and 10) or d, e - 3)
+		end
+
 		text:Width(frame:GetWidth() / 1.4)
-		text:SetJustifyH("RIGHT")
 	end
 
 	if button then
-		button:SetPoint("TOPRIGHT", -14, -8)
 		S:HandleNextPrevButton(button)
-		button:SetSize(16, 16)
+		button:ClearAllPoints()
+		button:Point("TOPRIGHT", -14, -8)
+		button:Size(16, 16)
 	end
 
 	if frame.Icon then
 		frame.Icon:SetPoint('LEFT', 23, 0)
 	end
-
-	frame:CreateBackdrop()
-	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
-	frame.backdrop:Point("TOPLEFT", 20, -6)
-	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 end
 
 function S:HandleStatusBar(frame, color)
