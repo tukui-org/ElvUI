@@ -7,15 +7,19 @@ local strlower = string.lower
 local IsPlayerSpell = IsPlayerSpell
 
 local function Defaults(priorityOverride)
-	return {['enable'] = true, ['priority'] = priorityOverride or 0, ['stackThreshold'] = 0}
+	return {
+		enable = true,
+		priority = priorityOverride or 0,
+		stackThreshold = 0
+	}
 end
 
 G.unitframe.aurafilters = {};
 
 -- These are debuffs that are some form of CC
 G.unitframe.aurafilters.CCDebuffs = {
-	['type'] = 'Whitelist',
-	['spells'] = {
+	type = 'Whitelist',
+	spells = {
 	--Death Knight
 		[47476]  = Defaults(2), -- Strangulate
 		[108194] = Defaults(4), -- Asphyxiate UH
@@ -174,8 +178,8 @@ G.unitframe.aurafilters.CCDebuffs = {
 
 -- These are buffs that can be considered "protection" buffs
 G.unitframe.aurafilters.TurtleBuffs = {
-	['type'] = 'Whitelist',
-	['spells'] = {
+	type = 'Whitelist',
+	spells = {
 	--Death Knight
 		[48707]  = Defaults(), -- Anti-Magic Shell
 		[81256]  = Defaults(), -- Dancing Rune Weapon
@@ -303,8 +307,8 @@ G.unitframe.aurafilters.TurtleBuffs = {
 }
 
 G.unitframe.aurafilters.PlayerBuffs = {
-	['type'] = 'Whitelist',
-	['spells'] = {
+	type = 'Whitelist',
+	spells = {
 	--Death Knight
 		[48707]  = Defaults(), -- Anti-Magic Shell
 		[81256]  = Defaults(), -- Dancing Rune Weapon
@@ -586,8 +590,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 
 -- Buffs that really we dont need to see
 G.unitframe.aurafilters.Blacklist = {
-	['type'] = 'Blacklist',
-	['spells'] = {
+	type = 'Blacklist',
+	spells = {
 		[36900]  = Defaults(), -- Soul Split: Evil!
 		[36901]  = Defaults(), -- Soul Split: Good
 		[36893]  = Defaults(), -- Transporter Malfunction
@@ -624,8 +628,8 @@ G.unitframe.aurafilters.Blacklist = {
 	bloodlust, paladin hand spells, raid cooldowns, etc..
 ]]
 G.unitframe.aurafilters.Whitelist = {
-	['type'] = 'Whitelist',
-	['spells'] = {
+	type = 'Whitelist',
+	spells = {
 		[31821]  = Defaults(), -- Devotion Aura
 		[2825]   = Defaults(), -- Bloodlust
 		[32182]  = Defaults(), -- Heroism
@@ -640,8 +644,8 @@ G.unitframe.aurafilters.Whitelist = {
 
 -- RAID DEBUFFS: This should be pretty self explainitory
 G.unitframe.aurafilters.RaidDebuffs = {
-	['type'] = 'Whitelist',
-	['spells'] = {
+	type = 'Whitelist',
+	spells = {
 	-- Mythic+ Dungeons
 		[209858] = Defaults(), -- Necrotic
 		[226512] = Defaults(), -- Sanguine
@@ -978,8 +982,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	This can be buffs put on other enemies or on players.
 ]]
 G.unitframe.aurafilters.RaidBuffsElvUI = {
-	['type'] = 'Whitelist',
-	['spells'] = {
+	type = 'Whitelist',
+	spells = {
 		--Mythic/Mythic+
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
@@ -1004,9 +1008,22 @@ local function ClassBuff(id, point, color, anyUnit, onlyShowMissing, style, disp
 		r2, g2, b2 = unpack(textColor)
 	end
 
-	return {["enabled"] = true, ["id"] = id, ["point"] = point, ["color"] = {["r"] = r, ["g"] = g, ["b"] = b},
-	["anyUnit"] = anyUnit, ["onlyShowMissing"] = onlyShowMissing, ['style'] = style or 'coloredIcon', ['displayText'] = displayText or false, ['decimalThreshold'] = decimalThreshold or 5,
-	['textColor'] = {["r"] = r2, ["g"] = g2, ["b"] = b2}, ['textThreshold'] = textThreshold or -1, ['xOffset'] = xOffset or 0, ['yOffset'] = yOffset or 0, ["sizeOverride"] = sizeOverride or 0}
+	return {
+		enabled = true,
+		id = id,
+		point = point,
+		color = {r = r, g = g, b = b},
+		anyUnit = anyUnit,
+		onlyShowMissing = onlyShowMissing,
+		style = style or 'coloredIcon',
+		displayText = displayText or false,
+		decimalThreshold = decimalThreshold or 5,
+		textColor = {r = r2, g = g2, b = b2},
+		textThreshold = textThreshold or -1,
+		xOffset = xOffset or 0,
+		yOffset = yOffset or 0,
+		sizeOverride = sizeOverride or 0
+	}
 end
 
 G.unitframe.buffwatch = {
@@ -1074,7 +1091,7 @@ G.unitframe.buffwatch = {
 
 -- Profile specific BuffIndicator
 P.unitframe.filters = {
-	['buffwatch'] = {},
+	buffwatch = {},
 }
 
 -- List of spells to display ticks
@@ -1129,20 +1146,20 @@ G.unitframe.DebuffHighlightColors = {
 
 G.unitframe.specialFilters = {
 	-- Whitelists
-	['Boss'] = true,
-	['Personal'] = true,
-	['nonPersonal'] = true,
-	['CastByUnit'] = true,
-	['notCastByUnit'] = true,
-	['Dispellable'] = true,
-	['notDispellable'] = true,
-	['CastByNPC'] = true,
-	['CastByPlayers'] = true,
+	Boss = true,
+	Personal = true,
+	nonPersonal = true,
+	CastByUnit = true,
+	notCastByUnit = true,
+	Dispellable = true,
+	notDispellable = true,
+	CastByNPC = true,
+	CastByPlayers = true,
 
 	-- Blacklists
-	['blockNonPersonal'] = true,
-	['blockCastByPlayers'] = true,
-	['blockNoDuration'] = true,
-	['blockDispellable'] = true,
-	['blockNotDispellable'] = true,
+	blockNonPersonal = true,
+	blockCastByPlayers = true,
+	blockNoDuration = true,
+	blockDispellable = true,
+	blockNotDispellable = true,
 };
