@@ -555,6 +555,21 @@ E.PopupDialogs.UI_SCALE_CHANGES_INFORM = {
 	hideOnEscape = false,
 }
 
+E.PopupDialogs.SCRIPT_PROFILE = {
+	text = L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"],
+	button1 = L["Disable"],
+	button2 = L["Continue"],
+	OnAccept = function()
+		SetCVar('scriptProfile', 0)
+		ReloadUI()
+	end,
+	OnCancel = E.noop,
+	showAlert = 1,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false,
+}
+
 local MAX_STATIC_POPUPS = 4
 
 function E:StaticPopup_OnShow()
