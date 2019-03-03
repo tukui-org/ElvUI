@@ -1842,7 +1842,7 @@ local function GetUnitSettings(unit, name)
 				end,
 			},
 			showTestFrame = {
-				order = -9,
+				order = -8,
 				name = L["Show/Hide Test Frame"],
 				type = "execute",
 				func = function(info)
@@ -2811,7 +2811,7 @@ local function GetUnitSettings(unit, name)
 
 	if unit == "PLAYER" then
 		group.args.enable = {
-			order = -15,
+			order = -7,
 			name = L["Enable"],
 			type = "toggle",
 		}
@@ -2886,7 +2886,7 @@ local function GetUnitSettings(unit, name)
 	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
 		group.args.markHealers = {
 			type = "toggle",
-			order = 10,
+			order = -7,
 			name = L["Healer Icon"],
 			desc = L["Display a healer icon over known healers inside battlegrounds or arenas."],
 			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:ConfigureAll() end,
