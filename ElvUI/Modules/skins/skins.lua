@@ -438,7 +438,7 @@ function S:HandleDropDownBox(frame, width)
 	frame:StripTextures()
 	frame:CreateBackdrop()
 	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
-	frame.backdrop:Point("TOPLEFT", 20, -6)
+	frame.backdrop:Point("TOPLEFT", 12, -6)
 	frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -12, 6)
 
 	if width then
