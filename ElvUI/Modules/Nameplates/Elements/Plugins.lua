@@ -82,6 +82,7 @@ end
 
 function NP:Construct_TargetIndicator(nameplate)
 	local TargetIndicator = CreateFrame('Frame', nameplate:GetDebugName()..'TargetIndicator', nameplate)
+	TargetIndicator:SetFrameLevel(0)
 
 	TargetIndicator.Shadow = CreateFrame('Frame', nil, TargetIndicator)
 	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(5)})
@@ -89,8 +90,6 @@ function NP:Construct_TargetIndicator(nameplate)
 
 	for _, object in pairs({'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator'}) do
 		TargetIndicator[object] = TargetIndicator:CreateTexture(nil, 'BACKGROUND', nil, -5)
-		TargetIndicator[object]:SetSnapToPixelGrid(false)
-		TargetIndicator[object]:SetTexelSnappingBias(0)
 		TargetIndicator[object]:Hide()
 	end
 

@@ -18,7 +18,7 @@ function NP:UpdateColor(unit, cur, max)
 
 	if(self.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = parent.colors.tapped
-	elseif self.ColorOverride then
+	elseif self.ColorOverride and not UnitIsPlayer(unit) then
 		t = self.ColorOverride
 	elseif(self.colorDisconnected and self.disconnected) then
 		t = parent.colors.disconnected
