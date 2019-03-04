@@ -337,8 +337,8 @@ local tabs = {
 	"Right",
 }
 
-function S:HandleTab(tab)
-	if (not tab or tab.backdrop) then return end
+function S:HandleTab(tab, noBackdrop)
+	if (not tab) or (tab.backdrop and not noBackdrop) then return end
 
 	for _, object in pairs(tabs) do
 		local tex = _G[tab:GetName()..object]
@@ -347,15 +347,18 @@ function S:HandleTab(tab)
 		end
 	end
 
-	if tab.GetHighlightTexture and tab:GetHighlightTexture() then
-		tab:GetHighlightTexture():SetTexture()
+	local highlightTex = tab.GetHighlightTexture and tab:GetHighlightTexture()
+	if highlightTex then
+		highlightTex:SetTexture()
 	else
 		tab:StripTextures()
 	end
 
-	tab:CreateBackdrop()
-	tab.backdrop:Point("TOPLEFT", 10, E.PixelMode and -1 or -3)
-	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
+	if not noBackdrop then
+		tab:CreateBackdrop()
+		tab.backdrop:Point("TOPLEFT", 10, E.PixelMode and -1 or -3)
+		tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
+	end
 end
 
 function S:HandleRotateButton(btn)
@@ -364,14 +367,18 @@ function S:HandleRotateButton(btn)
 	btn:SetTemplate()
 	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)
 
-	btn:GetNormalTexture():SetTexCoord(0.3, 0.29, 0.3, 0.65, 0.69, 0.29, 0.69, 0.65)
-	btn:GetPushedTexture():SetTexCoord(0.3, 0.29, 0.3, 0.65, 0.69, 0.29, 0.69, 0.65)
+	local normTex = btn:GetNormalTexture()
+	local pushTex = btn:GetPushedTexture()
+	local highlightTex = btn:GetHighlightTexture()
 
-	btn:GetHighlightTexture():SetColorTexture(1, 1, 1, 0.3)
+	normTex:SetInside()
+	normTex:SetTexCoord(0.3, 0.29, 0.3, 0.65, 0.69, 0.29, 0.69, 0.65)
 
-	btn:GetNormalTexture():SetInside()
-	btn:GetPushedTexture():SetAllPoints(btn:GetNormalTexture())
-	btn:GetHighlightTexture():SetAllPoints(btn:GetNormalTexture())
+	pushTex:SetAllPoints(normTex)
+	pushTex:SetTexCoord(0.3, 0.29, 0.3, 0.65, 0.69, 0.29, 0.69, 0.65)
+
+	highlightTex:SetAllPoints(normTex)
+	highlightTex:SetColorTexture(1, 1, 1, 0.3)
 
 	btn.isSkinned = true
 end

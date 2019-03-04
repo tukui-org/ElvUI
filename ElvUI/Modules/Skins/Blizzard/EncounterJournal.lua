@@ -168,11 +168,10 @@ local function ItemSetsFrame(_, button)
 end
 
 local function HandleTopTabs(tab)
-	S:HandleTab(tab)
+	S:HandleTab(tab, true)
 	tab:SetTemplate("Default", true)
 	tab:Width(tab:GetFontString():GetStringWidth() * 1.5)
 	tab:SetHitRectInsets(0, 0, 0, 0)
-	tab.backdrop:Hide()
 end
 
 local function LoadSkin()
