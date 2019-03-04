@@ -296,12 +296,12 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.movers.ElvAB_3 = "BOTTOM,ElvUIParent,BOTTOM,-1,139"
 		E.db.movers.ElvAB_5 = "BOTTOM,ElvUIParent,BOTTOM,-92,57"
 		E.db.movers.ElvUF_FocusMover = "BOTTOM,ElvUIParent,BOTTOM,342,59"
-		E.db.movers.ElvUF_PartyMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,248"
+		E.db.movers.ElvUF_PartyMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,37,242"
 		E.db.movers.ElvUF_PetMover = "BOTTOM,ElvUIParent,BOTTOM,-342,100"
 		E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,-1,95"
 		E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-342,139"
 		E.db.movers.ElvUF_Raid40Mover = "TOPLEFT,ElvUIParent,BOTTOMLEFT,4,482"
-		E.db.movers.ElvUF_RaidMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,243"
+		E.db.movers.ElvUF_RaidMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,37,242"
 		E.db.movers.ElvUF_RaidpetMover = "TOPLEFT,ElvUIParent,BOTTOMLEFT,4,737"
 		E.db.movers.ElvUF_TargetCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,-1,243"
 		E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,342,139"
@@ -410,6 +410,7 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.unitframe.units.party.width = 231
 			--Raid
 		E.db.unitframe.units.raid.growthDirection = "RIGHT_UP"
+		E.db.unitframe.units.raid.horizontalSpacing = 2
 		E.db.unitframe.units.raid.health.frequentUpdates = true
 		E.db.unitframe.units.raid.infoPanel.enable = true
 		E.db.unitframe.units.raid.name.attachTextTo = "InfoPanel"
@@ -426,7 +427,7 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.unitframe.units.raid.roleIcon.size = 12
 		E.db.unitframe.units.raid.roleIcon.xOffset = 0
 		E.db.unitframe.units.raid.visibility = "[@raid6,noexists] hide;show"
-		E.db.unitframe.units.raid.width = 92
+		E.db.unitframe.units.raid.width = 86
 			--Raid40
 		E.db.unitframe.units.raid40.enable = false
 		E.db.unitframe.units.raid40.rdebuffs.font = "PT Sans Narrow"
@@ -454,6 +455,7 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.unitframe.units.party.enable = false
 		E.db.unitframe.units.party.health.frequentUpdates = true
 		E.db.unitframe.units.raid.visibility = "[nogroup] hide;show"
+		E.db.unitframe.units.raid.horizontalSpacing = 3
 		E.db.unitframe.units.raid40.health.frequentUpdates = true
 	end
 

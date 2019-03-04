@@ -458,23 +458,23 @@ end
 function LO:CreateChatButtonPanel()
 	if E.private.chat.enable ~= true then return end
 
-	local ChatButtonHolder = CreateFrame("Frame", "ChatButtonHolder", E.UIParent)
+	local ChatButtonHolder = CreateFrame("Frame", 'ChatButtonHolder', E.UIParent)
 	ChatButtonHolder:ClearAllPoints()
-	ChatButtonHolder:SetPoint("RIGHT", _G.LeftChatPanel, "LEFT", E.PixelMode and -2 or -4, 0)
+	ChatButtonHolder:SetPoint('RIGHT', _G.LeftChatPanel, 'LEFT', E.PixelMode and -2 or -4, 0)
 	ChatButtonHolder:SetSize(33, _G.LeftChatPanel:GetHeight()-2)
 
 	--QuickJoinToastButton:Hide() -- DONT KILL IT! If we use hide we also hide the Toasts, which are used in other Plugins.
+	_G.QuickJoinToastButton:ClearAllPoints()
+	_G.QuickJoinToastButton:SetPoint('BOTTOM', _G.ChatFrameChannelButton, 'TOP', 0, E.PixelMode and 4 or 6)
+	_G.QuickJoinToastButton:SetSize(27, 32)
 
 	ChatButtonHolder:CreateBackdrop('Transparent', nil, true)
 	ChatButtonHolder.backdrop:SetPoint('TOPLEFT', ChatButtonHolder, E.PixelMode and 1 or 3, 1)
 	ChatButtonHolder.backdrop:SetPoint('BOTTOMRIGHT', ChatButtonHolder, E.PixelMode and 1 or 3, -1)
 	ChatButtonHolder.backdrop:SetBackdropColor(E.db.chat.panelColor.r, E.db.chat.panelColor.g, E.db.chat.panelColor.b, E.db.chat.panelColor.a)
 
-	--ChatButtonHolder:Hide()
-	--E:CreateMover(ChatButtonHolder, "SocialMenuMover", _G.BINDING_HEADER_VOICE_CHAT)
-
 	_G.ChatFrameChannelButton:ClearAllPoints()
-	_G.ChatFrameChannelButton:SetPoint("TOP", ChatButtonHolder, "TOP", E.PixelMode and 1.1 or 3, -2)
+	_G.ChatFrameChannelButton:SetPoint('TOP', ChatButtonHolder, 'TOP', E.PixelMode and 1.1 or 3, -2)
 
 	-- We have to reparent the buttons to our ChatButtonHolder
 	_G.ChatFrameChannelButton:SetParent(ChatButtonHolder)
