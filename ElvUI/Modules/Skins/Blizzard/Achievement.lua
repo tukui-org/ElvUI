@@ -58,6 +58,7 @@ local function SkinAchievement(Achievement, BiggerIcon)
 	end
 
 	if Achievement.tracked then
+		Achievement.tracked:GetRegions():SetTextColor(1, 1, 1)
 		S:HandleCheckBox(Achievement.tracked, true)
 		Achievement.tracked:Size(14, 14)
 		Achievement.tracked:ClearAllPoints()
