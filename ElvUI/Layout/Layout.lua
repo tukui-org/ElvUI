@@ -502,7 +502,6 @@ function LO:CreateChatButtonPanel()
 
 	QuickJoinToastButton.FriendsButton:SetTexture(friendTex)
 	QuickJoinToastButton.QueueButton:SetTexture(queueTex)
-	QuickJoinToastButton:SetHighlightTexture('')
 
 	hooksecurefunc(QuickJoinToastButton, 'ToastToFriendFinished', function(self)
 		self.FriendsButton:SetShown(not self.displayedToast)
