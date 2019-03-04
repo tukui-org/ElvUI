@@ -458,7 +458,7 @@ end
 function LO:CreateChatButtonPanel()
 	if E.private.chat.enable ~= true then return end
 
-	local ChatButtonHolder = CreateFrame("Frame", 'ChatButtonHolder', E.UIParent)
+	local ChatButtonHolder = CreateFrame('Frame', 'ChatButtonHolder', E.UIParent)
 	ChatButtonHolder:ClearAllPoints()
 	ChatButtonHolder:SetPoint('RIGHT', _G.LeftChatPanel, 'LEFT', E.PixelMode and -2 or -4, 0)
 	ChatButtonHolder:SetSize(33, _G.LeftChatPanel:GetHeight()-2)
