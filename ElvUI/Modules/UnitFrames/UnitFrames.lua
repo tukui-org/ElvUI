@@ -28,7 +28,7 @@ local UnregisterStateDriver = UnregisterStateDriver
 local CompactRaidFrameContainer = CompactRaidFrameContainer
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
-local MAX_ARENA_ENEMIES = MAX_ARENA_ENEMIES
+local MAX_ARENA_ENEMIES = MAX_ARENA_ENEMIES or 5
 
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 -- GLOBALS: ElvUF_Parent, Arena_LoadUI
