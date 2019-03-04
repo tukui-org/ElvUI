@@ -445,6 +445,10 @@ function E:PLAYER_ENTERING_WORLD()
 		E.clippedUiScaleCVar = E:PixelClip(GetCVar("uiScale"))
 		E:StaticPopup_Show("UI_SCALE_CHANGES_INFORM", WrapTextInColorCode(E.clippedUiScaleCVar, "fffe7b2c"))
 	end
+
+	if not E.global.nameplatesResetInformed then
+		E:StaticPopup_Show("MAJOR_RELEASE_NAMEPLATES")
+	end
 end
 
 function E:ValueFuncCall()
