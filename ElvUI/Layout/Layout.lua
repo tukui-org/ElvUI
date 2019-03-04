@@ -491,47 +491,50 @@ function LO:CreateChatButtonPanel()
 	-- Skin the QuickJoinToastButton
 	local QuickJoinToastButton = _G.QuickJoinToastButton
 	QuickJoinToastButton:SetParent(ChatButtonHolder)
-	QuickJoinToastButton:SetSize(24, 32)
+	QuickJoinToastButton:SetSize(27, 30)
 
 	QuickJoinToastButton:CreateBackdrop()
 	QuickJoinToastButton.backdrop:SetAllPoints()
 
-	hooksecurefunc(QuickJoinToastButton, "UpdateQueueIcon", function(qjtb)
-		qjtb.FriendsButton:SetTexture([[Interface\FriendsFrame\UI-Toast-FriendOnlineIcon]])
+	-- Change the QuickJoin Textures. Looks better =)
+	local friendTex = 'Interface\\HELPFRAME\\ReportLagIcon-Chat'
+	local queueTex = 'Interface\\HELPFRAME\\HelpIcon-ItemRestoration'
 
-		if qjtb:GetButtonState() == "PUSHED" then
-			if qjtb.isLFGList then
-				qjtb.QueueButton:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-				qjtb.FlashingLayer:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-			else
-				qjtb.QueueButton:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
-				qjtb.FlashingLayer:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
-			end
-		else
-			if qjtb.isLFGList then
-				qjtb.QueueButton:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-				qjtb.FlashingLayer:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-			else
-				qjtb.QueueButton:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
-				qjtb.FlashingLayer:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
-			end
-		end
+	QuickJoinToastButton.FriendsButton:SetTexture(friendTex)
+	QuickJoinToastButton.QueueButton:SetTexture(queueTex)
+	QuickJoinToastButton:SetHighlightTexture('')
+
+	hooksecurefunc(QuickJoinToastButton, 'ToastToFriendFinished', function(self)
+		self.FriendsButton:SetShown(not self.displayedToast)
+		self.FriendCount:SetShown(not self.displayedToast)
 	end)
 
-	QuickJoinToastButton.FriendsButton:SetTexture([[Interface\FriendsFrame\UI-Toast-FriendOnlineIcon]])
-	QuickJoinToastButton.FriendsButton:ClearAllPoints()
-	QuickJoinToastButton.FriendsButton:SetPoint("CENTER", 0, 3)
-	QuickJoinToastButton.FriendsButton:SetSize(30, 30)
+	hooksecurefunc(QuickJoinToastButton, 'UpdateQueueIcon', function(self)
+		if not self.displayedToast then return end
+		self.FriendsButton:SetTexture(friendTex)
+		self.QueueButton:SetTexture(queueTex)
+		self.FlashingLayer:SetTexture(queueTex)
+		self.FriendsButton:SetShown(false)
+		self.FriendCount:SetShown(false)
+	end)
 
-	QuickJoinToastButton.QueueButton:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-	QuickJoinToastButton.QueueButton:ClearAllPoints()
-	QuickJoinToastButton.QueueButton:SetPoint("CENTER", 0, 3)
-	QuickJoinToastButton.QueueButton:SetSize(28, 28)
+	QuickJoinToastButton:HookScript('OnMouseDown', function(self)
+		self.FriendsButton:SetTexture(friendTex)
+	end)
 
-	QuickJoinToastButton.FlashingLayer:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-	QuickJoinToastButton.FlashingLayer:ClearAllPoints()
-	QuickJoinToastButton.FlashingLayer:SetPoint("CENTER", 0, 3)
-	QuickJoinToastButton.FlashingLayer:SetSize(28, 28)
+	QuickJoinToastButton:HookScript('OnMouseUp', function(self)
+		self.FriendsButton:SetTexture(friendTex)
+	end)
+
+	-- Skin the QuickJoinToastButton.Toast
+	QuickJoinToastButton.Toast.Background:SetTexture('')
+	QuickJoinToastButton.Toast:CreateBackdrop('Transparent')
+	QuickJoinToastButton.Toast.backdrop:SetPoint('TOPLEFT', 10, -1)
+	QuickJoinToastButton.Toast.backdrop:SetPoint('BOTTOMRIGHT', 0, 3)
+	QuickJoinToastButton.Toast.backdrop:Hide()
+
+	hooksecurefunc(QuickJoinToastButton, "ShowToast", function() QuickJoinToastButton.Toast.backdrop:Show() end)
+	hooksecurefunc(QuickJoinToastButton, "HideToast", function() QuickJoinToastButton.Toast.backdrop:Hide() end)
 end
 
 function LO:CreateMinimapPanels()
