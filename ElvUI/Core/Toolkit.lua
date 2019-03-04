@@ -204,6 +204,10 @@ local StripTexturesBlizzFrames = {
 	'bgLeft',
 	'bgRight',
 	'FilligreeOverlay',
+	'PortraitOverlay',
+	'ArtOverlayFrame',
+	'Portrait',
+	'portrait',
 }
 
 local STRIP_TEX = 'Texture'

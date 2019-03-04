@@ -87,7 +87,7 @@ function S:HandlePortraitFrame(frame, setBackdrop)
 
 	local name = frame and frame.GetName and frame:GetName()
 	local insetFrame = name and _G[name..'Inset'] or frame.Inset
-	local portraitFrame = name and _G[name..'Portrait'] or frame.Portrait
+	local portraitFrame = name and _G[name..'Portrait'] or frame.Portrait or frame.portrait
 	local portraitFrameOverlay = name and _G[name..'PortraitOverlay'] or frame.PortraitOverlay
 	local artFrameOverlay = name and _G[name..'ArtOverlayFrame'] or frame.ArtOverlayFrame
 
@@ -257,6 +257,15 @@ function S:HandleButton(button, strip, isDeclineButton)
 		region = buttonName and _G[buttonName..region] or button[region]
 		if region then
 			region:SetAlpha(0)
+		end
+	end
+
+	if button.Icon then
+		local Texture = button.Icon:GetTexture()
+		if Texture and (type(Texture) == 'string' and strfind(Texture, [[Interface\ChatFrame\ChatFrameExpandArrow]])) then
+			button.Icon:SetTexture(E.Media.Textures.ArrowUp)
+			button.Icon:SetVertexColor(1, 1, 1)
+			button.Icon:SetRotation(S.ArrowRotation['right'])
 		end
 	end
 

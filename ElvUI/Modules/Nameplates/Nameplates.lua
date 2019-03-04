@@ -272,10 +272,8 @@ function NP:ConfigureAll()
 	SetCVar('nameplateShowEnemyMinions', NP.db.units.ENEMY_PLAYER.minions == true and 1 or 0)
 	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors == true and 1 or 0)
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
-	SetCVar('nameplateMinAlpha', 1)
 	SetCVar('nameplateOtherTopInset', NP.db.clampToScreen and 0.08 or -1)
 	SetCVar('nameplateOtherBottomInset', NP.db.clampToScreen and 0.1 or -1)
-	SetCVar('nameplateLargerScale', 1)
 
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
@@ -340,13 +338,13 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP.Plates[nameplate] = true
 		nameplate:UpdateTags()
 
-		--[[if nameplate ~= _G.ElvNP_Player then
+		if nameplate ~= _G.ElvNP_Player then
 			if (UnitIsBattlePetCompanion(unit) or UnitIsBattlePet(unit)) and nameplate:IsEnabled() then
 				nameplate:Disable()
 			elseif not nameplate:IsEnabled() then
 				nameplate:Enable()
 			end
-		end]]
+		end
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
