@@ -10,7 +10,6 @@ local _G = _G
 local tonumber = tonumber
 local floor = math.floor
 local format, strsub = string.format, strsub
-local collectgarbage = collectgarbage
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
@@ -152,10 +151,6 @@ function B:EnhanceColorPicker()
 			frame.func()
 			frame.timeSinceUpdate = 0
 		end
-	end)
-
-	_G.ColorPickerOkayButton:HookScript('OnClick', function()
-		collectgarbage("collect"); --Couldn't hurt to do this, this button usually executes a lot of code.
 	end)
 
 	_G.OpacitySliderFrame:HookScript("OnValueChanged", function()

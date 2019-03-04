@@ -10,7 +10,7 @@ ElvUI[2] = L
 --Lua functions
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local assert, type, collectgarbage, pcall, date = assert, type, collectgarbage, pcall, date
+local assert, type, pcall, date = assert, type, pcall, date
 local twipe, tinsert, tremove, next = wipe, tinsert, tremove, next
 local floor, gsub, strmatch, strjoin = floor, gsub, match, strjoin
 local format, find, strrep, len, sub = format, strfind, strrep, strlen, strsub
@@ -1193,8 +1193,6 @@ function E:UpdateEnd()
 
 	E:SetMoversClampedToScreen(true) -- Go back to using clamp after resizing has taken place.
 
-	collectgarbage('collect')
-
 	if (E.ignoreInstall ~= true) and (E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83)) then
 		E.ignoreInstall = nil
 		E:Install()
@@ -1863,7 +1861,6 @@ function E:Initialize()
 	self:Tutorials()
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
-	collectgarbage('collect')
 
 	if GetCVarBool("scriptProfile") then
 		E:StaticPopup_Show('SCRIPT_PROFILE')
