@@ -65,7 +65,7 @@ function M:ClearPageInfo(frame, which)
 	if not (frame and frame.ItemLevelText) then return end
 	frame.ItemLevelText:SetText('')
 
-	for i=1, 17 do
+	for i = 1, 17 do
 		if i ~= 4 then
 			local inspectItem = _G[which..InspectItems[i]]
 			inspectItem.enchantText:SetText()
@@ -124,7 +124,7 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, ench
 		inspectItem.iLvlText:SetTextColor(unpack(itemLevelColors))
 	end
 
-	for x=1, 10 do
+	for x = 1, 10 do
 		inspectItem["textureSlot"..x]:SetTexture(gems and gems[x])
 	end
 end
@@ -240,16 +240,13 @@ function M:UpdateInspectPageFonts(which)
 	local itemLevelFont = E.db.general.itemLevel.itemLevelFont
 	local itemLevelFontSize = E.db.general.itemLevel.itemLevelFontSize or 12
 	local itemLevelFontOutline = E.db.general.itemLevel.itemLevelFontOutline or 'OUTLINE'
-	local enchantFont = E.db.general.itemLevel.enchantFont
-	local enchantFontSize = E.db.general.itemLevel.enchantFontSize or 11
-	local enchantFontOutline = E.db.general.itemLevel.enchantFontOutline or 'OUTLINE'
 
 	for i, s in pairs(InspectItems) do
 		if i ~= 4 then
 			local slot = _G[which..s]
 			if slot then
 				slot.iLvlText:FontTemplate(LSM:Fetch("font", itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
-				slot.enchantText:FontTemplate(LSM:Fetch("font", enchantFont), enchantFontSize, enchantFontOutline)
+				slot.enchantText:FontTemplate(LSM:Fetch("font", itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
 			end
 		end
 	end
