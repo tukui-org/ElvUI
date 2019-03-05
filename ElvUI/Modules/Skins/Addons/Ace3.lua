@@ -19,7 +19,11 @@ local function SkinDropdownPullout(self)
 			if self.obj.dropdown.slider then
 				self.obj.dropdown.slider:SetTemplate()
 				self.obj.dropdown.slider:SetThumbTexture([[Interface\Buttons\WHITE8X8]])
-				self.obj.dropdown.slider:GetThumbTexture():SetVertexColor(1, .82, 0, 0.8)
+
+				local thumb = self.obj.dropdown.slider:GetThumbTexture()
+				thumb:SetVertexColor(1, .82, 0, 0.8)
+				thumb:etSnapToPixelGrid(false)
+				thumb:SetTexelSnappingBias(0)
 			end
 		end
 	end
@@ -100,9 +104,9 @@ function S:SkinAce3()
 			widget.label:ClearAllPoints()
 			widget.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
 
-			button:Size(20, 20)
 			button:ClearAllPoints()
-			button:Point('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
+			button:Point('TOPLEFT', frame.backdrop, 'TOPRIGHT', -22, -2)
+			button:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -2, 2)
 
 			text:ClearAllPoints()
 			text:SetJustifyH('RIGHT')
@@ -130,9 +134,9 @@ function S:SkinAce3()
 			frame.text:ClearAllPoints()
 			frame.text:Point('RIGHT', button, 'LEFT', -2, 0)
 
-			button:Size(20, 20)
 			button:ClearAllPoints()
-			button:Point('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
+			button:Point('TOPLEFT', frame.backdrop, 'TOPRIGHT', -22, -2)
+			button:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -2, 2)
 
 			frame.backdrop:Point('TOPLEFT', 0, -21)
 			frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
