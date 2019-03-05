@@ -62,7 +62,7 @@ local function SetBackdrop(self, backdrop)
 	border.RIGHT:Point("BOTTOMRIGHT", border.BOTTOMRIGHT, "TOPRIGHT", 0, 0)
 
 	border.TOPLEFT:Size(backdrop.edgeSize or 1)
-	border.TOPRIGHT:Size(backdrop.edgeSiz or 1)
+	border.TOPRIGHT:Size(backdrop.edgeSize or 1)
 	border.BOTTOMLEFT:Size(backdrop.edgeSize or 1)
 	border.BOTTOMRIGHT:Size(backdrop.edgeSize or 1)
 
