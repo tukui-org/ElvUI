@@ -9,7 +9,7 @@ local wipe = wipe
 local floor = floor
 local unpack, pairs = unpack, pairs
 local gmatch, gsub, format = gmatch, gsub, format
-local strfind, utf8lower, strmatch, utf8sub = strfind, utf8lower, strmatch, utf8sub
+local strfind, utf8lower, strmatch, utf8sub = strfind, string.utf8lower, strmatch, string.utf8sub
 --WoW API / Variables
 local GetGuildInfo = GetGuildInfo
 local GetNumGroupMembers = GetNumGroupMembers
