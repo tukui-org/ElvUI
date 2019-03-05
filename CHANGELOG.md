@@ -4,7 +4,7 @@
 Added a ChatButton holder left to the chat. It should be now more intuitiv to find the Voice Chat Buttons. FYI: No options for it yet and we might come up with a different solution in the future.  
 
 **Bug Fixes:**  
-Fixed our SetTemplate function, which now should finally should deal with all (maybe =)) Border issue regarding the Pixel Changes introduced with 8.1.  
+Fixed our SetTemplate function, which now should finally deal with all (maybe =)) Border issue regarding the Pixel Changes introduced with 8.1.  
 
 **Misc. Changes:**  
 
