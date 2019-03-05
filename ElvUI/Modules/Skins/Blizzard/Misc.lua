@@ -304,8 +304,8 @@ local function LoadSkin()
 			local uncheck = _G["DropDownList"..level.."Button"..i.."UnCheck"]
 			local highlight = _G["DropDownList"..level.."Button"..i.."Highlight"]
 
-			highlight:SetTexture(E.Media.Textures.Highlight)
-			highlight:SetBlendMode('BLEND')
+			highlight:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
+			highlight:SetBlendMode('ADD')
 			highlight:SetDrawLayer('BACKGROUND')
 			highlight:SetVertexColor(r, g, b)
 
