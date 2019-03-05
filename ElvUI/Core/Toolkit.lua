@@ -229,9 +229,6 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 
 			if not f.oborder then
 				local border = CreateFrame('Frame', nil, f)
-				local frameLevel = f:GetFrameLevel()
-				if frameLevel <= 0 then frameLevel = 0 else frameLevel = frameLevel - 1 end
-				border:SetFrameLevel(frameLevel)
 				hookBlizzardBackdrop(border)
 				border:SetAllPoints()
 				border:SetBackdrop({
