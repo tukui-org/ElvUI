@@ -10,6 +10,94 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
+
+-- ls and Azil below
+
+local Borders = { "TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT", "TOP", "BOTTOM", "LEFT", "RIGHT" }
+
+local function SetBackdrop(self, backdrop)
+	if not backdrop then
+		if self.borders then
+			for _, v in pairs(Borders) do
+				self.borders[v]:Hide()
+			end
+		end
+		return
+	end
+
+	local border = {}
+	self.border = border
+
+	for _, v in pairs(Borders) do
+		border[v] = self:CreateTexture(nil, "BORDER", nil, 1)
+		border[v]:SetSnapToPixelGrid(false)
+		border[v]:SetTexelSnappingBias(0)
+	end
+
+	border.CENTER = self:CreateTexture(nil, "BACKGROUND", nil, 0)
+	border.CENTER:SetSnapToPixelGrid(false)
+	border.CENTER:SetTexelSnappingBias(0)
+
+	border.CENTER:Point('TOPLEFT', self)
+	border.CENTER:Point('BOTTOMRIGHT', self)
+	border.CENTER:SetTexture(backdrop.bgFile)
+
+	border.TOPLEFT:Point("BOTTOMRIGHT", self, "TOPLEFT", 1, -1)
+	border.TOPRIGHT:Point("BOTTOMLEFT", self, "TOPRIGHT", -1, -1)
+	border.BOTTOMLEFT:Point("TOPRIGHT", self, "BOTTOMLEFT", 1, 1)
+	border.BOTTOMRIGHT:Point("TOPLEFT", self, "BOTTOMRIGHT", -1, 1)
+
+	border.TOP:Point("TOPLEFT", border.TOPLEFT, "TOPRIGHT", 0, 0)
+	border.TOP:Point("TOPRIGHT", border.TOPRIGHT, "TOPLEFT", 0, 0)
+
+	border.BOTTOM:Point("BOTTOMLEFT", border.BOTTOMLEFT, "BOTTOMRIGHT", 0, 0)
+	border.BOTTOM:Point("BOTTOMRIGHT", border.BOTTOMRIGHT, "BOTTOMLEFT", 0, 0)
+
+	border.LEFT:Point("TOPLEFT", border.TOPLEFT, "BOTTOMLEFT", 0, 0)
+	border.LEFT:Point("BOTTOMLEFT", border.BOTTOMLEFT, "TOPLEFT", 0, 0)
+
+	border.RIGHT:Point("TOPRIGHT", border.TOPRIGHT, "BOTTOMRIGHT", 0, 0)
+	border.RIGHT:Point("BOTTOMRIGHT", border.BOTTOMRIGHT, "TOPRIGHT", 0, 0)
+
+	border.TOPLEFT:Size(1, 1)
+	border.TOPRIGHT:Size(1, 1)
+	border.BOTTOMLEFT:Size(1, 1)
+	border.BOTTOMRIGHT:Size(1, 1)
+
+	border.TOP:Height(1)
+	border.BOTTOM:Height(1)
+	border.LEFT:Width(1)
+	border.RIGHT:Width(1)
+
+	return border
+end
+
+local function GetBackdrop(self)
+	return self.border
+end
+
+local function SetBackdropBorderColor(self, r, g, b, a)
+	for _, v in pairs(Borders) do
+		self.border[v]:SetColorTexture(r, g, b, a)
+	end
+end
+
+local function SetBackdropColor(self, r, g, b, a)
+	self.border.CENTER:SetVertexColor(r, g, b, a)
+end
+
+local function GetBackdropBorderColor(self)
+	local r, g, b, a = self.border.TOPLEFT:GetVertexColor()
+	return r, g, b, a
+end
+
+local function GetBackdropColor(self)
+	local r, g, b, a = self.border.CENTER:GetVertexColor()
+	return r, g, b, a
+end
+
+-- ls and Azil above
+
 local function GetTemplate(t, isUnitFrameElement)
 	backdropa = 1
 
@@ -88,6 +176,17 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	if ignoreUpdates then f.ignoreUpdates = ignoreUpdates end
 	if forcePixelMode then f.forcePixelMode = forcePixelMode end
 	if isUnitFrameElement then f.isUnitFrameElement = isUnitFrameElement end
+
+	if not f.lsAzilRazzleDazzle then
+		f:SetBackdrop(nil)
+		f.SetBackdrop = SetBackdrop
+		f.GetBackdrop = GetBackdrop
+		f.SetBackdropColor = SetBackdropColor
+		f.GetBackdropColor = GetBackdropColor
+		f.SetBackdropBorderColor = SetBackdropBorderColor
+		f.GetBackdropBorderColor = GetBackdropBorderColor
+		f.lsAzilRazzleDazzle = true
+	end
 
 	if t == 'NoBackdrop' then
 		f:SetBackdrop(nil)
