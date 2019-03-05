@@ -71,12 +71,12 @@ local function hookBlizzardBackdrop(frame)
 		local borders = {}
 
 		for _, v in pairs(BackdropBorders) do
-			borders[v] = frame:CreateTexture(nil, "BORDER", nil, 1)
+			borders[v] = frame:CreateTexture("$parentPixelBorder"..v, "BORDER", nil, 1)
 			borders[v]:SetSnapToPixelGrid(false)
 			borders[v]:SetTexelSnappingBias(0)
 		end
 
-		borders.CENTER = frame:CreateTexture(nil, "BACKGROUND", nil, 0)
+		borders.CENTER = frame:CreateTexture("$parentPixelBorderCENTER", "BACKGROUND", nil, 0)
 		borders.CENTER:SetSnapToPixelGrid(false)
 		borders.CENTER:SetTexelSnappingBias(0)
 
