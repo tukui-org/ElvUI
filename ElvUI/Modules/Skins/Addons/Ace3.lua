@@ -169,11 +169,12 @@ function S:SkinAce3()
 			frame.backdrop:Point('BOTTOMRIGHT', -1, 0)
 		elseif (TYPE == 'Button' or TYPE == 'Button-ElvUI') then
 			local frame = widget.frame
-			S:HandleButton(frame, nil, true)
 			frame:StripTextures()
 			frame:CreateBackdrop('Default', true)
 			frame.backdrop:SetInside()
 			widget.text:SetParent(frame.backdrop)
+			frame:HookScript("OnEnter", S.SetModifiedBackdrop)
+			frame:HookScript("OnLeave", S.SetOriginalBackdrop)
 		elseif TYPE == 'Slider' then
 			local frame = widget.slider
 			local editbox = widget.editbox
