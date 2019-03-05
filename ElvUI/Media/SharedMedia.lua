@@ -84,6 +84,8 @@ E.Media = {
 		ArrowUp = M..[[Textures\ArrowUp.tga]],
 		BagNewItemGlow = M..[[Textures\BagNewItemGlow.tga]],
 		BagQuestIcon = M..[[Textures\BagQuestIcon.tga]],
+		Black8x8 = M..[[Textures\Black8x8.tga]],
+		White8x8 = [[Interface\BUTTONS\WHITE8X8]], -- not elvui
 		BagUpgradeIcon = M..[[Textures\BagUpgradeIcon.tga]],
 		BubbleTex = M..[[Textures\BubbleTex.tga]],
 		ChatEmojis = M..[[Textures\ChatEmojis]],
@@ -145,5 +147,5 @@ LSM:Register('statusbar','Melli',E.Media.Textures.Melli)
 LSM:Register('statusbar','ElvUI Gloss',E.Media.Textures.NormTex)
 LSM:Register('statusbar','ElvUI Norm',E.Media.Textures.NormTex2)
 LSM:Register('statusbar','Minimalist',E.Media.Textures.Minimalist)
-LSM:Register('statusbar','ElvUI Blank',[[Interface\BUTTONS\WHITE8X8]])
-LSM:Register('background','ElvUI Blank',[[Interface\BUTTONS\WHITE8X8]])
+LSM:Register('statusbar','ElvUI Blank',E.Media.Textures.White8x8)
+LSM:Register('background','ElvUI Blank',E.Media.Textures.White8x8)

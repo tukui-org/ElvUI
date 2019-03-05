@@ -18,7 +18,7 @@ local function SkinDropdownPullout(self)
 
 			if self.obj.dropdown.slider then
 				self.obj.dropdown.slider:SetTemplate()
-				self.obj.dropdown.slider:SetThumbTexture([[Interface\Buttons\WHITE8X8]])
+				self.obj.dropdown.slider:SetThumbTexture(E.Media.Textures.White8x8)
 
 				local thumb = self.obj.dropdown.slider:GetThumbTexture()
 				thumb:SetVertexColor(1, .82, 0, 0.8)

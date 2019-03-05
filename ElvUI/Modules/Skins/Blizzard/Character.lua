@@ -50,7 +50,7 @@ local function ColorizeStatPane(frame)
 	frame.rightGrad:Width(80)
 	frame.rightGrad:Height(frame:GetHeight())
 	frame.rightGrad:Point("RIGHT", frame, "CENTER")
-	frame.rightGrad:SetTexture([[Interface\BUTTONS\WHITE8X8]])
+	frame.rightGrad:SetTexture(E.Media.Textures.White8x8)
 	frame.rightGrad:SetGradientAlpha("Horizontal", r, g, b, 0, r, g, b, 0.35)
 end
 
