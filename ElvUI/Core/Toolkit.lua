@@ -42,8 +42,6 @@ local function SetBackdrop(self, backdrop)
 	border.CENTER:Point('BOTTOMRIGHT', self)
 	border.CENTER:SetTexture(backdrop.bgFile)
 
-	-- backdrop.insets somewhere below
-
 	border.TOPLEFT:Point("BOTTOMRIGHT", self, "TOPLEFT", 1, -1)
 	border.TOPRIGHT:Point("BOTTOMLEFT", self, "TOPRIGHT", -1, -1)
 	border.BOTTOMLEFT:Point("TOPRIGHT", self, "BOTTOMLEFT", 1, 1)
@@ -61,15 +59,15 @@ local function SetBackdrop(self, backdrop)
 	border.RIGHT:Point("TOPRIGHT", border.TOPRIGHT, "BOTTOMRIGHT", 0, 0)
 	border.RIGHT:Point("BOTTOMRIGHT", border.BOTTOMRIGHT, "TOPRIGHT", 0, 0)
 
-	border.TOPLEFT:Size(backdrop.edgeSize or 1)
-	border.TOPRIGHT:Size(backdrop.edgeSiz or 1)
-	border.BOTTOMLEFT:Size(backdrop.edgeSize or 1)
-	border.BOTTOMRIGHT:Size(backdrop.edgeSize or 1)
+	border.TOPLEFT:Size(1, 1)
+	border.TOPRIGHT:Size(1, 1)
+	border.BOTTOMLEFT:Size(1, 1)
+	border.BOTTOMRIGHT:Size(1, 1)
 
-	border.TOP:Height(backdrop.edgeSize or 1)
-	border.BOTTOM:Height(backdrop.edgeSize or 1)
-	border.LEFT:Width(backdrop.edgeSize or 1)
-	border.RIGHT:Width(backdrop.edgeSize or 1)
+	border.TOP:Height(1)
+	border.BOTTOM:Height(1)
+	border.LEFT:Width(1)
+	border.RIGHT:Width(1)
 
 	return border
 end
