@@ -9,7 +9,7 @@ local wipe = wipe
 local floor = floor
 local unpack, pairs = unpack, pairs
 local gmatch, gsub, format = gmatch, gsub, format
-local strfind, utf8lower, strmatch, utf8sub = strfind, utf8lower, strmatch, utf8sub
+local strfind, strlower, strmatch, strsub = strfind, strlower, strmatch, strsub
 --WoW API / Variables
 local GetGuildInfo = GetGuildInfo
 local GetNumGroupMembers = GetNumGroupMembers
@@ -612,8 +612,8 @@ local function abbrev(name)
 	local letters, lastWord = '', strmatch(name, '.+%s(.+)$')
 	if lastWord then
 		for word in gmatch(name, '.-%s') do
-			local firstLetter = utf8sub(gsub(word, '^[%s%p]*', ''), 1, 1)
-			if firstLetter ~= utf8lower(firstLetter) then
+			local firstLetter = strsub(gsub(word, '^[%s%p]*', ''), 1, 1)
+			if firstLetter ~= strlower(firstLetter) then
 				letters = format('%s%s. ', letters, firstLetter)
 			end
 		end
