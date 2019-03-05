@@ -2,7 +2,6 @@
 local _G = _G
 local print, tostring, select = print, tostring, select
 local strlower = strlower
-local format = format
 --WoW API / Variables
 local GetMouseFocus = GetMouseFocus
 local IsAddOnLoaded = IsAddOnLoaded

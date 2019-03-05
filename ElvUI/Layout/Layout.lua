@@ -3,7 +3,6 @@ local LO = E:NewModule('Layout', 'AceEvent-3.0');
 
 --Lua functions
 local _G = _G
-local unpack = unpack
 --WoW API / Variables
 local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
 local hooksecurefunc = hooksecurefunc
