@@ -710,8 +710,12 @@ function S:HandleSliderFrame(frame)
 	end)
 
 	frame:SetThumbTexture(E.Media.Textures.Melli)
-	frame:GetThumbTexture():SetVertexColor(1, .82, 0, 0.8)
-	frame:GetThumbTexture():Size(SIZE-2,SIZE-2)
+
+	local thumb = frame:GetThumbTexture()
+	thumb:SetVertexColor(1, .82, 0, 0.8)
+	thumb:Size(SIZE-2,SIZE-2)
+	thumb:SetSnapToPixelGrid(false)
+	thumb:SetTexelSnappingBias(0)
 
 	if orientation == 'VERTICAL' then
 		frame:Width(SIZE)
