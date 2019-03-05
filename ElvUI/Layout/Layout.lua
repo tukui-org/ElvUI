@@ -524,6 +524,9 @@ function LO:CreateChatButtonPanel()
 		self.FriendsButton:SetTexture(friendTex)
 	end)
 
+	QuickJoinToastButton.Toast:ClearAllPoints()
+	QuickJoinToastButton.Toast:SetPoint('LEFT', QuickJoinToastButton, 'RIGHT', -6, 0)
+
 	-- Skin the QuickJoinToastButton.Toast
 	QuickJoinToastButton.Toast.Background:SetTexture('')
 	QuickJoinToastButton.Toast:CreateBackdrop('Transparent')
