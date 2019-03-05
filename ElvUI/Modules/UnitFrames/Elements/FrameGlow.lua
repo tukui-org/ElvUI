@@ -105,7 +105,7 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 	local power = frame.Power and frame.Power.backdrop
 	local health = frame.Health and frame.Health.backdrop
 	local portrait = (frame.USE_PORTRAIT and not frame.USE_PORTRAIT_OVERLAY) and (frame.Portrait and frame.Portrait.backdrop)
-	local offset = (E.PixelMode and E.mult*3) or E.mult*4 -- edgeSize is 3
+	local offset = (E.PixelMode and 3) or 4 -- edgeSize is 3
 
 	mainGlow:ClearAllPoints()
 	mainGlow:Point('TOPLEFT', (frame.ORIENTATION == "LEFT" and portrait) or health, -offset, offset)
