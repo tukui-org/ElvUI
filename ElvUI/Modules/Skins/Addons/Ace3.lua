@@ -22,7 +22,7 @@ local function SkinDropdownPullout(self)
 
 				local thumb = self.obj.dropdown.slider:GetThumbTexture()
 				thumb:SetVertexColor(1, .82, 0, 0.8)
-				thumb:etSnapToPixelGrid(false)
+				thumb:SetSnapToPixelGrid(false)
 				thumb:SetTexelSnappingBias(0)
 			end
 		end
