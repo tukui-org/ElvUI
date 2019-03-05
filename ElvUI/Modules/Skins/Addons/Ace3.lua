@@ -169,12 +169,9 @@ function S:SkinAce3()
 			frame.backdrop:Point('BOTTOMRIGHT', -1, 0)
 		elseif (TYPE == 'Button' or TYPE == 'Button-ElvUI') then
 			local frame = widget.frame
-			frame:StripTextures()
-			frame:CreateBackdrop('Default', true)
-			frame.backdrop:SetInside()
+			S:HandleButton(frame, true, true, true)
 			widget.text:SetParent(frame.backdrop)
-			frame:HookScript("OnEnter", S.SetModifiedBackdrop)
-			frame:HookScript("OnLeave", S.SetOriginalBackdrop)
+			frame.backdrop:SetInside()
 		elseif TYPE == 'Slider' then
 			local frame = widget.slider
 			local editbox = widget.editbox
@@ -304,6 +301,13 @@ function S:SkinAce3()
 					tab:CreateBackdrop()
 					tab.backdrop:Point('TOPLEFT', 10, -3)
 					tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
+
+					hooksecurefunc(tab, 'SetPoint', function(fr, a, b, c, d, e, f)
+						if f ~= 'ignore' and a == 'TOPLEFT' then
+							fr:SetPoint(a, b, c, d, e+2, 'ignore')
+						end
+					end)
+
 					return tab
 				end
 			end

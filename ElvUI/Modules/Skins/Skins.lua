@@ -240,7 +240,7 @@ function S:SkinTalentListButtons(frame)
 	end
 end
 
-function S:HandleButton(button, strip, isDeclineButton)
+function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSetTemplate)
 	if button.isSkinned then return end
 	assert(button, "doesn't exist!")
 
@@ -281,7 +281,12 @@ function S:HandleButton(button, strip, isDeclineButton)
 		end
 	end
 
-	button:SetTemplate("Default", true)
+	if useCreateBackdrop then
+		button:CreateBackdrop('Default', true)
+	elseif not noSetTemplate then
+		button:SetTemplate("Default", true)
+	end
+
 	button:HookScript("OnEnter", S.SetModifiedBackdrop)
 	button:HookScript("OnLeave", S.SetOriginalBackdrop)
 
