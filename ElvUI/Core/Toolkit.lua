@@ -392,6 +392,8 @@ end
 local function StyleButton(button, noHover, noPushed, noChecked)
 	if button.SetHighlightTexture and not button.hover and not noHover then
 		local hover = button:CreateTexture()
+		hover:SetSnapToPixelGrid(false)
+		hover:SetTexelSnappingBias(0)
 		hover:SetInside()
 		hover:SetColorTexture(1, 1, 1, 0.3)
 		button:SetHighlightTexture(hover)
@@ -400,6 +402,8 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 
 	if button.SetPushedTexture and not button.pushed and not noPushed then
 		local pushed = button:CreateTexture()
+		pushed:SetSnapToPixelGrid(false)
+		pushed:SetTexelSnappingBias(0)
 		pushed:SetInside()
 		pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 		button:SetPushedTexture(pushed)
@@ -408,6 +412,8 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 
 	if button.SetCheckedTexture and not button.checked and not noChecked then
 		local checked = button:CreateTexture()
+		checked:SetSnapToPixelGrid(false)
+		checked:SetTexelSnappingBias(0)
 		checked:SetInside()
 		checked:SetColorTexture(1, 1, 1, 0.3)
 		button:SetCheckedTexture(checked)
