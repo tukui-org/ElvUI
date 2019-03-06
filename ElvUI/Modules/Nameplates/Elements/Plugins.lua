@@ -224,3 +224,27 @@ function NP:Update_DetectionIndicator(nameplate)
 		end
 	end
 end
+
+function NP:Construct_FloatingCombatFeedback(nameplate)
+	local FloatingCombatFeedback = CreateFrame("Frame", nil, nameplate)
+	FloatingCombatFeedback:SetPoint('CENTER')
+	FloatingCombatFeedback:SetSize(16, 16)
+
+	for i = 1, 12 do
+		FloatingCombatFeedback[i] = FloatingCombatFeedback:CreateFontString(nil, "OVERLAY")
+	end
+
+	return FloatingCombatFeedback
+end
+
+function NP:Update_FloatingCombatFeedback(nameplate)
+	nameplate.FloatingCombatFeedback.mode = "Fountain"
+	nameplate.FloatingCombatFeedback.xOffset = 60
+	nameplate.FloatingCombatFeedback.yOffset = 10
+	nameplate.FloatingCombatFeedback.yDirection = 1 -- 1 (Up) or -1 (Down)
+	nameplate.FloatingCombatFeedback.scrollTime = 1.5
+
+	for i = 1, 12 do
+		nameplate.FloatingCombatFeedback[i]:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	end
+end
