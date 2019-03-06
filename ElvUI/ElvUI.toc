@@ -10,12 +10,12 @@
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI_Config, ElvUI
 
-developer\load_developer.xml
+Developer\Load_Developer.xml
 Libraries\Load_Libraries.xml
 init.lua
-locales\load_locales.xml
-media\load_media.xml
+Locales\Load_Locales.xml
+Media\Load_Media.xml
 Settings\Load_Config.xml
-core\load_core.xml
-layout\load_layout.xml
-Modules\load_modules.xml
+Core\Load_Core.xml
+Layout\Load_Layout.xml
+Modules\Load_Modules.xml
