@@ -27,9 +27,9 @@ function NP:Construct_Power(nameplate)
 
 		if self.__owner.PowerColorChanged then return end
 
-		local Color = _G.ElvUI.oUF.colors.power[pToken]
+		local Color = NP.db.colors.power[pToken]
 		if Color then
-			self:SetStatusBarColor(unpack(Color))
+			self:SetStatusBarColor(Color.r, Color.g, Color.b)
 		end
 	end
 

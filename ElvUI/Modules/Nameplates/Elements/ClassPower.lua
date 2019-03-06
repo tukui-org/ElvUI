@@ -47,7 +47,7 @@ function NP:Construct_ClassPower(nameplate)
 			local bar = self[i]
 
 			if powerType == 'COMBO_POINTS' then
-				r, g, b = unpack(NP.db.colors.classResources.comboPoints[i])
+				r, g, b = NP.db.colors.classResources.comboPoints[i].r, NP.db.colors.classResources.comboPoints[i].g, NP.db.colors.classResources.comboPoints[i].b
 			end
 
 			bar:SetStatusBarColor(r, g, b)
