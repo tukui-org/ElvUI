@@ -2439,36 +2439,39 @@ function CH:Initialize()
 
 	self:SecureHook("FCF_SetWindowAlpha")
 
-	_G.ChatFrameChannelButton:ClearAllPoints()
-	_G.ChatFrameChannelButton:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -2)
-	_G.ChatFrameChannelButton:SetParent(_G.LeftChatPanel)
-	_G.ChatFrameChannelButton.Icon:SetDesaturated(true)
+	local channelButtons = {
+		[1] = _G.ChatFrameChannelButton,
+		[2] = _G.ChatFrameToggleVoiceDeafenButton,
+		[3] = _G.ChatFrameToggleVoiceMuteButton
+	}
 
-	_G.ChatFrameToggleVoiceDeafenButton:ClearAllPoints()
-	_G.ChatFrameToggleVoiceDeafenButton:SetPoint("RIGHT", _G.ChatFrameChannelButton, "LEFT")
-	_G.ChatFrameToggleVoiceDeafenButton:SetParent(_G.LeftChatPanel)
-	_G.ChatFrameToggleVoiceDeafenButton.Icon:SetDesaturated(true)
+	for index, button in pairs(channelButtons) do
+		button:ClearAllPoints()
+		button.Icon:SetDesaturated(true)
+		button.Icon:SetParent(_G.LeftChatPanel)
 
-	_G.ChatFrameToggleVoiceMuteButton:ClearAllPoints()
-	_G.ChatFrameToggleVoiceMuteButton:SetPoint("RIGHT", _G.ChatFrameToggleVoiceDeafenButton, "LEFT")
-	_G.ChatFrameToggleVoiceMuteButton:SetParent(_G.LeftChatPanel)
-	_G.ChatFrameToggleVoiceMuteButton.Icon:SetDesaturated(true)
+		if index == 1 then
+			button:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -2)
+		else
+			button:SetPoint("RIGHT", channelButtons[index-1], "LEFT")
+		end
+	end
 
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-	_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.ChatFrameToggleVoiceMuteButton, 'LEFT', 0, 2)
+	_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[3], 'LEFT', 0, 2)
 	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
 
-	_G.ChatFrameToggleVoiceMuteButton:HookScript("OnShow", RepositionChatIcons)
-	_G.ChatFrameToggleVoiceMuteButton:HookScript("OnHide", RepositionChatIcons) -- dont think this is needed but meh
+	channelButtons[3]:HookScript("OnShow", RepositionChatIcons)
+	channelButtons[3]:HookScript("OnHide", RepositionChatIcons) -- dont think this is needed but meh
 
 	hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y)
 		if anchor == _G.GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
 			frame:Point(point, anchor, attachTo, -2, -6)
-		elseif point == "BOTTOMRIGHT" and anchor ~= _G.ChatFrameToggleVoiceMuteButton and anchor ~= _G.ChatFrameChannelButton and not _G.GeneralDockManagerOverflowButton:IsShown() then
-			if _G.ChatFrameToggleVoiceMuteButton:IsShown() then
-				frame:Point("BOTTOMRIGHT", _G.ChatFrameToggleVoiceMuteButton, "BOTTOMLEFT")
+		elseif point == "BOTTOMRIGHT" and anchor ~= channelButtons[3] and anchor ~= channelButtons[1] and not _G.GeneralDockManagerOverflowButton:IsShown() then
+			if channelButtons[3]:IsShown() then
+				frame:Point("BOTTOMRIGHT", channelButtons[3], "BOTTOMLEFT")
 			else
-				frame:Point("BOTTOMRIGHT", _G.ChatFrameChannelButton, "BOTTOMLEFT")
+				frame:Point("BOTTOMRIGHT", channelButtons[1], "BOTTOMLEFT")
 			end
 		end
 	end)
