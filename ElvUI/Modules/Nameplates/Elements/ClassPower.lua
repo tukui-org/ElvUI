@@ -40,8 +40,14 @@ function NP:Construct_ClassPower(nameplate)
 	end
 
 	function ClassPower:UpdateColor(powerType)
-		local color = ElvUF.colors.power[powerType]
-		local r, g, b = color[1], color[2], color[3]
+		local color, r, g, b = NP.db.colors.power[powerType]
+		if color then
+			r, g, b = color.r, color.g, color.b
+		else
+			color = ElvUF.colors.power[powerType]
+			r, g, b = unpack(color)
+		end
+
 		for i = 1, #self do
 			if powerType == 'COMBO_POINTS' then
 				r, g, b = NP.db.colors.classResources.comboPoints[i].r, NP.db.colors.classResources.comboPoints[i].g, NP.db.colors.classResources.comboPoints[i].b
