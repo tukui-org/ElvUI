@@ -220,7 +220,6 @@ L["Raid Menu"] = true
 L["Remaining:"] = true
 L["Rested:"] = true
 L["Right Click:"] = true
-L["Toggle Chat Buttons"] = true --layout\layout.lua
 L["Toggle Chat Frame"] = true --layout\layout.lua
 L["Toggle Configuration"] = true --layout\layout.lua
 L["AP:"] = true -- Artifact Power

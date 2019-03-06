@@ -80,8 +80,6 @@ local function ChatButton_OnEnter(self)
 		GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
 		GameTooltip:ClearLines()
 		GameTooltip:AddDoubleLine(L["Left Click:"], L["Toggle Chat Frame"], 1, 1, 1)
-		GameTooltip:AddLine('')
-		GameTooltip:AddDoubleLine(L["Right Click:"], L["Toggle Chat Buttons"], 1, 1, 1)
 		GameTooltip:Show()
 	end
 end
@@ -303,17 +301,6 @@ function LO:ToggleChatPanels()
 	end
 end
 
-function LO:ChatButtonPanel_OnClick()
-	_G.GameTooltip:Hide()
-
-	local ChatButtonHolder = _G.ChatButtonHolder
-	if ChatButtonHolder:IsShown() then
-		ChatButtonHolder:Hide()
-	else
-		ChatButtonHolder:Show()
-	end
-end
-
 function LO:CreateChatPanels()
 	local SPACING = E.Border*3 - E.Spacing
 	local SIDE_BUTTON_SPACING = (E.PixelMode and E.Border*4) or SPACING*2
@@ -368,8 +355,6 @@ function LO:CreateChatPanels()
 	lchattb:SetScript('OnClick', function(lcb, btn)
 		if btn == "LeftButton" then
 			ChatButton_OnClick(lcb)
-		elseif btn == "RightButton" then
-			LO:ChatButtonPanel_OnClick(lcb)
 		end
 	end)
 
@@ -428,8 +413,6 @@ function LO:CreateChatPanels()
 	rchattb:SetScript('OnClick', function(rcb, btn)
 		if btn == "LeftButton" then
 			ChatButton_OnClick(rcb)
-		elseif btn == "RightButton" then
-			LO:ChatButtonPanel_OnClick(rcb)
 		end
 	end)
 

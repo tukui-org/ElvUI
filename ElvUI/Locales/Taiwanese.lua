@@ -221,7 +221,6 @@ L["Raid Menu"] = "團隊選單"
 L["Remaining:"] = "剩餘:"
 L["Rested:"] = "休息:"
 L["Right Click:"] = true
-L["Toggle Chat Buttons"] = "開關對話按鈕" --layout\layout.lua
 L["Toggle Chat Frame"] = "開關對話框架" --layout\layout.lua
 L["Toggle Configuration"] = "開啟/關閉設定" --layout\layout.lua
 L["AP:"] = "神器能量:" -- Artifact Power
