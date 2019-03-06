@@ -3588,8 +3588,8 @@ E.Options.args.nameplate = {
 									type = 'color',
 								},
 								LUNAR_POWER = {
-									order = 4,
-									name = INSANITY,
+									order = 5,
+									name = LUNAR_POWER,
 									type = 'color',
 								},
 								MAELSTROM = {
