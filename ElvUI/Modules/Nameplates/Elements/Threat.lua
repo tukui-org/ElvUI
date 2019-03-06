@@ -9,6 +9,7 @@ function NP:Construct_ThreatIndicator(nameplate)
 	local ThreatIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
 	ThreatIndicator:Size(16, 16)
 	ThreatIndicator:Point('CENTER', nameplate, 'TOPRIGHT')
+	ThreatIndicator:SetColorTexture(0, 0, 0, 0)
 
 	function ThreatIndicator:PreUpdate(unit)
 		NP:PreUpdateThreat(self, unit)
