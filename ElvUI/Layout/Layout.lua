@@ -121,7 +121,19 @@ function HideBothChat()
 	ChatButton_OnClick(_G.RightChatToggleButton)
 end
 
+local channelButtons = {
+	[1] = _G.ChatFrameChannelButton,
+	[2] = _G.ChatFrameToggleVoiceDeafenButton,
+	[3] = _G.ChatFrameToggleVoiceMuteButton
+}
+
 function LO:ToggleChatTabPanels(rightOverride, leftOverride)
+	if E.private.chat.enable then
+		for _, button in pairs(channelButtons) do
+			button.Icon:SetParent(E.db.chat.panelTabBackdrop and _G.LeftChatTab or _G.LeftChatPanel)
+		end
+	end
+
 	if leftOverride or not E.db.chat.panelTabBackdrop then
 		_G.LeftChatTab:Hide()
 	else

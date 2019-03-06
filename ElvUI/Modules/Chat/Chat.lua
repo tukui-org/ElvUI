@@ -2351,6 +2351,12 @@ local function RepositionChatIcons()
 	end
 end
 
+local channelButtons = {
+	[1] = _G.ChatFrameChannelButton,
+	[2] = _G.ChatFrameToggleVoiceDeafenButton,
+	[3] = _G.ChatFrameToggleVoiceMuteButton
+}
+
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then
 		ElvCharacterDB.ChatHistory = nil --Depreciated
@@ -2439,16 +2445,9 @@ function CH:Initialize()
 
 	self:SecureHook("FCF_SetWindowAlpha")
 
-	local channelButtons = {
-		[1] = _G.ChatFrameChannelButton,
-		[2] = _G.ChatFrameToggleVoiceDeafenButton,
-		[3] = _G.ChatFrameToggleVoiceMuteButton
-	}
-
 	for index, button in pairs(channelButtons) do
 		button:ClearAllPoints()
 		button.Icon:SetDesaturated(true)
-		button.Icon:SetParent(_G.LeftChatPanel)
 
 		if index == 1 then
 			button:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -2)
