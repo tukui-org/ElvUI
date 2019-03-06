@@ -3277,14 +3277,14 @@ E.Options.args.nameplate = {
 									order = 2,
 									type = "range",
 									name = L["Target Width"],
-									min = 4, max = 40, step = 1,
+									min = 50, max = 400, step = 1,
 									disabled = function() return E.db.nameplates.useTargetScale ~= true end,
 								},
 								targetHeight = {
 									order = 2,
 									type = "range",
 									name = L["Target Height"],
-									min = 50, max = 400, step = 1,
+									min = 4, max = 40, step = 1,
 									disabled = function() return E.db.nameplates.useTargetScale ~= true end,
 								},
 								nonTargetTransparency = {
