@@ -3183,6 +3183,7 @@ E.Options.args.nameplate = {
 							order = 3,
 							type = "execute",
 							name = L["Reset CVars"],
+							desc = L["Configure the nameplate CVars with the ElvUI recommended defaults."],
 							func = function()
 								NP:CVarReset()
 							end,

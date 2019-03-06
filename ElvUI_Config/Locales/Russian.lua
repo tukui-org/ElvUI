@@ -716,6 +716,7 @@ L["Clear Filter"] = "Очистить фильтр"
 L["Clickable Height"] = "Кликабельная высота"
 L["Clickable Width"] = "Кликабельная ширина"
 L["Color Tanked"] = "Окрашивать танкуемых"
+L["Configure the nameplate CVars with the ElvUI recommended defaults."] = true
 L["Control enemy nameplates toggling on or off when in combat."] = "Контролирует показ/скрытие вражеских индикаторов в бою."
 L["Control friendly nameplates toggling on or off when in combat."] = "Контролирует показ/скрытие дружеских индикаторов в бою."
 L["Controls how big of an area on the screen will accept clicks to target unit."] = "Определяет размер области экрана, клик на которой будет считаться кликом по юниту."

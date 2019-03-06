@@ -769,6 +769,7 @@ L["Clear Filter"] = "필터 정리"
 L["Clickable Height"] = "클릭되는 높이"
 L["Clickable Width"] = "클릭되는 넓이"
 L["Color Tanked"] = "방어전담 색입히기"
+L["Configure the nameplate CVars with the ElvUI recommended defaults."] = true
 L["Control enemy nameplates toggling on or off when in combat."] = "적군 이름표의 전투중 표시여부를 조절합니다."
 L["Control friendly nameplates toggling on or off when in combat."] = "아군 이름표의 전투중 표시여부를 조절합니다."
 L["Controls how big of an area on the screen will accept clicks to target unit."] = "해당 유닛의 표시부에서 클릭이 수용되는 영역의 크기를 조절합니다."
