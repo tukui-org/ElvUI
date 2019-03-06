@@ -191,7 +191,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 
 	hookBlizzardBackdrop(f)
 
-	if t then f.template = t end
+	f.template = t or 'Default'
 	if glossTex then f.glossTex = glossTex end
 	if ignoreUpdates then f.ignoreUpdates = ignoreUpdates end
 	if forcePixelMode then f.forcePixelMode = forcePixelMode end
@@ -253,8 +253,6 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 end
 
 local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
-	if not t then t = 'Default' end
-
 	local parent = f.IsObjectType and f:IsObjectType('Texture') and f:GetParent() or f
 	local b = CreateFrame('Frame', nil, parent)
 	if f.forcePixelMode or forcePixelMode then
