@@ -2441,17 +2441,20 @@ function CH:Initialize()
 	_G.ChatFrameChannelButton:ClearAllPoints()
 	_G.ChatFrameChannelButton:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -2)
 	_G.ChatFrameChannelButton:SetParent(_G.LeftChatPanel)
-	
+	_G.ChatFrameChannelButton.Icon:SetDesaturated(true)
+
 	_G.ChatFrameToggleVoiceDeafenButton:ClearAllPoints()
-	_G.ChatFrameToggleVoiceDeafenButton:SetPoint("RIGHT", _G.ChatFrameChannelButton, "LEFT", -4, 0)
+	_G.ChatFrameToggleVoiceDeafenButton:SetPoint("RIGHT", _G.ChatFrameChannelButton, "LEFT")
 	_G.ChatFrameToggleVoiceDeafenButton:SetParent(_G.LeftChatPanel)
+	_G.ChatFrameToggleVoiceDeafenButton.Icon:SetDesaturated(true)
 
 	_G.ChatFrameToggleVoiceMuteButton:ClearAllPoints()
-	_G.ChatFrameToggleVoiceMuteButton:SetPoint("RIGHT", _G.ChatFrameToggleVoiceDeafenButton, "LEFT", -4, 0)
+	_G.ChatFrameToggleVoiceMuteButton:SetPoint("RIGHT", _G.ChatFrameToggleVoiceDeafenButton, "LEFT")
 	_G.ChatFrameToggleVoiceMuteButton:SetParent(_G.LeftChatPanel)
+	_G.ChatFrameToggleVoiceMuteButton.Icon:SetDesaturated(true)
 
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-	_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.ChatFrameToggleVoiceMuteButton, 'LEFT', -4, 2)
+	_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.ChatFrameToggleVoiceMuteButton, 'LEFT', 0, 2)
 	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
 
 	_G.ChatFrameToggleVoiceMuteButton:HookScript("OnShow", RepositionChatIcons)
