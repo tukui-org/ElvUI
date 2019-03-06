@@ -2357,94 +2357,7 @@ local channelButtons = {
 	[3] = _G.ChatFrameToggleVoiceMuteButton
 }
 
-function CH:Initialize()
-	if ElvCharacterDB.ChatHistory then
-		ElvCharacterDB.ChatHistory = nil --Depreciated
-	end
-	if ElvCharacterDB.ChatLog then
-		ElvCharacterDB.ChatLog = nil --Depreciated
-	end
-
-	self.db = E.db.chat
-
-	self:DelayGuildMOTD() --Keep this before `is Chat Enabled` check
-	if E.private.chat.enable ~= true then return end
-	local S = E:GetModule('Skins')
-
-	if not ElvCharacterDB.ChatEditHistory then
-		ElvCharacterDB.ChatEditHistory = {};
-	end
-
-	if not ElvCharacterDB.ChatHistoryLog or not self.db.chatHistory then
-		ElvCharacterDB.ChatHistoryLog = {};
-	end
-
-	self:DefaultSmileys()
-	self:UpdateChatKeywords()
-	self:UpdateFading()
-
-	E.Chat = self
-	self:SecureHook('ChatEdit_OnEnterPressed')
-
-	if _G.WIM then
-		_G.WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(frame) CH.clickedframe = frame end);
-		_G.WIM.RegisterItemRefHandler('url', HyperLinkedURL)
-		_G.WIM.RegisterItemRefHandler('squ', HyperLinkedSQU)
-		_G.WIM.RegisterItemRefHandler('cpl', HyperLinkedCPL)
-	end
-
-	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
-	self:SecureHook("FCF_SavePositionAndDimensions", "ON_FCF_SavePositionAndDimensions")
-	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
-	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
-	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
-	self:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
-	self:RegisterEvent('PET_BATTLE_CLOSE')
-
-	if E.private.general.voiceOverlay then
-		self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED", "VoiceOverlay");
-		self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED", "VoiceOverlay");
-		self:RegisterEvent("VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED", "VoiceOverlay");
-		self:RegisterEvent("VOICE_CHAT_COMMUNICATION_MODE_CHANGED", "VoiceOverlay");
-		self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_REMOVED", "VoiceOverlay");
-		self:RegisterEvent("VOICE_CHAT_CHANNEL_REMOVED", "VoiceOverlay");
-		self:RegisterEvent("VOICE_CHAT_CHANNEL_DEACTIVATED", "VoiceOverlay");
-		_G.VoiceActivityManager:UnregisterAllEvents();
-	end
-
-	self:SetupChat()
-	self:UpdateAnchors()
-	if not E.db.chat.lockPositions then
-		CH:UpdateChatTabs() --It was not done in PositionChat, so do it now
-	end
-
-	hooksecurefunc("ChatEdit_UpdateHeader", function(editbox)
-		local chatType = editbox:GetAttribute("chatType")
-		if not chatType then return end
-
-		local ChatTypeInfo = _G.ChatTypeInfo
-		local info = ChatTypeInfo[chatType]
-		local chanTarget = editbox:GetAttribute("channelTarget")
-		local chanName = chanTarget and GetChannelName(chanTarget)
-
-		--Increase inset on right side to make room for character count text
-		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
-		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
-
-		if chanName and (chatType == "CHANNEL") then
-			if chanName == 0 then
-				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			else
-				info = ChatTypeInfo[chatType..chanName]
-				editbox:SetBackdropBorderColor(info.r, info.g, info.b)
-			end
-		else
-			editbox:SetBackdropBorderColor(info.r, info.g, info.b)
-		end
-	end)
-
-	self:SecureHook("FCF_SetWindowAlpha")
-
+function CH:HandleChatVoiceIcons(S)
 	for index, button in pairs(channelButtons) do
 		button:ClearAllPoints()
 		button.Icon:SetDesaturated(true)
@@ -2481,20 +2394,9 @@ function CH:Initialize()
 	S:HandleButton(_G.ChatFrameToggleVoiceDeafenButton, nil, nil, nil, true)
 	S:HandleButton(_G.ChatFrameToggleVoiceMuteButton, nil, nil, nil, true)
 	RepositionChatIcons()
+end
 
-	for _, event in pairs(FindURL_Events) do
-		_G.ChatFrame_AddMessageEventFilter(event, CH[event] or CH.FindURL)
-		local nType = strsub(event, 10)
-		if nType ~= 'AFK' and nType ~= 'DND' and nType ~= 'COMMUNITIES_CHANNEL' then
-			self:RegisterEvent(event, 'SaveChatHistory')
-		end
-	end
-
-	if self.db.chatHistory then
-		self:DisplayChatHistory()
-	end
-
-	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
+function CH:BuildCopyChatFrame(S)
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	tinsert(_G.UISpecialFrames, "CopyChatFrame")
 	frame:SetTemplate('Transparent')
@@ -2567,8 +2469,98 @@ function CH:Initialize()
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
 	S:HandleCloseButton(close)
+end
+
+function CH:Initialize()
+	if ElvCharacterDB.ChatHistory then ElvCharacterDB.ChatHistory = nil end --Depreciated
+	if ElvCharacterDB.ChatLog then ElvCharacterDB.ChatLog = nil end --Depreciated
+
+	self.db = E.db.chat
+	self:DelayGuildMOTD() -- Keep this before `is Chat Enabled` check
+
+	if E.private.chat.enable ~= true then return end
+	E.Chat = self
+
+	local S = E:GetModule('Skins')
+	if not ElvCharacterDB.ChatEditHistory then ElvCharacterDB.ChatEditHistory = {} end
+	if not ElvCharacterDB.ChatHistoryLog or not self.db.chatHistory then ElvCharacterDB.ChatHistoryLog = {} end
 
 	_G.ChatFrameMenuButton:Kill()
+
+	self:DefaultSmileys()
+	self:UpdateChatKeywords()
+	self:UpdateFading()
+	self:UpdateAnchors()
+	self:SetupChat()
+	self:Panels_ColorUpdate()
+	self:HandleChatVoiceIcons(S)
+
+	self:SecureHook('ChatEdit_OnEnterPressed')
+	self:SecureHook('FCF_SetWindowAlpha')
+	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
+	self:SecureHook('FCF_SavePositionAndDimensions', 'ON_FCF_SavePositionAndDimensions')
+	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
+	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
+	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
+	self:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
+	self:RegisterEvent('PET_BATTLE_CLOSE')
+
+	if E.private.general.voiceOverlay then
+		self:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED', 'VoiceOverlay');
+		self:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED', 'VoiceOverlay');
+		self:RegisterEvent('VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED', 'VoiceOverlay');
+		self:RegisterEvent('VOICE_CHAT_COMMUNICATION_MODE_CHANGED', 'VoiceOverlay');
+		self:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_REMOVED', 'VoiceOverlay');
+		self:RegisterEvent('VOICE_CHAT_CHANNEL_REMOVED', 'VoiceOverlay');
+		self:RegisterEvent('VOICE_CHAT_CHANNEL_DEACTIVATED', 'VoiceOverlay');
+		_G.VoiceActivityManager:UnregisterAllEvents();
+	end
+
+	if _G.WIM then
+		_G.WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(frame) CH.clickedframe = frame end);
+		_G.WIM.RegisterItemRefHandler('url', HyperLinkedURL)
+		_G.WIM.RegisterItemRefHandler('squ', HyperLinkedSQU)
+		_G.WIM.RegisterItemRefHandler('cpl', HyperLinkedCPL)
+	end
+
+	if not E.db.chat.lockPositions then CH:UpdateChatTabs() end --It was not done in PositionChat, so do it now
+
+	for _, event in pairs(FindURL_Events) do
+		_G.ChatFrame_AddMessageEventFilter(event, CH[event] or CH.FindURL)
+		local nType = strsub(event, 10)
+		if nType ~= 'AFK' and nType ~= 'DND' and nType ~= 'COMMUNITIES_CHANNEL' then
+			self:RegisterEvent(event, 'SaveChatHistory')
+		end
+	end
+
+	if self.db.chatHistory then self:DisplayChatHistory() end
+	self:BuildCopyChatFrame(S)
+
+	-- Editbox Backdrop Color
+	hooksecurefunc("ChatEdit_UpdateHeader", function(editbox)
+		local chatType = editbox:GetAttribute("chatType")
+		if not chatType then return end
+
+		local ChatTypeInfo = _G.ChatTypeInfo
+		local info = ChatTypeInfo[chatType]
+		local chanTarget = editbox:GetAttribute("channelTarget")
+		local chanName = chanTarget and GetChannelName(chanTarget)
+
+		--Increase inset on right side to make room for character count text
+		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
+		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
+
+		if chanName and (chatType == "CHANNEL") then
+			if chanName == 0 then
+				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			else
+				info = ChatTypeInfo[chatType..chanName]
+				editbox:SetBackdropBorderColor(info.r, info.g, info.b)
+			end
+		else
+			editbox:SetBackdropBorderColor(info.r, info.g, info.b)
+		end
+	end)
 
 	-- Combat Log Skinning (credit: Aftermathh)
 	local CombatLogButton = _G.CombatLogQuickButtonFrame_Custom
@@ -2588,6 +2580,7 @@ function CH:Initialize()
 	local CombatLogProgressBar = _G.CombatLogQuickButtonFrame_CustomProgressBar
 	CombatLogProgressBar:SetStatusBarTexture(E.media.normTex)
 	CombatLogProgressBar:SetInside(CombatLogButton)
+	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogButton, "TOPRIGHT", 0, -1)
 	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
@@ -2635,9 +2628,7 @@ function CH:Initialize()
 
 		self.ChatHeadFrame[i]:Hide()
 	end
-
 	self:SetChatHeadOrientation("TOP")
-	self:Panels_ColorUpdate()
 end
 
 CH.TalkingList = {}
