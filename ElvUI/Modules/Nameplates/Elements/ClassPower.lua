@@ -43,14 +43,11 @@ function NP:Construct_ClassPower(nameplate)
 		local color = ElvUF.colors.power[powerType]
 		local r, g, b = color[1], color[2], color[3]
 		for i = 1, #self do
-
-			local bar = self[i]
-
 			if powerType == 'COMBO_POINTS' then
 				r, g, b = NP.db.colors.classResources.comboPoints[i].r, NP.db.colors.classResources.comboPoints[i].g, NP.db.colors.classResources.comboPoints[i].b
 			end
 
-			bar:SetStatusBarColor(r, g, b)
+			self[i]:SetStatusBarColor(r, g, b)
 		end
 	end
 
