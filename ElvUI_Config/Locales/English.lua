@@ -712,6 +712,7 @@ L["Clear Filter"] = true
 L["Clickable Height"] = true
 L["Clickable Width"] = true
 L["Color Tanked"] = true
+L["Configure the nameplate CVars with the ElvUI recommended defaults."] = true
 L["Control enemy nameplates toggling on or off when in combat."] = true
 L["Control friendly nameplates toggling on or off when in combat."] = true
 L["Controls how big of an area on the screen will accept clicks to target unit."] = true

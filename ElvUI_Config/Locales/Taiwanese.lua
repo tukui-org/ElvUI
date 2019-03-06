@@ -718,6 +718,7 @@ L["Clear Filter"] = "清空過濾器"
 L["Clickable Height"] = "可點擊高度"
 L["Clickable Width"] = "可點擊寬度"
 L["Color Tanked"] = "被坦住的顏色"
+L["Configure the nameplate CVars with the ElvUI recommended defaults."] = true
 L["Control enemy nameplates toggling on or off when in combat."] = "控制戰鬥中敵對姓名板的開啟和關閉"
 L["Control friendly nameplates toggling on or off when in combat."] = "控制戰鬥中友方姓名板的開啟和關閉"
 L["Controls how big of an area on the screen will accept clicks to target unit."] = "決定屏幕上一個多大的光環才允許通過點擊選定到目標框體上"
