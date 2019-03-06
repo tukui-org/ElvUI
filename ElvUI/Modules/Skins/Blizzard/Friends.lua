@@ -130,7 +130,7 @@ local function LoadSkin()
 	end
 
 	S:HandleEditBox(_G.FriendsFriendsList)
-	S:HandleDropDownBox(_G.FriendsFriendsFrameDropDown,150)
+	S:HandleDropDownBox(_G.FriendsFriendsFrameDropDown, 150)
 
 	_G.FriendsTabHeaderSoRButton:SetTemplate()
 	_G.FriendsTabHeaderSoRButton:StyleButton()
@@ -153,7 +153,7 @@ local function LoadSkin()
 	S:HandleDropDownBox(_G.FriendsFrameStatusDropDown, 70)
 
 	_G.FriendsFrameStatusDropDown:ClearAllPoints()
-	_G.FriendsFrameStatusDropDown:Point("TOPLEFT", FriendsFrame, "TOPLEFT", -13, -28)
+	_G.FriendsFrameStatusDropDown:Point("TOPLEFT", FriendsFrame, "TOPLEFT", -6, -28)
 
 	local FriendsFrameBattlenetFrame = _G.FriendsFrameBattlenetFrame
 	FriendsFrameBattlenetFrame:StripTextures()
@@ -165,7 +165,7 @@ local function LoadSkin()
 	FriendsFrameBattlenetFrame.Tag:Point("TOP", FriendsFrame, "TOP", 0, -8)
 
 	_G.FriendsFrameBroadcastInput:CreateBackdrop()
-	_G.FriendsFrameBroadcastInput:Width(259)
+	_G.FriendsFrameBroadcastInput:Width(250)
 
 	hooksecurefunc("FriendsFrame_CheckBattlenetStatus", function()
 		if BNFeaturesEnabled() then
