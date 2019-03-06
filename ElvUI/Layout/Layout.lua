@@ -20,7 +20,7 @@ end
 
 function LO:Initialize()
 	self:CreateChatPanels()
-	self:CreateChatButtonPanel()
+	--self:CreateChatButtonPanel()
 	self:CreateMinimapPanels()
 	self:SetDataPanelStyle()
 

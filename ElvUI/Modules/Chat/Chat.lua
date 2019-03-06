@@ -865,7 +865,7 @@ function CH:Panels_ColorUpdate()
 	local panelColor = E.db.chat.panelColor
 	_G.LeftChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
 	_G.RightChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
-	_G.ChatButtonHolder.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
+	--_G.ChatButtonHolder.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
 end
 
 local function UpdateChatTabColor(_, r, g, b)
@@ -2340,6 +2340,17 @@ function CH:DefaultSmileys()
 	CH:AddSmiley('</3', E:TextureString(E.Media.ChatEmojis.BrokenHeart, ':16:16'))
 end
 
+local function RepositionChatIcons()
+	_G.GeneralDockManagerScrollFrame:SetPoint("BOTTOMRIGHT") -- call our hook
+
+	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
+	if _G.ChatFrameToggleVoiceMuteButton:IsShown() then
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.ChatFrameToggleVoiceMuteButton, 'LEFT', -4, 2)
+	else
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.ChatFrameChannelButton, 'LEFT', -4, 2)
+	end
+end
+
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then
 		ElvCharacterDB.ChatHistory = nil --Depreciated
@@ -2427,14 +2438,43 @@ function CH:Initialize()
 
 	self:SecureHook("FCF_SetWindowAlpha")
 
+	_G.ChatFrameChannelButton:ClearAllPoints()
+	_G.ChatFrameChannelButton:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 0, -2)
+	_G.ChatFrameChannelButton:SetParent(_G.LeftChatPanel)
+	
+	_G.ChatFrameToggleVoiceDeafenButton:ClearAllPoints()
+	_G.ChatFrameToggleVoiceDeafenButton:SetPoint("RIGHT", _G.ChatFrameChannelButton, "LEFT", -4, 0)
+	_G.ChatFrameToggleVoiceDeafenButton:SetParent(_G.LeftChatPanel)
+
+	_G.ChatFrameToggleVoiceMuteButton:ClearAllPoints()
+	_G.ChatFrameToggleVoiceMuteButton:SetPoint("RIGHT", _G.ChatFrameToggleVoiceDeafenButton, "LEFT", -4, 0)
+	_G.ChatFrameToggleVoiceMuteButton:SetParent(_G.LeftChatPanel)
+
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-	_G.GeneralDockManagerOverflowButton:Point('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', -2, 2)
+	_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.ChatFrameToggleVoiceMuteButton, 'LEFT', -4, 2)
 	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
+
+	_G.ChatFrameToggleVoiceMuteButton:HookScript("OnShow", RepositionChatIcons)
+	_G.ChatFrameToggleVoiceMuteButton:HookScript("OnHide", RepositionChatIcons) -- dont think this is needed but meh
+
 	hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y)
 		if anchor == _G.GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
 			frame:Point(point, anchor, attachTo, -2, -6)
+		elseif point == "BOTTOMRIGHT" and anchor ~= _G.ChatFrameToggleVoiceMuteButton and anchor ~= _G.ChatFrameChannelButton and not _G.GeneralDockManagerOverflowButton:IsShown() then
+			if _G.ChatFrameToggleVoiceMuteButton:IsShown() then
+				frame:Point("BOTTOMRIGHT", _G.ChatFrameToggleVoiceMuteButton, "BOTTOMLEFT")
+			else
+				frame:Point("BOTTOMRIGHT", _G.ChatFrameChannelButton, "BOTTOMLEFT")
+			end
 		end
 	end)
+	E:GetModule("Skins"):HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
+
+	QuickJoinToastButton:Hide()
+	E:GetModule("Skins"):HandleButton(_G.ChatFrameChannelButton, nil, nil, nil, true)
+	E:GetModule("Skins"):HandleButton(_G.ChatFrameToggleVoiceDeafenButton, nil, nil, nil, true)
+	E:GetModule("Skins"):HandleButton(_G.ChatFrameToggleVoiceMuteButton, nil, nil, nil, true)	
+	RepositionChatIcons()
 
 	for _, event in pairs(FindURL_Events) do
 		_G.ChatFrame_AddMessageEventFilter(event, CH[event] or CH.FindURL)
