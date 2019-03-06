@@ -2363,6 +2363,7 @@ function CH:Initialize()
 
 	self:DelayGuildMOTD() --Keep this before `is Chat Enabled` check
 	if E.private.chat.enable ~= true then return end
+	local S = E:GetModule('Skins')
 
 	if not ElvCharacterDB.ChatEditHistory then
 		ElvCharacterDB.ChatEditHistory = {};
@@ -2471,12 +2472,12 @@ function CH:Initialize()
 			end
 		end
 	end)
-	E:GetModule("Skins"):HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
 
-	QuickJoinToastButton:Hide()
-	E:GetModule("Skins"):HandleButton(_G.ChatFrameChannelButton, nil, nil, nil, true)
-	E:GetModule("Skins"):HandleButton(_G.ChatFrameToggleVoiceDeafenButton, nil, nil, nil, true)
-	E:GetModule("Skins"):HandleButton(_G.ChatFrameToggleVoiceMuteButton, nil, nil, nil, true)	
+	_G.QuickJoinToastButton:Hide()
+	S:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
+	S:HandleButton(_G.ChatFrameChannelButton, nil, nil, nil, true)
+	S:HandleButton(_G.ChatFrameToggleVoiceDeafenButton, nil, nil, nil, true)
+	S:HandleButton(_G.ChatFrameToggleVoiceMuteButton, nil, nil, nil, true)
 	RepositionChatIcons()
 
 	for _, event in pairs(FindURL_Events) do
@@ -2491,7 +2492,6 @@ function CH:Initialize()
 		self:DisplayChatHistory()
 	end
 
-	local S = E:GetModule('Skins')
 	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	tinsert(_G.UISpecialFrames, "CopyChatFrame")
