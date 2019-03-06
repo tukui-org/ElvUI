@@ -109,7 +109,7 @@ function NP:Update_TargetIndicator(nameplate)
 
 	if NP.db.targetGlow ~= 'none' then
 		local GlowStyle = NP.db.targetGlow
-		if not db.health.enabled and (GlowStyle ~= 'style2' and GlowStyle ~= 'style6' and GlowStyle ~= 'style8') then
+		if not db.health.enable and (GlowStyle ~= 'style2' and GlowStyle ~= 'style6' and GlowStyle ~= 'style8') then
 			GlowStyle = 'style2'
 			nameplate.TargetIndicator.style = 'style2'
 		end
