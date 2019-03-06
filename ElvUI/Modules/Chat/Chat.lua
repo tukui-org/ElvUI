@@ -2439,7 +2439,7 @@ function CH:Initialize()
 	self:SecureHook("FCF_SetWindowAlpha")
 
 	_G.ChatFrameChannelButton:ClearAllPoints()
-	_G.ChatFrameChannelButton:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 0, -2)
+	_G.ChatFrameChannelButton:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -2)
 	_G.ChatFrameChannelButton:SetParent(_G.LeftChatPanel)
 	
 	_G.ChatFrameToggleVoiceDeafenButton:ClearAllPoints()
