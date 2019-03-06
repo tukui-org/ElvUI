@@ -105,13 +105,13 @@ function NP:Update_TargetIndicator(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	nameplate.TargetIndicator.style = NP.db.targetGlow
-	local GlowStyle = nameplate.TargetIndicator.style
-
 	nameplate.TargetIndicator.lowHealthThreshold = NP.db.lowHealthThreshold
 
-	if GlowStyle ~= 'none' then
+	if NP.db.targetGlow ~= 'none' then
+		local GlowStyle = NP.db.targetGlow
 		if not db.health.enabled and (GlowStyle ~= 'style2' and GlowStyle ~= 'style6' and GlowStyle ~= 'style8') then
 			GlowStyle = 'style2'
+			nameplate.TargetIndicator.style = 'style2'
 		end
 		local Color = NP.db.colors.glowColor
 		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == 'style3' or GlowStyle == 'style5' or GlowStyle == 'style6') then
