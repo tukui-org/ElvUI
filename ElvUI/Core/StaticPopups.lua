@@ -34,11 +34,10 @@ E.PopupDialogs.ELVUI_UPDATE_WHILE_RUNNING = {
 	OnShow = function(self)
 		local sq = E:StaticPopup_GetSecureButton('Quit')
 		if sq then
-			sq:SetParent(self)
-			sq:SetAllPoints(self.button1)
-			sq:SetSize(self.button1:GetSize())
+			E:StaticPopup_PositionSecureButton(self, self.button1, sq)
 		else
-			E:StaticPopup_SetSecureButton('Quit', E:StaticPopup_CreateSecureButton(self, '/quit'))
+			local secureButton = E:StaticPopup_CreateSecureButton(self, '/quit')
+			E:StaticPopup_SetSecureButton('Quit', secureButton)
 		end
 
 		self.button1:Hide()
@@ -1329,6 +1328,12 @@ end
 
 function E:StaticPopup_GetSecureButton(which)
 	return SecureButtons[which]
+end
+
+function E:StaticPopup_PositionSecureButton(popup, popupButton, secureButton)
+	secureButton:SetParent(popup)
+	secureButton:SetAllPoints(popupButton)
+	secureButton:SetSize(popupButton:GetSize())
 end
 
 function E:StaticPopup_SetSecureButton(which, btn)
