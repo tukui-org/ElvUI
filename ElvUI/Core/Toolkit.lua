@@ -26,22 +26,22 @@ local function customSetBackdrop(frame, backdrop)
 	end
 
 	if backdrop.insets then
-		frame.pixelBorders.CENTER:Point('TOPLEFT', frame, 'TOPLEFT', -backdrop.insets.left, backdrop.insets.top)
-		frame.pixelBorders.CENTER:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', backdrop.insets.right, -backdrop.insets.bottom)
+		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame, 'TOPLEFT', -backdrop.insets.left, backdrop.insets.top)
+		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', backdrop.insets.right, -backdrop.insets.bottom)
 	else
-		frame.pixelBorders.CENTER:Point('TOPLEFT', frame)
-		frame.pixelBorders.CENTER:Point('BOTTOMRIGHT', frame)
+		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame)
+		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame)
 	end
 
-	frame.pixelBorders.TOPLEFT:Size(backdrop.edgeSize or 1)
-	frame.pixelBorders.TOPRIGHT:Size(backdrop.edgeSize or 1)
-	frame.pixelBorders.BOTTOMLEFT:Size(backdrop.edgeSize or 1)
-	frame.pixelBorders.BOTTOMRIGHT:Size(backdrop.edgeSize or 1)
+	frame.pixelBorders.TOPLEFT:SetSize(backdrop.edgeSize or E.mult)
+	frame.pixelBorders.TOPRIGHT:SetSize(backdrop.edgeSize or E.mult)
+	frame.pixelBorders.BOTTOMLEFT:SetSize(backdrop.edgeSize or E.mult)
+	frame.pixelBorders.BOTTOMRIGHT:SetSize(backdrop.edgeSize or E.mult)
 
-	frame.pixelBorders.TOP:Height(backdrop.edgeSize or 1)
-	frame.pixelBorders.BOTTOM:Height(backdrop.edgeSize or 1)
-	frame.pixelBorders.LEFT:Width(backdrop.edgeSize or 1)
-	frame.pixelBorders.RIGHT:Width(backdrop.edgeSize or 1)
+	frame.pixelBorders.TOP:SetHeight(backdrop.edgeSize or E.mult)
+	frame.pixelBorders.BOTTOM:SetHeight(backdrop.edgeSize or E.mult)
+	frame.pixelBorders.LEFT:SetWidth(backdrop.edgeSize or E.mult)
+	frame.pixelBorders.RIGHT:SetWidth(backdrop.edgeSize or E.mult)
 end
 
 local function customBackdropBorderColor(frame, r, g, b, a, skip)
