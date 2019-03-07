@@ -2808,7 +2808,7 @@ local function GetUnitSettings(unit, name)
 			},
 			raidTargetIndicator = {
 				order = 10,
-				name = L["Raid Target Indicator"],
+				name = L["Raid Icon"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].raidTargetIndicator[ info[#info] ] end,
 				set = function(info, value) E.db.nameplates.units[unit].raidTargetIndicator[ info[#info] ] = value; NP:ConfigureAll() end,
@@ -2816,7 +2816,7 @@ local function GetUnitSettings(unit, name)
 					header = {
 						order = 0,
 						type = "header",
-						name = L["Raid Target Indicator"],
+						name = L["Raid Icon"],
 					},
 					enable = {
 						order = 1,
