@@ -2921,6 +2921,59 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 		}
+		group.args.classBarGroup = {
+			order = 130,
+			type = "group",
+			name = L["Classbar"],
+			get = function(info) return E.db.nameplates.classbar[ info[#info] ] end,
+			set = function(info, value) E.db.nameplates.classbar[ info[#info] ] = value; NP:ConfigureAll() end,
+			args = {
+				enable = {
+					type = "toggle",
+					order = 1,
+					name = L["Enable"]
+				},
+				attachTo = {
+					type = "select",
+					order = 2,
+					name = L["Attach To"],
+					values = {
+						PLAYER = L["Player Nameplate"],
+						TARGET = L["Targeted Nameplate"],
+					},
+				},
+				yOffset = {
+					order = 3,
+					name = L["Y-Offset"],
+					type = "range",
+					min = -20, max = 20, step = 1,
+				},
+				height = {
+					order = 4,
+					name = L["Height"],
+					type = "range",
+					min = 4, max = 20, step = 1,
+				},
+				width = {
+					order = 5,
+					name = L["Width"],
+					type = "range",
+					min = 50, max = 200, step = 1,
+				},
+				sortDirection = {
+					name = L["Sort Direction"],
+					desc = L["Defines the sort order of the selected sort method."],
+					type = 'select',
+					order = 7,
+					values = {
+						['asc'] = L["Ascending"],
+						['desc'] = L["Descending"],
+						['NONE'] = NONE,
+					},
+					hidden = function() return (E.myclass ~= 'DEATHKNIGHT') end,
+				},
+			},
+		}
 		group.args.healthGroup.args.useClassColor = {
 			order = 4,
 			type = "toggle",
@@ -3080,16 +3133,8 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		classBarShortcut = {
-			order = 9,
-			type = "execute",
-			name = L["Classbar"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "classBarGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
 		threatShortcut = {
-			order = 10,
+			order = 9,
 			type = "execute",
 			name = L["Threat"],
 			buttonElvUI = true,
@@ -3097,11 +3142,19 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		colorsShortcut = {
-			order = 11,
+			order = 10,
 			type = "execute",
 			name = L["Colors"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "colorsGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		cutawayHealthShortcut = {
+			order = 11,
+			type = "execute",
+			name = L["Cutaway Health"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "cutawayHealth") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer3 = {
@@ -3109,16 +3162,8 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		cutawayHealthShortcut = {
-			order = 13,
-			type = "execute",
-			name = L["Cutaway Health"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "cutawayHealth") end,
-			disabled = function() return not E.NamePlates; end,
-		},
 		questIcon = {
-			order = 14,
+			order = 13,
 			type = "execute",
 			name = L["Quest Icon"],
 			buttonElvUI = true,
@@ -3126,11 +3171,19 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		playerShortcut = {
-			order = 15,
+			order = 14,
 			type = "execute",
 			name = L["Player Frame"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		friendlyPlayerShortcut = {
+			order = 15,
+			type = "execute",
+			name = L["Friendly Player Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer4 = {
@@ -3138,16 +3191,8 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		friendlyPlayerShortcut = {
-			order = 17,
-			type = "execute",
-			name = L["Friendly Player Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
 		friendlyNPCShortcut = {
-			order = 18,
+			order = 17,
 			type = "execute",
 			name = L["Friendly NPC Frames"],
 			buttonElvUI = true,
@@ -3155,11 +3200,19 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		enemyPlayerShortcut = {
-			order = 19,
+			order = 18,
 			type = "execute",
 			name = L["Enemy Player Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyPlayerGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		enemyNPCShortcut = {
+			order = 19,
+			type = "execute",
+			name = L["Enemy NPC Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer5 = {
@@ -3167,26 +3220,13 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		enemyNPCShortcut = {
-			order = 21,
-			type = "execute",
-			name = L["Enemy NPC Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
 		filtersShortcut = {
-			order = 22,
+			order = 21,
 			type = "execute",
 			name = L["Style Filter"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "filters") end,
 			disabled = function() return not E.NamePlates; end,
-		},
-		spacer6 = {
-			order = 24,
-			type = "description",
-			name = " ",
 		},
 		generalGroup = {
 			order = 25,
@@ -3828,59 +3868,6 @@ E.Options.args.nameplate = {
 									},
 								},
 							}
-						},
-					},
-				},
-				classBarGroup = {
-					order = 130,
-					type = "group",
-					name = L["Classbar"],
-					get = function(info) return E.db.nameplates.classbar[ info[#info] ] end,
-					set = function(info, value) E.db.nameplates.classbar[ info[#info] ] = value; NP:ConfigureAll() end,
-					args = {
-						enable = {
-							type = "toggle",
-							order = 1,
-							name = L["Enable"]
-						},
-						attachTo = {
-							type = "select",
-							order = 2,
-							name = L["Attach To"],
-							values = {
-								PLAYER = L["Player Nameplate"],
-								TARGET = L["Targeted Nameplate"],
-							},
-						},
-						yOffset = {
-							order = 3,
-							name = L["Y-Offset"],
-							type = "range",
-							min = -20, max = 20, step = 1,
-						},
-						height = {
-							order = 4,
-							name = L["Height"],
-							type = "range",
-							min = 4, max = 20, step = 1,
-						},
-						width = {
-							order = 5,
-							name = L["Width"],
-							type = "range",
-							min = 50, max = 200, step = 1,
-						},
-						sortDirection = {
-							name = L["Sort Direction"],
-							desc = L["Defines the sort order of the selected sort method."],
-							type = 'select',
-							order = 7,
-							values = {
-								['asc'] = L["Ascending"],
-								['desc'] = L["Descending"],
-								['NONE'] = NONE,
-							},
-							hidden = function() return (E.myclass ~= 'DEATHKNIGHT') end,
 						},
 					},
 				},
