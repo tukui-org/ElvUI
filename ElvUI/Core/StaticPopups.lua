@@ -24,6 +24,7 @@ local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DE
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
 
 local Skins
+local SecureQuitButton
 local SecureQuitOnEnter = function(s) s.text:SetTextColor(1, 1, 1) end
 local SecureQuitOnLeave = function(s) s.text:SetTextColor(1, 0.17, 0.26) end
 local function BuildSecureQuit(popup)
@@ -47,7 +48,7 @@ local function BuildSecureQuit(popup)
 	btn:SetTemplate(nil, true)
 	SecureQuitOnLeave(btn)
 
-	return
+	return btn
 end
 
 E.PopupDialogs = {}
@@ -58,8 +59,14 @@ E.PopupDialogs.ELVUI_UPDATE_WHILE_RUNNING = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnShow = function(self)
-		if not self.secureQuit then
-			self.secureQuit = BuildSecureQuit(self)
+		local sq = E:StaticPopup_GetSecureQuitButton()
+		if sq then
+			sq:SetParent(self)
+			sq:SetAllPoints(self.button1)
+			sq:SetSize(self.button1:GetSize())
+		else
+			local button = BuildSecureQuit(self)
+			E:StaticPopup_SetSecureQuitButton(button)
 		end
 
 		self.button1:Hide()
@@ -668,7 +675,6 @@ E.PopupDialogs.MAJOR_RELEASE_NAMEPLATES = {
 }
 
 local MAX_STATIC_POPUPS = 4
-
 function E:StaticPopup_OnShow()
 	PlaySound(850); --IG_MAINMENU_OPEN
 
@@ -1315,6 +1321,14 @@ function E:StaticPopup_CheckButtonOnClick()
 	if (info.checkButtonOnClick) then
 		info.checkButtonOnClick(self)
 	end
+end
+
+function E:StaticPopup_GetSecureQuitButton()
+	return SecureQuitButton
+end
+
+function E:StaticPopup_SetSecureQuitButton(btn)
+	SecureQuitButton = btn
 end
 
 function E:Contruct_StaticPopups()
