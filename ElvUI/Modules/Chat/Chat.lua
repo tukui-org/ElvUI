@@ -2487,11 +2487,11 @@ function CH:Initialize()
 
 	_G.ChatFrameMenuButton:Kill()
 
+	self:SetupChat()
 	self:DefaultSmileys()
 	self:UpdateChatKeywords()
 	self:UpdateFading()
 	self:UpdateAnchors()
-	self:SetupChat()
 	self:Panels_ColorUpdate()
 	self:HandleChatVoiceIcons(S)
 
