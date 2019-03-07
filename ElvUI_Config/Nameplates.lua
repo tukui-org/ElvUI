@@ -2761,7 +2761,7 @@ local function GetUnitSettings(unit, name)
 					header = {
 						order = 0,
 						type = "header",
-						name = L["Name"],
+						name = L["PvP Indicator"],
 					},
 					enable = {
 						order = 1,
@@ -2816,7 +2816,7 @@ local function GetUnitSettings(unit, name)
 					header = {
 						order = 0,
 						type = "header",
-						name = L["Name"],
+						name = L["Raid Target Indicator"],
 					},
 					enable = {
 						order = 1,
