@@ -8,7 +8,7 @@ local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 function NP:Construct_RaidTargetIndicator(nameplate)
 	local RaidTargetIndicator = nameplate:CreateTexture(nil, 'OVERLAY', 7)
 	RaidTargetIndicator:Size(24, 24)
-	RaidTargetIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, 24)
+	RaidTargetIndicator:Point('BOTTOM', nameplate, 'TOP', 0, 24)
 
 	function RaidTargetIndicator:Override(event)
 		local element = self.RaidTargetIndicator
@@ -28,12 +28,20 @@ function NP:Construct_RaidTargetIndicator(nameplate)
 end
 
 function NP:Update_RaidTargetIndicator(nameplate)
-	--if not nameplate:IsElementEnabled('RaidTargetIndicator') then
-	--	nameplate:EnableElement('RaidTargetIndicator')
-	--end
-	--RaidTargetIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, 24)
+	local db = NP.db.units[nameplate.frameType]
 
-	--if nameplate:IsElementEnabled('RaidTargetIndicator') then
-	--	nameplate:DisableElement('RaidTargetIndicator')
-	--end
+	if db.raidTargetIndicator and db.raidTargetIndicator.enable then
+		if not nameplate:IsElementEnabled('RaidTargetIndicator') then
+			nameplate:EnableElement('RaidTargetIndicator')
+		end
+
+		nameplate.RaidTargetIndicator:Size(db.raidTargetIndicator.size, db.raidTargetIndicator.size)
+
+		nameplate.RaidTargetIndicator:ClearAllPoints()
+		nameplate.RaidTargetIndicator:Point(E.InversePoints[db.raidTargetIndicator.position], nameplate, db.raidTargetIndicator.position, db.raidTargetIndicator.xOffset, db.raidTargetIndicator.yOffset)
+	else
+		if nameplate:IsElementEnabled('RaidTargetIndicator') then
+			nameplate:DisableElement('RaidTargetIndicator')
+		end
+	end
 end

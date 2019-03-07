@@ -528,6 +528,13 @@ P.nameplates = {
 				xOffset = 0,
 				yOffset = 0,
 			},
+			raidTargetIndicator = {
+				enable = true,
+				size = 24,
+				position = 'TOP',
+				xOffset = 0,
+				yOffset = 4,
+			},
 			castbar = {
 				enable = true,
 				width = 150,
@@ -653,6 +660,13 @@ P.nameplates = {
 				xOffset = 0,
 				yOffset = 0,
 			},
+			raidTargetIndicator = {
+				enable = true,
+				size = 24,
+				position = 'TOP',
+				xOffset = 0,
+				yOffset = 4,
+			},
 			castbar = {
 				enable = true,
 				width = 150,
@@ -777,6 +791,13 @@ P.nameplates = {
 				size = 36,
 				xOffset = 0,
 				yOffset = 0,
+			},
+			raidTargetIndicator = {
+				enable = true,
+				size = 24,
+				position = 'TOP',
+				xOffset = 0,
+				yOffset = 4,
 			},
 			castbar = {
 				enable = true,
@@ -966,6 +987,13 @@ P.nameplates = {
 				xOffset = 15,
 				yOffset = 0,
 			},
+			raidTargetIndicator = {
+				enable = true,
+				size = 24,
+				position = 'TOP',
+				xOffset = 0,
+				yOffset = 4,
+			},
 		},
 		ENEMY_NPC = {
 			portrait = {
@@ -1027,6 +1055,13 @@ P.nameplates = {
 				size = 36,
 				xOffset = 0,
 				yOffset = 0,
+			},
+			raidTargetIndicator = {
+				enable = true,
+				size = 24,
+				position = 'TOP',
+				xOffset = 0,
+				yOffset = 4,
 			},
 			castbar = {
 				enable = true,

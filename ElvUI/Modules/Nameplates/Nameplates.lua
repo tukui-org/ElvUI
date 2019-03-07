@@ -148,6 +148,8 @@ function NP:UpdatePlate(nameplate)
 
 	NP:Update_TargetIndicator(nameplate)
 
+	NP:Update_RaidTargetIndicator(nameplate)
+
 	NP:Update_ClassPower(nameplate)
 
 	if E.myclass == 'DEATHKNIGHT' then

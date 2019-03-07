@@ -2806,6 +2806,55 @@ local function GetUnitSettings(unit, name)
 					},
 				},
 			},
+			raidTargetIndicator = {
+				order = 10,
+				name = L["Raid Target Indicator"],
+				type = "group",
+				get = function(info) return E.db.nameplates.units[unit].raidTargetIndicator[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].raidTargetIndicator[ info[#info] ] = value; NP:ConfigureAll() end,
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Name"],
+					},
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",
+					},
+					size = {
+						order = 3,
+						name = L["Size"],
+						type = "range",
+						min = 5, max = 100, step = 1,
+					},
+					position = {
+						order = 4,
+						type = "select",
+						name = L["Icon Position"],
+						values = {
+							["LEFT"] = L["Left"],
+							["RIGHT"] = L["Right"],
+							["TOP"] = L["Top"],
+							["BOTTOM"] = L["Bottom"],
+							["CENTER"] = L["Center"],
+						},
+					},
+					xOffset = {
+						order = 5,
+						name = L["X-Offset"],
+						type = "range",
+						min = -100, max = 100, step = 1,
+					},
+					yOffset = {
+						order = 6,
+						name = L["Y-Offset"],
+						type = "range",
+						min = -100, max = 100, step = 1,
+					},
+				},
+			},
 		},
 	}
 
