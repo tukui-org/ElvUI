@@ -965,7 +965,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 			local msg, ver = tonumber(message), tonumber(E.version)
 			if ver ~= G.general.version then
 				if not E.shownUpdatedWhileRunningPopup then
-					E:StaticPopup_Show('ELVUI_UPDATED_WHILE_RUNNING')
+					E:StaticPopup_Show('ELVUI_UPDATED_WHILE_RUNNING', nil, nil, {mismatch = ver > G.general.version})
 
 					E.shownUpdatedWhileRunningPopup = true
 				end
