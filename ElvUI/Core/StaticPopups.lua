@@ -23,8 +23,50 @@ local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
 local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
 
+local Skins
+local SecureQuitOnEnter = function(s) s.text:SetTextColor(1, 1, 1) end
+local SecureQuitOnLeave = function(s) s.text:SetTextColor(1, 0.17, 0.26) end
+local function BuildSecureQuit(popup)
+	local btn = CreateFrame('Button', nil, popup, 'SecureActionButtonTemplate')
+	btn:SetAttribute('type','macro')
+	btn:SetAttribute('macrotext','/quit')
+	btn:SetAllPoints(popup.button1)
+	btn:SetSize(popup.button1:GetSize())
+	btn:HookScript('OnEnter', SecureQuitOnEnter)
+	btn:HookScript('OnLeave', SecureQuitOnLeave)
+	Skins:HandleButton(btn)
+
+	local t = btn:CreateFontString(nil, 'OVERLAY', btn)
+	t:Point('CENTER', 0, 1)
+	t:FontTemplate()
+	t:SetJustifyH('CENTER')
+	t:SetText(_G.QUIT)
+	btn.text = t
+
+	btn:SetFontString(t)
+	btn:SetTemplate(nil, true)
+	SecureQuitOnLeave(btn)
+
+	return
+end
+
 E.PopupDialogs = {}
 E.StaticPopup_DisplayedFrames = {}
+
+E.PopupDialogs.ELVUI_UPDATE_WHILE_RUNNING = {
+	text = L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."],
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnShow = function(self)
+		if not self.secureQuit then
+			self.secureQuit = BuildSecureQuit(self)
+		end
+
+		self.button1:Hide()
+	end,
+	timeout = 0,
+	whileDead = 1,
+}
 
 E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 	text = L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"],
@@ -934,7 +976,7 @@ function E:StaticPopup_Resize(dialog, which)
 		dialog.maxWidthSoFar = width;
 	end
 
-	local height = 32 + text:GetHeight() + 8 + button1:GetHeight();
+	local height = 32 + (text and text:GetHeight() or 0) + 8 + button1:GetHeight();
 	if ( info.hasEditBox ) then
 		height = height + 8 + editBox:GetHeight();
 	elseif ( info.hasMoneyFrame ) then
@@ -1278,7 +1320,7 @@ end
 function E:Contruct_StaticPopups()
 	E.StaticPopupFrames = {}
 
-	local S = self:GetModule('Skins')
+	Skins = E:GetModule('Skins')
 	for index = 1, MAX_STATIC_POPUPS do
 		E.StaticPopupFrames[index] = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'StaticPopupTemplate')
 		E.StaticPopupFrames[index]:SetID(index)
@@ -1306,20 +1348,20 @@ function E:Contruct_StaticPopups()
 		E.StaticPopupFrames[index]:SetTemplate('Transparent')
 
 		for i = 1, 3 do
-			S:HandleButton(_G["ElvUI_StaticPopup"..index.."Button"..i])
+			Skins:HandleButton(_G["ElvUI_StaticPopup"..index.."Button"..i])
 		end
 
 		_G['ElvUI_StaticPopup'..index..'CheckButton']:Size(24)
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:FontTemplate(nil, nil, "")
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:SetTextColor(1,0.17,0.26)
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:Point("LEFT", _G['ElvUI_StaticPopup'..index..'CheckButton'], "RIGHT", 4, 1)
-		S:HandleCheckBox(_G['ElvUI_StaticPopup'..index..'CheckButton'])
+		Skins:HandleCheckBox(_G['ElvUI_StaticPopup'..index..'CheckButton'])
 
 		_G["ElvUI_StaticPopup"..index.."EditBox"]:SetFrameLevel(_G["ElvUI_StaticPopup"..index.."EditBox"]:GetFrameLevel()+1)
-		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."EditBox"])
-		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."MoneyInputFrameGold"])
-		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."MoneyInputFrameSilver"])
-		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."MoneyInputFrameCopper"])
+		Skins:HandleEditBox(_G["ElvUI_StaticPopup"..index.."EditBox"])
+		Skins:HandleEditBox(_G["ElvUI_StaticPopup"..index.."MoneyInputFrameGold"])
+		Skins:HandleEditBox(_G["ElvUI_StaticPopup"..index.."MoneyInputFrameSilver"])
+		Skins:HandleEditBox(_G["ElvUI_StaticPopup"..index.."MoneyInputFrameCopper"])
 		_G["ElvUI_StaticPopup"..index.."EditBox"].backdrop:Point("TOPLEFT", -2, -4)
 		_G["ElvUI_StaticPopup"..index.."EditBox"].backdrop:Point("BOTTOMRIGHT", 2, 4)
 		_G["ElvUI_StaticPopup"..index.."ItemFrameNameFrame"]:Kill()
