@@ -3189,6 +3189,11 @@ E.Options.args.nameplate = {
 							end,
 							confirm = true,
 						},
+						highlight = {
+							order = 4,
+							type = "toggle",
+							name = L["Highlight on NamePlate"],
+						},
 						clampToScreen = {
 							order = 5,
 							type = "toggle",

@@ -449,6 +449,7 @@ P.nameplates = {
 	targetGlow = 'style2',
 	targetScale = 1.15,
 	useTargetScale = true,
+	highlight = true,
 	threat = {
 		beingTankedByTank = true,
 		goodScale = 0.8,

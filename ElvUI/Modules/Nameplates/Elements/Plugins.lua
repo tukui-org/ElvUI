@@ -165,15 +165,16 @@ end
 
 function NP:Update_Highlight(nameplate)
 	local db = NP.db.units[nameplate.frameType]
-
-	if db.health.enable then
-		nameplate.Highlight.texture:SetColorTexture(1, 1, 1, .3)
-		nameplate.Highlight.texture:SetAllPoints(nameplate.Health)
-		nameplate.Highlight.texture:SetAlpha(1)
-	else
-		nameplate.Highlight.texture:SetTexture(E.Media.Textures.Spark)
-		nameplate.Highlight.texture:SetAllPoints(nameplate)
-		nameplate.Highlight.texture:SetAlpha(.5)
+	if NP.db.highlight then
+		if db.health.enable then
+			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, .3)
+			nameplate.Highlight.texture:SetAllPoints(nameplate.Health)
+			nameplate.Highlight.texture:SetAlpha(1)
+		else
+			nameplate.Highlight.texture:SetTexture(E.Media.Textures.Spark)
+			nameplate.Highlight.texture:SetAllPoints(nameplate)
+			nameplate.Highlight.texture:SetAlpha(.5)
+		end
 	end
 end
 
