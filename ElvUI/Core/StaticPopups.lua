@@ -32,11 +32,11 @@ E.PopupDialogs.ELVUI_UPDATE_WHILE_RUNNING = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnShow = function(self)
-		local sq = E:StaticPopup_GetSecureButton('Quit')
-		if sq then
-			E:StaticPopup_PositionSecureButton(self, self.button1, sq)
+		local secureButton = E:StaticPopup_GetSecureButton('Quit')
+		if secureButton then
+			E:StaticPopup_PositionSecureButton(self, self.button1, secureButton)
 		else
-			local secureButton = E:StaticPopup_CreateSecureButton(self, self.button1, '/quit')
+			secureButton = E:StaticPopup_CreateSecureButton(self, self.button1, '/quit')
 			E:StaticPopup_SetSecureButton('Quit', secureButton)
 		end
 
