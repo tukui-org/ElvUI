@@ -963,7 +963,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 		if sender == myName then return end
 		if prefix == 'ELVUI_VERSIONCHK' then
 			local msg, ver = tonumber(message), tonumber(E.version)
-			if ver > G.general.version then
+			if ver ~= G.general.version then
 				E:StaticPopup_Show('ELVUI_UPDATE_WHILE_RUNNING')
 			elseif msg and (msg > ver) then -- you're outdated D:
 				if not E.recievedOutOfDateMessage then
