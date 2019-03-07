@@ -1898,8 +1898,11 @@ function CH:ChatEdit_AddHistory(_, line) -- editBox, line
 	if line and strlen(line) > 0 then
 		if strfind(line, '/rl') then return end
 
-		for _, text in pairs(ElvCharacterDB.ChatEditHistory) do
-			if text == line then return end
+		for index, text in pairs(ElvCharacterDB.ChatEditHistory) do
+			if text == line then
+				tremove(ElvCharacterDB.ChatEditHistory, index)
+				break
+			end
 		end
 
 		tinsert(ElvCharacterDB.ChatEditHistory, #ElvCharacterDB.ChatEditHistory + 1, line)
