@@ -22,34 +22,7 @@ local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
 local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
-
 local Skins
-local SecureQuitButton
-local SecureQuitOnEnter = function(s) s.text:SetTextColor(1, 1, 1) end
-local SecureQuitOnLeave = function(s) s.text:SetTextColor(1, 0.17, 0.26) end
-local function BuildSecureQuit(popup)
-	local btn = CreateFrame('Button', nil, popup, 'SecureActionButtonTemplate')
-	btn:SetAttribute('type','macro')
-	btn:SetAttribute('macrotext','/quit')
-	btn:SetAllPoints(popup.button1)
-	btn:SetSize(popup.button1:GetSize())
-	btn:HookScript('OnEnter', SecureQuitOnEnter)
-	btn:HookScript('OnLeave', SecureQuitOnLeave)
-	Skins:HandleButton(btn)
-
-	local t = btn:CreateFontString(nil, 'OVERLAY', btn)
-	t:Point('CENTER', 0, 1)
-	t:FontTemplate()
-	t:SetJustifyH('CENTER')
-	t:SetText(_G.QUIT)
-	btn.text = t
-
-	btn:SetFontString(t)
-	btn:SetTemplate(nil, true)
-	SecureQuitOnLeave(btn)
-
-	return btn
-end
 
 E.PopupDialogs = {}
 E.StaticPopup_DisplayedFrames = {}
@@ -59,14 +32,13 @@ E.PopupDialogs.ELVUI_UPDATE_WHILE_RUNNING = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnShow = function(self)
-		local sq = E:StaticPopup_GetSecureQuitButton()
+		local sq = E:StaticPopup_GetSecureButton('Quit')
 		if sq then
 			sq:SetParent(self)
 			sq:SetAllPoints(self.button1)
 			sq:SetSize(self.button1:GetSize())
 		else
-			local button = BuildSecureQuit(self)
-			E:StaticPopup_SetSecureQuitButton(button)
+			E:StaticPopup_SetSecureButton('Quit', E:StaticPopup_CreateSecureButton(self, '/quit'))
 		end
 
 		self.button1:Hide()
@@ -1323,12 +1295,48 @@ function E:StaticPopup_CheckButtonOnClick()
 	end
 end
 
-function E:StaticPopup_GetSecureQuitButton()
-	return SecureQuitButton
+-- Static popup secure buttons
+local SecureButtons = {}
+local SecureOnEnter = function(s) s.text:SetTextColor(1, 1, 1) end
+local SecureOnLeave = function(s) s.text:SetTextColor(1, 0.17, 0.26) end
+function E:StaticPopup_CreateSecureButton(popup, macro)
+	local btn = CreateFrame('Button', nil, popup, 'SecureActionButtonTemplate')
+	btn:SetAttribute('type', 'macro')
+	btn:SetAttribute('macrotext', macro)
+	btn:SetAllPoints(popup.button1)
+	btn:SetSize(popup.button1:GetSize())
+	btn:HookScript('OnEnter', SecureOnEnter)
+	btn:HookScript('OnLeave', SecureOnLeave)
+	Skins:HandleButton(btn)
+
+	local t = btn:CreateFontString(nil, 'OVERLAY', btn)
+	t:Point('CENTER', 0, 1)
+	t:FontTemplate()
+	t:SetJustifyH('CENTER')
+	t:SetText(_G.QUIT)
+	btn.text = t
+
+	btn:SetFontString(t)
+	btn:SetTemplate(nil, true)
+	SecureOnLeave(btn)
+
+	return btn
 end
 
-function E:StaticPopup_SetSecureQuitButton(btn)
-	SecureQuitButton = btn
+function E:StaticPopup_GetAllSecureButtons()
+	return SecureButtons
+end
+
+function E:StaticPopup_GetSecureButton(which)
+	return SecureButtons[which]
+end
+
+function E:StaticPopup_SetSecureButton(which, btn)
+	if SecureButtons[which] then
+		error("A secure StaticPopup Button called `"..which.."` already exists.")
+	end
+
+	SecureButtons[which] = btn
 end
 
 function E:Contruct_StaticPopups()
