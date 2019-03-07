@@ -10,6 +10,8 @@ function NP:Construct_Portrait(nameplate)
 	local Portrait = nameplate:CreateTexture(nil, 'OVERLAY')
 	Portrait:SetTexCoord(.18, .82, .18, .82)
 	Portrait:CreateBackdrop()
+	Portrait:SetSnapToPixelGrid(false)
+	Portrait:SetTexelSnappingBias(0)
 	Portrait:Hide()
 
 	function Portrait:PostUpdate(unit)

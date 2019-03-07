@@ -12,6 +12,11 @@ function NP:Construct_Power(nameplate)
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent')
 	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+
+	local statusBarTexture = Power:GetStatusBarTexture()
+	statusBarTexture:SetSnapToPixelGrid(false)
+	statusBarTexture:SetTexelSnappingBias(0)
+
 	NP.StatusBars[Power] = true
 
 	Power.frequentUpdates = true

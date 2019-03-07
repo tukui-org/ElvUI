@@ -11,6 +11,11 @@ function NP:Construct_Castbar(nameplate)
 	Castbar:SetFrameLevel(5)
 	Castbar:CreateBackdrop('Transparent')
 	Castbar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+
+	local statusBarTexture = Castbar:GetStatusBarTexture()
+	statusBarTexture:SetSnapToPixelGrid(false)
+	statusBarTexture:SetTexelSnappingBias(0)
+
 	NP.StatusBars[Castbar] = true
 
 	Castbar.Button = CreateFrame('Frame', nil, Castbar)
@@ -19,6 +24,8 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Icon = Castbar.Button:CreateTexture(nil, 'ARTWORK')
 	Castbar.Icon:SetInside()
 	Castbar.Icon:SetTexCoord(unpack(E.TexCoords))
+	Castbar.Icon:SetSnapToPixelGrid(false)
+	Castbar.Icon:SetTexelSnappingBias(0)
 
 	Castbar.Time = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Time:Point('RIGHT', Castbar, 'RIGHT', -4, 0)
