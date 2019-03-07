@@ -36,7 +36,7 @@ E.PopupDialogs.ELVUI_UPDATE_WHILE_RUNNING = {
 		if sq then
 			E:StaticPopup_PositionSecureButton(self, self.button1, sq)
 		else
-			local secureButton = E:StaticPopup_CreateSecureButton(self, '/quit')
+			local secureButton = E:StaticPopup_CreateSecureButton(self, self.button1, '/quit')
 			E:StaticPopup_SetSecureButton('Quit', secureButton)
 		end
 
@@ -1298,12 +1298,12 @@ end
 local SecureButtons = {}
 local SecureOnEnter = function(s) s.text:SetTextColor(1, 1, 1) end
 local SecureOnLeave = function(s) s.text:SetTextColor(1, 0.17, 0.26) end
-function E:StaticPopup_CreateSecureButton(popup, macro)
+function E:StaticPopup_CreateSecureButton(popup, button, macro)
 	local btn = CreateFrame('Button', nil, popup, 'SecureActionButtonTemplate')
 	btn:SetAttribute('type', 'macro')
 	btn:SetAttribute('macrotext', macro)
-	btn:SetAllPoints(popup.button1)
-	btn:SetSize(popup.button1:GetSize())
+	btn:SetAllPoints(button)
+	btn:SetSize(button:GetSize())
 	btn:HookScript('OnEnter', SecureOnEnter)
 	btn:HookScript('OnLeave', SecureOnLeave)
 	Skins:HandleButton(btn)
