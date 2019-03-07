@@ -346,6 +346,7 @@ L["Do you swear not to post in technical support about something not working wit
 L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "현재 사용하는 ElvUI가 5버전 이상 뒤쳐진 버전입니다. http://www.tukui.org 에서 새 버전을 다운로드 받으세요. 프리미엄유저가 되어 Tukui Client 프로그램을 쓰면 자동으로 업데이트 해드립니다."
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI가 오래된 버전입니다. http://www.tukui.org 에서 새 버전을 다운로드 받으세요. 프리미엄유저가 되어 Tukui Client 프로그램을 쓰면 자동으로 업데이트 해드립니다."
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI의 데이터베이스를 조정할 필요가 있습니다. 잠시 기다려주세요."
+L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = true
 L["Error resetting UnitFrame."] = "유닛프레임 초기화 오류"
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = true
 L["I Swear"] = "알겠습니다."

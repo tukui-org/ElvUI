@@ -346,6 +346,7 @@ L["Do you swear not to post in technical support about something not working wit
 L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI已过期5个或者更多的版本。你可以在www.tukui.org下载到最新的版本。购买会员可以使用Tukui客户端自动更新ElvUI"
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI已过期。你可以在www.tukui.org下载到最新的版本。购买会员可以使用Tukui客户端自动更新ElvUI"
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI需要进行数据库优化，请耐性等待。"
+L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = true
 L["Error resetting UnitFrame."] = "重置单位框架出现错误."
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = "鼠标指向任何动作条或者技能书快捷键来绑定它. 按Esc键来清除当前动作条按钮的按键绑定."
 L["I Swear"] = '我承诺'

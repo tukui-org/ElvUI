@@ -346,6 +346,7 @@ L["Do you swear not to post in technical support about something not working wit
 L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI está cinco o mas revisiones desactualizado. Puedes descargar la versión más nueva de www.tukui.org. ¡Obtén la suscripción premium y ElvUI se actualizará automáticamente con el cliente Tukui!"
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI está desactualizado. Puedes descargar la versión más nueva de www.tukui.org. ¡Obtén la suscripción premium y ElvUI se actualizará automáticamente con el cliente Tukui!"
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI necesita realizar optimizaciones de base de datos por favor se paciente."
+L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = true
 L["Error resetting UnitFrame."] = true
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = true
 L["I Swear"] = "Lo Juro"
