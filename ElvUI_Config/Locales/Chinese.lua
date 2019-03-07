@@ -886,6 +886,7 @@ L["These filters don't use a list of spells like the regular filters. Instead th
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."] = "这些过滤器使用一个法术列表来决定光环显示与否. 这些过滤器的内容可以在设置中的'过滤器'选项中更改."
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = "这会重置这个过滤器到初始状态. 你添加到这个过滤器的任何技能都会被移除."
 L["Threat"] = "仇恨"
+L["Threat Indicator"] = true
 L["Tiers"] = "天赋层"
 L["Time To Hold"] = "停留时间"
 L["Toggle Off While In Combat"] = "战斗时关闭"

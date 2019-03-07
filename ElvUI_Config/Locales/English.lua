@@ -881,6 +881,7 @@ L["These filters don't use a list of spells like the regular filters. Instead th
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."] = true
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true
 L["Threat"] = true
+L["Threat Indicator"] = true
 L["Tiers"] = true
 L["Time To Hold"] = true
 L["Toggle Off While In Combat"] = true

@@ -455,6 +455,7 @@ P.nameplates = {
 		goodScale = 0.8,
 		badScale = 1.2,
 		useThreatColor = true,
+		indicator = false,
 	},
 	units = {
 		PLAYER = {

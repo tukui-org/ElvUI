@@ -7,9 +7,6 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 
 function NP:Construct_ThreatIndicator(nameplate)
 	local ThreatIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
-	ThreatIndicator:Size(16, 16)
-	ThreatIndicator:Point('CENTER', nameplate, 'TOPRIGHT')
-	ThreatIndicator:SetColorTexture(0, 0, 0, 0)
 
 	function ThreatIndicator:PreUpdate(unit)
 		NP:PreUpdateThreat(self, unit)
@@ -20,6 +17,22 @@ function NP:Construct_ThreatIndicator(nameplate)
 	end
 
 	return ThreatIndicator
+end
+
+function NP:Update_ThreatIndicator(nameplate)
+	local db = NP.db.threat
+
+	if db.indicator and nameplate.frameType == 'ENEMY_NPC' then -- only for NPC??
+		if not nameplate:IsElementEnabled('ThreatIndicator') then
+			nameplate:EnableElement('ThreatIndicator')
+		end
+		nameplate.ThreatIndicator:Size(16, 16)
+		nameplate.ThreatIndicator:Point('CENTER', nameplate, 'TOPRIGHT')
+	else
+		if nameplate:IsElementEnabled('ThreatIndicator') then
+			nameplate:DisableElement('ThreatIndicator')
+		end
+	end
 end
 
 function NP:PreUpdateThreat(threat, unit)

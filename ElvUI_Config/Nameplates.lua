@@ -3914,6 +3914,13 @@ E.Options.args.nameplate = {
 							set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; end,
 							disabled = function() return not E.db.nameplates.threat.useThreatColor end,
 						},
+						indicator = {
+							name = L["Threat Indicator"],
+							order = 3,
+							type = 'toggle',
+							get = function(info) return E.db.nameplates.threat.indicator end,
+							set = function(info, value) E.db.nameplates.threat.indicator = value; NP:ConfigureAll() end,
+						},
 						goodWidth = {
 							name = L["Good Width"],
 							order = 3,
