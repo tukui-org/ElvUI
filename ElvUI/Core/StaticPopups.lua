@@ -27,7 +27,7 @@ local Skins
 E.PopupDialogs = {}
 E.StaticPopup_DisplayedFrames = {}
 
-E.PopupDialogs.ELVUI_UPDATE_WHILE_RUNNING = {
+E.PopupDialogs.ELVUI_UPDATED_WHILE_RUNNING = {
 	text = L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
