@@ -1905,7 +1905,7 @@ function CH:ChatEdit_AddHistory(_, line) -- editBox, line
 			end
 		end
 
-		tinsert(ElvCharacterDB.ChatEditHistory, #ElvCharacterDB.ChatEditHistory + 1, line)
+		tinsert(ElvCharacterDB.ChatEditHistory, line)
 
 		if #ElvCharacterDB.ChatEditHistory > 20 then
 			tremove(ElvCharacterDB.ChatEditHistory, 1)
