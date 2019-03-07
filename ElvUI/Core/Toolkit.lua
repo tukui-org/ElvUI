@@ -34,10 +34,10 @@ local function customSetBackdrop(frame, backdrop)
 	end
 
 	local size = backdrop.edgeSize or E.mult
-	frame.pixelBorders.TOPLEFT:SetSize(size)
-	frame.pixelBorders.TOPRIGHT:SetSize(size)
-	frame.pixelBorders.BOTTOMLEFT:SetSize(size)
-	frame.pixelBorders.BOTTOMRIGHT:SetSize(size)
+	frame.pixelBorders.TOPLEFT:SetSize(size, size)
+	frame.pixelBorders.TOPRIGHT:SetSize(size, size)
+	frame.pixelBorders.BOTTOMLEFT:SetSize(size, size)
+	frame.pixelBorders.BOTTOMRIGHT:SetSize(size, size)
 
 	frame.pixelBorders.TOP:SetHeight(size)
 	frame.pixelBorders.BOTTOM:SetHeight(size)
