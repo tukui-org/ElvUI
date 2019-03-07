@@ -44,8 +44,7 @@ local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
-
-local UIHider
+local UIHider, Skins
 
 AB.RegisterCooldown = E.RegisterCooldown
 
@@ -667,7 +666,8 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 	end
 
 	if icon then
-		S:HandleIcon(icon)
+		if not Skins then Skins = E:GetModule('Skins') end
+		Skins:HandleIcon(icon)
 		icon:SetInside()
 	end
 
