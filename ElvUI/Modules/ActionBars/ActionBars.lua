@@ -667,9 +667,7 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 	end
 
 	if icon then
-		icon:SetTexCoord(unpack(E.TexCoords));
-		icon:SetSnapToPixelGrid(false)
-		icon:SetTexelSnappingBias(0)
+		S:HandleIcon(icon)
 		icon:SetInside()
 	end
 

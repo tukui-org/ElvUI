@@ -630,6 +630,8 @@ end
 
 function S:HandleIcon(icon, backdrop)
 	icon:SetTexCoord(unpack(E.TexCoords))
+	icon:SetSnapToPixelGrid(false)
+	icon:SetTexelSnappingBias(0)
 	if backdrop then
 		icon:CreateBackdrop()
 	end
