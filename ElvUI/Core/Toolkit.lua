@@ -33,15 +33,16 @@ local function customSetBackdrop(frame, backdrop)
 		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame)
 	end
 
-	frame.pixelBorders.TOPLEFT:SetSize(backdrop.edgeSize or E.mult)
-	frame.pixelBorders.TOPRIGHT:SetSize(backdrop.edgeSize or E.mult)
-	frame.pixelBorders.BOTTOMLEFT:SetSize(backdrop.edgeSize or E.mult)
-	frame.pixelBorders.BOTTOMRIGHT:SetSize(backdrop.edgeSize or E.mult)
+	local size = backdrop.edgeSize or E.mult
+	frame.pixelBorders.TOPLEFT:SetSize(size, size)
+	frame.pixelBorders.TOPRIGHT:SetSize(size, size)
+	frame.pixelBorders.BOTTOMLEFT:SetSize(size, size)
+	frame.pixelBorders.BOTTOMRIGHT:SetSize(size, size)
 
-	frame.pixelBorders.TOP:SetHeight(backdrop.edgeSize or E.mult)
-	frame.pixelBorders.BOTTOM:SetHeight(backdrop.edgeSize or E.mult)
-	frame.pixelBorders.LEFT:SetWidth(backdrop.edgeSize or E.mult)
-	frame.pixelBorders.RIGHT:SetWidth(backdrop.edgeSize or E.mult)
+	frame.pixelBorders.TOP:SetHeight(size)
+	frame.pixelBorders.BOTTOM:SetHeight(size)
+	frame.pixelBorders.LEFT:SetWidth(size)
+	frame.pixelBorders.RIGHT:SetWidth(size)
 end
 
 local function customBackdropBorderColor(frame, r, g, b, a, skip)
