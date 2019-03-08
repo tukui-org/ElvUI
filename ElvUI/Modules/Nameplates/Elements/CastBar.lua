@@ -100,7 +100,7 @@ function NP:Update_Castbar(nameplate)
 			nameplate:EnableElement('Castbar')
 		end
 
-		nameplate.Castbar.timeToHold = db.castbar.timeToHold
+		nameplate.Castbar.holdTime = db.castbar.timeToHold
 		nameplate.Castbar:Size(db.castbar.width, db.castbar.height)
 		nameplate.Castbar:Point('CENTER', nameplate, 'CENTER', 0, db.castbar.yOffset)
 
