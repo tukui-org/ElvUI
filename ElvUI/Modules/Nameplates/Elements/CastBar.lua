@@ -4,8 +4,6 @@ local NP = E:GetModule('NamePlates')
 local unpack = unpack
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
-local FAILED = FAILED
-local INTERRUPTED = INTERRUPTED
 
 function NP:Construct_Castbar(nameplate)
 	local Castbar = CreateFrame('StatusBar', nameplate:GetDebugName()..'Castbar', nameplate)
