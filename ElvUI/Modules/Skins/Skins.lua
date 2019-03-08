@@ -1211,6 +1211,10 @@ function S:ADDON_LOADED(_, addon)
 		if not S.Lib_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('Lib') end -- NoTaint_UIDropDownMenu
 	end
 
+	if not S.SkinnedAce3 then
+		S:SkinAce3()
+	end
+
 	if self.allowBypass[addon] then
 		if self.addonsToLoad[addon] then
 			--Load addons using the old deprecated register method
@@ -1238,10 +1242,6 @@ function S:ADDON_LOADED(_, addon)
 			self.addonCallbacks[addon].CallPriority[index] = nil
 			E.callbacks:Fire(event)
 		end
-	end
-
-	if not S.SkinnedAce3 then
-		S:SkinAce3()
 	end
 end
 
