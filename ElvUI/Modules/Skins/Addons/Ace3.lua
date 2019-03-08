@@ -336,17 +336,12 @@ function S:SkinAce3()
 	AceGUI.RegisterAsContainer = RegisterAsContainer
 end
 
-local function attemptSkin(_, _, addon)
-	if addon == 'ElvUI_Config' then
-		local AceGUI = E.Libs.AceGUI
-		if not AceGUI then
-			AceGUI = _G.LibStub('AceGUI-3.0', true)
-			E.Libs.AceGUI = AceGUI
-		end
-
-		if AceGUI and (AceGUI.RegisterAsContainer ~= RegisterAsContainer or AceGUI.RegisterAsWidget ~= RegisterAsWidget) then
-			S:SkinAce3()
-		end
+local function attemptSkin(frame)
+	local AceGUI = E.Libs.AceGUI
+	if not AceGUI then AceGUI = _G.LibStub('AceGUI-3.0', true) end
+	if AceGUI and (AceGUI.RegisterAsContainer ~= RegisterAsContainer or AceGUI.RegisterAsWidget ~= RegisterAsWidget) then
+		frame:UnregisterEvent("ADDON_LOADED")
+		S:SkinAce3()
 	end
 end
 
