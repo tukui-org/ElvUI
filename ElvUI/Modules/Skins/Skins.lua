@@ -6,6 +6,7 @@ local _G = _G
 local unpack, assert, pairs, ipairs, select, type, pcall = unpack, assert, pairs, ipairs, select, type, pcall
 local tinsert, wipe, strfind = tinsert, wipe, strfind
 --WoW API / Variables
+local CreateFrame = CreateFrame
 local GetCVarBool = GetCVarBool
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
@@ -1238,6 +1239,10 @@ function S:ADDON_LOADED(_, addon)
 			E.callbacks:Fire(event)
 		end
 	end
+
+	if not S.SkinnedAce3 then
+		S:SkinAce3()
+	end
 end
 
 --Old deprecated register function. Keep it for the time being for any plugins that may need it.
@@ -1322,6 +1327,14 @@ function S:AddCallback(eventName, loadFunc)
 	E.RegisterCallback(E, eventName, loadFunc)
 end
 
+function S:SkinAce3()
+	local AceGUI = E.Libs.AceGUI
+	if not AceGUI then AceGUI = _G.LibStub('AceGUI-3.0', true) end
+	if AceGUI and (AceGUI.RegisterAsContainer ~= S.Ace3_RegisterAsContainer or AceGUI.RegisterAsWidget ~= S.Ace3_RegisterAsWidget) then
+		S:HookAce3(AceGUI)
+	end
+end
+
 function S:Initialize()
 	self.db = E.private.skins
 
@@ -1335,6 +1348,7 @@ function S:Initialize()
 			end
 		end
 	end
+
 	--Fire event for all skins that doesn't rely on a Blizzard addon
 	for index, event in ipairs(self.nonAddonCallbacks.CallPriority) do
 		self.nonAddonCallbacks[event] = nil;
@@ -1361,6 +1375,8 @@ function S:Initialize()
 	end
 
 	wipe(self.nonAddonsToLoad)
+
+	S:SkinAce3()
 
 	hooksecurefunc("TriStateCheckbox_SetState", function(_, checkButton)
 		if checkButton.forceSaturation then
