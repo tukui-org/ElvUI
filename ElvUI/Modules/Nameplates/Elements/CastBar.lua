@@ -75,21 +75,6 @@ function NP:Construct_Castbar(nameplate)
 		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')
 	end
 
-	--some work for Azil <3
-	function Castbar:CastFail(self, event, unit, castID, spellID)
-		if(self.unit ~= unit) then return end
-
-		if(not self:IsShown() or self.castID ~= castID or self.spellID ~= spellID) then
-			return
-		end
-
-		if self.Text then
-			self.Text:SetText(event == 'UNIT_SPELLCAST_FAILED' and FAILED or INTERRUPTED)
-		end
-
-		self.holdTime = self.timeToHold or 0
-	end
-
 	return Castbar
 end
 
