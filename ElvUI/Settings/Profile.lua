@@ -1123,7 +1123,7 @@ P.nameplates = {
 				},
 			},
 			eliteIcon = {
-				enable = false,
+				enable = true,
 				size = 20,
 				position = 'RIGHT',
 				xOffset = 15,
