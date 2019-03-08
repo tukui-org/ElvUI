@@ -336,16 +336,16 @@ function S:SkinAce3()
 	AceGUI.RegisterAsContainer = RegisterAsContainer
 end
 
-local function attemptSkin(frame, event)
+local f = CreateFrame("Frame")
+local function attemptSkin()
 	local AceGUI = E.Libs.AceGUI
 	if not AceGUI then AceGUI = _G.LibStub('AceGUI-3.0', true) end
 	if AceGUI and (AceGUI.RegisterAsContainer ~= RegisterAsContainer or AceGUI.RegisterAsWidget ~= RegisterAsWidget) then
-		frame:UnregisterEvent(event)
+		f:UnregisterEvent("ADDON_LOADED")
 		S:SkinAce3()
 	end
 end
 
-local f = CreateFrame("Frame")
 f:RegisterEvent("ADDON_LOADED")
 f:SetScript("OnEvent", attemptSkin)
 
