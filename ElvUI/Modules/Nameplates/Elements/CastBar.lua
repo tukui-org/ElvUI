@@ -4,6 +4,8 @@ local NP = E:GetModule('NamePlates')
 local unpack = unpack
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
+local FAILED = FAILED
+local INTERRUPTED = INTERRUPTED
 
 function NP:Construct_Castbar(nameplate)
 	local Castbar = CreateFrame('StatusBar', nameplate:GetDebugName()..'Castbar', nameplate)
@@ -43,8 +45,16 @@ function NP:Construct_Castbar(nameplate)
 
 		if (self.notInterruptible and UnitCanAttack('player', unit)) then
 			self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, .7)
+
+			if self.Icon then
+				self.Icon:SetDesaturated(true)
+			end
 		else
 			self:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b, .7)
+
+			if self.Icon then
+				self.Icon:SetDesaturated(false)
+			end
 		end
 	end
 
@@ -64,6 +74,20 @@ function NP:Construct_Castbar(nameplate)
 	function Castbar:PostCastStop()
 		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')
 	end
+
+	--[[ some work for Azil <3
+	function Castbar:CastFail(self, event, unit, castID, spellID)
+		if(self.unit ~= unit) then return end
+
+		if(not self:IsShown() or self.castID ~= castID or self.spellID ~= spellID) then
+			return
+		end
+
+		if self.Text then
+			self.Text:SetText(event == 'UNIT_SPELLCAST_FAILED' and FAILED or INTERRUPTED)
+		end
+	end
+	]]
 
 	return Castbar
 end
