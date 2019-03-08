@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local gsub = gsub
+local pairs = pairs
 local ipairs = ipairs
 local select = select
 local unpack = unpack

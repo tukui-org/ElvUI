@@ -10,8 +10,6 @@ local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
---GLOBALS: NORMAL_FONT_COLOR
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.calendar ~= true then return end
 
@@ -155,7 +153,7 @@ local function LoadSkin()
 		edgeFile = E.media.blankTex,
 		edgeSize = 2,
 	})
-	_G.CalendarTodayFrame:SetBackdropBorderColor(NORMAL_FONT_COLOR:GetRGB())
+	_G.CalendarTodayFrame:SetBackdropBorderColor(_G.NORMAL_FONT_COLOR:GetRGB())
 
 	--CreateEventFrame
 	_G.CalendarCreateEventFrame:StripTextures()

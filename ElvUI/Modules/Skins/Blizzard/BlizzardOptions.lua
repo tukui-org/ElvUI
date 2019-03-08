@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
+local select = select
 local ipairs = ipairs
 local pairs = pairs
 --WoW API / Variables
@@ -194,7 +195,7 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
-		if ( not FCF_GetCurrentChatFrame() ) then
+		if ( not _G.FCF_GetCurrentChatFrame() ) then
 			return
 		end
 		for index in ipairs(frame.checkBoxTable) do
@@ -227,7 +228,7 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc('ChatConfig_UpdateSwatches', function(frame)
-		if ( not FCF_GetCurrentChatFrame() ) then
+		if ( not _G.FCF_GetCurrentChatFrame() ) then
 			return
 		end
 		for index in ipairs(frame.swatchTable) do

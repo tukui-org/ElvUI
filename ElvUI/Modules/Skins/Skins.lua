@@ -6,7 +6,6 @@ local _G = _G
 local unpack, assert, pairs, ipairs, select, type, pcall = unpack, assert, pairs, ipairs, select, type, pcall
 local tinsert, wipe, strfind = tinsert, wipe, strfind
 --WoW API / Variables
-local CreateFrame = CreateFrame
 local GetCVarBool = GetCVarBool
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
