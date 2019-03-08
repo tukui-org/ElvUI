@@ -65,7 +65,7 @@ local function GetBackdropBorderColor(frame)
 end
 ]]
 
-local function hookBlizzardBackdrop(frame)
+local function hookBlizzardBackdrop(frame, noSecureHook)
 	if not frame then return end
 
 	if not frame.pixelBorders then
@@ -101,7 +101,7 @@ local function hookBlizzardBackdrop(frame)
 		frame.pixelBorders = borders
 	end
 
-	if not frame.pixelBorderHooks then
+	if not noSecureHook and not frame.pixelBorderHooks then
 		--[[frame.BlizzSetBackdrop = frame.SetBackdrop
 			frame.BlizzSetBackdropBorderColor = frame.SetBackdropBorderColor]]
 
@@ -217,27 +217,27 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 		if not E.PixelMode and not f.forcePixelMode then
 			if not f.iborder then
 				local border = CreateFrame('Frame', nil, f)
-				hookBlizzardBackdrop(border)
-				border:SetAllPoints()
-				border:SetBackdrop({
-					edgeFile = E.media.blankTex,
-					edgeSize = E.mult,
+				hookBlizzardBackdrop(border, true)
+				customSetBackdrop(border, {
+					edgeFile = E.media.blankTex, edgeSize = E.mult,
 					insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 				})
-				border:SetBackdropBorderColor(0, 0, 0, 1)
+
+				customBackdropBorderColor(border, 0, 0, 0, 1)
+				border:SetAllPoints()
 				f.iborder = border
 			end
 
 			if not f.oborder then
 				local border = CreateFrame('Frame', nil, f)
-				hookBlizzardBackdrop(border)
-				border:SetAllPoints()
-				border:SetBackdrop({
-					edgeFile = E.media.blankTex,
-					edgeSize = E.mult,
+				hookBlizzardBackdrop(border, true)
+				customSetBackdrop(border, {
+					edgeFile = E.media.blankTex, edgeSize = E.mult,
 					insets = {left = E.mult, right = E.mult, top = E.mult, bottom = E.mult}
 				})
-				border:SetBackdropBorderColor(0, 0, 0, 1)
+
+				customBackdropBorderColor(border, 0, 0, 0, 1)
+				border:SetAllPoints()
 				f.oborder = border
 			end
 		end
