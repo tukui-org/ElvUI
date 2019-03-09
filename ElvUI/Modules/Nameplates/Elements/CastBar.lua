@@ -60,6 +60,9 @@ function NP:Construct_Castbar(nameplate)
 	end
 
 	function Castbar:PostCastFail()
+		if self.Text:GetText() == INTERRUPTED then
+			self.Text:SetText(INTERRUPTED.. " > " .. self.interruptedBy)
+		end
 		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')
 	end
 
@@ -73,6 +76,36 @@ function NP:Construct_Castbar(nameplate)
 
 	return Castbar
 end
+
+function NP:COMBAT_LOG_EVENT_UNFILTERED()
+	local _, event, _, sourceGUID, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
+
+	if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
+		local plate = C_NamePlate.GetNamePlateForUnit('target')
+		if plate and (plate.unitFrame and plate.unitFrame.Castbar) then
+			local db = plate.unitFrame.frameType and self.db and self.db.units and self.db.units[plate.unitFrame.frameType]
+			local healthBar = (db and db.health and db.health.enable) or (plate.unitFrame.isTarget and self.db.alwaysShowTargetHealth)
+			if healthBar and (db and db.castbar and db.castbar.enable) and db.castbar.sourceInterrupt then
+				local holdTime = db.castbar.timeToHold
+				if holdTime > 0 then
+					if db.castbar.sourceInterruptClassColor then
+						local _, sourceClass = GetPlayerInfoByGUID(sourceGUID)
+						if sourceClass then
+							local classColor = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[sourceClass]) or RAID_CLASS_COLORS[sourceClass];
+							sourceClass = classColor and classColor.colorStr
+						end
+
+						plate.unitFrame.CastBar.interruptedBy = (sourceClass and strjoin('', '|c', sourceClass, sourceName)) or sourceName
+					else
+						plate.unitFrame.CastBar.interruptedBy = sourceName
+					end
+				end
+			end
+		end
+	end
+end
+
+NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 
 function NP:Update_Castbar(nameplate)
 	local db = NP.db.units[nameplate.frameType]
