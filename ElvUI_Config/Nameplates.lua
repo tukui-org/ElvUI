@@ -2119,78 +2119,99 @@ local function GetUnitSettings(unit, name)
 						name = L["Enable"],
 						type = "toggle",
 					},
-					hideSpellName = {
-						order = 2,
-						name = L["Hide Spell Name"],
-						type = "toggle",
-					},
-					hideTime = {
-						order = 3,
-						name = L["Hide Time"],
-						type = "toggle",
-					},
 					sourceInterrupt = {
-						order = 4,
+						order = 2,
 						type = 'toggle',
 						name = L["Display Interrupt Source"],
 						desc = L["Display the unit name who interrupted a spell on the castbar. You should increase the 'Time to Hold' to show properly."],
 					},
-					-- order 5 is player Display Target
-					height = {
-						order = 6,
-						name = L["Height"],
-						type = "range",
-						min = 4, max = 20, step = 1,
+					sourceInterruptClassColor = {
+						order = 3,
+						type = 'toggle',
+						name = L["Show Interrupt Source in Class Color"],
+						disabled = function() return not E.db.nameplates.units[unit].castbar.sourceInterrupt end,
 					},
-					width = {
-						order = 7,
-						name = L["Width"],
-						type = "range",
-						min = 50, max = 200, step = 1,
-					},
-					castTimeFormat = {
-						order = 8,
-						type = "select",
-						name = L["Cast Time Format"],
-						values = {
-							["CURRENT"] = L["Current"],
-							["CURRENT_MAX"] = L["Current / Max"],
-							["REMAINING"] = L["Remaining"],
-						},
-						disabled = function() return true end, -- remove me
-					},
-					channelTimeFormat = {
-						order = 9,
-						type = "select",
-						name = L["Channel Time Format"],
-						values = {
-							["CURRENT"] = L["Current"],
-							["CURRENT_MAX"] = L["Current / Max"],
-							["REMAINING"] = L["Remaining"],
-						},
-						disabled = function() return true end, -- remove me
-					},
+					-- order 4 is player Display Target
 					timeToHold = {
-						order = 10,
+						order = 5,
 						type = "range",
 						name = L["Time To Hold"],
 						desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
 						min = 0, max = 4, step = 0.1,
 					},
+					spacer = {
+						order = 6,
+						type = "description",
+						name = " ",
+					},
+					height = {
+						order = 7,
+						name = L["Height"],
+						type = "range",
+						min = 4, max = 20, step = 1,
+					},
+					width = {
+						order = 8,
+						name = L["Width"],
+						type = "range",
+						min = 50, max = 200, step = 1,
+					},
 					yOffset = {
-						order = 11,
+						order = 9,
 						name = L["Y-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
-					textPosition = {
-						order = 12,
-						name = L["Text Position"],
-						type = "select",
-						values = {
-							["ONBAR"] = L["On Bar"],
-							["ABOVE"] = L["Above"],
-							["BELOW"] = L["Below"]
+					textGroup = {
+						order = 10,
+						name = "",
+						type = "group",
+						get = function(info) return E.db.nameplates.units[unit].castbar[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,
+						guiInline = true,
+						args = {
+							hideSpellName = {
+								order = 1,
+								name = L["Hide Spell Name"],
+								type = "toggle",
+							},
+							hideTime = {
+								order = 2,
+								name = L["Hide Time"],
+								type = "toggle",
+							},
+							textPosition = {
+								order = 3,
+								name = L["Text Position"],
+								type = "select",
+								values = {
+									["ONBAR"] = L["On Bar"],
+									["ABOVE"] = L["Above"],
+									["BELOW"] = L["Below"]
+								},
+							},
+							castTimeFormat = {
+								order = 4,
+								type = "select",
+								name = L["Cast Time Format"],
+								values = {
+									["CURRENT"] = L["Current"],
+									["CURRENT_MAX"] = L["Current / Max"],
+									["REMAINING"] = L["Remaining"],
+								},
+								disabled = function() return true end, -- remove me
+							},
+							channelTimeFormat = {
+								order = 5,
+								type = "select",
+								name = L["Channel Time Format"],
+								values = {
+									["CURRENT"] = L["Current"],
+									["CURRENT_MAX"] = L["Current / Max"],
+									["REMAINING"] = L["Remaining"],
+								},
+								disabled = function() return true end, -- remove me
+							},
 						},
 					},
 					iconGroup = {
@@ -3346,7 +3367,7 @@ local function GetUnitSettings(unit, name)
 			name = L["Use Class Color"],
 		}
 		group.args.castGroup.args.displayTarget = {
-			order = 5,
+			order = 4,
 			type = 'toggle',
 			name = L["Display Target"],
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
