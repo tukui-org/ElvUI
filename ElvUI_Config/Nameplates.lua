@@ -2198,6 +2198,7 @@ local function GetUnitSettings(unit, name)
 									["CURRENT"] = L["Current"],
 									["CURRENT_MAX"] = L["Current / Max"],
 									["REMAINING"] = L["Remaining"],
+									['REMAININGMAX'] = L["Remaining / Max"],
 								},
 							},
 							channelTimeFormat = {
@@ -2208,6 +2209,7 @@ local function GetUnitSettings(unit, name)
 									["CURRENT"] = L["Current"],
 									["CURRENT_MAX"] = L["Current / Max"],
 									["REMAINING"] = L["Remaining"],
+									['REMAININGMAX'] = L["Remaining / Max"],
 								},
 							},
 						},
