@@ -2134,7 +2134,6 @@ local function GetUnitSettings(unit, name)
 						type = 'toggle',
 						name = L["Display Interrupt Source"],
 						desc = L["Display the unit name who interrupted a spell on the castbar. You should increase the 'Time to Hold' to show properly."],
-						disabled = function() return true end, -- remove me
 					},
 					-- order 5 is player Display Target
 					height = {
