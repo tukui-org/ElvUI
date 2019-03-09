@@ -360,7 +360,7 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 
 	if priority ~= '' then
 		local isUnit = unit and caster and UnitIsUnit(unit, caster)
-		local canDispell = (parentType == 'Buffs' and isStealable) or (parentType == 'Debuffs' and debuffType and E:IsDispellableByMe(debuffType))
+		local canDispell = (parentType == 'buffs' and isStealable) or (parentType == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType))
 		filterCheck = NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(',', priority))
 	else
 		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
