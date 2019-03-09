@@ -2362,21 +2362,21 @@ local function GetUnitSettings(unit, name)
 						name = L["Stack Counter"],
 						guiInline = true,
 						args = {
-							font = {
+							countFont = {
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 12,
 								name = L["Font"],
 								values = AceGUIWidgetLSMlists.font,
 								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
-							fontSize = {
+							countFontSize = {
 								order = 13,
 								name = FONT_SIZE,
 								type = "range",
 								min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
 								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
-							fontOutline = {
+							countFontOutline = {
 								order = 14,
 								name = L["Font Outline"],
 								desc = L["Set the font outline."],
@@ -2416,6 +2416,38 @@ local function GetUnitSettings(unit, name)
 									["BOTTOMLEFT"] = "BOTTOMLEFT",
 									["TOPRIGHT"] = "TOPRIGHT",
 								},
+							},
+							spacer = {
+								order = 3,
+								type = "description",
+								name = " ",
+							},
+							font = {
+								type = "select", dialogControl = 'LSM30_Font',
+								order = 4,
+								name = L["Font"],
+								values = AceGUIWidgetLSMlists.font,
+								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+							},
+							fontSize = {
+								order = 5,
+								name = FONT_SIZE,
+								type = "range",
+								min = 4, max = 60, step = 1,
+								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+							},
+							fontOutline = {
+								order = 6,
+								name = L["Font Outline"],
+								desc = L["Set the font outline."],
+								type = "select",
+								values = {
+									['NONE'] = NONE,
+									['OUTLINE'] = 'OUTLINE',
+									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+									['THICKOUTLINE'] = 'THICKOUTLINE',
+								},
+								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 						}
 					},
@@ -2645,21 +2677,21 @@ local function GetUnitSettings(unit, name)
 						name = L["Stack Counter"],
 						guiInline = true,
 						args = {
-							font = {
+							countFont = {
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 12,
 								name = L["Font"],
 								values = AceGUIWidgetLSMlists.font,
 								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
-							fontSize = {
+							countFontSize = {
 								order = 13,
 								name = FONT_SIZE,
 								type = "range",
 								min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
 								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
-							fontOutline = {
+							countFontOutline = {
 								order = 14,
 								name = L["Font Outline"],
 								desc = L["Set the font outline."],
@@ -2699,6 +2731,38 @@ local function GetUnitSettings(unit, name)
 									["BOTTOMLEFT"] = "BOTTOMLEFT",
 									["TOPRIGHT"] = "TOPRIGHT",
 								},
+							},
+							spacer = {
+								order = 3,
+								type = "description",
+								name = " ",
+							},
+							font = {
+								type = "select", dialogControl = 'LSM30_Font',
+								order = 4,
+								name = L["Font"],
+								values = AceGUIWidgetLSMlists.font,
+								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
+							},
+							fontSize = {
+								order = 5,
+								name = FONT_SIZE,
+								type = "range",
+								min = 4, max = 60, step = 1,
+								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
+							},
+							fontOutline = {
+								order = 6,
+								name = L["Font Outline"],
+								desc = L["Set the font outline."],
+								type = "select",
+								values = {
+									['NONE'] = NONE,
+									['OUTLINE'] = 'OUTLINE',
+									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+									['THICKOUTLINE'] = 'THICKOUTLINE',
+								},
+								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 						}
 					},

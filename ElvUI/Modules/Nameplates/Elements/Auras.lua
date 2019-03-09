@@ -239,12 +239,12 @@ function NP:PostUpdateAura(unit, button)
 
 	if db and db[parentType] then
 		button:Size(db[parentType].size, db[parentType].size)
-		button.count:SetFont(LSM:Fetch('font', db[parentType].font), db[parentType].fontSize, db[parentType].fontOutline)
+		button.count:SetFont(LSM:Fetch('font', db[parentType].countFont), db[parentType].countFontSize, db[parentType].countFontOutline)
 	end
 
 	if button:IsShown() and button.cd then
 		NP:UpdateCooldownTextPosition(button.cd, db and db[parentType])
-		NP:UpdateCooldownSettings(button.cd)
+		NP:UpdateCooldownSettings(button.cd, db and db[parentType])
 	end
 end
 
@@ -263,11 +263,11 @@ function NP:UpdateCooldownTextPosition(cd, db)
 	end
 end
 
-function NP:UpdateCooldownSettings(cd)
-	if cd and cd.CooldownSettings then
-		cd.CooldownSettings.font = LSM:Fetch('font', NP.db.font)
-		cd.CooldownSettings.fontSize = NP.db.fontSize
-		cd.CooldownSettings.fontOutline = NP.db.fontOutline
+function NP:UpdateCooldownSettings(cd, db)
+	if cd and cd.CooldownSettings and db then
+		cd.CooldownSettings.font = LSM:Fetch('font', db.font)
+		cd.CooldownSettings.fontSize = db.fontSize
+		cd.CooldownSettings.fontOutline = db.fontOutline
 		if cd.timer then
 			E:Cooldown_OnSizeChanged(cd.timer, cd, cd:GetSize(), 'override')
 		end
