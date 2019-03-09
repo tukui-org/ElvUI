@@ -451,6 +451,7 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
 	NP:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
+	NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	NP:RegisterEvent('GROUP_FORMED', 'CheckGroup')
 	NP:RegisterEvent('GROUP_LEFT', 'CheckGroup')
 

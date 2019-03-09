@@ -60,9 +60,6 @@ function NP:Construct_Castbar(nameplate)
 	end
 
 	function Castbar:PostCastFail()
-		if self.Text:GetText() == INTERRUPTED then
-			self.Text:SetText(INTERRUPTED.. " > " .. self.interruptedBy)
-		end
 		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')
 	end
 
@@ -95,17 +92,15 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 							sourceClass = classColor and classColor.colorStr
 						end
 
-						plate.unitFrame.Castbar.interruptedBy = (sourceClass and strjoin('', '|c', sourceClass, sourceName)) or sourceName
+						plate.unitFrame.Castbar.Text:SetText(INTERRUPTED.." > "..(sourceClass and strjoin('', '|c', sourceClass, sourceName)) or sourceName)
 					else
-						plate.unitFrame.Castbar.interruptedBy = sourceName
+						plate.unitFrame.Castbar.Text:SetText(INTERRUPTED.." > "..sourceName)
 					end
 				end
 			end
 		end
 	end
 end
-
-NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 
 function NP:Update_Castbar(nameplate)
 	local db = NP.db.units[nameplate.frameType]
