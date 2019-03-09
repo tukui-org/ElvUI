@@ -151,6 +151,9 @@ function NP:Update_Castbar(nameplate)
 		end
 
 		nameplate.Castbar.timeToHold = db.castbar.timeToHold
+		nameplate.Castbar.castTimeFormat = db.castbar.castTimeFormat
+		nameplate.Castbar.channelTimeFormat = db.castbar.channelTimeFormat
+
 		nameplate.Castbar:Size(db.castbar.width, db.castbar.height)
 		nameplate.Castbar:Point('CENTER', nameplate, 'CENTER', 0, db.castbar.yOffset)
 
