@@ -1972,10 +1972,21 @@ local function GetUnitSettings(unit, name)
 						min = 50, max = 200, step = 1,
 					},
 					yOffset = {
-						order = 4,
+						order = 5,
 						name = L["Y-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
+					},
+					displayAltPower = {
+						order = 6,
+						name = L["Swap to Alt Power"],
+						type = "toggle",
+					},
+					useAtlas = {
+						order = 7,
+						name = L["Use Atlas Textures"],
+						desc = L["Use Atlas Textures if there is one available."],
+						type = "toggle",
 					},
 					textGroup = {
 						order = 100,

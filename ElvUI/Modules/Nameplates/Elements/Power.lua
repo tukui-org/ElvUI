@@ -23,8 +23,6 @@ function NP:Construct_Power(nameplate)
 	Power.colorTapping = false
 	Power.colorClass = false
 	Power.Smooth = true
-	Power.displayAltPower = true
-	Power.useAtlas = true
 
 	function Power:PreUpdate(unit)
 		local _, pToken = UnitPowerType(unit)
@@ -96,6 +94,8 @@ function NP:Update_Power(nameplate)
 
 	nameplate:Tag(nameplate.Power.Text, db.power.text.format)
 
+	nameplate.Power.displayAltPower = db.power.displayAltPower
+	nameplate.Power.useAtlas = db.power.useAtlas
 	nameplate.Power.colorClass = db.power.useClassColor or false
 	nameplate.Power.width = db.power.width
 	nameplate.Power.height = db.power.height
