@@ -30,7 +30,7 @@ for _, specID in pairs(healerSpecIDs) do
 	end
 end
 
-local function Event(self)
+local function Event()
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and (instanceType == 'pvp' or instanceType == 'arena') then
 		if instanceType == 'pvp' then
@@ -39,9 +39,9 @@ local function Event(self)
 				name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 				if name then
 					name = gsub(name,'%-'..gsub(E.myrealm,'[%s%-]',''),'') --[[ name = match(name,"([^%-]+).*") ]]
-					if name and self.HealerSpecs[talentSpec] then
+					if name and HealerSpecs[talentSpec] then
 						Healers[name] = talentSpec
-					elseif name and self.Healers[name] then
+					elseif name and Healers[name] then
 						Healers[name] = nil;
 					end
 				end
@@ -61,7 +61,7 @@ local function Event(self)
 						_, talentSpec = GetSpecializationInfoByID(s)
 					end
 
-					if talentSpec and talentSpec ~= UNKNOWN and self.HealerSpecs[talentSpec] then
+					if talentSpec and talentSpec ~= UNKNOWN and HealerSpecs[talentSpec] then
 						Healers[name] = talentSpec
 					end
 				end
