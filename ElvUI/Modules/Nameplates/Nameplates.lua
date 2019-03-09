@@ -77,7 +77,7 @@ function NP:StylePlate(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
 
 	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
-	NP.FontStrings.Values[nameplate.Health.Text] = true
+	NP.FontStrings.Health[nameplate.Health.Text] = true
 
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
 
@@ -251,6 +251,9 @@ function NP:Update_Fonts()
 	for Font in pairs(NP.FontStrings.Values) do
 		Font:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 	end
+	for Font in pairs(NP.FontStrings.Health) do
+		Font:SetFont(E.LSM:Fetch('font', NP.db.healthFont), NP.db.healthFontSize, NP.db.healthFontOutline)
+	end
 end
 
 function NP:CheckGroup()
@@ -410,6 +413,7 @@ function NP:Initialize()
 	NP.FontStrings = {
 		General = {},
 		Values = {},
+		Health = {},
 	}
 	local BlizzPlateManaBar = _G.NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
