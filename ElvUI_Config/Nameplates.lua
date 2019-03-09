@@ -2236,6 +2236,41 @@ local function GetUnitSettings(unit, name)
 							},
 						},
 					},
+					fontGroup = {
+						type = "group",
+						order = 14,
+						name = L["Font"],
+						guiInline = true,
+						args = {
+							font = {
+								type = "select", dialogControl = 'LSM30_Font',
+								order = 1,
+								name = L["Font"],
+								values = AceGUIWidgetLSMlists.font,
+								set = function(info, value) E.db.nameplates.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,
+							},
+							fontSize = {
+								order = 2,
+								name = FONT_SIZE,
+								type = "range",
+								min = 4, max = 60, step = 1,
+								set = function(info, value) E.db.nameplates.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,
+							},
+							fontOutline = {
+								order = 3,
+								name = L["Font Outline"],
+								desc = L["Set the font outline."],
+								type = "select",
+								values = {
+									['NONE'] = NONE,
+									['OUTLINE'] = 'OUTLINE',
+									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+									['THICKOUTLINE'] = 'THICKOUTLINE',
+								},
+								set = function(info, value) E.db.nameplates.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,
+							},
+						},
+					},
 				},
 			},
 			buffsGroup = {
@@ -2256,60 +2291,17 @@ local function GetUnitSettings(unit, name)
 						type = "toggle",
 					},
 					numAuras = {
-						order = 3,
+						order = 2,
 						name = L["# Displayed Auras"],
 						--desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
 						min = 1, max = 8, step = 1,
 					},
 					size = {
-						order = 4,
+						order = 3,
 						name = L["Icon Size"],
 						type = "range",
 						min = 6, max = 60, step = 1,
-					},
-					spacing = {
-						order = 5,
-						name = L["Spacing"],
-						type = "range",
-						min = 0, max = 60, step = 1,
-					},
-					yOffset = {
-						order = 7,
-						type = 'range',
-						name = L["Y-Offset"],
-						min = -1000, max = 1000, step = 1,
-					},
-					--xOffset = {
-					--	order = 8,
-					--	type = 'range',
-					--	name = L["X-Offset"],
-					--	min = -1000, max = 1000, step = 1,
-					--},
-					anchorPoint = {
-						type = 'select',
-						order = 9,
-						name = L["Anchor Point"],
-						desc = L["What point to anchor to the frame you set to attach to."],
-						values = positionValues,
-					},
-					growthX = {
-						type = 'select',
-						order = 10,
-						name = L["Growth X-Direction"],
-						values = {
-							['LEFT'] = L["Left"],
-							['RIGHT'] = L["Right"],
-						},
-					},
-					growthY = {
-						type = 'select',
-						order = 11,
-						name = L["Growth Y-Direction"],
-						values = {
-							['UP'] = L["Up"],
-							['DOWN'] = L["Down"],
-						},
 					},
 					--width = {
 					--	order = 3,
@@ -2327,6 +2319,106 @@ local function GetUnitSettings(unit, name)
 					--	get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
 					--	set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					--},
+					spacing = {
+						order = 5,
+						name = L["Spacing"],
+						type = "range",
+						min = 0, max = 60, step = 1,
+					},
+					yOffset = {
+						order = 6,
+						type = 'range',
+						name = L["Y-Offset"],
+						min = -1000, max = 1000, step = 1,
+					},
+					anchorPoint = {
+						type = 'select',
+						order = 7,
+						name = L["Anchor Point"],
+						desc = L["What point to anchor to the frame you set to attach to."],
+						values = positionValues,
+					},
+					growthX = {
+						type = 'select',
+						order = 8,
+						name = L["Growth X-Direction"],
+						values = {
+							['LEFT'] = L["Left"],
+							['RIGHT'] = L["Right"],
+						},
+					},
+					growthY = {
+						type = 'select',
+						order = 9,
+						name = L["Growth Y-Direction"],
+						values = {
+							['UP'] = L["Up"],
+							['DOWN'] = L["Down"],
+						},
+					},
+					stacks = {
+						type = "group",
+						order = 10,
+						name = L["Stack Counter"],
+						guiInline = true,
+						args = {
+							font = {
+								type = "select", dialogControl = 'LSM30_Font',
+								order = 12,
+								name = L["Font"],
+								values = AceGUIWidgetLSMlists.font,
+								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+							},
+							fontSize = {
+								order = 13,
+								name = FONT_SIZE,
+								type = "range",
+								min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
+								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+							},
+							fontOutline = {
+								order = 14,
+								name = L["Font Outline"],
+								desc = L["Set the font outline."],
+								type = "select",
+								values = {
+									['NONE'] = NONE,
+									['OUTLINE'] = 'OUTLINE',
+									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+									['THICKOUTLINE'] = 'THICKOUTLINE',
+								},
+								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+							},
+						}
+					},
+					duration = {
+						type = "group",
+						order = 11,
+						name = L["Duration"],
+						guiInline = true,
+						args = {
+							cooldownShortcut = {
+								order = 1,
+								type = "execute",
+								name = L["Cooldowns"],
+								buttonElvUI = true,
+								func = function() ACD:SelectGroup("ElvUI", "cooldown", "nameplates") end,
+							},
+							durationPosition = {
+								order = 2,
+								name = L["Position"],
+								type = "select",
+								get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
+								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+								values = {
+									["CENTER"] = L["Center"],
+									["TOPLEFT"] = "TOPLEFT",
+									["BOTTOMLEFT"] = "BOTTOMLEFT",
+									["TOPRIGHT"] = "TOPRIGHT",
+								},
+							},
+						}
+					},
 					filtersGroup = {
 						name = FILTERS,
 						order = 12,
@@ -2482,60 +2574,17 @@ local function GetUnitSettings(unit, name)
 						type = "toggle",
 					},
 					numAuras = {
-						order = 3,
+						order = 2,
 						name = L["# Displayed Auras"],
 						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
 						min = 1, max = 8, step = 1,
 					},
 					size = {
-						order = 4,
+						order = 3,
 						name = L["Icon Size"],
 						type = "range",
 						min = 6, max = 60, step = 1,
-					},
-					spacing = {
-						order = 5,
-						name = L["Spacing"],
-						type = "range",
-						min = 0, max = 60, step = 1,
-					},
-					yOffset = {
-						order = 6,
-						type = 'range',
-						name = L["Y-Offset"],
-						min = -1000, max = 1000, step = 1,
-					},
-					--xOffset = {
-					--	order = 7,
-					--	type = 'range',
-					--	name = L["X-Offset"],
-					--	min = -1000, max = 1000, step = 1,
-					--},
-					anchorPoint = {
-						type = 'select',
-						order = 8,
-						name = L["Anchor Point"],
-						desc = L["What point to anchor to the frame you set to attach to."],
-						values = positionValues,
-					},
-					growthX = {
-						type = 'select',
-						order = 9,
-						name = L["Growth X-Direction"],
-						values = {
-							['LEFT'] = L["Left"],
-							['RIGHT'] = L["Right"],
-						},
-					},
-					growthY = {
-						type = 'select',
-						order = 10,
-						name = L["Growth Y-Direction"],
-						values = {
-							['UP'] = L["Up"],
-							['DOWN'] = L["Down"],
-						},
 					},
 					--width = {
 					--	order = 3,
@@ -2553,9 +2602,109 @@ local function GetUnitSettings(unit, name)
 					--	get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
 					--	set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 					--},
+					spacing = {
+						order = 5,
+						name = L["Spacing"],
+						type = "range",
+						min = 0, max = 60, step = 1,
+					},
+					yOffset = {
+						order = 6,
+						type = 'range',
+						name = L["Y-Offset"],
+						min = -1000, max = 1000, step = 1,
+					},
+					anchorPoint = {
+						type = 'select',
+						order = 7,
+						name = L["Anchor Point"],
+						desc = L["What point to anchor to the frame you set to attach to."],
+						values = positionValues,
+					},
+					growthX = {
+						type = 'select',
+						order = 8,
+						name = L["Growth X-Direction"],
+						values = {
+							['LEFT'] = L["Left"],
+							['RIGHT'] = L["Right"],
+						},
+					},
+					growthY = {
+						type = 'select',
+						order = 9,
+						name = L["Growth Y-Direction"],
+						values = {
+							['UP'] = L["Up"],
+							['DOWN'] = L["Down"],
+						},
+					},
+					stacks = {
+						type = "group",
+						order = 10,
+						name = L["Stack Counter"],
+						guiInline = true,
+						args = {
+							font = {
+								type = "select", dialogControl = 'LSM30_Font',
+								order = 12,
+								name = L["Font"],
+								values = AceGUIWidgetLSMlists.font,
+								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
+							},
+							fontSize = {
+								order = 13,
+								name = FONT_SIZE,
+								type = "range",
+								min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
+								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
+							},
+							fontOutline = {
+								order = 14,
+								name = L["Font Outline"],
+								desc = L["Set the font outline."],
+								type = "select",
+								values = {
+									['NONE'] = NONE,
+									['OUTLINE'] = 'OUTLINE',
+									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+									['THICKOUTLINE'] = 'THICKOUTLINE',
+								},
+								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
+							},
+						}
+					},
+					duration = {
+						type = "group",
+						order = 11,
+						name = L["Duration"],
+						guiInline = true,
+						args = {
+							cooldownShortcut = {
+								order = 1,
+								type = "execute",
+								name = L["Cooldowns"],
+								buttonElvUI = true,
+								func = function() ACD:SelectGroup("ElvUI", "cooldown", "nameplates") end,
+							},
+							durationPosition = {
+								order = 2,
+								name = L["Position"],
+								type = "select",
+								get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
+								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
+								values = {
+									["CENTER"] = L["Center"],
+									["TOPLEFT"] = "TOPLEFT",
+									["BOTTOMLEFT"] = "BOTTOMLEFT",
+									["TOPRIGHT"] = "TOPRIGHT",
+								},
+							},
+						}
+					},
 					filtersGroup = {
 						name = FILTERS,
-						order = 11,
+						order = 12,
 						type = "group",
 						get = function(info) return E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] = value; NP:ConfigureAll() end,
@@ -3266,20 +3415,20 @@ E.Options.args.nameplate = {
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general") end,
 			disabled = function() return not E.NamePlates; end,
 		},
-		fontsShortcut = {
-			order = 6,
-			type = "execute",
-			name = L["Fonts"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "fontGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
 		cooldownShortcut = {
-			order = 7,
+			order = 6,
 			type = "execute",
 			name = L["Cooldowns"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "cooldown", "nameplates") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		threatShortcut = {
+			order = 7,
+			type = "execute",
+			name = L["Threat"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "threatGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer2 = {
@@ -3287,16 +3436,8 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		threatShortcut = {
-			order = 9,
-			type = "execute",
-			name = L["Threat"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "threatGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
 		colorsShortcut = {
-			order = 10,
+			order = 9,
 			type = "execute",
 			name = L["Colors"],
 			buttonElvUI = true,
@@ -3304,11 +3445,19 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		cutawayHealthShortcut = {
-			order = 11,
+			order = 10,
 			type = "execute",
 			name = L["Cutaway Health"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "cutawayHealth") end,
+			disabled = function() return true end, -- not E.NamePlates;
+		},
+		questIcon = {
+			order = 11,
+			type = "execute",
+			name = L["Quest Icon"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "questIcon") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer3 = {
@@ -3316,16 +3465,8 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		questIcon = {
-			order = 13,
-			type = "execute",
-			name = L["Quest Icon"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "questIcon") end,
-			disabled = function() return not E.NamePlates; end,
-		},
 		playerShortcut = {
-			order = 14,
+			order = 13,
 			type = "execute",
 			name = L["Player Frame"],
 			buttonElvUI = true,
@@ -3333,11 +3474,19 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		friendlyPlayerShortcut = {
-			order = 15,
+			order = 14,
 			type = "execute",
 			name = L["Friendly Player Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		friendlyNPCShortcut = {
+			order = 15,
+			type = "execute",
+			name = L["Friendly NPC Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer4 = {
@@ -3345,16 +3494,8 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		friendlyNPCShortcut = {
-			order = 17,
-			type = "execute",
-			name = L["Friendly NPC Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
 		enemyPlayerShortcut = {
-			order = 18,
+			order = 17,
 			type = "execute",
 			name = L["Enemy Player Frames"],
 			buttonElvUI = true,
@@ -3362,20 +3503,15 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		enemyNPCShortcut = {
-			order = 19,
+			order = 18,
 			type = "execute",
 			name = L["Enemy NPC Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
-		spacer5 = {
-			order = 20,
-			type = "description",
-			name = " ",
-		},
 		filtersShortcut = {
-			order = 21,
+			order = 19,
 			type = "execute",
 			name = L["Style Filter"],
 			buttonElvUI = true,
@@ -3887,74 +4023,6 @@ E.Options.args.nameplate = {
 								NP:ConfigureAll()
 							end,
 							args = {},
-						},
-					},
-				},
-				fontGroup = {
-					order = 100,
-					type = 'group',
-					name = L["Fonts"],
-					args = {
-						stacks = {
-							type = "group",
-							order = 5,
-							name = L["Stack Counter"],
-							guiInline = true,
-							args = {
-								stackFont = {
-									type = "select", dialogControl = 'LSM30_Font',
-									order = 12,
-									name = L["Font"],
-									values = AceGUIWidgetLSMlists.font,
-									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:ConfigureAll() end,
-								},
-								stackFontSize = {
-									order = 13,
-									name = FONT_SIZE,
-									type = "range",
-									min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
-									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:ConfigureAll() end,
-								},
-								stackFontOutline = {
-									order = 14,
-									name = L["Font Outline"],
-									desc = L["Set the font outline."],
-									type = "select",
-									values = {
-										['NONE'] = NONE,
-										['OUTLINE'] = 'OUTLINE',
-										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-										['THICKOUTLINE'] = 'THICKOUTLINE',
-									},
-									set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:ConfigureAll() end,
-								},
-							}
-						},
-						duration = {
-							type = "group",
-							order = 6,
-							name = L["Duration"],
-							guiInline = true,
-							args = {
-								cooldownShortcut = {
-									order = 1,
-									type = "execute",
-									name = L["Cooldowns"],
-									buttonElvUI = true,
-									func = function() ACD:SelectGroup("ElvUI", "cooldown", "nameplates") end,
-								},
-								durationPosition = {
-									order = 2,
-									name = L["Position"],
-									type = "select",
-									values = {
-										["CENTER"] = L["Center"],
-										["TOPLEFT"] = "TOPLEFT",
-										["BOTTOMLEFT"] = "BOTTOMLEFT",
-										["TOPRIGHT"] = "TOPRIGHT",
-									},
-								},
-							}
 						},
 					},
 				},

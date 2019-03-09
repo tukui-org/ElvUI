@@ -213,7 +213,7 @@ end
 
 function NP:PostUpdateAura(unit, button)
 	if button.isDebuff then
-		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
+		if (not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
 			button.icon:SetDesaturated((unit and not strfind(unit, 'arena%d')) and true or false)
 		else
@@ -229,7 +229,7 @@ function NP:PostUpdateAura(unit, button)
 		if button.isStealable and not button.isFriend then
 			button:SetBackdropBorderColor(0.93, 0.91, 0.55, 1.0)
 		else
-			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
+			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end
 
@@ -239,22 +239,23 @@ function NP:PostUpdateAura(unit, button)
 
 	if db and db[parentType] then
 		button:Size(db[parentType].size, db[parentType].size)
+		button.count:SetFont(LSM:Fetch('font', db[parentType].font), db[parentType].fontSize, db[parentType].fontOutline)
 	end
 
 	if button:IsShown() and button.cd then
-		NP:UpdateCooldownTextPosition(button.cd)
+		NP:UpdateCooldownTextPosition(button.cd, db and db[parentType])
 		NP:UpdateCooldownSettings(button.cd)
 	end
 end
 
-function NP:UpdateCooldownTextPosition(cd)
+function NP:UpdateCooldownTextPosition(cd, db)
 	if cd.timer and cd.timer.text then
 		cd.timer.text:ClearAllPoints()
-		if NP.db.durationPosition == 'TOPLEFT' then
+		if db and db.durationPosition == 'TOPLEFT' then
 			cd.timer.text:Point('TOPLEFT', 1, 1)
-		elseif NP.db.durationPosition == 'BOTTOMLEFT' then
+		elseif db and db.durationPosition == 'BOTTOMLEFT' then
 			cd.timer.text:Point('BOTTOMLEFT', 1, 1)
-		elseif NP.db.durationPosition == 'TOPRIGHT' then
+		elseif db and db.durationPosition == 'TOPRIGHT' then
 			cd.timer.text:Point('TOPRIGHT', 1, 1)
 		else
 			cd.timer.text:Point('CENTER', 1, 1)
