@@ -54,6 +54,46 @@ function NP:Construct_Castbar(nameplate)
 		end
 	end
 
+	function Castbar:CustomDelayText()
+		if self.casting then
+			if self.castTimeFormat == "CURRENT" then
+				self.Time:SetFormattedText("%.1f", self.duration)
+			elseif self.castTimeFormat == "CURRENT_MAX" then
+				self.Time:SetFormattedText("%.1f / %.1f", self.duration, self.max)
+			else --REMAINING
+				self.Time:SetFormattedText("%.1f", (self.max - self.duration))
+			end
+		else
+			if self.channelTimeFormat == "CURRENT" then
+				self.Time:SetFormattedText("%.1f", (self.max - self.duration))
+			elseif self.channelTimeFormat == "CURRENT_MAX" then
+				self.Time:SetFormattedText("%.1f / %.1f", (self.max - self.duration), self.max)
+			else --REMAINING
+				self.Time:SetFormattedText("%.1f", self.duration)
+			end
+		end
+	end
+
+	function Castbar:CustomTimeText()
+		if self.casting then
+			if self.castTimeFormat == "CURRENT" then
+				self.Time:SetFormattedText("%.1f", self.duration)
+			elseif self.castTimeFormat == "CURRENT_MAX" then
+				self.Time:SetFormattedText("%.1f / %.1f", self.duration, self.max)
+			else --REMAINING
+				self.Time:SetFormattedText("%.1f", (self.max - self.duration))
+			end
+		else
+			if self.channelTimeFormat == "CURRENT" then
+				self.Time:SetFormattedText("%.1f", (self.max - self.duration))
+			elseif self.channelTimeFormat == "CURRENT_MAX" then
+				self.Time:SetFormattedText("%.1f / %.1f", (self.max - self.duration), self.max)
+			else --REMAINING
+				self.Time:SetFormattedText("%.1f", self.duration)
+			end
+		end
+	end
+
 	function Castbar:PostCastStart(unit)
 		self:CheckInterrupt(unit)
 		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')

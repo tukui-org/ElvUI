@@ -2199,7 +2199,6 @@ local function GetUnitSettings(unit, name)
 									["CURRENT_MAX"] = L["Current / Max"],
 									["REMAINING"] = L["Remaining"],
 								},
-								disabled = function() return true end, -- remove me
 							},
 							channelTimeFormat = {
 								order = 5,
@@ -2210,7 +2209,6 @@ local function GetUnitSettings(unit, name)
 									["CURRENT_MAX"] = L["Current / Max"],
 									["REMAINING"] = L["Remaining"],
 								},
-								disabled = function() return true end, -- remove me
 							},
 						},
 					},
