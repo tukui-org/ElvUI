@@ -777,6 +777,7 @@ L["Hide Spell Name"] = "Verstecke Zaubername"
 L["Hide Time"] = "Verstecke Zeit"
 L["Hide When Empty"] = "Verstecke wenn leer"
 L["Hide"] = "Verstecken" --Also used in DataTexts
+L["Highlight on NamePlate"] = "Hervorhebung auf Namensplakette"
 L["How long the CutawayHealth will take to fade out."] = "Wie lange das Animierte Leben braucht um auszublenden."
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "Wieviele Sekunden die Zauberleiste sichtbar bleibt, nachdem ein Zauber abgebrochen oder unterbrochen wurde."
 L["How much time before the CutawayHealth starts to fade."] = "Wieviel Zeit es benötigt bevor das Animierte Leben auszublendet."

@@ -774,6 +774,7 @@ L["Hide Spell Name"] = "Скрыть название заклинания"
 L["Hide Time"] = "Скрыть время"
 L["Hide When Empty"] = "Скрывать пустые"
 L["Hide"] = "Скрыть" --Also used in DataTexts
+L["Highlight on NamePlate"] = true
 L["How long the CutawayHealth will take to fade out."] = "Время на исчезновение убывающего здоровья."
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "После прерывания или отмены, полоса заклинаний будет оставаться видимой указаное количество секунд."
 L["How much time before the CutawayHealth starts to fade."] = "Время до начала исчезновения убывающего здоровья."

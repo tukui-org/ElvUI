@@ -775,6 +775,7 @@ L["Hide Spell Name"] = "隐藏法术名字"
 L["Hide Time"] = "隐藏时间"
 L["Hide When Empty"] = "空白时隐藏"
 L["Hide"] = "隐藏"
+L["Highlight on NamePlate"] = true
 L["How long the CutawayHealth will take to fade out."] = "血量变化高亮淡出过程所需的时间"
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "在施法失败或被打断时施法条保持可见的秒数"
 L["How much time before the CutawayHealth starts to fade."] = "血量变化高亮淡出前所需要的时间"

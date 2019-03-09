@@ -828,6 +828,7 @@ L["Hide Spell Name"] = "주문 이름 숨김"
 L["Hide Time"] = "시간 숨김"
 L["Hide When Empty"] = "비었을때 숨김"
 L["Hide"] = "숨김"
+L["Highlight on NamePlate"] = true
 L["How long the CutawayHealth will take to fade out."] = true
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "시전이 실패하거나 방해받은 후 몇 초동안 시전바를 보이게 둘지 결정합니다."
 L["How much time before the CutawayHealth starts to fade."] = true

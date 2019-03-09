@@ -774,6 +774,7 @@ L["Hide Spell Name"] = true
 L["Hide Time"] = true
 L["Hide When Empty"] = true
 L["Hide"] = "Esconder"
+L["Highlight on NamePlate"] = true
 L["How long the CutawayHealth will take to fade out."] = true
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = true
 L["How much time before the CutawayHealth starts to fade."] = true
