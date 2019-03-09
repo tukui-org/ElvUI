@@ -2762,7 +2762,7 @@ local function GetUnitSettings(unit, name)
 					},
 				},
 			},
-			pvpIndicator = {
+			pvpindicator = {
 				order = 9,
 				name = L["PvP Indicator"],
 				type = "group",

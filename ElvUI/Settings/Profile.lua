@@ -796,7 +796,7 @@ P.nameplates = {
 				},
 			},
 			pvpindicator = {
-				enable = true,
+				enable = false,
 				showBadge = true,
 				position = 'RIGHT',
 				size = 36,
@@ -1003,6 +1003,14 @@ P.nameplates = {
 				xOffset = 0,
 				yOffset = 4,
 			},
+			pvpindicator = {
+				enable = false,
+				showBadge = true,
+				position = 'RIGHT',
+				size = 36,
+				xOffset = 0,
+				yOffset = 0,
+			},
 		},
 		ENEMY_NPC = {
 			portrait = {
@@ -1135,6 +1143,14 @@ P.nameplates = {
 			},
 			detection = {
 				enable = true,
+			},
+			pvpindicator = {
+				enable = false,
+				showBadge = true,
+				position = 'RIGHT',
+				size = 36,
+				xOffset = 0,
+				yOffset = 0,
 			},
 		},
 	},
