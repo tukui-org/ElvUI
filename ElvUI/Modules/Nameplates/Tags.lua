@@ -146,7 +146,7 @@ oUF.Tags.Methods['quest:title'] = function(unit)
 				return Hex(colors.r, colors.g, colors.b)..QuestName..'|r'
 			end
 		end
-    end
+	end
 end
 
 oUF.Tags.Events['quest:info'] = 'UNIT_NAME_UPDATE UNIT_HEALTH'
