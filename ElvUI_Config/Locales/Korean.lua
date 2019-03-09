@@ -929,6 +929,7 @@ L["When using Static Position, this option also requires the target to be attack
 L["Side Arrows"] = "양옆 화살표"
 L["Style Filter"] = "스타일 필터"
 L["Suramar Detection"] = "수라마르 감지"
+L["Swap to Alt Power"] = true
 L["Tagged NPC"] = "선점된 유닛"
 L["Talent to match"] = "일치하는 특성"
 L["Tanked Color"] = "방어전담 색상"
@@ -957,6 +958,8 @@ L["Under Power Threshold"] = true
 L["Unit in Combat"] = "유닛 전투중"
 L["Unit Out of Combat"] = "유닛 비전투"
 L["Unit Type"] = "유닛 종류"
+L["Use Atlas Textures"] = true
+L["Use Atlas Textures if there is one available."] = true
 L["Use Class Color"] = "직업 색상 사용"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "끌어다 놓기로 재정렬하거나 우클릭으로 필터에서 제거합니다."
 L["Use Portrait"] = "초상화 사용"

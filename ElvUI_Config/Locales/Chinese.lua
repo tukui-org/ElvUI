@@ -876,6 +876,7 @@ L["When using Static Position, this option also requires the target to be attack
 L["Side Arrows"] = "侧面箭头"
 L["Style Filter"] = "样式过滤器"
 L["Suramar Detection"] = "苏拉玛卫兵探测"
+L["Swap to Alt Power"] = true
 L["Tagged NPC"] = "标记的NPC"
 L["Talent to match"] = "匹配的天赋"
 L["Tanked Color"] = "坦克颜色"
@@ -904,6 +905,8 @@ L["Under Power Threshold"] = "低于能量阈值"
 L["Unit in Combat"] = "单位战斗中"
 L["Unit Out of Combat"] = "单位战斗外"
 L["Unit Type"] = "单位类型"
+L["Use Atlas Textures"] = true
+L["Use Atlas Textures if there is one available."] = true
 L["Use Class Color"] = "使用职业颜色"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "使用拖拽的方式调整过滤器优先级, 或者右键移除一个过滤器"
 L["Use Portrait"] = "使用头像"

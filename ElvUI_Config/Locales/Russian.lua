@@ -875,6 +875,7 @@ L["When using Static Position, this option also requires the target to be attack
 L["Side Arrows"] = "Стрелки по сторонам"
 L["Style Filter"] = "Фильтры стиля"
 L["Suramar Detection"] = "Сурамарское обнаружение"
+L["Swap to Alt Power"] = true
 L["Tagged NPC"] = "Чужой НИП"
 L["Talent to match"] = "Проверка таланта"
 L["Tanked Color"] = "Цвет танкуемого"
@@ -903,6 +904,8 @@ L["Under Power Threshold"] = "Менее значения ресурса"
 L["Unit in Combat"] = "Юнит в бою"
 L["Unit Out of Combat"] = "Юнит вне боя"
 L["Unit Type"] = "Тип юнита"
+L["Use Atlas Textures"] = true
+L["Use Atlas Textures if there is one available."] = true
 L["Use Class Color"] = "Использовать цвет класса"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "Используйте перетаскивание для смены приоритета или ПКМ для удаления фильтра."
 L["Use Portrait"] = "Отображать портрет"

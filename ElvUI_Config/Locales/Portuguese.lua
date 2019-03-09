@@ -875,6 +875,7 @@ L["When using Static Position, this option also requires the target to be attack
 L["Side Arrows"] = true
 L["Style Filter"] = true
 L["Suramar Detection"] = true
+L["Swap to Alt Power"] = true
 L["Tagged NPC"] = true
 L["Talent to match"] = true
 L["Tanked Color"] = true
@@ -903,6 +904,8 @@ L["Under Power Threshold"] = true
 L["Unit in Combat"] = true
 L["Unit Out of Combat"] = true
 L["Unit Type"] = true
+L["Use Atlas Textures"] = true
+L["Use Atlas Textures if there is one available."] = true
 L["Use Class Color"] = true
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = true
 L["Use Portrait"] = true
