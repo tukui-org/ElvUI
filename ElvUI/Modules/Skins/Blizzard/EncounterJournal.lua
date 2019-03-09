@@ -399,6 +399,97 @@ local function LoadSkin()
 		end
 	end
 
+	if E.private.skins.parchmentRemover.enable then
+		local suggestFrame = _G.EncounterJournal.suggestFrame
+
+		-- Suggestion 1
+		local suggestion = suggestFrame.Suggestion1
+		suggestion.bg:Hide()
+		suggestion:CreateBackdrop("Transparent")
+
+		local centerDisplay = suggestion.centerDisplay
+		centerDisplay.title.text:SetTextColor(1, 1, 1)
+		centerDisplay.description.text:SetTextColor(.9, .9, .9)
+
+		local reward = suggestion.reward
+		reward.text:SetTextColor(.9, .9, .9)
+		reward.iconRing:Hide()
+		reward.iconRingHighlight:SetTexture()
+
+		-- Suggestion 2 and 3
+		for i = 2, 3 do
+			suggestion = suggestFrame["Suggestion"..i]
+
+			suggestion.bg:Hide()
+			suggestion:CreateBackdrop("Transparent")
+
+			suggestion.icon:SetPoint("TOPLEFT", 10, -10)
+
+			centerDisplay = suggestion.centerDisplay
+
+			centerDisplay:ClearAllPoints()
+			centerDisplay:SetPoint("TOPLEFT", 85, -10)
+			centerDisplay.title.text:SetTextColor(1, 1, 1)
+			centerDisplay.description.text:SetTextColor(.9, .9, .9)
+
+			reward = suggestion.reward
+
+			reward.iconRing:Hide()
+			reward.iconRingHighlight:SetTexture("")
+		end
+
+		hooksecurefunc("EJSuggestFrame_RefreshDisplay", function()
+			local self = suggestFrame
+			if #self.suggestions > 0 then
+				local suggestion = self.Suggestion1
+				local data = self.suggestions[1]
+				suggestion.iconRing:Hide()
+				if suggestion and data then
+					suggestion.icon:SetMask("")
+					suggestion.icon:SetTexture(data.iconPath)
+					suggestion.icon:SetTexCoord(unpack(E.TexCoords))
+				end
+			end
+
+			if #self.suggestions > 1 then
+				for i = 2, #self.suggestions do
+					local suggestion = self["Suggestion"..i]
+					if not suggestion then break end
+					local data = self.suggestions[i]
+					suggestion.iconRing:Hide()
+					if data.iconPath then
+						suggestion.icon:SetMask("")
+						suggestion.icon:SetTexture(data.iconPath)
+						suggestion.icon:SetTexCoord(unpack(E.TexCoords))
+					end
+				end
+			end
+		end)
+
+		hooksecurefunc("EJSuggestFrame_UpdateRewards", function(suggestion)
+			local rewardData = suggestion.reward.data
+			if rewardData then
+				local texture = rewardData.itemIcon or rewardData.currencyIcon or [[Interface\Icons\achievement_guildperk_mobilebanking]]
+				suggestion.reward.icon:SetMask("")
+				suggestion.reward.icon:SetTexture(texture)
+
+				if not suggestion.reward.icon.backdrop then
+					suggestion.reward.icon:CreateBackdrop()
+					suggestion.reward.icon.backdrop:SetOutside(suggestion.reward.icon)
+				end
+
+				local r, g, b = unpack(E["media"].bordercolor)
+				if rewardData.itemID then
+					local quality = select(3, GetItemInfo(rewardData.itemID))
+					if quality and quality > 1 then
+						r, g, b = GetItemQualityColor(quality)
+					end
+				end
+				suggestion.reward.icon.backdrop:SetBackdropBorderColor(r, g, b)
+			end
+		end)
+	end
+
 	--Suggestion Reward Tooltips
 	if E.private.skins.blizzard.tooltip then
 		local tooltip = _G.EncounterJournalTooltip
