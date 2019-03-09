@@ -3925,7 +3925,7 @@ E.Options.args.nameplate = {
 							type = 'range',
 							get = function(info) return E.db.nameplates.threat[ info[#info] ] end,
 							set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; end,
-							min = 4, max = 40, step = 1,
+							min = 50, max = 400, step = 1,
 						},
 						goodHeight = {
 							name = L["Good Height"],
@@ -3933,7 +3933,7 @@ E.Options.args.nameplate = {
 							type = 'range',
 							get = function(info) return E.db.nameplates.threat[ info[#info] ] end,
 							set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; end,
-							min = 50, max = 400, step = 1,
+							min = 4, max = 40, step = 1,
 						},
 						badWidth = {
 							name = L["Bad Width"],
@@ -3941,7 +3941,7 @@ E.Options.args.nameplate = {
 							type = 'range',
 							get = function(info) return E.db.nameplates.threat[ info[#info] ] end,
 							set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; end,
-							min = 4, max = 40, step = 1,
+							min = 50, max = 400, step = 1,
 						},
 						badHeight = {
 							name = L["Bad Height"],
@@ -3949,7 +3949,7 @@ E.Options.args.nameplate = {
 							type = 'range',
 							get = function(info) return E.db.nameplates.threat[ info[#info] ] end,
 							set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; end,
-							min = 50, max = 400, step = 1,
+							min = 4, max = 40, step = 1,
 						},
 					},
 				},
