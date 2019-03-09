@@ -8,13 +8,6 @@ function NP:Construct_TagText(nameplate)
 	return Text
 end
 
-function NP:Construct_HealthText(nameplate)
-	local Text = nameplate:CreateFontString(nil, 'OVERLAY')
-	Text:SetFont(E.LSM:Fetch('font', NP.db.healthFont), NP.db.healthFontSize, NP.db.healthFontOutline)
-
-	return Text
-end
-
 function NP:Update_Name(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
