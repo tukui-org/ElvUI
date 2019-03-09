@@ -76,23 +76,19 @@ function NP:StylePlate(nameplate)
 
 	nameplate.Health = NP:Construct_Health(nameplate)
 
-	nameplate.Health.Text = NP:Construct_HealthText(nameplate.RaisedElement)
-	NP.FontStrings.Health[nameplate.Health.Text] = true
+	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
 
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
 
 	nameplate.Power = NP:Construct_Power(nameplate)
 
 	nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
-	NP.FontStrings.Values[nameplate.Power.Text] = true
 
 	nameplate.PowerPrediction = NP:Construct_PowerPrediction(nameplate)
 
 	nameplate.Name = NP:Construct_TagText(nameplate.RaisedElement)
-	NP.FontStrings.General[nameplate.Name] = true
 
 	nameplate.Level = NP:Construct_TagText(nameplate.RaisedElement)
-	NP.FontStrings.General[nameplate.Level] = true
 
 	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate.RaisedElement)
 
@@ -244,18 +240,6 @@ function NP:Update_StatusBars()
 	end
 end
 
-function NP:Update_Fonts()
-	for Font in pairs(NP.FontStrings.General) do
-		Font:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
-	end
-	for Font in pairs(NP.FontStrings.Values) do
-		Font:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
-	end
-	for Font in pairs(NP.FontStrings.Health) do
-		Font:SetFont(E.LSM:Fetch('font', NP.db.healthFont), NP.db.healthFontSize, NP.db.healthFontOutline)
-	end
-end
-
 function NP:CheckGroup()
 	NP.IsInGroup = IsInGroup() or IsInRaid()
 end
@@ -305,7 +289,6 @@ function NP:ConfigureAll()
 
 	NP:StyleFilterConfigureEvents() -- Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
 	NP:Update_StatusBars()
-	NP:Update_Fonts()
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)

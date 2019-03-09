@@ -8,19 +8,13 @@ function NP:Construct_TagText(nameplate)
 	return Text
 end
 
-function NP:Construct_HealthText(nameplate)
-	local Text = nameplate:CreateFontString(nil, 'OVERLAY')
-	Text:SetFont(E.LSM:Fetch('font', NP.db.healthFont), NP.db.healthFontSize, NP.db.healthFontOutline)
-
-	return Text
-end
-
 function NP:Update_Name(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if db.name.enable then
 		nameplate.Name:ClearAllPoints()
 		nameplate.Name:Point(E.InversePoints[db.name.position], nameplate, db.name.position, db.name.xOffset, db.name.yOffset)
+		nameplate.Name:SetFont(E.LSM:Fetch('font', db.name.font), db.name.fontSize, db.name.fontOutline)
 		nameplate.Name:Show()
 	else
 		nameplate.Name:Hide()
@@ -33,6 +27,7 @@ function NP:Update_Level(nameplate)
 	if db.level.enable then
 		nameplate.Level:ClearAllPoints()
 		nameplate.Level:Point(E.InversePoints[db.level.position], nameplate, db.level.position, db.level.xOffset, db.level.yOffset)
+		nameplate.Level:SetFont(E.LSM:Fetch('font', db.level.font), db.level.fontSize, db.level.fontOutline)
 		nameplate.Level:Show()
 	else
 		nameplate.Level:Hide()
