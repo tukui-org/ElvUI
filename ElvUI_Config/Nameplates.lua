@@ -2123,7 +2123,7 @@ local function GetUnitSettings(unit, name)
 					},
 					iconGroup = {
 						order = 13,
-						name = L["Icon Group"],
+						name = L["Icon"],
 						type = "group",
 						get = function(info) return E.db.nameplates.units[unit].castbar[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,
@@ -2197,7 +2197,7 @@ local function GetUnitSettings(unit, name)
 					},
 					spacing = {
 						order = 5,
-						name = L["Icon Spacing"],
+						name = L["Spacing"],
 						type = "range",
 						min = 0, max = 60, step = 1,
 					},
@@ -2223,7 +2223,7 @@ local function GetUnitSettings(unit, name)
 					growthX = {
 						type = 'select',
 						order = 10,
-						name = L["Growth X Direction"],
+						name = L["Growth X-Direction"],
 						values = {
 							['LEFT'] = L["Left"],
 							['RIGHT'] = L["Right"],
@@ -2232,7 +2232,7 @@ local function GetUnitSettings(unit, name)
 					growthY = {
 						type = 'select',
 						order = 11,
-						name = L["Growth Y Direction"],
+						name = L["Growth Y-Direction"],
 						values = {
 							['UP'] = L["Up"],
 							['DOWN'] = L["Down"],
@@ -2423,7 +2423,7 @@ local function GetUnitSettings(unit, name)
 					},
 					spacing = {
 						order = 5,
-						name = L["Icon Spacing"],
+						name = L["Spacing"],
 						type = "range",
 						min = 0, max = 60, step = 1,
 					},
@@ -2449,7 +2449,7 @@ local function GetUnitSettings(unit, name)
 					growthX = {
 						type = 'select',
 						order = 9,
-						name = L["Growth X Direction"],
+						name = L["Growth X-Direction"],
 						values = {
 							['LEFT'] = L["Left"],
 							['RIGHT'] = L["Right"],
@@ -2458,7 +2458,7 @@ local function GetUnitSettings(unit, name)
 					growthY = {
 						type = 'select',
 						order = 10,
-						name = L["Growth Y Direction"],
+						name = L["Growth Y-Direction"],
 						values = {
 							['UP'] = L["Up"],
 							['DOWN'] = L["Down"],
@@ -3921,6 +3921,7 @@ E.Options.args.nameplate = {
 							type = 'toggle',
 							get = function(info) return E.db.nameplates.threat.indicator end,
 							set = function(info, value) E.db.nameplates.threat.indicator = value; NP:ConfigureAll() end,
+							disabled = function() return true end, -- remove me
 						},
 						goodWidth = {
 							name = L["Good Width"],
