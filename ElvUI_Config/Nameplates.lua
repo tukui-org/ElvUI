@@ -3378,20 +3378,23 @@ E.Options.args.nameplate = {
 									order = 1,
 									type = "toggle",
 									name = L["Use Target Size"],
+									disabled = function() return true end, -- remove me
 								},
 								targetWidth = {
 									order = 2,
 									type = "range",
 									name = L["Target Width"],
 									min = 50, max = 400, step = 1,
-									disabled = function() return E.db.nameplates.useTargetScale ~= true end,
+									disabled = function() return true end, -- remove me
+									--disabled = function() return E.db.nameplates.useTargetScale ~= true end,
 								},
 								targetHeight = {
 									order = 2,
 									type = "range",
 									name = L["Target Height"],
 									min = 4, max = 40, step = 1,
-									disabled = function() return E.db.nameplates.useTargetScale ~= true end,
+									disabled = function() return true end, -- remove me
+									--disabled = function() return E.db.nameplates.useTargetScale ~= true end,
 								},
 								nonTargetTransparency = {
 									order = 3,
