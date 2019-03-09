@@ -95,9 +95,9 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 							sourceClass = classColor and classColor.colorStr
 						end
 
-						plate.unitFrame.CastBar.interruptedBy = (sourceClass and strjoin('', '|c', sourceClass, sourceName)) or sourceName
+						plate.unitFrame.Castbar.interruptedBy = (sourceClass and strjoin('', '|c', sourceClass, sourceName)) or sourceName
 					else
-						plate.unitFrame.CastBar.interruptedBy = sourceName
+						plate.unitFrame.Castbar.interruptedBy = sourceName
 					end
 				end
 			end
