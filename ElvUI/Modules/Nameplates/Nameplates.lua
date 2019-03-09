@@ -76,7 +76,7 @@ function NP:StylePlate(nameplate)
 
 	nameplate.Health = NP:Construct_Health(nameplate)
 
-	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
+	nameplate.Health.Text = NP:Construct_HealthText(nameplate.RaisedElement)
 	NP.FontStrings.Health[nameplate.Health.Text] = true
 
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
