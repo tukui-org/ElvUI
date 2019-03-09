@@ -110,6 +110,17 @@ function NP:Update_Castbar(nameplate)
 			nameplate.Castbar.Text:Point('LEFT', nameplate.Castbar, 'LEFT', 4, 0)
 		end
 
+		if db.castbar.hideTime then
+			nameplate.Castbar.Time:Hide()
+		else
+			nameplate.Castbar.Time:Show()
+		end
+
+		if db.castbar.hideSpellName then
+			nameplate.Castbar.Text:Hide()
+		else
+			nameplate.Castbar.Text:Show()
+		end
 	else
 		if nameplate:IsElementEnabled('Castbar') then
 			nameplate:DisableElement('Castbar')
