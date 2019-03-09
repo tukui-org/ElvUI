@@ -333,7 +333,7 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 
 	local parent = button:GetParent()
 	local parentType = parent.type
-	local db = NP.db.units[parent.__owner.frameType] and NP.db.units[parent.__owner.frameType][parentType]
+	local db = NP.db and NP.db.units and NP.db.units[parent.__owner.frameType] and NP.db.units[parent.__owner.frameType][parentType]
 	if not db then return true end
 
 	local isPlayer = (caster == 'player' or caster == 'vehicle')
