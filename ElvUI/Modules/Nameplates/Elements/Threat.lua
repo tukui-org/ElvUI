@@ -16,6 +16,8 @@ end
 
 function NP:Construct_ThreatIndicator(nameplate)
 	local ThreatIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
+	ThreatIndicator:Size(16, 16)
+	ThreatIndicator:Point('CENTER', nameplate, 'TOPRIGHT')
 
 	ThreatIndicator.PreUpdate = NP.ThreatIndicator_PreUpdate
 	ThreatIndicator.PostUpdate = NP.ThreatIndicator_PostUpdate
@@ -26,12 +28,16 @@ end
 function NP:Update_ThreatIndicator(nameplate)
 	local db = NP.db.threat
 
-	if db.indicator and nameplate.frameType == 'ENEMY_NPC' then -- only for NPC??
+	if db.enable and nameplate.frameType == 'ENEMY_NPC' then -- only for NPC??
 		if not nameplate:IsElementEnabled('ThreatIndicator') then
 			nameplate:EnableElement('ThreatIndicator')
 		end
-		nameplate.ThreatIndicator:Size(16, 16)
-		nameplate.ThreatIndicator:Point('CENTER', nameplate, 'TOPRIGHT')
+
+		if db.indicator then
+			nameplate.ThreatIndicator:Show()
+		else
+			nameplate.ThreatIndicator:Hide()
+		end
 	else
 		if nameplate:IsElementEnabled('ThreatIndicator') then
 			nameplate:DisableElement('ThreatIndicator')

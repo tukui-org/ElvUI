@@ -110,47 +110,40 @@ function NP:Update_TargetIndicator(nameplate)
 	nameplate.TargetIndicator.lowHealthThreshold = NP.db.lowHealthThreshold
 
 	if NP.db.targetGlow ~= 'none' then
-		local GlowStyle = NP.db.targetGlow
+		local GlowStyle, Color = NP.db.targetGlow, NP.db.colors.glowColor
+
 		if not db.health.enable and (GlowStyle ~= 'style2' and GlowStyle ~= 'style6' and GlowStyle ~= 'style8') then
 			GlowStyle = 'style2'
 			nameplate.TargetIndicator.style = 'style2'
 		end
-		local Color = NP.db.colors.glowColor
+
 		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == 'style3' or GlowStyle == 'style5' or GlowStyle == 'style6') then
-			local topArrowSpace = -3
-			if db.showName and (nameplate.Name:GetText() ~= nil and nameplate.Name:GetText() ~= '') then
-				topArrowSpace = NP.db.fontSize + topArrowSpace
-			end
-			nameplate.TargetIndicator.TopIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, topArrowSpace)
+			nameplate.TargetIndicator.TopIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, -6)
+
 			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
 
 		if (nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator) and (GlowStyle == 'style4' or GlowStyle == 'style7' or GlowStyle == 'style8') then
 			nameplate.TargetIndicator.LeftIndicator:Point('LEFT', nameplate.Health, 'RIGHT', -3, 0)
 			nameplate.TargetIndicator.RightIndicator:Point('RIGHT', nameplate.Health, 'LEFT', 3, 0)
+
 			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
 
 		if nameplate.TargetIndicator.Shadow and (GlowStyle == 'style1' or GlowStyle == 'style5' or GlowStyle == 'style7') then
 			nameplate.TargetIndicator.Shadow:SetOutside(nameplate.Health, E:Scale(E.PixelMode and 6 or 8), E:Scale(E.PixelMode and 6 or 8))
+
 			nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b, Color.a)
 		end
 
 		if nameplate.TargetIndicator.Spark and (GlowStyle == 'style2' or GlowStyle == 'style6' or GlowStyle == 'style8') then
-			local scale = 1
-			if NP.db.useTargetScale then
-				if NP.db.targetScale >= 0.75 then
-					scale = NP.db.targetScale
-				else
-					scale = 0.75
-				end
-			end
-
+			local scale = NP.db.useTargetScale and (NP.db.targetScale >= .75 and NP.db.targetScale or .75) or 1
 			local size = (E.Border + 14) * scale;
 
 			nameplate.TargetIndicator.Spark:Point('TOPLEFT', nameplate.Health, 'TOPLEFT', -(size * 2), size)
-			nameplate.TargetIndicator.Spark:Point('BOTTOMRIGHT', nameplate.Health, 'BOTTOMRIGHT', size * 2, -size)
+			nameplate.TargetIndicator.Spark:Point('BOTTOMRIGHT', nameplate.Health, 'BOTTOMRIGHT', (size * 2), -size)
+
 			nameplate.TargetIndicator.Spark:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
 	end

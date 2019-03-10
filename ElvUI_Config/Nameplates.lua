@@ -2196,7 +2196,7 @@ local function GetUnitSettings(unit, name)
 								name = L["Cast Time Format"],
 								values = {
 									["CURRENT"] = L["Current"],
-									["CURRENT_MAX"] = L["Current / Max"],
+									["CURRENTMAX"] = L["Current / Max"],
 									["REMAINING"] = L["Remaining"],
 									['REMAININGMAX'] = L["Remaining / Max"],
 								},
@@ -3609,8 +3609,26 @@ E.Options.args.nameplate = {
 			childGroups = "tab",
 			disabled = function() return not E.NamePlates; end,
 			args = {
-				general = {
+				resetcvars = {
 					order = 1,
+					type = "execute",
+					name = L["Reset CVars"],
+					desc = L["Reset Nameplate CVars to the ElvUI recommended defaults."],
+					func = function()
+						NP:CVarReset()
+					end,
+					confirm = true,
+				},
+				resetFilters = {
+					order = 2,
+					name = L["Reset Aura Filters"],
+					type = "execute",
+					func = function()
+						E:StaticPopup_Show("RESET_NP_AF") --reset nameplate aurafilters
+					end,
+				},
+				general = {
+					order = 10,
 					type = "group",
 					name = L["General"],
 					args = {
@@ -3641,16 +3659,6 @@ E.Options.args.nameplate = {
 								["BLIZZARD"] = L["Target, Quest, Combat"],
 								["TARGET"] = L["Only Show Target"],
 							},
-						},
-						resetcvars = {
-							order = 3,
-							type = "execute",
-							name = L["Reset CVars"],
-							desc = L["Reset Nameplate CVars to the ElvUI recommended defaults."],
-							func = function()
-								NP:CVarReset()
-							end,
-							confirm = true,
 						},
 						highlight = {
 							order = 4,
@@ -3720,14 +3728,6 @@ E.Options.args.nameplate = {
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
 							min = 10, max = 75, step = 1,
 							set = function(info, value) E.db.nameplates.clickableHeight = value; E:StaticPopup_Show("CONFIG_RL") end,
-						},
-						resetFilters = {
-							order = 12,
-							name = L["Reset Aura Filters"],
-							type = "execute",
-							func = function(info)
-								E:StaticPopup_Show("RESET_NP_AF") --reset nameplate aurafilters
-							end,
 						},
 						targetedNamePlate = {
 							order = 14,
@@ -4124,6 +4124,13 @@ E.Options.args.nameplate = {
 						t.r, t.g, t.b = r, g, b
 					end,
 					args = {
+						enable = {
+							order = 0,
+							type = "toggle",
+							name = L["Enable"],
+							get = function(info) return E.db.nameplates.threat.enable end,
+							set = function(info, value) E.db.nameplates.threat.enable = value; end,
+						},
 						useThreatColor = {
 							order = 1,
 							type = "toggle",

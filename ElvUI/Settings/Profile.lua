@@ -444,6 +444,7 @@ P.nameplates = {
 	useTargetScale = false,
 	highlight = true,
 	threat = {
+		enable = true,
 		beingTankedByTank = true,
 		goodScale = 0.8,
 		badScale = 1.2,
