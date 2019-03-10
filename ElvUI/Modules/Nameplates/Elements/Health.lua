@@ -1,58 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
-local unpack = unpack
 local pairs = pairs
 local CreateFrame = CreateFrame
-local UnitClass = UnitClass
-local UnitIsPlayer = UnitIsPlayer
-local UnitIsTapDenied = UnitIsTapDenied
-local UnitPlayerControlled = UnitPlayerControlled
-local UnitReaction = UnitReaction
-
---overrides oUF's color function
-function NP:UpdateColor(unit, cur, max)
-	local parent = self.__owner
-
-	local r, g, b, t
-
-	if(self.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
-		t = parent.colors.tapped
-	elseif self.ColorOverride and not UnitIsPlayer(unit) then
-		t = self.ColorOverride
-	elseif(self.colorDisconnected and self.disconnected) then
-		t = parent.colors.disconnected
-	elseif(self.colorClass and UnitIsPlayer(unit)) or
-		(self.colorClassNPC and not UnitIsPlayer(unit)) or
-		(self.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
-		local _, class = UnitClass(unit)
-		t = parent.colors.class[class]
-	elseif(self.colorReaction and UnitReaction(unit, 'player')) then
-		t = parent.colors.reaction[UnitReaction(unit, 'player')]
-	elseif(self.colorSmooth) then
-		r, g, b = parent:ColorGradient(cur, max, unpack(self.smoothGradient or parent.colors.smooth))
-	elseif(self.colorHealth) then
-		t = parent.colors.health
-	end
-
-	if(t) then
-		r, g, b = t[1], t[2], t[3]
-	end
-
-	if(r or g or b) then
-		self.r, self.g, self.b = r, g, b
-
-		if self.__owner.HealthColorChanged then return end
-
-		self:SetStatusBarColor(r, g, b)
-
-		local bg = self.bg
-		if(bg) then
-			local mu = bg.multiplier or 1
-			bg:SetVertexColor(r * mu, g * mu, b * mu)
-		end
-	end
-end
 
 function NP:Construct_Health(nameplate)
 	local Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'Health', nameplate)
@@ -60,11 +10,12 @@ function NP:Construct_Health(nameplate)
 	Health:SetFrameLevel(5)
 	Health:CreateBackdrop('Transparent')
 	Health:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
-	Health.UpdateColor = NP.UpdateColor
+
 	--[[Health.bg = Health:CreateTexture(nil, "BACKGROUND")
 	Health.bg:SetAllPoints()
 	Health.bg:SetTexture(E.media.blankTex)
 	Health.bg.multiplier = 0.2]]
+
 	NP.StatusBars[Health] = true
 
 	local statusBarTexture = Health:GetStatusBarTexture()
@@ -80,10 +31,7 @@ function NP:Construct_Health(nameplate)
 	nameplate.FlashTexture:Hide()
 
 	Health.Smooth = true
-	Health.colorReaction = true
 	Health.frequentUpdates = true
-	Health.colorTapping = true
-	Health.colorDisconnected = false
 
 	return Health
 end
@@ -92,6 +40,8 @@ function NP:Update_Health(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	nameplate.Health.colorClass = db.health.useClassColor
+	nameplate.Health.colorReaction = true
+	nameplate.Health.colorTapping = true
 
 	if db.health.enable then
 		if not nameplate:IsElementEnabled('Health') then
