@@ -4320,24 +4320,38 @@ E.Options.args.nameplate = {
 	},
 }
 
+for i = 1, 6 do
+	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args['COMBO_POINTS'..i] = {
+		type = 'color',
+		name = COMBO_POINTS..' #'..i,
+		get = function(info)
+			local t = E.db.nameplates.colors.classResources.comboPoints[i]
+			local d = P.nameplates.colors.classResources.comboPoints[i]
+			return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+		end,
+		set = function(info, r, g, b)
+			local t = E.db.nameplates.colors.classResources.comboPoints[i]
+			t.r, t.g, t.b = r, g, b
+			NP:ConfigureAll()
+		end,
+	}
+end
+
 if E.myclass == 'PALADIN' then
 	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args[E.myclass] = {
 		type = 'color',
 		name = HOLY_POWER,
-		order = ORDER,
 	}
 elseif E.myclass == 'MAGE' then
 	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args[E.myclass] = {
 		type = 'color',
 		name = POWER_TYPE_ARCANE_CHARGES,
-		order = ORDER,
 	}
 elseif E.myclass == 'MONK' then
 	for i = 1, 6 do
-		E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args['resource'..i] = {
+		E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args['CHI_POWER'..i] = {
 			type = 'color',
 			name = CHI_POWER..' #'..i,
-			order = ORDER + i,
 			get = function(info)
 				local t = E.db.nameplates.colors.classResources.MONK[i]
 				local d = P.nameplates.colors.classResources.MONK[i]
@@ -4354,12 +4368,10 @@ elseif E.myclass == 'WARLOCK' then
 	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args[E.myclass] = {
 		type = 'color',
 		name = SOUL_SHARDS,
-		order = ORDER,
 	}
 elseif E.myclass == 'DEATHKNIGHT' then
 	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args[E.myclass] = {
 		type = 'color',
 		name = RUNES,
-		order = ORDER,
 	}
 end
