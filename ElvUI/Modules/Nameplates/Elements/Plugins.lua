@@ -27,7 +27,7 @@ function NP:Construct_QuestIcons(nameplate)
 
 	QuestIcons.Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
 	QuestIcons.Text:Point('BOTTOMRIGHT', QuestIcons, 'BOTTOMRIGHT', 2, -0.8)
-	QuestIcons.Text:SetFont(E.Libs.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	QuestIcons.Text:FontTemplate(E.Libs.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	return QuestIcons
 end
@@ -249,6 +249,6 @@ function NP:Update_FloatingCombatFeedback(nameplate)
 	nameplate.FloatingCombatFeedback.scrollTime = 1.5
 
 	for i = 1, 12 do
-		nameplate.FloatingCombatFeedback[i]:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+		nameplate.FloatingCombatFeedback[i]:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 	end
 end

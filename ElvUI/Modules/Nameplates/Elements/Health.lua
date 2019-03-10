@@ -58,7 +58,7 @@ function NP:Update_Health(nameplate)
 	if db.health.text.enable then
 		nameplate.Health.Text:ClearAllPoints()
 		nameplate.Health.Text:Point(E.InversePoints[db.health.text.position], nameplate, db.health.text.position, db.health.text.xOffset, db.health.text.yOffset)
-		nameplate.Health.Text:SetFont(E.LSM:Fetch('font', db.health.text.font), db.health.text.fontSize, db.health.text.fontOutline)
+		nameplate.Health.Text:FontTemplate(E.LSM:Fetch('font', db.health.text.font), db.health.text.fontSize, db.health.text.fontOutline)
 		nameplate.Health.Text:Show()
 	else
 		nameplate.Health.Text:Hide()
