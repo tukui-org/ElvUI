@@ -4120,52 +4120,36 @@ E.Options.args.nameplate = {
 					order = 150,
 					type = "group",
 					name = L["Threat"],
-					get = function(info)
-						local t = E.db.nameplates.threat[ info[#info] ]
-						local d = P.nameplates.threat[info[#info]]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-					end,
-					set = function(info, r, g, b)
-						local t = E.db.nameplates.threat[ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-					end,
+					get = function(info) return E.db.nameplates.threat[ info[#info] ] end,
+					set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; NP:ConfigureAll() end,
 					args = {
 						enable = {
 							order = 0,
 							type = "toggle",
 							name = L["Enable"],
-							get = function(info) return E.db.nameplates.threat.enable end,
-							set = function(info, value) E.db.nameplates.threat.enable = value; end,
 						},
 						useThreatColor = {
 							order = 1,
 							type = "toggle",
 							name = L["Use Threat Color"],
-							get = function(info) return E.db.nameplates.threat.useThreatColor end,
-							set = function(info, value) E.db.nameplates.threat.useThreatColor = value; end,
 						},
 						beingTankedByTank = {
 							name = L["Color Tanked"],
 							desc = L["Use Tanked Color when a nameplate is being effectively tanked by another tank."],
 							order = 2,
 							type = "toggle",
-							get = function(info) return E.db.nameplates.threat[ info[#info] ] end,
-							set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; end,
 							disabled = function() return not E.db.nameplates.threat.useThreatColor end,
 						},
 						indicator = {
 							name = L["Threat Indicator"],
 							order = 3,
 							type = 'toggle',
-							get = function(info) return E.db.nameplates.threat.indicator end,
-							set = function(info, value) E.db.nameplates.threat.indicator = value; NP:ConfigureAll() end,
+							disabled = function() return not E.db.nameplates.threat.enable end,
 						},
 						goodWidth = {
 							name = L["Good Width"],
 							order = 3,
 							type = 'range',
-							get = function(info) return E.db.nameplates.threat[ info[#info] ] end,
-							set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; end,
 							min = 50, max = 400, step = 1,
 							disabled = function() return true end, -- remove me
 						},
@@ -4173,8 +4157,6 @@ E.Options.args.nameplate = {
 							name = L["Good Height"],
 							order = 4,
 							type = 'range',
-							get = function(info) return E.db.nameplates.threat[ info[#info] ] end,
-							set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; end,
 							min = 4, max = 40, step = 1,
 							disabled = function() return true end, -- remove me
 						},
@@ -4182,8 +4164,6 @@ E.Options.args.nameplate = {
 							name = L["Bad Width"],
 							order = 5,
 							type = 'range',
-							get = function(info) return E.db.nameplates.threat[ info[#info] ] end,
-							set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; end,
 							min = 50, max = 400, step = 1,
 							disabled = function() return true end, -- remove me
 						},
@@ -4191,8 +4171,6 @@ E.Options.args.nameplate = {
 							name = L["Bad Height"],
 							order = 6,
 							type = 'range',
-							get = function(info) return E.db.nameplates.threat[ info[#info] ] end,
-							set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; end,
 							min = 4, max = 40, step = 1,
 							disabled = function() return true end, -- remove me
 						},

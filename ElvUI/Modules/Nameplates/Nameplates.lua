@@ -22,6 +22,7 @@ local UnitIsFriend = UnitIsFriend
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local IsInInstance = IsInInstance
 local UnitExists = UnitExists
+local GetCVar = GetCVar
 
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
@@ -170,7 +171,7 @@ end
 function NP:CVarReset()
 	SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
 	SetCVar('nameplateGlobalScale', 1)
-	SetCVar('NamePlateHorizontalScale',1)
+	SetCVar('NamePlateHorizontalScale', 1)
 	SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'))
 	SetCVar('nameplateLargerScale', 1)
 	SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'))
@@ -178,7 +179,7 @@ function NP:CVarReset()
 	SetCVar('nameplateMaxAlphaDistance', 40)
 	SetCVar('nameplateMaxScale', 1)
 	SetCVar('nameplateMaxScaleDistance', 40)
-	SetCVar('nameplateMinAlpha', GetCVarDefault('nameplateMinAlpha')) -- if we set it back to 1, it will sometimes break the alpha
+	SetCVar('nameplateMinAlpha', 1) -- if we set it back to 1, it will sometimes break the alpha
 	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance')) -- see above
 	SetCVar('nameplateMinScale', 1)
 	SetCVar('nameplateMinScaleDistance', 0)
@@ -320,8 +321,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		-- update this plate and fade it in
 		NP:UpdatePlate(nameplate)
+
 		if nameplate:IsShown() then
-			E:UIFrameFadeIn(nameplate, 1, 0, 1)
+			E:UIFrameFadeIn(nameplate, nameplate.isTarget and 1 or NP.db.nonTargetTransparency, 0, 1)
 		end
 
 		NP.Plates[nameplate] = true
@@ -332,6 +334,24 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP:ClearStyledPlate(nameplate)
 		nameplate.isTargetingMe = nil
 		nameplate.isTarget = nil
+	elseif event == 'PLAYER_TARGET_CHANGED' then
+		if nameplate then
+			nameplate.isTarget = true
+			local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
+			local Alpha = NP.db.nonTargetTransparency
+			for plate in pairs(NP.Plates) do
+				if plate:GetParent():GetAlpha() == OccludedAlpha then
+					Alpha = OccludedAlpha
+				end
+				plate:SetAlpha(Alpha)
+			end
+			nameplate:SetAlpha(1)
+		else
+			nameplate.isTarget = false
+			for plate in pairs(NP.Plates) do
+				plate:SetAlpha(1)
+			end
+		end
 	end
 end
 
@@ -343,11 +363,6 @@ end
 NP.plateEvents = {
 	['PLAYER_TARGET_CHANGED'] = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
-		if self.isTarget or not UnitExists("target") then
-			self:SetAlpha(1)
-		else
-			self:SetAlpha(NP.db.nonTargetTransparency)
-		end
 	end,
 	['UNIT_TARGET'] = function(self, _, unit)
 		unit = unit or self.unit
@@ -385,11 +400,7 @@ function NP:Initialize()
 
 	NP.Plates = {}
 	NP.StatusBars = {}
-	NP.FontStrings = {
-		General = {},
-		Values = {},
-		Health = {},
-	}
+
 	local BlizzPlateManaBar = _G.NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
 		BlizzPlateManaBar:Hide()
