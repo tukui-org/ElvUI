@@ -39,6 +39,9 @@ local function LoadSkin()
 		S:HandleButton(buttons[i])
 	end
 
+	_G.MacroNewButton:ClearAllPoints()
+	_G.MacroNewButton:SetPoint("RIGHT", _G.MacroExitButton, "LEFT", -2 , 0)
+
 	for i = 1, 2 do
 		local tab = _G[format("MacroFrameTab%s", i)]
 		tab:Height(22)
@@ -61,10 +64,6 @@ local function LoadSkin()
 	_G.MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
 	_G.MacroFrameSelectedMacroButtonIcon:Point("TOPLEFT", E.mult, -E.mult)
 	_G.MacroFrameSelectedMacroButtonIcon:Point("BOTTOMRIGHT", -E.mult, E.mult)
-
-	-- temporarily moving this text
-	_G.MacroFrameCharLimitText:ClearAllPoints()
-	_G.MacroFrameCharLimitText:Point("BOTTOM", _G.MacroFrameTextBackground, -25, -35)
 
 	-- Skin all buttons
 	for i = 1, _G.MAX_ACCOUNT_MACROS do
