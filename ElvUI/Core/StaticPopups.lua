@@ -64,11 +64,10 @@ E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 	OnHide = function(self)
 		self.editBox:Width(self.editBox.width or 50)
 		self.editBox.width = nil
-		E.outOfDateWarned = true
 	end,
 	hideOnEscape = 1,
 	button1 = OKAY,
-	OnAccept = function() E.outOfDateWarned = true; end,
+	OnAccept = E.noop,
 	EditBoxOnEnterPressed = function(self)
 		ChatEdit_FocusActiveWindow();
 		self:GetParent():Hide();
@@ -1093,7 +1092,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		if ( info.maxBytes ) then
 			editBox:SetMaxBytes(info.maxBytes);
 		end
-		editBox:SetText('');
+		editBox:SetText();
 		if ( info.editBoxWidth ) then
 			editBox:Width(info.editBoxWidth);
 		else
