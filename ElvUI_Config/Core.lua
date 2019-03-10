@@ -4,13 +4,6 @@ local D = E:GetModule("Distributor")
 local format = format
 local sort, tinsert = sort, tinsert
 
-local DEFAULT_WIDTH, DEFAULT_HEIGHT = 900, 650
-if E.UIParent then
-	local width, height = E.UIParent:GetSize()
-	DEFAULT_WIDTH = (width*60)/100
-	DEFAULT_HEIGHT = (height*70)/100
-end
-
 local _G = _G
 E.Libs.AceGUI = _G.LibStub('AceGUI-3.0')
 E.Libs.AceConfig = _G.LibStub('AceConfig-3.0-ElvUI')
@@ -26,14 +19,25 @@ local UnitExists = UnitExists
 local GameTooltip_Hide = GameTooltip_Hide
 local GameFontHighlightSmall = _G.GameFontHighlightSmall
 
-E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
-E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", DEFAULT_WIDTH, DEFAULT_HEIGHT)
-
 --Function we can call on profile change to update GUI
 function E:RefreshGUI()
-	self:RefreshCustomTextsConfigs()
+	E:RefreshCustomTextsConfigs()
 	E.Libs.AceConfigRegistry:NotifyChange("ElvUI")
 end
+
+function E:GetConfigSize()
+	local defaultWidth, defaultHeight = 900, 650
+	if E.UIParent then
+		local width, height = E.UIParent:GetSize()
+		defaultWidth = (width*60)/100
+		defaultHeight = (height*70)/100
+	end
+
+	return defaultWidth, defaultHeight
+end
+
+E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
+E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigSize())
 
 E.Options.args = {
 	ElvUI_Header = {
