@@ -5,16 +5,20 @@ local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 
+
+function NP:ThreatIndicator_PreUpdate(unit)
+	NP:PreUpdateThreat(self, unit)
+end
+
+function NP:ThreatIndicator_PostUpdate(unit, status)
+	NP:PostUpdateThreat(self, unit, status)
+end
+
 function NP:Construct_ThreatIndicator(nameplate)
 	local ThreatIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
 
-	function ThreatIndicator:PreUpdate(unit)
-		NP:PreUpdateThreat(self, unit)
-	end
-
-	function ThreatIndicator:PostUpdate(unit, status)
-		NP:PostUpdateThreat(self, unit, status)
-	end
+	ThreatIndicator.PreUpdate = NP.ThreatIndicator_PreUpdate
+	ThreatIndicator.PostUpdate = NP.ThreatIndicator_PostUpdate
 
 	return ThreatIndicator
 end

@@ -6,6 +6,35 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 
+function NP:Power_PreUpdate(unit)
+	local _, pToken = UnitPowerType(unit)
+	self.token = pToken
+
+	if self.__owner.PowerColorChanged then return end
+
+	local Color = NP.db.colors.power[pToken]
+	if Color then
+		self:SetStatusBarColor(Color.r, Color.g, Color.b)
+	else
+		Color = _G.ElvUI.oUF.colors.power[pToken]
+		if Color then
+			self:SetStatusBarColor(unpack(Color))
+		end
+	end
+end
+
+function NP:Power_PostUpdate(unit, cur, min, max)
+	local db = NP.db.units[self.__owner.frameType]
+	if not db then return end
+
+	if (db.powerbar and db.powerbar.hideWhenEmpty) and ((cur == 0 and min == 0) or (min == 0 and max == 0)) then
+		self:Hide()
+	else
+		self:PreUpdate(unit)
+		self:Show()
+	end
+end
+
 function NP:Construct_Power(nameplate)
 	local Power = CreateFrame('StatusBar', nameplate:GetDebugName()..'Power', nameplate)
 	Power:SetFrameStrata(nameplate:GetFrameStrata())
@@ -24,34 +53,8 @@ function NP:Construct_Power(nameplate)
 	Power.colorClass = false
 	Power.Smooth = true
 
-	function Power:PreUpdate(unit)
-		local _, pToken = UnitPowerType(unit)
-		self.token = pToken
-
-		if self.__owner.PowerColorChanged then return end
-
-		local Color = NP.db.colors.power[pToken]
-		if Color then
-			self:SetStatusBarColor(Color.r, Color.g, Color.b)
-		else
-			Color = _G.ElvUI.oUF.colors.power[pToken]
-			if Color then
-				self:SetStatusBarColor(unpack(Color))
-			end
-		end
-	end
-
-	function Power:PostUpdate(unit, cur, min, max)
-		local db = NP.db.units[self.__owner.frameType]
-		if not db then return end
-
-		if (db.powerbar and db.powerbar.hideWhenEmpty) and ((cur == 0 and min == 0) or (min == 0 and max == 0)) then
-			self:Hide()
-		else
-			self:PreUpdate(unit)
-			self:Show()
-		end
-	end
+	Power.PreUpdate = NP.Power_PreUpdate
+	Power.PostUpdate = NP.Power_PostUpdate
 
 	return Power
 end

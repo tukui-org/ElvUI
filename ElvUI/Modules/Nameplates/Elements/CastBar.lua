@@ -5,6 +5,91 @@ local unpack, abs = unpack, abs
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
 
+function NP:Castbar_CheckInterrupt(unit)
+	if (unit == 'vehicle') then
+		unit = 'player'
+	end
+
+	if (self.notInterruptible and UnitCanAttack('player', unit)) then
+		self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, .7)
+
+		if self.Icon then
+			self.Icon:SetDesaturated(true)
+		end
+	else
+		self:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b, .7)
+
+		if self.Icon then
+			self.Icon:SetDesaturated(false)
+		end
+	end
+end
+
+function NP:Castbar_CustomDelayText(duration)
+	if self.channeling then
+		if self.channelTimeFormat == 'CURRENT' then
+			self.Time:SetText(("%.1f |cffaf5050%.1f|r"):format(abs(duration - self.max), self.delay))
+		elseif self.channelTimeFormat == 'CURRENTMAX' then
+			self.Time:SetText(("%.1f / %.1f |cffaf5050%.1f|r"):format(duration, self.max, self.delay))
+		elseif self.channelTimeFormat == 'REMAINING' then
+			self.Time:SetText(("%.1f |cffaf5050%.1f|r"):format(duration, self.delay))
+		elseif self.channelTimeFormat == 'REMAININGMAX' then
+			self.Time:SetText(("%.1f / %.1f |cffaf5050%.1f|r"):format(abs(duration - self.max), self.max, self.delay))
+		end
+	else
+		if self.castTimeFormat == 'CURRENT' then
+			self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(duration, "+", self.delay))
+		elseif self.castTimeFormat == 'CURRENTMAX' then
+			self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "+", self.delay))
+		elseif self.castTimeFormat == 'REMAINING' then
+			self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(abs(duration - self.max), "+", self.delay))
+		elseif self.castTimeFormat == 'REMAININGMAX' then
+			self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(abs(duration - self.max), self.max, "+", self.delay))
+		end
+	end
+end
+
+function NP:Castbar_CustomTimeText(duration)
+	if self.channeling then
+		if self.channelTimeFormat == 'CURRENT' then
+			self.Time:SetText(("%.1f"):format(abs(duration - self.max)))
+		elseif self.channelTimeFormat == 'CURRENTMAX' then
+			self.Time:SetText(("%.1f / %.1f"):format(abs(duration - self.max), self.max))
+		elseif self.channelTimeFormat == 'REMAINING' then
+			self.Time:SetText(("%.1f"):format(duration))
+		elseif self.channelTimeFormat == 'REMAININGMAX' then
+			self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
+		end
+	else
+		if self.castTimeFormat == 'CURRENT' then
+			self.Time:SetText(("%.1f"):format(duration))
+		elseif self.castTimeFormat == 'CURRENTMAX' then
+			self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
+		elseif self.castTimeFormat == 'REMAINING' then
+			self.Time:SetText(("%.1f"):format(abs(duration - self.max)))
+		elseif self.castTimeFormat == 'REMAININGMAX' then
+			self.Time:SetText(("%.1f / %.1f"):format(abs(duration - self.max), self.max))
+		end
+	end
+end
+
+function NP:Castbar_PostCastStart(unit)
+	self:CheckInterrupt(unit)
+	NP:StyleFilterUpdate(self.__owner, 'FAKE_Casting')
+end
+
+function NP:Castbar_PostCastFail()
+	NP:StyleFilterUpdate(self.__owner, 'FAKE_Casting')
+end
+
+function NP:Castbar_PostCastInterruptible(unit)
+	self:CheckInterrupt(unit)
+end
+
+function NP:Castbar_PostCastStop()
+	NP:StyleFilterUpdate(self.__owner, 'FAKE_Casting')
+end
+
 function NP:Construct_Castbar(nameplate)
 	local Castbar = CreateFrame('StatusBar', nameplate:GetDebugName()..'Castbar', nameplate)
 	Castbar:SetFrameStrata(nameplate:GetFrameStrata())
@@ -36,90 +121,13 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Text:SetJustifyH('LEFT')
 	Castbar.Text:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
-	function Castbar:CheckInterrupt(unit)
-		if (unit == 'vehicle') then
-			unit = 'player'
-		end
-
-		if (self.notInterruptible and UnitCanAttack('player', unit)) then
-			self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, .7)
-
-			if self.Icon then
-				self.Icon:SetDesaturated(true)
-			end
-		else
-			self:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b, .7)
-
-			if self.Icon then
-				self.Icon:SetDesaturated(false)
-			end
-		end
-	end
-
-	function Castbar:CustomDelayText(duration)
-		if self.channeling then
-			if self.channelTimeFormat == 'CURRENT' then
-				self.Time:SetText(("%.1f |cffaf5050%.1f|r"):format(abs(duration - self.max), self.delay))
-			elseif self.channelTimeFormat == 'CURRENTMAX' then
-				self.Time:SetText(("%.1f / %.1f |cffaf5050%.1f|r"):format(duration, self.max, self.delay))
-			elseif self.channelTimeFormat == 'REMAINING' then
-				self.Time:SetText(("%.1f |cffaf5050%.1f|r"):format(duration, self.delay))
-			elseif self.channelTimeFormat == 'REMAININGMAX' then
-				self.Time:SetText(("%.1f / %.1f |cffaf5050%.1f|r"):format(abs(duration - self.max), self.max, self.delay))
-			end
-		else
-			if self.castTimeFormat == 'CURRENT' then
-				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(duration, "+", self.delay))
-			elseif self.castTimeFormat == 'CURRENTMAX' then
-				self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "+", self.delay))
-			elseif self.castTimeFormat == 'REMAINING' then
-				self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(abs(duration - self.max), "+", self.delay))
-			elseif self.castTimeFormat == 'REMAININGMAX' then
-				self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(abs(duration - self.max), self.max, "+", self.delay))
-			end
-		end
-	end
-
-	function Castbar:CustomTimeText(duration)
-		if self.channeling then
-			if self.channelTimeFormat == 'CURRENT' then
-				self.Time:SetText(("%.1f"):format(abs(duration - self.max)))
-			elseif self.channelTimeFormat == 'CURRENTMAX' then
-				self.Time:SetText(("%.1f / %.1f"):format(abs(duration - self.max), self.max))
-			elseif self.channelTimeFormat == 'REMAINING' then
-				self.Time:SetText(("%.1f"):format(duration))
-			elseif self.channelTimeFormat == 'REMAININGMAX' then
-				self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
-			end
-		else
-			if self.castTimeFormat == 'CURRENT' then
-				self.Time:SetText(("%.1f"):format(duration))
-			elseif self.castTimeFormat == 'CURRENTMAX' then
-				self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
-			elseif self.castTimeFormat == 'REMAINING' then
-				self.Time:SetText(("%.1f"):format(abs(duration - self.max)))
-			elseif self.castTimeFormat == 'REMAININGMAX' then
-				self.Time:SetText(("%.1f / %.1f"):format(abs(duration - self.max), self.max))
-			end
-		end
-	end
-
-	function Castbar:PostCastStart(unit)
-		self:CheckInterrupt(unit)
-		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')
-	end
-
-	function Castbar:PostCastFail()
-		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')
-	end
-
-	function Castbar:PostCastInterruptible(unit)
-		self:CheckInterrupt(unit)
-	end
-
-	function Castbar:PostCastStop()
-		NP:StyleFilterUpdate(nameplate, 'FAKE_Casting')
-	end
+	Castbar.CheckInterrupt = NP.Castbar_CheckInterrupt
+	Castbar.CustomDelayText = NP.Castbar_CustomDelayText
+	Castbar.CustomTimeText = NP.Castbar_CustomTimeText
+	Castbar.PostCastStart = NP.Castbar_PostCastStart
+	Castbar.PostCastFail = NP.Castbar_PostCastFail
+	Castbar.PostCastInterruptible = NP.Castbar_PostCastInterruptible
+	Castbar.PostCastStop = NP.Castbar_PostCastStop
 
 	return Castbar
 end

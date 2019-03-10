@@ -5,22 +5,24 @@ local UnitIsUnit = UnitIsUnit
 local GetRaidTargetIndex = GetRaidTargetIndex
 local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 
+function NP:RaidTargetIndicator_Override(event)
+	local element = self.RaidTargetIndicator
+
+	if self.unit then
+		local index = GetRaidTargetIndex(self.unit)
+		if (index) and not UnitIsUnit(self.unit, 'player') then
+			SetRaidTargetIconTexture(element, index)
+			element:Show()
+		else
+			element:Hide()
+		end
+	end
+end
+
 function NP:Construct_RaidTargetIndicator(nameplate)
 	local RaidTargetIndicator = nameplate:CreateTexture(nil, 'OVERLAY', 7)
 
-	function RaidTargetIndicator:Override(event)
-		local element = self.RaidTargetIndicator
-
-		if self.unit then
-			local index = GetRaidTargetIndex(self.unit)
-			if (index) and not UnitIsUnit(self.unit, 'player') then
-				SetRaidTargetIconTexture(element, index)
-				element:Show()
-			else
-				element:Hide()
-			end
-		end
-	end
+	RaidTargetIndicator.Override = NP.RaidTargetIndicator_Override
 
 	return RaidTargetIndicator
 end

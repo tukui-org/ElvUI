@@ -6,6 +6,24 @@ local unpack = unpack
 local UnitClass = UnitClass
 local UnitIsPlayer = UnitIsPlayer
 
+
+function NP:Portrait_PostUpdate(unit)
+	local db = NP.db.units[self.__owner.frameType]
+	if not db then return end
+
+	if (db.portrait and db.portrait.classicon) and UnitIsPlayer(unit) then
+		local _, class = UnitClass(unit);
+		self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
+		self:SetTexCoord(unpack(_G.CLASS_ICON_TCOORDS[class]))
+		self.backdrop:Hide()
+	elseif self.__owner.PortraitShown or (db.portrait and db.portrait.enable) then
+		self:SetTexCoord(.18, .82, .18, .82)
+		self.backdrop:Show()
+	else
+		self.backdrop:Hide()
+	end
+end
+
 function NP:Construct_Portrait(nameplate)
 	local Portrait = nameplate:CreateTexture(nil, 'OVERLAY')
 	Portrait:SetTexCoord(.18, .82, .18, .82)
@@ -14,22 +32,7 @@ function NP:Construct_Portrait(nameplate)
 	Portrait:SetTexelSnappingBias(0)
 	Portrait:Hide()
 
-	function Portrait:PostUpdate(unit)
-		local db = NP.db.units[self.__owner.frameType]
-		if not db then return end
-
-		if (db.portrait and db.portrait.classicon) and UnitIsPlayer(unit) then
-			local _, class = UnitClass(unit);
-			self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-			self:SetTexCoord(unpack(_G.CLASS_ICON_TCOORDS[class]))
-			self.backdrop:Hide()
-		elseif self.__owner.PortraitShown or (db.portrait and db.portrait.enable) then
-			self:SetTexCoord(.18, .82, .18, .82)
-			self.backdrop:Show()
-		else
-			self.backdrop:Hide()
-		end
-	end
+	Portrait.PostUpdate = NP.Portrait_PostUpdate
 
 	return Portrait
 end
