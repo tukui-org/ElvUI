@@ -122,16 +122,6 @@ function NP:StylePlate(nameplate)
 end
 
 function NP:UpdatePlate(nameplate)
-	NP:Update_Auras(nameplate)
-
-	NP:Update_Castbar(nameplate)
-
-	NP:Update_ClassificationIndicator(nameplate)
-
-	NP:Update_QuestIcons(nameplate)
-
-	NP:Update_Portrait(nameplate)
-
 	NP:Update_Health(nameplate)
 
 	NP:Update_HealthPrediction(nameplate)
@@ -140,6 +130,18 @@ function NP:UpdatePlate(nameplate)
 
 	NP:Update_PowerPrediction(nameplate)
 
+	NP:Update_Castbar(nameplate)
+
+	NP:Update_ClassPower(nameplate)
+
+	NP:Update_Auras(nameplate)
+
+	NP:Update_ClassificationIndicator(nameplate)
+
+	NP:Update_QuestIcons(nameplate)
+
+	NP:Update_Portrait(nameplate)
+
 	NP:Update_PvPIndicator(nameplate)
 
 	NP:Update_TargetIndicator(nameplate)
@@ -147,8 +149,6 @@ function NP:UpdatePlate(nameplate)
 	NP:Update_ThreatIndicator(nameplate)
 
 	NP:Update_RaidTargetIndicator(nameplate)
-
-	NP:Update_ClassPower(nameplate)
 
 	if E.myclass == 'DEATHKNIGHT' then
 		NP:Update_Runes(nameplate)

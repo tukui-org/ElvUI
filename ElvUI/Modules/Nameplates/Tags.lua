@@ -53,7 +53,7 @@ oUF.Tags.Methods['npctitle'] = function(unit)
 		r, g, b = unpack(oUF.colors.reaction[reactionType])
 	end
 
-	local Title = _G[format('oUF_TooltipScannerTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
+	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
 
 	if (Title and not Title:find('^'..LEVEL)) then
 		return format('%s%s|r', Hex(r, g, b), Title)
@@ -135,7 +135,7 @@ oUF.Tags.Methods['quest:title'] = function(unit)
 
 			if not ( PlayerName and PlayerName ~= '' and PlayerName ~= UnitName('player') ) then
 				if ProgressText then
-					QuestName = _G['oUF_TooltipScannerTextLeft' .. i - 1]:GetText()
+					QuestName = _G['ElvUI_ScanTooltipTextLeft' .. i - 1]:GetText()
 				end
 			end
 		end
@@ -167,7 +167,7 @@ oUF.Tags.Methods['quest:info'] = function(unit)
 			if (not PlayerName or PlayerName == '' or PlayerName == UnitName('player')) and ProgressText then
 				local x, y
 				if not QuestName and ProgressText then
-					QuestName = _G['oUF_TooltipScannerTextLeft' .. i - 1]:GetText()
+					QuestName = _G['ElvUI_ScanTooltipTextLeft' .. i - 1]:GetText()
 				end
 				if ProgressText then
 					x, y = strmatch(ProgressText, '(%d+)/(%d+)')
