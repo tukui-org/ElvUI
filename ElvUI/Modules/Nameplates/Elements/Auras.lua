@@ -121,6 +121,7 @@ function NP:Construct_AuraIcon(button)
 	button.cd:SetReverse(true)
 	button.cd:SetInside(button)
 
+	button.cd.CooldownFontSize = 12
 	button.cd.CooldownOverride = 'nameplates'
 	button.cd.CooldownSettings = {
 		['font'] = LSM:Fetch('font', NP.db.font),

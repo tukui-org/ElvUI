@@ -52,6 +52,7 @@ function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 	local fontScale = width and (floor(width + .5) / ICON_SIZE)
 
 	-- `CooldownFontSize` is used when we the cooldown button/icon does not use `SetSize` or `Size` for some reason
+	-- also it can be used to prevent the font size being based on scale, which can sometimes hide the cd text
 	if parent and parent.CooldownFontSize then
 		fontScale = (parent.CooldownFontSize / FONT_SIZE)
 	end
