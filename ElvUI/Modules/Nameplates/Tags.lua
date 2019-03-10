@@ -45,7 +45,9 @@ oUF.Tags.Methods['npctitle'] = function(unit)
 		return
 	end
 
+	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	E.ScanTooltip:SetUnit(unit)
+	E.ScanTooltip:Show()
 
 	local reactionType = UnitReaction(unit, "player")
 	local r, g, b = 1, 1, 1
@@ -124,6 +126,10 @@ oUF.Tags.Methods['quest:title'] = function(unit)
 		return
 	end
 
+	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+	E.ScanTooltip:SetUnit(unit)
+	E.ScanTooltip:Show()
+
 	local QuestName
 
 	if E.ScanTooltip:NumLines() >= 3 then
@@ -154,6 +160,10 @@ oUF.Tags.Methods['quest:info'] = function(unit)
 	if UnitIsPlayer(unit) then
 		return
 	end
+
+	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+	E.ScanTooltip:SetUnit(unit)
+	E.ScanTooltip:Show()
 
 	local ObjectiveCount = 0
 	local QuestName
