@@ -3,8 +3,13 @@ local D = E:GetModule("Distributor")
 
 local format = format
 local sort, tinsert = sort, tinsert
-local DEFAULT_WIDTH = 890
-local DEFAULT_HEIGHT = 651
+
+local DEFAULT_WIDTH, DEFAULT_HEIGHT = 900, 650
+if E.UIParent then
+	local width, height = E.UIParent:GetSize()
+	DEFAULT_WIDTH = (width*60)/100
+	DEFAULT_HEIGHT = (height*70)/100
+end
 
 local _G = _G
 E.Libs.AceGUI = _G.LibStub('AceGUI-3.0')
