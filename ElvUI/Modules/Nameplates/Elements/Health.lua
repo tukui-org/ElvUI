@@ -40,7 +40,7 @@ function NP:Update_Health(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	nameplate.Health.colorClass = db.health.useClassColor
-	nameplate.Health.colorSelection = true
+--	nameplate.Health.colorSelection = true
 	nameplate.Health.colorReaction = true
 	nameplate.Health.colorTapping = true
 
