@@ -34,9 +34,9 @@ function NP:Update_ThreatIndicator(nameplate)
 		end
 
 		if db.indicator then
-			nameplate.ThreatIndicator:Show()
+			nameplate.ThreatIndicator:SetAlpha(1)
 		else
-			nameplate.ThreatIndicator:Hide()
+			nameplate.ThreatIndicator:SetAlpha(0)
 		end
 	else
 		if nameplate:IsElementEnabled('ThreatIndicator') then
