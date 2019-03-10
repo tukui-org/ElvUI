@@ -4153,7 +4153,6 @@ E.Options.args.nameplate = {
 							type = 'toggle',
 							get = function(info) return E.db.nameplates.threat.indicator end,
 							set = function(info, value) E.db.nameplates.threat.indicator = value; NP:ConfigureAll() end,
-							disabled = function() return true end, -- remove me
 						},
 						goodWidth = {
 							name = L["Good Width"],
