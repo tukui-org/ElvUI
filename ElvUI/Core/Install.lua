@@ -518,9 +518,9 @@ local function SetupAuras(style)
 		end
 	end
 
-	if InstallStepComplete then
-		InstallStepComplete.message = L["Auras Set"]
-		InstallStepComplete:Show()
+	if _G.InstallStepComplete then
+		_G.InstallStepComplete.message = L["Auras Set"]
+		_G.InstallStepComplete:Show()
 	end
 end
 
