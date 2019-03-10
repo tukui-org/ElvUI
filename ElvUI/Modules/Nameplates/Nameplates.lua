@@ -325,7 +325,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isTarget = UnitIsUnit(unit, "target")
 
 		if nameplate:IsShown() then
-			E:UIFrameFadeIn(nameplate, 1, 0, nameplate.isTarget and 1 or NP.db.nonTargetTransparency)
+			E:UIFrameFadeIn(nameplate, 1, 0, (nameplate.isTarget and 1) or (UnitExists("target") and NP.db.nonTargetTransparency or 1))
 		end
 
 		NP.Plates[nameplate] = true
