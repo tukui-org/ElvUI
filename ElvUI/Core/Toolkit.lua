@@ -254,8 +254,10 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 end
 
 local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
-	local parent = f.IsObjectType and f:IsObjectType('Texture') and f:GetParent() or f
+	local parent = (f.IsObjectType and f:IsObjectType('Texture') and f:GetParent()) or f
 	local b = CreateFrame('Frame', nil, parent)
+	f.backdrop = b
+
 	if f.forcePixelMode or forcePixelMode then
 		b:SetOutside(f, E.mult, E.mult)
 	else
@@ -270,8 +272,6 @@ local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFr
 	else
 		b:SetFrameLevel(0)
 	end
-
-	f.backdrop = b
 end
 
 local function CreateShadow(f, size)
