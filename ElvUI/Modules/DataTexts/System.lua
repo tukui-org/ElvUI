@@ -18,6 +18,7 @@ local GetNetStats = GetNetStats
 local GetNumAddOns = GetNumAddOns
 local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown = IsShiftKeyDown
+local IsModifierKeyDown = IsModifierKeyDown
 local ResetCPUUsage = ResetCPUUsage
 local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
@@ -103,8 +104,10 @@ local function UpdateCPU()
 end
 
 local function Click()
-	collectgarbage("collect");
-	ResetCPUUsage();
+	if IsModifierKeyDown() then
+		collectgarbage("collect");
+		ResetCPUUsage();
+	end
 end
 
 local ipTypes = {"IPv4", "IPv6"}
@@ -160,6 +163,7 @@ local function OnEnter(self)
 		DT.tooltip:AddLine(L["(Hold Shift) Memory Usage"])
 	end
 
+	DT.tooltip:AddLine(L["(Modifer Click) Collect Garbage"])
 	DT.tooltip:Show()
 end
 

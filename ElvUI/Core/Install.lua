@@ -25,7 +25,6 @@ local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
 local FCF_SetWindowName = FCF_SetWindowName
 local FCF_StopDragging = FCF_StopDragging
 local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
-local CreateAnimationGroup = CreateAnimationGroup
 local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
@@ -253,11 +252,9 @@ function E:SetupLayout(layout, noDataReset)
 		--Chat
 		E.db.chat.fontSize = 10
 		E.db.chat.panelColorConverted = true
-		E.db.chat.separateSizes = true
+		E.db.chat.separateSizes = false
 		E.db.chat.panelHeight = 236
-		E.db.chat.panelWidth = 440
-		E.db.chat.panelHeightRight = 236
-		E.db.chat.panelWidthRight = 472
+		E.db.chat.panelWidth = 472
 		E.db.chat.tapFontSize = 10
 		--DataBars
 		E.db.databars.azerite.height = 10
@@ -301,7 +298,7 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,-1,95"
 		E.db.movers.ElvUF_PlayerMover = "BOTTOM,ElvUIParent,BOTTOM,-342,139"
 		E.db.movers.ElvUF_Raid40Mover = "TOPLEFT,ElvUIParent,BOTTOMLEFT,4,482"
-		E.db.movers.ElvUF_RaidMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,243"
+		E.db.movers.ElvUF_RaidMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,248"
 		E.db.movers.ElvUF_RaidpetMover = "TOPLEFT,ElvUIParent,BOTTOMLEFT,4,737"
 		E.db.movers.ElvUF_TargetCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,-1,243"
 		E.db.movers.ElvUF_TargetMover = "BOTTOM,ElvUIParent,BOTTOM,342,139"
@@ -321,7 +318,6 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.movers.VehicleSeatMover = "TOPLEFT,ElvUIParent,TOPLEFT,4,-4"
 		E.db.movers.VOICECHAT = "TOPLEFT,ElvUIParent,TOPLEFT,368,-210"
 		E.db.movers.ZoneAbility = "BOTTOM,ElvUIParent,BOTTOM,-1,293"
-		E.db.movers.LeftChatMover ="BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,36,4"
 		--Tooltip
 		E.db.tooltip.fontSize = 10
 		E.db.tooltip.healthBar.fontOutline = "MONOCHROMEOUTLINE"
@@ -445,16 +441,16 @@ function E:SetupLayout(layout, noDataReset)
 
 	--Healer Layout
 	if layout == "healer" and not noDataReset then
-		E.db["movers"]["ElvUF_PlayerCastbarMover"] = "BOTTOM,ElvUIParent,BOTTOM,0,243"
-		E.db["movers"]["ElvUF_TargetCastbarMover"] = "BOTTOM,ElvUIParent,BOTTOM,0,97"
-		E.db["movers"]["ElvUF_RaidMover"] = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,202,373"
-		E.db["movers"]["LootFrameMover"] = "TOPLEFT,ElvUIParent,TOPLEFT,250,-104"
-		E.db["movers"]["ShiftAB"] = "TOPLEFT,ElvUIParent,BOTTOMLEFT,4,273"
-		E.db["movers"]["VOICECHAT"] = "TOPLEFT,ElvUIParent,TOPLEFT,250,-82"
-		E.db["unitframe"]["units"]["party"]["enable"] = false
-		E.db["unitframe"]["units"]["party"]["health"]["frequentUpdates"] = true
-		E.db["unitframe"]["units"]["raid"]["visibility"] = "[nogroup] hide;show"
-		E.db["unitframe"]["units"]["raid40"]["health"]["frequentUpdates"] = true
+		E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,243"
+		E.db.movers.ElvUF_TargetCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,97"
+		E.db.movers.ElvUF_RaidMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,202,373"
+		E.db.movers.LootFrameMover = "TOPLEFT,ElvUIParent,TOPLEFT,250,-104"
+		E.db.movers.ShiftAB = "TOPLEFT,ElvUIParent,BOTTOMLEFT,4,273"
+		E.db.movers.VOICECHAT = "TOPLEFT,ElvUIParent,TOPLEFT,250,-82"
+		E.db.unitframe.units.party.enable = false
+		E.db.unitframe.units.party.health.frequentUpdates = true
+		E.db.unitframe.units.raid.visibility = "[nogroup] hide;show"
+		E.db.unitframe.units.raid40.health.frequentUpdates = true
 	end
 
 	if not noDataReset and _G.InstallStepComplete then
@@ -539,24 +535,24 @@ local function ResetAll()
 	_G.InstallPrevButton:Disable()
 	_G.InstallOption1Button:Hide()
 	_G.InstallOption1Button:SetScript("OnClick", nil)
-	_G.InstallOption1Button:SetText("")
+	_G.InstallOption1Button:SetText()
 	_G.InstallOption2Button:Hide()
 	_G.InstallOption2Button:SetScript('OnClick', nil)
-	_G.InstallOption2Button:SetText('')
+	_G.InstallOption2Button:SetText()
 	_G.InstallOption3Button:Hide()
 	_G.InstallOption3Button:SetScript('OnClick', nil)
-	_G.InstallOption3Button:SetText('')
+	_G.InstallOption3Button:SetText()
 	_G.InstallOption4Button:Hide()
 	_G.InstallOption4Button:SetScript('OnClick', nil)
-	_G.InstallOption4Button:SetText('')
+	_G.InstallOption4Button:SetText()
 	_G.InstallSlider:Hide()
-	_G.InstallSlider.Min:SetText("")
-	_G.InstallSlider.Max:SetText("")
-	_G.InstallSlider.Cur:SetText("")
-	ElvUIInstallFrame.SubTitle:SetText("")
-	ElvUIInstallFrame.Desc1:SetText("")
-	ElvUIInstallFrame.Desc2:SetText("")
-	ElvUIInstallFrame.Desc3:SetText("")
+	_G.InstallSlider.Min:SetText()
+	_G.InstallSlider.Max:SetText()
+	_G.InstallSlider.Cur:SetText()
+	ElvUIInstallFrame.SubTitle:SetText()
+	ElvUIInstallFrame.Desc1:SetText()
+	ElvUIInstallFrame.Desc2:SetText()
+	ElvUIInstallFrame.Desc3:SetText()
 	ElvUIInstallFrame:Size(550, 400)
 end
 
@@ -631,24 +627,30 @@ local function SetPage(PageNum)
 		f.SubTitle:SetText(_G.UISCALE)
 		f.Desc1:SetFormattedText(L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."])
 		InstallSlider:Show()
+		InstallSlider:SetValueStep(0.01)
+		InstallSlider:SetObeyStepOnDrag(true)
 		InstallSlider:SetMinMaxValues(0.4, 1.15)
 
 		local value = E:PixelClip(E.global.general.UIScale)
 		InstallSlider:SetValue(value)
 		InstallSlider.Cur:SetText(value)
 		InstallSlider:SetScript("OnValueChanged", function(self)
-			E.global.general.UIScale = self:GetValue()
-			local scale = E:PixelClip(E.global.general.UIScale)
-			InstallSlider.Cur:SetText(scale)
+			E.global.general.UIScale =  E:PixelClip(self:GetValue())
+			InstallSlider.Cur:SetText(E.global.general.UIScale)
 		end)
 
 		InstallSlider.Min:SetText(0.4)
 		InstallSlider.Max:SetText(1.15)
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function()
-			local autoScale = E:PixelBestSize()
-			E.global.general.UIScale = E:PixelClip(autoScale)
-			InstallSlider:SetValue(E.global.general.UIScale)
+			local scale = E:PixelClip(E:PixelBestSize())
+
+			-- this is to just keep the slider in place, the values need updated again afterwards
+			InstallSlider:SetValue(scale)
+
+			-- update the values with deeper accuracy
+			E.global.general.UIScale = scale
+			InstallSlider.Cur:SetText(E.global.general.UIScale)
 		end)
 
 		InstallOption1Button:SetText(L["Auto Scale"])
@@ -836,7 +838,7 @@ function E:Install()
 		f.Option1:StripTextures()
 		f.Option1:Size(160, 30)
 		f.Option1:Point("BOTTOM", 0, 45)
-		f.Option1:SetText("")
+		f.Option1:SetText()
 		f.Option1:Hide()
 		E.Skins:HandleButton(f.Option1, true)
 
@@ -844,7 +846,7 @@ function E:Install()
 		f.Option2:StripTextures()
 		f.Option2:Size(110, 30)
 		f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45)
-		f.Option2:SetText("")
+		f.Option2:SetText()
 		f.Option2:Hide()
 		f.Option2:SetScript('OnShow', function() f.Option1:Width(110); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45) end)
 		f.Option2:SetScript('OnHide', function() f.Option1:Width(160); f.Option1:ClearAllPoints(); f.Option1:Point("BOTTOM", 0, 45) end)
@@ -854,7 +856,7 @@ function E:Install()
 		f.Option3:StripTextures()
 		f.Option3:Size(100, 30)
 		f.Option3:Point('LEFT', f.Option2, 'RIGHT', 4, 0)
-		f.Option3:SetText("")
+		f.Option3:SetText()
 		f.Option3:Hide()
 		f.Option3:SetScript('OnShow', function() f.Option1:Width(100); f.Option1:ClearAllPoints(); f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0); f.Option2:Width(100); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOM', f, 'BOTTOM', 0, 45)  end)
 		f.Option3:SetScript('OnHide', function() f.Option1:Width(160); f.Option1:ClearAllPoints(); f.Option1:Point("BOTTOM", 0, 45); f.Option2:Width(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
@@ -864,7 +866,7 @@ function E:Install()
 		f.Option4:StripTextures()
 		f.Option4:Size(100, 30)
 		f.Option4:Point('LEFT', f.Option3, 'RIGHT', 4, 0)
-		f.Option4:SetText("")
+		f.Option4:SetText()
 		f.Option4:Hide()
 		f.Option4:SetScript('OnShow', function()
 			f.Option1:Width(100)

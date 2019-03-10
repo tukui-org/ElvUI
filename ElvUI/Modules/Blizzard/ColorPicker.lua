@@ -10,7 +10,6 @@ local _G = _G
 local tonumber = tonumber
 local floor = math.floor
 local format, strsub = string.format, strsub
-local collectgarbage = collectgarbage
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
@@ -154,10 +153,6 @@ function B:EnhanceColorPicker()
 		end
 	end)
 
-	_G.ColorPickerOkayButton:HookScript('OnClick', function()
-		collectgarbage("collect"); --Couldn't hurt to do this, this button usually executes a lot of code.
-	end)
-
 	_G.OpacitySliderFrame:HookScript("OnValueChanged", function()
 		if not editingText then
 			UpdateAlphaText()
@@ -182,7 +177,7 @@ function B:EnhanceColorPicker()
 
 	-- add Color Swatch for the copied color
 	t = _G.ColorPickerFrame:CreateTexture("ColorPPCopyColorSwatch")
-	t:SetSize(w,h)
+	t:Size(w,h)
 	t:SetColorTexture(0,0,0)
 	t:Hide()
 

@@ -89,7 +89,7 @@ local function LoadSkin()
 		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
 		bu.backdrop:SetInside(bu, 3, 3)
 
-		bu.icon:SetPoint("LEFT", bu, -40, 0)
+		bu.icon:Point("LEFT", bu, -40, 0)
 		bu.icon:SetTexCoord(unpack(E.TexCoords))
 		bu.icon:CreateBackdrop()
 		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
@@ -131,12 +131,12 @@ local function LoadSkin()
 		bu.selectedTexture:SetTexture()
 
 		bu.factionIcon:SetDrawLayer('OVERLAY')
-		bu.factionIcon:SetPoint('TOPRIGHT', -1, -4)
-		bu.factionIcon:SetPoint('BOTTOMRIGHT', -1, 4)
+		bu.factionIcon:Point('TOPRIGHT', -1, -4)
+		bu.factionIcon:Point('BOTTOMRIGHT', -1, 4)
 
 		bu.favorite:SetTexture("Interface\\COMMON\\FavoritesIcon")
 		bu.favorite:Point("TOPLEFT", bu.DragButton, "TOPLEFT" , -8, 8)
-		bu.favorite:SetSize(32, 32)
+		bu.favorite:Size(32, 32)
 	end
 
 	-----------------------------
@@ -164,7 +164,6 @@ local function LoadSkin()
 	S:HandleEditBox(_G.PetJournalSearchBox)
 	_G.PetJournalSearchBox:ClearAllPoints()
 	_G.PetJournalSearchBox:Point("TOPLEFT", _G.PetJournalLeftInset, "TOPLEFT", (E.PixelMode and 13 or 10), -9)
-	_G.PetJournalFilterButton:StripTextures(true)
 	S:HandleButton(_G.PetJournalFilterButton)
 	_G.PetJournalFilterButton:Height(E.PixelMode and 22 or 24)
 	_G.PetJournalFilterButton:ClearAllPoints()
@@ -178,7 +177,7 @@ local function LoadSkin()
 		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
 		bu.backdrop:SetInside(bu, 3, 3)
 
-		bu.icon:SetPoint("LEFT", -40, 0)
+		bu.icon:Point("LEFT", -40, 0)
 		bu.icon:SetTexCoord(unpack(E.TexCoords))
 		bu.icon:CreateBackdrop()
 		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
@@ -363,7 +362,7 @@ local function LoadSkin()
 			end
 			self.backdrop:SetBackdropBorderColor(r, g, b)
 		else
-			self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end)
 
@@ -400,8 +399,8 @@ local function LoadSkin()
 
 		button.levelBackground:SetTexture()
 
-		button.name:SetPoint('LEFT', button, 'RIGHT', 4, 8)
-		button.level:SetPoint('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
+		button.name:Point('LEFT', button, 'RIGHT', 4, 8)
+		button.level:Point('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
 
 		button.SetTextColor = nil
 		if C_Heirloom_PlayerHasHeirloom(button.itemID) then
@@ -413,7 +412,7 @@ local function LoadSkin()
 			button.name:SetTextColor(0.4, 0.4, 0.4)
 			button.level:SetTextColor(0.4, 0.4, 0.4)
 			button.special:SetTextColor(0.4, 0.4, 0.4)
-			button.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 		button.SetTextColor = E.noop
 	end)
@@ -435,14 +434,14 @@ local function LoadSkin()
 	--Items
 	WardrobeCollectionFrame.progressBar:StripTextures()
 	WardrobeCollectionFrame.progressBar:CreateBackdrop()
-	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E["media"].normTex)
+	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
 
 	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
 
 	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)
 	_G.WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
 
-	WardrobeCollectionFrame.FilterButton:SetPoint('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
+	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	S:HandleDropDownBox(_G.WardrobeCollectionFrameWeaponDropDown)
 
@@ -464,7 +463,7 @@ local function LoadSkin()
 					elseif texture == "transmog-wardrobe-border-unusable" then
 						r, g, b =  1, 0, 0
 					else
-						r, g, b = unpack(E["media"].bordercolor)
+						r, g, b = unpack(E.media.bordercolor)
 					end
 					Model.backdrop:SetBackdropBorderColor(r, g, b)
 				end)
@@ -524,12 +523,12 @@ local function LoadSkin()
 	WardrobeOutfitFrame:StripTextures()
 	WardrobeOutfitFrame:SetTemplate("Transparent")
 	S:HandleDropDownBox(_G.WardrobeOutfitDropDown)
-	_G.WardrobeOutfitDropDown:SetSize(200, 32)
+	_G.WardrobeOutfitDropDown:Size(200, 32)
 	_G.WardrobeOutfitDropDownText:ClearAllPoints()
-	_G.WardrobeOutfitDropDownText:SetPoint("CENTER", _G.WardrobeOutfitDropDown, 10, 2)
+	_G.WardrobeOutfitDropDownText:Point("CENTER", _G.WardrobeOutfitDropDown, 10, 2)
 	S:HandleButton(_G.WardrobeOutfitDropDown.SaveButton)
 	_G.WardrobeOutfitDropDown.SaveButton:ClearAllPoints()
-	_G.WardrobeOutfitDropDown.SaveButton:SetPoint("LEFT", _G.WardrobeOutfitDropDown, "RIGHT", 1, 4)
+	_G.WardrobeOutfitDropDown.SaveButton:Point("LEFT", _G.WardrobeOutfitDropDown, "RIGHT", 1, 4)
 
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
@@ -544,7 +543,7 @@ local function LoadSkin()
 	end
 
 	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
-	WardrobeTransmogFrame.SpecButton:SetPoint("RIGHT", WardrobeTransmogFrame.ApplyButton, "LEFT", -2, 0)
+	WardrobeTransmogFrame.SpecButton:Point("RIGHT", WardrobeTransmogFrame.ApplyButton, "LEFT", -2, 0)
 	S:HandleButton(WardrobeTransmogFrame.SpecButton)
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
 	S:HandleButton(WardrobeTransmogFrame.Model.ClearAllPendingButton)

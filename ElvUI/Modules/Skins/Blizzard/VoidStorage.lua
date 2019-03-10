@@ -37,7 +37,7 @@ local function LoadSkin()
 	VoidStorageFrame:SetTemplate("Transparent")
 
 	VoidStorageFrame.Page1:SetNormalTexture("Interface\\Icons\\INV_Enchant_EssenceCosmicGreater")
-	VoidStorageFrame.Page1:SetPoint("LEFT", "$parent", "TOPRIGHT", 1, -60)
+	VoidStorageFrame.Page1:Point("LEFT", "$parent", "TOPRIGHT", 1, -60)
 
 	VoidStorageFrame.Page2:SetNormalTexture("Interface\\Icons\\INV_Enchant_EssenceArcaneLarge")
 

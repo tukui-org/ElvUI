@@ -7,9 +7,116 @@ local unpack, type, select, getmetatable, assert, pairs = unpack, type, select, 
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local hooksecurefunc = hooksecurefunc
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
+
+-- ls, Azil, and Simpy made this to replace Blizzard's SetBackdrop API while the textures can't snap
+local BackdropBorders = {"TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT", "TOP", "BOTTOM", "LEFT", "RIGHT"}
+
+local function customSetBackdrop(frame, backdrop)
+	if not backdrop then
+		if frame.pixelBorders then
+			for _, v in pairs(BackdropBorders) do
+				frame.pixelBorders[v]:Hide()
+			end
+		end
+		return
+	end
+
+	if backdrop.insets then
+		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame, 'TOPLEFT', -backdrop.insets.left, backdrop.insets.top)
+		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', backdrop.insets.right, -backdrop.insets.bottom)
+	else
+		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame)
+		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame)
+	end
+
+	local size = backdrop.edgeSize or E.mult
+	frame.pixelBorders.TOPLEFT:SetSize(size, size)
+	frame.pixelBorders.TOPRIGHT:SetSize(size, size)
+	frame.pixelBorders.BOTTOMLEFT:SetSize(size, size)
+	frame.pixelBorders.BOTTOMRIGHT:SetSize(size, size)
+
+	frame.pixelBorders.TOP:SetHeight(size)
+	frame.pixelBorders.BOTTOM:SetHeight(size)
+	frame.pixelBorders.LEFT:SetWidth(size)
+	frame.pixelBorders.RIGHT:SetWidth(size)
+end
+
+local function customBackdropBorderColor(frame, r, g, b, a, skip)
+	if skip == 'ElvUI' then return end
+
+	if frame.pixelBorders then
+		for _, v in pairs(BackdropBorders) do
+			frame.pixelBorders[v]:SetColorTexture(r, g, b, a)
+		end
+	end
+
+	frame:SetBackdropBorderColor(r, g, b, 0, 'ElvUI')
+end
+
+--[[
+local function GetBackdropBorderColor(frame)
+	if frame.pixelBorders then
+		return frame.pixelBorders.TOPLEFT:GetVertexColor()
+	end
+end
+]]
+
+local function hookBlizzardBackdrop(frame, noSecureHook)
+	if not frame then return end
+
+	if not frame.pixelBorders then
+		local borders = {}
+
+		for _, v in pairs(BackdropBorders) do
+			borders[v] = frame:CreateTexture("$parentPixelBorder"..v, "BORDER", nil, 1)
+			borders[v]:SetSnapToPixelGrid(false)
+			borders[v]:SetTexelSnappingBias(0)
+		end
+
+		borders.CENTER = frame:CreateTexture("$parentPixelBorderCENTER", "BACKGROUND", nil, 0)
+		borders.CENTER:SetSnapToPixelGrid(false)
+		borders.CENTER:SetTexelSnappingBias(0)
+
+		borders.TOPLEFT:Point("BOTTOMRIGHT", borders.CENTER, "TOPLEFT", 1, -1)
+		borders.TOPRIGHT:Point("BOTTOMLEFT", borders.CENTER, "TOPRIGHT", -1, -1)
+		borders.BOTTOMLEFT:Point("TOPRIGHT", borders.CENTER, "BOTTOMLEFT", 1, 1)
+		borders.BOTTOMRIGHT:Point("TOPLEFT", borders.CENTER, "BOTTOMRIGHT", -1, 1)
+
+		borders.TOP:Point("TOPLEFT", borders.TOPLEFT, "TOPRIGHT", 0, 0)
+		borders.TOP:Point("TOPRIGHT", borders.TOPRIGHT, "TOPLEFT", 0, 0)
+
+		borders.BOTTOM:Point("BOTTOMLEFT", borders.BOTTOMLEFT, "BOTTOMRIGHT", 0, 0)
+		borders.BOTTOM:Point("BOTTOMRIGHT", borders.BOTTOMRIGHT, "BOTTOMLEFT", 0, 0)
+
+		borders.LEFT:Point("TOPLEFT", borders.TOPLEFT, "BOTTOMLEFT", 0, 0)
+		borders.LEFT:Point("BOTTOMLEFT", borders.BOTTOMLEFT, "TOPLEFT", 0, 0)
+
+		borders.RIGHT:Point("TOPRIGHT", borders.TOPRIGHT, "BOTTOMRIGHT", 0, 0)
+		borders.RIGHT:Point("BOTTOMRIGHT", borders.BOTTOMRIGHT, "TOPRIGHT", 0, 0)
+
+		frame.pixelBorders = borders
+	end
+
+	if not noSecureHook and not frame.pixelBorderHooks then
+		--[[frame.BlizzSetBackdrop = frame.SetBackdrop
+			frame.BlizzSetBackdropBorderColor = frame.SetBackdropBorderColor]]
+
+		hooksecurefunc(frame, 'SetBackdrop', customSetBackdrop)
+		hooksecurefunc(frame, 'SetBackdropBorderColor', customBackdropBorderColor)
+
+		--[[frame.SetBackdrop = SetBackdrop
+			frame.SetBackdropBorderColor = SetBackdropBorderColor
+			frame.GetBackdropBorderColor = GetBackdropBorderColor]]
+
+		frame.pixelBorderHooks = true
+	end
+end
+-- end backdrop replace code
+
 local function GetTemplate(t, isUnitFrameElement)
 	backdropa = 1
 
@@ -26,22 +133,22 @@ local function GetTemplate(t, isUnitFrameElement)
 	end
 end
 
-local function Size(frame, width, height)
+local function Size(frame, width, height, ...)
 	assert(width)
-	frame:SetSize(E:Scale(width), E:Scale(height or width))
+	frame:SetSize(E:Scale(width), E:Scale(height or width), ...)
 end
 
-local function Width(frame, width)
+local function Width(frame, width, ...)
 	assert(width)
-	frame:SetWidth(E:Scale(width))
+	frame:SetWidth(E:Scale(width), ...)
 end
 
-local function Height(frame, height)
+local function Height(frame, height, ...)
 	assert(height)
-	frame:SetHeight(E:Scale(height))
+	frame:SetHeight(E:Scale(height), ...)
 end
 
-local function Point(obj, arg1, arg2, arg3, arg4, arg5)
+local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
 	if arg2 == nil then arg2 = obj:GetParent() end
 
 	if type(arg2)=='number' then arg2 = E:Scale(arg2) end
@@ -49,7 +156,7 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 	if type(arg4)=='number' then arg4 = E:Scale(arg4) end
 	if type(arg5)=='number' then arg5 = E:Scale(arg5) end
 
-	obj:SetPoint(arg1, arg2, arg3, arg4, arg5)
+	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
 end
 
 local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
@@ -83,7 +190,9 @@ end
 local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 	GetTemplate(t, isUnitFrameElement)
 
-	if t then f.template = t end
+	hookBlizzardBackdrop(f)
+
+	f.template = t or 'Default'
 	if glossTex then f.glossTex = glossTex end
 	if ignoreUpdates then f.ignoreUpdates = ignoreUpdates end
 	if forcePixelMode then f.forcePixelMode = forcePixelMode end
@@ -108,26 +217,27 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 		if not E.PixelMode and not f.forcePixelMode then
 			if not f.iborder then
 				local border = CreateFrame('Frame', nil, f)
-				border:SetInside(f, E.mult, E.mult)
-				border:SetBackdrop({
-					edgeFile = E.media.blankTex,
-					edgeSize = E.mult,
+				hookBlizzardBackdrop(border, true)
+				customSetBackdrop(border, {
+					edgeFile = E.media.blankTex, edgeSize = E.mult,
 					insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 				})
-				border:SetBackdropBorderColor(0, 0, 0, 1)
+
+				customBackdropBorderColor(border, 0, 0, 0, 1)
+				border:SetAllPoints()
 				f.iborder = border
 			end
 
 			if not f.oborder then
 				local border = CreateFrame('Frame', nil, f)
-				border:SetOutside(f, E.mult, E.mult)
-				border:SetFrameLevel(f:GetFrameLevel() + 1)
-				border:SetBackdrop({
-					edgeFile = E.media.blankTex,
-					edgeSize = E.mult,
+				hookBlizzardBackdrop(border, true)
+				customSetBackdrop(border, {
+					edgeFile = E.media.blankTex, edgeSize = E.mult,
 					insets = {left = E.mult, right = E.mult, top = E.mult, bottom = E.mult}
 				})
-				border:SetBackdropBorderColor(0, 0, 0, 1)
+
+				customBackdropBorderColor(border, 0, 0, 0, 1)
+				border:SetAllPoints()
 				f.oborder = border
 			end
 		end
@@ -144,8 +254,6 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 end
 
 local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
-	if not t then t = 'Default' end
-
 	local parent = f.IsObjectType and f:IsObjectType('Texture') and f:GetParent() or f
 	local b = CreateFrame('Frame', nil, parent)
 	if f.forcePixelMode or forcePixelMode then
@@ -204,6 +312,10 @@ local StripTexturesBlizzFrames = {
 	'bgLeft',
 	'bgRight',
 	'FilligreeOverlay',
+	'PortraitOverlay',
+	'ArtOverlayFrame',
+	'Portrait',
+	'portrait',
 }
 
 local STRIP_TEX = 'Texture'
@@ -276,6 +388,8 @@ end
 local function StyleButton(button, noHover, noPushed, noChecked)
 	if button.SetHighlightTexture and not button.hover and not noHover then
 		local hover = button:CreateTexture()
+		hover:SetSnapToPixelGrid(false)
+		hover:SetTexelSnappingBias(0)
 		hover:SetInside()
 		hover:SetColorTexture(1, 1, 1, 0.3)
 		button:SetHighlightTexture(hover)
@@ -284,6 +398,8 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 
 	if button.SetPushedTexture and not button.pushed and not noPushed then
 		local pushed = button:CreateTexture()
+		pushed:SetSnapToPixelGrid(false)
+		pushed:SetTexelSnappingBias(0)
 		pushed:SetInside()
 		pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 		button:SetPushedTexture(pushed)
@@ -292,6 +408,8 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 
 	if button.SetCheckedTexture and not button.checked and not noChecked then
 		local checked = button:CreateTexture()
+		checked:SetSnapToPixelGrid(false)
+		checked:SetTexelSnappingBias(0)
 		checked:SetInside()
 		checked:SetColorTexture(1, 1, 1, 0.3)
 		button:SetCheckedTexture(checked)
@@ -364,6 +482,7 @@ local object = CreateFrame('Frame')
 addapi(object)
 addapi(object:CreateTexture())
 addapi(object:CreateFontString())
+addapi(object:CreateMaskTexture())
 
 object = EnumerateFrames()
 while object do

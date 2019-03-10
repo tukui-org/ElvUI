@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local gsub = gsub
+local pairs = pairs
 local ipairs = ipairs
 local select = select
 local unpack = unpack
@@ -23,7 +24,7 @@ local function HandleReward(frame)
 		S:HandleIcon(frame.Icon, true)
 
 		frame.Count:ClearAllPoints()
-		frame.Count:SetPoint("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, 0)
+		frame.Count:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, 0)
 	end
 
 	if frame.NameFrame then

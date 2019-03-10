@@ -66,7 +66,11 @@ function mod:ConstructElement_CutawayHealth(parent)
 
 	local cutawayHealth = CreateFrame("StatusBar", "$parentCutawayHealth", healthBar)
 	cutawayHealth:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
-	cutawayHealth:SetFrameLevel(healthBar:GetFrameLevel() - 1);
+	cutawayHealth:SetFrameLevel(healthBar:GetFrameLevel() - 1)
+
+	local statusBarTexture = cutawayHealth:GetStatusBarTexture()
+	statusBarTexture:SetSnapToPixelGrid(false)
+	statusBarTexture:SetTexelSnappingBias(0)
 
 	mod:RegisterHealthBarCallbacks(parent, mod.CutawayHealthValueChangeCallback, mod.CutawayHealthColorChangeCallback, mod.CutawayHealthMaxHealthChangeCallback);
 

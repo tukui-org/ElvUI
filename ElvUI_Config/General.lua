@@ -49,8 +49,7 @@ E.Options.args.general = {
 					type = 'execute',
 					name = L["Auto Scale"],
 					func = function()
-						local autoScale = E:PixelBestSize()
-						E.global.general.UIScale = E:PixelClip(autoScale)
+						E.global.general.UIScale = E:PixelClip(E:PixelBestSize())
 						E:StaticPopup_Show("UISCALE_CHANGE")
 					end,
 				},
@@ -58,8 +57,8 @@ E.Options.args.general = {
 					order = 3,
 					type = "range",
 					name = UI_SCALE,
-					min = 0.1, max = 1.25,
-					softMin = 0.40, softMax = 1.15, step = 0.01,
+					min = 0.1, max = 1.25, step = 0.00001,
+					softMin = 0.40, softMax = 1.15, bigStep = 0.01,
 					get = function(info) return E.global.general.UIScale end,
 					set = function(info, value)
 						E.global.general.UIScale = value;
@@ -806,81 +805,36 @@ E.Options.args.general = {
 							order = 3,
 							type = 'group',
 							name = L["Fonts"],
+							disabled = function() return not E.db.general.itemLevel.displayCharacterInfo and not E.db.general.itemLevel.displayInspectInfo end,
+							get = function(info) return E.db.general.itemLevel[ info[#info] ] end,
+							set = function(info, value)
+								E.db.general.itemLevel[ info[#info] ] = value
+								M:UpdateInspectPageFonts("Character")
+								M:UpdateInspectPageFonts("Inspect")
+							end,
 							args = {
-								level ={
+								itemLevelFont = {
 									order = 1,
-									type = 'group',
-									name = L["Item Level Font"],
-									disabled = function() return not E.db.general.itemLevel.displayCharacterInfo and not E.db.general.itemLevel.displayInspectInfo end,
-									get = function(info) return E.db.general.itemLevel[ info[#info] ] end,
-									set = function(info, value)
-										E.db.general.itemLevel[ info[#info] ] = value
-										M:UpdateInspectPageFonts("Character")
-										M:UpdateInspectPageFonts("Inspect")
-									end,
-									args = {
-										itemLevelFont = {
-											order = 1,
-											type = "select",
-											name = L["Font"],
-											dialogControl = 'LSM30_Font',
-											values = AceGUIWidgetLSMlists.font,
-										},
-										itemLevelFontSize = {
-											order = 2,
-											type = "range",
-											name = FONT_SIZE,
-											min = 4, max = 40, step = 1,
-										},
-										itemLevelFontOutline = {
-											order = 3,
-											type = "select",
-											name = L["Font Outline"],
-											values = {
-												["NONE"] = NONE,
-												["OUTLINE"] = "OUTLINE",
-												["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-												["THICKOUTLINE"] = "THICKOUTLINE",
-											},
-										},
-									},
+									type = "select",
+									name = L["Font"],
+									dialogControl = 'LSM30_Font',
+									values = AceGUIWidgetLSMlists.font,
 								},
-								enchants = {
+								itemLevelFontSize = {
 									order = 2,
-									type = 'group',
-									name = L["Enchants Font"],
-									disabled = function() return not E.db.general.itemLevel.displayCharacterInfo and not E.db.general.itemLevel.displayInspectInfo end,
-									get = function(info) return E.db.general.itemLevel[ info[#info] ] end,
-									set = function(info, value)
-										E.db.general.itemLevel[ info[#info] ] = value
-										M:UpdateInspectPageFonts("Character")
-										M:UpdateInspectPageFonts("Inspect")
-									end,
-									args = {
-										enchantFont = {
-											order = 1,
-											type = "select",
-											name = L["Font"],
-											dialogControl = 'LSM30_Font',
-											values = AceGUIWidgetLSMlists.font,
-										},
-										enchantFontSize = {
-											order = 2,
-											type = "range",
-											name = FONT_SIZE,
-											min = 4, max = 40, step = 1,
-										},
-										enchantFontOutline = {
-											order = 3,
-											type = "select",
-											name = L["Font Outline"],
-											values = {
-												["NONE"] = NONE,
-												["OUTLINE"] = "OUTLINE",
-												["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-												["THICKOUTLINE"] = "THICKOUTLINE",
-											},
-										},
+									type = "range",
+									name = FONT_SIZE,
+									min = 4, max = 40, step = 1,
+								},
+								itemLevelFontOutline = {
+									order = 3,
+									type = "select",
+									name = L["Font Outline"],
+									values = {
+										["NONE"] = NONE,
+										["OUTLINE"] = "OUTLINE",
+										["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+										["THICKOUTLINE"] = "THICKOUTLINE",
 									},
 								},
 							},

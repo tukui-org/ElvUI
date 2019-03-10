@@ -62,8 +62,8 @@ local function LoadSkin()
 	end
 
 	_G.InboxFrame:CreateBackdrop("Transparent")
-	_G.InboxFrame.backdrop:SetPoint("TOPLEFT", _G.MailItem1, "TOPLEFT")
-	_G.InboxFrame.backdrop:SetPoint("BOTTOMRIGHT", _G.MailItem7, "BOTTOMRIGHT")
+	_G.InboxFrame.backdrop:Point("TOPLEFT", _G.MailItem1, "TOPLEFT")
+	_G.InboxFrame.backdrop:Point("BOTTOMRIGHT", _G.MailItem7, "BOTTOMRIGHT")
 
 	S:HandleNextPrevButton(_G.InboxPrevPageButton, nil, nil, true)
 	S:HandleNextPrevButton(_G.InboxNextPageButton, nil, nil, true)
@@ -89,8 +89,8 @@ local function LoadSkin()
 	_G.SendMailMoneyBg:Kill()
 	_G.SendMailMoneyInset:StripTextures()
 	_G.SendMailSubjectEditBox:Point("TOPLEFT", _G.SendMailNameEditBox, "BOTTOMLEFT", 0, -10)
-	_G.SendMailSubjectEditBox:SetHeight(18)
-	_G.SendMailNameEditBox:SetHeight(18)
+	_G.SendMailSubjectEditBox:Height(18)
+	_G.SendMailNameEditBox:Height(18)
 	_G.SendMailFrame:StripTextures()
 
 	hooksecurefunc("SendMailFrame_Update", MailFrameSkin)

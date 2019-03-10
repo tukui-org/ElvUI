@@ -1,12 +1,34 @@
-### Version 10.92 [  ]
+### Version 11.00 [  ]
 
 **New Additions:**  
 
 
 **Bug Fixes:**  
+Fixed our SetTemplate function, which now should finally deal with all (maybe =)) Border issue regarding the Pixel Changes introduced with 8.1.  
 
 
 **Misc. Changes:**  
+We now only use one Font option for the Character-/Inspect Feature.  
+Put the Voice Chat Buttons in our Left Chat. Now its more intuitive to find it. 
+
+___
+### Version 10.92 [ March 4th 2019 ]
+
+**New Additions:**  
+Added option to suppress the "UI Scale Changed" popup for the current session. It is a checkbox on the popup itself.  
+
+
+**Bug Fixes:**  
+Fixed visibility of raid frames in the installer for the healer layout.  
+
+
+**Misc. Changes:**  
+Added warning popup with information about nameplates getting reset with patch 8.1.5.  
+Added hard cap on min/max values for UI Scale setting.  
+Added hard cap on max value for general font size setting.  
+Added support for checkboxes on our static popups.  
+Reverted some of the recent UI scale changes in an attempt to make it work correctly for more people.  
+A few skin tweaks.  
 
 
 ___

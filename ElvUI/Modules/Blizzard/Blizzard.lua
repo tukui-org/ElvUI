@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Blizzard', 'AceEvent-3.0', 'AceHook-3.0');
-E.Blizzard = B --Deprecated, start using E:GetModule("Blizzard") for a reference to this module
+E.Blizzard = B
 
 local _G = _G
 local select = select
@@ -50,8 +50,6 @@ function B:ADDON_LOADED()
 end
 
 function B:Initialize()
-	E.Blizzard = B
-
 	self:EnhanceColorPicker()
 	self:KillBlizzard()
 	self:AlertMovers()
@@ -91,7 +89,7 @@ function B:Initialize()
 	if TalentMicroButtonAlert then -- why do we need to check this?
 		if E.global.general.showMissingTalentAlert then
 			TalentMicroButtonAlert:ClearAllPoints()
-			TalentMicroButtonAlert:SetPoint("CENTER", E.UIParent, "TOP", 0, -75)
+			TalentMicroButtonAlert:Point("CENTER", E.UIParent, "TOP", 0, -75)
 			TalentMicroButtonAlert:StripTextures()
 			TalentMicroButtonAlert.Arrow:Hide()
 			TalentMicroButtonAlert.Text:FontTemplate()
@@ -101,7 +99,7 @@ function B:Initialize()
 			TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, "OVERLAY")
 			TalentMicroButtonAlert.tex:Point("RIGHT", -10, 0)
 			TalentMicroButtonAlert.tex:SetTexture("Interface\\DialogFrame\\UI-Dialog-Icon-AlertNew")
-			TalentMicroButtonAlert.tex:SetSize(32, 32)
+			TalentMicroButtonAlert.tex:Size(32, 32)
 		else
 			TalentMicroButtonAlert:Kill() -- Kill it, because then the blizz default will show
 		end

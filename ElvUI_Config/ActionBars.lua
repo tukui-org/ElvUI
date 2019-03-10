@@ -5,7 +5,7 @@ local group
 local _G = _G
 local pairs = pairs
 local SetCVar = SetCVar
-local GameTooltip = _G['GameTooltip']
+local GameTooltip = _G.GameTooltip
 local FONT_SIZE = FONT_SIZE
 local NONE, COLOR, COLORS = NONE, COLOR, COLORS
 local SHIFT_KEY, ALT_KEY, CTRL_KEY = SHIFT_KEY, ALT_KEY, CTRL_KEY
@@ -27,7 +27,7 @@ local points = {
 local ACD = E.Libs.AceConfigDialog
 
 local function BuildABConfig()
-	group['general'] = {
+	group.general = {
 		order = 1,
 		type = "group",
 		name = L["General Options"],
@@ -342,7 +342,7 @@ local function BuildABConfig()
 			},
 		},
 	}
-	group['barPet'] = {
+	group.barPet = {
 		name = L["Pet Bar"],
 		type = 'group',
 		order = 2,
@@ -464,7 +464,7 @@ local function BuildABConfig()
 			},
 		},
 	}
-	group['stanceBar'] = {
+	group.stanceBar = {
 		name = L["Stance Bar"],
 		type = 'group',
 		order = 3,
@@ -609,7 +609,7 @@ local function BuildABConfig()
 			},
 		},
 	}
-	group['microbar'] = {
+	group.microbar = {
 		type = "group",
 		name = L["Micro Bar"],
 		order = 4,
@@ -869,7 +869,7 @@ local function BuildABConfig()
 			end
 		end
 	end
-	group['extraActionButton'] = {
+	group.extraActionButton = {
 		type = "group",
 		name = L["Boss Button"],
 		order = 11,

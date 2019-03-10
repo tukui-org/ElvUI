@@ -27,7 +27,7 @@ function B:GarrisonDropDown()
 	if IsAddOnLoaded("WarPlan") then return; end
 
 	local function ShowLanding(page)
-		HideUIPanel(_G["GarrisonLandingPage"])
+		HideUIPanel(_G.GarrisonLandingPage)
 		ShowGarrisonLandingPage(page)
 	end
 
@@ -36,9 +36,9 @@ function B:GarrisonDropDown()
 	end
 
 	local landingChoiceMenu, landingChoices
-	_G["GarrisonLandingPageMinimapButton"]:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-	_G["GarrisonLandingPageMinimapButton"]:HookScript("PreClick", function(self, b)
-		self.landingVisiblePriorToClick = _G["GarrisonLandingPage"] and _G["GarrisonLandingPage"]:IsVisible() and _G["GarrisonLandingPage"].garrTypeID
+	_G.GarrisonLandingPageMinimapButton:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+	_G.GarrisonLandingPageMinimapButton:HookScript("PreClick", function(self, b)
+		self.landingVisiblePriorToClick = _G.GarrisonLandingPage and _G.GarrisonLandingPage:IsVisible() and _G.GarrisonLandingPage.garrTypeID
 		if b == "RightButton" then
 			local openOK, openID = PlaySound(SOUNDKIT_UI_GARRISON_GARRISON_REPORT_OPEN)
 			local closeOK, closeID = PlaySound(SOUNDKIT_UI_GARRISON_GARRISON_REPORT_CLOSE)
@@ -46,9 +46,9 @@ function B:GarrisonDropDown()
 			self.closeSoundID = closeOK and closeID
 		end
 	end)
-	_G["GarrisonLandingPageMinimapButton"]:HookScript("OnClick", function(self, b)
+	_G.GarrisonLandingPageMinimapButton:HookScript("OnClick", function(self, b)
 		if b == "LeftButton" then
-			if _G["GarrisonLandingPage"].garrTypeID ~= C_Garrison_GetLandingPageGarrisonType() then
+			if _G.GarrisonLandingPage.garrTypeID ~= C_Garrison_GetLandingPageGarrisonType() then
 				ShowLanding(C_Garrison_GetLandingPageGarrisonType())
 			end
 			return
@@ -57,7 +57,7 @@ function B:GarrisonDropDown()
 				if self.landingVisiblePriorToClick then
 					ShowLanding(self.landingVisiblePriorToClick)
 				else
-					HideUIPanel(_G["GarrisonLandingPage"])
+					HideUIPanel(_G.GarrisonLandingPage)
 				end
 				MaybeStopSound(self.openSoundID)
 				MaybeStopSound(self.closeSoundID)
@@ -74,14 +74,14 @@ function B:GarrisonDropDown()
 				end
 				_G.EasyMenu(landingChoices, landingChoiceMenu, "cursor", 0, 0, "MENU", 4)
 				DropDownList1:ClearAllPoints()
-				DropDownList1:SetPoint("TOPRIGHT", self, "TOPLEFT", 10, -4)
+				DropDownList1:Point("TOPRIGHT", self, "TOPLEFT", 10, -4)
 			elseif GarrisonLandingPage.garrTypeID == 3 then
 				ShowLanding(2)
 				MaybeStopSound(self.closeSoundID)
 			end
 		end
 	end)
-	_G["GarrisonLandingPageMinimapButton"]:HookScript("PostClick", function(self)
+	_G.GarrisonLandingPageMinimapButton:HookScript("PostClick", function(self)
 		self.closeSoundID, self.openSoundID = nil, nil
 	end)
 end

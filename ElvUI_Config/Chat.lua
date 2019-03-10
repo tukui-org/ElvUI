@@ -1,10 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local CH = E:GetModule('Chat')
+local Bags = E:GetModule('Bags')
+local Layout = E:GetModule('Layout')
 
 local _G = _G
 local gsub = string.gsub
 local strlower = string.lower
-local GameTooltip = _G['GameTooltip']
+local GameTooltip = _G.GameTooltip
 
 E.Options.args.chat = {
 	type = "group",
@@ -297,14 +299,14 @@ E.Options.args.chat = {
 					order = 2,
 					type = 'toggle',
 					name = L["Tab Panel Transparency"],
-					set = function(info, value) E.db.chat.panelTabTransparency = value; E:GetModule('Layout'):SetChatTabStyle(); end,
+					set = function(info, value) E.db.chat.panelTabTransparency = value; Layout:SetChatTabStyle(); end,
 				},
 				panelTabBackdrop = {
 					order = 3,
 					type = 'toggle',
 					name = L["Tab Panel"],
 					desc = L["Toggle the chat tab panel backdrop."],
-					set = function(info, value) E.db.chat.panelTabBackdrop = value; E:GetModule('Layout'):ToggleChatPanels(); end,
+					set = function(info, value) E.db.chat.panelTabBackdrop = value; Layout:ToggleChatPanels(); end,
 				},
 				editBoxPosition = {
 					order = 4,
@@ -322,7 +324,7 @@ E.Options.args.chat = {
 					type = 'select',
 					name = L["Panel Backdrop"],
 					desc = L["Toggle showing of the left and right chat panels."],
-					set = function(info, value) E.db.chat.panelBackdrop = value; E:GetModule('Layout'):ToggleChatPanels(); E:GetModule('Chat'):PositionChat(true); E:GetModule('Chat'):UpdateAnchors() end,
+					set = function(info, value) E.db.chat.panelBackdrop = value; Layout:ToggleChatPanels(); CH:PositionChat(true); CH:UpdateAnchors() end,
 					values = {
 						['HIDEBOTH'] = L["Hide Both"],
 						['SHOWBOTH'] = L["Show Both"],
@@ -337,8 +339,8 @@ E.Options.args.chat = {
 					desc = L["Enable the use of separate size options for the right chat panel."],
 					set = function(info, value)
 						E.db.chat.separateSizes = value;
-						E:GetModule('Chat'):PositionChat(true);
-						E:GetModule('Bags'):Layout();
+						CH:PositionChat(true);
+						Bags:Layout();
 					end,
 				},
 				spacer1 = {
@@ -351,7 +353,7 @@ E.Options.args.chat = {
 					type = 'range',
 					name = L["Panel Height"],
 					desc = L["PANEL_DESC"],
-					set = function(info, value) E.db.chat.panelHeight = value; E:GetModule('Chat'):PositionChat(true); end,
+					set = function(info, value) E.db.chat.panelHeight = value; CH:PositionChat(true); end,
 					min = 60, max = 600, step = 1,
 				},
 				panelWidth = {
@@ -361,8 +363,8 @@ E.Options.args.chat = {
 					desc = L["PANEL_DESC"],
 					set = function(info, value)
 						E.db.chat.panelWidth = value;
-						E:GetModule('Chat'):PositionChat(true);
-						local bags = E:GetModule('Bags');
+						CH:PositionChat(true);
+						local bags = Bags;
 						if not E.db.chat.separateSizes then
 							bags:Layout();
 						end
@@ -398,7 +400,7 @@ E.Options.args.chat = {
 					desc = L["Adjust the height of your right chat panel."],
 					disabled = function() return not E.db.chat.separateSizes end,
 					hidden = function() return not E.db.chat.separateSizes end,
-					set = function(info, value) E.db.chat.panelHeightRight = value; E:GetModule('Chat'):PositionChat(true); end,
+					set = function(info, value) E.db.chat.panelHeightRight = value; CH:PositionChat(true); end,
 					min = 60, max = 600, step = 1,
 				},
 				panelWidthRight = {
@@ -410,8 +412,8 @@ E.Options.args.chat = {
 					hidden = function() return not E.db.chat.separateSizes end,
 					set = function(info, value)
 						E.db.chat.panelWidthRight = value;
-						E:GetModule('Chat'):PositionChat(true);
-						E:GetModule('Bags'):Layout();
+						CH:PositionChat(true);
+						Bags:Layout();
 					end,
 					min = 50, max = 1000, step = 1,
 				},

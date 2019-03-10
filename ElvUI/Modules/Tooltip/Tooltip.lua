@@ -78,7 +78,7 @@ local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 local LEVEL1 = _G.TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?','')
 local LEVEL2 = _G.TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?','')
 
-local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
+local GameTooltip, GameTooltipStatusBar = _G.GameTooltip, _G.GameTooltipStatusBar
 local targetList = {}
 local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
 local AFK_LABEL = " |cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r"
@@ -276,7 +276,6 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 			local unitReaction = UnitReaction(unit, "player")
 			if E.db.tooltip.useCustomFactionColors then
 				if unitReaction then
-					unitReaction = format("%s", unitReaction) --Cast to string because our table is indexed by string keys
 					color = E.db.tooltip.factionColors[unitReaction]
 				end
 			else
@@ -483,7 +482,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				local _, class = UnitClass(unitTarget)
 				targetColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
 			else
-				targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[""..UnitReaction(unitTarget, "player")] or FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
+				targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[UnitReaction(unitTarget, "player")] or FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
 			end
 
 			tt:AddDoubleLine(format("%s:", _G.TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
@@ -738,7 +737,7 @@ end
 function TT:RepositionBNET(frame, _, anchor)
 	if anchor ~= _G.BNETMover then
 		frame:ClearAllPoints()
-		frame:SetPoint(_G.BNETMover.anchorPoint or 'TOPLEFT', _G.BNETMover, _G.BNETMover.anchorPoint or 'TOPLEFT');
+		frame:Point(_G.BNETMover.anchorPoint or 'TOPLEFT', _G.BNETMover, _G.BNETMover.anchorPoint or 'TOPLEFT');
 	end
 end
 

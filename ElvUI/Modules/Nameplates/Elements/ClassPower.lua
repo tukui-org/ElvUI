@@ -16,6 +16,42 @@ local MAX_POINTS = {
 	['DRUID'] = 5
 }
 
+function NP:ClassPower_UpdateColor(powerType)
+	local color, r, g, b = NP.db.colors.power[powerType]
+	if color then
+		r, g, b = color.r, color.g, color.b
+	else
+		color = ElvUF.colors.power[powerType]
+		r, g, b = unpack(color)
+	end
+
+	for i = 1, #self do
+		if powerType == 'COMBO_POINTS' then
+			r, g, b = NP.db.colors.classResources.comboPoints[i].r, NP.db.colors.classResources.comboPoints[i].g, NP.db.colors.classResources.comboPoints[i].b
+		end
+
+		self[i]:SetStatusBarColor(r, g, b)
+	end
+end
+
+function NP:ClassPower_PostUpdate(cur, max, needUpdate, powerType)
+	if cur and cur > 0 then
+		self:Show()
+	else
+		self:Hide()
+	end
+	if needUpdate then
+		for i = 1, max do
+			self[i]:Size(NP.db.classbar.width / max, NP.db.classbar.height)
+			if i == 1 then
+				self[i]:Point('LEFT', self, 'LEFT', 0, 0)
+			else
+				self[i]:Point('LEFT', self[i - 1], 'RIGHT', 1, 0)
+			end
+		end
+	end
+end
+
 function NP:Construct_ClassPower(nameplate)
 	local ClassPower = CreateFrame('Frame', nameplate:GetDebugName()..'ClassPower', nameplate)
 	ClassPower:Hide()
@@ -23,56 +59,34 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:SetFrameLevel(5)
 	ClassPower:CreateBackdrop('Transparent')
 
-	ClassPower:SetSize(NP.db.classbar.width + ((MAX_POINTS[E.myclass] or 5) - 1), NP.db.classbar.height)
+	ClassPower:Size(NP.db.classbar.width + ((MAX_POINTS[E.myclass] or 5) - 1), NP.db.classbar.height)
 	local Width = NP.db.classbar.width / (MAX_POINTS[E.myclass] or 5)
 
 	for i = 1, (MAX_POINTS[E.myclass] or 5) do
 		ClassPower[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
-		ClassPower[i]:SetSize(Width, NP.db.classbar.height)
+		ClassPower[i]:Size(Width, NP.db.classbar.height)
 		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		NP.StatusBars[ClassPower[i]] = true
 
 		if i == 1 then
-			ClassPower[i]:SetPoint('LEFT', ClassPower, 'LEFT', 0, 0)
+			ClassPower[i]:Point('LEFT', ClassPower, 'LEFT', 0, 0)
 		else
-			ClassPower[i]:SetPoint('LEFT', ClassPower[i - 1], 'RIGHT', 1, 0)
+			ClassPower[i]:Point('LEFT', ClassPower[i - 1], 'RIGHT', 1, 0)
 		end
 	end
 
-	function ClassPower:UpdateColor(powerType)
-		local color = ElvUF.colors.power[powerType]
-		local r, g, b = color[1], color[2], color[3]
-		for i = 1, #self do
-
-			local bar = self[i]
-
-			if powerType == 'COMBO_POINTS' then
-				r, g, b = unpack(NP.db.colors.classResources.comboPoints[i])
-			end
-
-			bar:SetStatusBarColor(r, g, b)
-		end
-	end
-
-	function ClassPower:PostUpdate(cur, max, needUpdate, powerType)
-		if cur and cur > 0 then
-			self:Show()
-		else
-			self:Hide()
-		end
-		if needUpdate then
-			for i = 1, max do
-				self[i]:SetSize(NP.db.classbar.width / max, NP.db.classbar.height)
-				if i == 1 then
-					self[i]:SetPoint('LEFT', self, 'LEFT', 0, 0)
-				else
-					self[i]:SetPoint('LEFT', self[i - 1], 'RIGHT', 1, 0)
-				end
-			end
-		end
-	end
+	ClassPower.UpdateColor = NP.ClassPower_UpdateColor
+	ClassPower.PostUpdate = NP.ClassPower_PostUpdate
 
 	return ClassPower
+end
+
+function NP:Runes_PostUpdate()
+	if UnitHasVehicleUI('player') then
+		self:Hide()
+	else
+		self:Show()
+	end
 end
 
 function NP:Construct_Runes(nameplate)
@@ -82,30 +96,23 @@ function NP:Construct_Runes(nameplate)
 	Runes:CreateBackdrop('Transparent')
 	Runes:Hide()
 
-	function Runes:UpdateColor() return end
+	Runes.UpdateColor = E.noop
+	Runes.PostUpdate = NP.Runes_PostUpdate
 
-	function Runes:PostUpdate()
-		if (UnitHasVehicleUI('player')) then
-			self:Hide()
-		else
-			self:Show()
-		end
-	end
-
-	Runes:SetSize(NP.db.classbar.width + 5, NP.db.classbar.height)
+	Runes:Size(NP.db.classbar.width + 5, NP.db.classbar.height)
 	local width = NP.db.classbar.width / 6
 
 	for i = 1, 6 do
 		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
 		Runes[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
-		Runes[i]:SetSize(width, NP.db.classbar.height)
+		Runes[i]:Size(width, NP.db.classbar.height)
 		NP.StatusBars[Runes[i]] = true
 
 		if i == 1 then
-			Runes[i]:SetPoint('LEFT', Runes, 'LEFT', 0, 0)
+			Runes[i]:Point('LEFT', Runes, 'LEFT', 0, 0)
 		else
-			Runes[i]:SetPoint('LEFT', Runes[i-1], 'RIGHT', 1, 0)
+			Runes[i]:Point('LEFT', Runes[i-1], 'RIGHT', 1, 0)
 		end
 	end
 
@@ -119,7 +126,7 @@ function NP:Update_ClassPower(nameplate)
 			nameplate.ClassPower:Show()
 		end
 
-		nameplate.ClassPower:SetPoint('CENTER', nameplate, 'CENTER', 0, NP.db.classbar.yOffset)
+		nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', 0, NP.db.classbar.yOffset)
 	else
 		if nameplate:IsElementEnabled('ClassPower') then
 			nameplate:DisableElement('ClassPower')
@@ -135,16 +142,16 @@ function NP:Update_Runes(nameplate)
 			nameplate.Runes:Show()
 		end
 
-		nameplate.Runes:SetPoint('CENTER', nameplate, 'CENTER', 0, NP.db.classbar.yOffset)
+		nameplate.Runes:Point('CENTER', nameplate, 'CENTER', 0, NP.db.classbar.yOffset)
 
 		nameplate.sortOrder = NP.db.classbar.sortDirection
 
-		nameplate.Runes:SetSize(NP.db.classbar.width + 5, NP.db.classbar.height)
+		nameplate.Runes:Size(NP.db.classbar.width + 5, NP.db.classbar.height)
 		local width = NP.db.classbar.width / 6
 
 		for i = 1, 6 do
 			nameplate.Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
-			nameplate.Runes[i]:SetSize(width, NP.db.classbar.height)
+			nameplate.Runes[i]:Size(width, NP.db.classbar.height)
 		end
 	else
 		if nameplate:IsElementEnabled('Runes') then

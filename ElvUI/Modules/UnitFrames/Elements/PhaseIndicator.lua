@@ -7,8 +7,8 @@ local unpack = unpack
 local UnitIsWarModePhased = UnitIsWarModePhased
 
 local texCoords = {
-    [1] = {1 / 128, 33 / 128, 1 / 64, 33 / 64},
-    [2] = {34 / 128, 66 / 128, 1 / 64, 33 / 64},
+	[1] = {1 / 128, 33 / 128, 1 / 64, 33 / 64},
+	[2] = {34 / 128, 66 / 128, 1 / 64, 33 / 64},
 }
 
 function UF:PostUpdate_PhaseIcon(isInSamePhase)
@@ -19,8 +19,8 @@ end
 
 function UF:Construct_PhaseIcon(frame)
 	local PhaseIndicator = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK', nil, 1)
-	PhaseIndicator:SetSize(30, 30)
-	PhaseIndicator:SetPoint('CENTER', frame.Health, 'CENTER')
+	PhaseIndicator:Size(30, 30)
+	PhaseIndicator:Point('CENTER', frame.Health, 'CENTER')
 	PhaseIndicator:SetTexture(E.Media.Textures.PhaseIcons)
 	PhaseIndicator:SetDrawLayer('OVERLAY', 7)
 

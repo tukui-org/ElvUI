@@ -31,7 +31,7 @@ function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specC
 			frame.PVPSpecIcon:Hide()
 		end
 	else -- mainly called from `PostUpdateArenaFrame` to hide them
-		frame.ArenaPrepSpec:SetText('')
+		frame.ArenaPrepSpec:SetText()
 
 		if specIcon then
 			frame.ArenaPrepIcon.bg:Hide()

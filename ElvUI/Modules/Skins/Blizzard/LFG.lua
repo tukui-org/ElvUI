@@ -48,7 +48,7 @@ local function HandleGoldIcon(button)
 	count:SetDrawLayer("OVERLAY")
 
 	nameFrame:SetTexture()
-	nameFrame:SetSize(118, 39)
+	nameFrame:Size(118, 39)
 end
 
 local function SkinItemButton(parentFrame, _, index)
@@ -80,7 +80,7 @@ local function SkinItemButton(parentFrame, _, index)
 		item.Count:SetParent(item.backdrop)
 
 		item.NameFrame:SetTexture()
-		item.NameFrame:SetSize(118, 39)
+		item.NameFrame:Size(118, 39)
 
 		item.shortageBorder:SetTexture()
 
@@ -218,7 +218,7 @@ local function LoadSkin()
 			local isLeader = roleButton:GetName() ~= nil and roleButton:GetName():find("Leader") or false
 			if(not isLeader) then
 				roleButton.background = roleButton:CreateTexture(nil, "BACKGROUND")
-				roleButton.background:SetSize(80, 80)
+				roleButton.background:Size(80, 80)
 				roleButton.background:Point("CENTER")
 				roleButton.background:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 				roleButton.background:SetAlpha(0.65)
@@ -263,12 +263,12 @@ local function LoadSkin()
 
 		if ( avail2 ) then
 			avail1:ClearAllPoints();
-			avail1:SetPoint("TOPRIGHT", self, "TOP", -40, -35)
+			avail1:Point("TOPRIGHT", self, "TOP", -40, -35)
 			avail2:ClearAllPoints()
-			avail2:SetPoint("TOPLEFT", self, "TOP", 40, -35)
+			avail2:Point("TOPLEFT", self, "TOP", 40, -35)
 		elseif ( avail1 ) then
 			avail1:ClearAllPoints()
-			avail1:SetPoint("TOP", self, "TOP", 0, -35)
+			avail1:Point("TOP", self, "TOP", 0, -35)
 		end
 	end)
 
@@ -572,10 +572,10 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.LFGListSearchPanelScrollFrameScrollBar)
 
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
-	LFGListFrame.SearchPanel.FilterButton:SetPoint("LEFT", LFGListFrame.SearchPanel.SearchBox, "RIGHT", 5, 0)
+	LFGListFrame.SearchPanel.FilterButton:Point("LEFT", LFGListFrame.SearchPanel.SearchBox, "RIGHT", 5, 0)
 	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton)
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
-	LFGListFrame.SearchPanel.RefreshButton.Icon:SetPoint("CENTER")
+	LFGListFrame.SearchPanel.RefreshButton.Icon:Point("CENTER")
 
 	hooksecurefunc("LFGListApplicationViewer_UpdateApplicant", function(button)
 		if not button.DeclineButton.template then
@@ -608,21 +608,21 @@ local function LoadSkin()
 		for i = 2, numResults do
 			local button = self.AutoCompleteFrame.Results[i]
 			if button and not button.moved then
-				button:SetPoint("TOPLEFT", self.AutoCompleteFrame.Results[i-1], "BOTTOMLEFT", 0, -2)
-				button:SetPoint("TOPRIGHT", self.AutoCompleteFrame.Results[i-1], "BOTTOMRIGHT", 0, -2)
+				button:Point("TOPLEFT", self.AutoCompleteFrame.Results[i-1], "BOTTOMLEFT", 0, -2)
+				button:Point("TOPRIGHT", self.AutoCompleteFrame.Results[i-1], "BOTTOMRIGHT", 0, -2)
 				button.moved = true
 			end
 		end
-		self.AutoCompleteFrame:SetHeight(numResults * (self.AutoCompleteFrame.Results[1]:GetHeight() + 3.5) + 8)
+		self.AutoCompleteFrame:Height(numResults * (self.AutoCompleteFrame.Results[1]:GetHeight() + 3.5) + 8)
 	end)
 
 	LFGListFrame.SearchPanel.AutoCompleteFrame:StripTextures()
 	LFGListFrame.SearchPanel.AutoCompleteFrame:CreateBackdrop("Transparent")
-	LFGListFrame.SearchPanel.AutoCompleteFrame.backdrop:SetPoint("TOPLEFT", LFGListFrame.SearchPanel.AutoCompleteFrame, "TOPLEFT", 0, 3)
-	LFGListFrame.SearchPanel.AutoCompleteFrame.backdrop:SetPoint("BOTTOMRIGHT", LFGListFrame.SearchPanel.AutoCompleteFrame, "BOTTOMRIGHT", 6, 3)
+	LFGListFrame.SearchPanel.AutoCompleteFrame.backdrop:Point("TOPLEFT", LFGListFrame.SearchPanel.AutoCompleteFrame, "TOPLEFT", 0, 3)
+	LFGListFrame.SearchPanel.AutoCompleteFrame.backdrop:Point("BOTTOMRIGHT", LFGListFrame.SearchPanel.AutoCompleteFrame, "BOTTOMRIGHT", 6, 3)
 
-	LFGListFrame.SearchPanel.AutoCompleteFrame:SetPoint("TOPLEFT", LFGListFrame.SearchPanel.SearchBox, "BOTTOMLEFT", -2, -8)
-	LFGListFrame.SearchPanel.AutoCompleteFrame:SetPoint("TOPRIGHT", LFGListFrame.SearchPanel.SearchBox, "BOTTOMRIGHT", -4, -8)
+	LFGListFrame.SearchPanel.AutoCompleteFrame:Point("TOPLEFT", LFGListFrame.SearchPanel.SearchBox, "BOTTOMLEFT", -2, -8)
+	LFGListFrame.SearchPanel.AutoCompleteFrame:Point("TOPRIGHT", LFGListFrame.SearchPanel.SearchBox, "BOTTOMRIGHT", -4, -8)
 
 	--ApplicationViewer (Custom Groups)
 	LFGListFrame.ApplicationViewer.EntryName:FontTemplate()
@@ -647,7 +647,7 @@ local function LoadSkin()
 	LFGListFrame.ApplicationViewer.PrivateGroup:FontTemplate()
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
-	LFGListFrame.ApplicationViewer.RefreshButton:SetSize(24,24)
+	LFGListFrame.ApplicationViewer.RefreshButton:Size(24,24)
 	LFGListFrame.ApplicationViewer.RefreshButton:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.RefreshButton:Point("BOTTOMRIGHT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 16, 4)
 

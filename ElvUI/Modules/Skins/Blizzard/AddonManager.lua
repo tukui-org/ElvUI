@@ -17,15 +17,15 @@ local function LoadSkin()
 	S:HandleDropDownBox(_G.AddonCharacterDropDown, 165)
 	S:HandleScrollBar(_G.AddonListScrollFrameScrollBar)
 	S:HandleCheckBox(_G.AddonListForceLoad)
-	_G.AddonListForceLoad:SetSize(26, 26)
+	_G.AddonListForceLoad:Size(26, 26)
 
 	_G.AddonListScrollFrame:StripTextures()
 	_G.AddonListScrollFrame:CreateBackdrop('Transparent')
-	_G.AddonListScrollFrame.backdrop:SetPoint('TOPLEFT', -14, 0)
-	_G.AddonListScrollFrame.backdrop:SetPoint('BOTTOMRIGHT', 0, -1)
+	_G.AddonListScrollFrame.backdrop:Point('TOPLEFT', -14, 0)
+	_G.AddonListScrollFrame.backdrop:Point('BOTTOMRIGHT', 0, -1)
 
 	for i = 1, _G.MAX_ADDONS_DISPLAYED do
-		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])
+		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"], nil, nil, true)
 		S:HandleButton(_G["AddonListEntry"..i].LoadAddonButton)
 	end
 end

@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
+local select = select
 local ipairs = ipairs
 local pairs = pairs
 --WoW API / Variables
@@ -11,7 +12,7 @@ local UnitIsUnit = UnitIsUnit
 local InCombatLockdown = InCombatLockdown
 
 local function HandlePushToTalkButton(button)
-	button:SetSize(button:GetSize())
+	button:Size(button:GetSize())
 
 	button.TopLeft:Hide()
 	button.TopRight:Hide()
@@ -165,27 +166,27 @@ local function LoadSkin()
 
 	for i in pairs(_G.COMBAT_CONFIG_TABS) do
 		S:HandleTab(_G["CombatConfigTab"..i])
-		_G["CombatConfigTab"..i].backdrop:SetPoint("TOPLEFT", 0, -10)
-		_G["CombatConfigTab"..i].backdrop:SetPoint("BOTTOMRIGHT", -2, 3)
-		_G["CombatConfigTab"..i.."Text"]:SetPoint("BOTTOM", 0, 10)
+		_G["CombatConfigTab"..i].backdrop:Point("TOPLEFT", 0, -10)
+		_G["CombatConfigTab"..i].backdrop:Point("BOTTOMRIGHT", -2, 3)
+		_G["CombatConfigTab"..i.."Text"]:Point("BOTTOM", 0, 10)
 	end
 
 	_G.CombatConfigTab1:ClearAllPoints()
-	_G.CombatConfigTab1:SetPoint("BOTTOMLEFT", _G.ChatConfigBackgroundFrame, "TOPLEFT", 6, -2)
+	_G.CombatConfigTab1:Point("BOTTOMLEFT", _G.ChatConfigBackgroundFrame, "TOPLEFT", 6, -2)
 
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton)
-	_G.ChatConfigMoveFilterUpButton:SetSize(19, 19)
-	_G.ChatConfigMoveFilterDownButton:SetSize(19, 19)
-	_G.ChatConfigMoveFilterUpButton:SetPoint("TOPLEFT", "$parent", "BOTTOMLEFT", 0, -3)
-	_G.ChatConfigMoveFilterDownButton:SetPoint("LEFT", _G.ChatConfigMoveFilterUpButton, "RIGHT", 3, 0)
+	_G.ChatConfigMoveFilterUpButton:Size(19, 19)
+	_G.ChatConfigMoveFilterDownButton:Size(19, 19)
+	_G.ChatConfigMoveFilterUpButton:Point("TOPLEFT", "$parent", "BOTTOMLEFT", 0, -3)
+	_G.ChatConfigMoveFilterDownButton:Point("LEFT", _G.ChatConfigMoveFilterUpButton, "RIGHT", 3, 0)
 
-	_G.ChatConfigFrameOkayButton:SetPoint("RIGHT", "$parentCancelButton", "RIGHT", -1, -3)
-	_G.ChatConfigFrameDefaultButton:SetPoint("BOTTOMLEFT", 12, 10)
-	_G.ChatConfigCombatSettingsFiltersDeleteButton:SetPoint("TOPRIGHT", "$parent", "BOTTOMRIGHT", -3, -1)
-	_G.ChatConfigCombatSettingsFiltersAddFilterButton:SetPoint("RIGHT", "$parentDeleteButton", "LEFT", -2, 0)
-	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:SetPoint("RIGHT", "$parentAddFilterButton", "LEFT", -2, 0)
+	_G.ChatConfigFrameOkayButton:Point("RIGHT", "$parentCancelButton", "RIGHT", -1, -3)
+	_G.ChatConfigFrameDefaultButton:Point("BOTTOMLEFT", 12, 10)
+	_G.ChatConfigCombatSettingsFiltersDeleteButton:Point("TOPRIGHT", "$parent", "BOTTOMRIGHT", -3, -1)
+	_G.ChatConfigCombatSettingsFiltersAddFilterButton:Point("RIGHT", "$parentDeleteButton", "LEFT", -2, 0)
+	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:Point("RIGHT", "$parentAddFilterButton", "LEFT", -2, 0)
 
 	ChatConfigFrame:HookScript("OnShow", function()
 		for tab in _G.ChatConfigFrameChatTabManager.tabPool:EnumerateActive() do
@@ -194,7 +195,7 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
-		if ( not FCF_GetCurrentChatFrame() ) then
+		if ( not _G.FCF_GetCurrentChatFrame() ) then
 			return
 		end
 		for index in ipairs(frame.checkBoxTable) do
@@ -227,7 +228,7 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc('ChatConfig_UpdateSwatches', function(frame)
-		if ( not FCF_GetCurrentChatFrame() ) then
+		if ( not _G.FCF_GetCurrentChatFrame() ) then
 			return
 		end
 		for index in ipairs(frame.swatchTable) do
@@ -313,8 +314,8 @@ local function LoadSkin()
 		end
 	end
 
-	_G.InterfaceOptionsFrameTab1:SetPoint('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 6, 1)
-	_G.InterfaceOptionsFrameTab2:SetPoint('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
+	_G.InterfaceOptionsFrameTab1:Point('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 6, 1)
+	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
 	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas("WoWShare-TwitterLogo")
 
 	-- Toggle Test Audio Button - Wow 8.0

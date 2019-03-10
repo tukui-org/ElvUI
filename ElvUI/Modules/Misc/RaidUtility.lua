@@ -154,9 +154,9 @@ local function RaidUtility_PositionRoleIcons()
 	local left = point and strfind(point, "LEFT")
 	_G.RaidUtilityRoleIcons:ClearAllPoints()
 	if left then
-		_G.RaidUtilityRoleIcons:SetPoint("LEFT", _G.RaidUtilityPanel, "RIGHT", -1, 0)
+		_G.RaidUtilityRoleIcons:Point("LEFT", _G.RaidUtilityPanel, "RIGHT", -1, 0)
 	else
-		_G.RaidUtilityRoleIcons:SetPoint("RIGHT", _G.RaidUtilityPanel, "LEFT", 1, 0)
+		_G.RaidUtilityRoleIcons:Point("RIGHT", _G.RaidUtilityPanel, "LEFT", 1, 0)
 	end
 end
 
@@ -256,7 +256,7 @@ function RU:Initialize()
 		sb:StartMoving()
 	end)
 
-	E.FrameLocks['RaidUtility_ShowButton'] = true
+	E.FrameLocks.RaidUtility_ShowButton = true
 
 	RaidUtility_ShowButton:SetScript("OnDragStop", function(sb)
 		sb:StopMovingOrSizing()
@@ -282,8 +282,8 @@ function RU:Initialize()
 
 	--Role Icons
 	local RoleIcons = CreateFrame("Frame", "RaidUtilityRoleIcons", RaidUtilityPanel)
-	RoleIcons:SetPoint("LEFT", RaidUtilityPanel, "RIGHT", -1, 0)
-	RoleIcons:SetSize(36, PANEL_HEIGHT)
+	RoleIcons:Point("LEFT", RaidUtilityPanel, "RIGHT", -1, 0)
+	RoleIcons:Size(36, PANEL_HEIGHT)
 	RoleIcons:SetTemplate("Transparent")
 	RoleIcons:RegisterEvent("PLAYER_ENTERING_WORLD")
 	RoleIcons:RegisterEvent("GROUP_ROSTER_UPDATE")
@@ -300,7 +300,7 @@ function RU:Initialize()
 			frame:Point("BOTTOM", _G["RaidUtilityRoleIcons_"..roles[i-1]], "TOP", 0, 4)
 		end
 
-		frame:SetSize(28, 28)
+		frame:Size(28, 28)
 		--frame:SetTemplate()
 
 		local texture = frame:CreateTexture(nil, "OVERLAY")

@@ -130,7 +130,7 @@ local function LoadSkin()
 	end
 
 	S:HandleEditBox(_G.FriendsFriendsList)
-	S:HandleDropDownBox(_G.FriendsFriendsFrameDropDown,150)
+	S:HandleDropDownBox(_G.FriendsFriendsFrameDropDown, 150)
 
 	_G.FriendsTabHeaderSoRButton:SetTemplate()
 	_G.FriendsTabHeaderSoRButton:StyleButton()
@@ -153,7 +153,7 @@ local function LoadSkin()
 	S:HandleDropDownBox(_G.FriendsFrameStatusDropDown, 70)
 
 	_G.FriendsFrameStatusDropDown:ClearAllPoints()
-	_G.FriendsFrameStatusDropDown:Point("TOPLEFT", FriendsFrame, "TOPLEFT", -13, -28)
+	_G.FriendsFrameStatusDropDown:Point("TOPLEFT", FriendsFrame, "TOPLEFT", -6, -28)
 
 	local FriendsFrameBattlenetFrame = _G.FriendsFrameBattlenetFrame
 	FriendsFrameBattlenetFrame:StripTextures()
@@ -165,7 +165,7 @@ local function LoadSkin()
 	FriendsFrameBattlenetFrame.Tag:Point("TOP", FriendsFrame, "TOP", 0, -8)
 
 	_G.FriendsFrameBroadcastInput:CreateBackdrop()
-	_G.FriendsFrameBroadcastInput:SetWidth(259)
+	_G.FriendsFrameBroadcastInput:Width(250)
 
 	hooksecurefunc("FriendsFrame_CheckBattlenetStatus", function()
 		if BNFeaturesEnabled() then
@@ -215,7 +215,7 @@ local function LoadSkin()
 	for i = 1, 17 do
 		local level = _G["WhoFrameButton"..i.."Level"]
 		if level then
-			level:SetWidth(level:GetWidth() + 5)
+			level:Width(level:GetWidth() + 5)
 		end
 	end
 
@@ -287,7 +287,7 @@ local function LoadSkin()
 	local QuickJoinRoleSelectionFrame = _G.QuickJoinRoleSelectionFrame
 	S:HandleScrollBar(_G.QuickJoinScrollFrameScrollBar, 5)
 	S:HandleButton(QuickJoinFrame.JoinQueueButton)
-	QuickJoinFrame.JoinQueueButton:SetSize(131, 21)  --Match button on other tab
+	QuickJoinFrame.JoinQueueButton:Size(131, 21)  --Match button on other tab
 	QuickJoinFrame.JoinQueueButton:ClearAllPoints()
 	QuickJoinFrame.JoinQueueButton:Point("BOTTOMRIGHT", QuickJoinFrame, "BOTTOMRIGHT", -6, 4)
 	_G.QuickJoinScrollFrameTop:SetTexture()

@@ -10,7 +10,7 @@ ElvUI[2] = L
 --Lua functions
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local assert, type, collectgarbage, pcall, date = assert, type, collectgarbage, pcall, date
+local assert, type, pcall, date = assert, type, pcall, date
 local twipe, tinsert, tremove, next = wipe, tinsert, tremove, next
 local floor, gsub, strmatch, strjoin = floor, gsub, match, strjoin
 local format, find, strrep, len, sub = format, strfind, strrep, strlen, strsub
@@ -446,6 +446,10 @@ function E:PLAYER_ENTERING_WORLD()
 		E.clippedUiScaleCVar = E:PixelClip(GetCVar("uiScale"))
 		E:StaticPopup_Show("UI_SCALE_CHANGES_INFORM", WrapTextInColorCode(E.clippedUiScaleCVar, "fffe7b2c"))
 	end
+
+	if not E.global.nameplatesResetInformed then
+		E:StaticPopup_Show("MAJOR_RELEASE_NAMEPLATES")
+	end
 end
 
 function E:ValueFuncCall()
@@ -559,8 +563,8 @@ end
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', _G.UIParent)
 E.UIParent:SetFrameLevel(_G.UIParent:GetFrameLevel())
-E.UIParent:SetPoint('CENTER', _G.UIParent, 'CENTER')
 E.UIParent:SetSize(_G.UIParent:GetSize())
+E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
 E.snapBars[#E.snapBars + 1] = E.UIParent
 
@@ -642,10 +646,10 @@ function E:CheckRole()
 end
 
 function E:IncompatibleAddOn(addon, module)
-	E.PopupDialogs['INCOMPATIBLE_ADDON'].button1 = addon
-	E.PopupDialogs['INCOMPATIBLE_ADDON'].button2 = 'ElvUI '..module
-	E.PopupDialogs['INCOMPATIBLE_ADDON'].addon = addon
-	E.PopupDialogs['INCOMPATIBLE_ADDON'].module = module
+	E.PopupDialogs.INCOMPATIBLE_ADDON.button1 = addon
+	E.PopupDialogs.INCOMPATIBLE_ADDON.button2 = 'ElvUI '..module
+	E.PopupDialogs.INCOMPATIBLE_ADDON.addon = addon
+	E.PopupDialogs.INCOMPATIBLE_ADDON.module = module
 	E:StaticPopup_Show('INCOMPATIBLE_ADDON', addon, module)
 end
 
@@ -959,7 +963,13 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 		if sender == myName then return end
 		if prefix == 'ELVUI_VERSIONCHK' then
 			local msg, ver = tonumber(message), tonumber(E.version)
-			if msg and (msg > ver) then -- you're outdated D:
+			if ver ~= G.general.version then
+				if not E.shownUpdatedWhileRunningPopup then
+					E:StaticPopup_Show('ELVUI_UPDATED_WHILE_RUNNING', nil, nil, {mismatch = ver > G.general.version})
+
+					E.shownUpdatedWhileRunningPopup = true
+				end
+			elseif msg and (msg > ver) then -- you're outdated D:
 				if not E.recievedOutOfDateMessage then
 					E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
 
@@ -1192,8 +1202,6 @@ function E:UpdateEnd()
 	end
 
 	E:SetMoversClampedToScreen(true) -- Go back to using clamp after resizing has taken place.
-
-	collectgarbage('collect')
 
 	if (E.ignoreInstall ~= true) and (E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83)) then
 		E.ignoreInstall = nil
@@ -1674,6 +1682,16 @@ function E:DBConversions()
 		end
 	end
 
+	--Tooltip FactionColors Setting
+	for i=1, 8 do
+		local oldTable = E.db.tooltip.factionColors[''..i]
+		if oldTable then
+			local newTable = E:CopyTable({}, P.tooltip.factionColors[i]) -- import full table
+			E.db.tooltip.factionColors[i] = E:CopyTable(newTable, oldTable)
+			E.db.tooltip.factionColors[''..i] = nil
+		end
+	end
+
 	--Fix issue where UIScale was incorrectly stored as string
 	E.global.general.UIScale = tonumber(E.global.general.UIScale)
 
@@ -1788,7 +1806,6 @@ local function HandleCommandBar()
 		bar:Hide()
 		_G.UIParent:UnregisterEvent('UNIT_AURA')--Only used for OrderHall Bar
 	elseif E.global.general.commandBarSetting == 'ENABLED_RESIZEPARENT' then
-		E.UIParent:SetPoint('BOTTOM', _G.UIParent, 'BOTTOM')
 		_G.OrderHallCommandBar:HookScript('OnShow', SetModifiedHeight)
 		_G.OrderHallCommandBar:HookScript('OnHide', SetOriginalHeight)
 	end
@@ -1854,7 +1871,10 @@ function E:Initialize()
 	self:Tutorials()
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
-	collectgarbage('collect')
+
+	if GetCVarBool("scriptProfile") then
+		E:StaticPopup_Show('SCRIPT_PROFILE')
+	end
 
 	if self.db.general.loginmessage then
 		E:Print(select(2, E:GetModule('Chat'):FindURL('CHAT_MSG_DUMMY', format(L["LOGIN_MSG"], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)))..'.')

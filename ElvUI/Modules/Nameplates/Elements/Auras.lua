@@ -14,11 +14,50 @@ local UnitCanAttack = UnitCanAttack
 local UnitIsUnit = UnitIsUnit
 local DebuffTypeColor = DebuffTypeColor
 
+function NP:Auras_PostCreateIcon(button)
+	NP:Construct_AuraIcon(button)
+end
+
+function NP:Auras_PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
+	NP:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
+end
+
+function NP:Auras_CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+	button.name, button.spellID, button.expiration = name, spellID, expiration
+	return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+end
+
+function NP:Buffs_PostCreateIcon(button)
+	NP:Construct_AuraIcon(button)
+end
+
+function NP:Buffs_PostUpdateIcon(unit, button)
+	NP:PostUpdateAura(unit, button)
+end
+
+function NP:Buffs_CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+	button.name, button.spellID, button.expiration = name, spellID, expiration
+	return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+end
+
+function NP:Debuffs_PostCreateIcon(button)
+	NP:Construct_AuraIcon(button)
+end
+
+function NP:Debuffs_PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
+	NP:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
+end
+
+function NP:Debuffs_CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+	button.name, button.spellID, button.expiration = name, spellID, expiration
+	return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+end
+
 function NP:Construct_Auras(nameplate)
 	local Auras = CreateFrame('Frame', nameplate:GetDebugName()..'Auras', nameplate)
 	Auras:SetFrameStrata(nameplate:GetFrameStrata())
 	Auras:SetFrameLevel(5)
-	Auras:SetSize(300, 27)
+	Auras:Size(300, 27)
 
 	Auras.disableMouse = true
 	Auras.gap = true
@@ -35,7 +74,7 @@ function NP:Construct_Auras(nameplate)
 	local Buffs = CreateFrame('Frame', nameplate:GetDebugName()..'Buffs', nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(5)
-	Buffs:SetSize(300, 27)
+	Buffs:Size(300, 27)
 	Buffs.disableMouse = true
 	Buffs.size = 27
 	Buffs.num = 4
@@ -49,7 +88,7 @@ function NP:Construct_Auras(nameplate)
 	local Debuffs = CreateFrame('Frame', nameplate:GetDebugName()..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(5)
-	Debuffs:SetSize(300, 27)
+	Debuffs:Size(300, 27)
 	Debuffs.disableMouse = true
 	Debuffs.size = 27
 	Debuffs.num = 4
@@ -60,44 +99,15 @@ function NP:Construct_Auras(nameplate)
 	Debuffs['growth-y'] = 'UP'
 	Debuffs.type = 'debuffs'
 
-	function Auras:PostCreateIcon(button)
-		NP:Construct_AuraIcon(button)
-	end
-
-	function Auras:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
-		NP:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
-	end
-
-	function Auras:CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-		button.name, button.spellID, button.expiration = name, spellID, expiration
-		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-	end
-
-	function Buffs:PostCreateIcon(button)
-		NP:Construct_AuraIcon(button)
-	end
-
-	function Buffs:PostUpdateIcon(unit, button)
-		NP:PostUpdateAura(unit, button)
-	end
-
-	function Buffs:CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-		button.name, button.spellID, button.expiration = name, spellID, expiration
-		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-	end
-
-	function Debuffs:PostCreateIcon(button)
-		NP:Construct_AuraIcon(button)
-	end
-
-	function Debuffs:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
-		NP:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
-	end
-
-	function Debuffs:CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-		button.name, button.spellID, button.expiration = name, spellID, expiration
-		return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-	end
+	Auras.PostCreateIcon = NP.Auras_PostCreateIcon
+	Auras.PostUpdateIcon = NP.Auras_PostUpdateIcon
+	Auras.CustomFilter = NP.Auras_CustomFilter
+	Buffs.PostCreateIcon = NP.Buffs_PostCreateIcon
+	Buffs.PostUpdateIcon = NP.Buffs_PostUpdateIcon
+	Buffs.CustomFilter = NP.Buffs_CustomFilter
+	Debuffs.PostCreateIcon = NP.Debuffs_PostCreateIcon
+	Debuffs.PostUpdateIcon = NP.Debuffs_PostUpdateIcon
+	Debuffs.CustomFilter = NP.Debuffs_CustomFilter
 
 	nameplate.Auras = Auras
 	nameplate.Buffs = Buffs
@@ -130,9 +140,11 @@ function NP:Construct_AuraIcon(button)
 	button.icon:SetInside()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
+	button.icon:SetSnapToPixelGrid(false)
+	button.icon:SetTexelSnappingBias(0)
 
 	button.count:ClearAllPoints()
-	button.count:SetPoint('BOTTOMRIGHT', 1, 1)
+	button.count:Point('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
 
 	button.overlay:SetTexture(nil)
@@ -152,8 +164,8 @@ function NP:Update_Auras(nameplate)
 			--nameplate.Auras.numBuffs = db.buffs.numAuras
 
 			--if nameplate.Auras then
-				--nameplate.Auras:SetPoint('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
-				--nameplate.Auras:SetPoint('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
+				--nameplate.Auras:Point('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
+				--nameplate.Auras:Point('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
 			--end
 
 			nameplate.Debuffs:Hide()
@@ -171,10 +183,10 @@ function NP:Update_Auras(nameplate)
 				nameplate.Debuffs["growth-x"] = db.debuffs.growthX
 				nameplate.Debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
 
-				nameplate.Debuffs:ClearAllPoints()
 				local mult = floor(NP.db.clickableWidth / db.debuffs.size) < db.debuffs.numAuras
-				nameplate.Debuffs:SetSize(NP.db.clickableWidth, (mult and 1 or 2) * db.debuffs.size)
-				nameplate.Debuffs:SetPoint(E.InversePoints[db.debuffs.anchorPoint] or 'TOPRIGHT', db.debuffs.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.debuffs.anchorPoint or 'TOPRIGHT', 0, db.debuffs.yOffset)
+				nameplate.Debuffs:Size(NP.db.clickableWidth, (mult and 1 or 2) * db.debuffs.size)
+				nameplate.Debuffs:ClearAllPoints()
+				nameplate.Debuffs:Point(E.InversePoints[db.debuffs.anchorPoint] or 'TOPRIGHT', db.debuffs.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.debuffs.anchorPoint or 'TOPRIGHT', 0, db.debuffs.yOffset)
 				nameplate.Debuffs:Show()
 
 				nameplate.Debuffs:ForceUpdate()
@@ -192,9 +204,9 @@ function NP:Update_Auras(nameplate)
 				nameplate.Buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
 
 				local mult = floor(NP.db.clickableWidth / db.buffs.size) < db.buffs.numAuras
-				nameplate.Buffs:SetSize(NP.db.clickableWidth, (mult and 1 or 2) * db.buffs.size)
+				nameplate.Buffs:Size(NP.db.clickableWidth, (mult and 1 or 2) * db.buffs.size)
 				nameplate.Buffs:ClearAllPoints()
-				nameplate.Buffs:SetPoint(E.InversePoints[db.buffs.anchorPoint] or 'TOPLEFT', db.buffs.attachTo == 'DEBUFFS' and nameplate.Debuffs or nameplate, db.buffs.anchorPoint or 'TOPLEFT', 0, db.buffs.yOffset)
+				nameplate.Buffs:Point(E.InversePoints[db.buffs.anchorPoint] or 'TOPLEFT', db.buffs.attachTo == 'DEBUFFS' and nameplate.Debuffs or nameplate, db.buffs.anchorPoint or 'TOPLEFT', 0, db.buffs.yOffset)
 				nameplate.Buffs:Show()
 
 				nameplate.Buffs:ForceUpdate()
@@ -211,7 +223,7 @@ end
 
 function NP:PostUpdateAura(unit, button)
 	if button.isDebuff then
-		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
+		if (not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
 			button.icon:SetDesaturated((unit and not strfind(unit, 'arena%d')) and true or false)
 		else
@@ -227,7 +239,7 @@ function NP:PostUpdateAura(unit, button)
 		if button.isStealable and not button.isFriend then
 			button:SetBackdropBorderColor(0.93, 0.91, 0.55, 1.0)
 		else
-			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
+			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end
 
@@ -236,23 +248,24 @@ function NP:PostUpdateAura(unit, button)
 	local parentType = parent.type
 
 	if db and db[parentType] then
-		button:SetSize(db[parentType].size, db[parentType].size)
+		button:Size(db[parentType].size, db[parentType].size)
+		button.count:SetFont(LSM:Fetch('font', db[parentType].countFont), db[parentType].countFontSize, db[parentType].countFontOutline)
 	end
 
 	if button:IsShown() and button.cd then
-		NP:UpdateCooldownTextPosition(button.cd)
-		NP:UpdateCooldownSettings(button.cd)
+		NP:UpdateCooldownTextPosition(button.cd, db and db[parentType])
+		NP:UpdateCooldownSettings(button.cd, db and db[parentType])
 	end
 end
 
-function NP:UpdateCooldownTextPosition(cd)
+function NP:UpdateCooldownTextPosition(cd, db)
 	if cd.timer and cd.timer.text then
 		cd.timer.text:ClearAllPoints()
-		if NP.db.durationPosition == 'TOPLEFT' then
+		if db and db.durationPosition == 'TOPLEFT' then
 			cd.timer.text:Point('TOPLEFT', 1, 1)
-		elseif NP.db.durationPosition == 'BOTTOMLEFT' then
+		elseif db and db.durationPosition == 'BOTTOMLEFT' then
 			cd.timer.text:Point('BOTTOMLEFT', 1, 1)
-		elseif NP.db.durationPosition == 'TOPRIGHT' then
+		elseif db and db.durationPosition == 'TOPRIGHT' then
 			cd.timer.text:Point('TOPRIGHT', 1, 1)
 		else
 			cd.timer.text:Point('CENTER', 1, 1)
@@ -260,11 +273,11 @@ function NP:UpdateCooldownTextPosition(cd)
 	end
 end
 
-function NP:UpdateCooldownSettings(cd)
-	if cd and cd.CooldownSettings then
-		cd.CooldownSettings.font = LSM:Fetch('font', NP.db.font)
-		cd.CooldownSettings.fontSize = NP.db.fontSize
-		cd.CooldownSettings.fontOutline = NP.db.fontOutline
+function NP:UpdateCooldownSettings(cd, db)
+	if cd and cd.CooldownSettings and db then
+		cd.CooldownSettings.font = LSM:Fetch('font', db.font)
+		cd.CooldownSettings.fontSize = db.fontSize
+		cd.CooldownSettings.fontOutline = db.fontOutline
 		if cd.timer then
 			E:Cooldown_OnSizeChanged(cd.timer, cd, cd:GetSize(), 'override')
 		end
@@ -330,7 +343,7 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 
 	local parent = button:GetParent()
 	local parentType = parent.type
-	local db = NP.db.units[parent.__owner.frameType] and NP.db.units[parent.__owner.frameType][parentType]
+	local db = NP.db and NP.db.units and NP.db.units[parent.__owner.frameType] and NP.db.units[parent.__owner.frameType][parentType]
 	if not db then return true end
 
 	local isPlayer = (caster == 'player' or caster == 'vehicle')
@@ -358,7 +371,7 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 
 	if priority ~= '' then
 		local isUnit = unit and caster and UnitIsUnit(unit, caster)
-		local canDispell = (parentType == 'Buffs' and isStealable) or (parentType == 'Debuffs' and debuffType and E:IsDispellableByMe(debuffType))
+		local canDispell = (parentType == 'buffs' and isStealable) or (parentType == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType))
 		filterCheck = NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(',', priority))
 	else
 		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders

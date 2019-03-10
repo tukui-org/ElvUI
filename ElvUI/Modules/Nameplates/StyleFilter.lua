@@ -147,22 +147,12 @@ end
 
 function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	if VisibilityChanged then
+		--[[
 		frame.StyleChanged = true
 		frame.VisibilityChanged = true
-		if frame.frameType == "PLAYER" then
-			if self.db.units.PLAYER.useStaticPosition then
-				_G.ElvNP_Player:Hide()
-				if self.PlayerNamePlateAnchor then
-					self.PlayerNamePlateAnchor:Hide()
-				end
-			else
-				E:LockCVar("nameplatePersonalShowAlways", "0")
-				frame:Hide()
-			end
-		else
-			frame:Hide()
-		end
+		frame:Hide()
 		return --We hide it. Lets not do other things (no point)
+		]]
 	end
 	if HealthColorChanged then
 		frame.StyleChanged = true
@@ -182,7 +172,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.BorderChanged = true
 		mod:StyleFilterBorderColorLock(frame.Health.backdrop, true)
 		frame.Health.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
-		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].powerbar and mod.db.units[frame.frameType].powerbar.enable) then
+		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
 			mod:StyleFilterBorderColorLock(frame.Power.backdrop, true)
 			frame.Power.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		end
@@ -212,7 +202,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		end
 	end
 	if ScaleChanged then
-		--[[
+	--[[
 		frame.StyleChanged = true
 		frame.ScaleChanged = true
 		local scale = actions.scale
@@ -220,7 +210,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 			scale = scale * self.db.targetScale
 		end
 		self:SetFrameScale(frame, scale)
-		]]
+	]]
 	end
 	if AlphaChanged then
 		frame.StyleChanged = true
@@ -239,13 +229,11 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if PortraitShown then
 		frame.StyleChanged = true
 		frame.PortraitShown = true
-		self:UpdateElement_Portrait(frame, true)
-		self:ConfigureElement_Portrait(frame, true)
-		if frame.RightArrow:IsShown() then
-			frame.RightArrow:SetPoint("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.Health, "LEFT", E:Scale(E.Border*2), 0)
-		end
+		self:Update_Portrait(frame)
+		frame.Portrait:ForceUpdate()
 	end
 	if NameOnlyChanged then
+	--[[
 		frame.StyleChanged = true
 		frame.NameOnlyChanged = true
 		--hide the bars
@@ -257,9 +245,9 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		--position the name and update its color
 		frame.Name:ClearAllPoints()
 		frame.Name:SetJustifyH("CENTER")
-		frame.Name:SetPoint("TOP", frame, "CENTER")
+		frame.Name:Point("TOP", frame, "CENTER")
 		frame.Level:ClearAllPoints()
-		frame.Level:SetPoint("LEFT", frame.Name, "RIGHT")
+		frame.Level:Point("LEFT", frame.Name, "RIGHT")
 		frame.Level:SetJustifyH("LEFT")
 		if not NameColorChanged then
 			self:UpdateElement_Name(frame, true)
@@ -270,6 +258,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		self:ConfigureElement_Portrait(frame, true)
 		--position suramar detection
 		self:ConfigureElement_Detection(frame, frame.Portrait:IsShown() and frame.Portrait)
+	]]
 	end
 end
 
@@ -277,16 +266,6 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	frame.StyleChanged = nil
 	if VisibilityChanged then
 		frame.VisibilityChanged = nil
-		if frame.frameType == "PLAYER" then
-			if self.db.units.PLAYER.useStaticPosition then
-				_G.ElvNP_Player:Show()
-				if self.PlayerNamePlateAnchor then
-					self.PlayerNamePlateAnchor:Show()
-				end
-			else
-				E:LockCVar("nameplatePersonalShowAlways", "1")
-			end
-		end
 		frame:Show()
 	end
 	if HealthColorChanged then
@@ -298,7 +277,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if PowerColorChanged then
 		frame.PowerColorChanged = nil
-		local color = E.db.unitframe.colors.power[frame.PowerToken] or PowerBarColor[frame.PowerToken] or FallbackColor
+		local color = E.db.unitframe.colors.power[frame.Power.token] or PowerBarColor[frame.Power.token] or FallbackColor
 		if color then
 			frame.Power:SetStatusBarColor(color.r, color.g, color.b)
 		end
@@ -307,7 +286,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 		frame.BorderChanged = nil
 		mod:StyleFilterBorderColorLock(frame.Health.backdrop, false)
 		frame.Health.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].powerbar and mod.db.units[frame.frameType].powerbar.enable) then
+		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
 			mod:StyleFilterBorderColorLock(frame.Power.backdrop, false)
 			frame.Power.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
@@ -323,14 +302,12 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 		frame.Health:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 	end
 	if ScaleChanged then
-		--[[
 		frame.ScaleChanged = nil
 		if frame.isTarget and self.db.useTargetScale then
 			self:SetFrameScale(frame, self.db.targetScale)
 		else
 			self:SetFrameScale(frame, frame.ThreatScale or 1)
 		end
-		]]
 	end
 	if AlphaChanged then
 		frame.AlphaChanged = nil
@@ -346,21 +323,17 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if PortraitShown then
 		frame.PortraitShown = nil
-		frame.Portrait:Hide() --This could have been forced so hide it
-		self:UpdateElement_Portrait(frame) --Use the original check to determine if this should be shown
-		self:ConfigureElement_Portrait(frame)
-		if frame.RightArrow:IsShown() then
-			frame.RightArrow:SetPoint("RIGHT", (frame.Portrait:IsShown() and frame.Portrait) or frame.Health, "LEFT", E:Scale(E.Border*2), 0)
-		end
+		self:Update_Portrait(frame)
+		frame.Portrait:ForceUpdate()
 	end
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
-		if (frame.frameType and self.db.units[frame.frameType].healthbar.enable) or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth) then
+		if (frame.frameType and self.db.units[frame.frameType].health.enable) or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth) then
 			frame.Health:Show()
 			self:UpdateElement_Glow(frame)
-			if self.db.units[frame.frameType].powerbar and self.db.units[frame.frameType].powerbar.enable then
+			if self.db.units[frame.frameType].power and self.db.units[frame.frameType].power.enable then
 				local curValue = UnitPower(frame.unit, frame.PowerType);
-				if not (curValue == 0 and self.db.units[frame.frameType].powerbar.hideWhenEmpty) then
+				if not (curValue == 0 and self.db.units[frame.frameType].power.hideWhenEmpty) then
 					frame.Power:Show()
 				end
 			end
@@ -370,12 +343,12 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 			self:ConfigureElement_Name(frame)
 			self:UpdateElement_Name(frame)
 		else
-			frame.Name:SetText("")
+			frame.Name:SetText()
 		end
 		if self.db.showNPCTitles then
 			self:UpdateElement_NPCTitle(frame)
 		else
-			frame.NPCTitle:SetText("")
+			frame.NPCTitle:SetText()
 		end
 		if self.db.units[frame.frameType].portrait.enable then
 			self:ConfigureElement_Portrait(frame)
@@ -390,8 +363,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	local power, maxPower, percPower, underPowerThreshold, overPowerThreshold, powerUnit;
 	local health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold, healthUnit;
 
-	local castbarShown = frame.Castbar and frame.Castbar:IsShown()
-	local castbarTriggered = false --We use this to prevent additional calls to `UpdateElement_All` when the castbar hides
+	local isCasting = frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
 	local matchMyClass = false --Only check spec when we match the class condition
 
 	if not failed and trigger.names and next(trigger.names) then
@@ -425,10 +397,11 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	--Try to match by casting spell name or spell id
 	if not failed and (trigger.casting and trigger.casting.spells) and next(trigger.casting.spells) then
 		condition = 0
+
 		for spellName, value in pairs(trigger.casting.spells) do
 			if value == true then --only check spell that are checked
 				condition = 1
-				if castbarShown then
+				if isCasting then
 					spell = frame.Castbar.Text:GetText() --Make sure we can check spell name
 					if spell and spell ~= "" and spell ~= FAILED and spell ~= INTERRUPTED then
 						if tonumber(spellName) then
@@ -444,16 +417,14 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		end
 		if condition ~= 0 then --If we cant check spell name, we ignore this trigger when the castbar is shown
 			failed = (condition == 1)
-			castbarTriggered = (condition == 2)
 		end
 	end
 
 	--Try to match by casting interruptible
 	if not failed and (trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible)) then
 		condition = false
-		if castbarShown and ((trigger.casting.interruptible and frame.Castbar.canInterrupt) or (trigger.casting.notInterruptible and not frame.Castbar.canInterrupt)) then
+		if isCasting and ((trigger.casting.interruptible and frame.Castbar.canInterrupt) or (trigger.casting.notInterruptible and not frame.Castbar.canInterrupt)) then
 			condition = true
-			castbarTriggered = true
 		end
 		failed = not condition
 	end
@@ -736,17 +707,13 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 
 	--If failed is nil it means the filter is empty so we dont run FilterStyle
 	if failed == false then --The conditions didn't fail so pass to FilterStyle
-		self:StyleFilterPass(frame, filter.actions, castbarTriggered);
+		self:StyleFilterPass(frame, filter.actions);
 	end
 end
 
-function mod:StyleFilterPass(frame, actions, castbarTriggered)
-	if castbarTriggered then
-		frame.castbarTriggered = castbarTriggered
-	end
-
-	local healthBarEnabled = (frame.frameType and mod.db.units[frame.frameType].healthbar.enable) or (mod.db.displayStyle ~= "ALL") or (frame.isTarget and mod.db.alwaysShowTargetHealth)
-	local powerBarEnabled = frame.frameType and mod.db.units[frame.frameType].powerbar and mod.db.units[frame.frameType].powerbar.enable
+function mod:StyleFilterPass(frame, actions)
+	local healthBarEnabled = (frame.frameType and mod.db.units[frame.frameType].health.enable) or (mod.db.displayStyle ~= "ALL") or (frame.isTarget and mod.db.alwaysShowTargetHealth)
+	local powerBarEnabled = frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable
 	local healthBarShown = healthBarEnabled and frame.Health:IsShown()
 
 	self:StyleFilterSetChanges(frame, actions,
@@ -813,64 +780,64 @@ function mod:StyleFilterConfigureEvents()
 				tinsert(self.StyleFilterTriggerList, {filterName, filter.triggers.priority or 1})
 
 				-- NOTE: 0 for fake events, 1 to override StyleFilterWaitTime
-				self.StyleFilterTriggerEvents["FAKE_AuraWaitTimer"] = 0 -- for minTimeLeft and maxTimeLeft aura trigger
-				self.StyleFilterTriggerEvents["NAME_PLATE_UNIT_ADDED"] = 1
+				self.StyleFilterTriggerEvents.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
+				self.StyleFilterTriggerEvents.NAME_PLATE_UNIT_ADDED = 1
 
 				if filter.triggers.casting then
 					if next(filter.triggers.casting.spells) then
 						for _, value in pairs(filter.triggers.casting.spells) do
 							if value == true then
-								self.StyleFilterTriggerEvents["FAKE_Casting"] = 0
+								self.StyleFilterTriggerEvents.FAKE_Casting = 0
 								break
 							end
 						end
 					end
 
 					if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
-						self.StyleFilterTriggerEvents["FAKE_Casting"] = 0
+						self.StyleFilterTriggerEvents.FAKE_Casting = 0
 					end
 				end
 
 				-- real events
-				self.StyleFilterTriggerEvents["PLAYER_TARGET_CHANGED"] = true
+				self.StyleFilterTriggerEvents.PLAYER_TARGET_CHANGED = true
 
 				if filter.triggers.reactionType and filter.triggers.reactionType.enable then
-					self.StyleFilterTriggerEvents["UNIT_FACTION"] = true
+					self.StyleFilterTriggerEvents.UNIT_FACTION = true
 				end
 
 				if filter.triggers.targetMe or filter.triggers.notTargetMe then
-					self.StyleFilterTriggerEvents["UNIT_TARGET"] = true
+					self.StyleFilterTriggerEvents.UNIT_TARGET = true
 				end
 
 				if filter.triggers.healthThreshold then
-					self.StyleFilterTriggerEvents["UNIT_HEALTH"] = true
-					self.StyleFilterTriggerEvents["UNIT_MAXHEALTH"] = true
-					self.StyleFilterTriggerEvents["UNIT_HEALTH_FREQUENT"] = true
+					self.StyleFilterTriggerEvents.UNIT_HEALTH = true
+					self.StyleFilterTriggerEvents.UNIT_MAXHEALTH = true
+					self.StyleFilterTriggerEvents.UNIT_HEALTH_FREQUENT = true
 				end
 
 				if filter.triggers.powerThreshold then
-					self.StyleFilterTriggerEvents["UNIT_POWER_UPDATE"] = true
-					self.StyleFilterTriggerEvents["UNIT_POWER_FREQUENT"] = true
-					self.StyleFilterTriggerEvents["UNIT_DISPLAYPOWER"] = true
+					self.StyleFilterTriggerEvents.UNIT_POWER_UPDATE = true
+					self.StyleFilterTriggerEvents.UNIT_POWER_FREQUENT = true
+					self.StyleFilterTriggerEvents.UNIT_DISPLAYPOWER = true
 				end
 
 				if next(filter.triggers.names) then
 					for _, value in pairs(filter.triggers.names) do
 						if value == true then
-							self.StyleFilterTriggerEvents["UNIT_NAME_UPDATE"] = true
+							self.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = true
 							break
 						end
 					end
 				end
 
 				if filter.triggers.inCombat or filter.triggers.outOfCombat or filter.triggers.inCombatUnit or filter.triggers.outOfCombatUnit then
-					self.StyleFilterTriggerEvents["UNIT_THREAT_LIST_UPDATE"] = true
+					self.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
 				end
 
 				if next(filter.triggers.cooldowns.names) then
 					for _, value in pairs(filter.triggers.cooldowns.names) do
 						if value == "ONCD" or value == "OFFCD" then
-							self.StyleFilterTriggerEvents["SPELL_UPDATE_COOLDOWN"] = true
+							self.StyleFilterTriggerEvents.SPELL_UPDATE_COOLDOWN = true
 							break
 						end
 					end
@@ -879,7 +846,7 @@ function mod:StyleFilterConfigureEvents()
 				if next(filter.triggers.buffs.names) then
 					for _, value in pairs(filter.triggers.buffs.names) do
 						if value == true then
-							self.StyleFilterTriggerEvents["UNIT_AURA"] = true
+							self.StyleFilterTriggerEvents.UNIT_AURA = true
 							break
 						end
 					end
@@ -888,7 +855,7 @@ function mod:StyleFilterConfigureEvents()
 				if next(filter.triggers.debuffs.names) then
 					for _, value in pairs(filter.triggers.debuffs.names) do
 						if value == true then
-							self.StyleFilterTriggerEvents["UNIT_AURA"] = true
+							self.StyleFilterTriggerEvents.UNIT_AURA = true
 							break
 						end
 					end
@@ -912,9 +879,7 @@ function mod:StyleFilterConfigureEvents()
 	end
 end
 
-local iWantToTestBrokenStyleFilters = false
 function mod:StyleFilterUpdate(frame, event)
-	if not iWantToTestBrokenStyleFilters then return end
 	if not (frame and self.StyleFilterTriggerEvents[event]) then return end
 
 	if self.StyleFilterTriggerEvents[event] ~= 1 then

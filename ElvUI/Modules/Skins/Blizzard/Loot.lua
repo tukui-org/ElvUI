@@ -122,8 +122,8 @@ local function LoadSkin()
 
 	BonusRollFrame.SpecIcon.b = CreateFrame("Frame", nil, BonusRollFrame)
 	BonusRollFrame.SpecIcon.b:SetTemplate()
-	BonusRollFrame.SpecIcon.b:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 2)
-	BonusRollFrame.SpecIcon.b:SetSize(BonusRollFrame.SpecIcon:GetSize())
+	BonusRollFrame.SpecIcon.b:Point("BOTTOMRIGHT", BonusRollFrame, -2, 2)
+	BonusRollFrame.SpecIcon.b:Size(BonusRollFrame.SpecIcon:GetSize())
 	BonusRollFrame.SpecIcon.b:SetFrameLevel(6)
 	BonusRollFrame.SpecIcon:SetParent(BonusRollFrame.SpecIcon.b)
 	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
@@ -131,14 +131,14 @@ local function LoadSkin()
 	hooksecurefunc(BonusRollFrame.SpecIcon, "Hide", function(specIcon)
 		if specIcon.b and specIcon.b:IsShown() then
 			BonusRollFrame.CurrentCountFrame:ClearAllPoints()
-			BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+			BonusRollFrame.CurrentCountFrame:Point("BOTTOMRIGHT", BonusRollFrame, -2, 1)
 			specIcon.b:Hide()
 		end
 	end)
 	hooksecurefunc(BonusRollFrame.SpecIcon, "Show", function(specIcon)
 		if specIcon.b and not specIcon.b:IsShown() and specIcon:GetTexture() ~= nil then
 			BonusRollFrame.CurrentCountFrame:ClearAllPoints()
-			BonusRollFrame.CurrentCountFrame:SetPoint("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
+			BonusRollFrame.CurrentCountFrame:Point("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
 			specIcon.b:Show()
 		end
 	end)
@@ -156,12 +156,12 @@ local function LoadSkin()
 		if BonusRollFrame.SpecIcon.b then
 			BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil);
 			if BonusRollFrame.SpecIcon.b:IsShown() then
-				BonusRollFrame.CurrentCountFrame:SetPoint("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
+				BonusRollFrame.CurrentCountFrame:Point("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
 			else
-				BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+				BonusRollFrame.CurrentCountFrame:Point("BOTTOMRIGHT", BonusRollFrame, -2, 1)
 			end
 		else
-			BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+			BonusRollFrame.CurrentCountFrame:Point("BOTTOMRIGHT", BonusRollFrame, -2, 1)
 		end
 
 		--skin currency icons

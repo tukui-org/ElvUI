@@ -439,7 +439,7 @@ function CH:StyleChat(frame)
 
 			if editBox.historyIndex < 1 then
 				editBox.historyIndex = 0
-				editBox:SetText("")
+				editBox:SetText()
 				return
 			end
 		elseif key == "UP" then
@@ -758,8 +758,8 @@ function CH:PositionChat(override)
 	if ((InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override)) then return end
 	local RightChatPanel, LeftChatPanel, RightChatDataPanel, LeftChatToggleButton, LeftChatTab, CombatLogButton = _G.RightChatPanel, _G.LeftChatPanel, _G.RightChatDataPanel, _G.LeftChatToggleButton, _G.LeftChatTab, _G.CombatLogQuickButtonFrame_Custom
 	if not RightChatPanel or not LeftChatPanel then return; end
-	RightChatPanel:SetSize(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
-	LeftChatPanel:SetSize(E.db.chat.panelWidth, E.db.chat.panelHeight)
+	RightChatPanel:Size(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
+	LeftChatPanel:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
 	CombatLogButton:Size(LeftChatTab:GetWidth(), LeftChatTab:GetHeight())
 
 	self.RightChatWindowID = FindRightChatID()
@@ -797,9 +797,9 @@ function CH:PositionChat(override)
 				chat:Point("BOTTOMLEFT", RightChatDataPanel, "BOTTOMLEFT", 1, 1)
 			end
 			if id ~= 2 then
-				chat:SetSize((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 11, (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
+				chat:Size((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 11, (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
 			else
-				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogButton:GetHeight())
+				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogButton:GetHeight())
 			end
 
 			--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
@@ -831,7 +831,7 @@ function CH:PositionChat(override)
 					BASE_OFFSET = BASE_OFFSET - 24
 					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "BOTTOMLEFT", 1, 1)
 				end
-				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
+				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
 
 				--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
 				if chat:GetLeft() then
@@ -865,6 +865,7 @@ function CH:Panels_ColorUpdate()
 	local panelColor = E.db.chat.panelColor
 	_G.LeftChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
 	_G.RightChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
+	--_G.ChatButtonHolder.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
 end
 
 local function UpdateChatTabColor(_, r, g, b)
@@ -936,7 +937,7 @@ function CH:SetChatEditBoxMessage(message)
 		ChatEdit_ActivateChat(ChatFrameEditBox)
 	end
 	if editBoxText and editBoxText ~= "" then
-		ChatFrameEditBox:SetText('')
+		ChatFrameEditBox:SetText()
 	end
 	ChatFrameEditBox:Insert(message)
 	ChatFrameEditBox:HighlightText()
@@ -1897,11 +1898,14 @@ function CH:ChatEdit_AddHistory(_, line) -- editBox, line
 	if line and strlen(line) > 0 then
 		if strfind(line, '/rl') then return end
 
-		for _, text in pairs(ElvCharacterDB.ChatEditHistory) do
-			if text == line then return end
+		for index, text in pairs(ElvCharacterDB.ChatEditHistory) do
+			if text == line then
+				tremove(ElvCharacterDB.ChatEditHistory, index)
+				break
+			end
 		end
 
-		tinsert(ElvCharacterDB.ChatEditHistory, #ElvCharacterDB.ChatEditHistory + 1, line)
+		tinsert(ElvCharacterDB.ChatEditHistory, line)
 
 		if #ElvCharacterDB.ChatEditHistory > 20 then
 			tremove(ElvCharacterDB.ChatEditHistory, 1)
@@ -2339,116 +2343,63 @@ function CH:DefaultSmileys()
 	CH:AddSmiley('</3', E:TextureString(E.Media.ChatEmojis.BrokenHeart, ':16:16'))
 end
 
-function CH:Initialize()
-	if ElvCharacterDB.ChatHistory then
-		ElvCharacterDB.ChatHistory = nil --Depreciated
-	end
-	if ElvCharacterDB.ChatLog then
-		ElvCharacterDB.ChatLog = nil --Depreciated
-	end
-
-	self.db = E.db.chat
-
-	self:DelayGuildMOTD() --Keep this before `is Chat Enabled` check
-	if E.private.chat.enable ~= true then return end
-
-	if not ElvCharacterDB.ChatEditHistory then
-		ElvCharacterDB.ChatEditHistory = {};
-	end
-
-	if not ElvCharacterDB.ChatHistoryLog or not self.db.chatHistory then
-		ElvCharacterDB.ChatHistoryLog = {};
-	end
-
-	self:DefaultSmileys()
-	self:UpdateChatKeywords()
-	self:UpdateFading()
-
-	E.Chat = self
-	self:SecureHook('ChatEdit_OnEnterPressed')
-
-	if _G.WIM then
-		_G.WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(frame) CH.clickedframe = frame end);
-		_G.WIM.RegisterItemRefHandler('url', HyperLinkedURL)
-		_G.WIM.RegisterItemRefHandler('squ', HyperLinkedSQU)
-		_G.WIM.RegisterItemRefHandler('cpl', HyperLinkedCPL)
-	end
-
-	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
-	self:SecureHook("FCF_SavePositionAndDimensions", "ON_FCF_SavePositionAndDimensions")
-	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
-	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
-	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
-	self:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
-	self:RegisterEvent('PET_BATTLE_CLOSE')
-
-	if E.private.general.voiceOverlay then
-		self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED", "VoiceOverlay");
-		self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED", "VoiceOverlay");
-		self:RegisterEvent("VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED", "VoiceOverlay");
-		self:RegisterEvent("VOICE_CHAT_COMMUNICATION_MODE_CHANGED", "VoiceOverlay");
-		self:RegisterEvent("VOICE_CHAT_CHANNEL_MEMBER_REMOVED", "VoiceOverlay");
-		self:RegisterEvent("VOICE_CHAT_CHANNEL_REMOVED", "VoiceOverlay");
-		self:RegisterEvent("VOICE_CHAT_CHANNEL_DEACTIVATED", "VoiceOverlay");
-		_G.VoiceActivityManager:UnregisterAllEvents();
-	end
-
-	self:SetupChat()
-	self:UpdateAnchors()
-	if not E.db.chat.lockPositions then
-		CH:UpdateChatTabs() --It was not done in PositionChat, so do it now
-	end
-
-	hooksecurefunc("ChatEdit_UpdateHeader", function(editbox)
-		local chatType = editbox:GetAttribute("chatType")
-		if not chatType then return end
-
-		local ChatTypeInfo = _G.ChatTypeInfo
-		local info = ChatTypeInfo[chatType]
-		local chanTarget = editbox:GetAttribute("channelTarget")
-		local chanName = chanTarget and GetChannelName(chanTarget)
-
-		--Increase inset on right side to make room for character count text
-		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
-		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
-
-		if chanName and (chatType == "CHANNEL") then
-			if chanName == 0 then
-				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			else
-				info = ChatTypeInfo[chatType..chanName]
-				editbox:SetBackdropBorderColor(info.r, info.g, info.b)
-			end
-		else
-			editbox:SetBackdropBorderColor(info.r, info.g, info.b)
-		end
-	end)
-
-	self:SecureHook("FCF_SetWindowAlpha")
+local function RepositionChatIcons()
+	_G.GeneralDockManagerScrollFrame:SetPoint("BOTTOMRIGHT") -- call our hook
 
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-	_G.GeneralDockManagerOverflowButton:Point('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', -2, 2)
+	if _G.ChatFrameToggleVoiceMuteButton:IsShown() then
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.ChatFrameToggleVoiceMuteButton, 'LEFT', -4, 2)
+	else
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.ChatFrameChannelButton, 'LEFT', -4, 2)
+	end
+end
+
+local channelButtons = {
+	[1] = _G.ChatFrameChannelButton,
+	[2] = _G.ChatFrameToggleVoiceDeafenButton,
+	[3] = _G.ChatFrameToggleVoiceMuteButton
+}
+
+function CH:HandleChatVoiceIcons(S)
+	for index, button in pairs(channelButtons) do
+		button:ClearAllPoints()
+		button.Icon:SetDesaturated(true)
+
+		if index == 1 then
+			button:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -2)
+		else
+			button:SetPoint("RIGHT", channelButtons[index-1], "LEFT")
+		end
+	end
+
+	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
+	_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[3], 'LEFT', 0, 2)
 	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
+
+	channelButtons[3]:HookScript("OnShow", RepositionChatIcons)
+	channelButtons[3]:HookScript("OnHide", RepositionChatIcons) -- dont think this is needed but meh
+
 	hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y)
 		if anchor == _G.GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
 			frame:Point(point, anchor, attachTo, -2, -6)
+		elseif point == "BOTTOMRIGHT" and anchor ~= channelButtons[3] and anchor ~= channelButtons[1] and not _G.GeneralDockManagerOverflowButton:IsShown() then
+			if channelButtons[3]:IsShown() then
+				frame:Point("BOTTOMRIGHT", channelButtons[3], "BOTTOMLEFT")
+			else
+				frame:Point("BOTTOMRIGHT", channelButtons[1], "BOTTOMLEFT")
+			end
 		end
 	end)
 
-	for _, event in pairs(FindURL_Events) do
-		_G.ChatFrame_AddMessageEventFilter(event, CH[event] or CH.FindURL)
-		local nType = strsub(event, 10)
-		if nType ~= 'AFK' and nType ~= 'DND' and nType ~= 'COMMUNITIES_CHANNEL' then
-			self:RegisterEvent(event, 'SaveChatHistory')
-		end
-	end
+	_G.QuickJoinToastButton:Hide()
+	S:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
+	S:HandleButton(_G.ChatFrameChannelButton, nil, nil, nil, true)
+	S:HandleButton(_G.ChatFrameToggleVoiceDeafenButton, nil, nil, nil, true)
+	S:HandleButton(_G.ChatFrameToggleVoiceMuteButton, nil, nil, nil, true)
+	RepositionChatIcons()
+end
 
-	if self.db.chatHistory then
-		self:DisplayChatHistory()
-	end
-
-	local S = E:GetModule('Skins')
-	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
+function CH:BuildCopyChatFrame(S)
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	tinsert(_G.UISpecialFrames, "CopyChatFrame")
 	frame:SetTemplate('Transparent')
@@ -2521,8 +2472,98 @@ function CH:Initialize()
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
 	S:HandleCloseButton(close)
+end
+
+function CH:Initialize()
+	if ElvCharacterDB.ChatHistory then ElvCharacterDB.ChatHistory = nil end --Depreciated
+	if ElvCharacterDB.ChatLog then ElvCharacterDB.ChatLog = nil end --Depreciated
+
+	self.db = E.db.chat
+	self:DelayGuildMOTD() -- Keep this before `is Chat Enabled` check
+
+	if E.private.chat.enable ~= true then return end
+	E.Chat = self
+
+	local S = E:GetModule('Skins')
+	if not ElvCharacterDB.ChatEditHistory then ElvCharacterDB.ChatEditHistory = {} end
+	if not ElvCharacterDB.ChatHistoryLog or not self.db.chatHistory then ElvCharacterDB.ChatHistoryLog = {} end
 
 	_G.ChatFrameMenuButton:Kill()
+
+	self:SetupChat()
+	self:DefaultSmileys()
+	self:UpdateChatKeywords()
+	self:UpdateFading()
+	self:UpdateAnchors()
+	self:Panels_ColorUpdate()
+	self:HandleChatVoiceIcons(S)
+
+	self:SecureHook('ChatEdit_OnEnterPressed')
+	self:SecureHook('FCF_SetWindowAlpha')
+	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
+	self:SecureHook('FCF_SavePositionAndDimensions', 'ON_FCF_SavePositionAndDimensions')
+	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
+	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
+	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
+	self:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
+	self:RegisterEvent('PET_BATTLE_CLOSE')
+
+	if E.private.general.voiceOverlay then
+		self:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED', 'VoiceOverlay');
+		self:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED', 'VoiceOverlay');
+		self:RegisterEvent('VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED', 'VoiceOverlay');
+		self:RegisterEvent('VOICE_CHAT_COMMUNICATION_MODE_CHANGED', 'VoiceOverlay');
+		self:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_REMOVED', 'VoiceOverlay');
+		self:RegisterEvent('VOICE_CHAT_CHANNEL_REMOVED', 'VoiceOverlay');
+		self:RegisterEvent('VOICE_CHAT_CHANNEL_DEACTIVATED', 'VoiceOverlay');
+		_G.VoiceActivityManager:UnregisterAllEvents();
+	end
+
+	if _G.WIM then
+		_G.WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(frame) CH.clickedframe = frame end);
+		_G.WIM.RegisterItemRefHandler('url', HyperLinkedURL)
+		_G.WIM.RegisterItemRefHandler('squ', HyperLinkedSQU)
+		_G.WIM.RegisterItemRefHandler('cpl', HyperLinkedCPL)
+	end
+
+	if not E.db.chat.lockPositions then CH:UpdateChatTabs() end --It was not done in PositionChat, so do it now
+
+	for _, event in pairs(FindURL_Events) do
+		_G.ChatFrame_AddMessageEventFilter(event, CH[event] or CH.FindURL)
+		local nType = strsub(event, 10)
+		if nType ~= 'AFK' and nType ~= 'DND' and nType ~= 'COMMUNITIES_CHANNEL' then
+			self:RegisterEvent(event, 'SaveChatHistory')
+		end
+	end
+
+	if self.db.chatHistory then self:DisplayChatHistory() end
+	self:BuildCopyChatFrame(S)
+
+	-- Editbox Backdrop Color
+	hooksecurefunc("ChatEdit_UpdateHeader", function(editbox)
+		local chatType = editbox:GetAttribute("chatType")
+		if not chatType then return end
+
+		local ChatTypeInfo = _G.ChatTypeInfo
+		local info = ChatTypeInfo[chatType]
+		local chanTarget = editbox:GetAttribute("channelTarget")
+		local chanName = chanTarget and GetChannelName(chanTarget)
+
+		--Increase inset on right side to make room for character count text
+		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
+		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
+
+		if chanName and (chatType == "CHANNEL") then
+			if chanName == 0 then
+				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			else
+				info = ChatTypeInfo[chatType..chanName]
+				editbox:SetBackdropBorderColor(info.r, info.g, info.b)
+			end
+		else
+			editbox:SetBackdropBorderColor(info.r, info.g, info.b)
+		end
+	end)
 
 	-- Combat Log Skinning (credit: Aftermathh)
 	local CombatLogButton = _G.CombatLogQuickButtonFrame_Custom
@@ -2542,13 +2583,14 @@ function CH:Initialize()
 	local CombatLogProgressBar = _G.CombatLogQuickButtonFrame_CustomProgressBar
 	CombatLogProgressBar:SetStatusBarTexture(E.media.normTex)
 	CombatLogProgressBar:SetInside(CombatLogButton)
+	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogButton, "TOPRIGHT", 0, -1)
 	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
 
 	--Chat Heads Frame
 	self.ChatHeadFrame = CreateFrame("Frame", "ElvUIChatHeadFrame", E.UIParent)
-	self.ChatHeadFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 4, -80)
+	self.ChatHeadFrame:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -80)
 	self.ChatHeadFrame:Height(20)
 	self.ChatHeadFrame:Width(200)
 	E:CreateMover(self.ChatHeadFrame, 'VOICECHAT', L["Voice Overlay"]);
@@ -2558,13 +2600,13 @@ function CH:Initialize()
 	local CHAT_HEAD_HEIGHT = 40
 	for i=1, self.maxHeads do
 		self.ChatHeadFrame[i] = CreateFrame("Frame", "ElvUIChatHeadFrame"..i, self.ChatHeadFrame)
-		self.ChatHeadFrame[i]:SetWidth(self.ChatHeadFrame:GetWidth())
-		self.ChatHeadFrame[i]:SetHeight(CHAT_HEAD_HEIGHT)
+		self.ChatHeadFrame[i]:Width(self.ChatHeadFrame:GetWidth())
+		self.ChatHeadFrame[i]:Height(CHAT_HEAD_HEIGHT)
 
 		self.ChatHeadFrame[i].Portrait = CreateFrame("Frame", nil, self.ChatHeadFrame[i])
 		self.ChatHeadFrame[i].Portrait:Width(CHAT_HEAD_HEIGHT - self.volumeBarHeight)
 		self.ChatHeadFrame[i].Portrait:Height(CHAT_HEAD_HEIGHT - self.volumeBarHeight - E.Border*2)
-		self.ChatHeadFrame[i].Portrait:SetPoint("TOPLEFT", self.ChatHeadFrame[i], "TOPLEFT")
+		self.ChatHeadFrame[i].Portrait:Point("TOPLEFT", self.ChatHeadFrame[i], "TOPLEFT")
 		self.ChatHeadFrame[i].Portrait:SetTemplate()
 		self.ChatHeadFrame[i].Portrait.texture = self.ChatHeadFrame[i].Portrait:CreateTexture(nil, "OVERLAY")
 		self.ChatHeadFrame[i].Portrait.texture:SetTexCoord(0.15, 0.85, 0.15, 0.85)
@@ -2572,12 +2614,12 @@ function CH:Initialize()
 
 		self.ChatHeadFrame[i].Name = self.ChatHeadFrame[i]:CreateFontString(nil, "OVERLAY")
 		self.ChatHeadFrame[i].Name:FontTemplate(nil, 20)
-		self.ChatHeadFrame[i].Name:SetPoint("LEFT", self.ChatHeadFrame[i].Portrait, "RIGHT", 2, 0)
+		self.ChatHeadFrame[i].Name:Point("LEFT", self.ChatHeadFrame[i].Portrait, "RIGHT", 2, 0)
 
 		self.ChatHeadFrame[i].StatusBar = CreateFrame("StatusBar", nil, self.ChatHeadFrame[i])
-		self.ChatHeadFrame[i].StatusBar:SetPoint("TOPLEFT", self.ChatHeadFrame[i].Portrait, "BOTTOMLEFT", E.Border, -E.Spacing*3)
-		self.ChatHeadFrame[i].StatusBar:SetWidth(CHAT_HEAD_HEIGHT - E.Border*2 - self.volumeBarHeight)
-		self.ChatHeadFrame[i].StatusBar:SetHeight(self.volumeBarHeight)
+		self.ChatHeadFrame[i].StatusBar:Point("TOPLEFT", self.ChatHeadFrame[i].Portrait, "BOTTOMLEFT", E.Border, -E.Spacing*3)
+		self.ChatHeadFrame[i].StatusBar:Width(CHAT_HEAD_HEIGHT - E.Border*2 - self.volumeBarHeight)
+		self.ChatHeadFrame[i].StatusBar:Height(self.volumeBarHeight)
 		self.ChatHeadFrame[i].StatusBar:CreateBackdrop()
 		self.ChatHeadFrame[i].StatusBar:SetStatusBarTexture(E.media.normTex)
 		self.ChatHeadFrame[i].StatusBar:SetMinMaxValues(0, 1)
@@ -2589,9 +2631,7 @@ function CH:Initialize()
 
 		self.ChatHeadFrame[i]:Hide()
 	end
-
 	self:SetChatHeadOrientation("TOP")
-	self:Panels_ColorUpdate()
 end
 
 CH.TalkingList = {}
@@ -2667,23 +2707,22 @@ function CH:VoiceOverlay(event, ...)
 end
 
 function CH:SetChatHeadOrientation(position)
-
 	if position == "TOP" then
 		for i=1, self.maxHeads do
 			self.ChatHeadFrame[i]:ClearAllPoints()
 			if i == 1 then
-				self.ChatHeadFrame[i]:SetPoint("TOP", self.ChatHeadFrame, "BOTTOM", 0, -E.Border*3)
+				self.ChatHeadFrame[i]:Point("TOP", self.ChatHeadFrame, "BOTTOM", 0, -E.Border*3)
 			else
-				self.ChatHeadFrame[i]:SetPoint("TOP", self.ChatHeadFrame[i - 1], "BOTTOM", 0, -E.Border*3)
+				self.ChatHeadFrame[i]:Point("TOP", self.ChatHeadFrame[i - 1], "BOTTOM", 0, -E.Border*3)
 			end
 		end
 	else
 		for i=1, self.maxHeads do
 			self.ChatHeadFrame[i]:ClearAllPoints()
 			if i == 1 then
-				self.ChatHeadFrame[i]:SetPoint("BOTTOM", self.ChatHeadFrame, "TOP", 0, E.Border*3)
+				self.ChatHeadFrame[i]:Point("BOTTOM", self.ChatHeadFrame, "TOP", 0, E.Border*3)
 			else
-				self.ChatHeadFrame[i]:SetPoint("BOTTOM", self.ChatHeadFrame[i - 1], "TOP", 0, E.Border*3)
+				self.ChatHeadFrame[i]:Point("BOTTOM", self.ChatHeadFrame[i - 1], "TOP", 0, E.Border*3)
 			end
 		end
 	end

@@ -47,7 +47,7 @@ local function LoadSkin()
 
 	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo)
 		if clubInfo then
-			self:SetSize(166, 67)
+			self:Size(166, 67)
 
 			--select(13, self:GetRegions()):Hide() -- Hide the mouseover texture
 			self.Background:Hide()
@@ -83,7 +83,7 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetAddCommunity", function(self)
-		self:SetSize(166, 67)
+		self:Size(166, 67)
 
 		--select(13, self:GetRegions()):Hide() -- Hide the mouseover texture (needs some love)
 		self.Background:Hide()
@@ -108,7 +108,7 @@ local function LoadSkin()
 	end)
 
 	S:HandleItemButton(CommunitiesFrame.ChatTab)
-	CommunitiesFrame.ChatTab:SetPoint('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
+	CommunitiesFrame.ChatTab:Point('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
 	S:HandleItemButton(CommunitiesFrame.RosterTab)
 	S:HandleItemButton(CommunitiesFrame.GuildBenefitsTab)
 	S:HandleItemButton(CommunitiesFrame.GuildInfoTab)
@@ -116,12 +116,12 @@ local function LoadSkin()
 	S:HandleInsetFrame(CommunitiesFrame.CommunitiesList)
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)
 	CommunitiesFrame.MaximizeMinimizeFrame:ClearAllPoints()
-	CommunitiesFrame.MaximizeMinimizeFrame:SetPoint("RIGHT", CommunitiesFrame.CloseButton, "LEFT", 12, 0)
+	CommunitiesFrame.MaximizeMinimizeFrame:Point("RIGHT", CommunitiesFrame.CloseButton, "LEFT", 12, 0)
 
 
 	S:HandleButton(CommunitiesFrame.InviteButton)
 	CommunitiesFrame.AddToChatButton:ClearAllPoints()
-	CommunitiesFrame.AddToChatButton:SetPoint("BOTTOM", CommunitiesFrame.ChatEditBox, "BOTTOMRIGHT", -5, -30) -- needs probably adjustment
+	CommunitiesFrame.AddToChatButton:Point("BOTTOM", CommunitiesFrame.ChatEditBox, "BOTTOMRIGHT", -5, -30) -- needs probably adjustment
 	S:HandleButton(CommunitiesFrame.AddToChatButton)
 	S:HandleButton(CommunitiesFrame.GuildFinderFrame.FindAGuildButton)
 
@@ -143,7 +143,7 @@ local function LoadSkin()
 	CommunitiesFrame.GuildFinderFrame:StripTextures()
 
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
-	CommunitiesFrame.ChatEditBox:SetSize(120, 20)
+	CommunitiesFrame.ChatEditBox:Size(120, 20)
 
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
@@ -171,7 +171,7 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
-	CommunitiesFrame.MemberList.ShowOfflineButton:SetSize(25, 25)
+	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
 
 	hooksecurefunc(CommunitiesFrame.MemberList, "RefreshListDisplay", function(self)
 		for i = 1, self.ColumnDisplay:GetNumChildren() do
@@ -281,8 +281,8 @@ local function LoadSkin()
 	E:RegisterStatusBar(StatusBar)
 
 	local bg = CreateFrame("Frame", nil, StatusBar)
-	bg:SetPoint("TOPLEFT", 0, -3)
-	bg:SetPoint("BOTTOMRIGHT", 0, 1)
+	bg:Point("TOPLEFT", 0, -3)
+	bg:Point("BOTTOMRIGHT", 0, 1)
 	bg:SetFrameLevel(StatusBar:GetFrameLevel())
 	bg:CreateBackdrop()
 
@@ -450,7 +450,7 @@ local function LoadSkin()
 	EditStreamDialog.backdrop:SetAllPoints()
 
 	S:HandleEditBox(EditStreamDialog.NameEdit)
-	EditStreamDialog.NameEdit:SetSize(280, 20)
+	EditStreamDialog.NameEdit:Size(280, 20)
 	S:HandleEditBox(EditStreamDialog.Description)
 	S:HandleCheckBox(EditStreamDialog.TypeCheckBox)
 

@@ -14,8 +14,8 @@ local function LoadSkin()
 	local AuctionFrame = _G.AuctionFrame
 	AuctionFrame:StripTextures(true)
 	AuctionFrame:CreateBackdrop("Transparent")
-	AuctionFrame.backdrop:SetPoint('TOPLEFT', 0, -10)
-	AuctionFrame.backdrop:SetPoint('BOTTOMRIGHT', 0, 10)
+	AuctionFrame.backdrop:Point('TOPLEFT', 0, -10)
+	AuctionFrame.backdrop:Point('BOTTOMRIGHT', 0, 10)
 
 	local Buttons = {
 		_G.BrowseSearchButton,
@@ -124,10 +124,10 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.BrowseFilterScrollFrameScrollBar)
 	S:HandleScrollBar(_G.BrowseScrollFrameScrollBar)
 
-	_G.BrowseDropDown:SetPoint('TOPLEFT', _G.BrowseMaxLevel, 'TOPRIGHT', -6, 7)
-	_G.BrowseDropDown.Text:SetPoint("RIGHT", _G.BrowseDropDownRight, "RIGHT", -43, -2)
-	_G.BrowseDropDownName:SetPoint('BOTTOMLEFT', _G.BrowseDropDown, 'TOPLEFT', 20, -2)
-	_G.BrowseLevelHyphen:SetPoint('LEFT', _G.BrowseMinLevel, 'RIGHT', 2, 1)
+	_G.BrowseDropDown:Point('TOPLEFT', _G.BrowseMaxLevel, 'TOPRIGHT', -6, 7)
+	_G.BrowseDropDown.Text:Point("RIGHT", _G.BrowseDropDownRight, "RIGHT", -43, -2)
+	_G.BrowseDropDownName:Point('BOTTOMLEFT', _G.BrowseDropDown, 'TOPLEFT', 20, -2)
+	_G.BrowseLevelHyphen:Point('LEFT', _G.BrowseMinLevel, 'RIGHT', 2, 1)
 
 	_G.SideDressUpFrame:StripTextures(true)
 	_G.SideDressUpFrame:SetTemplate("Transparent")
@@ -145,18 +145,18 @@ local function LoadSkin()
 	_G.BrowsePrevPageButton:Point("TOPLEFT", _G.BrowseSearchButton, "BOTTOMLEFT", 0, -3)
 
 	--Fix Button Positions
-	_G.BrowsePrevPageButton:SetSize(20, 20)
-	_G.BrowsePrevPageButton:SetPoint('TOPLEFT', "$parent", "TOPLEFT", 660, -60)
-	_G.BrowseNextPageButton:SetSize(20, 20)
-	_G.BrowseNextPageButton:SetPoint('TOPRIGHT', "$parent", "TOPRIGHT", 67, -60)
-	_G.BrowseBuyoutButton:SetPoint("RIGHT", _G.BrowseCloseButton, "LEFT", -1, 0)
-	_G.BrowseBidButton:SetPoint("RIGHT", _G.BrowseBuyoutButton, "LEFT", -1, 0)
-	_G.BidBuyoutButton:SetPoint("RIGHT", _G.BidCloseButton, "LEFT", -1, 0)
-	_G.BidBidButton:SetPoint("RIGHT", _G.BidBuyoutButton, "LEFT", -1, 0)
-	_G.BrowseMaxLevel:SetPoint("LEFT", _G.BrowseMinLevel, "RIGHT", 8, 0)
-	_G.BrowseLevelHyphen:SetPoint('LEFT', _G.BrowseMinLevel, 'RIGHT', 2, 1)
-	_G.AuctionsCloseButton:SetPoint("BOTTOMRIGHT", _G.AuctionFrameAuctions, "BOTTOMRIGHT", 66, 12)
-	_G.AuctionsCancelAuctionButton:SetPoint("RIGHT", _G.AuctionsCloseButton, "LEFT", -4, 0)
+	_G.BrowsePrevPageButton:Size(20, 20)
+	_G.BrowsePrevPageButton:Point('TOPLEFT', "$parent", "TOPLEFT", 660, -60)
+	_G.BrowseNextPageButton:Size(20, 20)
+	_G.BrowseNextPageButton:Point('TOPRIGHT', "$parent", "TOPRIGHT", 67, -60)
+	_G.BrowseBuyoutButton:Point("RIGHT", _G.BrowseCloseButton, "LEFT", -1, 0)
+	_G.BrowseBidButton:Point("RIGHT", _G.BrowseBuyoutButton, "LEFT", -1, 0)
+	_G.BidBuyoutButton:Point("RIGHT", _G.BidCloseButton, "LEFT", -1, 0)
+	_G.BidBidButton:Point("RIGHT", _G.BidBuyoutButton, "LEFT", -1, 0)
+	_G.BrowseMaxLevel:Point("LEFT", _G.BrowseMinLevel, "RIGHT", 8, 0)
+	_G.BrowseLevelHyphen:Point('LEFT', _G.BrowseMinLevel, 'RIGHT', 2, 1)
+	_G.AuctionsCloseButton:Point("BOTTOMRIGHT", _G.AuctionFrameAuctions, "BOTTOMRIGHT", 66, 12)
+	_G.AuctionsCancelAuctionButton:Point("RIGHT", _G.AuctionsCloseButton, "LEFT", -4, 0)
 
 	_G.AuctionsItemButton:StripTextures()
 	_G.AuctionsItemButton:StyleButton()
@@ -221,8 +221,8 @@ local function LoadSkin()
 			Button:GetHighlightTexture():SetVertexColor(1, 1, 1, .2)
 
 			ItemButton:GetNormalTexture():SetTexture()
-			Button:GetHighlightTexture():SetPoint("TOPLEFT", ItemButton, "TOPRIGHT", 2, 0)
-			Button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", Button, "BOTTOMRIGHT", -2, 5)
+			Button:GetHighlightTexture():Point("TOPLEFT", ItemButton, "TOPRIGHT", 2, 0)
+			Button:GetHighlightTexture():Point("BOTTOMRIGHT", Button, "BOTTOMRIGHT", -2, 5)
 
 			S:HandleIcon(Texture)
 			Texture:SetInside()
@@ -248,25 +248,25 @@ local function LoadSkin()
 	end
 
 	local AuctionFrameAuctions = _G.AuctionFrameAuctions
-	AuctionFrameAuctions.LeftBackground:SetPoint("TOPLEFT", 15, -70)
-	AuctionFrameAuctions.LeftBackground:SetPoint("BOTTOMRIGHT", -545, 35)
+	AuctionFrameAuctions.LeftBackground:Point("TOPLEFT", 15, -70)
+	AuctionFrameAuctions.LeftBackground:Point("BOTTOMRIGHT", -545, 35)
 
-	AuctionFrameAuctions.RightBackground:SetPoint("TOPLEFT", AuctionFrameAuctions.LeftBackground, "TOPRIGHT", 3, 0)
-	AuctionFrameAuctions.RightBackground:SetPoint("BOTTOMRIGHT", AuctionFrame, -8, 35)
+	AuctionFrameAuctions.RightBackground:Point("TOPLEFT", AuctionFrameAuctions.LeftBackground, "TOPRIGHT", 3, 0)
+	AuctionFrameAuctions.RightBackground:Point("BOTTOMRIGHT", AuctionFrame, -8, 35)
 
 	local AuctionFrameBrowse = _G.AuctionFrameBrowse
-	AuctionFrameBrowse.LeftBackground:SetPoint("TOPLEFT", 20, -103)
-	AuctionFrameBrowse.LeftBackground:SetPoint("BOTTOMRIGHT", -575, 40)
+	AuctionFrameBrowse.LeftBackground:Point("TOPLEFT", 20, -103)
+	AuctionFrameBrowse.LeftBackground:Point("BOTTOMRIGHT", -575, 40)
 
-	AuctionFrameBrowse.RightBackground:SetPoint("TOPLEFT", AuctionFrameBrowse.LeftBackground, "TOPRIGHT", 4, 0)
-	AuctionFrameBrowse.RightBackground:SetPoint("BOTTOMRIGHT", AuctionFrame, "BOTTOMRIGHT", -8, 40)
+	AuctionFrameBrowse.RightBackground:Point("TOPLEFT", AuctionFrameBrowse.LeftBackground, "TOPRIGHT", 4, 0)
+	AuctionFrameBrowse.RightBackground:Point("BOTTOMRIGHT", AuctionFrame, "BOTTOMRIGHT", -8, 40)
 
 	local AuctionFrameBid = _G.AuctionFrameBid
 	AuctionFrameBid.Background = CreateFrame("Frame", nil, AuctionFrameBid)
 	AuctionFrameBid.Background:SetTemplate('Transparent')
-	AuctionFrameBid.Background:SetPoint("TOPLEFT", 22, -72)
-	AuctionFrameBid.Background:SetPoint("BOTTOMRIGHT", 66, 39)
-	_G.BidScrollFrame:SetHeight(332)
+	AuctionFrameBid.Background:Point("TOPLEFT", 22, -72)
+	AuctionFrameBid.Background:Point("BOTTOMRIGHT", 66, 39)
+	_G.BidScrollFrame:Height(332)
 
 	--WoW Token Category
 	local BrowseWowTokenResultsToken = _G.BrowseWowTokenResultsToken

@@ -26,9 +26,6 @@ local UnitFrame_OnLeave = UnitFrame_OnLeave
 local UnregisterAttributeDriver = UnregisterAttributeDriver
 local UnregisterStateDriver = UnregisterStateDriver
 local CompactRaidFrameContainer = CompactRaidFrameContainer
-local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
-local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
-local MAX_ARENA_ENEMIES = MAX_ARENA_ENEMIES
 
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 -- GLOBALS: ElvUF_Parent, Arena_LoadUI
@@ -576,7 +573,7 @@ function UF.groupPrototype:Configure_Groups(self)
 
 			if not group.isForced then
 				if not group.initialized then
-					group:SetAttribute("startingIndex", db.raidWideSorting and (-min(numGroups * (db.groupsPerRowCol * 5), MAX_RAID_MEMBERS) + 1) or -4)
+					group:SetAttribute("startingIndex", db.raidWideSorting and (-min(numGroups * (db.groupsPerRowCol * 5), _G.MAX_RAID_MEMBERS) + 1) or -4)
 					group:Show()
 					group.initialized = true
 				end
@@ -670,7 +667,7 @@ function UF.groupPrototype:Configure_Groups(self)
 		self:GetScript("OnSizeChanged")(self) --Mover size is not updated if frame is hidden, so call an update manually
 	end
 
-	self:SetSize(width - db.horizontalSpacing -groupSpacing, height - db.verticalSpacing -groupSpacing)
+	self:Size(width - db.horizontalSpacing -groupSpacing, height - db.verticalSpacing -groupSpacing)
 end
 
 function UF.groupPrototype:Update(self)
@@ -1120,7 +1117,7 @@ function ElvUF:DisableBlizzard(unit)
 		if (id) then
 			HandleFrame('Boss' .. id .. 'TargetFrame')
 		else
-			for i = 1, MAX_BOSS_FRAMES do
+			for i = 1, _G.MAX_BOSS_FRAMES do
 				HandleFrame(('Boss%dTargetFrame'):format(i))
 			end
 		end
@@ -1139,7 +1136,7 @@ function ElvUF:DisableBlizzard(unit)
 		if (id) then
 			HandleFrame('ArenaEnemyFrame' .. id)
 		else
-			for i = 1, MAX_ARENA_ENEMIES do
+			for i = 1, _G.MAX_ARENA_ENEMIES do
 				HandleFrame(format('ArenaEnemyFrame%d', i))
 			end
 		end

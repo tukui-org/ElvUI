@@ -40,15 +40,15 @@ local function LoadSkin()
 	for i = 1, _G.KEY_BINDINGS_DISPLAYED, 1 do
 		local button1 = _G["KeyBindingFrameKeyBinding"..i.."Key1Button"]
 		local button2 = _G["KeyBindingFrameKeyBinding"..i.."Key2Button"]
-		button2:SetPoint("LEFT", button1, "RIGHT", 1, 0) -- Needed for new Pixel Perfect
+		button2:Point("LEFT", button1, "RIGHT", 1, 0) -- Needed for new Pixel Perfect
 	end
 
 	hooksecurefunc("BindingButtonTemplate_SetupBindingButton", function(_, button)
 		if not button.IsSkinned then
 			local selected = button.selectedHighlight
 			selected:SetTexture(E.media.normTex)
-			selected:SetPoint("TOPLEFT", E.mult, -E.mult)
-			selected:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
+			selected:Point("TOPLEFT", E.mult, -E.mult)
+			selected:Point("BOTTOMRIGHT", -E.mult, E.mult)
 			selected:SetColorTexture(1, 1, 1, .25)
 			S:HandleButton(button)
 

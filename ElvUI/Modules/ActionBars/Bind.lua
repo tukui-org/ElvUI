@@ -145,7 +145,7 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.bindstring = "SPELL "..bind.button.name
 
 		GameTooltip:SetOwner(bind, "ANCHOR_TOP");
-		GameTooltip:SetPoint("BOTTOM", bind, "TOP", 0, 1);
+		GameTooltip:Point("BOTTOM", bind, "TOP", 0, 1);
 		GameTooltip:AddLine(bind.button.name, 1, 1, 1);
 		bind.button.bindings = {GetBindingKey(bind.button.bindstring)};
 			if #bind.button.bindings == 0 then
@@ -166,7 +166,7 @@ function AB:BindUpdate(button, spellmacro)
 		GameTooltip:Show();
 		GameTooltip:SetScript("OnHide", function(tt)
 			tt:SetOwner(bind, "ANCHOR_TOP");
-			tt:SetPoint("BOTTOM", bind, "TOP", 0, 1);
+			tt:Point("BOTTOM", bind, "TOP", 0, 1);
 			tt:AddLine(bind.button.name, 1, 1, 1);
 			bind.button.bindings = {GetBindingKey(spellmacro.." "..bind.button.name)};
 			if #bind.button.bindings == 0 then
@@ -188,7 +188,7 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.name = GetMacroInfo(bind.button.id);
 
 		GameTooltip:SetOwner(bind, "ANCHOR_TOP");
-		GameTooltip:SetPoint("BOTTOM", bind, "TOP", 0, 1);
+		GameTooltip:Point("BOTTOM", bind, "TOP", 0, 1);
 		GameTooltip:AddLine(bind.button.name, 1, 1, 1);
 
 		bind.button.bindings = {GetBindingKey(spellmacro.." "..bind.button.name)};
@@ -214,12 +214,12 @@ function AB:BindUpdate(button, spellmacro)
 		end
 
 		GameTooltip:SetOwner(bind, "ANCHOR_NONE");
-		GameTooltip:SetPoint("BOTTOM", bind, "TOP", 0, 1);
+		GameTooltip:Point("BOTTOM", bind, "TOP", 0, 1);
 		GameTooltip:AddLine(bind.button.name, 1, 1, 1);
 		GameTooltip:Show();
 		GameTooltip:SetScript("OnHide", function(tt)
 			tt:SetOwner(bind, "ANCHOR_NONE");
-			tt:SetPoint("BOTTOM", bind, "TOP", 0, 1);
+			tt:Point("BOTTOM", bind, "TOP", 0, 1);
 			tt:AddLine(bind.button.name, 1, 1, 1);
 			bind.button.bindings = {GetBindingKey(bind.button.bindstring)};
 			if #bind.button.bindings == 0 then
@@ -261,7 +261,7 @@ function AB:BindUpdate(button, spellmacro)
 		GameTooltip:Show();
 		GameTooltip:SetScript("OnHide", function(tt)
 			tt:SetOwner(bind, "ANCHOR_TOP");
-			tt:SetPoint("BOTTOM", bind, "TOP", 0, 4);
+			tt:Point("BOTTOM", bind, "TOP", 0, 4);
 			tt:AddLine(bind.button.name, 1, 1, 1);
 			bind.button.bindings = {GetBindingKey(bind.button.bindstring)};
 			if #bind.button.bindings == 0 then
@@ -408,7 +408,7 @@ function AB:LoadKeyBinder()
 	local header = CreateFrame('Button', nil, f)
 	header:SetTemplate('Default', true)
 	header:Width(100); header:Height(25)
-	header:SetPoint("CENTER", f, 'TOP')
+	header:Point("CENTER", f, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
 	header:EnableMouse(true)
 	header:RegisterForClicks('AnyUp', 'AnyDown')
@@ -417,15 +417,15 @@ function AB:LoadKeyBinder()
 
 	local title = header:CreateFontString("OVERLAY")
 	title:FontTemplate()
-	title:SetPoint("CENTER", header, "CENTER")
+	title:Point("CENTER", header, "CENTER")
 	title:SetText('Key Binds')
 
 	local desc = f:CreateFontString("ARTWORK")
 	desc:SetFontObject("GameFontHighlight")
 	desc:SetJustifyV("TOP")
 	desc:SetJustifyH("LEFT")
-	desc:SetPoint("TOPLEFT", 18, -32)
-	desc:SetPoint("BOTTOMRIGHT", -18, 48)
+	desc:Point("TOPLEFT", 18, -32)
+	desc:Point("BOTTOMRIGHT", -18, 48)
 	desc:SetText(L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."])
 
 	local perCharCheck = CreateFrame("CheckButton", f:GetName()..'CheckButton', f, "OptionsCheckButtonTemplate")
@@ -466,9 +466,9 @@ function AB:LoadKeyBinder()
 	end)
 
 	--position buttons
-	perCharCheck:SetPoint("BOTTOMLEFT", discard, "TOPLEFT", 0, 2)
-	save:SetPoint("BOTTOMRIGHT", -14, 10)
-	discard:SetPoint("BOTTOMLEFT", 14, 10)
+	perCharCheck:Point("BOTTOMLEFT", discard, "TOPLEFT", 0, 2)
+	save:Point("BOTTOMRIGHT", -14, 10)
+	discard:Point("BOTTOMLEFT", 14, 10)
 
 	local S = E:GetModule('Skins')
 	S:HandleCheckBox(perCharCheck)

@@ -268,7 +268,7 @@ local function UpdateFilterGroup()
 					func = function()
 						local value = selectedSpell:match(" %((%d+)%)$") or selectedSpell
 						if tonumber(value) then value = tonumber(value) end
-						if G['unitframe'].AuraBarColors[value] then
+						if G.unitframe.AuraBarColors[value] then
 							E.global.unitframe.AuraBarColors[value] = false;
 							E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
 						else
@@ -1215,8 +1215,8 @@ local function UpdateFilterGroup()
 					func = function()
 						local value = selectedSpell:match(" %((%d+)%)$") or selectedSpell
 						if tonumber(value) then value = tonumber(value) end
-						if G['unitframe'].aurafilters[selectedFilter] then
-							if G['unitframe'].aurafilters[selectedFilter].spells[value] then
+						if G.unitframe.aurafilters[selectedFilter] then
+							if G.unitframe.aurafilters[selectedFilter].spells[value] then
 								E.global.unitframe.aurafilters[selectedFilter].spells[value].enable = false;
 								E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
 							else

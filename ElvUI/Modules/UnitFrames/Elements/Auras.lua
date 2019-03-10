@@ -446,7 +446,7 @@ function UF:PostUpdateAura(unit, button)
 
 	local size = button:GetParent().size
 	if size then
-		button:SetSize(size, size)
+		button:Size(size, size)
 	end
 
 	if E:Cooldown_IsEnabled(button) then
@@ -470,7 +470,7 @@ function UF:PostUpdateAura(unit, button)
 			button.expirationSaved = nil
 			button:SetScript('OnUpdate', nil)
 			if button.text:GetFont() then
-				button.text:SetText('')
+				button.text:SetText()
 			end
 		end
 	end
@@ -488,7 +488,7 @@ function UF:UpdateAuraTimer(elapsed)
 		self:SetScript('OnUpdate', nil)
 
 		if textHasFont then
-			self.text:SetText('')
+			self.text:SetText()
 		end
 
 		return
@@ -634,7 +634,7 @@ function UF:UpdateBuffsHeight()
 	else
 		buffs:Height(buffs.size)
 		-- Any way to get rid of the last row as well?
-		-- Using buffs:SetHeight(0) makes frames anchored to this one disappear
+		-- Using buffs:Height(0) makes frames anchored to this one disappear
 	end
 end
 
@@ -650,6 +650,6 @@ function UF:UpdateDebuffsHeight()
 	else
 		debuffs:Height(debuffs.size)
 		-- Any way to get rid of the last row as well?
-		-- Using debuffs:SetHeight(0) makes frames anchored to this one disappear
+		-- Using debuffs:Height(0) makes frames anchored to this one disappear
 	end
 end

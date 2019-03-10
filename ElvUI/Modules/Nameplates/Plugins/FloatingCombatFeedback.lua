@@ -88,7 +88,7 @@ local function onUpdate(self, elapsed)
 		else
 			string.elapsed = string.elapsed + elapsed
 
-			string:SetPoint("CENTER", self, "CENTER", self.Scroll(string))
+			string:Point("CENTER", self, "CENTER", self.Scroll(string))
 
 			if (string.elapsed >= self.fadeout) then
 				string:SetAlpha(m_max(1 - (string.elapsed - self.fadeout) / (self.scrollTime - self.fadeout), 0))
@@ -178,7 +178,7 @@ local function Update(self, event, unit, message, flag, amount, school)
 		string:SetText(text)
 		string:SetTextHeight(element.fontHeight * multiplier)
 		string:SetTextColor(color.r, color.g, color.b)
-		string:SetPoint("CENTER", element, "CENTER", string.x, string.y)
+		string:Point("CENTER", element, "CENTER", string.x, string.y)
 		string:SetAlpha(1)
 		string:Show()
 

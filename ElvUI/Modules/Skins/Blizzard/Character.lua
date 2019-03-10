@@ -40,17 +40,17 @@ local function ColorizeStatPane(frame)
 
 	local r, g, b = 0.8, 0.8, 0.8
 	frame.leftGrad = frame:CreateTexture(nil, "BORDER")
-	frame.leftGrad:SetWidth(80)
-	frame.leftGrad:SetHeight(frame:GetHeight())
-	frame.leftGrad:SetPoint("LEFT", frame, "CENTER")
+	frame.leftGrad:Width(80)
+	frame.leftGrad:Height(frame:GetHeight())
+	frame.leftGrad:Point("LEFT", frame, "CENTER")
 	frame.leftGrad:SetTexture(E.media.blankTex)
 	frame.leftGrad:SetGradientAlpha("Horizontal", r, g, b, 0.35, r, g, b, 0)
 
 	frame.rightGrad = frame:CreateTexture(nil, "BORDER")
-	frame.rightGrad:SetWidth(80)
-	frame.rightGrad:SetHeight(frame:GetHeight())
-	frame.rightGrad:SetPoint("RIGHT", frame, "CENTER")
-	frame.rightGrad:SetTexture([[Interface\BUTTONS\WHITE8X8]])
+	frame.rightGrad:Width(80)
+	frame.rightGrad:Height(frame:GetHeight())
+	frame.rightGrad:Point("RIGHT", frame, "CENTER")
+	frame.rightGrad:SetTexture(E.Media.Textures.White8x8)
 	frame.rightGrad:SetGradientAlpha("Horizontal", r, g, b, 0, r, g, b, 0.35)
 end
 
@@ -59,9 +59,9 @@ local function StatsPane(which)
 	CharacterStatsPane[which]:StripTextures()
 	CharacterStatsPane[which]:CreateBackdrop("Transparent")
 	CharacterStatsPane[which].backdrop:ClearAllPoints()
-	CharacterStatsPane[which].backdrop:SetPoint("CENTER")
-	CharacterStatsPane[which].backdrop:SetWidth(150)
-	CharacterStatsPane[which].backdrop:SetHeight(18)
+	CharacterStatsPane[which].backdrop:Point("CENTER")
+	CharacterStatsPane[which].backdrop:Width(150)
+	CharacterStatsPane[which].backdrop:Height(18)
 end
 
 local function SkinItemFlyouts()
@@ -242,7 +242,7 @@ local function UpdateCurrencySkins()
 					-- these two only need to be called once
 					-- adding them here will prevent additional calls
 					button.expandIcon:Point("LEFT", 4, 0)
-					button.expandIcon:SetSize(15, 15)
+					button.expandIcon:Size(15, 15)
 				end
 
 				if button.isHeader then
@@ -268,7 +268,7 @@ local function LoadSkin()
 
 	-- General
 	local CharacterFrame = _G.CharacterFrame
-	S:HandlePortraitFrame(CharacterFrame, true)
+	S:HandlePortraitFrame(CharacterFrame)
 
 	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)
 	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
@@ -289,9 +289,9 @@ local function LoadSkin()
 			hooksecurefunc(Slot, "DisplayAsAzeriteEmpoweredItem", UpdateAzeriteEmpoweredItem)
 
 			if Slot.popoutButton:GetPoint() == 'TOP' then
-				Slot.popoutButton:SetPoint("TOP", Slot, "BOTTOM", 0, 2)
+				Slot.popoutButton:Point("TOP", Slot, "BOTTOM", 0, 2)
 			else
-				Slot.popoutButton:SetPoint("LEFT", Slot, "RIGHT", -2, 0)
+				Slot.popoutButton:Point("LEFT", Slot, "RIGHT", -2, 0)
 			end
 
 			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
@@ -301,7 +301,7 @@ local function LoadSkin()
 		end
 	end
 
-	-- Give character frame model backdrop it's color back
+	--Give character frame model backdrop it's color back
 	for _, corner in pairs({"TopLeft","TopRight","BotLeft","BotRight"}) do
 		local bg = _G["CharacterModelFrameBackground"..corner];
 		if bg then
@@ -398,8 +398,6 @@ local function LoadSkin()
 	_G.CharacterModelFrame.backdrop:Point("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	_G.CharacterModelFrame.backdrop:Point("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
-	CharacterFrame:SetTemplate("Transparent")
-
 	--Titles
 	_G.PaperDollTitlesPane:HookScript("OnShow", function()
 		for _, object in pairs(_G.PaperDollTitlesPane.buttons) do
@@ -434,7 +432,7 @@ local function LoadSkin()
 		object.icon:Point("LEFT", object, "LEFT", 4, 0)
 		hooksecurefunc(object.icon, "SetPoint", function(self, _, _, _, _, _, isForced)
 			if isForced ~= true then
-				self:SetPoint("LEFT", object, "LEFT", 4, 0, true)
+				self:Point("LEFT", object, "LEFT", 4, 0, true)
 			end
 		end)
 		hooksecurefunc(object.icon, "SetSize", function(self, width, height)

@@ -3,9 +3,9 @@ local LO = E:NewModule('Layout', 'AceEvent-3.0');
 
 --Lua functions
 local _G = _G
+local pairs = pairs
 --WoW API / Variables
 local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
-local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 -- GLOBALS: HideLeftChat, HideRightChat, HideBothChat
 
@@ -20,7 +20,6 @@ end
 
 function LO:Initialize()
 	self:CreateChatPanels()
-	self:CreateChatButtonPanel()
 	self:CreateMinimapPanels()
 	self:SetDataPanelStyle()
 
@@ -30,7 +29,7 @@ function LO:Initialize()
 	self.BottomPanel:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOMRIGHT', 1, -1)
 	self.BottomPanel:Height(PANEL_HEIGHT)
 	self.BottomPanel:SetScript('OnShow', Panel_OnShow)
-	E.FrameLocks['ElvUI_BottomPanel'] = true;
+	E.FrameLocks.ElvUI_BottomPanel = true;
 	Panel_OnShow(self.BottomPanel)
 	self:BottomPanelVisibility()
 
@@ -41,7 +40,7 @@ function LO:Initialize()
 	self.TopPanel:Height(PANEL_HEIGHT)
 	self.TopPanel:SetScript('OnShow', Panel_OnShow)
 	Panel_OnShow(self.TopPanel)
-	E.FrameLocks['ElvUI_TopPanel'] = true;
+	E.FrameLocks.ElvUI_TopPanel = true;
 	self:TopPanelVisibility()
 end
 
@@ -81,8 +80,6 @@ local function ChatButton_OnEnter(self)
 		GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
 		GameTooltip:ClearLines()
 		GameTooltip:AddDoubleLine(L["Left Click:"], L["Toggle Chat Frame"], 1, 1, 1)
-		GameTooltip:AddLine('')
-		GameTooltip:AddDoubleLine(L["Right Click:"], L["Toggle Chat Buttons"], 1, 1, 1)
 		GameTooltip:Show()
 	end
 end
@@ -124,7 +121,19 @@ function HideBothChat()
 	ChatButton_OnClick(_G.RightChatToggleButton)
 end
 
+local channelButtons = {
+	[1] = _G.ChatFrameChannelButton,
+	[2] = _G.ChatFrameToggleVoiceDeafenButton,
+	[3] = _G.ChatFrameToggleVoiceMuteButton
+}
+
 function LO:ToggleChatTabPanels(rightOverride, leftOverride)
+	if E.private.chat.enable then
+		for _, button in pairs(channelButtons) do
+			button.Icon:SetParent(E.db.chat.panelTabBackdrop and _G.LeftChatTab or _G.LeftChatPanel)
+		end
+	end
+
 	if leftOverride or not E.db.chat.panelTabBackdrop then
 		_G.LeftChatTab:Hide()
 	else
@@ -304,17 +313,6 @@ function LO:ToggleChatPanels()
 	end
 end
 
-function LO:ChatButtonPanel_OnClick()
-	_G.GameTooltip:Hide()
-
-	local ChatButtonHolder = _G.ChatButtonHolder
-	if ChatButtonHolder:IsShown() then
-		ChatButtonHolder:Hide()
-	else
-		ChatButtonHolder:Show()
-	end
-end
-
 function LO:CreateChatPanels()
 	local SPACING = E.Border*3 - E.Spacing
 	local SIDE_BUTTON_SPACING = (E.PixelMode and E.Border*4) or SPACING*2
@@ -369,8 +367,6 @@ function LO:CreateChatPanels()
 	lchattb:SetScript('OnClick', function(lcb, btn)
 		if btn == "LeftButton" then
 			ChatButton_OnClick(lcb)
-		elseif btn == "RightButton" then
-			LO:ChatButtonPanel_OnClick(lcb)
 		end
 	end)
 
@@ -429,8 +425,6 @@ function LO:CreateChatPanels()
 	rchattb:SetScript('OnClick', function(rcb, btn)
 		if btn == "LeftButton" then
 			ChatButton_OnClick(rcb)
-		elseif btn == "RightButton" then
-			LO:ChatButtonPanel_OnClick(rcb)
 		end
 	end)
 
@@ -452,86 +446,6 @@ function LO:CreateChatPanels()
 	end
 
 	self:ToggleChatPanels()
-end
-
-function LO:CreateChatButtonPanel()
-	if E.private.chat.enable ~= true then return end
-
-	local ChatButtonHolder = CreateFrame("Frame", "ChatButtonHolder", E.UIParent)
-	ChatButtonHolder:ClearAllPoints()
-	ChatButtonHolder:SetPoint("RIGHT", _G.LeftChatPanel, "LEFT", E.PixelMode and -2 or -4, 0)
-	ChatButtonHolder:SetSize(33, LeftChatPanel:GetHeight()-2)
-
-	--QuickJoinToastButton:Hide() -- DONT KILL IT! If we use hide we also hide the Toasts, which are used in other Plugins.
-
-	ChatButtonHolder:CreateBackdrop('Transparent', nil, true)
-	ChatButtonHolder.backdrop:SetPoint('TOPLEFT', ChatButtonHolder, E.PixelMode and 1 or 3, 1)
-	ChatButtonHolder.backdrop:SetPoint('BOTTOMRIGHT', ChatButtonHolder, E.PixelMode and 1 or 3, -1)
-	ChatButtonHolder.backdrop:SetBackdropColor(unpack(E.db.general.backdropfadecolor))
-	ChatButtonHolder.backdrop:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)
-
-	--ChatButtonHolder:Hide()
-	--E:CreateMover(ChatButtonHolder, "SocialMenuMover", _G.BINDING_HEADER_VOICE_CHAT)
-
-	_G.ChatFrameChannelButton:ClearAllPoints()
-	_G.ChatFrameChannelButton:SetPoint("TOP", ChatButtonHolder, "TOP", E.PixelMode and 1.1 or 3, -2)
-
-	-- We have to reparent the buttons to our ChatButtonHolder
-	_G.ChatFrameChannelButton:SetParent(ChatButtonHolder)
-	_G.ChatFrameToggleVoiceDeafenButton:SetParent(ChatButtonHolder)
-	_G.ChatFrameToggleVoiceMuteButton:SetParent(ChatButtonHolder)
-
-	E:GetModule("Skins"):HandleButton(_G.ChatFrameChannelButton)
-	E:GetModule("Skins"):HandleButton(_G.ChatFrameToggleVoiceDeafenButton)
-	E:GetModule("Skins"):HandleButton(_G.ChatFrameToggleVoiceMuteButton)
-
-	_G.ChatAlertFrame:ClearAllPoints()
-	_G.ChatAlertFrame:SetPoint("BOTTOM", _G.ChatFrameChannelButton, "TOP", 1, 3)
-
-	-- Skin the QuickJoinToastButton
-	local QuickJoinToastButton = _G["QuickJoinToastButton"]
-	QuickJoinToastButton:SetParent(ChatButtonHolder)
-	QuickJoinToastButton:SetSize(24, 32)
-
-	QuickJoinToastButton:CreateBackdrop()
-	QuickJoinToastButton.backdrop:SetAllPoints()
-
-	hooksecurefunc(QuickJoinToastButton, "UpdateQueueIcon", function(qjtb)
-		qjtb.FriendsButton:SetTexture([[Interface\FriendsFrame\UI-Toast-FriendOnlineIcon]])
-
-		if qjtb:GetButtonState() == "PUSHED" then
-			if qjtb.isLFGList then
-				qjtb.QueueButton:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-				qjtb.FlashingLayer:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-			else
-				qjtb.QueueButton:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
-				qjtb.FlashingLayer:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
-			end
-		else
-			if qjtb.isLFGList then
-				qjtb.QueueButton:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-				qjtb.FlashingLayer:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-			else
-				qjtb.QueueButton:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
-				qjtb.FlashingLayer:SetTexture([[Interface\LFGFrame\BattlenetWorking0]])
-			end
-		end
-	end)
-
-	QuickJoinToastButton.FriendsButton:SetTexture([[Interface\FriendsFrame\UI-Toast-FriendOnlineIcon]])
-	QuickJoinToastButton.FriendsButton:ClearAllPoints()
-	QuickJoinToastButton.FriendsButton:SetPoint("CENTER", 0, 3)
-	QuickJoinToastButton.FriendsButton:SetSize(30, 30)
-
-	QuickJoinToastButton.QueueButton:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-	QuickJoinToastButton.QueueButton:ClearAllPoints()
-	QuickJoinToastButton.QueueButton:SetPoint("CENTER", 0, 3)
-	QuickJoinToastButton.QueueButton:SetSize(28, 28)
-
-	QuickJoinToastButton.FlashingLayer:SetTexture([[Interface\FriendsFrame\UI-Toast-ChatInviteIcon]])
-	QuickJoinToastButton.FlashingLayer:ClearAllPoints()
-	QuickJoinToastButton.FlashingLayer:SetPoint("CENTER", 0, 3)
-	QuickJoinToastButton.FlashingLayer:SetSize(28, 28)
 end
 
 function LO:CreateMinimapPanels()

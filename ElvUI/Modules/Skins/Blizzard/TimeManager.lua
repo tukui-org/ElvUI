@@ -54,7 +54,7 @@ local function LoadSkin()
 	local StopwatchPlayPauseButton = _G.StopwatchPlayPauseButton
 	local StopwatchResetButton = _G.StopwatchResetButton
 	StopwatchPlayPauseButton:CreateBackdrop("Default", true)
-	StopwatchPlayPauseButton:SetSize(12, 12)
+	StopwatchPlayPauseButton:Size(12, 12)
 	StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
 	StopwatchPlayPauseButton:SetHighlightTexture("")
 	StopwatchPlayPauseButton.backdrop:SetOutside(StopwatchPlayPauseButton, 2, 2)
@@ -62,7 +62,7 @@ local function LoadSkin()
 	StopwatchPlayPauseButton:HookScript('OnLeave', S.SetOriginalBackdrop)
 	StopwatchPlayPauseButton:Point("RIGHT", StopwatchResetButton, "LEFT", -4, 0)
 	S:HandleButton(StopwatchResetButton)
-	StopwatchResetButton:SetSize(16,16)
+	StopwatchResetButton:Size(16,16)
 	StopwatchResetButton:SetNormalTexture(E.Media.Textures.Reset)
 	StopwatchResetButton:Point("BOTTOMRIGHT", StopwatchFrame, "BOTTOMRIGHT", -4, 6)
 

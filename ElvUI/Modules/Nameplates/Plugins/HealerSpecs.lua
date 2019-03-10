@@ -30,38 +30,39 @@ for _, specID in pairs(healerSpecIDs) do
 	end
 end
 
-local function Event(self)
+local function Event()
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and (instanceType == 'pvp' or instanceType == 'arena') then
-		if instanceType == 'pvp' then
+		local numOpps = GetNumArenaOpponentSpecs()
+
+		if instanceType == 'pvp' or (instanceType == 'arena' and numOpps == 0) then
 			local name, _, talentSpec
 			for i = 1, GetNumBattlefieldScores() do
 				name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 				if name then
 					name = gsub(name,'%-'..gsub(E.myrealm,'[%s%-]',''),'') --[[ name = match(name,"([^%-]+).*") ]]
-					if name and self.HealerSpecs[talentSpec] then
+					if name and HealerSpecs[talentSpec] then
 						Healers[name] = talentSpec
-					elseif name and self.Healers[name] then
+					elseif name and Healers[name] then
 						Healers[name] = nil;
 					end
 				end
 			end
-		else
-			local numOpps = GetNumArenaOpponentSpecs()
-			if not (numOpps > 1) then return end
-
-			for i = 1, 5 do
+		elseif (numOpps >= 1) then
+			for i = 1, numOpps do
 				local name, realm = UnitName(format('arena%d', i))
 				if name and name ~= UNKNOWN then
 					realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')
 					if realm then name = name.."-"..realm end
+
 					local s = GetArenaOpponentSpec(i)
 					local _, talentSpec = nil, UNKNOWN
+
 					if s and s > 0 then
 						_, talentSpec = GetSpecializationInfoByID(s)
 					end
 
-					if talentSpec and talentSpec ~= UNKNOWN and self.HealerSpecs[talentSpec] then
+					if talentSpec and talentSpec ~= UNKNOWN and HealerSpecs[talentSpec] then
 						Healers[name] = talentSpec
 					end
 				end

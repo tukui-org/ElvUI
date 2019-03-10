@@ -21,8 +21,8 @@ local function LoadSkin()
 
 	local rewardFrame = WarfrontsPartyPoseFrame.RewardAnimations.RewardFrame
 	rewardFrame:CreateBackdrop("Transparent")
-	rewardFrame.backdrop:SetPoint("TOPLEFT", -5, 5)
-	rewardFrame.backdrop:SetPoint("BOTTOMRIGHT", rewardFrame.NameFrame, 0, -5)
+	rewardFrame.backdrop:Point("TOPLEFT", -5, 5)
+	rewardFrame.backdrop:Point("BOTTOMRIGHT", rewardFrame.NameFrame, 0, -5)
 
 	rewardFrame.NameFrame:SetAlpha(0)
 	rewardFrame.IconBorder:SetAlpha(0)

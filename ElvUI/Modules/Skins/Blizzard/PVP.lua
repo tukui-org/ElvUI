@@ -81,12 +81,12 @@ local function LoadSkin()
 
 		reward.EnlistmentBonus:StripTextures()
 		reward.EnlistmentBonus:SetTemplate()
-		reward.EnlistmentBonus:SetSize(20, 20)
-		reward.EnlistmentBonus:SetPoint("TOPRIGHT", 2, 2)
+		reward.EnlistmentBonus:Size(20, 20)
+		reward.EnlistmentBonus:Point("TOPRIGHT", 2, 2)
 
 		local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
-		EnlistmentBonusIcon:SetPoint("TOPLEFT", reward.EnlistmentBonus, "TOPLEFT", 2, -2)
-		EnlistmentBonusIcon:SetPoint("BOTTOMRIGHT", reward.EnlistmentBonus, "BOTTOMRIGHT", -2, 2)
+		EnlistmentBonusIcon:Point("TOPLEFT", reward.EnlistmentBonus, "TOPLEFT", 2, -2)
+		EnlistmentBonusIcon:Point("BOTTOMRIGHT", reward.EnlistmentBonus, "BOTTOMRIGHT", -2, 2)
 		EnlistmentBonusIcon:SetTexture("Interface\\Icons\\achievement_guildperk_honorablemention_rank2")
 		EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	end
@@ -101,15 +101,15 @@ local function LoadSkin()
 
 		bu:StripTextures()
 		bu:CreateBackdrop()
-		bu.backdrop:SetPoint("TOPLEFT", 2, 0)
-		bu.backdrop:SetPoint("BOTTOMRIGHT", -1, 2)
+		bu.backdrop:Point("TOPLEFT", 2, 0)
+		bu.backdrop:Point("BOTTOMRIGHT", -1, 2)
 		bu:StyleButton(nil, true)
 
 		bu.SelectedTexture:SetInside(bu.backdrop)
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		bu.Icon:SetTexCoord(unpack(E.TexCoords))
-		bu.Icon:SetPoint("TOPLEFT", 5, -3)
+		bu.Icon:Point("TOPLEFT", 5, -3)
 	end
 
 	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(self)
@@ -164,7 +164,7 @@ local function LoadSkin()
 			Frame.ConquestBar.backdrop:SetOutside()
 		end
 
-		Frame.ConquestBar.Reward:SetPoint("LEFT", Frame.ConquestBar, "RIGHT", -8, 0)
+		Frame.ConquestBar.Reward:Point("LEFT", Frame.ConquestBar, "RIGHT", -8, 0)
 		Frame.ConquestBar:SetStatusBarTexture(E.media.normTex)
 		Frame.ConquestBar:SetStatusBarColor(unpack(E.myfaction == "Alliance" and {0.05, 0.15, 0.36} or {0.63, 0.09, 0.09}))
 

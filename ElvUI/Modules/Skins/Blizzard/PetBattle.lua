@@ -89,7 +89,7 @@ local function LoadSkin()
 		infoBar.PetTypeFrame:Size(100, 23)
 		infoBar.PetTypeFrame.text = infoBar.PetTypeFrame:CreateFontString(nil, 'OVERLAY')
 		infoBar.PetTypeFrame.text:FontTemplate()
-		infoBar.PetTypeFrame.text:SetText("")
+		infoBar.PetTypeFrame.text:SetText()
 
 		infoBar.ActualHealthBar:ClearAllPoints()
 		infoBar.Name:ClearAllPoints()
@@ -311,7 +311,7 @@ local function LoadSkin()
 	---------------------------------
 
 	local bar = CreateFrame("Frame", "ElvUIPetBattleActionBar", f)
-	bar:SetSize (52*6 + 7*10, 52 * 1 + 10*2)
+	bar:Size (52*6 + 7*10, 52 * 1 + 10*2)
 	bar:EnableMouse(true)
 	bar:SetTemplate()
 	bar:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 4)

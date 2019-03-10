@@ -23,9 +23,9 @@ local function LoadSkin()
 
 			reward:ClearAllPoints()
 			if IsAddOnLoaded("GarrisonMissionManager") then -- otherwise we mess with this AddOn
-				reward:SetPoint("TOPRIGHT", -E.mult * 65 + (index * -65), -E.mult)
+				reward:Point("TOPRIGHT", -E.mult * 65 + (index * -65), -E.mult)
 			else
-				reward:SetPoint("TOPRIGHT", -E.mult + (index * -65), -E.mult)
+				reward:Point("TOPRIGHT", -E.mult + (index * -65), -E.mult)
 			end
 
 			if reward.IconBorder then
@@ -76,7 +76,7 @@ local function LoadSkin()
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
 
 	FollowerList:ClearAllPoints()
-	FollowerList:SetPoint("BOTTOMLEFT", 24, 34)
+	FollowerList:Point("BOTTOMLEFT", 24, 34)
 
 	local scrollFrame = FollowerList.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)
@@ -176,7 +176,7 @@ local function LoadSkin()
 		for _, tab in pairs({Report.InProgress, Report.Available}) do
 			tab:SetHighlightTexture("")
 			tab.Text:ClearAllPoints()
-			tab.Text:SetPoint("CENTER")
+			tab.Text:Point("CENTER")
 
 			local bg = CreateFrame("Frame", nil, tab)
 			bg:SetFrameLevel(tab:GetFrameLevel() - 1)
@@ -190,17 +190,17 @@ local function LoadSkin()
 			tab.selectedTex = selectedTex
 
 			if tab == Report.InProgress then
-				bg:SetPoint("TOPLEFT", 5, 0)
-				bg:SetPoint("BOTTOMRIGHT")
+				bg:Point("TOPLEFT", 5, 0)
+				bg:Point("BOTTOMRIGHT")
 			else
-				bg:SetPoint("TOPLEFT")
-				bg:SetPoint("BOTTOMRIGHT", -7, 0)
+				bg:Point("TOPLEFT")
+				bg:Point("BOTTOMRIGHT", -7, 0)
 			end
 		end
 
 		hooksecurefunc("GarrisonLandingPageReport_SetTab", function(self)
 			local unselectedTab = Report.unselectedTab
-			unselectedTab:SetHeight(36)
+			unselectedTab:Height(36)
 			unselectedTab:SetNormalTexture("")
 			unselectedTab.selectedTex:Hide()
 
@@ -226,14 +226,14 @@ local function LoadSkin()
 				reward.IconBorder:SetAlpha(0)
 				-- For some reason, this fix icon border in 8.1
 				reward:ClearAllPoints()
-				reward:SetPoint("TOPRIGHT", -5, -5)
+				reward:Point("TOPRIGHT", -5, -5)
 
 				if E.private.skins.parchmentRemover.enable then
 					button.BG:Hide()
 
 					local bg = CreateFrame("Frame", nil, button)
-					bg:SetPoint("TOPLEFT")
-					bg:SetPoint("BOTTOMRIGHT", 0, 1)
+					bg:Point("TOPLEFT")
+					bg:Point("BOTTOMRIGHT", 0, 1)
 					bg:SetFrameLevel(button:GetFrameLevel() - 1)
 					bg:CreateBackdrop("Transparent")
 				end
@@ -386,7 +386,7 @@ local function LoadSkin()
 		S:HandleFollowerPage(self, true, true)
 	end)
 	FollowerTab:StripTextures()
-	FollowerTab.Class:SetSize(50, 43)
+	FollowerTab.Class:Size(50, 43)
 	FollowerTab.XPBar:StripTextures()
 	FollowerTab.XPBar:SetStatusBarTexture(E.media.normTex)
 	FollowerTab.XPBar:CreateBackdrop()
@@ -469,7 +469,7 @@ local function LoadSkin()
 	XPBar:SetStatusBarTexture(E.media.normTex)
 	XPBar:CreateBackdrop()
 
-	Class:SetSize(50, 43)
+	Class:Size(50, 43)
 end
 
 local function SkinFollowerTooltip(frame)

@@ -38,6 +38,8 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
 
+	_G.QueueStatusFrame:StripTextures()
+
 	-- Blizzard frame we want to reskin
 	local skins = {
 		"StaticPopup1",
@@ -61,7 +63,6 @@ local function LoadSkin()
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
-	_G.QueueStatusFrame:StripTextures()
 	hooksecurefunc("QueueStatusEntry_SetFullDisplay", function(entry, _, _, _, isTank, isHealer, isDPS)
 		if not entry then return end
 		local nextRoleIcon = 1
@@ -259,7 +260,7 @@ local function LoadSkin()
 		local p = E.PixelMode and 1 or 2
 		b:Point("TOPLEFT", _G.GhostFrameContentsFrameIcon, -p, p)
 		b:Point("BOTTOMRIGHT", _G.GhostFrameContentsFrameIcon, p, -p)
-		_G.GhostFrameContentsFrameIcon:SetSize(37,38)
+		_G.GhostFrameContentsFrameIcon:Size(37,38)
 		_G.GhostFrameContentsFrameIcon:SetParent(b)
 		b:SetTemplate()
 	end
@@ -274,9 +275,9 @@ local function LoadSkin()
 		local expandArrow = _G[listFrameName.."Button"..index.."ExpandArrow"];
 		if expandArrow then
 			expandArrow:SetNormalTexture(E.Media.Textures.ArrowUp)
-			expandArrow:SetSize(12, 12)
+			expandArrow:Size(12, 12)
 			expandArrow:GetNormalTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
-			expandArrow:GetNormalTexture():SetRotation(S.ArrowRotation['right'])
+			expandArrow:GetNormalTexture():SetRotation(S.ArrowRotation.right)
 		end
 
 		 _G[listFrameName.."MenuBackdrop"]:SetTemplate("Transparent")
@@ -286,7 +287,7 @@ local function LoadSkin()
 		if texture:find("Divider") then
 			local r, g, b = unpack(E.media.rgbvaluecolor)
 			icon:SetColorTexture(r, g, b, 0.45)
-			icon:SetHeight(1)
+			icon:Height(1)
 		end
 	end)
 
@@ -315,18 +316,18 @@ local function LoadSkin()
 			button.backdrop:Hide()
 
 			if not button.notCheckable then
-				uncheck:SetTexture('')
+				uncheck:SetTexture()
 				local _, co = check:GetTexCoord()
 				if co == 0 then
 					check:SetTexture("Interface\\Buttons\\UI-CheckBox-Check")
 					check:SetVertexColor(r, g, b, 1)
-					check:SetSize(20, 20)
+					check:Size(20, 20)
 					check:SetDesaturated(true)
 					button.backdrop:SetInside(check, 4, 4)
 				else
 					check:SetTexture(E.media.normTex)
 					check:SetVertexColor(r, g, b, 1)
-					check:SetSize(10, 10)
+					check:Size(10, 10)
 					check:SetDesaturated(false)
 					button.backdrop:SetOutside(check)
 				end
@@ -334,7 +335,7 @@ local function LoadSkin()
 				button.backdrop:Show()
 				check:SetTexCoord(0, 1, 0, 1);
 			else
-				check:SetSize(16, 16)
+				check:Size(16, 16)
 			end
 		end
 	end)

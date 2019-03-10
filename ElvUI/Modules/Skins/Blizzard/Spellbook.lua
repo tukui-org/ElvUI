@@ -42,7 +42,7 @@ local function LoadSkin()
 	S:HandleNextPrevButton(_G.SpellBookNextPageButton, nil, nil, true)
 
 	_G.SpellBookPageText:ClearAllPoints()
-	_G.SpellBookPageText:SetPoint("RIGHT", _G.SpellBookPrevPageButton, "LEFT", -5, 0)
+	_G.SpellBookPageText:Point("RIGHT", _G.SpellBookPrevPageButton, "LEFT", -5, 0)
 
 	for i = 1, _G.SPELLS_PER_PAGE do
 		local button = _G["SpellButton"..i]
@@ -112,7 +112,7 @@ local function LoadSkin()
 		end
 	end)
 
-	_G.SpellBookSkillLineTab1:SetPoint('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
+	_G.SpellBookSkillLineTab1:Point('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
 
 	for i = 1, 8 do
 		local Tab = _G["SpellBookSkillLineTab"..i]
@@ -142,17 +142,17 @@ local function LoadSkin()
 		end
 
 		S:HandleStatusBar(Frame.statusBar, {0, .86, 0})
-		Frame.statusBar.rankText:SetPoint("CENTER")
+		Frame.statusBar.rankText:Point("CENTER")
 
 		local a, b, c, _, e = Frame.statusBar:GetPoint()
-		Frame.statusBar:SetPoint(a, b, c, 0, e)
+		Frame.statusBar:Point(a, b, c, 0, e)
 
 		if a == 'BOTTOMLEFT' then
-			Frame.rank:SetPoint("BOTTOMLEFT", Frame.statusBar, "TOPLEFT", 0, 4)
+			Frame.rank:Point("BOTTOMLEFT", Frame.statusBar, "TOPLEFT", 0, 4)
 		end
 
 		if Frame.icon then
-			Frame.professionName:SetPoint("TOPLEFT", 100, -4)
+			Frame.professionName:Point("TOPLEFT", 100, -4)
 			Frame:StripTextures()
 			S:HandleIcon(Frame.icon, true)
 			Frame.icon:SetAlpha(1)

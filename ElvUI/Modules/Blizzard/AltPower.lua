@@ -104,14 +104,14 @@ function B:UpdateAltPowerBarSettings()
 	local statusBar = E.db.general.altPowerBar.statusBar
 	local font = E.db.general.altPowerBar.font
 
-	bar:SetSize(width, height)
+	bar:Size(width, height)
 	bar:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", statusBar))
 	bar.text:SetFont(E.Libs.LSM:Fetch("font", font), fontSize, fontOutline)
-	AltPowerBarHolder:SetSize(bar.backdrop:GetSize())
+	AltPowerBarHolder:Size(bar.backdrop:GetSize())
 
 	local textFormat = E.db.general.altPowerBar.textFormat
 	if textFormat == 'NONE' or not textFormat then
-		bar.text:SetText("")
+		bar.text:SetText()
 	else
 		local power, maxPower, perc = bar.powerValue or 0, bar.powerMaxValue or 0, bar.powerPercent or 0
 		local text = B:SetAltPowerBarText(bar.powerName or "", power, maxPower, perc)
@@ -125,14 +125,14 @@ function B:SkinAltPowerBar()
 	local powerbar = CreateFrame("StatusBar", "ElvUI_AltPowerBar", E.UIParent)
 	powerbar:CreateBackdrop("Transparent")
 	powerbar:SetMinMaxValues(0, 200)
-	powerbar:SetPoint("CENTER", AltPowerBarHolder)
+	powerbar:Point("CENTER", AltPowerBarHolder)
 	powerbar:Hide()
 
 	powerbar:SetScript("OnEnter", onEnter)
 	powerbar:SetScript("OnLeave", onLeave)
 
 	powerbar.text = powerbar:CreateFontString(nil, "OVERLAY")
-	powerbar.text:SetPoint("CENTER", powerbar, "CENTER")
+	powerbar.text:Point("CENTER", powerbar, "CENTER")
 	powerbar.text:SetJustifyH("CENTER")
 
 	B:UpdateAltPowerBarSettings()

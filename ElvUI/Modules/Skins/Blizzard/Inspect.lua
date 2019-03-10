@@ -16,18 +16,18 @@ local function LoadSkin()
 
 	_G.SpecializationRing:Hide()
 	S:HandleIcon(_G.SpecializationSpecIcon, true)
-	_G.SpecializationSpecIcon:SetSize(55, 55) -- 70, 70 default size
+	_G.SpecializationSpecIcon:Size(55, 55) -- 70, 70 default size
 
 	--Create portrait element for the PvP Frame so we can see prestige
 	local InspectPVPFrame = _G.InspectPVPFrame
 	local portrait = InspectPVPFrame:CreateTexture(nil, "OVERLAY")
-	portrait:SetSize(55, 55)
-	portrait:SetPoint("CENTER", InspectPVPFrame.PortraitBackground, "CENTER", 0, 0)
+	portrait:Size(55, 55)
+	portrait:Point("CENTER", InspectPVPFrame.PortraitBackground, "CENTER", 0, 0)
 	InspectPVPFrame.PortraitBackground:Kill()
 	InspectPVPFrame.PortraitBackground:ClearAllPoints()
-	InspectPVPFrame.PortraitBackground:SetPoint("TOPLEFT", 5, -5)
+	InspectPVPFrame.PortraitBackground:Point("TOPLEFT", 5, -5)
 	InspectPVPFrame.SmallWreath:ClearAllPoints()
-	InspectPVPFrame.SmallWreath:SetPoint("TOPLEFT", -2, -25)
+	InspectPVPFrame.SmallWreath:Point("TOPLEFT", -2, -25)
 
 	-- PVE Talents
 	for i = 1, 7 do

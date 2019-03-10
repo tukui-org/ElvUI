@@ -8,25 +8,25 @@ local CreateFrame = CreateFrame
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nameplate:GetDebugName()..'QuestIcons', nameplate)
 	QuestIcons:Hide()
-	QuestIcons:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+	QuestIcons:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 
 	for _, object in pairs({'Item', 'Loot', 'Skull', 'Chat'}) do
 		QuestIcons[object] = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
-		QuestIcons[object]:SetPoint('CENTER')
-		QuestIcons[object]:SetSize(NP.db.questIconSize, NP.db.questIconSize)
+		QuestIcons[object]:Point('CENTER')
+		QuestIcons[object]:Size(NP.db.questIconSize, NP.db.questIconSize)
 		QuestIcons[object]:Hide()
 	end
 
 	QuestIcons.Item:SetTexCoord(unpack(E.TexCoords))
 
-	QuestIcons.Skull:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+	QuestIcons.Skull:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 
-	QuestIcons.Chat:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+	QuestIcons.Chat:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 	QuestIcons.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
 	QuestIcons.Chat:SetTexCoord(0, 0.5, 0.5, 1)
 
 	QuestIcons.Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
-	QuestIcons.Text:SetPoint('BOTTOMRIGHT', QuestIcons, 'BOTTOMRIGHT', 2, -0.8)
+	QuestIcons.Text:Point('BOTTOMRIGHT', QuestIcons, 'BOTTOMRIGHT', 2, -0.8)
 	QuestIcons.Text:SetFont(E.Libs.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	return QuestIcons
@@ -38,12 +38,12 @@ function NP:Update_QuestIcons(nameplate)
 			nameplate:EnableElement('QuestIcons')
 		end
 		nameplate.QuestIcons:ClearAllPoints()
-		nameplate.QuestIcons:SetPoint('LEFT', nameplate, 'RIGHT', 4, 0)
-		nameplate.QuestIcons:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
-		nameplate.QuestIcons.Item:SetSize(NP.db.questIconSize, NP.db.questIconSize)
-		nameplate.QuestIcons.Loot:SetSize(NP.db.questIconSize, NP.db.questIconSize)
-		nameplate.QuestIcons.Skull:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
-		nameplate.QuestIcons.Chat:SetSize(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+		nameplate.QuestIcons:Point('LEFT', nameplate, 'RIGHT', 4, 0)
+		nameplate.QuestIcons:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+		nameplate.QuestIcons.Item:Size(NP.db.questIconSize, NP.db.questIconSize)
+		nameplate.QuestIcons.Loot:Size(NP.db.questIconSize, NP.db.questIconSize)
+		nameplate.QuestIcons.Skull:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+		nameplate.QuestIcons.Chat:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 	else
 		if nameplate:IsElementEnabled('QuestIcons') then
 			nameplate:DisableElement('QuestIcons')
@@ -66,7 +66,7 @@ function NP:Update_ClassificationIndicator(nameplate)
 		end
 
 		nameplate.ClassificationIndicator:ClearAllPoints()
-		nameplate.ClassificationIndicator:SetSize(db.eliteIcon.size, db.eliteIcon.size)
+		nameplate.ClassificationIndicator:Size(db.eliteIcon.size, db.eliteIcon.size)
 
 		if db.health.enable then
 			nameplate.ClassificationIndicator:Point(db.eliteIcon.position, nameplate.Health, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
@@ -82,6 +82,7 @@ end
 
 function NP:Construct_TargetIndicator(nameplate)
 	local TargetIndicator = CreateFrame('Frame', nameplate:GetDebugName()..'TargetIndicator', nameplate)
+	TargetIndicator:SetFrameLevel(0)
 
 	TargetIndicator.Shadow = CreateFrame('Frame', nil, TargetIndicator)
 	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(5)})
@@ -105,77 +106,83 @@ end
 function NP:Update_TargetIndicator(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	nameplate.TargetIndicator.style = NP['db'].targetGlow
-	nameplate.TargetIndicator.lowHealthThreshold = NP['db'].lowHealthThreshold
+	nameplate.TargetIndicator.style = NP.db.targetGlow
+	nameplate.TargetIndicator.lowHealthThreshold = NP.db.lowHealthThreshold
 
-	if NP['db'].targetGlow ~= 'none' then
-		local GlowStyle = NP['db'].targetGlow
-		local Color = NP['db'].colors.glowColor
+	if NP.db.targetGlow ~= 'none' then
+		local GlowStyle, Color = NP.db.targetGlow, NP.db.colors.glowColor
+
+		if not db.health.enable and (GlowStyle ~= 'style2' and GlowStyle ~= 'style6' and GlowStyle ~= 'style8') then
+			GlowStyle = 'style2'
+			nameplate.TargetIndicator.style = 'style2'
+		end
+
 		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == 'style3' or GlowStyle == 'style5' or GlowStyle == 'style6') then
-			local topArrowSpace = -3
-			if db.showName and (nameplate.Name:GetText() ~= nil and nameplate.Name:GetText() ~= '') then
-				topArrowSpace = NP['db'].fontSize + topArrowSpace
-			end
-			nameplate.TargetIndicator.TopIndicator:SetPoint('BOTTOM', nameplate.Health, 'TOP', 0, topArrowSpace)
-			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b)
+			nameplate.TargetIndicator.TopIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, -6)
+
+			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
 
 		if (nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator) and (GlowStyle == 'style4' or GlowStyle == 'style7' or GlowStyle == 'style8') then
-			nameplate.TargetIndicator.LeftIndicator:SetPoint('LEFT', nameplate.Health, 'RIGHT', -3, 0)
-			nameplate.TargetIndicator.RightIndicator:SetPoint('RIGHT', nameplate.Health, 'LEFT', 3, 0)
-			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b)
-			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b)
+			nameplate.TargetIndicator.LeftIndicator:Point('LEFT', nameplate.Health, 'RIGHT', -3, 0)
+			nameplate.TargetIndicator.RightIndicator:Point('RIGHT', nameplate.Health, 'LEFT', 3, 0)
+
+			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
+			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
 
 		if nameplate.TargetIndicator.Shadow and (GlowStyle == 'style1' or GlowStyle == 'style5' or GlowStyle == 'style7') then
 			nameplate.TargetIndicator.Shadow:SetOutside(nameplate.Health, E:Scale(E.PixelMode and 6 or 8), E:Scale(E.PixelMode and 6 or 8))
-			nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b)
+
+			nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b, Color.a)
 		end
 
 		if nameplate.TargetIndicator.Spark and (GlowStyle == 'style2' or GlowStyle == 'style6' or GlowStyle == 'style8') then
-			local scale = 1
-			if NP['db'].useTargetScale then
-				if NP['db'].targetScale >= 0.75 then
-					scale = NP['db'].targetScale
-				else
-					scale = 0.75
-				end
-			end
-
+			local scale = NP.db.useTargetScale and (NP.db.targetScale >= .75 and NP.db.targetScale or .75) or 1
 			local size = (E.Border + 14) * scale;
 
-			nameplate.TargetIndicator.Spark:SetPoint('TOPLEFT', nameplate.Health, 'TOPLEFT', -(size * 2), size)
-			nameplate.TargetIndicator.Spark:SetPoint('BOTTOMRIGHT', nameplate.Health, 'BOTTOMRIGHT', size * 2, -size)
-			nameplate.TargetIndicator.Spark:SetVertexColor(Color.r, Color.g, Color.b)
+			nameplate.TargetIndicator.Spark:Point('TOPLEFT', nameplate.Health, 'TOPLEFT', -(size * 2), size)
+			nameplate.TargetIndicator.Spark:Point('BOTTOMRIGHT', nameplate.Health, 'BOTTOMRIGHT', (size * 2), -size)
+
+			nameplate.TargetIndicator.Spark:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
 	end
 end
 
 function NP:Construct_Highlight(nameplate)
 	local Highlight = CreateFrame('Frame', nameplate:GetDebugName()..'Highlight', nameplate)
-
 	Highlight.texture = Highlight:CreateTexture(nil, 'BACKGROUND', nil, 1)
+	Highlight.texture:SetSnapToPixelGrid(false)
+	Highlight.texture:SetTexelSnappingBias(0)
 
 	return Highlight
 end
 
 function NP:Update_Highlight(nameplate)
 	local db = NP.db.units[nameplate.frameType]
-
-	if db.health.enable then
-		nameplate.Highlight.texture:SetColorTexture(1, 1, 1, .3)
-		nameplate.Highlight.texture:SetAllPoints(nameplate.Health)
-		nameplate.Highlight.texture:SetAlpha(1)
+	if NP.db.highlight then
+		if not nameplate:IsElementEnabled('Highlight') then
+			nameplate:EnableElement('Highlight')
+		end
+		if db.health.enable then
+			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, .3)
+			nameplate.Highlight.texture:SetAllPoints(nameplate.Health)
+			nameplate.Highlight.texture:SetAlpha(1)
+		else
+			nameplate.Highlight.texture:SetTexture(E.Media.Textures.Spark)
+			nameplate.Highlight.texture:SetAllPoints(nameplate)
+			nameplate.Highlight.texture:SetAlpha(.5)
+		end
 	else
-		nameplate.Highlight.texture:SetTexture(E.Media.Textures.Spark)
-		nameplate.Highlight.texture:SetAllPoints(nameplate)
-		nameplate.Highlight.texture:SetAlpha(.5)
+		if nameplate:IsElementEnabled('Highlight') then
+			nameplate:DisableElement('Highlight')
+		end
 	end
 end
 
 function NP:Construct_HealerSpecs(nameplate)
 	local texture = nameplate:CreateTexture(nil, "OVERLAY")
-	texture:SetSize(40, 40)
+	texture:Size(40, 40)
 	texture:SetTexture(E.Media.Textures.Healer)
 	texture:Hide()
 
@@ -190,7 +197,7 @@ function NP:Update_HealerSpecs(nameplate)
 			nameplate:EnableElement('HealerSpecs')
 		end
 
-		nameplate.HealerSpecs:SetPoint("RIGHT", nameplate.Health, "LEFT", -6, 0)
+		nameplate.HealerSpecs:Point("RIGHT", nameplate.Health, "LEFT", -6, 0)
 	else
 		if nameplate:IsElementEnabled('HealerSpecs') then
 			nameplate:DisableElement('HealerSpecs')
@@ -200,7 +207,7 @@ end
 
 function NP:Construct_DetectionIndicator(nameplate)
 	local model = CreateFrame("PlayerModel", nil, nameplate)
-	model:SetSize(75, 75)
+	model:Size(75, 75)
 	model:Hide()
 
 	return model
@@ -214,10 +221,34 @@ function NP:Update_DetectionIndicator(nameplate)
 			nameplate:EnableElement('DetectionIndicator')
 		end
 
-		nameplate.DetectionIndicator:SetPoint("BOTTOM", nameplate, "TOP", 0, 0)
+		nameplate.DetectionIndicator:Point("BOTTOM", nameplate, "TOP", 0, 0)
 	else
 		if nameplate:IsElementEnabled('DetectionIndicator') then
 			nameplate:DisableElement('DetectionIndicator')
 		end
+	end
+end
+
+function NP:Construct_FloatingCombatFeedback(nameplate)
+	local FloatingCombatFeedback = CreateFrame("Frame", nil, nameplate)
+	FloatingCombatFeedback:SetPoint('CENTER')
+	FloatingCombatFeedback:SetSize(16, 16)
+
+	for i = 1, 12 do
+		FloatingCombatFeedback[i] = FloatingCombatFeedback:CreateFontString(nil, "OVERLAY")
+	end
+
+	return FloatingCombatFeedback
+end
+
+function NP:Update_FloatingCombatFeedback(nameplate)
+	nameplate.FloatingCombatFeedback.mode = "Fountain"
+	nameplate.FloatingCombatFeedback.xOffset = 60
+	nameplate.FloatingCombatFeedback.yOffset = 10
+	nameplate.FloatingCombatFeedback.yDirection = 1 -- 1 (Up) or -1 (Down)
+	nameplate.FloatingCombatFeedback.scrollTime = 1.5
+
+	for i = 1, 12 do
+		nameplate.FloatingCombatFeedback[i]:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 	end
 end

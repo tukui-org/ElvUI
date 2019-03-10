@@ -69,8 +69,8 @@ local function LoadSkin()
 	local reward = _G.EmbeddedItemTooltip.ItemTooltip
 	local icon = reward.Icon
 	if reward and reward.backdrop then
-		reward.backdrop:SetPoint("TOPLEFT", icon, "TOPLEFT", -2, 2)
-		reward.backdrop:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
+		reward.backdrop:Point("TOPLEFT", icon, "TOPLEFT", -2, 2)
+		reward.backdrop:Point("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
 	end
 
 	-- Skin GameTooltip Status Bar
