@@ -153,7 +153,7 @@ function AddOn:OnInitialize()
 	self:Contruct_StaticPopups()
 	self:InitializeInitialModules()
 
-	if IsAddOnLoaded("Tukui") then
+	if GetAddOnEnableState(self.myname, "Tukui") == 2 then
 		self:StaticPopup_Show("TUKUI_ELVUI_INCOMPATIBLE")
 	end
 

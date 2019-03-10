@@ -3,6 +3,7 @@ local B = E:GetModule("Blizzard")
 local M = E:GetModule("Misc")
 
 local _G = _G
+local IsAddOnLoaded = IsAddOnLoaded
 local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
 
 local function GetChatWindowInfo()
@@ -804,81 +805,36 @@ E.Options.args.general = {
 							order = 3,
 							type = 'group',
 							name = L["Fonts"],
+							disabled = function() return not E.db.general.itemLevel.displayCharacterInfo and not E.db.general.itemLevel.displayInspectInfo end,
+							get = function(info) return E.db.general.itemLevel[ info[#info] ] end,
+							set = function(info, value)
+								E.db.general.itemLevel[ info[#info] ] = value
+								M:UpdateInspectPageFonts("Character")
+								M:UpdateInspectPageFonts("Inspect")
+							end,
 							args = {
-								level ={
+								itemLevelFont = {
 									order = 1,
-									type = 'group',
-									name = L["Item Level Font"],
-									disabled = function() return not E.db.general.itemLevel.displayCharacterInfo end,
-									get = function(info) return E.db.general.itemLevel[ info[#info] ] end,
-									set = function(info, value)
-										E.db.general.itemLevel[ info[#info] ] = value
-										M:UpdateInspectPageFonts("Character")
-										M:UpdateInspectPageFonts("Inspect")
-									end,
-									args = {
-										itemLevelFont = {
-											order = 1,
-											type = "select",
-											name = L["Font"],
-											dialogControl = 'LSM30_Font',
-											values = AceGUIWidgetLSMlists.font,
-										},
-										itemLevelFontSize = {
-											order = 2,
-											type = "range",
-											name = FONT_SIZE,
-											min = 4, max = 40, step = 1,
-										},
-										itemLevelFontOutline = {
-											order = 3,
-											type = "select",
-											name = L["Font Outline"],
-											values = {
-												["NONE"] = NONE,
-												["OUTLINE"] = "OUTLINE",
-												["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-												["THICKOUTLINE"] = "THICKOUTLINE",
-											},
-										},
-									},
+									type = "select",
+									name = L["Font"],
+									dialogControl = 'LSM30_Font',
+									values = AceGUIWidgetLSMlists.font,
 								},
-								enchants = {
+								itemLevelFontSize = {
 									order = 2,
-									type = 'group',
-									name = L["Enchants Font"],
-									disabled = function() return not E.db.general.itemLevel.displayInspectInfo end,
-									get = function(info) return E.db.general.itemLevel[ info[#info] ] end,
-									set = function(info, value)
-										E.db.general.itemLevel[ info[#info] ] = value
-										M:UpdateInspectPageFonts("Character")
-										M:UpdateInspectPageFonts("Inspect")
-									end,
-									args = {
-										enchantFont = {
-											order = 1,
-											type = "select",
-											name = L["Font"],
-											dialogControl = 'LSM30_Font',
-											values = AceGUIWidgetLSMlists.font,
-										},
-										enchantFontSize = {
-											order = 2,
-											type = "range",
-											name = FONT_SIZE,
-											min = 4, max = 40, step = 1,
-										},
-										enchantFontOutline = {
-											order = 3,
-											type = "select",
-											name = L["Font Outline"],
-											values = {
-												["NONE"] = NONE,
-												["OUTLINE"] = "OUTLINE",
-												["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-												["THICKOUTLINE"] = "THICKOUTLINE",
-											},
-										},
+									type = "range",
+									name = FONT_SIZE,
+									min = 4, max = 40, step = 1,
+								},
+								itemLevelFontOutline = {
+									order = 3,
+									type = "select",
+									name = L["Font Outline"],
+									values = {
+										["NONE"] = NONE,
+										["OUTLINE"] = "OUTLINE",
+										["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+										["THICKOUTLINE"] = "THICKOUTLINE",
 									},
 								},
 							},
