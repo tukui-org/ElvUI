@@ -33,7 +33,9 @@ end
 local function Event()
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and (instanceType == 'pvp' or instanceType == 'arena') then
-		if instanceType == 'pvp' then
+		local numOpps = GetNumArenaOpponentSpecs()
+
+		if instanceType == 'pvp' or (instanceType == 'arena' and numOpps == 0) then
 			local name, _, talentSpec
 			for i = 1, GetNumBattlefieldScores() do
 				name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
@@ -46,17 +48,16 @@ local function Event()
 					end
 				end
 			end
-		else
-			local numOpps = GetNumArenaOpponentSpecs()
-			if (numOpps == 0) then return end
-
+		elseif (numOpps >= 1) then
 			for i = 1, numOpps do
 				local name, realm = UnitName(format('arena%d', i))
 				if name and name ~= UNKNOWN then
 					realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')
 					if realm then name = name.."-"..realm end
+
 					local s = GetArenaOpponentSpec(i)
 					local _, talentSpec = nil, UNKNOWN
+
 					if s and s > 0 then
 						_, talentSpec = GetSpecializationInfoByID(s)
 					end
