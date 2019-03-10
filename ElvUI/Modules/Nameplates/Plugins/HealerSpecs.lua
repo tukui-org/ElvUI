@@ -48,7 +48,7 @@ local function Event()
 			end
 		else
 			local numOpps = GetNumArenaOpponentSpecs()
-			if not (numOpps > 1) then return end
+			if (numOpps == 0) then return end
 
 			for i = 1, numOpps do
 				local name, realm = UnitName(format('arena%d', i))
