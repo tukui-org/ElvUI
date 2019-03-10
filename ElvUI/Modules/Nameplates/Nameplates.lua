@@ -322,8 +322,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		-- update this plate and fade it in
 		NP:UpdatePlate(nameplate)
 
+		nameplate.isTarget = UnitIsUnit(unit, "target")
+
 		if nameplate:IsShown() then
-			E:UIFrameFadeIn(nameplate, nameplate.isTarget and 1 or NP.db.nonTargetTransparency, 0, 1)
+			E:UIFrameFadeIn(nameplate, 1, 0, nameplate.isTarget and 1 or NP.db.nonTargetTransparency)
 		end
 
 		NP.Plates[nameplate] = true
