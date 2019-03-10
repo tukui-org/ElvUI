@@ -115,7 +115,7 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Time = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Time:Point('RIGHT', Castbar, 'RIGHT', -4, 0)
 	Castbar.Time:SetJustifyH('RIGHT')
-	Castbar.Text:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	Castbar.Time:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	Castbar.Text = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Text:SetJustifyH('LEFT')
