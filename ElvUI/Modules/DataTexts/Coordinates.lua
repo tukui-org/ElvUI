@@ -31,7 +31,7 @@ local function OnEvent(self)
 		self.text:SetFormattedText(displayString, E.MapInfo.xText or 0, E.MapInfo.yText or 0)
 	else
 		inRestrictedArea = true
-		self.text:SetText("N/A")
+		self.text:SetText("")
 	end
 end
 
