@@ -68,8 +68,8 @@ function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 			if useCustomFont then
 				local customSize = (parent and parent.CooldownFontSize and cd.timerOptions.fontOptions.fontSize) or (fontScale * cd.timerOptions.fontOptions.fontSize)
 				text:FontTemplate(useCustomFont, customSize, cd.timerOptions.fontOptions.fontOutline)
-			elseif fontScale and parent and parent.CooldownSettings and parent.CooldownSettings.font and parent.CooldownSettings.fontOutline then
-				text:FontTemplate(parent.CooldownSettings.font, (fontScale * FONT_SIZE), parent.CooldownSettings.fontOutline)
+			elseif fontScale and parent and parent.CooldownSettings then
+				text:FontTemplate(parent.CooldownSettings.font, parent.CooldownSettings.fontSize or (fontScale * FONT_SIZE), parent.CooldownSettings.fontOutline)
 			elseif fontScale then
 				text:FontTemplate(nil, (fontScale * FONT_SIZE), 'OUTLINE')
 			end
