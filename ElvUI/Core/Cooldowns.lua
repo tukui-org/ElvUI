@@ -29,7 +29,7 @@ function E:Cooldown_OnUpdate(elapsed)
 		local remain = self.duration - (GetTime() - self.start)
 		if remain > 0.05 then
 			if self.fontScale and ((self.fontScale * self:GetEffectiveScale() / _G.UIParent:GetScale()) < MIN_SCALE) then
-				self.text:SetText()
+				self.text:SetText('')
 				self.nextUpdate = 500
 			else
 				local timeColors, timeThreshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold

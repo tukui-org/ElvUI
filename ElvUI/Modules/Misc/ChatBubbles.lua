@@ -38,7 +38,7 @@ function M:UpdateBubbleBorder()
 
 	local text = self.text:GetText()
 	if self.Name then
-		self.Name:SetText() --Always reset it
+		self.Name:SetText('') --Always reset it
 		if text and E.private.general.chatBubbleName then
 			M:AddChatBubbleName(self, messageToGUID[text], messageToSender[text])
 		end
