@@ -317,12 +317,13 @@ P.nameplates = {
 	cutawayHealthFadeOutTime = 0.6,
 	cutawayHealthLength = 0.3,
 	classbar = {
-		attachTo = 'TARGET',
+		attachTo = 'PLAYER',
 		enable = true,
 		height = 7,
 		sortDirection = 'NONE',
 		position = 'ABOVE',
 		width = 130,
+		yOffset = 11,
 	},
 	clickableWidth = 150,
 	clickableHeight = 30,
@@ -490,7 +491,7 @@ P.nameplates = {
 				width = 150,
 			},
 			name = {
-				enable = true,
+				enable = false,
 				format = '[name]',
 				position = 'TOPLEFT',
 				xOffset = 0,
@@ -500,7 +501,7 @@ P.nameplates = {
 				fontSize = 11,
 			},
 			level = {
-				enable = true,
+				enable = false,
 				format = '[difficultycolor][level]',
 				position = 'TOPRIGHT',
 				xOffset = 0,

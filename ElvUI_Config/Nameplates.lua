@@ -3334,12 +3334,13 @@ local function GetUnitSettings(unit, name)
 						PLAYER = L["Player Nameplate"],
 						TARGET = L["Targeted Nameplate"],
 					},
+					disabled = function() return true end, -- remove me
 				},
 				yOffset = {
 					order = 3,
 					name = L["Y-Offset"],
 					type = "range",
-					min = -20, max = 20, step = 1,
+					min = -40, max = 40, step = 1,
 				},
 				height = {
 					order = 4,
