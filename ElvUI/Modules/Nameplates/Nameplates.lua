@@ -336,7 +336,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isTarget = nil
 	elseif event == 'PLAYER_TARGET_CHANGED' then
 		if nameplate then
-			nameplate.isTarget = true
 			local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
 			local Alpha = NP.db.nonTargetTransparency
 			for plate in pairs(NP.Plates) do
@@ -347,7 +346,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			end
 			nameplate:SetAlpha(1)
 		else
-			nameplate.isTarget = false
 			for plate in pairs(NP.Plates) do
 				plate:SetAlpha(1)
 			end
