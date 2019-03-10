@@ -1052,7 +1052,7 @@ P.nameplates = {
 			},
 			level = {
 				enable = true,
-				format = '[difficultycolor][level][plus]',
+				format = '[difficultycolor][level][shortclassification]',
 				position = 'TOPRIGHT',
 				xOffset = 0,
 				yOffset = -7,
@@ -1241,7 +1241,7 @@ P.nameplates = {
 			},
 			level = {
 				enable = true,
-				format = '[difficultycolor][level][plus]',
+				format = '[difficultycolor][level][shortclassification]',
 				position = 'TOPRIGHT',
 				xOffset = 0,
 				yOffset = -7,
