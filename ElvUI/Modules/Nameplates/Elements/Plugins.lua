@@ -168,6 +168,9 @@ end
 function NP:Update_Highlight(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 	if NP.db.highlight then
+		if not nameplate:IsElementEnabled('Highlight') then
+			nameplate:EnableElement('Highlight')
+		end
 		if db.health.enable then
 			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, .3)
 			nameplate.Highlight.texture:SetAllPoints(nameplate.Health)
@@ -176,6 +179,10 @@ function NP:Update_Highlight(nameplate)
 			nameplate.Highlight.texture:SetTexture(E.Media.Textures.Spark)
 			nameplate.Highlight.texture:SetAllPoints(nameplate)
 			nameplate.Highlight.texture:SetAlpha(.5)
+		end
+	else
+		if nameplate:IsElementEnabled('Highlight') then
+			nameplate:DisableElement('Highlight')
 		end
 	end
 end
