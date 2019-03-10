@@ -206,7 +206,7 @@ local function Update(self, event, unit)
 				element.Loot:Show()
 			elseif questType == "CHAT" then
 				element.Chat:Show()
-				element.Text:SetText('')
+				element.Text:SetText()
 			elseif questType == "QUEST_ITEM" then
 				element.Item:Show()
 				element.Item:SetTexture(itemTexture)

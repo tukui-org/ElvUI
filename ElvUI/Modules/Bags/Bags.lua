@@ -509,8 +509,8 @@ function B:UpdateSlot(bagID, slotID)
 		UpdateItemUpgradeIcon(slot)
 	end
 
-	slot.itemLevel:SetText("")
-	slot.bindType:SetText("")
+	slot.itemLevel:SetText()
+	slot.bindType:SetText()
 
 	local professionColors = B.ProfessionColors[bagType]
 	local showItemLevel = B.db.itemLevel and clink and not professionColors

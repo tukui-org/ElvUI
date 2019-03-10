@@ -86,7 +86,7 @@ function A:UpdateTime(elapsed)
 		end
 
 		self.timeLeft = nil
-		self.time:SetText("")
+		self.time:SetText()
 		self:SetScript("OnUpdate", nil)
 	else
 		local timeColors, timeThreshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
@@ -218,14 +218,14 @@ function A:UpdateAura(button, index)
 			A.UpdateTime(button, 0)
 		else
 			button.timeLeft = nil
-			button.time:SetText("")
+			button.time:SetText()
 			button:SetScript("OnUpdate", nil)
 		end
 
 		if count and (count > 1) then
 			button.count:SetText(count)
 		else
-			button.count:SetText("")
+			button.count:SetText()
 		end
 
 		if filter == "HARMFUL" then
@@ -265,7 +265,7 @@ function A:UpdateTempEnchant(button, index)
 		button.offset = nil
 		button.timeLeft = nil
 		button:SetScript("OnUpdate", nil)
-		button.time:SetText("")
+		button.time:SetText()
 	end
 end
 

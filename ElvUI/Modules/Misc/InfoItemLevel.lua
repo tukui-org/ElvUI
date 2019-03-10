@@ -63,7 +63,7 @@ end
 
 function M:ClearPageInfo(frame, which)
 	if not (frame and frame.ItemLevelText) then return end
-	frame.ItemLevelText:SetText('')
+	frame.ItemLevelText:SetText()
 
 	for i = 1, 17 do
 		if i ~= 4 then
@@ -140,7 +140,7 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 			frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
 		end
 	else
-		frame.ItemLevelText:SetText('')
+		frame.ItemLevelText:SetText()
 	end
 end
 

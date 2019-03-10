@@ -109,10 +109,10 @@ function M:UpdateCoords(OnShow)
 			adjustedY = E:Round(100 * adjustedY, 2)
 			CoordsHolder.mouseCoords:SetFormattedText("%s:   %.2f, %.2f", MOUSE_LABEL, adjustedX, adjustedY)
 		else
-			CoordsHolder.mouseCoords:SetText("")
+			CoordsHolder.mouseCoords:SetText()
 		end
 	else
-		CoordsHolder.mouseCoords:SetText("")
+		CoordsHolder.mouseCoords:SetText()
 	end
 
 	if not inRestrictedArea and (OnShow or E.MapInfo.coordsWatching) then

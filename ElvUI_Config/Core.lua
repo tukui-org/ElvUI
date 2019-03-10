@@ -266,8 +266,8 @@ local function ExportImport_Open(mode)
 		exportButton:SetAutoWidth(true)
 		local function OnClick(self)
 			--Clear labels
-			Label1:SetText("")
-			Label2:SetText("")
+			Label1:SetText()
+			Label2:SetText()
 
 			local profileType, exportFormat = ProfileTypeDropdown:GetValue(), ExportFormatDropdown:GetValue()
 			local profileKey, profileExport = D:ExportProfile(profileType, exportFormat)
@@ -305,8 +305,8 @@ local function ExportImport_Open(mode)
 		importButton:SetAutoWidth(true)
 		importButton:SetCallback("OnClick", function()
 			--Clear labels
-			Label1:SetText("")
-			Label2:SetText("")
+			Label1:SetText()
+			Label2:SetText()
 
 			local text
 			local success = D:ImportProfile(Box:GetText())
@@ -325,8 +325,8 @@ local function ExportImport_Open(mode)
 		decodeButton:SetAutoWidth(true)
 		decodeButton:SetCallback("OnClick", function()
 			--Clear labels
-			Label1:SetText("")
-			Label2:SetText("")
+			Label1:SetText()
+			Label2:SetText()
 			local decodedText
 			local profileType, profileKey, profileData = D:Decode(Box:GetText())
 			if profileData then
@@ -341,8 +341,8 @@ local function ExportImport_Open(mode)
 		local function OnTextChanged()
 			local text = Box:GetText()
 			if text == "" then
-				Label1:SetText("")
-				Label2:SetText("")
+				Label1:SetText()
+				Label2:SetText()
 				importButton:SetDisabled(true)
 				decodeButton:SetDisabled(true)
 			elseif oldText ~= text then
@@ -356,7 +356,7 @@ local function ExportImport_Open(mode)
 				local profileType, profileKey = D:Decode(text)
 				if not profileType or (profileType and profileType == "profile" and not profileKey) then
 					Label1:SetText(L["Error decoding data. Import string may be corrupted!"])
-					Label2:SetText("")
+					Label2:SetText()
 					importButton:SetDisabled(true)
 					decodeButton:SetDisabled(true)
 				else
@@ -397,8 +397,8 @@ local function ExportImport_Open(mode)
 	end)
 
 	--Clear default text
-	Label1:SetText("")
-	Label2:SetText("")
+	Label1:SetText()
+	Label2:SetText()
 
 	--Close ElvUI Config
 	E.Libs.AceConfigDialog:Close("ElvUI")

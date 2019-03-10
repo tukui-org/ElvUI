@@ -68,7 +68,7 @@ local function SkinOverviewInfo(self, _, index)
 		header.descriptionBG:SetAlpha(0)
 		header.descriptionBGBottom:SetAlpha(0)
 		for i = 4, 18 do
-			select(i, header.button:GetRegions()):SetTexture("")
+			select(i, header.button:GetRegions()):SetTexture()
 		end
 
 		HandleButton(header.button)
@@ -117,7 +117,7 @@ local function SkinAbilitiesInfo()
 			header.descriptionBG:SetAlpha(0)
 			header.descriptionBGBottom:SetAlpha(0)
 			for i = 4, 18 do
-				select(i, header.button:GetRegions()):SetTexture("")
+				select(i, header.button:GetRegions()):SetTexture()
 			end
 
 			header.description:SetTextColor(1, 1, 1)
@@ -435,7 +435,7 @@ local function LoadSkin()
 			reward = suggestion.reward
 
 			reward.iconRing:Hide()
-			reward.iconRingHighlight:SetTexture("")
+			reward.iconRingHighlight:SetTexture()
 		end
 
 		hooksecurefunc("EJSuggestFrame_RefreshDisplay", function()

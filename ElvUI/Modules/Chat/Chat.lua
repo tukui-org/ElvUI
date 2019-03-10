@@ -439,7 +439,7 @@ function CH:StyleChat(frame)
 
 			if editBox.historyIndex < 1 then
 				editBox.historyIndex = 0
-				editBox:SetText("")
+				editBox:SetText()
 				return
 			end
 		elseif key == "UP" then
@@ -937,7 +937,7 @@ function CH:SetChatEditBoxMessage(message)
 		ChatEdit_ActivateChat(ChatFrameEditBox)
 	end
 	if editBoxText and editBoxText ~= "" then
-		ChatFrameEditBox:SetText('')
+		ChatFrameEditBox:SetText()
 	end
 	ChatFrameEditBox:Insert(message)
 	ChatFrameEditBox:HighlightText()

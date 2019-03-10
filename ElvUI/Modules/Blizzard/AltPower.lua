@@ -111,7 +111,7 @@ function B:UpdateAltPowerBarSettings()
 
 	local textFormat = E.db.general.altPowerBar.textFormat
 	if textFormat == 'NONE' or not textFormat then
-		bar.text:SetText("")
+		bar.text:SetText()
 	else
 		local power, maxPower, perc = bar.powerValue or 0, bar.powerMaxValue or 0, bar.powerPercent or 0
 		local text = B:SetAltPowerBarText(bar.powerName or "", power, maxPower, perc)
