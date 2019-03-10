@@ -18,6 +18,7 @@ local function LoadSkin()
 
 	_G.MacroFrameTextBackground:StripTextures()
 	_G.MacroFrameTextBackground:SetTemplate()
+	_G.MacroButtonScrollFrame:StripTextures()
 	_G.MacroButtonScrollFrame:CreateBackdrop()
 
 	S:HandleScrollBar(_G.MacroButtonScrollFrameScrollBar)
