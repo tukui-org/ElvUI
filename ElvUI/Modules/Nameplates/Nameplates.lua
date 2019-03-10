@@ -179,11 +179,11 @@ function NP:CVarReset()
 	SetCVar('nameplateMaxScale', 1)
 	SetCVar('nameplateMaxScaleDistance', 40)
 	SetCVar('nameplateMinAlpha', GetCVarDefault('nameplateMinAlpha')) -- if we set it back to 1, it will sometimes break the alpha
-	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
+	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance')) -- see above
 	SetCVar('nameplateMinScale', 1)
 	SetCVar('nameplateMinScaleDistance', 0)
 	SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
-	SetCVar('nameplateOccludedAlphaMult', .4)
+	SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult')) -- see above
 	SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
 	SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
 	SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
