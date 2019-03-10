@@ -1092,7 +1092,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		if ( info.maxBytes ) then
 			editBox:SetMaxBytes(info.maxBytes);
 		end
-		editBox:SetText();
+		editBox:SetText('');
 		if ( info.editBoxWidth ) then
 			editBox:Width(info.editBoxWidth);
 		else
