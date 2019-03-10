@@ -26,11 +26,12 @@ function E:RefreshGUI()
 end
 
 function E:GetConfigSize()
-	local defaultWidth, defaultHeight = 900, 650
+	local defaultWidth, defaultHeight
 	if E.UIParent then
-		local width, height = E.UIParent:GetSize()
-		defaultWidth = (width*60)/100
-		defaultHeight = (height*70)/100
+		local height = E.UIParent:GetHeight()
+		defaultWidth, defaultHeight = (height*110)/100, (height*70)/100
+	else
+		defaultWidth, defaultHeight = 900, 650
 	end
 
 	return defaultWidth, defaultHeight
