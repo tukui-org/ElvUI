@@ -327,14 +327,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP.Plates[nameplate] = true
 		nameplate:UpdateTags()
 
-		if nameplate ~= _G.ElvNP_Player then
-			if (UnitIsBattlePetCompanion(unit) or UnitIsBattlePet(unit)) and nameplate:IsEnabled() then
-				nameplate:Disable()
-			elseif not nameplate:IsEnabled() then
-				nameplate:Enable()
-			end
-		end
-
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		NP:ClearStyledPlate(nameplate)
