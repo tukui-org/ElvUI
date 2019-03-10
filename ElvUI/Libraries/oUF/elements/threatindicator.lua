@@ -112,8 +112,7 @@ local function Enable(self)
 		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', Path)
 
 		if(element:IsObjectType('Texture') and not element:GetTexture()) then
-			element:SetTexture([[Interface\Minimap\ObjectIcons]])
-			element:SetTexCoord(6/8, 7/8, 1/8, 2/8)
+			element:SetTexture([[Interface\RAIDFRAME\UI-RaidFrame-Threat]])
 		end
 
 		return true
