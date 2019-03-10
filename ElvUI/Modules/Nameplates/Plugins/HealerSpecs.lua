@@ -50,7 +50,7 @@ local function Event()
 			local numOpps = GetNumArenaOpponentSpecs()
 			if not (numOpps > 1) then return end
 
-			for i = 1, 5 do
+			for i = 1, numOpps do
 				local name, realm = UnitName(format('arena%d', i))
 				if name and name ~= UNKNOWN then
 					realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')
