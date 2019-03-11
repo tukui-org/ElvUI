@@ -347,8 +347,8 @@ function AddOn:ToggleConfig(msg)
 				ConfigOpen:ApplyStatus()
 				hooksecurefunc(frame, "StopMovingOrSizing", function(f)
 					if f.obj and f.obj.status then
-						self.global.general.AceGUI.top, self.global.general.AceGUI.left = f:GetTop(), f:GetLeft()
-						self.global.general.AceGUI.width, self.global.general.AceGUI.height = f:GetWidth(), f:GetHeight()
+						self.global.general.AceGUI.top, self.global.general.AceGUI.left = self:Round(f:GetTop(), 2), self:Round(f:GetLeft(), 2)
+						self.global.general.AceGUI.width, self.global.general.AceGUI.height = self:Round(f:GetWidth(), 2), self:Round(f:GetHeight(), 2)
 					end
 				end)
 			end
