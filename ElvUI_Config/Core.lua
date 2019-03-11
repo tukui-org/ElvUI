@@ -35,23 +35,15 @@ E.Options.args = {
 		name = L["Version"]..format(": |cff99ff33%s|r",E.version),
 		width = "full",
 	},
-	LoginMessage = {
-		order = 2,
-		type = 'toggle',
-		name = L["Login Message"],
-		customWidth = 150,
-		get = function(info) return E.db.general.loginmessage end,
-		set = function(info, value) E.db.general.loginmessage = value end,
-	},
 	ToggleTutorial = {
-		order = 3,
+		order = 2,
 		type = 'execute',
 		name = L["Toggle Tutorials"],
 		customWidth = 150,
 		func = function() E:Tutorials(true); E:ToggleConfig()  end,
 	},
 	Install = {
-		order = 4,
+		order = 3,
 		type = 'execute',
 		name = L["Install"],
 		customWidth = 100,
@@ -59,7 +51,7 @@ E.Options.args = {
 		func = function() E:Install(); E:ToggleConfig() end,
 	},
 	ToggleAnchors = {
-		order = 5,
+		order = 4,
 		type = "execute",
 		name = L["Toggle Anchors"],
 		customWidth = 150,
@@ -67,7 +59,7 @@ E.Options.args = {
 		func = function() E:ToggleConfigMode() end,
 	},
 	ResetAllMovers = {
-		order = 6,
+		order = 5,
 		type = "execute",
 		name = L["Reset Anchors"],
 		customWidth = 150,
@@ -75,7 +67,7 @@ E.Options.args = {
 		func = function() E:ResetUI() end,
 	},
 	Reposition = {
-		order = 7,
+		order = 6,
 		type = "execute",
 		name = L["Reposition"],
 		customWidth = 100,
@@ -92,6 +84,14 @@ E.Options.args = {
 				end
 			end
 		end,
+	},
+	LoginMessage = {
+		order = 7,
+		type = 'toggle',
+		name = L["Login Message"],
+		customWidth = 150,
+		get = function(info) return E.db.general.loginmessage end,
+		set = function(info, value) E.db.general.loginmessage = value end,
 	},
 }
 
