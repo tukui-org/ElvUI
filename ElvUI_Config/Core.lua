@@ -12,10 +12,10 @@ E.Libs.AceConfigRegistry = _G.LibStub('AceConfigRegistry-3.0-ElvUI')
 E.Libs.AceDBOptions = _G.LibStub('AceDBOptions-3.0')
 
 local UnitName = UnitName
+local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
-local UnitExists = UnitExists
 local GameTooltip_Hide = GameTooltip_Hide
 local GameFontHighlightSmall = _G.GameFontHighlightSmall
 
@@ -25,8 +25,12 @@ function E:RefreshGUI()
 	E.Libs.AceConfigRegistry:NotifyChange("ElvUI")
 end
 
+function E:GetConfigPosition()
+	return E.global.general.AceGUI.top, E.global.general.AceGUI.left
+end
+
 function E:GetConfigSize()
-	return 1200, 800
+	return E.global.general.AceGUI.width, E.global.general.AceGUI.height
 end
 
 E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)

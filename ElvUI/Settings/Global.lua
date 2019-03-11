@@ -15,6 +15,12 @@ G.general = {
 		xOffset = 0,
 		yOffset = 0,
 	},
+	AceGUI = {
+		width = 1000,
+		height = 700,
+		left = nil,
+		top = nil
+	},
 	disableTutorialButtons = true,
 	showMissingTalentAlert = false,
 	commandBarSetting = 'ENABLED_RESIZEPARENT',

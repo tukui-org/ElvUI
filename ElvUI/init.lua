@@ -322,10 +322,41 @@ function AddOn:ToggleConfig(msg)
 			mode = 'Open'
 		end
 	end
+
 	ACD[mode](ACD, AddOnName)
 
-	if pages and (mode == 'Open') then
-		ACD:SelectGroup(AddOnName, unpack(pages))
+	if mode == 'Open' then
+		ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
+		if ConfigOpen then
+			local frame = ConfigOpen.frame
+			if frame and not self.GUIFrame then
+				self.GUIFrame = frame
+				_G.ElvUIGUIFrame = self.GUIFrame
+
+				frame:SetClampedToScreen(true)
+				frame:SetMinResize(600, 500)
+
+				local status = frame.obj and frame.obj.status
+				if status then
+					local top, left = self:GetConfigPosition()
+					if top and left then
+						status.top, status.left = top, left
+					end
+				end
+
+				ConfigOpen:ApplyStatus()
+				hooksecurefunc(frame, "StopMovingOrSizing", function(f)
+					if f.obj and f.obj.status then
+						self.global.general.AceGUI.top, self.global.general.AceGUI.left = f:GetTop(), f:GetLeft()
+						self.global.general.AceGUI.width, self.global.general.AceGUI.height = f:GetWidth(), f:GetHeight()
+					end
+				end)
+			end
+		end
+
+		if pages then
+			ACD:SelectGroup(AddOnName, unpack(pages))
+		end
 	end
 
 	_G.GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
