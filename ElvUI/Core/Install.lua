@@ -196,7 +196,10 @@ function E:SetupTheme(theme, noDisplayMsg)
 	end
 
 	if not noDisplayMsg then
-		E:StaggeredUpdateAll(nil, true)
+		E:UpdateMedia()
+		E:UpdateBorderColors()
+		E:UpdateBackdropColors()
+		E:UpdateUnitFrames()
 	end
 
 	if _G.InstallStatus and _G.InstallStepComplete and not noDisplayMsg then
