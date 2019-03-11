@@ -42,7 +42,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.PostCastUpdate = self.PostChannelUpdate
 	castbar.PostCastInterruptible = self.PostCastInterruptible
 	castbar:SetClampedToScreen(true)
-	castbar:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
+	castbar:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 
 	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')
 	self:Configure_FontString(castbar.Time)

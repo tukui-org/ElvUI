@@ -648,7 +648,7 @@ function TT:GameTooltip_ShowStatusBar(tt)
 	if (not sb or not sb.Text) or sb.backdrop then return end
 
 	sb:StripTextures()
-	sb:CreateBackdrop('Default', nil, true)
+	sb:CreateBackdrop(nil, nil, true)
 	sb:SetStatusBarTexture(E.media.normTex)
 end
 

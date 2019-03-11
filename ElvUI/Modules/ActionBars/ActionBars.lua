@@ -661,7 +661,7 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 	end
 
 	if not button.noBackdrop and not button.backdrop and not button.useMasque then
-		button:CreateBackdrop('Default', true)
+		button:CreateBackdrop(nil, true)
 		button.backdrop:SetAllPoints()
 	end
 

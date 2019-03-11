@@ -13,7 +13,7 @@ function UF:Construct_AltPowerBar(frame)
 	altpower:GetStatusBarTexture():SetHorizTile(false)
 
 	altpower.PostUpdate = UF.AltPowerBarPostUpdate
-	altpower:CreateBackdrop("Default", true)
+	altpower:CreateBackdrop(nil, true)
 
 	altpower.text = altpower:CreateFontString(nil, 'OVERLAY')
 	altpower.text:Point("CENTER")

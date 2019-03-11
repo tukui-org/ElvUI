@@ -188,7 +188,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		S:HandleButton(button, nil, true)
 		button:StripTextures()
-		button:CreateBackdrop('Default', true)
+		button:CreateBackdrop(nil, true)
 		button.backdrop:SetInside()
 
 		msgframe:StripTextures()

@@ -236,7 +236,7 @@ function PI:CreateFrame()
 
 	f.Status = CreateFrame("StatusBar", "PluginInstallStatus", f)
 	f.Status:SetFrameLevel(f.Status:GetFrameLevel() + 2)
-	f.Status:CreateBackdrop("Default", true)
+	f.Status:CreateBackdrop(nil, true)
 	f.Status:SetStatusBarTexture(E.media.normTex)
 	f.Status:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
 	f.Status:Point("TOPLEFT", f.Prev, "TOPRIGHT", 6, -2)

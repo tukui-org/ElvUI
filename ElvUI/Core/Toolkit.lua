@@ -441,7 +441,7 @@ do
 		CloseButton:Size(size or 16)
 		CloseButton:Point('TOPRIGHT', offset or -6, offset or -6)
 		if backdrop then
-			CloseButton:CreateBackdrop('Default', true)
+			CloseButton:CreateBackdrop(nil, true)
 		end
 
 		CloseButton.Texture = CloseButton:CreateTexture(nil, 'OVERLAY')

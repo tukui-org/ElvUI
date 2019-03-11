@@ -34,7 +34,7 @@ local function LoadSkin()
 
 	local HelpFrameHeader = _G.HelpFrameHeader
 	HelpFrameHeader:StripTextures(true)
-	HelpFrameHeader:CreateBackdrop("Default", true)
+	HelpFrameHeader:CreateBackdrop(nil, true)
 	HelpFrameHeader:SetFrameLevel(HelpFrameHeader:GetFrameLevel() + 2)
 	_G.HelpFrameKnowledgebaseErrorFrame:SetFrameLevel(_G.HelpFrameKnowledgebaseErrorFrame:GetFrameLevel() + 2)
 

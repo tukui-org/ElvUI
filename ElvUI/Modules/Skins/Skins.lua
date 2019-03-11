@@ -282,7 +282,7 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 	end
 
 	if useCreateBackdrop then
-		button:CreateBackdrop('Default', true)
+		button:CreateBackdrop(nil, true)
 	elseif not noSetTemplate then
 		button:SetTemplate("Default", true)
 	end
@@ -320,7 +320,7 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 
 	if Thumb then
 		Thumb:SetTexture()
-		Thumb:CreateBackdrop('Default', true, true)
+		Thumb:CreateBackdrop(nil, true, true)
 		if not thumbTrimY then thumbTrimY = 3 end
 		if not thumbTrimX then thumbTrimX = 2 end
 		Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
@@ -653,7 +653,7 @@ function S:HandleItemButton(b, shrinkIcon)
 	end
 
 	b:StripTextures()
-	b:CreateBackdrop('Default', true)
+	b:CreateBackdrop(nil, true)
 	b:StyleButton()
 
 	if icon then

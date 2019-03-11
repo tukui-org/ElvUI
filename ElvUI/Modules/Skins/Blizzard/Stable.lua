@@ -32,7 +32,7 @@ local function PetButtons(btn, p)
 
 		button:SetFrameLevel(button:GetFrameLevel() + 2)
 		if not button.backdrop then
-			button:CreateBackdrop("Default", true)
+			button:CreateBackdrop(nil, true)
 			button.backdrop:SetAllPoints()
 		end
 	end
