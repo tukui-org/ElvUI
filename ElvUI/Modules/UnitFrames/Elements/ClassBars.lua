@@ -502,11 +502,11 @@ function UF:PostUpdateAdditionalPower(_, MIN, MAX, event)
 				self.text:SetFormattedText(color.."%d%%|r", floor(MIN / MAX * 100))
 			end
 		else --Text disabled
-			self.text:SetText()
+			self.text:SetText('')
 		end
 		self:Show()
 	else --Bar disabled
-		self.text:SetText()
+		self.text:SetText('')
 		self:Hide()
 	end
 end
@@ -518,7 +518,7 @@ function UF:PostVisibilityAdditionalPower(enabled, stateChanged)
 		frame.ClassBar = 'AdditionalPower'
 	else
 		frame.ClassBar = 'ClassPower'
-		self.text:SetText()
+		self.text:SetText('')
 	end
 
 	if stateChanged then

@@ -1,9 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
+local _G = _G
 local unpack, abs = unpack, abs
+local strjoin = strjoin
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
+local GetPlayerInfoByGUID = GetPlayerInfoByGUID
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
+local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local INTERRUPTED = INTERRUPTED
 
 function NP:Castbar_CheckInterrupt(unit)
 	if (unit == 'vehicle') then
@@ -13,7 +20,7 @@ function NP:Castbar_CheckInterrupt(unit)
 	if (self.notInterruptible and UnitCanAttack('player', unit)) then
 		self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, .7)
 
-		if self.Icon then
+		if self.Icon and NP.db.colors.castbarDesaturate then
 			self.Icon:SetDesaturated(true)
 		end
 	else
@@ -115,11 +122,11 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Time = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Time:Point('RIGHT', Castbar, 'RIGHT', -4, 0)
 	Castbar.Time:SetJustifyH('RIGHT')
-	Castbar.Time:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	Castbar.Time:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	Castbar.Text = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Text:SetJustifyH('LEFT')
-	Castbar.Text:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	Castbar.Text:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	Castbar.CheckInterrupt = NP.Castbar_CheckInterrupt
 	Castbar.CustomDelayText = NP.Castbar_CustomDelayText
@@ -136,7 +143,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 	local _, event, _, sourceGUID, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
 
 	if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
-		local plate = C_NamePlate.GetNamePlateForUnit('target')
+		local plate = C_NamePlate_GetNamePlateForUnit('target')
 		if plate and (plate.unitFrame and plate.unitFrame.Castbar) then
 			local db = plate.unitFrame.frameType and self.db and self.db.units and self.db.units[plate.unitFrame.frameType]
 			local healthBar = (db and db.health and db.health.enable) or (plate.unitFrame.isTarget and self.db.alwaysShowTargetHealth)
@@ -146,11 +153,11 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 					if db.castbar.sourceInterruptClassColor then
 						local _, sourceClass = GetPlayerInfoByGUID(sourceGUID)
 						if sourceClass then
-							local classColor = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[sourceClass]) or RAID_CLASS_COLORS[sourceClass];
+							local classColor = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[sourceClass]) or RAID_CLASS_COLORS[sourceClass];
 							sourceClass = classColor and classColor.colorStr
 						end
 
-						plate.unitFrame.Castbar.Text:SetText(INTERRUPTED.." > "..(sourceClass and strjoin('', '|c', sourceClass, sourceName)) or sourceName)
+						plate.unitFrame.Castbar.Text:SetText(INTERRUPTED.." > "..(sourceClass and strjoin('', '|c', sourceClass, sourceName) or sourceName))
 					else
 						plate.unitFrame.Castbar.Text:SetText(INTERRUPTED.." > "..sourceName)
 					end
@@ -201,14 +208,14 @@ function NP:Update_Castbar(nameplate)
 		if db.castbar.hideTime then
 			nameplate.Castbar.Time:Hide()
 		else
-			nameplate.Castbar.Time:SetFont(E.LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
+			nameplate.Castbar.Time:FontTemplate(E.LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
 			nameplate.Castbar.Time:Show()
 		end
 
 		if db.castbar.hideSpellName then
 			nameplate.Castbar.Text:Hide()
 		else
-			nameplate.Castbar.Text:SetFont(E.LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
+			nameplate.Castbar.Text:FontTemplate(E.LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
 			nameplate.Castbar.Text:Show()
 		end
 	else

@@ -125,7 +125,7 @@ function E:CreateStatusFrame()
 		section.Header.Text:SetJustifyH("CENTER")
 		section.Header.Text:SetJustifyV("MIDDLE")
 		local font, height, flags = section.Header.Text:GetFont()
-		section.Header.Text:SetFont(font, height*1.3, flags)
+		section.Header.Text:FontTemplate(font, height*1.3, flags)
 
 		section.Header.LeftDivider = section.Header:CreateTexture(nil, "ARTWORK")
 		section.Header.LeftDivider:Height(8)

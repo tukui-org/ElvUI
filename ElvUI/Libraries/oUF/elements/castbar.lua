@@ -22,17 +22,17 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 
 ## Options
 
-.timeToHold      - indicates for how many seconds the castbar should be visible after a _FAILED or _INTERRUPTED
+.timeToHold      - Indicates for how many seconds the castbar should be visible after a _FAILED or _INTERRUPTED
                    event. Defaults to 0 (number)
-.hideTradeSkills - makes the element ignore casts related to crafting professions (boolean)
+.hideTradeSkills - Makes the element ignore casts related to crafting professions (boolean)
 
 ## Attributes
 
-.castID           - a globally unique identifier of the currently cast spell (string?)
-.casting          - indicates whether the current spell is an ordinary cast (boolean)
-.channeling       - indicates whether the current spell is a channeled cast (boolean)
-.notInterruptible - indicates whether the current spell is interruptible (boolean)
-.spellID          - the spell identifier of the currently cast/channeled spell (number)
+.castID           - A globally unique identifier of the currently cast spell (string?)
+.casting          - Indicates whether the current spell is an ordinary cast (boolean)
+.channeling       - Indicates whether the current spell is a channeled cast (boolean)
+.notInterruptible - Indicates whether the current spell is interruptible (boolean)
+.spellID          - The spell identifier of the currently cast/channeled spell (number)
 
 ## Examples
 

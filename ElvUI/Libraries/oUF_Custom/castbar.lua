@@ -175,7 +175,7 @@ local function CastStart(self, event, unit)
 	if(element.Shield) then element.Shield:SetShown(notInterruptible) end
 	if(element.Spark) then element.Spark:Show() end
 	if(element.Text) then element.Text:SetText(name) end
-	if(element.Time) then element.Time:SetText() end
+	if(element.Time) then element.Time:SetText('') end
 
 	local safeZone = element.SafeZone
 	if(safeZone) then

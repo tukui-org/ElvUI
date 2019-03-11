@@ -86,10 +86,6 @@ function UF:Update_RaidpetHeader(header, db)
 end
 
 function UF:Update_RaidpetFrames(frame, db)
-	if InCombatLockdown() then
-		return
-	end
-
 	frame.db = db
 
 	frame.Portrait = frame.Portrait or (db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D)

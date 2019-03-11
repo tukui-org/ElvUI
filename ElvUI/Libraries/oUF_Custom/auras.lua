@@ -351,7 +351,7 @@ local function UpdateAuras(self, event, unit)
 			if(button.icon) then button.icon:SetTexture() end
 			if(button.overlay) then button.overlay:Hide() end
 			if(button.stealable) then button.stealable:Hide() end
-			if(button.count) then button.count:SetText() end
+			if(button.count) then button.count:SetText('') end
 
 			button:EnableMouse(false)
 			button:Show()

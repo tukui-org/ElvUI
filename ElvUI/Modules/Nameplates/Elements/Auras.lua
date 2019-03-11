@@ -116,10 +116,6 @@ end
 
 function NP:Construct_AuraIcon(button)
 	if not button then return end
-
-	button.text = button.cd:CreateFontString(nil, 'OVERLAY')
-	button.text:SetJustifyH('CENTER')
-
 	button:SetTemplate()
 
 	button.cd:SetReverse(true)
@@ -127,8 +123,6 @@ function NP:Construct_AuraIcon(button)
 
 	button.cd.CooldownFontSize = 12
 	button.cd.CooldownOverride = 'nameplates'
-	button.cd.CooldownPreHook = function(cd) NP:UpdateCooldownTextPosition(cd) end
-
 	button.cd.CooldownSettings = {
 		['font'] = LSM:Fetch('font', NP.db.font),
 		['fontSize'] = NP.db.fontSize,
@@ -244,17 +238,15 @@ function NP:PostUpdateAura(unit, button)
 	end
 
 	local parent = button:GetParent()
-	local db = NP.db.units[parent.__owner.frameType]
-	local parentType = parent.type
+	local db = parent and NP.db.units[parent.__owner.frameType] and NP.db.units[parent.__owner.frameType][parent.type]
+	if db then
+		button:Size(db.size, db.size)
+		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 
-	if db and db[parentType] then
-		button:Size(db[parentType].size, db[parentType].size)
-		button.count:SetFont(LSM:Fetch('font', db[parentType].countFont), db[parentType].countFontSize, db[parentType].countFontOutline)
-	end
-
-	if button:IsShown() and button.cd then
-		NP:UpdateCooldownTextPosition(button.cd, db and db[parentType])
-		NP:UpdateCooldownSettings(button.cd, db and db[parentType])
+		if button.cd then
+			NP:UpdateCooldownTextPosition(button.cd, db)
+			NP:UpdateCooldownSettings(button.cd, db)
+		end
 	end
 end
 

@@ -276,6 +276,18 @@ E.Options.args.tooltip = {
 					name = COMBAT,
 					desc = L["Hide tooltip while in combat."],
 				},
+				combatOverride = {
+					order = 5,
+					type = 'select',
+					name = L["Combat Override Key"],
+					desc = L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."],
+					values = {
+						['ALL'] = L["Always Hide"],
+						['SHIFT'] = SHIFT_KEY,
+						['ALT'] = ALT_KEY,
+						['CTRL'] = CTRL_KEY
+					},
+				},
 			},
 		},
 		healthBar = {

@@ -274,7 +274,7 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 		if button.Icon then button.Icon:Hide() end
 		if not button.text then
 			button.text = button:CreateFontString(nil, 'OVERLAY')
-			button.text:SetFont(E.Media.Fonts.PTSansNarrow, 16, 'OUTLINE')
+			button.text:FontTemplate(E.Media.Fonts.PTSansNarrow, 16, 'OUTLINE')
 			button.text:SetText('x')
 			button.text:SetJustifyH('CENTER')
 			button.text:Point('CENTER', button, 'CENTER')

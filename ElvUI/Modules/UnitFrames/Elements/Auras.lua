@@ -470,7 +470,7 @@ function UF:PostUpdateAura(unit, button)
 			button.expirationSaved = nil
 			button:SetScript('OnUpdate', nil)
 			if button.text:GetFont() then
-				button.text:SetText()
+				button.text:SetText('')
 			end
 		end
 	end
@@ -488,7 +488,7 @@ function UF:UpdateAuraTimer(elapsed)
 		self:SetScript('OnUpdate', nil)
 
 		if textHasFont then
-			self.text:SetText()
+			self.text:SetText('')
 		end
 
 		return

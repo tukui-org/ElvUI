@@ -254,8 +254,10 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 end
 
 local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
-	local parent = f.IsObjectType and f:IsObjectType('Texture') and f:GetParent() or f
+	local parent = (f.IsObjectType and f:IsObjectType('Texture') and f:GetParent()) or f
 	local b = CreateFrame('Frame', nil, parent)
+	f.backdrop = b
+
 	if f.forcePixelMode or forcePixelMode then
 		b:SetOutside(f, E.mult, E.mult)
 	else
@@ -270,8 +272,6 @@ local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFr
 	else
 		b:SetFrameLevel(0)
 	end
-
-	f.backdrop = b
 end
 
 local function CreateShadow(f, size)
@@ -328,7 +328,7 @@ local function StripRegion(which, object, kill, alpha)
 	elseif which == STRIP_TEX then
 		object:SetTexture()
 	elseif which == STRIP_FONT then
-		object:SetText()
+		object:SetText('')
 	end
 end
 
@@ -493,6 +493,9 @@ while object do
 
 	object = EnumerateFrames(object)
 end
+
+--Add API to `CreateFont` objects without actually creating one
+addapi(_G.GameFontNormal)
 
 --Hacky fix for issue on 7.1 PTR where scroll frames no longer seem to inherit the methods from the "Frame" widget
 local scrollFrame = CreateFrame('ScrollFrame')

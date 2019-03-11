@@ -321,14 +321,13 @@ function E:UpdateMedia()
 	self.media.hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
 	self.media.rgbvaluecolor = {value.r, value.g, value.b}
 
-	local LeftChatPanel = _G.LeftChatPanel
-	local RightChatPanel = _G.RightChatPanel
+	local LeftChatPanel, RightChatPanel = _G.LeftChatPanel, _G.RightChatPanel
 	if LeftChatPanel and LeftChatPanel.tex and RightChatPanel and RightChatPanel.tex then
 		LeftChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameLeft)
+		RightChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameRight)
+
 		local a = E.db.general.backdropfadecolor.a or 0.5
 		LeftChatPanel.tex:SetAlpha(a)
-
-		RightChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameRight)
 		RightChatPanel.tex:SetAlpha(a)
 	end
 
@@ -482,9 +481,9 @@ end
 
 function E:UpdateBorderColors()
 	for frame in pairs(self.frames) do
-		if frame and not frame.ignoreUpdates then
+		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreBorderColors then
-				if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
+				if frame.template == 'Default' or frame.template == 'Transparent' then
 					frame:SetBackdropBorderColor(unpack(self.media.bordercolor))
 				end
 			end
@@ -494,9 +493,9 @@ function E:UpdateBorderColors()
 	end
 
 	for frame in pairs(self.unitFrameElements) do
-		if frame and not frame.ignoreUpdates then
+		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreBorderColors then
-				if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
+				if frame.template == 'Default' or frame.template == 'Transparent' then
 					frame:SetBackdropBorderColor(unpack(self.media.unitframeBorderColor))
 				end
 			end
@@ -508,9 +507,9 @@ end
 
 function E:UpdateBackdropColors()
 	for frame in pairs(self.frames) do
-		if frame then
+		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreBackdropColors then
-				if frame.template == 'Default' or frame.template == nil then
+				if frame.template == 'Default' then
 					frame:SetBackdropColor(unpack(self.media.backdropcolor))
 				elseif frame.template == 'Transparent' then
 					frame:SetBackdropColor(unpack(self.media.backdropfadecolor))
@@ -522,9 +521,9 @@ function E:UpdateBackdropColors()
 	end
 
 	for frame in pairs(self.unitFrameElements) do
-		if frame then
+		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreBackdropColors then
-				if frame.template == 'Default' or frame.template == nil then
+				if frame.template == 'Default' then
 					frame:SetBackdropColor(unpack(self.media.backdropcolor))
 				elseif frame.template == 'Transparent' then
 					frame:SetBackdropColor(unpack(self.media.backdropfadecolor))
@@ -1030,13 +1029,18 @@ f:SetScript('OnUpdate', function(self, elapsed)
 	end
 end)
 
-function E:UpdateStart()
-	E:UpdateDB()
+function E:UpdateStart(skipCallback, skipUpdateDB)
+	if not skipUpdateDB then
+		E:UpdateDB()
+	end
+
 	E:UpdateMoverPositions()
 	E:UpdateMediaItems()
 	E:UpdateUnitFrames()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
 function E:UpdateDB()
@@ -1081,27 +1085,29 @@ function E:UpdateUnitFrames()
 	--Not part of staggered update
 end
 
-function E:UpdateMediaItems()
+function E:UpdateMediaItems(skipCallback)
 	E:UpdateMedia()
-	E:UpdateBorderColors()
-	E:UpdateBackdropColors()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateLayout()
+function E:UpdateLayout(skipCallback)
 	local Layout = E:GetModule('Layout')
 	Layout:ToggleChatPanels()
 	Layout:BottomPanelVisibility()
 	Layout:TopPanelVisibility()
 	Layout:SetDataPanelStyle()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateActionBars()
+function E:UpdateActionBars(skipCallback)
 	local ActionBars = E:GetModule('ActionBars')
 	ActionBars:Extra_SetAlpha()
 	ActionBars:Extra_SetScale()
@@ -1110,15 +1116,19 @@ function E:UpdateActionBars()
 	ActionBars:UpdateMicroPositionDimensions()
 	ActionBars:UpdatePetCooldownSettings()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateNamePlates()
+function E:UpdateNamePlates(skipCallback)
 	local NamePlates = E:GetModule('NamePlates')
 	NamePlates:ConfigureAll()
 	NamePlates:StyleFilterInitializeAllFilters()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
 function E:UpdateTooltip()
@@ -1126,7 +1136,7 @@ function E:UpdateTooltip()
 	--local Tooltip = E:GetModule('Tooltip')
 end
 
-function E:UpdateBags()
+function E:UpdateBags(skipCallback)
 	local Bags = E:GetModule('Bags')
 	Bags:Layout()
 	Bags:Layout(true)
@@ -1134,19 +1144,23 @@ function E:UpdateBags()
 	Bags:UpdateCountDisplay()
 	Bags:UpdateItemLevelDisplay()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateChat()
+function E:UpdateChat(skipCallback)
 	local Chat = E:GetModule('Chat')
 	Chat:PositionChat(true)
 	Chat:SetupChat()
 	Chat:UpdateAnchors()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateDataBars()
+function E:UpdateDataBars(skipCallback)
 	local DataBars = E:GetModule('DataBars')
 	DataBars:EnableDisable_AzeriteBar()
 	DataBars:EnableDisable_ExperienceBar()
@@ -1154,32 +1168,40 @@ function E:UpdateDataBars()
 	DataBars:EnableDisable_ReputationBar()
 	DataBars:UpdateDataBarDimensions()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateDataTexts()
+function E:UpdateDataTexts(skipCallback)
 	local DataTexts = E:GetModule('DataTexts')
 	DataTexts:LoadDataTexts()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateMinimap()
+function E:UpdateMinimap(skipCallback)
 	local Minimap = E:GetModule('Minimap')
 	Minimap:UpdateSettings()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateAuras()
+function E:UpdateAuras(skipCallback)
 	local Auras = E:GetModule('Auras')
 	if ElvUIPlayerBuffs then Auras:UpdateHeader(ElvUIPlayerBuffs) end
 	if ElvUIPlayerDebuffs then Auras:UpdateHeader(ElvUIPlayerDebuffs) end
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateMisc()
+function E:UpdateMisc(skipCallback)
 	E:GetModule('AFK'):Toggle()
 	E:GetModule('Blizzard'):SetObjectiveFrameHeight()
 
@@ -1191,7 +1213,9 @@ function E:UpdateMisc()
 	Totems:PositionAndSize()
 	Totems:ToggleEnable()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
 function E:UpdateEnd()
@@ -1203,8 +1227,8 @@ function E:UpdateEnd()
 
 	E:SetMoversClampedToScreen(true) -- Go back to using clamp after resizing has taken place.
 
-	if (E.ignoreInstall ~= true) and (E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83)) then
-		E.ignoreInstall = nil
+	if (E.installSetup ~= true) and (E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83)) then
+		E.installSetup = nil
 		E:Install()
 	end
 
@@ -1235,18 +1259,17 @@ end
 
 E:RegisterCallback("StaggeredUpdate", CallStaggeredUpdate)
 
-function E:StaggeredUpdateAll(event, ignoreInstall)
+function E:StaggeredUpdateAll(event, installSetup)
 	if not self.initialized then
 		C_Timer_After(1, function()
-			E:StaggeredUpdateAll(event, ignoreInstall)
+			E:StaggeredUpdateAll(event, installSetup)
 		end)
 
 		return
 	end
 
-	self.ignoreInstall = ignoreInstall
-
-	if event and (event == "OnProfileChanged" or event == "OnProfileCopied") and not self.staggerUpdateRunning then
+	self.installSetup = installSetup
+	if (installSetup or event and event == "OnProfileChanged" or event == "OnProfileCopied") and not self.staggerUpdateRunning then
 		tinsert(staggerTable, "UpdateLayout")
 		if E.private.actionbar.enable then
 			tinsert(staggerTable, "UpdateActionBars")
@@ -1282,12 +1305,8 @@ end
 
 function E:UpdateAll(doUpdates)
 	if doUpdates then
-		-- this block should mimic `E:UpdateStart`
-		self:UpdateDB()
-		self:UpdateMoverPositions()
-		self:UpdateMediaItems()
-		self:UpdateUnitFrames()
-		--
+		E:UpdateStart(true)
+
 		self:UpdateLayout()
 		self:UpdateTooltip()
 		self:UpdateActionBars()

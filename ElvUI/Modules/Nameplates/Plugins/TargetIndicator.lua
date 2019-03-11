@@ -128,21 +128,21 @@ local function Enable(self)
 		if element.TopIndicator then
 			if element.TopIndicator:IsObjectType('Texture') and not element.TopIndicator:GetTexture() then
 				element.TopIndicator:SetTexture(E.Media.Textures.ArrowUp)
-				element.TopIndicator:SetRotation(0)
+				element.TopIndicator:SetRotation(3.14)
 			end
 		end
 
 		if element.LeftIndicator then
 			if element.LeftIndicator:IsObjectType('Texture') and not element.LeftIndicator:GetTexture() then
 				element.LeftIndicator:SetTexture(E.Media.Textures.ArrowUp)
-				element.LeftIndicator:SetRotation(-1.57)
+				element.LeftIndicator:SetRotation(1.57)
 			end
 		end
 
 		if element.RightIndicator then
 			if element.RightIndicator:IsObjectType('Texture') and not element.RightIndicator:GetTexture() then
 				element.RightIndicator:SetTexture(E.Media.Textures.ArrowUp)
-				element.RightIndicator:SetRotation(1.57)
+				element.RightIndicator:SetRotation(-1.57)
 			end
 		end
 

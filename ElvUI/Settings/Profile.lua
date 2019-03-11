@@ -317,12 +317,13 @@ P.nameplates = {
 	cutawayHealthFadeOutTime = 0.6,
 	cutawayHealthLength = 0.3,
 	classbar = {
-		attachTo = 'TARGET',
+		attachTo = 'PLAYER',
 		enable = true,
 		height = 7,
 		sortDirection = 'NONE',
 		position = 'ABOVE',
 		width = 130,
+		yOffset = 11,
 	},
 	clickableWidth = 150,
 	clickableHeight = 30,
@@ -335,6 +336,7 @@ P.nameplates = {
 		glowColor = {r = 1, g = 1, b = 1, a = 1},
 		castColor = {r = 1, g = 0.81, b = 0},
 		castNoInterruptColor = {r = 0.78, g = 0.25, b = 0.25},
+		castbarDesaturate = true,
 		reactions = {
 			tapped = {r = 0.6, g = 0.6, b = 0.6},
 			good = {r = .29,  g = .68, b = .30},
@@ -490,7 +492,7 @@ P.nameplates = {
 				width = 150,
 			},
 			name = {
-				enable = true,
+				enable = false,
 				format = '[name]',
 				position = 'TOPLEFT',
 				xOffset = 0,
@@ -500,7 +502,7 @@ P.nameplates = {
 				fontSize = 11,
 			},
 			level = {
-				enable = true,
+				enable = false,
 				format = '[difficultycolor][level]',
 				position = 'TOPRIGHT',
 				xOffset = 0,
@@ -537,12 +539,19 @@ P.nameplates = {
 				xOffset = 0,
 				yOffset = 0,
 			},
+			pvpclassificationindicator = {
+				enable = false,
+				position = 'LEFT',
+				size = 36,
+				xOffset = 0,
+				yOffset = 0,
+			},
 			raidTargetIndicator = {
 				enable = true,
 				size = 24,
-				position = 'TOP',
-				xOffset = 0,
-				yOffset = 4,
+				position = 'LEFT',
+				xOffset = -4,
+				yOffset = 0,
 			},
 			castbar = {
 				enable = true,
@@ -722,12 +731,19 @@ P.nameplates = {
 				xOffset = 0,
 				yOffset = 0,
 			},
+			pvpclassificationindicator = {
+				enable = false,
+				position = 'LEFT',
+				size = 36,
+				xOffset = 0,
+				yOffset = 0,
+			},
 			raidTargetIndicator = {
 				enable = true,
 				size = 24,
-				position = 'TOP',
-				xOffset = 0,
-				yOffset = 4,
+				position = 'LEFT',
+				xOffset = -4,
+				yOffset = 0,
 			},
 			castbar = {
 				enable = true,
@@ -907,12 +923,19 @@ P.nameplates = {
 				xOffset = 0,
 				yOffset = 0,
 			},
+			pvpclassificationindicator = {
+				enable = false,
+				position = 'LEFT',
+				size = 36,
+				xOffset = 0,
+				yOffset = 0,
+			},
 			raidTargetIndicator = {
 				enable = true,
 				size = 24,
-				position = 'TOP',
-				xOffset = 0,
-				yOffset = 4,
+				position = 'LEFT',
+				xOffset = -4,
+				yOffset = 0,
 			},
 			castbar = {
 				enable = true,
@@ -1052,7 +1075,7 @@ P.nameplates = {
 			},
 			level = {
 				enable = true,
-				format = '[difficultycolor][level]',
+				format = '[difficultycolor][level][shortclassification]',
 				position = 'TOPRIGHT',
 				xOffset = 0,
 				yOffset = -7,
@@ -1189,9 +1212,9 @@ P.nameplates = {
 			raidTargetIndicator = {
 				enable = true,
 				size = 24,
-				position = 'TOP',
-				xOffset = 0,
-				yOffset = 4,
+				position = 'LEFT',
+				xOffset = -4,
+				yOffset = 0,
 			},
 			pvpindicator = {
 				enable = false,
@@ -1241,7 +1264,7 @@ P.nameplates = {
 			},
 			level = {
 				enable = true,
-				format = '[difficultycolor][level]',
+				format = '[difficultycolor][level][shortclassification]',
 				position = 'TOPRIGHT',
 				xOffset = 0,
 				yOffset = -7,
@@ -1272,9 +1295,9 @@ P.nameplates = {
 			raidTargetIndicator = {
 				enable = true,
 				size = 24,
-				position = 'TOP',
-				xOffset = 0,
-				yOffset = 4,
+				position = 'LEFT',
+				xOffset = -4,
+				yOffset = 0,
 			},
 			castbar = {
 				enable = true,
@@ -1374,7 +1397,7 @@ P.nameplates = {
 				},
 			},
 			eliteIcon = {
-				enable = true,
+				enable = false,
 				size = 20,
 				position = 'RIGHT',
 				xOffset = 15,

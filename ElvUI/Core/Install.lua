@@ -2,6 +2,7 @@ local E, L, V, P, G =unpack(select(2, ...)); --Import: Engine, Locales, PrivateD
 
 --Lua functions
 local _G = _G
+local gsub = gsub
 local format = format
 local ipairs = ipairs
 local tinsert = tinsert
@@ -35,9 +36,9 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CURRENT_PAGE = 0
 local MAX_PAGE = 8
 
-local function SetupChat()
-	_G.InstallStepComplete.message = L["Chat Set"]
-	_G.InstallStepComplete:Show()
+local myRealm = gsub(E.myrealm,'[%s%-]','')
+local myName = E.myname..'-'..myRealm
+local function SetupChat(noDisplayMsg)
 	FCF_ResetChatWindows() -- Monitor this
 	FCF_SetLocked(_G.ChatFrame1, 1)
 	FCF_DockFrame(_G.ChatFrame2)
@@ -119,12 +120,17 @@ local function SetupChat()
 		end
 	end
 
-	if E.myname == "Elvz" then
+	if myName == "Elvz-Kil'jaeden" or myName == "Illidelv-Area52" or myName == "Elv-Spirestone" then
 		SetCVar("scriptErrors", 1)
+	end
+
+	if _G.InstallStepComplete and not noDisplayMsg then
+		_G.InstallStepComplete.message = L["Chat Set"]
+		_G.InstallStepComplete:Show()
 	end
 end
 
-local function SetupCVars()
+local function SetupCVars(noDisplayMsg)
 	SetCVar("statusTextDisplay", "BOTH")
 	SetCVar("ShowClassColorInNameplate", 1)
 	SetCVar("screenshotQuality", 10)
@@ -134,9 +140,9 @@ local function SetupCVars()
 	SetCVar("showTutorials", 0)
 	SetCVar("UberTooltips", 1)
 	SetCVar("threatWarning", 3)
-	SetCVar('alwaysShowActionBars', 1)
-	SetCVar('lockActionBars', 1)
-	SetCVar('SpamFilter', 0)
+	SetCVar("alwaysShowActionBars", 1)
+	SetCVar("lockActionBars", 1)
+	SetCVar("SpamFilter", 0)
 	SetCVar("nameplateShowSelf", 0)
 	SetCVar("cameraDistanceMaxZoomFactor", 2.6)
 	SetCVar("nameplateShowFriendlyNPCs", 1)
@@ -145,8 +151,10 @@ local function SetupCVars()
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
 
-	_G.InstallStepComplete.message = L["CVars Set"]
-	_G.InstallStepComplete:Show()
+	if _G.InstallStepComplete and not noDisplayMsg then
+		_G.InstallStepComplete.message = L["CVars Set"]
+		_G.InstallStepComplete:Show()
+	end
 end
 
 function E:GetColor(r, g, b, a)
@@ -154,8 +162,9 @@ function E:GetColor(r, g, b, a)
 end
 
 function E:SetupTheme(theme, noDisplayMsg)
-	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 	E.private.theme = theme
+
+	local classColor
 
 	--Set colors
 	if theme == "classic" then
@@ -169,6 +178,8 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.castColor = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.castClassColor = false
 	elseif theme == "class" then
+		classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+
 		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
@@ -195,27 +206,27 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.general.valuecolor = E:GetColor(254/255, 123/255, 44/255)
 	end
 
-	if not noDisplayMsg then
-		E:StaggeredUpdateAll(nil, true)
-	end
+	E:UpdateStart(true, true)
 
-	if _G.InstallStatus and _G.InstallStepComplete and not noDisplayMsg then
+	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["Theme Set"]
 		_G.InstallStepComplete:Show()
 	end
 end
 
 
-function E:SetupLayout(layout, noDataReset)
-	--Unitframes
+function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 	if not noDataReset then
-		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
-	end
+		E.db.layoutSet = layout
 
-	--Shared base layout, tweaks to individual layouts will be below
-	if not noDataReset then
+		--Unitframes
+		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
+
+		--Shared base layout, tweaks to individual layouts will be below
 		E:ResetMovers('')
-		if not E.db.movers then E.db.movers = {} end
+		if not E.db.movers then
+			E.db.movers = {}
+		end
 
 		--ActionBars
 		E.db.actionbar.backdropSpacingConverted = true
@@ -426,48 +437,38 @@ function E:SetupLayout(layout, noDataReset)
 			--Raid40
 		E.db.unitframe.units.raid40.enable = false
 		E.db.unitframe.units.raid40.rdebuffs.font = "PT Sans Narrow"
-	end
 
-	--[[
-	--	Layout Tweaks will be handled below.
-	--	These are changes that deviate from the shared base layout
-	--]]
+		--[[
+		--	Layout Tweaks will be handled below.
+		--	These are changes that deviate from the shared base layout
+		--]]
 
-	--Caster Layout
-	if layout == "dpsCaster" and not noDataReset then
-		E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,243"
-		E.db.movers.ElvUF_TargetCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,97"
-	end
-
-	--Healer Layout
-	if layout == "healer" and not noDataReset then
-		E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,243"
-		E.db.movers.ElvUF_TargetCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,97"
-		E.db.movers.ElvUF_RaidMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,202,373"
-		E.db.movers.LootFrameMover = "TOPLEFT,ElvUIParent,TOPLEFT,250,-104"
-		E.db.movers.ShiftAB = "TOPLEFT,ElvUIParent,BOTTOMLEFT,4,273"
-		E.db.movers.VOICECHAT = "TOPLEFT,ElvUIParent,TOPLEFT,250,-82"
-		E.db.unitframe.units.party.enable = false
-		E.db.unitframe.units.party.health.frequentUpdates = true
-		E.db.unitframe.units.raid.visibility = "[nogroup] hide;show"
-		E.db.unitframe.units.raid40.health.frequentUpdates = true
-	end
-
-	if not noDataReset and _G.InstallStepComplete then
-		_G.InstallStepComplete.message = L["Layout Set"]
-		_G.InstallStepComplete:Show()
-	end
-
-	E.db.layoutSet = layout
-
-	if not noDataReset and E.private.theme then
-		E:SetupTheme(E.private.theme, true)
+		if layout == "dpsCaster" then
+			E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,243"
+			E.db.movers.ElvUF_TargetCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,97"
+		elseif layout == "healer" then
+			E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,243"
+			E.db.movers.ElvUF_TargetCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,97"
+			E.db.movers.ElvUF_RaidMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,202,373"
+			E.db.movers.LootFrameMover = "TOPLEFT,ElvUIParent,TOPLEFT,250,-104"
+			E.db.movers.ShiftAB = "TOPLEFT,ElvUIParent,BOTTOMLEFT,4,273"
+			E.db.movers.VOICECHAT = "TOPLEFT,ElvUIParent,TOPLEFT,250,-82"
+			E.db.unitframe.units.party.enable = false
+			E.db.unitframe.units.party.health.frequentUpdates = true
+			E.db.unitframe.units.raid.visibility = "[nogroup] hide;show"
+			E.db.unitframe.units.raid40.health.frequentUpdates = true
+		end
 	end
 
 	E:StaggeredUpdateAll(nil, true)
+
+	if _G.InstallStepComplete and not noDisplayMsg then
+		_G.InstallStepComplete.message = L["Layout Set"]
+		_G.InstallStepComplete:Show()
+	end
 end
 
-local function SetupAuras(style)
+local function SetupAuras(style, noDisplayMsg)
 	local UF = E:GetModule('UnitFrames')
 
 	local frame = UF.player
@@ -518,9 +519,9 @@ local function SetupAuras(style)
 		end
 	end
 
-	if InstallStepComplete then
-		InstallStepComplete.message = L["Auras Set"]
-		InstallStepComplete:Show()
+	if _G.InstallStepComplete and not noDisplayMsg then
+		_G.InstallStepComplete.message = L["Auras Set"]
+		_G.InstallStepComplete:Show()
 	end
 end
 
@@ -535,24 +536,24 @@ local function ResetAll()
 	_G.InstallPrevButton:Disable()
 	_G.InstallOption1Button:Hide()
 	_G.InstallOption1Button:SetScript("OnClick", nil)
-	_G.InstallOption1Button:SetText()
+	_G.InstallOption1Button:SetText('')
 	_G.InstallOption2Button:Hide()
 	_G.InstallOption2Button:SetScript('OnClick', nil)
-	_G.InstallOption2Button:SetText()
+	_G.InstallOption2Button:SetText('')
 	_G.InstallOption3Button:Hide()
 	_G.InstallOption3Button:SetScript('OnClick', nil)
-	_G.InstallOption3Button:SetText()
+	_G.InstallOption3Button:SetText('')
 	_G.InstallOption4Button:Hide()
 	_G.InstallOption4Button:SetScript('OnClick', nil)
-	_G.InstallOption4Button:SetText()
+	_G.InstallOption4Button:SetText('')
 	_G.InstallSlider:Hide()
-	_G.InstallSlider.Min:SetText()
-	_G.InstallSlider.Max:SetText()
-	_G.InstallSlider.Cur:SetText()
-	ElvUIInstallFrame.SubTitle:SetText()
-	ElvUIInstallFrame.Desc1:SetText()
-	ElvUIInstallFrame.Desc2:SetText()
-	ElvUIInstallFrame.Desc3:SetText()
+	_G.InstallSlider.Min:SetText('')
+	_G.InstallSlider.Max:SetText('')
+	_G.InstallSlider.Cur:SetText('')
+	ElvUIInstallFrame.SubTitle:SetText('')
+	ElvUIInstallFrame.Desc1:SetText('')
+	ElvUIInstallFrame.Desc2:SetText('')
+	ElvUIInstallFrame.Desc3:SetText('')
 	ElvUIInstallFrame:Size(550, 400)
 end
 
@@ -771,6 +772,12 @@ function E:Install()
 		f:Point("CENTER")
 		f:SetFrameStrata('TOOLTIP')
 
+		f:SetMovable(true)
+		f:EnableMouse(true)
+		f:RegisterForDrag("LeftButton")
+		f:SetScript("OnDragStart", function(frame) frame:StartMoving() frame:SetUserPlaced(false) end)
+		f:SetScript("OnDragStop", function(frame) frame:StopMovingOrSizing() end)
+
 		f.Title = f:CreateFontString(nil, 'OVERLAY')
 		f.Title:FontTemplate(nil, 17, nil)
 		f.Title:Point("TOP", 0, -5)
@@ -838,7 +845,7 @@ function E:Install()
 		f.Option1:StripTextures()
 		f.Option1:Size(160, 30)
 		f.Option1:Point("BOTTOM", 0, 45)
-		f.Option1:SetText()
+		f.Option1:SetText('')
 		f.Option1:Hide()
 		E.Skins:HandleButton(f.Option1, true)
 
@@ -846,7 +853,7 @@ function E:Install()
 		f.Option2:StripTextures()
 		f.Option2:Size(110, 30)
 		f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45)
-		f.Option2:SetText()
+		f.Option2:SetText('')
 		f.Option2:Hide()
 		f.Option2:SetScript('OnShow', function() f.Option1:Width(110); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45) end)
 		f.Option2:SetScript('OnHide', function() f.Option1:Width(160); f.Option1:ClearAllPoints(); f.Option1:Point("BOTTOM", 0, 45) end)
@@ -856,7 +863,7 @@ function E:Install()
 		f.Option3:StripTextures()
 		f.Option3:Size(100, 30)
 		f.Option3:Point('LEFT', f.Option2, 'RIGHT', 4, 0)
-		f.Option3:SetText()
+		f.Option3:SetText('')
 		f.Option3:Hide()
 		f.Option3:SetScript('OnShow', function() f.Option1:Width(100); f.Option1:ClearAllPoints(); f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0); f.Option2:Width(100); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOM', f, 'BOTTOM', 0, 45)  end)
 		f.Option3:SetScript('OnHide', function() f.Option1:Width(160); f.Option1:ClearAllPoints(); f.Option1:Point("BOTTOM", 0, 45); f.Option2:Width(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
@@ -866,7 +873,7 @@ function E:Install()
 		f.Option4:StripTextures()
 		f.Option4:Size(100, 30)
 		f.Option4:Point('LEFT', f.Option3, 'RIGHT', 4, 0)
-		f.Option4:SetText()
+		f.Option4:SetText('')
 		f.Option4:Hide()
 		f.Option4:SetScript('OnShow', function()
 			f.Option1:Width(100)

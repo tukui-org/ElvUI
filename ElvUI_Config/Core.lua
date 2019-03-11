@@ -3,8 +3,6 @@ local D = E:GetModule("Distributor")
 
 local format = format
 local sort, tinsert = sort, tinsert
-local DEFAULT_WIDTH = 890
-local DEFAULT_HEIGHT = 651
 
 local _G = _G
 E.Libs.AceGUI = _G.LibStub('AceGUI-3.0')
@@ -21,14 +19,18 @@ local UnitExists = UnitExists
 local GameTooltip_Hide = GameTooltip_Hide
 local GameFontHighlightSmall = _G.GameFontHighlightSmall
 
-E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
-E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", DEFAULT_WIDTH, DEFAULT_HEIGHT)
-
 --Function we can call on profile change to update GUI
 function E:RefreshGUI()
-	self:RefreshCustomTextsConfigs()
+	E:RefreshCustomTextsConfigs()
 	E.Libs.AceConfigRegistry:NotifyChange("ElvUI")
 end
+
+function E:GetConfigSize()
+	return 1200, 800
+end
+
+E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
+E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigSize())
 
 E.Options.args = {
 	ElvUI_Header = {
@@ -266,8 +268,8 @@ local function ExportImport_Open(mode)
 		exportButton:SetAutoWidth(true)
 		local function OnClick(self)
 			--Clear labels
-			Label1:SetText()
-			Label2:SetText()
+			Label1:SetText('')
+			Label2:SetText('')
 
 			local profileType, exportFormat = ProfileTypeDropdown:GetValue(), ExportFormatDropdown:GetValue()
 			local profileKey, profileExport = D:ExportProfile(profileType, exportFormat)
@@ -305,8 +307,8 @@ local function ExportImport_Open(mode)
 		importButton:SetAutoWidth(true)
 		importButton:SetCallback("OnClick", function()
 			--Clear labels
-			Label1:SetText()
-			Label2:SetText()
+			Label1:SetText('')
+			Label2:SetText('')
 
 			local text
 			local success = D:ImportProfile(Box:GetText())
@@ -325,8 +327,8 @@ local function ExportImport_Open(mode)
 		decodeButton:SetAutoWidth(true)
 		decodeButton:SetCallback("OnClick", function()
 			--Clear labels
-			Label1:SetText()
-			Label2:SetText()
+			Label1:SetText('')
+			Label2:SetText('')
 			local decodedText
 			local profileType, profileKey, profileData = D:Decode(Box:GetText())
 			if profileData then
@@ -341,8 +343,8 @@ local function ExportImport_Open(mode)
 		local function OnTextChanged()
 			local text = Box:GetText()
 			if text == "" then
-				Label1:SetText()
-				Label2:SetText()
+				Label1:SetText('')
+				Label2:SetText('')
 				importButton:SetDisabled(true)
 				decodeButton:SetDisabled(true)
 			elseif oldText ~= text then
@@ -356,7 +358,7 @@ local function ExportImport_Open(mode)
 				local profileType, profileKey = D:Decode(text)
 				if not profileType or (profileType and profileType == "profile" and not profileKey) then
 					Label1:SetText(L["Error decoding data. Import string may be corrupted!"])
-					Label2:SetText()
+					Label2:SetText('')
 					importButton:SetDisabled(true)
 					decodeButton:SetDisabled(true)
 				else
@@ -397,8 +399,8 @@ local function ExportImport_Open(mode)
 	end)
 
 	--Clear default text
-	Label1:SetText()
-	Label2:SetText()
+	Label1:SetText('')
+	Label2:SetText('')
 
 	--Close ElvUI Config
 	E.Libs.AceConfigDialog:Close("ElvUI")

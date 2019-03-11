@@ -77,6 +77,12 @@ end
 function E:PixelScaleChanged(event, skip)
 	E:UIScale(true) -- repopulate variables
 	E:UIScale() -- setup the scale
+
+	if E.RefreshGUI then
+		E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigSize())
+		E:RefreshGUI()
+	end
+
 	skip = skip or E.suppressScalePopup
 	if skip then return end
 
