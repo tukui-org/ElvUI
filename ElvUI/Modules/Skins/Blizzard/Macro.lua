@@ -74,7 +74,7 @@ local function LoadSkin()
 		if b then
 			b:StripTextures()
 			b:StyleButton(true)
-			b:SetTemplate("Default", true)
+			b:SetTemplate(nil, true)
 		end
 
 		if t then

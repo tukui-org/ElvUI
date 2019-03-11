@@ -418,7 +418,7 @@ function RU:Initialize()
 		f:SetDisabledTexture("")
 		f:HookScript("OnEnter", ButtonEnter)
 		f:HookScript("OnLeave", ButtonLeave)
-		f:SetTemplate("Default", true)
+		f:SetTemplate(nil, true)
 	end
 
 	--Automatically show/hide the frame if we have RaidLeader or RaidOfficer

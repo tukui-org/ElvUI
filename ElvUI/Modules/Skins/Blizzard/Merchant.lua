@@ -47,7 +47,7 @@ local function LoadSkin()
 
 		button:StripTextures()
 		button:StyleButton(false)
-		button:SetTemplate("Default", true)
+		button:SetTemplate(nil, true)
 		button:Point("TOPLEFT", item, "TOPLEFT", 4, -4)
 
 		icon:SetTexCoord(unpack(E.TexCoords))
@@ -71,7 +71,7 @@ local function LoadSkin()
 	-- Skin buyback item frame + icon
 	_G.MerchantBuyBackItemItemButton:StripTextures()
 	_G.MerchantBuyBackItemItemButton:StyleButton(false)
-	_G.MerchantBuyBackItemItemButton:SetTemplate("Default", true)
+	_G.MerchantBuyBackItemItemButton:SetTemplate(nil, true)
 
 	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.MerchantBuyBackItemItemButtonIconTexture:ClearAllPoints()

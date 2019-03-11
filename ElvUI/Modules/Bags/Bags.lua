@@ -1003,7 +1003,7 @@ function B:Layout(isBank)
 					end
 				end
 
-				f.ContainerHolder[i]:SetTemplate('Default', true)
+				f.ContainerHolder[i]:SetTemplate(nil, true)
 				f.ContainerHolder[i]:StyleButton()
 				f.ContainerHolder[i].IconBorder:SetAlpha(0)
 				f.ContainerHolder[i]:SetNormalTexture("")
@@ -1073,7 +1073,7 @@ function B:Layout(isBank)
 				if not f.Bags[bagID][slotID] then
 					f.Bags[bagID][slotID] = CreateFrame('CheckButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate');
 					f.Bags[bagID][slotID]:StyleButton();
-					f.Bags[bagID][slotID]:SetTemplate('Default', true);
+					f.Bags[bagID][slotID]:SetTemplate(nil, true);
 					f.Bags[bagID][slotID]:SetNormalTexture(nil);
 					f.Bags[bagID][slotID]:SetCheckedTexture(nil);
 
@@ -1242,7 +1242,7 @@ function B:Layout(isBank)
 				f.reagentFrame.slots[i]:SetID(i)
 
 				f.reagentFrame.slots[i]:StyleButton()
-				f.reagentFrame.slots[i]:SetTemplate('Default', true);
+				f.reagentFrame.slots[i]:SetTemplate(nil, true);
 				f.reagentFrame.slots[i]:SetNormalTexture(nil);
 
 				f.reagentFrame.slots[i].Count:ClearAllPoints();
@@ -1650,7 +1650,7 @@ function B:ContructContainerFrame(name, isBank)
 
 		f.reagentFrame.cover = CreateFrame("Button", nil, f.reagentFrame)
 		f.reagentFrame.cover:SetAllPoints(f.reagentFrame)
-		f.reagentFrame.cover:SetTemplate("Default", true)
+		f.reagentFrame.cover:SetTemplate(nil, true)
 		f.reagentFrame.cover:SetFrameLevel(f.reagentFrame:GetFrameLevel() + 10)
 
 		f.reagentFrame.cover.purchaseButton = CreateFrame("Button", nil, f.reagentFrame.cover)
@@ -2103,7 +2103,7 @@ function B:GUILDBANKFRAME_OPENED(event)
 	--[[
 		local button = CreateFrame("Button", "GuildSortButton", GuildBankFrame, "UIPanelButtonTemplate")
 		button:StripTextures()
-		button:SetTemplate("Default", true)
+		button:SetTemplate(nil, true)
 		button:Size(110, 20)
 		button:Point("RIGHT", GuildItemSearchBox, "LEFT", -4, 0)
 		button:SetText(L["Sort Tab"])

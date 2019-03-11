@@ -43,7 +43,7 @@ function UF:Configure_InfoPanel(frame, noTemplateChange)
 			if db.infoPanel.transparent then
 				frame.InfoPanel.backdrop:SetTemplate("Transparent", nil, nil, thinBorders, true)
 			else
-				frame.InfoPanel.backdrop:SetTemplate("Default", true, nil, thinBorders, true)
+				frame.InfoPanel.backdrop:SetTemplate(nil, true, nil, thinBorders, true)
 			end
 		end
 	else

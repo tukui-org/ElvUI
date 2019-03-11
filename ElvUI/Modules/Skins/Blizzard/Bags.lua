@@ -37,7 +37,7 @@ local function SkinButton(button)
 				region:SetTexture()
 			end
 		end
-		button:SetTemplate("Default", true)
+		button:SetTemplate(nil, true)
 		button:StyleButton()
 		button.IconBorder:SetAlpha(0)
 

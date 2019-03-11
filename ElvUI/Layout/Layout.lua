@@ -152,8 +152,8 @@ function LO:SetChatTabStyle()
 		_G.LeftChatTab:SetTemplate("Transparent")
 		_G.RightChatTab:SetTemplate("Transparent")
 	else
-		_G.LeftChatTab:SetTemplate("Default", true)
-		_G.RightChatTab:SetTemplate("Default", true)
+		_G.LeftChatTab:SetTemplate(nil, true)
+		_G.RightChatTab:SetTemplate(nil, true)
 	end
 end
 
@@ -177,12 +177,12 @@ function LO:SetDataPanelStyle()
 		RightChatToggleButton:SetTemplate("Transparent")
 		RightMiniPanel:SetTemplate("Transparent")
 	else
-		LeftChatDataPanel:SetTemplate("Default", true)
-		LeftChatToggleButton:SetTemplate("Default", true)
-		LeftMiniPanel:SetTemplate("Default", true)
-		RightChatDataPanel:SetTemplate("Default", true)
-		RightChatToggleButton:SetTemplate("Default", true)
-		RightMiniPanel:SetTemplate("Default", true)
+		LeftChatDataPanel:SetTemplate(nil, true)
+		LeftChatToggleButton:SetTemplate(nil, true)
+		LeftMiniPanel:SetTemplate(nil, true)
+		RightChatDataPanel:SetTemplate(nil, true)
+		RightChatToggleButton:SetTemplate(nil, true)
+		RightMiniPanel:SetTemplate(nil, true)
 	end
 end
 

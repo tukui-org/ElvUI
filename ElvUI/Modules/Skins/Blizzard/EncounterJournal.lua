@@ -169,7 +169,7 @@ end
 
 local function HandleTopTabs(tab)
 	S:HandleTab(tab, true)
-	tab:SetTemplate("Default", true)
+	tab:SetTemplate(nil, true)
 	tab:Width(tab:GetFontString():GetStringWidth() * 1.5)
 	tab:SetHitRectInsets(0, 0, 0, 0)
 end

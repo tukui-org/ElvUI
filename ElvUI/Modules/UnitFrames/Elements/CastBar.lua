@@ -73,7 +73,7 @@ function UF:Construct_Castbar(frame, moverName)
 
 	local button = CreateFrame("Frame", nil, castbar)
 	local holder = CreateFrame('Frame', nil, castbar)
-	button:SetTemplate("Default", nil, nil, self.thinBorders, true)
+	button:SetTemplate(nil, nil, nil, self.thinBorders, true)
 
 	castbar.Holder = holder
 	--these are placeholder so the mover can be created.. it will be changed.

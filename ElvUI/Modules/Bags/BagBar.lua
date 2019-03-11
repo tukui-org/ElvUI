@@ -27,7 +27,7 @@ function B:SkinBag(bag)
 	bag.IconBorder:SetAlpha(0)
 
 	bag:StripTextures()
-	bag:SetTemplate("Default", true)
+	bag:SetTemplate(nil, true)
 	bag:StyleButton(true)
 	icon:SetTexture(bag.oldTex)
 	icon:SetInside()

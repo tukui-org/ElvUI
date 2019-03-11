@@ -284,7 +284,7 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 	if useCreateBackdrop then
 		button:CreateBackdrop(nil, true)
 	elseif not noSetTemplate then
-		button:SetTemplate("Default", true)
+		button:SetTemplate(nil, true)
 	end
 
 	button:HookScript("OnEnter", S.SetModifiedBackdrop)

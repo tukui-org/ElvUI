@@ -54,7 +54,7 @@ function UF:Construct_AuraIcon(button)
 	button.text:Point('CENTER', 1, 1)
 	button.text:SetJustifyH('CENTER')
 
-	button:SetTemplate('Default', nil, nil, UF.thinBorders, true)
+	button:SetTemplate(nil, nil, nil, UF.thinBorders, true)
 
 	-- cooldown override settings
 	if not button.timerOptions then

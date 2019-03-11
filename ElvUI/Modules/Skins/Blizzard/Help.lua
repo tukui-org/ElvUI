@@ -131,7 +131,7 @@ local function LoadSkin()
 	--Hearth Stone Button
 	local HelpFrameCharacterStuckHearthstone = _G.HelpFrameCharacterStuckHearthstone
 	HelpFrameCharacterStuckHearthstone:StyleButton()
-	HelpFrameCharacterStuckHearthstone:SetTemplate("Default", true)
+	HelpFrameCharacterStuckHearthstone:SetTemplate(nil, true)
 	HelpFrameCharacterStuckHearthstone.IconTexture:SetInside()
 	HelpFrameCharacterStuckHearthstone.IconTexture:SetTexCoord(unpack(E.TexCoords))
 
