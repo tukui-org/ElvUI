@@ -3872,7 +3872,6 @@ E.Options.args.nameplate = {
 									type = "toggle",
 									name = L["Personal"],
 									set = function(info, value) E.db.nameplates.clickThrough.personal = value; NP:SetNamePlateSelfClickThrough() end,
-									disabled = function() return true end,
 								},
 								friendly = {
 									order = 2,

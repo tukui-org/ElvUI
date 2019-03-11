@@ -27,7 +27,6 @@ local GetCVar = GetCVar
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
-local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
 local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
 
@@ -244,14 +243,14 @@ function NP:PLAYER_REGEN_ENABLED()
 end
 
 function NP:SetNamePlateClickThrough()
-	--self:SetNamePlateSelfClickThrough()
+	self:SetNamePlateSelfClickThrough()
 	self:SetNamePlateFriendlyClickThrough()
 	self:SetNamePlateEnemyClickThrough()
 end
 
 function NP:SetNamePlateSelfClickThrough()
 	C_NamePlate_SetNamePlateSelfClickThrough(NP.db.clickThrough.personal)
-	self.PlayerFrame__:EnableMouse(not NP.db.clickThrough.personal)
+	_G.ElvNP_Player:EnableMouse(not NP.db.clickThrough.personal)
 end
 
 function NP:SetNamePlateFriendlyClickThrough()
