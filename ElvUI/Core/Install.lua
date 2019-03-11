@@ -772,6 +772,12 @@ function E:Install()
 		f:Point("CENTER")
 		f:SetFrameStrata('TOOLTIP')
 
+		f:SetMovable(true)
+		f:EnableMouse(true)
+		f:RegisterForDrag("LeftButton")
+		f:SetScript("OnDragStart", function(frame) frame:StartMoving() frame:SetUserPlaced(false) end)
+		f:SetScript("OnDragStop", function(frame) frame:StopMovingOrSizing() end)
+
 		f.Title = f:CreateFontString(nil, 'OVERLAY')
 		f.Title:FontTemplate(nil, 17, nil)
 		f.Title:Point("TOP", 0, -5)
