@@ -29,7 +29,7 @@ end
 function NP:Update_QuestIcons(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if db.questIcon.enable and (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') then
+	if (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') and db.questIcon.enable then
 		if not nameplate:IsElementEnabled('QuestIcons') then
 			nameplate:EnableElement('QuestIcons')
 		end
@@ -99,6 +99,15 @@ end
 
 function NP:Update_TargetIndicator(nameplate)
 	local db = NP.db.units[nameplate.frameType]
+
+	if nameplate.frameType == 'PLAYER' and nameplate:IsElementEnabled('TargetIndicator') then
+		nameplate:DisableElement('TargetIndicator')
+		return
+	end
+
+	if not nameplate:IsElementEnabled('TargetIndicator') then
+		nameplate:EnableElement('TargetIndicator')
+	end
 
 	nameplate.TargetIndicator.style = NP.db.targetGlow
 	nameplate.TargetIndicator.lowHealthThreshold = NP.db.lowHealthThreshold
