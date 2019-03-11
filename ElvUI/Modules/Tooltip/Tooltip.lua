@@ -99,8 +99,17 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 
 	if(tt:GetAnchorType() ~= "ANCHOR_NONE") then return end
 	if InCombatLockdown() and self.db.visibility.combat then
-		tt:Hide()
-		return
+		local modifier = self.db.visibility.combatOverride
+		if (not(
+				(modifier == 'SHIFT' and IsShiftKeyDown())
+				or
+				(modifier == 'CTRL' and IsControlKeyDown())
+				or
+				(modifier == 'ALT' and IsAltKeyDown())
+		)) then
+			tt:Hide()
+			return
+		end
 	end
 
 	local ownerName = tt:GetOwner() and tt:GetOwner().GetName and tt:GetOwner():GetName()
