@@ -37,6 +37,7 @@ function NP:Update_QuestIcons(nameplate)
 		if not nameplate:IsElementEnabled('QuestIcons') then
 			nameplate:EnableElement('QuestIcons')
 		end
+
 		nameplate.QuestIcons:ClearAllPoints()
 		nameplate.QuestIcons:Point('LEFT', nameplate, 'RIGHT', 4, 0)
 		nameplate.QuestIcons:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
