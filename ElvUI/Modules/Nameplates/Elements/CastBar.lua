@@ -1,9 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
+local _G = _G
 local unpack, abs = unpack, abs
+local strjoin = strjoin
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
+local GetPlayerInfoByGUID = GetPlayerInfoByGUID
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
+local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local INTERRUPTED = INTERRUPTED
 
 function NP:Castbar_CheckInterrupt(unit)
 	if (unit == 'vehicle') then
@@ -136,7 +143,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 	local _, event, _, sourceGUID, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
 
 	if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
-		local plate = C_NamePlate.GetNamePlateForUnit('target')
+		local plate = C_NamePlate_GetNamePlateForUnit('target')
 		if plate and (plate.unitFrame and plate.unitFrame.Castbar) then
 			local db = plate.unitFrame.frameType and self.db and self.db.units and self.db.units[plate.unitFrame.frameType]
 			local healthBar = (db and db.health and db.health.enable) or (plate.unitFrame.isTarget and self.db.alwaysShowTargetHealth)
@@ -146,11 +153,11 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 					if db.castbar.sourceInterruptClassColor then
 						local _, sourceClass = GetPlayerInfoByGUID(sourceGUID)
 						if sourceClass then
-							local classColor = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[sourceClass]) or RAID_CLASS_COLORS[sourceClass];
+							local classColor = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[sourceClass]) or RAID_CLASS_COLORS[sourceClass];
 							sourceClass = classColor and classColor.colorStr
 						end
 
-						plate.unitFrame.Castbar.Text:SetText(INTERRUPTED.." > "..(sourceClass and strjoin('', '|c', sourceClass, sourceName)) or sourceName)
+						plate.unitFrame.Castbar.Text:SetText(INTERRUPTED.." > "..(sourceClass and strjoin('', '|c', sourceClass, sourceName) or sourceName))
 					else
 						plate.unitFrame.Castbar.Text:SetText(INTERRUPTED.." > "..sourceName)
 					end
