@@ -41,7 +41,7 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 			elseif (status == 1) then --not tanking but threat higher than tank
 				Color = self.isTank and NP.db.colors.threat.goodTransition or NP.db.colors.threat.badTransition
 			else -- not tanking at all
-				Color = self.isTank and NP.db.colors.threat.badColor or self.offtank and NP.db.colors.threat.beingTankedByTankColor or NP.db.colors.threat.goodColor
+				Color = self.offtank and NP.db.colors.threat.beingTankedByTankColor or self.isTank and NP.db.colors.threat.badColor or NP.db.colors.threat.goodColor
 			end
 		end
 
