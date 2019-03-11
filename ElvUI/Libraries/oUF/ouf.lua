@@ -326,6 +326,8 @@ local function initObject(unit, style, styleFunc, header, ...)
 			end
 		end
 
+		activeElements[object] = {} -- styleFunc on headers break before this is set when they try to enable elements before it's set.
+
 		Private.UpdateUnits(object, objectUnit)
 
 		styleFunc(object, objectUnit, not header)
@@ -333,7 +335,6 @@ local function initObject(unit, style, styleFunc, header, ...)
 		object:HookScript('OnAttributeChanged', onAttributeChanged)
 		object:SetScript('OnShow', onShow)
 
-		activeElements[object] = {}
 		for element in next, elements do
 			object:EnableElement(element, objectUnit)
 		end
