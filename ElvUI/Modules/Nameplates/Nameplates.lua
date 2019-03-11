@@ -268,7 +268,7 @@ function NP:Update_StatusBars()
 end
 
 function NP:CheckGroup()
-	NP.IsInGroup = IsInGroup() or IsInRaid()
+	NP.IsInGroup = IsInRaid() or IsInGroup()
 end
 
 function NP:PLAYER_ENTERING_WORLD()
@@ -448,6 +448,7 @@ function NP:Initialize()
 	NP.Tooltip:SetOwner(_G.WorldFrame, 'ANCHOR_NONE')
 
 	ElvUF:Spawn('player', 'ElvNP_Player')
+	_G.ElvNP_Player.isNamePlate = true
 	_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
 	_G.ElvNP_Player:SetAttribute('*type1', 'target')
 	_G.ElvNP_Player:SetAttribute('*type2', 'togglemenu')
@@ -458,7 +459,6 @@ function NP:Initialize()
 	_G.ElvNP_Player:SetScript('OnEnter', _G.UnitFrame_OnEnter)
 	_G.ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 	_G.ElvNP_Player.frameType = 'PLAYER'
-	_G.ElvNP_Player.isNamePlate = true
 
 	ElvUF:Spawn('player', 'ElvNP_Test')
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)

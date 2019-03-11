@@ -3443,6 +3443,50 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 		}
+		group.args.questIcon = {
+			order = 226,
+			name = L["Quest Icon"],
+			type = 'group',
+			get = function(info) return E.db.nameplates.units[unit].questIcon[ info[#info] ] end,
+			set = function(info, value) E.db.nameplates.units[unit].questIcon[ info[#info] ] = value; NP:ConfigureAll() end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L["Enable"],
+				},
+				size = {
+					type = 'range',
+					order = 2,
+					name = L["Size"],
+					min = 10, max = 50, step = 1,
+				},
+				position = {
+					order = 3,
+					type = "select",
+					name = L["Icon Position"],
+					values = {
+						["LEFT"] = L["Left"],
+						["RIGHT"] = L["Right"],
+						["TOP"] = L["Top"],
+						["BOTTOM"] = L["Bottom"],
+						["CENTER"] = L["Center"],
+					},
+				},
+				xOffset = {
+					order = 4,
+					name = L["X-Offset"],
+					type = "range",
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					name = L["Y-Offset"],
+					type = "range",
+					min = -100, max = 100, step = 1,
+				},
+			},
+		}
 		if unit == "ENEMY_NPC" then
 			group.args.detection = {
 				order = 11,
@@ -3597,12 +3641,12 @@ E.Options.args.nameplate = {
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "cutawayHealth") end,
 			disabled = function() return true end, -- not E.NamePlates;
 		},
-		questIcon = {
+		filtersShortcut = {
 			order = 11,
 			type = "execute",
-			name = L["Quest Icon"],
+			name = L["Style Filter"],
 			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "questIcon") end,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "filters") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer3 = {
@@ -3653,14 +3697,6 @@ E.Options.args.nameplate = {
 			name = L["Enemy NPC Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
-		filtersShortcut = {
-			order = 19,
-			type = "execute",
-			name = L["Style Filter"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "filters") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		generalGroup = {
@@ -4269,37 +4305,6 @@ E.Options.args.nameplate = {
 							min = 0.1, max = 1, step = 0.1,
 							get = function(info) return E.db.nameplates.cutawayHealthFadeOutTime end,
 							set = function(info, value) E.db.nameplates.cutawayHealthFadeOutTime = value; end,
-						},
-					},
-				},
-				questIcon = {
-					order = 226,
-					name = L["Quest Icon"],
-					type = 'group',
-					args = {
-						enable = {
-							type = 'toggle',
-							order = 1,
-							name = L["Enable"],
-							get = function(info) return E.db.nameplates.questIcon end,
-							set = function(info, value) E.db.nameplates.questIcon = value; NP:ConfigureAll() end,
-						},
-						questIconSize = {
-							type = 'range',
-							order = 2,
-							name = L["Size"],
-							min = 10, max = 50, step = 1,
-							get = function(info) return E.db.nameplates.questIconSize end,
-							set = function(info, value) E.db.nameplates.questIconSize = value; NP:ConfigureAll() end,
-						},
-						questIconPosition = {
-							type = 'select',
-							order = 3,
-							name = L["Position"],
-							values = {
-								["LEFT"] = L["Left"],
-								["RIGHT"] = L["Right"],
-							},
 						},
 					},
 				},

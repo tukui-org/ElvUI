@@ -434,9 +434,6 @@ P.nameplates = {
 	motionType =  'STACKED',
 	nameColoredGlow = false,
 	nonTargetTransparency = 0.35,
-	questIcon = true,
-	questIconPosition = 'RIGHT',
-	questIconSize = 16,
 	showEnemyCombat = 'DISABLED',
 	showFriendlyCombat = 'DISABLED',
 	showNPCTitles = true,
@@ -1224,6 +1221,13 @@ P.nameplates = {
 				xOffset = 0,
 				yOffset = 0,
 			},
+			questIcon = {
+				enable = false,
+				position = 'RIGHT',
+				size = 36,
+				xOffset = 0,
+				yOffset = 0,
+			},
 		},
 		ENEMY_NPC = {
 			portrait = {
@@ -1409,6 +1413,13 @@ P.nameplates = {
 			pvpindicator = {
 				enable = false,
 				showBadge = true,
+				position = 'RIGHT',
+				size = 36,
+				xOffset = 0,
+				yOffset = 0,
+			},
+			questIcon = {
+				enable = false,
 				position = 'RIGHT',
 				size = 36,
 				xOffset = 0,
