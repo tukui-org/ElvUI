@@ -242,6 +242,19 @@ function AddOn:OnProfileReset()
 	self:StaticPopup_Show("RESET_PROFILE_PROMPT")
 end
 
+
+function AddOn:ResetConfigSettings()
+	AddOn.global.general.AceGUI = AddOn:CopyTable({}, AddOn.DF.global.general.AceGUI)
+end
+
+function AddOn:GetConfigPosition()
+	return AddOn.global.general.AceGUI.top, AddOn.global.general.AceGUI.left
+end
+
+function AddOn:GetConfigSize()
+	return AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height
+end
+
 local pageNodes = {}
 function AddOn:ToggleConfig(msg)
 	if InCombatLockdown() then

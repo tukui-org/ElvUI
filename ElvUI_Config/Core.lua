@@ -25,14 +25,6 @@ function E:RefreshGUI()
 	E.Libs.AceConfigRegistry:NotifyChange("ElvUI")
 end
 
-function E:GetConfigPosition()
-	return E.global.general.AceGUI.top, E.global.general.AceGUI.left
-end
-
-function E:GetConfigSize()
-	return E.global.general.AceGUI.width, E.global.general.AceGUI.height
-end
-
 E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
 E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigSize())
 
