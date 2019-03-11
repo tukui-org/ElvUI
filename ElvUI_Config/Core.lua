@@ -66,11 +66,11 @@ E.Options.args = {
 		desc = L["Reset all frames to their original positions."],
 		func = function() E:ResetUI() end,
 	},
-	Reposition = {
+	RepositionConfig = {
 		order = 6,
 		type = "execute",
-		name = L["Reposition"],
-		customWidth = 100,
+		name = L["Reposition Config"],
+		customWidth = 150,
 		func = function()
 			if E.GUIFrame then
 				local status = E.GUIFrame.obj and E.GUIFrame.obj.status
