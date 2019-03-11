@@ -3253,18 +3253,18 @@ local function GetUnitSettings(unit, name)
 	}
 
 	if unit == "PLAYER" then
-		group.args.enable = {
-			order = -7,
-			name = L["Enable"],
-			type = "toggle",
-		}
 		group.args.general = {
 			order = 0,
 			type = "group",
 			name = L["General"],
 			args = {
-				useStaticPosition = {
+				enable = {
 					order = 1,
+					name = L["Enable"],
+					type = "toggle",
+				},
+				useStaticPosition = {
+					order = 2,
 					type = "toggle",
 					name = L["Use Static Position"],
 					desc = L["When enabled the nameplate will stay visible in a locked position."],
