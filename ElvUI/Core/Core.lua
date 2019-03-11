@@ -481,9 +481,9 @@ end
 
 function E:UpdateBorderColors()
 	for frame in pairs(self.frames) do
-		if frame and not frame.ignoreUpdates then
+		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreBorderColors then
-				if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
+				if frame.template == 'Default' or frame.template == 'Transparent' then
 					frame:SetBackdropBorderColor(unpack(self.media.bordercolor))
 				end
 			end
@@ -493,9 +493,9 @@ function E:UpdateBorderColors()
 	end
 
 	for frame in pairs(self.unitFrameElements) do
-		if frame and not frame.ignoreUpdates then
+		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreBorderColors then
-				if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
+				if frame.template == 'Default' or frame.template == 'Transparent' then
 					frame:SetBackdropBorderColor(unpack(self.media.unitframeBorderColor))
 				end
 			end
@@ -507,9 +507,9 @@ end
 
 function E:UpdateBackdropColors()
 	for frame in pairs(self.frames) do
-		if frame then
+		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreBackdropColors then
-				if frame.template == 'Default' or frame.template == nil then
+				if frame.template == 'Default' then
 					frame:SetBackdropColor(unpack(self.media.backdropcolor))
 				elseif frame.template == 'Transparent' then
 					frame:SetBackdropColor(unpack(self.media.backdropfadecolor))
@@ -521,9 +521,9 @@ function E:UpdateBackdropColors()
 	end
 
 	for frame in pairs(self.unitFrameElements) do
-		if frame then
+		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreBackdropColors then
-				if frame.template == 'Default' or frame.template == nil then
+				if frame.template == 'Default' then
 					frame:SetBackdropColor(unpack(self.media.backdropcolor))
 				elseif frame.template == 'Transparent' then
 					frame:SetBackdropColor(unpack(self.media.backdropfadecolor))
