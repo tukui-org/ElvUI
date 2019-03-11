@@ -47,7 +47,6 @@ function UF:Configure_ClassBar(frame, cur)
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
 
 	local color = self.db.colors.classResources.bgColor
-	bars.backdrop.ignoreUpdates = true
 	bars.backdrop:SetBackdropColor(color.r, color.g, color.b)
 
 	color = E.db.unitframe.colors.borderColor
@@ -82,7 +81,6 @@ function UF:Configure_ClassBar(frame, cur)
 			bars[i].backdrop:Hide()
 
 			if i <= frame.MAX_CLASS_BAR then
-				bars[i].backdrop.ignoreUpdates = true
 				bars[i].backdrop:SetBackdropColor(color.r, color.g, color.b)
 
 				color = E.db.unitframe.colors.borderColor
