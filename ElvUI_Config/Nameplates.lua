@@ -3998,6 +3998,14 @@ E.Options.args.nameplate = {
 									type = 'color',
 									hasAlpha = false,
 								},
+								castbarDesaturate = {
+									type = 'toggle',
+									name = L["Desatured Icon"],
+									desc = L["Show the castbar icon desatured if a spell is not interruptible."],
+									order = 3,
+									get = function(info) return E.db.nameplates.colors[ info[#info] ] end,
+									set = function(info, value) E.db.nameplates.colors[ info[#info] ] = value; NP:ConfigureAll() end,
+								},
 							},
 						},
 						reactions = {
