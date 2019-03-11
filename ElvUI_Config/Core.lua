@@ -39,6 +39,7 @@ E.Options.args = {
 		order = 2,
 		type = 'toggle',
 		name = L["Login Message"],
+		customWidth = 150,
 		get = function(info) return E.db.general.loginmessage end,
 		set = function(info, value) E.db.general.loginmessage = value end,
 	},
@@ -46,12 +47,14 @@ E.Options.args = {
 		order = 3,
 		type = 'execute',
 		name = L["Toggle Tutorials"],
+		customWidth = 150,
 		func = function() E:Tutorials(true); E:ToggleConfig()  end,
 	},
 	Install = {
 		order = 4,
 		type = 'execute',
 		name = L["Install"],
+		customWidth = 100,
 		desc = L["Run the installation process."],
 		func = function() E:Install(); E:ToggleConfig() end,
 	},
@@ -59,6 +62,7 @@ E.Options.args = {
 		order = 5,
 		type = "execute",
 		name = L["Toggle Anchors"],
+		customWidth = 150,
 		desc = L["Unlock various elements of the UI to be repositioned."],
 		func = function() E:ToggleConfigMode() end,
 	},
@@ -66,6 +70,7 @@ E.Options.args = {
 		order = 6,
 		type = "execute",
 		name = L["Reset Anchors"],
+		customWidth = 150,
 		desc = L["Reset all frames to their original positions."],
 		func = function() E:ResetUI() end,
 	},
@@ -73,6 +78,7 @@ E.Options.args = {
 		order = 7,
 		type = "execute",
 		name = L["Reposition"],
+		customWidth = 100,
 		func = function()
 			if E.GUIFrame then
 				local status = E.GUIFrame.obj and E.GUIFrame.obj.status
