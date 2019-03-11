@@ -70,7 +70,7 @@ E.Options.args = {
 		order = 6,
 		type = "execute",
 		name = L["Reset Window"],
-		desc = L["Reset the Size and Position of this configuration window."],
+		desc = L["Reset the size and position of this frame."],
 		customWidth = 150,
 		func = function()
 			if E.GUIFrame then
