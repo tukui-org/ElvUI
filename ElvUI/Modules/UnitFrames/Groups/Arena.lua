@@ -23,6 +23,7 @@ function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specC
 
 	if show then -- during `PostUpdateArenaPreparation` this means spec class and name exist
 		frame.ArenaPrepSpec:SetText(specName.."  -  "..LOCALIZED_CLASS_NAMES_MALE[specClass])
+		frame.Health.value:Hide()
 
 		if specIcon then
 			frame.ArenaPrepIcon:SetTexture(specTexture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
@@ -32,6 +33,7 @@ function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specC
 		end
 	else -- mainly called from `PostUpdateArenaFrame` to hide them
 		frame.ArenaPrepSpec:SetText('')
+		frame.Health.value:Show()
 
 		if specIcon then
 			frame.ArenaPrepIcon.bg:Hide()
