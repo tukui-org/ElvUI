@@ -1029,13 +1029,15 @@ f:SetScript('OnUpdate', function(self, elapsed)
 	end
 end)
 
-function E:UpdateStart()
+function E:UpdateStart(skipCallback)
 	E:UpdateDB()
 	E:UpdateMoverPositions()
 	E:UpdateMediaItems()
 	E:UpdateUnitFrames()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
 function E:UpdateDB()
@@ -1080,25 +1082,29 @@ function E:UpdateUnitFrames()
 	--Not part of staggered update
 end
 
-function E:UpdateMediaItems()
+function E:UpdateMediaItems(skipCallback)
 	E:UpdateMedia()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateLayout()
+function E:UpdateLayout(skipCallback)
 	local Layout = E:GetModule('Layout')
 	Layout:ToggleChatPanels()
 	Layout:BottomPanelVisibility()
 	Layout:TopPanelVisibility()
 	Layout:SetDataPanelStyle()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateActionBars()
+function E:UpdateActionBars(skipCallback)
 	local ActionBars = E:GetModule('ActionBars')
 	ActionBars:Extra_SetAlpha()
 	ActionBars:Extra_SetScale()
@@ -1107,15 +1113,19 @@ function E:UpdateActionBars()
 	ActionBars:UpdateMicroPositionDimensions()
 	ActionBars:UpdatePetCooldownSettings()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateNamePlates()
+function E:UpdateNamePlates(skipCallback)
 	local NamePlates = E:GetModule('NamePlates')
 	NamePlates:ConfigureAll()
 	NamePlates:StyleFilterInitializeAllFilters()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
 function E:UpdateTooltip()
@@ -1123,7 +1133,7 @@ function E:UpdateTooltip()
 	--local Tooltip = E:GetModule('Tooltip')
 end
 
-function E:UpdateBags()
+function E:UpdateBags(skipCallback)
 	local Bags = E:GetModule('Bags')
 	Bags:Layout()
 	Bags:Layout(true)
@@ -1131,19 +1141,23 @@ function E:UpdateBags()
 	Bags:UpdateCountDisplay()
 	Bags:UpdateItemLevelDisplay()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateChat()
+function E:UpdateChat(skipCallback)
 	local Chat = E:GetModule('Chat')
 	Chat:PositionChat(true)
 	Chat:SetupChat()
 	Chat:UpdateAnchors()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateDataBars()
+function E:UpdateDataBars(skipCallback)
 	local DataBars = E:GetModule('DataBars')
 	DataBars:EnableDisable_AzeriteBar()
 	DataBars:EnableDisable_ExperienceBar()
@@ -1151,32 +1165,40 @@ function E:UpdateDataBars()
 	DataBars:EnableDisable_ReputationBar()
 	DataBars:UpdateDataBarDimensions()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateDataTexts()
+function E:UpdateDataTexts(skipCallback)
 	local DataTexts = E:GetModule('DataTexts')
 	DataTexts:LoadDataTexts()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateMinimap()
+function E:UpdateMinimap(skipCallback)
 	local Minimap = E:GetModule('Minimap')
 	Minimap:UpdateSettings()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateAuras()
+function E:UpdateAuras(skipCallback)
 	local Auras = E:GetModule('Auras')
 	if ElvUIPlayerBuffs then Auras:UpdateHeader(ElvUIPlayerBuffs) end
 	if ElvUIPlayerDebuffs then Auras:UpdateHeader(ElvUIPlayerDebuffs) end
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
-function E:UpdateMisc()
+function E:UpdateMisc(skipCallback)
 	E:GetModule('AFK'):Toggle()
 	E:GetModule('Blizzard'):SetObjectiveFrameHeight()
 
@@ -1188,7 +1210,9 @@ function E:UpdateMisc()
 	Totems:PositionAndSize()
 	Totems:ToggleEnable()
 
-	E.callbacks:Fire("StaggeredUpdate")
+	if not skipCallback then
+		E.callbacks:Fire("StaggeredUpdate")
+	end
 end
 
 function E:UpdateEnd()

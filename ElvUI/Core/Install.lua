@@ -196,10 +196,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 	end
 
 	if not noDisplayMsg then
-		-- keep in sync with E:UpdateMediaItems()
-		E:UpdateMedia()
-		E:UpdateFrameTemplates()
-		E:UpdateStatusBars()
+		E:UpdateMediaItems(true)
 	end
 
 	if _G.InstallStatus and _G.InstallStepComplete and not noDisplayMsg then
