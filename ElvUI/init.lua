@@ -12,6 +12,7 @@ To load the AddOn engine inside another addon add this to the top of your file:
 
 --Lua functions
 local _G = _G
+local min = min
 local format = format
 local pairs = pairs
 local strsplit = strsplit
@@ -242,6 +243,33 @@ function AddOn:OnProfileReset()
 	self:StaticPopup_Show("RESET_PROFILE_PROMPT")
 end
 
+
+function AddOn:ResetConfigSettings()
+	AddOn.global.general.AceGUI = AddOn:CopyTable({}, AddOn.DF.global.general.AceGUI)
+end
+
+function AddOn:GetConfigPosition()
+	return AddOn.global.general.AceGUI.top, AddOn.global.general.AceGUI.left
+end
+
+function AddOn:GetConfigSize()
+	return AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height
+end
+
+function AddOn:GetConfigDefaultSize()
+	local width, height = AddOn:GetConfigSize()
+	local maxWidth, maxHeight = AddOn.UIParent:GetSize()
+	width, height = min(maxWidth-50, width), min(maxHeight-50, height)
+	return width, height
+end
+
+function AddOn:ConfigStopMovingOrSizing()
+	if self.obj and self.obj.status then
+		AddOn.global.general.AceGUI.top, AddOn.global.general.AceGUI.left = AddOn:Round(self:GetTop(), 2), AddOn:Round(self:GetLeft(), 2)
+		AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height = AddOn:Round(self:GetWidth(), 2), AddOn:Round(self:GetHeight(), 2)
+	end
+end
+
 local pageNodes = {}
 function AddOn:ToggleConfig(msg)
 	if InCombatLockdown() then
@@ -322,10 +350,39 @@ function AddOn:ToggleConfig(msg)
 			mode = 'Open'
 		end
 	end
+
 	ACD[mode](ACD, AddOnName)
 
-	if pages and (mode == 'Open') then
-		ACD:SelectGroup(AddOnName, unpack(pages))
+	if mode == 'Open' then
+		ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
+		if ConfigOpen then
+			local frame = ConfigOpen.frame
+			if frame and not self.GUIFrame then
+				self.GUIFrame = frame
+				_G.ElvUIGUIFrame = self.GUIFrame
+
+				local maxWidth, maxHeight = self.UIParent:GetSize()
+				frame:SetClampedToScreen(true)
+				frame:SetMinResize(600, 500)
+				frame:SetMaxResize(maxWidth-50, maxHeight-50)
+
+				local status = frame.obj and frame.obj.status
+				if status then
+					local top, left = self:GetConfigPosition()
+					if top and left then
+						status.top, status.left = top, left
+
+						ConfigOpen:ApplyStatus()
+					end
+				end
+
+				hooksecurefunc(frame, "StopMovingOrSizing", AddOn.ConfigStopMovingOrSizing)
+			end
+		end
+
+		if pages then
+			ACD:SelectGroup(AddOnName, unpack(pages))
+		end
 	end
 
 	_G.GameTooltip:Hide() --Just in case you're mouseovered something and it closes.

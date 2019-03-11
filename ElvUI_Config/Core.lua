@@ -12,10 +12,10 @@ E.Libs.AceConfigRegistry = _G.LibStub('AceConfigRegistry-3.0-ElvUI')
 E.Libs.AceDBOptions = _G.LibStub('AceDBOptions-3.0')
 
 local UnitName = UnitName
+local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
-local UnitExists = UnitExists
 local GameTooltip_Hide = GameTooltip_Hide
 local GameFontHighlightSmall = _G.GameFontHighlightSmall
 
@@ -25,12 +25,8 @@ function E:RefreshGUI()
 	E.Libs.AceConfigRegistry:NotifyChange("ElvUI")
 end
 
-function E:GetConfigSize()
-	return 1200, 800
-end
-
 E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
-E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigSize())
+E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigDefaultSize())
 
 E.Options.args = {
 	ElvUI_Header = {
@@ -39,39 +35,64 @@ E.Options.args = {
 		name = L["Version"]..format(": |cff99ff33%s|r",E.version),
 		width = "full",
 	},
-	LoginMessage = {
-		order = 2,
-		type = 'toggle',
-		name = L["Login Message"],
-		get = function(info) return E.db.general.loginmessage end,
-		set = function(info, value) E.db.general.loginmessage = value end,
-	},
 	ToggleTutorial = {
-		order = 3,
+		order = 2,
 		type = 'execute',
 		name = L["Toggle Tutorials"],
+		customWidth = 150,
 		func = function() E:Tutorials(true); E:ToggleConfig()  end,
 	},
 	Install = {
-		order = 4,
+		order = 3,
 		type = 'execute',
 		name = L["Install"],
+		customWidth = 100,
 		desc = L["Run the installation process."],
 		func = function() E:Install(); E:ToggleConfig() end,
 	},
 	ToggleAnchors = {
-		order = 5,
+		order = 4,
 		type = "execute",
 		name = L["Toggle Anchors"],
+		customWidth = 150,
 		desc = L["Unlock various elements of the UI to be repositioned."],
 		func = function() E:ToggleConfigMode() end,
 	},
 	ResetAllMovers = {
-		order = 6,
+		order = 5,
 		type = "execute",
 		name = L["Reset Anchors"],
+		customWidth = 150,
 		desc = L["Reset all frames to their original positions."],
 		func = function() E:ResetUI() end,
+	},
+	RepositionWindow = {
+		order = 6,
+		type = "execute",
+		name = L["Reposition Window"],
+		desc = L["Reset the size and position of this frame."],
+		customWidth = 175,
+		func = function()
+			if E.GUIFrame then
+				local status = E.GUIFrame.obj and E.GUIFrame.obj.status
+				if status then
+					E:ResetConfigSettings()
+
+					status.top, status.left = E:GetConfigPosition()
+					status.width, status.height = E:GetConfigDefaultSize()
+
+					E.GUIFrame.obj:ApplyStatus()
+				end
+			end
+		end,
+	},
+	LoginMessage = {
+		order = 7,
+		type = 'toggle',
+		name = L["Login Message"],
+		customWidth = 150,
+		get = function(info) return E.db.general.loginmessage end,
+		set = function(info, value) E.db.general.loginmessage = value end,
 	},
 }
 
