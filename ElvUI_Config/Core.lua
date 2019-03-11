@@ -26,15 +26,7 @@ function E:RefreshGUI()
 end
 
 function E:GetConfigSize()
-	local defaultWidth, defaultHeight
-	if E.UIParent then
-		local height = E:Round(E.global.general.UIScale * E.UIParent:GetHeight(), 2)
-		defaultWidth, defaultHeight = (height*130)/100, (height*85)/100
-	else
-		defaultWidth, defaultHeight = 900, 650
-	end
-
-	return E:Round(defaultWidth, 2), E:Round(defaultHeight, 2)
+	return 1200, 800
 end
 
 E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
