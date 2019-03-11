@@ -92,6 +92,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		frame.backdrop:Point('TOPLEFT', 15, -2)
 		frame.backdrop:Point("BOTTOMRIGHT", -21, 0)
+		frame.backdrop:SetClipsChildren(true)
 
 		widget.label:ClearAllPoints()
 		widget.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
@@ -132,6 +133,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		frame.backdrop:Point('TOPLEFT', 0, -21)
 		frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
+		frame.backdrop:SetClipsChildren(true)
 
 		if TYPE == 'LSM30_Sound' then
 			widget.soundbutton:SetParent(frame.backdrop)
