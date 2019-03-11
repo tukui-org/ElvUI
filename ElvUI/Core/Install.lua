@@ -35,9 +35,7 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CURRENT_PAGE = 0
 local MAX_PAGE = 8
 
-local function SetupChat()
-	_G.InstallStepComplete.message = L["Chat Set"]
-	_G.InstallStepComplete:Show()
+local function SetupChat(noDisplayMsg)
 	FCF_ResetChatWindows() -- Monitor this
 	FCF_SetLocked(_G.ChatFrame1, 1)
 	FCF_DockFrame(_G.ChatFrame2)
@@ -122,9 +120,14 @@ local function SetupChat()
 	if E.myname == "Elvz" then
 		SetCVar("scriptErrors", 1)
 	end
+
+	if _G.InstallStepComplete and not noDisplayMsg then
+		_G.InstallStepComplete.message = L["Chat Set"]
+		_G.InstallStepComplete:Show()
+	end
 end
 
-local function SetupCVars()
+local function SetupCVars(noDisplayMsg)
 	SetCVar("statusTextDisplay", "BOTH")
 	SetCVar("ShowClassColorInNameplate", 1)
 	SetCVar("screenshotQuality", 10)
@@ -145,8 +148,10 @@ local function SetupCVars()
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
 
-	_G.InstallStepComplete.message = L["CVars Set"]
-	_G.InstallStepComplete:Show()
+	if _G.InstallStepComplete and not noDisplayMsg then
+		_G.InstallStepComplete.message = L["CVars Set"]
+		_G.InstallStepComplete:Show()
+	end
 end
 
 function E:GetColor(r, g, b, a)
@@ -200,14 +205,14 @@ function E:SetupTheme(theme, noDisplayMsg)
 
 	E:UpdateStart(true, true)
 
-	if _G.InstallStatus and _G.InstallStepComplete and not noDisplayMsg then
+	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["Theme Set"]
 		_G.InstallStepComplete:Show()
 	end
 end
 
 
-function E:SetupLayout(layout, noDataReset)
+function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 	if not noDataReset then
 		E.db.layoutSet = layout
 
@@ -454,13 +459,13 @@ function E:SetupLayout(layout, noDataReset)
 
 	E:StaggeredUpdateAll(nil, true)
 
-	if _G.InstallStepComplete then
+	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["Layout Set"]
 		_G.InstallStepComplete:Show()
 	end
 end
 
-local function SetupAuras(style)
+local function SetupAuras(style, noDisplayMsg)
 	local UF = E:GetModule('UnitFrames')
 
 	local frame = UF.player
@@ -511,7 +516,7 @@ local function SetupAuras(style)
 		end
 	end
 
-	if _G.InstallStepComplete then
+	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["Auras Set"]
 		_G.InstallStepComplete:Show()
 	end
