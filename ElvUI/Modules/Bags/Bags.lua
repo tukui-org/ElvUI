@@ -517,7 +517,11 @@ function B:UpdateSlot(bagID, slotID)
 	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON)
 	if showBindType or showItemLevel then
 		E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
-		E.ScanTooltip:SetBagItem(bagID, slotID)
+		if slot.GetInventorySlot then -- this fixes bank bagid -1
+			E.ScanTooltip:SetInventoryItem("player", slot:GetInventorySlot())
+		else
+			E.ScanTooltip:SetBagItem(bagID, slotID)
+		end
 		E.ScanTooltip:Show()
 	end
 
