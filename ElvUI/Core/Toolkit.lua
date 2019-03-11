@@ -208,10 +208,12 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 			insets = {left = 0, right = 0, top = 0, bottom = 0}
 		})
 
-		if t == 'Transparent' then
-			f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
-		else
-			f:SetBackdropColor(backdropr, backdropg, backdropb)
+		if not f.ignoreBackdropColors then
+			if t == 'Transparent' then
+				f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
+			else
+				f:SetBackdropColor(backdropr, backdropg, backdropb)
+			end
 		end
 
 		if not E.PixelMode and not f.forcePixelMode then
@@ -242,7 +244,10 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 			end
 		end
 	end
-	f:SetBackdropBorderColor(borderr, borderg, borderb)
+
+	if not f.ignoreBorderColors then
+		f:SetBackdropBorderColor(borderr, borderg, borderb)
+	end
 
 	if not f.ignoreUpdates then
 		if f.isUnitFrameElement then
