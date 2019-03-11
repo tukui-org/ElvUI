@@ -263,6 +263,13 @@ function AddOn:GetConfigDefaultSize()
 	return width, height
 end
 
+function AddOn:ConfigStopMovingOrSizing()
+	if self.obj and self.obj.status then
+		AddOn.global.general.AceGUI.top, AddOn.global.general.AceGUI.left = AddOn:Round(self:GetTop(), 2), AddOn:Round(self:GetLeft(), 2)
+		AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height = AddOn:Round(self:GetWidth(), 2), AddOn:Round(self:GetHeight(), 2)
+	end
+end
+
 local pageNodes = {}
 function AddOn:ToggleConfig(msg)
 	if InCombatLockdown() then
@@ -364,16 +371,12 @@ function AddOn:ToggleConfig(msg)
 					local top, left = self:GetConfigPosition()
 					if top and left then
 						status.top, status.left = top, left
+
+						ConfigOpen:ApplyStatus()
 					end
 				end
 
-				ConfigOpen:ApplyStatus()
-				hooksecurefunc(frame, "StopMovingOrSizing", function(f)
-					if f.obj and f.obj.status then
-						self.global.general.AceGUI.top, self.global.general.AceGUI.left = self:Round(f:GetTop(), 2), self:Round(f:GetLeft(), 2)
-						self.global.general.AceGUI.width, self.global.general.AceGUI.height = self:Round(f:GetWidth(), 2), self:Round(f:GetHeight(), 2)
-					end
-				end)
+				hooksecurefunc(frame, "StopMovingOrSizing", AddOn.ConfigStopMovingOrSizing)
 			end
 		end
 
