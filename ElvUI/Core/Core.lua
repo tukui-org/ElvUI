@@ -461,7 +461,7 @@ function E:UpdateFrameTemplates()
 	for frame in pairs(self.frames) do
 		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreFrameTemplates then
-				frame:SetTemplate(frame.template, frame.glossTex)
+				frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode)
 			end
 		else
 			self.frames[frame] = nil
@@ -471,7 +471,7 @@ function E:UpdateFrameTemplates()
 	for frame in pairs(self.unitFrameElements) do
 		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreFrameTemplates then
-				frame:SetTemplate(frame.template, frame.glossTex)
+				frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode, frame.isUnitFrameElement)
 			end
 		else
 			self.unitFrameElements[frame] = nil
