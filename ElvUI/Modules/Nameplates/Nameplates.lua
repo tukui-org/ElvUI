@@ -26,6 +26,10 @@ local GetCVar = GetCVar
 
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
+local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
+local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
+local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
+local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
 
 local function CopySettings(from, to)
 	for setting, value in pairs(from) do
@@ -239,6 +243,25 @@ function NP:PLAYER_REGEN_ENABLED()
 	end
 end
 
+function NP:SetNamePlateClickThrough()
+	--self:SetNamePlateSelfClickThrough()
+	self:SetNamePlateFriendlyClickThrough()
+	self:SetNamePlateEnemyClickThrough()
+end
+
+function NP:SetNamePlateSelfClickThrough()
+	C_NamePlate_SetNamePlateSelfClickThrough(NP.db.clickThrough.personal)
+	self.PlayerFrame__:EnableMouse(not NP.db.clickThrough.personal)
+end
+
+function NP:SetNamePlateFriendlyClickThrough()
+	C_NamePlate_SetNamePlateFriendlyClickThrough(NP.db.clickThrough.friendly)
+end
+
+function NP:SetNamePlateEnemyClickThrough()
+	C_NamePlate_SetNamePlateEnemyClickThrough(NP.db.clickThrough.enemy)
+end
+
 function NP:Update_StatusBars()
 	for StatusBar in pairs(NP.StatusBars) do
 		StatusBar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
@@ -294,6 +317,7 @@ function NP:ConfigureAll()
 
 	NP:StyleFilterConfigureEvents() -- Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
 	NP:Update_StatusBars()
+	NP:SetNamePlateClickThrough()
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
@@ -465,6 +489,7 @@ function NP:Initialize()
 	NP:StyleFilterInitializeAllFilters() -- Add metatable to all our StyleFilters so they can grab default values if missing
 	NP:ACTIVE_TALENT_GROUP_CHANGED()
 	NP:CheckGroup()
+	NP:SetNamePlateClickThrough()
 	NP:ConfigureAll()
 
 	E.NamePlates = NP
