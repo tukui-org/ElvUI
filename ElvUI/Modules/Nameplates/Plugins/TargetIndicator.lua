@@ -35,26 +35,26 @@ local function Update(self, event)
 	if element.Shadow then element.Shadow:Hide() end
 	if element.Spark then element.Spark:Hide() end
 
-	if UnitIsUnit(self.unit, "target") and (element.style ~= "none") then
-		if element.TopIndicator and (element.style == "style3" or element.style == "style5" or element.style == "style6") then
+	if UnitIsUnit(self.unit, 'target') and (element.style ~= 'none') then
+		if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
 			element.TopIndicator:Show()
 		end
 
-		if (element.LeftIndicator and element.RightIndicator) and (element.style == "style4" or element.style == "style7" or element.style == "style8") then
+		if (element.LeftIndicator and element.RightIndicator) and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
 			element.RightIndicator:Show()
 			element.LeftIndicator:Show()
 		end
 
-		if element.Shadow and (element.style == "style1" or element.style == "style5" or element.style == "style7") then
+		if element.Shadow and (element.style == 'style1' or element.style == 'style5' or element.style == 'style7') then
 			element.Shadow:Show()
 		end
 
-		if element.Spark and (element.style == "style2" or element.style == "style6" or element.style == "style8") then
+		if element.Spark and (element.style == 'style2' or element.style == 'style6' or element.style == 'style8') then
 			element.Spark:Show()
 		end
 	end
 
-	if element.lowHealthThreshold > 0 then
+	if not UnitIsUnit(self.unit, 'target') and element.lowHealthThreshold > 0 then
 		local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
 		local perc = (maxHealth > 0 and health/maxHealth) or 0
 		if perc <= element.lowHealthThreshold then
@@ -65,21 +65,21 @@ local function Update(self, event)
 				r, g, b = 1, 1, 0
 			end
 
-			if element.TopIndicator and (element.style == "style3" or element.style == "style5" or element.style == "style6") then
+			if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
 				element.TopIndicator:SetVertexColor(r, g, b)
 			end
 
-			if (element.LeftIndicator and element.RightIndicator) and (element.style == "style4" or element.style == "style7" or element.style == "style8") then
+			if (element.LeftIndicator and element.RightIndicator) and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
 				element.RightIndicator:SetVertexColor(r, g, b)
 				element.LeftIndicator:SetVertexColor(r, g, b)
 			end
 
-			if element.Shadow and (element.style == "style1" or element.style == "style5" or element.style == "style7") then
+			if element.Shadow and (element.style == 'style1' or element.style == 'style5' or element.style == 'style7') then
 				element.Shadow:Show()
 				element.Shadow:SetBackdropBorderColor(r, g, b)
 			end
 
-			if element.Spark and (element.style == "style2" or element.style == "style6" or element.style == "style8") then
+			if element.Spark and (element.style == 'style2' or element.style == 'style6' or element.style == 'style8') then
 				element.Spark:Show()
 				element.Spark:SetVertexColor(r, g, b)
 			end
@@ -106,7 +106,7 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		if not element.style then
-			element.style = "style1"
+			element.style = 'style1'
 		end
 
 		if not element.lowHealthThreshold then
@@ -115,7 +115,7 @@ local function Enable(self)
 
 		if element.Shadow then
 			if element.Shadow:IsObjectType('Frame') and not element.Shadow:GetBackdrop() == nil then
-				element.Shadow:SetBackdrop({edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(5)})
+				element.Shadow:SetBackdrop({edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(5)})
 			end
 		end
 
@@ -146,8 +146,8 @@ local function Enable(self)
 			end
 		end
 
-		self:RegisterEvent("PLAYER_TARGET_CHANGED", Path, true)
-		self:RegisterEvent("UNIT_HEALTH", Path)
+		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
+		self:RegisterEvent('UNIT_HEALTH', Path)
 
 		return true
 	end
@@ -162,8 +162,8 @@ local function Disable(self)
 		if element.Shadow then element.Shadow:Hide() end
 		if element.Spark then element.Spark:Hide() end
 
-		self:UnregisterEvent("PLAYER_TARGET_CHANGED", Path)
-		self:UnregisterEvent("UNIT_HEALTH", Path)
+		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
+		self:UnregisterEvent('UNIT_HEALTH', Path)
 	end
 end
 
