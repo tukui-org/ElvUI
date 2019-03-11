@@ -35,7 +35,7 @@ local function Event()
 	if inInstance and (instanceType == 'pvp' or instanceType == 'arena') then
 		local numOpps = GetNumArenaOpponentSpecs()
 
-		if instanceType == 'pvp' or (instanceType == 'arena' and numOpps == 0) then
+		if (numOpps == 0) then
 			local name, _, talentSpec
 			for i = 1, GetNumBattlefieldScores() do
 				name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
