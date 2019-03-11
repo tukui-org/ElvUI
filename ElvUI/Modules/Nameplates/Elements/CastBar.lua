@@ -20,10 +20,8 @@ function NP:Castbar_CheckInterrupt(unit)
 	if (self.notInterruptible and UnitCanAttack('player', unit)) then
 		self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, .7)
 
-		if NP.db.colors.castbarDesaturate then
-			if self.Icon then
-				self.Icon:SetDesaturated(true)
-			end
+		if self.Icon and NP.db.colors.castbarDesaturate then
+			self.Icon:SetDesaturated(true)
 		end
 	else
 		self:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b, .7)
