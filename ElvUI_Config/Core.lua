@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule("Distributor")
 
-local format = format
+local format, min = format, min
 local sort, tinsert = sort, tinsert
 
 local _G = _G
@@ -26,7 +26,13 @@ function E:RefreshGUI()
 end
 
 E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
-E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigSize())
+
+do
+	local width, height = E:GetConfigSize()
+	local maxWidth, maxHeight = E.UIParent:GetSize()
+	width, height = min(maxWidth-50, width), min(maxHeight-50, height)
+	E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", width, height)
+end
 
 E.Options.args = {
 	ElvUI_Header = {
