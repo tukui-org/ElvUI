@@ -1,1 +1,1 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">	<Script file='ReloadUI.lua'/>	<Script file='Frame.lua'/>	<Script file='Test.lua'/>	<Script file='Table.lua'/></Ui>
+<Ui xmlns="http://www.blizzard.com/wow/ui/">	<Script file='ReloadUI.lua'/>	<Script file='Frame.lua'/>	<Script file='Table.lua'/>	<Script file='Test.lua'/></Ui>
