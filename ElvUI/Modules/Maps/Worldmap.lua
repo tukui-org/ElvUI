@@ -26,13 +26,6 @@ local INVERTED_POINTS = {
 	["BOTTOM"] = "TOP",
 }
 
-local tooltips = {
-	WorldMapTooltip,
-	WorldMapCompareTooltip1,
-	WorldMapCompareTooltip2,
-	WorldMapCompareTooltip3
-}
-
 -- this will be updated later
 local smallerMapScale = 0.8
 
@@ -52,10 +45,6 @@ function M:SetLargeWorldMap()
 	WorldMapFrame:OnFrameSizeChanged()
 	if WorldMapFrame:GetMapID() then
 		WorldMapFrame.NavBar:Refresh()
-	end
-
-	for _, tt in pairs(tooltips) do
-		if _G[tt] then _G[tt]:SetFrameStrata("TOOLTIP") end
 	end
 end
 
