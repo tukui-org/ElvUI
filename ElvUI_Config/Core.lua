@@ -66,10 +66,10 @@ E.Options.args = {
 		desc = L["Reset all frames to their original positions."],
 		func = function() E:ResetUI() end,
 	},
-	ResetWindow = {
+	RepositionWindow = {
 		order = 6,
 		type = "execute",
-		name = L["Reset Window"],
+		name = L["Reposition Window"],
 		desc = L["Reset the size and position of this frame."],
 		customWidth = 150,
 		func = function()
