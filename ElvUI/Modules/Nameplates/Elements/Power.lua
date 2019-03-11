@@ -89,7 +89,7 @@ function NP:Update_Power(nameplate)
 
 	if db.power.text.enable then
 		nameplate.Power.Text:ClearAllPoints()
-		nameplate.Power.Text:Point(E.InversePoints[db.power.text.position], nameplate, db.power.text.position, db.power.text.xOffset, db.power.text.yOffset)
+		nameplate.Power.Text:Point(E.InversePoints[db.power.text.position], nameplate.Power, db.power.text.position, db.power.text.xOffset, db.power.text.yOffset)
 		nameplate.Power.Text:FontTemplate(E.LSM:Fetch('font', db.power.text.font), db.power.text.fontSize, db.power.text.fontOutline)
 		nameplate.Power.Text:Show()
 	else
