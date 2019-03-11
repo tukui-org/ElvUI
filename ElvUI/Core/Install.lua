@@ -2,6 +2,7 @@ local E, L, V, P, G =unpack(select(2, ...)); --Import: Engine, Locales, PrivateD
 
 --Lua functions
 local _G = _G
+local gsub = gsub
 local format = format
 local ipairs = ipairs
 local tinsert = tinsert
@@ -35,6 +36,8 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CURRENT_PAGE = 0
 local MAX_PAGE = 8
 
+local myRealm = gsub(E.myrealm,'[%s%-]','')
+local myName = E.myname..'-'..myRealm
 local function SetupChat(noDisplayMsg)
 	FCF_ResetChatWindows() -- Monitor this
 	FCF_SetLocked(_G.ChatFrame1, 1)
@@ -117,7 +120,7 @@ local function SetupChat(noDisplayMsg)
 		end
 	end
 
-	if E.myname == "Elvz" then
+	if myName == "Elvz-Kil'jaeden" or myName == "Illidelv-Area52" or myName == "Elv-Spirestone" then
 		SetCVar("scriptErrors", 1)
 	end
 
