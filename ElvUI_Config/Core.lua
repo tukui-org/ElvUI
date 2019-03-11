@@ -71,7 +71,7 @@ E.Options.args = {
 		type = "execute",
 		name = L["Reposition Window"],
 		desc = L["Reset the size and position of this frame."],
-		customWidth = 150,
+		customWidth = 175,
 		func = function()
 			if E.GUIFrame then
 				local status = E.GUIFrame.obj and E.GUIFrame.obj.status
