@@ -538,6 +538,13 @@ P.nameplates = {
 				xOffset = 0,
 				yOffset = 0,
 			},
+			pvpclassificationindicator = {
+				enable = false,
+				position = 'LEFT',
+				size = 36,
+				xOffset = 0,
+				yOffset = 0,
+			},
 			raidTargetIndicator = {
 				enable = true,
 				size = 24,
@@ -723,6 +730,13 @@ P.nameplates = {
 				xOffset = 0,
 				yOffset = 0,
 			},
+			pvpclassificationindicator = {
+				enable = false,
+				position = 'LEFT',
+				size = 36,
+				xOffset = 0,
+				yOffset = 0,
+			},
 			raidTargetIndicator = {
 				enable = true,
 				size = 24,
@@ -904,6 +918,13 @@ P.nameplates = {
 				enable = false,
 				showBadge = true,
 				position = 'RIGHT',
+				size = 36,
+				xOffset = 0,
+				yOffset = 0,
+			},
+			pvpclassificationindicator = {
+				enable = false,
+				position = 'LEFT',
 				size = 36,
 				xOffset = 0,
 				yOffset = 0,

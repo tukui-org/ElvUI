@@ -3147,6 +3147,7 @@ local function GetUnitSettings(unit, name)
 			pvpindicator = {
 				order = 9,
 				name = L["PvP Indicator"],
+				desc = L["Horde / Alliance / Honor Info"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].pvpindicator[ info[#info] ] end,
 				set = function(info, value) E.db.nameplates.units[unit].pvpindicator[ info[#info] ] = value; NP:ConfigureAll() end,
@@ -3200,7 +3201,7 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 			raidTargetIndicator = {
-				order = 10,
+				order = 11,
 				name = L["Raid Icon"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].raidTargetIndicator[ info[#info] ] end,
@@ -3463,6 +3464,59 @@ local function GetUnitSettings(unit, name)
 				},
 			}
 		end
+	end
+
+	if unit == "PLAYER" or unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+		group.args.pvpclassificationindicator = {
+			order = 10,
+			name = L["PvP Classification Indicator"],
+			desc = L["Cart / Flag / Orb / Assassin Bounty"],
+			type = "group",
+			get = function(info) return E.db.nameplates.units[unit].pvpclassificationindicator[ info[#info] ] end,
+			set = function(info, value) E.db.nameplates.units[unit].pvpclassificationindicator[ info[#info] ] = value; NP:ConfigureAll() end,
+			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["PvP Classification Indicator"],
+				},
+				enable = {
+					order = 1,
+					name = L["Enable"],
+					type = "toggle",
+				},
+				size = {
+					order = 2,
+					name = L["Size"],
+					type = "range",
+					min = 5, max = 100, step = 1,
+				},
+				position = {
+					order = 3,
+					type = "select",
+					name = L["Icon Position"],
+					values = {
+						["LEFT"] = L["Left"],
+						["RIGHT"] = L["Right"],
+						["TOP"] = L["Top"],
+						["BOTTOM"] = L["Bottom"],
+						["CENTER"] = L["Center"],
+					},
+				},
+				xOffset = {
+					order = 4,
+					name = L["X-Offset"],
+					type = "range",
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					name = L["Y-Offset"],
+					type = "range",
+					min = -100, max = 100, step = 1,
+				},
+			},
+		}
 	end
 
 	ORDER = ORDER + 100

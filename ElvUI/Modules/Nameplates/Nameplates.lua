@@ -109,7 +109,9 @@ function NP:StylePlate(nameplate)
 
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
 
-	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate.RaisedElement)
+	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate.RaisedElement) -- Horde / Alliance / HonorInfo
+
+	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
 
 	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate.RaisedElement)
 
@@ -143,7 +145,9 @@ function NP:UpdatePlate(nameplate)
 
 	NP:Update_Portrait(nameplate)
 
-	NP:Update_PvPIndicator(nameplate)
+	NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
+
+	NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
 
 	NP:Update_TargetIndicator(nameplate)
 
