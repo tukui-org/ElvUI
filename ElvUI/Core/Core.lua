@@ -1082,8 +1082,6 @@ end
 
 function E:UpdateMediaItems()
 	E:UpdateMedia()
-	E:UpdateBorderColors()
-	E:UpdateBackdropColors()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
 
