@@ -458,6 +458,7 @@ function NP:Initialize()
 	_G.ElvNP_Player:SetScript('OnEnter', _G.UnitFrame_OnEnter)
 	_G.ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 	_G.ElvNP_Player.frameType = 'PLAYER'
+	_G.ElvNP_Player.isNamePlate = true
 
 	ElvUF:Spawn('player', 'ElvNP_Test')
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
