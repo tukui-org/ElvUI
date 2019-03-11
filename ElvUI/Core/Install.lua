@@ -198,8 +198,6 @@ function E:SetupTheme(theme, noDisplayMsg)
 	if not noDisplayMsg then
 		-- keep in sync with E:UpdateMediaItems()
 		E:UpdateMedia()
-		E:UpdateBorderColors()
-		E:UpdateBackdropColors()
 		E:UpdateFrameTemplates()
 		E:UpdateStatusBars()
 	end
