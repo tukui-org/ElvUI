@@ -1029,8 +1029,11 @@ f:SetScript('OnUpdate', function(self, elapsed)
 	end
 end)
 
-function E:UpdateStart(skipCallback)
-	E:UpdateDB()
+function E:UpdateStart(skipCallback, skipUpdateDB)
+	if not skipUpdateDB then
+		E:UpdateDB()
+	end
+
 	E:UpdateMoverPositions()
 	E:UpdateMediaItems()
 	E:UpdateUnitFrames()

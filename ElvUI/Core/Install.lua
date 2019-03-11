@@ -196,7 +196,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 	end
 
 	if not noDisplayMsg then
-		E:UpdateStart(true)
+		E:UpdateStart(true, true)
 	end
 
 	if _G.InstallStatus and _G.InstallStepComplete and not noDisplayMsg then
