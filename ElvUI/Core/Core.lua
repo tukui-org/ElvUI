@@ -1227,8 +1227,8 @@ function E:UpdateEnd()
 
 	E:SetMoversClampedToScreen(true) -- Go back to using clamp after resizing has taken place.
 
-	if (E.ignoreInstall ~= true) and (E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83)) then
-		E.ignoreInstall = nil
+	if (E.installSetup ~= true) and (E.private.install_complete == nil or (E.private.install_complete and type(E.private.install_complete) == 'boolean') or (E.private.install_complete and type(tonumber(E.private.install_complete)) == 'number' and tonumber(E.private.install_complete) <= 3.83)) then
+		E.installSetup = nil
 		E:Install()
 	end
 
@@ -1259,18 +1259,17 @@ end
 
 E:RegisterCallback("StaggeredUpdate", CallStaggeredUpdate)
 
-function E:StaggeredUpdateAll(event, ignoreInstall)
+function E:StaggeredUpdateAll(event, installSetup)
 	if not self.initialized then
 		C_Timer_After(1, function()
-			E:StaggeredUpdateAll(event, ignoreInstall)
+			E:StaggeredUpdateAll(event, installSetup)
 		end)
 
 		return
 	end
 
-	self.ignoreInstall = ignoreInstall
-
-	if event and (event == "OnProfileChanged" or event == "OnProfileCopied") and not self.staggerUpdateRunning then
+	self.installSetup = installSetup
+	if (installSetup or event and event == "OnProfileChanged" or event == "OnProfileCopied") and not self.staggerUpdateRunning then
 		tinsert(staggerTable, "UpdateLayout")
 		if E.private.actionbar.enable then
 			tinsert(staggerTable, "UpdateActionBars")
