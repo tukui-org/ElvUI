@@ -16,8 +16,8 @@ G.general = {
 		yOffset = 0,
 	},
 	AceGUI = {
-		width = 1000,
-		height = 700,
+		width = 1024,
+		height = 768,
 		left = nil,
 		top = nil
 	},

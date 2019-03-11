@@ -12,6 +12,7 @@ To load the AddOn engine inside another addon add this to the top of your file:
 
 --Lua functions
 local _G = _G
+local min = min
 local format = format
 local pairs = pairs
 local strsplit = strsplit
@@ -253,6 +254,13 @@ end
 
 function AddOn:GetConfigSize()
 	return AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height
+end
+
+function AddOn:GetConfigDefaultSize()
+	local width, height = AddOn:GetConfigSize()
+	local maxWidth, maxHeight = AddOn.UIParent:GetSize()
+	width, height = min(maxWidth-50, width), min(maxHeight-50, height)
+	return width, height
 end
 
 local pageNodes = {}

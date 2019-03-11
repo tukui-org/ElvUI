@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule("Distributor")
 
-local format, min = format, min
+local format = format
 local sort, tinsert = sort, tinsert
 
 local _G = _G
@@ -26,13 +26,7 @@ function E:RefreshGUI()
 end
 
 E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
-
-do
-	local width, height = E:GetConfigSize()
-	local maxWidth, maxHeight = E.UIParent:GetSize()
-	width, height = min(maxWidth-50, width), min(maxHeight-50, height)
-	E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", width, height)
-end
+E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigDefaultSize())
 
 E.Options.args = {
 	ElvUI_Header = {
@@ -74,6 +68,24 @@ E.Options.args = {
 		name = L["Reset Anchors"],
 		desc = L["Reset all frames to their original positions."],
 		func = function() E:ResetUI() end,
+	},
+	Reposition = {
+		order = 7,
+		type = "execute",
+		name = L["Reposition"],
+		func = function()
+			if E.GUIFrame then
+				local status = E.GUIFrame.obj and E.GUIFrame.obj.status
+				if status then
+					E:ResetConfigSettings()
+
+					status.top, status.left = E:GetConfigPosition()
+					status.width, status.height = E:GetConfigDefaultSize()
+
+					E.GUIFrame.obj:ApplyStatus()
+				end
+			end
+		end,
 	},
 }
 
