@@ -1,10 +1,25 @@
+### Version 11.02 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+Fixed issue where opening the bank with shift would say you needed to purchase the reagent slots.  
+Fixed issue on pet bar which may have caused the "auto cast" markers to show in the wrong pet spells.  
+Fixed error in the config caused from the Nameplate Threat.  
+Fixed visual issue where the voice channel icon would show on the chat panel even though it was hidden causing it to appear out of place.  
+
+**Misc. Changes:**  
+
+
+___
 ### Version 11.01 [  ]
 
 **New Additions:**  
 
 
 **Bug Fixes:**  
-
+Fixed pet bar not displaying the spell textures correctly.  
 
 **Misc. Changes:**  
 
