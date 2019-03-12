@@ -36,7 +36,10 @@ function AB:UpdatePet(event, unit)
 		local buttonName = "PetActionButton"..i
 		local button = _G[buttonName]
 
-		button.icon:Hide()
+		button:SetAlpha(1);
+		button.icon:Hide();
+		button.isToken = isToken;
+
 		if not button.ICON then
 			button.ICON = button:CreateTexture(buttonName..'ICON')
 			button.ICON:SetTexCoord(unpack(E.TexCoords))
@@ -52,7 +55,6 @@ function AB:UpdatePet(event, unit)
 			button.tooltipName = _G[name];
 		end
 
-		button.isToken = isToken;
 		if spellID then
 			local spell = _G.Spell:CreateFromSpellID(spellID);
 			button.spellDataLoadedCancelFunc = spell:ContinueWithCancelOnSpellLoad(function()
@@ -61,15 +63,14 @@ function AB:UpdatePet(event, unit)
 		end
 
 		if isActive and name ~= "PET_ACTION_FOLLOW" then
-			--button:GetCheckedTexture():SetColorTexture(1, 1, 1)
 			button:SetChecked(true);
 
 			if IsPetAttackAction(i) then
 				PetActionButton_StartFlash(button);
 			end
 		else
-			--button:SetCheckedTexture("")
 			button:SetChecked(false);
+
 			if IsPetAttackAction(i) then
 				PetActionButton_StopFlash(button);
 			end
@@ -87,14 +88,13 @@ function AB:UpdatePet(event, unit)
 			AutoCastShine_AutoCastStop(button.AutoCastShine);
 		end
 
-		button:SetAlpha(1);
-
 		if texture then
 			if GetPetActionSlotUsable(i) then
 				SetDesaturation(button.ICON, nil);
 			else
 				SetDesaturation(button.ICON, 1);
 			end
+
 			button.ICON:Show();
 		else
 			button.ICON:Hide();
