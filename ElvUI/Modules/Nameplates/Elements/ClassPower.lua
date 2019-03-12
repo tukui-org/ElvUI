@@ -120,7 +120,7 @@ function NP:Construct_Runes(nameplate)
 end
 
 function NP:Update_ClassPower(nameplate)
-	if nameplate.frameType == 'PLAYER' then
+	if nameplate.frameType == 'PLAYER' and NP.db.classbar.enable then
 		if not nameplate:IsElementEnabled('ClassPower') then
 			nameplate:EnableElement('ClassPower')
 			nameplate.ClassPower:Show()
@@ -136,7 +136,7 @@ function NP:Update_ClassPower(nameplate)
 end
 
 function NP:Update_Runes(nameplate)
-	if nameplate.frameType == 'PLAYER' then
+	if nameplate.frameType == 'PLAYER' and NP.db.classbar.enable then
 		if not nameplate:IsElementEnabled('Runes') then
 			nameplate:EnableElement('Runes')
 			nameplate.Runes:Show()
