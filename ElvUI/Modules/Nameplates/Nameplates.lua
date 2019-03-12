@@ -341,7 +341,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		-- update player and test plate
-		if NP.db.units.PLAYER.useStaticPosition then
+		if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 			NP:UpdatePlate(_G.ElvNP_Player)
 		end
 		if _G.ElvNP_Test:IsEnabled() then
@@ -469,10 +469,6 @@ function NP:Initialize()
 	_G.ElvNP_Test.frameType = 'PLAYER'
 	NP:UpdatePlate(_G.ElvNP_Test)
 	_G.ElvNP_Test:Disable()
-
-	if not NP.db.units.PLAYER.useStaticPosition then
-		_G.ElvNP_Player:Disable()
-	end
 
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
 
