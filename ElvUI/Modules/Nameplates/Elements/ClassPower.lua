@@ -13,7 +13,7 @@ local MAX_POINTS = {
 	['MAGE'] = 4,
 	['MONK'] = 6,
 	['PALADIN'] = 5,
-	-- ['ROGUE'] = 6, this lets rogue use max_combo_points
+	['ROGUE'] = 6,
 	['WARLOCK'] = 5
 }
 
