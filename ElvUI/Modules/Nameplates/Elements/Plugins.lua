@@ -22,7 +22,7 @@ function NP:Construct_QuestIcons(nameplate)
 
 	QuestIcons.Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
 	QuestIcons.Text:Point('BOTTOMRIGHT', QuestIcons, 'BOTTOMRIGHT', 2, -0.8)
-	QuestIcons.Text:FontTemplate(E.Libs.LSM:Fetch('font', 'PT Sans Narrow'), 12, 'OUTLINE')
+	QuestIcons.Text:FontTemplate(E.Libs.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	return QuestIcons
 end
