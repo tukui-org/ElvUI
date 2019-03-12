@@ -8,12 +8,13 @@ local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 
 local MAX_POINTS = {
-	['PALADIN'] = 5,
-	['WARLOCK'] = 5,
-	['MONK'] = 6,
+	["DRUID"] = 5,
+	['DEATHKNIGHT'] = 6,
 	['MAGE'] = 4,
+	['MONK'] = 6,
+	['PALADIN'] = 5,
 	['ROGUE'] = 6,
-	['DRUID'] = 5
+	['WARLOCK'] = 5,
 }
 
 function NP:ClassPower_UpdateColor(powerType)
