@@ -531,14 +531,14 @@ function B:UpdateSlot(bagID, slotID)
 		slot:SetBackdropBorderColor(r, g, b)
 		slot.ignoreBorderColors = true
 	elseif clink then
-		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
+		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
 		slot.name = name
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
 
-		if slot.rarity then
-			r, g, b = GetItemQualityColor(slot.rarity);
+		if slot.rarity or itemRarity then
+			r, g, b = GetItemQualityColor(slot.rarity or itemRarity);
 		end
 
 		if showBindType or showItemLevel then
