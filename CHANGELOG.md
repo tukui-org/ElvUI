@@ -1,15 +1,27 @@
-### Version 11.00 [  ]
+### Version 11.01 [  ]
 
 **New Additions:**  
 
 
 **Bug Fixes:**  
-Fixed our SetTemplate function, which now should finally deal with all (maybe =)) Border issue regarding the Pixel Changes introduced with 8.1.  
 
 
 **Misc. Changes:**  
+
+
+___
+### Version 11.00 [ March 12th 2019 ]
+
+**New Additions:**  
+NamePlates were rewritten from scratch. They now utilize the oUF framework like our UnitFrames.  
+
+**Bug Fixes:**  
+Fixed our SetTemplate function, which now should finally deal with all (maybe =)) Border issue regarding the Pixel Changes introduced with 8.1.  
+
+**Misc. Changes:**  
 We now only use one Font option for the Character-/Inspect Feature.  
-Put the Voice Chat Buttons in our Left Chat. Now its more intuitive to find it. 
+Put the Voice Chat Buttons in our Left Chat. Now its more intuitive to find it.  
+Various skin tweaks/changes.  
 
 ___
 ### Version 10.92 [ March 4th 2019 ]
