@@ -62,7 +62,9 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:Size(NP.db.classbar.width + ((MAX_POINTS[E.myclass] or 5) - 1), NP.db.classbar.height)
 	local Width = NP.db.classbar.width / (MAX_POINTS[E.myclass] or 5)
 
-	for i = 1, (MAX_POINTS[E.myclass] or 5) do
+	local maxClassBarButtons = max(MAX_POINTS[E.myclass] or 0, MAX_COMBO_POINTS)
+
+	for i = 1, maxClassBarButtons do
 		ClassPower[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
 		ClassPower[i]:Size(Width, NP.db.classbar.height)
 		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
