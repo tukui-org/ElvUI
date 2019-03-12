@@ -3729,13 +3729,6 @@ E.Options.args.nameplate = {
 					type = "group",
 					name = L["General"],
 					args = {
-						statusbar = {
-							order = 0,
-							type = "select",
-							dialogControl = 'LSM30_Statusbar',
-							name = L["StatusBar Texture"],
-							values = AceGUIWidgetLSMlists.statusbar,
-						},
 						motionType = {
 							type = "select",
 							order = 1,
@@ -3757,27 +3750,8 @@ E.Options.args.nameplate = {
 								["TARGET"] = L["Only Show Target"],
 							},
 						},
-						highlight = {
-							order = 4,
-							type = "toggle",
-							name = L["Highlight on NamePlate"],
-						},
-						clampToScreen = {
-							order = 5,
-							type = "toggle",
-							name = L["Clamp Nameplates"],
-							desc = L["Clamp nameplates to the top of the screen when outside of view."],
-						},
-						lowHealthThreshold = {
-							order = 6,
-							name = L["Low Health Threshold"],
-							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
-							type = "range",
-							isPercent = true,
-							min = 0, max = 1, step = 0.01,
-						},
 						showEnemyCombat = {
-							order = 7,
+							order = 3,
 							type = "select",
 							name = L["Enemy Combat Toggle"],
 							desc = L["Control enemy nameplates toggling on or off when in combat."],
@@ -3792,7 +3766,7 @@ E.Options.args.nameplate = {
 							end,
 						},
 						showFriendlyCombat = {
-							order = 8,
+							order = 4,
 							type = "select",
 							name = L["Friendly Combat Toggle"],
 							desc = L["Control friendly nameplates toggling on or off when in combat."],
@@ -3804,14 +3778,14 @@ E.Options.args.nameplate = {
 							set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:PLAYER_REGEN_ENABLED() end,
 						},
 						loadDistance = {
-							order = 9,
+							order = 5,
 							type = "range",
 							name = L["Load Distance"],
 							desc = L["Only load nameplates for units within this range."],
 							min = 10, max = 100, step = 1,
 						},
 						clickableWidth = {
-							order = 10,
+							order = 6,
 							type = "range",
 							name = L["Clickable Width"],
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
@@ -3819,12 +3793,38 @@ E.Options.args.nameplate = {
 							set = function(info, value) E.db.nameplates.clickableWidth = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
 						clickableHeight = {
-							order = 11,
+							order = 7,
 							type = "range",
 							name = L["Clickable Height"],
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
 							min = 10, max = 75, step = 1,
 							set = function(info, value) E.db.nameplates.clickableHeight = value; E:StaticPopup_Show("CONFIG_RL") end,
+						},
+						statusbar = {
+							order = 8,
+							type = "select",
+							dialogControl = 'LSM30_Statusbar',
+							name = L["StatusBar Texture"],
+							values = AceGUIWidgetLSMlists.statusbar,
+						},
+						highlight = {
+							order = 9,
+							type = "toggle",
+							name = L["Highlight on NamePlate"],
+						},
+						clampToScreen = {
+							order = 10,
+							type = "toggle",
+							name = L["Clamp Nameplates"],
+							desc = L["Clamp nameplates to the top of the screen when outside of view."],
+						},
+						lowHealthThreshold = {
+							order = 11,
+							name = L["Low Health Threshold"],
+							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
+							type = "range",
+							isPercent = true,
+							min = 0, max = 1, step = 0.01,
 						},
 						targetedNamePlate = {
 							order = 14,
@@ -4247,28 +4247,28 @@ E.Options.args.nameplate = {
 						},
 						goodWidth = {
 							name = L["Good Width"],
-							order = 3,
+							order = 4,
 							type = 'range',
 							min = 50, max = 400, step = 1,
 							disabled = function() return true end, -- remove me
 						},
 						goodHeight = {
 							name = L["Good Height"],
-							order = 4,
+							order = 5,
 							type = 'range',
 							min = 4, max = 40, step = 1,
 							disabled = function() return true end, -- remove me
 						},
 						badWidth = {
 							name = L["Bad Width"],
-							order = 5,
+							order = 6,
 							type = 'range',
 							min = 50, max = 400, step = 1,
 							disabled = function() return true end, -- remove me
 						},
 						badHeight = {
 							name = L["Bad Height"],
-							order = 6,
+							order = 7,
 							type = 'range',
 							min = 4, max = 40, step = 1,
 							disabled = function() return true end, -- remove me
