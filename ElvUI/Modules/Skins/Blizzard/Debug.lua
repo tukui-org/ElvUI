@@ -101,12 +101,7 @@ local function LoadSkin()
 		end)
 
 		_G.EventTraceTooltip:HookScript("OnShow", function(self)
-			if not self.template then
-				self:SetTemplate("Transparent", nil, true) --ignore updates
-			else
-				self:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				self:SetBackdropColor(unpack(E.media.backdropfadecolor))
-			end
+			self:SetTemplate("Transparent", nil, true)
 		end)
 	end
 
