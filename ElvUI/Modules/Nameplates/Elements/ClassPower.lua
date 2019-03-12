@@ -59,10 +59,10 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:SetFrameLevel(5)
 	ClassPower:CreateBackdrop('Transparent')
 
-	ClassPower:Size(NP.db.classbar.width + ((MAX_POINTS[E.myclass] or 5) - 1), NP.db.classbar.height)
-	local Width = NP.db.classbar.width / (MAX_POINTS[E.myclass] or 5)
-
 	local maxClassBarButtons = max(MAX_POINTS[E.myclass] or 0, MAX_COMBO_POINTS)
+
+	ClassPower:Size(NP.db.classbar.width + (maxClassBarButtons - 1), NP.db.classbar.height)
+	local Width = NP.db.classbar.width / maxClassBarButtons
 
 	for i = 1, maxClassBarButtons do
 		ClassPower[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
@@ -138,9 +138,9 @@ function NP:Update_ClassPower(nameplate)
 
 		nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', 0, NP.db.classbar.yOffset)
 
-		local Width = NP.db.classbar.width / (MAX_POINTS[E.myclass] or 5)
-		nameplate.ClassPower:Size(NP.db.classbar.width + ((MAX_POINTS[E.myclass] or 5) - 1), NP.db.classbar.height)
 		local maxClassBarButtons = max(MAX_POINTS[E.myclass] or 0, MAX_COMBO_POINTS)
+		local Width = NP.db.classbar.width / maxClassBarButtons
+		nameplate.ClassPower:Size(NP.db.classbar.width + (maxClassBarButtons - 1), NP.db.classbar.height)
 
 		for i = 1, maxClassBarButtons do
 			nameplate.ClassPower[i]:Size(Width, NP.db.classbar.height)
