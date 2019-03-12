@@ -470,9 +470,48 @@ function NP:Initialize()
 
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
 
+	local NamePlatesCVars = {
+		['nameplateClassResourceTopInset'] = GetCVarDefault('nameplateClassResourceTopInset'),
+		['nameplateGlobalScale'] = 1,
+		['NamePlateHorizontalScale'] = 1,
+		['nameplateLargeBottomInset'] = GetCVarDefault('nameplateLargeBottomInset'),
+		['nameplateLargerScale'] = 1,
+		['nameplateLargeTopInset'] = GetCVarDefault('nameplateLargeTopInset'),
+		['nameplateMaxAlpha'] = 1,
+		['nameplateMaxAlphaDistance'] = 40,
+		['nameplateMaxScale'] = 1,
+		['nameplateMaxScaleDistance'] = 40,
+		['nameplateMinAlpha'] = 1,
+		['nameplateMinAlphaDistance'] = GetCVarDefault('nameplateMinAlphaDistance'),
+		['nameplateMinScale'] = 1,
+		['nameplateMinScaleDistance'] = 0,
+		['nameplateMotionSpeed'] = GetCVarDefault('nameplateMotionSpeed'),
+		['nameplateOccludedAlphaMult'] = GetCVarDefault('nameplateOccludedAlphaMult'),
+		['nameplateOtherAtBase'] = GetCVarDefault('nameplateOtherAtBase'),
+		['nameplateOverlapH'] = GetCVarDefault('nameplateOverlapH'),
+		['nameplateOverlapV'] = GetCVarDefault('nameplateOverlapV'),
+		['nameplateResourceOnTarget'] = GetCVarDefault('nameplateResourceOnTarget'),
+		['nameplateSelectedAlpha'] = 1,
+		['nameplateSelectedScale'] = 1,
+		['nameplateSelfAlpha'] = 1,
+		['nameplateSelfBottomInset'] = GetCVarDefault('nameplateSelfBottomInset'),
+		['nameplateSelfScale'] = 1,
+		['nameplateSelfTopInset'] = GetCVarDefault('nameplateSelfTopInset'),
+		['nameplateShowEnemies'] = 1,
+		['nameplateShowEnemyGuardians'] = 0,
+		['nameplateShowEnemyPets'] = 1,
+		['nameplateShowEnemyTotems'] = 0,
+		['nameplateShowFriendlyGuardians'] = 0,
+		['nameplateShowFriendlyNPCs'] = 1,
+		['nameplateShowFriendlyPets'] = 0,
+		['nameplateShowFriendlyTotems'] = 0,
+		['nameplateShowFriends'] = 0,
+		['nameplateTargetBehindMaxDistance'] = 40,
+	}
+
 	ElvUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit)
 		NP:NamePlateCallBack(nameplate, event, unit)
-	end)
+	end, NamePlatesCVars)
 
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
