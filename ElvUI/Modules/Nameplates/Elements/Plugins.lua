@@ -22,6 +22,7 @@ function NP:Construct_QuestIcons(nameplate)
 
 	QuestIcons.Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
 	QuestIcons.Text:Point('BOTTOMRIGHT', QuestIcons, 'BOTTOMRIGHT', 2, -0.8)
+	QuestIcons.Text:FontTemplate(E.Libs.LSM:Fetch('font', 'PT Sans Narrow'), 12, 'OUTLINE')
 
 	return QuestIcons
 end
@@ -36,8 +37,6 @@ function NP:Update_QuestIcons(nameplate)
 
 		nameplate.QuestIcons:ClearAllPoints()
 		nameplate.QuestIcons:Point(E.InversePoints[db.questIcon.position], nameplate, db.questIcon.position, db.questIcon.xOffset, db.questIcon.yOffset)
-
-		nameplate.QuestIcons.Text:FontTemplate(E.Libs.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 		nameplate.QuestIcons:Size(db.questIcon.size + 4, db.questIcon.size + 4)
 		nameplate.QuestIcons.Item:Size(db.questIcon.size, db.questIcon.size)
