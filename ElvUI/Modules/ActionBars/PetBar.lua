@@ -34,6 +34,7 @@ function AB:UpdatePet(event, unit)
 	for i=1, NUM_PET_ACTION_SLOTS, 1 do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 		local buttonName = "PetActionButton"..i
+		local autoCast = _G[buttonName.."AutoCastable"];
 		local button = _G[buttonName]
 
 		button:SetAlpha(1);
@@ -77,9 +78,9 @@ function AB:UpdatePet(event, unit)
 		end
 
 		if autoCastAllowed then
-			button.AutoCastable:Show();
+			autoCast:Show();
 		else
-			button.AutoCastable:Hide();
+			autoCast:Hide();
 		end
 
 		if autoCastEnabled then
