@@ -497,15 +497,6 @@ function NP:Initialize()
 		['nameplateSelfBottomInset'] = GetCVarDefault('nameplateSelfBottomInset'),
 		['nameplateSelfScale'] = 1,
 		['nameplateSelfTopInset'] = GetCVarDefault('nameplateSelfTopInset'),
-		['nameplateShowEnemies'] = 1,
-		['nameplateShowEnemyGuardians'] = 0,
-		['nameplateShowEnemyPets'] = 1,
-		['nameplateShowEnemyTotems'] = 0,
-		['nameplateShowFriendlyGuardians'] = 0,
-		['nameplateShowFriendlyNPCs'] = 1,
-		['nameplateShowFriendlyPets'] = 0,
-		['nameplateShowFriendlyTotems'] = 0,
-		['nameplateShowFriends'] = 0,
 		['nameplateTargetBehindMaxDistance'] = 40,
 	}
 
