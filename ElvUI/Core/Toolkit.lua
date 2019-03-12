@@ -190,7 +190,7 @@ end
 local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 	GetTemplate(t, isUnitFrameElement)
 
-	hookBlizzardBackdrop(f)
+	hookBlizzardBackdrop(f, ignoreUpdates)
 
 	f.template = t or 'Default'
 	if glossTex then f.glossTex = glossTex end
@@ -201,17 +201,25 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	if t == 'NoBackdrop' then
 		f:SetBackdrop(nil)
 	else
-		f:SetBackdrop({
+		local backdrop = {
 			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
 			edgeFile = E.media.blankTex,
 			tile = false, tileSize = 0, edgeSize = E.mult,
 			insets = {left = 0, right = 0, top = 0, bottom = 0}
-		})
+		}
 
-		if t == 'Transparent' then
-			f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
-		else
-			f:SetBackdropColor(backdropr, backdropg, backdropb)
+		f:SetBackdrop(backdrop)
+
+		if ignoreUpdates then -- call it at least once
+			customSetBackdrop(f, backdrop)
+		end
+
+		if not f.ignoreBackdropColors then
+			if t == 'Transparent' then
+				f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
+			else
+				f:SetBackdropColor(backdropr, backdropg, backdropb)
+			end
 		end
 
 		if not E.PixelMode and not f.forcePixelMode then
@@ -242,7 +250,14 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 			end
 		end
 	end
-	f:SetBackdropBorderColor(borderr, borderg, borderb)
+
+	if not f.ignoreBorderColors then
+		if ignoreUpdates then
+			customBackdropBorderColor(f, borderr, borderg, borderb)
+		else
+			f:SetBackdropBorderColor(borderr, borderg, borderb)
+		end
+	end
 
 	if not f.ignoreUpdates then
 		if f.isUnitFrameElement then
@@ -254,8 +269,10 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 end
 
 local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
-	local parent = f.IsObjectType and f:IsObjectType('Texture') and f:GetParent() or f
+	local parent = (f.IsObjectType and f:IsObjectType('Texture') and f:GetParent()) or f
 	local b = CreateFrame('Frame', nil, parent)
+	f.backdrop = b
+
 	if f.forcePixelMode or forcePixelMode then
 		b:SetOutside(f, E.mult, E.mult)
 	else
@@ -270,8 +287,6 @@ local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFr
 	else
 		b:SetFrameLevel(0)
 	end
-
-	f.backdrop = b
 end
 
 local function CreateShadow(f, size)
@@ -328,7 +343,7 @@ local function StripRegion(which, object, kill, alpha)
 	elseif which == STRIP_TEX then
 		object:SetTexture()
 	elseif which == STRIP_FONT then
-		object:SetText()
+		object:SetText('')
 	end
 end
 
@@ -436,7 +451,7 @@ do
 		CloseButton:Size(size or 16)
 		CloseButton:Point('TOPRIGHT', offset or -6, offset or -6)
 		if backdrop then
-			CloseButton:CreateBackdrop('Default', true)
+			CloseButton:CreateBackdrop(nil, true)
 		end
 
 		CloseButton.Texture = CloseButton:CreateTexture(nil, 'OVERLAY')
@@ -493,6 +508,9 @@ while object do
 
 	object = EnumerateFrames(object)
 end
+
+--Add API to `CreateFont` objects without actually creating one
+addapi(_G.GameFontNormal)
 
 --Hacky fix for issue on 7.1 PTR where scroll frames no longer seem to inherit the methods from the "Frame" widget
 local scrollFrame = CreateFrame('ScrollFrame')

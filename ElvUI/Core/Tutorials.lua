@@ -62,7 +62,7 @@ function E:SpawnTutorialFrame()
 	local S = E:GetModule('Skins')
 
 	local header = CreateFrame('Button', nil, f)
-	header:SetTemplate('Default', true)
+	header:SetTemplate(nil, true)
 	header:Width(120); header:Height(25)
 	header:Point("CENTER", f, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)

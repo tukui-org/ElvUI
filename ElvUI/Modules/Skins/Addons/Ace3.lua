@@ -10,9 +10,9 @@ local oldRegisterAsWidget, oldRegisterAsContainer
 function S:Ace3_SkinDropdownPullout()
 	if self and self.obj then
 		if self.obj.pullout and self.obj.pullout.frame then
-			self.obj.pullout.frame:SetTemplate('Default', true)
+			self.obj.pullout.frame:SetTemplate(nil, true)
 		elseif self.obj.dropdown then -- this will be LSM
-			self.obj.dropdown:SetTemplate('Default', true)
+			self.obj.dropdown:SetTemplate(nil, true)
 
 			if self.obj.dropdown.slider then
 				self.obj.dropdown.slider:SetTemplate()
@@ -92,6 +92,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		frame.backdrop:Point('TOPLEFT', 15, -2)
 		frame.backdrop:Point("BOTTOMRIGHT", -21, 0)
+		frame.backdrop:SetClipsChildren(true)
 
 		widget.label:ClearAllPoints()
 		widget.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
@@ -132,6 +133,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		frame.backdrop:Point('TOPLEFT', 0, -21)
 		frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
+		frame.backdrop:SetClipsChildren(true)
 
 		if TYPE == 'LSM30_Sound' then
 			widget.soundbutton:SetParent(frame.backdrop)
@@ -188,7 +190,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		S:HandleButton(button, nil, true)
 		button:StripTextures()
-		button:CreateBackdrop('Default', true)
+		button:CreateBackdrop(nil, true)
 		button.backdrop:SetInside()
 
 		msgframe:StripTextures()
@@ -245,9 +247,6 @@ function S:Ace3_RegisterAsContainer(widget)
 		local frame = widget.content:GetParent()
 		if TYPE == 'Frame' then
 			frame:StripTextures()
-			if not E.GUIFrame then
-				E.GUIFrame = frame
-			end
 			for i=1, frame:GetNumChildren() do
 				local child = select(i, frame:GetChildren())
 				if child:IsObjectType('Button') and child:GetText() then

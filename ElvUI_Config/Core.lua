@@ -3,8 +3,6 @@ local D = E:GetModule("Distributor")
 
 local format = format
 local sort, tinsert = sort, tinsert
-local DEFAULT_WIDTH = 890
-local DEFAULT_HEIGHT = 651
 
 local _G = _G
 E.Libs.AceGUI = _G.LibStub('AceGUI-3.0')
@@ -14,21 +12,21 @@ E.Libs.AceConfigRegistry = _G.LibStub('AceConfigRegistry-3.0-ElvUI')
 E.Libs.AceDBOptions = _G.LibStub('AceDBOptions-3.0')
 
 local UnitName = UnitName
+local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
-local UnitExists = UnitExists
 local GameTooltip_Hide = GameTooltip_Hide
 local GameFontHighlightSmall = _G.GameFontHighlightSmall
 
-E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
-E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", DEFAULT_WIDTH, DEFAULT_HEIGHT)
-
 --Function we can call on profile change to update GUI
 function E:RefreshGUI()
-	self:RefreshCustomTextsConfigs()
+	E:RefreshCustomTextsConfigs()
 	E.Libs.AceConfigRegistry:NotifyChange("ElvUI")
 end
+
+E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
+E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigDefaultSize())
 
 E.Options.args = {
 	ElvUI_Header = {
@@ -37,39 +35,64 @@ E.Options.args = {
 		name = L["Version"]..format(": |cff99ff33%s|r",E.version),
 		width = "full",
 	},
-	LoginMessage = {
+	RepositionWindow = {
 		order = 2,
-		type = 'toggle',
-		name = L["Login Message"],
-		get = function(info) return E.db.general.loginmessage end,
-		set = function(info, value) E.db.general.loginmessage = value end,
+		type = "execute",
+		name = L["Reposition Window"],
+		desc = L["Reset the size and position of this frame."],
+		customWidth = 175,
+		func = function()
+			if E.GUIFrame then
+				local status = E.GUIFrame.obj and E.GUIFrame.obj.status
+				if status then
+					E:ResetConfigSettings()
+
+					status.top, status.left = E:GetConfigPosition()
+					status.width, status.height = E:GetConfigDefaultSize()
+
+					E.GUIFrame.obj:ApplyStatus()
+				end
+			end
+		end,
 	},
 	ToggleTutorial = {
 		order = 3,
 		type = 'execute',
 		name = L["Toggle Tutorials"],
+		customWidth = 150,
 		func = function() E:Tutorials(true); E:ToggleConfig()  end,
 	},
 	Install = {
 		order = 4,
 		type = 'execute',
 		name = L["Install"],
+		customWidth = 100,
 		desc = L["Run the installation process."],
 		func = function() E:Install(); E:ToggleConfig() end,
 	},
-	ToggleAnchors = {
+	ResetAllMovers = {
 		order = 5,
 		type = "execute",
+		name = L["Reset Anchors"],
+		customWidth = 150,
+		desc = L["Reset all frames to their original positions."],
+		func = function() E:ResetUI() end,
+	},
+	ToggleAnchors = {
+		order = 6,
+		type = "execute",
 		name = L["Toggle Anchors"],
+		customWidth = 150,
 		desc = L["Unlock various elements of the UI to be repositioned."],
 		func = function() E:ToggleConfigMode() end,
 	},
-	ResetAllMovers = {
-		order = 6,
-		type = "execute",
-		name = L["Reset Anchors"],
-		desc = L["Reset all frames to their original positions."],
-		func = function() E:ResetUI() end,
+	LoginMessage = {
+		order = 7,
+		type = 'toggle',
+		name = L["Login Message"],
+		customWidth = 150,
+		get = function(info) return E.db.general.loginmessage end,
+		set = function(info, value) E.db.general.loginmessage = value end,
 	},
 }
 
@@ -266,8 +289,8 @@ local function ExportImport_Open(mode)
 		exportButton:SetAutoWidth(true)
 		local function OnClick(self)
 			--Clear labels
-			Label1:SetText()
-			Label2:SetText()
+			Label1:SetText('')
+			Label2:SetText('')
 
 			local profileType, exportFormat = ProfileTypeDropdown:GetValue(), ExportFormatDropdown:GetValue()
 			local profileKey, profileExport = D:ExportProfile(profileType, exportFormat)
@@ -305,8 +328,8 @@ local function ExportImport_Open(mode)
 		importButton:SetAutoWidth(true)
 		importButton:SetCallback("OnClick", function()
 			--Clear labels
-			Label1:SetText()
-			Label2:SetText()
+			Label1:SetText('')
+			Label2:SetText('')
 
 			local text
 			local success = D:ImportProfile(Box:GetText())
@@ -325,8 +348,8 @@ local function ExportImport_Open(mode)
 		decodeButton:SetAutoWidth(true)
 		decodeButton:SetCallback("OnClick", function()
 			--Clear labels
-			Label1:SetText()
-			Label2:SetText()
+			Label1:SetText('')
+			Label2:SetText('')
 			local decodedText
 			local profileType, profileKey, profileData = D:Decode(Box:GetText())
 			if profileData then
@@ -341,8 +364,8 @@ local function ExportImport_Open(mode)
 		local function OnTextChanged()
 			local text = Box:GetText()
 			if text == "" then
-				Label1:SetText()
-				Label2:SetText()
+				Label1:SetText('')
+				Label2:SetText('')
 				importButton:SetDisabled(true)
 				decodeButton:SetDisabled(true)
 			elseif oldText ~= text then
@@ -356,7 +379,7 @@ local function ExportImport_Open(mode)
 				local profileType, profileKey = D:Decode(text)
 				if not profileType or (profileType and profileType == "profile" and not profileKey) then
 					Label1:SetText(L["Error decoding data. Import string may be corrupted!"])
-					Label2:SetText()
+					Label2:SetText('')
 					importButton:SetDisabled(true)
 					decodeButton:SetDisabled(true)
 				else
@@ -397,8 +420,8 @@ local function ExportImport_Open(mode)
 	end)
 
 	--Clear default text
-	Label1:SetText()
-	Label2:SetText()
+	Label1:SetText('')
+	Label2:SetText('')
 
 	--Close ElvUI Config
 	E.Libs.AceConfigDialog:Close("ElvUI")

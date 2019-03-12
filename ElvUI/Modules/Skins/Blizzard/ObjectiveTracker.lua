@@ -42,7 +42,7 @@ local function SkinItemButton(_, block)
 		item.Cooldown:SetInside()
 		item.Count:ClearAllPoints()
 		item.Count:Point("TOPLEFT", 1, -1)
-		item.Count:SetFont(E.media.normFont, 14, "OUTLINE")
+		item.Count:FontTemplate(E.media.normFont, 14, "OUTLINE")
 		item.Count:SetShadowOffset(5, -5)
 		E:RegisterCooldown(item.Cooldown)
 		item.skinned = true

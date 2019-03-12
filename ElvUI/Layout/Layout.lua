@@ -152,8 +152,8 @@ function LO:SetChatTabStyle()
 		_G.LeftChatTab:SetTemplate("Transparent")
 		_G.RightChatTab:SetTemplate("Transparent")
 	else
-		_G.LeftChatTab:SetTemplate("Default", true)
-		_G.RightChatTab:SetTemplate("Default", true)
+		_G.LeftChatTab:SetTemplate(nil, true)
+		_G.RightChatTab:SetTemplate(nil, true)
 	end
 end
 
@@ -177,12 +177,12 @@ function LO:SetDataPanelStyle()
 		RightChatToggleButton:SetTemplate("Transparent")
 		RightMiniPanel:SetTemplate("Transparent")
 	else
-		LeftChatDataPanel:SetTemplate("Default", true)
-		LeftChatToggleButton:SetTemplate("Default", true)
-		LeftMiniPanel:SetTemplate("Default", true)
-		RightChatDataPanel:SetTemplate("Default", true)
-		RightChatToggleButton:SetTemplate("Default", true)
-		RightMiniPanel:SetTemplate("Default", true)
+		LeftChatDataPanel:SetTemplate(nil, true)
+		LeftChatToggleButton:SetTemplate(nil, true)
+		LeftMiniPanel:SetTemplate(nil, true)
+		RightChatDataPanel:SetTemplate(nil, true)
+		RightChatToggleButton:SetTemplate(nil, true)
+		RightMiniPanel:SetTemplate(nil, true)
 	end
 end
 
@@ -323,7 +323,7 @@ function LO:CreateChatPanels()
 	lchat:SetFrameLevel(300)
 	lchat:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
 	lchat:Point('BOTTOMLEFT', E.UIParent, 4, 4)
-	lchat:CreateBackdrop('Transparent', nil, true)
+	lchat:CreateBackdrop('Transparent')
 	lchat.backdrop:SetAllPoints()
 	E:CreateMover(lchat, "LeftChatMover", L["Left Chat"], nil, nil, nil, nil, nil, 'chat,general')
 	local LeftChatPanel = _G.LeftChatPanel
@@ -382,7 +382,7 @@ function LO:CreateChatPanels()
 	rchat:SetFrameLevel(300)
 	rchat:Size(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
 	rchat:Point('BOTTOMRIGHT', E.UIParent, -4, 4)
-	rchat:CreateBackdrop('Transparent', nil, true)
+	rchat:CreateBackdrop('Transparent')
 	rchat.backdrop:SetAllPoints()
 	E:CreateMover(rchat, "RightChatMover", L["Right Chat"], nil, nil, nil, nil, nil, 'chat,general')
 	local RightChatPanel = _G.RightChatPanel

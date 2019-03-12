@@ -22,9 +22,13 @@ local UnitIsFriend = UnitIsFriend
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local IsInInstance = IsInInstance
 local UnitExists = UnitExists
+local GetCVar = GetCVar
 
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
+local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
+local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
+local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
 
 local function CopySettings(from, to)
 	for setting, value in pairs(from) do
@@ -108,7 +112,9 @@ function NP:StylePlate(nameplate)
 
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
 
-	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate.RaisedElement)
+	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate.RaisedElement) -- Horde / Alliance / HonorInfo
+
+	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
 
 	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate.RaisedElement)
 
@@ -142,7 +148,9 @@ function NP:UpdatePlate(nameplate)
 
 	NP:Update_Portrait(nameplate)
 
-	NP:Update_PvPIndicator(nameplate)
+	NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
+
+	NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
 
 	NP:Update_TargetIndicator(nameplate)
 
@@ -170,7 +178,7 @@ end
 function NP:CVarReset()
 	SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
 	SetCVar('nameplateGlobalScale', 1)
-	SetCVar('NamePlateHorizontalScale',1)
+	SetCVar('NamePlateHorizontalScale', 1)
 	SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'))
 	SetCVar('nameplateLargerScale', 1)
 	SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'))
@@ -178,12 +186,12 @@ function NP:CVarReset()
 	SetCVar('nameplateMaxAlphaDistance', 40)
 	SetCVar('nameplateMaxScale', 1)
 	SetCVar('nameplateMaxScaleDistance', 40)
-	SetCVar('nameplateMinAlpha', 1)
-	SetCVar('nameplateMinAlphaDistance', 0)
+	SetCVar('nameplateMinAlpha', 1) -- if we set it back to 1, it will sometimes break the alpha
+	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance')) -- see above
 	SetCVar('nameplateMinScale', 1)
 	SetCVar('nameplateMinScaleDistance', 0)
 	SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
-	SetCVar('nameplateOccludedAlphaMult', .4)
+	SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult')) -- see above
 	SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
 	SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
 	SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
@@ -234,6 +242,25 @@ function NP:PLAYER_REGEN_ENABLED()
 	end
 end
 
+function NP:SetNamePlateClickThrough()
+	self:SetNamePlateSelfClickThrough()
+	self:SetNamePlateFriendlyClickThrough()
+	self:SetNamePlateEnemyClickThrough()
+end
+
+function NP:SetNamePlateSelfClickThrough()
+	C_NamePlate_SetNamePlateSelfClickThrough(NP.db.clickThrough.personal)
+	_G.ElvNP_Player:EnableMouse(not NP.db.clickThrough.personal)
+end
+
+function NP:SetNamePlateFriendlyClickThrough()
+	C_NamePlate_SetNamePlateFriendlyClickThrough(NP.db.clickThrough.friendly)
+end
+
+function NP:SetNamePlateEnemyClickThrough()
+	C_NamePlate_SetNamePlateEnemyClickThrough(NP.db.clickThrough.enemy)
+end
+
 function NP:Update_StatusBars()
 	for StatusBar in pairs(NP.StatusBars) do
 		StatusBar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
@@ -241,7 +268,7 @@ function NP:Update_StatusBars()
 end
 
 function NP:CheckGroup()
-	NP.IsInGroup = IsInGroup() or IsInRaid()
+	NP.IsInGroup = IsInRaid() or IsInGroup()
 end
 
 function NP:PLAYER_ENTERING_WORLD()
@@ -289,6 +316,7 @@ function NP:ConfigureAll()
 
 	NP:StyleFilterConfigureEvents() -- Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
 	NP:Update_StatusBars()
+	NP:SetNamePlateClickThrough()
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
@@ -311,7 +339,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		-- update player and test plate
-		if NP.db.units.PLAYER.useStaticPosition then
+		if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 			NP:UpdatePlate(_G.ElvNP_Player)
 		end
 		if _G.ElvNP_Test:IsEnabled() then
@@ -320,26 +348,37 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		-- update this plate and fade it in
 		NP:UpdatePlate(nameplate)
+
+		nameplate.isTarget = UnitIsUnit(unit, "target")
+
 		if nameplate:IsShown() then
-			E:UIFrameFadeIn(nameplate, 1, 0, 1)
+			E:UIFrameFadeIn(nameplate, 1, 0, (nameplate.isTarget and 1) or (UnitExists("target") and NP.db.nonTargetTransparency or 1))
 		end
 
 		NP.Plates[nameplate] = true
 		nameplate:UpdateTags()
-
-		if nameplate ~= _G.ElvNP_Player then
-			if (UnitIsBattlePetCompanion(unit) or UnitIsBattlePet(unit)) and nameplate:IsEnabled() then
-				nameplate:Disable()
-			elseif not nameplate:IsEnabled() then
-				nameplate:Enable()
-			end
-		end
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		NP:ClearStyledPlate(nameplate)
 		nameplate.isTargetingMe = nil
 		nameplate.isTarget = nil
+	elseif event == 'PLAYER_TARGET_CHANGED' then
+		if nameplate then
+			local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
+			local Alpha = NP.db.nonTargetTransparency
+			for plate in pairs(NP.Plates) do
+				if plate:GetParent():GetAlpha() == OccludedAlpha then
+					Alpha = OccludedAlpha
+				end
+				plate:SetAlpha(Alpha)
+			end
+			nameplate:SetAlpha(1)
+		else
+			for plate in pairs(NP.Plates) do
+				plate:SetAlpha(1)
+			end
+		end
 	end
 end
 
@@ -351,11 +390,6 @@ end
 NP.plateEvents = {
 	['PLAYER_TARGET_CHANGED'] = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
-		if self.isTarget or not UnitExists("target") then
-			self:SetAlpha(1)
-		else
-			self:SetAlpha(NP.db.nonTargetTransparency)
-		end
 	end,
 	['UNIT_TARGET'] = function(self, _, unit)
 		unit = unit or self.unit
@@ -393,11 +427,7 @@ function NP:Initialize()
 
 	NP.Plates = {}
 	NP.StatusBars = {}
-	NP.FontStrings = {
-		General = {},
-		Values = {},
-		Health = {},
-	}
+
 	local BlizzPlateManaBar = _G.NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
 		BlizzPlateManaBar:Hide()
@@ -418,6 +448,7 @@ function NP:Initialize()
 	NP.Tooltip:SetOwner(_G.WorldFrame, 'ANCHOR_NONE')
 
 	ElvUF:Spawn('player', 'ElvNP_Player')
+	_G.ElvNP_Player.isNamePlate = true
 	_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
 	_G.ElvNP_Player:SetAttribute('*type1', 'target')
 	_G.ElvNP_Player:SetAttribute('*type2', 'togglemenu')
@@ -436,10 +467,6 @@ function NP:Initialize()
 	_G.ElvNP_Test.frameType = 'PLAYER'
 	NP:UpdatePlate(_G.ElvNP_Test)
 	_G.ElvNP_Test:Disable()
-
-	if not NP.db.units.PLAYER.useStaticPosition then
-		_G.ElvNP_Player:Disable()
-	end
 
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
 

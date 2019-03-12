@@ -42,6 +42,8 @@ function UF:Construct_TankFrames()
 		self.unitframeType = "tanktarget"
 	end
 
+	UF:Update_TankFrames(self, E.db.unitframe.units.tank)
+
 	self.originalParent = self:GetParent()
 
 	return self
@@ -54,18 +56,14 @@ function UF:Update_TankHeader(header, db)
 	UF:ClearChildPoints(header:GetChildren())
 
 	RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
-	header:SetAttribute("startingIndex", 1)
 
 	header:SetAttribute('point', 'BOTTOM')
 	header:SetAttribute('columnAnchorPoint', 'LEFT')
-
-	UF:ClearChildPoints(header:GetChildren())
 	header:SetAttribute("yOffset", db.verticalSpacing)
 
-	local width, height = header:GetSize()
-	header.dirtyWidth, header.dirtyHeight = width, max(height, 2*db.height + db.verticalSpacing)
-
 	if not header.positioned then
+		local width, height = header:GetSize()
+		header.dirtyWidth, header.dirtyHeight = width, max(height, 2*db.height + db.verticalSpacing)
 		header:ClearAllPoints()
 		header:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -186)
 		E:CreateMover(header, header:GetName()..'Mover', L["MT Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,tank,generalGroup')

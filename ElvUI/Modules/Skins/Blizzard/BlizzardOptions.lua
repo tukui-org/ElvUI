@@ -25,7 +25,7 @@ local function HandlePushToTalkButton(button)
 	button.MiddleMiddle:Hide()
 	button:SetHighlightTexture("")
 
-	button:SetTemplate("Default", true)
+	button:SetTemplate(nil, true)
 	button:HookScript("OnEnter", S.SetModifiedBackdrop)
 	button:HookScript("OnLeave", S.SetOriginalBackdrop)
 end

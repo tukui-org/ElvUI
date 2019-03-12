@@ -62,7 +62,7 @@ local function LoadSkin()
 		S:HandleIcon(icon)
 		icon:SetInside()
 		E:RegisterCooldown(_G["SpellButton"..i.."Cooldown"])
-		button:SetTemplate("Default", true)
+		button:SetTemplate(nil, true)
 
 		if button.SpellHighlightTexture then
 			button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)

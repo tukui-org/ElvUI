@@ -3,17 +3,18 @@ local ElvUF = E.oUF
 
 local NP = E:GetModule('NamePlates')
 
-local unpack = unpack
+local unpack, max = unpack, max
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 
 local MAX_POINTS = {
-	['PALADIN'] = 5,
-	['WARLOCK'] = 5,
-	['MONK'] = 6,
+	['DRUID'] = 5,
+	['DEATHKNIGHT'] = 6,
 	['MAGE'] = 4,
+	['MONK'] = 6,
+	['PALADIN'] = 5,
 	['ROGUE'] = 6,
-	['DRUID'] = 5
+	['WARLOCK'] = 5
 }
 
 function NP:ClassPower_UpdateColor(powerType)
@@ -59,14 +60,14 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:SetFrameLevel(5)
 	ClassPower:CreateBackdrop('Transparent')
 
-	ClassPower:Size(NP.db.classbar.width + ((MAX_POINTS[E.myclass] or 5) - 1), NP.db.classbar.height)
-	local Width = NP.db.classbar.width / (MAX_POINTS[E.myclass] or 5)
-
-	for i = 1, (MAX_POINTS[E.myclass] or 5) do
+	for i = 1, max(MAX_POINTS[E.myclass] or 0, MAX_COMBO_POINTS) do
 		ClassPower[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
-		ClassPower[i]:Size(Width, NP.db.classbar.height)
 		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		NP.StatusBars[ClassPower[i]] = true
+
+		local statusBarTexture = ClassPower[i]:GetStatusBarTexture()
+		statusBarTexture:SetSnapToPixelGrid(false)
+		statusBarTexture:SetTexelSnappingBias(0)
 
 		if i == 1 then
 			ClassPower[i]:Point('LEFT', ClassPower, 'LEFT', 0, 0)
@@ -99,15 +100,15 @@ function NP:Construct_Runes(nameplate)
 	Runes.UpdateColor = E.noop
 	Runes.PostUpdate = NP.Runes_PostUpdate
 
-	Runes:Size(NP.db.classbar.width + 5, NP.db.classbar.height)
-	local width = NP.db.classbar.width / 6
-
 	for i = 1, 6 do
 		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
 		Runes[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
-		Runes[i]:Size(width, NP.db.classbar.height)
 		NP.StatusBars[Runes[i]] = true
+
+		local statusBarTexture = Runes[i]:GetStatusBarTexture()
+		statusBarTexture:SetSnapToPixelGrid(false)
+		statusBarTexture:SetTexelSnappingBias(0)
 
 		if i == 1 then
 			Runes[i]:Point('LEFT', Runes, 'LEFT', 0, 0)
@@ -120,13 +121,22 @@ function NP:Construct_Runes(nameplate)
 end
 
 function NP:Update_ClassPower(nameplate)
-	if nameplate.frameType == 'PLAYER' then
+	if nameplate.frameType == 'PLAYER' and NP.db.classbar.enable then
 		if not nameplate:IsElementEnabled('ClassPower') then
 			nameplate:EnableElement('ClassPower')
 			nameplate.ClassPower:Show()
 		end
 
 		nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', 0, NP.db.classbar.yOffset)
+
+		local maxClassBarButtons = nameplate.ClassPower.__max
+
+		local Width = NP.db.classbar.width / maxClassBarButtons
+		nameplate.ClassPower:Size(NP.db.classbar.width + (maxClassBarButtons - 1), NP.db.classbar.height)
+
+		for i = 1, maxClassBarButtons do
+			nameplate.ClassPower[i]:Size(Width, NP.db.classbar.height)
+		end
 	else
 		if nameplate:IsElementEnabled('ClassPower') then
 			nameplate:DisableElement('ClassPower')
@@ -136,7 +146,7 @@ function NP:Update_ClassPower(nameplate)
 end
 
 function NP:Update_Runes(nameplate)
-	if nameplate.frameType == 'PLAYER' then
+	if nameplate.frameType == 'PLAYER' and NP.db.classbar.enable then
 		if not nameplate:IsElementEnabled('Runes') then
 			nameplate:EnableElement('Runes')
 			nameplate.Runes:Show()
@@ -146,8 +156,8 @@ function NP:Update_Runes(nameplate)
 
 		nameplate.sortOrder = NP.db.classbar.sortDirection
 
-		nameplate.Runes:Size(NP.db.classbar.width + 5, NP.db.classbar.height)
 		local width = NP.db.classbar.width / 6
+		nameplate.Runes:Size(NP.db.classbar.width + 5, NP.db.classbar.height)
 
 		for i = 1, 6 do
 			nameplate.Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)

@@ -29,7 +29,7 @@ function E:Cooldown_OnUpdate(elapsed)
 		local remain = self.duration - (GetTime() - self.start)
 		if remain > 0.05 then
 			if self.fontScale and ((self.fontScale * self:GetEffectiveScale() / _G.UIParent:GetScale()) < MIN_SCALE) then
-				self.text:SetText()
+				self.text:SetText('')
 				self.nextUpdate = 500
 			else
 				local timeColors, timeThreshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
@@ -51,7 +51,8 @@ end
 function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 	local fontScale = width and (floor(width + .5) / ICON_SIZE)
 
-	-- .CooldownFontSize is used when we the cooldown button/icon does not use `SetSize` or `Size` for some reason. IE: nameplates
+	-- `CooldownFontSize` is used when we the cooldown button/icon does not use `SetSize` or `Size` for some reason
+	-- also it can be used to prevent the font size being based on scale, which can sometimes hide the cd text
 	if parent and parent.CooldownFontSize then
 		fontScale = (parent.CooldownFontSize / FONT_SIZE)
 	end
@@ -68,8 +69,8 @@ function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 			if useCustomFont then
 				local customSize = (parent and parent.CooldownFontSize and cd.timerOptions.fontOptions.fontSize) or (fontScale * cd.timerOptions.fontOptions.fontSize)
 				text:FontTemplate(useCustomFont, customSize, cd.timerOptions.fontOptions.fontOutline)
-			elseif fontScale and parent and parent.CooldownSettings and parent.CooldownSettings.font and parent.CooldownSettings.fontOutline then
-				text:FontTemplate(parent.CooldownSettings.font, (fontScale * FONT_SIZE), parent.CooldownSettings.fontOutline)
+			elseif fontScale and parent and parent.CooldownSettings then
+				text:FontTemplate(parent.CooldownSettings.font, parent.CooldownSettings.fontSize or (fontScale * FONT_SIZE), parent.CooldownSettings.fontOutline)
 			elseif fontScale then
 				text:FontTemplate(nil, (fontScale * FONT_SIZE), 'OUTLINE')
 			end

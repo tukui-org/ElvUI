@@ -89,7 +89,7 @@ local function LoadSkin()
 		infoBar.PetTypeFrame:Size(100, 23)
 		infoBar.PetTypeFrame.text = infoBar.PetTypeFrame:CreateFontString(nil, 'OVERLAY')
 		infoBar.PetTypeFrame.text:FontTemplate()
-		infoBar.PetTypeFrame.text:SetText()
+		infoBar.PetTypeFrame.text:SetText('')
 
 		infoBar.ActualHealthBar:ClearAllPoints()
 		infoBar.Name:ClearAllPoints()

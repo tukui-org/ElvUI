@@ -99,8 +99,17 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 
 	if(tt:GetAnchorType() ~= "ANCHOR_NONE") then return end
 	if InCombatLockdown() and self.db.visibility.combat then
-		tt:Hide()
-		return
+		local modifier = self.db.visibility.combatOverride
+		if (not(
+				(modifier == 'SHIFT' and IsShiftKeyDown())
+				or
+				(modifier == 'CTRL' and IsControlKeyDown())
+				or
+				(modifier == 'ALT' and IsAltKeyDown())
+		)) then
+			tt:Hide()
+			return
+		end
 	end
 
 	local ownerName = tt:GetOwner() and tt:GetOwner().GetName and tt:GetOwner():GetName()
@@ -639,7 +648,7 @@ function TT:GameTooltip_ShowStatusBar(tt)
 	if (not sb or not sb.Text) or sb.backdrop then return end
 
 	sb:StripTextures()
-	sb:CreateBackdrop('Default', nil, true)
+	sb:CreateBackdrop(nil, nil, true)
 	sb:SetStatusBarTexture(E.media.normTex)
 end
 
@@ -748,37 +757,37 @@ function TT:SetTooltipFonts()
 	local textSize = E.db.tooltip.textFontSize
 	local smallTextSize = E.db.tooltip.smallTextFontSize
 
-	_G.GameTooltipHeaderText:SetFont(font, headerSize, fontOutline)
-	_G.GameTooltipText:SetFont(font, textSize, fontOutline)
-	_G.GameTooltipTextSmall:SetFont(font, smallTextSize, fontOutline)
+	_G.GameTooltipHeaderText:FontTemplate(font, headerSize, fontOutline)
+	_G.GameTooltipText:FontTemplate(font, textSize, fontOutline)
+	_G.GameTooltipTextSmall:FontTemplate(font, smallTextSize, fontOutline)
 	if GameTooltip.hasMoney then
 		for i = 1, GameTooltip.numMoneyFrames do
-			_G["GameTooltipMoneyFrame"..i.."PrefixText"]:SetFont(font, textSize, fontOutline)
-			_G["GameTooltipMoneyFrame"..i.."SuffixText"]:SetFont(font, textSize, fontOutline)
-			_G["GameTooltipMoneyFrame"..i.."GoldButtonText"]:SetFont(font, textSize, fontOutline)
-			_G["GameTooltipMoneyFrame"..i.."SilverButtonText"]:SetFont(font, textSize, fontOutline)
-			_G["GameTooltipMoneyFrame"..i.."CopperButtonText"]:SetFont(font, textSize, fontOutline)
+			_G["GameTooltipMoneyFrame"..i.."PrefixText"]:FontTemplate(font, textSize, fontOutline)
+			_G["GameTooltipMoneyFrame"..i.."SuffixText"]:FontTemplate(font, textSize, fontOutline)
+			_G["GameTooltipMoneyFrame"..i.."GoldButtonText"]:FontTemplate(font, textSize, fontOutline)
+			_G["GameTooltipMoneyFrame"..i.."SilverButtonText"]:FontTemplate(font, textSize, fontOutline)
+			_G["GameTooltipMoneyFrame"..i.."CopperButtonText"]:FontTemplate(font, textSize, fontOutline)
 		end
 	end
 
 	--These show when you compare items ("Currently Equipped", name of item, item level)
 	--Since they appear at the top of the tooltip, we set it to use the header font size.
-	_G.ShoppingTooltip1TextLeft1:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextLeft2:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextLeft3:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextLeft4:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextRight1:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextRight2:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextRight3:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextRight4:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextLeft1:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextLeft2:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextLeft3:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextLeft4:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextRight1:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextRight2:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextRight3:SetFont(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextRight4:SetFont(font, headerSize, fontOutline)
+	_G.ShoppingTooltip1TextLeft1:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip1TextLeft2:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip1TextLeft3:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip1TextLeft4:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip1TextRight1:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip1TextRight2:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip1TextRight3:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip1TextRight4:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip2TextLeft1:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip2TextLeft2:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip2TextLeft3:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip2TextLeft4:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip2TextRight1:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip2TextRight2:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip2TextRight3:FontTemplate(font, headerSize, fontOutline)
+	_G.ShoppingTooltip2TextRight4:FontTemplate(font, headerSize, fontOutline)
 end
 
 --This changes the growth direction of the toast frame depending on position of the mover

@@ -199,7 +199,6 @@ L["This install process will help you learn some of the features in ElvUI has to
 L["This part of the installation process sets up your chat windows names, positions and colors."] = true
 L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."] = true
 L["This will change the layout of your unitframes and actionbars."] = true
-L["Trade"] = true
 L["Welcome to ElvUI version %s!"] = true
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = true
 L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."] = true

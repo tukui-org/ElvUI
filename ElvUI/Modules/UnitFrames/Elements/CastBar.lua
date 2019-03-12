@@ -42,7 +42,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.PostCastUpdate = self.PostChannelUpdate
 	castbar.PostCastInterruptible = self.PostCastInterruptible
 	castbar:SetClampedToScreen(true)
-	castbar:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
+	castbar:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 
 	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')
 	self:Configure_FontString(castbar.Time)
@@ -73,7 +73,7 @@ function UF:Construct_Castbar(frame, moverName)
 
 	local button = CreateFrame("Frame", nil, castbar)
 	local holder = CreateFrame('Frame', nil, castbar)
-	button:SetTemplate("Default", nil, nil, self.thinBorders, true)
+	button:SetTemplate(nil, nil, nil, self.thinBorders, true)
 
 	castbar.Holder = holder
 	--these are placeholder so the mover can be created.. it will be changed.

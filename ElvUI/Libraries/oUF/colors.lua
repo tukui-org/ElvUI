@@ -11,12 +11,28 @@ local colors = {
 		0, 1, 0
 	},
 	health = {49 / 255, 207 / 255, 37 / 255},
-	disconnected = {.6, .6, .6},
-	tapped = {.6, .6, .6},
+	disconnected = {0.6, 0.6, 0.6},
+	tapped = {0.6, 0.6, 0.6},
 	runes = {
 		{247 / 255, 65 / 255, 57 / 255}, -- blood
 		{148 / 255, 203 / 255, 247 / 255}, -- frost
 		{173 / 255, 235 / 255, 66 / 255}, -- unholy
+	},
+	selection = {
+		[ 0] = {255 / 255, 0 / 255, 0 / 255}, -- HOSTILE
+		[ 1] = {255 / 255, 129 / 255, 0 / 255}, -- UNFRIENDLY
+		[ 2] = {255 / 255, 255 / 255, 0 / 255}, -- NEUTRAL
+		[ 3] = {0 / 255, 255 / 255, 0 / 255}, -- FRIENDLY
+		[ 4] = {0 / 255, 0 / 255, 255 / 255}, -- PLAYER_SIMPLE
+		[ 5] = {96 / 255, 96 / 255, 255 / 255}, -- PLAYER_EXTENDED
+		[ 6] = {170 / 255, 170 / 255, 255 / 255}, -- PARTY
+		[ 7] = {170 / 255, 255 / 255, 170 / 255}, -- PARTY_PVP
+		[ 8] = {83 / 255, 201 / 255, 255 / 255}, -- FRIEND
+		[ 9] = {128 / 255, 128 / 255, 128 / 255}, -- DEAD
+		-- [10] = {}, -- COMMENTATOR_TEAM_1, unavailable to players
+		-- [11] = {}, -- COMMENTATOR_TEAM_2, unavailable to players
+		[12] = {255 / 255, 255 / 255, 139 / 255}, -- SELF, buggy
+		[13] = {0 / 255, 153 / 255, 0 / 255}, -- BATTLEGROUND_FRIENDLY_PVP
 	},
 	class = {},
 	debuff = {},
@@ -104,7 +120,7 @@ local function colorsAndPercent(a, b, ...)
 	if(a <= 0 or b == 0) then
 		return nil, ...
 	elseif(a >= b) then
-		return nil, select(select('#', ...) - 2, ...)
+		return nil, select(-3, ...)
 	end
 
 	local num = select('#', ...) / 3

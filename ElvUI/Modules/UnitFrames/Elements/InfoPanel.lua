@@ -9,7 +9,7 @@ function UF:Construct_InfoPanel(frame)
 
 	infoPanel:SetFrameLevel(7) --Health is 10 and filled power is 5 by default
 	local thinBorders = self.thinBorders
-	infoPanel:CreateBackdrop("Default", true, nil, thinBorders, true)
+	infoPanel:CreateBackdrop(nil, true, nil, thinBorders, true)
 
 	return infoPanel
 end
@@ -43,7 +43,7 @@ function UF:Configure_InfoPanel(frame, noTemplateChange)
 			if db.infoPanel.transparent then
 				frame.InfoPanel.backdrop:SetTemplate("Transparent", nil, nil, thinBorders, true)
 			else
-				frame.InfoPanel.backdrop:SetTemplate("Default", true, nil, thinBorders, true)
+				frame.InfoPanel.backdrop:SetTemplate(nil, true, nil, thinBorders, true)
 			end
 		end
 	else

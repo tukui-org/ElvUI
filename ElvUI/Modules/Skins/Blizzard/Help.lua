@@ -34,7 +34,7 @@ local function LoadSkin()
 
 	local HelpFrameHeader = _G.HelpFrameHeader
 	HelpFrameHeader:StripTextures(true)
-	HelpFrameHeader:CreateBackdrop("Default", true)
+	HelpFrameHeader:CreateBackdrop(nil, true)
 	HelpFrameHeader:SetFrameLevel(HelpFrameHeader:GetFrameLevel() + 2)
 	_G.HelpFrameKnowledgebaseErrorFrame:SetFrameLevel(_G.HelpFrameKnowledgebaseErrorFrame:GetFrameLevel() + 2)
 
@@ -131,7 +131,7 @@ local function LoadSkin()
 	--Hearth Stone Button
 	local HelpFrameCharacterStuckHearthstone = _G.HelpFrameCharacterStuckHearthstone
 	HelpFrameCharacterStuckHearthstone:StyleButton()
-	HelpFrameCharacterStuckHearthstone:SetTemplate("Default", true)
+	HelpFrameCharacterStuckHearthstone:SetTemplate(nil, true)
 	HelpFrameCharacterStuckHearthstone.IconTexture:SetInside()
 	HelpFrameCharacterStuckHearthstone.IconTexture:SetTexCoord(unpack(E.TexCoords))
 

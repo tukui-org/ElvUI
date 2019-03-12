@@ -8,42 +8,41 @@ local CreateFrame = CreateFrame
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nameplate:GetDebugName()..'QuestIcons', nameplate)
 	QuestIcons:Hide()
-	QuestIcons:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 
 	for _, object in pairs({'Item', 'Loot', 'Skull', 'Chat'}) do
 		QuestIcons[object] = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
 		QuestIcons[object]:Point('CENTER')
-		QuestIcons[object]:Size(NP.db.questIconSize, NP.db.questIconSize)
 		QuestIcons[object]:Hide()
 	end
 
 	QuestIcons.Item:SetTexCoord(unpack(E.TexCoords))
 
-	QuestIcons.Skull:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
-
-	QuestIcons.Chat:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
 	QuestIcons.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
 	QuestIcons.Chat:SetTexCoord(0, 0.5, 0.5, 1)
 
 	QuestIcons.Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
 	QuestIcons.Text:Point('BOTTOMRIGHT', QuestIcons, 'BOTTOMRIGHT', 2, -0.8)
-	QuestIcons.Text:SetFont(E.Libs.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	QuestIcons.Text:FontTemplate(E.Libs.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	return QuestIcons
 end
 
 function NP:Update_QuestIcons(nameplate)
-	if NP.db.questIcon and (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') then
+	local db = NP.db.units[nameplate.frameType]
+
+	if (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') and db.questIcon.enable then
 		if not nameplate:IsElementEnabled('QuestIcons') then
 			nameplate:EnableElement('QuestIcons')
 		end
+
 		nameplate.QuestIcons:ClearAllPoints()
-		nameplate.QuestIcons:Point('LEFT', nameplate, 'RIGHT', 4, 0)
-		nameplate.QuestIcons:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
-		nameplate.QuestIcons.Item:Size(NP.db.questIconSize, NP.db.questIconSize)
-		nameplate.QuestIcons.Loot:Size(NP.db.questIconSize, NP.db.questIconSize)
-		nameplate.QuestIcons.Skull:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
-		nameplate.QuestIcons.Chat:Size(NP.db.questIconSize + 4, NP.db.questIconSize + 4)
+		nameplate.QuestIcons:Point(E.InversePoints[db.questIcon.position], nameplate, db.questIcon.position, db.questIcon.xOffset, db.questIcon.yOffset)
+
+		nameplate.QuestIcons:Size(db.questIcon.size + 4, db.questIcon.size + 4)
+		nameplate.QuestIcons.Item:Size(db.questIcon.size, db.questIcon.size)
+		nameplate.QuestIcons.Loot:Size(db.questIcon.size, db.questIcon.size)
+		nameplate.QuestIcons.Skull:Size(db.questIcon.size + 4, db.questIcon.size + 4)
+		nameplate.QuestIcons.Chat:Size(db.questIcon.size + 4, db.questIcon.size + 4)
 	else
 		if nameplate:IsElementEnabled('QuestIcons') then
 			nameplate:DisableElement('QuestIcons')
@@ -68,11 +67,7 @@ function NP:Update_ClassificationIndicator(nameplate)
 		nameplate.ClassificationIndicator:ClearAllPoints()
 		nameplate.ClassificationIndicator:Size(db.eliteIcon.size, db.eliteIcon.size)
 
-		if db.health.enable then
-			nameplate.ClassificationIndicator:Point(db.eliteIcon.position, nameplate.Health, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
-		else
-			nameplate.ClassificationIndicator:Point('RIGHT', nameplate.Name, 'LEFT', 0, 0)
-		end
+		nameplate.ClassificationIndicator:Point(E.InversePoints[db.eliteIcon.position], nameplate, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
 	else
 		if nameplate:IsElementEnabled('ClassificationIndicator') then
 			nameplate:DisableElement('ClassificationIndicator')
@@ -105,6 +100,15 @@ end
 
 function NP:Update_TargetIndicator(nameplate)
 	local db = NP.db.units[nameplate.frameType]
+
+	if nameplate.frameType == 'PLAYER' and nameplate:IsElementEnabled('TargetIndicator') then
+		nameplate:DisableElement('TargetIndicator')
+		return
+	end
+
+	if not nameplate:IsElementEnabled('TargetIndicator') then
+		nameplate:EnableElement('TargetIndicator')
+	end
 
 	nameplate.TargetIndicator.style = NP.db.targetGlow
 	nameplate.TargetIndicator.lowHealthThreshold = NP.db.lowHealthThreshold
@@ -249,6 +253,6 @@ function NP:Update_FloatingCombatFeedback(nameplate)
 	nameplate.FloatingCombatFeedback.scrollTime = 1.5
 
 	for i = 1, 12 do
-		nameplate.FloatingCombatFeedback[i]:SetFont(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+		nameplate.FloatingCombatFeedback[i]:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 	end
 end

@@ -17,7 +17,7 @@ local function SkinAchievement(Achievement, BiggerIcon)
 
 	Achievement:SetFrameLevel(Achievement:GetFrameLevel() + 2)
 	Achievement:StripTextures(true)
-	Achievement:CreateBackdrop("Default", true)
+	Achievement:CreateBackdrop(nil, true)
 	Achievement.backdrop:SetInside()
 	Achievement.icon:SetTemplate()
 	Achievement.icon:Size(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)

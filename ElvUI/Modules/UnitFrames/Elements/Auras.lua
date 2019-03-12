@@ -54,7 +54,7 @@ function UF:Construct_AuraIcon(button)
 	button.text:Point('CENTER', 1, 1)
 	button.text:SetJustifyH('CENTER')
 
-	button:SetTemplate('Default', nil, nil, UF.thinBorders, true)
+	button:SetTemplate(nil, nil, nil, UF.thinBorders, true)
 
 	-- cooldown override settings
 	if not button.timerOptions then
@@ -470,7 +470,7 @@ function UF:PostUpdateAura(unit, button)
 			button.expirationSaved = nil
 			button:SetScript('OnUpdate', nil)
 			if button.text:GetFont() then
-				button.text:SetText()
+				button.text:SetText('')
 			end
 		end
 	end
@@ -488,7 +488,7 @@ function UF:UpdateAuraTimer(elapsed)
 		self:SetScript('OnUpdate', nil)
 
 		if textHasFont then
-			self.text:SetText()
+			self.text:SetText('')
 		end
 
 		return

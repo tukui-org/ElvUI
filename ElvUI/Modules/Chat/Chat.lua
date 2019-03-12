@@ -439,7 +439,7 @@ function CH:StyleChat(frame)
 
 			if editBox.historyIndex < 1 then
 				editBox.historyIndex = 0
-				editBox:SetText()
+				editBox:SetText('')
 				return
 			end
 		elseif key == "UP" then
@@ -460,7 +460,7 @@ function CH:StyleChat(frame)
 	_G[format(editbox:GetName().."Left", id)]:Kill()
 	_G[format(editbox:GetName().."Mid", id)]:Kill()
 	_G[format(editbox:GetName().."Right", id)]:Kill()
-	editbox:SetTemplate('Default', true)
+	editbox:SetTemplate(nil, true)
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 	editbox:SetAllPoints(LeftChatDataPanel)
 	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
@@ -937,7 +937,7 @@ function CH:SetChatEditBoxMessage(message)
 		ChatEdit_ActivateChat(ChatFrameEditBox)
 	end
 	if editBoxText and editBoxText ~= "" then
-		ChatFrameEditBox:SetText()
+		ChatFrameEditBox:SetText('')
 	end
 	ChatFrameEditBox:Insert(message)
 	ChatFrameEditBox:HighlightText()
@@ -1670,7 +1670,7 @@ function CH:SetupChat()
 		local _, fontSize = FCF_GetChatWindowInfo(id);
 		self:StyleChat(frame)
 		FCFTab_UpdateAlpha(frame)
-		frame:SetFont(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
+		frame:FontTemplate(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
 		if self.db.fontOutline ~= 'NONE' then
 			frame:SetShadowColor(0, 0, 0, 0.2)
 		else
@@ -1883,7 +1883,7 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	if ( not fontSize ) then
 		fontSize = dropDown.value;
 	end
-	chatFrame:SetFont(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
+	chatFrame:FontTemplate(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
 	if self.db.fontOutline ~= 'NONE' then
 		chatFrame:SetShadowColor(0, 0, 0, 0.2)
 	else

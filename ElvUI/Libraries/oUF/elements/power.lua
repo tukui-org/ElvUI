@@ -17,14 +17,17 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 
 ## Options
 
-.frequentUpdates - Indicates whether to use UNIT_POWER_FREQUENT instead UNIT_POWER_UPDATE to update the bar. Only valid
-                   for the player and pet units (boolean)
-.displayAltPower - Use this to let the widget display alternate power if the unit has one. If no alternate power the
-                   display will fall back to primary power (boolean)
-.useAtlas        - Use this to let the widget use an atlas for its texture if `.atlas` is defined on the widget or an
-                   atlas is present in `self.colors.power` for the appropriate power type (boolean)
-.atlas           - A custom atlas (string)
-.smoothGradient  - 9 color values to be used with the .colorSmooth option (table)
+.frequentUpdates                  - Indicates whether to use UNIT_POWER_FREQUENT instead UNIT_POWER_UPDATE to update the
+                                    bar. Only valid for the player and pet units (boolean)
+.displayAltPower                  - Use this to let the widget display alternate power if the unit has one. If no
+                                    alternate power the display will fall back to primary power (boolean)
+.useAtlas                         - Use this to let the widget use an atlas for its texture if `.atlas` is defined on
+                                    the widget or an atlas is present in `self.colors.power` for the appropriate power
+                                    type (boolean)
+.atlas                            - A custom atlas (string)
+.smoothGradient                   - 9 color values to be used with the .colorSmooth option (table)
+.considerSelectionInCombatHostile - Indicates whether selection should be considered hostile while the unit is in
+                                    combat with the player (boolean)
 
 The following options are listed by priority. The first check that returns true decides the color of the bar.
 
@@ -42,6 +45,9 @@ The following options are listed by priority. The first check that returns true 
 .colorClassNPC     - Use `self.colors.class[class]` to color the bar if the unit is a NPC (boolean)
 .colorClassPet     - Use `self.colors.class[class]` to color the bar if the unit is player controlled, but not a player
                      (boolean)
+.colorSelection    - Use `self.colors.selection[selection]` to color the bar based on the unit's selection color.
+                     `selection` is defined by the return value of Private.UnitSelectionType, a wrapper function
+                     for [UnitSelectionType](https://wow.gamepedia.com/API_UnitSelectionType) (boolean)
 .colorReaction     - Use `self.colors.reaction[reaction]` to color the bar based on the player's reaction towards the
                      unit. `reaction` is defined by the return value of
                      [UnitReaction](http://wowprogramming.com/docs/api/UnitReaction.html) (boolean)
@@ -90,6 +96,9 @@ The following options are listed by priority. The first check that returns true 
 
 local _, ns = ...
 local oUF = ns.oUF
+local Private = oUF.Private
+
+local UnitSelectionType = Private.UnitSelectionType
 
 -- sourced from FrameXML/UnitPowerBarAlt.lua
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
@@ -133,6 +142,8 @@ local function UpdateColor(element, unit, cur, min, max, displayType)
 		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
 		local _, class = UnitClass(unit)
 		t = parent.colors.class[class]
+	elseif(element.colorSelection and UnitSelectionType(unit, element.considerSelectionInCombatHostile)) then
+		t = parent.colors.selection[UnitSelectionType(unit, element.considerSelectionInCombatHostile)]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
 		t = parent.colors.reaction[UnitReaction(unit, 'player')]
 	elseif(element.colorSmooth) then
@@ -287,6 +298,7 @@ local function Enable(self)
 		self:RegisterEvent('UNIT_CONNECTION', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 		self:RegisterEvent('UNIT_FACTION', Path) -- For tapping
+		self:RegisterEvent('UNIT_FLAGS', Path) -- For selection
 
 		if(element:IsObjectType('StatusBar')) then
 			element.texture = element:GetStatusBarTexture() and element:GetStatusBarTexture():GetTexture() or [[Interface\TargetingFrame\UI-StatusBar]]
@@ -316,6 +328,7 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_CONNECTION', Path)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 		self:UnregisterEvent('UNIT_FACTION', Path)
+		self:UnregisterEvent('UNIT_FLAGS', Path)
 	end
 end
 

@@ -250,7 +250,7 @@ end
 
 local function updateRaid(self, event)
 	local unitGUID = UnitGUID(self.unit)
-	if unitGUID and unitGUID ~= self.unitGUID then
+	if(unitGUID and unitGUID ~= self.unitGUID) then
 		self.unitGUID = unitGUID
 
 		self:UpdateAllElements(event)
@@ -326,6 +326,8 @@ local function initObject(unit, style, styleFunc, header, ...)
 			end
 		end
 
+		activeElements[object] = {} -- styleFunc on headers break before this is set when they try to enable elements before it's set.
+
 		Private.UpdateUnits(object, objectUnit)
 
 		styleFunc(object, objectUnit, not header)
@@ -333,7 +335,6 @@ local function initObject(unit, style, styleFunc, header, ...)
 		object:HookScript('OnAttributeChanged', onAttributeChanged)
 		object:SetScript('OnShow', onShow)
 
-		activeElements[object] = {}
 		for element in next, elements do
 			object:EnableElement(element, objectUnit)
 		end

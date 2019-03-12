@@ -509,15 +509,19 @@ function B:UpdateSlot(bagID, slotID)
 		UpdateItemUpgradeIcon(slot)
 	end
 
-	slot.itemLevel:SetText()
-	slot.bindType:SetText()
+	slot.itemLevel:SetText('')
+	slot.bindType:SetText('')
 
 	local professionColors = B.ProfessionColors[bagType]
 	local showItemLevel = B.db.itemLevel and clink and not professionColors
 	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON)
 	if showBindType or showItemLevel then
 		E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
-		E.ScanTooltip:SetBagItem(bagID, slotID)
+		if slot.GetInventorySlot then -- this fixes bank bagid -1
+			E.ScanTooltip:SetInventoryItem("player", slot:GetInventorySlot())
+		else
+			E.ScanTooltip:SetBagItem(bagID, slotID)
+		end
 		E.ScanTooltip:Show()
 	end
 
@@ -527,14 +531,14 @@ function B:UpdateSlot(bagID, slotID)
 		slot:SetBackdropBorderColor(r, g, b)
 		slot.ignoreBorderColors = true
 	elseif clink then
-		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
+		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
 		slot.name = name
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
 
-		if slot.rarity then
-			r, g, b = GetItemQualityColor(slot.rarity);
+		if slot.rarity or itemRarity then
+			r, g, b = GetItemQualityColor(slot.rarity or itemRarity);
 		end
 
 		if showBindType or showItemLevel then
@@ -679,7 +683,7 @@ function B:UpdateCooldowns()
 	for _, bagID in ipairs(self.BagIDs) do
 		for slotID = 1, GetContainerNumSlots(bagID) do
 			local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-			CooldownFrame_Set(self.Bags[bagID][slotID].cooldown, start, duration, enable)
+			--CooldownFrame_Set(self.Bags[bagID][slotID].cooldown, start, duration, enable, _, _)
 		end
 	end
 end
@@ -927,6 +931,9 @@ function B:Layout(isBank)
 	local f = self:GetContainerFrame(isBank);
 
 	if not f then return end
+
+	local ButtonType = E.wowpatch == "8.1.0" and "CheckButton" or "ItemButton"
+
 	local buttonSize = isBank and self.db.bankSize or self.db.bagSize;
 	local buttonSpacing = E.Border*2;
 	local containerWidth = ((isBank and self.db.bankWidth) or self.db.bagWidth)
@@ -961,7 +968,7 @@ function B:Layout(isBank)
 		if (not isBank) or (isBank and bagID ~= -1 and numContainerSlots >= 1 and not (i - 1 > numContainerSlots)) then
 			if not f.ContainerHolder[i] then
 				if isBank then
-					f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIBankBag" .. (bagID-4), f.ContainerHolder, "BankItemButtonBagTemplate")
+					f.ContainerHolder[i] = CreateFrame(ButtonType, "ElvUIBankBag" .. (bagID-4), f.ContainerHolder, "BankItemButtonBagTemplate")
 					B:CreateFilterIcon(f.ContainerHolder[i])
 					f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 						if button == "RightButton" and holder.id then
@@ -974,7 +981,7 @@ function B:Layout(isBank)
 					end)
 				else
 					if bagID == 0 then --Backpack needs different setup
-						f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIMainBagBackpack", f.ContainerHolder, "ItemButtonTemplate, ItemAnimTemplate")
+						f.ContainerHolder[i] = CreateFrame(ButtonType, "ElvUIMainBagBackpack", f.ContainerHolder, "ItemAnimTemplate")
 						B:CreateFilterIcon(f.ContainerHolder[i])
 						f.ContainerHolder[i]:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 						f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
@@ -989,7 +996,7 @@ function B:Layout(isBank)
 							PutItemInBackpack();--Put bag on empty slot, or drop item in this bag
 						end)
 					else
-						f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIMainBag" .. (bagID-1) .. "Slot", f.ContainerHolder, "BagSlotButtonTemplate")
+						f.ContainerHolder[i] = CreateFrame(ButtonType, "ElvUIMainBag" .. (bagID-1) .. "Slot", f.ContainerHolder, "BagSlotButtonTemplate")
 						B:CreateFilterIcon(f.ContainerHolder[i])
 						f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 							if button == "RightButton" and holder.id then
@@ -1003,11 +1010,10 @@ function B:Layout(isBank)
 					end
 				end
 
-				f.ContainerHolder[i]:SetTemplate('Default', true)
+				f.ContainerHolder[i]:SetTemplate(nil, true)
 				f.ContainerHolder[i]:StyleButton()
-				f.ContainerHolder[i].IconBorder:SetAlpha(0)
+				--f.ContainerHolder[i].IconBorder:SetAlpha(0)
 				f.ContainerHolder[i]:SetNormalTexture("")
-				f.ContainerHolder[i]:SetCheckedTexture(nil)
 				f.ContainerHolder[i]:SetPushedTexture("")
 				f.ContainerHolder[i].id = bagID
 				f.ContainerHolder[i]:HookScript("OnEnter", function(ch) B.SetSlotAlphaForBag(ch, f) end)
@@ -1020,11 +1026,13 @@ function B:Layout(isBank)
 					end
 				end
 
-				f.ContainerHolder[i].iconTexture = _G[f.ContainerHolder[i]:GetName()..'IconTexture'];
-				f.ContainerHolder[i].iconTexture:SetInside()
-				f.ContainerHolder[i].iconTexture:SetTexCoord(unpack(E.TexCoords))
-				if bagID == 0 then --backpack
-					f.ContainerHolder[i].iconTexture:SetTexture("Interface\\Buttons\\Button-Backpack-Up");
+				if _G[f.ContainerHolder[i]:GetName()..'IconTexture'] then
+					f.ContainerHolder[i].iconTexture = _G[f.ContainerHolder[i]:GetName()..'IconTexture'];
+					f.ContainerHolder[i].iconTexture:SetInside()
+					f.ContainerHolder[i].iconTexture:SetTexCoord(unpack(E.TexCoords))
+					if bagID == 0 then --backpack
+						f.ContainerHolder[i].iconTexture:SetTexture("Interface\\Buttons\\Button-Backpack-Up");
+					end
 				end
 			end
 
@@ -1071,11 +1079,10 @@ function B:Layout(isBank)
 			for slotID = 1, numSlots do
 				f.totalSlots = f.totalSlots + 1;
 				if not f.Bags[bagID][slotID] then
-					f.Bags[bagID][slotID] = CreateFrame('CheckButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate');
+					f.Bags[bagID][slotID] = CreateFrame(ButtonType, f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate');
 					f.Bags[bagID][slotID]:StyleButton();
-					f.Bags[bagID][slotID]:SetTemplate('Default', true);
+					f.Bags[bagID][slotID]:SetTemplate(nil, true);
 					f.Bags[bagID][slotID]:SetNormalTexture(nil);
-					f.Bags[bagID][slotID]:SetCheckedTexture(nil);
 
 					if _G[f.Bags[bagID][slotID]:GetName()..'NewItemTexture'] then
 						_G[f.Bags[bagID][slotID]:GetName()..'NewItemTexture']:Hide()
@@ -1238,11 +1245,11 @@ function B:Layout(isBank)
 			totalSlots = totalSlots + 1;
 
 			if(not f.reagentFrame.slots[i]) then
-				f.reagentFrame.slots[i] = CreateFrame("Button", "ElvUIReagentBankFrameItem"..i, f.reagentFrame, "ReagentBankItemButtonGenericTemplate");
+				f.reagentFrame.slots[i] = CreateFrame(ButtonType, "ElvUIReagentBankFrameItem"..i, f.reagentFrame, "ReagentBankItemButtonGenericTemplate");
 				f.reagentFrame.slots[i]:SetID(i)
 
 				f.reagentFrame.slots[i]:StyleButton()
-				f.reagentFrame.slots[i]:SetTemplate('Default', true);
+				f.reagentFrame.slots[i]:SetTemplate(nil, true);
 				f.reagentFrame.slots[i]:SetNormalTexture(nil);
 
 				f.reagentFrame.slots[i].Count:ClearAllPoints();
@@ -1650,7 +1657,7 @@ function B:ContructContainerFrame(name, isBank)
 
 		f.reagentFrame.cover = CreateFrame("Button", nil, f.reagentFrame)
 		f.reagentFrame.cover:SetAllPoints(f.reagentFrame)
-		f.reagentFrame.cover:SetTemplate("Default", true)
+		f.reagentFrame.cover:SetTemplate(nil, true)
 		f.reagentFrame.cover:SetFrameLevel(f.reagentFrame:GetFrameLevel() + 10)
 
 		f.reagentFrame.cover.purchaseButton = CreateFrame("Button", nil, f.reagentFrame.cover)
@@ -1983,12 +1990,6 @@ function B:ContructContainerFrame(name, isBank)
 
 			B:NewItemGlowBagClear(f)
 
-			if ElvUIBags and ElvUIBags.buttons then
-				for _, bagButton in pairs(ElvUIBags.buttons) do
-					bagButton:SetChecked(false)
-				end
-			end
-
 			if E.db.bags.clearSearchOnClose then
 				B.ResetAndClear(f.editBox);
 			end
@@ -2103,7 +2104,7 @@ function B:GUILDBANKFRAME_OPENED(event)
 	--[[
 		local button = CreateFrame("Button", "GuildSortButton", GuildBankFrame, "UIPanelButtonTemplate")
 		button:StripTextures()
-		button:SetTemplate("Default", true)
+		button:SetTemplate(nil, true)
 		button:Size(110, 20)
 		button:Point("RIGHT", GuildItemSearchBox, "LEFT", -4, 0)
 		button:SetText(L["Sort Tab"])

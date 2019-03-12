@@ -57,7 +57,7 @@ E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 		self.editBox:SetAutoFocus(false)
 		self.editBox.width = self.editBox:GetWidth()
 		self.editBox:Width(220)
-		self.editBox:SetText("https://tukui.org/dl.php")
+		self.editBox:SetText("https://www.tukui.org/download.php?ui=elvui")
 		self.editBox:HighlightText()
 		ChatEdit_FocusActiveWindow();
 	end,
@@ -77,8 +77,8 @@ E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 		self:GetParent():Hide();
 	end,
 	EditBoxOnTextChanged = function(self)
-		if(self:GetText() ~= "https://tukui.org/dl.php") then
-			self:SetText("https://tukui.org/dl.php")
+		if(self:GetText() ~= "https://www.tukui.org/download.php?ui=elvui") then
+			self:SetText("https://www.tukui.org/download.php?ui=elvui")
 		end
 		self:HighlightText()
 		self:ClearFocus()

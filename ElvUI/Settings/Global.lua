@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Global Settings
 G.general = {
 	UIScale = 0.64,
-	version = 10.92,
+	version = 11.00,
 	eyefinity = false,
 	smallerWorldMap = true,
 	smallerWorldMapScale = 0.9,
@@ -14,6 +14,12 @@ G.general = {
 		position = 'BOTTOMLEFT',
 		xOffset = 0,
 		yOffset = 0,
+	},
+	AceGUI = {
+		width = 1000,
+		height = 720,
+		left = nil,
+		top = nil
 	},
 	disableTutorialButtons = true,
 	showMissingTalentAlert = false,
@@ -278,12 +284,9 @@ G.profileCopy = {
 		general = true,
 		cooldown = true,
 		classbar = true,
-		reactions = true,
-		healPrediction = true,
 		threat = true,
 		units = {
 			PLAYER = true,
-			HEALER = true,
 			FRIENDLY_PLAYER = true,
 			ENEMY_PLAYER = true,
 			FRIENDLY_NPC = true,

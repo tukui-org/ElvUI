@@ -160,7 +160,7 @@ local function LoadSkin()
 
 	_G.AuctionsItemButton:StripTextures()
 	_G.AuctionsItemButton:StyleButton()
-	_G.AuctionsItemButton:SetTemplate("Default", true)
+	_G.AuctionsItemButton:SetTemplate(nil, true)
 	_G.AuctionsItemButton.IconBorder:SetAlpha(0)
 
 	hooksecurefunc(_G.AuctionsItemButton.IconBorder, 'SetVertexColor', function(self, r, g, b)

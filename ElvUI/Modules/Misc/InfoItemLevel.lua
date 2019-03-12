@@ -63,13 +63,13 @@ end
 
 function M:ClearPageInfo(frame, which)
 	if not (frame and frame.ItemLevelText) then return end
-	frame.ItemLevelText:SetText()
+	frame.ItemLevelText:SetText('')
 
 	for i = 1, 17 do
 		if i ~= 4 then
 			local inspectItem = _G[which..InspectItems[i]]
-			inspectItem.enchantText:SetText()
-			inspectItem.iLvlText:SetText()
+			inspectItem.enchantText:SetText('')
+			inspectItem.iLvlText:SetText('')
 
 			for y=1, 10 do
 				inspectItem['textureSlot'..y]:SetTexture()
@@ -140,7 +140,7 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 			frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
 		end
 	else
-		frame.ItemLevelText:SetText()
+		frame.ItemLevelText:SetText('')
 	end
 end
 
@@ -165,8 +165,8 @@ function M:UpdatePageInfo(frame, which, guid, event)
 	for i = 1, 17 do
 		if i ~= 4 then
 			local inspectItem = _G[which..InspectItems[i]]
-			inspectItem.enchantText:SetText()
-			inspectItem.iLvlText:SetText()
+			inspectItem.enchantText:SetText('')
+			inspectItem.iLvlText:SetText('')
 
 			local unit = (which == 'Character' and 'player') or frame.unit
 			local iLvl, enchant, gems, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, true)

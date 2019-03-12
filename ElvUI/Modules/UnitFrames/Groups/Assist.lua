@@ -44,6 +44,8 @@ function UF:Construct_AssistFrames()
 
 	self.originalParent = self:GetParent()
 
+	UF:Update_AssistFrames(self, E.db.unitframe.units.assist)
+
 	return self
 end
 
@@ -53,23 +55,18 @@ function UF:Update_AssistHeader(header, db)
 
 	UF:ClearChildPoints(header:GetChildren())
 
-	header:SetAttribute("startingIndex", -1)
-	RegisterAttributeDriver(header, 'state-visibility', 'show')
 	RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
-	header:SetAttribute("startingIndex", 1)
 
 	header:SetAttribute('point', 'BOTTOM')
 	header:SetAttribute('columnAnchorPoint', 'LEFT')
-
-	UF:ClearChildPoints(header:GetChildren())
 	header:SetAttribute("yOffset", db.verticalSpacing)
-
-	local width, height = header:GetSize()
-	header.dirtyWidth, header.dirtyHeight = width, max(height, 2*db.height + db.verticalSpacing)
 
 	if not header.positioned then
 		header:ClearAllPoints()
 		header:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -248)
+
+		local width, height = header:GetSize()
+		header.dirtyWidth, header.dirtyHeight = width, max(height, 2*db.height + db.verticalSpacing)
 
 		E:CreateMover(header, header:GetName()..'Mover', L["MA Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,assist,generalGroup')
 		header.mover.positionOverride = "TOPLEFT"

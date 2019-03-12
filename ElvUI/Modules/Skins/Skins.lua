@@ -274,7 +274,7 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 		if button.Icon then button.Icon:Hide() end
 		if not button.text then
 			button.text = button:CreateFontString(nil, 'OVERLAY')
-			button.text:SetFont(E.Media.Fonts.PTSansNarrow, 16, 'OUTLINE')
+			button.text:FontTemplate(E.Media.Fonts.PTSansNarrow, 16, 'OUTLINE')
 			button.text:SetText('x')
 			button.text:SetJustifyH('CENTER')
 			button.text:Point('CENTER', button, 'CENTER')
@@ -282,9 +282,9 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 	end
 
 	if useCreateBackdrop then
-		button:CreateBackdrop('Default', true)
+		button:CreateBackdrop(nil, true)
 	elseif not noSetTemplate then
-		button:SetTemplate("Default", true)
+		button:SetTemplate(nil, true)
 	end
 
 	button:HookScript("OnEnter", S.SetModifiedBackdrop)
@@ -320,7 +320,7 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 
 	if Thumb then
 		Thumb:SetTexture()
-		Thumb:CreateBackdrop('Default', true, true)
+		Thumb:CreateBackdrop(nil, true, true)
 		if not thumbTrimY then thumbTrimY = 3 end
 		if not thumbTrimX then thumbTrimX = 2 end
 		Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
@@ -653,7 +653,7 @@ function S:HandleItemButton(b, shrinkIcon)
 	end
 
 	b:StripTextures()
-	b:CreateBackdrop('Default', true)
+	b:CreateBackdrop(nil, true)
 	b:StyleButton()
 
 	if icon then

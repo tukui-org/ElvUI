@@ -242,20 +242,6 @@ local function CreateNamePlatesConfig()
 		get = function(info) return E.global.profileCopy.nameplates[ info[#info] ] end,
 		set = function(info, value) E.global.profileCopy.nameplates[ info[#info] ] = value; end
 	}
-	config.args.reactions = {
-		order = 4,
-		type = "toggle",
-		name = L["Reaction Colors"],
-		get = function(info) return E.global.profileCopy.nameplates[ info[#info] ] end,
-		set = function(info, value) E.global.profileCopy.nameplates[ info[#info] ] = value; end
-	}
-	config.args.healPrediction = {
-		order = 5,
-		type = "toggle",
-		name = L["Heal Prediction"],
-		get = function(info) return E.global.profileCopy.nameplates[ info[#info] ] end,
-		set = function(info, value) E.global.profileCopy.nameplates[ info[#info] ] = value; end
-	}
 	config.args.threat = {
 		order = 6,
 		type = "toggle",
@@ -275,11 +261,6 @@ local function CreateNamePlatesConfig()
 				order = 1,
 				type = "toggle",
 				name = L["Player Frame"],
-			},
-			["HEALER"] = {
-				order = 2,
-				type = "toggle",
-				name = L["Healer Frames"],
 			},
 			["FRIENDLY_PLAYER"] = {
 				order = 3,

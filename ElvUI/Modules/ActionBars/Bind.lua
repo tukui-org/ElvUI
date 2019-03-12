@@ -406,7 +406,7 @@ function AB:LoadKeyBinder()
 	f:Hide()
 
 	local header = CreateFrame('Button', nil, f)
-	header:SetTemplate('Default', true)
+	header:SetTemplate(nil, true)
 	header:Width(100); header:Height(25)
 	header:Point("CENTER", f, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
