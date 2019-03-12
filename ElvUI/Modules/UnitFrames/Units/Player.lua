@@ -166,6 +166,7 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_Auras(frame, 'Debuffs')
 
 	--Castbar
+	frame:DisableElement('Castbar')
 	UF:Configure_Castbar(frame)
 
 	if (not db.enable and not E.private.unitframe.disabledBlizzardFrames.player) then
