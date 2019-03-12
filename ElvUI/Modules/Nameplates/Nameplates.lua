@@ -29,7 +29,6 @@ local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
 local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
 local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
-local C_Timer_After = C_Timer.After
 
 local function CopySettings(from, to)
 	for setting, value in pairs(from) do
@@ -275,7 +274,7 @@ end
 function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, IsInInstance())
 
-	C_Timer_After(.5, function() NP:ConfigureAll() end)
+	E:Delay(.5, NP.ConfigureAll, NP) -- find something else, this is not a fix lol
 end
 
 function NP:ConfigureAll()
