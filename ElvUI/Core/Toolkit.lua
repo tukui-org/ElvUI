@@ -190,7 +190,7 @@ end
 local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 	GetTemplate(t, isUnitFrameElement)
 
-	hookBlizzardBackdrop(f)
+	hookBlizzardBackdrop(f, ignoreUpdates)
 
 	f.template = t or 'Default'
 	if glossTex then f.glossTex = glossTex end
@@ -201,12 +201,18 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	if t == 'NoBackdrop' then
 		f:SetBackdrop(nil)
 	else
-		f:SetBackdrop({
+		local backdrop = {
 			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
 			edgeFile = E.media.blankTex,
 			tile = false, tileSize = 0, edgeSize = E.mult,
 			insets = {left = 0, right = 0, top = 0, bottom = 0}
-		})
+		}
+
+		f:SetBackdrop(backdrop)
+
+		if ignoreUpdates then -- call it at least once
+			customSetBackdrop(f, backdrop)
+		end
 
 		if not f.ignoreBackdropColors then
 			if t == 'Transparent' then
@@ -246,7 +252,11 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	end
 
 	if not f.ignoreBorderColors then
-		f:SetBackdropBorderColor(borderr, borderg, borderb)
+		if ignoreUpdates then
+			customBackdropBorderColor(f, borderr, borderg, borderb)
+		else
+			f:SetBackdropBorderColor(borderr, borderg, borderb)
+		end
 	end
 
 	if not f.ignoreUpdates then
