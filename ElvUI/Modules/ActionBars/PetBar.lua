@@ -41,6 +41,7 @@ function AB:UpdatePet(event, unit)
 			button.ICON = button:CreateTexture(buttonName..'ICON')
 			button.ICON:SetTexCoord(unpack(E.TexCoords))
 			button.ICON:SetInside()
+			button.pushed:SetDrawLayer('ARTWORK', 1)
 		end
 
 		if not isToken then
