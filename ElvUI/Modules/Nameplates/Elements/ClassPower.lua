@@ -18,6 +18,16 @@ local MAX_POINTS = {
 	['WARLOCK'] = 5
 }
 
+local ClassPowerID = {
+	['DRUID'] = _G.Enum.PowerType.ComboPoints or 4,
+	['MAGE'] = _G.Enum.PowerType.ArcaneCharges or 16,
+	['MONK'] = _G.Enum.PowerType.Chi or 12,
+	['PALADIN'] = _G.Enum.PowerType.HolyPower or 9,
+	['ROGUE'] = _G.Enum.PowerType.ComboPoints or 4,
+	['WARLOCK'] = _G.Enum.PowerType.SoulShards or 7,
+}
+
+
 function NP:ClassPower_UpdateColor(powerType)
 	local color, r, g, b = NP.db.colors.power[powerType]
 	if color then
@@ -122,13 +132,16 @@ function NP:Update_ClassPower(nameplate)
 			nameplate.ClassPower:Show()
 		end
 
-		nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', 0, NP.db.classbar.yOffset)
+		if nameplate.ClassPower.isEnabled then
+			nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', 0, NP.db.classbar.yOffset)
 
-		local Width = NP.db.classbar.width / nameplate.ClassPower.__max
-		nameplate.ClassPower:Size(NP.db.classbar.width + (nameplate.ClassPower.__max - 1), NP.db.classbar.height)
+			local maxClassBarButtons = UnitPowerMax('player', ClassPowerID[E.myclass])
+			local Width = NP.db.classbar.width / maxClassBarButtons
+			nameplate.ClassPower:Size(NP.db.classbar.width + (maxClassBarButtons - 1), NP.db.classbar.height)
 
-		for i = 1, nameplate.ClassPower.__max do
-			nameplate.ClassPower[i]:Size(Width, NP.db.classbar.height)
+			for i = 1, maxClassBarButtons do
+				nameplate.ClassPower[i]:Size(Width, NP.db.classbar.height)
+			end
 		end
 	else
 		if nameplate:IsElementEnabled('ClassPower') then
