@@ -243,7 +243,7 @@ function B:SetSearch(query)
 	end
 
 	if ElvUIReagentBankFrameItem1 then
-		for slotID=1, 98 do
+		for slotID = 1, B.REAGENTBANK_SIZE do
 			local _, _, _, _, _, _, link = GetContainerItemInfo(REAGENTBANK_CONTAINER, slotID);
 			local button = _G["ElvUIReagentBankFrameItem"..slotID]
 			local success, result = pcall(method, Search, link, query)
@@ -336,7 +336,7 @@ function B:UpdateCountDisplay()
 
 	--Reagent Bank
 	if self.BankFrame and self.BankFrame.reagentFrame then
-		for i = 1, 98 do
+		for i = 1, B.REAGENTBANK_SIZE do
 			local slot = self.BankFrame.reagentFrame.slots[i]
 			if slot then
 				slot.Count:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
@@ -648,7 +648,7 @@ end
 
 function B:UpdateBagSlots(bagID)
 	if bagID == REAGENTBANK_CONTAINER then
-		for i=1, 98 do
+		for i=1, B.REAGENTBANK_SIZE do
 			self:UpdateReagentSlot(i);
 		end
 	else
@@ -1241,7 +1241,7 @@ function B:Layout(isBank)
 
 		local totalSlots, lastReagentRowButton = 0
 		numContainerRows = 1
-		for i = 1, 98 do
+		for i = 1, B.REAGENTBANK_SIZE do
 			totalSlots = totalSlots + 1;
 
 			if(not f.reagentFrame.slots[i]) then
@@ -2394,6 +2394,7 @@ function B:Initialize()
 	E.bags = self
 	self.db = E.db.bags
 	self.BagFrames = {}
+	self.REAGENTBANK_SIZE = 98 -- numRow (7) * numColumn (7) * numSubColumn (2) = size = 98
 
 	self.ProfessionColors = {
 		[0x0008]   = { self.db.colors.profession.leatherworking.r, self.db.colors.profession.leatherworking.g, self.db.colors.profession.leatherworking.b },
