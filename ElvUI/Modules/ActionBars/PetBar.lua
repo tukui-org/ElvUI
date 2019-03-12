@@ -3,6 +3,7 @@ local AB = E:GetModule('ActionBars');
 
 --Lua functions
 local _G = _G
+local unpack = unpack
 local ceil = math.ceil
 --WoW API / Variables
 local RegisterStateDriver = RegisterStateDriver
@@ -31,18 +32,22 @@ function AB:UpdatePet(event, unit)
 	if(event == "UNIT_AURA" and unit ~= "pet") then return end
 
 	for i=1, NUM_PET_ACTION_SLOTS, 1 do
-		local buttonName = "PetActionButton"..i;
-		local button = _G[buttonName];
-		local icon = _G[buttonName.."Icon"];
-		local autoCast = _G[buttonName.."AutoCastable"];
-		local shine = _G[buttonName.."Shine"];
+		local buttonName = "PetActionButton"..i
+		local button = _G[buttonName]
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 
+		button.icon:Hide()
+		if not button.ICON then
+			button.ICON = button:CreateTexture(buttonName..'ICON')
+			button.ICON:SetTexCoord(unpack(E.TexCoords))
+			button.ICON:SetInside()
+		end
+
 		if not isToken then
-			icon:SetTexture(texture);
+			button.ICON:SetTexture(texture);
 			button.tooltipName = name;
 		else
-			icon:SetTexture(_G[texture]);
+			button.ICON:SetTexture(_G[texture]);
 			button.tooltipName = _G[name];
 		end
 
@@ -70,33 +75,33 @@ function AB:UpdatePet(event, unit)
 		end
 
 		if autoCastAllowed then
-			autoCast:Show();
+			button.AutoCastable:Show();
 		else
-			autoCast:Hide();
+			button.AutoCastable:Hide();
 		end
 
 		if autoCastEnabled then
-			AutoCastShine_AutoCastStart(shine);
+			AutoCastShine_AutoCastStart(button.AutoCastShine);
 		else
-			AutoCastShine_AutoCastStop(shine);
+			AutoCastShine_AutoCastStop(button.AutoCastShine);
 		end
 
 		button:SetAlpha(1);
 
 		if texture then
 			if GetPetActionSlotUsable(i) then
-				SetDesaturation(icon, nil);
+				SetDesaturation(button.ICON, nil);
 			else
-				SetDesaturation(icon, 1);
+				SetDesaturation(button.ICON, 1);
 			end
-			icon:Show();
+			button.ICON:Show();
 		else
-			icon:Hide();
+			button.ICON:Hide();
 		end
 
 		if not PetHasActionBar() and texture and name ~= "PET_ACTION_FOLLOW" then
 			PetActionButton_StopFlash(button);
-			SetDesaturation(icon, 1);
+			SetDesaturation(button.ICON, 1);
 			button:SetChecked(0);
 		end
 	end
