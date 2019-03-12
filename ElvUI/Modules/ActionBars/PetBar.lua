@@ -32,9 +32,9 @@ function AB:UpdatePet(event, unit)
 	if(event == "UNIT_AURA" and unit ~= "pet") then return end
 
 	for i=1, NUM_PET_ACTION_SLOTS, 1 do
+		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 		local buttonName = "PetActionButton"..i
 		local button = _G[buttonName]
-		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 
 		button.icon:Hide()
 		if not button.ICON then
