@@ -10,9 +10,9 @@ local oldRegisterAsWidget, oldRegisterAsContainer
 function S:Ace3_SkinDropdownPullout()
 	if self and self.obj then
 		if self.obj.pullout and self.obj.pullout.frame then
-			self.obj.pullout.frame:SetTemplate('Default', true)
+			self.obj.pullout.frame:SetTemplate(nil, true)
 		elseif self.obj.dropdown then -- this will be LSM
-			self.obj.dropdown:SetTemplate('Default', true)
+			self.obj.dropdown:SetTemplate(nil, true)
 
 			if self.obj.dropdown.slider then
 				self.obj.dropdown.slider:SetTemplate()
