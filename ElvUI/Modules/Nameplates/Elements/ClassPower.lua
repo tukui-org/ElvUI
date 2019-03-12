@@ -68,6 +68,10 @@ function NP:Construct_ClassPower(nameplate)
 		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		NP.StatusBars[ClassPower[i]] = true
 
+		local statusBarTexture = ClassPower[i]:GetStatusBarTexture()
+		statusBarTexture:SetSnapToPixelGrid(false)
+		statusBarTexture:SetTexelSnappingBias(0)
+
 		if i == 1 then
 			ClassPower[i]:Point('LEFT', ClassPower, 'LEFT', 0, 0)
 		else
@@ -108,6 +112,10 @@ function NP:Construct_Runes(nameplate)
 		Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
 		Runes[i]:Size(width, NP.db.classbar.height)
 		NP.StatusBars[Runes[i]] = true
+
+		local statusBarTexture = Runes[i]:GetStatusBarTexture()
+		statusBarTexture:SetSnapToPixelGrid(false)
+		statusBarTexture:SetTexelSnappingBias(0)
 
 		if i == 1 then
 			Runes[i]:Point('LEFT', Runes, 'LEFT', 0, 0)
@@ -152,8 +160,8 @@ function NP:Update_Runes(nameplate)
 
 		nameplate.sortOrder = NP.db.classbar.sortDirection
 
-		nameplate.Runes:Size(NP.db.classbar.width + 5, NP.db.classbar.height)
 		local width = NP.db.classbar.width / 6
+		nameplate.Runes:Size(NP.db.classbar.width + 5, NP.db.classbar.height)
 
 		for i = 1, 6 do
 			nameplate.Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
