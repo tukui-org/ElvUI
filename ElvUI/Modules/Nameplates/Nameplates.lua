@@ -273,8 +273,6 @@ end
 
 function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, IsInInstance())
-
-	E:Delay(.5, NP.ConfigureAll, NP) -- find something else, this is not a fix lol
 end
 
 function NP:ConfigureAll()
