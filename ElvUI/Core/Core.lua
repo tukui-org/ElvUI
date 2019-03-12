@@ -1718,6 +1718,15 @@ function E:DBConversions()
 	if E.global.general.UIScale <= 0 then
 		E.global.general.UIScale = G.general.UIScale
 	end
+
+	--v11 Nameplates Reset
+	if not E.db.v11NamePlateReset and E.private.nameplates.enable then
+		local styleFilters = E:CopyTable({}, E.db.nameplates.filters)
+		E.db.nameplates = E:CopyTable({}, P.nameplates)
+		E.db.nameplates.filters = E:CopyTable({}, styleFilters)
+		E:GetModule("NamePlates"):CVarReset()
+		E.db.v11NamePlateReset = true
+	end
 end
 
 local CPU_USAGE = {}
