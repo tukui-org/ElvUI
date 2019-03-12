@@ -4310,14 +4310,9 @@ E.Options.args.nameplate = {
 				},
 			},
 		},
-		playerGroup = GetUnitSettings("PLAYER", L["Player Frame"]),
-		friendlyPlayerGroup = GetUnitSettings("FRIENDLY_PLAYER", L["Friendly Player Frames"]),
-		enemyPlayerGroup = GetUnitSettings("ENEMY_PLAYER", L["Enemy Player Frames"]),
-		friendlyNPCGroup = GetUnitSettings("FRIENDLY_NPC", L["Friendly NPC Frames"]),
-		enemyNPCGroup = GetUnitSettings("ENEMY_NPC", L["Enemy NPC Frames"]),
 		filters = {
 			type = "group",
-			order = -99,
+			order = 30,
 			name = L["Style Filter"],
 			childGroups = "tab",
 			disabled = function() return not E.NamePlates; end,
@@ -4384,6 +4379,11 @@ E.Options.args.nameplate = {
 				},
 			},
 		},
+		playerGroup = GetUnitSettings("PLAYER", L["Player Frame"]),
+		friendlyPlayerGroup = GetUnitSettings("FRIENDLY_PLAYER", L["Friendly Player Frames"]),
+		enemyPlayerGroup = GetUnitSettings("ENEMY_PLAYER", L["Enemy Player Frames"]),
+		friendlyNPCGroup = GetUnitSettings("FRIENDLY_NPC", L["Friendly NPC Frames"]),
+		enemyNPCGroup = GetUnitSettings("ENEMY_NPC", L["Enemy NPC Frames"]),
 	},
 }
 
