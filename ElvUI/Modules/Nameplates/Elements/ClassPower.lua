@@ -127,6 +127,12 @@ function NP:Update_ClassPower(nameplate)
 		end
 
 		nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', 0, NP.db.classbar.yOffset)
+
+		local Width = NP.db.classbar.width / (MAX_POINTS[E.myclass] or 5)
+		nameplate.ClassPower:Size(NP.db.classbar.width + ((MAX_POINTS[E.myclass] or 5) - 1), NP.db.classbar.height)
+		for i = 1, (MAX_POINTS[E.myclass] or 5) do
+			nameplate.ClassPower[i]:Size(Width, NP.db.classbar.height)
+		end
 	else
 		if nameplate:IsElementEnabled('ClassPower') then
 			nameplate:DisableElement('ClassPower')
