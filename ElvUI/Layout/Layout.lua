@@ -129,8 +129,9 @@ local channelButtons = {
 
 function LO:ToggleChatTabPanels(rightOverride, leftOverride)
 	if E.private.chat.enable then
+		local attachToTab = (E.db.chat.panelBackdrop == "HIDEBOTH" or E.db.chat.panelBackdrop == "RIGHT") or E.db.chat.panelTabBackdrop
 		for _, button in pairs(channelButtons) do
-			button.Icon:SetParent(E.db.chat.panelTabBackdrop and _G.LeftChatTab or _G.LeftChatPanel)
+			button.Icon:SetParent((attachToTab and _G.LeftChatTab) or _G.LeftChatPanel)
 		end
 	end
 
