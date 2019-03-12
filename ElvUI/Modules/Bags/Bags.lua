@@ -1364,13 +1364,8 @@ function B:UpdateReagentSlot(slotID)
 end
 
 function B:UpdateAll()
-	if self.BagFrame then
-		self:Layout();
-	end
-
-	if self.BankFrame then
-		self:Layout(true);
-	end
+	if self.BagFrame then self:Layout() end
+	if self.BankFrame then self:Layout(true) end
 end
 
 function B:OnEvent(event, ...)
@@ -1704,20 +1699,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.reagentToggle:SetScript("OnLeave", self.Tooltip_Hide)
 		f.reagentToggle:SetScript("OnClick", function()
 			PlaySound(841) --IG_CHARACTER_INFO_TAB
-			if f.holderFrame:IsShown() then
-				_G.BankFrame.selectedTab = 2
-				f.holderFrame:Hide()
-				f.reagentFrame:Show()
-				f.editBox:Point('RIGHT', f.depositButton, 'LEFT', -5, 0);
-				f.bagText:SetText(L["Reagent Bank"])
-			else
-				_G.BankFrame.selectedTab = 1
-				f.reagentFrame:Hide()
-				f.holderFrame:Show()
-				f.editBox:Point('RIGHT', f.purchaseBagButton, 'LEFT', -5, 0);
-				f.bagText:SetText(L["Bank"])
-			end
-
+			B:ShowBankTab(f, f.holderFrame:IsShown())
 			self:Layout(true)
 			f:Show()
 		end)
@@ -2060,10 +2042,29 @@ function B:CloseBags()
 	TooltipModule:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
 
+function B:ShowBankTab(f, showReagent)
+	if showReagent then
+		_G.BankFrame.selectedTab = 2
+		f.holderFrame:Hide()
+		f.reagentFrame:Show()
+		f.editBox:Point('RIGHT', f.depositButton, 'LEFT', -5, 0);
+		f.bagText:SetText(L["Reagent Bank"])
+	else
+		_G.BankFrame.selectedTab = 1
+		f.reagentFrame:Hide()
+		f.holderFrame:Show()
+		f.editBox:Point('RIGHT', f.purchaseBagButton, 'LEFT', -5, 0);
+		f.bagText:SetText(L["Bank"])
+	end
+end
+
 function B:OpenBank()
 	if not self.BankFrame then
 		self.BankFrame = self:ContructContainerFrame('ElvUI_BankContainerFrame', true);
 	end
+
+	--Allow opening reagent tab directly by holding Shift
+	B:ShowBankTab(self.BankFrame, IsShiftKeyDown())
 
 	--Call :Layout first so all elements are created before we update
 	self:Layout(true)
@@ -2073,15 +2074,6 @@ function B:OpenBank()
 
 	self:OpenBags()
 	self:UpdateTokens()
-
-	--Allow opening reagent tab directly by holding Shift
-	if IsShiftKeyDown() then
-		_G.BankFrame.selectedTab = 2
-		self.BankFrame.holderFrame:Hide()
-		self.BankFrame.reagentFrame:Show()
-		self.BankFrame.editBox:Point('RIGHT', self.BankFrame.depositButton, 'LEFT', -5, 0);
-		self.BankFrame.bagText:SetText(L["Reagent Bank"])
-	end
 end
 
 function B:PLAYERBANKBAGSLOTS_CHANGED()
