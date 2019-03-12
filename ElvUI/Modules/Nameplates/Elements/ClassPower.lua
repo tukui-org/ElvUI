@@ -79,6 +79,12 @@ function NP:Construct_ClassPower(nameplate)
 		local statusBarTexture = ClassPower[i]:GetStatusBarTexture()
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
+
+		if i == 1 then
+			ClassPower[i]:Point('LEFT', ClassPower, 'LEFT', 0, 0)
+		else
+			ClassPower[i]:Point('LEFT', ClassPower[i - 1], 'RIGHT', 1, 0)
+		end
 	end
 
 	ClassPower.UpdateColor = NP.ClassPower_UpdateColor
