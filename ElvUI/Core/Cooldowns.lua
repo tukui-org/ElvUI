@@ -93,7 +93,7 @@ end
 function E:Cooldown_ForceUpdate(cd)
 	cd.nextUpdate = 0
 
-	if cd.fontScale and (cd.fontScale >= MIN_SCALE) then
+	if cd.staticSize or (cd.fontScale and (cd.fontScale >= MIN_SCALE)) then
 		cd:Show()
 	end
 end
@@ -184,7 +184,7 @@ function E:OnSetCooldown(start, duration)
 		timer.enabled = true
 		timer.nextUpdate = 0
 
-		if timer.fontScale and (timer.fontScale >= MIN_SCALE) then
+		if timer.staticSize or (timer.fontScale and (timer.fontScale >= MIN_SCALE)) then
 			timer:Show()
 		end
 	elseif self.timer then
