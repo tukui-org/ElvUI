@@ -18,7 +18,6 @@ local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_
 local CLASS, DEFAULT = CLASS, DEFAULT
 
 local colorBuffer = {}
-local editingText
 
 local function UpdateAlphaText()
 	local a = _G.OpacitySliderFrame:GetValue()
@@ -34,16 +33,16 @@ local function UpdateAlpha(tbox)
 		_G.ColorPPBoxA:SetText(("%d"):format(a))
 	end
 	a = 1 - (a / 100)
-	editingText = true
+
+	_G.OpacitySliderFrame.ignoreUpdates = true
 	_G.OpacitySliderFrame:SetValue(a)
-	editingText = nil
+	_G.OpacitySliderFrame.ignoreUpdates = nil
 end
 
 local function UpdateColorTexts(r, g, b)
 	if not r then r, g, b = _G.ColorPickerFrame:GetColorRGB() end
-	r = r*255
-	g = g*255
-	b = b*255
+	r, g, b = r*255, g*255, b*255
+
 	_G.ColorPPBoxR:SetText(("%d"):format(r))
 	_G.ColorPPBoxG:SetText(("%d"):format(g))
 	_G.ColorPPBoxB:SetText(("%d"):format(b))
@@ -82,10 +81,10 @@ local function UpdateColor(tbox)
 	-- This takes care of updating the hex entry when changing rgb fields and vice versa
 	UpdateColorTexts(r,g,b)
 
-	editingText = true
-	_G.ColorPickerFrame:SetColorRGB(r, g, b)
 	_G.ColorSwatch:SetColorTexture(r, g, b)
-	editingText = nil
+	_G.ColorPickerFrame.ignoreUpdates = true
+	_G.ColorPickerFrame:SetColorRGB(r, g, b)
+	_G.ColorPickerFrame.ignoreUpdates = nil
 end
 
 local function HandleUpdateLimiter(self, elapsed)
@@ -144,17 +143,18 @@ function B:EnhanceColorPicker()
 	--We overwrite the OnColorSelect script and set a limit on how often we allow a call to self.func
 	_G.ColorPickerFrame:SetScript('OnColorSelect', function(frame, r, g, b)
 		_G.ColorSwatch:SetColorTexture(r, g, b)
-		if not editingText then
+		if not frame.ignoreUpdates then
 			UpdateColorTexts(r, g, b)
-		end
-		if frame.allowUpdate then
-			frame.func()
-			frame.timeSinceUpdate = 0
+
+			if frame.allowUpdate then
+				frame.func()
+				frame.timeSinceUpdate = 0
+			end
 		end
 	end)
 
-	_G.OpacitySliderFrame:HookScript("OnValueChanged", function()
-		if not editingText then
+	_G.OpacitySliderFrame:HookScript("OnValueChanged", function(frame)
+		if not frame.ignoreUpdates then
 			UpdateAlphaText()
 		end
 	end)

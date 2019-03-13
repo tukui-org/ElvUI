@@ -13,16 +13,15 @@ local CreateFrame, UIParent = CreateFrame, UIParent
 
 -- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
 -- List them here for Mikk's FindGlobals script
--- GLOBALS: ShowUIPanel, HideUIPanel, ColorPickerFrame, OpacitySliderFrame
+-- GLOBALS: ShowUIPanel, HideUIPanel, ColorPickerFrame, OpacitySliderFrame, ColorPPDefault
 
 --[[-----------------------------------------------------------------------------
 Support functions
 -------------------------------------------------------------------------------]]
 local function ColorCallback(self, r, g, b, a, isAlpha)
-	if not self.HasAlpha then
-		a = 1
-	end
+	if not self.HasAlpha then a = 1 end
 	self:SetColor(r, g, b, a)
+
 	if ColorPickerFrame:IsVisible() then
 		--colorpicker is still open
 		self:Fire("OnValueChanged", r, g, b, a)
@@ -48,6 +47,7 @@ end
 
 local function ColorSwatch_OnClick(frame)
 	HideUIPanel(ColorPickerFrame)
+
 	local self = frame.obj
 	if not self.disabled then
 		ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
@@ -67,17 +67,13 @@ local function ColorSwatch_OnClick(frame)
 			ColorCallback(self, r, g, b, a, true)
 		end
 
-		local r, g, b, a, dR, dG, dB, dA = self.r, self.g, self.b, self.a, self.dR, self.dG, self.dB, self.dA
-		if self.HasAlpha then
-			ColorPickerFrame.opacity = 1 - (a or 0)
-		end
+		local r, g, b, a = self.r, self.g, self.b, self.a
+		if self.HasAlpha then ColorPickerFrame.opacity = 1 - (a or 0) end
 		ColorPickerFrame:SetColorRGB(r, g, b)
 
-		if(ColorPPDefault and self.dR and self.dG and self.dB) then
+		if ColorPPDefault and self.dR and self.dG and self.dB then
 			local alpha = 1
-			if(self.dA) then
-				alpha = 1 - self.dA
-			end
+			if self.dA then alpha = 1 - self.dA end
 			ColorPPDefault.colors = {r = self.dR, g = self.dG, b = self.dB, a = alpha}
 		end
 

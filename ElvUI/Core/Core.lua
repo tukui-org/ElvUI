@@ -205,14 +205,33 @@ function E:GetPlayerRole()
 	return assignedRole
 end
 
+function E:GrabColorPickerValues(r, g, b)
+	_G.ColorPickerFrame.ignoreUpdates = true
+
+	-- grab old values
+	local oldR, oldG, oldB = _G.ColorPickerFrame:GetColorRGB()
+
+	-- set and define the new values
+	_G.ColorPickerFrame:SetColorRGB(r, g, b)
+	r, g, b = _G.ColorPickerFrame:GetColorRGB()
+
+	-- swap back to the old values
+	if oldR then _G.ColorPickerFrame:SetColorRGB(oldR, oldG, oldB) end
+
+	_G.ColorPickerFrame.ignoreUpdates = nil
+
+	return r, g, b
+end
+
 --Basically check if another class border is being used on a class that doesn't match. And then return true if a match is found.
 function E:CheckClassColor(r, g, b)
-	r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
+	r, g, b = E:GrabColorPickerValues(r, g, b)
 	local matchFound = false
 	for class in pairs(RAID_CLASS_COLORS) do
 		if class ~= E.myclass then
 			local colorTable = class == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
-			if colorTable.r == r and colorTable.g == g and colorTable.b == b then
+			local red, green, blue = E:GrabColorPickerValues(colorTable.r, colorTable.g, colorTable.b)
+			if red == r and green == g and blue == b then
 				matchFound = true
 			end
 		end
