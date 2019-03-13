@@ -49,23 +49,12 @@ function AB:StyleShapeShift()
 		local cooldown = _G[buttonName.."Cooldown"]
 
 		button.icon:Hide();
-		if not button.ICON then
-			button.ICON = button:CreateTexture(buttonName..'ICON')
-			button.ICON:SetTexCoord(unpack(E.TexCoords))
-			button.ICON:SetInside()
-			button.ICON:SetSnapToPixelGrid(false)
-			button.ICON:SetTexelSnappingBias(0)
-
-			if button.pushed then
-				button.pushed:SetDrawLayer('ARTWORK', 1)
-			end
-		end
 
 		if i <= numForms then
 			local texture, isActive, isCastable, spellID, _ = GetShapeshiftFormInfo(i)
 
 			if self.db.stanceBar.style == 'darkenInactive' then
-				_,_, texture = GetSpellInfo(spellID)
+				_, _, texture = GetSpellInfo(spellID)
 			end
 
 			if not texture then texture = WispSplode end
@@ -73,11 +62,7 @@ function AB:StyleShapeShift()
 			button.ICON:SetTexture(texture)
 
 			if not button.useMasque then
-				if texture then
-					cooldown:SetAlpha(1);
-				else
-					cooldown:SetAlpha(0);
-				end
+				cooldown:SetAlpha(1);
 
 				if isActive then
 					_G.StanceBarFrame.lastSelected = button:GetID();
@@ -276,6 +261,18 @@ function AB:PositionAndSizeBarShapeShift()
 			button:SetAlpha(bar.db.alpha);
 		end
 
+		if not button.ICON then
+			button.ICON = button:CreateTexture("ElvUI_StanceBarButton"..i.."ICON")
+			button.ICON:SetTexCoord(unpack(E.TexCoords))
+			button.ICON:SetSnapToPixelGrid(false)
+			button.ICON:SetTexelSnappingBias(0)
+			button.ICON:SetInside()
+
+			if button.pushed then
+				button.pushed:SetDrawLayer('ARTWORK', 1)
+			end
+		end
+
 		if(not button.FlyoutUpdateFunc) then
 			self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.stanceBar and true or nil);
 		end
@@ -312,7 +309,7 @@ function AB:AdjustMaxStanceButtons(event)
 			self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave');
 		end
 
-		if ( i <= numButtons ) then
+		if i <= numButtons then
 			bar.buttons[i]:Show();
 			bar.LastButton = i;
 		else
@@ -351,15 +348,14 @@ function AB:CreateBarShapeShift()
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
 
-	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN');
+	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_USABLE', 'StyleShapeShift');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift');
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift');
 
 	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar');
 	self:AdjustMaxStanceButtons();
-	self:PositionAndSizeBarShapeShift();
 	self:StyleShapeShift();
 	self:UpdateStanceBindings()
 end
