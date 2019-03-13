@@ -385,7 +385,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isTargetingMe = nil
 		nameplate.isTarget = nil
 	elseif event == 'PLAYER_TARGET_CHANGED' then
-		NP:Move_ClassPower(nameplate)
 		if nameplate then
 			local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
 			local Alpha = NP.db.nonTargetTransparency
