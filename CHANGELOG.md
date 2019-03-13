@@ -11,6 +11,7 @@ Fixed issue which caused the Script Profile Popup to be shown twice.
 Fixed TargetIndicator glow change the color correctly after switching targets.  
 Fixed Masque support for Pet bar and Stance bar.  
 Fixed issue which caused the Action bar buttons to not set the "checked" state.  
+Fixed an issue which caused the Blizzard Castbar to sometimes not be shown when the UnitFrame module was disabled and disable Blizzard Player Frame was unchecked.  
 
 **Misc. Changes:**  
 Prevented the Update Popup from being shown while in combat.  
