@@ -1909,7 +1909,8 @@ local function GetUnitSettings(unit, name)
 							},
 							format = {
 								order = 2,
-								name = L["Format"],
+								name = L["Text Format"],
+								desc = L["TEXT_FORMAT_DESC"],
 								type = "input",
 							},
 							position = {
@@ -2039,7 +2040,8 @@ local function GetUnitSettings(unit, name)
 							},
 							format = {
 								order = 2,
-								name = L["Format"],
+								name = L["Text Format"],
+								desc = L["TEXT_FORMAT_DESC"],
 								type = "input",
 							},
 							position = {
@@ -3081,7 +3083,8 @@ local function GetUnitSettings(unit, name)
 					},
 					format = {
 						order = 2,
-						name = L["Format"],
+						name = L["Text Format"],
+						desc = L["TEXT_FORMAT_DESC"],
 						type = "input",
 					},
 					position = {
