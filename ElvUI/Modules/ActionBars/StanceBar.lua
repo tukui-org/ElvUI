@@ -201,8 +201,10 @@ function AB:PositionAndSizeBarShapeShift()
 		bar:SetParent(E.UIParent)
 	end
 
-	local button, lastButton, lastColumnButton;
+	local button, lastButton, lastColumnButton
+	local useMasque = MasqueGroup and E.private.actionbar.masque.stanceBar
 	local firstButtonSpacing = (self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
+
 	for i=1, NUM_STANCE_SLOTS do
 		button = _G["ElvUI_StanceBarButton"..i];
 		lastButton = _G["ElvUI_StanceBarButton"..i-1];
@@ -273,12 +275,16 @@ function AB:PositionAndSizeBarShapeShift()
 			end
 		end
 
-		if(not button.FlyoutUpdateFunc) then
-			self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.stanceBar and true or nil);
+		if useMasque then
+			MasqueGroup:AddButton(bar.buttons[i], {Icon=bar.buttons[i].ICON})
+		end
+
+		if not button.FlyoutUpdateFunc then
+			self:StyleButton(button, nil, useMasque and true or nil, true);
 		end
 	end
 
-	if MasqueGroup and E.private.actionbar.masque.stanceBar then MasqueGroup:ReSkin() end
+	if useMasque then MasqueGroup:ReSkin() end
 end
 
 function AB:AdjustMaxStanceButtons(event)
@@ -302,9 +308,7 @@ function AB:AdjustMaxStanceButtons(event)
 		if not bar.buttons[i] then
 			bar.buttons[i] = CreateFrame("CheckButton", format(bar:GetName().."Button%d", i), bar, "StanceButtonTemplate")
 			bar.buttons[i]:SetID(i)
-			if MasqueGroup and E.private.actionbar.masque.stanceBar then
-				MasqueGroup:AddButton(bar.buttons[i])
-			end
+
 			self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter');
 			self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave');
 		end

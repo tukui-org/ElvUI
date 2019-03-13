@@ -573,7 +573,7 @@ function AB:UpdateButtonSettings()
 
 	for button in pairs(self.handledbuttons) do
 		if button then
-			self:StyleButton(button, button.noBackdrop, button.useMasque)
+			self:StyleButton(button, button.noBackdrop, button.useMasque, button.ignoreNormal)
 			self:StyleFlyout(button)
 		else
 			self.handledbuttons[button] = nil
@@ -612,7 +612,7 @@ function AB:GetPage(bar, defaultPage, condition)
 	return condition
 end
 
-function AB:StyleButton(button, noBackdrop, useMasque)
+function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local name = button:GetName();
 	local macroText = _G[name.."Name"];
 	local icon = _G[name.."Icon"];
@@ -630,16 +630,12 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 	local countXOffset = self.db.countTextXOffset or 0
 	local countYOffset = self.db.countTextYOffset or 2
 
-	if not button.noBackdrop then
-		button.noBackdrop = noBackdrop;
-	end
-
-	if not button.useMasque then
-		button.useMasque = useMasque;
-	end
+	button.noBackdrop = noBackdrop
+	button.useMasque = useMasque
+	button.ignoreNormal = ignoreNormal
 
 	if flash then flash:SetTexture(); end
-	if normal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0); end
+	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0); end
 	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0); end
 
 	if border and not button.useMasque then
