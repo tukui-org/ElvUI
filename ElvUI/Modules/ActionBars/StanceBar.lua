@@ -56,10 +56,10 @@ function AB:StyleShapeShift()
 			button.ICON:SetTexelSnappingBias(0)
 			button.icon:Hide()
 
-			--[[if MasqueGroup and E.private.actionbar.masque.stanceBar then
+			if MasqueGroup and E.private.actionbar.masque.stanceBar then
 				_G[format(bar:GetName().."Button%dIcon", i)] = button.ICON
 				MasqueGroup:AddButton(button)
-			end]]
+			end
 
 			if button.pushed then
 				button.pushed:SetDrawLayer('ARTWORK', 1)
