@@ -9,6 +9,8 @@ Fixed issue on pet bar which may have caused the "auto cast" markers to show in 
 Fixed error in the config caused from the Nameplate Threat.  
 Fixed visual issue where the voice channel icon would show on the chat panel even though it was hidden causing it to appear out of place.  
 Fixed Blizzard Castbar being disabled when Unitframe module was disabled.  
+Fixed Pet bar issue which sometimes could error about `pushed`.  
+Altered the way the CD module was handling the text on Nameplates, so that the text will always be shown, regardless of it's icon size.  
 
 **Misc. Changes:**  
 Allowed Test Nameplate to be movable via drag.  
