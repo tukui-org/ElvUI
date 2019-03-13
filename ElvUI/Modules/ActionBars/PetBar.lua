@@ -45,7 +45,12 @@ function AB:UpdatePet(event, unit)
 			button.ICON = button:CreateTexture(buttonName..'ICON')
 			button.ICON:SetTexCoord(unpack(E.TexCoords))
 			button.ICON:SetInside()
-			button.pushed:SetDrawLayer('ARTWORK', 1)
+			button.ICON:SetSnapToPixelGrid(false)
+			button.ICON:SetTexelSnappingBias(0)
+
+			if button.pushed then
+				button.pushed:SetDrawLayer('ARTWORK', 1)
+			end
 		end
 
 		if not isToken then
@@ -194,13 +199,13 @@ function AB:PositionAndSizeBarPet()
 		lastButton = _G["PetActionButton"..i-1];
 		autoCast = _G["PetActionButton"..i..'AutoCastable'];
 		lastColumnButton = _G["PetActionButton"..i-buttonsPerRow];
+
 		button:SetParent(bar);
 		button:ClearAllPoints();
+		button:SetAttribute("showgrid", 1);
 		button:Size(size);
 
 		autoCast:SetOutside(button, autoCastSize, autoCastSize)
-
-		button:SetAttribute("showgrid", 1);
 
 		if i == 1 then
 			local x, y;
