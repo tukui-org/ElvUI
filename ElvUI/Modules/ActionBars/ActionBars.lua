@@ -3,7 +3,7 @@ local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
 
 --Lua functions
 local _G = _G
-local pairs, select, unpack = pairs, select, unpack
+local pairs, select = pairs, select
 local ceil = math.ceil
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 --WoW API / Variables
