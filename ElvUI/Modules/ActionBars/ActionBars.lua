@@ -223,7 +223,6 @@ function AB:PositionAndSizeBar(barName)
 		end
 
 		self:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil);
-		button:SetCheckedTexture("")
 	end
 
 	if bar.db.enabled or not bar.initialized then
