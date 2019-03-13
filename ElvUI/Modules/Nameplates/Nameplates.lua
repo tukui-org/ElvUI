@@ -345,23 +345,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		-- update player and test plate
 		if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
-			if not _G.ElvNP_Player then
-				ElvUF:Spawn('player', 'ElvNP_Player')
-				_G.ElvNP_Player:DisableElement('Castbar')
-				_G.ElvNP_Player.isNamePlate = true
-				_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
-				_G.ElvNP_Player:SetAttribute('*type1', 'target')
-				_G.ElvNP_Player:SetAttribute('*type2', 'togglemenu')
-				_G.ElvNP_Player:SetAttribute('toggleForVehicle', true)
-				_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
-				_G.ElvNP_Player:Size(NP.db.clickableWidth, NP.db.clickableHeight)
-				_G.ElvNP_Player:SetScale(1)
-				_G.ElvNP_Player:SetScript('OnEnter', _G.UnitFrame_OnEnter)
-				_G.ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
-				_G.ElvNP_Player.frameType = 'PLAYER'
-				E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
-			end
-
 			NP:UpdatePlate(_G.ElvNP_Player)
 		end
 		if _G.ElvNP_Test and _G.ElvNP_Test:IsEnabled() then
@@ -437,24 +420,6 @@ function NP:UpdatePlateEvents(nameplate)
 	NP:StyleFilterEventWatch(nameplate)
 end
 
-function NP:SpawnTestFrame()
-	if not _G.ElvNP_Test then
-		ElvUF:Spawn('player', 'ElvNP_Test')
-		_G.ElvNP_Test:DisableElement('Castbar')
-		_G.ElvNP_Test.isNamePlate = true
-		_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
-		_G.ElvNP_Test:Size(NP.db.clickableWidth, NP.db.clickableHeight)
-		_G.ElvNP_Test:SetScale(1)
-		_G.ElvNP_Test:SetMovable(true)
-		_G.ElvNP_Test:RegisterForDrag("LeftButton", "RightButton")
-		_G.ElvNP_Test:SetScript("OnDragStart", function(self) _G.ElvNP_Test:StartMoving() end)
-		_G.ElvNP_Test:SetScript("OnDragStop", function() _G.ElvNP_Test:StopMovingOrSizing() end)
-		_G.ElvNP_Test.frameType = 'PLAYER'
-		NP:UpdatePlate(_G.ElvNP_Test)
-		_G.ElvNP_Test:Disable()
-	end
-end
-
 function NP:Initialize()
 	NP.db = E.db.nameplates
 
@@ -486,6 +451,34 @@ function NP:Initialize()
 
 	NP.Tooltip = CreateFrame('GameTooltip', 'ElvUIQuestTooltip', nil, 'GameTooltipTemplate')
 	NP.Tooltip:SetOwner(_G.WorldFrame, 'ANCHOR_NONE')
+
+	ElvUF:Spawn('player', 'ElvNP_Player')
+	_G.ElvNP_Player:DisableElement('Castbar')
+	_G.ElvNP_Player.isNamePlate = true
+	_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
+	_G.ElvNP_Player:SetAttribute('*type1', 'target')
+	_G.ElvNP_Player:SetAttribute('*type2', 'togglemenu')
+	_G.ElvNP_Player:SetAttribute('toggleForVehicle', true)
+	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
+	_G.ElvNP_Player:Size(NP.db.clickableWidth, NP.db.clickableHeight)
+	_G.ElvNP_Player:SetScale(1)
+	_G.ElvNP_Player:SetScript('OnEnter', _G.UnitFrame_OnEnter)
+	_G.ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
+	_G.ElvNP_Player.frameType = 'PLAYER'
+	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
+
+	ElvUF:Spawn('player', 'ElvNP_Test')
+	_G.ElvNP_Test:DisableElement('Castbar')
+	_G.ElvNP_Test.isNamePlate = true
+	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
+	_G.ElvNP_Test:Size(NP.db.clickableWidth, NP.db.clickableHeight)
+	_G.ElvNP_Test:SetScale(1)
+	_G.ElvNP_Test:SetMovable(true)
+	_G.ElvNP_Test:RegisterForDrag("LeftButton", "RightButton")
+	_G.ElvNP_Test:SetScript("OnDragStart", function(self) _G.ElvNP_Test:StartMoving() end)
+	_G.ElvNP_Test:SetScript("OnDragStop", function() _G.ElvNP_Test:StopMovingOrSizing() end)
+	_G.ElvNP_Test.frameType = 'PLAYER'
+	_G.ElvNP_Test:Disable()
 
 	local NamePlatesCVars = {
 		['nameplateClassResourceTopInset'] = GetCVarDefault('nameplateClassResourceTopInset'),

@@ -1846,7 +1846,6 @@ local function GetUnitSettings(unit, name)
 				name = L["Show/Hide Test Frame"],
 				type = "execute",
 				func = function(info)
-					NP:SpawnTestFrame()
 					if not _G.ElvNP_Test:IsEnabled() or _G.ElvNP_Test.frameType ~= unit then
 						_G.ElvNP_Test:Enable()
 						_G.ElvNP_Test.frameType = unit
