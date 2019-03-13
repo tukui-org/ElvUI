@@ -196,14 +196,13 @@ do --this can save some main file locals
 		["Tirain-Spirestone"]	= MrHankey,
 		["Sinth-Spirestone"]	= MrHankey,
 
-		--I will forever have the picture you accidently shared of the manikin wearing a strapon in your bedroom burned in my brain
+		--I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain
 		["Misdîrect-Spirestone"] = ElvRainbow,
 		["Misoracle-Spirestone"] = ElvRainbow,
 		["MisLight-Spirestone"] = ElvRainbow,
 		["MisDivine-Spirestone"] = ElvRainbow,
 		["MisLust-Spirestone"] = ElvRainbow,
 		["MisMayhem-Spirestone"] = ElvRainbow,
-		["Misdîrect-Spirestone"] = ElvRainbow,
 		["Mismonk-Spirestone"] = ElvRainbow,
 		["Misillidan-Spirestone"] = ElvRainbow,
 		["Mispel-Spirestone"] = ElvRainbow,

@@ -464,6 +464,11 @@ function NP:Initialize()
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
 	_G.ElvNP_Test:Size(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_Test:SetScale(1)
+	_G.ElvNP_Test:SetMovable(true)
+	_G.ElvNP_Test:RegisterForDrag("LeftButton", "RightButton")
+	_G.ElvNP_Test:SetScript("OnDragStart", function(self) _G.ElvNP_Test:StartMoving() end)
+	_G.ElvNP_Test:SetScript("OnDragStop", function() _G.ElvNP_Test:StopMovingOrSizing() end)
+
 	_G.ElvNP_Test.frameType = 'PLAYER'
 	NP:UpdatePlate(_G.ElvNP_Test)
 	_G.ElvNP_Test:Disable()
