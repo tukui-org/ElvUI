@@ -1,4 +1,16 @@
-### Version 11.02 [  ]
+### Version 11.03 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 11.02 [ March 12th 2019 ]
 
 **New Additions:**  
 
@@ -16,7 +28,7 @@ Altered the way the CD module was handling the text on Nameplates, so that the t
 Allowed Test Nameplate to be movable via drag.  
 
 ___
-### Version 11.01 [  ]
+### Version 11.01 [ March 12th 2019 ]
 
 **New Additions:**  
 
