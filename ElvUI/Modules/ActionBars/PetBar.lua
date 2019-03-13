@@ -46,10 +46,10 @@ function AB:UpdatePet(event, unit)
 			button.ICON:SetTexelSnappingBias(0)
 			button.icon:Hide()
 
-			if MasqueGroup and E.private.actionbar.masque.petBar then
+			--[[if MasqueGroup and E.private.actionbar.masque.petBar then
 				_G[format("PetActionButton%dIcon", i)] = button.ICON
 				MasqueGroup:AddButton(button)
-			end
+			end]]
 
 			if button.pushed then
 				button.pushed:SetDrawLayer('ARTWORK', 1)
