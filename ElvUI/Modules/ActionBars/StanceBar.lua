@@ -45,16 +45,21 @@ function AB:StyleShapeShift()
 
 	for i = 1, NUM_STANCE_SLOTS do
 		local buttonName = "ElvUI_StanceBarButton"..i
-		local button = _G[buttonName]
 		local cooldown = _G[buttonName.."Cooldown"]
+		local button = _G[buttonName]
 
-		button.icon:Hide();
 		if not button.ICON then
-			button.ICON = button:CreateTexture(buttonName..'ICON')
+			button.ICON = button:CreateTexture(format(bar:GetName().."Button%dICON", i))
 			button.ICON:SetTexCoord(unpack(E.TexCoords))
 			button.ICON:SetInside()
 			button.ICON:SetSnapToPixelGrid(false)
 			button.ICON:SetTexelSnappingBias(0)
+			button.icon:Hide()
+
+			--[[if MasqueGroup and E.private.actionbar.masque.stanceBar then
+				_G[format(bar:GetName().."Button%dIcon", i)] = button.ICON
+				MasqueGroup:AddButton(button)
+			end]]
 
 			if button.pushed then
 				button.pushed:SetDrawLayer('ARTWORK', 1)
@@ -305,9 +310,7 @@ function AB:AdjustMaxStanceButtons(event)
 		if not bar.buttons[i] then
 			bar.buttons[i] = CreateFrame("CheckButton", format(bar:GetName().."Button%d", i), bar, "StanceButtonTemplate")
 			bar.buttons[i]:SetID(i)
-			if MasqueGroup and E.private.actionbar.masque.stanceBar then
-				MasqueGroup:AddButton(bar.buttons[i])
-			end
+
 			self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter');
 			self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave');
 		end
@@ -351,8 +354,8 @@ function AB:CreateBarShapeShift()
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
 
-	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN');
+	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_USABLE', 'StyleShapeShift');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift');
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift');
