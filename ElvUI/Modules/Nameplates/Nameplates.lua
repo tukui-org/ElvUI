@@ -347,6 +347,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 			if not _G.ElvNP_Player then
 				ElvUF:Spawn('player', 'ElvNP_Player')
+				_G.ElvNP_Test:DisableElement('Castbar')
 				_G.ElvNP_Player.isNamePlate = true
 				_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
 				_G.ElvNP_Player:SetAttribute('*type1', 'target')
@@ -359,10 +360,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 				_G.ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 				_G.ElvNP_Player.frameType = 'PLAYER'
 				E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
-				if not E.private.unitframe.disabledBlizzardFrames.player then
-					CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
-					CastingBarFrame_OnLoad(_G.PetCastingBarFrame)
-				end						
 			end
 
 			NP:UpdatePlate(_G.ElvNP_Player)
@@ -390,6 +387,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isTargetingMe = nil
 		nameplate.isTarget = nil
 	elseif event == 'PLAYER_TARGET_CHANGED' then
+		NP:Move_ClassPower()
 		if nameplate then
 			local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
 			local Alpha = NP.db.nonTargetTransparency
@@ -444,6 +442,7 @@ end
 function NP:SpawnTestFrame()
 	if not _G.ElvNP_Test then
 		ElvUF:Spawn('player', 'ElvNP_Test')
+		_G.ElvNP_Test:DisableElement('Castbar')
 		_G.ElvNP_Test.isNamePlate = true
 		_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
 		_G.ElvNP_Test:Size(NP.db.clickableWidth, NP.db.clickableHeight)
@@ -455,11 +454,6 @@ function NP:SpawnTestFrame()
 		_G.ElvNP_Test.frameType = 'PLAYER'
 		NP:UpdatePlate(_G.ElvNP_Test)
 		_G.ElvNP_Test:Disable()
-
-		if not E.private.unitframe.disabledBlizzardFrames.player then
-			CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
-			CastingBarFrame_OnLoad(_G.PetCastingBarFrame)
-		end			
 	end
 end
 
