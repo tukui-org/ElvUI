@@ -21,7 +21,7 @@ local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
-
+local WispSplode = "Interface\\Icons\\Spell_Nature_WispSplode"
 local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate');
 
 function AB:UPDATE_SHAPESHIFT_COOLDOWN()
@@ -40,20 +40,15 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 end
 
 function AB:StyleShapeShift()
-	local numForms = GetNumShapeshiftForms();
-	local texture, spellID, isActive, isCastable, _;
-	local buttonName, button, icon, cooldown;
-	local stance = GetShapeshiftForm();
+	local numForms = GetNumShapeshiftForms()
+	local stance = GetShapeshiftForm()
 
 	for i = 1, NUM_STANCE_SLOTS do
-		buttonName = "ElvUI_StanceBarButton"..i;
-		button = _G[buttonName];
-		icon = _G[buttonName.."Icon"];
-		cooldown = _G[buttonName.."Cooldown"];
+		local buttonName = "ElvUI_StanceBarButton"..i
+		local button = _G[buttonName]
+		local cooldown = _G[buttonName.."Cooldown"]
 
-		button:SetAlpha(1);
 		button.icon:Hide();
-
 		if not button.ICON then
 			button.ICON = button:CreateTexture(buttonName..'ICON')
 			button.ICON:SetTexCoord(unpack(E.TexCoords))
@@ -67,15 +62,15 @@ function AB:StyleShapeShift()
 		end
 
 		if i <= numForms then
-			texture, isActive, isCastable, spellID = GetShapeshiftFormInfo(i);
+			local texture, isActive, isCastable, spellID, _ = GetShapeshiftFormInfo(i)
 
 			if self.db.stanceBar.style == 'darkenInactive' then
 				_,_, texture = GetSpellInfo(spellID)
 			end
 
-			if not texture then
-				texture = "Interface\\Icons\\Spell_Nature_WispSplode"
-			end
+			if not texture then texture = WispSplode end
+
+			button.ICON:SetTexture(texture)
 
 			if not button.useMasque then
 				if texture then
@@ -113,8 +108,6 @@ function AB:StyleShapeShift()
 					button:SetChecked(false)
 				end
 			end
-
-			button.ICON:SetTexture(texture);
 
 			if isCastable then
 				button.ICON:SetVertexColor(1.0, 1.0, 1.0);
