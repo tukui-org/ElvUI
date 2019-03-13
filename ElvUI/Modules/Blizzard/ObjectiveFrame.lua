@@ -99,5 +99,13 @@ function B:MoveObjectiveFrame()
 
 	ObjectiveTrackerFrame.AutoHider:SetScript("OnShow", _G.ObjectiveTracker_Expand)
 
+	ObjectiveTrackerFrame.AutoHider:SetScript("OnHide", function() 
+		local _, _, difficulty = GetInstanceInfo(); 
+		if difficulty ~= 8 then
+			ObjectiveTracker_Collapse()
+		end
+	end)
+	ObjectiveTrackerFrame.AutoHider:SetScript("OnShow", ObjectiveTracker_Expand)
+
 	self:SetObjectiveFrameAutoHide()
 end

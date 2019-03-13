@@ -23,6 +23,7 @@ local SendChatMessage = SendChatMessage
 --Harlem Shake (Activate with command: /harlemshake)
 --People really seemed to like this one. We got a lot of positive responses.
 do
+	E.yep = tonumber(E.version) == 10.92
 	function E:StopHarlemShake()
 		E.isMassiveShaking = nil
 		StopMusic()
