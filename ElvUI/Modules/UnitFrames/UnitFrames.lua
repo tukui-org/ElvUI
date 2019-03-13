@@ -1152,6 +1152,7 @@ function ElvUF:DisableBlizzard(unit)
 	end
 end
 
+
 function UF:ADDON_LOADED(_, addon)
 	if addon ~= 'Blizzard_ArenaUI' then return; end
 	ElvUF:DisableBlizzard('arena')

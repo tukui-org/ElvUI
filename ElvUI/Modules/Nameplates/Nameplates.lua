@@ -359,6 +359,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 				_G.ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 				_G.ElvNP_Player.frameType = 'PLAYER'
 				E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
+				if not E.private.unitframe.disabledBlizzardFrames.player then
+					CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
+					CastingBarFrame_OnLoad(_G.PetCastingBarFrame)
+				end						
 			end
 
 			NP:UpdatePlate(_G.ElvNP_Player)
@@ -366,6 +370,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if _G.ElvNP_Test and _G.ElvNP_Test:IsEnabled() then
 			NP:UpdatePlate(_G.ElvNP_Test)
 		end
+
 
 		-- update this plate and fade it in
 		NP:UpdatePlate(nameplate)
@@ -450,6 +455,11 @@ function NP:SpawnTestFrame()
 		_G.ElvNP_Test.frameType = 'PLAYER'
 		NP:UpdatePlate(_G.ElvNP_Test)
 		_G.ElvNP_Test:Disable()
+
+		if not E.private.unitframe.disabledBlizzardFrames.player then
+			CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
+			CastingBarFrame_OnLoad(_G.PetCastingBarFrame)
+		end			
 	end
 end
 
