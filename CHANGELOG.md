@@ -8,9 +8,10 @@ Fixed issue where opening the bank with shift would say you needed to purchase t
 Fixed issue on pet bar which may have caused the "auto cast" markers to show in the wrong pet spells.  
 Fixed error in the config caused from the Nameplate Threat.  
 Fixed visual issue where the voice channel icon would show on the chat panel even though it was hidden causing it to appear out of place.  
+Fixed Blizzard Castbar being disabled when Unitframe module was disabled.  
 
 **Misc. Changes:**  
-
+Allowed Test Nameplate to be movable via drag.  
 
 ___
 ### Version 11.01 [  ]
