@@ -347,7 +347,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 			if not _G.ElvNP_Player then
 				ElvUF:Spawn('player', 'ElvNP_Player')
-				_G.ElvNP_Test:DisableElement('Castbar')
+				_G.ElvNP_Player:DisableElement('Castbar')
 				_G.ElvNP_Player.isNamePlate = true
 				_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
 				_G.ElvNP_Player:SetAttribute('*type1', 'target')
@@ -368,7 +368,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlate(_G.ElvNP_Test)
 		end
 
-
 		-- update this plate and fade it in
 		NP:UpdatePlate(nameplate)
 
@@ -387,7 +386,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isTargetingMe = nil
 		nameplate.isTarget = nil
 	elseif event == 'PLAYER_TARGET_CHANGED' then
-		NP:Move_ClassPower()
 		if nameplate then
 			local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
 			local Alpha = NP.db.nonTargetTransparency
