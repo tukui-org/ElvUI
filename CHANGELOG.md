@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-
+Fixed the Class Media Value Color from not using the class color on different classes as it should!  
 
 **Misc. Changes:**  
 Prevented the Update Popup from being shown while in combat.  
