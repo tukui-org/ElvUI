@@ -4,7 +4,6 @@ local AB = E:GetModule('ActionBars');
 --Lua functions
 local _G = _G
 local unpack = unpack
-local format = format
 local ceil = math.ceil
 --WoW API / Variables
 local RegisterStateDriver = RegisterStateDriver
@@ -35,29 +34,24 @@ function AB:UpdatePet(event, unit)
 	for i=1, NUM_PET_ACTION_SLOTS, 1 do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 		local buttonName = "PetActionButton"..i
-		local autoCast = _G[buttonName.."AutoCastable"]
+		local autoCast = _G[buttonName.."AutoCastable"];
 		local button = _G[buttonName]
 
+		button:SetAlpha(1);
+		button.icon:Hide();
+		button.isToken = isToken;
+
 		if not button.ICON then
-			button.ICON = button:CreateTexture(format("PetActionButton%dICON", i))
+			button.ICON = button:CreateTexture(buttonName..'ICON')
 			button.ICON:SetTexCoord(unpack(E.TexCoords))
 			button.ICON:SetInside()
 			button.ICON:SetSnapToPixelGrid(false)
 			button.ICON:SetTexelSnappingBias(0)
-			button.icon:Hide()
-
-			--[[if MasqueGroup and E.private.actionbar.masque.petBar then
-				_G[format("PetActionButton%dIcon", i)] = button.ICON
-				MasqueGroup:AddButton(button)
-			end]]
 
 			if button.pushed then
 				button.pushed:SetDrawLayer('ARTWORK', 1)
 			end
 		end
-
-		button:SetAlpha(1)
-		button.isToken = isToken
 
 		if not isToken then
 			button.ICON:SetTexture(texture);
@@ -321,11 +315,9 @@ function AB:CreateBarPet()
 	PetActionBar_ShowGrid();
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
-
 	for i=1, NUM_PET_ACTION_SLOTS do
-		local button =_G["PetActionButton"..i]
-		self:HookScript(button, 'OnEnter', 'Button_OnEnter');
-		self:HookScript(button, 'OnLeave', 'Button_OnLeave');
+		self:HookScript(_G["PetActionButton"..i], 'OnEnter', 'Button_OnEnter');
+		self:HookScript(_G["PetActionButton"..i], 'OnLeave', 'Button_OnLeave');
 	end
 
 	self:RegisterEvent('SPELLS_CHANGED', 'UpdatePet')
@@ -342,4 +334,11 @@ function AB:CreateBarPet()
 	E:CreateMover(bar, 'PetAB', L["Pet Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,barPet');
 	self:PositionAndSizeBarPet();
 	self:UpdatePetBindings()
+
+	if MasqueGroup and E.private.actionbar.masque.petBar then
+		for i=1, NUM_PET_ACTION_SLOTS do
+			local button = _G["PetActionButton"..i]
+			MasqueGroup:AddButton(button)
+		end
+	end
 end
