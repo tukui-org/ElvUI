@@ -1314,7 +1314,7 @@ function E:StaticPopup_CreateSecureButton(popup, button, text, macro)
 
 	local t = btn:CreateFontString(nil, 'OVERLAY', btn)
 	t:Point('CENTER', 0, 1)
-	t:FontTemplate()
+	t:FontTemplate(nil, nil, 'NONE')
 	t:SetJustifyH('CENTER')
 	t:SetText(text)
 	btn.text = t

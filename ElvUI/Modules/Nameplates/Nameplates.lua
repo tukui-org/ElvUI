@@ -186,12 +186,12 @@ function NP:CVarReset()
 	SetCVar('nameplateMaxAlphaDistance', 40)
 	SetCVar('nameplateMaxScale', 1)
 	SetCVar('nameplateMaxScaleDistance', 40)
-	SetCVar('nameplateMinAlpha', 1) -- if we set it back to 1, it will sometimes break the alpha
-	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance')) -- see above
+	SetCVar('nameplateMinAlpha', 1)
+	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
 	SetCVar('nameplateMinScale', 1)
 	SetCVar('nameplateMinScaleDistance', 0)
 	SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
-	SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult')) -- see above
+	SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'))
 	SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
 	SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
 	SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
@@ -250,7 +250,10 @@ end
 
 function NP:SetNamePlateSelfClickThrough()
 	C_NamePlate_SetNamePlateSelfClickThrough(NP.db.clickThrough.personal)
-	_G.ElvNP_Player:EnableMouse(not NP.db.clickThrough.personal)
+
+	if _G.ElvNP_Player then
+		_G.ElvNP_Player:EnableMouse(not NP.db.clickThrough.personal)
+	end
 end
 
 function NP:SetNamePlateFriendlyClickThrough()
@@ -301,11 +304,13 @@ function NP:ConfigureAll()
 
 	NP:PLAYER_REGEN_ENABLED()
 
-	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
-		_G.ElvNP_Player:Enable()
-		_G.ElvNP_Player:UpdateAllElements('OnShow')
-	else
-		_G.ElvNP_Player:Disable()
+	if _G.ElvNP_Player then
+		if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
+			_G.ElvNP_Player:Enable()
+			_G.ElvNP_Player:UpdateAllElements('OnShow')
+		else
+			_G.ElvNP_Player:Disable()
+		end
 	end
 
 	NP:NamePlateCallBack(_G.ElvNP_Player, 'NAME_PLATE_UNIT_ADDED')
@@ -320,7 +325,7 @@ function NP:ConfigureAll()
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
-	if event == 'NAME_PLATE_UNIT_ADDED' then
+	if event == 'NAME_PLATE_UNIT_ADDED' and nameplate then
 		NP:ClearStyledPlate(nameplate)
 
 		unit = unit or nameplate.unit
@@ -340,9 +345,26 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		-- update player and test plate
 		if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
+			if not _G.ElvNP_Player then
+				ElvUF:Spawn('player', 'ElvNP_Player')
+				_G.ElvNP_Player:DisableElement('Castbar')
+				_G.ElvNP_Player.isNamePlate = true
+				_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
+				_G.ElvNP_Player:SetAttribute('*type1', 'target')
+				_G.ElvNP_Player:SetAttribute('*type2', 'togglemenu')
+				_G.ElvNP_Player:SetAttribute('toggleForVehicle', true)
+				_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
+				_G.ElvNP_Player:Size(NP.db.clickableWidth, NP.db.clickableHeight)
+				_G.ElvNP_Player:SetScale(1)
+				_G.ElvNP_Player:SetScript('OnEnter', _G.UnitFrame_OnEnter)
+				_G.ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
+				_G.ElvNP_Player.frameType = 'PLAYER'
+				E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
+			end
+
 			NP:UpdatePlate(_G.ElvNP_Player)
 		end
-		if _G.ElvNP_Test:IsEnabled() then
+		if _G.ElvNP_Test and _G.ElvNP_Test:IsEnabled() then
 			NP:UpdatePlate(_G.ElvNP_Test)
 		end
 
@@ -415,6 +437,24 @@ function NP:UpdatePlateEvents(nameplate)
 	NP:StyleFilterEventWatch(nameplate)
 end
 
+function NP:SpawnTestFrame()
+	if not _G.ElvNP_Test then
+		ElvUF:Spawn('player', 'ElvNP_Test')
+		_G.ElvNP_Test:DisableElement('Castbar')
+		_G.ElvNP_Test.isNamePlate = true
+		_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
+		_G.ElvNP_Test:Size(NP.db.clickableWidth, NP.db.clickableHeight)
+		_G.ElvNP_Test:SetScale(1)
+		_G.ElvNP_Test:SetMovable(true)
+		_G.ElvNP_Test:RegisterForDrag("LeftButton", "RightButton")
+		_G.ElvNP_Test:SetScript("OnDragStart", function(self) _G.ElvNP_Test:StartMoving() end)
+		_G.ElvNP_Test:SetScript("OnDragStop", function() _G.ElvNP_Test:StopMovingOrSizing() end)
+		_G.ElvNP_Test.frameType = 'PLAYER'
+		NP:UpdatePlate(_G.ElvNP_Test)
+		_G.ElvNP_Test:Disable()
+	end
+end
+
 function NP:Initialize()
 	NP.db = E.db.nameplates
 
@@ -447,32 +487,39 @@ function NP:Initialize()
 	NP.Tooltip = CreateFrame('GameTooltip', 'ElvUIQuestTooltip', nil, 'GameTooltipTemplate')
 	NP.Tooltip:SetOwner(_G.WorldFrame, 'ANCHOR_NONE')
 
-	ElvUF:Spawn('player', 'ElvNP_Player')
-	_G.ElvNP_Player.isNamePlate = true
-	_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
-	_G.ElvNP_Player:SetAttribute('*type1', 'target')
-	_G.ElvNP_Player:SetAttribute('*type2', 'togglemenu')
-	_G.ElvNP_Player:SetAttribute('toggleForVehicle', true)
-	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
-	_G.ElvNP_Player:Size(NP.db.clickableWidth, NP.db.clickableHeight)
-	_G.ElvNP_Player:SetScale(1)
-	_G.ElvNP_Player:SetScript('OnEnter', _G.UnitFrame_OnEnter)
-	_G.ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
-	_G.ElvNP_Player.frameType = 'PLAYER'
-
-	ElvUF:Spawn('player', 'ElvNP_Test')
-	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
-	_G.ElvNP_Test:Size(NP.db.clickableWidth, NP.db.clickableHeight)
-	_G.ElvNP_Test:SetScale(1)
-	_G.ElvNP_Test.frameType = 'PLAYER'
-	NP:UpdatePlate(_G.ElvNP_Test)
-	_G.ElvNP_Test:Disable()
-
-	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
+	local NamePlatesCVars = {
+		['nameplateClassResourceTopInset'] = GetCVarDefault('nameplateClassResourceTopInset'),
+		['nameplateGlobalScale'] = 1,
+		['NamePlateHorizontalScale'] = 1,
+		['nameplateLargeBottomInset'] = GetCVarDefault('nameplateLargeBottomInset'),
+		['nameplateLargerScale'] = 1,
+		['nameplateLargeTopInset'] = GetCVarDefault('nameplateLargeTopInset'),
+		['nameplateMaxAlpha'] = 1,
+		['nameplateMaxAlphaDistance'] = 40,
+		['nameplateMaxScale'] = 1,
+		['nameplateMaxScaleDistance'] = 40,
+		['nameplateMinAlpha'] = 1,
+		['nameplateMinAlphaDistance'] = GetCVarDefault('nameplateMinAlphaDistance'),
+		['nameplateMinScale'] = 1,
+		['nameplateMinScaleDistance'] = 0,
+		['nameplateMotionSpeed'] = GetCVarDefault('nameplateMotionSpeed'),
+		['nameplateOccludedAlphaMult'] = GetCVarDefault('nameplateOccludedAlphaMult'),
+		['nameplateOtherAtBase'] = GetCVarDefault('nameplateOtherAtBase'),
+		['nameplateOverlapH'] = GetCVarDefault('nameplateOverlapH'),
+		['nameplateOverlapV'] = GetCVarDefault('nameplateOverlapV'),
+		['nameplateResourceOnTarget'] = GetCVarDefault('nameplateResourceOnTarget'),
+		['nameplateSelectedAlpha'] = 1,
+		['nameplateSelectedScale'] = 1,
+		['nameplateSelfAlpha'] = 1,
+		['nameplateSelfBottomInset'] = GetCVarDefault('nameplateSelfBottomInset'),
+		['nameplateSelfScale'] = 1,
+		['nameplateSelfTopInset'] = GetCVarDefault('nameplateSelfTopInset'),
+		['nameplateTargetBehindMaxDistance'] = 40,
+	}
 
 	ElvUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit)
 		NP:NamePlateCallBack(nameplate, event, unit)
-	end)
+	end, NamePlatesCVars)
 
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')

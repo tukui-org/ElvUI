@@ -34,6 +34,7 @@ function AB:UpdatePet(event, unit)
 	for i=1, NUM_PET_ACTION_SLOTS, 1 do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 		local buttonName = "PetActionButton"..i
+		local autoCast = _G[buttonName.."AutoCastable"];
 		local button = _G[buttonName]
 
 		button:SetAlpha(1);
@@ -44,7 +45,12 @@ function AB:UpdatePet(event, unit)
 			button.ICON = button:CreateTexture(buttonName..'ICON')
 			button.ICON:SetTexCoord(unpack(E.TexCoords))
 			button.ICON:SetInside()
-			button.pushed:SetDrawLayer('ARTWORK', 1)
+			button.ICON:SetSnapToPixelGrid(false)
+			button.ICON:SetTexelSnappingBias(0)
+
+			if button.pushed then
+				button.pushed:SetDrawLayer('ARTWORK', 1)
+			end
 		end
 
 		if not isToken then
@@ -77,9 +83,9 @@ function AB:UpdatePet(event, unit)
 		end
 
 		if autoCastAllowed then
-			button.AutoCastable:Show();
+			autoCast:Show();
 		else
-			button.AutoCastable:Hide();
+			autoCast:Hide();
 		end
 
 		if autoCastEnabled then
@@ -193,13 +199,13 @@ function AB:PositionAndSizeBarPet()
 		lastButton = _G["PetActionButton"..i-1];
 		autoCast = _G["PetActionButton"..i..'AutoCastable'];
 		lastColumnButton = _G["PetActionButton"..i-buttonsPerRow];
+
 		button:SetParent(bar);
 		button:ClearAllPoints();
+		button:SetAttribute("showgrid", 1);
 		button:Size(size);
 
 		autoCast:SetOutside(button, autoCastSize, autoCastSize)
-
-		button:SetAttribute("showgrid", 1);
 
 		if i == 1 then
 			local x, y;

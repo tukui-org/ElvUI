@@ -243,7 +243,7 @@ function B:SetSearch(query)
 	end
 
 	if ElvUIReagentBankFrameItem1 then
-		for slotID=1, 98 do
+		for slotID = 1, B.REAGENTBANK_SIZE do
 			local _, _, _, _, _, _, link = GetContainerItemInfo(REAGENTBANK_CONTAINER, slotID);
 			local button = _G["ElvUIReagentBankFrameItem"..slotID]
 			local success, result = pcall(method, Search, link, query)
@@ -336,7 +336,7 @@ function B:UpdateCountDisplay()
 
 	--Reagent Bank
 	if self.BankFrame and self.BankFrame.reagentFrame then
-		for i = 1, 98 do
+		for i = 1, B.REAGENTBANK_SIZE do
 			local slot = self.BankFrame.reagentFrame.slots[i]
 			if slot then
 				slot.Count:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
@@ -648,7 +648,7 @@ end
 
 function B:UpdateBagSlots(bagID)
 	if bagID == REAGENTBANK_CONTAINER then
-		for i=1, 98 do
+		for i=1, B.REAGENTBANK_SIZE do
 			self:UpdateReagentSlot(i);
 		end
 	else
@@ -683,7 +683,7 @@ function B:UpdateCooldowns()
 	for _, bagID in ipairs(self.BagIDs) do
 		for slotID = 1, GetContainerNumSlots(bagID) do
 			local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-			--CooldownFrame_Set(self.Bags[bagID][slotID].cooldown, start, duration, enable, _, _)
+			CooldownFrame_Set(self.Bags[bagID][slotID].cooldown, start, duration, enable, _, _)
 		end
 	end
 end
@@ -931,9 +931,6 @@ function B:Layout(isBank)
 	local f = self:GetContainerFrame(isBank);
 
 	if not f then return end
-
-	local ButtonType = E.wowpatch == "8.1.0" and "CheckButton" or "ItemButton"
-
 	local buttonSize = isBank and self.db.bankSize or self.db.bagSize;
 	local buttonSpacing = E.Border*2;
 	local containerWidth = ((isBank and self.db.bankWidth) or self.db.bagWidth)
@@ -968,7 +965,7 @@ function B:Layout(isBank)
 		if (not isBank) or (isBank and bagID ~= -1 and numContainerSlots >= 1 and not (i - 1 > numContainerSlots)) then
 			if not f.ContainerHolder[i] then
 				if isBank then
-					f.ContainerHolder[i] = CreateFrame(ButtonType, "ElvUIBankBag" .. (bagID-4), f.ContainerHolder, "BankItemButtonBagTemplate")
+					f.ContainerHolder[i] = CreateFrame("ItemButton", "ElvUIBankBag" .. (bagID-4), f.ContainerHolder, "BankItemButtonBagTemplate")
 					B:CreateFilterIcon(f.ContainerHolder[i])
 					f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 						if button == "RightButton" and holder.id then
@@ -981,7 +978,7 @@ function B:Layout(isBank)
 					end)
 				else
 					if bagID == 0 then --Backpack needs different setup
-						f.ContainerHolder[i] = CreateFrame(ButtonType, "ElvUIMainBagBackpack", f.ContainerHolder, "ItemAnimTemplate")
+						f.ContainerHolder[i] = CreateFrame("ItemButton", "ElvUIMainBagBackpack", f.ContainerHolder, "ItemAnimTemplate")
 						B:CreateFilterIcon(f.ContainerHolder[i])
 						f.ContainerHolder[i]:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 						f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
@@ -996,7 +993,7 @@ function B:Layout(isBank)
 							PutItemInBackpack();--Put bag on empty slot, or drop item in this bag
 						end)
 					else
-						f.ContainerHolder[i] = CreateFrame(ButtonType, "ElvUIMainBag" .. (bagID-1) .. "Slot", f.ContainerHolder, "BagSlotButtonTemplate")
+						f.ContainerHolder[i] = CreateFrame("ItemButton", "ElvUIMainBag" .. (bagID-1) .. "Slot", f.ContainerHolder, "BagSlotButtonTemplate")
 						B:CreateFilterIcon(f.ContainerHolder[i])
 						f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 							if button == "RightButton" and holder.id then
@@ -1012,7 +1009,7 @@ function B:Layout(isBank)
 
 				f.ContainerHolder[i]:SetTemplate(nil, true)
 				f.ContainerHolder[i]:StyleButton()
-				--f.ContainerHolder[i].IconBorder:SetAlpha(0)
+				f.ContainerHolder[i].IconBorder:SetAlpha(0)
 				f.ContainerHolder[i]:SetNormalTexture("")
 				f.ContainerHolder[i]:SetPushedTexture("")
 				f.ContainerHolder[i].id = bagID
@@ -1026,13 +1023,11 @@ function B:Layout(isBank)
 					end
 				end
 
-				if _G[f.ContainerHolder[i]:GetName()..'IconTexture'] then
-					f.ContainerHolder[i].iconTexture = _G[f.ContainerHolder[i]:GetName()..'IconTexture'];
-					f.ContainerHolder[i].iconTexture:SetInside()
-					f.ContainerHolder[i].iconTexture:SetTexCoord(unpack(E.TexCoords))
-					if bagID == 0 then --backpack
-						f.ContainerHolder[i].iconTexture:SetTexture("Interface\\Buttons\\Button-Backpack-Up");
-					end
+				f.ContainerHolder[i].iconTexture = _G[f.ContainerHolder[i]:GetName()..'IconTexture'];
+				f.ContainerHolder[i].iconTexture:SetInside()
+				f.ContainerHolder[i].iconTexture:SetTexCoord(unpack(E.TexCoords))
+				if bagID == 0 then --backpack
+					f.ContainerHolder[i].iconTexture:SetTexture("Interface\\Buttons\\Button-Backpack-Up");
 				end
 			end
 
@@ -1079,7 +1074,7 @@ function B:Layout(isBank)
 			for slotID = 1, numSlots do
 				f.totalSlots = f.totalSlots + 1;
 				if not f.Bags[bagID][slotID] then
-					f.Bags[bagID][slotID] = CreateFrame(ButtonType, f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate');
+					f.Bags[bagID][slotID] = CreateFrame('ItemButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate');
 					f.Bags[bagID][slotID]:StyleButton();
 					f.Bags[bagID][slotID]:SetTemplate(nil, true);
 					f.Bags[bagID][slotID]:SetNormalTexture(nil);
@@ -1241,11 +1236,11 @@ function B:Layout(isBank)
 
 		local totalSlots, lastReagentRowButton = 0
 		numContainerRows = 1
-		for i = 1, 98 do
+		for i = 1, B.REAGENTBANK_SIZE do
 			totalSlots = totalSlots + 1;
 
 			if(not f.reagentFrame.slots[i]) then
-				f.reagentFrame.slots[i] = CreateFrame(ButtonType, "ElvUIReagentBankFrameItem"..i, f.reagentFrame, "ReagentBankItemButtonGenericTemplate");
+				f.reagentFrame.slots[i] = CreateFrame("ItemButton", "ElvUIReagentBankFrameItem"..i, f.reagentFrame, "ReagentBankItemButtonGenericTemplate");
 				f.reagentFrame.slots[i]:SetID(i)
 
 				f.reagentFrame.slots[i]:StyleButton()
@@ -1364,13 +1359,8 @@ function B:UpdateReagentSlot(slotID)
 end
 
 function B:UpdateAll()
-	if self.BagFrame then
-		self:Layout();
-	end
-
-	if self.BankFrame then
-		self:Layout(true);
-	end
+	if self.BagFrame then self:Layout() end
+	if self.BankFrame then self:Layout(true) end
 end
 
 function B:OnEvent(event, ...)
@@ -1704,20 +1694,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.reagentToggle:SetScript("OnLeave", self.Tooltip_Hide)
 		f.reagentToggle:SetScript("OnClick", function()
 			PlaySound(841) --IG_CHARACTER_INFO_TAB
-			if f.holderFrame:IsShown() then
-				_G.BankFrame.selectedTab = 2
-				f.holderFrame:Hide()
-				f.reagentFrame:Show()
-				f.editBox:Point('RIGHT', f.depositButton, 'LEFT', -5, 0);
-				f.bagText:SetText(L["Reagent Bank"])
-			else
-				_G.BankFrame.selectedTab = 1
-				f.reagentFrame:Hide()
-				f.holderFrame:Show()
-				f.editBox:Point('RIGHT', f.purchaseBagButton, 'LEFT', -5, 0);
-				f.bagText:SetText(L["Bank"])
-			end
-
+			B:ShowBankTab(f, f.holderFrame:IsShown())
 			self:Layout(true)
 			f:Show()
 		end)
@@ -2060,10 +2037,29 @@ function B:CloseBags()
 	TooltipModule:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
 
+function B:ShowBankTab(f, showReagent)
+	if showReagent then
+		_G.BankFrame.selectedTab = 2
+		f.holderFrame:Hide()
+		f.reagentFrame:Show()
+		f.editBox:Point('RIGHT', f.depositButton, 'LEFT', -5, 0);
+		f.bagText:SetText(L["Reagent Bank"])
+	else
+		_G.BankFrame.selectedTab = 1
+		f.reagentFrame:Hide()
+		f.holderFrame:Show()
+		f.editBox:Point('RIGHT', f.purchaseBagButton, 'LEFT', -5, 0);
+		f.bagText:SetText(L["Bank"])
+	end
+end
+
 function B:OpenBank()
 	if not self.BankFrame then
 		self.BankFrame = self:ContructContainerFrame('ElvUI_BankContainerFrame', true);
 	end
+
+	--Allow opening reagent tab directly by holding Shift
+	B:ShowBankTab(self.BankFrame, IsShiftKeyDown())
 
 	--Call :Layout first so all elements are created before we update
 	self:Layout(true)
@@ -2073,15 +2069,6 @@ function B:OpenBank()
 
 	self:OpenBags()
 	self:UpdateTokens()
-
-	--Allow opening reagent tab directly by holding Shift
-	if IsShiftKeyDown() then
-		_G.BankFrame.selectedTab = 2
-		self.BankFrame.holderFrame:Hide()
-		self.BankFrame.reagentFrame:Show()
-		self.BankFrame.editBox:Point('RIGHT', self.BankFrame.depositButton, 'LEFT', -5, 0);
-		self.BankFrame.bagText:SetText(L["Reagent Bank"])
-	end
 end
 
 function B:PLAYERBANKBAGSLOTS_CHANGED()
@@ -2402,6 +2389,7 @@ function B:Initialize()
 	E.bags = self
 	self.db = E.db.bags
 	self.BagFrames = {}
+	self.REAGENTBANK_SIZE = 98 -- numRow (7) * numColumn (7) * numSubColumn (2) = size = 98
 
 	self.ProfessionColors = {
 		[0x0008]   = { self.db.colors.profession.leatherworking.r, self.db.colors.profession.leatherworking.g, self.db.colors.profession.leatherworking.b },

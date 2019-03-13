@@ -195,6 +195,19 @@ do --this can save some main file locals
 		["Tierone-Spirestone"] = "Dr. ", -- lol
 		["Tirain-Spirestone"]	= MrHankey,
 		["Sinth-Spirestone"]	= MrHankey,
+
+		--I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain
+		["Misdîrect-Spirestone"] = ElvRainbow,
+		["Misoracle-Spirestone"] = ElvRainbow,
+		["MisLight-Spirestone"] = ElvRainbow,
+		["MisDivine-Spirestone"] = ElvRainbow,
+		["MisLust-Spirestone"] = ElvRainbow,
+		["MisMayhem-Spirestone"] = ElvRainbow,
+		["Mismonk-Spirestone"] = ElvRainbow,
+		["Misillidan-Spirestone"] = ElvRainbow,
+		["Mispel-Spirestone"] = ElvRainbow,
+		["Misdecay-Spirestone"] = ElvRainbow,
+
 		-- Whiro --
 		["Zistraeti-WyrmrestAccord"]	= ElvPurple, -- Warlock
 		-- Merathilis Toons --
@@ -2381,7 +2394,7 @@ function CH:HandleChatVoiceIcons(S)
 
 	hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y)
 		if anchor == _G.GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
-			frame:Point(point, anchor, attachTo, -2, -6)
+			frame:Point(point, anchor, attachTo, -3, -6)
 		elseif point == "BOTTOMRIGHT" and anchor ~= channelButtons[3] and anchor ~= channelButtons[1] and not _G.GeneralDockManagerOverflowButton:IsShown() then
 			if channelButtons[3]:IsShown() then
 				frame:Point("BOTTOMRIGHT", channelButtons[3], "BOTTOMLEFT")
