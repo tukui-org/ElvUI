@@ -4,7 +4,11 @@
 
 
 **Bug Fixes:**  
+Fixed the textures on the Stance bar.  
 Fixed the Class Media Value Color from not using the class color on different classes as it should!  
+Fixed Style Filter for Health Color changing to black when the filter ends.  
+Fixed issue which caused the Script Profile Popup to be shown twice.  
+Fix TargetIndicator glow change the color correctly after switching targets.  
 
 **Misc. Changes:**  
 Prevented the Update Popup from being shown while in combat.  
