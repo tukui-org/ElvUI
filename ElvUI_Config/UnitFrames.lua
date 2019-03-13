@@ -2153,7 +2153,7 @@ E.Options.args.unitframe = {
 			name = L["Disabled Blizzard Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "disabledBlizzardFrames") end,
-			disabled = function() return not E.UnitFrames; end,
+			disabled = E.noop,
 		},
 		playerShortcut = {
 			order = 10,
@@ -3146,6 +3146,7 @@ E.Options.args.unitframe = {
 					name = L["Disabled Blizzard Frames"],
 					get = function(info) return E.private.unitframe.disabledBlizzardFrames[ info[#info] ] end,
 					set = function(info, value) E.private.unitframe.disabledBlizzardFrames[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+					disabled = E.noop,
 					args = {
 						header = {
 							order = 0,
