@@ -10,6 +10,7 @@ Fixed Style Filter for Health Color changing to black when the filter ends.
 Fixed issue which caused the Script Profile Popup to be shown twice.  
 Fixed TargetIndicator glow change the color correctly after switching targets.  
 Fixed Masque support for Pet bar and Stance bar.  
+Fixed issue which caused the Action bar buttons to not set the "checked" state.  
 
 **Misc. Changes:**  
 Prevented the Update Popup from being shown while in combat.  
