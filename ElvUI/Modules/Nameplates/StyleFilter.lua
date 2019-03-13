@@ -732,7 +732,7 @@ function mod:StyleFilterPass(frame, actions)
 end
 
 function mod:ClearStyledPlate(frame)
-	if frame.StyleChanged then
+	if frame and frame.StyleChanged then
 		self:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.PowerColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
 	end
 end
