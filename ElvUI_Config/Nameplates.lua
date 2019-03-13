@@ -3012,7 +3012,7 @@ local function GetUnitSettings(unit, name)
 							["TOPLEFT"] = "TOPLEFT",
 							["BOTTOMLEFT"] = "BOTTOMLEFT",
 							["TOPRIGHT"] = "TOPRIGHT",
-							["BOTTOMRIGHT"] = "TOPRIGHT",
+							["BOTTOMRIGHT"] = "BOTTOMRIGHT",
 						},
 					},
 					xOffset = {
