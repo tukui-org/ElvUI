@@ -7,7 +7,7 @@
 
 
 **Misc. Changes:**  
-
+Prevented the Update Popup from being shown while in combat.  
 
 ___
 ### Version 11.02 [ March 12th 2019 ]
