@@ -6,6 +6,7 @@
 **Bug Fixes:**  
 Actually let the Target Class Bar on Nameplates use Class Color for classes other than Death Knight.  
 Fixed an issue which made backdrops always appear.  
+Fixed another case when C-Stack errors could occur from the Toolkit.  
 
 **Misc. Changes:**  
 
