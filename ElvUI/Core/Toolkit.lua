@@ -194,7 +194,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 			if t == 'Transparent' then
 				customBackdropColor(f, backdropr, backdropg, backdropb, backdropa)
 			else
-				customBackdropColor(f, backdropr, backdropg, backdropb)
+				customBackdropColor(f, backdropr, backdropg, backdropb, 1)
 			end
 		end
 
