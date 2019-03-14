@@ -395,19 +395,12 @@ function NP:HandleTargetAlpha(nameplate, added)
 		local hasTarget = UnitExists('target')
 		local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
 		local newAlpha = (nameplate.isTarget and 1) or (hasTarget and NP.db.units.TARGET.nonTargetTransparency)
-		if newAlpha then
-			if added then
-				E:UIFrameFadeIn(nameplate, 1, 0, newAlpha)
-			else
-				nameplate:SetAlpha(newAlpha)
-			end
+		local alpha = newAlpha or NP:GetNonTargetAlpha(nameplate, hasTarget, OccludedAlpha)
+
+		if added then
+			E:UIFrameFadeIn(nameplate, 1, 0, alpha)
 		else
-			local alpha = NP:GetNonTargetAlpha(nameplate, hasTarget, OccludedAlpha)
-			if added then
-				E:UIFrameFadeIn(nameplate, 1, 0, alpha)
-			else
-				nameplate:SetAlpha(alpha)
-			end
+			nameplate:SetAlpha(alpha)
 		end
 	end
 end
