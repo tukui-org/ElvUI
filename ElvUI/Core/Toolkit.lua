@@ -24,9 +24,9 @@ local function customSetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft,
 		end
 	end
 
-	if not (giveBorder or bgFile) then return end
-
 	frame.pixelBorders.CENTER:SetTexture(bgFile)
+
+	if not (giveBorder or bgFile) then return end
 
 	if insetLeft or insetRight or insetTop or insetBottom then
 		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame, 'TOPLEFT', -insetLeft or 0, insetTop or 0)
@@ -62,8 +62,7 @@ local function customBackdropBorderColor(frame, r, g, b, a)
 end
 
 local function buildPixelBorders(frame, noSecureHook)
-	if not frame then return end
-	if not frame.pixelBorders then
+	if frame and not frame.pixelBorders then
 		local borders = {}
 
 		for _, v in pairs(BackdropBorders) do
@@ -93,12 +92,12 @@ local function buildPixelBorders(frame, noSecureHook)
 		borders.RIGHT:Point("TOPRIGHT", borders.TOPRIGHT, "BOTTOMRIGHT", 0, 0)
 		borders.RIGHT:Point("BOTTOMRIGHT", borders.BOTTOMRIGHT, "TOPRIGHT", 0, 0)
 
-		frame.pixelBorders = borders
-	end
+		if not noSecureHook then
+			hooksecurefunc(frame, "SetBackdropColor", customBackdropColor)
+			hooksecurefunc(frame, "SetBackdropBorderColor", customBackdropBorderColor)
+		end
 
-	if not noSecureHook then
-		hooksecurefunc(frame, "SetBackdropColor", customBackdropColor)
-		hooksecurefunc(frame, "SetBackdropBorderColor", customBackdropBorderColor)
+		frame.pixelBorders = borders
 	end
 end
 -- end backdrop replace code
@@ -194,7 +193,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 			if t == 'Transparent' then
 				customBackdropColor(f, backdropr, backdropg, backdropb, backdropa)
 			else
-				customBackdropColor(f, backdropr, backdropg, backdropb)
+				customBackdropColor(f, backdropr, backdropg, backdropb, 1)
 			end
 		end
 

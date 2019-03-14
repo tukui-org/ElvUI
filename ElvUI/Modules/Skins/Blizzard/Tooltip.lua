@@ -24,7 +24,6 @@ local function LoadSkin()
 
 	-- Skin Blizzard Tooltips
 	local GameTooltip = _G.GameTooltip
-	local EmbeddedItemTooltip = _G.EmbeddedItemTooltip
 	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
 	StoryTooltip:SetFrameLevel(4)
 
@@ -74,12 +73,12 @@ local function LoadSkin()
 	end
 
 	-- Skin GameTooltip Status Bar
-	GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(GameTooltipStatusBar)
-	GameTooltipStatusBar:CreateBackdrop('Transparent')
-	GameTooltipStatusBar:ClearAllPoints()
-	GameTooltipStatusBar:Point("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
-	GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(_G.GameTooltipStatusBar)
+	_G.GameTooltipStatusBar:CreateBackdrop('Transparent')
+	_G.GameTooltipStatusBar:ClearAllPoints()
+	_G.GameTooltipStatusBar:Point("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
 
 	TT:SecureHook('GameTooltip_ShowStatusBar') -- Skin Status Bars
 	TT:SecureHook('GameTooltip_ShowProgressBar') -- Skin Progress Bars

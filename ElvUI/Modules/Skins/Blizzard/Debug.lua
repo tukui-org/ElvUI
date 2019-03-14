@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 --WoW API / Variables
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local FrameTexs = {

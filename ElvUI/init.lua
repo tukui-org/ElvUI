@@ -28,6 +28,7 @@ local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMetadata = GetAddOnMetadata
 local GetTime = GetTime
 local HideUIPanel = HideUIPanel
+local GetAddOnEnableState = GetAddOnEnableState
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local LoadAddOn = LoadAddOn
@@ -244,13 +245,13 @@ function AddOn:OnProfileReset()
 	self:StaticPopup_Show("RESET_PROFILE_PROMPT")
 end
 
-
 function AddOn:ResetConfigSettings()
+	AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft = nil, nil
 	AddOn.global.general.AceGUI = AddOn:CopyTable({}, AddOn.DF.global.general.AceGUI)
 end
 
 function AddOn:GetConfigPosition()
-	return AddOn.global.general.AceGUI.top, AddOn.global.general.AceGUI.left
+	return AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft
 end
 
 function AddOn:GetConfigSize()
@@ -266,7 +267,7 @@ end
 
 function AddOn:ConfigStopMovingOrSizing()
 	if self.obj and self.obj.status then
-		AddOn.global.general.AceGUI.top, AddOn.global.general.AceGUI.left = AddOn:Round(self:GetTop(), 2), AddOn:Round(self:GetLeft(), 2)
+		AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft = AddOn:Round(self:GetTop(), 2), AddOn:Round(self:GetLeft(), 2)
 		AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height = AddOn:Round(self:GetWidth(), 2), AddOn:Round(self:GetHeight(), 2)
 	end
 end
@@ -363,7 +364,6 @@ function AddOn:ToggleConfig(msg)
 				_G.ElvUIGUIFrame = self.GUIFrame
 
 				local maxWidth, maxHeight = self.UIParent:GetSize()
-				frame:SetClampedToScreen(true)
 				frame:SetMinResize(600, 500)
 				frame:SetMaxResize(maxWidth-50, maxHeight-50)
 

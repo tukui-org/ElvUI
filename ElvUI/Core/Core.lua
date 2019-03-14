@@ -12,7 +12,7 @@ local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local assert, type, pcall, date = assert, type, pcall, date
 local twipe, tinsert, tremove, next = wipe, tinsert, tremove, next
-local floor, gsub, strmatch, strjoin = floor, gsub, match, strjoin
+local gsub, strmatch, strjoin = gsub, match, strjoin
 local format, find, strrep, len, sub = format, strfind, strrep, strlen, strsub
 --WoW API / Variables
 local CreateFrame = CreateFrame

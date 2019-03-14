@@ -140,6 +140,10 @@ local function LoadSkin()
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
 
+	hooksecurefunc(_G.LFGDungeonReadyDialog, "SetBackdrop", function(frame, backdrop)
+		if backdrop ~= nil then frame:SetBackdrop(nil) end
+	end)
+
 	hooksecurefunc("LFGDungeonReadyPopup_Update", function()
 		local _, _, _, _, _, _, role = GetLFGProposal()
 		if _G.LFGDungeonReadyDialogRoleIcon:IsShown() then
