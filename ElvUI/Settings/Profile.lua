@@ -1054,7 +1054,7 @@ P.nameplates = {
 				filters = {
 					minDuration = 0,
 					maxDuration = 0,
-					priority = 'Blacklist,Dispellable,blockNoDuration,Personal,Boss,CCDebuffs,RaidDebuffs' --NamePlate EnemyPlayer Debuffs
+					priority = 'Blacklist,blockNoDuration,Personal,Boss,CCDebuffs,RaidDebuffs' --NamePlate EnemyPlayer Debuffs
 				},
 			},
 		},
@@ -1398,7 +1398,7 @@ P.nameplates = {
 				filters = {
 					minDuration = 0,
 					maxDuration = 0,
-					priority = 'Blacklist,RaidBuffsElvUI,blockNoDuration,PlayerBuffs,TurtleBuffs,CastByUnit' --NamePlate EnemyNPC Buffs
+					priority = 'Blacklist,RaidBuffsElvUI,Dispellable,blockNoDuration,PlayerBuffs,TurtleBuffs,CastByUnit' --NamePlate EnemyNPC Buffs
 				},
 			},
 			debuffs = {
