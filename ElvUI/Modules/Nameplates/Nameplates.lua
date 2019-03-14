@@ -377,11 +377,16 @@ function NP:ConfigureAll()
 	NP:SetNamePlateClickThrough()
 end
 
-function NP:GetNonTargetAlpha(nameplate, hasTarget, OccludedAlpha)
+function NP:IsBlizzardPlateOccluded(nameplate)
+	local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
+	return E:Round(nameplate:GetParent():GetAlpha(), 2) == OccludedAlpha
+end
+
+function NP:GetNonTargetAlpha(nameplate, hasTarget)
 	local Alpha = NP.db.units.TARGET.nonTargetTransparency
 	if (nameplate.frameType == 'PLAYER') or nameplate.isTarget then
 		Alpha = 1
-	elseif (not nameplate.isTarget) and E:Round(nameplate:GetParent():GetAlpha(), 2) == OccludedAlpha then
+	elseif (not nameplate.isTarget) and NP:IsBlizzardPlateOccluded(nameplate) then
 		Alpha = Alpha * 0.5
 	elseif not hasTarget then
 		Alpha = 1
@@ -393,9 +398,8 @@ end
 function NP:HandleTargetAlpha(nameplate, added)
 	if nameplate then
 		local hasTarget = UnitExists('target')
-		local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
 		local newAlpha = (nameplate.isTarget and 1) or (hasTarget and NP.db.units.TARGET.nonTargetTransparency)
-		local alpha = newAlpha or NP:GetNonTargetAlpha(nameplate, hasTarget, OccludedAlpha)
+		local alpha = newAlpha or NP:GetNonTargetAlpha(nameplate, hasTarget)
 
 		if added then
 			E:UIFrameFadeIn(nameplate, 1, 0, alpha)
