@@ -209,7 +209,7 @@ end
 
 function NP:Move_TargetClassPower(nameplate)
 	local targetPlate = _G.ElvNP_TargetClassPower
-	local realPlate = (NP.db.classbar.enable and nameplate) or targetPlate
+	local realPlate = (NP.db.units.TARGET.classpower.enable and nameplate) or targetPlate
 	targetPlate.realPlate = realPlate
 
 	if targetPlate.ClassPower then

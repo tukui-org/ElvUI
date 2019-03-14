@@ -4,6 +4,7 @@
 
 
 **Bug Fixes:**  
+Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
 
 
 **Misc. Changes:**  

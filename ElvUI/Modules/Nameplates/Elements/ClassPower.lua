@@ -45,8 +45,9 @@ function NP:ClassPower_PostUpdate(Cur, Max, needUpdate)
 	end
 
 	if needUpdate then
+		local db = NP.db.units[self.__owner.frameType]
 		for i = 1, Max do
-			self[i]:Size(NP.db.classbar.width / Max, NP.db.classbar.height)
+			self[i]:Size(db.classpower.width / Max, db.classpower.height)
 			if i == 1 then
 				self[i]:Point('LEFT', self, 'LEFT', 0, 0)
 			else

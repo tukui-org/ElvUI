@@ -316,15 +316,6 @@ P.nameplates = {
 	cutawayHealth = false,
 	cutawayHealthFadeOutTime = 0.6,
 	cutawayHealthLength = 0.3,
-	classbar = { -- Depreacted
-		attachTo = 'PLAYER',
-		enable = true,
-		height = 7,
-		sortDirection = 'NONE',
-		position = 'ABOVE',
-		width = 130,
-		yOffset = 11,
-	},
 	clickableWidth = 150,
 	clickableHeight = 30,
 	clickThrough = {
