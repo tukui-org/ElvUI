@@ -313,11 +313,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if AlphaChanged then
 		frame.AlphaChanged = nil
-		if frame.isTarget then
-			frame:SetAlpha(1)
-		elseif not UnitIsUnit(frame.unit, "player") then
-			frame:SetAlpha(1 - self.db.nonTargetTransparency)
-		end
+		mod:HandleTargetAlpha(frame)
 	end
 	if NameColorChanged then
 		frame.NameColorChanged = nil
