@@ -1,9 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 
-local NP = E:GetModule('NamePlates')
-
-local unpack = unpack
+local _G = _G
+local unpack, max = unpack, max
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 
@@ -35,15 +35,16 @@ function NP:ClassPower_UpdateColor(powerType)
 	end
 end
 
-function NP:ClassPower_PostUpdate(cur, max, needUpdate, powerType)
-	if cur and cur > 0 then
+function NP:ClassPower_PostUpdate(Cur, Max, needUpdate)
+	if Cur and Cur > 0 then
 		self:Show()
 	else
 		self:Hide()
 	end
+
 	if needUpdate then
-		for i = 1, max do
-			self[i]:Size(NP.db.classbar.width / max, NP.db.classbar.height)
+		for i = 1, Max do
+			self[i]:Size(NP.db.classbar.width / Max, NP.db.classbar.height)
 			if i == 1 then
 				self[i]:Point('LEFT', self, 'LEFT', 0, 0)
 			else
@@ -60,7 +61,7 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:SetFrameLevel(5)
 	ClassPower:CreateBackdrop('Transparent')
 
-	for i = 1, _G.max(MAX_POINTS[E.myclass] or 0, MAX_COMBO_POINTS) do
+	for i = 1, max(MAX_POINTS[E.myclass] or 0, _G.MAX_COMBO_POINTS) do
 		ClassPower[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
 		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		NP.StatusBars[ClassPower[i]] = true
