@@ -24,7 +24,6 @@ local function LoadSkin()
 
 	-- Skin Blizzard Tooltips
 	local GameTooltip = _G.GameTooltip
-	local EmbeddedItemTooltip = _G.EmbeddedItemTooltip
 	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
 	StoryTooltip:SetFrameLevel(4)
 

@@ -3,8 +3,6 @@ local M = E:NewModule('WorldMap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 E.WorldMap = M
 
 --Lua functions
-local _G = _G
-local pairs = pairs
 local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
