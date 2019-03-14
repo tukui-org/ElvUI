@@ -706,11 +706,6 @@ function S:HandleSliderFrame(frame)
 	frame:StripTextures()
 	frame:CreateBackdrop()
 	frame.backdrop:SetAllPoints()
-
-	hooksecurefunc(frame, "SetBackdrop", function(slider, backdrop)
-		if backdrop ~= nil then slider:SetBackdrop(nil) end
-	end)
-
 	frame:SetThumbTexture(E.Media.Textures.Melli)
 
 	local thumb = frame:GetThumbTexture()
