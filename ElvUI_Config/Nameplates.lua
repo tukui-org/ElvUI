@@ -3609,12 +3609,12 @@ E.Options.args.nameplate = {
 			func = function() ACD:SelectGroup("ElvUI", "cooldown", "nameplates") end,
 			disabled = function() return not E.NamePlates; end,
 		},
-		threatShortcut = {
+		colorsShortcut = {
 			order = 7,
 			type = "execute",
-			name = L["Threat"],
+			name = COLORS,
 			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "threatGroup") end,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "colorsGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer2 = {
@@ -3622,12 +3622,12 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		colorsShortcut = {
+		threatShortcut = {
 			order = 9,
 			type = "execute",
-			name = COLORS,
+			name = L["Threat"],
 			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "colorsGroup") end,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "threatGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		cutawayHealthShortcut = {
