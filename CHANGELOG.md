@@ -4,7 +4,8 @@
 
 
 **Bug Fixes:**  
-
+Fixed the C-Stack error (for real).  
+Fixed issue which caused the chat panel backdrops color to change when updating the normal backdrop color setting.  
 
 **Misc. Changes:**  
 
