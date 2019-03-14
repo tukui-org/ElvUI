@@ -391,9 +391,9 @@ function NP:GetNonTargetAlpha(nameplate, hasTarget, OccludedAlpha)
 end
 
 function NP:HandleTargetAlpha(nameplate, added)
-	local hasTarget = UnitExists('target')
-	local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
 	if nameplate then
+		local hasTarget = UnitExists('target')
+		local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
 		local newAlpha = (nameplate.isTarget and 1) or (hasTarget and NP.db.units.TARGET.nonTargetTransparency)
 		if newAlpha then
 			if added then
