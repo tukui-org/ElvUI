@@ -5,7 +5,7 @@
 
 **Bug Fixes:**  
 Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
-
+Made Style Filter Name Color action work again.  
 
 **Misc. Changes:**  
 Enabled Style Filter Hide Frame action.  

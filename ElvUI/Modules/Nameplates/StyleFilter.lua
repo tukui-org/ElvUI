@@ -322,6 +322,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	if NameColorChanged then
 		frame.NameColorChanged = nil
 		frame.Name:UpdateTag()
+		frame.Name:SetTextColor(1, 1, 1, 1)
 	end
 	if PortraitShown then
 		frame.PortraitShown = nil
