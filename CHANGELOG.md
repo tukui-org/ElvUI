@@ -1,4 +1,4 @@
-### Version 11.03 [  ]
+### Version 11.03 [ March 14th 2019 ]
 
 **New Additions:**  
 Added Target Class Bar on Nameplates.  
