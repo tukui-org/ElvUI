@@ -1,3 +1,15 @@
+### Version 11.05 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
 ### Version 11.04 [ March 14th 2019 ]
 
 **New Additions:**  
