@@ -27,10 +27,11 @@ function NP:ClassPower_UpdateColor(powerType)
 		r, g, b = unpack(color)
 	end
 
+	local db = NP.db.units[self.__owner.frameType]
+	local ClassColor = db and db.classpower.classColor and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 	for i = 1, #self do
-		if powerType == 'COMBO_POINTS' then
-			r, g, b = NP.db.colors.classResources.comboPoints[i].r, NP.db.colors.classResources.comboPoints[i].g, NP.db.colors.classResources.comboPoints[i].b
-		end
+		local classColor = ClassColor or (powerType == 'COMBO_POINTS' and NP.db.colors.classResources.comboPoints[i])
+		if classColor then r, g, b = classColor.r, classColor.g, classColor.b end
 
 		self[i]:SetStatusBarColor(r, g, b)
 	end
