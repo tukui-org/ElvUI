@@ -1215,7 +1215,7 @@ P.nameplates = {
 				filters = {
 					minDuration = 0,
 					maxDuration = 0,
-					priority = 'Blacklist,Dispellable,Boss,CCDebuffs,RaidDebuffs,Dispellable' --NamePlate FriendlyNPC Debuffs
+					priority = 'Blacklist,Boss,CCDebuffs,RaidDebuffs,Dispellable' --NamePlate FriendlyNPC Debuffs
 				},
 			},
 			eliteIcon = {
