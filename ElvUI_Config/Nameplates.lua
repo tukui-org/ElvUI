@@ -3342,6 +3342,11 @@ local function GetUnitSettings(unit, name)
 					type = "range",
 					min = 50, max = 200, step = 1,
 				},
+				classColor = {
+					type = "toggle",
+					order = 6,
+					name = L["Use Class Color"]
+				},
 				sortDirection = {
 					name = L["Sort Direction"],
 					desc = L["Defines the sort order of the selected sort method."],
@@ -4422,8 +4427,13 @@ E.Options.args.nameplate = {
 							type = "range",
 							min = 50, max = 200, step = 1,
 						},
+						classColor = {
+							type = "toggle",
+							order = 6,
+							name = L["Use Class Color"]
+						},
 						sortDirection = {
-							order = 5,
+							order = 7,
 							name = L["Sort Direction"],
 							desc = L["Defines the sort order of the selected sort method."],
 							type = 'select',
