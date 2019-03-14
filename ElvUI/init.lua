@@ -250,7 +250,7 @@ function AddOn:ResetConfigSettings()
 end
 
 function AddOn:GetConfigPosition()
-	return AddOn.global.general.AceGUI.top, AddOn.global.general.AceGUI.left
+	return AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft
 end
 
 function AddOn:GetConfigSize()
@@ -266,7 +266,7 @@ end
 
 function AddOn:ConfigStopMovingOrSizing()
 	if self.obj and self.obj.status then
-		AddOn.global.general.AceGUI.top, AddOn.global.general.AceGUI.left = AddOn:Round(self:GetTop(), 2), AddOn:Round(self:GetLeft(), 2)
+		AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft = AddOn:Round(self:GetTop(), 2), AddOn:Round(self:GetLeft(), 2)
 		AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height = AddOn:Round(self:GetWidth(), 2), AddOn:Round(self:GetHeight(), 2)
 	end
 end

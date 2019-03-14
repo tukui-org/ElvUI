@@ -17,9 +17,7 @@ G.general = {
 	},
 	AceGUI = {
 		width = 1000,
-		height = 720,
-		left = nil,
-		top = nil
+		height = 720
 	},
 	disableTutorialButtons = true,
 	showMissingTalentAlert = false,
