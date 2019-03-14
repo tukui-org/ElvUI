@@ -110,11 +110,11 @@ function NP:Update_TargetIndicator(nameplate)
 		nameplate:EnableElement('TargetIndicator')
 	end
 
-	nameplate.TargetIndicator.style = NP.db.targetGlow
+	nameplate.TargetIndicator.style = NP.db.units.TARGET.glowStyle
 	nameplate.TargetIndicator.lowHealthThreshold = NP.db.lowHealthThreshold
 
 	if NP.db.targetGlow ~= 'none' then
-		local GlowStyle, Color = NP.db.targetGlow, NP.db.colors.glowColor
+		local GlowStyle, Color = NP.db.units.TARGET.glowStyle, NP.db.colors.glowColor
 
 		if not db.health.enable and (GlowStyle ~= 'style2' and GlowStyle ~= 'style6' and GlowStyle ~= 'style8') then
 			GlowStyle = 'style2'
@@ -142,7 +142,7 @@ function NP:Update_TargetIndicator(nameplate)
 		end
 
 		if nameplate.TargetIndicator.Spark and (GlowStyle == 'style2' or GlowStyle == 'style6' or GlowStyle == 'style8') then
-			local scale = NP.db.useTargetScale and (NP.db.targetScale >= .75 and NP.db.targetScale or .75) or 1
+			local scale = NP.db.units.TARGET.useScale and (NP.db.units.TARGET.scale >= .75 and NP.db.units.TARGET.scale or .75) or 1
 			local size = (E.Border + 14) * scale;
 
 			nameplate.TargetIndicator.Spark:Point('TOPLEFT', nameplate.Health, 'TOPLEFT', -(size * 2), size)

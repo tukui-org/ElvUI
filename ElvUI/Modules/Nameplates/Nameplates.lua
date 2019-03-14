@@ -57,7 +57,11 @@ function NP:Style(frame, unit)
 		return
 	end
 
-	NP:StylePlate(frame, unit)
+	if frame:GetName() == 'ElvNP_TargetClassPower' then
+		NP:StyleTargetPlate(frame, unit)
+	else
+		NP:StylePlate(frame, unit)
+	end
 
 	return frame
 end
@@ -71,10 +75,38 @@ function NP:Construct_RaisedELement(nameplate)
 	return RaisedElement
 end
 
+function NP:StyleTargetPlate(nameplate)
+	nameplate:Point('CENTER')
+	nameplate:Size(self.db.clickableWidth, self.db.clickableHeight)
+	nameplate:SetScale(E.global.general.UIScale)
+
+	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
+
+	--nameplate.Power = NP:Construct_Power(nameplate)
+
+	--nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
+
+	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
+
+	if E.myclass == 'DEATHKNIGHT' then
+		nameplate.Runes = NP:Construct_Runes(nameplate)
+	end
+end
+
+function NP:UpdateTargetPlate(nameplate)
+	NP:Update_ClassPower(nameplate)
+
+	if E.myclass == 'DEATHKNIGHT' then
+		NP:Update_Runes(nameplate)
+	end
+
+	nameplate:UpdateAllElements('OnShow')
+end
+
 function NP:StylePlate(nameplate)
 	nameplate:Point('CENTER')
 	nameplate:Size(self.db.clickableWidth, self.db.clickableHeight)
-	nameplate:SetScale(_G.UIParent:GetEffectiveScale())
+	nameplate:SetScale(E.global.general.UIScale)
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
 
@@ -173,6 +205,32 @@ function NP:UpdatePlate(nameplate)
 	NP:UpdatePlateEvents(nameplate)
 
 	nameplate:UpdateAllElements('OnShow')
+end
+
+function NP:Move_TargetClassPower(nameplate)
+	if nameplate and NP.db.classbar.enable then
+		if _G.ElvNP_TargetClassPower.ClassPower then
+			_G.ElvNP_TargetClassPower.ClassPower:SetParent(nameplate)
+			_G.ElvNP_TargetClassPower.ClassPower:ClearAllPoints()
+			_G.ElvNP_TargetClassPower.ClassPower:SetPoint('CENTER', nameplate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
+		end
+		if _G.ElvNP_TargetClassPower.Runes then
+			_G.ElvNP_TargetClassPower.Runes:SetParent(nameplate)
+			_G.ElvNP_TargetClassPower.Runes:ClearAllPoints()
+			_G.ElvNP_TargetClassPower.Runes:SetPoint('CENTER', nameplate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
+		end
+	else
+		if _G.ElvNP_TargetClassPower.ClassPower then
+			_G.ElvNP_TargetClassPower.ClassPower:SetParent(_G.ElvNP_TargetClassPower)
+			_G.ElvNP_TargetClassPower.ClassPower:ClearAllPoints()
+			_G.ElvNP_TargetClassPower.ClassPower:SetPoint('CENTER', _G.ElvNP_TargetClassPower, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
+		end
+		if _G.ElvNP_TargetClassPower.Runes then
+			_G.ElvNP_TargetClassPower.Runes:SetParent(_G.ElvNP_TargetClassPower)
+			_G.ElvNP_TargetClassPower.Runes:ClearAllPoints()
+			_G.ElvNP_TargetClassPower.Runes:SetPoint('CENTER', _G.ElvNP_TargetClassPower, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
+		end
+	end
 end
 
 function NP:CVarReset()
@@ -281,6 +339,7 @@ end
 function NP:ConfigureAll()
 	NP.PlayerRole = E:GetPlayerRole() -- GetSpecializationRole(GetSpecialization())
 
+	-- Find New Way to set these so they don't always reset the NP CVars and refresh the plates.
 	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
 	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
 	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
@@ -298,6 +357,7 @@ function NP:ConfigureAll()
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
 	end
+	--
 
 	C_NamePlate_SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	C_NamePlate_SetNamePlateEnemySize(NP.db.clickableWidth, NP.db.clickableHeight)
@@ -313,10 +373,12 @@ function NP:ConfigureAll()
 		end
 	end
 
-	NP:NamePlateCallBack(_G.ElvNP_Player, 'NAME_PLATE_UNIT_ADDED')
+	NP:UpdatePlate(_G.ElvNP_Player)
+	NP:UpdatePlate(_G.ElvNP_Test)
+	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 
 	for nameplate in pairs(NP.Plates) do
-		NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
+		NP:UpdatePlate(nameplate)
 	end
 
 	NP:StyleFilterConfigureEvents() -- Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
@@ -369,15 +431,22 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isTargetingMe = nil
 		nameplate.isTarget = nil
 	elseif event == 'PLAYER_TARGET_CHANGED' then
+		NP:Move_TargetClassPower(nameplate)
 		if nameplate then
 			local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
-			local Alpha = NP.db.nonTargetTransparency
+			local Alpha = NP.db.units.TARGET.nonTargetTransparency
 			for plate in pairs(NP.Plates) do
 				if plate:GetParent():GetAlpha() == OccludedAlpha then
 					Alpha = OccludedAlpha
 				end
+
+				if plate.frameType == 'PLAYER' then
+					Alpha = 1
+				end
+
 				plate:SetAlpha(Alpha)
 			end
+
 			nameplate:SetAlpha(1)
 		else
 			for plate in pairs(NP.Plates) do
@@ -479,6 +548,14 @@ function NP:Initialize()
 	_G.ElvNP_Test:SetScript("OnDragStop", function() _G.ElvNP_Test:StopMovingOrSizing() end)
 	_G.ElvNP_Test.frameType = 'PLAYER'
 	_G.ElvNP_Test:Disable()
+
+	ElvUF:Spawn('player', 'ElvNP_TargetClassPower')
+	_G.ElvNP_TargetClassPower.isNamePlate = true
+	_G.ElvNP_TargetClassPower:SetScale(1)
+	_G.ElvNP_TargetClassPower:Size(NP.db.clickableWidth, NP.db.clickableHeight)
+	_G.ElvNP_TargetClassPower.frameType = 'TARGET'
+	_G.ElvNP_TargetClassPower:SetAttribute('toggleForVehicle', true)
+	_G.ElvNP_TargetClassPower:SetAlpha(0)
 
 	local NamePlatesCVars = {
 		['nameplateClassResourceTopInset'] = GetCVarDefault('nameplateClassResourceTopInset'),

@@ -311,12 +311,12 @@ P.bags = {
 
 --NamePlate
 P.nameplates = {
-	alwaysShowTargetHealth = true,
+	alwaysShowTargetHealth = true,  -- Depreacted
 	clampToScreen = false,
 	cutawayHealth = false,
 	cutawayHealthFadeOutTime = 0.6,
 	cutawayHealthLength = 0.3,
-	classbar = {
+	classbar = { -- Depreacted
 		attachTo = 'PLAYER',
 		enable = true,
 		height = 7,
@@ -428,19 +428,17 @@ P.nameplates = {
 	font = 'PT Sans Narrow',
 	fontOutline = 'OUTLINE',
 	fontSize = 11,
-	hideBlizzardPlates = false,
 	loadDistance = 40,
 	lowHealthThreshold = 0.4,
 	motionType =  'STACKED',
 	nameColoredGlow = false,
-	nonTargetTransparency = 0.75,
+	nonTargetTransparency = 0.75, -- Depreacted
 	showEnemyCombat = 'DISABLED',
 	showFriendlyCombat = 'DISABLED',
-	showNPCTitles = true,
 	statusbar = 'ElvUI Norm',
-	targetGlow = 'style2',
-	targetScale = 1.15,
-	useTargetScale = false,
+	targetGlow = 'style2', -- Depreacted
+	targetScale = 1.15, -- Depreacted
+	useTargetScale = false, -- Depreacted
 	highlight = true,
 	threat = {
 		enable = true,
@@ -455,6 +453,13 @@ P.nameplates = {
 			enable = false,
 			useStaticPosition = false,
 			clickthrough = false,
+			classpower = {
+				enable = true,
+				height = 7,
+				sortDirection = 'NONE',
+				width = 130,
+				yOffset = 11,
+			},
 			portrait = {
 				enable = false,
 				position = 'RIGHT',
@@ -648,6 +653,20 @@ P.nameplates = {
 					maxDuration = 0,
 					priority = 'Blacklist,blockNoDuration,Personal,Boss,CCDebuffs,RaidDebuffs,Dispellable' --NamePlate Player Debuffs
 				},
+			},
+		},
+		TARGET = {
+			nonTargetTransparency = 0.75,
+			glowStyle = 'style2',
+			useScale = false,
+			scale = 1.15,
+			alwaysShowHealth = true,
+			classpower = {
+				enable = true,
+				height = 7,
+				sortDirection = 'NONE',
+				width = 130,
+				yOffset = 28,
 			},
 		},
 		FRIENDLY_PLAYER = {
@@ -1170,7 +1189,7 @@ P.nameplates = {
 				filters = {
 					minDuration = 0,
 					maxDuration = 0,
-					priority = 'Blacklist,Dispellable,blockNoDuration,Personal,TurtleBuffs' --NamePlate FriendlyNPC Buffs
+					priority = 'Blacklist,blockNoDuration,Personal,TurtleBuffs' --NamePlate FriendlyNPC Buffs
 				},
 			},
 			debuffs = {
@@ -1196,7 +1215,7 @@ P.nameplates = {
 				filters = {
 					minDuration = 0,
 					maxDuration = 0,
-					priority = 'Blacklist,Boss,CCDebuffs,RaidDebuffs,Dispellable' --NamePlate FriendlyNPC Debuffs
+					priority = 'Blacklist,Dispellable,Boss,CCDebuffs,RaidDebuffs,Dispellable' --NamePlate FriendlyNPC Debuffs
 				},
 			},
 			eliteIcon = {

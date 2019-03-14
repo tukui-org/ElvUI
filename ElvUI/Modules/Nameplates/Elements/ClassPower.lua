@@ -3,7 +3,7 @@ local ElvUF = E.oUF
 
 local NP = E:GetModule('NamePlates')
 
-local unpack, max = unpack, max
+local unpack = unpack
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 
@@ -60,7 +60,7 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:SetFrameLevel(5)
 	ClassPower:CreateBackdrop('Transparent')
 
-	for i = 1, max(MAX_POINTS[E.myclass] or 0, MAX_COMBO_POINTS) do
+	for i = 1, _G.max(MAX_POINTS[E.myclass] or 0, MAX_COMBO_POINTS) do
 		ClassPower[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
 		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		NP.StatusBars[ClassPower[i]] = true
@@ -121,21 +121,23 @@ function NP:Construct_Runes(nameplate)
 end
 
 function NP:Update_ClassPower(nameplate)
-	if nameplate.frameType == 'PLAYER' and NP.db.classbar.enable then
+	local db = NP.db.units[nameplate.frameType]
+
+	if db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('ClassPower') then
 			nameplate:EnableElement('ClassPower')
 			nameplate.ClassPower:Show()
 		end
 
-		nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', 0, NP.db.classbar.yOffset)
+		nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', 0, db.classpower.yOffset)
 
 		local maxClassBarButtons = nameplate.ClassPower.__max
 
-		local Width = NP.db.classbar.width / maxClassBarButtons
-		nameplate.ClassPower:Size(NP.db.classbar.width + (maxClassBarButtons - 1), NP.db.classbar.height)
+		local Width = db.classpower.width / maxClassBarButtons
+		nameplate.ClassPower:Size(db.classpower.width + (maxClassBarButtons - 1), db.classpower.height)
 
 		for i = 1, maxClassBarButtons do
-			nameplate.ClassPower[i]:Size(Width, NP.db.classbar.height)
+			nameplate.ClassPower[i]:Size(Width, db.classpower.height)
 		end
 	else
 		if nameplate:IsElementEnabled('ClassPower') then
@@ -146,22 +148,24 @@ function NP:Update_ClassPower(nameplate)
 end
 
 function NP:Update_Runes(nameplate)
-	if nameplate.frameType == 'PLAYER' and NP.db.classbar.enable then
+	local db = NP.db.units[nameplate.frameType]
+
+	if db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('Runes') then
 			nameplate:EnableElement('Runes')
 			nameplate.Runes:Show()
 		end
 
-		nameplate.Runes:Point('CENTER', nameplate, 'CENTER', 0, NP.db.classbar.yOffset)
+		nameplate.Runes:Point('CENTER', nameplate, 'CENTER', 0, db.classpower.yOffset)
 
-		nameplate.sortOrder = NP.db.classbar.sortDirection
+		nameplate.sortOrder = db.classpower.sortDirection
 
-		local width = NP.db.classbar.width / 6
-		nameplate.Runes:Size(NP.db.classbar.width + 5, NP.db.classbar.height)
+		local width = db.classpower.width / 6
+		nameplate.Runes:Size(db.classpower.width + 5, db.classpower.height)
 
 		for i = 1, 6 do
 			nameplate.Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
-			nameplate.Runes[i]:Size(width, NP.db.classbar.height)
+			nameplate.Runes[i]:Size(width, db.classpower.height)
 		end
 	else
 		if nameplate:IsElementEnabled('Runes') then
