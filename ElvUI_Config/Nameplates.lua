@@ -3651,8 +3651,16 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		playerShortcut = {
+		targetShortcut = {
 			order = 13,
+			type = "execute",
+			name = L["Targeted Nameplate"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "targetGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		playerShortcut = {
+			order = 14,
 			type = "execute",
 			name = L["Player Frame"],
 			buttonElvUI = true,
@@ -3660,19 +3668,11 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		friendlyPlayerShortcut = {
-			order = 14,
+			order = 15,
 			type = "execute",
 			name = L["Friendly Player Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
-		friendlyNPCShortcut = {
-			order = 15,
-			type = "execute",
-			name = L["Friendly NPC Frames"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		spacer4 = {
@@ -3680,8 +3680,16 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		enemyPlayerShortcut = {
+		friendlyNPCShortcut = {
 			order = 17,
+			type = "execute",
+			name = L["Friendly NPC Frames"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		enemyPlayerShortcut = {
+			order = 18,
 			type = "execute",
 			name = L["Enemy Player Frames"],
 			buttonElvUI = true,
@@ -3689,19 +3697,11 @@ E.Options.args.nameplate = {
 			disabled = function() return not E.NamePlates; end,
 		},
 		enemyNPCShortcut = {
-			order = 18,
+			order = 19,
 			type = "execute",
 			name = L["Enemy NPC Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
-		targetShortcut = {
-			order = 19,
-			type = "execute",
-			name = L["Targeted Nameplate"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "targetGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		generalGroup = {
