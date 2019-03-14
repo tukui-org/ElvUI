@@ -244,8 +244,8 @@ function AddOn:OnProfileReset()
 	self:StaticPopup_Show("RESET_PROFILE_PROMPT")
 end
 
-
 function AddOn:ResetConfigSettings()
+	AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft = nil, nil
 	AddOn.global.general.AceGUI = AddOn:CopyTable({}, AddOn.DF.global.general.AceGUI)
 end
 
