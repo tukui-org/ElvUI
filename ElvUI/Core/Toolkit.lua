@@ -62,8 +62,7 @@ local function customBackdropBorderColor(frame, r, g, b, a)
 end
 
 local function buildPixelBorders(frame, noSecureHook)
-	if not frame then return end
-	if not frame.pixelBorders then
+	if frame and not frame.pixelBorders then
 		local borders = {}
 
 		for _, v in pairs(BackdropBorders) do
