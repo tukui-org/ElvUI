@@ -7,6 +7,8 @@
 Actually let the Target Class Bar on Nameplates use Class Color for classes other than Death Knight.  
 Fixed an issue which made backdrops always appear.  
 Fixed another case when C-Stack errors could occur from the Toolkit.  
+Fixed an issue which caused clicking problems in the middle of the screen.  
+Fixed the non-Target Nameplate transparency option. (Thanks AcidWeb for helping!)  
 
 **Misc. Changes:**  
 
