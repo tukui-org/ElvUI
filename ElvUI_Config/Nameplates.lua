@@ -2025,6 +2025,11 @@ local function GetUnitSettings(unit, name)
 						desc = L["Use Atlas Textures if there is one available."],
 						type = "toggle",
 					},
+					classColor = {
+						type = 'toggle',
+						order = 8,
+						name = L["Use Class Color"],
+					},
 					textGroup = {
 						order = 100,
 						type = "group",
