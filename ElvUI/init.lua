@@ -146,8 +146,9 @@ function AddOn:OnInitialize()
 		end
 	end
 
+	self.twoPixelsPlease = false
 	self.ScanTooltip = CreateFrame("GameTooltip", "ElvUI_ScanTooltip", _G.UIParent, "GameTooltipTemplate")
-	self.PixelMode = self.private.general.pixelPerfect -- keep this over `UIScale`
+	self.PixelMode = self.twoPixelsPlease or self.private.general.pixelPerfect -- keep this over `UIScale`
 	self:UIScale(true)
 	self:UpdateMedia()
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')

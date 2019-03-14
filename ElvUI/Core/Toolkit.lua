@@ -48,9 +48,7 @@ local function customSetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft,
 end
 
 local function customBackdropColor(frame, r, g, b, a, skip)
-	if skip == 'ElvUI' then
-		return
-	elseif frame.pixelBorders then
+	if frame.pixelBorders and skip ~= 'ElvUI' then
 		frame.pixelBorders.CENTER:SetVertexColor(r, g, b, a)
 		frame:SetBackdropColor(r, g, b, 0, 'ElvUI')
 	end
@@ -191,7 +189,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	if t == 'NoBackdrop' then
 		customSetBackdrop(f)
 	else
-		customSetBackdrop(f, true, glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex, E.mult)
+		customSetBackdrop(f, true, glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex, (not E.twoPixelsPlease and E.mult) or E.mult*2)
 
 		if not f.ignoreBackdropColors then
 			if t == 'Transparent' then
