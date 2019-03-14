@@ -93,12 +93,12 @@ local function buildPixelBorders(frame, noSecureHook)
 		borders.RIGHT:Point("TOPRIGHT", borders.TOPRIGHT, "BOTTOMRIGHT", 0, 0)
 		borders.RIGHT:Point("BOTTOMRIGHT", borders.BOTTOMRIGHT, "TOPRIGHT", 0, 0)
 
-		frame.pixelBorders = borders
-	end
+		if not noSecureHook then
+			hooksecurefunc(frame, "SetBackdropColor", customBackdropColor)
+			hooksecurefunc(frame, "SetBackdropBorderColor", customBackdropBorderColor)
+		end
 
-	if not noSecureHook then
-		hooksecurefunc(frame, "SetBackdropColor", customBackdropColor)
-		hooksecurefunc(frame, "SetBackdropBorderColor", customBackdropBorderColor)
+		frame.pixelBorders = borders
 	end
 end
 -- end backdrop replace code
