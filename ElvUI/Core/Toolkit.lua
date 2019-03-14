@@ -24,9 +24,9 @@ local function customSetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft,
 		end
 	end
 
-	if not (giveBorder or bgFile) then return end
-
 	frame.pixelBorders.CENTER:SetTexture(bgFile)
+
+	if not (giveBorder or bgFile) then return end
 
 	if insetLeft or insetRight or insetTop or insetBottom then
 		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame, 'TOPLEFT', -insetLeft or 0, insetTop or 0)
