@@ -12,6 +12,7 @@ Fixed the non-Target Nameplate transparency option. (Thanks AcidWeb for helping!
 Fixed LFG Ready Popup skin from showing a Blizzard backdrop.  
 
 **Misc. Changes:**  
+Allowed the Config to once again leave the screen.  
 
 
 ___
