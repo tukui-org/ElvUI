@@ -1,9 +1,22 @@
-### Version 11.05 [  ]
+### Version 11.06 [  ]
 
 **New Additions:**  
 
 
 **Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 11.05 [ March 14th 2019 ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+Fixed LFG skin error.  
 Fixed the C-Stack error (for real).  
 Fixed issue which caused the chat panel backdrops color to change when updating the normal backdrop color setting.  
 
