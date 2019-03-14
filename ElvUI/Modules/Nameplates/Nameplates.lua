@@ -377,6 +377,41 @@ function NP:ConfigureAll()
 	NP:SetNamePlateClickThrough()
 end
 
+function NP:GetNonTargetAlpha(nameplate, hasTarget, OccludedAlpha)
+	local Alpha = NP.db.units.TARGET.nonTargetTransparency
+	if (nameplate.frameType == 'PLAYER') or nameplate.isTarget then
+		Alpha = 1
+	elseif (not nameplate.isTarget) and E:Round(nameplate:GetParent():GetAlpha(), 2) == OccludedAlpha then
+		Alpha = Alpha * 0.5
+	elseif not hasTarget then
+		Alpha = 1
+	end
+
+	return Alpha
+end
+
+function NP:HandleTargetAlpha(nameplate, added)
+	local hasTarget = UnitExists('target')
+	local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
+	if nameplate then
+		local newAlpha = (nameplate.isTarget and 1) or (hasTarget and NP.db.units.TARGET.nonTargetTransparency)
+		if newAlpha then
+			if added then
+				E:UIFrameFadeIn(nameplate, 1, 0, newAlpha)
+			else
+				nameplate:SetAlpha(newAlpha)
+			end
+		else
+			local alpha = NP:GetNonTargetAlpha(nameplate, hasTarget, OccludedAlpha)
+			if added then
+				E:UIFrameFadeIn(nameplate, 1, 0, alpha)
+			else
+				nameplate:SetAlpha(alpha)
+			end
+		end
+	end
+end
+
 function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'NAME_PLATE_UNIT_ADDED' and nameplate then
 		NP:ClearStyledPlate(nameplate)
@@ -415,13 +450,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:Move_TargetClassPower(nameplate)
 		end
 
-		if nameplate:IsShown() then
-			E:UIFrameFadeIn(nameplate, 1, 0, (nameplate.isTarget and 1) or (UnitExists("target") and NP.db.nonTargetTransparency or 1))
-		end
-
 		NP.Plates[nameplate] = true
 		nameplate:UpdateTags()
 
+		NP:HandleTargetAlpha(nameplate, true)
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		NP:ClearStyledPlate(nameplate)
@@ -429,28 +461,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isTarget = nil
 	elseif event == 'PLAYER_TARGET_CHANGED' then
 		NP:Move_TargetClassPower(nameplate)
-
-		if nameplate then
-			local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
-			local Alpha = NP.db.units.TARGET.nonTargetTransparency
-			for plate in pairs(NP.Plates) do
-				if plate:GetParent():GetAlpha() == OccludedAlpha then
-					Alpha = OccludedAlpha
-				end
-
-				if plate.frameType == 'PLAYER' then
-					Alpha = 1
-				end
-
-				plate:SetAlpha(Alpha)
-			end
-
-			nameplate:SetAlpha(1)
-		else
-			for plate in pairs(NP.Plates) do
-				plate:SetAlpha(1)
-			end
-		end
 	end
 end
 
@@ -462,6 +472,7 @@ end
 NP.plateEvents = {
 	['PLAYER_TARGET_CHANGED'] = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
+		NP:HandleTargetAlpha(self)
 	end,
 	['UNIT_TARGET'] = function(self, _, unit)
 		unit = unit or self.unit
