@@ -1247,7 +1247,7 @@ P.nameplates = {
 				yOffset = 0,
 			},
 			questIcon = {
-				enable = false,
+				enable = true,
 				position = 'RIGHT',
 				size = 16,
 				xOffset = 0,
@@ -1445,7 +1445,7 @@ P.nameplates = {
 				yOffset = 0,
 			},
 			questIcon = {
-				enable = false,
+				enable = true,
 				position = 'RIGHT',
 				size = 16,
 				xOffset = 0,
