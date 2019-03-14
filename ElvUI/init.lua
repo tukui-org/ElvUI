@@ -146,7 +146,7 @@ function AddOn:OnInitialize()
 		end
 	end
 
-	self.twoPixelsPlease = true
+	self.twoPixelsPlease = false
 	self.ScanTooltip = CreateFrame("GameTooltip", "ElvUI_ScanTooltip", _G.UIParent, "GameTooltipTemplate")
 	self.PixelMode = self.twoPixelsPlease or self.private.general.pixelPerfect -- keep this over `UIScale`
 	self:UIScale(true)
