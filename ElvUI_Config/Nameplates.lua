@@ -3550,7 +3550,7 @@ local function GetUnitSettings(unit, name)
 		}
 	end
 
-	ORDER = ORDER + 100
+	ORDER = ORDER + 1
 	return group
 end
 
@@ -3641,20 +3641,20 @@ E.Options.args.nameplate = {
 			type = "description",
 			name = " ",
 		},
-		playerShortcut = {
-			order = 13,
-			type = "execute",
-			name = L["Player Frame"],
-			buttonElvUI = true,
-			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
-			disabled = function() return not E.NamePlates; end,
-		},
 		targetShortcut = {
-			order = 14,
+			order = 13,
 			type = "execute",
 			name = L["Targeted Nameplate"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "targetGroup") end,
+			disabled = function() return not E.NamePlates; end,
+		},
+		playerShortcut = {
+			order = 14,
+			type = "execute",
+			name = L["Player Frame"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
 			disabled = function() return not E.NamePlates; end,
 		},
 		friendlyPlayerShortcut = {
@@ -4322,8 +4322,12 @@ E.Options.args.nameplate = {
 			},
 		},
 		playerGroup = GetUnitSettings("PLAYER", L["Player Frame"]),
+		friendlyPlayerGroup = GetUnitSettings("FRIENDLY_PLAYER", L["Friendly Player Frames"]),
+		friendlyNPCGroup = GetUnitSettings("FRIENDLY_NPC", L["Friendly NPC Frames"]),
+		enemyPlayerGroup = GetUnitSettings("ENEMY_PLAYER", L["Enemy Player Frames"]),
+		enemyNPCGroup = GetUnitSettings("ENEMY_NPC", L["Enemy NPC Frames"]),
 		targetGroup = {
-			order = 101,
+			order = 200,
 			type = "group",
 			name = L["Targeted Nameplate"],
 			get = function(info) return E.db.nameplates.units.TARGET[ info[#info] ] end,
@@ -4434,10 +4438,6 @@ E.Options.args.nameplate = {
 				},
 			},
 		},
-		friendlyPlayerGroup = GetUnitSettings("FRIENDLY_PLAYER", L["Friendly Player Frames"]),
-		friendlyNPCGroup = GetUnitSettings("FRIENDLY_NPC", L["Friendly NPC Frames"]),
-		enemyPlayerGroup = GetUnitSettings("ENEMY_PLAYER", L["Enemy Player Frames"]),
-		enemyNPCGroup = GetUnitSettings("ENEMY_NPC", L["Enemy NPC Frames"]),
 	},
 }
 
