@@ -177,76 +177,76 @@ local rolePaths = {
 
 local specialChatIcons
 do --this can save some main file locals
+	--local ElvRainbow	= E:TextureString(E.Media.ChatLogos.ElvRainbow, ":13:25")
 	--local ElvPink		= E:TextureString(E.Media.ChatLogos.ElvPink, ":13:25")
-	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple, ":13:25")
 	local ElvBlue		= E:TextureString(E.Media.ChatLogos.ElvBlue, ":13:25")
 	local ElvGreen		= E:TextureString(E.Media.ChatLogos.ElvGreen, ":13:25")
+	local ElvMelon		= E:TextureString(E.Media.ChatLogos.ElvMelon, ":13:25")
 	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange, ":13:25")
+	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple, ":13:25")
 	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed, ":13:25")
-	local ElvRainbow	= E:TextureString(E.Media.ChatLogos.ElvRainbow, ":13:25")
-	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe, ":15:15")
-	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey, ":16:18")
+	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe, ":16:16")
+	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey, ":16:16")
+	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow, ":16:16")
 	specialChatIcons = {
-		-- Elv --
+		-- Elv
 		["Illidelv-Area52"]		= ElvBlue,
 		["Elvz-Kil'jaeden"]		= ElvBlue,
 		["Elv-Spirestone"]		= ElvBlue,
-		-- Tirain --
-		["Tierone-Spirestone"] = "Dr. ", -- lol
+		-- Tirain (NOTE: lol)
+		["Tierone-Spirestone"]	= "Dr. ",
 		["Tirain-Spirestone"]	= MrHankey,
 		["Sinth-Spirestone"]	= MrHankey,
-
-		--I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain
-		["Misdîrect-Spirestone"] = ElvRainbow,
-		["Misoracle-Spirestone"] = ElvRainbow,
-		["MisLight-Spirestone"] = ElvRainbow,
-		["MisDivine-Spirestone"] = ElvRainbow,
-		["MisLust-Spirestone"] = ElvRainbow,
-		["MisMayhem-Spirestone"] = ElvRainbow,
-		["Mismonk-Spirestone"] = ElvRainbow,
-		["Misillidan-Spirestone"] = ElvRainbow,
-		["Mispel-Spirestone"] = ElvRainbow,
-		["Misdecay-Spirestone"] = ElvRainbow,
-
-		-- Whiro --
-		["Zistraeti-WyrmrestAccord"]	= ElvPurple, -- Warlock
-		-- Merathilis Toons --
-		["Asragoth-Shattrath"]		= ElvPurple,	-- Warlock [Alliance]
-		["Damará-Shattrath"]		= ElvRed,		-- Paladin [Alliance]
-		["Jazira-Shattrath"]		= ElvBlue,		-- Priest [Alliance]
-		["Maithilis-Shattrath"]		= ElvGreen,		-- Monk [Alliance]
-		["Mattdemôn-Shattrath"]		= ElvPurple,	-- Demon Hunter [Alliance]
-		["Melisendra-Shattrath"]	= ElvBlue,		-- Mage [Alliance]
-		["Merathilis-Garrosh"]		= ElvOrange,	-- Druid [Horde]
-		["Merathilis-Shattrath"]	= ElvOrange,	-- Druid [Alliance]
-		["Merathilîs-Shattrath"]	= ElvBlue,		-- Shaman [Alliance]
-		-- Affinity's Toons --
+		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
+		["Misdîrect-Spirestone"]	= Rainbow,
+		["Misoracle-Spirestone"]	= Rainbow,
+		["MisLight-Spirestone"]		= Rainbow,
+		["MisDivine-Spirestone"]	= Rainbow,
+		["MisLust-Spirestone"]		= Rainbow,
+		["MisMayhem-Spirestone"]	= Rainbow,
+		["Mismonk-Spirestone"]		= Rainbow,
+		["Misillidan-Spirestone"]	= Rainbow,
+		["Mispel-Spirestone"]		= Rainbow,
+		["Misdecay-Spirestone"]		= Rainbow,
+		-- Affinity
 		["Affinichi-Illidan"]	= Bathrobe,
 		["Affinitii-Illidan"]	= Bathrobe,
 		["Affinity-Illidan"]	= Bathrobe,
 		["Uplift-Illidan"]		= Bathrobe,
-		-- Blazeflack's Toons --
+		-- Whiro
+		["Zistraeti-WyrmrestAccord"]	= ElvPurple, -- Warlock
+		-- Merathilis
+		["Asragoth-Shattrath"]		= ElvPurple,	-- [Alliance] Warlock
+		["Damará-Shattrath"]		= ElvRed,		-- [Alliance] Paladin
+		["Jazira-Shattrath"]		= ElvBlue,		-- [Alliance] Priest
+		["Maithilis-Shattrath"]		= ElvGreen,		-- [Alliance] Monk
+		["Mattdemôn-Shattrath"]		= ElvPurple,	-- [Alliance] DH
+		["Melisendra-Shattrath"]	= ElvBlue,		-- [Alliance] Mage
+		["Merathilis-Shattrath"]	= ElvOrange,	-- [Alliance] Druid
+		["Merathilîs-Shattrath"]	= ElvBlue,		-- [Alliance] Shaman
+		["Merathilis-Garrosh"]		= ElvOrange,	-- [Horde] Druid
+		-- Blazeflack
 		["Blazii-Silvermoon"]	= ElvBlue, -- Priest
 		["Chazii-Silvermoon"]	= ElvBlue, -- Shaman
-		-- Simpy's Toons --
-		["Arieva-Cenarius"]		= ElvRainbow, -- Hunter
-		["Buddercup-Cenarius"]	= ElvRainbow, -- Rogue
-		["Cutepally-Cenarius"]	= ElvRainbow, -- Paladin
-		["Ezek-Cenarius"]		= ElvRainbow, -- DK
-		["Glice-Cenarius"]		= ElvRainbow, -- Warrior
-		["Kalline-Cenarius"]	= ElvRainbow, -- Shaman
-		["Puttietat-Cenarius"]	= ElvRainbow, -- Druid
-		["Simpy-Cenarius"]		= ElvRainbow, -- Warlock
-		["Twigly-Cenarius"]		= ElvRainbow, -- Monk
-		["Imsojelly-Cenarius"]	= ElvRainbow, -- [Horde] DK
-		["Imsojuicy-Cenarius"]	= ElvRainbow, -- [Horde] Druid
-		["Imsopeachy-Cenarius"]	= ElvRainbow, -- [Horde] DH
-		["Imsosalty-Cenarius"]	= ElvRainbow, -- [Horde] Paladin
-		["Imsospicy-Cenarius"]	= ElvRainbow, -- [Horde] Mage
-		["Bunne-CenarionCircle"]		= ElvRainbow, -- Warrior
-		["Loppybunny-CenarionCircle"]	= ElvRainbow, -- Mage
-		["Rubee-CenarionCircle"]		= ElvRainbow, -- DH
-		["Wennie-CenarionCircle"]		= ElvRainbow, -- Priest
+		-- Simpy
+		["Arieva-Cenarius"]		= ElvMelon, -- Hunter
+		["Buddercup-Cenarius"]	= ElvMelon, -- Rogue
+		["Cutepally-Cenarius"]	= ElvMelon, -- Paladin
+		["Ezek-Cenarius"]		= ElvMelon, -- DK
+		["Glice-Cenarius"]		= ElvMelon, -- Warrior
+		["Kalline-Cenarius"]	= ElvMelon, -- Shaman
+		["Puttietat-Cenarius"]	= ElvMelon, -- Druid
+		["Simpy-Cenarius"]		= ElvMelon, -- Warlock
+		["Twigly-Cenarius"]		= ElvMelon, -- Monk
+		["Imsojelly-Cenarius"]	= ElvMelon, -- [Horde] DK
+		["Imsojuicy-Cenarius"]	= ElvMelon, -- [Horde] Druid
+		["Imsopeachy-Cenarius"]	= ElvMelon, -- [Horde] DH
+		["Imsosalty-Cenarius"]	= ElvMelon, -- [Horde] Paladin
+		["Imsospicy-Cenarius"]	= ElvMelon, -- [Horde] Mage
+		["Bunne-CenarionCircle"]		= ElvMelon, -- Warrior
+		["Loppybunny-CenarionCircle"]	= ElvMelon, -- Mage
+		["Rubee-CenarionCircle"]		= ElvMelon, -- DH
+		["Wennie-CenarionCircle"]		= ElvMelon, -- Priest
 	}
 end
 
