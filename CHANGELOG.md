@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-
+Actually let the Target Class Bar on Nameplates use Class Color for classes other than Death Knight.  
 
 **Misc. Changes:**  
 
