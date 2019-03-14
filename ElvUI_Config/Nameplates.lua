@@ -4144,20 +4144,34 @@ E.Options.args.nameplate = {
 							args = {
 								['PALADIN'] = {
 									type = 'color',
+									order = 1,
 									name = HOLY_POWER,
 								},
 								['MAGE'] = {
 									type = 'color',
+									order = 2,
 									name = POWER_TYPE_ARCANE_CHARGES,
 								},
 								['WARLOCK'] = {
 									type = 'color',
+									order = 3,
 									name = SOUL_SHARDS,
 								},
 								['DEATHKNIGHT'] = {
 									type = 'color',
+									order = 4,
 									name = RUNES,
-								}
+								},
+								spacer1 = {
+									order = 5,
+									type = 'description',
+									name = ' ',
+								},
+								spacer2 = {
+									order = 20,
+									type = 'description',
+									name = ' ',
+								},
 							},
 						},
 					},
@@ -4451,23 +4465,11 @@ E.Options.args.nameplate = {
 	},
 }
 
+local ORDER = 10
 for i = 1, 6 do
-	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args['COMBO_POINTS'..i] = {
-		type = 'color',
-		name = COMBO_POINTS..' #'..i,
-		get = function(info)
-			local t = E.db.nameplates.colors.classResources.comboPoints[i]
-			local d = P.nameplates.colors.classResources.comboPoints[i]
-			return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-		end,
-		set = function(info, r, g, b)
-			local t = E.db.nameplates.colors.classResources.comboPoints[i]
-			t.r, t.g, t.b = r, g, b
-			NP:ConfigureAll()
-		end,
-	}
 	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args['CHI_POWER'..i] = {
 		type = 'color',
+		order = i + ORDER,
 		name = CHI_POWER..' #'..i,
 		get = function(info)
 			local t = E.db.nameplates.colors.classResources.MONK[i]
@@ -4476,6 +4478,21 @@ for i = 1, 6 do
 		end,
 		set = function(info, r, g, b)
 			local t = E.db.nameplates.colors.classResources.MONK[i]
+			t.r, t.g, t.b = r, g, b
+			NP:ConfigureAll()
+		end,
+	}
+	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args['COMBO_POINTS'..i] = {
+		type = 'color',
+		order = i + (ORDER * 2),
+		name = COMBO_POINTS..' #'..i,
+		get = function(info)
+			local t = E.db.nameplates.colors.classResources.comboPoints[i]
+			local d = P.nameplates.colors.classResources.comboPoints[i]
+			return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+		end,
+		set = function(info, r, g, b)
+			local t = E.db.nameplates.colors.classResources.comboPoints[i]
 			t.r, t.g, t.b = r, g, b
 			NP:ConfigureAll()
 		end,
