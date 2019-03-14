@@ -31,7 +31,7 @@ function E:UIScale(init)
 
 		E.mult = (bestScale / scale) - ((bestScale - pixelScale) / scale)
 		E.Spacing = (E.PixelMode and 0) or E.mult
-		E.Border = (E.PixelMode and E.mult) or E.mult*2
+		E.Border = ((not E.twoPixelsPlease) and E.PixelMode and E.mult) or E.mult*2
 	else --E.Initialize
 		local UIParent = _G.UIParent
 		UIParent:SetScale(scale)

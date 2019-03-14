@@ -202,17 +202,17 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 			end
 		end
 
-		if not E.PixelMode and not f.forcePixelMode then
+		if (E.twoPixelsPlease or not E.PixelMode) and not f.forcePixelMode then
 			if not f.iborder then
 				local border = CreateFrame('Frame', nil, f)
 				buildPixelBorders(border, true)
-				customSetBackdrop(border, true, nil, E.mult, -E.mult, -E.mult, -E.mult, -E.mult)
+				customSetBackdrop(border, true, nil, (not E.twoPixelsPlease and E.mult) or E.mult*2, -E.mult, -E.mult, -E.mult, -E.mult)
 				customBackdropBorderColor(border, 0, 0, 0, 1)
 				border:SetAllPoints()
 				f.iborder = border
 			end
 
-			if not f.oborder then
+			if not E.twoPixelsPlease and not f.oborder then
 				local border = CreateFrame('Frame', nil, f)
 				buildPixelBorders(border, true)
 				customSetBackdrop(border, true, nil, E.mult, E.mult, E.mult, E.mult, E.mult)
