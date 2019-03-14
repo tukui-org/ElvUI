@@ -21,6 +21,7 @@ local UnitIsFriend = UnitIsFriend
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local IsInInstance = IsInInstance
 local UnitExists = UnitExists
+local UnitClass = UnitClass
 local GetCVar = GetCVar
 
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
@@ -207,28 +208,19 @@ function NP:UpdatePlate(nameplate)
 end
 
 function NP:Move_TargetClassPower(nameplate)
-	if nameplate and NP.db.classbar.enable then
-		if _G.ElvNP_TargetClassPower.ClassPower then
-			_G.ElvNP_TargetClassPower.ClassPower:SetParent(nameplate)
-			_G.ElvNP_TargetClassPower.ClassPower:ClearAllPoints()
-			_G.ElvNP_TargetClassPower.ClassPower:SetPoint('CENTER', nameplate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
-		end
-		if _G.ElvNP_TargetClassPower.Runes then
-			_G.ElvNP_TargetClassPower.Runes:SetParent(nameplate)
-			_G.ElvNP_TargetClassPower.Runes:ClearAllPoints()
-			_G.ElvNP_TargetClassPower.Runes:SetPoint('CENTER', nameplate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
-		end
-	else
-		if _G.ElvNP_TargetClassPower.ClassPower then
-			_G.ElvNP_TargetClassPower.ClassPower:SetParent(_G.ElvNP_TargetClassPower)
-			_G.ElvNP_TargetClassPower.ClassPower:ClearAllPoints()
-			_G.ElvNP_TargetClassPower.ClassPower:SetPoint('CENTER', _G.ElvNP_TargetClassPower, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
-		end
-		if _G.ElvNP_TargetClassPower.Runes then
-			_G.ElvNP_TargetClassPower.Runes:SetParent(_G.ElvNP_TargetClassPower)
-			_G.ElvNP_TargetClassPower.Runes:ClearAllPoints()
-			_G.ElvNP_TargetClassPower.Runes:SetPoint('CENTER', _G.ElvNP_TargetClassPower, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
-		end
+	local targetPlate = _G.ElvNP_TargetClassPower
+	local realPlate = (NP.db.classbar.enable and nameplate) or targetPlate
+	targetPlate.realPlate = realPlate
+
+	if targetPlate.ClassPower then
+		targetPlate.ClassPower:SetParent(realPlate)
+		targetPlate.ClassPower:ClearAllPoints()
+		targetPlate.ClassPower:SetPoint('CENTER', realPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
+	end
+	if targetPlate.Runes then
+		targetPlate.Runes:SetParent(realPlate)
+		targetPlate.Runes:ClearAllPoints()
+		targetPlate.Runes:SetPoint('CENTER', realPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
 	end
 end
 
@@ -391,14 +383,18 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		unit = unit or nameplate.unit
 
-		local reaction = UnitReaction('player', unit)
+		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
+		nameplate.isTarget = UnitIsUnit(unit, 'target')
+		nameplate.reaction = UnitReaction('player', unit)
+		nameplate.isPlayer = UnitIsPlayer(unit)
+
 		if UnitIsUnit(unit, 'player') then
 			nameplate.frameType = 'PLAYER'
-		elseif UnitIsPVPSanctuary(unit) or (UnitIsPlayer(unit) and UnitIsFriend('player', unit) and reaction and reaction >= 5) then
+		elseif UnitIsPVPSanctuary(unit) or (nameplate.isPlayer and UnitIsFriend('player', unit) and nameplate.reaction and nameplate.reaction >= 5) then
 			nameplate.frameType = 'FRIENDLY_PLAYER'
-		elseif not UnitIsPlayer(unit) and (reaction and reaction >= 5) or UnitFactionGroup(unit) == 'Neutral' then
+		elseif not nameplate.isPlayer and (nameplate.reaction and nameplate.reaction >= 5) or UnitFactionGroup(unit) == 'Neutral' then
 			nameplate.frameType = 'FRIENDLY_NPC'
-		elseif not UnitIsPlayer(unit) and (reaction and reaction <= 4) then
+		elseif not nameplate.isPlayer and (nameplate.reaction and nameplate.reaction <= 4) then
 			nameplate.frameType = 'ENEMY_NPC'
 		else
 			nameplate.frameType = 'ENEMY_PLAYER'
@@ -414,8 +410,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		-- update this plate and fade it in
 		NP:UpdatePlate(nameplate)
-
-		nameplate.isTarget = UnitIsUnit(unit, "target")
 
 		if nameplate.isTarget then
 			NP:Move_TargetClassPower(nameplate)
@@ -435,6 +429,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isTarget = nil
 	elseif event == 'PLAYER_TARGET_CHANGED' then
 		NP:Move_TargetClassPower(nameplate)
+
 		if nameplate then
 			local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
 			local Alpha = NP.db.units.TARGET.nonTargetTransparency

@@ -6,6 +6,7 @@ local _G = _G
 local unpack, max = unpack, max
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local MAX_POINTS = {
 	['DRUID'] = 5,
@@ -164,8 +165,10 @@ function NP:Update_Runes(nameplate)
 		local width = db.classpower.width / 6
 		nameplate.Runes:Size(db.classpower.width + 5, db.classpower.height)
 
+		local runeColor = (db.classpower.classColor and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])) or NP.db.colors.classResources.DEATHKNIGHT
+
 		for i = 1, 6 do
-			nameplate.Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
+			nameplate.Runes[i]:SetStatusBarColor(runeColor.r, runeColor.g, runeColor.b)
 			nameplate.Runes[i]:Size(width, db.classpower.height)
 		end
 	else

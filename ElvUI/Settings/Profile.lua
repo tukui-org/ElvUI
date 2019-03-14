@@ -455,6 +455,7 @@ P.nameplates = {
 			clickthrough = false,
 			classpower = {
 				enable = true,
+				classColor = true,
 				height = 7,
 				sortDirection = 'NONE',
 				width = 130,
@@ -515,6 +516,7 @@ P.nameplates = {
 			},
 			power = {
 				enable = true,
+				classColor = true,
 				hideWhenEmpty = false,
 				costPrediction = true,
 				width = 150,
@@ -663,6 +665,7 @@ P.nameplates = {
 			alwaysShowHealth = true,
 			classpower = {
 				enable = true,
+				classColor = true,
 				height = 7,
 				sortDirection = 'NONE',
 				width = 130,
@@ -721,6 +724,7 @@ P.nameplates = {
 			},
 			power = {
 				enable = false,
+				classColor = true,
 				hideWhenEmpty = false,
 				costPrediction = true,
 				width = 150,
@@ -913,6 +917,7 @@ P.nameplates = {
 			},
 			power = {
 				enable = false,
+				classColor = true,
 				hideWhenEmpty = false,
 				costPrediction = true,
 				width = 150,
@@ -1101,6 +1106,7 @@ P.nameplates = {
 			},
 			power = {
 				enable = false,
+				classColor = true,
 				hideWhenEmpty = false,
 				costPrediction = true,
 				width = 150,
@@ -1297,6 +1303,7 @@ P.nameplates = {
 			},
 			power = {
 				enable = false,
+				classColor = true,
 				hideWhenEmpty = false,
 				costPrediction = true,
 				height = 8,
