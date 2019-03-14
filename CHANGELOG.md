@@ -1,10 +1,11 @@
-### Version 11.04 [  ]
+### Version 11.04 [ March 14th 2019 ]
 
 **New Additions:**  
 
 
 **Bug Fixes:**  
-
+Attempted to fix a C-Stack error from `Core/Toolkit`.  
+Fixed an issue which caused a hidden frame in the middle of the screen to hijack clicks.  
 
 **Misc. Changes:**  
 
