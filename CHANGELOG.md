@@ -1,17 +1,20 @@
 ### Version 11.03 [  ]
 
 **New Additions:**  
+Added Target Class Bar on Nameplates.  
+Added Class Color option for Target Class Bar, Player Class Bar, and Nameplate Power Bars.  
 
 
 **Bug Fixes:**  
 Fixed the textures on the Stance bar.  
+Fixed Masque support for Pet bar and Stance bar.  
 Fixed the Class Media Value Color from not using the class color on different classes as it should!  
 Fixed Style Filter for Health Color changing to black when the filter ends.  
 Fixed issue which caused the Script Profile Popup to be shown twice.  
 Fixed TargetIndicator glow change the color correctly after switching targets.  
-Fixed Masque support for Pet bar and Stance bar.  
 Fixed issue which caused the Action bar buttons to not set the "checked" state.  
 Fixed an issue which caused the Blizzard Castbar to sometimes not be shown when the UnitFrame module was disabled and disable Blizzard Player Frame was unchecked.  
+Fixed an issue which caused the UI to hide (like Alt-Z) when opening the Bank frame using the non-thin border theme.  
 
 **Misc. Changes:**  
 Prevented the Update Popup from being shown while in combat.  
