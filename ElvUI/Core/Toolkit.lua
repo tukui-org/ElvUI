@@ -48,9 +48,7 @@ local function customSetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft,
 end
 
 local function customBackdropColor(frame, r, g, b, a, skip)
-	if skip == 'ElvUI' then
-		return
-	elseif frame.pixelBorders then
+	if frame.pixelBorders and skip ~= 'ElvUI' then
 		frame.pixelBorders.CENTER:SetVertexColor(r, g, b, a)
 		frame:SetBackdropColor(r, g, b, 0, 'ElvUI')
 	end
