@@ -554,6 +554,7 @@ function NP:Initialize()
 	_G.ElvNP_TargetClassPower.frameType = 'TARGET'
 	_G.ElvNP_TargetClassPower:SetAttribute('toggleForVehicle', true)
 	_G.ElvNP_TargetClassPower:SetAlpha(0)
+	_G.ElvNP_TargetClassPower:EnableMouse(false)
 
 	local NamePlatesCVars = {
 		['nameplateClassResourceTopInset'] = GetCVarDefault('nameplateClassResourceTopInset'),
