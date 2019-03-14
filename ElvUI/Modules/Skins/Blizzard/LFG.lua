@@ -153,12 +153,6 @@ local function LoadSkin()
 		end
 	end)
 
-	hooksecurefunc(_G.LFGDungeonReadyDialog, "SetBackdrop", function(self, backdrop)
-		if backdrop.bgFile ~= E.media.blankTex then
-			self:SetTemplate("Transparent")
-		end
-	end)
-
 	hooksecurefunc("LFGDungeonReadyStatusIndividual_UpdateIcon", function(button)
 		local _, role = GetLFGProposalMember(button:GetID())
 
