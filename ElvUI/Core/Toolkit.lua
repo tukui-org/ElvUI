@@ -60,7 +60,7 @@ end
 local function customBackdropBorderColor(frame, r, g, b, a)
 	if frame.pixelBorders then
 		for _, v in pairs(BackdropBorders) do
-			frame.pixelBorders[v]:SetColorTexture(r, g, b, a)
+			frame.pixelBorders[v]:SetColorTexture(r or 0, g or 0, b or 0, a)
 		end
 	end
 end
