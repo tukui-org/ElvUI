@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local NP = E:GetModule('NamePlates')
 local LSM = E.LSM
 
 --Cache global variables
@@ -54,35 +55,40 @@ local function Update(self, event)
 		end
 	end
 
+	local r, g, b
 	if not UnitIsUnit(self.unit, 'target') and element.lowHealthThreshold > 0 then
 		local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
 		local perc = (maxHealth > 0 and health/maxHealth) or 0
+
 		if perc <= element.lowHealthThreshold then
-			local r, g, b
 			if perc <= element.lowHealthThreshold / 2 then
 				r, g, b = 1, 0, 0
 			else
 				r, g, b = 1, 1, 0
 			end
+		end
+	else
+		r, g, b = NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b
+	end
 
-			if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
-				element.TopIndicator:SetVertexColor(r, g, b)
-			end
+	if r then
+		if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
+			element.TopIndicator:SetVertexColor(r, g, b)
+		end
 
-			if (element.LeftIndicator and element.RightIndicator) and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
-				element.RightIndicator:SetVertexColor(r, g, b)
-				element.LeftIndicator:SetVertexColor(r, g, b)
-			end
+		if (element.LeftIndicator and element.RightIndicator) and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
+			element.RightIndicator:SetVertexColor(r, g, b)
+			element.LeftIndicator:SetVertexColor(r, g, b)
+		end
 
-			if element.Shadow and (element.style == 'style1' or element.style == 'style5' or element.style == 'style7') then
-				element.Shadow:Show()
-				element.Shadow:SetBackdropBorderColor(r, g, b)
-			end
+		if element.Shadow and (element.style == 'style1' or element.style == 'style5' or element.style == 'style7') then
+			element.Shadow:Show()
+			element.Shadow:SetBackdropBorderColor(r, g, b)
+		end
 
-			if element.Spark and (element.style == 'style2' or element.style == 'style6' or element.style == 'style8') then
-				element.Spark:Show()
-				element.Spark:SetVertexColor(r, g, b)
-			end
+		if element.Spark and (element.style == 'style2' or element.style == 'style6' or element.style == 'style8') then
+			element.Spark:Show()
+			element.Spark:SetVertexColor(r, g, b)
 		end
 	end
 

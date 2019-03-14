@@ -41,18 +41,6 @@ function AB:UpdatePet(event, unit)
 		button.icon:Hide();
 		button.isToken = isToken;
 
-		if not button.ICON then
-			button.ICON = button:CreateTexture(buttonName..'ICON')
-			button.ICON:SetTexCoord(unpack(E.TexCoords))
-			button.ICON:SetInside()
-			button.ICON:SetSnapToPixelGrid(false)
-			button.ICON:SetTexelSnappingBias(0)
-
-			if button.pushed then
-				button.pushed:SetDrawLayer('ARTWORK', 1)
-			end
-		end
-
 		if not isToken then
 			button.ICON:SetTexture(texture);
 			button.tooltipName = name;
@@ -313,12 +301,6 @@ function AB:CreateBarPet()
 
 	_G.PetActionBarFrame.showgrid = 1;
 	PetActionBar_ShowGrid();
-	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
-	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
-	for i=1, NUM_PET_ACTION_SLOTS do
-		self:HookScript(_G["PetActionButton"..i], 'OnEnter', 'Button_OnEnter');
-		self:HookScript(_G["PetActionButton"..i], 'OnLeave', 'Button_OnLeave');
-	end
 
 	self:RegisterEvent('SPELLS_CHANGED', 'UpdatePet')
 	self:RegisterEvent('PLAYER_CONTROL_GAINED', 'UpdatePet');
@@ -335,10 +317,27 @@ function AB:CreateBarPet()
 	self:PositionAndSizeBarPet();
 	self:UpdatePetBindings()
 
-	if MasqueGroup and E.private.actionbar.masque.petBar then
-		for i=1, NUM_PET_ACTION_SLOTS do
-			local button = _G["PetActionButton"..i]
-			MasqueGroup:AddButton(button)
+	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
+	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
+	for i=1, NUM_PET_ACTION_SLOTS do
+		local button = _G["PetActionButton"..i]
+		if not button.ICON then
+			button.ICON = button:CreateTexture("PetActionButton"..i..'ICON')
+			button.ICON:SetTexCoord(unpack(E.TexCoords))
+			button.ICON:SetSnapToPixelGrid(false)
+			button.ICON:SetTexelSnappingBias(0)
+			button.ICON:SetInside()
+
+			if button.pushed then
+				button.pushed:SetDrawLayer('ARTWORK', 1)
+			end
+		end
+
+		self:HookScript(button, 'OnEnter', 'Button_OnEnter');
+		self:HookScript(button, 'OnLeave', 'Button_OnLeave');
+
+		if MasqueGroup and E.private.actionbar.masque.petBar then
+			MasqueGroup:AddButton(button, {Icon=button.ICON})
 		end
 	end
 end

@@ -4,6 +4,11 @@ local NP = E:GetModule('NamePlates')
 local pairs = pairs
 local CreateFrame = CreateFrame
 
+function NP:Health_PostUpdate()
+	local r, g, b = self:GetStatusBarColor()
+	self.r, self.g, self.b = r, g, b
+end
+
 function NP:Construct_Health(nameplate)
 	local Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'Health', nameplate)
 	Health:SetFrameStrata(nameplate:GetFrameStrata())
@@ -32,6 +37,7 @@ function NP:Construct_Health(nameplate)
 
 	Health.Smooth = true
 	Health.frequentUpdates = true
+	Health.PostUpdate = NP.Health_PostUpdate
 
 	return Health
 end

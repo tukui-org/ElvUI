@@ -6,8 +6,8 @@ local _G = _G
 local unpack, type, select, getmetatable, assert, pairs = unpack, type, select, getmetatable, assert, pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local hooksecurefunc = hooksecurefunc
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
@@ -15,59 +15,58 @@ local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0,
 -- ls, Azil, and Simpy made this to replace Blizzard's SetBackdrop API while the textures can't snap
 local BackdropBorders = {"TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT", "TOP", "BOTTOM", "LEFT", "RIGHT"}
 
-local function customSetBackdrop(frame, backdrop)
-	if not backdrop then
-		if frame.pixelBorders then
-			for _, v in pairs(BackdropBorders) do
-				frame.pixelBorders[v]:Hide()
-			end
+local function customSetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft, insetRight, insetTop, insetBottom)
+	if not frame.pixelBorders then return end
+
+	if not giveBorder then
+		for _, v in pairs(BackdropBorders) do
+			frame.pixelBorders[v]:Hide()
 		end
-		return
 	end
 
-	if backdrop.insets then
-		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame, 'TOPLEFT', -backdrop.insets.left, backdrop.insets.top)
-		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', backdrop.insets.right, -backdrop.insets.bottom)
+	if not (giveBorder or bgFile) then return end
+
+	frame.pixelBorders.CENTER:SetTexture(bgFile)
+
+	if insetLeft or insetRight or insetTop or insetBottom then
+		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame, 'TOPLEFT', -insetLeft or 0, insetTop or 0)
+		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', insetRight or 0, -insetBottom or 0)
 	else
 		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame)
 		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame)
 	end
 
-	local size = backdrop.edgeSize or E.mult
-	frame.pixelBorders.TOPLEFT:SetSize(size, size)
-	frame.pixelBorders.TOPRIGHT:SetSize(size, size)
-	frame.pixelBorders.BOTTOMLEFT:SetSize(size, size)
-	frame.pixelBorders.BOTTOMRIGHT:SetSize(size, size)
+	frame.pixelBorders.TOPLEFT:SetSize(edgeSize, edgeSize)
+	frame.pixelBorders.TOPRIGHT:SetSize(edgeSize, edgeSize)
+	frame.pixelBorders.BOTTOMLEFT:SetSize(edgeSize, edgeSize)
+	frame.pixelBorders.BOTTOMRIGHT:SetSize(edgeSize, edgeSize)
 
-	frame.pixelBorders.TOP:SetHeight(size)
-	frame.pixelBorders.BOTTOM:SetHeight(size)
-	frame.pixelBorders.LEFT:SetWidth(size)
-	frame.pixelBorders.RIGHT:SetWidth(size)
+	frame.pixelBorders.TOP:SetHeight(edgeSize)
+	frame.pixelBorders.BOTTOM:SetHeight(edgeSize)
+	frame.pixelBorders.LEFT:SetWidth(edgeSize)
+	frame.pixelBorders.RIGHT:SetWidth(edgeSize)
 end
 
-local function customBackdropBorderColor(frame, r, g, b, a, skip)
+local function customSetBackdropColor(frame, r, g, b, a, skip)
 	if skip == 'ElvUI' then return end
 
 	if frame.pixelBorders then
+		frame.pixelBorders.CENTER:SetVertexColor(r, g, b, a)
+	end
+
+	frame:SetBackdropColor(r, g, b, 0, 'ElvUI')
+end
+
+local function customBackdropBorderColor(frame, r, g, b, a)
+	if frame.pixelBorders then
 		for _, v in pairs(BackdropBorders) do
-			frame.pixelBorders[v]:SetColorTexture(r, g, b, a)
+			frame.pixelBorders[v]:SetColorTexture(r or 0, g or 0, b or 0, a)
 		end
 	end
-
-	frame:SetBackdropBorderColor(r, g, b, 0, 'ElvUI')
 end
 
---[[
-local function GetBackdropBorderColor(frame)
-	if frame.pixelBorders then
-		return frame.pixelBorders.TOPLEFT:GetVertexColor()
-	end
-end
-]]
-
-local function hookBlizzardBackdrop(frame, noSecureHook)
+local function buildPixelBorders(frame, noSecureHook)
 	if not frame then return end
-
 	if not frame.pixelBorders then
 		local borders = {}
 
@@ -101,18 +100,9 @@ local function hookBlizzardBackdrop(frame, noSecureHook)
 		frame.pixelBorders = borders
 	end
 
-	if not noSecureHook and not frame.pixelBorderHooks then
-		--[[frame.BlizzSetBackdrop = frame.SetBackdrop
-			frame.BlizzSetBackdropBorderColor = frame.SetBackdropBorderColor]]
-
-		hooksecurefunc(frame, 'SetBackdrop', customSetBackdrop)
-		hooksecurefunc(frame, 'SetBackdropBorderColor', customBackdropBorderColor)
-
-		--[[frame.SetBackdrop = SetBackdrop
-			frame.SetBackdropBorderColor = SetBackdropBorderColor
-			frame.GetBackdropBorderColor = GetBackdropBorderColor]]
-
-		frame.pixelBorderHooks = true
+	if not noSecureHook then
+		hooksecurefunc(frame, "SetBackdropColor", customSetBackdropColor)
+		hooksecurefunc(frame, "SetBackdropBorderColor", customBackdropBorderColor)
 	end
 end
 -- end backdrop replace code
@@ -190,47 +180,33 @@ end
 local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 	GetTemplate(t, isUnitFrameElement)
 
-	hookBlizzardBackdrop(f, ignoreUpdates)
-
 	f.template = t or 'Default'
 	if glossTex then f.glossTex = glossTex end
 	if ignoreUpdates then f.ignoreUpdates = ignoreUpdates end
 	if forcePixelMode then f.forcePixelMode = forcePixelMode end
 	if isUnitFrameElement then f.isUnitFrameElement = isUnitFrameElement end
 
+	f:SetBackdrop(nil)
+	buildPixelBorders(f, ignoreUpdates)
+
 	if t == 'NoBackdrop' then
-		f:SetBackdrop(nil)
+		customSetBackdrop(f)
 	else
-		local backdrop = {
-			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
-			edgeFile = E.media.blankTex,
-			tile = false, tileSize = 0, edgeSize = E.mult,
-			insets = {left = 0, right = 0, top = 0, bottom = 0}
-		}
-
-		f:SetBackdrop(backdrop)
-
-		if ignoreUpdates then -- call it at least once
-			customSetBackdrop(f, backdrop)
-		end
+		customSetBackdrop(f, true, glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex, E.mult)
 
 		if not f.ignoreBackdropColors then
 			if t == 'Transparent' then
-				f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
+				customSetBackdropColor(f, backdropr, backdropg, backdropb, backdropa)
 			else
-				f:SetBackdropColor(backdropr, backdropg, backdropb)
+				customSetBackdropColor(f, backdropr, backdropg, backdropb)
 			end
 		end
 
 		if not E.PixelMode and not f.forcePixelMode then
 			if not f.iborder then
 				local border = CreateFrame('Frame', nil, f)
-				hookBlizzardBackdrop(border, true)
-				customSetBackdrop(border, {
-					edgeFile = E.media.blankTex, edgeSize = E.mult,
-					insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
-				})
-
+				buildPixelBorders(border, true)
+				customSetBackdrop(border, true, nil, E.mult, -E.mult, -E.mult, -E.mult, -E.mult)
 				customBackdropBorderColor(border, 0, 0, 0, 1)
 				border:SetAllPoints()
 				f.iborder = border
@@ -238,12 +214,8 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 
 			if not f.oborder then
 				local border = CreateFrame('Frame', nil, f)
-				hookBlizzardBackdrop(border, true)
-				customSetBackdrop(border, {
-					edgeFile = E.media.blankTex, edgeSize = E.mult,
-					insets = {left = E.mult, right = E.mult, top = E.mult, bottom = E.mult}
-				})
-
+				buildPixelBorders(border, true)
+				customSetBackdrop(border, true, nil, E.mult, E.mult, E.mult, E.mult, E.mult)
 				customBackdropBorderColor(border, 0, 0, 0, 1)
 				border:SetAllPoints()
 				f.oborder = border
@@ -252,11 +224,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	end
 
 	if not f.ignoreBorderColors then
-		if ignoreUpdates then
-			customBackdropBorderColor(f, borderr, borderg, borderb)
-		else
-			f:SetBackdropBorderColor(borderr, borderg, borderb)
-		end
+		customBackdropBorderColor(f, borderr, borderg, borderb)
 	end
 
 	if not f.ignoreUpdates then

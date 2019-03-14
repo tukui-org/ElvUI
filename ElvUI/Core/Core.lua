@@ -205,14 +205,33 @@ function E:GetPlayerRole()
 	return assignedRole
 end
 
+function E:GrabColorPickerValues(r, g, b)
+	_G.ColorPickerFrame.ignoreUpdates = true
+
+	-- grab old values
+	local oldR, oldG, oldB = _G.ColorPickerFrame:GetColorRGB()
+
+	-- set and define the new values
+	_G.ColorPickerFrame:SetColorRGB(r, g, b)
+	r, g, b = _G.ColorPickerFrame:GetColorRGB()
+
+	-- swap back to the old values
+	if oldR then _G.ColorPickerFrame:SetColorRGB(oldR, oldG, oldB) end
+
+	_G.ColorPickerFrame.ignoreUpdates = nil
+
+	return r, g, b
+end
+
 --Basically check if another class border is being used on a class that doesn't match. And then return true if a match is found.
 function E:CheckClassColor(r, g, b)
-	r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
+	r, g, b = E:GrabColorPickerValues(r, g, b)
 	local matchFound = false
 	for class in pairs(RAID_CLASS_COLORS) do
 		if class ~= E.myclass then
 			local colorTable = class == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
-			if colorTable.r == r and colorTable.g == g and colorTable.b == b then
+			local red, green, blue = E:GrabColorPickerValues(colorTable.r, colorTable.g, colorTable.b)
+			if red == r and green == g and blue == b then
 				matchFound = true
 			end
 		end
@@ -962,8 +981,10 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 		if sender == myName then return end
 		if prefix == 'ELVUI_VERSIONCHK' then
 			local msg, ver = tonumber(message), tonumber(E.version)
+			local inCombat = InCombatLockdown()
+
 			if ver ~= G.general.version then
-				if not E.shownUpdatedWhileRunningPopup then
+				if not E.shownUpdatedWhileRunningPopup and not inCombat then
 					E:StaticPopup_Show('ELVUI_UPDATED_WHILE_RUNNING', nil, nil, {mismatch = ver > G.general.version})
 
 					E.shownUpdatedWhileRunningPopup = true
@@ -972,7 +993,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 				if not E.recievedOutOfDateMessage then
 					E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
 
-					if msg and ((msg - ver) >= 0.05) then
+					if msg and ((msg - ver) >= 0.05) and not inCombat then
 						E:StaticPopup_Show('ELVUI_UPDATE_AVAILABLE')
 					end
 
@@ -1899,10 +1920,6 @@ function E:Initialize()
 	self:Tutorials()
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
-
-	if GetCVarBool("scriptProfile") then
-		E:StaticPopup_Show('SCRIPT_PROFILE')
-	end
 
 	if GetCVarBool("scriptProfile") then
 		E:StaticPopup_Show('SCRIPT_PROFILE')

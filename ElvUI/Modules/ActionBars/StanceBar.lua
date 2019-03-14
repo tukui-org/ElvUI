@@ -3,6 +3,7 @@ local AB = E:GetModule('ActionBars');
 
 --Lua functions
 local _G = _G
+local unpack = unpack
 local ceil = math.ceil
 local format, strfind = format, strfind
 --WoW API / Variables
@@ -20,7 +21,7 @@ local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
-
+local WispSplode = "Interface\\Icons\\Spell_Nature_WispSplode"
 local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate');
 
 function AB:UPDATE_SHAPESHIFT_COOLDOWN()
@@ -39,34 +40,29 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 end
 
 function AB:StyleShapeShift()
-	local numForms = GetNumShapeshiftForms();
-	local texture, spellID, isActive, isCastable, _;
-	local buttonName, button, icon, cooldown;
-	local stance = GetShapeshiftForm();
+	local numForms = GetNumShapeshiftForms()
+	local stance = GetShapeshiftForm()
 
 	for i = 1, NUM_STANCE_SLOTS do
-		buttonName = "ElvUI_StanceBarButton"..i;
-		button = _G[buttonName];
-		icon = _G[buttonName.."Icon"];
-		cooldown = _G[buttonName.."Cooldown"];
+		local buttonName = "ElvUI_StanceBarButton"..i
+		local button = _G[buttonName]
+		local cooldown = _G[buttonName.."Cooldown"]
+
+		button.icon:Hide();
 
 		if i <= numForms then
-			texture, isActive, isCastable, spellID = GetShapeshiftFormInfo(i);
+			local texture, isActive, isCastable, spellID, _ = GetShapeshiftFormInfo(i)
 
 			if self.db.stanceBar.style == 'darkenInactive' then
-				_,_, texture = GetSpellInfo(spellID)
+				_, _, texture = GetSpellInfo(spellID)
 			end
 
-			if not texture then
-				texture = "Interface\\Icons\\Spell_Nature_WispSplode"
-			end
+			if not texture then texture = WispSplode end
+
+			button.ICON:SetTexture(texture)
 
 			if not button.useMasque then
-				if texture then
-					cooldown:SetAlpha(1);
-				else
-					cooldown:SetAlpha(0);
-				end
+				cooldown:SetAlpha(1);
 
 				if isActive then
 					_G.StanceBarFrame.lastSelected = button:GetID();
@@ -98,12 +94,10 @@ function AB:StyleShapeShift()
 				end
 			end
 
-			icon:SetTexture(texture);
-
 			if isCastable then
-				icon:SetVertexColor(1.0, 1.0, 1.0);
+				button.ICON:SetVertexColor(1.0, 1.0, 1.0);
 			else
-				icon:SetVertexColor(0.4, 0.4, 0.4);
+				button.ICON:SetVertexColor(0.4, 0.4, 0.4);
 			end
 		end
 	end
@@ -207,8 +201,10 @@ function AB:PositionAndSizeBarShapeShift()
 		bar:SetParent(E.UIParent)
 	end
 
-	local button, lastButton, lastColumnButton;
+	local button, lastButton, lastColumnButton
+	local useMasque = MasqueGroup and E.private.actionbar.masque.stanceBar
 	local firstButtonSpacing = (self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
+
 	for i=1, NUM_STANCE_SLOTS do
 		button = _G["ElvUI_StanceBarButton"..i];
 		lastButton = _G["ElvUI_StanceBarButton"..i-1];
@@ -267,12 +263,28 @@ function AB:PositionAndSizeBarShapeShift()
 			button:SetAlpha(bar.db.alpha);
 		end
 
-		if(not button.FlyoutUpdateFunc) then
-			self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.stanceBar and true or nil);
+		if not button.ICON then
+			button.ICON = button:CreateTexture("ElvUI_StanceBarButton"..i.."ICON")
+			button.ICON:SetTexCoord(unpack(E.TexCoords))
+			button.ICON:SetSnapToPixelGrid(false)
+			button.ICON:SetTexelSnappingBias(0)
+			button.ICON:SetInside()
+
+			if button.pushed then
+				button.pushed:SetDrawLayer('ARTWORK', 1)
+			end
+		end
+
+		if useMasque then
+			MasqueGroup:AddButton(bar.buttons[i], {Icon=bar.buttons[i].ICON})
+		end
+
+		if not button.FlyoutUpdateFunc then
+			self:StyleButton(button, nil, useMasque and true or nil, true);
 		end
 	end
 
-	if MasqueGroup and E.private.actionbar.masque.stanceBar then MasqueGroup:ReSkin() end
+	if useMasque then MasqueGroup:ReSkin() end
 end
 
 function AB:AdjustMaxStanceButtons(event)
@@ -296,14 +308,12 @@ function AB:AdjustMaxStanceButtons(event)
 		if not bar.buttons[i] then
 			bar.buttons[i] = CreateFrame("CheckButton", format(bar:GetName().."Button%d", i), bar, "StanceButtonTemplate")
 			bar.buttons[i]:SetID(i)
-			if MasqueGroup and E.private.actionbar.masque.stanceBar then
-				MasqueGroup:AddButton(bar.buttons[i])
-			end
+
 			self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter');
 			self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave');
 		end
 
-		if ( i <= numButtons ) then
+		if i <= numButtons then
 			bar.buttons[i]:Show();
 			bar.LastButton = i;
 		else
@@ -342,15 +352,14 @@ function AB:CreateBarShapeShift()
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
 
-	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN');
+	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_USABLE', 'StyleShapeShift');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift');
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift');
 
 	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar');
 	self:AdjustMaxStanceButtons();
-	self:PositionAndSizeBarShapeShift();
 	self:StyleShapeShift();
 	self:UpdateStanceBindings()
 end

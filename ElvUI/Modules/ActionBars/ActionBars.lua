@@ -3,7 +3,7 @@ local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
 
 --Lua functions
 local _G = _G
-local pairs, select, unpack = pairs, select, unpack
+local pairs, select = pairs, select
 local ceil = math.ceil
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 --WoW API / Variables
@@ -223,7 +223,6 @@ function AB:PositionAndSizeBar(barName)
 		end
 
 		self:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil);
-		button:SetCheckedTexture("")
 	end
 
 	if bar.db.enabled or not bar.initialized then
@@ -573,7 +572,7 @@ function AB:UpdateButtonSettings()
 
 	for button in pairs(self.handledbuttons) do
 		if button then
-			self:StyleButton(button, button.noBackdrop, button.useMasque)
+			self:StyleButton(button, button.noBackdrop, button.useMasque, button.ignoreNormal)
 			self:StyleFlyout(button)
 		else
 			self.handledbuttons[button] = nil
@@ -612,7 +611,7 @@ function AB:GetPage(bar, defaultPage, condition)
 	return condition
 end
 
-function AB:StyleButton(button, noBackdrop, useMasque)
+function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local name = button:GetName();
 	local macroText = _G[name.."Name"];
 	local icon = _G[name.."Icon"];
@@ -630,16 +629,12 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 	local countXOffset = self.db.countTextXOffset or 0
 	local countYOffset = self.db.countTextYOffset or 2
 
-	if not button.noBackdrop then
-		button.noBackdrop = noBackdrop;
-	end
-
-	if not button.useMasque then
-		button.useMasque = useMasque;
-	end
+	button.noBackdrop = noBackdrop
+	button.useMasque = useMasque
+	button.ignoreNormal = ignoreNormal
 
 	if flash then flash:SetTexture(); end
-	if normal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0); end
+	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0); end
 	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0); end
 
 	if border and not button.useMasque then
