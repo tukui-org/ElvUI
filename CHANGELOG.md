@@ -8,7 +8,7 @@ Fixed an issue which caused the Targeted and Player Nameplate Classbar options t
 
 
 **Misc. Changes:**  
-
+Enabled Style Filter Hide Frame action.  
 
 ___
 ### Version 11.06 [ March 14th 2019 ]

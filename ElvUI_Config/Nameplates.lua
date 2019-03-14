@@ -1569,7 +1569,6 @@ local function UpdateFilterGroup()
 					order = 1,
 					type = 'toggle',
 					name = L["Hide Frame"],
-					disabled = true,
 				},
 				usePortrait = {
 					order = 2,

@@ -120,6 +120,10 @@ function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 	end
 end
 
+function mod:StyleFilterOnFinishedFlashAnim(requested)
+	if self and not requested then self:Play() end
+end
+
 function mod:StyleFilterSetUpFlashAnim(FlashTexture)
 	FlashTexture.anim = FlashTexture:CreateAnimationGroup("Flash")
 	FlashTexture.anim.fadein = FlashTexture.anim:CreateAnimation("ALPHA", "FadeIn")
@@ -132,9 +136,7 @@ function mod:StyleFilterSetUpFlashAnim(FlashTexture)
 	FlashTexture.anim.fadeout:SetToAlpha(0)
 	FlashTexture.anim.fadeout:SetOrder(1)
 
-	FlashTexture.anim:SetScript("OnFinished", function(flash, requested)
-		if not requested then flash:Play() end
-	end)
+	FlashTexture.anim:SetScript("OnFinished", mod.StyleFilterOnFinishedFlashAnim)
 end
 
 function mod:StyleFilterBorderColorLock(backdrop, switch)
@@ -147,12 +149,11 @@ end
 
 function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	if VisibilityChanged then
-		--[[
 		frame.StyleChanged = true
 		frame.VisibilityChanged = true
-		frame:Hide()
+		frame:ClearAllPoints()
+		frame:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
 		return --We hide it. Lets not do other things (no point)
-		]]
 	end
 	if HealthColorChanged then
 		frame.StyleChanged = true
@@ -266,7 +267,8 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	frame.StyleChanged = nil
 	if VisibilityChanged then
 		frame.VisibilityChanged = nil
-		frame:Show()
+		frame:ClearAllPoints()
+		frame:Point('CENTER')
 	end
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
