@@ -207,7 +207,6 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 				local border = CreateFrame('Frame', nil, f)
 				buildPixelBorders(border, true)
 				customSetBackdrop(border, true, nil, E.mult, -E.mult, -E.mult, -E.mult, -E.mult)
-				customSetBackdropColor(border, 0, 0, 0, 0)
 				customBackdropBorderColor(border, 0, 0, 0, 1)
 				border:SetAllPoints()
 				f.iborder = border
@@ -217,7 +216,6 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 				local border = CreateFrame('Frame', nil, f)
 				buildPixelBorders(border, true)
 				customSetBackdrop(border, true, nil, E.mult, E.mult, E.mult, E.mult, E.mult)
-				customSetBackdropColor(border, 0, 0, 0, 0)
 				customBackdropBorderColor(border, 0, 0, 0, 1)
 				border:SetAllPoints()
 				f.oborder = border
