@@ -386,7 +386,7 @@ function NP:GetNonTargetAlpha(nameplate, hasTarget)
 	local Alpha = NP.db.units.TARGET.nonTargetTransparency
 	if (nameplate.frameType == 'PLAYER') or nameplate.isTarget then
 		Alpha = 1
-	elseif (not nameplate.isTarget) and NP:IsBlizzardPlateOccluded(nameplate) then
+	elseif (not nameplate.isTarget) and not nameplate.isUnitOcculed and NP:IsBlizzardPlateOccluded(nameplate) then
 		Alpha = Alpha * 0.5
 	elseif not hasTarget then
 		Alpha = 1
@@ -406,6 +406,19 @@ function NP:HandleTargetAlpha(nameplate, added)
 		else
 			nameplate:SetAlpha(alpha)
 		end
+	end
+end
+
+function NP:WatchOcculed(elapsed)
+	if self.elapsed and (self.elapsed > 0.1) then
+		local nameplate = self and self:GetParent()
+		if nameplate then
+			nameplate.isUnitOcculed = NP:IsBlizzardPlateOccluded(nameplate)
+		end
+
+		self.elapsed = 0
+	else
+		self.elapsed = (self.elapsed and self.elapsed + elapsed) or 0
 	end
 end
 
@@ -450,10 +463,21 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP.Plates[nameplate] = true
 		nameplate:UpdateTags()
 
+		if not nameplate.OcculedWatcher then
+			nameplate.OcculedWatcher = CreateFrame('Frame', nil, nameplate)
+		end
+
+		nameplate.OcculedWatcher:SetScript('OnUpdate', NP.WatchOcculed)
+
 		NP:HandleTargetAlpha(nameplate, true)
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		NP:ClearStyledPlate(nameplate)
+
+		if nameplate.OcculedWatcher then
+			nameplate.OcculedWatcher:SetScript('OnUpdate', nil)
+		end
+
 		nameplate.isTargetingMe = nil
 		nameplate.isTarget = nil
 	elseif event == 'PLAYER_TARGET_CHANGED' then
