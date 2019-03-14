@@ -363,6 +363,7 @@ function AddOn:ToggleConfig(msg)
 				_G.ElvUIGUIFrame = self.GUIFrame
 
 				local maxWidth, maxHeight = self.UIParent:GetSize()
+				frame:SetClampedToScreen(true)
 				frame:SetMinResize(600, 500)
 				frame:SetMaxResize(maxWidth-50, maxHeight-50)
 
