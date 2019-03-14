@@ -216,7 +216,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if AlphaChanged then
 		frame.StyleChanged = true
 		frame.AlphaChanged = true
-		frame:SetAlpha(actions.alpha / 100)
+		E:UIFrameFadeIn(frame, 0, 0, actions.alpha / 100)
 	end
 	if NameColorChanged then
 		frame.StyleChanged = true

@@ -470,6 +470,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.OcculedWatcher:SetScript('OnUpdate', NP.WatchOcculed)
 
 		NP:HandleTargetAlpha(nameplate, true)
+
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		NP:ClearStyledPlate(nameplate)
