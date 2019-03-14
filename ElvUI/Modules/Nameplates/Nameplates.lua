@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local ElvUF = ElvUI.oUF
-
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
+local ElvUF = ElvUI.oUF
 
 --Cache global variables
 local _G = _G
