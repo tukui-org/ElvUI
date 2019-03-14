@@ -15,6 +15,7 @@ Fixed an issue which caused the Blizzard Castbar to sometimes not be shown when 
 
 **Misc. Changes:**  
 Prevented the Update Popup from being shown while in combat.  
+Added `Dispellable` to Nameplate Friendly NPC Buffs and Nameplate Enemy Player Debuffs list by default.  
 
 ___
 ### Version 11.02 [ March 12th 2019 ]
