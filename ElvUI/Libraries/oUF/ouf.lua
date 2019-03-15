@@ -326,7 +326,7 @@ local function initObject(unit, style, styleFunc, header, ...)
 			end
 		end
 
-		activeElements[object] = {} -- styleFunc on headers break before this is set when they try to enable elements before it's set.
+		activeElements[object] = {} --ElvUI: styleFunc on headers break before this is set when they try to enable elements before it's set.
 
 		Private.UpdateUnits(object, objectUnit)
 
