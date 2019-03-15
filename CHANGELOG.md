@@ -1,24 +1,24 @@
 ### Version 11.07 [  ]
 
 **New Additions:**  
-Added `ElvUIPlayerNamePlateAnchor` for WeakAuras.  
+Added `ElvUIPlayerNamePlateAnchor` for WeakAuras and other AddOns.  
+Added an option to toggle the Nameplates from fading in when shown.  
 
 **Bug Fixes:**  
 Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
-Made Style Filter Name Color action work again.  
-Made Style Filter Alpha work correctly again.  
+Made Style Filter Name Color and Alpha action work again.  
 
 **Misc. Changes:**  
 Enabled Style Filter Hide Frame action.  
 Reallowed Target Scale in Nameplate options.  
 Nameplate CVars and other CVars should be working correctly again.  
 Updated Module Copy to handle some new cases.  
+Keep `Player` nameplate from fading out.  
 
 ___
 ### Version 11.06 [ March 14th 2019 ]
 
 **New Additions:**  
-
 
 **Bug Fixes:**  
 Actually let the Target Class Bar on Nameplates use Class Color for classes other than Death Knight.  
@@ -31,12 +31,10 @@ Fixed LFG Ready Popup skin from showing a Blizzard backdrop.
 **Misc. Changes:**  
 Allowed the Config to once again leave the screen.  
 
-
 ___
 ### Version 11.05 [ March 14th 2019 ]
 
 **New Additions:**  
-
 
 **Bug Fixes:**  
 Fixed LFG skin error.  
@@ -45,12 +43,10 @@ Fixed issue which caused the chat panel backdrops color to change when updating 
 
 **Misc. Changes:**  
 
-
 ___
 ### Version 11.04 [ March 14th 2019 ]
 
 **New Additions:**  
-
 
 **Bug Fixes:**  
 Attempted to fix a C-Stack error from `Core/Toolkit`.  
@@ -58,14 +54,12 @@ Fixed an issue which caused a hidden frame in the middle of the screen to hijack
 
 **Misc. Changes:**  
 
-
 ___
 ### Version 11.03 [ March 14th 2019 ]
 
 **New Additions:**  
 Added Target Class Bar on Nameplates.  
 Added Class Color option for Target Class Bar, Player Class Bar, and Nameplate Power Bars.  
-
 
 **Bug Fixes:**  
 Fixed the textures on the Stance bar.  
@@ -87,7 +81,6 @@ ___
 
 **New Additions:**  
 
-
 **Bug Fixes:**  
 Fixed issue where opening the bank with shift would say you needed to purchase the reagent slots.  
 Fixed issue on pet bar which may have caused the "auto cast" markers to show in the wrong pet spells.  
@@ -105,12 +98,10 @@ ___
 
 **New Additions:**  
 
-
 **Bug Fixes:**  
 Fixed pet bar not displaying the spell textures correctly.  
 
 **Misc. Changes:**  
-
 
 ___
 ### Version 11.00 [ March 12th 2019 ]
@@ -132,10 +123,8 @@ ___
 **New Additions:**  
 Added option to suppress the "UI Scale Changed" popup for the current session. It is a checkbox on the popup itself.  
 
-
 **Bug Fixes:**  
 Fixed visibility of raid frames in the installer for the healer layout.  
-
 
 **Misc. Changes:**  
 Added warning popup with information about nameplates getting reset with patch 8.1.5.  
@@ -145,29 +134,23 @@ Added support for checkboxes on our static popups.
 Reverted some of the recent UI scale changes in an attempt to make it work correctly for more people.  
 A few skin tweaks.  
 
-
 ___
 ### Version 10.91 [ February 27th 2019 ]
 
 **New Additions:**  
 
-
 **Bug Fixes:**  
 Fixed issue with Objective Tracker in Mythics.  
 
-
 **Misc. Changes:**  
-
 
 ___
 ### Version 10.90 [ February 25th 2019 ]
 
 **New Additions:**  
 
-
 **Bug Fixes:**  
 Fixed issue causing UIScale value to be stored as string instead of number, resulting in an error in v10.89.  
-
 
 **Misc. Changes:**  
 Changed UIScale information popup so it will continue to pop up until an action has been taken. This is to make sure the user sees the info in case an error prevented the popup the first time.
@@ -184,7 +167,6 @@ Fixed incompatibility issue(s) with Kaliel's Tracker due to a moved reference to
 Fixed rare issue where UIScale had been stored as 0 and would cause the UI to explode.  
 
 **Misc. Changes:**  
-
 
 ___
 ### Version 10.88 [ February 24th 2019 ]
@@ -212,14 +194,12 @@ ___
 
 **New Additions:**  
 
-
 **Bug Fixes:**  
 Fixed an issue with the combat log header. (#1013)  
 Fixed a bag config error if the bag module was disabled.  
 Fixed an error caused by incorrect file loading order.  
 
 **Misc. Changes:**  
-
 
 ___
 ### Version 10.86 [ January 29th 2019 ]
@@ -335,7 +315,6 @@ Added right-click functionality for the movers in `/moveui` to get to the option
 Added NamePlate indicators for Quest Mobs. Works only in the Open World.  
 Added a skin option to remove the Parchment from some skins.  
 
-
 **Bug Fixes:**  
 Fixed display castbar for Arena & Boss Frames.  
 Fixed Raidmarker spacing. (#791)  
@@ -346,7 +325,6 @@ Fixed Health Backdrop ClassBackdrop multiplier. (#134)
 Fixed DejaCharacterStats and Character Skin conflicts. (#819)  
 Fixed `Raid Menu` button in `Raid Control`. (!78 - Thanks @Dimitro)  
 Fixed issue which prevented Style Filters from applying to Healthbars of some Nameplates when Healthbar was disabled.  
-
 
 **Misc. Changes:**  
 Updated CCDebuffs list.  
@@ -370,10 +348,8 @@ Added toggle option for the New Item Glow in your bags. (#452)
 Added an option to hide the honor databar below max level. Disabled by default.  
 Add width override for nameplate auras. (#142)  
 
-
 **Bug Fixes:**  
 Fixed a rare nil error in the range code.  
-
 
 **Misc. Changes:**  
 Added Infested affix buff to RaidBuffsElvUI filter.  
@@ -385,11 +361,9 @@ ___
 
 **New Additions:**  
 
-
 **Bug Fixes:**  
 Fixed issue with display of Attonement in Buff Indicators when the Trinity talent is active. (#346)  
 Fixed issue with "out of range" display on UnitFrames on the Mother encounter in Uldir. (#767)  
-
 
 **Misc. Changes:**  
 Added BfA Dungeon debuffs to RaidDebuff filter. Credit: Dharwin & Rubgrsch.  
@@ -406,7 +380,6 @@ Added Seafarer's Dubloon to the Currency Datatext.
 Added Strata option for the Bags.  
 Added a temp mover for the Scrapping Machine Frame.  
 
-
 **Bug Fixes:**  
 Fixed Nameplate Cutaway health not following Style Filter Health Color changes.  
 Fixed the AltPowerBar enable toggle not requiring a reload.  
@@ -416,7 +389,6 @@ Fixed issue with chat frames and data panels disappearing. (#686)
 Fixed statusbars on the ToyBox & Heirloom tab in the collection skin.  
 Fixed issue which prevented debuff highlight from working for shadow priests and diseases.  
 Fixed channel ticks for Penance with talent 'Castigation'  
-
 
 **Misc. Changes:**  
 Removed Legion debuffs  
@@ -433,7 +405,6 @@ Added BFA Mission Datatext (Thanks @AcidWeb).
 Added ActionBar option to color Keybind Text instead of Button.  
 Added Alternative Power Bar. The settings are located under `/ec - General - Alternative Power`.  
 
-
 **Bug Fixes:**  
 Fixed a texture issue on the Talent skin. (#566)  
 Fixed bags from being shown over the WorldMapFrame. (#592)  
@@ -443,7 +414,6 @@ Fixed skin issue with Mission Talent Frame.
 Fixed issue which prevented clicking in the top-right of screen where Minimap is by default (when the Minimap is not actually there).  
 Fixed Stagger class bar auto-hide (Thanks to Jimmy Pruitt).  
 Fixed Ace3 plus/minus on some scrollbars (#631 - Thanks @sezz).  
-
 
 **Misc. Changes:**  
 Updated spell id for Earth Shield. (#527)  
@@ -468,14 +438,12 @@ ___
 
 **New Additions:**  
 
-
 **Bug Fixes:**  
 Fixed CVar `chatClassColorOverride` not working correctly.  
 Fixed errors which occurred in `OrderHallTalentFrame` and `Contribution` skins.  
 Fixed memory leaking from `GetPlayerMapPosition` API. (Thanks to Rubgrsch and siweia)!  
 Fixed bags not properly showing items when searched.  
 Fixed an issue that sometimes the chat scrollBars where not hidden properly.  
-
 
 **Misc. Changes:**  
 Re-enable the old Guild skin back.  
@@ -487,11 +455,9 @@ ___
 **New Additions:**  
 Added a mover for the Chat buttons.  
 
-
 **Bug Fixes:**  
 Reworked the Microbar mouseover handler. (#523)  
 Fixed issue which caused community chats to be shown in all chat frames.  
-
 
 **Misc. Changes:**  
 Updated `Setup Chat` part of installer to enable class colors in all channels and communities.  
@@ -503,11 +469,9 @@ ___
 
 **New Additions:**  
 
-
 **Bug Fixes:**  
 Fixed issue with backdrop on tooltips turning blue.  
 Fixed error when pressing 'Enter' to start typing in the chat. (#485)  
-
 
 **Misc. Changes:**  
 Added skins from Simpy for Artifact Appearance and Orderhall Talents.  
@@ -527,7 +491,6 @@ Added scale option for the smaller world map.
 Added new skins for the new elements in patch 8.0.  
 Added the original chat buttons to a dedicated panel which can be toggled by right-clicking the "<" character in the left chat panel.  
 
-
 **Bug Fixes:**  
 Fixed issue with UnitFrame Mouseglow when Portraits was enabled in non-overlay mode.  
 Fixed error when attempting to right click a fake unitframe spawned from "Display Frames" by unregistering mouse on these frames.  
@@ -541,7 +504,6 @@ Fixed issue with tooltip compare being activated when it should not. (#471)
 Fixed several issues with the Micro Bar.   
 Fixed error in the Spellbook relating to our Vehicle Button on the minimap and position of the Minimap. (#434)  
 Fixed various issues with tooltips. (#472)  
-
 
 **Misc. Changes:**  
 In order to improve load times, ElvUI will no longer load `Blizzard_DebugTools`.  
@@ -558,7 +520,6 @@ Added option to move the Resurrect Icon on the party/raid/raid40 frames.
 Added new UnitFrame Glow settings located under `UnitFrame -> General -> Frame Glow`. Each type of UnitFrame (Player, Target, Etc) has new options to disable these settings individually.  
 Added an option `Nameplates -> General -> Name Colored Glow` to use the Nameplate Name Color for the Name Glow instead of Glow Color.  
 Added options to override the Cooldown Text settings inside of `Bags`, `NamePlates`, `UnitFrames`, and `Buffs and Debuffs`.  
-
 
 **Bug Fixes:**  
 Fixed instance group size for Seething Shore and Arathi Blizzard.  
@@ -578,7 +539,6 @@ Fixed issue which made the Friendly Blizzard plates wider than they should be fo
 Fixed issue which may have caused the Nameplate Clickable range to be off more than it should.  
 Fixed issue which prevented nameplate glow from wrapping around the enemy castbars.  
 Fixed error for shapeshifting druids who enter combat when nameplate classbar is attached to player nameplate.  
-
 
 **Misc. Changes:**  
 The Plugin Installer frame is now movable.  
@@ -610,7 +570,6 @@ Added an option for a detailed report for Vendor Grey Items.
 Added Talent Spec Icon on the tooltip.  
 Added Instance Icons on the Saved Instances tooltip. (Thanks Kkthnx for the idea)!  
 
-
 **Bug Fixes:**  
 Fixed issue that would allow quest grey items to be vendored via Vendor Grey Items.  
 Fixed rare tooltip error (attempt to index local 'color').  
@@ -621,7 +580,6 @@ Corrected issue which made the UI Scale incorrect after alt-tab during combat wh
 Fixed issue in which class colored names in chat could still hijack the coloring of some hyperlinks. (This will also allow other hyperlinks to be keywords as well).  
 Fixed UI-Scale bug for users over 1080p in Fullscreen mode. (Thanks AcidWeb and Nihilith for helping debug).  
 Fixed UI-Scale being off for Mac users as well. (Thank you critklepka for helping debug the Mac scale issue).  
-
 
 **Misc. Changes:**  
 Skinned the new Allied Races frame.  
@@ -646,13 +604,11 @@ ___
 **New Additions:**  
 None  
 
-
 **Bug Fixes:**  
 Fixed position of the ElvUI Status Report frame (/estatus).  
 Fixed issue updating npc titles on NamePlates.  
 Fixed placement issue of name and level on NamePlates when "Always Show Target Healthbar" is disabled.  
 Improved workaround for vehicle issue on Antoran High Command (credit: ls-@GitHub).  
-
 
 **Misc. Changes:**  
 The Style Filter action "Name Only" will also display the NPC title now.  
@@ -671,7 +627,6 @@ Added options to hide specific sections in the Friends datatext tooltip.
 Added the ability to assign items to bags like in blizzard's ui to our big bag (toggle the bags and right click bag -> assign it).  
 Added new command "/estatus" which will show a Status Report frame with helpful information for troubleshooting purposes.  
 
-
 **Bug Fixes:**  
 Fixed issue with missing border colors on some elements after a login or reload.  
 Fixed issue in Chat Copy which made it unable to copy dumped hyperlinks properly.  
@@ -682,7 +637,6 @@ Fixed error when importing style filters via global (account settings).
 Fixed issue which prevented some Style Filter actions from taking affect. (#282)  
 Fixed issue which caused items in the bag to not update correctly (after sorting). (#288)  
 Fixed issue which caused the invite via Guild and Friend (non-bnet) datatext to not properly request an invite.  
-
 
 **Misc. Changes:**  
 Updated UnitFrame and NamePlate heal prediction based on oUF changes.  
@@ -706,7 +660,6 @@ Added a Combat-Hide option to role icons on party/raid frames.
 Added option to self-cast with a right-click on actionbuttons.  
 Added "Desaturate On Cooldown" option to action bars. It will make icons black&white when the action is on cooldown.  
 
-
 **Bug Fixes:**  
 Changed the vehicle fix we put in place previously. It will only affect the Antorus raid instance now. You no longer need pet frames to see vehicles in old raids.  
 Fixed issue with stance bar visibility when switching between specs.  
@@ -723,7 +676,6 @@ Fixed issue which caused the version check for ElvUI and associated 3rd party pl
 Fixed issue which could cause the clickable area on nameplates to use an incorrect size.  
 Fixed issue with healer icons in battlegrounds when multiple players had the same name.  
 Fixed various issues with the Friend datatext relating to multiple characters or games from the same account.  
-
 
 **Misc. Changes:**  
 Cleaned up code in Friend datatext.  
@@ -752,7 +704,6 @@ Added options for Health font on NamePlates.
 Added option to copy a single chat line by clicking a texture on the left side of it.  
 Added raid debuffs for the new Antorus, the Burning Throne raid.  This requires testing and feedback by users.  
 
-
 **Bug Fixes:**  
 Fixed issue with Style Filter scale action.  
 Fixed pet type in the pet battle UI for non-English clients.  
@@ -763,7 +714,6 @@ Fixed issue which caused auras to not respect the Max Duration setting when prio
 Fixed issue which may have caused weird behaviour with player nameplate hide delay.  
 Fixed issue which caused some Quick Join messages in chat to be duplicated.  
 Fixed issue which made it impossible to target raid members in vehicles in the new raid instance. This is a temporary workaround until Blizzard fixes the issue. Until then you need to use Raid-Pet Frames if you need to see vehicles (Malygos, Ulduar etc).  
-
 
 **Misc. Changes:**  
 Various tweaks/updates to a lot of the skins.  
@@ -786,7 +736,6 @@ Added option to change duration text position on nameplate auras.
 Added option to change castbar icon position on nameplates.  
 Added font outline option for the Threat Bar.  
 
-
 **Bug Fixes:**  
 Fixed issue with nameplate scale not following Style Filter settings on target change.  
 Fixed issue with placement of microbar within its mover frame.  
@@ -795,7 +744,6 @@ Fixed error when setting text color on custom buff indicators.
 Fixed issue preventing you from inviting people on remote chat in Guild datatext.  
 Fixed issue which caused classbar to disappear from target nameplate.  
 Fixed issue which caused enemy nameplates to break after having targeted a friendly unit in an instance and have the classbar appear above that nameplate.  
-
 
 **Misc. Changes:**  
 Added Beacon of Virtue to Buff Indicator filter.  
@@ -814,10 +762,8 @@ ___
 **New Additions:**  
 None
 
-
 **Bug Fixes:**  
 Fixed error with castbar element (for real this time).
-
 
 **Misc. Changes:**  
 None
@@ -828,10 +774,8 @@ ___
 **New Additions:**  
 None
 
-
 **Bug Fixes:**  
 Fixed error in castbar element.
-
 
 **Misc. Changes:**  
 None
@@ -842,10 +786,8 @@ ___
 **New Additions:**  
 None  
 
-
 **Bug Fixes:**  
 Fixed issue creating new style filters.  
-
 
 **Misc. Changes:**  
 None  
@@ -878,7 +820,6 @@ Added Power Threshold trigger to nameplate style filters.
 Added ability to match players own health in the "Health Threshold" trigger for nameplate style filters.  
 Added role icons to the RaidUtility frame when in a raid.  
 
-
 **Bug Fixes:**  
 Attempt more fixes towards the unit errors on nameplates.  
 Fixed a divide by 0 error in Artifact DataBars.  
@@ -890,7 +831,6 @@ Fixed issue with healer icon position when portrait is enabled on nameplates.
 Fixed issue which caused the "Hide" action on nameplate style filters to incorrectly show hidden nameplates if "Hide" was disabled.  
 Fixed issue with portrait position on nameplates when healthbar is disabled but forced to be shown on targeted nameplate.  
 Fixed issue with chat editbox position when backdrop was enabled/disabled.  
-
 
 **Misc. Changes:**  
 Added and updated spell IDs in the RaidDebuffs filter.  
@@ -920,7 +860,6 @@ Added a "Reset Aura Filters" button for all Buffs, Debuffs and Aura Bars modules
 Added a "Reset Filter" button to all default filters in the Filters section of the config. This will completely reset the filter to its original state and remove any spells the user added.  
 Added 2 new special filters for Aura Filtering: "CastByPlayers" and "blockCastByPlayers". These can either allow or block all auras cast by player units (meaning not NPCs).  
 
-
 **Bug Fixes:**  
 Fixed rare error in nameplates regarding attempt to use a non-unit value as argument for UnitIsUnit API.  
 Fixed taint which prevented kicking someone from guild.  
@@ -928,7 +867,6 @@ Fixed issue which caused "Fluid Position" option for Player unitframe to go miss
 Fixed rare error in nameplates when changing target.  
 Fixed issue which may have caused some nameplate elements to stay visible when nameplate was not.  
 Fixed issue which caused nameplate mouseover highlight to stay visible until you moused over another unit.  
-
 
 **Misc. Changes:**  
 Changed how we control state of filters used in filter priority lists. Now you use Shift+LeftClick to toggle between friendly, enemy and normal state on a filter.  
@@ -946,10 +884,8 @@ Added "Role" to Style Filter triggers. Your current role has to match this befor
 Added "Class" to Style Filter triggers. You can select which classes and specs this filter should activate for. Your current class and spec has to match this before a filter is activated. If no spec is selected then it will only match class.  
 Added "blockNonPersonal" special filter for aura filtering. Combine this filter with a whitelist in order to only see your own spells from this whitelist.  
 
-
 **Bug Fixes:**  
 Fixed rare error in nameplates regarding attempt to use a non-unit value as argument for UnitIsUnit API.  
-
 
 **Misc. Changes:**  
 Updated Ace3 libraries.  
@@ -965,10 +901,8 @@ ___
 **New Additions:**  
 None  
 
-
 **Bug Fixes:**  
 Fixed issue which broke the Ace3 config of other addons.  
-
 
 **Misc. Changes:**  
 Reverted some changes to Profiles section of ElvUI.  
@@ -986,7 +920,6 @@ Added a "Fluid Position" option to Smart Aura Position settings. This will use t
 Added a "yOffset" option to Aura Bars on Player, Target and Focus unitframe. (Abeline)  
 Added Portrait option to NamePlates. This was also added as an action in style filters.  
 
-
 **Bug Fixes:**  
 Fixed an error when entering combat while game is minimized.  
 Fixed scaling of the Leave Vehicle button on the minimap. (Hekili)  
@@ -994,7 +927,6 @@ Fixed Bagbar buttons border size. (Rubgrsch)
 Fixed error when switching profile while having player unitframe disabled.  
 Fixed issue which caused unitframe tags containing literals to use OnUpdate instead of their assigned events. (Martin)  
 Fixed issue which could break actionbar paging when the code contained the new-line character (\n)  
-
 
 **Misc. Changes:**  
 Updated a lot of skins.  
