@@ -305,10 +305,7 @@ end
 
 function NP:SetNamePlateSelfClickThrough()
 	C_NamePlate_SetNamePlateSelfClickThrough(NP.db.clickThrough.personal)
-
-	if _G.ElvNP_Player then
-		_G.ElvNP_Player:EnableMouse(not NP.db.clickThrough.personal)
-	end
+	_G.ElvNP_Player:EnableMouse(not NP.db.clickThrough.personal)
 end
 
 function NP:SetNamePlateFriendlyClickThrough()
@@ -441,8 +438,11 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.reaction = UnitReaction('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 
-		if UnitIsUnit(unit, 'player') then
+		if UnitIsUnit(unit, 'player') and NP.db.units.PLAYER.enable then
 			nameplate.frameType = 'PLAYER'
+			NP.PlayerNamePlateAnchor:SetParent(nameplate)
+			NP.PlayerNamePlateAnchor:SetAllPoints(nameplate)
+			NP.PlayerNamePlateAnchor:Show()
 		elseif UnitIsPVPSanctuary(unit) or (nameplate.isPlayer and UnitIsFriend('player', unit) and nameplate.reaction and nameplate.reaction >= 5) then
 			nameplate.frameType = 'FRIENDLY_PLAYER'
 		elseif not nameplate.isPlayer and (nameplate.reaction and nameplate.reaction >= 5) or UnitFactionGroup(unit) == 'Neutral' then
@@ -456,6 +456,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		-- update player and test plate
 		if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 			NP:UpdatePlate(_G.ElvNP_Player)
+			NP.PlayerNamePlateAnchor:SetParent(_G.ElvNP_Player)
+			NP.PlayerNamePlateAnchor:SetAllPoints(_G.ElvNP_Player)
+			NP.PlayerNamePlateAnchor:Show()
 		end
 		if _G.ElvNP_Test and _G.ElvNP_Test:IsEnabled() then
 			NP:UpdatePlate(_G.ElvNP_Test)
@@ -482,6 +485,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		NP:ClearStyledPlate(nameplate)
+
+		if nameplate.frameType == 'PLAYER' then
+			NP.PlayerNamePlateAnchor:Hide()
+		end
 
 		if nameplate.OcculedWatcher then
 			nameplate.OcculedWatcher:SetScript('OnUpdate', nil)
@@ -596,7 +603,9 @@ function NP:Initialize()
 	_G.ElvNP_TargetClassPower:Size(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_TargetClassPower.frameType = 'TARGET'
 	_G.ElvNP_TargetClassPower:SetAttribute('toggleForVehicle', true)
-	_G.ElvNP_TargetClassPower:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
+
+	NP.PlayerNamePlateAnchor = CreateFrame("Frame", "ElvUIPlayerNamePlateAnchor", E.UIParent)
+	NP.PlayerNamePlateAnchor:Hide()
 
 	ElvUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit) NP:NamePlateCallBack(nameplate, event, unit) end)
 
