@@ -249,13 +249,6 @@ local function CreateNamePlatesConfig()
 		get = function(info) return E.global.profileCopy.nameplates[ info[#info] ] end,
 		set = function(info, value) E.global.profileCopy.nameplates[ info[#info] ] = value; end
 	}
-	config.args.classbar = {
-		order = 3,
-		type = "toggle",
-		name = L["Classbar"],
-		get = function(info) return E.global.profileCopy.nameplates[ info[#info] ] end,
-		set = function(info, value) E.global.profileCopy.nameplates[ info[#info] ] = value; end
-	}
 	config.args.threat = {
 		order = 6,
 		type = "toggle",
