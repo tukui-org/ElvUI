@@ -72,6 +72,7 @@ E.Media = {
 		ElvOrange = M..[[ChatLogos\ElvOrange.tga]],
 		ElvPink = M..[[ChatLogos\ElvPink.tga]],
 		ElvPurple = M..[[ChatLogos\ElvPurple.tga]],
+		ElvYellow = M..[[ChatLogos\ElvYellow.tga]],
 		ElvRed = M..[[ChatLogos\ElvRed.tga]],
 		Bathrobe = M..[[ChatLogos\Bathrobe.tga]],
 		HelloKitty = M..[[ChatLogos\HelloKitty.tga]],

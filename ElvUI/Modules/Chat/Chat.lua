@@ -178,17 +178,22 @@ local rolePaths = {
 local specialChatIcons
 do --this can save some main file locals
 	local x, y = ':16:16',':13:25'
+	--local ElvMelon		= E:TextureString(E.Media.ChatLogos.ElvMelon,y)
 	--local ElvRainbow	= E:TextureString(E.Media.ChatLogos.ElvRainbow,y)
-	--local ElvPink		= E:TextureString(E.Media.ChatLogos.ElvPink,y)
-	local ElvBlue		= E:TextureString(E.Media.ChatLogos.ElvBlue,y)
-	local ElvGreen		= E:TextureString(E.Media.ChatLogos.ElvGreen,y)
-	local ElvMelon		= E:TextureString(E.Media.ChatLogos.ElvMelon,y)
-	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
-	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
 	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed,y)
+	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
+	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
+	local ElvGreen		= E:TextureString(E.Media.ChatLogos.ElvGreen,y)
+	local ElvBlue		= E:TextureString(E.Media.ChatLogos.ElvBlue,y)
+	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
+	local ElvPink		= E:TextureString(E.Media.ChatLogos.ElvPink,y)
 	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
 	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
+
+	local a,b,c=0,false,{ElvRed,ElvOrange,ElvYellow,ElvGreen,ElvBlue,ElvPurple,ElvPink}
+	local itsSimpy=function()a=a-(b and 1 or -1)if(b and a==1 or a==0)or a==#c then b=not b end return c[a] end
+
 	specialChatIcons = {
 		-- Elv
 		["Illidelv-Area52"]		= ElvBlue,
@@ -230,24 +235,24 @@ do --this can save some main file locals
 		["Blazii-Silvermoon"]	= ElvBlue, -- Priest
 		["Chazii-Silvermoon"]	= ElvBlue, -- Shaman
 		-- Simpy
-		["Arieva-Cenarius"]		= ElvMelon, -- Hunter
-		["Buddercup-Cenarius"]	= ElvMelon, -- Rogue
-		["Cutepally-Cenarius"]	= ElvMelon, -- Paladin
-		["Ezek-Cenarius"]		= ElvMelon, -- DK
-		["Glice-Cenarius"]		= ElvMelon, -- Warrior
-		["Kalline-Cenarius"]	= ElvMelon, -- Shaman
-		["Puttietat-Cenarius"]	= ElvMelon, -- Druid
-		["Simpy-Cenarius"]		= ElvMelon, -- Warlock
-		["Twigly-Cenarius"]		= ElvMelon, -- Monk
-		["Imsojelly-Cenarius"]	= ElvMelon, -- [Horde] DK
-		["Imsojuicy-Cenarius"]	= ElvMelon, -- [Horde] Druid
-		["Imsopeachy-Cenarius"]	= ElvMelon, -- [Horde] DH
-		["Imsosalty-Cenarius"]	= ElvMelon, -- [Horde] Paladin
-		["Imsospicy-Cenarius"]	= ElvMelon, -- [Horde] Mage
-		["Bunne-CenarionCircle"]		= ElvMelon, -- Warrior
-		["Loppybunny-CenarionCircle"]	= ElvMelon, -- Mage
-		["Rubee-CenarionCircle"]		= ElvMelon, -- DH
-		["Wennie-CenarionCircle"]		= ElvMelon, -- Priest
+		["Arieva-Cenarius"]		= itsSimpy, -- Hunter
+		["Buddercup-Cenarius"]	= itsSimpy, -- Rogue
+		["Cutepally-Cenarius"]	= itsSimpy, -- Paladin
+		["Ezek-Cenarius"]		= itsSimpy, -- DK
+		["Glice-Cenarius"]		= itsSimpy, -- Warrior
+		["Kalline-Cenarius"]	= itsSimpy, -- Shaman
+		["Puttietat-Cenarius"]	= itsSimpy, -- Druid
+		["Simpy-Cenarius"]		= itsSimpy, -- Warlock
+		["Twigly-Cenarius"]		= itsSimpy, -- Monk
+		["Imsojelly-Cenarius"]	= itsSimpy, -- [Horde] DK
+		["Imsojuicy-Cenarius"]	= itsSimpy, -- [Horde] Druid
+		["Imsopeachy-Cenarius"]	= itsSimpy, -- [Horde] DH
+		["Imsosalty-Cenarius"]	= itsSimpy, -- [Horde] Paladin
+		["Imsospicy-Cenarius"]	= itsSimpy, -- [Horde] Mage
+		["Bunne-CenarionCircle"]		= itsSimpy, -- Warrior
+		["Loppybunny-CenarionCircle"]	= itsSimpy, -- Mage
+		["Rubee-CenarionCircle"]		= itsSimpy, -- DH
+		["Wennie-CenarionCircle"]		= itsSimpy, -- Priest
 	}
 end
 
@@ -1553,6 +1558,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			-- Player Flags
 			local pflag, chatIcon, pluginChatIcon = "", specialChatIcons[playerName], CH:GetPluginIcon(playerName)
+			if type(chatIcon) == 'function' then chatIcon = chatIcon() end
+
 			if arg6 ~= "" then -- Blizzard Flags
 				if arg6 == "GM" or arg6 == "DEV" then -- Blizzard Icon, this was sent by a GM or Dev.
 					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t";
