@@ -411,7 +411,7 @@ function NP:HandleTargetAlpha(nameplate, added)
 			alpha = newAlpha or NP:GetNonTargetAlpha(nameplate, hasTarget)
 		end
 
-		if added then
+		if added and NP.db.fadeIn then
 			E:UIFrameFadeIn(nameplate, 1, 0, alpha)
 		else
 			nameplate:SetAlpha(alpha)

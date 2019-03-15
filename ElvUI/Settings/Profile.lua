@@ -426,6 +426,7 @@ P.nameplates = {
 	showFriendlyCombat = 'DISABLED',
 	statusbar = 'ElvUI Norm',
 	highlight = true,
+	fadeIn = true,
 	threat = {
 		enable = true,
 		beingTankedByTank = true,

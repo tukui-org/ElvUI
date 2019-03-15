@@ -3816,14 +3816,19 @@ E.Options.args.nameplate = {
 							type = "toggle",
 							name = L["Highlight on NamePlate"],
 						},
-						clampToScreen = {
+						fadeIn = {
 							order = 10,
+							type = "toggle",
+							name = L["Fade-in on Shown"],
+						},
+						clampToScreen = {
+							order = 11,
 							type = "toggle",
 							name = L["Clamp Nameplates"],
 							desc = L["Clamp nameplates to the top of the screen when outside of view."],
 						},
 						lowHealthThreshold = {
-							order = 11,
+							order = 12,
 							name = L["Low Health Threshold"],
 							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
 							type = "range",
