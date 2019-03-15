@@ -1,7 +1,7 @@
 ### Version 11.07 [  ]
 
 **New Additions:**  
-
+Added `ElvUIPlayerNamePlateAnchor` for WeakAuras.  
 
 **Bug Fixes:**  
 Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
@@ -12,6 +12,7 @@ Made Style Filter Alpha work correctly again.
 Enabled Style Filter Hide Frame action.  
 Reallowed Target Scale in Nameplate options.  
 Nameplate CVars and other CVars should be working correctly again.  
+Updated Module Copy to handle some new cases.  
 
 ___
 ### Version 11.06 [ March 14th 2019 ]
