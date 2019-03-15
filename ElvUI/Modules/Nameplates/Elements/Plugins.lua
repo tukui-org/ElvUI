@@ -101,8 +101,10 @@ end
 function NP:Update_TargetIndicator(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if nameplate.frameType == 'PLAYER' and nameplate:IsElementEnabled('TargetIndicator') then
-		nameplate:DisableElement('TargetIndicator')
+	if nameplate.frameType == 'PLAYER' then
+		if nameplate:IsElementEnabled('TargetIndicator') then
+			nameplate:DisableElement('TargetIndicator')
+		end
 		return
 	end
 
