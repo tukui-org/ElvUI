@@ -402,9 +402,14 @@ end
 
 function NP:HandleTargetAlpha(nameplate, added)
 	if nameplate then
-		local hasTarget = UnitExists('target')
-		local newAlpha = (nameplate.isTarget and 1) or (hasTarget and NP.db.units.TARGET.nonTargetTransparency)
-		local alpha = newAlpha or NP:GetNonTargetAlpha(nameplate, hasTarget)
+		local alpha
+		if nameplate.frameType == 'PLAYER' then
+			alpha = 1
+		else
+			local hasTarget = UnitExists('target')
+			local newAlpha = (nameplate.isTarget and 1) or (hasTarget and NP.db.units.TARGET.nonTargetTransparency)
+			alpha = newAlpha or NP:GetNonTargetAlpha(nameplate, hasTarget)
+		end
 
 		if added then
 			E:UIFrameFadeIn(nameplate, 1, 0, alpha)
