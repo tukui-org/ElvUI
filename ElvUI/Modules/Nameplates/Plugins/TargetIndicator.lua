@@ -56,15 +56,17 @@ local function Update(self, event)
 	end
 
 	local r, g, b
-	if not UnitIsUnit(self.unit, 'target') and element.lowHealthThreshold > 0 then
-		local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
-		local perc = (maxHealth > 0 and health/maxHealth) or 0
+	if not UnitIsUnit(self.unit, 'target') then
+		if element.lowHealthThreshold > 0 then
+			local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
+			local perc = (maxHealth > 0 and health/maxHealth) or 0
 
-		if perc <= element.lowHealthThreshold then
-			if perc <= element.lowHealthThreshold / 2 then
-				r, g, b = 1, 0, 0
-			else
-				r, g, b = 1, 1, 0
+			if perc <= element.lowHealthThreshold then
+				if perc <= element.lowHealthThreshold / 2 then
+					r, g, b = 1, 0, 0
+				else
+					r, g, b = 1, 1, 0
+				end
 			end
 		end
 	else
