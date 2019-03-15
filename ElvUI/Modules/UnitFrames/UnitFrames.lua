@@ -1100,6 +1100,7 @@ function ElvUF:DisableBlizzard(unit)
 		PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
 
 		-- User placed frames don't animate
+		PlayerFrame:SetMovable(true)
 		PlayerFrame:SetUserPlaced(true)
 		PlayerFrame:SetDontSavePosition(true)
 	elseif (unit == 'pet') and E.private.unitframe.disabledBlizzardFrames.player then
