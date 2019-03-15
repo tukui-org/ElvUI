@@ -4356,14 +4356,21 @@ E.Options.args.nameplate = {
 			get = function(info) return E.db.nameplates.units.TARGET[ info[#info] ] end,
 			set = function(info, value) E.db.nameplates.units.TARGET[ info[#info] ] = value; NP:ConfigureAll() end,
 			args = {
-				useScale = {
+				scale = {
 					order = 0,
+					type = "range",
+					name = L["Scale"],
+					min = 0, max = 2, step = .01,
+					isPercent = true,
+				},
+				useScale = {
+					order = 1,
 					type = "toggle",
 					name = L["Use Target Size"],
 					disabled = function() return true end, -- remove me
 				},
 				width = {
-					order = 1,
+					order = 2,
 					type = "range",
 					name = L["Target Width"],
 					min = 50, max = 400, step = 1,
@@ -4371,7 +4378,7 @@ E.Options.args.nameplate = {
 					--disabled = function() return E.db.nameplates.useTargetScale ~= true end,
 				},
 				height = {
-					order = 2,
+					order = 3,
 					type = "range",
 					name = L["Target Height"],
 					min = 4, max = 40, step = 1,
@@ -4379,20 +4386,15 @@ E.Options.args.nameplate = {
 					--disabled = function() return E.db.nameplates.useTargetScale ~= true end,
 				},
 				nonTargetTransparency = {
-					order = 3,
+					order = 4,
 					type = "range",
 					isPercent = true,
 					name = L["Non-Target Alpha"],
 					desc = L["Set the alpha level of nameplates that are not the target nameplate."],
 					min = 0, max = 1, step = 0.01,
 				},
-				spacer1 = {
-					order = 4,
-					type = 'description',
-					name = ' ',
-				},
 				glowStyle = {
-					order = 4,
+					order = 5,
 					type = "select",
 					customWidth = 225,
 					name = L["Target/Low Health Indicator"],
@@ -4409,13 +4411,13 @@ E.Options.args.nameplate = {
 					},
 				},
 				alwaysShowHealth = {
-					order = 5,
+					order = 6,
 					type = "toggle",
 					name = L["Always Show Target Health"],
 					customWidth = 200,
 				},
 				classBarGroup = {
-					order = 6,
+					order = 7,
 					type = "group",
 					name = L["Classbar"],
 					guiInline = true,

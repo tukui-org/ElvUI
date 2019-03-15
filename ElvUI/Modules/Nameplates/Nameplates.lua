@@ -57,6 +57,8 @@ function NP:Style(frame, unit)
 		return
 	end
 
+	frame.isNamePlate = true
+
 	if frame:GetName() == 'ElvNP_TargetClassPower' then
 		NP:StyleTargetPlate(frame, unit)
 	else
@@ -207,10 +209,14 @@ function NP:UpdatePlate(nameplate)
 	nameplate:UpdateAllElements('OnShow')
 end
 
-function NP:Move_TargetClassPower(nameplate)
+function NP:SetupTarget(nameplate)
 	local targetPlate = _G.ElvNP_TargetClassPower
 	local realPlate = (NP.db.units.TARGET.classpower.enable and nameplate) or targetPlate
 	targetPlate.realPlate = realPlate
+
+	--if NP.db.units.TARGET.alwaysShowHealth and nameplate and not nameplate:IsElementEnabled('Health') then
+	--	nameplate:EnableElement('Health')
+	--end
 
 	if targetPlate.ClassPower then
 		targetPlate.ClassPower:SetParent(realPlate)
@@ -226,18 +232,13 @@ end
 
 function NP:CVarReset()
 	SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
-	SetCVar('nameplateGlobalScale', 1)
-	SetCVar('NamePlateHorizontalScale', 1)
 	SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'))
-	SetCVar('nameplateLargerScale', 1)
 	SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'))
 	SetCVar('nameplateMaxAlpha', 1)
 	SetCVar('nameplateMaxAlphaDistance', 40)
-	SetCVar('nameplateMaxScale', 1)
 	SetCVar('nameplateMaxScaleDistance', 40)
 	SetCVar('nameplateMinAlpha', 1)
 	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
-	SetCVar('nameplateMinScale', 1)
 	SetCVar('nameplateMinScaleDistance', 0)
 	SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
 	SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'))
@@ -246,10 +247,8 @@ function NP:CVarReset()
 	SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
 	SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
 	SetCVar('nameplateSelectedAlpha', 1)
-	SetCVar('nameplateSelectedScale', 1)
-	SetCVar('nameplateSelfAlpha', 1)
 	SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'))
-	SetCVar('nameplateSelfScale', 1)
+	SetCVar('nameplateSelfAlpha', 1)
 	SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'))
 	SetCVar('nameplateShowEnemies', 1)
 	SetCVar('nameplateShowEnemyGuardians', 0)
@@ -344,6 +343,14 @@ function NP:ConfigureAll()
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
 	SetCVar('nameplateOtherTopInset', NP.db.clampToScreen and 0.08 or -1)
 	SetCVar('nameplateOtherBottomInset', NP.db.clampToScreen and 0.1 or -1)
+
+	SetCVar('nameplateSelfScale', 1)
+	SetCVar('nameplateSelectedScale', NP.db.units.TARGET.scale)
+	SetCVar('nameplateMinScale', 1)
+	SetCVar('nameplateMaxScale', 1)
+	SetCVar('nameplateLargerScale', 1)
+	SetCVar('nameplateGlobalScale', 1)
+	SetCVar('NamePlateHorizontalScale', 1)
 
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
@@ -457,7 +464,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP:UpdatePlate(nameplate)
 
 		if nameplate.isTarget then
-			NP:Move_TargetClassPower(nameplate)
+			NP:SetupTarget(nameplate)
 		end
 
 		NP.Plates[nameplate] = true
@@ -482,7 +489,14 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isTargetingMe = nil
 		nameplate.isTarget = nil
 	elseif event == 'PLAYER_TARGET_CHANGED' then
-		NP:Move_TargetClassPower(nameplate)
+		if NP.PreviousTargetPlate then
+			NP:UpdatePlate(NP.PreviousTargetPlate)
+			NP.PreviousTargetPlate = nil
+		else
+			NP.PreviousTargetPlate = nameplate
+		end
+
+		NP:SetupTarget(nameplate)
 	end
 end
 
@@ -553,8 +567,6 @@ function NP:Initialize()
 	NP.Tooltip:SetOwner(_G.WorldFrame, 'ANCHOR_NONE')
 
 	ElvUF:Spawn('player', 'ElvNP_Player')
-	_G.ElvNP_Player:DisableElement('Castbar')
-	_G.ElvNP_Player.isNamePlate = true
 	_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
 	_G.ElvNP_Player:SetAttribute('*type1', 'target')
 	_G.ElvNP_Player:SetAttribute('*type2', 'togglemenu')
@@ -568,8 +580,6 @@ function NP:Initialize()
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
 
 	ElvUF:Spawn('player', 'ElvNP_Test')
-	_G.ElvNP_Test:DisableElement('Castbar')
-	_G.ElvNP_Test.isNamePlate = true
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
 	_G.ElvNP_Test:Size(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_Test:SetScale(1)
@@ -581,7 +591,6 @@ function NP:Initialize()
 	_G.ElvNP_Test:Disable()
 
 	ElvUF:Spawn('player', 'ElvNP_TargetClassPower')
-	_G.ElvNP_TargetClassPower.isNamePlate = true
 	_G.ElvNP_TargetClassPower:SetScale(1)
 	_G.ElvNP_TargetClassPower:Size(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_TargetClassPower.frameType = 'TARGET'
@@ -618,9 +627,7 @@ function NP:Initialize()
 		['nameplateTargetBehindMaxDistance'] = 40,
 	}
 
-	ElvUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit)
-		NP:NamePlateCallBack(nameplate, event, unit)
-	end, NamePlatesCVars)
+	ElvUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit) NP:NamePlateCallBack(nameplate, event, unit) end, NamePlatesCVars)
 
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
