@@ -311,7 +311,6 @@ P.bags = {
 
 --NamePlate
 P.nameplates = {
-	alwaysShowTargetHealth = true,  -- Depreacted
 	clampToScreen = false,
 	cutawayHealth = false,
 	cutawayHealthFadeOutTime = 0.6,
@@ -423,13 +422,9 @@ P.nameplates = {
 	lowHealthThreshold = 0.4,
 	motionType =  'STACKED',
 	nameColoredGlow = false,
-	nonTargetTransparency = 0.75, -- Depreacted
 	showEnemyCombat = 'DISABLED',
 	showFriendlyCombat = 'DISABLED',
 	statusbar = 'ElvUI Norm',
-	targetGlow = 'style2', -- Depreacted
-	targetScale = 1.15, -- Depreacted
-	useTargetScale = false, -- Depreacted
 	highlight = true,
 	threat = {
 		enable = true,

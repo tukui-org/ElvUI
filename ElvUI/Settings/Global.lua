@@ -283,7 +283,6 @@ G.profileCopy = {
 	nameplates = {
 		general = true,
 		cooldown = true,
-		classbar = true,
 		threat = true,
 		units = {
 			PLAYER = true,
