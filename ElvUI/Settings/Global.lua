@@ -277,6 +277,8 @@ G.profileCopy = {
 		minimap = true,
 		threat = true,
 		totems = true,
+		itemLevel = true,
+		altPowerBar = true,
 	},
 	nameplates = {
 		general = true,
@@ -285,6 +287,7 @@ G.profileCopy = {
 		threat = true,
 		units = {
 			PLAYER = true,
+			TARGET = true,
 			FRIENDLY_PLAYER = true,
 			ENEMY_PLAYER = true,
 			FRIENDLY_NPC = true,

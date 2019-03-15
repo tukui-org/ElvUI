@@ -221,6 +221,20 @@ local function CreateGeneralConfig()
 		get = function(info) return E.global.profileCopy.general[ info[#info] ] end,
 		set = function(info, value) E.global.profileCopy.general[ info[#info] ] = value; end
 	}
+	config.args.itemLevel = {
+		order = 6,
+		type = "toggle",
+		name = L["Item Level"],
+		get = function(info) return E.global.profileCopy.general[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.general[ info[#info] ] = value; end
+	}
+	config.args.altPowerBar = {
+		order = 7,
+		type = "toggle",
+		name = L["Alternative Power"],
+		get = function(info) return E.global.profileCopy.general[ info[#info] ] end,
+		set = function(info, value) E.global.profileCopy.general[ info[#info] ] = value; end
+	}
 
 	return config
 end
@@ -261,6 +275,11 @@ local function CreateNamePlatesConfig()
 				order = 1,
 				type = "toggle",
 				name = L["Player Frame"],
+			},
+			["TARGET"] = {
+				order = 2,
+				type = "toggle",
+				name = L["Targeted Nameplate"],
 			},
 			["FRIENDLY_PLAYER"] = {
 				order = 3,
