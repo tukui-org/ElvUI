@@ -742,6 +742,7 @@ L["Enemy Player Frames"] = "敵對玩家框架"
 L["Enemy"] = "敵對"
 L["ENEMY_NPC"] = "敵對NPC"
 L["ENEMY_PLAYER"] = "敵對玩家"
+L["Fade-in on Shown"] = true
 L["Fade Out"] = "漸隱"
 L["Filter already exists!"] = "過濾器已存在！"
 L["Filter Priority"] = "過濾器優先順序"

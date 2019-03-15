@@ -740,6 +740,7 @@ L["Enemy Player Frames"] = true
 L["Enemy"] = "Inimigo"
 L["ENEMY_NPC"] = "Enemy NPC"
 L["ENEMY_PLAYER"] = "Enemy Player"
+L["Fade-in on Shown"] = true
 L["Fade Out"] = true
 L["Filter already exists!"] = true
 L["Filter Priority"] = true

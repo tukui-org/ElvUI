@@ -743,6 +743,7 @@ L["Enemy Player Frames"] = "Gegnerische Spieler Rahmen"
 L["Enemy"] = "Gegner" --Also used in UnitFrames
 L["ENEMY_NPC"] = "Gegnerischer NPC"
 L["ENEMY_PLAYER"] = "Gegnerischer Spieler"
+L["Fade-in on Shown"] = "Einblenden wenn angezeigt"
 L["Fade Out"] = "Ausblenden"
 L["Filter already exists!"] = "Filter existiert bereits!"
 L["Filter Priority"] = "Filter Priorität"

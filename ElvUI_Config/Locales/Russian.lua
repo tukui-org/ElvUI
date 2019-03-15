@@ -740,6 +740,7 @@ L["Enemy Player Frames"] = "Враждебные игроки"
 L["Enemy"] = "Враг" --Also used in UnitFrames
 L["ENEMY_NPC"] = "Враждебный НИП"
 L["ENEMY_PLAYER"] = "Враждебный игрок"
+L["Fade-in on Shown"] = true
 L["Fade Out"] = "Исчезновение"
 L["Filter already exists!"] = "Фильтр уже существует!"
 L["Filter Priority"] = "Приоритет фильтров"

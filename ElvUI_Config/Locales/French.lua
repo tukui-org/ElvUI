@@ -741,6 +741,7 @@ L["Enemy Player Frames"] = true
 L["Enemy"] = "Ennemi" --Also used in UnitFrames
 L["ENEMY_NPC"] = "PNJ ennemi"
 L["ENEMY_PLAYER"] = "Joueur ennemi"
+L["Fade-in on Shown"] = true
 L["Fade Out"] = true
 L["Filter already exists!"] = true
 L["Filter Priority"] = true

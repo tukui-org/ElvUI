@@ -793,6 +793,7 @@ L["Enemy Player Frames"] = "적대적 플레이어 프레임"
 L["Enemy"] = "적군"
 L["ENEMY_NPC"] = "Enemy NPC"
 L["ENEMY_PLAYER"] = "Enemy Player"
+L["Fade-in on Shown"] = true
 L["Fade Out"] = true
 L["Filter already exists!"] = "필터가 이미 존재합니다!"
 L["Filter Priority"] = "필터 우선순위"
