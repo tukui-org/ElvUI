@@ -10,6 +10,8 @@ Made Style Filter Alpha work correctly again.
 
 **Misc. Changes:**  
 Enabled Style Filter Hide Frame action.  
+Reallowed Target Scale in Nameplate options.  
+Nameplate CVars and other CVars should be working correctly again.  
 
 ___
 ### Version 11.06 [ March 14th 2019 ]
@@ -374,7 +376,7 @@ Fixed a rare nil error in the range code.
 
 **Misc. Changes:**  
 Added Infested affix buff to RaidBuffsElvUI filter.  
-Updated ArenaPrepFrame functions (Thanks oUF)!  
+Updated ArenaPrepFrame functions. (Thanks oUF!)  
 Updated PvP, LFG & Talent skins.  
 
 ___
