@@ -391,7 +391,7 @@ function NP:GetNonTargetAlpha(nameplate, hasTarget)
 	local Alpha = NP.db.units.TARGET.nonTargetTransparency
 	if (nameplate.frameType == 'PLAYER') or nameplate.isTarget then
 		Alpha = 1
-	elseif (not nameplate.isTarget) and not nameplate.isUnitOcculed and NP:IsBlizzardPlateOccluded(nameplate) then
+	elseif (not nameplate.isTarget) and not nameplate.isUnitOccluded and NP:IsBlizzardPlateOccluded(nameplate) then
 		Alpha = Alpha * 0.5
 	elseif not hasTarget then
 		Alpha = 1
@@ -423,7 +423,7 @@ function NP:WatchOcculed(elapsed)
 	if self.elapsed and (self.elapsed > 0.1) then
 		local nameplate = self and self:GetParent()
 		if nameplate then
-			nameplate.isUnitOcculed = NP:IsBlizzardPlateOccluded(nameplate)
+			nameplate.isUnitOccluded = NP:IsBlizzardPlateOccluded(nameplate)
 		end
 
 		self.elapsed = 0
