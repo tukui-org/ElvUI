@@ -112,11 +112,11 @@ local function LoadSkin()
 		local onShow = function(self)
 			local parent = self:GetParent()
 			if not parent.transition:IsPlaying() then
-				parent.transition:Play()
-			end
+				for _, child in pairs(parent.transition.color.children) do
+					child:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				end
 
-			for _, child in pairs(parent.transition.color.children) do
-				child:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				parent.transition:Play()
 			end
 		end
 
@@ -124,10 +124,10 @@ local function LoadSkin()
 			local parent = self:GetParent()
 			if parent.transition:IsPlaying() then
 				parent.transition:Stop()
-			end
 
-			for _, child in pairs(parent.transition.color.children) do
-				child:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				for _, child in pairs(parent.transition.color.children) do
+					child:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				end
 			end
 		end
 
