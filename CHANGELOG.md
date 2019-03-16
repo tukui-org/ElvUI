@@ -8,6 +8,8 @@ Added an option to toggle the Nameplates from fading in when shown.
 Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
 Made Style Filter Name Color and Alpha action work again.  
 Fixed Style Filter Health Color not working correctly in combat.  
+Fixed Target Indicator not showing when a unit was at low health.  
+Fixed an issue in Toolkit which prevented border/backdrop color in some cases.  
 
 **Misc. Changes:**  
 Enabled Style Filter Hide Frame action.  
@@ -15,6 +17,8 @@ Reallowed Target Scale in Nameplate options.
 Nameplate CVars and other CVars should be working correctly again.  
 Updated Module Copy to handle some new cases.  
 Keep `Player` nameplate from fading out.  
+Stopped allowing Keybinder in combat.  
+Made the UI Scale popup `Suppress` checkbox actually disable `Accept` button, as this only works correctly when you use `Cancel` to end the popup.  
 
 ___
 ### Version 11.06 [ March 14th 2019 ]
