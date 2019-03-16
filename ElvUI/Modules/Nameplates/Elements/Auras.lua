@@ -238,7 +238,7 @@ function NP:PostUpdateAura(unit, button)
 	end
 
 	local parent = button:GetParent()
-	local db = parent and NP.db.units[parent.__owner.frameType] and NP.db.units[parent.__owner.frameType][parent.type]
+	local db = parent and NP.db.units and NP.db.units[parent.__owner.frameType] and NP.db.units[parent.__owner.frameType][parent.type]
 	if db then
 		button:Size(db.size, db.size)
 		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
