@@ -7,6 +7,7 @@ Added an option to toggle the Nameplates from fading in when shown.
 **Bug Fixes:**  
 Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
 Made Style Filter Name Color and Alpha action work again.  
+Fixed Style Filter Health Color not working correctly in combat.  
 
 **Misc. Changes:**  
 Enabled Style Filter Hide Frame action.  

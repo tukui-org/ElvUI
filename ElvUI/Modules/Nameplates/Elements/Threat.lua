@@ -46,7 +46,11 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		end
 
 		if Color then
-			self.__owner.Health:SetStatusBarColor(Color.r, Color.g, Color.b)
+			if self.__owner.HealthColorChanged then
+				self.r, self.g, self.b = Color.r, Color.g, Color.b
+			else
+				self.__owner.Health:SetStatusBarColor(Color.r, Color.g, Color.b)
+			end
 		end
 	end
 end

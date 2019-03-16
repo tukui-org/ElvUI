@@ -7,6 +7,11 @@ local CreateFrame = CreateFrame
 function NP:Health_PostUpdate()
 	local r, g, b = self:GetStatusBarColor()
 	self.r, self.g, self.b = r, g, b
+
+	local filterColored = self.__owner.HealthColorChanged
+	if filterColored then
+		self:SetStatusBarColor(filterColored.r, filterColored.g, filterColored.b)
+	end
 end
 
 function NP:Construct_Health(nameplate)

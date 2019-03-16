@@ -156,7 +156,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	end
 	if HealthColorChanged then
 		frame.StyleChanged = true
-		frame.HealthColorChanged = true
+		frame.HealthColorChanged = actions.color.healthColor
 		frame.Health:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
 		if frame.CutawayHealth then
 			frame.CutawayHealth:SetStatusBarColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a);
