@@ -9,7 +9,7 @@ Added option to hide voice chat buttons on the chat tab panel.
 Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
 Made Style Filter Name Color and Alpha action work again.  
 Fixed Style Filter Health Color not working correctly in combat.  
-Fixed Target Indicator not showing when a unit was at low health.  
+Fixed Target Indicator showing permanently when Low Health Threshold was set to zero.  
 Fixed an issue in Toolkit which prevented border/backdrop color in some cases.  
 Fixed spam errors when trying to change talents when you have non selected yet.  
 
