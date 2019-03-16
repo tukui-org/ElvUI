@@ -331,6 +331,7 @@ L["Fades the text on chat tabs that are not docked at the left or right chat pan
 L["Font Outline"] = true --Also used in UnitFrames section
 L["Font"] = true
 L["Hide Both"] = true
+L["Hide Voice Chat Buttons"] = true
 L["Hyperlink Hover"] = true
 L["Keyword Alert"] = true
 L["Keywords"] = true

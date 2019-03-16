@@ -884,7 +884,6 @@ function CH:Panels_ColorUpdate()
 	local panelColor = E.db.chat.panelColor
 	_G.LeftChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
 	_G.RightChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
-	--_G.ChatButtonHolder.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
 end
 
 local function UpdateChatTabColor(_, r, g, b)
@@ -2518,7 +2517,9 @@ function CH:Initialize()
 	self:UpdateFading()
 	self:UpdateAnchors()
 	self:Panels_ColorUpdate()
-	self:HandleChatVoiceIcons(S)
+	if not self.db.hideVoiceButtons then
+		self:HandleChatVoiceIcons(S)
+	end
 
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	self:SecureHook('FCF_SetWindowAlpha')

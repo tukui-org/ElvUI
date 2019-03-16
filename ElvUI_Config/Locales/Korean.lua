@@ -377,6 +377,7 @@ L["Fades the text on chat tabs that are not docked at the left or right chat pan
 L["Font Outline"] = "글꼴 외곽선"
 L["Font"] = "글꼴"
 L["Hide Both"] = "둘 다 숨기기"
+L["Hide Voice Chat Buttons"] = true
 L["Hyperlink Hover"] = "링크 툴팁 표시"
 L["Keyword Alert"] = "키워드 발견 시 소리로 알림"
 L["Keywords"] = "강조할 키워드"

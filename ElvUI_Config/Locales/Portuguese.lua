@@ -328,6 +328,7 @@ L["Fades the text on chat tabs that are not docked at the left or right chat pan
 L["Font Outline"] = "Contorno da Fonte"
 L["Font"] = "Fonte"
 L["Hide Both"] = "Esconder Ambos"
+L["Hide Voice Chat Buttons"] = true
 L["Hyperlink Hover"] = "Pairar no hyperlink"
 L["Keyword Alert"] = "Alerta de palavra-chave"
 L["Keywords"] = "Palavras-chave"

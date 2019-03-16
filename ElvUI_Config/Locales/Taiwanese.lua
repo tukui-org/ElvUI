@@ -329,6 +329,7 @@ L["Fades the text on chat tabs that are not docked at the left or right chat pan
 L["Font Outline"] = "字體描邊"
 L["Font"] = "字體"
 L["Hide Both"] = "全部隱藏"
+L["Hide Voice Chat Buttons"] = true
 L["Hyperlink Hover"] = "超連結提示資訊"
 L["Keyword Alert"] = "關鍵字警報"
 L["Keywords"] = "關鍵字"

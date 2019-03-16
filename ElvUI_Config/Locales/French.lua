@@ -328,6 +328,7 @@ L["Fades the text on chat tabs that are not docked at the left or right chat pan
 L["Font Outline"] = "Contours extérieurs de la police" --Also used in UnitFrames section
 L["Font"] = "Police"
 L["Hide Both"] = "Masquer les deux"
+L["Hide Voice Chat Buttons"] = true
 L["Hyperlink Hover"] = "Survol des liens"
 L["Keyword Alert"] = "Alerte mots-clés"
 L["Keywords"] = "Mots-clés"
