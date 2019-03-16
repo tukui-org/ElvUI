@@ -182,7 +182,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnit
 	if isUnitFrameElement then f.isUnitFrameElement = isUnitFrameElement end
 
 	f:SetBackdrop(nil)
-	buildPixelBorders(f, ignoreUpdates)
+	buildPixelBorders(f)
 
 	if t == 'NoBackdrop' then
 		customSetBackdrop(f)
