@@ -76,8 +76,14 @@ function E:SetBackdropBorderColor(frame, r, g, b, a)
 	end
 end
 
-local setBackdropColor = function(self, r, g, b, a) E:SetBackdropColor(self, r, g, b, a) end
-local setBackdropBorderColor = function(self, r, g, b, a) E:SetBackdropBorderColor(self, r, g, b, a) end
+function E:HookedSetBackdropColor(r, g, b, a)
+	E:SetBackdropColor(self, r, g, b, a)
+end
+
+function E:HookedSetBackdropBorderColor(r, g, b, a)
+	E:SetBackdropBorderColor(self, r, g, b, a)
+end
+
 function E:BuildPixelBorders(frame, noSecureHook)
 	if frame and not frame.pixelBorders then
 		local borders = {}
@@ -111,8 +117,8 @@ function E:BuildPixelBorders(frame, noSecureHook)
 		borders.RIGHT:Point("BOTTOMRIGHT", borders.BOTTOMRIGHT, "TOPRIGHT", 0, 0)
 
 		if not noSecureHook then
-			hooksecurefunc(frame, "SetBackdropColor", setBackdropColor)
-			hooksecurefunc(frame, "SetBackdropBorderColor", setBackdropBorderColor)
+			hooksecurefunc(frame, "SetBackdropColor", E.HookedSetBackdropColor)
+			hooksecurefunc(frame, "SetBackdropBorderColor", E.HookedSetBackdropBorderColor)
 		end
 
 		frame.pixelBorders = borders
