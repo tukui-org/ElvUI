@@ -115,8 +115,8 @@ local function LoadSkin()
 				parent.transition:Play()
 			end
 
-			for j=1, _G.NUM_TALENT_COLUMNS do
-				parent['talent'..j].bg.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			for _, child in pairs(parent.transition.color.children) do
+				child:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 
@@ -126,8 +126,8 @@ local function LoadSkin()
 				parent.transition:Stop()
 			end
 
-			for j=1, _G.NUM_TALENT_COLUMNS do
-				parent['talent'..j].bg.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			for _, child in pairs(parent.transition.color.children) do
+				child:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 
