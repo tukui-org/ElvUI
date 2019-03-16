@@ -50,7 +50,7 @@ local ElvToolkit = {
 		if E then
 			return E:GetBackdropColor(parent)
 		else
-			return Updater:GetBackdropColor()
+			return parent:GetBackdropColor()
 		end
 	end,
 	GetBackdropBorderColor = function(parent)
@@ -58,7 +58,7 @@ local ElvToolkit = {
 		if E then
 			return E:GetBackdropBorderColor(parent)
 		else
-			return Updater:GetBackdropBorderColor()
+			return parent:GetBackdropBorderColor()
 		end
 	end
 }
