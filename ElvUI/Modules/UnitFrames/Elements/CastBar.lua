@@ -437,7 +437,7 @@ function UF:PostCastStart(unit)
 	if self.bg:IsShown() then
 		self.bg:SetColorTexture(r * 0.25, g * 0.25, b * 0.25)
 
-		local _, _, _, alpha = self.backdrop:GetBackdropColor()
+		local _, _, _, alpha = E:GetBackdropColor(self.backdrop)
 		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)
 	end
 end
@@ -534,7 +534,7 @@ function UF:PostCastInterruptible(unit)
 	if self.bg:IsShown() then
 		self.bg:SetColorTexture(r * 0.25, g * 0.25, b * 0.25)
 
-		local _, _, _, alpha = self.backdrop:GetBackdropColor()
+		local _, _, _, alpha = E:GetBackdropColor(self.backdrop)
 		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)
 	end
 end

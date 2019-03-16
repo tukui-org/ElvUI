@@ -47,6 +47,22 @@ local function customSetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft,
 	frame.pixelBorders.RIGHT:SetWidth(edgeSize)
 end
 
+function E:GetBackdropColor(frame)
+	if frame.pixelBorders then
+		return frame.pixelBorders.CENTER:GetVertexColor()
+	else
+		return frame:GetBackdropColor()
+	end
+end
+
+function E:GetBackdropBorderColor(frame)
+	if frame.pixelBorders then
+		return frame.pixelBorders.TOP:GetVertexColor()
+	else
+		return frame:GetBackdropBorderColor()
+	end
+end
+
 local function customBackdropColor(frame, r, g, b, a)
 	if frame.pixelBorders then
 		frame.pixelBorders.CENTER:SetVertexColor(r, g, b, a)

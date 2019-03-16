@@ -293,7 +293,7 @@ function UF:ColorizeAuraBars()
 		end
 
 		if(UF.db.colors.transparentAurabars) then
-			local _, _, _, alpha = frame:GetBackdropColor()
+			local _, _, _, alpha = E:GetBackdropColor(frame)
 			if colors then
 				frame:SetBackdropColor(colors.r * 0.58, colors.g * 0.58, colors.b * 0.58, alpha)
 			else

@@ -1261,10 +1261,10 @@ end
 local function updateColor(self, r, g, b)
 	if not self.isTransparent then return end
 	if self.backdrop then
-		local _, _, _, a = self.backdrop:GetBackdropColor()
+		local _, _, _, a = E:GetBackdropColor(self.backdrop)
 		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, a)
 	elseif self:GetParent().template then
-		local _, _, _, a = self:GetParent():GetBackdropColor()
+		local _, _, _, a = E:GetBackdropColor(self:GetParent())
 		self:GetParent():SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, a)
 	end
 

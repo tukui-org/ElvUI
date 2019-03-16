@@ -655,7 +655,7 @@ end
 function TT:CheckBackdropColor(tt)
 	if (not tt) or tt:IsForbidden() then return end
 
-	local r, g, b = tt:GetBackdropColor()
+	local r, g, b = E:GetBackdropColor(tt)
 	if r and g and b then
 		r, g, b = E:Round(r, 1), E:Round(g, 1), E:Round(b, 1)
 
@@ -670,7 +670,7 @@ function TT:SetStyle(tt)
 	if not tt or tt:IsForbidden() then return end
 	tt:SetTemplate("Transparent", nil, true) --ignore updates
 
-	local r, g, b = tt:GetBackdropColor()
+	local r, g, b = E:GetBackdropColor(tt)
 	tt:SetBackdropColor(r, g, b, self.db.colorAlpha)
 end
 
