@@ -1,5 +1,5 @@
 -- LibAnim by Hydra
-local Version = 2.01
+local Version = 2.02
 
 if (_LibAnim and _LibAnim >= Version) then
 	return
@@ -44,9 +44,28 @@ local GetColor = function(p, r1, g1, b1, r2, g2, b2)
 	return r1 + (r2 - r1) * p, g1 + (g2 - g1) * p, b1 + (b2 - b1) * p
 end
 
+local ElvToolkit = {
+	GetBackdropColor = function(parent)
+		local E = ElvUI and ElvUI[1]
+		if E then
+			return E:GetBackdropColor(parent)
+		else
+			return Updater:GetBackdropColor()
+		end
+	end,
+	GetBackdropBorderColor = function(parent)
+		local E = ElvUI and ElvUI[1]
+		if E then
+			return E:GetBackdropBorderColor(parent)
+		else
+			return Updater:GetBackdropBorderColor()
+		end
+	end
+}
+
 local Set = {
-	["backdrop"] = Updater.SetBackdropColor,
-	["border"] = Updater.SetBackdropBorderColor,
+	["backdrop"] = function(self, ...) self:SetBackdropColor(...) end,
+	["border"] = function(self, ...) self:SetBackdropBorderColor(...) end,
 	["statusbar"] = Updater.SetStatusBarColor,
 	["text"] = Text.SetTextColor,
 	["texture"] = Texture.SetTexture,
@@ -54,8 +73,8 @@ local Set = {
 }
 
 local Get = {
-	["backdrop"] = Updater.GetBackdropColor,
-	["border"] = Updater.GetBackdropBorderColor,
+	["backdrop"] = ElvToolkit.GetBackdropColor,
+	["border"] = ElvToolkit.GetBackdropBorderColor,
 	["statusbar"] = Updater.GetStatusBarColor,
 	["text"] = Text.GetTextColor,
 	["texture"] = Texture.GetVertexColor,
