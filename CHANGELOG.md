@@ -3,6 +3,7 @@
 **New Additions:**  
 Added `ElvUIPlayerNamePlateAnchor` for WeakAuras and other AddOns.  
 Added an option to toggle the Nameplates from fading in when shown.  
+Added option to hide voice chat buttons on the chat tab panel.  
 
 **Bug Fixes:**  
 Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
