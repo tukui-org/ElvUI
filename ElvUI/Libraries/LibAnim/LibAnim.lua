@@ -368,6 +368,31 @@ local AnimMethods = {
 			self.EndBSetting = b or 1
 		end,
 
+		AddChild = function(self, child, mainChild)
+			if not self.children then
+				self.children = {}
+			end
+
+			if not self.mainChild then
+				self.mainChild = mainChild or child
+			elseif mainChild then
+				self.mainChild = mainChild
+			end
+
+			tinsert(self.children, child)
+		end,
+
+		RemoveChild = function(self, child)
+			if not self.children then return end
+			local checkIndex = type(child) == 'number'
+			for index, tchild in ipairs(self.children) do
+				if (checkIndex and index == child) or tchild == child then
+					tremove(self.children, index)
+					break
+				end
+			end
+		end,
+
 		GetChange = function(self)
 			return self.EndRSetting, self.EndGSetting, self.EndBSetting
 		end,
@@ -743,11 +768,24 @@ end
 UpdateFuncs["color"] = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
 	self.ColorOffset = Smoothing[self.Smoothing](self.Timer, 0, self.Duration, self.Duration)
-	Set[self.ColorType](self.Parent, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
+
+	if self.children then
+		for c=1, #self.children do
+			Set[self.ColorType](self.children[c], GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
+		end
+	else
+		Set[self.ColorType](self.Parent, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
+	end
 
 	if (self.Timer >= self.Duration) then
 		tremove(Updater, i)
-		Set[self.ColorType](self.Parent, self.EndR, self.EndG, self.EndB)
+		if self.children then
+			for c=1, #self.children do
+				Set[self.ColorType](self.children[c], self.EndR, self.EndG, self.EndB)
+			end
+		else
+			Set[self.ColorType](self.Parent, self.EndR, self.EndG, self.EndB)
+		end
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
@@ -757,7 +795,7 @@ end
 AnimTypes["color"] = function(self)
 	self.Timer = 0
 	self.ColorType = self.ColorType or "backdrop"
-	self.StartR, self.StartG, self.StartB = Get[self.ColorType](self.Parent)
+	self.StartR, self.StartG, self.StartB = Get[self.ColorType](self.mainChild or self.Parent)
 	self.EndR = self.EndRSetting or 1
 	self.EndG = self.EndGSetting or 1
 	self.EndB = self.EndBSetting or 1

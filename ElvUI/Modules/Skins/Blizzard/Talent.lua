@@ -110,24 +110,46 @@ local function LoadSkin()
 		end
 
 		local onShow = function(self)
-			local bu = self:GetParent()
-			bu.bg.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			if not bu.bg.transition:IsPlaying() then bu.bg.transition:Play() end
+			local parent = self:GetParent()
+			if not parent.transition:IsPlaying() then
+				parent.transition:Play()
+			end
+
+			for j=1, _G.NUM_TALENT_COLUMNS do
+				parent['talent'..j].bg.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end
 		end
 
 		local onHide = function(self)
-			local bu = self:GetParent()
-			if bu.bg.transition:IsPlaying() then bu.bg.transition:Stop() end
-			bu.bg.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			local parent = self:GetParent()
+			if parent.transition:IsPlaying() then
+				parent.transition:Stop()
+			end
+
+			for j=1, _G.NUM_TALENT_COLUMNS do
+				parent['talent'..j].bg.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end
 		end
 
 		for i = 1, _G.MAX_TALENT_TIERS do
 			local row = _G.PlayerTalentFrameTalents['tier'..i]
 			row:StripTextures()
-			row.GlowFrame:Kill()
 
 			row.TopLine:Point("TOP", 0, 4)
 			row.BottomLine:Point("BOTTOM", 0, -4)
+
+			row.transition = CreateAnimationGroup(row)
+			row.transition:SetLooping(true)
+
+			row.transition.color = row.transition:CreateAnimation("Color")
+			row.transition.color:SetDuration(0.7)
+			row.transition.color:SetColorType("border")
+			row.transition.color:SetChange(unpack(E.media.rgbvaluecolor))
+			row.transition.color:SetScript("OnFinished", onFinished)
+
+			row.GlowFrame:StripTextures()
+			row.GlowFrame:HookScript('OnShow', onShow)
+			row.GlowFrame:HookScript('OnHide', onHide)
 
 			for j = 1, _G.NUM_TALENT_COLUMNS do
 				local bu = row['talent'..j]
@@ -143,19 +165,9 @@ local function LoadSkin()
 				bu.bg:SetFrameLevel(bu:GetFrameLevel() - 4)
 				bu.bg:Point("TOPLEFT", 15, -1)
 				bu.bg:Point("BOTTOMRIGHT", -10, 1)
+				row.transition.color:AddChild(bu.bg.backdrop)
 
-				bu.bg.transition = CreateAnimationGroup(bu.bg.backdrop)
-				bu.bg.transition:SetLooping(true)
-
-				bu.bg.transition.color = bu.bg.transition:CreateAnimation("Color")
-				bu.bg.transition.color:SetDuration(0.7)
-				bu.bg.transition.color:SetColorType("border")
-				bu.bg.transition.color:SetChange(unpack(E.media.rgbvaluecolor))
-				bu.bg.transition.color:SetScript("OnFinished", onFinished)
-
-				bu.GlowFrame:StripTextures()
-				bu.GlowFrame:HookScript('OnShow', onShow)
-				bu.GlowFrame:HookScript('OnHide', onHide)
+				bu.GlowFrame:Kill()
 
 				bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
 				bu.bg.SelectedTexture:Point("TOPLEFT", bu, "TOPLEFT", 15, -1)
