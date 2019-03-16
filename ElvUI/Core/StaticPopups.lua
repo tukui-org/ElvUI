@@ -210,7 +210,14 @@ E.PopupDialogs.UISCALE_CHANGE = {
 	hasCheckButton = true,
 	checkButtonText = L["Suppress In This Session"],
 	checkButtonOnClick = function(self)
-		E.suppressScalePopup = self:GetChecked()
+		local checked = self:GetChecked()
+		local frame = self:GetParent()
+		E.suppressScalePopup = checked
+		if checked then
+			frame.button1:Disable()
+		else
+			frame.button1:Enable()
+		end
 	end,
 }
 
