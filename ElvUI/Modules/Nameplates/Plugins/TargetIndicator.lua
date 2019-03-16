@@ -56,24 +56,26 @@ local function Update(self, event)
 	end
 
 	local r, g, b
-	if not UnitIsUnit(self.unit, 'target') then
-		if element.lowHealthThreshold > 0 then
-			local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
-			local perc = (maxHealth > 0 and health/maxHealth) or 0
+	local showIndicator
+	if UnitIsUnit(self.unit, 'target') then
+		showIndicator = true
+		r, g, b = NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b
+	elseif (not UnitIsUnit(self.unit, 'target') and element.lowHealthThreshold > 0) then
+		local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
+		local perc = (maxHealth > 0 and health/maxHealth) or 0
 
-			if perc <= element.lowHealthThreshold then
-				if perc <= element.lowHealthThreshold / 2 then
-					r, g, b = 1, 0, 0
-				else
-					r, g, b = 1, 1, 0
-				end
+		if perc <= element.lowHealthThreshold then
+			showIndicator = true
+			if perc <= element.lowHealthThreshold / 2 then
+				r, g, b = 1, 0, 0
+			else
+				r, g, b = 1, 1, 0
 			end
 		end
-	else
-		r, g, b = NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b
+
 	end
 
-	if r then
+	if showIndicator then
 		if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
 			element.TopIndicator:SetVertexColor(r, g, b)
 		end
