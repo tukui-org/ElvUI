@@ -109,49 +109,27 @@ function NP:StylePlate(nameplate)
 	nameplate:Point('CENTER')
 	nameplate:Size(self.db.clickableWidth, self.db.clickableHeight)
 	nameplate:SetScale(E.global.general.UIScale)
-
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
-
 	nameplate.Health = NP:Construct_Health(nameplate)
-
 	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
-
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
-
 	nameplate.Power = NP:Construct_Power(nameplate)
-
 	nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
-
 	nameplate.PowerPrediction = NP:Construct_PowerPrediction(nameplate)
-
 	nameplate.Name = NP:Construct_TagText(nameplate.RaisedElement)
-
 	nameplate.Level = NP:Construct_TagText(nameplate.RaisedElement)
-
 	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate.RaisedElement)
-
 	nameplate.Castbar = NP:Construct_Castbar(nameplate)
-
 	nameplate.Portrait = NP:Construct_Portrait(nameplate.RaisedElement)
-
 	nameplate.QuestIcons = NP:Construct_QuestIcons(nameplate.RaisedElement)
-
 	nameplate.RaidTargetIndicator = NP:Construct_RaidTargetIndicator(nameplate.RaisedElement)
-
 	nameplate.TargetIndicator = NP:Construct_TargetIndicator(nameplate)
-
 	nameplate.ThreatIndicator = NP:Construct_ThreatIndicator(nameplate.RaisedElement)
-
 	nameplate.Highlight = NP:Construct_Highlight(nameplate)
-
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
-
 	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate.RaisedElement) -- Horde / Alliance / HonorInfo
-
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
-
 	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate.RaisedElement)
-
 	nameplate.DetectionIndicator = NP:Construct_DetectionIndicator(nameplate.RaisedElement)
 
 	NP:Construct_Auras(nameplate)
@@ -159,52 +137,64 @@ function NP:StylePlate(nameplate)
 	if E.myclass == 'DEATHKNIGHT' then
 		nameplate.Runes = NP:Construct_Runes(nameplate)
 	end
+
+	NP.Plates[nameplate] = true
 end
 
 function NP:UpdatePlate(nameplate)
 	NP:Update_Health(nameplate)
-
 	NP:Update_HealthPrediction(nameplate)
-
 	NP:Update_Power(nameplate)
-
 	NP:Update_PowerPrediction(nameplate)
-
 	NP:Update_Castbar(nameplate)
-
 	NP:Update_ClassPower(nameplate)
-
-	NP:Update_Auras(nameplate)
-
-	NP:Update_ClassificationIndicator(nameplate)
-
-	NP:Update_QuestIcons(nameplate)
-
-	NP:Update_Portrait(nameplate)
-
-	NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
-
-	NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
-
-	NP:Update_TargetIndicator(nameplate)
-
-	NP:Update_ThreatIndicator(nameplate)
-
-	NP:Update_RaidTargetIndicator(nameplate)
-
 	if E.myclass == 'DEATHKNIGHT' then
 		NP:Update_Runes(nameplate)
 	end
-
+	NP:Update_Auras(nameplate)
+	NP:Update_ClassificationIndicator(nameplate)
+	NP:Update_QuestIcons(nameplate)
+	NP:Update_Portrait(nameplate)
+	NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
+	NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
+	NP:Update_TargetIndicator(nameplate)
+	NP:Update_ThreatIndicator(nameplate)
+	NP:Update_RaidTargetIndicator(nameplate)
 	NP:Update_Highlight(nameplate)
-
 	NP:Update_HealerSpecs(nameplate)
-
 	NP:Update_Tags(nameplate)
-
 	NP:Update_DetectionIndicator(nameplate)
-
 	NP:UpdatePlateEvents(nameplate)
+end
+
+function NP:DisablePlate(nameplate)
+	if nameplate:IsElementEnabled('Health') then nameplate:DisableElement('Health') end
+	if nameplate:IsElementEnabled('HealthPrediction') then nameplate:DisableElement('HealthPrediction') end
+	if nameplate:IsElementEnabled('Power') then nameplate:DisableElement('Power') end
+	if nameplate:IsElementEnabled('PowerPrediction') then nameplate:DisableElement('PowerPrediction') end
+	if nameplate:IsElementEnabled('Name') then nameplate:DisableElement('Name') end
+	if nameplate:IsElementEnabled('Level') then nameplate:DisableElement('Level') end
+	if nameplate:IsElementEnabled('ClassificationIndicator') then nameplate:DisableElement('ClassificationIndicator') end
+	if nameplate:IsElementEnabled('Castbar') then nameplate:DisableElement('Castbar') end
+	if nameplate:IsElementEnabled('Portrait') then nameplate:DisableElement('Portrait') end
+	if nameplate:IsElementEnabled('QuestIcons') then nameplate:DisableElement('QuestIcons') end
+	if nameplate:IsElementEnabled('RaidTargetIndicator') then nameplate:DisableElement('RaidTargetIndicator') end
+	if nameplate:IsElementEnabled('TargetIndicator') then nameplate:DisableElement('TargetIndicator') end
+	if nameplate:IsElementEnabled('ThreatIndicator') then nameplate:DisableElement('ThreatIndicator') end
+	if nameplate:IsElementEnabled('Highlight') then nameplate:DisableElement('Highlight') end
+	if nameplate:IsElementEnabled('ClassPower') then nameplate:DisableElement('ClassPower') end
+	if nameplate:IsElementEnabled('PvPIndicator') then nameplate:DisableElement('PvPIndicator') end
+	if nameplate:IsElementEnabled('PvPClassificationIndicator') then nameplate:DisableElement('PvPClassificationIndicator') end
+	if nameplate:IsElementEnabled('HealerSpecs') then nameplate:DisableElement('HealerSpecs') end
+	if nameplate:IsElementEnabled('DetectionIndicator') then nameplate:DisableElement('DetectionIndicator') end
+	if nameplate:IsElementEnabled('Auras') then nameplate:DisableElement('Auras') end
+
+	nameplate.Health.Text:Hide()
+	nameplate.Power.Text:Hide()
+
+	if E.myclass == 'DEATHKNIGHT' then
+		if nameplate:IsElementEnabled('Runes') then nameplate:DisableElement('Runes') end
+	end
 end
 
 function NP:SetupTarget(nameplate)
@@ -320,8 +310,21 @@ function NP:Update_StatusBars()
 	end
 end
 
-function NP:CheckGroup()
+function NP:GROUP_FORMED()
 	NP.IsInGroup = IsInRaid() or IsInGroup()
+
+	wipe(NP.GroupRoles)
+	if NP.IsInGroup then
+		local NumPlayers, Unit = IsInRaid() and 40 or 4, IsInRaid() and 'raid' or 'party'
+		for i = 1, NumPlayers do
+			NP.GroupRoles[UnitName(Unit)] = UnitGroupRolesAssigned(Unit..i)
+		end
+	end
+end
+
+function NP:GROUP_LEFT()
+	NP.IsInGroup = IsInRaid() or IsInGroup()
+	wipe(NP.GroupRoles)
 end
 
 function NP:PLAYER_ENTERING_WORLD()
@@ -340,7 +343,7 @@ function NP:ConfigureAll()
 	SetCVar('NameplatePersonalShowWithTarget', (NP.db.units.PLAYER.visibility.showWithTarget == true and 1 or 0))
 	SetCVar('nameplateShowAll', NP.db.displayStyle ~= 'ALL' and 0 or 1)
 	SetCVar('nameplateShowFriendlyMinions', NP.db.units.FRIENDLY_PLAYER.minions == true and 1 or 0)
-	SetCVar('nameplateShowEnemyMinions', NP.db.units.ENEMY_PLAYER.minions == true and 1 or 0)
+	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions == true or NP.db.units.ENEMY_NPC.minions == true) and 1 or 0)
 	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors == true and 1 or 0)
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
 	SetCVar('nameplateOtherTopInset', NP.db.clampToScreen and 0.08 or -1)
@@ -469,14 +472,15 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlate(_G.ElvNP_Test)
 		end
 
-		-- update this plate and fade it in
-		NP:UpdatePlate(nameplate)
+		if NP.db.units[nameplate.frameType].enable then
+			NP:UpdatePlate(nameplate)
+		else
+			NP:DisablePlate(nameplate)
+		end
 
 		if nameplate.isTarget then
 			NP:SetupTarget(nameplate)
 		end
-
-		NP.Plates[nameplate] = true
 
 		if not nameplate.OcculedWatcher then
 			nameplate.OcculedWatcher = CreateFrame('Frame', nil, nameplate)
@@ -551,6 +555,7 @@ function NP:Initialize()
 
 	NP.Plates = {}
 	NP.StatusBars = {}
+	NP.GroupRoles = {}
 
 	local BlizzPlateManaBar = _G.NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
@@ -612,8 +617,8 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
 	NP:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
 	NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
-	NP:RegisterEvent('GROUP_FORMED', 'CheckGroup')
-	NP:RegisterEvent('GROUP_LEFT', 'CheckGroup')
+	NP:RegisterEvent('GROUP_FORMED')
+	NP:RegisterEvent('GROUP_LEFT')
 
 	NP:StyleFilterInitializeAllFilters() -- Add metatable to all our StyleFilters so they can grab default values if missing
 	NP:ACTIVE_TALENT_GROUP_CHANGED()

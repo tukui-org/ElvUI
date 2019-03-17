@@ -1856,6 +1856,20 @@ local function GetUnitSettings(unit, name)
 					end
 				end,
 			},
+			general = {
+				order = 0,
+				type = "group",
+				name = L["General"],
+				get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
+				args = {
+					enable = {
+						order = 0,
+						name = L["Enable"],
+						type = "toggle",
+					},
+				},
+			},
 			healthGroup = {
 				order = 1,
 				name = L["Health"],
@@ -3263,58 +3277,44 @@ local function GetUnitSettings(unit, name)
 	}
 
 	if unit == "PLAYER" then
-		group.args.general = {
-			order = 0,
+		group.args.general.args.useStaticPosition = {
+			order = 2,
+			type = "toggle",
+			name = L["Use Static Position"],
+			desc = L["When enabled the nameplate will stay visible in a locked position."],
+			disabled = function() return not E.db.nameplates.units[unit].enable end,
+		}
+		group.args.general.args.visibility = {
+			order = 10,
 			type = "group",
-			name = L["General"],
-			get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
-			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
+			guiInline = true,
+			name = L["Visibility"],
+			disabled = function() return E.db.nameplates.units[unit].useStaticPosition end,
 			args = {
-				enable = {
+				showAlways = {
 					order = 1,
-					name = L["Enable"],
 					type = "toggle",
+					name = L["Always Show"],
 				},
-				useStaticPosition = {
+				showInCombat = {
 					order = 2,
 					type = "toggle",
-					name = L["Use Static Position"],
-					desc = L["When enabled the nameplate will stay visible in a locked position."],
-					disabled = function() return not E.db.nameplates.units[unit].enable end,
+					name = L["Show In Combat"],
+					disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
 				},
-				visibility = {
-					order = 10,
-					type = "group",
-					guiInline = true,
-					name = L["Visibility"],
-					disabled = function() return E.db.nameplates.units[unit].useStaticPosition end,
-					args = {
-						showAlways = {
-							order = 1,
-							type = "toggle",
-							name = L["Always Show"],
-						},
-						showInCombat = {
-							order = 2,
-							type = "toggle",
-							name = L["Show In Combat"],
-							disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
-						},
-						showWithTarget = {
-							order = 2,
-							type = "toggle",
-							name = L["Show With Target"],
-							desc = L["When using Static Position, this option also requires the target to be attackable."],
-							disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
-						},
-						hideDelay = {
-							order = 4,
-							type = "range",
-							name = L["Hide Delay"],
-							min = 0, max = 20, step = 0.5,
-							disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
-						},
-					},
+				showWithTarget = {
+					order = 2,
+					type = "toggle",
+					name = L["Show With Target"],
+					desc = L["When using Static Position, this option also requires the target to be attackable."],
+					disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
+				},
+				hideDelay = {
+					order = 4,
+					type = "range",
+					name = L["Hide Delay"],
+					min = 0, max = 20, step = 0.5,
+					disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
 				},
 			},
 		}
@@ -3379,12 +3379,20 @@ local function GetUnitSettings(unit, name)
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
 		}
 	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
-		group.args.markHealers = {
+		group.args.general.args.markHealers = {
 			type = "toggle",
-			order = -7,
+			order = 1,
 			name = L["Healer Icon"],
 			desc = L["Display a healer icon over known healers inside battlegrounds or arenas."],
-			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:ConfigureAll() end,
+			get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
+			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
+		}
+		group.args.general.args.minions = {
+			type = "toggle",
+			order = 2,
+			name = L["Display Minions"] ,
+			get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
+			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
 		}
 		group.args.healthGroup.args.useClassColor = {
 			order = 6,
@@ -3486,24 +3494,26 @@ local function GetUnitSettings(unit, name)
 			},
 		}
 		if unit == "ENEMY_NPC" then
-			group.args.detection = {
-				order = 11,
+			group.args.general.args.minor = {
+				type = 'toggle',
+				order = 1,
+				name = L["Display Minor Units"],
+				get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
+			}
+			group.args.general.args.minions = {
+				type = "toggle",
+				order = 2,
+				name = L["Display Minions"] ,
+				get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
+			}
+			group.args.general.args.detection = {
+				order = 3,
 				name = L["Detection"],
-				type = "group",
-				get = function(info) return E.db.nameplates.units[unit].detection[ info[#info] ] end,
-				set = function(info, value) E.db.nameplates.units[unit].detection[ info[#info] ] = value; NP:ConfigureAll() end,
-				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Suramar Detection"],
-					},
-					enable = {
-						order = 1,
-						name = L["Enable"],
-						type = "toggle",
-					},
-				},
+				type = "toggle",
+				get = function() return E.db.nameplates.units[unit].detection.enable end,
+				set = function(_, value) E.db.nameplates.units[unit].detection.enable = value; NP:ConfigureAll() end,
 			}
 		end
 	end
@@ -3810,7 +3820,6 @@ E.Options.args.nameplate = {
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
 							min = 50, max = 200, step = 1,
 							set = function(info, value)
-								updateUnitsHealthYoffset(value, E.db.nameplates.clickableWidth)
 								E.db.nameplates.clickableWidth = value
 								E:StaticPopup_Show("CONFIG_RL")
 							end,
@@ -3822,6 +3831,7 @@ E.Options.args.nameplate = {
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
 							min = 10, max = 75, step = 1,
 							set = function(info, value)
+								updateUnitsHealthYoffset(value, E.db.nameplates.clickableHeight)
 								E.db.nameplates.clickableHeight = value
 								E:StaticPopup_Show("CONFIG_RL")
 							end,

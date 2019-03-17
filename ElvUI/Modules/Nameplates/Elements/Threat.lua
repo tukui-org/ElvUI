@@ -6,15 +6,15 @@ local UnitIsUnit = UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 
 function NP:ThreatIndicator_PreUpdate(unit)
-	local ROLE = NP.IsInGroup and UnitExists(unit..'target') and not UnitIsUnit(unit..'target', 'player') and UnitGroupRolesAssigned(unit..'target') or 'NONE'
+	local ROLE = NP.IsInGroup and UnitExists(unit..'target') and not UnitIsUnit(unit..'target', 'player') and NP.GroupRoles[UnitName(unit..'target')] or 'NONE'
 
 	if ROLE == 'TANK' then
 		self.feedbackUnit = unit..'target'
-		--self.offTank = true
+		self.offTank = NP.PlayerRole == 'TANK' and true or false
 		self.isTank = true
 	else
 		self.feedbackUnit = 'player'
-		--self.offTank = false
+		self.offTank = false
 		self.isTank = NP.PlayerRole == 'TANK' and true or false
 	end
 end
