@@ -4360,6 +4360,7 @@ E.Options.args.nameplate = {
 			name = L["Targeted Nameplate"],
 			get = function(info) return E.db.nameplates.units.TARGET[ info[#info] ] end,
 			set = function(info, value) E.db.nameplates.units.TARGET[ info[#info] ] = value; NP:ConfigureAll() end,
+			disabled = function() return not E.NamePlates; end,
 			args = {
 				scale = {
 					order = 0,
