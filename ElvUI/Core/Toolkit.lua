@@ -95,7 +95,7 @@ function E:BuildPixelBorders(frame, noSecureHook)
 			borders[v]:SetTexelSnappingBias(0)
 		end
 
-		borders.CENTER = frame:CreateTexture("$parentPixelBorderCENTER", "BACKGROUND", nil, 0)
+		borders.CENTER = frame:CreateTexture("$parentPixelBorderCENTER", "BACKGROUND", nil, -8)
 		borders.CENTER:SetSnapToPixelGrid(false)
 		borders.CENTER:SetTexelSnappingBias(0)
 
