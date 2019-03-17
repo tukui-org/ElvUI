@@ -813,6 +813,8 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			if(nameplateCallback) then
 				nameplateCallback(nameplate.unitFrame, event, unit)
 			end
+
+			nameplate.unitFrame:UpdateAllElements(event)
 		elseif(event == 'NAME_PLATE_UNIT_REMOVED' and unit) then
 			local nameplate = C_NamePlate.GetNamePlateForUnit(unit)
 			if(not nameplate) then return end
