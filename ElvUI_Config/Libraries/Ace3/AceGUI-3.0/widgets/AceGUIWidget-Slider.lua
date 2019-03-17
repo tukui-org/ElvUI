@@ -176,15 +176,12 @@ local methods = {
 	end,
 
 	["SetSliderValues"] = function(self, min, max, step)
-		if type(min) == 'function' then min = min() end
-		if type(max) == 'function' then max = max() end
-
 		local frame = self.slider
 		frame.setup = true
 		self.min = min
 		self.max = max
 		self.step = step
-		frame:SetMinMaxValues(min or 0, max or 100)
+		frame:SetMinMaxValues(min or 0,max or 100)
 		UpdateLabels(self)
 		frame:SetValueStep(step or 1)
 		if self.value then
