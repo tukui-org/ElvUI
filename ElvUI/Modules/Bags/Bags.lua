@@ -606,8 +606,9 @@ function B:UpdateSlot(bagID, slotID)
 			slot:SetBackdropBorderColor(rr, gg, bb)
 			slot.ignoreBorderColors = true
 		else
-			slot.newItemGlow:SetVertexColor(1, 1, 1)
-			slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			local rr, gg, bb = unpack(E.media.bordercolor)
+			slot.newItemGlow:SetVertexColor(rr, gg, bb)
+			slot:SetBackdropBorderColor(rr, gg, bb)
 			slot.ignoreBorderColors = nil
 		end
 
@@ -618,8 +619,9 @@ function B:UpdateSlot(bagID, slotID)
 		slot:SetBackdropBorderColor(rr, gg, bb)
 		slot.ignoreBorderColors = true
 	else
-		slot.newItemGlow:SetVertexColor(1, 1, 1)
-		slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		local rr, gg, bb = unpack(E.media.bordercolor)
+		slot.newItemGlow:SetVertexColor(rr, gg, bb)
+		slot:SetBackdropBorderColor(rr, gg, bb)
 		slot.ignoreBorderColors = nil
 	end
 
@@ -1352,13 +1354,15 @@ function B:UpdateReagentSlot(slotID)
 			slot:SetBackdropBorderColor(r, g, b);
 			slot.ignoreBorderColors = true
 		else
-			slot.newItemGlow:SetVertexColor(1, 1, 1)
-			slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
+			local rr, gg, bb = unpack(E.media.bordercolor)
+			slot.newItemGlow:SetVertexColor(rr, gg, bb)
+			slot:SetBackdropBorderColor(rr, gg, bb)
 			slot.ignoreBorderColors = nil
 		end
 	else
-		slot.newItemGlow:SetVertexColor(1, 1, 1);
-		slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
+		local rr, gg, bb = unpack(E.media.bordercolor)
+		slot.newItemGlow:SetVertexColor(rr, gg, bb)
+		slot:SetBackdropBorderColor(rr, gg, bb)
 		slot.ignoreBorderColors = nil
 	end
 
