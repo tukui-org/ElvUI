@@ -530,6 +530,7 @@ function B:UpdateSlot(bagID, slotID)
 		E.ScanTooltip:Show()
 	end
 
+	local newItemGlowLowAlpha = false
 	if professionColors then
 		local r, g, b = unpack(professionColors)
 		slot.newItemGlow:SetVertexColor(r, g, b)
@@ -609,6 +610,7 @@ function B:UpdateSlot(bagID, slotID)
 			slot.newItemGlow:SetVertexColor(1, 1, 1)
 			slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			slot.ignoreBorderColors = nil
+			newItemGlowLowAlpha = true
 		end
 
 		if slot.Azerite and C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID(clink) then slot.Azerite:Show() end
@@ -621,8 +623,10 @@ function B:UpdateSlot(bagID, slotID)
 		slot.newItemGlow:SetVertexColor(1, 1, 1)
 		slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		slot.ignoreBorderColors = nil
+		newItemGlowLowAlpha = true
 	end
 
+	slot.newItemGlow.Holder:SetAlpha(newItemGlowLowAlpha and 0.25 or 1)
 	E.ScanTooltip:Hide()
 
 	if E.db.bags.newItemGlow then
@@ -1161,7 +1165,10 @@ function B:Layout(isBank)
 					end
 
 					if not f.Bags[bagID][slotID].newItemGlow then
-						local newItemGlow = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
+						local newGlowHolder = CreateFrame('Frame', '$parentNewItemGlowHolder', f.Bags[bagID][slotID])
+						newGlowHolder:SetAllPoints()
+						local newItemGlow = newGlowHolder:CreateTexture(nil, "OVERLAY")
+						newItemGlow.Holder = newGlowHolder
 						newItemGlow:SetInside()
 						newItemGlow:SetTexture(E.Media.Textures.BagNewItemGlow)
 						newItemGlow:Hide()
@@ -1269,7 +1276,10 @@ function B:Layout(isBank)
 				f.reagentFrame.slots[i].IconBorder:SetAlpha(0)
 
 				if not f.reagentFrame.slots[i].newItemGlow then
-					local newItemGlow = f.reagentFrame.slots[i]:CreateTexture(nil, "OVERLAY")
+					local newGlowHolder = CreateFrame('Frame', '$parentNewItemGlowHolder', f.reagentFrame.slots[i])
+					newGlowHolder:SetAllPoints()
+					local newItemGlow = newGlowHolder:CreateTexture(nil, "OVERLAY")
+					newItemGlow.Holder = newGlowHolder
 					newItemGlow:SetInside()
 					newItemGlow:SetTexture(E.Media.Textures.BagNewItemGlow)
 					newItemGlow:Hide()
@@ -1324,6 +1334,7 @@ function B:UpdateReagentSlot(slotID)
 		SetItemButtonTextureVertexColor(slot, 1, 1, 1);
 	end
 
+	local newItemGlowLowAlpha = false
 	if clink then
 		local name, _, rarity = GetItemInfo(clink);
 		slot.name, slot.rarity = name, rarity
@@ -1355,12 +1366,16 @@ function B:UpdateReagentSlot(slotID)
 			slot.newItemGlow:SetVertexColor(1, 1, 1)
 			slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
 			slot.ignoreBorderColors = nil
+			newItemGlowLowAlpha = true
 		end
 	else
 		slot.newItemGlow:SetVertexColor(1, 1, 1);
 		slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
 		slot.ignoreBorderColors = nil
+		newItemGlowLowAlpha = true
 	end
+
+	slot.newItemGlow.Holder:SetAlpha(newItemGlowLowAlpha and 0.25 or 1)
 
 	if E.db.bags.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
