@@ -205,8 +205,6 @@ function NP:UpdatePlate(nameplate)
 	NP:Update_DetectionIndicator(nameplate)
 
 	NP:UpdatePlateEvents(nameplate)
-
-	nameplate:UpdateAllElements('OnShow')
 end
 
 function NP:SetupTarget(nameplate)
@@ -479,7 +477,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		NP.Plates[nameplate] = true
-		nameplate:UpdateTags()
 
 		if not nameplate.OcculedWatcher then
 			nameplate.OcculedWatcher = CreateFrame('Frame', nil, nameplate)
