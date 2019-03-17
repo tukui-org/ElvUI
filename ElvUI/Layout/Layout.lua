@@ -128,7 +128,7 @@ local channelButtons = {
 }
 
 function LO:ToggleChatTabPanels(rightOverride, leftOverride)
-	if E.private.chat.enable and E.db.chat.hideVoiceButtons then
+	if E.private.chat.enable and not E.db.chat.hideVoiceButtons then
 		for _, button in pairs(channelButtons) do
 			button.Icon:SetParent((E.db.chat.panelTabBackdrop and _G.LeftChatTab) or _G.LeftChatPanel)
 		end
