@@ -46,6 +46,7 @@ function NP:ClassPower_PostUpdate(Cur, Max, needUpdate)
 
 	if needUpdate then
 		local db = NP.db.units[self.__owner.frameType]
+		if not db then return end
 		for i = 1, Max do
 			self[i]:Size(db.classpower.width / Max, db.classpower.height)
 			if i == 1 then

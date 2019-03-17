@@ -445,6 +445,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if UnitIsUnit(unit, 'player') and NP.db.units.PLAYER.enable then
 			nameplate.frameType = 'PLAYER'
+			NP.PlayerNamePlateAnchor:ClearAllPoints()
 			NP.PlayerNamePlateAnchor:SetParent(nameplate)
 			NP.PlayerNamePlateAnchor:SetAllPoints(nameplate)
 			NP.PlayerNamePlateAnchor:Show()
@@ -461,6 +462,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		-- update player and test plate
 		if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 			NP:UpdatePlate(_G.ElvNP_Player)
+			NP.PlayerNamePlateAnchor:ClearAllPoints()
 			NP.PlayerNamePlateAnchor:SetParent(_G.ElvNP_Player)
 			NP.PlayerNamePlateAnchor:SetAllPoints(_G.ElvNP_Player)
 			NP.PlayerNamePlateAnchor:Show()
@@ -502,13 +504,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isTargetingMe = nil
 		nameplate.isTarget = nil
 	elseif event == 'PLAYER_TARGET_CHANGED' then
-		if NP.PreviousTargetPlate then
-			NP:UpdatePlate(NP.PreviousTargetPlate)
-			NP.PreviousTargetPlate = nil
-		else
-			NP.PreviousTargetPlate = nameplate
-		end
-
 		NP:SetupTarget(nameplate)
 	end
 end
@@ -598,7 +593,7 @@ function NP:Initialize()
 	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test:SetMovable(true)
 	_G.ElvNP_Test:RegisterForDrag("LeftButton", "RightButton")
-	_G.ElvNP_Test:SetScript("OnDragStart", function(self) _G.ElvNP_Test:StartMoving() end)
+	_G.ElvNP_Test:SetScript("OnDragStart", function() _G.ElvNP_Test:StartMoving() end)
 	_G.ElvNP_Test:SetScript("OnDragStop", function() _G.ElvNP_Test:StopMovingOrSizing() end)
 	_G.ElvNP_Test.frameType = 'PLAYER'
 	_G.ElvNP_Test:Disable()
