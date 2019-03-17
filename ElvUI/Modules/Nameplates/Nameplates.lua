@@ -317,7 +317,7 @@ function NP:GROUP_FORMED()
 	if NP.IsInGroup then
 		local NumPlayers, Unit = IsInRaid() and 40 or 4, IsInRaid() and 'raid' or 'party'
 		for i = 1, NumPlayers do
-			NP.GroupRoles[UnitName(Unit)] = UnitGroupRolesAssigned(Unit..i)
+			NP.GroupRoles[UnitName(Unit..i)] = UnitGroupRolesAssigned(Unit..i)
 		end
 	end
 end
