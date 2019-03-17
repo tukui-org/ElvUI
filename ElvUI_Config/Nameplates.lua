@@ -1905,6 +1905,7 @@ local function GetUnitSettings(unit, name)
 						order = 4,
 						name = L["Y-Offset"],
 						type = "range",
+						sliderElvUI = true,
 						min = function() return -(E.db.nameplates.clickableWidth or 150) end,
 						max = function() return (E.db.nameplates.clickableWidth or 150) end,
 						step = 1,

@@ -95,6 +95,7 @@ local basekeys={
 	-- below here were created by ElvUI --
 	customWidth=optnumber,
 	textWidth=optmethodbool,
+	sliderElvUI=optmethodbool,
 	buttonElvUI=optmethodbool,
 	sortByValue=optmethodbool,
 	dragdrop=optmethodbool,

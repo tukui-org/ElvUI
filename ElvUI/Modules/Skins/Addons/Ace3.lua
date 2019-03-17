@@ -170,7 +170,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		S:HandleButton(frame, true, true, true)
 		widget.text:SetParent(frame.backdrop)
 		frame.backdrop:SetInside()
-	elseif TYPE == 'Slider' then
+	elseif TYPE == 'Slider' or TYPE == 'Slider-ElvUI' then
 		local frame = widget.slider
 		local editbox = widget.editbox
 		local lowtext = widget.lowtext
