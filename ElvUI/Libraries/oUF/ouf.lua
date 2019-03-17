@@ -822,7 +822,6 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			if(not nameplate) then return end
 
 			nameplate.unitFrame:SetAttribute('unit', nil)
-			nameplate.unitFrame.unitGUID = nil
 
 			if(nameplateCallback) then
 				nameplateCallback(nameplate.unitFrame, event, unit)
