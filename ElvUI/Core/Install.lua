@@ -132,7 +132,6 @@ end
 
 local function SetupCVars(noDisplayMsg)
 	SetCVar("statusTextDisplay", "BOTH")
-	SetCVar("ShowClassColorInNameplate", 1)
 	SetCVar("screenshotQuality", 10)
 	SetCVar("chatMouseScroll", 1)
 	SetCVar("chatStyle", "classic")
@@ -143,10 +142,10 @@ local function SetupCVars(noDisplayMsg)
 	SetCVar("alwaysShowActionBars", 1)
 	SetCVar("lockActionBars", 1)
 	SetCVar("SpamFilter", 0)
-	SetCVar("nameplateShowSelf", 0)
 	SetCVar("cameraDistanceMaxZoomFactor", 2.6)
-	SetCVar("nameplateShowFriendlyNPCs", 1)
 	SetCVar("showQuestTrackingTooltips", 1)
+
+	E:GetModule("NamePlates"):CVarReset()
 
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
