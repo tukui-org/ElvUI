@@ -4210,7 +4210,7 @@ E.Options.args.nameplate = {
 							disabled = function() return not E.db.nameplates.threat.useThreatColor end,
 						},
 						indicator = {
-							name = L["Threat Indicator"],
+							name = L["Show Icon"],
 							order = 3,
 							type = 'toggle',
 							disabled = function() return not E.db.nameplates.threat.enable end,
