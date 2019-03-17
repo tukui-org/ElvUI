@@ -829,6 +829,9 @@ end
 local function ActivateSlider(widget, event, value)
 	local option = widget:GetUserData("option")
 	local min, max, step = option.min or (not option.softMin and 0 or nil), option.max or (not option.softMax and 100 or nil), option.step
+	if type(min) == 'function' then min = min() end
+	if type(max) == 'function' then max = max() end
+
 	if min then
 		if step then
 			value = math_floor((value - min) / step + 0.5) * step + min

@@ -1891,7 +1891,9 @@ local function GetUnitSettings(unit, name)
 						order = 4,
 						name = L["Y-Offset"],
 						type = "range",
-						min = -100, max = 100, step = 1,
+						min = function() return -(E.db.nameplates.clickableWidth or 150) end,
+						max = function() return (E.db.nameplates.clickableWidth or 150) end,
+						step = 1,
 					},
 					textGroup = {
 						order = 100,
@@ -3563,6 +3565,19 @@ local function GetUnitSettings(unit, name)
 	return group
 end
 
+local yOffsetUnits = {"PLAYER","FRIENDLY_PLAYER","FRIENDLY_NPC","ENEMY_PLAYER","ENEMY_NPC"}
+local updateUnitsHealthYoffset = function(value, oldValue)
+	for _, unit in pairs(yOffsetUnits) do
+		local unitYoffset = E.db.nameplates.units[unit].health.yOffset
+		local isNegative = unitYoffset < 0
+		if unitYoffset > value or (isNegative and unitYoffset < -value) then -- overflow
+			E.db.nameplates.units[unit].health.yOffset = value
+		elseif oldValue and unitYoffset ~= 0 then -- dont update if its zero
+			E.db.nameplates.units[unit].health.yOffset = unitYoffset - (oldValue - value) -- add the difference
+		end
+	end
+end
+
 E.Options.args.nameplate = {
 	type = "group",
 	name = L["NamePlates"],
@@ -3794,7 +3809,11 @@ E.Options.args.nameplate = {
 							name = L["Clickable Width"],
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
 							min = 50, max = 200, step = 1,
-							set = function(info, value) E.db.nameplates.clickableWidth = value; E:StaticPopup_Show("CONFIG_RL") end,
+							set = function(info, value)
+								updateUnitsHealthYoffset(value, E.db.nameplates.clickableWidth)
+								E.db.nameplates.clickableWidth = value
+								E:StaticPopup_Show("CONFIG_RL")
+							end,
 						},
 						clickableHeight = {
 							order = 7,
@@ -3802,7 +3821,10 @@ E.Options.args.nameplate = {
 							name = L["Clickable Height"],
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
 							min = 10, max = 75, step = 1,
-							set = function(info, value) E.db.nameplates.clickableHeight = value; E:StaticPopup_Show("CONFIG_RL") end,
+							set = function(info, value)
+								E.db.nameplates.clickableHeight = value
+								E:StaticPopup_Show("CONFIG_RL")
+							end,
 						},
 						statusbar = {
 							order = 8,
