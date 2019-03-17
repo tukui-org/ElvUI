@@ -2081,11 +2081,9 @@ function B:ShowItemGlow(bag, slot)
 		slot:SetAlpha(1)
 	end
 
-	if bag.NewItemGlow:IsPlaying() then
-		bag.NewItemGlow:Stop()
+	if not bag.NewItemGlow:IsPlaying() then
+		bag.NewItemGlow:Play()
 	end
-
-	bag.NewItemGlow:Play()
 end
 
 function B:HideItemGlow(bag)
