@@ -221,20 +221,14 @@ local function LoadSkin()
 			end
 		end)
 
-		for i = 1, C_QuestLog_GetMaxNumQuestsCanAccept() do
-			local button = _G['QuestTitleButton'..i]
-			if button then
-				hooksecurefunc(button, 'SetFormattedText', function()
-					local fontString = button.GetFontString and button:GetFontString()
-					if fontString then
-						local fontText = fontString.GetText and fontString:GetText()
-						if fontText and fontText:find('|cff000000') then
-							fontString:SetText(gsub(fontText, '|cff000000', '|cffffe519'))
-						end
-					end
-				end)
+		QuestFrameGreetingPanel:HookScript('OnShow', function()
+			for Button in QuestFrameGreetingPanel.titleButtonPool:EnumerateActive() do
+				local Text = Button:GetFontString():GetText()
+				if Text and strfind(Text, '|cff000000') then
+					Button:GetFontString():SetText(string.gsub(Text, '|cff000000', '|cffffe519'))
+				end
 			end
-		end
+		end)
 
 		local QuestInfoRewardsFrame = _G.QuestInfoRewardsFrame
 		if QuestInfoRewardsFrame.spellHeaderPool then
