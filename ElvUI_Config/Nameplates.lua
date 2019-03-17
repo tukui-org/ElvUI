@@ -3334,7 +3334,7 @@ local function GetUnitSettings(unit, name)
 					order = 3,
 					name = L["Y-Offset"],
 					type = "range",
-					min = -40, max = 40, step = 1,
+					min = -80, max = 80, step = 1,
 				},
 				height = {
 					order = 4,
@@ -4471,7 +4471,7 @@ E.Options.args.nameplate = {
 							order = 2,
 							name = L["Y-Offset"],
 							type = "range",
-							min = -40, max = 40, step = 1,
+							min = -80, max = 80, step = 1,
 						},
 						height = {
 							order = 3,
