@@ -65,23 +65,24 @@ UF.classMaxResourceBar = {
 }
 
 UF.instanceMapIDs = {
-	[30] = 40, -- Alterac Valley
-	[489] = 10, -- Warsong Gulch
-	[529] = 15, -- Arathi Basin
-	[566] = 15, -- Eye of the Storm
-	[607] = 15, -- Strand of the Ancients
-	[628] = 40, -- Isle of Conquest
-	[726] = 10, -- Twin Peaks
-	[727] = 10, -- Silvershard Mines [STVDiamondMineBG]
-	[761] = 10, -- The Battle for Gilneas [GilneasBattleground2]
-	[968] = 10, -- Rated Eye of the Storm
-	[998] = 10, -- Temple of Kotmogu
-	[1105] = 15, -- Deepwind Gourge [GoldRush]
-	[1280] = 40, -- Tarren Mill vs Southshore [HillsbradFoothillsBG]
-	[1681] = 15, -- Arathi Blizzard [ArathiBasinWinter]
-	[1803] = 10, -- Seething Shore [AzeriteBG]
-	--[1715] = 5, -- Battle for Blackrock Mountain
-	--do not have enough information on this one yet, going to store the instanceID for now.
+	[30]   = 40, -- Alterac Valley
+	[489]  = 10, -- Classic Warsong Gulch
+	[529]  = 15, -- Classic Arathi Basin
+	[566]  = 15, -- Eye of the Storm
+	[607]  = 15, -- Strand of the Ancients
+	[628]  = 40, -- Isle of Conquest
+	[726]  = 10, -- Twin Peaks
+	[727]  = 10, -- Silvershard Mines
+	[761]  = 10, -- The Battle for Gilneas
+	[968]  = 10, -- Rated Eye of the Storm
+	[998]  = 10, -- Temple of Kotmogu
+	[1105] = 15, -- Deepwind Gorge
+	[1280] = 40, -- Southshore vs Tarren Mill
+	[1681] = 15, -- Arathi Basin Winter
+	[1803] = 10, -- Seething Shore
+	[2106] = 10, -- Warsong Gulch
+	[2118] = 40, -- Battle for Wintergrasp
+	[3358] = 15, -- Arathi Basin
 }
 
 UF.headerGroupBy = {
