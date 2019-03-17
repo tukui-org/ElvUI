@@ -12,10 +12,10 @@ local function Update(self)
 
 	local unit = self.unit
 	local classification = UnitClassification(unit)
-	if classification == 'elite' or classification == "worldboss" then
+	if classification == 'rareelite' or classification == "worldboss" then
 		element:SetTexCoord(0, 0.15, 0.25, 0.53)
 		element:Show()
-	elseif classification == 'rareelite' or classification == 'rare' then
+	elseif classification == 'elite' or classification == 'rare' then
 		element:SetTexCoord(0, 0.15, 0.52, 0.84)
 		element:Show()
 	else
