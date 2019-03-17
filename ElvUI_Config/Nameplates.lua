@@ -3368,7 +3368,7 @@ local function GetUnitSettings(unit, name)
 			},
 		}
 		group.args.healthGroup.args.useClassColor = {
-			order = 4,
+			order = 5,
 			type = "toggle",
 			name = L["Use Class Color"],
 		}
@@ -3387,7 +3387,7 @@ local function GetUnitSettings(unit, name)
 			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:ConfigureAll() end,
 		}
 		group.args.healthGroup.args.useClassColor = {
-			order = 4,
+			order = 6,
 			type = "toggle",
 			name = L["Use Class Color"],
 		}
