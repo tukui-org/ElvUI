@@ -172,8 +172,6 @@ function NP:DisablePlate(nameplate)
 	if nameplate:IsElementEnabled('HealthPrediction') then nameplate:DisableElement('HealthPrediction') end
 	if nameplate:IsElementEnabled('Power') then nameplate:DisableElement('Power') end
 	if nameplate:IsElementEnabled('PowerPrediction') then nameplate:DisableElement('PowerPrediction') end
-	if nameplate:IsElementEnabled('Name') then nameplate:DisableElement('Name') end
-	if nameplate:IsElementEnabled('Level') then nameplate:DisableElement('Level') end
 	if nameplate:IsElementEnabled('ClassificationIndicator') then nameplate:DisableElement('ClassificationIndicator') end
 	if nameplate:IsElementEnabled('Castbar') then nameplate:DisableElement('Castbar') end
 	if nameplate:IsElementEnabled('Portrait') then nameplate:DisableElement('Portrait') end
@@ -191,6 +189,8 @@ function NP:DisablePlate(nameplate)
 
 	nameplate.Health.Text:Hide()
 	nameplate.Power.Text:Hide()
+	nameplate.Name:Hide()
+	nameplate.Level:Hide()
 
 	if E.myclass == 'DEATHKNIGHT' then
 		if nameplate:IsElementEnabled('Runes') then nameplate:DisableElement('Runes') end
