@@ -622,7 +622,7 @@ function NP:Initialize()
 
 	NP:StyleFilterInitializeAllFilters() -- Add metatable to all our StyleFilters so they can grab default values if missing
 	NP:ACTIVE_TALENT_GROUP_CHANGED()
-	NP:CheckGroup()
+	NP:GROUP_FORMED()
 	NP:ConfigureAll()
 
 	E.NamePlates = NP
