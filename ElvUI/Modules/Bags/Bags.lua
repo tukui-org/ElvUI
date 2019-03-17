@@ -2106,6 +2106,7 @@ function B:SetupItemGlow(frame)
 	frame.NewItemGlow.Fade = frame.NewItemGlow:CreateAnimation("fade")
 	frame.NewItemGlow.Fade:SetDuration(0.7)
 	frame.NewItemGlow.Fade:SetChange(0)
+	frame.NewItemGlow.Fade:SetSmoothing('in')
 	frame.NewItemGlow.Fade:SetScript("OnFinished", B.ItemGlowOnFinished)
 end
 
