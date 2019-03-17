@@ -434,12 +434,13 @@ end
 
 function B:NewItemGlowSlotSwitch(slot, show)
 	if slot and slot.newItemGlow then
-		if show and E.db.bags.newItemGlow then
+		if show then
 			slot.newItemGlow:Show()
-			E:Flash(slot.newItemGlow, 0.5, true)
+
+			local bank = slot:GetParent().isBank and B.BankFrame
+			B:ShowItemGlow(bank or B.BagFrame, slot.newItemGlow)
 		else
 			slot.newItemGlow:Hide()
-			E:StopFlash(slot.newItemGlow)
 
 			-- also clear them on blizzard's side
 			if slot.bagID and slot.slotID then
@@ -461,8 +462,12 @@ function B:NewItemGlowBagClear(bagFrame)
 	end
 end
 
-local function hideNewItemGlow(slot)
-	B:NewItemGlowSlotSwitch(slot)
+function B:HideSlotItemGlow()
+	B:NewItemGlowSlotSwitch(self)
+end
+
+function B:CheckSlotNewItem(slot, bagID, slotID)
+	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 end
 
 function B:UpdateSlot(bagID, slotID)
@@ -619,7 +624,10 @@ function B:UpdateSlot(bagID, slotID)
 	end
 
 	E.ScanTooltip:Hide()
-	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
+
+	if E.db.bags.newItemGlow then
+		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
+	end
 
 	if texture then
 		local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
@@ -1157,8 +1165,9 @@ function B:Layout(isBank)
 						newItemGlow:SetInside()
 						newItemGlow:SetTexture(E.Media.Textures.BagNewItemGlow)
 						newItemGlow:Hide()
+						B.BagFrame.NewItemGlow.Fade:AddChild(newItemGlow)
 						f.Bags[bagID][slotID].newItemGlow = newItemGlow
-						f.Bags[bagID][slotID]:HookScript("OnEnter", hideNewItemGlow)
+						f.Bags[bagID][slotID]:HookScript('OnEnter', B.HideSlotItemGlow)
 					end
 				end
 
@@ -1242,6 +1251,7 @@ function B:Layout(isBank)
 			if(not f.reagentFrame.slots[i]) then
 				f.reagentFrame.slots[i] = CreateFrame("ItemButton", "ElvUIReagentBankFrameItem"..i, f.reagentFrame, "ReagentBankItemButtonGenericTemplate");
 				f.reagentFrame.slots[i]:SetID(i)
+				f.reagentFrame.slots[i].isReagent = true
 
 				f.reagentFrame.slots[i]:StyleButton()
 				f.reagentFrame.slots[i]:SetTemplate(nil, true);
@@ -1263,8 +1273,9 @@ function B:Layout(isBank)
 					newItemGlow:SetInside()
 					newItemGlow:SetTexture(E.Media.Textures.BagNewItemGlow)
 					newItemGlow:Hide()
+					B.BankFrame.NewItemGlow.Fade:AddChild(newItemGlow)
 					f.reagentFrame.slots[i].newItemGlow = newItemGlow
-					f.reagentFrame.slots[i]:HookScript("OnEnter", hideNewItemGlow)
+					f.reagentFrame.slots[i]:HookScript('OnEnter', B.HideSlotItemGlow)
 				end
 			end
 
@@ -1351,7 +1362,9 @@ function B:UpdateReagentSlot(slotID)
 		slot.ignoreBorderColors = nil
 	end
 
-	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
+	if E.db.bags.newItemGlow then
+		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
+	end
 
 	SetItemButtonTexture(slot, texture);
 	SetItemButtonCount(slot, count);
@@ -1809,6 +1822,7 @@ function B:ContructContainerFrame(name, isBank)
 			CloseBankFrame()
 
 			B:NewItemGlowBagClear(f)
+			B:HideItemGlow(f)
 
 			if E.db.bags.clearSearchOnClose then
 				B.ResetAndClear(f.editBox);
@@ -1966,6 +1980,7 @@ function B:ContructContainerFrame(name, isBank)
 			end
 
 			B:NewItemGlowBagClear(f)
+			B:HideItemGlow(f)
 
 			if E.db.bags.clearSearchOnClose then
 				B.ResetAndClear(f.editBox);
@@ -2053,9 +2068,49 @@ function B:ShowBankTab(f, showReagent)
 	end
 end
 
+function B:ItemGlowOnFinished()
+	if self:GetChange() == 1 then
+		self:SetChange(0)
+	else
+		self:SetChange(1)
+	end
+end
+
+function B:ShowItemGlow(bag, slot)
+	if slot then
+		slot:SetAlpha(1)
+	end
+
+	if bag.NewItemGlow:IsPlaying() then
+		bag.NewItemGlow:Stop()
+	end
+
+	bag.NewItemGlow:Play()
+end
+
+function B:HideItemGlow(bag)
+	if bag.NewItemGlow:IsPlaying() then
+		bag.NewItemGlow:Stop()
+
+		for _, itemGlow in pairs(bag.NewItemGlow.Fade.children) do
+			itemGlow:SetAlpha(0)
+		end
+	end
+end
+
+function B:SetupItemGlow(frame)
+	frame.NewItemGlow = CreateAnimationGroup(frame)
+	frame.NewItemGlow:SetLooping(true)
+	frame.NewItemGlow.Fade = frame.NewItemGlow:CreateAnimation("fade")
+	frame.NewItemGlow.Fade:SetDuration(0.7)
+	frame.NewItemGlow.Fade:SetChange(0)
+	frame.NewItemGlow.Fade:SetScript("OnFinished", B.ItemGlowOnFinished)
+end
+
 function B:OpenBank()
 	if not self.BankFrame then
 		self.BankFrame = self:ContructContainerFrame('ElvUI_BankContainerFrame', true);
+		B:SetupItemGlow(self.BankFrame)
 	end
 
 	--Allow opening reagent tab directly by holding Shift
@@ -2064,11 +2119,11 @@ function B:OpenBank()
 	--Call :Layout first so all elements are created before we update
 	self:Layout(true)
 
-	_G.BankFrame:Show()
-	self.BankFrame:Show()
-
 	self:OpenBags()
 	self:UpdateTokens()
+
+	_G.BankFrame:Show()
+	self.BankFrame:Show()
 end
 
 function B:PLAYERBANKBAGSLOTS_CHANGED()
@@ -2444,6 +2499,7 @@ function B:Initialize()
 
 	--Create Bag Frame
 	self.BagFrame = self:ContructContainerFrame('ElvUI_ContainerFrame');
+	B:SetupItemGlow(self.BagFrame)
 
 	--Hook onto Blizzard Functions
 	--self:SecureHook('UpdateNewItemList', 'ClearNewItems')

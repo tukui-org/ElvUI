@@ -252,6 +252,31 @@ local AnimMethods = {
 			return self.Parent
 		end,
 
+		AddChild = function(self, child, mainChild)
+			if not self.children then
+				self.children = {}
+			end
+
+			if not self.mainChild then
+				self.mainChild = mainChild or child
+			elseif mainChild then
+				self.mainChild = mainChild
+			end
+
+			tinsert(self.children, child)
+		end,
+
+		RemoveChild = function(self, child)
+			if not self.children then return end
+			local checkIndex = type(child) == 'number'
+			for index, tchild in ipairs(self.children) do
+				if (checkIndex and index == child) or tchild == child then
+					tremove(self.children, index)
+					break
+				end
+			end
+		end,
+
 		SetScript = function(self, handler, func)
 			handler = strlower(handler)
 
@@ -366,31 +391,6 @@ local AnimMethods = {
 			self.EndRSetting = r or 1
 			self.EndGSetting = g or 1
 			self.EndBSetting = b or 1
-		end,
-
-		AddChild = function(self, child, mainChild)
-			if not self.children then
-				self.children = {}
-			end
-
-			if not self.mainChild then
-				self.mainChild = mainChild or child
-			elseif mainChild then
-				self.mainChild = mainChild
-			end
-
-			tinsert(self.children, child)
-		end,
-
-		RemoveChild = function(self, child)
-			if not self.children then return end
-			local checkIndex = type(child) == 'number'
-			for index, tchild in ipairs(self.children) do
-				if (checkIndex and index == child) or tchild == child then
-					tremove(self.children, index)
-					break
-				end
-			end
 		end,
 
 		GetChange = function(self)
@@ -684,11 +684,24 @@ end
 UpdateFuncs["fade"] = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
 	self.AlphaOffset = Smoothing[self.Smoothing](self.Timer, self.StartAlpha, self.Change, self.Duration)
-	self.Parent:SetAlpha(self.AlphaOffset)
+
+	if self.children then
+		for _, child in pairs(self.children) do
+			child:SetAlpha(self.AlphaOffset)
+		end
+	else
+		self.Parent:SetAlpha(self.AlphaOffset)
+	end
 
 	if (self.Timer >= self.Duration) then
 		tremove(Updater, i)
-		self.Parent:SetAlpha(self.EndAlpha)
+		if self.children then
+			for _, child in pairs(self.children) do
+				child:SetAlpha(self.EndAlpha)
+			end
+		else
+			self.Parent:SetAlpha(self.EndAlpha)
+		end
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
@@ -701,7 +714,7 @@ AnimTypes["fade"] = function(self)
 	end
 
 	self.Timer = 0
-	self.StartAlpha = self.Parent:GetAlpha() or 1
+	self.StartAlpha = (self.mainChild or self.Parent):GetAlpha() or 1
 	self.EndAlpha = self.EndAlphaSetting or 0
 	self.Change = self.EndAlpha - self.StartAlpha
 
@@ -770,8 +783,8 @@ UpdateFuncs["color"] = function(self, elapsed, i)
 	self.ColorOffset = Smoothing[self.Smoothing](self.Timer, 0, self.Duration, self.Duration)
 
 	if self.children then
-		for c=1, #self.children do
-			Set[self.ColorType](self.children[c], GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
+		for _, child in pairs(self.children) do
+			Set[self.ColorType](child, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
 		end
 	else
 		Set[self.ColorType](self.Parent, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
@@ -780,8 +793,8 @@ UpdateFuncs["color"] = function(self, elapsed, i)
 	if (self.Timer >= self.Duration) then
 		tremove(Updater, i)
 		if self.children then
-			for c=1, #self.children do
-				Set[self.ColorType](self.children[c], self.EndR, self.EndG, self.EndB)
+			for _, child in pairs(self.children) do
+				Set[self.ColorType](child, self.EndR, self.EndG, self.EndB)
 			end
 		else
 			Set[self.ColorType](self.Parent, self.EndR, self.EndG, self.EndB)

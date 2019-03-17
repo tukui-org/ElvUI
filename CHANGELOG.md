@@ -11,7 +11,7 @@ Made Style Filter Name Color and Alpha action work again.
 Fixed Style Filter Health Color not working correctly in combat.  
 Fixed Target Indicator showing permanently when Low Health Threshold was set to zero.  
 Fixed an issue in Toolkit which prevented border/backdrop color in some cases.  
-Fixed spam errors when trying to change talents when you have non selected yet.  
+Fixed spam errors when trying to change Talents when you have non selected yet.  
 
 **Misc. Changes:**  
 Enabled Style Filter Hide Frame action.  
@@ -21,6 +21,7 @@ Updated Module Copy to handle some new cases.
 Keep `Player` nameplate from fading out.  
 Stopped allowing Keybinder in combat.  
 Made the UI Scale popup `Suppress` checkbox actually disable `Accept` button, as this only works correctly when you use `Cancel` to end the popup.  
+Recoded the animation for the Bag New Item Glow so they all glow together instead of seperately.  
 
 ___
 ### Version 11.06 [ March 14th 2019 ]
