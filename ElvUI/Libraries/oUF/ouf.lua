@@ -807,7 +807,12 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			end
 
 			nameplate.unitFrame:SetAttribute('unit', unit)
-			nameplate.unitFrame:UpdateAllElements(event)
+
+			local unitGUID = UnitGUID(unit)
+			if unitGUID ~= nameplate.unitFrame.unitGUID then
+				nameplate.unitFrame:UpdateAllElements(event)
+				nameplate.unitFrame.unitGUID = unitGUID
+			end
 
 			if(nameplateCallback) then
 				nameplateCallback(nameplate.unitFrame, event, unit)
@@ -817,6 +822,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			if(not nameplate) then return end
 
 			nameplate.unitFrame:SetAttribute('unit', nil)
+			nameplate.unitFrame.unitGUID = nil
 
 			if(nameplateCallback) then
 				nameplateCallback(nameplate.unitFrame, event, unit)
