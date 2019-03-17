@@ -189,7 +189,6 @@ function NP:DisablePlate(nameplate)
 
 	nameplate.Health.Text:Hide()
 	nameplate.Power.Text:Hide()
-	nameplate.Name:Hide()
 	nameplate.Level:Hide()
 
 	if E.myclass == 'DEATHKNIGHT' then
@@ -472,10 +471,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlate(_G.ElvNP_Test)
 		end
 
-		if NP.db.units[nameplate.frameType].enable then
-			NP:UpdatePlate(nameplate)
-		else
+		if not NP.db.units[nameplate.frameType].enable then
 			NP:DisablePlate(nameplate)
+		else
+			NP:UpdatePlate(nameplate)
 		end
 
 		if nameplate.isTarget then

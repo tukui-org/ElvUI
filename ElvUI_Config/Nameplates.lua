@@ -3289,6 +3289,8 @@ local function GetUnitSettings(unit, name)
 			type = "group",
 			guiInline = true,
 			name = L["Visibility"],
+			get = function(info) return E.db.nameplates.units[unit].visibility[ info[#info] ] end,
+			set = function(info, value) E.db.nameplates.units[unit].visibility[ info[#info] ] = value; NP:ConfigureAll() end,
 			disabled = function() return E.db.nameplates.units[unit].useStaticPosition end,
 			args = {
 				showAlways = {
