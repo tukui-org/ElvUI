@@ -530,14 +530,14 @@ UpdateFuncs.move = function(self, elapsed, i)
 		self.YOffset = Smoothing[self.Smoothing](self.Timer, self.StartY, self.YChange, self.Duration)
 	end
 
-	self.Parent:SetPoint(self.A1, self.P, self.A2, (self.EndX ~= 0 and self.XOffset or self.StartX), (self.EndY ~= 0 and self.YOffset or self.StartY))
-
 	if self.Timer >= self.Duration then
 		tremove(Updater, i)
 		self.Parent:SetPoint(self.A1, self.P, self.A2, self.EndX, self.EndY)
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	else
+		self.Parent:SetPoint(self.A1, self.P, self.A2, (self.EndX ~= 0 and self.XOffset or self.StartX), (self.EndY ~= 0 and self.YOffset or self.StartY))
 	end
 end
 
@@ -572,14 +572,6 @@ UpdateFuncs.fade = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
 	self.AlphaOffset = Smoothing[self.Smoothing](self.Timer, self.StartAlpha, self.Change, self.Duration)
 
-	if self.children then
-		for _, child in pairs(self.children) do
-			child:SetAlpha(self.AlphaOffset)
-		end
-	else
-		self.Parent:SetAlpha(self.AlphaOffset)
-	end
-
 	if self.Timer >= self.Duration then
 		tremove(Updater, i)
 		if self.children then
@@ -589,9 +581,18 @@ UpdateFuncs.fade = function(self, elapsed, i)
 		else
 			self.Parent:SetAlpha(self.EndAlpha)
 		end
+
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	elseif self.children then
+		for _, child in pairs(self.children) do
+			if child:IsShown() then
+				child:SetAlpha(self.AlphaOffset)
+			end
+		end
+	elseif self.Parent:IsShown() then
+		self.Parent:SetAlpha(self.AlphaOffset)
 	end
 end
 
@@ -610,7 +611,6 @@ end
 UpdateFuncs.height = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
 	self.HeightOffset = Smoothing[self.Smoothing](self.Timer, self.StartHeight, self.HeightChange, self.Duration)
-	self.Parent:SetHeight(self.HeightOffset)
 
 	if self.Timer >= self.Duration then
 		tremove(Updater, i)
@@ -618,6 +618,8 @@ UpdateFuncs.height = function(self, elapsed, i)
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	else
+		self.Parent:SetHeight(self.HeightOffset)
 	end
 end
 
@@ -636,7 +638,6 @@ end
 UpdateFuncs.width = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
 	self.WidthOffset = Smoothing[self.Smoothing](self.Timer, self.StartWidth, self.WidthChange, self.Duration)
-	self.Parent:SetWidth(self.WidthOffset)
 
 	if self.Timer >= self.Duration then
 		tremove(Updater, i)
@@ -644,6 +645,8 @@ UpdateFuncs.width = function(self, elapsed, i)
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	else
+		self.Parent:SetWidth(self.WidthOffset)
 	end
 end
 
@@ -663,14 +666,6 @@ UpdateFuncs.color = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
 	self.ColorOffset = Smoothing[self.Smoothing](self.Timer, 0, self.Duration, self.Duration)
 
-	if self.children then
-		for _, child in pairs(self.children) do
-			Set[self.ColorType](child, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
-		end
-	else
-		Set[self.ColorType](self.Parent, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
-	end
-
 	if self.Timer >= self.Duration then
 		tremove(Updater, i)
 		if self.children then
@@ -683,6 +678,12 @@ UpdateFuncs.color = function(self, elapsed, i)
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	elseif self.children then
+		for _, child in pairs(self.children) do
+			Set[self.ColorType](child, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
+		end
+	else
+		Set[self.ColorType](self.Parent, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
 	end
 end
 
@@ -701,7 +702,6 @@ end
 UpdateFuncs.progress = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
 	self.ValueOffset = Smoothing[self.Smoothing](self.Timer, self.StartValue, self.ProgressChange, self.Duration)
-	self.Parent:SetValue(self.ValueOffset)
 
 	if self.Timer >= self.Duration then
 		tremove(Updater, i)
@@ -709,6 +709,8 @@ UpdateFuncs.progress = function(self, elapsed, i)
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	else
+		self.Parent:SetValue(self.ValueOffset)
 	end
 end
 
@@ -742,7 +744,6 @@ end
 UpdateFuncs.number = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
 	self.NumberOffset = Smoothing[self.Smoothing](self.Timer, self.StartNumber, self.NumberChange, self.Duration)
-	self.Parent:SetText(self.Prefix..floor(self.NumberOffset)..self.Postfix)
 
 	if self.Timer >= self.Duration then
 		tremove(Updater, i)
@@ -750,6 +751,8 @@ UpdateFuncs.number = function(self, elapsed, i)
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	else
+		self.Parent:SetText(self.Prefix..floor(self.NumberOffset)..self.Postfix)
 	end
 end
 
