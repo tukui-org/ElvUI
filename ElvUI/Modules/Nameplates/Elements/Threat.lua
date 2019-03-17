@@ -10,11 +10,11 @@ function NP:ThreatIndicator_PreUpdate(unit)
 
 	if ROLE == 'TANK' then
 		self.feedbackUnit = unit..'target'
-		self.offTank = true
+		--self.offTank = true
 		self.isTank = true
 	else
 		self.feedbackUnit = 'player'
-		self.offTank = false
+		--self.offTank = false
 		self.isTank = NP.PlayerRole == 'TANK' and true or false
 	end
 end
@@ -41,7 +41,8 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 			elseif (status == 1) then --not tanking but threat higher than tank
 				Color = self.isTank and NP.db.colors.threat.goodTransition or NP.db.colors.threat.badTransition
 			else -- not tanking at all
-				Color = self.isTank and self.offTank and NP.db.colors.threat.beingTankedByTankColor or self.isTank and NP.db.colors.threat.badColor or NP.db.colors.threat.goodColor
+				--Color = self.isTank and self.offTank and NP.db.colors.threat.beingTankedByTankColor or self.isTank and NP.db.colors.threat.badColor or NP.db.colors.threat.goodColor
+				Color = self.isTank and NP.db.colors.threat.badColor or NP.db.colors.threat.goodColor
 			end
 		end
 
