@@ -11,7 +11,9 @@ end
 function NP:Update_Name(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if db.name.enable then
+	local BlizzName = nameplate:GetParent().UnitFrame and nameplate:GetParent().UnitFrame.name:IsShown()
+
+	if db.name.enable and BlizzName then
 		nameplate.Name:ClearAllPoints()
 		nameplate.Name:Point(E.InversePoints[db.name.position], nameplate, db.name.position, db.name.xOffset, db.name.yOffset)
 		nameplate.Name:FontTemplate(E.LSM:Fetch('font', db.name.font), db.name.fontSize, db.name.fontOutline)
@@ -24,7 +26,9 @@ end
 function NP:Update_Level(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if db.level.enable then
+	local BlizzName = nameplate:GetParent().UnitFrame and nameplate:GetParent().UnitFrame.name:IsShown()
+
+	if db.level.enable and BlizzName then
 		nameplate.Level:ClearAllPoints()
 		nameplate.Level:Point(E.InversePoints[db.level.position], nameplate, db.level.position, db.level.xOffset, db.level.yOffset)
 		nameplate.Level:FontTemplate(E.LSM:Fetch('font', db.level.font), db.level.fontSize, db.level.fontOutline)

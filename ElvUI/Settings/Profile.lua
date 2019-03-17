@@ -645,6 +645,7 @@ P.nameplates = {
 			},
 		},
 		TARGET = {
+			enable = true,
 			nonTargetTransparency = 0.75,
 			glowStyle = 'style2',
 			useScale = false,
@@ -660,6 +661,7 @@ P.nameplates = {
 			},
 		},
 		FRIENDLY_PLAYER = {
+			enable = true,
 			portrait = {
 				enable = false,
 				position = 'RIGHT',
@@ -853,6 +855,7 @@ P.nameplates = {
 			},
 		},
 		ENEMY_PLAYER = {
+			enable = true,
 			portrait = {
 				enable = false,
 				position = 'RIGHT',
@@ -1046,6 +1049,7 @@ P.nameplates = {
 			},
 		},
 		FRIENDLY_NPC = {
+			enable = true,
 			portrait = {
 				enable = false,
 				position = 'RIGHT',
@@ -1242,6 +1246,7 @@ P.nameplates = {
 			},
 		},
 		ENEMY_NPC = {
+			enable = true,
 			portrait = {
 				enable = false,
 				position = 'RIGHT',
