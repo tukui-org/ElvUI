@@ -3823,7 +3823,6 @@ E.Options.args.nameplate = {
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
 							min = 50, max = 200, step = 1,
 							set = function(info, value)
-								updateUnitsHealthYoffset(value, E.db.nameplates.clickableWidth)
 								E.db.nameplates.clickableWidth = value
 								E:StaticPopup_Show("CONFIG_RL")
 							end,
@@ -3835,6 +3834,7 @@ E.Options.args.nameplate = {
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
 							min = 10, max = 75, step = 1,
 							set = function(info, value)
+								updateUnitsHealthYoffset(value, E.db.nameplates.clickableHeight)
 								E.db.nameplates.clickableHeight = value
 								E:StaticPopup_Show("CONFIG_RL")
 							end,
