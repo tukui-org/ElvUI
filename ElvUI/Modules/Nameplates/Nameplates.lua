@@ -359,7 +359,6 @@ function NP:ConfigureAll()
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
 	end
-	--
 
 	C_NamePlate_SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	C_NamePlate_SetNamePlateEnemySize(NP.db.clickableWidth, NP.db.clickableHeight)
