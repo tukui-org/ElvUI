@@ -25,7 +25,7 @@ local function UpdateAlphaText(displayValue)
 	end
 
 	_G.ColorPPBoxA.noUpdateAlpha = true
-	_G.ColorPPBoxA:SetText(("%d"):format(displayValue))
+	_G.ColorPPBoxA:SetText(displayValue)
 end
 
 local function UpdateAlpha(tbox)
@@ -38,7 +38,7 @@ local function UpdateAlpha(tbox)
 	if a > 100 then
 		a = 100
 		_G.ColorPPBoxA.noUpdateAlpha = true
-		_G.ColorPPBoxA:SetText(("%d"):format(a))
+		_G.ColorPPBoxA:SetText(a)
 	end
 	a = 1 - (a / 100)
 
@@ -46,60 +46,64 @@ local function UpdateAlpha(tbox)
 end
 
 local function UpdateColorTexts(r, g, b)
-	if not r then r, g, b = _G.ColorPickerFrame:GetColorRGB() end
+	if not (r and g and b) then
+		r, g, b = _G.ColorPickerFrame:GetColorRGB()
+	end
+
 	r, g, b = r*255, g*255, b*255
+	print('rgb', r, g, b)
 
 	-- this will prevent the infinite loops
+	_G.ColorPPBoxH.noUpdateColor = true
 	_G.ColorPPBoxR.noUpdateColor = true
 	_G.ColorPPBoxG.noUpdateColor = true
 	_G.ColorPPBoxB.noUpdateColor = true
-	_G.ColorPPBoxH.noUpdateColor = true
 
-	_G.ColorPPBoxR:SetText(("%d"):format(r))
-	_G.ColorPPBoxG:SetText(("%d"):format(g))
-	_G.ColorPPBoxB:SetText(("%d"):format(b))
 	_G.ColorPPBoxH:SetText(("%.2x%.2x%.2x"):format(r, g, b))
+	_G.ColorPPBoxR:SetText(r)
+	_G.ColorPPBoxG:SetText(g)
+	_G.ColorPPBoxB:SetText(b)
 end
 
-local function UpdateColor(tbox)
+local function UpdateColor(tbox, isUserInput)
 	if tbox.noUpdateColor then
 		tbox.noUpdateColor = nil
 		return
 	end
 
 	local r, g, b = _G.ColorPickerFrame:GetColorRGB()
-	local id = tbox:GetID()
+	print('first', r, g, b)
 
-	if id == 1 then
-		r = format("%d", tbox:GetNumber())
-		if not r then r = 0 end
-		r = r/255
-	elseif id == 2 then
-		g = format("%d", tbox:GetNumber())
-		if not g then g = 0 end
-		g = g/255
-	elseif id == 3 then
-		b = format("%d", tbox:GetNumber())
-		if not b then b = 0 end
-		b = b/255
-	elseif id == 4 then
-		-- hex values
-		if tbox:GetNumLetters() == 6 then
-			local rgb = tbox:GetText()
-			r, g, b = tonumber('0x'..strsub(rgb, 0, 2)), tonumber('0x'..strsub(rgb, 3, 4)), tonumber('0x'..strsub(rgb, 5, 6))
-			if not r then r = 0 else r = r/255 end
-			if not g then g = 0 else g = g/255 end
-			if not b then b = 0 else b = b/255 end
+	if isUserInput then
+		if tbox == _G.ColorPPBoxH then
+			if tbox:GetNumLetters() == 6 then -- hex values
+				local rgb = tbox:GetText()
+				r, g, b = tonumber('0x'..strsub(rgb, 0, 2)), tonumber('0x'..strsub(rgb, 3, 4)), tonumber('0x'..strsub(rgb, 5, 6))
+				print('hex', r, g, b)
+				if not r then r = 0 else r = r/255 end
+				if not g then g = 0 else g = g/255 end
+				if not b then b = 0 else b = b/255 end
+			else
+				print('hex broken')
+				return
+			end
 		else
-			return
+			local c = tbox:GetNumber()
+			print('getNumber', c, tbox:GetText())
+			if tbox == _G.ColorPPBoxR then r = c;if not r then r = 0 else r = r/255 end end
+			if tbox == _G.ColorPPBoxG then g = c;if not g then g = 0 else g = g/255 end end
+			if tbox == _G.ColorPPBoxB then b = c;if not b then b = 0 else b = b/255 end end
 		end
 	end
+	print('second', r, g, b, tbox:GetDebugName())
 
 	-- This takes care of updating the hex entry when changing rgb fields and vice versa
-	UpdateColorTexts(r,g,b)
+	UpdateColorTexts(r, g, b)
 
-	_G.ColorSwatch:SetColorTexture(r, g, b)
+	_G.ColorPickerFrame.noColorCallback = true
 	_G.ColorPickerFrame:SetColorRGB(r, g, b)
+	_G.ColorPickerFrame.noColorCallback = nil
+	_G.ColorSwatch:SetColorTexture(r, g, b)
 end
 
 local function ColorPPBoxA_SetFocus()
@@ -118,8 +122,12 @@ local function delayCall()
 	end
 end
 local function onColorSelect(frame, r, g, b)
+	if frame.noColorCallback then return end
+
 	_G.ColorSwatch:SetColorTexture(r, g, b)
 	UpdateColorTexts(r, g, b)
+
+	print('onColorSelect', r, g, b, frame:IsVisible(), _G.ColorPickerFrame.noColorCallback)
 
 	if not frame:IsVisible() then
 		delayCall()
@@ -135,6 +143,8 @@ local function onValueChanged(frame, value)
 		frame.lastSliderValue = displayValue
 
 		UpdateAlphaText(displayValue)
+
+		print('onValueChanged', _G.ColorPickerFrame:IsVisible(), _G.ColorPickerFrame.noColorCallback)
 
 		if not _G.ColorPickerFrame:IsVisible() then
 			delayCall()
@@ -176,7 +186,7 @@ function B:EnhanceColorPicker()
 		local r, g, b = frame:GetColorRGB()
 		_G.ColorPPOldColorSwatch:SetColorTexture(r,g,b)
 
-			-- show/hide the alpha box
+		-- show/hide the alpha box
 		if frame.hasOpacity then
 			_G.ColorPPBoxA:Show()
 			_G.ColorPPBoxLabelA:Show()
@@ -193,7 +203,6 @@ function B:EnhanceColorPicker()
 		--Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
 		--We overwrite the OnColorSelect script and set a limit on how often we allow a call to self.func
 		frame:SetScript('OnColorSelect', onColorSelect)
-
 		_G.OpacitySliderFrame:SetScript('OnValueChanged', onValueChanged)
 	end)
 
@@ -326,12 +335,12 @@ function B:EnhanceColorPicker()
 		local rgb = boxes[i]
 		local box = CreateFrame("EditBox", "ColorPPBox"..rgb, _G.ColorPickerFrame, "InputBoxTemplate")
 		S:HandleEditBox(box)
-		box:SetID(i)
 		box:SetFrameStrata("DIALOG")
 		box:SetAutoFocus(false)
 		box:SetTextInsets(0,7,0,0)
 		box:SetJustifyH("RIGHT")
 		box:Height(24)
+		box:SetID(i)
 
 		if i == 4 then
 			-- Hex entry box
