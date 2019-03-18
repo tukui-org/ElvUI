@@ -1906,8 +1906,8 @@ local function GetUnitSettings(unit, name)
 						name = L["Y-Offset"],
 						type = "range",
 						sliderElvUI = true,
-						min = function() return -(E.db.nameplates.clickableHeight or 100) end,
-						max = function() return (E.db.nameplates.clickableHeight or 100) end,
+						min = function() return -(E.db.nameplates.clickableHeight or 75) end,
+						max = function() return (E.db.nameplates.clickableHeight or 75) end,
 						step = 1,
 					},
 					textGroup = {
