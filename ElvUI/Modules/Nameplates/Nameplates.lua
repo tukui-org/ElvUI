@@ -194,7 +194,23 @@ function NP:DisablePlate(nameplate)
 
 	nameplate.Health.Text:Hide()
 	nameplate.Power.Text:Hide()
-	nameplate.Level:Hide()
+
+	nameplate.Name:Show()
+	nameplate.Name:ClearAllPoints()
+	nameplate.Name:SetPoint('CENTER', nameplate, 'CENTER', 0, 0)
+	if NP.db.units[nameplate.frameType].showTitle then
+		nameplate.Level:Show()
+		nameplate.Level:ClearAllPoints()
+		nameplate.Level:SetPoint('TOP', nameplate.Name, 'BOTTOM', 0, -2)
+		if strfind(nameplate.frameType, '_NPC') then
+			nameplate:Tag(nameplate.Level, '[npctitle]')
+		elseif strfind(nameplate.frameType, '_PLAYER') then
+			nameplate:Tag(nameplate.Level, '[guild]')
+		end
+		nameplate:UpdateTags()
+	else
+		nameplate.Level:Hide()
+	end
 
 	if E.myclass == 'DEATHKNIGHT' then
 		if nameplate:IsElementEnabled('Runes') then nameplate:DisableElement('Runes') end
@@ -450,12 +466,15 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isTarget = UnitIsUnit(unit, 'target')
 		nameplate.reaction = UnitReaction('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
+		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
 
 		if UnitIsUnit(unit, 'player') and NP.db.units.PLAYER.enable then
 			nameplate.frameType = 'PLAYER'
-			NP.PlayerNamePlateAnchor:SetParent(nameplate)
-			NP.PlayerNamePlateAnchor:SetAllPoints(nameplate)
-			NP.PlayerNamePlateAnchor:Show()
+			if not InCombatLockdown() then
+				NP.PlayerNamePlateAnchor:SetParent(nameplate)
+				NP.PlayerNamePlateAnchor:SetAllPoints(nameplate)
+				NP.PlayerNamePlateAnchor:Show()
+			end
 		elseif UnitIsPVPSanctuary(unit) or (nameplate.isPlayer and UnitIsFriend('player', unit) and nameplate.reaction and nameplate.reaction >= 5) then
 			nameplate.frameType = 'FRIENDLY_PLAYER'
 		elseif not nameplate.isPlayer and (nameplate.reaction and nameplate.reaction >= 5) or UnitFactionGroup(unit) == 'Neutral' then
@@ -474,10 +493,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlate(_G.ElvNP_Test)
 		end
 
+		NP:UpdatePlate(nameplate)
+
 		if not NP.db.units[nameplate.frameType].enable then
 			NP:DisablePlate(nameplate)
-		else
-			NP:UpdatePlate(nameplate)
 		end
 
 		if nameplate.isTarget then

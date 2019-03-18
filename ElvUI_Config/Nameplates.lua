@@ -3382,6 +3382,13 @@ local function GetUnitSettings(unit, name)
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
 		}
 	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+		group.args.general.args.showTitle = {
+			type = 'toggle',
+			order = 2,
+			name = L['Show Guild'],
+			get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
+			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
+		}
 		group.args.general.args.markHealers = {
 			type = "toggle",
 			order = 1,
@@ -3403,6 +3410,13 @@ local function GetUnitSettings(unit, name)
 			name = L["Use Class Color"],
 		}
 	elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+		group.args.general.args.showTitle = {
+			type = 'toggle',
+			order = 2,
+			name = L['Show NPC Title'],
+			get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
+			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
+		}
 		group.args.eliteIcon = {
 			order = 10,
 			name = L["Elite Icon"],

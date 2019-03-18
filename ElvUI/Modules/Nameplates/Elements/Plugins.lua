@@ -157,6 +157,7 @@ end
 
 function NP:Construct_Highlight(nameplate)
 	local Highlight = CreateFrame('Frame', nameplate:GetDebugName()..'Highlight', nameplate)
+	Highlight:Hide()
 	Highlight.texture = Highlight:CreateTexture(nil, 'BACKGROUND', nil, 1)
 	Highlight.texture:SetSnapToPixelGrid(false)
 	Highlight.texture:SetTexelSnappingBias(0)

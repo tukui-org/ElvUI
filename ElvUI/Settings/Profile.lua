@@ -662,6 +662,7 @@ P.nameplates = {
 		},
 		FRIENDLY_PLAYER = {
 			enable = true,
+			showTitle = true,
 			portrait = {
 				enable = false,
 				position = 'RIGHT',
@@ -856,6 +857,7 @@ P.nameplates = {
 		},
 		ENEMY_PLAYER = {
 			enable = true,
+			showTitle = true,
 			portrait = {
 				enable = false,
 				position = 'RIGHT',
@@ -1050,6 +1052,7 @@ P.nameplates = {
 		},
 		FRIENDLY_NPC = {
 			enable = true,
+			showTitle = true,
 			portrait = {
 				enable = false,
 				position = 'RIGHT',
@@ -1247,6 +1250,7 @@ P.nameplates = {
 		},
 		ENEMY_NPC = {
 			enable = true,
+			showTitle = true,
 			portrait = {
 				enable = false,
 				position = 'RIGHT',
