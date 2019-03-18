@@ -312,15 +312,16 @@ function NP:Update_StatusBars()
 	end
 end
 
-NP.GroupRoles = {}
 function NP:GROUP_FORMED()
 	NP.IsInGroup = IsInRaid() or IsInGroup()
 
 	wipe(NP.GroupRoles)
 	if NP.IsInGroup then
-		local NumPlayers, Unit = IsInRaid() and 40 or 4, IsInRaid() and 'raid' or 'party'
+		local NumPlayers, Unit = IsInRaid() and 40 or 5, IsInRaid() and 'raid' or 'party'
 		for i = 1, NumPlayers do
-			NP.GroupRoles[UnitName(Unit..i)] = UnitGroupRolesAssigned(Unit..i)
+			if UnitExists(Unit..i) then
+				NP.GroupRoles[UnitName(Unit..i)] = UnitGroupRolesAssigned(Unit..i)
+			end
 		end
 	end
 end
@@ -565,7 +566,7 @@ function NP:Initialize()
 
 	NP.Plates = {}
 	NP.StatusBars = {}
-	--NP.GroupRoles = {}
+	NP.GroupRoles = {}
 
 	local BlizzPlateManaBar = _G.NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
