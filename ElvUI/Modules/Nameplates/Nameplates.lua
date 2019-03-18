@@ -26,6 +26,8 @@ local UnitExists = UnitExists
 local UnitClass = UnitClass
 local UnitName = UnitName
 local GetCVar = GetCVar
+local GetNumGroupMembers = GetNumGroupMembers
+local GetNumSubgroupMembers = GetNumSubgroupMembers
 
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
@@ -317,7 +319,7 @@ function NP:GROUP_FORMED()
 
 	wipe(NP.GroupRoles)
 	if NP.IsInGroup then
-		local NumPlayers, Unit = IsInRaid() and 40 or 5, IsInRaid() and 'raid' or 'party'
+		local NumPlayers, Unit = IsInRaid() and GetNumGroupMembers() or GetNumSubgroupMembers(), IsInRaid() and 'raid' or 'party'
 		for i = 1, NumPlayers do
 			if UnitExists(Unit..i) then
 				NP.GroupRoles[UnitName(Unit..i)] = UnitGroupRolesAssigned(Unit..i)
