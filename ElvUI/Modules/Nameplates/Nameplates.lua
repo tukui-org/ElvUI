@@ -350,6 +350,30 @@ function NP:ConfigureAll()
 
 	SetCVar('nameplateSelectedScale', NP.db.units.TARGET.scale)
 
+	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinus:SetSize(0.0001, 0.0001)
+	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions:SetSize(0.0001, 0.0001)
+	InterfaceOptionsNamesPanelUnitNameplatesFriendlyMinions:SetSize(0.0001, 0.0001)
+	InterfaceOptionsNamesPanelUnitNameplatesPersonalResource:SetSize(0.0001, 0.0001)
+	InterfaceOptionsNamesPanelUnitNameplatesPersonalResourceOnEnemy:SetSize(0.0001, 0.0001)
+	InterfaceOptionsNamesPanelUnitNameplatesShowAll:SetSize(0.0001, 0.0001)
+	InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown:SetSize(0.0001, 0.0001)
+
+	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinus:SetAlpha(0)
+	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions:SetAlpha(0)
+	InterfaceOptionsNamesPanelUnitNameplatesFriendlyMinions:SetAlpha(0)
+	InterfaceOptionsNamesPanelUnitNameplatesPersonalResource:SetAlpha(0)
+	InterfaceOptionsNamesPanelUnitNameplatesPersonalResourceOnEnemy:SetAlpha(0)
+	InterfaceOptionsNamesPanelUnitNameplatesShowAll:SetAlpha(0)
+	InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown:SetAlpha(0)
+
+	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinus:Hide()
+	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions:Hide()
+	InterfaceOptionsNamesPanelUnitNameplatesFriendlyMinions:Hide()
+	InterfaceOptionsNamesPanelUnitNameplatesPersonalResource:Hide()
+	InterfaceOptionsNamesPanelUnitNameplatesPersonalResourceOnEnemy:Hide()
+	InterfaceOptionsNamesPanelUnitNameplatesShowAll:Hide()
+	InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown:Hide()
+
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
 	end
