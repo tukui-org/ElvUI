@@ -73,7 +73,9 @@ local function ColorSwatch_OnClick(frame)
 
 		local r, g, b, a = self.r, self.g, self.b, self.a
 		if self.HasAlpha then ColorPickerFrame.opacity = 1 - (a or 0) end
+		ColorPickerFrame.noColorCallback = true
 		ColorPickerFrame:SetColorRGB(r, g, b)
+		ColorPickerFrame.noColorCallback = nil
 
 		if ColorPPDefault and self.dR and self.dG and self.dB then
 			local alpha = 1
