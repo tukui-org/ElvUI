@@ -7,7 +7,7 @@ local B = E:GetModule('Blizzard');
 local S = E:GetModule('Skins');
 
 local _G = _G
-local tonumber, floor, strsub = tonumber, floor, strsub
+local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
@@ -283,7 +283,9 @@ function B:EnhanceColorPicker()
 	b:Point("TOPLEFT", "ColorPPClass", "BOTTOMLEFT", 0, -7)
 	b:Disable() -- enable when something has been copied
 	b:SetScript("OnHide", function(btn)
-		btn.colors = nil
+		if btn.colors then
+			wipe(btn.colors)
+		end
 	end)
 	b:SetScript("OnShow", function(btn)
 		if btn.colors then
