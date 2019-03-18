@@ -120,7 +120,9 @@ local function onColorSelect(frame, r, g, b)
 	_G.ColorSwatch:SetColorTexture(r, g, b)
 	UpdateColorTexts(r, g, b)
 
-	if not onColorSelectDelay then
+	if not ColorPickerFrame:IsVisible() then
+		colorDelayFunc()
+	elseif not onColorSelectDelay then
 		onColorSelectDelay = E:Delay(updateDelay, colorDelayFunc)
 	end
 end
@@ -138,7 +140,9 @@ local function onValueChanged(frame, value)
 
 		UpdateAlphaText(displayValue)
 
-		if not onValueChangedDelay then
+		if not ColorPickerFrame:IsVisible() then
+			opacityDelayFunc()
+		elseif not onValueChangedDelay then
 			onValueChangedDelay = E:Delay(updateDelay, opacityDelayFunc)
 		end
 	end
@@ -317,7 +321,6 @@ function B:EnhanceColorPicker()
 	-- set up edit box frames and interior label and text areas
 	local boxes = { "R", "G", "B", "H", "A" }
 	for i = 1, #boxes do
-
 		local rgb = boxes[i]
 		local box = CreateFrame("EditBox", "ColorPPBox"..rgb, _G.ColorPickerFrame, "InputBoxTemplate")
 		S:HandleEditBox(box)
