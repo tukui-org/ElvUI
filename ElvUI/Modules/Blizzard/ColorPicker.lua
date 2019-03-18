@@ -20,10 +20,7 @@ local CLASS, DEFAULT = CLASS, DEFAULT
 local colorBuffer = {}
 
 local function UpdateAlphaText()
-	local a = _G.OpacitySliderFrame:GetValue()
-	a = (1 - a) * 100
-	a = floor(a +.05)
-	_G.ColorPPBoxA:SetText(("%d"):format(a))
+	_G.ColorPPBoxA:SetText(("%d"):format(floor(((1 - _G.OpacitySliderFrame:GetValue()) * 100) +.05)))
 end
 
 local function UpdateAlpha(tbox)
@@ -34,9 +31,7 @@ local function UpdateAlpha(tbox)
 	end
 	a = 1 - (a / 100)
 
-	_G.OpacitySliderFrame.ignoreUpdates = true
 	_G.OpacitySliderFrame:SetValue(a)
-	_G.OpacitySliderFrame.ignoreUpdates = nil
 end
 
 local function UpdateColorTexts(r, g, b)
@@ -153,11 +148,7 @@ function B:EnhanceColorPicker()
 		end
 	end)
 
-	_G.OpacitySliderFrame:HookScript("OnValueChanged", function(frame)
-		if not frame.ignoreUpdates then
-			UpdateAlphaText()
-		end
-	end)
+	_G.OpacitySliderFrame:HookScript("OnValueChanged", UpdateAlphaText)
 
 	-- make the Color Picker dialog a bit taller, to make room for edit boxes
 	_G.ColorPickerFrame:Height(_G.ColorPickerFrame:GetHeight() + 40)
