@@ -7,9 +7,7 @@ local B = E:GetModule('Blizzard');
 local S = E:GetModule('Skins');
 
 local _G = _G
-local tonumber = tonumber
-local floor = math.floor
-local format, strsub = string.format, strsub
+local tonumber, floor, strsub = tonumber, floor, strsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
@@ -50,8 +48,8 @@ local function UpdateColorTexts(r, g, b)
 		r, g, b = _G.ColorPickerFrame:GetColorRGB()
 	end
 
+	-- we want those /255 values
 	r, g, b = r*255, g*255, b*255
-	print('rgb', r, g, b)
 
 	-- this will prevent the infinite loops
 	_G.ColorPPBoxH.noUpdateColor = true
@@ -72,30 +70,24 @@ local function UpdateColor(tbox, isUserInput)
 	end
 
 	local r, g, b = _G.ColorPickerFrame:GetColorRGB()
-	print('first', r, g, b)
-
-	if isUserInput then
+	if isUserInput then -- this keeps the ColorPPBoxB from being zero, while also saving cpu
 		if tbox == _G.ColorPPBoxH then
 			if tbox:GetNumLetters() == 6 then -- hex values
 				local rgb = tbox:GetText()
 				r, g, b = tonumber('0x'..strsub(rgb, 0, 2)), tonumber('0x'..strsub(rgb, 3, 4)), tonumber('0x'..strsub(rgb, 5, 6))
-				print('hex', r, g, b)
 				if not r then r = 0 else r = r/255 end
 				if not g then g = 0 else g = g/255 end
 				if not b then b = 0 else b = b/255 end
 			else
-				print('hex broken')
 				return
 			end
 		else
 			local c = tbox:GetNumber()
-			print('getNumber', c, tbox:GetText())
 			if tbox == _G.ColorPPBoxR then r = c;if not r then r = 0 else r = r/255 end end
 			if tbox == _G.ColorPPBoxG then g = c;if not g then g = 0 else g = g/255 end end
 			if tbox == _G.ColorPPBoxB then b = c;if not b then b = 0 else b = b/255 end end
 		end
 	end
-	print('second', r, g, b, tbox:GetDebugName())
 
 	-- This takes care of updating the hex entry when changing rgb fields and vice versa
 	UpdateColorTexts(r, g, b)
@@ -127,8 +119,6 @@ local function onColorSelect(frame, r, g, b)
 	_G.ColorSwatch:SetColorTexture(r, g, b)
 	UpdateColorTexts(r, g, b)
 
-	print('onColorSelect', r, g, b, frame:IsVisible(), _G.ColorPickerFrame.noColorCallback)
-
 	if not frame:IsVisible() then
 		delayCall()
 	elseif not delayFunc then
@@ -143,8 +133,6 @@ local function onValueChanged(frame, value)
 		frame.lastSliderValue = displayValue
 
 		UpdateAlphaText(displayValue)
-
-		print('onValueChanged', _G.ColorPickerFrame:IsVisible(), _G.ColorPickerFrame.noColorCallback)
 
 		if not _G.ColorPickerFrame:IsVisible() then
 			delayCall()
@@ -165,15 +153,12 @@ function B:EnhanceColorPicker()
 		return
 	end
 
-	_G.ColorPickerFrame:SetClampedToScreen(true)
-
 	--Skin the default frame, move default buttons into place
+	_G.ColorPickerFrame:SetClampedToScreen(true)
 	_G.ColorPickerFrame:SetTemplate("Transparent")
 	_G.ColorPickerFrameHeader:SetTexture()
 	_G.ColorPickerFrameHeader:ClearAllPoints()
 	_G.ColorPickerFrameHeader:Point("TOP", _G.ColorPickerFrame, 0, 0)
-	S:HandleButton(_G.ColorPickerOkayButton)
-	S:HandleButton(_G.ColorPickerCancelButton)
 	_G.ColorPickerCancelButton:ClearAllPoints()
 	_G.ColorPickerOkayButton:ClearAllPoints()
 	_G.ColorPickerCancelButton:Point("BOTTOMRIGHT", _G.ColorPickerFrame, "BOTTOMRIGHT", -6, 6)
@@ -181,6 +166,9 @@ function B:EnhanceColorPicker()
 	_G.ColorPickerOkayButton:Point("BOTTOMLEFT", _G.ColorPickerFrame,"BOTTOMLEFT", 6,6)
 	_G.ColorPickerOkayButton:Point("RIGHT", _G.ColorPickerCancelButton,"LEFT", -4,0)
 	S:HandleSliderFrame(_G.OpacitySliderFrame)
+	S:HandleButton(_G.ColorPickerOkayButton)
+	S:HandleButton(_G.ColorPickerCancelButton)
+
 	_G.ColorPickerFrame:HookScript("OnShow", function(frame)
 		-- get color that will be replaced
 		local r, g, b = frame:GetColorRGB()
@@ -200,10 +188,10 @@ function B:EnhanceColorPicker()
 			frame:Width(345)
 		end
 
-		--Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
-		--We overwrite the OnColorSelect script and set a limit on how often we allow a call to self.func
-		frame:SetScript('OnColorSelect', onColorSelect)
+		-- Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
+		-- We overwrite these two scripts and set a limit on how often we allow a call their update functions
 		_G.OpacitySliderFrame:SetScript('OnValueChanged', onValueChanged)
+		frame:SetScript('OnColorSelect', onColorSelect)
 	end)
 
 	-- make the Color Picker dialog a bit taller, to make room for edit boxes
@@ -224,8 +212,8 @@ function B:EnhanceColorPicker()
 
 	-- add Color Swatch for the copied color
 	t = _G.ColorPickerFrame:CreateTexture("ColorPPCopyColorSwatch")
-	t:Size(w,h)
 	t:SetColorTexture(0,0,0)
+	t:Size(w,h)
 	t:Hide()
 
 	-- add copy button to the _G.ColorPickerFrame
@@ -246,11 +234,7 @@ function B:EnhanceColorPicker()
 		_G.ColorPPCopyColorSwatch:SetColorTexture(colorBuffer.r, colorBuffer.g, colorBuffer.b)
 		_G.ColorPPCopyColorSwatch:Show()
 
-		if _G.ColorPickerFrame.hasOpacity then
-			colorBuffer.a = _G.OpacitySliderFrame:GetValue()
-		else
-			colorBuffer.a = nil
-		end
+		colorBuffer.a = (_G.ColorPickerFrame.hasOpacity and _G.OpacitySliderFrame:GetValue()) or nil
 	end)
 
 	--class color button
@@ -277,14 +261,14 @@ function B:EnhanceColorPicker()
 	b:Width(60)
 	b:Height(22)
 	b:Point('TOPLEFT', 'ColorPPCopy', 'TOPRIGHT', 2, 0)
-	b:Disable()  -- enable when something has been copied
+	b:Disable() -- enable when something has been copied
 
 	-- paste color on button click, updating frame components
 	b:SetScript("OnClick", function()
 		_G.ColorPickerFrame:SetColorRGB(colorBuffer.r, colorBuffer.g, colorBuffer.b)
 		_G.ColorSwatch:SetColorTexture(colorBuffer.r, colorBuffer.g, colorBuffer.b)
 		if _G.ColorPickerFrame.hasOpacity then
-			if colorBuffer.a then  --color copied had an alpha value
+			if colorBuffer.a then --color copied had an alpha value
 				_G.OpacitySliderFrame:SetValue(colorBuffer.a)
 			end
 		end
@@ -297,7 +281,7 @@ function B:EnhanceColorPicker()
 	b:Width(80)
 	b:Height(22)
 	b:Point("TOPLEFT", "ColorPPClass", "BOTTOMLEFT", 0, -7)
-	b:Disable()  -- enable when something has been copied
+	b:Disable() -- enable when something has been copied
 	b:SetScript("OnHide", function(btn)
 		btn.colors = nil
 	end)
@@ -334,16 +318,16 @@ function B:EnhanceColorPicker()
 	for i = 1, #boxes do
 		local rgb = boxes[i]
 		local box = CreateFrame("EditBox", "ColorPPBox"..rgb, _G.ColorPickerFrame, "InputBoxTemplate")
-		S:HandleEditBox(box)
+		box:Point("TOP", "ColorPickerWheel", "BOTTOM", 0, -15)
 		box:SetFrameStrata("DIALOG")
 		box:SetAutoFocus(false)
 		box:SetTextInsets(0,7,0,0)
 		box:SetJustifyH("RIGHT")
 		box:Height(24)
 		box:SetID(i)
+		S:HandleEditBox(box)
 
-		if i == 4 then
-			-- Hex entry box
+		if i == 4 then -- hex entry box
 			box:SetMaxLetters(6)
 			box:Width(56)
 			box:SetNumeric(false)
@@ -352,17 +336,12 @@ function B:EnhanceColorPicker()
 			box:Width(40)
 			box:SetNumeric(true)
 		end
-		box:Point("TOP", "ColorPickerWheel", "BOTTOM", 0, -15)
 
 		-- label
 		local label = box:CreateFontString("ColorPPBoxLabel"..rgb, "ARTWORK", "GameFontNormalSmall")
-		label:SetTextColor(1, 1, 1)
 		label:Point("RIGHT", "ColorPPBox"..rgb, "LEFT", -5, 0)
-		if i == 4 then
-			label:SetText("#")
-		else
-			label:SetText(rgb)
-		end
+		label:SetText(i == 4 and "#" or rgb)
+		label:SetTextColor(1, 1, 1)
 
 		-- set up scripts to handle event appropriately
 		if i == 5 then
@@ -398,9 +377,10 @@ function B:EnhanceColorPicker()
 	local mover = CreateFrame('Frame', nil, _G.ColorPickerFrame)
 	mover:Point('TOPLEFT', _G.ColorPickerFrame, 'TOP', -60, 0)
 	mover:Point('BOTTOMRIGHT', _G.ColorPickerFrame, 'TOP', 60, -15)
-	mover:EnableMouse(true)
 	mover:SetScript('OnMouseDown', function() _G.ColorPickerFrame:StartMoving() end)
 	mover:SetScript('OnMouseUp', function() _G.ColorPickerFrame:StopMovingOrSizing() end)
+	mover:EnableMouse(true)
+
 	_G.ColorPickerFrame:SetUserPlaced(true)
 	_G.ColorPickerFrame:EnableKeyboard(false)
 end
