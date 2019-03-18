@@ -8,6 +8,7 @@ local pairs = pairs
 local ipairs = ipairs
 local select = select
 local unpack = unpack
+local strfind = string.find
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local GetMoney = GetMoney
@@ -221,11 +222,11 @@ local function LoadSkin()
 			end
 		end)
 
-		QuestFrameGreetingPanel:HookScript('OnShow', function()
-			for Button in QuestFrameGreetingPanel.titleButtonPool:EnumerateActive() do
+		_G.QuestFrameGreetingPanel:HookScript('OnShow', function()
+			for Button in _G.QuestFrameGreetingPanel.titleButtonPool:EnumerateActive() do
 				local Text = Button:GetFontString():GetText()
 				if Text and strfind(Text, '|cff000000') then
-					Button:GetFontString():SetText(string.gsub(Text, '|cff000000', '|cffffe519'))
+					Button:GetFontString():SetText(gsub(Text, '|cff000000', '|cffffe519'))
 				end
 			end
 		end)
