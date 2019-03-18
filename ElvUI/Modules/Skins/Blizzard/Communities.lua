@@ -425,8 +425,7 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesGuildRecruitmentFrameApplicants.DeclineButton)
 
 	for i = 1, 5 do
-		local bu = _G["CommunitiesGuildRecruitmentFrameApplicantsContainerButton"..i]
-		bu:SetBackdrop(nil)
+		_G["CommunitiesGuildRecruitmentFrameApplicantsContainerButton"..i]:SetBackdrop(nil)
 	end
 
 	-- Notification Settings Dialog

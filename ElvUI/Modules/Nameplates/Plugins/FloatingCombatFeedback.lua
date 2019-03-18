@@ -54,7 +54,7 @@ local schoolColors = {
 
 local function removeString(self, i, string)
 	t_remove(self.FeedbackToAnimate, i)
-	string:SetText(nil)
+	string:SetText('')
 	string:SetAlpha(0)
 	string:Hide()
 

@@ -188,7 +188,7 @@ function TT:RemoveTrashLines(tt)
 		local linetext = tiptext:GetText()
 
 		if(linetext == _G.PVP or linetext == _G.FACTION_ALLIANCE or linetext == _G.FACTION_HORDE) then
-			tiptext:SetText(nil)
+			tiptext:SetText('')
 			tiptext:Hide()
 		end
 	end
