@@ -80,7 +80,8 @@ local function ColorSwatch_OnClick(frame)
 		if ColorPPDefault and self.dR and self.dG and self.dB then
 			local alpha = 1
 			if self.dA then alpha = 1 - self.dA end
-			ColorPPDefault.colors = {r = self.dR, g = self.dG, b = self.dB, a = alpha}
+			if not ColorPPDefault.colors then ColorPPDefault.colors = {} end
+			ColorPPDefault.colors.r, ColorPPDefault.colors.g, ColorPPDefault.colors.b, ColorPPDefault.colors.a = self.dR, self.dG, self.dB, alpha
 		end
 
 		ColorPickerFrame.cancelFunc = function()
