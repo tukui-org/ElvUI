@@ -5,6 +5,7 @@ local ElvUF = ElvUI.oUF
 --Cache global variables
 local _G = _G
 --Lua functions
+local wipe = wipe
 local select = select
 local pairs = pairs
 local type = type
@@ -20,8 +21,10 @@ local UnitIsPVPSanctuary = UnitIsPVPSanctuary
 local UnitIsFriend = UnitIsFriend
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local IsInInstance = IsInInstance
+local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitExists = UnitExists
 local UnitClass = UnitClass
+local UnitName = UnitName
 local GetCVar = GetCVar
 
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
@@ -347,32 +350,7 @@ function NP:ConfigureAll()
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
 	SetCVar('nameplateOtherTopInset', NP.db.clampToScreen and 0.08 or -1)
 	SetCVar('nameplateOtherBottomInset', NP.db.clampToScreen and 0.1 or -1)
-
 	SetCVar('nameplateSelectedScale', NP.db.units.TARGET.scale)
-
-	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinus:SetSize(0.0001, 0.0001)
-	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions:SetSize(0.0001, 0.0001)
-	InterfaceOptionsNamesPanelUnitNameplatesFriendlyMinions:SetSize(0.0001, 0.0001)
-	InterfaceOptionsNamesPanelUnitNameplatesPersonalResource:SetSize(0.0001, 0.0001)
-	InterfaceOptionsNamesPanelUnitNameplatesPersonalResourceOnEnemy:SetSize(0.0001, 0.0001)
-	InterfaceOptionsNamesPanelUnitNameplatesShowAll:SetSize(0.0001, 0.0001)
-	InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown:SetSize(0.0001, 0.0001)
-
-	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinus:SetAlpha(0)
-	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions:SetAlpha(0)
-	InterfaceOptionsNamesPanelUnitNameplatesFriendlyMinions:SetAlpha(0)
-	InterfaceOptionsNamesPanelUnitNameplatesPersonalResource:SetAlpha(0)
-	InterfaceOptionsNamesPanelUnitNameplatesPersonalResourceOnEnemy:SetAlpha(0)
-	InterfaceOptionsNamesPanelUnitNameplatesShowAll:SetAlpha(0)
-	InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown:SetAlpha(0)
-
-	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinus:Hide()
-	InterfaceOptionsNamesPanelUnitNameplatesEnemyMinions:Hide()
-	InterfaceOptionsNamesPanelUnitNameplatesFriendlyMinions:Hide()
-	InterfaceOptionsNamesPanelUnitNameplatesPersonalResource:Hide()
-	InterfaceOptionsNamesPanelUnitNameplatesPersonalResourceOnEnemy:Hide()
-	InterfaceOptionsNamesPanelUnitNameplatesShowAll:Hide()
-	InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown:Hide()
 
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
@@ -564,6 +542,16 @@ function NP:UpdatePlateEvents(nameplate)
 	NP:StyleFilterEventWatch(nameplate)
 end
 
+local optionsTable = {'EnemyMinus','EnemyMinions','FriendlyMinions','PersonalResource','PersonalResourceOnEnemy','ShowAll','MotionDropDown'}
+function NP:HideInterfaceOptions()
+	for _, x in pairs(optionsTable) do
+		local o = _G['InterfaceOptionsNamesPanelUnitNameplates'..x]
+		o:SetSize(0.0001, 0.0001)
+		o:SetAlpha(0)
+		o:Hide()
+	end
+end
+
 function NP:Initialize()
 	NP.db = E.db.nameplates
 
@@ -645,6 +633,7 @@ function NP:Initialize()
 	NP:ACTIVE_TALENT_GROUP_CHANGED()
 	NP:GROUP_FORMED()
 	NP:ConfigureAll()
+	NP:HideInterfaceOptions()
 
 	E.NamePlates = NP
 end
