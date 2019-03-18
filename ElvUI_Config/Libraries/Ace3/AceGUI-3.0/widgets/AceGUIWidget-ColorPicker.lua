@@ -19,6 +19,8 @@ local CreateFrame, UIParent = CreateFrame, UIParent
 Support functions
 -------------------------------------------------------------------------------]]
 local function ColorCallback(self, r, g, b, a, isAlpha)
+	-- this will block an infinite loop from `E.GrabColorPickerValues`
+	-- which is caused when we set values into the color picker again on `OnValueChanged`
 	if ColorPickerFrame.noColorCallback then return end
 
 	if not self.HasAlpha then a = 1 end

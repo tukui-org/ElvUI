@@ -206,6 +206,8 @@ function E:GetPlayerRole()
 end
 
 function E:GrabColorPickerValues(r, g, b)
+	-- we must block the execution path to `ColorCallback` in `AceGUIWidget-ColorPicker-ElvUI`
+	-- in order to prevent an infinite loop from `OnValueChanged` when passing into `E.UpdateMedia` which eventually leads here again.
 	_G.ColorPickerFrame.noColorCallback = true
 
 	-- grab old values
@@ -218,6 +220,7 @@ function E:GrabColorPickerValues(r, g, b)
 	-- swap back to the old values
 	if oldR then _G.ColorPickerFrame:SetColorRGB(oldR, oldG, oldB) end
 
+	-- free it up..
 	_G.ColorPickerFrame.noColorCallback = nil
 
 	return r, g, b
