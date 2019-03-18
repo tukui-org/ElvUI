@@ -38,6 +38,12 @@ local function UpdateColorTexts(r, g, b)
 	if not r then r, g, b = _G.ColorPickerFrame:GetColorRGB() end
 	r, g, b = r*255, g*255, b*255
 
+	-- this will prevent the infinite loops
+	_G.ColorPPBoxR.noUpdateColor = true
+	_G.ColorPPBoxG.noUpdateColor = true
+	_G.ColorPPBoxB.noUpdateColor = true
+	_G.ColorPPBoxH.noUpdateColor = true
+
 	_G.ColorPPBoxR:SetText(("%d"):format(r))
 	_G.ColorPPBoxG:SetText(("%d"):format(g))
 	_G.ColorPPBoxB:SetText(("%d"):format(b))
@@ -45,6 +51,11 @@ local function UpdateColorTexts(r, g, b)
 end
 
 local function UpdateColor(tbox)
+	if tbox.noUpdateColor then
+		tbox.noUpdateColor = nil
+		return
+	end
+
 	local r, g, b = _G.ColorPickerFrame:GetColorRGB()
 	local id = tbox:GetID()
 
@@ -77,9 +88,7 @@ local function UpdateColor(tbox)
 	UpdateColorTexts(r,g,b)
 
 	_G.ColorSwatch:SetColorTexture(r, g, b)
-	_G.ColorPickerFrame.ignoreUpdates = true
 	_G.ColorPickerFrame:SetColorRGB(r, g, b)
-	_G.ColorPickerFrame.ignoreUpdates = nil
 end
 
 local function HandleUpdateLimiter(self, elapsed)
@@ -95,6 +104,7 @@ function B:EnhanceColorPicker()
 	if IsAddOnLoaded("ColorPickerPlus") then
 		return
 	end
+
 	_G.ColorPickerFrame:SetClampedToScreen(true)
 
 	--Skin the default frame, move default buttons into place
@@ -138,13 +148,11 @@ function B:EnhanceColorPicker()
 	--We overwrite the OnColorSelect script and set a limit on how often we allow a call to self.func
 	_G.ColorPickerFrame:SetScript('OnColorSelect', function(frame, r, g, b)
 		_G.ColorSwatch:SetColorTexture(r, g, b)
-		if not frame.ignoreUpdates then
-			UpdateColorTexts(r, g, b)
+		UpdateColorTexts(r, g, b)
 
-			if frame.allowUpdate then
-				frame.func()
-				frame.timeSinceUpdate = 0
-			end
+		if frame.allowUpdate then
+			frame.func()
+			frame.timeSinceUpdate = 0
 		end
 	end)
 

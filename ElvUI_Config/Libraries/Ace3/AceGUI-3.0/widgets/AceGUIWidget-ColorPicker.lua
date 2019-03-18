@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 ColorPicker Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "ColorPicker-ElvUI", 24
+local Type, Version = "ColorPicker-ElvUI", 25
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -19,6 +19,8 @@ local CreateFrame, UIParent = CreateFrame, UIParent
 Support functions
 -------------------------------------------------------------------------------]]
 local function ColorCallback(self, r, g, b, a, isAlpha)
+	if ColorPickerFrame.noColorCallback then return end
+
 	if not self.HasAlpha then a = 1 end
 	self:SetColor(r, g, b, a)
 

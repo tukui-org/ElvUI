@@ -206,7 +206,7 @@ function E:GetPlayerRole()
 end
 
 function E:GrabColorPickerValues(r, g, b)
-	_G.ColorPickerFrame.ignoreUpdates = true
+	_G.ColorPickerFrame.noColorCallback = true
 
 	-- grab old values
 	local oldR, oldG, oldB = _G.ColorPickerFrame:GetColorRGB()
@@ -218,7 +218,7 @@ function E:GrabColorPickerValues(r, g, b)
 	-- swap back to the old values
 	if oldR then _G.ColorPickerFrame:SetColorRGB(oldR, oldG, oldB) end
 
-	_G.ColorPickerFrame.ignoreUpdates = nil
+	_G.ColorPickerFrame.noColorCallback = nil
 
 	return r, g, b
 end
