@@ -3393,7 +3393,7 @@ local function GetUnitSettings(unit, name)
 		group.args.general.args.minions = {
 			type = "toggle",
 			order = 2,
-			name = L["Display Minions"] ,
+			name = UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
 			get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
 			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
 		}
@@ -3500,14 +3500,14 @@ local function GetUnitSettings(unit, name)
 			group.args.general.args.minor = {
 				type = 'toggle',
 				order = 1,
-				name = L["Display Minor Units"],
+				name = UNIT_NAMEPLATES_SHOW_ENEMY_MINUS,
 				get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
 				set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
 			}
 			group.args.general.args.minions = {
 				type = "toggle",
 				order = 2,
-				name = L["Display Minions"] ,
+				name = UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
 				get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
 				set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
 			}
