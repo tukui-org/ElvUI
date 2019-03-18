@@ -182,8 +182,6 @@ function NP:Update_Auras(nameplate)
 				nameplate.Debuffs:ClearAllPoints()
 				nameplate.Debuffs:Point(E.InversePoints[db.debuffs.anchorPoint] or 'TOPRIGHT', db.debuffs.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.debuffs.anchorPoint or 'TOPRIGHT', 0, db.debuffs.yOffset)
 				nameplate.Debuffs:Show()
-
-				nameplate.Debuffs:ForceUpdate()
 			else
 				nameplate.Debuffs:Hide()
 			end
@@ -202,8 +200,6 @@ function NP:Update_Auras(nameplate)
 				nameplate.Buffs:ClearAllPoints()
 				nameplate.Buffs:Point(E.InversePoints[db.buffs.anchorPoint] or 'TOPLEFT', db.buffs.attachTo == 'DEBUFFS' and nameplate.Debuffs or nameplate, db.buffs.anchorPoint or 'TOPLEFT', 0, db.buffs.yOffset)
 				nameplate.Buffs:Show()
-
-				nameplate.Buffs:ForceUpdate()
 			else
 				nameplate.Buffs:Hide()
 			end
