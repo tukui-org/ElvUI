@@ -12,6 +12,8 @@ Fixed Style Filter Health Color not working correctly in combat.
 Fixed Target Indicator showing permanently when Low Health Threshold was set to zero.  
 Fixed an issue in Toolkit which prevented border/backdrop color in some cases.  
 Fixed spam errors when trying to change Talents when you have non selected yet.  
+Fixed a gap at the end of Classbar on Nameplates.  
+Fixed an issue whiched caused incompatiblity with our config and ColorPickerPlus.  
 
 **Misc. Changes:**  
 Enabled Style Filter Hide Frame action.  
@@ -23,6 +25,8 @@ Stopped allowing Keybinder in combat.
 Made the UI Scale popup `Suppress` checkbox actually disable `Accept` button, as this only works correctly when you use `Cancel` to end the popup.  
 Recoded the animation for the Bag New Item Glow so they all glow together instead of seperately, also gave it a fancy new glow texture.  
 Updated oUF to increase preformance of the new Nameplates further.  
+Updated Quest Greeting Frame skin.  
+Attempted to fix Off Tank Color on Nameplates.. ~ @Azilroka ??
 
 ___
 ### Version 11.06 [ March 14th 2019 ]
