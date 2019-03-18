@@ -18,7 +18,6 @@ local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_
 local CLASS, DEFAULT = CLASS, DEFAULT
 
 local colorBuffer = {}
-local updateDelay = 0.15
 
 local function UpdateAlphaText(displayValue)
 	if not displayValue then
@@ -111,26 +110,21 @@ local function ColorPPBoxR_SetFocus()
 	_G.ColorPPBoxR:SetFocus()
 end
 
-local onColorSelectDelay
-local function colorDelayFunc()
-	_G.ColorPickerFrame.func()
-	onColorSelectDelay = nil
+local delayWait, delayFunc = 0.15
+local function delayCall()
+	delayFunc()
+	delayFunc = nil
 end
 local function onColorSelect(frame, r, g, b)
 	_G.ColorSwatch:SetColorTexture(r, g, b)
 	UpdateColorTexts(r, g, b)
 
-	if not ColorPickerFrame:IsVisible() then
-		colorDelayFunc()
-	elseif not onColorSelectDelay then
-		onColorSelectDelay = E:Delay(updateDelay, colorDelayFunc)
+	if not frame:IsVisible() then
+		delayCall()
+	elseif not delayFunc then
+		delayFunc = _G.ColorPickerFrame.func
+		E:Delay(delayWait, delayCall)
 	end
-end
-
-local onValueChangedDelay
-local function opacityDelayFunc()
-	_G.ColorPickerFrame.opacityFunc()
-	onValueChangedDelay = nil
 end
 
 local function onValueChanged(frame, value)
@@ -140,10 +134,16 @@ local function onValueChanged(frame, value)
 
 		UpdateAlphaText(displayValue)
 
-		if not ColorPickerFrame:IsVisible() then
-			opacityDelayFunc()
-		elseif not onValueChangedDelay then
-			onValueChangedDelay = E:Delay(updateDelay, opacityDelayFunc)
+		if not _G.ColorPickerFrame:IsVisible() then
+			delayCall()
+		else
+			local opacityFunc = _G.ColorPickerFrame.opacityFunc
+			if delayFunc and (delayFunc ~= opacityFunc) then
+				delayFunc = opacityFunc
+			elseif not delayFunc then
+				delayFunc = opacityFunc
+				E:Delay(delayWait, delayCall)
+			end
 		end
 	end
 end
