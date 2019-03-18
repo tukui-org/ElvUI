@@ -312,6 +312,7 @@ function NP:Update_StatusBars()
 	end
 end
 
+NP.GroupRoles = {}
 function NP:GROUP_FORMED()
 	NP.IsInGroup = IsInRaid() or IsInGroup()
 
@@ -564,7 +565,7 @@ function NP:Initialize()
 
 	NP.Plates = {}
 	NP.StatusBars = {}
-	NP.GroupRoles = {}
+	--NP.GroupRoles = {}
 
 	local BlizzPlateManaBar = _G.NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then
