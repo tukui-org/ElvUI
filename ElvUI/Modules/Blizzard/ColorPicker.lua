@@ -18,15 +18,27 @@ local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_
 local CLASS, DEFAULT = CLASS, DEFAULT
 
 local colorBuffer = {}
+local updateDelay = 0.15
 
-local function UpdateAlphaText()
-	_G.ColorPPBoxA:SetText(("%d"):format(floor(((1 - _G.OpacitySliderFrame:GetValue()) * 100) +.05)))
+local function UpdateAlphaText(displayValue)
+	if not displayValue then
+		displayValue = floor(((1 - _G.OpacitySliderFrame:GetValue()) * 100) +.05)
+	end
+
+	_G.ColorPPBoxA.noUpdateAlpha = true
+	_G.ColorPPBoxA:SetText(("%d"):format(displayValue))
 end
 
 local function UpdateAlpha(tbox)
+	if tbox.noUpdateAlpha then
+		tbox.noUpdateAlpha = nil
+		return
+	end
+
 	local a = tbox:GetNumber()
 	if a > 100 then
 		a = 100
+		_G.ColorPPBoxA.noUpdateAlpha = true
 		_G.ColorPPBoxA:SetText(("%d"):format(a))
 	end
 	a = 1 - (a / 100)
@@ -91,12 +103,44 @@ local function UpdateColor(tbox)
 	_G.ColorPickerFrame:SetColorRGB(r, g, b)
 end
 
-local function HandleUpdateLimiter(self, elapsed)
-	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
-	if self.timeSinceUpdate > 0.15 then
-		self.allowUpdate = true
-	else
-		self.allowUpdate = false
+local function ColorPPBoxA_SetFocus()
+	_G.ColorPPBoxA:SetFocus()
+end
+
+local function ColorPPBoxR_SetFocus()
+	_G.ColorPPBoxR:SetFocus()
+end
+
+local onColorSelectDelay
+local function colorDelayFunc()
+	_G.ColorPickerFrame.func()
+	onColorSelectDelay = nil
+end
+local function onColorSelect(frame, r, g, b)
+	_G.ColorSwatch:SetColorTexture(r, g, b)
+	UpdateColorTexts(r, g, b)
+
+	if not onColorSelectDelay then
+		onColorSelectDelay = E:Delay(updateDelay, colorDelayFunc)
+	end
+end
+
+local onValueChangedDelay
+local function opacityDelayFunc()
+	_G.ColorPickerFrame.opacityFunc()
+	onValueChangedDelay = nil
+end
+
+local function onValueChanged(frame, value)
+	local displayValue = floor(((1 - value) * 100) + .05)
+	if frame.lastSliderValue ~= displayValue then
+		frame.lastSliderValue = displayValue
+
+		UpdateAlphaText(displayValue)
+
+		if not onValueChangedDelay then
+			onValueChangedDelay = E:Delay(updateDelay, opacityDelayFunc)
+		end
 	end
 end
 
@@ -130,33 +174,22 @@ function B:EnhanceColorPicker()
 		if frame.hasOpacity then
 			_G.ColorPPBoxA:Show()
 			_G.ColorPPBoxLabelA:Show()
-			_G.ColorPPBoxH:SetScript("OnTabPressed", function() _G.ColorPPBoxA:SetFocus() end)
+			_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxA_SetFocus)
 			UpdateAlphaText()
 			frame:Width(405)
 		else
 			_G.ColorPPBoxA:Hide()
 			_G.ColorPPBoxLabelA:Hide()
-			_G.ColorPPBoxH:SetScript("OnTabPressed", function() _G.ColorPPBoxR:SetFocus() end)
+			_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxR_SetFocus)
 			frame:Width(345)
 		end
 
-		--Set OnUpdate script to handle update limiter
-		frame:SetScript("OnUpdate", HandleUpdateLimiter)
+		--Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
+		--We overwrite the OnColorSelect script and set a limit on how often we allow a call to self.func
+		frame:SetScript('OnColorSelect', onColorSelect)
+
+		_G.OpacitySliderFrame:SetScript('OnValueChanged', onValueChanged)
 	end)
-
-	--Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
-	--We overwrite the OnColorSelect script and set a limit on how often we allow a call to self.func
-	_G.ColorPickerFrame:SetScript('OnColorSelect', function(frame, r, g, b)
-		_G.ColorSwatch:SetColorTexture(r, g, b)
-		UpdateColorTexts(r, g, b)
-
-		if frame.allowUpdate then
-			frame.func()
-			frame.timeSinceUpdate = 0
-		end
-	end)
-
-	_G.OpacitySliderFrame:HookScript("OnValueChanged", UpdateAlphaText)
 
 	-- make the Color Picker dialog a bit taller, to make room for edit boxes
 	_G.ColorPickerFrame:Height(_G.ColorPickerFrame:GetHeight() + 40)
