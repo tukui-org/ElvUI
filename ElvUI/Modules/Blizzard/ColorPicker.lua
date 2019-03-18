@@ -112,8 +112,10 @@ end
 
 local delayWait, delayFunc = 0.15
 local function delayCall()
-	delayFunc()
-	delayFunc = nil
+	if delayFunc then
+		delayFunc()
+		delayFunc = nil
+	end
 end
 local function onColorSelect(frame, r, g, b)
 	_G.ColorSwatch:SetColorTexture(r, g, b)
