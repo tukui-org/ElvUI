@@ -91,6 +91,8 @@ function UF:Construct_AuraIcon(button)
 	button.icon:SetInside(button, offset, offset)
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
+	button.icon:SetSnapToPixelGrid(false)
+	button.icon:SetTexelSnappingBias(0)
 
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', 1, 1)
@@ -438,7 +440,7 @@ function UF:PostUpdateAura(unit, button)
 		end
 	else
 		if button.isStealable and not button.isFriend then
-			button:SetBackdropBorderColor(237/255, 234/255, 142/255)
+			button:SetBackdropBorderColor(0.93, 0.91, 0.55, 1.0)
 		else
 			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
 		end
