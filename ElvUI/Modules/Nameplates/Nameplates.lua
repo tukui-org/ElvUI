@@ -428,7 +428,7 @@ function NP:HandleTargetAlpha(nameplate, added)
 	end
 end
 
-function NP:WatchOcculed(elapsed)
+function NP:WatchOccluded(elapsed)
 	if self.elapsed and (self.elapsed > 0.1) then
 		local nameplate = self and self:GetParent()
 		if nameplate then
@@ -485,11 +485,11 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:SetupTarget(nameplate)
 		end
 
-		if not nameplate.OcculedWatcher then
-			nameplate.OcculedWatcher = CreateFrame('Frame', nil, nameplate)
+		if not nameplate.OccludedWatcher then
+			nameplate.OccludedWatcher = CreateFrame('Frame', nil, nameplate)
 		end
 
-		nameplate.OcculedWatcher:SetScript('OnUpdate', NP.WatchOcculed)
+		nameplate.OccludedWatcher:SetScript('OnUpdate', NP.WatchOccluded)
 
 		NP:HandleTargetAlpha(nameplate, true)
 
@@ -501,8 +501,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP.PlayerNamePlateAnchor:Hide()
 		end
 
-		if nameplate.OcculedWatcher then
-			nameplate.OcculedWatcher:SetScript('OnUpdate', nil)
+		if nameplate.OccludedWatcher then
+			nameplate.OccludedWatcher:SetScript('OnUpdate', nil)
 		end
 
 		nameplate.isTargetingMe = nil
