@@ -364,6 +364,9 @@ function NP:ConfigureAll()
 		if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 			_G.ElvNP_Player:Enable()
 			_G.ElvNP_Player:UpdateAllElements('OnShow')
+			NP.PlayerNamePlateAnchor:SetParent(_G.ElvNP_Player)
+			NP.PlayerNamePlateAnchor:SetAllPoints(_G.ElvNP_Player)
+			NP.PlayerNamePlateAnchor:Show()
 		else
 			_G.ElvNP_Player:Disable()
 		end
@@ -445,7 +448,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if UnitIsUnit(unit, 'player') and NP.db.units.PLAYER.enable then
 			nameplate.frameType = 'PLAYER'
-			NP.PlayerNamePlateAnchor:ClearAllPoints()
 			NP.PlayerNamePlateAnchor:SetParent(nameplate)
 			NP.PlayerNamePlateAnchor:SetAllPoints(nameplate)
 			NP.PlayerNamePlateAnchor:Show()
@@ -462,10 +464,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		-- update player and test plate
 		if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 			NP:UpdatePlate(_G.ElvNP_Player)
-			NP.PlayerNamePlateAnchor:ClearAllPoints()
-			NP.PlayerNamePlateAnchor:SetParent(_G.ElvNP_Player)
-			NP.PlayerNamePlateAnchor:SetAllPoints(_G.ElvNP_Player)
-			NP.PlayerNamePlateAnchor:Show()
 		end
 		if _G.ElvNP_Test and _G.ElvNP_Test:IsEnabled() then
 			NP:UpdatePlate(_G.ElvNP_Test)
