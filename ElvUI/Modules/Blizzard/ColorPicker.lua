@@ -329,7 +329,8 @@ function B:EnhanceColorPicker()
 		box:SetID(i)
 		S:HandleEditBox(box)
 
-		if i == 4 then -- hex entry box
+		-- hex entry box
+		if i == 4 then
 			box:SetMaxLetters(6)
 			box:Width(56)
 			box:SetNumeric(false)
