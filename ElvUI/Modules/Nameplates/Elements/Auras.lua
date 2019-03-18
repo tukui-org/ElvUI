@@ -141,8 +141,8 @@ function NP:Construct_AuraIcon(button)
 	button.count:Point('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
 
-	button.overlay:SetTexture(nil)
-	button.stealable:SetTexture(nil)
+	button.overlay:SetTexture()
+	button.stealable:SetTexture()
 end
 
 function NP:Update_Auras(nameplate)
