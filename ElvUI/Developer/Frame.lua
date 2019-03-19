@@ -10,6 +10,10 @@ local IsAddOnLoaded = IsAddOnLoaded
 local GetAddOnInfo = GetAddOnInfo
 local LoadAddOn = LoadAddOn
 
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: SLASH_FRAME1, SLASH_FRAMELIST1, SLASH_TEXLIST1, FRAME
+-- GLOBALS: SLASH_GETPOINT1, SLASH_DEV1, ElvUIDev, ElvUI
+
 local me = UnitName('player')
 local IsDebugDisabled = function()
 	if GetAddOnEnableState(me, 'Blizzard_DebugTools') == 0 then
@@ -18,23 +22,6 @@ local IsDebugDisabled = function()
 		return true
 	end
 end
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: SLASH_FRAME1, SLASH_FRAMELIST1, SLASH_TEXLIST1, FRAME
--- GLOBALS: SLASH_GETPOINT1, SLASH_DEV1, ElvUIDev, ElvUI
-
---[[
-	Command to grab frame information when mouseing over a frame
-
-	Frame Name
-	Width
-	Height
-	Strata
-	Level
-	X Offset
-	Y Offset
-	Point
-]]
 
 SLASH_FRAME1 = "/frame"
 SlashCmdList.FRAME = function(arg)
@@ -46,7 +33,9 @@ SlashCmdList.FRAME = function(arg)
 		arg = GetMouseFocus()
 	end
 
-	if arg ~= nil then FRAME = arg end --Set the global variable FRAME to = whatever we are mousing over to simplify messing with frames that have no name.
+	if arg ~= nil then
+		FRAME = arg -- Set the global variable FRAME to = whatever we are mousing over to simplify messing with frames that have no name.
+	end
 
 	if not _G.TableAttributeDisplay then
 		UIParentLoadAddOn("Blizzard_DebugTools")
@@ -67,8 +56,8 @@ SlashCmdList.FRAMELIST = function(msg)
 	end
 
 	local isPreviouslyShown = _G.FrameStackTooltip:IsShown()
-	if(not isPreviouslyShown) then
-		if(msg == tostring(true)) then
+	if not isPreviouslyShown then
+		if msg == tostring(true) then
 			_G.FrameStackTooltip_Toggle(true);
 		else
 			_G.FrameStackTooltip_Toggle();
