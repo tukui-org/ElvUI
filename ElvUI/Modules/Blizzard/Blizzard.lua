@@ -3,52 +3,8 @@ local B = E:NewModule('Blizzard', 'AceEvent-3.0', 'AceHook-3.0');
 E.Blizzard = B
 
 local _G = _G
-local select = select
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
-local hooksecurefunc = hooksecurefunc
-
-local function OnMouseDown(self, button)
-	local string = self.Text:GetText()
-	if button == "RightButton" then
-		E:GetModule("Chat"):SetChatEditBoxMessage(string)
-	elseif button == "MiddleButton" then
-		local rawData = self:GetParent():GetAttributeData().rawValue
-
-		if rawData.GetObjectType and rawData:GetObjectType() == "Texture" then
-			_G.TEX = rawData
-			E:Print("_G.TEX set to: ", string)
-		else
-			_G.FRAME = rawData
-			E:Print("_G.FRAME set to: ", string)
-		end
-	else
-		_G.TableAttributeDisplayValueButton_OnMouseDown(self)
-	end
-end
-
-local function UpdateLines(self)
-	if not self.LinesScrollFrame then return end
-	for i=1, self.LinesScrollFrame.LinesContainer:GetNumChildren() do
-		local child = select(i, self.LinesScrollFrame.LinesContainer:GetChildren())
-		if child.ValueButton and child.ValueButton:GetScript("OnMouseDown") ~= OnMouseDown then
-			child.ValueButton:SetScript("OnMouseDown", OnMouseDown)
-		end
-	end
-end
-
-function B:ADDON_LOADED()
-	local debugTools = IsAddOnLoaded("Blizzard_DebugTools")
-	if not debugTools and not self.Registered then
-		self:RegisterEvent("ADDON_LOADED")
-		self.Registered = true
-	elseif debugTools then
-		hooksecurefunc(_G.TableInspectorMixin, "RefreshAllData", UpdateLines)
-
-		self:UnregisterEvent("ADDON_LOADED")
-		self.Registered = nil
-	end
-end
 
 function B:Initialize()
 	self:EnhanceColorPicker()
@@ -105,8 +61,6 @@ function B:Initialize()
 			TalentMicroButtonAlert:Kill() -- Kill it, because then the blizz default will show
 		end
 	end
-
-	self:ADDON_LOADED()
 end
 
 local function InitializeCallback()
