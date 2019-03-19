@@ -1819,30 +1819,8 @@ local function GetUnitSettings(unit, name)
 		set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
 		disabled = function() return not E.NamePlates; end,
 		args = {
-			copySettings = {
-				order = -10,
-				name = L["Copy Settings From"],
-				desc = L["Copy settings from another unit."],
-				type = "select",
-				values = copyValues,
-				get = function() return '' end,
-				set = function(info, value)
-					NP:CopySettings(value, unit)
-					NP:ConfigureAll()
-				end,
-			},
-			defaultSettings = {
-				order = -9,
-				name = L["Default Settings"],
-				desc = L["Set Settings to Default"],
-				type = "execute",
-				func = function(info)
-					NP:ResetSettings(unit)
-					NP:ConfigureAll()
-				end,
-			},
 			showTestFrame = {
-				order = -8,
+				order = -10,
 				name = L["Show/Hide Test Frame"],
 				type = "execute",
 				func = function(info)
@@ -1856,22 +1834,43 @@ local function GetUnitSettings(unit, name)
 					end
 				end,
 			},
+			defaultSettings = {
+				order = -9,
+				name = L["Default Settings"],
+				desc = L["Set Settings to Default"],
+				type = "execute",
+				func = function(info)
+					NP:ResetSettings(unit)
+					NP:ConfigureAll()
+				end,
+			},
+			copySettings = {
+				order = -8,
+				name = L["Copy Settings From"],
+				desc = L["Copy settings from another unit."],
+				type = "select",
+				values = copyValues,
+				get = function() return '' end,
+				set = function(info, value)
+					NP:CopySettings(value, unit)
+					NP:ConfigureAll()
+				end,
+			},
+			enable = {
+				order = -7,
+				name = L["Enable"],
+				type = "toggle",
+			},
 			general = {
-				order = 0,
+				order = 1,
 				type = "group",
 				name = L["General"],
 				get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
 				set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
-				args = {
-					enable = {
-						order = 0,
-						name = L["Enable"],
-						type = "toggle",
-					},
-				},
+				args = {},
 			},
 			healthGroup = {
-				order = 1,
+				order = 2,
 				name = L["Health"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].health[ info[#info] ] end,
@@ -1991,7 +1990,7 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 			powerGroup = {
-				order = 2,
+				order = 3,
 				name = L["Power"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].power[ info[#info] ] end,
@@ -2127,7 +2126,7 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 			castGroup = {
-				order = 3,
+				order = 4,
 				name = L["Cast Bar"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].castbar[ info[#info] ] end,
@@ -2318,7 +2317,7 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 			buffsGroup = {
-				order = 4,
+				order = 5,
 				name = L["Buffs"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
@@ -2633,7 +2632,7 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 			debuffsGroup = {
-				order = 5,
+				order = 6,
 				name = L["Debuffs"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
@@ -2948,7 +2947,7 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 			portraitGroup = {
-				order = 6,
+				order = 7,
 				name = L["Portrait"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].portrait[ info[#info] ] end,
@@ -3003,7 +3002,7 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 			levelGroup = {
-				order = 7,
+				order = 8,
 				name = LEVEL,
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].level[ info[#info] ] end,
@@ -3086,7 +3085,7 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 			nameGroup = {
-				order = 8,
+				order = 9,
 				name = L["Name"],
 				type = "group",
 				get = function(info) return E.db.nameplates.units[unit].name[ info[#info] ] end,
@@ -3170,7 +3169,7 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 			pvpindicator = {
-				order = 9,
+				order = 10,
 				name = L["PvP Indicator"],
 				desc = L["Horde / Alliance / Honor Info"],
 				type = "group",
