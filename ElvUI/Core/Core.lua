@@ -1873,7 +1873,12 @@ function E:Dump(object, inspect)
 	if not debugTools then UIParentLoadAddOn('Blizzard_DebugTools') end
 
 	if inspect then
-		_G.DisplayTableInspectorWindow(object)
+		local tableType = type(object)
+		if tableType == 'table' then
+			_G.DisplayTableInspectorWindow(object)
+		else
+			E:Print('Failed: ', tostring(object), ' is type: ', tableType,'. Requires table object.')
+		end
 	else
 		_G.DevTools_Dump(object)
 	end
