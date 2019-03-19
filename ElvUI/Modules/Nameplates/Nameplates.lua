@@ -384,9 +384,6 @@ function NP:ConfigureAll()
 	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_Player:UpdateAllElements('OnShow')
-		NP.PlayerNamePlateAnchor:SetParent(_G.ElvNP_Player)
-		NP.PlayerNamePlateAnchor:SetAllPoints(_G.ElvNP_Player)
-		NP.PlayerNamePlateAnchor:Show()
 	else
 		_G.ElvNP_Player:Disable()
 	end
@@ -397,11 +394,6 @@ function NP:ConfigureAll()
 
 	for nameplate in pairs(NP.Plates) do
 		NP:UpdatePlate(nameplate)
-		if nameplate.frameType == 'PLAYER' then
-			NP.PlayerNamePlateAnchor:SetParent(nameplate)
-			NP.PlayerNamePlateAnchor:SetAllPoints(nameplate)
-			NP.PlayerNamePlateAnchor:Show()
-		end
 	end
 
 	NP:StyleFilterConfigureEvents() -- Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
@@ -473,6 +465,11 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if UnitIsUnit(unit, 'player') and NP.db.units.PLAYER.enable then
 			nameplate.frameType = 'PLAYER'
+			if not InCombatLockdown() then
+				NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+				NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+				NP.PlayerNamePlateAnchor:Show()
+			end
 		elseif UnitIsPVPSanctuary(unit) or (nameplate.isPlayer and UnitIsFriend('player', unit) and nameplate.reaction and nameplate.reaction >= 5) then
 			nameplate.frameType = 'FRIENDLY_PLAYER'
 		elseif not nameplate.isPlayer and (nameplate.reaction and nameplate.reaction >= 5) or UnitFactionGroup(unit) == 'Neutral' then
