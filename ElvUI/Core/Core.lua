@@ -1863,6 +1863,22 @@ local function HandleCommandBar()
 	end
 end
 
+function E:Dump(object, inspect)
+	if GetAddOnEnableState(self.myname, 'Blizzard_DebugTools') == 0 then
+		E:Print('Blizzard_DebugTools is disabled.')
+		return
+	end
+
+	local debugTools = IsAddOnLoaded('Blizzard_DebugTools')
+	if not debugTools then UIParentLoadAddOn('Blizzard_DebugTools') end
+
+	if inspect then
+		DisplayTableInspectorWindow(object)
+	else
+		DevTools_Dump(object)
+	end
+end
+
 function E:Initialize()
 	twipe(self.db)
 	twipe(self.global)
