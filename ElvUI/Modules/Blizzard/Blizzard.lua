@@ -27,9 +27,10 @@ local function OnMouseDown(self, button)
 	end
 end
 
-local function UpdateLines()
-	for i=1, _G.TableAttributeDisplay.LinesScrollFrame.LinesContainer:GetNumChildren() do
-		local child = select(i, _G.TableAttributeDisplay.LinesScrollFrame.LinesContainer:GetChildren())
+local function UpdateLines(self)
+	if not self.LinesScrollFrame then return end
+	for i=1, self.LinesScrollFrame.LinesContainer:GetNumChildren() do
+		local child = select(i, self.LinesScrollFrame.LinesContainer:GetChildren())
 		if child.ValueButton and child.ValueButton:GetScript("OnMouseDown") ~= OnMouseDown then
 			child.ValueButton:SetScript("OnMouseDown", OnMouseDown)
 		end
@@ -42,7 +43,7 @@ function B:ADDON_LOADED()
 		self:RegisterEvent("ADDON_LOADED")
 		self.Registered = true
 	elseif debugTools then
-		hooksecurefunc(_G.TableAttributeDisplay.dataProviders[2], "RefreshData", UpdateLines)
+		hooksecurefunc(_G.TableInspectorMixin, "RefreshAllData", UpdateLines)
 
 		self:UnregisterEvent("ADDON_LOADED")
 		self.Registered = nil
