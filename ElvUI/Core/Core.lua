@@ -1864,7 +1864,7 @@ local function HandleCommandBar()
 end
 
 function E:Dump(object, inspect)
-	if GetAddOnEnableState(self.myname, 'Blizzard_DebugTools') == 0 then
+	if GetAddOnEnableState(E.myname, 'Blizzard_DebugTools') == 0 then
 		E:Print('Blizzard_DebugTools is disabled.')
 		return
 	end
