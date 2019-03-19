@@ -280,6 +280,7 @@ function S:Ace3_RegisterAsContainer(widget)
 				for i = offset + 1, #lines do
 					local button = buttons[i - offset]
 					if button then
+						button.highlight:SetVertexColor(1.0, 0.9, 0.0, 0.8)
 						if groupstatus[lines[i].uniquevalue] then
 							button.toggle:SetNormalTexture(E.Media.Textures.Minus)
 							button.toggle:SetPushedTexture(E.Media.Textures.Minus)
