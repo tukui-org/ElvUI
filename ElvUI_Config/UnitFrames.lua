@@ -1,4 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local ENABLE = '|cFFff3333'..L['Enable']..'|r'
+
 local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule("NamePlates")
 
@@ -188,7 +190,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 			enable = {
 				type = 'toggle',
 				order = 2,
-				name = L["Enable"],
+				name = ENABLE,
 			},
 			configureButton1 = {
 				order = 3,
@@ -443,7 +445,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 			enable = {
 				type = 'toggle',
 				order = 2,
-				name = L["Enable"],
+				name = ENABLE,
 			},
 			perrow = {
 				type = 'range',
@@ -782,7 +784,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 			enable = {
 				type = 'toggle',
 				order = 5,
-				name = L["Enable"],
+				name = ENABLE,
 			},
 			width = {
 				order = 6,
@@ -836,7 +838,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				args = {
 					icon = {
 						order = 1,
-						name = L["Enable"],
+						name = ENABLE,
 						type = 'toggle',
 					},
 					iconAttached = {
@@ -1007,7 +1009,7 @@ local function GetOptionsTable_InformationPanel(updateFunc, groupName, numUnits)
 			enable = {
 				type = 'toggle',
 				order = 2,
-				name = L["Enable"],
+				name = ENABLE,
 			},
 			transparent = {
 				type = "toggle",
@@ -1192,7 +1194,7 @@ local function CreateCustomTextGroup(unit, objectName)
 			enable = {
 				order = 3,
 				type = "toggle",
-				name = L["Enable"],
+				name = ENABLE,
 			},
 			font = {
 				type = "select", dialogControl = 'LSM30_Font',
@@ -1384,7 +1386,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 			enable = {
 				type = 'toggle',
 				order = 2,
-				name = L["Enable"],
+				name = ENABLE,
 				desc = L["If you have a lot of 3D Portraits active then it will likely have a big impact on your FPS. Disable some portraits if you experience FPS issues."],
 				confirmText = L["If you have a lot of 3D Portraits active then it will likely have a big impact on your FPS. Disable some portraits if you experience FPS issues."],
 				confirm = true,
@@ -1460,7 +1462,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 			enable = {
 				type = 'toggle',
 				order = 1,
-				name = L["Enable"],
+				name = ENABLE,
 			},
 			powerPrediction = {
 				type = 'toggle',
@@ -1667,7 +1669,7 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 			enable = {
 				type = 'toggle',
 				order = 2,
-				name = L["Enable"],
+				name = ENABLE,
 			},
 			attachTo = {
 				type = 'select',
@@ -1721,7 +1723,7 @@ local function GetOptionsTable_ResurrectIcon(updateFunc, groupName, numUnits)
 			enable = {
 				type = 'toggle',
 				order = 2,
-				name = L["Enable"],
+				name = ENABLE,
 			},
 			attachTo = {
 				type = 'select',
@@ -1775,7 +1777,7 @@ local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
 			enable = {
 				type = 'toggle',
 				order = 2,
-				name = L["Enable"],
+				name = ENABLE,
 			},
 			attachTo = {
 				type = 'select',
@@ -1829,7 +1831,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 			enable = {
 				order = 2,
 				type = 'toggle',
-				name = L["Enable"],
+				name = ENABLE,
 			},
 			showDispellableDebuff = {
 				order = 3,
@@ -1999,7 +2001,7 @@ local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
 			enable = {
 				order = 2,
 				type = "toggle",
-				name = L["Enable"],
+				name = ENABLE,
 			},
 			size = {
 				order = 3,
@@ -2054,7 +2056,7 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 			enable = {
 				order = 1,
 				type = "toggle",
-				name = L["Enable"],
+				name = ENABLE,
 			},
 			showOverAbsorbs = {
 				order = 2,
@@ -2091,7 +2093,7 @@ E.Options.args.unitframe = {
 		enable = {
 			order = 0,
 			type = "toggle",
-			name = L["Enable"],
+			name = ENABLE,
 			get = function(info) return E.private.unitframe.enable end,
 			set = function(info, value) E.private.unitframe.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
@@ -2477,7 +2479,7 @@ E.Options.args.unitframe = {
 								enable = {
 									order = 1,
 									type = 'toggle',
-									name = L["Enable"],
+									name = ENABLE,
 									disabled = false,
 								},
 								spacer = {
@@ -2524,7 +2526,7 @@ E.Options.args.unitframe = {
 								enable = {
 									order = 1,
 									type = 'toggle',
-									name = L["Enable"],
+									name = ENABLE,
 									disabled = false,
 								},
 								spacer = {
@@ -2571,7 +2573,7 @@ E.Options.args.unitframe = {
 								enable = {
 									order = 1,
 									type = 'toggle',
-									name = L["Enable"],
+									name = ENABLE,
 									disabled = false,
 								},
 								texture = {
@@ -3285,7 +3287,7 @@ E.Options.args.unitframe.args.player = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 			set = function(info, value)
 				E.db.unitframe.units.player[ info[#info] ] = value;
 				UF:CreateAndUpdateUF('player');
@@ -3422,7 +3424,7 @@ E.Options.args.unitframe.args.player = {
 				enable = {
 					type = 'toggle',
 					order = 2,
-					name = L["Enable"],
+					name = ENABLE,
 				},
 				height = {
 					type = 'range',
@@ -3585,7 +3587,7 @@ E.Options.args.unitframe.args.player = {
 				enable = {
 					order = 2,
 					type = "toggle",
-					name = L["Enable"],
+					name = ENABLE,
 				},
 				defaultColor = {
 					order = 3,
@@ -3684,7 +3686,7 @@ E.Options.args.unitframe.args.player = {
 				enable = {
 					order = 2,
 					type = "toggle",
-					name = L["Enable"],
+					name = ENABLE,
 				},
 				defaultColor = {
 					order = 3,
@@ -3788,7 +3790,7 @@ E.Options.args.unitframe.args.player = {
 				enable = {
 					order = 2,
 					type = "toggle",
-					name = L["Enable"],
+					name = ENABLE,
 				},
 				scale = {
 					order = 3,
@@ -3863,7 +3865,7 @@ E.Options.args.unitframe.args.player = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				position = {
@@ -3922,7 +3924,7 @@ E.Options.args.unitframe.args.target = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -4043,7 +4045,7 @@ E.Options.args.unitframe.args.target = {
 				enable = {
 					order = 2,
 					type = "toggle",
-					name = L["Enable"],
+					name = ENABLE,
 				},
 				scale = {
 					order = 3,
@@ -4092,7 +4094,7 @@ E.Options.args.unitframe.args.target = {
 				enable = {
 					order = 2,
 					type = "toggle",
-					name = L["Enable"],
+					name = ENABLE,
 				},
 				scale = {
 					order = 3,
@@ -4171,7 +4173,7 @@ E.Options.args.unitframe.args.targettarget = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -4313,7 +4315,7 @@ E.Options.args.unitframe.args.targettargettarget = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -4451,7 +4453,7 @@ E.Options.args.unitframe.args.focus = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -4587,7 +4589,7 @@ E.Options.args.unitframe.args.focustarget = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -4725,7 +4727,7 @@ E.Options.args.unitframe.args.pet = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -4818,7 +4820,7 @@ E.Options.args.unitframe.args.pet = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				size = {
@@ -4892,7 +4894,7 @@ E.Options.args.unitframe.args.pettarget = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -5024,7 +5026,7 @@ E.Options.args.unitframe.args.boss = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -5178,7 +5180,7 @@ E.Options.args.unitframe.args.arena = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -5307,7 +5309,7 @@ E.Options.args.unitframe.args.arena = {
 				enable = {
 					type = 'toggle',
 					order = 2,
-					name = L["Enable"],
+					name = ENABLE,
 				},
 				position = {
 					type = 'select',
@@ -5389,7 +5391,7 @@ E.Options.args.unitframe.args.party = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'party'),
 		generalGroup = {
@@ -5628,7 +5630,7 @@ E.Options.args.unitframe.args.party = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				size = {
@@ -5678,7 +5680,7 @@ E.Options.args.unitframe.args.party = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				position = {
@@ -5747,7 +5749,7 @@ E.Options.args.unitframe.args.party = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				position = {
@@ -5785,7 +5787,7 @@ E.Options.args.unitframe.args.party = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				width = {
@@ -5874,7 +5876,7 @@ E.Options.args.unitframe.args.party = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				width = {
@@ -5968,7 +5970,7 @@ E.Options.args.unitframe.args.party = {
 				enable = {
 					order = 2,
 					type = "toggle",
-					name = L["Enable"],
+					name = ENABLE,
 				},
 				scale = {
 					order = 3,
@@ -6043,7 +6045,7 @@ E.Options.args.unitframe.args.raid = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		generalGroup = {
@@ -6290,7 +6292,7 @@ E.Options.args.unitframe.args.raid = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				size = {
@@ -6340,7 +6342,7 @@ E.Options.args.unitframe.args.raid = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				position = {
@@ -6409,7 +6411,7 @@ E.Options.args.unitframe.args.raid = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				position = {
@@ -6438,7 +6440,7 @@ E.Options.args.unitframe.args.raid = {
 				enable = {
 					order = 2,
 					type = "toggle",
-					name = L["Enable"],
+					name = ENABLE,
 				},
 				scale = {
 					order = 3,
@@ -6518,7 +6520,7 @@ E.Options.args.unitframe.args.raid40 = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		generalGroup = {
@@ -6765,7 +6767,7 @@ E.Options.args.unitframe.args.raid40 = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				size = {
@@ -6815,7 +6817,7 @@ E.Options.args.unitframe.args.raid40 = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				position = {
@@ -6884,7 +6886,7 @@ E.Options.args.unitframe.args.raid40 = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				position = {
@@ -6913,7 +6915,7 @@ E.Options.args.unitframe.args.raid40 = {
 				enable = {
 					order = 2,
 					type = "toggle",
-					name = L["Enable"],
+					name = ENABLE,
 				},
 				scale = {
 					order = 3,
@@ -6993,7 +6995,7 @@ E.Options.args.unitframe.args.raidpet = {
 		enable = {
 			type = 'toggle',
 			order = 4,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		generalGroup = {
@@ -7223,7 +7225,7 @@ E.Options.args.unitframe.args.raidpet = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				size = {
@@ -7269,7 +7271,7 @@ E.Options.args.unitframe.args.tank = {
 		enable = {
 			type = 'toggle',
 			order = 2,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		generalGroup = {
 			order = 3,
@@ -7348,7 +7350,7 @@ E.Options.args.unitframe.args.tank = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				width = {
@@ -7412,7 +7414,7 @@ E.Options.args.unitframe.args.tank = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				size = {
@@ -7474,7 +7476,7 @@ E.Options.args.unitframe.args.assist = {
 		enable = {
 			type = 'toggle',
 			order = 2,
-			name = L["Enable"],
+			name = ENABLE,
 		},
 		generalGroup = {
 			order = 3,
@@ -7553,7 +7555,7 @@ E.Options.args.unitframe.args.assist = {
 				},
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 2,
 				},
 				width = {
@@ -7612,7 +7614,7 @@ E.Options.args.unitframe.args.assist = {
 			args = {
 				enable = {
 					type = 'toggle',
-					name = L["Enable"],
+					name = ENABLE,
 					order = 1,
 				},
 				size = {

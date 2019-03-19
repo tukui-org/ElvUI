@@ -1,4 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local ENABLE = '|cFFff3333'..L['Enable']..'|r'
+
 local NP = E:GetModule('NamePlates')
 local ACD = E.Libs.AceConfigDialog
 
@@ -236,7 +238,7 @@ local function UpdateTalentSection()
 			enabled = {
 				type = 'toggle',
 				order = 1,
-				name = L["Enable"],
+				name = ENABLE,
 				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled end,
 				set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled = value; UpdateTalentSection(); NP:ConfigureAll() end
 			},
@@ -646,7 +648,7 @@ local function UpdateFilterGroup()
 			order = 5,
 			args = {
 				enable = {
-					name = L["Enable"],
+					name = ENABLE,
 					order = 0,
 					type = 'toggle',
 					get = function(info)
@@ -1028,7 +1030,7 @@ local function UpdateFilterGroup()
 						healthThreshold = {
 							type = 'toggle',
 							order = 1,
-							name = L["Enable"],
+							name = ENABLE,
 						},
 						healthUsePlayer = {
 							type = 'toggle',
@@ -1075,7 +1077,7 @@ local function UpdateFilterGroup()
 						powerThreshold = {
 							type = 'toggle',
 							order = 1,
-							name = L["Enable"],
+							name = ENABLE,
 						},
 						powerUsePlayer = {
 							type = 'toggle',
@@ -1122,7 +1124,7 @@ local function UpdateFilterGroup()
 						level = {
 							type = 'toggle',
 							order = 1,
-							name = L["Enable"],
+							name = ENABLE,
 						},
 						mylevel = {
 							type = 'toggle',
@@ -1369,7 +1371,7 @@ local function UpdateFilterGroup()
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						enable = {
-							name = L["Enable"],
+							name = ENABLE,
 							order = 0,
 							type = 'toggle',
 							get = function(info)
@@ -1432,7 +1434,7 @@ local function UpdateFilterGroup()
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						enable = {
-							name = L["Enable"],
+							name = ENABLE,
 							order = 0,
 							type = 'toggle',
 						},
@@ -1726,7 +1728,7 @@ local function UpdateFilterGroup()
 					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 					args = {
 						enable = {
-							name = L["Enable"],
+							name = ENABLE,
 							order = 1,
 							type = 'toggle',
 						},
@@ -1748,7 +1750,7 @@ local function UpdateFilterGroup()
 					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 					args = {
 						enable = {
-							name = L["Enable"],
+							name = ENABLE,
 							order = 1,
 							type = 'toggle',
 							get = function(info)
@@ -1858,7 +1860,7 @@ local function GetUnitSettings(unit, name)
 			},
 			enable = {
 				order = -7,
-				name = L["Enable"],
+				name = ENABLE,
 				type = "toggle",
 			},
 			general = {
@@ -1883,7 +1885,7 @@ local function GetUnitSettings(unit, name)
 					},
 					enable = {
 						order = 1,
-						name = L["Enable"],
+						name = ENABLE,
 						type = "toggle",
 						disabled = function() return unit == "PLAYER" end,
 						hidden = function() return unit == "PLAYER" end,
@@ -1919,7 +1921,7 @@ local function GetUnitSettings(unit, name)
 						args = {
 							enable = {
 								order = 1,
-								name = L["Enable"],
+								name = ENABLE,
 								type = "toggle",
 							},
 							format = {
@@ -2003,7 +2005,7 @@ local function GetUnitSettings(unit, name)
 					},
 					enable = {
 						order = 1,
-						name = L["Enable"],
+						name = ENABLE,
 						type = "toggle",
 					},
 					hideWhenEmpty = {
@@ -2055,7 +2057,7 @@ local function GetUnitSettings(unit, name)
 						args = {
 							enable = {
 								order = 1,
-								name = L["Enable"],
+								name = ENABLE,
 								type = "toggle",
 							},
 							format = {
@@ -2139,7 +2141,7 @@ local function GetUnitSettings(unit, name)
 					},
 					enable = {
 						order = 1,
-						name = L["Enable"],
+						name = ENABLE,
 						type = "toggle",
 					},
 					sourceInterrupt = {
@@ -2330,7 +2332,7 @@ local function GetUnitSettings(unit, name)
 					},
 					enable = {
 						order = 1,
-						name = L["Enable"],
+						name = ENABLE,
 						type = "toggle",
 					},
 					numAuras = {
@@ -2645,7 +2647,7 @@ local function GetUnitSettings(unit, name)
 					},
 					enable = {
 						order = 1,
-						name = L["Enable"],
+						name = ENABLE,
 						type = "toggle",
 					},
 					numAuras = {
@@ -2960,7 +2962,7 @@ local function GetUnitSettings(unit, name)
 					},
 					enable = {
 						order = 1,
-						name = L["Enable"],
+						name = ENABLE,
 						type = "toggle",
 					},
 					width = {
@@ -3015,7 +3017,7 @@ local function GetUnitSettings(unit, name)
 					},
 					enable = {
 						order = 1,
-						name = L["Enable"],
+						name = ENABLE,
 						type = "toggle",
 					},
 					format = {
@@ -3098,7 +3100,7 @@ local function GetUnitSettings(unit, name)
 					},
 					enable = {
 						order = 1,
-						name = L["Enable"],
+						name = ENABLE,
 						type = "toggle",
 					},
 					format = {
@@ -3183,7 +3185,7 @@ local function GetUnitSettings(unit, name)
 					},
 					enable = {
 						order = 1,
-						name = L["Enable"],
+						name = ENABLE,
 						type = "toggle",
 					},
 					showBadge = {
@@ -3238,7 +3240,7 @@ local function GetUnitSettings(unit, name)
 					},
 					enable = {
 						order = 1,
-						name = L["Enable"],
+						name = ENABLE,
 						type = "toggle",
 					},
 					size = {
@@ -3330,7 +3332,7 @@ local function GetUnitSettings(unit, name)
 				enable = {
 					type = "toggle",
 					order = 1,
-					name = L["Enable"]
+					name = ENABLE
 				},
 				yOffset = {
 					order = 3,
@@ -3430,7 +3432,7 @@ local function GetUnitSettings(unit, name)
 				},
 				enable = {
 					order = 1,
-					name = L["Enable"],
+					name = ENABLE,
 					type = "toggle",
 				},
 				size = {
@@ -3475,7 +3477,7 @@ local function GetUnitSettings(unit, name)
 				enable = {
 					type = 'toggle',
 					order = 1,
-					name = L["Enable"],
+					name = ENABLE,
 				},
 				size = {
 					type = 'range',
@@ -3550,7 +3552,7 @@ local function GetUnitSettings(unit, name)
 				},
 				enable = {
 					order = 1,
-					name = L["Enable"],
+					name = ENABLE,
 					type = "toggle",
 				},
 				size = {
@@ -3614,7 +3616,7 @@ E.Options.args.nameplate = {
 		enable = {
 			order = 1,
 			type = "toggle",
-			name = L["Enable"],
+			name = ENABLE,
 			get = function(info) return E.private.nameplates[ info[#info] ] end,
 			set = function(info, value) E.private.nameplates[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
@@ -4243,7 +4245,7 @@ E.Options.args.nameplate = {
 						enable = {
 							order = 0,
 							type = "toggle",
-							name = L["Enable"],
+							name = ENABLE,
 						},
 						useThreatColor = {
 							order = 1,
@@ -4302,7 +4304,7 @@ E.Options.args.nameplate = {
 						enabled = {
 							type = 'toggle',
 							order = 1,
-							name = L["Enable"],
+							name = ENABLE,
 							get = function(info) return E.db.nameplates.cutawayHealth end,
 							set = function(info, value) E.db.nameplates.cutawayHealth = value; end,
 						},
@@ -4481,7 +4483,7 @@ E.Options.args.nameplate = {
 						enable = {
 							order = 1,
 							type = "toggle",
-							name = L["Enable"]
+							name = ENABLE
 						},
 						yOffset = {
 							order = 2,

@@ -1,4 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local ENABLE = '|cFFff3333'..L['Enable']..'|r'
+
 local mod = E:GetModule('DataBars')
 
 E.Options.args.databars = {
@@ -28,7 +30,7 @@ E.Options.args.databars = {
 				enable = {
 					order = 0,
 					type = "toggle",
-					name = L["Enable"],
+					name = ENABLE,
 					set = function(info, value) mod.db.experience[ info[#info] ] = value; mod:EnableDisable_ExperienceBar() end,
 				},
 				mouseover = {
@@ -133,7 +135,7 @@ E.Options.args.databars = {
 				enable = {
 					order = 0,
 					type = "toggle",
-					name = L["Enable"],
+					name = ENABLE,
 					set = function(info, value) mod.db.reputation[ info[#info] ] = value; mod:EnableDisable_ReputationBar() end,
 				},
 				mouseover = {
@@ -237,7 +239,7 @@ E.Options.args.databars = {
 				enable = {
 					order = 0,
 					type = "toggle",
-					name = L["Enable"],
+					name = ENABLE,
 					set = function(info, value) mod.db.honor[ info[#info] ] = value; mod:EnableDisable_HonorBar() end,
 				},
 				mouseover = {
@@ -348,7 +350,7 @@ E.Options.args.databars = {
 				enable = {
 					order = 0,
 					type = "toggle",
-					name = L["Enable"],
+					name = ENABLE,
 					set = function(info, value) mod.db.azerite[ info[#info] ] = value; mod:EnableDisable_AzeriteBar() end,
 				},
 				mouseover = {

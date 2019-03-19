@@ -1,4 +1,6 @@
 local E, L, V, P, G, _ = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, GlobalDB
+local ENABLE = '|cFFff3333'..L['Enable']..'|r'
+
 local A = E:GetModule('Auras')
 
 local format = string.format
@@ -125,7 +127,7 @@ E.Options.args.auras = {
 		enable = {
 			order = 2,
 			type = 'toggle',
-			name = L["Enable"],
+			name = ENABLE,
 			get = function(info) return E.private.auras[ info[#info] ] end,
 			set = function(info, value)
 				E.private.auras[ info[#info] ] = value;
