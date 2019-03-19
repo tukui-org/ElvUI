@@ -330,7 +330,7 @@ function NP:Update_StatusBars()
 	end
 end
 
-function NP:GROUP_FORMED()
+function NP:GROUP_ROSTER_UPDATE()
 	NP.IsInGroup = IsInRaid() or IsInGroup()
 
 	wipe(NP.GroupRoles)
@@ -643,7 +643,7 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
 	NP:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
 	NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
-	NP:RegisterEvent('GROUP_FORMED')
+	NP:RegisterEvent('GROUP_ROSTER_UPDATE')
 	NP:RegisterEvent('GROUP_LEFT')
 
 	NP:StyleFilterInitializeAllFilters() -- Add metatable to all our StyleFilters so they can grab default values if missing
