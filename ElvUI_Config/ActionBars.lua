@@ -354,7 +354,7 @@ local function BuildABConfig()
 			enabled = {
 				order = 1,
 				type = 'toggle',
-				name = L.RED_ENABLE,
+				name = L['Enable'],
 			},
 			restorePosition = {
 				order = 2,
@@ -476,7 +476,7 @@ local function BuildABConfig()
 			enabled = {
 				order = 1,
 				type = 'toggle',
-				name = L.RED_ENABLE,
+				name = L['Enable'],
 			},
 			restorePosition = {
 				order = 2,
@@ -620,7 +620,7 @@ local function BuildABConfig()
 			enabled = {
 				order = 1,
 				type = "toggle",
-				name = L.RED_ENABLE,
+				name = L['Enable'],
 			},
 			mouseover = {
 				order = 2,
@@ -698,7 +698,7 @@ local function BuildABConfig()
 				enabled = {
 					order = 1,
 					type = 'toggle',
-					name = L.RED_ENABLE,
+					name = L['Enable'],
 					set = function(info, value)
 						E.db.actionbar['bar'..i][ info[#info] ] = value;
 						AB:PositionAndSizeBar('bar'..i)
@@ -907,7 +907,7 @@ E.Options.args.actionbar = {
 		enable = {
 			order = 1,
 			type = "toggle",
-			name = L.RED_ENABLE,
+			name = L['Enable'],
 			get = function(info) return E.private.actionbar[ info[#info] ] end,
 			set = function(info, value) E.private.actionbar[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},

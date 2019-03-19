@@ -22,7 +22,7 @@ E.Options.args.bags = {
 		enable = {
 			order = 2,
 			type = "toggle",
-			name = L.RED_ENABLE,
+			name = L['Enable'],
 			desc = L["Enable/Disable the all-in-one bag."],
 			get = function(info) return E.private.bags.enable end,
 			set = function(info, value) E.private.bags.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
@@ -510,7 +510,7 @@ E.Options.args.bags = {
 				enable = {
 					order = 1,
 					type = "toggle",
-					name = L.RED_ENABLE,
+					name = L['Enable'],
 					desc = L["Enable/Disable the Bag-Bar."],
 					get = function(info) return E.private.bags.bagBar end,
 					set = function(info, value) E.private.bags.bagBar = value; E:StaticPopup_Show("PRIVATE_RL") end
@@ -699,7 +699,7 @@ E.Options.args.bags = {
 				enable = {
 					order = 1,
 					type = "toggle",
-					name = L.RED_ENABLE,
+					name = L['Enable'],
 					desc = L["Automatically vendor gray items when visiting a vendor."],
 				},
 				interval = {

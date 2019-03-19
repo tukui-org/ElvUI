@@ -27,6 +27,15 @@ function S:Ace3_SkinDropdownPullout()
 	end
 end
 
+function S:Ace3_CheckBoxIsEnableSwitch(widget)
+	local text = widget.text and widget.text:GetText()
+	if text then
+		local enabled, disabled = text == L.GREEN_ENABLE, text == L.RED_ENABLE
+		local isSwitch = (text == L.Enable) or enabled or disabled
+		return isSwitch, enabled, disabled
+	end
+end
+
 function S:Ace3_RegisterAsWidget(widget)
 	if not E.private.skins.ace3.enable then
 		return oldRegisterAsWidget(self, widget)
@@ -56,26 +65,24 @@ function S:Ace3_RegisterAsWidget(widget)
 		checkbg:SetTexture()
 		highlight:SetTexture()
 
+		hooksecurefunc(widget, "SetValue", function(w, checked)
+			if S:Ace3_CheckBoxIsEnableSwitch(w) then
+				w:SetLabel(checked and L.GREEN_ENABLE or L.RED_ENABLE)
+			end
+		end)
+
 		if E.private.skins.checkBoxSkin then
 			checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
-
 			check:SetTexture(E.Media.Textures.Melli)
-
-			hooksecurefunc(widget, "SetValue", function(_, checked)
-				local text = widget.text and widget.text:GetText()
-				if text and (text == L.GREEN_ENABLE or text == L.RED_ENABLE) then
-					widget.text:SetText(checked and L.GREEN_ENABLE or L.RED_ENABLE)
-				end
-			end)
 
 			hooksecurefunc(check, "SetDesaturated", function(chk, value)
 				if value == true then
 					chk:SetVertexColor(.6, .6, .6, .8)
 				else
-					local text = widget.text and widget.text:GetText()
-					if text and (text == L.GREEN_ENABLE) then
+					local isSwitch, enabled, disabled = S:Ace3_CheckBoxIsEnableSwitch(widget)
+					if isSwitch and enabled then
 						chk:SetVertexColor(0.2, 1.0, 0.2, 1.0)
-					elseif text and (text == L.RED_ENABLE) then
+					elseif isSwitch and disabled then
 						chk:SetVertexColor(1.0, 0.2, 0.2, 1.0)
 					else
 						chk:SetVertexColor(1, .82, 0, 0.8)
