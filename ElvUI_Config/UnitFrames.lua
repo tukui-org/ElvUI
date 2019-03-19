@@ -5005,6 +5005,30 @@ E.Options.args.unitframe.args.boss = {
 	set = function(info, value) E.db.unitframe.units.boss[ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
+		displayFrames = {
+			type = 'execute',
+			order = 1,
+			name = L["Display Frames"],
+			desc = L["Force the frames to show, they will act as if they are the player frame."],
+			func = function() UF:ToggleForceShowGroupFrames('boss', MAX_BOSS_FRAMES) end,
+		},
+		resetSettings = {
+			type = 'execute',
+			order = 2,
+			name = L["Restore Defaults"],
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Boss Frames"], nil, {unit='boss', mover='Boss Frames'}) end,
+		},
+		copyFrom = {
+			type = 'select',
+			order = 3,
+			name = L["Copy From"],
+			desc = L["Select a unit to copy settings from."],
+			values = {
+				['boss'] = 'boss',
+				['arena'] = 'arena',
+			},
+			set = function(info, value) UF:MergeUnitSettings(value, 'boss'); end,
+		},
 		generalGroup = {
 			order = 1,
 			type = "group",
@@ -5020,30 +5044,6 @@ E.Options.args.unitframe.args.boss = {
 					order = 2,
 					name = L["Enable"],
 					width = "full",
-				},
-				copyFrom = {
-					type = 'select',
-					order = 3,
-					name = L["Copy From"],
-					desc = L["Select a unit to copy settings from."],
-					values = {
-						['boss'] = 'boss',
-						['arena'] = 'arena',
-					},
-					set = function(info, value) UF:MergeUnitSettings(value, 'boss'); end,
-				},
-				resetSettings = {
-					type = 'execute',
-					order = 4,
-					name = L["Restore Defaults"],
-					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Boss Frames"], nil, {unit='boss', mover='Boss Frames'}) end,
-				},
-				displayFrames = {
-					type = 'execute',
-					order = 5,
-					name = L["Display Frames"],
-					desc = L["Force the frames to show, they will act as if they are the player frame."],
-					func = function() UF:ToggleForceShowGroupFrames('boss', MAX_BOSS_FRAMES) end,
 				},
 				width = {
 					order = 6,
@@ -5160,6 +5160,30 @@ E.Options.args.unitframe.args.arena = {
 	set = function(info, value) E.db.unitframe.units.arena[ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
+		displayFrames = {
+			type = 'execute',
+			order = 1,
+			name = L["Display Frames"],
+			desc = L["Force the frames to show, they will act as if they are the player frame."],
+			func = function() UF:ToggleForceShowGroupFrames('arena', 5) end,
+		},
+		resetSettings = {
+			type = 'execute',
+			order = 2,
+			name = L["Restore Defaults"],
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Arena Frames"], nil, {unit='arena', mover='Arena Frames'}) end,
+		},
+		copyFrom = {
+			type = 'select',
+			order = 3,
+			name = L["Copy From"],
+			desc = L["Select a unit to copy settings from."],
+			values = {
+				['boss'] = 'boss',
+				['arena'] = 'arena',
+			},
+			set = function(info, value) UF:MergeUnitSettings(value, 'arena'); end,
+		},
 		generalGroup = {
 			order = 1,
 			type = "group",
@@ -5175,30 +5199,6 @@ E.Options.args.unitframe.args.arena = {
 					order = 2,
 					name = L["Enable"],
 					width = "full",
-				},
-				copyFrom = {
-					type = 'select',
-					order = 3,
-					name = L["Copy From"],
-					desc = L["Select a unit to copy settings from."],
-					values = {
-						['boss'] = 'boss',
-						['arena'] = 'arena',
-					},
-					set = function(info, value) UF:MergeUnitSettings(value, 'arena'); end,
-				},
-				resetSettings = {
-					type = 'execute',
-					order = 4,
-					name = L["Restore Defaults"],
-					func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Arena Frames"], nil, {unit='arena', mover='Arena Frames'}) end,
-				},
-				displayFrames = {
-					type = 'execute',
-					order = 5,
-					name = L["Display Frames"],
-					desc = L["Force the frames to show, they will act as if they are the player frame."],
-					func = function() UF:ToggleForceShowGroupFrames('arena', 5) end,
 				},
 				width = {
 					order = 6,
