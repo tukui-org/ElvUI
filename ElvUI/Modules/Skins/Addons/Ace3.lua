@@ -64,6 +64,8 @@ function S:Ace3_RegisterAsWidget(widget)
 			hooksecurefunc(check, "SetDesaturated", function(chk, value)
 				if value == true then
 					chk:SetVertexColor(.6, .6, .6, .8)
+				elseif widget.text and (widget.text:GetText() == L.RED_ENABLE) then
+					chk:SetVertexColor(1.0, 0.2, 0.2, 1.0)
 				else
 					chk:SetVertexColor(1, .82, 0, 0.8)
 				end
