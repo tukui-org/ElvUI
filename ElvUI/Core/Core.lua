@@ -1873,9 +1873,9 @@ function E:Dump(object, inspect)
 	if not debugTools then UIParentLoadAddOn('Blizzard_DebugTools') end
 
 	if inspect then
-		DisplayTableInspectorWindow(object)
+		_G.DisplayTableInspectorWindow(object)
 	else
-		DevTools_Dump(object)
+		_G.DevTools_Dump(object)
 	end
 end
 
