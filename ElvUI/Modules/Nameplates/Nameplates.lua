@@ -439,7 +439,7 @@ function NP:HandleTargetAlpha(nameplate, added)
 end
 
 function NP:WatchOccluded(elapsed)
-	if self.elapsed and (self.elapsed > 0.1) then
+	if self.elapsed and (self.elapsed > 0.05) then
 		local nameplate = self and self:GetParent()
 		if nameplate then
 			nameplate.isUnitOccluded = NP:IsBlizzardPlateOccluded(nameplate)
@@ -447,7 +447,7 @@ function NP:WatchOccluded(elapsed)
 
 		self.elapsed = 0
 	else
-		self.elapsed = (self.elapsed and self.elapsed + elapsed) or 0
+		self.elapsed = (self.elapsed or 0) + elapsed
 	end
 end
 
