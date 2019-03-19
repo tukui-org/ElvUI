@@ -1,6 +1,4 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local ENABLE = '|cFFff3333'..L['Enable']..'|r'
-
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
@@ -22,7 +20,7 @@ E.Options.args.tooltip = {
 		enable = {
 			order = 2,
 			type = "toggle",
-			name = ENABLE,
+			name = L.RED_ENABLE,
 			get = function(info) return E.private.tooltip[ info[#info] ] end,
 			set = function(info, value) E.private.tooltip[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},

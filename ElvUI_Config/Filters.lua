@@ -1,6 +1,4 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local ENABLE = '|cFFff3333'..L['Enable']..'|r'
-
 local UF = E:GetModule('UnitFrames');
 
 local type = type
@@ -154,7 +152,7 @@ local function UpdateFilterGroup()
 				enableReset = {
 					order = 1,
 					type = "toggle",
-					name = ENABLE,
+					name = L.RED_ENABLE,
 					get = function(info) return FilterResetState[selectedFilter] end,
 					set = function(info, value)
 						FilterResetState[selectedFilter] = value
@@ -193,7 +191,7 @@ local function UpdateFilterGroup()
 			guiInline = true,
 			args = {
 				enabled = {
-					name = ENABLE,
+					name = L.RED_ENABLE,
 					order = 0,
 					type = 'toggle',
 					get = function(info)
@@ -335,7 +333,7 @@ local function UpdateFilterGroup()
 				enableReset = {
 					order = 1,
 					type = "toggle",
-					name = ENABLE,
+					name = L.RED_ENABLE,
 					get = function(info) return FilterResetState[selectedFilter] end,
 					set = function(info, value)
 						FilterResetState[selectedFilter] = value
@@ -505,7 +503,7 @@ local function UpdateFilterGroup()
 				enableReset = {
 					order = 1,
 					type = "toggle",
-					name = ENABLE,
+					name = L.RED_ENABLE,
 					get = function(info) return FilterResetState[selectedFilter] end,
 					set = function(info, value)
 						FilterResetState[selectedFilter] = value
@@ -540,7 +538,7 @@ local function UpdateFilterGroup()
 					order = -10,
 					args = {
 						enabled = {
-							name = ENABLE,
+							name = L.RED_ENABLE,
 							order = 0,
 							type = 'toggle',
 						},
@@ -756,7 +754,7 @@ local function UpdateFilterGroup()
 				enableReset = {
 					order = 1,
 					type = "toggle",
-					name = ENABLE,
+					name = L.RED_ENABLE,
 					get = function(info) return FilterResetState[selectedFilter] end,
 					set = function(info, value)
 						FilterResetState[selectedFilter] = value
@@ -797,7 +795,7 @@ local function UpdateFilterGroup()
 				order = -10,
 				args = {
 					enabled = {
-						name = ENABLE,
+						name = L.RED_ENABLE,
 						order = 0,
 						type = 'toggle',
 					},
@@ -1011,7 +1009,7 @@ local function UpdateFilterGroup()
 				enableReset = {
 					order = 1,
 					type = "toggle",
-					name = ENABLE,
+					name = L.RED_ENABLE,
 					get = function(info) return FilterResetState[selectedFilter] end,
 					set = function(info, value)
 						FilterResetState[selectedFilter] = value
@@ -1056,7 +1054,7 @@ local function UpdateFilterGroup()
 				order = -10,
 				args = {
 					enabled = {
-						name = ENABLE,
+						name = L.RED_ENABLE,
 						order = 0,
 						type = 'toggle',
 					},
@@ -1302,7 +1300,7 @@ local function UpdateFilterGroup()
 					enableReset = {
 						order = 1,
 						type = "toggle",
-						name = ENABLE,
+						name = L.RED_ENABLE,
 						get = function(info) return FilterResetState[selectedFilter] end,
 						set = function(info, value)
 							FilterResetState[selectedFilter] = value
@@ -1343,7 +1341,7 @@ local function UpdateFilterGroup()
 			args = {
 				enable = {
 					order = 1,
-					name = ENABLE,
+					name = L.RED_ENABLE,
 					type = "toggle",
 					get = function()
 						if selectedFolder or not (spellID or selectedSpell) then

@@ -1,6 +1,4 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local ENABLE = '|cFFff3333'..L['Enable']..'|r'
-
 local AB = E:GetModule('ActionBars')
 local group
 
@@ -356,7 +354,7 @@ local function BuildABConfig()
 			enabled = {
 				order = 1,
 				type = 'toggle',
-				name = ENABLE,
+				name = L.RED_ENABLE,
 			},
 			restorePosition = {
 				order = 2,
@@ -478,7 +476,7 @@ local function BuildABConfig()
 			enabled = {
 				order = 1,
 				type = 'toggle',
-				name = ENABLE,
+				name = L.RED_ENABLE,
 			},
 			restorePosition = {
 				order = 2,
@@ -622,7 +620,7 @@ local function BuildABConfig()
 			enabled = {
 				order = 1,
 				type = "toggle",
-				name = ENABLE,
+				name = L.RED_ENABLE,
 			},
 			mouseover = {
 				order = 2,
@@ -700,7 +698,7 @@ local function BuildABConfig()
 				enabled = {
 					order = 1,
 					type = 'toggle',
-					name = ENABLE,
+					name = L.RED_ENABLE,
 					set = function(info, value)
 						E.db.actionbar['bar'..i][ info[#info] ] = value;
 						AB:PositionAndSizeBar('bar'..i)
@@ -909,7 +907,7 @@ E.Options.args.actionbar = {
 		enable = {
 			order = 1,
 			type = "toggle",
-			name = ENABLE,
+			name = L.RED_ENABLE,
 			get = function(info) return E.private.actionbar[ info[#info] ] end,
 			set = function(info, value) E.private.actionbar[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},

@@ -1,6 +1,4 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local ENABLE = '|cFFff3333'..L['Enable']..'|r'
-
 local B = E:GetModule("Blizzard")
 local M = E:GetModule("Misc")
 
@@ -377,7 +375,7 @@ E.Options.args.general = {
 				enable = {
 					order = 2,
 					type = "toggle",
-					name = ENABLE,
+					name = L.RED_ENABLE,
 					set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):ToggleEnable() end,
 				},
 				size = {
@@ -532,7 +530,7 @@ E.Options.args.general = {
 				threatEnable = {
 					order = 41,
 					type = "toggle",
-					name = ENABLE,
+					name = L.RED_ENABLE,
 					get = function(info) return E.db.general.threat.enable end,
 					set = function(info, value) E.db.general.threat.enable = value; E:GetModule('Threat'):ToggleEnable()end,
 				},
@@ -589,7 +587,7 @@ E.Options.args.general = {
 				enable = {
 					order = 2,
 					type = "toggle",
-					name = ENABLE,
+					name = L.RED_ENABLE,
 					desc = L["Replace Blizzard's Alternative Power Bar"],
 					width = 'full',
 					set = function(info, value)

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-
 -- Create a container frame
 local f = E.Libs.AceGUI:Create("Frame")
 f:SetTitle("ElvUI Unitframe Tags")

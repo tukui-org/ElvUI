@@ -1,6 +1,4 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local ENABLE = '|cFFff3333'..L['Enable']..'|r'
-
 local CH = E:GetModule('Chat')
 local Bags = E:GetModule('Bags')
 local Layout = E:GetModule('Layout')
@@ -25,7 +23,7 @@ E.Options.args.chat = {
 		enable = {
 			order = 2,
 			type = "toggle",
-			name = ENABLE,
+			name = L.RED_ENABLE,
 			get = function(info) return E.private.chat.enable end,
 			set = function(info, value) E.private.chat.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},

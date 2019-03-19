@@ -1,6 +1,4 @@
 local E, L, V, P, G, _ = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, GlobalDB
-local ENABLE = '|cFFff3333'..L['Enable']..'|r'
-
 local B = E:GetModule('Bags')
 
 local _G = _G
@@ -24,7 +22,7 @@ E.Options.args.bags = {
 		enable = {
 			order = 2,
 			type = "toggle",
-			name = ENABLE,
+			name = L.RED_ENABLE,
 			desc = L["Enable/Disable the all-in-one bag."],
 			get = function(info) return E.private.bags.enable end,
 			set = function(info, value) E.private.bags.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
@@ -512,7 +510,7 @@ E.Options.args.bags = {
 				enable = {
 					order = 1,
 					type = "toggle",
-					name = ENABLE,
+					name = L.RED_ENABLE,
 					desc = L["Enable/Disable the Bag-Bar."],
 					get = function(info) return E.private.bags.bagBar end,
 					set = function(info, value) E.private.bags.bagBar = value; E:StaticPopup_Show("PRIVATE_RL") end
@@ -701,7 +699,7 @@ E.Options.args.bags = {
 				enable = {
 					order = 1,
 					type = "toggle",
-					name = ENABLE,
+					name = L.RED_ENABLE,
 					desc = L["Automatically vendor gray items when visiting a vendor."],
 				},
 				interval = {
