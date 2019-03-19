@@ -363,8 +363,6 @@ local function Enable(self)
 		element.SetColorThreat = SetColorThreat
 		element.SetFrequentUpdates = SetFrequentUpdates
 
-		element.useAtlas = true
-
 		if(element.colorDisconnected) then
 			self:RegisterEvent('UNIT_CONNECTION', ColorPath)
 		end
