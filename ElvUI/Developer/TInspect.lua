@@ -42,9 +42,12 @@ end
 
 local event = "ADDON_LOADED"
 local function Setup(frame)
+	if frame.Registered then return end
+
 	local debugTools = IsAddOnLoaded("Blizzard_DebugTools")
 	if debugTools then
 		hooksecurefunc(_G.TableInspectorMixin, "RefreshAllData", UpdateLines)
+		frame.Registered = true
 
 		if frame:IsEventRegistered(event) then
 			frame:UnregisterEvent(event)
