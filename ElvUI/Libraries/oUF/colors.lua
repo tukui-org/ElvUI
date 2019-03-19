@@ -11,6 +11,7 @@ local colors = {
 		0, 1, 0
 	},
 	health = {49 / 255, 207 / 255, 37 / 255},
+	dead = {0.6, 0.6, 0.6},
 	disconnected = {0.6, 0.6, 0.6},
 	tapped = {0.6, 0.6, 0.6},
 	runes = {
@@ -38,6 +39,7 @@ local colors = {
 	debuff = {},
 	reaction = {},
 	power = {},
+	threat = {},
 }
 
 -- We do this because people edit the vars directly, and changing the default
@@ -115,6 +117,13 @@ colors.power[13] = colors.power.INSANITY
 colors.power[16] = colors.power.ARCANE_CHARGES
 colors.power[17] = colors.power.FURY
 colors.power[18] = colors.power.PAIN
+
+-- alternate power, sourced from FrameXML/CompactUnitFrame.lua
+colors.power[10] = {0.7, 0.7, 0.6}
+
+for i = 0, 3 do
+	colors.threat[i] = {GetThreatStatusColor(i)}
+end
 
 local function colorsAndPercent(a, b, ...)
 	if(a <= 0 or b == 0) then
