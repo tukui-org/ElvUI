@@ -61,13 +61,25 @@ function S:Ace3_RegisterAsWidget(widget)
 
 			check:SetTexture(E.Media.Textures.Melli)
 
+			hooksecurefunc(widget, "SetValue", function(_, checked)
+				local text = widget.text and widget.text:GetText()
+				if text and (text == L.GREEN_ENABLE or text == L.RED_ENABLE) then
+					widget.text:SetText(checked and L.GREEN_ENABLE or L.RED_ENABLE)
+				end
+			end)
+
 			hooksecurefunc(check, "SetDesaturated", function(chk, value)
 				if value == true then
 					chk:SetVertexColor(.6, .6, .6, .8)
-				elseif widget.text and (widget.text:GetText() == L.RED_ENABLE) then
-					chk:SetVertexColor(1.0, 0.2, 0.2, 1.0)
 				else
-					chk:SetVertexColor(1, .82, 0, 0.8)
+					local text = widget.text and widget.text:GetText()
+					if text and (text == L.GREEN_ENABLE) then
+						chk:SetVertexColor(0.2, 1.0, 0.2, 1.0)
+					elseif text and (text == L.RED_ENABLE) then
+						chk:SetVertexColor(1.0, 0.2, 0.2, 1.0)
+					else
+						chk:SetVertexColor(1, .82, 0, 0.8)
+					end
 				end
 			end)
 

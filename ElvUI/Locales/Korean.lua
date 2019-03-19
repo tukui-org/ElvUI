@@ -393,5 +393,6 @@ L["Dead"] = "죽음"
 L["Ghost"] = "유령"
 L["Offline"] = "오프라인"
 
---Red Enable..
+--Option Enable..
 L.RED_ENABLE = '|cFFff3333'..L['Enable']..'|r'
+L.GREEN_ENABLE = '|cFF33ff33'..L['Enable']..'|r'

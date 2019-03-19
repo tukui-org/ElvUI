@@ -392,5 +392,6 @@ L["Dead"] = true
 L["Ghost"] = "Fantasma"
 L["Offline"] = "Desconectado"
 
---Red Enable..
+--Option Enable..
 L.RED_ENABLE = '|cFFff3333'..L['Enable']..'|r'
+L.GREEN_ENABLE = '|cFF33ff33'..L['Enable']..'|r'
