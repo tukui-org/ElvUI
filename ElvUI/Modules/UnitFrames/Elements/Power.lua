@@ -51,6 +51,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 		power.value:Point(textPos, frame.Health, textPos, x, 0)
 	end
 
+	power.useAtlas = false
 	power.colorDisconnected = false
 	power.colorTapping = false
 	power:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
