@@ -1819,8 +1819,13 @@ local function GetUnitSettings(unit, name)
 		set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
 		disabled = function() return not E.NamePlates; end,
 		args = {
-			showTestFrame = {
+			enable = {
 				order = -10,
+				name = L.RED_ENABLE,
+				type = "toggle",
+			},
+			showTestFrame = {
+				order = -9,
 				name = L["Show/Hide Test Frame"],
 				type = "execute",
 				func = function(info)
@@ -1835,7 +1840,7 @@ local function GetUnitSettings(unit, name)
 				end,
 			},
 			defaultSettings = {
-				order = -9,
+				order = -8,
 				name = L["Default Settings"],
 				desc = L["Set Settings to Default"],
 				type = "execute",
@@ -1845,7 +1850,7 @@ local function GetUnitSettings(unit, name)
 				end,
 			},
 			copySettings = {
-				order = -8,
+				order = -7,
 				name = L["Copy Settings From"],
 				desc = L["Copy settings from another unit."],
 				type = "select",
@@ -1855,11 +1860,6 @@ local function GetUnitSettings(unit, name)
 					NP:CopySettings(value, unit)
 					NP:ConfigureAll()
 				end,
-			},
-			enable = {
-				order = -7,
-				name = L.RED_ENABLE,
-				type = "toggle",
 			},
 			general = {
 				order = 1,

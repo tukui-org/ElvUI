@@ -3253,8 +3253,22 @@ E.Options.args.unitframe.args.player = {
 	set = function(info, value) E.db.unitframe.units.player[ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		showAuras = {
+		enable = {
+			type = 'toggle',
 			order = 1,
+			name = L.RED_ENABLE,
+			set = function(info, value)
+				E.db.unitframe.units.player[ info[#info] ] = value;
+				UF:CreateAndUpdateUF('player');
+				if value == true and E.db.unitframe.units.player.combatfade then
+					ElvUF_Pet:SetParent(ElvUF_Player)
+				else
+					ElvUF_Pet:SetParent(ElvUF_Parent)
+				end
+			end,
+		},
+		showAuras = {
+			order = 2,
 			type = 'execute',
 			name = L["Show Auras"],
 			func = function()
@@ -3270,31 +3284,17 @@ E.Options.args.unitframe.args.player = {
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Player Frame"], nil, {unit='player', mover='Player Frame'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
 			set = function(info, value) UF:MergeUnitSettings(value, 'player'); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
-			set = function(info, value)
-				E.db.unitframe.units.player[ info[#info] ] = value;
-				UF:CreateAndUpdateUF('player');
-				if value == true and E.db.unitframe.units.player.combatfade then
-					ElvUF_Pet:SetParent(ElvUF_Player)
-				else
-					ElvUF_Pet:SetParent(ElvUF_Parent)
-				end
-			end,
 		},
 		generalGroup = {
 			order = 5,
@@ -3890,8 +3890,13 @@ E.Options.args.unitframe.args.target = {
 	set = function(info, value) E.db.unitframe.units.target[ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		showAuras = {
+		enable = {
+			type = 'toggle',
 			order = 1,
+			name = L.RED_ENABLE,
+		},
+		showAuras = {
+			order = 2,
 			type = 'execute',
 			name = L["Show Auras"],
 			func = function()
@@ -3907,22 +3912,17 @@ E.Options.args.unitframe.args.target = {
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Target Frame"], nil, {unit='target', mover='Target Frame'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
 			set = function(info, value) UF:MergeUnitSettings(value, 'target'); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -4139,8 +4139,13 @@ E.Options.args.unitframe.args.targettarget = {
 	set = function(info, value) E.db.unitframe.units.targettarget[ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		showAuras = {
+		enable = {
+			type = 'toggle',
 			order = 1,
+			name = L.RED_ENABLE,
+		},
+		showAuras = {
+			order = 2,
 			type = 'execute',
 			name = L["Show Auras"],
 			func = function()
@@ -4156,22 +4161,17 @@ E.Options.args.unitframe.args.targettarget = {
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTarget Frame"], nil, {unit='targettarget', mover='TargetTarget Frame'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
 			set = function(info, value) UF:MergeUnitSettings(value, 'targettarget'); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -4281,8 +4281,13 @@ E.Options.args.unitframe.args.targettargettarget = {
 	set = function(info, value) E.db.unitframe.units.targettargettarget[ info[#info] ] = value; UF:CreateAndUpdateUF('targettargettarget') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		showAuras = {
+		enable = {
+			type = 'toggle',
 			order = 1,
+			name = L.RED_ENABLE,
+		},
+		showAuras = {
+			order = 2,
 			type = 'execute',
 			name = L["Show Auras"],
 			func = function()
@@ -4298,22 +4303,17 @@ E.Options.args.unitframe.args.targettargettarget = {
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTargetTarget Frame"], nil, {unit='targettargettarget', mover='TargetTargetTarget Frame'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
 			set = function(info, value) UF:MergeUnitSettings(value, 'targettargettarget'); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -4419,8 +4419,13 @@ E.Options.args.unitframe.args.focus = {
 	set = function(info, value) E.db.unitframe.units.focus[ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		showAuras = {
+		enable = {
+			type = 'toggle',
 			order = 1,
+			name = L.RED_ENABLE,
+		},
+		showAuras = {
+			order = 2,
 			type = 'execute',
 			name = L["Show Auras"],
 			func = function()
@@ -4436,22 +4441,17 @@ E.Options.args.unitframe.args.focus = {
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Focus Frame"], nil, {unit='focus', mover='Focus Frame'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
 			set = function(info, value) UF:MergeUnitSettings(value, 'focus'); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -4555,8 +4555,13 @@ E.Options.args.unitframe.args.focustarget = {
 	set = function(info, value) E.db.unitframe.units.focustarget[ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		showAuras = {
+		enable = {
+			type = 'toggle',
 			order = 1,
+			name = L.RED_ENABLE,
+		},
+		showAuras = {
+			order = 2,
 			type = 'execute',
 			name = L["Show Auras"],
 			func = function()
@@ -4572,22 +4577,17 @@ E.Options.args.unitframe.args.focustarget = {
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["FocusTarget Frame"], nil, {unit='focustarget', mover='FocusTarget Frame'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
 			set = function(info, value) UF:MergeUnitSettings(value, 'focustarget'); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -4693,8 +4693,13 @@ E.Options.args.unitframe.args.pet = {
 	set = function(info, value) E.db.unitframe.units.pet[ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		showAuras = {
+		enable = {
+			type = 'toggle',
 			order = 1,
+			name = L.RED_ENABLE,
+		},
+		showAuras = {
+			order = 2,
 			type = 'execute',
 			name = L["Show Auras"],
 			func = function()
@@ -4710,22 +4715,17 @@ E.Options.args.unitframe.args.pet = {
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Pet Frame"], nil, {unit='pet', mover='Pet Frame'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
 			set = function(info, value) UF:MergeUnitSettings(value, 'pet'); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -4860,8 +4860,13 @@ E.Options.args.unitframe.args.pettarget = {
 	set = function(info, value) E.db.unitframe.units.pettarget[ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		showAuras = {
+		enable = {
+			type = 'toggle',
 			order = 1,
+			name = L.RED_ENABLE,
+		},
+		showAuras = {
+			order = 2,
 			type = 'execute',
 			name = L["Show Auras"],
 			func = function()
@@ -4877,22 +4882,17 @@ E.Options.args.unitframe.args.pettarget = {
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["PetTarget Frame"], nil, {unit='pettarget', mover='PetTarget Frame'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
 			set = function(info, value) UF:MergeUnitSettings(value, 'pettarget'); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -4997,22 +4997,27 @@ E.Options.args.unitframe.args.boss = {
 	set = function(info, value) E.db.unitframe.units.boss[ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
+		enable = {
+			type = 'toggle',
+			order = 1,
+			name = L.RED_ENABLE,
+		},
 		displayFrames = {
 			type = 'execute',
-			order = 1,
+			order = 2,
 			name = L["Display Frames"],
 			desc = L["Force the frames to show, they will act as if they are the player frame."],
 			func = function() UF:ToggleForceShowGroupFrames('boss', MAX_BOSS_FRAMES) end,
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Boss Frames"], nil, {unit='boss', mover='Boss Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
@@ -5020,11 +5025,6 @@ E.Options.args.unitframe.args.boss = {
 				['arena'] = 'arena',
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'boss'); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -5151,22 +5151,27 @@ E.Options.args.unitframe.args.arena = {
 	set = function(info, value) E.db.unitframe.units.arena[ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
+		enable = {
+			type = 'toggle',
+			order = 1,
+			name = L.RED_ENABLE,
+		},
 		displayFrames = {
 			type = 'execute',
-			order = 1,
+			order = 2,
 			name = L["Display Frames"],
 			desc = L["Force the frames to show, they will act as if they are the player frame."],
 			func = function() UF:ToggleForceShowGroupFrames('arena', 5) end,
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Arena Frames"], nil, {unit='arena', mover='Arena Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
@@ -5174,11 +5179,6 @@ E.Options.args.unitframe.args.arena = {
 				['arena'] = 'arena',
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'arena'); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
 		},
 		generalGroup = {
 			order = 5,
@@ -5361,8 +5361,13 @@ E.Options.args.unitframe.args.party = {
 	set = function(info, value) E.db.unitframe.units.party[ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		configureToggle = {
+		enable = {
+			type = 'toggle',
 			order = 1,
+			name = L.RED_ENABLE,
+		},
+		configureToggle = {
+			order = 2,
 			type = 'execute',
 			name = L["Display Frames"],
 			func = function()
@@ -5371,13 +5376,13 @@ E.Options.args.unitframe.args.party = {
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Party Frames"], nil, {unit='party', mover='Party Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
@@ -5385,11 +5390,6 @@ E.Options.args.unitframe.args.party = {
 				['raid40'] = L["Raid40 Frames"],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'party', true); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'party'),
 		generalGroup = {
@@ -6015,8 +6015,13 @@ E.Options.args.unitframe.args.raid = {
 	set = function(info, value) E.db.unitframe.units.raid[ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		configureToggle = {
+		enable = {
+			type = 'toggle',
 			order = 1,
+			name = L.RED_ENABLE,
+		},
+		configureToggle = {
+			order = 2,
 			type = 'execute',
 			name = L["Display Frames"],
 			func = function()
@@ -6025,13 +6030,13 @@ E.Options.args.unitframe.args.raid = {
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Raid Frames"], nil, {unit='raid', mover='Raid Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
@@ -6039,11 +6044,6 @@ E.Options.args.unitframe.args.raid = {
 				['raid40'] = L["Raid40 Frames"],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'raid', true); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		generalGroup = {
@@ -6490,8 +6490,13 @@ E.Options.args.unitframe.args.raid40 = {
 	set = function(info, value) E.db.unitframe.units.raid40[ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid40') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		configureToggle = {
+		enable = {
+			type = 'toggle',
 			order = 1,
+			name = L.RED_ENABLE,
+		},
+		configureToggle = {
+			order = 2,
 			type = 'execute',
 			name = L["Display Frames"],
 			func = function()
@@ -6500,13 +6505,13 @@ E.Options.args.unitframe.args.raid40 = {
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Raid-40 Frames"], nil, {unit='raid40', mover='Raid Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
@@ -6514,11 +6519,6 @@ E.Options.args.unitframe.args.raid40 = {
 				['raid'] = L["Raid Frames"],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'raid40', true); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		generalGroup = {
@@ -6965,8 +6965,13 @@ E.Options.args.unitframe.args.raidpet = {
 	set = function(info, value) E.db.unitframe.units.raidpet[ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raidpet') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		configureToggle = {
+		enable = {
+			type = 'toggle',
 			order = 1,
+			name = L.RED_ENABLE,
+		},
+		configureToggle = {
+			order = 2,
 			type = 'execute',
 			name = L["Display Frames"],
 			func = function()
@@ -6975,13 +6980,13 @@ E.Options.args.unitframe.args.raidpet = {
 		},
 		resetSettings = {
 			type = 'execute',
-			order = 2,
+			order = 3,
 			name = L["Restore Defaults"],
 			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Raid Pet Frames"], nil, {unit='raidpet', mover='Raid Pet Frames'}) end,
 		},
 		copyFrom = {
 			type = 'select',
-			order = 3,
+			order = 4,
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
@@ -6989,11 +6994,6 @@ E.Options.args.unitframe.args.raidpet = {
 				['raid'] = L["Raid Frames"],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'raidpet', true); end,
-		},
-		enable = {
-			type = 'toggle',
-			order = 4,
-			name = L.RED_ENABLE,
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		generalGroup = {
@@ -7260,16 +7260,16 @@ E.Options.args.unitframe.args.tank = {
 	set = function(info, value) E.db.unitframe.units.tank[ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('tank') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		resetSettings = {
-			type = 'execute',
-			order = 1,
-			name = L["Restore Defaults"],
-			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Tank Frames"], nil, {unit='tank'}) end,
-		},
 		enable = {
 			type = 'toggle',
-			order = 2,
+			order = 1,
 			name = L.RED_ENABLE,
+		},
+		resetSettings = {
+			type = 'execute',
+			order = 2,
+			name = L["Restore Defaults"],
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Tank Frames"], nil, {unit='tank'}) end,
 		},
 		generalGroup = {
 			order = 3,
@@ -7465,16 +7465,16 @@ E.Options.args.unitframe.args.assist = {
 	set = function(info, value) E.db.unitframe.units.assist[ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('assist') end,
 	disabled = function() return not E.UnitFrames; end,
 	args = {
-		resetSettings = {
-			type = 'execute',
-			order = 1,
-			name = L["Restore Defaults"],
-			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Assist Frames"], nil, {unit='assist'}) end,
-		},
 		enable = {
 			type = 'toggle',
-			order = 2,
+			order = 1,
 			name = L.RED_ENABLE,
+		},
+		resetSettings = {
+			type = 'execute',
+			order = 2,
+			name = L["Restore Defaults"],
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Assist Frames"], nil, {unit='assist'}) end,
 		},
 		generalGroup = {
 			order = 3,
