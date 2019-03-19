@@ -222,14 +222,16 @@ local function LoadSkin()
 			end
 		end)
 
-		_G.QuestFrameGreetingPanel:HookScript('OnShow', function()
+		local function UpdateGreetingFrame()
 			for Button in _G.QuestFrameGreetingPanel.titleButtonPool:EnumerateActive() do
 				local Text = Button:GetFontString():GetText()
 				if Text and strfind(Text, '|cff000000') then
 					Button:GetFontString():SetText(gsub(Text, '|cff000000', '|cffffe519'))
 				end
 			end
-		end)
+		end
+		_G.QuestFrameGreetingPanel:HookScript('OnShow', UpdateGreetingFrame)
+		hooksecurefunc("QuestFrameGreetingPanel_OnShow", UpdateGreetingFrame)
 
 		local QuestInfoRewardsFrame = _G.QuestInfoRewardsFrame
 		if QuestInfoRewardsFrame.spellHeaderPool then
