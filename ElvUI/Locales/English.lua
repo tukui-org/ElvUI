@@ -393,4 +393,4 @@ L["Ghost"] = true
 L["Offline"] = true
 
 --Red Enable..
-L.RED_ENABLE = '|cFFff3333'..L['Enable']..'|r'
+L.RED_ENABLE = '|cFFff3333Enable|r'
