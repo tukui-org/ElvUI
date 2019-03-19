@@ -394,5 +394,5 @@ L["Ghost"] = "鬼魂"
 L["Offline"] = "離線"
 
 --Option Enable..
-L.RED_ENABLE = '|cFFff3333'.."啟用"..'|r'
-L.GREEN_ENABLE = '|cFF33ff33'.."啟用"..'|r'
+L.RED_ENABLE = '|cFFff3333啟用|r'
+L.GREEN_ENABLE = '|cFF33ff33啟用|r'

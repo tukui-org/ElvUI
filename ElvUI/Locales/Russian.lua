@@ -394,5 +394,5 @@ L["Ghost"] = "Призрак"
 L["Offline"] = "Не в сети"
 
 --Option Enable..
-L.RED_ENABLE = '|cFFff3333'.."Включить"..'|r'
-L.GREEN_ENABLE = '|cFF33ff33'.."Включить"..'|r'
+L.RED_ENABLE = '|cFFff3333Включить|r'
+L.GREEN_ENABLE = '|cFF33ff33Включить|r'
