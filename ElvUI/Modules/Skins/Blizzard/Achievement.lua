@@ -219,6 +219,12 @@ local function LoadSkin(event)
 	_G.AchievementFrameComparisonDark:SetAlpha(0)
 	_G.AchievementFrameComparisonSummaryPlayerBackground:Hide()
 	_G.AchievementFrameComparisonSummaryFriendBackground:Hide()
+
+	local summaries = {_G.AchievementFrameComparisonSummaryPlayer, _G.AchievementFrameComparisonSummaryFriend}
+	for _, frame in pairs(summaries) do
+		frame:SetBackdrop(nil)
+	end
+
 	_G.AchievementFrameMetalBorderTopLeft:Hide()
 	_G.AchievementFrameWoodBorderTopLeft:Hide()
 	_G.AchievementFrameMetalBorderTopRight:Hide()
