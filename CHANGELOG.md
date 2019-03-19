@@ -28,6 +28,7 @@ Recoded the animation for the Bag New Item Glow so they all glow together instea
 Updated oUF to increase preformance of the new Nameplates further.  
 Updated Quest Greeting Frame skin.  
 Optimized the Color Picker code for better preformance.  
+Made the `Enable` Checkboxes in the config red so they're easier to spot.  
 [WIP] Fixing Off Tank Color on Nameplates. @Azilroka  
 [WIP] Adding Name Only on Nameplates. @Azilroka  
 [WIP] Adding oUF Color Selection by LS- @Azilroka  
