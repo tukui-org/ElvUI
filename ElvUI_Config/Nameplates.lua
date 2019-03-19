@@ -1933,42 +1933,54 @@ local function GetUnitSettings(unit, name)
 								type = "select",
 								name = L["Position"],
 								values = {
-									["LEFT"] = L["Left"],
-									["RIGHT"] = L["Right"],
 									["CENTER"] = L["Center"],
+									["TOPLEFT"] = "TOPLEFT",
+									["BOTTOMLEFT"] = "BOTTOMLEFT",
+									["TOPRIGHT"] = "TOPRIGHT",
+									["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+
+								},
+							},
+							parent = {
+								order = 4,
+								type = "select",
+								name = L["Parent"],
+								values = {
+									["Nameplate"] = L["Nameplate"],
+									["Health"] = L["Health"],
 								},
 							},
 							xOffset = {
-								order = 4,
+								order = 5,
 								name = L["X-Offset"],
 								type = "range",
 								min = -100, max = 100, step = 1,
 							},
 							yOffset = {
-								order = 5,
+								order = 6,
 								name = L["Y-Offset"],
 								type = "range",
 								min = -100, max = 100, step = 1,
 							},
 							fontGroup = {
 								type = "group",
-								order = 6,
+								order = 7,
 								name = "",
 								guiInline = true,
+								get = function(info) return E.db.nameplates.units[unit].health.text[ info[#info] ] end,
+								set = function(info, value) E.db.nameplates.units[unit].health.text[ info[#info] ] = value; NP:ConfigureAll() end,
 								args = {
 									font = {
 										type = "select", dialogControl = 'LSM30_Font',
 										order = 1,
 										name = L["Font"],
 										values = AceGUIWidgetLSMlists.font,
-										set = function(info, value) E.db.nameplates.units[unit].health.text[ info[#info] ] = value; NP:ConfigureAll() end,
 									},
 									fontSize = {
 										order = 2,
 										name = FONT_SIZE,
 										type = "range",
 										min = 4, max = 60, step = 1,
-										set = function(info, value) E.db.nameplates.units[unit].health.text[ info[#info] ] = value; NP:ConfigureAll() end,
 									},
 									fontOutline = {
 										order = 3,
@@ -1981,7 +1993,6 @@ local function GetUnitSettings(unit, name)
 											['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 											['THICKOUTLINE'] = 'THICKOUTLINE',
 										},
-										set = function(info, value) E.db.nameplates.units[unit].health.text[ info[#info] ] = value; NP:ConfigureAll() end,
 									},
 								},
 							},
@@ -2069,42 +2080,53 @@ local function GetUnitSettings(unit, name)
 								type = "select",
 								name = L["Position"],
 								values = {
-									["LEFT"] = L["Left"],
-									["RIGHT"] = L["Right"],
 									["CENTER"] = L["Center"],
+									["TOPLEFT"] = "TOPLEFT",
+									["BOTTOMLEFT"] = "BOTTOMLEFT",
+									["TOPRIGHT"] = "TOPRIGHT",
+									["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+								},
+							},
+							parent = {
+								order = 4,
+								type = "select",
+								name = L["Parent"],
+								values = {
+									["Nameplate"] = L["Nameplate"],
+									["Power"] = L["Power"],
 								},
 							},
 							xOffset = {
-								order = 4,
+								order = 5,
 								name = L["X-Offset"],
 								type = "range",
 								min = -100, max = 100, step = 1,
 							},
 							yOffset = {
-								order = 5,
+								order = 6,
 								name = L["Y-Offset"],
 								type = "range",
 								min = -100, max = 100, step = 1,
 							},
 							fontGroup = {
 								type = "group",
-								order = 6,
+								order = 7,
 								name = "",
 								guiInline = true,
+								get = function(info) return E.db.nameplates.units[unit].power.text[ info[#info] ] end,
+								set = function(info, value) E.db.nameplates.units[unit].power.text[ info[#info] ] = value; NP:ConfigureAll() end,
 								args = {
 									font = {
 										type = "select", dialogControl = 'LSM30_Font',
 										order = 1,
 										name = L["Font"],
 										values = AceGUIWidgetLSMlists.font,
-										set = function(info, value) E.db.nameplates.units[unit].power.text[ info[#info] ] = value; NP:ConfigureAll() end,
 									},
 									fontSize = {
 										order = 2,
 										name = FONT_SIZE,
 										type = "range",
 										min = 4, max = 60, step = 1,
-										set = function(info, value) E.db.nameplates.units[unit].power.text[ info[#info] ] = value; NP:ConfigureAll() end,
 									},
 									fontOutline = {
 										order = 3,
@@ -2117,7 +2139,6 @@ local function GetUnitSettings(unit, name)
 											['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 											['THICKOUTLINE'] = 'THICKOUTLINE',
 										},
-										set = function(info, value) E.db.nameplates.units[unit].power.text[ info[#info] ] = value; NP:ConfigureAll() end,
 									},
 								},
 							},
@@ -2284,20 +2305,20 @@ local function GetUnitSettings(unit, name)
 						order = 14,
 						name = L["Font"],
 						guiInline = true,
+						get = function(info) return E.db.nameplates.units[unit].castbar[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,
 						args = {
 							font = {
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 1,
 								name = L["Font"],
 								values = AceGUIWidgetLSMlists.font,
-								set = function(info, value) E.db.nameplates.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							fontSize = {
 								order = 2,
 								name = FONT_SIZE,
 								type = "range",
 								min = 4, max = 60, step = 1,
-								set = function(info, value) E.db.nameplates.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							fontOutline = {
 								order = 3,
@@ -2310,7 +2331,6 @@ local function GetUnitSettings(unit, name)
 									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 									['THICKOUTLINE'] = 'THICKOUTLINE',
 								},
-								set = function(info, value) E.db.nameplates.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 						},
 					},
@@ -2404,20 +2424,20 @@ local function GetUnitSettings(unit, name)
 						order = 10,
 						name = L["Stack Counter"],
 						guiInline = true,
+						get = function(info, value) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 						args = {
 							countFont = {
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 12,
 								name = L["Font"],
 								values = AceGUIWidgetLSMlists.font,
-								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							countFontSize = {
 								order = 13,
 								name = FONT_SIZE,
 								type = "range",
 								min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
-								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							countFontOutline = {
 								order = 14,
@@ -2430,7 +2450,6 @@ local function GetUnitSettings(unit, name)
 									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 									['THICKOUTLINE'] = 'THICKOUTLINE',
 								},
-								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 						}
 					},
@@ -2439,6 +2458,8 @@ local function GetUnitSettings(unit, name)
 						order = 11,
 						name = L["Duration"],
 						guiInline = true,
+						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 						args = {
 							cooldownShortcut = {
 								order = 1,
@@ -2451,8 +2472,6 @@ local function GetUnitSettings(unit, name)
 								order = 2,
 								name = L["Position"],
 								type = "select",
-								get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
-								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 								values = {
 									["CENTER"] = L["Center"],
 									["TOPLEFT"] = "TOPLEFT",
@@ -2470,14 +2489,12 @@ local function GetUnitSettings(unit, name)
 								order = 4,
 								name = L["Font"],
 								values = AceGUIWidgetLSMlists.font,
-								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							fontSize = {
 								order = 5,
 								name = FONT_SIZE,
 								type = "range",
 								min = 4, max = 60, step = 1,
-								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							fontOutline = {
 								order = 6,
@@ -2490,7 +2507,6 @@ local function GetUnitSettings(unit, name)
 									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 									['THICKOUTLINE'] = 'THICKOUTLINE',
 								},
-								set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 						}
 					},
@@ -2719,20 +2735,20 @@ local function GetUnitSettings(unit, name)
 						order = 10,
 						name = L["Stack Counter"],
 						guiInline = true,
+						get = function(info, value) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 						args = {
 							countFont = {
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 12,
 								name = L["Font"],
 								values = AceGUIWidgetLSMlists.font,
-								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							countFontSize = {
 								order = 13,
 								name = FONT_SIZE,
 								type = "range",
 								min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
-								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							countFontOutline = {
 								order = 14,
@@ -2745,7 +2761,6 @@ local function GetUnitSettings(unit, name)
 									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 									['THICKOUTLINE'] = 'THICKOUTLINE',
 								},
-								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 						}
 					},
@@ -2754,6 +2769,8 @@ local function GetUnitSettings(unit, name)
 						order = 11,
 						name = L["Duration"],
 						guiInline = true,
+						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 						args = {
 							cooldownShortcut = {
 								order = 1,
@@ -2766,8 +2783,6 @@ local function GetUnitSettings(unit, name)
 								order = 2,
 								name = L["Position"],
 								type = "select",
-								get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
-								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 								values = {
 									["CENTER"] = L["Center"],
 									["TOPLEFT"] = "TOPLEFT",
@@ -2785,14 +2800,12 @@ local function GetUnitSettings(unit, name)
 								order = 4,
 								name = L["Font"],
 								values = AceGUIWidgetLSMlists.font,
-								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							fontSize = {
 								order = 5,
 								name = FONT_SIZE,
 								type = "range",
 								min = 4, max = 60, step = 1,
-								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							fontOutline = {
 								order = 6,
@@ -2805,7 +2818,6 @@ local function GetUnitSettings(unit, name)
 									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 									['THICKOUTLINE'] = 'THICKOUTLINE',
 								},
-								set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 						}
 					},
@@ -3035,37 +3047,46 @@ local function GetUnitSettings(unit, name)
 							["BOTTOMRIGHT"] = "BOTTOMRIGHT",
 						},
 					},
-					xOffset = {
+					parent = {
 						order = 4,
+						type = "select",
+						name = L["Parent"],
+						values = {
+							["Nameplate"] = L["Nameplate"],
+							["Health"] = L["Health"],
+						},
+					},
+					xOffset = {
+						order = 5,
 						name = L["X-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
 					yOffset = {
-						order = 5,
+						order = 6,
 						name = L["Y-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
 					fontGroup = {
 						type = "group",
-						order = 6,
+						order = 7,
 						name = "",
 						guiInline = true,
+						get = function(info) return E.db.nameplates.units[unit].level[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].level[ info[#info] ] = value; NP:ConfigureAll() end,
 						args = {
 							font = {
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 1,
 								name = L["Font"],
 								values = AceGUIWidgetLSMlists.font,
-								set = function(info, value) E.db.nameplates.units[unit].level[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							fontSize = {
 								order = 2,
 								name = FONT_SIZE,
 								type = "range",
 								min = 4, max = 60, step = 1,
-								set = function(info, value) E.db.nameplates.units[unit].level[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							fontOutline = {
 								order = 3,
@@ -3078,7 +3099,6 @@ local function GetUnitSettings(unit, name)
 									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 									['THICKOUTLINE'] = 'THICKOUTLINE',
 								},
-								set = function(info, value) E.db.nameplates.units[unit].level[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 						},
 					},
@@ -3119,37 +3139,46 @@ local function GetUnitSettings(unit, name)
 							["BOTTOMRIGHT"] = "BOTTOMRIGHT",
 						},
 					},
-					xOffset = {
+					parent = {
 						order = 4,
+						type = "select",
+						name = L["Parent"],
+						values = {
+							["Nameplate"] = L["Nameplate"],
+							["Health"] = L["Health"],
+						},
+					},
+					xOffset = {
+						order = 5,
 						name = L["X-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
 					yOffset = {
-						order = 5,
+						order = 6,
 						name = L["Y-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
 					fontGroup = {
 						type = "group",
-						order = 6,
+						order = 7,
 						name = "",
 						guiInline = true,
+						get = function(info) return E.db.nameplates.units[unit].name[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].name[ info[#info] ] = value; NP:ConfigureAll() end,
 						args = {
 							font = {
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 1,
 								name = L["Font"],
 								values = AceGUIWidgetLSMlists.font,
-								set = function(info, value) E.db.nameplates.units[unit].name[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							fontSize = {
 								order = 2,
 								name = FONT_SIZE,
 								type = "range",
 								min = 4, max = 60, step = 1,
-								set = function(info, value) E.db.nameplates.units[unit].name[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 							fontOutline = {
 								order = 3,
@@ -3162,7 +3191,6 @@ local function GetUnitSettings(unit, name)
 									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 									['THICKOUTLINE'] = 'THICKOUTLINE',
 								},
-								set = function(info, value) E.db.nameplates.units[unit].name[ info[#info] ] = value; NP:ConfigureAll() end,
 							},
 						},
 					},
@@ -3381,27 +3409,26 @@ local function GetUnitSettings(unit, name)
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
 		}
 	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+		group.args.general.args.nameOnly = {
+			type = 'toggle',
+			order = 1,
+			name = L['Name Only'],
+		}
 		group.args.general.args.showTitle = {
 			type = 'toggle',
 			order = 2,
 			name = L['Show Guild'],
-			get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
-			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
 		}
 		group.args.general.args.markHealers = {
 			type = "toggle",
 			order = 1,
 			name = L["Healer Icon"],
 			desc = L["Display a healer icon over known healers inside battlegrounds or arenas."],
-			get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
-			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
 		}
 		group.args.general.args.minions = {
 			type = "toggle",
 			order = 2,
 			name = UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
-			get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
-			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
 		}
 		group.args.healthGroup.args.useClassColor = {
 			order = 6,
@@ -3409,12 +3436,15 @@ local function GetUnitSettings(unit, name)
 			name = L["Use Class Color"],
 		}
 	elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+		group.args.general.args.nameOnly = {
+			type = 'toggle',
+			order = 1,
+			name = L['Name Only'],
+		}
 		group.args.general.args.showTitle = {
 			type = 'toggle',
 			order = 2,
 			name = L['Show NPC Title'],
-			get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
-			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
 		}
 		group.args.eliteIcon = {
 			order = 10,
@@ -3444,11 +3474,11 @@ local function GetUnitSettings(unit, name)
 					type = "select",
 					name = L["Icon Position"],
 					values = {
-						["LEFT"] = L["Left"],
-						["RIGHT"] = L["Right"],
-						["TOP"] = L["Top"],
-						["BOTTOM"] = L["Bottom"],
 						["CENTER"] = L["Center"],
+						["TOPLEFT"] = "TOPLEFT",
+						["BOTTOMLEFT"] = "BOTTOMLEFT",
+						["TOPRIGHT"] = "TOPRIGHT",
+						["BOTTOMRIGHT"] = "BOTTOMRIGHT",
 					},
 				},
 				xOffset = {
@@ -3488,11 +3518,11 @@ local function GetUnitSettings(unit, name)
 					type = "select",
 					name = L["Icon Position"],
 					values = {
-						["LEFT"] = L["Left"],
-						["RIGHT"] = L["Right"],
-						["TOP"] = L["Top"],
-						["BOTTOM"] = L["Bottom"],
 						["CENTER"] = L["Center"],
+						["TOPLEFT"] = "TOPLEFT",
+						["BOTTOMLEFT"] = "BOTTOMLEFT",
+						["TOPRIGHT"] = "TOPRIGHT",
+						["BOTTOMRIGHT"] = "BOTTOMRIGHT",
 					},
 				},
 				xOffset = {
@@ -3514,22 +3544,16 @@ local function GetUnitSettings(unit, name)
 				type = 'toggle',
 				order = 1,
 				name = UNIT_NAMEPLATES_SHOW_ENEMY_MINUS,
-				get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
-				set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
 			}
 			group.args.general.args.minions = {
 				type = "toggle",
 				order = 2,
 				name = UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
-				get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
-				set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
 			}
 			group.args.general.args.detection = {
 				order = 3,
 				name = L["Detection"],
 				type = "toggle",
-				get = function() return E.db.nameplates.units[unit].detection.enable end,
-				set = function(_, value) E.db.nameplates.units[unit].detection.enable = value; NP:ConfigureAll() end,
 			}
 		end
 	end
@@ -3564,11 +3588,11 @@ local function GetUnitSettings(unit, name)
 					type = "select",
 					name = L["Icon Position"],
 					values = {
-						["LEFT"] = L["Left"],
-						["RIGHT"] = L["Right"],
-						["TOP"] = L["Top"],
-						["BOTTOM"] = L["Bottom"],
 						["CENTER"] = L["Center"],
+						["TOPLEFT"] = "TOPLEFT",
+						["BOTTOMLEFT"] = "BOTTOMLEFT",
+						["TOPRIGHT"] = "TOPRIGHT",
+						["BOTTOMRIGHT"] = "BOTTOMRIGHT",
 					},
 				},
 				xOffset = {
@@ -3587,6 +3611,100 @@ local function GetUnitSettings(unit, name)
 		}
 	end
 
+	if unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" or unit == "FRIENDLY_NPC" or unit == "ENEMY_NPC" then
+		group.args.titleGroup = {
+			order = 9,
+			name = L["Title"],
+			type = "group",
+			get = function(info) return E.db.nameplates.units[unit].title[ info[#info] ] end,
+			set = function(info, value) E.db.nameplates.units[unit].title[ info[#info] ] = value; NP:ConfigureAll() end,
+			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Name"],
+				},
+				enable = {
+					order = 1,
+					name = L['Enable'],
+					type = "toggle",
+				},
+				format = {
+					order = 2,
+					name = L["Text Format"],
+					desc = L["TEXT_FORMAT_DESC"],
+					type = "input",
+				},
+				position = {
+					order = 3,
+					type = "select",
+					name = L["Position"],
+					values = {
+						["CENTER"] = L["Center"],
+						["TOPLEFT"] = "TOPLEFT",
+						["BOTTOMLEFT"] = "BOTTOMLEFT",
+						["TOPRIGHT"] = "TOPRIGHT",
+						["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+					},
+				},
+				parent = {
+					order = 4,
+					type = "select",
+					name = L["Parent"],
+					values = {
+						["Nameplate"] = L["Nameplate"],
+						["Health"] = L["Health"],
+					},
+				},
+				xOffset = {
+					order = 5,
+					name = L["X-Offset"],
+					type = "range",
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 6,
+					name = L["Y-Offset"],
+					type = "range",
+					min = -100, max = 100, step = 1,
+				},
+				fontGroup = {
+					type = "group",
+					order = 7,
+					name = "",
+					guiInline = true,
+					get = function(info) return E.db.nameplates.units[unit].title[ info[#info] ] end,
+					set = function(info, value) E.db.nameplates.units[unit].title[ info[#info] ] = value; NP:ConfigureAll() end,
+					args = {
+						font = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 1,
+							name = L["Font"],
+							values = AceGUIWidgetLSMlists.font,
+						},
+						fontSize = {
+							order = 2,
+							name = FONT_SIZE,
+							type = "range",
+							min = 4, max = 60, step = 1,
+						},
+						fontOutline = {
+							order = 3,
+							name = L["Font Outline"],
+							desc = L["Set the font outline."],
+							type = "select",
+							values = {
+								['NONE'] = NONE,
+								['OUTLINE'] = 'OUTLINE',
+								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+								['THICKOUTLINE'] = 'THICKOUTLINE',
+							},
+						},
+					},
+				},
+			},
+		}
+	end
 	ORDER = ORDER + 1
 	return group
 end

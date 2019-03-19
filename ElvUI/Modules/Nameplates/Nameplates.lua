@@ -123,6 +123,7 @@ function NP:StylePlate(nameplate)
 	nameplate.PowerPrediction = NP:Construct_PowerPrediction(nameplate)
 	nameplate.Name = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.Level = NP:Construct_TagText(nameplate.RaisedElement)
+	nameplate.Title = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate.RaisedElement)
 	nameplate.Castbar = NP:Construct_Castbar(nameplate)
 	nameplate.Portrait = NP:Construct_Portrait(nameplate.RaisedElement)
@@ -195,20 +196,14 @@ function NP:DisablePlate(nameplate)
 	nameplate.Health.Text:Hide()
 	nameplate.Power.Text:Hide()
 
-	nameplate.Name:Show()
-	nameplate.Name:ClearAllPoints()
-	nameplate.Name:SetPoint('CENTER', nameplate, 'CENTER', 0, 0)
-	if NP.db.units[nameplate.frameType].showTitle then
-		nameplate.Level:Show()
-		nameplate.Level:ClearAllPoints()
-		nameplate.Level:SetPoint('TOP', nameplate.Name, 'BOTTOM', 0, -2)
-		if strfind(nameplate.frameType, '_NPC') then
-			nameplate:Tag(nameplate.Level, '[npctitle]')
-		elseif strfind(nameplate.frameType, '_PLAYER') then
-			nameplate:Tag(nameplate.Level, '[guild]')
+	if nameplate.nameOnly then
+		nameplate.Name:Show()
+		nameplate.Name:ClearAllPoints()
+		nameplate.Name:SetPoint('CENTER', nameplate, 'CENTER', 0, 0)
+		if NP.db.units[nameplate.frameType].showTitle then
 		end
-		nameplate:UpdateTags()
 	else
+		nameplate.Name:Hide()
 		nameplate.Level:Hide()
 	end
 
