@@ -14,6 +14,7 @@ Fixed an issue in Toolkit which prevented border/backdrop color in some cases.
 Fixed spam errors when trying to change Talents when you have non selected yet.  
 Fixed a gap at the end of Classbar on Nameplates.  
 Fixed an issue whiched caused incompatiblity with our config and ColorPickerPlus.  
+Made sure the LDB Datatext value color updates along with the General Media Value color correctly.  
 
 **Misc. Changes:**  
 Enabled Style Filter Hide Frame action.  
@@ -26,7 +27,10 @@ Made the UI Scale popup `Suppress` checkbox actually disable `Accept` button, as
 Recoded the animation for the Bag New Item Glow so they all glow together instead of seperately, also gave it a fancy new glow texture.  
 Updated oUF to increase preformance of the new Nameplates further.  
 Updated Quest Greeting Frame skin.  
-Attempted to fix Off Tank Color on Nameplates.. ~ @Azilroka ??
+Optimized the Color Picker code for better preformance.  
+[WIP] Fixing Off Tank Color on Nameplates. @Azilroka  
+[WIP] Adding Name Only on Nameplates. @Azilroka  
+[WIP] Adding oUF Color Selection by LS- @Azilroka  
 
 ___
 ### Version 11.06 [ March 14th 2019 ]
