@@ -392,3 +392,6 @@ L["You can use the /resetui command to reset all of your movers. You can also us
 L["Dead"] = "죽음"
 L["Ghost"] = "유령"
 L["Offline"] = "오프라인"
+
+--Red Enable..
+L.RED_ENABLE = '|cFFff3333'..L['Enable']..'|r'
