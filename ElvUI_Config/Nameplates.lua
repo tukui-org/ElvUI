@@ -4153,6 +4153,7 @@ E.Options.args.nameplate = {
 							order = 4,
 							type = 'group',
 							name = L["Selection"],
+							guiInline = true,
 							get = function(info)
 								local n = tonumber(info[#info])
 								local t = E.db.nameplates.colors.selection[n]
