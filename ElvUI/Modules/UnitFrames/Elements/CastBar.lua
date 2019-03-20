@@ -177,7 +177,9 @@ function UF:Configure_Castbar(frame)
 			end
 		end
 
-		castbar.Spark:Height(db.infoPanel and db.infoPanel.height * 2) -- Grab the height from the infopanel.
+		if db.castbar.spark then
+			castbar.Spark:Height(db.infoPanel and db.infoPanel.height * 2) -- Grab the height from the infopanel.
+		end
 
 		if(castbar.Holder.mover) then
 			E:DisableMover(castbar.Holder.mover:GetName())
