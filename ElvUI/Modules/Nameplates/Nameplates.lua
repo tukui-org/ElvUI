@@ -144,7 +144,7 @@ function NP:StylePlate(nameplate)
 		nameplate.Runes = NP:Construct_Runes(nameplate)
 	end
 
-	NP.Plates[nameplate] = true
+	NP.Plates[nameplate] = nameplate:GetName()
 end
 
 function NP:UpdatePlate(nameplate)
@@ -460,11 +460,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if UnitIsUnit(unit, 'player') and NP.db.units.PLAYER.enable then
 			nameplate.frameType = 'PLAYER'
-			if not InCombatLockdown() then
-				NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
-				NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
-				NP.PlayerNamePlateAnchor:Show()
-			end
+			NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+			NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+			NP.PlayerNamePlateAnchor:Show()
 		elseif UnitIsPVPSanctuary(unit) or (nameplate.isPlayer and UnitIsFriend('player', unit) and nameplate.reaction and nameplate.reaction >= 5) then
 			nameplate.frameType = 'FRIENDLY_PLAYER'
 		elseif not nameplate.isPlayer and (nameplate.reaction and nameplate.reaction >= 5) or UnitFactionGroup(unit) == 'Neutral' then
@@ -505,7 +503,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		NP:ClearStyledPlate(nameplate)
 
-		if nameplate.frameType == 'PLAYER' then
+		if nameplate.frameType == 'PLAYER' and nameplate ~= _G.ElvNP_Test then
 			NP.PlayerNamePlateAnchor:Hide()
 		end
 
