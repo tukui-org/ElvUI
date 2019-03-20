@@ -240,7 +240,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	local multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 0.25
 
 	if (((colors.healthclass == true and colors.colorhealthbyvalue == true) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
-		local cur, max = self.cur or 1, self.max or 100
+		local cur, max = (self.dead and 0) or self.cur or 1, self.max or 100
 		if parent.isForced then
 			cur = parent.forcedHealth or cur
 			max = (cur > max and cur * 2) or max
