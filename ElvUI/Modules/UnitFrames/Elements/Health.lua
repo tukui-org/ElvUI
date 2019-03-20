@@ -83,6 +83,8 @@ function UF:Configure_HealthBar(frame)
 	else
 		if self.db.colors.healthselection == true then
 			health.colorSelection = true
+		elseif self.db.colors.healththreat == true then
+			health.colorThreat = true
 		elseif self.db.colors.healthclass ~= true then
 			if self.db.colors.colorhealthbyvalue == true then
 				health.colorSmooth = true

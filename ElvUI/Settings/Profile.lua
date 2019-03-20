@@ -1788,9 +1788,11 @@ P.unitframe = {
 	colors = {
 		borderColor = {r = 0, g = 0, b = 0},
 		healthclass = false,
+		healththreat = false,
 		healthselection = false,
 		forcehealthreaction = false,
 		powerclass = false,
+		powerthreat = false,
 		powerselection = false,
 		colorhealthbyvalue = true,
 		customhealthbackdrop = false,
@@ -1831,6 +1833,12 @@ P.unitframe = {
 			BAD = { r = 199/255, g = 64/255, b = 64/255 },
 			NEUTRAL = { r = 218/255, g = 197/255, b = 92/255 },
 			GOOD = { r = 75/255, g = 175/255, b = 76/255 },
+		},
+		threat = {
+			[ 0] = {r = 0.5, g = 0.5, b = 0.5}, -- low
+			[ 1] = {r = 1.0, g = 1.0, b = 0.5}, -- overnuking
+			[ 2] = {r = 1.0, g = 0.5, b = 0.0}, -- losing threat
+			[ 3] = {r = 1.0, g = 0.2, b = 0.2}, -- tanking securely
 		},
 		selection = {
 			[ 0] = {r = 254/255, g = 045/255, b = 045/255}, -- HOSTILE

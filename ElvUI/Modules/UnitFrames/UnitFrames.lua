@@ -362,6 +362,11 @@ function UF:UpdateColors()
 	ElvUF.colors.power.INSANITY = E:SetColorTable(ElvUF.colors.power.INSANITY, db.power.INSANITY)
 	ElvUF.colors.power.MAELSTROM = E:SetColorTable(ElvUF.colors.power.MAELSTROM, db.power.MAELSTROM)
 
+	ElvUF.colors.threat[0] = E:SetColorTable(ElvUF.colors.threat[0], db.threat[0])
+	ElvUF.colors.threat[1] = E:SetColorTable(ElvUF.colors.threat[1], db.threat[1])
+	ElvUF.colors.threat[2] = E:SetColorTable(ElvUF.colors.threat[2], db.threat[2])
+	ElvUF.colors.threat[3] = E:SetColorTable(ElvUF.colors.threat[3], db.threat[3])
+
 	ElvUF.colors.selection[0] = E:SetColorTable(ElvUF.colors.selection[0], db.selection[0])
 	ElvUF.colors.selection[1] = E:SetColorTable(ElvUF.colors.selection[1], db.selection[1])
 	ElvUF.colors.selection[2] = E:SetColorTable(ElvUF.colors.selection[2], db.selection[2])
