@@ -228,12 +228,11 @@ function UF:Configure_Power(frame)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 end
 
-local tokens = { [0] = "MANA", "RAGE", "FOCUS", "ENERGY", "RUNIC_POWER" }
+local tokens = {[0]="MANA","RAGE","FOCUS","ENERGY","RUNIC_POWER"}
 function UF:PostUpdatePowerColor()
 	local parent = self.origParent or self:GetParent()
 	if parent.isForced then
-		local pType = random(0, 4)
-		local color = ElvUF.colors.power[tokens[pType]]
+		local color = ElvUF.colors.power[tokens[random(0,4)]]
 		self:SetValue(random(1, self.max))
 
 		if not self.colorClass then
@@ -250,8 +249,7 @@ function UF:PostUpdatePower(unit, _, _, max)
 		self:SetValue(random(1, max))
 	end
 
-	local db = parent.db
-	if db and db.power and db.power.hideonnpc then
+	if parent.db and parent.db.power and parent.db.power.hideonnpc then
 		UF:PostNamePosition(parent, unit)
 	end
 
