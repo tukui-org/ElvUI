@@ -75,18 +75,18 @@ function UF:Configure_HealthBar(frame)
 		health.colorClass = true
 		health.colorReaction = true
 	elseif db.colorOverride and db.colorOverride == "FORCE_OFF" then
-		if self.db.colors.colorhealthbyvalue == true then
+		if self.db.colors.colorhealthbyvalue then
 			health.colorSmooth = true
 		else
 			health.colorHealth = true
 		end
 	else
-		if self.db.colors.healthselection == true then
+		if self.db.colors.healthselection then
 			health.colorSelection = true
-		elseif self.db.colors.healththreat == true then
+		elseif self.db.colors.healththreat then
 			health.colorThreat = true
 		elseif self.db.colors.healthclass ~= true then
-			if self.db.colors.colorhealthbyvalue == true then
+			if self.db.colors.colorhealthbyvalue then
 				health.colorSmooth = true
 			else
 				health.colorHealth = true
