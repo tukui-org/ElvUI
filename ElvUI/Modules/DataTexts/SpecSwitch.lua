@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
+local _G = _G
 local format, strjoin = format, strjoin
 --WoW API / Variables
 local GetLootSpecialization = GetLootSpecialization
