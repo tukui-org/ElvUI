@@ -269,8 +269,6 @@ end
 
 local function ToggleResourceBar(bars, overrideVisibility)
 	local frame = bars.origParent or bars:GetParent()
-	if bars == frame.AlternativePower then return end
-
 	local db = frame.db
 	if not db then return end
 
