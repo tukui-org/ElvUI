@@ -166,9 +166,9 @@ function NP:Update_Power(nameplate)
 
 	nameplate:Tag(nameplate.Power.Text, db.power.text.format)
 
-	nameplate.Power.displayAltPower = db.power.displayAltPower
 	nameplate.Power.useAtlas = db.power.useAtlas
-	nameplate.Power.colorClass = db.power.useClassColor or false
+	nameplate.Power.colorClass = db.power.useClassColor
+	nameplate.Power.colorPower = not db.power.useClassColor
 	nameplate.Power.width = db.power.width
 	nameplate.Power.height = db.power.height
 	nameplate.Power:Size(db.power.width, db.power.height)
