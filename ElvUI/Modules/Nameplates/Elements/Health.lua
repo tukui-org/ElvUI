@@ -14,53 +14,6 @@ function NP:Health_PostUpdate()
 	end
 end
 
-function NP:Health_UpdateColor(event, unit)
-	if(not unit or self.unit ~= unit) then return end
-	local element = self.Health
-
-	local r, g, b, t
-	if(element.colorDead and element.dead) then
-		t = NP.db.colors.dead
-	elseif(element.colorDisconnected and element.disconnected) then
-		t = NP.db.colors.disconnected
-	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
-		t = NP.db.colors.tapped
-	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
-		t =  NP.db.colors.threat[UnitThreatSituation('player', unit)]
-	elseif(element.colorClass and UnitIsPlayer(unit)) or
-		(element.colorClassNPC and not UnitIsPlayer(unit)) or
-		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
-		local _, class = UnitClass(unit)
-		t = self.colors.class[class]
-	elseif(element.colorSelection and UnitSelectionType(unit, element.considerSelectionInCombatHostile)) then
-		t = NP.db.colors.selection[UnitSelectionType(unit, element.considerSelectionInCombatHostile)]
-	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
-		t = NP.db.colors.reaction[UnitReaction(unit, 'player')]
-	elseif(element.colorSmooth) then
-		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or NP.db.colors.smooth))
-	elseif(element.colorHealth) then
-		t = NP.db.colors.health
-	end
-
-	if(t) then
-		r, g, b = t[1], t[2], t[3]
-	end
-
-	if(b) then
-		element:SetStatusBarColor(r, g, b)
-
-		local bg = element.bg
-		if(bg) then
-			local mu = bg.multiplier or 1
-			bg:SetVertexColor(r * mu, g * mu, b * mu)
-		end
-	end
-
-	if(element.PostUpdateColor) then
-		element:PostUpdateColor(unit, r, g, b)
-	end
-end
-
 function NP:Construct_Health(nameplate)
 	local Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'Health', nameplate)
 	Health:SetFrameStrata(nameplate:GetFrameStrata())
@@ -90,7 +43,6 @@ function NP:Construct_Health(nameplate)
 	Health.Smooth = true
 	Health.frequentUpdates = true
 	Health.PostUpdate = NP.Health_PostUpdate
-	Health.UpdateColor = NP.Health_UpdateColor
 
 	return Health
 end
