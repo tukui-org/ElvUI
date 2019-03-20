@@ -239,11 +239,15 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	local colors = E.db.unitframe.colors;
 	local multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 0.25
 
-	if (((colors.healthclass == true and colors.colorhealthbyvalue == true) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
+	if (((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
 		local cur, max = (self.dead and 0) or self.cur or 1, self.max or 100
 		if parent.isForced then
 			cur = parent.forcedHealth or cur
 			max = (cur > max and cur * 2) or max
+		end
+
+		if not (r and g and b) then
+			r, g, b = colors.health.r, colors.health.g, colors.health.b
 		end
 
 		local newr, newg, newb = ElvUF:ColorGradient(cur, max, 1, 0, 0, 1, 1, 0, r, g, b)
