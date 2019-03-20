@@ -26,7 +26,7 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		self.__owner.Health.colorClass = false
 		self.__owner.Health.colorClassNPC = false
 		self.__owner.Health.colorClassPet = false
-		--self.__owner.Health.colorSelection = false
+		self.__owner.Health.colorSelection = false
 		self.__owner.Health.colorReaction = false
 		self.__owner.Health.colorSmooth = false
 		self.__owner.Health.colorHealth = false

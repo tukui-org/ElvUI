@@ -20,13 +20,13 @@ function NP:Health_UpdateColor(event, unit)
 
 	local r, g, b, t
 	if(element.colorDead and element.dead) then
-		t = NP.db.colors.dead
+		t = self.colors.dead
 	elseif(element.colorDisconnected and element.disconnected) then
-		t = NP.db.colors.disconnected
+		t = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = NP.db.colors.tapped
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
-		t =  NP.db.colors.threat[UnitThreatSituation('player', unit)]
+		t =  self.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorClass and UnitIsPlayer(unit)) or
 		(element.colorClassNPC and not UnitIsPlayer(unit)) or
 		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
@@ -39,9 +39,9 @@ function NP:Health_UpdateColor(event, unit)
 		if reaction <= 3 then reaction = 'bad' elseif reaction == 4 then reaction = 'neutral' else reaction = 'good' end
 		t = NP.db.colors.reactions[reaction]
 	elseif(element.colorSmooth) then
-		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or NP.db.colors.smooth))
+		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
 	elseif(element.colorHealth) then
-		t = NP.db.colors.health
+		t = self.colors.health
 	end
 
 	if(t) then

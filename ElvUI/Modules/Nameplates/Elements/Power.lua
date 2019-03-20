@@ -1,34 +1,100 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
-local _G = _G
 local unpack = unpack
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+
+function NP:Power_UpdateColor(event, unit)
+	if(self.unit ~= unit) then return end
+	local element = self.Power
+
+	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
+
+	local r, g, b, t, atlas
+	if(element.colorDead and element.dead) then
+		t = self.colors.dead
+	elseif(element.colorDisconnected and element.disconnected) then
+		t = self.colors.disconnected
+	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
+		t = self.colors.tapped
+	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
+		t =  self.colors.threat[UnitThreatSituation('player', unit)]
+	elseif(element.colorPower) then
+		if(element.displayType ~= ALTERNATE_POWER_INDEX) then
+			t = NP.db.colors.power[ptoken or ptype]
+			if(not t) then
+				if(element.GetAlternativeColor) then
+					r, g, b = element:GetAlternativeColor(unit, ptype, ptoken, altR, altG, altB)
+				elseif(altR) then
+					r, g, b = altR, altG, altB
+					if(r > 1 or g > 1 or b > 1) then
+						-- BUG: As of 7.0.3, altR, altG, altB may be in 0-1 or 0-255 range.
+						r, g, b = r / 255, g / 255, b / 255
+					end
+				end
+			end
+		else
+			t = self.colors.power[ALTERNATE_POWER_INDEX]
+		end
+
+		if(element.useAtlas and t and t.atlas) then
+			atlas = t.atlas
+		end
+	elseif(element.colorClass and UnitIsPlayer(unit)) or
+		(element.colorClassNPC and not UnitIsPlayer(unit)) or
+		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
+		local _, class = UnitClass(unit)
+		t = self.colors.class[class]
+	elseif(element.colorSelection and UnitSelectionType(unit, element.considerSelectionInCombatHostile)) then
+		t = NP.db.colors.selection[UnitSelectionType(unit, element.considerSelectionInCombatHostile)]
+	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
+		local reaction = UnitReaction(unit, 'player')
+		if reaction <= 3 then reaction = 'bad' elseif reaction == 4 then reaction = 'neutral' else reaction = 'good' end
+		t = NP.db.colors.reactions[reaction]
+	elseif(element.colorSmooth) then
+		local adjust = 0 - (element.min or 0)
+		r, g, b = self:ColorGradient((element.cur or 1) + adjust, (element.max or 1) + adjust, unpack(element.smoothGradient or self.colors.smooth))
+	end
+
+	if(t) then
+		r, g, b = t[1] or t.r, t[2] or t.g, t[3] or t.b
+	end
+
+	if(atlas) then
+		element:SetStatusBarAtlas(atlas)
+		element:SetStatusBarColor(1, 1, 1)
+	else
+		element:SetStatusBarTexture(element.texture)
+
+		if(b) then
+			element:SetStatusBarColor(r, g, b)
+		end
+	end
+
+	local bg = element.bg
+	if(bg and b) then
+		local mu = bg.multiplier or 1
+		bg:SetVertexColor(r * mu, g * mu, b * mu)
+	end
+
+	if(element.PostUpdateColor) then
+		element:PostUpdateColor(unit, r, g, b)
+	end
+end
 
 function NP:Power_PreUpdate(unit)
 	local _, pToken = UnitPowerType(unit)
 	self.token = pToken
 
 	if self.__owner.PowerColorChanged then return end
-
-	local Color = NP.db.colors.power[pToken]
-	if Color then
-		self:SetStatusBarColor(Color.r, Color.g, Color.b)
-	else
-		Color = _G.ElvUI.oUF.colors.power[pToken]
-		if Color then
-			self:SetStatusBarColor(unpack(Color))
-		end
-	end
 end
 
 function NP:Power_PostUpdate(unit, cur, min, max)
 	local db = NP.db.units[self.__owner.frameType]
 	if not db then return end
 
-	if (db.powerbar and db.powerbar.hideWhenEmpty) and ((cur == 0 and min == 0) or (min == 0 and max == 0)) then
+	if (db.power and db.power.hideWhenEmpty) and ((cur == 0 and min == 0) or (min == 0 and max == 0)) then
 		self:Hide()
 	else
 		self:PreUpdate(unit)
@@ -56,6 +122,7 @@ function NP:Construct_Power(nameplate)
 
 	Power.PreUpdate = NP.Power_PreUpdate
 	Power.PostUpdate = NP.Power_PostUpdate
+	Power.UpdateColor = NP.Power_UpdateColor
 
 	return Power
 end
