@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local D = E:GetModule('Distributor')
 local format = format
 local sort, tinsert = sort, tinsert
 
