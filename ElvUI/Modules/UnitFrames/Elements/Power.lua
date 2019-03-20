@@ -31,6 +31,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	power.RaisedElementParent:SetAllPoints()
 
 	power.PostUpdate = self.PostUpdatePower
+	power.PostUpdateColor = self.PostUpdatePowerColor
 
 	if bg then
 		power.bg = power:CreateTexture(nil, 'BORDER')
@@ -223,20 +224,25 @@ function UF:Configure_Power(frame)
 end
 
 local tokens = { [0] = "MANA", "RAGE", "FOCUS", "ENERGY", "RUNIC_POWER" }
-function UF:PostUpdatePower(unit, _, _, max)
+function UF:PostUpdatePowerColor()
 	local parent = self.origParent or self:GetParent()
-
 	if parent.isForced then
 		local pType = random(0, 4)
 		local color = ElvUF.colors.power[tokens[pType]]
-		local min = random(1, max)
-		self:SetValue(min)
+		self:SetValue(random(1, self.max))
 
 		if not self.colorClass then
 			self:SetStatusBarColor(color[1], color[2], color[3])
 			local mu = self.bg.multiplier or 1
 			self.bg:SetVertexColor(color[1] * mu, color[2] * mu, color[3] * mu)
 		end
+	end
+end
+
+function UF:PostUpdatePower(unit, _, _, max)
+	local parent = self.origParent or self:GetParent()
+	if parent.isForced then
+		self:SetValue(random(1, max))
 	end
 
 	local db = parent.db
