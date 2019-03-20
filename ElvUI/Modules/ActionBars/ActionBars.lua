@@ -4,7 +4,7 @@ local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
 --Lua functions
 local _G = _G
 local pairs, select = pairs, select
-local ceil = math.ceil
+local ceil, unpack = math.ceil, unpack
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 --WoW API / Variables
 local CanExitVehicle = CanExitVehicle
@@ -44,7 +44,7 @@ local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
-local UIHider, Skins
+local UIHider
 
 AB.RegisterCooldown = E.RegisterCooldown
 
@@ -624,7 +624,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local shine = _G[name.."Shine"];
 
 	local color = self.db.fontColor
-
 	local countPosition = self.db.countTextPosition or 'BOTTOMRIGHT'
 	local countXOffset = self.db.countTextXOffset or 0
 	local countYOffset = self.db.countTextYOffset or 2
@@ -633,13 +632,10 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	button.useMasque = useMasque
 	button.ignoreNormal = ignoreNormal
 
-	if flash then flash:SetTexture(); end
-	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0); end
-	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0); end
-
-	if border and not button.useMasque then
-		border:Kill();
-	end
+	if flash then flash:SetTexture() end
+	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0) end
+	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0) end
+	if border and not button.useMasque then border:Kill() end
 
 	if count then
 		count:ClearAllPoints();
@@ -661,8 +657,9 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if icon then
-		if not Skins then Skins = E:GetModule('Skins') end
-		Skins:HandleIcon(icon)
+		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetSnapToPixelGrid(false)
+		icon:SetTexelSnappingBias(0)
 		icon:SetInside()
 	end
 
@@ -679,25 +676,24 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	--Extra Action Button
 	if button.style then
-		--button.style:SetParent(button.backdrop)
 		button.style:SetDrawLayer('BACKGROUND', -7)
 	end
 
 	button.FlyoutUpdateFunc = AB.StyleFlyout
-	self:FixKeybindText(button);
+	self:FixKeybindText(button)
 
 	if not button.useMasque then
-		button:StyleButton();
+		button:StyleButton()
 	else
 		button:StyleButton(true, true, true)
 	end
 
-	if(not self.handledbuttons[button]) then
+	if not self.handledbuttons[button] then
 		button.cooldown.CooldownOverride = 'actionbar'
 
 		E:RegisterCooldown(button.cooldown)
 
-		self.handledbuttons[button] = true;
+		self.handledbuttons[button] = true
 	end
 end
 
@@ -713,10 +709,10 @@ end
 
 function AB:Bar_OnLeave(bar)
 	if bar:GetParent() == self.fadeParent then
-		if(not self.fadeParent.mouseLock) then
+		if not self.fadeParent.mouseLock then
 			E:UIFrameFadeOut(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1 - self.db.globalFadeAlpha)
 		end
-	elseif(bar.mouseover) then
+	elseif bar.mouseover then
 		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
 	end
 end
@@ -724,10 +720,10 @@ end
 function AB:Button_OnEnter(button)
 	local bar = button:GetParent()
 	if bar:GetParent() == self.fadeParent then
-		if(not self.fadeParent.mouseLock) then
+		if not self.fadeParent.mouseLock then
 			E:UIFrameFadeIn(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1)
 		end
-	elseif(bar.mouseover) then
+	elseif bar.mouseover then
 		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
 	end
 end
@@ -735,10 +731,10 @@ end
 function AB:Button_OnLeave(button)
 	local bar = button:GetParent()
 	if bar:GetParent() == self.fadeParent then
-		if(not self.fadeParent.mouseLock) then
+		if not self.fadeParent.mouseLock then
 			E:UIFrameFadeOut(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1 - self.db.globalFadeAlpha)
 		end
-	elseif(bar.mouseover) then
+	elseif bar.mouseover then
 		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
 	end
 end
