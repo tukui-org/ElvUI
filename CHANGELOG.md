@@ -29,9 +29,9 @@ Updated oUF to increase preformance of the new Nameplates further.
 Updated Quest Greeting Frame skin.  
 Optimized the Color Picker code for better preformance.  
 Made the `Enable` Checkboxes in the config colorful, so that they're easier to spot, plus it looks really cool.  
+[Testing][oUF Note: Self appears to be bugged?] Added oUF Color Selection by LS- @Simpy  
 [WIP] Fixing Off Tank Color on Nameplates. @Azilroka  
 [WIP] Adding Name Only on Nameplates. @Azilroka  
-[WIP] Adding oUF Color Selection by LS- @Azilroka  
 
 ___
 ### Version 11.06 [ March 14th 2019 ]
