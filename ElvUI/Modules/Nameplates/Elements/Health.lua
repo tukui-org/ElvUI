@@ -24,7 +24,7 @@ function NP:Health_UpdateColor(event, unit)
 	elseif(element.colorDisconnected and element.disconnected) then
 		t = NP.db.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
-		t = NP.db.colors.reactions.tapped
+		t = NP.db.colors.tapped
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
 		t =  NP.db.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorClass and UnitIsPlayer(unit)) or
