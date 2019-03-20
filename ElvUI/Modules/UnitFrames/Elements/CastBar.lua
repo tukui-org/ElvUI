@@ -60,6 +60,8 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Spark_ = castbar:CreateTexture(nil, 'OVERLAY')
 	castbar.Spark_:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 	castbar.Spark_:SetBlendMode('ADD')
+	castbar.Spark_:SetSnapToPixelGrid(false)
+	castbar.Spark_:SetTexelSnappingBias(0)
 	castbar.Spark_:SetVertexColor(1, 1, 1)
 	castbar.Spark_:Size(20, 40)
 
@@ -175,6 +177,8 @@ function UF:Configure_Castbar(frame)
 			end
 		end
 
+		castbar.Spark:Height(castbar:GetHeight() * 2) -- Grab the height from the castbar if inside infopanel again.
+
 		if(castbar.Holder.mover) then
 			E:DisableMover(castbar.Holder.mover:GetName())
 		end
@@ -185,7 +189,7 @@ function UF:Configure_Castbar(frame)
 		end
 
 		castbar:ClearAllPoints()
-		if frame.ORIENTATION ~= "RIGHT"  then
+		if frame.ORIENTATION ~= "RIGHT" then
 			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
 			if not isMoved then
 				castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER - frame.SPACING))
