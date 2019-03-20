@@ -264,8 +264,8 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 		local Texture = button.Icon:GetTexture()
 		if Texture and (type(Texture) == 'string' and strfind(Texture, [[Interface\ChatFrame\ChatFrameExpandArrow]])) then
 			button.Icon:SetTexture(E.Media.Textures.ArrowUp)
-			button.Icon:SetVertexColor(1, 1, 1)
 			button.Icon:SetRotation(S.ArrowRotation['right'])
+			button.Icon:SetVertexColor(1, 1, 1)
 		end
 	end
 
@@ -275,9 +275,9 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 		if not button.text then
 			button.text = button:CreateFontString(nil, 'OVERLAY')
 			button.text:FontTemplate(E.Media.Fonts.PTSansNarrow, 16, 'OUTLINE')
-			button.text:SetText('x')
-			button.text:SetJustifyH('CENTER')
 			button.text:Point('CENTER', button, 'CENTER')
+			button.text:SetJustifyH('CENTER')
+			button.text:SetText('x')
 		end
 	end
 
