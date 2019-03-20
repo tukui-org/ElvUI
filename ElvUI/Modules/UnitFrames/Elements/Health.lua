@@ -235,7 +235,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	local multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 0.25
 
 	if (((colors.healthclass == true and colors.colorhealthbyvalue == true) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
-		local newr, newg, newb = ElvUF:ColorGradient(self.min, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
+		local newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
 		self:SetStatusBarColor(newr, newg, newb)
 		self.bg:SetVertexColor(newr * multiplier, newg * multiplier, newb * multiplier)
 		self.bg.multiplier = multiplier
@@ -247,9 +247,9 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 		local t
 		if UnitIsPlayer(unit) then
 			local _, class = UnitClass(unit)
-			t = self.colors.class[class]
+			t = parent.colors.class[class]
 		elseif reaction then
-			t = self.colors.reaction[reaction]
+			t = parent.colors.reaction[reaction]
 		end
 
 		if t then
