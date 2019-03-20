@@ -389,6 +389,12 @@ function NP:ConfigureAll()
 
 	for nameplate in pairs(NP.Plates) do
 		NP:UpdatePlate(nameplate)
+		if nameplate.frameType == 'PLAYER' then
+			NP.PlayerNamePlateAnchor:ClearAllPoints()
+			NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+			NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+			NP.PlayerNamePlateAnchor:Show()
+		end
 	end
 
 	NP:StyleFilterConfigureEvents() -- Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
@@ -460,6 +466,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if UnitIsUnit(unit, 'player') and NP.db.units.PLAYER.enable then
 			nameplate.frameType = 'PLAYER'
+			NP.PlayerNamePlateAnchor:ClearAllPoints()
 			NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
 			NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
 			NP.PlayerNamePlateAnchor:Show()
