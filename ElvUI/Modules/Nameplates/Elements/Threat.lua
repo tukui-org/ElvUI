@@ -21,7 +21,6 @@ end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
 	if NP.db.threat and NP.db.threat.useThreatColor then
-		-- Set All Health Colors to false
 		self.__owner.Health.colorTapping = false
 		self.__owner.Health.colorDisconnected = false
 		self.__owner.Health.colorClass = false
@@ -31,17 +30,16 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		self.__owner.Health.colorReaction = false
 		self.__owner.Health.colorSmooth = false
 		self.__owner.Health.colorHealth = false
-		--
+
 		local Color
 		if status then
-			if (status == 3) then --Securely Tanking
+			if (status == 3) then -- securely tanking
 				Color = self.isTank and self.offTank and NP.db.colors.threat.beingTankedByTankColor or self.isTank and NP.db.colors.threat.goodColor or NP.db.colors.threat.badColor
-			elseif (status == 2) then --insecurely tanking
+			elseif (status == 2) then -- insecurely tanking
 				Color = self.isTank and NP.db.colors.threat.badTransition or NP.db.colors.threat.goodTransition
-			elseif (status == 1) then --not tanking but threat higher than tank
+			elseif (status == 1) then -- not tanking but threat higher than tank
 				Color = self.isTank and NP.db.colors.threat.goodTransition or NP.db.colors.threat.badTransition
 			else -- not tanking at all
-				--Color = self.isTank and self.offTank and NP.db.colors.threat.beingTankedByTankColor or self.isTank and NP.db.colors.threat.badColor or NP.db.colors.threat.goodColor
 				Color = self.isTank and NP.db.colors.threat.badColor or NP.db.colors.threat.goodColor
 			end
 		end
