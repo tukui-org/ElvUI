@@ -4,6 +4,7 @@
 Added `ElvUIPlayerNamePlateAnchor` for WeakAuras and other AddOns.  
 Added an option to toggle the Nameplates from fading in when shown.  
 Added option to hide voice chat buttons on the chat tab panel.  
+Added UnitFrame Health Colors: Threat and Color Selection from oUF. (Thanks oUF/LS-)!  
 
 **Bug Fixes:**  
 Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
@@ -43,7 +44,7 @@ Actually let the Target Class Bar on Nameplates use Class Color for classes othe
 Fixed an issue which made backdrops always appear.  
 Fixed another case when C-Stack errors could occur from the Toolkit.  
 Fixed an issue which caused clicking problems in the middle of the screen.  
-Fixed the non-Target Nameplate transparency option. (Thanks AcidWeb for helping!)  
+Fixed the non-Target Nameplate transparency option. (Thanks AcidWeb for helping)!  
 Fixed LFG Ready Popup skin from showing a Blizzard backdrop.  
 
 **Misc. Changes:**  
@@ -204,7 +205,7 @@ Fixed taint in CommunitiesUI preventing you from setting notes among other thing
 **Misc. Changes:**  
 Various Skin updates.  
 Modified the bag item level code; items might actually show the correct item level now. :o  
-Improved the tooltip item level code, it should be far more accurate now! (Thanks AcidWeb and Ls- for helping us with this!) :)  
+Improved the tooltip item level code, it should be far more accurate now! (Thanks AcidWeb and Ls- for helping us with this)! :)  
 The layout in the installer has been replaced with a new one.  
 
 ___
@@ -371,7 +372,7 @@ Fixed a rare nil error in the range code.
 
 **Misc. Changes:**  
 Added Infested affix buff to RaidBuffsElvUI filter.  
-Updated ArenaPrepFrame functions. (Thanks oUF!)  
+Updated ArenaPrepFrame functions. (Thanks oUF)!  
 Updated PvP, LFG & Talent skins.  
 
 ___
