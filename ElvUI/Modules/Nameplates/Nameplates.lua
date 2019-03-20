@@ -147,6 +147,41 @@ function NP:StylePlate(nameplate)
 	NP.Plates[nameplate] = nameplate:GetName()
 end
 
+-- WIP for Azil.. Power backdrop is acting weird
+function NP:UpdateNameOnly(nameplate)
+	local db = NP.db.units[nameplate.frameType]
+
+	if db and db.nameOnly then
+		nameplate.Name:Show()
+		nameplate.Name:ClearAllPoints()
+		nameplate.Name:SetPoint('CENTER', nameplate, 'CENTER', 0, 0)
+
+		if db.health and db.health.enable then
+			nameplate.Health:Hide()
+			nameplate.Health.Text:Hide()
+		end
+		if db.level and db.level.enable then
+			nameplate.Level:Hide()
+		end
+		if db.power and db.power.enable then
+			nameplate.Power:Hide()
+			nameplate.Power.Text:Hide()
+		end
+	else
+		if db.health and db.health.enable then
+			nameplate.Health:Show()
+			nameplate.Health.Text:Show()
+		end
+		if db.level and db.level.enable then
+			nameplate.Level:Show()
+		end
+		if db.power and db.power.enable then
+			nameplate.Power:Show()
+			nameplate.Power.Text:Show()
+		end
+	end
+end
+
 function NP:UpdatePlate(nameplate)
 	NP:Update_Health(nameplate)
 	NP:Update_HealthPrediction(nameplate)
@@ -171,6 +206,8 @@ function NP:UpdatePlate(nameplate)
 	NP:Update_Tags(nameplate)
 	NP:Update_DetectionIndicator(nameplate)
 	NP:UpdatePlateEvents(nameplate)
+	-- WIP for Azil
+	NP:UpdateNameOnly(nameplate)
 end
 
 function NP:DisablePlate(nameplate)
@@ -195,17 +232,6 @@ function NP:DisablePlate(nameplate)
 
 	nameplate.Health.Text:Hide()
 	nameplate.Power.Text:Hide()
-
-	if nameplate.nameOnly then
-		nameplate.Name:Show()
-		nameplate.Name:ClearAllPoints()
-		nameplate.Name:SetPoint('CENTER', nameplate, 'CENTER', 0, 0)
-		if NP.db.units[nameplate.frameType].showTitle then
-		end
-	else
-		nameplate.Name:Hide()
-		nameplate.Level:Hide()
-	end
 
 	if E.myclass == 'DEATHKNIGHT' then
 		if nameplate:IsElementEnabled('Runes') then nameplate:DisableElement('Runes') end
