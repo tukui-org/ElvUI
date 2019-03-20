@@ -148,6 +148,7 @@ function NP:StylePlate(nameplate)
 end
 
 -- WIP for Azil.. Power backdrop is acting weird
+-- ToDo enable check for existing units so all elements gets shown if you have a target
 function NP:UpdateNameOnly(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
