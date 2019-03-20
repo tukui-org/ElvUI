@@ -1788,8 +1788,10 @@ P.unitframe = {
 	colors = {
 		borderColor = {r = 0, g = 0, b = 0},
 		healthclass = false,
+		healthselection = false,
 		forcehealthreaction = false,
 		powerclass = false,
+		powerselection = false,
 		colorhealthbyvalue = true,
 		customhealthbackdrop = false,
 		useDeadBackdrop = false,
@@ -1831,13 +1833,20 @@ P.unitframe = {
 			GOOD = { r = 75/255, g = 175/255, b = 76/255 },
 		},
 		selection = {
-			[1] = {r = 255/255, g = 255/255, b = 139/255},	-- very light yellow, used for player's character while in combat
-			[2] = {r = 218/255, g = 197/255, b = 92/255},	-- yellow, used for neutral units
-			[3] = {r = 255/255, g = 156/255, b = 73/255},	-- orange, used for unfriendly units
-			[4] = {r = 199/255, g = 64/255, b = 64/255},	-- red, used for hostile units
-			[5] = {r = 128/255, g = 128/255, b = 128/255},	-- grey, used for dead units
-			[6] = {r = 75/255, g = 175/255, b = 76/255},	-- green, used for friendly units
-			[7] = {r = 0/255, g = 179/255, b = 255/255},	-- blue, the default colour, mainly used for players in dungeons, raids, and sanctuaries
+			[ 0] = {r = 254/255, g = 045/255, b = 045/255}, -- HOSTILE
+			[ 1] = {r = 255/255, g = 129/255, b = 050/255}, -- UNFRIENDLY
+			[ 2] = {r = 255/255, g = 217/255, b = 050/255}, -- NEUTRAL
+			[ 3] = {r = 050/255, g = 180/255, b = 000/255}, -- FRIENDLY
+			[ 4] = {r = 050/255, g = 100/255, b = 255/255}, -- PLAYER_SIMPLE
+			[ 5] = {r = 102/255, g = 136/255, b = 255/255}, -- PLAYER_EXTENDED
+			[ 6] = {r = 102/255, g = 050/255, b = 255/255}, -- PARTY
+			[ 7] = {r = 187/255, g = 050/255, b = 255/255}, -- PARTY_PVP
+			[ 8] = {r = 050/255, g = 255/255, b = 108/255}, -- FRIEND
+			[ 9] = {r = 153/255, g = 153/255, b = 153/255}, -- DEAD
+			--[10] = {}, -- COMMENTATOR_TEAM_1, unavailable to players
+			--[11] = {}, -- COMMENTATOR_TEAM_2, unavailable to players
+			[12] = {r = 017/255, g = 221/255, b = 255/255}, -- SELF, buggy
+			[13] = {r = 025/255, g = 147/255, b = 072/255}, -- BATTLEGROUND_FRIENDLY_PVP
 		},
 		healPrediction = {
 			personal = {r = 0, g = 1, b = 0.5, a = 0.25},
