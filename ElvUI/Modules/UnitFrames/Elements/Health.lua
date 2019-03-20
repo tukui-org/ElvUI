@@ -21,6 +21,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 
 	health:SetFrameLevel(10) --Make room for Portrait and Power which should be lower by default
 	health.PostUpdate = self.PostUpdateHealth
+	health.PostUpdateColor = self.PostUpdateHealthColor
 
 	if bg then
 		health.bg = health:CreateTexture(nil, 'BORDER')
@@ -226,24 +227,15 @@ function UF:GetHealthBottomOffset(frame)
 	return bottomOffset
 end
 
-function UF:PostUpdateHealth(unit, min, max)
+function UF:PostUpdateHealthColor(unit, r, g, b)
 	local parent = self:GetParent()
-	if parent.isForced then
-		min = random(1, max)
-		self:SetValue(min)
-	end
-
-	if parent.ResurrectIndicator then
-		parent.ResurrectIndicator:SetAlpha(min == 0 and 1 or 0)
-	end
 
 	-- Health by Value
 	local colors = E.db.unitframe.colors;
 	local multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 0.25
 
 	if (((colors.healthclass == true and colors.colorhealthbyvalue == true) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
-		local r, g, b = self:GetStatusBarColor()
-		local newr, newg, newb = ElvUF:ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
+		local newr, newg, newb = ElvUF:ColorGradient(self.min, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
 		self:SetStatusBarColor(newr, newg, newb)
 		self.bg:SetVertexColor(newr * multiplier, newg * multiplier, newb * multiplier)
 		self.bg.multiplier = multiplier
@@ -255,9 +247,9 @@ function UF:PostUpdateHealth(unit, min, max)
 		local t
 		if UnitIsPlayer(unit) then
 			local _, class = UnitClass(unit)
-			t = parent.colors.class[class]
+			t = self.colors.class[class]
 		elseif reaction then
-			t = parent.colors.reaction[reaction]
+			t = self.colors.reaction[reaction]
 		end
 
 		if t then
@@ -276,5 +268,18 @@ function UF:PostUpdateHealth(unit, min, max)
 	if self.bg and colors.useDeadBackdrop and UnitIsDeadOrGhost(unit) then
 		local backdrop = colors.health_backdrop_dead
 		self.bg:SetVertexColor(backdrop.r, backdrop.g, backdrop.b)
+	end
+
+end
+
+function UF:PostUpdateHealth(unit, cur, max)
+	local parent = self:GetParent()
+	if parent.isForced then
+		cur = random(1, max)
+		self:SetValue(cur)
+	end
+
+	if parent.ResurrectIndicator then
+		parent.ResurrectIndicator:SetAlpha(cur == 0 and 1 or 0)
 	end
 end
