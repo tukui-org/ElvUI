@@ -2960,11 +2960,13 @@ E.Options.args.unitframe = {
 									name = L["Dead"],
 									type = 'color',
 								},
+						--[[ disabled in oUF for now by LS-
 								['12'] = {
 									order = 12,
 									name = L["Self"],
 									type = 'color',
 								},
+							]]
 								['13'] = {
 									order = 13,
 									name = L["Battleground Friendly"],
