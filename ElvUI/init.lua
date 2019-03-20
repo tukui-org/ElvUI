@@ -325,7 +325,7 @@ function AddOn:ToggleConfig(msg)
 				local main, mainNode, mainSelStr, sub, subNode, subSel
 				for i = 1, pageCount do
 					if i == 1 then
-						main = pages[i] and ACD.Status and ACD.Status.ElvUI
+						main = pages[i] and ACD and ACD.Status and ACD.Status.ElvUI
 						mainSel = main and main.status and main.status.groups and main.status.groups.selected
 						mainSelStr = mainSel and ('^'..mainSel:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')..'\001')
 						mainNode = main and main.children and main.children[pages[i]]
@@ -339,7 +339,7 @@ function AddOn:ToggleConfig(msg)
 					index = index + 2
 				end
 			else
-				local main = pages[1] and ACD.Status and ACD.Status.ElvUI
+				local main = pages[1] and ACD and ACD.Status and ACD.Status.ElvUI
 				mainSel = main and main.status and main.status.groups and main.status.groups.selected
 			end
 
@@ -353,7 +353,9 @@ function AddOn:ToggleConfig(msg)
 		end
 	end
 
-	ACD[mode](ACD, AddOnName)
+	if ACD then
+		ACD[mode](ACD, AddOnName)
+	end
 
 	if mode == 'Open' then
 		ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
@@ -381,7 +383,7 @@ function AddOn:ToggleConfig(msg)
 			end
 		end
 
-		if pages then
+		if ACD and pages then
 			ACD:SelectGroup(AddOnName, unpack(pages))
 		end
 	end
