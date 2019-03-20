@@ -28,6 +28,8 @@ local UnitName = UnitName
 local GetCVar = GetCVar
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
+local GetSpecializationRole = GetSpecializationRole
+local GetSpecialization = GetSpecialization
 
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
@@ -526,7 +528,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 end
 
 function NP:ACTIVE_TALENT_GROUP_CHANGED()
-	NP.PlayerRole = E:GetPlayerRole() -- GetSpecializationRole(GetSpecialization())
+	NP.PlayerRole = GetSpecializationRole(GetSpecialization())
 end
 
 -- Event functions fired from the NamePlate itself
