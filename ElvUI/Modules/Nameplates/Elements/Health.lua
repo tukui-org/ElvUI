@@ -24,7 +24,7 @@ function NP:Health_UpdateColor(event, unit)
 	elseif(element.colorDisconnected and element.disconnected) then
 		t = NP.db.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
-		t = NP.db.colors.tapped
+		t = NP.db.colors.reactions.tapped
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
 		t =  NP.db.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorClass and UnitIsPlayer(unit)) or
@@ -35,7 +35,9 @@ function NP:Health_UpdateColor(event, unit)
 	elseif(element.colorSelection and UnitSelectionType(unit, element.considerSelectionInCombatHostile)) then
 		t = NP.db.colors.selection[UnitSelectionType(unit, element.considerSelectionInCombatHostile)]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
-		t = NP.db.colors.reaction[UnitReaction(unit, 'player')]
+		local reaction = UnitReaction(unit, 'player')
+		if reaction <= 3 then reaction = 'bad' elseif reaction == 4 then reaction = 'neutral' else reaction = 'good' end
+		t = NP.db.colors.reactions[reaction]
 	elseif(element.colorSmooth) then
 		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or NP.db.colors.smooth))
 	elseif(element.colorHealth) then
@@ -43,7 +45,7 @@ function NP:Health_UpdateColor(event, unit)
 	end
 
 	if(t) then
-		r, g, b = t[1], t[2], t[3]
+		r, g, b = t[1] or t.r, t[2] or t.g, t[3] or t.b
 	end
 
 	if(b) then
@@ -87,7 +89,6 @@ function NP:Construct_Health(nameplate)
 	nameplate.FlashTexture:SetTexelSnappingBias(0)
 	nameplate.FlashTexture:Hide()
 
-	Health.Smooth = true
 	Health.frequentUpdates = true
 	Health.PostUpdate = NP.Health_PostUpdate
 	Health.UpdateColor = NP.Health_UpdateColor
@@ -98,10 +99,10 @@ end
 function NP:Update_Health(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	nameplate.Health.colorClass = db.health.useClassColor
-	--nameplate.Health.colorSelection = true
-	nameplate.Health.colorReaction = true
 	nameplate.Health.colorTapping = true
+	nameplate.Health.colorClass = db.health.useClassColor
+	nameplate.Health.colorSelection = true
+	nameplate.Health.colorReaction = true
 
 	if db.health.enable then
 		if not nameplate:IsElementEnabled('Health') then

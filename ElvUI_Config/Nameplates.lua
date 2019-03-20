@@ -4059,7 +4059,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						threat = {
-							order = 150,
+							order = 2,
 							type = "group",
 							name = L["Threat"],
 							guiInline = true,
@@ -4112,7 +4112,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						castGroup = {
-							order = 175,
+							order = 3,
 							type = "group",
 							name = L["Cast Bar"],
 							guiInline = true,
@@ -4149,8 +4149,89 @@ E.Options.args.nameplate = {
 								},
 							},
 						},
+						selectionGroup = {
+							order = 4,
+							type = 'group',
+							name = L["Selection"],
+							get = function(info)
+								local n = tonumber(info[#info])
+								local t = E.db.nameplates.colors.selection[n]
+								local d = P.nameplates.colors.selection[n]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+							end,
+							set = function(info, r, g, b)
+								local n = tonumber(info[#info])
+								local t = E.db.nameplates.colors.selection[n]
+								t.r, t.g, t.b = r, g, b
+								NP:ConfigureAll()
+							end,
+							args = {
+								['0'] = {
+									order = 0,
+									name = L["Hostile"],
+									type = 'color',
+								},
+								['1'] = {
+									order = 1,
+									name = L["Unfriendly"],
+									type = 'color',
+								},
+								['2'] = {
+									order = 2,
+									name = L["Neutral"],
+									type = 'color',
+								},
+								['3'] = {
+									order = 3,
+									name = L["Friendly"],
+									type = 'color',
+								},
+								['4'] = {
+									order = 4,
+									name = L["Player Simple"],
+									type = 'color',
+								},
+								['5'] = {
+									order = 5,
+									name = L["Player Extended"],
+									type = 'color',
+								},
+								['6'] = {
+									order = 6,
+									name = L["Party"],
+									type = 'color',
+								},
+								['7'] = {
+									order = 7,
+									name = L["Party PVP"],
+									type = 'color',
+								},
+								['8'] = {
+									order = 8,
+									name = L["Friend"],
+									type = 'color',
+								},
+								['9'] = {
+									order = 9,
+									name = L["Dead"],
+									type = 'color',
+								},
+						--[[ disabled in oUF for now by LS-
+								['12'] = {
+									order = 12,
+									name = L["Self"],
+									type = 'color',
+								},
+							]]
+								['13'] = {
+									order = 13,
+									name = L["Battleground Friendly"],
+									type = 'color',
+								},
+							},
+						},
 						reactions = {
-							order = 200,
+							order = 5,
 							type = "group",
 							name = L["Reaction Colors"],
 							guiInline = true,
@@ -4188,11 +4269,21 @@ E.Options.args.nameplate = {
 									order = 5,
 									type = 'color',
 									hasAlpha = false,
+									get = function(info)
+										local t = E.db.nameplates.colors[ info[#info] ]
+										local d = P.nameplates.colors[info[#info]]
+										return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+									end,
+									set = function(info, r, g, b)
+										local t = E.db.nameplates.colors[ info[#info] ]
+										t.r, t.g, t.b = r, g, b
+										NP:ConfigureAll()
+									end,
 								},
 							},
 						},
 						healPrediction = {
-							order = 225,
+							order = 6,
 							name = L["Heal Prediction"],
 							type = 'group',
 							guiInline = true,
@@ -4234,7 +4325,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						power = {
-							order = 250,
+							order = 7,
 							name = L["Power Colors"],
 							type = 'group',
 							guiInline = true,
@@ -4302,7 +4393,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						classResources = {
-							order = 275,
+							order = 8,
 							name = L["Class Resources"],
 							type = 'group',
 							guiInline = true,
