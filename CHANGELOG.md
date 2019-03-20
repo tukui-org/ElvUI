@@ -4,7 +4,7 @@
 Added `ElvUIPlayerNamePlateAnchor` for WeakAuras and other AddOns.  
 Added an option to toggle the Nameplates from fading in when shown.  
 Added option to hide voice chat buttons on the chat tab panel.  
-Added UnitFrame Health Colors: Threat and Color Selection from oUF. (Thanks oUF/LS-)!  
+[Testing] Added UnitFrame `Color Selection` colors from oUF. (Thanks oUF/LS-)!  
 
 **Bug Fixes:**  
 Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
@@ -30,7 +30,7 @@ Updated oUF to increase preformance of the new Nameplates further.
 Updated Quest Greeting Frame skin.  
 Optimized the Color Picker code for better preformance.  
 Made the `Enable` Checkboxes in the config colorful, so that they're easier to spot, plus it looks really cool.  
-[Testing][oUF Note: Self appears to be bugged?] Added oUF Color Selection by LS- @Simpy  
+[WIP] Adding Threat color to UnitFrames similar to Nameplate @Simpy  
 [WIP] Fixing Off Tank Color on Nameplates. @Azilroka  
 [WIP] Adding Name Only on Nameplates. @Azilroka  
 
