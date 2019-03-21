@@ -6,11 +6,14 @@ local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 
 function NP:Power_UpdateColor(event, unit)
-	if(self.unit ~= unit) then return end
-	local element = self.Power
+	if self.unit ~= unit then return end
 
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
+	self.token = ptoken
 
+	if self.__owner.PowerColorChanged then return end
+
+	local element = self.Power
 	local r, g, b, t, atlas
 	if(element.colorDead and element.dead) then
 		t = self.colors.dead
@@ -83,13 +86,6 @@ function NP:Power_UpdateColor(event, unit)
 	end
 end
 
-function NP:Power_PreUpdate(unit)
-	local _, pToken = UnitPowerType(unit)
-	self.token = pToken
-
-	if self.__owner.PowerColorChanged then return end
-end
-
 function NP:Power_PostUpdate(unit, cur, min, max)
 	local db = NP.db.units[self.__owner.frameType]
 	if not db then return end
@@ -120,7 +116,6 @@ function NP:Construct_Power(nameplate)
 	Power.colorClass = false
 	Power.Smooth = true
 
-	Power.PreUpdate = NP.Power_PreUpdate
 	Power.PostUpdate = NP.Power_PostUpdate
 	Power.UpdateColor = NP.Power_UpdateColor
 
