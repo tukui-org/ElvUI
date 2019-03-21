@@ -8,12 +8,12 @@ local UnitPowerType = UnitPowerType
 function NP:Power_UpdateColor(event, unit)
 	if self.unit ~= unit then return end
 
-	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
-	self.token = ptoken
-
-	if self.__owner.PowerColorChanged then return end
-
 	local element = self.Power
+	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
+	element.token = ptoken
+
+	if element.PowerColorChanged then return end
+
 	local r, g, b, t, atlas
 	if(element.colorDead and element.dead) then
 		t = self.colors.dead
@@ -93,7 +93,6 @@ function NP:Power_PostUpdate(unit, cur, min, max)
 	if (db.power and db.power.hideWhenEmpty) and ((cur == 0 and min == 0) or (min == 0 and max == 0)) then
 		self:Hide()
 	else
-		self:PreUpdate(unit)
 		self:Show()
 	end
 end
