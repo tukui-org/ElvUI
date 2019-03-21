@@ -2930,14 +2930,16 @@ E.Options.args.unitframe = {
 									name = L["Friendly"],
 									type = 'color',
 								},
+						--[[ LS- said to just use "Player Extended" as "Player" and don't use "Player Simple" at all
 								['4'] = {
 									order = 4,
 									name = L["Player Simple"],
 									type = 'color',
 								},
+							]]
 								['5'] = {
 									order = 5,
-									name = L["Player Extended"],
+									name = L["Player"], -- Player Extended
 									type = 'color',
 								},
 								['6'] = {
