@@ -46,7 +46,7 @@ local function OnEvent(self)
 			firstMember, numMembers, extraCount = members[1], #members, ''
 			playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
 			if numMembers > 1 then
-				extraCount = format('[+%s]', numMembers - 1)
+				extraCount = format(' +%s', numMembers - 1)
 			end
 			if playerName then
 				coloredName = format('%s%s|r%s', nameColor, playerName, extraCount)
