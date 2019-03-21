@@ -3417,7 +3417,8 @@ local function GetUnitSettings(unit, name)
 		group.args.general.args.showTitle = {
 			type = 'toggle',
 			order = 2,
-			name = L['Show Guild'],
+			name = L['Show Title'],
+			disabled = function() return not E.db.nameplates.units[unit].nameOnly end,
 		}
 		group.args.general.args.markHealers = {
 			type = "toggle",
@@ -3444,7 +3445,8 @@ local function GetUnitSettings(unit, name)
 		group.args.general.args.showTitle = {
 			type = 'toggle',
 			order = 2,
-			name = L['Show NPC Title'],
+			name = L['Show Title'],
+			disabled = function() return not E.db.nameplates.units[unit].nameOnly end,
 		}
 		group.args.eliteIcon = {
 			order = 10,

@@ -175,7 +175,7 @@ function NP:UpdatePlate(nameplate)
 	NP:UpdatePlateEvents(nameplate)
 end
 
-function NP:DisablePlate(nameplate)
+function NP:DisablePlate(nameplate, nameOnly)
 	if nameplate:IsElementEnabled('Health') then nameplate:DisableElement('Health') end
 	if nameplate:IsElementEnabled('HealthPrediction') then nameplate:DisableElement('HealthPrediction') end
 	if nameplate:IsElementEnabled('Power') then nameplate:DisableElement('Power') end
@@ -197,16 +197,19 @@ function NP:DisablePlate(nameplate)
 
 	nameplate.Health.Text:Hide()
 	nameplate.Power.Text:Hide()
+	nameplate.Name:Hide()
+	nameplate.Level:Hide()
+	nameplate.Title:Hide()
 
-	if nameplate.nameOnly then
+	if nameOnly then
 		nameplate.Name:Show()
 		nameplate.Name:ClearAllPoints()
 		nameplate.Name:SetPoint('CENTER', nameplate, 'CENTER', 0, 0)
 		if NP.db.units[nameplate.frameType].showTitle then
+			nameplate.Title:Show()
+			nameplate.Title:ClearAllPoints()
+			nameplate.Title:SetPoint('TOP', nameplate.Name, 'BOTTOM', 0, -2)
 		end
-	else
-		nameplate.Name:Hide()
-		nameplate.Level:Hide()
 	end
 
 	if E.myclass == 'DEATHKNIGHT' then
@@ -492,8 +495,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:UpdatePlate(nameplate)
 
-		if not NP.db.units[nameplate.frameType].enable then
-			NP:DisablePlate(nameplate)
+		if (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
+			NP:DisablePlate(nameplate, NP.db.units[nameplate.frameType].nameOnly)
 		end
 
 		if nameplate.isTarget then

@@ -44,6 +44,8 @@ function NP:Update_Title(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 	if not db.title then return end
 
+	nameplate:Tag(nameplate.Title, db.title.format)
+
 	if db.title.enable then
 		nameplate.Title:ClearAllPoints()
 		nameplate.Title:Point(E.InversePoints[db.title.position], db.title.parent == 'Nameplate' and nameplate or nameplate[db.title.parent], db.title.position, db.title.xOffset, db.title.yOffset)
