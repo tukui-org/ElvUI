@@ -40,8 +40,7 @@ function NP:Health_UpdateColor(event, unit)
 	end
 
 	if self.HealthColorChanged then
-		t = self.HealthColorChanged
-		r, g, b = t.r, t.g, t.b -- use the style filter values
+		r, g, b = self.HealthColorChanged.r, self.HealthColorChanged.g, self.HealthColorChanged.b -- use the style filter values
 	end
 
 	if(b) then
