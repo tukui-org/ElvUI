@@ -3303,16 +3303,10 @@ local function GetUnitSettings(unit, name)
 		},
 	}
 
+	-- start groups at 12, options at 100
 	if unit == "PLAYER" then
-		group.args.general.args.useStaticPosition = {
-			order = 2,
-			type = "toggle",
-			name = L["Use Static Position"],
-			desc = L["When enabled the nameplate will stay visible in a locked position."],
-			disabled = function() return not E.db.nameplates.units[unit].enable end,
-		}
 		group.args.general.args.visibility = {
-			order = 10,
+			order = 12,
 			type = "group",
 			guiInline = true,
 			name = L["Visibility"],
@@ -3348,7 +3342,7 @@ local function GetUnitSettings(unit, name)
 			},
 		}
 		group.args.classBarGroup = {
-			order = 130,
+			order = 13,
 			type = "group",
 			name = L["Classbar"],
 			get = function(info) return E.db.nameplates.units[unit].classpower[ info[#info] ] end,
@@ -3396,13 +3390,20 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 		}
+		group.args.general.args.useStaticPosition = {
+			order = 100,
+			type = "toggle",
+			name = L["Use Static Position"],
+			desc = L["When enabled the nameplate will stay visible in a locked position."],
+			disabled = function() return not E.db.nameplates.units[unit].enable end,
+		}
 		group.args.healthGroup.args.useClassColor = {
-			order = 5,
+			order = 101,
 			type = "toggle",
 			name = L["Use Class Color"],
 		}
 		group.args.castGroup.args.displayTarget = {
-			order = 4,
+			order = 102,
 			type = 'toggle',
 			name = L["Display Target"],
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
@@ -3410,45 +3411,34 @@ local function GetUnitSettings(unit, name)
 	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
 		group.args.general.args.nameOnly = {
 			type = 'toggle',
-			order = 1,
+			order = 100,
 			name = L['Name Only'],
 		}
 		group.args.general.args.showTitle = {
 			type = 'toggle',
-			order = 2,
+			order = 101,
 			name = L['Show Title'],
-			disabled = function() return not E.db.nameplates.units[unit].nameOnly end,
+			desc = L['Title will only appear if Name Only is enabled or triggered in a Style Filter.']
 		}
 		group.args.general.args.markHealers = {
 			type = "toggle",
-			order = 1,
+			order = 102,
 			name = L["Healer Icon"],
 			desc = L["Display a healer icon over known healers inside battlegrounds or arenas."],
 		}
 		group.args.general.args.minions = {
 			type = "toggle",
-			order = 2,
+			order = 103,
 			name = UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
 		}
 		group.args.healthGroup.args.useClassColor = {
-			order = 6,
+			order = 104,
 			type = "toggle",
 			name = L["Use Class Color"],
 		}
 	elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
-		group.args.general.args.nameOnly = {
-			type = 'toggle',
-			order = 1,
-			name = L['Name Only'],
-		}
-		group.args.general.args.showTitle = {
-			type = 'toggle',
-			order = 2,
-			name = L['Show Title'],
-			disabled = function() return not E.db.nameplates.units[unit].nameOnly end,
-		}
 		group.args.eliteIcon = {
-			order = 10,
+			order = 12,
 			name = L["Elite Icon"],
 			type = "group",
 			get = function(info) return E.db.nameplates.units[unit].eliteIcon[ info[#info] ] end,
@@ -3497,7 +3487,7 @@ local function GetUnitSettings(unit, name)
 			},
 		}
 		group.args.questIcon = {
-			order = 226,
+			order = 13,
 			name = L["Quest Icon"],
 			type = 'group',
 			get = function(info) return E.db.nameplates.units[unit].questIcon[ info[#info] ] end,
@@ -3540,28 +3530,40 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 		}
+		group.args.general.args.nameOnly = {
+			type = 'toggle',
+			order = 100,
+			name = L['Name Only'],
+		}
+		group.args.general.args.showTitle = {
+			type = 'toggle',
+			order = 101,
+			name = L['Show Title'],
+			desc = L['Title will only appear if Name Only is enabled or triggered in a Style Filter.']
+		}
 		if unit == "ENEMY_NPC" then
 			group.args.general.args.minor = {
 				type = 'toggle',
-				order = 1,
+				order = 102,
 				name = UNIT_NAMEPLATES_SHOW_ENEMY_MINUS,
 			}
 			group.args.general.args.minions = {
 				type = "toggle",
-				order = 2,
+				order = 103,
 				name = UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
 			}
 			group.args.general.args.detection = {
-				order = 3,
+				order = 104,
 				name = L["Detection"],
 				type = "toggle",
 			}
 		end
 	end
 
+	-- start groups at 30
 	if unit == "PLAYER" or unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
 		group.args.pvpclassificationindicator = {
-			order = 10,
+			order = 30,
 			name = L["PvP Classification Indicator"],
 			desc = L["Cart / Flag / Orb / Assassin Bounty"],
 			type = "group",
@@ -3612,9 +3614,10 @@ local function GetUnitSettings(unit, name)
 		}
 	end
 
+	-- start groups at 50
 	if unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" or unit == "FRIENDLY_NPC" or unit == "ENEMY_NPC" then
 		group.args.titleGroup = {
-			order = 9,
+			order = 50,
 			name = L["Title"],
 			type = "group",
 			get = function(info) return E.db.nameplates.units[unit].title[ info[#info] ] end,
@@ -3706,6 +3709,7 @@ local function GetUnitSettings(unit, name)
 			},
 		}
 	end
+
 	ORDER = ORDER + 1
 	return group
 end
