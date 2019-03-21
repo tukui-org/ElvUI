@@ -149,8 +149,8 @@ function NP:Update_Auras(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if db.auras.enable or db.debuffs.enable or db.buffs.enable then
-		if not nameplate:IsElementEnabled('Aura') then
-			nameplate:EnableElement('Aura')
+		if not nameplate:IsElementEnabled('Auras') then
+			nameplate:EnableElement('Auras')
 		end
 
 		if db.auras.enable then
@@ -205,8 +205,8 @@ function NP:Update_Auras(nameplate)
 			end
 		end
 	else
-		if nameplate:IsElementEnabled('Aura') then
-			nameplate:DisableElement('Aura')
+		if nameplate:IsElementEnabled('Auras') then
+			nameplate:DisableElement('Auras')
 		end
 	end
 end

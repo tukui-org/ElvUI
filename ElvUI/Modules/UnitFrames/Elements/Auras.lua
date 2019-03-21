@@ -131,12 +131,12 @@ end
 
 function UF:EnableDisable_Auras(frame)
 	if frame.db.debuffs.enable or frame.db.buffs.enable then
-		if not frame:IsElementEnabled('Aura') then
-			frame:EnableElement('Aura')
+		if not frame:IsElementEnabled('Auras') then
+			frame:EnableElement('Auras')
 		end
 	else
-		if frame:IsElementEnabled('Aura') then
-			frame:DisableElement('Aura')
+		if frame:IsElementEnabled('Auras') then
+			frame:DisableElement('Auras')
 		end
 	end
 end
