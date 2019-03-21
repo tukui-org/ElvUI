@@ -7,7 +7,6 @@ local format, strjoin, wipe = string.format, strjoin, wipe
 --WoW API / Variables
 local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
-local SocialQueueUtil_SortGroupMembers = SocialQueueUtil_SortGroupMembers
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local C_SocialQueue_GetAllGroups = C_SocialQueue.GetAllGroups
 local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
@@ -41,15 +40,8 @@ local function OnEvent(self)
 	local coloredName, players, members, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityName, leaderName, isLeader, activity, output, queueCount, queueName, searchResultInfo
 
 	for _, guid in pairs(quickJoinGroups) do
-		members = nil -- clear it
-		players = C_SocialQueue_GetGroupMembers(guid)
-		if players and next(players) then
-			if type(players[1]) == 'table' and type(players[2]) == 'table' then
-				members = SocialQueueUtil_SortGroupMembers(players)
-			else
-				members = players
-			end
-		end
+		players, members = (C_SocialQueue_GetGroupMembers(guid)), nil -- clear members
+		if players and next(players) then members = CHAT:SocialQueueUtil_SortGroupMembers(players) end
 		if members then
 			firstMember, numMembers, extraCount = members[1], #members, ''
 			playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)

@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 --Lua functions
-local gsub, strfind, gmatch, format = gsub, strfind, gmatch, format
+local sort, gsub, strfind, gmatch, format = sort, gsub, strfind, gmatch, format
 local ipairs, wipe, time, difftime = ipairs, wipe, time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
@@ -75,13 +75,13 @@ local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
 local Social_GetShareAchievementLink = Social_GetShareAchievementLink
 local Social_GetShareItemLink = Social_GetShareItemLink
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
-local SocialQueueUtil_SortGroupMembers = SocialQueueUtil_SortGroupMembers
 local StaticPopup_Visible = StaticPopup_Visible
 local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitName = UnitName
+local strcmputf8i = strcmputf8i
 local UnitRealmRelationship = UnitRealmRelationship
 
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
@@ -2161,19 +2161,33 @@ function CH:SocialQueueMessage(guid, message)
 	E:Print(format('|Hsqu:%s|h%s|h', guid, strtrim(message)))
 end
 
+local relationshipPriorityOrdering = {bnfriend=1,wowfriend=2,guild=3,club=4};
+function CH:SocialQueueUtil_SortGroupMembers(members)
+	sort(members, function(lhs, rhs)
+		if lhs and rhs then -- cause this errors in blizzards.. rest of the function is copy/paste from `SocialQueue.lua#217`
+			local lhsName, _, lhsRelationship = SocialQueueUtil_GetRelationshipInfo(lhs.guid, nil, lhs.clubId);
+			local rhsName, _, rhsRelationship = SocialQueueUtil_GetRelationshipInfo(rhs.guid, nil, lhs.clubId);
+
+			-- Sort order bnFriend
+			if lhsRelationship ~= rhsRelationship then
+			  local lhsPriority = lhsRelationship and relationshipPriorityOrdering[lhsRelationship] or 10;
+			  local rhsPriority = rhsRelationship and relationshipPriorityOrdering[rhsRelationship] or 10;
+			  return lhsPriority < rhsPriority;
+			end
+
+			return strcmputf8i(lhsName, rhsName) <= 0;
+		end
+	end);
+
+	return members;
+end
+
 function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedItems
 	if not self.db.socialQueueMessages then return end
 	if numAddedItems == 0 or not guid then return end
 
-	local members
-	local players = C_SocialQueue_GetGroupMembers(guid)
-	if players and next(players) then
-		if type(players[1]) == 'table' and type(players[2]) == 'table' then
-			members = SocialQueueUtil_SortGroupMembers(players)
-		else
-			members = players
-		end
-	end
+	local players, members = (C_SocialQueue_GetGroupMembers(guid))
+	if players and next(players) then members = CH:SocialQueueUtil_SortGroupMembers(players) end
 	if not members then return end -- just bail because huh? no members in a group?
 
 	local firstMember, numMembers, extraCount, coloredName = members[1], #members, ''
