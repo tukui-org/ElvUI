@@ -4,16 +4,6 @@ local NP = E:GetModule('NamePlates')
 local pairs = pairs
 local CreateFrame = CreateFrame
 
-function NP:Health_PostUpdate()
-	local r, g, b = self:GetStatusBarColor()
-	self.r, self.g, self.b = r, g, b
-
-	local filterColored = self.__owner.HealthColorChanged
-	if filterColored then
-		self:SetStatusBarColor(filterColored.r, filterColored.g, filterColored.b)
-	end
-end
-
 function NP:Health_UpdateColor(event, unit)
 	if(not unit or self.unit ~= unit) then return end
 	local element = self.Health
@@ -44,8 +34,13 @@ function NP:Health_UpdateColor(event, unit)
 		t = self.colors.health
 	end
 
+	if self.HealthColorChanged then
+		t = self.HealthColorChanged
+	end
+
 	if(t) then
 		r, g, b = t[1] or t.r, t[2] or t.g, t[3] or t.b
+		self.r, self.g, self.b = r, g, b
 	end
 
 	if(b) then
@@ -90,7 +85,6 @@ function NP:Construct_Health(nameplate)
 	nameplate.FlashTexture:Hide()
 
 	Health.frequentUpdates = true
-	Health.PostUpdate = NP.Health_PostUpdate
 	Health.UpdateColor = NP.Health_UpdateColor
 
 	return Health
