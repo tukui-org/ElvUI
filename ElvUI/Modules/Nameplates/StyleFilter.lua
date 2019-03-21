@@ -150,8 +150,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if VisibilityChanged then
 		frame.StyleChanged = true
 		frame.VisibilityChanged = true
-		frame:ClearAllPoints()
-		frame:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
+		mod:DisablePlate(frame)
 		return --We hide it. Lets not do other things (no point)
 	end
 	if HealthColorChanged then
@@ -233,32 +232,9 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.Portrait:ForceUpdate()
 	end
 	if NameOnlyChanged then
-	--[[
 		frame.StyleChanged = true
 		frame.NameOnlyChanged = true
-		--hide the bars
-		if frame.Castbar:IsShown() then frame.Castbar:Hide() end
-		if frame.Power:IsShown() then frame.Power:Hide() end
-		if frame.Health:IsShown() then frame.Health:Hide() end
-		--hide the target indicator
-		self:UpdateElement_Glow(frame)
-		--position the name and update its color
-		frame.Name:ClearAllPoints()
-		frame.Name:SetJustifyH("CENTER")
-		frame.Name:Point("TOP", frame, "CENTER")
-		frame.Level:ClearAllPoints()
-		frame.Level:Point("LEFT", frame.Name, "RIGHT")
-		frame.Level:SetJustifyH("LEFT")
-		if not NameColorChanged then
-			self:UpdateElement_Name(frame, true)
-		end
-		--show the npc title
-		self:UpdateElement_NPCTitle(frame, true)
-		--position the portrait
-		self:ConfigureElement_Portrait(frame, true)
-		--position suramar detection
-		self:ConfigureElement_Detection(frame, frame.Portrait:IsShown() and frame.Portrait)
-	]]
+		mod:DisablePlate(frame, true)
 	end
 end
 
@@ -266,8 +242,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	frame.StyleChanged = nil
 	if VisibilityChanged then
 		frame.VisibilityChanged = nil
-		frame:ClearAllPoints()
-		frame:Point('CENTER')
+		mod:UpdatePlate(frame)
 	end
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
@@ -326,31 +301,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
-		if (frame.frameType and self.db.units[frame.frameType].health.enable) or (self.db.displayStyle ~= "ALL") or (frame.isTarget and self.db.alwaysShowTargetHealth) then
-			frame.Health:Show()
-			self:UpdateElement_Glow(frame)
-			if self.db.units[frame.frameType].power and self.db.units[frame.frameType].power.enable then
-				local curValue = UnitPower(frame.unit, frame.PowerType);
-				if not (curValue == 0 and self.db.units[frame.frameType].power.hideWhenEmpty) then
-					frame.Power:Show()
-				end
-			end
-		end
-		if self.db.units[frame.frameType].showName then
-			self:ConfigureElement_Level(frame)
-			self:ConfigureElement_Name(frame)
-			self:UpdateElement_Name(frame)
-		else
-			frame.Name:SetText('')
-		end
-		if self.db.showNPCTitles then
-			self:UpdateElement_NPCTitle(frame)
-		else
-			frame.NPCTitle:SetText('')
-		end
-		if self.db.units[frame.frameType].portrait.enable then
-			self:ConfigureElement_Portrait(frame)
-		end
+		mod:UpdatePlate(frame)
 	end
 end
 

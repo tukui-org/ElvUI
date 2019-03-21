@@ -1580,8 +1580,7 @@ local function UpdateFilterGroup()
 					name = L["Name Only"],
 					order = 3,
 					type = 'toggle',
-					disabled = true,
-					--disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
+					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 				},
 				spacer1 = {
 					order = 4,
