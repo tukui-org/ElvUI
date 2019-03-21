@@ -150,7 +150,9 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if VisibilityChanged then
 		frame.StyleChanged = true
 		frame.VisibilityChanged = true
-		mod:DisablePlate(frame)
+		mod:DisablePlate(frame) -- disable the plate elements
+		frame:ClearAllPoints() -- lets still move the frame out cause its clickable otherwise
+		frame:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
 		return --We hide it. Lets not do other things (no point)
 	end
 	if HealthColorChanged then
@@ -242,7 +244,10 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	frame.StyleChanged = nil
 	if VisibilityChanged then
 		frame.VisibilityChanged = nil
-		mod:UpdatePlate(frame)
+		mod:UpdatePlate(frame) -- enable elements back
+		frame:ClearAllPoints() -- pull the frame back in
+		frame:Point('CENTER')
+		E:UIFrameFadeIn(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
 	end
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
@@ -287,11 +292,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if AlphaChanged then
 		frame.AlphaChanged = nil
-		if mod.db.fadeIn then
-			E:UIFrameFadeIn(frame, 1, 0, 1)
-		else
-			frame:SetAlpha(1)
-		end
+		E:UIFrameFadeIn(frame, mod.db.fadeIn and 1 or 0, 0, 1)
 	end
 	if NameColorChanged then
 		frame.NameColorChanged = nil
