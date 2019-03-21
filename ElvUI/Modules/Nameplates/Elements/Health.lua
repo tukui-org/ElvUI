@@ -34,13 +34,14 @@ function NP:Health_UpdateColor(event, unit)
 		t = self.colors.health
 	end
 
-	if self.HealthColorChanged then
-		t = self.HealthColorChanged
-	end
-
 	if(t) then
 		r, g, b = t[1] or t.r, t[2] or t.g, t[3] or t.b
-		self.r, self.g, self.b = r, g, b
+		element.r, element.g, element.b = r, g, b -- save these for the style filter to switch back
+	end
+
+	if self.HealthColorChanged then
+		t = self.HealthColorChanged
+		r, g, b = t.r, t.g, t.b -- use the style filter values
 	end
 
 	if(b) then
