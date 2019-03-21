@@ -259,7 +259,6 @@ function NP:CVarReset()
 	SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
 	SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
 	SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
-	SetCVar('nameplateSelectedAlpha', 1)
 	SetCVar('nameplateSelectedScale', 1)
 	SetCVar('nameplateSelfAlpha', 1)
 	SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'))
@@ -278,6 +277,10 @@ function NP:CVarReset()
 end
 
 function NP:PLAYER_REGEN_DISABLED()
+	SetCVar("nameplateMaxAlpha", .65)
+	SetCVar("nameplateOccludedAlphaMult", .6)
+	SetCVar('nameplateSelectedAlpha', 1)
+
 	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
 		SetCVar('nameplateShowFriends', 1);
 	elseif (NP.db.showFriendlyCombat == 'TOGGLE_OFF') then
@@ -292,6 +295,10 @@ function NP:PLAYER_REGEN_DISABLED()
 end
 
 function NP:PLAYER_REGEN_ENABLED()
+	SetCVar("nameplateMaxAlpha", 1)
+	SetCVar("nameplateOccludedAlphaMult", .4)
+	SetCVar('nameplateSelectedAlpha', 1)
+
 	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
 		SetCVar('nameplateShowFriends', 0);
 	elseif (NP.db.showFriendlyCombat == 'TOGGLE_OFF') then
@@ -407,56 +414,6 @@ function NP:ConfigureAll()
 	NP:SetNamePlateClickThrough()
 end
 
-function NP:IsBlizzardPlateOccluded(nameplate)
-	local OccludedAlpha = GetCVar('nameplateMaxAlpha') * GetCVar('nameplateOccludedAlphaMult')
-	return E:Round(nameplate:GetParent():GetAlpha(), 2) == OccludedAlpha
-end
-
-function NP:GetNonTargetAlpha(nameplate, hasTarget)
-	local Alpha = NP.db.units.TARGET.nonTargetTransparency
-	if (nameplate.frameType == 'PLAYER') or nameplate.isTarget then
-		Alpha = 1
-	elseif (not nameplate.isTarget) and not nameplate.isUnitOccluded and NP:IsBlizzardPlateOccluded(nameplate) then
-		Alpha = Alpha * 0.5
-	elseif not hasTarget then
-		Alpha = 1
-	end
-
-	return Alpha
-end
-
-function NP:HandleTargetAlpha(nameplate, added)
-	if nameplate then
-		local alpha
-		if nameplate.frameType == 'PLAYER' then
-			alpha = 1
-		else
-			local hasTarget = UnitExists('target')
-			local newAlpha = (nameplate.isTarget and 1) or (hasTarget and NP.db.units.TARGET.nonTargetTransparency)
-			alpha = newAlpha or NP:GetNonTargetAlpha(nameplate, hasTarget)
-		end
-
-		if added and NP.db.fadeIn then
-			E:UIFrameFadeIn(nameplate, 1, 0, alpha)
-		else
-			nameplate:SetAlpha(alpha)
-		end
-	end
-end
-
-function NP:WatchOccluded(elapsed)
-	if self.elapsed and (self.elapsed > 0.05) then
-		local nameplate = self and self:GetParent()
-		if nameplate then
-			nameplate.isUnitOccluded = NP:IsBlizzardPlateOccluded(nameplate)
-		end
-
-		self.elapsed = 0
-	else
-		self.elapsed = (self.elapsed or 0) + elapsed
-	end
-end
-
 function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'NAME_PLATE_UNIT_ADDED' and nameplate then
 		NP:ClearStyledPlate(nameplate)
@@ -503,24 +460,12 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:SetupTarget(nameplate)
 		end
 
-		if not nameplate.OccludedWatcher then
-			nameplate.OccludedWatcher = CreateFrame('Frame', nil, nameplate)
-		end
-
-		nameplate.OccludedWatcher:SetScript('OnUpdate', NP.WatchOccluded)
-
-		NP:HandleTargetAlpha(nameplate, true)
-
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		NP:ClearStyledPlate(nameplate)
 
 		if nameplate.frameType == 'PLAYER' and nameplate ~= _G.ElvNP_Test then
 			NP.PlayerNamePlateAnchor:Hide()
-		end
-
-		if nameplate.OccludedWatcher then
-			nameplate.OccludedWatcher:SetScript('OnUpdate', nil)
 		end
 
 		nameplate.isTargetingMe = nil
@@ -538,7 +483,6 @@ end
 NP.plateEvents = {
 	['PLAYER_TARGET_CHANGED'] = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
-		NP:HandleTargetAlpha(self)
 	end,
 	['UNIT_TARGET'] = function(self, _, unit)
 		unit = unit or self.unit
