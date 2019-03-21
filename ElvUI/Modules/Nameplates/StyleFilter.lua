@@ -287,7 +287,11 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if AlphaChanged then
 		frame.AlphaChanged = nil
-		mod:HandleTargetAlpha(frame)
+		if mod.db.fadeIn then
+			E:UIFrameFadeIn(frame, 1, 0, 1)
+		else
+			frame:SetAlpha(1)
+		end
 	end
 	if NameColorChanged then
 		frame.NameColorChanged = nil

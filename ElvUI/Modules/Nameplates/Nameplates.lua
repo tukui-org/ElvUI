@@ -25,7 +25,6 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitExists = UnitExists
 local UnitClass = UnitClass
 local UnitName = UnitName
-local GetCVar = GetCVar
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local GetSpecializationRole = GetSpecializationRole
@@ -458,6 +457,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if nameplate.isTarget then
 			NP:SetupTarget(nameplate)
+		end
+
+		if NP.db.fadeIn then
+			E:UIFrameFadeIn(nameplate, 1, 0, 1)
 		end
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
