@@ -113,7 +113,6 @@ function NP:Construct_Power(nameplate)
 	Power.frequentUpdates = true
 	Power.colorTapping = false
 	Power.colorClass = false
-	Power.Smooth = true
 
 	Power.PostUpdate = NP.Power_PostUpdate
 	Power.UpdateColor = NP.Power_UpdateColor
