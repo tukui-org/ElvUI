@@ -333,7 +333,10 @@ local function initObject(unit, style, styleFunc, header, ...)
 		styleFunc(object, objectUnit, not header)
 
 		object:HookScript('OnAttributeChanged', onAttributeChanged)
-		if not object.isNamePlate then
+
+		-- NAME_PLATE_UNIT_ADDED fires after the frame is shown, so there's no
+		-- need to call UAE multiple times
+		if(not object.isNamePlate) then
 			object:SetScript('OnShow', onShow)
 		end
 
@@ -346,7 +349,7 @@ local function initObject(unit, style, styleFunc, header, ...)
 		end
 
 		-- Make Clique kinda happy
-		if not object.isNamePlate then
+		if(not object.isNamePlate) then
 			_G.ClickCastFrames = ClickCastFrames or {}
 			ClickCastFrames[object] = true
 		end
@@ -745,6 +748,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 	argcheck(nameplateCallback, 3, 'function', 'nil')
 	argcheck(nameplateCVars, 4, 'table', 'nil')
 	if(not style) then return error('Unable to create frame. No styles have been registered.') end
+	if(oUF_NamePlateDriver) then return error('oUF nameplate driver has already been initialized.') end
 
 	local style = style
 	local prefix = namePrefix or generateName()
@@ -759,7 +763,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 		end
 	end)
 
-	local eventHandler = CreateFrame('Frame')
+	local eventHandler = CreateFrame('Frame', 'oUF_NamePlateDriver')
 	eventHandler:RegisterEvent('NAME_PLATE_UNIT_ADDED')
 	eventHandler:RegisterEvent('NAME_PLATE_UNIT_REMOVED')
 	eventHandler:RegisterEvent('PLAYER_TARGET_CHANGED')
@@ -787,6 +791,8 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 				nameplateCallback(nameplate and nameplate.unitFrame, event, 'target')
 			end
 
+			-- UAE is called after the callback to reduce the number of
+			-- ForceUpdate calls layout devs have to do themselves
 			if(nameplate) then
 				nameplate.unitFrame:UpdateAllElements(event)
 			end
@@ -814,6 +820,8 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 				nameplateCallback(nameplate.unitFrame, event, unit)
 			end
 
+			-- UAE is called after the callback to reduce the number of
+			-- ForceUpdate calls layout devs have to do themselves
 			nameplate.unitFrame:UpdateAllElements(event)
 		elseif(event == 'NAME_PLATE_UNIT_REMOVED' and unit) then
 			local nameplate = C_NamePlate.GetNamePlateForUnit(unit)
