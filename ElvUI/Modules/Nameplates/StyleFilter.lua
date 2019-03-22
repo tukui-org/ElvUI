@@ -307,6 +307,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
 		mod:UpdatePlate(frame)
+		E:UIFrameFadeIn(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
 	end
 end
 
