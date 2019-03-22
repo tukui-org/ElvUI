@@ -29,7 +29,7 @@ local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local GetSpecializationRole = GetSpecializationRole
 local GetSpecialization = GetSpecialization
-
+local InCombatLockdown = InCombatLockdown
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
