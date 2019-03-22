@@ -699,8 +699,7 @@ function mod:StyleFilterSort(place)
 	end
 end
 
--- Event functions fired from the NamePlate itself
-mod.StyleFilterEventFunctions = {
+mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	['PLAYER_TARGET_CHANGED'] = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
 	end,
@@ -940,6 +939,7 @@ do -- oUF style filter inject watch functions without actually registering any e
 	end
 end
 
+-- events we actually register on plates when they aren't added
 function mod:StyleFilterEvents(nameplate)
 	if not nameplate:IsEventRegistered('PLAYER_TARGET_CHANGED') then
 		nameplate:RegisterEvent('PLAYER_TARGET_CHANGED', E.noop, true)
