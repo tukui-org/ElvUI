@@ -592,6 +592,11 @@ E.Options.args.bags = {
 			get = function(info) return E.db.bags.split[ info[#info] ] end,
 			set = function(info, value) E.db.bags.split[ info[#info] ] = value B:UpdateAll() end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Split"],
+				},
 				bagSpacing = {
 					order = 1,
 					type = "range",
@@ -696,6 +701,11 @@ E.Options.args.bags = {
 			get = function(info) return E.db.bags.vendorGrays[ info[#info] ] end,
 			set = function(info, value) E.db.bags.vendorGrays[ info[#info] ] = value; B:UpdateSellFrameSettings() end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Vendor Grays"],
+				},
 				enable = {
 					order = 1,
 					type = "toggle",

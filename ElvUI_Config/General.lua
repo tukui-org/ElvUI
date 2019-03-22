@@ -692,6 +692,11 @@ E.Options.args.general = {
 			get = function(info) return E.db.general[ info[#info] ] end,
 			set = function(info, value) E.db.general[ info[#info] ] = value end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["BlizzUI Improvements"],
+				},
 				loot = {
 					order = 1,
 					type = "toggle",
@@ -850,6 +855,11 @@ E.Options.args.general = {
 			get = function(info) return E.db.general[ info[#info] ] end,
 			set = function(info, value) E.db.general[ info[#info] ] = value end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Miscellaneous"],
+				},
 				interruptAnnounce = {
 					order = 1,
 					name = L["Announce Interrupts"],
