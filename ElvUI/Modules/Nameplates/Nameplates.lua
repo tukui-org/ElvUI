@@ -451,9 +451,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:SetupTarget(nameplate)
 		end
 
-		--if nameplate:IsShown() and NP.db.fadeIn then
-		--	E:UIFrameFadeIn(nameplate, 1, 0, 1)
-		--end
+		if nameplate:IsShown() and NP.db.fadeIn then
+			E:UIFrameFadeIn(nameplate, 1, 0, 1)
+		end
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
