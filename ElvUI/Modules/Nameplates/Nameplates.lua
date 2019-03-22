@@ -244,8 +244,7 @@ function NP:CVarReset()
 	SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'))
 	SetCVar('nameplateLargerScale', 1)
 	SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'))
-	SetCVar('nameplateMaxAlpha', 1)
-	SetCVar('nameplateMaxAlphaDistance', 40)
+	SetCVar('nameplateMaxAlphaDistance', GetCVarDefault('nameplateMaxAlphaDistance'))
 	SetCVar('nameplateMaxScale', 1)
 	SetCVar('nameplateMaxScaleDistance', 40)
 	SetCVar('nameplateMinAlpha', 1)
@@ -263,20 +262,12 @@ function NP:CVarReset()
 	SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'))
 	SetCVar('nameplateSelfScale', 1)
 	SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'))
-	SetCVar('nameplateShowEnemies', 1)
-	SetCVar('nameplateShowEnemyGuardians', 0)
-	SetCVar('nameplateShowEnemyPets', 1)
-	SetCVar('nameplateShowEnemyTotems', 0)
-	SetCVar('nameplateShowFriendlyGuardians', 0)
-	SetCVar('nameplateShowFriendlyNPCs', 1)
-	SetCVar('nameplateShowFriendlyPets', 0)
-	SetCVar('nameplateShowFriendlyTotems', 0)
-	SetCVar('nameplateShowFriends', 0)
 	SetCVar('nameplateTargetBehindMaxDistance', 40)
 end
 
 function NP:PLAYER_REGEN_DISABLED()
-	SetCVar("nameplateMaxAlpha", .65)
+	SetCVar("nameplateMaxAlpha", 1)
+	SetCVar("nameplateMinAlpha", NP.db.units.TARGET.nonTargetTransparency)
 	SetCVar("nameplateOccludedAlphaMult", .6)
 	SetCVar('nameplateSelectedAlpha', 1)
 
@@ -295,6 +286,7 @@ end
 
 function NP:PLAYER_REGEN_ENABLED()
 	SetCVar("nameplateMaxAlpha", 1)
+	SetCVar("nameplateMinAlpha", 1)
 	SetCVar("nameplateOccludedAlphaMult", .4)
 	SetCVar('nameplateSelectedAlpha', 1)
 
@@ -459,9 +451,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:SetupTarget(nameplate)
 		end
 
-		if NP.db.fadeIn then
-			E:UIFrameFadeIn(nameplate, 1, 0, 1)
-		end
+		--if nameplate:IsShown() and NP.db.fadeIn then
+		--	E:UIFrameFadeIn(nameplate, 1, 0, 1)
+		--end
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
