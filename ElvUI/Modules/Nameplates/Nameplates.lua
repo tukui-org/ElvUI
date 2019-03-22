@@ -148,28 +148,36 @@ function NP:StylePlate(nameplate)
 end
 
 function NP:UpdatePlate(nameplate)
-	NP:Update_Health(nameplate)
-	NP:Update_HealthPrediction(nameplate)
-	NP:Update_Power(nameplate)
-	NP:Update_PowerPrediction(nameplate)
-	NP:Update_Castbar(nameplate)
-	NP:Update_ClassPower(nameplate)
-	if E.myclass == 'DEATHKNIGHT' then
-		NP:Update_Runes(nameplate)
-	end
-	NP:Update_Auras(nameplate)
-	NP:Update_ClassificationIndicator(nameplate)
-	NP:Update_QuestIcons(nameplate)
-	NP:Update_Portrait(nameplate)
-	NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
-	NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
-	NP:Update_TargetIndicator(nameplate)
-	NP:Update_ThreatIndicator(nameplate)
-	NP:Update_RaidTargetIndicator(nameplate)
-	NP:Update_Highlight(nameplate)
-	NP:Update_HealerSpecs(nameplate)
 	NP:Update_Tags(nameplate)
-	NP:Update_DetectionIndicator(nameplate)
+
+	if (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
+		NP:DisablePlate(nameplate, NP.db.units[nameplate.frameType].nameOnly)
+	else
+		NP:Update_Health(nameplate)
+		NP:Update_HealthPrediction(nameplate)
+		NP:Update_Power(nameplate)
+		NP:Update_PowerPrediction(nameplate)
+		NP:Update_Castbar(nameplate)
+
+		NP:Update_ClassPower(nameplate)
+		if E.myclass == 'DEATHKNIGHT' then
+			NP:Update_Runes(nameplate)
+		end
+
+		NP:Update_Auras(nameplate)
+		NP:Update_ClassificationIndicator(nameplate)
+		NP:Update_QuestIcons(nameplate)
+		NP:Update_Portrait(nameplate)
+		NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
+		NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
+		NP:Update_TargetIndicator(nameplate)
+		NP:Update_ThreatIndicator(nameplate)
+		NP:Update_RaidTargetIndicator(nameplate)
+		NP:Update_Highlight(nameplate)
+		NP:Update_HealerSpecs(nameplate)
+		NP:Update_DetectionIndicator(nameplate)
+	end
+
 	NP:UpdatePlateEvents(nameplate)
 end
 
@@ -439,10 +447,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		NP:UpdatePlate(nameplate)
-
-		if (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
-			NP:DisablePlate(nameplate, NP.db.units[nameplate.frameType].nameOnly)
-		end
 
 		if nameplate.isTarget then
 			NP:SetupTarget(nameplate)
