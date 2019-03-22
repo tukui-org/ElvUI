@@ -1049,7 +1049,7 @@ local function removeDefaults(db, defaults, blocker)
 	end
 end
 
-function mod:PLAYER_LOGOUT()
+function mod:StyleFilterClearDefaults()
 	for filterName, filterTable in pairs(E.global.nameplate.filters) do
 		if G.nameplate.filters[filterName] then
 			local defaultTable = E:CopyTable({}, E.StyleFilterDefaults);
@@ -1061,12 +1061,12 @@ function mod:PLAYER_LOGOUT()
 	end
 end
 
+function mod:StyleFilterCopyDefaults(tbl)
+	copyDefaults(tbl, E.StyleFilterDefaults);
+end
+
 function mod:StyleFilterInitialize()
 	for _, filterTable in pairs(E.global.nameplate.filters) do
 		mod:StyleFilterCopyDefaults(filterTable);
 	end
-end
-
-function mod:StyleFilterCopyDefaults(tbl)
-	copyDefaults(tbl, E.StyleFilterDefaults);
 end
