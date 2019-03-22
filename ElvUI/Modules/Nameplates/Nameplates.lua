@@ -265,7 +265,7 @@ function NP:CVarReset()
 end
 
 function NP:PLAYER_REGEN_DISABLED()
-	SetCVar("nameplateMaxAlpha", 1)
+	SetCVar("nameplateMaxAlpha", NP.db.units.TARGET.nonTargetTransparency)
 	SetCVar("nameplateMinAlpha", NP.db.units.TARGET.nonTargetTransparency)
 	SetCVar("nameplateOccludedAlphaMult", .6)
 	SetCVar('nameplateSelectedAlpha', 1)
