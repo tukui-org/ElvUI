@@ -1893,17 +1893,17 @@ local function GetUnitSettings(unit, name)
 						disabled = function() return unit == "PLAYER" end,
 						hidden = function() return unit == "PLAYER" end,
 					},
-					height = {
-						order = 2,
-						name = L["Height"],
-						type = "range",
-						min = 4, max = 20, step = 1,
-					},
 					width = {
-						order = 3,
+						order = 2,
 						name = L["Width"],
 						type = "range",
 						min = 50, max = 200, step = 1,
+					},
+					height = {
+						order = 3,
+						name = L["Height"],
+						type = "range",
+						min = 4, max = 20, step = 1,
 					},
 					yOffset = {
 						order = 4,
@@ -2027,17 +2027,17 @@ local function GetUnitSettings(unit, name)
 						name = L["Hide When Empty"],
 						type = "toggle",
 					},
-					height = {
-						order = 3,
-						name = L["Height"],
-						type = "range",
-						min = 4, max = 20, step = 1,
-					},
 					width = {
-						order = 4,
+						order = 3,
 						name = L["Width"],
 						type = "range",
 						min = 50, max = 200, step = 1,
+					},
+					height = {
+						order = 4,
+						name = L["Height"],
+						type = "range",
+						min = 4, max = 20, step = 1,
 					},
 					yOffset = {
 						order = 5,
@@ -2193,17 +2193,17 @@ local function GetUnitSettings(unit, name)
 						type = "description",
 						name = " ",
 					},
-					height = {
-						order = 7,
-						name = L["Height"],
-						type = "range",
-						min = 4, max = 20, step = 1,
-					},
 					width = {
-						order = 8,
+						order = 7,
 						name = L["Width"],
 						type = "range",
 						min = 50, max = 200, step = 1,
+					},
+					height = {
+						order = 8,
+						name = L["Height"],
+						type = "range",
+						min = 4, max = 20, step = 1,
 					},
 					yOffset = {
 						order = 9,
@@ -3365,17 +3365,17 @@ local function GetUnitSettings(unit, name)
 					type = "range",
 					min = -80, max = 80, step = 1,
 				},
-				height = {
-					order = 4,
-					name = L["Height"],
-					type = "range",
-					min = 4, max = 20, step = 1,
-				},
 				width = {
-					order = 5,
+					order = 4,
 					name = L["Width"],
 					type = "range",
 					min = 50, max = 200, step = 1,
+				},
+				height = {
+					order = 5,
+					name = L["Height"],
+					type = "range",
+					min = 4, max = 20, step = 1,
 				},
 				classColor = {
 					type = "toggle",
@@ -4706,23 +4706,23 @@ E.Options.args.nameplate = {
 							type = "toggle",
 							name = L['Enable']
 						},
-						yOffset = {
-							order = 2,
-							name = L["Y-Offset"],
+						width = {
+							order = 1,
+							name = L["Width"],
 							type = "range",
-							min = -80, max = 80, step = 1,
+							min = 50, max = 200, step = 1,
 						},
 						height = {
-							order = 3,
+							order = 2,
 							name = L["Height"],
 							type = "range",
 							min = 4, max = 20, step = 1,
 						},
-						width = {
-							order = 4,
-							name = L["Width"],
+						yOffset = {
+							order = 3,
+							name = L["Y-Offset"],
 							type = "range",
-							min = 50, max = 200, step = 1,
+							min = -80, max = 80, step = 1,
 						},
 						classColor = {
 							type = "toggle",
