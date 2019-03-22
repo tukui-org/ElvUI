@@ -21,10 +21,6 @@ local function UpdateAlphaText(displayValue)
 		displayValue = floor(((1 - _G.OpacitySliderFrame:GetValue()) * 100) + .05)
 	end
 
-	if displayValue > 100 then
-		displayValue = 100
-	end
-
 	_G.ColorPPBoxA:SetText(displayValue)
 end
 
