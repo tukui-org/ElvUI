@@ -2207,7 +2207,7 @@ local function GetUnitSettings(unit, name)
 					},
 					textGroup = {
 						order = 10,
-						name = "",
+						name = L["Text"],
 						type = "group",
 						get = function(info) return E.db.nameplates.units[unit].castbar[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,
@@ -3162,7 +3162,7 @@ local function GetUnitSettings(unit, name)
 					fontGroup = {
 						type = "group",
 						order = 7,
-						name = "",
+						name = L["Font"],
 						guiInline = true,
 						get = function(info) return E.db.nameplates.units[unit].name[ info[#info] ] end,
 						set = function(info, value) E.db.nameplates.units[unit].name[ info[#info] ] = value; NP:ConfigureAll() end,
@@ -3675,7 +3675,7 @@ local function GetUnitSettings(unit, name)
 				fontGroup = {
 					type = "group",
 					order = 7,
-					name = "",
+					name = L["Font"],
 					guiInline = true,
 					get = function(info) return E.db.nameplates.units[unit].title[ info[#info] ] end,
 					set = function(info, value) E.db.nameplates.units[unit].title[ info[#info] ] = value; NP:ConfigureAll() end,
