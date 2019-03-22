@@ -158,12 +158,7 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_Power(nameplate)
 		NP:Update_PowerPrediction(nameplate)
 		NP:Update_Castbar(nameplate)
-
 		NP:Update_ClassPower(nameplate)
-		if E.myclass == 'DEATHKNIGHT' then
-			NP:Update_Runes(nameplate)
-		end
-
 		NP:Update_Auras(nameplate)
 		NP:Update_ClassificationIndicator(nameplate)
 		NP:Update_QuestIcons(nameplate)
@@ -176,6 +171,9 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_Highlight(nameplate)
 		NP:Update_HealerSpecs(nameplate)
 		NP:Update_DetectionIndicator(nameplate)
+		if E.myclass == 'DEATHKNIGHT' then
+			NP:Update_Runes(nameplate)
+		end
 	end
 
 	NP:UpdatePlateEvents(nameplate)
@@ -200,6 +198,9 @@ function NP:DisablePlate(nameplate, nameOnly)
 	if nameplate:IsElementEnabled('HealerSpecs') then nameplate:DisableElement('HealerSpecs') end
 	if nameplate:IsElementEnabled('DetectionIndicator') then nameplate:DisableElement('DetectionIndicator') end
 	if nameplate:IsElementEnabled('Auras') then nameplate:DisableElement('Auras') end
+	if E.myclass == 'DEATHKNIGHT' and nameplate:IsElementEnabled('Runes') then
+		nameplate:DisableElement('Runes')
+	end
 
 	nameplate.Health.Text:Hide()
 	nameplate.Power.Text:Hide()
@@ -216,10 +217,6 @@ function NP:DisablePlate(nameplate, nameOnly)
 			nameplate.Title:ClearAllPoints()
 			nameplate.Title:SetPoint('TOP', nameplate.Name, 'BOTTOM', 0, -2)
 		end
-	end
-
-	if E.myclass == 'DEATHKNIGHT' then
-		if nameplate:IsElementEnabled('Runes') then nameplate:DisableElement('Runes') end
 	end
 end
 
