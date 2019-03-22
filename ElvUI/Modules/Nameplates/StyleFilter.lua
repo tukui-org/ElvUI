@@ -69,8 +69,8 @@ function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, min
 						minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
 						maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
 						if timeLeft then -- if we use a min/max time setting; we must create a delay timer
-							if hasMinTime then self:StyleFilterAuraWaitTimer(frame, button, 'hasMinTimer', timeLeft, minTimeLeft) end
-							if hasMaxTime then self:StyleFilterAuraWaitTimer(frame, button, 'hasMaxTimer', timeLeft, maxTimeLeft) end
+							if hasMinTime then mod:StyleFilterAuraWaitTimer(frame, button, 'hasMinTimer', timeLeft, minTimeLeft) end
+							if hasMaxTime then mod:StyleFilterAuraWaitTimer(frame, button, 'hasMaxTimer', timeLeft, maxTimeLeft) end
 						end
 						if minTimeAllow and maxTimeAllow then
 							count = count + 1 --keep track of how many matches we have
@@ -182,11 +182,11 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.StyleChanged = true
 		frame.FlashingHealth = true
 		if not TextureChanged then
-			frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
+			frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", mod.db.statusbar))
 		end
 		frame.FlashTexture:SetVertexColor(actions.flash.color.r, actions.flash.color.g, actions.flash.color.b)
 		if not frame.FlashTexture.anim then
-			self:StyleFilterSetUpFlashAnim(frame.FlashTexture)
+			mod:StyleFilterSetUpFlashAnim(frame.FlashTexture)
 		end
 		frame.FlashTexture.anim.fadein:SetToAlpha(actions.flash.color.a)
 		frame.FlashTexture.anim.fadeout:SetFromAlpha(actions.flash.color.a)
@@ -207,10 +207,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.StyleChanged = true
 		frame.ScaleChanged = true
 		local scale = actions.scale
-		if frame.isTarget and self.db.useTargetScale then
-			scale = scale * self.db.targetScale
+		if frame.isTarget and mod.db.useTargetScale then
+			scale = scale * mod.db.targetScale
 		end
-		self:SetFrameScale(frame, scale)
+		mod:SetFrameScale(frame, scale)
 	]]
 	end
 	if AlphaChanged then
@@ -230,7 +230,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if PortraitShown then
 		frame.StyleChanged = true
 		frame.PortraitShown = true
-		self:Update_Portrait(frame)
+		mod:Update_Portrait(frame)
 		frame.Portrait:ForceUpdate()
 	end
 	if NameOnlyChanged then
@@ -279,15 +279,15 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if TextureChanged then
 		frame.TextureChanged = nil
-		frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", self.db.statusbar))
-		frame.Health:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+		frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", mod.db.statusbar))
+		frame.Health:SetStatusBarTexture(LSM:Fetch("statusbar", mod.db.statusbar))
 	end
 	if ScaleChanged then
 		frame.ScaleChanged = nil
-		if frame.isTarget and self.db.useTargetScale then
-			self:SetFrameScale(frame, self.db.targetScale)
+		if frame.isTarget and mod.db.useTargetScale then
+			mod:SetFrameScale(frame, mod.db.targetScale)
 		else
-			self:SetFrameScale(frame, frame.ThreatScale or 1)
+			mod:SetFrameScale(frame, frame.ThreatScale or 1)
 		end
 	end
 	if AlphaChanged then
@@ -301,7 +301,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if PortraitShown then
 		frame.PortraitShown = nil
-		self:Update_Portrait(frame)
+		mod:Update_Portrait(frame)
 		frame.Portrait:ForceUpdate()
 	end
 	if NameOnlyChanged then
@@ -633,7 +633,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 
 	--Try to match according to cooldown conditions
 	if not failed and trigger.cooldowns and trigger.cooldowns.names and next(trigger.cooldowns.names) then
-		condition = self:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll)
+		condition = mod:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll)
 		if condition ~= nil then --Condition will be nil if none are set to ONCD or OFFCD
 			failed = not condition
 		end
@@ -641,7 +641,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 
 	--Try to match according to buff aura conditions
 	if not failed and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-		condition = self:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
+		condition = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
 		if condition ~= nil then --Condition will be nil if none are selected
 			failed = not condition
 		end
@@ -649,20 +649,20 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 
 	--Try to match according to debuff aura conditions
 	if not failed and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
-		condition = self:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
+		condition = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
 		if condition ~= nil then --Condition will be nil if none are selected
 			failed = not condition
 		end
 	end
 
 	--Callback for Plugins
-	if self.CustomStyleConditions then
-		failed = self:CustomStyleConditions(frame, filter, trigger, failed)
+	if mod.CustomStyleConditions then
+		failed = mod:CustomStyleConditions(frame, filter, trigger, failed)
 	end
 
 	--If failed is nil it means the filter is empty so we dont run FilterStyle
 	if failed == false then --The conditions didn't fail so pass to FilterStyle
-		self:StyleFilterPass(frame, filter.actions);
+		mod:StyleFilterPass(frame, filter.actions);
 	end
 end
 
@@ -671,7 +671,7 @@ function mod:StyleFilterPass(frame, actions)
 	local powerBarEnabled = frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable
 	local healthBarShown = healthBarEnabled and frame.Health:IsShown()
 
-	self:StyleFilterSetChanges(frame, actions,
+	mod:StyleFilterSetChanges(frame, actions,
 		(healthBarShown and actions.color and actions.color.health), --HealthColorChanged
 		(healthBarShown and powerBarEnabled and actions.color and actions.color.power), --PowerColorChanged
 		(healthBarShown and actions.color and actions.color.border and frame.Health.backdrop), --BorderChanged
@@ -688,7 +688,7 @@ end
 
 function mod:ClearStyledPlate(frame)
 	if frame and frame.StyleChanged then
-		self:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.PowerColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
+		mod:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.PowerColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
 	end
 end
 
@@ -720,79 +720,79 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 }
 
 function mod:StyleFilterSetWatchEvents()
-	for _, event in ipairs(self.StyleFilterDefaultEvents) do
-		self.StyleFilterPlateEvents[event] = self.StyleFilterTriggerEvents[event] and true or nil
+	for _, event in ipairs(mod.StyleFilterDefaultEvents) do
+		mod.StyleFilterPlateEvents[event] = mod.StyleFilterTriggerEvents[event] and true or nil
 	end
 end
 
 function mod:StyleFilterConfigureEvents()
-	wipe(self.StyleFilterTriggerList)
-	wipe(self.StyleFilterTriggerEvents)
+	wipe(mod.StyleFilterTriggerList)
+	wipe(mod.StyleFilterTriggerEvents)
 
 	for filterName, filter in pairs(E.global.nameplate.filters) do
 		if filter.triggers and E.db.nameplates and E.db.nameplates.filters then
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
-				tinsert(self.StyleFilterTriggerList, {filterName, filter.triggers.priority or 1})
+				tinsert(mod.StyleFilterTriggerList, {filterName, filter.triggers.priority or 1})
 
 				-- NOTE: 0 for fake events, 1 to override StyleFilterWaitTime
-				self.StyleFilterTriggerEvents.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
-				self.StyleFilterTriggerEvents.NAME_PLATE_UNIT_ADDED = 1
+				mod.StyleFilterTriggerEvents.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
+				mod.StyleFilterTriggerEvents.NAME_PLATE_UNIT_ADDED = 1
 
 				if filter.triggers.casting then
 					if next(filter.triggers.casting.spells) then
 						for _, value in pairs(filter.triggers.casting.spells) do
 							if value == true then
-								self.StyleFilterTriggerEvents.FAKE_Casting = 0
+								mod.StyleFilterTriggerEvents.FAKE_Casting = 0
 								break
 							end
 						end
 					end
 
 					if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
-						self.StyleFilterTriggerEvents.FAKE_Casting = 0
+						mod.StyleFilterTriggerEvents.FAKE_Casting = 0
 					end
 				end
 
 				-- real events
-				self.StyleFilterTriggerEvents.PLAYER_TARGET_CHANGED = true
+				mod.StyleFilterTriggerEvents.PLAYER_TARGET_CHANGED = true
 
 				if filter.triggers.reactionType and filter.triggers.reactionType.enable then
-					self.StyleFilterTriggerEvents.UNIT_FACTION = true
+					mod.StyleFilterTriggerEvents.UNIT_FACTION = true
 				end
 
 				if filter.triggers.targetMe or filter.triggers.notTargetMe then
-					self.StyleFilterTriggerEvents.UNIT_TARGET = true
+					mod.StyleFilterTriggerEvents.UNIT_TARGET = true
 				end
 
 				if filter.triggers.healthThreshold then
-					self.StyleFilterTriggerEvents.UNIT_HEALTH = true
-					self.StyleFilterTriggerEvents.UNIT_MAXHEALTH = true
-					self.StyleFilterTriggerEvents.UNIT_HEALTH_FREQUENT = true
+					mod.StyleFilterTriggerEvents.UNIT_HEALTH = true
+					mod.StyleFilterTriggerEvents.UNIT_MAXHEALTH = true
+					mod.StyleFilterTriggerEvents.UNIT_HEALTH_FREQUENT = true
 				end
 
 				if filter.triggers.powerThreshold then
-					self.StyleFilterTriggerEvents.UNIT_POWER_UPDATE = true
-					self.StyleFilterTriggerEvents.UNIT_POWER_FREQUENT = true
-					self.StyleFilterTriggerEvents.UNIT_DISPLAYPOWER = true
+					mod.StyleFilterTriggerEvents.UNIT_POWER_UPDATE = true
+					mod.StyleFilterTriggerEvents.UNIT_POWER_FREQUENT = true
+					mod.StyleFilterTriggerEvents.UNIT_DISPLAYPOWER = true
 				end
 
 				if next(filter.triggers.names) then
 					for _, value in pairs(filter.triggers.names) do
 						if value == true then
-							self.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = true
+							mod.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = true
 							break
 						end
 					end
 				end
 
 				if filter.triggers.inCombat or filter.triggers.outOfCombat or filter.triggers.inCombatUnit or filter.triggers.outOfCombatUnit then
-					self.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
+					mod.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
 				end
 
 				if next(filter.triggers.cooldowns.names) then
 					for _, value in pairs(filter.triggers.cooldowns.names) do
 						if value == "ONCD" or value == "OFFCD" then
-							self.StyleFilterTriggerEvents.SPELL_UPDATE_COOLDOWN = true
+							mod.StyleFilterTriggerEvents.SPELL_UPDATE_COOLDOWN = true
 							break
 						end
 					end
@@ -801,7 +801,7 @@ function mod:StyleFilterConfigureEvents()
 				if next(filter.triggers.buffs.names) then
 					for _, value in pairs(filter.triggers.buffs.names) do
 						if value == true then
-							self.StyleFilterTriggerEvents.UNIT_AURA = true
+							mod.StyleFilterTriggerEvents.UNIT_AURA = true
 							break
 						end
 					end
@@ -810,7 +810,7 @@ function mod:StyleFilterConfigureEvents()
 				if next(filter.triggers.debuffs.names) then
 					for _, value in pairs(filter.triggers.debuffs.names) do
 						if value == true then
-							self.StyleFilterTriggerEvents.UNIT_AURA = true
+							mod.StyleFilterTriggerEvents.UNIT_AURA = true
 							break
 						end
 					end
@@ -821,23 +821,23 @@ function mod:StyleFilterConfigureEvents()
 
 	mod:StyleFilterSetWatchEvents()
 
-	if next(self.StyleFilterTriggerList) then
-		sort(self.StyleFilterTriggerList, self.StyleFilterSort) --sort by priority
+	if next(mod.StyleFilterTriggerList) then
+		sort(mod.StyleFilterTriggerList, mod.StyleFilterSort) -- sort by priority
 	else
 		if _G.ElvNP_Player then
-			self:ClearStyledPlate(_G.ElvNP_Player)
+			mod:ClearStyledPlate(_G.ElvNP_Player)
 		end
 
 		for nameplate in pairs(mod.Plates) do
-			self:ClearStyledPlate(nameplate)
+			mod:ClearStyledPlate(nameplate)
 		end
 	end
 end
 
 function mod:StyleFilterUpdate(frame, event)
-	if not (frame and self.StyleFilterTriggerEvents[event]) then return end
+	if not (frame and mod.StyleFilterTriggerEvents[event]) then return end
 
-	if self.StyleFilterTriggerEvents[event] ~= 1 then
+	if mod.StyleFilterTriggerEvents[event] ~= 1 then
 		if not frame.StyleFilterWaitTime then
 			frame.StyleFilterWaitTime = GetTime()
 		elseif GetTime() > (frame.StyleFilterWaitTime + 0.1) then
@@ -847,36 +847,36 @@ function mod:StyleFilterUpdate(frame, event)
 		end
 	end
 
-	self:ClearStyledPlate(frame)
+	mod:ClearStyledPlate(frame)
 
 	local filter
-	for filterNum in ipairs(self.StyleFilterTriggerList) do
-		filter = E.global.nameplate.filters[self.StyleFilterTriggerList[filterNum][1]];
+	for filterNum in ipairs(mod.StyleFilterTriggerList) do
+		filter = E.global.nameplate.filters[mod.StyleFilterTriggerList[filterNum][1]];
 		if filter then
-			self:StyleFilterConditionCheck(frame, filter, filter.triggers, nil)
+			mod:StyleFilterConditionCheck(frame, filter, filter.triggers, nil)
 		end
 	end
 end
 
 do -- oUF style filter inject watch functions without actually registering any events
-	local update = function(self, event)
-		mod:StyleFilterUpdate(self, event)
+	local update = function(frame, event)
+		mod:StyleFilterUpdate(frame, event)
 	end
 
 	local oUF_event_metatable = {
-		__call = function(funcs, self, ...)
+		__call = function(funcs, frame, ...)
 			for _, func in next, funcs do
-				func(self, ...)
+				func(frame, ...)
 			end
 		end,
 	}
 
-	local oUF_fake_register = function(self, event, remove)
-		local curev = self[event]
+	local oUF_fake_register = function(frame, event, remove)
+		local curev = frame[event]
 		if curev then
 			local kind = type(curev)
 			if kind == 'function' and curev ~= update then
-				self[event] = setmetatable({curev, update}, oUF_event_metatable)
+				frame[event] = setmetatable({curev, update}, oUF_event_metatable)
 			elseif kind == 'table' then
 				for index, infunc in next, curev do
 					if infunc == update then
@@ -891,12 +891,12 @@ do -- oUF style filter inject watch functions without actually registering any e
 				tinsert(curev, update)
 			end
 		else
-			self[event] = (not remove and update) or nil
+			frame[event] = (not remove and update) or nil
 		end
 	end
 
-	local styleFilterIsWatching = function(self, event)
-		local curev = self[event]
+	local styleFilterIsWatching = function(frame, event)
+		local curev = frame[event]
 		if curev then
 			local kind = type(curev)
 			if kind == 'function' and curev == update then
@@ -1031,7 +1031,7 @@ end
 
 function mod:StyleFilterInitializeAllFilters()
 	for _, filterTable in pairs(E.global.nameplate.filters) do
-		self:StyleFilterInitializeFilter(filterTable);
+		mod:StyleFilterInitializeFilter(filterTable);
 	end
 end
 
