@@ -17,6 +17,7 @@ local GetTalentInfo = GetTalentInfo
 local GetTime = GetTime
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitClassification = UnitClassification
+local UnitIsUnit = UnitIsUnit
 local UnitGUID = UnitGUID
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -33,7 +34,7 @@ local FAILED = FAILED
 
 local FallbackColor = {r=1, b=1, g=1}
 
-function mod:StyleFilterAuraWaitTimer(frame, button, varTimerName, timeLeft, mTimeLeft)
+function mod:StyleFilterAuraWait(frame, button, varTimerName, timeLeft, mTimeLeft)
 	if button and not button[varTimerName] then
 		local updateIn = timeLeft-mTimeLeft
 		if updateIn > 0 then
@@ -69,8 +70,8 @@ function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, min
 						minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
 						maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
 						if timeLeft then -- if we use a min/max time setting; we must create a delay timer
-							if hasMinTime then mod:StyleFilterAuraWaitTimer(frame, button, 'hasMinTimer', timeLeft, minTimeLeft) end
-							if hasMaxTime then mod:StyleFilterAuraWaitTimer(frame, button, 'hasMaxTimer', timeLeft, maxTimeLeft) end
+							if hasMinTime then mod:StyleFilterAuraWait(frame, button, 'hasMinTimer', timeLeft, minTimeLeft) end
+							if hasMaxTime then mod:StyleFilterAuraWait(frame, button, 'hasMaxTimer', timeLeft, maxTimeLeft) end
 						end
 						if minTimeAllow and maxTimeAllow then
 							count = count + 1 --keep track of how many matches we have
@@ -119,11 +120,11 @@ function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 	end
 end
 
-function mod:StyleFilterOnFinishedFlashAnim(requested)
+function mod:StyleFilterFinishedFlash(requested)
 	if self and not requested then self:Play() end
 end
 
-function mod:StyleFilterSetUpFlashAnim(FlashTexture)
+function mod:StyleFilterSetupFlash(FlashTexture)
 	FlashTexture.anim = FlashTexture:CreateAnimationGroup("Flash")
 	FlashTexture.anim.fadein = FlashTexture.anim:CreateAnimation("ALPHA", "FadeIn")
 	FlashTexture.anim.fadein:SetFromAlpha(0)
@@ -135,10 +136,10 @@ function mod:StyleFilterSetUpFlashAnim(FlashTexture)
 	FlashTexture.anim.fadeout:SetToAlpha(0)
 	FlashTexture.anim.fadeout:SetOrder(1)
 
-	FlashTexture.anim:SetScript("OnFinished", mod.StyleFilterOnFinishedFlashAnim)
+	FlashTexture.anim:SetScript("OnFinished", mod.StyleFilterFinishedFlash)
 end
 
-function mod:StyleFilterBorderColorLock(backdrop, switch)
+function mod:StyleFilterBorderLock(backdrop, switch)
 	if switch == true then
 		backdrop.ignoreBorderColors = true --but keep the backdrop updated
 	else
@@ -171,10 +172,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if BorderChanged then
 		frame.StyleChanged = true
 		frame.BorderChanged = true
-		mod:StyleFilterBorderColorLock(frame.Health.backdrop, true)
+		mod:StyleFilterBorderLock(frame.Health.backdrop, true)
 		frame.Health.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
-			mod:StyleFilterBorderColorLock(frame.Power.backdrop, true)
+			mod:StyleFilterBorderLock(frame.Power.backdrop, true)
 			frame.Power.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
 		end
 	end
@@ -186,7 +187,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		end
 		frame.FlashTexture:SetVertexColor(actions.flash.color.r, actions.flash.color.g, actions.flash.color.b)
 		if not frame.FlashTexture.anim then
-			mod:StyleFilterSetUpFlashAnim(frame.FlashTexture)
+			mod:StyleFilterSetupFlash(frame.FlashTexture)
 		end
 		frame.FlashTexture.anim.fadein:SetToAlpha(actions.flash.color.a)
 		frame.FlashTexture.anim.fadeout:SetFromAlpha(actions.flash.color.a)
@@ -265,10 +266,10 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if BorderChanged then
 		frame.BorderChanged = nil
-		mod:StyleFilterBorderColorLock(frame.Health.backdrop, false)
+		mod:StyleFilterBorderLock(frame.Health.backdrop, false)
 		frame.Health.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
-			mod:StyleFilterBorderColorLock(frame.Power.backdrop, false)
+			mod:StyleFilterBorderLock(frame.Power.backdrop, false)
 			frame.Power.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end
@@ -306,7 +307,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
-		mod:UpdatePlate(frame)
+		mod:UpdatePlate(frame, mod.db.units[frame.frameType].nameOnly)
 		E:UIFrameFadeIn(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
 	end
 end
@@ -686,7 +687,7 @@ function mod:StyleFilterPass(frame, actions)
 	)
 end
 
-function mod:ClearStyledPlate(frame)
+function mod:StyleFilterClear(frame)
 	if frame and frame.StyleChanged then
 		mod:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.PowerColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
 	end
@@ -697,6 +698,17 @@ function mod:StyleFilterSort(place)
 		return self[2] > place[2] --Sort by priority: 1=first, 2=second, 3=third, etc
 	end
 end
+
+-- Event functions fired from the NamePlate itself
+mod.StyleFilterEventFunctions = {
+	['PLAYER_TARGET_CHANGED'] = function(self)
+		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
+	end,
+	['UNIT_TARGET'] = function(self, _, unit)
+		unit = unit or self.unit
+		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
+	end
+}
 
 mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
 mod.StyleFilterTriggerEvents = {} -- events required by the filter that we need to watch for
@@ -719,13 +731,13 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_THREAT_LIST_UPDATE'
 }
 
-function mod:StyleFilterSetWatchEvents()
+function mod:StyleFilterWatchEvents()
 	for _, event in ipairs(mod.StyleFilterDefaultEvents) do
 		mod.StyleFilterPlateEvents[event] = mod.StyleFilterTriggerEvents[event] and true or nil
 	end
 end
 
-function mod:StyleFilterConfigureEvents()
+function mod:StyleFilterConfigure()
 	wipe(mod.StyleFilterTriggerList)
 	wipe(mod.StyleFilterTriggerEvents)
 
@@ -819,17 +831,17 @@ function mod:StyleFilterConfigureEvents()
 		end
 	end
 
-	mod:StyleFilterSetWatchEvents()
+	mod:StyleFilterWatchEvents()
 
 	if next(mod.StyleFilterTriggerList) then
 		sort(mod.StyleFilterTriggerList, mod.StyleFilterSort) -- sort by priority
 	else
 		if _G.ElvNP_Player then
-			mod:ClearStyledPlate(_G.ElvNP_Player)
+			mod:StyleFilterClear(_G.ElvNP_Player)
 		end
 
 		for nameplate in pairs(mod.Plates) do
-			mod:ClearStyledPlate(nameplate)
+			mod:StyleFilterClear(nameplate)
 		end
 	end
 end
@@ -847,7 +859,7 @@ function mod:StyleFilterUpdate(frame, event)
 		end
 	end
 
-	mod:ClearStyledPlate(frame)
+	mod:StyleFilterClear(frame)
 
 	local filter
 	for filterNum in ipairs(mod.StyleFilterTriggerList) do
@@ -859,7 +871,10 @@ function mod:StyleFilterUpdate(frame, event)
 end
 
 do -- oUF style filter inject watch functions without actually registering any events
-	local update = function(frame, event)
+	local update = function(frame, event, ...)
+		if mod.StyleFilterEventFunctions[event] then
+			mod.StyleFilterEventFunctions[event](frame, event, ...)
+		end
 		mod:StyleFilterUpdate(frame, event)
 	end
 
@@ -923,6 +938,23 @@ do -- oUF style filter inject watch functions without actually registering any e
 			end
 		end
 	end
+end
+
+function mod:StyleFilterEvents(nameplate)
+	if not nameplate:IsEventRegistered('PLAYER_TARGET_CHANGED') then
+		nameplate:RegisterEvent('PLAYER_TARGET_CHANGED', E.noop, true)
+	end
+	if not nameplate:IsEventRegistered('SPELL_UPDATE_COOLDOWN') then
+		nameplate:RegisterEvent('SPELL_UPDATE_COOLDOWN', E.noop, true)
+	end
+	if not nameplate:IsEventRegistered('UNIT_THREAT_LIST_UPDATE') then
+		nameplate:RegisterEvent('UNIT_THREAT_LIST_UPDATE', E.noop)
+	end
+	if not nameplate:IsEventRegistered('UNIT_TARGET') then
+		nameplate:RegisterEvent('UNIT_TARGET', E.noop)
+	end
+
+	mod:StyleFilterEventWatch(nameplate)
 end
 
 -- Shamelessy taken from AceDB-3.0
@@ -1029,12 +1061,12 @@ function mod:PLAYER_LOGOUT()
 	end
 end
 
-function mod:StyleFilterInitializeAllFilters()
+function mod:StyleFilterInitialize()
 	for _, filterTable in pairs(E.global.nameplate.filters) do
-		mod:StyleFilterInitializeFilter(filterTable);
+		mod:StyleFilterCopyDefaults(filterTable);
 	end
 end
 
-function mod:StyleFilterInitializeFilter(tbl)
+function mod:StyleFilterCopyDefaults(tbl)
 	copyDefaults(tbl, E.StyleFilterDefaults);
 end

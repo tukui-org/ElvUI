@@ -176,7 +176,7 @@ function NP:UpdatePlate(nameplate)
 		end
 	end
 
-	NP:UpdatePlateEvents(nameplate)
+	NP:StyleFilterEvents(nameplate)
 end
 
 function NP:DisablePlate(nameplate, nameOnly)
@@ -402,14 +402,14 @@ function NP:ConfigureAll()
 		end
 	end
 
-	NP:StyleFilterConfigureEvents() -- Populate `mod.StyleFilterEvents` with events Style Filters will be using and sort the filters based on priority.
 	NP:Update_StatusBars()
 	NP:SetNamePlateClickThrough()
+	NP:StyleFilterConfigure()
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'NAME_PLATE_UNIT_ADDED' and nameplate then
-		NP:ClearStyledPlate(nameplate)
+		NP:StyleFilterClear(nameplate)
 
 		unit = unit or nameplate.unit
 
@@ -455,7 +455,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
-		NP:ClearStyledPlate(nameplate)
+		NP:StyleFilterClear(nameplate)
 
 		if nameplate.frameType == 'PLAYER' and nameplate ~= _G.ElvNP_Test then
 			NP.PlayerNamePlateAnchor:Hide()
@@ -470,35 +470,6 @@ end
 
 function NP:ACTIVE_TALENT_GROUP_CHANGED()
 	NP.PlayerRole = GetSpecializationRole(GetSpecialization())
-end
-
--- Event functions fired from the NamePlate itself
-NP.plateEvents = {
-	['PLAYER_TARGET_CHANGED'] = function(self)
-		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
-	end,
-	['UNIT_TARGET'] = function(self, _, unit)
-		unit = unit or self.unit
-		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
-	end,
-	['UNIT_THREAT_LIST_UPDATE'] = E.noop,
-	['SPELL_UPDATE_COOLDOWN'] = E.noop
-}
-
-function NP:RegisterElementEvent(nameplate, event, func, unitless)
-	if not func then func = NP.plateEvents[event] end
-	if not func then return end
-
-	nameplate:RegisterEvent(event, func, unitless)
-end
-
-function NP:UpdatePlateEvents(nameplate)
-	NP:RegisterElementEvent(nameplate, 'PLAYER_TARGET_CHANGED', nil, true)
-	NP:RegisterElementEvent(nameplate, 'SPELL_UPDATE_COOLDOWN', nil, true)
-	NP:RegisterElementEvent(nameplate, 'UNIT_THREAT_LIST_UPDATE')
-	NP:RegisterElementEvent(nameplate, 'UNIT_TARGET')
-
-	NP:StyleFilterEventWatch(nameplate)
 end
 
 local optionsTable = {'EnemyMinus','EnemyMinions','FriendlyMinions','PersonalResource','PersonalResourceOnEnemy','ShowAll','MotionDropDown'}
@@ -588,7 +559,7 @@ function NP:Initialize()
 	NP:RegisterEvent('GROUP_ROSTER_UPDATE')
 	NP:RegisterEvent('GROUP_LEFT')
 
-	NP:StyleFilterInitializeAllFilters() -- Add metatable to all our StyleFilters so they can grab default values if missing
+	NP:StyleFilterInitialize()
 	NP:ACTIVE_TALENT_GROUP_CHANGED()
 	NP:GROUP_ROSTER_UPDATE()
 	NP:ConfigureAll()
