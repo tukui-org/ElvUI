@@ -1866,7 +1866,13 @@ local function GetUnitSettings(unit, name)
 				name = L["General"],
 				get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
 				set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
-				args = {},
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["General"],
+					},
+				},
 			},
 			healthGroup = {
 				order = 2,
@@ -1909,7 +1915,7 @@ local function GetUnitSettings(unit, name)
 						step = 1,
 					},
 					textGroup = {
-						order = 100,
+						order = 200,
 						type = "group",
 						name = L["Text"],
 						guiInline = true,
@@ -2056,7 +2062,7 @@ local function GetUnitSettings(unit, name)
 						name = L["Use Class Color"],
 					},
 					textGroup = {
-						order = 100,
+						order = 200,
 						type = "group",
 						name = L["Text"],
 						guiInline = true,
