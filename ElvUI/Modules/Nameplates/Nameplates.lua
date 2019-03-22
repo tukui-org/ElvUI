@@ -237,6 +237,7 @@ function NP:SetupTarget(nameplate)
 end
 
 function NP:CVarReset()
+	SetCVar("nameplateOccludedAlphaMult", .5)
 	SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
 	SetCVar('nameplateGlobalScale', 1)
 	SetCVar('NamePlateHorizontalScale', 1)
@@ -256,6 +257,7 @@ function NP:CVarReset()
 	SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
 	SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
 	SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
+	SetCVar('nameplateSelectedAlpha', 1)
 	SetCVar('nameplateSelectedScale', 1)
 	SetCVar('nameplateSelfAlpha', 1)
 	SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'))
@@ -267,8 +269,6 @@ end
 function NP:PLAYER_REGEN_DISABLED()
 	SetCVar("nameplateMaxAlpha", NP.db.units.TARGET.nonTargetTransparency)
 	SetCVar("nameplateMinAlpha", NP.db.units.TARGET.nonTargetTransparency)
-	SetCVar("nameplateOccludedAlphaMult", .6)
-	SetCVar('nameplateSelectedAlpha', 1)
 
 	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
 		SetCVar('nameplateShowFriends', 1);
@@ -286,8 +286,6 @@ end
 function NP:PLAYER_REGEN_ENABLED()
 	SetCVar("nameplateMaxAlpha", 1)
 	SetCVar("nameplateMinAlpha", 1)
-	SetCVar("nameplateOccludedAlphaMult", .4)
-	SetCVar('nameplateSelectedAlpha', 1)
 
 	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
 		SetCVar('nameplateShowFriends', 0);
