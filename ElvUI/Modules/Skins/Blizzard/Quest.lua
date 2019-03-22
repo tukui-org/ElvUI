@@ -45,7 +45,7 @@ end
 local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
 	scrollFrame:SetTemplate()
 	if not scrollFrame.spellTex then
-		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'BACKGROUND')
+		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'BACKGROUND', 1)
 	end
 
 	scrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
