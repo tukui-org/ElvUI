@@ -150,8 +150,8 @@ end
 function NP:UpdatePlate(nameplate)
 	NP:Update_Tags(nameplate)
 
-	if (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
-		NP:DisablePlate(nameplate, NP.db.units[nameplate.frameType].nameOnly)
+	if (nameplate.VisibilityChanged or nameplate.NameOnlyChanged) (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
+		NP:DisablePlate(nameplate, NP.db.units[nameplate.frameType].nameOnly, nameplate.NameOnlyChanged)
 	else
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
