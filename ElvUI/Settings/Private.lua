@@ -23,7 +23,7 @@ V.general = {
 	},
 	classColorMentionsSpeech = true,
 	raidUtility = true,
-	voiceOverlay = false,
+	voiceOverlay = true,
 }
 
 V.bags = {

@@ -549,6 +549,13 @@ function CH:StyleChat(frame)
 		end
 	end)
 
+	_G.QuickJoinToastButton:Kill()
+	local S = E:GetModule('Skins')
+	S:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
+	S:HandleButton(_G.ChatFrameChannelButton, nil, nil, nil, true)
+	S:HandleButton(_G.ChatFrameToggleVoiceDeafenButton, nil, nil, nil, true)
+	S:HandleButton(_G.ChatFrameToggleVoiceMuteButton, nil, nil, nil, true)
+
 	CreatedFrames = id
 	frame.styled = true
 end
@@ -2396,7 +2403,7 @@ local channelButtons = {
 	[3] = _G.ChatFrameToggleVoiceMuteButton
 }
 
-function CH:HandleChatVoiceIcons(S)
+function CH:HandleChatVoiceIcons()
 	for index, button in pairs(channelButtons) do
 		button:ClearAllPoints()
 		button.Icon:SetDesaturated(true)
@@ -2427,11 +2434,6 @@ function CH:HandleChatVoiceIcons(S)
 		end
 	end)
 
-	_G.QuickJoinToastButton:Hide()
-	S:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
-	S:HandleButton(_G.ChatFrameChannelButton, nil, nil, nil, true)
-	S:HandleButton(_G.ChatFrameToggleVoiceDeafenButton, nil, nil, nil, true)
-	S:HandleButton(_G.ChatFrameToggleVoiceMuteButton, nil, nil, nil, true)
 	RepositionChatIcons()
 end
 
