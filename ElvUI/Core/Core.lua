@@ -1148,7 +1148,7 @@ end
 function E:UpdateNamePlates(skipCallback)
 	local NamePlates = E:GetModule('NamePlates')
 	NamePlates:ConfigureAll()
-	NamePlates:StyleFilterInitializeAllFilters()
+	NamePlates:StyleFilterInitialize()
 
 	if not skipCallback then
 		E.callbacks:Fire("StaggeredUpdate")
