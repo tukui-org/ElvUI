@@ -16,46 +16,40 @@ local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_
 local CLASS, DEFAULT = CLASS, DEFAULT
 
 local colorBuffer = {}
-
 local function UpdateAlphaText(displayValue)
 	if not displayValue then
-		displayValue = floor(((1 - _G.OpacitySliderFrame:GetValue()) * 100) +.05)
+		displayValue = floor(((1 - _G.OpacitySliderFrame:GetValue()) * 100) + .05)
 	end
 
-	_G.ColorPPBoxA.noUpdateAlpha = true
+	if displayValue > 100 then
+		displayValue = 100
+	end
+
 	_G.ColorPPBoxA:SetText(displayValue)
 end
 
 local function UpdateAlpha(tbox)
-	if tbox.noUpdateAlpha then
-		tbox.noUpdateAlpha = nil
-		return
-	end
-
-	local a = tbox:GetNumber()
-	if a > 100 then
-		a = 100
-		_G.ColorPPBoxA.noUpdateAlpha = true
-		_G.ColorPPBoxA:SetText(a)
-	end
-	a = 1 - (a / 100)
-
-	_G.OpacitySliderFrame:SetValue(a)
+	_G.OpacitySliderFrame:SetValue(1 - (tbox:GetNumber() / 100))
 end
 
-local function UpdateColorTexts(r, g, b)
+local function UpdateColorTexts(r, g, b, box)
 	if not (r and g and b) then
 		r, g, b = _G.ColorPickerFrame:GetColorRGB()
+
+		if box then
+			local c = box:GetNumber() / 255
+			if box == _G.ColorPPBoxR then
+				r = c
+			elseif box == _G.ColorPPBoxG then
+				g = c
+			elseif box == _G.ColorPPBoxB then
+				b = c
+			end
+		end
 	end
 
 	-- we want those /255 values
 	r, g, b = r*255, g*255, b*255
-
-	-- this will prevent the infinite loops
-	_G.ColorPPBoxH.noUpdateColor = true
-	_G.ColorPPBoxR.noUpdateColor = true
-	_G.ColorPPBoxG.noUpdateColor = true
-	_G.ColorPPBoxB.noUpdateColor = true
 
 	_G.ColorPPBoxH:SetText(("%.2x%.2x%.2x"):format(r, g, b))
 	_G.ColorPPBoxR:SetText(r)
@@ -63,38 +57,14 @@ local function UpdateColorTexts(r, g, b)
 	_G.ColorPPBoxB:SetText(b)
 end
 
-local function UpdateColor(tbox, isUserInput)
-	if tbox.noUpdateColor then
-		tbox.noUpdateColor = nil
-		return
-	end
+local function UpdateColor()
+	local rgb = _G.ColorPPBoxH:GetText()
+	local r, g, b = tonumber('0x'..strsub(rgb, 0, 2)), tonumber('0x'..strsub(rgb, 3, 4)), tonumber('0x'..strsub(rgb, 5, 6))
+	if not r then r = 0 else r = r/255 end
+	if not g then g = 0 else g = g/255 end
+	if not b then b = 0 else b = b/255 end
 
-	local r, g, b = _G.ColorPickerFrame:GetColorRGB()
-	if isUserInput then -- this keeps the ColorPPBoxB from being zero, while also saving cpu
-		if tbox == _G.ColorPPBoxH then
-			if tbox:GetNumLetters() == 6 then -- hex values
-				local rgb = tbox:GetText()
-				r, g, b = tonumber('0x'..strsub(rgb, 0, 2)), tonumber('0x'..strsub(rgb, 3, 4)), tonumber('0x'..strsub(rgb, 5, 6))
-				if not r then r = 0 else r = r/255 end
-				if not g then g = 0 else g = g/255 end
-				if not b then b = 0 else b = b/255 end
-			else
-				return
-			end
-		else
-			local c = tbox:GetNumber()
-			if tbox == _G.ColorPPBoxR then r = c;if not r then r = 0 else r = r/255 end end
-			if tbox == _G.ColorPPBoxG then g = c;if not g then g = 0 else g = g/255 end end
-			if tbox == _G.ColorPPBoxB then b = c;if not b then b = 0 else b = b/255 end end
-		end
-	end
-
-	-- This takes care of updating the hex entry when changing rgb fields and vice versa
-	UpdateColorTexts(r, g, b)
-
-	_G.ColorPickerFrame.noColorCallback = true
 	_G.ColorPickerFrame:SetColorRGB(r, g, b)
-	_G.ColorPickerFrame.noColorCallback = nil
 	_G.ColorSwatch:SetColorTexture(r, g, b)
 end
 
@@ -180,11 +150,13 @@ function B:EnhanceColorPicker()
 			_G.ColorPPBoxLabelA:Show()
 			_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxA_SetFocus)
 			UpdateAlphaText()
+			UpdateColorTexts()
 			frame:Width(405)
 		else
 			_G.ColorPPBoxA:Hide()
 			_G.ColorPPBoxLabelA:Hide()
 			_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxR_SetFocus)
+			UpdateColorTexts()
 			frame:Width(345)
 		end
 
@@ -348,18 +320,30 @@ function B:EnhanceColorPicker()
 
 		-- set up scripts to handle event appropriately
 		if i == 5 then
-			box:SetScript("OnEscapePressed", function(eb) eb:ClearFocus() UpdateAlphaText() end)
-			box:SetScript("OnEnterPressed", function(eb) eb:ClearFocus() UpdateAlphaText() end)
-			box:SetScript("OnTextChanged", UpdateAlpha)
+			box:SetScript("OnKeyUp", function(eb, key)
+				if tonumber(key) or key == "BACKSPACE" then
+					UpdateAlpha(eb)
+				elseif key == "ENTER" or key == "ESCAPE" then
+					eb:ClearFocus()
+					UpdateAlpha(eb)
+				end
+			end)
 		else
-			box:SetScript("OnEscapePressed", function(eb) eb:ClearFocus() UpdateColorTexts() end)
-			box:SetScript("OnEnterPressed", function(eb) eb:ClearFocus() UpdateColorTexts() end)
-			box:SetScript("OnTextChanged", UpdateColor)
+			box:SetScript("OnKeyUp", function(eb, key)
+				if ((i == 4 and tonumber(key, 16)) or (i ~= 4 and tonumber(key))) or key == "BACKSPACE" then
+					if i ~= 4 then UpdateColorTexts(nil, nil, nil, eb) end
+					if i == 4 and eb:GetNumLetters() ~= 6 then return end
+					UpdateColor()
+				elseif key == "ENTER" or key == "ESCAPE" then
+					eb:ClearFocus()
+					UpdateColorTexts(nil, nil, nil, eb)
+					UpdateColor()
+				end
+			end)
 		end
 
 		box:SetScript("OnEditFocusGained", function(eb) eb:SetCursorPosition(0) eb:HighlightText() end)
 		box:SetScript("OnEditFocusLost", function(eb) eb:HighlightText(0,0) end)
-		box:SetScript("OnTextSet", function(eb) eb:ClearFocus() end)
 		box:Show()
 	end
 
