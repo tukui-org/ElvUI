@@ -687,7 +687,7 @@ local function UpdateFilterGroup()
 						if G.nameplate.filters[selectedNameplateFilter] then
 							filter = E:CopyTable(filter, G.nameplate.filters[selectedNameplateFilter]);
 						end
-						NP:StyleFilterInitializeFilter(filter);
+						NP:StyleFilterCopyDefaults(filter);
 						E.global.nameplate.filters[selectedNameplateFilter] = filter;
 						UpdateStyleLists()
 						UpdateClassSection()
@@ -4566,7 +4566,7 @@ E.Options.args.nameplate = {
 							return
 						end
 						local filter = {};
-						NP:StyleFilterInitializeFilter(filter);
+						NP:StyleFilterCopyDefaults(filter);
 						E.global.nameplate.filters[value] = filter;
 						UpdateFilterGroup();
 						NP:ConfigureAll()
