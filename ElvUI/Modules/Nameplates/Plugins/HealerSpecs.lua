@@ -130,9 +130,9 @@ local function Disable(self)
 	if (element) then
 		element:Hide()
 
-		self:UnregisterEvent("UNIT_NAME_UPDATE")
-		self:UnregisterEvent("ARENA_OPPONENT_UPDATE")
-		self:UnregisterEvent("UPDATE_BATTLEFIELD_SCORE")
+		self:UnregisterEvent("UNIT_NAME_UPDATE", Path)
+		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Path)
+		self:UnregisterEvent("UPDATE_BATTLEFIELD_SCORE", Path)
 	end
 end
 
