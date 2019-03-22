@@ -2452,6 +2452,11 @@ E.Options.args.unitframe = {
 					childGroups = "tree",
 					name = L["Frame Glow"],
 					args = {
+						header = {
+							order = 0,
+							type = "header",
+							name = L["Frame Glow"],
+						},
 						mainGlow = {
 							order = 1,
 							type = 'group',
@@ -7764,6 +7769,11 @@ E.Options.args.unitframe.args.assist = {
 			get = function(info) return E.db.unitframe.units.assist.buffIndicator[ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units.assist.buffIndicator[ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('assist') end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Buff Indicator"],
+				},
 				enable = {
 					type = 'toggle',
 					name = L['Enable'],
