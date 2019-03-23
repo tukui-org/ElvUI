@@ -516,9 +516,6 @@ function NP:Initialize()
 		end
 	end)
 
-	NP.Tooltip = CreateFrame('GameTooltip', 'ElvUIQuestTooltip', nil, 'GameTooltipTemplate')
-	NP.Tooltip:SetOwner(_G.WorldFrame, 'ANCHOR_NONE')
-
 	ElvUF:Spawn('player', 'ElvNP_Player')
 	_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
 	_G.ElvNP_Player:SetAttribute('*type1', 'target')
