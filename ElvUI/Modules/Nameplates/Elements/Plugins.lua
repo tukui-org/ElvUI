@@ -170,7 +170,7 @@ end
 function NP:Update_Highlight(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if NP.db.highlight and db.enabled then
+	if NP.db.highlight and db.enable then
 		if not nameplate:IsElementEnabled('Highlight') then
 			nameplate:EnableElement('Highlight')
 		end
