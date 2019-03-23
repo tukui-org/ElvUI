@@ -2052,20 +2052,18 @@ function CH:SaveChatHistory(event, ...)
 		tempHistory[i] = select(i, ...) or false
 	end
 
-	if #tempHistory > 0 then
-		if not strmatch(tempHistory[1],'^|Kv%d-|k$') then -- ignore guild protection
-			tempHistory[50] = event
-			tempHistory[51] = time()
+	if (#tempHistory > 0) and not CH:MessageIsProtected(tempHistory[1]) then
+		tempHistory[50] = event
+		tempHistory[51] = time()
 
-			local coloredName, battleTag
-			if tempHistory[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(tempHistory[2], tempHistory[13], true) end
-			if battleTag then tempHistory[53] = battleTag end -- store the battletag, only when the person is known by battletag, so we can replace arg2 later in the function
-			tempHistory[52] = coloredName or CH:GetColoredName(event, ...)
+		local coloredName, battleTag
+		if tempHistory[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(tempHistory[2], tempHistory[13], true) end
+		if battleTag then tempHistory[53] = battleTag end -- store the battletag, only when the person is known by battletag, so we can replace arg2 later in the function
+		tempHistory[52] = coloredName or CH:GetColoredName(event, ...)
 
-			tinsert(data, tempHistory)
-			while #data >= 128 do
-				tremove(data, 1)
-			end
+		tinsert(data, tempHistory)
+		while #data >= 128 do
+			tremove(data, 1)
 		end
 	end
 end
