@@ -4721,30 +4721,30 @@ E.Options.args.nameplate = {
 							name = L['Enable']
 						},
 						width = {
-							order = 1,
+							order = 2,
 							name = L["Width"],
 							type = "range",
 							min = 50, max = 200, step = 1,
 						},
 						height = {
-							order = 2,
+							order = 3,
 							name = L["Height"],
 							type = "range",
 							min = 4, max = 20, step = 1,
 						},
 						yOffset = {
-							order = 3,
+							order = 4,
 							name = L["Y-Offset"],
 							type = "range",
 							min = -80, max = 80, step = 1,
 						},
 						classColor = {
 							type = "toggle",
-							order = 6,
+							order = 5,
 							name = L["Use Class Color"]
 						},
 						sortDirection = {
-							order = 7,
+							order = 6,
 							name = L["Sort Direction"],
 							desc = L["Defines the sort order of the selected sort method."],
 							type = 'select',
