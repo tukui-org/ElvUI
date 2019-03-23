@@ -1,5 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
+local Layout = E:GetModule('Layout')
+local Chat = E:GetModule('Chat')
+local Minimap = E:GetModule('Minimap')
+
 local datatexts = {}
 
 local _G = _G
@@ -248,7 +252,7 @@ E.Options.args.datatexts = {
 							type = 'toggle',
 							set = function(info, value)
 								E.db.datatexts[ info[#info] ] = value
-								E:GetModule('Layout'):SetDataPanelStyle()
+								Layout:SetDataPanelStyle()
 							end,
 						},
 						panelBackdrop = {
@@ -257,7 +261,7 @@ E.Options.args.datatexts = {
 							type = 'toggle',
 							set = function(info, value)
 								E.db.datatexts[ info[#info] ] = value
-								E:GetModule('Layout'):SetDataPanelStyle()
+								Layout:SetDataPanelStyle()
 							end,
 						},
 						noCombatClick = {
@@ -334,8 +338,8 @@ E.Options.args.datatexts = {
 							E.db.LeftChatPanelFaded = true;
 							HideLeftChat()
 						end
-						E:GetModule('Chat'):UpdateAnchors()
-						E:GetModule('Layout'):ToggleChatPanels()
+						Chat:UpdateAnchors()
+						Layout:ToggleChatPanels()
 					end,
 				},
 				rightChatPanel = {
@@ -349,8 +353,8 @@ E.Options.args.datatexts = {
 							E.db.RightChatPanelFaded = true;
 							HideRightChat()
 						end
-						E:GetModule('Chat'):UpdateAnchors()
-						E:GetModule('Layout'):ToggleChatPanels()
+						Chat:UpdateAnchors()
+						Layout:ToggleChatPanels()
 					end,
 				},
 				minimapPanels = {
@@ -360,7 +364,7 @@ E.Options.args.datatexts = {
 					type = 'toggle',
 					set = function(info, value)
 						E.db.datatexts[ info[#info] ] = value
-						E:GetModule('Minimap'):UpdateSettings()
+						Minimap:UpdateSettings()
 					end,
 				},
 				minimapTop = {
@@ -369,7 +373,7 @@ E.Options.args.datatexts = {
 					type = 'toggle',
 					set = function(info, value)
 						E.db.datatexts[ info[#info] ] = value
-						E:GetModule('Minimap'):UpdateSettings()
+						Minimap:UpdateSettings()
 					end,
 				},
 				minimapTopLeft = {
@@ -378,7 +382,7 @@ E.Options.args.datatexts = {
 					type = 'toggle',
 					set = function(info, value)
 						E.db.datatexts[ info[#info] ] = value
-						E:GetModule('Minimap'):UpdateSettings()
+						Minimap:UpdateSettings()
 					end,
 				},
 				minimapTopRight = {
@@ -387,7 +391,7 @@ E.Options.args.datatexts = {
 					type = 'toggle',
 					set = function(info, value)
 						E.db.datatexts[ info[#info] ] = value
-						E:GetModule('Minimap'):UpdateSettings()
+						Minimap:UpdateSettings()
 					end,
 				},
 				minimapBottom = {
@@ -396,7 +400,7 @@ E.Options.args.datatexts = {
 					type = 'toggle',
 					set = function(info, value)
 						E.db.datatexts[ info[#info] ] = value
-						E:GetModule('Minimap'):UpdateSettings()
+						Minimap:UpdateSettings()
 					end,
 				},
 				minimapBottomLeft = {
@@ -405,7 +409,7 @@ E.Options.args.datatexts = {
 					type = 'toggle',
 					set = function(info, value)
 						E.db.datatexts[ info[#info] ] = value
-						E:GetModule('Minimap'):UpdateSettings()
+						Minimap:UpdateSettings()
 					end,
 				},
 				minimapBottomRight = {
@@ -414,7 +418,7 @@ E.Options.args.datatexts = {
 					type = 'toggle',
 					set = function(info, value)
 						E.db.datatexts[ info[#info] ] = value
-						E:GetModule('Minimap'):UpdateSettings()
+						Minimap:UpdateSettings()
 					end,
 				},
 				spacer = {
