@@ -19,12 +19,14 @@ local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_
 local CLASS, DEFAULT = CLASS, DEFAULT
 
 local colorBuffer = {}
-local function UpdateAlphaText(displayValue)
-	if not displayValue then
-		displayValue = floor(((1 - _G.OpacitySliderFrame:GetValue()) * 100) + .05)
-	end
+local function alphaValue(num)
+	return num and floor(((1 - num) * 100) + .05) or 0
+end
 
-	_G.ColorPPBoxA:SetText(displayValue)
+local function UpdateAlphaText(alpha)
+	if not alpha then alpha = alphaValue(_G.OpacitySliderFrame:GetValue()) end
+
+	_G.ColorPPBoxA:SetText(alpha)
 end
 
 local function UpdateAlpha(tbox)
@@ -41,19 +43,16 @@ local function extendToSix(str)
 end
 
 local function GetHexColor(box)
-	local rgb = box:GetText()
-	local boxLen = box:GetNumLetters()
-	if boxLen == 3 then
+	local rgb, rgbSize = box:GetText(), box:GetNumLetters()
+	if rgbSize == 3 then
 		rgb = gsub(rgb, '(%x)(%x)(%x)$', expandFromThree)
-	elseif boxLen < 6 then
+	elseif rgbSize < 6 then
 		rgb = gsub(rgb, '(.+)$', extendToSix)
 	end
 
-	local r, g, b = tonumber(strsub(rgb, 0, 2), 16), tonumber(strsub(rgb, 3, 4), 16), tonumber(strsub(rgb, 5, 6), 16)
-	if not r then r = 0 else r = r/255 end
-	if not g then g = 0 else g = g/255 end
-	if not b then b = 0 else b = b/255 end
-	return r, g, b
+	local r, g, b = tonumber(strsub(rgb,0,2),16) or 0, tonumber(strsub(rgb,3,4),16) or 0, tonumber(strsub(rgb,5,6),16) or 0
+
+	return r/255, g/255, b/255
 end
 
 local function UpdateColorTexts(r, g, b, box)
@@ -61,17 +60,19 @@ local function UpdateColorTexts(r, g, b, box)
 		r, g, b = _G.ColorPickerFrame:GetColorRGB()
 
 		if box then
-			local boxNum = box:GetNumber()
-			if boxNum > 255 then boxNum = 255 end
-			local c = boxNum / 255
 			if box == _G.ColorPPBoxH then
 				r, g, b = GetHexColor(box)
-			elseif box == _G.ColorPPBoxR then
-				r = c
-			elseif box == _G.ColorPPBoxG then
-				g = c
-			elseif box == _G.ColorPPBoxB then
-				b = c
+			else
+				local num = box:GetNumber()
+				if num > 255 then num = 255 end
+				local c = num/255
+				if box == _G.ColorPPBoxR then
+					r = c
+				elseif box == _G.ColorPPBoxG then
+					g = c
+				elseif box == _G.ColorPPBoxB then
+					b = c
+				end
 			end
 		end
 	end
@@ -121,11 +122,11 @@ local function onColorSelect(frame, r, g, b)
 end
 
 local function onValueChanged(frame, value)
-	local displayValue = floor(((1 - value) * 100) + .05)
-	if frame.lastSliderValue ~= displayValue then
-		frame.lastSliderValue = displayValue
+	local alpha = alphaValue(value)
+	if frame.lastAlpha ~= alpha then
+		frame.lastAlpha = alpha
 
-		UpdateAlphaText(displayValue)
+		UpdateAlphaText(alpha)
 
 		if not _G.ColorPickerFrame:IsVisible() then
 			delayCall()
@@ -142,9 +143,7 @@ local function onValueChanged(frame, value)
 end
 
 function B:EnhanceColorPicker()
-	if IsAddOnLoaded("ColorPickerPlus") then
-		return
-	end
+	if IsAddOnLoaded('ColorPickerPlus') then return end
 
 	--Skin the default frame, move default buttons into place
 	_G.ColorPickerFrame:SetClampedToScreen(true)
