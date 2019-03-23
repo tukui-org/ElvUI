@@ -679,7 +679,7 @@ P.nameplates = {
 				height = 7,
 				sortDirection = 'NONE',
 				width = 130,
-				yOffset = 28,
+				yOffset = 55,
 			},
 		},
 		FRIENDLY_PLAYER = {
