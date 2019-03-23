@@ -20,7 +20,7 @@ function NP:ThreatIndicator_PreUpdate(unit)
 end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
-	if NP.db.threat and NP.db.threat.useThreatColor then
+	if NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor then
 		self.__owner.Health.colorTapping = false
 		self.__owner.Health.colorDisconnected = false
 		self.__owner.Health.colorClass = false

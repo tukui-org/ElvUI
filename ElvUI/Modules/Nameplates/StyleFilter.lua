@@ -241,14 +241,31 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	end
 end
 
+function mod:StyleFilterUpdatePlate(frame)
+	mod:UpdatePlate(frame) -- enable elements back
+
+	if frame.frameType then
+		if mod.db.units[frame.frameType].health.enable then
+			frame.Health:ForceUpdate()
+		end
+		if mod.db.units[frame.frameType].power.enable then
+			frame.Power:ForceUpdate()
+		end
+	end
+	if mod.db.threat.enable and mod.db.threat.useThreatColor then
+		frame.ThreatIndicator:ForceUpdate() -- this will account for the threat health color
+	end
+
+	E:UIFrameFadeIn(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
+end
+
 function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
 	frame.StyleChanged = nil
 	if VisibilityChanged then
 		frame.VisibilityChanged = nil
-		mod:UpdatePlate(frame) -- enable elements back
+		mod:StyleFilterUpdatePlate(frame)
 		frame:ClearAllPoints() -- pull the frame back in
 		frame:Point('CENTER')
-		E:UIFrameFadeIn(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
 	end
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
@@ -307,8 +324,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
-		mod:UpdatePlate(frame, mod.db.units[frame.frameType].nameOnly)
-		E:UIFrameFadeIn(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
+		mod:StyleFilterUpdatePlate(frame)
 	end
 end
 

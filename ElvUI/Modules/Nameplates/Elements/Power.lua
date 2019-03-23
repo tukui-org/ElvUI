@@ -98,7 +98,7 @@ function NP:Power_PostUpdate(unit, cur, min, max)
 	local db = NP.db.units[self.__owner.frameType]
 	if not db then return end
 
-	if (db.power and db.power.hideWhenEmpty) and ((cur == 0 and min == 0) or (min == 0 and max == 0)) then
+	if (db.power and db.power.enable and db.power.hideWhenEmpty) and ((cur == 0 and min == 0) or (min == 0 and max == 0)) then
 		self:Hide()
 	else
 		self:Show()
