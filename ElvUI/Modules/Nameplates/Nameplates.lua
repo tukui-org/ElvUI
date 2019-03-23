@@ -566,8 +566,6 @@ function NP:Initialize()
 	NP:GROUP_ROSTER_UPDATE()
 	NP:ConfigureAll()
 	NP:HideInterfaceOptions()
-
-	E.NamePlates = NP
 end
 
 local function InitializeCallback()

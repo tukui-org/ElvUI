@@ -12,7 +12,6 @@ local CreateFrame = CreateFrame
 
 local PANEL_HEIGHT = 22
 local SIDE_BUTTON_WIDTH = 16
-E.Layout = LO
 
 local function Panel_OnShow(self)
 	self:SetFrameLevel(200)

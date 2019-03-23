@@ -21,10 +21,8 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local UNKNOWN = UNKNOWN
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: RightChatDataPanel, LeftChatDataPanel, ElvUF
--- GLOBALS: CUSTOM_CLASS_COLORS
+-- GLOBALS: RightChatDataPanel, LeftChatDataPanel, ElvUF, CUSTOM_CLASS_COLORS
 
-E.Threat = THREAT
 THREAT.list = {}
 
 function THREAT:UpdatePosition()

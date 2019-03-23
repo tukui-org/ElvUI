@@ -19,8 +19,6 @@ local IsInInstance = IsInInstance
 
 function DT:Initialize()
 	--if E.db.datatexts.enable ~= true then return end
-	E.DataTexts = DT
-
 	self.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
 	TT:HookScript(self.tooltip, 'OnShow', 'SetStyle')
 

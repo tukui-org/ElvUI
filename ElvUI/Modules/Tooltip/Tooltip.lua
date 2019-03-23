@@ -821,7 +821,6 @@ function TT:Initialize()
 	self:SecureHook(_G.BNToastFrame, "SetPoint", "RepositionBNET")
 
 	if E.private.tooltip.enable ~= true then return end
-	E.Tooltip = TT
 
 	GameTooltip.StatusBar = GameTooltipStatusBar
 	GameTooltip.StatusBar:Height(self.db.healthBar.height)

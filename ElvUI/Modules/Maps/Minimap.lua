@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Minimap')
-E.Minimap = M
 
 --Lua functions
 local _G = _G
@@ -210,8 +209,7 @@ function M:UpdateSettings()
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 	end
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or _G.Minimap:GetWidth() + 10
-	E.MinimapWidth = E.MinimapSize
-	E.MinimapHeight = E.MinimapSize
+	E.MinimapWidth, E.MinimapHeight = E.MinimapSize, E.MinimapSize
 
 	if E.private.general.minimap.enable then
 		_G.Minimap:Size(E.MinimapSize, E.MinimapSize)

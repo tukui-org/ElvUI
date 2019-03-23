@@ -2520,7 +2520,6 @@ function CH:Initialize()
 	self:DelayGuildMOTD() -- Keep this before `is Chat Enabled` check
 
 	if E.private.chat.enable ~= true then return end
-	E.Chat = self
 
 	if not ElvCharacterDB.ChatEditHistory then ElvCharacterDB.ChatEditHistory = {} end
 	if not ElvCharacterDB.ChatHistoryLog or not self.db.chatHistory then ElvCharacterDB.ChatHistoryLog = {} end

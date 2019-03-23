@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TOTEMS = E:GetModule('Totems')
-E.TotemBar = TOTEMS
 
 --Lua functions
 local _G = _G

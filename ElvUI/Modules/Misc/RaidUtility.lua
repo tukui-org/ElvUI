@@ -23,11 +23,8 @@ local ToggleFriendsFrame = ToggleFriendsFrame
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitIsGroupAssistant = UnitIsGroupAssistant
 local UnitIsGroupLeader = UnitIsGroupLeader
-
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local NUM_RAID_GROUPS = NUM_RAID_GROUPS
-
-E.RaidUtility = RU
 local PANEL_HEIGHT = 100
 
 --Check if We are Raid Leader or Raid Officer

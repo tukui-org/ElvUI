@@ -1381,7 +1381,6 @@ function UF:Initialize()
 	self.db = E.db.unitframe
 	self.thinBorders = self.db.thinBorders or E.PixelMode
 	if E.private.unitframe.enable ~= true then return; end
-	E.UnitFrames = UF;
 
 	local ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
 	ElvUF_Parent:SetFrameStrata("LOW")

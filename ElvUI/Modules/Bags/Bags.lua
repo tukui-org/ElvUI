@@ -2442,11 +2442,9 @@ function B:Initialize()
 		return
 	end
 
-	E.bags = self
 	self.db = E.db.bags
 	self.BagFrames = {}
 	self.REAGENTBANK_SIZE = 98 -- numRow (7) * numColumn (7) * numSubColumn (2) = size = 98
-
 	self.ProfessionColors = {
 		[0x0008]   = { self.db.colors.profession.leatherworking.r, self.db.colors.profession.leatherworking.g, self.db.colors.profession.leatherworking.b },
 		[0x0010]   = { self.db.colors.profession.inscription.r, self.db.colors.profession.inscription.g, self.db.colors.profession.inscription.b },
@@ -2511,8 +2509,6 @@ function B:Initialize()
 	self:SecureHook('ToggleBackpack')
 	self:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens');
 	self:Layout();
-
-	E.Bags = self;
 
 	self:DisableBlizzard();
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")

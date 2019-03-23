@@ -11,7 +11,6 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
-E.Skins = S
 S.addonsToLoad = {}
 S.nonAddonsToLoad = {}
 S.allowBypass = {}
