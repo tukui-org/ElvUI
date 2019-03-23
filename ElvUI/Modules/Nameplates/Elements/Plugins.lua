@@ -175,7 +175,7 @@ function NP:Update_Highlight(nameplate)
 			nameplate:EnableElement('Highlight')
 		end
 
-		if db.health.enable and (not db.nameOnly) and (not nameplate.NameOnlyChanged) then
+		if db.health.enable and not (db.nameOnly or nameplate.NameOnlyChanged) then
 			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, .3)
 			nameplate.Highlight.texture:SetAllPoints(nameplate.Health)
 			nameplate.Highlight.texture:SetAlpha(1)
