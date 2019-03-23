@@ -609,6 +609,7 @@ L["Shows item level of each item, enchants, and gems when inspecting another pla
 L["Skin Backdrop (No Borders)"] = "반투명 스킨적용(테두리없음)"
 L["Skin Backdrop"] = "반투명 스킨적용"
 L["Skin the blizzard chat bubbles."] = "말풍선에 디자인을 변경해 스킨을 입힐지, 혹은 투명하게 하여 안보이게 할지 결정합니다."
+L["Status Bar"] = true
 L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = true
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "화면상에서 캐릭터 위에 표시되는 이름, 길드, 칭호 등의 글꼴을 변경합니다.|n|n|cffff0000주의|r|n이 설정은 리로드가 아닌 캐릭터에 재접속하야 적용됩니다."

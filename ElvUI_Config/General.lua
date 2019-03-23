@@ -548,92 +548,107 @@ E.Options.args.general = {
 						E:StaticPopup_Show("PRIVATE_RL");
 					end,
 				},
-				height = {
-					order = 3,
-					type = "range",
-					name = L["Height"],
-					min = 5, max = 100, step = 1,
-
-				},
 				width = {
-					order = 4,
+					order = 3,
 					type = "range",
 					name = L["Width"],
 					min = 50, max = 1000, step = 1,
 				},
-				font = {
-					type = "select", dialogControl = 'LSM30_Font',
-					order = 5,
-					name = L["Font"],
-					values = AceGUIWidgetLSMlists.font,
-				},
-				fontSize = {
-					order = 6,
-					name = FONT_SIZE,
+				height = {
+					order = 4,
 					type = "range",
-					min = 6, max = 22, step = 1,
+					name = L["Height"],
+					min = 5, max = 100, step = 1,
 				},
-				fontOutline = {
-					order = 7,
-					type = "select",
-					name = L["Font Outline"],
-					values = {
-						["NONE"] = NONE,
-						["OUTLINE"] = "OUTLINE",
-						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-						["THICKOUTLINE"] = "THICKOUTLINE",
+				statusBarGroup = {
+					order = 5,
+					name = L["Status Bar"],
+					type = 'group',
+					guiInline = true,
+					args = {
+						statusBar = {
+							order = 1,
+							type = "select", dialogControl = 'LSM30_Statusbar',
+							name = L["StatusBar Texture"],
+							values = AceGUIWidgetLSMlists.statusbar,
+						},
+						statusBarColorGradient = {
+							order = 2,
+							name = L["Color Gradient"],
+							type = 'toggle',
+							get = function(info)
+								return E.db.general.altPowerBar[ info[#info] ]
+							end,
+							set = function(info, value)
+								E.db.general.altPowerBar[ info[#info] ] = value;
+								B:UpdateAltPowerBarColors();
+							end,
+						},
+						statusBarColor = {
+							type = 'color',
+							order = 3,
+							name = COLOR,
+							disabled = function()
+								return E.db.general.altPowerBar.statusBarColorGradient
+							end,
+							get = function(info)
+								local t = E.db.general.altPowerBar[ info[#info] ]
+								local d = P.general.altPowerBar[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+							end,
+							set = function(info, r, g, b)
+								local t = E.db.general.altPowerBar[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								B:UpdateAltPowerBarColors();
+							end,
+						},
 					},
 				},
-				statusBar = {
-					order = 7,
-					type = "select", dialogControl = 'LSM30_Statusbar',
-					name = L["StatusBar Texture"],
-					values = AceGUIWidgetLSMlists.statusbar,
-				},
-				statusBarColorGradient = {
-					order = 8,
-					name = L["Color Gradient"],
-					type = 'toggle',
-					get = function(info)
-						return E.db.general.altPowerBar[ info[#info] ]
-					end,
-					set = function(info, value)
-						E.db.general.altPowerBar[ info[#info] ] = value;
-						Blizzard:UpdateAltPowerBarColors();
-					end,
-				},
-				statusBarColor = {
-					type = 'color',
-					order = 9,
-					name = COLOR,
-					disabled = function()
-						return E.db.general.altPowerBar.statusBarColorGradient
-					end,
-					get = function(info)
-						local t = E.db.general.altPowerBar[ info[#info] ]
-						local d = P.general.altPowerBar[ info[#info] ]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-					end,
-					set = function(info, r, g, b)
-						local t = E.db.general.altPowerBar[ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						Blizzard:UpdateAltPowerBarColors();
-					end,
-				},
-				textFormat = {
-					order = 10,
-					type = 'select',
-					name = L["Text Format"],
-					sortByValue = true,
-					values = {
-						NONE = NONE,
-						NAME = NAME,
-						NAMEPERC = L["Name: Percent"],
-						NAMECURMAX = L["Name: Current / Max"],
-						NAMECURMAXPERC = L["Name: Current / Max - Percent"],
-						PERCENT = L["Percent"],
-						CURMAX = L["Current / Max"],
-						CURMAXPERC = L["Current / Max - Percent"],
+				textGroup = {
+					order = 6,
+					name = L["Text"],
+					type = 'group',
+					guiInline = true,
+					args = {
+						font = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 1,
+							name = L["Font"],
+							values = AceGUIWidgetLSMlists.font,
+						},
+						fontSize = {
+							order = 2,
+							name = FONT_SIZE,
+							type = "range",
+							min = 6, max = 22, step = 1,
+						},
+						fontOutline = {
+							order = 3,
+							type = "select",
+							name = L["Font Outline"],
+							values = {
+								["NONE"] = NONE,
+								["OUTLINE"] = "OUTLINE",
+								["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+								["THICKOUTLINE"] = "THICKOUTLINE",
+							},
+						},
+						textFormat = {
+							order = 4,
+							type = 'select',
+							name = L["Text Format"],
+							sortByValue = true,
+							values = {
+								NONE = NONE,
+								NAME = NAME,
+								NAMEPERC = L["Name: Percent"],
+								NAMECURMAX = L["Name: Current / Max"],
+								NAMECURMAXPERC = L["Name: Current / Max - Percent"],
+								PERCENT = L["Percent"],
+								CURMAX = L["Current / Max"],
+								CURMAXPERC = L["Current / Max - Percent"],
+							},
+						},
 					},
 				},
 			},

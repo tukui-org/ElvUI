@@ -558,6 +558,7 @@ L["Shows item level of each item, enchants, and gems when inspecting another pla
 L["Skin Backdrop (No Borders)"] = "美化背景(無邊界)"
 L["Skin Backdrop"] = "美化背景"
 L["Skin the blizzard chat bubbles."] = "美化暴雪對話泡泡."
+L["Status Bar"] = true
 L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = "特寫框體縮放"
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家頭頂姓名的字體. |cffFF0000警告: 你需要重新開啟遊戲或重新登錄才能使用此功能.|r"

@@ -426,17 +426,17 @@ local function BuildABConfig()
 				min = 0, max = 10, step = 1,
 				disabled = function() return not E.private.actionbar.enable end,
 			},
-			heightMult = {
+			widthMult = {
 				order = 12,
 				type = 'range',
-				name = L["Height Multiplier"],
+				name = L["Width Multiplier"],
 				desc = L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."],
 				min = 1, max = 5, step = 1,
 			},
-			widthMult = {
+			heightMult = {
 				order = 13,
 				type = 'range',
-				name = L["Width Multiplier"],
+				name = L["Height Multiplier"],
 				desc = L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."],
 				min = 1, max = 5, step = 1,
 			},
