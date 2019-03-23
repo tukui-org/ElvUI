@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local B = E:GetModule("Blizzard")
-local M = E:GetModule("Misc")
+local Misc = E:GetModule('Misc')
+local Layout = E:GetModule('Layout')
+local Totems = E:GetModule('Totems')
+local Blizzard = E:GetModule('Blizzard')
+local AFK = E:GetModule('AFK')
 
 local _G = _G
 local IsAddOnLoaded = IsAddOnLoaded
@@ -92,21 +95,21 @@ E.Options.args.general = {
 					type = 'toggle',
 					name = L["Bottom Panel"],
 					desc = L["Display a panel across the bottom of the screen. This is for cosmetic only."],
-					set = function(info, value) E.db.general.bottomPanel = value; E:GetModule('Layout'):BottomPanelVisibility() end
+					set = function(info, value) E.db.general.bottomPanel = value; Layout:BottomPanelVisibility() end
 				},
 				topPanel = {
 					order = 15,
 					type = 'toggle',
 					name = L["Top Panel"],
 					desc = L["Display a panel across the top of the screen. This is for cosmetic only."],
-					set = function(info, value) E.db.general.topPanel = value; E:GetModule('Layout'):TopPanelVisibility() end
+					set = function(info, value) E.db.general.topPanel = value; Layout:TopPanelVisibility() end
 				},
 				afk = {
 					order = 16,
 					type = 'toggle',
 					name = L["AFK Mode"],
 					desc = L["When you go AFK display the AFK screen."],
-					set = function(info, value) E.db.general.afk = value; E:GetModule('AFK'):Toggle() end
+					set = function(info, value) E.db.general.afk = value; AFK:Toggle() end
 				},
 				decimalLength = {
 					order = 24,
@@ -359,7 +362,7 @@ E.Options.args.general = {
 			type = "group",
 			name = L["Class Totems"],
 			get = function(info) return E.db.general.totems[ info[#info] ] end,
-			set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):PositionAndSize() end,
+			set = function(info, value) E.db.general.totems[ info[#info] ] = value; Totems:PositionAndSize() end,
 			args = {
 				header = {
 					order = 1,
@@ -370,7 +373,7 @@ E.Options.args.general = {
 					order = 2,
 					type = "toggle",
 					name = L['Enable'],
-					set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):ToggleEnable() end,
+					set = function(info, value) E.db.general.totems[ info[#info] ] = value; Totems:ToggleEnable() end,
 				},
 				size = {
 					order = 3,
@@ -477,7 +480,7 @@ E.Options.args.general = {
 					name = L["Auto Hide"],
 					desc = L["Automatically hide the objetive frame during boss or arena fights."],
 					disabled = function() return IsAddOnLoaded("!KalielsTracker") end,
-					set = function(info, value) E.db.general.objectiveFrameAutoHide = value; E:GetModule('Blizzard'):SetObjectiveFrameAutoHide(); end,
+					set = function(info, value) E.db.general.objectiveFrameAutoHide = value; Blizzard:SetObjectiveFrameAutoHide(); end,
 				},
 				objectiveFrameHeight = {
 					order = 32,
@@ -485,7 +488,7 @@ E.Options.args.general = {
 					name = L["Objective Frame Height"],
 					desc = L["Height of the objective tracker. Increase size to be able to see more objectives."],
 					min = 400, max = E.screenheight, step = 1,
-					set = function(info, value) E.db.general.objectiveFrameHeight = value; E:GetModule('Blizzard'):SetObjectiveFrameHeight(); end,
+					set = function(info, value) E.db.general.objectiveFrameHeight = value; Blizzard:SetObjectiveFrameHeight(); end,
 				},
 				bonusObjectivePosition = {
 					order = 33,
@@ -556,7 +559,7 @@ E.Options.args.general = {
 			get = function(info) return E.db.general.altPowerBar[ info[#info] ] end,
 			set = function(info, value)
 				E.db.general.altPowerBar[ info[#info] ] = value;
-				B:UpdateAltPowerBarSettings();
+				Blizzard:UpdateAltPowerBarSettings();
 			end,
 			args = {
 				alternativePowerHeader = {
@@ -626,7 +629,7 @@ E.Options.args.general = {
 					end,
 					set = function(info, value)
 						E.db.general.altPowerBar[ info[#info] ] = value;
-						B:UpdateAltPowerBarColors();
+						Blizzard:UpdateAltPowerBarColors();
 					end,
 				},
 				statusBarColor = {
@@ -644,7 +647,7 @@ E.Options.args.general = {
 					set = function(info, r, g, b)
 						local t = E.db.general.altPowerBar[ info[#info] ]
 						t.r, t.g, t.b = r, g, b
-						B:UpdateAltPowerBarColors();
+						Blizzard:UpdateAltPowerBarColors();
 					end,
 				},
 				textFormat = {
@@ -735,7 +738,7 @@ E.Options.args.general = {
 					name = L["Vehicle Seat Indicator Size"],
 					min = 64, max = 128, step = 4,
 					get = function(info) return E.db.general.vehicleSeatIndicatorSize end,
-					set = function(info, value) E.db.general.vehicleSeatIndicatorSize = value; B:UpdateVehicleFrame() end,
+					set = function(info, value) E.db.general.vehicleSeatIndicatorSize = value; Blizzard:UpdateVehicleFrame() end,
 				},
 				commandBarSetting = {
 					order = 9,
@@ -772,7 +775,7 @@ E.Options.args.general = {
 							desc = L["Shows item level of each item, enchants, and gems on the character page."],
 							set = function(info, value)
 								E.db.general.itemLevel.displayCharacterInfo = value;
-								M:ToggleItemLevelInfo()
+								Misc:ToggleItemLevelInfo()
 							end
 						},
 						displayInspectInfo = {
@@ -782,7 +785,7 @@ E.Options.args.general = {
 							desc = L["Shows item level of each item, enchants, and gems when inspecting another player."],
 							set = function(info, value)
 								E.db.general.itemLevel.displayInspectInfo = value;
-								M:ToggleItemLevelInfo()
+								Misc:ToggleItemLevelInfo()
 							end
 						},
 						fontGroup = {
@@ -793,8 +796,8 @@ E.Options.args.general = {
 							get = function(info) return E.db.general.itemLevel[ info[#info] ] end,
 							set = function(info, value)
 								E.db.general.itemLevel[ info[#info] ] = value
-								M:UpdateInspectPageFonts("Character")
-								M:UpdateInspectPageFonts("Inspect")
+								Misc:UpdateInspectPageFonts("Character")
+								Misc:UpdateInspectPageFonts("Inspect")
 							end,
 							args = {
 								itemLevelFont = {
