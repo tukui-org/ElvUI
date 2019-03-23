@@ -277,3 +277,43 @@ function NP:Update_FloatingCombatFeedback(nameplate)
 		end
 	end
 end
+
+function NP:Construct_Fader(nameplate)
+	local Fader = {
+		Target = true,
+		Health = true,
+		Combat = true,
+		Power = true,
+		Casting = true,
+		Smooth = 1,
+		Delay = 3,
+		MaxAlpha = 1,
+		MinAlpha = 0,
+	}
+
+	return Fader
+end
+
+function NP:Update_Fader(nameplate)
+	local db = NP.db.units[nameplate.frameType]
+
+	if (not db.visibility) or db.visibility.showAlways then
+		if nameplate:IsElementEnabled('Fader') then
+			nameplate:DisableElement('Fader')
+		end
+	else
+		if not nameplate:IsElementEnabled('Fader') then
+			nameplate:EnableElement('Fader')
+		end
+
+		nameplate.Fader.Combat = db.visibility.showInCombat
+		nameplate.Fader.Target = db.visibility.showWithTarget
+		nameplate.Fader.Health = true
+		nameplate.Fader.Power = true
+		nameplate.Fader.Casting = true
+		nameplate.Fader.Smooth = 1
+		nameplate.Fader.Delay = db.visibility.hideDelay
+		nameplate.Fader.MaxAlpha = 1
+		nameplate.Fader.MinAlpha = 0
+	end
+end

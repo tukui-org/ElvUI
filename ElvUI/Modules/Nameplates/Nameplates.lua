@@ -145,18 +145,7 @@ function NP:StylePlate(nameplate)
 	end
 
 	if nameplate == _G.ElvNP_Player then
-		-- Setup Fader
-		nameplate.Fader = {
-			Combat = NP.db.units.PLAYER.visibility.showInCombat,
-			Target = NP.db.units.PLAYER.visibility.showWithTarget,
-			Health = true,
-			Power = true,
-			Casting = true,
-			Smooth = 1,
-			Delay = NP.db.units.PLAYER.visibility.hideDelay,
-			MaxAlpha = 1,
-			MinAlpha = 0,
-		}
+		nameplate.Fader = NP:Construct_Fader(nameplate)
 	end
 
 	NP.Plates[nameplate] = nameplate:GetName()
@@ -188,6 +177,10 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_DetectionIndicator(nameplate)
 		if E.myclass == 'DEATHKNIGHT' then
 			NP:Update_Runes(nameplate)
+		end
+
+		if nameplate == _G.ElvNP_Player then
+			NP:Update_Fader(nameplate)
 		end
 	end
 
@@ -350,6 +343,7 @@ function NP:GROUP_ROSTER_UPDATE()
 	NP.IsInGroup = IsInRaid() or IsInGroup()
 
 	wipe(NP.GroupRoles)
+
 	if NP.IsInGroup then
 		local NumPlayers, Unit = IsInRaid() and GetNumGroupMembers() or GetNumSubgroupMembers(), IsInRaid() and 'raid' or 'party'
 		for i = 1, NumPlayers do
@@ -407,21 +401,6 @@ function NP:ConfigureAll(fromConfig)
 
 	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 		_G.ElvNP_Player:Enable()
-		-- Setup Fader
-		if NP.db.units.PLAYER.visibility.showAlways then
-			if _G.ElvNP_Player:IsElementEnabled('Fader') then
-				_G.ElvNP_Player:DisableElement('Fader')
-			end
-		else
-			if not _G.ElvNP_Player:IsElementEnabled('Fader') then
-				_G.ElvNP_Player:EnableElement('Fader')
-			end
-
-			_G.ElvNP_Player.Fader.Combat = NP.db.units.PLAYER.visibility.showInCombat
-			_G.ElvNP_Player.Fader.Target = NP.db.units.PLAYER.visibility.showWithTarget
-			_G.ElvNP_Player.Fader.Smooth = 1
-			_G.ElvNP_Player.Fader.Delay = NP.db.units.PLAYER.visibility.hideDelay
-		end
 	else
 		_G.ElvNP_Player:Disable()
 	end

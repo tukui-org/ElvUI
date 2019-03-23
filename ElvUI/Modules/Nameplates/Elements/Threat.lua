@@ -7,6 +7,8 @@ local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
 
 function NP:ThreatIndicator_PreUpdate(unit)
+	if (NP.InstanceType == 'arena' or NP.InstanceType == 'pvp') then return end
+
 	local ROLE = NP.IsInGroup and UnitExists(unit..'target') and not UnitIsUnit(unit..'target', 'player') and NP.GroupRoles[UnitName(unit..'target')] or 'NONE'
 
 	if ROLE == 'TANK' then
@@ -21,6 +23,8 @@ function NP:ThreatIndicator_PreUpdate(unit)
 end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
+	if (NP.InstanceType == 'arena' or NP.InstanceType == 'pvp') then return end
+
 	if NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor and not UnitIsTapDenied(unit) then
 		self.__owner.Health.colorTapping = false
 		self.__owner.Health.colorDisconnected = false
