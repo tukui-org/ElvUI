@@ -526,7 +526,6 @@ E.Options.args.general = {
 						['LEFTCHAT'] = L["Left Chat"],
 						['RIGHTCHAT'] = L["Right Chat"],
 					},
-					get = function(info) return E.db.general.threat. end,
 					set = function(info, value) E.db.general.threat.position = value; E:GetModule('Threat'):UpdatePosition() end,
 				},
 				textSize = {
