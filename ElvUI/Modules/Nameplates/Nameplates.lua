@@ -354,26 +354,30 @@ function NP:PLAYER_ENTERING_WORLD()
 end
 
 function NP:ConfigureAll()
-	NP.PlayerRole = E:GetPlayerRole() -- GetSpecializationRole(GetSpecialization())
+	NP.PlayerRole = GetSpecializationRole(GetSpecialization())
 
 	-- Find New Way to set these so they don't always reset the NP CVars and refresh the plates.
 	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
 	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
+
+	SetCVar('NameplatePersonalShowAlways', (NP.db.units.PLAYER.visibility.showAlways and 1 or 0))
+	SetCVar('NameplatePersonalShowInCombat', (NP.db.units.PLAYER.visibility.showInCombat and 1 or 0))
+	SetCVar('NameplatePersonalShowWithTarget', (NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0))
 	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
-	SetCVar('NameplatePersonalShowAlways', (NP.db.units.PLAYER.visibility.showAlways == true and 1 or 0))
-	SetCVar('NameplatePersonalShowInCombat', (NP.db.units.PLAYER.visibility.showInCombat == true and 1 or 0))
-	SetCVar('NameplatePersonalShowWithTarget', (NP.db.units.PLAYER.visibility.showWithTarget == true and 1 or 0))
-	SetCVar('nameplateShowAll', NP.db.displayStyle ~= 'ALL' and 0 or 1)
-	SetCVar('nameplateShowFriendlyMinions', NP.db.units.FRIENDLY_PLAYER.minions == true and 1 or 0)
-	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions == true or NP.db.units.ENEMY_NPC.minions == true) and 1 or 0)
-	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors == true and 1 or 0)
+
+	SetCVar('nameplateShowFriendlyMinions', NP.db.units.FRIENDLY_PLAYER.minions and 1 or 0)
+	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions or NP.db.units.ENEMY_NPC.minions) and 1 or 0)
+	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors and 1 or 0)
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
-	SetCVar('nameplateOtherTopInset', NP.db.clampToScreen and 0.08 or -1)
-	SetCVar('nameplateOtherBottomInset', NP.db.clampToScreen and 0.1 or -1)
 	SetCVar('nameplateSelectedScale', NP.db.units.TARGET.scale)
 
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
+	end
+
+	if NP.db.clampToScreen then
+		SetCVar('nameplateOtherTopInset', 0.08)
+		SetCVar('nameplateOtherBottomInset', 0.1)
 	end
 
 	C_NamePlate_SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
