@@ -565,6 +565,13 @@ E.Options.args.general = {
 					name = L["Status Bar"],
 					type = 'group',
 					guiInline = true,
+					set = function(info, value)
+						E.db.general.altPowerBar[ info[#info] ] = value;
+						Blizzard:UpdateAltPowerBarColors();
+					end,
+					get = function(info)
+						return E.db.general.altPowerBar[ info[#info] ]
+					end,
 					args = {
 						statusBar = {
 							order = 1,
@@ -576,13 +583,6 @@ E.Options.args.general = {
 							order = 2,
 							name = L["Color Gradient"],
 							type = 'toggle',
-							get = function(info)
-								return E.db.general.altPowerBar[ info[#info] ]
-							end,
-							set = function(info, value)
-								E.db.general.altPowerBar[ info[#info] ] = value;
-								B:UpdateAltPowerBarColors();
-							end,
 						},
 						statusBarColor = {
 							type = 'color',
@@ -599,7 +599,7 @@ E.Options.args.general = {
 							set = function(info, r, g, b)
 								local t = E.db.general.altPowerBar[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
-								B:UpdateAltPowerBarColors();
+								Blizzard:UpdateAltPowerBarColors();
 							end,
 						},
 					},
@@ -609,6 +609,13 @@ E.Options.args.general = {
 					name = L["Text"],
 					type = 'group',
 					guiInline = true,
+					set = function(info, value)
+						E.db.general.altPowerBar[ info[#info] ] = value;
+						Blizzard:UpdateAltPowerBarColors();
+					end,
+					get = function(info)
+						return E.db.general.altPowerBar[ info[#info] ]
+					end,
 					args = {
 						font = {
 							type = "select", dialogControl = 'LSM30_Font',
