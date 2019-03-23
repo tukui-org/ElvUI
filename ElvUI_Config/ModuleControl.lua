@@ -1,13 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
-local CP = E:GetModule('CopyProfile');
+local UF = E:GetModule('UnitFrames')
+local MC = E:GetModule('ModuleCopy')
 
 local XPBAR_LABEL, MINIMAP_LABEL = XPBAR_LABEL, MINIMAP_LABEL
 local REPUTATION, HONOR, COLORS = REPUTATION, HONOR, COLORS
 
 --Actionbars
 local function CreateActionbarsConfig()
-	local config = CP:CreateModuleConfigGroup(L["ActionBars"], "actionbar")
+	local config = MC:CreateModuleConfigGroup(L["ActionBars"], "actionbar")
 	for i = 1, 6 do
 		config.args["bar"..i] = {
 			order = i+1,
@@ -58,7 +58,7 @@ end
 
 --Auras
 local function CreateAurasConfig()
-	local config = CP:CreateModuleConfigGroup(L["Auras"], "auras")
+	local config = MC:CreateModuleConfigGroup(L["Auras"], "auras")
 	config.args.buffs = {
 		order = 2,
 		type = "toggle",
@@ -86,7 +86,7 @@ end
 
 --Bags
 local function CreateBagsConfig()
-	local config = CP:CreateModuleConfigGroup(L["Bags"], "bags")
+	local config = MC:CreateModuleConfigGroup(L["Bags"], "bags")
 	config.args.bagBar = {
 		order = 2,
 		type = "toggle",
@@ -121,14 +121,14 @@ end
 
 --Chat
 local function CreateChatConfig()
-	local config = CP:CreateModuleConfigGroup(L["Chat"], "chat")
+	local config = MC:CreateModuleConfigGroup(L["Chat"], "chat")
 
 	return config
 end
 
 --Cooldowns
 local function CreateCooldownConfig()
-	local config = CP:CreateModuleConfigGroup(L["Cooldown Text"], "cooldown")
+	local config = MC:CreateModuleConfigGroup(L["Cooldown Text"], "cooldown")
 	config.args.fonts = {
 		order = 2,
 		type = "toggle",
@@ -142,7 +142,7 @@ end
 
 --DataBars
 local function CreateDatatbarsConfig()
-	local config = CP:CreateModuleConfigGroup(L["DataBars"], "databars")
+	local config = MC:CreateModuleConfigGroup(L["DataBars"], "databars")
 
 	config.args.experience = {
 		order = 2,
@@ -178,7 +178,7 @@ end
 
 --DataTexts
 local function CreateDatatextsConfig()
-	local config = CP:CreateModuleConfigGroup(L["DataTexts"], "datatexts")
+	local config = MC:CreateModuleConfigGroup(L["DataTexts"], "datatexts")
 	config.args.panels = {
 		order = 2,
 		type = "toggle",
@@ -192,7 +192,7 @@ end
 
 --General
 local function CreateGeneralConfig()
-	local config = CP:CreateModuleConfigGroup(L["General"], "general")
+	local config = MC:CreateModuleConfigGroup(L["General"], "general")
 	config.args.altPowerBar = {
 		order = 2,
 		type = "toggle",
@@ -241,7 +241,7 @@ end
 
 --NamePlates
 local function CreateNamePlatesConfig()
-	local config = CP:CreateModuleConfigGroup(L["NamePlates"], "nameplates")
+	local config = MC:CreateModuleConfigGroup(L["NamePlates"], "nameplates")
 	config.args.cooldown = {
 		order = 2,
 		type = "toggle",
@@ -302,7 +302,7 @@ end
 
 --Tooltip
 local function CreateTooltipConfig()
-	local config = CP:CreateModuleConfigGroup(L["Tooltip"], "tooltip")
+	local config = MC:CreateModuleConfigGroup(L["Tooltip"], "tooltip")
 	config.args.visibility = {
 		order = 2,
 		type = "toggle",
@@ -323,7 +323,7 @@ end
 
 --UnitFrames
 local function CreateUnitframesConfig()
-	local config = CP:CreateModuleConfigGroup(L["UnitFrames"], "unitframe")
+	local config = MC:CreateModuleConfigGroup(L["UnitFrames"], "unitframe")
 	config.args.cooldown = {
 		order = 2,
 		type = "toggle",
@@ -542,7 +542,7 @@ E.Options.args.modulecontrol= {
 					desc = L["On screen positions for different elements."],
 					childGroups = "tab",
 					disabled = E.Options.args.profiles.args.copyfrom.disabled,
-					args = CP:CreateMoversConfigGroup(),
+					args = MC:CreateMoversConfigGroup(),
 				},
 			},
 		},
