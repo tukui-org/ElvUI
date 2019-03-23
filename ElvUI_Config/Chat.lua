@@ -12,8 +12,8 @@ E.Options.args.chat = {
 	type = "group",
 	name = L["Chat"],
 	childGroups = "tab",
-	get = function(info) return E.db.chat[ info[#info] ] end,
-	set = function(info, value) E.db.chat[ info[#info] ] = value end,
+	get = function(info) return E.db.chat[info[#info]] end,
+	set = function(info, value) E.db.chat[info[#info]] = value end,
 	args = {
 		intro = {
 			order = 1,
@@ -55,7 +55,7 @@ E.Options.args.chat = {
 					name = L["Hyperlink Hover"],
 					desc = L["Display the hyperlink tooltip while hovering over a hyperlink."],
 					set = function(info, value)
-						E.db.chat[ info[#info] ] = value
+						E.db.chat[info[#info]] = value
 						if value == true then
 							CH:EnableHyperlink()
 						else
@@ -69,7 +69,7 @@ E.Options.args.chat = {
 					name = L["Sticky Chat"],
 					desc = L["When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel."],
 					set = function(info, value)
-						E.db.chat[ info[#info] ] = value
+						E.db.chat[info[#info]] = value
 					end,
 				},
 				fade = {
@@ -78,7 +78,7 @@ E.Options.args.chat = {
 					name = L["Fade Chat"],
 					desc = L["Fade the chat text when there is no activity."],
 					set = function(info, value)
-						E.db.chat[ info[#info] ] = value
+						E.db.chat[info[#info]] = value
 						CH:UpdateFading()
 					end,
 				},
@@ -88,7 +88,7 @@ E.Options.args.chat = {
 					name = L["Emotion Icons"],
 					desc = L["Display emotion icons in chat."],
 					set = function(info, value)
-						E.db.chat[ info[#info] ] = value
+						E.db.chat[info[#info]] = value
 					end,
 				},
 				lfgIcons = {
@@ -165,7 +165,7 @@ E.Options.args.chat = {
 					type = "toggle",
 					name = L["Hide Voice Chat Buttons"],
 					set = function(info, value)
-						E.db.chat[ info[#info] ] = value
+						E.db.chat[info[#info]] = value
 						E:StaticPopup_Show("CONFIG_RL")
 					end,
 				},
@@ -213,7 +213,7 @@ E.Options.args.chat = {
 					desc = L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."],
 					min = 0, max = 120, step = 1,
 					set = function(info, value)
-						E.db.chat[ info[#info] ] = value
+						E.db.chat[info[#info]] = value
 						if value == 0 then
 							CH:DisableChatThrottle()
 						end
@@ -226,7 +226,7 @@ E.Options.args.chat = {
 					desc = L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."],
 					min = 0, max = 120, step = 5,
 					set = function(info, value)
-						E.db.chat[ info[#info] ] = value
+						E.db.chat[info[#info]] = value
 					end,
 				},
 				numAllowedCombatRepeat = {
@@ -278,7 +278,7 @@ E.Options.args.chat = {
 					desc = L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"],
 					type = 'input',
 					width = 'full',
-					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:UpdateChatKeywords() end,
+					set = function(info, value) E.db.chat[info[#info]] = value; CH:UpdateChatKeywords() end,
 				},
 			},
 		},
@@ -298,7 +298,7 @@ E.Options.args.chat = {
 					name = L["Lock Positions"],
 					desc = L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."],
 					set = function(info, value)
-						E.db.chat[ info[#info] ] = value
+						E.db.chat[info[#info]] = value
 						if value == true then
 							CH:PositionChat(true)
 						end
@@ -326,7 +326,7 @@ E.Options.args.chat = {
 						['BELOW_CHAT'] = L["Below Chat"],
 						['ABOVE_CHAT'] = L["Above Chat"],
 					},
-					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:UpdateAnchors() end,
+					set = function(info, value) E.db.chat[info[#info]] = value; CH:UpdateAnchors() end,
 				},
 				panelBackdrop = {
 					order = 5,
@@ -433,7 +433,7 @@ E.Options.args.chat = {
 					name = L["Panel Texture (Left)"],
 					desc = L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."],
 					set = function(info, value)
-						E.db.chat[ info[#info] ] = value
+						E.db.chat[info[#info]] = value
 						E:UpdateMedia()
 					end,
 				},
@@ -444,7 +444,7 @@ E.Options.args.chat = {
 					name = L["Panel Texture (Right)"],
 					desc = L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."],
 					set = function(info, value)
-						E.db.chat[ info[#info] ] = value
+						E.db.chat[info[#info]] = value
 						E:UpdateMedia()
 					end,
 				},
@@ -454,7 +454,7 @@ E.Options.args.chat = {
 			order = 120,
 			type = 'group',
 			name = L["Fonts"],
-			set = function(info, value) E.db.chat[ info[#info] ] = value; CH:SetupChat() end,
+			set = function(info, value) E.db.chat[info[#info]] = value; CH:SetupChat() end,
 			args = {
 				header = {
 					order = 0,

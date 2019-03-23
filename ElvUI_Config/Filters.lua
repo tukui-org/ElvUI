@@ -533,8 +533,8 @@ local function UpdateFilterGroup()
 				E.Options.args.filters.args.filterGroup.args[name] = {
 					name = name..' ('..selectedSpell..')',
 					type = 'group',
-					get = function(info) return E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ] end,
-					set = function(info, value) E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
+					get = function(info) return E.global.unitframe.buffwatch.PET[selectedSpell][info[#info]] end,
+					set = function(info, value) E.global.unitframe.buffwatch.PET[selectedSpell][info[#info]] = value; UF:CreateAndUpdateUF('pet') end,
 					order = -10,
 					args = {
 						enabled = {
@@ -590,11 +590,11 @@ local function UpdateFilterGroup()
 							type = 'color',
 							order = 6,
 							get = function(info)
-								local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
+								local t = E.global.unitframe.buffwatch.PET[selectedSpell][info[#info]]
 								return t.r, t.g, t.b, t.a
 							end,
 							set = function(info, r, g, b)
-								local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
+								local t = E.global.unitframe.buffwatch.PET[selectedSpell][info[#info]]
 								t.r, t.g, t.b = r, g, b
 								UF:CreateAndUpdateUF('pet')
 							end,
@@ -609,7 +609,7 @@ local function UpdateFilterGroup()
 							type = 'color',
 							order = 8,
 							get = function(info)
-								local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
+								local t = E.global.unitframe.buffwatch.PET[selectedSpell][info[#info]]
 								if t then
 									return t.r, t.g, t.b, t.a
 								else
@@ -617,7 +617,7 @@ local function UpdateFilterGroup()
 								end
 							end,
 							set = function(info, r, g, b)
-								local t = E.global.unitframe.buffwatch.PET[selectedSpell][ info[#info] ]
+								local t = E.global.unitframe.buffwatch.PET[selectedSpell][info[#info]]
 								t.r, t.g, t.b = r, g, b
 								UF:CreateAndUpdateUF('pet')
 							end,
@@ -783,9 +783,9 @@ local function UpdateFilterGroup()
 			E.Options.args.filters.args.filterGroup.args[name] = {
 				name = name..' ('..selectedSpell..')',
 				type = 'group',
-				get = function(info) return E.global.unitframe.buffwatch[E.myclass][selectedSpell][ info[#info] ] end,
+				get = function(info) return E.global.unitframe.buffwatch[E.myclass][selectedSpell][info[#info]] end,
 				set = function(info, value)
-					E.global.unitframe.buffwatch[E.myclass][selectedSpell][ info[#info] ] = value;
+					E.global.unitframe.buffwatch[E.myclass][selectedSpell][info[#info]] = value;
 
 					UF:UpdateAuraWatchFromHeader('raid')
 					UF:UpdateAuraWatchFromHeader('raid40')
@@ -847,11 +847,11 @@ local function UpdateFilterGroup()
 						type = 'color',
 						order = 6,
 						get = function(info)
-							local t = E.global.unitframe.buffwatch[E.myclass][selectedSpell][ info[#info] ]
+							local t = E.global.unitframe.buffwatch[E.myclass][selectedSpell][info[#info]]
 							return t.r, t.g, t.b, t.a
 						end,
 						set = function(info, r, g, b)
-							local t = E.global.unitframe.buffwatch[E.myclass][selectedSpell][ info[#info] ]
+							local t = E.global.unitframe.buffwatch[E.myclass][selectedSpell][info[#info]]
 							t.r, t.g, t.b = r, g, b
 							UF:UpdateAuraWatchFromHeader('raid')
 							UF:UpdateAuraWatchFromHeader('raid40')
@@ -869,7 +869,7 @@ local function UpdateFilterGroup()
 						type = 'color',
 						order = 8,
 						get = function(info)
-							local t = E.global.unitframe.buffwatch[E.myclass][selectedSpell][ info[#info] ]
+							local t = E.global.unitframe.buffwatch[E.myclass][selectedSpell][info[#info]]
 							if t then
 								return t.r, t.g, t.b, t.a
 							else
@@ -1041,11 +1041,11 @@ local function UpdateFilterGroup()
 				hidden = function() return not E.db.unitframe.filters.buffwatch[selectedSpell] end,
 				get = function(info)
 					if E.db.unitframe.filters.buffwatch[selectedSpell] then
-						return E.db.unitframe.filters.buffwatch[selectedSpell][ info[#info] ]
+						return E.db.unitframe.filters.buffwatch[selectedSpell][info[#info]]
 					end
 				end,
 				set = function(info, value)
-					E.db.unitframe.filters.buffwatch[selectedSpell][ info[#info] ] = value;
+					E.db.unitframe.filters.buffwatch[selectedSpell][info[#info]] = value;
 
 					UF:UpdateAuraWatchFromHeader('raid')
 					UF:UpdateAuraWatchFromHeader('raid40')
@@ -1107,12 +1107,12 @@ local function UpdateFilterGroup()
 						order = 6,
 						get = function(info)
 							if E.db.unitframe.filters.buffwatch[selectedSpell] then
-								local t = E.db.unitframe.filters.buffwatch[selectedSpell][ info[#info] ]
+								local t = E.db.unitframe.filters.buffwatch[selectedSpell][info[#info]]
 								return t.r, t.g, t.b, t.a
 							end
 						end,
 						set = function(info, r, g, b)
-							local t = E.db.unitframe.filters.buffwatch[selectedSpell][ info[#info] ]
+							local t = E.db.unitframe.filters.buffwatch[selectedSpell][info[#info]]
 							t.r, t.g, t.b = r, g, b
 							UF:UpdateAuraWatchFromHeader('raid')
 							UF:UpdateAuraWatchFromHeader('raid40')
@@ -1130,7 +1130,7 @@ local function UpdateFilterGroup()
 						order = 8,
 						get = function(info)
 							if E.db.unitframe.filters.buffwatch[selectedSpell] then
-								local t = E.db.unitframe.filters.buffwatch[selectedSpell][ info[#info] ]
+								local t = E.db.unitframe.filters.buffwatch[selectedSpell][info[#info]]
 								if t then
 									return t.r, t.g, t.b, t.a
 								else
@@ -1139,7 +1139,7 @@ local function UpdateFilterGroup()
 							end
 						end,
 						set = function(info, r, g, b)
-							local t = E.db.unitframe.filters.buffwatch[selectedSpell][ info[#info] ]
+							local t = E.db.unitframe.filters.buffwatch[selectedSpell][info[#info]]
 							t.r, t.g, t.b = r, g, b
 							UF:UpdateAuraWatchFromHeader('raid')
 							UF:UpdateAuraWatchFromHeader('raid40')

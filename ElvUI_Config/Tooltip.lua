@@ -9,8 +9,8 @@ E.Options.args.tooltip = {
 	type = "group",
 	name = L["Tooltip"],
 	childGroups = "tab",
-	get = function(info) return E.db.tooltip[ info[#info] ] end,
-	set = function(info, value) E.db.tooltip[ info[#info] ] = value; end,
+	get = function(info) return E.db.tooltip[info[#info]] end,
+	set = function(info, value) E.db.tooltip[info[#info]] = value; end,
 	args = {
 		intro = {
 			order = 1,
@@ -21,8 +21,8 @@ E.Options.args.tooltip = {
 			order = 2,
 			type = "toggle",
 			name = L['Enable'],
-			get = function(info) return E.private.tooltip[ info[#info] ] end,
-			set = function(info, value) E.private.tooltip[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
+			get = function(info) return E.private.tooltip[info[#info]] end,
+			set = function(info, value) E.private.tooltip[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		general = {
 			order = 3,
@@ -223,8 +223,8 @@ E.Options.args.tooltip = {
 			order = 100,
 			type = "group",
 			name = L["Visibility"],
-			get = function(info) return E.db.tooltip.visibility[ info[#info] ] end,
-			set = function(info, value) E.db.tooltip.visibility[ info[#info] ] = value; end,
+			get = function(info) return E.db.tooltip.visibility[info[#info]] end,
+			set = function(info, value) E.db.tooltip.visibility[info[#info]] = value; end,
 			args = {
 				header = {
 					order = 0,
@@ -294,8 +294,8 @@ E.Options.args.tooltip = {
 			order = 200,
 			type = "group",
 			name = L["Health Bar"],
-			get = function(info) return E.db.tooltip.healthBar[ info[#info] ] end,
-			set = function(info, value) E.db.tooltip.healthBar[ info[#info] ] = value; end,
+			get = function(info) return E.db.tooltip.healthBar[info[#info]] end,
+			set = function(info, value) E.db.tooltip.healthBar[info[#info]] = value; end,
 			args = {
 				header = {
 					order = 0,

@@ -79,7 +79,7 @@ local function BuildABConfig()
 				name = LOCK_ACTIONBAR_TEXT,
 				desc = L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."],
 				set = function(info, value)
-					E.db.actionbar[ info[#info] ] = value;
+					E.db.actionbar[info[#info]] = value;
 					AB:UpdateButtonSettings()
 
 					--Make it work for PetBar too
@@ -159,7 +159,7 @@ local function BuildABConfig()
 				desc = L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."],
 				min = 0, max = 1, step = 0.01,
 				isPercent = true,
-				set = function(info, value) E.db.actionbar[ info[#info] ] = value; AB.fadeParent:SetAlpha(1-value) end,
+				set = function(info, value) E.db.actionbar[info[#info]] = value; AB.fadeParent:SetAlpha(1-value) end,
 			},
 			colorGroup = {
 				order = 20,
@@ -167,12 +167,12 @@ local function BuildABConfig()
 				name = COLORS,
 				guiInline = true,
 				get = function(info)
-					local t = E.db.actionbar[ info[#info] ]
+					local t = E.db.actionbar[info[#info]]
 					local d = P.actionbar[info[#info]]
 					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 				end,
 				set = function(info, r, g, b)
-					local t = E.db.actionbar[ info[#info] ]
+					local t = E.db.actionbar[info[#info]]
 					t.r, t.g, t.b = r, g, b
 					AB:UpdateButtonSettings();
 				end,
@@ -241,12 +241,12 @@ local function BuildABConfig()
 						name = COLOR,
 						width = 'full',
 						get = function(info)
-							local t = E.db.actionbar[ info[#info] ]
+							local t = E.db.actionbar[info[#info]]
 							local d = P.actionbar[info[#info]]
 							return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 						end,
 						set = function(info, r, g, b)
-							local t = E.db.actionbar[ info[#info] ]
+							local t = E.db.actionbar[info[#info]]
 							t.r, t.g, t.b = r, g, b
 							AB:UpdateButtonSettings();
 						end,
@@ -348,8 +348,8 @@ local function BuildABConfig()
 		order = 2,
 		guiInline = false,
 		disabled = function() return not E.ActionBars.Initialized; end,
-		get = function(info) return E.db.actionbar.barPet[ info[#info] ] end,
-		set = function(info, value) E.db.actionbar.barPet[ info[#info] ] = value; AB:PositionAndSizeBarPet() end,
+		get = function(info) return E.db.actionbar.barPet[info[#info]] end,
+		set = function(info, value) E.db.actionbar.barPet[info[#info]] = value; AB:PositionAndSizeBarPet() end,
 		args = {
 			enabled = {
 				order = 1,
@@ -470,8 +470,8 @@ local function BuildABConfig()
 		order = 3,
 		guiInline = false,
 		disabled = function() return not E.ActionBars.Initialized; end,
-		get = function(info) return E.db.actionbar.stanceBar[ info[#info] ] end,
-		set = function(info, value) E.db.actionbar.stanceBar[ info[#info] ] = value; AB:PositionAndSizeBarShapeShift() end,
+		get = function(info) return E.db.actionbar.stanceBar[info[#info]] end,
+		set = function(info, value) E.db.actionbar.stanceBar[info[#info]] = value; AB:PositionAndSizeBarShapeShift() end,
 		args = {
 			enabled = {
 				order = 1,
@@ -614,8 +614,8 @@ local function BuildABConfig()
 		name = L["Micro Bar"],
 		order = 4,
 		disabled = function() return not E.ActionBars.Initialized; end,
-		get = function(info) return E.db.actionbar.microbar[ info[#info] ] end,
-		set = function(info, value) E.db.actionbar.microbar[ info[#info] ] = value; AB:UpdateMicroPositionDimensions() end,
+		get = function(info) return E.db.actionbar.microbar[info[#info]] end,
+		set = function(info, value) E.db.actionbar.microbar[info[#info]] = value; AB:UpdateMicroPositionDimensions() end,
 		args = {
 			enabled = {
 				order = 1,
@@ -692,15 +692,15 @@ local function BuildABConfig()
 			type = 'group',
 			guiInline = false,
 			disabled = function() return not E.ActionBars.Initialized; end,
-			get = function(info) return E.db.actionbar['bar'..i][ info[#info] ] end,
-			set = function(info, value) E.db.actionbar['bar'..i][ info[#info] ] = value; AB:PositionAndSizeBar('bar'..i) end,
+			get = function(info) return E.db.actionbar['bar'..i][info[#info]] end,
+			set = function(info, value) E.db.actionbar['bar'..i][info[#info]] = value; AB:PositionAndSizeBar('bar'..i) end,
 			args = {
 				enabled = {
 					order = 1,
 					type = 'toggle',
 					name = L['Enable'],
 					set = function(info, value)
-						E.db.actionbar['bar'..i][ info[#info] ] = value;
+						E.db.actionbar['bar'..i][info[#info]] = value;
 						AB:PositionAndSizeBar('bar'..i)
 					end,
 				},
@@ -726,7 +726,7 @@ local function BuildABConfig()
 					type = 'toggle',
 					name = L["Show Empty Buttons"],
 					order = 5,
-					set = function(info, value) E.db.actionbar['bar'..i][ info[#info] ] = value; AB:UpdateButtonSettingsForBar('bar'..i) end,
+					set = function(info, value) E.db.actionbar['bar'..i][info[#info]] = value; AB:UpdateButtonSettingsForBar('bar'..i) end,
 				},
 				mouseover = {
 					order = 6,
@@ -751,7 +751,7 @@ local function BuildABConfig()
 					order = 9,
 					type = "select",
 					name = L["Flyout Direction"],
-					set = function(info, value) E.db.actionbar['bar'..i][ info[#info] ] = value; AB:PositionAndSizeBar('bar'..i); AB:UpdateButtonSettingsForBar("bar"..i) end,
+					set = function(info, value) E.db.actionbar['bar'..i][info[#info]] = value; AB:PositionAndSizeBar('bar'..i); AB:UpdateButtonSettingsForBar("bar"..i) end,
 					values = {
 						["UP"] = L["Up"],
 						["DOWN"] = L["Down"],
@@ -874,7 +874,7 @@ local function BuildABConfig()
 		name = L["Boss Button"],
 		order = 11,
 		disabled = function() return not E.ActionBars.Initialized; end,
-		get = function(info) return E.db.actionbar.extraActionButton[ info[#info] ] end,
+		get = function(info) return E.db.actionbar.extraActionButton[info[#info]] end,
 		args = {
 			alpha = {
 				order = 1,
@@ -883,7 +883,7 @@ local function BuildABConfig()
 				desc = L["Change the alpha level of the frame."],
 				isPercent = true,
 				min = 0, max = 1, step = 0.01,
-				set = function(info, value) E.db.actionbar.extraActionButton[ info[#info] ] = value; AB:Extra_SetAlpha() end,
+				set = function(info, value) E.db.actionbar.extraActionButton[info[#info]] = value; AB:Extra_SetAlpha() end,
 			},
 			scale = {
 				order = 2,
@@ -891,7 +891,7 @@ local function BuildABConfig()
 				name = L["Scale"],
 				isPercent = true,
 				min = 0.2, max = 2, step = 0.01,
-				set = function(info, value) E.db.actionbar.extraActionButton[ info[#info] ] = value; AB:Extra_SetScale() end,
+				set = function(info, value) E.db.actionbar.extraActionButton[info[#info]] = value; AB:Extra_SetScale() end,
 			},
 		},
 	}
@@ -901,15 +901,15 @@ E.Options.args.actionbar = {
 	type = "group",
 	name = L["ActionBars"],
 	childGroups = "tree",
-	get = function(info) return E.db.actionbar[ info[#info] ] end,
-	set = function(info, value) E.db.actionbar[ info[#info] ] = value; AB:UpdateButtonSettings() end,
+	get = function(info) return E.db.actionbar[info[#info]] end,
+	set = function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end,
 	args = {
 		enable = {
 			order = 1,
 			type = "toggle",
 			name = L['Enable'],
-			get = function(info) return E.private.actionbar[ info[#info] ] end,
-			set = function(info, value) E.private.actionbar[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
+			get = function(info) return E.private.actionbar[info[#info]] end,
+			set = function(info, value) E.private.actionbar[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		intro = {
 			order = 2,

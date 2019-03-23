@@ -46,8 +46,8 @@ function DT:PanelLayoutOptions()
 					type = 'select',
 					name = L[option] or option:upper(),
 					values = datatexts,
-					get = function(info) return E.db.datatexts.panels[pointLoc][ info[#info] ] end,
-					set = function(info, value) E.db.datatexts.panels[pointLoc][ info[#info] ] = value; DT:LoadDataTexts() end,
+					get = function(info) return E.db.datatexts.panels[pointLoc][info[#info]] end,
+					set = function(info, value) E.db.datatexts.panels[pointLoc][info[#info]] = value; DT:LoadDataTexts() end,
 				}
 			end
 		elseif type(tab) == 'string' then
@@ -211,8 +211,8 @@ E.Options.args.datatexts = {
 	type = "group",
 	name = L["DataTexts"],
 	childGroups = "tab",
-	get = function(info) return E.db.datatexts[ info[#info] ] end,
-	set = function(info, value) E.db.datatexts[ info[#info] ] = value; DT:LoadDataTexts() end,
+	get = function(info) return E.db.datatexts[info[#info]] end,
+	set = function(info, value) E.db.datatexts[info[#info]] = value; DT:LoadDataTexts() end,
 	args = {
 		intro = {
 			order = 1,
@@ -251,7 +251,7 @@ E.Options.args.datatexts = {
 							name = L["Panel Transparency"],
 							type = 'toggle',
 							set = function(info, value)
-								E.db.datatexts[ info[#info] ] = value
+								E.db.datatexts[info[#info]] = value
 								Layout:SetDataPanelStyle()
 							end,
 						},
@@ -260,7 +260,7 @@ E.Options.args.datatexts = {
 							name = L["Backdrop"],
 							type = 'toggle',
 							set = function(info, value)
-								E.db.datatexts[ info[#info] ] = value
+								E.db.datatexts[info[#info]] = value
 								Layout:SetDataPanelStyle()
 							end,
 						},
@@ -333,7 +333,7 @@ E.Options.args.datatexts = {
 					desc = L["Display data panels below the chat, used for datatexts."],
 					type = 'toggle',
 					set = function(info, value)
-						E.db.datatexts[ info[#info] ] = value
+						E.db.datatexts[info[#info]] = value
 						if E.db.LeftChatPanelFaded then
 							E.db.LeftChatPanelFaded = true;
 							HideLeftChat()
@@ -348,7 +348,7 @@ E.Options.args.datatexts = {
 					desc = L["Display data panels below the chat, used for datatexts."],
 					type = 'toggle',
 					set = function(info, value)
-						E.db.datatexts[ info[#info] ] = value
+						E.db.datatexts[info[#info]] = value
 						if E.db.RightChatPanelFaded then
 							E.db.RightChatPanelFaded = true;
 							HideRightChat()
@@ -363,7 +363,7 @@ E.Options.args.datatexts = {
 					desc = L["Display minimap panels below the minimap, used for datatexts."],
 					type = 'toggle',
 					set = function(info, value)
-						E.db.datatexts[ info[#info] ] = value
+						E.db.datatexts[info[#info]] = value
 						Minimap:UpdateSettings()
 					end,
 				},
@@ -372,7 +372,7 @@ E.Options.args.datatexts = {
 					name = L["TopMiniPanel"],
 					type = 'toggle',
 					set = function(info, value)
-						E.db.datatexts[ info[#info] ] = value
+						E.db.datatexts[info[#info]] = value
 						Minimap:UpdateSettings()
 					end,
 				},
@@ -381,7 +381,7 @@ E.Options.args.datatexts = {
 					name = L["TopLeftMiniPanel"],
 					type = 'toggle',
 					set = function(info, value)
-						E.db.datatexts[ info[#info] ] = value
+						E.db.datatexts[info[#info]] = value
 						Minimap:UpdateSettings()
 					end,
 				},
@@ -390,7 +390,7 @@ E.Options.args.datatexts = {
 					name = L["TopRightMiniPanel"],
 					type = 'toggle',
 					set = function(info, value)
-						E.db.datatexts[ info[#info] ] = value
+						E.db.datatexts[info[#info]] = value
 						Minimap:UpdateSettings()
 					end,
 				},
@@ -399,7 +399,7 @@ E.Options.args.datatexts = {
 					name = L["BottomMiniPanel"],
 					type = 'toggle',
 					set = function(info, value)
-						E.db.datatexts[ info[#info] ] = value
+						E.db.datatexts[info[#info]] = value
 						Minimap:UpdateSettings()
 					end,
 				},
@@ -408,7 +408,7 @@ E.Options.args.datatexts = {
 					name = L["BottomLeftMiniPanel"],
 					type = 'toggle',
 					set = function(info, value)
-						E.db.datatexts[ info[#info] ] = value
+						E.db.datatexts[info[#info]] = value
 						Minimap:UpdateSettings()
 					end,
 				},
@@ -417,7 +417,7 @@ E.Options.args.datatexts = {
 					name = L["BottomRightMiniPanel"],
 					type = 'toggle',
 					set = function(info, value)
-						E.db.datatexts[ info[#info] ] = value
+						E.db.datatexts[info[#info]] = value
 						Minimap:UpdateSettings()
 					end,
 				},

@@ -141,7 +141,7 @@ E.Options.args.maps = {
 			order = 2,
 			type = "group",
 			name = MINIMAP_LABEL,
-			get = function(info) return E.db.general.minimap[ info[#info] ] end,
+			get = function(info) return E.db.general.minimap[info[#info]] end,
 			childGroups = "tab",
 			args = {
 				header = {
@@ -160,8 +160,8 @@ E.Options.args.maps = {
 							type = "toggle",
 							name = L['Enable'],
 							desc = L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"],
-							get = function(info) return E.private.general.minimap[ info[#info] ] end,
-							set = function(info, value) E.private.general.minimap[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+							get = function(info) return E.private.general.minimap[info[#info]] end,
+							set = function(info, value) E.private.general.minimap[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 						},
 						size = {
 							order = 2,
@@ -169,8 +169,8 @@ E.Options.args.maps = {
 							name = L["Size"],
 							desc = L["Adjust the size of the minimap."],
 							min = 120, max = 250, step = 1,
-							get = function(info) return E.db.general.minimap[ info[#info] ] end,
-							set = function(info, value) E.db.general.minimap[ info[#info] ] = value; MM:UpdateSettings() end,
+							get = function(info) return E.db.general.minimap[info[#info]] end,
+							set = function(info, value) E.db.general.minimap[info[#info]] = value; MM:UpdateSettings() end,
 							disabled = function() return not E.private.general.minimap.enable end,
 						},
 					},
@@ -259,8 +259,8 @@ E.Options.args.maps = {
 							order = 1,
 							type = "group",
 							name = GARRISON_LANDING_PAGE_TITLE,
-							get = function(info) return E.db.general.minimap.icons.classHall[ info[#info] ] end,
-							set = function(info, value) E.db.general.minimap.icons.classHall[ info[#info] ] = value; MM:UpdateSettings() end,
+							get = function(info) return E.db.general.minimap.icons.classHall[info[#info]] end,
+							set = function(info, value) E.db.general.minimap.icons.classHall[info[#info]] = value; MM:UpdateSettings() end,
 							args = {
 								hideClassHallReport = {
 									order = 1,
@@ -319,8 +319,8 @@ E.Options.args.maps = {
 							order = 2,
 							type = "group",
 							name = L["Calendar"],
-							get = function(info) return E.db.general.minimap.icons.calendar[ info[#info] ] end,
-							set = function(info, value) E.db.general.minimap.icons.calendar[ info[#info] ] = value; MM:UpdateSettings() end,
+							get = function(info) return E.db.general.minimap.icons.calendar[info[#info]] end,
+							set = function(info, value) E.db.general.minimap.icons.calendar[info[#info]] = value; MM:UpdateSettings() end,
 							args = {
 								hideCalendar = {
 									order = 1,
@@ -380,8 +380,8 @@ E.Options.args.maps = {
 							order = 3,
 							type = "group",
 							name = MAIL_LABEL,
-							get = function(info) return E.db.general.minimap.icons.mail[ info[#info] ] end,
-							set = function(info, value) E.db.general.minimap.icons.mail[ info[#info] ] = value; MM:UpdateSettings() end,
+							get = function(info) return E.db.general.minimap.icons.mail[info[#info]] end,
+							set = function(info, value) E.db.general.minimap.icons.mail[info[#info]] = value; MM:UpdateSettings() end,
 							args = {
 								position = {
 									order = 1,
@@ -426,8 +426,8 @@ E.Options.args.maps = {
 							order = 4,
 							type = "group",
 							name = L["LFG Queue"],
-							get = function(info) return E.db.general.minimap.icons.lfgEye[ info[#info] ] end,
-							set = function(info, value) E.db.general.minimap.icons.lfgEye[ info[#info] ] = value; MM:UpdateSettings() end,
+							get = function(info) return E.db.general.minimap.icons.lfgEye[info[#info]] end,
+							set = function(info, value) E.db.general.minimap.icons.lfgEye[info[#info]] = value; MM:UpdateSettings() end,
 							args = {
 								position = {
 									order = 1,
@@ -472,8 +472,8 @@ E.Options.args.maps = {
 							order = 5,
 							type = "group",
 							name = L["Instance Difficulty"],
-							get = function(info) return E.db.general.minimap.icons.difficulty[ info[#info] ] end,
-							set = function(info, value) E.db.general.minimap.icons.difficulty[ info[#info] ] = value; MM:UpdateSettings() end,
+							get = function(info) return E.db.general.minimap.icons.difficulty[info[#info]] end,
+							set = function(info, value) E.db.general.minimap.icons.difficulty[info[#info]] = value; MM:UpdateSettings() end,
 							args = {
 								position = {
 									order = 1,
@@ -518,8 +518,8 @@ E.Options.args.maps = {
 							order = 6,
 							type = "group",
 							name = CHALLENGE_MODE,
-							get = function(info) return E.db.general.minimap.icons.challengeMode[ info[#info] ] end,
-							set = function(info, value) E.db.general.minimap.icons.challengeMode[ info[#info] ] = value; MM:UpdateSettings() end,
+							get = function(info) return E.db.general.minimap.icons.challengeMode[info[#info]] end,
+							set = function(info, value) E.db.general.minimap.icons.challengeMode[info[#info]] = value; MM:UpdateSettings() end,
 							args = {
 								position = {
 									order = 1,
@@ -564,8 +564,8 @@ E.Options.args.maps = {
 							order = 7,
 							type = "group",
 							name = L["Vehicle Exit"],
-							get = function(info) return E.db.general.minimap.icons.vehicleLeave[ info[#info] ] end,
-							set = function(info, value) E.db.general.minimap.icons.vehicleLeave[ info[#info] ] = value; AB:UpdateVehicleLeave() end,
+							get = function(info) return E.db.general.minimap.icons.vehicleLeave[info[#info]] end,
+							set = function(info, value) E.db.general.minimap.icons.vehicleLeave[info[#info]] = value; AB:UpdateVehicleLeave() end,
 							args = {
 								hide = {
 									order = 1,
@@ -621,8 +621,8 @@ E.Options.args.maps = {
 							order = 8,
 							type = "group",
 							name = L["Open Ticket"],
-							get = function(info) return E.db.general.minimap.icons.ticket[ info[#info] ] end,
-							set = function(info, value) E.db.general.minimap.icons.ticket[ info[#info] ] = value; MM:UpdateSettings() end,
+							get = function(info) return E.db.general.minimap.icons.ticket[info[#info]] end,
+							set = function(info, value) E.db.general.minimap.icons.ticket[info[#info]] = value; MM:UpdateSettings() end,
 							args = {
 								position = {
 									order = 1,

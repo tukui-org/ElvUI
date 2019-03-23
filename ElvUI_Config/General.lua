@@ -23,8 +23,8 @@ E.Options.args.general = {
 	name = L["General"],
 	order = 1,
 	childGroups = "tab",
-	get = function(info) return E.db.general[ info[#info] ] end,
-	set = function(info, value) E.db.general[ info[#info] ] = value end,
+	get = function(info) return E.db.general[info[#info]] end,
+	set = function(info, value) E.db.general[info[#info]] = value end,
 	args = {
 		intro = {
 			order = 3,
@@ -83,7 +83,7 @@ E.Options.args.general = {
 					desc = L["Attempt to support eyefinity/nvidia surround."],
 					type = "toggle",
 					get = function(info) return E.global.general.eyefinity end,
-					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
+					set = function(info, value) E.global.general[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				taintLog = {
 					order = 13,
@@ -140,8 +140,8 @@ E.Options.args.general = {
 			order = 5,
 			type = "group",
 			name = L["Media"],
-			get = function(info) return E.db.general[ info[#info] ] end,
-			set = function(info, value) E.db.general[ info[#info] ] = value end,
+			get = function(info) return E.db.general[info[#info]] end,
+			set = function(info, value) E.db.general[info[#info]] = value end,
 			args = {
 				header = {
 					order = 0,
@@ -160,7 +160,7 @@ E.Options.args.general = {
 							desc = L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"],
 							type = "range",
 							min = 4, max = 32, step = 1,
-							set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
+							set = function(info, value) E.db.general[info[#info]] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
 						},
 						font = {
 							type = "select", dialogControl = 'LSM30_Font',
@@ -168,7 +168,7 @@ E.Options.args.general = {
 							name = L["Default Font"],
 							desc = L["The font that the core of the UI will use."],
 							values = AceGUIWidgetLSMlists.font,
-							set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
+							set = function(info, value) E.db.general[info[#info]] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
 						},
 						fontStyle = {
 							type = "select",
@@ -180,7 +180,7 @@ E.Options.args.general = {
 								["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 								["THICKOUTLINE"] = "THICKOUTLINE",
 							},
-							set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
+							set = function(info, value) E.db.general[info[#info]] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
 						},
 						applyFontToAll = {
 							order = 4,
@@ -195,8 +195,8 @@ E.Options.args.general = {
 							name = L["CombatText Font"],
 							desc = L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"],
 							values = AceGUIWidgetLSMlists.font,
-							get = function(info) return E.private.general[ info[#info] ] end,
-							set = function(info, value) E.private.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show("PRIVATE_RL"); end,
+							get = function(info) return E.private.general[info[#info]] end,
+							set = function(info, value) E.private.general[info[#info]] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show("PRIVATE_RL"); end,
 						},
 						namefont = {
 							type = "select", dialogControl = 'LSM30_Font',
@@ -204,16 +204,16 @@ E.Options.args.general = {
 							name = L["Name Font"],
 							desc = L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"],
 							values = AceGUIWidgetLSMlists.font,
-							get = function(info) return E.private.general[ info[#info] ] end,
-							set = function(info, value) E.private.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show("PRIVATE_RL"); end,
+							get = function(info) return E.private.general[info[#info]] end,
+							set = function(info, value) E.private.general[info[#info]] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show("PRIVATE_RL"); end,
 						},
 						replaceBlizzFonts = {
 							order = 7,
 							type = 'toggle',
 							name = L["Replace Blizzard Fonts"],
 							desc = L["Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI config. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default."],
-							get = function(info) return E.private.general[ info[#info] ] end,
-							set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+							get = function(info) return E.private.general[info[#info]] end,
+							set = function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
 						},
 					},
 				},
@@ -222,7 +222,7 @@ E.Options.args.general = {
 					name = L["Textures"],
 					type = 'group',
 					guiInline = true,
-					get = function(info) return E.private.general[ info[#info] ] end,
+					get = function(info) return E.private.general[info[#info]] end,
 					args = {
 						normTex = {
 							type = "select", dialogControl = 'LSM30_Statusbar',
@@ -231,8 +231,8 @@ E.Options.args.general = {
 							desc = L["The texture that will be used mainly for statusbars."],
 							values = AceGUIWidgetLSMlists.statusbar,
 							set = function(info, value)
-								local previousValue = E.private.general[ info[#info] ]
-								E.private.general[ info[#info] ] = value;
+								local previousValue = E.private.general[info[#info]]
+								E.private.general[info[#info]] = value;
 
 								if(E.db.unitframe.statusbar == previousValue) then
 									E.db.unitframe.statusbar = value
@@ -251,7 +251,7 @@ E.Options.args.general = {
 							desc = L["This texture will get used on objects like chat windows and dropdown menus."],
 							values = AceGUIWidgetLSMlists.statusbar,
 							set = function(info, value)
-								E.private.general[ info[#info] ] = value;
+								E.private.general[info[#info]] = value;
 								E:UpdateMedia()
 								E:UpdateFrameTemplates()
 							end
@@ -276,13 +276,12 @@ E.Options.args.general = {
 					type = 'group',
 					guiInline = true,
 					get = function(info)
-						local t = E.db.general[ info[#info] ]
+						local t = E.db.general[info[#info]]
 						local d = P.general[info[#info]]
 						return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 					end,
 					set = function(info, r, g, b, a)
-						local setting = info[#info]
-						local t = E.db.general[setting]
+						local setting =info[#info]						local t = E.db.general[setting]
 						t.r, t.g, t.b, t.a = r, g, b, a
 						E:UpdateMedia()
 						if setting == 'bordercolor' then
@@ -325,8 +324,8 @@ E.Options.args.general = {
 							type = 'toggle',
 							name = L["Crop Icons"],
 							desc = L["This is for Customized Icons in your Interface/Icons folder."],
-							get = function(info) return E.db.general[ info[#info] ] end,
-							set = function(info, value) E.db.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+							get = function(info) return E.db.general[info[#info]] end,
+							set = function(info, value) E.db.general[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
 						},
 					},
 				},
@@ -336,8 +335,8 @@ E.Options.args.general = {
 			order = 6,
 			type = "group",
 			name = L["Class Totems"],
-			get = function(info) return E.db.general.totems[ info[#info] ] end,
-			set = function(info, value) E.db.general.totems[ info[#info] ] = value; Totems:PositionAndSize() end,
+			get = function(info) return E.db.general.totems[info[#info]] end,
+			set = function(info, value) E.db.general.totems[info[#info]] = value; Totems:PositionAndSize() end,
 			args = {
 				header = {
 					order = 1,
@@ -348,7 +347,7 @@ E.Options.args.general = {
 					order = 2,
 					type = "toggle",
 					name = L['Enable'],
-					set = function(info, value) E.db.general.totems[ info[#info] ] = value; Totems:ToggleEnable() end,
+					set = function(info, value) E.db.general.totems[info[#info]] = value; Totems:ToggleEnable() end,
 				},
 				size = {
 					order = 3,
@@ -386,8 +385,8 @@ E.Options.args.general = {
 			order = 7,
 			type = "group",
 			name = L["Chat Bubbles"],
-			get = function(info) return E.private.general[ info[#info] ] end,
-			set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+			get = function(info) return E.private.general[info[#info]] end,
+			set = function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			args = {
 				header = {
 					order = 1,
@@ -442,7 +441,7 @@ E.Options.args.general = {
 			order = 8,
 			type = "group",
 			name = L["Objective Frame"],
-			get = function(info) return E.db.general[ info[#info] ] end,
+			get = function(info) return E.db.general[info[#info]] end,
 			args = {
 				objectiveFrameHeader = {
 					order = 30,
@@ -482,7 +481,7 @@ E.Options.args.general = {
 			order = 9,
 			type = "group",
 			name = L["Threat"],
-			get = function(info) return E.db.general.threat[ info[#info] ] end,
+			get = function(info) return E.db.general.threat[info[#info]] end,
 			args = {
 				threatHeader = {
 					order = 40,
@@ -531,9 +530,9 @@ E.Options.args.general = {
 			order = 10,
 			type = "group",
 			name = L["Alternative Power"],
-			get = function(info) return E.db.general.altPowerBar[ info[#info] ] end,
+			get = function(info) return E.db.general.altPowerBar[info[#info]] end,
 			set = function(info, value)
-				E.db.general.altPowerBar[ info[#info] ] = value;
+				E.db.general.altPowerBar[info[#info]] = value;
 				Blizzard:UpdateAltPowerBarSettings();
 			end,
 			args = {
@@ -549,7 +548,7 @@ E.Options.args.general = {
 					desc = L["Replace Blizzard's Alternative Power Bar"],
 					width = 'full',
 					set = function(info, value)
-						E.db.general.altPowerBar[ info[#info] ] = value;
+						E.db.general.altPowerBar[info[#info]] = value;
 						E:StaticPopup_Show("PRIVATE_RL");
 					end,
 				},
@@ -571,11 +570,11 @@ E.Options.args.general = {
 					type = 'group',
 					guiInline = true,
 					set = function(info, value)
-						E.db.general.altPowerBar[ info[#info] ] = value;
+						E.db.general.altPowerBar[info[#info]] = value;
 						Blizzard:UpdateAltPowerBarColors();
 					end,
 					get = function(info)
-						return E.db.general.altPowerBar[ info[#info] ]
+						return E.db.general.altPowerBar[info[#info]]
 					end,
 					args = {
 						statusBar = {
@@ -597,12 +596,12 @@ E.Options.args.general = {
 								return E.db.general.altPowerBar.statusBarColorGradient
 							end,
 							get = function(info)
-								local t = E.db.general.altPowerBar[ info[#info] ]
-								local d = P.general.altPowerBar[ info[#info] ]
+								local t = E.db.general.altPowerBar[info[#info]]
+								local d = P.general.altPowerBar[info[#info]]
 								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 							end,
 							set = function(info, r, g, b)
-								local t = E.db.general.altPowerBar[ info[#info] ]
+								local t = E.db.general.altPowerBar[info[#info]]
 								t.r, t.g, t.b = r, g, b
 								Blizzard:UpdateAltPowerBarColors();
 							end,
@@ -615,11 +614,11 @@ E.Options.args.general = {
 					type = 'group',
 					guiInline = true,
 					set = function(info, value)
-						E.db.general.altPowerBar[ info[#info] ] = value;
+						E.db.general.altPowerBar[info[#info]] = value;
 						Blizzard:UpdateAltPowerBarColors();
 					end,
 					get = function(info)
-						return E.db.general.altPowerBar[ info[#info] ]
+						return E.db.general.altPowerBar[info[#info]]
 					end,
 					args = {
 						font = {
@@ -669,8 +668,8 @@ E.Options.args.general = {
 			order = 11,
 			type = "group",
 			name = L["BlizzUI Improvements"],
-			get = function(info) return E.db.general[ info[#info] ] end,
-			set = function(info, value) E.db.general[ info[#info] ] = value end,
+			get = function(info) return E.db.general[info[#info]] end,
+			set = function(info, value) E.db.general[info[#info]] = value end,
 			args = {
 				header = {
 					order = 0,
@@ -763,7 +762,7 @@ E.Options.args.general = {
 					name = L["Item Level"],
 					type = 'group',
 					guiInline = true,
-					get = function(info) return E.db.general.itemLevel[ info[#info] ] end,
+					get = function(info) return E.db.general.itemLevel[info[#info]] end,
 					args = {
 						displayCharacterInfo = {
 							order = 1,
@@ -790,9 +789,9 @@ E.Options.args.general = {
 							type = 'group',
 							name = L["Fonts"],
 							disabled = function() return not E.db.general.itemLevel.displayCharacterInfo and not E.db.general.itemLevel.displayInspectInfo end,
-							get = function(info) return E.db.general.itemLevel[ info[#info] ] end,
+							get = function(info) return E.db.general.itemLevel[info[#info]] end,
 							set = function(info, value)
-								E.db.general.itemLevel[ info[#info] ] = value
+								E.db.general.itemLevel[info[#info]] = value
 								Misc:UpdateInspectPageFonts("Character")
 								Misc:UpdateInspectPageFonts("Inspect")
 							end,
@@ -831,8 +830,8 @@ E.Options.args.general = {
 			order = 12,
 			type = "group",
 			name = L["Miscellaneous"],
-			get = function(info) return E.db.general[ info[#info] ] end,
-			set = function(info, value) E.db.general[ info[#info] ] = value end,
+			get = function(info) return E.db.general[info[#info]] end,
+			set = function(info, value) E.db.general[info[#info]] = value end,
 			args = {
 				header = {
 					order = 0,
