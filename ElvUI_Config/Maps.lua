@@ -1,6 +1,7 @@
 local E, L, V, P, G, _ = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, GlobalDB
-local WM = E:GetModule("WorldMap")
-local MM = E:GetModule("Minimap")
+local WM = E:GetModule('WorldMap')
+local MM = E:GetModule('Minimap')
+local AB = E:GetModule('ActionBars')
 
 local SetCVar = SetCVar
 
@@ -564,7 +565,7 @@ E.Options.args.maps = {
 							type = "group",
 							name = L["Vehicle Exit"],
 							get = function(info) return E.db.general.minimap.icons.vehicleLeave[ info[#info] ] end,
-							set = function(info, value) E.db.general.minimap.icons.vehicleLeave[ info[#info] ] = value; E:GetModule('ActionBars'):UpdateVehicleLeave() end,
+							set = function(info, value) E.db.general.minimap.icons.vehicleLeave[ info[#info] ] = value; AB:UpdateVehicleLeave() end,
 							args = {
 								hide = {
 									order = 1,

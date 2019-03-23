@@ -3,6 +3,7 @@ local Misc = E:GetModule('Misc')
 local Layout = E:GetModule('Layout')
 local Totems = E:GetModule('Totems')
 local Blizzard = E:GetModule('Blizzard')
+local Threat = E:GetModule('Threat')
 local AFK = E:GetModule('AFK')
 
 local _G = _G
@@ -518,7 +519,7 @@ E.Options.args.general = {
 					order = 41,
 					type = "toggle",
 					name = L['Enable'],
-					set = function(info, value) E.db.general.threat.enable = value; E:GetModule('Threat'):ToggleEnable()end,
+					set = function(info, value) E.db.general.threat.enable = value; Threat:ToggleEnable()end,
 				},
 				position = {
 					order = 42,
@@ -529,20 +530,20 @@ E.Options.args.general = {
 						['LEFTCHAT'] = L["Left Chat"],
 						['RIGHTCHAT'] = L["Right Chat"],
 					},
-					set = function(info, value) E.db.general.threat.position = value; E:GetModule('Threat'):UpdatePosition() end,
+					set = function(info, value) E.db.general.threat.position = value; Threat:UpdatePosition() end,
 				},
 				textSize = {
 					order = 43,
 					name = FONT_SIZE,
 					type = "range",
 					min = 6, max = 22, step = 1,
-					set = function(info, value) E.db.general.threat.textSize = value; E:GetModule('Threat'):UpdatePosition() end,
+					set = function(info, value) E.db.general.threat.textSize = value; Threat:UpdatePosition() end,
 				},
 				textOutline = {
 					order = 44,
 					type = "select",
 					name = L["Font Outline"],
-					set = function(info, value) E.db.general.threat.textOutline = value; E:GetModule('Threat'):UpdatePosition() end,
+					set = function(info, value) E.db.general.threat.textOutline = value; Threat:UpdatePosition() end,
 					values = {
 						["NONE"] = NONE,
 						["OUTLINE"] = "OUTLINE",
