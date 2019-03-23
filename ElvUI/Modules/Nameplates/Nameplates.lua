@@ -370,10 +370,7 @@ function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, IsInInstance())
 end
 
-function NP:ConfigureAll()
-	NP.PlayerRole = GetSpecializationRole(GetSpecialization())
-
-	-- Find New Way to set these so they don't always reset the NP CVars and refresh the plates.
+function NP:SetCVars()
 	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
 	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
 
@@ -396,6 +393,10 @@ function NP:ConfigureAll()
 		SetCVar('nameplateOtherTopInset', 0.08)
 		SetCVar('nameplateOtherBottomInset', 0.1)
 	end
+end
+
+function NP:ConfigureAll()
+	NP.PlayerRole = GetSpecializationRole(GetSpecialization())
 
 	C_NamePlate_SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	C_NamePlate_SetNamePlateEnemySize(NP.db.clickableWidth, NP.db.clickableHeight)
@@ -591,6 +592,7 @@ function NP:Initialize()
 	NP:ACTIVE_TALENT_GROUP_CHANGED()
 	NP:GROUP_ROSTER_UPDATE()
 	NP:ConfigureAll()
+	NP:SetCVars()
 	NP:HideInterfaceOptions()
 end
 

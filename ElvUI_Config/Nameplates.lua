@@ -1865,7 +1865,7 @@ local function GetUnitSettings(unit, name)
 				type = "group",
 				name = L["General"],
 				get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
-				set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
+				set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() NP:SetCVars() end,
 				args = {
 					header = {
 						order = 0,
@@ -3316,8 +3316,6 @@ local function GetUnitSettings(unit, name)
 			type = "group",
 			guiInline = true,
 			name = L["Visibility"],
-			get = function(info) return E.db.nameplates.units[unit].visibility[ info[#info] ] end,
-			set = function(info, value) E.db.nameplates.units[unit].visibility[ info[#info] ] = value; NP:ConfigureAll() end,
 			disabled = function() return E.db.nameplates.units[unit].useStaticPosition end,
 			args = {
 				showAlways = {
@@ -3497,7 +3495,7 @@ local function GetUnitSettings(unit, name)
 			name = L["Quest Icon"],
 			type = 'group',
 			get = function(info) return E.db.nameplates.units[unit].questIcon[ info[#info] ] end,
-			set = function(info, value) E.db.nameplates.units[unit].questIcon[ info[#info] ] = value; NP:ConfigureAll() end,
+			set = function(info, value) E.db.nameplates.units[unit].questIcon[ info[#info] ] = value; NP:ConfigureAll() NP:SetCVars() end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -3902,6 +3900,8 @@ E.Options.args.nameplate = {
 					order = 10,
 					type = "group",
 					name = L["General"],
+					get = function(info) return E.db.nameplates[ info[#info] ] end,
+					set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:SetCVars() end,
 					args = {
 						motionType = {
 							type = "select",
