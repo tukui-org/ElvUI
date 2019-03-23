@@ -82,10 +82,14 @@ function E:HookedSetBackdropBorderColor(r, g, b, a)
 	E:SetBackdropBorderColor(self, r, g, b, a)
 end
 
-function E:HidePixelBorders(frame)
+function E:TogglePixelBorders(frame, show)
 	if frame.pixelBorders then
 		for _, v in pairs(E.PixelBorders) do
-			frame.pixelBorders[v]:Hide()
+			if show then
+				frame.pixelBorders[v]:Show()
+			else
+				frame.pixelBorders[v]:Hide()
+			end
 		end
 	end
 end
