@@ -281,7 +281,8 @@ E.Options.args.general = {
 						return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 					end,
 					set = function(info, r, g, b, a)
-						local setting =info[#info]						local t = E.db.general[setting]
+						local setting = info[#info]
+						local t = E.db.general[setting]
 						t.r, t.g, t.b, t.a = r, g, b, a
 						E:UpdateMedia()
 						if setting == 'bordercolor' then
