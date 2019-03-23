@@ -30,7 +30,13 @@ local function UpdateAlphaText(alpha)
 end
 
 local function UpdateAlpha(tbox)
-	_G.OpacitySliderFrame:SetValue(1 - (tbox:GetNumber() / 100))
+	local num = tbox:GetNumber()
+	if num > 100 then
+		tbox:SetText(100)
+		num = 100
+	end
+
+	_G.OpacitySliderFrame:SetValue(1 - (num / 100))
 end
 
 local function expandFromThree(r, g, b)
@@ -343,7 +349,8 @@ function B:EnhanceColorPicker()
 		-- set up scripts to handle event appropriately
 		if i == 5 then
 			box:SetScript("OnKeyUp", function(eb, key)
-				if (tonumber(key) and not IsModifierKeyDown()) or key == "BACKSPACE" then
+				local copyPaste = IsControlKeyDown() and key == 'V'
+				if key == "BACKSPACE" or copyPaste or (strlen(key) == 1 and not IsModifierKeyDown()) then
 					UpdateAlpha(eb)
 				elseif key == "ENTER" or key == "ESCAPE" then
 					eb:ClearFocus()
@@ -353,8 +360,7 @@ function B:EnhanceColorPicker()
 		else
 			box:SetScript("OnKeyUp", function(eb, key)
 				local copyPaste = IsControlKeyDown() and key == 'V'
-				local hexBoxKey, rgbBoxKey = i == 4 and tonumber(key, 16), i ~= 4 and tonumber(key)
-				if (copyPaste or ((hexBoxKey or rgbBoxKey) and not IsModifierKeyDown())) or key == "BACKSPACE" then
+				if key == "BACKSPACE" or copyPaste or (strlen(key) == 1 and not IsModifierKeyDown()) then
 					if i ~= 4 then UpdateColorTexts(nil, nil, nil, eb) end
 					if i == 4 and eb:GetNumLetters() ~= 6 then return end
 					UpdateColor()
