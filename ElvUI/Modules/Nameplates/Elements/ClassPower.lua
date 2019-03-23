@@ -82,7 +82,7 @@ function NP:Construct_ClassPower(nameplate)
 			ClassPower[i]:Point('LEFT', ClassPower, 'LEFT', 0, 0)
 		elseif i == Max then -- freaky gap at end of bar
 			ClassPower[i]:Point('LEFT', ClassPower[i - 1], 'RIGHT', 1, 0)
-			ClassPower[i]:Point('RIGHT', ClassPower)			
+			ClassPower[i]:Point('RIGHT', ClassPower)
 		else
 			ClassPower[i]:Point('LEFT', ClassPower[i - 1], 'RIGHT', 1, 0)
 		end

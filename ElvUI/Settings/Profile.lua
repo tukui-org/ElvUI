@@ -342,11 +342,13 @@ P.nameplates = {
 			--overhealabsorbs = {r = 1, g = 0, b = 0, a = 0.25},
 		},
 		threat = {
-			goodColor = {r = 0.29,  g = 0.68, b = 0.30},
-			badColor = {r = 0.78, g = 0.25, b = 0.25},
-			goodTransition = {r = 0.85, g = 0.77, b = .36},
-			badTransition ={r = 0.92, g = 0.64, b = .15},
-			beingTankedByTankColor = {r = 0.8, g = 0.1, b = 1},
+			goodColor = {r = 050/255, g = 180/255, b = 000/255},
+			badColor = {r = 254/255, g = 045/255, b = 045/255},
+			goodTransition = {r = 255/255, g = 217/255, b = 050/255},
+			badTransition ={r = 255/255, g = 129/255, b = 050/255},
+			offTankColor = {r = 187/255, g = 050/255, b = 255/255},
+			offTankColorGoodTransition = {r = .31, g = .45, b = .63},
+			offTankColorBadTransition = {r = 0.71, g = 0.43, b = 0.27},
 		},
 		power = {
 			ENERGY = {r = 0.65, g = 0.63, b = 0.35},
