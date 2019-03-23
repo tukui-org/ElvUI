@@ -4,6 +4,7 @@ local NP = E:GetModule('NamePlates')
 local UnitName = UnitName
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
+local UnitIsTapDenied = UnitIsTapDenied
 
 function NP:ThreatIndicator_PreUpdate(unit)
 	local ROLE = NP.IsInGroup and UnitExists(unit..'target') and not UnitIsUnit(unit..'target', 'player') and NP.GroupRoles[UnitName(unit..'target')] or 'NONE'
@@ -20,7 +21,7 @@ function NP:ThreatIndicator_PreUpdate(unit)
 end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
-	if NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor then
+	if NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor and not UnitIsTapDenied(unit) then
 		self.__owner.Health.colorTapping = false
 		self.__owner.Health.colorDisconnected = false
 		self.__owner.Health.colorClass = false
