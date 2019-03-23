@@ -427,7 +427,9 @@ function NP:ConfigureAll(fromConfig)
 	for nameplate in pairs(NP.Plates) do
 		NP:UpdatePlate(nameplate)
 		if fromConfig then
+			nameplate.isConfigUpdate = true
 			nameplate:UpdateAllElements('OnShow')
+			nameplate.isConfigUpdate = nil
 		end
 		if nameplate.frameType == 'PLAYER' then
 			NP.PlayerNamePlateAnchor:ClearAllPoints()
