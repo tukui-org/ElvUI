@@ -145,13 +145,10 @@ function NP:StylePlate(nameplate)
 		nameplate.Runes = NP:Construct_Runes(nameplate)
 	end
 
-	if strfind(nameplate:GetName(), 'ElvNP_NamePlate') then
-		NP.Plates[nameplate] = nameplate:GetName()
-	end
+	NP.Plates[nameplate] = nameplate:GetName()
 end
 
 function NP:UpdatePlate(nameplate)
-	nameplate:EnableMouse(false) -- false makes Default UI NamePlate Clickable again.
 	NP:Update_Tags(nameplate)
 
 	if (nameplate.VisibilityChanged or nameplate.NameOnlyChanged) or (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
@@ -221,8 +218,6 @@ function NP:DisablePlate(nameplate, nameOnly)
 			nameplate.Title:ClearAllPoints()
 			nameplate.Title:SetPoint('TOP', nameplate.Name, 'BOTTOM', 0, -2)
 		end
-	else
-		nameplate:EnableMouse(true)	-- True intercepts the clicks so that the Default UI NamePlate doesn't accept clicks.
 	end
 end
 
