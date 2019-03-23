@@ -414,8 +414,6 @@ function NP:ConfigureAll(fromConfig)
 
 		_G.ElvNP_Player.FadeSmooth = 1
 		_G.ElvNP_Player.FadeDelay = NP.db.units.PLAYER.visibility.hideDelay
-
-		_G.ElvNP_Player:UpdateAllElements('OnShow')
 	else
 		_G.ElvNP_Player:Disable()
 	end
@@ -427,9 +425,7 @@ function NP:ConfigureAll(fromConfig)
 	for nameplate in pairs(NP.Plates) do
 		NP:UpdatePlate(nameplate)
 		if fromConfig then
-			nameplate.isConfigUpdate = true
 			nameplate:UpdateAllElements('OnShow')
-			nameplate.isConfigUpdate = nil
 		end
 		if nameplate.frameType == 'PLAYER' then
 			NP.PlayerNamePlateAnchor:ClearAllPoints()

@@ -1834,6 +1834,7 @@ local function GetUnitSettings(unit, name)
 						NP:UpdatePlate(_G.ElvNP_Test)
 						NP:ConfigureAll(true)
 					else
+						NP:DisablePlate(_G.ElvNP_Test)
 						_G.ElvNP_Test:Disable()
 					end
 				end,
