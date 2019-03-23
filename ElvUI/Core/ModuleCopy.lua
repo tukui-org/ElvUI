@@ -262,9 +262,8 @@ function CP:CopyMovers(mode)
 	E:SetMoversPositions()
 end
 
---Maybe actually not needed at all
 function CP:Initialize()
-
+	self.Initialized = true
 end
 
 local function InitializeCallback()

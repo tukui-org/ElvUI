@@ -127,6 +127,8 @@ function M:PositionCoords()
 end
 
 function M:Initialize()
+	self.Initialized = true
+
 	if E.global.general.WorldMapCoordinates.enable then
 		local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
 		CoordsHolder:SetFrameLevel(WorldMapFrame.BorderFrame:GetFrameLevel() + 2)

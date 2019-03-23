@@ -414,8 +414,8 @@ function A:Initialize()
 
 	if not E.private.auras.enable then return end
 
+	self.Initialized = true
 	self.db = E.db.auras
-
 	self.BuffFrame = self:CreateAuraHeader("HELPFUL")
 	self.BuffFrame:Point("TOPRIGHT", _G.MMHolder, "TOPLEFT", -(6 + E.Border), -E.Border - E.Spacing)
 	E:CreateMover(self.BuffFrame, "BuffsMover", L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')

@@ -19,6 +19,7 @@ local function Panel_OnShow(self)
 end
 
 function LO:Initialize()
+	self.Initialized = true
 	self:CreateChatPanels()
 	self:CreateMinimapPanels()
 	self:SetDataPanelStyle()

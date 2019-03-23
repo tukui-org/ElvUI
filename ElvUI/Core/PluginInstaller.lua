@@ -457,6 +457,7 @@ function PI:RunInstall()
 end
 
 function PI:Initialize()
+	PI.Initialized = true
 	PI:CreateStepComplete()
 	PI:CreateFrame()
 end

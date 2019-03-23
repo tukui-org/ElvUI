@@ -108,6 +108,7 @@ function D:StaticPopup_Show(name)
 end
 
 function D:Initialize()
+	self.Initialized = true
 	self.HideFrame = CreateFrame('Frame')
 	self.HideFrame:Hide()
 

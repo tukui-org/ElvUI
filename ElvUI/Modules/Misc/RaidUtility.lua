@@ -194,6 +194,7 @@ end
 
 function RU:Initialize()
 	if E.private.general.raidUtility == false then return end
+	self.Initialized = true
 
 	--Create main frame
 	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerBaseTemplate")

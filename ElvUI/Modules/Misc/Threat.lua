@@ -145,6 +145,7 @@ function THREAT:ToggleEnable()
 end
 
 function THREAT:Initialize()
+	self.Initialized = true
 	self.db = E.db.general.threat
 
 	self.bar = CreateFrame('StatusBar', 'ElvUI_ThreatBar', E.UIParent)

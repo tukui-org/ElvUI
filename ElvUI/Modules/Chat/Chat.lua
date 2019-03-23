@@ -2516,10 +2516,11 @@ function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then ElvCharacterDB.ChatHistory = nil end --Depreciated
 	if ElvCharacterDB.ChatLog then ElvCharacterDB.ChatLog = nil end --Depreciated
 
-	self.db = E.db.chat
 	self:DelayGuildMOTD() -- Keep this before `is Chat Enabled` check
 
 	if E.private.chat.enable ~= true then return end
+	self.Initialized = true
+	self.db = E.db.chat
 
 	if not ElvCharacterDB.ChatEditHistory then ElvCharacterDB.ChatEditHistory = {} end
 	if not ElvCharacterDB.ChatHistoryLog or not self.db.chatHistory then ElvCharacterDB.ChatHistoryLog = {} end

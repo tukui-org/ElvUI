@@ -334,6 +334,7 @@ function M:ADDON_LOADED(_, addon)
 end
 
 function M:Initialize()
+	self.Initialized = true
 	self:LoadRaidMarker()
 	self:LoadLootRoll()
 	self:LoadChatBubbles()

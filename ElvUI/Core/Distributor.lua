@@ -30,6 +30,7 @@ local Downloads = {}
 local Uploads = {}
 
 function D:Initialize()
+	self.Initialized = true
 	self:RegisterComm(REQUEST_PREFIX)
 	self:RegisterEvent("CHAT_MSG_ADDON")
 

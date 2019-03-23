@@ -250,6 +250,8 @@ function AFK:LoopAnimations()
 end
 
 function AFK:Initialize()
+	self.Initialized = true
+
 	local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]
 
 	self.AFKMode = CreateFrame("Frame", "ElvUIAFKFrame")

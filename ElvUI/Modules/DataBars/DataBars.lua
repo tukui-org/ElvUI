@@ -63,6 +63,7 @@ function mod:PLAYER_LEVEL_UP(level)
 end
 
 function mod:Initialize()
+	self.Initialized = true
 	self.db = E.db.databars
 
 	self:LoadExperienceBar()

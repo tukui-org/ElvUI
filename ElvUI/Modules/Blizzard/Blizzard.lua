@@ -7,6 +7,8 @@ local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 
 function B:Initialize()
+	self.Initialized = true
+
 	self:EnhanceColorPicker()
 	self:KillBlizzard()
 	self:AlertMovers()

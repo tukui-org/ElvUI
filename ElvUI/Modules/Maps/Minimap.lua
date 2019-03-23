@@ -402,10 +402,13 @@ end
 function M:Initialize()
 	menuFrame:SetTemplate("Transparent", true)
 	self:UpdateSettings()
+
 	if not E.private.general.minimap.enable then
 		_G.Minimap:SetMaskTexture('Textures\\MinimapMask')
-		return;
+		return
 	end
+
+	self.Initialized = true
 
 	--Support for other mods
 	function GetMinimapShape()

@@ -1329,6 +1329,7 @@ function S:SkinAce3()
 end
 
 function S:Initialize()
+	self.Initialized = true
 	self.db = E.private.skins
 
 	--Fire events for Blizzard addons that are already loaded
