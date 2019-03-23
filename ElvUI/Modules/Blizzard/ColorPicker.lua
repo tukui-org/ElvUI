@@ -7,7 +7,7 @@ local B = E:GetModule('Blizzard')
 local S = E:GetModule('Skins')
 
 local _G = _G
-local strlen, strjoin = strlen, strjoin
+local strlen, strjoin, gsub = strlen, strjoin, gsub
 local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -44,12 +44,12 @@ local function GetHexColor(box)
 	local rgb = box:GetText()
 	local boxLen = box:GetNumLetters()
 	if boxLen == 3 then
-		rgb = rgb:gsub('(%x)(%x)(%x)$', expandFromThree)
+		rgb = gsub(rgb, '(%x)(%x)(%x)$', expandFromThree)
 	elseif boxLen < 6 then
-		rgb = rgb:gsub('(.+)$', extendToSix)
+		rgb = gsub(rgb, '(.+)$', extendToSix)
 	end
 
-	local r, g, b = tonumber('0x'..strsub(rgb, 0, 2)), tonumber('0x'..strsub(rgb, 3, 4)), tonumber('0x'..strsub(rgb, 5, 6))
+	local r, g, b = tonumber(strsub(rgb, 0, 2), 16), tonumber(strsub(rgb, 3, 4), 16), tonumber(strsub(rgb, 5, 6), 16)
 	if not r then r = 0 else r = r/255 end
 	if not g then g = 0 else g = g/255 end
 	if not b then b = 0 else b = b/255 end
