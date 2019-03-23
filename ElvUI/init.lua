@@ -52,7 +52,7 @@ AddOn.DF = {}; AddOn.DF.profile = {}; AddOn.DF.global = {}; AddOn.privateVars = 
 AddOn.Options = {type = "group", name = AddOnName, args = {}}
 
 AddOn.ActionBars = AddOn:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0')
-AddOn.Afk = AddOn:NewModule('AFK','AceEvent-3.0','AceTimer-3.0')
+AddOn.AFK = AddOn:NewModule('AFK','AceEvent-3.0','AceTimer-3.0')
 AddOn.Auras = AddOn:NewModule('Auras','AceHook-3.0','AceEvent-3.0')
 AddOn.Bags = AddOn:NewModule('Bags','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 AddOn.Blizzard = AddOn:NewModule('Blizzard','AceEvent-3.0','AceHook-3.0')
