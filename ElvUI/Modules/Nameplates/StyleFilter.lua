@@ -241,7 +241,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	end
 end
 
-function mod:StyleFilterUpdatePlate(frame)
+function mod:StyleFilterUpdatePlate(frame, nameOnly)
 	mod:UpdatePlate(frame) -- enable elements back
 
 	if frame.frameType then
@@ -256,7 +256,9 @@ function mod:StyleFilterUpdatePlate(frame)
 		frame.ThreatIndicator:ForceUpdate() -- this will account for the threat health color
 	end
 
-	E:UIFrameFadeIn(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
+	if not nameOnly then
+		E:UIFrameFadeIn(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
+	end
 end
 
 function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
@@ -324,7 +326,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
-		mod:StyleFilterUpdatePlate(frame)
+		mod:StyleFilterUpdatePlate(frame, true)
 	end
 end
 
