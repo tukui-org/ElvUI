@@ -568,6 +568,7 @@ function NP:Initialize()
 	_G.ElvNP_Test:SetScript("OnDragStop", function() _G.ElvNP_Test:StopMovingOrSizing() end)
 	_G.ElvNP_Test.frameType = 'PLAYER'
 	_G.ElvNP_Test:Disable()
+	NP:DisablePlate(_G.ElvNP_Test)
 
 	ElvUF:Spawn('player', 'ElvNP_TargetClassPower')
 	_G.ElvNP_TargetClassPower:SetScale(1)
