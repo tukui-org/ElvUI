@@ -158,7 +158,8 @@ end
 function NP:Construct_Highlight(nameplate)
 	local Highlight = CreateFrame('Frame', nameplate:GetDebugName()..'Highlight', nameplate)
 	Highlight:Hide()
-	Highlight.texture = Highlight:CreateTexture(nil, 'BACKGROUND', nil, 1)
+
+	Highlight.texture = Highlight:CreateTexture(nil, 'ARTWORK')
 	Highlight.texture:SetSnapToPixelGrid(false)
 	Highlight.texture:SetTexelSnappingBias(0)
 
@@ -167,11 +168,13 @@ end
 
 function NP:Update_Highlight(nameplate)
 	local db = NP.db.units[nameplate.frameType]
+
 	if NP.db.highlight then
 		if not nameplate:IsElementEnabled('Highlight') then
 			nameplate:EnableElement('Highlight')
 		end
-		if db.health.enable then
+
+		if db.health.enable and not db.nameOnly then
 			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, .3)
 			nameplate.Highlight.texture:SetAllPoints(nameplate.Health)
 			nameplate.Highlight.texture:SetAlpha(1)
