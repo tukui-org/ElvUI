@@ -165,6 +165,7 @@ end
 
 function NP:UpdatePlate(nameplate)
 	NP:Update_Tags(nameplate)
+	NP:Update_Highlight(nameplate)
 
 	if (nameplate.VisibilityChanged or nameplate.NameOnlyChanged) or (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
 		NP:DisablePlate(nameplate, nameplate.NameOnlyChanged or (NP.db.units[nameplate.frameType].nameOnly and not nameplate.VisibilityChanged))
@@ -184,7 +185,6 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_TargetIndicator(nameplate)
 		NP:Update_ThreatIndicator(nameplate)
 		NP:Update_RaidTargetIndicator(nameplate)
-		NP:Update_Highlight(nameplate)
 		NP:Update_HealerSpecs(nameplate)
 		NP:Update_DetectionIndicator(nameplate)
 		if E.myclass == 'DEATHKNIGHT' then
@@ -207,7 +207,6 @@ function NP:DisablePlate(nameplate, nameOnly)
 	if nameplate:IsElementEnabled('RaidTargetIndicator') then nameplate:DisableElement('RaidTargetIndicator') end
 	if nameplate:IsElementEnabled('TargetIndicator') then nameplate:DisableElement('TargetIndicator') end
 	if nameplate:IsElementEnabled('ThreatIndicator') then nameplate:DisableElement('ThreatIndicator') end
-	if nameplate:IsElementEnabled('Highlight') then nameplate:DisableElement('Highlight') end
 	if nameplate:IsElementEnabled('ClassPower') then nameplate:DisableElement('ClassPower') end
 	if nameplate:IsElementEnabled('PvPIndicator') then nameplate:DisableElement('PvPIndicator') end
 	if nameplate:IsElementEnabled('PvPClassificationIndicator') then nameplate:DisableElement('PvPClassificationIndicator') end
@@ -225,6 +224,7 @@ function NP:DisablePlate(nameplate, nameOnly)
 	nameplate.Title:Hide()
 
 	if nameOnly then
+		NP:Update_Highlight(nameplate)
 		nameplate.Name:Show()
 		nameplate.Name:ClearAllPoints()
 		nameplate.Name:SetPoint('CENTER', nameplate, 'CENTER', 0, 0)

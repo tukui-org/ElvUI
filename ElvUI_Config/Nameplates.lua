@@ -4644,7 +4644,7 @@ E.Options.args.nameplate = {
 			type = "group",
 			name = L["Targeted Nameplate"],
 			get = function(info) return E.db.nameplates.units.TARGET[ info[#info] ] end,
-			set = function(info, value) E.db.nameplates.units.TARGET[ info[#info] ] = value; NP:ConfigureAll() end,
+			set = function(info, value) E.db.nameplates.units.TARGET[ info[#info] ] = value; NP:ConfigureAll() NP:SetCVars() end,
 			disabled = function() return not E.NamePlates.Initialized end,
 			args = {
 				scale = {
