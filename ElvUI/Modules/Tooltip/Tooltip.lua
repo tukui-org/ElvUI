@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TT = E:GetModule('Tooltip')
-local Skins = E:GetModules('Skins')
+local Skins = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
