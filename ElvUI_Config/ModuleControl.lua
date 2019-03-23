@@ -261,8 +261,8 @@ local function CreateNamePlatesConfig()
 		type = "group",
 		guiInline = true,
 		name = L["UnitFrames"],
-		get = function(info) return E.global.profileCopy.nameplates[info[#info - 1]][info[#info]] end,
-		set = function(info, value) E.global.profileCopy.nameplates[info[#info - 1]][info[#info]] = value; end,
+		get = function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end,
+		set = function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end,
 		args = {
 			["PLAYER"] = {
 				order = 1,
@@ -336,8 +336,8 @@ local function CreateUnitframesConfig()
 		type = "group",
 		guiInline = true,
 		name = COLORS,
-		get = function(info) return E.global.profileCopy.unitframe[info[#info - 1]][info[#info]] end,
-		set = function(info, value) E.global.profileCopy.unitframe[info[#info - 1]][info[#info]] = value; end,
+		get = function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end,
+		set = function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end,
 		args = {
 			["general"] = {
 				order = 1,
@@ -381,8 +381,8 @@ local function CreateUnitframesConfig()
 		type = "group",
 		guiInline = true,
 		name = L["UnitFrames"],
-		get = function(info) return E.global.profileCopy.unitframe[info[#info - 1]][info[#info]] end,
-		set = function(info, value) E.global.profileCopy.unitframe[info[#info - 1]][info[#info]] = value; end,
+		get = function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end,
+		set = function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end,
 		args = {
 			["player"] = {
 				order = 1,
