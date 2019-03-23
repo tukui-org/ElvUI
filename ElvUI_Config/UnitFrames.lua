@@ -1494,7 +1494,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 						for i=1, numUnits do
 							if _G[frameName..i] then
 								local min, max = _G[frameName..i].Power:GetMinMaxValues()
-								_G[frameName..i].Power:SetMinMaxValues(min, max + 500)
+								_G[frameName..i].Power:SetMinMaxValues(min, max+500)
 								_G[frameName..i].Power:SetValue(1)
 								_G[frameName..i].Power:SetValue(0)
 							end
@@ -1502,7 +1502,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 					else
 						if _G[frameName] and _G[frameName].Power then
 							local min, max = _G[frameName].Power:GetMinMaxValues()
-							_G[frameName].Power:SetMinMaxValues(min, max + 500)
+							_G[frameName].Power:SetMinMaxValues(min, max+500)
 							_G[frameName].Power:SetValue(1)
 							_G[frameName].Power:SetValue(0)
 						else
@@ -1510,7 +1510,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 								local child = select(i, _G[frameName]:GetChildren())
 								if child and child.Power then
 									local min, max = child.Power:GetMinMaxValues()
-									child.Power:SetMinMaxValues(min, max + 500)
+									child.Power:SetMinMaxValues(min, max+500)
 									child.Power:SetValue(1)
 									child.Power:SetValue(0)
 								end
@@ -7846,7 +7846,7 @@ E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.class
 
 for i = 1, 3 do
 	E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args['combo'..i] = {
-		order = i + 2,
+		order = i+2,
 		type = 'color',
 		name = L["Combo Point"]..' #'..i,
 		get = function(info)
@@ -7889,7 +7889,7 @@ if P.unitframe.colors.classResources[E.myclass] then
 			E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
 				type = 'color',
 				name = L["Anticipation"]..' #'..i,
-				order = ORDER + i,
+				order = ORDER+i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.ROGUE[i]
 					local d = P.unitframe.colors.classResources.ROGUE[i]
@@ -7907,7 +7907,7 @@ if P.unitframe.colors.classResources[E.myclass] then
 			E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
 				type = 'color',
 				name = CHI_POWER..' #'..i,
-				order = ORDER + i,
+				order = ORDER+i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.MONK[i]
 					local d = P.unitframe.colors.classResources.MONK[i]

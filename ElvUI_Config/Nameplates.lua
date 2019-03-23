@@ -170,7 +170,7 @@ local function UpdateClassSection()
 		classOrder = 0
 		local coloredName;
 		for _, classTag in ipairs(classIndexTable) do
-			classOrder = classOrder + 1
+			classOrder = classOrder+1
 			coloredName = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classTag]) or RAID_CLASS_COLORS[classTag]
 			coloredName = (coloredName and coloredName.colorStr) or "ff666666"
 			local classTrigger = E.global.nameplate.filters[selectedNameplateFilter].triggers.class
@@ -286,7 +286,7 @@ local function UpdateTalentSection()
 				get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i..'enabled'] end,
 				set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i..'enabled'] = value; UpdateTalentSection(); NP:ConfigureAll() end
 			}
-			order = order + 1;
+			order = order+1;
 			if (E.global.nameplate.filters[selectedNameplateFilter].triggers.talent['tier'..i..'enabled']) then
 				E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers.args["tier"..i] = {
 					type = 'group',
@@ -314,14 +314,14 @@ local function UpdateTalentSection()
 						},
 					}
 				}
-				order = order + 1;
+				order = order+1;
 			end
 			E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers.args["spacer"..i] = {
 				order = order,
 				type = 'description',
 				name = '',
 			}
-			order = order + 1
+			order = order+1
 		end
 	end
 end
@@ -3715,7 +3715,7 @@ local function GetUnitSettings(unit, name)
 		}
 	end
 
-	ORDER = ORDER + 1
+	ORDER = ORDER+1
 	return group
 end
 
@@ -3727,7 +3727,7 @@ local updateUnitsHealthYoffset = function(value, oldValue)
 		if unitYoffset > value or (isNegative and unitYoffset < -value) then -- overflow
 			E.db.nameplates.units[unit].health.yOffset = value
 		elseif oldValue and unitYoffset ~= 0 then -- dont update if its zero
-			E.db.nameplates.units[unit].health.yOffset = unitYoffset - (oldValue - value) -- add the difference
+			E.db.nameplates.units[unit].health.yOffset = unitYoffset - (oldValue-value) -- add the difference
 		end
 	end
 end
@@ -4767,7 +4767,7 @@ local ORDER = 10
 for i = 1, 6 do
 	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args['CHI_POWER'..i] = {
 		type = 'color',
-		order = i + ORDER,
+		order = i+ORDER,
 		name = CHI_POWER..' #'..i,
 		get = function(info)
 			local t = E.db.nameplates.colors.classResources.MONK[i]
