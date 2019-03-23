@@ -111,10 +111,9 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:StylePlate(nameplate)
-	nameplate:SetAllPoints()
+	nameplate:Point('CENTER')
 	nameplate:Size(self.db.clickableWidth, self.db.clickableHeight)
 	nameplate:SetScale(E.global.general.UIScale)
-
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
 	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
@@ -145,13 +144,10 @@ function NP:StylePlate(nameplate)
 		nameplate.Runes = NP:Construct_Runes(nameplate)
 	end
 
-	if strfind(nameplate:GetName(), 'ElvNP_NamePlate') then
-		NP.Plates[nameplate] = nameplate:GetName()
-	end
+	NP.Plates[nameplate] = nameplate:GetName()
 end
 
 function NP:UpdatePlate(nameplate)
-	nameplate:EnableMouse(false) -- false makes Default UI NamePlate Clickable again.
 	NP:Update_Tags(nameplate)
 
 	if (nameplate.VisibilityChanged or nameplate.NameOnlyChanged) or (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
@@ -221,8 +217,6 @@ function NP:DisablePlate(nameplate, nameOnly)
 			nameplate.Title:ClearAllPoints()
 			nameplate.Title:SetPoint('TOP', nameplate.Name, 'BOTTOM', 0, -2)
 		end
-	else
-		nameplate:EnableMouse(true)	-- True intercepts the clicks so that the Default UI NamePlate doesn't accept clicks.
 	end
 end
 
@@ -248,6 +242,7 @@ function NP:SetupTarget(nameplate)
 end
 
 function NP:CVarReset()
+	SetCVar("nameplateOccludedAlphaMult", .5)
 	SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
 	SetCVar('nameplateGlobalScale', 1)
 	SetCVar('NamePlateHorizontalScale', 1)
@@ -273,7 +268,6 @@ function NP:CVarReset()
 	SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'))
 	SetCVar('nameplateSelfScale', 1)
 	SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'))
-	SetCVar('nameplateShowAll', 1)
 	SetCVar('nameplateTargetBehindMaxDistance', 40)
 end
 
@@ -365,25 +359,21 @@ function NP:ConfigureAll()
 	-- Find New Way to set these so they don't always reset the NP CVars and refresh the plates.
 	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
 	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
-
-	SetCVar('NameplatePersonalShowAlways', (NP.db.units.PLAYER.visibility.showAlways and 1 or 0))
-	SetCVar('NameplatePersonalShowInCombat', (NP.db.units.PLAYER.visibility.showInCombat and 1 or 0))
-	SetCVar('NameplatePersonalShowWithTarget', (NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0))
 	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
-
-	SetCVar('nameplateShowFriendlyMinions', NP.db.units.FRIENDLY_PLAYER.minions and 1 or 0)
-	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions or NP.db.units.ENEMY_NPC.minions) and 1 or 0)
-	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors and 1 or 0)
+	SetCVar('NameplatePersonalShowAlways', (NP.db.units.PLAYER.visibility.showAlways == true and 1 or 0))
+	SetCVar('NameplatePersonalShowInCombat', (NP.db.units.PLAYER.visibility.showInCombat == true and 1 or 0))
+	SetCVar('NameplatePersonalShowWithTarget', (NP.db.units.PLAYER.visibility.showWithTarget == true and 1 or 0))
+	SetCVar('nameplateShowAll', NP.db.displayStyle ~= 'ALL' and 0 or 1)
+	SetCVar('nameplateShowFriendlyMinions', NP.db.units.FRIENDLY_PLAYER.minions == true and 1 or 0)
+	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions == true or NP.db.units.ENEMY_NPC.minions == true) and 1 or 0)
+	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors == true and 1 or 0)
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
+	SetCVar('nameplateOtherTopInset', NP.db.clampToScreen and 0.08 or -1)
+	SetCVar('nameplateOtherBottomInset', NP.db.clampToScreen and 0.1 or -1)
 	SetCVar('nameplateSelectedScale', NP.db.units.TARGET.scale)
 
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
-	end
-
-	if NP.db.clampToScreen then
-		SetCVar('nameplateOtherTopInset', 0.08)
-		SetCVar('nameplateOtherBottomInset', 0.1)
 	end
 
 	C_NamePlate_SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
@@ -482,7 +472,7 @@ function NP:ACTIVE_TALENT_GROUP_CHANGED()
 	NP.PlayerRole = GetSpecializationRole(GetSpecialization())
 end
 
-local optionsTable = {'EnemyMinus','EnemyMinions','FriendlyMinions','PersonalResource','PersonalResourceOnEnemy', 'MotionDropDown'}
+local optionsTable = {'EnemyMinus','EnemyMinions','FriendlyMinions','PersonalResource','PersonalResourceOnEnemy','ShowAll','MotionDropDown'}
 function NP:HideInterfaceOptions()
 	for _, x in pairs(optionsTable) do
 		local o = _G['InterfaceOptionsNamesPanelUnitNameplates'..x]
