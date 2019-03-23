@@ -278,13 +278,18 @@ E.Options.args.general = {
 					get = function(info)
 						local t = E.db.general[ info[#info] ]
 						local d = P.general[info[#info]]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 					end,
-					set = function(info, r, g, b)
-						local t = E.db.general[ info[#info] ]
-						t.r, t.g, t.b = r, g, b
+					set = function(info, r, g, b, a)
+						local setting = info[#info]
+						local t = E.db.general[setting]
+						t.r, t.g, t.b, t.a = r, g, b, a
 						E:UpdateMedia()
-						E:UpdateBorderColors()
+						if setting == 'bordercolor' then
+							E:UpdateBorderColors()
+						elseif setting == 'backdropcolor' or setting == 'backdropfadecolor' then
+							E:UpdateBackdropColors()
+						end
 					end,
 					args = {
 						bordercolor = {
