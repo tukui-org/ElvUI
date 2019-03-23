@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local THREAT = E:NewModule('Threat', 'AceEvent-3.0');
+local THREAT = E:GetModule('Threat');
 
 --Lua functions
 local pairs, select = pairs, select

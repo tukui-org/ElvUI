@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local LO = E:NewModule('Layout', 'AceEvent-3.0');
+local LO = E:GetModule('Layout');
 
 --Lua functions
 local _G = _G

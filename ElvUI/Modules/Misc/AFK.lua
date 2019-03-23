@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local AFKString = _G.AFK
-local AFK = E:NewModule('AFK', 'AceEvent-3.0', 'AceTimer-3.0');
-local CH = E:GetModule("Chat")
+local AFK = E:GetModule('AFK')
+local CH = E:GetModule('Chat')
 
 --Lua functions
 local _G = _G
@@ -35,6 +34,7 @@ local UnitIsAFK = UnitIsAFK
 local CinematicFrame = CinematicFrame
 local DND = DND
 local MovieFrame = MovieFrame
+local AFKString = AFK
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, PVEFrame, ElvUIAFKPlayerModel, ChatTypeInfo

@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local S = E:NewModule('Skins', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
+local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G

@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local mod = E:NewModule("DataBars", 'AceEvent-3.0')
+local mod = E:GetModule("DataBars")
 E.DataBars = mod
 
 --WoW API / Variables

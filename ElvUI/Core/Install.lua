@@ -1,4 +1,7 @@
 local E, L, V, P, G =unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local NP = E:GetModule('NamePlates')
+local UF = E:GetModule('UnitFrames')
+local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
@@ -145,7 +148,7 @@ local function SetupCVars(noDisplayMsg)
 	SetCVar("cameraDistanceMaxZoomFactor", 2.6)
 	SetCVar("showQuestTrackingTooltips", 1)
 
-	E:GetModule("NamePlates"):CVarReset()
+	NP:CVarReset()
 
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
@@ -468,8 +471,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 end
 
 local function SetupAuras(style, noDisplayMsg)
-	local UF = E:GetModule('UnitFrames')
-
 	local frame = UF.player
 	E:CopyTable(E.db.unitframe.units.player.buffs, P.unitframe.units.player.buffs)
 	E:CopyTable(E.db.unitframe.units.player.debuffs, P.unitframe.units.player.debuffs)
@@ -507,14 +508,14 @@ local function SetupAuras(style, noDisplayMsg)
 		E.db.unitframe.units.player.debuffs.attachTo = 'BUFFS'
 		E.db.unitframe.units.player.aurabar.enable = false
 		if E.private.unitframe.enable then
-			E:GetModule('UnitFrames'):CreateAndUpdateUF("player")
+			UF:CreateAndUpdateUF("player")
 		end
 
 		--TARGET
 		E.db.unitframe.units.target.debuffs.enable = true
 		E.db.unitframe.units.target.aurabar.enable = false
 		if E.private.unitframe.enable then
-			E:GetModule('UnitFrames'):CreateAndUpdateUF("target")
+			UF:CreateAndUpdateUF("target")
 		end
 	end
 
@@ -829,7 +830,7 @@ function E:Install()
 		f.Slider:Width(400)
 		f.Slider:SetHitRectInsets(0, 0, -10, 0)
 		f.Slider:SetPoint("CENTER", 0, 45)
-		E:GetModule("Skins"):HandleSliderFrame(f.Slider)
+		S:HandleSliderFrame(f.Slider)
 		f.Slider:Hide()
 
 		f.Slider.Min = f.Slider:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")

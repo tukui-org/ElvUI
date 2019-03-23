@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local M = E:NewModule('Misc', 'AceEvent-3.0', 'AceTimer-3.0');
-E.Misc = M;
+local M = E:GetModule('Misc')
+E.Misc = M
 
 --Lua functions
 local _G = _G

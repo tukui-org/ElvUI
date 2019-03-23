@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local D = E:NewModule('DebugTools', 'AceEvent-3.0', 'AceHook-3.0');
+local D = E:GetModule('DebugTools');
 E.DebugTools = D
 
 --WoW API / Variables

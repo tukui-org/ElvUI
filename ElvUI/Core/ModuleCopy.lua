@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local CP = E:NewModule('CopyProfile', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0","AceSerializer-3.0")
+local CP = E:GetModule('CopyProfile')
 
 local pairs, next, type = pairs, next, type
 local format, error = format, error

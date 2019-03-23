@@ -1,5 +1,21 @@
 local ElvUI = select(2, ...)
 local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local ActionBars = E:GetModule('ActionBars')
+local AFK = E:GetModule('AFK')
+local Auras = E:GetModule('Auras')
+local Bags = E:GetModule('Bags')
+local Blizzard = E:GetModule('Blizzard')
+local Chat = E:GetModule('Chat')
+local DataBars = E:GetModule('DataBars')
+local DataTexts = E:GetModule('DataTexts')
+local Layout = E:GetModule('Layout')
+local Minimap = E:GetModule('Minimap')
+local NamePlates = E:GetModule('NamePlates')
+local Threat = E:GetModule('Threat')
+local Tooltip = E:GetModule('Tooltip')
+local Totems = E:GetModule('Totems')
+local UnitFrames = E:GetModule('UnitFrames')
+
 local LSM = E.Libs.LSM
 local Masque = E.Libs.Masque
 
@@ -33,6 +49,8 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UnitFactionGroup = UnitFactionGroup
 local UnitGUID = UnitGUID
+local GetAddOnEnableState = GetAddOnEnableState
+local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
 local WrapTextInColorCode = WrapTextInColorCode
@@ -1075,17 +1093,17 @@ function E:UpdateDB()
 	E.db.install_complete = nil
 
 	E:DBConversions()
-	E:GetModule('Auras').db = E.db.auras
-	E:GetModule('ActionBars').db = E.db.actionbar
-	E:GetModule('Bags').db = E.db.bags
-	E:GetModule('Chat').db = E.db.chat
-	E:GetModule('DataBars').db = E.db.databars
-	E:GetModule('DataTexts').db = E.db.datatexts
-	E:GetModule('NamePlates').db = E.db.nameplates
-	E:GetModule('Tooltip').db = E.db.tooltip
-	E:GetModule('UnitFrames').db = E.db.unitframe
-	E:GetModule('Threat').db = E.db.general.threat
-	E:GetModule('Totems').db = E.db.general.totems
+	Auras.db = E.db.auras
+	ActionBars.db = E.db.actionbar
+	Bags.db = E.db.bags
+	Chat.db = E.db.chat
+	DataBars.db = E.db.databars
+	DataTexts.db = E.db.datatexts
+	NamePlates.db = E.db.nameplates
+	Tooltip.db = E.db.tooltip
+	UnitFrames.db = E.db.unitframe
+	Threat.db = E.db.general.threat
+	Totems.db = E.db.general.totems
 
 	--Not part of staggered update
 end
@@ -1102,7 +1120,6 @@ end
 
 function E:UpdateUnitFrames()
 	if E.private.unitframe.enable then
-		local UnitFrames = E:GetModule('UnitFrames')
 		UnitFrames:Update_AllFrames()
 	end
 
@@ -1120,7 +1137,6 @@ function E:UpdateMediaItems(skipCallback)
 end
 
 function E:UpdateLayout(skipCallback)
-	local Layout = E:GetModule('Layout')
 	Layout:ToggleChatPanels()
 	Layout:BottomPanelVisibility()
 	Layout:TopPanelVisibility()
@@ -1132,7 +1148,6 @@ function E:UpdateLayout(skipCallback)
 end
 
 function E:UpdateActionBars(skipCallback)
-	local ActionBars = E:GetModule('ActionBars')
 	ActionBars:Extra_SetAlpha()
 	ActionBars:Extra_SetScale()
 	ActionBars:ToggleDesaturation()
@@ -1146,7 +1161,6 @@ function E:UpdateActionBars(skipCallback)
 end
 
 function E:UpdateNamePlates(skipCallback)
-	local NamePlates = E:GetModule('NamePlates')
 	NamePlates:ConfigureAll()
 	NamePlates:StyleFilterInitialize()
 
@@ -1156,12 +1170,10 @@ function E:UpdateNamePlates(skipCallback)
 end
 
 function E:UpdateTooltip()
-	--Placeholder?
-	--local Tooltip = E:GetModule('Tooltip')
+	-- for plugins :3
 end
 
 function E:UpdateBags(skipCallback)
-	local Bags = E:GetModule('Bags')
 	Bags:Layout()
 	Bags:Layout(true)
 	Bags:SizeAndPositionBagBar()
@@ -1174,7 +1186,6 @@ function E:UpdateBags(skipCallback)
 end
 
 function E:UpdateChat(skipCallback)
-	local Chat = E:GetModule('Chat')
 	Chat:PositionChat(true)
 	Chat:SetupChat()
 	Chat:UpdateAnchors()
@@ -1185,7 +1196,6 @@ function E:UpdateChat(skipCallback)
 end
 
 function E:UpdateDataBars(skipCallback)
-	local DataBars = E:GetModule('DataBars')
 	DataBars:EnableDisable_AzeriteBar()
 	DataBars:EnableDisable_ExperienceBar()
 	DataBars:EnableDisable_HonorBar()
@@ -1198,7 +1208,6 @@ function E:UpdateDataBars(skipCallback)
 end
 
 function E:UpdateDataTexts(skipCallback)
-	local DataTexts = E:GetModule('DataTexts')
 	DataTexts:LoadDataTexts()
 
 	if not skipCallback then
@@ -1207,7 +1216,6 @@ function E:UpdateDataTexts(skipCallback)
 end
 
 function E:UpdateMinimap(skipCallback)
-	local Minimap = E:GetModule('Minimap')
 	Minimap:UpdateSettings()
 
 	if not skipCallback then
@@ -1216,7 +1224,6 @@ function E:UpdateMinimap(skipCallback)
 end
 
 function E:UpdateAuras(skipCallback)
-	local Auras = E:GetModule('Auras')
 	if ElvUIPlayerBuffs then Auras:UpdateHeader(ElvUIPlayerBuffs) end
 	if ElvUIPlayerDebuffs then Auras:UpdateHeader(ElvUIPlayerDebuffs) end
 
@@ -1226,14 +1233,12 @@ function E:UpdateAuras(skipCallback)
 end
 
 function E:UpdateMisc(skipCallback)
-	E:GetModule('AFK'):Toggle()
-	E:GetModule('Blizzard'):SetObjectiveFrameHeight()
+	AFK:Toggle()
+	Blizzard:SetObjectiveFrameHeight()
 
-	local Threat = E:GetModule('Threat')
 	Threat:ToggleEnable()
 	Threat:UpdatePosition()
 
-	local Totems = E:GetModule('Totems')
 	Totems:PositionAndSize()
 	Totems:ToggleEnable()
 
@@ -1644,9 +1649,8 @@ function E:InitializeInitialModules()
 end
 
 function E:RefreshModulesDB()
-	local UF = self:GetModule('UnitFrames')
-	twipe(UF.db)
-	UF.db = self.db.unitframe
+	twipe(UnitFrames.db)
+	UnitFrames.db = self.db.unitframe
 end
 
 function E:InitializeModules()
@@ -1748,7 +1752,7 @@ function E:DBConversions()
 		local styleFilters = E:CopyTable({}, E.db.nameplates.filters)
 		E.db.nameplates = E:CopyTable({}, P.nameplates)
 		E.db.nameplates.filters = E:CopyTable({}, styleFilters)
-		E:GetModule("NamePlates"):CVarReset()
+		NamePlates:CVarReset()
 		E.db.v11NamePlateReset = true
 	end
 end
@@ -1942,15 +1946,15 @@ function E:Initialize()
 	end
 
 	self:Tutorials()
-	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
+	Minimap:UpdateSettings()
 
 	if GetCVarBool("scriptProfile") then
 		E:StaticPopup_Show('SCRIPT_PROFILE')
 	end
 
 	if self.db.general.loginmessage then
-		E:Print(select(2, E:GetModule('Chat'):FindURL('CHAT_MSG_DUMMY', format(L["LOGIN_MSG"], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)))..'.')
+		E:Print(select(2, Chat:FindURL('CHAT_MSG_DUMMY', format(L["LOGIN_MSG"], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)))..'.')
 	end
 
 	if _G.OrderHallCommandBar then

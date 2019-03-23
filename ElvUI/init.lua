@@ -49,11 +49,31 @@ local AddOnName, Engine = ...;
 local AddOn = AceAddon:NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0', 'AceHook-3.0');
 AddOn.callbacks = AddOn.callbacks or CallbackHandler:New(AddOn)
 AddOn.DF = {}; AddOn.DF.profile = {}; AddOn.DF.global = {}; AddOn.privateVars = {}; AddOn.privateVars.profile = {}; -- Defaults
-AddOn.Options = {
-	type = "group",
-	name = AddOnName,
-	args = {},
-}
+AddOn.Options = {type = "group", name = AddOnName, args = {}}
+
+AddOn:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0')
+AddOn:NewModule('AFK','AceEvent-3.0','AceTimer-3.0')
+AddOn:NewModule('Auras','AceHook-3.0','AceEvent-3.0')
+AddOn:NewModule('Bags','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+AddOn:NewModule('Blizzard','AceEvent-3.0','AceHook-3.0')
+AddOn:NewModule('Chat','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+AddOn:NewModule('CopyProfile','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
+AddOn:NewModule('DataBars','AceEvent-3.0')
+AddOn:NewModule('DataTexts','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+AddOn:NewModule('DebugTools','AceEvent-3.0','AceHook-3.0')
+AddOn:NewModule('Distributor','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
+AddOn:NewModule('Layout','AceEvent-3.0')
+AddOn:NewModule('Minimap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+AddOn:NewModule('Misc','AceEvent-3.0','AceTimer-3.0')
+AddOn:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+AddOn:NewModule('PluginInstaller')
+AddOn:NewModule('RaidUtility','AceEvent-3.0')
+AddOn:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+AddOn:NewModule('Threat','AceEvent-3.0')
+AddOn:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+AddOn:NewModule('Totems','AceEvent-3.0')
+AddOn:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
+AddOn:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 
 Engine[1] = AddOn;
 Engine[2] = {};

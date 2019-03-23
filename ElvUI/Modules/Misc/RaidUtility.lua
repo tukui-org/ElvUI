@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
-local RU = E:NewModule('RaidUtility', 'AceEvent-3.0');
+local RU = E:GetModule('RaidUtility')
 
 --Lua functions
 local _G = _G

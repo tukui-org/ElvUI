@@ -1,4 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames')
+local AB = E:GetModule('ActionBars')
 
 --Lua functions
 local _G = _G
@@ -13,8 +15,6 @@ local ICON_SIZE = 36 --the normal size for an icon (don't change this)
 local FONT_SIZE = 20 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
 local MIN_DURATION = 1.5 --the minimum duration to show cooldown text for
-
-local AB -- used to store the ActionBars module when we need it to set the buttons `.disableCountDownNumbers`
 
 function E:Cooldown_OnUpdate(elapsed)
 	if self.nextUpdate > 0 then
@@ -319,7 +319,7 @@ function E:UpdateCooldownOverride(module)
 					cd.nextupdate = -1
 					if E.private.unitframe.enable then
 						-- cd.unit defined in `UF:UpdateAuraIconSettings`, it's safe to pass even if `nil`
-						E:GetModule('UnitFrames'):PostUpdateAura(cd.unit, cd)
+						UF:PostUpdateAura(cd.unit, cd)
 						E:ToggleBlizzardCooldownText(cd.cd, cd)
 					end
 				end
@@ -359,7 +359,6 @@ function E:UpdateCooldownSettings(module)
 
 	-- okay update the other override settings if it was one of the core file calls
 	if module and (module == 'all') then
-		if not AB then AB = E:GetModule('ActionBars') end
 		E:UpdateCooldownSettings('bags')
 		E:UpdateCooldownSettings('nameplates')
 		E:UpdateCooldownSettings('actionbar')
