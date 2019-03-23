@@ -147,7 +147,6 @@ function NP:StylePlate(nameplate)
 	if nameplate == _G.ElvNP_Player then
 		-- Setup Fader
 		nameplate.Fader = not NP.db.units.PLAYER.visibility.showAlways
-		nameplate.FadeHover = true
 		nameplate.FadeCombat = NP.db.units.PLAYER.visibility.showInCombat
 		nameplate.FadeTarget = NP.db.units.PLAYER.visibility.showWithTarget
 		nameplate.FadeHealth = true
@@ -398,7 +397,7 @@ function NP:SetCVars()
 	end
 end
 
-function NP:ConfigureAll()
+function NP:ConfigureAll(fromConfig)
 	NP.PlayerRole = GetSpecializationRole(GetSpecialization())
 
 	C_NamePlate_SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
@@ -427,7 +426,9 @@ function NP:ConfigureAll()
 
 	for nameplate in pairs(NP.Plates) do
 		NP:UpdatePlate(nameplate)
-		nameplate:UpdateAllElements('OnShow')
+		if fromConfig then
+			nameplate:UpdateAllElements('OnShow')
+		end
 		if nameplate.frameType == 'PLAYER' then
 			NP.PlayerNamePlateAnchor:ClearAllPoints()
 			NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
