@@ -181,7 +181,7 @@ function NP:Update_Highlight(nameplate)
 			nameplate.Highlight.texture:SetAlpha(1)
 		else
 			nameplate.Highlight.texture:SetTexture(E.Media.Textures.Spark)
-			nameplate.Highlight.texture:SetAllPoints(nameplate)
+			nameplate.Highlight.texture:SetAllPoints(nameplate.Name)
 			nameplate.Highlight.texture:SetAlpha(.5)
 		end
 	else

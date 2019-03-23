@@ -124,6 +124,9 @@ function NP:Construct_Runes(nameplate)
 
 		if i == 1 then
 			Runes[i]:Point('LEFT', Runes, 'LEFT', 0, 0)
+		elseif i == 6 then
+			Runes[i]:Point('LEFT', Runes[i -1], 'RIGHT', 1, 0)
+			Runes[i]:Point('RIGHT')
 		else
 			Runes[i]:Point('LEFT', Runes[i-1], 'RIGHT', 1, 0)
 		end
@@ -146,10 +149,10 @@ function NP:Update_ClassPower(nameplate)
 		local maxClassBarButtons = nameplate.ClassPower.__max
 
 		local Width = db.classpower.width / maxClassBarButtons
-		nameplate.ClassPower:Size(db.classpower.width + (maxClassBarButtons - 1), db.classpower.height)
+		nameplate.ClassPower:Size(db.classpower.width, db.classpower.height)
 
 		for i = 1, maxClassBarButtons do
-			nameplate.ClassPower[i]:Size(Width, db.classpower.height)
+			nameplate.ClassPower[i]:Size(Width - 1, db.classpower.height)
 		end
 	else
 		if nameplate:IsElementEnabled('ClassPower') then
@@ -173,13 +176,13 @@ function NP:Update_Runes(nameplate)
 		nameplate.sortOrder = db.classpower.sortDirection
 
 		local width = db.classpower.width / 6
-		nameplate.Runes:Size(db.classpower.width + 5, db.classpower.height)
+		nameplate.Runes:Size(db.classpower.width, db.classpower.height)
 
 		local runeColor = (db.classpower.classColor and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])) or NP.db.colors.classResources.DEATHKNIGHT
 
 		for i = 1, 6 do
 			nameplate.Runes[i]:SetStatusBarColor(runeColor.r, runeColor.g, runeColor.b)
-			nameplate.Runes[i]:Size(width, db.classpower.height)
+			nameplate.Runes[i]:Size(width - 1, db.classpower.height)
 		end
 	else
 		if nameplate:IsElementEnabled('Runes') then

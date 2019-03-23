@@ -374,10 +374,13 @@ function NP:SetCVars()
 	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
 	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
 
-	SetCVar('NameplatePersonalShowAlways', (NP.db.units.PLAYER.visibility.showAlways and 1 or 0))
-	SetCVar('NameplatePersonalShowInCombat', (NP.db.units.PLAYER.visibility.showInCombat and 1 or 0))
-	SetCVar('NameplatePersonalShowWithTarget', (NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0))
-	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
+	if NP.db.units.PLAYER.visibility.showAlways then
+		SetCVar('NameplatePersonalShowAlways', 1)
+	else
+		SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
+		SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
+		SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
+	end
 
 	SetCVar('nameplateShowFriendlyMinions', NP.db.units.FRIENDLY_PLAYER.minions and 1 or 0)
 	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions or NP.db.units.ENEMY_NPC.minions) and 1 or 0)
@@ -405,7 +408,6 @@ function NP:ConfigureAll()
 
 	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 		_G.ElvNP_Player:Enable()
-
 		-- Setup Fader
 		_G.ElvNP_Player.Fader = not NP.db.units.PLAYER.visibility.showAlways
 		_G.ElvNP_Player.FadeCombat = NP.db.units.PLAYER.visibility.showInCombat
@@ -550,7 +552,7 @@ function NP:Initialize()
 	_G.ElvNP_Player:SetAttribute('toggleForVehicle', true)
 	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:Size(NP.db.clickableWidth, NP.db.clickableHeight)
-	_G.ElvNP_Player:SetScale(E.global.general.UIScale)
+	_G.ElvNP_Player:SetScale(1)
 	_G.ElvNP_Player:SetScript('OnEnter', _G.UnitFrame_OnEnter)
 	_G.ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 	_G.ElvNP_Player.frameType = 'PLAYER'
@@ -559,7 +561,7 @@ function NP:Initialize()
 	ElvUF:Spawn('player', 'ElvNP_Test')
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
 	_G.ElvNP_Test:Size(NP.db.clickableWidth, NP.db.clickableHeight)
-	_G.ElvNP_Test:SetScale(E.global.general.UIScale)
+	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test:SetMovable(true)
 	_G.ElvNP_Test:RegisterForDrag("LeftButton", "RightButton")
 	_G.ElvNP_Test:SetScript("OnDragStart", function() _G.ElvNP_Test:StartMoving() end)
@@ -568,7 +570,7 @@ function NP:Initialize()
 	_G.ElvNP_Test:Disable()
 
 	ElvUF:Spawn('player', 'ElvNP_TargetClassPower')
-	_G.ElvNP_TargetClassPower:SetScale(E.global.general.UIScale)
+	_G.ElvNP_TargetClassPower:SetScale(1)
 	_G.ElvNP_TargetClassPower:Size(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_TargetClassPower.frameType = 'TARGET'
 	_G.ElvNP_TargetClassPower:SetAttribute('toggleForVehicle', true)
