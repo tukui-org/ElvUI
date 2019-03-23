@@ -146,17 +146,17 @@ function NP:StylePlate(nameplate)
 
 	if nameplate == _G.ElvNP_Player then
 		-- Setup Fader
-		nameplate.Fader = not NP.db.units.PLAYER.visibility.showAlways
-		nameplate.FadeCombat = NP.db.units.PLAYER.visibility.showInCombat
-		nameplate.FadeTarget = NP.db.units.PLAYER.visibility.showWithTarget
-		nameplate.FadeHealth = true
-		nameplate.FadePower = true
-		nameplate.FadeCasting = true
-
-		nameplate.FadeSmooth = 1
-		nameplate.FadeDelay = NP.db.units.PLAYER.visibility.hideDelay
-		nameplate.FadeMaxAlpha = 1
-		nameplate.FadeMinAlpha = 0
+		nameplate.Fader = {
+			Combat = NP.db.units.PLAYER.visibility.showInCombat,
+			Target = NP.db.units.PLAYER.visibility.showWithTarget,
+			Health = true,
+			Power = true,
+			Casting = true,
+			Smooth = 1,
+			Delay = NP.db.units.PLAYER.visibility.hideDelay,
+			MaxAlpha = 1,
+			MinAlpha = 0,
+		}
 	end
 
 	NP.Plates[nameplate] = nameplate:GetName()
@@ -408,12 +408,20 @@ function NP:ConfigureAll(fromConfig)
 	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 		_G.ElvNP_Player:Enable()
 		-- Setup Fader
-		_G.ElvNP_Player.Fader = not NP.db.units.PLAYER.visibility.showAlways
-		_G.ElvNP_Player.FadeCombat = NP.db.units.PLAYER.visibility.showInCombat
-		_G.ElvNP_Player.FadeTarget = NP.db.units.PLAYER.visibility.showWithTarget
+		if NP.db.units.PLAYER.visibility.showAlways then
+			if _G.ElvNP_Player:IsElementEnabled('Fader') then
+				_G.ElvNP_Player:DisableElement('Fader')
+			end
+		else
+			if not _G.ElvNP_Player:IsElementEnabled('Fader') then
+				_G.ElvNP_Player:EnableElement('Fader')
+			end
 
-		_G.ElvNP_Player.FadeSmooth = 1
-		_G.ElvNP_Player.FadeDelay = NP.db.units.PLAYER.visibility.hideDelay
+			_G.ElvNP_Player.Fader.Combat = NP.db.units.PLAYER.visibility.showInCombat
+			_G.ElvNP_Player.Fader.Target = NP.db.units.PLAYER.visibility.showWithTarget
+			_G.ElvNP_Player.Fader.Smooth = 1
+			_G.ElvNP_Player.Fader.Delay = NP.db.units.PLAYER.visibility.hideDelay
+		end
 	else
 		_G.ElvNP_Player:Disable()
 	end
