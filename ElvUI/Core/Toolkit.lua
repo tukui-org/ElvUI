@@ -18,9 +18,7 @@ function E:SetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft, insetRigh
 	if not frame.pixelBorders then return end
 
 	if not giveBorder then
-		for _, v in pairs(E.PixelBorders) do
-			frame.pixelBorders[v]:Hide()
-		end
+		E:HidePixelBorders(frame)
 	end
 
 	frame.pixelBorders.CENTER:SetTexture(bgFile)
@@ -82,6 +80,14 @@ end
 
 function E:HookedSetBackdropBorderColor(r, g, b, a)
 	E:SetBackdropBorderColor(self, r, g, b, a)
+end
+
+function E:HidePixelBorders(frame)
+	if frame.pixelBorders then
+		for _, v in pairs(E.PixelBorders) do
+			frame.pixelBorders[v]:Hide()
+		end
+	end
 end
 
 function E:BuildPixelBorders(frame, noSecureHook)
