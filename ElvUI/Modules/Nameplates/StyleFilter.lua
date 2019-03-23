@@ -17,11 +17,12 @@ local GetTalentInfo = GetTalentInfo
 local GetTime = GetTime
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitClassification = UnitClassification
-local UnitIsUnit = UnitIsUnit
 local UnitGUID = UnitGUID
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitIsQuestBoss = UnitIsQuestBoss
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitIsUnit = UnitIsUnit
 local UnitLevel = UnitLevel
 local UnitName = UnitName
 local UnitPower = UnitPower
@@ -252,7 +253,7 @@ function mod:StyleFilterUpdatePlate(frame, nameOnly)
 			frame.Power:ForceUpdate()
 		end
 	end
-	if mod.db.threat.enable and mod.db.threat.useThreatColor then
+	if mod.db.threat.enable and mod.db.threat.useThreatColor and not UnitIsTapDenied(frame.unit) then
 		frame.ThreatIndicator:ForceUpdate() -- this will account for the threat health color
 	end
 
