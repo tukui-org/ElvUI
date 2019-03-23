@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local THREAT = E:GetModule('Threat');
+local THREAT = E:GetModule('Threat')
+local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local pairs, select = pairs, select
@@ -24,9 +25,7 @@ local UNKNOWN = UNKNOWN
 -- GLOBALS: CUSTOM_CLASS_COLORS
 
 E.Threat = THREAT
-THREAT.list = {};
-
-local DT -- used to hold the DT module when we need it
+THREAT.list = {}
 
 function THREAT:UpdatePosition()
 	if self.db.position == 'RIGHTCHAT' then
@@ -148,8 +147,6 @@ function THREAT:ToggleEnable()
 end
 
 function THREAT:Initialize()
-	DT = E:GetModule('DataTexts')
-
 	self.db = E.db.general.threat
 
 	self.bar = CreateFrame('StatusBar', 'ElvUI_ThreatBar', E.UIParent)

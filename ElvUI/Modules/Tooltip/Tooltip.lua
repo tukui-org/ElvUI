@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TT = E:GetModule('Tooltip')
-local S -- used to hold the skin module when we need it
+local Skins = E:GetModules('Skins')
 
 --Lua functions
 local _G = _G
@@ -623,8 +623,7 @@ function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
 			_, max = tt.pbBar:GetMinMaxValues()
 		end
 
-		if not S then S = E:GetModule('Skins') end
-		S:StatusBarColorGradient(tt.pbBar, cur, max)
+		Skins:StatusBarColorGradient(tt.pbBar, cur, max)
 	end
 end
 

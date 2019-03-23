@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local mod = E:GetModule('NamePlates');
-local LSM = E.Libs.LSM;
+local mod = E:GetModule('NamePlates')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select

@@ -1,6 +1,6 @@
 --Credit Baudzilla
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local M = E:GetModule('Misc');
+local M = E:GetModule('Misc')
 
 --Lua functions
 local sin, cos, rad = math.sin, math.cos, math.rad

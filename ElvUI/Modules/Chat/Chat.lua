@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local CH = E:GetModule('Chat')
+local Skins = E:GetModule('Skins')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -550,11 +551,10 @@ function CH:StyleChat(frame)
 	end)
 
 	_G.QuickJoinToastButton:Kill()
-	local S = E:GetModule('Skins')
-	S:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
-	S:HandleButton(_G.ChatFrameChannelButton, nil, nil, nil, true)
-	S:HandleButton(_G.ChatFrameToggleVoiceDeafenButton, nil, nil, nil, true)
-	S:HandleButton(_G.ChatFrameToggleVoiceMuteButton, nil, nil, nil, true)
+	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
+	Skins:HandleButton(_G.ChatFrameChannelButton, nil, nil, nil, true)
+	Skins:HandleButton(_G.ChatFrameToggleVoiceDeafenButton, nil, nil, nil, true)
+	Skins:HandleButton(_G.ChatFrameToggleVoiceMuteButton, nil, nil, nil, true)
 
 	CreatedFrames = id
 	frame.styled = true
@@ -2437,7 +2437,7 @@ function CH:HandleChatVoiceIcons()
 	RepositionChatIcons()
 end
 
-function CH:BuildCopyChatFrame(S)
+function CH:BuildCopyChatFrame()
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	tinsert(_G.UISpecialFrames, "CopyChatFrame")
 	frame:SetTemplate('Transparent')
@@ -2478,7 +2478,7 @@ function CH:BuildCopyChatFrame(S)
 	local scrollArea = CreateFrame("ScrollFrame", "CopyChatScrollFrame", frame, "UIPanelScrollFrameTemplate")
 	scrollArea:Point("TOPLEFT", frame, "TOPLEFT", 8, -30)
 	scrollArea:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 8)
-	S:HandleScrollBar(_G.CopyChatScrollFrameScrollBar)
+	Skins:HandleScrollBar(_G.CopyChatScrollFrameScrollBar)
 	scrollArea:SetScript("OnSizeChanged", function(scroll)
 		_G.CopyChatFrameEditBox:Width(scroll:GetWidth())
 		_G.CopyChatFrameEditBox:Height(scroll:GetHeight())
@@ -2509,7 +2509,7 @@ function CH:BuildCopyChatFrame(S)
 	close:Point("TOPRIGHT")
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
-	S:HandleCloseButton(close)
+	Skins:HandleCloseButton(close)
 end
 
 function CH:Initialize()
@@ -2522,7 +2522,6 @@ function CH:Initialize()
 	if E.private.chat.enable ~= true then return end
 	E.Chat = self
 
-	local S = E:GetModule('Skins')
 	if not ElvCharacterDB.ChatEditHistory then ElvCharacterDB.ChatEditHistory = {} end
 	if not ElvCharacterDB.ChatHistoryLog or not self.db.chatHistory then ElvCharacterDB.ChatHistoryLog = {} end
 
@@ -2535,7 +2534,7 @@ function CH:Initialize()
 	self:UpdateAnchors()
 	self:Panels_ColorUpdate()
 	if not self.db.hideVoiceButtons then
-		self:HandleChatVoiceIcons(S)
+		self:HandleChatVoiceIcons()
 	end
 
 	self:SecureHook('ChatEdit_OnEnterPressed')
@@ -2577,7 +2576,7 @@ function CH:Initialize()
 	end
 
 	if self.db.chatHistory then self:DisplayChatHistory() end
-	self:BuildCopyChatFrame(S)
+	self:BuildCopyChatFrame()
 
 	-- Editbox Backdrop Color
 	hooksecurefunc("ChatEdit_UpdateHeader", function(editbox)
@@ -2623,7 +2622,7 @@ function CH:Initialize()
 	local CombatLogProgressBar = _G.CombatLogQuickButtonFrame_CustomProgressBar
 	CombatLogProgressBar:SetStatusBarTexture(E.media.normTex)
 	CombatLogProgressBar:SetInside(CombatLogButton)
-	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
+	Skins:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogButton, "TOPRIGHT", 0, -1)
 	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()

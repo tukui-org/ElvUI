@@ -1,5 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local B = E:GetModule('Bags');
+local B = E:GetModule('Bags')
+local TT = E:GetModule('Tooltip')
+local Skins = E:GetModule('Skins')
 local Search = E.Libs.ItemSearch
 
 --Lua functions1
@@ -104,7 +106,7 @@ local SEARCH = SEARCH
 
 local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
 
-local ElvUIAssignBagDropdown, TooltipModule, SkinModule
+local ElvUIAssignBagDropdown
 local SEARCH_STRING = ""
 local BAG_FILTER_ICONS = {
 	[_G.LE_BAG_FILTER_FLAG_EQUIPMENT] = "Interface\\ICONS\\INV_Chest_Plate10",
@@ -1589,8 +1591,6 @@ function B:VendorGrayCheck()
 end
 
 function B:ContructContainerFrame(name, isBank)
-	if not SkinModule then SkinModule = E:GetModule('Skins') end
-
 	local strata = E.db.bags.strata or 'HIGH'
 
 	local f = CreateFrame('Button', name, E.UIParent);
@@ -1643,7 +1643,7 @@ function B:ContructContainerFrame(name, isBank)
 	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton');
 	f.closeButton:Point('TOPRIGHT', 5, 5);
 
-	SkinModule:HandleCloseButton(f.closeButton);
+	Skins:HandleCloseButton(f.closeButton);
 
 	f.holderFrame = CreateFrame('Frame', nil, f);
 	f.holderFrame:Point('TOP', f, 'TOP', 0, -f.topOffset);
@@ -1671,7 +1671,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.reagentFrame.cover.purchaseButton:Height(20)
 		f.reagentFrame.cover.purchaseButton:Width(150)
 		f.reagentFrame.cover.purchaseButton:Point('CENTER', f.reagentFrame.cover, 'CENTER')
-		SkinModule:HandleButton(f.reagentFrame.cover.purchaseButton)
+		Skins:HandleButton(f.reagentFrame.cover.purchaseButton)
 		f.reagentFrame.cover.purchaseButton:SetFrameLevel(f.reagentFrame.cover.purchaseButton:GetFrameLevel() + 2)
 		f.reagentFrame.cover.purchaseButton.text = f.reagentFrame.cover.purchaseButton:CreateFontString(nil, 'OVERLAY')
 		f.reagentFrame.cover.purchaseButton.text:FontTemplate()
@@ -2041,8 +2041,7 @@ end
 function B:OpenBags()
 	self.BagFrame:Show()
 
-	if not TooltipModule then TooltipModule = E:GetModule('Tooltip') end
-	TooltipModule:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
+	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
 
 function B:CloseBags()
@@ -2052,8 +2051,7 @@ function B:CloseBags()
 		self.BankFrame:Hide()
 	end
 
-	if not TooltipModule then TooltipModule = E:GetModule('Tooltip') end
-	TooltipModule:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
+	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
 
 function B:ShowBankTab(f, showReagent)

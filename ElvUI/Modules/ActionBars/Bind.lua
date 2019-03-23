@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local AB = E:GetModule('ActionBars');
+local AB = E:GetModule('ActionBars')
+local Skins = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
@@ -475,8 +476,7 @@ function AB:LoadKeyBinder()
 	save:Point("BOTTOMRIGHT", -14, 10)
 	discard:Point("BOTTOMLEFT", 14, 10)
 
-	local S = E:GetModule('Skins')
-	S:HandleCheckBox(perCharCheck)
-	S:HandleButton(save)
-	S:HandleButton(discard)
+	Skins:HandleCheckBox(perCharCheck)
+	Skins:HandleButton(save)
+	Skins:HandleButton(discard)
 end

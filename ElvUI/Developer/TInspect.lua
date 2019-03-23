@@ -1,29 +1,23 @@
 --Lua functions
 local _G = _G
+local select = select
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
+-- GLOBALS: ElvUI
 
-local E, Chat
 local function OnMouseDown(self, button)
-	if not E then E = _G.ElvUI and _G.ElvUI[1] end
-	if not E then return end
-
 	local text = self.Text:GetText()
 	if button == "RightButton" then
-		if not Chat then Chat = E:GetModule("Chat") end
-		if not Chat then return end
-
-		Chat:SetChatEditBoxMessage(text)
+		ElvUI[1]:GetModule("Chat"):SetChatEditBoxMessage(text)
 	elseif button == "MiddleButton" then
 		local rawData = self:GetParent():GetAttributeData().rawValue
-
 		if rawData.IsObjectType and rawData:IsObjectType("Texture") then
 			_G.TEX = rawData
-			E:Print("_G.TEX set to: ", text)
+			ElvUI[1]:Print("_G.TEX set to: ", text)
 		else
 			_G.FRAME = rawData
-			E:Print("_G.FRAME set to: ", text)
+			ElvUI[1]:Print("_G.FRAME set to: ", text)
 		end
 	else
 		_G.TableAttributeDisplayValueButton_OnMouseDown(self)
@@ -43,7 +37,6 @@ end
 local event = "ADDON_LOADED"
 local function Setup(frame)
 	if frame.Registered then return end
-
 	local debugTools = IsAddOnLoaded("Blizzard_DebugTools")
 	if debugTools then
 		hooksecurefunc(_G.TableInspectorMixin, "RefreshAllData", UpdateLines)

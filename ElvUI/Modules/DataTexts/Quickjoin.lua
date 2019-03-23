@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
+local CH = E:GetModule('Chat')
 
 --Lua functions
 local next, pairs, select, type = next, pairs, select, type
@@ -31,17 +32,14 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local CHAT
 local function OnEvent(self)
 	wipe(quickJoin)
 	quickJoinGroups = C_SocialQueue_GetAllGroups()
 
-	if not CHAT then CHAT = E:GetModule("Chat") end --load order issue requires this to be here, could probably change load order to fix...
 	local coloredName, players, members, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityName, leaderName, isLeader, activity, output, queueCount, queueName, searchResultInfo
-
 	for _, guid in pairs(quickJoinGroups) do
 		players, members = (C_SocialQueue_GetGroupMembers(guid)), nil -- clear members
-		if players and next(players) then members = CHAT:SocialQueueUtil_SortGroupMembers(players) end
+		if players and next(players) then members = CH:SocialQueueUtil_SortGroupMembers(players) end
 		if members then
 			firstMember, numMembers, extraCount = members[1], #members, ''
 			playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
@@ -63,7 +61,7 @@ local function OnEvent(self)
 					searchResultInfo = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
 					if searchResultInfo then
 						activityName, leaderName = searchResultInfo.name, searchResultInfo.leaderName
-						isLeader = CHAT:SocialQueueIsLeader(playerName, leaderName)
+						isLeader = CH:SocialQueueIsLeader(playerName, leaderName)
 					end
 				end
 

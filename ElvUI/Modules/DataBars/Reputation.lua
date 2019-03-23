@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local mod = E:GetModule('DataBars');
+local mod = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 --Lua functions

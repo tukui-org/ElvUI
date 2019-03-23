@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local B = E:GetModule('Blizzard');
+local B = E:GetModule('Blizzard')
+local Skins = E:GetModule('Skins')
 E.Blizzard = B
 
 local _G = _G
@@ -51,7 +52,7 @@ function B:Initialize()
 			TalentMicroButtonAlert.Arrow:Hide()
 			TalentMicroButtonAlert.Text:FontTemplate()
 			TalentMicroButtonAlert:CreateBackdrop("Transparent")
-			E:GetModule("Skins"):HandleCloseButton(TalentMicroButtonAlert.CloseButton)
+			Skins:HandleCloseButton(TalentMicroButtonAlert.CloseButton)
 
 			TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, "OVERLAY")
 			TalentMicroButtonAlert.tex:Point("RIGHT", -10, 0)

@@ -3,8 +3,8 @@
 ]]
 
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local B = E:GetModule('Blizzard');
-local S = E:GetModule('Skins');
+local B = E:GetModule('Blizzard')
+local S = E:GetModule('Skins')
 
 local _G = _G
 local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
