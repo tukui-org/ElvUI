@@ -144,6 +144,22 @@ function NP:StylePlate(nameplate)
 		nameplate.Runes = NP:Construct_Runes(nameplate)
 	end
 
+	if nameplate == _G.ElvNP_Player then
+		-- Setup Fader
+		nameplate.Fader = not NP.db.units.PLAYER.visibility.showAlways
+		nameplate.FadeHover = true
+		nameplate.FadeCombat = NP.db.units.PLAYER.visibility.showInCombat
+		nameplate.FadeTarget = NP.db.units.PLAYER.visibility.showWithTarget
+		nameplate.FadeHealth = true
+		nameplate.FadePower = true
+		nameplate.FadeCasting = true
+
+		nameplate.FadeSmooth = 1
+		nameplate.FadeDelay = NP.db.units.PLAYER.visibility.hideDelay
+		nameplate.FadeMaxAlpha = 1
+		nameplate.FadeMinAlpha = 0
+	end
+
 	NP.Plates[nameplate] = nameplate:GetName()
 end
 
@@ -387,6 +403,15 @@ function NP:ConfigureAll()
 
 	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 		_G.ElvNP_Player:Enable()
+
+		-- Setup Fader
+		_G.ElvNP_Player.Fader = not NP.db.units.PLAYER.visibility.showAlways
+		_G.ElvNP_Player.FadeCombat = NP.db.units.PLAYER.visibility.showInCombat
+		_G.ElvNP_Player.FadeTarget = NP.db.units.PLAYER.visibility.showWithTarget
+
+		_G.ElvNP_Player.FadeSmooth = 1
+		_G.ElvNP_Player.FadeDelay = NP.db.units.PLAYER.visibility.hideDelay
+
 		_G.ElvNP_Player:UpdateAllElements('OnShow')
 	else
 		_G.ElvNP_Player:Disable()
@@ -516,6 +541,7 @@ function NP:Initialize()
 	end)
 
 	ElvUF:Spawn('player', 'ElvNP_Player')
+	_G.ElvNP_Player:EnableMouse(true)
 	_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
 	_G.ElvNP_Player:SetAttribute('*type1', 'target')
 	_G.ElvNP_Player:SetAttribute('*type2', 'togglemenu')
