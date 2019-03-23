@@ -7,10 +7,13 @@ local B = E:GetModule('Blizzard')
 local S = E:GetModule('Skins')
 
 local _G = _G
+local strlen, strjoin = strlen, strjoin
 local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
+local IsControlKeyDown = IsControlKeyDown
+local IsModifierKeyDown = IsModifierKeyDown
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT
 local CLASS, DEFAULT = CLASS, DEFAULT
@@ -28,13 +31,42 @@ local function UpdateAlpha(tbox)
 	_G.OpacitySliderFrame:SetValue(1 - (tbox:GetNumber() / 100))
 end
 
+local function expandFromThree(r, g, b)
+	return strjoin('',r,r,g,g,b,b)
+end
+
+local function extendToSix(str)
+	for _=1, 6-strlen(str) do str=str..0 end
+	return str
+end
+
+local function GetHexColor(box)
+	local rgb = box:GetText()
+	local boxLen = box:GetNumLetters()
+	if boxLen == 3 then
+		rgb = rgb:gsub('(%x)(%x)(%x)$', expandFromThree)
+	elseif boxLen < 6 then
+		rgb = rgb:gsub('(.+)$', extendToSix)
+	end
+
+	local r, g, b = tonumber('0x'..strsub(rgb, 0, 2)), tonumber('0x'..strsub(rgb, 3, 4)), tonumber('0x'..strsub(rgb, 5, 6))
+	if not r then r = 0 else r = r/255 end
+	if not g then g = 0 else g = g/255 end
+	if not b then b = 0 else b = b/255 end
+	return r, g, b
+end
+
 local function UpdateColorTexts(r, g, b, box)
 	if not (r and g and b) then
 		r, g, b = _G.ColorPickerFrame:GetColorRGB()
 
 		if box then
-			local c = box:GetNumber() / 255
-			if box == _G.ColorPPBoxR then
+			local boxNum = box:GetNumber()
+			if boxNum > 255 then boxNum = 255 end
+			local c = boxNum / 255
+			if box == _G.ColorPPBoxH then
+				r, g, b = GetHexColor(box)
+			elseif box == _G.ColorPPBoxR then
 				r = c
 			elseif box == _G.ColorPPBoxG then
 				g = c
@@ -54,12 +86,7 @@ local function UpdateColorTexts(r, g, b, box)
 end
 
 local function UpdateColor()
-	local rgb = _G.ColorPPBoxH:GetText()
-	local r, g, b = tonumber('0x'..strsub(rgb, 0, 2)), tonumber('0x'..strsub(rgb, 3, 4)), tonumber('0x'..strsub(rgb, 5, 6))
-	if not r then r = 0 else r = r/255 end
-	if not g then g = 0 else g = g/255 end
-	if not b then b = 0 else b = b/255 end
-
+	local r, g, b = GetHexColor(_G.ColorPPBoxH)
 	_G.ColorPickerFrame:SetColorRGB(r, g, b)
 	_G.ColorSwatch:SetColorTexture(r, g, b)
 end
@@ -317,7 +344,7 @@ function B:EnhanceColorPicker()
 		-- set up scripts to handle event appropriately
 		if i == 5 then
 			box:SetScript("OnKeyUp", function(eb, key)
-				if tonumber(key) or key == "BACKSPACE" then
+				if (tonumber(key) and not IsModifierKeyDown()) or key == "BACKSPACE" then
 					UpdateAlpha(eb)
 				elseif key == "ENTER" or key == "ESCAPE" then
 					eb:ClearFocus()
@@ -326,7 +353,9 @@ function B:EnhanceColorPicker()
 			end)
 		else
 			box:SetScript("OnKeyUp", function(eb, key)
-				if ((i == 4 and tonumber(key, 16)) or (i ~= 4 and tonumber(key))) or key == "BACKSPACE" then
+				local copyPaste = IsControlKeyDown() and key == 'V'
+				local hexBoxKey, rgbBoxKey = i == 4 and tonumber(key, 16), i ~= 4 and tonumber(key)
+				if (copyPaste or ((hexBoxKey or rgbBoxKey) and not IsModifierKeyDown())) or key == "BACKSPACE" then
 					if i ~= 4 then UpdateColorTexts(nil, nil, nil, eb) end
 					if i == 4 and eb:GetNumLetters() ~= 6 then return end
 					UpdateColor()
