@@ -28,7 +28,7 @@ E.Options.args.tooltip = {
 			order = 3,
 			type = "group",
 			name = L["General"],
-			disabled = function() return not E.Tooltip; end,
+			disabled = function() return not E.Tooltip.Initialized end,
 			args = {
 				header = {
 					order = 0,
@@ -392,6 +392,6 @@ for i = 1, 8 do
 		type = "color",
 		hasAlpha = false,
 		name = _G["FACTION_STANDING_LABEL"..i],
-		disabled = function() return not E.Tooltip or not E.db.tooltip.useCustomFactionColors end,
+		disabled = function() return not E.Tooltip.Initialized or not E.db.tooltip.useCustomFactionColors end,
 	}
 end

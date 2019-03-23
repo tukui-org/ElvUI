@@ -1213,6 +1213,7 @@ end
 function AB:Initialize()
 	self.db = E.db.actionbar
 	if E.private.actionbar.enable ~= true then return; end
+	self.Initialized = true
 
 	self.fadeParent = CreateFrame("Frame", "Elv_ABFade", _G.UIParent)
 	self.fadeParent:SetAlpha(1 - self.db.globalFadeAlpha)

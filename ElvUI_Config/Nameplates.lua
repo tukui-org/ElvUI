@@ -1816,7 +1816,7 @@ local function GetUnitSettings(unit, name)
 		childGroups = "tab",
 		get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
 		set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
-		disabled = function() return not E.NamePlates; end,
+		disabled = function() return not E.NamePlates.Initialized end,
 		args = {
 			enable = {
 				order = -10,
@@ -3768,7 +3768,7 @@ E.Options.args.nameplate = {
 			name = L["General"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general") end,
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 		},
 		cooldownShortcut = {
 			order = 6,
@@ -3776,7 +3776,7 @@ E.Options.args.nameplate = {
 			name = L["Cooldowns"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "cooldown", "nameplates") end,
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 		},
 		colorsShortcut = {
 			order = 7,
@@ -3784,7 +3784,7 @@ E.Options.args.nameplate = {
 			name = COLORS,
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "colorsGroup") end,
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 		},
 		spacer2 = {
 			order = 8,
@@ -3797,7 +3797,7 @@ E.Options.args.nameplate = {
 			name = L["Threat"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "threatGroup") end,
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 		},
 		cutawayHealthShortcut = {
 			order = 10,
@@ -3813,7 +3813,7 @@ E.Options.args.nameplate = {
 			name = L["Style Filter"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "filters") end,
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 		},
 		spacer3 = {
 			order = 12,
@@ -3826,7 +3826,7 @@ E.Options.args.nameplate = {
 			name = L["Player Frame"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 		},
 		friendlyPlayerShortcut = {
 			order = 14,
@@ -3834,7 +3834,7 @@ E.Options.args.nameplate = {
 			name = L["Friendly Player Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 		},
 		friendlyNPCShortcut = {
 			order = 15,
@@ -3842,7 +3842,7 @@ E.Options.args.nameplate = {
 			name = L["Friendly NPC Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 		},
 		spacer4 = {
 			order = 16,
@@ -3855,7 +3855,7 @@ E.Options.args.nameplate = {
 			name = L["Enemy Player Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyPlayerGroup") end,
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 		},
 		enemyNPCShortcut = {
 			order = 18,
@@ -3863,7 +3863,7 @@ E.Options.args.nameplate = {
 			name = L["Enemy NPC Frames"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 		},
 		targetShortcut = {
 			order = 19,
@@ -3871,14 +3871,14 @@ E.Options.args.nameplate = {
 			name = L["Targeted Nameplate"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "targetGroup") end,
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 		},
 		generalGroup = {
 			order = 25,
 			type = "group",
 			name = L["General Options"],
 			childGroups = "tab",
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 			args = {
 				resetcvars = {
 					order = 1,
@@ -4570,7 +4570,7 @@ E.Options.args.nameplate = {
 			order = 30,
 			name = L["Style Filter"],
 			childGroups = "tab",
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 			args = {
 				addFilter = {
 					order = 1,
@@ -4645,7 +4645,7 @@ E.Options.args.nameplate = {
 			name = L["Targeted Nameplate"],
 			get = function(info) return E.db.nameplates.units.TARGET[ info[#info] ] end,
 			set = function(info, value) E.db.nameplates.units.TARGET[ info[#info] ] = value; NP:ConfigureAll() end,
-			disabled = function() return not E.NamePlates; end,
+			disabled = function() return not E.NamePlates.Initialized end,
 			args = {
 				scale = {
 					order = 0,

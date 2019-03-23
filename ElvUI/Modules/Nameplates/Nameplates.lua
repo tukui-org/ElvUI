@@ -490,10 +490,9 @@ function NP:Initialize()
 	NP.db = E.db.nameplates
 
 	if E.private.nameplates.enable ~= true then return end
+	NP.Initialized = true
 
-	ElvUF:RegisterStyle('ElvNP', function(frame, unit)
-		NP:Style(frame, unit)
-	end)
+	ElvUF:RegisterStyle('ElvNP', function(frame, unit) NP:Style(frame, unit) end)
 	ElvUF:SetActiveStyle('ElvNP')
 
 	NP.Plates = {}

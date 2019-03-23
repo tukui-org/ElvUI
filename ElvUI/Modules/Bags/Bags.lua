@@ -2442,6 +2442,7 @@ function B:Initialize()
 		return
 	end
 
+	self.Initialized = true
 	self.db = E.db.bags
 	self.BagFrames = {}
 	self.REAGENTBANK_SIZE = 98 -- numRow (7) * numColumn (7) * numSubColumn (2) = size = 98
