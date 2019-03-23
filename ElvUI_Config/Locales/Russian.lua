@@ -556,6 +556,7 @@ L["Shows item level of each item, enchants, and gems when inspecting another pla
 L["Skin Backdrop (No Borders)"] = "Стилизовать фон (без границ)"
 L["Skin Backdrop"] = "Стилизовать фон"
 L["Skin the blizzard chat bubbles."] = "Стилизовать облачка сообщения Blizzard"
+L["Status Bar"] = true
 L["Talking Head Backdrop"] = "Фон говорящей головы"
 L["Talking Head Scale"] = 'Масштаб "говорящей головы"'
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Шрифт, которым будет написан текст над головами игроков. |cffFF0000ВНИМАНИЕ: Необходим перезапуск игры или релог для начала действия этой настройки.|r"
