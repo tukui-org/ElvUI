@@ -11,7 +11,6 @@ local function Update(self, event)
 	local power = UnitPower(unit)
 
 	if not self.Fader then
-		self:SetAlpha(1)
 		return
 	end
 

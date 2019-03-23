@@ -427,6 +427,7 @@ function NP:ConfigureAll()
 
 	for nameplate in pairs(NP.Plates) do
 		NP:UpdatePlate(nameplate)
+		nameplate:UpdateAllElements('OnShow')
 		if nameplate.frameType == 'PLAYER' then
 			NP.PlayerNamePlateAnchor:ClearAllPoints()
 			NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
