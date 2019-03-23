@@ -21,8 +21,6 @@ local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitPVPName = UnitPVPName
 local UnitReaction = UnitReaction
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local LEVEL = LEVEL
 
 --GLOBALS: Hex, CUSTOM_CLASS_COLORS

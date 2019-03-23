@@ -2,6 +2,14 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local NP = E:GetModule('NamePlates')
 
 local pairs = pairs
+local unpack = unpack
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitThreatSituation = UnitThreatSituation
+local UnitIsPlayer = UnitIsPlayer
+local UnitClass = UnitClass
+local UnitSelectionType = UnitSelectionType
+local UnitReaction = UnitReaction
 local CreateFrame = CreateFrame
 
 function NP:Health_UpdateColor(event, unit)

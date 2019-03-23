@@ -1,9 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
+local UnitName = UnitName
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
-local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 
 function NP:ThreatIndicator_PreUpdate(unit)
 	local ROLE = NP.IsInGroup and UnitExists(unit..'target') and not UnitIsUnit(unit..'target', 'player') and NP.GroupRoles[UnitName(unit..'target')] or 'NONE'
