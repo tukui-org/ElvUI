@@ -242,8 +242,6 @@ end
 
 function NP:Construct_FloatingCombatFeedback(nameplate)
 	local FloatingCombatFeedback = CreateFrame("Frame", nil, nameplate)
-	FloatingCombatFeedback:SetPoint('CENTER')
-	FloatingCombatFeedback:SetSize(16, 16)
 
 	for i = 1, 12 do
 		FloatingCombatFeedback[i] = FloatingCombatFeedback:CreateFontString(nil, "OVERLAY")
@@ -253,13 +251,29 @@ function NP:Construct_FloatingCombatFeedback(nameplate)
 end
 
 function NP:Update_FloatingCombatFeedback(nameplate)
-	nameplate.FloatingCombatFeedback.mode = "Fountain"
-	nameplate.FloatingCombatFeedback.xOffset = 60
-	nameplate.FloatingCombatFeedback.yOffset = 10
-	nameplate.FloatingCombatFeedback.yDirection = 1 -- 1 (Up) or -1 (Down)
-	nameplate.FloatingCombatFeedback.scrollTime = 1.5
+	local db = NP.db.units[nameplate.frameType]
 
-	for i = 1, 12 do
-		nameplate.FloatingCombatFeedback[i]:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	if not db.floatingCombatFeedback then return end
+
+	if db.floatingCombatFeedback.enable then
+		if not nameplate:IsElementEnabled('FloatingCombatFeedback') then
+			nameplate:EnableElement('FloatingCombatFeedback')
+		end
+
+		nameplate.FloatingCombatFeedback:SetPoint(db.floatingCombatFeedback.position)
+		nameplate.FloatingCombatFeedback.mode = db.floatingCombatFeedback.mode
+		nameplate.FloatingCombatFeedback.xOffset = db.floatingCombatFeedback.xOffset
+		nameplate.FloatingCombatFeedback.yOffset = db.floatingCombatFeedback.yOffset
+		nameplate.FloatingCombatFeedback.yDirection = db.floatingCombatFeedback.direction == "UP" and 1 or -1
+		nameplate.FloatingCombatFeedback.scrollTime = 1.5
+
+		for i = 1, 12 do
+			nameplate.FloatingCombatFeedback[i]:FontTemplate(E.LSM:Fetch('font', db.floatingCombatFeedback.font), db.floatingCombatFeedback.fontSize, db.floatingCombatFeedback.fontOutline)
+		end
+
+	else
+		if nameplate:IsElementEnabled('FloatingCombatFeedback') then
+			nameplate:DisableElement('FloatingCombatFeedback')
+		end
 	end
 end
