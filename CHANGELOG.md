@@ -5,7 +5,6 @@ Added `ElvUIPlayerNamePlateAnchor` for WeakAuras and other AddOns.
 Added an option to toggle the Nameplates from fading in when shown.  
 Added option to hide voice chat buttons on the chat tab panel.  
 Added NamePlate and UnitFrame `Color Selection` colors from oUF. (Thanks oUF/LS-)!  
-Added Floating Combat Feedback to Nameplates.  
 Added an option to ignore the UI Scale popup when resizing the game window (/ec -> General -> Ignore UI Scale Popup).  
 
 **Bug Fixes:**  
@@ -48,9 +47,10 @@ Skin the Communities Notification Buttons.
 Cleaned some of the Unitframe Castbar code, as we believe this is part of the reason for the Unitframes to cause additional lags.  
 Removed Nameplate Detection as this was used in Legion but is no longer used as much and this would increase Nameplate preformance further.  
 [WIP] Currently have disabled Unitframe PowerPredicition as this is the second area for Unitframe additional lags (@Azilroka)  
-[WIP] Adding Threat color to UnitFrames similar to Nameplate (@Simpy)  
 [WIP] Custom Text on Nameplates (@Azilroka)  
 [WIP] Cutaway Health on Nameplates (@Azilroka)  
+[WIP] Added Floating Combat Feedback to Nameplates (@Azilroka)  
+[WIP] Adding Threat color to UnitFrames similar to Nameplate (@Simpy)  
 
 ___
 ### Version 11.06 [ March 14th 2019 ]
