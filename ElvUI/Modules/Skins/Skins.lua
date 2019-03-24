@@ -469,12 +469,15 @@ function S:HandleDropDownBox(frame, width)
 	if text then
 		local justifyH = text:GetJustifyH()
 		local right = justifyH == 'RIGHT'
+		local left = justifyH == 'LEFT'
 
 		local a, _, c, d, e = text:GetPoint()
 		text:ClearAllPoints()
 
 		if right then
 			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (right and -3) or 0, 0)
+		elseif left then -- for now only on the Communities.StreamDropdown?
+			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and -15) or 0, 0)
 		else
 			text:Point(a, frame.backdrop, c, (justifyH == 'LEFT' and 10) or d, e-3)
 		end
