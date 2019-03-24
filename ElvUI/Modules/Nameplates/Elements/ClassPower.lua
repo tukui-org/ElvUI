@@ -138,7 +138,7 @@ end
 function NP:Update_ClassPower(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if nameplate.frameType == 'PLAYER' and db.classpower and db.classpower.enable then
+	if (nameplate.frameType == 'PLAYER' or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('ClassPower') then
 			nameplate:EnableElement('ClassPower')
 			nameplate.ClassPower:Show()
@@ -165,7 +165,7 @@ end
 function NP:Update_Runes(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if nameplate.frameType == 'PLAYER' and db.classpower and db.classpower.enable then
+	if (nameplate.frameType == 'PLAYER' or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('Runes') then
 			nameplate:EnableElement('Runes')
 			nameplate.Runes:Show()
