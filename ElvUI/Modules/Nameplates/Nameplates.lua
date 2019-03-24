@@ -230,7 +230,7 @@ function NP:StylePlate(nameplate)
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
 	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate.RaisedElement)
 	nameplate.DetectionIndicator = NP:Construct_DetectionIndicator(nameplate.RaisedElement)
-
+	--nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
 	NP:Construct_Auras(nameplate)
 
 	if E.myclass == 'DEATHKNIGHT' then

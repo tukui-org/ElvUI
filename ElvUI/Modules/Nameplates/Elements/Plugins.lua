@@ -317,3 +317,21 @@ function NP:Update_Fader(nameplate)
 		nameplate.Fader.MinAlpha = 0
 	end
 end
+
+function NP:Construct_Cutaway(nameplate)
+	local Cutaway = CreateFrame('Frame', nameplate:GetDebugName()..'Cutaway', nameplate)
+
+	Cutaway.Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'CutawayHealth', nameplate.Health)
+	Cutaway.Health:SetAllPoints()
+	Cutaway.Health:SetFrameLevel(4)
+	Cutaway.Health:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+	NP.StatusBars[Cutaway.Health] = true
+
+	Cutaway.Power = CreateFrame('StatusBar', nameplate:GetDebugName()..'CutawayPower', nameplate.Power)
+	Cutaway.Power:SetAllPoints()
+	Cutaway.Power:SetFrameLevel(4)
+	Cutaway.Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+	NP.StatusBars[Cutaway.Power] = true
+
+	return Cutaway
+end
