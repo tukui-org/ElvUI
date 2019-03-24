@@ -479,7 +479,7 @@ function S:HandleDropDownBox(frame, width)
 		elseif left then -- for now only on the Communities.StreamDropdown?
 			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and -15) or 0, 0)
 		else
-			text:Point(a, frame.backdrop, c, (justifyH == 'LEFT' and 10) or d, e-3)
+			text:Point(a, frame.backdrop, c, (left and 10) or d, e-3)
 		end
 
 		text:Width(frame:GetWidth() / 1.4)
