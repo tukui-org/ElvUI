@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 --Lua functions
-local sort, gsub, strfind, gmatch, format = sort, gsub, strfind, gmatch, format
+local gsub, strfind, gmatch, format = gsub, strfind, gmatch, format
 local ipairs, wipe, time, difftime = ipairs, wipe, time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
@@ -82,7 +82,6 @@ local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitName = UnitName
-local strcmputf8i = strcmputf8i
 local UnitRealmRelationship = UnitRealmRelationship
 
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
