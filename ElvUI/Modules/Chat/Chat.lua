@@ -2397,41 +2397,49 @@ local channelButtons = {
 	[3] = _G.ChatFrameToggleVoiceMuteButton
 }
 
-function CH:HandleChatVoiceIcons()
-	for index, button in pairs(channelButtons) do
-		button:ClearAllPoints()
-		button.Icon:SetDesaturated(true)
-
-		if index == 1 then
-			button:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -2)
-		else
-			button:SetPoint("RIGHT", channelButtons[index-1], "LEFT")
+function CH:HandleChatVoiceIcons(hideVoiceButtons)
+	if hideVoiceButtons then
+		-- only skin them
+		for _, button in pairs(channelButtons) do
+			Skins:HandleButton(button)
 		end
-	end
+	else
+		for index, button in pairs(channelButtons) do
+			button:ClearAllPoints()
+			button.Icon:SetDesaturated(true)
+			Skins:HandleButton(button, nil, nil, nil, true)
 
-	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-	_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[3], 'LEFT', 0, 2)
-	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
-
-	channelButtons[3]:HookScript("OnShow", RepositionChatIcons)
-	channelButtons[3]:HookScript("OnHide", RepositionChatIcons) -- dont think this is needed but meh
-
-	hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y)
-		if anchor == _G.GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
-			frame:Point(point, anchor, attachTo, -3, -6)
-		elseif point == "BOTTOMRIGHT" and anchor ~= channelButtons[3] and anchor ~= channelButtons[1] and not _G.GeneralDockManagerOverflowButton:IsShown() then
-			if channelButtons[3]:IsShown() then
-				frame:Point("BOTTOMRIGHT", channelButtons[3], "BOTTOMLEFT")
+			if index == 1 then
+				button:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -2)
 			else
-				frame:Point("BOTTOMRIGHT", channelButtons[1], "BOTTOMLEFT")
+				button:SetPoint("RIGHT", channelButtons[index-1], "LEFT")
 			end
 		end
-	end)
 
-	-- We skin it later in Style chat, to keep the backdrops on the button if the option are disabled
-	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
+		_G.GeneralDockManagerOverflowButton:ClearAllPoints()
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[3], 'LEFT', 0, 2)
+		_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
 
-	RepositionChatIcons()
+		channelButtons[3]:HookScript("OnShow", RepositionChatIcons)
+		channelButtons[3]:HookScript("OnHide", RepositionChatIcons) -- dont think this is needed but meh
+
+		hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y)
+			if anchor == _G.GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
+				frame:Point(point, anchor, attachTo, -3, -6)
+			elseif point == "BOTTOMRIGHT" and anchor ~= channelButtons[3] and anchor ~= channelButtons[1] and not _G.GeneralDockManagerOverflowButton:IsShown() then
+				if channelButtons[3]:IsShown() then
+					frame:Point("BOTTOMRIGHT", channelButtons[3], "BOTTOMLEFT")
+				else
+					frame:Point("BOTTOMRIGHT", channelButtons[1], "BOTTOMLEFT")
+				end
+			end
+		end)
+
+		-- We skin it later in Style chat, to keep the backdrops on the button if the option are disabled
+		Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
+
+		RepositionChatIcons()
+	end
 end
 
 function CH:BuildCopyChatFrame()
@@ -2530,17 +2538,7 @@ function CH:Initialize()
 	self:UpdateFading()
 	self:UpdateAnchors()
 	self:Panels_ColorUpdate()
-
-	if self.db.hideVoiceButtons then
-		Skins:HandleButton(_G.ChatFrameChannelButton)
-		Skins:HandleButton(_G.ChatFrameToggleVoiceDeafenButton)
-		Skins:HandleButton(_G.ChatFrameToggleVoiceMuteButton)
-	else
-		self:HandleChatVoiceIcons()
-		Skins:HandleButton(_G.ChatFrameChannelButton, nil, nil, nil, true)
-		Skins:HandleButton(_G.ChatFrameToggleVoiceDeafenButton, nil, nil, nil, true)
-		Skins:HandleButton(_G.ChatFrameToggleVoiceMuteButton, nil, nil, nil, true)
-	end
+	self:HandleChatVoiceIcons(self.db.hideVoiceButtons)
 
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	self:SecureHook('FCF_SetWindowAlpha')
