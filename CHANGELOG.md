@@ -19,7 +19,7 @@ Fixed a gap at the end of Classbar on Nameplates.
 Fixed an issue whiched caused incompatiblity with our config and ColorPickerPlus.  
 Made sure the LDB Datatext value color updates along with the General Media Value color correctly.  
 Fixed an error in `init.lua`: attempt to index local 'ACD'.  
-Fixed `Hide when Empty` on Nameplates.  
+Fixed Power `Hide when Empty` on Nameplates.  
 Hopefully, fixed the `lhs` error with Quick Join in Chat and DataText.  
 Fixed a Nameplate bug where the Highlight was under the health.  
 Fixed the skin not applying to Voice Chat Icons when the option was disabled to have them shown on the Chat Tab Panel.  
