@@ -2397,8 +2397,8 @@ local channelButtons = {
 	[3] = _G.ChatFrameToggleVoiceMuteButton
 }
 
-function CH:HandleChatVoiceIcons(hideVoiceButtons)
-	if hideVoiceButtons then
+function CH:HandleChatVoiceIcons()
+	if self.db.hideVoiceButtons then
 		-- only skin them
 		for _, button in pairs(channelButtons) do
 			Skins:HandleButton(button)
@@ -2538,7 +2538,7 @@ function CH:Initialize()
 	self:UpdateFading()
 	self:UpdateAnchors()
 	self:Panels_ColorUpdate()
-	self:HandleChatVoiceIcons(self.db.hideVoiceButtons)
+	self:HandleChatVoiceIcons()
 
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	self:SecureHook('FCF_SetWindowAlpha')
