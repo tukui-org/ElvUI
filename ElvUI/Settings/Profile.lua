@@ -1858,11 +1858,11 @@ P.unitframe = {
 	colors = {
 		borderColor = {r = 0, g = 0, b = 0},
 		healthclass = false,
-		healththreat = false,
+		--healththreat = false,
 		healthselection = false,
 		forcehealthreaction = false,
 		powerclass = false,
-		powerthreat = false,
+		--powerthreat = false,
 		powerselection = false,
 		colorhealthbyvalue = true,
 		customhealthbackdrop = false,

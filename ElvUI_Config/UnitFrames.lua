@@ -2675,14 +2675,14 @@ E.Options.args.unitframe = {
 									get = function(info) return E.db.unitframe.colors[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 								},
-								healththreat = {
+								--[=[healththreat = {
 									order = 2,
 									type = 'toggle',
 									name = L["Threat Health"],
 									desc = L["Color health by threat status."],
 									get = function(info) return E.db.unitframe.colors[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
-								},
+								},]=]
 								forcehealthreaction = {
 									order = 3,
 									type = 'toggle',
@@ -2799,14 +2799,14 @@ E.Options.args.unitframe = {
 									get = function(info) return E.db.unitframe.colors[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 								},
-								powerthreat = {
+								--[=[powerthreat = {
 									order = 2,
 									type = 'toggle',
 									name = L["Threat Power"],
 									desc = L["Color power by threat status."],
 									get = function(info) return E.db.unitframe.colors[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
-								},
+								},]=]
 								transparentPower = {
 									order = 3,
 									type = 'toggle',
