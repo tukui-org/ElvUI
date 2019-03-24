@@ -86,8 +86,8 @@ function E:PixelScaleChanged(event, skip)
 	if skip or E.global.general.ignoreScalePopup then return end
 
 	if event == 'UISCALE_CHANGE' then
-		E:Delay(0.5, function() E:StaticPopup_Show(event) end)
-	elseif E.StaticPopupFrames then
+		E:Delay(0.5, E.StaticPopup_Show, E, event)
+	else
 		E:StaticPopup_Show('UISCALE_CHANGE')
 	end
 end
