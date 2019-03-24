@@ -2177,7 +2177,8 @@ function CH:SocialQueueUtil_SortGroupMembers(members)
 			end
 
 			return strcmputf8i(lhsName, rhsName) <= 0;
-		else return false -- going to see if this fixes `invalid order function for sorting`
+		else
+			return true -- going to see if this fixes `invalid order function for sorting`
 		end
 	end);
 
