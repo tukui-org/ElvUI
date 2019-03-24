@@ -781,7 +781,6 @@ L["Copy Settings From"] = "설정 복사해서 가져오기"
 L["Current Level"] = true
 L["Cutaway Health"] = true
 L["Default Settings"] = "기본 설정"
-L["Detection"] = "감지"
 L["Desaturated Icon"] = true
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "전장이나 투기장에서 유닛이 힐러인 경우 이름표에 힐러 아이콘을 표시합니다."
 L["Display Interrupt Source"] = true

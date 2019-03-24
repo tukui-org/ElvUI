@@ -724,7 +724,6 @@ L["Copy Settings From"] = true
 L["Current Level"] = true
 L["Cutaway Health"] = true
 L["Default Settings"] = true
-L["Detection"] = true
 L["Desaturated Icon"] = true
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = true
 L["Display Interrupt Source"] = true

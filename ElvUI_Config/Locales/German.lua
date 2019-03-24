@@ -731,7 +731,6 @@ L["Copy Settings From"] = "Kopiere Einstellungen von"
 L["Current Level"] = "Aktuelles Level"
 L["Cutaway Health"] = "Animiertes Leben" -- Makes more sense in german
 L["Default Settings"] = "Standard Einstellungen"
-L["Detection"] = "Aufspüren"
 L["Desaturated Icon"] = "Entsättigtes Symbol"
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "Zeige auf Schlachtfeldern oder in Arenen ein Heilersymbol über Heilern an."
 L["Display Interrupt Source"] = "Zeige Unterbrechungsquelle"

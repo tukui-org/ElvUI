@@ -729,7 +729,6 @@ L["Copy Settings From"] = "Copier les options de"
 L["Current Level"] = "Niveau actuel"
 L["Cutaway Health"] = true
 L["Default Settings"] = "Options par défaut"
-L["Detection"] = true
 L["Desaturated Icon"] = true
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "Affiche un icône soigneur sur le ou les soigneur(s) connu(s) à l'intérieur d'un champ de bataille ou arène"
 L["Display Interrupt Source"] = true

@@ -3563,11 +3563,6 @@ local function GetUnitSettings(unit, name)
 				order = 103,
 				name = UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
 			}
-			group.args.general.args.detection = {
-				order = 104,
-				name = L["Detection"],
-				type = "toggle",
-			}
 		end
 	end
 
