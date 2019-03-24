@@ -96,7 +96,13 @@ end
 
 function NP:Power_PostUpdate(unit, cur, min, max)
 	local db = NP.db.units[self.__owner.frameType]
+
 	if not db then return end
+
+	if self.__owner.frameType == 'ENEMY_NPC' and not self.displayType then
+		self:Hide()
+		return
+	end
 
 	if (db.power and db.power.enable and db.power.hideWhenEmpty) and ((cur == 0 and min == 0) or (min == 0 and max == 0)) then
 		self:Hide()
@@ -154,6 +160,7 @@ function NP:Update_Power(nameplate)
 
 	nameplate:Tag(nameplate.Power.Text, db.power.text.format)
 
+	nameplate.Power.displayAltPower = nameplate.frameType == 'ENEMY_NPC'
 	nameplate.Power.useAtlas = db.power.useAtlas
 	nameplate.Power.colorClass = db.power.useClassColor
 	nameplate.Power.colorPower = not db.power.useClassColor
