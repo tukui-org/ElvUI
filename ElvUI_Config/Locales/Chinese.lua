@@ -877,7 +877,6 @@ L["Show the castbar icon desaturated if a spell is not interruptible."] = "在�
 L["Show With Target"] = "有目标时显示"
 L["Side Arrows"] = "侧面箭头"
 L["Style Filter"] = "样式过滤器"
-L["Suramar Detection"] = "苏拉玛卫兵探测"
 L["Swap to Alt Power"] = "切换到副能量"
 L["Tagged NPC"] = "标记的NPC"
 L["Talent to match"] = "匹配的天赋"

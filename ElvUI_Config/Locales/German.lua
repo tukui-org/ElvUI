@@ -879,7 +879,6 @@ L["Show the castbar icon desaturated if a spell is not interruptible."] = "Zeigt
 L["Show With Target"] = "Zeige mit Ziel"
 L["Side Arrows"] = "Seitliche Pfeile"
 L["Style Filter"] = "Stil Filter"
-L["Suramar Detection"] = "Surumar Aufspürung"
 L["Swap to Alt Power"] = "Wechsle auf Alternative Energie"
 L["Tagged NPC"] = "Ausgewählter NPC"
 L["Talent to match"] = "Talent entsprechend"

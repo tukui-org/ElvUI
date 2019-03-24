@@ -930,7 +930,6 @@ L["Show the castbar icon desaturated if a spell is not interruptible."] = true
 L["Show With Target"] = "대상이 있을때 표시"
 L["Side Arrows"] = "양옆 화살표"
 L["Style Filter"] = "스타일 필터"
-L["Suramar Detection"] = "수라마르 감지"
 L["Swap to Alt Power"] = true
 L["Tagged NPC"] = "선점된 유닛"
 L["Talent to match"] = "일치하는 특성"

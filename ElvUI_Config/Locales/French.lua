@@ -877,7 +877,6 @@ L["Show the castbar icon desaturated if a spell is not interruptible."] = true
 L["Show With Target"] = true
 L["Side Arrows"] = true
 L["Style Filter"] = true
-L["Suramar Detection"] = true
 L["Swap to Alt Power"] = true
 L["Tagged NPC"] = "PNJ marqué"
 L["Talent to match"] = true
