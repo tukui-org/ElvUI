@@ -33,7 +33,6 @@ Nameplate CVars and other CVars should be working correctly again.
 Updated Module Copy to handle some new cases.  
 Keep `Player` nameplate from fading out.  
 Stopped allowing Keybinder in combat.  
-Made the UI Scale popup `Suppress` checkbox actually disable `Accept` button, as this only works correctly when you use `Cancel` to end the popup.  
 Recoded the animation for the Bag New Item Glow so they all glow together instead of seperately, also gave it a fancy new glow texture.  
 Updated oUF to increase preformance of the new Nameplates further.  
 Updated Quest Greeting Frame skin.  
