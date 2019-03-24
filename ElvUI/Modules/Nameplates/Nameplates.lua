@@ -57,6 +57,99 @@ function NP:CopySettings(from, to)
 	CopySettings(self.db.units[from], self.db.units[to])
 end
 
+function NP:CVarReset()
+	SetCVar("nameplateOccludedAlphaMult", .5)
+	SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
+	SetCVar('nameplateGlobalScale', 1)
+	SetCVar('NamePlateHorizontalScale', 1)
+	SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'))
+	SetCVar('nameplateLargerScale', 1)
+	SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'))
+	SetCVar('nameplateMaxAlphaDistance', GetCVarDefault('nameplateMaxAlphaDistance'))
+	SetCVar('nameplateMaxScale', 1)
+	SetCVar('nameplateMaxScaleDistance', 40)
+	SetCVar('nameplateMinAlpha', 1)
+	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
+	SetCVar('nameplateMinScale', 1)
+	SetCVar('nameplateMinScaleDistance', 0)
+	SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
+	SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'))
+	SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
+	SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
+	SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
+	SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
+	SetCVar('nameplateShowAll', 1)
+	SetCVar('nameplateSelectedAlpha', 1)
+	SetCVar('nameplateSelectedScale', 1)
+	SetCVar('nameplateSelfAlpha', 1)
+	SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'))
+	SetCVar('nameplateSelfScale', 1)
+	SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'))
+	SetCVar('nameplateTargetBehindMaxDistance', 40)
+end
+
+function NP:SetCVars()
+	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
+	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
+
+	if NP.db.units.PLAYER.visibility.showAlways then
+		SetCVar('NameplatePersonalShowAlways', 1)
+	else
+		SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
+		SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
+		SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
+	end
+
+	SetCVar('nameplateShowFriendlyMinions', NP.db.units.FRIENDLY_PLAYER.minions and 1 or 0)
+	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions or NP.db.units.ENEMY_NPC.minions) and 1 or 0)
+	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors and 1 or 0)
+	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
+	SetCVar('nameplateSelectedScale', NP.db.units.TARGET.scale)
+
+	if NP.db.questIcon then
+		SetCVar('showQuestTrackingTooltips', 1)
+	end
+
+	if NP.db.clampToScreen then
+		SetCVar('nameplateOtherTopInset', 0.08)
+		SetCVar('nameplateOtherBottomInset', 0.1)
+	end
+end
+
+function NP:PLAYER_REGEN_DISABLED()
+	SetCVar("nameplateMaxAlpha", NP.db.units.TARGET.nonTargetTransparency)
+	SetCVar("nameplateMinAlpha", NP.db.units.TARGET.nonTargetTransparency)
+
+	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
+		SetCVar('nameplateShowFriends', 1);
+	elseif (NP.db.showFriendlyCombat == 'TOGGLE_OFF') then
+		SetCVar('nameplateShowFriends', 0);
+	end
+
+	if (NP.db.showEnemyCombat == 'TOGGLE_ON') then
+		SetCVar('nameplateShowEnemies', 1);
+	elseif (NP.db.showEnemyCombat == 'TOGGLE_OFF') then
+		SetCVar('nameplateShowEnemies', 0);
+	end
+end
+
+function NP:PLAYER_REGEN_ENABLED()
+	SetCVar("nameplateMaxAlpha", 1)
+	SetCVar("nameplateMinAlpha", 1)
+
+	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
+		SetCVar('nameplateShowFriends', 0);
+	elseif (NP.db.showFriendlyCombat == 'TOGGLE_OFF') then
+		SetCVar('nameplateShowFriends', 1);
+	end
+
+	if (NP.db.showEnemyCombat == 'TOGGLE_ON') then
+		SetCVar('nameplateShowEnemies', 0);
+	elseif (NP.db.showEnemyCombat == 'TOGGLE_OFF') then
+		SetCVar('nameplateShowEnemies', 1);
+	end
+end
+
 function NP:Style(frame, unit)
 	if (not unit) then
 		return
@@ -246,99 +339,6 @@ function NP:SetupTarget(nameplate)
 		targetPlate.Runes:SetParent(realPlate)
 		targetPlate.Runes:ClearAllPoints()
 		targetPlate.Runes:SetPoint('CENTER', realPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
-	end
-end
-
-function NP:CVarReset()
-	SetCVar("nameplateOccludedAlphaMult", .5)
-	SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
-	SetCVar('nameplateGlobalScale', 1)
-	SetCVar('NamePlateHorizontalScale', 1)
-	SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'))
-	SetCVar('nameplateLargerScale', 1)
-	SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'))
-	SetCVar('nameplateMaxAlphaDistance', GetCVarDefault('nameplateMaxAlphaDistance'))
-	SetCVar('nameplateMaxScale', 1)
-	SetCVar('nameplateMaxScaleDistance', 40)
-	SetCVar('nameplateMinAlpha', 1)
-	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
-	SetCVar('nameplateMinScale', 1)
-	SetCVar('nameplateMinScaleDistance', 0)
-	SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
-	SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'))
-	SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
-	SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
-	SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
-	SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
-	SetCVar('nameplateShowAll', 1)
-	SetCVar('nameplateSelectedAlpha', 1)
-	SetCVar('nameplateSelectedScale', 1)
-	SetCVar('nameplateSelfAlpha', 1)
-	SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'))
-	SetCVar('nameplateSelfScale', 1)
-	SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'))
-	SetCVar('nameplateTargetBehindMaxDistance', 40)
-end
-
-function NP:SetCVars()
-	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
-	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
-
-	if NP.db.units.PLAYER.visibility.showAlways then
-		SetCVar('NameplatePersonalShowAlways', 1)
-	else
-		SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
-		SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
-		SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
-	end
-
-	SetCVar('nameplateShowFriendlyMinions', NP.db.units.FRIENDLY_PLAYER.minions and 1 or 0)
-	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions or NP.db.units.ENEMY_NPC.minions) and 1 or 0)
-	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors and 1 or 0)
-	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
-	SetCVar('nameplateSelectedScale', NP.db.units.TARGET.scale)
-
-	if NP.db.questIcon then
-		SetCVar('showQuestTrackingTooltips', 1)
-	end
-
-	if NP.db.clampToScreen then
-		SetCVar('nameplateOtherTopInset', 0.08)
-		SetCVar('nameplateOtherBottomInset', 0.1)
-	end
-end
-
-function NP:PLAYER_REGEN_DISABLED()
-	SetCVar("nameplateMaxAlpha", NP.db.units.TARGET.nonTargetTransparency)
-	SetCVar("nameplateMinAlpha", NP.db.units.TARGET.nonTargetTransparency)
-
-	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
-		SetCVar('nameplateShowFriends', 1);
-	elseif (NP.db.showFriendlyCombat == 'TOGGLE_OFF') then
-		SetCVar('nameplateShowFriends', 0);
-	end
-
-	if (NP.db.showEnemyCombat == 'TOGGLE_ON') then
-		SetCVar('nameplateShowEnemies', 1);
-	elseif (NP.db.showEnemyCombat == 'TOGGLE_OFF') then
-		SetCVar('nameplateShowEnemies', 0);
-	end
-end
-
-function NP:PLAYER_REGEN_ENABLED()
-	SetCVar("nameplateMaxAlpha", 1)
-	SetCVar("nameplateMinAlpha", 1)
-
-	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
-		SetCVar('nameplateShowFriends', 0);
-	elseif (NP.db.showFriendlyCombat == 'TOGGLE_OFF') then
-		SetCVar('nameplateShowFriends', 1);
-	end
-
-	if (NP.db.showEnemyCombat == 'TOGGLE_ON') then
-		SetCVar('nameplateShowEnemies', 0);
-	elseif (NP.db.showEnemyCombat == 'TOGGLE_OFF') then
-		SetCVar('nameplateShowEnemies', 1);
 	end
 end
 
