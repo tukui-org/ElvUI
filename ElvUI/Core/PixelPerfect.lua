@@ -83,7 +83,7 @@ function E:PixelScaleChanged(event, skip)
 		E:RefreshGUI()
 	end
 
-	if skip or E.suppressScalePopup then return end
+	if skip or E.global.general.ignoreScalePopup then return end
 
 	if event == 'UISCALE_CHANGE' then
 		E:Delay(0.5, function() E:StaticPopup_Show(event) end)

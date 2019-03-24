@@ -265,6 +265,7 @@ local blacklistedKeys = {
 			["UIScale"] = true,
 			["version"] = true,
 			["eyefinity"] = true,
+			["ignoreScalePopup"] = true,
 			["disableTutorialButtons"] = true,
 			["showMissingTalentAlert"] = true,
 		},

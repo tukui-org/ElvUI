@@ -5,6 +5,7 @@ G.general = {
 	UIScale = 0.64,
 	version = 11.06,
 	eyefinity = false,
+	ignoreScalePopup = false,
 	smallerWorldMap = true,
 	smallerWorldMapScale = 0.9,
 	fadeMapWhenMoving = true,

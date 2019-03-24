@@ -207,22 +207,10 @@ E.PopupDialogs.UISCALE_CHANGE = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	button3 = L["Preview Changes"],
-	OnAlt = function () E:PixelScaleChanged('UISCALE_CHANGE') end,
+	OnAlt = function() E:PixelScaleChanged('UISCALE_CHANGE') end,
 	timeout = 0,
 	whileDead = 1,
-	hideOnEscape = false,
-	hasCheckButton = true,
-	checkButtonText = L["Suppress In This Session"],
-	checkButtonOnClick = function(self)
-		local checked = self:GetChecked()
-		local frame = self:GetParent()
-		E.suppressScalePopup = checked
-		if checked then
-			frame.button1:Disable()
-		else
-			frame.button1:Enable()
-		end
-	end,
+	hideOnEscape = false
 }
 
 E.PopupDialogs.PIXELPERFECT_CHANGED = {

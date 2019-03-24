@@ -65,12 +65,20 @@ E.Options.args.general = {
 					softMin = 0.40, softMax = 1.15, bigStep = 0.01,
 					get = function(info) return E.global.general.UIScale end,
 					set = function(info, value)
-						E.global.general.UIScale = value;
+						E.global.general.UIScale = value
 						E:StaticPopup_Show("UISCALE_CHANGE")
 					end
 				},
-				pixelPerfect = {
+				ignoreScalePopup = {
 					order = 4,
+					type = 'toggle',
+					name = L["Ignore UI Scale Popup"],
+					desc = L["This will prevent the UI Scale Popup from being shown when changing the game window size."],
+					get = function(info) return E.global.general.ignoreScalePopup end,
+					set = function(info, value) E.global.general.ignoreScalePopup = value end
+				},
+				pixelPerfect = {
+					order = 5,
 					name = L["Thin Border Theme"],
 					desc = L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."],
 					type = 'toggle',
@@ -78,7 +86,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				eyefinity = {
-					order = 11,
+					order = 6,
 					name = L["Multi-Monitor Support"],
 					desc = L["Attempt to support eyefinity/nvidia surround."],
 					type = "toggle",
@@ -86,34 +94,34 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				taintLog = {
-					order = 13,
+					order = 7,
 					type = "toggle",
 					name = L["Log Taints"],
 					desc = L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."],
 				},
 				bottomPanel = {
-					order = 14,
+					order = 8,
 					type = 'toggle',
 					name = L["Bottom Panel"],
 					desc = L["Display a panel across the bottom of the screen. This is for cosmetic only."],
 					set = function(info, value) E.db.general.bottomPanel = value; Layout:BottomPanelVisibility() end
 				},
 				topPanel = {
-					order = 15,
+					order = 9,
 					type = 'toggle',
 					name = L["Top Panel"],
 					desc = L["Display a panel across the top of the screen. This is for cosmetic only."],
 					set = function(info, value) E.db.general.topPanel = value; Layout:TopPanelVisibility() end
 				},
 				afk = {
-					order = 16,
+					order = 10,
 					type = 'toggle',
 					name = L["AFK Mode"],
 					desc = L["When you go AFK display the AFK screen."],
 					set = function(info, value) E.db.general.afk = value; AFK:Toggle() end
 				},
 				decimalLength = {
-					order = 24,
+					order = 11,
 					type = "range",
 					name = L["Decimal Length"],
 					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
@@ -121,7 +129,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
 				numberPrefixStyle = {
-					order = 26,
+					order = 12,
 					type = "select",
 					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
