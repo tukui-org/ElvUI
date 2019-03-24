@@ -405,9 +405,7 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
 			inspectGUIDCache[unitGUID].time = nil
 			inspectGUIDCache[unitGUID].specName = nil
 			inspectGUIDCache[unitGUID].itemLevel = nil
-			return E:Delay(0.33, function()
-				self:AddInspectInfo(tooltip, unit, numTries + 1, r, g, b)
-			end)
+			return E:Delay(0.33, TT.AddInspectInfo, TT, tooltip, unit, numTries + 1, r, g, b)
 		end
 
 		tooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, r, g, b)

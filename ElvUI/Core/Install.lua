@@ -727,7 +727,7 @@ function E:Install()
 				PlaySoundFile([[Sound\Interface\LevelUp.wav]])
 				f.text:SetText(f.message)
 				UIFrameFadeOut(f, 3.5, 1, 0)
-				E:Delay(4, function() f:Hide() end)
+				E:Delay(4, f.Hide, f)
 				f.message = nil
 			else
 				f:Hide()
