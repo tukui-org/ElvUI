@@ -1915,6 +1915,11 @@ local function GetUnitSettings(unit, name)
 						max = function() return (E.db.nameplates.clickableHeight or 75) end,
 						step = 1,
 					},
+					healPrediction = {
+						order = 5,
+						name = L["Heal Prediction"],
+						type = "toggle",
+					},
 					textGroup = {
 						order = 200,
 						type = "group",
