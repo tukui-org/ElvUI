@@ -4,7 +4,9 @@
 Added `ElvUIPlayerNamePlateAnchor` for WeakAuras and other AddOns.  
 Added an option to toggle the Nameplates from fading in when shown.  
 Added option to hide voice chat buttons on the chat tab panel.  
-[Testing] Added UnitFrame `Color Selection` colors from oUF. (Thanks oUF/LS-)!  
+Added NamePlate and UnitFrame `Color Selection` colors from oUF. (Thanks oUF/LS-)!  
+Added Floating Combat Feedback to Nameplates.  
+Added an option to ignore the UI Scale popup when resizing the game window (/ec -> General -> Ignore UI Scale Popup).  
 
 **Bug Fixes:**  
 Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
@@ -16,6 +18,14 @@ Fixed spam errors when trying to change Talents when you have non selected yet.
 Fixed a gap at the end of Classbar on Nameplates.  
 Fixed an issue whiched caused incompatiblity with our config and ColorPickerPlus.  
 Made sure the LDB Datatext value color updates along with the General Media Value color correctly.  
+Fixed an error in `init.lua`: attempt to index local 'ACD'.  
+Fixed `Hide when Empty` on Nameplates.  
+Hopefully, fixed the `lhs` error with Quick Join in Chat and DataText.  
+Fixed a Nameplate bug where the Highlight was under the health.  
+Fixed the skin not applying to Voice Chat Icons when the option was disabled to have them shown on the Chat Tab Panel.  
+Fixed an issue with the Quest Skin which caused the Quest Icon beside the text to sometimes not be shown.  
+Fixing Off Tank Color on Nameplates and added transitioning colors.  
+Fixed the DropDown Box text on the Communities Stream Dropdown.  
 
 **Misc. Changes:**  
 Enabled Style Filter Hide Frame action.  
@@ -28,11 +38,19 @@ Made the UI Scale popup `Suppress` checkbox actually disable `Accept` button, as
 Recoded the animation for the Bag New Item Glow so they all glow together instead of seperately, also gave it a fancy new glow texture.  
 Updated oUF to increase preformance of the new Nameplates further.  
 Updated Quest Greeting Frame skin.  
-Optimized the Color Picker code for better preformance.  
+Optimized the Color Picker code for better preformance, also it will accept three digit hex values in the hex box (but you must you press enter).  
 Made the `Enable` Checkboxes in the config colorful, so that they're easier to spot, plus it looks really cool.  
-[WIP] Adding Threat color to UnitFrames similar to Nameplate @Simpy  
-[WIP] Fixing Off Tank Color on Nameplates. @Azilroka  
-[WIP] Adding Name Only on Nameplates. @Azilroka  
+Adding Name Only (with Show Title) on Nameplates and back in Style Filters.  
+Oganized some of the Config with help from (@wing5wong).  
+Reworked the Nameplate Target Alpha so that it shows only while in combat.  
+Added and skinned the New Toy Alert.  
+Skin the Communities Notification Buttons.  
+Cleaned some of the Unitframe Castbar code, as we believe this is part of the reason for the Unitframes to cause additional lags.  
+Removed Nameplate Detection as this was used in Legion but is no longer used as much and this would increase Nameplate preformance further.  
+[WIP] Currently have disabled Unitframe PowerPredicition as this is the second area for Unitframe additional lags (@Azilroka)  
+[WIP] Adding Threat color to UnitFrames similar to Nameplate (@Simpy)  
+[WIP] Custom Text on Nameplates (@Azilroka)  
+[WIP] Cutaway Health on Nameplates (@Azilroka)  
 
 ___
 ### Version 11.06 [ March 14th 2019 ]
