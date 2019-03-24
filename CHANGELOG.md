@@ -37,7 +37,7 @@ Made the UI Scale popup `Suppress` checkbox actually disable `Accept` button, as
 Recoded the animation for the Bag New Item Glow so they all glow together instead of seperately, also gave it a fancy new glow texture.  
 Updated oUF to increase preformance of the new Nameplates further.  
 Updated Quest Greeting Frame skin.  
-Optimized the Color Picker code for better preformance, also it will accept three digit hex values in the hex box (but you must you press enter).  
+Optimized the Color Picker code for better preformance, also it will accept three digit hex values in the hex box but you must you press enter.  
 Made the `Enable` Checkboxes in the config colorful, so that they're easier to spot, plus it looks really cool.  
 Adding Name Only (with Show Title) on Nameplates and back in Style Filters.  
 Oganized some of the Config with help from (@wing5wong).  
