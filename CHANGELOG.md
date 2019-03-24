@@ -47,7 +47,7 @@ Cleaned some of the Unitframe Castbar code, as we believe this is part of the re
 Removed Nameplate Detection as this was used in Legion but is no longer used as much and this would increase Nameplate preformance further.  
 Readded the `Visbility` settings to Static Player Nameplate.  
 
-**Work in Progress:**
+**Work in Progress:**  
 Currently have disabled Unitframe PowerPredicition as this is the second area for Unitframe additional lags.  
 Custom Text on Nameplates.  
 Cutaway Health on Nameplates.  
