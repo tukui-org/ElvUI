@@ -36,12 +36,11 @@ local function OnEvent(self)
 	wipe(quickJoin)
 	quickJoinGroups = C_SocialQueue_GetAllGroups()
 
-	local coloredName, players, members, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityName, leaderName, isLeader, activity, output, queueCount, queueName, searchResultInfo
+	local coloredName, players, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityName, leaderName, isLeader, activity, output, queueCount, queueName, searchResultInfo
 	for _, guid in pairs(quickJoinGroups) do
-		players, members = (C_SocialQueue_GetGroupMembers(guid)), nil -- clear members
-		if players and #players>1 then members = CH:SocialQueueUtil_SortGroupMembers(players) end
-		if members then
-			firstMember, numMembers, extraCount = members[1], #members, ''
+		players = C_SocialQueue_GetGroupMembers(guid)
+		if players then
+			firstMember, numMembers, extraCount = players[1], #players, ''
 			playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
 			if numMembers > 1 then
 				extraCount = format(' +%s', numMembers - 1)

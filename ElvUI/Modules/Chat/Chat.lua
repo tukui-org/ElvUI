@@ -2162,36 +2162,12 @@ function CH:SocialQueueMessage(guid, message)
 	E:Print(format('|Hsqu:%s|h%s|h', guid, strtrim(message)))
 end
 
-local relationshipPriorityOrdering = {bnfriend=1,wowfriend=2,guild=3,club=4};
-function CH:SocialQueueUtil_SortGroupMembers(members)
-	sort(members, function(lhs, rhs)
-		if lhs and rhs then -- cause this errors in blizzards.. rest of the function is copy/paste from `SocialQueue.lua#217`
-			local lhsName, _, lhsRelationship = SocialQueueUtil_GetRelationshipInfo(lhs.guid, nil, lhs.clubId);
-			local rhsName, _, rhsRelationship = SocialQueueUtil_GetRelationshipInfo(rhs.guid, nil, lhs.clubId);
-
-			-- Sort order bnFriend
-			if lhsRelationship ~= rhsRelationship then
-			  local lhsPriority = lhsRelationship and relationshipPriorityOrdering[lhsRelationship] or 10;
-			  local rhsPriority = rhsRelationship and relationshipPriorityOrdering[rhsRelationship] or 10;
-			  return lhsPriority < rhsPriority;
-			end
-
-			return strcmputf8i(lhsName, rhsName) <= 0;
-		end
-	end);
-
-	return members;
-end
-
 function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedItems
 	if not self.db.socialQueueMessages then return end
 	if numAddedItems == 0 or not guid then return end
 
-	local players, members = (C_SocialQueue_GetGroupMembers(guid))
-	if players and #players>1 then members = CH:SocialQueueUtil_SortGroupMembers(players) end
-	if not members then return end -- just bail because huh? no members in a group?
-
-	local firstMember, numMembers, extraCount, coloredName = members[1], #members, ''
+	local players = C_SocialQueue_GetGroupMembers(guid)
+	local firstMember, numMembers, extraCount, coloredName = players[1], #players, ''
 	local playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
 	if numMembers > 1 then
 		extraCount = format(' +%s', numMembers - 1)
