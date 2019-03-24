@@ -367,58 +367,6 @@ function UF:PostCastStart(unit)
 
 	self.unit = unit
 
-	if db.castbar.ticks and unit == "player" then
-		local unitframe = E.global.unitframe
-		local baseTicks = unitframe.ChannelTicks[self.spellID]
-
-		-- Detect channeling spell and if it's the same as the previously channeled one
-		if baseTicks and self.spellID == self.prevSpellCast then
-			self.chainChannel = true
-		elseif baseTicks then
-			self.chainChannel = nil
-			self.prevSpellCast = self.spellID
-		end
-
-		if baseTicks and unitframe.ChannelTicksSize[self.spellID] and unitframe.HastedChannelTicks[self.spellID] then
-			local tickIncRate = 1 / baseTicks
-			local curHaste = UnitSpellHaste("player") * 0.01
-			local firstTickInc = tickIncRate / 2
-			local bonusTicks = 0
-			if curHaste >= firstTickInc then
-				bonusTicks = bonusTicks + 1
-			end
-
-			local x = tonumber(E:Round(firstTickInc + tickIncRate, 2))
-			while curHaste >= x do
-				x = tonumber(E:Round(firstTickInc + (tickIncRate * bonusTicks), 2))
-				if curHaste >= x then
-					bonusTicks = bonusTicks + 1
-				end
-			end
-
-			local baseTickSize = unitframe.ChannelTicksSize[self.spellID]
-			local hastedTickSize = baseTickSize / (1 + curHaste)
-			local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
-			local extraTickRatio = extraTick / hastedTickSize
-
-			UF:SetCastTicks(self, baseTicks + bonusTicks, extraTickRatio)
-		elseif baseTicks and unitframe.ChannelTicksSize[self.spellID] then
-			local curHaste = UnitSpellHaste("player") * 0.01
-			local baseTickSize = unitframe.ChannelTicksSize[self.spellID]
-			local hastedTickSize = baseTickSize / (1 +  curHaste)
-			local extraTick = self.max - hastedTickSize * (baseTicks)
-			local extraTickRatio = extraTick / hastedTickSize
-
-			UF:SetCastTicks(self, baseTicks, extraTickRatio)
-		elseif baseTicks then
-			UF:SetCastTicks(self, baseTicks)
-		else
-			UF:HideTicks()
-		end
-	elseif unit == 'player' then
-		UF:HideTicks()
-	end
-
 	local colors = ElvUF.colors
 	local r, g, b = colors.castColor[1], colors.castColor[2], colors.castColor[3]
 
