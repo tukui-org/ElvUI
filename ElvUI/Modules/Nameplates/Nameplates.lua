@@ -213,7 +213,6 @@ function NP:StylePlate(nameplate)
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
 	nameplate.Power = NP:Construct_Power(nameplate)
 	nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
-	nameplate.PowerPrediction = NP:Construct_PowerPrediction(nameplate)
 	nameplate.Name = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.Level = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.Title = NP:Construct_TagText(nameplate.RaisedElement)
@@ -253,7 +252,6 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
 		NP:Update_Power(nameplate)
-		NP:Update_PowerPrediction(nameplate)
 		NP:Update_Castbar(nameplate)
 		NP:Update_ClassPower(nameplate)
 		NP:Update_Auras(nameplate)
@@ -282,7 +280,6 @@ function NP:DisablePlate(nameplate, nameOnly)
 	if nameplate:IsElementEnabled('Health') then nameplate:DisableElement('Health') end
 	if nameplate:IsElementEnabled('HealthPrediction') then nameplate:DisableElement('HealthPrediction') end
 	if nameplate:IsElementEnabled('Power') then nameplate:DisableElement('Power') end
-	if nameplate:IsElementEnabled('PowerPrediction') then nameplate:DisableElement('PowerPrediction') end
 	if nameplate:IsElementEnabled('ClassificationIndicator') then nameplate:DisableElement('ClassificationIndicator') end
 	if nameplate:IsElementEnabled('Castbar') then nameplate:DisableElement('Castbar') end
 	if nameplate:IsElementEnabled('Portrait') then nameplate:DisableElement('Portrait') end

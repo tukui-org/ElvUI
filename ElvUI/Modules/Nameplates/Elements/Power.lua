@@ -128,19 +128,6 @@ function NP:Construct_Power(nameplate)
 	return Power
 end
 
-function NP:Construct_PowerPrediction(nameplate)
-	local PowerBar = CreateFrame('StatusBar', nameplate:GetDebugName()..'PowerPrediction', nameplate.Power)
-	PowerBar:SetReverseFill(true)
-	PowerBar:Point('TOP')
-	PowerBar:Point('BOTTOM')
-	PowerBar:Point('RIGHT', nameplate.Power:GetStatusBarTexture(), 'RIGHT')
-	PowerBar:Width(130)
-	PowerBar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
-	NP.StatusBars[PowerBar] = true
-
-	return { mainBar = PowerBar }
-end
-
 function NP:Update_Power(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
@@ -173,20 +160,4 @@ function NP:Update_Power(nameplate)
 	nameplate.Power.width = db.power.width
 	nameplate.Power.height = db.power.height
 	nameplate.Power:Size(db.power.width, db.power.height)
-end
-
-function NP:Update_PowerPrediction(nameplate)
-	local db = NP.db.units[nameplate.frameType]
-
-	if db.power.enable and db.power.costPrediction then
-		if not nameplate:IsElementEnabled('PowerPrediction') then
-			nameplate:EnableElement('PowerPrediction')
-		end
-
-		nameplate.PowerPrediction.mainBar:Width(db.power.width)
-	else
-		if nameplate:IsElementEnabled('PowerPrediction') then
-			nameplate:DisableElement('PowerPrediction')
-		end
-	end
 end
