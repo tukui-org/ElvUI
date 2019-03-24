@@ -550,11 +550,13 @@ function CH:StyleChat(frame)
 		end
 	end)
 
-	_G.QuickJoinToastButton:Kill()
-	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
-	Skins:HandleButton(_G.ChatFrameChannelButton, nil, nil, nil, true)
-	Skins:HandleButton(_G.ChatFrameToggleVoiceDeafenButton, nil, nil, nil, true)
-	Skins:HandleButton(_G.ChatFrameToggleVoiceMuteButton, nil, nil, nil, true)
+	_G.QuickJoinToastButton:Hide()
+
+	if self.db.hideVoiceButtons then
+		Skins:HandleButton(_G.ChatFrameChannelButton)
+		Skins:HandleButton(_G.ChatFrameToggleVoiceDeafenButton)
+		Skins:HandleButton(_G.ChatFrameToggleVoiceMuteButton)
+	end
 
 	CreatedFrames = id
 	frame.styled = true
@@ -2432,6 +2434,12 @@ function CH:HandleChatVoiceIcons()
 		end
 	end)
 
+	-- We skin it later in Style chat, to keep the backdrops on the button if the option are disabled
+	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
+	Skins:HandleButton(_G.ChatFrameChannelButton, nil, nil, nil, true)
+	Skins:HandleButton(_G.ChatFrameToggleVoiceDeafenButton, nil, nil, nil, true)
+	Skins:HandleButton(_G.ChatFrameToggleVoiceMuteButton, nil, nil, nil, true)
+
 	RepositionChatIcons()
 end
 
@@ -2531,6 +2539,7 @@ function CH:Initialize()
 	self:UpdateFading()
 	self:UpdateAnchors()
 	self:Panels_ColorUpdate()
+
 	if not self.db.hideVoiceButtons then
 		self:HandleChatVoiceIcons()
 	end
