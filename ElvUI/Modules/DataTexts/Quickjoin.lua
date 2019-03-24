@@ -39,7 +39,7 @@ local function OnEvent(self)
 	local coloredName, players, members, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityName, leaderName, isLeader, activity, output, queueCount, queueName, searchResultInfo
 	for _, guid in pairs(quickJoinGroups) do
 		players, members = (C_SocialQueue_GetGroupMembers(guid)), nil -- clear members
-		if players and next(players) then members = CH:SocialQueueUtil_SortGroupMembers(players) end
+		if players and #players>1 then members = CH:SocialQueueUtil_SortGroupMembers(players) end
 		if members then
 			firstMember, numMembers, extraCount = members[1], #members, ''
 			playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)

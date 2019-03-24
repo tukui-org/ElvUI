@@ -2177,8 +2177,6 @@ function CH:SocialQueueUtil_SortGroupMembers(members)
 			end
 
 			return strcmputf8i(lhsName, rhsName) <= 0;
-		else
-			return true -- going to see if this fixes `invalid order function for sorting`
 		end
 	end);
 
@@ -2190,7 +2188,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 	if numAddedItems == 0 or not guid then return end
 
 	local players, members = (C_SocialQueue_GetGroupMembers(guid))
-	if players and next(players) then members = CH:SocialQueueUtil_SortGroupMembers(players) end
+	if players and #players>1 then members = CH:SocialQueueUtil_SortGroupMembers(players) end
 	if not members then return end -- just bail because huh? no members in a group?
 
 	local firstMember, numMembers, extraCount, coloredName = members[1], #members, ''
