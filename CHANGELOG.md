@@ -5,7 +5,7 @@ Added ElvUIPlayerNamePlateAnchor for WeakAuras and other AddOns.
 Added an option to toggle the Nameplates from fading in when shown.  
 Added option to hide voice chat buttons on the chat tab panel.  
 Added NamePlate and UnitFrame Color Selection colors from oUF. (Thanks oUF/LS-)!  
-Added an option to ignore the UI Scale popup when resizing the game window (/ec -> General -> Ignore UI Scale Popup).  
+Added an option to ignore the UI Scale popup when resizing the game window (General -> Ignore UI Scale Popup).  
 
 **Bug Fixes:**  
 Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
@@ -151,7 +151,7 @@ NamePlates were rewritten from scratch. They now utilize the oUF framework like 
 Fixed our SetTemplate function, which now should finally deal with all (maybe =)) Border issue regarding the Pixel Changes introduced with 8.1.  
 
 **Misc. Changes:**  
-We now only use one Font option for the Character-/Inspect Feature.  
+We now only use one Font option for the Character/Inspect Feature.  
 Put the Voice Chat Buttons in our Left Chat. Now its more intuitive to find it.  
 Various skin tweaks/changes.  
 
@@ -210,7 +210,7 @@ ___
 ### Version 10.88 [ February 24th 2019 ]
 
 **New Additions:**  
-Added new scale options. (/ec - General - Auto Scale | UI Scale)  
+Added new scale options. (General -> Auto Scale | UI Scale)  
 Added quality border option for Bag/Bank items. (#869)  
 Added BoE/BoA text overlay in our Bag/Bank.  
 Added optional mount name for units on tooltips.  
@@ -441,7 +441,7 @@ Added Phase Indicator for Target, Party and Raid frames (Thanks @ls-).
 Added Cutaway Health to nameplates (part of #331).  
 Added BFA Mission Datatext (Thanks @AcidWeb).  
 Added ActionBar option to color Keybind Text instead of Button.  
-Added Alternative Power Bar. The settings are located under: /ec - General - Alternative Power  
+Added Alternative Power Bar. The settings are located under: General -> Alternative Power  
 
 **Bug Fixes:**  
 Fixed a texture issue on the Talent skin. (#566)  
@@ -521,8 +521,8 @@ ___
 **Version 10.75 for patch 8.0 [ July 17th 2018 ]**
 
 **New Additions:**  
-New Cooldown settings, they can be found in the Cooldowns category or by typing: /ec cooldown  
-Added Death Knight Rune sorting option under: /ec - Player Frame - Classbar - Sort Direction  
+New Cooldown settings, they can be found in the Cooldowns category.  
+Added Death Knight Rune sorting option under: Player Frame -> Classbar -> Sort Direction  
 Added new Azerite DataBar (replaces Artifact DataBar).  
 Added button size and spacing options to the Micro Bar.  
 Added scale option for the smaller world map.  
