@@ -46,10 +46,12 @@ Skin the Communities Notification Buttons.
 Cleaned some of the Unitframe Castbar code, as we believe this is part of the reason for the Unitframes to cause additional lags.  
 Removed Nameplate Detection as this was used in Legion but is no longer used as much and this would increase Nameplate preformance further.  
 Readded the `Visbility` settings to Static Player Nameplate.  
-[WIP] Currently have disabled Unitframe PowerPredicition as this is the second area for Unitframe additional lags (@Azilroka)  
-[WIP] Custom Text on Nameplates (@Azilroka)  
-[WIP] Cutaway Health on Nameplates (@Azilroka)  
-[WIP] Added Floating Combat Feedback to Nameplates (@Azilroka)  
+
+** Work in Progress: **
+Currently have disabled Unitframe PowerPredicition as this is the second area for Unitframe additional lags.  
+Custom Text on Nameplates.  
+Cutaway Health on Nameplates.  
+Added Floating Combat Feedback to Nameplates.  
 
 ___
 ### Version 11.06 [ March 14th 2019 ]
