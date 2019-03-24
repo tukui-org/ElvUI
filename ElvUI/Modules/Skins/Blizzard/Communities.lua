@@ -132,6 +132,13 @@ local function LoadSkin()
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
 	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
 
+	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, "SetFilter", function(self)
+		self.ShowNotificationsButton:SetSize(20, 20)
+		self.HideNotificationsButton:SetSize(20, 20)
+		S:HandleCheckBox(self.ShowNotificationsButton)
+		S:HandleCheckBox(self.HideNotificationsButton)
+	end)
+
 	-- [[ CHAT TAB ]]
 	CommunitiesFrame.MemberList:StripTextures()
 	CommunitiesFrame.MemberList.InsetFrame:Hide()
