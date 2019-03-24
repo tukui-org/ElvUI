@@ -170,25 +170,25 @@ local function SkinGuildChallengeAlert(frame)
 end
 
 local function SkinHonorAwardedAlert(frame)
-    frame:SetAlpha(1)
-    if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha); frame.hooked = true end
+	frame:SetAlpha(1)
+	if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha); frame.hooked = true end
 
-    frame.Background:Kill()
-    frame.IconBorder:Kill()
+	frame.Background:Kill()
+	frame.IconBorder:Kill()
 
-    -- Icon border
-    if not frame.Icon.b then
-        frame.Icon.b = CreateFrame("Frame", nil, frame)
-        frame.Icon.b:SetTemplate("Default")
-        frame.Icon.b:SetOutside(frame.Icon)
-        frame.Icon:SetParent(frame.Icon.b)
-    end
+	-- Icon border
+	if not frame.Icon.b then
+		frame.Icon.b = CreateFrame("Frame", nil, frame)
+		frame.Icon.b:SetTemplate("Default")
+		frame.Icon.b:SetOutside(frame.Icon)
+		frame.Icon:SetParent(frame.Icon.b)
+	end
 
-    if not frame.backdrop then
-        frame:CreateBackdrop("Transparent")
-        frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
-        frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
-    end
+	if not frame.backdrop then
+		frame:CreateBackdrop("Transparent")
+		frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
+		frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
+	end
 end
 
 local function SkinInvasionAlert(frame)
@@ -780,6 +780,7 @@ local function LoadSkin()
 	-- Pets/Mounts
 	hooksecurefunc(_G.NewPetAlertSystem, "setUpFunction", SkinNewPetAlert)
 	hooksecurefunc(_G.NewMountAlertSystem, "setUpFunction", SkinNewPetAlert)
+	hooksecurefunc(_G.NewToyAlertSystem, "setUpFunction", SkinNewPetAlert)
 
 	--[[ STATIC SKINNING ]]--
 	--Bonus Roll Money
