@@ -43,6 +43,8 @@ function UF:Construct_TankFrames()
 	end
 
 	UF:Update_TankFrames(self, E.db.unitframe.units.tank)
+	UF:Update_StatusBars()
+	UF:Update_FontStrings()
 
 	self.originalParent = self:GetParent()
 

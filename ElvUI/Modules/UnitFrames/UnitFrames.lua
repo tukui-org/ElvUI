@@ -919,9 +919,6 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			UF.headerFunctions[group]:Update(self[group])
 		end
 	end
-
-	UF:Update_StatusBars()
-	UF:Update_FontStrings()
 end
 
 function UF:PLAYER_REGEN_ENABLED()
