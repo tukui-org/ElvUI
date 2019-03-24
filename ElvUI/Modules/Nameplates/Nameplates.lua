@@ -280,6 +280,34 @@ function NP:CVarReset()
 	SetCVar('nameplateTargetBehindMaxDistance', 40)
 end
 
+function NP:SetCVars()
+	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
+	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
+
+	if NP.db.units.PLAYER.visibility.showAlways then
+		SetCVar('NameplatePersonalShowAlways', 1)
+	else
+		SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
+		SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
+		SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
+	end
+
+	SetCVar('nameplateShowFriendlyMinions', NP.db.units.FRIENDLY_PLAYER.minions and 1 or 0)
+	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions or NP.db.units.ENEMY_NPC.minions) and 1 or 0)
+	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors and 1 or 0)
+	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
+	SetCVar('nameplateSelectedScale', NP.db.units.TARGET.scale)
+
+	if NP.db.questIcon then
+		SetCVar('showQuestTrackingTooltips', 1)
+	end
+
+	if NP.db.clampToScreen then
+		SetCVar('nameplateOtherTopInset', 0.08)
+		SetCVar('nameplateOtherBottomInset', 0.1)
+	end
+end
+
 function NP:PLAYER_REGEN_DISABLED()
 	SetCVar("nameplateMaxAlpha", NP.db.units.TARGET.nonTargetTransparency)
 	SetCVar("nameplateMinAlpha", NP.db.units.TARGET.nonTargetTransparency)
@@ -361,34 +389,6 @@ end
 
 function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, IsInInstance())
-end
-
-function NP:SetCVars()
-	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
-	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
-
-	if NP.db.units.PLAYER.visibility.showAlways then
-		SetCVar('NameplatePersonalShowAlways', 1)
-	else
-		SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
-		SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
-		SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
-	end
-
-	SetCVar('nameplateShowFriendlyMinions', NP.db.units.FRIENDLY_PLAYER.minions and 1 or 0)
-	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions or NP.db.units.ENEMY_NPC.minions) and 1 or 0)
-	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors and 1 or 0)
-	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
-	SetCVar('nameplateSelectedScale', NP.db.units.TARGET.scale)
-
-	if NP.db.questIcon then
-		SetCVar('showQuestTrackingTooltips', 1)
-	end
-
-	if NP.db.clampToScreen then
-		SetCVar('nameplateOtherTopInset', 0.08)
-		SetCVar('nameplateOtherBottomInset', 0.1)
-	end
 end
 
 function NP:ConfigureAll(fromConfig)
