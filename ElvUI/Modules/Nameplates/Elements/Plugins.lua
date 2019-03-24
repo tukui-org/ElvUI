@@ -216,30 +216,6 @@ function NP:Update_HealerSpecs(nameplate)
 	end
 end
 
-function NP:Construct_DetectionIndicator(nameplate)
-	local model = CreateFrame("PlayerModel", nil, nameplate)
-	model:Size(75, 75)
-	model:Hide()
-
-	return model
-end
-
-function NP:Update_DetectionIndicator(nameplate)
-	local db = NP.db.units[nameplate.frameType]
-
-	if (nameplate.frameType == 'ENEMY_NPC') and db.detection and db.detection.enable then
-		if not nameplate:IsElementEnabled('DetectionIndicator') then
-			nameplate:EnableElement('DetectionIndicator')
-		end
-
-		nameplate.DetectionIndicator:Point("BOTTOM", nameplate, "TOP", 0, 0)
-	else
-		if nameplate:IsElementEnabled('DetectionIndicator') then
-			nameplate:DisableElement('DetectionIndicator')
-		end
-	end
-end
-
 function NP:Construct_FloatingCombatFeedback(nameplate)
 	local FloatingCombatFeedback = CreateFrame("Frame", nil, nameplate)
 

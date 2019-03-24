@@ -1566,9 +1566,6 @@ P.nameplates = {
 				xOffset = 15,
 				yOffset = 0,
 			},
-			detection = {
-				enable = true,
-			},
 			pvpindicator = {
 				enable = false,
 				showBadge = true,

@@ -229,7 +229,6 @@ function NP:StylePlate(nameplate)
 	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate.RaisedElement) -- Horde / Alliance / HonorInfo
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
 	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate.RaisedElement)
-	nameplate.DetectionIndicator = NP:Construct_DetectionIndicator(nameplate.RaisedElement)
 	--nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
 	NP:Construct_Auras(nameplate)
 
@@ -267,7 +266,6 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_ThreatIndicator(nameplate)
 		NP:Update_RaidTargetIndicator(nameplate)
 		NP:Update_HealerSpecs(nameplate)
-		NP:Update_DetectionIndicator(nameplate)
 		if E.myclass == 'DEATHKNIGHT' then
 			NP:Update_Runes(nameplate)
 		end
@@ -296,7 +294,6 @@ function NP:DisablePlate(nameplate, nameOnly)
 	if nameplate:IsElementEnabled('PvPIndicator') then nameplate:DisableElement('PvPIndicator') end
 	if nameplate:IsElementEnabled('PvPClassificationIndicator') then nameplate:DisableElement('PvPClassificationIndicator') end
 	if nameplate:IsElementEnabled('HealerSpecs') then nameplate:DisableElement('HealerSpecs') end
-	if nameplate:IsElementEnabled('DetectionIndicator') then nameplate:DisableElement('DetectionIndicator') end
 	if nameplate:IsElementEnabled('Auras') then nameplate:DisableElement('Auras') end
 	if E.myclass == 'DEATHKNIGHT' and nameplate:IsElementEnabled('Runes') then
 		nameplate:DisableElement('Runes')
