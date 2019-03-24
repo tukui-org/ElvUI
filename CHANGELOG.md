@@ -48,10 +48,10 @@ Removed Nameplate Detection as this was used in Legion but is no longer used as 
 Readded the Visbility settings to Static Player Nameplate.  
 
 **Work in Progress:**  
-Currently have disabled Unitframe PowerPredicition as this is the second area for Unitframe additional lags.  
+Currently have Unitframe PowerPredicition disabled, as we believe this is the second area for Unitframe additional lags.  
 Custom Text on Nameplates.  
 Cutaway Health on Nameplates.  
-Added Floating Combat Feedback to Nameplates.  
+Floating Combat Feedback on Nameplates.  
 
 ___
 ### Version 11.06 [ March 14th 2019 ]
