@@ -203,7 +203,11 @@ E.PopupDialogs.INCOMPATIBLE_ADDON = {
 E.PopupDialogs.UISCALE_CHANGE = {
 	text = L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."],
 	OnAccept = function() ReloadUI(); end,
-	OnCancel = E.noop,
+	OnCancel = function()
+		if E.suppressScalePopup then
+			E:UnregisterEvent("UISCALE_CHANGE")
+		end
+	end,
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	button3 = L["Preview Changes"],
