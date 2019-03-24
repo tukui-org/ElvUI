@@ -2167,6 +2167,8 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 	if numAddedItems == 0 or not guid then return end
 
 	local players = C_SocialQueue_GetGroupMembers(guid)
+	if not players then return end
+
 	local firstMember, numMembers, extraCount, coloredName = players[1], #players, ''
 	local playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
 	if numMembers > 1 then
