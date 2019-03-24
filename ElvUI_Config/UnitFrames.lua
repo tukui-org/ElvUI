@@ -1466,6 +1466,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				type = 'toggle',
 				order = 2,
 				name = L["Power Prediction"],
+				disabled = function() return true end,
 			},
 			text_format = {
 				order = 100,

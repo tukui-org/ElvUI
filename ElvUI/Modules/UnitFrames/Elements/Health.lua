@@ -297,9 +297,6 @@ function UF:PostUpdateHealth(_, cur, max)
 		if parent.forcedHealth then
 			parent.forcedHealth = nil
 		end
-		if self.dead then
-			self:SetValue(0)
-		end
 		if parent.ResurrectIndicator then
 			parent.ResurrectIndicator:SetAlpha(cur == 0 and 1 or 0)
 		end
