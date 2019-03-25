@@ -526,6 +526,7 @@ L["Hide At Max Level"] = true
 L["Hide Error Text"] = "Ocultar Texto de Error"
 L["Hide In Vehicle"] = true
 L["Hides the red error text at the top of the screen while in combat."] = "Oculta el texto rojo de error en la parte superior de la pantalla mientras estás en combate."
+L["Ignore UI Scale Popup"] = true
 L["Log Taints"] = "Registro Exhaustivo"
 L["Login Message"] = "Mensaje de inicio"
 L["Loot Roll"] = "Marco de Botín"
@@ -566,6 +567,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["Thin Border Theme"] = true
 L["This is for Customized Icons in your Interface/Icons folder."] = true
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = true
+L["This will prevent the UI Scale Popup from being shown when changing the game window size."] = true
 L["Toggle Tutorials"] = "Mostrar/Ocultar Tutoriales"
 L["Top Panel"] = "Panel Superior"
 L["Unit Prefix Style"] = true

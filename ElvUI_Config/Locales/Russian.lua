@@ -525,6 +525,7 @@ L["Hide At Max Level"] = "Прятать на максимальном уров�
 L["Hide Error Text"] = "Прятать сообщения об ошибках"
 L["Hide In Vehicle"] = "Прятать в транспорте"
 L["Hides the red error text at the top of the screen while in combat."] = "Скрывать красный текст ошибок вверху экрана в бою."
+L["Ignore UI Scale Popup"] = true
 L["Log Taints"] = "Отслеживать недочеты"
 L["Login Message"] = "Сообщение загрузки"
 L["Loot Roll"] = "Раздел добычи"
@@ -565,6 +566,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["Thin Border Theme"] = "Тонкие границы"
 L["This is for Customized Icons in your Interface/Icons folder."] = "Используется для кастомных иконок в папке Interface/Icons"
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = "В какой чат отправлять сообщения от ElvUI."
+L["This will prevent the UI Scale Popup from being shown when changing the game window size."] = true
 L["Toggle Tutorials"] = "Показать помощь"
 L["Top Panel"] = "Верхняя панель"
 L["Unit Prefix Style"] = "Стиль сокращений"

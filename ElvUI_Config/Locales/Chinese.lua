@@ -526,6 +526,7 @@ L["Hide At Max Level"] = "在最高等级时隐藏"
 L["Hide Error Text"] = "隐藏错误文字"
 L["Hide In Vehicle"] = "骑乘时隐藏"
 L["Hides the red error text at the top of the screen while in combat."] = "战斗中隐藏屏幕顶部红字错误信息"
+L["Ignore UI Scale Popup"] = true
 L["Log Taints"] = "错误记录"
 L["Login Message"] = "登陆信息"
 L["Loot Roll"] = "掷骰"
@@ -566,6 +567,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["Thin Border Theme"] = "细边框主题"
 L["This is for Customized Icons in your Interface/Icons folder."] = "这将应用于你的Interface/Icons文件夹下的自定义图标"
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = "选择ElvUI信息的聊天输出"
+L["This will prevent the UI Scale Popup from being shown when changing the game window size."] = true
 L["Toggle Tutorials"] = "教学开关"
 L["Top Panel"] = "顶部面板"
 L["Unit Prefix Style"] = "单位缩写"
