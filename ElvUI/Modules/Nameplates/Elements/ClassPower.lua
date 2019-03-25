@@ -141,9 +141,9 @@ function NP:Update_ClassPower(nameplate)
 	if (nameplate.frameType == 'PLAYER' or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('ClassPower') then
 			nameplate:EnableElement('ClassPower')
-			nameplate.ClassPower:Show()
 		end
 
+		nameplate.ClassPower:Show()
 		nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', 0, db.classpower.yOffset)
 
 		local maxClassBarButtons = nameplate.ClassPower.__max
@@ -157,8 +157,9 @@ function NP:Update_ClassPower(nameplate)
 	else
 		if nameplate:IsElementEnabled('ClassPower') then
 			nameplate:DisableElement('ClassPower')
-			nameplate.ClassPower:Hide()
 		end
+
+		nameplate.ClassPower:Hide()
 	end
 end
 
@@ -168,8 +169,9 @@ function NP:Update_Runes(nameplate)
 	if (nameplate.frameType == 'PLAYER' or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('Runes') then
 			nameplate:EnableElement('Runes')
-			nameplate.Runes:Show()
 		end
+
+		nameplate.Runes:Show()
 
 		nameplate.Runes:Point('CENTER', nameplate, 'CENTER', 0, db.classpower.yOffset)
 
@@ -187,7 +189,8 @@ function NP:Update_Runes(nameplate)
 	else
 		if nameplate:IsElementEnabled('Runes') then
 			nameplate:DisableElement('Runes')
-			nameplate.Runes:Hide()
 		end
+
+		nameplate.Runes:Hide()
 	end
 end

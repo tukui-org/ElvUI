@@ -78,7 +78,6 @@ function NP:CVarReset()
 	SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
 	SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
 	SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
-	SetCVar('nameplateShowAll', 1)
 	SetCVar('nameplateSelectedAlpha', 1)
 	SetCVar('nameplateSelectedScale', 1)
 	SetCVar('nameplateSelfAlpha', 1)
@@ -91,6 +90,8 @@ end
 function NP:SetCVars()
 	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
 	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
+
+	-- SetCVar('nameplateShowAll', 1) -- NP Show Always
 
 	if NP.db.units.PLAYER.visibility.showAlways then
 		SetCVar('NameplatePersonalShowAlways', 1)
@@ -398,7 +399,13 @@ function NP:ConfigureAll(fromConfig)
 	end
 
 	NP:UpdatePlate(_G.ElvNP_Player)
+	_G.ElvNP_Player:UpdateAllElements('ForceUpdate') -- Needed outside of Config call
+
 	NP:UpdatePlate(_G.ElvNP_Test)
+	if fromConfig then
+		_G.ElvNP_Test:UpdateAllElements('ForceUpdate')
+	end
+
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 
 	for nameplate in pairs(NP.Plates) do
@@ -445,14 +452,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.frameType = 'ENEMY_NPC'
 		else
 			nameplate.frameType = 'ENEMY_PLAYER'
-		end
-
-		-- update player and test plate
-		if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
-			NP:UpdatePlate(_G.ElvNP_Player)
-		end
-		if _G.ElvNP_Test and _G.ElvNP_Test:IsEnabled() then
-			NP:UpdatePlate(_G.ElvNP_Test)
 		end
 
 		NP:UpdatePlate(nameplate)
