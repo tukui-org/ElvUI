@@ -1075,19 +1075,19 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				order = 6,
 				name = L["Use Health Texture on Background"],
 			},
-			text_format = {
-				order = 100,
-				name = L["Text Format"],
-				type = 'input',
-				width = 'full',
-				desc = L["TEXT_FORMAT_DESC"],
-			},
 			configureButton = {
-				order = 6,
+				order = 7,
 				name = L["Coloring"],
 				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
 				type = 'execute',
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "healthGroup") end,
+			},
+			text_format = {
+				order = 10,
+				name = L["Text Format"],
+				type = 'input',
+				width = 'full',
+				desc = L["TEXT_FORMAT_DESC"],
 			},
 		},
 	}
@@ -1095,14 +1095,14 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 	if isGroupFrame then
 		config.args.frequentUpdates = {
 			type = 'toggle',
-			order = 2,
+			order = 8,
 			name = L["Frequent Updates"],
 			desc = L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."],
 		}
 
 		config.args.orientation = {
 			type = 'select',
-			order = 3,
+			order = 9,
 			name = L["Statusbar Fill Orientation"],
 			desc = L["Direction the health bar moves when gaining/losing health."],
 			values = {
