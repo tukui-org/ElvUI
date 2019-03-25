@@ -60,17 +60,10 @@ oUF.Tags.Methods['npctitle'] = function(unit)
 	end
 end
 
-oUF.Tags.Events['guild'] = 'UNIT_NAME_UPDATE'
-oUF.Tags.Methods['guild'] = function(unit)
-	if (UnitIsPlayer(unit)) then
-		return Hex(.25, .75, .25)..(GetGuildInfo(unit) or '')..'|r'
-	end
-end
-
 oUF.Tags.Events['guild:rank'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['guild:rank'] = function(unit)
 	if (UnitIsPlayer(unit)) then
-		return Hex(.25, .75, .25)..(select(2, GetGuildInfo(unit)) or '')..'|r'
+		return select(2, GetGuildInfo(unit)) or ''
 	end
 end
 

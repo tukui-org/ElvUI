@@ -1119,9 +1119,11 @@ end
 
 ElvUF.Tags.SharedEvents.PLAYER_GUILD_UPDATE = true
 
-ElvUF.Tags.Events['guild'] = 'PLAYER_GUILD_UPDATE'
+ElvUF.Tags.Events['guild'] = 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE'
 ElvUF.Tags.Methods['guild'] = function(unit)
-	return GetGuildInfo(unit) or nil
+	if (UnitIsPlayer(unit)) then
+		return GetGuildInfo(unit) or nil
+	end
 end
 
 ElvUF.Tags.Events['guild:brackets'] = 'PLAYER_GUILD_UPDATE'
