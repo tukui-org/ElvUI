@@ -326,10 +326,12 @@ function NP:SetupTarget(nameplate)
 	--end
 
 	if targetPlate.ClassPower then
+		targetPlate.ClassPower:SetParent(realPlate)
 		targetPlate.ClassPower:ClearAllPoints()
 		targetPlate.ClassPower:SetPoint('CENTER', realPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
 	end
 	if targetPlate.Runes then
+		targetPlate.Runes:SetParent(realPlate)
 		targetPlate.Runes:ClearAllPoints()
 		targetPlate.Runes:SetPoint('CENTER', realPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
 	end
