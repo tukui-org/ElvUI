@@ -55,6 +55,7 @@ end
 local function Disable(self)
 	local element = self.Highlight
 	if (element) then
+		element:Hide()
 
 		self:UnregisterEvent("UPDATE_MOUSEOVER_UNIT", Path)
 	end

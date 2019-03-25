@@ -1866,7 +1866,7 @@ local function GetUnitSettings(unit, name)
 				type = "group",
 				name = L["General"],
 				get = function(info) return E.db.nameplates.units[unit][info[#info]] end,
-				set = function(info, value) E.db.nameplates.units[unit][info[#info]] = value; NP:ConfigureAll(true) NP:SetCVars() end,
+				set = function(info, value) E.db.nameplates.units[unit][info[#info]] = value; NP:SetCVars() NP:ConfigureAll(true) end,
 				args = {
 					header = {
 						order = 0,
@@ -3323,7 +3323,7 @@ local function GetUnitSettings(unit, name)
 			guiInline = true,
 			name = L["Visibility"],
 			get = function(info) return E.db.nameplates.units[unit].visibility[info[#info]] end,
-			set = function(info, value) E.db.nameplates.units[unit].visibility[info[#info]] = value NP:ConfigureAll(true) NP:SetCVars() end,
+			set = function(info, value) E.db.nameplates.units[unit].visibility[info[#info]] = value NP:SetCVars() NP:ConfigureAll(true) end,
 			args = {
 				showAlways = {
 					order = 1,
@@ -3502,7 +3502,7 @@ local function GetUnitSettings(unit, name)
 			name = L["Quest Icon"],
 			type = 'group',
 			get = function(info) return E.db.nameplates.units[unit].questIcon[info[#info]] end,
-			set = function(info, value) E.db.nameplates.units[unit].questIcon[info[#info]] = value; NP:ConfigureAll(true) NP:SetCVars() end,
+			set = function(info, value) E.db.nameplates.units[unit].questIcon[info[#info]] = value; NP:SetCVars() NP:ConfigureAll(true) end,
 			args = {
 				enable = {
 					type = 'toggle',
@@ -4646,7 +4646,7 @@ E.Options.args.nameplate = {
 			type = "group",
 			name = L["Targeted Nameplate"],
 			get = function(info) return E.db.nameplates.units.TARGET[info[#info]] end,
-			set = function(info, value) E.db.nameplates.units.TARGET[info[#info]] = value; NP:ConfigureAll(true) NP:SetCVars() end,
+			set = function(info, value) E.db.nameplates.units.TARGET[info[#info]] = value; NP:SetCVars() NP:ConfigureAll(true) end,
 			disabled = function() return not E.NamePlates.Initialized end,
 			args = {
 				scale = {

@@ -572,11 +572,11 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_LOGOUT', NP.StyleFilterClearDefaults)
 
 	NP:StyleFilterInitialize()
+	NP:HideInterfaceOptions()
 	NP:ACTIVE_TALENT_GROUP_CHANGED()
 	NP:GROUP_ROSTER_UPDATE()
-	NP:ConfigureAll()
 	NP:SetCVars()
-	NP:HideInterfaceOptions()
+	NP:ConfigureAll()
 end
 
 local function InitializeCallback()
