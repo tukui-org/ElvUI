@@ -11,7 +11,6 @@ local colors = {
 		0, 1, 0
 	},
 	health = {49 / 255, 207 / 255, 37 / 255},
-	dead = {0.6, 0.6, 0.6},
 	disconnected = {0.6, 0.6, 0.6},
 	tapped = {0.6, 0.6, 0.6},
 	runes = {
@@ -24,15 +23,19 @@ local colors = {
 		[ 1] = {255 / 255, 129 / 255, 0 / 255}, -- UNFRIENDLY
 		[ 2] = {255 / 255, 255 / 255, 0 / 255}, -- NEUTRAL
 		[ 3] = {0 / 255, 255 / 255, 0 / 255}, -- FRIENDLY
+		-- not used by oUF, we always use extended colours
 		[ 4] = {0 / 255, 0 / 255, 255 / 255}, -- PLAYER_SIMPLE
 		[ 5] = {96 / 255, 96 / 255, 255 / 255}, -- PLAYER_EXTENDED
 		[ 6] = {170 / 255, 170 / 255, 255 / 255}, -- PARTY
 		[ 7] = {170 / 255, 255 / 255, 170 / 255}, -- PARTY_PVP
 		[ 8] = {83 / 255, 201 / 255, 255 / 255}, -- FRIEND
 		[ 9] = {128 / 255, 128 / 255, 128 / 255}, -- DEAD
-		-- [10] = {}, -- COMMENTATOR_TEAM_1, unavailable to players
-		-- [11] = {}, -- COMMENTATOR_TEAM_2, unavailable to players
-		[12] = {255 / 255, 255 / 255, 139 / 255}, -- SELF, buggy
+		--  unavailable to players
+		-- [10] = {}, -- COMMENTATOR_TEAM_1
+		-- unavailable to players
+		-- [11] = {}, -- COMMENTATOR_TEAM_2
+		-- not used by oUF, inconsistent due to bugs and its reliance on cvars
+		[12] = {255 / 255, 255 / 255, 139 / 255}, -- SELF
 		[13] = {0 / 255, 153 / 255, 0 / 255}, -- BATTLEGROUND_FRIENDLY_PVP
 	},
 	class = {},

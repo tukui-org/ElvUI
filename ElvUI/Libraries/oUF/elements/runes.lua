@@ -86,9 +86,9 @@ local function UpdateColor(self, event)
 
 	local color
 	if(spec ~= 0 and element.colorSpec) then
-		color = element.__owner.colors.runes[spec]
+		color = self.colors.runes[spec]
 	else
-		color = element.__owner.colors.power.RUNES
+		color = self.colors.power.RUNES
 	end
 
 	local r, g, b = color[1], color[2], color[3]

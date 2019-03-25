@@ -18,7 +18,7 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 ## Options
 
 .frequentUpdates                  - Indicates whether to use UNIT_POWER_FREQUENT instead UNIT_POWER_UPDATE to update the
-                                    bar. Only valid for the player and pet units (boolean)
+                                    bar (boolean)
 .displayAltPower                  - Use this to let the widget display alternate power if the unit has one. If no
                                     alternate power the display will fall back to primary power (boolean)
 .useAtlas                         - Use this to let the widget use an atlas for its texture if an atlas is present in
@@ -29,7 +29,6 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 
 The following options are listed by priority. The first check that returns true decides the color of the bar.
 
-.colorDead         - Use `self.colors.dead` to color the bar if the unit is dead (boolean)
 .colorDisconnected - Use `self.colors.disconnected` to color the bar if the unit is offline (boolean)
 .colorTapping      - Use `self.colors.tapping` to color the bar if the unit isn't tapped by the player (boolean)
 .colorThreat       - Use `self.colors.threat[threat]` to color the bar based on the unit's threat status. `threat` is
@@ -115,9 +114,7 @@ local function UpdateColor(self, event, unit)
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 
 	local r, g, b, t, atlas
-	if(element.colorDead and element.dead) then
-		t = self.colors.dead
-	elseif(element.colorDisconnected and element.disconnected) then
+	if(element.colorDisconnected and element.disconnected) then
 		t = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = self.colors.tapped
@@ -215,12 +212,11 @@ local function Update(self, event, unit)
 	end
 
 	local cur, max = UnitPower(unit, displayType), UnitPowerMax(unit, displayType)
-	local dead = UnitIsDeadOrGhost(unit)
 	local disconnected = not UnitIsConnected(unit)
 
 	element:SetMinMaxValues(min or 0, max)
 
-	if(dead or disconnected) then
+	if(disconnected) then
 		element:SetValue(max)
 	else
 		element:SetValue(cur)
@@ -230,7 +226,6 @@ local function Update(self, event, unit)
 	element.min = min
 	element.max = max
 	element.displayType = displayType
-	element.dead = dead
 	element.disconnected = disconnected
 
 	--[[ Callback: Power:PostUpdate(unit, cur, min, max)

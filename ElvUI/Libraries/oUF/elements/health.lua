@@ -25,7 +25,6 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 
 The following options are listed by priority. The first check that returns true decides the color of the bar.
 
-.colorDead         - Use `self.colors.dead` to color the bar if the unit is dead (boolean)
 .colorDisconnected - Use `self.colors.disconnected` to color the bar if the unit is offline (boolean)
 .colorTapping      - Use `self.colors.tapping` to color the bar if the unit isn't tapped by the player (boolean)
 .colorThreat       - Use `self.colors.threat[threat]` to color the bar based on the unit's threat status. `threat` is
@@ -95,9 +94,7 @@ local function UpdateColor(self, event, unit)
 	local element = self.Health
 
 	local r, g, b, t
-	if(element.colorDead and element.dead) then
-		t = self.colors.dead
-	elseif(element.colorDisconnected and element.disconnected) then
+	if(element.colorDisconnected and element.disconnected) then
 		t = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = self.colors.tapped
@@ -163,12 +160,11 @@ local function Update(self, event, unit)
 	end
 
 	local cur, max = UnitHealth(unit), UnitHealthMax(unit)
-	local dead = UnitIsDeadOrGhost(unit)
 	local disconnected = not UnitIsConnected(unit)
 
 	element:SetMinMaxValues(0, max)
 
-	if(dead or disconnected) then
+	if(disconnected) then
 		element:SetValue(max)
 	else
 		element:SetValue(cur)
@@ -176,7 +172,6 @@ local function Update(self, event, unit)
 
 	element.cur = cur
 	element.max = max
-	element.dead = dead
 	element.disconnected = disconnected
 
 	--[[ Callback: Health:PostUpdate(unit, cur, max)
