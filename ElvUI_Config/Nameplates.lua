@@ -4683,7 +4683,7 @@ E.Options.args.nameplate = {
 					type = "range",
 					isPercent = true,
 					name = L["Non-Target Alpha"],
-					desc = L["Set the alpha level of nameplates that are not the target nameplate."],
+					desc = L["Set the alpha level of nameplates that are not the target nameplate. Works only in combat."],
 					min = 0, max = 1, step = 0.01,
 				},
 				glowStyle = {
