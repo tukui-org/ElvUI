@@ -400,21 +400,11 @@ function NP:ConfigureAll(fromConfig)
 		_G.ElvNP_Player:Disable()
 	end
 
-	NP:UpdatePlate(_G.ElvNP_Player)
-	_G.ElvNP_Player:UpdateAllElements('ForceUpdate') -- Needed outside of Config call
-
-	NP:UpdatePlate(_G.ElvNP_Test)
-	if fromConfig then
-		_G.ElvNP_Test:UpdateAllElements('ForceUpdate')
-	end
-
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 
 	for nameplate in pairs(NP.Plates) do
 		NP:UpdatePlate(nameplate)
-		if fromConfig then
-			nameplate:UpdateAllElements('ForceUpdate')
-		end
+		nameplate:UpdateAllElements('ForceUpdate')
 		if nameplate.frameType == 'PLAYER' then
 			NP.PlayerNamePlateAnchor:ClearAllPoints()
 			NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)

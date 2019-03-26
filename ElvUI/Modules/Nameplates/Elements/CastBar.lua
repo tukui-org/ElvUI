@@ -136,6 +136,14 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.PostCastInterruptible = NP.Castbar_PostCastInterruptible
 	Castbar.PostCastStop = NP.Castbar_PostCastStop
 
+	if nameplate == _G.ElvNP_Test then
+		Castbar.Hide = Castbar.Show
+		Castbar:Show()
+		Castbar.Text:SetText('Casting')
+		Castbar.Time:SetText('3.1')
+		Castbar.Icon:SetTexture([[Interface\Icons\Achievement_Character_Pandaren_Female]])
+	end
+
 	return Castbar
 end
 

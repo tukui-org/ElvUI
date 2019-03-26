@@ -84,6 +84,7 @@ function NP:Construct_Auras(nameplate)
 	Buffs['growth-x'] = 'RIGHT'
 	Buffs['growth-y'] = 'UP'
 	Buffs.type = 'buffs'
+	Buffs.forceShow = nameplate == _G.ElvNP_Test
 
 	local Debuffs = CreateFrame('Frame', nameplate:GetDebugName()..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
@@ -98,6 +99,7 @@ function NP:Construct_Auras(nameplate)
 	Debuffs['growth-x'] = 'RIGHT'
 	Debuffs['growth-y'] = 'UP'
 	Debuffs.type = 'debuffs'
+	Debuffs.forceShow = nameplate == _G.ElvNP_Test
 
 	Auras.PostCreateIcon = NP.Auras_PostCreateIcon
 	Auras.PostUpdateIcon = NP.Auras_PostUpdateIcon
