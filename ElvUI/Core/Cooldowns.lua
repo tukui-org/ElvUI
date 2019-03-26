@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames')
 local AB = E:GetModule('ActionBars')
 
 --Lua functions
-local _G = _G
 local next, ipairs, pairs = next, ipairs, pairs
 local floor, tinsert = floor, tinsert
 --WoW API / Variables

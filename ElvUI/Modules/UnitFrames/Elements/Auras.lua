@@ -74,10 +74,7 @@ function UF:Construct_AuraIcon(button)
 
 		if auraName then
 			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
-			E.global.unitframe.aurafilters.Blacklist.spells[btn.spellID] = {
-				['enable'] = true,
-				['priority'] = 0,
-			}
+			E.global.unitframe.aurafilters.Blacklist.spells[btn.spellID] = { enable = true, priority = 0 }
 
 			UF:Update_AllFrames()
 		end
