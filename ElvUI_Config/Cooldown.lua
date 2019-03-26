@@ -273,8 +273,8 @@ E.Options.args.cooldown = {
 }
 
 group(5,  'global',     L["Global"])
-group(6,  'actionbar',  L["ActionBars"])
-group(7,  'bags',       L["Bags"])
-group(8,  'auras',      BUFFOPTIONS_LABEL)
+group(6,  'auras',      BUFFOPTIONS_LABEL)
+group(7,  'actionbar',  L["ActionBars"])
+group(8,  'bags',       L["Bags"])
 group(9,  'nameplates', L["NamePlates"])
 group(10, 'unitframe',  L["UnitFrames"])
