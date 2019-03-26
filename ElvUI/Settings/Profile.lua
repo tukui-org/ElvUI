@@ -309,6 +309,11 @@ P.bags = {
 	},
 };
 
+--Future Color Table
+P.colors = {
+
+};
+
 --NamePlate
 P.nameplates = {
 	clampToScreen = false,
