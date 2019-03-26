@@ -123,15 +123,6 @@ function NP:Construct_AuraIcon(button)
 	button.cd:SetReverse(true)
 	button.cd:SetInside(button)
 
-	button.cd.CooldownOverride = 'nameplates'
-	button.cd.CooldownSettings = {
-		['font'] = LSM:Fetch('font', NP.db.font),
-		['fontSize'] = NP.db.fontSize,
-		['fontOutline'] = NP.db.fontOutline,
-	}
-
-	E:RegisterCooldown(button.cd)
-
 	button.icon:SetInside()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
@@ -144,6 +135,15 @@ function NP:Construct_AuraIcon(button)
 
 	button.overlay:SetTexture()
 	button.stealable:SetTexture()
+
+	button.cd.CooldownOverride = 'nameplates'
+	button.cd.CooldownSettings = {
+		['font'] = LSM:Fetch('font', NP.db.font),
+		['fontSize'] = NP.db.fontSize,
+		['fontOutline'] = NP.db.fontOutline,
+	}
+
+	E:RegisterCooldown(button.cd)
 end
 
 function NP:Update_Auras(nameplate)
