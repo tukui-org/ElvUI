@@ -154,22 +154,21 @@ function UF:Configure_Auras(frame, auraType)
 	auraType = auraType:lower()
 	local rows = db[auraType].numrows
 
-	local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
-	if frame.USE_POWERBAR_OFFSET then
-		local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
-
-		if not (db[auraType].attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
-			totalWidth = totalWidth - powerOffset
-		end
-	end
-	auras:Width(totalWidth)
-
 	auras.forceShow = frame.forceShowAuras
 	auras.num = db[auraType].perrow * rows
 	auras.size = db[auraType].sizeOverride ~= 0 and db[auraType].sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
 
 	if db[auraType].sizeOverride and db[auraType].sizeOverride > 0 then
 		auras:Width(db[auraType].perrow * db[auraType].sizeOverride)
+	else
+		local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
+		if frame.USE_POWERBAR_OFFSET then
+			if not (db[auraType].attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
+				local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
+				totalWidth = totalWidth - powerOffset
+			end
+		end
+		auras:Width(totalWidth)
 	end
 
 	local attachTo = self:GetAuraAnchorFrame(frame, db[auraType].attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')

@@ -27,7 +27,7 @@ function E:Cooldown_OnUpdate(elapsed)
 	else
 		local remain = self.duration - (GetTime() - self.start)
 		if remain > 0.05 then
-			if (not self.staticSize) and self.fontScale and ((self.fontScale * self:GetEffectiveScale() / _G.UIParent:GetScale()) < MIN_SCALE) then
+			if self.fontScale and (self.fontScale < MIN_SCALE) then
 				self.text:SetText('')
 				self.nextUpdate = 500
 			else
@@ -50,23 +50,17 @@ end
 function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 	local fontScale = width and (floor(width + .5) / ICON_SIZE)
 
-	-- `CooldownFontSize` is used when we the cooldown button/icon does not use `SetSize` or `Size` for some reason
-	-- also it `staticSize` can be used to prevent the font size being based on scale, which can sometimes (when the icon is under 20px) hide the cd text
-	local staticSize = parent and parent.CooldownFontSize
-	if staticSize then fontScale = (parent.CooldownFontSize / FONT_SIZE) end
-
 	if fontScale and (fontScale == cd.fontScale) and (force ~= 'override') then return end
-	cd.fontScale, cd.staticSize = fontScale, staticSize
+	cd.fontScale = fontScale
 
-	if (not staticSize) and fontScale and (fontScale < MIN_SCALE) then
+	if fontScale and (fontScale < MIN_SCALE) then
 		cd:Hide()
 	else
 		local text = cd.text or cd.time
 		if text then
 			local useCustomFont = (cd.timerOptions and cd.timerOptions.fontOptions and cd.timerOptions.fontOptions.enable) and E.Libs.LSM:Fetch("font", cd.timerOptions.fontOptions.font)
 			if useCustomFont then
-				local customSize = (staticSize and cd.timerOptions.fontOptions.fontSize) or (fontScale * cd.timerOptions.fontOptions.fontSize)
-				text:FontTemplate(useCustomFont, customSize, cd.timerOptions.fontOptions.fontOutline)
+				text:FontTemplate(useCustomFont, (fontScale * cd.timerOptions.fontOptions.fontSize), cd.timerOptions.fontOptions.fontOutline)
 			elseif fontScale and parent and parent.CooldownSettings then
 				text:FontTemplate(parent.CooldownSettings.font, parent.CooldownSettings.fontSize or (fontScale * FONT_SIZE), parent.CooldownSettings.fontOutline)
 			elseif fontScale then
@@ -93,7 +87,7 @@ end
 function E:Cooldown_ForceUpdate(cd)
 	cd.nextUpdate = 0
 
-	if cd.staticSize or (cd.fontScale and (cd.fontScale >= MIN_SCALE)) then
+	if cd.fontScale and (cd.fontScale >= MIN_SCALE) then
 		cd:Show()
 	end
 end
@@ -165,8 +159,8 @@ function E:CreateCooldownTimer(parent)
 
 	-- keep an eye on the size so we can rescale the font if needed
 	self:Cooldown_OnSizeChanged(timer, parent, parent:GetSize())
-	parent:SetScript('OnSizeChanged', function(_, ...)
-		self:Cooldown_OnSizeChanged(timer, parent, ...)
+	parent:SetScript('OnSizeChanged', function(owner, width)
+		self:Cooldown_OnSizeChanged(timer, owner, width)
 	end)
 
 	-- keep this after Cooldown_OnSizeChanged
@@ -184,7 +178,7 @@ function E:OnSetCooldown(start, duration)
 		timer.enabled = true
 		timer.nextUpdate = 0
 
-		if timer.staticSize or (timer.fontScale and (timer.fontScale >= MIN_SCALE)) then
+		if timer.fontScale and (timer.fontScale >= MIN_SCALE) then
 			timer:Show()
 		end
 	elseif self.timer then
