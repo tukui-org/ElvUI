@@ -171,19 +171,6 @@ function UF:Configure_Auras(frame, auraType)
 		auras:EnableMouse(true)
 	end
 
-	do -- update aura count font and update the cooldown settings fontsize
-		local index = 1
-		while auras[index] do
-			local button = auras[index]
-
-			if button.count then
-				button.count:FontTemplate(LSM:Fetch('font', auras.db.countFont), auras.db.countFontSize, auras.db.countFontOutline)
-			end
-
-			index = index + 1
-		end
-	end
-
 	if auras.db.enable then
 		auras:Show()
 	else
@@ -333,14 +320,31 @@ end
 function UF:PostUpdateAura(unit, button)
 	local auras = button:GetParent()
 	local frame = auras:GetParent()
-	local type = auras.type
-	local db = frame.db and frame.db[type]
+	local db = frame.db and frame.db[auras.type]
 
 	if db then
 		if db.clickThrough and button:IsMouseEnabled() then
 			button:EnableMouse(false)
 		elseif not db.clickThrough and not button:IsMouseEnabled() then
 			button:EnableMouse(true)
+		end
+
+		if button.cd.timer and button.cd.timer.text then
+			button.cd.timer.text:ClearAllPoints()
+
+			if db and db.durationPosition == 'TOPLEFT' then
+				button.cd.timer.text:Point('TOPLEFT', 1, 1)
+			elseif db and db.durationPosition == 'BOTTOMLEFT' then
+				button.cd.timer.text:Point('BOTTOMLEFT', 1, 1)
+			elseif db and db.durationPosition == 'TOPRIGHT' then
+				button.cd.timer.text:Point('TOPRIGHT', 1, 1)
+			else
+				button.cd.timer.text:Point('CENTER', 1, 1)
+			end
+		end
+
+		if button.count then
+			button.count:FontTemplate(LSM:Fetch('font', auras.db.countFont), auras.db.countFontSize, auras.db.countFontOutline)
 		end
 	end
 

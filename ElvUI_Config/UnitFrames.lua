@@ -546,6 +546,34 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 					},
 				}
 			},
+			duration = {
+				type = "group",
+				order = 13,
+				name = L["Duration"],
+				guiInline = true,
+				get = function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end,
+				set = function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+				args = {
+					cooldownShortcut = {
+						order = 1,
+						type = "execute",
+						name = L["Cooldowns"],
+						buttonElvUI = true,
+						func = function() ACD:SelectGroup("ElvUI", "cooldown", "unitframe") end,
+					},
+					durationPosition = {
+						order = 2,
+						name = L["Position"],
+						type = "select",
+						values = {
+							["CENTER"] = L["Center"],
+							["TOPLEFT"] = "TOPLEFT",
+							["BOTTOMLEFT"] = "BOTTOMLEFT",
+							["TOPRIGHT"] = "TOPRIGHT",
+						},
+					},
+				}
+			},
 			filters = {
 				name = FILTERS,
 				guiInline = true,
