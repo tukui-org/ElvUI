@@ -177,13 +177,13 @@ function NP:Update_Highlight(nameplate)
 		end
 
 		if db.health.enable and not (db.nameOnly or nameplate.NameOnlyChanged) then
-			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, .3)
-			nameplate.Highlight.texture:SetAllPoints(nameplate.Health)
-			nameplate.Highlight.texture:SetAlpha(1)
+			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, 0.25)
+			nameplate.Highlight.texture:SetAllPoints(nameplate.FlashTexture)
+			nameplate.Highlight.texture:SetAlpha(0.75)
 		else
 			nameplate.Highlight.texture:SetTexture(E.Media.Textures.Spark)
 			nameplate.Highlight.texture:SetAllPoints(nameplate)
-			nameplate.Highlight.texture:SetAlpha(.5)
+			nameplate.Highlight.texture:SetAlpha(0.50)
 		end
 	else
 		if nameplate:IsElementEnabled('Highlight') then
