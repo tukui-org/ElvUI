@@ -17,8 +17,8 @@ local function Update(self, event, unit)
 		(element.Target and (unit:find('target') and UnitExists(unit))) or
 		(element.Target and UnitExists(unit .. 'target')) or
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
-		(element.Power and ((powerType == 'RAGE' or powerType == 'RUNIC_POWER') and power > 0)) or
-		(element.Power and ((powerType ~= 'RAGE' and powerType ~= 'RUNIC_POWER') and power < UnitPowerMax(unit))) or
+		(element.Power and ((powerType == 'RAGE' or powerType == 'RUNIC_POWER' or powerType == 'MAELSTROM') and power > 0)) or
+		(element.Power and ((powerType ~= 'RAGE' and powerType ~= 'RUNIC_POWER' and  powerType ~= 'MAELSTROM') and power < UnitPowerMax(unit))) or
 		(element.Hover and (GetMouseFocus() == self))
 	then
 		if (element.Smooth) then
