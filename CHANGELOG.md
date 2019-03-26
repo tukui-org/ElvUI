@@ -6,6 +6,7 @@ Added an option to toggle the Nameplates from fading in when shown.
 Added option to hide voice chat buttons on the chat tab panel.  
 Added NamePlate and UnitFrame Color Selection colors from oUF. (Thanks oUF/LS-)!  
 Added an option to ignore the UI Scale popup when resizing the game window (General -> Ignore UI Scale Popup).  
+Added Duration option for Unitframe cooldown text.  
 
 **Bug Fixes:**  
 Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
@@ -18,7 +19,7 @@ Fixed a gap at the end of Classbar on Nameplates.
 Fixed an issue whiched caused incompatiblity with our config and ColorPickerPlus.  
 Made sure the LDB Datatext value color updates along with the General Media Value color correctly.  
 Fixed an error in init.lua: attempt to index local 'ACD'.  
-Fixed Power Hide when Empty on Nameplates.  
+Fixed Nameplate Power Hide when Empty.  
 Hopefully, fixed the lhs error with Quick Join in Chat and DataText.  
 Fixed a Nameplate bug where the Highlight was under the health.  
 Fixed the skin not applying to Voice Chat Icons when the option was disabled to have them shown on the Chat Tab Panel.  
@@ -27,6 +28,7 @@ Fixing Off Tank Color on Nameplates and added transitioning colors.
 Fixed the DropDown Box text on the Communities Stream Dropdown.  
 
 **Misc. Changes:**  
+Removed the 'Forcing MaxGroups to' message.  
 Enabled Style Filter Hide Frame action.  
 Reallowed Target Scale in Nameplate options.  
 Nameplate CVars and other CVars should be working correctly again.  
@@ -46,6 +48,7 @@ Skin the Communities Notification Buttons.
 Cleaned some of the Unitframe Castbar code, as we believe this is part of the reason for the Unitframes to cause additional lags.  
 Removed Nameplate Detection as this was used in Legion but is no longer used as much and this would increase Nameplate preformance further.  
 Readded the Visbility settings to Static Player Nameplate.  
+Reworked the Nameplate cooldown text, so that it matches Unitframes.  
 
 **Work in Progress:**  
 Cutaway Health, Custom Text, and Floating Combat Feedback on Nameplates.  
