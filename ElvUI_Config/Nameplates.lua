@@ -2490,35 +2490,6 @@ local function GetUnitSettings(unit, name)
 									["TOPRIGHT"] = "TOPRIGHT",
 								},
 							},
-							spacer = {
-								order = 3,
-								type = "description",
-								name = " ",
-							},
-							font = {
-								type = "select", dialogControl = 'LSM30_Font',
-								order = 4,
-								name = L["Font"],
-								values = AceGUIWidgetLSMlists.font,
-							},
-							fontSize = {
-								order = 5,
-								name = FONT_SIZE,
-								type = "range",
-								min = 4, max = 60, step = 1,
-							},
-							fontOutline = {
-								order = 6,
-								name = L["Font Outline"],
-								desc = L["Set the font outline."],
-								type = "select",
-								values = {
-									['NONE'] = NONE,
-									['OUTLINE'] = 'OUTLINE',
-									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-									['THICKOUTLINE'] = 'THICKOUTLINE',
-								},
-							},
 						}
 					},
 					filtersGroup = {
@@ -2799,35 +2770,6 @@ local function GetUnitSettings(unit, name)
 									["TOPLEFT"] = "TOPLEFT",
 									["BOTTOMLEFT"] = "BOTTOMLEFT",
 									["TOPRIGHT"] = "TOPRIGHT",
-								},
-							},
-							spacer = {
-								order = 3,
-								type = "description",
-								name = " ",
-							},
-							font = {
-								type = "select", dialogControl = 'LSM30_Font',
-								order = 4,
-								name = L["Font"],
-								values = AceGUIWidgetLSMlists.font,
-							},
-							fontSize = {
-								order = 5,
-								name = FONT_SIZE,
-								type = "range",
-								min = 4, max = 60, step = 1,
-							},
-							fontOutline = {
-								order = 6,
-								name = L["Font Outline"],
-								desc = L["Set the font outline."],
-								type = "select",
-								values = {
-									['NONE'] = NONE,
-									['OUTLINE'] = 'OUTLINE',
-									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-									['THICKOUTLINE'] = 'THICKOUTLINE',
 								},
 							},
 						}

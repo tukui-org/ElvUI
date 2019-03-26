@@ -137,11 +137,6 @@ function NP:Construct_AuraIcon(button)
 	button.stealable:SetTexture()
 
 	button.cd.CooldownOverride = 'nameplates'
-	button.cd.CooldownSettings = {
-		['font'] = LSM:Fetch('font', NP.db.font),
-		['fontOutline'] = NP.db.fontOutline
-	}
-
 	E:RegisterCooldown(button.cd)
 end
 
@@ -241,7 +236,6 @@ function NP:PostUpdateAura(unit, button)
 
 		if button.cd then
 			NP:UpdateCooldownTextPosition(button.cd, db)
-			NP:UpdateCooldownSettings(button.cd, db)
 		end
 	end
 end
@@ -257,16 +251,6 @@ function NP:UpdateCooldownTextPosition(cd, db)
 			cd.timer.text:Point('TOPRIGHT', 1, 1)
 		else
 			cd.timer.text:Point('CENTER', 1, 1)
-		end
-	end
-end
-
-function NP:UpdateCooldownSettings(cd, db)
-	if cd and cd.CooldownSettings and db then
-		cd.CooldownSettings.font = LSM:Fetch('font', db.font)
-		cd.CooldownSettings.fontOutline = db.fontOutline
-		if cd.timer then
-			E:Cooldown_OnSizeChanged(cd.timer, cd, cd:GetSize(), 'override')
 		end
 	end
 end

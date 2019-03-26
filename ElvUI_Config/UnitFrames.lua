@@ -483,20 +483,14 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				desc = L["What point to anchor to the frame you set to attach to."],
 				values = positionValues,
 			},
-			fontSize = {
-				order = 9,
-				name = FONT_SIZE,
-				type = "range",
-				min = 6, max = 212, step = 1,
-			},
 			clickThrough = {
-				order = 15,
+				order = 9,
 				name = L["Click Through"],
 				desc = L["Ignore mouse events."],
 				type = 'toggle',
 			},
 			sortMethod = {
-				order = 16,
+				order = 10,
 				name = L["Sort By"],
 				desc = L["Method to sort by."],
 				type = 'select',
@@ -509,7 +503,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				},
 			},
 			sortDirection = {
-				order = 16,
+				order = 11,
 				name = L["Sort Direction"],
 				desc = L["Ascending or Descending order."],
 				type = 'select',
@@ -517,6 +511,40 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 					['ASCENDING'] = L["Ascending"],
 					['DESCENDING'] = L["Descending"],
 				},
+			},
+			stacks = {
+				type = "group",
+				order = 12,
+				name = L["Stack Counter"],
+				guiInline = true,
+				get = function(info, value) return E.db.unitframe.units[groupName][auraType][info[#info]] end,
+				set = function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+				args = {
+					countFont = {
+						type = "select", dialogControl = 'LSM30_Font',
+						order = 1,
+						name = L["Font"],
+						values = AceGUIWidgetLSMlists.font,
+					},
+					countFontSize = {
+						order = 2,
+						name = FONT_SIZE,
+						type = "range",
+						min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
+					},
+					countFontOutline = {
+						order = 3,
+						name = L["Font Outline"],
+						desc = L["Set the font outline."],
+						type = "select",
+						values = {
+							['NONE'] = NONE,
+							['OUTLINE'] = 'OUTLINE',
+							['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+							['THICKOUTLINE'] = 'THICKOUTLINE',
+						},
+					},
+				}
 			},
 			filters = {
 				name = FILTERS,
