@@ -386,7 +386,7 @@ function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, IsInInstance())
 end
 
-function NP:ConfigureAll(fromConfig)
+function NP:ConfigureAll()
 	NP.PlayerRole = GetSpecializationRole(GetSpecialization())
 
 	C_NamePlate_SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
