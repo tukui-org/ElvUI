@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
-local ElvUF = ElvUI.oUF
+local ElvUF = E.oUF
 
 --Cache global variables
 local _G = _G
