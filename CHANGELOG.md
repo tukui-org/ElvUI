@@ -1,54 +1,54 @@
 ### Version 11.07 [  ]
 
 **New Additions:**  
-Added ElvUIPlayerNamePlateAnchor for WeakAuras and other AddOns.  
-Added an option to toggle the Nameplates from fading in when shown.  
-Added option to hide voice chat buttons on the chat tab panel.  
-Added NamePlate and UnitFrame Color Selection colors from oUF. (Thanks oUF/LS-)!  
+[Nameplate] Added ElvUIPlayerNamePlateAnchor for WeakAuras and other AddOns.  
+[Nameplate] Added an option to toggle the Nameplates from fading in when shown.  
+[Nameplate / Unitframes] Added NamePlate and UnitFrame Color Selection colors from oUF. (Thanks oUF/LS-)!  
+[Unitframes] Added Duration option for Unitframe cooldown text.  
+[Chat] Added option to hide voice chat buttons on the chat tab panel.  
 Added an option to ignore the UI Scale popup when resizing the game window (General -> Ignore UI Scale Popup).  
-Added Duration option for Unitframe cooldown text.  
 
 **Bug Fixes:**  
-Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
-Made Style Filter Name Color and Alpha action work again.  
-Fixed Style Filter Health Color not working correctly in combat.  
-Fixed Target Indicator showing permanently when Low Health Threshold was set to zero.  
-Fixed an issue in Toolkit which prevented border/backdrop color in some cases.  
+[Nameplate] Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
+[Nameplate] Made Style Filter Name Color and Alpha action work again.  
+[Nameplate] Fixed Style Filter Health Color not working correctly in combat.  
+[Nameplate] Fixed Target Indicator showing permanently when Low Health Threshold was set to zero.  
+[Nameplate] Fixed a gap at the end of Classbar on Nameplates.  
+[Nameplate] Fixed Nameplate Power Hide when Empty.  
+[Nameplate] Fixed a Nameplate bug where the Highlight was under the health.  
+[Nameplate] Fixing Off Tank Color on Nameplates and added transitioning colors.  
+Fixed an issue which prevented border and backdrop color from being updated correctly in some cases.  
 Fixed spam errors when trying to change Talents when you have non selected yet.  
-Fixed a gap at the end of Classbar on Nameplates.  
 Fixed an issue whiched caused incompatiblity with our config and ColorPickerPlus.  
-Made sure the LDB Datatext value color updates along with the General Media Value color correctly.  
 Fixed an error in init.lua: attempt to index local 'ACD'.  
-Fixed Nameplate Power Hide when Empty.  
-Hopefully, fixed the lhs error with Quick Join in Chat and DataText.  
-Fixed a Nameplate bug where the Highlight was under the health.  
 Fixed the skin not applying to Voice Chat Icons when the option was disabled to have them shown on the Chat Tab Panel.  
 Fixed an issue with the Quest Skin which caused the Quest Icon beside the text to sometimes not be shown.  
-Fixing Off Tank Color on Nameplates and added transitioning colors.  
 Fixed the DropDown Box text on the Communities Stream Dropdown.  
+Finally fixed the 'lhs' error with Quick Join in Chat and DataText.  
+Made sure the LDB Datatext value color updates along with the General Media Value color correctly.  
 
 **Misc. Changes:**  
-Removed the 'Forcing MaxGroups to' message.  
-Enabled Style Filter Hide Frame action.  
-Reallowed Target Scale in Nameplate options.  
-Nameplate CVars and other CVars should be working correctly again.  
+[Nameplate] Keep Player nameplate from fading out.  
+[Nameplate] Enabled Style Filter Hide Frame action.  
+[Nameplate] Reallowed Target Scale in Nameplate options.  
+[Nameplate] Nameplate CVars and other CVars should be working correctly again.  
+[Nameplate] Removed Nameplate Detection as this was used in Legion but is no longer used as much and this would increase Nameplate preformance further.  
+[Nameplate] Readded the Visbility settings to Static Player Nameplate.  
+[Nameplate] Reworked the Nameplate cooldown text, so that it matches Unitframes.  
+[Nameplate] Adding Name Only (with Show Title) on Nameplates and back in Style Filters.  
+[Nameplate] Reworked the Nameplate Target Alpha so that it shows only while in combat.  
+[Nameplate] Updated oUF to increase preformance of the new Nameplates further.  
+[Unitframe] Cleaned some of the Unitframe Castbar code, as we believe this is part of the reason for the Unitframes to cause additional lags.  
+[Actionbars] Stopped allowing Keybinder in combat.  
+[Bags] Recoded the animation for the Bag New Item Glow so they all glow together instead of seperately, also gave it a fancy new glow texture.  
+[Config] Made the Enable Checkboxes in the config colorful, so that they're easier to spot, plus it looks really cool, imo.  
+[Config] Oganized some of the Config with help from (@wing5wong).  
 Updated Module Copy to handle some new cases.  
-Keep Player nameplate from fading out.  
-Stopped allowing Keybinder in combat.  
-Recoded the animation for the Bag New Item Glow so they all glow together instead of seperately, also gave it a fancy new glow texture.  
-Updated oUF to increase preformance of the new Nameplates further.  
 Updated Quest Greeting Frame skin.  
 Optimized the Color Picker code for better preformance, also it will accept three digit hex values in the hex box but you must you press enter.  
-Made the Enable Checkboxes in the config colorful, so that they're easier to spot, plus it looks really cool.  
-Adding Name Only (with Show Title) on Nameplates and back in Style Filters.  
-Oganized some of the Config with help from (@wing5wong).  
-Reworked the Nameplate Target Alpha so that it shows only while in combat.  
-Added and skinned the New Toy Alert.  
-Skin the Communities Notification Buttons.  
-Cleaned some of the Unitframe Castbar code, as we believe this is part of the reason for the Unitframes to cause additional lags.  
-Removed Nameplate Detection as this was used in Legion but is no longer used as much and this would increase Nameplate preformance further.  
-Readded the Visbility settings to Static Player Nameplate.  
-Reworked the Nameplate cooldown text, so that it matches Unitframes.  
+Skinned the New Toy Alert.  
+Skinned the Communities Notification Buttons.  
+Removed the 'Forcing MaxGroups to' message.  
 
 **Work in Progress:**  
 Cutaway Health, Custom Text, and Floating Combat Feedback on Nameplates.  
