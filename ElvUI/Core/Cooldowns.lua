@@ -47,10 +47,10 @@ function E:Cooldown_OnUpdate(elapsed)
 	end
 end
 
-function E:Cooldown_OnSizeChanged(cd, parent, width, force)
+function E:Cooldown_OnSizeChanged(cd, width, force)
 	local fontScale = width and (floor(width + .5) / ICON_SIZE)
 
-	if fontScale and (fontScale == cd.fontScale) and (force ~= 'override') then return end
+	if fontScale and (fontScale == cd.fontScale) and (force ~= true) then return end
 	cd.fontScale = fontScale
 
 	if fontScale and (fontScale < MIN_SCALE) then
@@ -61,14 +61,12 @@ function E:Cooldown_OnSizeChanged(cd, parent, width, force)
 			local useCustomFont = (cd.timerOptions and cd.timerOptions.fontOptions and cd.timerOptions.fontOptions.enable) and E.Libs.LSM:Fetch("font", cd.timerOptions.fontOptions.font)
 			if useCustomFont then
 				text:FontTemplate(useCustomFont, (fontScale * cd.timerOptions.fontOptions.fontSize), cd.timerOptions.fontOptions.fontOutline)
-			elseif fontScale and parent and parent.timerSettings then
-				text:FontTemplate(parent.timerSettings.font, parent.timerSettings.fontSize or (fontScale * FONT_SIZE), parent.timerSettings.fontOutline)
 			elseif fontScale then
 				text:FontTemplate(nil, (fontScale * FONT_SIZE), 'OUTLINE')
 			end
 		end
 
-		if cd.enabled and (force ~= 'override') then
+		if cd.enabled and (force ~= true) then
 			self:Cooldown_ForceUpdate(cd)
 		end
 	end
@@ -158,9 +156,9 @@ function E:CreateCooldownTimer(parent)
 	E:ToggleBlizzardCooldownText(parent, timer)
 
 	-- keep an eye on the size so we can rescale the font if needed
-	self:Cooldown_OnSizeChanged(timer, parent, parent:GetSize())
-	parent:SetScript('OnSizeChanged', function(owner, width)
-		self:Cooldown_OnSizeChanged(timer, owner, width)
+	self:Cooldown_OnSizeChanged(timer, parent:GetWidth())
+	parent:SetScript('OnSizeChanged', function(_, width)
+		self:Cooldown_OnSizeChanged(timer, width)
 	end)
 
 	-- keep this after Cooldown_OnSizeChanged
@@ -269,7 +267,7 @@ function E:UpdateCooldownOverride(module)
 
 			-- update font
 			if timer and CD then
-				self:Cooldown_OnSizeChanged(CD, cd, cd:GetSize(), 'override')
+				self:Cooldown_OnSizeChanged(CD, cd:GetWidth(), true)
 			else
 				text = CD.text or CD.time
 				if text then
