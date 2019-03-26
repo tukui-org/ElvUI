@@ -143,7 +143,6 @@ function NP:Update_ClassPower(nameplate)
 			nameplate:EnableElement('ClassPower')
 		end
 
-		nameplate.ClassPower:Show()
 		nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', 0, db.classpower.yOffset)
 
 		local maxClassBarButtons = nameplate.ClassPower.__max
