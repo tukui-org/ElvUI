@@ -329,7 +329,7 @@ function UF:PostUpdateAura(unit, button)
 			button:EnableMouse(true)
 		end
 
-		if button.cd.timer and button.cd.timer.text then
+		if button.cd and button.cd.timer and button.cd.timer.text then
 			button.cd.timer.text:ClearAllPoints()
 
 			if db and db.durationPosition == 'TOPLEFT' then
