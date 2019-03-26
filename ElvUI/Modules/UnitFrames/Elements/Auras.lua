@@ -49,41 +49,7 @@ end
 
 function UF:Construct_AuraIcon(button)
 	local offset = UF.thinBorders and E.mult or E.Border
-
-	button.text = button.cd:CreateFontString(nil, 'OVERLAY')
-	button.text:Point('CENTER', 1, 1)
-	button.text:SetJustifyH('CENTER')
-
 	button:SetTemplate(nil, nil, nil, UF.thinBorders, true)
-
-	-- cooldown override settings
-	if not button.timerOptions then
-		button.timerOptions = {}
-	end
-
-	button.timerOptions.reverseToggle = UF.db.cooldown.reverse
-	button.timerOptions.hideBlizzard = UF.db.cooldown.hideBlizzard
-
-	if UF.db.cooldown.override and E.TimeColors.unitframe then
-		button.timerOptions.timeColors, button.timerOptions.timeThreshold = E.TimeColors.unitframe, UF.db.cooldown.threshold
-	else
-		button.timerOptions.timeColors, button.timerOptions.timeThreshold = nil, nil
-	end
-
-	if UF.db.cooldown.checkSeconds then
-		button.timerOptions.hhmmThreshold, button.timerOptions.mmssThreshold = UF.db.cooldown.hhmmThreshold, UF.db.cooldown.mmssThreshold
-	else
-		button.timerOptions.hhmmThreshold, button.timerOptions.mmssThreshold = nil, nil
-	end
-
-	if UF.db.cooldown.fonts and UF.db.cooldown.fonts.enable then
-		button.timerOptions.fontOptions = UF.db.cooldown.fonts
-	elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
-		button.timerOptions.fontOptions = E.db.cooldown.fonts
-	else
-		button.timerOptions.fontOptions = nil
-	end
-	----------
 
 	button.cd:SetReverse(true)
 	button.cd:SetInside(button, offset, offset)
@@ -118,6 +84,11 @@ function UF:Construct_AuraIcon(button)
 	end)
 
 	button.cd.CooldownOverride = 'unitframe'
+	button.cd.CooldownSettings = {
+		['font'] = LSM:Fetch('font', E.db.unitframe.font),
+		['fontOutline'] = E.db.unitframe.fontOutline
+	}
+
 	E:RegisterCooldown(button.cd)
 end
 
@@ -140,14 +111,13 @@ end
 
 function UF:Configure_Auras(frame, auraType)
 	if not frame.VARIABLES_SET then return end
-	local db = frame.db
 
+	local db = frame.db
 	local auras = frame[auraType]
 	auraType = auraType:lower()
 	auras.db = db[auraType]
 
 	local rows = auras.db.numrows
-
 	auras.forceShow = frame.forceShowAuras
 	auras.num = auras.db.perrow * rows
 	auras.size = auras.db.sizeOverride ~= 0 and auras.db.sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
@@ -206,22 +176,22 @@ function UF:Configure_Auras(frame, auraType)
 		auras:EnableMouse(true)
 	end
 
+	do -- update aura count font and update the cooldown settings fontsize
+		local index = 1
+		while auras[index] do
+			local button = auras[index]
+			if button.count then
+				button.count:FontTemplate(button.cd.CooldownSettings.font, auras.db.fontSize, button.cd.CooldownSettings.fontOutline)
+			end
+
+			index = index + 1
+		end
+	end
+
 	if auras.db.enable then
 		auras:Show()
 	else
 		auras:Hide()
-	end
-
-	do -- update aura count
-		local index = 1
-		local font = LSM:Fetch("font", E.db.unitframe.font)
-		local outline = E.db.unitframe.fontOutline
-		while auras[index] do
-			if auras[index].count then
-				auras[index].count:FontTemplate(font, auras.db.countFontSize or auras.db.fontSize, outline)
-			end
-			index = index + 1
-		end
 	end
 
 	local position = db.smartAuraPosition

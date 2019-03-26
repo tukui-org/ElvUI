@@ -139,8 +139,7 @@ function NP:Construct_AuraIcon(button)
 	button.cd.CooldownOverride = 'nameplates'
 	button.cd.CooldownSettings = {
 		['font'] = LSM:Fetch('font', NP.db.font),
-		['fontSize'] = NP.db.fontSize,
-		['fontOutline'] = NP.db.fontOutline,
+		['fontOutline'] = NP.db.fontOutline
 	}
 
 	E:RegisterCooldown(button.cd)
@@ -265,7 +264,6 @@ end
 function NP:UpdateCooldownSettings(cd, db)
 	if cd and cd.CooldownSettings and db then
 		cd.CooldownSettings.font = LSM:Fetch('font', db.font)
-		cd.CooldownSettings.fontSize = db.fontSize
 		cd.CooldownSettings.fontOutline = db.fontOutline
 		if cd.timer then
 			E:Cooldown_OnSizeChanged(cd.timer, cd, cd:GetSize(), 'override')

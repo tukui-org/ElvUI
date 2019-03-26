@@ -356,7 +356,7 @@ function E:UpdateCooldownSettings(module)
 		E:UpdateCooldownSettings('bags')
 		E:UpdateCooldownSettings('nameplates')
 		E:UpdateCooldownSettings('actionbar')
-		E:UpdateCooldownSettings('unitframe') -- has special OnUpdate
+		E:UpdateCooldownSettings('unitframe')
 		E:UpdateCooldownSettings('auras') -- has special OnUpdate
 	end
 end
