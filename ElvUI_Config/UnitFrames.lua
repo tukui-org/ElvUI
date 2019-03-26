@@ -2981,7 +2981,7 @@ E.Options.args.unitframe = {
 								},
 							},
 						},
-						threatGroup = {
+						--[[threatGroup = {
 							order = 6,
 							type = 'group',
 							name = L["Threat"],
@@ -3019,7 +3019,7 @@ E.Options.args.unitframe = {
 									type = 'color',
 								},
 							},
-						},
+						},]]
 						castBars = {
 							order = 7,
 							type = 'group',
