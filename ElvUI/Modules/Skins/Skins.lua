@@ -270,13 +270,11 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 
 	-- used for a white X on decline buttons (more clear)
 	if isDeclineButton then
-		if button.Icon then button.Icon:Hide() end
-		if not button.text then
-			button.text = button:CreateFontString(nil, 'OVERLAY')
-			button.text:FontTemplate(E.Media.Fonts.PTSansNarrow, 16, 'OUTLINE')
-			button.text:Point('CENTER', button, 'CENTER')
-			button.text:SetJustifyH('CENTER')
-			button.text:SetText('x')
+		if button.Icon then
+			button.Icon:SetTexture(E.Media.Textures.Close)
+		end
+		if button.Text then
+			button.Text:SetText('')
 		end
 	end
 
