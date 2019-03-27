@@ -244,14 +244,12 @@ end
 function NP:UpdateCooldownTextPosition(cd, db)
 	if cd.timer and cd.timer.text then
 		cd.timer.text:ClearAllPoints()
-		if db and db.durationPosition == 'TOPLEFT' then
-			cd.timer.text:Point('TOPLEFT', 1, 1)
-		elseif db and db.durationPosition == 'BOTTOMLEFT' then
-			cd.timer.text:Point('BOTTOMLEFT', 1, 1)
-		elseif db and db.durationPosition == 'TOPRIGHT' then
-			cd.timer.text:Point('TOPRIGHT', 1, 1)
+		local point = (db and db.durationPosition) or 'CENTER'
+		if point == 'CENTER' then
+			cd.timer.text:Point(point, 1, 0)
 		else
-			cd.timer.text:Point('CENTER', 1, 1)
+			local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
+			cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
 		end
 	end
 end

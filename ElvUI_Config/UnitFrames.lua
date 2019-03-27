@@ -566,7 +566,10 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 						name = L["Position"],
 						type = "select",
 						values = {
-							["CENTER"] = L["Center"],
+							["TOP"] = "TOP",
+							["LEFT"] = "LEFT",
+							["BOTTOM"] = "BOTTOM",
+							["CENTER"] = "CENTER",
 							["TOPLEFT"] = "TOPLEFT",
 							["BOTTOMLEFT"] = "BOTTOMLEFT",
 							["TOPRIGHT"] = "TOPRIGHT",

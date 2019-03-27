@@ -1990,7 +1990,7 @@ local function GetUnitSettings(unit, name)
 								type = "select",
 								name = L["Position"],
 								values = {
-									["CENTER"] = L["Center"],
+									["CENTER"] = "CENTER",
 									["TOPLEFT"] = "TOPLEFT",
 									["BOTTOMLEFT"] = "BOTTOMLEFT",
 									["TOPRIGHT"] = "TOPRIGHT",
@@ -2137,7 +2137,7 @@ local function GetUnitSettings(unit, name)
 								type = "select",
 								name = L["Position"],
 								values = {
-									["CENTER"] = L["Center"],
+									["CENTER"] = "CENTER",
 									["TOPLEFT"] = "TOPLEFT",
 									["BOTTOMLEFT"] = "BOTTOMLEFT",
 									["TOPRIGHT"] = "TOPRIGHT",
@@ -2525,7 +2525,10 @@ local function GetUnitSettings(unit, name)
 								name = L["Position"],
 								type = "select",
 								values = {
-									["CENTER"] = L["Center"],
+									["TOP"] = "TOP",
+									["LEFT"] = "LEFT",
+									["BOTTOM"] = "BOTTOM",
+									["CENTER"] = "CENTER",
 									["TOPLEFT"] = "TOPLEFT",
 									["BOTTOMLEFT"] = "BOTTOMLEFT",
 									["TOPRIGHT"] = "TOPRIGHT",
@@ -2807,7 +2810,10 @@ local function GetUnitSettings(unit, name)
 								name = L["Position"],
 								type = "select",
 								values = {
-									["CENTER"] = L["Center"],
+									["TOP"] = "TOP",
+									["LEFT"] = "LEFT",
+									["BOTTOM"] = "BOTTOM",
+									["CENTER"] = "CENTER",
 									["TOPLEFT"] = "TOPLEFT",
 									["BOTTOMLEFT"] = "BOTTOMLEFT",
 									["TOPRIGHT"] = "TOPRIGHT",
@@ -3034,7 +3040,7 @@ local function GetUnitSettings(unit, name)
 						type = "select",
 						name = L["Position"],
 						values = {
-							["CENTER"] = L["Center"],
+							["CENTER"] = "CENTER",
 							["TOPLEFT"] = "TOPLEFT",
 							["BOTTOMLEFT"] = "BOTTOMLEFT",
 							["TOPRIGHT"] = "TOPRIGHT",
@@ -3126,7 +3132,7 @@ local function GetUnitSettings(unit, name)
 						type = "select",
 						name = L["Position"],
 						values = {
-							["CENTER"] = L["Center"],
+							["CENTER"] = "CENTER",
 							["TOPLEFT"] = "TOPLEFT",
 							["BOTTOMLEFT"] = "BOTTOMLEFT",
 							["TOPRIGHT"] = "TOPRIGHT",
@@ -3459,7 +3465,7 @@ local function GetUnitSettings(unit, name)
 					type = "select",
 					name = L["Icon Position"],
 					values = {
-						["CENTER"] = L["Center"],
+						["CENTER"] = "CENTER",
 						["TOPLEFT"] = "TOPLEFT",
 						["BOTTOMLEFT"] = "BOTTOMLEFT",
 						["TOPRIGHT"] = "TOPRIGHT",
@@ -3508,7 +3514,7 @@ local function GetUnitSettings(unit, name)
 					type = "select",
 					name = L["Icon Position"],
 					values = {
-						["CENTER"] = L["Center"],
+						["CENTER"] = "CENTER",
 						["TOPLEFT"] = "TOPLEFT",
 						["BOTTOMLEFT"] = "BOTTOMLEFT",
 						["TOPRIGHT"] = "TOPRIGHT",
@@ -3585,7 +3591,7 @@ local function GetUnitSettings(unit, name)
 					type = "select",
 					name = L["Icon Position"],
 					values = {
-						["CENTER"] = L["Center"],
+						["CENTER"] = "CENTER",
 						["TOPLEFT"] = "TOPLEFT",
 						["BOTTOMLEFT"] = "BOTTOMLEFT",
 						["TOPRIGHT"] = "TOPRIGHT",
@@ -3638,7 +3644,7 @@ local function GetUnitSettings(unit, name)
 					type = "select",
 					name = L["Position"],
 					values = {
-						["CENTER"] = L["Center"],
+						["CENTER"] = "CENTER",
 						["TOPLEFT"] = "TOPLEFT",
 						["BOTTOMLEFT"] = "BOTTOMLEFT",
 						["TOPRIGHT"] = "TOPRIGHT",
