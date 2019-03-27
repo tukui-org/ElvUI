@@ -4,6 +4,21 @@ local oUF = E.oUF
 local GetMouseFocus = GetMouseFocus
 local UnitPowerType, UnitPower, UnitPowerMax, UnitCastingInfo, UnitChannelInfo, UnitAffectingCombat, UnitExists, UnitHealth, UnitHealthMax = UnitPowerType, UnitPower, UnitPowerMax, UnitCastingInfo, UnitChannelInfo, UnitAffectingCombat, UnitExists, UnitHealth, UnitHealthMax
 
+local PowerTypesEmpty = {
+	RAGE = true,
+	RUNIC_POWER = true,
+	LUNAR_POWER = true,
+	MAELSTROM = true,
+	FURY = true,
+	PAIN = true
+}
+
+local PowerTypesFull = {
+	MANA = true,
+	FOCUS = true,
+	ENERGY = true,
+}
+
 local function Update(self, event, unit)
 	unit = unit or self.unit
 	local element = self.Fader
@@ -17,8 +32,8 @@ local function Update(self, event, unit)
 		(element.Target and (unit:find('target') and UnitExists(unit))) or
 		(element.Target and UnitExists(unit .. 'target')) or
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
-		(element.Power and ((powerType == 'RAGE' or powerType == 'RUNIC_POWER' or powerType == 'MAELSTROM') and power > 0)) or
-		(element.Power and ((powerType ~= 'RAGE' and powerType ~= 'RUNIC_POWER' and  powerType ~= 'MAELSTROM') and power < UnitPowerMax(unit))) or
+		(element.Power and (PowerTypesEmpty[powerType] and power > 0)) or
+		(element.Power and (PowerTypesFull[powerType] and power < UnitPowerMax(unit))) or
 		(element.Hover and (GetMouseFocus() == self))
 	then
 		if (element.Smooth) then

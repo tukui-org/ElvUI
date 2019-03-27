@@ -104,7 +104,7 @@ function NP:Power_PostUpdate(unit, cur, min, max)
 		return
 	end
 
-	if (db.power and db.power.enable and db.power.hideWhenEmpty) and ((cur == 0 and min == 0) or (min == 0 and max == 0)) then
+	if (db.power and db.power.enable and db.power.hideWhenEmpty) and (cur == 0) then
 		self:Hide()
 	else
 		self:Show()
