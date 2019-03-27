@@ -1,6 +1,7 @@
 ### Version 11.07 [  ]
 
 **New Additions:**  
+[Nameplate] Added Style Filter trigger Creature Type.  
 [Nameplate] Added ElvUIPlayerNamePlateAnchor for WeakAuras and other AddOns.  
 [Nameplate] Added an option to toggle the Nameplates from fading in when shown.  
 [Nameplate / Unitframes] Added NamePlate and UnitFrame Color Selection colors from oUF. (Thanks oUF/LS-)!  
