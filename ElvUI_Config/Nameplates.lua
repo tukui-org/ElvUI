@@ -2240,11 +2240,6 @@ local function GetUnitSettings(unit, name)
 						desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
 						min = 0, max = 4, step = 0.1,
 					},
-					spacer = {
-						order = 6,
-						type = "description",
-						name = " ",
-					},
 					width = {
 						order = 7,
 						name = L["Width"],
@@ -3402,7 +3397,7 @@ local function GetUnitSettings(unit, name)
 			name = L["Use Class Color"],
 		}
 		group.args.castGroup.args.displayTarget = {
-			order = 102,
+			order = 4, -- stays at 4
 			type = 'toggle',
 			name = L["Display Target"],
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
