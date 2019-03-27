@@ -6,7 +6,7 @@
 [Nameplate] Added an option to toggle the Nameplates from fading in when shown.  
 [Nameplate / Unitframes] Added NamePlate and UnitFrame Color Selection colors from oUF. (Thanks oUF/LS-)!  
 [Unitframe] Added Duration option for cooldown text and reworked the cooldown code.  
-[Chat] Added option to Hide Voice Buttons on the Tab Panel.  
+[Chat] Added option to Pin Voice Buttons on the Tab Panel (on by default).  
 Added an option to ignore the UI Scale popup when resizing the game window (General -> Ignore UI Scale Popup).  
 
 **Bug Fixes:**  
