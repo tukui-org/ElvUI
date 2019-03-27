@@ -2418,6 +2418,88 @@ function CH:HandleChatVoiceIcons()
 	end
 end
 
+function CH:CreateChatButtonPanel()
+	local ChatButtonHolder = CreateFrame('Frame', 'ChatButtonHolder', E.UIParent)
+	ChatButtonHolder:ClearAllPoints()
+	ChatButtonHolder:SetPoint('RIGHT', _G.LeftChatPanel, 'LEFT', E.PixelMode and -2 or -4, 0)
+	ChatButtonHolder:SetSize(33, _G.LeftChatPanel:GetHeight()-2)
+
+	--QuickJoinToastButton:Hide() -- DONT KILL IT! If we use hide we also hide the Toasts, which are used in other Plugins.
+	_G.QuickJoinToastButton:ClearAllPoints()
+	_G.QuickJoinToastButton:SetPoint('BOTTOM', _G.ChatFrameChannelButton, 'TOP', 0, E.PixelMode and 4 or 6)
+	_G.QuickJoinToastButton:SetSize(27, 32)
+
+	ChatButtonHolder:CreateBackdrop('Transparent', nil, true)
+	ChatButtonHolder.backdrop:SetPoint('TOPLEFT', ChatButtonHolder, E.PixelMode and 1 or 3, 1)
+	ChatButtonHolder.backdrop:SetPoint('BOTTOMRIGHT', ChatButtonHolder, E.PixelMode and 1 or 3, -1)
+	ChatButtonHolder.backdrop:SetBackdropColor(E.db.chat.panelColor.r, E.db.chat.panelColor.g, E.db.chat.panelColor.b, E.db.chat.panelColor.a)
+
+	_G.ChatFrameChannelButton:ClearAllPoints()
+	_G.ChatFrameChannelButton:SetPoint('TOP', ChatButtonHolder, 'TOP', E.PixelMode and 1.1 or 3, -2)
+
+	-- We have to reparent the buttons to our ChatButtonHolder
+	_G.ChatFrameChannelButton:SetParent(ChatButtonHolder)
+	_G.ChatFrameToggleVoiceDeafenButton:SetParent(ChatButtonHolder)
+	_G.ChatFrameToggleVoiceMuteButton:SetParent(ChatButtonHolder)
+
+	E:GetModule("Skins"):HandleButton(_G.ChatFrameChannelButton)
+	E:GetModule("Skins"):HandleButton(_G.ChatFrameToggleVoiceDeafenButton)
+	E:GetModule("Skins"):HandleButton(_G.ChatFrameToggleVoiceMuteButton)
+
+	_G.ChatAlertFrame:ClearAllPoints()
+	_G.ChatAlertFrame:SetPoint("BOTTOM", _G.ChatFrameChannelButton, "TOP", 1, 3)
+
+	-- Skin the QuickJoinToastButton
+	local QuickJoinToastButton = _G.QuickJoinToastButton
+	QuickJoinToastButton:SetParent(ChatButtonHolder)
+	QuickJoinToastButton:SetSize(27, 30)
+
+	QuickJoinToastButton:CreateBackdrop()
+	QuickJoinToastButton.backdrop:SetAllPoints()
+
+	-- Change the QuickJoin Textures. Looks better =)
+	local friendTex = 'Interface\\HELPFRAME\\ReportLagIcon-Chat'
+	local queueTex = 'Interface\\HELPFRAME\\HelpIcon-ItemRestoration'
+
+	QuickJoinToastButton.FriendsButton:SetTexture(friendTex)
+	QuickJoinToastButton.QueueButton:SetTexture(queueTex)
+
+	hooksecurefunc(QuickJoinToastButton, 'ToastToFriendFinished', function(t)
+		t.FriendsButton:SetShown(not t.displayedToast)
+		t.FriendCount:SetShown(not t.displayedToast)
+	end)
+
+	hooksecurefunc(QuickJoinToastButton, 'UpdateQueueIcon', function(t)
+		if not t.displayedToast then return end
+		t.FriendsButton:SetTexture(friendTex)
+		t.QueueButton:SetTexture(queueTex)
+		t.FlashingLayer:SetTexture(queueTex)
+		t.FriendsButton:SetShown(false)
+		t.FriendCount:SetShown(false)
+	end)
+
+	QuickJoinToastButton:HookScript('OnMouseDown', function(t)
+		t.FriendsButton:SetTexture(friendTex)
+	end)
+
+	QuickJoinToastButton:HookScript('OnMouseUp', function(t)
+		t.FriendsButton:SetTexture(friendTex)
+	end)
+
+	QuickJoinToastButton.Toast:ClearAllPoints()
+	QuickJoinToastButton.Toast:SetPoint('LEFT', QuickJoinToastButton, 'RIGHT', -6, 0)
+
+	-- Skin the QuickJoinToastButton.Toast
+	QuickJoinToastButton.Toast.Background:SetTexture('')
+	QuickJoinToastButton.Toast:CreateBackdrop('Transparent')
+	QuickJoinToastButton.Toast.backdrop:SetPoint('TOPLEFT', 10, -1)
+	QuickJoinToastButton.Toast.backdrop:SetPoint('BOTTOMRIGHT', 0, 3)
+	QuickJoinToastButton.Toast.backdrop:Hide()
+
+	hooksecurefunc(QuickJoinToastButton, "ShowToast", function() QuickJoinToastButton.Toast.backdrop:Show() end)
+	hooksecurefunc(QuickJoinToastButton, "HideToast", function() QuickJoinToastButton.Toast.backdrop:Hide() end)
+end
+
 function CH:BuildCopyChatFrame()
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	tinsert(_G.UISpecialFrames, "CopyChatFrame")
