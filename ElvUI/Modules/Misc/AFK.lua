@@ -32,9 +32,9 @@ local SetCVar = SetCVar
 local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
 local CinematicFrame = CinematicFrame
-local DND = DND
 local MovieFrame = MovieFrame
-local AFKString = AFK
+local DNDstr = _G.DND
+local AFKstr = _G.AFK
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, PVEFrame, ElvUIAFKPlayerModel, ChatTypeInfo
@@ -230,8 +230,8 @@ local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg
 	if CH.db.shortChannels then
 		body = body:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
 		body = body:gsub("^(.-|h) "..L["whispers"], "%1")
-		body = body:gsub("<"..AFKString..">", "[|cffFF0000"..L["AFK"].."|r] ")
-		body = body:gsub("<"..DND..">", "[|cffE7E716"..L["DND"].."|r] ")
+		body = body:gsub("<"..AFKstr..">", "[|cffFF0000"..L["AFK"].."|r] ")
+		body = body:gsub("<"..DNDstr..">", "[|cffE7E716"..L["DND"].."|r] ")
 		body = body:gsub("%[BN_CONVERSATION:", '%['.."")
 	end
 
