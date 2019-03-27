@@ -50,6 +50,27 @@ if GetLocale() == "ruRU" then
 	INFO_NEW = "Последняя:"
 	LIBRARY = "Библиотека"
 end
+
+if GetLocale() == "zhCN" then
+	MSG_OUTDATED = "你的 %s %s 版本已经过期 (最新版本是 %s)。你可以从 http://www.tukui.org 下载最新版本"
+	HDR_CONFIG = "插件"
+	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - 载入的插件 (绿色表示拥有当前版本, 红色表示版本已经过期)"
+	INFO_BY = "作者"
+	INFO_VERSION = "版本:"
+	INFO_NEW = "最新:"
+	LIBRARY = "库"
+end
+
+if GetLocale() == "zhTW" then
+	MSG_OUTDATED = "你的 %s %s 版本已經過期 (最新版本為 %s)。你可以透過 http://www.tukui.org 下載最新的版本"
+	HDR_CONFIG = "插件"
+	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - 載入的插件 (綠色表示擁有當前版本, 紅色表示版本已經過期)"
+	INFO_BY = "作者"
+	INFO_VERSION = "版本:"
+	INFO_NEW = "最新:"
+	LIBRARY = "庫"
+end
+
 ------------------------------
 --
 -- Plugin table format:
