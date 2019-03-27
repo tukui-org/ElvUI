@@ -1,4 +1,4 @@
-local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 22
+local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 23
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -31,7 +31,8 @@ local INFO_VERSION = "Version:"
 local INFO_NEW = "Newest:"
 local LIBRARY = "Library"
 
-if GetLocale() == "deDE" then
+local locale = GetLocale()
+if locale == "deDE" then
 	MSG_OUTDATED = "Deine Version von %s %s ist veraltet (akutelle Version ist %s). Du kannst die aktuelle Version von http://www.tukui.org herunterrladen."
 	HDR_CONFIG = "Plugins"
 	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - Plugins geladen (Grün bedeutet du hast die aktuelle Version, Rot bedeutet es ist veraltet)"
@@ -39,9 +40,7 @@ if GetLocale() == "deDE" then
 	INFO_VERSION = "Version:"
 	INFO_NEW = "Neuste:"
 	LIBRARY = "Bibliothek"
-end
-
-if GetLocale() == "ruRU" then
+elseif locale == "ruRU" then
 	MSG_OUTDATED = "Ваша версия %s %s устарела (последняя версия %s). Вы можете скачать последнюю версию на http://www.tukui.org"
 	HDR_CONFIG = "Плагины"
 	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - загруженные плагины (зеленый означает, что у вас последняя версия, красный - устаревшая)"
@@ -49,9 +48,7 @@ if GetLocale() == "ruRU" then
 	INFO_VERSION = "Версия:"
 	INFO_NEW = "Последняя:"
 	LIBRARY = "Библиотека"
-end
-
-if GetLocale() == "zhCN" then
+elseif locale == "zhCN" then
 	MSG_OUTDATED = "你的 %s %s 版本已经过期 (最新版本是 %s)。你可以从 http://www.tukui.org 下载最新版本"
 	HDR_CONFIG = "插件"
 	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - 载入的插件 (绿色表示拥有当前版本, 红色表示版本已经过期)"
@@ -59,9 +56,7 @@ if GetLocale() == "zhCN" then
 	INFO_VERSION = "版本:"
 	INFO_NEW = "最新:"
 	LIBRARY = "库"
-end
-
-if GetLocale() == "zhTW" then
+elseif locale == "zhTW" then
 	MSG_OUTDATED = "你的 %s %s 版本已經過期 (最新版本為 %s)。你可以透過 http://www.tukui.org 下載最新的版本"
 	HDR_CONFIG = "插件"
 	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - 載入的插件 (綠色表示擁有當前版本, 紅色表示版本已經過期)"
