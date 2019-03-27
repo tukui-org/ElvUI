@@ -121,8 +121,6 @@ local function Disable(self, unit)
 	local element = self.Fader
 
 	if element then
-		self:SetAlpha(1)
-
 		self:UnregisterEvent('PLAYER_REGEN_ENABLED', Update)
 		self:UnregisterEvent('PLAYER_REGEN_DISABLED', Update)
 		self:UnregisterEvent('UNIT_TARGET', Update)
