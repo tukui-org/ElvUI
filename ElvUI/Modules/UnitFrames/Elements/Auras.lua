@@ -162,9 +162,9 @@ function UF:Configure_Auras(frame, auraType)
 	auras.xOffset = x + auras.db.xOffset
 	auras.yOffset = y + auras.db.yOffset
 
-	if db.clickThrough and auras:IsMouseEnabled() then
+	if auras.db.clickThrough and auras:IsMouseEnabled() then
 		auras:EnableMouse(false)
-	elseif not db.clickThrough and not auras:IsMouseEnabled() then
+	elseif not auras.db.clickThrough and not auras:IsMouseEnabled() then
 		auras:EnableMouse(true)
 	end
 
