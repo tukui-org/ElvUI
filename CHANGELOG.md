@@ -5,45 +5,46 @@
 [Nameplate] Added ElvUIPlayerNamePlateAnchor for WeakAuras and other AddOns.  
 [Nameplate] Added an option to toggle the Nameplates from fading in when shown.  
 [Nameplate / Unitframes] Added NamePlate and UnitFrame Color Selection colors from oUF. (Thanks oUF/LS-)!  
-[Unitframes] Added Duration option for Unitframe cooldown text.  
-[Chat] Added option to hide voice chat buttons on the chat tab panel.  
+[Unitframe] Added Duration option for cooldown text and reworked the cooldown code.  
+[Chat] Added option to Hide Voice Buttons on the Tab Panel.  
 Added an option to ignore the UI Scale popup when resizing the game window (General -> Ignore UI Scale Popup).  
 
 **Bug Fixes:**  
-[Nameplate] Fixed an issue which caused the Targeted and Player Nameplate Classbar options to not take effect correctly.  
+[Nameplate] Fixed an issue which caused the Targeted and Player Classbar options to not take effect correctly.  
 [Nameplate] Made Style Filter Name Color and Alpha action work again.  
 [Nameplate] Fixed Style Filter Health Color not working correctly in combat.  
 [Nameplate] Fixed Target Indicator showing permanently when Low Health Threshold was set to zero.  
 [Nameplate] Fixed a gap at the end of Classbar on Nameplates.  
-[Nameplate] Fixed Nameplate Power Hide when Empty.  
-[Nameplate] Fixed a Nameplate bug where the Highlight was under the health.  
+[Nameplate] Fixed Power Hide when Empty.  
+[Nameplate] Fixed a bug where the Highlight was under the health.  
 [Nameplate] Fixing Off Tank Color on Nameplates and added transitioning colors.  
+[Actionbar] Fixed main bar (bar one) paging issue.  
+[Chat] Fixed the skin not applying to Voice Icons when the option was disabled to have them shown on the Tab Panel.  
+[Chat / Datatext] Finally fixed the 'lhs' error with Quick Join.  
+[Datatext] Made sure the LDB Datatext value color updates along with the General Media Value color correctly.  
 Fixed an issue which prevented border and backdrop color from being updated correctly in some cases.  
 Fixed spam errors when trying to change Talents when you have non selected yet.  
 Fixed an issue whiched caused incompatiblity with our config and ColorPickerPlus.  
 Fixed an error in init.lua: attempt to index local 'ACD'.  
-Fixed the skin not applying to Voice Chat Icons when the option was disabled to have them shown on the Chat Tab Panel.  
 Fixed an issue with the Quest Skin which caused the Quest Icon beside the text to sometimes not be shown.  
 Fixed the DropDown Box text on the Communities Stream Dropdown.  
-Finally fixed the 'lhs' error with Quick Join in Chat and DataText.  
-Made sure the LDB Datatext value color updates along with the General Media Value color correctly.  
 
 **Misc. Changes:**  
 [Nameplate] Keep Player nameplate from fading out.  
 [Nameplate] Enabled Style Filter Hide Frame action.  
-[Nameplate] Reallowed Target Scale in Nameplate options.  
-[Nameplate] Nameplate CVars and other CVars should be working correctly again.  
-[Nameplate] Removed Nameplate Detection as this was used in Legion but is no longer used as much and this would increase Nameplate preformance further.  
-[Nameplate] Readded the Visbility settings to Static Player Nameplate.  
-[Nameplate] Reworked the Nameplate cooldown text, so that it matches Unitframes.  
+[Nameplate] Reallowed Target Scale in options.  
+[Nameplate] CVars and other CVars should be working correctly again.  
+[Nameplate] Removed Detection as this was used in Legion but is no longer used as much and this would increase preformance further.  
+[Nameplate] Readded the Visbility settings on Static Player.  
+[Nameplate] Reworked the cooldown text, so that it matches Unitframes.  
 [Nameplate] Adding Name Only (with Show Title) on Nameplates and back in Style Filters.  
-[Nameplate] Reworked the Nameplate Target Alpha so that it shows only while in combat.  
+[Nameplate] Reworked the Target Alpha so that it shows only while in combat.  
 [Nameplate] Updated oUF to increase preformance of the new Nameplates further.  
-[Unitframe] Cleaned some of the Unitframe Castbar code, as we believe this is part of the reason for the Unitframes to cause additional lags.  
-[Actionbars] Stopped allowing Keybinder in combat.  
-[Bags] Recoded the animation for the Bag New Item Glow so they all glow together instead of seperately, also gave it a fancy new glow texture.  
+[Unitframe] Cleaned some of the Castbar code, as we believe this is part of the reason for the Unitframes to cause additional lags.  
+[Actionbar] Stopped allowing Keybinder in combat.  
+[Bag] Recoded the animation for the New Item Glow so they all glow together instead of seperately, also gave it a fancy new glow texture.  
 [Config] Made the Enable Checkboxes in the config colorful, so that they're easier to spot, plus it looks really cool, imo.  
-[Config] Oganized some of the Config with help from (@wing5wong).  
+[Config] Oganized a bit with help from (@wing5wong).  
 Updated Module Copy to handle some new cases.  
 Updated Quest Greeting Frame skin.  
 Optimized the Color Picker code for better preformance, also it will accept three digit hex values in the hex box but you must you press enter.  
