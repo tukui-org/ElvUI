@@ -422,7 +422,7 @@ P.nameplates = {
 			enable = false,
 			font = 'PT Sans Narrow',
 			fontOutline = 'OUTLINE',
-			fontSize = 10,
+			fontSize = 18,
 		},
 	},
 	displayStyle = 'ALL',
