@@ -13,7 +13,7 @@ Added an option to ignore the UI Scale popup when resizing the game window (Gene
 [Nameplate] Fixed an issue which caused the Targeted and Player Classbar options to not take effect correctly.  
 [Nameplate] Made Style Filter Name Color and Alpha action work again.  
 [Nameplate] Fixed Style Filter Health Color not working correctly in combat.  
-[Nameplate] Fixed Target Indicator showing permanently when Low Health Threshold was set to zero.  
+[Nameplate] Fixed Target Indicator showing permanently when Low Health Threshold was set to zero. (!115 - Thanks @wing5wong)  
 [Nameplate] Fixed a gap at the end of Classbar on Nameplates.  
 [Nameplate] Fixed Power Hide when Empty.  
 [Nameplate] Fixed a bug where the Highlight was under the health.  
