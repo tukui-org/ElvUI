@@ -1693,7 +1693,7 @@ P.chat = {
 	copyChatLines = false,
 	useBTagName = false,
 	panelColor = {r = .06,g = .06,b = .06, a = 0.8},
-	hideVoiceButtons = false,
+	pinVoiceButtons = true,
 }
 
 --Datatexts

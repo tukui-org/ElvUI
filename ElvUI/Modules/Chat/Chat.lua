@@ -2366,10 +2366,10 @@ local channelButtons = {
 	[3] = _G.ChatFrameToggleVoiceMuteButton
 }
 
-local function RepositionChatIcons()
+function CH:RepositionChatVoiceIcons()
 	_G.GeneralDockManagerScrollFrame:SetPoint("BOTTOMRIGHT") -- call our hook
-
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
+
 	if channelButtons[3]:IsShown() then
 		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[3], 'LEFT', -4, 2)
 	else
@@ -2378,9 +2378,7 @@ local function RepositionChatIcons()
 end
 
 function CH:HandleChatVoiceIcons()
-	if self.db.hideVoiceButtons then
-		self:CreateChatVoicePanel()
-	else
+	if self.db.pinVoiceButtons then
 		for index, button in pairs(channelButtons) do
 			button:ClearAllPoints()
 			button.Icon:SetDesaturated(true)
@@ -2397,8 +2395,8 @@ function CH:HandleChatVoiceIcons()
 		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[3], 'LEFT', 0, 2)
 		_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
 
-		channelButtons[3]:HookScript("OnShow", RepositionChatIcons)
-		channelButtons[3]:HookScript("OnHide", RepositionChatIcons) -- dont think this is needed but meh
+		channelButtons[3]:HookScript("OnShow", CH.RepositionChatVoiceIcons)
+		channelButtons[3]:HookScript("OnHide", CH.RepositionChatVoiceIcons) -- dont think this is needed but meh
 
 		hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y)
 			if anchor == _G.GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
@@ -2415,7 +2413,9 @@ function CH:HandleChatVoiceIcons()
 		-- We skin it later in Style chat, to keep the backdrops on the button if the option are disabled
 		Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
 
-		RepositionChatIcons()
+		CH:RepositionChatVoiceIcons()
+	else
+		self:CreateChatVoicePanel()
 	end
 end
 
