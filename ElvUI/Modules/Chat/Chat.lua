@@ -2428,7 +2428,6 @@ function CH:CreateChatVoicePanel()
 	Holder:SetBackdropColor(E.db.chat.panelColor.r, E.db.chat.panelColor.g, E.db.chat.panelColor.b, E.db.chat.panelColor.a)
 	E:CreateMover(Holder, "SocialMenuMover", _G.BINDING_HEADER_VOICE_CHAT)
 
-	-- We have to reparent the buttons to our `ChatButtonHolder`
 	channelButtons[1]:ClearAllPoints()
 	channelButtons[1]:Point('TOP', Holder, 'TOP', 0, -2)
 
