@@ -3487,6 +3487,11 @@ local function GetUnitSettings(unit, name)
 			get = function(info) return E.db.nameplates.units[unit].questIcon[info[#info]] end,
 			set = function(info, value) E.db.nameplates.units[unit].questIcon[info[#info]] = value; NP:SetCVars() NP:ConfigureAll() end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Quest Icon"],
+				},
 				enable = {
 					type = 'toggle',
 					order = 1,
