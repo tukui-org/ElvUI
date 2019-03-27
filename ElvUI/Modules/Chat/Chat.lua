@@ -2432,7 +2432,8 @@ function CH:CreateChatVoicePanel()
 	channelButtons[1]:Point('TOP', Holder, 'TOP', 0, -2)
 
 	for _, button in pairs(channelButtons) do
-		Skins:HandleButton(button)
+		Skins:HandleButton(button, nil, nil, nil, true)
+		button.Icon:SetParent(button)
 		button:SetParent(Holder)
 	end
 
