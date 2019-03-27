@@ -124,7 +124,7 @@ function NP:Construct_Power(nameplate)
 
 	NP.StatusBars[Power] = true
 
-	Power.frequentUpdates = true
+	--Power.frequentUpdates = true
 	Power.colorTapping = false
 	Power.colorClass = false
 

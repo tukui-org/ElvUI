@@ -98,8 +98,6 @@ local function Enable(self, unit)
 			element.Delay = 3
 		end
 
-		Update(self)
-
 		return true
 	end
 end
@@ -108,7 +106,7 @@ local function Disable(self, unit)
 	local element = self.Fader
 
 	if element then
-		E:UIFrameFadeIn(self, element.Smooth, self:GetAlpha(), element.MaxAlpha)
+		self:SetAlpha(1)
 
 		self:UnregisterEvent('PLAYER_REGEN_ENABLED', Update)
 		self:UnregisterEvent('PLAYER_REGEN_DISABLED', Update)

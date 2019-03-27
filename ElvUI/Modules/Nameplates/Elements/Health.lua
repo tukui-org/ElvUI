@@ -92,7 +92,6 @@ function NP:Construct_Health(nameplate)
 	nameplate.FlashTexture:SetTexelSnappingBias(0)
 	nameplate.FlashTexture:Hide()
 
-	Health.frequentUpdates = true
 	Health.UpdateColor = NP.Health_UpdateColor
 
 	return Health
