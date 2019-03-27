@@ -728,6 +728,7 @@ L["Controls which nameplates will be displayed."] = "控制何种姓名板被显
 L["Cooldowns"] = "冷却"
 L["Copy settings from another unit."] = "从其他框架中复制设置"
 L["Copy Settings From"] = "复制设置"
+L["Creature Type"] = true
 L["Current Level"] = "当前等级"
 L["Cutaway Health"] = "血量变化高亮"
 L["Default Settings"] = "默认设置"

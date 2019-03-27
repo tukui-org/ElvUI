@@ -727,6 +727,7 @@ L["Controls which nameplates will be displayed."] = "Определяет, ка�
 L["Cooldowns"] = "Восстановление"
 L["Copy settings from another unit."] = "Скопировать настройки с другого юнита."
 L["Copy Settings From"] = "Скопировать из"
+L["Creature Type"] = true
 L["Current Level"] = "Текущий уровень"
 L["Cutaway Health"] = "Убывающее здоровье"
 L["Default Settings"] = "Умолчания"

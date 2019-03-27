@@ -780,6 +780,7 @@ L["Controls which nameplates will be displayed."] = "표시할 이름표를 조�
 L["Cooldowns"] = "재사용 대기시간"
 L["Copy settings from another unit."] = "다른 부분에서 설정을 복사하여 가져옵니다."
 L["Copy Settings From"] = "설정 복사해서 가져오기"
+L["Creature Type"] = true
 L["Current Level"] = true
 L["Cutaway Health"] = true
 L["Default Settings"] = "기본 설정"

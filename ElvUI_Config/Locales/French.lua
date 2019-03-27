@@ -728,6 +728,7 @@ L["Controls which nameplates will be displayed."] = true
 L["Cooldowns"] = true
 L["Copy settings from another unit."] = "Copier les options d'une autre unité"
 L["Copy Settings From"] = "Copier les options de"
+L["Creature Type"] = true
 L["Current Level"] = "Niveau actuel"
 L["Cutaway Health"] = true
 L["Default Settings"] = "Options par défaut"

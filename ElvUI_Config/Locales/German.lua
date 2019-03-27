@@ -730,6 +730,7 @@ L["Controls which nameplates will be displayed."] = "Legt fest welche Namensplak
 L["Cooldowns"] = true --No need to translate
 L["Copy settings from another unit."] = "Kopiere Einstellungen von einer anderen Einheit."
 L["Copy Settings From"] = "Kopiere Einstellungen von"
+L["Creature Type"] = "Kreatur Typ"
 L["Current Level"] = "Aktuelles Level"
 L["Cutaway Health"] = "Animiertes Leben" -- Makes more sense in german
 L["Default Settings"] = "Standard Einstellungen"
