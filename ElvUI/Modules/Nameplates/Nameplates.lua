@@ -403,12 +403,10 @@ function NP:ConfigureAll()
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 
 	for nameplate in pairs(NP.Plates) do
-		NP:StyleFilterClear(nameplate)
+		NP:StyleFilterClear(nameplate) -- keep this at the top
 
 		NP:UpdatePlate(nameplate)
 		nameplate:UpdateAllElements('ForceUpdate')
-
-		NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED')
 
 		if nameplate.frameType == 'PLAYER' then
 			NP.PlayerNamePlateAnchor:ClearAllPoints()
@@ -416,6 +414,8 @@ function NP:ConfigureAll()
 			NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
 			NP.PlayerNamePlateAnchor:Show()
 		end
+
+		NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this at the end
 	end
 
 	NP:Update_StatusBars()
@@ -425,7 +425,7 @@ end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'NAME_PLATE_UNIT_ADDED' and nameplate then
-		NP:StyleFilterClear(nameplate)
+		NP:StyleFilterClear(nameplate) -- keep this at the top
 
 		unit = unit or nameplate.unit
 
@@ -463,7 +463,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
-		NP:StyleFilterClear(nameplate)
+		NP:StyleFilterClear(nameplate) -- keep this at the top
 
 		if nameplate.frameType == 'PLAYER' and nameplate ~= _G.ElvNP_Test then
 			NP.PlayerNamePlateAnchor:Hide()
