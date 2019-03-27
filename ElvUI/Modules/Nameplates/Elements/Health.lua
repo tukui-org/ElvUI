@@ -92,6 +92,7 @@ function NP:Construct_Health(nameplate)
 	nameplate.FlashTexture:SetTexelSnappingBias(0)
 	nameplate.FlashTexture:Hide()
 
+	Health.frequentUpdates = true --Azil, keep this for now. It seems it may prevent event bugs
 	Health.UpdateColor = NP.Health_UpdateColor
 
 	return Health

@@ -124,6 +124,7 @@ function NP:Construct_Power(nameplate)
 
 	NP.StatusBars[Power] = true
 
+	Power.frequentUpdates = true --Azil, keep this for now. It seems it may prevent event bugs
 	Power.colorTapping = false
 	Power.colorClass = false
 
