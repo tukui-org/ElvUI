@@ -403,8 +403,13 @@ function NP:ConfigureAll()
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 
 	for nameplate in pairs(NP.Plates) do
+		NP:StyleFilterClear(nameplate)
+
 		NP:UpdatePlate(nameplate)
 		nameplate:UpdateAllElements('ForceUpdate')
+
+		NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED')
+
 		if nameplate.frameType == 'PLAYER' then
 			NP.PlayerNamePlateAnchor:ClearAllPoints()
 			NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
