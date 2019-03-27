@@ -274,7 +274,6 @@ G.profileCopy = {
 	},
 	general = {
 		general = true,
-		altPowerBar = true,
 		minimap = true,
 		threat = true,
 		totems = true,
