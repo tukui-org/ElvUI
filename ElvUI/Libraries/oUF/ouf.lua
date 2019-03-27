@@ -336,9 +336,9 @@ local function initObject(unit, style, styleFunc, header, ...)
 
 		-- NAME_PLATE_UNIT_ADDED fires after the frame is shown, so there's no
 		-- need to call UAE multiple times
-		if(not object.isNamePlate) then
+		--if(not object.isNamePlate) then
 			object:SetScript('OnShow', onShow)
-		end
+		--end
 
 		for element in next, elements do
 			object:EnableElement(element, objectUnit)
@@ -804,6 +804,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 				nameplate.style = style
 
 				nameplate.unitFrame = CreateFrame('Button', prefix..nameplate:GetName(), nameplate)
+				nameplate.unitFrame:Hide()
 				nameplate.unitFrame:EnableMouse(false)
 				nameplate.unitFrame.isNamePlate = true
 
@@ -822,7 +823,8 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 
 			-- UAE is called after the callback to reduce the number of
 			-- ForceUpdate calls layout devs have to do themselves
-			nameplate.unitFrame:UpdateAllElements(event)
+			--nameplate.unitFrame:UpdateAllElements(event)
+			nameplate.unitFrame:Show()
 		elseif(event == 'NAME_PLATE_UNIT_REMOVED' and unit) then
 			local nameplate = C_NamePlate.GetNamePlateForUnit(unit)
 			if(not nameplate) then return end
@@ -832,6 +834,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			if(nameplateCallback) then
 				nameplateCallback(nameplate.unitFrame, event, unit)
 			end
+			nameplate.unitFrame:Hide()
 		end
 	end)
 end
