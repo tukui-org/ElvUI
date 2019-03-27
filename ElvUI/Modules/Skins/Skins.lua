@@ -268,13 +268,9 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 		end
 	end
 
-	-- used for a white X on decline buttons (more clear)
 	if isDeclineButton then
 		if button.Icon then
 			button.Icon:SetTexture(E.Media.Textures.Close)
-		end
-		if button.Text then
-			button.Text:SetText('')
 		end
 	end
 
