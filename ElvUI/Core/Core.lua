@@ -1710,16 +1710,16 @@ function E:DBConversions()
 		E.db.chat.panelColorConverted = true
 	end
 
-	if E.db.chat.hideVoiceButtons then
-		E.db.chat.pinVoiceButtons = false
+	if E.db.chat.hideVoiceButtons ~= nil then
+		E.db.chat.pinVoiceButtons = not E.db.chat.hideVoiceButtons
 		E.db.chat.hideVoiceButtons = nil
 	end
 
 	--Vendor Greys option is now in bags table
-	if E.db.general.vendorGrays then
+	if E.db.general.vendorGrays ~= nil then
 		E.db.bags.vendorGrays.enable = E.db.general.vendorGrays
-		E.db.general.vendorGrays = nil
 		E.db.general.vendorGraysDetails = nil
+		E.db.general.vendorGrays = nil
 	end
 
 	--Heal Prediction is now a table instead of a bool
