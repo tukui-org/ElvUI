@@ -164,6 +164,7 @@ E.Options.args.chat = {
 					order = 16,
 					type = "toggle",
 					name = L["Pin Voice Buttons"],
+					desc = L["This will pin the voice buttons to the chat's tab panel. Unchecking it will create a voice button panel with a mover."],
 					set = function(info, value)
 						E.db.chat[info[#info]] = value
 						E:StaticPopup_Show("CONFIG_RL")
