@@ -464,6 +464,7 @@ local function UpdateStyleLists()
 			end
 		end
 	end
+
 	if E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers.casting and E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells then
 		E.Options.args.nameplate.args.filters.args.triggers.args.casting.args.spells = {
 			order = 50,
@@ -1555,6 +1556,22 @@ local function UpdateFilterGroup()
 						},
 					}
 				},
+				creatureType = {
+					order = 23,
+					type = 'group',
+					name = L["Creature Type"],
+					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType[info[#info]] end,
+					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType[info[#info]] = value; NP:ConfigureAll() end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					args = {
+						enable = {
+							type = 'toggle',
+							order = 1,
+							name = L['Enable'],
+							width = 'full'
+						},
+					}
+				},
 			},
 		}
 		E.Options.args.nameplate.args.filters.args.actions = {
@@ -1792,6 +1809,35 @@ local function UpdateFilterGroup()
 				},
 			},
 		}
+
+		do -- build creatureType options
+			local creatureTypeOrder = {
+				Aberration = 2,
+				Beast = 3,
+				Critter = 4,
+				Demon = 5,
+				Dragonkin = 6,
+				Elemental = 7,
+				['Gas Cloud'] = 8,
+				Giant = 9,
+				Humanoid = 10,
+				Mechanical = 11,
+				['Not specified'] = 12,
+				Totem = 13,
+				Undead = 14,
+				['Wild Pet'] = 15,
+				['Non-combat Pet'] = 16
+			}
+
+			for k, v in pairs(E.CreatureTypes) do
+				E.Options.args.nameplate.args.filters.args.triggers.args.creatureType.args[v] = {
+					type = 'toggle',
+					order = creatureTypeOrder[v],
+					name = k,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or not E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType.enable end,
+				}
+			end
+		end
 
 		specListOrder = 50 -- reset this to 50
 		UpdateClassSection()

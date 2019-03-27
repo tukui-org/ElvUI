@@ -16,8 +16,10 @@ local GetSpellCooldown = GetSpellCooldown
 local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
 local GetTime = GetTime
+local PowerBarColor = PowerBarColor
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitClassification = UnitClassification
+local UnitCreatureType = UnitCreatureType
 local UnitGUID = UnitGUID
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -29,7 +31,6 @@ local UnitName = UnitName
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitReaction = UnitReaction
-local PowerBarColor = PowerBarColor
 local C_Timer_NewTimer = C_Timer.NewTimer
 local INTERRUPTED = INTERRUPTED
 local FAILED = FAILED
@@ -516,11 +517,9 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 end
 
 function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
-	local condition, name, guid, npcid, inCombat, questBoss, reaction, spell, classification;
-	local talentSelected, talentFunction, talentRows, _, instanceType, instanceDifficulty;
-	local level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID;
-	local power, maxPower, percPower, underPowerThreshold, overPowerThreshold, powerUnit;
-	local health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold, healthUnit;
+	local _, condition, name, guid, npcid, inCombat, questBoss, reaction, spell, classification, instanceType, instanceDifficulty,
+	talentSelected, talentFunction, talentRows, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID, creatureType,
+	power, maxPower, percPower, underPowerThreshold, overPowerThreshold, powerUnit, health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold, healthUnit;
 
 	local isCasting = frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
 	local matchMyClass = false --Only check spec when we match the class condition
@@ -813,6 +812,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 			condition = true
 		end
 
+		failed = not condition
+	end
+
+	--Try to match by creature conditions
+	if not failed and trigger.creatureType and trigger.creatureType.enable then
+		condition = false
+		creatureType = E.CreatureTypes[UnitCreatureType(frame.unit)]
+		if creatureType and trigger.creatureType[creatureType] then
+			condition = true
+		end
 		failed = not condition
 	end
 
