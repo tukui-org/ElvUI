@@ -154,14 +154,8 @@ E.Options.args.chat = {
 					name = L["Quick Join Messages"],
 					desc = L["Show clickable Quick Join messages inside of the chat."],
 				},
-				copyChatLines = {
-					order = 15,
-					type = "toggle",
-					name = L["Copy Chat Lines"],
-					desc = L["Adds an arrow infront of the chat lines to copy the entire line."],
-				},
 				pinVoiceButtons = {
-					order = 16,
+					order = 15,
 					type = "toggle",
 					name = L["Pin Voice Buttons"],
 					desc = L["This will pin the voice buttons to the chat's tab panel. Unchecking it will create a voice button panel with a mover."],
@@ -170,14 +164,29 @@ E.Options.args.chat = {
 						E:StaticPopup_Show("CONFIG_RL")
 					end,
 				},
-				useCustomTimeColor = {
+				desaturateVoiceIcons = {
+					order = 16,
+					type = "toggle",
+					name = L["Desaturate Voice Icons"],
+					set = function(info, value)
+						E.db.chat[info[#info]] = value
+						CH:UpdateVoiceChatIcons()
+					end,
+				},
+				copyChatLines = {
 					order = 17,
+					type = "toggle",
+					name = L["Copy Chat Lines"],
+					desc = L["Adds an arrow infront of the chat lines to copy the entire line."],
+				},
+				useCustomTimeColor = {
+					order = 18,
 					type = "toggle",
 					name = L["Custom Timestamp Color"],
 					disabled = function() return not E.db.chat.timeStampFormat == "NONE" end,
 				},
 				customTimeColor = {
-					order = 18,
+					order = 19,
 					type = "color",
 					hasAlpha = false,
 					name = L["Timestamp Color"],
@@ -193,7 +202,7 @@ E.Options.args.chat = {
 					end,
 				},
 				timeStampFormat = {
-					order = 19,
+					order = 20,
 					type = 'select',
 					name = TIMESTAMPS_LABEL,
 					desc = OPTION_TOOLTIP_TIMESTAMPS,
@@ -208,7 +217,7 @@ E.Options.args.chat = {
 					},
 				},
 				throttleInterval = {
-					order = 20,
+					order = 21,
 					type = 'range',
 					name = L["Spam Interval"],
 					desc = L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."],
@@ -221,7 +230,7 @@ E.Options.args.chat = {
 					end,
 				},
 				scrollDownInterval = {
-					order = 21,
+					order = 22,
 					type = 'range',
 					name = L["Scroll Interval"],
 					desc = L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."],
@@ -231,14 +240,14 @@ E.Options.args.chat = {
 					end,
 				},
 				numAllowedCombatRepeat = {
-					order = 22,
+					order = 23,
 					type = "range",
 					name = L["Allowed Combat Repeat"],
 					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
 					min = 2, max = 10, step = 1,
 				},
 				numScrollMessages = {
-					order = 23,
+					order = 24,
 					type = "range",
 					name = L["Scroll Messages"],
 					desc = L["Number of messages you scroll for each step."],

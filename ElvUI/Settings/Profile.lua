@@ -1694,6 +1694,7 @@ P.chat = {
 	useBTagName = false,
 	panelColor = {r = .06,g = .06,b = .06, a = 0.8},
 	pinVoiceButtons = true,
+	desaturateVoiceIcons = true,
 }
 
 --Datatexts

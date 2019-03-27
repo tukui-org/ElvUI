@@ -2377,11 +2377,17 @@ function CH:RepositionChatVoiceIcons()
 	end
 end
 
+function CH:UpdateVoiceChatIcons()
+	for _, button in pairs(channelButtons) do
+		button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
+	end
+end
+
 function CH:HandleChatVoiceIcons()
 	if self.db.pinVoiceButtons then
 		for index, button in pairs(channelButtons) do
 			button:ClearAllPoints()
-			button.Icon:SetDesaturated(true)
+			button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
 			Skins:HandleButton(button, nil, nil, nil, true)
 
 			if index == 1 then
@@ -2434,6 +2440,7 @@ function CH:CreateChatVoicePanel()
 	for _, button in pairs(channelButtons) do
 		Skins:HandleButton(button, nil, nil, nil, true)
 		button.Icon:SetParent(button)
+		button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
 		button:SetParent(Holder)
 	end
 
