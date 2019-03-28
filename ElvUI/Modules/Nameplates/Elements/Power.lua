@@ -144,7 +144,7 @@ function NP:Update_Power(nameplate)
 
 		nameplate.Power:Point('CENTER', nameplate, 'CENTER', 0, db.power.yOffset)
 
-		ElvUF:SetSmoothing(nameplate.Power, NP.db.smoothbars)
+		E:SetSmoothing(nameplate.Power, NP.db.smoothbars)
 	else
 		if nameplate:IsElementEnabled('Power') then
 			nameplate:DisableElement('Power')

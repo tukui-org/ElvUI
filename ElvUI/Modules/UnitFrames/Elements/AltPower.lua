@@ -68,12 +68,14 @@ function UF:Configure_AltPower(frame)
 		frame:EnableElement('AlternativePower')
 		altpower.text:SetAlpha(1)
 		altpower:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING+frame.BORDER)
+
 		if not frame.USE_PORTRAIT_OVERLAY then
 			altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.PORTRAIT_WIDTH+frame.BORDER), -frame.BORDER)
 		else
 			altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER, -frame.BORDER)
 		end
-		ElvUF:SetSmoothing(altpower, UF.db.smoothbars)
+
+		E:SetSmoothing(altpower, UF.db.smoothbars)
 	else
 		frame:DisableElement('AlternativePower')
 		altpower.text:SetAlpha(0)

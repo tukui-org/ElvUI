@@ -72,7 +72,7 @@ function UF:Configure_Power(frame)
 			power:Show()
 		end
 
-		ElvUF:SetSmoothing(power, self.db.smoothbars)
+		E:SetSmoothing(power, self.db.smoothbars)
 
 		--Text
 		local attachPoint = self:GetObjectAnchorPoint(frame, db.power.attachTextTo)

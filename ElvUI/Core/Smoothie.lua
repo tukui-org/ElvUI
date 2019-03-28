@@ -1,4 +1,4 @@
-if not ElvUF then return end
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 -- Credit: ls- (lightspark)
 local abs, next, Lerp = abs, next, Lerp
@@ -124,7 +124,7 @@ local function DesmoothBar(bar)
 	end
 end
 
-function ElvUF:SetSmoothing(bar, enable)
+function E:SetSmoothing(bar, enable)
 	if enable then
 		SmoothBar(bar)
 	else
