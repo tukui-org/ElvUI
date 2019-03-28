@@ -3598,6 +3598,8 @@ local function GetUnitSettings(unit, name)
 					name = L["Icon Position"],
 					values = {
 						["CENTER"] = "CENTER",
+						["LEFT"] = "LEFT",
+						["RIGHT"] = "RIGHT",
 						["TOPLEFT"] = "TOPLEFT",
 						["BOTTOMLEFT"] = "BOTTOMLEFT",
 						["TOPRIGHT"] = "TOPRIGHT",
