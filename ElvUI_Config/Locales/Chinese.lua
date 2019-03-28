@@ -502,6 +502,7 @@ L["Chat Bubble Names"] = "聊天气泡名字"
 L["Chat Output"] = "聊天输出"
 L["Color Gradient"] = "颜色渐变"
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "控制像姓名板和团队框架中各数值的小数位数"
+L["Controls the speed at which smoothed bars will be updated."] = true
 L["Crop Icons"] = "裁剪图标"
 L["Current / Max - Percent"] = "当前值 / 最大值 - 百分比"
 L["Decimal Length"] = "小数位数"
@@ -568,7 +569,6 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "细边框主题会改变所有的外观,使用细边框主题会略微提升性能"
 L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."] = "在ElvUI中数值单位的缩写. 该选项主要应用在单位框体"
 L["Thin Border Theme"] = "细边框主题"
-L["Controls the speed at which smoothed bars will be updated."] = true
 L["This is for Customized Icons in your Interface/Icons folder."] = "这将应用于你的Interface/Icons文件夹下的自定义图标"
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = "选择ElvUI信息的聊天输出"
 L["This will prevent the UI Scale Popup from being shown when changing the game window size."] = true
