@@ -67,7 +67,7 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:Hide()
 	ClassPower:SetFrameStrata(nameplate:GetFrameStrata())
 	ClassPower:SetFrameLevel(5)
-	ClassPower:CreateBackdrop('Transparent', nil, nil, self.thinBorders)
+	ClassPower:CreateBackdrop('Transparent')
 
 	local Max = max(MAX_POINTS[E.myclass] or 0, _G.MAX_COMBO_POINTS)
 	for i = 1, Max do
@@ -79,7 +79,7 @@ function NP:Construct_ClassPower(nameplate)
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
 
-		ClassPower[i]:CreateBackdrop('Transparent', nil, nil, self.thinBorders)
+		ClassPower[i]:CreateBackdrop('Transparent')
 		ClassPower[i].backdrop:SetParent(ClassPower) -- Azil, ugly border on the right for ComboPoints
 
 		if i == 1 then
@@ -110,7 +110,7 @@ function NP:Construct_Runes(nameplate)
 	local Runes = CreateFrame('Frame', nameplate:GetDebugName()..'Runes', nameplate)
 	Runes:SetFrameStrata(nameplate:GetFrameStrata())
 	Runes:SetFrameLevel(5)
-	Runes:CreateBackdrop('Transparent', nil, nil, self.thinBorders)
+	Runes:CreateBackdrop('Transparent')
 	Runes:Hide()
 
 	Runes.UpdateColor = E.noop
@@ -126,7 +126,7 @@ function NP:Construct_Runes(nameplate)
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
 
-		Runes[i]:CreateBackdrop('Transparent', nil, nil, self.thinBorders)
+		Runes[i]:CreateBackdrop('Transparent')
 		Runes[i].backdrop:SetParent(Runes)
 
 		if i == 1 then
