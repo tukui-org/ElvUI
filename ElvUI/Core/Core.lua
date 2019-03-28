@@ -1961,7 +1961,9 @@ function E:Initialize()
 	end
 
 	if self.db.general.loginmessage then
-		print(format(L["LOGIN_MSG"], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version))
+		local msg = format(L["LOGIN_MSG"], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)
+		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
+		print(msg)
 	end
 
 	if _G.OrderHallCommandBar then
