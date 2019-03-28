@@ -5,4 +5,5 @@
 	<Script file="portrait.lua"/>
 	<Script file="stagger.lua"/>
 	<Script file="tags.lua"/>
+	<Script file="smoothie.lua"/>
 </Ui>
