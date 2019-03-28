@@ -78,7 +78,6 @@ function NP:Construct_Health(nameplate)
 	Health.bg:SetTexture(E.media.blankTex)
 	Health.bg.multiplier = 0.2]]
 
-	E:SmoothBar(Health)
 	NP.StatusBars[Health] = true
 
 	local statusBarTexture = Health:GetStatusBarTexture()
