@@ -938,7 +938,9 @@ E.Options.args.actionbar = {
 			order = 6,
 			type = "execute",
 			name = L["Cooldowns"],
+			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "cooldown", "actionbar") end,
+			disabled = function() return not E.ActionBars.Initialized; end,
 		},
 		petBarShortcut = {
 			order = 7,
