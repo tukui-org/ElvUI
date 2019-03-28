@@ -27,21 +27,17 @@ local function isCloseEnough(new, target, range)
 	return true
 end
 
-local frame = CreateFrame("Frame", "LSBarSmoother")
+local frame = CreateFrame('Frame', 'LSBarSmoother')
 local function onUpdate(_, elapsed)
 	for object, target in next, activeObjects do
-		if object.SetValue_ then
-			local new = Lerp(object._value, target, clamp(0.33 * elapsed * TARGET_FPS))
-			if isCloseEnough(new, target, object._max - object._min) then
-				new = target
-				activeObjects[object] = nil
-			end
-
-			object:SetValue_(new)
-			object._value = new
-		else
+		local new = Lerp(object._value, target, clamp(0.33 * elapsed * TARGET_FPS))
+		if isCloseEnough(new, target, object._max - object._min) then
+			new = target
 			activeObjects[object] = nil
 		end
+
+		object:SetValue_(new)
+		object._value = new
 	end
 end
 
@@ -89,16 +85,16 @@ local function SmoothBar(bar)
 		bar.SetMinMaxValues = bar_SetSmoothedMinMaxValues
 	end
 
-	if not frame:GetScript("OnUpdate") then
-		frame:SetScript("OnUpdate", onUpdate)
+	if not frame:GetScript('OnUpdate') then
+		frame:SetScript('OnUpdate', onUpdate)
 	end
 
 	handledObjects[bar] = true
 end
 
 local function DesmoothBar(bar)
-	local oldValue = activeObjects[bar]
-	if oldValue then
+	if activeObjects[bar] then
+		bar:SetValue_(activeObjects[bar])
 		activeObjects[bar] = nil
 	end
 
@@ -107,10 +103,6 @@ local function DesmoothBar(bar)
 	end
 
 	if bar.SetValue_ then
-		if oldValue then
-			bar:SetValue_(oldValue)
-		end
-
 		bar.SetValue = bar.SetValue_
 		bar.SetValue_ = nil
 	end
@@ -120,7 +112,7 @@ local function DesmoothBar(bar)
 	end
 
 	if not next(handledObjects) then
-		frame:SetScript("OnUpdate", nil)
+		frame:SetScript('OnUpdate', nil)
 	end
 end
 
