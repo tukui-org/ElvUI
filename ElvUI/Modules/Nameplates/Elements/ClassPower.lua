@@ -34,7 +34,11 @@ function NP:ClassPower_UpdateColor(powerType)
 		if classColor then r, g, b = classColor.r, classColor.g, classColor.b end
 
 		self[i]:SetStatusBarColor(r, g, b)
-		self[i].backdrop:SetBackdropColor(r, g, b, 0.15)
+		local bg = self[i].bg
+		if(bg) then
+			local mu = bg.multiplier or 1
+			bg:SetVertexColor(r * mu, g * mu, b * mu)
+		end
 	end
 end
 
@@ -50,6 +54,7 @@ function NP:ClassPower_PostUpdate(Cur, Max, needUpdate)
 		if not db then return end
 		for i = 1, Max do
 			self[i]:Size(db.classpower.width / Max, db.classpower.height)
+			self[i].bg:Size(db.classpower.width / Max, db.classpower.height)
 			if i == 1 then
 				self[i]:Point('LEFT', self, 'LEFT', 0, 0)
 			elseif i == Max then  -- freaky gap at end of bar
@@ -73,20 +78,26 @@ function NP:Construct_ClassPower(nameplate)
 	for i = 1, Max do
 		ClassPower[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
 		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+		ClassPower[i]:SetFrameStrata(nameplate:GetFrameStrata())
+		ClassPower[i]:SetFrameLevel(6)
 		NP.StatusBars[ClassPower[i]] = true
 
 		local statusBarTexture = ClassPower[i]:GetStatusBarTexture()
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
 
-		ClassPower[i]:CreateBackdrop('Transparent')
-		ClassPower[i].backdrop:SetParent(ClassPower) -- Azil, ugly border on the right for ComboPoints
+		ClassPower[i].bg = ClassPower:CreateTexture(nil, "BACKGROUND")
+		ClassPower[i].bg:SetAllPoints(ClassPower[i])
+		ClassPower[i].bg:SetTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+		ClassPower[i].bg:SetSnapToPixelGrid(false)
+		ClassPower[i].bg:SetTexelSnappingBias(0)
+		ClassPower[i].bg.multiplier = .25
 
 		if i == 1 then
 			ClassPower[i]:Point('LEFT', ClassPower, 'LEFT', 0, 0)
 		elseif i == Max then -- freaky gap at end of bar
 			ClassPower[i]:Point('LEFT', ClassPower[i - 1], 'RIGHT', 1, 0)
-			ClassPower[i]:Point('RIGHT', ClassPower)
+			ClassPower[i]:Point('RIGHT', ClassPower, 'RIGHT')
 		else
 			ClassPower[i]:Point('LEFT', ClassPower[i - 1], 'RIGHT', 1, 0)
 		end
@@ -126,8 +137,12 @@ function NP:Construct_Runes(nameplate)
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
 
-		Runes[i]:CreateBackdrop('Transparent')
-		Runes[i].backdrop:SetParent(Runes)
+		Runes[i].bg = Runes[i]:CreateTexture(nil, 'BACKGROUND', 0)
+		Runes[i].bg:SetAllPoints()
+		Runes[i].bg:SetSnapToPixelGrid(false)
+		Runes[i].bg:SetTexelSnappingBias(0)
+		Runes[i].bg:SetTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+		Runes[i].bg:SetVertexColor(NP.db.colors.classResources.DEATHKNIGHT.r * .25, NP.db.colors.classResources.DEATHKNIGHT.g * .25, NP.db.colors.classResources.DEATHKNIGHT.b * .25)
 
 		if i == 1 then
 			Runes[i]:Point('LEFT', Runes, 'LEFT', 0, 0)
@@ -159,6 +174,7 @@ function NP:Update_ClassPower(nameplate)
 
 		for i = 1, maxClassBarButtons do
 			nameplate.ClassPower[i]:Size(Width - 1, db.classpower.height)
+			nameplate.ClassPower[i].bg:Size(Width - 1, db.classpower.height)
 		end
 	else
 		if nameplate:IsElementEnabled('ClassPower') then
@@ -191,7 +207,7 @@ function NP:Update_Runes(nameplate)
 		for i = 1, 6 do
 			nameplate.Runes[i]:SetStatusBarColor(runeColor.r, runeColor.g, runeColor.b)
 			nameplate.Runes[i]:Size(width - 1, db.classpower.height)
-			nameplate.Runes[i].backdrop:SetBackdropColor(runeColor.r, runeColor.g, runeColor.b, 0.25)
+			nameplate.Runes[i].bg:Size(width - 1, db.classpower.height)
 		end
 	else
 		if nameplate:IsElementEnabled('Runes') then
