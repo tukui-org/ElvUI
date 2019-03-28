@@ -3519,6 +3519,8 @@ local function GetUnitSettings(unit, name)
 						["BOTTOMLEFT"] = "BOTTOMLEFT",
 						["TOPRIGHT"] = "TOPRIGHT",
 						["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+						["LEFT"] = "LEFT",
+						["RIGHT"] = "RIGHT",
 					},
 				},
 				xOffset = {
