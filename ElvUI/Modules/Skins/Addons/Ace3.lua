@@ -176,6 +176,12 @@ function S:Ace3_RegisterAsWidget(widget)
 		S:HandleEditBox(frame)
 		S:HandleButton(button)
 
+		hooksecurefunc(frame, "SetTextInsets", function(fr, l, r, t, b)
+			if l == 0 then
+				fr:SetTextInsets(3, r, t, b)
+			end
+		end)
+
 		button:Point('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
 
 		hooksecurefunc(frame, 'SetPoint', function(fr, a, b, c, d, e)
