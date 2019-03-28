@@ -25,7 +25,7 @@ local function isCloseEnough(new, target, range)
 end
 
 local frame = CreateFrame("Frame", "LSBarSmoother")
-frame:SetScript("OnUpdate", function(_, elapsed)
+local function onUpdate(_, elapsed)
 	for object, target in next, objects do
 		if object.SetValue_ then
 			local new = Lerp(object._value, target, clamp(0.33 * elapsed * TARGET_FPS))
@@ -40,7 +40,7 @@ frame:SetScript("OnUpdate", function(_, elapsed)
 			objects[object] = nil
 		end
 	end
-end)
+end
 
 local function bar_SetSmoothedValue(self, value)
 	self._value = self:GetValue()
@@ -85,9 +85,18 @@ function ElvUF:SmoothBar(bar)
 		bar.SetMinMaxValues_ = bar.SetMinMaxValues
 		bar.SetMinMaxValues = bar_SetSmoothedMinMaxValues
 	end
+
+	if not frame:GetScript("OnUpdate") then
+		frame:SetScript("OnUpdate", onUpdate)
+	end
 end
 
 function ElvUF:DesmoothBar(bar)
+	if objects[bar] then
+		bar:SetValue_(objects[bar])
+		objects[bar] = nil
+	end
+
 	if bar.SetValue_ then
 		bar.SetValue = bar.SetValue_
 		bar.SetValue_ = nil
@@ -95,6 +104,10 @@ function ElvUF:DesmoothBar(bar)
 	if bar.SetMinMaxValues_ then
 		bar.SetMinMaxValues = bar.SetMinMaxValues_
 		bar.SetMinMaxValues_ = nil
+	end
+
+	if not next(objects) then
+		frame:SetScript("OnUpdate", nil)
 	end
 end
 
