@@ -43,6 +43,7 @@ P.general = {
 		textFormat = 'NAMECURMAX',
 		statusBarColorGradient = false,
 		statusBarColor = { r = 0.2, g = 0.4, b = 0.8 },
+		smoothbars = false,
 	},
 	fontSize = 12,
 	font = 'PT Sans Narrow',

@@ -598,20 +598,26 @@ E.Options.args.general = {
 						return E.db.general.altPowerBar[info[#info]]
 					end,
 					args = {
-						statusBar = {
+						smoothbars = {
+							type = 'toggle',
 							order = 1,
+							name = L["Smooth Bars"],
+							desc = L["Bars will transition smoothly."],
+						},
+						statusBar = {
+							order = 2,
 							type = "select", dialogControl = 'LSM30_Statusbar',
 							name = L["StatusBar Texture"],
 							values = AceGUIWidgetLSMlists.statusbar,
 						},
 						statusBarColorGradient = {
-							order = 2,
+							order = 3,
 							name = L["Color Gradient"],
 							type = 'toggle',
 						},
 						statusBarColor = {
 							type = 'color',
-							order = 3,
+							order = 4,
 							name = COLOR,
 							disabled = function()
 								return E.db.general.altPowerBar.statusBarColorGradient

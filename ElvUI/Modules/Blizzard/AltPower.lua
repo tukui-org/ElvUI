@@ -97,17 +97,14 @@ end
 
 function B:UpdateAltPowerBarSettings()
 	local bar = ElvUI_AltPowerBar
-	local width = E.db.general.altPowerBar.width or 250
-	local height = E.db.general.altPowerBar.height or 20
-	local fontOutline = E.db.general.altPowerBar.fontOutline or 'OUTLINE'
-	local fontSize = E.db.general.altPowerBar.fontSize or 12
-	local statusBar = E.db.general.altPowerBar.statusBar
-	local font = E.db.general.altPowerBar.font
+	local db = E.db.general.altPowerBar
 
-	bar:Size(width, height)
-	bar:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", statusBar))
-	bar.text:FontTemplate(E.Libs.LSM:Fetch("font", font), fontSize, fontOutline)
+	bar:Size(db.width or 250, db.height or 20)
+	bar:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", db.statusBar))
+	bar.text:FontTemplate(E.Libs.LSM:Fetch("font", db.font), db.fontSize or 12, db.fontOutline or 'OUTLINE')
 	AltPowerBarHolder:Size(bar.backdrop:GetSize())
+
+	E:SetSmoothing(bar, db.smoothbars)
 
 	local textFormat = E.db.general.altPowerBar.textFormat
 	if textFormat == 'NONE' or not textFormat then
