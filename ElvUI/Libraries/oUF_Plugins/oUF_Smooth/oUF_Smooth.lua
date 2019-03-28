@@ -31,14 +31,18 @@ do -- Credit: ls- (lightspark)
 	local frame = CreateFrame("Frame", "LSBarSmoother")
 	frame:SetScript("OnUpdate", function(_, elapsed)
 		for object, target in next, objects do
-			local new = Lerp(object._value, target, clamp(0.33 * elapsed * TARGET_FPS))
-			if isCloseEnough(new, target, object._max - object._min) then
-				new = target
+			if object.SetValue_ then
+				local new = Lerp(object._value, target, clamp(0.33 * elapsed * TARGET_FPS))
+				if isCloseEnough(new, target, object._max - object._min) then
+					new = target
+					objects[object] = nil
+				end
+
+				object:SetValue_(new)
+				object._value = new
+			else
 				objects[object] = nil
 			end
-
-			object:SetValue_(new)
-			object._value = new
 		end
 	end)
 
@@ -77,10 +81,14 @@ do -- Credit: ls- (lightspark)
 		bar:SetMinMaxValues(0, 1)
 		bar:SetValue(0)
 
-		bar.SetValue_ = bar.SetValue
-		bar.SetMinMaxValues_ = bar.SetMinMaxValues
-		bar.SetValue = bar_SetSmoothedValue
-		bar.SetMinMaxValues = bar_SetSmoothedMinMaxValues
+		if not bar.SetValue_ then
+			bar.SetValue_ = bar.SetValue
+			bar.SetValue = bar_SetSmoothedValue
+		end
+		if not bar.SetMinMaxValues_ then
+			bar.SetMinMaxValues_ = bar.SetMinMaxValues
+			bar.SetMinMaxValues = bar_SetSmoothedMinMaxValues
+		end
 	end
 
 	function ElvUF:DesmoothBar(bar)
@@ -88,7 +96,6 @@ do -- Credit: ls- (lightspark)
 			bar.SetValue = bar.SetValue_
 			bar.SetValue_ = nil
 		end
-
 		if bar.SetMinMaxValues_ then
 			bar.SetMinMaxValues = bar.SetMinMaxValues_
 			bar.SetMinMaxValues_ = nil
