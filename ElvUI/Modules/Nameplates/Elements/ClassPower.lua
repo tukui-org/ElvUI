@@ -80,7 +80,7 @@ function NP:Construct_ClassPower(nameplate)
 		statusBarTexture:SetTexelSnappingBias(0)
 
 		ClassPower[i]:CreateBackdrop('Transparent', nil, nil, self.thinBorders)
-		ClassPower[i].backdrop:SetParent(ClassPower) -- Azil, ugly border on the right
+		ClassPower[i].backdrop:SetParent(ClassPower) -- Azil, ugly border on the right for ComboPoints
 
 		if i == 1 then
 			ClassPower[i]:Point('LEFT', ClassPower, 'LEFT', 0, 0)
@@ -127,7 +127,7 @@ function NP:Construct_Runes(nameplate)
 		statusBarTexture:SetTexelSnappingBias(0)
 
 		Runes[i]:CreateBackdrop('Transparent', nil, nil, self.thinBorders)
-		Runes[i].backdrop:SetParent(Runes) -- Azil, ugly border on the right
+		Runes[i].backdrop:SetParent(Runes)
 
 		if i == 1 then
 			Runes[i]:Point('LEFT', Runes, 'LEFT', 0, 0)
