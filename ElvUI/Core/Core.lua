@@ -1920,6 +1920,10 @@ function E:Initialize()
 	self:UpdateCooldownSettings('all')
 	self.initialized = true
 
+	if E.db.general.smoothingAmount and (E.db.general.smoothingAmount ~= 0.33) then
+		E:SetSmoothingAmount(E.db.general.smoothingAmount)
+	end
+
 	if self.private.install_complete == nil then
 		self:Install()
 	end

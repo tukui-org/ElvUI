@@ -5,6 +5,7 @@ local abs, next, Lerp = abs, next, Lerp
 local activeObjects = {}
 local handledObjects = {}
 local TARGET_FPS = 60
+local AMOUNT = 0.33
 
 local function clamp(v, min, max)
 	min = min or 0
@@ -30,7 +31,7 @@ end
 local frame = CreateFrame('Frame', 'LSBarSmoother')
 local function onUpdate(_, elapsed)
 	for object, target in next, activeObjects do
-		local new = Lerp(object._value, target, clamp(0.33 * elapsed * TARGET_FPS))
+		local new = Lerp(object._value, target, clamp(AMOUNT * elapsed * TARGET_FPS))
 		if isCloseEnough(new, target, object._max - object._min) then
 			new = target
 			activeObjects[object] = nil
@@ -114,6 +115,10 @@ local function DesmoothBar(bar)
 	if not next(handledObjects) then
 		frame:SetScript('OnUpdate', nil)
 	end
+end
+
+function E:SetSmoothingAmount(amount)
+	AMOUNT = clamp(amount, 0.2, 0.8)
 end
 
 function E:SetSmoothing(bar, enable)

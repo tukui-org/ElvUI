@@ -5,6 +5,7 @@ P.gridSize = 64
 --Core
 P.general = {
 	messageRedirect = DEFAULT_CHAT_FRAME:GetName(),
+	smoothingAmount = 0.33,
 	taintLog = false,
 	stickyFrames = true,
 	loginmessage = true,
