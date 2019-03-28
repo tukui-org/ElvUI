@@ -45,12 +45,16 @@ end
 local function bar_SetSmoothedValue(self, value)
 	value = tonumber(value)
 
+	assert(value, 'bar_SetSmoothedValue requires (value) to be a number.')
+
 	self._value = self:GetValue()
 	activeObjects[self] = clamp(value, self._min, self._max)
 end
 
 local function bar_SetSmoothedMinMaxValues(self, min, max)
 	min, max = tonumber(min), tonumber(max)
+
+	assert(min and max, 'bar_SetSmoothedMinMaxValues requires (min and max) to be a number.')
 
 	self:SetMinMaxValues_(min, max)
 
