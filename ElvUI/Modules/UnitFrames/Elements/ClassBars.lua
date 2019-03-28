@@ -363,7 +363,7 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged)
 	local r, g, b
 	for i=1, #self do
 		r, g, b = self[i]:GetStatusBarColor()
-		self[i].bg:SetVertexColor(r, g, b, 0.15)
+		self[i].bg:SetVertexColor(r, g, b, 0.25)
 		if maxBars and (i <= maxBars) then
 			self[i].bg:Show()
 		else
@@ -398,7 +398,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i].bg = runes[i]:CreateTexture(nil, 'BORDER')
 		runes[i].bg:SetAllPoints()
 		runes[i].bg:SetTexture(E.media.blankTex)
-		runes[i].bg.multiplier = 0.3
+		runes[i].bg.multiplier = 0.25
 	end
 
 	runes.PostUpdate = PostUpdateRunes
@@ -437,7 +437,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.bg = additionalPower:CreateTexture(nil, "BORDER")
 	additionalPower.bg:SetAllPoints(additionalPower)
 	additionalPower.bg:SetTexture(E.media.blankTex)
-	additionalPower.bg.multiplier = 0.3
+	additionalPower.bg.multiplier = 0.25
 
 	additionalPower.text = additionalPower:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(additionalPower.text)
