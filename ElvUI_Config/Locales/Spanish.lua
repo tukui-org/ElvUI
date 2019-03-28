@@ -560,6 +560,7 @@ L["Shows item level of each item, enchants, and gems when inspecting another pla
 L["Skin Backdrop (No Borders)"] = true
 L["Skin Backdrop"] = "Apariencia del Fondo"
 L["Skin the blizzard chat bubbles."] = "Modificar la apariencia de las Burbujas de Chat de Blizzard"
+L["Smoothing Amount"] = true
 L["Status Bar"] = true
 L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = true
@@ -567,6 +568,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true
 L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."] = true
 L["Thin Border Theme"] = true
+L["This controls the speed of status bars which use Smooth Bars option."] = true
 L["This is for Customized Icons in your Interface/Icons folder."] = true
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = true
 L["This will prevent the UI Scale Popup from being shown when changing the game window size."] = true
