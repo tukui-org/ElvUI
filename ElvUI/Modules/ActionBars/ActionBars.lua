@@ -245,59 +245,6 @@ function AB:PositionAndSizeBar(barName)
 		RegisterStateDriver(bar, "page", page);
 		bar:SetAttribute("page", page)
 
-		if barName == "bar1" then
-			RegisterStateDriver(bar.vehicleFix, "vehicleFix", "[vehicleui] 1;0")
-			bar.vehicleFix:SetAttribute("_onstate-vehicleFix", [[
-				local bar = self:GetParent()
-				local ParsedText = SecureCmdOptionParse(self:GetParent():GetAttribute("page"))
-
-				if newstate == 1 then
-					if(HasVehicleActionBar()) then
-						local index = GetVehicleBarIndex() -- This should update the bar correctly for King's Rest now.
-						bar:SetAttribute("state", index)
-						bar:ChildUpdate("state", index)
-						self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", index) -- Update MainMenuBarArtFrame too.
-					else
-						if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
-							ParsedText = GetTempShapeshiftBarIndex() or ParsedText
-						end
-
-						if ParsedText ~= 0 then
-							bar:SetAttribute("state", ParsedText)
-							bar:ChildUpdate("state", ParsedText)
-							self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", ParsedText)
-						else
-							local newCondition = bar:GetAttribute("newCondition")
-							if newCondition then
-								newstate = SecureCmdOptionParse(newCondition)
-								bar:SetAttribute("state", newstate)
-								bar:ChildUpdate("state", newstate)
-								self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)
-							end
-						end
-					end
-				else
-					if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
-						ParsedText = GetTempShapeshiftBarIndex() or ParsedText
-					end
-
-					if ParsedText ~= 0 then
-						bar:SetAttribute("state", ParsedText)
-						bar:ChildUpdate("state", ParsedText)
-						self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", ParsedText)
-					else
-						local newCondition = bar:GetAttribute("newCondition")
-						if newCondition then
-							newstate = SecureCmdOptionParse(newCondition)
-							bar:SetAttribute("state", newstate)
-							bar:ChildUpdate("state", newstate)
-							self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)
-						end
-					end
-				end
-			]]);
-		end
-
 		if not bar.initialized then
 			bar.initialized = true;
 			AB:PositionAndSizeBar(barName)
