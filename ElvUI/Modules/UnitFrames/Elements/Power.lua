@@ -37,7 +37,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 		power.bg = power:CreateTexture(nil, 'BORDER')
 		power.bg:SetAllPoints()
 		power.bg:SetTexture(E.media.blankTex)
-		power.bg.multiplier = 0.2
+		power.bg.multiplier = 0.25
 	end
 
 	if text then
