@@ -54,7 +54,7 @@ function UF:Configure_HealthBar(frame)
 	local db = frame.db
 	local health = frame.Health
 
-	health.Smooth = self.db.smoothbars
+	ElvUF:SetSmoothing(health, self.db.smoothbars)
 
 	--Text
 	if db.health and health.value then

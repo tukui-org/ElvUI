@@ -78,7 +78,6 @@ function NP:Construct_Health(nameplate)
 	Health.bg:SetTexture(E.media.blankTex)
 	Health.bg.multiplier = 0.2]]
 
-	E:SmoothBar(Health)
 	NP.StatusBars[Health] = true
 
 	local statusBarTexture = Health:GetStatusBarTexture()
@@ -113,6 +112,8 @@ function NP:Update_Health(nameplate)
 		end
 
 		nameplate.Health:Point('CENTER', nameplate, 'CENTER', 0, db.health.yOffset)
+
+		ElvUF:SetSmoothing(nameplate.Health, NP.db.smoothbars)
 	else
 		if nameplate:IsElementEnabled('Health') then
 			nameplate:DisableElement('Health')

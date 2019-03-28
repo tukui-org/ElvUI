@@ -311,6 +311,7 @@ P.bags = {
 
 --NamePlate
 P.nameplates = {
+	smoothbars = false,
 	clampToScreen = false,
 	cutawayHealth = false,
 	cutawayHealthFadeOutTime = 0.6,

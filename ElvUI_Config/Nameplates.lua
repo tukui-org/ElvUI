@@ -4008,6 +4008,13 @@ E.Options.args.nameplate = {
 							isPercent = true,
 							min = 0, max = 1, step = 0.01,
 						},
+						smoothbars = {
+							type = 'toggle',
+							order = 13,
+							name = L["Smooth Bars"],
+							desc = L["Bars will transition smoothly."],
+							set = function(info, value) E.db.nameplates[info[#info]] = value; NP:ConfigureAll(); end,
+						},
 						clickThrough = {
 							order = 15,
 							type = "group",
