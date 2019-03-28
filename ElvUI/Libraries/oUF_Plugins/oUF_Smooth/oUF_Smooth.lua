@@ -72,7 +72,7 @@ do -- Credit: ls- (lightspark)
 		self._max = max
 	end
 
-	function E:SmoothBar(bar)
+	function ElvUF:SmoothBar(bar)
 		-- reset the bar
 		bar:SetMinMaxValues(0, 1)
 		bar:SetValue(0)
@@ -83,7 +83,7 @@ do -- Credit: ls- (lightspark)
 		bar.SetMinMaxValues = bar_SetSmoothedMinMaxValues
 	end
 
-	function E:DesmoothBar(bar)
+	function ElvUF:DesmoothBar(bar)
 		if bar.SetValue_ then
 			bar.SetValue = bar.SetValue_
 			bar.SetValue_ = nil
@@ -92,6 +92,14 @@ do -- Credit: ls- (lightspark)
 		if bar.SetMinMaxValues_ then
 			bar.SetMinMaxValues = bar.SetMinMaxValues_
 			bar.SetMinMaxValues_ = nil
+		end
+	end
+
+	function ElvUF:SetSmoothing(bar, enable)
+		if enable then
+			self:SmoothBar(bar)
+		else
+			self:DesmoothBar(bar)
 		end
 	end
 end
