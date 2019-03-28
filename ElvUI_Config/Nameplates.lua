@@ -3301,6 +3301,89 @@ local function GetUnitSettings(unit, name)
 					},
 				},
 			},
+			floatingCombatFeedback = {
+				order = 12,
+				name = L["Floating Combat Feedback"],
+				type = "group",
+				get = function(info) return E.db.nameplates.units[unit].floatingCombatFeedback[info[#info]] end,
+				set = function(info, value) E.db.nameplates.units[unit].floatingCombatFeedback[info[#info]] = value; NP:ConfigureAll() end,
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Floating Combat Feedback"],
+					},
+					enable = {
+						order = 1,
+						name = L['Enable'],
+						type = "toggle",
+					},
+					mode = {
+						order = 4,
+						type = "select",
+						name = L["Direction"],
+						values = {
+							["Fountain"] = L["Fountain"],
+							["Standard"] = L["Standard"],
+						},
+					},
+					direction = {
+						order = 4,
+						type = "select",
+						name = L["Direction"],
+						values = {
+							["UP"] = L["Up"],
+							["DOWN"] = L["Down"],
+						},
+					},
+					xOffset = {
+						order = 5,
+						name = L["X-Offset"],
+						type = "range",
+						min = -100, max = 100, step = 1,
+					},
+					yOffset = {
+						order = 6,
+						name = L["Y-Offset"],
+						type = "range",
+						min = -100, max = 100, step = 1,
+					},
+					fontGroup = {
+						type = "group",
+						order = 7,
+						name = L["Font"],
+						guiInline = true,
+						get = function(info) return E.db.nameplates.units[unit].floatingCombatFeedback[info[#info]] end,
+						set = function(info, value) E.db.nameplates.units[unit].floatingCombatFeedback[info[#info]] = value; NP:ConfigureAll() end,
+						args = {
+							font = {
+								type = "select", dialogControl = 'LSM30_Font',
+								order = 1,
+								name = L["Font"],
+								values = AceGUIWidgetLSMlists.font,
+							},
+							fontSize = {
+								order = 2,
+								name = FONT_SIZE,
+								type = "range",
+								min = 4, max = 60, step = 1,
+							},
+							fontOutline = {
+								order = 3,
+								name = L["Font Outline"],
+								desc = L["Set the font outline."],
+								type = "select",
+								values = {
+									['NONE'] = NONE,
+									['OUTLINE'] = 'OUTLINE',
+									['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+									['THICKOUTLINE'] = 'THICKOUTLINE',
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 

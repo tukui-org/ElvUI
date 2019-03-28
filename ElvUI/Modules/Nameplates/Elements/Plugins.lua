@@ -219,6 +219,7 @@ end
 
 function NP:Construct_FloatingCombatFeedback(nameplate)
 	local FloatingCombatFeedback = CreateFrame("Frame", nil, nameplate)
+	FloatingCombatFeedback:SetAllPoints(nameplate)
 
 	for i = 1, 12 do
 		FloatingCombatFeedback[i] = FloatingCombatFeedback:CreateFontString(nil, "OVERLAY")
@@ -237,17 +238,17 @@ function NP:Update_FloatingCombatFeedback(nameplate)
 			nameplate:EnableElement('FloatingCombatFeedback')
 		end
 
-		nameplate.FloatingCombatFeedback:SetPoint(db.floatingCombatFeedback.position)
 		nameplate.FloatingCombatFeedback.mode = db.floatingCombatFeedback.mode
 		nameplate.FloatingCombatFeedback.xOffset = db.floatingCombatFeedback.xOffset
 		nameplate.FloatingCombatFeedback.yOffset = db.floatingCombatFeedback.yOffset
 		nameplate.FloatingCombatFeedback.yDirection = db.floatingCombatFeedback.direction == "UP" and 1 or -1
+		nameplate.FloatingCombatFeedback.fontHeight = db.floatingCombatFeedback.fontSize
 		nameplate.FloatingCombatFeedback.scrollTime = 1.5
+		nameplate.FloatingCombatFeedback.abbreviateNumbers = true
 
 		for i = 1, 12 do
 			nameplate.FloatingCombatFeedback[i]:FontTemplate(E.LSM:Fetch('font', db.floatingCombatFeedback.font), db.floatingCombatFeedback.fontSize, db.floatingCombatFeedback.fontOutline)
 		end
-
 	else
 		if nameplate:IsElementEnabled('FloatingCombatFeedback') then
 			nameplate:DisableElement('FloatingCombatFeedback')

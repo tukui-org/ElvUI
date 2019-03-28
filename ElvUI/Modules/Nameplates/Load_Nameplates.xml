@@ -16,6 +16,7 @@
 	<Script file="Plugins\ClassificationIndicator.lua"/>
 	<Script file="Plugins\Cutaway.lua"/>
 	<Script file="Plugins\Fader.lua"/>
+	<Script file="Plugins\FloatingCombatFeedback.lua"/>
 	<Script file="Plugins\HealerSpecs.lua"/>
 	<Script file="Plugins\Highlight.lua"/>
 	<Script file="Plugins\QuestIcons.lua"/>
