@@ -2714,7 +2714,6 @@ function CH:Initialize()
 		self.ChatHeadFrame[i].StatusBar:CreateBackdrop()
 		self.ChatHeadFrame[i].StatusBar:SetStatusBarTexture(E.media.normTex)
 		self.ChatHeadFrame[i].StatusBar:SetMinMaxValues(0, 1)
-		E:SetSmoothing(self.ChatHeadFrame[i].StatusBar)
 
 		self.ChatHeadFrame[i].StatusBar.anim = CreateAnimationGroup(self.ChatHeadFrame[i].StatusBar)
 		self.ChatHeadFrame[i].StatusBar.anim.progress = self.ChatHeadFrame[i].StatusBar.anim:CreateAnimation("Progress")
