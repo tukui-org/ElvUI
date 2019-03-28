@@ -2,7 +2,8 @@ if not ElvUF then return end
 
 -- Credit: ls- (lightspark)
 local abs, next, Lerp = abs, next, Lerp
-local objects = {}
+local activeObjects = {}
+local handledObjects = {}
 local TARGET_FPS = 60
 
 local function clamp(v, min, max)
@@ -28,25 +29,25 @@ end
 
 local frame = CreateFrame("Frame", "LSBarSmoother")
 local function onUpdate(_, elapsed)
-	for object, target in next, objects do
+	for object, target in next, activeObjects do
 		if object.SetValue_ then
 			local new = Lerp(object._value, target, clamp(0.33 * elapsed * TARGET_FPS))
 			if isCloseEnough(new, target, object._max - object._min) then
 				new = target
-				objects[object] = nil
+				activeObjects[object] = nil
 			end
 
 			object:SetValue_(new)
 			object._value = new
 		else
-			objects[object] = nil
+			activeObjects[object] = nil
 		end
 	end
 end
 
 local function bar_SetSmoothedValue(self, value)
 	self._value = self:GetValue()
-	objects[self] = clamp(value, self._min, self._max)
+	activeObjects[self] = clamp(value, self._min, self._max)
 end
 
 local function bar_SetSmoothedMinMaxValues(self, min, max)
@@ -58,9 +59,9 @@ local function bar_SetSmoothedMinMaxValues(self, min, max)
 			ratio = max / (self._max or max)
 		end
 
-		local target = objects[self]
+		local target = activeObjects[self]
 		if target then
-			objects[self] = target * ratio
+			activeObjects[self] = target * ratio
 		end
 
 		local cur = self._value
@@ -74,7 +75,6 @@ local function bar_SetSmoothedMinMaxValues(self, min, max)
 	self._max = max
 end
 
-local registered = {}
 local function SmoothBar(bar)
 	-- reset the bar
 	bar:SetMinMaxValues(0, 1)
@@ -93,17 +93,17 @@ local function SmoothBar(bar)
 		frame:SetScript("OnUpdate", onUpdate)
 	end
 
-	registered[bar] = true
+	handledObjects[bar] = true
 end
 
 local function DesmoothBar(bar)
-	local oldValue = objects[bar]
+	local oldValue = activeObjects[bar]
 	if oldValue then
-		objects[bar] = nil
+		activeObjects[bar] = nil
 	end
 
-	if registered[bar] then
-		registered[bar] = nil
+	if handledObjects[bar] then
+		handledObjects[bar] = nil
 	end
 
 	if bar.SetValue_ then
@@ -119,7 +119,7 @@ local function DesmoothBar(bar)
 		bar.SetMinMaxValues_ = nil
 	end
 
-	if not next(registered) then
+	if not next(handledObjects) then
 		frame:SetScript("OnUpdate", nil)
 	end
 end
