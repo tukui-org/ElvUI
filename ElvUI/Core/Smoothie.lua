@@ -43,11 +43,15 @@ local function onUpdate(_, elapsed)
 end
 
 local function bar_SetSmoothedValue(self, value)
+	value = tonumber(value)
+
 	self._value = self:GetValue()
 	activeObjects[self] = clamp(value, self._min, self._max)
 end
 
 local function bar_SetSmoothedMinMaxValues(self, min, max)
+	min, max = tonumber(min), tonumber(max)
+
 	self:SetMinMaxValues_(min, max)
 
 	if self._max and self._max ~= max then
