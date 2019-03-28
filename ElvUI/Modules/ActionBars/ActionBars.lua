@@ -17,7 +17,6 @@ local GetMouseFocus = GetMouseFocus
 local GetNumFlyouts, GetFlyoutInfo = GetNumFlyouts, GetFlyoutInfo
 local GetOverrideBarIndex = GetOverrideBarIndex
 local GetVehicleBarIndex = GetVehicleBarIndex
-local HasOverrideActionBar, HasVehicleActionBar = HasOverrideActionBar, HasVehicleActionBar
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local MainMenuBarVehicleLeaveButton_OnEnter = MainMenuBarVehicleLeaveButton_OnEnter
@@ -266,9 +265,7 @@ end
 
 function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate');
-	bar.vehicleFix = CreateFrame("Frame", nil, bar, "SecureHandlerStateTemplate")
 	bar:SetFrameRef("MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
-	bar.vehicleFix:SetFrameRef("MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
 
 	local point, anchor, attachTo, x, y = strsplit(',', self.barDefaults['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
@@ -1063,44 +1060,6 @@ function AB:StyleFlyout(button)
 	end
 end
 
-function AB:VehicleFix()
-	local barName = 'bar1'
-	local bar = self.handledBars[barName]
-	local buttonSpacing = E:Scale(self.db[barName].buttonspacing);
-	local backdropSpacing = E:Scale((self.db[barName].backdropSpacing or self.db[barName].buttonspacing))
-	local numButtons = self.db[barName].buttons;
-	local buttonsPerRow = self.db[barName].buttonsPerRow;
-	local size = E:Scale(self.db[barName].buttonsize);
-	local point = self.db[barName].point;
-	local numColumns = ceil(numButtons / buttonsPerRow);
-
-	if (HasOverrideActionBar() or HasVehicleActionBar()) and numButtons == 12 then
-		local widthMult, heightMult, x, y = 1, 1
-
-		if point == "BOTTOMLEFT" then
-			x, y = E.Spacing, E.Spacing
-		elseif point == "BOTTOMRIGHT" then
-			x, y = -E.Spacing, E.Spacing
-		elseif point == "TOPLEFT" then
-			x, y = E.Spacing, -E.Spacing
-		elseif point == "TOPRIGHT" then
-			x, y = -E.Spacing, -E.Spacing
-		end
-
-		bar.backdrop:ClearAllPoints()
-		bar.backdrop:SetPoint(point, bar, point, x, y)
-
-		local backdropWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (backdropSpacing*2) + (E.Border*2) - (E.Spacing*2)
-		local backdropeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (backdropSpacing*2) + (E.Border*2) - (E.Spacing*2)
-		bar.backdrop:SetWidth(backdropWidth)
-		bar.backdrop:SetHeight(backdropeight)
-	else
-		--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
-		bar.backdrop:SetPoint("TOPLEFT", bar, "TOPLEFT", E.Spacing, -E.Spacing)
-		bar.backdrop:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -E.Spacing, E.Spacing)
-	end
-end
-
 local color
 --Update text color when button is updated
 function AB:LAB_ButtonUpdate(button)
@@ -1195,8 +1154,6 @@ function AB:Initialize()
 	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
 	self:RegisterEvent("PET_BATTLE_CLOSE", "ReassignBindings")
 	self:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
-	self:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR', 'VehicleFix')
-	self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', 'VehicleFix')
 
 	if C_PetBattles_IsInBattle() then
 		self:RemoveBindings()
