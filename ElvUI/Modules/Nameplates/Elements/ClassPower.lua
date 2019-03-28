@@ -19,7 +19,7 @@ local MAX_POINTS = {
 }
 
 function NP:ClassPower_UpdateColor(powerType)
-	local color, r, g, b = NP.db.colors.power[powerType]
+	local color, r, g, b = NP.db.colors.classResources[E.myclass] or NP.db.colors.power[powerType]
 	if color then
 		r, g, b = color.r, color.g, color.b
 	else
@@ -30,7 +30,7 @@ function NP:ClassPower_UpdateColor(powerType)
 	local db = NP.db.units[self.__owner.frameType]
 	local ClassColor = db and db.classpower.classColor and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 	for i = 1, #self do
-		local classColor = ClassColor or (powerType == 'COMBO_POINTS' and NP.db.colors.classResources.comboPoints[i])
+		local classColor = ClassColor or (powerType == 'COMBO_POINTS' and NP.db.colors.classResources.comboPoints[i] or powerType == 'CHI' and NP.db.colors.classResources.MONK)
 		if classColor then r, g, b = classColor.r, classColor.g, classColor.b end
 
 		self[i]:SetStatusBarColor(r, g, b)
