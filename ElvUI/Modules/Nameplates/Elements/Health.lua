@@ -113,6 +113,8 @@ function NP:Update_Health(nameplate)
 		end
 
 		nameplate.Health:Point('CENTER', nameplate, 'CENTER', 0, db.health.yOffset)
+
+		ElvUF:SetSmoothing(nameplate.Health, true) -- need option
 	else
 		if nameplate:IsElementEnabled('Health') then
 			nameplate:DisableElement('Health')

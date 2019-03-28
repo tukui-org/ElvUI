@@ -73,7 +73,7 @@ function UF:Configure_AltPower(frame)
 		else
 			altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER, -frame.BORDER)
 		end
-		altpower.Smooth = UF.db.smoothbars
+		ElvUF:SetSmoothing(altpower, UF.db.smoothbars)
 	else
 		frame:DisableElement('AlternativePower')
 		altpower.text:SetAlpha(0)
