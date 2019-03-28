@@ -30,6 +30,7 @@ Fixed an issue whiched caused incompatiblity with our config and ColorPickerPlus
 Fixed an error in init.lua: attempt to index local 'ACD'.  
 Fixed an issue with the Quest Skin which caused the Quest Icon beside the text to sometimes not be shown.  
 Fixed the DropDown Box text on the Communities Stream Dropdown.  
+Fixed an issue which would cause an error if you had the Login messaged enable while the Chat module was disabled.  
 
 **Misc. Changes:**  
 [Nameplate] Keep Player nameplate from fading out.  
