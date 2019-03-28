@@ -34,6 +34,7 @@ function NP:ClassPower_UpdateColor(powerType)
 		if classColor then r, g, b = classColor.r, classColor.g, classColor.b end
 
 		self[i]:SetStatusBarColor(r, g, b)
+		self[i].backdrop:SetBackdropColor(r, g, b, 0.15)
 	end
 end
 
@@ -66,7 +67,7 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:Hide()
 	ClassPower:SetFrameStrata(nameplate:GetFrameStrata())
 	ClassPower:SetFrameLevel(5)
-	ClassPower:CreateBackdrop('Transparent')
+	ClassPower:CreateBackdrop('Transparent', nil, nil, self.thinBorders)
 
 	local Max = max(MAX_POINTS[E.myclass] or 0, _G.MAX_COMBO_POINTS)
 	for i = 1, Max do
@@ -77,6 +78,9 @@ function NP:Construct_ClassPower(nameplate)
 		local statusBarTexture = ClassPower[i]:GetStatusBarTexture()
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
+
+		ClassPower[i]:CreateBackdrop('Transparent', nil, nil, self.thinBorders)
+		ClassPower[i].backdrop:SetParent(ClassPower) -- Azil, ugly border on the right
 
 		if i == 1 then
 			ClassPower[i]:Point('LEFT', ClassPower, 'LEFT', 0, 0)
@@ -106,7 +110,7 @@ function NP:Construct_Runes(nameplate)
 	local Runes = CreateFrame('Frame', nameplate:GetDebugName()..'Runes', nameplate)
 	Runes:SetFrameStrata(nameplate:GetFrameStrata())
 	Runes:SetFrameLevel(5)
-	Runes:CreateBackdrop('Transparent')
+	Runes:CreateBackdrop('Transparent', nil, nil, self.thinBorders)
 	Runes:Hide()
 
 	Runes.UpdateColor = E.noop
@@ -121,6 +125,9 @@ function NP:Construct_Runes(nameplate)
 		local statusBarTexture = Runes[i]:GetStatusBarTexture()
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
+
+		Runes[i]:CreateBackdrop('Transparent', nil, nil, self.thinBorders)
+		Runes[i].backdrop:SetParent(Runes) -- Azil, ugly border on the right
 
 		if i == 1 then
 			Runes[i]:Point('LEFT', Runes, 'LEFT', 0, 0)
@@ -184,6 +191,7 @@ function NP:Update_Runes(nameplate)
 		for i = 1, 6 do
 			nameplate.Runes[i]:SetStatusBarColor(runeColor.r, runeColor.g, runeColor.b)
 			nameplate.Runes[i]:Size(width - 1, db.classpower.height)
+			nameplate.Runes[i].backdrop:SetBackdropColor(runeColor.r, runeColor.g, runeColor.b, 0.25)
 		end
 	else
 		if nameplate:IsElementEnabled('Runes') then
