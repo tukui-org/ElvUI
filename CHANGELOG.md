@@ -43,6 +43,7 @@ Fixed an issue which would cause an error if you had the Login messaged enable w
 [Nameplate] Adding Name Only (with Show Title) on Nameplates and back in Style Filters.  
 [Nameplate] Reworked the Target Alpha so that it shows only while in combat.  
 [Nameplate] Updated oUF to increase preformance of the new Nameplates further.  
+[Nameplate] Added backdrop coloring to the classbars.  
 [Unitframe] Cleaned some of the Castbar code, as we believe this is part of the reason for the Unitframes to cause additional lags.  
 [Actionbar] Stopped allowing Keybinder in combat.  
 [Bag] Recoded the animation for the New Item Glow so they all glow together instead of seperately, also gave it a fancy new glow texture.  
@@ -54,6 +55,7 @@ Optimized the Color Picker code for better preformance, also it will accept thre
 Skinned the New Toy Alert.  
 Skinned the Communities Notification Buttons.  
 Removed the 'Forcing MaxGroups to' message.  
+Added smoothing option to the Alternative Power bar.  
 
 **Work in Progress:**  
 Cutaway Health, Custom Text, and Floating Combat Feedback on Nameplates.  
