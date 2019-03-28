@@ -1,3 +1,5 @@
+if not ElvUF then return end
+
 -- Credit: ls- (lightspark)
 local abs, next, Lerp = abs, next, Lerp
 local objects = {}
@@ -72,6 +74,7 @@ local function bar_SetSmoothedMinMaxValues(self, min, max)
 	self._max = max
 end
 
+local registered = {}
 function ElvUF:SmoothBar(bar)
 	-- reset the bar
 	bar:SetMinMaxValues(0, 1)
@@ -89,15 +92,25 @@ function ElvUF:SmoothBar(bar)
 	if not frame:GetScript("OnUpdate") then
 		frame:SetScript("OnUpdate", onUpdate)
 	end
+
+	registered[bar] = true
 end
 
 function ElvUF:DesmoothBar(bar)
-	if objects[bar] then
-		bar:SetValue_(objects[bar])
+	local oldValue = objects[bar]
+	if oldValue then
 		objects[bar] = nil
 	end
 
+	if registered[bar] then
+		registered[bar] = nil
+	end
+
 	if bar.SetValue_ then
+		if oldValue then
+			bar:SetValue_(oldValue)
+		end
+
 		bar.SetValue = bar.SetValue_
 		bar.SetValue_ = nil
 	end
@@ -106,7 +119,7 @@ function ElvUF:DesmoothBar(bar)
 		bar.SetMinMaxValues_ = nil
 	end
 
-	if not next(objects) then
+	if not next(registered) then
 		frame:SetScript("OnUpdate", nil)
 	end
 end
