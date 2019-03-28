@@ -75,7 +75,7 @@ local function bar_SetSmoothedMinMaxValues(self, min, max)
 end
 
 local registered = {}
-function ElvUF:SmoothBar(bar)
+local function SmoothBar(bar)
 	-- reset the bar
 	bar:SetMinMaxValues(0, 1)
 	bar:SetValue(0)
@@ -96,7 +96,7 @@ function ElvUF:SmoothBar(bar)
 	registered[bar] = true
 end
 
-function ElvUF:DesmoothBar(bar)
+local function DesmoothBar(bar)
 	local oldValue = objects[bar]
 	if oldValue then
 		objects[bar] = nil
@@ -126,8 +126,8 @@ end
 
 function ElvUF:SetSmoothing(bar, enable)
 	if enable then
-		self:SmoothBar(bar)
+		SmoothBar(bar)
 	else
-		self:DesmoothBar(bar)
+		DesmoothBar(bar)
 	end
 end
