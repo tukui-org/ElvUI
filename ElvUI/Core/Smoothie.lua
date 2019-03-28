@@ -28,7 +28,7 @@ local function isCloseEnough(new, target, range)
 	return true
 end
 
-local frame = CreateFrame('Frame', 'LSBarSmoother')
+local frame = CreateFrame('Frame')
 local function onUpdate(_, elapsed)
 	for object, target in next, activeObjects do
 		local new = Lerp(object._value, target, clamp(AMOUNT * elapsed * TARGET_FPS))
@@ -73,9 +73,8 @@ local function bar_SetSmoothedMinMaxValues(self, min, max)
 end
 
 local function SmoothBar(bar)
-	-- reset the bar
-	bar:SetMinMaxValues(0, 1)
-	bar:SetValue(0)
+    bar._min, bar._max = bar:GetMinMaxValues()
+    bar._value = bar:GetValue()
 
 	if not bar.SetValue_ then
 		bar.SetValue_ = bar.SetValue
