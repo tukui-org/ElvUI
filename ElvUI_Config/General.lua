@@ -147,7 +147,7 @@ E.Options.args.general = {
 					type = "range",
 					isPercent = true,
 					name = L["Smoothing Amount"],
-					desc = L["This controls the speed of status bars which use Smooth Bars option."],
+					desc = L["Controls the speed at which smoothed bars will be updated."],
 					min = 0.2, max = 0.8, softMax = 0.75, softMin = 0.25, step = 0.01,
 					set = function(info, value)
 						E.db.general.smoothingAmount = value

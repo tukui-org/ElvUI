@@ -620,7 +620,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "얇은 경계 테마 옵션은 인터페이스의 전반적인 외형을 변경합니다. 얇은 경계 테마를 사용하는 것은 기존보다 약간 성능이 향상됩니다."
 L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."] = "ElvUI에서 수치를 짧게 표시하고 싶을때 단위를 사용해 축약합니다. 주로 유닛프레임에서 사용됩니다."
 L["Thin Border Theme"] = "얇은 경계 테마"
-L["This controls the speed of status bars which use Smooth Bars option."] = true
+L["Controls the speed at which smoothed bars will be updated."] = true
 L["This is for Customized Icons in your Interface/Icons folder."] = true
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = true
 L["This will prevent the UI Scale Popup from being shown when changing the game window size."] = true

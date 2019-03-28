@@ -569,7 +569,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "Das Dünne Rahmen Theme ändert das gesamte Erscheinungsbild deines UI. Das Benutzten des Dünnen Rahmen Theme ist ein kleiner performance Schub gegenüber dem traditionellen Layout."
 L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."] = "Der Einheitenpräfix den du benutzen möchtest wenn die Werte von ElvUI verkürzt sind. Wird meist auf den Einheitenfenstern benutzt."
 L["Thin Border Theme"] = "Dünner Rahmen Theme"
-L["This controls the speed of status bars which use Smooth Bars option."] = "Dieses kontrolliert die Geschwindigkeit von Statusleisten welche die Option Sanfte Leistenübergänge verwenden."
+L["Controls the speed at which smoothed bars will be updated."] = true
 L["This is for Customized Icons in your Interface/Icons folder."] = "Dieses ist für Benutzerdefinierte Symbole in deinem Interface/Icon Ordner."
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = "Dieses wählt das Chatfenster aus wo die ElvUI Nachrichten erscheinen sollen."
 L["This will prevent the UI Scale Popup from being shown when changing the game window size."] = "Dieses verhindert dass das UI Skalierungs-Popup erscheint, wenn man die Spiel Fenstergröße ändert."
