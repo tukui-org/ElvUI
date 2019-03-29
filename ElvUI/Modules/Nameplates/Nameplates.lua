@@ -169,6 +169,7 @@ function NP:Construct_RaisedELement(nameplate)
 	RaisedElement:SetFrameStrata(nameplate:GetFrameStrata())
 	RaisedElement:SetFrameLevel(10)
 	RaisedElement:SetAllPoints()
+	RaisedElement:EnableMouse(false)
 
 	return RaisedElement
 end
@@ -235,6 +236,8 @@ function NP:StylePlate(nameplate)
 	end
 
 	if nameplate == _G.ElvNP_Player then
+		nameplate:SetScript('OnEnter', _G.UnitFrame_OnEnter)
+		nameplate:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 		nameplate.Fader = NP:Construct_Fader(nameplate)
 	end
 
@@ -528,8 +531,6 @@ function NP:Initialize()
 	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:Size(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_Player:SetScale(1)
-	_G.ElvNP_Player:SetScript('OnEnter', _G.UnitFrame_OnEnter)
-	_G.ElvNP_Player:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 	_G.ElvNP_Player.frameType = 'PLAYER'
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'player,generalGroup')
 
@@ -553,6 +554,7 @@ function NP:Initialize()
 	_G.ElvNP_TargetClassPower:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
 
 	NP.PlayerNamePlateAnchor = CreateFrame("Frame", "ElvUIPlayerNamePlateAnchor", E.UIParent)
+	NP.PlayerNamePlateAnchor:EnableMouse(false)
 	NP.PlayerNamePlateAnchor:Hide()
 
 	ElvUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit) NP:NamePlateCallBack(nameplate, event, unit) end)

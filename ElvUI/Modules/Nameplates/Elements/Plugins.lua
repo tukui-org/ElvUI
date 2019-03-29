@@ -51,7 +51,7 @@ function NP:Update_QuestIcons(nameplate)
 end
 
 function NP:Construct_ClassificationIndicator(nameplate)
-	local ClassificationIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
+	local ClassificationIndicator = nameplate:CreateTexture(nameplate:GetDebugName()..'ClassificationIndicator', 'OVERLAY')
 
 	return ClassificationIndicator
 end
@@ -159,6 +159,7 @@ end
 function NP:Construct_Highlight(nameplate)
 	local Highlight = CreateFrame('Frame', nameplate:GetDebugName()..'Highlight', nameplate)
 	Highlight:Hide()
+	Highlight:EnableMouse(false)
 	Highlight:SetFrameLevel(9)
 
 	Highlight.texture = Highlight:CreateTexture(nil, 'ARTWORK')
@@ -193,7 +194,7 @@ function NP:Update_Highlight(nameplate)
 end
 
 function NP:Construct_HealerSpecs(nameplate)
-	local texture = nameplate:CreateTexture(nil, "OVERLAY")
+	local texture = nameplate:CreateTexture(nameplate:GetDebugName()..'HealerSpecs', "OVERLAY")
 	texture:Size(40, 40)
 	texture:SetTexture(E.Media.Textures.Healer)
 	texture:Hide()
@@ -220,6 +221,7 @@ end
 function NP:Construct_FloatingCombatFeedback(nameplate)
 	local FloatingCombatFeedback = CreateFrame("Frame", nil, nameplate)
 	FloatingCombatFeedback:SetAllPoints(nameplate)
+	FloatingCombatFeedback:EnableMouse(false)
 
 	for i = 1, 12 do
 		FloatingCombatFeedback[i] = FloatingCombatFeedback:CreateFontString(nil, "OVERLAY")
@@ -258,6 +260,7 @@ end
 
 function NP:Construct_Fader(nameplate)
 	local Fader = {
+		Hover = true,
 		Target = true,
 		Health = true,
 		Combat = true,
@@ -288,15 +291,9 @@ function NP:Update_Fader(nameplate)
 
 		nameplate.Fader.Combat = db.visibility.showInCombat
 		nameplate.Fader.Target = db.visibility.showWithTarget
-		nameplate.Fader.Health = true
-		nameplate.Fader.Power = true
-		nameplate.Fader.Casting = true
-		nameplate.Fader.Smooth = 1
 		nameplate.Fader.Delay = db.visibility.hideDelay
-		nameplate.Fader.MaxAlpha = 1
-		nameplate.Fader.MinAlpha = 0
 
-		nameplate:ForceUpdate('Fader')
+		nameplate.Fader:ForceUpdate()
 	end
 end
 
