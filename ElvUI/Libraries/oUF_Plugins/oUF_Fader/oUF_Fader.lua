@@ -57,7 +57,7 @@ local function Update(self, event, unit)
 		end
 	else
 		if element.Delay then
-			E:Delay(element.Delay, E.UIFrameFadeIn, E, self, element.Smooth, self:GetAlpha(), element.MinAlpha)
+			E:Delay(element.Delay, E.UIFrameFadeOut, E, self, element.Smooth, self:GetAlpha(), element.MinAlpha)
 		elseif element.Smooth then
 			E:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), element.MinAlpha)
 		else
