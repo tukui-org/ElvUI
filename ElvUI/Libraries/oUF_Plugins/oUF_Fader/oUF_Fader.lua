@@ -30,7 +30,6 @@ local PowerTypesFull = {
 	ENERGY = true,
 }
 
-
 local function Update(self, event, unit)
 	unit = unit or self.unit
 	local element = self.Fader

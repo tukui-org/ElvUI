@@ -189,8 +189,11 @@ function UF:Update_PlayerFrame(frame, db)
 	end
 
 	--Combat Fade
-	if db.combatfade and not frame:IsElementEnabled('Fader') then
-		frame:EnableElement('Fader')
+	if db.combatfade then
+		if not frame:IsElementEnabled('Fader') then
+			frame:EnableElement('Fader')
+		end
+
 		frame.Fader:ForceUpdate()
 	elseif not db.combatfade and frame:IsElementEnabled('Fader') then
 		frame:DisableElement('Fader')
