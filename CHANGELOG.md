@@ -45,6 +45,7 @@ Fixed an issue which would cause an error if you had the Login messaged enable w
 [Nameplate] Updated oUF to increase preformance of the new Nameplates further.  
 [Nameplate] Added backdrop coloring to the classbars.  
 [Unitframe] Cleaned some of the Castbar code, as we believe this is part of the reason for the Unitframes to cause additional lags.  
+[Unitframe] Replaced the Combat Fade code on the Player frame, with the same code we now use to fade the Player nameplate.  
 [Actionbar] Stopped allowing Keybinder in combat.  
 [Bag] Recoded the animation for the New Item Glow so they all glow together instead of seperately, also gave it a fancy new glow texture.  
 [Config] Made the Enable Checkboxes in the config colorful, so that they're easier to spot, plus it looks really cool, imo.  
