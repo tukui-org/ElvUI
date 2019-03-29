@@ -16,15 +16,6 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 
-local PowerTypesEmpty = {
-	RAGE = true,
-	RUNIC_POWER = true,
-	LUNAR_POWER = true,
-	MAELSTROM = true,
-	FURY = true,
-	PAIN = true
-}
-
 local PowerTypesFull = {
 	MANA = true,
 	FOCUS = true,
@@ -46,7 +37,6 @@ local function Update(self, event, unit)
 		(element.Target and UnitExists(unit .. 'target')) or
 		(element.Focus and UnitExists('focus')) or
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
-		(element.Power and (PowerTypesEmpty[powerType] and power > 0)) or
 		(element.Power and (PowerTypesFull[powerType] and power < UnitPowerMax(unit))) or
 		(element.Hover and (GetMouseFocus() == self))
 	then
