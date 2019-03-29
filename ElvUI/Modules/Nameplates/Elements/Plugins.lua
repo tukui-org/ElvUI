@@ -225,6 +225,7 @@ function NP:Construct_FloatingCombatFeedback(nameplate)
 
 	for i = 1, 12 do
 		FloatingCombatFeedback[i] = FloatingCombatFeedback:CreateFontString(nil, "OVERLAY")
+		FloatingCombatFeedback[i]:FontTemplate(E.Libs.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 	end
 
 	return FloatingCombatFeedback
