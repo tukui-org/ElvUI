@@ -217,7 +217,7 @@ E.Options.args.chat = {
 					guiInline = true,
 					args = {
 						customTimeColor = {
-							order = 17,
+							order = 1,
 							type = "color",
 							hasAlpha = false,
 							name = L["Timestamp Color"],
@@ -233,7 +233,7 @@ E.Options.args.chat = {
 							end,
 						},
 						timeStampFormat = {
-							order = 18,
+							order = 2,
 							type = 'select',
 							name = TIMESTAMPS_LABEL,
 							desc = OPTION_TOOLTIP_TIMESTAMPS,
