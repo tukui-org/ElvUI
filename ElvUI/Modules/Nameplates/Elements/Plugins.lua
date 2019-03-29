@@ -258,8 +258,8 @@ function NP:Update_FloatingCombatFeedback(nameplate)
 	end
 end
 
-function NP:Construct_Fader(nameplate)
-	local Fader = {
+function NP:DefaultFader()
+	return {
 		Hover = true,
 		Target = true,
 		Health = true,
@@ -271,8 +271,6 @@ function NP:Construct_Fader(nameplate)
 		MaxAlpha = 1,
 		MinAlpha = 0,
 	}
-
-	return Fader
 end
 
 function NP:Update_Fader(nameplate)

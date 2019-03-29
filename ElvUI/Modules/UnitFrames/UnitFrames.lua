@@ -1374,6 +1374,20 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	end
 end
 
+function UF:DefaultFader()
+	return {
+		Target = true,
+		Health = true,
+		Combat = true,
+		Power = true,
+		Casting = true,
+		Smooth = 0.5,
+		Delay = 0,
+		MaxAlpha = 1,
+		MinAlpha = 0,
+	}
+end
+
 function UF:Initialize()
 	self.db = E.db.unitframe
 	self.thinBorders = self.db.thinBorders or E.PixelMode

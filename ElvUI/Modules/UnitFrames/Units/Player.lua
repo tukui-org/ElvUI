@@ -71,19 +71,8 @@ function UF:Construct_PlayerFrame(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.PvPIndicator = self:Construct_PvPIcon(frame)
+	frame.Fader = self:DefaultFader()
 	frame.customTexts = {}
-
-	frame.Fader = {
-		Target = true,
-		Health = true,
-		Combat = true,
-		Power = true,
-		Casting = true,
-		Smooth = 0.5,
-		Delay = 0,
-		MaxAlpha = 1,
-		MinAlpha = 0,
-	}
 
 	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,player,generalGroup')

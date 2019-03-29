@@ -238,7 +238,7 @@ function NP:StylePlate(nameplate)
 	if nameplate == _G.ElvNP_Player then
 		nameplate:SetScript('OnEnter', _G.UnitFrame_OnEnter)
 		nameplate:SetScript('OnLeave', _G.UnitFrame_OnLeave)
-		nameplate.Fader = NP:Construct_Fader(nameplate)
+		nameplate.Fader = NP:DefaultFader()
 	end
 
 	NP.Plates[nameplate] = nameplate:GetName()
