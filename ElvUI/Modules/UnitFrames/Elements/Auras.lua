@@ -155,9 +155,6 @@ function UF:Configure_Auras(frame, auraType)
 	auras["growth-x"] = auras.db.anchorPoint == 'LEFT' and 'LEFT' or  auras.db.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.db.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
 	auras.initialAnchor = E.InversePoints[auras.db.anchorPoint]
 
-	-- this will keep the aura pane click through, the buttons themselves are handled in PostUpdateAura
-	auras:EnableMouse(false)
-
 	--These are needed for SmartAuraPosition
 	auras.attachTo = attachTo
 	auras.point = E.InversePoints[auras.db.anchorPoint]
