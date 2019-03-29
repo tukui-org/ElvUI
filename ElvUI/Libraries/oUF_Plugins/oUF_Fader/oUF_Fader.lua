@@ -137,6 +137,14 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', Update)
 		end
 
+		if not element.MinAlpha then
+			element.MinAlpha = .35
+		end
+
+		if not element.MaxAlpha then
+			element.MaxAlpha = 1
+		end
+
 		return true
 	end
 end
