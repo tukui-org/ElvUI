@@ -390,6 +390,7 @@ function NP:PLAYER_ENTERING_WORLD()
 end
 
 function NP:ConfigureAll()
+	NP:StyleFilterConfigure() -- keep this at the top
 	NP.PlayerRole = GetSpecializationRole(GetSpecialization())
 
 	C_NamePlate_SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
@@ -406,7 +407,7 @@ function NP:ConfigureAll()
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 
 	for nameplate in pairs(NP.Plates) do
-		NP:StyleFilterClear(nameplate) -- keep this at the top
+		NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
 
 		NP:UpdatePlate(nameplate)
 		nameplate:UpdateAllElements('ForceUpdate')
@@ -418,12 +419,11 @@ function NP:ConfigureAll()
 			NP.PlayerNamePlateAnchor:Show()
 		end
 
-		NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this at the end
+		NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this at the end of the loop
 	end
 
 	NP:Update_StatusBars()
 	NP:SetNamePlateClickThrough()
-	NP:StyleFilterConfigure()
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
