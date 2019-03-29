@@ -69,9 +69,16 @@ local function ForceUpdate(element)
 	return Update(element.__owner, "ForceUpdate", element.__owner.unit)
 end
 
-local function scriptUpdate(self)
+local function hoverUpdate(self)
 	local element = self.Fader
-	if element and (element.HoverHooked == 1 or element.TargetHooked == 1) then
+	if element and element.HoverHooked == 1 then
+		Update(self)
+	end
+end
+
+local function targetUpdate(self)
+	local element = self.Fader
+	if element and element.TargetHooked == 1 then
 		Update(self)
 	end
 end
@@ -85,8 +92,8 @@ local function Enable(self, unit)
 
 		if element.Hover then
 			if not element.HoverHooked then
-				self:HookScript('OnEnter', scriptUpdate)
-				self:HookScript('OnLeave', scriptUpdate)
+				self:HookScript('OnEnter', hoverUpdate)
+				self:HookScript('OnLeave', hoverUpdate)
 			end
 
 			element.HoverHooked = 1 -- on state
@@ -99,7 +106,7 @@ local function Enable(self, unit)
 
 		if element.Target then
 			if not element.TargetHooked then
-				self:HookScript('OnShow', scriptUpdate)
+				self:HookScript('OnShow', targetUpdate)
 			end
 
 			element.TargetHooked = 1 -- on state
