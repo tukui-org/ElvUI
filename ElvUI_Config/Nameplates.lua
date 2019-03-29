@@ -744,6 +744,8 @@ local function UpdateFilterGroup()
 					name = L["Targeting"],
 					order = 7,
 					type = "group",
+					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]] end,
+					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]] = value; NP:ConfigureAll() end,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						isTarget = {
@@ -751,28 +753,12 @@ local function UpdateFilterGroup()
 							desc = L["If enabled then the filter will only activate when you are targeting the unit."],
 							order = 1,
 							type = 'toggle',
-							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
-							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.isTarget
-							end,
-							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.isTarget = value
-								NP:ConfigureAll()
-							end,
 						},
 						notTarget = {
 							name = L["Not Targeted"],
 							desc = L["If enabled then the filter will only activate when you are not targeting the unit."],
 							order = 2,
 							type = 'toggle',
-							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
-							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.notTarget
-							end,
-							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.notTarget = value
-								NP:ConfigureAll()
-							end,
 						},
 						spacer2 = {
 							order = 3,
@@ -784,28 +770,12 @@ local function UpdateFilterGroup()
 							desc = L["If enabled then the filter will only activate when the unit is targeting you."],
 							order = 4,
 							type = 'toggle',
-							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
-							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.targetMe
-							end,
-							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.targetMe = value
-								NP:ConfigureAll()
-							end,
 						},
 						notTargetMe = {
 							name = L["Not Targeting Player"],
 							desc = L["If enabled then the filter will only activate when the unit is not targeting you."],
 							order = 5,
 							type = 'toggle',
-							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
-							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.notTargetMe
-							end,
-							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.notTargetMe = value
-								NP:ConfigureAll()
-							end,
 						},
 						spacer3 = {
 							order = 6,
@@ -817,28 +787,12 @@ local function UpdateFilterGroup()
 							desc = L["If enabled then the filter will only activate when you are focusing the unit."],
 							order = 7,
 							type = 'toggle',
-							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
-							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.isFocus
-							end,
-							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.isFocus = value
-								NP:ConfigureAll()
-							end,
 						},
 						notFocus = {
 							name = L["Not Focused"],
 							desc = L["If enabled then the filter will only activate when you are not focusing the unit."],
 							order = 8,
 							type = 'toggle',
-							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
-							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.notFocus
-							end,
-							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.notFocus = value
-								NP:ConfigureAll()
-							end,
 						},
 					}
 				},
@@ -846,6 +800,8 @@ local function UpdateFilterGroup()
 					order = 8,
 					type = 'group',
 					name = L["Casting"],
+					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.casting[info[#info]] end,
+					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.casting[info[#info]] = value; NP:ConfigureAll() end,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
 						interruptible = {
@@ -853,26 +809,12 @@ local function UpdateFilterGroup()
 							order = 1,
 							name = L["Interruptible"],
 							desc = L["If enabled then the filter will only activate if the unit is casting interruptible spells."],
-							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.interruptible
-							end,
-							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.interruptible = value
-								NP:ConfigureAll()
-							end,
 						},
 						notInterruptible = {
 							type = 'toggle',
 							order = 2,
 							name = L["Non-Interruptable"],
 							desc = L["If enabled then the filter will only activate if the unit is casting not interruptible spells."],
-							get = function(info)
-								return E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.notInterruptible
-							end,
-							set = function(info, value)
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.notInterruptible = value
-								NP:ConfigureAll()
-							end,
 						},
 						spacer2 = {
 							order = 3,
