@@ -239,41 +239,30 @@ end
 
 --Keys that should not be exported
 local blacklistedKeys = {
-	["profile"] = {
-		["general"] = {
-			["numberPrefixStyle"] = true,
+	profile = {
+		general = {
+			numberPrefixStyle = true,
 		},
-		["actionbar"] = {
-		--[[
-			["bar1"] = {["paging"] = true},
-			["bar2"] = {["paging"] = true},
-			["bar3"] = {["paging"] = true},
-			["bar4"] = {["paging"] = true},
-			["bar5"] = {["paging"] = true},
-			["bar6"] = {["paging"] = true},
-			["bar7"] = {["paging"] = true},
-			["bar8"] = {["paging"] = true},
-			["bar9"] = {["paging"] = true},
-			["bar10"] = {["paging"] = true},
-		--]]
+		chat = {
+			hideVoiceButtons = true,
 		},
 	},
-	["private"] = {},
-	["global"] = {
-		["userInformedNewChanges1"] = true,
-		["general"] = {
-			["UIScale"] = true,
-			["version"] = true,
-			["eyefinity"] = true,
-			["ignoreScalePopup"] = true,
-			["disableTutorialButtons"] = true,
-			["showMissingTalentAlert"] = true,
+	private = {},
+	global = {
+		userInformedNewChanges1 = true,
+		general = {
+			UIScale = true,
+			version = true,
+			eyefinity = true,
+			ignoreScalePopup = true,
+			disableTutorialButtons = true,
+			showMissingTalentAlert = true,
 		},
-		["chat"] = {
-			["classColorMentionExcludedNames"] = true,
+		chat = {
+			classColorMentionExcludedNames = true,
 		},
-		["unitframe"] = {
-			["spellRangeCheck"] = true,
+		unitframe = {
+			spellRangeCheck = true,
 		},
 	},
 }
