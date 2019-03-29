@@ -807,6 +807,39 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 						},
+						spacer3 = {
+							order = 6,
+							type = 'description',
+							name = '',
+						},
+						isFocus = {
+							name = L["Is Focused"],
+							desc = L["If enabled then the filter will only activate when you are focusing the unit."],
+							order = 7,
+							type = 'toggle',
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.isFocus
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.isFocus = value
+								NP:ConfigureAll()
+							end,
+						},
+						notFocus = {
+							name = L["Not Focused"],
+							desc = L["If enabled then the filter will only activate when you are not focusing the unit."],
+							order = 8,
+							type = 'toggle',
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.notFocus
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.notFocus = value
+								NP:ConfigureAll()
+							end,
+						},
 					}
 				},
 				casting = {

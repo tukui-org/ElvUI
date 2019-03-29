@@ -653,6 +653,15 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
+	--Try to match by unit focus conditions
+	if not failed and (trigger.isFocus or trigger.notFocus) then
+		condition = false
+		if (trigger.isFocus and frame.isFocused) or (trigger.notFocus and not frame.isFocused) then
+			condition = true
+		end
+		failed = not condition
+	end
+
 	--Try to match if unit is a quest boss
 	if not failed and trigger.questBoss then
 		condition = false
@@ -915,11 +924,26 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	['PLAYER_TARGET_CHANGED'] = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
 	end,
+	['PLAYER_FOCUS_CHANGED'] = function(self)
+		self.isFocused = self.unit and UnitIsUnit(self.unit, 'focus') or nil
+	end,
 	['UNIT_TARGET'] = function(self, _, unit)
 		unit = unit or self.unit
 		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
 	end
 }
+
+function mod:StyleFilterSetVariables(nameplate)
+	for _, func in pairs(mod.StyleFilterEventFunctions) do
+		func(nameplate)
+	end
+end
+
+function mod:StyleFilterClearVariables(nameplate)
+	nameplate.isTarget = nil
+	nameplate.isFocused = nil
+	nameplate.isTargetingMe = nil
+end
 
 mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
 mod.StyleFilterTriggerEvents = {} -- events required by the filter that we need to watch for
@@ -928,6 +952,7 @@ mod.StyleFilterPlateEvents = { -- events watched inside of ouf, which is called 
 }
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
 	'PLAYER_TARGET_CHANGED',
+	'PLAYER_FOCUS_CHANGED',
 	'SPELL_UPDATE_COOLDOWN',
 	'UNIT_AURA',
 	'UNIT_DISPLAYPOWER',
@@ -985,6 +1010,10 @@ function mod:StyleFilterConfigure()
 
 				if filter.triggers.targetMe or filter.triggers.notTargetMe then
 					mod.StyleFilterTriggerEvents.UNIT_TARGET = true
+				end
+
+				if filter.triggers.isFocus or filter.triggers.notFocus then
+					mod.StyleFilterTriggerEvents.PLAYER_FOCUS_CHANGED = true
 				end
 
 				if filter.triggers.healthThreshold then
@@ -1155,6 +1184,9 @@ end
 function mod:StyleFilterEvents(nameplate)
 	if not nameplate:IsEventRegistered('PLAYER_TARGET_CHANGED') then
 		nameplate:RegisterEvent('PLAYER_TARGET_CHANGED', E.noop, true)
+	end
+	if not nameplate:IsEventRegistered('PLAYER_FOCUS_CHANGED') then
+		nameplate:RegisterEvent('PLAYER_FOCUS_CHANGED', E.noop, true)
 	end
 	if not nameplate:IsEventRegistered('SPELL_UPDATE_COOLDOWN') then
 		nameplate:RegisterEvent('SPELL_UPDATE_COOLDOWN', E.noop, true)

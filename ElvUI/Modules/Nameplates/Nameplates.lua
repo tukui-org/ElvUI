@@ -433,10 +433,11 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		unit = unit or nameplate.unit
 
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
-		nameplate.isTarget = UnitIsUnit(unit, 'target')
 		nameplate.reaction = UnitReaction('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
+
+		NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
 
 		if UnitIsUnit(unit, 'player') and NP.db.units.PLAYER.enable then
 			nameplate.frameType = 'PLAYER'
@@ -472,8 +473,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP.PlayerNamePlateAnchor:Hide()
 		end
 
-		nameplate.isTargetingMe = nil
-		nameplate.isTarget = nil
+		NP:StyleFilterClearVariables(nameplate)
 	elseif event == 'PLAYER_TARGET_CHANGED' then
 		NP:SetupTarget(nameplate)
 	end
