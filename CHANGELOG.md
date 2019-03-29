@@ -8,7 +8,7 @@
 [Nameplate / Unitframes] Added NamePlate and UnitFrame Color Selection colors from oUF. (Thanks oUF/LS-)!  
 [Nameplate / Unitframes] Added a new smoothing method to Unitframes and Nameplates. (Thanks LS-)!  
 [Unitframe] Added Duration option for cooldown text and reworked the cooldown code.  
-[Chat] Added option to Desaturate and/or Pin Voice Buttons on the Tab Panel (both on by default).  
+[Chat] Added option to Desaturate and/or Pin or Hide Voice Buttons on the Tab Panel (both on by default).  
 Added an option to ignore the UI Scale popup when resizing the game window (General -> Ignore UI Scale Popup).  
 
 **Bug Fixes:**  
@@ -21,7 +21,6 @@ Added an option to ignore the UI Scale popup when resizing the game window (Gene
 [Nameplate] Fixed a bug where the Highlight was under the health.  
 [Nameplate] Fixing Off Tank Color on Nameplates and added transitioning colors.  
 [Actionbar] Fixed main bar (bar one) paging issue.  
-[Chat] Fixed the skin not applying to Voice Icons when the option was disabled to have them shown on the Tab Panel.  
 [Chat / Datatext] Finally fixed the 'lhs' error with Quick Join.  
 [Skin] Fixed an issue which caused the Ace3 skin to add an X on buttons from other addons using our skin. (#1217)  
 [Datatext] Made sure the LDB Datatext value color updates along with the General Media Value color correctly.  
