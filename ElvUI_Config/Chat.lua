@@ -161,8 +161,21 @@ E.Options.args.chat = {
 					name = L["Copy Chat Lines"],
 					desc = L["Adds an arrow infront of the chat lines to copy the entire line."],
 				},
-				throttleInterval = {
+				spacer = {
 					order = 16,
+					type = 'description',
+					name = '',
+					width = 'full',
+				},
+				numAllowedCombatRepeat = {
+					order = 17,
+					type = "range",
+					name = L["Allowed Combat Repeat"],
+					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
+					min = 2, max = 10, step = 1,
+				},
+				throttleInterval = {
+					order = 18,
 					type = 'range',
 					name = L["Spam Interval"],
 					desc = L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."],
@@ -175,7 +188,7 @@ E.Options.args.chat = {
 					end,
 				},
 				scrollDownInterval = {
-					order = 17,
+					order = 19,
 					type = 'range',
 					name = L["Scroll Interval"],
 					desc = L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."],
@@ -184,22 +197,54 @@ E.Options.args.chat = {
 						E.db.chat[info[#info]] = value
 					end,
 				},
-				numAllowedCombatRepeat = {
-					order = 18,
-					type = "range",
-					name = L["Allowed Combat Repeat"],
-					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
-					min = 2, max = 10, step = 1,
-				},
 				numScrollMessages = {
-					order = 19,
+					order = 20,
 					type = "range",
 					name = L["Scroll Messages"],
 					desc = L["Number of messages you scroll for each step."],
 					min = 1, max = 10, step = 1,
 				},
-				timestampGroup = {
+				voicechatGroup = {
 					order = 21,
+					type = 'group',
+					name = _G.BINDING_HEADER_VOICE_CHAT,
+					guiInline = true,
+					args = {
+						hideVoiceButtons = {
+							order = 1,
+							type = "toggle",
+							name = L["Hide Voice Buttons"],
+							desc = L["Completely hide the voice buttons."],
+							set = function(info, value)
+								E.db.chat[info[#info]] = value
+								E:StaticPopup_Show("CONFIG_RL")
+							end,
+						},
+						pinVoiceButtons = {
+							order = 2,
+							type = "toggle",
+							name = L["Pin Voice Buttons"],
+							desc = L["This will pin the voice buttons to the chat's tab panel. Unchecking it will create a voice button panel with a mover."],
+							disabled = function() return E.db.chat.hideVoiceButtons end,
+							set = function(info, value)
+								E.db.chat[info[#info]] = value
+								E:StaticPopup_Show("CONFIG_RL")
+							end,
+						},
+						desaturateVoiceIcons = {
+							order = 3,
+							type = "toggle",
+							name = L["Desaturate Voice Icons"],
+							disabled = function() return E.db.chat.hideVoiceButtons end,
+							set = function(info, value)
+								E.db.chat[info[#info]] = value
+								CH:UpdateVoiceChatIcons()
+							end,
+						},
+					},
+				},
+				timestampGroup = {
+					order = 22,
 					type = 'group',
 					name = TIMESTAMPS_LABEL,
 					guiInline = true,
@@ -240,45 +285,6 @@ E.Options.args.chat = {
 								["%H:%M "] = "15:27",
 								["%H:%M:%S "] =	"15:27:32"
 							},
-						},
-					},
-				},
-				voicechatGroup = {
-					order = 22,
-					type = 'group',
-					name = _G.BINDING_HEADER_VOICE_CHAT,
-					guiInline = true,
-					args = {
-						hideVoiceButtons = {
-							order = 1,
-							type = "toggle",
-							name = L["Hide Voice Buttons"],
-							desc = L["Completely hide the voice buttons."],
-							set = function(info, value)
-								E.db.chat[info[#info]] = value
-								E:StaticPopup_Show("CONFIG_RL")
-							end,
-						},
-						pinVoiceButtons = {
-							order = 2,
-							type = "toggle",
-							name = L["Pin Voice Buttons"],
-							desc = L["This will pin the voice buttons to the chat's tab panel. Unchecking it will create a voice button panel with a mover."],
-							disabled = function() return E.db.chat.hideVoiceButtons end,
-							set = function(info, value)
-								E.db.chat[info[#info]] = value
-								E:StaticPopup_Show("CONFIG_RL")
-							end,
-						},
-						desaturateVoiceIcons = {
-							order = 3,
-							type = "toggle",
-							name = L["Desaturate Voice Icons"],
-							disabled = function() return E.db.chat.hideVoiceButtons end,
-							set = function(info, value)
-								E.db.chat[info[#info]] = value
-								CH:UpdateVoiceChatIcons()
-							end,
 						},
 					},
 				},
