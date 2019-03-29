@@ -31,6 +31,7 @@ local function Update(self, event, unit)
 		(element.Combat and UnitAffectingCombat(unit)) or
 		(element.Target and (unit:find('target') and UnitExists(unit))) or
 		(element.Target and UnitExists(unit .. 'target')) or
+		(element.Focus and UnitExists('focus')) or
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesEmpty[powerType] and power > 0)) or
 		(element.Power and (PowerTypesFull[powerType] and power < UnitPowerMax(unit))) or
@@ -76,6 +77,10 @@ local function Enable(self, unit)
 		if(element.Target) then
 			self:HookScript('OnShow', Update)
 			self:RegisterEvent('UNIT_TARGET', Update)
+		end
+
+		if(element.Focus) then
+			self:RegisterEvent("PLAYER_FOCUS_CHANGED", Update, true)
 		end
 
 		if(element.Health) then
