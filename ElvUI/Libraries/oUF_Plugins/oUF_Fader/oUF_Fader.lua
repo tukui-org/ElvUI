@@ -87,8 +87,6 @@ local function Enable(self, unit)
 		if element.Hover then
 			if not handledFrames[element] then
 				handledFrames[element] = true
-			else
-				print('Hover', element:GetDebugName())
 			end
 
 			FaderFrame:SetScript('OnEnter', FaderFrame.Update)
@@ -101,13 +99,6 @@ local function Enable(self, unit)
 		end
 
 		if element.Target then
-			if not handledFrames[element] then
-				handledFrames[element] = true
-			else
-				print('Hover', element:GetDebugName())
-			end
-
-			FaderFrame:SetScript('OnShow', FaderFrame.Update)
 			self:RegisterEvent('UNIT_TARGET', Update)
 		end
 
@@ -162,7 +153,6 @@ local function Disable(self, unit)
 			handledFrames[element] = nil
 		end
 
-		FaderFrame:SetScript('OnShow', nil)
 		FaderFrame:SetScript('OnEnter', nil)
 		FaderFrame:SetScript('OnLeave', nil)
 
