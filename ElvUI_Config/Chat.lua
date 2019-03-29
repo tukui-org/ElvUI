@@ -254,7 +254,7 @@ E.Options.args.chat = {
 					guiInline = true,
 					args = {
 						hideVoiceButtons = {
-							order = 17,
+							order = 1,
 							type = "toggle",
 							name = L["Hide Voice Buttons"],
 							desc = L["Completely hide the voice buttons."],
@@ -264,7 +264,7 @@ E.Options.args.chat = {
 							end,
 						},
 						pinVoiceButtons = {
-							order = 18,
+							order = 2,
 							type = "toggle",
 							name = L["Pin Voice Buttons"],
 							desc = L["This will pin the voice buttons to the chat's tab panel. Unchecking it will create a voice button panel with a mover."],
@@ -275,7 +275,7 @@ E.Options.args.chat = {
 							end,
 						},
 						desaturateVoiceIcons = {
-							order = 19,
+							order = 3,
 							type = "toggle",
 							name = L["Desaturate Voice Icons"],
 							disabled = function() return E.db.chat.hideVoiceButtons end,
