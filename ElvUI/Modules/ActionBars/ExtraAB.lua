@@ -16,7 +16,7 @@ local ExtraActionBarHolder, ZoneAbilityHolder
 
 local function FixExtraActionCD(cd)
 	local start, duration = GetActionCooldown(cd:GetParent().action)
-	E.OnSetCooldown(cd, start, duration, 0, 0)
+	E.OnSetCooldown(cd, start, duration)
 end
 
 function AB:Extra_SetAlpha()
