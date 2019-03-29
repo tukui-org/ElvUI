@@ -88,15 +88,11 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_TARGET', Update)
 		end
 
-<<<<<<< HEAD:ElvUI/Modules/Nameplates/Plugins/Fader.lua
-		if(element.Focus) then
+		if element.Focus then
 			self:RegisterEvent("PLAYER_FOCUS_CHANGED", Update, true)
 		end
 
-		if(element.Health) then
-=======
 		if element.Health then
->>>>>>> delete oUF_CombatFader and add oUF_Fader :o:ElvUI/Libraries/oUF_Plugins/oUF_Fader/oUF_Fader.lua
 			self:RegisterEvent('UNIT_HEALTH', Update)
 			self:RegisterEvent('UNIT_MAXHEALTH', Update)
 		end
