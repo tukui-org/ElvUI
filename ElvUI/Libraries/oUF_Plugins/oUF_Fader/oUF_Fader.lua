@@ -83,9 +83,12 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		if element.Hover and element.HoverHooked ~= 1 then
-			self:HookScript('OnEnter', scriptUpdate)
-			self:HookScript('OnLeave', scriptUpdate)
+		if element.Hover then
+			if not element.HoverHooked then
+				self:HookScript('OnEnter', scriptUpdate)
+				self:HookScript('OnLeave', scriptUpdate)
+			end
+
 			element.HoverHooked = 1 -- on state
 		end
 
@@ -95,10 +98,11 @@ local function Enable(self, unit)
 		end
 
 		if element.Target then
-			if element.TargetHooked ~= 1 then
+			if not element.TargetHooked then
 				self:HookScript('OnShow', scriptUpdate)
-				element.TargetHooked = 1 -- on state
 			end
+
+			element.TargetHooked = 1 -- on state
 
 			self:RegisterEvent('UNIT_TARGET', Update)
 		end
