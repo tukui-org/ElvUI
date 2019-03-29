@@ -3290,42 +3290,42 @@ local function GetUnitSettings(unit, name)
 					},
 					enable = {
 						order = 1,
-						name = L['Enable'],
+						name = L["Enable"],
 						type = "toggle",
 					},
 					mode = {
-						order = 4,
+						order = 2,
 						type = "select",
-						name = L["Direction"],
+						name = L["Display Style"],
 						values = {
 							["Fountain"] = L["Fountain"],
 							["Standard"] = L["Standard"],
 						},
 					},
 					direction = {
-						order = 4,
+						order = 3,
 						type = "select",
-						name = L["Direction"],
+						name = L["Growth Direction"],
 						values = {
 							["UP"] = L["Up"],
 							["DOWN"] = L["Down"],
 						},
 					},
 					xOffset = {
-						order = 5,
+						order = 4,
 						name = L["X-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
 					yOffset = {
-						order = 6,
+						order = 5,
 						name = L["Y-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
 					fontGroup = {
 						type = "group",
-						order = 7,
+						order = 6,
 						name = L["Font"],
 						guiInline = true,
 						get = function(info) return E.db.nameplates.units[unit].floatingCombatFeedback[info[#info]] end,
@@ -4417,7 +4417,7 @@ E.Options.args.nameplate = {
 						},
 						power = {
 							order = 7,
-							name = L["Power Colors"],
+							name = L["Power Color"],
 							type = 'group',
 							guiInline = true,
 							get = function(info)

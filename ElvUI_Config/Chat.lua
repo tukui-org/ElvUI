@@ -161,57 +161,14 @@ E.Options.args.chat = {
 					name = L["Copy Chat Lines"],
 					desc = L["Adds an arrow infront of the chat lines to copy the entire line."],
 				},
-				spacer1 = {
-					order = 16,
-					type = 'description',
-					name = '',
-					width = 'full',
-				},
-				hideVoiceButtons = {
-					order = 17,
-					type = "toggle",
-					name = L["Hide Voice Buttons"],
-					desc = L["Completely hide the voice buttons."],
-					set = function(info, value)
-						E.db.chat[info[#info]] = value
-						E:StaticPopup_Show("CONFIG_RL")
-					end,
-				},
-				pinVoiceButtons = {
-					order = 18,
-					type = "toggle",
-					name = L["Pin Voice Buttons"],
-					desc = L["This will pin the voice buttons to the chat's tab panel. Unchecking it will create a voice button panel with a mover."],
-					disabled = function() return E.db.chat.hideVoiceButtons end,
-					set = function(info, value)
-						E.db.chat[info[#info]] = value
-						E:StaticPopup_Show("CONFIG_RL")
-					end,
-				},
-				desaturateVoiceIcons = {
-					order = 19,
-					type = "toggle",
-					name = L["Desaturate Voice Icons"],
-					disabled = function() return E.db.chat.hideVoiceButtons end,
-					set = function(info, value)
-						E.db.chat[info[#info]] = value
-						CH:UpdateVoiceChatIcons()
-					end,
-				},
-				spacer2 = {
-					order = 20,
-					type = 'description',
-					name = '',
-					width = 'full',
-				},
 				useCustomTimeColor = {
-					order = 21,
+					order = 16,
 					type = "toggle",
 					name = L["Custom Timestamp Color"],
 					disabled = function() return not E.db.chat.timeStampFormat == "NONE" end,
 				},
 				customTimeColor = {
-					order = 22,
+					order = 17,
 					type = "color",
 					hasAlpha = false,
 					name = L["Timestamp Color"],
@@ -227,7 +184,7 @@ E.Options.args.chat = {
 					end,
 				},
 				timeStampFormat = {
-					order = 23,
+					order = 18,
 					type = 'select',
 					name = TIMESTAMPS_LABEL,
 					desc = OPTION_TOOLTIP_TIMESTAMPS,
@@ -241,14 +198,14 @@ E.Options.args.chat = {
 						["%H:%M:%S "] =	"15:27:32"
 					},
 				},
-				spacer3 = {
-					order = 24,
+				spacer = {
+					order = 19,
 					type = 'description',
 					name = '',
 					width = 'full',
 				},
 				throttleInterval = {
-					order = 25,
+					order = 20,
 					type = 'range',
 					name = L["Spam Interval"],
 					desc = L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."],
@@ -261,7 +218,7 @@ E.Options.args.chat = {
 					end,
 				},
 				scrollDownInterval = {
-					order = 26,
+					order = 21,
 					type = 'range',
 					name = L["Scroll Interval"],
 					desc = L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."],
@@ -271,19 +228,64 @@ E.Options.args.chat = {
 					end,
 				},
 				numAllowedCombatRepeat = {
-					order = 27,
+					order = 22,
 					type = "range",
 					name = L["Allowed Combat Repeat"],
 					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
 					min = 2, max = 10, step = 1,
 				},
 				numScrollMessages = {
-					order = 28,
+					order = 23,
 					type = "range",
 					name = L["Scroll Messages"],
 					desc = L["Number of messages you scroll for each step."],
 					min = 1, max = 10, step = 1,
-				}
+				},
+				spacer1 = {
+					order = 24,
+					type = 'description',
+					name = '',
+					width = 'full',
+				},
+				voicechat = {
+					order = 30,
+					type = 'group',
+					name = _G.BINDING_HEADER_VOICE_CHAT,
+					guiInline = true,
+					args = {
+						hideVoiceButtons = {
+							order = 17,
+							type = "toggle",
+							name = L["Hide Voice Buttons"],
+							desc = L["Completely hide the voice buttons."],
+							set = function(info, value)
+								E.db.chat[info[#info]] = value
+								E:StaticPopup_Show("CONFIG_RL")
+							end,
+						},
+						pinVoiceButtons = {
+							order = 18,
+							type = "toggle",
+							name = L["Pin Voice Buttons"],
+							desc = L["This will pin the voice buttons to the chat's tab panel. Unchecking it will create a voice button panel with a mover."],
+							disabled = function() return E.db.chat.hideVoiceButtons end,
+							set = function(info, value)
+								E.db.chat[info[#info]] = value
+								E:StaticPopup_Show("CONFIG_RL")
+							end,
+						},
+						desaturateVoiceIcons = {
+							order = 19,
+							type = "toggle",
+							name = L["Desaturate Voice Icons"],
+							disabled = function() return E.db.chat.hideVoiceButtons end,
+							set = function(info, value)
+								E.db.chat[info[#info]] = value
+								CH:UpdateVoiceChatIcons()
+							end,
+						},
+					},
+				},
 			},
 		},
 		alerts = {
