@@ -1,8 +1,17 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local oUF = E.oUF
+local _, ns = ...
+local oUF = oUF or ns.oUF
+assert(oUF, "oUF_Fader cannot find an instance of oUF. If your oUF is embedded into a layout, it may not be embedded properly.")
 
 local GetMouseFocus = GetMouseFocus
-local UnitPowerType, UnitPower, UnitPowerMax, UnitCastingInfo, UnitChannelInfo, UnitAffectingCombat, UnitExists, UnitHealth, UnitHealthMax = UnitPowerType, UnitPower, UnitPowerMax, UnitCastingInfo, UnitChannelInfo, UnitAffectingCombat, UnitExists, UnitHealth, UnitHealthMax
+local UnitPowerType = UnitPowerType
+local UnitPower = UnitPower
+local UnitCastingInfo = UnitCastingInfo
+local UnitChannelInfo = UnitChannelInfo
+local UnitAffectingCombat = UnitAffectingCombat
+local UnitExists = UnitExists
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitPowerMax = UnitPowerMax
 
 local PowerTypesEmpty = {
 	RAGE = true,
@@ -37,16 +46,16 @@ local function Update(self, event, unit)
 		(element.Power and (PowerTypesFull[powerType] and power < UnitPowerMax(unit))) or
 		(element.Hover and (GetMouseFocus() == self))
 	then
-		if (element.Smooth) then
-			E:UIFrameFadeIn(self, element.Smooth, self:GetAlpha(), element.MaxAlpha)
+		if element.Smooth then
+			ElvUI[1]:UIFrameFadeIn(self, element.Smooth, self:GetAlpha(), element.MaxAlpha)
 		else
 			self:SetAlpha(element.MaxAlpha)
 		end
 	else
 		if element.Delay then
-			E:Delay(element.Delay, E.UIFrameFadeIn, E, self, element.Smooth, self:GetAlpha(), element.MinAlpha)
-		elseif (element.Smooth) then
-			E:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), element.MinAlpha)
+			ElvUI[1]:Delay(element.Delay, ElvUI[1].UIFrameFadeIn, ElvUI[1], self, element.Smooth, self:GetAlpha(), element.MinAlpha)
+		elseif element.Smooth then
+			ElvUI[1]:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), element.MinAlpha)
 		else
 			self:SetAlpha(element.MinAlpha)
 		end
@@ -60,40 +69,44 @@ end
 local function Enable(self, unit)
 	local element = self.Fader
 
-	if (element) then
+	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		if(element.Hover) then
+		if element.Hover then
 			self:HookScript('OnEnter', Update)
 			self:HookScript('OnLeave', Update)
 		end
 
-		if(element.Combat) then
+		if element.Combat then
 			self:RegisterEvent('PLAYER_REGEN_ENABLED', Update, true)
 			self:RegisterEvent('PLAYER_REGEN_DISABLED', Update, true)
 		end
 
-		if(element.Target) then
+		if element.Target then
 			self:HookScript('OnShow', Update)
 			self:RegisterEvent('UNIT_TARGET', Update)
 		end
 
+<<<<<<< HEAD:ElvUI/Modules/Nameplates/Plugins/Fader.lua
 		if(element.Focus) then
 			self:RegisterEvent("PLAYER_FOCUS_CHANGED", Update, true)
 		end
 
 		if(element.Health) then
+=======
+		if element.Health then
+>>>>>>> delete oUF_CombatFader and add oUF_Fader :o:ElvUI/Libraries/oUF_Plugins/oUF_Fader/oUF_Fader.lua
 			self:RegisterEvent('UNIT_HEALTH', Update)
 			self:RegisterEvent('UNIT_MAXHEALTH', Update)
 		end
 
-		if(element.Power) then
+		if element.Power then
 			self:RegisterEvent('UNIT_POWER_UPDATE', Update)
 			self:RegisterEvent('UNIT_MAXPOWER', Update)
 		end
 
-		if(element.Casting) then
+		if element.Casting then
 			self:RegisterEvent('UNIT_SPELLCAST_START', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_FAILED', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_STOP', Update)

@@ -296,7 +296,7 @@ function NP:Update_Fader(nameplate)
 		nameplate.Fader.MaxAlpha = 1
 		nameplate.Fader.MinAlpha = 0
 
-		E:UIFrameFadeIn(nameplate, nameplate.Fader.Smooth, nameplate:GetAlpha(), nameplate.Fader.MaxAlpha)
+		nameplate:ForceUpdate('Fader')
 	end
 end
 

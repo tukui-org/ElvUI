@@ -71,8 +71,19 @@ function UF:Construct_PlayerFrame(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.PvPIndicator = self:Construct_PvPIcon(frame)
-	frame.CombatFade = true
 	frame.customTexts = {}
+
+	frame.Fader = {
+		Target = true,
+		Health = true,
+		Combat = true,
+		Power = true,
+		Casting = true,
+		Smooth = 0.5,
+		Delay = 0,
+		MaxAlpha = 1,
+		MinAlpha = 0,
+	}
 
 	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,player,generalGroup')
@@ -178,10 +189,11 @@ function UF:Update_PlayerFrame(frame, db)
 	end
 
 	--Combat Fade
-	if db.combatfade and not frame:IsElementEnabled('CombatFade') then
-		frame:EnableElement('CombatFade')
-	elseif not db.combatfade and frame:IsElementEnabled('CombatFade') then
-		frame:DisableElement('CombatFade')
+	if db.combatfade and not frame:IsElementEnabled('Fader') then
+		frame:EnableElement('Fader')
+		frame:ForceUpdate('Fader')
+	elseif not db.combatfade and frame:IsElementEnabled('Fader') then
+		frame:DisableElement('Fader')
 	end
 
 	--Debuff Highlight
