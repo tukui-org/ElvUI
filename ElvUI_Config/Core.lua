@@ -149,14 +149,14 @@ local DEVELOPERS = {
 	"Hydrazine",
 	"Blazeflack",
 	"|cffff7d0aMerathilis|r",
-	"|cFF8866ccSimpy|r"
+	"|cFF8866ccSimpy|r",
+	"|cFF0070DEAzilroka|r",
 }
 
 local TESTERS = {
 	"Tukui Community",
 	"|cffF76ADBSarah|r - For Sarahing",
 	"Affinity",
-	"Azilroka",
 	"Modarch",
 	"Bladesdruid",
 	"Tirain",
