@@ -2432,7 +2432,7 @@ function CH:CreateChatVoicePanel()
 	Holder:Size(30, 86)
 	Holder:SetTemplate('Transparent', nil, true)
 	Holder:SetBackdropColor(E.db.chat.panelColor.r, E.db.chat.panelColor.g, E.db.chat.panelColor.b, E.db.chat.panelColor.a)
-	E:CreateMover(Holder, "SocialMenuMover", _G.BINDING_HEADER_VOICE_CHAT)
+	E:CreateMover(Holder, "SocialMenuMover", _G.BINDING_HEADER_VOICE_CHAT, nil, nil, nil, nil, nil, 'chat')
 
 	channelButtons[1]:ClearAllPoints()
 	channelButtons[1]:Point('TOP', Holder, 'TOP', 0, -2)
