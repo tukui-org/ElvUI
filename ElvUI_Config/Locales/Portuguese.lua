@@ -801,6 +801,8 @@ L["If enabled then the filter will only activate when the unit is not targeting 
 L["If enabled then the filter will only activate when the unit is out of combat."] = true
 L["If enabled then the filter will only activate when the unit is targeting you."] = true
 L["If enabled then the filter will only activate when you are in combat."] = true
+L["If enabled then the filter will only activate when you are focusing the unit."] = true
+L["If enabled then the filter will only activate when you are not focusing the unit."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = true
 L["If enabled then the filter will only activate when you are out of combat."] = true
 L["If enabled then the filter will only activate when you are targeting the unit."] = true
@@ -814,6 +816,7 @@ L["If this threshold is used then the power of the unit needs to be lower than t
 L["Instance Type"] = true
 L["Interruptible"] = true
 L["Not Targeting Player"] = true
+L["Is Focused"] = true
 L["Is PvP Talents"] = true
 L["Is Targeted"] = true
 L["Is Targeting Player"] = true
@@ -835,6 +838,7 @@ L["Name Colored Glow"] = true
 L["Name Only"] = true
 L["NamePlates"] = "Placas de Identificação"
 L["Non-Target Alpha"] = true
+L["Not Focused"] = true
 L["Not Targeted"] = true
 L["Off Cooldown"] = true
 L["Off Tank"] = true
