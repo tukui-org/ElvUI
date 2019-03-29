@@ -324,6 +324,9 @@ function NP:SetupTarget(nameplate)
 	local realPlate = (NP.db.units.TARGET.classpower.enable and nameplate) or targetPlate
 	targetPlate.realPlate = realPlate
 
+	if nameplate and not UnitIsUnit("target", nameplate.unit) then
+		realPlate = targetPlate
+	end
 	--if NP.db.units.TARGET.alwaysShowHealth and nameplate and not nameplate:IsElementEnabled('Health') then
 	--	nameplate:EnableElement('Health')
 	--end
@@ -387,6 +390,7 @@ end
 
 function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, IsInInstance())
+	NP:UpdatePlate(_G.ElvNP_Player)
 end
 
 function NP:ConfigureAll()
@@ -427,7 +431,7 @@ function NP:ConfigureAll()
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
-	if event == 'NAME_PLATE_UNIT_ADDED' and nameplate then
+	if event == 'NAME_PLATE_UNIT_ADDED' then
 		NP:StyleFilterClear(nameplate) -- keep this at the top
 
 		unit = unit or nameplate.unit
@@ -457,8 +461,11 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:UpdatePlate(nameplate)
 
-		if nameplate.isTarget then
-			NP:SetupTarget(nameplate)
+		NP:SetupTarget(nameplate)
+		for plate in pairs(NP.Plates) do
+			if plate.isTarget then
+				NP:SetupTarget(plate)
+			end
 		end
 
 		if nameplate:IsShown() and NP.db.fadeIn then
