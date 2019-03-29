@@ -161,14 +161,8 @@ E.Options.args.chat = {
 					name = L["Copy Chat Lines"],
 					desc = L["Adds an arrow infront of the chat lines to copy the entire line."],
 				},
-				useCustomTimeColor = {
-					order = 16,
-					type = "toggle",
-					name = L["Custom Timestamp Color"],
-					disabled = function() return not E.db.chat.timeStampFormat == "NONE" end,
-				},
 				throttleInterval = {
-					order = 17,
+					order = 16,
 					type = 'range',
 					name = L["Spam Interval"],
 					desc = L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."],
@@ -181,7 +175,7 @@ E.Options.args.chat = {
 					end,
 				},
 				scrollDownInterval = {
-					order = 18,
+					order = 17,
 					type = 'range',
 					name = L["Scroll Interval"],
 					desc = L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."],
@@ -191,33 +185,33 @@ E.Options.args.chat = {
 					end,
 				},
 				numAllowedCombatRepeat = {
-					order = 19,
+					order = 18,
 					type = "range",
 					name = L["Allowed Combat Repeat"],
 					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
 					min = 2, max = 10, step = 1,
 				},
 				numScrollMessages = {
-					order = 20,
+					order = 19,
 					type = "range",
 					name = L["Scroll Messages"],
 					desc = L["Number of messages you scroll for each step."],
 					min = 1, max = 10, step = 1,
 				},
-				spacer1 = {
-					order = 21,
-					type = 'description',
-					name = '',
-					width = 'full',
-				},
 				timestampGroup = {
-					order = 22,
+					order = 21,
 					type = 'group',
 					name = TIMESTAMPS_LABEL,
 					guiInline = true,
 					args = {
-						customTimeColor = {
+						useCustomTimeColor = {
 							order = 1,
+							type = "toggle",
+							name = L["Custom Timestamp Color"],
+							disabled = function() return not E.db.chat.timeStampFormat == "NONE" end,
+						},
+						customTimeColor = {
+							order = 2,
 							type = "color",
 							hasAlpha = false,
 							name = L["Timestamp Color"],
@@ -233,7 +227,7 @@ E.Options.args.chat = {
 							end,
 						},
 						timeStampFormat = {
-							order = 2,
+							order = 3,
 							type = 'select',
 							name = TIMESTAMPS_LABEL,
 							desc = OPTION_TOOLTIP_TIMESTAMPS,
@@ -250,7 +244,7 @@ E.Options.args.chat = {
 					},
 				},
 				voicechatGroup = {
-					order = 23,
+					order = 22,
 					type = 'group',
 					name = _G.BINDING_HEADER_VOICE_CHAT,
 					guiInline = true,
