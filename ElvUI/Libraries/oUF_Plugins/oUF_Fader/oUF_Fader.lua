@@ -30,6 +30,7 @@ local PowerTypesFull = {
 	ENERGY = true,
 }
 
+
 local function Update(self, event, unit)
 	unit = unit or self.unit
 	local element = self.Fader
@@ -68,6 +69,14 @@ local function ForceUpdate(element)
 	return Update(element.__owner, "ForceUpdate", element.__owner.unit)
 end
 
+local FaderFrame = CreateFrame("Frame")
+local handledFrames = {}
+FaderFrame.Update = function()
+	for element in next, handledFrames do
+		Update(element)
+	end
+end
+
 local function Enable(self, unit)
 	local element = self.Fader
 
@@ -76,8 +85,14 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 
 		if element.Hover then
-			self:HookScript('OnEnter', Update)
-			self:HookScript('OnLeave', Update)
+			if not handledFrames[element] then
+				handledFrames[element] = true
+			else
+				print('Hover', element:GetDebugName())
+			end
+
+			FaderFrame:SetScript('OnEnter', FaderFrame.Update)
+			FaderFrame:SetScript('OnLeave', FaderFrame.Update)
 		end
 
 		if element.Combat then
@@ -86,7 +101,13 @@ local function Enable(self, unit)
 		end
 
 		if element.Target then
-			self:HookScript('OnShow', Update)
+			if not handledFrames[element] then
+				handledFrames[element] = true
+			else
+				print('Hover', element:GetDebugName())
+			end
+
+			FaderFrame:SetScript('OnShow', FaderFrame.Update)
 			self:RegisterEvent('UNIT_TARGET', Update)
 		end
 
@@ -137,6 +158,14 @@ local function Disable(self, unit)
 	local element = self.Fader
 
 	if element then
+		if handledFrames[element] then
+			handledFrames[element] = nil
+		end
+
+		FaderFrame:SetScript('OnShow', nil)
+		FaderFrame:SetScript('OnEnter', nil)
+		FaderFrame:SetScript('OnLeave', nil)
+
 		self:UnregisterEvent('PLAYER_REGEN_ENABLED', Update)
 		self:UnregisterEvent('PLAYER_REGEN_DISABLED', Update)
 		self:UnregisterEvent('UNIT_TARGET', Update)

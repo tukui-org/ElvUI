@@ -191,9 +191,10 @@ function UF:Update_PlayerFrame(frame, db)
 	--Combat Fade
 	if db.combatfade and not frame:IsElementEnabled('Fader') then
 		frame:EnableElement('Fader')
-		frame:ForceUpdate('Fader')
+		frame.Fader:ForceUpdate()
 	elseif not db.combatfade and frame:IsElementEnabled('Fader') then
 		frame:DisableElement('Fader')
+		E:UIFrameFadeIn(frame, 1, frame:GetAlpha(), 1)
 	end
 
 	--Debuff Highlight
