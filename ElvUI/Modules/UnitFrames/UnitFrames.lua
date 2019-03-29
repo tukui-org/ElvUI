@@ -1376,13 +1376,14 @@ end
 
 function UF:DefaultFader()
 	return {
+		Hover = false,
 		Target = true,
 		Health = true,
 		Combat = true,
 		Power = true,
 		Casting = true,
 		Smooth = 0.5,
-		Delay = 0,
+		Delay = false,
 		MaxAlpha = 1,
 		MinAlpha = 0,
 	}
