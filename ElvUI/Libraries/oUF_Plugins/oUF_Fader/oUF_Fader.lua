@@ -5,15 +5,15 @@ assert(oUF, "oUF_Fader cannot find an instance of oUF. If your oUF is embedded i
 -- GLOBALS: ElvUI
 
 local GetMouseFocus = GetMouseFocus
-local UnitPowerType = UnitPowerType
-local UnitPower = UnitPower
+local UnitAffectingCombat = UnitAffectingCombat
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
-local UnitAffectingCombat = UnitAffectingCombat
 local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
+local UnitPowerType = UnitPowerType
 
 local PowerTypesEmpty = {
 	RAGE = true,
