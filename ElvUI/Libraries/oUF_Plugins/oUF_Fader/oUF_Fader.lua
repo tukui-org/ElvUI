@@ -34,6 +34,7 @@ local PowerTypesFull = {
 local function Update(self, event, unit)
 	unit = unit or self.unit
 	local element = self.Fader
+	local E = ElvUI[1]
 
 	local _, powerType = UnitPowerType(unit)
 	local power = UnitPower(unit)
@@ -50,15 +51,15 @@ local function Update(self, event, unit)
 		(element.Hover and (GetMouseFocus() == self))
 	then
 		if element.Smooth then
-			ElvUI[1]:UIFrameFadeIn(self, element.Smooth, self:GetAlpha(), element.MaxAlpha)
+			E:UIFrameFadeIn(self, element.Smooth, self:GetAlpha(), element.MaxAlpha)
 		else
 			self:SetAlpha(element.MaxAlpha)
 		end
 	else
 		if element.Delay then
-			ElvUI[1]:Delay(element.Delay, ElvUI[1].UIFrameFadeIn, ElvUI[1], self, element.Smooth, self:GetAlpha(), element.MinAlpha)
+			E:Delay(element.Delay, E.UIFrameFadeIn, E, self, element.Smooth, self:GetAlpha(), element.MinAlpha)
 		elseif element.Smooth then
-			ElvUI[1]:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), element.MinAlpha)
+			E:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), element.MinAlpha)
 		else
 			self:SetAlpha(element.MinAlpha)
 		end
