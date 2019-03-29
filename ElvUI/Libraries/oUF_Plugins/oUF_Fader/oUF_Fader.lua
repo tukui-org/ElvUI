@@ -2,6 +2,8 @@ local _, ns = ...
 local oUF = oUF or ns.oUF
 assert(oUF, "oUF_Fader cannot find an instance of oUF. If your oUF is embedded into a layout, it may not be embedded properly.")
 
+-- GLOBALS: ElvUI
+
 local GetMouseFocus = GetMouseFocus
 local UnitPowerType = UnitPowerType
 local UnitPower = UnitPower
