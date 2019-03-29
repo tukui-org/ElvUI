@@ -2384,11 +2384,11 @@ function CH:UpdateVoiceChatIcons()
 end
 
 function CH:HandleChatVoiceIcons()
-	if self.db.hideVoiceButtons then
+	if CH.db.hideVoiceButtons then
 		for _, button in pairs(channelButtons) do
 			button:Hide()
 		end
-	elseif self.db.pinVoiceButtons then
+	elseif CH.db.pinVoiceButtons then
 		for index, button in pairs(channelButtons) do
 			button:ClearAllPoints()
 			button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
@@ -2425,7 +2425,7 @@ function CH:HandleChatVoiceIcons()
 
 		CH:RepositionChatVoiceIcons()
 	else
-		self:CreateChatVoicePanel()
+		CH:CreateChatVoicePanel()
 	end
 end
 
