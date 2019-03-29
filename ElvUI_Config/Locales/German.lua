@@ -813,7 +813,7 @@ L["If this threshold is used then the power of the unit needs to be higher than 
 L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "Wenn dieser Schwellenwert genutzt wird, muss die Kraft niedriger sein als dieser Wert um den Filter zu aktivieren. Setzte auf 0 um zu deaktiveren."
 L["Instance Type"] = "Instanz Typ"
 L["Interruptible"] = "Unterbrechbar"
-L["Is Not Targeting Player"] = "Hat Spieler nicht als Ziel"
+L["Not Targeting Player"] = "Hat Spieler nicht als Ziel"
 L["Is PvP Talents"] = "Ist PvP Talent"
 L["Is Targeted"] = "Ist anvisiert"
 L["Is Targeting Player"] = "Hat Spieler als Ziel"

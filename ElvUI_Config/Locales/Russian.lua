@@ -810,7 +810,7 @@ L["If this threshold is used then the power of the unit needs to be higher than 
 L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "Если используется, то уровень ресурса юнита должен быть ниже указанного, чтобы фильтр активировался."
 L["Instance Type"] = "Тип подземелья"
 L["Interruptible"] = "Прерываемые"
-L["Is Not Targeting Player"] = "Не целится в игрока"
+L["Not Targeting Player"] = "Не целится в игрока"
 L["Is PvP Talents"] = "PvP талант"
 L["Is Targeted"] = "Взят в цель"
 L["Is Targeting Player"] = "Целится в игрока"

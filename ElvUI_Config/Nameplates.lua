@@ -794,7 +794,7 @@ local function UpdateFilterGroup()
 							end,
 						},
 						notTargetMe = {
-							name = L["Is Not Targeting Player"],
+							name = L["Not Targeting Player"],
 							desc = L["If enabled then the filter will only activate when the unit is not targeting you."],
 							order = 5,
 							type = 'toggle',

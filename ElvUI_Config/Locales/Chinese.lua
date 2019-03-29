@@ -811,7 +811,7 @@ L["If this threshold is used then the power of the unit needs to be higher than 
 L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "如果这个阈值被设置则单位的能量需要比设定值更低才会将过滤器激活. 设为0以禁用."
 L["Instance Type"] = "副本类型"
 L["Interruptible"] = "可打断"
-L["Is Not Targeting Player"] = "目标不为玩家"
+L["Not Targeting Player"] = "目标不为玩家"
 L["Is PvP Talents"] = "PvP天赋"
 L["Is Targeted"] = "当前目标"
 L["Is Targeting Player"] = "目标为玩家"

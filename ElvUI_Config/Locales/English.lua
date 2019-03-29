@@ -806,7 +806,7 @@ L["If this threshold is used then the power of the unit needs to be higher than 
 L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = true
 L["Instance Type"] = true
 L["Interruptible"] = true
-L["Is Not Targeting Player"] = true
+L["Not Targeting Player"] = true
 L["Is PvP Talents"] = true
 L["Is Targeted"] = true
 L["Is Targeting Player"] = true
