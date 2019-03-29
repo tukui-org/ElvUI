@@ -3482,6 +3482,7 @@ E.Options.args.unitframe.args.player = {
 					ElvUF_Pet:SetParent(ElvUF_Player)
 				else
 					ElvUF_Pet:SetParent(ElvUF_Parent)
+					E:UIFrameFadeIn(ElvUF_Pet, 1, ElvUF_Player:GetAlpha(), 1)
 				end
 			end,
 		},
@@ -3556,6 +3557,7 @@ E.Options.args.unitframe.args.player = {
 							ElvUF_Pet:SetParent(ElvUF_Player)
 						else
 							ElvUF_Pet:SetParent(ElvUF_Parent)
+							E:UIFrameFadeIn(ElvUF_Pet, 1, ElvUF_Player:GetAlpha(), 1)
 						end
 					end,
 				},
