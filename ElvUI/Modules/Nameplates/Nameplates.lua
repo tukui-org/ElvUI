@@ -322,7 +322,7 @@ end
 function NP:SetupTarget(nameplate, removed)
 	local TCP = _G.ElvNP_TargetClassPower
 	local nameOnly = nameplate and (nameplate.NameOnlyChanged or NP.db.units[nameplate.frameType].nameOnly)
-	TCP.realPlate = NP.db.units.TARGET.classpower.enable and not (removed or nameOnly) and nameplate
+	TCP.realPlate = (NP.db.units.TARGET.classpower.enable and not (removed or nameOnly) and nameplate) or nil
 
 	local moveToPlate = TCP.realPlate or TCP
 	if TCP.ClassPower then
