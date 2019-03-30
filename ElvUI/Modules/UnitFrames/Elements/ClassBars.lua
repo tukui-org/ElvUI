@@ -124,13 +124,13 @@ function UF:Configure_ClassBar(frame, cur)
 					bars[i].backdrop:Show()
 				end
 
+				local r, g, b
 				if E.myclass == "MONK" then
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
+					r, g, b = unpack(ElvUF.colors.ClassBars[E.myclass][i])
 				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" or E.myclass == "WARLOCK" then
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
+					r, g, b = unpack(ElvUF.colors.ClassBars[E.myclass])
 				elseif E.myclass == "DEATHKNIGHT" and frame.ClassBar == "Runes" then
-					local r, g, b = unpack(ElvUF.colors.ClassBars.DEATHKNIGHT)
-					bars[i]:SetStatusBarColor(r, g, b)
+					r, g, b = unpack(ElvUF.colors.ClassBars.DEATHKNIGHT)
 					if bars[i].bg then
 						local mu = bars[i].bg.multiplier or 1
 						bars[i].bg:SetVertexColor(r * mu, g * mu, b * mu)
@@ -141,9 +141,11 @@ function UF:Configure_ClassBar(frame, cur)
 					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
 					local maxComboPoints = ((frame.MAX_CLASS_BAR == 10 and 10) or (frame.MAX_CLASS_BAR > 5 and 6 or 5))
 
-					local r, g, b = ElvUF:ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3)
-					bars[i]:SetStatusBarColor(r, g, b)
+					r, g, b = ElvUF:ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3)
 				end
+
+				bars[i]:SetStatusBarColor(r, g, b)
+				bars[i].savedR, bars[i].savedG, bars[i].savedB = r, g, b
 
 				if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
 					bars[i]:SetOrientation("VERTICAL")
@@ -312,13 +314,15 @@ function UF:Construct_ClassBar(frame)
 	for i = 1, maxBars do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassIconButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E.media.blankTex) --Dummy really, this needs to be set so we can change the color
-		bars[i]:GetStatusBarTexture():SetHorizTile(false)
+		local statusbarTexture = bars[i]:GetStatusBarTexture()
+		statusbarTexture:SetHorizTile(false)
+		statusbarTexture:SetDrawLayer('ARTWORK', 1)
 		UF.statusbars[bars[i]] = true
 
 		bars[i]:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 		bars[i].backdrop:SetParent(bars)
 
-		bars[i].bg = bars:CreateTexture(nil, 'OVERLAY')
+		bars[i].bg = bars:CreateTexture(nil, 'ARTWORK')
 		bars[i].bg:SetAllPoints(bars[i])
 		bars[i].bg:SetTexture(E.media.blankTex)
 	end
@@ -360,10 +364,9 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged)
 		UF:Configure_ClassBar(frame, current)
 	end
 
-	local r, g, b
 	for i=1, #self do
-		r, g, b = self[i]:GetStatusBarColor()
-		self[i].bg:SetVertexColor(r, g, b, 0.25)
+		self[i].bg:SetVertexColor(self[i].savedR * .35, self[i].savedG * .35, self[i].savedB * .35)
+
 		if maxBars and (i <= maxBars) then
 			self[i].bg:Show()
 		else
@@ -398,7 +401,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i].bg = runes[i]:CreateTexture(nil, 'BORDER')
 		runes[i].bg:SetAllPoints()
 		runes[i].bg:SetTexture(E.media.blankTex)
-		runes[i].bg.multiplier = 0.25
+		runes[i].bg.multiplier = 0.35
 	end
 
 	runes.PostUpdate = PostUpdateRunes
@@ -437,7 +440,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.bg = additionalPower:CreateTexture(nil, "BORDER")
 	additionalPower.bg:SetAllPoints(additionalPower)
 	additionalPower.bg:SetTexture(E.media.blankTex)
-	additionalPower.bg.multiplier = 0.25
+	additionalPower.bg.multiplier = 0.35
 
 	additionalPower.text = additionalPower:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(additionalPower.text)

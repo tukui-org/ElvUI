@@ -80,18 +80,19 @@ function NP:Construct_ClassPower(nameplate)
 		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		ClassPower[i]:SetFrameStrata(nameplate:GetFrameStrata())
 		ClassPower[i]:SetFrameLevel(6)
+		ClassPower[i]:GetStatusBarTexture():SetDrawLayer('ARTWORK', 1)
 		NP.StatusBars[ClassPower[i]] = true
 
 		local statusBarTexture = ClassPower[i]:GetStatusBarTexture()
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
 
-		ClassPower[i].bg = ClassPower:CreateTexture(nil, "BACKGROUND")
+		ClassPower[i].bg = ClassPower:CreateTexture(nil, 'ARTWORK')
 		ClassPower[i].bg:SetAllPoints(ClassPower[i])
-		ClassPower[i].bg:SetTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+		ClassPower[i].bg:SetTexture(E.media.blankTex)
 		ClassPower[i].bg:SetSnapToPixelGrid(false)
 		ClassPower[i].bg:SetTexelSnappingBias(0)
-		ClassPower[i].bg.multiplier = .25
+		ClassPower[i].bg.multiplier = .35
 
 		if i == 1 then
 			ClassPower[i]:Point('LEFT', ClassPower, 'LEFT', 0, 0)
@@ -131,18 +132,19 @@ function NP:Construct_Runes(nameplate)
 		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
 		Runes[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
+		Runes[i]:GetStatusBarTexture():SetDrawLayer('ARTWORK', 1)
 		NP.StatusBars[Runes[i]] = true
 
 		local statusBarTexture = Runes[i]:GetStatusBarTexture()
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
 
-		Runes[i].bg = Runes[i]:CreateTexture(nil, 'BACKGROUND', 0)
+		Runes[i].bg = Runes[i]:CreateTexture(nil, 'ARTWORK')
 		Runes[i].bg:SetAllPoints()
 		Runes[i].bg:SetSnapToPixelGrid(false)
 		Runes[i].bg:SetTexelSnappingBias(0)
-		Runes[i].bg:SetTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
-		Runes[i].bg:SetVertexColor(NP.db.colors.classResources.DEATHKNIGHT.r * .25, NP.db.colors.classResources.DEATHKNIGHT.g * .25, NP.db.colors.classResources.DEATHKNIGHT.b * .25)
+		Runes[i].bg:SetTexture(E.media.blankTex)
+		Runes[i].bg:SetVertexColor(NP.db.colors.classResources.DEATHKNIGHT.r * .35, NP.db.colors.classResources.DEATHKNIGHT.g * .35, NP.db.colors.classResources.DEATHKNIGHT.b * .35)
 
 		if i == 1 then
 			Runes[i]:Point('LEFT', Runes, 'LEFT', 0, 0)
