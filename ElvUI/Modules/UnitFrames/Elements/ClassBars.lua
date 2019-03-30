@@ -124,13 +124,13 @@ function UF:Configure_ClassBar(frame, cur)
 					bars[i].backdrop:Show()
 				end
 
-				local r, g, b
 				if E.myclass == "MONK" then
-					r, g, b = unpack(ElvUF.colors.ClassBars[E.myclass][i])
+					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
 				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" or E.myclass == "WARLOCK" then
-					r, g, b = unpack(ElvUF.colors.ClassBars[E.myclass])
+					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
 				elseif E.myclass == "DEATHKNIGHT" and frame.ClassBar == "Runes" then
-					r, g, b = unpack(ElvUF.colors.ClassBars.DEATHKNIGHT)
+					local r, g, b = unpack(ElvUF.colors.ClassBars.DEATHKNIGHT)
+					bars[i]:SetStatusBarColor(r, g, b)
 					if bars[i].bg then
 						local mu = bars[i].bg.multiplier or 1
 						bars[i].bg:SetVertexColor(r * mu, g * mu, b * mu)
@@ -141,11 +141,8 @@ function UF:Configure_ClassBar(frame, cur)
 					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
 					local maxComboPoints = ((frame.MAX_CLASS_BAR == 10 and 10) or (frame.MAX_CLASS_BAR > 5 and 6 or 5))
 
-					r, g, b = ElvUF:ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3)
+					bars[i]:SetStatusBarColor(ElvUF:ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3))
 				end
-
-				bars[i]:SetStatusBarColor(r, g, b)
-				bars[i].savedR, bars[i].savedG, bars[i].savedB = r, g, b
 
 				if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
 					bars[i]:SetOrientation("VERTICAL")
@@ -363,7 +360,8 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged)
 	end
 
 	for i=1, #self do
-		self[i].bg:SetVertexColor(self[i].savedR * .35, self[i].savedG * .35, self[i].savedB * .35)
+		local r, g, b = self[i]:GetStatusBarColor()
+		self[i].bg:SetVertexColor(r * .35, g * .35, b * .35)
 
 		if maxBars and (i <= maxBars) then
 			self[i].bg:Show()
