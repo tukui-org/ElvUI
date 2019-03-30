@@ -30,7 +30,7 @@ function E:UIScale(init)
 		local pixelScale = 768 / E.screenheight
 
 		E.mult = (bestScale / scale) - ((bestScale - pixelScale) / scale)
-		E.Spacing = (E.PixelMode and E.mult-1) or E.mult
+		E.Spacing = (E.PixelMode and 0) or E.mult
 		E.Border = ((not E.twoPixelsPlease) and E.PixelMode and E.mult) or E.mult*2
 	else --E.Initialize
 		local UIParent = _G.UIParent
