@@ -11,7 +11,6 @@
 	<Include file="Ace3\AceTimer-3.0\AceTimer-3.0.xml"/>
 	<Include file="Ace3\AceHook-3.0\AceHook-3.0.xml"/>
 	<Include file="LibSpellRange-1.0\lib.xml"/>
-	<Include file="LibPlayerSpells-1.0\lib.xml"/>
 	<Include file="LibSharedMedia-3.0\lib.xml"/>
 	<Script file="LibSimpleSticky\LibSimpleSticky.lua"/>
 	<Include file='oUF\oUF.xml'/>
