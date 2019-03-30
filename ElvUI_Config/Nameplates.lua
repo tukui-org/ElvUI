@@ -3293,36 +3293,36 @@ local function GetUnitSettings(unit, name)
 						name = L["Enable"],
 						type = "toggle",
 					},
-					mode = {
-						order = 2,
-						type = "select",
-						name = L["Display Style"],
-						values = {
-							["Fountain"] = L["Fountain"],
-							["Standard"] = L["Standard"],
-						},
-					},
-					direction = {
-						order = 3,
-						type = "select",
-						name = L["Growth Direction"],
-						values = {
-							["UP"] = L["Up"],
-							["DOWN"] = L["Down"],
-						},
-					},
-					xOffset = {
-						order = 4,
-						name = L["X-Offset"],
-						type = "range",
-						min = -100, max = 100, step = 1,
-					},
-					yOffset = {
-						order = 5,
-						name = L["Y-Offset"],
-						type = "range",
-						min = -100, max = 100, step = 1,
-					},
+					--mode = {
+					--	order = 2,
+					--	type = "select",
+					--	name = L["Display Style"],
+					--	values = {
+					--		["Fountain"] = L["Fountain"],
+					--		["Standard"] = L["Standard"],
+					--	},
+					--},
+					--direction = {
+					--	order = 3,
+					--	type = "select",
+					--	name = L["Growth Direction"],
+					--	values = {
+					--		["UP"] = L["Up"],
+					--		["DOWN"] = L["Down"],
+					--	},
+					--},
+					--xOffset = {
+					--	order = 4,
+					--	name = L["X-Offset"],
+					--	type = "range",
+					--	min = -100, max = 100, step = 1,
+					--},
+					--yOffset = {
+					--	order = 5,
+					--	name = L["Y-Offset"],
+					--	type = "range",
+					--	min = -100, max = 100, step = 1,
+					--},
 					fontGroup = {
 						type = "group",
 						order = 6,

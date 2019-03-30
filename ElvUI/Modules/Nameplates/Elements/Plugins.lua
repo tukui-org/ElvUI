@@ -241,10 +241,10 @@ function NP:Update_FloatingCombatFeedback(nameplate)
 			nameplate:EnableElement('FloatingCombatFeedback')
 		end
 
-		nameplate.FloatingCombatFeedback.mode = db.floatingCombatFeedback.mode
-		nameplate.FloatingCombatFeedback.xOffset = db.floatingCombatFeedback.xOffset
-		nameplate.FloatingCombatFeedback.yOffset = db.floatingCombatFeedback.yOffset
-		nameplate.FloatingCombatFeedback.yDirection = db.floatingCombatFeedback.direction == "UP" and 1 or -1
+		--nameplate.FloatingCombatFeedback.mode = db.floatingCombatFeedback.mode
+		--nameplate.FloatingCombatFeedback.xOffset = db.floatingCombatFeedback.xOffset
+		--nameplate.FloatingCombatFeedback.yOffset = db.floatingCombatFeedback.yOffset
+		--nameplate.FloatingCombatFeedback.yDirection = db.floatingCombatFeedback.direction == "UP" and 1 or -1
 		nameplate.FloatingCombatFeedback.fontHeight = db.floatingCombatFeedback.fontSize
 		nameplate.FloatingCombatFeedback.scrollTime = 1.5
 		nameplate.FloatingCombatFeedback.abbreviateNumbers = true
