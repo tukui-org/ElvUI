@@ -42,7 +42,7 @@ function NP:ClassPower_UpdateColor(powerType)
 	end
 end
 
-function NP:ClassPower_PostUpdate(Cur, Max, needUpdate)
+function NP:ClassPower_PostUpdate(Cur, _, needUpdate)
 	if Cur and Cur > 0 then
 		self:Show()
 	else

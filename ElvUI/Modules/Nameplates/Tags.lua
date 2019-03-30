@@ -47,16 +47,10 @@ oUF.Tags.Methods['npctitle'] = function(unit)
 	E.ScanTooltip:SetUnit(unit)
 	E.ScanTooltip:Show()
 
-	local reactionType = UnitReaction(unit, "player")
-	local r, g, b = 1, 1, 1
-	if reactionType then
-		r, g, b = unpack(oUF.colors.reaction[reactionType])
-	end
-
 	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
 
 	if (Title and not Title:find('^'..LEVEL)) then
-		return format('%s%s|r', Hex(r, g, b), Title)
+		return Title
 	end
 end
 
@@ -86,7 +80,7 @@ end
 oUF.Tags.Events['name:title'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['name:title'] = function(unit)
 	if (UnitIsPlayer(unit)) then
-		return Hex(.25, .75, .25)..(UnitPVPName(unit) or '')..'|r'
+		return UnitPVPName(unit)
 	end
 end
 
