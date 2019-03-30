@@ -471,6 +471,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP.PlayerNamePlateAnchor:Hide()
 		end
 
+		if nameplate.isTarget then
+			NP:SetupTarget(nameplate)
+		end
+
 		NP:StyleFilterClearVariables(nameplate)
 	elseif event == 'PLAYER_TARGET_CHANGED' then
 		NP:SetupTarget(nameplate)
