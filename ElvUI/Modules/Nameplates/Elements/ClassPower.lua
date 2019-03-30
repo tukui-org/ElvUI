@@ -198,8 +198,8 @@ function NP:Update_Runes(nameplate)
 				nameplate.Runes[i].bg:Size(width, db.classpower.height)
 			else
 				nameplate.Runes[i]:Point('LEFT', nameplate.Runes[i-1], 'RIGHT', 1, 0)
-				nameplate.Runes[i]:Size(width - E:Scale(1), db.classpower.height)
-				nameplate.Runes[i].bg:Size(width - E:Scale(1), db.classpower.height)
+				nameplate.Runes[i]:Size(width - 1, db.classpower.height)
+				nameplate.Runes[i].bg:Size(width - 1, db.classpower.height)
 			end
 		end
 	else
