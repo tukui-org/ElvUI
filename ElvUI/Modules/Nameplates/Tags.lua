@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local oUF = E.oUF
 
 local _G = _G
-local unpack = unpack
 local format = format
 local select = select
 local strmatch = strmatch
@@ -20,7 +19,6 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitPVPName = UnitPVPName
-local UnitReaction = UnitReaction
 local LEVEL = LEVEL
 
 --GLOBALS: Hex, CUSTOM_CLASS_COLORS
