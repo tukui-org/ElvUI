@@ -408,6 +408,11 @@ function NP:ConfigureAll()
 		NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
 
 		NP:UpdatePlate(nameplate)
+
+		if nameplate.isTarget then
+			NP:SetupTarget(nameplate)
+		end
+
 		nameplate:UpdateAllElements('ForceUpdate')
 
 		if nameplate.frameType == 'PLAYER' then
