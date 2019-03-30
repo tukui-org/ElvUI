@@ -61,7 +61,7 @@ function NP:ClassPower_PostUpdate(Cur, Max, needUpdate)
 				self[i]:Point('LEFT', self, 'LEFT', 0, 0)
 			elseif i == Max then  -- freaky gap at end of bar
 				self[i]:Point('LEFT', self[i - 1], 'RIGHT', 1, 0)
-				self[i]:Point('RIGHT', self, 'RIGHT', -1, 0)
+				self[i]:Point('RIGHT', self, 'RIGHT', 0, 0)
 			else
 				self[i]:Point('LEFT', self[i - 1], 'RIGHT', 1, 0)
 			end
