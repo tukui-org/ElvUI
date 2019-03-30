@@ -219,12 +219,12 @@ function NP:Update_HealerSpecs(nameplate)
 end
 
 function NP:Construct_FloatingCombatFeedback(nameplate)
-	local FloatingCombatFeedback = CreateFrame("Frame", nil, nameplate)
+	local FloatingCombatFeedback = CreateFrame("Frame", nameplate:GetDebugName()..'Feedback', nameplate)
 	FloatingCombatFeedback:SetAllPoints(nameplate)
 	FloatingCombatFeedback:EnableMouse(false)
 
 	for i = 1, 12 do
-		FloatingCombatFeedback[i] = FloatingCombatFeedback:CreateFontString(nil, "OVERLAY")
+		FloatingCombatFeedback[i] = FloatingCombatFeedback:CreateFontString('$parentText'..i, "OVERLAY")
 		FloatingCombatFeedback[i]:FontTemplate(E.Libs.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 	end
 
