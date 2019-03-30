@@ -93,5 +93,6 @@ function E:PixelScaleChanged(event, skip)
 end
 
 function E:Scale(x)
+	if x == 0 then return E.mult-1 end
 	return E.mult * floor(x / E.mult + 0.5)
 end
