@@ -314,15 +314,13 @@ function UF:Construct_ClassBar(frame)
 	for i = 1, maxBars do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassIconButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E.media.blankTex) --Dummy really, this needs to be set so we can change the color
-		local statusbarTexture = bars[i]:GetStatusBarTexture()
-		statusbarTexture:SetHorizTile(false)
-		statusbarTexture:SetDrawLayer('ARTWORK', 1)
+		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 		UF.statusbars[bars[i]] = true
 
 		bars[i]:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 		bars[i].backdrop:SetParent(bars)
 
-		bars[i].bg = bars:CreateTexture(nil, 'ARTWORK')
+		bars[i].bg = bars:CreateTexture(nil, 'BORDER')
 		bars[i].bg:SetAllPoints(bars[i])
 		bars[i].bg:SetTexture(E.media.blankTex)
 	end

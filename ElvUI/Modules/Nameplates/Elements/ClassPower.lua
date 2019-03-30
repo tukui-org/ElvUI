@@ -80,14 +80,13 @@ function NP:Construct_ClassPower(nameplate)
 		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		ClassPower[i]:SetFrameStrata(nameplate:GetFrameStrata())
 		ClassPower[i]:SetFrameLevel(6)
-		ClassPower[i]:GetStatusBarTexture():SetDrawLayer('ARTWORK', 1)
 		NP.StatusBars[ClassPower[i]] = true
 
 		local statusBarTexture = ClassPower[i]:GetStatusBarTexture()
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
 
-		ClassPower[i].bg = ClassPower:CreateTexture(nil, 'ARTWORK')
+		ClassPower[i].bg = ClassPower:CreateTexture(nil, 'BORDER')
 		ClassPower[i].bg:SetAllPoints(ClassPower[i])
 		ClassPower[i].bg:SetTexture(E.media.blankTex)
 		ClassPower[i].bg:SetSnapToPixelGrid(false)
@@ -132,14 +131,13 @@ function NP:Construct_Runes(nameplate)
 		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
 		Runes[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
-		Runes[i]:GetStatusBarTexture():SetDrawLayer('ARTWORK', 1)
 		NP.StatusBars[Runes[i]] = true
 
 		local statusBarTexture = Runes[i]:GetStatusBarTexture()
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
 
-		Runes[i].bg = Runes[i]:CreateTexture(nil, 'ARTWORK')
+		Runes[i].bg = Runes[i]:CreateTexture(nil, 'BORDER')
 		Runes[i].bg:SetAllPoints()
 		Runes[i].bg:SetSnapToPixelGrid(false)
 		Runes[i].bg:SetTexelSnappingBias(0)
