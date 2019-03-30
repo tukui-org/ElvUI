@@ -250,7 +250,9 @@ function UF:AuraBarFilter(unit, name, _, _, debuffType, duration, _, unitCaster,
 		isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 		isPlayer = (unitCaster == 'player' or unitCaster == 'vehicle')
 		isUnit = unit and unitCaster and UnitIsUnit(unit, unitCaster)
-		canDispell = (self.type == 'Buffs' and isStealable) or (self.type == 'Debuffs' and debuffType and E:IsDispellableByMe(debuffType))
+
+		local auraType = (isFriend and db.friendlyAuraType) or (not isFriend and db.enemyAuraType)
+		canDispell = (auraType == 'HELPFUL' and isStealable) or (auraType == 'HARMFUL' and debuffType and E:IsDispellableByMe(debuffType))
 		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
 		filterCheck = UF:CheckFilter(name, unitCaster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", db.priority))
 	else
