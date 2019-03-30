@@ -50,36 +50,20 @@ function NP:ClassPower_PostUpdate(Cur, Max, needUpdate)
 	end
 
 	if needUpdate then
-		local db = NP.db.units[self.__owner.frameType]
-		if not db then return end
-		for i = 1, self.ClassMax do
-			self[i]:Size(db.classpower.width / Max, db.classpower.height)
-			self[i].bg:Size(db.classpower.width / Max, db.classpower.height)
-
-			self[i]:ClearAllPoints() -- because max points might change
-			if i == 1 then
-				self[i]:Point('LEFT', self, 'LEFT', 0, 0)
-			elseif i == Max then  -- freaky gap at end of bar
-				self[i]:Point('LEFT', self[i - 1], 'RIGHT', 1, 0)
-				self[i]:Point('RIGHT', self, 'RIGHT', 0, 0)
-			elseif i < Max then
-				self[i]:Point('LEFT', self[i - 1], 'RIGHT', 1, 0)
-			else
-				self[i]:Hide()
-			end
-		end
+		NP:Update_ClassPower(self.__owner)
 	end
 end
 
 function NP:Construct_ClassPower(nameplate)
 	local ClassPower = CreateFrame('Frame', nameplate:GetDebugName()..'ClassPower', nameplate)
+	ClassPower:CreateBackdrop('Transparent')
 	ClassPower:Hide()
 	ClassPower:SetFrameStrata(nameplate:GetFrameStrata())
 	ClassPower:SetFrameLevel(5)
-	ClassPower:CreateBackdrop('Transparent')
-	ClassPower.ClassMax = max(MAX_POINTS[E.myclass] or 0, _G.MAX_COMBO_POINTS)
 
-	for i = 1, ClassPower.ClassMax do
+	local Max = max(MAX_POINTS[E.myclass] or 0, _G.MAX_COMBO_POINTS)
+
+	for i = 1, Max do
 		ClassPower[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
 		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		ClassPower[i]:SetFrameStrata(nameplate:GetFrameStrata())
@@ -96,15 +80,6 @@ function NP:Construct_ClassPower(nameplate)
 		ClassPower[i].bg:SetSnapToPixelGrid(false)
 		ClassPower[i].bg:SetTexelSnappingBias(0)
 		ClassPower[i].bg.multiplier = .35
-
-		if i == 1 then
-			ClassPower[i]:Point('LEFT', ClassPower, 'LEFT', 0, 0)
-		elseif i == ClassPower.ClassMax then -- freaky gap at end of bar
-			ClassPower[i]:Point('LEFT', ClassPower[i - 1], 'RIGHT', 1, 0)
-			ClassPower[i]:Point('RIGHT', ClassPower, 'RIGHT')
-		else
-			ClassPower[i]:Point('LEFT', ClassPower[i - 1], 'RIGHT', 1, 0)
-		end
 	end
 
 	ClassPower.UpdateColor = NP.ClassPower_UpdateColor
@@ -147,15 +122,6 @@ function NP:Construct_Runes(nameplate)
 		Runes[i].bg:SetTexelSnappingBias(0)
 		Runes[i].bg:SetTexture(E.media.blankTex)
 		Runes[i].bg:SetVertexColor(NP.db.colors.classResources.DEATHKNIGHT.r * .35, NP.db.colors.classResources.DEATHKNIGHT.g * .35, NP.db.colors.classResources.DEATHKNIGHT.b * .35)
-
-		if i == 1 then
-			Runes[i]:Point('LEFT', Runes, 'LEFT', 0, 0)
-		elseif i == 6 then
-			Runes[i]:Point('LEFT', Runes[i -1], 'RIGHT', 1, 0)
-			Runes[i]:Point('RIGHT')
-		else
-			Runes[i]:Point('LEFT', Runes[i-1], 'RIGHT', 1, 0)
-		end
 	end
 
 	return Runes
@@ -176,9 +142,24 @@ function NP:Update_ClassPower(nameplate)
 		local Width = db.classpower.width / maxClassBarButtons
 		nameplate.ClassPower:Size(db.classpower.width, db.classpower.height)
 
+		for i = 1, #nameplate.ClassPower do
+			nameplate.ClassPower[i]:Hide()
+			nameplate.ClassPower[i].bg:Hide()
+		end
+
 		for i = 1, maxClassBarButtons do
-			nameplate.ClassPower[i]:Size(Width - 1, db.classpower.height)
-			nameplate.ClassPower[i].bg:Size(Width - 1, db.classpower.height)
+			nameplate.ClassPower[i]:Show()
+			nameplate.ClassPower[i].bg:Show()
+
+			if i == 1 then
+				nameplate.ClassPower[i]:Size(Width - (maxClassBarButtons == 6 and 2 or 0), db.classpower.height)
+				nameplate.ClassPower[i].bg:Size(Width - (maxClassBarButtons == 6 and 2 or 0), db.classpower.height)
+				nameplate.ClassPower[i]:Point('LEFT', nameplate.ClassPower, 'LEFT', 0, 0)
+			else
+				nameplate.ClassPower[i]:Size(Width - 1, db.classpower.height)
+				nameplate.ClassPower[i].bg:Size(Width - 1, db.classpower.height)
+				nameplate.ClassPower[i]:Point('LEFT', nameplate.ClassPower[i - 1], 'RIGHT', 1, 0)
+			end
 		end
 	else
 		if nameplate:IsElementEnabled('ClassPower') then
@@ -210,8 +191,16 @@ function NP:Update_Runes(nameplate)
 
 		for i = 1, 6 do
 			nameplate.Runes[i]:SetStatusBarColor(runeColor.r, runeColor.g, runeColor.b)
-			nameplate.Runes[i]:Size(width - 1, db.classpower.height)
-			nameplate.Runes[i].bg:Size(width - 1, db.classpower.height)
+
+			if i == 1 then
+				nameplate.Runes[i]:Point('LEFT', nameplate.Runes, 'LEFT', 0, 0)
+				nameplate.Runes[i]:Size(width, db.classpower.height)
+				nameplate.Runes[i].bg:Size(width, db.classpower.height)
+			else
+				nameplate.Runes[i]:Point('LEFT', nameplate.Runes[i-1], 'RIGHT', 1, 0)
+				nameplate.Runes[i]:Size(width - E:Scale(1), db.classpower.height)
+				nameplate.Runes[i].bg:Size(width - E:Scale(1), db.classpower.height)
+			end
 		end
 	else
 		if nameplate:IsElementEnabled('Runes') then
