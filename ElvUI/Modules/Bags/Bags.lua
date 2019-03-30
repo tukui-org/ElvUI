@@ -1753,7 +1753,7 @@ function B:ContructContainerFrame(name, isBank)
 			f.sortButton:Disable()
 		end
 
-		--Toggle Bags Button
+		--Deposite Reagents Button
 		f.depositButton = CreateFrame("Button", name..'DepositButton', f.reagentFrame);
 		f.depositButton:Size(16 + E.Border, 16 + E.Border)
 		f.depositButton:SetTemplate()
@@ -1773,11 +1773,30 @@ function B:ContructContainerFrame(name, isBank)
 			DepositReagentBank()
 		end)
 
+		f.depositButtonBank = CreateFrame("Button", name..'DepositButton', f.holderFrame)
+		f.depositButtonBank:Size(16 + E.Border, 16 + E.Border)
+		f.depositButtonBank:SetTemplate()
+		f.depositButtonBank:Point("RIGHT", f.sortButton, "LEFT", -5, 0)
+		f.depositButtonBank:SetNormalTexture("Interface\\ICONS\\misc_arrowdown")
+		f.depositButtonBank:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+		f.depositButtonBank:GetNormalTexture():SetInside()
+		f.depositButtonBank:SetPushedTexture("Interface\\ICONS\\misc_arrowdown")
+		f.depositButtonBank:GetPushedTexture():SetTexCoord(unpack(E.TexCoords))
+		f.depositButtonBank:GetPushedTexture():SetInside()
+		f.depositButtonBank:StyleButton(nil, true)
+		f.depositButtonBank.ttText = L["Deposit Reagents"]
+		f.depositButtonBank:SetScript("OnEnter", self.Tooltip_Show)
+		f.depositButtonBank:SetScript("OnLeave", self.Tooltip_Hide)
+		f.depositButtonBank:SetScript('OnClick', function()
+			PlaySound(852) --IG_MAINMENU_OPTION
+			DepositReagentBank()
+		end)
+
 		--Toggle Bags Button
 		f.bagsButton = CreateFrame("Button", name..'BagsButton', f.holderFrame);
 		f.bagsButton:Size(16 + E.Border, 16 + E.Border)
 		f.bagsButton:SetTemplate()
-		f.bagsButton:Point("RIGHT", f.sortButton, "LEFT", -5, 0)
+		f.bagsButton:Point("RIGHT", f.depositButtonBank, "LEFT", -5, 0)
 		f.bagsButton:SetNormalTexture("Interface\\Buttons\\Button-Backpack-Up")
 		f.bagsButton:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 		f.bagsButton:GetNormalTexture():SetInside()
