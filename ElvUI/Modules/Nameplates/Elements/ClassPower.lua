@@ -55,6 +55,8 @@ function NP:ClassPower_PostUpdate(Cur, Max, needUpdate)
 		for i = 1, Max do
 			self[i]:Size(db.classpower.width / Max, db.classpower.height)
 			self[i].bg:Size(db.classpower.width / Max, db.classpower.height)
+
+			self[i]:ClearAllPoints() -- because max points might change
 			if i == 1 then
 				self[i]:Point('LEFT', self, 'LEFT', 0, 0)
 			elseif i == Max then  -- freaky gap at end of bar
