@@ -140,7 +140,7 @@ function NP:Update_ClassPower(nameplate)
 		local maxClassBarButtons = nameplate.ClassPower.__max
 
 		local Width = db.classpower.width / maxClassBarButtons
-		nameplate.ClassPower:Size(db.classpower.width + 1, db.classpower.height)
+		nameplate.ClassPower:Size(db.classpower.width, db.classpower.height)
 
 		for i = 1, #nameplate.ClassPower do
 			nameplate.ClassPower[i]:Hide()
@@ -150,10 +150,11 @@ function NP:Update_ClassPower(nameplate)
 		for i = 1, maxClassBarButtons do
 			nameplate.ClassPower[i]:Show()
 			nameplate.ClassPower[i].bg:Show()
+			nameplate.ClassPower[i]:ClearAllPoints()
 
 			if i == 1 then
-				nameplate.ClassPower[i]:Size(Width - (maxClassBarButtons == 6 and 2 or 1), db.classpower.height)
-				nameplate.ClassPower[i].bg:Size(Width - (maxClassBarButtons == 6 and 2 or 1), db.classpower.height)
+				nameplate.ClassPower[i]:Size(Width - (maxClassBarButtons == 6 and 2 or 0), db.classpower.height)
+				nameplate.ClassPower[i].bg:Size(Width - (maxClassBarButtons == 6 and 2 or 0), db.classpower.height)
 				nameplate.ClassPower[i]:Point('LEFT', nameplate.ClassPower, 'LEFT', 0, 0)
 			else
 				nameplate.ClassPower[i]:Size(Width - 1, db.classpower.height)
@@ -161,6 +162,8 @@ function NP:Update_ClassPower(nameplate)
 				nameplate.ClassPower[i]:Point('LEFT', nameplate.ClassPower[i - 1], 'RIGHT', 1, 0)
 			end
 		end
+
+		nameplate.ClassPower[maxClassBarButtons]:Point('RIGHT', nameplate.ClassPower)
 	else
 		if nameplate:IsElementEnabled('ClassPower') then
 			nameplate:DisableElement('ClassPower')
@@ -179,13 +182,12 @@ function NP:Update_Runes(nameplate)
 		end
 
 		nameplate.Runes:Show()
-
 		nameplate.Runes:Point('CENTER', nameplate, 'CENTER', 0, db.classpower.yOffset)
 
 		nameplate.sortOrder = db.classpower.sortDirection
 
 		local width = db.classpower.width / 6
-		nameplate.Runes:Size(db.classpower.width + 1, db.classpower.height)
+		nameplate.Runes:Size(db.classpower.width, db.classpower.height)
 
 		local runeColor = (db.classpower.classColor and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])) or NP.db.colors.classResources.DEATHKNIGHT
 
@@ -194,14 +196,16 @@ function NP:Update_Runes(nameplate)
 
 			if i == 1 then
 				nameplate.Runes[i]:Point('LEFT', nameplate.Runes, 'LEFT', 0, 0)
-				nameplate.Runes[i]:Size(width - 1, db.classpower.height)
-				nameplate.Runes[i].bg:Size(width - 1, db.classpower.height)
+				nameplate.Runes[i]:Size(width, db.classpower.height)
+				nameplate.Runes[i].bg:Size(width, db.classpower.height)
 			else
 				nameplate.Runes[i]:Point('LEFT', nameplate.Runes[i-1], 'RIGHT', 1, 0)
 				nameplate.Runes[i]:Size(width - 1, db.classpower.height)
 				nameplate.Runes[i].bg:Size(width - 1, db.classpower.height)
 			end
 		end
+
+		nameplate.Runes[6]:Point('RIGHT', nameplate.Runes)
 	else
 		if nameplate:IsElementEnabled('Runes') then
 			nameplate:DisableElement('Runes')
