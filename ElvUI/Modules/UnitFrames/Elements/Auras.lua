@@ -82,6 +82,16 @@ function UF:Construct_AuraIcon(button)
 
 	button.cd.CooldownOverride = 'unitframe'
 	E:RegisterCooldown(button.cd)
+
+	local auras = button:GetParent()
+	local frame = auras:GetParent()
+	button.db = frame.db and frame.db[auras.type]
+
+	if button.count then
+		button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
+	end
+
+	button.needsUpdateCooldownPosition = true
 end
 
 function UF:EnableDisable_Auras(frame)
@@ -101,6 +111,21 @@ local function ReverseUpdate(frame)
 	UF:Configure_Auras(frame, "Buffs")
 end
 
+function UF:UpdateAuraCooldownPosition(button)
+	if button.cd and button.cd.timer and button.cd.timer.text then
+		button.cd.timer.text:ClearAllPoints()
+		local point = (button.db and button.db.durationPosition) or 'CENTER'
+		if point == 'CENTER' then
+			button.cd.timer.text:Point(point, 1, 0)
+		else
+			local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
+			button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
+		end
+
+		button.needsUpdateCooldownPosition = nil
+	end
+end
+
 function UF:Configure_Auras(frame, auraType)
 	if not frame.VARIABLES_SET then return end
 
@@ -113,6 +138,7 @@ function UF:Configure_Auras(frame, auraType)
 	auras.forceShow = frame.forceShowAuras
 	auras.num = auras.db.perrow * rows
 	auras.size = auras.db.sizeOverride ~= 0 and auras.db.sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
+	auras.disableMouse = auras.db.clickThrough
 
 	if auras.db.sizeOverride and auras.db.sizeOverride > 0 then
 		auras:Width(auras.db.perrow * auras.db.sizeOverride)
@@ -125,6 +151,20 @@ function UF:Configure_Auras(frame, auraType)
 			end
 		end
 		auras:Width(totalWidth)
+	end
+
+	local index = 1
+	while auras[index] do
+		local button = auras[index]
+		if button then
+			if button.count then
+				button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
+			end
+
+			button.needsUpdateCooldownPosition = true
+		end
+
+		index = index + 1
 	end
 
 	local attachTo = self:GetAuraAnchorFrame(frame, auras.db.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
@@ -309,33 +349,6 @@ function UF:SortAuras()
 end
 
 function UF:PostUpdateAura(unit, button)
-	local auras = button:GetParent()
-	local frame = auras:GetParent()
-	local db = frame.db and frame.db[auras.type]
-
-	if db then
-		if db.clickThrough and button:IsMouseEnabled() then
-			button:EnableMouse(false)
-		elseif not db.clickThrough and not button:IsMouseEnabled() then
-			button:EnableMouse(true)
-		end
-
-		if button.cd and button.cd.timer and button.cd.timer.text then
-			button.cd.timer.text:ClearAllPoints()
-			local point = (db and db.durationPosition) or 'CENTER'
-			if point == 'CENTER' then
-				button.cd.timer.text:Point(point, 1, 0)
-			else
-				local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
-				button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
-			end
-		end
-
-		if button.count then
-			button.count:FontTemplate(LSM:Fetch('font', auras.db.countFont), auras.db.countFontSize, auras.db.countFontOutline)
-		end
-	end
-
 	if button.isDebuff then
 		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
@@ -355,6 +368,10 @@ function UF:PostUpdateAura(unit, button)
 		else
 			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
 		end
+	end
+
+	if button.needsUpdateCooldownPosition then
+		UF:UpdateAuraCooldownPosition(button)
 	end
 
 	local size = button:GetParent().size
