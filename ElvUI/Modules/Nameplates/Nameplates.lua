@@ -320,26 +320,20 @@ function NP:DisablePlate(nameplate, nameOnly)
 end
 
 function NP:SetupTarget(nameplate)
-	local targetPlate = _G.ElvNP_TargetClassPower
-	local realPlate = (NP.db.units.TARGET.classpower.enable and nameplate) or targetPlate
-	targetPlate.realPlate = realPlate
+	local TCP = _G.ElvNP_TargetClassPower
+	local nameOnly = nameplate and (nameplate.NameOnlyChanged or NP.db.units[nameplate.frameType].nameOnly)
+	TCP.realPlate = NP.db.units.TARGET.classpower.enable and (not nameOnly) and nameplate
 
-	if nameplate and not UnitIsUnit("target", nameplate.unit) then
-		realPlate = targetPlate
+	local moveToPlate = TCP.realPlate or TCP
+	if TCP.ClassPower then
+		TCP.ClassPower:SetParent(moveToPlate)
+		TCP.ClassPower:ClearAllPoints()
+		TCP.ClassPower:SetPoint('CENTER', moveToPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
 	end
-	--if NP.db.units.TARGET.alwaysShowHealth and nameplate and not nameplate:IsElementEnabled('Health') then
-	--	nameplate:EnableElement('Health')
-	--end
-
-	if targetPlate.ClassPower then
-		targetPlate.ClassPower:SetParent(realPlate)
-		targetPlate.ClassPower:ClearAllPoints()
-		targetPlate.ClassPower:SetPoint('CENTER', realPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
-	end
-	if targetPlate.Runes then
-		targetPlate.Runes:SetParent(realPlate)
-		targetPlate.Runes:ClearAllPoints()
-		targetPlate.Runes:SetPoint('CENTER', realPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
+	if TCP.Runes then
+		TCP.Runes:SetParent(moveToPlate)
+		TCP.Runes:ClearAllPoints()
+		TCP.Runes:SetPoint('CENTER', moveToPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
 	end
 end
 
@@ -431,7 +425,7 @@ function NP:ConfigureAll()
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
-	if event == 'NAME_PLATE_UNIT_ADDED' then
+	if event == 'NAME_PLATE_UNIT_ADDED' and nameplate then
 		NP:StyleFilterClear(nameplate) -- keep this at the top
 
 		unit = unit or nameplate.unit
@@ -461,11 +455,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:UpdatePlate(nameplate)
 
-		NP:SetupTarget(nameplate)
-		for plate in pairs(NP.Plates) do
-			if plate.isTarget then
-				NP:SetupTarget(plate)
-			end
+		if nameplate.isTarget then
+			NP:SetupTarget(nameplate)
 		end
 
 		if nameplate:IsShown() and NP.db.fadeIn then
