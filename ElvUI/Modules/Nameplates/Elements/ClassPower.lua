@@ -52,7 +52,7 @@ function NP:ClassPower_PostUpdate(Cur, Max, needUpdate)
 	if needUpdate then
 		local db = NP.db.units[self.__owner.frameType]
 		if not db then return end
-		for i = 1, Max do
+		for i = 1, self.Max do
 			self[i]:Size(db.classpower.width / Max, db.classpower.height)
 			self[i].bg:Size(db.classpower.width / Max, db.classpower.height)
 
@@ -62,8 +62,10 @@ function NP:ClassPower_PostUpdate(Cur, Max, needUpdate)
 			elseif i == Max then  -- freaky gap at end of bar
 				self[i]:Point('LEFT', self[i - 1], 'RIGHT', 1, 0)
 				self[i]:Point('RIGHT', self, 'RIGHT', 0, 0)
-			else
+			elseif i < Max then
 				self[i]:Point('LEFT', self[i - 1], 'RIGHT', 1, 0)
+			else
+				self[i]:Hide()
 			end
 		end
 	end
@@ -75,9 +77,9 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:SetFrameStrata(nameplate:GetFrameStrata())
 	ClassPower:SetFrameLevel(5)
 	ClassPower:CreateBackdrop('Transparent')
+	ClassPower.Max = max(MAX_POINTS[E.myclass] or 0, _G.MAX_COMBO_POINTS)
 
-	local Max = max(MAX_POINTS[E.myclass] or 0, _G.MAX_COMBO_POINTS)
-	for i = 1, Max do
+	for i = 1, ClassPower.Max do
 		ClassPower[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
 		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		ClassPower[i]:SetFrameStrata(nameplate:GetFrameStrata())
@@ -97,7 +99,7 @@ function NP:Construct_ClassPower(nameplate)
 
 		if i == 1 then
 			ClassPower[i]:Point('LEFT', ClassPower, 'LEFT', 0, 0)
-		elseif i == Max then -- freaky gap at end of bar
+		elseif i == ClassPower.Max then -- freaky gap at end of bar
 			ClassPower[i]:Point('LEFT', ClassPower[i - 1], 'RIGHT', 1, 0)
 			ClassPower[i]:Point('RIGHT', ClassPower, 'RIGHT')
 		else
