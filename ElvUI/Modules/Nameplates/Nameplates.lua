@@ -319,10 +319,10 @@ function NP:DisablePlate(nameplate, nameOnly)
 	end
 end
 
-function NP:SetupTarget(nameplate)
+function NP:SetupTarget(nameplate, removed)
 	local TCP = _G.ElvNP_TargetClassPower
 	local nameOnly = nameplate and (nameplate.NameOnlyChanged or NP.db.units[nameplate.frameType].nameOnly)
-	TCP.realPlate = NP.db.units.TARGET.classpower.enable and (not nameOnly) and nameplate
+	TCP.realPlate = NP.db.units.TARGET.classpower.enable and not (removed or nameOnly) and nameplate
 
 	local moveToPlate = TCP.realPlate or TCP
 	if TCP.ClassPower then
@@ -425,7 +425,7 @@ function NP:ConfigureAll()
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
-	if event == 'NAME_PLATE_UNIT_ADDED' and nameplate then
+	if event == 'NAME_PLATE_UNIT_ADDED' then
 		NP:StyleFilterClear(nameplate) -- keep this at the top
 
 		unit = unit or nameplate.unit
@@ -472,7 +472,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		if nameplate.isTarget then
-			NP:SetupTarget(nameplate)
+			NP:SetupTarget(nameplate, true)
 		end
 
 		NP:StyleFilterClearVariables(nameplate)
