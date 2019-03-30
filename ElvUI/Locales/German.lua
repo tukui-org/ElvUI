@@ -38,7 +38,7 @@ L["Purchase Bags"] = "Taschen kaufen"
 L["Purchase"] = "Kaufen"
 L["Reagent Bank"] = "Reagenzien Bank"
 L["Reset Position"] = "Position zurücksetzen"
-L["Right Click the bag icon to assign a type of item to this bag."] = "Rechts Klicke auf das Taschensymbol um einen Gegenstandstyp zuzuweisen."
+L["Right Click the bag icon to assign a type of item to this bag."] = "Rechtsklick auf das Taschensymbol um einen Gegenstandstyp zuzuweisen."
 L["Show/Hide Reagents"] = "Reagenzien anzeigen/ausblenden"
 L["Sort Tab"] = "Tab sortieren" --Not used, yet?
 L["Temporary Move"] = "Temporäres Bewegen"
@@ -132,9 +132,9 @@ L["Talent/Loot Specialization"] = "Talent-/Lootspezialisierung"
 L["Total CPU:"] = "Gesamt CPU:"
 L["Total Memory:"] = "Gesamte Speichernutzung:"
 L["Total: "] = "Gesamt: "
-L["Unhittable:"] = "Unhittable:"
+L["Unhittable:"] = "Unschlagbar:"
 L["Waist"] = "Taille"
-L["World Protocol:"] = "Welt Protokol"
+L["World Protocol:"] = "Welt Protokoll"
 L["Wrist"] = "Handgelenke"
 L["WoW Token:"] = "WoW-Marke"
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFFLinksklick:|r Talentspezialisierung ändern"
@@ -171,7 +171,7 @@ L["Dark"] = "Dunkel"
 L["Disable"] = "Deaktivieren"
 L["Discord"] = true -- No need to translate
 L["ElvUI Installation"] = "ElvUI Installation"
-L["Finished"] = "Beendet"
+L["Finished"] = "Abgeschlossen"
 L["Grid Size:"] = "Rastergröße:"
 L["Healer"] = "Heiler"
 L["Icons Only"] = "Nur Symbole" --Also used in Bags
@@ -224,12 +224,12 @@ L["Toggle Chat Frame"] = "Chatfenster an-/ausschalten" --layout\layout.lua
 L["Toggle Configuration"] = "Konfiguration an-/ausschalten" --layout\layout.lua
 L["AP:"] = true -- No need to translate (Artifact Power)
 L["XP:"] = "EP:"
-L["You don't have permission to mark targets."] = "Du hast keine Rechte um ein Ziel zu markieren."
+L["You don't have permission to mark targets."] = "Du hast keine Rechte ein Ziel zu markieren."
 L["Voice Overlay"] = true -- No need to translate
 
 --Movers
 L["Alternative Power"] = "Alternative Energie"
-L["Archeology Progress Bar"] = "Archeologie Fortschrittsleiste"
+L["Archeology Progress Bar"] = "Archäologie Fortschrittsleiste"
 L["Arena Frames"] = "Arena Fenster" --Also used in UnitFrames
 L["Bag Mover (Grow Down)"] = "Taschen Anker (Nach unten wachsen)"
 L["Bag Mover (Grow Up)"] = "Taschen Anker (Nach oben wachsen)"
@@ -300,7 +300,7 @@ Options:
 --Plugin Installer
 L["ElvUI Plugin Installation"] = true --No need to translate
 L["In Progress"] = "In Bearbeitung"
-L["List of installations in queue:"] = "Liste von Installationen in Warteschlange:"
+L["List of installations in queue:"] = "Liste der Installationen in der Warteschlange:"
 L["Pending"] = "Ausstehend"
 L["Steps"] = "Schritte"
 
