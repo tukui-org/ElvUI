@@ -25,9 +25,10 @@ local function OnMouseDown(self, button)
 end
 
 local function UpdateLines(self)
-	if not self.LinesScrollFrame then return end
-	for i=1, self.LinesScrollFrame.LinesContainer:GetNumChildren() do
-		local child = select(i, self.LinesScrollFrame.LinesContainer:GetChildren())
+	local scrollFrame = self.LinesScrollFrame or _G.TableAttributeDisplay.LinesScrollFrame -- tinspect, or fstack ctrl
+	if not scrollFrame then return end
+	for i=1, scrollFrame.LinesContainer:GetNumChildren() do
+		local child = select(i, scrollFrame.LinesContainer:GetChildren())
 		if child.ValueButton and child.ValueButton:GetScript("OnMouseDown") ~= OnMouseDown then
 			child.ValueButton:SetScript("OnMouseDown", OnMouseDown)
 		end
@@ -39,7 +40,8 @@ local function Setup(frame)
 	if frame.Registered then return end
 	local debugTools = IsAddOnLoaded("Blizzard_DebugTools")
 	if debugTools then
-		hooksecurefunc(_G.TableInspectorMixin, "RefreshAllData", UpdateLines)
+		hooksecurefunc(_G.TableInspectorMixin, "RefreshAllData", UpdateLines) -- /tinspect
+		hooksecurefunc(_G.TableAttributeDisplay.dataProviders[2], "RefreshData", UpdateLines) -- fstack ctrl
 		frame.Registered = true
 
 		if frame:IsEventRegistered(event) then
