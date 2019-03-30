@@ -87,7 +87,14 @@ function UF:Construct_AuraIcon(button)
 	local frame = auras:GetParent()
 	button.db = frame.db and frame.db[auras.type]
 
-	button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
+	UF:UpdateAuraSettings(button)
+end
+
+function UF:UpdateAuraSettings(button)
+	if button.db then
+		button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
+	end
+
 	button.needsUpdateCooldownPosition = true
 end
 
@@ -154,8 +161,8 @@ function UF:Configure_Auras(frame, auraType)
 	while auras[index] do
 		local button = auras[index]
 		if button then
-			button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
-			button.needsUpdateCooldownPosition = true
+			button.db = auras.db
+			UF:UpdateAuraSettings(button)
 		end
 
 		index = index + 1
