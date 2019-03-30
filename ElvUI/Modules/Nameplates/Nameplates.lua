@@ -476,8 +476,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		NP:StyleFilterClearVariables(nameplate)
-	elseif event == 'PLAYER_TARGET_CHANGED' then
-		NP:SetupTarget(nameplate)
+	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
+		NP:SetupTarget(nameplate) -- pass it, even as nil here
 	end
 end
 
