@@ -2673,8 +2673,10 @@ function CH:Initialize()
 		end
 		for i = 1, 2 do
 			local CombatLogQuickButton = _G["CombatLogQuickButtonFrameButton"..i]
-			local CombatLogText = CombatLogQuickButton:GetFontString()
-			CombatLogText:FontTemplate(nil, nil, 'OUTLINE')
+			if CombatLogQuickButton then
+				local CombatLogText = CombatLogQuickButton:GetFontString()
+				CombatLogText:FontTemplate(nil, nil, 'OUTLINE')
+			end
 		end
 		local CombatLogProgressBar = _G.CombatLogQuickButtonFrame_CustomProgressBar
 		CombatLogProgressBar:SetStatusBarTexture(E.media.normTex)
