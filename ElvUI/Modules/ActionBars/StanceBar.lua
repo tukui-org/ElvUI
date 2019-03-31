@@ -335,7 +335,7 @@ function AB:UpdateStanceBindings()
 	for i = 1, NUM_STANCE_SLOTS do
 		if self.db.hotkeytext then
 			_G["ElvUI_StanceBarButton"..i.."HotKey"]:Show()
-			_G["ElvUI_StanceBarButton"..i.."HotKey"]:SetText(GetBindingKey("CLICK ElvUI_StanceBarButton"..i..":LeftButton"))
+			_G["ElvUI_StanceBarButton"..i.."HotKey"]:SetText(GetBindingKey('SHAPESHIFTBUTTON'..i))
 			self:FixKeybindText(_G["ElvUI_StanceBarButton"..i])
 		else
 			_G["ElvUI_StanceBarButton"..i.."HotKey"]:Hide()
