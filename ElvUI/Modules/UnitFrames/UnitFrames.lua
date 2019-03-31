@@ -1382,6 +1382,7 @@ function UF:DefaultFader()
 		Combat = true,
 		Power = true,
 		Casting = true,
+		Vehicle = true,
 		Smooth = 0.33,
 		Delay = false,
 		MaxAlpha = 1,
