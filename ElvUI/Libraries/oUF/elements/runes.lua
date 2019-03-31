@@ -59,9 +59,9 @@ local function ascSort(runeAID, runeBID)
 	local runeAStart, _, runeARuneReady = GetRuneCooldown(runeAID)
 	local runeBStart, _, runeBRuneReady = GetRuneCooldown(runeBID)
 	if(runeARuneReady ~= runeBRuneReady) then
-		return runeARuneReady
+		return runeBRuneReady
 	elseif(runeAStart ~= runeBStart) then
-		return runeAStart < runeBStart
+		return runeAStart > runeBStart
 	else
 		return runeAID < runeBID
 	end
@@ -71,9 +71,9 @@ local function descSort(runeAID, runeBID)
 	local runeAStart, _, runeARuneReady = GetRuneCooldown(runeAID)
 	local runeBStart, _, runeBRuneReady = GetRuneCooldown(runeBID)
 	if(runeARuneReady ~= runeBRuneReady) then
-		return runeBRuneReady
+		return runeARuneReady
 	elseif(runeAStart ~= runeBStart) then
-		return runeAStart > runeBStart
+		return runeAStart < runeBStart
 	else
 		return runeAID > runeBID
 	end
