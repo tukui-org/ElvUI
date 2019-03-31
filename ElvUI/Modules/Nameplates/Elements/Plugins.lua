@@ -280,9 +280,8 @@ function NP:Update_Fader(nameplate)
 	if (not db.visibility) or db.visibility.showAlways then
 		if nameplate:IsElementEnabled('Fader') then
 			nameplate:DisableElement('Fader')
+			E:UIFrameFadeIn(nameplate, 1, nameplate:GetAlpha(), 1)
 		end
-
-		E:UIFrameFadeIn(nameplate, 1, nameplate:GetAlpha(), 1)
 	else
 		if not nameplate:IsElementEnabled('Fader') then
 			nameplate:EnableElement('Fader')
