@@ -15,6 +15,7 @@ local UnitHealthMax = UnitHealthMax
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
+local UnitHasVehicleUI = UnitHasVehicleUI
 
 local PowerTypesFull = {
 	MANA = true,
@@ -38,6 +39,7 @@ local function Update(self, event, unit)
 		(element.Focus and UnitExists('focus')) or
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesFull[powerType] and power < UnitPowerMax(unit))) or
+		(element.Vehicle and UnitHasVehicleUI(unit)) or
 		(element.Hover and (GetMouseFocus() == self))
 	then
 		if element.Smooth then
