@@ -4,8 +4,8 @@ local oUF = E.oUF
 --Cache global variables
 --Lua functions
 local _G = _G
-local pairs = pairs
-local floor = math.floor
+local pairs, tonumber = pairs, tonumber
+local ceil, floor = math.ceil, math.floor
 local match = string.match
 --WoW API / Variables
 local UnitName = UnitName
@@ -110,7 +110,7 @@ local function GetQuests(unitID)
 	local inInstance = IsInInstance()
 	if inInstance then return end
 
-	-- Track active WorldQuests on the current Map
+	-- Track active Quests on the current Map
 	local uiMapID = C_Map_GetBestMapForUnit('player')
 	if uiMapID then
 		for k, task in pairs(C_TaskQuest_GetQuestsForPlayerByMapID(uiMapID) or {}) do
@@ -146,6 +146,11 @@ local function GetQuests(unitID)
 			local x, y = match(progressText, '(%d+)/(%d+)')
 			if x and y then
 				QuestList[index].objectiveCount = floor(y - x)
+			else
+				local progress = tonumber(match(progressText, '([%d%.]+)%%')) -- contains % in the progressText
+				if progress and progress <= 100 then
+					QuestList[index].objectiveCount = ceil(100 - progress)
+				end
 			end
 
 			local QuestLogIndex, itemTexture, _
