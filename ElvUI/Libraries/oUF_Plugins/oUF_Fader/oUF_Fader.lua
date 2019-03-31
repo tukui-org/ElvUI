@@ -105,6 +105,7 @@ local function Enable(self, unit)
 			element.TargetHooked = 1 -- on state
 
 			self:RegisterEvent('UNIT_TARGET', Update)
+			self:RegisterEvent('PLAYER_TARGET_CHANGED', Update, true)
 		end
 
 		if element.Focus then
