@@ -10,10 +10,14 @@ local match = string.match
 --WoW API / Variables
 local UnitName = UnitName
 local IsInInstance = IsInInstance
+local GetLocale = GetLocale
 local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local C_TaskQuest_GetQuestProgressBarInfo = C_TaskQuest.GetQuestProgressBarInfo
+local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
+local C_TaskQuest_GetQuestsForPlayerByMapID = C_TaskQuest.GetQuestsForPlayerByMapID
+local C_TaskQuest_GetQuestInfoByQuestID = C_TaskQuest.GetQuestInfoByQuestID
 
 local ActiveQuests = {
 	-- [questName] = questID ?
@@ -105,6 +109,20 @@ end
 local function GetQuests(unitID)
 	local inInstance = IsInInstance()
 	if inInstance then return end
+
+	-- Track active WorldQuests on the current Map
+	local uiMapID = C_Map_GetBestMapForUnit('player')
+	if uiMapID then
+		for k, task in pairs(C_TaskQuest_GetQuestsForPlayerByMapID(uiMapID) or {}) do
+			if task.inProgress then
+				local questID = task.questId
+				local questName = C_TaskQuest_GetQuestInfoByQuestID(questID)
+				if questName then
+					ActiveQuests[questName] = questID
+				end
+			end
+		end
+	end
 
 	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	E.ScanTooltip:SetUnit(unitID)
