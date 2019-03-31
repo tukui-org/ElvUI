@@ -184,7 +184,7 @@ function NP:Update_Runes(nameplate)
 		nameplate.Runes:Show()
 		nameplate.Runes:Point('CENTER', nameplate, 'CENTER', 0, db.classpower.yOffset)
 
-		nameplate.sortOrder = db.classpower.sortDirection
+		nameplate.Runes.sortOrder = db.classpower.sortDirection
 
 		local width = db.classpower.width / 6
 		nameplate.Runes:Size(db.classpower.width, db.classpower.height)
