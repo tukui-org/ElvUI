@@ -111,20 +111,6 @@ local function GetQuests(unitID)
 	local inInstance = IsInInstance()
 	if inInstance then return end
 
-	-- Track active Quests on the current Map
-	local uiMapID = C_Map_GetBestMapForUnit('player')
-	if uiMapID then
-		for k, task in pairs(C_TaskQuest_GetQuestsForPlayerByMapID(uiMapID) or {}) do
-			if task.inProgress then
-				local questID = task.questId
-				local questName = C_TaskQuest_GetQuestInfoByQuestID(questID)
-				if questName then
-					ActiveQuests[questName] = questID
-				end
-			end
-		end
-	end
-
 	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	E.ScanTooltip:SetUnit(unitID)
 	E.ScanTooltip:Show()
