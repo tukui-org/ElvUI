@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
-local tinsert, tremove, next = tinsert, tremove, next, wipe
+local tinsert, tremove, next = tinsert, tremove, next
 local select, tonumber, assert, type, unpack = select, tonumber, assert, type, unpack
 local atan2, modf, ceil, floor, abs, sqrt, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, mod
 local format, strfind, strsub, strupper, gsub, gmatch, utf8sub = format, strfind, strsub, strupper, gsub, gmatch, string.utf8sub
