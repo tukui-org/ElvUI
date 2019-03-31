@@ -15,9 +15,6 @@ local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local C_TaskQuest_GetQuestProgressBarInfo = C_TaskQuest.GetQuestProgressBarInfo
-local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
-local C_TaskQuest_GetQuestsForPlayerByMapID = C_TaskQuest.GetQuestsForPlayerByMapID
-local C_TaskQuest_GetQuestInfoByQuestID = C_TaskQuest.GetQuestInfoByQuestID
 
 local ActiveQuests = {
 	-- [questName] = questID ?
