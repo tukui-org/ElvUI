@@ -33,6 +33,7 @@ local QuestTypesLocalized = {
 		["kill"] = "KILL",
 		["defeat"] = "KILL",
 		["speak"] = "CHAT",
+		["ask"] = "CHAT",
 	},
 	["deDE"] = {
 		["besiegen"] = "KILL",
