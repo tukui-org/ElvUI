@@ -20,8 +20,13 @@ Added an option to ignore the UI Scale popup when resizing the game window (Gene
 [Nameplate] Fixed Power Hide when Empty.  
 [Nameplate] Fixed a bug where the Highlight was under the health.  
 [Nameplate] Fixing Off Tank Color on Nameplates and added transitioning colors.  
+[Nameplate] Made sure the Classbar appears on the Targeted plate correctly.  
+[Nameplate] Fixed issue which prevented the Quest Icon from showing in some cases.  
+[Nameplate] Fixed rune sort order for Deathknights and Classbar color for Monks.  
 [Actionbar] Fixed main bar (bar one) paging issue.  
+[Actionbar] Fixed Stance Bar Keybinding Text not appearing correctly. (#541)  
 [Chat / Datatext] Finally fixed the 'lhs' error with Quick Join.  
+[Chat] Fixed an issue which was caused from our Chat file skinning the Combat Log bar when other addons hid it.  
 [Skin] Fixed an issue which caused the Ace3 skin to add an X on buttons from other addons using our skin. (#1217)  
 [Datatext] Made sure the LDB Datatext value color updates along with the General Media Value color correctly.  
 Fixed an issue which prevented border and backdrop color from being updated correctly in some cases.  
@@ -30,13 +35,16 @@ Fixed an issue whiched caused incompatiblity with our config and ColorPickerPlus
 Fixed an error in init.lua: attempt to index local 'ACD'.  
 Fixed an issue with the Quest Skin which caused the Quest Icon beside the text to sometimes not be shown.  
 Fixed the DropDown Box text on the Communities Stream Dropdown.  
+Fixed a tiny visual glitch with the DropDown in the Communities frame.  
 Fixed an issue which would cause an error if you had the Login messaged enable while the Chat module was disabled.  
+Fixed an issue which kept healers stored when out of a Battleground. (#1219)  
+Fixed an issue which prevented Aurabars from correctly handling the Dispellable filters.  
+Fixed the cooldown swipe texture on the ExtraActionButton so that it's shown over the actual icon texture.  
 
 **Misc. Changes:**  
 [Nameplate] Keep Player nameplate from fading out.  
 [Nameplate] Enabled Style Filter Hide Frame action.  
 [Nameplate] Reallowed Target Scale in options.  
-[Nameplate] CVars and other CVars should be working correctly again.  
 [Nameplate] Removed Detection as this was used in Legion but is no longer used as much and this would increase preformance further.  
 [Nameplate] Readded the Visbility settings on Static Player.  
 [Nameplate] Reworked the cooldown text, so that it matches Unitframes.  
@@ -45,9 +53,10 @@ Fixed an issue which would cause an error if you had the Login messaged enable w
 [Nameplate] Updated oUF to increase preformance of the new Nameplates further.  
 [Nameplate] Added backdrop coloring to the classbars.  
 [Unitframe] Cleaned some of the Castbar code, as we believe this is part of the reason for the Unitframes to cause additional lags.  
-[Unitframe] Replaced the Combat Fade code on the Player frame, with the same code we now use to fade the Player nameplate.  
+[Unitframe] Replaced the Combat Fade code on the Player frame, with the same code we now use to fade the Player nameplate. (oUF_Fader)  
 [Actionbar] Stopped allowing Keybinder in combat.  
 [Bag] Recoded the animation for the New Item Glow so they all glow together instead of seperately, also gave it a fancy new glow texture.  
+[Bag] Added the Deposit Reagents button to the Bank Tab too.  
 [Config] Made the Enable Checkboxes in the config colorful, so that they're easier to spot, plus it looks really cool, imo.  
 [Config] Oganized a bit with help from (@wing5wong).  
 Updated Module Copy to handle some new cases.  
@@ -57,6 +66,10 @@ Skinned the New Toy Alert.
 Skinned the Communities Notification Buttons.  
 Removed the 'Forcing MaxGroups to' message.  
 Added smoothing option to the Alternative Power bar.  
+Blizzard corrected the issue with CVars not saving correctly.  
+Adjusted all the Power and Classbar backdrop colors to be a little more vivid.  
+Added dispellable to boss buff filters by default. (#1215)  
+Added Vehicle support to our new oUF_Fader lib. (#148)  
 
 **Work in Progress:**  
 Cutaway Health, Custom Text, and Floating Combat Feedback on Nameplates.  
