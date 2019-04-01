@@ -122,6 +122,11 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_MAXPOWER', Update)
 		end
 
+		if element.Vehicle then
+			self:RegisterEvent('UNIT_ENTERED_VEHICLE', Update, true)
+			self:RegisterEvent('UNIT_EXITED_VEHICLE', Update, true)
+		end
+
 		if element.Casting then
 			self:RegisterEvent('UNIT_SPELLCAST_START', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_FAILED', Update)
@@ -156,6 +161,7 @@ local function Disable(self, unit)
 
 		self:UnregisterEvent('PLAYER_REGEN_ENABLED', Update)
 		self:UnregisterEvent('PLAYER_REGEN_DISABLED', Update)
+		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Update)
 		self:UnregisterEvent('UNIT_TARGET', Update)
 		self:UnregisterEvent('UNIT_HEALTH', Update)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Update)
@@ -167,6 +173,8 @@ local function Disable(self, unit)
 		self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', Update)
 		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_START', Update)
 		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', Update)
+		self:UnregisterEvent('UNIT_ENTERED_VEHICLE', Update)
+		self:UnregisterEvent('UNIT_EXITED_VEHICLE', Update)
 	end
 end
 
