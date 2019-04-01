@@ -708,6 +708,7 @@ L["Apply this filter if a debuff has remaining time less than this. Set to zero 
 L["Background Glow"] = "背景發光"
 L["Bad Color"] = "危險顏色"
 L["Bad Height"] = "危險高度"
+L["Bad Scale"] = true
 L["Bad Transition Color"] = "危險過渡顏色"
 L["Bad Width"] = "危險寬度"
 L["Battleground Friendly"] = "戰場友方"
@@ -769,6 +770,7 @@ L["FRIENDLY_PLAYER"] = "友方玩家"
 L["General Options"] = "常規選項"
 L["Good Color"] = "正常顏色"
 L["Good Height"] = "正常高度"
+L["Good Scale"] = true
 L["Good Transition Color"] = "正常過渡顏色"
 L["Good Width"] = "正常寬度"
 L["Growth X-Direction"] = "正常X軸偏移"

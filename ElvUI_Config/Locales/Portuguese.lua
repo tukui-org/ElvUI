@@ -707,6 +707,7 @@ L["Apply this filter if a debuff has remaining time greater than this. Set to ze
 L["Apply this filter if a debuff has remaining time less than this. Set to zero to disable."] = true
 L["Background Glow"] = true
 L["Bad Color"] = true
+L["Bad Scale"] = true
 L["Bad Transition Color"] = true
 L["Bad Width"] = true
 L["Battleground Friendly"] = true
@@ -767,6 +768,7 @@ L["FRIENDLY_NPC"] = "Friendly NPC"
 L["FRIENDLY_PLAYER"] = "Friendly Player"
 L["General Options"] = true
 L["Good Color"] = true
+L["Good Scale"] = true
 L["Good Transition Color"] = true
 L["Good Width"] = true
 L["Growth X-Direction"] = true

@@ -759,6 +759,7 @@ L["Apply this filter if a debuff has remaining time less than this. Set to zero 
 L["Background Glow"] = "배경 밝게"
 L["Bad Color"] = "나쁨 색상"
 L["Bad Height"] = true
+L["Bad Scale"] = true
 L["Bad Transition Color"] = "나쁨 전환 색상"
 L["Bad Width"] = true
 L["Battleground Friendly"] = true
@@ -821,6 +822,7 @@ L["FRIENDLY_PLAYER"] = "우호적인 플레이어"
 L["General Options"] = "일반 설정"
 L["Good Color"] = "좋음 색상"
 L["Good Height"] = true
+L["Good Scale"] = true
 L["Good Transition Color"] = "좋음 전환 색상"
 L["Good Width"] = true
 L["Growth X-Direction"] = true

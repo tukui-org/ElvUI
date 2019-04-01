@@ -706,6 +706,7 @@ L["Apply this filter if a debuff has remaining time less than this. Set to zero 
 L["Background Glow"] = "Фоновое свечение"
 L["Bad Color"] = "Плохой цвет"
 L["Bad Height"] = "Плохая высота"
+L["Bad Scale"] = true
 L["Bad Transition Color"] = "Цвет плохого перехода"
 L["Bad Width"] = "Плохая ширина"
 L["Battleground Friendly"] = "Свои на БГ/Арене"
@@ -767,6 +768,7 @@ L["FRIENDLY_PLAYER"] = "Дружественный игрок"
 L["General Options"] = "Общие"
 L["Good Color"] = "Хороший цвет"
 L["Good Height"] = "Хорошая высота"
+L["Good Scale"] = true
 L["Good Transition Color"] = "Цвет хорошего перехода"
 L["Good Width"] = "Хорошая ширина"
 L["Growth X-Direction"] = "Рост по Х"
