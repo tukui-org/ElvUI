@@ -82,6 +82,11 @@ function NP:Construct_ClassPower(nameplate)
 		ClassPower[i].bg.multiplier = .35
 	end
 
+	if nameplate == _G.ElvNP_Test then
+		ClassPower.Hide = ClassPower.Show
+		ClassPower:Show()
+	end
+
 	ClassPower.UpdateColor = NP.ClassPower_UpdateColor
 	ClassPower.PostUpdate = NP.ClassPower_PostUpdate
 
