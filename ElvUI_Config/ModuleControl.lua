@@ -272,27 +272,27 @@ local function CreateNamePlatesConfig()
 			["TARGET"] = {
 				order = 2,
 				type = "toggle",
-				name = L["Targeted Nameplate"],
+				name = L["Targeted NamePlate"],
 			},
 			["FRIENDLY_PLAYER"] = {
 				order = 3,
 				type = "toggle",
-				name = L["Friendly Player Frames"],
+				name = L["Friendly Player NamePlates"],
 			},
 			["ENEMY_PLAYER"] = {
 				order = 4,
 				type = "toggle",
-				name = L["Enemy Player Frames"],
+				name = L["Enemy Player NamePlates"],
 			},
 			["FRIENDLY_NPC"] = {
 				order = 5,
 				type = "toggle",
-				name = L["Friendly NPC Frames"],
+				name = L["Friendly NPC NamePlates"],
 			},
 			["ENEMY_NPC"] = {
 				order = 6,
 				type = "toggle",
-				name = L["Enemy NPC Frames"],
+				name = L["Enemy NPC NamePlates"],
 			},
 		},
 	}
@@ -658,4 +658,3 @@ E.Options.args.modulecontrol= {
 		},
 	},
 }
-
