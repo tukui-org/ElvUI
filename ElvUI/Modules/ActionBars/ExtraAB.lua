@@ -79,7 +79,8 @@ function AB:SetupExtraButton()
 
 			self:StyleButton(button, true)
 			button:SetTemplate()
-			button.icon:SetDrawLayer('ARTWORK')
+			button.icon:SetDrawLayer('BORDER')
+
 			local tex = button:CreateTexture(nil, 'OVERLAY')
 			tex:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 			tex:SetInside()
