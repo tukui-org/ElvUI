@@ -207,17 +207,11 @@ end
 
 function NP:ScalePlate(nameplate, scale)
 	if not nameplate then
-		if NP.ScaledPlate then
-			NP.ScaledPlate:SetScale(E.global.general.UIScale)
-			NP.ScaledPlate = false
-		end
 		return
 	end
 
 	local targetScale = format('%.2f', E.global.general.UIScale * scale)
 	nameplate:SetScale(targetScale)
-
-	NP.ScaledPlate = nameplate
 end
 
 function NP:StylePlate(nameplate)
@@ -451,7 +445,6 @@ end
 function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'NAME_PLATE_UNIT_ADDED' then
 		NP:StyleFilterClear(nameplate) -- keep this at the top
-		nameplate:SetScale(E.global.general.UIScale)
 
 		unit = unit or nameplate.unit
 
@@ -499,7 +492,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if nameplate.isTarget then
 			NP:SetupTarget(nameplate, true)
-			NP:ScalePlate(nameplate, NP.db.units.TARGET.scale)
+			NP:ScalePlate(nameplate, 1)
 		end
 
 		NP:StyleFilterClearVariables(nameplate)
