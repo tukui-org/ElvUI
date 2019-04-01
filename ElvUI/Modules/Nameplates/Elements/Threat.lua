@@ -21,7 +21,7 @@ function NP:ThreatIndicator_PreUpdate(unit)
 end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
-	if NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor and not UnitIsTapDenied(unit) then
+	if NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor and not UnitIsTapDenied(unit) and status then
 		self.__owner.Health.colorTapping = false
 		self.__owner.Health.colorDisconnected = false
 		self.__owner.Health.colorClass = false
@@ -33,26 +33,28 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		self.__owner.Health.colorSmooth = false
 		self.__owner.Health.colorHealth = false
 
-		local Color
-		if status then
-			if (status == 3) then -- securely tanking
-				Color = self.offTank and NP.db.colors.threat.offTankColor or self.isTank and NP.db.colors.threat.goodColor or NP.db.colors.threat.badColor
-			elseif (status == 2) then -- insecurely tanking
-				Color = self.offTank and NP.db.colors.threat.offTankColorBadTransition or self.isTank and NP.db.colors.threat.badTransition or NP.db.colors.threat.goodTransition
-			elseif (status == 1) then -- not tanking but threat higher than tank
-				Color = self.offTank and NP.db.colors.threat.offTankColorGoodTransition or self.isTank and NP.db.colors.threat.goodTransition or NP.db.colors.threat.badTransition
-			else -- not tanking at all
-				Color = self.isTank and NP.db.colors.threat.badColor or NP.db.colors.threat.goodColor
-			end
+		local Color, Scale
+		if (status == 3) then -- securely tanking
+			Color = self.offTank and NP.db.colors.threat.offTankColor or self.isTank and NP.db.colors.threat.goodColor or NP.db.colors.threat.badColor
+			Scale = self.isTank and NP.db.threat.goodScale or NP.db.threat.badScale
+		elseif (status == 2) then -- insecurely tanking
+			Color = self.offTank and NP.db.colors.threat.offTankColorBadTransition or self.isTank and NP.db.colors.threat.badTransition or NP.db.colors.threat.goodTransition
+			Scale = 1
+		elseif (status == 1) then -- not tanking but threat higher than tank
+			Color = self.offTank and NP.db.colors.threat.offTankColorGoodTransition or self.isTank and NP.db.colors.threat.goodTransition or NP.db.colors.threat.badTransition
+			Scale = 1
+		else -- not tanking at all
+			Color = self.isTank and NP.db.colors.threat.badColor or NP.db.colors.threat.goodColor
+			Scale = self.isTank and NP.db.threat.badScale or NP.db.threat.goodScale
 		end
 
-		if Color then
-			if self.__owner.HealthColorChanged then
-				self.r, self.g, self.b = Color.r, Color.g, Color.b
-			else
-				self.__owner.Health:SetStatusBarColor(Color.r, Color.g, Color.b)
-			end
+		if self.__owner.HealthColorChanged then
+			self.r, self.g, self.b = Color.r, Color.g, Color.b
+		else
+			self.__owner.Health:SetStatusBarColor(Color.r, Color.g, Color.b)
 		end
+
+		NP:ScalePlate(self.__owner, Scale)
 	end
 end
 

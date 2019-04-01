@@ -205,13 +205,22 @@ function NP:UpdateTargetPlate(nameplate)
 	nameplate:UpdateAllElements('OnShow')
 end
 
-function NP:ScalePlate(nameplate, scale)
+function NP:ScalePlate(nameplate, scale, targetPlate)
+	if NP.targetPlate then
+		NP.targetPlate:SetScale(E.global.general.UIScale)
+		NP.targetPlate = false
+	end
+
 	if not nameplate then
 		return
 	end
 
 	local targetScale = format('%.2f', E.global.general.UIScale * scale)
 	nameplate:SetScale(targetScale)
+
+	if targetPlate then
+		NP.targetPlate = nameplate
+	end
 end
 
 function NP:StylePlate(nameplate)
@@ -475,7 +484,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if nameplate.isTarget then
 			NP:SetupTarget(nameplate)
-			NP:ScalePlate(nameplate, NP.db.units.TARGET.scale)
+			NP:ScalePlate(nameplate, NP.db.units.TARGET.scale, true)
 		end
 
 		if nameplate:IsShown() and NP.db.fadeIn then
@@ -492,13 +501,13 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if nameplate.isTarget then
 			NP:SetupTarget(nameplate, true)
-			NP:ScalePlate(nameplate, 1)
+			NP:ScalePlate(nameplate, 1, true)
 		end
 
 		NP:StyleFilterClearVariables(nameplate)
 	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
 		NP:SetupTarget(nameplate) -- pass it, even as nil here
-		NP:ScalePlate(nameplate, NP.db.units.TARGET.scale)
+		NP:ScalePlate(nameplate, NP.db.units.TARGET.scale, true)
 	end
 end
 
