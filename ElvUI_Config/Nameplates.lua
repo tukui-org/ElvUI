@@ -4685,7 +4685,7 @@ E.Options.args.nameplate = {
 				},
 			},
 		},
-		playerGroup = GetUnitSettings("PLAYER", L["Targeted Nameplate"]),
+		playerGroup = GetUnitSettings("PLAYER", L["Player NamePlate"]),
 		friendlyPlayerGroup = GetUnitSettings("FRIENDLY_PLAYER", L["Friendly Player NamePlates"]),
 		friendlyNPCGroup = GetUnitSettings("FRIENDLY_NPC", L["Friendly NPC NamePlates"]),
 		enemyPlayerGroup = GetUnitSettings("ENEMY_PLAYER", L["Enemy Player NamePlates"]),
