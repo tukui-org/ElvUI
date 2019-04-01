@@ -39,7 +39,6 @@ Fixed a tiny visual glitch with the DropDown in the Communities frame.
 Fixed an issue which would cause an error if you had the Login messaged enable while the Chat module was disabled.  
 Fixed an issue which kept healers stored when out of a Battleground. (#1219)  
 Fixed an issue which prevented Aurabars from correctly handling the Dispellable filters.  
-Fixed the cooldown swipe texture on the ExtraActionButton so that it's shown over the actual icon texture.  
 
 **Misc. Changes:**  
 [Nameplate] Keep Player nameplate from fading out.  
