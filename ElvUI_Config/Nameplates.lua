@@ -4569,6 +4569,7 @@ E.Options.args.nameplate = {
 							type = 'range',
 							isPercent = true,
 							min = 1, max = 2, step = .01,
+							disabled = function() return not E.db.nameplates.threat.enable end,
 						},
 						badScale = {
 							name = L["Bad Scale"],
@@ -4576,6 +4577,7 @@ E.Options.args.nameplate = {
 							type = 'range',
 							isPercent = true,
 							min = 1, max = 2, step = .01,
+							disabled = function() return not E.db.nameplates.threat.enable end,
 						},
 					},
 				},
