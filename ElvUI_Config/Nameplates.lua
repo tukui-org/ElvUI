@@ -4563,33 +4563,19 @@ E.Options.args.nameplate = {
 							type = 'toggle',
 							disabled = function() return not E.db.nameplates.threat.enable end,
 						},
-						goodWidth = {
-							name = L["Good Width"],
+						goodScale = {
+							name = L["Good Scale"],
 							order = 4,
 							type = 'range',
-							min = 50, max = 400, step = 1,
-							disabled = function() return true end, -- remove me
+							isPercent = true,
+							min = 0, max = 2, step = .01,
 						},
-						goodHeight = {
-							name = L["Good Height"],
-							order = 5,
-							type = 'range',
-							min = 4, max = 40, step = 1,
-							disabled = function() return true end, -- remove me
-						},
-						badWidth = {
-							name = L["Bad Width"],
+						badScale = {
+							name = L["Bad Scale"],
 							order = 6,
 							type = 'range',
-							min = 50, max = 400, step = 1,
-							disabled = function() return true end, -- remove me
-						},
-						badHeight = {
-							name = L["Bad Height"],
-							order = 7,
-							type = 'range',
-							min = 4, max = 40, step = 1,
-							disabled = function() return true end, -- remove me
+							isPercent = true,
+							min = 0, max = 2, step = .01,
 						},
 					},
 				},
@@ -4716,28 +4702,6 @@ E.Options.args.nameplate = {
 					name = L["Scale"],
 					min = 0, max = 2, step = .01,
 					isPercent = true,
-				},
-				useScale = {
-					order = 1,
-					type = "toggle",
-					name = L["Use Target Size"],
-					disabled = function() return true end, -- remove me
-				},
-				width = {
-					order = 2,
-					type = "range",
-					name = L["Target Width"],
-					min = 50, max = 400, step = 1,
-					disabled = function() return true end, -- remove me
-					--disabled = function() return E.db.nameplates.useTargetScale ~= true end,
-				},
-				height = {
-					order = 3,
-					type = "range",
-					name = L["Target Height"],
-					min = 4, max = 40, step = 1,
-					disabled = function() return true end, -- remove me
-					--disabled = function() return E.db.nameplates.useTargetScale ~= true end,
 				},
 				nonTargetTransparency = {
 					order = 4,

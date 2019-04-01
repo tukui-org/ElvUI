@@ -9,6 +9,8 @@ local wipe = wipe
 local select = select
 local pairs = pairs
 local type = type
+local format = format
+local tonumber = tonumber
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
@@ -59,6 +61,7 @@ end
 
 function NP:CVarReset()
 	SetCVar("nameplateOccludedAlphaMult", .5)
+	SetCVar("nameplateMinAlpha", GetCVarDefault("nameplateMinAlpha"))
 	SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
 	SetCVar('nameplateGlobalScale', 1)
 	SetCVar('NamePlateHorizontalScale', 1)
@@ -68,10 +71,10 @@ function NP:CVarReset()
 	SetCVar('nameplateMaxAlphaDistance', GetCVarDefault('nameplateMaxAlphaDistance'))
 	SetCVar('nameplateMaxScale', 1)
 	SetCVar('nameplateMaxScaleDistance', 40)
-	SetCVar('nameplateMinAlpha', 1)
 	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
 	SetCVar('nameplateMinScale', 1)
 	SetCVar('nameplateMinScaleDistance', 0)
+	SetCVar('nameplateSelectedScale', 1)
 	SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
 	SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'))
 	SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
@@ -202,10 +205,26 @@ function NP:UpdateTargetPlate(nameplate)
 	nameplate:UpdateAllElements('OnShow')
 end
 
+function NP:ScalePlate(nameplate, scale)
+	if not nameplate then
+		if NP.ScaledPlate then
+			NP.ScaledPlate:SetScale(E.global.general.UIScale)
+			NP.ScaledPlate = false
+		end
+		return
+	end
+
+	local targetScale = format('%.2f', E.global.general.UIScale * scale)
+	nameplate:SetScale(targetScale)
+
+	NP.ScaledPlate = nameplate
+end
+
 function NP:StylePlate(nameplate)
 	nameplate:Point('CENTER')
 	nameplate:Size(self.db.clickableWidth, self.db.clickableHeight)
 	nameplate:SetScale(E.global.general.UIScale)
+
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
 	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
@@ -432,6 +451,7 @@ end
 function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'NAME_PLATE_UNIT_ADDED' then
 		NP:StyleFilterClear(nameplate) -- keep this at the top
+		nameplate:SetScale(E.global.general.UIScale)
 
 		unit = unit or nameplate.unit
 
@@ -462,6 +482,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if nameplate.isTarget then
 			NP:SetupTarget(nameplate)
+			NP:ScalePlate(nameplate, NP.db.units.TARGET.scale)
 		end
 
 		if nameplate:IsShown() and NP.db.fadeIn then
@@ -478,11 +499,13 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if nameplate.isTarget then
 			NP:SetupTarget(nameplate, true)
+			NP:ScalePlate(nameplate, NP.db.units.TARGET.scale)
 		end
 
 		NP:StyleFilterClearVariables(nameplate)
 	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
 		NP:SetupTarget(nameplate) -- pass it, even as nil here
+		NP:ScalePlate(nameplate, NP.db.units.TARGET.scale)
 	end
 end
 
@@ -532,8 +555,6 @@ function NP:Initialize()
 	ElvUF:Spawn('player', 'ElvNP_Player')
 	_G.ElvNP_Player:EnableMouse(true)
 	_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
-	_G.ElvNP_Player:SetAttribute('*type1', 'target')
-	_G.ElvNP_Player:SetAttribute('*type2', 'togglemenu')
 	_G.ElvNP_Player:SetAttribute('toggleForVehicle', true)
 	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:Size(NP.db.clickableWidth, NP.db.clickableHeight)
