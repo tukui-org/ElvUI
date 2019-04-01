@@ -142,6 +142,7 @@ function NP:Construct_Castbar(nameplate)
 		Castbar.Text:SetText('Casting')
 		Castbar.Time:SetText('3.1')
 		Castbar.Icon:SetTexture([[Interface\Icons\Achievement_Character_Pandaren_Female]])
+		Castbar:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b)
 	end
 
 	return Castbar

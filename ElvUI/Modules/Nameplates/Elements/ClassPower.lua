@@ -37,7 +37,7 @@ function NP:ClassPower_UpdateColor(powerType)
 		local bg = self[i].bg
 		if(bg) then
 			local mu = bg.multiplier or 1
-			bg:SetVertexColor(r * mu, g * mu, b * mu)
+			bg:SetColorTexture(r * mu, g * mu, b * mu)
 		end
 	end
 end
@@ -76,7 +76,6 @@ function NP:Construct_ClassPower(nameplate)
 
 		ClassPower[i].bg = ClassPower:CreateTexture(nil, 'BORDER')
 		ClassPower[i].bg:SetAllPoints(ClassPower[i])
-		ClassPower[i].bg:SetTexture(E.media.blankTex)
 		ClassPower[i].bg:SetSnapToPixelGrid(false)
 		ClassPower[i].bg:SetTexelSnappingBias(0)
 		ClassPower[i].bg.multiplier = .35
@@ -85,6 +84,10 @@ function NP:Construct_ClassPower(nameplate)
 	if nameplate == _G.ElvNP_Test then
 		ClassPower.Hide = ClassPower.Show
 		ClassPower:Show()
+		for i = 1, Max do
+			ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+			ClassPower[i].bg:SetColorTexture(NP.db.colors.classResources.comboPoints[i].r, NP.db.colors.classResources.comboPoints[i].g, NP.db.colors.classResources.comboPoints[i].b)
+		end
 	end
 
 	ClassPower.UpdateColor = NP.ClassPower_UpdateColor
