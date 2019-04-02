@@ -207,7 +207,7 @@ end
 function NP:ScalePlate(nameplate, scale, targetPlate)
 	if targetPlate and NP.targetPlate then
 		NP.targetPlate:SetScale(E.global.general.UIScale)
-		NP.targetPlate = false
+		NP.targetPlate = nil
 	end
 
 	if not nameplate then return end
