@@ -63,7 +63,7 @@ E.StyleFilterDefaults = {
 			trivial = false,
 			minus = false,
 		},
-		class = {}, --this can stay empty we only will accept values that exist
+		class = {}, -- this can stay empty we only will accept values that exist
 		talent = {
 			type = 'normal',
 			enabled = false,
