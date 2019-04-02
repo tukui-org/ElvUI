@@ -260,39 +260,39 @@ local function CreateNamePlatesConfig()
 		order = 7,
 		type = "group",
 		guiInline = true,
-		name = L["UnitFrames"],
+		name = L["NamePlates"],
 		get = function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end,
 		set = function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end,
 		args = {
 			["PLAYER"] = {
 				order = 1,
 				type = "toggle",
-				name = L["Player Frame"],
+				name = L["Player"],
 			},
 			["TARGET"] = {
 				order = 2,
 				type = "toggle",
-				name = L["Targeted NamePlate"],
+				name = L["Target"],
 			},
 			["FRIENDLY_PLAYER"] = {
 				order = 3,
 				type = "toggle",
-				name = L["Friendly Player NamePlates"],
+				name = L["FRIENDLY_PLAYER"],
 			},
 			["ENEMY_PLAYER"] = {
 				order = 4,
 				type = "toggle",
-				name = L["Enemy Player NamePlates"],
+				name = L["ENEMY_PLAYER"],
 			},
 			["FRIENDLY_NPC"] = {
 				order = 5,
 				type = "toggle",
-				name = L["Friendly NPC NamePlates"],
+				name = L["FRIENDLY_NPC"],
 			},
 			["ENEMY_NPC"] = {
 				order = 6,
 				type = "toggle",
-				name = L["Enemy NPC NamePlates"],
+				name = L["ENEMY_NPC"],
 			},
 		},
 	}
