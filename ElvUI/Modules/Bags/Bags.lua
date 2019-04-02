@@ -210,10 +210,11 @@ function B:OpenEditbox()
 end
 
 function B:ResetAndClear()
-	local editbox = self:GetParent().editBox or self
-	if editbox then editbox:SetText(SEARCH) end
+	B.BankFrame.editBox:SetText(SEARCH)
+	B.BankFrame.editBox:ClearFocus()
+	B.BagFrame.editBox:SetText(SEARCH)
+	B.BagFrame.editBox:ClearFocus()
 
-	self:ClearFocus();
 	B:SearchReset();
 end
 
@@ -1841,6 +1842,7 @@ function B:ContructContainerFrame(name, isBank)
 			end
 		end)
 
+		f:SetScript('OnShow', B.RefreshSearch)
 		f:SetScript('OnHide', function()
 			CloseBankFrame()
 
@@ -1848,7 +1850,7 @@ function B:ContructContainerFrame(name, isBank)
 			B:HideItemGlow(f)
 
 			if E.db.bags.clearSearchOnClose then
-				B.ResetAndClear(f.editBox);
+				B:ResetAndClear();
 			end
 		end)
 
@@ -1996,6 +1998,7 @@ function B:ContructContainerFrame(name, isBank)
 			f.currencyButton[i]:Hide();
 		end
 
+		f:SetScript('OnShow', B.RefreshSearch)
 		f:SetScript('OnHide', function()
 			CloseBackpack()
 			for i = 1, NUM_BAG_FRAMES do
@@ -2005,8 +2008,8 @@ function B:ContructContainerFrame(name, isBank)
 			B:NewItemGlowBagClear(f)
 			B:HideItemGlow(f)
 
-			if E.db.bags.clearSearchOnClose then
-				B.ResetAndClear(f.editBox);
+			if not _G.BankFrame:IsShown() and E.db.bags.clearSearchOnClose then
+				B:ResetAndClear();
 			end
 		end)
 	end
