@@ -254,7 +254,7 @@ function NP:Update_Fader(nameplate)
 	end
 end
 
-function NP:Construct_Cutaway(nameplate)
+--[[function NP:Construct_Cutaway(nameplate)
 	local Cutaway = CreateFrame('Frame', nameplate:GetDebugName()..'Cutaway', nameplate)
 
 	Cutaway.Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'CutawayHealth', nameplate.Health)
@@ -270,4 +270,4 @@ function NP:Construct_Cutaway(nameplate)
 	NP.StatusBars[Cutaway.Power] = true
 
 	return Cutaway
-end
+end]]

@@ -346,9 +346,9 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.StyleChanged = true
 		frame.HealthColorChanged = actions.color.healthColor
 		frame.Health:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
-		if frame.CutawayHealth then
+		--[[if frame.CutawayHealth then
 			frame.CutawayHealth:SetStatusBarColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a);
-		end
+		end]]
 	end
 	if PowerColorChanged then
 		frame.StyleChanged = true
@@ -453,9 +453,9 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
 		frame.Health:SetStatusBarColor(frame.Health.r, frame.Health.g, frame.Health.b);
-		if frame.CutawayHealth then
+		--[[if frame.CutawayHealth then
 			frame.CutawayHealth:SetStatusBarColor(frame.Health.r * 1.5, frame.Health.g * 1.5, frame.Health.b * 1.5, 1);
-		end
+		end]]
 	end
 	if PowerColorChanged then
 		frame.PowerColorChanged = nil
