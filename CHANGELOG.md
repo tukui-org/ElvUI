@@ -10,6 +10,7 @@
 [Unitframe] Added Duration option for cooldown text and reworked the cooldown code.  
 [Chat] Added options to Desaturate, Pin to Tab Panel, or Hide Voice Buttons.  
 Added an option to ignore the UI Scale popup when resizing the game window (General -> Ignore UI Scale Popup).  
+Add a new default Style Filter: "Explosives" for Explosive Orbs in Mythic plus.  
 
 **Bug Fixes:**  
 [Nameplate] Fixed an issue which caused the Targeted and Player Classbar options to not take effect correctly.  
@@ -23,6 +24,7 @@ Added an option to ignore the UI Scale popup when resizing the game window (Gene
 [Nameplate] Made sure the Classbar appears on the Targeted plate correctly.  
 [Nameplate] Fixed issue which prevented the Quest Icon from showing in some cases.  
 [Nameplate] Fixed rune sort order for Deathknights and Classbar color for Monks.  
+[Nameplate] Fixed Bag and Bank search from not being cleared consistently. (#1108)  
 [Actionbar] Fixed main bar (bar one) paging issue.  
 [Actionbar] Fixed Stance Bar Keybinding Text not appearing correctly. (#541)  
 [Chat / Datatext] Finally fixed the 'lhs' error with Quick Join.  
@@ -51,6 +53,7 @@ Fixed an issue which prevented Aurabars from correctly handling the Dispellable 
 [Nameplate] Reworked the Target Alpha so that it shows only while in combat.  
 [Nameplate] Updated oUF to increase preformance of the new Nameplates further.  
 [Nameplate] Added backdrop coloring to the classbars.  
+[Nameplate] Health Prediction defaulted to off except for Player.  
 [Unitframe] Cleaned some of the Castbar code, as we believe this is part of the reason for the Unitframes to cause additional lags.  
 [Unitframe] Replaced the Combat Fade code on the Player frame, with the same code we now use to fade the Player nameplate. (oUF_Fader)  
 [Actionbar] Stopped allowing Keybinder in combat.  
