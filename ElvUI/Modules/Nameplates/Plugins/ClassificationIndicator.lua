@@ -12,11 +12,11 @@ local function Update(self)
 
 	local unit = self.unit
 	local classification = UnitClassification(unit)
-	if classification == 'rareelite' or classification == "worldboss" then
-		element:SetTexCoord(0, 0.15, 0.25, 0.53)
+	if classification == "elite" or classification == "worldboss" then
+		element:SetAtlas("nameplates-icon-elite-gold")
 		element:Show()
-	elseif classification == 'elite' or classification == 'rare' then
-		element:SetTexCoord(0, 0.15, 0.52, 0.84)
+	elseif classification == "rareelite" or classification == 'rare' then
+		element:SetAtlas("nameplates-icon-elite-silver")
 		element:Show()
 	else
 		element:Hide()
