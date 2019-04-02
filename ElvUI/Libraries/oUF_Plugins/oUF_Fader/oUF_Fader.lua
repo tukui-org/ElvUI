@@ -114,7 +114,7 @@ local function Enable(self, unit)
 
 		if element.Health then
 			self:RegisterEvent('UNIT_HEALTH', Update)
-			--self:RegisterEvent('UNIT_HEALTH_FREQUENT', Update)
+			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Update)
 			self:RegisterEvent('UNIT_MAXHEALTH', Update)
 		end
 
@@ -165,6 +165,7 @@ local function Disable(self, unit)
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Update)
 		self:UnregisterEvent('UNIT_TARGET', Update)
 		self:UnregisterEvent('UNIT_HEALTH', Update)
+		self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Update)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Update)
 		self:UnregisterEvent('UNIT_POWER_UPDATE', Update)
 		self:UnregisterEvent('UNIT_MAXPOWER', Update)
