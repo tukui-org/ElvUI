@@ -1580,7 +1580,7 @@ local function UpdateFilterGroup()
 					name = L["Scale"],
 					disabled = function() return E.global.nameplate.filters[selectedNameplateFilter].actions.hide end,
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].actions.scale or 1 end,
-					min = 1, max = 2, step = 0.01,
+					min = 0.5, max = 1.5, softMin = .75, softMax = 1.25, step = 0.01,
 				},
 				alpha = {
 					order = 6,
@@ -4562,7 +4562,7 @@ E.Options.args.nameplate = {
 							order = 4,
 							type = 'range',
 							isPercent = true,
-							min = 1, max = 2, step = .01,
+							min = 0.5, max = 1.5, softMin = .75, softMax = 1.25, step = 0.01,
 							disabled = function() return not E.db.nameplates.threat.enable end,
 						},
 						badScale = {
@@ -4570,7 +4570,7 @@ E.Options.args.nameplate = {
 							order = 6,
 							type = 'range',
 							isPercent = true,
-							min = 1, max = 2, step = .01,
+							min = 0.5, max = 1.5, softMin = .75, softMax = 1.25, step = 0.01,
 							disabled = function() return not E.db.nameplates.threat.enable end,
 						},
 					},
@@ -4696,7 +4696,7 @@ E.Options.args.nameplate = {
 					order = 0,
 					type = "range",
 					name = L["Scale"],
-					min = 1, max = 2, step = .01,
+					min = 0.5, max = 1.5, softMin = .75, softMax = 1.25, step = 0.01,
 					isPercent = true,
 				},
 				nonTargetTransparency = {
