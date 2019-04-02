@@ -754,7 +754,6 @@ L["Filter already exists!"] = "过滤器已存在！"
 L["Filter Priority"] = "过滤器优先级"
 L["Filters Page"] = "过滤器界面"
 L["Flash"] = "闪光"
-L["Floating Combat Feedback"] = true
 L["Friend"] = true
 L["Friendly Combat Toggle"] = "友方战斗开关"
 L["FRIENDLY_NPC"] = "友方NPC"

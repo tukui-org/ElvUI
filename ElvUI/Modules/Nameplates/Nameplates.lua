@@ -246,7 +246,6 @@ function NP:StylePlate(nameplate)
 	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate.RaisedElement) -- Horde / Alliance / HonorInfo
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
 	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate.RaisedElement)
-	nameplate.FloatingCombatFeedback = NP:Construct_FloatingCombatFeedback(nameplate.RaisedElement)
 	--nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
 	NP:Construct_Auras(nameplate)
 
@@ -285,7 +284,6 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_ThreatIndicator(nameplate)
 		NP:Update_RaidTargetIndicator(nameplate)
 		NP:Update_HealerSpecs(nameplate)
-		NP:Update_FloatingCombatFeedback(nameplate)
 
 		if E.myclass == 'DEATHKNIGHT' then
 			NP:Update_Runes(nameplate)

@@ -806,7 +806,6 @@ L["Filter already exists!"] = "필터가 이미 존재합니다!"
 L["Filter Priority"] = "필터 우선순위"
 L["Filters Page"] = "필터 설정"
 L["Flash"] = "반짝임"
-L["Floating Combat Feedback"] = true
 L["Friend"] = true
 L["Friendly Combat Toggle"] = "아군 전투 전환"
 L["FRIENDLY_NPC"] = "우호적인 NPC"

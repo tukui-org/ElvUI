@@ -754,7 +754,6 @@ L["Filter already exists!"] = true
 L["Filter Priority"] = true
 L["Filters Page"] = true
 L["Flash"] = true
-L["Floating Combat Feedback"] = true
 L["Friend"] = true
 L["Friendly Combat Toggle"] = true
 L["FRIENDLY_NPC"] = "PNJ alliés"

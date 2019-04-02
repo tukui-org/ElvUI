@@ -218,47 +218,6 @@ function NP:Update_HealerSpecs(nameplate)
 	end
 end
 
-function NP:Construct_FloatingCombatFeedback(nameplate)
-	local FloatingCombatFeedback = CreateFrame("Frame", nameplate:GetDebugName()..'Feedback', nameplate)
-	FloatingCombatFeedback:SetAllPoints(nameplate)
-	FloatingCombatFeedback:EnableMouse(false)
-
-	for i = 1, 12 do
-		FloatingCombatFeedback[i] = FloatingCombatFeedback:CreateFontString('$parentText'..i, "OVERLAY")
-		FloatingCombatFeedback[i]:FontTemplate(E.Libs.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
-	end
-
-	return FloatingCombatFeedback
-end
-
-function NP:Update_FloatingCombatFeedback(nameplate)
-	local db = NP.db.units[nameplate.frameType]
-
-	if not db.floatingCombatFeedback then return end
-
-	if db.floatingCombatFeedback.enable then
-		if not nameplate:IsElementEnabled('FloatingCombatFeedback') then
-			nameplate:EnableElement('FloatingCombatFeedback')
-		end
-
-		--nameplate.FloatingCombatFeedback.mode = db.floatingCombatFeedback.mode
-		--nameplate.FloatingCombatFeedback.xOffset = db.floatingCombatFeedback.xOffset
-		--nameplate.FloatingCombatFeedback.yOffset = db.floatingCombatFeedback.yOffset
-		--nameplate.FloatingCombatFeedback.yDirection = db.floatingCombatFeedback.direction == "UP" and 1 or -1
-		nameplate.FloatingCombatFeedback.fontHeight = db.floatingCombatFeedback.fontSize
-		nameplate.FloatingCombatFeedback.scrollTime = 1.5
-		nameplate.FloatingCombatFeedback.abbreviateNumbers = true
-
-		for i = 1, 12 do
-			nameplate.FloatingCombatFeedback[i]:FontTemplate(E.LSM:Fetch('font', db.floatingCombatFeedback.font), db.floatingCombatFeedback.fontSize, db.floatingCombatFeedback.fontOutline)
-		end
-	else
-		if nameplate:IsElementEnabled('FloatingCombatFeedback') then
-			nameplate:DisableElement('FloatingCombatFeedback')
-		end
-	end
-end
-
 function NP:DefaultFader()
 	return {
 		Hover = true,

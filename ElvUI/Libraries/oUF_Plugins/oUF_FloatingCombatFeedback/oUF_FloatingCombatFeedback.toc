@@ -1,8 +1,0 @@
-## Interface: 80100
-## Author: lightspark
-## Version: 4.0.0
-## Title: oUF: FloatingCombatFeedback
-## Notes: Floating Combat Feedback support for oUF layouts.
-## RequiredDeps: oUF
-
-oUF_FloatingCombatFeedback.lua

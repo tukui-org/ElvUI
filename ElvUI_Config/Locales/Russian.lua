@@ -753,7 +753,6 @@ L["Filter already exists!"] = "Фильтр уже существует!"
 L["Filter Priority"] = "Приоритет фильтров"
 L["Filters Page"] = "Фильтры"
 L["Flash"] = "Мерцание"
-L["Floating Combat Feedback"] = true
 L["Friend"] = "Друзья"
 L["Friendly Combat Toggle"] = "Переключение в бою (друзья)"
 L["FRIENDLY_NPC"] = "Дружественный НИП"
