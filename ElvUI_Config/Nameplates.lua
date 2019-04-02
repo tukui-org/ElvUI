@@ -3465,13 +3465,13 @@ local function GetUnitSettings(unit, name)
 		group.args.general.args.nameOnly = {
 			type = 'toggle',
 			order = 100,
-			name = L['Name Only'],
+			name = L["Name Only"],
 		}
 		group.args.general.args.showTitle = {
 			type = 'toggle',
 			order = 101,
-			name = L['Show Title'],
-			desc = L['Title will only appear if Name Only is enabled or triggered in a Style Filter.']
+			name = L["Show Title"],
+			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."]
 		}
 		group.args.general.args.markHealers = {
 			type = "toggle",
@@ -3593,13 +3593,13 @@ local function GetUnitSettings(unit, name)
 		group.args.general.args.nameOnly = {
 			type = 'toggle',
 			order = 100,
-			name = L['Name Only'],
+			name = L["Name Only"],
 		}
 		group.args.general.args.showTitle = {
 			type = 'toggle',
 			order = 101,
-			name = L['Show Title'],
-			desc = L['Title will only appear if Name Only is enabled or triggered in a Style Filter.']
+			name = L["Show Title"],
+			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."]
 		}
 		if unit == "ENEMY_NPC" then
 			group.args.general.args.minor = {

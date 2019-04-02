@@ -219,7 +219,6 @@ L["Left Click:"] = "滑鼠左鍵：" --layout\layout.lua
 L["Raid Menu"] = "團隊選單"
 L["Remaining:"] = "剩餘:"
 L["Rested:"] = "休息:"
-L["Right Click:"] = "右鍵點擊:"
 L["Toggle Chat Frame"] = "開關對話框架" --layout\layout.lua
 L["Toggle Configuration"] = "開啟/關閉設定" --layout\layout.lua
 L["AP:"] = "神兵之力:" -- Artifact Power

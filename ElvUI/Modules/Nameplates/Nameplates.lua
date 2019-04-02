@@ -562,7 +562,7 @@ function NP:Initialize()
 	_G.ElvNP_Player:Size(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_Player:SetScale(1)
 	_G.ElvNP_Player.frameType = 'PLAYER'
-	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L['Player NamePlate'], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
+	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
 
 	ElvUF:Spawn('player', 'ElvNP_Test')
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)

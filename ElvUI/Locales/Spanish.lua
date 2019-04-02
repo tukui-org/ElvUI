@@ -219,7 +219,6 @@ L["Left Click:"] = "Click Izquierdo"
 L["Raid Menu"] = "Menú de Banda"
 L["Remaining:"] = "Restante"
 L["Rested:"] = "Descansado:"
-L["Right Click:"] = true
 L["Toggle Chat Frame"] = "Mostrar/Ocultar Marco de Chat"
 L["Toggle Configuration"] = "Mostrar/Ocultar Configuración"
 L["AP:"] = true -- Artifact Power

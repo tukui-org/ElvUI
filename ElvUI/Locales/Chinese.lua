@@ -219,7 +219,6 @@ L["Left Click:"] = "左键:"
 L["Raid Menu"] = "团队菜单"
 L["Remaining:"] = "剩余:"
 L["Rested:"] = "休息:"
-L["Right Click:"] = "右键:"
 L["Toggle Chat Frame"] = "开关聊天框架"
 L["Toggle Configuration"] = "设置开关"
 L["AP:"] = "神器能量:" -- Artifact Power
