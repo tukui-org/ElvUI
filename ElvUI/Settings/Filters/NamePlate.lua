@@ -20,6 +20,37 @@ G.nameplate.filters = {
 			scale = 1.15,
 		},
 	},
+	Explosives = {
+		triggers = {
+			nameplateType = {
+				enable = true,
+				enemyNPC = true,
+			},
+			instanceType = {
+				party = true,
+			},
+			instanceDifficulty = {
+				dungeon = {
+					["mythic+"] = true,
+				},
+			},
+			names = {
+				["120651"] = true,
+			},
+		},
+		actions = {
+			usePortrait = true,
+			scale = 1.15,
+			color = {
+				healthColor = {
+					["r"] = 0,
+					["g"] = 255,
+					["b"] = 255,
+				},
+				health = true,
+			},
+		},
+	},
 }
 
 E.StyleFilterDefaults = {
