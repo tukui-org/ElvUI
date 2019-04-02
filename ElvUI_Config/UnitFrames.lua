@@ -2217,7 +2217,7 @@ E.Options.args.unitframe = {
 		playerShortcut = {
 			order = 10,
 			type = "execute",
-			name = L["Player Frame"],
+			name = L["Player"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "player") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2230,7 +2230,7 @@ E.Options.args.unitframe = {
 		targetShortcut = {
 			order = 12,
 			type = "execute",
-			name = L["Target Frame"],
+			name = L["Target"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "target") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2238,7 +2238,7 @@ E.Options.args.unitframe = {
 		targettargetShortcut = {
 			order = 13,
 			type = "execute",
-			name = L["TargetTarget Frame"],
+			name = L["TargetTarget"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "targettarget") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2246,7 +2246,7 @@ E.Options.args.unitframe = {
 		targettargettargetShortcut = {
 			order = 14,
 			type = "execute",
-			name = L["TargetTargetTarget Frame"],
+			name = L["TargetTargetTarget"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "targettargettarget") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2259,7 +2259,7 @@ E.Options.args.unitframe = {
 		focusShortcut = {
 			order = 16,
 			type = "execute",
-			name = L["Focus Frame"],
+			name = L["Focus"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "focus") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2267,7 +2267,7 @@ E.Options.args.unitframe = {
 		focustargetShortcut = {
 			order = 17,
 			type = "execute",
-			name = L["FocusTarget Frame"],
+			name = L["FocusTarget"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "focustarget") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2275,7 +2275,7 @@ E.Options.args.unitframe = {
 		petShortcut = {
 			order = 18,
 			type = "execute",
-			name = L["Pet Frame"],
+			name = L["Pet"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "pet") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2288,7 +2288,7 @@ E.Options.args.unitframe = {
 		pettargetShortcut = {
 			order = 20,
 			type = "execute",
-			name = L["PetTarget Frame"],
+			name = L["PetTarget"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "pettarget") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2296,7 +2296,7 @@ E.Options.args.unitframe = {
 		arenaShortcut = {
 			order = 21,
 			type = "execute",
-			name = L["Arena Frames"],
+			name = L["Arena"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "arena") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2304,7 +2304,7 @@ E.Options.args.unitframe = {
 		bossShortcut = {
 			order = 22,
 			type = "execute",
-			name = L["Boss Frames"],
+			name = L["Boss"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "boss") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2317,7 +2317,7 @@ E.Options.args.unitframe = {
 		partyShortcut = {
 			order = 24,
 			type = "execute",
-			name = L["Party Frames"],
+			name = L["Party"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "party") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2325,7 +2325,7 @@ E.Options.args.unitframe = {
 		raidShortcut = {
 			order = 25,
 			type = "execute",
-			name = L["Raid Frames"],
+			name = L["Raid"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "raid") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2333,7 +2333,7 @@ E.Options.args.unitframe = {
 		raid40Shortcut = {
 			order = 26,
 			type = "execute",
-			name = L["Raid-40 Frames"],
+			name = L["Raid-40"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "raid40") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2346,7 +2346,7 @@ E.Options.args.unitframe = {
 		raidpetShortcut = {
 			order = 28,
 			type = "execute",
-			name = L["Raid Pet Frames"],
+			name = L["Raid Pet"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "raidpet") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2354,7 +2354,7 @@ E.Options.args.unitframe = {
 		assistShortcut = {
 			order = 29,
 			type = "execute",
-			name = L["Assist Frames"],
+			name = L["Assist"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "assist") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2362,7 +2362,7 @@ E.Options.args.unitframe = {
 		tankShortcut = {
 			order = 30,
 			type = "execute",
-			name = L["Tank Frames"],
+			name = L["Tank "],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "tank") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -3373,40 +3373,40 @@ E.Options.args.unitframe = {
 						player = {
 							order = 1,
 							type = 'toggle',
-							name = L["Player Frame"],
+							name = L["Player"],
 							desc = L["Disables the player and pet unitframes."],
 						},
 						target = {
 							order = 2,
 							type = 'toggle',
-							name = L["Target Frame"],
+							name = L["Target"],
 							desc = L["Disables the target and target of target unitframes."],
 						},
 						focus = {
 							order = 3,
 							type = 'toggle',
-							name = L["Focus Frame"],
+							name = L["Focus"],
 							desc = L["Disables the focus and target of focus unitframes."],
 						},
 						boss = {
 							order = 4,
 							type = 'toggle',
-							name = L["Boss Frames"],
+							name = L["Boss"],
 						},
 						arena = {
 							order = 5,
 							type = 'toggle',
-							name = L["Arena Frames"],
+							name = L["Arena"],
 						},
 						party = {
 							order = 6,
 							type = 'toggle',
-							name = L["Party Frames"],
+							name = L["Party"],
 						},
 						raid = {
 							order = 7,
 							type = 'toggle',
-							name = L["Raid Frames"],
+							name = L["Raid"],
 						},
 					},
 				},
@@ -3463,7 +3463,7 @@ E.Options.args.unitframe = {
 
 --Player
 E.Options.args.unitframe.args.player = {
-	name = L["Player Frame"],
+	name = L["Player"],
 	type = 'group',
 	order = 300,
 	childGroups = "tab",
@@ -3505,7 +3505,7 @@ E.Options.args.unitframe.args.player = {
 			type = 'execute',
 			order = 3,
 			name = L["Restore Defaults"],
-			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Player Frame"], nil, {unit='player', mover='Player Frame'}) end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Player"], nil, {unit='player', mover='Player Frame'}) end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -4102,7 +4102,7 @@ E.Options.args.unitframe.args.player = {
 
 --Target
 E.Options.args.unitframe.args.target = {
-	name = L["Target Frame"],
+	name = L["Target"],
 	type = 'group',
 	order = 400,
 	childGroups = "tab",
@@ -4351,7 +4351,7 @@ E.Options.args.unitframe.args.target = {
 
 --TargetTarget
 E.Options.args.unitframe.args.targettarget = {
-	name = L["TargetTarget Frame"],
+	name = L["TargetTarget"],
 	type = 'group',
 	order = 500,
 	childGroups = "tab",
@@ -4493,7 +4493,7 @@ E.Options.args.unitframe.args.targettarget = {
 
 --TargetTargetTarget
 E.Options.args.unitframe.args.targettargettarget = {
-	name = L["TargetTargetTarget Frame"],
+	name = L["TargetTargetTarget"],
 	type = 'group',
 	order = 500,
 	childGroups = "tab",
@@ -4631,7 +4631,7 @@ E.Options.args.unitframe.args.targettargettarget = {
 
 --Focus
 E.Options.args.unitframe.args.focus = {
-	name = L["Focus Frame"],
+	name = L["Focus"],
 	type = 'group',
 	order = 600,
 	childGroups = "tab",
@@ -4767,7 +4767,7 @@ E.Options.args.unitframe.args.focus = {
 
 --Focus Target
 E.Options.args.unitframe.args.focustarget = {
-	name = L["FocusTarget Frame"],
+	name = L["FocusTarget"],
 	type = 'group',
 	order = 700,
 	childGroups = "tab",
@@ -4905,7 +4905,7 @@ E.Options.args.unitframe.args.focustarget = {
 
 --Pet
 E.Options.args.unitframe.args.pet = {
-	name = L["Pet Frame"],
+	name = L["Pet"],
 	type = 'group',
 	order = 800,
 	childGroups = "tab",
@@ -5072,7 +5072,7 @@ E.Options.args.unitframe.args.pet = {
 
 --Pet Target
 E.Options.args.unitframe.args.pettarget = {
-	name = L["PetTarget Frame"],
+	name = L["PetTarget"],
 	type = 'group',
 	order = 900,
 	childGroups = "tab",
@@ -5209,7 +5209,7 @@ E.Options.args.unitframe.args.pettarget = {
 
 --Boss Frames
 E.Options.args.unitframe.args.boss = {
-	name = L["Boss Frames"],
+	name = L["Boss"],
 	type = 'group',
 	order = 1000,
 	childGroups = "tab",
@@ -5363,7 +5363,7 @@ E.Options.args.unitframe.args.boss = {
 
 --Arena Frames
 E.Options.args.unitframe.args.arena = {
-	name = L["Arena Frames"],
+	name = L["Arena"],
 	type = 'group',
 	order = 1000,
 	childGroups = "tab",
@@ -5573,7 +5573,7 @@ E.Options.args.unitframe.args.arena = {
 
 --Party Frames
 E.Options.args.unitframe.args.party = {
-	name = L["Party Frames"],
+	name = L["Party"],
 	type = 'group',
 	order = 1100,
 	childGroups = "tab",
@@ -6227,7 +6227,7 @@ E.Options.args.unitframe.args.party = {
 
 --Raid Frames
 E.Options.args.unitframe.args.raid = {
-	name = L["Raid Frames"],
+	name = L["Raid"],
 	type = 'group',
 	order = 1100,
 	childGroups = "tab",
@@ -6702,7 +6702,7 @@ E.Options.args.unitframe.args.raid = {
 
 --Raid-40 Frames
 E.Options.args.unitframe.args.raid40 = {
-	name = L["Raid-40 Frames"],
+	name = L["Raid-40"],
 	type = 'group',
 	order = 1100,
 	childGroups = "tab",
@@ -7179,7 +7179,7 @@ E.Options.args.unitframe.args.raid40 = {
 E.Options.args.unitframe.args.raidpet = {
 	order = 1200,
 	type = 'group',
-	name = L["Raid Pet Frames"],
+	name = L["Raid Pet"],
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.raidpet[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.raidpet[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raidpet') end,
@@ -7472,7 +7472,7 @@ E.Options.args.unitframe.args.raidpet = {
 
 --Tank Frames
 E.Options.args.unitframe.args.tank = {
-	name = L["Tank Frames"],
+	name = L["Tank"],
 	type = 'group',
 	order = 1300,
 	childGroups = "tab",
@@ -7677,7 +7677,7 @@ E.Options.args.unitframe.args.tank.args.targetsGroup.args.name.set = function(in
 
 --Assist Frames
 E.Options.args.unitframe.args.assist = {
-	name = L["Assist Frames"],
+	name = L["Assist"],
 	type = 'group',
 	order = 1300,
 	childGroups = "tab",
