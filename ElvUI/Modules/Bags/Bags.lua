@@ -203,10 +203,10 @@ function B:UpdateSearch()
 end
 
 function B:OpenEditbox()
-	self.BagFrame.detail:Hide();
-	self.BagFrame.editBox:Show();
-	self.BagFrame.editBox:SetText(SEARCH);
-	self.BagFrame.editBox:HighlightText();
+	self.BagFrame.detail:Hide()
+	self.BagFrame.editBox:Show()
+	self.BagFrame.editBox:SetText(SEARCH)
+	self.BagFrame.editBox:HighlightText()
 end
 
 function B:ResetAndClear()
