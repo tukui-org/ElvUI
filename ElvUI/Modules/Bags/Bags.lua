@@ -184,7 +184,7 @@ function B:UpdateSearch()
 		end
 
 		if repeatChar then
-			B.ResetAndClear(self)
+			B:ResetAndClear()
 			return
 		end
 	end
@@ -1850,7 +1850,7 @@ function B:ContructContainerFrame(name, isBank)
 			B:HideItemGlow(f)
 
 			if E.db.bags.clearSearchOnClose then
-				B:ResetAndClear();
+				B:ResetAndClear()
 			end
 		end)
 
@@ -2009,7 +2009,7 @@ function B:ContructContainerFrame(name, isBank)
 			B:HideItemGlow(f)
 
 			if not _G.BankFrame:IsShown() and E.db.bags.clearSearchOnClose then
-				B:ResetAndClear();
+				B:ResetAndClear()
 			end
 		end)
 	end
