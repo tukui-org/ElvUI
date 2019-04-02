@@ -9,6 +9,8 @@ local UnitIsTapDenied = UnitIsTapDenied
 function NP:ThreatIndicator_PreUpdate(unit)
 	local ROLE = NP.IsInGroup and UnitExists(unit..'target') and not UnitIsUnit(unit..'target', 'player') and NP.GroupRoles[UnitName(unit..'target')] or 'NONE'
 
+	self.__owner.ThreatScale = nil
+
 	if ROLE == 'TANK' then
 		self.feedbackUnit = unit..'target'
 		self.offTank = NP.PlayerRole == 'TANK' and true or false
@@ -53,6 +55,8 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		else
 			self.__owner.Health:SetStatusBarColor(Color.r, Color.g, Color.b)
 		end
+
+		self.__owner.ThreatScale = Scale
 
 		NP:ScalePlate(self.__owner, Scale)
 	end

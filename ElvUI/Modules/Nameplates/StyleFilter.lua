@@ -390,15 +390,9 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		end
 	end
 	if ScaleChanged then
-	--[[
 		frame.StyleChanged = true
 		frame.ScaleChanged = true
-		local scale = actions.scale
-		if frame.isTarget and mod.db.useTargetScale then
-			scale = scale * mod.db.targetScale
-		end
-		mod:SetFrameScale(frame, scale)
-	]]
+		mod:ScalePlate(frame, actions.scale)
 	end
 	if AlphaChanged then
 		frame.StyleChanged = true
@@ -438,6 +432,7 @@ function mod:StyleFilterUpdatePlate(frame, nameOnly)
 			frame.Power:ForceUpdate()
 		end
 	end
+
 	if mod.db.threat.enable and mod.db.threat.useThreatColor and not UnitIsTapDenied(frame.unit) then
 		frame.ThreatIndicator:ForceUpdate() -- this will account for the threat health color
 	end
@@ -490,10 +485,10 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if ScaleChanged then
 		frame.ScaleChanged = nil
-		if frame.isTarget and mod.db.useTargetScale then
-			mod:SetFrameScale(frame, mod.db.targetScale)
+		if frame.isTarget then
+			mod:ScalePlate(frame, mod.db.units.TARGET.scale, true)
 		else
-			mod:SetFrameScale(frame, frame.ThreatScale or 1)
+			mod:ScalePlate(frame, frame.ThreatScale or 1)
 		end
 	end
 	if AlphaChanged then
@@ -943,6 +938,7 @@ function mod:StyleFilterClearVariables(nameplate)
 	nameplate.isTarget = nil
 	nameplate.isFocused = nil
 	nameplate.isTargetingMe = nil
+	nameplate.ThreatScale = nil
 end
 
 mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority

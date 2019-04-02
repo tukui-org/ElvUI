@@ -10,7 +10,6 @@ local select = select
 local pairs = pairs
 local type = type
 local format = format
-local tonumber = tonumber
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
@@ -206,14 +205,12 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
-	if NP.targetPlate then
+	if targetPlate and NP.targetPlate then
 		NP.targetPlate:SetScale(E.global.general.UIScale)
 		NP.targetPlate = false
 	end
 
-	if not nameplate then
-		return
-	end
+	if not nameplate then return end
 
 	local targetScale = format('%.2f', E.global.general.UIScale * scale)
 	nameplate:SetScale(targetScale)
