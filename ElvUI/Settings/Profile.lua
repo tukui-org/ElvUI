@@ -435,6 +435,11 @@ P.nameplates = {
 				enable = false,
 			},
 		},
+		Explosives = {
+			triggers = {
+				enable = false,
+			},
+		},
 	},
 	font = 'PT Sans Narrow',
 	fontOutline = 'OUTLINE',

@@ -10,10 +10,6 @@ G.nameplate.filters = {
 		triggers = {
 			level = true,
 			curlevel = -1,
-			nameplateType = {
-				enable = true,
-				enemyNPC = true,
-			},
 		},
 		actions = {
 			usePortrait = true,
@@ -25,14 +21,6 @@ G.nameplate.filters = {
 			nameplateType = {
 				enable = true,
 				enemyNPC = true,
-			},
-			instanceType = {
-				party = true,
-			},
-			instanceDifficulty = {
-				dungeon = {
-					["mythic+"] = true,
-				},
 			},
 			names = {
 				["120651"] = true,
