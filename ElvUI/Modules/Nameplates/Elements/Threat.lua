@@ -56,9 +56,12 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 			self.__owner.Health:SetStatusBarColor(Color.r, Color.g, Color.b)
 		end
 
-		self.__owner.ThreatScale = Scale
-
-		NP:ScalePlate(self.__owner, Scale)
+		if not self.__owner.isTarget then
+			self.__owner.ThreatScale = Scale
+			NP:ScalePlate(self.__owner, Scale)
+		elseif self.__owner.ThreatScale then
+			self.__owner.ThreatScale = nil
+		end
 	end
 end
 
