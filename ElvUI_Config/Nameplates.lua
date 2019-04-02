@@ -1375,24 +1375,19 @@ local function UpdateFilterGroup()
 									order = 2,
 									type = 'toggle',
 								},
-								healer = {
-									name = L["HEALER"],
-									order = 3,
-									type = 'toggle',
-								},
 								enemyPlayer = {
 									name = L["ENEMY_PLAYER"],
-									order = 4,
+									order = 3,
 									type = 'toggle',
 								},
 								enemyNPC = {
 									name = L["ENEMY_NPC"],
-									order = 5,
+									order = 4,
 									type = 'toggle',
 								},
 								player = {
-									name = L["PLAYER"],
-									order = 6,
+									name = L["Player"],
+									order = 5,
 									type = 'toggle',
 								},
 							},
@@ -1415,7 +1410,7 @@ local function UpdateFilterGroup()
 						reputation = {
 							name = REPUTATION,
 							desc = L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."],
-							order = 0,
+							order = 1,
 							type = 'toggle',
 							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or not E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable end,
 						},
@@ -1423,7 +1418,7 @@ local function UpdateFilterGroup()
 							name = "",
 							type = "group",
 							guiInline = true,
-							order = 1,
+							order = 2,
 							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or not E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType.enable end,
 							args = {
 								hated = {
@@ -3770,7 +3765,7 @@ local function GetUnitSettings(unit, name)
 		}
 	end
 
-	ORDER = ORDER+1
+	ORDER = ORDER+2
 	return group
 end
 
@@ -3877,7 +3872,7 @@ E.Options.args.nameplate = {
 		playerShortcut = {
 			order = 13,
 			type = "execute",
-			name = L["Player NamePlate"],
+			name = L["Player"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
 			disabled = function() return not E.NamePlates.Initialized end,
@@ -3885,7 +3880,7 @@ E.Options.args.nameplate = {
 		friendlyPlayerShortcut = {
 			order = 14,
 			type = "execute",
-			name = L["Friendly Player NamePlates"],
+			name = L["FRIENDLY_PLAYER"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
 			disabled = function() return not E.NamePlates.Initialized end,
@@ -3893,7 +3888,7 @@ E.Options.args.nameplate = {
 		friendlyNPCShortcut = {
 			order = 15,
 			type = "execute",
-			name = L["Friendly NPC NamePlates"],
+			name = L["FRIENDLY_NPC"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
 			disabled = function() return not E.NamePlates.Initialized end,
@@ -3906,7 +3901,7 @@ E.Options.args.nameplate = {
 		enemyPlayerShortcut = {
 			order = 17,
 			type = "execute",
-			name = L["Enemy Player NamePlates"],
+			name = L["ENEMY_PLAYER"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyPlayerGroup") end,
 			disabled = function() return not E.NamePlates.Initialized end,
@@ -3914,7 +3909,7 @@ E.Options.args.nameplate = {
 		enemyNPCShortcut = {
 			order = 18,
 			type = "execute",
-			name = L["Enemy NPC NamePlates"],
+			name = L["ENEMY_NPC"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
 			disabled = function() return not E.NamePlates.Initialized end,
@@ -3922,7 +3917,7 @@ E.Options.args.nameplate = {
 		targetShortcut = {
 			order = 19,
 			type = "execute",
-			name = L["Targeted NamePlate"],
+			name = L["Target"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "targetGroup") end,
 			disabled = function() return not E.NamePlates.Initialized end,
@@ -4685,15 +4680,15 @@ E.Options.args.nameplate = {
 				},
 			},
 		},
-		playerGroup = GetUnitSettings("PLAYER", L["Player NamePlate"]),
-		friendlyPlayerGroup = GetUnitSettings("FRIENDLY_PLAYER", L["Friendly Player NamePlates"]),
-		friendlyNPCGroup = GetUnitSettings("FRIENDLY_NPC", L["Friendly NPC NamePlates"]),
-		enemyPlayerGroup = GetUnitSettings("ENEMY_PLAYER", L["Enemy Player NamePlates"]),
-		enemyNPCGroup = GetUnitSettings("ENEMY_NPC", L["Enemy NPC NamePlates"]),
+		playerGroup = GetUnitSettings("PLAYER", L["Player"]),
+		friendlyPlayerGroup = GetUnitSettings("FRIENDLY_PLAYER", L["FRIENDLY_PLAYER"]),
+		friendlyNPCGroup = GetUnitSettings("FRIENDLY_NPC", L["FRIENDLY_NPC"]),
+		enemyPlayerGroup = GetUnitSettings("ENEMY_PLAYER", L["ENEMY_PLAYER"]),
+		enemyNPCGroup = GetUnitSettings("ENEMY_NPC", L["ENEMY_NPC"]),
 		targetGroup = {
-			order = 200,
+			order = 101,
 			type = "group",
-			name = L["Targeted NamePlate"],
+			name = L["Target"],
 			get = function(info) return E.db.nameplates.units.TARGET[info[#info]] end,
 			set = function(info, value) E.db.nameplates.units.TARGET[info[#info]] = value; NP:SetCVars() NP:ConfigureAll() end,
 			disabled = function() return not E.NamePlates.Initialized end,
