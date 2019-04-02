@@ -457,7 +457,7 @@ P.nameplates = {
 		enable = true,
 		beingTankedByTank = true,
 		goodScale = 1,
-		badScale = 1.4,
+		badScale = 1.2,
 		useThreatColor = true,
 		indicator = false,
 	},
@@ -678,7 +678,7 @@ P.nameplates = {
 			enable = true,
 			nonTargetTransparency = 0.5,
 			glowStyle = 'style4',
-			scale = 1.2,
+			scale = 1.1,
 			classpower = {
 				enable = false,
 				classColor = false,
