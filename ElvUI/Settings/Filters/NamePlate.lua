@@ -23,19 +23,15 @@ G.nameplate.filters = {
 				enemyNPC = true,
 			},
 			names = {
-				["120651"] = true,
+				['120651'] = true,
 			},
 		},
 		actions = {
 			usePortrait = true,
 			scale = 1.15,
 			color = {
-				healthColor = {
-					["r"] = 0,
-					["g"] = 255,
-					["b"] = 255,
-				},
 				health = true,
+				healthColor = {r = 0, g = 255, b = 255}
 			},
 		},
 	},
@@ -69,44 +65,23 @@ E.StyleFilterDefaults = {
 		},
 		class = {}, --this can stay empty we only will accept values that exist
 		talent = {
-			type = "normal",
+			type = 'normal',
 			enabled = false,
 			requireAll = false,
 			tier1enabled = false,
-			tier1 = {
-				missing = false,
-				column = 0,
-			},
+			tier1 = {missing = false, column = 0},
 			tier2enabled = false,
-			tier2 = {
-				missing = false,
-				column = 0,
-			},
+			tier2 = {missing = false, column = 0},
 			tier3enabled = false,
-			tier3 = {
-				missing = false,
-				column = 0,
-			},
+			tier3 = {missing = false, column = 0},
 			tier4enabled = false,
-			tier4 = {
-				missing = false,
-				column = 0,
-			},
+			tier4 = {missing = false, column = 0},
 			tier5enabled = false,
-			tier5 = {
-				missing = false,
-				column = 0,
-			},
+			tier5 = {missing = false, column = 0},
 			tier6enabled = false,
-			tier6 = {
-				missing = false,
-				column = 0,
-			},
+			tier6 = {missing = false, column = 0},
 			tier7enabled = false,
-			tier7 = {
-				missing = false,
-				column = 0,
-			},
+			tier7 = {missing = false, column = 0},
 		},
 		curlevel = 0,
 		maxlevel = 0,
@@ -171,7 +146,7 @@ E.StyleFilterDefaults = {
 				normal = false,
 				heroic = false,
 				mythic = false,
-				["mythic+"] = false,
+				['mythic+'] = false,
 				timewalking = false,
 			},
 			raid = {
@@ -222,7 +197,7 @@ E.StyleFilterDefaults = {
 		},
 		texture = {
 			enable = false,
-			texture = "ElvUI Norm",
+			texture = 'ElvUI Norm',
 		},
 		flash = {
 			enable = false,
