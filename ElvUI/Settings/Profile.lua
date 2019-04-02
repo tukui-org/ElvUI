@@ -437,7 +437,7 @@ P.nameplates = {
 		},
 		Explosives = {
 			triggers = {
-				enable = false,
+				enable = true,
 			},
 		},
 	},
