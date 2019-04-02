@@ -114,6 +114,7 @@ local function Enable(self, unit)
 
 		if element.Health then
 			self:RegisterEvent('UNIT_HEALTH', Update)
+			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Update)
 			self:RegisterEvent('UNIT_MAXHEALTH', Update)
 		end
 
