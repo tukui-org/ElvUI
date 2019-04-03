@@ -37,11 +37,25 @@ local function ClearTimers(element)
 	end
 end
 
+local function FadeOut(anim, frame, timeToFade, startAlpha, endAlpha)
+	anim.timeToFade = timeToFade
+	anim.startAlpha = startAlpha
+	anim.endAlpha = endAlpha
+
+	ElvUI[1]:UIFrameFade(frame, anim)
+end
+
 local function ToggleAlpha(self, element, endAlpha)
 	ClearTimers(element)
 
 	if element.Smooth then
-		ElvUI[1]:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), endAlpha)
+		if not element.anim then
+			element.anim = { mode = 'OUT' }
+		else
+			element.anim.fadeTimer = nil
+		end
+
+		FadeOut(element.anim, self, element.Smooth, self:GetAlpha(), endAlpha)
 	else
 		self:SetAlpha(element.MinAlpha)
 	end
