@@ -81,7 +81,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame.TargetGlow = self:Construct_TargetGlow(frame)
 		frame.Trinket = self:Construct_Trinket(frame)
 		frame.PVPSpecIcon = self:Construct_PVPSpecIcon(frame)
-		frame.Range = self:Construct_Range(frame)
+		frame.Fader = self:Construct_Fader()
 		frame:SetAttribute("type2", "focus")
 
 		frame.customTexts = {}
@@ -182,8 +182,8 @@ function UF:Update_ArenaFrames(frame, db)
 	--Trinket
 	UF:Configure_Trinket(frame)
 
-	--Range
-	UF:Configure_Range(frame)
+	--Fader
+	UF:Configure_Fader(frame)
 
 	--Heal Prediction
 	UF:Configure_HealComm(frame)

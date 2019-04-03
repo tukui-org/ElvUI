@@ -26,11 +26,11 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
-	frame.Range = self:Construct_Range(frame)
 	frame.ThreatIndicator = self:Construct_Threat(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
+	frame.Fader = self:Construct_Fader()
 
 	frame.customTexts = {}
 	frame:Point('BOTTOM', ElvUF_Focus, 'TOP', 0, 7) --Set to default position
@@ -84,7 +84,7 @@ function UF:Update_FocusTargetFrame(frame, db)
 	--Power
 	UF:Configure_Power(frame)
 
-	-- Power Predicition
+	--Power Predicition
 	UF:Configure_PowerPrediction(frame)
 
 	--Portrait
@@ -98,11 +98,11 @@ function UF:Update_FocusTargetFrame(frame, db)
 	UF:Configure_Auras(frame, 'Buffs')
 	UF:Configure_Auras(frame, 'Debuffs')
 
+	--Fader
+	UF:Configure_Fader(frame)
+
 	--Raid Icon
 	UF:Configure_RaidIcon(frame)
-
-	--Range
-	UF:Configure_Range(frame)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)

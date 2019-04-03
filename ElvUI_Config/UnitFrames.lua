@@ -757,6 +757,119 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 	return config
 end
 
+local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
+	local config = {
+		order = 550,
+		type = 'group',
+		name = L["Fader"],
+		get = function(info) return E.db.unitframe.units[groupName].fader[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].fader[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+		args = {
+			header = {
+				order = 1,
+				type = "header",
+				name = L["Fader"],
+			},
+			enable = {
+				type = 'toggle',
+				order = 2,
+				name = L['Enable'],
+			},
+			range = {
+				type = 'toggle',
+				order = 3,
+				name = L['Range'],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable end,
+				hidden = function() return groupName == 'player' end,
+			},
+			hover = {
+				type = 'toggle',
+				order = 4,
+				name = L['Hover'],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			combat = {
+				type = 'toggle',
+				order = 5,
+				name = L['Combat'],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			target = {
+				type = 'toggle',
+				order = 6,
+				name = L['Target'],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			focus = {
+				type = 'toggle',
+				order = 7,
+				name = L['Focus'],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			health = {
+				type = 'toggle',
+				order = 8,
+				name = L['Health'],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			power = {
+				type = 'toggle',
+				order = 9,
+				name = L['Power'],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			vehicle = {
+				type = 'toggle',
+				order = 10,
+				name = L['Vehicle'],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			casting = {
+				type = 'toggle',
+				order = 11,
+				name = L['Casting'],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			spacer = {
+				order = 12,
+				type = 'description',
+				name = ' ',
+				width = 'full',
+			},
+			delay = {
+				order = 13,
+				name = L["Delay"],
+				type = 'range',
+				min = 0, max = 3, step = 0.1,
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			smooth = {
+				order = 14,
+				name = L["Smooth"],
+				type = 'range',
+				min = 0, max = 1, step = 0.01,
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable end,
+			},
+			minAlpha = {
+				order = 15,
+				name = L["Min Alpha"],
+				type = 'range',
+				min = 0, max = 1, step = 0.01,
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable end,
+			},
+			maxAlpha = {
+				order = 16,
+				name = L["Max Alpha"],
+				type = 'range',
+				min = 0, max = 1, step = 0.01,
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable end,
+			},
+		},
+	}
+
+	return config
+end
+
 local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits)
 	local config = {
 		order = 800,
@@ -2392,13 +2505,6 @@ E.Options.args.unitframe = {
 							disabled = function() return E.private.general.pixelPerfect end,
 							set = function(info, value) E.db.unitframe[info[#info]] = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
-						OORAlpha = {
-							order = 2,
-							name = L["OOR Alpha"],
-							desc = L["The alpha to set units that are out of range to."],
-							type = 'range',
-							softMin = .1, min = 0, max = 1, step = 0.01,
-						},
 						debuffHighlighting = {
 							order = 3,
 							name = L["Debuff Highlighting"],
@@ -3478,12 +3584,6 @@ E.Options.args.unitframe.args.player = {
 			set = function(info, value)
 				E.db.unitframe.units.player[info[#info]] = value;
 				UF:CreateAndUpdateUF('player');
-				if value == true and E.db.unitframe.units.player.combatfade then
-					ElvUF_Pet:SetParent(ElvUF_Player)
-				else
-					ElvUF_Pet:SetParent(ElvUF_Parent)
-					E:UIFrameFadeIn(ElvUF_Pet, 1, ElvUF_Player:GetAlpha(), 1)
-				end
 			end,
 		},
 		showAuras = {
@@ -3544,22 +3644,6 @@ E.Options.args.unitframe.args.player = {
 					name = L["Height"],
 					type = 'range',
 					min = 10, max = 500, step = 1,
-				},
-				combatfade = {
-					order = 5,
-					name = L["Combat Fade"],
-					desc = L["Fade the unitframe when out of combat, not casting, no target exists."],
-					type = 'toggle',
-					set = function(info, value)
-						E.db.unitframe.units.player[info[#info]] = value;
-						UF:CreateAndUpdateUF('player');
-						if value == true and E.db.unitframe.units.player.enable then
-							ElvUF_Pet:SetParent(ElvUF_Player)
-						else
-							ElvUF_Pet:SetParent(ElvUF_Parent)
-							E:UIFrameFadeIn(ElvUF_Pet, 1, ElvUF_Player:GetAlpha(), 1)
-						end
-					end,
 				},
 				hideonnpc = {
 					type = 'toggle',
@@ -3622,6 +3706,7 @@ E.Options.args.unitframe.args.player = {
 		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'player', nil, true),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'player'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'player'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'player'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'player'),
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'player'),
 		castbar = GetOptionsTable_Castbar(true, UF.CreateAndUpdateUF, 'player'),
@@ -4174,12 +4259,6 @@ E.Options.args.unitframe.args.target = {
 					type = 'range',
 					min = 10, max = 500, step = 1,
 				},
-				rangeCheck = {
-					order = 5,
-					name = L["Range Check"],
-					desc = L["Check if you are in range to cast spells on this specific unit."],
-					type = "toggle",
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 6,
@@ -4243,6 +4322,7 @@ E.Options.args.unitframe.args.target = {
 		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'target', nil, true),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'target'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'target'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'target'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'target'),
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'target'),
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'target'),
@@ -4415,12 +4495,6 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'range',
 					min = 10, max = 500, step = 1,
 				},
-				rangeCheck = {
-					order = 5,
-					name = L["Range Check"],
-					desc = L["Check if you are in range to cast spells on this specific unit."],
-					type = "toggle",
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 6,
@@ -4485,6 +4559,7 @@ E.Options.args.unitframe.args.targettarget = {
 		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'targettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettarget'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'targettarget'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'targettarget'),
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'targettarget'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettarget'),
@@ -4557,12 +4632,6 @@ E.Options.args.unitframe.args.targettargettarget = {
 					type = 'range',
 					min = 10, max = 500, step = 1,
 				},
-				rangeCheck = {
-					order = 5,
-					name = L["Range Check"],
-					desc = L["Check if you are in range to cast spells on this specific unit."],
-					type = "toggle",
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 6,
@@ -4623,6 +4692,7 @@ E.Options.args.unitframe.args.targettargettarget = {
 		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'targettargettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettargettarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettargettarget'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'targettargettarget'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'targettargettarget'),
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'targettargettarget'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettargettarget'),
@@ -4695,12 +4765,6 @@ E.Options.args.unitframe.args.focus = {
 					type = 'range',
 					min = 10, max = 500, step = 1,
 				},
-				rangeCheck = {
-					order = 5,
-					name = L["Range Check"],
-					desc = L["Check if you are in range to cast spells on this specific unit."],
-					type = "toggle",
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 6,
@@ -4757,6 +4821,7 @@ E.Options.args.unitframe.args.focus = {
 		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'focus'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focus'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focus'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'focus'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'focus'),
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'focus'),
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'focus'),
@@ -4831,12 +4896,6 @@ E.Options.args.unitframe.args.focustarget = {
 					type = 'range',
 					min = 10, max = 500, step = 1,
 				},
-				rangeCheck = {
-					order = 5,
-					name = L["Range Check"],
-					desc = L["Check if you are in range to cast spells on this specific unit."],
-					type = "toggle",
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 6,
@@ -4897,6 +4956,7 @@ E.Options.args.unitframe.args.focustarget = {
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'focustarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focustarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focustarget'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'focustarget'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'focustarget'),
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'focustarget'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'focustarget'),
@@ -4968,12 +5028,6 @@ E.Options.args.unitframe.args.pet = {
 					name = L["Height"],
 					type = 'range',
 					min = 10, max = 500, step = 1,
-				},
-				rangeCheck = {
-					order = 5,
-					name = L["Range Check"],
-					desc = L["Check if you are in range to cast spells on this specific unit."],
-					type = "toggle",
 				},
 				hideonnpc = {
 					type = 'toggle',
@@ -5063,6 +5117,7 @@ E.Options.args.unitframe.args.pet = {
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pet'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pet'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'pet'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'pet'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'pet'),
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'pet'),
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'pet'),
@@ -5136,12 +5191,6 @@ E.Options.args.unitframe.args.pettarget = {
 					type = 'range',
 					min = 10, max = 500, step = 1,
 				},
-				rangeCheck = {
-					order = 5,
-					name = L["Range Check"],
-					desc = L["Check if you are in range to cast spells on this specific unit."],
-					type = "toggle",
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 6,
@@ -5202,6 +5251,7 @@ E.Options.args.unitframe.args.pettarget = {
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pettarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'pettarget'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'pettarget'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'pettarget'),
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'pettarget'),
 	},
@@ -5276,12 +5326,6 @@ E.Options.args.unitframe.args.boss = {
 					type = 'range',
 					min = 10, max = 500, step = 1,
 				},
-				rangeCheck = {
-					order = 8,
-					name = L["Range Check"],
-					desc = L["Check if you are in range to cast spells on this specific unit."],
-					type = "toggle",
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 9,
@@ -5354,6 +5398,7 @@ E.Options.args.unitframe.args.boss = {
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
@@ -5429,12 +5474,6 @@ E.Options.args.unitframe.args.arena = {
 					name = L["Height"],
 					type = 'range',
 					min = 10, max = 500, step = 1,
-				},
-				rangeCheck = {
-					order = 8,
-					name = L["Range Check"],
-					desc = L["Check if you are in range to cast spells on this specific unit."],
-					type = "toggle",
 				},
 				hideonnpc = {
 					type = 'toggle',
@@ -5565,6 +5604,7 @@ E.Options.args.unitframe.args.arena = {
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'arena', 5),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUFGroup, 'arena', 5),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUFGroup, 'arena', 5),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
@@ -5629,12 +5669,6 @@ E.Options.args.unitframe.args.party = {
 					desc = L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."],
 					get = function(info) return E.db.unitframe.units.party.power.hideonnpc end,
 					set = function(info, value) E.db.unitframe.units.party.power.hideonnpc = value; UF:CreateAndUpdateHeaderGroup('party'); end,
-				},
-				rangeCheck = {
-					order = 4,
-					name = L["Range Check"],
-					desc = L["Check if you are in range to cast spells on this specific unit."],
-					type = "toggle",
 				},
 				threatStyle = {
 					type = 'select',
@@ -5987,6 +6021,7 @@ E.Options.args.unitframe.args.party = {
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'party'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'party'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'party'),
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'party'),
@@ -6284,12 +6319,6 @@ E.Options.args.unitframe.args.raid = {
 					get = function(info) return E.db.unitframe.units.raid.power.hideonnpc end,
 					set = function(info, value) E.db.unitframe.units.raid.power.hideonnpc = value; UF:CreateAndUpdateHeaderGroup('raid'); end,
 				},
-				rangeCheck = {
-					order = 4,
-					name = L["Range Check"],
-					desc = L["Check if you are in range to cast spells on this specific unit."],
-					type = "toggle",
-				},
 				threatStyle = {
 					type = 'select',
 					order = 6,
@@ -6494,6 +6523,7 @@ E.Options.args.unitframe.args.raid = {
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'),
 		buffIndicator = {
@@ -6759,12 +6789,6 @@ E.Options.args.unitframe.args.raid40 = {
 					get = function(info) return E.db.unitframe.units.raid40.power.hideonnpc end,
 					set = function(info, value) E.db.unitframe.units.raid40.power.hideonnpc = value; UF:CreateAndUpdateHeaderGroup('raid40'); end,
 				},
-				rangeCheck = {
-					order = 4,
-					name = L["Range Check"],
-					desc = L["Check if you are in range to cast spells on this specific unit."],
-					type = "toggle",
-				},
 				threatStyle = {
 					type = 'select',
 					order = 6,
@@ -6969,6 +6993,7 @@ E.Options.args.unitframe.args.raid40 = {
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		buffIndicator = {
@@ -7226,12 +7251,6 @@ E.Options.args.unitframe.args.raidpet = {
 					type = "header",
 					name = L["General"],
 				},
-				rangeCheck = {
-					order = 3,
-					name = L["Range Check"],
-					desc = L["Check if you are in range to cast spells on this specific unit."],
-					type = "toggle",
-				},
 				threatStyle = {
 					type = 'select',
 					order = 5,
@@ -7425,6 +7444,7 @@ E.Options.args.unitframe.args.raidpet = {
 		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
@@ -7615,6 +7635,7 @@ E.Options.args.unitframe.args.tank = {
 			},
 		},
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'tank'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'tank'),
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'tank'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'tank'),
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'tank'),
@@ -7820,6 +7841,7 @@ E.Options.args.unitframe.args.assist = {
 			},
 		},
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'assist'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'assist'),
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'assist'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'assist'),
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'assist'),

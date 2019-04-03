@@ -1683,6 +1683,30 @@ function E:DBConversions()
 		E.db.unitframe.units.player.restIcon = nil
 	end
 
+	-- [Fader] Combat Fade options for Player
+	if E.db.unitframe.units.player.combatfade ~= nil then
+		local enabled = E.db.unitframe.units.player.combatfade
+		E.db.unitframe.units.player.fader.enable = enabled
+
+		if enabled then -- use the old min alpha too
+			E.db.unitframe.units.player.fader.minAlpha = 0
+		end
+
+		E.db.unitframe.units.player.combatfade = nil
+	end
+
+	-- [Fader] Range check options for Units
+	local rangeCheckUnits = { 'target', 'targettarget', 'targettargettarget', 'focus', 'focustarget', 'pet', 'pettarget', 'boss', 'arena', 'party', 'raid', 'raid40', 'raidpet', 'tank', 'assist' }
+	for _, unit in pairs(rangeCheckUnits) do
+		if E.db.unitframe.units[unit].rangeCheck ~= nil then
+			local enabled = E.db.unitframe.units[unit].rangeCheck
+			E.db.unitframe.units[unit].fader.enable = enabled
+			E.db.unitframe.units[unit].fader.range = enabled
+
+			E.db.unitframe.units[unit].rangeCheck = nil
+		end
+	end
+
 	--Convert old "Buffs and Debuffs" font size option to individual options
 	if E.db.auras.fontSize then
 		local fontSize = E.db.auras.fontSize

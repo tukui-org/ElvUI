@@ -462,6 +462,51 @@ function UF:Update_FontStrings()
 	end
 end
 
+function UF:Construct_Fader()
+	return { UpdateRange = UF.UpdateRange }
+end
+
+function UF:Configure_Fader(frame)
+	if frame.db.enable and (frame.db.fader and frame.db.fader.enable) then
+		if frame:IsElementEnabled('Fader') then
+			frame:DisableElement('Fader') -- we need to clear the old stuff
+		end
+
+		frame.Fader.Hover = frame.db.fader.hover
+		frame.Fader.Combat = frame.db.fader.combat
+		frame.Fader.Target = frame.db.fader.target
+		frame.Fader.Focus = frame.db.fader.focus
+		frame.Fader.Health = frame.db.fader.health
+		frame.Fader.Power = frame.db.fader.power
+		frame.Fader.Vehicle = frame.db.fader.vehicle
+		frame.Fader.Casting = frame.db.fader.casting
+		frame.Fader.MinAlpha = frame.db.fader.minAlpha
+		frame.Fader.MaxAlpha = frame.db.fader.maxAlpha
+
+		if frame ~= _G.ElvUF_Player then
+			frame.Fader.Range = frame.db.fader.range
+		end
+
+		if frame.db.fader.smooth > 0 then
+			frame.Fader.Smooth = frame.db.fader.smooth
+		else
+			frame.Fader.Smooth = nil
+		end
+
+		if frame.db.fader.delay > 0 then
+			frame.Fader.Delay = frame.db.fader.delay
+		else
+			frame.Fader.Delay = nil
+		end
+
+		frame:EnableElement('Fader') -- reset the settings
+		frame.Fader:ForceUpdate()
+	elseif frame:IsElementEnabled('Fader') then
+		frame:DisableElement('Fader')
+		E:UIFrameFadeIn(frame, 1, frame:GetAlpha(), 1)
+	end
+end
+
 function UF:Configure_FontString(obj)
 	UF.fontstrings[obj] = true
 	obj:FontTemplate() --This is temporary.
@@ -507,41 +552,49 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 		local unit = group..i
 		local frameName = E:StringTitle(unit)
 		frameName = frameName:gsub('t(arget)', 'T%1')
-		if not self[unit] then
+		local frame = self[unit]
+
+		if not frame then
 			self.groupunits[unit] = group;
-			self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
-			self[unit].index = i
-			self[unit]:SetParent(ElvUF_Parent)
-			self[unit]:SetID(i)
+			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
+			frame.index = i
+			frame:SetParent(ElvUF_Parent)
+			frame:SetID(i)
+			self[unit] = frame
 		end
 
 		frameName = E:StringTitle(group)
 		frameName = frameName:gsub('t(arget)', 'T%1')
-		self[unit].Update = function()
-			UF["Update_"..E:StringTitle(frameName).."Frames"](self, self[unit], self.db.units[group])
+		frame.Update = function()
+			UF["Update_"..E:StringTitle(frameName).."Frames"](self, frame, self.db.units[group])
 		end
 
 		if self.db.units[group].enable then
-			self[unit]:Enable()
+			frame:Enable()
 
 			if group == 'arena' then
-				self[unit]:SetAttribute('oUF-enableArenaPrep', true)
+				frame:SetAttribute('oUF-enableArenaPrep', true)
 			end
 
-			self[unit].Update()
+			frame.Update()
 
-			if self[unit].isForced then
-				self:ForceShow(self[unit])
+			if frame.isForced then
+				self:ForceShow(frame)
 			end
-			E:EnableMover(self[unit].mover:GetName())
+			E:EnableMover(frame.mover:GetName())
 		else
-			self[unit]:Disable()
+			frame:Disable()
 
 			if group == 'arena' then
-				self[unit]:SetAttribute('oUF-enableArenaPrep', false)
+				frame:SetAttribute('oUF-enableArenaPrep', false)
 			end
 
-			E:DisableMover(self[unit].mover:GetName())
+			-- for some reason the boss/arena 'uncheck disable' doesnt fire this, we need to so putting it here.
+			if group == 'boss' or group == 'arena' then
+				UF:Configure_Fader(frame)
+			end
+
+			E:DisableMover(frame.mover:GetName())
 		end
 	end
 end
@@ -1061,7 +1114,6 @@ end
 local hiddenParent = CreateFrame("Frame", nil, _G.UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
-
 local HandleFrame = function(baseName)
 	local frame
 	if (type(baseName) == 'string') then
@@ -1372,22 +1424,6 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 			backdropTex.multiplier = 0.25
 		end
 	end
-end
-
-function UF:DefaultFader()
-	return {
-		Hover = false,
-		Target = true,
-		Health = true,
-		Combat = true,
-		Power = true,
-		Casting = true,
-		Vehicle = true,
-		Smooth = 0.33,
-		Delay = false,
-		MaxAlpha = 1,
-		MinAlpha = 0,
-	}
 end
 
 function UF:Initialize()

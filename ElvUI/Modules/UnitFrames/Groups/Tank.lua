@@ -28,7 +28,7 @@ function UF:Construct_TankFrames()
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
-	self.Range = UF:Construct_Range(self)
+	self.Fader = UF:Construct_Fader()
 
 	if not self.isChild then
 		self.Buffs = UF:Construct_Buffs(self)
@@ -146,8 +146,8 @@ function UF:Update_TankFrames(frame, db)
 	--Threat
 	UF:Configure_Threat(frame)
 
-	--Range
-	UF:Configure_Range(frame)
+	--Fader
+	UF:Configure_Fader(frame)
 
 	UF:Configure_RaidIcon(frame)
 

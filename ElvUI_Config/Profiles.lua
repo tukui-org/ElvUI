@@ -223,7 +223,6 @@ if(not ElvDB.profiles.Minimalistic) then
 						["text_format"] = "[powercolor][power:current-max]",
 						["height"] = 15,
 					},
-					["combatfade"] = true,
 					["castbar"] = {
 						["iconAttached"] = false,
 						["iconSize"] = 54,

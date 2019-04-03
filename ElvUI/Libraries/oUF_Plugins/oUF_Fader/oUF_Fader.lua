@@ -5,18 +5,21 @@ assert(oUF, "oUF_Fader cannot find an instance of oUF. If your oUF is embedded i
 -- Credit: p3lim, Azilroka, Simpy
 
 -- GLOBALS: ElvUI
+local next, tinsert, tremove = next, tinsert, tremove
+local CreateFrame = CreateFrame
 local GetMouseFocus = GetMouseFocus
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 local UnitExists = UnitExists
+local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
-local UnitHasVehicleUI = UnitHasVehicleUI
 
+local onRangeObjects, onRangeFrame = {}
 local PowerTypesFull = {
 	MANA = true,
 	FOCUS = true,
@@ -24,12 +27,40 @@ local PowerTypesFull = {
 }
 
 local function Update(self, event, unit)
-	unit = unit or self.unit
-	local element = self.Fader
 	local E = ElvUI[1]
+	local element = self.Fader
 
-	local _, powerType = UnitPowerType(unit)
-	local power = UnitPower(unit)
+	if element.isOff then
+		if element.Smooth then
+			E:UIFrameFadeIn(self, element.Smooth, self:GetAlpha(), 1)
+		else
+			self:SetAlpha(1)
+		end
+
+		return
+	end
+
+	unit = unit or self.unit
+
+	-- range fader
+	if element.UpdateRange then
+		element.UpdateRange(self, unit)
+	end
+	if element.Range and element.RangeAlpha then
+		if element.Smooth then
+			E:UIFrameFadeIn(self, element.Smooth, self:GetAlpha(), element.RangeAlpha)
+		else
+			self:SetAlpha(element.RangeAlpha)
+		end
+
+		return
+	end
+
+	-- normal fader
+	local _, powerType
+	if element.Power then
+		_, powerType = UnitPowerType(unit)
+	end
 
 	if
 		(element.Casting and (UnitCastingInfo(unit) or UnitChannelInfo(unit))) or
@@ -38,7 +69,7 @@ local function Update(self, event, unit)
 		(element.Target and UnitExists(unit .. 'target')) or
 		(element.Focus and UnitExists('focus')) or
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
-		(element.Power and (PowerTypesFull[powerType] and power < UnitPowerMax(unit))) or
+		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
 		(element.Vehicle and UnitHasVehicleUI(unit)) or
 		(element.Hover and (GetMouseFocus() == self))
 	then
@@ -62,6 +93,21 @@ local function ForceUpdate(element)
 	return Update(element.__owner, "ForceUpdate", element.__owner.unit)
 end
 
+local timer = 0
+local function onRangeUpdate(_, elapsed)
+	timer = timer + elapsed
+
+	if timer >= .20 then
+		for _, object in next, onRangeObjects do
+			if object:IsShown() then
+				object.Fader:ForceUpdate()
+			end
+		end
+
+		timer = 0
+	end
+end
+
 local function HoverScript(self)
 	local element = self.Fader
 	if element and element.HoverHooked == 1 then
@@ -83,7 +129,22 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
+		local on
+		if element.Range then
+			on = true
+
+			if not onRangeFrame then
+				onRangeFrame = CreateFrame('Frame')
+				onRangeFrame:SetScript('OnUpdate', onRangeUpdate)
+			end
+
+			onRangeFrame:Show()
+			tinsert(onRangeObjects, self)
+		end
+
 		if element.Hover then
+			on = true
+
 			if not element.HoverHooked then
 				self:HookScript('OnEnter', HoverScript)
 				self:HookScript('OnLeave', HoverScript)
@@ -93,11 +154,15 @@ local function Enable(self, unit)
 		end
 
 		if element.Combat then
+			on = true
+
 			self:RegisterEvent('PLAYER_REGEN_ENABLED', Update, true)
 			self:RegisterEvent('PLAYER_REGEN_DISABLED', Update, true)
 		end
 
 		if element.Target then
+			on = true
+
 			if not element.TargetHooked then
 				self:HookScript('OnShow', TargetScript)
 			end
@@ -109,26 +174,36 @@ local function Enable(self, unit)
 		end
 
 		if element.Focus then
+			on = true
+
 			self:RegisterEvent("PLAYER_FOCUS_CHANGED", Update, true)
 		end
 
 		if element.Health then
+			on = true
+
 			self:RegisterEvent('UNIT_HEALTH', Update)
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Update)
 			self:RegisterEvent('UNIT_MAXHEALTH', Update)
 		end
 
 		if element.Power then
+			on = true
+
 			self:RegisterEvent('UNIT_POWER_UPDATE', Update)
 			self:RegisterEvent('UNIT_MAXPOWER', Update)
 		end
 
 		if element.Vehicle then
+			on = true
+
 			self:RegisterEvent('UNIT_ENTERED_VEHICLE', Update, true)
 			self:RegisterEvent('UNIT_EXITED_VEHICLE', Update, true)
 		end
 
 		if element.Casting then
+			on = true
+
 			self:RegisterEvent('UNIT_SPELLCAST_START', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_FAILED', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_STOP', Update)
@@ -143,6 +218,12 @@ local function Enable(self, unit)
 
 		if not element.MaxAlpha then
 			element.MaxAlpha = 1
+		end
+
+		if not on then
+			element.isOff = true
+		else
+			element.isOff = nil
 		end
 
 		return true
@@ -177,6 +258,25 @@ local function Disable(self, unit)
 		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', Update)
 		self:UnregisterEvent('UNIT_ENTERED_VEHICLE', Update)
 		self:UnregisterEvent('UNIT_EXITED_VEHICLE', Update)
+
+		if onRangeFrame then
+			for index, frame in next, onRangeObjects do
+				if frame == self then
+					tremove(onRangeObjects, index)
+					break
+				end
+			end
+
+			if element.Smooth then
+				ElvUI[1]:UIFrameFadeIn(self, element.Smooth, self:GetAlpha(), 1)
+			else
+				self:SetAlpha(1)
+			end
+
+			if #onRangeObjects == 0 then
+				onRangeFrame:Hide()
+			end
+		end
 	end
 end
 
