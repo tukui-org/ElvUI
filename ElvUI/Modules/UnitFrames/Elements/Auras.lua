@@ -163,6 +163,7 @@ function UF:Configure_Auras(frame, auraType)
 		if button then
 			button.db = auras.db
 			UF:UpdateAuraSettings(button)
+			button:Size(auras.size)
 		end
 
 		index = index + 1
@@ -371,7 +372,9 @@ function UF:PostUpdateAura(unit, button)
 		end
 	end
 
-	UF:UpdateAuraCooldownPosition(button)
+	if button.needsUpdateCooldownPosition then
+		UF:UpdateAuraCooldownPosition(button)
+	end
 
 	local size = button:GetParent().size
 	if size then button:Size(size, size) end
