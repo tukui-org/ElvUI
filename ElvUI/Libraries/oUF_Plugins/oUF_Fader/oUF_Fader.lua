@@ -71,7 +71,8 @@ local function Update(self, event, unit)
 	if
 		(element.Casting and (UnitCastingInfo(unit) or UnitChannelInfo(unit))) or
 		(element.Combat and UnitAffectingCombat(unit)) or
-		(element.Target and ( (unit ~= 'target' and unit:find('target') and UnitExists(unit)) or UnitExists(unit .. 'target') )) or
+		(element.PlayerTarget and UnitExists('target')) or
+		(element.UnitTarget and UnitExists(unit..'target')) or
 		(element.Focus and UnitExists('focus')) or
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
@@ -164,7 +165,7 @@ local function Enable(self, unit)
 			self:RegisterEvent('PLAYER_REGEN_DISABLED', Update, true)
 		end
 
-		if element.Target then
+		if element.UnitTarget or element.PlayerTarget then
 			on = true
 
 			if not element.TargetHooked then
@@ -175,12 +176,13 @@ local function Enable(self, unit)
 
 			self:RegisterEvent('UNIT_TARGET', Update)
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', Update, true)
+			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
 		end
 
 		if element.Focus then
 			on = true
 
-			self:RegisterEvent("PLAYER_FOCUS_CHANGED", Update, true)
+			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
 		end
 
 		if element.Health then
@@ -248,6 +250,7 @@ local function Disable(self, unit)
 		self:UnregisterEvent('PLAYER_REGEN_ENABLED', Update)
 		self:UnregisterEvent('PLAYER_REGEN_DISABLED', Update)
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Update)
+		self:UnregisterEvent('PLAYER_FOCUS_CHANGED', Update)
 		self:UnregisterEvent('UNIT_TARGET', Update)
 		self:UnregisterEvent('UNIT_HEALTH', Update)
 		self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Update)

@@ -474,7 +474,7 @@ function UF:Configure_Fader(frame)
 
 		frame.Fader.Hover = frame.db.fader.hover
 		frame.Fader.Combat = frame.db.fader.combat
-		frame.Fader.Target = frame.db.fader.target
+		frame.Fader.PlayerTarget = frame.db.fader.playertarget
 		frame.Fader.Focus = frame.db.fader.focus
 		frame.Fader.Health = frame.db.fader.health
 		frame.Fader.Power = frame.db.fader.power
@@ -485,6 +485,7 @@ function UF:Configure_Fader(frame)
 
 		if frame ~= _G.ElvUF_Player then
 			frame.Fader.Range = frame.db.fader.range
+			frame.Fader.UnitTarget = frame.db.fader.unittarget
 		end
 
 		if frame.db.fader.smooth > 0 then
