@@ -27,6 +27,11 @@ local PowerTypesFull = {
 }
 
 local function Update(self, event, unit)
+	if self.isForced then
+		self:SetAlpha(1)
+		return
+	end
+
 	local E = ElvUI[1]
 	local element = self.Fader
 
