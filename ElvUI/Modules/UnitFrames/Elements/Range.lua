@@ -168,7 +168,7 @@ function UF:UpdateRange(unit)
 		alpha = self.Fader.MinAlpha
 	elseif unit then
 		if UnitCanAttack("player", unit) then
-			alpha = (enemyIsInRange(unit) and self.Fader.MaxAlpha) or (enemyIsInLongRange(unit) and self.Fader.MaxAlpha) or self.Fader.MinAlpha
+			alpha = ((enemyIsInRange(unit) or enemyIsInLongRange(unit)) and self.Fader.MaxAlpha) or self.Fader.MinAlpha
 		elseif UnitIsUnit(unit, "pet") then
 			alpha = (petIsInRange(unit) and self.Fader.MaxAlpha) or self.Fader.MinAlpha
 		else
