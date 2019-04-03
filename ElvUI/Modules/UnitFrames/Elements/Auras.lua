@@ -167,7 +167,6 @@ function UF:Configure_Auras(frame, auraType)
 		if button then
 			button.db = auras.db
 			UF:UpdateAuraSettings(button)
-			button:Size(auras.size)
 		end
 
 		index = index + 1
