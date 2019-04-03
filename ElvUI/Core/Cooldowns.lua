@@ -82,7 +82,7 @@ function E:Cooldown_IsEnabled(cd)
 end
 
 function E:Cooldown_ForceUpdate(cd)
-	cd.nextUpdate = 0
+	cd.nextUpdate = -1
 
 	if cd.fontScale and (cd.fontScale >= MIN_SCALE) then
 		cd:Show()
@@ -173,7 +173,7 @@ function E:OnSetCooldown(start, duration)
 		timer.start = start
 		timer.duration = duration
 		timer.enabled = true
-		timer.nextUpdate = 0
+		timer.nextUpdate = -1
 
 		if timer.fontScale and (timer.fontScale >= MIN_SCALE) then
 			timer:Show()
