@@ -96,7 +96,6 @@ function UF:UpdateAuraSettings(button)
 	end
 
 	button.needsUpdateCooldownPosition = true
-	UF:UpdateAuraCooldownPosition(button)
 end
 
 function UF:EnableDisable_Auras(frame)
@@ -372,9 +371,7 @@ function UF:PostUpdateAura(unit, button)
 		end
 	end
 
-	if button.needsUpdateCooldownPosition then
-		UF:UpdateAuraCooldownPosition(button)
-	end
+	UF:UpdateAuraCooldownPosition(button)
 
 	local size = button:GetParent().size
 	if size then button:Size(size, size) end
