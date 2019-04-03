@@ -41,6 +41,7 @@ Fixed an issue which would cause an error if you had the Login messaged enable w
 Fixed an issue which kept healers stored when out of a Battleground. (#1219)  
 Fixed an issue which prevented Aurabars from correctly handling the Dispellable filters.  
 Fixed Bag and Bank search from not being cleared consistently. (#1108)  
+Fixed an issue with the cooldown module which wouldn't correctly set cooldowns when they were started cooldown before you logged into the game.  
 
 **Misc. Changes:**  
 [Nameplate] Keep Player nameplate from fading out.  
