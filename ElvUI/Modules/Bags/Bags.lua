@@ -210,10 +210,13 @@ function B:OpenEditbox()
 end
 
 function B:ResetAndClear()
-	B.BankFrame.editBox:SetText(SEARCH)
-	B.BankFrame.editBox:ClearFocus()
 	B.BagFrame.editBox:SetText(SEARCH)
 	B.BagFrame.editBox:ClearFocus()
+
+	if B.BankFrame then
+		B.BankFrame.editBox:SetText(SEARCH)
+		B.BankFrame.editBox:ClearFocus()
+	end
 
 	B:SearchReset();
 end
