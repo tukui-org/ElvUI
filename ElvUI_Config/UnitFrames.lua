@@ -845,7 +845,7 @@ local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
 			},
 			delay = {
 				order = 14,
-				name = L["Delay"],
+				name = L["Fade Out Delay"],
 				type = 'range',
 				min = 0, max = 3, step = 0.1,
 				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
