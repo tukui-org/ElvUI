@@ -1,21 +1,22 @@
 ### Version 11.07 [  ]
 
 **New Additions:**  
-[Nameplate] Added Style Filter trigger Creature Type.  
-[Nameplate] Added Style Filter trigger if the unit is Focused (or not).  
 [Nameplate] Added ElvUIPlayerNamePlateAnchor for WeakAuras and other AddOns.  
 [Nameplate] Added an option to toggle the Nameplates from fading in when shown.  
 [Nameplate / Unitframes] Added NamePlate and UnitFrame Color Selection colors from oUF. (Thanks oUF/LS-)!  
 [Nameplate / Unitframes] Added a new smoothing method to Unitframes and Nameplates. (Thanks LS-)!  
+[Nameplate: Style Filter] Add a new Filter: "Explosives" for Explosive Orbs in Mythic plus.  
+[Nameplate: Style Filter] Added trigger Creature Type.  
+[Nameplate: Style Filter] Added trigger if the unit is Focused (or not).  
 [Unitframe] Added Duration option for cooldown text and reworked the cooldown code.  
 [Chat] Added options to Desaturate, Pin to Tab Panel, or Hide Voice Buttons.  
 Added an option to ignore the UI Scale popup when resizing the game window (General -> Ignore UI Scale Popup).  
-Add a new default Style Filter: "Explosives" for Explosive Orbs in Mythic plus.  
 
 **Bug Fixes:**  
 [Nameplate] Fixed an issue which caused the Targeted and Player Classbar options to not take effect correctly.  
-[Nameplate] Made Style Filter Name Color and Alpha action work again.  
-[Nameplate] Fixed Style Filter Health Color not working correctly in combat.  
+[Nameplate: Style Filter] Made Name Color and Alpha action work again.  
+[Nameplate: Style Filter] Fixed Health Color not working correctly in combat.  
+[Nameplate: Style Filter] Fixed PVP Talent triggers.  
 [Nameplate] Fixed Target Indicator showing permanently when Low Health Threshold was set to zero. (!115 - Thanks @wing5wong)  
 [Nameplate] Fixed a gap at the end of Classbar on Nameplates.  
 [Nameplate] Fixed Power Hide when Empty.  
@@ -44,13 +45,13 @@ Fixed Bag and Bank search from not being cleared consistently. (#1108)
 Fixed an issue with the cooldown module which wouldn't correctly set cooldowns when they were started cooldown before you logged into the game.  
 
 **Misc. Changes:**  
+[Nameplate: Style Filter] Enabled Hide Frame action.  
+[Nameplate + Style Filter] Adding Name Only (with Show Title).  
 [Nameplate] Keep Player nameplate from fading out.  
-[Nameplate] Enabled Style Filter Hide Frame action.  
 [Nameplate] Reallowed Target Scale in options.  
 [Nameplate] Removed Detection as this was used in Legion but is no longer used as much and this would increase preformance further.  
 [Nameplate] Readded the Visbility settings on Static Player.  
 [Nameplate] Reworked the cooldown text, so that it matches Unitframes.  
-[Nameplate] Adding Name Only (with Show Title) on Nameplates and back in Style Filters.  
 [Nameplate] Reworked the Target Alpha so that it shows only while in combat.  
 [Nameplate] Updated oUF to increase preformance of the new Nameplates further.  
 [Nameplate] Added backdrop coloring to the classbars.  
