@@ -274,11 +274,7 @@ local function Disable(self, unit)
 				end
 			end
 
-			if element.Smooth then
-				ElvUI[1]:UIFrameFadeIn(self, element.Smooth, self:GetAlpha(), 1)
-			else
-				self:SetAlpha(1)
-			end
+			ToggleAlpha(self, element, 1)
 
 			if #onRangeObjects == 0 then
 				onRangeFrame:Hide()
