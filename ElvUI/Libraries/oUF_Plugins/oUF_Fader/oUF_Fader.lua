@@ -26,22 +26,27 @@ local PowerTypesFull = {
 	ENERGY = true,
 }
 
+local function ToggleAlpha(self, element, endAlpha)
+	if element.Smooth then
+		ElvUI[1]:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), endAlpha)
+	else
+		self:SetAlpha(element.MinAlpha)
+	end
+	if element.isDelayed then
+		element.isDelayed = nil
+	end
+end
+
 local function Update(self, event, unit)
 	if self.isForced then
 		self:SetAlpha(1)
 		return
 	end
 
-	local E = ElvUI[1]
 	local element = self.Fader
 
 	if element.isOff then
-		if element.Smooth then
-			E:UIFrameFadeIn(self, element.Smooth, self:GetAlpha(), 1)
-		else
-			self:SetAlpha(1)
-		end
-
+		ToggleAlpha(self, element, 1)
 		return
 	end
 
@@ -52,12 +57,7 @@ local function Update(self, event, unit)
 		element.UpdateRange(self, unit)
 	end
 	if element.Range and element.RangeAlpha then
-		if element.Smooth then
-			E:UIFrameFadeIn(self, element.Smooth, self:GetAlpha(), element.RangeAlpha)
-		else
-			self:SetAlpha(element.RangeAlpha)
-		end
-
+		ToggleAlpha(self, element, element.RangeAlpha)
 		return
 	end
 
@@ -78,23 +78,22 @@ local function Update(self, event, unit)
 		(element.Vehicle and UnitHasVehicleUI(unit)) or
 		(element.Hover and (GetMouseFocus() == self))
 	then
-		if element.Smooth then
-			E:UIFrameFadeIn(self, element.Smooth, self:GetAlpha(), element.MaxAlpha)
-		else
-			self:SetAlpha(element.MaxAlpha)
-		end
+		ToggleAlpha(self, element, element.MaxAlpha)
 	else
-		if element.Delay then
-			E:Delay(element.Delay, E.UIFrameFadeOut, E, self, element.Smooth, self:GetAlpha(), element.MinAlpha)
-		elseif element.Smooth then
-			E:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), element.MinAlpha)
+		if element.Delay and not element.isDelayed then
+			ElvUI[1]:Delay(element.Delay, ToggleAlpha, self, element, element.MinAlpha)
+			element.isDelayed = true
 		else
-			self:SetAlpha(element.MinAlpha)
+			ToggleAlpha(self, element, element.MinAlpha)
 		end
 	end
 end
 
-local function ForceUpdate(element)
+local function ForceUpdate(element, configuring)
+	if configuring then
+		element.configureDelay = nil
+	end
+
 	return Update(element.__owner, "ForceUpdate", element.__owner.unit)
 end
 
