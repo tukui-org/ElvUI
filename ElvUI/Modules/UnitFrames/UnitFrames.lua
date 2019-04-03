@@ -502,8 +502,12 @@ function UF:Configure_Fader(frame)
 
 		frame:EnableElement('Fader') -- reset the settings
 
-		if frame.Fader.configureDelay then E:CancelTimer(frame.Fader.configureDelay) end
-		frame.Fader.configureDelay = E:ScheduleTimer(frame.Fader.ForceUpdate, 0.25, frame.Fader, true)
+		if frame.Fader.configTimer then
+			E:CancelTimer(frame.Fader.configTimer)
+			frame.Fader.configTimer = nil
+		end
+
+		frame.Fader.configTimer = E:ScheduleTimer(frame.Fader.ForceUpdate, 0.25, frame.Fader, true)
 	elseif frame:IsElementEnabled('Fader') then
 		frame:DisableElement('Fader')
 		E:UIFrameFadeIn(frame, 1, frame:GetAlpha(), 1)

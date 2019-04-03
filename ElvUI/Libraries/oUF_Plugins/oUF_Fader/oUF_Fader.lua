@@ -26,10 +26,19 @@ local PowerTypesFull = {
 	ENERGY = true,
 }
 
-local function ToggleAlpha(self, element, endAlpha)
+local function ClearTimers(element)
+	if element.configTimer then
+		ElvUI[1]:CancelTimer(element.configTimer)
+		element.configTimer = nil
+	end
 	if element.delayTimer then
 		ElvUI[1]:CancelTimer(element.delayTimer)
+		element.delayTimer = nil
 	end
+end
+
+local function ToggleAlpha(self, element, endAlpha)
+	ClearTimers(element)
 
 	if element.Smooth then
 		ElvUI[1]:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), endAlpha)
@@ -83,7 +92,8 @@ local function Update(self, event, unit)
 		ToggleAlpha(self, element, element.MaxAlpha)
 	else
 		if element.Delay then
-			if element.delayTimer then ElvUI[1]:CancelTimer(element.delayTimer) end
+			ClearTimers(element)
+
 			element.delayTimer = ElvUI[1]:ScheduleTimer(ToggleAlpha, element.Delay, self, element, element.MinAlpha)
 		else
 			ToggleAlpha(self, element, element.MinAlpha)
@@ -91,11 +101,7 @@ local function Update(self, event, unit)
 	end
 end
 
-local function ForceUpdate(element, configuring)
-	if configuring then
-		element.configureDelay = nil
-	end
-
+local function ForceUpdate(element)
 	return Update(element.__owner, "ForceUpdate", element.__owner.unit)
 end
 
@@ -115,16 +121,18 @@ local function onRangeUpdate(_, elapsed)
 end
 
 local function HoverScript(self)
-	local element = self.Fader
-	if element and element.HoverHooked == 1 then
-		Update(self)
+	if self.Fader and self.Fader.HoverHooked == 1 then
+		self.Fader:ForceUpdate()
 	end
 end
 
 local function TargetScript(self)
-	local element = self.Fader
-	if element and element.TargetHooked == 1 then
-		Update(self)
+	if self.Fader and self.Fader.TargetHooked == 1 then
+		if self:IsShown() then
+			self.Fader:ForceUpdate()
+		else
+			self:SetAlpha(0)
+		end
 	end
 end
 
@@ -171,6 +179,7 @@ local function Enable(self, unit)
 
 			if not element.TargetHooked then
 				self:HookScript('OnShow', TargetScript)
+				self:HookScript('OnHide', TargetScript)
 			end
 
 			element.TargetHooked = 1 -- on state
