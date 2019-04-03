@@ -9,7 +9,6 @@ local gsub, strsplit, tinsert, tremove, sort, wipe = gsub, strsplit, tinsert, tr
 
 local GetLocale = GetLocale
 local GetInstanceInfo = GetInstanceInfo
-local GetPvpTalentInfo = GetPvpTalentInfo
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpellCharges = GetSpellCharges
 local GetSpellCooldown = GetSpellCooldown
@@ -32,6 +31,7 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitReaction = UnitReaction
 local C_Timer_NewTimer = C_Timer.NewTimer
+local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local INTERRUPTED = INTERRUPTED
 local FAILED = FAILED
 
@@ -513,7 +513,7 @@ end
 
 function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	local _, condition, name, guid, npcid, inCombat, questBoss, reaction, spell, classification, instanceType, instanceDifficulty,
-	talentSelected, talentFunction, talentRows, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID, creatureType,
+	talentSelected, pvpTalent, talentRows, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID, creatureType,
 	power, maxPower, percPower, underPowerThreshold, overPowerThreshold, powerUnit, health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold, healthUnit;
 
 	local isCasting = frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
@@ -767,12 +767,19 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	if not failed and trigger.talent.enabled then
 		condition = false
 
-		talentFunction = (trigger.talent.type == "pvp" and GetPvpTalentInfo) or GetTalentInfo
-		talentRows = (trigger.talent.type == "pvp" and 6) or 7
+		pvpTalent = trigger.talent.type == "pvp"
+		talentRows = (pvpTalent and 4) or 7
 
 		for i = 1, talentRows do
 			if (trigger.talent["tier"..i.."enabled"] and trigger.talent["tier"..i].column > 0) then
-				talentSelected = select(4, talentFunction(i, trigger.talent["tier"..i].column, 1))
+				if pvpTalent then
+					-- column is actually the talentID for pvpTalents
+					local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(i)
+					talentSelected = (slotInfo and slotInfo.selectedTalentID) == trigger.talent["tier"..i].column
+				else
+					talentSelected = select(4, GetTalentInfo(i, trigger.talent["tier"..i].column, 1))
+				end
+
 				if (talentSelected and not trigger.talent["tier"..i].missing) or (trigger.talent["tier"..i].missing and not talentSelected) then
 					condition = true
 					if not trigger.talent.requireAll then

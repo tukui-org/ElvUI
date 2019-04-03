@@ -11,8 +11,9 @@ local GetClassInfo = GetClassInfo
 local GetDifficultyInfo = GetDifficultyInfo
 local GetNumClasses = GetNumClasses
 local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
-local GetPvpTalentInfo = GetPvpTalentInfo
+local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
+local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
 local DUNGEON_DIFFICULTY, RAID_INFO_WORLD_BOSS = DUNGEON_DIFFICULTY, RAID_INFO_WORLD_BOSS
@@ -20,6 +21,8 @@ local PLAYER_DIFFICULTY1, ITEM_QUALITY3_DESC, SPEED, DISABLE = PLAYER_DIFFICULTY
 local LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE = LEVEL, NONE, REPUTATION, COMBAT, FILTERS, TALENT, ELITE
 local ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS = ARENA, RAID, DUNGEONS, BATTLEFIELDS, SCENARIOS
 local BLOCK, FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR = BLOCK, FRIEND, ENEMY, CLASS, ROLE, TANK, HEALER, DAMAGER, COLOR
+local UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS = UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS
+local UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
 local FACTION_STANDING_LABEL1 = FACTION_STANDING_LABEL1
 local FACTION_STANDING_LABEL2 = FACTION_STANDING_LABEL2
 local FACTION_STANDING_LABEL3 = FACTION_STANDING_LABEL3
@@ -214,16 +217,26 @@ local function GetTalentString(tier, column)
 	return formatStr:format(texture, name);
 end
 
-local function GetPvpTalentString(tier, column)
-	local _, name, texture = GetPvpTalentInfo(tier, column, 1);
+local function GetPvpTalentString(talentID)
+	local _, name, texture = GetPvpTalentInfoByID(talentID);
 	return formatStr:format(texture, name);
 end
 
 local function GenerateValues(tier, isPvP)
 	local values = {};
 
-	for i = 1, 3 do
-		values[i] = isPvP and GetPvpTalentString(tier, i) or GetTalentString(tier, i);
+	if isPvP then
+		local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(tier)
+		if slotInfo.availableTalentIDs then
+			for i = 1, #slotInfo.availableTalentIDs do
+				local talentID = slotInfo.availableTalentIDs[i]
+				values[talentID] = GetPvpTalentString(talentID)
+			end
+		end
+	else
+		for i = 1, 3 do
+			values[i] = GetTalentString(tier, i);
+		end
 	end
 
 	return values;
@@ -231,7 +244,7 @@ end
 
 local function UpdateTalentSection()
 	if E.global.nameplate.filters[selectedNameplateFilter] then
-		local maxTiers = (E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "normal" and 7) or 6;
+		local maxTiers = (E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.type == "normal" and 7) or 4;
 		E.Options.args.nameplate.args.filters.args.triggers.args.talent.args = {
 			enabled = {
 				type = 'toggle',
