@@ -467,7 +467,7 @@ function UF:Construct_Fader()
 end
 
 function UF:Configure_Fader(frame)
-	if frame.db.enable and (frame.db.fader and frame.db.fader.enable) then
+	if frame.db and frame.db.enable and (frame.db.fader and frame.db.fader.enable) then
 		if frame:IsElementEnabled('Fader') then
 			frame:DisableElement('Fader') -- we need to clear the old stuff
 		end
