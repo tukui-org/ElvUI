@@ -293,6 +293,9 @@ local function Disable(self, unit)
 			if #onRangeObjects == 0 then
 				onRangeFrame:Hide()
 			end
+		else
+			-- ToggleAlpha will catch this for onRangeObjects but we must do it for the others too
+			ClearTimers(element)
 		end
 	end
 end
