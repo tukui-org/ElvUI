@@ -1,5 +1,4 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames')
 local AB = E:GetModule('ActionBars')
 
 --Lua functions
@@ -281,15 +280,12 @@ function E:UpdateCooldownOverride(module)
 						if not customFont then
 							customFont = E.Libs.LSM:Fetch("font", E.db[cd.CooldownOverride].font)
 						end
-						if customFont then
-							-- cd.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
-							if cd.auraType and (cd.CooldownOverride == 'auras') then
-								customFontSize = E.db[cd.CooldownOverride][cd.auraType] and E.db[cd.CooldownOverride][cd.auraType].durationFontSize
-								if customFontSize then
-									text:FontTemplate(customFont, customFontSize, E.db[cd.CooldownOverride].fontOutline)
-								end
-							elseif (cd.CooldownOverride == 'unitframe') then
-								text:FontTemplate(customFont, E.db[cd.CooldownOverride].fontSize, E.db[cd.CooldownOverride].fontOutline)
+
+						-- cd.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
+						if customFont and cd.auraType and (cd.CooldownOverride == 'auras') then
+							customFontSize = E.db[cd.CooldownOverride][cd.auraType] and E.db[cd.CooldownOverride][cd.auraType].durationFontSize
+							if customFontSize then
+								text:FontTemplate(customFont, customFontSize, E.db[cd.CooldownOverride].fontOutline)
 							end
 						end
 					end
@@ -303,17 +299,8 @@ function E:UpdateCooldownOverride(module)
 				if (not blizzTextAB) and AB and AB.handledBars and (cd.CooldownOverride == 'actionbar') then
 					blizzTextAB = true
 				end
-			elseif cd.CooldownOverride and not (timer and CD) then
-				if cd.CooldownOverride == 'auras' then
-					cd.nextUpdate = -1
-				elseif cd.CooldownOverride == 'unitframe' then
-					cd.nextUpdate = -1
-					if E.private.unitframe.enable then
-						-- cd.unit defined in `UF:UpdateAuraIconSettings`, it's safe to pass even if `nil`
-						UF:PostUpdateAura(cd.unit, cd)
-						E:ToggleBlizzardCooldownText(cd.cd, cd)
-					end
-				end
+			elseif cd.CooldownOverride == 'auras' and not (timer and CD) then
+				cd.nextUpdate = -1
 			end
 		end
 	end
