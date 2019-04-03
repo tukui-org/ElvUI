@@ -1711,7 +1711,7 @@ function E:DBConversions()
 				E.db.unitframe.units[unit].fader.range = enabled
 
 				if outsideAlpha then
-					E.db.unitframe.units[unit].fader.MinAlpha = outsideAlpha
+					E.db.unitframe.units[unit].fader.minAlpha = outsideAlpha
 				end
 
 				E.db.unitframe.units[unit].rangeCheck = nil
