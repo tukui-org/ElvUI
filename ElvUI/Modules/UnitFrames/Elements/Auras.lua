@@ -86,6 +86,7 @@ function UF:Construct_AuraIcon(button)
 	local auras = button:GetParent()
 	local frame = auras:GetParent()
 	button.db = frame.db and frame.db[auras.type]
+	frame.size = 30
 
 	UF:UpdateAuraSettings(button)
 end
@@ -94,6 +95,9 @@ function UF:UpdateAuraSettings(button)
 	if button.db then
 		button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
 	end
+
+	local size = button:GetParent().size
+	if size then button:Size(size) end
 
 	button.needsUpdateCooldownPosition = true
 end
@@ -375,9 +379,6 @@ function UF:PostUpdateAura(unit, button)
 	if button.needsUpdateCooldownPosition then
 		UF:UpdateAuraCooldownPosition(button)
 	end
-
-	local size = button:GetParent().size
-	if size then button:Size(size, size) end
 end
 
 function UF:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
