@@ -96,6 +96,7 @@ function UF:UpdateAuraSettings(button)
 	end
 
 	button.needsUpdateCooldownPosition = true
+	UF:UpdateAuraCooldownPosition(button)
 end
 
 function UF:EnableDisable_Auras(frame)
