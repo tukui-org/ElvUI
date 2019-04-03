@@ -86,18 +86,16 @@ function UF:Construct_AuraIcon(button)
 	local auras = button:GetParent()
 	local frame = auras:GetParent()
 	button.db = frame.db and frame.db[auras.type]
-	frame.size = 30
 
-	UF:UpdateAuraSettings(button)
+	UF:UpdateAuraSettings(auras, button)
 end
 
-function UF:UpdateAuraSettings(button)
+function UF:UpdateAuraSettings(auras, button)
 	if button.db then
 		button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
 	end
 
-	local size = button:GetParent().size
-	if size then button:Size(size) end
+	button:Size((auras and auras.size) or 30)
 
 	button.needsUpdateCooldownPosition = true
 end
@@ -166,7 +164,7 @@ function UF:Configure_Auras(frame, auraType)
 		local button = auras[index]
 		if button then
 			button.db = auras.db
-			UF:UpdateAuraSettings(button)
+			UF:UpdateAuraSettings(auras, button)
 		end
 
 		index = index + 1
