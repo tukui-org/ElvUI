@@ -432,7 +432,7 @@ P.nameplates = {
 	filters = {
 		Boss = {
 			triggers = {
-				enable = true,
+				enable = false,
 			},
 		},
 		Explosives = {
