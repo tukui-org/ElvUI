@@ -163,7 +163,6 @@ function UF:Configure_Auras(frame, auraType)
 		local button = auras[index]
 		if button then
 			button.db = auras.db
-			print('Configure_Auras', button:GetDebugName())
 			UF:UpdateAuraSettings(button)
 		end
 
