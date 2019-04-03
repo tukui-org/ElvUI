@@ -1782,7 +1782,6 @@ P.unitframe = {
 	font = 'Homespun',
 	fontSize = 10,
 	fontOutline = 'MONOCHROMEOUTLINE',
-	OORAlpha = 0.35,
 	debuffHighlighting = 'FILL',
 	smartRaidFilter = true,
 	targetOnMouseDown = false,

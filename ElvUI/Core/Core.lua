@@ -1696,14 +1696,26 @@ function E:DBConversions()
 	end
 
 	-- [Fader] Range check options for Units
-	local rangeCheckUnits = { 'target', 'targettarget', 'targettargettarget', 'focus', 'focustarget', 'pet', 'pettarget', 'boss', 'arena', 'party', 'raid', 'raid40', 'raidpet', 'tank', 'assist' }
-	for _, unit in pairs(rangeCheckUnits) do
-		if E.db.unitframe.units[unit].rangeCheck ~= nil then
-			local enabled = E.db.unitframe.units[unit].rangeCheck
-			E.db.unitframe.units[unit].fader.enable = enabled
-			E.db.unitframe.units[unit].fader.range = enabled
+	do
+		local outsideAlpha
+		if E.db.unitframe.OORAlpha ~= nil then
+			outsideAlpha = E.db.unitframe.OORAlpha
+			E.db.unitframe.OORAlpha = nil
+		end
 
-			E.db.unitframe.units[unit].rangeCheck = nil
+		local rangeCheckUnits = { 'target', 'targettarget', 'targettargettarget', 'focus', 'focustarget', 'pet', 'pettarget', 'boss', 'arena', 'party', 'raid', 'raid40', 'raidpet', 'tank', 'assist' }
+		for _, unit in pairs(rangeCheckUnits) do
+			if E.db.unitframe.units[unit].rangeCheck ~= nil then
+				local enabled = E.db.unitframe.units[unit].rangeCheck
+				E.db.unitframe.units[unit].fader.enable = enabled
+				E.db.unitframe.units[unit].fader.range = enabled
+
+				if outsideAlpha then
+					E.db.unitframe.units[unit].fader.MinAlpha = outsideAlpha
+				end
+
+				E.db.unitframe.units[unit].rangeCheck = nil
+			end
 		end
 	end
 
