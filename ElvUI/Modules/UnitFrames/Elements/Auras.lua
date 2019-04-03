@@ -87,7 +87,6 @@ function UF:Construct_AuraIcon(button)
 	local frame = auras:GetParent()
 	button.db = frame.db and frame.db[auras.type]
 
-	print('Construct_AuraIcon', button:GetDebugName())
 	UF:UpdateAuraSettings(button)
 end
 
