@@ -152,8 +152,6 @@ function E:CreateCooldownTimer(parent)
 	end
 	----------
 
-	E:ToggleBlizzardCooldownText(parent, timer)
-
 	-- keep an eye on the size so we can rescale the font if needed
 	self:Cooldown_OnSizeChanged(timer, parent:GetWidth())
 	parent:SetScript('OnSizeChanged', function(_, width)
@@ -174,6 +172,8 @@ function E:OnSetCooldown(start, duration)
 		timer.duration = duration
 		timer.enabled = true
 		timer.nextUpdate = 0
+
+		E:ToggleBlizzardCooldownText(self, timer)
 
 		if timer.fontScale and (timer.fontScale >= MIN_SCALE) then
 			timer:Show()
