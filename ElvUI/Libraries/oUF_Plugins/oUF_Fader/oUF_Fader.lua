@@ -26,14 +26,14 @@ local PowerTypesFull = {
 	ENERGY = true,
 }
 
-local function ToggleAlpha(self, element, endAlpha)
+local function ToggleAlpha(self, element, endAlpha, delayCall)
+	if delayCall then element.isDelayed = nil end
+	if element.isDelayed then return end
+
 	if element.Smooth then
 		ElvUI[1]:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), endAlpha)
 	else
 		self:SetAlpha(element.MinAlpha)
-	end
-	if element.isDelayed then
-		element.isDelayed = nil
 	end
 end
 
@@ -53,7 +53,7 @@ local function Update(self, event, unit)
 	unit = unit or self.unit
 
 	-- range fader
-	if element.UpdateRange then
+	if element.Range and element.UpdateRange then
 		element.UpdateRange(self, unit)
 	end
 	if element.Range and element.RangeAlpha then
@@ -70,8 +70,7 @@ local function Update(self, event, unit)
 	if
 		(element.Casting and (UnitCastingInfo(unit) or UnitChannelInfo(unit))) or
 		(element.Combat and UnitAffectingCombat(unit)) or
-		(element.Target and (unit:find('target') and UnitExists(unit))) or
-		(element.Target and UnitExists(unit .. 'target')) or
+		(element.Target and ( (unit:find('target') and UnitExists(unit)) or UnitExists(unit .. 'target') )) or
 		(element.Focus and UnitExists('focus')) or
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
@@ -81,8 +80,7 @@ local function Update(self, event, unit)
 		ToggleAlpha(self, element, element.MaxAlpha)
 	else
 		if element.Delay and not element.isDelayed then
-			ElvUI[1]:Delay(element.Delay, ToggleAlpha, self, element, element.MinAlpha)
-			element.isDelayed = true
+			element.isDelayed = ElvUI[1]:Delay(element.Delay, ToggleAlpha, self, element, element.MinAlpha, true)
 		else
 			ToggleAlpha(self, element, element.MinAlpha)
 		end
