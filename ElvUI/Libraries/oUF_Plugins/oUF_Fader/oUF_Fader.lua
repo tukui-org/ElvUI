@@ -184,6 +184,10 @@ local function Enable(self, unit)
 
 			element.TargetHooked = 1 -- on state
 
+			if not self:IsShown() then
+				self:SetAlpha(0)
+			end
+
 			self:RegisterEvent('UNIT_TARGET', Update)
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', Update, true)
 			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
