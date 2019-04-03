@@ -469,7 +469,7 @@ end
 function UF:Configure_Fader(frame)
 	if frame.db and frame.db.enable and (frame.db.fader and frame.db.fader.enable) then
 		if frame:IsElementEnabled('Fader') then
-			frame:DisableElement('Fader') -- we need to clear the old stuff
+			frame:DisableElement('Fader') -- we need to clear the old stuff, this also clears the configTimer
 		end
 
 		frame.Fader.Hover = frame.db.fader.hover
@@ -502,12 +502,9 @@ function UF:Configure_Fader(frame)
 
 		frame:EnableElement('Fader') -- reset the settings
 
-		if frame.Fader.configTimer then
-			E:CancelTimer(frame.Fader.configTimer)
-			frame.Fader.configTimer = nil
+		if not frame.Fader.configTimer then
+			frame.Fader.configTimer = E:ScheduleTimer(frame.Fader.ForceUpdate, 0.25, frame.Fader, true)
 		end
-
-		frame.Fader.configTimer = E:ScheduleTimer(frame.Fader.ForceUpdate, 0.25, frame.Fader, true)
 	elseif frame:IsElementEnabled('Fader') then
 		frame:DisableElement('Fader')
 		E:UIFrameFadeIn(frame, 1, frame:GetAlpha(), 1)

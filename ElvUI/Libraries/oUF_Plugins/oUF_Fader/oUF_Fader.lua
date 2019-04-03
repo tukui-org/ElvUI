@@ -38,8 +38,6 @@ local function ClearTimers(element)
 end
 
 local function ToggleAlpha(self, element, endAlpha)
-	ClearTimers(element)
-
 	if element.Smooth then
 		ElvUI[1]:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), endAlpha)
 	else
@@ -293,10 +291,9 @@ local function Disable(self, unit)
 			if #onRangeObjects == 0 then
 				onRangeFrame:Hide()
 			end
-		else
-			-- ToggleAlpha will catch this for onRangeObjects but we must do it for the others too
-			ClearTimers(element)
 		end
+
+		ClearTimers(element)
 	end
 end
 
