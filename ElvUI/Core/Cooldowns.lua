@@ -307,7 +307,7 @@ function E:UpdateCooldownOverride(module)
 				if cd.CooldownOverride == 'auras' then
 					cd.nextUpdate = -1
 				elseif cd.CooldownOverride == 'unitframe' then
-					cd.nextupdate = -1
+					cd.nextUpdate = -1
 					if E.private.unitframe.enable then
 						-- cd.unit defined in `UF:UpdateAuraIconSettings`, it's safe to pass even if `nil`
 						UF:PostUpdateAura(cd.unit, cd)
