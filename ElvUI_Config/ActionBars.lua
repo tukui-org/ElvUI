@@ -285,7 +285,7 @@ local function BuildABConfig()
 							hotkeyTextPosition  = {
 								type = 'select',
 								order = 4,
-								name = L["Hotkey Text Position"],
+								name = L["Keybind Text Position"],
 								values = {
 									['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
 									['BOTTOMLEFT'] = 'BOTTOMLEFT',
@@ -298,13 +298,13 @@ local function BuildABConfig()
 							hotkeyTextXOffset = {
 								type = 'range',
 								order = 5,
-								name = L["Hotkey Text X-Offset"],
+								name = L["Keybind Text X-Offset"],
 								min = -10, max = 10, step = 1,
 							},
 							hotkeyTextYOffset = {
 								type = 'range',
 								order = 6,
-								name = L["Hotkey Text Y-Offset"],
+								name = L["Keybind Text Y-Offset"],
 								min = -10, max = 10, step = 1,
 							},
 						},
