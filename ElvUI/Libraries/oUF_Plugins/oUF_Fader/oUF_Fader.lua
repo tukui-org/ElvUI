@@ -71,7 +71,7 @@ local function Update(self, event, unit)
 	if
 		(element.Casting and (UnitCastingInfo(unit) or UnitChannelInfo(unit))) or
 		(element.Combat and UnitAffectingCombat(unit)) or
-		(element.Target and ( (unit:find('target') and UnitExists(unit)) or UnitExists(unit .. 'target') )) or
+		(element.Target and ( (unit ~= 'target' and unit:find('target') and UnitExists(unit)) or UnitExists(unit .. 'target') )) or
 		(element.Focus and UnitExists('focus')) or
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
