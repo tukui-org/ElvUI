@@ -45,7 +45,6 @@ local function Update(self, event, unit)
 	end
 
 	local element = self.Fader
-
 	if element.isOff then
 		ToggleAlpha(self, element, 1)
 		return
@@ -54,11 +53,13 @@ local function Update(self, event, unit)
 	unit = unit or self.unit
 
 	-- range fader
-	if element.Range and element.UpdateRange then
-		element.UpdateRange(self, unit)
-	end
-	if element.Range and element.RangeAlpha then
-		ToggleAlpha(self, element, element.RangeAlpha)
+	if element.Range then
+		if element.UpdateRange then
+			element.UpdateRange(self, unit)
+		end
+		if element.RangeAlpha then
+			ToggleAlpha(self, element, element.RangeAlpha)
+		end
 		return
 	end
 
