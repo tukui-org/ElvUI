@@ -26,9 +26,10 @@ local PowerTypesFull = {
 	ENERGY = true,
 }
 
-local function ToggleAlpha(self, element, endAlpha, delayCall)
-	if delayCall then element.isDelayed = nil end
-	if element.isDelayed then return end
+local function ToggleAlpha(self, element, endAlpha)
+	if element.delayTimer then
+		ElvUI[1]:CancelTimer(element.delayTimer)
+	end
 
 	if element.Smooth then
 		ElvUI[1]:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), endAlpha)
@@ -79,8 +80,9 @@ local function Update(self, event, unit)
 	then
 		ToggleAlpha(self, element, element.MaxAlpha)
 	else
-		if element.Delay and not element.isDelayed then
-			element.isDelayed = ElvUI[1]:Delay(element.Delay, ToggleAlpha, self, element, element.MinAlpha, true)
+		if element.Delay then
+			if element.delayTimer then ElvUI[1]:CancelTimer(element.delayTimer) end
+			element.delayTimer = ElvUI[1]:ScheduleTimer(ToggleAlpha, element.Delay, self, element, element.MinAlpha)
 		else
 			ToggleAlpha(self, element, element.MinAlpha)
 		end
