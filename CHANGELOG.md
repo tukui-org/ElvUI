@@ -24,7 +24,6 @@ Add a new default Style Filter: "Explosives" for Explosive Orbs in Mythic plus.
 [Nameplate] Made sure the Classbar appears on the Targeted plate correctly.  
 [Nameplate] Fixed issue which prevented the Quest Icon from showing in some cases.  
 [Nameplate] Fixed rune sort order for Deathknights and Classbar color for Monks.  
-[Nameplate] Fixed Bag and Bank search from not being cleared consistently. (#1108)  
 [Actionbar] Fixed main bar (bar one) paging issue.  
 [Actionbar] Fixed Stance Bar Keybinding Text not appearing correctly. (#541)  
 [Chat / Datatext] Finally fixed the 'lhs' error with Quick Join.  
@@ -41,6 +40,7 @@ Fixed a tiny visual glitch with the DropDown in the Communities frame.
 Fixed an issue which would cause an error if you had the Login messaged enable while the Chat module was disabled.  
 Fixed an issue which kept healers stored when out of a Battleground. (#1219)  
 Fixed an issue which prevented Aurabars from correctly handling the Dispellable filters.  
+Fixed Bag and Bank search from not being cleared consistently. (#1108)  
 
 **Misc. Changes:**  
 [Nameplate] Keep Player nameplate from fading out.  
