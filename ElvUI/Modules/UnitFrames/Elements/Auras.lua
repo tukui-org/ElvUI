@@ -80,9 +80,6 @@ function UF:Construct_AuraIcon(button)
 		end
 	end)
 
-	button.cd.CooldownOverride = 'unitframe'
-	E:RegisterCooldown(button.cd)
-
 	local auras = button:GetParent()
 	local frame = auras:GetParent()
 	button.db = frame.db and frame.db[auras.type]
@@ -91,6 +88,11 @@ function UF:Construct_AuraIcon(button)
 end
 
 function UF:UpdateAuraSettings(button)
+	if not button.cd.isRegisteredCooldown then
+		button.cd.CooldownOverride = 'unitframe'
+		E:RegisterCooldown(button.cd)
+	end
+
 	if button.db then
 		button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
 	end
