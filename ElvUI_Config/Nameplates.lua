@@ -2073,26 +2073,32 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						min = 4, max = 20, step = 1,
 					},
-					yOffset = {
+					xOffset = {
 						order = 5,
 						name = L["Y-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
-					displayAltPower = {
+					yOffset = {
 						order = 6,
+						name = L["Y-Offset"],
+						type = "range",
+						min = -100, max = 100, step = 1,
+					},
+					displayAltPower = {
+						order = 7,
 						name = L["Swap to Alt Power"],
 						type = "toggle",
 					},
 					useAtlas = {
-						order = 7,
+						order = 8,
 						name = L["Use Atlas Textures"],
 						desc = L["Use Atlas Textures if there is one available."],
 						type = "toggle",
 					},
 					classColor = {
 						type = 'toggle',
-						order = 8,
+						order = 9,
 						name = L["Use Class Color"],
 					},
 					textGroup = {
@@ -2234,14 +2240,20 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						min = 4, max = 20, step = 1,
 					},
-					yOffset = {
+					xOffset = {
 						order = 9,
 						name = L["Y-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
-					textGroup = {
+					yOffset = {
 						order = 10,
+						name = L["Y-Offset"],
+						type = "range",
+						min = -100, max = 100, step = 1,
+					},
+					textGroup = {
+						order = 20,
 						name = L["Text"],
 						type = "group",
 						get = function(info) return E.db.nameplates.units[unit].castbar[info[#info]] end,
@@ -2293,7 +2305,7 @@ local function GetUnitSettings(unit, name)
 						},
 					},
 					iconGroup = {
-						order = 13,
+						order = 25,
 						name = L["Icon"],
 						type = "group",
 						get = function(info) return E.db.nameplates.units[unit].castbar[info[#info]] end,
@@ -2336,7 +2348,7 @@ local function GetUnitSettings(unit, name)
 					},
 					fontGroup = {
 						type = "group",
-						order = 14,
+						order = 30,
 						name = L["Font"],
 						guiInline = true,
 						get = function(info) return E.db.nameplates.units[unit].castbar[info[#info]] end,
@@ -2422,22 +2434,28 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						min = 0, max = 60, step = 1,
 					},
-					yOffset = {
+					xOffset = {
 						order = 6,
+						name = L["Y-Offset"],
+						type = "range",
+						min = -100, max = 100, step = 1,
+					},
+					yOffset = {
+						order = 7,
 						type = 'range',
 						name = L["Y-Offset"],
-						min = -1000, max = 1000, step = 1,
+						min = -100, max = 100, step = 1,
 					},
 					anchorPoint = {
 						type = 'select',
-						order = 7,
+						order = 8,
 						name = L["Anchor Point"],
 						desc = L["What point to anchor to the frame you set to attach to."],
 						values = positionValues,
 					},
 					growthX = {
 						type = 'select',
-						order = 8,
+						order = 9,
 						name = L["Growth X-Direction"],
 						values = {
 							['LEFT'] = L["Left"],
@@ -2446,7 +2464,7 @@ local function GetUnitSettings(unit, name)
 					},
 					growthY = {
 						type = 'select',
-						order = 9,
+						order = 10,
 						name = L["Growth Y-Direction"],
 						values = {
 							['UP'] = L["Up"],
@@ -2455,7 +2473,7 @@ local function GetUnitSettings(unit, name)
 					},
 					stacks = {
 						type = "group",
-						order = 10,
+						order = 11,
 						name = L["Stack Counter"],
 						guiInline = true,
 						get = function(info, value) return E.db.nameplates.units[unit].buffs[info[#info]] end,
@@ -2489,7 +2507,7 @@ local function GetUnitSettings(unit, name)
 					},
 					duration = {
 						type = "group",
-						order = 11,
+						order = 12,
 						name = L["Duration"],
 						guiInline = true,
 						get = function(info) return E.db.nameplates.units[unit].buffs[info[#info]] end,
@@ -2520,7 +2538,7 @@ local function GetUnitSettings(unit, name)
 					},
 					filtersGroup = {
 						name = FILTERS,
-						order = 12,
+						order = 13,
 						type = "group",
 						guiInline = true,
 						get = function(info) return E.db.nameplates.units[unit].buffs.filters[info[#info]] end,
@@ -2707,11 +2725,17 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						min = 0, max = 60, step = 1,
 					},
-					yOffset = {
+					xOffset = {
 						order = 6,
+						name = L["Y-Offset"],
+						type = "range",
+						min = -100, max = 100, step = 1,
+					},
+					yOffset = {
+						order = 7,
 						type = 'range',
 						name = L["Y-Offset"],
-						min = -1000, max = 1000, step = 1,
+						min = -100, max = 100, step = 1,
 					},
 					anchorPoint = {
 						type = 'select',
@@ -3294,7 +3318,7 @@ local function GetUnitSettings(unit, name)
 			guiInline = true,
 			name = L["Visibility"],
 			get = function(info) return E.db.nameplates.units[unit].visibility[info[#info]] end,
-			set = function(info, value) E.db.nameplates.units[unit].visibility[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end,
+			set = function(info, value) E.db.nameplates.units[unit].visibility[info[#info]] = value; NP:SetCVars() NP:ConfigureAll() print(value) end,
 			args = {
 				showAlways = {
 					order = 1,
@@ -3318,7 +3342,7 @@ local function GetUnitSettings(unit, name)
 					order = 4,
 					type = "range",
 					name = L["Hide Delay"],
-					min = 0, max = 20, step = 0.5,
+					min = 0, max = 20, step = 1,
 					disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
 				},
 			},
@@ -3335,11 +3359,17 @@ local function GetUnitSettings(unit, name)
 					order = 1,
 					name = L['Enable']
 				},
+				xOffset = {
+					order = 2,
+					name = L["Y-Offset"],
+					type = "range",
+					min = -100, max = 100, step = 1,
+				},
 				yOffset = {
 					order = 3,
 					name = L["Y-Offset"],
 					type = "range",
-					min = -80, max = 80, step = 1,
+					min = -100, max = 100, step = 1,
 				},
 				width = {
 					order = 4,

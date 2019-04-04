@@ -185,7 +185,7 @@ function NP:Update_Castbar(nameplate)
 		nameplate.Castbar.channelTimeFormat = db.castbar.channelTimeFormat
 
 		nameplate.Castbar:Size(db.castbar.width, db.castbar.height)
-		nameplate.Castbar:Point('CENTER', nameplate, 'CENTER', 0, db.castbar.yOffset)
+		nameplate.Castbar:Point('CENTER', nameplate, 'CENTER', db.castbar.xOffset, db.castbar.yOffset)
 
 		if db.castbar.showIcon then
 			nameplate.Castbar.Button:ClearAllPoints()

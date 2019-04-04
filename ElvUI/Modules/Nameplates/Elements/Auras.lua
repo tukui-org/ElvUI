@@ -176,7 +176,7 @@ function NP:Update_Auras(nameplate)
 				local mult = floor(NP.db.clickableWidth / db.debuffs.size) < db.debuffs.numAuras
 				nameplate.Debuffs:Size(NP.db.clickableWidth, (mult and 1 or 2) * db.debuffs.size)
 				nameplate.Debuffs:ClearAllPoints()
-				nameplate.Debuffs:Point(E.InversePoints[db.debuffs.anchorPoint] or 'TOPRIGHT', db.debuffs.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.debuffs.anchorPoint or 'TOPRIGHT', 0, db.debuffs.yOffset)
+				nameplate.Debuffs:Point(E.InversePoints[db.debuffs.anchorPoint] or 'TOPRIGHT', db.debuffs.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.debuffs.anchorPoint or 'TOPRIGHT', db.debuffs.xOffset, db.debuffs.yOffset)
 				nameplate.Debuffs:Show()
 			else
 				nameplate.Debuffs:Hide()
@@ -194,7 +194,7 @@ function NP:Update_Auras(nameplate)
 				local mult = floor(NP.db.clickableWidth / db.buffs.size) < db.buffs.numAuras
 				nameplate.Buffs:Size(NP.db.clickableWidth, (mult and 1 or 2) * db.buffs.size)
 				nameplate.Buffs:ClearAllPoints()
-				nameplate.Buffs:Point(E.InversePoints[db.buffs.anchorPoint] or 'TOPLEFT', db.buffs.attachTo == 'DEBUFFS' and nameplate.Debuffs or nameplate, db.buffs.anchorPoint or 'TOPLEFT', 0, db.buffs.yOffset)
+				nameplate.Buffs:Point(E.InversePoints[db.buffs.anchorPoint] or 'TOPLEFT', db.buffs.attachTo == 'DEBUFFS' and nameplate.Debuffs or nameplate, db.buffs.anchorPoint or 'TOPLEFT', db.debuffs.xOffset, db.buffs.yOffset)
 				nameplate.Buffs:Show()
 			else
 				nameplate.Buffs:Hide()

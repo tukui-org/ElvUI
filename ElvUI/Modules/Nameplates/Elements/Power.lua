@@ -142,7 +142,7 @@ function NP:Update_Power(nameplate)
 			nameplate:EnableElement('Power')
 		end
 
-		nameplate.Power:Point('CENTER', nameplate, 'CENTER', 0, db.power.yOffset)
+		nameplate.Power:Point('CENTER', nameplate, 'CENTER', db.power.xOffset, db.power.yOffset)
 
 		E:SetSmoothing(nameplate.Power, NP.db.smoothbars)
 	else

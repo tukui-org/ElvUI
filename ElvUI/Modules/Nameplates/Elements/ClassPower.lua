@@ -143,7 +143,7 @@ function NP:Update_ClassPower(nameplate)
 			nameplate:EnableElement('ClassPower')
 		end
 
-		nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', 0, db.classpower.yOffset)
+		nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 
 		local maxClassBarButtons = nameplate.ClassPower.__max
 
@@ -190,7 +190,7 @@ function NP:Update_Runes(nameplate)
 		end
 
 		nameplate.Runes:Show()
-		nameplate.Runes:Point('CENTER', nameplate, 'CENTER', 0, db.classpower.yOffset)
+		nameplate.Runes:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 
 		nameplate.Runes.sortOrder = db.classpower.sortDirection
 
