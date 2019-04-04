@@ -139,8 +139,17 @@ local function BuildABConfig()
 					AB:ToggleCooldownOptions()
 				end,
 			},
-			movementModifier = {
+			chargeCooldown = {
 				order = 13,
+				type = "toggle",
+				name = L["Show Charge Cooldown"],
+				set = function(info, value)
+					E.db.actionbar.chargeCooldown = value;
+					AB:ToggleCooldownOptions()
+				end,
+			},
+			movementModifier = {
+				order = 14,
 				type = 'select',
 				name = PICKUP_ACTION_KEY_TEXT,
 				desc = L["The button you must hold down in order to drag an ability to another action button."],
@@ -153,22 +162,13 @@ local function BuildABConfig()
 				},
 			},
 			globalFadeAlpha = {
-				order = 14,
+				order = 15,
 				type = 'range',
 				name = L["Global Fade Transparency"],
 				desc = L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."],
 				min = 0, max = 1, step = 0.01,
 				isPercent = true,
 				set = function(info, value) E.db.actionbar[info[#info]] = value; AB.fadeParent:SetAlpha(1-value) end,
-			},
-			chargeCooldown = {
-				order = 15,
-				type = "toggle",
-				name = L["Show Charge Cooldown"],
-				set = function(info, value)
-					E.db.actionbar.chargeCooldown = value;
-					AB:ToggleCooldownOptions()
-				end,
 			},
 			colorGroup = {
 				order = 20,

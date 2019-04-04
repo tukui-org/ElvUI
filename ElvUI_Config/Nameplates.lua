@@ -3430,7 +3430,7 @@ local function GetUnitSettings(unit, name)
 			type = 'toggle',
 			order = 101,
 			name = L["Show Title"],
-			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."]
+			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."],
 		}
 		group.args.general.args.markHealers = {
 			type = "toggle",
