@@ -21,7 +21,7 @@ local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 
 -- These variables will be left-over when disabled if they were used (for reuse later if they become re-enabled):
--- Fader.anim, Fader.HoverHooked, Fader.TargetHooked, Fader.RangeAlpha
+-- Fader.anim, Fader.HoverHooked, Fader.TargetHooked
 
 local MIN_ALPHA, MAX_ALPHA = .35, 1
 local onRangeObjects, onRangeFrame = {}
@@ -68,7 +68,7 @@ end
 
 local function Update(self, event, unit)
 	local element = self.Fader
-	if self.isForced or (not element or not element.isEnabled) then
+	if self.isForced or (not element or not element.count or element.count <= 0) then
 		self:SetAlpha(1)
 		return
 	end
@@ -164,6 +164,7 @@ local options = {
 			if onRangeFrame then
 				for idx, obj in next, onRangeObjects do
 					if obj == self then
+						self.Fader.RangeAlpha = nil
 						tremove(onRangeObjects, idx)
 						break
 					end
@@ -261,29 +262,39 @@ local options = {
 		events = {'UNIT_SPELLCAST_START','UNIT_SPELLCAST_FAILED','UNIT_SPELLCAST_STOP','UNIT_SPELLCAST_INTERRUPTED','UNIT_SPELLCAST_CHANNEL_START','UNIT_SPELLCAST_CHANNEL_STOP'}
 	},
 	MinAlpha = {
+		countIgnored = true,
 		enable = function(self, state)
 			self.Fader.MinAlpha = state or MIN_ALPHA
 		end
 	},
 	MaxAlpha = {
+		countIgnored = true,
 		enable = function(self, state)
 			self.Fader.MaxAlpha = state or MAX_ALPHA
 		end
 	},
-	Smooth = {},
-	Delay = {},
+	Smooth = {countIgnored = true},
+	Delay = {countIgnored = true},
 }
 
 local function SetOption(element, opt, state)
-	local option = (opt == 'UnitTarget' or opt == 'PlayerTarget' and 'Target') or opt
+	local option = ((opt == 'UnitTarget' or opt == 'PlayerTarget') and 'Target') or opt
 	if option and options[option] and (element[opt] ~= state) then
 		element[opt] = state
 
 		if state then
+			if not options[option].countIgnored then
+				element.count = element.count + 1
+			end
+
 			if options[option].enable then
 				options[option].enable(element.__owner, state)
 			end
 		else
+			if (element.count > 0) and not options[option].countIgnored then
+				element.count = element.count - 1
+			end
+
 			if options[option].events and next(options[option].events) then
 				for _, event in ipairs(options[option].events) do
 					element.__owner:UnregisterEvent(event, Update)
@@ -306,7 +317,7 @@ local function Enable(self)
 
 		self.Fader.MinAlpha = MIN_ALPHA
 		self.Fader.MaxAlpha = MAX_ALPHA
-		self.Fader.isEnabled = true
+		self.Fader.count = 0
 
 		return true
 	end
@@ -314,8 +325,6 @@ end
 
 local function Disable(self)
 	if self.Fader then
-		self.Fader.isEnabled = nil
-
 		for opt in pairs(options) do
 			if opt == 'Target' then
 				self.Fader:SetOption('UnitTarget')
@@ -324,6 +333,9 @@ local function Disable(self)
 				self.Fader:SetOption(opt)
 			end
 		end
+
+		self.Fader.count = nil
+		self.Fader:ClearTimers()
 	end
 end
 
