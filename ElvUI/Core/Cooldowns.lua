@@ -73,6 +73,8 @@ end
 function E:Cooldown_IsEnabled(cd)
 	if cd.alwaysEnabled then
 		return true
+	elseif cd.disabled then
+		return false
 	elseif cd.timerOptions and (cd.timerOptions.reverseToggle ~= nil) then
 		return (E.db.cooldown.enable and not cd.timerOptions.reverseToggle) or (not E.db.cooldown.enable and cd.timerOptions.reverseToggle)
 	else
