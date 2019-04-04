@@ -453,14 +453,15 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		unit = unit or nameplate.unit
 
-		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
+		local mainFrame = nameplate:GetParent()
+		nameplate.blizzPlate = mainFrame.UnitFrame
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.reaction = UnitReaction('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.unitGUID = UnitGUID(unit)
 
 		if nameplate.unitGUID then
-			NP.PlateGUID[nameplate.unitGUID] = nameplate
+			NP.PlateGUID[nameplate.unitGUID] = mainFrame
 		end
 
 		NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
