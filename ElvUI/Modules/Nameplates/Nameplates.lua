@@ -20,6 +20,7 @@ local SetCVar, GetCVarDefault = SetCVar, GetCVarDefault
 local UnitFactionGroup = UnitFactionGroup
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
 local UnitIsFriend = UnitIsFriend
+local UnitGUID = UnitGUID
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local IsInInstance = IsInInstance
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned

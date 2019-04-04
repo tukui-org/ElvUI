@@ -1,10 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
+-- Cache global variables
+-- Lua functions
+-- WoW API / Variables
 local UnitName = UnitName
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
+-- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
+-- GLOBALS:
 
 function NP:ThreatIndicator_PreUpdate(unit)
 	local ROLE = NP.IsInGroup and UnitExists(unit..'target') and not UnitIsUnit(unit..'target', 'player') and NP.GroupRoles[UnitName(unit..'target')] or 'NONE'

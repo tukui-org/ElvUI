@@ -1,9 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
-local pairs = pairs
-local unpack = unpack
+-- Cache global variables
+-- Lua functions
+local pairs, unpack = pairs, unpack
+-- WoW API / Variables
 local CreateFrame = CreateFrame
+-- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
+-- GLOBALS:
 
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nameplate:GetDebugName()..'QuestIcons', nameplate)

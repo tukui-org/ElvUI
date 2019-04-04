@@ -1,12 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
+-- Cache global variables
+-- Lua functions
+-- WoW API / Variables
 local C_Timer_After = C_Timer.After
 local hooksecurefunc = hooksecurefunc
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
+-- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
+-- GLOBALS:
 
 local HealthIsDone, PowerIsDone
 local function CloseHealth()

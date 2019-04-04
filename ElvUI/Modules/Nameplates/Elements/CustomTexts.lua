@@ -1,6 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
+-- Cache global variables
+-- Lua functions
+local pairs = pairs
+-- WoW API / Variables
+-- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
+-- GLOBALS:
+
 function NP:Configure_CustomTexts(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 

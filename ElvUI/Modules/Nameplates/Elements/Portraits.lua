@@ -1,11 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
+-- Cache global variables
+-- Lua functions
 local _G = _G
 local unpack = unpack
+-- WoW API / Variables
 local UnitClass = UnitClass
 local UnitIsPlayer = UnitIsPlayer
-
+-- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
+-- GLOBALS:
 
 function NP:Portrait_PostUpdate(unit)
 	local db = NP.db.units[self.__owner.frameType]

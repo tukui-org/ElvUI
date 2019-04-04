@@ -1,9 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
+-- Cache global variables
+-- Lua functions
 local gsub = gsub
 local format = format
 local wipe = wipe
+-- WoW API / Variables
 local UnitName = UnitName
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldScore = GetBattlefieldScore
@@ -12,6 +15,8 @@ local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local IsInInstance = IsInInstance
 local UNKNOWN = UNKNOWN
+-- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
+-- GLOBALS:
 
 local healerSpecIDs = {
 	65,		--Paladin Holy

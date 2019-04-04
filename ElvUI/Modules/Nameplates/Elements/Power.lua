@@ -1,17 +1,22 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
+-- Cache global variables
+-- Lua functions
 local _G = _G
+local unpack = unpack
+-- WoW API / Variables
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitThreatSituation = UnitThreatSituation
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
-local unpack = unpack
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 local UnitSelectionType = UnitSelectionType
+-- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
+-- GLOBALS:
 
 function NP:Power_UpdateColor(event, unit)
 	if self.unit ~= unit then return end
