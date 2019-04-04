@@ -78,6 +78,7 @@ Blizzard corrected the issue with CVars not saving correctly.
 Adjusted all the Power and Classbar backdrop colors to be a little more vivid.  
 Added dispellable to boss buff filters by default. (#1215)  
 Added Vehicle support to our new oUF_Fader lib. (#148)  
+Scaled the Skip frame on the cinematic screen. (#1176)  
 
 **Work in Progress:**  
 Cutaway Health, Custom Text, and Floating Combat Feedback on Nameplates.  
