@@ -136,7 +136,7 @@ local function BuildABConfig()
 				name = L["Desaturate On Cooldown"],
 				set = function(info, value)
 					E.db.actionbar.desaturateOnCooldown = value;
-					AB:ToggleDesaturation(value)
+					AB:ToggleCooldownOptions()
 				end,
 			},
 			movementModifier = {
@@ -160,6 +160,15 @@ local function BuildABConfig()
 				min = 0, max = 1, step = 0.01,
 				isPercent = true,
 				set = function(info, value) E.db.actionbar[info[#info]] = value; AB.fadeParent:SetAlpha(1-value) end,
+			},
+			chargeCooldown = {
+				order = 15,
+				type = "toggle",
+				name = L["Show Charge Cooldown"],
+				set = function(info, value)
+					E.db.actionbar.chargeCooldown = value;
+					AB:ToggleCooldownOptions()
+				end,
 			},
 			colorGroup = {
 				order = 20,

@@ -1071,32 +1071,24 @@ function AB:LAB_ButtonUpdate(button)
 end
 LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
 
-local function Saturate(cooldown)
-	cooldown:GetParent().icon:SetDesaturated(false)
-end
-
 local function OnCooldownUpdate(_, button, start, duration)
 	if not button._state_type == "action" then return; end
 
-	if start and duration > 1.5 then
+	if button.chargeCooldown then
+		AB:RegisterCooldown(button.chargeCooldown)
+		button.chargeCooldown.forceDisabled = not AB.db.chargeCooldown
+	end
+
+	if duration and duration > 1.5 then
 		button.saturationLocked = true --Lock any new actions that are created after we activated desaturation option
 		button.icon:SetDesaturated(true)
-
-		--Hook cooldown done and add colors back
-		if not button.onCooldownDoneHooked then
-			button.onCooldownDoneHooked = true
-			AB:HookScript(button.cooldown, "OnCooldownDone", Saturate)
-		end
 	else
 		button.icon:SetDesaturated(false)
 	end
 end
 
-function AB:ToggleDesaturation(value)
-	value = value or self.db.desaturateOnCooldown
-
-	if value then
-		LAB.RegisterCallback(AB, "OnCooldownUpdate", OnCooldownUpdate)
+function AB:ToggleCooldownOptions()
+	if AB.db.desaturateOnCooldown then
 		local start, duration
 		for button in pairs(LAB.actionButtons) do
 			button.saturationLocked = true
@@ -1104,15 +1096,16 @@ function AB:ToggleDesaturation(value)
 			OnCooldownUpdate(nil, button, start, duration)
 		end
 	else
-		LAB.UnregisterCallback(AB, "OnCooldownUpdate")
 		for button in pairs(LAB.actionButtons) do
 			button.saturationLocked = nil
 			button.icon:SetDesaturated(false)
-			if button.onCooldownDoneHooked then
-				AB:Unhook(button.cooldown, "OnCooldownDone")
-				button.onCooldownDoneHooked = nil
-			end
 		end
+	end
+
+	if (AB.db.desaturateOnCooldown or AB.db.chargeCooldown) then
+		LAB.RegisterCallback(AB, "OnCooldownUpdate", OnCooldownUpdate)
+	else
+		LAB.UnregisterCallback(AB, "OnCooldownUpdate")
 	end
 end
 
@@ -1167,7 +1160,7 @@ function AB:Initialize()
 
 	_G.SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
 
-	self:ToggleDesaturation()
+	self:ToggleCooldownOptions()
 end
 
 local function InitializeCallback()
