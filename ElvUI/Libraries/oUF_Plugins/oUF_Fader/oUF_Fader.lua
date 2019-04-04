@@ -279,24 +279,43 @@ local options = {
 	Delay = {countIgnored = true},
 }
 
+--[[
+local function ResetCount(element)
+	element.count = 0
+
+	for key in pairs(options) do
+		if not options[key].countIgnored then
+			if key == 'Target' then
+				if element.UnitTarget then element.count = element.count + 1 end
+				if element.PlayerTarget then element.count = element.count + 1 end
+			elseif element[key] then
+				element.count = element.count + 1
+			end
+		end
+	end
+end
+]]
+
+local function CountOption(element, state, oldState)
+	if state and not oldState then
+		element.count = element.count + 1
+	elseif oldState and not state then
+		element.count = element.count - 1
+	end
+end
+
 local function SetOption(element, opt, state)
 	local option = ((opt == 'UnitTarget' or opt == 'PlayerTarget') and 'Target') or opt
-	if option and options[option] and (element[opt] ~= state) then
+	local oldState = element[opt]
+
+	if option and options[option] and (oldState ~= state) then
 		element[opt] = state
 
 		if state then
-			if not options[option].countIgnored then
-				element.count = element.count + 1
-			end
-
 			if options[option].enable then
 				options[option].enable(element.__owner, state)
 			end
 		else
-			if (element.count > 0) and not options[option].countIgnored then
-				element.count = element.count - 1
-			end
-
 			if options[option].events and next(options[option].events) then
 				for _, event in ipairs(options[option].events) do
 					element.__owner:UnregisterEvent(event, Update)
@@ -306,6 +325,10 @@ local function SetOption(element, opt, state)
 			if options[option].disable then
 				options[option].disable(element.__owner)
 			end
+		end
+
+		if not options[option].countIgnored then
+			CountOption(element, state, oldState)
 		end
 	end
 end
