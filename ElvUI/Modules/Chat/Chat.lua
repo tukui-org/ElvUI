@@ -191,8 +191,8 @@ do --this can save some main file locals
 	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 
-	local a,b,c=0,false,{ElvRed,ElvOrange,ElvYellow,ElvGreen,ElvBlue,ElvPurple,ElvPink}
-	local itsSimpy=function()a=a-(b and 1 or -1)if(b and a==1 or a==0)or a==#c then b=not b end return c[a] end
+	local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
+	local itsSimpy = function() a = a -(b and 1 or -1) if (b and a==1 or a==0) or a == #c then b = not b end return c[a] end
 
 	specialChatIcons = {
 		-- Elv
@@ -223,14 +223,15 @@ do --this can save some main file locals
 		["Zistraeti-WyrmrestAccord"]	= ElvPurple, -- Warlock
 		-- Merathilis
 		["Asragoth-Shattrath"]		= ElvPurple,	-- [Alliance] Warlock
+		["Brítt-Shattrath"] 		= ElvBlue,		-- [Alliance] Warrior
 		["Damará-Shattrath"]		= ElvRed,		-- [Alliance] Paladin
 		["Jazira-Shattrath"]		= ElvBlue,		-- [Alliance] Priest
+		["Jústice-Shattrath"]		= ElvYellow,	-- [Alliance] Rogue
 		["Maithilis-Shattrath"]		= ElvGreen,		-- [Alliance] Monk
-		["Mattdemôn-Shattrath"]		= ElvPurple,	-- [Alliance] DH
+		["Mattdemôn-Shattrath"]		= itsSimpy,		-- [Alliance] DH
 		["Melisendra-Shattrath"]	= ElvBlue,		-- [Alliance] Mage
 		["Merathilis-Shattrath"]	= ElvOrange,	-- [Alliance] Druid
 		["Merathilîs-Shattrath"]	= ElvBlue,		-- [Alliance] Shaman
-		["Merathilis-Garrosh"]		= ElvOrange,	-- [Horde] Druid
 		-- Blazeflack
 		["Blazii-Silvermoon"]	= ElvBlue, -- Priest
 		["Chazii-Silvermoon"]	= ElvBlue, -- Shaman
