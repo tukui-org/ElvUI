@@ -192,7 +192,7 @@ do --this can save some main file locals
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 
 	local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
-	local itsSimpy = function() a = a -(b and 1 or -1) if (b and a==1 or a==0) or a == #c then b = not b end return c[a] end
+	local itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a] end
 
 	specialChatIcons = {
 		-- Elv
