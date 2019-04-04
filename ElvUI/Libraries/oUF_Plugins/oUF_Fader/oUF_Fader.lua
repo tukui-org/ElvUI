@@ -282,8 +282,8 @@ local options = {
 local function CountOption(element, state, oldState)
 	if state and not oldState then
 		element.count = (element.count or 0) + 1
-	elseif oldState and not state then
-		element.count = (element.count or 0) - 1
+	elseif oldState and element.count and not state then
+		element.count = element.count - 1
 	end
 end
 
