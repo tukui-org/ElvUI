@@ -227,6 +227,7 @@ function NP:Update_Fader(nameplate)
 
 		if nameplate:IsElementEnabled('Fader') then
 			nameplate:DisableElement('Fader')
+
 			E:UIFrameFadeIn(nameplate, 1, nameplate:GetAlpha(), 1)
 		end
 	else
@@ -236,14 +237,15 @@ function NP:Update_Fader(nameplate)
 
 		if not nameplate:IsElementEnabled('Fader') then
 			nameplate:EnableElement('Fader')
+
+			nameplate.Fader:SetOption('MinAlpha', 0)
+			nameplate.Fader:SetOption('Smooth', 0.5)
+			nameplate.Fader:SetOption('Hover', true)
+			nameplate.Fader:SetOption('Power', true)
+			nameplate.Fader:SetOption('Health', true)
+			nameplate.Fader:SetOption('Casting', true)
 		end
 
-		nameplate.Fader:SetOption('MinAlpha', 0)
-		nameplate.Fader:SetOption('Smooth', 0.5)
-		nameplate.Fader:SetOption('Hover', true)
-		nameplate.Fader:SetOption('Power', true)
-		nameplate.Fader:SetOption('Health', true)
-		nameplate.Fader:SetOption('Casting', true)
 		nameplate.Fader:SetOption('PlayerTarget', db.visibility.showWithTarget)
 		nameplate.Fader:SetOption('Combat', db.visibility.showInCombat)
 		nameplate.Fader:SetOption('Delay', db.visibility.hideDelay)
