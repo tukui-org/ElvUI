@@ -279,23 +279,6 @@ local options = {
 	Delay = {countIgnored = true},
 }
 
---[[
-local function ResetCount(element)
-	element.count = 0
-
-	for key in pairs(options) do
-		if not options[key].countIgnored then
-			if key == 'Target' then
-				if element.UnitTarget then element.count = element.count + 1 end
-				if element.PlayerTarget then element.count = element.count + 1 end
-			elseif element[key] then
-				element.count = element.count + 1
-			end
-		end
-	end
-end
-]]
-
 local function CountOption(element, state, oldState)
 	if state and not oldState then
 		element.count = element.count + 1
