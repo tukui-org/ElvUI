@@ -153,7 +153,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 		local plate = NP.PlateGUID[targetGUID]
 		if plate and plate.Castbar then
 			local db = plate.frameType and self.db and self.db.units and self.db.units[plate.frameType]
-			if (db and db.health and db.health.enable) and (db and db.castbar and db.castbar.enable) and db.castbar.sourceInterrupt then
+			if (db and db.castbar and db.castbar.enable) and db.castbar.sourceInterrupt then
 				if db.castbar.timeToHold > 0 then
 					if db.castbar.sourceInterruptClassColor then
 						local _, sourceClass = GetPlayerInfoByGUID(sourceGUID)
