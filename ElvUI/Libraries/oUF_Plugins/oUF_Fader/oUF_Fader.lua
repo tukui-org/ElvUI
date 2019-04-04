@@ -20,6 +20,9 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 
+-- These variables will be left-over when disabled if they were used (for reuse later if they become re-enabled):
+-- Fader.anim, Fader.HoverHooked, Fader.TargetHooked, Fader.RangeAlpha
+
 local MIN_ALPHA, MAX_ALPHA = .35, 1
 local onRangeObjects, onRangeFrame = {}
 local PowerTypesFull = {
@@ -147,8 +150,6 @@ local function TargetScript(self)
 end
 
 local options = {
-	-- these options will be left-over when disabled if they were used (for reuse later if they become re-enabled):
-	-- fader.anim, fader.HoverHooked, fader.TargetHooked
 	Range = {
 		enable = function(self)
 			if not onRangeFrame then
