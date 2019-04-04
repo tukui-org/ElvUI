@@ -9,10 +9,8 @@ local GetMouseFocus = GetMouseFocus
 local IsAddOnLoaded = IsAddOnLoaded
 local GetAddOnInfo = GetAddOnInfo
 local LoadAddOn = LoadAddOn
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: SLASH_FRAME1, SLASH_FRAMELIST1, SLASH_TEXLIST1, FRAME
--- GLOBALS: SLASH_GETPOINT1, SLASH_DEV1, ElvUIDev, ElvUI
+local SlashCmdList = SlashCmdList
+-- GLOBALS: ElvUIDev, ElvUI, FRAME, SLASH_FRAME1, SLASH_FRAMELIST1, SLASH_TEXLIST1, SLASH_GETPOINT1, SLASH_DEV1
 
 local me = UnitName('player')
 local IsDebugDisabled = function()

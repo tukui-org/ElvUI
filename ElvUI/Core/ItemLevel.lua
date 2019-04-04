@@ -1,10 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
+--Lua functions
 local _G = _G
 local format = format
 local tinsert = tinsert
 local select, tonumber = select, tonumber
 local next, max, wipe = next, max, wipe
+--WoW API / Variables
 local UnitIsUnit = UnitIsUnit
 local GetCVarBool = GetCVarBool
 local GetItemInfo = GetItemInfo

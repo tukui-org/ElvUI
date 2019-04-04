@@ -3,6 +3,7 @@ local THREAT = E:GetModule('Threat')
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
+local _G = _G
 local pairs, select = pairs, select
 local wipe = wipe
 --WoW API / Variables
@@ -16,22 +17,18 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitReaction = UnitReaction
-
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local UNKNOWN = UNKNOWN
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: RightChatDataPanel, LeftChatDataPanel, ElvUF, CUSTOM_CLASS_COLORS
+-- GLOBALS: ElvUF
 
 THREAT.list = {}
 
 function THREAT:UpdatePosition()
 	if self.db.position == 'RIGHTCHAT' then
-		self.bar:SetInside(RightChatDataPanel)
-		self.bar:SetParent(RightChatDataPanel)
+		self.bar:SetInside(_G.RightChatDataPanel)
+		self.bar:SetParent(_G.RightChatDataPanel)
 	else
-		self.bar:SetInside(LeftChatDataPanel)
-		self.bar:SetParent(LeftChatDataPanel)
+		self.bar:SetInside(_G.LeftChatDataPanel)
+		self.bar:SetParent(_G.LeftChatDataPanel)
 	end
 
 	self.bar.text:FontTemplate(nil, self.db.textSize)
@@ -54,7 +51,7 @@ function THREAT:GetColor(unit)
 	local unitReaction = UnitReaction(unit, 'player')
 	local _, unitClass = UnitClass(unit)
 	if (UnitIsPlayer(unit)) then
-		local class = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[unitClass] or RAID_CLASS_COLORS[unitClass]
+		local class = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[unitClass] or _G.RAID_CLASS_COLORS[unitClass]
 		if not class then return 194, 194, 194 end
 		return class.r*255, class.g*255, class.b*255
 	elseif (unitReaction) then

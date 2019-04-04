@@ -6,7 +6,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Lua functions
 local random = random
 local tremove = tremove
------
+--WoW API / Variables
 
 function E:SetUpAnimGroup(object, type, ...)
 	if not type then type = 'Flash' end

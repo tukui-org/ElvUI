@@ -30,11 +30,7 @@ local GameTooltip_Hide = GameTooltip_Hide
 local MAX_ACCOUNT_MACROS = MAX_ACCOUNT_MACROS
 local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
 local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent, ElvUIBindPopupWindow, GameTooltip, StanceButton1, PetActionButton1
--- GLOBALS: ShoppingTooltip1, SpellBookFrame, MacroFrameTab1Text, SpellFlyout
--- GLOBALS: ElvUIBindPopupWindowCheckButton
+-- GLOBALS: ElvUIBindPopupWindow, ElvUIBindPopupWindowCheckButton
 
 local bind = CreateFrame("Frame", "ElvUI_KeyBinder", E.UIParent);
 
@@ -67,8 +63,8 @@ end
 function AB:BindHide()
 	bind:ClearAllPoints();
 	bind:Hide();
-	if not GameTooltip:IsForbidden() then
-		GameTooltip:Hide();
+	if not _G.GameTooltip:IsForbidden() then
+		_G.GameTooltip:Hide();
 	end
 end
 
@@ -83,8 +79,8 @@ function AB:BindListener(key)
 		end
 		E:Print(format(L["All keybindings cleared for |cff00ff00%s|r."], bind.button.name));
 		self:BindUpdate(bind.button, bind.spellmacro);
-		if bind.spellmacro~="MACRO" and not GameTooltip:IsForbidden() then
-			GameTooltip:Hide();
+		if bind.spellmacro~="MACRO" and not _G.GameTooltip:IsForbidden() then
+			_G.GameTooltip:Hide();
 		end
 		return;
 	end
@@ -129,13 +125,14 @@ function AB:BindListener(key)
 		E:Print(alt..ctrl..shift..key..L[" |cff00ff00bound to |r"]..bind.button.name..".");
 	end
 	self:BindUpdate(bind.button, bind.spellmacro);
-	if bind.spellmacro~="MACRO" and bind.spellmacro~="FLYOUT" and not GameTooltip:IsForbidden() then
-		GameTooltip:Hide();
+	if bind.spellmacro~="MACRO" and bind.spellmacro~="FLYOUT" and not _G.GameTooltip:IsForbidden() then
+		_G.GameTooltip:Hide();
 	end
 end
 
 function AB:BindUpdate(button, spellmacro)
 	if not bind.active or InCombatLockdown() then return; end
+	local GameTooltip = _G.GameTooltip
 
 	bind.button = button;
 	bind.spellmacro = spellmacro;
@@ -144,7 +141,7 @@ function AB:BindUpdate(button, spellmacro)
 	bind:SetAllPoints(button);
 	bind:Show();
 
-	ShoppingTooltip1:Hide();
+	_G.ShoppingTooltip1:Hide();
 
 	if spellmacro == "FLYOUT" then
 		bind.button.name = GetSpellInfo(button.spellID);
@@ -166,7 +163,7 @@ function AB:BindUpdate(button, spellmacro)
 
 	elseif spellmacro == "SPELL" then
 		bind.button.id = SpellBook_GetSpellBookSlot(bind.button);
-		bind.button.name = GetSpellBookItemName(bind.button.id, SpellBookFrame.bookType);
+		bind.button.name = GetSpellBookItemName(bind.button.id, _G.SpellBookFrame.bookType);
 
 		GameTooltip:AddLine(L["Trigger"]);
 		GameTooltip:Show();
@@ -189,7 +186,7 @@ function AB:BindUpdate(button, spellmacro)
 	elseif spellmacro == "MACRO" then
 		bind.button.id = bind.button:GetID();
 
-		if floor(.5+select(2,MacroFrameTab1Text:GetTextColor())*10)/10==.8 then bind.button.id = bind.button.id + MAX_ACCOUNT_MACROS; end
+		if floor(.5+select(2,_G.MacroFrameTab1Text:GetTextColor())*10)/10==.8 then bind.button.id = bind.button.id + MAX_ACCOUNT_MACROS; end
 
 		bind.button.name = GetMacroInfo(bind.button.id);
 
@@ -285,19 +282,19 @@ function AB:BindUpdate(button, spellmacro)
 end
 
 function AB:RegisterButton(b, override)
-	local stance = StanceButton1:GetScript("OnClick");
-	local pet = PetActionButton1:GetScript("OnClick");
+	local stance = _G.StanceButton1:GetScript("OnClick");
+	local pet = _G.PetActionButton1:GetScript("OnClick");
 	local button = SecureActionButton_OnClick;
 	if b.IsProtected and b.IsObjectType and b.GetScript and b:IsObjectType('CheckButton') and b:IsProtected() then
 		local script = b:GetScript("OnClick");
 		if override then
-			b:HookScript("OnEnter", function(b) self:BindUpdate(b); end);
+			b:HookScript("OnEnter", function(s) self:BindUpdate(s); end);
 		elseif script==pet then
-			b:HookScript("OnEnter", function(b) self:BindUpdate(b, "PET"); end);
+			b:HookScript("OnEnter", function(s) self:BindUpdate(s, "PET"); end);
 		elseif script==stance then
-			b:HookScript("OnEnter", function(b) self:BindUpdate(b, "STANCE"); end);
+			b:HookScript("OnEnter", function(s) self:BindUpdate(s, "STANCE"); end);
 		elseif (script==button) then
-			b:HookScript("OnEnter", function(b) self:BindUpdate(b); end);
+			b:HookScript("OnEnter", function(s) self:BindUpdate(s); end);
 		end
 	end
 end
@@ -326,7 +323,7 @@ function AB:UpdateFlyouts()
 		if (isKnown) then
 			for k=1, numSlots do
 				local b = _G["SpellFlyoutButton"..k]
-				if SpellFlyout:IsShown() and b and b:IsShown() then
+				if _G.SpellFlyout:IsShown() and b and b:IsShown() then
 					if not b.hookedFlyout then
 						b:HookScript("OnEnter", function(b) AB:BindUpdate(b, "FLYOUT"); end);
 						b.hookedFlyout = true
@@ -347,7 +344,7 @@ function AB:RegisterMacro(addon)
 end
 
 function AB:ChangeBindingProfile()
-	if ( ElvUIBindPopupWindowCheckButton:GetChecked() ) then
+	if ElvUIBindPopupWindowCheckButton:GetChecked() then
 		LoadBindings(2);
 		SaveBindings(2);
 	else
@@ -367,22 +364,22 @@ function AB:LoadKeyBinder()
 	bind.texture:SetColorTexture(0, 0, 0, .25);
 	bind:Hide();
 
-	self:SecureHookScript(GameTooltip, "OnUpdate", "Tooltip_OnUpdate")
-	hooksecurefunc(GameTooltip, "Hide", function(tooltip)
+	self:SecureHookScript(_G.GameTooltip, "OnUpdate", "Tooltip_OnUpdate")
+	hooksecurefunc(_G.GameTooltip, "Hide", function(tooltip)
 		if not tooltip:IsForbidden() then
 			for _, tt in pairs(tooltip.shoppingTooltips) do tt:Hide() end
 		end
 	end)
 
-	bind:SetScript('OnEnter', function(self) local db = self.button:GetParent().db if db and db.mouseover then AB:Button_OnEnter(self.button) end end)
-	bind:SetScript("OnLeave", function(self) AB:BindHide(); local db = self.button:GetParent().db if db and db.mouseover then AB:Button_OnLeave(self.button) end end)
+	bind:SetScript('OnEnter', function(b) local db = b.button:GetParent().db if db and db.mouseover then AB:Button_OnEnter(b.button) end end)
+	bind:SetScript("OnLeave", function(b) AB:BindHide(); local db = b.button:GetParent().db if db and db.mouseover then AB:Button_OnLeave(b.button) end end)
 	bind:SetScript("OnKeyUp", function(_, key) self:BindListener(key) end);
 	bind:SetScript("OnMouseUp", function(_, key) self:BindListener(key) end);
 	bind:SetScript("OnMouseWheel", function(_, delta) if delta>0 then self:BindListener("MOUSEWHEELUP") else self:BindListener("MOUSEWHEELDOWN"); end end);
 
 	for i = 1, 12 do
 		local b = _G["SpellButton"..i];
-		b:HookScript("OnEnter", function(b) AB:BindUpdate(b, "SPELL"); end);
+		b:HookScript("OnEnter", function(s) AB:BindUpdate(s, "SPELL"); end);
 	end
 
 	for b in pairs(self.handledbuttons) do
@@ -399,7 +396,7 @@ function AB:LoadKeyBinder()
 	self:UpdateFlyouts()
 
 	--Special Popup
-	local f = CreateFrame("Frame", "ElvUIBindPopupWindow", UIParent)
+	local f = CreateFrame("Frame", "ElvUIBindPopupWindow", _G.UIParent)
 	f:SetFrameStrata("DIALOG")
 	f:SetToplevel(true)
 	f:EnableMouse(true)
@@ -450,8 +447,8 @@ function AB:LoadKeyBinder()
 	end)
 
 	perCharCheck:SetScript("OnEnter", function(self)
-		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-		GameTooltip:SetText(CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP, nil, nil, nil, nil, 1);
+		_G.GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+		_G.GameTooltip:SetText(CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP, nil, nil, nil, nil, 1);
 	end)
 
 	perCharCheck:SetScript("OnLeave", GameTooltip_Hide)

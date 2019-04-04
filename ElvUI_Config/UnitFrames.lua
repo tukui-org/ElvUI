@@ -3,35 +3,20 @@ local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule("NamePlates")
 
 local _G = _G
-local format = format
-local gsub = gsub
-local ipairs = ipairs
-local pairs = pairs
-local select = select
-local strmatch = strmatch
-local strsplit = strsplit
-local tconcat = table.concat
-local tinsert = tinsert
-local tremove = tremove
-local type = type
-local wipe = wipe
+local format, gsub, ipairs, pairs, select, strmatch, strsplit = format, gsub, ipairs, pairs, select, strmatch, strsplit
+local tconcat, tinsert, tremove, type, wipe, tonumber = table.concat, tinsert, tremove, type, wipe, tonumber
 local BLOCK, FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR = BLOCK, FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR
 local GetScreenWidth = GetScreenWidth
 local IsAddOnLoaded = IsAddOnLoaded
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
--- GLOBALS: MAX_BOSS_FRAMES
--- GLOBALS: CUSTOM_CLASS_COLORS, AceGUIWidgetLSMlists
--- GLOBALS: ElvUF_Parent, ElvUF_Player, ElvUF_Pet, ElvUF_PetTarget, ElvUF_Party, ElvUF_Raidpet
--- GLOBALS: ElvUF_Target, ElvUF_TargetTarget, ElvUF_TargetTargetTarget, ElvUF_Focus, ElvUF_FocusTarget
-
--- The variables below aren't caught by mikk's Find Globals script
 local CUSTOM, DISABLE, DEFAULT, COLORS = CUSTOM, DISABLE, DEFAULT, COLORS
 local SHIFT_KEY, ALT_KEY, CTRL_KEY = SHIFT_KEY, ALT_KEY, CTRL_KEY
 local HEALTH, MANA, NAME, PLAYER, CLASS, ROLE, GROUP = HEALTH, MANA, NAME, PLAYER, CLASS, ROLE, GROUP
 local CHI_POWER, RAGE, FOCUS, ENERGY, PAIN, FURY, INSANITY, MAELSTROM, RUNIC_POWER, HOLY_POWER, LUNAR_POWER = CHI_POWER, RAGE, FOCUS, ENERGY, PAIN, FURY, INSANITY, MAELSTROM, RUNIC_POWER, HOLY_POWER, LUNAR_POWER
 local POWER_TYPE_ARCANE_CHARGES, SOUL_SHARDS, RUNES = POWER_TYPE_ARCANE_CHARGES, SOUL_SHARDS, RUNES
-------------------------------
+
+-- GLOBALS: ElvUF_Parent, ElvUF_Player, ElvUF_Pet, ElvUF_PetTarget, ElvUF_Party, ElvUF_Raidpet
+-- GLOBALS: ElvUF_Target, ElvUF_TargetTarget, ElvUF_TargetTargetTarget, ElvUF_Focus, ElvUF_FocusTarget
 
 local ACD = E.Libs.AceConfigDialog
 
@@ -524,7 +509,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 						type = "select", dialogControl = 'LSM30_Font',
 						order = 1,
 						name = L["Font"],
-						values = AceGUIWidgetLSMlists.font,
+						values = _G.AceGUIWidgetLSMlists.font,
 					},
 					countFontSize = {
 						order = 2,
@@ -1314,7 +1299,7 @@ local function CreateCustomTextGroup(unit, objectName)
 			if unit == 'party' or unit:find('raid') then
 				UF:CreateAndUpdateHeaderGroup(unit)
 			elseif unit == 'boss' then
-				UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES)
+				UF:CreateAndUpdateUFGroup('boss', _G.MAX_BOSS_FRAMES)
 			elseif unit == 'arena' then
 				UF:CreateAndUpdateUFGroup('arena', 5)
 			else
@@ -1377,7 +1362,7 @@ local function CreateCustomTextGroup(unit, objectName)
 				type = "select", dialogControl = 'LSM30_Font',
 				order = 4,
 				name = L["Font"],
-				values = AceGUIWidgetLSMlists.font,
+				values = _G.AceGUIWidgetLSMlists.font,
 			},
 			size = {
 				order = 5,
@@ -2031,7 +2016,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 				order = 5,
 				type = "select", dialogControl = "LSM30_Font",
 				name = L["Font"],
-				values = AceGUIWidgetLSMlists.font,
+				values = _G.AceGUIWidgetLSMlists.font,
 			},
 			fontSize = {
 				order = 6,
@@ -2574,7 +2559,7 @@ E.Options.args.unitframe = {
 									order = 3,
 									name = L["StatusBar Texture"],
 									desc = L["Main statusbar texture."],
-									values = AceGUIWidgetLSMlists.statusbar,
+									values = _G.AceGUIWidgetLSMlists.statusbar,
 									set = function(info, value) E.db.unitframe[info[#info]] = value; UF:Update_StatusBars() end,
 								},
 							},
@@ -2590,7 +2575,7 @@ E.Options.args.unitframe = {
 									order = 4,
 									name = L["Default Font"],
 									desc = L["The font that the unitframes will use."],
-									values = AceGUIWidgetLSMlists.font,
+									values = _G.AceGUIWidgetLSMlists.font,
 									set = function(info, value) E.db.unitframe[info[#info]] = value; UF:Update_FontStrings() end,
 								},
 								fontSize = {
@@ -2756,7 +2741,7 @@ E.Options.args.unitframe = {
 									dialogControl = 'LSM30_Statusbar',
 									order = 2,
 									name = L["Texture"],
-									values = AceGUIWidgetLSMlists.statusbar,
+									values = _G.AceGUIWidgetLSMlists.statusbar,
 									get = function(info)
 										return E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]]
 									end,
@@ -3279,7 +3264,7 @@ E.Options.args.unitframe = {
 									end,
 									set = function(info, r, g, b)
 										if E:CheckClassColor(r, g, b) then
-											local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+											local classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass])
 											r = classColor.r
 											g = classColor.g
 											b = classColor.b
@@ -5271,7 +5256,7 @@ E.Options.args.unitframe.args.boss = {
 	order = 1000,
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.boss[info[#info]] end,
-	set = function(info, value) E.db.unitframe.units.boss[info[#info]] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+	set = function(info, value) E.db.unitframe.units.boss[info[#info]] = value; UF:CreateAndUpdateUFGroup('boss', _G.MAX_BOSS_FRAMES) end,
 	disabled = function() return not E.UnitFrames.Initialized end,
 	args = {
 		enable = {
@@ -5284,7 +5269,7 @@ E.Options.args.unitframe.args.boss = {
 			order = 2,
 			name = L["Display Frames"],
 			desc = L["Force the frames to show, they will act as if they are the player frame."],
-			func = function() UF:ToggleForceShowGroupFrames('boss', MAX_BOSS_FRAMES) end,
+			func = function() UF:ToggleForceShowGroupFrames('boss', _G.MAX_BOSS_FRAMES) end,
 		},
 		resetSettings = {
 			type = 'execute',
@@ -5324,7 +5309,7 @@ E.Options.args.unitframe.args.boss = {
 						end
 
 						E.db.unitframe.units.boss[info[#info]] = value;
-						UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES);
+						UF:CreateAndUpdateUFGroup('boss', _G.MAX_BOSS_FRAMES);
 					end,
 				},
 				height = {
@@ -5339,7 +5324,7 @@ E.Options.args.unitframe.args.boss = {
 					name = L["Text Toggle On NPC"],
 					desc = L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."],
 					get = function(info) return E.db.unitframe.units.boss.power.hideonnpc end,
-					set = function(info, value) E.db.unitframe.units.boss.power.hideonnpc = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
+					set = function(info, value) E.db.unitframe.units.boss.power.hideonnpc = value; UF:CreateAndUpdateUFGroup('boss', _G.MAX_BOSS_FRAMES) end,
 				},
 				growthDirection = {
 					order = 10,
@@ -5399,17 +5384,17 @@ E.Options.args.unitframe.args.boss = {
 				},
 			},
 		},
-		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
-		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
-		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
-		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
-		name = GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
-		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
-		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
-		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
-		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
-		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
+		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		name = GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
 	},
 }
 

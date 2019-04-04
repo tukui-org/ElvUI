@@ -13,9 +13,6 @@ local GetExpansionLevel = GetExpansionLevel
 local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
 local InCombatLockdown = InCombatLockdown
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, LeftChatPanel, CreateFrame
-
 function mod:GetXP(unit)
 	if(unit == 'pet') then
 		return GetPetExperience()

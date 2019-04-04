@@ -3,9 +3,9 @@ local UF = E:GetModule('UnitFrames');
 local LSM = E.Libs.LSM
 
 --Lua functions
+local _G = _G
 local unpack, strfind, format, tinsert, strsplit, sort, ceil = unpack, strfind, format, tinsert, strsplit, sort, ceil
 --WoW API / Variables
-local GetTime = GetTime
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown
@@ -13,9 +13,6 @@ local IsControlKeyDown = IsControlKeyDown
 local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: DebuffTypeColor
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', frame:GetName().."Buffs", frame)
@@ -357,7 +354,7 @@ function UF:PostUpdateAura(unit, button)
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
 			button.icon:SetDesaturated((unit and not strfind(unit, 'arena%d')) and true or false)
 		else
-			local color = (button.dtype and DebuffTypeColor[button.dtype]) or DebuffTypeColor.none
+			local color = (button.dtype and _G.DebuffTypeColor[button.dtype]) or _G.DebuffTypeColor.none
 			if button.name and (button.name == "Unstable Affliction" or button.name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
 				button:SetBackdropBorderColor(0.05, 0.85, 0.94)
 			else

@@ -63,8 +63,6 @@ local PlaySoundFile = PlaySoundFile
 local UIFrameFadeOut = UIFrameFadeOut
 local CreateAnimationGroup = CreateAnimationGroup
 local CONTINUE, PREVIOUS, UNKNOWN = CONTINUE, PREVIOUS, UNKNOWN
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: PluginInstallFrame
 
 --Installation Functions

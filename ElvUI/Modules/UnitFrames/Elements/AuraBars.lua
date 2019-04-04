@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 --Lua functions
-local match = string.match
+local _G = _G
+local strmatch = strmatch
 local strsplit = strsplit
 local tostring = tostring
 local format = format
@@ -15,11 +16,7 @@ local IsControlKeyDown = IsControlKeyDown
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 local UnitCanAttack = UnitCanAttack
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-
---Global variables that we don't want to cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUF_Player
--- GLOBALS: CUSTOM_CLASS_COLORS
 
 function UF:Construct_AuraBars()
 	local bar = self.statusBar
@@ -91,11 +88,11 @@ function UF:Configure_AuraBars(frame)
 		local attachTo = frame
 
 		if(E:CheckClassColor(buffColor.r, buffColor.g, buffColor.b)) then
-			buffColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+			buffColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass])
 		end
 
 		if(E:CheckClassColor(debuffColor.r, debuffColor.g, debuffColor.b)) then
-			debuffColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+			debuffColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass])
 		end
 
 		if db.aurabar.attachTo == 'BUFFS' then
@@ -189,7 +186,7 @@ function UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBos
 	local friendCheck, filterName, filter, filterType, spellList, spell
 	for i=1, select('#', ...) do
 		filterName = select(i, ...)
-		friendCheck = (isFriend and match(filterName, "^Friendly:([^,]*)")) or (not isFriend and match(filterName, "^Enemy:([^,]*)")) or nil
+		friendCheck = (isFriend and strmatch(filterName, "^Friendly:([^,]*)")) or (not isFriend and strmatch(filterName, "^Enemy:([^,]*)")) or nil
 		if friendCheck ~= false then
 			if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
 				filterName = friendCheck -- this is for our filters to handle Friendly and Enemy

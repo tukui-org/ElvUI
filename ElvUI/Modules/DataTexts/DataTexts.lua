@@ -14,9 +14,6 @@ local C_Timer_After = C_Timer.After
 local InCombatLockdown = InCombatLockdown
 local IsInInstance = IsInInstance
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip
-
 function DT:Initialize()
 	--if E.db.datatexts.enable ~= true then return end
 	self.Initialized = true

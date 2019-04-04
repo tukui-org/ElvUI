@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Lua functions
+local _G = _G
 --WoW API / Variables
 local GetLFGRandomDungeonInfo = GetLFGRandomDungeonInfo
 local GetLFGRoleShortageRewards = GetLFGRoleShortageRewards
@@ -12,9 +14,6 @@ local LFG_ROLE_NUM_SHORTAGE_TYPES = LFG_ROLE_NUM_SHORTAGE_TYPES
 local BATTLEGROUND_HOLIDAY = BATTLEGROUND_HOLIDAY
 local DUNGEONS = DUNGEONS
 local RAID_FINDER = RAID_FINDER
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: LFDParentFrame
 
 local TANK_ICON = E:TextureString(E.Media.Textures.Tank, ":14:14")
 local HEALER_ICON = E:TextureString(E.Media.Textures.Healer, ":14:14")
@@ -75,7 +74,7 @@ local function OnEvent(self)
 end
 
 local function OnClick()
-	PVEFrame_ToggleFrame("GroupFinderFrame", LFDParentFrame);
+	PVEFrame_ToggleFrame("GroupFinderFrame", _G.LFDParentFrame);
 end
 
 local function ValueColorUpdate(hex)

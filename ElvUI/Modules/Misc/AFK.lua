@@ -25,20 +25,15 @@ local IsShiftKeyDown = IsShiftKeyDown
 local MoveViewLeftStart = MoveViewLeftStart
 local MoveViewLeftStop = MoveViewLeftStop
 local PVEFrame_ToggleFrame = PVEFrame_ToggleFrame
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local RemoveExtraSpaces = RemoveExtraSpaces
 local Screenshot = Screenshot
 local SetCVar = SetCVar
 local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
-local CinematicFrame = CinematicFrame
-local MovieFrame = MovieFrame
+local CinematicFrame = _G.CinematicFrame
+local MovieFrame = _G.MovieFrame
 local DNDstr = _G.DND
 local AFKstr = _G.AFK
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent, PVEFrame, ElvUIAFKPlayerModel, ChatTypeInfo
--- GLOBALS: CUSTOM_CLASS_COLORS
 
 local CAMERA_SPEED = 0.035
 local ignoreKeys = {
@@ -64,7 +59,7 @@ function AFK:SetAFK(status)
 		MoveViewLeftStart(CAMERA_SPEED);
 		self.AFKMode:Show()
 		CloseAllWindows()
-		UIParent:Hide()
+		_G.UIParent:Hide()
 
 		if(IsInGuild()) then
 			local guildName, guildRankName = GetGuildInfo("player");
@@ -89,7 +84,7 @@ function AFK:SetAFK(status)
 
 		self.isAFK = true
 	elseif(self.isAFK) then
-		UIParent:Show()
+		_G.UIParent:Show()
 		self.AFKMode:Hide()
 		MoveViewLeftStop();
 
@@ -99,7 +94,7 @@ function AFK:SetAFK(status)
 
 		self.AFKMode.chat:UnregisterAllEvents()
 		self.AFKMode.chat:Clear()
-		if(PVEFrame:IsShown()) then --odd bug, frame is blank
+		if(_G.PVEFrame:IsShown()) then --odd bug, frame is blank
 			PVEFrame_ToggleFrame()
 			PVEFrame_ToggleFrame()
 		end
@@ -184,7 +179,7 @@ end
 local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 	local coloredName = GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
 	local type = strsub(event, 10);
-	local info = ChatTypeInfo[type];
+	local info = _G.ChatTypeInfo[type];
 
 	if(event == "CHAT_MSG_BN_WHISPER") then
 		coloredName = CH:GetBNFriendColor(arg2, arg13)
@@ -239,7 +234,8 @@ local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg
 end
 
 function AFK:LoopAnimations()
-	if(ElvUIAFKPlayerModel.curAnimation == "wave") then
+	local ElvUIAFKPlayerModel = _G.ElvUIAFKPlayerModel
+	if ElvUIAFKPlayerModel.curAnimation == "wave" then
 		ElvUIAFKPlayerModel:SetAnimation(69)
 		ElvUIAFKPlayerModel.curAnimation = "dance"
 		ElvUIAFKPlayerModel.startTime = GetTime()
@@ -252,12 +248,12 @@ end
 function AFK:Initialize()
 	self.Initialized = true
 
-	local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]
+	local classColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass]
 
 	self.AFKMode = CreateFrame("Frame", "ElvUIAFKFrame")
 	self.AFKMode:SetFrameLevel(1)
-	self.AFKMode:SetScale(UIParent:GetScale())
-	self.AFKMode:SetAllPoints(UIParent)
+	self.AFKMode:SetScale(_G.UIParent:GetScale())
+	self.AFKMode:SetAllPoints(_G.UIParent)
 	self.AFKMode:Hide()
 	self.AFKMode:EnableKeyboard(true)
 	self.AFKMode:SetScript("OnKeyDown", OnKeyDown)

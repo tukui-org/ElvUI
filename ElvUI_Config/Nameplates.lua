@@ -32,9 +32,7 @@ local FACTION_STANDING_LABEL6 = FACTION_STANDING_LABEL6
 local FACTION_STANDING_LABEL7 = FACTION_STANDING_LABEL7
 local FACTION_STANDING_LABEL8 = FACTION_STANDING_LABEL8
 local GARRISON_CURRENT_LEVEL = GARRISON_CURRENT_LEVEL --"Tier %d";
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local FONT_SIZE = FONT_SIZE
--- GLOBALS: MAX_PLAYER_LEVEL, AceGUIWidgetLSMlists, CUSTOM_CLASS_COLORS
 
 local selectedNameplateFilter
 
@@ -121,7 +119,7 @@ local function UpdateClassSpec(classTag, enabled)
 			args = {},
 		}
 	end
-	local coloredName = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classTag]) or RAID_CLASS_COLORS[classTag]
+	local coloredName = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classTag]) or _G.RAID_CLASS_COLORS[classTag]
 	coloredName = (coloredName and coloredName.colorStr) or "ff666666"
 	for i=1, GetNumSpecializationsForClassID(classTable[classTag].classID) do
 		local specID, name = GetSpecializationInfoForClassID(classTable[classTag].classID, i)
@@ -174,7 +172,7 @@ local function UpdateClassSection()
 		local coloredName;
 		for _, classTag in ipairs(classIndexTable) do
 			classOrder = classOrder+1
-			coloredName = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classTag]) or RAID_CLASS_COLORS[classTag]
+			coloredName = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classTag]) or _G.RAID_CLASS_COLORS[classTag]
 			coloredName = (coloredName and coloredName.colorStr) or "ff666666"
 			local classTrigger = E.global.nameplate.filters[selectedNameplateFilter].triggers.class
 			if classTrigger then
@@ -1130,7 +1128,7 @@ local function UpdateFilterGroup()
 							type = 'range',
 							name = L["Minimum Level"],
 							desc = L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."],
-							min = -1, max = MAX_PLAYER_LEVEL+3, step = 1,
+							min = -1, max = _G.MAX_PLAYER_LEVEL+3, step = 1,
 							disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.level and not E.global.nameplate.filters[selectedNameplateFilter].triggers.mylevel) end,
 							get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.minlevel or 0 end,
 						},
@@ -1139,7 +1137,7 @@ local function UpdateFilterGroup()
 							type = 'range',
 							name = L["Maximum Level"],
 							desc = L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."],
-							min = -1, max = MAX_PLAYER_LEVEL+3, step = 1,
+							min = -1, max = _G.MAX_PLAYER_LEVEL+3, step = 1,
 							disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.level and not E.global.nameplate.filters[selectedNameplateFilter].triggers.mylevel) end,
 							get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.maxlevel or 0 end,
 						},
@@ -1148,7 +1146,7 @@ local function UpdateFilterGroup()
 							desc = L["If enabled then the filter will only activate if the level of the unit matches this value."],
 							order = 6,
 							type = "range",
-							min = -1, max = MAX_PLAYER_LEVEL+3, step = 1,
+							min = -1, max = _G.MAX_PLAYER_LEVEL+3, step = 1,
 							disabled = function() return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.level and not E.global.nameplate.filters[selectedNameplateFilter].triggers.mylevel) end,
 							get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.curlevel or 0 end,
 						},
@@ -1733,7 +1731,7 @@ local function UpdateFilterGroup()
 							type = "select",
 							dialogControl = 'LSM30_Statusbar',
 							name = L["Texture"],
-							values = AceGUIWidgetLSMlists.statusbar,
+							values = _G.AceGUIWidgetLSMlists.statusbar,
 							disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].actions.texture.enable end,
 						},
 					},
@@ -2013,7 +2011,7 @@ local function GetUnitSettings(unit, name)
 										type = "select", dialogControl = 'LSM30_Font',
 										order = 1,
 										name = L["Font"],
-										values = AceGUIWidgetLSMlists.font,
+										values = _G.AceGUIWidgetLSMlists.font,
 									},
 									fontSize = {
 										order = 2,
@@ -2165,7 +2163,7 @@ local function GetUnitSettings(unit, name)
 										type = "select", dialogControl = 'LSM30_Font',
 										order = 1,
 										name = L["Font"],
-										values = AceGUIWidgetLSMlists.font,
+										values = _G.AceGUIWidgetLSMlists.font,
 									},
 									fontSize = {
 										order = 2,
@@ -2358,7 +2356,7 @@ local function GetUnitSettings(unit, name)
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 1,
 								name = L["Font"],
-								values = AceGUIWidgetLSMlists.font,
+								values = _G.AceGUIWidgetLSMlists.font,
 							},
 							fontSize = {
 								order = 2,
@@ -2483,7 +2481,7 @@ local function GetUnitSettings(unit, name)
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 12,
 								name = L["Font"],
-								values = AceGUIWidgetLSMlists.font,
+								values = _G.AceGUIWidgetLSMlists.font,
 							},
 							countFontSize = {
 								order = 13,
@@ -2774,7 +2772,7 @@ local function GetUnitSettings(unit, name)
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 12,
 								name = L["Font"],
-								values = AceGUIWidgetLSMlists.font,
+								values = _G.AceGUIWidgetLSMlists.font,
 							},
 							countFontSize = {
 								order = 13,
@@ -3086,7 +3084,7 @@ local function GetUnitSettings(unit, name)
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 1,
 								name = L["Font"],
-								values = AceGUIWidgetLSMlists.font,
+								values = _G.AceGUIWidgetLSMlists.font,
 							},
 							fontSize = {
 								order = 2,
@@ -3178,7 +3176,7 @@ local function GetUnitSettings(unit, name)
 								type = "select", dialogControl = 'LSM30_Font',
 								order = 1,
 								name = L["Font"],
-								values = AceGUIWidgetLSMlists.font,
+								values = _G.AceGUIWidgetLSMlists.font,
 							},
 							fontSize = {
 								order = 2,
@@ -3318,7 +3316,7 @@ local function GetUnitSettings(unit, name)
 			guiInline = true,
 			name = L["Visibility"],
 			get = function(info) return E.db.nameplates.units[unit].visibility[info[#info]] end,
-			set = function(info, value) E.db.nameplates.units[unit].visibility[info[#info]] = value; NP:SetCVars() NP:ConfigureAll() print(value) end,
+			set = function(info, value) E.db.nameplates.units[unit].visibility[info[#info]] = value; NP:SetCVars(); NP:ConfigureAll() end,
 			args = {
 				showAlways = {
 					order = 1,
@@ -3698,7 +3696,7 @@ local function GetUnitSettings(unit, name)
 							type = "select", dialogControl = 'LSM30_Font',
 							order = 1,
 							name = L["Font"],
-							values = AceGUIWidgetLSMlists.font,
+							values = _G.AceGUIWidgetLSMlists.font,
 						},
 						fontSize = {
 							order = 2,
@@ -3996,7 +3994,7 @@ E.Options.args.nameplate = {
 							type = "select",
 							dialogControl = 'LSM30_Statusbar',
 							name = L["StatusBar Texture"],
-							values = AceGUIWidgetLSMlists.statusbar,
+							values = _G.AceGUIWidgetLSMlists.statusbar,
 						},
 						highlight = {
 							order = 9,

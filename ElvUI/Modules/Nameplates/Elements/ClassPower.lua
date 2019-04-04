@@ -6,7 +6,6 @@ local _G = _G
 local unpack, max = unpack, max
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local MAX_POINTS = {
 	['DRUID'] = 5,
@@ -28,7 +27,7 @@ function NP:ClassPower_UpdateColor(powerType)
 	end
 
 	local db = NP.db.units[self.__owner.frameType]
-	local ClassColor = db and db.classpower.classColor and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+	local ClassColor = db and db.classpower.classColor and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass])
 	for i = 1, #self do
 		local classColor = ClassColor or (powerType == 'COMBO_POINTS' and NP.db.colors.classResources.comboPoints[i] or powerType == 'CHI' and NP.db.colors.classResources.MONK[i])
 		if classColor then r, g, b = classColor.r, classColor.g, classColor.b end
@@ -197,7 +196,7 @@ function NP:Update_Runes(nameplate)
 		local width = db.classpower.width / 6
 		nameplate.Runes:Size(db.classpower.width, db.classpower.height)
 
-		local runeColor = (db.classpower.classColor and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])) or NP.db.colors.classResources.DEATHKNIGHT
+		local runeColor = (db.classpower.classColor and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass])) or NP.db.colors.classResources.DEATHKNIGHT
 
 		for i = 1, 6 do
 			nameplate.Runes[i]:SetStatusBarColor(runeColor.r, runeColor.g, runeColor.b)

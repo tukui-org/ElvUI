@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local M = E:GetModule('WorldMap')
 
 --Lua functions
+local _G = _G
 local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -10,9 +11,7 @@ local SetCVar = SetCVar
 local SetUIPanelAttribute = SetUIPanelAttribute
 local MOUSE_LABEL = MOUSE_LABEL:gsub("|T.-|t","")
 local PLAYER = PLAYER
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: WorldMapFrame, CoordsHolder, NumberFontNormal, WORLD_MAP_MIN_ALPHA
+-- GLOBALS: WORLD_MAP_MIN_ALPHA, CoordsHolder
 
 local INVERTED_POINTS = {
 	["TOPLEFT"] = "BOTTOMLEFT",
@@ -27,6 +26,7 @@ local INVERTED_POINTS = {
 local smallerMapScale = 0.8
 
 function M:SetLargeWorldMap()
+	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:SetParent(E.UIParent)
 	WorldMapFrame:SetScale(1)
 	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
@@ -46,12 +46,14 @@ function M:SetLargeWorldMap()
 end
 
 function M:UpdateMaximizedSize()
+	local WorldMapFrame = _G.WorldMapFrame
 	local width, height = WorldMapFrame:GetSize()
 	local magicNumber = (1 - smallerMapScale) * 100
 	WorldMapFrame:Size((width * smallerMapScale) - (magicNumber + 2), (height * smallerMapScale) - 2)
 end
 
 function M:SynchronizeDisplayState()
+	local WorldMapFrame = _G.WorldMapFrame
 	if WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
 		WorldMapFrame:Point("CENTER", E.UIParent)
@@ -59,6 +61,7 @@ function M:SynchronizeDisplayState()
 end
 
 function M:SetSmallWorldMap()
+	local WorldMapFrame = _G.WorldMapFrame
 	if not WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
 		WorldMapFrame:Point("TOPLEFT", E.UIParent, "TOPLEFT", 16, -94)
@@ -78,6 +81,7 @@ function M:UpdateRestrictedArea()
 end
 
 function M:UpdateCoords(OnShow)
+	local WorldMapFrame = _G.WorldMapFrame
 	if not WorldMapFrame:IsShown() then return end
 
 	if WorldMapFrame.ScrollContainer:IsMouseOver() then
@@ -121,7 +125,7 @@ function M:PositionCoords()
 	if find(position, "TOP") then y = -5 end
 
 	CoordsHolder.playerCoords:ClearAllPoints()
-	CoordsHolder.playerCoords:Point(position, WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)
+	CoordsHolder.playerCoords:Point(position, _G.WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)
 	CoordsHolder.mouseCoords:ClearAllPoints()
 	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
 end
@@ -129,6 +133,7 @@ end
 function M:Initialize()
 	self.Initialized = true
 
+	local WorldMapFrame = _G.WorldMapFrame
 	if E.global.general.WorldMapCoordinates.enable then
 		local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
 		CoordsHolder:SetFrameLevel(WorldMapFrame.BorderFrame:GetFrameLevel() + 2)
@@ -137,8 +142,8 @@ function M:Initialize()
 		CoordsHolder.mouseCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
 		CoordsHolder.playerCoords:SetTextColor(1, 1 ,0)
 		CoordsHolder.mouseCoords:SetTextColor(1, 1 ,0)
-		CoordsHolder.playerCoords:SetFontObject(NumberFontNormal)
-		CoordsHolder.mouseCoords:SetFontObject(NumberFontNormal)
+		CoordsHolder.playerCoords:SetFontObject(_G.NumberFontNormal)
+		CoordsHolder.mouseCoords:SetFontObject(_G.NumberFontNormal)
 		CoordsHolder.playerCoords:SetText(PLAYER..":   0, 0")
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
 

@@ -16,8 +16,6 @@ local PlaySound = PlaySound
 local SetRaidTarget = SetRaidTarget
 local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 local UIErrorsFrame = UIErrorsFrame
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: RaidMark_HotkeyPressed
 
 local ButtonIsDown;

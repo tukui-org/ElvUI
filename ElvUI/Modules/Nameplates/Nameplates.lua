@@ -2,9 +2,8 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 
---Cache global variables
-local _G = _G
 --Lua functions
+local _G = _G
 local wipe = wipe
 local select = select
 local pairs = pairs
@@ -27,6 +26,7 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitExists = UnitExists
 local UnitClass = UnitClass
 local UnitName = UnitName
+local UnitGUID = UnitGUID
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local GetSpecializationRole = GetSpecializationRole

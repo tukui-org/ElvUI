@@ -5,7 +5,6 @@ local LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local format = format
-
 --WoW API / Variables
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
@@ -17,9 +16,6 @@ local CreateFrame = CreateFrame
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local REPUTATION, STANDING = REPUTATION, STANDING
 local MAX_REPUTATION_REACTION = MAX_REPUTATION_REACTION
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, RightChatPanel
 
 local backupColor = FACTION_BAR_COLORS[1]
 local FactionStandingLabelUnknown = UNKNOWN
@@ -120,9 +116,12 @@ function mod:UpdateReputation(event)
 end
 
 function mod:ReputationBar_OnEnter()
+	local GameTooltip = _G.GameTooltip
+
 	if mod.db.reputation.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
+
 	GameTooltip:ClearLines()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
@@ -190,14 +189,14 @@ function mod:EnableDisable_ReputationBar()
 end
 
 function mod:LoadReputationBar()
-	self.repBar = self:CreateBar('ElvUI_ReputationBar', self.ReputationBar_OnEnter, self.ReputationBar_OnClick, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.repBar = self:CreateBar('ElvUI_ReputationBar', self.ReputationBar_OnEnter, self.ReputationBar_OnClick, 'RIGHT', _G.RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
 	E:RegisterStatusBar(self.repBar.statusBar)
 
 	self.repBar.eventFrame = CreateFrame("Frame")
 	self.repBar.eventFrame:Hide()
 	self.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-	self.repBar.eventFrame:SetScript("OnEvent", function(self, event) mod:UpdateReputation(event) end)
+	self.repBar.eventFrame:SetScript("OnEvent", function(_, event) mod:UpdateReputation(event) end)
 
 	self:UpdateReputationDimensions()
 

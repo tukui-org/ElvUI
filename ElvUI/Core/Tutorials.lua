@@ -3,13 +3,10 @@ local Skins = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local DISABLE = DISABLE
 local HIDE = HIDE
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUITutorialWindow
 
 E.TutorialList = {

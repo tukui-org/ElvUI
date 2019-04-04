@@ -20,8 +20,7 @@ local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitPVPName = UnitPVPName
 local LEVEL = LEVEL
-
---GLOBALS: Hex, CUSTOM_CLASS_COLORS
+--GLOBALS: Hex
 
 oUF.Tags.Events['cast:name'] = 'UNIT_SPELLCAST_START UNIT_SPELLCAST_CHANNEL_START'
 oUF.Tags.Methods['cast:name'] = function(unit)

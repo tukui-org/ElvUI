@@ -1,7 +1,7 @@
 --Lua functions
+local pairs, type, table = pairs, type, table
 local setmetatable, getmetatable = setmetatable, getmetatable
-local pairs, type = pairs, type
-local table = table
+--WoW API / Variables
 
 function table.copy(t, deep, seen)
 	seen = seen or {}

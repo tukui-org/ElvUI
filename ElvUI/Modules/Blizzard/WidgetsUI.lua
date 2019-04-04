@@ -6,7 +6,6 @@ local _G = _G
 --WoW-Api
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
---Global variables that we don't cache, list them here for mikk's FindGlobals script
 
 local function topCenterPosition(self, _, b)
 	local holder = _G.TopCenterContainerHolder

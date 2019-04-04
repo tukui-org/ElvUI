@@ -1,9 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local MC = E:GetModule('ModuleCopy')
 
+--Lua functions
 local pairs, next, type = pairs, next, type
 local format, error = format, error
-
+--WoW API / Variables
 -- GLOBALS: ElvDB
 
 --This table to reserve settings names in E.global.profileCopy. Used in export/imports functions

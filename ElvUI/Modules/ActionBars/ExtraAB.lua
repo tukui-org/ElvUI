@@ -9,9 +9,6 @@ local CreateFrame = CreateFrame
 local GetActionCooldown = GetActionCooldown
 local HasExtraActionBar = HasExtraActionBar
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ExtraActionBarFrame, ZoneAbilityFrame
-
 local ExtraActionBarHolder, ZoneAbilityHolder
 
 local function FixExtraActionCD(cd)
@@ -23,14 +20,14 @@ function AB:Extra_SetAlpha()
 	if not E.private.actionbar.enable then return; end
 	local alpha = E.db.actionbar.extraActionButton.alpha
 
-	for i=1, ExtraActionBarFrame:GetNumChildren() do
+	for i=1, _G.ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
 		if button then
 			button:SetAlpha(alpha)
 		end
 	end
 
-	local button = ZoneAbilityFrame.SpellButton
+	local button = _G.ZoneAbilityFrame.SpellButton
 	if button then
 		button:SetAlpha(alpha)
 	end
@@ -40,18 +37,21 @@ function AB:Extra_SetScale()
 	if not E.private.actionbar.enable then return; end
 	local scale = E.db.actionbar.extraActionButton.scale
 
-	if ExtraActionBarFrame then
-		ExtraActionBarFrame:SetScale(scale)
-		ExtraActionBarHolder:Size(ExtraActionBarFrame:GetWidth() * scale)
+	if _G.ExtraActionBarFrame then
+		_G.ExtraActionBarFrame:SetScale(scale)
+		ExtraActionBarHolder:Size(_G.ExtraActionBarFrame:GetWidth() * scale)
 	end
 
-	if ZoneAbilityFrame then
-		ZoneAbilityFrame:SetScale(scale)
-		ZoneAbilityHolder:Size(ZoneAbilityFrame:GetWidth() * scale)
+	if _G.ZoneAbilityFrame then
+		_G.ZoneAbilityFrame:SetScale(scale)
+		ZoneAbilityHolder:Size(_G.ZoneAbilityFrame:GetWidth() * scale)
 	end
 end
 
 function AB:SetupExtraButton()
+	local ExtraActionBarFrame = _G.ExtraActionBarFrame
+	local ZoneAbilityFrame = _G.ZoneAbilityFrame
+
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
 	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
 	ExtraActionBarHolder:Size(ExtraActionBarFrame:GetSize())

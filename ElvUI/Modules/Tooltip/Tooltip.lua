@@ -65,7 +65,6 @@ local UnitRealmRelationship = UnitRealmRelationship
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local LE_REALM_RELATION_COALESCED = LE_REALM_RELATION_COALESCED
 local LE_REALM_RELATION_VIRTUAL = LE_REALM_RELATION_VIRTUAL
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
@@ -214,7 +213,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		local pvpName = UnitPVPName(unit)
 		local relationship = UnitRealmRelationship(unit);
 		if not localeClass or not class then return; end
-		color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
+		color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]
 
 		if self.db.playerTitles and pvpName then
 			name = pvpName
@@ -327,7 +326,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		end
 	end
 
-	return color or RAID_CLASS_COLORS.PRIEST
+	return color or _G.RAID_CLASS_COLORS.PRIEST
 end
 
 local inspectGUIDCache = {}
@@ -487,7 +486,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			local targetColor
 			if(UnitIsPlayer(unitTarget) and not UnitHasVehicleUI(unitTarget)) then
 				local _, class = UnitClass(unitTarget)
-				targetColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
+				targetColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]
 			else
 				targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[UnitReaction(unitTarget, "player")] or FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
 			end
@@ -500,8 +499,8 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				local groupUnit = (IsInRaid() and "raid"..i or "party"..i);
 				if (UnitIsUnit(groupUnit.."target", unit)) and (not UnitIsUnit(groupUnit,"player")) then
 					local _, class = UnitClass(groupUnit);
-					local classColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-					if not classColor then classColor = RAID_CLASS_COLORS.PRIEST end
+					local classColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]
+					if not classColor then classColor = _G.RAID_CLASS_COLORS.PRIEST end
 					tinsert(targetList, format("|c%s%s|r", classColor.colorStr, UnitName(groupUnit)))
 				end
 			end
@@ -698,8 +697,8 @@ function TT:SetUnitAura(tt, unit, index, filter)
 			if caster then
 				local name = UnitName(caster)
 				local _, class = UnitClass(caster)
-				local color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-				if not color then color = RAID_CLASS_COLORS.PRIEST end
+				local color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]
+				if not color then color = _G.RAID_CLASS_COLORS.PRIEST end
 				tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id), format("|c%s%s|r", color.colorStr, name))
 			else
 				tt:AddLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id))

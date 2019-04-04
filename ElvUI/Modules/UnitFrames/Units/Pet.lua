@@ -9,8 +9,6 @@ local _G = _G
 local tinsert = tinsert
 --WoW API / Variables
 local InCombatLockdown = InCombatLockdown
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUF_Player
 
 function UF:Construct_PetFrame(frame)
