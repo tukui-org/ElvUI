@@ -20,6 +20,7 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 
+local MIN_ALPHA, MAX_ALPHA = .35, 1
 local onRangeObjects, onRangeFrame = {}
 local PowerTypesFull = {
 	MANA = true,
@@ -259,17 +260,13 @@ local options = {
 		events = {'UNIT_SPELLCAST_START','UNIT_SPELLCAST_FAILED','UNIT_SPELLCAST_STOP','UNIT_SPELLCAST_INTERRUPTED','UNIT_SPELLCAST_CHANNEL_START','UNIT_SPELLCAST_CHANNEL_STOP'}
 	},
 	MinAlpha = {
-		enable = function(self)
-			if not self.Fader.MinAlpha then
-				self.Fader.MinAlpha = .35
-			end
+		enable = function(self, state)
+			self.Fader.MinAlpha = state or MIN_ALPHA
 		end
 	},
 	MaxAlpha = {
-		enable = function(self)
-			if not self.Fader.MaxAlpha then
-				self.Fader.MaxAlpha = .35
-			end
+		enable = function(self, state)
+			self.Fader.MaxAlpha = state or MAX_ALPHA
 		end
 	},
 	Smooth = {},
@@ -283,7 +280,7 @@ local function SetOption(element, opt, state)
 
 		if state then
 			if options[option].enable then
-				options[option].enable(element.__owner)
+				options[option].enable(element.__owner, state)
 			end
 		else
 			if options[option].events and next(options[option].events) then
@@ -305,6 +302,9 @@ local function Enable(self)
 		self.Fader.ForceUpdate = ForceUpdate
 		self.Fader.SetOption = SetOption
 		self.Fader.ClearTimers = ClearTimers
+
+		self.Fader.MinAlpha = MIN_ALPHA
+		self.Fader.MaxAlpha = MAX_ALPHA
 
 		return true
 	end
