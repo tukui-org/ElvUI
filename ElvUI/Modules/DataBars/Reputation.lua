@@ -13,12 +13,11 @@ local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionI
 local InCombatLockdown = InCombatLockdown
 local ToggleCharacter = ToggleCharacter
 local CreateFrame = CreateFrame
-local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local REPUTATION, STANDING = REPUTATION, STANDING
-local MAX_REPUTATION_REACTION = MAX_REPUTATION_REACTION
 
-local backupColor = FACTION_BAR_COLORS[1]
+local backupColor = _G.FACTION_BAR_COLORS[1]
 local FactionStandingLabelUnknown = UNKNOWN
+
 function mod:UpdateReputation(event)
 	if not mod.db.reputation.enable then return end
 
@@ -37,7 +36,7 @@ function mod:UpdateReputation(event)
 			end
 		end
 	else
-		if reaction == MAX_REPUTATION_REACTION then
+		if reaction == _G.MAX_REPUTATION_REACTION then
 			-- max rank, make it look like a full bar
 			min, max, value = 0, 1, 1
 			isCapped = true
@@ -59,7 +58,7 @@ function mod:UpdateReputation(event)
 
 		local text = ''
 		local textFormat = self.db.reputation.textFormat
-		local color = FACTION_BAR_COLORS[reaction] or backupColor
+		local color = _G.FACTION_BAR_COLORS[reaction] or backupColor
 		bar.statusBar:SetStatusBarColor(color.r, color.g, color.b)
 
 		bar.statusBar:SetMinMaxValues(min, max)
@@ -145,7 +144,7 @@ function mod:ReputationBar_OnEnter()
 		if factionID then friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID) end
 
 		GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or _G['FACTION_STANDING_LABEL'..reaction], 1, 1, 1)
-		if reaction ~= MAX_REPUTATION_REACTION or C_Reputation_IsFactionParagon(factionID) then
+		if reaction ~= _G.MAX_REPUTATION_REACTION or C_Reputation_IsFactionParagon(factionID) then
 			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', value - min, max - min, (value - min) / ((max - min == 0) and max or (max - min)) * 100), 1, 1, 1)
 		end
 	end

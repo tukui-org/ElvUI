@@ -62,10 +62,6 @@ local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
 
-local FACTION_BAR_COLORS = FACTION_BAR_COLORS
-local LE_REALM_RELATION_COALESCED = LE_REALM_RELATION_COALESCED
-local LE_REALM_RELATION_VIRTUAL = LE_REALM_RELATION_VIRTUAL
-
 local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
 local C_MountJournal_GetMountInfoExtraByID = C_MountJournal.GetMountInfoExtraByID
@@ -222,9 +218,9 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		if realm and realm ~= "" then
 			if(isShiftKeyDown) or self.db.alwaysShowRealm then
 				name = name.."-"..realm
-			elseif(relationship == LE_REALM_RELATION_COALESCED) then
+			elseif(relationship == _G.LE_REALM_RELATION_COALESCED) then
 				name = name.._G.FOREIGN_SERVER_LABEL
-			elseif(relationship == LE_REALM_RELATION_VIRTUAL) then
+			elseif(relationship == _G.LE_REALM_RELATION_VIRTUAL) then
 				name = name.._G.INTERACTIVE_SERVER_LABEL
 			end
 		end
@@ -287,7 +283,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 					color = E.db.tooltip.factionColors[unitReaction]
 				end
 			else
-				color = FACTION_BAR_COLORS[unitReaction]
+				color = _G.FACTION_BAR_COLORS[unitReaction]
 			end
 		end
 
@@ -488,7 +484,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				local _, class = UnitClass(unitTarget)
 				targetColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]
 			else
-				targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[UnitReaction(unitTarget, "player")] or FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
+				targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[UnitReaction(unitTarget, "player")] or _G.FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
 			end
 
 			tt:AddDoubleLine(format("%s:", _G.TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
