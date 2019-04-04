@@ -849,7 +849,7 @@ function CH:PositionChat(override)
 				if E.db.datatexts.leftChatPanel then
 					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
 				else
-					BASE_OFFSET = BASE_OFFSET - 24
+					BASE_OFFSET = BASE_OFFSET - 25
 					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "BOTTOMLEFT", 1, 1)
 				end
 				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
