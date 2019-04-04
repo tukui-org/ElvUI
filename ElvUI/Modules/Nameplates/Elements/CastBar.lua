@@ -149,15 +149,12 @@ end
 
 function NP:COMBAT_LOG_EVENT_UNFILTERED()
 	local _, event, _, sourceGUID, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
-
 	if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
 		local plate = NP.PlateGUID[targetGUID]
 		if plate and plate.Castbar then
 			local db = plate.frameType and self.db and self.db.units and self.db.units[plate.frameType]
-			local healthBar = (db and db.health and db.health.enable)
-			if healthBar and (db and db.castbar and db.castbar.enable) and db.castbar.sourceInterrupt then
-				local holdTime = db.castbar.timeToHold
-				if holdTime > 0 then
+			if (db and db.health and db.health.enable) and (db and db.castbar and db.castbar.enable) and db.castbar.sourceInterrupt then
+				if db.castbar.timeToHold > 0 then
 					if db.castbar.sourceInterruptClassColor then
 						local _, sourceClass = GetPlayerInfoByGUID(sourceGUID)
 						if sourceClass then
