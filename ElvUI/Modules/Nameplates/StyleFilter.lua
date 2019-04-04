@@ -525,9 +525,9 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 			if value == true then --only check names that are checked
 				condition = 1
 				if tonumber(unitName) then
-					guid = UnitGUID(frame.unit)
+					if not guid then guid = UnitGUID(frame.unit) end
 					if guid then
-						npcid = select(6, strsplit('-', guid))
+						if not npcid then npcid = select(6, strsplit('-', guid)) end
 						if tonumber(unitName) == tonumber(npcid) then
 							condition = 2
 							break
