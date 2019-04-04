@@ -71,9 +71,9 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 end
 
 function E:Cooldown_IsEnabled(cd)
-	if cd.alwaysEnabled then
+	if cd.forceEnabled then
 		return true
-	elseif cd.disabled then
+	elseif cd.forceDisabled then
 		return false
 	elseif cd.timerOptions and (cd.timerOptions.reverseToggle ~= nil) then
 		return (E.db.cooldown.enable and not cd.timerOptions.reverseToggle) or (not E.db.cooldown.enable and cd.timerOptions.reverseToggle)
@@ -169,7 +169,7 @@ end
 
 E.RegisteredCooldowns = {}
 function E:OnSetCooldown(start, duration)
-	if (not self.disabled) and (start and duration) and (duration > MIN_DURATION) then
+	if (not self.forceDisabled) and (start and duration) and (duration > MIN_DURATION) then
 		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
 		timer.duration = duration

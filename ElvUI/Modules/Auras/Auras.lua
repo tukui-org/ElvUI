@@ -273,7 +273,7 @@ function A:CooldownText_Update(button)
 	if not button then return end
 
 	-- cooldown override settings
-	button.alwaysEnabled = true
+	button.forceEnabled = true
 
 	if not button.timerOptions then
 		button.timerOptions = {}
