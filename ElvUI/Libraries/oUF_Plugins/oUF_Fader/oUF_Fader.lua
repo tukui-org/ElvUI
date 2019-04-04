@@ -149,7 +149,7 @@ local options = {
 	-- these options will be left-over when disabled if they were used (for reuse later if they become re-enabled):
 	-- fader.anim, fader.HoverHooked, fader.TargetHooked
 	Range = {
-		func = function(self)
+		enable = function(self)
 			if not onRangeFrame then
 				onRangeFrame = CreateFrame('Frame')
 				onRangeFrame:SetScript('OnUpdate', onRangeUpdate)
@@ -158,7 +158,7 @@ local options = {
 			onRangeFrame:Show()
 			tinsert(onRangeObjects, self)
 		end,
-		disableFunc = function(self)
+		disable = function(self)
 			if onRangeFrame then
 				for idx, obj in next, onRangeObjects do
 					if obj == self then
@@ -174,7 +174,7 @@ local options = {
 		end
 	},
 	Hover = {
-		func = function(self)
+		enable = function(self)
 			if not self.Fader.HoverHooked then
 				self:HookScript('OnEnter', HoverScript)
 				self:HookScript('OnLeave', HoverScript)
@@ -182,21 +182,21 @@ local options = {
 
 			self.Fader.HoverHooked = 1 -- on state
 		end,
-		disableFunc = function(self)
+		disable = function(self)
 			if self.Fader.HoverHooked == 1 then
 				self.Fader.HoverHooked = 0 -- off state
 			end
 		end
 	},
 	Combat = {
-		func = function(self)
+		enable = function(self)
 			self:RegisterEvent('PLAYER_REGEN_ENABLED', Update, true)
 			self:RegisterEvent('PLAYER_REGEN_DISABLED', Update, true)
 		end,
 		events = {'PLAYER_REGEN_ENABLED','PLAYER_REGEN_DISABLED'}
 	},
 	Target = { --[[ UnitTarget, PlayerTarget ]]
-		func = function(self)
+		enable = function(self)
 			if not self.Fader.TargetHooked then
 				self:HookScript('OnShow', TargetScript)
 				self:HookScript('OnHide', TargetScript)
@@ -213,20 +213,20 @@ local options = {
 			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
 		end,
 		events = {'UNIT_TARGET','PLAYER_TARGET_CHANGED','PLAYER_FOCUS_CHANGED'},
-		disableFunc = function(self)
+		disable = function(self)
 			if self.Fader.TargetHooked == 1 then
 				self.Fader.TargetHooked = 0 -- off state
 			end
 		end
 	},
 	Focus = {
-		func = function(self)
+		enable = function(self)
 			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
 		end,
 		events = {'PLAYER_FOCUS_CHANGED'}
 	},
 	Health = {
-		func = function(self)
+		enable = function(self)
 			self:RegisterEvent('UNIT_HEALTH', Update)
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Update)
 			self:RegisterEvent('UNIT_MAXHEALTH', Update)
@@ -234,21 +234,21 @@ local options = {
 		events = {'UNIT_HEALTH','UNIT_HEALTH_FREQUENT','UNIT_MAXHEALTH'}
 	},
 	Power = {
-		func = function(self)
+		enable = function(self)
 			self:RegisterEvent('UNIT_POWER_UPDATE', Update)
 			self:RegisterEvent('UNIT_MAXPOWER', Update)
 		end,
 		events = {'UNIT_POWER_UPDATE','UNIT_MAXPOWER'}
 	},
 	Vehicle = {
-		func = function(self)
+		enable = function(self)
 			self:RegisterEvent('UNIT_ENTERED_VEHICLE', Update, true)
 			self:RegisterEvent('UNIT_EXITED_VEHICLE', Update, true)
 		end,
 		events = {'UNIT_ENTERED_VEHICLE','UNIT_EXITED_VEHICLE'}
 	},
 	Casting = {
-		func = function(self)
+		enable = function(self)
 			self:RegisterEvent('UNIT_SPELLCAST_START', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_FAILED', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_STOP', Update)
@@ -259,14 +259,14 @@ local options = {
 		events = {'UNIT_SPELLCAST_START','UNIT_SPELLCAST_FAILED','UNIT_SPELLCAST_STOP','UNIT_SPELLCAST_INTERRUPTED','UNIT_SPELLCAST_CHANNEL_START','UNIT_SPELLCAST_CHANNEL_STOP'}
 	},
 	MinAlpha = {
-		func = function(self)
+		enable = function(self)
 			if not self.Fader.MinAlpha then
 				self.Fader.MinAlpha = .35
 			end
 		end
 	},
 	MaxAlpha = {
-		func = function(self)
+		enable = function(self)
 			if not self.Fader.MaxAlpha then
 				self.Fader.MaxAlpha = .35
 			end
@@ -282,8 +282,8 @@ local function SetOption(element, opt, state)
 		element[opt] = state
 
 		if state then
-			if options[option].func then
-				options[option].func(element.__owner)
+			if options[option].enable then
+				options[option].enable(element.__owner)
 			end
 		else
 			if options[option].events and next(options[option].events) then
@@ -292,8 +292,8 @@ local function SetOption(element, opt, state)
 				end
 			end
 
-			if options[option].disableFunc then
-				options[option].disableFunc(element.__owner)
+			if options[option].disable then
+				options[option].disable(element.__owner)
 			end
 		end
 	end
