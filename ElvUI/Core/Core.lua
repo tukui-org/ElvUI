@@ -1148,7 +1148,7 @@ end
 function E:UpdateActionBars(skipCallback)
 	ActionBars:Extra_SetAlpha()
 	ActionBars:Extra_SetScale()
-	ActionBars:ToggleDesaturation()
+	ActionBars:ToggleCooldownOptions()
 	ActionBars:UpdateButtonSettings()
 	ActionBars:UpdateMicroPositionDimensions()
 	ActionBars:UpdatePetCooldownSettings()
