@@ -152,9 +152,9 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 
 	if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
 		local plate = NP.PlateGUID[targetGUID]
-		if plate and (plate.unitFrame and plate.unitFrame.Castbar) then
-			local db = plate.unitFrame.frameType and self.db and self.db.units and self.db.units[plate.unitFrame.frameType]
-			local healthBar = (db and db.health and db.health.enable) or (plate.unitFrame.isTarget and self.db.alwaysShowTargetHealth)
+		if plate and plate.Castbar then
+			local db = plate.frameType and self.db and self.db.units and self.db.units[plate.frameType]
+			local healthBar = (db and db.health and db.health.enable)
 			if healthBar and (db and db.castbar and db.castbar.enable) and db.castbar.sourceInterrupt then
 				local holdTime = db.castbar.timeToHold
 				if holdTime > 0 then
@@ -165,9 +165,9 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 							sourceClass = classColor and classColor.colorStr
 						end
 
-						plate.unitFrame.Castbar.Text:SetText(INTERRUPTED.." > "..(sourceClass and strjoin('', '|c', sourceClass, sourceName) or sourceName))
+						plate.Castbar.Text:SetText(INTERRUPTED.." > "..(sourceClass and strjoin('', '|c', sourceClass, sourceName) or sourceName))
 					else
-						plate.unitFrame.Castbar.Text:SetText(INTERRUPTED.." > "..sourceName)
+						plate.Castbar.Text:SetText(INTERRUPTED.." > "..sourceName)
 					end
 				end
 			end
