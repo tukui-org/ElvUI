@@ -491,6 +491,7 @@ function UF:Configure_Fader(frame)
 		frame.Fader:SetOption('Smooth', (frame.db.fader.smooth > 0 and frame.db.fader.smooth) or nil)
 		frame.Fader:SetOption('Delay', (frame.db.fader.delay > 0 and frame.db.fader.delay) or nil)
 
+		frame.Fader:ClearTimers()
 		frame.Fader.configTimer = E:ScheduleTimer(frame.Fader.ForceUpdate, 0.25, frame.Fader, true)
 	elseif frame:IsElementEnabled('Fader') then
 		frame:DisableElement('Fader')

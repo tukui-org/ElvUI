@@ -47,7 +47,7 @@ local function FadeOut(anim, frame, timeToFade, startAlpha, endAlpha)
 end
 
 local function ToggleAlpha(self, element, endAlpha)
-	ClearTimers(element)
+	element:ClearTimers()
 
 	if element.Smooth then
 		if not element.anim then
@@ -102,8 +102,7 @@ local function Update(self, event, unit)
 		ToggleAlpha(self, element, element.MaxAlpha)
 	else
 		if element.Delay then
-			ClearTimers(element)
-
+			element:ClearTimers()
 			element.delayTimer = ElvUI[1]:ScheduleTimer(ToggleAlpha, element.Delay, self, element, element.MinAlpha)
 		else
 			ToggleAlpha(self, element, element.MinAlpha)
@@ -266,8 +265,6 @@ local function SetOption(element, opt, state)
 	if option and options[option] and (element[opt] ~= state) then
 		element[opt] = state
 
-		ClearTimers(element)
-
 		if state then
 			if options[option].func then
 				options[option].func(element.__owner)
@@ -304,6 +301,7 @@ local function Enable(self)
 		self.Fader.__owner = self
 		self.Fader.ForceUpdate = ForceUpdate
 		self.Fader.SetOption = SetOption
+		self.Fader.ClearTimers = ClearTimers
 
 		return true
 	end
