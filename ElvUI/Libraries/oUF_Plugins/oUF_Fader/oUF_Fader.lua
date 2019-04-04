@@ -67,12 +67,12 @@ local function ToggleAlpha(self, element, endAlpha)
 end
 
 local function Update(self, event, unit)
-	if self.isForced then
+	local element = self.Fader
+	if self.isForced or (not element or not element.isEnabled) then
 		self:SetAlpha(1)
 		return
 	end
 
-	local element = self.Fader
 	unit = unit or self.unit
 
 	-- range fader
@@ -306,6 +306,7 @@ local function Enable(self)
 
 		self.Fader.MinAlpha = MIN_ALPHA
 		self.Fader.MaxAlpha = MAX_ALPHA
+		self.Fader.isEnabled = true
 
 		return true
 	end
@@ -313,6 +314,8 @@ end
 
 local function Disable(self)
 	if self.Fader then
+		self.Fader.isEnabled = nil
+
 		for opt in pairs(options) do
 			if opt == 'Target' then
 				self.Fader:SetOption('UnitTarget')
