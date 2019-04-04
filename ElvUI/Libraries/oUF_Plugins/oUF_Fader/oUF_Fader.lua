@@ -70,7 +70,7 @@ end
 
 local function Update(self, _, unit)
 	local element = self.Fader
-	if self.isForced or (not element or not element.count or element.count <= 0) then
+	if self.isForced or (not element or not element.Enabled) then
 		self:SetAlpha(1)
 		return
 	end
@@ -264,19 +264,17 @@ local options = {
 		events = {'UNIT_SPELLCAST_START','UNIT_SPELLCAST_FAILED','UNIT_SPELLCAST_STOP','UNIT_SPELLCAST_INTERRUPTED','UNIT_SPELLCAST_CHANNEL_START','UNIT_SPELLCAST_CHANNEL_STOP'}
 	},
 	MinAlpha = {
-		countIgnored = true,
 		enable = function(self, state)
 			self.Fader.MinAlpha = state or MIN_ALPHA
 		end
 	},
 	MaxAlpha = {
-		countIgnored = true,
 		enable = function(self, state)
 			self.Fader.MaxAlpha = state or MAX_ALPHA
 		end
 	},
-	Smooth = {countIgnored = true},
-	Delay = {countIgnored = true},
+	Smooth = {},
+	Delay = {},
 }
 
 local function SetOption(element, opt, state)
@@ -285,18 +283,10 @@ local function SetOption(element, opt, state)
 		element[opt] = state
 
 		if state then
-			if not options[option].countIgnored then
-				element.count = element.count + 1
-			end
-
 			if options[option].enable then
 				options[option].enable(element.__owner, state)
 			end
 		else
-			if (element.count > 0) and not options[option].countIgnored then
-				element.count = element.count - 1
-			end
-
 			if options[option].events and next(options[option].events) then
 				for _, event in ipairs(options[option].events) do
 					element.__owner:UnregisterEvent(event, Update)
@@ -319,7 +309,7 @@ local function Enable(self)
 
 		self.Fader.MinAlpha = MIN_ALPHA
 		self.Fader.MaxAlpha = MAX_ALPHA
-		self.Fader.count = 0
+		self.Fader.Enabled = true
 
 		return true
 	end
@@ -336,7 +326,7 @@ local function Disable(self)
 			end
 		end
 
-		self.Fader.count = nil
+		self.Fader.Enabled = nil
 		self.Fader:ClearTimers()
 	end
 end
