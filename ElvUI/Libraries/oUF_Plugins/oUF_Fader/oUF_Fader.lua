@@ -281,9 +281,9 @@ local options = {
 
 local function CountOption(element, state, oldState)
 	if state and not oldState then
-		element.count = element.count + 1
+		element.count = (element.count or 0) + 1
 	elseif oldState and not state then
-		element.count = element.count - 1
+		element.count = (element.count or 0) - 1
 	end
 end
 
@@ -325,7 +325,6 @@ local function Enable(self)
 
 		self.Fader.MinAlpha = MIN_ALPHA
 		self.Fader.MaxAlpha = MAX_ALPHA
-		self.Fader.count = 0
 
 		return true
 	end
