@@ -26,7 +26,6 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitExists = UnitExists
 local UnitClass = UnitClass
 local UnitName = UnitName
-local UnitGUID = UnitGUID
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local GetSpecializationRole = GetSpecializationRole
