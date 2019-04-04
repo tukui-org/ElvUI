@@ -9,6 +9,7 @@
 [Nameplate: Style Filter] Added trigger Creature Type.  
 [Nameplate: Style Filter] Added trigger if the unit is Focused (or not).  
 [Unitframe] Added Duration option for cooldown text and reworked the cooldown code.  
+[Actionbar] Added show cooldown text on charges option. (#716)  
 [Chat] Added options to Desaturate, Pin to Tab Panel, or Hide Voice Buttons.  
 Added an option to ignore the UI Scale popup when resizing the game window (General -> Ignore UI Scale Popup).  
 
@@ -48,7 +49,7 @@ Fixed an issue with the cooldown module which wouldn't correctly set cooldowns w
 [Nameplate: Style Filter] Enabled Hide Frame action.  
 [Nameplate + Style Filter] Adding Name Only (with Show Title).  
 [Nameplate] Keep Player nameplate from fading out.  
-[Nameplate] Reallowed Target Scale in options.  
+[Nameplate] Reallowed Target and Threat Scale in options.  
 [Nameplate] Removed Detection as this was used in Legion but is no longer used as much and this would increase preformance further.  
 [Nameplate] Readded the Visbility settings on Static Player.  
 [Nameplate] Reworked the cooldown text, so that it matches Unitframes.  
