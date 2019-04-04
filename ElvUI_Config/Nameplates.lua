@@ -3632,7 +3632,7 @@ local function GetUnitSettings(unit, name)
 	if unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" or unit == "FRIENDLY_NPC" or unit == "ENEMY_NPC" then
 		group.args.titleGroup = {
 			order = 50,
-			name = L["Title"],
+			name = _G.UNIT_NAME_PLAYER_TITLE,
 			type = "group",
 			get = function(info) return E.db.nameplates.units[unit].title[info[#info]] end,
 			set = function(info, value) E.db.nameplates.units[unit].title[info[#info]] = value; NP:ConfigureAll() end,
@@ -3644,7 +3644,7 @@ local function GetUnitSettings(unit, name)
 				},
 				enable = {
 					order = 1,
-					name = L['Enable'],
+					name = L["Enable"],
 					type = "toggle",
 				},
 				format = {
