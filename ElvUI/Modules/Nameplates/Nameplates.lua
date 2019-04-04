@@ -4,32 +4,33 @@ local ElvUF = E.oUF
 
 --Lua functions
 local _G = _G
-local wipe = wipe
-local select = select
-local pairs = pairs
-local type = type
 local format = format
+local pairs = pairs
+local select = select
+local strsplit = strsplit
+local type = type
+local wipe = wipe
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
-local UnitIsPlayer = UnitIsPlayer
-local UnitIsUnit = UnitIsUnit
-local UnitReaction = UnitReaction
-local SetCVar, GetCVarDefault = SetCVar, GetCVarDefault
-local UnitFactionGroup = UnitFactionGroup
-local UnitIsPVPSanctuary = UnitIsPVPSanctuary
-local UnitIsFriend = UnitIsFriend
-local UnitGUID = UnitGUID
-local IsInGroup, IsInRaid = IsInGroup, IsInRaid
-local IsInInstance = IsInInstance
-local UnitGroupRolesAssigned = UnitGroupRolesAssigned
-local UnitExists = UnitExists
-local UnitClass = UnitClass
-local UnitName = UnitName
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
-local GetSpecializationRole = GetSpecializationRole
 local GetSpecialization = GetSpecialization
+local GetSpecializationRole = GetSpecializationRole
+local IsInGroup, IsInRaid = IsInGroup, IsInRaid
+local IsInInstance = IsInInstance
+local SetCVar, GetCVarDefault = SetCVar, GetCVarDefault
+local UnitClass = UnitClass
+local UnitExists = UnitExists
+local UnitFactionGroup = UnitFactionGroup
+local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+local UnitGUID = UnitGUID
+local UnitIsFriend = UnitIsFriend
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsPVPSanctuary = UnitIsPVPSanctuary
+local UnitIsUnit = UnitIsUnit
+local UnitName = UnitName
+local UnitReaction = UnitReaction
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
@@ -454,9 +455,11 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
+		nameplate.repReaction = UnitReaction(unit, 'player')
 		nameplate.reaction = UnitReaction('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.unitGUID = UnitGUID(unit)
+		nameplate.npcID = nameplate.unitGUID and select(6, strsplit('-', nameplate.unitGUID))
 
 		if nameplate.unitGUID then
 			NP.PlateGUID[nameplate.unitGUID] = nameplate

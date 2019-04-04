@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
 local setmetatable, tonumber, type, unpack = setmetatable, tonumber, type, unpack
-local gsub, strsplit, tinsert, tremove, sort, wipe = gsub, strsplit, tinsert, tremove, sort, wipe
+local gsub, tinsert, tremove, sort, wipe = gsub, tinsert, tremove, sort, wipe
 
 local GetLocale = GetLocale
 local GetInstanceInfo = GetInstanceInfo
@@ -19,7 +19,6 @@ local PowerBarColor = PowerBarColor
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitClassification = UnitClassification
 local UnitCreatureType = UnitCreatureType
-local UnitGUID = UnitGUID
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitIsQuestBoss = UnitIsQuestBoss
@@ -29,7 +28,6 @@ local UnitLevel = UnitLevel
 local UnitName = UnitName
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
-local UnitReaction = UnitReaction
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local INTERRUPTED = INTERRUPTED
@@ -512,7 +510,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 end
 
 function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
-	local _, condition, name, guid, npcid, inCombat, questBoss, reaction, spell, classification, instanceType, instanceDifficulty,
+	local _, condition, name, inCombat, questBoss, reaction, spell, classification, instanceType, instanceDifficulty,
 	talentSelected, pvpTalent, talentRows, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID, creatureType,
 	power, maxPower, percPower, underPowerThreshold, overPowerThreshold, powerUnit, health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold, healthUnit;
 
@@ -525,10 +523,8 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 			if value == true then --only check names that are checked
 				condition = 1
 				if tonumber(unitName) then
-					if not guid then guid = UnitGUID(frame.unit) end
-					if guid then
-						if not npcid then npcid = select(6, strsplit('-', guid)) end
-						if tonumber(unitName) == tonumber(npcid) then
+					if frame.unitGUID and frame.npcID then
+						if tonumber(unitName) == tonumber(frame.npcID) then
 							condition = 2
 							break
 						end
@@ -838,7 +834,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 
 	--Try to match by Reaction (or Reputation) type
 	if not failed and trigger.reactionType and trigger.reactionType.enable then
-		reaction = (trigger.reactionType.reputation and UnitReaction(frame.unit, 'player')) or UnitReaction('player', frame.unit)
+		reaction = (trigger.reactionType.reputation and frame.repReaction) or frame.reaction
 		condition = false
 
 		if (reaction==1 and trigger.reactionType.hated)
