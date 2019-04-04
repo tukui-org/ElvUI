@@ -5,6 +5,7 @@ assert(oUF, "oUF_Fader cannot find an instance of oUF. If your oUF is embedded i
 -- Credit: p3lim, Azilroka, Simpy
 
 -- GLOBALS: ElvUI
+local pairs, ipairs = pairs, ipairs
 local next, tinsert, tremove = next, tinsert, tremove
 local CreateFrame = CreateFrame
 local GetMouseFocus = GetMouseFocus
@@ -57,7 +58,7 @@ local function ToggleAlpha(self, element, endAlpha)
 
 		FadeOut(element.anim, self, element.Smooth, self:GetAlpha(), endAlpha)
 	else
-		self:SetAlpha(element.MinAlpha)
+		self:SetAlpha(endAlpha)
 	end
 end
 
@@ -68,11 +69,6 @@ local function Update(self, event, unit)
 	end
 
 	local element = self.Fader
-	if element.isOff then
-		ToggleAlpha(self, element, 1)
-		return
-	end
-
 	unit = unit or self.unit
 
 	-- range fader
@@ -150,17 +146,9 @@ local function TargetScript(self)
 	end
 end
 
-local function Enable(self, unit)
-	local element = self.Fader
-
-	if element then
-		element.__owner = self
-		element.ForceUpdate = ForceUpdate
-
-		local on
-		if element.Range then
-			on = true
-
+local options = {
+	Range = {
+		func = function(self)
 			if not onRangeFrame then
 				onRangeFrame = CreateFrame('Frame')
 				onRangeFrame:SetScript('OnUpdate', onRangeUpdate)
@@ -169,34 +157,37 @@ local function Enable(self, unit)
 			onRangeFrame:Show()
 			tinsert(onRangeObjects, self)
 		end
-
-		if element.Hover then
-			on = true
-
-			if not element.HoverHooked then
+	},
+	Hover = {
+		func = function(self)
+			if not self.Fader.HoverHooked then
 				self:HookScript('OnEnter', HoverScript)
 				self:HookScript('OnLeave', HoverScript)
 			end
 
-			element.HoverHooked = 1 -- on state
+			self.Fader.HoverHooked = 1 -- on state
+		end,
+		disableFunc = function(self)
+			if self.Fader.HoverHooked == 1 then
+				self.Fader.HoverHooked = 0 -- off state
+			end
 		end
-
-		if element.Combat then
-			on = true
-
+	},
+	Combat = {
+		func = function(self)
 			self:RegisterEvent('PLAYER_REGEN_ENABLED', Update, true)
 			self:RegisterEvent('PLAYER_REGEN_DISABLED', Update, true)
-		end
-
-		if element.UnitTarget or element.PlayerTarget then
-			on = true
-
-			if not element.TargetHooked then
+		end,
+		events = {'PLAYER_REGEN_ENABLED','PLAYER_REGEN_DISABLED'}
+	},
+	Target = { --[[ UnitTarget, PlayerTarget ]]
+		func = function(self)
+			if not self.Fader.TargetHooked then
 				self:HookScript('OnShow', TargetScript)
 				self:HookScript('OnHide', TargetScript)
 			end
 
-			element.TargetHooked = 1 -- on state
+			self.Fader.TargetHooked = 1 -- on state
 
 			if not self:IsShown() then
 				self:SetAlpha(0)
@@ -205,110 +196,128 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_TARGET', Update)
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', Update, true)
 			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
+		end,
+		events = {'UNIT_TARGET','PLAYER_TARGET_CHANGED','PLAYER_FOCUS_CHANGED'},
+		disableFunc = function(self)
+			if self.Fader.TargetHooked == 1 then
+				self.Fader.TargetHooked = 0 -- off state
+			end
 		end
-
-		if element.Focus then
-			on = true
-
+	},
+	Focus = {
+		func = function(self)
 			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
-		end
-
-		if element.Health then
-			on = true
-
+		end,
+		events = {'PLAYER_FOCUS_CHANGED'}
+	},
+	Health = {
+		func = function(self)
 			self:RegisterEvent('UNIT_HEALTH', Update)
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Update)
 			self:RegisterEvent('UNIT_MAXHEALTH', Update)
-		end
-
-		if element.Power then
-			on = true
-
+		end,
+		events = {'UNIT_HEALTH','UNIT_HEALTH_FREQUENT','UNIT_MAXHEALTH'}
+	},
+	Power = {
+		func = function(self)
 			self:RegisterEvent('UNIT_POWER_UPDATE', Update)
 			self:RegisterEvent('UNIT_MAXPOWER', Update)
-		end
-
-		if element.Vehicle then
-			on = true
-
+		end,
+		events = {'UNIT_POWER_UPDATE','UNIT_MAXPOWER'}
+	},
+	Vehicle = {
+		func = function(self)
 			self:RegisterEvent('UNIT_ENTERED_VEHICLE', Update, true)
 			self:RegisterEvent('UNIT_EXITED_VEHICLE', Update, true)
-		end
-
-		if element.Casting then
-			on = true
-
+		end,
+		events = {'UNIT_ENTERED_VEHICLE','UNIT_EXITED_VEHICLE'}
+	},
+	Casting = {
+		func = function(self)
 			self:RegisterEvent('UNIT_SPELLCAST_START', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_FAILED', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_STOP', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', Update)
+		end,
+		events = {'UNIT_SPELLCAST_START','UNIT_SPELLCAST_FAILED','UNIT_SPELLCAST_STOP','UNIT_SPELLCAST_INTERRUPTED','UNIT_SPELLCAST_CHANNEL_START','UNIT_SPELLCAST_CHANNEL_STOP'}
+	},
+	MinAlpha = {
+		func = function(self)
+			if not self.Fader.MinAlpha then
+				self.Fader.MinAlpha = .35
+			end
 		end
-
-		if not element.MinAlpha then
-			element.MinAlpha = .35
+	},
+	MaxAlpha = {
+		func = function(self)
+			if not self.Fader.MaxAlpha then
+				self.Fader.MaxAlpha = .35
+			end
 		end
+	},
+	Smooth = {},
+	Delay = {},
+}
 
-		if not element.MaxAlpha then
-			element.MaxAlpha = 1
-		end
+local function SetOption(element, opt, state)
+	local option = (opt == 'UnitTarget' or opt == 'PlayerTarget' and 'Target') or opt
+	if option and options[option] and (element[opt] ~= state) then
+		element[opt] = state
 
-		if not on then
-			element.isOff = true
+		ClearTimers(element)
+
+		if state then
+			if options[option].func then
+				options[option].func(element.__owner)
+			end
 		else
-			element.isOff = nil
+			if options[option].events and next(options[option].events) then
+				for _, event in ipairs(options[option].events) do
+					element.__owner:UnregisterEvent(event, Update)
+				end
+			end
+
+			if options[option].disableFunc then
+				options[option].disableFunc(element.__owner)
+			end
+
+			if option == 'Range' and onRangeFrame then
+				for idx, obj in next, onRangeObjects do
+					if obj == element.__owner then
+						tremove(onRangeObjects, idx)
+						break
+					end
+				end
+
+				if #onRangeObjects == 0 then
+					onRangeFrame:Hide()
+				end
+			end
 		end
+	end
+end
+
+local function Enable(self)
+	if self.Fader then
+		self.Fader.__owner = self
+		self.Fader.ForceUpdate = ForceUpdate
+		self.Fader.SetOption = SetOption
 
 		return true
 	end
 end
 
-local function Disable(self, unit)
-	local element = self.Fader
-
-	if element then
-		if element.HoverHooked == 1 then
-			element.HoverHooked = 0 -- off state
-		end
-		if element.TargetHooked == 1 then
-			element.TargetHooked = 0 -- off state
-		end
-
-		self:UnregisterEvent('PLAYER_REGEN_ENABLED', Update)
-		self:UnregisterEvent('PLAYER_REGEN_DISABLED', Update)
-		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Update)
-		self:UnregisterEvent('PLAYER_FOCUS_CHANGED', Update)
-		self:UnregisterEvent('UNIT_TARGET', Update)
-		self:UnregisterEvent('UNIT_HEALTH', Update)
-		self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Update)
-		self:UnregisterEvent('UNIT_MAXHEALTH', Update)
-		self:UnregisterEvent('UNIT_POWER_UPDATE', Update)
-		self:UnregisterEvent('UNIT_MAXPOWER', Update)
-		self:UnregisterEvent('UNIT_SPELLCAST_START', Update)
-		self:UnregisterEvent('UNIT_SPELLCAST_FAILED', Update)
-		self:UnregisterEvent('UNIT_SPELLCAST_STOP', Update)
-		self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', Update)
-		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_START', Update)
-		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', Update)
-		self:UnregisterEvent('UNIT_ENTERED_VEHICLE', Update)
-		self:UnregisterEvent('UNIT_EXITED_VEHICLE', Update)
-
-		if onRangeFrame then
-			for index, frame in next, onRangeObjects do
-				if frame == self then
-					tremove(onRangeObjects, index)
-					break
-				end
+local function Disable(self)
+	if self.Fader then
+		for opt in pairs(options) do
+			if opt == 'Target' then
+				self.Fader:SetOption('UnitTarget')
+				self.Fader:SetOption('PlayerTarget')
+			else
+				self.Fader:SetOption(opt)
 			end
-
-			ToggleAlpha(self, element, 1)
-
-			if #onRangeObjects == 0 then
-				onRangeFrame:Hide()
-			end
-		else
-			ClearTimers(element)
 		end
 	end
 end

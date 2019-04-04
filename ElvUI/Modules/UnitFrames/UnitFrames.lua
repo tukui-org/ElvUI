@@ -468,39 +468,28 @@ end
 
 function UF:Configure_Fader(frame)
 	if frame.db and frame.db.enable and (frame.db.fader and frame.db.fader.enable) then
-		if frame:IsElementEnabled('Fader') then
-			frame:DisableElement('Fader') -- we need to clear the old stuff, this also clears the configTimer
+		if not frame:IsElementEnabled('Fader') then
+			frame:EnableElement('Fader')
 		end
 
-		frame.Fader.Hover = frame.db.fader.hover
-		frame.Fader.Combat = frame.db.fader.combat
-		frame.Fader.PlayerTarget = frame.db.fader.playertarget
-		frame.Fader.Focus = frame.db.fader.focus
-		frame.Fader.Health = frame.db.fader.health
-		frame.Fader.Power = frame.db.fader.power
-		frame.Fader.Vehicle = frame.db.fader.vehicle
-		frame.Fader.Casting = frame.db.fader.casting
-		frame.Fader.MinAlpha = frame.db.fader.minAlpha
-		frame.Fader.MaxAlpha = frame.db.fader.maxAlpha
+		frame.Fader:SetOption('Hover', frame.db.fader.hover)
+		frame.Fader:SetOption('Combat', frame.db.fader.combat)
+		frame.Fader:SetOption('PlayerTarget', frame.db.fader.playertarget)
+		frame.Fader:SetOption('Focus', frame.db.fader.focus)
+		frame.Fader:SetOption('Health', frame.db.fader.health)
+		frame.Fader:SetOption('Power', frame.db.fader.power)
+		frame.Fader:SetOption('Vehicle', frame.db.fader.vehicle)
+		frame.Fader:SetOption('Casting', frame.db.fader.casting)
+		frame.Fader:SetOption('MinAlpha', frame.db.fader.minAlpha)
+		frame.Fader:SetOption('MaxAlpha', frame.db.fader.maxAlpha)
 
 		if frame ~= _G.ElvUF_Player then
-			frame.Fader.Range = frame.db.fader.range
-			frame.Fader.UnitTarget = frame.db.fader.unittarget
+			frame.Fader:SetOption('Range', frame.db.fader.range)
+			frame.Fader:SetOption('UnitTarget', frame.db.fader.unittarget)
 		end
 
-		if frame.db.fader.smooth > 0 then
-			frame.Fader.Smooth = frame.db.fader.smooth
-		else
-			frame.Fader.Smooth = nil
-		end
-
-		if frame.db.fader.delay > 0 then
-			frame.Fader.Delay = frame.db.fader.delay
-		else
-			frame.Fader.Delay = nil
-		end
-
-		frame:EnableElement('Fader') -- reset the settings
+		frame.Fader:SetOption('Smooth', (frame.db.fader.smooth > 0 and frame.db.fader.smooth) or nil)
+		frame.Fader:SetOption('Delay', (frame.db.fader.delay > 0 and frame.db.fader.delay) or nil)
 
 		frame.Fader.configTimer = E:ScheduleTimer(frame.Fader.ForceUpdate, 0.25, frame.Fader, true)
 	elseif frame:IsElementEnabled('Fader') then
