@@ -1,10 +1,12 @@
 local _, ns = ...
-local oUF = oUF or ns.oUF
+local oUF = _G.oUF or ns.oUF
 assert(oUF, "oUF_Fader cannot find an instance of oUF. If your oUF is embedded into a layout, it may not be embedded properly.")
 
--- Credit: p3lim, Azilroka, Simpy
+-------------
+-- Credits --  p3lim, Azilroka, Simpy
+-------------
 
--- GLOBALS: ElvUI
+local _G = _G
 local pairs, ipairs = pairs, ipairs
 local next, tinsert, tremove = next, tinsert, tremove
 local CreateFrame = CreateFrame
@@ -21,23 +23,23 @@ local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 
 -- These variables will be left-over when disabled if they were used (for reuse later if they become re-enabled):
--- Fader.anim, Fader.HoverHooked, Fader.TargetHooked
+---- Fader.anim, Fader.HoverHooked, Fader.TargetHooked
 
+local E -- ElvUI engine defined in ClearTimers
 local MIN_ALPHA, MAX_ALPHA = .35, 1
 local onRangeObjects, onRangeFrame = {}
-local PowerTypesFull = {
-	MANA = true,
-	FOCUS = true,
-	ENERGY = true,
-}
+local PowerTypesFull = {MANA = true, FOCUS = true, ENERGY = true}
 
 local function ClearTimers(element)
+	if not E then E = _G.ElvUI[1] end
+
 	if element.configTimer then
-		ElvUI[1]:CancelTimer(element.configTimer)
+		E:CancelTimer(element.configTimer)
 		element.configTimer = nil
 	end
+
 	if element.delayTimer then
-		ElvUI[1]:CancelTimer(element.delayTimer)
+		E:CancelTimer(element.delayTimer)
 		element.delayTimer = nil
 	end
 end
@@ -47,7 +49,7 @@ local function FadeOut(anim, frame, timeToFade, startAlpha, endAlpha)
 	anim.startAlpha = startAlpha
 	anim.endAlpha = endAlpha
 
-	ElvUI[1]:UIFrameFade(frame, anim)
+	E:UIFrameFade(frame, anim)
 end
 
 local function ToggleAlpha(self, element, endAlpha)
@@ -66,7 +68,7 @@ local function ToggleAlpha(self, element, endAlpha)
 	end
 end
 
-local function Update(self, event, unit)
+local function Update(self, _, unit)
 	local element = self.Fader
 	if self.isForced or (not element or not element.count or element.count <= 0) then
 		self:SetAlpha(1)
@@ -107,7 +109,7 @@ local function Update(self, event, unit)
 	else
 		if element.Delay then
 			element:ClearTimers()
-			element.delayTimer = ElvUI[1]:ScheduleTimer(ToggleAlpha, element.Delay, self, element, element.MinAlpha)
+			element.delayTimer = E:ScheduleTimer(ToggleAlpha, element.Delay, self, element, element.MinAlpha)
 		else
 			ToggleAlpha(self, element, element.MinAlpha)
 		end
