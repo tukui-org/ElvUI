@@ -2075,7 +2075,7 @@ local function GetUnitSettings(unit, name)
 					},
 					xOffset = {
 						order = 5,
-						name = L["Y-Offset"],
+						name = L["X-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
@@ -2242,7 +2242,7 @@ local function GetUnitSettings(unit, name)
 					},
 					xOffset = {
 						order = 9,
-						name = L["Y-Offset"],
+						name = L["X-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
@@ -2436,7 +2436,7 @@ local function GetUnitSettings(unit, name)
 					},
 					xOffset = {
 						order = 6,
-						name = L["Y-Offset"],
+						name = L["X-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
@@ -2727,7 +2727,7 @@ local function GetUnitSettings(unit, name)
 					},
 					xOffset = {
 						order = 6,
-						name = L["Y-Offset"],
+						name = L["X-Offset"],
 						type = "range",
 						min = -100, max = 100, step = 1,
 					},
@@ -3361,7 +3361,7 @@ local function GetUnitSettings(unit, name)
 				},
 				xOffset = {
 					order = 2,
-					name = L["Y-Offset"],
+					name = L["X-Offset"],
 					type = "range",
 					min = -100, max = 100, step = 1,
 				},
