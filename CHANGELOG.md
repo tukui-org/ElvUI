@@ -18,6 +18,7 @@ Added an option to ignore the UI Scale popup when resizing the game window (Gene
 [Nameplate: Style Filter] Made Name Color and Alpha action work again.  
 [Nameplate: Style Filter] Fixed Health Color not working correctly in combat.  
 [Nameplate: Style Filter] Fixed PVP Talent triggers.  
+[Nameplate: Style Filter] Fixed Castbar Interruptible triggers.  
 [Nameplate] Fixed Target Indicator showing permanently when Low Health Threshold was set to zero. (!115 - Thanks @wing5wong)  
 [Nameplate] Fixed a gap at the end of Classbar on Nameplates.  
 [Nameplate] Fixed Power Hide when Empty.  
@@ -57,6 +58,7 @@ Fixed an issue with the cooldown module which wouldn't correctly set cooldowns w
 [Nameplate] Updated oUF to increase preformance of the new Nameplates further.  
 [Nameplate] Added backdrop coloring to the classbars.  
 [Nameplate] Health Prediction defaulted to off except for Player.  
+[Nameplate] Added xOffsets on Buffs, Debuffs, Castbar, Class Power, and Power bars.  
 [Unitframe] Cleaned some of the Castbar code, as we believe this is part of the reason for the Unitframes to cause additional lags.  
 [Unitframe] Replaced the Combat Fade code on the Player frame, with the same code we now use to fade the Player nameplate. (oUF_Fader)  
 [Unitframe] Replaced the Range check option with the Unitframe Fader settings. (oUF_Fader)  
