@@ -220,37 +220,33 @@ function NP:Update_HealerSpecs(nameplate)
 	end
 end
 
-function NP:DefaultFader()
-	return {
-		Hover = true,
-		Target = true,
-		Health = true,
-		Combat = true,
-		Power = true,
-		Casting = true,
-		Smooth = 1,
-		Delay = 3,
-		MaxAlpha = 1,
-		MinAlpha = 0,
-	}
-end
-
 function NP:Update_Fader(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if (not db.visibility) or db.visibility.showAlways then
+
 		if nameplate:IsElementEnabled('Fader') then
 			nameplate:DisableElement('Fader')
 			E:UIFrameFadeIn(nameplate, 1, nameplate:GetAlpha(), 1)
 		end
 	else
+		if not nameplate.Fader then
+			nameplate.Fader = {}
+		end
+
 		if not nameplate:IsElementEnabled('Fader') then
 			nameplate:EnableElement('Fader')
 		end
 
-		nameplate.Fader.Combat = db.visibility.showInCombat
-		nameplate.Fader.Target = db.visibility.showWithTarget
-		nameplate.Fader.Delay = db.visibility.hideDelay
+		nameplate.Fader:SetOption('MinAlpha', 0)
+		nameplate.Fader:SetOption('Smooth', 0.5)
+		nameplate.Fader:SetOption('Hover', true)
+		nameplate.Fader:SetOption('Power', true)
+		nameplate.Fader:SetOption('Health', true)
+		nameplate.Fader:SetOption('Casting', true)
+		nameplate.Fader:SetOption('PlayerTarget', db.visibility.showWithTarget)
+		nameplate.Fader:SetOption('Combat', db.visibility.showInCombat)
+		nameplate.Fader:SetOption('Delay', db.visibility.hideDelay)
 
 		nameplate.Fader:ForceUpdate()
 	end
