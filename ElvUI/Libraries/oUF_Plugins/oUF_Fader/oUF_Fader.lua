@@ -146,6 +146,8 @@ local function TargetScript(self)
 end
 
 local options = {
+	-- these options will be left-over when disabled if they were used (for reuse later if they become re-enabled):
+	-- fader.anim, fader.HoverHooked, fader.TargetHooked
 	Range = {
 		func = function(self)
 			if not onRangeFrame then
@@ -155,6 +157,20 @@ local options = {
 
 			onRangeFrame:Show()
 			tinsert(onRangeObjects, self)
+		end,
+		disableFunc = function(self)
+			if onRangeFrame then
+				for idx, obj in next, onRangeObjects do
+					if obj == self then
+						tremove(onRangeObjects, idx)
+						break
+					end
+				end
+
+				if #onRangeObjects == 0 then
+					onRangeFrame:Hide()
+				end
+			end
 		end
 	},
 	Hover = {
@@ -278,19 +294,6 @@ local function SetOption(element, opt, state)
 
 			if options[option].disableFunc then
 				options[option].disableFunc(element.__owner)
-			end
-
-			if option == 'Range' and onRangeFrame then
-				for idx, obj in next, onRangeObjects do
-					if obj == element.__owner then
-						tremove(onRangeObjects, idx)
-						break
-					end
-				end
-
-				if #onRangeObjects == 0 then
-					onRangeFrame:Hide()
-				end
 			end
 		end
 	end
