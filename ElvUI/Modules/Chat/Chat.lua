@@ -227,7 +227,7 @@ do --this can save some main file locals
 		["Jazira-Shattrath"]		= ElvBlue,		-- [Alliance] Priest
 		["Jústice-Shattrath"]		= ElvYellow,	-- [Alliance] Rogue
 		["Maithilis-Shattrath"]		= ElvGreen,		-- [Alliance] Monk
-		["Mattdemôn-Shattrath"]		= itsSimpy,		-- [Alliance] DH
+		["Mattdemôn-Shattrath"]		= itsSimpy,		-- [Alliance] DH    --[[ note: not really Simpy; IMPOSTER lol ]]
 		["Melisendra-Shattrath"]	= ElvBlue,		-- [Alliance] Mage
 		["Merathilis-Shattrath"]	= ElvOrange,	-- [Alliance] Druid
 		["Merathilîs-Shattrath"]	= ElvBlue,		-- [Alliance] Shaman
