@@ -8,7 +8,6 @@ local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
-local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local INTERRUPTED = INTERRUPTED
 
@@ -152,7 +151,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 	local _, event, _, sourceGUID, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
 
 	if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
-		local plate = C_NamePlate_GetNamePlateForUnit('target')
+		local plate = NP.PlateGUID[targetGUID]
 		if plate and (plate.unitFrame and plate.unitFrame.Castbar) then
 			local db = plate.unitFrame.frameType and self.db and self.db.units and self.db.units[plate.unitFrame.frameType]
 			local healthBar = (db and db.health and db.health.enable) or (plate.unitFrame.isTarget and self.db.alwaysShowTargetHealth)

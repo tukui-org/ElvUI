@@ -453,10 +453,15 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		unit = unit or nameplate.unit
 
+		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.reaction = UnitReaction('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
-		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
+		nameplate.unitGUID = UnitGUID(unit)
+
+		if nameplate.unitGUID then
+			NP.PlateGUID[nameplate.unitGUID] = nameplate
+		end
 
 		NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
 
@@ -500,6 +505,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:ScalePlate(nameplate, 1, true)
 		end
 
+		if nameplate.unitGUID then
+			NP.PlateGUID[nameplate.unitGUID] = nil
+		end
+
 		NP:StyleFilterClearVariables(nameplate)
 	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
 		NP:SetupTarget(nameplate) -- pass it, even as nil here
@@ -531,6 +540,7 @@ function NP:Initialize()
 	ElvUF:SetActiveStyle('ElvNP')
 
 	NP.Plates = {}
+	NP.PlateGUID = {}
 	NP.StatusBars = {}
 	NP.GroupRoles = {}
 
