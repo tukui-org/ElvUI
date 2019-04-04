@@ -8,8 +8,6 @@ local unpack = unpack
 -- WoW API / Variables
 local UnitClass = UnitClass
 local UnitIsPlayer = UnitIsPlayer
--- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
--- GLOBALS:
 
 function NP:Portrait_PostUpdate(unit)
 	local db = NP.db.units[self.__owner.frameType]

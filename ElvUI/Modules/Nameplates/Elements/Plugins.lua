@@ -6,8 +6,6 @@ local NP = E:GetModule('NamePlates')
 local pairs, unpack = pairs, unpack
 -- WoW API / Variables
 local CreateFrame = CreateFrame
--- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
--- GLOBALS:
 
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nameplate:GetDebugName()..'QuestIcons', nameplate)

@@ -5,8 +5,6 @@ local oUF = E.oUF
 -- Lua functions
 -- WoW API / Variables
 local UnitClassification = UnitClassification
--- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
--- GLOBALS:
 
 local function Update(self)
 	local element = self.ClassificationIndicator

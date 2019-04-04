@@ -7,8 +7,6 @@ local oUF = E.oUF
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local C_Timer_After = C_Timer.After
--- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
--- GLOBALS:
 
 local function MouseOnUnit(frame)
 	if frame and frame:IsVisible() and UnitExists('mouseover') then

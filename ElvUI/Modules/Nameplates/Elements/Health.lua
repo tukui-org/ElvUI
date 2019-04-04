@@ -14,8 +14,6 @@ local UnitClass = UnitClass
 local UnitSelectionType = UnitSelectionType
 local UnitReaction = UnitReaction
 local CreateFrame = CreateFrame
--- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
--- GLOBALS:
 
 function NP:Health_UpdateColor(event, unit)
 	if(not unit or self.unit ~= unit) then return end

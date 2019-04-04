@@ -5,8 +5,6 @@ local NP = E:GetModule('NamePlates')
 -- Lua functions
 local strlower = strlower
 -- WoW API / Variables
--- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
--- GLOBALS:
 
 function NP:PvPIndicator_PostUpdate(unit, status)
 	if not status then return end

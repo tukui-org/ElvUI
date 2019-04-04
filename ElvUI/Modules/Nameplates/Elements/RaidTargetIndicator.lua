@@ -7,8 +7,6 @@ local NP = E:GetModule('NamePlates')
 local UnitIsUnit = UnitIsUnit
 local GetRaidTargetIndex = GetRaidTargetIndex
 local SetRaidTargetIconTexture = SetRaidTargetIconTexture
--- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
--- GLOBALS:
 
 function NP:RaidTargetIndicator_Override(event)
 	local element = self.RaidTargetIndicator

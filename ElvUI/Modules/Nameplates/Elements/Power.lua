@@ -15,8 +15,6 @@ local UnitReaction = UnitReaction
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 local UnitSelectionType = UnitSelectionType
--- Global variables that we don"t cache, list them here for the mikk"s Find Globals script
--- GLOBALS:
 
 function NP:Power_UpdateColor(event, unit)
 	if self.unit ~= unit then return end
