@@ -576,7 +576,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	--Try to match by casting interruptible
 	if not failed and (trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible)) then
 		condition = false
-		if isCasting and ((trigger.casting.interruptible and frame.Castbar.canInterrupt) or (trigger.casting.notInterruptible and not frame.Castbar.canInterrupt)) then
+		if isCasting and ((trigger.casting.interruptible and not frame.Castbar.notInterruptible) or (trigger.casting.notInterruptible and frame.Castbar.notInterruptible)) then
 			condition = true
 		end
 		failed = not condition
