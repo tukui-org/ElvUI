@@ -1409,3 +1409,64 @@ L["yOffset"] = "Y轴偏移"
 L["You cannot copy settings from the same unit."] = "你不能从相同的单位复制设定"
 L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."] = "你不能移除一个内建技能, 仅能停用此技能"
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = "按住设置按键+右键单击会把该玩家加入黑名单, 设为无以关闭该功能"
+
+-- New Locales -- Need Translated then sorted
+
+-- NamePlates
+L["PvP Indicator"] = true -- "Horde / Alliance / Honor Info"
+L["Horde / Alliance / Honor Info"] = true
+L["PvP Classification Indicator"] = true -- Cart / Flag / Orb / Assassin Bounty
+L["Cart / Flag / Orb / Assassin Bounty"] = true
+L["Show/Hide Test Frame"] = true
+L["Nameplate"] = true
+L["Remove Spell ID or Name"] = true
+
+-- Misc
+L["Item Level:"] = true
+L["Item level: %.2f"] = true
+
+-- Bags
+L["Quest Starter"] = true
+L["BoE"] = true
+L["BoU"] = true
+
+-- DataText
+L["(Modifer Click) Collect Garbage"] = true
+
+-- Tooltip
+L["Combat Override Key"] = true
+L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."] = true
+
+-- Chat
+L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."] = true
+
+-- ActionBars
+L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true
+
+-- Module Copy
+L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
+L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
+
+-- UnitFrames
+L["Remaining / Max"] = true
+L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = true
+
+-- Install
+L["Auras Set"] = true
+L["Aura Bars & Icons"] = true
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
+
+-- Skins
+L["Blizzard"] = true
+
+-- Static Popups
+L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = true
+L["Continue"] = true
+
+-- General
+L["Colors"] = true
+L["Boss"] = true
+L["Tank"] = true
+L["Party"] = true
+L["Pet"] = true
+L["Target"] = true
