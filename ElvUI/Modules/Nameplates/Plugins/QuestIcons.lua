@@ -36,10 +36,11 @@ local QuestTypesLocalized = {
 		["besiegen"] = "KILL",
 		["besiegt"] = "KILL",
 		["getötet"] = "KILL",
-		["sprecht"] = "CHAT",
 		["töten"] = "KILL",
 		["tötet"] = "KILL",
 		["zerstört"] = "KILL",
+		["sprecht"] = "CHAT",
+		["befragt"] = "CHAT",
 
 	},
 	["esMX"] = {
@@ -71,9 +72,12 @@ local QuestTypesLocalized = {
 		["поговорит"] = "CHAT",
 	},
 	["zhCN"] = {
-		["slain"] = "KILL",
-		["destroyed"] = "KILL",
-		["speak"] = "CHAT",
+		["消灭"] = "KILL",
+		["摧毁"] = "KILL",
+		["获得"] = "KILL",
+		["谈一谈"] = "CHAT",
+		["击败"] = "CHAT",
+		["交谈"] = "CHAT",
 	},
 	["zhTW"] = {
 		["slain"] = "KILL",
