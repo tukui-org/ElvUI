@@ -234,6 +234,16 @@ function NP:PostUpdateAura(unit, button)
 	if db then
 		button:Size(db.size, db.size)
 		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+		button.count:ClearAllPoints()
+
+		local point = (db and db.countPosition) or 'CENTER'
+		if point == 'CENTER' then
+			button.count:Point(point, 1, 0)
+		else
+			local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
+			button.count:SetJustifyH(right and 'RIGHT' or 'LEFT')
+			button.count:Point(point, right and -1 or 1, bottom and 1 or -1)
+		end
 
 		if button.cd then
 			NP:UpdateCooldownTextPosition(button.cd, db)

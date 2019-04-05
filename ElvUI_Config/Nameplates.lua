@@ -2501,6 +2501,21 @@ local function GetUnitSettings(unit, name)
 									['THICKOUTLINE'] = 'THICKOUTLINE',
 								},
 							},
+							countPosition = {
+								order = 2,
+								name = L["Position"],
+								type = "select",
+								values = {
+									["TOP"] = "TOP",
+									["LEFT"] = "LEFT",
+									["BOTTOM"] = "BOTTOM",
+									["CENTER"] = "CENTER",
+									["TOPLEFT"] = "TOPLEFT",
+									["BOTTOMLEFT"] = "BOTTOMLEFT",
+									["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+									["RIGHT"] = "RIGHT",
+									["TOPRIGHT"] = "TOPRIGHT",								},
+							},
 						}
 					},
 					duration = {
@@ -2529,6 +2544,8 @@ local function GetUnitSettings(unit, name)
 									["CENTER"] = "CENTER",
 									["TOPLEFT"] = "TOPLEFT",
 									["BOTTOMLEFT"] = "BOTTOMLEFT",
+									["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+									["RIGHT"] = "RIGHT",
 									["TOPRIGHT"] = "TOPRIGHT",
 								},
 							},
@@ -2792,6 +2809,22 @@ local function GetUnitSettings(unit, name)
 									['THICKOUTLINE'] = 'THICKOUTLINE',
 								},
 							},
+							countPosition = {
+								order = 2,
+								name = L["Position"],
+								type = "select",
+								values = {
+									["TOP"] = "TOP",
+									["LEFT"] = "LEFT",
+									["BOTTOM"] = "BOTTOM",
+									["CENTER"] = "CENTER",
+									["TOPLEFT"] = "TOPLEFT",
+									["BOTTOMLEFT"] = "BOTTOMLEFT",
+									["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+									["RIGHT"] = "RIGHT",
+									["TOPRIGHT"] = "TOPRIGHT",
+								},
+							},
 						}
 					},
 					duration = {
@@ -2820,6 +2853,8 @@ local function GetUnitSettings(unit, name)
 									["CENTER"] = "CENTER",
 									["TOPLEFT"] = "TOPLEFT",
 									["BOTTOMLEFT"] = "BOTTOMLEFT",
+									["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+									["RIGHT"] = "RIGHT",
 									["TOPRIGHT"] = "TOPRIGHT",
 								},
 							},
