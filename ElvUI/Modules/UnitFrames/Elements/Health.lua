@@ -202,6 +202,8 @@ function UF:Configure_HealthBar(frame)
 		end
 
 		--Party/Raid Frames can toggle frequent updates
+		if db.health.frequentUpdates == nil then db.health.frequentUpdates = true end
+
 		health:SetFrequentUpdates(db.health.frequentUpdates)
 
 		if db.health.bgUseBarTexture then
