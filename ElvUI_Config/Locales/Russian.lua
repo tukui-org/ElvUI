@@ -950,6 +950,7 @@ L["Character Frame"] = "Окно персонажа"
 L["CheckBox Skin"] = "Скин чекбоксов"
 L["Contribution"] = "Вклад"
 L["Debug Tools"] = "Инструменты отладки"
+L["GM Chat"] = true
 L["Gossip Frame"] = "Диалоги"
 L["Guild Control Frame"] = "Управление гильдией"
 L["Guild Registrar"] = "Регистратор гильдий"

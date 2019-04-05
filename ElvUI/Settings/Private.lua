@@ -136,6 +136,7 @@ V.skins = {
 		Scrapping = true,
 		IslandQueue = true,
 		IslandsPartyPose = true,
+		GMChat = true,
 	},
 }
 

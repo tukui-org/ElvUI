@@ -952,6 +952,7 @@ L["Character Frame"] = "角色"
 L["CheckBox Skin"] = "勾选框皮肤"
 L["Contribution"] = "捐献"
 L["Debug Tools"] = "除错工具"
+L["GM Chat"] = true
 L["Gossip Frame"] = "闲谈"
 L["Guild Control Frame"] = "公会控制"
 L["Guild Registrar"] = "公会注册"

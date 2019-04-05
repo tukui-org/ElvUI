@@ -455,6 +455,11 @@ E.Options.args.skins = {
 					name = AZERITE_RESPEC_TITLE,
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				GMChat = {
+					type = "toggle",
+					name = L["GM Chat"],
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},

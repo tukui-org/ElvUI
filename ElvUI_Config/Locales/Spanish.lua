@@ -950,6 +950,7 @@ L["Character Frame"] = "Personaje"
 L["CheckBox Skin"] = true
 L["Contribution"] = true
 L["Debug Tools"] = "Herramientas de Depuración"
+L["GM Chat"] = true
 L["Gossip Frame"] = "Actualidad"
 L["Guild Control Frame"] = "Control de Hermandad"
 L["Guild Registrar"] = "Registrar Hermandad"

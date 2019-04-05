@@ -1004,6 +1004,7 @@ L["Character Frame"] = "캐릭터 창"
 L["CheckBox Skin"] = true
 L["Contribution"] = "기여"
 L["Debug Tools"] = "오류 확인 창"
+L["GM Chat"] = true
 L["Gossip Frame"] = "NPC 대화 창"
 L["Guild Control Frame"] = "길드 관리 창"
 L["Guild Registrar"] = "길드 등록"

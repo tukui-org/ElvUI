@@ -953,6 +953,7 @@ L["Character Frame"] = "Charakterfenster"
 L["CheckBox Skin"] = "Auswahlkästchen Skin"
 L["Contribution"] = "Beitragsfenster"
 L["Debug Tools"] = "Debug Tools"
+L["GM Chat"] = true --no need to translate
 L["Gossip Frame"] = "Begrüßungsfenster"
 L["Guild Control Frame"] = "Gildenkontrollfenster"
 L["Guild Registrar"] = "Gildenregister"

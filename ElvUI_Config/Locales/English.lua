@@ -946,6 +946,7 @@ L["Character Frame"] = true
 L["CheckBox Skin"] = true
 L["Contribution"] = true
 L["Debug Tools"] = true
+L["GM Chat"] = true
 L["Gossip Frame"] = true
 L["Guild Control Frame"] = true
 L["Guild Registrar"] = true

@@ -951,6 +951,7 @@ L["Character Frame"] = "Fenêtre du Personnage"
 L["CheckBox Skin"] = true
 L["Contribution"] = true
 L["Debug Tools"] = "Outils de débogage"
+L["GM Chat"] = true
 L["Gossip Frame"] = "Fenêtre PNJ"
 L["Guild Control Frame"] = "Gestion de Guilde"
 L["Guild Registrar"] = "Bannière de Guilde"
