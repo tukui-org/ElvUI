@@ -74,8 +74,7 @@ local QuestTypesLocalized = {
 		["消灭"] = "KILL",
 		["摧毁"] = "KILL",
 		["获得"] = "KILL",
-		["谈一谈"] = "CHAT",
-		["击败"] = "CHAT",
+		["击败"] = "KILL",
 		["交谈"] = "CHAT",
 	},
 	["zhTW"] = {
