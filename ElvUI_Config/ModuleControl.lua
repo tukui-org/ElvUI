@@ -417,7 +417,7 @@ local function CreateUnitframesConfig()
 			["pet"] = {
 				order = 7,
 				type = "toggle",
-				name = L["Pet"],
+				name = PET,
 			},
 			["pettarget"] = {
 				order = 8,
@@ -437,7 +437,7 @@ local function CreateUnitframesConfig()
 			["party"] = {
 				order = 11,
 				type = "toggle",
-				name = L["Party"],
+				name = PARTY,
 			},
 			["raid"] = {
 				order = 12,
@@ -457,7 +457,7 @@ local function CreateUnitframesConfig()
 			["tank"] = {
 				order = 15,
 				type = "toggle",
-				name = L["Tank"],
+				name = TANK,
 			},
 			["assist"] = {
 				order = 16,

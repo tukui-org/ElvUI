@@ -265,7 +265,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 				if role == "HEALER" then
 					role, r, g, b = L["Healer"], 0, 1, .59
 				elseif role == "TANK" then
-					role, r, g, b = L["Tank"], .16, .31, .61
+					role, r, g, b = TANK, .16, .31, .61
 				elseif role == "DAMAGER" then
 					role, r, g, b = L["DPS"], .77, .12, .24
 				end
