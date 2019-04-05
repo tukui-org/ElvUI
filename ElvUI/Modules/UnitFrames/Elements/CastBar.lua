@@ -120,7 +120,7 @@ function UF:Configure_Castbar(frame)
 		castbar:SetFrameLevel(db.castbar.strataAndLevel.frameLevel)
 	end
 
-	castbar.timeToHold = db.castbar.holdTime
+	castbar.timeToHold = db.castbar.timeToHold
 
 	--Latency
 	if db.castbar.latency then
