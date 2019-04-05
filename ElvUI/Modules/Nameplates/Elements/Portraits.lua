@@ -41,6 +41,7 @@ end
 
 function NP:Update_Portrait(nameplate)
 	local db = NP.db.units[nameplate.frameType]
+
 	if nameplate.PortraitShown or (db.portrait and db.portrait.enable) then
 		if not nameplate:IsElementEnabled('Portrait') then
 			nameplate:EnableElement('Portrait')

@@ -1076,6 +1076,7 @@ local function OnCooldownUpdate(_, button, start, duration)
 
 	if button.chargeCooldown then
 		AB:RegisterCooldown(button.chargeCooldown)
+		button.chargeCooldown.CooldownOverride = 'actionbar'
 		button.chargeCooldown.forceDisabled = not AB.db.chargeCooldown
 	end
 
