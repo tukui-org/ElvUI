@@ -208,14 +208,15 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
+	local mult = (nameplate == _G.ElvNP_Player and E.mult) or E.global.general.UIScale
 	if targetPlate and NP.targetPlate then
-		NP.targetPlate:SetScale(E.global.general.UIScale)
+		NP.targetPlate:SetScale(mult)
 		NP.targetPlate = nil
 	end
 
 	if not nameplate then return end
 
-	local targetScale = format('%.2f', E.global.general.UIScale * scale)
+	local targetScale = format('%.2f', mult * scale)
 	nameplate:SetScale(targetScale)
 
 	if targetPlate then
@@ -575,7 +576,7 @@ function NP:Initialize()
 	_G.ElvNP_Player:SetAttribute('toggleForVehicle', true)
 	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:Size(NP.db.clickableWidth, NP.db.clickableHeight)
-	_G.ElvNP_Player:SetScale(1)
+	_G.ElvNP_Player:SetScale(E.mult)
 	_G.ElvNP_Player.frameType = 'PLAYER'
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
 
