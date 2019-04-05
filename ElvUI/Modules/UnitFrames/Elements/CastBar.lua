@@ -108,9 +108,9 @@ function UF:Configure_Castbar(frame)
 	castbar:Height(db.castbar.height - ((frame.BORDER+frame.SPACING)*2))
 	castbar.Holder:Width(db.castbar.width)
 	castbar.Holder:Height(db.castbar.height)
-	if(castbar.Holder:GetScript('OnSizeChanged')) then
-		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
-	end
+
+	local oSC = castbar.Holder:GetScript('OnSizeChanged')
+	if oSC then oSC(castbar.Holder) end
 
 	if db.castbar.strataAndLevel and db.castbar.strataAndLevel.useCustomStrata then
 		castbar:SetFrameStrata(db.castbar.strataAndLevel.frameStrata)
