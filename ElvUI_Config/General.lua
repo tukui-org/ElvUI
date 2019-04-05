@@ -367,7 +367,7 @@ E.Options.args.general = {
 				enable = {
 					order = 2,
 					type = "toggle",
-					name = L["Enable"'],
+					name = L["Enable"],
 					set = function(info, value) E.db.general.totems[info[#info]] = value; Totems:ToggleEnable() end,
 				},
 				size = {
@@ -512,7 +512,7 @@ E.Options.args.general = {
 				enable = {
 					order = 41,
 					type = "toggle",
-					name = L["Enable"'],
+					name = L["Enable"],
 					set = function(info, value) E.db.general.threat.enable = value; Threat:ToggleEnable()end,
 				},
 				position = {
@@ -565,7 +565,7 @@ E.Options.args.general = {
 				enable = {
 					order = 2,
 					type = "toggle",
-					name = L["Enable"'],
+					name = L["Enable"],
 					desc = L["Replace Blizzard's Alternative Power Bar"],
 					width = 'full',
 					set = function(info, value)

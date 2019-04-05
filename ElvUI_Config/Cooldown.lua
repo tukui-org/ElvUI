@@ -68,7 +68,7 @@ local function group(order, db, label)
 					checkSeconds = {
 						type = "toggle",
 						order = 1,
-						name = L["Enable"'],
+						name = L["Enable"],
 						desc = L["This will override the global cooldown settings."],
 						disabled = E.noop,
 					},
@@ -97,7 +97,7 @@ local function group(order, db, label)
 					override = {
 						type = "toggle",
 						order = 1,
-						name = L["Enable"'],
+						name = L["Enable"],
 						desc = L["This will override the global cooldown settings."],
 						get = function(info) return (profile(db))[info[#info]] end,
 						set = function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end,
@@ -183,7 +183,7 @@ local function group(order, db, label)
 					enable = {
 						type = "toggle",
 						order = 1,
-						name = L["Enable"'],
+						name = L["Enable"],
 						desc = L["This will override the global cooldown settings."],
 						disabled = E.noop,
 					},
@@ -265,7 +265,7 @@ E.Options.args.cooldown = {
 		enable = {
 			type = "toggle",
 			order = 2,
-			name = L["Enable"'],
+			name = L["Enable"],
 			desc = L["Display cooldown text on anything with the cooldown spiral."]
 		},
 	},

@@ -20,7 +20,7 @@ E.Options.args.tooltip = {
 		enable = {
 			order = 2,
 			type = "toggle",
-			name = L["Enable"'],
+			name = L["Enable"],
 			get = function(info) return E.private.tooltip[info[#info]] end,
 			set = function(info, value) E.private.tooltip[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
