@@ -2273,7 +2273,7 @@ local function GetUnitSettings(unit, name)
 								name = L["Text Position"],
 								type = "select",
 								values = {
-									["ONBAR"] = L["On Bar"],
+									["ONBAR"] = L["Cast Bar"],
 									["ABOVE"] = L["Above"],
 									["BELOW"] = L["Below"]
 								},
