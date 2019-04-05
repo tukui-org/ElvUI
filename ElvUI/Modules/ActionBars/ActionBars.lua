@@ -1080,7 +1080,7 @@ local function OnCooldownUpdate(_, button, start, duration)
 		button.chargeCooldown.forceDisabled = not AB.db.chargeCooldown
 	end
 
-	if duration and duration > 1.5 then
+	if AB.db.desaturateOnCooldown and duration and duration > 1.5 then
 		button.saturationLocked = true --Lock any new actions that are created after we activated desaturation option
 		button.icon:SetDesaturated(true)
 	else
