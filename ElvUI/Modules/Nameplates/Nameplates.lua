@@ -261,6 +261,8 @@ function NP:StylePlate(nameplate)
 	end
 
 	NP.Plates[nameplate] = nameplate:GetName()
+
+	NP:StyleFilterPlateStyled(nameplate)
 end
 
 function NP:UpdatePlate(nameplate)

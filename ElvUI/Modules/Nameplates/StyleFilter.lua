@@ -7,8 +7,8 @@ local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget,
 local setmetatable, tonumber, type, unpack = setmetatable, tonumber, type, unpack
 local gsub, tinsert, tremove, sort, wipe = gsub, tinsert, tremove, sort, wipe
 
-local GetLocale = GetLocale
 local GetInstanceInfo = GetInstanceInfo
+local GetLocale = GetLocale
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpellCharges = GetSpellCharges
 local GetSpellCooldown = GetSpellCooldown
@@ -27,6 +27,8 @@ local UnitIsUnit = UnitIsUnit
 local UnitLevel = UnitLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
+
+local hooksecurefunc = hooksecurefunc
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local INTERRUPTED = INTERRUPTED
@@ -322,6 +324,23 @@ function mod:StyleFilterSetupFlash(FlashTexture)
 	FlashTexture.anim:SetScript("OnFinished", mod.StyleFilterFinishedFlash)
 end
 
+function mod:StyleFilterPlateStyled(frame)
+	if frame and frame.Name and not frame.Name.__owner then
+		frame.Name.__owner = frame
+		hooksecurefunc(frame.Name, 'SetFormattedText', mod.StyleFilterNameChanged)
+	end
+end
+
+function mod:StyleFilterNameChanged()
+	if not self.__owner or not self.__owner.NameColorChanged then return end
+
+	local nameText = self:GetText()
+	if nameText and nameText ~= "" then
+		local unitName = self.__owner.unitName and gsub(self.__owner.unitName,'([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
+		if unitName then self:SetText(gsub(nameText,'|c[fF][fF]%x%x%x%x%x%x%s-('..unitName..')','%1')) end
+	end
+end
+
 function mod:StyleFilterBorderLock(backdrop, switch)
 	if switch == true then
 		backdrop.ignoreBorderColors = true --but keep the backdrop updated
@@ -399,11 +418,9 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if NameColorChanged then
 		frame.StyleChanged = true
 		frame.NameColorChanged = true
-		local nameText = frame.Name:GetText()
-		if nameText and nameText ~= "" then
-			frame.Name:SetText(gsub(nameText, '|c[fF][fF]%x%x%x%x%x%x', ''))
-			frame.Name:SetTextColor(actions.color.nameColor.r, actions.color.nameColor.g, actions.color.nameColor.b, actions.color.nameColor.a)
-		end
+
+		mod.StyleFilterNameChanged(frame.Name)
+		frame.Name:SetTextColor(actions.color.nameColor.r, actions.color.nameColor.g, actions.color.nameColor.b, actions.color.nameColor.a)
 	end
 	if PortraitShown then
 		frame.StyleChanged = true
