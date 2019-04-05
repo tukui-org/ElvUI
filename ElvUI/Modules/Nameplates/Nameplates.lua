@@ -459,7 +459,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.reaction = UnitReaction('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.unitGUID = UnitGUID(unit)
-		nameplate.npcID = nameplate.unitGUID and select(6, strsplit('-', nameplate.unitGUID))
+		nameplate.unitName = UnitName(unit)
+		nameplate.npcID = nameplate.unitGUID and select(6,strsplit('-',nameplate.unitGUID))
 
 		if nameplate.unitGUID then
 			NP.PlateGUID[nameplate.unitGUID] = nameplate

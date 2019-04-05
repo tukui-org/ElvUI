@@ -25,7 +25,6 @@ local UnitIsQuestBoss = UnitIsQuestBoss
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitIsUnit = UnitIsUnit
 local UnitLevel = UnitLevel
-local UnitName = UnitName
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local C_Timer_NewTimer = C_Timer.NewTimer
@@ -510,7 +509,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 end
 
 function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
-	local _, condition, name, inCombat, questBoss, reaction, spell, classification, instanceType, instanceDifficulty,
+	local _, condition, inCombat, questBoss, reaction, spell, classification, instanceType, instanceDifficulty,
 	talentSelected, pvpTalent, talentRows, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID, creatureType,
 	power, maxPower, percPower, underPowerThreshold, overPowerThreshold, powerUnit, health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold, healthUnit;
 
@@ -519,19 +518,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 
 	if not failed and trigger.names and next(trigger.names) then
 		condition = 0
-		for unitName, value in pairs(trigger.names) do
+		for name, value in pairs(trigger.names) do
 			if value == true then --only check names that are checked
 				condition = 1
-				if tonumber(unitName) then
-					if frame.unitGUID and frame.npcID then
-						if tonumber(unitName) == tonumber(frame.npcID) then
-							condition = 2
-							break
-						end
+				if tonumber(name) then --check as guid
+					if frame.npcID and (name == frame.npcID) then
+						condition = 2
+						break
 					end
 				else
-					name = UnitName(frame.unit)
-					if unitName and unitName ~= "" and unitName == name then
+					if name and name ~= "" and (name == frame.unitName) then
 						condition = 2
 						break
 					end
