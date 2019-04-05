@@ -4,8 +4,6 @@ local oUF = E.oUF
 -- Cache global variables
 -- Lua functions
 -- WoW API / Variables
-local UnitClassification = UnitClassification
-
 local function Update(self)
 	local element = self.ClassificationIndicator
 
@@ -13,8 +11,7 @@ local function Update(self)
 		element:PreUpdate()
 	end
 
-	local unit = self.unit
-	local classification = UnitClassification(unit)
+	local classification = self.classification
 	if classification == "elite" or classification == "worldboss" then
 		element:SetAtlas("nameplates-icon-elite-gold")
 		element:Show()

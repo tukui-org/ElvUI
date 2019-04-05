@@ -21,6 +21,8 @@ local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local IsInInstance = IsInInstance
 local SetCVar, GetCVarDefault = SetCVar, GetCVarDefault
 local UnitClass = UnitClass
+local UnitClassification = UnitClassification
+local UnitCreatureType = UnitCreatureType
 local UnitExists = UnitExists
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
@@ -459,6 +461,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.repReaction = UnitReaction(unit, 'player')
 		nameplate.reaction = UnitReaction('player', unit)
+		nameplate.classification = UnitClassification(unit)
+		nameplate.creatureType = UnitCreatureType(unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.unitGUID = UnitGUID(unit)
 		nameplate.unitName = UnitName(unit)

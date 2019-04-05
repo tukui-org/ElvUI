@@ -17,8 +17,6 @@ local GetTalentInfo = GetTalentInfo
 local GetTime = GetTime
 local PowerBarColor = PowerBarColor
 local UnitAffectingCombat = UnitAffectingCombat
-local UnitClassification = UnitClassification
-local UnitCreatureType = UnitCreatureType
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitIsQuestBoss = UnitIsQuestBoss
@@ -699,7 +697,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	--Try to match by classification conditions
 	if not failed and (trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus) then
 		condition = false
-		classification = UnitClassification(frame.unit)
+		classification = frame.classification
 		if classification
 		and ((trigger.classification.worldboss and classification == "worldboss")
 		or (trigger.classification.rareelite   and classification == "rareelite")
@@ -838,7 +836,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	--Try to match by creature conditions
 	if not failed and trigger.creatureType and trigger.creatureType.enable then
 		condition = false
-		creatureType = E.CreatureTypes[UnitCreatureType(frame.unit)]
+		creatureType = E.CreatureTypes[frame.creatureType]
 		if creatureType and trigger.creatureType[creatureType] then
 			condition = true
 		end
