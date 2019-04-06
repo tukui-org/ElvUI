@@ -3,6 +3,7 @@
 **New Additions:**  
 [Nameplate] Added ElvUIPlayerNamePlateAnchor for WeakAuras and other AddOns.  
 [Nameplate] Added an option to toggle the Nameplates from fading in when shown.  
+[Nameplate] Added Aura stack position option. (#1140)  
 [Nameplate / Unitframes] Added NamePlate and UnitFrame Color Selection colors from oUF. (Thanks oUF/LS-)!  
 [Nameplate / Unitframes] Added a new smoothing method to Unitframes and Nameplates. (Thanks LS-)!  
 [Nameplate: Style Filter] Add a new Filter: "Explosives" for Explosive Orbs in Mythic plus.  
@@ -19,6 +20,7 @@ Added an option to ignore the UI Scale popup when resizing the game window (Gene
 [Nameplate: Style Filter] Fixed Health Color not working correctly in combat.  
 [Nameplate: Style Filter] Fixed PVP Talent triggers.  
 [Nameplate: Style Filter] Fixed Castbar Interruptible triggers.  
+[Nameplate: Style Filter] Optimized the Name/NPC ID trigger, reaction, classification triggers.  
 [Nameplate] Fixed Target Indicator showing permanently when Low Health Threshold was set to zero. (!115 - Thanks @wing5wong)  
 [Nameplate] Fixed a gap at the end of Classbar on Nameplates.  
 [Nameplate] Fixed Power Hide when Empty.  
@@ -27,8 +29,11 @@ Added an option to ignore the UI Scale popup when resizing the game window (Gene
 [Nameplate] Made sure the Classbar appears on the Targeted plate correctly.  
 [Nameplate] Fixed issue which prevented the Quest Icon from showing in some cases.  
 [Nameplate] Fixed rune sort order for Deathknights and Classbar color for Monks.  
+[Nameplate] Fixed Quest Icon on for CN region, some others still need locale update.. :(  
 [Actionbar] Fixed main bar (bar one) paging issue.  
 [Actionbar] Fixed Stance Bar Keybinding Text not appearing correctly. (#541)  
+[Unitframe] Fixed health not updating correctly (again).  
+[Unitframe] Fixed Castbar hold time not working correctly.  
 [Chat / Datatext] Finally fixed the 'lhs' error with Quick Join.  
 [Chat] Fixed an issue which was caused from our Chat file skinning the Combat Log bar when other addons hid it.  
 [Skin] Fixed an issue which caused the Ace3 skin to add an X on buttons from other addons using our skin. (#1217)  
