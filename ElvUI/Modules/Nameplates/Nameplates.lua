@@ -194,6 +194,8 @@ function NP:StyleTargetPlate(nameplate)
 
 	if E.myclass == 'DEATHKNIGHT' then
 		nameplate.Runes = NP:Construct_Runes(nameplate)
+	elseif E.myclass == 'MONK' then
+		nameplate.Stagger = NP:Construct_Stagger(nameplate)
 	end
 end
 
@@ -202,9 +204,11 @@ function NP:UpdateTargetPlate(nameplate)
 
 	if E.myclass == 'DEATHKNIGHT' then
 		NP:Update_Runes(nameplate)
+	elseif E.myclass == 'MONK' then
+		NP:Update_Stagger(nameplate)
 	end
 
-	nameplate:UpdateAllElements('OnShow')
+--	nameplate:UpdateAllElements('OnShow')
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
@@ -256,6 +260,8 @@ function NP:StylePlate(nameplate)
 
 	if E.myclass == 'DEATHKNIGHT' then
 		nameplate.Runes = NP:Construct_Runes(nameplate)
+	elseif E.myclass == 'MONK' then
+		nameplate.Stagger = NP:Construct_Stagger(nameplate)
 	end
 
 	if nameplate == _G.ElvNP_Player then
@@ -293,6 +299,8 @@ function NP:UpdatePlate(nameplate)
 
 		if E.myclass == 'DEATHKNIGHT' then
 			NP:Update_Runes(nameplate)
+		elseif E.myclass == 'MONK' then
+			NP:Update_Stagger(nameplate)
 		end
 
 		if nameplate == _G.ElvNP_Player then
@@ -357,6 +365,11 @@ function NP:SetupTarget(nameplate, removed)
 		TCP.Runes:SetParent(moveToPlate)
 		TCP.Runes:ClearAllPoints()
 		TCP.Runes:SetPoint('CENTER', moveToPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
+	end
+	if TCP.Stagger then
+		TCP.Stagger:SetParent(moveToPlate)
+		TCP.Stagger:ClearAllPoints()
+		TCP.Stagger:SetPoint('CENTER', moveToPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
 	end
 end
 

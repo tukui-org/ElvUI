@@ -95,45 +95,6 @@ function NP:Construct_ClassPower(nameplate)
 	return ClassPower
 end
 
-function NP:Runes_PostUpdate()
-	if UnitHasVehicleUI('player') then
-		self:Hide()
-	else
-		self:Show()
-	end
-end
-
-function NP:Construct_Runes(nameplate)
-	local Runes = CreateFrame('Frame', nameplate:GetDebugName()..'Runes', nameplate)
-	Runes:SetFrameStrata(nameplate:GetFrameStrata())
-	Runes:SetFrameLevel(5)
-	Runes:CreateBackdrop('Transparent')
-	Runes:Hide()
-
-	Runes.UpdateColor = E.noop
-	Runes.PostUpdate = NP.Runes_PostUpdate
-
-	for i = 1, 6 do
-		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
-		Runes[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
-		Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
-		NP.StatusBars[Runes[i]] = true
-
-		local statusBarTexture = Runes[i]:GetStatusBarTexture()
-		statusBarTexture:SetSnapToPixelGrid(false)
-		statusBarTexture:SetTexelSnappingBias(0)
-
-		Runes[i].bg = Runes[i]:CreateTexture(nil, 'BORDER')
-		Runes[i].bg:SetAllPoints()
-		Runes[i].bg:SetSnapToPixelGrid(false)
-		Runes[i].bg:SetTexelSnappingBias(0)
-		Runes[i].bg:SetTexture(E.media.blankTex)
-		Runes[i].bg:SetVertexColor(NP.db.colors.classResources.DEATHKNIGHT.r * .35, NP.db.colors.classResources.DEATHKNIGHT.g * .35, NP.db.colors.classResources.DEATHKNIGHT.b * .35)
-	end
-
-	return Runes
-end
-
 function NP:Update_ClassPower(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
@@ -180,6 +141,45 @@ function NP:Update_ClassPower(nameplate)
 	end
 end
 
+function NP:Runes_PostUpdate()
+	if UnitHasVehicleUI('player') then
+		self:Hide()
+	else
+		self:Show()
+	end
+end
+
+function NP:Construct_Runes(nameplate)
+	local Runes = CreateFrame('Frame', nameplate:GetDebugName()..'Runes', nameplate)
+	Runes:SetFrameStrata(nameplate:GetFrameStrata())
+	Runes:SetFrameLevel(5)
+	Runes:CreateBackdrop('Transparent')
+	Runes:Hide()
+
+	Runes.UpdateColor = E.noop
+	Runes.PostUpdate = NP.Runes_PostUpdate
+
+	for i = 1, 6 do
+		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
+		Runes[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+		Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
+		NP.StatusBars[Runes[i]] = true
+
+		local statusBarTexture = Runes[i]:GetStatusBarTexture()
+		statusBarTexture:SetSnapToPixelGrid(false)
+		statusBarTexture:SetTexelSnappingBias(0)
+
+		Runes[i].bg = Runes[i]:CreateTexture(nil, 'BORDER')
+		Runes[i].bg:SetAllPoints()
+		Runes[i].bg:SetSnapToPixelGrid(false)
+		Runes[i].bg:SetTexelSnappingBias(0)
+		Runes[i].bg:SetTexture(E.media.blankTex)
+		Runes[i].bg:SetVertexColor(NP.db.colors.classResources.DEATHKNIGHT.r * .35, NP.db.colors.classResources.DEATHKNIGHT.g * .35, NP.db.colors.classResources.DEATHKNIGHT.b * .35)
+	end
+
+	return Runes
+end
+
 function NP:Update_Runes(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
@@ -219,5 +219,35 @@ function NP:Update_Runes(nameplate)
 		end
 
 		nameplate.Runes:Hide()
+	end
+end
+
+function NP:Construct_Stagger(nameplate)
+    local Stagger = CreateFrame('StatusBar', nameplate:GetDebugName()..'Stagger', nameplate)
+	Stagger:SetFrameStrata(nameplate:GetFrameStrata())
+	Stagger:SetFrameLevel(5)
+	Stagger:CreateBackdrop('Transparent')
+	Stagger:Hide()
+
+	return Stagger
+end
+
+function NP:Update_Stagger(nameplate)
+	local db = NP.db.units[nameplate.frameType]
+
+	if (nameplate.frameType == 'PLAYER' or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
+		if not nameplate:IsElementEnabled('Stagger') then
+			nameplate:EnableElement('Stagger')
+		end
+
+		nameplate.Stagger:Show()
+		nameplate.Stagger:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
+		nameplate.Stagger:Size(db.classpower.width, db.classpower.height)
+	else
+		if nameplate:IsElementEnabled('Stagger') then
+			nameplate:DisableElement('Stagger')
+		end
+
+		nameplate.Stagger:Hide()
 	end
 end
