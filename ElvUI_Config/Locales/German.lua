@@ -145,6 +145,7 @@ L["The spacing between the backdrop and the buttons."] = "Der Abstand zwischen d
 L["This setting will be updated upon changing stances."] = "Diese Einstellungen werden bei Gestaltwandel aktualisiert"
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "CD-Schwelle bevor der Text rot wird. Setze diesen Wert auf -1, wenn er nie rot werden soll"
 L["This will override the global cooldown settings."] = "Dieses überschreibt die globale Abklingzeiteinstellung."
+L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = "Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen verwenden um die Aktionsleiste zu zeigen/verstecken.\n Beispiel: '[combat] show;hide'"
 L["Toggles the display of the actionbars backdrop."] = "Aktiviere den Hintergrund der Aktionsleisten."
 L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = "Transparenz Level wenn nicht im Kampf, kein Ziel ausgewählt, volle Gesundheit, nicht am Zaubern und kein Fokus existiert."
 L["Usable"] = "Nutzbar"
@@ -185,7 +186,9 @@ L["Bank 6"] = true
 L["Bank 7"] = true
 L["Bar Direction"] = "Ausrichtung Leiste"
 L["Blizzard Style"] = "Blizzard Stil"
+L["BoE"] = true --no need to translate
 L["Bottom to Top"] = "Von unten nach oben"
+L["BoU"] = true --no need to translate
 L["Button Size (Bag)"] = "Tasten Größe (Tasche)"
 L["Button Size (Bank)"] = "Tasten Größe (Bank)"
 L["Clear Search On Close"] = "Leere Suche beim Schließen"
@@ -222,6 +225,7 @@ L["Panel Width (Bags)"] = "Leistenbreite (Taschen)"
 L["Panel Width (Bank)"] = "Leistenbreite (Bank)"
 L["Profession Bags"] = "Berufstaschen"
 L["Progress Bar"] = "Fortschrittsbalken"
+L["Quest Starter"] = "Quest beginnen"
 L["Reverse Bag Slots"] = "Umgekehrte Taschenslots"
 L["Search Syntax"] = "Suchsyntax"
 L["Sell Interval"] = "Verkaufsintervall"
@@ -367,6 +371,7 @@ L["Shorten the channel names in chat."] = "Kürze Kanalnamen im Chat."
 L["Show Both"] = "Zeige Beide"
 L["Show clickable Quick Join messages inside of the chat."] = "Zeige eine anklickbare Schnellbeitritt Nachricht im Chat."
 L["Spam Interval"] = "Spam-Interval"
+L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."] = "Spezifiziere einen Dateinamen in deinem World of Warcraft Ordner.\n\nBitte beachte:\n-Die Bildgröße sollte 256x128 sein\n-Du musst dein Spiel komplett neu starten nachdem du eine Datei zum Ordner hinzugefügt hast.\n-Der Dateityp muss tga sein.\n\nBeispiel: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nFür die meisten Benutzter ist es einfacher die tga Datei einfach in deinem World of Warcraft Ordner zu plazieren."
 L["Sticky Chat"] = "Kanal merken"
 L["Tab Font Outline"] = "Tab Schriftkontur"
 L["Tab Font Size"] = "Tab Schriftgröße"
@@ -499,12 +504,14 @@ L["Automatically select greed or disenchant (when available) on green quality it
 L["Automatically vendor gray items when visiting a vendor."] = "Automatischer Verkauf von grauen Gegenständen bei einem Händlerbesuch."
 L["BlizzUI Improvements"] = "Blizzard Verbesserungen"
 L["Bonus Reward Position"] = "Bonusbeute Position"
+L["Boss"] = true --no need to translate
 L["Bottom Panel"] = "Untere Leiste"
 L["Chat Bubbles Style"] = "Sprechblasen Stil"
 L["Chat Bubbles"] = "Sprechblasen"
 L["Chat Bubble Names"] = "Sprechblasen Name"
 L["Chat Output"] = "Chat Ausgabe"
 L["Color Gradient"] = "Farbverlauf"
+L["Colors"] = "Farben"
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "Kontrolliert die Anzahl der Dezimalstellen in den Werten auf den Namensplaketten und Einheitenfenstern."
 L["Controls the speed at which smoothed bars will be updated."] = "Kontrolliert die Geschwindigkeit wie die Sanften Leistenübergange updaten."
 L["Crop Icons"] = "Symbole zuschneiden"
@@ -547,8 +554,10 @@ L["Name: Current / Max - Percent"] = "Name: Aktuell / Max - Prozent"
 L["Name: Percent"] = "Name: Prozent"
 L["Objective Frame Height"] = "Questfenster Höhe"
 L["Order Hall Command Bar"] = "Orderhallen Kommando Leiste"
+L["Party"] = "Gruppe"
 L["Party / Raid"] = "Gruppe / Schlachtzug"
 L["Party Only"] = "Nur in der Gruppe"
+L["Pet"] = "Begleiter"
 L["Position of bonus quest reward frame relative to the objective tracker."] = "Position vom Bonusbeute Fenster, relativ zum Questfenster."
 L["Raid Only"] = "Nur im Schlachtzug"
 L["Remove Backdrop"] = "Hintergrund entfernen"
@@ -567,8 +576,10 @@ L["Skin Backdrop"] = "Skin für den Hintergrund"
 L["Skin the blizzard chat bubbles."] = "Skin die Blizzard Chat Sprechblasen."
 L["Smoothing Amount"] = "Sanfter Animationswert"
 L["Status Bar"] = "Statusleiste"
+L["Tank"] = true --no need to translate
 L["Talking Head Backdrop"] = "Sprechender Kopf Hintergrund"
 L["Talking Head Scale"] = "Sprechender Kopf Skalierung"
+L["Target"] = "Ziel"
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Die Schrift, die über den Köpfen der Spieler auftaucht. |cffFF0000WARNUNG: Das benötigt einen Neustart des Spiels oder einen Relog um in Effekt zu treten.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "Das Dünne Rahmen Theme ändert das gesamte Erscheinungsbild deines UI. Das Benutzten des Dünnen Rahmen Theme ist ein kleiner performance Schub gegenüber dem traditionellen Layout."
 L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."] = "Der Einheitenpräfix den du benutzen möchtest wenn die Werte von ElvUI verkürzt sind. Wird meist auf den Einheitenfenstern benutzt."
@@ -693,6 +704,8 @@ L["On screen positions for different elements."] = "Position der verschiedenen E
 L["Select a profile to copy from/to."] = "Wähle ein Profil um zu kopieren von/zu."
 L["This section will allow you to copy settings to a select module from or to a different profile."] = "Diese Sektion erlaubt dir die Einstellungen von einem ausgewählten Module zu oder von einen anderen Profil zu kopieren."
 L["This section will help reset specfic settings back to default."] = "Diese Sektion wird dir dabei helfen spezifische Einstellungen zurückzusetzen."
+L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Du möchtest Einstellungen für |cffD3CF00\"%s\"|r von deinem derzeitigen |cff4beb2c\"%s\"|r Profil zu |cff4beb2c\"%s\"|r Profil kopieren. Bist du sicher?"
+L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Du möchtest Einstellungen für |cffD3CF00\"%s\"|r Profil zu deinem aktuellem |cff4beb2c\"%s\"|r Profil kopieren. Bist du sicher?"
 
 --NamePlates
 L["# Displayed Auras"] = "# angezeigte Auren"
@@ -713,6 +726,7 @@ L["Bad Transition Color"] = "Schlechte Übergangsfarbe"
 L["Battleground Friendly"] = "Schlachtfeld Freundlich"
 L["Border Glow"] = "Rahmen Leuchten"
 L["Border"] = "Rand"
+L["Cart / Flag / Orb / Assassin Bounty"] = "Waggen / Flagge / Kugel / Attentäter Kopfgeld"
 L["Cast Bar"] = "Zauberleiste"
 L["Cast Color"] = "Zauberfarbe"
 L["Cast No Interrupt Color"] = "Nicht unterbrechbare Zauberfarbe"
@@ -778,6 +792,7 @@ L["Hide Time"] = "Verstecke Zeit"
 L["Hide When Empty"] = "Verstecke wenn leer"
 L["Hide"] = "Verstecken" --Also used in DataTexts
 L["Highlight on NamePlate"] = "Hervorhebung auf Namensplakette"
+L["Horde / Alliance / Honor Info"] = "Horde / Allianz / Ehre Info"
 L["How long the CutawayHealth will take to fade out."] = "Wie lange das Animierte Leben braucht um auszublenden."
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = "Wieviele Sekunden die Zauberleiste sichtbar bleibt, nachdem ein Zauber abgebrochen oder unterbrochen wurde."
 L["How much time before the CutawayHealth starts to fade."] = "Wieviel Zeit es benötigt bevor das Animierte Leben auszublendet."
@@ -830,6 +845,7 @@ L["Minus"] = true --No need to translate
 L["Missing"] = "Fehlend"
 L["Name Color"] = "Namen Farbe"
 L["Name Only"] = "Nur Name"
+L["Nameplate"] = "Namensplakette"
 L["NamePlates"] = "Namensplaketten"
 L["Non-Target Alpha"] = "Nicht-Anvisiert Alpha"
 L["Not Focused"] = "Nicht Fokus"
@@ -851,6 +867,8 @@ L["Player Power"] = "Spieler Kraft"
 L["Power Color"] = "Kraftfarbe"
 L["Player"] = "Spieler"
 L["Power Threshold"] = "Kraft Schwellenwert"
+L["PvP Classification Indicator"] = "PvP Klassifikation Indikator" -- Cart / Flag / Orb / Assassin Bounty
+L["PvP Indicator"] = "PvP Indikator" -- "Horde / Alliance / Honor Info"
 L["Quest Boss"] = true --No need to translate
 L["Quest Icon"] = "Quest Symbol"
 L["Raid Difficulty"] = "Schlachtzug Schwierigkeitsgrad"
@@ -859,6 +877,7 @@ L["Reaction Colors"] = "Reaktionsfarbe"
 L["Reaction Type"] = "Reaktion Typ"
 L["Remove a Name or NPC ID from the list."] = "Entferne einen Namen oder NPC ID von der Liste."
 L["Remove Name or NPC ID"] = "Entferne Name oder NPC ID"
+L["Remove Spell ID or Name"] = "Entferne Zauber ID oder Name"
 L["Require All"] = "Benötigt alle"
 L["Reset CVars"] = "CVars zurücksetzen"
 L["Reset filter priority to the default state."] = "Setze die Filter Priorität auf Standard zurück."
@@ -873,6 +892,7 @@ L["Shortcut to 'Filters' section of the config."] = "Verknüpfung zur 'Filter' S
 L["Shortcut to global filters."] = "Verknüpfung zu Globalen Filter"
 L["Shortcuts"] = "Verknüpfungen"
 L["Show Badge"] = "Zeige Abzeichen"
+L["Show/Hide Test Frame"] = "Zeige/Verstecke Test Fenster"
 L["Show Icon"] = "Zeige Symbol"
 L["Show In Combat"] = "Im Kampf anzeigen"
 L["Show Interrupt Source in Class Color"] = "Zeigt wer unterbrochen hat in Klassenfarbe"
@@ -947,6 +967,7 @@ L["Allied Races"] = "Verbündete Völker"
 L["Archaeology Frame"] = "Archäologiefenster"
 L["BG Map"] = "Schlachtfeldkarte"
 L["BG Score"] = "Schlachtfeldpunkte"
+L["Blizzard"] = true --no need to translate
 L["Calendar Frame"] = "Kalender Fenster"
 L["Character Frame"] = "Charakterfenster"
 L["CheckBox Skin"] = "Auswahlkästchen Skin"
@@ -992,6 +1013,8 @@ L["Bags Only"] = "Nur Taschen"
 L["Bags/Bank"] = "Taschen/Bank"
 L["Bank Only"] = "Nur Bank"
 L["Both"] = "Beide"
+L["Combat Override Key"] = "Im Kampf Überschreibungstaste"
+L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."] = "Wähle wann du den Tooltip im Kampf sehen möchtest. Wenn ein Modifikator genutzt wird, musst du ihn gedrückt halten um den Tooltip anzuzeigen."
 L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."] = "Wählt aus wann der Tooltip angezeigt wird. Wenn ein Modifikator ausgewählt ist, dann musst du ihn gedrückt halten um den Tooltip anzuzeigen."
 L["Comparison Font Size"] = "Vergleich Schriftgröße"
 L["Current Mount"] = "Aktuelles Mount"
@@ -1199,6 +1222,7 @@ L["Icon: TOPLEFT"] = "Symbol: OBENLINKS"
 L["Icon: TOPRIGHT"] = "Symbol: OBENRECHTS"
 L["If not set to 0 then override the size of the aura icon to this."] = "Wenn dieser Wert nicht auf 0 gesetzt wird, dann überschreibt dieser die größe des Aurensymbols."
 L["If you have a lot of 3D Portraits active then it will likely have a big impact on your FPS. Disable some portraits if you experience FPS issues."] = "Wenn du viele 3D Portraits aktiviert hast, wird es voraussichtlich enorm auf deine FPS auswirken. Deaktiviere bitte einige 3D Portraits sollte das der Fall sein."
+L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "Wenn du ein Symbol oder eine Auraleiste nicht angezeigt haben möchtest, halte einfach Shift und rechtsklick auf das Symbol um zu verstecken."
 L["Ignore mouse events."] = "Ignoriere Maus Events."
 L["InfoPanel Border"] = "InfoPanel Rand"
 L["Information Panel"] = true --no need to translate this
@@ -1285,6 +1309,7 @@ L["Reaction Castbars"] = "Reaktion Zauberleiste"
 L["Reactions"] = "Reaktionen"
 L["Ready Check Icon"] = "Bereitschaftssymbol"
 L["Remaining"] = "Verbleibend"
+L["Remaining / Max"] = "Verbleibend / Max"
 L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = "Entferne Zauber vom Filter. Benutze die Zauber ID, wenn du die ID siehst als Teil vom Zaubernamen im Filter."
 L["Remove a spell from the filter."] = "Entfernt einen Zauber aus dem Filter."
 L["Remove Spell"] = "Entferne Zauber"
@@ -1411,64 +1436,3 @@ L["yOffset"] = "Y-Versatz" --Another variation in bags section Y Offset
 L["You cannot copy settings from the same unit."] = "Du kannst keine Einstellungen von der gleichen Einheit kopieren."
 L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."] = "Du kannst keinen Filter entfernen, der nicht von dir selbst hinzugefügt wurde. Setzte den Zauber einfach auf deaktiviert."
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = "Du musst den Modifikator gedrückt halten um mit rechtsklick auf ein Symbol es zur Schwarzen Liste hinzuzufügen. Setzte auf 'Kein' um die Funktion zu deaktivieren."
-
--- New Locales -- Need Translated then sorted
-
--- NamePlates
-L["PvP Indicator"] = true -- "Horde / Alliance / Honor Info"
-L["Horde / Alliance / Honor Info"] = true
-L["PvP Classification Indicator"] = true -- Cart / Flag / Orb / Assassin Bounty
-L["Cart / Flag / Orb / Assassin Bounty"] = true
-L["Show/Hide Test Frame"] = true
-L["Nameplate"] = true
-L["Remove Spell ID or Name"] = true
-
--- Misc
-L["Item Level:"] = true
-L["Item level: %.2f"] = true
-
--- Bags
-L["Quest Starter"] = true
-L["BoE"] = true
-L["BoU"] = true
-
--- DataText
-L["(Modifer Click) Collect Garbage"] = true
-
--- Tooltip
-L["Combat Override Key"] = true
-L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."] = true
-
--- Chat
-L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."] = true
-
--- ActionBars
-L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true
-
--- Module Copy
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
-
--- UnitFrames
-L["Remaining / Max"] = true
-L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = true
-
--- Install
-L["Auras Set"] = true
-L["Aura Bars & Icons"] = true
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
-
--- Skins
-L["Blizzard"] = true
-
--- Static Popups
-L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = true
-L["Continue"] = true
-
--- General
-L["Colors"] = true
-L["Boss"] = true
-L["Tank"] = true
-L["Party"] = true
-L["Pet"] = true
-L["Target"] = true
