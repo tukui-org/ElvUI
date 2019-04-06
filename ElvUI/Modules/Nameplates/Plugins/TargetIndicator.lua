@@ -156,7 +156,7 @@ local function Enable(self)
 		end
 
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
-		self:RegisterEvent('UNIT_HEALTH', Path)
+		self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 
 		return true
 	end
@@ -172,7 +172,7 @@ local function Disable(self)
 		if element.Spark then element.Spark:Hide() end
 
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
-		self:UnregisterEvent('UNIT_HEALTH', Path)
+		self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
 	end
 end
 
