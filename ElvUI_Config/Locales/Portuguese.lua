@@ -1422,17 +1422,10 @@ L["Show/Hide Test Frame"] = true
 L["Nameplate"] = true
 L["Remove Spell ID or Name"] = true
 
--- Misc
-L["Item Level:"] = true
-L["Item level: %.2f"] = true
-
 -- Bags
 L["Quest Starter"] = true
 L["BoE"] = true
 L["BoU"] = true
-
--- DataText
-L["(Modifer Click) Collect Garbage"] = true
 
 -- Tooltip
 L["Combat Override Key"] = true
@@ -1452,17 +1445,8 @@ L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r
 L["Remaining / Max"] = true
 L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = true
 
--- Install
-L["Auras Set"] = true
-L["Aura Bars & Icons"] = true
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
-
 -- Skins
 L["Blizzard"] = true
-
--- Static Popups
-L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = true
-L["Continue"] = true
 
 -- General
 L["Colors"] = true

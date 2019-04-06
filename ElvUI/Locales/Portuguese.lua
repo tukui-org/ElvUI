@@ -393,3 +393,16 @@ L["Offline"] = "Desconectado"
 --Option Enable..
 L.RED_ENABLE = '|cFFff3333Ativar|r'
 L.GREEN_ENABLE = '|cFF33ff33Ativar|r'
+
+-- Install
+L["Auras Set"] = true
+L["Aura Bars & Icons"] = true
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
+-- Static Popups
+L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = true
+L["Continue"] = true
+-- DataText
+L["(Modifer Click) Collect Garbage"] = true
+-- Misc
+L["Item Level:"] = true
+L["Item level: %.2f"] = true
