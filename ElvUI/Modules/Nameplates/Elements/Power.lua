@@ -102,7 +102,7 @@ function NP:Power_PostUpdate(unit, cur, min, max)
 
 	if not db then return end
 
-	if self.__owner.frameType == 'ENEMY_NPC' and db.power.displayAltPower and not self.displayType then
+	if db.power.displayAltPower and not self.displayType then
 		self:Hide()
 		return
 	end
