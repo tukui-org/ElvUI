@@ -1261,7 +1261,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		local nameWithRealm -- we also use this lower in function to correct mobile to link with the realm as well
 
 		--Cache name->class
-		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','') -- also used similar to nameWithRealm except for emotes to link the realm
+		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')
 		if name and name ~= '' then
 			CH.ClassNames[strlower(name)] = englishClass
 			nameWithRealm = (realm and name.."-"..realm) or name.."-"..PLAYER_REALM
@@ -1538,17 +1538,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					playerLink = playerLinkDisplayText;
 				end
 			else
-				if ( chatType == "TEXT_EMOTE" and realm ) then
-					-- make sure emote has realm link correct
-					playerName = playerName.."-"..realm
-					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
-				elseif ( arg14 and nameWithRealm and nameWithRealm ~= playerName ) then
-					-- make sure mobile has realm link correct
-					playerName = nameWithRealm
-					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
-				elseif ( chatType == "BN_WHISPER" or chatType == "BN_WHISPER_INFORM" ) then
+				if chatType == "BN_WHISPER" or chatType == "BN_WHISPER_INFORM" then
 					playerLink = GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget);
-				elseif ( chatType == "GUILD" and nameWithRealm and nameWithRealm ~= playerName ) then
+				elseif (chatType == "GUILD" or chatType == "TEXT_EMOTE" or chatType == "WHISPER" or arg14) and (nameWithRealm and nameWithRealm ~= playerName) then
 					playerName = nameWithRealm
 					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
 				else
@@ -1604,7 +1596,6 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					if ( chatType == "EMOTE" ) then
 						body = format(_G["CHAT_"..chatType.."_GET"]..message, pflag..playerLink);
 					elseif ( chatType == "TEXT_EMOTE" and realm ) then
-						-- make sure emote has realm link correct
 						if info.colorNameByClass then
 							body = gsub(message, arg2.."%-"..realm, pflag..gsub(playerLink, "(|h|c.-)|r|h$","%1-"..realm.."|r|h"), 1);
 						else
