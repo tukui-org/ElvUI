@@ -875,7 +875,7 @@ L["Show In Combat"] = "Показывать в бою"
 L["Show Interrupt Source in Class Color"] = "Отображать прервавшего цветом класса"
 L["Show PvP Badge Indicator if available"] = "Показывать значек ранга PvP, если доступен"
 L["Show the castbar icon desaturated if a spell is not interruptible."] = "Показывать иконку полосы заклинания обесцвеченой, если заклинание нельзя прервать."
-L["Show Title"] = true
+L["Show Title"] = "Звание"
 L["Show With Target"] = "Отображать с целью"
 L["Side Arrows"] = "Стрелки по сторонам"
 L["Style Filter"] = "Фильтры стиля"
@@ -892,7 +892,7 @@ L["This will reset the contents of this filter back to default. Any spell you ha
 L["Threat"] = "Угроза"
 L["Tiers"] = "Ряды"
 L["Time To Hold"] = "Время задержки"
-L["Title will only appear if Name Only is enabled or triggered in a Style Filter."] = true
+L["Title will only appear if Name Only is enabled or triggered in a Style Filter."] = "Звание (например, Продавец Фруктов) отображается в режиме \"Только имя\" или если включено фильтрами стиля."
 L["Toggle Off While In Combat"] = "Включать в бою"
 L["Toggle On While In Combat"] = "Отключить в бою"
 L["Top Arrow"] = "Стрелка сверху"
@@ -1058,7 +1058,7 @@ L["Buffs"] = "Баффы"
 L["By Type"] = "По типу"
 L["Camera Distance Scale"] = "Дистанция камеры"
 L["Castbar"] = "Полоса заклинаний"
-L["Casting"] = true
+-- L["Casting"] = true
 L["Center"] = "Центр"
 L["Choose UIPARENT to prevent it from hiding with the unitframe."] = "Выберите UIPARENT, чтобы не дать полосе скрываться вместе с рамкой."
 L["Class Backdrop"] = "Фон по классу"
@@ -1139,7 +1139,7 @@ L["Enabling this allows raid-wide sorting however you will not be able to distin
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = "Включение опции инвертирует порядок группировки в неполном рейде, она изменит направление роста и точку его начала."
 L["Enemy Aura Type"] = "Тип аур врага"
 L["Fade Out Delay"] = "Задержка изчезновения"
-L["Fader"] = true
+L["Fader"] = "Затухание"
 L["Fill"] = "Заполнение"
 L["Filled"] = "По ширине рамки"
 L["Filter Type"] = "Тип фильтра"
@@ -1181,7 +1181,7 @@ L["Height"] = "Высота"
 L["Horizontal Spacing"] = "Отступ по горизонтали"
 L["Horizontal"] = "Горизонтально" --Also used in bags module
 L["Hostile"] = "Враждебный"
-L["Hover"] = true
+L["Hover"] = "Наведение"
 L["How far away the portrait is from the camera."] = "Как далеко от персонажа находится камера."
 L["Icon Inside Castbar"] = "Иконка на полосе"
 L["Icon Size"] = "Размер иконки"
@@ -1276,7 +1276,7 @@ L["Raid Icon"] = "Рейдовая иконка"
 L["Raid-Wide Sorting"] = "Общерейдовая сортировка"
 L["Raid40 Frames"] = "Рейд 40"
 L["RaidDebuff Indicator"] = "Индикатор рейдовых дебаффов"
-L["Range"] = true
+L["Range"] = "Радиус"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Более частое обновление состояния здоровья, использует больше памяти и ресурсов процессора. Рекомендуется только для целителей."
 L["Reaction Castbars"] = "Полоса заклинаний по реакции"
 L["Reactions"] = "Отношение"
@@ -1412,44 +1412,44 @@ L["You need to hold this modifier down in order to blacklist an aura by right-cl
 -- New Locales -- Need Translated then sorted
 
 -- NamePlates
-L["PvP Indicator"] = true -- "Horde / Alliance / Honor Info"
-L["Horde / Alliance / Honor Info"] = true
-L["PvP Classification Indicator"] = true -- Cart / Flag / Orb / Assassin Bounty
-L["Cart / Flag / Orb / Assassin Bounty"] = true
-L["Show/Hide Test Frame"] = true
-L["Nameplate"] = true
-L["Remove Spell ID or Name"] = true
+L["PvP Indicator"] = "Индикатор PvP" -- "Horde / Alliance / Honor Info"
+L["Horde / Alliance / Honor Info"] = "Орда / Альянс / Честь"
+L["PvP Classification Indicator"] = "Классификация в PvP" -- Cart / Flag / Orb / Assassin Bounty
+L["Cart / Flag / Orb / Assassin Bounty"] = "Тележка / Флаг / Сфера / Убить этого гада"
+L["Show/Hide Test Frame"] = "Показать / Скерыть тестовый фрейм"
+L["Nameplate"] = "Индикатор здоровья"
+L["Remove Spell ID or Name"] = "Удалить ID заклинания или имя"
 
 -- Bags
-L["Quest Starter"] = true
-L["BoE"] = true
-L["BoU"] = true
+L["Quest Starter"] = "Начинает задание"
+L["BoE"] = "ПпН"
+L["BoU"] = "ПпИ"
 
 -- Tooltip
-L["Combat Override Key"] = true
-L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."] = true
+L["Combat Override Key"] = "Клавиша показа в бою"
+L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."] = "Если модификатор выбран, подсказка будет отображаться в бою только при ее нажатии."
 
 -- Chat
-L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."] = true
+-- L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."] = true
 
 -- ActionBars
-L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true
+-- L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true
 
 -- Module Copy
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
+L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Вы собираетесь скопировать настройки для модуля |cffD3CF00\"%s\"|r из вашего текущего профиля |cff4beb2c\"%s\"|r в профиль |cff4beb2c\"%s\"|r. Вы уверены?"
+L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Вы собираетесь скопировать настройки для модуля |cffD3CF00\"%s\"|r из вашего профиля |cff4beb2c\"%s\"|r в текущий профиль |cff4beb2c\"%s\"|r. Вы уверены?"
 
 -- UnitFrames
-L["Remaining / Max"] = true
-L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = true
+L["Remaining / Max"] = "Оставшееся / Максимальное"
+L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "Если у вас есть иконка или полоса аур, которую вы не хотите отображать, просто shift+ПКМ на ней для занесения в черный список (она пропадет)."
 
 -- Skins
-L["Blizzard"] = true
+L["Blizzard"] = true --Nope
 
 -- General
-L["Colors"] = true
-L["Boss"] = true
-L["Tank"] = true
-L["Party"] = true
-L["Pet"] = true
-L["Target"] = true
+L["Colors"] = "Цвета"
+L["Boss"] = "Босс"
+L["Tank"] = "Танк"
+L["Party"] = "Группа"
+L["Pet"] = "Питомец"
+L["Target"] = "Цель"
