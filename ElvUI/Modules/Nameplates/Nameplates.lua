@@ -330,6 +330,9 @@ function NP:DisablePlate(nameplate, nameOnly)
 	if E.myclass == 'DEATHKNIGHT' and nameplate:IsElementEnabled('Runes') then
 		nameplate:DisableElement('Runes')
 	end
+	if E.myclass == 'MONK' and nameplate:IsElementEnabled('Stagger') then
+		nameplate:DisableElement('Stagger')
+	end
 
 	nameplate.Health.Text:Hide()
 	nameplate.Power.Text:Hide()
@@ -356,20 +359,21 @@ function NP:SetupTarget(nameplate, removed)
 	TCP.realPlate = (NP.db.units.TARGET.classpower.enable and not (removed or nameOnly) and nameplate) or nil
 
 	local moveToPlate = TCP.realPlate or TCP
+
 	if TCP.ClassPower then
 		TCP.ClassPower:SetParent(moveToPlate)
 		TCP.ClassPower:ClearAllPoints()
-		TCP.ClassPower:SetPoint('CENTER', moveToPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
+		TCP.ClassPower:SetPoint('CENTER', moveToPlate, 'CENTER', NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
 	end
 	if TCP.Runes then
 		TCP.Runes:SetParent(moveToPlate)
 		TCP.Runes:ClearAllPoints()
-		TCP.Runes:SetPoint('CENTER', moveToPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
+		TCP.Runes:SetPoint('CENTER', moveToPlate, 'CENTER', NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
 	end
 	if TCP.Stagger then
 		TCP.Stagger:SetParent(moveToPlate)
 		TCP.Stagger:ClearAllPoints()
-		TCP.Stagger:SetPoint('CENTER', moveToPlate, 'CENTER', 0, NP.db.units.TARGET.classpower.yOffset)
+		TCP.Stagger:SetPoint('CENTER', moveToPlate, 'CENTER', NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
 	end
 end
 
