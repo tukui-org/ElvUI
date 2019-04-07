@@ -1779,7 +1779,8 @@ P.tooltip = {
 		unitFrames = 'NONE',
 		bags = 'NONE',
 		actionbars = 'NONE',
-		combat = false
+		combat = false,
+		combatOverride = 'ALL',
 	},
 	healthBar = {
 		text = true,
