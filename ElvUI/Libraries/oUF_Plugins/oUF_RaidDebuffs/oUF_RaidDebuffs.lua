@@ -44,11 +44,7 @@ function addon:RegisterDebuffs(t)
 	for spell, value in pairs(t) do
 		if type(t[spell]) == 'boolean' then
 			local oldValue = t[spell]
-			t[spell] = {
-				['enable'] = oldValue,
-				['priority'] = 0,
-				['stackThreshold'] = 0
-			}
+			t[spell] = { enable = oldValue, priority = 0, stackThreshold = 0 }
 		else
 			if t[spell].enable then
 				add(spell, t[spell].priority, t[spell].stackThreshold)

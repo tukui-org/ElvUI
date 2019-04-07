@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local D = E:GetModule("Distributor")
-
+local D = E:GetModule('Distributor')
 local format = format
 local sort, tinsert = sort, tinsert
 
@@ -150,14 +149,14 @@ local DEVELOPERS = {
 	"Hydrazine",
 	"Blazeflack",
 	"|cffff7d0aMerathilis|r",
-	"|cFF8866ccSimpy|r"
+	"|cFF8866ccSimpy|r",
+	"|cFF0070DEAzilroka|r",
 }
 
 local TESTERS = {
 	"Tukui Community",
 	"|cffF76ADBSarah|r - For Sarahing",
 	"Affinity",
-	"Azilroka",
 	"Modarch",
 	"Bladesdruid",
 	"Tirain",

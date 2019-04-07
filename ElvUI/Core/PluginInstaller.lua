@@ -50,7 +50,7 @@
 ]]
 
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
-local PI = E:NewModule("PluginInstaller")
+local PI = E:GetModule("PluginInstaller")
 
 --Lua functions
 local _G = _G
@@ -63,8 +63,6 @@ local PlaySoundFile = PlaySoundFile
 local UIFrameFadeOut = UIFrameFadeOut
 local CreateAnimationGroup = CreateAnimationGroup
 local CONTINUE, PREVIOUS, UNKNOWN = CONTINUE, PREVIOUS, UNKNOWN
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: PluginInstallFrame
 
 --Installation Functions
@@ -156,15 +154,15 @@ function PI:CreateStepComplete()
 	imsg:Size(418, 72)
 	imsg:Point("TOP", 0, -190)
 	imsg:Hide()
-	imsg:SetScript('OnShow', function(self)
-		if self.message then
+	imsg:SetScript('OnShow', function(frame)
+		if frame.message then
 			PlaySoundFile([[Sound\Interface\LevelUp.wav]])
-			self.text:SetText(self.message)
-			UIFrameFadeOut(self, 3.5, 1, 0)
-			E:Delay(4, function() self:Hide() end)
-			self.message = nil
+			frame.text:SetText(frame.message)
+			UIFrameFadeOut(frame, 3.5, 1, 0)
+			E:Delay(4, frame.Hide, frame)
+			frame.message = nil
 		else
-			self:Hide()
+			frame:Hide()
 		end
 	end)
 
@@ -406,7 +404,9 @@ function PI:CloseInstall()
 		f.side.Lines[i].text:SetText('')
 		f.side.Lines[i]:Hide()
 	end
-	if #(self.Installs) > 0 then E:Delay(1, function() PI:RunInstall() end) end
+	if #self.Installs > 0 then
+		E:Delay(1, PI.RunInstall, PI)
+	end
 end
 
 function PI:RunInstall()
@@ -457,6 +457,7 @@ function PI:RunInstall()
 end
 
 function PI:Initialize()
+	PI.Initialized = true
 	PI:CreateStepComplete()
 	PI:CreateFrame()
 end

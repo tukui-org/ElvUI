@@ -1,4 +1,7 @@
 local E, L, V, P, G =unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local NP = E:GetModule('NamePlates')
+local UF = E:GetModule('UnitFrames')
+local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
@@ -30,7 +33,6 @@ local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
 local GUILD_EVENT_LOG = GUILD_EVENT_LOG
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 -- GLOBALS: ElvUIInstallFrame
 
 local CURRENT_PAGE = 0
@@ -132,7 +134,6 @@ end
 
 local function SetupCVars(noDisplayMsg)
 	SetCVar("statusTextDisplay", "BOTH")
-	SetCVar("ShowClassColorInNameplate", 1)
 	SetCVar("screenshotQuality", 10)
 	SetCVar("chatMouseScroll", 1)
 	SetCVar("chatStyle", "classic")
@@ -143,10 +144,10 @@ local function SetupCVars(noDisplayMsg)
 	SetCVar("alwaysShowActionBars", 1)
 	SetCVar("lockActionBars", 1)
 	SetCVar("SpamFilter", 0)
-	SetCVar("nameplateShowSelf", 0)
 	SetCVar("cameraDistanceMaxZoomFactor", 2.6)
-	SetCVar("nameplateShowFriendlyNPCs", 1)
 	SetCVar("showQuestTrackingTooltips", 1)
+
+	NP:CVarReset()
 
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
@@ -178,7 +179,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.castColor = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.castClassColor = false
 	elseif theme == "class" then
-		classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+		classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass])
 
 		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
@@ -469,8 +470,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 end
 
 local function SetupAuras(style, noDisplayMsg)
-	local UF = E:GetModule('UnitFrames')
-
 	local frame = UF.player
 	E:CopyTable(E.db.unitframe.units.player.buffs, P.unitframe.units.player.buffs)
 	E:CopyTable(E.db.unitframe.units.player.debuffs, P.unitframe.units.player.debuffs)
@@ -508,14 +507,14 @@ local function SetupAuras(style, noDisplayMsg)
 		E.db.unitframe.units.player.debuffs.attachTo = 'BUFFS'
 		E.db.unitframe.units.player.aurabar.enable = false
 		if E.private.unitframe.enable then
-			E:GetModule('UnitFrames'):CreateAndUpdateUF("player")
+			UF:CreateAndUpdateUF("player")
 		end
 
 		--TARGET
 		E.db.unitframe.units.target.debuffs.enable = true
 		E.db.unitframe.units.target.aurabar.enable = false
 		if E.private.unitframe.enable then
-			E:GetModule('UnitFrames'):CreateAndUpdateUF("target")
+			UF:CreateAndUpdateUF("target")
 		end
 	end
 
@@ -727,7 +726,7 @@ function E:Install()
 				PlaySoundFile([[Sound\Interface\LevelUp.wav]])
 				f.text:SetText(f.message)
 				UIFrameFadeOut(f, 3.5, 1, 0)
-				E:Delay(4, function() f:Hide() end)
+				E:Delay(4, f.Hide, f)
 				f.message = nil
 			else
 				f:Hide()
@@ -830,7 +829,7 @@ function E:Install()
 		f.Slider:Width(400)
 		f.Slider:SetHitRectInsets(0, 0, -10, 0)
 		f.Slider:SetPoint("CENTER", 0, 45)
-		E:GetModule("Skins"):HandleSliderFrame(f.Slider)
+		S:HandleSliderFrame(f.Slider)
 		f.Slider:Hide()
 
 		f.Slider.Min = f.Slider:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")

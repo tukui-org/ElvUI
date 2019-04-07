@@ -8,6 +8,7 @@ local pairs = pairs
 local ipairs = ipairs
 local select = select
 local unpack = unpack
+local strfind = string.find
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local GetMoney = GetMoney
@@ -44,7 +45,7 @@ end
 local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
 	scrollFrame:SetTemplate()
 	if not scrollFrame.spellTex then
-		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'ARTWORK')
+		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'BACKGROUND', 1)
 	end
 
 	scrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
@@ -197,6 +198,21 @@ local function LoadSkin()
 	_G.QuestProgressScrollFrame:SetTemplate()
 	_G.QuestGreetingScrollFrame:SetTemplate()
 
+	local function UpdateGreetingFrame()
+		for Button in _G.QuestFrameGreetingPanel.titleButtonPool:EnumerateActive() do
+			Button.Icon:SetDrawLayer("ARTWORK")
+			if E.private.skins.parchmentRemover.enable then
+				local Text = Button:GetFontString():GetText()
+				if Text and strfind(Text, '|cff000000') then
+					Button:GetFontString():SetText(gsub(Text, '|cff000000', '|cffffe519'))
+				end
+			end
+		end
+	end
+
+	_G.QuestFrameGreetingPanel:HookScript('OnShow', UpdateGreetingFrame)
+	hooksecurefunc("QuestFrameGreetingPanel_OnShow", UpdateGreetingFrame)
+
 	if E.private.skins.parchmentRemover.enable then
 		hooksecurefunc('QuestFrameProgressItems_Update', function()
 			_G.QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
@@ -220,21 +236,6 @@ local function LoadSkin()
 				end
 			end
 		end)
-
-		for i = 1, C_QuestLog_GetMaxNumQuestsCanAccept() do
-			local button = _G['QuestTitleButton'..i]
-			if button then
-				hooksecurefunc(button, 'SetFormattedText', function()
-					local fontString = button.GetFontString and button:GetFontString()
-					if fontString then
-						local fontText = fontString.GetText and fontString:GetText()
-						if fontText and fontText:find('|cff000000') then
-							fontString:SetText(gsub(fontText, '|cff000000', '|cffffe519'))
-						end
-					end
-				end)
-			end
-		end
 
 		local QuestInfoRewardsFrame = _G.QuestInfoRewardsFrame
 		if QuestInfoRewardsFrame.spellHeaderPool then

@@ -8,6 +8,8 @@ local select = select
 local pairs = pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local GetItemInfo = GetItemInfo
+local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
 
 local rad = math.rad

@@ -1,19 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local D = E:NewModule('DebugTools', 'AceEvent-3.0', 'AceHook-3.0');
-E.DebugTools = D
+local D = E:GetModule('DebugTools')
 
 --WoW API / Variables
+local _G = _G
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local GetCVarBool = GetCVarBool
 local StaticPopup_Hide = StaticPopup_Hide
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ScriptErrorsFrame
--- GLOBALS: UIParent, IsAddOnLoaded, LoadAddOn
-
 function D:ModifyErrorFrame()
+	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	ScriptErrorsFrame.ScrollFrame.Text.cursorOffset = 0
 	ScriptErrorsFrame.ScrollFrame.Text.cursorHeight = 0
 	ScriptErrorsFrame.ScrollFrame.Text:SetScript("OnEditFocusGained", nil)
@@ -63,6 +60,7 @@ function D:ModifyErrorFrame()
 end
 
 function D:ScriptErrorsFrame_UpdateButtons()
+	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	if not ScriptErrorsFrame.firstButton then return end
 
 	local numErrors = #ScriptErrorsFrame.order;
@@ -89,17 +87,17 @@ function D:ScriptErrorsFrame_OnError(_, _, keepHidden)
 end
 
 function D:PLAYER_REGEN_ENABLED()
-	ScriptErrorsFrame:SetParent(UIParent)
+	_G.ScriptErrorsFrame:SetParent(_G.UIParent)
 	D.MessagePrinted = nil;
 end
 
 function D:PLAYER_REGEN_DISABLED()
-	ScriptErrorsFrame:SetParent(self.HideFrame)
+	_G.ScriptErrorsFrame:SetParent(self.HideFrame)
 end
 
 function D:TaintError(event, addonName, addonFunc)
 	if GetCVarBool('scriptErrors') ~= true or E.db.general.taintLog ~= true then return end
-	ScriptErrorsFrame:OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false, false)
+	_G.ScriptErrorsFrame:OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false, false)
 end
 
 function D:StaticPopup_Show(name)
@@ -109,9 +107,11 @@ function D:StaticPopup_Show(name)
 end
 
 function D:Initialize()
+	self.Initialized = true
 	self.HideFrame = CreateFrame('Frame')
 	self.HideFrame:Hide()
 
+	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	self:SecureHookScript(ScriptErrorsFrame, 'OnShow', D.ModifyErrorFrame)
 	self:SecureHook(ScriptErrorsFrame, 'UpdateButtons', D.ScriptErrorsFrame_UpdateButtons)
 	self:SecureHook(ScriptErrorsFrame, 'OnError', D.ScriptErrorsFrame_OnError)

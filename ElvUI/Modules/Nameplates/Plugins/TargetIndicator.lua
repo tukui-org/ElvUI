@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local NP = E:GetModule('NamePlates')
 local LSM = E.LSM
 
---Cache global variables
 --Lua functions
 --WoW API / Variables
 local UnitHealth = UnitHealth
@@ -56,22 +55,26 @@ local function Update(self, event)
 	end
 
 	local r, g, b
-	if not UnitIsUnit(self.unit, 'target') and element.lowHealthThreshold > 0 then
+	local showIndicator
+	if UnitIsUnit(self.unit, 'target') then
+		showIndicator = true
+		r, g, b = NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b
+	elseif (not UnitIsUnit(self.unit, 'target') and element.lowHealthThreshold > 0) then
 		local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
 		local perc = (maxHealth > 0 and health/maxHealth) or 0
 
 		if perc <= element.lowHealthThreshold then
+			showIndicator = true
 			if perc <= element.lowHealthThreshold / 2 then
 				r, g, b = 1, 0, 0
 			else
 				r, g, b = 1, 1, 0
 			end
 		end
-	else
-		r, g, b = NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b
+
 	end
 
-	if r then
+	if showIndicator then
 		if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
 			element.TopIndicator:SetVertexColor(r, g, b)
 		end
@@ -153,7 +156,7 @@ local function Enable(self)
 		end
 
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
-		self:RegisterEvent('UNIT_HEALTH', Path)
+		self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 
 		return true
 	end
@@ -169,7 +172,7 @@ local function Disable(self)
 		if element.Spark then element.Spark:Hide() end
 
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
-		self:UnregisterEvent('UNIT_HEALTH', Path)
+		self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
 	end
 end
 

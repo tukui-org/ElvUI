@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
+local _G = _G
 local type, ipairs, pairs, select = type, ipairs, pairs, select
 local sort, next, wipe, tremove, tinsert = sort, next, wipe, tremove, tinsert
 local format, gsub, strfind, strjoin = format, gsub, strfind, strjoin
@@ -33,26 +34,17 @@ local C_FriendList_GetNumFriends = C_FriendList.GetNumFriends
 local C_FriendList_GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
 local ChatFrame_SendBNetTell = ChatFrame_SendBNetTell
 
-local AFK = AFK
-local DND = DND
-local FRIENDS = FRIENDS
-local LOCALIZED_CLASS_NAMES_FEMALE = LOCALIZED_CLASS_NAMES_FEMALE
-local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-
--- GLOBALS: CUSTOM_CLASS_COLORS
-
 -- create a popup
 E.PopupDialogs.SET_BN_BROADCAST = {
-	text = BN_BROADCAST_TOOLTIP,
-	button1 = ACCEPT,
-	button2 = CANCEL,
+	text = _G.BN_BROADCAST_TOOLTIP,
+	button1 = _G.ACCEPT,
+	button2 = _G.CANCEL,
 	hasEditBox = 1,
 	editBoxWidth = 350,
 	maxLetters = 127,
 	OnAccept = function(self) BNSetCustomMessage(self.editBox:GetText()) end,
 	OnShow = function(self) self.editBox:SetText(select(4, BNGetInfo()) ) self.editBox:SetFocus() end,
-	OnHide = ChatEdit_FocusActiveWindow,
+	OnHide = _G.ChatEdit_FocusActiveWindow,
 	EditBoxOnEnterPressed = function(self) BNSetCustomMessage(self:GetText()) self:GetParent():Hide() end,
 	EditBoxOnEscapePressed = function(self) self:GetParent():Hide() end,
 	timeout = 0,
@@ -64,17 +56,17 @@ E.PopupDialogs.SET_BN_BROADCAST = {
 
 local menuFrame = CreateFrame("Frame", "FriendDatatextRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
-	{ text = OPTIONS_MENU, isTitle = true, notCheckable=true},
-	{ text = INVITE, hasArrow = true, notCheckable=true, },
-	{ text = CHAT_MSG_WHISPER_INFORM, hasArrow = true, notCheckable=true, },
-	{ text = PLAYER_STATUS, hasArrow = true, notCheckable=true,
+	{ text = _G.OPTIONS_MENU, isTitle = true, notCheckable=true},
+	{ text = _G.INVITE, hasArrow = true, notCheckable=true, },
+	{ text = _G.CHAT_MSG_WHISPER_INFORM, hasArrow = true, notCheckable=true, },
+	{ text = _G.PLAYER_STATUS, hasArrow = true, notCheckable=true,
 		menuList = {
-			{ text = "|cff2BC226"..AVAILABLE.."|r", notCheckable=true, func = function() if IsChatAFK() then SendChatMessage("", "AFK") elseif IsChatDND() then SendChatMessage("", "DND") end end },
-			{ text = "|cffE7E716"..DND.."|r", notCheckable=true, func = function() if not IsChatDND() then SendChatMessage("", "DND") end end },
-			{ text = "|cffFF0000"..AFK.."|r", notCheckable=true, func = function() if not IsChatAFK() then SendChatMessage("", "AFK") end end },
+			{ text = "|cff2BC226".._G.AVAILABLE.."|r", notCheckable=true, func = function() if IsChatAFK() then SendChatMessage("", "AFK") elseif IsChatDND() then SendChatMessage("", "DND") end end },
+			{ text = "|cffE7E716".._G.DND.."|r", notCheckable=true, func = function() if not IsChatDND() then SendChatMessage("", "DND") end end },
+			{ text = "|cffFF0000".._G.AFK.."|r", notCheckable=true, func = function() if not IsChatAFK() then SendChatMessage("", "AFK") end end },
 		},
 	},
-	{ text = BN_BROADCAST_TOOLTIP, notCheckable=true, func = function() E:StaticPopup_Show("SET_BN_BROADCAST") end },
+	{ text = _G.BN_BROADCAST_TOOLTIP, notCheckable=true, func = function() E:StaticPopup_Show("SET_BN_BROADCAST") end },
 }
 
 local function inviteClick(self, name, guid)
@@ -121,16 +113,16 @@ end
 
 local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
-local worldOfWarcraftString = WORLD_OF_WARCRAFT
-local battleNetString = BATTLENET_OPTIONS_LABEL
-local totalOnlineString = strjoin("", FRIENDS_LIST_ONLINE, ": %s/%s")
+local worldOfWarcraftString = _G.WORLD_OF_WARCRAFT
+local battleNetString = _G.BATTLENET_OPTIONS_LABEL
+local totalOnlineString = strjoin("", _G.FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
 local statusTable = { " |cffFFFFFF[|r|cffFF9900"..L["AFK"].."|r|cffFFFFFF]|r", " |cffFFFFFF[|r|cffFF3333"..L["DND"].."|r|cffFFFFFF]|r", "" }
 local groupedTable = { "|cffaaaaaa*|r", "" }
 local friendTable, BNTable, tableList = {}, {}, {}
-local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
+local friendOnline, friendOffline = gsub(_G.ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(_G.ERR_FRIEND_OFFLINE_S,"%%s","")
 local BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2, BNET_CLIENT_COD = BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2, BNET_CLIENT_COD
 local wowString = BNET_CLIENT_WOW
 local dataValid = false
@@ -174,9 +166,9 @@ local function BuildFriendTable(total)
 	for i = 1, total do
 		local name, level, class, area, connected, status, note, _, guid = GetFriendInfo(i)
 
-		if status == "<"..AFK..">" then
+		if status == "<".._G.AFK..">" then
 			status = statusTable[1]
-		elseif status == "<"..DND..">" then
+		elseif status == "<".._G.DND..">" then
 			status = statusTable[2]
 		else
 			status = statusTable[3]
@@ -184,8 +176,8 @@ local function BuildFriendTable(total)
 
 		if connected then
 			--other non-english locales require this
-			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-			for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
 
 			friendTable[i] = { name, level, class, area, connected, status, note, guid }
 		end
@@ -224,8 +216,8 @@ end
 
 local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid, gameText)
 	if class and class ~= "" then --other non-english locales require this
-		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
 	end
 
 	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
@@ -338,7 +330,7 @@ local function OnEvent(self, event, message)
 	-- force update when showing tooltip
 	dataValid = false
 
-	self.text:SetFormattedText(displayString, FRIENDS, onlineFriends + numBNetOnline)
+	self.text:SetFormattedText(displayString, _G.FRIENDS, onlineFriends + numBNetOnline)
 	lastPanel = self
 end
 
@@ -362,7 +354,7 @@ local function Click(self, btn)
 						shouldSkip = true
 					end
 					if not shouldSkip then
-						local classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[3]]) or RAID_CLASS_COLORS[info[3]], GetQuestDifficultyColor(info[2])
+						local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[3]]) or _G.RAID_CLASS_COLORS[info[3]], GetQuestDifficultyColor(info[2])
 						classc = classc or GetQuestDifficultyColor(info[2]);
 
 						menuCountWhispers = menuCountWhispers + 1
@@ -403,7 +395,7 @@ local function Click(self, btn)
 					end
 
 					if info[6] == wowString and (E.myfaction == info[12]) and not (UnitInParty(info[4]) or UnitInRaid(info[4])) then
-						local classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[14]]) or RAID_CLASS_COLORS[info[14]], GetQuestDifficultyColor(info[16])
+						local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[14]]) or _G.RAID_CLASS_COLORS[info[14]], GetQuestDifficultyColor(info[16])
 						classc = classc or GetQuestDifficultyColor(info[16])
 
 						menuCountInvites = menuCountInvites + 1
@@ -465,7 +457,7 @@ local function OnEnter(self)
 				end
 				if not shouldSkip then
 					if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
-					classc, levelc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[3]]) or RAID_CLASS_COLORS[info[3]], GetQuestDifficultyColor(info[2])
+					classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[3]]) or _G.RAID_CLASS_COLORS[info[3]], GetQuestDifficultyColor(info[2])
 
 					classc = classc or GetQuestDifficultyColor(info[2])
 
@@ -501,17 +493,17 @@ local function OnEnter(self)
 						end
 						if not shouldSkip then
 							if info[6] == wowString then
-								classc = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[info[14]]) or RAID_CLASS_COLORS[info[14]]
+								classc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[14]]) or _G.RAID_CLASS_COLORS[info[14]]
 								if info[16] ~= '' then
 									levelc = GetQuestDifficultyColor(info[16])
 								else
-									levelc = RAID_CLASS_COLORS.PRIEST
-									classc = RAID_CLASS_COLORS.PRIEST
+									levelc = _G.RAID_CLASS_COLORS.PRIEST
+									classc = _G.RAID_CLASS_COLORS.PRIEST
 								end
 
 								--Sometimes the friend list is fubar with level 0 unknown friends
 								if not classc then
-									classc = RAID_CLASS_COLORS.PRIEST
+									classc = _G.RAID_CLASS_COLORS.PRIEST
 								end
 
 								if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end

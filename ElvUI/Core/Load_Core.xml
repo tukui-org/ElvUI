@@ -11,6 +11,7 @@
 	<Script file='Commands.lua'/>
 	<Script file='StaticPopups.lua'/>
 	<Script file='Animation.lua'/>
+	<Script file='Smoothie.lua'/>
 	<Script file='Movers.lua'/>
 	<Script file='Config.lua'/>
 	<Script file='Tutorials.lua'/>

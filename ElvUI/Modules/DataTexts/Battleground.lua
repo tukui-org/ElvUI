@@ -2,8 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
+local _G = _G
 local select = select
-local join = string.join
+local strjoin = strjoin
 --WoW API / Variables
 local GetBattlefieldScore = GetBattlefieldScore
 local GetNumBattlefieldStats = GetNumBattlefieldStats
@@ -27,12 +28,12 @@ local dataLayout = {
 }
 
 local dataStrings = {
-	[10] = DAMAGE,
-	[5] = HONOR,
-	[2] = KILLING_BLOWS,
-	[4] = DEATHS,
-	[3] = KILLS,
-	[11] = SHOW_COMBAT_HEALING,
+	[10] = _G.DAMAGE,
+	[5] = _G.HONOR,
+	[2] = _G.KILLING_BLOWS,
+	[4] = _G.DEATHS,
+	[3] = _G.KILLS,
+	[11] = _G.SHOW_COMBAT_HEALING,
 }
 
 function DT:UPDATE_BATTLEFIELD_SCORE()
@@ -50,7 +51,7 @@ end
 function DT:BattlegroundStats()
 	DT:SetupTooltip(self)
 
-	local classColor = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass]) or RAID_CLASS_COLORS[E.myclass]
+	local classColor = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass]) or _G.RAID_CLASS_COLORS[E.myclass]
 	local numStatInfo = GetNumBattlefieldStats()
 	if numStatInfo then
 		for index = 1, GetNumBattlefieldScores() do
@@ -79,7 +80,7 @@ function DT:HideBattlegroundTexts()
 end
 
 local function ValueColorUpdate(hex)
-	displayString = join("", "%s: ", hex, "%s|r")
+	displayString = strjoin("", "%s: ", hex, "%s|r")
 
 	if lastPanel ~= nil then
 		DT.UPDATE_BATTLEFIELD_SCORE(lastPanel)

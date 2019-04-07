@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local S = E:NewModule('Skins', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
+local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
@@ -11,7 +11,6 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
-E.Skins = S
 S.addonsToLoad = {}
 S.nonAddonsToLoad = {}
 S.allowBypass = {}
@@ -264,20 +263,14 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 		local Texture = button.Icon:GetTexture()
 		if Texture and (type(Texture) == 'string' and strfind(Texture, [[Interface\ChatFrame\ChatFrameExpandArrow]])) then
 			button.Icon:SetTexture(E.Media.Textures.ArrowUp)
-			button.Icon:SetVertexColor(1, 1, 1)
 			button.Icon:SetRotation(S.ArrowRotation['right'])
+			button.Icon:SetVertexColor(1, 1, 1)
 		end
 	end
 
-	-- used for a white X on decline buttons (more clear)
 	if isDeclineButton then
-		if button.Icon then button.Icon:Hide() end
-		if not button.text then
-			button.text = button:CreateFontString(nil, 'OVERLAY')
-			button.text:FontTemplate(E.Media.Fonts.PTSansNarrow, 16, 'OUTLINE')
-			button.text:SetText('x')
-			button.text:SetJustifyH('CENTER')
-			button.text:Point('CENTER', button, 'CENTER')
+		if button.Icon then
+			button.Icon:SetTexture(E.Media.Textures.Close)
 		end
 	end
 
@@ -470,14 +463,17 @@ function S:HandleDropDownBox(frame, width)
 	if text then
 		local justifyH = text:GetJustifyH()
 		local right = justifyH == 'RIGHT'
+		local left = justifyH == 'LEFT'
 
 		local a, _, c, d, e = text:GetPoint()
 		text:ClearAllPoints()
 
 		if right then
 			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (right and -3) or 0, 0)
+		elseif left then -- for now only on the Communities.StreamDropdown?
+			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and -15) or 0, 0)
 		else
-			text:Point(a, frame.backdrop, c, (justifyH == 'LEFT' and 10) or d, e-3)
+			text:Point(a, frame.backdrop, c, (left and 10) or d, e-3)
 		end
 
 		text:Width(frame:GetWidth() / 1.4)
@@ -1330,6 +1326,7 @@ function S:SkinAce3()
 end
 
 function S:Initialize()
+	self.Initialized = true
 	self.db = E.private.skins
 
 	--Fire events for Blizzard addons that are already loaded

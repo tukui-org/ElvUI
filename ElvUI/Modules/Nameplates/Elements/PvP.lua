@@ -1,14 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
+-- Cache global variables
+-- Lua functions
 local strlower = strlower
+-- WoW API / Variables
 
 function NP:PvPIndicator_PostUpdate(unit, status)
 	if not status then return end
 
 	if (not self.Badge) or (self.Badge and not self.Badge:IsShown()) then
 		if status ~= 'FFA' then
-			self:SetAtlas('bfa-landingbutton-'..strlower(status)..'-up', true)
+			self:SetAtlas('bfa-landingbutton-'..strlower(status)..'-up')
 			self:SetTexCoord(0, 1, 0, 1)
 		end
 	end

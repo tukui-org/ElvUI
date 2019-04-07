@@ -1,5 +1,4 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, GlobalDB
-
 local COLORS = COLORS
 local pairs = pairs
 
@@ -19,12 +18,12 @@ local function group(order, db, label)
 		order = order,
 		name = label,
 		get = function(info)
-			local t = (profile(db))[ info[#info] ]
-			local d = (private(db))[ info[#info] ]
+			local t = (profile(db))[info[#info]]
+			local d = (private(db))[info[#info]]
 			return t.r, t.g, t.b, t.a, d.r, d.g, d.b;
 		end,
 		set = function(info, r, g, b)
-			local t = (profile(db))[ info[#info] ]
+			local t = (profile(db))[info[#info]]
 			t.r, t.g, t.b = r, g, b;
 			E:UpdateCooldownSettings(db);
 		end,
@@ -39,16 +38,16 @@ local function group(order, db, label)
 				order = 2,
 				name = L["Reverse Toggle"],
 				desc = L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."],
-				get = function(info) return (profile(db))[ info[#info] ] end,
-				set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
+				get = function(info) return (profile(db))[info[#info]] end,
+				set = function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end,
 			},
 			hideBlizzard = {
 				type = "toggle",
 				order = 3,
 				name = L["Force Hide Blizzard Text"],
 				desc = L["This option will force hide Blizzard's cooldown text if it's enabled at [Interface > ActionBars > Show Numbers on Cooldown]."],
-				get = function(info) return (profile(db))[ info[#info] ] end,
-				set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
+				get = function(info) return (profile(db))[info[#info]] end,
+				set = function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end,
 				disabled = function()
 					if db == "global" then
 						return E.db.cooldown.enable
@@ -62,8 +61,8 @@ local function group(order, db, label)
 				type = "group",
 				name = L["Text Threshold"],
 				guiInline = true,
-				get = function(info) return (profile(db))[ info[#info] ] end,
-				set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
+				get = function(info) return (profile(db))[info[#info]] end,
+				set = function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end,
 				disabled = function() return not (profile(db)).checkSeconds end,
 				args = {
 					checkSeconds = {
@@ -100,8 +99,8 @@ local function group(order, db, label)
 						order = 1,
 						name = L["Enable"],
 						desc = L["This will override the global cooldown settings."],
-						get = function(info) return (profile(db))[ info[#info] ] end,
-						set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
+						get = function(info) return (profile(db))[info[#info]] end,
+						set = function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end,
 					},
 					threshold = {
 						type = 'range',
@@ -110,8 +109,8 @@ local function group(order, db, label)
 						desc = L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"],
 						min = -1, max = 20, step = 1,
 						disabled = function() return not (profile(db)).override end,
-						get = function(info) return (profile(db))[ info[#info] ] end,
-						set = function(info, value) (profile(db))[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
+						get = function(info) return (profile(db))[info[#info]] end,
+						set = function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end,
 					},
 					spacer1 = {
 						order = 3,
@@ -177,8 +176,8 @@ local function group(order, db, label)
 				type = "group",
 				name = L["Fonts"],
 				guiInline = true,
-				get = function(info) return (profile(db)).fonts[ info[#info] ] end,
-				set = function(info, value) (profile(db)).fonts[ info[#info] ] = value; E:UpdateCooldownSettings(db); end,
+				get = function(info) return (profile(db)).fonts[info[#info]] end,
+				set = function(info, value) (profile(db)).fonts[info[#info]] = value; E:UpdateCooldownSettings(db); end,
 				disabled = function() return not (profile(db)).fonts.enable end,
 				args = {
 					enable = {
@@ -197,7 +196,6 @@ local function group(order, db, label)
 						order = 3,
 						type = 'range',
 						name = L["Text Font Size"],
-						desc = L["Sets the size of the timers."],
 						min = 10, max = 50, step = 1,
 					},
 					font = {
@@ -256,8 +254,8 @@ E.Options.args.cooldown = {
 	type = 'group',
 	name = L["Cooldown Text"],
 	childGroups = "tab",
-	get = function(info) return E.db.cooldown[ info[#info] ] end,
-	set = function(info, value) E.db.cooldown[ info[#info] ] = value; E:UpdateCooldownSettings('global'); end,
+	get = function(info) return E.db.cooldown[info[#info]] end,
+	set = function(info, value) E.db.cooldown[info[#info]] = value; E:UpdateCooldownSettings('global'); end,
 	args = {
 		intro = {
 			order = 1,
@@ -274,8 +272,8 @@ E.Options.args.cooldown = {
 }
 
 group(5,  'global',     L["Global"])
-group(6,  'actionbar',  L["ActionBars"])
-group(7,  'bags',       L["Bags"])
-group(8,  'auras',      BUFFOPTIONS_LABEL)
+group(6,  'auras',      BUFFOPTIONS_LABEL)
+group(7,  'actionbar',  L["ActionBars"])
+group(8,  'bags',       L["Bags"])
 group(9,  'nameplates', L["NamePlates"])
 group(10, 'unitframe',  L["UnitFrames"])

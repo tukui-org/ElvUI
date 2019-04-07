@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 ColorPicker Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "ColorPicker-ElvUI", 24
+local Type, Version = "ColorPicker-ElvUI", 25
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -19,6 +19,10 @@ local CreateFrame, UIParent = CreateFrame, UIParent
 Support functions
 -------------------------------------------------------------------------------]]
 local function ColorCallback(self, r, g, b, a, isAlpha)
+	-- this will block an infinite loop from `E.GrabColorPickerValues`
+	-- which is caused when we set values into the color picker again on `OnValueChanged`
+	if ColorPickerFrame.noColorCallback then return end
+
 	if not self.HasAlpha then a = 1 end
 	self:SetColor(r, g, b, a)
 
@@ -74,7 +78,8 @@ local function ColorSwatch_OnClick(frame)
 		if ColorPPDefault and self.dR and self.dG and self.dB then
 			local alpha = 1
 			if self.dA then alpha = 1 - self.dA end
-			ColorPPDefault.colors = {r = self.dR, g = self.dG, b = self.dB, a = alpha}
+			if not ColorPPDefault.colors then ColorPPDefault.colors = {} end
+			ColorPPDefault.colors.r, ColorPPDefault.colors.g, ColorPPDefault.colors.b, ColorPPDefault.colors.a = self.dR, self.dG, self.dB, alpha
 		end
 
 		ColorPickerFrame.cancelFunc = function()

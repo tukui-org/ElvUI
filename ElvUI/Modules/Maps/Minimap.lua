@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local M = E:NewModule('Minimap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
-E.Minimap = M
+local M = E:GetModule('Minimap')
 
 --Lua functions
 local _G = _G
@@ -210,8 +209,7 @@ function M:UpdateSettings()
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 	end
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or _G.Minimap:GetWidth() + 10
-	E.MinimapWidth = E.MinimapSize
-	E.MinimapHeight = E.MinimapSize
+	E.MinimapWidth, E.MinimapHeight = E.MinimapSize, E.MinimapSize
 
 	if E.private.general.minimap.enable then
 		_G.Minimap:Size(E.MinimapSize, E.MinimapSize)
@@ -404,10 +402,13 @@ end
 function M:Initialize()
 	menuFrame:SetTemplate("Transparent", true)
 	self:UpdateSettings()
+
 	if not E.private.general.minimap.enable then
 		_G.Minimap:SetMaskTexture('Textures\\MinimapMask')
-		return;
+		return
 	end
+
+	self.Initialized = true
 
 	--Support for other mods
 	function GetMinimapShape()

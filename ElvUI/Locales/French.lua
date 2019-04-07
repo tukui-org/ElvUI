@@ -219,7 +219,6 @@ L["Left Click:"] = "Clic Gauche :" --layout\layout.lua
 L["Raid Menu"] = "Menu Raid"
 L["Remaining:"] = "Restant :"
 L["Rested:"] = "Reposé :"
-L["Right Click:"] = true
 L["Toggle Chat Frame"] = "Activer la fenêtre de discussion" --layout\layout.lua
 L["Toggle Configuration"] = "Afficher la configuration" --layout\layout.lua
 L["AP:"] = "PA : " -- Artifact Power
@@ -269,7 +268,7 @@ L["Player Buffs"] = "Améliorations du joueur"
 L["Player Castbar"] = "Barre d'incantation du joueur"
 L["Player Debuffs"] = "Affaiblissements du joueur"
 L["Player Frame"] = "Cadre du joueur" --Also used in UnitFrames
-L["Player Nameplate"] = "Barre du joueur"
+L["Player NamePlate"] = "Barre du joueur"
 L["Player Powerbar"] = "Barre de pouvoir du joueur"  --need review.
 L["Raid Frames"] = "Cadres de raid"
 L["Raid Pet Frames"] = "Cadres de raid des familiers"
@@ -356,7 +355,6 @@ L["One or more of the changes you have made require a ReloadUI."] = "Une ou plus
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "Un ou plusieurs changements que vous avez effectués a une incidence sur tous les personnages qui utilisent cet addon. Vous devez recharger l'interface utilisateur pour voir le(s) changement(s) apporté(s)."
 L["Preview Changes"] = true
 L["Save"] = "Sauvegarder"
-L["Suppress In This Session"] = true
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "Le profil que vous essayez d'importer existe déjà. Choisissez un nouveau nom ou acceptez d'écraser le profil existant."
 L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = true
 L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."] = true
@@ -392,3 +390,20 @@ L["You can use the /resetui command to reset all of your movers. You can also us
 L["Dead"] = "Mort"
 L["Ghost"] = "Fantôme"
 L["Offline"] = "Déconnecté"
+
+--Option Enable..
+L.RED_ENABLE = '|cFFff3333Activer|r'
+L.GREEN_ENABLE = '|cFF33ff33Activer|r'
+
+-- Install
+L["Auras Set"] = true
+L["Aura Bars & Icons"] = true
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
+-- Static Popups
+L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = true
+L["Continue"] = true
+-- DataText
+L["(Modifer Click) Collect Garbage"] = true
+-- Misc
+L["Item Level:"] = true
+L["Item level: %.2f"] = true

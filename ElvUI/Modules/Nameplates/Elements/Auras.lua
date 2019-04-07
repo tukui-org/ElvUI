@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
+local _G = _G
 local floor = floor
 local unpack = unpack
 local select = select
@@ -84,6 +85,7 @@ function NP:Construct_Auras(nameplate)
 	Buffs['growth-x'] = 'RIGHT'
 	Buffs['growth-y'] = 'UP'
 	Buffs.type = 'buffs'
+	Buffs.forceShow = nameplate == _G.ElvNP_Test
 
 	local Debuffs = CreateFrame('Frame', nameplate:GetDebugName()..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
@@ -98,6 +100,7 @@ function NP:Construct_Auras(nameplate)
 	Debuffs['growth-x'] = 'RIGHT'
 	Debuffs['growth-y'] = 'UP'
 	Debuffs.type = 'debuffs'
+	Debuffs.forceShow = nameplate == _G.ElvNP_Test
 
 	Auras.PostCreateIcon = NP.Auras_PostCreateIcon
 	Auras.PostUpdateIcon = NP.Auras_PostUpdateIcon
@@ -121,16 +124,6 @@ function NP:Construct_AuraIcon(button)
 	button.cd:SetReverse(true)
 	button.cd:SetInside(button)
 
-	button.cd.CooldownFontSize = 12
-	button.cd.CooldownOverride = 'nameplates'
-	button.cd.CooldownSettings = {
-		['font'] = LSM:Fetch('font', NP.db.font),
-		['fontSize'] = NP.db.fontSize,
-		['fontOutline'] = NP.db.fontOutline,
-	}
-
-	E:RegisterCooldown(button.cd)
-
 	button.icon:SetInside()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
@@ -141,27 +134,53 @@ function NP:Construct_AuraIcon(button)
 	button.count:Point('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
 
-	button.overlay:SetTexture(nil)
-	button.stealable:SetTexture(nil)
+	button.overlay:SetTexture()
+	button.stealable:SetTexture()
+
+	button.cd.CooldownOverride = 'nameplates'
+	E:RegisterCooldown(button.cd)
+
+	local auras = button:GetParent()
+	button.db = auras and NP.db.units and NP.db.units[auras.__owner.frameType] and NP.db.units[auras.__owner.frameType][auras.type]
+
+	NP:UpdateAuraSettings(button)
+end
+
+function NP:Configure_Auras(nameplate, auras, db)
+	auras.size = db.size
+	auras.num = db.numAuras
+	auras.onlyShowPlayer = false
+	auras.spacing = db.spacing
+	auras["growth-y"] = db.growthY
+	auras["growth-x"] = db.growthX
+	auras.initialAnchor = E.InversePoints[db.anchorPoint]
+
+	local index = 1
+	while auras[index] do
+		local button = auras[index]
+		if button then
+			button.db = db
+			NP:UpdateAuraSettings(button)
+		end
+
+		index = index + 1
+	end
+
+	local mult = floor(NP.db.clickableWidth / db.size) < db.numAuras
+	auras:Size(NP.db.clickableWidth, (mult and 1 or 2) * db.size)
+	auras:ClearAllPoints()
+	auras:Point(E.InversePoints[db.anchorPoint] or 'TOPRIGHT', db.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.anchorPoint or 'TOPRIGHT', db.xOffset, db.yOffset)
 end
 
 function NP:Update_Auras(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if db.auras.enable or db.debuffs.enable or db.buffs.enable then
-		if not nameplate:IsElementEnabled('Aura') then
-			nameplate:EnableElement('Aura')
+		if not nameplate:IsElementEnabled('Auras') then
+			nameplate:EnableElement('Auras')
 		end
 
 		if db.auras.enable then
-			--nameplate.Auras.numDebuffs = db.debuffs.numAuras
-			--nameplate.Auras.numBuffs = db.buffs.numAuras
-
-			--if nameplate.Auras then
-				--nameplate.Auras:Point('BOTTOMLEFT', nameplate.Health, 'TOPLEFT', 0, 15)
-				--nameplate.Auras:Point('BOTTOMRIGHT', nameplate.Health, 'TOPRIGHT', 0, 15)
-			--end
-
 			nameplate.Debuffs:Hide()
 			nameplate.Buffs:Hide()
 			nameplate.Auras:Show()
@@ -169,48 +188,22 @@ function NP:Update_Auras(nameplate)
 			nameplate.Auras:Hide()
 
 			if db.debuffs.enable then
-				nameplate.Debuffs.size = db.debuffs.size
-				nameplate.Debuffs.num = db.debuffs.numAuras
-				nameplate.Debuffs.onlyShowPlayer = false
-				nameplate.Debuffs.spacing = db.debuffs.spacing
-				nameplate.Debuffs["growth-y"] = db.debuffs.growthY
-				nameplate.Debuffs["growth-x"] = db.debuffs.growthX
-				nameplate.Debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
-
-				local mult = floor(NP.db.clickableWidth / db.debuffs.size) < db.debuffs.numAuras
-				nameplate.Debuffs:Size(NP.db.clickableWidth, (mult and 1 or 2) * db.debuffs.size)
-				nameplate.Debuffs:ClearAllPoints()
-				nameplate.Debuffs:Point(E.InversePoints[db.debuffs.anchorPoint] or 'TOPRIGHT', db.debuffs.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.debuffs.anchorPoint or 'TOPRIGHT', 0, db.debuffs.yOffset)
+				NP:Configure_Auras(nameplate, nameplate.Debuffs, db.debuffs)
 				nameplate.Debuffs:Show()
-
-				nameplate.Debuffs:ForceUpdate()
 			else
 				nameplate.Debuffs:Hide()
 			end
 
 			if db.buffs.enable then
-				nameplate.Buffs.size = db.buffs.size
-				nameplate.Buffs.num = db.buffs.numAuras
-				nameplate.Buffs.onlyShowPlayer = false
-				nameplate.Buffs.spacing = db.buffs.spacing
-				nameplate.Buffs["growth-y"] = db.buffs.growthY
-				nameplate.Buffs["growth-x"] = db.buffs.growthX
-				nameplate.Buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
-
-				local mult = floor(NP.db.clickableWidth / db.buffs.size) < db.buffs.numAuras
-				nameplate.Buffs:Size(NP.db.clickableWidth, (mult and 1 or 2) * db.buffs.size)
-				nameplate.Buffs:ClearAllPoints()
-				nameplate.Buffs:Point(E.InversePoints[db.buffs.anchorPoint] or 'TOPLEFT', db.buffs.attachTo == 'DEBUFFS' and nameplate.Debuffs or nameplate, db.buffs.anchorPoint or 'TOPLEFT', 0, db.buffs.yOffset)
+				NP:Configure_Auras(nameplate, nameplate.Buffs, db.buffs)
 				nameplate.Buffs:Show()
-
-				nameplate.Buffs:ForceUpdate()
 			else
 				nameplate.Buffs:Hide()
 			end
 		end
 	else
-		if nameplate:IsElementEnabled('Aura') then
-			nameplate:DisableElement('Aura')
+		if nameplate:IsElementEnabled('Auras') then
+			nameplate:DisableElement('Auras')
 		end
 	end
 end
@@ -237,42 +230,43 @@ function NP:PostUpdateAura(unit, button)
 		end
 	end
 
-	local parent = button:GetParent()
-	local db = parent and NP.db.units[parent.__owner.frameType] and NP.db.units[parent.__owner.frameType][parent.type]
-	if db then
-		button:Size(db.size, db.size)
-		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
-
-		if button.cd then
-			NP:UpdateCooldownTextPosition(button.cd, db)
-			NP:UpdateCooldownSettings(button.cd, db)
-		end
+	if button.needsUpdateCooldownPosition then
+		NP:UpdateAuraCooldownPosition(button)
 	end
 end
 
-function NP:UpdateCooldownTextPosition(cd, db)
-	if cd.timer and cd.timer.text then
-		cd.timer.text:ClearAllPoints()
-		if db and db.durationPosition == 'TOPLEFT' then
-			cd.timer.text:Point('TOPLEFT', 1, 1)
-		elseif db and db.durationPosition == 'BOTTOMLEFT' then
-			cd.timer.text:Point('BOTTOMLEFT', 1, 1)
-		elseif db and db.durationPosition == 'TOPRIGHT' then
-			cd.timer.text:Point('TOPRIGHT', 1, 1)
+function NP:UpdateAuraSettings(button)
+	if button.db then
+		button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
+		button.count:ClearAllPoints()
+
+		local point = (button.db and button.db.countPosition) or 'CENTER'
+		if point == 'CENTER' then
+			button.count:Point(point, 1, 0)
 		else
-			cd.timer.text:Point('CENTER', 1, 1)
+			local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
+			button.count:SetJustifyH(right and 'RIGHT' or 'LEFT')
+			button.count:Point(point, right and -1 or 1, bottom and 1 or -1)
 		end
 	end
+
+	button:Size(button.db.size or 26)
+
+	button.needsUpdateCooldownPosition = true
 end
 
-function NP:UpdateCooldownSettings(cd, db)
-	if cd and cd.CooldownSettings and db then
-		cd.CooldownSettings.font = LSM:Fetch('font', db.font)
-		cd.CooldownSettings.fontSize = db.fontSize
-		cd.CooldownSettings.fontOutline = db.fontOutline
-		if cd.timer then
-			E:Cooldown_OnSizeChanged(cd.timer, cd, cd:GetSize(), 'override')
+function NP:UpdateAuraCooldownPosition(button)
+	if button.cd and button.cd.timer and button.cd.timer.text then
+		button.cd.timer.text:ClearAllPoints()
+		local point = (button.db and button.db.durationPosition) or 'CENTER'
+		if point == 'CENTER' then
+			button.cd.timer.text:Point(point, 1, 0)
+		else
+			local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
+			button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
 		end
+
+		button.needsUpdateCooldownPosition = nil
 	end
 end
 

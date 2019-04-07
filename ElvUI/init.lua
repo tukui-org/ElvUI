@@ -22,7 +22,6 @@ local wipe = wipe
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local issecurevariable = issecurevariable
-
 local CreateFrame = CreateFrame
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMetadata = GetAddOnMetadata
@@ -49,11 +48,31 @@ local AddOnName, Engine = ...;
 local AddOn = AceAddon:NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0', 'AceHook-3.0');
 AddOn.callbacks = AddOn.callbacks or CallbackHandler:New(AddOn)
 AddOn.DF = {}; AddOn.DF.profile = {}; AddOn.DF.global = {}; AddOn.privateVars = {}; AddOn.privateVars.profile = {}; -- Defaults
-AddOn.Options = {
-	type = "group",
-	name = AddOnName,
-	args = {},
-}
+AddOn.Options = {type = "group", name = AddOnName, args = {}}
+
+AddOn.ActionBars = AddOn:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0')
+AddOn.AFK = AddOn:NewModule('AFK','AceEvent-3.0','AceTimer-3.0')
+AddOn.Auras = AddOn:NewModule('Auras','AceHook-3.0','AceEvent-3.0')
+AddOn.Bags = AddOn:NewModule('Bags','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+AddOn.Blizzard = AddOn:NewModule('Blizzard','AceEvent-3.0','AceHook-3.0')
+AddOn.Chat = AddOn:NewModule('Chat','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+AddOn.DataBars = AddOn:NewModule('DataBars','AceEvent-3.0')
+AddOn.DataTexts = AddOn:NewModule('DataTexts','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+AddOn.DebugTools = AddOn:NewModule('DebugTools','AceEvent-3.0','AceHook-3.0')
+AddOn.Distributor = AddOn:NewModule('Distributor','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
+AddOn.Layout = AddOn:NewModule('Layout','AceEvent-3.0')
+AddOn.Minimap = AddOn:NewModule('Minimap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+AddOn.Misc = AddOn:NewModule('Misc','AceEvent-3.0','AceTimer-3.0')
+AddOn.ModuleCopy = AddOn:NewModule('ModuleCopy','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
+AddOn.NamePlates = AddOn:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+AddOn.PluginInstaller = AddOn:NewModule('PluginInstaller')
+AddOn.RaidUtility = AddOn:NewModule('RaidUtility','AceEvent-3.0')
+AddOn.Skins = AddOn:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+AddOn.Threat = AddOn:NewModule('Threat','AceEvent-3.0')
+AddOn.Tooltip = AddOn:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+AddOn.TotemBar = AddOn:NewModule('Totems','AceEvent-3.0')
+AddOn.UnitFrames = AddOn:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
+AddOn.WorldMap = AddOn:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 
 Engine[1] = AddOn;
 Engine[2] = {};
@@ -325,7 +344,7 @@ function AddOn:ToggleConfig(msg)
 				local main, mainNode, mainSelStr, sub, subNode, subSel
 				for i = 1, pageCount do
 					if i == 1 then
-						main = pages[i] and ACD.Status and ACD.Status.ElvUI
+						main = pages[i] and ACD and ACD.Status and ACD.Status.ElvUI
 						mainSel = main and main.status and main.status.groups and main.status.groups.selected
 						mainSelStr = mainSel and ('^'..mainSel:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')..'\001')
 						mainNode = main and main.children and main.children[pages[i]]
@@ -339,7 +358,7 @@ function AddOn:ToggleConfig(msg)
 					index = index + 2
 				end
 			else
-				local main = pages[1] and ACD.Status and ACD.Status.ElvUI
+				local main = pages[1] and ACD and ACD.Status and ACD.Status.ElvUI
 				mainSel = main and main.status and main.status.groups and main.status.groups.selected
 			end
 
@@ -353,7 +372,9 @@ function AddOn:ToggleConfig(msg)
 		end
 	end
 
-	ACD[mode](ACD, AddOnName)
+	if ACD then
+		ACD[mode](ACD, AddOnName)
+	end
 
 	if mode == 'Open' then
 		ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
@@ -381,7 +402,7 @@ function AddOn:ToggleConfig(msg)
 			end
 		end
 
-		if pages then
+		if ACD and pages then
 			ACD:SelectGroup(AddOnName, unpack(pages))
 		end
 	end

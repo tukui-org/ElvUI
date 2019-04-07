@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
+local _G = _G
 local select, ipairs = select, ipairs
 local format = string.format
 local sort = sort
@@ -20,16 +21,12 @@ local C_Garrison_GetTalentTreeInfoForID = C_Garrison.GetTalentTreeInfoForID
 local C_Garrison_HasGarrison = C_Garrison.HasGarrison
 local C_Garrison_RequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
 local CAPACITANCE_WORK_ORDERS = CAPACITANCE_WORK_ORDERS
-local COMPLETE = COMPLETE
 local FOLLOWERLIST_LABEL_TROOPS = FOLLOWERLIST_LABEL_TROOPS
 local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
 local GARRISON_TALENT_ORDER_ADVANCEMENT = GARRISON_TALENT_ORDER_ADVANCEMENT
 local LE_FOLLOWER_TYPE_GARRISON_7_0 = LE_FOLLOWER_TYPE_GARRISON_7_0
 local LE_GARRISON_TYPE_7_0 = LE_GARRISON_TYPE_7_0
 local ORDER_HALL_MISSIONS = ORDER_HALL_MISSIONS
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GarrisonLandingPage
 
 local GARRISON_CURRENCY = 1220
 local GARRISON_ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(GARRISON_CURRENCY)))
@@ -66,7 +63,7 @@ local function OnEnter(self, _, noUpdate)
 			end
 
 			if(timeLeft and timeLeft == "0") then
-				DT.tooltip:AddDoubleLine(mission.name, COMPLETE, r, g, b, 0, 1, 0)
+				DT.tooltip:AddDoubleLine(mission.name, _G.COMPLETE, r, g, b, 0, 1, 0)
 			else
 				DT.tooltip:AddDoubleLine(mission.name, mission.timeLeft, r, g, b)
 			end
@@ -156,6 +153,7 @@ local function OnClick()
 		return;
 	end
 
+	local GarrisonLandingPage = _G.GarrisonLandingPage
 	local isShown = GarrisonLandingPage and GarrisonLandingPage:IsShown();
 	if (not isShown) then
 		ShowGarrisonLandingPage(LE_GARRISON_TYPE_7_0);

@@ -219,7 +219,6 @@ L["Left Click:"] = "左键:"
 L["Raid Menu"] = "团队菜单"
 L["Remaining:"] = "剩余:"
 L["Rested:"] = "休息:"
-L["Right Click:"] = "右键:"
 L["Toggle Chat Frame"] = "开关聊天框架"
 L["Toggle Configuration"] = "设置开关"
 L["AP:"] = "神器能量:" -- Artifact Power
@@ -240,13 +239,12 @@ L["Bank Mover (Grow Up)"] = "银行框架(向上)"
 L["Bar "] = "动作条 " --Also in ActionBars
 L["BNet Frame"] = "战网提示信息"
 L["Boss Button"] = "特殊技能键"
-L["Boss Frames"] = "首领框架"
 L["Class Totems"] = "职业图腾"
 L["Classbar"] = "职业特有条"
 L["Experience Bar"] = "经验条"
 L["Focus Castbar"] = "焦点目标施法条"
 L["Focus Frame"] = "焦点目标框架"
-L["FocusTarget Frame"] = "焦点目标的目标框架"
+L["FocusTarget"] = "焦点目标的目标框架"
 L["GM Ticket Frame"] = "GM对话框"
 L["Honor Bar"] = "荣誉条"
 L["Left Chat"] = "左侧对话框"
@@ -260,20 +258,15 @@ L["Minimap"] = "小地图"
 L["MirrorTimer"] = "镜像计时器"
 L["MT Frames"] = "主坦克框"
 L["Objective Frame"] = "任务框架"
-L["Party Frames"] = "队伍框架"
 L["Pet Bar"] = "宠物动作条" --Also in ActionBars
 L["Pet Castbar"] = "宠物施法条"
-L["Pet Frame"] = "宠物框架"
-L["PetTarget Frame"] = "宠物目标框架"
 L["Player Buffs"] = "玩家增益"
 L["Player Castbar"] = "玩家施法条"
 L["Player Debuffs"] = "玩家减益"
-L["Player Frame"] = "玩家框架"
-L["Player Nameplate"] = "玩家姓名板"
+L["Player NamePlate"] = "玩家姓名板"
 L["Player Powerbar"] = "玩家能量条"
-L["Raid Frames"] = "团队框架"
-L["Raid Pet Frames"] = "团队宠物框架"
-L["Raid-40 Frames"] = "40人团队框架"
+L["Raid Pet"] = "团队宠物框架"
+L["Raid-40"] = "40人团队框架"
 L["Reputation Bar"] = "声望条"
 L["Right Chat"] = "右侧对话框"
 L["Stance Bar"] = "姿态条" --Also in ActionBars
@@ -356,7 +349,6 @@ L["One or more of the changes you have made require a ReloadUI."] = "已变更�
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "你所做的改动可能会影响到使用这个插件的所有角色，你需要重新加载界面才能使改动生效。"
 L["Preview Changes"] = "预览改动"
 L["Save"] = "储存"
-L["Suppress In This Session"] = true
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "你尝试导入的配置文件已经存在。请选择一个新的名字或者确认覆盖存在的配置文件。"
 L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = "UI缩放已经改变, 点击'预览'按钮来预览改动. 建议你重载界面以获得最好的界面."
 L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."] = true
@@ -392,3 +384,20 @@ L["You can use the /resetui command to reset all of your movers. You can also us
 L["Dead"] = "死亡"
 L["Ghost"] = "鬼魂"
 L["Offline"] = "离线"
+
+--Option Enable..
+L.RED_ENABLE = '|cFFff3333启用|r'
+L.GREEN_ENABLE = '|cFF33ff33启用|r'
+
+-- Install
+L["Auras Set"] = true
+L["Aura Bars & Icons"] = true
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
+-- Static Popups
+L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = true
+L["Continue"] = true
+-- DataText
+L["(Modifer Click) Collect Garbage"] = true
+-- Misc
+L["Item Level:"] = true
+L["Item level: %.2f"] = true

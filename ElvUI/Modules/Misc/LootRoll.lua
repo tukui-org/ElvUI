@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local M = E:GetModule('Misc');
+local M = E:GetModule('Misc')
 
 --Lua functions
 local _G = _G
@@ -30,7 +30,6 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local NEED = NEED
 local PASS = PASS
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local ROLL_DISENCHANT = ROLL_DISENCHANT
 
 local pos = 'TOP';
@@ -55,7 +54,7 @@ local function SetTip(frame)
 	if frame:IsEnabled() == 0 then GameTooltip:AddLine("|cffff3333"..L["Can't Roll"]) end
 	for name, tbl in pairs(frame.parent.rolls) do
 		if rolltypes[tbl[1]] == rolltypes[frame.rolltype] then
-			local classColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[tbl[2]] or RAID_CLASS_COLORS[tbl[2]]
+			local classColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[tbl[2]] or _G.RAID_CLASS_COLORS[tbl[2]]
 			GameTooltip:AddLine(name, classColor.r, classColor.g, classColor.b)
 		end
 	end

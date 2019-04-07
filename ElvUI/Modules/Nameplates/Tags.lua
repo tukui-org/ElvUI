@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local oUF = E.oUF
 
 local _G = _G
-local unpack = unpack
 local format = format
 local select = select
 local strmatch = strmatch
@@ -20,12 +19,8 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitPVPName = UnitPVPName
-local UnitReaction = UnitReaction
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local LEVEL = LEVEL
-
---GLOBALS: Hex, CUSTOM_CLASS_COLORS
+--GLOBALS: Hex
 
 oUF.Tags.Events['cast:name'] = 'UNIT_SPELLCAST_START UNIT_SPELLCAST_CHANNEL_START'
 oUF.Tags.Methods['cast:name'] = function(unit)
@@ -49,30 +44,17 @@ oUF.Tags.Methods['npctitle'] = function(unit)
 	E.ScanTooltip:SetUnit(unit)
 	E.ScanTooltip:Show()
 
-	local reactionType = UnitReaction(unit, "player")
-	local r, g, b = 1, 1, 1
-	if reactionType then
-		r, g, b = unpack(oUF.colors.reaction[reactionType])
-	end
-
 	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
 
 	if (Title and not Title:find('^'..LEVEL)) then
-		return format('%s%s|r', Hex(r, g, b), Title)
-	end
-end
-
-oUF.Tags.Events['guild'] = 'UNIT_NAME_UPDATE'
-oUF.Tags.Methods['guild'] = function(unit)
-	if (UnitIsPlayer(unit)) then
-		return Hex(.25, .75, .25)..(GetGuildInfo(unit) or '')..'|r'
+		return Title
 	end
 end
 
 oUF.Tags.Events['guild:rank'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['guild:rank'] = function(unit)
 	if (UnitIsPlayer(unit)) then
-		return Hex(.25, .75, .25)..(select(2, GetGuildInfo(unit)) or '')..'|r'
+		return select(2, GetGuildInfo(unit)) or ''
 	end
 end
 
@@ -95,30 +77,32 @@ end
 oUF.Tags.Events['name:title'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['name:title'] = function(unit)
 	if (UnitIsPlayer(unit)) then
-		return Hex(.25, .75, .25)..(UnitPVPName(unit) or '')..'|r'
+		return UnitPVPName(unit)
 	end
 end
 
-oUF.Tags.SharedEvents.COMBAT_LOG_EVENT_UNFILTERED = true
+--[[
+	oUF.Tags.SharedEvents.COMBAT_LOG_EVENT_UNFILTERED = true
 
-oUF.Tags.Events['interrupt'] = 'COMBAT_LOG_EVENT_UNFILTERED'
-oUF.Tags.Methods['interrupt'] = function(unit)
-	local _, event, _, _, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
+	oUF.Tags.Events['interrupt'] = 'COMBAT_LOG_EVENT_UNFILTERED'
+	oUF.Tags.Methods['interrupt'] = function(unit)
+		local _, event, _, _, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
 
-	if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
-		return sourceName
+		if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
+			return sourceName
+		end
 	end
-end
 
-oUF.Tags.Events['interrupt:classcolor'] = 'COMBAT_LOG_EVENT_UNFILTERED'
-oUF.Tags.Methods['interrupt:classcolor'] = function(unit)
-	local _, event, _, _, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
+	oUF.Tags.Events['interrupt:classcolor'] = 'COMBAT_LOG_EVENT_UNFILTERED'
+	oUF.Tags.Methods['interrupt:classcolor'] = function(unit)
+		local _, event, _, _, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
 
-	if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
-		local class = select(2, UnitClass(sourceName)) or 'PRIEST'
-		return (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]):GenerateHexColorMarkup()..sourceName..'|r'
+		if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
+			local class = select(2, UnitClass(sourceName)) or 'PRIEST'
+			return (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]):GenerateHexColorMarkup()..sourceName..'|r'
+		end
 	end
-end
+]]
 
 oUF.Tags.Events['quest:title'] = 'UNIT_NAME_UPDATE UNIT_HEALTH'
 oUF.Tags.Methods['quest:title'] = function(unit)

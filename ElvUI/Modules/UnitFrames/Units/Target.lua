@@ -13,19 +13,13 @@ local IsAddOnLoaded = IsAddOnLoaded
 function UF:Construct_TargetFrame(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Health.frequentUpdates = true;
-
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.Power.frequentUpdates = true;
-
 	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
-
 	frame.Name = self:Construct_NameText(frame)
-
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
-
 	frame.Buffs = self:Construct_Buffs(frame)
-
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.ThreatIndicator = self:Construct_Threat(frame)
 	frame.Castbar = self:Construct_Castbar(frame, L["Target Castbar"])
@@ -38,9 +32,9 @@ function UF:Construct_TargetFrame(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
-	frame.Range = self:Construct_Range(frame)
 	frame.PhaseIndicator = self:Construct_PhaseIcon(frame)
 	frame.PvPIndicator = self:Construct_PvPIcon(frame)
+	frame.Fader = self:Construct_Fader()
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 413, 68)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,target,generalGroup')
@@ -120,6 +114,9 @@ function UF:Update_TargetFrame(frame, db)
 	--Castbar
 	UF:Configure_Castbar(frame)
 
+	--Fader
+	UF:Configure_Fader(frame)
+
 	--Debuff Highlight
 	UF:Configure_DebuffHighlight(frame)
 
@@ -131,9 +128,6 @@ function UF:Update_TargetFrame(frame, db)
 
 	--AuraBars
 	UF:Configure_AuraBars(frame)
-
-	--Range
-	UF:Configure_Range(frame)
 
 	-- PhaseIndicator
 	UF:Configure_PhaseIcon(frame)

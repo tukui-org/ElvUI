@@ -3,37 +3,37 @@ local _G = _G
 local print, tostring, select = print, tostring, select
 local strlower = strlower
 --WoW API / Variables
+local GetAddOnEnableState = GetAddOnEnableState
+local UIParentLoadAddOn = UIParentLoadAddOn
 local GetMouseFocus = GetMouseFocus
 local IsAddOnLoaded = IsAddOnLoaded
 local GetAddOnInfo = GetAddOnInfo
 local LoadAddOn = LoadAddOn
+local SlashCmdList = SlashCmdList
+-- GLOBALS: ElvUIDev, ElvUI, FRAME, SLASH_FRAME1, SLASH_FRAMELIST1, SLASH_TEXLIST1, SLASH_GETPOINT1, SLASH_DEV1
 
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: SLASH_FRAME1, SLASH_FRAMELIST1, SLASH_TEXLIST1, FRAME, ChatFrame1
--- GLOBALS: FrameStackTooltip, UIParentLoadAddOn, CopyChatFrame, ElvUI
--- GLOBALS: SLASH_GETPOINT1, SLASH_DEV1, ElvUIDev
+local me = UnitName('player')
+local IsDebugDisabled = function()
+	if GetAddOnEnableState(me, 'Blizzard_DebugTools') == 0 then
+		print('Blizzard_DebugTools is disabled.')
 
---[[
-	Command to grab frame information when mouseing over a frame
-
-	Frame Name
-	Width
-	Height
-	Strata
-	Level
-	X Offset
-	Y Offset
-	Point
-]]
+		return true
+	end
+end
 
 SLASH_FRAME1 = "/frame"
 SlashCmdList.FRAME = function(arg)
+	if IsDebugDisabled() then return end
+
 	if arg ~= "" then
 		arg = _G[arg]
 	else
 		arg = GetMouseFocus()
 	end
-	if arg ~= nil then FRAME = arg end --Set the global variable FRAME to = whatever we are mousing over to simplify messing with frames that have no name.
+
+	if arg ~= nil then
+		FRAME = arg -- Set the global variable FRAME to = whatever we are mousing over to simplify messing with frames that have no name.
+	end
 
 	if not _G.TableAttributeDisplay then
 		UIParentLoadAddOn("Blizzard_DebugTools")
@@ -47,13 +47,15 @@ end
 
 SLASH_FRAMELIST1 = "/framelist"
 SlashCmdList.FRAMELIST = function(msg)
-	if(not FrameStackTooltip) then
-		UIParentLoadAddOn("Blizzard_DebugTools");
+	if IsDebugDisabled() then return end
+
+	if not _G.FrameStackTooltip then
+		UIParentLoadAddOn("Blizzard_DebugTools")
 	end
 
-	local isPreviouslyShown = FrameStackTooltip:IsShown()
-	if(not isPreviouslyShown) then
-		if(msg == tostring(true)) then
+	local isPreviouslyShown = _G.FrameStackTooltip:IsShown()
+	if not isPreviouslyShown then
+		if msg == tostring(true) then
 			_G.FrameStackTooltip_Toggle(true);
 		else
 			_G.FrameStackTooltip_Toggle();
@@ -61,7 +63,7 @@ SlashCmdList.FRAMELIST = function(msg)
 	end
 
 	print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-	for i = 2, FrameStackTooltip:NumLines() do
+	for i = 2, _G.FrameStackTooltip:NumLines() do
 		local text = _G["FrameStackTooltipTextLeft"..i]:GetText();
 		if(text and text ~= "") then
 			print(text)
@@ -69,27 +71,22 @@ SlashCmdList.FRAMELIST = function(msg)
 	end
 	print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-	if(CopyChatFrame:IsShown()) then
-		CopyChatFrame:Hide()
+	if _G.CopyChatFrame:IsShown() then
+		_G.CopyChatFrame:Hide()
 	end
 
-	ElvUI[1]:GetModule("Chat"):CopyChat(ChatFrame1)
-	if(not isPreviouslyShown) then
-		FrameStackTooltip_Toggle();
+	ElvUI[1]:GetModule("Chat"):CopyChat(_G.ChatFrame1)
+	if not isPreviouslyShown then
+		_G.FrameStackTooltip_Toggle();
 	end
 end
 
 local function TextureList(frame)
 	frame = _G[frame] or FRAME
-	--[[for key, obj in pairs(frame) do
-		if type(obj) == "table" and obj.IsObjectType and obj:IsObjectType('Texture') then
-			print(key, obj:GetTexture())
-		end
-	end]]
 
 	for i=1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
-		if(region:IsObjectType('Texture')) then
+		if region.IsObjectType and region:IsObjectType('Texture') then
 			print(region:GetTexture(), region:GetName(), region:GetDrawLayer())
 		end
 	end
@@ -134,7 +131,6 @@ SlashCmdList.DEV = function()
 			end
 		end
 	else
-		--local addon = self:GetAddOn("ElvUIDev")
 		if not ElvUIDev.frame:IsShown() then
 			ElvUIDev.frame:Show()
 		else

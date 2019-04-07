@@ -7,7 +7,6 @@ local select = select
 local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local function colorBorder(child, backdrop, atlas)
 	if child.AlphaIconOverlay:IsShown() then --isBeingResearched or (talentAvailability and not selected)
@@ -37,7 +36,7 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.orderhall ~= true then return end
 
-	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass])
 
 	-- CommandBar
 	local OrderHallCommandBar = _G.OrderHallCommandBar

@@ -219,7 +219,6 @@ L["Left Click:"] = "ЛКМ:" --layout\layout.lua
 L["Raid Menu"] = "Рейдовое меню"
 L["Remaining:"] = "Осталось:"
 L["Rested:"] = "Бодрость:"
-L["Right Click:"] = "ПКМ: "
 L["Toggle Chat Frame"] = "Показать/скрыть чат" --layout\layout.lua
 L["Toggle Configuration"] = "Конфигурация" --layout\layout.lua
 L["AP:"] = "СА:" -- Artifact Power
@@ -269,7 +268,7 @@ L["Player Buffs"] = "Баффы игрока"
 L["Player Castbar"] = "Полоса заклинаний игрока"
 L["Player Debuffs"] = "Дебаффы игрока"
 L["Player Frame"] = "Игрок" --Also used in UnitFrames
-L["Player Nameplate"] = "Индикатор игрока"
+L["Player NamePlate"] = "Индикатор игрока"
 L["Player Powerbar"] = "Полоса ресурса игрока"
 L["Raid Frames"] = "Рейд"
 L["Raid Pet Frames"] = "Питомцы рейда"
@@ -345,7 +344,7 @@ L["Do you swear not to post in technical support about something not working wit
 L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "Ваш ElvUI устарел более, чем на 5 версий. Обновите его на tukui.org. Или вы можете автоматически обновлять его автоматический через TukUI Client с премиум статусом."
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI устарел. Вы можете скачать последнюю версию с www.tukui.org. С премиум аккаунтом ElvUI будет автоматически обновляться через TukUI клиент."
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI нужно провести оптимизацию базы данных. Подождите, пожалуйста."
-L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = true
+L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = "ElvUI обновился, пока игра была запущена. Перезапустите игру, чтобы обновления могли по человечески примениться."
 L["Error resetting UnitFrame."] = "Ошибка сброса рамки юнита."
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = "Наведите мышку на любую кнопку панели команд или книги заклинаний, чтобы создать назначение. Нажатие ESC убирает текущее назначение."
 L["I Swear"] = "Я клянусь!"
@@ -356,7 +355,6 @@ L["One or more of the changes you have made require a ReloadUI."] = "Одно и
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "Одно или несколько изменений повлияют на всех персонажей, использующих этот аддон. Вы должны перезагрузить интерфейс для отображения этих изменений."
 L["Preview Changes"] = "Посмотреть изменения"
 L["Save"] = "Сохранить"
-L["Suppress In This Session"] = true
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "Профиль, который вы хотите импортировать, уже существует. Задайте новой имя или примите для перезаписи существующего профиля."
 L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = "Масштаб интерфейса изменен. Если вы хотите посмотреть на результат, нажмите кнопку предпросмотра. Для лучшего результата рекомендуется перезагрузить интерфейс."
 L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."] = "Эта версия EvUI содержит изменения обработки масштаба интерфейса. За подробностями смотрим чейнджлог. Требуется заново установить масштаб для использования новой системы. Ваш предыдущий масштаб был %s.\n\nВы можете или применить это значение, или использовать 'Автомасштаб' для установки масштаба в теории подходящего для вашего разрешения.\n\nВы также можете самостоятельно выбрать масштаб в общем разделе настроек ElvUI config. В теории ElvUI теперь должен выглядеть лучше, но возможны проблемы с видок окна конфигурации."
@@ -392,3 +390,20 @@ L["You can use the /resetui command to reset all of your movers. You can also us
 L["Dead"] = "Труп"
 L["Ghost"] = "Призрак"
 L["Offline"] = "Не в сети"
+
+--Option Enable..
+L.RED_ENABLE = '|cFFff3333Включить|r'
+L.GREEN_ENABLE = '|cFF33ff33Включить|r'
+
+-- Install
+L["Auras Set"] = "Ауры установлены"
+L["Aura Bars & Icons"] = "Полосы и иконки"
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = "Выберите тип си стемы аур, который будет применен к рамкам юнитов. Выберите \"Полосы и иконки\" для показа полос аур и иконок, выберите \"Только иконки\" для показа исключительно иконок."
+-- Static Popups
+L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = "Вы используете профайлинг ЦПУ. Это бьет по производительности. Вы точно уверены, что это нужно?"
+L["Continue"] = "Продолжить"
+-- DataText
+L["(Modifer Click) Collect Garbage"] = "(Клик с модификатором) Очистка мусора"
+-- Misc
+L["Item Level:"] = "Уровень предмета:"
+L["Item level: %.2f"] = "Уровень предмета: %.2f"

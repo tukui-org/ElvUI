@@ -38,7 +38,7 @@ local function LoadSkin()
 
 	WarboardQuestChoiceFrame:HookScript("OnShow", function(self)
 		if self.CloseButton.Border then self.CloseButton.Border:SetAlpha(0) end
-		E:Delay(.5, WarboardQuestChoiceDelayed, self)
+		E:Delay(0.5, WarboardQuestChoiceDelayed, self)
 	end)
 
 	-- TODO Hide the "new" CloseButton.Border

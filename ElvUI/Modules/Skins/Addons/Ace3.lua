@@ -27,6 +27,15 @@ function S:Ace3_SkinDropdownPullout()
 	end
 end
 
+function S:Ace3_CheckBoxIsEnableSwitch(widget)
+	local text = widget.text and widget.text:GetText()
+	if text then
+		local enabled, disabled = text == L.GREEN_ENABLE, text == L.RED_ENABLE
+		local isSwitch = (text == L.Enable) or enabled or disabled
+		return isSwitch, enabled, disabled
+	end
+end
+
 function S:Ace3_RegisterAsWidget(widget)
 	if not E.private.skins.ace3.enable then
 		return oldRegisterAsWidget(self, widget)
@@ -56,16 +65,28 @@ function S:Ace3_RegisterAsWidget(widget)
 		checkbg:SetTexture()
 		highlight:SetTexture()
 
+		hooksecurefunc(widget, "SetValue", function(w, checked)
+			if S:Ace3_CheckBoxIsEnableSwitch(w) then
+				w:SetLabel(checked and L.GREEN_ENABLE or L.RED_ENABLE)
+			end
+		end)
+
 		if E.private.skins.checkBoxSkin then
 			checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
-
 			check:SetTexture(E.Media.Textures.Melli)
 
 			hooksecurefunc(check, "SetDesaturated", function(chk, value)
 				if value == true then
 					chk:SetVertexColor(.6, .6, .6, .8)
 				else
-					chk:SetVertexColor(1, .82, 0, 0.8)
+					local isSwitch, enabled, disabled = S:Ace3_CheckBoxIsEnableSwitch(widget)
+					if isSwitch and enabled then
+						chk:SetVertexColor(0.2, 1.0, 0.2, 1.0)
+					elseif isSwitch and disabled then
+						chk:SetVertexColor(1.0, 0.2, 0.2, 1.0)
+					else
+						chk:SetVertexColor(1, .82, 0, 0.8)
+					end
 				end
 			end)
 
@@ -155,6 +176,12 @@ function S:Ace3_RegisterAsWidget(widget)
 		S:HandleEditBox(frame)
 		S:HandleButton(button)
 
+		hooksecurefunc(frame, "SetTextInsets", function(fr, l, r, t, b)
+			if l == 0 then
+				fr:SetTextInsets(3, r, t, b)
+			end
+		end)
+
 		button:Point('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
 
 		hooksecurefunc(frame, 'SetPoint', function(fr, a, b, c, d, e)
@@ -167,10 +194,11 @@ function S:Ace3_RegisterAsWidget(widget)
 		frame.backdrop:Point('BOTTOMRIGHT', -1, 0)
 	elseif (TYPE == 'Button' or TYPE == 'Button-ElvUI') then
 		local frame = widget.frame
-		S:HandleButton(frame, true, true, true)
-		widget.text:SetParent(frame.backdrop)
+		S:HandleButton(frame, true, nil, true)
 		frame.backdrop:SetInside()
-	elseif TYPE == 'Slider' then
+
+		widget.text:SetParent(frame.backdrop)
+	elseif TYPE == 'Slider' or TYPE == 'Slider-ElvUI' then
 		local frame = widget.slider
 		local editbox = widget.editbox
 		local lowtext = widget.lowtext
@@ -188,9 +216,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		local button = widget.button
 		local msgframe = widget.msgframe
 
-		S:HandleButton(button, nil, true)
-		button:StripTextures()
-		button:CreateBackdrop(nil, true)
+		S:HandleButton(button, true, nil, true)
 		button.backdrop:SetInside()
 
 		msgframe:StripTextures()
@@ -278,6 +304,7 @@ function S:Ace3_RegisterAsContainer(widget)
 				for i = offset + 1, #lines do
 					local button = buttons[i - offset]
 					if button then
+						button.highlight:SetVertexColor(1.0, 0.9, 0.0, 0.8)
 						if groupstatus[lines[i].uniquevalue] then
 							button.toggle:SetNormalTexture(E.Media.Textures.Minus)
 							button.toggle:SetPushedTexture(E.Media.Textures.Minus)

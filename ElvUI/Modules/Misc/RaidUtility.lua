@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
-local RU = E:NewModule('RaidUtility', 'AceEvent-3.0');
+local RU = E:GetModule('RaidUtility')
 
 --Lua functions
 local _G = _G
@@ -23,11 +23,7 @@ local ToggleFriendsFrame = ToggleFriendsFrame
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitIsGroupAssistant = UnitIsGroupAssistant
 local UnitIsGroupLeader = UnitIsGroupLeader
-
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local NUM_RAID_GROUPS = NUM_RAID_GROUPS
-
-E.RaidUtility = RU
 local PANEL_HEIGHT = 100
 
 --Check if We are Raid Leader or Raid Officer
@@ -132,7 +128,7 @@ local function onEnter(self)
 	for i = 1, GetNumGroupMembers() do
 		name, _, group, _, _, class, _, _, _, _, _, groupRole = GetRaidRosterInfo(i)
 		if name and groupRole == role then
-			color = class == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
+			color = class == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class])
 			coloredName = ("|cff%02x%02x%02x%s"):format(color.r * 255, color.g * 255, color.b * 255, name:gsub("%-.+", "*"))
 			tinsert(roleIconRoster[group], coloredName)
 		end
@@ -197,6 +193,7 @@ end
 
 function RU:Initialize()
 	if E.private.general.raidUtility == false then return end
+	self.Initialized = true
 
 	--Create main frame
 	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerBaseTemplate")

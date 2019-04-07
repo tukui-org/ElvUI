@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local AB = E:GetModule('ActionBars')
 
 --Lua functions
-local _G = _G
 local next, ipairs, pairs = next, ipairs, pairs
 local floor, tinsert = floor, tinsert
 --WoW API / Variables
@@ -14,8 +14,6 @@ local FONT_SIZE = 20 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
 local MIN_DURATION = 1.5 --the minimum duration to show cooldown text for
 
-local AB -- used to store the ActionBars module when we need it to set the buttons `.disableCountDownNumbers`
-
 function E:Cooldown_OnUpdate(elapsed)
 	if self.nextUpdate > 0 then
 		self.nextUpdate = self.nextUpdate - elapsed
@@ -27,7 +25,7 @@ function E:Cooldown_OnUpdate(elapsed)
 	else
 		local remain = self.duration - (GetTime() - self.start)
 		if remain > 0.05 then
-			if (not self.staticSize) and self.fontScale and ((self.fontScale * self:GetEffectiveScale() / _G.UIParent:GetScale()) < MIN_SCALE) then
+			if self.fontScale and (self.fontScale < MIN_SCALE) then
 				self.text:SetText('')
 				self.nextUpdate = 500
 			else
@@ -47,42 +45,36 @@ function E:Cooldown_OnUpdate(elapsed)
 	end
 end
 
-function E:Cooldown_OnSizeChanged(cd, parent, width, force)
+function E:Cooldown_OnSizeChanged(cd, width, force)
 	local fontScale = width and (floor(width + .5) / ICON_SIZE)
 
-	-- `CooldownFontSize` is used when we the cooldown button/icon does not use `SetSize` or `Size` for some reason
-	-- also it `staticSize` can be used to prevent the font size being based on scale, which can sometimes (when the icon is under 20px) hide the cd text
-	local staticSize = parent and parent.CooldownFontSize
-	if staticSize then fontScale = (parent.CooldownFontSize / FONT_SIZE) end
+	if fontScale and (fontScale == cd.fontScale) and (force ~= true) then return end
+	cd.fontScale = fontScale
 
-	if fontScale and (fontScale == cd.fontScale) and (force ~= 'override') then return end
-	cd.fontScale, cd.staticSize = fontScale, staticSize
-
-	if (not staticSize) and fontScale and (fontScale < MIN_SCALE) then
+	if fontScale and (fontScale < MIN_SCALE) then
 		cd:Hide()
 	else
 		local text = cd.text or cd.time
 		if text then
 			local useCustomFont = (cd.timerOptions and cd.timerOptions.fontOptions and cd.timerOptions.fontOptions.enable) and E.Libs.LSM:Fetch("font", cd.timerOptions.fontOptions.font)
 			if useCustomFont then
-				local customSize = (staticSize and cd.timerOptions.fontOptions.fontSize) or (fontScale * cd.timerOptions.fontOptions.fontSize)
-				text:FontTemplate(useCustomFont, customSize, cd.timerOptions.fontOptions.fontOutline)
-			elseif fontScale and parent and parent.CooldownSettings then
-				text:FontTemplate(parent.CooldownSettings.font, parent.CooldownSettings.fontSize or (fontScale * FONT_SIZE), parent.CooldownSettings.fontOutline)
+				text:FontTemplate(useCustomFont, (fontScale * cd.timerOptions.fontOptions.fontSize), cd.timerOptions.fontOptions.fontOutline)
 			elseif fontScale then
 				text:FontTemplate(nil, (fontScale * FONT_SIZE), 'OUTLINE')
 			end
 		end
 
-		if cd.enabled and (force ~= 'override') then
+		if cd.enabled and (force ~= true) then
 			self:Cooldown_ForceUpdate(cd)
 		end
 	end
 end
 
 function E:Cooldown_IsEnabled(cd)
-	if cd.alwaysEnabled then
+	if cd.forceEnabled then
 		return true
+	elseif cd.forceDisabled then
+		return false
 	elseif cd.timerOptions and (cd.timerOptions.reverseToggle ~= nil) then
 		return (E.db.cooldown.enable and not cd.timerOptions.reverseToggle) or (not E.db.cooldown.enable and cd.timerOptions.reverseToggle)
 	else
@@ -91,9 +83,9 @@ function E:Cooldown_IsEnabled(cd)
 end
 
 function E:Cooldown_ForceUpdate(cd)
-	cd.nextUpdate = 0
+	cd.nextUpdate = -1
 
-	if cd.staticSize or (cd.fontScale and (cd.fontScale >= MIN_SCALE)) then
+	if cd.fontScale and (cd.fontScale >= MIN_SCALE) then
 		cd:Show()
 	end
 end
@@ -164,9 +156,9 @@ function E:CreateCooldownTimer(parent)
 	E:ToggleBlizzardCooldownText(parent, timer)
 
 	-- keep an eye on the size so we can rescale the font if needed
-	self:Cooldown_OnSizeChanged(timer, parent, parent:GetSize())
-	parent:SetScript('OnSizeChanged', function(_, ...)
-		self:Cooldown_OnSizeChanged(timer, parent, ...)
+	self:Cooldown_OnSizeChanged(timer, parent:GetWidth())
+	parent:SetScript('OnSizeChanged', function(_, width)
+		self:Cooldown_OnSizeChanged(timer, width)
 	end)
 
 	-- keep this after Cooldown_OnSizeChanged
@@ -177,14 +169,14 @@ end
 
 E.RegisteredCooldowns = {}
 function E:OnSetCooldown(start, duration)
-	if (start > 0) and (duration > MIN_DURATION) then
+	if (not self.forceDisabled) and (start and duration) and (duration > MIN_DURATION) then
 		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
 		timer.duration = duration
 		timer.enabled = true
-		timer.nextUpdate = 0
+		timer.nextUpdate = -1
 
-		if timer.staticSize or (timer.fontScale and (timer.fontScale >= MIN_SCALE)) then
+		if timer.fontScale and (timer.fontScale >= MIN_SCALE) then
 			timer:Show()
 		end
 	elseif self.timer then
@@ -275,7 +267,7 @@ function E:UpdateCooldownOverride(module)
 
 			-- update font
 			if timer and CD then
-				self:Cooldown_OnSizeChanged(CD, cd, cd:GetSize(), 'override')
+				self:Cooldown_OnSizeChanged(CD, cd:GetWidth(), true)
 			else
 				text = CD.text or CD.time
 				if text then
@@ -290,15 +282,12 @@ function E:UpdateCooldownOverride(module)
 						if not customFont then
 							customFont = E.Libs.LSM:Fetch("font", E.db[cd.CooldownOverride].font)
 						end
-						if customFont then
-							-- cd.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
-							if cd.auraType and (cd.CooldownOverride == 'auras') then
-								customFontSize = E.db[cd.CooldownOverride][cd.auraType] and E.db[cd.CooldownOverride][cd.auraType].durationFontSize
-								if customFontSize then
-									text:FontTemplate(customFont, customFontSize, E.db[cd.CooldownOverride].fontOutline)
-								end
-							elseif (cd.CooldownOverride == 'unitframe') then
-								text:FontTemplate(customFont, E.db[cd.CooldownOverride].fontSize, E.db[cd.CooldownOverride].fontOutline)
+
+						-- cd.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
+						if customFont and cd.auraType and (cd.CooldownOverride == 'auras') then
+							customFontSize = E.db[cd.CooldownOverride][cd.auraType] and E.db[cd.CooldownOverride][cd.auraType].durationFontSize
+							if customFontSize then
+								text:FontTemplate(customFont, customFontSize, E.db[cd.CooldownOverride].fontOutline)
 							end
 						end
 					end
@@ -312,17 +301,8 @@ function E:UpdateCooldownOverride(module)
 				if (not blizzTextAB) and AB and AB.handledBars and (cd.CooldownOverride == 'actionbar') then
 					blizzTextAB = true
 				end
-			elseif cd.CooldownOverride and not (timer and CD) then
-				if cd.CooldownOverride == 'auras' then
-					cd.nextUpdate = -1
-				elseif cd.CooldownOverride == 'unitframe' then
-					cd.nextupdate = -1
-					if E.private.unitframe.enable then
-						-- cd.unit defined in `UF:UpdateAuraIconSettings`, it's safe to pass even if `nil`
-						E:GetModule('UnitFrames'):PostUpdateAura(cd.unit, cd)
-						E:ToggleBlizzardCooldownText(cd.cd, cd)
-					end
-				end
+			elseif cd.CooldownOverride == 'auras' and not (timer and CD) then
+				cd.nextUpdate = -1
 			end
 		end
 	end
@@ -359,11 +339,10 @@ function E:UpdateCooldownSettings(module)
 
 	-- okay update the other override settings if it was one of the core file calls
 	if module and (module == 'all') then
-		if not AB then AB = E:GetModule('ActionBars') end
 		E:UpdateCooldownSettings('bags')
 		E:UpdateCooldownSettings('nameplates')
 		E:UpdateCooldownSettings('actionbar')
-		E:UpdateCooldownSettings('unitframe') -- has special OnUpdate
+		E:UpdateCooldownSettings('unitframe')
 		E:UpdateCooldownSettings('auras') -- has special OnUpdate
 	end
 end

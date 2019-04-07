@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
-local S -- used to hold the skin module when we need it
+local TT = E:GetModule('Tooltip')
+local Skins = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
@@ -61,11 +61,6 @@ local UnitPVPName = UnitPVPName
 local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
-
-local FACTION_BAR_COLORS = FACTION_BAR_COLORS
-local LE_REALM_RELATION_COALESCED = LE_REALM_RELATION_COALESCED
-local LE_REALM_RELATION_VIRTUAL = LE_REALM_RELATION_VIRTUAL
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
@@ -188,7 +183,7 @@ function TT:RemoveTrashLines(tt)
 		local linetext = tiptext:GetText()
 
 		if(linetext == _G.PVP or linetext == _G.FACTION_ALLIANCE or linetext == _G.FACTION_HORDE) then
-			tiptext:SetText(nil)
+			tiptext:SetText('')
 			tiptext:Hide()
 		end
 	end
@@ -214,7 +209,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		local pvpName = UnitPVPName(unit)
 		local relationship = UnitRealmRelationship(unit);
 		if not localeClass or not class then return; end
-		color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
+		color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]
 
 		if self.db.playerTitles and pvpName then
 			name = pvpName
@@ -223,9 +218,9 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		if realm and realm ~= "" then
 			if(isShiftKeyDown) or self.db.alwaysShowRealm then
 				name = name.."-"..realm
-			elseif(relationship == LE_REALM_RELATION_COALESCED) then
+			elseif(relationship == _G.LE_REALM_RELATION_COALESCED) then
 				name = name.._G.FOREIGN_SERVER_LABEL
-			elseif(relationship == LE_REALM_RELATION_VIRTUAL) then
+			elseif(relationship == _G.LE_REALM_RELATION_VIRTUAL) then
 				name = name.._G.INTERACTIVE_SERVER_LABEL
 			end
 		end
@@ -270,7 +265,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 				if role == "HEALER" then
 					role, r, g, b = L["Healer"], 0, 1, .59
 				elseif role == "TANK" then
-					role, r, g, b = L["Tank"], .16, .31, .61
+					role, r, g, b = TANK, .16, .31, .61
 				elseif role == "DAMAGER" then
 					role, r, g, b = L["DPS"], .77, .12, .24
 				end
@@ -288,7 +283,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 					color = E.db.tooltip.factionColors[unitReaction]
 				end
 			else
-				color = FACTION_BAR_COLORS[unitReaction]
+				color = _G.FACTION_BAR_COLORS[unitReaction]
 			end
 		end
 
@@ -327,7 +322,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		end
 	end
 
-	return color or RAID_CLASS_COLORS.PRIEST
+	return color or _G.RAID_CLASS_COLORS.PRIEST
 end
 
 local inspectGUIDCache = {}
@@ -405,9 +400,7 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
 			inspectGUIDCache[unitGUID].time = nil
 			inspectGUIDCache[unitGUID].specName = nil
 			inspectGUIDCache[unitGUID].itemLevel = nil
-			return E:Delay(0.33, function()
-				self:AddInspectInfo(tooltip, unit, numTries + 1, r, g, b)
-			end)
+			return E:Delay(0.33, TT.AddInspectInfo, TT, tooltip, unit, numTries + 1, r, g, b)
 		end
 
 		tooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, r, g, b)
@@ -489,9 +482,9 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			local targetColor
 			if(UnitIsPlayer(unitTarget) and not UnitHasVehicleUI(unitTarget)) then
 				local _, class = UnitClass(unitTarget)
-				targetColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
+				targetColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]
 			else
-				targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[UnitReaction(unitTarget, "player")] or FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
+				targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[UnitReaction(unitTarget, "player")] or _G.FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
 			end
 
 			tt:AddDoubleLine(format("%s:", _G.TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
@@ -502,8 +495,8 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				local groupUnit = (IsInRaid() and "raid"..i or "party"..i);
 				if (UnitIsUnit(groupUnit.."target", unit)) and (not UnitIsUnit(groupUnit,"player")) then
 					local _, class = UnitClass(groupUnit);
-					local classColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-					if not classColor then classColor = RAID_CLASS_COLORS.PRIEST end
+					local classColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]
+					if not classColor then classColor = _G.RAID_CLASS_COLORS.PRIEST end
 					tinsert(targetList, format("|c%s%s|r", classColor.colorStr, UnitName(groupUnit)))
 				end
 			end
@@ -623,8 +616,7 @@ function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
 			_, max = tt.pbBar:GetMinMaxValues()
 		end
 
-		if not S then S = E:GetModule('Skins') end
-		S:StatusBarColorGradient(tt.pbBar, cur, max)
+		Skins:StatusBarColorGradient(tt.pbBar, cur, max)
 	end
 end
 
@@ -655,7 +647,7 @@ end
 function TT:CheckBackdropColor(tt)
 	if (not tt) or tt:IsForbidden() then return end
 
-	local r, g, b = tt:GetBackdropColor()
+	local r, g, b = E:GetBackdropColor(tt)
 	if r and g and b then
 		r, g, b = E:Round(r, 1), E:Round(g, 1), E:Round(b, 1)
 
@@ -670,7 +662,7 @@ function TT:SetStyle(tt)
 	if not tt or tt:IsForbidden() then return end
 	tt:SetTemplate("Transparent", nil, true) --ignore updates
 
-	local r, g, b = tt:GetBackdropColor()
+	local r, g, b = E:GetBackdropColor(tt)
 	tt:SetBackdropColor(r, g, b, self.db.colorAlpha)
 end
 
@@ -701,8 +693,8 @@ function TT:SetUnitAura(tt, unit, index, filter)
 			if caster then
 				local name = UnitName(caster)
 				local _, class = UnitClass(caster)
-				local color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-				if not color then color = RAID_CLASS_COLORS.PRIEST end
+				local color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]
+				if not color then color = _G.RAID_CLASS_COLORS.PRIEST end
 				tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id), format("|c%s%s|r", color.colorStr, name))
 			else
 				tt:AddLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id))
@@ -822,7 +814,7 @@ function TT:Initialize()
 	self:SecureHook(_G.BNToastFrame, "SetPoint", "RepositionBNET")
 
 	if E.private.tooltip.enable ~= true then return end
-	E.Tooltip = TT
+	self.Initialized = true
 
 	GameTooltip.StatusBar = GameTooltipStatusBar
 	GameTooltip.StatusBar:Height(self.db.healthBar.height)

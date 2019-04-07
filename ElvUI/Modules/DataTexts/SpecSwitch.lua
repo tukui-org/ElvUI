@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
+local _G = _G
 local format, strjoin = format, strjoin
 --WoW API / Variables
 local GetLootSpecialization = GetLootSpecialization
@@ -18,13 +19,10 @@ local LOOT = LOOT
 local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: PlayerTalentFrame, LoadAddOn
-
 local lastPanel, active
 local displayString = '';
-local activeString = strjoin("", "|cff00FF00" , ACTIVE_PETS, "|r")
-local inactiveString = strjoin("", "|cffFF0000", FACTION_INACTIVE, "|r")
+local activeString = strjoin("", "|cff00FF00" , _G.ACTIVE_PETS, "|r")
+local inactiveString = strjoin("", "|cffFF0000", _G.FACTION_INACTIVE, "|r")
 local menuFrame = CreateFrame("Frame", "LootSpecializationDatatextClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{ text = SELECT_LOOT_SPECIALIZATION, isTitle = true, notCheckable = true },
@@ -35,7 +33,7 @@ local menuList = {
 	{ notCheckable = true }
 }
 local specList = {
-	{ text = SPECIALIZATION, isTitle = true, notCheckable = true },
+	{ text = _G.SPECIALIZATION, isTitle = true, notCheckable = true },
 	{ notCheckable = true },
 	{ notCheckable = true },
 	{ notCheckable = true },
@@ -113,14 +111,14 @@ local function OnClick(self, button)
 
 	if button == "LeftButton" then
 		DT.tooltip:Hide()
-		if not PlayerTalentFrame then
-			LoadAddOn("Blizzard_TalentUI")
+		if not _G.PlayerTalentFrame then
+			_G.LoadAddOn("Blizzard_TalentUI")
 		end
 		if IsShiftKeyDown() then
-			if not PlayerTalentFrame:IsShown() then
-				ShowUIPanel(PlayerTalentFrame)
+			if not _G.PlayerTalentFrame:IsShown() then
+				ShowUIPanel(_G.PlayerTalentFrame)
 			else
-				HideUIPanel(PlayerTalentFrame)
+				HideUIPanel(_G.PlayerTalentFrame)
 			end
 		else
 			for index = 1, 4 do

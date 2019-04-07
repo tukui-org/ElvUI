@@ -829,6 +829,9 @@ end
 local function ActivateSlider(widget, event, value)
 	local option = widget:GetUserData("option")
 	local min, max, step = option.min or (not option.softMin and 0 or nil), option.max or (not option.softMax and 100 or nil), option.step
+	if type(min) == 'function' then min = min() end
+	if type(max) == 'function' then max = max() end
+
 	if min then
 		if step then
 			value = math_floor((value - min) / step + 0.5) * step + min
@@ -1167,7 +1170,8 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 						end
 					end
 				elseif v.type == "range" then
-					control = CreateControl(v.dialogControl or v.control, "Slider")
+					local sliderElvUI = GetOptionsMemberValue("sliderElvUI",v, options, path, appName)
+					control = CreateControl(v.dialogControl or v.control, sliderElvUI and "Slider-ElvUI" or "Slider")
 					control:SetLabel(name)
 					control:SetSliderValues(v.softMin or v.min or 0, v.softMax or v.max or 100, v.bigStep or v.step or 0)
 					control:SetIsPercent(v.isPercent)

@@ -1,8 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Global variables that we don't need to cache, list them here for mikk's FindGlobals script
--- GLOBALS: CreateFrame
+--WoW API / Variables
+local CreateFrame = CreateFrame
 
 function UF:Construct_InfoPanel(frame)
 	local infoPanel = CreateFrame("Frame", nil, frame)

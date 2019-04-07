@@ -9,8 +9,6 @@ local floor, max = floor, max
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUF_Player
 
 local _, ns = ...
@@ -141,8 +139,7 @@ function UF:Configure_ClassBar(frame, cur)
 					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
 					local maxComboPoints = ((frame.MAX_CLASS_BAR == 10 and 10) or (frame.MAX_CLASS_BAR > 5 and 6 or 5))
 
-					local r, g, b = ElvUF:ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3)
-					bars[i]:SetStatusBarColor(r, g, b)
+					bars[i]:SetStatusBarColor(ElvUF:ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3))
 				end
 
 				if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
@@ -318,7 +315,7 @@ function UF:Construct_ClassBar(frame)
 		bars[i]:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 		bars[i].backdrop:SetParent(bars)
 
-		bars[i].bg = bars:CreateTexture(nil, 'OVERLAY')
+		bars[i].bg = bars:CreateTexture(nil, 'BORDER')
 		bars[i].bg:SetAllPoints(bars[i])
 		bars[i].bg:SetTexture(E.media.blankTex)
 	end
@@ -360,10 +357,10 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged)
 		UF:Configure_ClassBar(frame, current)
 	end
 
-	local r, g, b
 	for i=1, #self do
-		r, g, b = self[i]:GetStatusBarColor()
-		self[i].bg:SetVertexColor(r, g, b, 0.15)
+		local r, g, b = self[i]:GetStatusBarColor()
+		self[i].bg:SetVertexColor(r * .35, g * .35, b * .35)
+
 		if maxBars and (i <= maxBars) then
 			self[i].bg:Show()
 		else
@@ -398,7 +395,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i].bg = runes[i]:CreateTexture(nil, 'BORDER')
 		runes[i].bg:SetAllPoints()
 		runes[i].bg:SetTexture(E.media.blankTex)
-		runes[i].bg.multiplier = 0.3
+		runes[i].bg.multiplier = 0.35
 	end
 
 	runes.PostUpdate = PostUpdateRunes
@@ -437,7 +434,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.bg = additionalPower:CreateTexture(nil, "BORDER")
 	additionalPower.bg:SetAllPoints(additionalPower)
 	additionalPower.bg:SetTexture(E.media.blankTex)
-	additionalPower.bg.multiplier = 0.3
+	additionalPower.bg.multiplier = 0.35
 
 	additionalPower.text = additionalPower:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(additionalPower.text)

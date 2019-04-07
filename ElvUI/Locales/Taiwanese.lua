@@ -7,7 +7,7 @@ if not L then return end
 L["INCOMPATIBLE_ADDON"] = "插件 %s 與 ElvUI 的 %s 模組不相容。請停用不相容的插件，或停用相關的模組."
 
 --*_MSG locales
-L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"
+L["LOGIN_MSG"] = "歡迎使用 %sElvUI|r %s%s 版本|r, 輸入 /ec 可打開遊戲內設置介面. 如果你需要技術協助，可訪問我們的網址 https://www.tukui.org 或是加入我們的 Discord 伺服器: https://discord.gg/xFWcfgE"
 
 --ActionBars
 L["Binding"] = "綁定"
@@ -45,7 +45,7 @@ L["Temporary Move"] = "移動背包"
 L["Toggle Bags"] = "開啟/關閉背包"
 L["Vendor Grays"] = "出售灰色物品"
 L["Vendor / Delete Grays"] = "出售/摧毁灰色物品"
-L["Vendoring Grays"] = true
+L["Vendoring Grays"] = "正在出售灰色物品"
 
 --Chat
 L["AFK"] = "暫離" --Also used in datatexts and tooltip
@@ -67,7 +67,7 @@ L["whispers"] = "密語"
 L["yells"] = "大喊"
 
 --DataBars
-L["Azerite Bar"] = true
+L["Azerite Bar"] = "神兵條"
 L["Current Level:"] = "目前等級"
 L["Honor Remaining:"] = "剩餘:"
 L["Honor XP:"] = "榮譽:"
@@ -136,7 +136,7 @@ L["Unhittable:"] = "未命中:"
 L["Waist"] = "腰部"
 L["World Protocol:"] = "世界協議:"
 L["Wrist"] = "護腕"
-L["WoW Token:"] = true
+L["WoW Token:"] = "魔獸代幣:"
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFF左鍵:|r 變更目前職業專精"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFF右鍵k:|r 變更目前拾取專精"
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + 左鍵:|r 顯示天賦專精介面"
@@ -157,7 +157,7 @@ L["Request was denied by user."] = "請求被對方拒絕."
 L["Your profile was successfully recieved by the player."] = "你的設定檔已被其他玩家成功接收."
 
 --Install
-L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = true
+L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = "調節適合你螢幕的介面縮放比例，按下自動調節按鍵可自動設置介面縮放比例。"
 L["Auras"] = "光環"
 L["Caster DPS"] = "法系輸出"
 L["Chat Set"] = "對話设置"
@@ -186,12 +186,12 @@ L["Nudge"] = "微調"
 L["Please click the button below so you can setup variables and ReloadUI."] = "請按下方按鈕設定變數並重載介面."
 L["Please click the button below to setup your CVars."] = "請按下方按鈕設定參數."
 L["Please press the continue button to go onto the next step."] = "請按「繼續」按鈕，執行下一個步驟."
-L["Preview"] = true
+L["Preview"] = "預覽"
 L["Setup Chat"] = "設定對話視窗"
 L["Setup CVars"] = "設定參數"
 L["Skip Process"] = "略過"
 L["Sticky Frames"] = "框架依附"
-L["Tank / Physical DPS"] = true
+L["Tank / Physical DPS"] = "坦克 / 物理輸出"
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = "對話視窗與WOW 原始對話視窗的操作方式相同, 你可以拖拉、移動分頁或重新命名分頁. 請按下方按鈕以設定對話視窗."
 L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = "若要進入內建設定選單, 請輸入/ec, 或者按一下小地圖旁的「C」按鈕.若要略過安裝程序, 請按下方按鈕."
 L["Theme Set"] = "主題設定"
@@ -208,7 +208,7 @@ L["You can now choose what layout you wish to use based on your combat role."] =
 --Misc
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% 以上 |cff%02x%02x%02x%s|r]"
 L["Bars"] = "條" --Also used in UnitFrames
-L["Calendar"] = "日曆"
+L["Calendar"] = "行事曆"
 L["Can't Roll"] = "無法需求此裝備"
 L["Disband Group"] = "解散隊伍"
 L["Empty Slot"] = "空格"
@@ -219,10 +219,9 @@ L["Left Click:"] = "滑鼠左鍵：" --layout\layout.lua
 L["Raid Menu"] = "團隊選單"
 L["Remaining:"] = "剩餘:"
 L["Rested:"] = "休息:"
-L["Right Click:"] = true
 L["Toggle Chat Frame"] = "開關對話框架" --layout\layout.lua
 L["Toggle Configuration"] = "開啟/關閉設定" --layout\layout.lua
-L["AP:"] = "神器能量:" -- Artifact Power
+L["AP:"] = "神兵之力:" -- Artifact Power
 L["XP:"] = "經驗:"
 L["You don't have permission to mark targets."] = "你沒有標記目標的權限."
 L["Voice Overlay"] = "語音浮層"
@@ -269,7 +268,7 @@ L["Player Buffs"] = "玩家增益"
 L["Player Castbar"] = "玩家施法條"
 L["Player Debuffs"] = "玩家減益"
 L["Player Frame"] = "玩家框架" --Also used in UnitFrames
-L["Player Nameplate"] = "玩家姓名版"
+L["Player NamePlate"] = "玩家姓名版"
 L["Player Powerbar"] = "玩家能量條"
 L["Raid Frames"] = "團隊框架"
 L["Raid Pet Frames"] = "團隊寵物框架"
@@ -345,27 +344,26 @@ L["Do you swear not to post in technical support about something not working wit
 L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI 以過期超過5個版本. 你可以在 www.tukui.org 下載到最新的版本. 購買會員可以使用 Tukui 客戶端自動下載最新的 ElvUI."
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI 以過期. 你可以在 www.tukui.org 下載到最新的版本. 購買會員可以使用 Tukui 客戶端自動下載最新的 ElvUI."
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI 需要進行資料庫優化, 請稍待."
-L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = true
+L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = "ElvUI 在遊戲運行時被更新了. 請重開遊戲以確保文件的完整更新."
 L["Error resetting UnitFrame."] = "重置單位框架錯誤"
-L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = true
+L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = "將你的滑鼠游標放在任意快捷鍵或是法術書上來完成綁定。按下 ESC 可以清除當前快捷鍵的綁定."
 L["I Swear"] = "我承諾"
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "看起來你其中的一個插件使得 Blizzard_CompactRaidFrames 停用了. 這會造成錯誤與問題. 插件現在會重新被啟用."
 L["No, Revert Changes!"] = "不, 回復修改!"
 L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."] = "喔 拜託,你不能同時使用 Elvui 和 Tukui， 請選擇一個停用."
 L["One or more of the changes you have made require a ReloadUI."] = "已變更一或多個設定, 需重載介面."
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "你所做的改動可能會影響到使用這個插件的所有角色, 你需要重新加載介面才能使改動生效."
-L["Preview Changes"] = true
+L["Preview Changes"] = "預覽修改"
 L["Save"] = "儲存"
-L["Suppress In This Session"] = true
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "你嘗試導入的設定檔已存在. 選擇一個新名稱或是允許覆蓋原有設定檔"
-L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = true
-L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."] = true
+L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = "介面縮放比例已被更改, 如果您想預覽這個更改, 請按預覽按鈕. 同時建議您為了最好的顯示效果重載用戶介面."
+L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."] = "這個 ElvUI 版本中包含了我們處理介面縮放比例的方法改動. 你可以查看更新日誌來獲取更多訊息. 為了使用新的顯示系統, 我們需要你重新設置你的介面縮放比例. 看起來你之前設定的介面縮放比例是 %s.\n\n你可以直接設定為這個值, 或者你也可以使用 '自動縮放' 函式來找到最適合你螢幕解析度的設定.\n\n你還可以在 ElvUI設定 的 一般設定 之中來調節它. 理論上現在ElvUI可以在任何介面縮放比例之下保持完美的像素顯示, 不過還是有少數遊戲內選項導致的問題."
 L["Type /hellokitty to revert to old settings."] = "輸入 /hellokitty 來回復舊設定"
-L["Use CVar Value"] = true
+L["Use CVar Value"] = "使用 CVar 設定值"
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "使用治療者佈局時建議你下載 Clique 插件, 以擁有點擊血條治療的功能"
 L["Yes, Keep Changes!"] = "是的, 保留變更!"
 L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."] = "你選擇了細邊框主題選項. 你必須完成安裝程序來移除任何圖像錯誤"
-L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."] = "你改變了介面縮放比例, 然而ElvUI的自動縮放選項是開啟的. 點擊接受以關閉ElvUI的自動縮放."
+L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."] = "你手動改變了介面縮放比例, 然而你開啟了ElvUI的自動縮放. 點擊接受以關閉ElvUI的自動縮放."
 L["You have imported settings which may require a UI reload to take effect. Reload now?"] = "你導入的設定可能需要重新載入UI才能生效. 現在重新載入嗎?"
 L["You must purchase a bank slot first!"] = "你必需先購買一個銀行背包欄位!"
 
@@ -392,3 +390,20 @@ L["You can use the /resetui command to reset all of your movers. You can also us
 L["Dead"] = "死亡"
 L["Ghost"] = "鬼魂"
 L["Offline"] = "離線"
+
+--Option Enable..
+L.RED_ENABLE = '|cFFff3333啟用|r'
+L.GREEN_ENABLE = '|cFF33ff33啟用|r'
+
+-- Install
+L["Auras Set"] = true
+L["Aura Bars & Icons"] = true
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
+-- Static Popups
+L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = true
+L["Continue"] = true
+-- DataText
+L["(Modifer Click) Collect Garbage"] = true
+-- Misc
+L["Item Level:"] = true
+L["Item level: %.2f"] = true

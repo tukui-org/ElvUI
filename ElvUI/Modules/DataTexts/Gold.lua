@@ -2,8 +2,10 @@ local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB,
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
+local _G = _G
 local wipe = wipe
 local pairs = pairs
+local ipairs = ipairs
 local strjoin = strjoin
 local tinsert = tinsert
 --WoW API / Variables
@@ -14,9 +16,7 @@ local IsLoggedIn = IsLoggedIn
 local IsShiftKeyDown = IsShiftKeyDown
 local C_WowTokenPublic = C_WowTokenPublic
 local C_Timer_NewTicker = C_Timer.NewTicker
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ElvDB, CUSTOM_CLASS_COLORS, ToggleAllBags
+-- GLOBALS: ElvDB
 
 local Ticker
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
@@ -70,7 +70,7 @@ local function Click(self, btn)
 			DT.tooltip:Hide();
 		end
 	else
-		ToggleAllBags()
+		_G.ToggleAllBags()
 	end
 end
 
@@ -97,7 +97,7 @@ local function OnEnter(self)
 	for k,_ in pairs(ElvDB.gold[E.myrealm]) do
 		if ElvDB.gold[E.myrealm][k] then
 			local class = ElvDB.class[E.myrealm][k] or "PRIEST"
-			local color = class and (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
+			local color = class and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class])
 			tinsert(myGold,
 				{
 					name = k,

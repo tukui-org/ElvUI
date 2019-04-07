@@ -1,4 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local AB = E:GetModule('ActionBars')
+local UF = E:GetModule('UnitFrames')
+local Misc = E:GetModule('Misc')
+local Bags = E:GetModule('Bags')
+local Skins = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
@@ -22,7 +27,6 @@ local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
 local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
-local Skins
 
 E.PopupDialogs = {}
 E.StaticPopup_DisplayedFrames = {}
@@ -148,8 +152,8 @@ E.PopupDialogs.CONFIRM_LOSE_BINDING_CHANGES = {
 	button1 = OKAY,
 	button2 = CANCEL,
 	OnAccept = function()
-		E:GetModule('ActionBars'):ChangeBindingProfile()
-		E:GetModule('ActionBars').bindingsChanged = nil;
+		AB:ChangeBindingProfile()
+		AB.bindingsChanged = nil;
 	end,
 	OnCancel = function()
 		local isChecked = ElvUIBindPopupWindowCheckButton:GetChecked()
@@ -203,15 +207,10 @@ E.PopupDialogs.UISCALE_CHANGE = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	button3 = L["Preview Changes"],
-	OnAlt = function () E:PixelScaleChanged('UISCALE_CHANGE') end,
+	OnAlt = function() E:PixelScaleChanged('UISCALE_CHANGE') end,
 	timeout = 0,
 	whileDead = 1,
-	hideOnEscape = false,
-	hasCheckButton = true,
-	checkButtonText = L["Suppress In This Session"],
-	checkButtonOnClick = function(self)
-		E.suppressScalePopup = self:GetChecked()
-	end,
+	hideOnEscape = false
 }
 
 E.PopupDialogs.PIXELPERFECT_CHANGED = {
@@ -278,7 +277,6 @@ E.PopupDialogs.RESET_UF_UNIT = {
 	button2 = CANCEL,
 	OnAccept = function(self)
 		if self.data and self.data.unit then
-			local UF = E:GetModule('UnitFrames');
 			UF:ResetUnitSettings(self.data.unit);
 			if self.data.mover then
 				E:ResetMovers(self.data.mover);
@@ -348,8 +346,8 @@ E.PopupDialogs.KEYBIND_MODE = {
 	text = L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."],
 	button1 = L["Save"],
 	button2 = L["Discard"],
-	OnAccept = function() E:GetModule('ActionBars'):DeactivateBindMode(true) end,
-	OnCancel = function() E:GetModule('ActionBars'):DeactivateBindMode(false) end,
+	OnAccept = function() AB:DeactivateBindMode(true) end,
+	OnCancel = function() AB:DeactivateBindMode(false) end,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
@@ -359,7 +357,7 @@ E.PopupDialogs.DELETE_GRAYS = {
 	text = format("|cffff0000%s|r", L["Delete gray items?"]),
 	button1 = YES,
 	button2 = NO,
-	OnAccept = function() E:GetModule('Bags'):VendorGrays(true) end,
+	OnAccept = function() Bags:VendorGrays(true) end,
 	OnShow = function(self)
 		MoneyFrame_Update(self.moneyFrame, E.PopupDialogs.DELETE_GRAYS.Money);
 	end,
@@ -456,7 +454,7 @@ E.PopupDialogs.DISBAND_RAID = {
 	text = L["Are you sure you want to disband the group?"],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = function() E:GetModule('Misc'):DisbandRaidGroup() end,
+	OnAccept = function() Misc:DisbandRaidGroup() end,
 	timeout = 0,
 	whileDead = 1,
 }
@@ -1351,7 +1349,6 @@ end
 function E:Contruct_StaticPopups()
 	E.StaticPopupFrames = {}
 
-	Skins = E:GetModule('Skins')
 	for index = 1, MAX_STATIC_POPUPS do
 		E.StaticPopupFrames[index] = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'StaticPopupTemplate')
 		E.StaticPopupFrames[index]:SetID(index)

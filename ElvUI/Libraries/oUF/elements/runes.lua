@@ -19,7 +19,8 @@ A default texture will be applied if the sub-widgets are StatusBars and don't ha
 
 .colorSpec - Use `self.colors.runes[specID]` to color the bar based on player's spec. `specID` is defined by the return
              value of [GetSpecialization](http://wowprogramming.com/docs/api/GetSpecialization.html) (boolean)
-.sortOrder - Sorting order (string?)['asc', 'desc']
+.sortOrder - Sorting order. Sorts by the remaining cooldown time, 'asc' - from the least cooldown time remaining (fully
+             charged) to the most (fully depleted), 'desc' - the opposite (string?)['asc', 'desc']
 
 ## Sub-Widgets Options
 
@@ -79,25 +80,44 @@ local function descSort(runeAID, runeBID)
 	end
 end
 
-local function UpdateColor(element, runeID)
+local function UpdateColor(self, event)
+	local element = self.Runes
+
 	local spec = GetSpecialization() or 0
 
 	local color
 	if(spec ~= 0 and element.colorSpec) then
-		color = element.__owner.colors.runes[spec]
+		color = self.colors.runes[spec]
 	else
-		color = element.__owner.colors.power.RUNES
+		color = self.colors.power.RUNES
 	end
 
 	local r, g, b = color[1], color[2], color[3]
 
-	element[runeID]:SetStatusBarColor(r, g, b)
+	for index = 1, #element do
+		element[index]:SetStatusBarColor(r, g, b)
 
-	local bg = element[runeID].bg
-	if(bg) then
-		local mu = bg.multiplier or 1
-		bg:SetVertexColor(r * mu, g * mu, b * mu)
+		local bg = element[index].bg
+		if(bg) then
+			local mu = bg.multiplier or 1
+			bg:SetVertexColor(r * mu, g * mu, b * mu)
+		end
 	end
+
+	if(element.PostUpdateColor) then
+		element:PostUpdateColor(r, g, b)
+	end
+end
+
+local function ColorPath(self, ...)
+	--[[ Override: Runes.UpdateColor(self, event, ...)
+	Used to completely override the internal function for updating the widgets' colors.
+
+	* self  - the parent object
+	* event - the event triggering the update (string)
+	* ...   - the arguments accompanying the event
+	--]]
+	(self.Runes.UpdateColor or UpdateColor) (self, ...)
 end
 
 local function Update(self, event)
@@ -149,21 +169,7 @@ local function Update(self, event)
 	end
 end
 
-local function Path(self, event, ...)
-	local element = self.Runes
-	if(event ~= 'RUNE_POWER_UPDATE') then
-		--[[ Override: Runes:UpdateColor(runeID)
-		Used to completely override the internal function for updating the widgets' colors.
-
-		* self   - the Runes element
-		* runeID - the index of the updated rune (number)
-		--]]
-		local UpdateColorMethod = element.UpdateColor or UpdateColor
-		for index = 1, #element do
-			UpdateColorMethod(element, index)
-		end
-	end
-
+local function Path(self, ...)
 	--[[ Override: Runes.Override(self, event, ...)
 	Used to completely override the internal update function.
 
@@ -171,11 +177,12 @@ local function Path(self, event, ...)
 	* event - the event triggering the update (string)
 	* ...   - the arguments accompanying the event
 	--]]
-	return (element.Override or Update) (self, event, ...)
+	(self.Runes.Override or Update) (self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate')
+	Path(element.__owner, 'ForceUpdate')
+	ColorPath(element.__owner, 'ForceUpdate')
 end
 
 local function Enable(self, unit)
@@ -191,7 +198,7 @@ local function Enable(self, unit)
 			end
 		end
 
-		self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', Path)
+		self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
 		self:RegisterEvent('RUNE_POWER_UPDATE', Path, true)
 
 		return true
@@ -205,7 +212,7 @@ local function Disable(self)
 			element[i]:Hide()
 		end
 
-		self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', Path)
+		self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
 		self:UnregisterEvent('RUNE_POWER_UPDATE', Path)
 	end
 end

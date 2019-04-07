@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local LBG = E.Libs.ButtonGlow
 local M = E:GetModule('Misc')
+local LBG = E.Libs.ButtonGlow
 
 --Lua functions
 local _G = _G

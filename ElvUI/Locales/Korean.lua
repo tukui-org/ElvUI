@@ -219,7 +219,6 @@ L["Left Click:"] = "왼 클릭 :"
 L["Raid Menu"] = "공대 도구"
 L["Remaining:"] = "다음 레벨까지: "
 L["Rested:"] = "휴식 경험치:"
-L["Right Click:"] = true
 L["Toggle Chat Frame"] = "패널 표시 전환"
 L["Toggle Configuration"] = "ElvUI 설정창 열기"
 L["AP:"] = "유물력" -- Artifact Power
@@ -269,7 +268,7 @@ L["Player Buffs"] = "플레이어 버프"
 L["Player Castbar"] = "플레이어 시전바"
 L["Player Debuffs"] = "플레이어 디버프"
 L["Player Frame"] = "플레이어 프레임"
-L["Player Nameplate"] = "플레이어 이룜표"
+L["Player NamePlate"] = "플레이어 이룜표"
 L["Player Powerbar"] = "플레이어 자원바"
 L["Raid Frames"] = "레이드 프레임"
 L["Raid Pet Frames"] = "레이드 소환수 프레임"
@@ -356,7 +355,6 @@ L["One or more of the changes you have made require a ReloadUI."] = "변경 사�
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "이 설정은 모든 캐릭터에게 동일하게 적용됩니다.|n|n설정 적용을 위해 리로드 하시겠습니까?"
 L["Preview Changes"] = true
 L["Save"] = "저장"
-L["Suppress In This Session"] = true
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "불러오려는 프로필이 이미 존재합니다. 새로운 이름을 지정하시거나 기존 프로필에 덮어쓸지를 선택하십시오."
 L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = true
 L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."] = true
@@ -392,3 +390,20 @@ L["You can use the /resetui command to reset all of your movers. You can also us
 L["Dead"] = "죽음"
 L["Ghost"] = "유령"
 L["Offline"] = "오프라인"
+
+--Option Enable..
+L.RED_ENABLE = '|cFFff3333사용|r'
+L.GREEN_ENABLE = '|cFF33ff33사용|r'
+
+-- Install
+L["Auras Set"] = true
+L["Aura Bars & Icons"] = true
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
+-- Static Popups
+L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = true
+L["Continue"] = true
+-- DataText
+L["(Modifer Click) Collect Garbage"] = true
+-- Misc
+L["Item Level:"] = true
+L["Item level: %.2f"] = true

@@ -1,15 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
---Cache global variables
 --Lua functions
 local _G = _G
-local pairs = pairs
-local floor = math.floor
+local pairs, tonumber = pairs, tonumber
+local ceil, floor = math.ceil, math.floor
 local match = string.match
 --WoW API / Variables
 local UnitName = UnitName
 local IsInInstance = IsInInstance
+local GetLocale = GetLocale
 local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
@@ -29,15 +29,17 @@ local QuestTypesLocalized = {
 		["kill"] = "KILL",
 		["defeat"] = "KILL",
 		["speak"] = "CHAT",
+		["ask"] = "CHAT",
 	},
 	["deDE"] = {
 		["besiegen"] = "KILL",
 		["besiegt"] = "KILL",
 		["getötet"] = "KILL",
-		["sprecht"] = "CHAT",
 		["töten"] = "KILL",
 		["tötet"] = "KILL",
 		["zerstört"] = "KILL",
+		["befragt"] = "CHAT",
+		["sprecht"] = "CHAT",
 
 	},
 	["esMX"] = {
@@ -69,9 +71,11 @@ local QuestTypesLocalized = {
 		["поговорит"] = "CHAT",
 	},
 	["zhCN"] = {
-		["slain"] = "KILL",
-		["destroyed"] = "KILL",
-		["speak"] = "CHAT",
+		["消灭"] = "KILL",
+		["摧毁"] = "KILL",
+		["获得"] = "KILL",
+		["击败"] = "KILL",
+		["交谈"] = "CHAT",
 	},
 	["zhTW"] = {
 		["slain"] = "KILL",
@@ -128,6 +132,11 @@ local function GetQuests(unitID)
 			local x, y = match(progressText, '(%d+)/(%d+)')
 			if x and y then
 				QuestList[index].objectiveCount = floor(y - x)
+			else
+				local progress = tonumber(match(progressText, '([%d%.]+)%%')) -- contains % in the progressText
+				if progress and progress <= 100 then
+					QuestList[index].objectiveCount = ceil(100 - progress)
+				end
 			end
 
 			local QuestLogIndex, itemTexture, _

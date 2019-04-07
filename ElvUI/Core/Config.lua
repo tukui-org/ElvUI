@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
@@ -250,8 +251,6 @@ function E:CreateMoverPopup()
 	f:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 	f:CreateShadow(5)
 	f:Hide()
-
-	local S = E:GetModule('Skins')
 
 	local header = CreateFrame('Button', nil, f)
 	header:SetTemplate(nil, true)

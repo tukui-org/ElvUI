@@ -1,8 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
-local pairs = pairs
-local unpack = unpack
+-- Cache global variables
+-- Lua functions
+local pairs, unpack = pairs, unpack
+-- WoW API / Variables
 local CreateFrame = CreateFrame
 
 function NP:Construct_QuestIcons(nameplate)
@@ -51,7 +53,7 @@ function NP:Update_QuestIcons(nameplate)
 end
 
 function NP:Construct_ClassificationIndicator(nameplate)
-	local ClassificationIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
+	local ClassificationIndicator = nameplate:CreateTexture(nameplate:GetDebugName()..'ClassificationIndicator', 'OVERLAY')
 
 	return ClassificationIndicator
 end
@@ -101,8 +103,10 @@ end
 function NP:Update_TargetIndicator(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if nameplate.frameType == 'PLAYER' and nameplate:IsElementEnabled('TargetIndicator') then
-		nameplate:DisableElement('TargetIndicator')
+	if nameplate.frameType == 'PLAYER' then
+		if nameplate:IsElementEnabled('TargetIndicator') then
+			nameplate:DisableElement('TargetIndicator')
+		end
 		return
 	end
 
@@ -113,7 +117,7 @@ function NP:Update_TargetIndicator(nameplate)
 	nameplate.TargetIndicator.style = NP.db.units.TARGET.glowStyle
 	nameplate.TargetIndicator.lowHealthThreshold = NP.db.lowHealthThreshold
 
-	if NP.db.targetGlow ~= 'none' then
+	if nameplate.TargetIndicator.style ~= 'none' then
 		local GlowStyle, Color = NP.db.units.TARGET.glowStyle, NP.db.colors.glowColor
 
 		if not db.health.enable and (GlowStyle ~= 'style2' and GlowStyle ~= 'style6' and GlowStyle ~= 'style8') then
@@ -138,7 +142,8 @@ function NP:Update_TargetIndicator(nameplate)
 		if nameplate.TargetIndicator.Shadow and (GlowStyle == 'style1' or GlowStyle == 'style5' or GlowStyle == 'style7') then
 			nameplate.TargetIndicator.Shadow:SetOutside(nameplate.Health, E:Scale(E.PixelMode and 6 or 8), E:Scale(E.PixelMode and 6 or 8))
 
-			nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b, Color.a)
+			nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b)
+			nameplate.TargetIndicator.Shadow:SetAlpha(Color.a)
 		end
 
 		if nameplate.TargetIndicator.Spark and (GlowStyle == 'style2' or GlowStyle == 'style6' or GlowStyle == 'style8') then
@@ -155,7 +160,11 @@ end
 
 function NP:Construct_Highlight(nameplate)
 	local Highlight = CreateFrame('Frame', nameplate:GetDebugName()..'Highlight', nameplate)
-	Highlight.texture = Highlight:CreateTexture(nil, 'BACKGROUND', nil, 1)
+	Highlight:Hide()
+	Highlight:EnableMouse(false)
+	Highlight:SetFrameLevel(9)
+
+	Highlight.texture = Highlight:CreateTexture(nil, 'ARTWORK')
 	Highlight.texture:SetSnapToPixelGrid(false)
 	Highlight.texture:SetTexelSnappingBias(0)
 
@@ -164,18 +173,20 @@ end
 
 function NP:Update_Highlight(nameplate)
 	local db = NP.db.units[nameplate.frameType]
-	if NP.db.highlight then
+
+	if NP.db.highlight and db.enable then
 		if not nameplate:IsElementEnabled('Highlight') then
 			nameplate:EnableElement('Highlight')
 		end
-		if db.health.enable then
-			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, .3)
-			nameplate.Highlight.texture:SetAllPoints(nameplate.Health)
-			nameplate.Highlight.texture:SetAlpha(1)
+
+		if db.health.enable and not (db.nameOnly or nameplate.NameOnlyChanged) then
+			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, 0.25)
+			nameplate.Highlight.texture:SetAllPoints(nameplate.FlashTexture)
+			nameplate.Highlight.texture:SetAlpha(0.75)
 		else
 			nameplate.Highlight.texture:SetTexture(E.Media.Textures.Spark)
 			nameplate.Highlight.texture:SetAllPoints(nameplate)
-			nameplate.Highlight.texture:SetAlpha(.5)
+			nameplate.Highlight.texture:SetAlpha(0.50)
 		end
 	else
 		if nameplate:IsElementEnabled('Highlight') then
@@ -185,7 +196,7 @@ function NP:Update_Highlight(nameplate)
 end
 
 function NP:Construct_HealerSpecs(nameplate)
-	local texture = nameplate:CreateTexture(nil, "OVERLAY")
+	local texture = nameplate:CreateTexture(nameplate:GetDebugName()..'HealerSpecs', "OVERLAY")
 	texture:Size(40, 40)
 	texture:SetTexture(E.Media.Textures.Healer)
 	texture:Hide()
@@ -209,50 +220,54 @@ function NP:Update_HealerSpecs(nameplate)
 	end
 end
 
-function NP:Construct_DetectionIndicator(nameplate)
-	local model = CreateFrame("PlayerModel", nil, nameplate)
-	model:Size(75, 75)
-	model:Hide()
-
-	return model
-end
-
-function NP:Update_DetectionIndicator(nameplate)
+function NP:Update_Fader(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if (nameplate.frameType == 'ENEMY_NPC') and db.detection and db.detection.enable then
-		if not nameplate:IsElementEnabled('DetectionIndicator') then
-			nameplate:EnableElement('DetectionIndicator')
-		end
+	if (not db.visibility) or db.visibility.showAlways then
 
-		nameplate.DetectionIndicator:Point("BOTTOM", nameplate, "TOP", 0, 0)
+		if nameplate:IsElementEnabled('Fader') then
+			nameplate:DisableElement('Fader')
+
+			E:UIFrameFadeIn(nameplate, 1, nameplate:GetAlpha(), 1)
+		end
 	else
-		if nameplate:IsElementEnabled('DetectionIndicator') then
-			nameplate:DisableElement('DetectionIndicator')
+		if not nameplate.Fader then
+			nameplate.Fader = {}
 		end
+
+		if not nameplate:IsElementEnabled('Fader') then
+			nameplate:EnableElement('Fader')
+
+			nameplate.Fader:SetOption('MinAlpha', 0)
+			nameplate.Fader:SetOption('Smooth', 0.5)
+			nameplate.Fader:SetOption('Hover', true)
+			nameplate.Fader:SetOption('Power', true)
+			nameplate.Fader:SetOption('Health', true)
+			nameplate.Fader:SetOption('Casting', true)
+		end
+
+		nameplate.Fader:SetOption('PlayerTarget', db.visibility.showWithTarget)
+		nameplate.Fader:SetOption('Combat', db.visibility.showInCombat)
+		nameplate.Fader:SetOption('Delay', db.visibility.hideDelay)
+
+		nameplate.Fader:ForceUpdate()
 	end
 end
 
-function NP:Construct_FloatingCombatFeedback(nameplate)
-	local FloatingCombatFeedback = CreateFrame("Frame", nil, nameplate)
-	FloatingCombatFeedback:SetPoint('CENTER')
-	FloatingCombatFeedback:SetSize(16, 16)
+--[[function NP:Construct_Cutaway(nameplate)
+	local Cutaway = CreateFrame('Frame', nameplate:GetDebugName()..'Cutaway', nameplate)
 
-	for i = 1, 12 do
-		FloatingCombatFeedback[i] = FloatingCombatFeedback:CreateFontString(nil, "OVERLAY")
-	end
+	Cutaway.Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'CutawayHealth', nameplate.Health)
+	Cutaway.Health:SetAllPoints()
+	Cutaway.Health:SetFrameLevel(4)
+	Cutaway.Health:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+	NP.StatusBars[Cutaway.Health] = true
 
-	return FloatingCombatFeedback
-end
+	Cutaway.Power = CreateFrame('StatusBar', nameplate:GetDebugName()..'CutawayPower', nameplate.Power)
+	Cutaway.Power:SetAllPoints()
+	Cutaway.Power:SetFrameLevel(4)
+	Cutaway.Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+	NP.StatusBars[Cutaway.Power] = true
 
-function NP:Update_FloatingCombatFeedback(nameplate)
-	nameplate.FloatingCombatFeedback.mode = "Fountain"
-	nameplate.FloatingCombatFeedback.xOffset = 60
-	nameplate.FloatingCombatFeedback.yOffset = 10
-	nameplate.FloatingCombatFeedback.yDirection = 1 -- 1 (Up) or -1 (Down)
-	nameplate.FloatingCombatFeedback.scrollTime = 1.5
-
-	for i = 1, 12 do
-		nameplate.FloatingCombatFeedback[i]:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
-	end
-end
+	return Cutaway
+end]]

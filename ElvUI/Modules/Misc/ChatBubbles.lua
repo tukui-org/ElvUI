@@ -1,8 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local M = E:GetModule('Misc');
-local CH = E:GetModule("Chat");
+local M = E:GetModule('Misc')
+local CH = E:GetModule('Chat')
 
 --Lua functions
+local _G = _G
 local format = string.format
 local select, unpack, pairs, wipe = select, unpack, pairs, wipe
 --WoW API / Variables
@@ -11,11 +12,7 @@ local CreateFrame = CreateFrame
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local IsInInstance = IsInInstance
 local RemoveExtraSpaces = RemoveExtraSpaces
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: CUSTOM_CLASS_COLORS
 
 --Message caches
 local messageToGUID = {}
@@ -55,7 +52,7 @@ function M:UpdateBubbleBorder()
 				wordMatch = classMatch and lowerCaseWord
 
 				if(wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch]) then
-					classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch];
+					classColorTable = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classMatch] or _G.RAID_CLASS_COLORS[classMatch];
 					word = word:gsub(tempWord:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 				end
 
@@ -81,7 +78,7 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 	if guid ~= nil and guid ~= "" then
 		local _, class = GetPlayerInfoByGUID(guid)
 		if class then
-			color = (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] and CUSTOM_CLASS_COLORS[class].colorStr) or (RAID_CLASS_COLORS[class] and RAID_CLASS_COLORS[class].colorStr)
+			color = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] and _G.CUSTOM_CLASS_COLORS[class].colorStr) or (_G.RAID_CLASS_COLORS[class] and _G.RAID_CLASS_COLORS[class].colorStr)
 		end
 	else
 		color = defaultColor

@@ -59,6 +59,7 @@ local optstring={["nil"]=true,["string"]=true, _="string"}
 local optstringfunc={["nil"]=true,["string"]=true,["function"]=true, _="string or funcref"}
 local optstringnumberfunc={["nil"]=true,["string"]=true,["number"]=true,["function"]=true, _="string, number or funcref"}
 local optnumber={["nil"]=true,["number"]=true, _="number"}
+local optnumberfunc={["nil"]=true,["number"]=true,["function"]=true,_="number"} -- added by ElvUI for range
 local optmethodfalse={["nil"]=true,["string"]=true,["function"]=true,["boolean"]={[false]=true},  _="methodname, funcref or false"}
 local optmethodnumber={["nil"]=true,["string"]=true,["function"]=true,["number"]=true,  _="methodname, funcref or number"}
 local optmethodtable={["nil"]=true,["string"]=true,["function"]=true,["table"]=true,  _="methodname, funcref or table"}
@@ -94,6 +95,7 @@ local basekeys={
 	-- below here were created by ElvUI --
 	customWidth=optnumber,
 	textWidth=optmethodbool,
+	sliderElvUI=optmethodbool,
 	buttonElvUI=optmethodbool,
 	sortByValue=optmethodbool,
 	dragdrop=optmethodbool,
@@ -147,12 +149,12 @@ local typedkeys={
 	tristate={
 	},
 	range={
-		min=optnumber,
-		softMin=optnumber,
-		max=optnumber,
-		softMax=optnumber,
+		min=optnumberfunc,
+		softMin=optnumberfunc,
+		max=optnumberfunc,
+		softMax=optnumberfunc,
 		step=optnumber,
-		bigStep=optnumber,
+		bigStep=optnumberfunc,
 		isPercent=optbool,
 	},
 	select={

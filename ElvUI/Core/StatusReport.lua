@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local Skins = E:GetModule("Skins")
 
 --Lua functions
 --WoW API / Variables
@@ -229,13 +230,13 @@ function E:CreateStatusFrame()
 	StatusFrame.Section4.Content.Button1:Point("LEFT", StatusFrame.Section4.Content, "LEFT")
 	StatusFrame.Section4.Content.Button1:SetText("Forum")
 	StatusFrame.Section4.Content.Button1:SetButtonState("DISABLED")
-	E:GetModule("Skins"):HandleButton(StatusFrame.Section4.Content.Button1, true)
+	Skins:HandleButton(StatusFrame.Section4.Content.Button1, true)
 	StatusFrame.Section4.Content.Button2 = CreateFrame("Button", nil, StatusFrame.Section4.Content, "UIPanelButtonTemplate")
 	StatusFrame.Section4.Content.Button2:Size(100, 25)
 	StatusFrame.Section4.Content.Button2:Point("RIGHT", StatusFrame.Section4.Content, "RIGHT")
 	StatusFrame.Section4.Content.Button2:SetText("Ticket")
 	StatusFrame.Section4.Content.Button2:SetButtonState("DISABLED")
-	E:GetModule("Skins"):HandleButton(StatusFrame.Section4.Content.Button2, true)
+	Skins:HandleButton(StatusFrame.Section4.Content.Button2, true)
 
 	E.StatusFrame = StatusFrame
 end

@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local CH = E:NewModule('Chat', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
+local CH = E:GetModule('Chat')
+local Skins = E:GetModule('Skins')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -75,7 +76,6 @@ local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
 local Social_GetShareAchievementLink = Social_GetShareAchievementLink
 local Social_GetShareItemLink = Social_GetShareItemLink
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
-local SocialQueueUtil_SortGroupMembers = SocialQueueUtil_SortGroupMembers
 local StaticPopup_Visible = StaticPopup_Visible
 local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
@@ -102,7 +102,6 @@ local GetPlayerCommunityLink = GetPlayerCommunityLink
 local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
 local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
 local SOUNDKIT = SOUNDKIT
@@ -178,17 +177,22 @@ local rolePaths = {
 local specialChatIcons
 do --this can save some main file locals
 	local x, y = ':16:16',':13:25'
+	--local ElvMelon		= E:TextureString(E.Media.ChatLogos.ElvMelon,y)
 	--local ElvRainbow	= E:TextureString(E.Media.ChatLogos.ElvRainbow,y)
-	--local ElvPink		= E:TextureString(E.Media.ChatLogos.ElvPink,y)
-	local ElvBlue		= E:TextureString(E.Media.ChatLogos.ElvBlue,y)
-	local ElvGreen		= E:TextureString(E.Media.ChatLogos.ElvGreen,y)
-	local ElvMelon		= E:TextureString(E.Media.ChatLogos.ElvMelon,y)
-	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
-	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
 	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed,y)
+	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
+	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
+	local ElvGreen		= E:TextureString(E.Media.ChatLogos.ElvGreen,y)
+	local ElvBlue		= E:TextureString(E.Media.ChatLogos.ElvBlue,y)
+	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
+	local ElvPink		= E:TextureString(E.Media.ChatLogos.ElvPink,y)
 	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
 	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
+
+	local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
+	local itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a] end
+
 	specialChatIcons = {
 		-- Elv
 		["Illidelv-Area52"]		= ElvBlue,
@@ -218,36 +222,37 @@ do --this can save some main file locals
 		["Zistraeti-WyrmrestAccord"]	= ElvPurple, -- Warlock
 		-- Merathilis
 		["Asragoth-Shattrath"]		= ElvPurple,	-- [Alliance] Warlock
+		["Brítt-Shattrath"] 		= ElvBlue,		-- [Alliance] Warrior
 		["Damará-Shattrath"]		= ElvRed,		-- [Alliance] Paladin
 		["Jazira-Shattrath"]		= ElvBlue,		-- [Alliance] Priest
+		["Jústice-Shattrath"]		= ElvYellow,	-- [Alliance] Rogue
 		["Maithilis-Shattrath"]		= ElvGreen,		-- [Alliance] Monk
-		["Mattdemôn-Shattrath"]		= ElvPurple,	-- [Alliance] DH
+		["Mattdemôn-Shattrath"]		= itsSimpy,		-- [Alliance] DH    --[[ note: not really Simpy; IMPOSTER lol ]]
 		["Melisendra-Shattrath"]	= ElvBlue,		-- [Alliance] Mage
 		["Merathilis-Shattrath"]	= ElvOrange,	-- [Alliance] Druid
 		["Merathilîs-Shattrath"]	= ElvBlue,		-- [Alliance] Shaman
-		["Merathilis-Garrosh"]		= ElvOrange,	-- [Horde] Druid
 		-- Blazeflack
 		["Blazii-Silvermoon"]	= ElvBlue, -- Priest
 		["Chazii-Silvermoon"]	= ElvBlue, -- Shaman
 		-- Simpy
-		["Arieva-Cenarius"]		= ElvMelon, -- Hunter
-		["Buddercup-Cenarius"]	= ElvMelon, -- Rogue
-		["Cutepally-Cenarius"]	= ElvMelon, -- Paladin
-		["Ezek-Cenarius"]		= ElvMelon, -- DK
-		["Glice-Cenarius"]		= ElvMelon, -- Warrior
-		["Kalline-Cenarius"]	= ElvMelon, -- Shaman
-		["Puttietat-Cenarius"]	= ElvMelon, -- Druid
-		["Simpy-Cenarius"]		= ElvMelon, -- Warlock
-		["Twigly-Cenarius"]		= ElvMelon, -- Monk
-		["Imsojelly-Cenarius"]	= ElvMelon, -- [Horde] DK
-		["Imsojuicy-Cenarius"]	= ElvMelon, -- [Horde] Druid
-		["Imsopeachy-Cenarius"]	= ElvMelon, -- [Horde] DH
-		["Imsosalty-Cenarius"]	= ElvMelon, -- [Horde] Paladin
-		["Imsospicy-Cenarius"]	= ElvMelon, -- [Horde] Mage
-		["Bunne-CenarionCircle"]		= ElvMelon, -- Warrior
-		["Loppybunny-CenarionCircle"]	= ElvMelon, -- Mage
-		["Rubee-CenarionCircle"]		= ElvMelon, -- DH
-		["Wennie-CenarionCircle"]		= ElvMelon, -- Priest
+		["Arieva-Cenarius"]		= itsSimpy, -- Hunter
+		["Buddercup-Cenarius"]	= itsSimpy, -- Rogue
+		["Cutepally-Cenarius"]	= itsSimpy, -- Paladin
+		["Ezek-Cenarius"]		= itsSimpy, -- DK
+		["Glice-Cenarius"]		= itsSimpy, -- Warrior
+		["Kalline-Cenarius"]	= itsSimpy, -- Shaman
+		["Puttietat-Cenarius"]	= itsSimpy, -- Druid
+		["Simpy-Cenarius"]		= itsSimpy, -- Warlock
+		["Twigly-Cenarius"]		= itsSimpy, -- Monk
+		["Imsojelly-Cenarius"]	= itsSimpy, -- [Horde] DK
+		["Imsojuicy-Cenarius"]	= itsSimpy, -- [Horde] Druid
+		["Imsopeachy-Cenarius"]	= itsSimpy, -- [Horde] DH
+		["Imsosalty-Cenarius"]	= itsSimpy, -- [Horde] Paladin
+		["Imsospicy-Cenarius"]	= itsSimpy, -- [Horde] Mage
+		["Bunne-CenarionCircle"]		= itsSimpy, -- Warrior
+		["Loppybunny-CenarionCircle"]	= itsSimpy, -- Mage
+		["Rubee-CenarionCircle"]		= itsSimpy, -- DH
+		["Wennie-CenarionCircle"]		= itsSimpy, -- Priest
 	}
 end
 
@@ -543,6 +548,8 @@ function CH:StyleChat(frame)
 			button:SetAlpha(0)
 		end
 	end)
+
+	_G.QuickJoinToastButton:Hide()
 
 	CreatedFrames = id
 	frame.styled = true
@@ -842,7 +849,7 @@ function CH:PositionChat(override)
 				if E.db.datatexts.leftChatPanel then
 					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
 				else
-					BASE_OFFSET = BASE_OFFSET - 24
+					BASE_OFFSET = BASE_OFFSET - 25
 					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "BOTTOMLEFT", 1, 1)
 				end
 				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
@@ -879,7 +886,10 @@ function CH:Panels_ColorUpdate()
 	local panelColor = E.db.chat.panelColor
 	_G.LeftChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
 	_G.RightChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
-	--_G.ChatButtonHolder.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
+
+	if _G.ChatButtonHolder then
+		_G.ChatButtonHolder:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
+	end
 end
 
 local function UpdateChatTabColor(_, r, g, b)
@@ -1125,7 +1135,7 @@ function CH:GetBNFriendColor(name, id, useBTag)
 	end
 
 	Class = Class and Class ~= '' and gsub(strupper(Class),'%s','')
-	local COLOR = Class and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[Class] or RAID_CLASS_COLORS[Class])
+	local COLOR = Class and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[Class] or _G.RAID_CLASS_COLORS[Class])
 
 	return (COLOR and format('|c%s%s|r', COLOR.colorStr, TAG or name)) or TAG or name, isBattleTagPresence and BATTLE_TAG
 end
@@ -1166,7 +1176,7 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 		local _, englishClass = GetPlayerInfoByGUID(arg12)
 
 		if ( englishClass ) then
-			local classColorTable = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[englishClass] or RAID_CLASS_COLORS[englishClass];
+			local classColorTable = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[englishClass] or _G.RAID_CLASS_COLORS[englishClass];
 			if ( not classColorTable ) then
 				return arg2;
 			end
@@ -1195,7 +1205,7 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 				for i=1, GetNumGroupMembers() do
 					local name, _, subgroup, _, _, classFileName = GetRaidRosterInfo(i);
 					if ( name and subgroup == groupIndex ) then
-						local classColorTable = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classFileName] or RAID_CLASS_COLORS[classFileName];
+						local classColorTable = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classFileName] or _G.RAID_CLASS_COLORS[classFileName];
 						if ( classColorTable ) then
 							name = format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name);
 						end
@@ -1251,7 +1261,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		local nameWithRealm -- we also use this lower in function to correct mobile to link with the realm as well
 
 		--Cache name->class
-		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','') -- also used similar to nameWithRealm except for emotes to link the realm
+		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')
 		if name and name ~= '' then
 			CH.ClassNames[strlower(name)] = englishClass
 			nameWithRealm = (realm and name.."-"..realm) or name.."-"..PLAYER_REALM
@@ -1528,17 +1538,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					playerLink = playerLinkDisplayText;
 				end
 			else
-				if ( chatType == "TEXT_EMOTE" and realm ) then
-					-- make sure emote has realm link correct
-					playerName = playerName.."-"..realm
-					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
-				elseif ( arg14 and nameWithRealm and nameWithRealm ~= playerName ) then
-					-- make sure mobile has realm link correct
-					playerName = nameWithRealm
-					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
-				elseif ( chatType == "BN_WHISPER" or chatType == "BN_WHISPER_INFORM" ) then
+				if chatType == "BN_WHISPER" or chatType == "BN_WHISPER_INFORM" then
 					playerLink = GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget);
-				elseif ( chatType == "GUILD" and nameWithRealm and nameWithRealm ~= playerName ) then
+				elseif ((chatType == "GUILD" or chatType == "TEXT_EMOTE") or arg14) and (nameWithRealm and nameWithRealm ~= playerName) then
 					playerName = nameWithRealm
 					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget);
 				else
@@ -1553,6 +1555,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			-- Player Flags
 			local pflag, chatIcon, pluginChatIcon = "", specialChatIcons[playerName], CH:GetPluginIcon(playerName)
+			if type(chatIcon) == 'function' then chatIcon = chatIcon() end
+
 			if arg6 ~= "" then -- Blizzard Flags
 				if arg6 == "GM" or arg6 == "DEV" then -- Blizzard Icon, this was sent by a GM or Dev.
 					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t";
@@ -1592,7 +1596,6 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					if ( chatType == "EMOTE" ) then
 						body = format(_G["CHAT_"..chatType.."_GET"]..message, pflag..playerLink);
 					elseif ( chatType == "TEXT_EMOTE" and realm ) then
-						-- make sure emote has realm link correct
 						if info.colorNameByClass then
 							body = gsub(message, arg2.."%-"..realm, pflag..gsub(playerLink, "(|h|c.-)|r|h$","%1-"..realm.."|r|h"), 1);
 						else
@@ -1848,7 +1851,7 @@ function CH:CheckKeyword(message, author)
 				local wordMatch = classMatch and lowerCaseWord
 
 				if(wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch]) then
-					local classColorTable = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classMatch] or RAID_CLASS_COLORS[classMatch];
+					local classColorTable = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classMatch] or _G.RAID_CLASS_COLORS[classMatch];
 					word = gsub(word, gsub(tempWord, "%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 				end
 			end
@@ -2039,20 +2042,18 @@ function CH:SaveChatHistory(event, ...)
 		tempHistory[i] = select(i, ...) or false
 	end
 
-	if #tempHistory > 0 then
-		if not strmatch(tempHistory[1],'^|Kv%d-|k$') then -- ignore guild protection
-			tempHistory[50] = event
-			tempHistory[51] = time()
+	if (#tempHistory > 0) and not CH:MessageIsProtected(tempHistory[1]) then
+		tempHistory[50] = event
+		tempHistory[51] = time()
 
-			local coloredName, battleTag
-			if tempHistory[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(tempHistory[2], tempHistory[13], true) end
-			if battleTag then tempHistory[53] = battleTag end -- store the battletag, only when the person is known by battletag, so we can replace arg2 later in the function
-			tempHistory[52] = coloredName or CH:GetColoredName(event, ...)
+		local coloredName, battleTag
+		if tempHistory[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(tempHistory[2], tempHistory[13], true) end
+		if battleTag then tempHistory[53] = battleTag end -- store the battletag, only when the person is known by battletag, so we can replace arg2 later in the function
+		tempHistory[52] = coloredName or CH:GetColoredName(event, ...)
 
-			tinsert(data, tempHistory)
-			while #data >= 128 do
-				tremove(data, 1)
-			end
+		tinsert(data, tempHistory)
+		while #data >= 128 do
+			tremove(data, 1)
 		end
 	end
 end
@@ -2159,18 +2160,10 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 	if not self.db.socialQueueMessages then return end
 	if numAddedItems == 0 or not guid then return end
 
-	local members
 	local players = C_SocialQueue_GetGroupMembers(guid)
-	if players and next(players) then
-		if type(players[1]) == 'table' and type(players[2]) == 'table' then
-			members = SocialQueueUtil_SortGroupMembers(players)
-		else
-			members = players
-		end
-	end
-	if not members then return end -- just bail because huh? no members in a group?
+	if not players then return end
 
-	local firstMember, numMembers, extraCount, coloredName = members[1], #members, ''
+	local firstMember, numMembers, extraCount, coloredName = players[1], #players, ''
 	local playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
 	if numMembers > 1 then
 		extraCount = format(' +%s', numMembers - 1)
@@ -2358,63 +2351,142 @@ function CH:DefaultSmileys()
 	CH:AddSmiley('</3', E:TextureString(E.Media.ChatEmojis.BrokenHeart,x))
 end
 
-local function RepositionChatIcons()
-	_G.GeneralDockManagerScrollFrame:SetPoint("BOTTOMRIGHT") -- call our hook
-
-	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-	if _G.ChatFrameToggleVoiceMuteButton:IsShown() then
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.ChatFrameToggleVoiceMuteButton, 'LEFT', -4, 2)
-	else
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.ChatFrameChannelButton, 'LEFT', -4, 2)
-	end
-end
-
 local channelButtons = {
 	[1] = _G.ChatFrameChannelButton,
 	[2] = _G.ChatFrameToggleVoiceDeafenButton,
 	[3] = _G.ChatFrameToggleVoiceMuteButton
 }
 
-function CH:HandleChatVoiceIcons(S)
-	for index, button in pairs(channelButtons) do
-		button:ClearAllPoints()
-		button.Icon:SetDesaturated(true)
-
-		if index == 1 then
-			button:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -2)
-		else
-			button:SetPoint("RIGHT", channelButtons[index-1], "LEFT")
-		end
-	end
-
+function CH:RepositionChatVoiceIcons()
+	_G.GeneralDockManagerScrollFrame:SetPoint("BOTTOMRIGHT") -- call our hook
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-	_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[3], 'LEFT', 0, 2)
-	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
 
-	channelButtons[3]:HookScript("OnShow", RepositionChatIcons)
-	channelButtons[3]:HookScript("OnHide", RepositionChatIcons) -- dont think this is needed but meh
-
-	hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y)
-		if anchor == _G.GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
-			frame:Point(point, anchor, attachTo, -3, -6)
-		elseif point == "BOTTOMRIGHT" and anchor ~= channelButtons[3] and anchor ~= channelButtons[1] and not _G.GeneralDockManagerOverflowButton:IsShown() then
-			if channelButtons[3]:IsShown() then
-				frame:Point("BOTTOMRIGHT", channelButtons[3], "BOTTOMLEFT")
-			else
-				frame:Point("BOTTOMRIGHT", channelButtons[1], "BOTTOMLEFT")
-			end
-		end
-	end)
-
-	_G.QuickJoinToastButton:Hide()
-	S:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
-	S:HandleButton(_G.ChatFrameChannelButton, nil, nil, nil, true)
-	S:HandleButton(_G.ChatFrameToggleVoiceDeafenButton, nil, nil, nil, true)
-	S:HandleButton(_G.ChatFrameToggleVoiceMuteButton, nil, nil, nil, true)
-	RepositionChatIcons()
+	if channelButtons[3]:IsShown() then
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[3], 'LEFT', -4, 2)
+	else
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[1], 'LEFT', -4, 2)
+	end
 end
 
-function CH:BuildCopyChatFrame(S)
+function CH:UpdateVoiceChatIcons()
+	for _, button in pairs(channelButtons) do
+		button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
+	end
+end
+
+function CH:HandleChatVoiceIcons()
+	if CH.db.hideVoiceButtons then
+		for _, button in pairs(channelButtons) do
+			button:Hide()
+		end
+	elseif CH.db.pinVoiceButtons then
+		for index, button in pairs(channelButtons) do
+			button:ClearAllPoints()
+			button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
+			Skins:HandleButton(button, nil, nil, nil, true)
+
+			if index == 1 then
+				button:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -2)
+			else
+				button:SetPoint("RIGHT", channelButtons[index-1], "LEFT")
+			end
+		end
+
+		_G.GeneralDockManagerOverflowButton:ClearAllPoints()
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[3], 'LEFT', 0, 2)
+		_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
+
+		channelButtons[3]:HookScript("OnShow", CH.RepositionChatVoiceIcons)
+		channelButtons[3]:HookScript("OnHide", CH.RepositionChatVoiceIcons) -- dont think this is needed but meh
+
+		hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y)
+			if anchor == _G.GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
+				frame:Point(point, anchor, attachTo, -3, -6)
+			elseif point == "BOTTOMRIGHT" and anchor ~= channelButtons[3] and anchor ~= channelButtons[1] and not _G.GeneralDockManagerOverflowButton:IsShown() then
+				if channelButtons[3]:IsShown() then
+					frame:Point("BOTTOMRIGHT", channelButtons[3], "BOTTOMLEFT")
+				else
+					frame:Point("BOTTOMRIGHT", channelButtons[1], "BOTTOMLEFT")
+				end
+			end
+		end)
+
+		-- We skin it later in Style chat, to keep the backdrops on the button if the option are disabled
+		Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
+
+		CH:RepositionChatVoiceIcons()
+	else
+		CH:CreateChatVoicePanel()
+	end
+end
+
+function CH:CreateChatVoicePanel()
+	local Holder = CreateFrame('Frame', 'ChatButtonHolder', E.UIParent)
+	Holder:ClearAllPoints()
+	Holder:Point("BOTTOMLEFT", _G.LeftChatPanel, "TOPLEFT", 0, 1)
+	Holder:Size(30, 86)
+	Holder:SetTemplate('Transparent', nil, true)
+	Holder:SetBackdropColor(E.db.chat.panelColor.r, E.db.chat.panelColor.g, E.db.chat.panelColor.b, E.db.chat.panelColor.a)
+	E:CreateMover(Holder, "SocialMenuMover", _G.BINDING_HEADER_VOICE_CHAT, nil, nil, nil, nil, nil, 'chat')
+
+	channelButtons[1]:ClearAllPoints()
+	channelButtons[1]:Point('TOP', Holder, 'TOP', 0, -2)
+
+	for _, button in pairs(channelButtons) do
+		Skins:HandleButton(button, nil, nil, nil, true)
+		button.Icon:SetParent(button)
+		button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
+		button:SetParent(Holder)
+	end
+
+	_G.ChatAlertFrame:ClearAllPoints()
+	_G.ChatAlertFrame:Point("BOTTOM", channelButtons[1], "TOP", 1, 3)
+
+	-- Skin the QuickJoinToastButton
+	local Button = _G.QuickJoinToastButton
+	Button:SetTemplate()
+	Button:SetParent(Holder)
+	Button:ClearAllPoints()
+	Button:Point('BOTTOM', Holder, 'TOP', -E.Border, 2*E.Border)
+	Button:Size(30, 32)
+	-- Button:Hide() -- DONT KILL IT! If we use hide we also hide the Toasts, which are used in other Plugins.
+
+	-- Change the QuickJoin Textures. Looks better =)
+	local friendTex = 'Interface\\HELPFRAME\\ReportLagIcon-Chat'
+	local queueTex = 'Interface\\HELPFRAME\\HelpIcon-ItemRestoration'
+
+	Button.FriendsButton:SetTexture(friendTex)
+	Button.QueueButton:SetTexture(queueTex)
+
+	hooksecurefunc(Button, 'ToastToFriendFinished', function(t)
+		t.FriendsButton:SetShown(not t.displayedToast)
+		t.FriendCount:SetShown(not t.displayedToast)
+	end)
+
+	hooksecurefunc(Button, 'UpdateQueueIcon', function(t)
+		if not t.displayedToast then return end
+		t.FriendsButton:SetTexture(friendTex)
+		t.QueueButton:SetTexture(queueTex)
+		t.FlashingLayer:SetTexture(queueTex)
+		t.FriendsButton:SetShown(false)
+		t.FriendCount:SetShown(false)
+	end)
+
+	Button:HookScript('OnMouseDown', function(t) t.FriendsButton:SetTexture(friendTex) end)
+	Button:HookScript('OnMouseUp', function(t) t.FriendsButton:SetTexture(friendTex) end)
+
+	-- Skin the `QuickJoinToastButton.Toast`
+	Button.Toast:ClearAllPoints()
+	Button.Toast:Point('LEFT', Button, 'RIGHT', -6, 0)
+	Button.Toast.Background:SetTexture('')
+	Button.Toast:CreateBackdrop('Transparent')
+	Button.Toast.backdrop:Hide()
+
+	hooksecurefunc(Button, "ShowToast", function() Button.Toast.backdrop:Show() end)
+	hooksecurefunc(Button, "HideToast", function() Button.Toast.backdrop:Hide() end)
+end
+
+function CH:BuildCopyChatFrame()
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	tinsert(_G.UISpecialFrames, "CopyChatFrame")
 	frame:SetTemplate('Transparent')
@@ -2455,7 +2527,7 @@ function CH:BuildCopyChatFrame(S)
 	local scrollArea = CreateFrame("ScrollFrame", "CopyChatScrollFrame", frame, "UIPanelScrollFrameTemplate")
 	scrollArea:Point("TOPLEFT", frame, "TOPLEFT", 8, -30)
 	scrollArea:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 8)
-	S:HandleScrollBar(_G.CopyChatScrollFrameScrollBar)
+	Skins:HandleScrollBar(_G.CopyChatScrollFrameScrollBar)
 	scrollArea:SetScript("OnSizeChanged", function(scroll)
 		_G.CopyChatFrameEditBox:Width(scroll:GetWidth())
 		_G.CopyChatFrameEditBox:Height(scroll:GetHeight())
@@ -2486,20 +2558,19 @@ function CH:BuildCopyChatFrame(S)
 	close:Point("TOPRIGHT")
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
-	S:HandleCloseButton(close)
+	Skins:HandleCloseButton(close)
 end
 
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then ElvCharacterDB.ChatHistory = nil end --Depreciated
 	if ElvCharacterDB.ChatLog then ElvCharacterDB.ChatLog = nil end --Depreciated
 
-	self.db = E.db.chat
 	self:DelayGuildMOTD() -- Keep this before `is Chat Enabled` check
 
 	if E.private.chat.enable ~= true then return end
-	E.Chat = self
+	self.Initialized = true
+	self.db = E.db.chat
 
-	local S = E:GetModule('Skins')
 	if not ElvCharacterDB.ChatEditHistory then ElvCharacterDB.ChatEditHistory = {} end
 	if not ElvCharacterDB.ChatHistoryLog or not self.db.chatHistory then ElvCharacterDB.ChatHistoryLog = {} end
 
@@ -2511,7 +2582,7 @@ function CH:Initialize()
 	self:UpdateFading()
 	self:UpdateAnchors()
 	self:Panels_ColorUpdate()
-	self:HandleChatVoiceIcons(S)
+	self:HandleChatVoiceIcons()
 
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	self:SecureHook('FCF_SetWindowAlpha')
@@ -2552,7 +2623,7 @@ function CH:Initialize()
 	end
 
 	if self.db.chatHistory then self:DisplayChatHistory() end
-	self:BuildCopyChatFrame(S)
+	self:BuildCopyChatFrame()
 
 	-- Editbox Backdrop Color
 	hooksecurefunc("ChatEdit_UpdateHeader", function(editbox)
@@ -2582,26 +2653,30 @@ function CH:Initialize()
 
 	-- Combat Log Skinning (credit: Aftermathh)
 	local CombatLogButton = _G.CombatLogQuickButtonFrame_Custom
-	local CombatLogFontContainer = _G.ChatFrame2 and _G.ChatFrame2.FontStringContainer
-	CombatLogButton:StripTextures()
-	CombatLogButton:SetTemplate("Transparent")
-	if CombatLogFontContainer then
-		CombatLogButton:ClearAllPoints()
-		CombatLogButton:Point("BOTTOMLEFT", CombatLogFontContainer, "TOPLEFT", -1, 1)
-		CombatLogButton:Point("BOTTOMRIGHT", CombatLogFontContainer, "TOPRIGHT", E.PixelMode and 4 or 0, 1)
+	if CombatLogButton then
+		local CombatLogFontContainer = _G.ChatFrame2 and _G.ChatFrame2.FontStringContainer
+		CombatLogButton:StripTextures()
+		CombatLogButton:SetTemplate("Transparent")
+		if CombatLogFontContainer then
+			CombatLogButton:ClearAllPoints()
+			CombatLogButton:Point("BOTTOMLEFT", CombatLogFontContainer, "TOPLEFT", -1, 1)
+			CombatLogButton:Point("BOTTOMRIGHT", CombatLogFontContainer, "TOPRIGHT", E.PixelMode and 4 or 0, 1)
+		end
+		for i = 1, 2 do
+			local CombatLogQuickButton = _G["CombatLogQuickButtonFrameButton"..i]
+			if CombatLogQuickButton then
+				local CombatLogText = CombatLogQuickButton:GetFontString()
+				CombatLogText:FontTemplate(nil, nil, 'OUTLINE')
+			end
+		end
+		local CombatLogProgressBar = _G.CombatLogQuickButtonFrame_CustomProgressBar
+		CombatLogProgressBar:SetStatusBarTexture(E.media.normTex)
+		CombatLogProgressBar:SetInside(CombatLogButton)
+		Skins:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
+		_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
+		_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogButton, "TOPRIGHT", 0, -1)
+		_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
 	end
-	for i = 1, 2 do
-		local CombatLogQuickButton = _G["CombatLogQuickButtonFrameButton"..i]
-		local CombatLogText = CombatLogQuickButton:GetFontString()
-		CombatLogText:FontTemplate(nil, nil, 'OUTLINE')
-	end
-	local CombatLogProgressBar = _G.CombatLogQuickButtonFrame_CustomProgressBar
-	CombatLogProgressBar:SetStatusBarTexture(E.media.normTex)
-	CombatLogProgressBar:SetInside(CombatLogButton)
-	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
-	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
-	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogButton, "TOPRIGHT", 0, -1)
-	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
 
 	--Chat Heads Frame
 	self.ChatHeadFrame = CreateFrame("Frame", "ElvUIChatHeadFrame", E.UIParent)

@@ -149,6 +149,7 @@ local function LoadSkin()
 		if self and self.closeDialog and not self.closeDialog.template then
 			self.closeDialog:StripTextures()
 			self.closeDialog:SetTemplate('Transparent')
+			self:SetScale(_G.UIParent:GetScale())
 			local dialogName = self.closeDialog.GetName and self.closeDialog:GetName()
 			local closeButton = self.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
 			local resumeButton = self.closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
@@ -162,6 +163,7 @@ local function LoadSkin()
 	-- this is called through `MovieFrame_OnEvent` on the event `PLAY_MOVIE`
 	hooksecurefunc('MovieFrame_PlayMovie', function(self)
 		if self and self.CloseDialog and not self.CloseDialog.template then
+			self:SetScale(_G.UIParent:GetScale())
 			self.CloseDialog:StripTextures()
 			self.CloseDialog:SetTemplate('Transparent')
 			S:HandleButton(self.CloseDialog.ConfirmButton)

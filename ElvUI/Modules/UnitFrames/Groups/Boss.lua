@@ -9,8 +9,6 @@ local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: BossHeaderMover
 
 local BossHeader = CreateFrame('Frame', 'BossHeader', E.UIParent)
@@ -39,7 +37,7 @@ function UF:Construct_BossFrames(frame)
 	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
 	frame.AlternativePower = self:Construct_AltPowerBar(frame)
 	frame.ClassBar = "AlternativePower"
-	frame.Range = self:Construct_Range(frame)
+	frame.Fader = self:Construct_Fader()
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame:SetAttribute("type2", "focus")
@@ -130,7 +128,8 @@ function UF:Update_BossFrames(frame, db)
 
 	UF:Configure_CustomTexts(frame)
 
-	UF:Configure_Range(frame)
+	--Fader
+	UF:Configure_Fader(frame)
 
 	frame:ClearAllPoints()
 	if frame.index == 1 then

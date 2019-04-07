@@ -39,7 +39,6 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.CustomTimeText = self.CustomTimeText
 	castbar.PostCastStart = self.PostCastStart
 	castbar.PostCastStop = self.PostCastStop
-	castbar.PostCastUpdate = self.PostChannelUpdate
 	castbar.PostCastInterruptible = self.PostCastInterruptible
 	castbar:SetClampedToScreen(true)
 	castbar:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
@@ -60,6 +59,8 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Spark_ = castbar:CreateTexture(nil, 'OVERLAY')
 	castbar.Spark_:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 	castbar.Spark_:SetBlendMode('ADD')
+	castbar.Spark_:SetSnapToPixelGrid(false)
+	castbar.Spark_:SetTexelSnappingBias(0)
 	castbar.Spark_:SetVertexColor(1, 1, 1)
 	castbar.Spark_:Size(20, 40)
 
@@ -107,9 +108,9 @@ function UF:Configure_Castbar(frame)
 	castbar:Height(db.castbar.height - ((frame.BORDER+frame.SPACING)*2))
 	castbar.Holder:Width(db.castbar.width)
 	castbar.Holder:Height(db.castbar.height)
-	if(castbar.Holder:GetScript('OnSizeChanged')) then
-		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
-	end
+
+	local oSC = castbar.Holder:GetScript('OnSizeChanged')
+	if oSC then oSC(castbar.Holder) end
 
 	if db.castbar.strataAndLevel and db.castbar.strataAndLevel.useCustomStrata then
 		castbar:SetFrameStrata(db.castbar.strataAndLevel.frameStrata)
@@ -119,7 +120,7 @@ function UF:Configure_Castbar(frame)
 		castbar:SetFrameLevel(db.castbar.strataAndLevel.frameLevel)
 	end
 
-	castbar.timeToHold = db.castbar.holdTime
+	castbar.timeToHold = db.castbar.timeToHold
 
 	--Latency
 	if db.castbar.latency then
@@ -175,6 +176,10 @@ function UF:Configure_Castbar(frame)
 			end
 		end
 
+		if db.castbar.spark then
+			castbar.Spark:Height(db.infoPanel and db.infoPanel.height * 2) -- Grab the height from the infopanel.
+		end
+
 		if(castbar.Holder.mover) then
 			E:DisableMover(castbar.Holder.mover:GetName())
 		end
@@ -185,7 +190,7 @@ function UF:Configure_Castbar(frame)
 		end
 
 		castbar:ClearAllPoints()
-		if frame.ORIENTATION ~= "RIGHT"  then
+		if frame.ORIENTATION ~= "RIGHT" then
 			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
 			if not isMoved then
 				castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER - frame.SPACING))
@@ -361,17 +366,16 @@ function UF:PostCastStart(unit)
 
 	self.unit = unit
 
-	if db.castbar.ticks and unit == "player" then
+	if self.channeling and db.castbar.ticks and unit == "player" then
 		local unitframe = E.global.unitframe
 		local baseTicks = unitframe.ChannelTicks[self.spellID]
-
-		-- Detect channeling spell and if it's the same as the previously channeled one
-		if baseTicks and self.spellID == self.prevSpellCast then
-			self.chainChannel = true
-		elseif baseTicks then
-			self.chainChannel = nil
-			self.prevSpellCast = self.spellID
-		end
+		---- Detect channeling spell and if it's the same as the previously channeled one
+		--if baseTicks and self.spellID == self.prevSpellCast then
+		--	self.chainChannel = true
+		--elseif baseTicks then
+		--	self.chainChannel = nil
+		--	self.prevSpellCast = self.spellID
+		--end
 
 		if baseTicks and unitframe.ChannelTicksSize[self.spellID] and unitframe.HastedChannelTicks[self.spellID] then
 			local tickIncRate = 1 / baseTicks
@@ -394,8 +398,8 @@ function UF:PostCastStart(unit)
 			local hastedTickSize = baseTickSize / (1 + curHaste)
 			local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
 			local extraTickRatio = extraTick / hastedTickSize
-
 			UF:SetCastTicks(self, baseTicks + bonusTicks, extraTickRatio)
+			self.hadTicks = true
 		elseif baseTicks and unitframe.ChannelTicksSize[self.spellID] then
 			local curHaste = UnitSpellHaste("player") * 0.01
 			local baseTickSize = unitframe.ChannelTicksSize[self.spellID]
@@ -404,13 +408,13 @@ function UF:PostCastStart(unit)
 			local extraTickRatio = extraTick / hastedTickSize
 
 			UF:SetCastTicks(self, baseTicks, extraTickRatio)
+			self.hadTicks = true
 		elseif baseTicks then
 			UF:SetCastTicks(self, baseTicks)
+			self.hadTicks = true
 		else
 			UF:HideTicks()
 		end
-	elseif unit == 'player' then
-		UF:HideTicks()
 	end
 
 	local colors = ElvUF.colors
@@ -437,72 +441,15 @@ function UF:PostCastStart(unit)
 	if self.bg:IsShown() then
 		self.bg:SetColorTexture(r * 0.25, g * 0.25, b * 0.25)
 
-		local _, _, _, alpha = self.backdrop:GetBackdropColor()
+		local _, _, _, alpha = E:GetBackdropColor(self.backdrop)
 		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)
 	end
 end
 
-function UF:PostCastStop()
-	self.chainChannel = nil
-	self.prevSpellCast = nil
-end
-
-function UF:PostChannelUpdate(unit)
-	local db = self:GetParent().db
-	if not db then return; end
-	if not (unit == "player" or unit == "vehicle") then return end
-
-	if db.castbar.ticks then
-		local unitframe = E.global.unitframe
-		local baseTicks = unitframe.ChannelTicks[self.spellID]
-
-		if baseTicks and unitframe.ChannelTicksSize[self.spellID] and unitframe.HastedChannelTicks[self.spellID] then
-			local tickIncRate = 1 / baseTicks
-			local curHaste = UnitSpellHaste("player") * 0.01
-			local firstTickInc = tickIncRate / 2
-			local bonusTicks = 0
-			if curHaste >= firstTickInc then
-				bonusTicks = bonusTicks + 1
-			end
-
-			local x = tonumber(E:Round(firstTickInc + tickIncRate, 2))
-			while curHaste >= x do
-				x = tonumber(E:Round(firstTickInc + (tickIncRate * bonusTicks), 2))
-				if curHaste >= x then
-					bonusTicks = bonusTicks + 1
-				end
-			end
-
-			local baseTickSize = unitframe.ChannelTicksSize[self.spellID]
-			local hastedTickSize = baseTickSize / (1 + curHaste)
-			local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
-			if self.chainChannel then
-				self.extraTickRatio = extraTick / hastedTickSize
-				self.chainChannel = nil
-			end
-
-			UF:SetCastTicks(self, baseTicks + bonusTicks, self.extraTickRatio)
-		elseif baseTicks and unitframe.ChannelTicksSize[self.spellID] then
-			local curHaste = UnitSpellHaste("player") * 0.01
-			local baseTickSize = unitframe.ChannelTicksSize[self.spellID]
-			local hastedTickSize = baseTickSize / (1 + curHaste)
-			local extraTick = self.max - hastedTickSize * (baseTicks)
-			if self.chainChannel then
-				self.extraTickRatio = extraTick / hastedTickSize
-				self.chainChannel = nil
-			end
-
-			UF:SetCastTicks(self, baseTicks, self.extraTickRatio)
-		elseif baseTicks then
-			if self.chainChannel then
-				baseTicks = baseTicks + 1
-			end
-			UF:SetCastTicks(self, baseTicks)
-		else
-			UF:HideTicks()
-		end
-	else
+function UF:PostCastStop(unit)
+	if self.hadTicks and unit == 'player' then
 		UF:HideTicks()
+		self.hadTicks = false
 	end
 end
 
@@ -534,7 +481,7 @@ function UF:PostCastInterruptible(unit)
 	if self.bg:IsShown() then
 		self.bg:SetColorTexture(r * 0.25, g * 0.25, b * 0.25)
 
-		local _, _, _, alpha = self.backdrop:GetBackdropColor()
+		local _, _, _, alpha = E:GetBackdropColor(self.backdrop)
 		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)
 	end
 end

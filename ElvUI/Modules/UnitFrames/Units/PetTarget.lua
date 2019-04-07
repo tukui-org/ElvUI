@@ -7,29 +7,24 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 --Lua functions
 local _G = _G
 local tinsert = tinsert
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUF_Pet
 
 function UF:Construct_PetTargetFrame(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
-
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
-
 	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
-
 	frame.Name = self:Construct_NameText(frame)
-
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 	frame.ThreatIndicator = self:Construct_Threat(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
-	frame.Range = self:Construct_Range(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
+	frame.Fader = self:Construct_Fader()
 	frame.customTexts = {}
+
 	frame:Point('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["PetTarget Frame"], nil, -7, nil, 'ALL,SOLO', nil, 'unitframe,pettarget,generalGroup')
 
@@ -71,7 +66,9 @@ function UF:Update_PetTargetFrame(frame, db)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+
 	UF:Configure_InfoPanel(frame)
+
 	--Health
 	UF:Configure_HealthBar(frame)
 
@@ -81,7 +78,7 @@ function UF:Update_PetTargetFrame(frame, db)
 	--Power
 	UF:Configure_Power(frame)
 
-	-- Power Predicition
+	--Power Predicition
 	UF:Configure_PowerPrediction(frame)
 
 	--Portrait
@@ -95,8 +92,8 @@ function UF:Update_PetTargetFrame(frame, db)
 	UF:Configure_Auras(frame, 'Buffs')
 	UF:Configure_Auras(frame, 'Debuffs')
 
-	--Range
-	UF:Configure_Range(frame)
+	--Fader
+	UF:Configure_Fader(frame)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
