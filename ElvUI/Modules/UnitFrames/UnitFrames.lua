@@ -81,8 +81,9 @@ UF.instanceMapIDs = {
 	[1681] = 15, -- Arathi Basin Winter
 	[1803] = 10, -- Seething Shore
 	[2106] = 10, -- Warsong Gulch
+	[2107] = 15, -- Arathi Basin
 	[2118] = 40, -- Battle for Wintergrasp
-	[3358] = 15, -- Arathi Basin
+	[3358] = 15, -- Arathi Basin (NEW - Only Brawl?)
 }
 
 UF.headerGroupBy = {
