@@ -2754,14 +2754,14 @@ local function GetUnitSettings(unit, name)
 					},
 					anchorPoint = {
 						type = 'select',
-						order = 7,
+						order = 8,
 						name = L["Anchor Point"],
 						desc = L["What point to anchor to the frame you set to attach to."],
 						values = positionValues,
 					},
 					growthX = {
 						type = 'select',
-						order = 8,
+						order = 9,
 						name = L["Growth X-Direction"],
 						values = {
 							['LEFT'] = L["Left"],
@@ -2770,7 +2770,7 @@ local function GetUnitSettings(unit, name)
 					},
 					growthY = {
 						type = 'select',
-						order = 9,
+						order = 10,
 						name = L["Growth Y-Direction"],
 						values = {
 							['UP'] = L["Up"],
@@ -2779,7 +2779,7 @@ local function GetUnitSettings(unit, name)
 					},
 					stacks = {
 						type = "group",
-						order = 10,
+						order = 11,
 						name = L["Stack Counter"],
 						guiInline = true,
 						get = function(info, value) return E.db.nameplates.units[unit].debuffs[info[#info]] end,
@@ -2829,7 +2829,7 @@ local function GetUnitSettings(unit, name)
 					},
 					duration = {
 						type = "group",
-						order = 11,
+						order = 12,
 						name = L["Duration"],
 						guiInline = true,
 						get = function(info) return E.db.nameplates.units[unit].debuffs[info[#info]] end,
@@ -2862,7 +2862,7 @@ local function GetUnitSettings(unit, name)
 					},
 					filtersGroup = {
 						name = FILTERS,
-						order = 12,
+						order = 13,
 						type = "group",
 						get = function(info) return E.db.nameplates.units[unit].debuffs.filters[info[#info]] end,
 						set = function(info, value) E.db.nameplates.units[unit].debuffs.filters[info[#info]] = value; NP:ConfigureAll() end,
