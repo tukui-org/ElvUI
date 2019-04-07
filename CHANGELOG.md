@@ -1,4 +1,16 @@
-### Version 11.07 [  ]
+### Version 11.08 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 11.07 [ April 7th 2019 ]
 
 **New Additions:**  
 [Nameplate] Added ElvUIPlayerNamePlateAnchor for WeakAuras and other AddOns.  
