@@ -1053,7 +1053,6 @@ L["Buffs"] = true
 L["By Type"] = true
 L["Camera Distance Scale"] = true
 L["Castbar"] = true
-L["Casting"] = true
 L["Center"] = true
 L["Choose UIPARENT to prevent it from hiding with the unitframe."] = true
 L["Class Backdrop"] = true
@@ -1422,12 +1421,6 @@ L["BoU"] = true
 -- Tooltip
 L["Combat Override Key"] = true
 L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."] = true
-
--- Chat
-L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."] = true
-
--- ActionBars
-L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true
 
 -- Module Copy
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
