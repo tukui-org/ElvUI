@@ -4,10 +4,17 @@
 
 
 **Bug Fixes:**  
+[Actionbar] Reworked the Show Charge Cooldown a bit so that it won't stack two texts on certain spells.  
+[Nameplate] Name Only ending was preventing the Target Class Power from displaying correctly.  
 
 
 **Misc. Changes:**  
+[Nameplate] Target xOffset & DisablePlate for Stagger.  
+[Nameplate] Corrected the display alt power setting.  
 
+**Work in Progress:**  
+Cutaway Health on Nameplates.  
+Testing how Arena Prep Frames spawn.  
 
 ___
 ### Version 11.07 [ April 7th 2019 ]
@@ -96,9 +103,6 @@ Adjusted all the Power and Classbar backdrop colors to be a little more vivid.
 Added dispellable to boss buff filters by default. (#1215)  
 Added Vehicle support to our new oUF_Fader lib. (#148)  
 Scaled the Skip frame on the cinematic screen. (#1176)  
-
-**Work in Progress:**  
-Cutaway Health, Custom Text, and Floating Combat Feedback on Nameplates.  
 
 ___
 ### Version 11.06 [ March 14th 2019 ]
