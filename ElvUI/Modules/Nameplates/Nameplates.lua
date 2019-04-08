@@ -306,6 +306,10 @@ function NP:UpdatePlate(nameplate)
 		if nameplate == _G.ElvNP_Player then
 			NP:Update_Fader(nameplate)
 		end
+
+		if nameplate.isTarget then
+			NP:SetupTarget(nameplate)
+		end
 	end
 
 	NP:StyleFilterEvents(nameplate)
@@ -327,12 +331,8 @@ function NP:DisablePlate(nameplate, nameOnly)
 	if nameplate:IsElementEnabled('PvPClassificationIndicator') then nameplate:DisableElement('PvPClassificationIndicator') end
 	if nameplate:IsElementEnabled('HealerSpecs') then nameplate:DisableElement('HealerSpecs') end
 	if nameplate:IsElementEnabled('Auras') then nameplate:DisableElement('Auras') end
-	if E.myclass == 'DEATHKNIGHT' and nameplate:IsElementEnabled('Runes') then
-		nameplate:DisableElement('Runes')
-	end
-	if E.myclass == 'MONK' and nameplate:IsElementEnabled('Stagger') then
-		nameplate:DisableElement('Stagger')
-	end
+	if E.myclass == 'DEATHKNIGHT' and nameplate:IsElementEnabled('Runes') then nameplate:DisableElement('Runes') end
+	if E.myclass == 'MONK' and nameplate:IsElementEnabled('Stagger') then nameplate:DisableElement('Stagger') end
 
 	nameplate.Health.Text:Hide()
 	nameplate.Power.Text:Hide()
