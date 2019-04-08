@@ -1060,10 +1060,9 @@ function AB:StyleFlyout(button)
 	end
 end
 
-local color
 --Update text color when button is updated
 function AB:LAB_ButtonUpdate(button)
-	color = AB.db.fontColor
+	local color = AB.db.fontColor
 	button.Count:SetTextColor(color.r, color.g, color.b)
 	if button.config and (button.config.outOfRangeColoring ~= "hotkey") then
 		button.HotKey:SetTextColor(color.r, color.g, color.b)
@@ -1071,14 +1070,33 @@ function AB:LAB_ButtonUpdate(button)
 end
 LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
 
-local function OnCooldownUpdate(_, button, start, duration)
+local function SetButtonDesaturation(button, desaturate, duration)
+	if desaturate then
+		if not duration then
+			duration = select(2, button:GetCooldown())
+		end
+
+		if duration and duration > 1.5 then
+			button.icon:SetDesaturated(true)
+			button.saturationLocked = true
+		else
+			button.icon:SetDesaturated(false)
+			button.saturationLocked = nil
+		end
+	else
+		button.icon:SetDesaturated(false)
+		button.saturationLocked = nil
+	end
+end
+
+local function OnCooldownDown(_, _, button)
+	SetButtonDesaturation(button, AB.db.desaturateOnCooldown, 0)
+end
+
+local function OnCooldownUpdate(_, button, _, duration)
 	if button._state_type ~= "action" then return end
-
 	button.cooldown.hideText = (button.cooldown.isChargeCooldown and not AB.db.chargeCooldown) or nil
-
-	local desaturate = AB.db.desaturateOnCooldown and (duration and duration > 1.5)
-	button.saturationLocked = desaturate or nil --Lock any new actions that are created after we activated desaturation option
-	button.icon:SetDesaturated(desaturate)
+	SetButtonDesaturation(button, AB.db.desaturateOnCooldown, duration)
 end
 
 function AB:ToggleCooldownOptions()
@@ -1089,25 +1107,15 @@ function AB:ToggleCooldownOptions()
 			E:Cooldown_ForceUpdate(button.cooldown.timer)
 		end
 
-		if AB.db.desaturateOnCooldown then
-			local _, duration = button:GetCooldown()
-			if duration and duration > 1.5 then
-				button.icon:SetDesaturated(true)
-				button.saturationLocked = true
-			else
-				button.icon:SetDesaturated(false)
-				button.saturationLocked = nil
-			end
-		else
-			button.icon:SetDesaturated(false)
-			button.saturationLocked = nil
-		end
+		SetButtonDesaturation(button, AB.db.desaturateOnCooldown)
 	end
 
-	if (AB.db.desaturateOnCooldown or AB.db.chargeCooldown) then
+	if AB.db.desaturateOnCooldown or AB.db.chargeCooldown then
 		LAB.RegisterCallback(AB, "OnCooldownUpdate", OnCooldownUpdate)
+		LAB.RegisterCallback(AB, "OnCooldownDown", OnCooldownDown)
 	else
 		LAB.UnregisterCallback(AB, "OnCooldownUpdate")
+		LAB.UnregisterCallback(AB, "OnCooldownDown")
 	end
 end
 
