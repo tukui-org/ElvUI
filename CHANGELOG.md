@@ -5,6 +5,7 @@
 
 **Bug Fixes:**  
 [Actionbar] Reworked the Show Charge Cooldown a bit so that it won't stack two texts on certain spells.  
+[Actionbar] Refixed the Desaturation option so that it will recolor as soon as the cooldown finishes.  
 [Nameplate] Name Only ending was preventing the Target Class Power from displaying correctly.  
 
 
