@@ -1089,7 +1089,7 @@ local function SetButtonDesaturation(button, desaturate, duration)
 	end
 end
 
-local function OnCooldownDown(_, _, button)
+local function OnCooldownDown(_, button)
 	SetButtonDesaturation(button, AB.db.desaturateOnCooldown, 0)
 end
 

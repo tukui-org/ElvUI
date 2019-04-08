@@ -1255,7 +1255,7 @@ local function onCooldownDone(self)
 		UpdateCooldown(button)
 	end
 
-	lib.callbacks:Fire("OnCooldownDown", self, button)
+	lib.callbacks:Fire("OnCooldownDown", button, self)
 end
 
 function UpdateCooldown(self)
