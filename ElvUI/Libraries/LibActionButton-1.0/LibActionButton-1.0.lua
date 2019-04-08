@@ -1260,6 +1260,7 @@ function UpdateCooldown(self)
 	local charges, maxCharges, chargeStart, chargeDuration, chargeModRate = self:GetCharges()
 
 	self.cooldown:SetDrawBling(self.config.useDrawBling and (self.cooldown:GetEffectiveAlpha() > 0.5))
+	self.cooldown:SetDrawSwipe(true)
 
 	if (locStart + locDuration) > (start + duration) then
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_LOSS_OF_CONTROL then
@@ -1283,6 +1284,7 @@ function UpdateCooldown(self)
 
 		if charges and maxCharges and charges > 0 and charges < maxCharges then
 			CooldownFrame_Set(self.cooldown, chargeStart, chargeDuration, true, true, chargeModRate)
+			self.cooldown:SetDrawSwipe(self.config.useDrawSwipeOnCharges)
 			self.cooldown.isChargeCooldown = true
 
 			-- update charge cooldown skin when masque is used
