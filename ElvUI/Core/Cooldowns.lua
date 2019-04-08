@@ -25,7 +25,7 @@ function E:Cooldown_OnUpdate(elapsed)
 	else
 		local remain = self.duration - (GetTime() - self.start)
 		if remain > 0.05 then
-			if self.fontScale and (self.fontScale < MIN_SCALE) then
+			if self.parent.hideText or (self.fontScale and (self.fontScale < MIN_SCALE)) then
 				self.text:SetText('')
 				self.nextUpdate = 500
 			else
@@ -96,12 +96,10 @@ function E:Cooldown_StopTimer(cd)
 end
 
 function E:CreateCooldownTimer(parent)
-	local scaler = CreateFrame('Frame', nil, parent)
-	scaler:SetAllPoints()
-
-	local timer = CreateFrame('Frame', nil, scaler)
+	local timer = CreateFrame('Frame', nil, parent)
 	timer:Hide()
 	timer:SetAllPoints()
+	timer.parent = parent
 	parent.timer = timer
 
 	local text = timer:CreateFontString(nil, 'OVERLAY')

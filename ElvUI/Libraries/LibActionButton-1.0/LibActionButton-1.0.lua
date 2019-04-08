@@ -54,7 +54,7 @@ local str_match, format, tinsert, tremove = string.match, format, tinsert, tremo
 -- GLOBALS: RANGE_INDICATOR, ATTACK_BUTTON_FLASH_TIME, TOOLTIP_UPDATE_TIME
 -- GLOBALS: ZoneAbilityFrame, HasZoneAbility, GetLastZoneAbilitySpellTexture
 
----- Added for ElvUI
+---- Added by ElvUI
 -- GLOBALS: C_ToyBox, GetSpellInfo, GetCVarBool, GetModifiedClick, IsAltKeyDown, IsControlKeyDown, IsShiftKeyDown, FlyoutHasSpell
 -- GLOBALS: CooldownFrame_Set, GetActionLossOfControlCooldown, COOLDOWN_TYPE_LOSS_OF_CONTROL, COOLDOWN_TYPE_NORMAL
 
@@ -1269,6 +1269,7 @@ function UpdateCooldown(self)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_LOSS_OF_CONTROL
 		end
 		CooldownFrame_Set(self.cooldown, locStart, locDuration, true, true, modRate)
+		self.cooldown.isChargeCooldown = nil
 	else
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_NORMAL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge")
@@ -1282,6 +1283,7 @@ function UpdateCooldown(self)
 
 		if charges and maxCharges and charges > 0 and charges < maxCharges then
 			CooldownFrame_Set(self.cooldown, chargeStart, chargeDuration, true, true, chargeModRate)
+			self.cooldown.isChargeCooldown = true
 
 			-- update charge cooldown skin when masque is used
 			if Masque and Masque.UpdateCharge then
@@ -1289,6 +1291,7 @@ function UpdateCooldown(self)
 			end
 		else
 			CooldownFrame_Set(self.cooldown, start, duration, enable, false, modRate)
+			self.cooldown.isChargeCooldown = nil
 		end
 	end
 	lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, enable, modRate)
