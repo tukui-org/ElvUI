@@ -29,17 +29,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 16 -- the real minor version is 74
+local MINOR_VERSION = 17 -- the real minor version is 74
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
 
 -- Lua functions
-local _G = _G
 local type, error, tostring, tonumber, assert, select = type, error, tostring, tonumber, assert, select
 local setmetatable, wipe, unpack, pairs, next = setmetatable, wipe, unpack, pairs, next
-local str_match, format, tinsert, tremove = string.match, format, tinsert, tremove
+local str_match, format = string.match, format
 
 -- GLOBALS: LibStub, CreateFrame, InCombatLockdown, ClearCursor, GetCursorInfo, GameTooltip, GameTooltip_SetDefaultAnchor
 -- GLOBALS: GetBindingKey, GetBindingText, SetBinding, SetBindingClick, GetCVar, GetMacroInfo
@@ -1290,6 +1289,16 @@ function UpdateCooldown(self)
 			CooldownFrame_Set(self.cooldown, chargeStart, chargeDuration, true, true, chargeModRate)
 			self.cooldown:SetDrawSwipe(self.config.useDrawSwipeOnCharges)
 			self.cooldown.isChargeCooldown = true
+
+			if not self.swipeCooldown then
+				local cooldown = CreateFrame("Cooldown", self:GetName().."SwipeCooldown", self, "CooldownFrameTemplate");
+				cooldown:SetDrawBling(self.config.useDrawBling and (cooldown:GetEffectiveAlpha() > 0.5))
+				cooldown:SetHideCountdownNumbers(true)
+				cooldown:SetAllPoints(self)
+				self.swipeCooldown = cooldown
+			end
+
+			CooldownFrame_Set(self.swipeCooldown, start, duration, enable, false, modRate)
 
 			-- update charge cooldown skin when masque is used
 			if Masque and Masque.UpdateCharge then
