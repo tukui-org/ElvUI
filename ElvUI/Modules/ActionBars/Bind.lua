@@ -210,11 +210,7 @@ function AB:BindUpdate(button, spellmacro)
 
 		if not bind.button.name then return; end
 
-		if not bind.button.id or bind.button.id < 1 or bind.button.id > 10 then
-			bind.button.bindstring = "CLICK "..bind.button.name..":LeftButton";
-		else
-			bind.button.bindstring = (spellmacro=="STANCE" and "SHAPESHIFTBUTTON" or "BONUSACTIONBUTTON")..bind.button.id;
-		end
+		bind.button.bindstring = (spellmacro=="STANCE" and "SHAPESHIFTBUTTON" or "BONUSACTIONBUTTON")..bind.button.id;
 
 		GameTooltip:SetOwner(bind, "ANCHOR_NONE");
 		GameTooltip:Point("BOTTOM", bind, "TOP", 0, 1);
@@ -241,9 +237,7 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.name = button:GetName();
 
 		if not bind.button.name then return; end
-		if (not bind.button.action or bind.button.action < 1 or bind.button.action > 132) and not (bind.button.keyBoundTarget) then
-			bind.button.bindstring = "CLICK "..bind.button.name..":LeftButton";
-		elseif bind.button.keyBoundTarget then
+		if bind.button.keyBoundTarget then
 			bind.button.bindstring = bind.button.keyBoundTarget
 		else
 			local modact = 1+(bind.button.action-1)%12;
