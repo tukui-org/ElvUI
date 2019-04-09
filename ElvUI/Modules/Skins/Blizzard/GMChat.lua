@@ -5,6 +5,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select = select
 --WoW API / Variables
+local hooksecurefunc = hooksecurefunc
 -- GLOBALS:
 
 local function LoadSkin()
@@ -18,14 +19,23 @@ local function LoadSkin()
 	frame.buttonFrame:Hide()
 
 	local eb = frame.editBox
+	eb:CreateBackdrop("Transparent")
+	eb.backdrop:Hide()
 	eb:SetAltArrowKeyMode(false)
 	for i = 3, 8 do
 		select(i, eb:GetRegions()):SetAlpha(0)
 	end
-	S:HandleEditBox(eb)
 	eb:ClearAllPoints()
 	eb:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 0, -7)
 	eb:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, -32)
+
+
+	hooksecurefunc("ChatEdit_DeactivateChat", function(editBox)
+		if editBox.isGM then eb.backdrop:Hide() end
+	end)
+	hooksecurefunc("ChatEdit_ActivateChat", function(editBox)
+		if editBox.isGM then eb.backdrop:Show() end
+	end)
 
 	local lang = _G.GMChatFrameEditBoxLanguage
 	lang:GetRegions():SetAlpha(0)
@@ -40,10 +50,10 @@ local function LoadSkin()
 	tab:SetPoint("TOPRIGHT", frame, "TOPRIGHT", 0, 28)
 	_G.GMChatTabIcon:SetTexture("Interface\\ChatFrame\\UI-ChatIcon-Blizz")
 
-	S:HandleCloseButton(_G.GMChatFrameCloseButton)
-	_G.GMChatFrameCloseButton:ClearAllPoints()
-	_G.GMChatFrameCloseButton:SetPoint("RIGHT", _G.GMChatTab, -5, 0)
-
+	local close = _G.GMChatFrameCloseButton
+	S:HandleCloseButton(close)
+	close:ClearAllPoints()
+	close:SetPoint("RIGHT", tab, -5, 0)
 end
 
 S:AddCallbackForAddon("Blizzard_GMChatUI", "GMChat", LoadSkin)
