@@ -1,15 +1,25 @@
-### Version 11.09 [  ]
+### Version 11.10 [  ]
 
 **New Additions:**  
 
 
 **Bug Fixes:**  
-Unsnapped the Totem Bar icon textures.  
-Fixed Masque error "ActionBars.lua:1079: attempt to index field 'pushed' (a nil value)".  
-Fixed charge cooldown setting not applying correctly. (#1256)  
+
 
 **Misc. Changes:**  
 
+
+___
+### Version 11.09 [ April 8th 2019 ]
+
+**New Additions:**  
+
+**Bug Fixes:**  
+Unsnapped the Totem Bar icon textures.  
+Fixed Actionbar Masque enabled error "attempt to index field 'pushed' (a nil value)".  
+Fixed charge cooldown setting not applying correctly. (#1256)  
+
+**Misc. Changes:**  
 
 ___
 ### Version 11.08 [ April 8th 2019 ]
