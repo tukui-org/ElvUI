@@ -29,7 +29,6 @@ local function LoadSkin()
 	eb:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 0, -7)
 	eb:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, -32)
 
-
 	hooksecurefunc("ChatEdit_DeactivateChat", function(editBox)
 		if editBox.isGM then eb.backdrop:Hide() end
 	end)
