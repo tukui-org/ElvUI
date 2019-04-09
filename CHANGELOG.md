@@ -5,12 +5,12 @@
 **Bug Fixes:**  
 [Actionbar] Reworked the Show Charge Cooldown a bit so that it won't stack two texts on certain spells.  
 [Actionbar] Refixed the Desaturation option so that it will recolor as soon as the cooldown finishes.  
+[Actionbar] Fixed the pushed texture getting stuck on some actionbars.  
 [Nameplate] Name Only ending was preventing the Target Class Power from displaying correctly.  
 
 **Misc. Changes:**  
 [Nameplate] Target xOffset & DisablePlate for Stagger.  
 [Nameplate] Corrected the display alt power setting.  
-[Actionbar] Removed pushed state from buttons when using Key Down as this means there is no real pushed state.  
 
 ___
 ### Version 11.07 [ April 7th 2019 ]
