@@ -7,7 +7,7 @@
 [Actionbar] Refixed the Desaturation option so that it will recolor as soon as the cooldown finishes.  
 [Actionbar] Fixed the pushed texture getting stuck on some buttons.  
 [Nameplate] Name Only ending was preventing the Target Class Power from displaying correctly.  
-[Nameplate] Option for Target xOffset for Stagger and made this Stagger disables correctly when it should.  
+[Nameplate] Option for Target xOffset for Stagger and made sure Stagger bar disables correctly when it should.  
 [Nameplate] Corrected the Swap to Alt Power setting.  
 [Nameplate] Made sure Target Class Power gets updated correctly.  
 
