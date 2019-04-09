@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-
+Unsnapped the Totem Bar icon textures.  
 
 **Misc. Changes:**  
 
