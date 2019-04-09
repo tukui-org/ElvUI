@@ -1075,8 +1075,7 @@ local function SetButtonDesaturation(button, desaturate, duration)
 end
 
 function AB:LAB_ButtonState(button)
-	if button.config.clickOnDown and (button:GetButtonState() == "PUSHED") then
-		button:SetButtonState('NORMAL')
+	if button.config.clickOnDown then
 		button:GetPushedTexture():Hide()
 	end
 end
