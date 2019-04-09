@@ -1076,13 +1076,13 @@ end
 
 function AB:LAB_MouseUp()
 	if self.config.clickOnDown then
-		self.pushed:SetAlpha(0)
+		self:GetPushedTexture():SetAlpha(0)
 	end
 end
 
 function AB:LAB_MouseDown()
 	if self.config.clickOnDown then
-		self.pushed:SetAlpha(1)
+		self:GetPushedTexture():SetAlpha(1)
 	end
 end
 
