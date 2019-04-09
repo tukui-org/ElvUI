@@ -29,27 +29,34 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 15
+local MINOR_VERSION = 16 -- the real minor version is 74
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
 
+-- Lua functions
+local _G = _G
 local type, error, tostring, tonumber, assert, select = type, error, tostring, tonumber, assert, select
 local setmetatable, wipe, unpack, pairs, next = setmetatable, wipe, unpack, pairs, next
 local str_match, format, tinsert, tremove = string.match, format, tinsert, tremove
 
--- GLOBALS: ATTACK_BUTTON_FLASH_TIME, C_ToyBox, ClearCursor, COOLDOWN_TYPE_LOSS_OF_CONTROL, COOLDOWN_TYPE_NORMAL
--- GLOBALS: CooldownFrame_Set, CreateFrame, FindSpellBookSlotBySpellID, FlyoutHasSpell, GameTooltip, GameTooltip_SetDefaultAnchor
--- GLOBALS: GetActionCharges, GetActionCooldown, GetActionCount, GetActionInfo, GetActionLossOfControlCooldown, GetActionText
--- GLOBALS: GetActionTexture, GetBindingKey, GetBindingText, GetCursorInfo, GetCVar, GetCVarBool, GetItemCooldown, GetItemCount
--- GLOBALS: GetItemIcon, GetLastZoneAbilitySpellTexture, GetMacroInfo, GetMacroSpell, GetModifiedClick, GetMouseFocus, GetSpellCharges
--- GLOBALS: GetSpellCooldown, GetSpellCount, GetSpellInfo, GetSpellTexture, HasAction, HasZoneAbility, InCombatLockdown, IsActionInRange
--- GLOBALS: IsAltKeyDown, IsAttackAction, IsAttackSpell, IsAutoRepeatAction, IsAutoRepeatSpell, IsConsumableAction, IsConsumableItem
--- GLOBALS: IsConsumableSpell, IsControlKeyDown, IsCurrentAction, IsCurrentItem, IsCurrentSpell, IsEquippedAction, IsEquippedItem
--- GLOBALS: IsItemAction, IsItemInRange, IsShiftKeyDown, IsSpellInRange, IsSpellOverlayed, IsStackableAction, IsUsableAction, IsUsableItem
--- GLOBALS: IsUsableSpell, LibStub, PickupAction, PickupCompanion, PickupEquipmentSet, PickupItem, PickupMacro, PickupPetAction, PickupSpell
--- GLOBALS: RANGE_INDICATOR, SetBinding, SetBindingClick, SetClampedTextureRotation, SpellFlyout, TOOLTIP_UPDATE_TIME, UIParent, ZoneAbilityFrame
+-- GLOBALS: LibStub, CreateFrame, InCombatLockdown, ClearCursor, GetCursorInfo, GameTooltip, GameTooltip_SetDefaultAnchor
+-- GLOBALS: GetBindingKey, GetBindingText, SetBinding, SetBindingClick, GetCVar, GetMacroInfo
+-- GLOBALS: PickupAction, PickupItem, PickupMacro, PickupPetAction, PickupSpell, PickupCompanion, PickupEquipmentSet
+-- GLOBALS: CooldownFrame_SetTimer, UIParent, IsSpellOverlayed, SpellFlyout, GetMouseFocus, SetClampedTextureRotation
+-- GLOBALS: GetActionInfo, GetActionTexture, HasAction, GetActionText, GetActionCount, GetActionCooldown, IsAttackAction
+-- GLOBALS: IsAutoRepeatAction, IsEquippedAction, IsCurrentAction, IsConsumableAction, IsUsableAction, IsStackableAction, IsActionInRange
+-- GLOBALS: GetSpellLink, GetMacroSpell, GetSpellTexture, GetSpellCount, GetSpellCooldown, IsAttackSpell, IsCurrentSpell
+-- GLOBALS: FindSpellBookSlotBySpellID, IsUsableSpell, IsConsumableSpell, IsSpellInRange, IsAutoRepeatSpell
+-- GLOBALS: GetItemIcon, GetItemCount, GetItemCooldown, IsEquippedItem, IsCurrentItem, IsUsableItem, IsConsumableItem, IsItemInRange
+-- GLOBALS: GetActionCharges, IsItemAction, GetSpellCharges
+-- GLOBALS: RANGE_INDICATOR, ATTACK_BUTTON_FLASH_TIME, TOOLTIP_UPDATE_TIME
+-- GLOBALS: ZoneAbilityFrame, HasZoneAbility, GetLastZoneAbilitySpellTexture
+
+---- Added by ElvUI
+-- GLOBALS: C_ToyBox, GetSpellInfo, GetCVarBool, GetModifiedClick, IsAltKeyDown, IsControlKeyDown, IsShiftKeyDown, FlyoutHasSpell
+-- GLOBALS: CooldownFrame_Set, GetActionLossOfControlCooldown, COOLDOWN_TYPE_LOSS_OF_CONTROL, COOLDOWN_TYPE_NORMAL
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
@@ -63,9 +70,6 @@ lib.buttonRegistry = lib.buttonRegistry or {}
 lib.activeButtons = lib.activeButtons or {}
 lib.actionButtons = lib.actionButtons or {}
 lib.nonActionButtons = lib.nonActionButtons or {}
-
-lib.ChargeCooldowns = lib.ChargeCooldowns or {}
-lib.NumChargeCooldowns = lib.NumChargeCooldowns or 0
 
 lib.ACTION_HIGHLIGHT_MARKS = lib.ACTION_HIGHLIGHT_MARKS or setmetatable({}, { __index = ACTION_HIGHLIGHT_MARKS })
 
@@ -112,9 +116,8 @@ local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, Upda
 local StartFlash, StopFlash, UpdateFlash, UpdateHotkeys, UpdateRangeTimer, UpdateOverlayGlow
 local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick
 local ShowOverlayGlow, HideOverlayGlow
-local EndChargeCooldown
-local UpdateRange -- Sezz: new method
 
+local UpdateRange -- Sezz: new method
 local InitializeEventHandler, OnEvent, ForAllButtons, OnUpdate
 
 local function GameTooltip_GetOwnerForbidden()
@@ -1095,11 +1098,6 @@ function Update(self, fromUpdateConfig)
 			self:SetAlpha(0.0)
 		end
 		self.cooldown:Hide()
-		self:SetChecked(false)
-
-		if self.chargeCooldown then
-			EndChargeCooldown(self.chargeCooldown)
-		end
 	end
 
 	-- Add a green border if button is an equipped item
@@ -1250,48 +1248,13 @@ function UpdateCount(self)
 	end
 end
 
-function EndChargeCooldown(self)
-	self:Hide()
-	self:SetParent(UIParent)
-	self.parent.chargeCooldown = nil
-	self.parent = nil
-	tinsert(lib.ChargeCooldowns, self)
-end
-
-local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeModRate)
-	if not parent.chargeCooldown then
-		local cooldown = tremove(lib.ChargeCooldowns)
-		if not cooldown then
-			lib.NumChargeCooldowns = lib.NumChargeCooldowns + 1
-			cooldown = CreateFrame("Cooldown", "LAB10ChargeCooldown"..lib.NumChargeCooldowns, parent, "CooldownFrameTemplate");
-			cooldown:SetScript("OnCooldownDone", EndChargeCooldown)
-			cooldown:SetHideCountdownNumbers(true)
-		end
-		cooldown:SetParent(parent)
-		cooldown:SetAllPoints(parent)
-		cooldown:SetFrameStrata("TOOLTIP")
-		cooldown:Show()
-		parent.chargeCooldown = cooldown
-		cooldown.parent = parent
-	end
-	-- set cooldown
-	parent.chargeCooldown:SetDrawBling(parent.config.useDrawBling and (parent.chargeCooldown:GetEffectiveAlpha() > 0.5))
-	parent.chargeCooldown:SetDrawSwipe(parent.config.useDrawSwipeOnCharges)
-	CooldownFrame_Set(parent.chargeCooldown, chargeStart, chargeDuration, true, true, chargeModRate)
-
-	-- update charge cooldown skin when masque is used
-	if Masque and Masque.UpdateCharge then
-		Masque:UpdateCharge(parent)
-	end
-
-	if not chargeStart or chargeStart == 0 then
-		EndChargeCooldown(parent.chargeCooldown)
-	end
-end
-
 local function OnCooldownDone(self)
-	self:SetScript("OnCooldownDone", nil)
-	UpdateCooldown(self:GetParent())
+	local button = self:GetParent()
+	if (self.currentCooldownType == COOLDOWN_TYPE_NORMAL) and button.locStart and (button.locStart > 0) then
+		UpdateCooldown(button)
+	end
+
+	lib.callbacks:Fire("OnCooldownDone", button, self)
 end
 
 function UpdateCooldown(self)
@@ -1299,7 +1262,12 @@ function UpdateCooldown(self)
 	local start, duration, enable, modRate = self:GetCooldown()
 	local charges, maxCharges, chargeStart, chargeDuration, chargeModRate = self:GetCharges()
 
+	self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
 	self.cooldown:SetDrawBling(self.config.useDrawBling and (self.cooldown:GetEffectiveAlpha() > 0.5))
+	self.cooldown:SetDrawSwipe(true)
+
+	self.cooldown.locStart = locStart
+	self.cooldown.locDuration = locDuration
 
 	if (locStart + locDuration) > (start + duration) then
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_LOSS_OF_CONTROL then
@@ -1309,6 +1277,7 @@ function UpdateCooldown(self)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_LOSS_OF_CONTROL
 		end
 		CooldownFrame_Set(self.cooldown, locStart, locDuration, true, true, modRate)
+		self.cooldown.isChargeCooldown = nil
 	else
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_NORMAL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge")
@@ -1316,16 +1285,20 @@ function UpdateCooldown(self)
 			self.cooldown:SetHideCountdownNumbers(self.config.disableCountDownNumbers)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_NORMAL
 		end
-		if locStart > 0 then
-			self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
-		end
 
 		if charges and maxCharges and charges > 0 and charges < maxCharges then
-			StartChargeCooldown(self, chargeStart, chargeDuration, chargeModRate)
-		elseif self.chargeCooldown then
-			EndChargeCooldown(self.chargeCooldown)
+			CooldownFrame_Set(self.cooldown, chargeStart, chargeDuration, true, true, chargeModRate)
+			self.cooldown:SetDrawSwipe(self.config.useDrawSwipeOnCharges)
+			self.cooldown.isChargeCooldown = true
+
+			-- update charge cooldown skin when masque is used
+			if Masque and Masque.UpdateCharge then
+				Masque:UpdateCharge(self)
+			end
+		else
+			CooldownFrame_Set(self.cooldown, start, duration, enable, false, modRate)
+			self.cooldown.isChargeCooldown = nil
 		end
-		CooldownFrame_Set(self.cooldown, start, duration, enable, false, modRate)
 	end
 	lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, enable, modRate)
 end

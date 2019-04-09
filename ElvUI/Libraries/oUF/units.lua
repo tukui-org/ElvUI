@@ -131,11 +131,9 @@ local function updateArenaPreparation(self, event)
 
 		local specID = GetArenaOpponentSpec(id)
 		if(specID) then
-			if(self:IsEnabled()) then
-				-- disable the unit watch so we can forcefully show the object ourselves
-				self:Disable()
-				self:RegisterEvent('ARENA_OPPONENT_UPDATE', updateArenaPreparation)
-			end
+			-- disable the unit watch so we can forcefully show the object ourselves
+			self:Disable()
+			self:RegisterEvent('ARENA_OPPONENT_UPDATE', updateArenaPreparation)
 
 			-- update Health and Power (if available) with "fake" data
 			updateArenaPreparationElements(self, event, 'Health', specID)

@@ -3944,7 +3944,7 @@ E.Options.args.nameplate = {
 					type = "group",
 					name = L["General"],
 					get = function(info) return E.db.nameplates[info[#info]] end,
-					set = function(info, value) E.db.nameplates[info[#info]] = value; NP:SetCVars() end,
+					set = function(info, value) E.db.nameplates[info[#info]] = value; NP:SetCVars(); NP:ConfigureAll(); end,
 					args = {
 						motionType = {
 							type = "select",
@@ -4742,6 +4742,12 @@ E.Options.args.nameplate = {
 							type = "range",
 							min = 4, max = 20, step = 1,
 						},
+						xOffset = {
+							order = 4,
+							name = L["X-Offset"],
+							type = "range",
+							min = -80, max = 80, step = 1,
+						},
 						yOffset = {
 							order = 4,
 							name = L["Y-Offset"],
@@ -4772,7 +4778,7 @@ E.Options.args.nameplate = {
 	},
 }
 
-local ORDER = 10
+ORDER = 10
 for i = 1, 6 do
 	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args['CHI_POWER'..i] = {
 		type = 'color',
