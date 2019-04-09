@@ -6,6 +6,7 @@
 **Bug Fixes:**  
 Unsnapped the Totem Bar icon textures.  
 Fixed Masque error "ActionBars.lua:1079: attempt to index field 'pushed' (a nil value)".  
+Fixed charge cooldown setting not applying correctly. (#1256)  
 
 **Misc. Changes:**  
 
