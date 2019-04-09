@@ -205,11 +205,11 @@ function AB:BindUpdate(button, spellmacro)
 			end
 		GameTooltip:Show();
 	elseif spellmacro=="STANCE" or spellmacro=="PET" then
-		bind.button.id = tonumber(button:GetID());
 		bind.button.name = button:GetName();
 
 		if not bind.button.name then return; end
 
+		bind.button.id = tonumber(button:GetID());
 		bind.button.bindstring = (spellmacro=="STANCE" and "SHAPESHIFTBUTTON" or "BONUSACTIONBUTTON")..bind.button.id;
 
 		GameTooltip:SetOwner(bind, "ANCHOR_NONE");
@@ -233,10 +233,11 @@ function AB:BindUpdate(button, spellmacro)
 			tt:SetScript("OnHide", nil);
 		end);
 	else
-		bind.button.action = tonumber(button.action);
 		bind.button.name = button:GetName();
 
 		if not bind.button.name then return; end
+		bind.button.action = tonumber(button.action);
+
 		if bind.button.keyBoundTarget then
 			bind.button.bindstring = bind.button.keyBoundTarget
 		else
