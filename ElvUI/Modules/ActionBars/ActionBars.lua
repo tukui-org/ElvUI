@@ -1074,10 +1074,21 @@ local function SetButtonDesaturation(button, desaturate, duration)
 	end
 end
 
-function AB:LAB_ButtonState(button)
-	if button.config.clickOnDown then
-		button:GetPushedTexture():Hide()
+function AB:LAB_MouseUp()
+	if self.config.clickOnDown then
+		self.pushed:SetAlpha(0)
 	end
+end
+
+function AB:LAB_MouseDown()
+	if self.config.clickOnDown then
+		self.pushed:SetAlpha(1)
+	end
+end
+
+function AB:LAB_ButtonCreated(button)
+	button:HookScript("OnMouseUp", AB.LAB_MouseUp)
+	button:HookScript("OnMouseDown", AB.LAB_MouseDown)
 end
 
 function AB:LAB_ButtonUpdate(button)
@@ -1124,7 +1135,7 @@ function AB:Initialize()
 	self.Initialized = true
 
 	LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
-	LAB.RegisterCallback(AB, "OnButtonState", AB.LAB_ButtonState)
+	LAB.RegisterCallback(AB, "OnButtonCreated", AB.LAB_ButtonCreated)
 
 	self.fadeParent = CreateFrame("Frame", "Elv_ABFade", _G.UIParent)
 	self.fadeParent:SetAlpha(1 - self.db.globalFadeAlpha)
