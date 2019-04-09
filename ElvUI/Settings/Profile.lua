@@ -4653,7 +4653,7 @@ P.actionbar = {
 	addNewSpells = false,
 	rightClickSelfCast = false,
 	desaturateOnCooldown = false,
-	chargeCooldown = true,
+	chargeCooldown = false,
 
 	bar1 = {
 		enabled = true,
