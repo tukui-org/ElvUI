@@ -1256,6 +1256,13 @@ local function OnCooldownDone(self)
 	lib.callbacks:Fire("OnCooldownDone", button, self)
 end
 
+local function SwipeCooldownDone(self)
+	local button = self:GetParent()
+	button.cooldown:SetDrawSwipe(button.config.useDrawSwipeOnCharges)
+
+	lib.callbacks:Fire("SwipeCooldownDone", button, self)
+end
+
 function UpdateCooldown(self)
 	local locStart, locDuration = self:GetLossOfControlCooldown()
 	local start, duration, enable, modRate = self:GetCooldown()
@@ -1287,18 +1294,21 @@ function UpdateCooldown(self)
 
 		if charges and maxCharges and charges > 0 and charges < maxCharges then
 			CooldownFrame_Set(self.cooldown, chargeStart, chargeDuration, true, true, chargeModRate)
-			self.cooldown:SetDrawSwipe(self.config.useDrawSwipeOnCharges)
 			self.cooldown.isChargeCooldown = true
 
-			if not self.swipeCooldown then
-				local cooldown = CreateFrame("Cooldown", self:GetName().."SwipeCooldown", self, "CooldownFrameTemplate");
-				cooldown:SetDrawBling(self.config.useDrawBling and (cooldown:GetEffectiveAlpha() > 0.5))
-				cooldown:SetHideCountdownNumbers(true)
-				cooldown:SetAllPoints(self)
-				self.swipeCooldown = cooldown
-			end
+			if duration > 0 then
+				if not self.swipeCooldown then
+					local cooldown = CreateFrame("Cooldown", self:GetName().."SwipeCooldown", self, "CooldownFrameTemplate")
+					cooldown:SetScript("OnCooldownDone", SwipeCooldownDone)
+					cooldown:SetDrawBling(self.config.useDrawBling and (cooldown:GetEffectiveAlpha() > 0.5))
+					cooldown:SetHideCountdownNumbers(true)
+					cooldown:SetAllPoints(self)
+					self.swipeCooldown = cooldown
+				end
 
-			CooldownFrame_Set(self.swipeCooldown, start, duration, enable, false, modRate)
+				self.cooldown:SetDrawSwipe(false)
+				CooldownFrame_Set(self.swipeCooldown, start, duration, enable, false, modRate)
+			end
 
 			-- update charge cooldown skin when masque is used
 			if Masque and Masque.UpdateCharge then
