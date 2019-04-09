@@ -1018,7 +1018,7 @@ function AB:StyleFlyout(button)
 	local actionbar = button:GetParent()
 	local parent = actionbar and actionbar:GetParent()
 	local parentName = parent and parent:GetName()
-	if parentName and parentName == "SpellBookSpellIconsFrame" then return end
+	if parentName == "SpellBookSpellIconsFrame" then return end
 
 	--Change arrow direction depending on what bar the button is on
 	local arrowDistance = 2
