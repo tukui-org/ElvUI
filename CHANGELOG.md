@@ -4,10 +4,11 @@
 
 
 **Bug Fixes:**  
-
+Readded the GCD swipe to spells with charges.  
 
 **Misc. Changes:**  
-
+Update GMChat skin.  
+Disabled Actionbar Show Charge Cooldown by default.  
 
 ___
 ### Version 11.09 [ April 8th 2019 ]
