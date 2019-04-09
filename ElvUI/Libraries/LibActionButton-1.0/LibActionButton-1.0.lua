@@ -1098,7 +1098,6 @@ function Update(self, fromUpdateConfig)
 			self:SetAlpha(0.0)
 		end
 		self.cooldown:Hide()
-		self:SetChecked(false)
 	end
 
 	-- Add a green border if button is an equipped item
@@ -1249,13 +1248,13 @@ function UpdateCount(self)
 	end
 end
 
-local function onCooldownDone(self)
+local function OnCooldownDone(self)
 	local button = self:GetParent()
 	if (self.currentCooldownType == COOLDOWN_TYPE_NORMAL) and button.locStart and (button.locStart > 0) then
 		UpdateCooldown(button)
 	end
 
-	lib.callbacks:Fire("OnCooldownDown", button, self)
+	lib.callbacks:Fire("OnCooldownDone", button, self)
 end
 
 function UpdateCooldown(self)
@@ -1263,7 +1262,7 @@ function UpdateCooldown(self)
 	local start, duration, enable, modRate = self:GetCooldown()
 	local charges, maxCharges, chargeStart, chargeDuration, chargeModRate = self:GetCharges()
 
-	self.cooldown:SetScript("OnCooldownDone", onCooldownDone)
+	self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
 	self.cooldown:SetDrawBling(self.config.useDrawBling and (self.cooldown:GetEffectiveAlpha() > 0.5))
 	self.cooldown:SetDrawSwipe(true)
 

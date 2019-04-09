@@ -559,13 +559,13 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local name = button:GetName();
 	local macroText = _G[name.."Name"];
 	local icon = _G[name.."Icon"];
+	local shine = _G[name.."Shine"];
 	local count = _G[name.."Count"];
 	local flash	 = _G[name.."Flash"];
 	local hotkey = _G[name.."HotKey"];
 	local border  = _G[name.."Border"];
 	local normal  = _G[name.."NormalTexture"];
 	local normal2 = button:GetNormalTexture()
-	local shine = _G[name.."Shine"];
 
 	local color = self.db.fontColor
 	local countPosition = self.db.countTextPosition or 'BOTTOMRIGHT'
@@ -946,23 +946,23 @@ function AB:FixKeybindText(button)
 	end
 end
 
-local buttons = 0
-local function SetupFlyoutButton()
-	for i=1, buttons do
+AB.FlyoutButtons = 0
+function AB:SetupFlyoutButton()
+	for i=1, AB.FlyoutButtons do
 		--prevent error if you don't have max amount of buttons
 		if _G["SpellFlyoutButton"..i] then
 			AB:StyleButton(_G["SpellFlyoutButton"..i], nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil)
 			_G["SpellFlyoutButton"..i]:StyleButton()
-			_G["SpellFlyoutButton"..i]:HookScript('OnEnter', function(self)
-				local parent = self:GetParent()
+			_G["SpellFlyoutButton"..i]:HookScript('OnEnter', function(btn)
+				local parent = btn:GetParent()
 				local parentAnchorButton = select(2, parent:GetPoint())
 				if not AB.handledbuttons[parentAnchorButton] then return end
 
 				local parentAnchorBar = parentAnchorButton:GetParent()
 				AB:Bar_OnEnter(parentAnchorBar)
 			end)
-			_G["SpellFlyoutButton"..i]:HookScript('OnLeave', function(self)
-				local parent = self:GetParent()
+			_G["SpellFlyoutButton"..i]:HookScript('OnLeave', function(btn)
+				local parent = btn:GetParent()
 				local parentAnchorButton = select(2, parent:GetPoint())
 				if not AB.handledbuttons[parentAnchorButton] then return end
 
@@ -977,16 +977,16 @@ local function SetupFlyoutButton()
 		end
 	end
 
-	_G.SpellFlyout:HookScript('OnEnter', function(self)
-		local anchorButton = select(2, self:GetPoint())
+	_G.SpellFlyout:HookScript('OnEnter', function(btn)
+		local anchorButton = select(2, btn:GetPoint())
 		if not AB.handledbuttons[anchorButton] then return end
 
 		local parentAnchorBar = anchorButton:GetParent()
 		AB:Bar_OnEnter(parentAnchorBar)
 	end)
 
-	_G.SpellFlyout:HookScript('OnLeave', function(self)
-		local anchorButton = select(2, self:GetPoint())
+	_G.SpellFlyout:HookScript('OnLeave', function(btn)
+		local anchorButton = select(2, btn:GetPoint())
 		if not AB.handledbuttons[anchorButton] then return end
 
 		local parentAnchorBar = anchorButton:GetParent()
@@ -995,7 +995,7 @@ local function SetupFlyoutButton()
 end
 
 function AB:StyleFlyout(button)
-	if(not button.FlyoutArrow or not button.FlyoutArrow:IsShown()) then return end
+	if not button.FlyoutArrow or not button.FlyoutArrow:IsShown() then return end
 
 	if not LAB.buttonRegistry[button] then return end
 	if not button.FlyoutBorder then return end
@@ -1009,28 +1009,23 @@ function AB:StyleFlyout(button)
 	_G.SpellFlyoutBackgroundEnd:SetAlpha(0)
 
 	for i=1, GetNumFlyouts() do
-		local x = GetFlyoutID(i)
-		local _, _, numSlots, isKnown = GetFlyoutInfo(x)
-		if isKnown then
-			if numSlots > buttons then
-				buttons = numSlots
-			end
+		local _, _, numSlots, isKnown = GetFlyoutInfo(GetFlyoutID(i))
+		if numSlots and isKnown and (numSlots > AB.FlyoutButtons) then
+			AB.FlyoutButtons = numSlots
 		end
 	end
 
-	if button:GetParent() and button:GetParent():GetParent() and button:GetParent():GetParent():GetName() and button:GetParent():GetParent():GetName() == "SpellBookSpellIconsFrame" then
-		return
-	end
+	local actionbar = button:GetParent()
+	local parent = actionbar and actionbar:GetParent()
+	local parentName = parent and parent:GetName()
+	if parentName and parentName == "SpellBookSpellIconsFrame" then return end
 
 	--Change arrow direction depending on what bar the button is on
-	local arrowDistance
+	local arrowDistance = 2
 	if ((_G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == button) or GetMouseFocus() == button) then
 		arrowDistance = 5
-	else
-		arrowDistance = 2
 	end
 
-	local actionbar = button:GetParent()
 	if actionbar then
 		local direction = actionbar.db and actionbar.db.flyoutDirection or "AUTOMATIC"
 		local point = E:GetScreenQuadrant(actionbar)
@@ -1060,16 +1055,6 @@ function AB:StyleFlyout(button)
 	end
 end
 
---Update text color when button is updated
-function AB:LAB_ButtonUpdate(button)
-	local color = AB.db.fontColor
-	button.Count:SetTextColor(color.r, color.g, color.b)
-	if button.config and (button.config.outOfRangeColoring ~= "hotkey") then
-		button.HotKey:SetTextColor(color.r, color.g, color.b)
-	end
-end
-LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
-
 local function SetButtonDesaturation(button, desaturate, duration)
 	if desaturate then
 		if not duration then
@@ -1089,11 +1074,26 @@ local function SetButtonDesaturation(button, desaturate, duration)
 	end
 end
 
-local function OnCooldownDown(_, button)
+function AB:LAB_ButtonState(button)
+	if button.config.clickOnDown and (button:GetButtonState() == "PUSHED") then
+		button:SetButtonState('NORMAL')
+		button:GetPushedTexture():Hide()
+	end
+end
+
+function AB:LAB_ButtonUpdate(button)
+	local color = AB.db.fontColor
+	button.Count:SetTextColor(color.r, color.g, color.b)
+	if button.config and (button.config.outOfRangeColoring ~= "hotkey") then
+		button.HotKey:SetTextColor(color.r, color.g, color.b)
+	end
+end
+
+function AB:LAB_CooldownDone(button)
 	SetButtonDesaturation(button, AB.db.desaturateOnCooldown, 0)
 end
 
-local function OnCooldownUpdate(_, button, _, duration)
+function AB:LAB_CooldownUpdate(button, _, duration)
 	if button._state_type ~= "action" then return end
 	button.cooldown.hideText = (button.cooldown.isChargeCooldown and not AB.db.chargeCooldown) or nil
 	SetButtonDesaturation(button, AB.db.desaturateOnCooldown, duration)
@@ -1111,11 +1111,11 @@ function AB:ToggleCooldownOptions()
 	end
 
 	if AB.db.desaturateOnCooldown or AB.db.chargeCooldown then
-		LAB.RegisterCallback(AB, "OnCooldownUpdate", OnCooldownUpdate)
-		LAB.RegisterCallback(AB, "OnCooldownDown", OnCooldownDown)
+		LAB.RegisterCallback(AB, "OnCooldownUpdate", AB.LAB_CooldownUpdate)
+		LAB.RegisterCallback(AB, "OnCooldownDone", AB.LAB_CooldownDone)
 	else
 		LAB.UnregisterCallback(AB, "OnCooldownUpdate")
-		LAB.UnregisterCallback(AB, "OnCooldownDown")
+		LAB.UnregisterCallback(AB, "OnCooldownDone")
 	end
 end
 
@@ -1123,6 +1123,9 @@ function AB:Initialize()
 	self.db = E.db.actionbar
 	if E.private.actionbar.enable ~= true then return; end
 	self.Initialized = true
+
+	LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
+	LAB.RegisterCallback(AB, "OnButtonState", AB.LAB_ButtonState)
 
 	self.fadeParent = CreateFrame("Frame", "Elv_ABFade", _G.UIParent)
 	self.fadeParent:SetAlpha(1 - self.db.globalFadeAlpha)
@@ -1138,7 +1141,6 @@ function AB:Initialize()
 	self.fadeParent:SetScript("OnEvent", self.FadeParent_OnEvent)
 
 	self:DisableBlizzard()
-
 	self:SetupExtraButton()
 	self:SetupMicroBar()
 	self:UpdateBar1Paging()
@@ -1146,14 +1148,15 @@ function AB:Initialize()
 	for i=1, 6 do
 		self:CreateBar(i)
 	end
+
 	self:CreateBarPet()
 	self:CreateBarShapeShift()
 	self:CreateVehicleLeave()
-
 	self:UpdateButtonSettings()
 	self:UpdatePetCooldownSettings()
-
+	self:ToggleCooldownOptions()
 	self:LoadKeyBinder()
+
 	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
 	self:RegisterEvent("PET_BATTLE_CLOSE", "ReassignBindings")
 	self:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
@@ -1164,13 +1167,11 @@ function AB:Initialize()
 		self:ReassignBindings()
 	end
 
-	--We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates
+	-- We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates
 	SetCVar('lockActionBars', (self.db.lockActionBars == true and 1 or 0))
-	_G.LOCK_ACTIONBAR = (self.db.lockActionBars == true and "1" or "0") --Keep an eye on this, in case it taints
+	_G.LOCK_ACTIONBAR = (self.db.lockActionBars == true and "1" or "0") -- Keep an eye on this, in case it taints
 
-	_G.SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
-
-	self:ToggleCooldownOptions()
+	_G.SpellFlyout:HookScript("OnShow", AB.SetupFlyoutButton)
 end
 
 local function InitializeCallback()
