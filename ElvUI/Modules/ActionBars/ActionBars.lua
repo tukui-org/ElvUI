@@ -1087,6 +1087,7 @@ function AB:LAB_MouseDown()
 end
 
 function AB:LAB_ButtonCreated(button)
+	-- this fixes Key Down getting the pushed texture stuck
 	button:HookScript("OnMouseUp", AB.LAB_MouseUp)
 	button:HookScript("OnMouseDown", AB.LAB_MouseDown)
 end
