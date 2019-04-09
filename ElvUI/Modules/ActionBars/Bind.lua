@@ -213,7 +213,7 @@ function AB:BindUpdate(button, spellmacro)
 		if not bind.button.id or bind.button.id < 1 or bind.button.id > 10 then
 			bind.button.bindstring = "CLICK "..bind.button.name..":LeftButton";
 		else
-			bind.button.bindstring = (spellmacro=="STANCE" and "StanceButton" or "BONUSACTIONBUTTON")..bind.button.id;
+			bind.button.bindstring = (spellmacro=="STANCE" and "SHAPESHIFTBUTTON" or "BONUSACTIONBUTTON")..bind.button.id;
 		end
 
 		GameTooltip:SetOwner(bind, "ANCHOR_NONE");
@@ -281,19 +281,16 @@ function AB:BindUpdate(button, spellmacro)
 	end
 end
 
-function AB:RegisterButton(b, override)
+function AB:RegisterButton(b)
 	local stance = _G.StanceButton1:GetScript("OnClick");
 	local pet = _G.PetActionButton1:GetScript("OnClick");
-	local button = SecureActionButton_OnClick;
 	if b.IsProtected and b.IsObjectType and b.GetScript and b:IsObjectType('CheckButton') and b:IsProtected() then
 		local script = b:GetScript("OnClick");
-		if override then
-			b:HookScript("OnEnter", function(s) self:BindUpdate(s); end);
-		elseif script==pet then
+		if script==pet then
 			b:HookScript("OnEnter", function(s) self:BindUpdate(s, "PET"); end);
 		elseif script==stance then
 			b:HookScript("OnEnter", function(s) self:BindUpdate(s, "STANCE"); end);
-		elseif (script==button) then
+		else
 			b:HookScript("OnEnter", function(s) self:BindUpdate(s); end);
 		end
 	end
@@ -383,7 +380,7 @@ function AB:LoadKeyBinder()
 	end
 
 	for b in pairs(self.handledbuttons) do
-		self:RegisterButton(b, true);
+		self:RegisterButton(b);
 	end
 
 	if not IsAddOnLoaded("Blizzard_MacroUI") then
