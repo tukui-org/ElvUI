@@ -208,7 +208,7 @@ function NP:UpdateTargetPlate(nameplate)
 		NP:Update_Stagger(nameplate)
 	end
 
---	nameplate:UpdateAllElements('OnShow')
+	nameplate:UpdateAllElements('OnShow')
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
