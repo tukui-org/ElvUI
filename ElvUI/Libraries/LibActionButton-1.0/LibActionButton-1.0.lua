@@ -1308,6 +1308,8 @@ function UpdateCooldown(self)
 
 				self.cooldown:SetDrawSwipe(false)
 				CooldownFrame_Set(self.swipeCooldown, start, duration, enable, false, modRate)
+			else
+				self.cooldown:SetDrawSwipe(self.config.useDrawSwipeOnCharges)
 			end
 
 			-- update charge cooldown skin when masque is used
