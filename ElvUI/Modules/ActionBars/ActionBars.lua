@@ -1076,13 +1076,13 @@ end
 
 function AB:LAB_MouseUp()
 	if self.config.clickOnDown then
-		self.pushed:SetAlpha(0)
+		self:GetPushedTexture():SetAlpha(0)
 	end
 end
 
 function AB:LAB_MouseDown()
 	if self.config.clickOnDown then
-		self.pushed:SetAlpha(1)
+		self:GetPushedTexture():SetAlpha(1)
 	end
 end
 
@@ -1106,14 +1106,14 @@ end
 
 function AB:LAB_CooldownUpdate(button, _, duration)
 	if button._state_type ~= "action" then return end
-	button.cooldown.hideText = (button.cooldown.isChargeCooldown and not AB.db.chargeCooldown) or nil
+	button.cooldown.hideText = (button.cooldown.isChargeCooldown and (AB.db.chargeCooldown == false)) or nil
 	SetButtonDesaturation(button, AB.db.desaturateOnCooldown, duration)
 end
 
 function AB:ToggleCooldownOptions()
 	for button in pairs(LAB.actionButtons) do
 		local oldstate = button.cooldown.hideText
-		button.cooldown.hideText = (button.cooldown.isChargeCooldown and not AB.db.chargeCooldown) or nil
+		button.cooldown.hideText = (button.cooldown.isChargeCooldown and (AB.db.chargeCooldown == false)) or nil
 		if button.cooldown.timer and (oldstate ~= button.cooldown.hideText) then
 			E:Cooldown_ForceUpdate(button.cooldown.timer)
 		end
@@ -1121,7 +1121,7 @@ function AB:ToggleCooldownOptions()
 		SetButtonDesaturation(button, AB.db.desaturateOnCooldown)
 	end
 
-	if AB.db.desaturateOnCooldown or AB.db.chargeCooldown then
+	if AB.db.desaturateOnCooldown or (AB.db.chargeCooldown == false) then
 		LAB.RegisterCallback(AB, "OnCooldownUpdate", AB.LAB_CooldownUpdate)
 		LAB.RegisterCallback(AB, "OnCooldownDone", AB.LAB_CooldownDone)
 	else
