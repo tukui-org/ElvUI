@@ -7,7 +7,7 @@
 
 
 **Misc. Changes:**  
-
+Unitframe Status Bars will now sync their textures onto the background space when not using transparent.  
 
 ___
 ### Version 11.10 [ April 9th 2019 ]
