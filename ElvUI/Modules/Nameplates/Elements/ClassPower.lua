@@ -34,9 +34,9 @@ function NP:ClassPower_UpdateColor(powerType)
 
 		self[i]:SetStatusBarColor(r, g, b)
 		local bg = self[i].bg
-		if(bg) then
+		if bg then
 			local mu = bg.multiplier or 1
-			bg:SetColorTexture(r * mu, g * mu, b * mu)
+			bg:SetVertexColor(r * mu, g * mu, b * mu)
 		end
 	end
 end
@@ -61,10 +61,11 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:SetFrameLevel(5)
 
 	local Max = max(MAX_POINTS[E.myclass] or 0, _G.MAX_COMBO_POINTS)
+	local texture = E.LSM:Fetch('statusbar', NP.db.statusbar)
 
 	for i = 1, Max do
 		ClassPower[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
-		ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+		ClassPower[i]:SetStatusBarTexture(texture)
 		ClassPower[i]:SetFrameStrata(nameplate:GetFrameStrata())
 		ClassPower[i]:SetFrameLevel(6)
 		NP.StatusBars[ClassPower[i]] = true
@@ -73,10 +74,11 @@ function NP:Construct_ClassPower(nameplate)
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
 
-		ClassPower[i].bg = ClassPower:CreateTexture(nil, 'BORDER')
+		ClassPower[i].bg = ClassPower:CreateTexture(nameplate:GetDebugName()..'ClassPower'..i..'bg', 'BORDER')
 		ClassPower[i].bg:SetAllPoints(ClassPower[i])
 		ClassPower[i].bg:SetSnapToPixelGrid(false)
 		ClassPower[i].bg:SetTexelSnappingBias(0)
+		ClassPower[i].bg:SetTexture(texture)
 		ClassPower[i].bg.multiplier = .35
 	end
 
@@ -84,8 +86,9 @@ function NP:Construct_ClassPower(nameplate)
 		ClassPower.Hide = ClassPower.Show
 		ClassPower:Show()
 		for i = 1, Max do
-			ClassPower[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
-			ClassPower[i].bg:SetColorTexture(NP.db.colors.classResources.comboPoints[i].r, NP.db.colors.classResources.comboPoints[i].g, NP.db.colors.classResources.comboPoints[i].b)
+			ClassPower[i]:SetStatusBarTexture(texture)
+			ClassPower[i].bg:SetTexture(texture)
+			ClassPower[i].bg:SetVertexColor(NP.db.colors.classResources.comboPoints[i].r, NP.db.colors.classResources.comboPoints[i].g, NP.db.colors.classResources.comboPoints[i].b)
 		end
 	end
 
@@ -159,9 +162,11 @@ function NP:Construct_Runes(nameplate)
 	Runes.UpdateColor = E.noop
 	Runes.PostUpdate = NP.Runes_PostUpdate
 
+	local texture = E.LSM:Fetch('statusbar', NP.db.statusbar)
+
 	for i = 1, 6 do
 		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
-		Runes[i]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+		Runes[i]:SetStatusBarTexture(texture)
 		Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
 		NP.StatusBars[Runes[i]] = true
 
@@ -169,11 +174,11 @@ function NP:Construct_Runes(nameplate)
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
 
-		Runes[i].bg = Runes[i]:CreateTexture(nil, 'BORDER')
+		Runes[i].bg = Runes[i]:CreateTexture(nameplate:GetDebugName()..'Runes'..i..'bg', 'BORDER')
 		Runes[i].bg:SetAllPoints()
 		Runes[i].bg:SetSnapToPixelGrid(false)
 		Runes[i].bg:SetTexelSnappingBias(0)
-		Runes[i].bg:SetTexture(E.media.blankTex)
+		Runes[i].bg:SetTexture(texture)
 		Runes[i].bg:SetVertexColor(NP.db.colors.classResources.DEATHKNIGHT.r * .35, NP.db.colors.classResources.DEATHKNIGHT.g * .35, NP.db.colors.classResources.DEATHKNIGHT.b * .35)
 	end
 
