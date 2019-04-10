@@ -100,27 +100,15 @@ local function BuildABConfig()
 					AB:UpdatePetCooldownSettings()
 				end,
 			},
-			useDrawSwipeOnCharges = {
-				order = 9,
-				type = "toggle",
-				name = L["Use Draw Swipe"],
-				desc = L["Shows a swipe animation when a spell is recharging but still has charges left."],
-				get = function(info) return E.db.actionbar.useDrawSwipeOnCharges end,
-				set = function(info, value) E.db.actionbar.useDrawSwipeOnCharges = value;
-					for _, bar in pairs(AB.handledBars) do
-						AB:UpdateButtonConfig(bar, bar.bindButtons)
-					end
-				end,
-			},
 			addNewSpells = {
-				order = 10,
+				order = 9,
 				type = "toggle",
 				name = L["Auto Add New Spells"],
 				desc = L["Allow newly learned spells to be automatically placed on an empty actionbar slot."],
 				set = function(info, value) E.db.actionbar.addNewSpells = value; AB:IconIntroTracker_Toggle() end,
 			},
 			rightClickSelfCast = {
-				order = 11,
+				order = 10,
 				type = "toggle",
 				name = L["RightClick Self-Cast"],
 				set = function(info, value)
@@ -130,26 +118,45 @@ local function BuildABConfig()
 					end
 				end,
 			},
-			desaturateOnCooldown = {
-				order = 12,
+			useDrawSwipeOnCharges = {
+				order = 11,
 				type = "toggle",
-				name = L["Desaturate On Cooldown"],
-				set = function(info, value)
-					E.db.actionbar.desaturateOnCooldown = value;
-					AB:ToggleCooldownOptions()
+				name = L["Charge Draw Swipe"],
+				desc = L["Shows a swipe animation when a spell is recharging but still has charges left."],
+				get = function(info) return E.db.actionbar.useDrawSwipeOnCharges end,
+				set = function(info, value) E.db.actionbar.useDrawSwipeOnCharges = value;
+					for _, bar in pairs(AB.handledBars) do
+						AB:UpdateButtonConfig(bar, bar.bindButtons)
+					end
 				end,
 			},
 			chargeCooldown = {
-				order = 13,
+				order = 12,
 				type = "toggle",
-				name = L["Show Charge Cooldown"],
+				name = L["Charge Cooldown Text"],
 				set = function(info, value)
 					E.db.actionbar.chargeCooldown = value;
 					AB:ToggleCooldownOptions()
 				end,
 			},
-			movementModifier = {
+			desaturateOnCooldown = {
+				order = 13,
+				type = "toggle",
+				name = L["Desaturate Cooldowns"],
+				customWidth = 180,
+				set = function(info, value)
+					E.db.actionbar.desaturateOnCooldown = value;
+					AB:ToggleCooldownOptions()
+				end,
+			},
+			spacer = {
 				order = 14,
+				type = "description",
+				name = " ",
+				width = 'full',
+			},
+			movementModifier = {
+				order = 15,
 				type = 'select',
 				name = PICKUP_ACTION_KEY_TEXT,
 				desc = L["The button you must hold down in order to drag an ability to another action button."],
@@ -162,7 +169,7 @@ local function BuildABConfig()
 				},
 			},
 			globalFadeAlpha = {
-				order = 15,
+				order = 16,
 				type = 'range',
 				name = L["Global Fade Transparency"],
 				desc = L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."],

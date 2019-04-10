@@ -205,16 +205,12 @@ function AB:BindUpdate(button, spellmacro)
 			end
 		GameTooltip:Show();
 	elseif spellmacro=="STANCE" or spellmacro=="PET" then
-		bind.button.id = tonumber(button:GetID());
 		bind.button.name = button:GetName();
 
 		if not bind.button.name then return; end
 
-		if not bind.button.id or bind.button.id < 1 or bind.button.id > 10 then
-			bind.button.bindstring = "CLICK "..bind.button.name..":LeftButton";
-		else
-			bind.button.bindstring = (spellmacro=="STANCE" and "StanceButton" or "BONUSACTIONBUTTON")..bind.button.id;
-		end
+		bind.button.id = tonumber(button:GetID());
+		bind.button.bindstring = (spellmacro=="STANCE" and "SHAPESHIFTBUTTON" or "BONUSACTIONBUTTON")..bind.button.id;
 
 		GameTooltip:SetOwner(bind, "ANCHOR_NONE");
 		GameTooltip:Point("BOTTOM", bind, "TOP", 0, 1);
@@ -237,13 +233,12 @@ function AB:BindUpdate(button, spellmacro)
 			tt:SetScript("OnHide", nil);
 		end);
 	else
-		bind.button.action = tonumber(button.action);
 		bind.button.name = button:GetName();
 
 		if not bind.button.name then return; end
-		if (not bind.button.action or bind.button.action < 1 or bind.button.action > 132) and not (bind.button.keyBoundTarget) then
-			bind.button.bindstring = "CLICK "..bind.button.name..":LeftButton";
-		elseif bind.button.keyBoundTarget then
+		bind.button.action = tonumber(button.action);
+
+		if bind.button.keyBoundTarget then
 			bind.button.bindstring = bind.button.keyBoundTarget
 		else
 			local modact = 1+(bind.button.action-1)%12;
@@ -281,19 +276,16 @@ function AB:BindUpdate(button, spellmacro)
 	end
 end
 
-function AB:RegisterButton(b, override)
+function AB:RegisterButton(b)
 	local stance = _G.StanceButton1:GetScript("OnClick");
 	local pet = _G.PetActionButton1:GetScript("OnClick");
-	local button = SecureActionButton_OnClick;
 	if b.IsProtected and b.IsObjectType and b.GetScript and b:IsObjectType('CheckButton') and b:IsProtected() then
 		local script = b:GetScript("OnClick");
-		if override then
-			b:HookScript("OnEnter", function(s) self:BindUpdate(s); end);
-		elseif script==pet then
+		if script==pet then
 			b:HookScript("OnEnter", function(s) self:BindUpdate(s, "PET"); end);
 		elseif script==stance then
 			b:HookScript("OnEnter", function(s) self:BindUpdate(s, "STANCE"); end);
-		elseif (script==button) then
+		else
 			b:HookScript("OnEnter", function(s) self:BindUpdate(s); end);
 		end
 	end
@@ -383,7 +375,7 @@ function AB:LoadKeyBinder()
 	end
 
 	for b in pairs(self.handledbuttons) do
-		self:RegisterButton(b, true);
+		self:RegisterButton(b);
 	end
 
 	if not IsAddOnLoaded("Blizzard_MacroUI") then

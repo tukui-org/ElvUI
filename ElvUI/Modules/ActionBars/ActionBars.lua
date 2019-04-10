@@ -1055,23 +1055,40 @@ function AB:StyleFlyout(button)
 	end
 end
 
-local function SetButtonDesaturation(button, desaturate, duration)
-	if desaturate then
-		if not duration then
-			duration = select(2, button:GetCooldown())
-		end
+function AB:UpdateChargeCooldown(button, duration)
+	local cd = button and button.chargeCooldown
+	if not cd then return end
 
-		if duration and duration > 1.5 then
-			button.icon:SetDesaturated(true)
-			button.saturationLocked = true
-		else
-			button.icon:SetDesaturated(false)
-			button.saturationLocked = nil
+	local oldstate = cd.hideText
+	cd.hideText = (duration and duration > 1.5) or (AB.db.chargeCooldown == false) or nil
+	if cd.timer and (oldstate ~= cd.hideText) then
+		E:Cooldown_ForceUpdate(cd.timer)
+	end
+end
+
+function AB:ToggleCooldownOptions()
+	for button in pairs(LAB.actionButtons) do
+		if button._state_type == "action" then
+			local duration = select(2, button:GetCooldown())
+			AB:UpdateChargeCooldown(button, duration)
+			AB:SetButtonDesaturation(button, duration)
 		end
+	end
+end
+
+function AB:SetButtonDesaturation(button, duration)
+	if AB.db.desaturateOnCooldown and (duration and duration > 1.5) then
+		button.icon:SetDesaturated(true)
+		button.saturationLocked = true
 	else
 		button.icon:SetDesaturated(false)
 		button.saturationLocked = nil
 	end
+end
+
+function AB:LAB_ChargeCreated(_, cd)
+	cd.CooldownOverride = 'actionbar'
+	E:RegisterCooldown(cd)
 end
 
 function AB:LAB_MouseUp()
@@ -1101,32 +1118,13 @@ function AB:LAB_ButtonUpdate(button)
 end
 
 function AB:LAB_CooldownDone(button)
-	SetButtonDesaturation(button, AB.db.desaturateOnCooldown, 0)
+	AB:SetButtonDesaturation(button, 0)
 end
 
 function AB:LAB_CooldownUpdate(button, _, duration)
-	if button._state_type ~= "action" then return end
-	button.cooldown.hideText = (button.cooldown.isChargeCooldown and (AB.db.chargeCooldown == false)) or nil
-	SetButtonDesaturation(button, AB.db.desaturateOnCooldown, duration)
-end
-
-function AB:ToggleCooldownOptions()
-	for button in pairs(LAB.actionButtons) do
-		local oldstate = button.cooldown.hideText
-		button.cooldown.hideText = (button.cooldown.isChargeCooldown and (AB.db.chargeCooldown == false)) or nil
-		if button.cooldown.timer and (oldstate ~= button.cooldown.hideText) then
-			E:Cooldown_ForceUpdate(button.cooldown.timer)
-		end
-
-		SetButtonDesaturation(button, AB.db.desaturateOnCooldown)
-	end
-
-	if AB.db.desaturateOnCooldown or (AB.db.chargeCooldown == false) then
-		LAB.RegisterCallback(AB, "OnCooldownUpdate", AB.LAB_CooldownUpdate)
-		LAB.RegisterCallback(AB, "OnCooldownDone", AB.LAB_CooldownDone)
-	else
-		LAB.UnregisterCallback(AB, "OnCooldownUpdate")
-		LAB.UnregisterCallback(AB, "OnCooldownDone")
+	if button._state_type == "action" then
+		AB:UpdateChargeCooldown(button, duration)
+		AB:SetButtonDesaturation(button, duration)
 	end
 end
 
@@ -1137,6 +1135,9 @@ function AB:Initialize()
 
 	LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
 	LAB.RegisterCallback(AB, "OnButtonCreated", AB.LAB_ButtonCreated)
+	LAB.RegisterCallback(AB, "OnChargeCreated", AB.LAB_ChargeCreated)
+	LAB.RegisterCallback(AB, "OnCooldownUpdate", AB.LAB_CooldownUpdate)
+	LAB.RegisterCallback(AB, "OnCooldownDone", AB.LAB_CooldownDone)
 
 	self.fadeParent = CreateFrame("Frame", "Elv_ABFade", _G.UIParent)
 	self.fadeParent:SetAlpha(1 - self.db.globalFadeAlpha)
