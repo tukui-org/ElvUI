@@ -98,7 +98,7 @@ L["Gold"] = "金錢"
 L["goldabbrev"] = "|cffffd700金|r" --Also used in Bags
 L["Hands"] = "手部"
 L["Head"] = "頭部"
-L["Hold Shift + Right Click:"] = "按住 Shift 並按滑鼠右鍵"
+L["Hold Shift + Right Click:"] = "按住 Shift + 滑鼠右鍵"
 L["Home Latency:"] = "本機延遲:"
 L["Home Protocol:"] = "本機協議:"
 L["HP"] = "生命值"
@@ -290,8 +290,8 @@ L["Zone Ability"] = "區域技能"
 L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, 移好後請點擊「鎖定」.
 
 選項:
-  LeftClick - Toggle Nudge Frame.
-  右鍵 - Open Config Section.
+  左鍵 - 開啟微調窗口.
+  右鍵 - 開啟對應設定.
   Shift + 右鍵 - 暫時隱藏定位器.
   Ctrl + 右鍵 - 重置定位器位置到預設值.
 ]=]
@@ -321,7 +321,7 @@ L["You don't have enough money to repair."] = "沒有足夠的資金來修復."
 L["You must be at a vendor."] = "你必須與商人對話."
 L["Your items have been repaired for: "] = "裝備已修復，共支出："
 L["Your items have been repaired using guild bank funds for: "] = "已使用公會資金修復裝備，共支出："
-L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."] = "|cFFE30000LUA錯誤已接收, 你可以在脫離戰鬥後檢查.|r"
+L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."] = "|cFFE30000接收到了Lua錯誤, 你可以在脫離戰鬥後檢查.|r"
 
 --Static Popups
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "你所做的改動只會影響到使用這個插件的本角色, 你需要重新加載介面才能使改動生效."
@@ -339,10 +339,10 @@ L["Delete gray items?"] = "刪除灰色物品?"
 L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = "偵測到你的 ElvUI 設定插件已過期. 這可能是因為你的 Tukui 客戶端已過期. 請拜訪我們的下載頁面並更新 Tukui 客戶端然後再重新安裝 ElvUI. ElvUI 設定插件過期會造成某些選項遺失"
 L["Disable Warning"] = "停用警告"
 L["Discard"] = "取消"
-L["Do you enjoy the new ElvUI?"] = "你享受新版的 ElvUI嗎?"
+L["Do you enjoy the new ElvUI?"] = "你享受新版的ElvUI嗎?"
 L["Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?"] = "你發誓在你沒停用其他插件或是模組前不會到技術支援發文詢問某些功能失效嗎?"
-L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI 以過期超過5個版本. 你可以在 www.tukui.org 下載到最新的版本. 購買會員可以使用 Tukui 客戶端自動下載最新的 ElvUI."
-L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI 以過期. 你可以在 www.tukui.org 下載到最新的版本. 購買會員可以使用 Tukui 客戶端自動下載最新的 ElvUI."
+L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI 已過期超過5個版本. 你可以在 www.tukui.org 下載到最新的版本. 購買會員可以使用 Tukui 客戶端自動下載最新的 ElvUI."
+L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI 已過期. 你可以在 www.tukui.org 下載到最新的版本. 購買會員可以使用 Tukui 客戶端自動下載最新的 ElvUI."
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI 需要進行資料庫優化, 請稍待."
 L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = "ElvUI 在遊戲運行時被更新了. 請重開遊戲以確保文件的完整更新."
 L["Error resetting UnitFrame."] = "重置單位框架錯誤"
@@ -376,7 +376,7 @@ L["A raid marker feature is available by pressing Escape -> Keybinds scroll to t
 L["ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable this from the profiles tab."] = "ElvUI 可以根據你所使用的天賦自動套用不同的裝備組. 你可以在設定檔中啟用此功能."
 L["For technical support visit us at http://www.tukui.org."] = "如需技術支援請至 http://www.tukui.org."
 L["If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them."] = "如果你不慎移除了對話框, 你可以重新安裝一次重置他們."
-L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing."] = "如果你使用 ElvUI 時遇到問題, 請嘗試停用除了ElvUI之外的插件. 請記住 ElvUI 是一套全套的 UI 替換插件, 你不能同時使用不同的插件來完成同一件事."
+L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing."] = "如果你使用 ElvUI 時遇到問題, 請嘗試停用除了ElvUI之外的插件. 請記住ElvUI是一套全套的UI替換插件, 你不能同時使用不同的插件來完成同一件事."
 L["The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this."] = "你可以使用 /focus 指令設定目前目標為焦點目標. 建議你可以寫一個聚集來做這件事"
 L["To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu."] = "你可以通過按住Shift拖動技能條中的按鍵. 你可以在Blizzard的快捷列設定中更改按鍵."
 L["To setup which channels appear in which chat frame, right click the chat tab and go to settings."] = "你可以通過右鍵點擊對話框標籤欄設定你需要在對話框內顯示的頻道."
@@ -396,14 +396,14 @@ L.RED_ENABLE = '|cFFff3333啟用|r'
 L.GREEN_ENABLE = '|cFF33ff33啟用|r'
 
 -- Install
-L["Auras Set"] = true
-L["Aura Bars & Icons"] = true
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
+L["Auras Set"] = "光環設定"
+L["Aura Bars & Icons"] = "光環條及圖標"
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = "選擇你想用在 ElvUI 單位框架上的光環系統類型. 選擇光環條及圖標將會同時顯示光環條及光環圖標, 如果選擇圖標就只會顯示光環圖標."
 -- Static Popups
-L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = true
-L["Continue"] = true
+L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = "你正在使用 CPU 使用記錄. 這將導致性能低下. 你想要關閉它還是繼續?"
+L["Continue"] = "下一步"
 -- DataText
 L["(Modifer Click) Collect Garbage"] = true
 -- Misc
-L["Item Level:"] = true
-L["Item level: %.2f"] = true
+L["Item Level:"] = "物品等級:"
+L["Item level: %.2f"] =  "物品等級: %.2f"
