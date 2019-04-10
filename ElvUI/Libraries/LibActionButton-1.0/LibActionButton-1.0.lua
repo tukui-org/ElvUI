@@ -1266,6 +1266,7 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeMo
 			cooldown = CreateFrame("Cooldown", "LAB10ChargeCooldown"..lib.NumChargeCooldowns, parent, "CooldownFrameTemplate");
 			cooldown:SetScript("OnCooldownDone", EndChargeCooldown)
 			cooldown:SetHideCountdownNumbers(true)
+			cooldown:SetDrawBling(false)
 
 			lib.callbacks:Fire("OnChargeCreated", parent, cooldown)
 		end
@@ -1276,8 +1277,8 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeMo
 		parent.chargeCooldown = cooldown
 		cooldown.parent = parent
 	end
+
 	-- set cooldown
-	parent.chargeCooldown:SetDrawBling(parent.config.useDrawBling and (parent.chargeCooldown:GetEffectiveAlpha() > 0.5))
 	CooldownFrame_Set(parent.chargeCooldown, chargeStart, chargeDuration, true, true, chargeModRate)
 
 	-- update charge cooldown skin when masque is used
