@@ -1,7 +1,18 @@
-### Version 11.10 [  ]
+### Version 11.11 [  ]
 
 **New Additions:**  
 
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 11.10 [ April 9th 2019 ]
+
+**New Additions:**  
 
 **Bug Fixes:**  
 Fixed Keybind Mode (/kb) to once again work on Stance and Pet buttons.  
