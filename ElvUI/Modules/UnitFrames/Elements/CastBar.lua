@@ -428,7 +428,7 @@ function UF:PostCastStart(unit)
 		t = ElvUF.colors.reaction[UnitReaction(unit, "player")]
 	end
 
-	if(t) then
+	if t then
 		r, g, b = t[1], t[2], t[3]
 	end
 
@@ -438,12 +438,7 @@ function UF:PostCastStart(unit)
 
 	self:SetStatusBarColor(r, g, b)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
-	if self.bg:IsShown() then
-		self.bg:SetColorTexture(r * 0.25, g * 0.25, b * 0.25)
-
-		local _, _, _, alpha = E:GetBackdropColor(self.backdrop)
-		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)
-	end
+	UF.UpdateBackdropTextureColor(self, r, g, b)
 end
 
 function UF:PostCastStop(unit)
@@ -478,10 +473,5 @@ function UF:PostCastInterruptible(unit)
 	self:SetStatusBarColor(r, g, b)
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
-	if self.bg:IsShown() then
-		self.bg:SetColorTexture(r * 0.25, g * 0.25, b * 0.25)
-
-		local _, _, _, alpha = E:GetBackdropColor(self.backdrop)
-		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)
-	end
+	UF.UpdateBackdropTextureColor(self, r, g, b)
 end

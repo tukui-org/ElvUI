@@ -1356,7 +1356,7 @@ function UF:UpdateBackdropTextureColor(r, g, b)
 		end
 	end
 
-	if self.bg and self.bg:IsObjectType('Texture') and not self.bg.multiplier then
+	if self.bg and self.bg:IsObjectType('Texture') then
 		self.bg:SetVertexColor(r * m, g * m, b * m)
 	end
 end
