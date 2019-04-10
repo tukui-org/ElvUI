@@ -36,6 +36,7 @@ local UnitHealthMax = UnitHealthMax
 local UnitOnTaxi = UnitOnTaxi
 local UnregisterStateDriver = UnregisterStateDriver
 local VehicleExit = VehicleExit
+local GetSpellCooldown = GetSpellCooldown
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 
@@ -1055,13 +1056,31 @@ function AB:StyleFlyout(button)
 	end
 end
 
-local function SetButtonDesaturation(button, desaturate, duration)
+function AB:UpdateChargeCooldown(button, duration)
+	local cd = button and button.chargeCooldown
+	if not cd then return end
+	if not cd.isRegisteredCooldown then
+		cd.CooldownOverride = 'actionbar'
+		E:RegisterCooldown(cd)
+	end
+
+	local oldstate = cd.hideText
+	if not duration then duration = select(2, button:GetCooldown()) end
+	local _, gcd = GetSpellCooldown(61304)
+	cd.hideText = (duration and duration > gcd) or (AB.db.chargeCooldown == false) or nil
+	if cd.timer and (oldstate ~= cd.hideText) then
+		E:Cooldown_ForceUpdate(cd.timer)
+	end
+end
+
+function AB:SetButtonDesaturation(button, desaturate, duration)
 	if desaturate then
 		if not duration then
 			duration = select(2, button:GetCooldown())
 		end
 
-		if duration and duration > 1.5 then
+		local _, gcd = GetSpellCooldown(61304)
+		if duration and duration > gcd then
 			button.icon:SetDesaturated(true)
 			button.saturationLocked = true
 		else
@@ -1101,24 +1120,20 @@ function AB:LAB_ButtonUpdate(button)
 end
 
 function AB:LAB_CooldownDone(button)
-	SetButtonDesaturation(button, AB.db.desaturateOnCooldown, 0)
+	AB:SetButtonDesaturation(button, AB.db.desaturateOnCooldown, 0)
 end
 
 function AB:LAB_CooldownUpdate(button, _, duration)
 	if button._state_type ~= "action" then return end
-	button.cooldown.hideText = (button.cooldown.isChargeCooldown and (AB.db.chargeCooldown == false)) or nil
-	SetButtonDesaturation(button, AB.db.desaturateOnCooldown, duration)
+
+	AB:UpdateChargeCooldown(button, duration)
+	AB:SetButtonDesaturation(button, AB.db.desaturateOnCooldown, duration)
 end
 
 function AB:ToggleCooldownOptions()
 	for button in pairs(LAB.actionButtons) do
-		local oldstate = button.cooldown.hideText
-		button.cooldown.hideText = (button.cooldown.isChargeCooldown and (AB.db.chargeCooldown == false)) or nil
-		if button.cooldown.timer and (oldstate ~= button.cooldown.hideText) then
-			E:Cooldown_ForceUpdate(button.cooldown.timer)
-		end
-
-		SetButtonDesaturation(button, AB.db.desaturateOnCooldown)
+		AB:UpdateChargeCooldown(button)
+		AB:SetButtonDesaturation(button, AB.db.desaturateOnCooldown)
 	end
 
 	if AB.db.desaturateOnCooldown or (AB.db.chargeCooldown == false) then
