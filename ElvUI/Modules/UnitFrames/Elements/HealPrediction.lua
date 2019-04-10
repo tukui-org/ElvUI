@@ -8,41 +8,55 @@ local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 function UF:Construct_HealComm(frame)
 	local myBar = CreateFrame('StatusBar', nil, frame.Health)
 	myBar:SetFrameLevel(11)
+	myBar.parent = frame.Health
 	UF.statusbars[myBar] = true
 	myBar:Hide()
 
 	local otherBar = CreateFrame('StatusBar', nil, frame.Health)
 	otherBar:SetFrameLevel(11)
+	otherBar.parent = frame.Health
 	UF.statusbars[otherBar] = true
 	otherBar:Hide()
 
 	local absorbBar = CreateFrame('StatusBar', nil, frame.Health)
 	absorbBar:SetFrameLevel(11)
+	absorbBar.parent = frame.Health
 	UF.statusbars[absorbBar] = true
 	absorbBar:Hide()
 
 	local healAbsorbBar = CreateFrame('StatusBar', nil, frame.Health)
 	healAbsorbBar:SetFrameLevel(11)
+	healAbsorbBar.parent = frame.Health
 	UF.statusbars[healAbsorbBar] = true
 	healAbsorbBar:Hide()
 
 	local overAbsorb = frame.Health:CreateTexture(nil, "ARTWORK")
-	overAbsorb:SetTexture(E.media.blankTex)
+	overAbsorb.parent = frame.Health
+	UF.statusbars[overAbsorb] = true
 	overAbsorb:Hide()
 
 	local overHealAbsorb = frame.Health:CreateTexture(nil, "ARTWORK")
-	overHealAbsorb:SetTexture(E.media.blankTex)
+	overHealAbsorb.parent = frame.Health
+	UF.statusbars[overHealAbsorb] = true
 	overHealAbsorb:Hide()
+
+	local texture = (not frame.Health.isTransparent and frame.Health:GetStatusBarTexture()) or E.media.blankTex
+	UF:Update_StatusBar(myBar, texture)
+	UF:Update_StatusBar(otherBar, texture)
+	UF:Update_StatusBar(absorbBar, texture)
+	UF:Update_StatusBar(healAbsorbBar, texture)
+	UF:Update_StatusBar(overAbsorb, texture)
+	UF:Update_StatusBar(overHealAbsorb, texture)
 
 	return {
 		myBar = myBar,
 		otherBar = otherBar,
 		absorbBar = absorbBar,
 		healAbsorbBar = healAbsorbBar,
-		maxOverflow = 1,
 		overAbsorb_ = overAbsorb,
 		overHealAbsorb_ = overHealAbsorb,
 		PostUpdate = UF.UpdateHealComm,
+		maxOverflow = 1,
 		parent = frame,
 	}
 end
@@ -73,7 +87,7 @@ function UF:Configure_HealComm(frame)
 			healAbsorbBar:SetParent(frame.Health)
 		end
 
-		 if frame.db.health then
+		if frame.db.health then
 			local orientation = frame.db.health.orientation or frame.Health:GetOrientation()
 			local reverseFill = not not frame.db.health.reverseFill
 			local showAbsorbAmount = frame.db.healPrediction.showAbsorbAmount

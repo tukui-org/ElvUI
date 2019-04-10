@@ -439,17 +439,43 @@ end
 function UF:Update_StatusBars()
 	local statusBarTexture = LSM:Fetch("statusbar", self.db.statusbar)
 	for statusbar in pairs(UF.statusbars) do
-		if statusbar and statusbar:IsObjectType('StatusBar') and not statusbar.isTransparent then
-			statusbar:SetStatusBarTexture(statusBarTexture)
-			if statusbar.texture then statusbar.texture = statusBarTexture end --Update .texture on oUF Power element
+		local useBlank = statusbar.isTransparent
+		if statusbar.parent then useBlank = statusbar.parent.isTransparent end
+		if statusbar and statusbar:IsObjectType('StatusBar') then
+			if not useBlank then
+				statusbar:SetStatusBarTexture(statusBarTexture)
+				if statusbar.texture then
+					statusbar.texture = statusBarTexture
+				end --Update .texture on oUF Power element
+			end
+
+			UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
 		elseif statusbar and statusbar:IsObjectType('Texture') then
 			statusbar:SetTexture(statusBarTexture)
+			UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
 		end
 	end
 end
 
-function UF:Update_StatusBar(bar)
-	bar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+function UF:Update_StatusBar(statusbar, texture)
+	if not statusbar then return end
+	if not texture then texture = LSM:Fetch("statusbar", self.db.statusbar) end
+
+	local isColor; if type(texture) == 'table' then isColor = true end
+
+	if statusbar:IsObjectType('StatusBar') then
+		if isColor then
+			statusbar:SetStatusBarColor(unpack(texture))
+		else
+			statusbar:SetStatusBarTexture(texture)
+		end
+	elseif statusbar:IsObjectType('Texture') then
+		if isColor then
+			statusbar:SetColorTexture(unpack(texture))
+		else
+			statusbar:SetTexture(texture)
+		end
+	end
 end
 
 function UF:Update_FontString(object)
@@ -1337,6 +1363,21 @@ local function updateColor(self, r, g, b)
 	end
 end
 
+function UF:UpdatePredictionStatusBar(prediction, parent, name)
+	if not (prediction and parent) then return end
+	local texture = (not parent.isTransparent and parent:GetStatusBarTexture():GetTexture()) or E.media.blankTex
+	if name == "Health" then
+		UF:Update_StatusBar(prediction.myBar, texture)
+		UF:Update_StatusBar(prediction.otherBar, texture)
+		UF:Update_StatusBar(prediction.absorbBar, texture)
+		UF:Update_StatusBar(prediction.healAbsorbBar, texture)
+		UF:Update_StatusBar(prediction.overAbsorb, texture)
+		UF:Update_StatusBar(prediction.overHealAbsorb, texture)
+	elseif name == "Power" then
+		UF:Update_StatusBar(prediction.mainBar, texture)
+	end
+end
+
 function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertBackdropTex, reverseFill)
 	statusBar.isTransparent = isTransparent
 
@@ -1350,6 +1391,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		end
 
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
+		UF:Update_StatusBar(statusBar.bg, E.media.blankTex)
 		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end --Needed for Power element
 
 		backdropTex:ClearAllPoints()
@@ -1387,7 +1429,10 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		elseif statusBar:GetParent().template then
 			statusBar:GetParent():SetTemplate(nil, nil, nil, self.thinBorders, true)
 		end
-		statusBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+
+		local texture = LSM:Fetch("statusbar", self.db.statusbar)
+		statusBar:SetStatusBarTexture(texture)
+		UF:Update_StatusBar(statusBar.bg, texture)
 		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end
 
 		if adjustBackdropPoints then
