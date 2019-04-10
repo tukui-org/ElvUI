@@ -274,28 +274,19 @@ function UF:ColorizeAuraBars()
 			colors = E.db.unitframe.colors.auraBarTurtleColor
 		end
 
-		if colors then
-			frame.statusBar:SetStatusBarColor(colors.r, colors.g, colors.b)
-			frame.statusBar.bg:SetColorTexture(colors.r * 0.25, colors.g * 0.25, colors.b * 0.25)
-		else
-			local r, g, b = frame.statusBar:GetStatusBarColor()
-			frame.statusBar.bg:SetColorTexture(r * 0.25, g * 0.25, b * 0.25)
-		end
-
 		if UF.db.colors.transparentAurabars and not frame.statusBar.isTransparent then
 			UF:ToggleTransparentStatusBar(true, frame.statusBar, frame.statusBar.bg, nil, true)
-		elseif(frame.statusBar.isTransparent and not UF.db.colors.transparentAurabars) then
+		elseif frame.statusBar.isTransparent and not UF.db.colors.transparentAurabars then
 			UF:ToggleTransparentStatusBar(false, frame.statusBar, frame.statusBar.bg, nil, true)
 		end
 
-		if(UF.db.colors.transparentAurabars) then
-			local _, _, _, alpha = E:GetBackdropColor(frame)
-			if colors then
-				frame:SetBackdropColor(colors.r * 0.58, colors.g * 0.58, colors.b * 0.58, alpha)
-			else
-				local r, g, b = frame.statusBar:GetStatusBarColor()
-				frame:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)
-			end
+		if colors then
+			UF.UpdateBackdropTexColor(frame.statusBar, colors.r, colors.g, colors.b)
+		else
+			local r, g, b = frame.statusBar:GetStatusBarColor()
+			UF.UpdateBackdropTexColor(frame.statusBar, r, g, b)
 		end
+
+		print('update 1')
 	end
 end

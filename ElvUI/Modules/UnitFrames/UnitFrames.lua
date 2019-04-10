@@ -449,10 +449,15 @@ function UF:Update_StatusBars()
 				end --Update .texture on oUF Power element
 			end
 
-			UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
+			if not statusbar.invertBackdropTex then
+				UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
+			end
 		elseif statusbar and statusbar:IsObjectType('Texture') then
 			statusbar:SetTexture(statusBarTexture)
-			UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
+
+			if not statusbar.invertBackdropTex then
+				UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
+			end
 		end
 	end
 end
@@ -461,7 +466,8 @@ function UF:Update_StatusBar(statusbar, texture)
 	if not statusbar then return end
 	if not texture then texture = LSM:Fetch("statusbar", self.db.statusbar) end
 
-	local isColor; if type(texture) == 'table' then isColor = true end
+	local isColor
+	if type(texture) == 'table' then isColor = true end
 
 	if statusbar:IsObjectType('StatusBar') then
 		if isColor then
@@ -1348,18 +1354,27 @@ function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)
 	self:Update_AllFrames()
 end
 
-local function updateColor(self, r, g, b)
-	if not self.isTransparent then return end
+function UF:UpdateBackdropTexColor(r, g, b)
+	local m = 0.35
+	local n = self.isTransparent and (m * 2) or m
+
+	if self.invertBackdropTex then
+		local nn = n;n=m;m=nn
+	end
+
 	if self.backdrop then
 		local _, _, _, a = E:GetBackdropColor(self.backdrop)
-		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, a)
-	elseif self:GetParent().template then
-		local _, _, _, a = E:GetBackdropColor(self:GetParent())
-		self:GetParent():SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, a)
+		self.backdrop:SetBackdropColor(r * n, g * n, b * n, a)
+	else
+		local parent = self:GetParent()
+		if parent and parent.template then
+			local _, _, _, a = E:GetBackdropColor(parent)
+			parent:SetBackdropColor(r * n, g * n, b * n, a)
+		end
 	end
 
 	if self.bg and self.bg:IsObjectType('Texture') and not self.bg.multiplier then
-		self.bg:SetColorTexture(r * 0.35, g * 0.35, b * 0.35)
+		self.bg:SetColorTexture(r * m, g * m, b * m)
 	end
 end
 
@@ -1380,9 +1395,11 @@ end
 
 function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertBackdropTex, reverseFill)
 	statusBar.isTransparent = isTransparent
+	statusBar.invertBackdropTex = invertBackdropTex
 
 	local statusBarTex = statusBar:GetStatusBarTexture()
 	local statusBarOrientation = statusBar:GetOrientation()
+
 	if isTransparent then
 		if statusBar.backdrop then
 			statusBar.backdrop:SetTemplate("Transparent", nil, nil, nil, true)
@@ -1391,7 +1408,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		end
 
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
-		UF:Update_StatusBar(statusBar.bg, E.media.blankTex)
+		if not invertBackdropTex then UF:Update_StatusBar(statusBar.bg, E.media.blankTex) end
 		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end --Needed for Power element
 
 		backdropTex:ClearAllPoints()
@@ -1416,12 +1433,8 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		end
 
 		if not invertBackdropTex and not statusBar.hookedColor then
-			hooksecurefunc(statusBar, "SetStatusBarColor", updateColor)
+			hooksecurefunc(statusBar, "SetStatusBarColor", UF.UpdateBackdropTexColor)
 			statusBar.hookedColor = true
-		end
-
-		if backdropTex.multiplier then
-			backdropTex.multiplier = 0.25
 		end
 	else
 		if statusBar.backdrop then
@@ -1432,7 +1445,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 
 		local texture = LSM:Fetch("statusbar", self.db.statusbar)
 		statusBar:SetStatusBarTexture(texture)
-		UF:Update_StatusBar(statusBar.bg, texture)
+		if not invertBackdropTex then UF:Update_StatusBar(statusBar.bg, texture) end
 		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end
 
 		if adjustBackdropPoints then
@@ -1456,10 +1469,6 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 
 		if invertBackdropTex then
 			backdropTex:Hide()
-		end
-
-		if backdropTex.multiplier then
-			backdropTex.multiplier = 0.25
 		end
 	end
 end
