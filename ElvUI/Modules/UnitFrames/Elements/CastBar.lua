@@ -70,7 +70,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)
 
 	castbar.bg = castbar:CreateTexture(nil, 'BORDER')
-	castbar.bg:Hide()
+	castbar.bg:Show()
 
 	local button = CreateFrame("Frame", nil, castbar)
 	local holder = CreateFrame('Frame', nil, castbar)
