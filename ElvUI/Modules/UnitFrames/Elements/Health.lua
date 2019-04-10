@@ -27,7 +27,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 		health.bg = health:CreateTexture(nil, 'BORDER')
 		health.bg:SetAllPoints()
 		health.bg:SetTexture(E.media.blankTex)
-		health.bg.multiplier = 0.25
+		health.bg.multiplier = 0.35
 	end
 
 	if text then
