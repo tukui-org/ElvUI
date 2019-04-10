@@ -1069,9 +1069,11 @@ end
 
 function AB:ToggleCooldownOptions()
 	for button in pairs(LAB.actionButtons) do
-		local duration = select(2, button:GetCooldown())
-		AB:UpdateChargeCooldown(button, duration)
-		AB:SetButtonDesaturation(button, duration)
+		if button._state_type == "action" then
+			local duration = select(2, button:GetCooldown())
+			AB:UpdateChargeCooldown(button, duration)
+			AB:SetButtonDesaturation(button, duration)
+		end
 	end
 end
 
@@ -1121,10 +1123,10 @@ function AB:LAB_CooldownDone(button)
 end
 
 function AB:LAB_CooldownUpdate(button, _, duration)
-	if button._state_type ~= "action" then return end
-
-	AB:UpdateChargeCooldown(button, duration)
-	AB:SetButtonDesaturation(button, duration)
+	if button._state_type == "action" then
+		AB:UpdateChargeCooldown(button, duration)
+		AB:SetButtonDesaturation(button, duration)
+	end
 end
 
 function AB:Initialize()
