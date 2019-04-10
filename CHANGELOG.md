@@ -4,7 +4,8 @@
 
 
 **Bug Fixes:**  
-Readded the GCD swipe to spells with charges.  
+Fixed /kb to once again work on Stance and Pet buttons.  
+Recoded some of the charge cooldown stuff (again!) This should fix Blade Flurry.  
 
 **Misc. Changes:**  
 Update GMChat skin.  
