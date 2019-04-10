@@ -163,6 +163,7 @@ function NP:Construct_Runes(nameplate)
 	Runes.PostUpdate = NP.Runes_PostUpdate
 
 	local texture = E.LSM:Fetch('statusbar', NP.db.statusbar)
+	local multiplier = .35
 
 	for i = 1, 6 do
 		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
@@ -174,7 +175,6 @@ function NP:Construct_Runes(nameplate)
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
 
-		local multiplier = .35
 		Runes[i].bg = Runes[i]:CreateTexture(nameplate:GetDebugName()..'Runes'..i..'bg', 'BORDER')
 		Runes[i].bg:SetAllPoints()
 		Runes[i].bg:SetSnapToPixelGrid(false)
