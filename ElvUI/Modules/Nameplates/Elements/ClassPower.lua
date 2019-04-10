@@ -174,12 +174,13 @@ function NP:Construct_Runes(nameplate)
 		statusBarTexture:SetSnapToPixelGrid(false)
 		statusBarTexture:SetTexelSnappingBias(0)
 
+		local multiplier = .35
 		Runes[i].bg = Runes[i]:CreateTexture(nameplate:GetDebugName()..'Runes'..i..'bg', 'BORDER')
 		Runes[i].bg:SetAllPoints()
 		Runes[i].bg:SetSnapToPixelGrid(false)
 		Runes[i].bg:SetTexelSnappingBias(0)
 		Runes[i].bg:SetTexture(texture)
-		Runes[i].bg:SetVertexColor(NP.db.colors.classResources.DEATHKNIGHT.r * .35, NP.db.colors.classResources.DEATHKNIGHT.g * .35, NP.db.colors.classResources.DEATHKNIGHT.b * .35)
+		Runes[i].bg:SetVertexColor(NP.db.colors.classResources.DEATHKNIGHT.r * multiplier, NP.db.colors.classResources.DEATHKNIGHT.g * multiplier, NP.db.colors.classResources.DEATHKNIGHT.b * multiplier)
 	end
 
 	return Runes
