@@ -226,8 +226,11 @@ function NP:Construct_Stagger(nameplate)
     local Stagger = CreateFrame('StatusBar', nameplate:GetDebugName()..'Stagger', nameplate)
 	Stagger:SetFrameStrata(nameplate:GetFrameStrata())
 	Stagger:SetFrameLevel(5)
+	Stagger:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 	Stagger:CreateBackdrop('Transparent')
 	Stagger:Hide()
+
+	NP.StatusBars[Stagger] = true
 
 	return Stagger
 end
@@ -240,14 +243,11 @@ function NP:Update_Stagger(nameplate)
 			nameplate:EnableElement('Stagger')
 		end
 
-		nameplate.Stagger:Show()
 		nameplate.Stagger:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		nameplate.Stagger:Size(db.classpower.width, db.classpower.height)
 	else
 		if nameplate:IsElementEnabled('Stagger') then
 			nameplate:DisableElement('Stagger')
 		end
-
-		nameplate.Stagger:Hide()
 	end
 end
