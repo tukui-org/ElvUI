@@ -36,7 +36,6 @@ local UnitHealthMax = UnitHealthMax
 local UnitOnTaxi = UnitOnTaxi
 local UnregisterStateDriver = UnregisterStateDriver
 local VehicleExit = VehicleExit
-local GetSpellCooldown = GetSpellCooldown
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 
