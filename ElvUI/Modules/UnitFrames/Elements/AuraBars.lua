@@ -267,28 +267,34 @@ function UF:ColorizeAuraBars()
 	for index = 1, #bars do
 		local frame = bars[index]
 		if not frame:IsVisible() then break end
-		local spellName = frame.statusBar.aura.name
-		local spellID = frame.statusBar.aura.spellID
+
+		local sb = frame.statusBar
+		local spellName = sb.aura.name
+		local spellID = sb.aura.spellID
 		local colors = E.global.unitframe.AuraBarColors[spellID] or E.global.unitframe.AuraBarColors[tostring(spellID)] or E.global.unitframe.AuraBarColors[spellName]
 
 		if E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName]) and not colors and (spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)) then
 			colors = E.db.unitframe.colors.auraBarTurtleColor
 		end
 
-		if UF.db.colors.transparentAurabars and not frame.statusBar.isTransparent then
-			UF:ToggleTransparentStatusBar(true, frame.statusBar, frame.statusBar.bg, nil, true)
-		elseif frame.statusBar.isTransparent and not UF.db.colors.transparentAurabars then
-			UF:ToggleTransparentStatusBar(false, frame.statusBar, frame.statusBar.bg, nil, true)
-		elseif frame.statusBar.bg.setAnchors then
-			UF:SetStatusBarBackdropPoints(frame.statusBar, frame.statusBar:GetStatusBarTexture(), frame.statusBar.bg)
-			frame.statusBar.bg.setAnchors = nil
+		if UF.db.colors.transparentAurabars and not sb.isTransparent then
+			UF:ToggleTransparentStatusBar(true, sb, sb.bg, nil, true)
+		elseif sb.isTransparent and not UF.db.colors.transparentAurabars then
+			UF:ToggleTransparentStatusBar(false, sb, sb.bg, nil, true)
+		elseif sb.bg then
+			local sbTexture = sb:GetStatusBarTexture()
+			if not sb.bg:GetTexture() then
+				UF:Update_StatusBar(sb.bg, sbTexture:GetTexture())
+			end
+
+			UF:SetStatusBarBackdropPoints(sb, sbTexture, sb.bg)
 		end
 
 		if colors then
-			UF.UpdateBackdropTextureColor(frame.statusBar, colors.r, colors.g, colors.b)
+			UF.UpdateBackdropTextureColor(sb, colors.r, colors.g, colors.b)
 		else
-			local r, g, b = frame.statusBar:GetStatusBarColor()
-			UF.UpdateBackdropTextureColor(frame.statusBar, r, g, b)
+			local r, g, b = sb:GetStatusBarColor()
+			UF.UpdateBackdropTextureColor(sb, r, g, b)
 		end
 	end
 end
