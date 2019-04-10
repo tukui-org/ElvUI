@@ -449,15 +449,11 @@ function UF:Update_StatusBars()
 				end --Update .texture on oUF Power element
 			end
 
-			if not statusbar.invertBackdropTex then
-				UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
-			end
+			UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
 		elseif statusbar and statusbar:IsObjectType('Texture') then
 			statusbar:SetTexture(statusBarTexture)
 
-			if not statusbar.invertBackdropTex then
-				UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
-			end
+			UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
 		end
 	end
 end
@@ -1414,7 +1410,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		end
 
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
-		if not invertBackdropTex then UF:Update_StatusBar(statusBar.bg, E.media.blankTex) end
+		UF:Update_StatusBar(statusBar.bg, E.media.blankTex)
 		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end --Needed for Power element
 
 		backdropTex:ClearAllPoints()
@@ -1446,7 +1442,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 
 		local texture = LSM:Fetch("statusbar", self.db.statusbar)
 		statusBar:SetStatusBarTexture(texture)
-		if not invertBackdropTex then UF:Update_StatusBar(statusBar.bg, texture) end
+		UF:Update_StatusBar(statusBar.bg, texture)
 		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end
 
 		if adjustBackdropPoints then
