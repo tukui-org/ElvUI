@@ -439,19 +439,17 @@ end
 function UF:Update_StatusBars()
 	local statusBarTexture = LSM:Fetch("statusbar", self.db.statusbar)
 	for statusbar in pairs(UF.statusbars) do
-		local useBlank = statusbar.isTransparent
-		if statusbar.parent then useBlank = statusbar.parent.isTransparent end
-		if statusbar and statusbar:IsObjectType('StatusBar') then
-			if not useBlank then
-				statusbar:SetStatusBarTexture(statusBarTexture)
-				if statusbar.texture then
-					statusbar.texture = statusBarTexture
-				end --Update .texture on oUF Power element
+		if statusbar then
+			local useBlank = statusbar.isTransparent
+			if statusbar.parent then useBlank = statusbar.parent.isTransparent end
+			if statusbar:IsObjectType('StatusBar') then
+				if not useBlank then
+					statusbar:SetStatusBarTexture(statusBarTexture)
+					if statusbar.texture then statusbar.texture = statusBarTexture end --Update .texture on oUF Power element
+				end
+			elseif statusbar:IsObjectType('Texture') then
+				statusbar:SetTexture(statusBarTexture)
 			end
-
-			UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
-		elseif statusbar and statusbar:IsObjectType('Texture') then
-			statusbar:SetTexture(statusBarTexture)
 
 			UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
 		end
@@ -462,21 +460,10 @@ function UF:Update_StatusBar(statusbar, texture)
 	if not statusbar then return end
 	if not texture then texture = LSM:Fetch("statusbar", self.db.statusbar) end
 
-	local isColor
-	if type(texture) == 'table' then isColor = true end
-
 	if statusbar:IsObjectType('StatusBar') then
-		if isColor then
-			statusbar:SetStatusBarColor(unpack(texture))
-		else
-			statusbar:SetStatusBarTexture(texture)
-		end
+		statusbar:SetStatusBarTexture(texture)
 	elseif statusbar:IsObjectType('Texture') then
-		if isColor then
-			statusbar:SetColorTexture(unpack(texture))
-		else
-			statusbar:SetTexture(texture)
-		end
+		statusbar:SetTexture(texture)
 	end
 end
 
@@ -1354,7 +1341,7 @@ function UF:UpdateBackdropTextureColor(r, g, b)
 	local m = 0.35
 	local n = self.isTransparent and (m * 2) or m
 
-	if self.invertBackdropTex then
+	if self.invertColors then
 		local nn = n;n=m;m=nn
 	end
 
@@ -1370,7 +1357,7 @@ function UF:UpdateBackdropTextureColor(r, g, b)
 	end
 
 	if self.bg and self.bg:IsObjectType('Texture') and not self.bg.multiplier then
-		self.bg:SetColorTexture(r * m, g * m, b * m)
+		self.bg:SetVertexColor(r * m, g * m, b * m)
 	end
 end
 
@@ -1389,9 +1376,28 @@ function UF:UpdatePredictionStatusBar(prediction, parent, name)
 	end
 end
 
-function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertBackdropTex, reverseFill)
+function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
+	backdropTex:ClearAllPoints()
+	if statusBarOrientation == 'VERTICAL' then
+		backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
+		backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
+		backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
+	else
+		if reverseFill then
+			backdropTex:Point("TOPRIGHT", statusBarTex, "TOPLEFT")
+			backdropTex:Point("BOTTOMRIGHT", statusBarTex, "BOTTOMLEFT")
+			backdropTex:Point("BOTTOMLEFT", statusBar, "BOTTOMLEFT")
+		else
+			backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
+			backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+			backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+		end
+	end
+end
+
+function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertColors, reverseFill)
 	statusBar.isTransparent = isTransparent
-	statusBar.invertBackdropTex = invertBackdropTex
+	statusBar.invertColors = invertColors
 	statusBar.backdropTex = backdropTex
 
 	local statusBarTex = statusBar:GetStatusBarTexture()
@@ -1411,28 +1417,10 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
 		UF:Update_StatusBar(statusBar.bg, E.media.blankTex)
+
 		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end --Needed for Power element
 
-		backdropTex:ClearAllPoints()
-		if statusBarOrientation == 'VERTICAL' then
-			backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
-			backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
-			backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
-		else
-			if reverseFill then
-				backdropTex:Point("TOPRIGHT", statusBarTex, "TOPLEFT")
-				backdropTex:Point("BOTTOMRIGHT", statusBarTex, "BOTTOMLEFT")
-				backdropTex:Point("BOTTOMLEFT", statusBar, "BOTTOMLEFT")
-			else
-				backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
-				backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
-				backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
-			end
-		end
-
-		if invertBackdropTex then
-			backdropTex:Show()
-		end
+		UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
 	else
 		if statusBar.backdrop then
 			statusBar.backdrop:SetTemplate(nil, nil, nil, not statusBar.PostCastStart and self.thinBorders, true)
@@ -1443,29 +1431,11 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		local texture = LSM:Fetch("statusbar", self.db.statusbar)
 		statusBar:SetStatusBarTexture(texture)
 		UF:Update_StatusBar(statusBar.bg, texture)
+
 		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end
 
 		if adjustBackdropPoints then
-			backdropTex:ClearAllPoints()
-			if statusBarOrientation == 'VERTICAL' then
-				backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
-				backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
-				backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
-			else
-				if reverseFill then
-					backdropTex:Point("TOPRIGHT", statusBarTex, "TOPLEFT")
-					backdropTex:Point("BOTTOMRIGHT", statusBarTex, "BOTTOMLEFT")
-					backdropTex:Point("BOTTOMLEFT", statusBar, "BOTTOMLEFT")
-				else
-					backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
-					backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
-					backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
-				end
-			end
-		end
-
-		if invertBackdropTex then
-			backdropTex:Hide()
+			UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
 		end
 	end
 end
