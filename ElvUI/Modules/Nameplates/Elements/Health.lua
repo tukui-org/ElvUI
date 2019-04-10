@@ -54,14 +54,10 @@ function NP:Health_UpdateColor(event, unit)
 		r, g, b = self.HealthColorChanged.r, self.HealthColorChanged.g, self.HealthColorChanged.b -- use the style filter values
 	end
 
-	if(b) then
+	if b then
 		element:SetStatusBarColor(r, g, b)
 
-		local bg = element.bg
-		if(bg) then
-			local mu = bg.multiplier or 1
-			bg:SetVertexColor(r * mu, g * mu, b * mu)
-		end
+		if element.bg then element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier) end
 	end
 
 	if(element.PostUpdateColor) then

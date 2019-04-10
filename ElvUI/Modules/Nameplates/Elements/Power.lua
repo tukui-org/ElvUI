@@ -86,11 +86,7 @@ function NP:Power_UpdateColor(event, unit)
 		end
 	end
 
-	local bg = element.bg
-	if(bg and b) then
-		local mu = bg.multiplier or 1
-		bg:SetVertexColor(r * mu, g * mu, b * mu)
-	end
+	if element.bg and b then element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier) end
 
 	if(element.PostUpdateColor) then
 		element:PostUpdateColor(unit, r, g, b)

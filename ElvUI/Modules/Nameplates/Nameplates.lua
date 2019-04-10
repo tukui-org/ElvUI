@@ -570,6 +570,7 @@ function NP:Initialize()
 	NP.PlateGUID = {}
 	NP.StatusBars = {}
 	NP.GroupRoles = {}
+	NP.multiplier = 0.35
 
 	local BlizzPlateManaBar = _G.NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then

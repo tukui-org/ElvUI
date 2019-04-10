@@ -33,11 +33,8 @@ function NP:ClassPower_UpdateColor(powerType)
 		if classColor then r, g, b = classColor.r, classColor.g, classColor.b end
 
 		self[i]:SetStatusBarColor(r, g, b)
-		local bg = self[i].bg
-		if bg then
-			local mu = bg.multiplier or 1
-			bg:SetVertexColor(r * mu, g * mu, b * mu)
-		end
+
+		if self[i].bg then self[i].bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier) end
 	end
 end
 
@@ -79,7 +76,6 @@ function NP:Construct_ClassPower(nameplate)
 		ClassPower[i].bg:SetSnapToPixelGrid(false)
 		ClassPower[i].bg:SetTexelSnappingBias(0)
 		ClassPower[i].bg:SetTexture(texture)
-		ClassPower[i].bg.multiplier = .35
 	end
 
 	if nameplate == _G.ElvNP_Test then
@@ -163,12 +159,12 @@ function NP:Construct_Runes(nameplate)
 	Runes.PostUpdate = NP.Runes_PostUpdate
 
 	local texture = E.LSM:Fetch('statusbar', NP.db.statusbar)
-	local multiplier = .35
+	local color = NP.db.colors.classResources.DEATHKNIGHT
 
 	for i = 1, 6 do
 		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
 		Runes[i]:SetStatusBarTexture(texture)
-		Runes[i]:SetStatusBarColor(NP.db.colors.classResources.DEATHKNIGHT.r, NP.db.colors.classResources.DEATHKNIGHT.g, NP.db.colors.classResources.DEATHKNIGHT.b)
+		Runes[i]:SetStatusBarColor(color.r, color.g, color.b)
 		NP.StatusBars[Runes[i]] = true
 
 		local statusBarTexture = Runes[i]:GetStatusBarTexture()
@@ -180,7 +176,7 @@ function NP:Construct_Runes(nameplate)
 		Runes[i].bg:SetSnapToPixelGrid(false)
 		Runes[i].bg:SetTexelSnappingBias(0)
 		Runes[i].bg:SetTexture(texture)
-		Runes[i].bg:SetVertexColor(NP.db.colors.classResources.DEATHKNIGHT.r * multiplier, NP.db.colors.classResources.DEATHKNIGHT.g * multiplier, NP.db.colors.classResources.DEATHKNIGHT.b * multiplier)
+		Runes[i].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
 	end
 
 	return Runes
