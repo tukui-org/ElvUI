@@ -1354,7 +1354,7 @@ function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)
 	self:Update_AllFrames()
 end
 
-function UF:UpdateBackdropTexColor(r, g, b)
+function UF:UpdateBackdropTextureColor(r, g, b)
 	local m = 0.35
 	local n = self.isTransparent and (m * 2) or m
 
@@ -1396,9 +1396,15 @@ end
 function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertBackdropTex, reverseFill)
 	statusBar.isTransparent = isTransparent
 	statusBar.invertBackdropTex = invertBackdropTex
+	statusBar.backdropTex = backdropTex
 
 	local statusBarTex = statusBar:GetStatusBarTexture()
 	local statusBarOrientation = statusBar:GetOrientation()
+
+	if not statusBar.hookedColor then
+		hooksecurefunc(statusBar, "SetStatusBarColor", UF.UpdateBackdropTextureColor)
+		statusBar.hookedColor = true
+	end
 
 	if isTransparent then
 		if statusBar.backdrop then
@@ -1430,11 +1436,6 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 
 		if invertBackdropTex then
 			backdropTex:Show()
-		end
-
-		if not invertBackdropTex and not statusBar.hookedColor then
-			hooksecurefunc(statusBar, "SetStatusBarColor", UF.UpdateBackdropTexColor)
-			statusBar.hookedColor = true
 		end
 	else
 		if statusBar.backdrop then

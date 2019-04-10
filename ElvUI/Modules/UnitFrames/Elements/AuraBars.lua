@@ -281,12 +281,10 @@ function UF:ColorizeAuraBars()
 		end
 
 		if colors then
-			UF.UpdateBackdropTexColor(frame.statusBar, colors.r, colors.g, colors.b)
+			UF.UpdateBackdropTextureColor(frame.statusBar, colors.r, colors.g, colors.b)
 		else
 			local r, g, b = frame.statusBar:GetStatusBarColor()
-			UF.UpdateBackdropTexColor(frame.statusBar, r, g, b)
+			UF.UpdateBackdropTextureColor(frame.statusBar, r, g, b)
 		end
-
-		print('update 1')
 	end
 end
