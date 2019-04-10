@@ -42,6 +42,7 @@ function UF:Construct_AuraBars()
 	bar.icon:SetDrawLayer('OVERLAY')
 
 	bar.bg = bar:CreateTexture(nil, 'BORDER')
+	bar.bg.setAnchors = true
 	bar.bg:Show()
 
 	bar.iconHolder:RegisterForClicks('RightButtonUp')
@@ -278,6 +279,9 @@ function UF:ColorizeAuraBars()
 			UF:ToggleTransparentStatusBar(true, frame.statusBar, frame.statusBar.bg, nil, true)
 		elseif frame.statusBar.isTransparent and not UF.db.colors.transparentAurabars then
 			UF:ToggleTransparentStatusBar(false, frame.statusBar, frame.statusBar.bg, nil, true)
+		elseif frame.statusBar.bg.setAnchors then
+			UF:SetStatusBarBackdropPoints(frame.statusBar, frame.statusBar:GetStatusBarTexture(), frame.statusBar.bg)
+			frame.statusBar.bg.setAnchors = nil
 		end
 
 		if colors then
