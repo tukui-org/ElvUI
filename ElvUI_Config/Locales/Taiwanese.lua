@@ -19,12 +19,12 @@ L["TOOLTIP_DESC"] = "浮動提示資訊設定選項."
 L["SEARCH_SYNTAX_DESC"] = [=[因為新增加的 LibItemSearch，你現在可以使用更進階的物品搜尋. 下面是一份搜尋語法的文件. 想要看更完整的解釋請到: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 條件搜尋:
-    • q:[品質] 或 quality:[品質]. 舉例，q:史詩 會搜尋所有史詩物品.
-    • l:[裝等]，lvl:[裝等] 或 level:[裝等]. 舉例，l:30 會搜尋所有裝等30的物品.
-    • t:[類型]，type:[類型] 或 slot:[類型]. 舉例，t:武器 會搜尋所有武器.
+    • q:[品質] 或 quality:[品質]. 舉例，輸入 q:史詩 會搜尋所有史詩物品.
+    • l:[裝等]，lvl:[裝等] 或 level:[裝等]. 舉例，輸入 l:30 會搜尋所有裝等30的物品.
+    • t:[類型]，type:[類型] 或 slot:[類型]. 舉例，輸入 t:武器 會搜尋所有武器.
     • n:[名稱] 或 name:[名稱]. 舉例，輸入 n:muffins 會搜尋所有物品名稱中含有 "muffins".
-    • s:[套裝] 或 set:[套裝]. 舉例，s:火 會在你定義的套裝名稱起始為 火 的套裝中搜尋所有裝備.
-    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
+    • s:[套裝] 或 set:[套裝]. 舉例，輸入 s:火 會在你定義的套裝名稱起始為 火 的套裝中搜尋所有裝備.
+    • r:[等級], reg:[等級], rl:[等級], regl:[等級] or reqlvl:[等級]. 舉例, 輸入 reqlvl:30 將會搜尋全部裝等需求等級為 30 的物品.
     • tt:[關鍵字]，tip:[關鍵字] 或 tooltip:[關鍵字]. 舉例，tt:綁定 會搜尋所有物品提示中含有綁定兩字的物品 如 帳號綁定，裝備綁定 或 拾取綁定.
 
 
@@ -42,9 +42,9 @@ L["SEARCH_SYNTAX_DESC"] = [=[因為新增加的 LibItemSearch，你現在可以�
     • boa : 帳號綁定.
     • quest : 任務綁定
     • reagent, crafting : 專業技能材料
-    • keystone : Mythic Keystone.
+    • keystone : 傳奇地城鑰石.
     • followers : 追隨者物品
-    • champions : Champion equipment.]=]
+    • champions : 部隊裝備.]=]
 L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
 
 範例：
@@ -313,10 +313,10 @@ L["Below Chat"] = "對話框下方"
 L["Chat EditBox Position"] = "對話輸入框位置"
 L["Chat History"] = "對話記錄"
 L["Class Color Mentions"] = "使用職業上色"
-L["Completely hide the voice buttons."] = true
+L["Completely hide the voice buttons."] = "完全隱藏語音按鈕"
 L["Copy Chat Lines"] = "複製聊天記錄"
 L["Custom Timestamp Color"] = "自訂時間戳記顏色"
-L["Desaturate Voice Icons"] = true
+L["Desaturate Voice Icons"] = "低飽和度的語音圖標"
 L["Display LFG Icons in group chat."] = "在隊伍聊天中顯示預組圖示"
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "滑鼠懸停在超鏈接上時顯示鏈接提示框."
 L["Enable the use of separate size options for the right chat panel."] = "啟用獨立的右聊天框大小選項"
@@ -332,7 +332,7 @@ L["Fades the text on chat tabs that are not docked at the left or right chat pan
 L["Font Outline"] = "字體描邊"
 L["Font"] = "字體"
 L["Hide Both"] = "全部隱藏"
-L["Hide Voice Buttons"] = true
+L["Hide Voice Buttons"] = "隱藏語音按鈕"
 L["Hyperlink Hover"] = "超連結提示資訊"
 L["Keyword Alert"] = "關鍵字警報"
 L["Keywords"] = "關鍵字"
@@ -350,7 +350,7 @@ L["Panel Height"] = "對話框高度"
 L["Panel Texture (Left)"] = "對話框材質(左)"
 L["Panel Texture (Right)"] = "對話框材質(右)"
 L["Panel Width"] = "對話框寛度"
-L["Pin Voice Buttons"] = true
+L["Pin Voice Buttons"] = "釘住語音按鈕"
 L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = "對話編輯框位置,如果底部的信息文字被禁用的話,將會強制顯示在對話框頂部."
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "單位時間(秒) 內屏蔽重複對話信息, 設定為0 禁用此功能."
 L["Quick Join Messages"] = "快速加入訊息"
@@ -565,7 +565,7 @@ L["Shows item level of each item, enchants, and gems when inspecting another pla
 L["Skin Backdrop (No Borders)"] = "美化背景(無邊界)"
 L["Skin Backdrop"] = "美化背景"
 L["Skin the blizzard chat bubbles."] = "美化暴雪對話泡泡."
-L["Smoothing Amount"] = true
+L["Smoothing Amount"] = "平滑程度"
 L["Status Bar"] = "狀態條"
 L["Talking Head Backdrop"] = "特寫框架背景"
 L["Talking Head Scale"] = "特寫框架縮放"
@@ -690,7 +690,7 @@ L["Module Reset"] = "模組重置"
 L["Movers"] = "移動器"
 L["On screen positions for different elements."] = "不同的元件在螢幕上的位置"
 L["Select a profile to copy from/to."] = "選擇一個設定文件來當作複製的來源或目標"
-L["This section will allow you to copy settings to a select module from or to a different profile."] = "這個部分允許你從其他的設定文件複製 到/回 所選擇的部分的模組設定"
+L["This section will allow you to copy settings to a select module from or to a different profile."] = "這個部分允許你複製到或是匯入其他的設定文件所選擇的部分的模組設定"
 L["This section will help reset specfic settings back to default."] = "這個部分會幫助你重置指定的模組設定回預設值"
 
 --NamePlates
@@ -734,11 +734,11 @@ L["Controls which nameplates will be displayed."] = "控制何種姓名板被顯
 L["Cooldowns"] = "冷卻"
 L["Copy settings from another unit."] = "從其他框架中複製設置"
 L["Copy Settings From"] = "複製設置"
-L["Creature Type"] = true
+L["Creature Type"] = "生物類型"
 L["Current Level"] = "當前等級"
 L["Cutaway Health"] = "生命值漸變"
 L["Default Settings"] = "默認設置"
-L["Desaturated Icon"] = true
+L["Desaturated Icon"] = "低飽和度圖標"
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "戰場或競技場中，為已確認為補職的玩家標上補職圖示."
 L["Display Interrupt Source"] = "顯示打斷來源"
 L["Display Style"] = "顯示格式"
@@ -784,37 +784,37 @@ L["Icon Position"] = "圖標位置"
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = "如果選中則將會檢查光環是否缺失而不是光環是否存在"
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = "如果選中則要求滿足所有光環. 不啟用則只要求任一光環存在即可啟動."
 L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = true
-L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."] = "如果選中則過濾器僅僅在單位等級大於等於該值的時候啟動"
-L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."] = "如果選中則過濾器僅僅在單位等級小於等於該值的時候啟動"
-L["If enabled then the filter will only activate if the level of the unit matches this value."] = "如果選中則過濾器僅僅在單位等級符合該值的時候啟動"
-L["If enabled then the filter will only activate if the level of the unit matches your own."] = "如果選中則過濾器僅僅在單位等級符合你的等級的時候啟動"
-L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "如果選中則過濾器僅僅在單位施放可打斷技能的時候啟動"
-L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "如果選中則過濾器僅僅在單位施放不可打斷技能的時候啟動"
-L["If enabled then the filter will only activate when the unit is in combat."] = "如果選中則過濾器僅僅在單位在戰鬥中的時候啟動"
-L["If enabled then the filter will only activate when the unit is not targeting you."] = "如果選中則過濾器僅僅在單位沒有選中你的時候啟動"
-L["If enabled then the filter will only activate when the unit is out of combat."] = "如果選中則過濾器僅僅在單位不在戰鬥中的時候啟動"
-L["If enabled then the filter will only activate when the unit is targeting you."] = "如果選中則過濾器僅僅在單位選中你的時候啟動"
-L["If enabled then the filter will only activate when you are focusing the unit."] = true
-L["If enabled then the filter will only activate when you are in combat."] = "如果選中則過濾器僅僅在你在戰鬥中的時候啟動"
-L["If enabled then the filter will only activate when you are not focusing the unit."] = true
-L["If enabled then the filter will only activate when you are not targeting the unit."] = "如果選中則過濾器僅僅在你沒有選中單位的時候啟動"
-L["If enabled then the filter will only activate when you are out of combat."] = "如果選中則過濾器僅僅在你不在戰鬥中的時候啟動"
-L["If enabled then the filter will only activate when you are targeting the unit."] = "如果選中則過濾器僅僅在你選中單位的時候啟動"
-L["If the aura is listed with a number then you need to use that to remove it from the list."] = "如果光環和一個數一起列出你需要用它來將其移出列表"
-L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = true
+L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."] = "如果選中則過濾器只會在單位等級大於等於該值的時候啟動"
+L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."] = "如果選中則過濾器只會在單位等級小於等於該值的時候啟動"
+L["If enabled then the filter will only activate if the level of the unit matches this value."] = "如果選中則過濾器只會在單位等級符合該值的時候啟動"
+L["If enabled then the filter will only activate if the level of the unit matches your own."] = "如果選中則過濾器只會在單位等級符合你的等級的時候啟動"
+L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "如果選中則過濾器只會在單位施放可打斷技能的時候啟動"
+L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "如果選中則過濾器只會在單位施放不可打斷技能的時候啟動"
+L["If enabled then the filter will only activate when the unit is in combat."] = "如果選中則過濾器只會在單位在戰鬥中的時候啟動"
+L["If enabled then the filter will only activate when the unit is not targeting you."] = "如果選中則過濾器只會在單位沒有選中你的時候啟動"
+L["If enabled then the filter will only activate when the unit is out of combat."] = "如果選中則過濾器只會在單位不在戰鬥中的時候啟動"
+L["If enabled then the filter will only activate when the unit is targeting you."] = "如果選中則過濾器只會在單位選中你的時候啟動"
+L["If enabled then the filter will only activate when you are focusing the unit."] = "如果選中則過濾器只會在你設其為專注目標時啟動"
+L["If enabled then the filter will only activate when you are in combat."] = "如果選中則過濾器只會在戰鬥中啟動"
+L["If enabled then the filter will only activate when you are not focusing the unit."] = "如果選中則過濾器只會在你沒有設其為專注目標時啟動"
+L["If enabled then the filter will only activate when you are not targeting the unit."] = "如果選中則過濾器只會在你沒有選中單位的時候啟動"
+L["If enabled then the filter will only activate when you are out of combat."] = "如果選中則過濾器只會在你不在戰鬥中的時候啟動"
+L["If enabled then the filter will only activate when you are targeting the unit."] = "如果選中則過濾器只會在你選中單位的時候啟動"
+L["If the aura is listed with a number then you need to use that to remove it from the list."] = "如果光環在列表之中有和一個數字同時設定, 你需要用它來將其移出列表"
+L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."] = "如果開啟, 將會使用你在該單位陣營中的聲望來進行反應檢查."
 L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."] = "如果列表為空, 並且'可打斷'被選中, 那麼過濾器會在任何可被打斷的施法時啟動"
 L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = "如果這個閾值被設置則單位的血量需要比設定值更高才會將過濾器啟動. 設為0以禁用."
 L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "如果這個閾值被設置則單位的血量需要比設定值更低才會將過濾器啟動. 設為0以禁用."
-L["If this threshold is used then the power of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = true
-L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = true
+L["If this threshold is used then the power of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = "如果這個閾值被設置則單位的能量需要比設定值更高才會將過濾器啟動. 設為0以禁用."
+L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "如果這個閾值被設置則單位的能量需要比設定值更低才會將過濾器啟動. 設為0以禁用."
 L["Instance Type"] = "副本類型"
 L["Interruptible"] = "可打斷"
 L["Not Targeting Player"] = "目標不是玩家"
-L["Is Focused"] = true
+L["Is Focused"] = "專注目標"
 L["Is PvP Talents"] = "PvP 天賦"
 L["Is Targeted"] = "目標"
 L["Is Targeting Player"] = "目標是玩家"
-L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable."
+L["LEVEL_BOSS"] = "為團隊首領框架設定等級為-1, 也可以設定為0來關閉."
 L["Load Distance"] = "讀取距離"
 L["Low Health Threshold"] = "低生命值閾值"
 L["Lower numbers mean a higher priority. Filters are processed in order from 1 to 100."] = "更低的數值意味著更高的優先順序. 過濾器將按照1至100的順序進行."
@@ -877,7 +877,7 @@ L["Show In Combat"] = "戰鬥中顯示"
 L["Show Interrupt Source in Class Color"] = "用職業顏色顯示打斷來源"
 L["Show PvP Badge Indicator if available"] = true
 L["Show the castbar icon desaturated if a spell is not interruptible."] = true
-L["Show Title"] = true
+L["Show Title"] = "顯示稱號"
 L["Show With Target"] = "有目標時顯示"
 L["Side Arrows"] = "側面箭頭"
 L["Style Filter"] = "樣式過濾器"
@@ -951,7 +951,7 @@ L["Character Frame"] = "角色"
 L["CheckBox Skin"] = "選框皮膚"
 L["Contribution"] = "捐獻"
 L["Debug Tools"] = "除錯工具"
-L["GM Chat"] = true
+L["GM Chat"] = "GM 對話"
 L["Gossip Frame"] = "對話"
 L["Guild Control Frame"] = "公會控制"
 L["Guild Registrar"] = "公會註冊"
@@ -1091,7 +1091,7 @@ L["Combo Point"] = "連擊點"
 L["Configure Auras"] = "設置光環"
 L["Copy From"] = "複製自"
 L["Count Font Size"] = "計數字體尺寸"
-L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = "創造一個過濾器, 一旦創造, 每個單位的buff/debuff 都能使用."
+L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."] = "創建一個過濾器, 創建一次即可讓每個單位的 buff/debuff 都能使用."
 L["Create Custom Text"] = "創建自定義文本"
 L["Create Filter"] = "創造過濾器"
 L["Current - Max"] = "目前值 - 最大值"
@@ -1139,8 +1139,8 @@ L["Duration"] = "持續時間"
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = "啟用後將可以在整個團隊內排序，但你不再可以區分不同小隊"
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = "啟用後翻轉未滿團隊的隊伍順序(起始方向)"
 L["Enemy Aura Type"] = "敵對光環類型"
-L["Fade Out Delay"] = true
-L["Fader"] = true
+L["Fade Out Delay"] = "淡出延遲"
+L["Fader"] = "漸隱"
 L["Fill"] = "填充"
 L["Filled"] = "全長"
 L["Filter Type"] = "過濾器類型"
@@ -1182,7 +1182,7 @@ L["Height"] = "高"
 L["Horizontal Spacing"] = "水平間隔"
 L["Horizontal"] = "水平"
 L["Hostile"] = "敵對"
-L["Hover"] = true
+L["Hover"] = "滑鼠指向"
 L["How far away the portrait is from the camera."] = "人像和鏡頭間有多遠"
 L["Icon Inside Castbar"] = "施法條內的圖標"
 L["Icon Size"] = "圖標尺寸"
@@ -1213,7 +1213,7 @@ L["Main statusbar texture."] = "主狀態條材質"
 L["Main Tanks / Main Assist"] = "主坦克 / 主助理"
 L["Make textures transparent."] = "材質透明"
 L["Match Frame Width"] = "匹配視窗寬度"
-L["Max Alpha"] = true
+L["Max Alpha"] = "最小透明度"
 L["Max amount of overflow allowed to extend past the end of the health bar."] = "顯示在生命值條末端的治療吸收盾的最大量"
 L["Max Bars"] = "最多"
 L["Max Overflow"] = "最大治療吸收盾"
@@ -1222,7 +1222,7 @@ L["Method to sort by."] = "排序方式"
 L["Middle Click - Set Focus"] = "滑鼠中鍵 - 設置焦點"
 L["Middle clicking the unit frame will cause your focus to match the unit."] = "滑鼠中鍵點擊單位框架設置焦點."
 L["Middle"] = "中間"
-L["Min Alpha"] = true
+L["Min Alpha"] = "最小透明度"
 L["Minimum Duration"] = "最低持續時間"
 L["Model Rotation"] = "模型旋轉"
 L["Mouseover Glow"] = "滑鼠指向發光"
@@ -1256,7 +1256,7 @@ L["Personal"] = "個人的"
 L["Pet Name"] = "寵物名字"
 L["Phase Indicator"] = "位面指示器"
 L["Player Frame Aura Bars"] = "玩家框架光環條"
-L["Player Target"] = true
+L["Player Target"] = "玩家目標"
 L["Portrait"] = "頭像"
 L["Position Buffs on Debuffs"] = "增益在減益上"
 L["Position Debuffs on Buffs"] = "減益在減益上"
@@ -1277,7 +1277,7 @@ L["Raid Icon"] = "團隊圖示"
 L["Raid-Wide Sorting"] = "全團隊排序"
 L["Raid40 Frames"] = "40人團隊框架"
 L["RaidDebuff Indicator"] = "團隊副本減益光環標示"
-L["Range"] = true
+L["Range"] = "距離"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "實時更新生命值會佔用更多的內存的和CPU, 只推薦治療角色開啟."
 L["Reaction Castbars"] = "聲望施法條"
 L["Reactions"] = "陣營聲望"
@@ -1326,8 +1326,8 @@ L["Size Override"] = "尺寸覆蓋"
 L["Size"] = "尺寸"
 L["Smart Aura Position"] = "智能光環位置"
 L["Smart Raid Filter"] = "智能團隊過濾"
-L["Smooth Bars"] = "平滑化"
-L["Smooth"] = true
+L["Smooth Bars"] = "條平滑化"
+L["Smooth"] = "平滑"
 L["Sort By"] = "排序"
 L["Spaced"] = "留空"
 L["Spacing"] = "間隙"
@@ -1378,7 +1378,7 @@ L["Transparent"] = "透明"
 L["Turtle Color"] = "減傷類的顏色"
 L["Unfriendly"] = "不友好"
 L["Uniform Threshold"] = "統一閾值"
-L["Unit Target"] = true
+L["Unit Target"] = "單位目標"
 L["UnitFrames"] = "單位框架"
 L["Up"] = "上"
 L["Use Custom Level"] = "使用自訂層次"
@@ -1391,7 +1391,7 @@ L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the glo
 L["Use thin borders on certain unitframe elements."] = "使用細邊框"
 L["Use this backdrop color for units that are dead or ghosts."] = "死亡或靈魂狀態背景"
 L["Value must be a number"] = "數值必須為一個數字"
-L["Vehicle"] = true
+L["Vehicle"] = "載具"
 L["Vertical Fill Direction"] = "垂直填充方向"
 L["Vertical Spacing"] = "垂直間隔"
 L["Vertical"] = "垂直"
@@ -1399,7 +1399,7 @@ L["Visibility"] = "可見性"
 L["What point to anchor to the frame you set to attach to."] = "增益光環框架於其依附框架的依附位置."
 L["What to attach the buff anchor frame to."] = "Buff 定位附加到的框架."
 L["What to attach the debuff anchor frame to."] = "Debuff 定位附加到的框架."
-L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."] = true
+L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."] = "如果開啟將會忽略法術名只顯示用法術ID添加到過濾器的法術."
 L["When true, the header includes the player when not in a raid."] = "若啟用, 隊伍中將顯示玩家."
 L["Whitelist"] = "白名單"
 L["Width"] = "寬"
@@ -1413,38 +1413,38 @@ L["You need to hold this modifier down in order to blacklist an aura by right-cl
 -- New Locales -- Need Translated then sorted
 
 -- NamePlates
-L["PvP Indicator"] = true -- "Horde / Alliance / Honor Info"
-L["Horde / Alliance / Honor Info"] = true
+L["PvP Indicator"] = "PvP 提示器" -- "Horde / Alliance / Honor Info"
+L["Horde / Alliance / Honor Info"] = "部落 / 聯盟 / 榮譽信息"
 L["PvP Classification Indicator"] = true -- Cart / Flag / Orb / Assassin Bounty
 L["Cart / Flag / Orb / Assassin Bounty"] = true
-L["Show/Hide Test Frame"] = true
-L["Nameplate"] = true
-L["Remove Spell ID or Name"] = true
+L["Show/Hide Test Frame"] = "顯示/關閉測試框架"
+L["Nameplate"] = "姓名板"
+L["Remove Spell ID or Name"] = "移除法術ID或法術名"
 
 -- Bags
-L["Quest Starter"] = true
+L["Quest Starter"] = "任務接取物品"
 L["BoE"] = true
 L["BoU"] = true
 
 -- Tooltip
-L["Combat Override Key"] = true
-L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."] = true
+L["Combat Override Key"] = "戰鬥中顯示按鍵"
+L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."] = "如果你想在戰鬥中看到浮動提示請選中. 如果你已經選中了修飾鍵顯示, 那麼你需要按住來顯示浮動提示."
 
 -- Module Copy
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
-
+L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "你將進行 |cffD3CF00\"%s\"|r 的設定拷貝, 從當前配置文件 |cff4beb2c\"%s\"|r 到配置文件 |cff4beb2c\"%s\"|r. 你確定麼?"
+L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "你將進行 |cffD3CF00\"%s\"|r 的設定拷貝, 從配置文件 |cff4beb2c\"%s\"|r 到你當前配置文件 |cff4beb2c\"%s\"|r. 你確定麼?"
+ 
 -- UnitFrames
-L["Remaining / Max"] = true
-L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = true
+L["Remaining / Max"] = "剩餘時間 / 最大時間"
+L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "如果你不想讓某一個光環或是光環條顯示出來，只需按住Shift的同時滑鼠右鍵點擊圖標就可以讓其消失。"
 
 -- Skins
-L["Blizzard"] = true
+L["Blizzard"] = "暴雪原生"
 
 -- General
-L["Colors"] = true
-L["Boss"] = true
-L["Tank"] = true
-L["Party"] = true
-L["Pet"] = true
-L["Target"] = true
+L["Colors"] = "顏色"
+L["Boss"] = "團隊首領"
+L["Tank"] = "坦克"
+L["Party"] = "隊伍"
+L["Pet"] = "寵物"
+L["Target"] = "目標"
