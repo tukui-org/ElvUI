@@ -4,12 +4,12 @@
 
 
 **Bug Fixes:**  
-Fixed /kb to once again work on Stance and Pet buttons.  
+Fixed Keybind Mode (/kb) to once again work on Stance and Pet buttons.  
 Recoded some of the charge cooldown stuff (again!) This should fix Blade Flurry.  
 
 **Misc. Changes:**  
 Update GMChat skin.  
-Disabled Actionbar Show Charge Cooldown by default.  
+Disabled Actionbar Charge Cooldown Text by default.  
 
 ___
 ### Version 11.09 [ April 8th 2019 ]
