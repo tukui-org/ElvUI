@@ -280,7 +280,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 			if color then
 				self.bg:SetVertexColor(color[1] * self.bg.multiplier, color[2] * self.bg.multiplier, color[3] * self.bg.multiplier)
 			end
-		else
+		elseif newb then
 			self.bg:SetVertexColor(newr * self.bg.multiplier, newg * self.bg.multiplier, newb * self.bg.multiplier)
 		end
 	end
