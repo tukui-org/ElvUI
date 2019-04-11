@@ -61,7 +61,9 @@ function NP:Power_UpdateColor(event, unit)
 		local _, class = UnitClass(unit)
 		t = self.colors.class[class]
 	elseif(element.colorSelection and UnitSelectionType(unit, element.considerSelectionInCombatHostile)) then
-		t = NP.db.colors.selection[UnitSelectionType(unit, element.considerSelectionInCombatHostile)]
+		local Selection = UnitSelectionType(unit, element.considerSelectionInCombatHostile)
+		if Selection == 4 then Selection = 5 end
+		t = NP.db.colors.selection[Selection]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
 		local reaction = UnitReaction(unit, 'player')
 		if reaction <= 3 then reaction = 'bad' elseif reaction == 4 then reaction = 'neutral' else reaction = 'good' end
