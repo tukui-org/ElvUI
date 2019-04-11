@@ -372,7 +372,7 @@ function UF:UpdateColors()
 	ElvUF.colors.selection[1] = E:SetColorTable(ElvUF.colors.selection[1], db.selection[1])
 	ElvUF.colors.selection[2] = E:SetColorTable(ElvUF.colors.selection[2], db.selection[2])
 	ElvUF.colors.selection[3] = E:SetColorTable(ElvUF.colors.selection[3], db.selection[3])
-	ElvUF.colors.selection[4] = E:SetColorTable(ElvUF.colors.selection[4], db.selection[4])
+	ElvUF.colors.selection[4] = E:SetColorTable(ElvUF.colors.selection[4], db.selection[5]) -- 4 = 5, player simple -> extended
 	ElvUF.colors.selection[5] = E:SetColorTable(ElvUF.colors.selection[5], db.selection[5])
 	ElvUF.colors.selection[6] = E:SetColorTable(ElvUF.colors.selection[6], db.selection[6])
 	ElvUF.colors.selection[7] = E:SetColorTable(ElvUF.colors.selection[7], db.selection[7])

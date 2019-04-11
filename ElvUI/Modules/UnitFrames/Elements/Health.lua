@@ -239,10 +239,11 @@ end
 
 function UF:PostUpdateHealthColor(unit, r, g, b)
 	local parent = self:GetParent()
+	local colors = E.db.unitframe.colors
 
-	-- Health by Value
-	local colors = E.db.unitframe.colors;
-	local multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 0.25
+	if self.bg then
+		self.bg.multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or (colors.classbackdrop and 1) or 0.35
+	end
 
 	if (((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
 		local cur, max = self.cur or 1, self.max or 100
@@ -257,37 +258,31 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 
 		local newr, newg, newb = ElvUF:ColorGradient(cur, max, 1, 0, 0, 1, 1, 0, r, g, b)
 		self:SetStatusBarColor(newr, newg, newb)
-		self.bg:SetVertexColor(newr * multiplier, newg * multiplier, newb * multiplier)
-		self.bg.multiplier = multiplier
-	end
 
-	-- Class Backdrop
-	if self.bg and colors.classbackdrop then
-		local reaction = UnitReaction(unit, 'player')
-		local t
-		if UnitIsPlayer(unit) then
-			local _, class = UnitClass(unit)
-			t = parent.colors.class[class]
-		elseif reaction then
-			t = parent.colors.reaction[reaction]
-		end
-
-		if t then
-			multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 1
-			self.bg:SetVertexColor(t[1] * multiplier , t[2] * multiplier, t[3] * multiplier)
-			self.bg.multiplier = multiplier
+		if self.bg then
+			self.bg:SetVertexColor(newr * self.bg.multiplier, newg * self.bg.multiplier, newb * self.bg.multiplier)
 		end
 	end
 
-	-- Custom Backdrop
-	if self.bg and colors.customhealthbackdrop then
-		local backdrop = colors.health_backdrop
-		self.bg:SetVertexColor(backdrop.r, backdrop.g, backdrop.b)
-	end
+	if self.bg then
+		if colors.classbackdrop then
+			local reaction, color = (UnitReaction(unit, 'player'))
 
-	if self.bg and colors.useDeadBackdrop and UnitIsDeadOrGhost(unit) then
-		local backdrop = colors.health_backdrop_dead
-		self.bg:SetVertexColor(backdrop.r, backdrop.g, backdrop.b)
+			if UnitIsPlayer(unit) then
+				local _, class = UnitClass(unit)
+				color = parent.colors.class[class]
+			elseif reaction then
+				color = parent.colors.reaction[reaction]
+			end
+
+			if color then
+				self.bg:SetVertexColor(color[1] * self.bg.multiplier , color[2] * self.bg.multiplier, color[3] * self.bg.multiplier)
+			end
+		elseif colors.customhealthbackdrop then
+			self.bg:SetVertexColor(colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
+		elseif colors.useDeadBackdrop and UnitIsDeadOrGhost(unit) then
+			self.bg:SetVertexColor(colors.health_backdrop_dead.r, colors.health_backdrop_dead.g, colors.health_backdrop_dead.b)
+		end
 	end
 end
 

@@ -239,8 +239,11 @@ function UF:PostUpdatePowerColor()
 
 		if not self.colorClass then
 			self:SetStatusBarColor(color[1], color[2], color[3])
-			local mu = self.bg.multiplier or 1
-			self.bg:SetVertexColor(color[1] * mu, color[2] * mu, color[3] * mu)
+
+			if self.bg then
+				local mu = self.bg.multiplier or 1
+				self.bg:SetVertexColor(color[1] * mu, color[2] * mu, color[3] * mu)
+			end
 		end
 	end
 end
