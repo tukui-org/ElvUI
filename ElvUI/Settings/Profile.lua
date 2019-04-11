@@ -1925,7 +1925,6 @@ P.unitframe = {
 			color = {r = 1, g = 1, b = 1, a = 1},
 		},
 		classResources = {
-			bgColor = {r = 0.1,g = 0.1,b = 0.1, a = 1},
 			comboPoints = {
 				[1] = {r = 0.69, g = 0.31, b = 0.31},
 				[2] = {r = 0.65, g = 0.63, b = 0.34},

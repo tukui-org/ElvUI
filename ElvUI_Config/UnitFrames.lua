@@ -7912,13 +7912,6 @@ E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.class
 	args = {}
 }
 
-E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args.bgColor = {
-	order = 1,
-	type = 'color',
-	name = L["Backdrop Color"],
-	hasAlpha = false,
-}
-
 for i = 1, 3 do
 	E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args['combo'..i] = {
 		order = i+2,
