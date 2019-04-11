@@ -242,11 +242,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	local parent = self:GetParent()
 	local colors = E.db.unitframe.colors
 
-	if self.bg then
-		self.bg.multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 0.35
-	end
-
-	local newr, newg, newb
+	local newr, newg, newb -- fallback for bg if custom settings arent used
 	if (((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
 		local cur, max = self.cur or 1, self.max or 100
 		if parent.isForced then
@@ -254,15 +250,15 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 			max = (cur > max and cur * 2) or max
 		end
 
-		if not (r and g and b) then
-			r, g, b = colors.health.r, colors.health.g, colors.health.b
-		end
+		if not (r and g and b) then r, g, b = colors.health.r, colors.health.g, colors.health.b end
 
 		newr, newg, newb = ElvUF:ColorGradient(cur, max, 1, 0, 0, 1, 1, 0, r, g, b)
 		self:SetStatusBarColor(newr, newg, newb)
 	end
 
 	if self.bg then
+		self.bg.multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 0.35
+
 		if colors.useDeadBackdrop and UnitIsDeadOrGhost(unit) then
 			self.bg:SetVertexColor(colors.health_backdrop_dead.r, colors.health_backdrop_dead.g, colors.health_backdrop_dead.b)
 		elseif colors.customhealthbackdrop then
@@ -282,6 +278,8 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 			end
 		elseif newb then
 			self.bg:SetVertexColor(newr * self.bg.multiplier, newg * self.bg.multiplier, newb * self.bg.multiplier)
+		else
+			self.bg:SetVertexColor(r * self.bg.multiplier, g * self.bg.multiplier, b * self.bg.multiplier)
 		end
 	end
 end
