@@ -243,14 +243,13 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	local colors = E.db.unitframe.colors
 
 	local newr, newg, newb -- fallback for bg if custom settings arent used
+	if not b then r, g, b = colors.health.r, colors.health.g, colors.health.b end
 	if (((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
 		local cur, max = self.cur or 1, self.max or 100
 		if parent.isForced then
 			cur = parent.forcedHealth or cur
 			max = (cur > max and cur * 2) or max
 		end
-
-		if not (r and g and b) then r, g, b = colors.health.r, colors.health.g, colors.health.b end
 
 		newr, newg, newb = ElvUF:ColorGradient(cur, max, 1, 0, 0, 1, 1, 0, r, g, b)
 		self:SetStatusBarColor(newr, newg, newb)
