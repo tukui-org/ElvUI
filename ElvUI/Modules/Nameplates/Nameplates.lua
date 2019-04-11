@@ -16,7 +16,7 @@ local CreateFrame = CreateFrame
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
-local IsInInstance = IsInInstance
+local GetInstanceInfo = GetInstanceInfo
 local SetCVar, GetCVarDefault = SetCVar, GetCVarDefault
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
@@ -321,8 +321,6 @@ function NP:DisablePlate(nameplate, nameOnly)
 	if nameplate:IsElementEnabled('Castbar') then nameplate:DisableElement('Castbar') end
 	if nameplate:IsElementEnabled('Portrait') then nameplate:DisableElement('Portrait') end
 	if nameplate:IsElementEnabled('QuestIcons') then nameplate:DisableElement('QuestIcons') end
-	if nameplate:IsElementEnabled('RaidTargetIndicator') then nameplate:DisableElement('RaidTargetIndicator') end
-	if nameplate:IsElementEnabled('TargetIndicator') then nameplate:DisableElement('TargetIndicator') end
 	if nameplate:IsElementEnabled('ThreatIndicator') then nameplate:DisableElement('ThreatIndicator') end
 	if nameplate:IsElementEnabled('ClassPower') then nameplate:DisableElement('ClassPower') end
 	if nameplate:IsElementEnabled('PvPIndicator') then nameplate:DisableElement('PvPIndicator') end
@@ -422,8 +420,7 @@ function NP:GROUP_LEFT()
 end
 
 function NP:PLAYER_ENTERING_WORLD()
-	NP.InstanceType = select(2, IsInInstance())
-
+	NP.InstanceType = select(2, GetInstanceInfo())
 	NP:UpdatePlate(_G.ElvNP_Player)
 end
 
