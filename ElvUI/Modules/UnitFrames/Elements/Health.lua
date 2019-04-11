@@ -243,7 +243,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	local colors = E.db.unitframe.colors
 
 	if self.bg then
-		self.bg.multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or (colors.classbackdrop and 1) or 0.35
+		self.bg.multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 0.35
 	end
 
 	local newr, newg, newb
