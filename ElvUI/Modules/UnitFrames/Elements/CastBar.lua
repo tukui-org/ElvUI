@@ -70,6 +70,8 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)
 
 	castbar.bg = castbar:CreateTexture(nil, 'BORDER')
+	castbar.bg:SetAllPoints()
+	castbar.bg:SetTexture(E.media.blankTex)
 	castbar.bg:Show()
 
 	local button = CreateFrame("Frame", nil, castbar)
@@ -234,6 +236,8 @@ function UF:Configure_Castbar(frame)
 			ticks[i]:Width(castbar.tickWidth)
 		end
 	end
+
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, castbar, castbar.bg, nil, true)
 
 	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 		frame:EnableElement('Castbar')
@@ -437,8 +441,6 @@ function UF:PostCastStart(unit)
 	end
 
 	self:SetStatusBarColor(r, g, b)
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
-	UF.UpdateBackdropTextureColor(self, r, g, b)
 end
 
 function UF:PostCastStop(unit)
@@ -471,7 +473,4 @@ function UF:PostCastInterruptible(unit)
 	end
 
 	self:SetStatusBarColor(r, g, b)
-
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
-	UF.UpdateBackdropTextureColor(self, r, g, b)
 end

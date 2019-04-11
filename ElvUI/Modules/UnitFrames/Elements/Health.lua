@@ -22,6 +22,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	health:SetFrameLevel(10) --Make room for Portrait and Power which should be lower by default
 	health.PostUpdate = self.PostUpdateHealth
 	health.PostUpdateColor = self.PostUpdateHealthColor
+	health.ignoreStatusBarHook = true
 
 	if bg then
 		health.bg = health:CreateTexture(nil, 'BORDER')
@@ -245,6 +246,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 		self.bg.multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or (colors.classbackdrop and 1) or 0.35
 	end
 
+	local newr, newg, newb
 	if (((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
 		local cur, max = self.cur or 1, self.max or 100
 		if parent.isForced then
@@ -256,16 +258,16 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 			r, g, b = colors.health.r, colors.health.g, colors.health.b
 		end
 
-		local newr, newg, newb = ElvUF:ColorGradient(cur, max, 1, 0, 0, 1, 1, 0, r, g, b)
+		newr, newg, newb = ElvUF:ColorGradient(cur, max, 1, 0, 0, 1, 1, 0, r, g, b)
 		self:SetStatusBarColor(newr, newg, newb)
-
-		if self.bg then
-			self.bg:SetVertexColor(newr * self.bg.multiplier, newg * self.bg.multiplier, newb * self.bg.multiplier)
-		end
 	end
 
 	if self.bg then
-		if colors.classbackdrop then
+		if colors.useDeadBackdrop and UnitIsDeadOrGhost(unit) then
+			self.bg:SetVertexColor(colors.health_backdrop_dead.r, colors.health_backdrop_dead.g, colors.health_backdrop_dead.b)
+		elseif colors.customhealthbackdrop then
+			self.bg:SetVertexColor(colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
+		elseif colors.classbackdrop then
 			local reaction, color = (UnitReaction(unit, 'player'))
 
 			if UnitIsPlayer(unit) then
@@ -276,12 +278,10 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 			end
 
 			if color then
-				self.bg:SetVertexColor(color[1] * self.bg.multiplier , color[2] * self.bg.multiplier, color[3] * self.bg.multiplier)
+				self.bg:SetVertexColor(color[1] * self.bg.multiplier, color[2] * self.bg.multiplier, color[3] * self.bg.multiplier)
 			end
-		elseif colors.customhealthbackdrop then
-			self.bg:SetVertexColor(colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
-		elseif colors.useDeadBackdrop and UnitIsDeadOrGhost(unit) then
-			self.bg:SetVertexColor(colors.health_backdrop_dead.r, colors.health_backdrop_dead.g, colors.health_backdrop_dead.b)
+		else
+			self.bg:SetVertexColor(newr * self.bg.multiplier, newg * self.bg.multiplier, newb * self.bg.multiplier)
 		end
 	end
 end

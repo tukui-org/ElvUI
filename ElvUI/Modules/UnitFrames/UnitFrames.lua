@@ -1403,7 +1403,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	local statusBarTex = statusBar:GetStatusBarTexture()
 	local statusBarOrientation = statusBar:GetOrientation()
 
-	if not statusBar.hookedColor then
+	if not statusBar.ignoreStatusBarHook and not statusBar.hookedColor then
 		hooksecurefunc(statusBar, "SetStatusBarColor", UF.UpdateBackdropTextureColor)
 		statusBar.hookedColor = true
 	end

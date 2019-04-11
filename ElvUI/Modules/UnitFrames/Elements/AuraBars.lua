@@ -42,7 +42,6 @@ function UF:Construct_AuraBars()
 	bar.icon:SetDrawLayer('OVERLAY')
 
 	bar.bg = bar:CreateTexture(nil, 'BORDER')
-	bar.bg.setAnchors = true
 	bar.bg:Show()
 
 	bar.iconHolder:RegisterForClicks('RightButtonUp')
