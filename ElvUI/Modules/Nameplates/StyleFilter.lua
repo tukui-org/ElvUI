@@ -525,7 +525,7 @@ end
 
 function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	local _, condition, inCombat, questBoss, reaction, spell, classification, instanceType, instanceDifficulty,
-	talentSelected, pvpTalent, talentRows, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, myRole, mySpecID, creatureType,
+	talentSelected, pvpTalent, talentRows, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, mySpecID, creatureType,
 	power, maxPower, percPower, underPowerThreshold, overPowerThreshold, powerUnit, health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold, healthUnit;
 
 	local isCasting = frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
