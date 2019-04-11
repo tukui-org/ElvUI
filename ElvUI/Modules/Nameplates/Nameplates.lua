@@ -403,12 +403,13 @@ function NP:Update_StatusBars()
 end
 
 function NP:GROUP_ROSTER_UPDATE()
-	NP.IsInGroup = IsInRaid() or IsInGroup()
+	local isInRaid = IsInRaid()
+	NP.IsInGroup = isInRaid or IsInGroup()
 
 	wipe(NP.GroupRoles)
 
 	if NP.IsInGroup then
-		local NumPlayers, Unit = IsInRaid() and GetNumGroupMembers() or GetNumSubgroupMembers(), IsInRaid() and 'raid' or 'party'
+		local NumPlayers, Unit = (isInRaid and GetNumGroupMembers()) or GetNumSubgroupMembers(), (isInRaid and 'raid') or 'party'
 		for i = 1, NumPlayers do
 			if UnitExists(Unit..i) then
 				NP.GroupRoles[UnitName(Unit..i)] = UnitGroupRolesAssigned(Unit..i)
@@ -424,12 +425,12 @@ end
 
 function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, IsInInstance())
+
 	NP:UpdatePlate(_G.ElvNP_Player)
 end
 
 function NP:ConfigureAll()
 	NP:StyleFilterConfigure() -- keep this at the top
-	NP.PlayerRole = GetSpecializationRole(GetSpecialization())
 
 	C_NamePlate_SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
 	C_NamePlate_SetNamePlateEnemySize(NP.db.clickableWidth, NP.db.clickableHeight)
@@ -543,10 +544,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 	end
 end
 
-function NP:ACTIVE_TALENT_GROUP_CHANGED()
-	NP.PlayerRole = GetSpecializationRole(GetSpecialization())
-end
-
 local optionsTable = {'EnemyMinus','EnemyMinions','FriendlyMinions','PersonalResource','PersonalResourceOnEnemy','MotionDropDown'}
 function NP:HideInterfaceOptions()
 	for _, x in pairs(optionsTable) do
@@ -626,7 +623,6 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
-	NP:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
 	NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	NP:RegisterEvent('GROUP_ROSTER_UPDATE')
 	NP:RegisterEvent('GROUP_LEFT')
@@ -634,7 +630,6 @@ function NP:Initialize()
 
 	NP:StyleFilterInitialize()
 	NP:HideInterfaceOptions()
-	NP:ACTIVE_TALENT_GROUP_CHANGED()
 	NP:GROUP_ROSTER_UPDATE()
 	NP:SetCVars()
 	NP:ConfigureAll()

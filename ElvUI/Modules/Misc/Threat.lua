@@ -101,7 +101,7 @@ function THREAT:Update()
 				local r, g, b = self:GetColor(largestUnit)
 				self.bar.text:SetFormattedText(L["ABOVE_THREAT_FORMAT"], name, percent, leadPercent, r, g, b, UnitName(largestUnit) or UNKNOWN)
 
-				if E.role == 'Tank' then
+				if E.myrole == 'TANK' then
 					self.bar:SetStatusBarColor(0, 0.839, 0)
 					self.bar:SetValue(leadPercent)
 				else

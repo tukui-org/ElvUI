@@ -141,14 +141,6 @@ E.DispelClasses = {
 	}
 }
 
-E.HealingClasses = {
-	PALADIN = 1,
-	SHAMAN = 3,
-	DRUID = 4,
-	MONK = 2,
-	PRIEST = {1, 2}
-}
-
 E.ClassRole = {
 	PALADIN = {
 		[1] = 'Caster',
@@ -607,23 +599,6 @@ E.snapBars[#E.snapBars + 1] = E.UIParent
 E.HiddenFrame = CreateFrame('Frame')
 E.HiddenFrame:Hide()
 
-function E:CheckTalentTree(tree)
-	local activeSpec = GetActiveSpecGroup()
-	local currentSpec = activeSpec and GetSpecialization(false, false, activeSpec)
-
-	if currentSpec and type(tree) == 'number' then
-		return tree == currentSpec
-	elseif currentSpec and type(tree) == 'table' then
-		for _, index in pairs(tree) do
-			if index == currentSpec then
-				return true
-			end
-		end
-	end
-
-	return false
-end
-
 function E:IsDispellableByMe(debuffType)
 	if not self.DispelClasses[self.myclass] then return end
 
@@ -633,25 +608,17 @@ function E:IsDispellableByMe(debuffType)
 end
 
 function E:CheckRole()
-	local talentTree = GetSpecialization()
-	self.myspec = talentTree
+	self.myspec = GetSpecialization()
+	self.myrole = E:GetPlayerRole()
 
-	local IsInPvPGear, role = false
+	-- myrole = group role; TANK, HEALER, DAMAGE
+	-- role   = class role; Tank, Melee, Caster
 
-	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
-	if resilperc > GetDodgeChance() and resilperc > GetParryChance() and UnitLevel('player') == MAX_PLAYER_LEVEL then
-		IsInPvPGear = true
-	end
-
+	local role
 	if type(self.ClassRole[self.myclass]) == 'string' then
 		role = self.ClassRole[self.myclass]
-	elseif talentTree then
-		role = self.ClassRole[self.myclass][talentTree]
-	end
-
-	--Check for PvP gear
-	if role == 'Tank' and IsInPvPGear then
-		role = 'Melee'
+	elseif self.myspec then
+		role = self.ClassRole[self.myclass][self.myspec]
 	end
 
 	if not role then
@@ -672,12 +639,8 @@ function E:CheckRole()
 		self.callbacks:Fire('RoleChanged')
 	end
 
-	if self.HealingClasses[self.myclass] ~= nil and self.myclass ~= 'PRIEST' then
-		if self:CheckTalentTree(self.HealingClasses[self.myclass]) then
-			self.DispelClasses[self.myclass].Magic = true
-		else
-			self.DispelClasses[self.myclass].Magic = false
-		end
+	if self.myrole and self.DispelClasses[self.myclass] ~= nil then
+		self.DispelClasses[self.myclass].Magic = (self.myrole == 'HEALER')
 	end
 end
 

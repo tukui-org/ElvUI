@@ -10,18 +10,18 @@ local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
 
 function NP:ThreatIndicator_PreUpdate(unit)
-	local ROLE = NP.IsInGroup and UnitExists(unit..'target') and not UnitIsUnit(unit..'target', 'player') and NP.GroupRoles[UnitName(unit..'target')] or 'NONE'
+	local ROLE = NP.IsInGroup and (UnitExists(unit..'target') and not UnitIsUnit(unit..'target', 'player')) and NP.GroupRoles[UnitName(unit..'target')] or 'NONE'
 
 	self.__owner.ThreatScale = nil
 
 	if ROLE == 'TANK' then
 		self.feedbackUnit = unit..'target'
-		self.offTank = NP.PlayerRole == 'TANK' and true or false
+		self.offTank = E.myrole == 'TANK'
 		self.isTank = true
 	else
 		self.feedbackUnit = 'player'
 		self.offTank = false
-		self.isTank = NP.PlayerRole == 'TANK' and true or false
+		self.isTank = E.myrole == 'TANK'
 	end
 end
 
