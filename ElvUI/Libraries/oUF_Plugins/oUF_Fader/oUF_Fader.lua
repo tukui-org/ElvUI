@@ -197,8 +197,9 @@ local options = {
 		enable = function(self)
 			self:RegisterEvent('PLAYER_REGEN_ENABLED', Update, true)
 			self:RegisterEvent('PLAYER_REGEN_DISABLED', Update, true)
+			self:RegisterEvent('UNIT_FLAGS', Update)
 		end,
-		events = {'PLAYER_REGEN_ENABLED','PLAYER_REGEN_DISABLED'}
+		events = {'PLAYER_REGEN_ENABLED','PLAYER_REGEN_DISABLED','UNIT_FLAGS'}
 	},
 	Target = { --[[ UnitTarget, PlayerTarget ]]
 		enable = function(self)
