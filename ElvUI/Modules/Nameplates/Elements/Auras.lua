@@ -250,7 +250,7 @@ function NP:UpdateAuraSettings(button)
 		end
 	end
 
-	button:Size(button.db.size or 26)
+	button:Size((button.db and button.db.size) or 26)
 
 	button.needsUpdateCooldownPosition = true
 end
