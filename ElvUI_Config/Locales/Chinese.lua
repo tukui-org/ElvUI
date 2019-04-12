@@ -951,7 +951,7 @@ L["Character Frame"] = "角色"
 L["CheckBox Skin"] = "勾选框皮肤"
 L["Contribution"] = "捐献"
 L["Debug Tools"] = "除错工具"
-L["GM Chat"] = true
+L["GM Chat"] = "GM对话框"
 L["Gossip Frame"] = "闲谈"
 L["Guild Control Frame"] = "公会控制"
 L["Guild Registrar"] = "公会注册"
@@ -1182,7 +1182,7 @@ L["Height"] = "高"
 L["Horizontal Spacing"] = "水平间隔"
 L["Horizontal"] = "水平"
 L["Hostile"] = "敌对"
-L["Hover"] = true
+L["Hover"] = "鼠标指向"
 L["How far away the portrait is from the camera."] = "人像和镜头间有多远"
 L["Icon Inside Castbar"] = "施法条内的图标"
 L["Icon Size"] = "图标尺寸"
@@ -1412,13 +1412,13 @@ L["You need to hold this modifier down in order to blacklist an aura by right-cl
 -- New Locales -- Need Translated then sorted
 
 -- NamePlates
-L["PvP Indicator"] = true -- "Horde / Alliance / Honor Info"
-L["Horde / Alliance / Honor Info"] = true
+L["PvP Indicator"] = "PvP指示器" -- "Horde / Alliance / Honor Info"
+L["Horde / Alliance / Honor Info"] = "部落 / 联盟 / 荣誉信息"
 L["PvP Classification Indicator"] = true -- Cart / Flag / Orb / Assassin Bounty
 L["Cart / Flag / Orb / Assassin Bounty"] = true
-L["Show/Hide Test Frame"] = true
-L["Nameplate"] = true
-L["Remove Spell ID or Name"] = true
+L["Show/Hide Test Frame"] = "显示/隐藏测试框架"
+L["Nameplate"] = "姓名板"
+L["Remove Spell ID or Name"] = "移除技能ID或者名字"
 
 -- Bags
 L["Quest Starter"] = true
@@ -1430,20 +1430,20 @@ L["Combat Override Key"] = true
 L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."] = true
 
 -- Module Copy
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
+L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "|cffD3CF00\"%s\"|r 设置将从你当前配置文件 |cff4beb2c\"%s\"|r 导出到 |cff4beb2c\"%s\"|r 配置文件中. 你确定吗?"
+L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "|cffD3CF00\"%s\"|r 设置将从配置文件 |cff4beb2c\"%s\"|r 导入到你当前配置文件 |cff4beb2c\"%s\"|r 中. 你确定吗?"
 
 -- UnitFrames
-L["Remaining / Max"] = true
+L["Remaining / Max"] = "剩余值 / 最大值"
 L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = true
 
 -- Skins
 L["Blizzard"] = true
 
 -- General
-L["Colors"] = true
-L["Boss"] = true
-L["Tank"] = true
-L["Party"] = true
-L["Pet"] = true
-L["Target"] = true
+L["Colors"] = "颜色"
+L["Boss"] = "首领"
+L["Tank"] = "坦克"
+L["Party"] = "小队"
+L["Pet"] = "宠物"
+L["Target"] = "目标"
