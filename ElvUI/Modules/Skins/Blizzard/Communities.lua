@@ -130,7 +130,7 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
 
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
-	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
+	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu, nil, true) -- use an override here to adjust the damn text position >.>
 
 	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, "SetFilter", function(self)
 		self.ShowNotificationsButton:SetSize(20, 20)
