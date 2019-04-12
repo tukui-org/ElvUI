@@ -477,7 +477,7 @@ function S:HandleDropDownBox(frame, width, override)
 		end
 
 		if override then
-			if left then -- for now only on the Communities.StreamDropdown in minimized move >.>
+			if left then -- for now only on the Communities.StreamDropdown in minimized mode >.>
 				text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and 1) or -3, 0)
 			end
 		end
