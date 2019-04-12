@@ -973,6 +973,7 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_POWER_FREQUENT',
 	'UNIT_POWER_UPDATE',
 	'UNIT_TARGET',
+	'UNIT_THREAT_LIST_UPDATE',
 	'UNIT_FLAGS'
 }
 
@@ -1047,6 +1048,7 @@ function mod:StyleFilterConfigure()
 				end
 
 				if filter.triggers.inCombat or filter.triggers.outOfCombat or filter.triggers.inCombatUnit or filter.triggers.outOfCombatUnit then
+					mod.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
 					mod.StyleFilterTriggerEvents.UNIT_FLAGS = true
 				end
 
@@ -1199,6 +1201,9 @@ function mod:StyleFilterEvents(nameplate)
 	end
 	if not nameplate:IsEventRegistered('SPELL_UPDATE_COOLDOWN') then
 		nameplate:RegisterEvent('SPELL_UPDATE_COOLDOWN', E.noop, true)
+	end
+	if not nameplate:IsEventRegistered('UNIT_THREAT_LIST_UPDATE') then
+		nameplate:RegisterEvent('UNIT_THREAT_LIST_UPDATE', E.noop)
 	end
 	if not nameplate:IsEventRegistered('UNIT_FLAGS') then
 		nameplate:RegisterEvent('UNIT_FLAGS', E.noop)
