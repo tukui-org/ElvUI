@@ -10,6 +10,7 @@ Fixed Selection Player Color sometimes being incorrect.
 Fixed Nameplate Alternative Power Swap.  
 Fixed Fader from properly fading the Pet Frame out when combat ends.  
 Fixed "button.db" error in Nameplate Aura code.  
+Fixed a dropdown text position if the Communities Frame is minimized.  
 
 **Misc. Changes:**  
 Unitframe Status Bars will now sync their textures onto the background space when not using transparent.  
