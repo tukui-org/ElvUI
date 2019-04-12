@@ -1345,14 +1345,16 @@ function UF:UpdateBackdropTextureColor(r, g, b)
 		local nn = n;n=m;m=nn
 	end
 
-	if self.backdrop then
-		local _, _, _, a = E:GetBackdropColor(self.backdrop)
-		self.backdrop:SetBackdropColor(r * n, g * n, b * n, a)
-	else
-		local parent = self:GetParent()
-		if parent and parent.template then
-			local _, _, _, a = E:GetBackdropColor(parent)
-			parent:SetBackdropColor(r * n, g * n, b * n, a)
+	if self.isTransparent then
+		if self.backdrop then
+			local _, _, _, a = E:GetBackdropColor(self.backdrop)
+			self.backdrop:SetBackdropColor(r * n, g * n, b * n, a)
+		else
+			local parent = self:GetParent()
+			if parent and parent.template then
+				local _, _, _, a = E:GetBackdropColor(parent)
+				parent:SetBackdropColor(r * n, g * n, b * n, a)
+			end
 		end
 	end
 
@@ -1403,7 +1405,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	local statusBarTex = statusBar:GetStatusBarTexture()
 	local statusBarOrientation = statusBar:GetOrientation()
 
-	if not statusBar.ignoreStatusBarHook and not statusBar.hookedColor then
+	if not statusBar.hookedColor then
 		hooksecurefunc(statusBar, "SetStatusBarColor", UF.UpdateBackdropTextureColor)
 		statusBar.hookedColor = true
 	end

@@ -2901,7 +2901,7 @@ E.Options.args.unitframe = {
 									order = 12,
 									name = L["Health Backdrop Multiplier"],
 									type = 'range',
-									min = 0, max = 1, step = .01,
+									min = 0, max = 0.75, step = .01,
 									get = function(info) return E.db.unitframe.colors[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 								},

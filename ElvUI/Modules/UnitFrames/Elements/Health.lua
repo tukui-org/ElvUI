@@ -22,7 +22,6 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	health:SetFrameLevel(10) --Make room for Portrait and Power which should be lower by default
 	health.PostUpdate = self.PostUpdateHealth
 	health.PostUpdateColor = self.PostUpdateHealthColor
-	health.ignoreStatusBarHook = true
 
 	if bg then
 		health.bg = health:CreateTexture(nil, 'BORDER')

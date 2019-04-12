@@ -1721,6 +1721,11 @@ function E:DBConversions()
 		end
 	end
 
+	--Health Backdrop Multiplier
+	if E.db.unitframe.colors.healthmultiplier > 0.75 then
+		E.db.unitframe.colors.healthmultiplier = 0.75
+	end
+
 	--Tooltip FactionColors Setting
 	for i=1, 8 do
 		local oldTable = E.db.tooltip.factionColors[''..i]
