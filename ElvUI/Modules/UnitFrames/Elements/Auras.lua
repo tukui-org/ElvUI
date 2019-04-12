@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 
 --Lua functions
 local _G = _G
-local unpack, strfind, format, tinsert, strsplit, sort, ceil = unpack, strfind, format, tinsert, strsplit, sort, ceil
+local unpack, strfind, format, strsplit, sort, ceil = unpack, strfind, format, strsplit, sort, ceil
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown

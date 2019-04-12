@@ -16,7 +16,6 @@ local CreateFrame = CreateFrame
 local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
-local C_QuestLog_GetMaxNumQuestsCanAccept = C_QuestLog.GetMaxNumQuestsCanAccept
 
 local function HandleReward(frame)
 	if (not frame) then return end

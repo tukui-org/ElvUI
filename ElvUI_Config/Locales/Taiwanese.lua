@@ -1433,7 +1433,7 @@ L["Choose when you want the tooltip to show in combat. If a modifer is chosen, t
 -- Module Copy
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "你將進行 |cffD3CF00\"%s\"|r 的設定拷貝, 從當前配置文件 |cff4beb2c\"%s\"|r 到配置文件 |cff4beb2c\"%s\"|r. 你確定麼?"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "你將進行 |cffD3CF00\"%s\"|r 的設定拷貝, 從配置文件 |cff4beb2c\"%s\"|r 到你當前配置文件 |cff4beb2c\"%s\"|r. 你確定麼?"
- 
+
 -- UnitFrames
 L["Remaining / Max"] = "剩餘時間 / 最大時間"
 L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "如果你不想讓某一個光環或是光環條顯示出來，只需按住Shift的同時滑鼠右鍵點擊圖標就可以讓其消失。"
