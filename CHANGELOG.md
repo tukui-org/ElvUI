@@ -5,17 +5,17 @@
 
 **Bug Fixes:**  
 Fixed Nameplate Stagger texture.  
-Fixed the Charge Cooldown Text not correctly setting Blizzard's Cooldown Text.  
+Fixed the Charge Cooldown Text not correctly setting Blizzard Cooldown Text.  
 Fixed Selection Player Color sometimes being incorrect.  
 Fixed Nameplate Alternative Power Swap.  
 Fixed Fader from properly fading the Pet Frame out when combat ends.  
-Fixed a "button.db" error in Nameplate Aura code.  
+Fixed "button.db" error in Nameplate Aura code.  
 
 **Misc. Changes:**  
 Unitframe Status Bars will now sync their textures onto the background space when not using transparent.  
 Nameplate Class Bar will also sync it's texture to the background.  
 Attempted to fix PossessBarFrame, MainMenuBar, etc.. taint errors.  
-Cleaned up some of the code which handles player role in the UI, this fixed the Timewalking threat being backwards.  
+Cleaned up some of the code which handles Player Role in the UI, this fixed the Timewalking Threat being backwards.  
 
 ___
 ### Version 11.10 [ April 9th 2019 ]
