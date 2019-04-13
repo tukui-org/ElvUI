@@ -128,9 +128,11 @@ function NP:Update_ClassPower(nameplate)
 				nameplate.ClassPower[i].bg:Size(Width - 1, db.classpower.height)
 				nameplate.ClassPower[i]:Point('LEFT', nameplate.ClassPower[i - 1], 'RIGHT', 1, 0)
 			end
-		end
 
-		nameplate.ClassPower[maxClassBarButtons]:Point('RIGHT', nameplate.ClassPower)
+			if i == maxClassBarButtons then
+				nameplate.ClassPower[maxClassBarButtons]:Point('RIGHT', nameplate.ClassPower)
+			end
+		end
 	else
 		if nameplate:IsElementEnabled('ClassPower') then
 			nameplate:DisableElement('ClassPower')
