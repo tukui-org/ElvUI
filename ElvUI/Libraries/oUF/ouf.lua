@@ -11,7 +11,7 @@ local Private = oUF.Private
 local argcheck = Private.argcheck
 local error = Private.error
 local print = Private.print
-local UnitExists = Private.UnitExists
+local unitExists = Private.unitExists
 
 local styles, style = {}
 local callback, objects, headers = {}, {}, {}
@@ -58,7 +58,7 @@ local function updateActiveUnit(self, event, unit)
 		modUnit = 'vehicle'
 	end
 
-	if(not UnitExists(modUnit)) then return end
+	if(not unitExists(modUnit)) then return end
 
 	-- Change the active unit and run a full update.
 	if(Private.UpdateUnits(self, modUnit, realUnit)) then
@@ -193,7 +193,7 @@ for k, v in next, {
 	--]]
 	UpdateAllElements = function(self, event)
 		local unit = self.unit
-		if(not UnitExists(unit)) then return end
+		if(not unitExists(unit)) then return end
 
 		assert(type(event) == 'string', "Invalid argument 'event' in UpdateAllElements.")
 

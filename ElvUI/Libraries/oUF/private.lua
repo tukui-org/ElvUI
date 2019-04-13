@@ -21,7 +21,7 @@ function Private.error(...)
 	Private.print('|cffff0000Error:|r ' .. string.format(...))
 end
 
-function Private.UnitExists(unit)
+function Private.unitExists(unit)
 	return unit and (UnitExists(unit) or ShowBossFrameWhenUninteractable(unit))
 end
 
@@ -54,7 +54,7 @@ local selectionTypes = {
 	[13] = 13,
 }
 
-function Private.UnitSelectionType(unit, considerHostile)
+function Private.unitSelectionType(unit, considerHostile)
 	if(considerHostile and UnitThreatSituation('player', unit)) then
 		return 0
 	else
