@@ -357,8 +357,8 @@ L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFF右鍵k:|r
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + 左鍵:|r 顯示天賦專精介面"
 
 ----------------------------------
-L["RED_ENABLE"] = '|cFFff3333啟用|r'
-L["GREEN_ENABLE"] = '|cFF33ff33啟用|r'
+L["RED_ENABLE"] = "|cFFff3333啟用|r"
+L["GREEN_ENABLE"] = "|cFF33ff33啟用|r"
 L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, 移好後請點擊「鎖定」.
 選項:
   左鍵 - 開啟微調窗口.

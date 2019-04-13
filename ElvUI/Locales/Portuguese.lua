@@ -290,7 +290,7 @@ L["The chat windows function the same as Blizzard standard chat windows, you can
 L["The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this."] = "A unidade de Foco pode ser definida escrevendo /focus quando voce tem no alvo a unidade que quer tal. É recomendado que faça uma macro para este efeito."
 L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = "O modo configuração em jogo pode ser acessado escrevendo o comando /ec ou clicando no botão 'C' no minimapa. Pressione o botão abaixo se desejar pular o processo de instalação"
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = true
-L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = 'O feitiço "%s" foi adicionado à Lista Negra dos filtros das auras de unidades.'
+L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = "O feitiço \"%s\" foi adicionado à Lista Negra dos filtros das auras de unidades."
 L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = true
 L["Theme Set"] = "Tema configurado"
 L["Theme Setup"] = "Configuração do Tema"
@@ -356,8 +356,8 @@ L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFClique Dir
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = true
 
 ----------------------------------
-L["RED_ENABLE"] = '|cFFff3333Ativar|r'
-L["GREEN_ENABLE"] = '|cFF33ff33Ativar|r'
+L["RED_ENABLE"] = "|cFFff3333Ativar|r"
+L["GREEN_ENABLE"] = "|cFF33ff33Ativar|r"
 L["DESC_MOVERCONFIG"] = [=[Movedores destravados. Mova-os agora e clique Travar quando acabar.
 Options:
   LeftClick - Toggle Nudge Frame.

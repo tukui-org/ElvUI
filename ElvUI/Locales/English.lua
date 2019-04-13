@@ -11,7 +11,7 @@ L["(Hold Shift) Memory Usage"] = true
 L["(Modifer Click) Collect Garbage"] = true
 L["A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker."] = true
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = true
-L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
+L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]"
 L["Accepting this will reset the UnitFrame settings for %s. Are you sure?"] = true
 L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = true
 L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = true
@@ -356,8 +356,8 @@ L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = true
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = true
 
 ----------------------------------
-L["RED_ENABLE"] = '|cFFff3333Enable|r'
-L["GREEN_ENABLE"] = '|cFF33ff33Enable|r'
+L["RED_ENABLE"] = "|cFFff3333Enable|r"
+L["GREEN_ENABLE"] = "|cFF33ff33Enable|r"
 L["DESC_MOVERCONFIG"] = [=[Movers unlocked. Move them now and click Lock when you are done.
 
 Options:

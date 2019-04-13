@@ -357,8 +357,8 @@ L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFClick Droi
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + Click Gauche :|r Voir la spécialisation des talents de l'interface"
 
 ----------------------------------
-L["RED_ENABLE"] = '|cFFff3333Activer|r'
-L["GREEN_ENABLE"] = '|cFF33ff33Activer|r'
+L["RED_ENABLE"] = "|cFFff3333Activer|r"
+L["GREEN_ENABLE"] = "|cFF33ff33Activer|r"
 L["DESC_MOVERCONFIG"] = [=[Cadres déverrouillés. Déplacez-les et cliquez sur Verrouiller une fois terminé.
 
 Options:

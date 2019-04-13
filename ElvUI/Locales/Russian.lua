@@ -10,9 +10,9 @@ L["%s is attempting to share the profile %s with you. Would you like to accept t
 L["%s: %s tried to call the protected function '%s'."] = "%s: %s tried to call the protected function '%s'."
 L["(Hold Shift) Memory Usage"] = "(Зажать Shift) Использование памяти"
 L["(Modifer Click) Collect Garbage"] = "(Клик с модификатором) Очистка мусора"
-L["A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker."] = 'Функция рейдовых меток доступна в Escape -> Назначение клавиш. Прокрутите вниз до раздела ElvUI и назначьте клавишу для рейдовых меток.'
+L["A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker."] = "Функция рейдовых меток доступна в Escape -> Назначение клавиш. Прокрутите вниз до раздела ElvUI и назначьте клавишу для рейдовых меток."
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "Настройка, которую Вы только что изменили, будет влиять только на этого персонажа. Она не будет изменяться при смене профиля. Также это изменение требует перезагрузки интерфейса для вступления в силу."
-L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [на %.0f%% опережаем |cff%02x%02x%02x%s|r]'
+L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [на %.0f%% опережаем |cff%02x%02x%02x%s|r]"
 L["Accepting this will reset the UnitFrame settings for %s. Are you sure?"] = "Приняв это вы сбросите настройки для %s. Вы уверены?"
 L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = "Приняв это вы сбросите ваши списки приоритетов для всех аур на индикаторах здоровья. Вы уверены?"
 L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = "Приняв это вы сбросите ваши списки приоритетов для всех аур на рамках юнитов. Вы уверены?"
@@ -47,7 +47,7 @@ L["Bank Mover (Grow Up)"] = "Банк (Рост вверх)"
 L["Bank"] = "Банк"
 L["Bar "] = "Панель "
 L["Bars"] = "Полосы"
-L["Battleground datatexts temporarily hidden, to show type /bgstats or right click the 'C' icon near the minimap."] = 'Информация поля боя временно скрыта. Для отображения введите /bgstat или ПКМ на иконке "С" у миникарты.'
+L["Battleground datatexts temporarily hidden, to show type /bgstats or right click the 'C' icon near the minimap."] = "Информация поля боя временно скрыта. Для отображения введите /bgstat или ПКМ на иконке 'С' у миникарты."
 L["Battleground datatexts will now show again if you are inside a battleground."] = "Информация поля боя снова будет отображаться, если Вы находитесь на них."
 L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."] = "Из-за массового непонимания новой системы аур, я добавил новый шаг в установку. Он опционален. Если Вам нравится, как сейчас настроены Ваши ауры, перейдите до последнюю страницу установки и нажмите \"Завершить\", чтобы это сообщение больше не появлялось. Если же оно появится снова, пожалуйста, перезапустите игру."
 L["BfA Missions"] = "Миссии BfA"
@@ -99,7 +99,7 @@ L["Do you swear not to post in technical support about something not working wit
 L["Download"] = "Загрузка"
 L["DPS"] = "УВС"
 L["Earned:"] = "Заработано"
-L["ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable this from the profiles tab."] = 'В ElvUI присутствует функция двойной специализации, которая позволит Вам использовать разные профили для разных наборов талантов. Вы можете включить эту функцию в разделе профилей.'
+L["ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable this from the profiles tab."] = "В ElvUI присутствует функция двойной специализации, которая позволит Вам использовать разные профили для разных наборов талантов. Вы можете включить эту функцию в разделе профилей."
 L["ElvUI Installation"] = "Установка ElvUI"
 L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "Ваш ElvUI устарел более, чем на 5 версий. Обновите его на tukui.org. Или вы можете автоматически обновлять его автоматический через TukUI Client с премиум статусом."
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI устарел. Вы можете скачать последнюю версию с www.tukui.org. С премиум аккаунтом ElvUI будет автоматически обновляться через TukUI клиент."
@@ -118,7 +118,7 @@ L["Fishy Loot"] = "Улов"
 L["Focus Castbar"] = "Полоса заклинаний фокуса"
 L["Focus Frame"] = "Фокус"
 L["FocusTarget Frame"] = "Цель фокуса"
-L["For technical support visit us at http://www.tukui.org."] = 'За технической поддержкой обращайтесь на http://www.tukui.org.'
+L["For technical support visit us at http://www.tukui.org."] = "За технической поддержкой обращайтесь на http://www.tukui.org."
 L["Friends List"] = "Список друзей"
 L["G"] = "Г"
 L["Garrison"] = "Гарнизон"
@@ -144,8 +144,8 @@ L["HPS"] = "ИВС"
 L["I Swear"] = "Я клянусь!"
 L["I"] = "П"
 L["Icons Only"] = "Только иконки"
-L["If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them."] = 'Если Вы случайно удалили вкладку чата, всегда можно сделать следующее: зайти в конфигурацию, запустить установку, дойти до шага настроек чата и сбросить их.'
-L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing."] = 'Если Вы испытываете проблемы с ElvUI, попробуйте отключить все аддоны, кроме самого ElvUI. Помните, ElvUI это аддон, полностью заменяющий интерфейс, Вы не можете одновременно использовать два аддона, выполняющих одинаковые функции.'
+L["If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them."] = "Если Вы случайно удалили вкладку чата, всегда можно сделать следующее: зайти в конфигурацию, запустить установку, дойти до шага настроек чата и сбросить их."
+L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing."] = "Если Вы испытываете проблемы с ElvUI, попробуйте отключить все аддоны, кроме самого ElvUI. Помните, ElvUI это аддон, полностью заменяющий интерфейс, Вы не можете одновременно использовать два аддона, выполняющих одинаковые функции."
 L["IL"] = "ЛП"
 L["Importance: |cff07D400High|r"] = "Важность: |cff07D400Высокая|r"
 L["Importance: |cffD3CF00Medium|r"] = "Важность: |cffD3CF00Средняя|r"
@@ -287,10 +287,10 @@ L["TargetTarget Frame"] = "Цель цели"
 L["TargetTargetTarget Frame"] = "Цель цели цели"
 L["Temporary Move"] = "Временное перемещение"
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = "Окна чата работают так же, как и в стандартном чате Blizzard. Вы можете нажать правую кнопку мыши на вкладках для перемещения, переименования и тд. Пожалуйста, нажмите кнопку ниже для настройки чата."
-L["The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this."] = 'Запомненную цель (фокус) можно установить командой /focus при взятии нужного врага в цель. Для этого рекомендуется сделать макрос.'
+L["The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this."] = "Запомненную цель (фокус) можно установить командой /focus при взятии нужного врага в цель. Для этого рекомендуется сделать макрос."
 L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = "Меню настроек можно вызвать командой /ес или кнопкой 'С' на миникарте. Нажмите кнопку ниже, если Вы хотите прервать процесс установки."
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "Профиль, который вы хотите импортировать, уже существует. Задайте новой имя или примите для перезаписи существующего профиля."
-L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = 'Заклинание "%s" было добавлено в фильтр "Blacklist" аур рамок юнитов.'
+L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = "Заклинание \"%s\" было добавлено в фильтр \"Blacklist\" аур рамок юнитов."
 L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = "Масштаб интерфейса изменен. Если вы хотите посмотреть на результат, нажмите кнопку предпросмотра. Для лучшего результата рекомендуется перезагрузить интерфейс."
 L["Theme Set"] = "Тема установлена"
 L["Theme Setup"] = "Тема"
@@ -300,8 +300,8 @@ L["This part of the installation process sets up your World of Warcraft default 
 L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."] = "Эта версия EvUI содержит изменения обработки масштаба интерфейса. За подробностями смотрим чейнджлог. Требуется заново установить масштаб для использования новой системы. Ваш предыдущий масштаб был %s.\n\nВы можете или применить это значение, или использовать 'Автомасштаб' для установки масштаба в теории подходящего для вашего разрешения.\n\nВы также можете самостоятельно выбрать масштаб в общем разделе настроек ElvUI config. В теории ElvUI теперь должен выглядеть лучше, но возможны проблемы с видок окна конфигурации."
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Эта опция вызвала конфликт точек фиксации, в результате которого \"%s\" крепится к самому себе. Пожалуйста, проверьте настройки точек фиксации. \"%s\" будет прикреплено к \"%s\"."
 L["This will change the layout of your unitframes and actionbars."] = "Это изменит расположение ваших рамок юнитов, рейда и панелей команд."
-L["To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu."] = 'Для перемещения способностей по панелям команд нужно перемещать их с зажатой клавишей shift. Вы можете поменять модификатор в опциях панелей команд.'
-L["To setup which channels appear in which chat frame, right click the chat tab and go to settings."] = 'Для настройки отображения каналов в чате кликните правой кнопкой мыши на закладке нужного чата и выберите пункт "параметры".'
+L["To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu."] = "Для перемещения способностей по панелям команд нужно перемещать их с зажатой клавишей shift. Вы можете поменять модификатор в опциях панелей команд."
+L["To setup which channels appear in which chat frame, right click the chat tab and go to settings."] = "Для настройки отображения каналов в чате кликните правой кнопкой мыши на закладке нужного чата и выберите пункт \"параметры\"."
 L["Toggle Bags"] = "Показать сумки"
 L["Toggle Chat Frame"] = "Показать/скрыть чат"
 L["Toggle Configuration"] = "Конфигурация"
@@ -333,13 +333,13 @@ L["yells"] = "кричит"
 L["Yes, Keep Changes!"] = "Да, сохранить изменения!"
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = "Вы завершили процесс установки. Если Вам требуется техническая поддержка, посетите сайт http://www.tukui.org."
 L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = "Вы используете профайлинг ЦПУ. Это бьет по производительности. Вы точно уверены, что это нужно?"
-L["You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear."] = 'Вы можете получить доступ к функциям копирования чата и меню чата, наведя курсор на верхний правый угол панели чата и кликнув левой/правой кнопкой мыши на появившейся кнопке.'
+L["You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear."] = "Вы можете получить доступ к функциям копирования чата и меню чата, наведя курсор на верхний правый угол панели чата и кликнув левой/правой кнопкой мыши на появившейся кнопке."
 L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."] = "Вы всегда можете изменить шрифты и цвета любого элемента ElvUI из меню конфигурации. Классическая и пиксельная темы не отличаются для русского клиента."
 L["You can now choose what layout you wish to use based on your combat role."] = "Вы можете выбрать используемое расположение, основываясь на Вашей роли."
 L["You can see someones average item level of their gear by holding shift and mousing over them. It should appear inside the tooltip."] = "Вы можете узнать средний уровень предметов игрока, зажав shift и наведя на них курсор. Информация будет отражена в подсказке."
 L["You can set your keybinds quickly by typing /kb."] = "Вы можете быстро назначать клавиши, введя команду /kb."
 L["You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by enabling the actual microbar located in the actionbar settings."] = "Вы можете получить доступ к микроменю, кликнув средней кнопкой мыши на миникарте. Также Вы можете включить обычное микроменю в настройках панелей команд"
-L["You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame"] = 'Вы можете использовать команду /resetui чтобы сбросить положения всех фиксаторов. Вы также можете использовать команду /resetui <имя фиксатора> для сброса определенного фиксатора.\nПример: /resetui Player Frame'
+L["You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame"] = "Вы можете использовать команду /resetui чтобы сбросить положения всех фиксаторов. Вы также можете использовать команду /resetui <имя фиксатора> для сброса определенного фиксатора.\nПример: /resetui Player Frame"
 L["You don't have enough money to repair."] = "У вас недостаточно денег для ремонта."
 L["You don't have permission to mark targets."] = "У вас нет разрешения на установку меток"
 L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."] = "Вы переключились в режим тонких границ. Вы должны завершить установку для исправления графических багов."
@@ -357,9 +357,9 @@ L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFПКМ:|r 
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + ЛКМ:|r Показать окно специализации"
 
 ----------------------------------
-L["RED_ENABLE"] = '|cFFff3333Включить|r'
-L["GREEN_ENABLE"] = '|cFF33ff33Включить|r'
-L["DESC_MOVERCONFIG"] = [=[Блокировка отключена. Передвиньте фреймы и нажмите 'Закрепить', когда закончите.
+L["RED_ENABLE"] = "|cFFff3333Включить|r"
+L["GREEN_ENABLE"] = "|cFF33ff33Включить|r"
+L["DESC_MOVERCONFIG"] = [=[Блокировка отключена. Передвиньте фреймы и нажмите "Закрепить", когда закончите.
 Options:
   LeftClick - Toggle Nudge Frame.
   RightClick - Open Config Section.

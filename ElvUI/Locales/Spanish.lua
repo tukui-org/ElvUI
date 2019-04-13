@@ -357,8 +357,8 @@ L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFClick Dere
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + Click Izquierdo:|r Mostrar Interfaz de Especialización de Talentos"
 
 ----------------------------------
-L["RED_ENABLE"] = '|cFFff3333Habilitar|r'
-L["GREEN_ENABLE"] = '|cFF33ff33Habilitar|r'
+L["RED_ENABLE"] = "|cFFff3333Habilitar|r"
+L["GREEN_ENABLE"] = "|cFF33ff33Habilitar|r"
 L["DESC_MOVERCONFIG"] = [=[Fijadores desbloqueados. Muévelos ahora y haz click en Bloquear cuando termines.
 Options:
   LeftClick - Toggle Nudge Frame.
