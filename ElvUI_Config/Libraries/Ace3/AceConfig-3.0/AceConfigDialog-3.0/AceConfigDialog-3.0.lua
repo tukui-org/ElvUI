@@ -505,13 +505,11 @@ local function OptionOnMouseOver(widget, event)
 	local path = user.path
 	local appName = user.appName
 
-	GameTooltip:SetOwner(widget.frame, "ANCHOR_TOPRIGHT")
+	if opt.descStyle and opt.descStyle ~= "tooltip" then return end
+
 	local name = GetOptionsMemberValue("name", opt, options, path, appName)
 	local desc = GetOptionsMemberValue("desc", opt, options, path, appName)
 	local usage = GetOptionsMemberValue("usage", opt, options, path, appName)
-	local descStyle = opt.descStyle
-
-	if descStyle and descStyle ~= "tooltip" then return end
 
 	local descText = type(desc) == "string"
 	local usageText = type(usage) == "string"
@@ -533,28 +531,30 @@ local function OptionOnMouseOver(widget, event)
 	end
 
 	if descText or usageText or userText or softText or bigText then
+		GameTooltip:SetOwner(widget.frame, "ANCHOR_TOPRIGHT")
 		GameTooltip:SetText(name, 1, .82, 0, true)
-	end
-	if userText then
-		GameTooltip:AddLine(user.text, 0.5, 0.5, 0.8, true)
-	end
-	if descText then
-		GameTooltip:AddLine(desc, 1, 1, 1, true)
-	end
-	if usageText then
-		GameTooltip:AddLine("Usage: "..usage, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true)
-	end
-	if bigText or softText then
-		GameTooltip:AddLine(" ")
-	end
-	if bigText then
-		GameTooltip:AddLine(Step, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true)
-	end
-	if softText then
-		GameTooltip:AddDoubleLine(Min, Max)
-	end
 
-	GameTooltip:Show()
+		if userText then
+			GameTooltip:AddLine(user.text, 0.5, 0.5, 0.8, true)
+		end
+		if descText then
+			GameTooltip:AddLine(desc, 1, 1, 1, true)
+		end
+		if usageText then
+			GameTooltip:AddLine("Usage: "..usage, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true)
+		end
+		if bigText or softText then
+			GameTooltip:AddLine(" ")
+		end
+		if bigText then
+			GameTooltip:AddLine(Step, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true)
+		end
+		if softText then
+			GameTooltip:AddDoubleLine(Min, Max)
+		end
+
+		GameTooltip:Show()
+	end
 end
 
 local function OptionOnMouseLeave(widget, event)
