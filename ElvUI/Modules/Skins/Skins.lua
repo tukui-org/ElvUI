@@ -470,16 +470,12 @@ function S:HandleDropDownBox(frame, width, override)
 
 		if right then
 			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (right and -3) or 0, 0)
+		elseif left and override then -- for now only on the Communities.StreamDropdown in minimized mode >.>
+			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and 1) or -3, 0)
 		elseif left then
 			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and -15) or -3, 0)
 		else
 			text:Point(a, frame.backdrop, c, (left and 10) or d, e-3)
-		end
-
-		if override then
-			if left then -- for now only on the Communities.StreamDropdown in minimized mode >.>
-				text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and 1) or -3, 0)
-			end
 		end
 
 		text:Width(frame:GetWidth() / 1.4)
