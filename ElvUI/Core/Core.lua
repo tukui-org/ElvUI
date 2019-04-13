@@ -1698,6 +1698,10 @@ function E:DBConversions()
 		E.db.nameplates.durationFontOutline = nil
 	end
 
+	if E.db.nameplates.lowHealthThreshold > 0.8 then
+		E.db.nameplates.lowHealthThreshold = 0.8
+	end
+
 	if not E.db.chat.panelColorConverted then
 		local color = E.db.general.backdropfadecolor
 		E.db.chat.panelColor = {r = color.r, g = color.g, b = color.b, a = color.a}

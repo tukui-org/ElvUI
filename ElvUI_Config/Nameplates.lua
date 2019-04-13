@@ -4053,7 +4053,7 @@ E.Options.args.nameplate = {
 							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
 							type = "range",
 							isPercent = true,
-							min = 0, max = 1, step = 0.01,
+							min = 0, softMax = 0.5, max = 0.8, step = 0.01,
 						},
 						smoothbars = {
 							type = 'toggle',
