@@ -11,12 +11,15 @@ Fixed Nameplate Alternative Power Swap.
 Fixed Fader from properly fading the Pet Frame out when combat ends.  
 Fixed "button.db" error in Nameplate Aura code.  
 Fixed a dropdown text position if the Communities Frame is minimized.  
+Fixed Nameplate Class Bar error "ClassPower.lua line 133: attempt to index field '?' (a userdata value)".  
 
 **Misc. Changes:**  
 Unitframe Status Bars will now sync their textures onto the background space when not using transparent.  
 Nameplate Class Bar will also sync it's texture to the background.  
 Attempted to fix PossessBarFrame, MainMenuBar, etc.. taint errors.  
 Cleaned up some of the code which handles Player Role in the UI, this fixed the Timewalking Threat being backwards.  
+Tweaked the Tooltips in the Config so it will display the hard limits (min, max, decimal step) and only display a tooltip when it has other information than just name.  
+Limited the Nameplate Low Health Threshold to '80%'.  
 
 ___
 ### Version 11.10 [ April 9th 2019 ]
