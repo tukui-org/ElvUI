@@ -370,15 +370,11 @@ P.nameplates = {
 			[ 1] = {r = 255/255, g = 129/255, b = 050/255}, -- UNFRIENDLY
 			[ 2] = {r = 255/255, g = 217/255, b = 050/255}, -- NEUTRAL
 			[ 3] = {r = 050/255, g = 180/255, b = 000/255}, -- FRIENDLY
-			[ 4] = {r = 050/255, g = 100/255, b = 255/255}, -- PLAYER_SIMPLE
 			[ 5] = {r = 102/255, g = 136/255, b = 255/255}, -- PLAYER_EXTENDED
 			[ 6] = {r = 102/255, g = 050/255, b = 255/255}, -- PARTY
 			[ 7] = {r = 187/255, g = 050/255, b = 255/255}, -- PARTY_PVP
 			[ 8] = {r = 050/255, g = 255/255, b = 108/255}, -- FRIEND
 			[ 9] = {r = 153/255, g = 153/255, b = 153/255}, -- DEAD
-			--[10] = {}, -- COMMENTATOR_TEAM_1, unavailable to players
-			--[11] = {}, -- COMMENTATOR_TEAM_2, unavailable to players
-			[12] = {r = 017/255, g = 221/255, b = 255/255}, -- SELF, buggy
 			[13] = {r = 025/255, g = 147/255, b = 072/255}, -- BATTLEGROUND_FRIENDLY_PVP
 		},
 		classResources = {
@@ -1899,15 +1895,11 @@ P.unitframe = {
 			[ 1] = {r = 255/255, g = 129/255, b = 050/255}, -- UNFRIENDLY
 			[ 2] = {r = 255/255, g = 217/255, b = 050/255}, -- NEUTRAL
 			[ 3] = {r = 050/255, g = 180/255, b = 000/255}, -- FRIENDLY
-			[ 4] = {r = 050/255, g = 100/255, b = 255/255}, -- PLAYER_SIMPLE
 			[ 5] = {r = 102/255, g = 136/255, b = 255/255}, -- PLAYER_EXTENDED
 			[ 6] = {r = 102/255, g = 050/255, b = 255/255}, -- PARTY
 			[ 7] = {r = 187/255, g = 050/255, b = 255/255}, -- PARTY_PVP
 			[ 8] = {r = 050/255, g = 255/255, b = 108/255}, -- FRIEND
 			[ 9] = {r = 153/255, g = 153/255, b = 153/255}, -- DEAD
-			--[10] = {}, -- COMMENTATOR_TEAM_1, unavailable to players
-			--[11] = {}, -- COMMENTATOR_TEAM_2, unavailable to players
-			[12] = {r = 017/255, g = 221/255, b = 255/255}, -- SELF, buggy
 			[13] = {r = 025/255, g = 147/255, b = 072/255}, -- BATTLEGROUND_FRIENDLY_PVP
 		},
 		healPrediction = {
