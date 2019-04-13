@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 69
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 70
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -513,16 +513,45 @@ local function OptionOnMouseOver(widget, event)
 
 	if descStyle and descStyle ~= "tooltip" then return end
 
-	GameTooltip:SetText(name, 1, .82, 0, true)
+	local descText = type(desc) == "string"
+	local usageText = type(usage) == "string"
+	local userText = opt.type == "multiselect"
+	local softText = opt.softMin or opt.softMax
+	local bigText = opt.bigStep
+	local Min, Max, Step
 
-	if opt.type == "multiselect" then
+	if softText then
+		Min = (opt.min and "|cFFCCCCCCMin:|r "..(opt.isPercent and (opt.min*100).."%" or opt.min)) or ""
+		Max = (opt.max and "|cFFCCCCCCMax:|r "..(opt.isPercent and (opt.max*100).."%" or opt.max)) or ""
+		softText = Min ~= "" or Max ~= ""
+	end
+	if bigText then
+		local dec = opt.step and format("%f", opt.step):gsub('%.?0-$','')
+		local num = dec and tonumber(dec)
+		Step = (num and num > 0 and "|cFFCCCCCCStep:|r "..dec) or ""
+		bigText = Step ~= ""
+	end
+
+	if descText or usageText or userText or softText or bigText then
+		GameTooltip:SetText(name, 1, .82, 0, true)
+	end
+	if userText then
 		GameTooltip:AddLine(user.text, 0.5, 0.5, 0.8, true)
 	end
-	if type(desc) == "string" then
+	if descText then
 		GameTooltip:AddLine(desc, 1, 1, 1, true)
 	end
-	if type(usage) == "string" then
+	if usageText then
 		GameTooltip:AddLine("Usage: "..usage, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true)
+	end
+	if bigText or softText then
+		GameTooltip:AddLine(" ")
+	end
+	if bigText then
+		GameTooltip:AddLine(Step, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true)
+	end
+	if softText then
+		GameTooltip:AddDoubleLine(Min, Max)
 	end
 
 	GameTooltip:Show()
@@ -1493,20 +1522,21 @@ local function TreeOnButtonEnter(widget, event, uniquevalue, button)
 	local name = GetOptionsMemberValue("name", group, options, feedpath, appName)
 	local desc = GetOptionsMemberValue("desc", group, options, feedpath, appName)
 
-	GameTooltip:SetOwner(button, "ANCHOR_CURSOR")
-	if widget.type == "TabGroup" then
-		GameTooltip:SetPoint("BOTTOM",button,"TOP")
-	else
-		GameTooltip:SetPoint("LEFT",button,"RIGHT")
-	end
-
-	GameTooltip:SetText(name, 1, .82, 0, true)
-
 	if type(desc) == "string" then
-		GameTooltip:AddLine(desc, 1, 1, 1, true)
-	end
+		GameTooltip:SetOwner(button, "ANCHOR_CURSOR")
 
-	GameTooltip:Show()
+		if widget.type == "TabGroup" then
+			GameTooltip:SetPoint("BOTTOM",button,"TOP")
+		else
+			GameTooltip:SetPoint("LEFT",button,"RIGHT")
+		end
+
+		GameTooltip:SetText(name, 1, .82, 0, true)
+
+		GameTooltip:AddLine(desc, 1, 1, 1, true)
+
+		GameTooltip:Show()
+	end
 end
 
 local function TreeOnButtonLeave(widget, event, value, button)
