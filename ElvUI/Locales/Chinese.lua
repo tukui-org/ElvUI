@@ -86,7 +86,7 @@ L["Chest"] = "胸"
 L["Combat"] = "战斗"
 L["Combat/Arena Time"] = "战斗时间"
 L["Coords"] = "坐标"
-L["copperabbrev"] = "|cffeda55f铜|r"
+L["copperabbrev"] = "|cffeda55f铜|r" --Also used in Bags
 L["Deficit:"] = "亏损:"
 L["Download"] = "下载"
 L["DPS"] = "伤害输出"
@@ -95,7 +95,7 @@ L["Feet"] = "脚"
 L["Friends List"] = "好友列表"
 L["Garrison"] = "要塞"
 L["Gold"] = "金"
-L["goldabbrev"] = "|cffffd700金|r"
+L["goldabbrev"] = "|cffffd700金|r" --Also used in Bags
 L["Hands"] = "手"
 L["Head"] = "头"
 L["Hold Shift + Right Click:"] = "按住Shift + 右键点击"
@@ -121,7 +121,7 @@ L["Saved Dungeon(s)"] = "已有进度的地下城"
 L["Server: "] = "服务器: "
 L["Session:"] = "本次登陆:"
 L["Shoulder"] = "肩"
-L["silverabbrev"] = "|cffc7c7cf银|r"
+L["silverabbrev"] = "|cffc7c7cf银|r" --Also used in Bags
 L["SP"] = "法术强度"
 L["Spell/Heal Power"] = "法术/治疗强度"
 L["Spec"] = "专精"
@@ -174,7 +174,7 @@ L["ElvUI Installation"] = "安装 ElvUI"
 L["Finished"] = "完成"
 L["Grid Size:"] = "网格尺寸:"
 L["Healer"] = "治疗"
-L["Icons Only"] = "图标"
+L["Icons Only"] = "图标" --Also used in Bags
 L["Importance: |cff07D400High|r"] = "重要度: |cff07D400高|r"
 L["Importance: |cffD3CF00Medium|r"] = "重要性: |cffD3CF00中|r"
 L["Importance: |cffFF0000Low|r"] = "重要性:|cffFF0000低|r"
@@ -207,20 +207,20 @@ L["You can now choose what layout you wish to use based on your combat role."] =
 
 --Misc
 L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% 以上 |cff%02x%02x%02x%s|r]'
-L["Bars"] = "条"
+L["Bars"] = "条" --Also used in UnitFrames
 L["Calendar"] = "日历"
 L["Can't Roll"] = "无法需求此装备"
 L["Disband Group"] = "解散队伍"
 L["Empty Slot"] = "空拾取位"
-L["Enable"] = "启用"
+L["Enable"] = "启用" --Doesn't fit a section since it's used a lot of places
 L["Experience"] = "经验/声望条"
 L["Fishy Loot"] = "贪婪"
-L["Left Click:"] = "左键:"
+L["Left Click:"] = "左键:" --layout\layout.lua
 L["Raid Menu"] = "团队菜单"
 L["Remaining:"] = "剩余:"
 L["Rested:"] = "休息:"
-L["Toggle Chat Frame"] = "开关聊天框架"
-L["Toggle Configuration"] = "设置开关"
+L["Toggle Chat Frame"] = "开关聊天框架" --layout\layout.lua
+L["Toggle Configuration"] = "设置开关" --layout\layout.lua
 L["AP:"] = "神器能量:" -- Artifact Power
 L["XP:"] = "经验:"
 L["You don't have permission to mark targets."] = "你没有标记目标的权限"
@@ -229,7 +229,7 @@ L["Voice Overlay"] = "语音界面"
 --Movers
 L["Alternative Power"] = "特殊能量条"
 L["Archeology Progress Bar"] = "考古进度条"
-L["Arena Frames"] = "竞技场框架"
+L["Arena Frames"] = "竞技场框架" --Also used in UnitFrames
 L["Bag Mover (Grow Down)"] = "背包框架(向下)"
 L["Bag Mover (Grow Up)"] = "背包框架(向上)"
 L["Bag Mover"] = "背包框架"
@@ -239,12 +239,13 @@ L["Bank Mover (Grow Up)"] = "银行框架(向上)"
 L["Bar "] = "动作条 " --Also in ActionBars
 L["BNet Frame"] = "战网提示信息"
 L["Boss Button"] = "特殊技能键"
+L["Boss Frames"] = "首领框架" --Also used in UnitFrames
 L["Class Totems"] = "职业图腾"
-L["Classbar"] = "职业特有条"
+L["Classbar"] = "职业特有条" --Also used in UnitFrames
 L["Experience Bar"] = "经验条"
 L["Focus Castbar"] = "焦点目标施法条"
-L["Focus Frame"] = "焦点目标框架"
-L["FocusTarget"] = "焦点目标的目标框架"
+L["Focus Frame"] = "焦点目标框架" --Also used in UnitFrames
+L["FocusTarget"] = "焦点目标的目标框架" --Also used in UnitFrames
 L["GM Ticket Frame"] = "GM对话框"
 L["Honor Bar"] = "荣誉条"
 L["Left Chat"] = "左侧对话框"
@@ -258,13 +259,18 @@ L["Minimap"] = "小地图"
 L["MirrorTimer"] = "镜像计时器"
 L["MT Frames"] = "主坦克框"
 L["Objective Frame"] = "任务框架"
+L["Party Frames"] = "小队框架" --Also used in UnitFrames
 L["Pet Bar"] = "宠物动作条" --Also in ActionBars
 L["Pet Castbar"] = "宠物施法条"
+L["Pet Frame"] = "宠物框架" --Also used in UnitFrames
+L["PetTarget"] = "宠物的目标框架" --Also used in UnitFrames
 L["Player Buffs"] = "玩家增益"
 L["Player Castbar"] = "玩家施法条"
 L["Player Debuffs"] = "玩家减益"
+L["Player Frame"] = "玩家框架" --Also used in UnitFrames
 L["Player NamePlate"] = "玩家姓名板"
 L["Player Powerbar"] = "玩家能量条"
+L["Raid"] = "团队框架"
 L["Raid Pet"] = "团队宠物框架"
 L["Raid-40"] = "40人团队框架"
 L["Reputation Bar"] = "声望条"
@@ -272,20 +278,20 @@ L["Right Chat"] = "右侧对话框"
 L["Stance Bar"] = "姿态条" --Also in ActionBars
 L["Talking Head Frame"] = "剧情对话框"
 L["Target Castbar"] = "目标施法条"
-L["Target Frame"] = "目标框架"
+L["Target Frame"] = "目标框架" --Also used in UnitFrames
 L["Target Powerbar"] = "目标能量条"
-L["TargetTarget Frame"] = "目标的目标框架"
-L["TargetTargetTarget Frame"] = "目标的目标的目标框架"
+L["TargetTarget Frame"] = "目标的目标框架" --Also used in UnitFrames
+L["TargetTargetTarget Frame"] = "目标的目标的目标框架" --Also used in UnitFrames
 L["Tooltip"] = "鼠标提示"
-L["UIWidgetBelowMinimapContainer"] = true
-L["UIWidgetTopContainer"] = true
+L["UIWidgetBelowMinimapContainer"] = "小地图下方部件容器"
+L["UIWidgetTopContainer"] = "顶部部件容器"
 L["Vehicle Seat Frame"] = "载具座位框"
 L["Zone Ability"] = "区域技能"
 L["DESC_MOVERCONFIG"] = [=[解除框架移动锁定. 现在可以移动它们, 移好后请点击「锁定」.
 
 选项：
-  LeftClick - Toggle Nudge Frame.
-  右键 - Open Config Section.
+  左键 - 打开微调窗口.
+  右键 - 打开配置窗口.
   Shift + 右键 - 暂时隐藏定位开关
   Ctrl + 右键 - 重置定位开关位置
 ]=]
@@ -390,12 +396,12 @@ L.RED_ENABLE = '|cFFff3333启用|r'
 L.GREEN_ENABLE = '|cFF33ff33启用|r'
 
 -- Install
-L["Auras Set"] = true
-L["Aura Bars & Icons"] = true
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
+L["Auras Set"] = "光环设定"
+L["Aura Bars & Icons"] = "光环条及图标"
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = "选择你想使用的光环系统类型. 选择光环条及图标将会同时显示光环条及图标，选择图标将只会显示图标."
 -- Static Popups
-L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = true
-L["Continue"] = true
+L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = "你正在追踪CPU使用记录. 这将导致性能低下. 你想禁用它还是继续?"
+L["Continue"] = "下一步"
 -- DataText
 L["(Modifer Click) Collect Garbage"] = true
 -- Misc
