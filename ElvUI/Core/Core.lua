@@ -1722,8 +1722,14 @@ function E:DBConversions()
 	end
 
 	--Health Backdrop Multiplier
-	if E.db.unitframe.colors.healthmultiplier > 0.75 then
-		E.db.unitframe.colors.healthmultiplier = 0.75
+	if E.db.unitframe.colors.healthmultiplier ~= nil then
+		if E.db.unitframe.colors.healthmultiplier > 0.75 then
+			E.db.unitframe.colors.healthMultiplier = 0.75
+		else
+			E.db.unitframe.colors.healthMultiplier = E.db.unitframe.colors.healthmultiplier
+		end
+
+		E.db.unitframe.colors.healthmultiplier = nil
 	end
 
 	--Tooltip FactionColors Setting

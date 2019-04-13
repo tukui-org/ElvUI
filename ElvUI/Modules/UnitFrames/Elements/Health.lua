@@ -255,7 +255,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	end
 
 	if self.bg then
-		self.bg.multiplier = (colors.healthmultiplier > 0 and colors.healthmultiplier) or 0.35
+		self.bg.multiplier = (colors.healthMultiplier > 0 and colors.healthMultiplier) or 0.35
 
 		if colors.useDeadBackdrop and UnitIsDeadOrGhost(unit) then
 			self.bg:SetVertexColor(colors.health_backdrop_dead.r, colors.health_backdrop_dead.g, colors.health_backdrop_dead.b)
