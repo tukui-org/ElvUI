@@ -79,7 +79,7 @@ function NP:CVarReset()
 	SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'))
 	SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
 	SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
-	SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
+	SetCVar('nameplateOverlapV', .5)
 	SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
 	SetCVar('nameplateSelectedAlpha', 1)
 	SetCVar('nameplateSelectedScale', 1)
@@ -442,6 +442,7 @@ function NP:ConfigureAll()
 
 	for nameplate in pairs(NP.Plates) do
 		NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
+		nameplate:Size(self.db.clickableWidth, self.db.clickableHeight)
 
 		NP:UpdatePlate(nameplate)
 
