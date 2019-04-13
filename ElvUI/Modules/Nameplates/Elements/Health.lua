@@ -14,6 +14,7 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
 local CreateFrame = CreateFrame
+local unitSelectionType = oUF.Private.unitSelectionType
 
 function NP:Health_UpdateColor(event, unit)
 	if(not unit or self.unit ~= unit) then return end
@@ -33,8 +34,8 @@ function NP:Health_UpdateColor(event, unit)
 		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
 		local _, class = UnitClass(unit)
 		t = self.colors.class[class]
-	elseif(element.colorSelection and oUF.Private.unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
-		t = NP.db.colors.selection[oUF.Private.unitSelectionType(unit, element.considerSelectionInCombatHostile)]
+	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
+		t = NP.db.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
 		local reaction = UnitReaction(unit, 'player')
 		if reaction <= 3 then reaction = 'bad' elseif reaction == 4 then reaction = 'neutral' else reaction = 'good' end
