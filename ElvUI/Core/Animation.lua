@@ -42,15 +42,17 @@ function E:SetUpAnimGroup(obj, Type, ...)
 	elseif strsub(Type, 1, 5) == 'Shake' then
 		local shake = obj:CreateAnimationGroup(Type)
 		shake:SetLooping("REPEAT")
-		shake.path = obj.shake:CreateAnimation("Path")
+		shake.path = shake:CreateAnimation("Path")
 
 		local offsets
 		if Type == 'Shake' then
 			shake.path:SetDuration(0.7)
 			offsets = shakeOffsets
+			obj.shake = shake
 		elseif Type == 'ShakeH' then
 			shake.path:SetDuration(2)
 			offsets = shakeOffsetsH
+			obj.shakeh = shake
 		end
 
 		for i = 1, 6 do
