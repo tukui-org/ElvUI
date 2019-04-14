@@ -8,16 +8,15 @@ local random, tremove = random, tremove
 local strsub, strlower = strsub, strlower
 --WoW API / Variables
 
-local oShake, oShakeH = {
-	{-9,7,-7,12}, {-5,9,-9,5}, {-5,7,-7,5}, {-9,9,-9,9}, {-5,7,-7,5}, {-9,7,-9,5}
-},	{-5,5,-2,5,-2,5}
+E.AnimShake = {{-9,7,-7,12}, {-5,9,-9,5}, {-5,7,-7,5}, {-9,9,-9,9}, {-5,7,-7,5}, {-9,7,-9,5}}
+E.AnimShakeH = {-5,5,-2,5,-2,5}
 
-local animOnFinished = function(self, requested)
+function E:FlashLoopFinished(requested)
 	if not requested then self:Play() end
 end
 
-local randomShake = function(index)
-	local s = oShake[index]
+function E:RandomAnimShake(index)
+	local s = E.AnimShake[index]
 	return random(s[1], s[2]), random(s[3], s[4])
 end
 
@@ -25,24 +24,24 @@ function E:SetUpAnimGroup(obj, Type, ...)
 	if not Type then Type = 'Flash' end
 
 	if strsub(Type, 1, 5) == 'Flash' then
-		obj.anim = obj:CreateAnimationGroup("Flash")
-		obj.anim.fadein = obj.anim:CreateAnimation("ALPHA", "FadeIn")
+		obj.anim = obj:CreateAnimationGroup('Flash')
+		obj.anim.fadein = obj.anim:CreateAnimation('ALPHA', 'FadeIn')
 		obj.anim.fadein:SetFromAlpha(0)
 		obj.anim.fadein:SetToAlpha(1)
 		obj.anim.fadein:SetOrder(2)
 
-		obj.anim.fadeout = obj.anim:CreateAnimation("ALPHA", "FadeOut")
+		obj.anim.fadeout = obj.anim:CreateAnimation('ALPHA', 'FadeOut')
 		obj.anim.fadeout:SetFromAlpha(1)
 		obj.anim.fadeout:SetToAlpha(0)
 		obj.anim.fadeout:SetOrder(1)
 
 		if Type == 'FlashLoop' then
-			obj.anim:SetScript("OnFinished", animOnFinished)
+			obj.anim:SetScript('OnFinished', E.FlashLoopFinished)
 		end
 	elseif strsub(Type, 1, 5) == 'Shake' then
 		local shake = obj:CreateAnimationGroup(Type)
-		shake:SetLooping("REPEAT")
-		shake.path = shake:CreateAnimation("Path")
+		shake:SetLooping('REPEAT')
+		shake.path = shake:CreateAnimation('Path')
 
 		if Type == 'Shake' then
 			shake.path:SetDuration(0.7)
@@ -55,9 +54,9 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		for i = 1, 6 do
 			shake.path[i] = shake.path:CreateControlPoint()
 			if Type == 'Shake' then
-				shake.path[i]:SetOffset(randomShake(i))
+				shake.path[i]:SetOffset(E:RandomAnimShake(i))
 			else
-				shake.path[i]:SetOffset(oShakeH[i], 0)
+				shake.path[i]:SetOffset(E.AnimShakeH[i], 0)
 			end
 			shake.path[i]:SetOrder(i)
 		end
@@ -67,27 +66,27 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		local x, y, duration, customName = ...
 		if not customName then customName = 'anim' end
 
-		local anim = obj:CreateAnimationGroup("Move_In")
+		local anim = obj:CreateAnimationGroup('Move_In')
 		obj[customName] = anim
 
-		anim.in1 = anim:CreateAnimation("Translation")
+		anim.in1 = anim:CreateAnimation('Translation')
 		anim.in1:SetDuration(0)
 		anim.in1:SetOrder(1)
 		anim.in1:SetOffset(E:Scale(x), E:Scale(y))
 
-		anim.in2 = anim:CreateAnimation("Translation")
+		anim.in2 = anim:CreateAnimation('Translation')
 		anim.in2:SetDuration(duration)
 		anim.in2:SetOrder(2)
-		anim.in2:SetSmoothing("OUT")
+		anim.in2:SetSmoothing('OUT')
 		anim.in2:SetOffset(E:Scale(-x), E:Scale(-y))
 
-		anim.out1 = obj:CreateAnimationGroup("Move_Out")
-		anim.out1:SetScript("OnFinished", function() obj:Hide() end)
+		anim.out1 = obj:CreateAnimationGroup('Move_Out')
+		anim.out1:SetScript('OnFinished', function() obj:Hide() end)
 
-		anim.out2 = anim.out1:CreateAnimation("Translation")
+		anim.out2 = anim.out1:CreateAnimation('Translation')
 		anim.out2:SetDuration(duration)
 		anim.out2:SetOrder(1)
-		anim.out2:SetSmoothing("IN")
+		anim.out2:SetSmoothing('IN')
 		anim.out2:SetOffset(E:Scale(x), E:Scale(y))
 	end
 end
@@ -122,7 +121,7 @@ end
 
 function E:Flash(obj, duration, loop)
 	if not obj.anim then
-		E:SetUpAnimGroup(obj, loop and "FlashLoop" or 'Flash')
+		E:SetUpAnimGroup(obj, loop and 'FlashLoop' or 'Flash')
 	end
 
 	if not obj.anim.playing then
@@ -157,7 +156,7 @@ function E:SlideOut(obj, customName)
 	obj[customName].out1:Play()
 end
 
-local frameFadeManager = CreateFrame("FRAME")
+local frameFadeManager = CreateFrame('FRAME')
 local FADEFRAMES = {}
 
 function E:UIFrameFade_OnUpdate(elapsed)
@@ -173,9 +172,9 @@ function E:UIFrameFade_OnUpdate(elapsed)
 
 		-- If the fadeTimer is less then the desired fade time then set the alpha otherwise hold the fade state, call the finished function, or just finish the fade
 		if fadeInfo.fadeTimer < fadeInfo.timeToFade then
-			if fadeInfo.mode == "IN" then
+			if fadeInfo.mode == 'IN' then
 				frame:SetAlpha((fadeInfo.fadeTimer / fadeInfo.timeToFade) * (fadeInfo.endAlpha - fadeInfo.startAlpha) + fadeInfo.startAlpha)
-			elseif fadeInfo.mode == "OUT" then
+			elseif fadeInfo.mode == 'OUT' then
 				frame:SetAlpha(((fadeInfo.timeToFade - fadeInfo.fadeTimer) / fadeInfo.timeToFade) * (fadeInfo.startAlpha - fadeInfo.endAlpha)  + fadeInfo.endAlpha)
 			end
 		else
@@ -197,26 +196,26 @@ function E:UIFrameFade_OnUpdate(elapsed)
 	end
 
 	if #FADEFRAMES == 0 then
-		frameFadeManager:SetScript("OnUpdate", nil)
+		frameFadeManager:SetScript('OnUpdate', nil)
 	end
 end
 
 -- Generic fade function
 function E:UIFrameFade(frame, fadeInfo)
-	if not frame then
-		return
-	end
+	if not frame then return end
+
 	if not fadeInfo.mode then
-		fadeInfo.mode = "IN"
+		fadeInfo.mode = 'IN'
 	end
-	if fadeInfo.mode == "IN" then
+
+	if fadeInfo.mode == 'IN' then
 		if not fadeInfo.startAlpha then
 			fadeInfo.startAlpha = 0
 		end
 		if not fadeInfo.endAlpha then
 			fadeInfo.endAlpha = 1.0
 		end
-	elseif fadeInfo.mode == "OUT" then
+	elseif fadeInfo.mode == 'OUT' then
 		if not fadeInfo.startAlpha then
 			fadeInfo.startAlpha = 1.0
 		end
@@ -240,13 +239,13 @@ function E:UIFrameFade(frame, fadeInfo)
 	end
 
 	FADEFRAMES[#FADEFRAMES + 1] = frame
-	frameFadeManager:SetScript("OnUpdate", E.UIFrameFade_OnUpdate)
+	frameFadeManager:SetScript('OnUpdate', E.UIFrameFade_OnUpdate)
 end
 
 -- Convenience function to do a simple fade in
 function E:UIFrameFadeIn(frame, timeToFade, startAlpha, endAlpha)
 	local fadeInfo = {}
-	fadeInfo.mode = "IN"
+	fadeInfo.mode = 'IN'
 	fadeInfo.timeToFade = timeToFade
 	fadeInfo.startAlpha = startAlpha
 	fadeInfo.endAlpha = endAlpha
@@ -256,7 +255,7 @@ end
 -- Convenience function to do a simple fade out
 function E:UIFrameFadeOut(frame, timeToFade, startAlpha, endAlpha)
 	local fadeInfo = {}
-	fadeInfo.mode = "OUT"
+	fadeInfo.mode = 'OUT'
 	fadeInfo.timeToFade = timeToFade
 	fadeInfo.startAlpha = startAlpha
 	fadeInfo.endAlpha = endAlpha
