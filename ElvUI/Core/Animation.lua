@@ -4,8 +4,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Lua functions
-local random, tremove = random, tremove
-local strsub, strlower = strsub, strlower
+local random, tremove, strsub = random, tremove, strsub
 --WoW API / Variables
 
 E.AnimShake = {{-9,7,-7,12}, {-5,9,-9,5}, {-5,7,-7,5}, {-9,9,-9,9}, {-5,7,-7,5}, {-9,7,-9,5}}
@@ -60,8 +59,6 @@ function E:SetUpAnimGroup(obj, Type, ...)
 			end
 			shake.path[i]:SetOrder(i)
 		end
-
-		obj[strlower(Type)] = shake
 	else
 		local x, y, duration, customName = ...
 		if not customName then customName = 'anim' end
