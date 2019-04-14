@@ -44,20 +44,21 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		shake:SetLooping("REPEAT")
 		shake.path = shake:CreateAnimation("Path")
 
-		local offsets
 		if Type == 'Shake' then
 			shake.path:SetDuration(0.7)
-			offsets = shakeOffsets
 			obj.shake = shake
 		elseif Type == 'ShakeH' then
 			shake.path:SetDuration(2)
-			offsets = shakeOffsetsH
 			obj.shakeh = shake
 		end
 
 		for i = 1, 6 do
 			shake.path[i] = shake.path:CreateControlPoint()
-			shake.path[i]:SetOffset(offsets[i], 0)
+			if Type == 'Shake' then
+				shake.path[i]:SetOffset(unpack(shakeOffsets[i]))
+			else
+				shake.path[i]:SetOffset(shakeOffsetsH[i], 0)
+			end
 			shake.path[i]:SetOrder(i)
 		end
 
