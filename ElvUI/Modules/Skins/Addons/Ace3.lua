@@ -290,7 +290,7 @@ function S:Ace3_RegisterAsContainer(widget)
 		if TYPE == 'InlineGroup' then
 			local c = E.media.backdropfadecolor
 			frame:SetTemplate('Transparent', nil, true)
-			frame:SetBackdropColor(c[1]*0.5, c[2]*0.5, c[3]*0.5, 1)
+			frame:SetBackdropColor(c[1]*0.5, c[2]*0.5, c[3]*0.5, c[4])
 		else
 			frame:SetTemplate('Transparent')
 		end
@@ -353,7 +353,7 @@ function S:Ace3_RegisterAsContainer(widget)
 		local c = E.media.backdropfadecolor
 		local frame = widget.content:GetParent()
 		frame:SetTemplate('Default', nil, true)
-		frame:SetBackdropColor(c[1]*0.5, c[2]*0.5, c[3]*0.5, 1)
+		frame:SetBackdropColor(c[1]*0.5, c[2]*0.5, c[3]*0.5, c[4])
 	end
 
 	return oldRegisterAsContainer(self, widget)
