@@ -6,6 +6,7 @@ local format = format
 local tinsert = tinsert
 local select, tonumber = select, tonumber
 local next, max, wipe = next, max, wipe
+local utf8sub = string.utf8sub
 --WoW API / Variables
 local UnitIsUnit = UnitIsUnit
 local GetCVarBool = GetCVarBool
@@ -33,7 +34,7 @@ function E:InspectGearSlot(line, lineText, enchantText, enchantColors, iLvl, ite
 	local itemLevel = lineText and lineText:match(MATCH_ITEM_LEVEL)
 	local enchant = lineText:match(MATCH_ENCHANT)
 	if enchant then
-		enchantText = enchant:sub(1, 18)
+		enchantText = utf8sub(enchant, 1, 18)
 		enchantColors = {lr, lg, lb}
 	end
 	if itemLevel then
