@@ -288,10 +288,9 @@ function S:Ace3_RegisterAsContainer(widget)
 		end
 
 		if TYPE == 'InlineGroup' then
-			local c = E.media.backdropfadecolor
 			frame:SetTemplate('Transparent')
 			frame.ignoreBackdropColors = true
-			frame:SetBackdropColor(c[1]*0.5, c[2]*0.5, c[3]*0.5, c[4])
+			frame:SetBackdropColor(0, 0, 0, 0.25)
 		else
 			frame:SetTemplate('Transparent')
 		end
@@ -351,11 +350,10 @@ function S:Ace3_RegisterAsContainer(widget)
 			S:HandleScrollBar(widget.scrollbar)
 		end
 	elseif TYPE == 'SimpleGroup' then
-		local c = E.media.backdropfadecolor
 		local frame = widget.content:GetParent()
 		frame:SetTemplate('Transparent')
 		frame.ignoreBackdropColors = true
-		frame:SetBackdropColor(c[1]*0.5, c[2]*0.5, c[3]*0.5, c[4])
+		frame:SetBackdropColor(0, 0, 0, 0.25)
 	end
 
 	return oldRegisterAsContainer(self, widget)
