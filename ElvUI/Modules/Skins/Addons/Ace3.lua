@@ -266,6 +266,7 @@ function S:Ace3_RegisterAsContainer(widget)
 	if not E.private.skins.ace3.enable then
 		return oldRegisterAsContainer(self, widget)
 	end
+
 	local TYPE = widget.type
 	if TYPE == 'ScrollFrame' then
 		S:HandleScrollBar(widget.scrollbar)
@@ -285,7 +286,14 @@ function S:Ace3_RegisterAsContainer(widget)
 			frame:StripTextures()
 			S:HandleCloseButton(frame.obj.closebutton)
 		end
-		frame:SetTemplate('Transparent')
+
+		if TYPE == 'InlineGroup' then
+			local c = E.media.backdropfadecolor
+			frame:SetTemplate('Transparent', nil, true)
+			frame:SetBackdropColor(c[1]*0.5, c[2]*0.5, c[3]*0.5, 1)
+		else
+			frame:SetTemplate('Transparent')
+		end
 
 		if widget.treeframe then
 			widget.treeframe:SetTemplate('Transparent')
@@ -342,9 +350,10 @@ function S:Ace3_RegisterAsContainer(widget)
 			S:HandleScrollBar(widget.scrollbar)
 		end
 	elseif TYPE == 'SimpleGroup' then
+		local c = E.media.backdropfadecolor
 		local frame = widget.content:GetParent()
-		frame:SetTemplate('Transparent', nil, true) --ignore border updates
-		frame:SetBackdropBorderColor(0,0,0,0) --Make border completely transparent
+		frame:SetTemplate('Default', nil, true)
+		frame:SetBackdropColor(c[1]*0.5, c[2]*0.5, c[3]*0.5, 1)
 	end
 
 	return oldRegisterAsContainer(self, widget)
