@@ -8,17 +8,17 @@ local random, tremove = random, tremove
 local strsub, strlower = strsub, strlower
 --WoW API / Variables
 
-local shakeOffsets, shakeOffsetsH = {
-	{random(-9, 7), random(-7, 12)},
-	{random(-5, 9), random(-9, 5)},
-	{random(-5, 7), random(-7, 5)},
-	{random(-9, 9), random(-9, 9)},
-	{random(-5, 7), random(-7, 5)},
-	{random(-9, 7), random(-9, 5)},
-}, {-5, 5, -2, 5, -2, 5}
+local oShake, oShakeH = {
+	{-9,7,-7,12}, {-5,9,-9,5}, {-5,7,-7,5}, {-9,9,-9,9}, {-5,7,-7,5}, {-9,7,-9,5}
+},	{-5,5,-2,5,-2,5}
 
 local animOnFinished = function(self, requested)
 	if not requested then self:Play() end
+end
+
+local randomShake = function(index)
+	local s = oShake[index]
+	return random(s[1], s[2]), random(s[3], s[4])
 end
 
 function E:SetUpAnimGroup(obj, Type, ...)
@@ -55,9 +55,9 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		for i = 1, 6 do
 			shake.path[i] = shake.path:CreateControlPoint()
 			if Type == 'Shake' then
-				shake.path[i]:SetOffset(unpack(shakeOffsets[i]))
+				shake.path[i]:SetOffset(randomShake(i))
 			else
-				shake.path[i]:SetOffset(shakeOffsetsH[i], 0)
+				shake.path[i]:SetOffset(oShakeH[i], 0)
 			end
 			shake.path[i]:SetOrder(i)
 		end
