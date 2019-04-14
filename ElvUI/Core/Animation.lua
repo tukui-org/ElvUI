@@ -52,12 +52,13 @@ function E:SetUpAnimGroup(obj, Type, ...)
 
 		for i = 1, 6 do
 			shake.path[i] = shake.path:CreateControlPoint()
+			shake.path[i]:SetOrder(i)
+
 			if Type == 'Shake' then
 				shake.path[i]:SetOffset(E:RandomAnimShake(i))
 			else
 				shake.path[i]:SetOffset(E.AnimShakeH[i], 0)
 			end
-			shake.path[i]:SetOrder(i)
 		end
 	else
 		local x, y, duration, customName = ...
