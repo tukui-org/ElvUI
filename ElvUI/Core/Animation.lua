@@ -11,7 +11,7 @@ local tremove = tremove
 function E:SetUpAnimGroup(object, type, ...)
 	if not type then type = 'Flash' end
 
-	if type == 'Flash' then
+	if type:sub(1, 5) == 'Flash' then
 		object.anim = object:CreateAnimationGroup("Flash")
 		object.anim.fadein = object.anim:CreateAnimation("ALPHA", "FadeIn")
 		object.anim.fadein:SetFromAlpha(0)
@@ -22,93 +22,66 @@ function E:SetUpAnimGroup(object, type, ...)
 		object.anim.fadeout:SetFromAlpha(1)
 		object.anim.fadeout:SetToAlpha(0)
 		object.anim.fadeout:SetOrder(1)
-	elseif type == 'FlashLoop' then
-		object.anim = object:CreateAnimationGroup("Flash")
-		object.anim.fadein = object.anim:CreateAnimation("ALPHA", "FadeIn")
-		object.anim.fadein:SetFromAlpha(0)
-		object.anim.fadein:SetToAlpha(1)
-		object.anim.fadein:SetOrder(2)
+		if type == 'FlashLoop' then
+			object.anim:SetScript("OnFinished", function(_, requested)
+				if(not requested) then
+					object.anim:Play()
+				end
+			end)
+		end
+	elseif type:sub(1, 5) == 'Shake' then
+		local shake = object:CreateAnimationGroup(type)
+		shake:SetLooping("REPEAT")
+		shake.path = object.shake:CreateAnimation("Path")
+		local offsets
+		if type == 'Shake' then
+			shake.path:SetDuration(0.7)
+			offsets = {
+				{random(-9, 7), random(-7, 12)},
+				{random(-5, 9), random(-9, 5)},
+				{random(-5, 7), random(-7, 5)},
+				{random(-9, 9), random(-9, 9)},
+				{random(-5, 7), random(-7, 5)},
+				{random(-9, 7), random(-9, 5)},
+			}
+		elseif type == 'ShakeH' then
+			shake.path:SetDuration(2)
+			offsets = {-5, 5, -2, 5, -2, 5}
+		end
 
-		object.anim.fadeout = object.anim:CreateAnimation("ALPHA", "FadeOut")
-		object.anim.fadeout:SetFromAlpha(1)
-		object.anim.fadeout:SetToAlpha(0)
-		object.anim.fadeout:SetOrder(1)
+		for i = 1, 6 do
+			shake.path[i] = shake.path:CreateControlPoint()
+			shake.path[i]:SetOffset(offsets[i], 0)
+			shake.path[i]:SetOrder(i)
+		end
 
-		object.anim:SetScript("OnFinished", function(_, requested)
-			if(not requested) then
-				object.anim:Play()
-			end
-		end)
-	elseif type == 'Shake' then
-		object.shake = object:CreateAnimationGroup("Shake")
-		object.shake:SetLooping("REPEAT")
-		object.shake.path = object.shake:CreateAnimation("Path")
-		object.shake.path[1] = object.shake.path:CreateControlPoint()
-		object.shake.path[2] = object.shake.path:CreateControlPoint()
-		object.shake.path[3] = object.shake.path:CreateControlPoint()
-		object.shake.path[4] = object.shake.path:CreateControlPoint()
-		object.shake.path[5] = object.shake.path:CreateControlPoint()
-		object.shake.path[6] = object.shake.path:CreateControlPoint()
-
-		object.shake.path:SetDuration(0.7)
-		object.shake.path[1]:SetOffset(random(-9, 7), random(-7, 12))
-		object.shake.path[1]:SetOrder(1)
-		object.shake.path[2]:SetOffset(random(-5, 9), random(-9, 5))
-		object.shake.path[2]:SetOrder(2)
-		object.shake.path[3]:SetOffset(random(-5, 7), random(-7, 5))
-		object.shake.path[3]:SetOrder(3)
-		object.shake.path[4]:SetOffset(random(-9, 9), random(-9, 9))
-		object.shake.path[4]:SetOrder(4)
-		object.shake.path[5]:SetOffset(random(-5, 7), random(-7, 5))
-		object.shake.path[5]:SetOrder(5)
-		object.shake.path[6]:SetOffset(random(-9, 7), random(-9, 5))
-		object.shake.path[6]:SetOrder(6)
-	elseif type == 'Shake_Horizontal' then
-		object.shakeh = object:CreateAnimationGroup("ShakeH")
-		object.shakeh:SetLooping("REPEAT")
-		object.shakeh.path = object.shakeh:CreateAnimation("Path")
-		object.shakeh.path[1] = object.shakeh.path:CreateControlPoint()
-		object.shakeh.path[2] = object.shakeh.path:CreateControlPoint()
-		object.shakeh.path[3] = object.shakeh.path:CreateControlPoint()
-		object.shakeh.path[4] = object.shakeh.path:CreateControlPoint()
-		object.shakeh.path[5] = object.shakeh.path:CreateControlPoint()
-		object.shakeh.path[6] = object.shakeh.path:CreateControlPoint()
-
-		object.shakeh.path:SetDuration(2)
-		object.shakeh.path[1]:SetOffset(-5, 0)
-		object.shakeh.path[1]:SetOrder(1)
-		object.shakeh.path[2]:SetOffset(5, 0)
-		object.shakeh.path[2]:SetOrder(2)
-		object.shakeh.path[3]:SetOffset(-2, 0)
-		object.shakeh.path[3]:SetOrder(3)
-		object.shakeh.path[4]:SetOffset(5, 0)
-		object.shakeh.path[4]:SetOrder(4)
-		object.shakeh.path[5]:SetOffset(-2, 0)
-		object.shakeh.path[5]:SetOrder(5)
-		object.shakeh.path[6]:SetOffset(5, 0)
-		object.shakeh.path[6]:SetOrder(6)
+		object[type:lower()] = shake
 	else
 		local x, y, duration, customName = ...
 		if not customName then
 			customName = 'anim'
 		end
 		object[customName] = object:CreateAnimationGroup("Move_In")
+
 		object[customName].in1 = object[customName]:CreateAnimation("Translation")
 		object[customName].in1:SetDuration(0)
 		object[customName].in1:SetOrder(1)
+		object[customName].in1:SetOffset(E:Scale(x), E:Scale(y))
+
 		object[customName].in2 = object[customName]:CreateAnimation("Translation")
 		object[customName].in2:SetDuration(duration)
 		object[customName].in2:SetOrder(2)
 		object[customName].in2:SetSmoothing("OUT")
+		object[customName].in2:SetOffset(E:Scale(-x), E:Scale(-y))
+
 		object[customName].out1 = object:CreateAnimationGroup("Move_Out")
+		object[customName].out1:SetScript("OnFinished", function() object:Hide() end)
+
 		object[customName].out2 = object[customName].out1:CreateAnimation("Translation")
 		object[customName].out2:SetDuration(duration)
 		object[customName].out2:SetOrder(1)
 		object[customName].out2:SetSmoothing("IN")
-		object[customName].in1:SetOffset(E:Scale(x), E:Scale(y))
-		object[customName].in2:SetOffset(E:Scale(-x), E:Scale(-y))
 		object[customName].out2:SetOffset(E:Scale(x), E:Scale(y))
-		object[customName].out1:SetScript("OnFinished", function() object:Hide() end)
 	end
 end
 
@@ -128,7 +101,7 @@ end
 
 function E:ShakeHorizontal(object)
 	if not object.shakeh then
-		E:SetUpAnimGroup(object, 'Shake_Horizontal')
+		E:SetUpAnimGroup(object, 'ShakeH')
 	end
 
 	object.shakeh:Play()
@@ -156,7 +129,6 @@ end
 function E:StopFlash(object)
 	if object.anim and object.anim.playing then
 		object.anim:Stop()
-		object.anim.playing = nil;
 	end
 end
 
@@ -255,13 +227,11 @@ function E:UIFrameFade(frame, fadeInfo)
 		frame:Show();
 	end
 
-	local index = 1;
-	while FADEFRAMES[index] do
+	for index = 1, #FADEFRAMES do
 		-- If frame is already set to fade then return
 		if ( FADEFRAMES[index] == frame ) then
 			return;
 		end
-		index = index + 1;
 	end
 	FADEFRAMES[#FADEFRAMES + 1] = frame
 	frameFadeManager:SetScript("OnUpdate", E.UIFrameFade_OnUpdate);
@@ -287,18 +257,11 @@ function E:UIFrameFadeOut(frame, timeToFade, startAlpha, endAlpha)
 	E:UIFrameFade(frame, fadeInfo);
 end
 
-function E:tDeleteItem(table, item)
-	local index = 1;
-	while table[index] do
-		if ( item == table[index] ) then
-			tremove(table, index);
+function E:UIFrameFadeRemoveFrame(frame)
+	for index = 1, #FADEFRAMES do
+		if ( frame == FADEFRAMES[index] ) then
+			tremove(FADEFRAMES, index);
 			break
-		else
-			index = index + 1;
 		end
 	end
-end
-
-function E:UIFrameFadeRemoveFrame(frame)
-	E:tDeleteItem(FADEFRAMES, frame);
 end
