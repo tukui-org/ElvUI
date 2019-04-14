@@ -4,7 +4,7 @@ local M = E:GetModule('Minimap')
 --Lua functions
 local _G = _G
 local tinsert = tinsert
-local strsub = strsub
+local utf8sub = string.utf8sub
 --WoW API / Variables
 local CloseAllWindows = CloseAllWindows
 local CloseMenus = CloseMenus
@@ -171,7 +171,7 @@ end
 
 function M:Update_ZoneText()
 	if E.db.general.minimap.locationText == 'HIDE' or not E.private.general.minimap.enable then return; end
-	_G.Minimap.location:SetText(strsub(GetMinimapZoneText(),1,46))
+	_G.Minimap.location:SetText(utf8sub(GetMinimapZoneText(),1,46))
 	_G.Minimap.location:SetTextColor(M:GetLocTextColor())
 	_G.Minimap.location:FontTemplate(E.Libs.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 end
