@@ -937,3 +937,4 @@ oUF.Tags = {
 }
 
 oUF:RegisterMetaFunction('Tag', Tag, true)
+oUF:RegisterMetaFunction('Untag', Untag, true)
