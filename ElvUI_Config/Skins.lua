@@ -75,8 +75,8 @@ E.Options.args.skins = {
 			order = 300,
 			type = 'group',
 			name = L["Blizzard"],
-			get = function(info) return E.private.skins.blizzard[ info[#info] ] end,
-			set = function(info, value) E.private.skins.blizzard[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+			get = function(info) return E.private.skins.blizzard[info[#info]] end,
+			set = function(info, value) E.private.skins.blizzard[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			disabled = function() return not E.private.skins.blizzard.enable end,
 			guiInline = true,
 			args = {
@@ -453,6 +453,11 @@ E.Options.args.skins = {
 				AzeriteRespec = {
 					type = "toggle",
 					name = AZERITE_RESPEC_TITLE,
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				GMChat = {
+					type = "toggle",
+					name = L["GM Chat"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 			},

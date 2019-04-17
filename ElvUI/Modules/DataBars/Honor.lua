@@ -1,8 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local mod = E:GetModule('DataBars');
+local mod = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 --Lua functions
+local _G = _G
 local format = format
 --WoW API / Variables
 local UnitHonor = UnitHonor
@@ -10,13 +11,11 @@ local UnitHonorLevel = UnitHonorLevel
 local UnitHonorMax = UnitHonorMax
 local UnitIsPVP = UnitIsPVP
 local UnitLevel = UnitLevel
+local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local TogglePVPUI = TogglePVPUI
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local HONOR = HONOR
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, RightChatPanel, CreateFrame
 
 function mod:UpdateHonor(event, unit)
 	if not mod.db.honor.enable then return end
@@ -77,9 +76,11 @@ function mod:UpdateHonor(event, unit)
 end
 
 function mod:HonorBar_OnEnter()
+	local GameTooltip = _G.GameTooltip
 	if mod.db.honor.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
+
 	GameTooltip:ClearLines()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
@@ -135,7 +136,7 @@ function mod:EnableDisable_HonorBar()
 end
 
 function mod:LoadHonorBar()
-	self.honorBar = self:CreateBar('ElvUI_HonorBar', self.HonorBar_OnEnter, self.HonorBar_OnClick, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.honorBar = self:CreateBar('ElvUI_HonorBar', self.HonorBar_OnEnter, self.HonorBar_OnClick, 'RIGHT', _G.RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.honorBar.statusBar:SetStatusBarColor(240/255, 114/255, 65/255)
 	self.honorBar.statusBar:SetMinMaxValues(0, 325)
 

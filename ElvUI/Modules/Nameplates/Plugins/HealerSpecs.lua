@@ -1,8 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
+-- Cache global variables
+-- Lua functions
 local gsub = gsub
 local format = format
+local wipe = wipe
+-- WoW API / Variables
 local UnitName = UnitName
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldScore = GetBattlefieldScore
@@ -28,6 +32,10 @@ for _, specID in pairs(healerSpecIDs) do
 	if name and not HealerSpecs[name] then
 		HealerSpecs[name] = true
 	end
+end
+
+local function WipeTable()
+	wipe(Healers)
 end
 
 local function Event()
@@ -120,6 +128,7 @@ local function Enable(self)
 		self:RegisterEvent("UNIT_NAME_UPDATE", Path)
 		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Event, true)
 		self:RegisterEvent("UPDATE_BATTLEFIELD_SCORE", Event, true)
+		self:RegisterEvent("PLAYER_ENTERING_WORLD", WipeTable, true)
 
 		return true
 	end
@@ -130,9 +139,12 @@ local function Disable(self)
 	if (element) then
 		element:Hide()
 
-		self:UnregisterEvent("UNIT_NAME_UPDATE")
-		self:UnregisterEvent("ARENA_OPPONENT_UPDATE")
-		self:UnregisterEvent("UPDATE_BATTLEFIELD_SCORE")
+		self:UnregisterEvent("UNIT_NAME_UPDATE", Path)
+		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Event)
+		self:UnregisterEvent("UPDATE_BATTLEFIELD_SCORE", Event)
+		self:UnregisterEvent("UNIT_TARGET", Path)
+		self:UnregisterEvent("PLAYER_TARGET_CHANGED", Path)
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD", WipeTable)
 	end
 end
 

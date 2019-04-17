@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 --WoW API / Variables
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local FrameTexs = {
@@ -101,12 +100,7 @@ local function LoadSkin()
 		end)
 
 		_G.EventTraceTooltip:HookScript("OnShow", function(self)
-			if not self.template then
-				self:SetTemplate("Transparent", nil, true) --ignore updates
-			else
-				self:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				self:SetBackdropColor(unpack(E.media.backdropfadecolor))
-			end
+			self:SetTemplate("Transparent", nil, true)
 		end)
 	end
 

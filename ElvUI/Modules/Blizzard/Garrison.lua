@@ -19,9 +19,6 @@ local WAR_CAMPAIGN = WAR_CAMPAIGN
 local GARRISON_LANDING_PAGE_TITLE = GARRISON_LANDING_PAGE_TITLE
 local ORDER_HALL_LANDING_PAGE_TITLE = ORDER_HALL_LANDING_PAGE_TITLE
 
---No point caching anything else here, but list them here for mikk's FindGlobals script
--- GLOBALS: GarrisonLandingPage, DropDownList1
-
 function B:GarrisonDropDown()
 	-- Right click Menu for Garrision Button all Credits to Foxlit (WarPlan)
 	if IsAddOnLoaded("WarPlan") then return; end
@@ -37,16 +34,16 @@ function B:GarrisonDropDown()
 
 	local landingChoiceMenu, landingChoices
 	_G.GarrisonLandingPageMinimapButton:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-	_G.GarrisonLandingPageMinimapButton:HookScript("PreClick", function(self, b)
-		self.landingVisiblePriorToClick = _G.GarrisonLandingPage and _G.GarrisonLandingPage:IsVisible() and _G.GarrisonLandingPage.garrTypeID
+	_G.GarrisonLandingPageMinimapButton:HookScript("PreClick", function(btn, b)
+		btn.landingVisiblePriorToClick = _G.GarrisonLandingPage and _G.GarrisonLandingPage:IsVisible() and _G.GarrisonLandingPage.garrTypeID
 		if b == "RightButton" then
 			local openOK, openID = PlaySound(SOUNDKIT_UI_GARRISON_GARRISON_REPORT_OPEN)
 			local closeOK, closeID = PlaySound(SOUNDKIT_UI_GARRISON_GARRISON_REPORT_CLOSE)
-			self.openSoundID = openOK and openID
-			self.closeSoundID = closeOK and closeID
+			btn.openSoundID = openOK and openID
+			btn.closeSoundID = closeOK and closeID
 		end
 	end)
-	_G.GarrisonLandingPageMinimapButton:HookScript("OnClick", function(self, b)
+	_G.GarrisonLandingPageMinimapButton:HookScript("OnClick", function(btn, b)
 		if b == "LeftButton" then
 			if _G.GarrisonLandingPage.garrTypeID ~= C_Garrison_GetLandingPageGarrisonType() then
 				ShowLanding(C_Garrison_GetLandingPageGarrisonType())
@@ -54,13 +51,13 @@ function B:GarrisonDropDown()
 			return
 		elseif b == "RightButton" then
 			if (C_Garrison_GetLandingPageGarrisonType() or 0) > 3 then
-				if self.landingVisiblePriorToClick then
-					ShowLanding(self.landingVisiblePriorToClick)
+				if btn.landingVisiblePriorToClick then
+					ShowLanding(btn.landingVisiblePriorToClick)
 				else
 					HideUIPanel(_G.GarrisonLandingPage)
 				end
-				MaybeStopSound(self.openSoundID)
-				MaybeStopSound(self.closeSoundID)
+				MaybeStopSound(btn.openSoundID)
+				MaybeStopSound(btn.closeSoundID)
 				if not landingChoiceMenu then
 					landingChoiceMenu = CreateFrame("Frame", "ElvUI_LandingChoicesDropdown", E.UIParent, "UIDropDownMenuTemplate")
 					local function ShowLanding_(_, ...)
@@ -73,15 +70,15 @@ function B:GarrisonDropDown()
 					}
 				end
 				_G.EasyMenu(landingChoices, landingChoiceMenu, "cursor", 0, 0, "MENU", 4)
-				DropDownList1:ClearAllPoints()
-				DropDownList1:Point("TOPRIGHT", self, "TOPLEFT", 10, -4)
-			elseif GarrisonLandingPage.garrTypeID == 3 then
+				_G.DropDownList1:ClearAllPoints()
+				_G.DropDownList1:Point("TOPRIGHT", btn, "TOPLEFT", 10, -4)
+			elseif _G.GarrisonLandingPage.garrTypeID == 3 then
 				ShowLanding(2)
-				MaybeStopSound(self.closeSoundID)
+				MaybeStopSound(btn.closeSoundID)
 			end
 		end
 	end)
-	_G.GarrisonLandingPageMinimapButton:HookScript("PostClick", function(self)
-		self.closeSoundID, self.openSoundID = nil, nil
+	_G.GarrisonLandingPageMinimapButton:HookScript("PostClick", function(btn)
+		btn.closeSoundID, btn.openSoundID = nil, nil
 	end)
 end

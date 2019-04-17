@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 15
+local MINOR_VERSION = 17 -- the real minor version is 74
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -1266,6 +1266,9 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeMo
 			cooldown = CreateFrame("Cooldown", "LAB10ChargeCooldown"..lib.NumChargeCooldowns, parent, "CooldownFrameTemplate");
 			cooldown:SetScript("OnCooldownDone", EndChargeCooldown)
 			cooldown:SetHideCountdownNumbers(true)
+			cooldown:SetDrawBling(false)
+
+			lib.callbacks:Fire("OnChargeCreated", parent, cooldown)
 		end
 		cooldown:SetParent(parent)
 		cooldown:SetAllPoints(parent)
@@ -1274,9 +1277,8 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeMo
 		parent.chargeCooldown = cooldown
 		cooldown.parent = parent
 	end
+
 	-- set cooldown
-	parent.chargeCooldown:SetDrawBling(parent.config.useDrawBling and (parent.chargeCooldown:GetEffectiveAlpha() > 0.5))
-	parent.chargeCooldown:SetDrawSwipe(parent.config.useDrawSwipeOnCharges)
 	CooldownFrame_Set(parent.chargeCooldown, chargeStart, chargeDuration, true, true, chargeModRate)
 
 	-- update charge cooldown skin when masque is used
@@ -1290,8 +1292,14 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeMo
 end
 
 local function OnCooldownDone(self)
-	self:SetScript("OnCooldownDone", nil)
-	UpdateCooldown(self:GetParent())
+	local button = self:GetParent()
+	if (self.currentCooldownType == COOLDOWN_TYPE_NORMAL) and button.locStart and (button.locStart > 0) then
+		UpdateCooldown(button)
+	elseif button.chargeCooldown then
+		button.chargeCooldown:SetDrawSwipe(button.config.useDrawSwipeOnCharges)
+	end
+
+	lib.callbacks:Fire("OnCooldownDone", button, self)
 end
 
 function UpdateCooldown(self)
@@ -1300,6 +1308,9 @@ function UpdateCooldown(self)
 	local charges, maxCharges, chargeStart, chargeDuration, chargeModRate = self:GetCharges()
 
 	self.cooldown:SetDrawBling(self.config.useDrawBling and (self.cooldown:GetEffectiveAlpha() > 0.5))
+	self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
+	self.cooldown.locStart = locStart
+	self.cooldown.locDuration = locDuration
 
 	if (locStart + locDuration) > (start + duration) then
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_LOSS_OF_CONTROL then
@@ -1308,6 +1319,7 @@ function UpdateCooldown(self)
 			self.cooldown:SetHideCountdownNumbers(true)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_LOSS_OF_CONTROL
 		end
+
 		CooldownFrame_Set(self.cooldown, locStart, locDuration, true, true, modRate)
 	else
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_NORMAL then
@@ -1316,15 +1328,15 @@ function UpdateCooldown(self)
 			self.cooldown:SetHideCountdownNumbers(self.config.disableCountDownNumbers)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_NORMAL
 		end
-		if locStart > 0 then
-			self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
-		end
 
 		if charges and maxCharges and charges > 0 and charges < maxCharges then
 			StartChargeCooldown(self, chargeStart, chargeDuration, chargeModRate)
+
+			self.chargeCooldown:SetDrawSwipe(duration <= 0 and self.config.useDrawSwipeOnCharges)
 		elseif self.chargeCooldown then
 			EndChargeCooldown(self.chargeCooldown)
 		end
+
 		CooldownFrame_Set(self.cooldown, start, duration, enable, false, modRate)
 	end
 	lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, enable, modRate)

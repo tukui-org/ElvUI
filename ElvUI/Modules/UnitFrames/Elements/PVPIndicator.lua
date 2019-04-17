@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 --Lua functions
-
 --WoW API / Variables
 
 function UF:Construct_PvPIndicator(frame)

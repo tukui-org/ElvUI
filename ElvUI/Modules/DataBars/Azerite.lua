@@ -1,8 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local mod = E:GetModule('DataBars');
+local mod = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 --Lua functions
+local _G = _G
 local floor = floor
 local format = string.format
 --WoW API / Variables
@@ -10,11 +11,9 @@ local C_AzeriteItem_FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
 local C_AzeriteItem_GetPowerLevel = C_AzeriteItem.GetPowerLevel
 local InCombatLockdown = InCombatLockdown
+local CreateFrame = CreateFrame
 local ARTIFACT_POWER = ARTIFACT_POWER
 local Item = Item
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, CreateFrame
 
 function mod:UpdateAzerite(event, unit)
 	if not mod.db.azerite.enable then return end
@@ -74,8 +73,9 @@ function mod:AzeriteBar_OnEnter()
 	if mod.db.azerite.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
-	GameTooltip:ClearLines()
-	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+
+	_G.GameTooltip:ClearLines()
+	_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem();
 	local azeriteItem = Item:CreateFromItemLocation(azeriteItemLocation);
@@ -91,13 +91,13 @@ function mod:AzeriteBar_OnEnter()
 		GameTooltip:AddLine(AZERITE_POWER_TOOLTIP_BODY:format(azeriteItemName));
 		]]
 
-		GameTooltip:AddDoubleLine(ARTIFACT_POWER, azeriteItemName.." ("..currentLevel..")", nil,  nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
-		GameTooltip:AddLine(' ')
+		_G.GameTooltip:AddDoubleLine(ARTIFACT_POWER, azeriteItemName.." ("..currentLevel..")", nil,  nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
+		_G.GameTooltip:AddLine(' ')
 
-		GameTooltip:AddDoubleLine(L["AP:"], format(' %d / %d (%d%%)', xp, totalLevelXP, xp / totalLevelXP  * 100), 1, 1, 1)
-		GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', xpToNextLevel, xpToNextLevel / totalLevelXP * 100, 10 * xpToNextLevel / totalLevelXP), 1, 1, 1)
+		_G.GameTooltip:AddDoubleLine(L["AP:"], format(' %d / %d (%d%%)', xp, totalLevelXP, xp / totalLevelXP  * 100), 1, 1, 1)
+		_G.GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', xpToNextLevel, xpToNextLevel / totalLevelXP * 100, 10 * xpToNextLevel / totalLevelXP), 1, 1, 1)
 
-		GameTooltip:Show()
+		_G.GameTooltip:Show()
 	end)
 end
 

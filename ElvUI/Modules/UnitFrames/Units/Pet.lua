@@ -8,28 +8,18 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local _G = _G
 local tinsert = tinsert
 --WoW API / Variables
-local InCombatLockdown = InCombatLockdown
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUF_Player
 
 function UF:Construct_PetFrame(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Health.frequentUpdates = true;
-
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
-
 	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
-
 	frame.Name = self:Construct_NameText(frame)
-
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
-
 	frame.Buffs = self:Construct_Buffs(frame)
-
 	frame.Debuffs = self:Construct_Debuffs(frame)
-
 	frame.Castbar = self:Construct_Castbar(frame, L["Pet Castbar"])
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
@@ -37,11 +27,12 @@ function UF:Construct_PetFrame(frame)
 	frame.HealthPrediction = self:Construct_HealComm(frame)
 	frame.AuraWatch = self:Construct_AuraWatch(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
-	frame.Range = self:Construct_Range(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
+	frame.Fader = self:Construct_Fader()
 	frame.customTexts = {}
+
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Pet Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,pet,generalGroup')
 
@@ -85,6 +76,7 @@ function UF:Update_PetFrame(frame, db)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
 	UF:Configure_InfoPanel(frame)
+
 	--Health
 	UF:Configure_HealthBar(frame)
 
@@ -94,7 +86,7 @@ function UF:Update_PetFrame(frame, db)
 	--Power
 	UF:Configure_Power(frame)
 
-	-- Power Predicition
+	--Power Predicition
 	UF:Configure_PowerPrediction(frame)
 
 	--Portrait
@@ -108,22 +100,17 @@ function UF:Update_PetFrame(frame, db)
 	UF:Configure_Auras(frame, 'Buffs')
 	UF:Configure_Auras(frame, 'Debuffs')
 
+	--Fader
+	UF:Configure_Fader(frame)
+
 	--Castbar
 	UF:Configure_Castbar(frame)
 
 	--OverHealing
 	UF:Configure_HealComm(frame)
 
-	-- AuraBars
+	--AuraBars
 	UF:Configure_AuraBars(frame)
-
-	--Combat Fade
-	if E.db.unitframe.units.player.enable and E.db.unitframe.units.player.combatfade and ElvUF_Player and not InCombatLockdown() then
-		frame:SetParent(ElvUF_Player)
-	end
-
-	--Range
-	UF:Configure_Range(frame)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)

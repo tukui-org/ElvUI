@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
+local _G = _G
 local format = format
 local sort = sort
 local ipairs = ipairs
@@ -35,9 +36,6 @@ local LE_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH
 local LE_FOLLOWER_TYPE_GARRISON_8_0 = LE_FOLLOWER_TYPE_GARRISON_8_0
 local LE_GARRISON_TYPE_8_0 = LE_GARRISON_TYPE_8_0
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GarrisonLandingPage
 
 local WARRESOURCES_CURRENCY = 1560
 local WARRESOURCES_ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(WARRESOURCES_CURRENCY)))
@@ -171,6 +169,7 @@ local function OnClick()
 		return
 	end
 
+	local GarrisonLandingPage = _G.GarrisonLandingPage
 	local isShown = GarrisonLandingPage and GarrisonLandingPage:IsShown()
 	if (not isShown) then
 		ShowGarrisonLandingPage(LE_GARRISON_TYPE_8_0)

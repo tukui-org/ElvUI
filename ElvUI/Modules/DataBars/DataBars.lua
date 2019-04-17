@@ -1,20 +1,20 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local mod = E:NewModule("DataBars", 'AceEvent-3.0')
-E.DataBars = mod
+local mod = E:GetModule('DataBars')
 
+--Lua functions
+local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetExpansionLevel = GetExpansionLevel
 local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ElvUI_ExperienceBar, ElvUI_ReputationBar, ElvUI_ArtifactBar, ElvUI_HonorBar, ElvUI_AzeriteBar,
--- GLOBALS: GameTooltip
+-- GLOBALS: ElvUI_ExperienceBar, ElvUI_ReputationBar, ElvUI_ArtifactBar, ElvUI_HonorBar, ElvUI_AzeriteBar
 
 function mod:OnLeave()
 	if (self == ElvUI_ExperienceBar and mod.db.experience.mouseover) or (self == ElvUI_ReputationBar and mod.db.reputation.mouseover) or (self == ElvUI_ArtifactBar and mod.db.artifact.mouseover) or (self == ElvUI_HonorBar and mod.db.honor.mouseover) or (self == ElvUI_AzeriteBar and mod.db.azerite.mouseover) then
 		E:UIFrameFadeOut(self, 1, self:GetAlpha(), 0)
 	end
-	GameTooltip:Hide()
+
+	_G.GameTooltip:Hide()
 end
 
 function mod:CreateBar(name, onEnter, onClick, ...)
@@ -64,6 +64,7 @@ function mod:PLAYER_LEVEL_UP(level)
 end
 
 function mod:Initialize()
+	self.Initialized = true
 	self.db = E.db.databars
 
 	self:LoadExperienceBar()

@@ -9,8 +9,6 @@ local floor, max = floor, max
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUF_Player
 
 local _, ns = ...
@@ -46,11 +44,7 @@ function UF:Configure_ClassBar(frame, cur)
 	--We don't want to modify the original frame.CLASSBAR_WIDTH value, as it bugs out when the classbar gains more buttons
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
 
-	local color = self.db.colors.classResources.bgColor
-	bars.backdrop.ignoreUpdates = true
-	bars.backdrop:SetBackdropColor(color.r, color.g, color.b)
-
-	color = E.db.unitframe.colors.borderColor
+	local color = E.db.unitframe.colors.borderColor
 	bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
@@ -82,10 +76,6 @@ function UF:Configure_ClassBar(frame, cur)
 			bars[i].backdrop:Hide()
 
 			if i <= frame.MAX_CLASS_BAR then
-				bars[i].backdrop.ignoreUpdates = true
-				bars[i].backdrop:SetBackdropColor(color.r, color.g, color.b)
-
-				color = E.db.unitframe.colors.borderColor
 				bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
 				bars[i]:Height(bars:GetHeight())
@@ -143,8 +133,7 @@ function UF:Configure_ClassBar(frame, cur)
 					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
 					local maxComboPoints = ((frame.MAX_CLASS_BAR == 10 and 10) or (frame.MAX_CLASS_BAR > 5 and 6 or 5))
 
-					local r, g, b = ElvUF:ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3)
-					bars[i]:SetStatusBarColor(r, g, b)
+					bars[i]:SetStatusBarColor(ElvUF:ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3))
 				end
 
 				if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
@@ -307,7 +296,7 @@ UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 -------------------------------------------------------------
 function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
+	bars:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 	bars:Hide()
 
 	local maxBars = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
@@ -317,10 +306,10 @@ function UF:Construct_ClassBar(frame)
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 		UF.statusbars[bars[i]] = true
 
-		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
+		bars[i]:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 		bars[i].backdrop:SetParent(bars)
 
-		bars[i].bg = bars:CreateTexture(nil, 'OVERLAY')
+		bars[i].bg = bars:CreateTexture(nil, 'BORDER')
 		bars[i].bg:SetAllPoints(bars[i])
 		bars[i].bg:SetTexture(E.media.blankTex)
 	end
@@ -362,10 +351,10 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged)
 		UF:Configure_ClassBar(frame, current)
 	end
 
-	local r, g, b
 	for i=1, #self do
-		r, g, b = self[i]:GetStatusBarColor()
-		self[i].bg:SetVertexColor(r, g, b, 0.15)
+		local r, g, b = self[i]:GetStatusBarColor()
+		self[i].bg:SetVertexColor(r * .35, g * .35, b * .35)
+
 		if maxBars and (i <= maxBars) then
 			self[i].bg:Show()
 		else
@@ -385,22 +374,22 @@ end
 
 function UF:Construct_DeathKnightResourceBar(frame)
 	local runes = CreateFrame("Frame", nil, frame)
-	runes:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
+	runes:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 	runes.backdrop:Hide()
 
 	for i = 1, UF.classMaxResourceBar[E.myclass] do
 		runes[i] = CreateFrame("StatusBar", frame:GetName().."RuneButton"..i, runes)
-		UF.statusbars[runes[i]] = true
 		runes[i]:SetStatusBarTexture(E.media.blankTex)
 		runes[i]:GetStatusBarTexture():SetHorizTile(false)
+		UF.statusbars[runes[i]] = true
 
-		runes[i]:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
+		runes[i]:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 		runes[i].backdrop:SetParent(runes)
 
 		runes[i].bg = runes[i]:CreateTexture(nil, 'BORDER')
 		runes[i].bg:SetAllPoints()
 		runes[i].bg:SetTexture(E.media.blankTex)
-		runes[i].bg.multiplier = 0.3
+		runes[i].bg.multiplier = 0.35
 	end
 
 	runes.PostUpdate = PostUpdateRunes
@@ -432,14 +421,14 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.colorPower = true
 	additionalPower.PostUpdate = UF.PostUpdateAdditionalPower
 	additionalPower.PostUpdateVisibility = UF.PostVisibilityAdditionalPower
-	additionalPower:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
-	UF.statusbars[additionalPower] = true
+	additionalPower:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 	additionalPower:SetStatusBarTexture(E.media.blankTex)
+	UF.statusbars[additionalPower] = true
 
 	additionalPower.bg = additionalPower:CreateTexture(nil, "BORDER")
 	additionalPower.bg:SetAllPoints(additionalPower)
 	additionalPower.bg:SetTexture(E.media.blankTex)
-	additionalPower.bg.multiplier = 0.3
+	additionalPower.bg.multiplier = 0.35
 
 	additionalPower.text = additionalPower:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(additionalPower.text)
@@ -535,10 +524,10 @@ end
 -----------------------------------------------------------
 function UF:Construct_Stagger(frame)
 	local stagger = CreateFrame("Statusbar", nil, frame)
-	UF.statusbars[stagger] = true
-	stagger:CreateBackdrop("Default",nil, nil, self.thinBorders, true)
+	stagger:CreateBackdrop(nil,nil, nil, self.thinBorders, true)
 	stagger.PostUpdate = UF.PostUpdateStagger
 	stagger.PostUpdateVisibility = UF.PostUpdateVisibilityStagger
+	UF.statusbars[stagger] = true
 
 	stagger:SetScript("OnShow", ToggleResourceBar)
 	stagger:SetScript("OnHide", ToggleResourceBar)

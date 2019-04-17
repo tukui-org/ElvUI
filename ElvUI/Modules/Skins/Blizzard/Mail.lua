@@ -12,7 +12,7 @@ local function MailFrameSkin()
 		local btn = _G["SendMailAttachment"..i]
 		if not btn.skinned then
 			btn:StripTextures()
-			btn:SetTemplate("Default", true)
+			btn:SetTemplate(nil, true)
 			btn:StyleButton()
 			btn.skinned = true
 			hooksecurefunc(btn.IconBorder, 'SetVertexColor', function(self, r, g, b)
@@ -44,7 +44,7 @@ local function LoadSkin()
 
 		local btn = _G["MailItem"..i.."Button"]
 		btn:StripTextures()
-		btn:SetTemplate("Default", true)
+		btn:SetTemplate(nil, true)
 		btn:StyleButton()
 
 		local t = _G["MailItem"..i.."ButtonIcon"]
@@ -130,13 +130,13 @@ local function LoadSkin()
 	_G.OpenMailArithmeticLine:Kill()
 
 	_G.OpenMailLetterButton:StripTextures()
-	_G.OpenMailLetterButton:SetTemplate("Default", true)
+	_G.OpenMailLetterButton:SetTemplate(nil, true)
 	_G.OpenMailLetterButton:StyleButton()
 	_G.OpenMailLetterButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.OpenMailLetterButtonIconTexture:SetInside()
 
 	_G.OpenMailMoneyButton:StripTextures()
-	_G.OpenMailMoneyButton:SetTemplate("Default", true)
+	_G.OpenMailMoneyButton:SetTemplate(nil, true)
 	_G.OpenMailMoneyButton:StyleButton()
 	_G.OpenMailMoneyButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.OpenMailMoneyButtonIconTexture:SetInside()
@@ -144,7 +144,7 @@ local function LoadSkin()
 	for i = 1, _G.ATTACHMENTS_MAX_SEND do
 		local btn = _G["OpenMailAttachmentButton"..i]
 		btn:StripTextures()
-		btn:SetTemplate("Default", true)
+		btn:SetTemplate(nil, true)
 		btn:StyleButton()
 
 		hooksecurefunc(btn.IconBorder, 'SetVertexColor', function(self, r, g, b)

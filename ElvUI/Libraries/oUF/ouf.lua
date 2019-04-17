@@ -11,7 +11,7 @@ local Private = oUF.Private
 local argcheck = Private.argcheck
 local error = Private.error
 local print = Private.print
-local UnitExists = Private.UnitExists
+local unitExists = Private.unitExists
 
 local styles, style = {}
 local callback, objects, headers = {}, {}, {}
@@ -58,7 +58,7 @@ local function updateActiveUnit(self, event, unit)
 		modUnit = 'vehicle'
 	end
 
-	if(not UnitExists(modUnit)) then return end
+	if(not unitExists(modUnit)) then return end
 
 	-- Change the active unit and run a full update.
 	if(Private.UpdateUnits(self, modUnit, realUnit)) then
@@ -193,7 +193,7 @@ for k, v in next, {
 	--]]
 	UpdateAllElements = function(self, event)
 		local unit = self.unit
-		if(not UnitExists(unit)) then return end
+		if(not unitExists(unit)) then return end
 
 		assert(type(event) == 'string', "Invalid argument 'event' in UpdateAllElements.")
 
@@ -326,14 +326,20 @@ local function initObject(unit, style, styleFunc, header, ...)
 			end
 		end
 
+		activeElements[object] = {} --ElvUI: styleFunc on headers break before this is set when they try to enable elements before it's set.
+
 		Private.UpdateUnits(object, objectUnit)
 
 		styleFunc(object, objectUnit, not header)
 
 		object:HookScript('OnAttributeChanged', onAttributeChanged)
-		object:SetScript('OnShow', onShow)
 
-		activeElements[object] = {}
+		-- NAME_PLATE_UNIT_ADDED fires after the frame is shown, so there's no
+		-- need to call UAE multiple times
+		--if(not object.isNamePlate) then
+			object:SetScript('OnShow', onShow)
+		--end
+
 		for element in next, elements do
 			object:EnableElement(element, objectUnit)
 		end
@@ -343,7 +349,7 @@ local function initObject(unit, style, styleFunc, header, ...)
 		end
 
 		-- Make Clique kinda happy
-		if not object.isNamePlate then
+		if(not object.isNamePlate) then
 			_G.ClickCastFrames = ClickCastFrames or {}
 			ClickCastFrames[object] = true
 		end
@@ -626,7 +632,7 @@ do
 		local name = overrideName or generateName(nil, ...)
 		local header = CreateFrame('Frame', name, PetBattleFrameHider, template)
 
-		header:SetAttribute('template', 'oUF_ClickCastUnitTemplate')
+		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate')
 		for i = 1, select('#', ...), 2 do
 			local att, val = select(i, ...)
 			if(not att) then break end
@@ -642,6 +648,35 @@ do
 
 		-- We set it here so layouts can't directly override it.
 		header:SetAttribute('initialConfigFunction', initialConfigFunction)
+		header:SetAttribute('_initialAttributeNames', '_onenter,_onleave,refreshUnitChange,_onstate-vehicleui')
+		header:SetAttribute('_initialAttribute-_onenter', [[
+			local snippet = self:GetAttribute('clickcast_onenter')
+			if(snippet) then
+				self:Run(snippet)
+			end
+		]])
+		header:SetAttribute('_initialAttribute-_onleave', [[
+			local snippet = self:GetAttribute('clickcast_onleave')
+			if(snippet) then
+				self:Run(snippet)
+			end
+		]])
+		header:SetAttribute('_initialAttribute-refreshUnitChange', [[
+			local unit = self:GetAttribute('unit')
+			if(unit) then
+				RegisterStateDriver(self, 'vehicleui', '[@' .. unit .. ',unithasvehicleui]vehicle; novehicle')
+			else
+				UnregisterStateDriver(self, 'vehicleui')
+			end
+		]])
+		header:SetAttribute('_initialAttribute-_onstate-vehicleui', [[
+			local unit = self:GetAttribute('unit')
+			if(newstate == 'vehicle' and unit and UnitPlayerOrPetInRaid(unit) and not UnitTargetsVehicleInRaidUI(unit)) then
+				self:SetAttribute('toggleForVehicle', false)
+			else
+				self:SetAttribute('toggleForVehicle', true)
+			end
+		]])
 		header:SetAttribute('oUF-headerType', isPetHeader and 'pet' or 'group')
 
 		if(Clique) then
@@ -713,6 +748,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 	argcheck(nameplateCallback, 3, 'function', 'nil')
 	argcheck(nameplateCVars, 4, 'table', 'nil')
 	if(not style) then return error('Unable to create frame. No styles have been registered.') end
+	if(oUF_NamePlateDriver) then return error('oUF nameplate driver has already been initialized.') end
 
 	local style = style
 	local prefix = namePrefix or generateName()
@@ -727,7 +763,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 		end
 	end)
 
-	local eventHandler = CreateFrame('Frame')
+	local eventHandler = CreateFrame('Frame', 'oUF_NamePlateDriver')
 	eventHandler:RegisterEvent('NAME_PLATE_UNIT_ADDED')
 	eventHandler:RegisterEvent('NAME_PLATE_UNIT_REMOVED')
 	eventHandler:RegisterEvent('PLAYER_TARGET_CHANGED')
@@ -751,12 +787,14 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			end
 		elseif(event == 'PLAYER_TARGET_CHANGED') then
 			local nameplate = C_NamePlate.GetNamePlateForUnit('target')
-			if(nameplate) then
-				nameplate.unitFrame:UpdateAllElements(event)
-			end
-
 			if(nameplateCallback) then
 				nameplateCallback(nameplate and nameplate.unitFrame, event, 'target')
+			end
+
+			-- UAE is called after the callback to reduce the number of
+			-- ForceUpdate calls layout devs have to do themselves
+			if(nameplate) then
+				nameplate.unitFrame:UpdateAllElements(event)
 			end
 		elseif(event == 'NAME_PLATE_UNIT_ADDED' and unit) then
 			local nameplate = C_NamePlate.GetNamePlateForUnit(unit)
@@ -766,6 +804,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 				nameplate.style = style
 
 				nameplate.unitFrame = CreateFrame('Button', prefix..nameplate:GetName(), nameplate)
+				nameplate.unitFrame:Hide()
 				nameplate.unitFrame:EnableMouse(false)
 				nameplate.unitFrame.isNamePlate = true
 
@@ -777,21 +816,25 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			end
 
 			nameplate.unitFrame:SetAttribute('unit', unit)
-			nameplate.unitFrame:UpdateAllElements(event)
 
 			if(nameplateCallback) then
 				nameplateCallback(nameplate.unitFrame, event, unit)
 			end
+
+			-- UAE is called after the callback to reduce the number of
+			-- ForceUpdate calls layout devs have to do themselves
+			--nameplate.unitFrame:UpdateAllElements(event)
+			nameplate.unitFrame:Show()
 		elseif(event == 'NAME_PLATE_UNIT_REMOVED' and unit) then
 			local nameplate = C_NamePlate.GetNamePlateForUnit(unit)
 			if(not nameplate) then return end
 
 			nameplate.unitFrame:SetAttribute('unit', nil)
-			nameplate.unitFrame:UpdateAllElements(event)
 
 			if(nameplateCallback) then
 				nameplateCallback(nameplate.unitFrame, event, unit)
 			end
+			nameplate.unitFrame:Hide()
 		end
 	end)
 end

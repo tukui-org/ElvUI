@@ -63,7 +63,7 @@ function AB:HandleMicroButton(button)
 	local f = CreateFrame("Frame", nil, button)
 	f:SetFrameLevel(400)
 	f:SetFrameStrata("BACKGROUND")
-	f:SetTemplate("Default", true)
+	f:SetTemplate(nil, true)
 	f:SetOutside(button)
 	button.backdrop = f
 

@@ -1,8 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local mod = E:GetModule('DataBars');
+local mod = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 --Lua functions
+local _G = _G
 local format = format
 local min = min
 --WoW API / Variables
@@ -12,9 +13,7 @@ local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
 local GetExpansionLevel = GetExpansionLevel
 local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
 local InCombatLockdown = InCombatLockdown
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, LeftChatPanel, CreateFrame
+local CreateFrame = CreateFrame
 
 function mod:GetXP(unit)
 	if(unit == 'pet') then
@@ -98,9 +97,11 @@ function mod:UpdateExperience(event)
 end
 
 function mod:ExperienceBar_OnEnter()
+	local GameTooltip = _G.GameTooltip
 	if mod.db.experience.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
+
 	GameTooltip:ClearLines()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
@@ -169,7 +170,7 @@ function mod:EnableDisable_ExperienceBar()
 end
 
 function mod:LoadExperienceBar()
-	self.expBar = self:CreateBar('ElvUI_ExperienceBar', self.ExperienceBar_OnEnter, self.ExperienceBar_OnClick, 'LEFT', LeftChatPanel, 'RIGHT', -E.Border + E.Spacing*3, 0)
+	self.expBar = self:CreateBar('ElvUI_ExperienceBar', self.ExperienceBar_OnEnter, self.ExperienceBar_OnClick, 'LEFT', _G.LeftChatPanel, 'RIGHT', -E.Border + E.Spacing*3, 0)
 	self.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
 	self.expBar.rested = CreateFrame('StatusBar', nil, self.expBar)
 	self.expBar.rested:SetInside()

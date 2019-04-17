@@ -1,4 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local DT = E:GetModule('DataTexts')
+local AB = E:GetModule('ActionBars')
 
 --Lua functions
 local _G = _G
@@ -50,7 +52,6 @@ function E:LuaError(msg)
 end
 
 function E:BGStats()
-	local DT = E:GetModule('DataTexts')
 	DT.ForceHideBGStats = nil;
 	DT:LoadDataTexts()
 
@@ -242,7 +243,6 @@ function E:LoadCommands()
 	-- self:RegisterChatCommand("aprilfools", "") --Don't need this until next april fools
 
 	if E.private.actionbar.enable then
-		local AB = E:GetModule("ActionBars")
 		self:RegisterChatCommand("kb", AB.ActivateBindMode)
 	end
 end

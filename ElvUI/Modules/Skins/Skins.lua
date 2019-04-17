@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local S = E:NewModule('Skins', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
+local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
@@ -11,7 +11,6 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
-E.Skins = S
 S.addonsToLoad = {}
 S.nonAddonsToLoad = {}
 S.allowBypass = {}
@@ -264,27 +263,21 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 		local Texture = button.Icon:GetTexture()
 		if Texture and (type(Texture) == 'string' and strfind(Texture, [[Interface\ChatFrame\ChatFrameExpandArrow]])) then
 			button.Icon:SetTexture(E.Media.Textures.ArrowUp)
-			button.Icon:SetVertexColor(1, 1, 1)
 			button.Icon:SetRotation(S.ArrowRotation['right'])
+			button.Icon:SetVertexColor(1, 1, 1)
 		end
 	end
 
-	-- used for a white X on decline buttons (more clear)
 	if isDeclineButton then
-		if button.Icon then button.Icon:Hide() end
-		if not button.text then
-			button.text = button:CreateFontString(nil, 'OVERLAY')
-			button.text:FontTemplate(E.Media.Fonts.PTSansNarrow, 16, 'OUTLINE')
-			button.text:SetText('x')
-			button.text:SetJustifyH('CENTER')
-			button.text:Point('CENTER', button, 'CENTER')
+		if button.Icon then
+			button.Icon:SetTexture(E.Media.Textures.Close)
 		end
 	end
 
 	if useCreateBackdrop then
-		button:CreateBackdrop('Default', true)
+		button:CreateBackdrop(nil, true)
 	elseif not noSetTemplate then
-		button:SetTemplate("Default", true)
+		button:SetTemplate(nil, true)
 	end
 
 	button:HookScript("OnEnter", S.SetModifiedBackdrop)
@@ -320,7 +313,7 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 
 	if Thumb then
 		Thumb:SetTexture()
-		Thumb:CreateBackdrop('Default', true, true)
+		Thumb:CreateBackdrop(nil, true, true)
 		if not thumbTrimY then thumbTrimY = 3 end
 		if not thumbTrimX then thumbTrimX = 2 end
 		Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
@@ -449,7 +442,7 @@ function S:HandleEditBox(frame)
 	end
 end
 
-function S:HandleDropDownBox(frame, width)
+function S:HandleDropDownBox(frame, width, override)
 	if frame.backdrop then return end
 
 	local FrameName = frame.GetName and frame:GetName()
@@ -470,14 +463,19 @@ function S:HandleDropDownBox(frame, width)
 	if text then
 		local justifyH = text:GetJustifyH()
 		local right = justifyH == 'RIGHT'
+		local left = justifyH == 'LEFT'
 
 		local a, _, c, d, e = text:GetPoint()
 		text:ClearAllPoints()
 
 		if right then
 			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (right and -3) or 0, 0)
+		elseif left and override then -- for now only on the Communities.StreamDropdown in minimized mode >.>
+			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and 1) or -1, 0)
+		elseif left then
+			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and -20) or -1, 0)
 		else
-			text:Point(a, frame.backdrop, c, (justifyH == 'LEFT' and 10) or d, e-3)
+			text:Point(a, frame.backdrop, c, (left and 10) or d, e-3)
 		end
 
 		text:Width(frame:GetWidth() / 1.4)
@@ -653,7 +651,7 @@ function S:HandleItemButton(b, shrinkIcon)
 	end
 
 	b:StripTextures()
-	b:CreateBackdrop('Default', true)
+	b:CreateBackdrop(nil, true)
 	b:StyleButton()
 
 	if icon then
@@ -706,11 +704,6 @@ function S:HandleSliderFrame(frame)
 	frame:StripTextures()
 	frame:CreateBackdrop()
 	frame.backdrop:SetAllPoints()
-
-	hooksecurefunc(frame, "SetBackdrop", function(slider, backdrop)
-		if backdrop ~= nil then slider:SetBackdrop(nil) end
-	end)
-
 	frame:SetThumbTexture(E.Media.Textures.Melli)
 
 	local thumb = frame:GetThumbTexture()
@@ -1335,6 +1328,7 @@ function S:SkinAce3()
 end
 
 function S:Initialize()
+	self.Initialized = true
 	self.db = E.private.skins
 
 	--Fire events for Blizzard addons that are already loaded

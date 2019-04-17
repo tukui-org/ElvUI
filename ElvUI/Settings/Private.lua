@@ -23,7 +23,7 @@ V.general = {
 	},
 	classColorMentionsSpeech = true,
 	raidUtility = true,
-	voiceOverlay = false,
+	voiceOverlay = true,
 }
 
 V.bags = {
@@ -136,6 +136,7 @@ V.skins = {
 		Scrapping = true,
 		IslandQueue = true,
 		IslandsPartyPose = true,
+		GMChat = true,
 	},
 }
 

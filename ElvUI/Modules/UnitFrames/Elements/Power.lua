@@ -31,12 +31,13 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	power.RaisedElementParent:SetAllPoints()
 
 	power.PostUpdate = self.PostUpdatePower
+	power.PostUpdateColor = self.PostUpdatePowerColor
 
 	if bg then
 		power.bg = power:CreateTexture(nil, 'BORDER')
 		power.bg:SetAllPoints()
 		power.bg:SetTexture(E.media.blankTex)
-		power.bg.multiplier = 0.2
+		power.bg.multiplier = 0.35
 	end
 
 	if text then
@@ -51,9 +52,10 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 		power.value:Point(textPos, frame.Health, textPos, x, 0)
 	end
 
+	power.useAtlas = false
 	power.colorDisconnected = false
 	power.colorTapping = false
-	power:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
+	power:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 
 	return power
 end
@@ -70,7 +72,7 @@ function UF:Configure_Power(frame)
 			power:Show()
 		end
 
-		power.Smooth = self.db.smoothbars
+		E:SetSmoothing(power, self.db.smoothbars)
 
 		--Text
 		local attachPoint = self:GetObjectAnchorPoint(frame, db.power.attachTextTo)
@@ -94,8 +96,13 @@ function UF:Configure_Power(frame)
 		power.colorClass = nil
 		power.colorReaction = nil
 		power.colorPower = nil
+		power.colorSelection = nil
 
-		if self.db.colors.powerclass then
+		if self.db.colors.powerselection then
+			power.colorSelection = true
+		--[[elseif self.db.colors.powerthreat then
+			power.colorThreat = true]]
+		elseif self.db.colors.powerclass then
 			power.colorClass = true
 			power.colorReaction = true
 		else
@@ -210,7 +217,6 @@ function UF:Configure_Power(frame)
 			E.FrameLocks[power] = nil
 			power:SetParent(frame)
 		end
-
 	elseif frame:IsElementEnabled('Power') then
 		frame:DisableElement('Power')
 		power:Hide()
@@ -219,27 +225,36 @@ function UF:Configure_Power(frame)
 
 	--Transparency Settings
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
+
+	--Prediction Texture; keep under ToggleTransparentStatusBar
+	UF:UpdatePredictionStatusBar(frame.PowerPrediction, frame.Power, "Power")
 end
 
-local tokens = { [0] = "MANA", "RAGE", "FOCUS", "ENERGY", "RUNIC_POWER" }
-function UF:PostUpdatePower(unit, _, _, max)
+local tokens = {[0]="MANA","RAGE","FOCUS","ENERGY","RUNIC_POWER"}
+function UF:PostUpdatePowerColor()
 	local parent = self.origParent or self:GetParent()
-
 	if parent.isForced then
-		local pType = random(0, 4)
-		local color = ElvUF.colors.power[tokens[pType]]
-		local min = random(1, max)
-		self:SetValue(min)
+		local color = ElvUF.colors.power[tokens[random(0,4)]]
+		self:SetValue(random(1, self.max))
 
 		if not self.colorClass then
 			self:SetStatusBarColor(color[1], color[2], color[3])
-			local mu = self.bg.multiplier or 1
-			self.bg:SetVertexColor(color[1] * mu, color[2] * mu, color[3] * mu)
+
+			if self.bg then
+				local mu = self.bg.multiplier or 1
+				self.bg:SetVertexColor(color[1] * mu, color[2] * mu, color[3] * mu)
+			end
 		end
 	end
+end
 
-	local db = parent.db
-	if db and db.power and db.power.hideonnpc then
+function UF:PostUpdatePower(unit, _, _, max)
+	local parent = self.origParent or self:GetParent()
+	if parent.isForced then
+		self:SetValue(random(1, max))
+	end
+
+	if parent.db and parent.db.power and parent.db.power.hideonnpc then
 		UF:PostNamePosition(parent, unit)
 	end
 

@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local B = E:GetModule('Blizzard');
+local B = E:GetModule('Blizzard')
+local Misc = E:GetModule('Misc')
 
 local _G = _G
 --Lua functions
@@ -10,7 +11,6 @@ local hooksecurefunc = hooksecurefunc
 
 local POSITION, ANCHOR_POINT, YOFFSET = "TOP", "BOTTOM", -10
 
-local Misc
 function E:PostAlertMove()
 	local AlertFrameMover = _G.AlertFrameMover
 	local AlertFrameHolder = _G.AlertFrameHolder
@@ -32,9 +32,7 @@ function E:PostAlertMove()
 	local AlertFrame = _G.AlertFrame
 	local GroupLootContainer = _G.GroupLootContainer
 
-	if not Misc then Misc = E:GetModule('Misc') end
 	local rollBars = Misc.RollBars
-
 	if E.private.general.lootRoll then
 		local lastframe, lastShownFrame
 		for i, frame in pairs(rollBars) do

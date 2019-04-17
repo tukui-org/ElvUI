@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0","AceSerializer-3.0")
+local D = E:GetModule('Distributor')
 local LibCompress = E.Libs.Compress
 local LibBase64 = E.Libs.Base64
 
@@ -30,6 +30,7 @@ local Downloads = {}
 local Uploads = {}
 
 function D:Initialize()
+	self.Initialized = true
 	self:RegisterComm(REQUEST_PREFIX)
 	self:RegisterEvent("CHAT_MSG_ADDON")
 
@@ -238,40 +239,31 @@ end
 
 --Keys that should not be exported
 local blacklistedKeys = {
-	["profile"] = {
-		["general"] = {
-			["numberPrefixStyle"] = true,
+	profile = {
+		general = {
+			numberPrefixStyle = true,
 		},
-		["actionbar"] = {
-		--[[
-			["bar1"] = {["paging"] = true},
-			["bar2"] = {["paging"] = true},
-			["bar3"] = {["paging"] = true},
-			["bar4"] = {["paging"] = true},
-			["bar5"] = {["paging"] = true},
-			["bar6"] = {["paging"] = true},
-			["bar7"] = {["paging"] = true},
-			["bar8"] = {["paging"] = true},
-			["bar9"] = {["paging"] = true},
-			["bar10"] = {["paging"] = true},
-		--]]
+		chat = {
+			hideVoiceButtons = true,
 		},
 	},
-	["private"] = {},
-	["global"] = {
-		["userInformedNewChanges1"] = true,
-		["general"] = {
-			["UIScale"] = true,
-			["version"] = true,
-			["eyefinity"] = true,
-			["disableTutorialButtons"] = true,
-			["showMissingTalentAlert"] = true,
+	private = {},
+	global = {
+		uiScaleInformed = true,
+		userInformedNewChanges1 = true,
+		general = {
+			UIScale = true,
+			version = true,
+			eyefinity = true,
+			ignoreScalePopup = true,
+			disableTutorialButtons = true,
+			showMissingTalentAlert = true,
 		},
-		["chat"] = {
-			["classColorMentionExcludedNames"] = true,
+		chat = {
+			classColorMentionExcludedNames = true,
 		},
-		["unitframe"] = {
-			["spellRangeCheck"] = true,
+		unitframe = {
+			spellRangeCheck = true,
 		},
 	},
 }

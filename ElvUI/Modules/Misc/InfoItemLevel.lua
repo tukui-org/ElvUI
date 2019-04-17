@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local M = E:GetModule('Misc');
+local M = E:GetModule('Misc')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -184,7 +184,7 @@ function M:UpdatePageInfo(frame, which, guid, event)
 	end
 
 	if waitForItems then
-		E:Delay(0.10, function() M:UpdateAverageString(frame, which, iLevelDB) end)
+		E:Delay(0.10, M.UpdateAverageString, M, frame, which, iLevelDB)
 	else
 		M:UpdateAverageString(frame, which, iLevelDB)
 	end

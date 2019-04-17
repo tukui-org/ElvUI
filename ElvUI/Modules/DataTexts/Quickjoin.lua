@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
+local CH = E:GetModule('Chat')
 
 --Lua functions
 local next, pairs, select, type = next, pairs, select, type
@@ -7,7 +8,6 @@ local format, strjoin, wipe = string.format, strjoin, wipe
 --WoW API / Variables
 local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
-local SocialQueueUtil_SortGroupMembers = SocialQueueUtil_SortGroupMembers
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local C_SocialQueue_GetAllGroups = C_SocialQueue.GetAllGroups
 local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
@@ -32,29 +32,18 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local CHAT
 local function OnEvent(self)
 	wipe(quickJoin)
 	quickJoinGroups = C_SocialQueue_GetAllGroups()
 
-	if not CHAT then CHAT = E:GetModule("Chat") end --load order issue requires this to be here, could probably change load order to fix...
-	local coloredName, players, members, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityName, leaderName, isLeader, activity, output, queueCount, queueName, searchResultInfo
-
+	local coloredName, players, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityName, leaderName, isLeader, activity, output, queueCount, queueName, searchResultInfo
 	for _, guid in pairs(quickJoinGroups) do
-		members = nil -- clear it
 		players = C_SocialQueue_GetGroupMembers(guid)
-		if players and next(players) then
-			if type(players[1]) == 'table' and type(players[2]) == 'table' then
-				members = SocialQueueUtil_SortGroupMembers(players)
-			else
-				members = players
-			end
-		end
-		if members then
-			firstMember, numMembers, extraCount = members[1], #members, ''
+		if players then
+			firstMember, numMembers, extraCount = players[1], #players, ''
 			playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
 			if numMembers > 1 then
-				extraCount = format('[+%s]', numMembers - 1)
+				extraCount = format(' +%s', numMembers - 1)
 			end
 			if playerName then
 				coloredName = format('%s%s|r%s', nameColor, playerName, extraCount)
@@ -71,7 +60,7 @@ local function OnEvent(self)
 					searchResultInfo = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
 					if searchResultInfo then
 						activityName, leaderName = searchResultInfo.name, searchResultInfo.leaderName
-						isLeader = CHAT:SocialQueueIsLeader(playerName, leaderName)
+						isLeader = CH:SocialQueueIsLeader(playerName, leaderName)
 					end
 				end
 

@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
+local _G = _G
 local select, pairs = select, pairs
 local format = string.format
 --WoW API / Variables
@@ -10,9 +11,6 @@ local GetMoney = GetMoney
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 local EXPANSION_NAME7 = EXPANSION_NAME7
 local OTHER = OTHER
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ToggleCharacter
 
 -- Currencies we care about
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
@@ -39,7 +37,7 @@ currencyList.GOLD = BONUS_ROLL_REWARD_MONEY
 DT.CurrencyList = currencyList
 
 local function OnClick()
-	ToggleCharacter("TokenFrame")
+	_G.ToggleCharacter("TokenFrame")
 end
 
 local goldText

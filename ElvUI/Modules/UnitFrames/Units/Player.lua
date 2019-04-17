@@ -17,22 +17,15 @@ local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 function UF:Construct_PlayerFrame(frame)
 	frame.ThreatIndicator = self:Construct_Threat(frame)
-
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Health.frequentUpdates = true;
-
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.Power.frequentUpdates = true;
-
 	frame.Name = self:Construct_NameText(frame)
-
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
-
 	frame.Buffs = self:Construct_Buffs(frame)
-
 	frame.Debuffs = self:Construct_Debuffs(frame)
-
 	frame.Castbar = self:Construct_Castbar(frame, L["Player Castbar"])
 
 	--Create a holder frame all "classbars" can be positioned into
@@ -58,7 +51,6 @@ function UF:Construct_PlayerFrame(frame)
 	end
 
 	frame.PowerPrediction = self:Construct_PowerPrediction(frame) -- must be AFTER Power & AdditionalPower
-
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
@@ -71,7 +63,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.PvPIndicator = self:Construct_PvPIcon(frame)
-	frame.CombatFade = true
+	frame.Fader = self:Construct_Fader()
 	frame.customTexts = {}
 
 	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position
@@ -166,6 +158,7 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_Auras(frame, 'Debuffs')
 
 	--Castbar
+	frame:DisableElement('Castbar')
 	UF:Configure_Castbar(frame)
 
 	if (not db.enable and not E.private.unitframe.disabledBlizzardFrames.player) then
@@ -176,12 +169,8 @@ function UF:Update_PlayerFrame(frame, db)
 		CastingBarFrame_SetUnit(_G.PetCastingBarFrame, nil)
 	end
 
-	--Combat Fade
-	if db.combatfade and not frame:IsElementEnabled('CombatFade') then
-		frame:EnableElement('CombatFade')
-	elseif not db.combatfade and frame:IsElementEnabled('CombatFade') then
-		frame:DisableElement('CombatFade')
-	end
+	--Fader
+	UF:Configure_Fader(frame)
 
 	--Debuff Highlight
 	UF:Configure_DebuffHighlight(frame)

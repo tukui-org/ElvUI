@@ -5,18 +5,16 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 --Lua functions
+local _G = _G
 local max = math.max
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local RegisterAttributeDriver = RegisterAttributeDriver
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UnitFrame_OnEnter, UnitFrame_OnLeave
-
 function UF:Construct_AssistFrames()
-	self:SetScript('OnEnter', UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UnitFrame_OnLeave)
+	self:SetScript('OnEnter', _G.UnitFrame_OnEnter)
+	self:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
 	self.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, self.RaisedElementParent)
@@ -28,7 +26,7 @@ function UF:Construct_AssistFrames()
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
-	self.Range = UF:Construct_Range(self)
+	self.Fader = UF:Construct_Fader()
 
 	if not self.isChild then
 		self.Buffs = UF:Construct_Buffs(self)
@@ -44,6 +42,10 @@ function UF:Construct_AssistFrames()
 
 	self.originalParent = self:GetParent()
 
+	UF:Update_AssistFrames(self, E.db.unitframe.units.assist)
+	UF:Update_StatusBars()
+	UF:Update_FontStrings()
+
 	return self
 end
 
@@ -53,23 +55,18 @@ function UF:Update_AssistHeader(header, db)
 
 	UF:ClearChildPoints(header:GetChildren())
 
-	header:SetAttribute("startingIndex", -1)
-	RegisterAttributeDriver(header, 'state-visibility', 'show')
 	RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
-	header:SetAttribute("startingIndex", 1)
 
 	header:SetAttribute('point', 'BOTTOM')
 	header:SetAttribute('columnAnchorPoint', 'LEFT')
-
-	UF:ClearChildPoints(header:GetChildren())
 	header:SetAttribute("yOffset", db.verticalSpacing)
-
-	local width, height = header:GetSize()
-	header.dirtyWidth, header.dirtyHeight = width, max(height, 2*db.height + db.verticalSpacing)
 
 	if not header.positioned then
 		header:ClearAllPoints()
 		header:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -248)
+
+		local width, height = header:GetSize()
+		header.dirtyWidth, header.dirtyHeight = width, max(height, 2*db.height + db.verticalSpacing)
 
 		E:CreateMover(header, header:GetName()..'Mover', L["MA Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,assist,generalGroup')
 		header.mover.positionOverride = "TOPLEFT"
@@ -148,8 +145,8 @@ function UF:Update_AssistFrames(frame, db)
 	--Name
 	UF:UpdateNameSettings(frame)
 
-	--Range
-	UF:Configure_Range(frame)
+	--Fader
+	UF:Configure_Fader(frame)
 
 	UF:Configure_RaidIcon(frame)
 

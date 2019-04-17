@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local M = E:NewModule('Minimap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
-E.Minimap = M
+local M = E:GetModule('Minimap')
 
 --Lua functions
 local _G = _G
 local tinsert = tinsert
-local strsub = strsub
+local utf8sub = string.utf8sub
 --WoW API / Variables
 local CloseAllWindows = CloseAllWindows
 local CloseMenus = CloseMenus
@@ -172,7 +171,7 @@ end
 
 function M:Update_ZoneText()
 	if E.db.general.minimap.locationText == 'HIDE' or not E.private.general.minimap.enable then return; end
-	_G.Minimap.location:SetText(strsub(GetMinimapZoneText(),1,46))
+	_G.Minimap.location:SetText(utf8sub(GetMinimapZoneText(),1,46))
 	_G.Minimap.location:SetTextColor(M:GetLocTextColor())
 	_G.Minimap.location:FontTemplate(E.Libs.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 end
@@ -210,8 +209,7 @@ function M:UpdateSettings()
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 	end
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or _G.Minimap:GetWidth() + 10
-	E.MinimapWidth = E.MinimapSize
-	E.MinimapHeight = E.MinimapSize
+	E.MinimapWidth, E.MinimapHeight = E.MinimapSize, E.MinimapSize
 
 	if E.private.general.minimap.enable then
 		_G.Minimap:Size(E.MinimapSize, E.MinimapSize)
@@ -404,10 +402,13 @@ end
 function M:Initialize()
 	menuFrame:SetTemplate("Transparent", true)
 	self:UpdateSettings()
+
 	if not E.private.general.minimap.enable then
 		_G.Minimap:SetMaskTexture('Textures\\MinimapMask')
-		return;
+		return
 	end
+
+	self.Initialized = true
 
 	--Support for other mods
 	function GetMinimapShape()

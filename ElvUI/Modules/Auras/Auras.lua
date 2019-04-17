@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local A = E:NewModule('Auras', 'AceHook-3.0', 'AceEvent-3.0');
+local A = E:GetModule('Auras');
 local LSM = E.Libs.LSM
 
 --Lua functions
@@ -273,7 +273,7 @@ function A:CooldownText_Update(button)
 	if not button then return end
 
 	-- cooldown override settings
-	button.alwaysEnabled = true
+	button.forceEnabled = true
 
 	if not button.timerOptions then
 		button.timerOptions = {}
@@ -414,8 +414,8 @@ function A:Initialize()
 
 	if not E.private.auras.enable then return end
 
+	self.Initialized = true
 	self.db = E.db.auras
-
 	self.BuffFrame = self:CreateAuraHeader("HELPFUL")
 	self.BuffFrame:Point("TOPRIGHT", _G.MMHolder, "TOPLEFT", -(6 + E.Border), -E.Border - E.Spacing)
 	E:CreateMover(self.BuffFrame, "BuffsMover", L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')

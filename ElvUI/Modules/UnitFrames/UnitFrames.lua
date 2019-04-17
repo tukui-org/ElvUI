@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceHook-3.0');
+local UF = E:GetModule('UnitFrames');
 local LSM = E.Libs.LSM
 UF.LSM = E.Libs.LSM
 
@@ -60,28 +60,30 @@ UF.classMaxResourceBar = {
 	['WARLOCK'] = 5,
 	['MONK'] = 6,
 	['MAGE'] = 4,
-	['ROGUE'] = 10,
+	['ROGUE'] = 6,
 	["DRUID"] = 5
 }
 
 UF.instanceMapIDs = {
-	[30] = 40, -- Alterac Valley
-	[489] = 10, -- Warsong Gulch
-	[529] = 15, -- Arathi Basin
-	[566] = 15, -- Eye of the Storm
-	[607] = 15, -- Strand of the Ancients
-	[628] = 40, -- Isle of Conquest
-	[726] = 10, -- Twin Peaks
-	[727] = 10, -- Silvershard Mines [STVDiamondMineBG]
-	[761] = 10, -- The Battle for Gilneas [GilneasBattleground2]
-	[968] = 10, -- Rated Eye of the Storm
-	[998] = 10, -- Temple of Kotmogu
-	[1105] = 15, -- Deepwind Gourge [GoldRush]
-	[1280] = 40, -- Tarren Mill vs Southshore [HillsbradFoothillsBG]
-	[1681] = 15, -- Arathi Blizzard [ArathiBasinWinter]
-	[1803] = 10, -- Seething Shore [AzeriteBG]
-	--[1715] = 5, -- Battle for Blackrock Mountain
-	--do not have enough information on this one yet, going to store the instanceID for now.
+	[30]   = 40, -- Alterac Valley
+	[489]  = 10, -- Classic Warsong Gulch
+	[529]  = 15, -- Classic Arathi Basin
+	[566]  = 15, -- Eye of the Storm
+	[607]  = 15, -- Strand of the Ancients
+	[628]  = 40, -- Isle of Conquest
+	[726]  = 10, -- Twin Peaks
+	[727]  = 10, -- Silvershard Mines
+	[761]  = 10, -- The Battle for Gilneas
+	[968]  = 10, -- Rated Eye of the Storm
+	[998]  = 10, -- Temple of Kotmogu
+	[1105] = 15, -- Deepwind Gorge
+	[1280] = 40, -- Southshore vs Tarren Mill
+	[1681] = 15, -- Arathi Basin Winter
+	[1803] = 10, -- Seething Shore
+	[2106] = 10, -- Warsong Gulch
+	[2107] = 15, -- Arathi Basin
+	[2118] = 40, -- Battle for Wintergrasp
+	[3358] = 15, -- Arathi Basin (NEW - Only Brawl?)
 }
 
 UF.headerGroupBy = {
@@ -361,6 +363,22 @@ function UF:UpdateColors()
 	ElvUF.colors.power.INSANITY = E:SetColorTable(ElvUF.colors.power.INSANITY, db.power.INSANITY)
 	ElvUF.colors.power.MAELSTROM = E:SetColorTable(ElvUF.colors.power.MAELSTROM, db.power.MAELSTROM)
 
+	ElvUF.colors.threat[0] = E:SetColorTable(ElvUF.colors.threat[0], db.threat[0])
+	ElvUF.colors.threat[1] = E:SetColorTable(ElvUF.colors.threat[1], db.threat[1])
+	ElvUF.colors.threat[2] = E:SetColorTable(ElvUF.colors.threat[2], db.threat[2])
+	ElvUF.colors.threat[3] = E:SetColorTable(ElvUF.colors.threat[3], db.threat[3])
+
+	ElvUF.colors.selection[0] = E:SetColorTable(ElvUF.colors.selection[0], db.selection[0])
+	ElvUF.colors.selection[1] = E:SetColorTable(ElvUF.colors.selection[1], db.selection[1])
+	ElvUF.colors.selection[2] = E:SetColorTable(ElvUF.colors.selection[2], db.selection[2])
+	ElvUF.colors.selection[3] = E:SetColorTable(ElvUF.colors.selection[3], db.selection[3])
+	ElvUF.colors.selection[5] = E:SetColorTable(ElvUF.colors.selection[5], db.selection[5])
+	ElvUF.colors.selection[6] = E:SetColorTable(ElvUF.colors.selection[6], db.selection[6])
+	ElvUF.colors.selection[7] = E:SetColorTable(ElvUF.colors.selection[7], db.selection[7])
+	ElvUF.colors.selection[8] = E:SetColorTable(ElvUF.colors.selection[8], db.selection[8])
+	ElvUF.colors.selection[9] = E:SetColorTable(ElvUF.colors.selection[9], db.selection[9])
+	ElvUF.colors.selection[13] = E:SetColorTable(ElvUF.colors.selection[13], db.selection[13])
+
 	if not ElvUF.colors.ComboPoints then ElvUF.colors.ComboPoints = {} end
 	ElvUF.colors.ComboPoints[1] = E:SetColorTable(ElvUF.colors.ComboPoints[1], db.classResources.comboPoints[1])
 	ElvUF.colors.ComboPoints[2] = E:SetColorTable(ElvUF.colors.ComboPoints[2], db.classResources.comboPoints[2])
@@ -419,17 +437,32 @@ end
 function UF:Update_StatusBars()
 	local statusBarTexture = LSM:Fetch("statusbar", self.db.statusbar)
 	for statusbar in pairs(UF.statusbars) do
-		if statusbar and statusbar:IsObjectType('StatusBar') and not statusbar.isTransparent then
-			statusbar:SetStatusBarTexture(statusBarTexture)
-			if statusbar.texture then statusbar.texture = statusBarTexture end --Update .texture on oUF Power element
-		elseif statusbar and statusbar:IsObjectType('Texture') then
-			statusbar:SetTexture(statusBarTexture)
+		if statusbar then
+			local useBlank = statusbar.isTransparent
+			if statusbar.parent then useBlank = statusbar.parent.isTransparent end
+			if statusbar:IsObjectType('StatusBar') then
+				if not useBlank then
+					statusbar:SetStatusBarTexture(statusBarTexture)
+					if statusbar.texture then statusbar.texture = statusBarTexture end --Update .texture on oUF Power element
+				end
+			elseif statusbar:IsObjectType('Texture') then
+				statusbar:SetTexture(statusBarTexture)
+			end
+
+			UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
 		end
 	end
 end
 
-function UF:Update_StatusBar(bar)
-	bar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+function UF:Update_StatusBar(statusbar, texture)
+	if not statusbar then return end
+	if not texture then texture = LSM:Fetch("statusbar", self.db.statusbar) end
+
+	if statusbar:IsObjectType('StatusBar') then
+		statusbar:SetStatusBarTexture(texture)
+	elseif statusbar:IsObjectType('Texture') then
+		statusbar:SetTexture(texture)
+	end
 end
 
 function UF:Update_FontString(object)
@@ -440,6 +473,43 @@ function UF:Update_FontStrings()
 	local stringFont = LSM:Fetch("font", self.db.font)
 	for font in pairs(UF.fontstrings) do
 		font:FontTemplate(stringFont, self.db.fontSize, self.db.fontOutline)
+	end
+end
+
+function UF:Construct_Fader()
+	return { UpdateRange = UF.UpdateRange }
+end
+
+function UF:Configure_Fader(frame)
+	if frame.db and frame.db.enable and (frame.db.fader and frame.db.fader.enable) then
+		if not frame:IsElementEnabled('Fader') then
+			frame:EnableElement('Fader')
+		end
+
+		frame.Fader:SetOption('Hover', frame.db.fader.hover)
+		frame.Fader:SetOption('Combat', frame.db.fader.combat)
+		frame.Fader:SetOption('PlayerTarget', frame.db.fader.playertarget)
+		frame.Fader:SetOption('Focus', frame.db.fader.focus)
+		frame.Fader:SetOption('Health', frame.db.fader.health)
+		frame.Fader:SetOption('Power', frame.db.fader.power)
+		frame.Fader:SetOption('Vehicle', frame.db.fader.vehicle)
+		frame.Fader:SetOption('Casting', frame.db.fader.casting)
+		frame.Fader:SetOption('MinAlpha', frame.db.fader.minAlpha)
+		frame.Fader:SetOption('MaxAlpha', frame.db.fader.maxAlpha)
+
+		if frame ~= _G.ElvUF_Player then
+			frame.Fader:SetOption('Range', frame.db.fader.range)
+			frame.Fader:SetOption('UnitTarget', frame.db.fader.unittarget)
+		end
+
+		frame.Fader:SetOption('Smooth', (frame.db.fader.smooth > 0 and frame.db.fader.smooth) or nil)
+		frame.Fader:SetOption('Delay', (frame.db.fader.delay > 0 and frame.db.fader.delay) or nil)
+
+		frame.Fader:ClearTimers()
+		frame.Fader.configTimer = E:ScheduleTimer(frame.Fader.ForceUpdate, 0.25, frame.Fader, true)
+	elseif frame:IsElementEnabled('Fader') then
+		frame:DisableElement('Fader')
+		E:UIFrameFadeIn(frame, 1, frame:GetAlpha(), 1)
 	end
 end
 
@@ -488,41 +558,49 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 		local unit = group..i
 		local frameName = E:StringTitle(unit)
 		frameName = frameName:gsub('t(arget)', 'T%1')
-		if not self[unit] then
+		local frame = self[unit]
+
+		if not frame then
 			self.groupunits[unit] = group;
-			self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
-			self[unit].index = i
-			self[unit]:SetParent(ElvUF_Parent)
-			self[unit]:SetID(i)
+			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
+			frame.index = i
+			frame:SetParent(ElvUF_Parent)
+			frame:SetID(i)
+			self[unit] = frame
 		end
 
 		frameName = E:StringTitle(group)
 		frameName = frameName:gsub('t(arget)', 'T%1')
-		self[unit].Update = function()
-			UF["Update_"..E:StringTitle(frameName).."Frames"](self, self[unit], self.db.units[group])
+		frame.Update = function()
+			UF["Update_"..E:StringTitle(frameName).."Frames"](self, frame, self.db.units[group])
 		end
 
 		if self.db.units[group].enable then
-			self[unit]:Enable()
+			frame:Enable()
 
 			if group == 'arena' then
-				self[unit]:SetAttribute('oUF-enableArenaPrep', true)
+				frame:SetAttribute('oUF-enableArenaPrep', true)
 			end
 
-			self[unit].Update()
+			frame.Update()
 
-			if self[unit].isForced then
-				self:ForceShow(self[unit])
+			if frame.isForced then
+				self:ForceShow(frame)
 			end
-			E:EnableMover(self[unit].mover:GetName())
+			E:EnableMover(frame.mover:GetName())
 		else
-			self[unit]:Disable()
+			frame:Disable()
 
 			if group == 'arena' then
-				self[unit]:SetAttribute('oUF-enableArenaPrep', false)
+				frame:SetAttribute('oUF-enableArenaPrep', false)
 			end
 
-			E:DisableMover(self[unit].mover:GetName())
+			-- for some reason the boss/arena 'uncheck disable' doesnt fire this, we need to so putting it here.
+			if group == 'boss' or group == 'arena' then
+				UF:Configure_Fader(frame)
+			end
+
+			E:DisableMover(frame.mover:GetName())
 		end
 	end
 end
@@ -796,7 +874,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 
 			if maxPlayers > 0 then
 				numGroups = E:Round(maxPlayers/5)
-				E:Print(group, "Forcing maxGroups to: "..numGroups.." because maxPlayers is: "..maxPlayers)
+				--E:Print(group, "Forcing maxGroups to: "..numGroups.." because maxPlayers is: "..maxPlayers)
 			end
 		end
 	end
@@ -1042,7 +1120,6 @@ end
 local hiddenParent = CreateFrame("Frame", nil, _G.UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
-
 local HandleFrame = function(baseName)
 	local frame
 	if (type(baseName) == 'string') then
@@ -1100,6 +1177,7 @@ function ElvUF:DisableBlizzard(unit)
 		PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
 
 		-- User placed frames don't animate
+		PlayerFrame:SetMovable(true)
 		PlayerFrame:SetUserPlaced(true)
 		PlayerFrame:SetDontSavePosition(true)
 	elseif (unit == 'pet') and E.private.unitframe.disabledBlizzardFrames.player then
@@ -1151,6 +1229,7 @@ function ElvUF:DisableBlizzard(unit)
 		end
 	end
 end
+
 
 function UF:ADDON_LOADED(_, addon)
 	if addon ~= 'Blizzard_ArenaUI' then return; end
@@ -1256,103 +1335,107 @@ function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)
 	self:Update_AllFrames()
 end
 
-local function updateColor(self, r, g, b)
-	if not self.isTransparent then return end
-	if self.backdrop then
-		local _, _, _, a = self.backdrop:GetBackdropColor()
-		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, a)
-	elseif self:GetParent().template then
-		local _, _, _, a = self:GetParent():GetBackdropColor()
-		self:GetParent():SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, a)
+function UF:UpdateBackdropTextureColor(r, g, b)
+	local m = 0.35
+	local n = self.isTransparent and (m * 2) or m
+
+	if self.invertColors then
+		local nn = n;n=m;m=nn
+	end
+
+	if self.isTransparent then
+		if self.backdrop then
+			local _, _, _, a = E:GetBackdropColor(self.backdrop)
+			self.backdrop:SetBackdropColor(r * n, g * n, b * n, a)
+		else
+			local parent = self:GetParent()
+			if parent and parent.template then
+				local _, _, _, a = E:GetBackdropColor(parent)
+				parent:SetBackdropColor(r * n, g * n, b * n, a)
+			end
+		end
 	end
 
 	if self.bg and self.bg:IsObjectType('Texture') and not self.bg.multiplier then
-		self.bg:SetColorTexture(r * 0.35, g * 0.35, b * 0.35)
+		self.bg:SetVertexColor(r * m, g * m, b * m)
 	end
 end
 
-function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertBackdropTex, reverseFill)
+function UF:UpdatePredictionStatusBar(prediction, parent, name)
+	if not (prediction and parent) then return end
+	local texture = (not parent.isTransparent and parent:GetStatusBarTexture():GetTexture()) or E.media.blankTex
+	if name == "Health" then
+		UF:Update_StatusBar(prediction.myBar, texture)
+		UF:Update_StatusBar(prediction.otherBar, texture)
+		UF:Update_StatusBar(prediction.absorbBar, texture)
+		UF:Update_StatusBar(prediction.healAbsorbBar, texture)
+		UF:Update_StatusBar(prediction.overAbsorb, texture)
+		UF:Update_StatusBar(prediction.overHealAbsorb, texture)
+	elseif name == "Power" then
+		UF:Update_StatusBar(prediction.mainBar, texture)
+	end
+end
+
+function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
+	backdropTex:ClearAllPoints()
+	if statusBarOrientation == 'VERTICAL' then
+		backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
+		backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
+		backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
+	else
+		if reverseFill then
+			backdropTex:Point("TOPRIGHT", statusBarTex, "TOPLEFT")
+			backdropTex:Point("BOTTOMRIGHT", statusBarTex, "BOTTOMLEFT")
+			backdropTex:Point("BOTTOMLEFT", statusBar, "BOTTOMLEFT")
+		else
+			backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
+			backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+			backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+		end
+	end
+end
+
+function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertColors, reverseFill)
 	statusBar.isTransparent = isTransparent
+	statusBar.invertColors = invertColors
+	statusBar.backdropTex = backdropTex
 
 	local statusBarTex = statusBar:GetStatusBarTexture()
 	local statusBarOrientation = statusBar:GetOrientation()
+
+	if not statusBar.hookedColor then
+		hooksecurefunc(statusBar, "SetStatusBarColor", UF.UpdateBackdropTextureColor)
+		statusBar.hookedColor = true
+	end
+
 	if isTransparent then
 		if statusBar.backdrop then
 			statusBar.backdrop:SetTemplate("Transparent", nil, nil, nil, true)
-			statusBar.backdrop.ignoreUpdates = true
 		elseif statusBar:GetParent().template then
 			statusBar:GetParent():SetTemplate("Transparent", nil, nil, nil, true)
-			statusBar:GetParent().ignoreUpdates = true
 		end
 
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
+		UF:Update_StatusBar(statusBar.bg, E.media.blankTex)
+
 		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end --Needed for Power element
 
-		backdropTex:ClearAllPoints()
-		if statusBarOrientation == 'VERTICAL' then
-			backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
-			backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
-			backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
-		else
-			if reverseFill then
-				backdropTex:Point("TOPRIGHT", statusBarTex, "TOPLEFT")
-				backdropTex:Point("BOTTOMRIGHT", statusBarTex, "BOTTOMLEFT")
-				backdropTex:Point("BOTTOMLEFT", statusBar, "BOTTOMLEFT")
-			else
-				backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
-				backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
-				backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
-			end
-		end
-
-		if invertBackdropTex then
-			backdropTex:Show()
-		end
-
-		if not invertBackdropTex and not statusBar.hookedColor then
-			hooksecurefunc(statusBar, "SetStatusBarColor", updateColor)
-			statusBar.hookedColor = true
-		end
-
-		if backdropTex.multiplier then
-			backdropTex.multiplier = 0.25
-		end
+		UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
 	else
 		if statusBar.backdrop then
-			statusBar.backdrop:SetTemplate("Default", nil, nil, not statusBar.PostCastStart and self.thinBorders, true)
-			statusBar.backdrop.ignoreUpdates = nil
+			statusBar.backdrop:SetTemplate(nil, nil, nil, not statusBar.PostCastStart and self.thinBorders, true)
 		elseif statusBar:GetParent().template then
-			statusBar:GetParent():SetTemplate("Default", nil, nil, self.thinBorders, true)
-			statusBar:GetParent().ignoreUpdates = nil
+			statusBar:GetParent():SetTemplate(nil, nil, nil, self.thinBorders, true)
 		end
-		statusBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+
+		local texture = LSM:Fetch("statusbar", self.db.statusbar)
+		statusBar:SetStatusBarTexture(texture)
+		UF:Update_StatusBar(statusBar.bg, texture)
+
 		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end
 
 		if adjustBackdropPoints then
-			backdropTex:ClearAllPoints()
-			if statusBarOrientation == 'VERTICAL' then
-				backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
-				backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
-				backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
-			else
-				if reverseFill then
-					backdropTex:Point("TOPRIGHT", statusBarTex, "TOPLEFT")
-					backdropTex:Point("BOTTOMRIGHT", statusBarTex, "BOTTOMLEFT")
-					backdropTex:Point("BOTTOMLEFT", statusBar, "BOTTOMLEFT")
-				else
-					backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
-					backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
-					backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
-				end
-			end
-		end
-
-		if invertBackdropTex then
-			backdropTex:Hide()
-		end
-
-		if backdropTex.multiplier then
-			backdropTex.multiplier = 0.25
+			UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
 		end
 	end
 end
@@ -1360,8 +1443,8 @@ end
 function UF:Initialize()
 	self.db = E.db.unitframe
 	self.thinBorders = self.db.thinBorders or E.PixelMode
-	if E.private.unitframe.enable ~= true then return; end
-	E.UnitFrames = UF;
+	if E.private.unitframe.enable ~= true then return end
+	self.Initialized = true
 
 	local ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
 	ElvUF_Parent:SetFrameStrata("LOW")

@@ -13,13 +13,11 @@ local function SkinOjectiveTrackerHeaders()
 		for i = 1, #frame do
 			local modules = frame[i]
 			if modules then
-				local header = modules.Header
-				local background = modules.Header.Background
-				background:SetAtlas(nil)
+				modules.Header.Background:SetAtlas(nil)
 
 				local text = modules.Header.Text
 				text:FontTemplate()
-				text:SetParent(header)
+				text:SetParent(modules.Header)
 			end
 		end
 	end

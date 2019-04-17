@@ -17,7 +17,7 @@ local function SkinAchievement(Achievement, BiggerIcon)
 
 	Achievement:SetFrameLevel(Achievement:GetFrameLevel() + 2)
 	Achievement:StripTextures(true)
-	Achievement:CreateBackdrop("Default", true)
+	Achievement:CreateBackdrop(nil, true)
 	Achievement.backdrop:SetInside()
 	Achievement.icon:SetTemplate()
 	Achievement.icon:Size(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)
@@ -219,6 +219,12 @@ local function LoadSkin(event)
 	_G.AchievementFrameComparisonDark:SetAlpha(0)
 	_G.AchievementFrameComparisonSummaryPlayerBackground:Hide()
 	_G.AchievementFrameComparisonSummaryFriendBackground:Hide()
+
+	local summaries = {_G.AchievementFrameComparisonSummaryPlayer, _G.AchievementFrameComparisonSummaryFriend}
+	for _, frame in pairs(summaries) do
+		frame:SetBackdrop(nil)
+	end
+
 	_G.AchievementFrameMetalBorderTopLeft:Hide()
 	_G.AchievementFrameWoodBorderTopLeft:Hide()
 	_G.AchievementFrameMetalBorderTopRight:Hide()

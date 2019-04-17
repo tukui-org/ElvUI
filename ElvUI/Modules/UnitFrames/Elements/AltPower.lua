@@ -13,7 +13,7 @@ function UF:Construct_AltPowerBar(frame)
 	altpower:GetStatusBarTexture():SetHorizTile(false)
 
 	altpower.PostUpdate = UF.AltPowerBarPostUpdate
-	altpower:CreateBackdrop("Default", true)
+	altpower:CreateBackdrop(nil, true)
 
 	altpower.text = altpower:CreateFontString(nil, 'OVERLAY')
 	altpower.text:Point("CENTER")
@@ -55,7 +55,7 @@ function UF:AltPowerBarPostUpdate(unit, cur, _, max)
 		if perc > 0 then
 			self.text:SetFormattedText("|cffD7BEA5[|r%d%%|cffD7BEA5]|r", perc)
 		else
-			self.text:SetText(nil)
+			self.text:SetText('')
 		end
 	end
 end
@@ -68,12 +68,14 @@ function UF:Configure_AltPower(frame)
 		frame:EnableElement('AlternativePower')
 		altpower.text:SetAlpha(1)
 		altpower:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING+frame.BORDER)
+
 		if not frame.USE_PORTRAIT_OVERLAY then
 			altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.PORTRAIT_WIDTH+frame.BORDER), -frame.BORDER)
 		else
 			altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER, -frame.BORDER)
 		end
-		altpower.Smooth = UF.db.smoothbars
+
+		E:SetSmoothing(altpower, UF.db.smoothbars)
 	else
 		frame:DisableElement('AlternativePower')
 		altpower.text:SetAlpha(0)

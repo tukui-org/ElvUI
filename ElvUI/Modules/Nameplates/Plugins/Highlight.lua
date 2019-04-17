@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
+-- Cache global variables
+-- Lua functions
+-- WoW API / Variables
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local C_Timer_After = C_Timer.After
@@ -55,6 +58,7 @@ end
 local function Disable(self)
 	local element = self.Highlight
 	if (element) then
+		element:Hide()
 
 		self:UnregisterEvent("UPDATE_MOUSEOVER_UNIT", Path)
 	end

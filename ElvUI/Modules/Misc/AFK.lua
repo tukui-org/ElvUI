@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local AFKString = _G.AFK
-local AFK = E:NewModule('AFK', 'AceEvent-3.0', 'AceTimer-3.0');
-local CH = E:GetModule("Chat")
+local AFK = E:GetModule('AFK')
+local CH = E:GetModule('Chat')
 
 --Lua functions
 local _G = _G
@@ -26,19 +25,15 @@ local IsShiftKeyDown = IsShiftKeyDown
 local MoveViewLeftStart = MoveViewLeftStart
 local MoveViewLeftStop = MoveViewLeftStop
 local PVEFrame_ToggleFrame = PVEFrame_ToggleFrame
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local RemoveExtraSpaces = RemoveExtraSpaces
 local Screenshot = Screenshot
 local SetCVar = SetCVar
 local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
-local CinematicFrame = CinematicFrame
-local DND = DND
-local MovieFrame = MovieFrame
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent, PVEFrame, ElvUIAFKPlayerModel, ChatTypeInfo
--- GLOBALS: CUSTOM_CLASS_COLORS
+local CinematicFrame = _G.CinematicFrame
+local MovieFrame = _G.MovieFrame
+local DNDstr = _G.DND
+local AFKstr = _G.AFK
 
 local CAMERA_SPEED = 0.035
 local ignoreKeys = {
@@ -64,7 +59,7 @@ function AFK:SetAFK(status)
 		MoveViewLeftStart(CAMERA_SPEED);
 		self.AFKMode:Show()
 		CloseAllWindows()
-		UIParent:Hide()
+		_G.UIParent:Hide()
 
 		if(IsInGuild()) then
 			local guildName, guildRankName = GetGuildInfo("player");
@@ -89,7 +84,7 @@ function AFK:SetAFK(status)
 
 		self.isAFK = true
 	elseif(self.isAFK) then
-		UIParent:Show()
+		_G.UIParent:Show()
 		self.AFKMode:Hide()
 		MoveViewLeftStop();
 
@@ -99,7 +94,7 @@ function AFK:SetAFK(status)
 
 		self.AFKMode.chat:UnregisterAllEvents()
 		self.AFKMode.chat:Clear()
-		if(PVEFrame:IsShown()) then --odd bug, frame is blank
+		if(_G.PVEFrame:IsShown()) then --odd bug, frame is blank
 			PVEFrame_ToggleFrame()
 			PVEFrame_ToggleFrame()
 		end
@@ -184,7 +179,7 @@ end
 local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 	local coloredName = GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
 	local type = strsub(event, 10);
-	local info = ChatTypeInfo[type];
+	local info = _G.ChatTypeInfo[type];
 
 	if(event == "CHAT_MSG_BN_WHISPER") then
 		coloredName = CH:GetBNFriendColor(arg2, arg13)
@@ -230,8 +225,8 @@ local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg
 	if CH.db.shortChannels then
 		body = body:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
 		body = body:gsub("^(.-|h) "..L["whispers"], "%1")
-		body = body:gsub("<"..AFKString..">", "[|cffFF0000"..L["AFK"].."|r] ")
-		body = body:gsub("<"..DND..">", "[|cffE7E716"..L["DND"].."|r] ")
+		body = body:gsub("<"..AFKstr..">", "[|cffFF0000"..L["AFK"].."|r] ")
+		body = body:gsub("<"..DNDstr..">", "[|cffE7E716"..L["DND"].."|r] ")
 		body = body:gsub("%[BN_CONVERSATION:", '%['.."")
 	end
 
@@ -239,7 +234,8 @@ local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg
 end
 
 function AFK:LoopAnimations()
-	if(ElvUIAFKPlayerModel.curAnimation == "wave") then
+	local ElvUIAFKPlayerModel = _G.ElvUIAFKPlayerModel
+	if ElvUIAFKPlayerModel.curAnimation == "wave" then
 		ElvUIAFKPlayerModel:SetAnimation(69)
 		ElvUIAFKPlayerModel.curAnimation = "dance"
 		ElvUIAFKPlayerModel.startTime = GetTime()
@@ -250,12 +246,14 @@ function AFK:LoopAnimations()
 end
 
 function AFK:Initialize()
-	local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]
+	self.Initialized = true
+
+	local classColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass]
 
 	self.AFKMode = CreateFrame("Frame", "ElvUIAFKFrame")
 	self.AFKMode:SetFrameLevel(1)
-	self.AFKMode:SetScale(UIParent:GetScale())
-	self.AFKMode:SetAllPoints(UIParent)
+	self.AFKMode:SetScale(_G.UIParent:GetScale())
+	self.AFKMode:SetAllPoints(_G.UIParent)
 	self.AFKMode:Hide()
 	self.AFKMode:EnableKeyboard(true)
 	self.AFKMode:SetScript("OnKeyDown", OnKeyDown)

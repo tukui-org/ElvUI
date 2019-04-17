@@ -1,25 +1,22 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local DT = E:NewModule('DataTexts', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
+local DT = E:GetModule('DataTexts')
+local TT = E:GetModule('Tooltip')
 local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
-local TT = E:GetModule("Tooltip")
 
 --Lua functions
+local _G = _G
 local pairs, type, error = pairs, type, error
-local len = string.len
+local strlen = strlen
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local C_Timer_After = C_Timer.After
 local InCombatLockdown = InCombatLockdown
 local IsInInstance = IsInInstance
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip
-
 function DT:Initialize()
 	--if E.db.datatexts.enable ~= true then return end
-	E.DataTexts = DT
-
+	self.Initialized = true
 	self.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
 	TT:HookScript(self.tooltip, 'OnShow', 'SetStyle')
 
@@ -52,50 +49,58 @@ local function LoadDataTextsDelayed()
 	C_Timer_After(0.5, function() DT:LoadDataTexts() end)
 end
 
-local hex = '|cffFFFFFF'
+local LDBHex = '|cffFFFFFF'
 function DT:SetupObjectLDB(name, obj) --self will now be the event
 	local curFrame = nil;
 
-	local function OnEnter(self)
-		DT:SetupTooltip(self)
+	local function OnEnter(dt)
+		DT:SetupTooltip(dt)
 		if obj.OnTooltipShow then
 			obj.OnTooltipShow(DT.tooltip)
 		end
 		if obj.OnEnter then
-			obj.OnEnter(self)
+			obj.OnEnter(dt)
 		end
 		DT.tooltip:Show()
 	end
 
-	local function OnLeave(self)
+	local function OnLeave(dt)
 		if obj.OnLeave then
-			obj.OnLeave(self)
+			obj.OnLeave(dt)
 		end
 		DT.tooltip:Hide()
 	end
 
-	local function OnClick(self, button)
+	local function OnClick(dt, button)
 		if obj.OnClick then
-			obj.OnClick(self, button)
+			obj.OnClick(dt, button)
 		end
 	end
 
-	local function textUpdate(_, name, _, value)
-		if value == nil or (len(value) >= 3) or value == 'n/a' or name == value then
-			curFrame.text:SetText(value ~= 'n/a' and value or name)
+	local function textUpdate(_, Name, _, Value)
+		if Value == nil or (strlen(Value) >= 3) or Value == 'n/a' or Name == Value then
+			curFrame.text:SetText(Value ~= 'n/a' and Value or Name)
 		else
-			curFrame.text:SetFormattedText("%s: %s%s|r", name, hex, value)
+			curFrame.text:SetFormattedText("%s: %s%s|r", Name, LDBHex, Value)
 		end
 	end
 
-	local function OnEvent(self)
-		curFrame = self
+	local function OnCallback(newHex)
+		if name and obj then
+			LDBHex = newHex
+			LDB.callbacks:Fire("LibDataBroker_AttributeChanged_"..name.."_text", name, nil, obj.text, obj)
+		end
+	end
+
+	local function OnEvent(dt)
+		curFrame = dt
 		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_text", textUpdate)
 		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_value", textUpdate)
-		LDB.callbacks:Fire("LibDataBroker_AttributeChanged_"..name.."_text", name, nil, obj.text, obj)
+		OnCallback(LDBHex)
 	end
 
 	DT:RegisterDatatext(name, {'PLAYER_ENTERING_WORLD'}, OnEvent, nil, OnClick, OnEnter, OnLeave)
+	E.valueColorUpdateFuncs[OnCallback] = true
 
 	--Update config if it has been loaded
 	if DT.PanelLayoutOptions then
@@ -113,11 +118,6 @@ function DT:RegisterLDB()
 		self:SetupObjectLDB(name, obj)
 	end
 end
-
-local function ValueColorUpdate(newHex)
-	hex = newHex
-end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 function DT:GetDataPanelPoint(panel, i, numPoints)
 	if numPoints == 1 then
@@ -155,8 +155,8 @@ function DT:SetupTooltip(panel)
 	self.tooltip:Hide()
 	self.tooltip:SetOwner(parent, parent.anchor, parent.xOff, parent.yOff)
 	self.tooltip:ClearLines()
-	if not GameTooltip:IsForbidden() then
-		GameTooltip:Hide() -- WHY??? BECAUSE FUCK GAMETOOLTIP, THATS WHY!!
+	if not _G.GameTooltip:IsForbidden() then
+		_G.GameTooltip:Hide() -- WHY??? BECAUSE FUCK GAMETOOLTIP, THATS WHY!!
 	end
 end
 
@@ -216,16 +216,16 @@ function DT:AssignPanelToDataText(panel, data)
 	end
 
 	if data.onClick then
-		panel:SetScript('OnClick', function(self, button)
+		panel:SetScript('OnClick', function(p, button)
 			if E.db.datatexts.noCombatClick and InCombatLockdown() then return; end
-			data.onClick(self, button)
+			data.onClick(p, button)
 		end)
 	end
 
 	if data.onEnter then
-		panel:SetScript('OnEnter', function(self)
+		panel:SetScript('OnEnter', function(p)
 			if E.db.datatexts.noCombatHover and InCombatLockdown() then return; end
-			data.onEnter(self)
+			data.onEnter(p)
 		end)
 	end
 
@@ -238,7 +238,7 @@ end
 
 function DT:LoadDataTexts()
 	self.db = E.db.datatexts
-	for name, obj in LDB:DataObjectIterator() do
+	for _, _ in LDB:DataObjectIterator() do
 		LDB:UnregisterAllCallbacks(self)
 	end
 
@@ -260,7 +260,7 @@ function DT:LoadDataTexts()
 			panel.dataPanels[pointIndex]:SetScript('OnClick', nil)
 			panel.dataPanels[pointIndex].text:FontTemplate(fontTemplate, self.db.fontSize, self.db.fontOutline)
 			panel.dataPanels[pointIndex].text:SetWordWrap(self.db.wordWrap)
-			panel.dataPanels[pointIndex].text:SetText(nil)
+			panel.dataPanels[pointIndex].text:SetText('')
 			panel.dataPanels[pointIndex].pointIndex = pointIndex
 
 			if enableBGPanel then

@@ -3,6 +3,7 @@ local AB = E:GetModule('ActionBars');
 
 --Lua functions
 local _G = _G
+local unpack = unpack
 local ceil = math.ceil
 --WoW API / Variables
 local RegisterStateDriver = RegisterStateDriver
@@ -31,22 +32,23 @@ function AB:UpdatePet(event, unit)
 	if(event == "UNIT_AURA" and unit ~= "pet") then return end
 
 	for i=1, NUM_PET_ACTION_SLOTS, 1 do
-		local buttonName = "PetActionButton"..i;
-		local button = _G[buttonName];
-		local icon = _G[buttonName.."Icon"];
-		local autoCast = _G[buttonName.."AutoCastable"];
-		local shine = _G[buttonName.."Shine"];
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
+		local buttonName = "PetActionButton"..i
+		local autoCast = _G[buttonName.."AutoCastable"];
+		local button = _G[buttonName]
+
+		button:SetAlpha(1);
+		button.icon:Hide();
+		button.isToken = isToken;
 
 		if not isToken then
-			icon:SetTexture(texture);
+			button.ICON:SetTexture(texture);
 			button.tooltipName = name;
 		else
-			icon:SetTexture(_G[texture]);
+			button.ICON:SetTexture(_G[texture]);
 			button.tooltipName = _G[name];
 		end
 
-		button.isToken = isToken;
 		if spellID then
 			local spell = _G.Spell:CreateFromSpellID(spellID);
 			button.spellDataLoadedCancelFunc = spell:ContinueWithCancelOnSpellLoad(function()
@@ -55,15 +57,14 @@ function AB:UpdatePet(event, unit)
 		end
 
 		if isActive and name ~= "PET_ACTION_FOLLOW" then
-			--button:GetCheckedTexture():SetColorTexture(1, 1, 1)
 			button:SetChecked(true);
 
 			if IsPetAttackAction(i) then
 				PetActionButton_StartFlash(button);
 			end
 		else
-			--button:SetCheckedTexture("")
 			button:SetChecked(false);
+
 			if IsPetAttackAction(i) then
 				PetActionButton_StopFlash(button);
 			end
@@ -76,27 +77,26 @@ function AB:UpdatePet(event, unit)
 		end
 
 		if autoCastEnabled then
-			AutoCastShine_AutoCastStart(shine);
+			AutoCastShine_AutoCastStart(button.AutoCastShine);
 		else
-			AutoCastShine_AutoCastStop(shine);
+			AutoCastShine_AutoCastStop(button.AutoCastShine);
 		end
-
-		button:SetAlpha(1);
 
 		if texture then
 			if GetPetActionSlotUsable(i) then
-				SetDesaturation(icon, nil);
+				SetDesaturation(button.ICON, nil);
 			else
-				SetDesaturation(icon, 1);
+				SetDesaturation(button.ICON, 1);
 			end
-			icon:Show();
+
+			button.ICON:Show();
 		else
-			icon:Hide();
+			button.ICON:Hide();
 		end
 
 		if not PetHasActionBar() and texture and name ~= "PET_ACTION_FOLLOW" then
 			PetActionButton_StopFlash(button);
-			SetDesaturation(icon, 1);
+			SetDesaturation(button.ICON, 1);
 			button:SetChecked(0);
 		end
 	end
@@ -187,13 +187,13 @@ function AB:PositionAndSizeBarPet()
 		lastButton = _G["PetActionButton"..i-1];
 		autoCast = _G["PetActionButton"..i..'AutoCastable'];
 		lastColumnButton = _G["PetActionButton"..i-buttonsPerRow];
+
 		button:SetParent(bar);
 		button:ClearAllPoints();
+		button:SetAttribute("showgrid", 1);
 		button:Size(size);
 
 		autoCast:SetOutside(button, autoCastSize, autoCastSize)
-
-		button:SetAttribute("showgrid", 1);
 
 		if i == 1 then
 			local x, y;
@@ -301,12 +301,6 @@ function AB:CreateBarPet()
 
 	_G.PetActionBarFrame.showgrid = 1;
 	PetActionBar_ShowGrid();
-	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
-	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
-	for i=1, NUM_PET_ACTION_SLOTS do
-		self:HookScript(_G["PetActionButton"..i], 'OnEnter', 'Button_OnEnter');
-		self:HookScript(_G["PetActionButton"..i], 'OnLeave', 'Button_OnLeave');
-	end
 
 	self:RegisterEvent('SPELLS_CHANGED', 'UpdatePet')
 	self:RegisterEvent('PLAYER_CONTROL_GAINED', 'UpdatePet');
@@ -323,10 +317,27 @@ function AB:CreateBarPet()
 	self:PositionAndSizeBarPet();
 	self:UpdatePetBindings()
 
-	if MasqueGroup and E.private.actionbar.masque.petBar then
-		for i=1, NUM_PET_ACTION_SLOTS do
-			local button = _G["PetActionButton"..i]
-			MasqueGroup:AddButton(button)
+	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
+	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
+	for i=1, NUM_PET_ACTION_SLOTS do
+		local button = _G["PetActionButton"..i]
+		if not button.ICON then
+			button.ICON = button:CreateTexture("PetActionButton"..i..'ICON')
+			button.ICON:SetTexCoord(unpack(E.TexCoords))
+			button.ICON:SetSnapToPixelGrid(false)
+			button.ICON:SetTexelSnappingBias(0)
+			button.ICON:SetInside()
+
+			if button.pushed then
+				button.pushed:SetDrawLayer('ARTWORK', 1)
+			end
+		end
+
+		self:HookScript(button, 'OnEnter', 'Button_OnEnter');
+		self:HookScript(button, 'OnLeave', 'Button_OnLeave');
+
+		if MasqueGroup and E.private.actionbar.masque.petBar then
+			MasqueGroup:AddButton(button, {Icon=button.ICON})
 		end
 	end
 end

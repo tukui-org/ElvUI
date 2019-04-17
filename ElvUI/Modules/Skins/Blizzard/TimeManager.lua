@@ -53,7 +53,7 @@ local function LoadSkin()
 	--Play/Pause and Reset buttons
 	local StopwatchPlayPauseButton = _G.StopwatchPlayPauseButton
 	local StopwatchResetButton = _G.StopwatchResetButton
-	StopwatchPlayPauseButton:CreateBackdrop("Default", true)
+	StopwatchPlayPauseButton:CreateBackdrop(nil, true)
 	StopwatchPlayPauseButton:Size(12, 12)
 	StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
 	StopwatchPlayPauseButton:SetHighlightTexture("")

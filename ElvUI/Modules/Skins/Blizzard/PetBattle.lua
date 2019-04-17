@@ -315,7 +315,7 @@ local function LoadSkin()
 	bar:EnableMouse(true)
 	bar:SetTemplate()
 	bar:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 4)
-	bar:SetFrameLevel(0)
+	bar:SetFrameLevel(2)
 	bar:SetFrameStrata('BACKGROUND')
 
 	bf:StripTextures()

@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
@@ -251,10 +252,8 @@ function E:CreateMoverPopup()
 	f:CreateShadow(5)
 	f:Hide()
 
-	local S = E:GetModule('Skins')
-
 	local header = CreateFrame('Button', nil, f)
-	header:SetTemplate('Default', true)
+	header:SetTemplate(nil, true)
 	header:Width(100); header:Height(25)
 	header:Point("CENTER", f, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
@@ -401,7 +400,7 @@ function E:CreateMoverPopup()
 	nudgeFrame.title = desc
 
 	header = CreateFrame('Button', nil, nudgeFrame)
-	header:SetTemplate('Default', true)
+	header:SetTemplate(nil, true)
 	header:Width(100); header:Height(25)
 	header:Point("CENTER", nudgeFrame, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)

@@ -1,33 +1,37 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local B = E:GetModule('Blizzard');
+local B = E:GetModule('Blizzard')
 
+--Lua functions
+local _G = _G
 local floor = math.floor
 local format = string.format
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 local UnitAlternatePowerInfo = UnitAlternatePowerInfo
 local UnitPowerMax = UnitPowerMax
 local UnitPower = UnitPower
--- GLOBALS: CreateFrame, PlayerPowerBarAlt, ALTERNATE_POWER_INDEX, hooksecurefunc
--- GLOBALS: GameTooltip, GameTooltip_SetDefaultAnchor, ElvUI_AltPowerBar, AltPowerBarHolder
+-- GLOBALS: AltPowerBarHolder
 
 local function updateTooltip(self)
-	if GameTooltip:IsForbidden() then return end
+	if _G.GameTooltip:IsForbidden() then return end
 
 	if self.powerName and self.powerTooltip then
-		GameTooltip:SetText(self.powerName, 1, 1, 1)
-		GameTooltip:AddLine(self.powerTooltip, nil, nil, nil, 1)
-		GameTooltip:Show()
+		_G.GameTooltip:SetText(self.powerName, 1, 1, 1)
+		_G.GameTooltip:AddLine(self.powerTooltip, nil, nil, nil, 1)
+		_G.GameTooltip:Show()
 	end
 end
 
 local function onEnter(self)
 	if not self:IsVisible() then return end
 
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	_G.GameTooltip_SetDefaultAnchor(_G.GameTooltip, self)
 	updateTooltip(self)
 end
 
 local function onLeave()
-	GameTooltip:Hide()
+	_G.GameTooltip:Hide()
 end
 
 function B:SetAltPowerBarText(name, value, max, percent)
@@ -57,22 +61,22 @@ function B:PositionAltPowerBar()
 	holder:Point('TOP', E.UIParent, 'TOP', 0, -18)
 	holder:Size(128, 50)
 
-	PlayerPowerBarAlt:ClearAllPoints()
-	PlayerPowerBarAlt:Point('CENTER', holder, 'CENTER')
-	PlayerPowerBarAlt:SetParent(holder)
-	PlayerPowerBarAlt.ignoreFramePositionManager = true
+	_G.PlayerPowerBarAlt:ClearAllPoints()
+	_G.PlayerPowerBarAlt:Point('CENTER', holder, 'CENTER')
+	_G.PlayerPowerBarAlt:SetParent(holder)
+	_G.PlayerPowerBarAlt.ignoreFramePositionManager = true
 
 	--The Blizzard function FramePositionDelegate:UIParentManageFramePositions()
 	--calls :ClearAllPoints on PlayerPowerBarAlt under certain conditions.
 	--Doing ".ClearAllPoints = E.noop" causes error when you enter combat.
 	local function Position(bar) bar:Point('CENTER', AltPowerBarHolder, 'CENTER') end
-	hooksecurefunc(PlayerPowerBarAlt, "ClearAllPoints", Position)
+	hooksecurefunc(_G.PlayerPowerBarAlt, "ClearAllPoints", Position)
 
 	E:CreateMover(holder, 'AltPowerBarMover', L["Alternative Power"], nil, nil, nil, nil, nil, 'general,alternativePowerGroup')
 end
 
 function B:UpdateAltPowerBarColors()
-	local bar = ElvUI_AltPowerBar
+	local bar = _G.ElvUI_AltPowerBar
 
 	if E.db.general.altPowerBar.statusBarColorGradient then
 		if bar.colorGradientR and bar.colorGradientG and bar.colorGradientB then
@@ -96,18 +100,15 @@ function B:UpdateAltPowerBarColors()
 end
 
 function B:UpdateAltPowerBarSettings()
-	local bar = ElvUI_AltPowerBar
-	local width = E.db.general.altPowerBar.width or 250
-	local height = E.db.general.altPowerBar.height or 20
-	local fontOutline = E.db.general.altPowerBar.fontOutline or 'OUTLINE'
-	local fontSize = E.db.general.altPowerBar.fontSize or 12
-	local statusBar = E.db.general.altPowerBar.statusBar
-	local font = E.db.general.altPowerBar.font
+	local bar = _G.ElvUI_AltPowerBar
+	local db = E.db.general.altPowerBar
 
-	bar:Size(width, height)
-	bar:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", statusBar))
-	bar.text:FontTemplate(E.Libs.LSM:Fetch("font", font), fontSize, fontOutline)
+	bar:Size(db.width or 250, db.height or 20)
+	bar:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", db.statusBar))
+	bar.text:FontTemplate(E.Libs.LSM:Fetch("font", db.font), db.fontSize or 12, db.fontOutline or 'OUTLINE')
 	AltPowerBarHolder:Size(bar.backdrop:GetSize())
+
+	E:SetSmoothing(bar, db.smoothbars)
 
 	local textFormat = E.db.general.altPowerBar.textFormat
 	if textFormat == 'NONE' or not textFormat then
@@ -144,8 +145,8 @@ function B:SkinAltPowerBar()
 	powerbar:RegisterEvent("UNIT_POWER_BAR_HIDE")
 	powerbar:RegisterEvent("PLAYER_ENTERING_WORLD")
 	powerbar:SetScript("OnEvent", function(bar)
-		PlayerPowerBarAlt:UnregisterAllEvents()
-		PlayerPowerBarAlt:Hide()
+		_G.PlayerPowerBarAlt:UnregisterAllEvents()
+		_G.PlayerPowerBarAlt:Hide()
 
 		local barType, min, _, _, _, _, _, _, _, _, powerName, powerTooltip = UnitAlternatePowerInfo('player')
 		if not barType then
@@ -156,8 +157,8 @@ function B:SkinAltPowerBar()
 		bar.powerTooltip = powerTooltip
 
 		if barType then
-			local power = UnitPower("player", ALTERNATE_POWER_INDEX)
-			local maxPower = UnitPowerMax("player", ALTERNATE_POWER_INDEX) or 0
+			local power = UnitPower("player", _G.ALTERNATE_POWER_INDEX)
+			local maxPower = UnitPowerMax("player", _G.ALTERNATE_POWER_INDEX) or 0
 			local perc = (maxPower > 0 and floor(power / maxPower * 100)) or 0
 
 			bar.powerValue = power

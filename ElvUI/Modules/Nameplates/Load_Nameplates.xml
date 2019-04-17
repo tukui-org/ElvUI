@@ -14,7 +14,7 @@
 	<Script file="Elements\Tags.lua"/>
 	<Script file="Elements\Threat.lua"/>
 	<Script file="Plugins\ClassificationIndicator.lua"/>
-	<Script file="Plugins\DetectionIndicator.lua"/>
+	<!-- Script file="Plugins\Cutaway.lua"/ -->
 	<Script file="Plugins\HealerSpecs.lua"/>
 	<Script file="Plugins\Highlight.lua"/>
 	<Script file="Plugins\QuestIcons.lua"/>

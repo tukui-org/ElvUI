@@ -55,7 +55,7 @@ local function LoadSkin()
 				texture:SetTexture()
 			end
 			button:StyleButton()
-			button:SetTemplate("Default", true)
+			button:SetTemplate(nil, true)
 
 			hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
 				self:GetParent():SetBackdropBorderColor(r,g,b)
@@ -77,7 +77,7 @@ local function LoadSkin()
 
 		button:StripTextures()
 		button:StyleButton(true)
-		button:SetTemplate("Default", true)
+		button:SetTemplate(nil, true)
 
 		texture:SetInside()
 		texture:SetTexCoord(unpack(E.TexCoords))

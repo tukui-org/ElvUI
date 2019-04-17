@@ -13,12 +13,9 @@ local IsInInstance = IsInInstance
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UnitFrame_OnEnter, UnitFrame_OnLeave
-
 function UF:Construct_PartyFrames()
-	self:SetScript('OnEnter', UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UnitFrame_OnLeave)
+	self:SetScript('OnEnter', _G.UnitFrame_OnEnter)
+	self:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
 	self.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, self.RaisedElementParent)
@@ -68,6 +65,7 @@ function UF:Construct_PartyFrames()
 		self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
 		self.HealthPrediction = UF:Construct_HealComm(self)
 		self.customTexts = {}
+
 		self.Sparkle = CreateFrame("Frame", nil, self)
 		self.Sparkle:SetAllPoints(self.Health)
 		self.Castbar = UF:Construct_Castbar(self)
@@ -75,7 +73,7 @@ function UF:Construct_PartyFrames()
 		self.unitframeType = "party"
 	end
 
-	self.Range = UF:Construct_Range(self)
+	self.Fader = UF:Construct_Fader()
 
 	return self
 end
@@ -256,7 +254,8 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_CustomTexts(frame)
 	end
 
-	UF:Configure_Range(frame)
+	--Fader
+	UF:Configure_Fader(frame)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end

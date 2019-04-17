@@ -65,17 +65,20 @@ E.Media = {
 		ZZZ = M..[[ChatEmojis\ZZZ.tga]]
 	},
 	ChatLogos = {
-		Bathrobe = M..[[ChatLogos\Bathrobe.tga]],
+		ElvRainbow = M..[[ChatLogos\ElvRainbow.tga]],
+		ElvMelon = M..[[ChatLogos\ElvMelon.tga]],
 		ElvBlue = M..[[ChatLogos\ElvBlue.tga]],
 		ElvGreen = M..[[ChatLogos\ElvGreen.tga]],
 		ElvOrange = M..[[ChatLogos\ElvOrange.tga]],
 		ElvPink = M..[[ChatLogos\ElvPink.tga]],
 		ElvPurple = M..[[ChatLogos\ElvPurple.tga]],
-		ElvRainbow = M..[[ChatLogos\ElvRainbow.tga]],
+		ElvYellow = M..[[ChatLogos\ElvYellow.tga]],
 		ElvRed = M..[[ChatLogos\ElvRed.tga]],
+		Bathrobe = M..[[ChatLogos\Bathrobe.tga]],
 		HelloKitty = M..[[ChatLogos\HelloKitty.tga]],
 		Illuminati = M..[[ChatLogos\Illuminati.tga]],
 		MrHankey = M..[[ChatLogos\MrHankey.tga]],
+		Rainbow = M..[[ChatLogos\Rainbow.tga]],
 		TyroneBiggums = M..[[ChatLogos\TyroneBiggums.tga]]
 	},
 	Textures = {

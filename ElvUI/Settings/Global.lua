@@ -3,8 +3,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Global Settings
 G.general = {
 	UIScale = 0.64,
-	version = 10.92,
+	version = 11.10,
 	eyefinity = false,
+	ignoreScalePopup = false,
 	smallerWorldMap = true,
 	smallerWorldMapScale = 0.9,
 	fadeMapWhenMoving = true,
@@ -17,9 +18,7 @@ G.general = {
 	},
 	AceGUI = {
 		width = 1000,
-		height = 720,
-		left = nil,
-		top = nil
+		height = 720
 	},
 	disableTutorialButtons = true,
 	showMissingTalentAlert = false,
@@ -275,18 +274,19 @@ G.profileCopy = {
 	},
 	general = {
 		general = true,
-		altPowerBar = true,
 		minimap = true,
 		threat = true,
 		totems = true,
+		itemLevel = true,
+		altPowerBar = true,
 	},
 	nameplates = {
 		general = true,
 		cooldown = true,
-		classbar = true,
 		threat = true,
 		units = {
 			PLAYER = true,
+			TARGET = true,
 			FRIENDLY_PLAYER = true,
 			ENEMY_PLAYER = true,
 			FRIENDLY_NPC = true,

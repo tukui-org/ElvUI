@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local TOTEMS = E:NewModule('Totems', 'AceEvent-3.0');
-E.TotemBar = TOTEMS
+local TOTEMS = E:GetModule('Totems')
 
 --Lua functions
 local _G = _G
@@ -91,11 +90,12 @@ function TOTEMS:PositionAndSize()
 end
 
 function TOTEMS:Initialize()
+	self.Initialized = true
 	self.db = E.db.general.totems
 
 	local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
 	bar:Point('TOPLEFT', _G.LeftChatPanel, 'TOPRIGHT', 14, 0)
-	self.bar = bar;
+	self.bar = bar
 
 	for i=1, MAX_TOTEMS do
 		local frame = CreateFrame('Button', bar:GetName()..'Totem'..i, bar)
@@ -110,6 +110,8 @@ function TOTEMS:Initialize()
 		frame.iconTexture = frame:CreateTexture(nil, 'ARTWORK')
 		frame.iconTexture:SetInside()
 		frame.iconTexture:SetTexCoord(unpack(E.TexCoords))
+		frame.iconTexture:SetSnapToPixelGrid(false)
+		frame.iconTexture:SetTexelSnappingBias(0)
 
 		frame.cooldown = CreateFrame('Cooldown', frame:GetName()..'Cooldown', frame, 'CooldownFrameTemplate')
 		frame.cooldown:SetReverse(true)

@@ -5,6 +5,7 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 --Lua functions
+local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
@@ -12,12 +13,9 @@ local IsInInstance = IsInInstance
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
 
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UnitFrame_OnEnter, UnitFrame_OnLeave
-
 function UF:Construct_RaidpetFrames()
-	self:SetScript('OnEnter', UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UnitFrame_OnLeave)
+	self:SetScript('OnEnter', _G.UnitFrame_OnEnter)
+	self:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
 	self.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, self.RaisedElementParent)
@@ -37,7 +35,7 @@ function UF:Construct_RaidpetFrames()
 	self.ThreatIndicator = UF:Construct_Threat(self)
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 	self.HealthPrediction = UF:Construct_HealComm(self)
-	self.Range = UF:Construct_Range(self)
+	self.Fader = UF:Construct_Fader()
 	self.customTexts = {}
 
 	self.unitframeType = "raidpet"
@@ -159,8 +157,8 @@ function UF:Update_RaidpetFrames(frame, db)
 	--OverHealing
 	UF:Configure_HealComm(frame)
 
-	--Range
-	UF:Configure_Range(frame)
+	--Fader
+	UF:Configure_Fader(frame)
 
 	--BuffIndicator
 	UF:UpdateAuraWatch(frame, true) --2nd argument is the petOverride

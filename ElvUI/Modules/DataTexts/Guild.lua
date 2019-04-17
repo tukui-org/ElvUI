@@ -25,7 +25,6 @@ local ToggleGuildFrame = ToggleGuildFrame
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
 local GUILD = GUILD
 local GUILD_MOTD = GUILD_MOTD
@@ -43,9 +42,9 @@ local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r %s"
 local levelNameStatusString = "|cff%02x%02x%02x%d|r %s%s %s"
 local nameRankString = "%s |cff999999-|cffffffff %s"
 local standingString = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b).."%s:|r |cFFFFFFFF%s/%s (%s%%)"
-local moreMembersOnlineString = strjoin("", "+ %d ", FRIENDS_LIST_ONLINE, "...")
-local noteString = strjoin("", "|cff999999   ", LABEL_NOTE, ":|r %s")
-local officerNoteString = strjoin("", "|cff999999   ", GUILD_RANK1_DESC, ":|r %s")
+local moreMembersOnlineString = strjoin("", "+ %d ", _G.FRIENDS_LIST_ONLINE, "...")
+local noteString = strjoin("", "|cff999999   ", _G.LABEL_NOTE, ":|r %s")
+local officerNoteString = strjoin("", "|cff999999   ", _G.GUILD_RANK1_DESC, ":|r %s")
 local guildTable, guildMotD = {}, ""
 local lastPanel
 
@@ -102,7 +101,7 @@ local function UpdateGuildMessage()
 	guildMotD = GetGuildRosterMOTD()
 end
 
-local FRIEND_ONLINE = select(2, strsplit(" ", ERR_FRIEND_ONLINE_SS, 2))
+local FRIEND_ONLINE = select(2, strsplit(" ", _G.ERR_FRIEND_ONLINE_SS, 2))
 local resendRequest = false
 local eventHandlers = {
 	['CHAT_MSG_SYSTEM'] = function(self, arg1)
@@ -154,9 +153,9 @@ end
 
 local menuFrame = CreateFrame("Frame", "GuildDatatTextRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
-	{ text = OPTIONS_MENU, isTitle = true, notCheckable=true},
-	{ text = INVITE, hasArrow = true, notCheckable=true,},
-	{ text = CHAT_MSG_WHISPER_INFORM, hasArrow = true, notCheckable=true,}
+	{ text = _G.OPTIONS_MENU, isTitle = true, notCheckable=true},
+	{ text = _G.INVITE, hasArrow = true, notCheckable=true,},
+	{ text = _G.CHAT_MSG_WHISPER_INFORM, hasArrow = true, notCheckable=true,}
 }
 
 local function inviteClick(self, name, guid)
@@ -196,7 +195,7 @@ local function Click(self, btn)
 
 		for _, info in ipairs(guildTable) do
 			if info[7] and info[1] ~= E.myname then
-				local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
+				local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or _G.RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then
 					grouped = "|cffaaaaaa*|r"
 				elseif not (info[11] and info[4] == REMOTE_CHAT) then
@@ -257,7 +256,7 @@ local function OnEnter(self, _, noUpdate)
 
 		if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
 
-		local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
+		local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or _G.RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
 
 		if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end
 

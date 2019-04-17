@@ -42,10 +42,8 @@ local function SkinLFGuild()
 
 	-- skin container buttons on browse and request page
 	for i = 1, 5 do
-		local b = _G["LookingForGuildBrowseFrameContainerButton"..i]
-		local t = _G["LookingForGuildAppsFrameContainerButton"..i]
-		b:SetBackdrop(nil)
-		t:SetBackdrop(nil)
+		_G["LookingForGuildBrowseFrameContainerButton"..i]:SetBackdrop(nil)
+		_G["LookingForGuildAppsFrameContainerButton"..i]:SetBackdrop(nil)
 	end
 
 	-- skin tabs

@@ -2,14 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 --Lua functions
-
 --WoW API / Variables
 local CreateFrame = CreateFrame
 
 function UF:Construct_PVPSpecIcon(frame)
 	local specIcon = CreateFrame("Frame", nil, frame)
 	specIcon.bg = CreateFrame("Frame", nil, specIcon)
-	specIcon.bg:SetTemplate("Default", nil, nil, self.thinBorders, true)
+	specIcon.bg:SetTemplate(nil, nil, nil, self.thinBorders, true)
 	specIcon.bg:SetFrameLevel(specIcon:GetFrameLevel() - 1)
 	specIcon:SetInside(specIcon.bg)
 

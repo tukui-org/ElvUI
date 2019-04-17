@@ -130,7 +130,14 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
 
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
-	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
+	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu, nil, true) -- use an override here to adjust the damn text position >.>
+
+	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, "SetFilter", function(self)
+		self.ShowNotificationsButton:SetSize(20, 20)
+		self.HideNotificationsButton:SetSize(20, 20)
+		S:HandleCheckBox(self.ShowNotificationsButton)
+		S:HandleCheckBox(self.HideNotificationsButton)
+	end)
 
 	-- [[ CHAT TAB ]]
 	CommunitiesFrame.MemberList:StripTextures()
@@ -154,7 +161,11 @@ local function LoadSkin()
 	S:HandleCloseButton(CommunitiesFrame.GuildMemberDetailFrame.CloseButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.RemoveButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.GroupInviteButton)
-	S:HandleDropDownBox(CommunitiesFrame.GuildMemberDetailFrame.RankDropdown)
+	local DropDown = CommunitiesFrame.GuildMemberDetailFrame.RankDropdown
+	S:HandleDropDownBox(DropDown, 160)
+	DropDown.backdrop:Point("TOPLEFT", 0, -6)
+	DropDown.backdrop:Point("BOTTOMRIGHT", -12, 6)
+	DropDown:Point('LEFT', CommunitiesFrame.GuildMemberDetailFrame.RankLabel, 'RIGHT', 2, 0)
 
 	-- [[ ROSTER TAB ]]
 	local MemberList = CommunitiesFrame.MemberList
@@ -425,8 +436,7 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesGuildRecruitmentFrameApplicants.DeclineButton)
 
 	for i = 1, 5 do
-		local bu = _G["CommunitiesGuildRecruitmentFrameApplicantsContainerButton"..i]
-		bu:SetBackdrop(nil)
+		_G["CommunitiesGuildRecruitmentFrameApplicantsContainerButton"..i]:SetBackdrop(nil)
 	end
 
 	-- Notification Settings Dialog

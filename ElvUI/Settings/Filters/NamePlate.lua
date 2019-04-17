@@ -10,14 +10,29 @@ G.nameplate.filters = {
 		triggers = {
 			level = true,
 			curlevel = -1,
+		},
+		actions = {
+			usePortrait = true,
+			scale = 1.15,
+		},
+	},
+	Explosives = {
+		triggers = {
 			nameplateType = {
 				enable = true,
 				enemyNPC = true,
+			},
+			names = {
+				['120651'] = true,
 			},
 		},
 		actions = {
 			usePortrait = true,
 			scale = 1.15,
+			color = {
+				health = true,
+				healthColor = {r = 0, g = 255, b = 255}
+			},
 		},
 	},
 }
@@ -48,46 +63,25 @@ E.StyleFilterDefaults = {
 			trivial = false,
 			minus = false,
 		},
-		class = {}, --this can stay empty we only will accept values that exist
+		class = {}, -- this can stay empty we only will accept values that exist
 		talent = {
-			type = "normal",
+			type = 'normal',
 			enabled = false,
 			requireAll = false,
 			tier1enabled = false,
-			tier1 = {
-				missing = false,
-				column = 0,
-			},
+			tier1 = {missing = false, column = 0},
 			tier2enabled = false,
-			tier2 = {
-				missing = false,
-				column = 0,
-			},
+			tier2 = {missing = false, column = 0},
 			tier3enabled = false,
-			tier3 = {
-				missing = false,
-				column = 0,
-			},
+			tier3 = {missing = false, column = 0},
 			tier4enabled = false,
-			tier4 = {
-				missing = false,
-				column = 0,
-			},
+			tier4 = {missing = false, column = 0},
 			tier5enabled = false,
-			tier5 = {
-				missing = false,
-				column = 0,
-			},
+			tier5 = {missing = false, column = 0},
 			tier6enabled = false,
-			tier6 = {
-				missing = false,
-				column = 0,
-			},
+			tier6 = {missing = false, column = 0},
 			tier7enabled = false,
-			tier7 = {
-				missing = false,
-				column = 0,
-			},
+			tier7 = {missing = false, column = 0},
 		},
 		curlevel = 0,
 		maxlevel = 0,
@@ -101,6 +95,23 @@ E.StyleFilterDefaults = {
 		underPowerThreshold = 0,
 		overPowerThreshold = 0,
 		names = {},
+		creatureType = {
+			Aberration = false,
+			Beast = false,
+			Critter = false,
+			Demon = false,
+			Dragonkin = false,
+			Elemental = false,
+			['Gas Cloud'] = false,
+			Giant = false,
+			Humanoid = false,
+			Mechanical = false,
+			['Not specified'] = false,
+			Totem = false,
+			Undead = false,
+			['Wild Pet'] = false,
+			['Non-combat Pet'] = false
+		},
 		nameplateType = {
 			enable = false,
 			friendlyPlayer = false,
@@ -135,7 +146,7 @@ E.StyleFilterDefaults = {
 				normal = false,
 				heroic = false,
 				mythic = false,
-				["mythic+"] = false,
+				['mythic+'] = false,
 				timewalking = false,
 			},
 			raid = {
@@ -186,7 +197,7 @@ E.StyleFilterDefaults = {
 		},
 		texture = {
 			enable = false,
-			texture = "ElvUI Norm",
+			texture = 'ElvUI Norm',
 		},
 		flash = {
 			enable = false,

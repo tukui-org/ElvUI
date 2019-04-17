@@ -64,10 +64,7 @@ local SPELL_POWER_MANA = Enum.PowerType.Mana
 local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local UNKNOWN = UNKNOWN
-
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: Hex, PowerBarColor, _TAGS
 
 ------------------------------------------------------------------------
@@ -837,13 +834,13 @@ local function GetClassPower(class)
 	return min, max, r, g, b
 end
 
-ElvUF.Tags.Events['classpowercolor'] = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Events['classpowercolor'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 ElvUF.Tags.Methods['classpowercolor'] = function()
 	local _, _, r, g, b = GetClassPower(E.myclass)
 	return Hex(r, g, b)
 end
 
-ElvUF.Tags.Events['classpower:current'] = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Events['classpower:current'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 ElvUF.Tags.Methods['classpower:current'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
@@ -853,7 +850,7 @@ ElvUF.Tags.Methods['classpower:current'] = function()
 	end
 end
 
-ElvUF.Tags.Events['classpower:deficit'] = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Events['classpower:deficit'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 ElvUF.Tags.Methods['classpower:deficit'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
@@ -863,7 +860,7 @@ ElvUF.Tags.Methods['classpower:deficit'] = function()
 	end
 end
 
-ElvUF.Tags.Events['classpower:current-percent'] = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Events['classpower:current-percent'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 ElvUF.Tags.Methods['classpower:current-percent'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
@@ -873,7 +870,7 @@ ElvUF.Tags.Methods['classpower:current-percent'] = function()
 	end
 end
 
-ElvUF.Tags.Events['classpower:current-max'] = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Events['classpower:current-max'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 ElvUF.Tags.Methods['classpower:current-max'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
@@ -883,7 +880,7 @@ ElvUF.Tags.Methods['classpower:current-max'] = function()
 	end
 end
 
-ElvUF.Tags.Events['classpower:current-max-percent'] = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Events['classpower:current-max-percent'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 ElvUF.Tags.Methods['classpower:current-max-percent'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
@@ -893,7 +890,7 @@ ElvUF.Tags.Methods['classpower:current-max-percent'] = function()
 	end
 end
 
-ElvUF.Tags.Events['classpower:percent'] = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
+ElvUF.Tags.Events['classpower:percent'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 ElvUF.Tags.Methods['classpower:percent'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
@@ -901,6 +898,16 @@ ElvUF.Tags.Methods['classpower:percent'] = function()
 	else
 		return E:GetFormattedText('PERCENT', min, max)
 	end
+end
+
+if E.myclass == 'MONK' then
+	local events = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA'
+	ElvUF.Tags.Events['classpower:current'] = events
+	ElvUF.Tags.Events['classpower:deficit'] = events
+	ElvUF.Tags.Events['classpower:current-percent'] = events
+	ElvUF.Tags.Events['classpower:current-max'] = events
+	ElvUF.Tags.Events['classpower:current-max-percent'] = events
+	ElvUF.Tags.Events['classpower:percent'] = events
 end
 
 ElvUF.Tags.Events['absorbs'] = 'UNIT_ABSORB_AMOUNT_CHANGED'
@@ -1119,9 +1126,11 @@ end
 
 ElvUF.Tags.SharedEvents.PLAYER_GUILD_UPDATE = true
 
-ElvUF.Tags.Events['guild'] = 'PLAYER_GUILD_UPDATE'
+ElvUF.Tags.Events['guild'] = 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE'
 ElvUF.Tags.Methods['guild'] = function(unit)
-	return GetGuildInfo(unit) or nil
+	if (UnitIsPlayer(unit)) then
+		return GetGuildInfo(unit) or nil
+	end
 end
 
 ElvUF.Tags.Events['guild:brackets'] = 'PLAYER_GUILD_UPDATE'

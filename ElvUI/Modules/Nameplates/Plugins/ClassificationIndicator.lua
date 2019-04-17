@@ -1,8 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
-local UnitClassification = UnitClassification
-
+-- Cache global variables
+-- Lua functions
+-- WoW API / Variables
 local function Update(self)
 	local element = self.ClassificationIndicator
 
@@ -10,13 +11,12 @@ local function Update(self)
 		element:PreUpdate()
 	end
 
-	local unit = self.unit
-	local classification = UnitClassification(unit)
-	if classification == 'elite' or classification == "worldboss" then
-		element:SetTexCoord(0, 0.15, 0.25, 0.53)
+	local classification = self.classification
+	if classification == "elite" or classification == "worldboss" then
+		element:SetAtlas("nameplates-icon-elite-gold")
 		element:Show()
-	elseif classification == 'rareelite' or classification == 'rare' then
-		element:SetTexCoord(0, 0.15, 0.52, 0.84)
+	elseif classification == "rareelite" or classification == 'rare' then
+		element:SetAtlas("nameplates-icon-elite-silver")
 		element:Show()
 	else
 		element:Hide()
