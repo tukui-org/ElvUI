@@ -1157,7 +1157,6 @@ function S:SkinIconTextAndCurrenciesWidget(widgetFrame)
 end
 
 function S:SkinTextWithStateWidget(widgetFrame)
-	--local text = widgetFrame.Text;
 end
 
 function S:SkinHorizontalCurrenciesWidget(widgetFrame)
@@ -1169,7 +1168,10 @@ end
 function S:SkinScenarioHeaderCurrenciesAndBackgroundWidget(widgetFrame)
 end
 
-function S:SkinTextureWithStateWidget(widgetFrame)
+function S:SkinTextureAndTextWidget(widgetFrame)
+end
+
+function S:SkinTextureAndTextRowWidget(widgetFrame)
 end
 
 local W = Enum.UIWidgetVisualizationType;
@@ -1186,7 +1188,8 @@ S.WidgetSkinningFuncs = {
 	[W.HorizontalCurrencies] = "SkinHorizontalCurrenciesWidget",
 	[W.BulletTextList] = "SkinBulletTextListWidget",
 	[W.ScenarioHeaderCurrenciesAndBackground] = "SkinScenarioHeaderCurrenciesAndBackgroundWidget",
-	[W.TextureWithState] = "SkinTextureWithStateWidget"
+	[W.TextureAndText] = "SkinTextureAndTextWidget",
+	[W.TextureAndTextRow] = "SkinTextureAndTextRowWidget",
 }
 
 function S:SkinWidgetContainer(widgetContainer)

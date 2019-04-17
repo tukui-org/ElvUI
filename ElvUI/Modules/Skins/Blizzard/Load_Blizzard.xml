@@ -8,6 +8,7 @@
 	<Script file='Artifact.lua'/>
 	<Script file='AuctionHouse.lua'/>
 	<Script file='Azerite.lua'/>
+	<Script file='AzeriteEssence.lua'/>
 	<Script file='AzeriteRespec.lua'/>
 	<Script file='Bags.lua'/>
 	<Script file='Barber.lua'/>

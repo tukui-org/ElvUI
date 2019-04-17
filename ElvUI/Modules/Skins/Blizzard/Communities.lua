@@ -118,12 +118,10 @@ local function LoadSkin()
 	CommunitiesFrame.MaximizeMinimizeFrame:ClearAllPoints()
 	CommunitiesFrame.MaximizeMinimizeFrame:Point("RIGHT", CommunitiesFrame.CloseButton, "LEFT", 12, 0)
 
-
 	S:HandleButton(CommunitiesFrame.InviteButton)
 	CommunitiesFrame.AddToChatButton:ClearAllPoints()
 	CommunitiesFrame.AddToChatButton:Point("BOTTOM", CommunitiesFrame.ChatEditBox, "BOTTOMRIGHT", -5, -30) -- needs probably adjustment
 	S:HandleButton(CommunitiesFrame.AddToChatButton)
-	S:HandleButton(CommunitiesFrame.GuildFinderFrame.FindAGuildButton)
 
 	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
 	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
@@ -147,10 +145,28 @@ local function LoadSkin()
 	CommunitiesFrame.Chat:StripTextures()
 	CommunitiesFrame.Chat.InsetFrame:SetTemplate("Transparent")
 
-	CommunitiesFrame.GuildFinderFrame:StripTextures()
-
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
+
+	-- GuildFinder Frame
+	CommunitiesFrame.GuildFinderFrame:StripTextures()
+	S:HandleDropDownBox(CommunitiesFrame.GuildFinderFrame.OptionsList.ClubFocusDropdown)
+	S:HandleDropDownBox(CommunitiesFrame.GuildFinderFrame.OptionsList.ClubSizeDropdown)
+
+	local checkBoxes = {
+		_G.CommunitiesFrame.GuildFinderFrame.OptionsList.TankRoleFrame.CheckBox,
+		_G.CommunitiesFrame.GuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox,
+		_G.CommunitiesFrame.GuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox,
+	}
+
+	for i = 1, #checkBoxes do
+		S:HandleCheckBox(checkBoxes[i])
+	end
+
+	S:HandleEditBox(CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox)
+	CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox:Size(115, 25)
+	S:HandleButton(CommunitiesFrame.GuildFinderFrame.OptionsList.Search)
+	S:HandleButton(CommunitiesFrame.GuildFinderFrame.PendingClubs)
 
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()

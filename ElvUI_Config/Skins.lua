@@ -460,6 +460,11 @@ E.Options.args.skins = {
 					name = L["GM Chat"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				AzeriteEssence = {
+					type = "toggle",
+					name = L["Azerite Essence"], -- Maybe Temp Name
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},
