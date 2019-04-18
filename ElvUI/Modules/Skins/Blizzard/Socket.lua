@@ -35,6 +35,7 @@ local function LoadSkin()
 		button_icon:SetInside()
 	end
 
+	--[[
 	hooksecurefunc("ItemSocketingFrame_Update", function()
 		local numSockets = GetNumSockets();
 		for i=1, numSockets do
@@ -47,6 +48,7 @@ local function LoadSkin()
 			end
 		end
 	end)
+	]]
 
 	_G.ItemSocketingFramePortrait:Kill()
 	_G.ItemSocketingSocketButton:ClearAllPoints()
