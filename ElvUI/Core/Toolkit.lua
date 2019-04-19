@@ -502,10 +502,11 @@ local function addapi(object)
 	if not object.GetNamedChild then mt.GetNamedChild = GetNamedChild end
 	if not object.FuckPixelSnap then
 		if mt.SetSnapToPixelGrid then hooksecurefunc(mt, 'SetSnapToPixelGrid', WatchPixelSnap) end
-		if mt.CreateTexture then hooksecurefunc(mt, 'CreateTexture', FuckPixelSnap) end
 		if mt.SetStatusBarTexture then hooksecurefunc(mt, 'SetStatusBarTexture', FuckPixelSnap) end
 		if mt.SetColorTexture then hooksecurefunc(mt, 'SetColorTexture', FuckPixelSnap) end
 		if mt.SetVertexColor then hooksecurefunc(mt, 'SetVertexColor', FuckPixelSnap) end
+		if mt.CreateTexture then hooksecurefunc(mt, 'CreateTexture', FuckPixelSnap) end
+		if mt.SetTexCoord then hooksecurefunc(mt, 'SetTexCoord', FuckPixelSnap) end
 		if mt.SetTexture then hooksecurefunc(mt, 'SetTexture', FuckPixelSnap) end
 		mt.FuckPixelSnap = true
 	end
