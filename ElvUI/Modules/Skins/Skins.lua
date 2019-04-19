@@ -628,8 +628,7 @@ end
 
 function S:HandleIcon(icon, backdrop)
 	icon:SetTexCoord(unpack(E.TexCoords))
-	icon:SetSnapToPixelGrid(false)
-	icon:SetTexelSnappingBias(0)
+
 	if backdrop then
 		icon:CreateBackdrop()
 	end
@@ -709,8 +708,6 @@ function S:HandleSliderFrame(frame)
 	local thumb = frame:GetThumbTexture()
 	thumb:SetVertexColor(1, .82, 0, 0.8)
 	thumb:Size(SIZE-2,SIZE-2)
-	thumb:SetSnapToPixelGrid(false)
-	thumb:SetTexelSnappingBias(0)
 
 	if orientation == 'VERTICAL' then
 		frame:Width(SIZE)

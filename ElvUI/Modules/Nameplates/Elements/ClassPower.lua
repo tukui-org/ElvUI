@@ -67,14 +67,8 @@ function NP:Construct_ClassPower(nameplate)
 		ClassPower[i]:SetFrameLevel(6)
 		NP.StatusBars[ClassPower[i]] = true
 
-		local statusBarTexture = ClassPower[i]:GetStatusBarTexture()
-		statusBarTexture:SetSnapToPixelGrid(false)
-		statusBarTexture:SetTexelSnappingBias(0)
-
 		ClassPower[i].bg = ClassPower:CreateTexture(nameplate:GetDebugName()..'ClassPower'..i..'bg', 'BORDER')
 		ClassPower[i].bg:SetAllPoints(ClassPower[i])
-		ClassPower[i].bg:SetSnapToPixelGrid(false)
-		ClassPower[i].bg:SetTexelSnappingBias(0)
 		ClassPower[i].bg:SetTexture(texture)
 	end
 
@@ -169,16 +163,10 @@ function NP:Construct_Runes(nameplate)
 		Runes[i]:SetStatusBarColor(color.r, color.g, color.b)
 		NP.StatusBars[Runes[i]] = true
 
-		local statusBarTexture = Runes[i]:GetStatusBarTexture()
-		statusBarTexture:SetSnapToPixelGrid(false)
-		statusBarTexture:SetTexelSnappingBias(0)
-
 		Runes[i].bg = Runes[i]:CreateTexture(nameplate:GetDebugName()..'Runes'..i..'bg', 'BORDER')
-		Runes[i].bg:SetAllPoints()
-		Runes[i].bg:SetSnapToPixelGrid(false)
-		Runes[i].bg:SetTexelSnappingBias(0)
-		Runes[i].bg:SetTexture(texture)
 		Runes[i].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
+		Runes[i].bg:SetTexture(texture)
+		Runes[i].bg:SetAllPoints()
 	end
 
 	return Runes

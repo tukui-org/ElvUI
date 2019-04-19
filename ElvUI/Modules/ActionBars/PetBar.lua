@@ -324,8 +324,6 @@ function AB:CreateBarPet()
 		if not button.ICON then
 			button.ICON = button:CreateTexture("PetActionButton"..i..'ICON')
 			button.ICON:SetTexCoord(unpack(E.TexCoords))
-			button.ICON:SetSnapToPixelGrid(false)
-			button.ICON:SetTexelSnappingBias(0)
 			button.ICON:SetInside()
 
 			if button.pushed then

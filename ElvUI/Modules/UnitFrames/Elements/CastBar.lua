@@ -59,8 +59,6 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Spark_ = castbar:CreateTexture(nil, 'OVERLAY')
 	castbar.Spark_:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 	castbar.Spark_:SetBlendMode('ADD')
-	castbar.Spark_:SetSnapToPixelGrid(false)
-	castbar.Spark_:SetTexelSnappingBias(0)
 	castbar.Spark_:SetVertexColor(1, 1, 1)
 	castbar.Spark_:Size(20, 40)
 

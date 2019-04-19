@@ -83,15 +83,10 @@ function NP:Construct_Health(nameplate)
 	NP.StatusBars[Health] = true
 
 	local statusBarTexture = Health:GetStatusBarTexture()
-	statusBarTexture:SetSnapToPixelGrid(false)
-	statusBarTexture:SetTexelSnappingBias(0)
-
 	nameplate.FlashTexture = Health:CreateTexture(nameplate:GetDebugName()..'FlashTexture', "OVERLAY")
 	nameplate.FlashTexture:SetTexture(E.Libs.LSM:Fetch("background", "ElvUI Blank"))
 	nameplate.FlashTexture:Point("BOTTOMLEFT", statusBarTexture, "BOTTOMLEFT")
 	nameplate.FlashTexture:Point("TOPRIGHT", statusBarTexture, "TOPRIGHT")
-	nameplate.FlashTexture:SetSnapToPixelGrid(false)
-	nameplate.FlashTexture:SetTexelSnappingBias(0)
 	nameplate.FlashTexture:Hide()
 
 	Health.frequentUpdates = true --Azil, keep this for now. It seems it may prevent event bugs
@@ -148,10 +143,6 @@ function NP:Construct_HealthPrediction(nameplate)
 		HealthPrediction[Bar]:Point('TOP')
 		HealthPrediction[Bar]:Point('BOTTOM')
 		HealthPrediction[Bar]:Width(150)
-
-		local statusBarTexture = HealthPrediction[Bar]:GetStatusBarTexture()
-		statusBarTexture:SetSnapToPixelGrid(false)
-		statusBarTexture:SetTexelSnappingBias(0)
 
 		NP.StatusBars[HealthPrediction[Bar]] = true
 	end

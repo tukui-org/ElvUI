@@ -108,10 +108,8 @@ function TOTEMS:Initialize()
 		frame.holder:SetAllPoints()
 
 		frame.iconTexture = frame:CreateTexture(nil, 'ARTWORK')
-		frame.iconTexture:SetInside()
 		frame.iconTexture:SetTexCoord(unpack(E.TexCoords))
-		frame.iconTexture:SetSnapToPixelGrid(false)
-		frame.iconTexture:SetTexelSnappingBias(0)
+		frame.iconTexture:SetInside()
 
 		frame.cooldown = CreateFrame('Cooldown', frame:GetName()..'Cooldown', frame, 'CooldownFrameTemplate')
 		frame.cooldown:SetReverse(true)
