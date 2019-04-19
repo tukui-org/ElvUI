@@ -129,12 +129,6 @@ local function LoadSkin()
 	_G.BrowseDropDownName:Point('BOTTOMLEFT', _G.BrowseDropDown, 'TOPLEFT', 20, -2)
 	_G.BrowseLevelHyphen:Point('LEFT', _G.BrowseMinLevel, 'RIGHT', 2, 1)
 
-	_G.SideDressUpFrame:StripTextures(true)
-	_G.SideDressUpFrame:SetTemplate("Transparent")
-	_G.SideDressUpFrame:Point("TOPLEFT", AuctionFrame, "TOPRIGHT", 2, 0)
-	S:HandleButton(_G.SideDressUpModelResetButton)
-	S:HandleCloseButton(_G.SideDressUpModelCloseButton)
-
 	S:HandleNextPrevButton(_G.BrowseNextPageButton)
 	S:HandleNextPrevButton(_G.BrowsePrevPageButton)
 	_G.BrowseNextPageButton:Size(20, 20)
