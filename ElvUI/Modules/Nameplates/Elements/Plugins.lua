@@ -124,21 +124,21 @@ function NP:Update_TargetIndicator(nameplate)
 		end
 
 		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == 'style3' or GlowStyle == 'style5' or GlowStyle == 'style6') then
-			nameplate.TargetIndicator.TopIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, -6)
+			nameplate.TargetIndicator.TopIndicator:Point('BOTTOM', nameplate, 'TOP', 0, -6)
 
 			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
 
 		if (nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator) and (GlowStyle == 'style4' or GlowStyle == 'style7' or GlowStyle == 'style8') then
-			nameplate.TargetIndicator.LeftIndicator:Point('LEFT', nameplate.Health, 'RIGHT', -3, 0)
-			nameplate.TargetIndicator.RightIndicator:Point('RIGHT', nameplate.Health, 'LEFT', 3, 0)
+			nameplate.TargetIndicator.LeftIndicator:Point('LEFT', nameplate, 'RIGHT', -3, 0)
+			nameplate.TargetIndicator.RightIndicator:Point('RIGHT', nameplate, 'LEFT', 3, 0)
 
 			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
 
 		if nameplate.TargetIndicator.Shadow and (GlowStyle == 'style1' or GlowStyle == 'style5' or GlowStyle == 'style7') then
-			nameplate.TargetIndicator.Shadow:SetOutside(nameplate.Health, E:Scale(E.PixelMode and 6 or 8), E:Scale(E.PixelMode and 6 or 8))
+			nameplate.TargetIndicator.Shadow:SetOutside(nameplate, E:Scale(E.PixelMode and 6 or 8), E:Scale(E.PixelMode and 6 or 8))
 
 			nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b)
 			nameplate.TargetIndicator.Shadow:SetAlpha(Color.a)
@@ -148,8 +148,8 @@ function NP:Update_TargetIndicator(nameplate)
 			local scale = NP.db.units.TARGET.useScale and (NP.db.units.TARGET.scale >= .75 and NP.db.units.TARGET.scale or .75) or 1
 			local size = (E.Border + 14) * scale;
 
-			nameplate.TargetIndicator.Spark:Point('TOPLEFT', nameplate.Health, 'TOPLEFT', -(size * 2), size)
-			nameplate.TargetIndicator.Spark:Point('BOTTOMRIGHT', nameplate.Health, 'BOTTOMRIGHT', (size * 2), -size)
+			nameplate.TargetIndicator.Spark:Point('TOPLEFT', db.health.enable and nameplate or nameplate.Name, 'TOPLEFT', -(size * 2), size)
+			nameplate.TargetIndicator.Spark:Point('BOTTOMRIGHT', db.health.enable and nameplate or nameplate.Name, 'BOTTOMRIGHT', (size * 2), -size)
 
 			nameplate.TargetIndicator.Spark:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
@@ -181,7 +181,7 @@ function NP:Update_Highlight(nameplate)
 			nameplate.Highlight.texture:SetAlpha(0.75)
 		else
 			nameplate.Highlight.texture:SetTexture(E.Media.Textures.Spark)
-			nameplate.Highlight.texture:SetAllPoints(nameplate)
+			nameplate.Highlight.texture:SetAllPoints(db.health.enable and nameplate or nameplate.Name)
 			nameplate.Highlight.texture:SetAlpha(0.50)
 		end
 	else
