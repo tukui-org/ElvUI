@@ -2,16 +2,6 @@
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 if not L then return end
 
-L["Raid Target"] = "团队目标"
-L["Blue Square"] = "蓝色广场"
-L["Green Triangle"] = "绿色三角形"
-L["Orange Circle"] = "橙色圆圈"
-L["Purple Diamond"] = "紫色钻石"
-L["Red Cross"] = "红十字"
-L["White Moon"] = "白月亮"
-L["White Skull"] = "白色头骨"
-L["Yellow Star"] = "黄星"
-
 L["# Displayed Auras"] = "显示光环的数量"
 L["%s and then %s"] = "%s 于 %s"
 L["24-Hour Time"] = "24小时制"
