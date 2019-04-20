@@ -10,7 +10,6 @@ local select = select
 local strsplit = strsplit
 local type = type
 local wipe = wipe
-local max = max
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
@@ -181,7 +180,7 @@ end
 
 function NP:StyleTargetPlate(nameplate)
 	nameplate:Point('CENTER')
-	nameplate:Size(NP.db.units.PLAYER.health.width, NP.db.units.PLAYER.health.height)
+	nameplate:Size(self.db.clickableWidth, self.db.clickableHeight)
 	nameplate:SetScale(E.global.general.UIScale)
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
@@ -230,6 +229,7 @@ end
 
 function NP:StylePlate(nameplate)
 	nameplate:Point('CENTER')
+	nameplate:Size(self.db.clickableWidth, self.db.clickableHeight)
 	nameplate:SetScale(E.global.general.UIScale)
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
@@ -280,15 +280,6 @@ function NP:UpdatePlate(nameplate)
 	if (nameplate.VisibilityChanged or nameplate.NameOnlyChanged) or (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
 		NP:DisablePlate(nameplate, nameplate.NameOnlyChanged or (NP.db.units[nameplate.frameType].nameOnly and not nameplate.VisibilityChanged))
 	else
-		local Scale = E.global.general.UIScale
-		if nameplate.frameType == 'PLAYER' then
-			nameplate:Size(NP.db.units.PLAYER.health.width * Scale, NP.db.units.PLAYER.health.height * Scale)
-		elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
-			nameplate:Size(max(NP.db.units.FRIENDLY_NPC.health.width, NP.db.units.FRIENDLY_PLAYER.health.width) * Scale, max(NP.db.units.FRIENDLY_NPC.health.height, NP.db.units.FRIENDLY_PLAYER.health.height) * Scale)
-		else
-			nameplate:Size(max(NP.db.units.ENEMY_NPC.health.width, NP.db.units.ENEMY_PLAYER.health.width) * Scale, max(NP.db.units.ENEMY_NPC.health.height, NP.db.units.ENEMY_PLAYER.health.height) * Scale)
-		end
-
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
 		NP:Update_Power(nameplate)
@@ -437,10 +428,11 @@ end
 function NP:ConfigureAll()
 	NP:StyleFilterConfigure() -- keep this at the top
 
-	local Scale = E.global.general.UIScale
-	C_NamePlate_SetNamePlateSelfSize(NP.db.units.PLAYER.health.width * Scale, NP.db.units.PLAYER.health.height * Scale)
-	C_NamePlate_SetNamePlateEnemySize(max(NP.db.units.ENEMY_NPC.health.width, NP.db.units.ENEMY_PLAYER.health.width) * Scale, max(NP.db.units.ENEMY_NPC.health.height, NP.db.units.ENEMY_PLAYER.health.height) * Scale)
-	C_NamePlate_SetNamePlateFriendlySize(max(NP.db.units.FRIENDLY_NPC.health.width, NP.db.units.FRIENDLY_PLAYER.health.width) * Scale, max(NP.db.units.FRIENDLY_NPC.health.height, NP.db.units.FRIENDLY_PLAYER.health.height) * Scale)
+	local width, height = NP.db.clickableWidth * E.global.general.UIScale, NP.db.clickableHeight * E.global.general.UIScale
+
+	C_NamePlate_SetNamePlateSelfSize(width, height)
+	C_NamePlate_SetNamePlateEnemySize(width, height)
+	C_NamePlate_SetNamePlateFriendlySize(width, height)
 
 	NP:PLAYER_REGEN_ENABLED()
 
@@ -454,14 +446,7 @@ function NP:ConfigureAll()
 
 	for nameplate in pairs(NP.Plates) do
 		NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
-
-		if nameplate.frameType == 'PLAYER' then
-			nameplate:Size(NP.db.units.PLAYER.health.width * Scale, NP.db.units.PLAYER.health.height * Scale)
-		elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
-			nameplate:Size(max(NP.db.units.FRIENDLY_NPC.health.width, NP.db.units.FRIENDLY_PLAYER.health.width) * Scale, max(NP.db.units.FRIENDLY_NPC.health.height, NP.db.units.FRIENDLY_PLAYER.health.height) * Scale)
-		else
-			nameplate:Size(max(NP.db.units.ENEMY_NPC.health.width, NP.db.units.ENEMY_PLAYER.health.width) * Scale, max(NP.db.units.ENEMY_NPC.health.height, NP.db.units.ENEMY_PLAYER.health.height) * Scale)
-		end
+		nameplate:Size(self.db.clickableWidth, self.db.clickableHeight)
 
 		NP:UpdatePlate(nameplate)
 
@@ -605,15 +590,15 @@ function NP:Initialize()
 	_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
 	_G.ElvNP_Player:SetAttribute('toggleForVehicle', true)
 	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
-	_G.ElvNP_Player:Size(NP.db.units.PLAYER.health.width, NP.db.units.PLAYER.health.height)
+	_G.ElvNP_Player:Size(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_Player:SetScale(E.mult)
 	_G.ElvNP_Player.frameType = 'PLAYER'
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
 
 	ElvUF:Spawn('player', 'ElvNP_Test')
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
-	_G.ElvNP_Test:Size(NP.db.units.PLAYER.health.width, NP.db.units.PLAYER.health.height)
-	_G.ElvNP_Test:SetScale(E.mult)
+	_G.ElvNP_Test:Size(NP.db.clickableWidth, NP.db.clickableHeight)
+	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test:SetMovable(true)
 	_G.ElvNP_Test:RegisterForDrag("LeftButton", "RightButton")
 	_G.ElvNP_Test:SetScript("OnDragStart", function() _G.ElvNP_Test:StartMoving() end)
@@ -624,7 +609,7 @@ function NP:Initialize()
 
 	ElvUF:Spawn('player', 'ElvNP_TargetClassPower')
 	_G.ElvNP_TargetClassPower:SetScale(1)
-	_G.ElvNP_TargetClassPower:Size(NP.db.units.PLAYER.health.width, NP.db.units.PLAYER.health.height)
+	_G.ElvNP_TargetClassPower:Size(NP.db.clickableWidth, NP.db.clickableHeight)
 	_G.ElvNP_TargetClassPower.frameType = 'TARGET'
 	_G.ElvNP_TargetClassPower:SetAttribute('toggleForVehicle', true)
 	_G.ElvNP_TargetClassPower:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)

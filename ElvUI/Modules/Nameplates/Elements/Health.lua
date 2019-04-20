@@ -108,7 +108,7 @@ function NP:Update_Health(nameplate)
 			nameplate:EnableElement('Health')
 		end
 
-		nameplate.Health:Point('CENTER')
+		nameplate.Health:Point('CENTER', nameplate, 'CENTER', 0, db.health.yOffset)
 
 		E:SetSmoothing(nameplate.Health, NP.db.smoothbars)
 	else
