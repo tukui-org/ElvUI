@@ -181,7 +181,7 @@ end
 
 function NP:StyleTargetPlate(nameplate)
 	nameplate:Point('CENTER')
-	nameplate:Size(self.db.clickableWidth, self.db.clickableHeight)
+	nameplate:Size(NP.db.units.PLAYER.health.width, NP.db.units.PLAYER.health.height)
 	nameplate:SetScale(E.global.general.UIScale)
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
