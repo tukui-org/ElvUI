@@ -761,11 +761,6 @@ local function UpdateFilterGroup()
 									order = 2,
 									type = 'toggle',
 								},
-								spacer2 = {
-									order = 3,
-									type = 'description',
-									name = '',
-								},
 								targetMe = {
 									name = L["Is Targeting Player"],
 									desc = L["If enabled then the filter will only activate when the unit is targeting you."],
@@ -777,11 +772,6 @@ local function UpdateFilterGroup()
 									desc = L["If enabled then the filter will only activate when the unit is not targeting you."],
 									order = 5,
 									type = 'toggle',
-								},
-								spacer3 = {
-									order = 6,
-									type = 'description',
-									name = '',
 								},
 								isFocus = {
 									name = L["Is Focused"],
@@ -885,11 +875,6 @@ local function UpdateFilterGroup()
 									desc = L["If enabled then the filter will only activate when you are out of combat."],
 									order = 2,
 									type = 'toggle',
-								},
-								spacer1 = {
-									order = 3,
-									type = 'description',
-									name = '',
 								},
 								inCombatUnit = {
 									name = L["Unit in Combat"],
@@ -1497,8 +1482,32 @@ local function UpdateFilterGroup()
 						},
 					},
 				},
-				instanceType = {
+				creatureType = {
+					name = L["Creature Type"],
 					order = 22,
+					type = 'group',
+					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType[info[#info]] end,
+					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType[info[#info]] = value; NP:ConfigureAll() end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					args = {
+						enable = {
+							type = 'toggle',
+							order = 1,
+							name = L["Enable"],
+							width = 'full'
+						},
+						types = {
+							name = "",
+							type = "group",
+							guiInline = true,
+							order = 2,
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or not E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType.enable end,
+							args = {}
+						}
+					}
+				},
+				instanceType = {
+					order = 23,
 					type = 'group',
 					name = L["Instance Type"],
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType[info[#info]] end,
@@ -1558,30 +1567,6 @@ local function UpdateFilterGroup()
 									name = _G.BATTLEFIELDS,
 								},
 							}
-						}
-					}
-				},
-				creatureType = {
-					name = L["Creature Type"],
-					order = 23,
-					type = 'group',
-					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType[info[#info]] end,
-					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType[info[#info]] = value; NP:ConfigureAll() end,
-					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
-					args = {
-						enable = {
-							type = 'toggle',
-							order = 1,
-							name = L["Enable"],
-							width = 'full'
-						},
-						types = {
-							name = "",
-							type = "group",
-							guiInline = true,
-							order = 2,
-							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or not E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType.enable end,
-							args = {}
 						}
 					}
 				},
