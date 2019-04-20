@@ -2,7 +2,7 @@
 
 **New Additions:**  
 Add debuffs for Crucible of Storms.  
-Added Target Marker Style Fitler. (Thanks @wing5wong)  
+Added Target Marker Style Filter. (Thanks @wing5wong)  
 
 **Bug Fixes:**  
 Fixed Nameplate Stagger texture.  
