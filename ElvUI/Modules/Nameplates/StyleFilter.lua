@@ -1247,94 +1247,27 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterEventWatch(nameplate)
 end
 
--- Shamelessy taken from AceDB-3.0
+-- Shamelessy taken from AceDB-3.0 and stripped down by Simpy
 local function copyDefaults(dest, src)
-	-- this happens if some value in the SV overwrites our default value with a non-table
-	--if type(dest) ~= "table" then return end
 	for k, v in pairs(src) do
-		if k == "*" or k == "**" then
-			if type(v) == "table" then
-				-- This is a metatable used for table defaults
-				local mt = {
-					-- This handles the lookup and creation of new subtables
-					__index = function(t,k)
-							if k == nil then return nil end
-							local tbl = {}
-							copyDefaults(tbl, v)
-							rawset(t, k, tbl)
-							return tbl
-						end,
-				}
-				setmetatable(dest, mt)
-				-- handle already existing tables in the SV
-				for dk, dv in pairs(dest) do
-					if not rawget(src, dk) and type(dv) == "table" then
-						copyDefaults(dv, v)
-					end
-				end
-			else
-				-- Values are not tables, so this is just a simple return
-				local mt = {__index = function(_,k) return k~=nil and v or nil end}
-				setmetatable(dest, mt)
-			end
-		elseif type(v) == "table" then
+		if type(v) == "table" then
 			if not rawget(dest, k) then rawset(dest, k, {}) end
-			if type(dest[k]) == "table" then
-				copyDefaults(dest[k], v)
-				if src['**'] then
-					copyDefaults(dest[k], src['**'])
-				end
-			end
-		else
-			if rawget(dest, k) == nil then
-				rawset(dest, k, v)
-			end
+			if type(dest[k]) == "table" then copyDefaults(dest[k], v) end
+		elseif rawget(dest, k) == nil then
+			rawset(dest, k, v)
 		end
 	end
 end
 
-local function removeDefaults(db, defaults, blocker)
-	-- remove all metatables from the db, so we don't accidentally create new sub-tables through them
+local function removeDefaults(db, defaults)
 	setmetatable(db, nil)
-	-- loop through the defaults and remove their content
+
 	for k,v in pairs(defaults) do
-		if k == "*" or k == "**" then
-			if type(v) == "table" then
-				-- Loop through all the actual k,v pairs and remove
-				for key, value in pairs(db) do
-					if type(value) == "table" then
-						-- if the key was not explicitly specified in the defaults table, just strip everything from * and ** tables
-						if defaults[key] == nil and (not blocker or blocker[key] == nil) then
-							removeDefaults(value, v)
-							-- if the table is empty afterwards, remove it
-							if next(value) == nil then
-								db[key] = nil
-							end
-						-- if it was specified, only strip ** content, but block values which were set in the key table
-						elseif k == "**" then
-							removeDefaults(value, v, defaults[key])
-						end
-					end
-				end
-			elseif k == "*" then
-				-- check for non-table default
-				for key, value in pairs(db) do
-					if defaults[key] == nil and v == value then
-						db[key] = nil
-					end
-				end
-			end
-		elseif type(v) == "table" and type(db[k]) == "table" then
-			-- if a blocker was set, dive into it, to allow multi-level defaults
-			removeDefaults(db[k], v, blocker and blocker[k])
-			if next(db[k]) == nil then
-				db[k] = nil
-			end
-		else
-			-- check if the current value matches the default, and that its not blocked by another defaults table
-			if db[k] == defaults[k] and (not blocker or blocker[k] == nil) then
-				db[k] = nil
-			end
+		if type(v) == "table" and type(db[k]) == "table" then
+			removeDefaults(db[k], v)
+			if next(db[k]) == nil then db[k] = nil end
+		elseif db[k] == defaults[k] then
+			db[k] = nil
 		end
 	end
 end
