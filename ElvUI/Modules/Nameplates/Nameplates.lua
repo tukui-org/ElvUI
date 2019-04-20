@@ -116,6 +116,8 @@ function NP:SetCVars()
 		SetCVar('nameplateOtherTopInset', 0.08)
 		SetCVar('nameplateOtherBottomInset', 0.1)
 	end
+
+	_G.NamePlateDriverFrame:UpdateNamePlateOptions()
 end
 
 function NP:PLAYER_REGEN_DISABLED()
