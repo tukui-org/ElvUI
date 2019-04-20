@@ -284,9 +284,9 @@ function NP:UpdatePlate(nameplate)
 		if nameplate.frameType == 'PLAYER' then
 			nameplate:Size(NP.db.units.PLAYER.health.width * Scale, NP.db.units.PLAYER.health.height * Scale)
 		elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
-			nameplate:Size(max(NP.db.units.ENEMY_NPC.health.width, NP.db.units.ENEMY_PLAYER.health.width) * Scale, max(NP.db.units.ENEMY_NPC.health.height, NP.db.units.ENEMY_PLAYER.health.height) * Scale)
-		else
 			nameplate:Size(max(NP.db.units.FRIENDLY_NPC.health.width, NP.db.units.FRIENDLY_PLAYER.health.width) * Scale, max(NP.db.units.FRIENDLY_NPC.health.height, NP.db.units.FRIENDLY_PLAYER.health.height) * Scale)
+		else
+			nameplate:Size(max(NP.db.units.ENEMY_NPC.health.width, NP.db.units.ENEMY_PLAYER.health.width) * Scale, max(NP.db.units.ENEMY_NPC.health.height, NP.db.units.ENEMY_PLAYER.health.height) * Scale)
 		end
 
 		NP:Update_Health(nameplate)
@@ -458,9 +458,9 @@ function NP:ConfigureAll()
 		if nameplate.frameType == 'PLAYER' then
 			nameplate:Size(NP.db.units.PLAYER.health.width * Scale, NP.db.units.PLAYER.health.height * Scale)
 		elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
-			nameplate:Size(max(NP.db.units.ENEMY_NPC.health.width, NP.db.units.ENEMY_PLAYER.health.width) * Scale, max(NP.db.units.ENEMY_NPC.health.height, NP.db.units.ENEMY_PLAYER.health.height) * Scale)
-		else
 			nameplate:Size(max(NP.db.units.FRIENDLY_NPC.health.width, NP.db.units.FRIENDLY_PLAYER.health.width) * Scale, max(NP.db.units.FRIENDLY_NPC.health.height, NP.db.units.FRIENDLY_PLAYER.health.height) * Scale)
+		else
+			nameplate:Size(max(NP.db.units.ENEMY_NPC.health.width, NP.db.units.ENEMY_PLAYER.health.width) * Scale, max(NP.db.units.ENEMY_NPC.health.height, NP.db.units.ENEMY_PLAYER.health.height) * Scale)
 		end
 
 		NP:UpdatePlate(nameplate)
