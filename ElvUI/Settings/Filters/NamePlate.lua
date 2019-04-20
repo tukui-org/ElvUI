@@ -65,14 +65,14 @@ E.StyleFilterDefaults = {
 		},
 		class = {}, -- this can stay empty we only will accept values that exist
 		raidTarget = {
-			yellowStar = false,
-			orangeCircle = false,
-			purpleDiamond = false,
-			greenTriangle = false,
-			whiteMoon = false,
-			blueSquare = false,
-			redCross = false,
-			whiteSkull = false
+			star = false,
+			circle = false,
+			diamond = false,
+			triangle = false,
+			moon = false,
+			square = false,
+			cross = false,
+			skull = false
 		},
 		talent = {
 			type = 'normal',

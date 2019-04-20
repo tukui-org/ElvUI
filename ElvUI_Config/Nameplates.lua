@@ -1585,44 +1585,44 @@ local function UpdateFilterGroup()
 					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.raidTarget[info[#info]] = value; NP:ConfigureAll() end,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
-						yellowStar = {
+						star = {
 							type = 'toggle',
 							order = 1,
 							name = L["Yellow Star"],
 						},
-						orangeCircle = {
+						circle = {
 							type = 'toggle',
 							order = 2,
 							name = L["Orange Circle"],
 						},
-						purpleDiamond = {
+						diamond = {
 							type = 'toggle',
 							order = 3,
 							name = L["Purple Diamond"],
 						},
-						greenTriangle = {
+						triangle = {
 							type = 'toggle',
 							order = 4,
 							name = L["Green Triangle"],
 						},
-						whiteMoon = {
+						moon = {
 							type = 'toggle',
 							order = 5,
 							name = L["White Moon"],
 						},
-						blueSquare = {
+						square = {
 							type = 'toggle',
 							order = 6,
 							name = L["Blue Square"],
 						},
-						redCross = {
+						cross = {
 							type = 'toggle',
 							order = 7,
 							name = L["Red Cross"],
 						},
-						whiteSkull = {
+						skull = {
 							type = 'toggle',
-							order = 7,
+							order = 8,
 							name = L["White Skull"],
 						},
 					}

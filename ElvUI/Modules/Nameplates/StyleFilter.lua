@@ -527,7 +527,7 @@ end
 function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	local _, classification, condition, creatureType, curLevel, health, healthUnit, inCombat, instanceDifficulty, instanceType,
 	level, matchMyLevel, maxHealth, maxLevel, maxPower, minLevel, myLevel, mySpecID, overHealthThreshold, overPowerThreshold,
-	percHealth, percPower, power, powerUnit, pvpTalent, questBoss, raidTarget, reaction, spell, talentRows,talentSelected, 
+	percHealth, percPower, power, powerUnit, pvpTalent, questBoss, reaction, spell, talentRows,talentSelected,
 	underHealthThreshold, underPowerThreshold;
 
 	local isCasting = frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
@@ -888,20 +888,20 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	end
 
 	--Try to match according to raid target conditions
-	if not failed and (trigger.raidTarget.yellowStar or trigger.raidTarget.orangeCircle or trigger.raidTarget.purpleDiamond or trigger.raidTarget.greenTriangle or trigger.raidTarget.whiteMoon or trigger.raidTarget.blueSquare or trigger.raidTarget.redCross or trigger.raidTarget.whiteSkull) then
-		raidTarget = GetRaidTargetIndex(frame.unit)
+	if not failed and (trigger.raidTarget.star or trigger.raidTarget.circle or trigger.raidTarget.diamond or trigger.raidTarget.triangle or trigger.raidTarget.moon or trigger.raidTarget.square or trigger.raidTarget.cross or trigger.raidTarget.skull) then
 		condition = false
 
-		if (raidTarget == 1 and trigger.raidTarget.yellowStar)
-		or (raidTarget == 2 and trigger.raidTarget.orangeCircle)
-		or (raidTarget == 3 and trigger.raidTarget.purpleDiamond)
-		or (raidTarget == 4 and trigger.raidTarget.greenTriangle)
-		or (raidTarget == 5 and trigger.raidTarget.whiteMoon)
-		or (raidTarget == 6 and trigger.raidTarget.blueSquare)
-		or (raidTarget == 7 and trigger.raidTarget.redCross)
-		or (raidTarget == 8 and trigger.raidTarget.whiteSkull) then
+		if frame.RaidTargetIndex and ((frame.RaidTargetIndex == 1 and trigger.raidTarget.star)
+		or (frame.RaidTargetIndex == 2 and trigger.raidTarget.circle)
+		or (frame.RaidTargetIndex == 3 and trigger.raidTarget.diamond)
+		or (frame.RaidTargetIndex == 4 and trigger.raidTarget.triangle)
+		or (frame.RaidTargetIndex == 5 and trigger.raidTarget.moon)
+		or (frame.RaidTargetIndex == 6 and trigger.raidTarget.square)
+		or (frame.RaidTargetIndex == 7 and trigger.raidTarget.cross)
+		or (frame.RaidTargetIndex == 8 and trigger.raidTarget.skull)) then
 			condition = true
 		end
+
 		failed = not condition
 	end
 
@@ -955,9 +955,8 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	['PLAYER_FOCUS_CHANGED'] = function(self)
 		self.isFocused = self.unit and UnitIsUnit(self.unit, 'focus') or nil
 	end,
-	['RAID_TARGET_UPDATED'] = function(self, _, unit)
-		unit = unit or self.unit
-		self.isRaidTarget = GetRaidTargetIndex(unit) or nil
+	['RAID_TARGET_UPDATE'] = function(self)
+		self.RaidTargetIndex = self.unit and GetRaidTargetIndex(self.unit) or nil
 	end,
 	['UNIT_TARGET'] = function(self, _, unit)
 		unit = unit or self.unit
@@ -975,6 +974,7 @@ function mod:StyleFilterClearVariables(nameplate)
 	nameplate.isTarget = nil
 	nameplate.isFocused = nil
 	nameplate.isTargetingMe = nil
+	nameplate.RaidTargetIndex = nil
 	nameplate.ThreatScale = nil
 end
 
@@ -1063,6 +1063,10 @@ function mod:StyleFilterConfigure()
 					mod.StyleFilterTriggerEvents.UNIT_DISPLAYPOWER = true
 				end
 
+				if filter.triggers.raidTarget then
+					mod.StyleFilterTriggerEvents.RAID_TARGET_UPDATE = true
+				end
+
 				if next(filter.triggers.names) then
 					for _, value in pairs(filter.triggers.names) do
 						if value == true then
@@ -1102,10 +1106,6 @@ function mod:StyleFilterConfigure()
 							break
 						end
 					end
-				end
-
-				if filter.triggers.raidTarget then
-					mod.StyleFilterTriggerEvents.RAID_TARGET_UPDATE = true
 				end
 			end
 		end
