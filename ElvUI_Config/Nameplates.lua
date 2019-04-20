@@ -1995,15 +1995,6 @@ local function GetUnitSettings(unit, name)
 						disabled = function() return unit == "PLAYER" end,
 						hidden = function() return unit == "PLAYER" end,
 					},
-					width = {
-						order = 2,
-						name = L["Width"],
-						type = "range",
-						sliderElvUI = true,
-						min = 50,
-						max = function() return (E.db.nameplates.clickableWidth or 250) end,
-						step = 1,
-					},
 					height = {
 						order = 3,
 						name = L["Height"],
@@ -2011,15 +2002,6 @@ local function GetUnitSettings(unit, name)
 						sliderElvUI = true,
 						min = 4,
 						max = function() return (E.db.nameplates.clickableHeight or 20) end,
-						step = 1,
-					},
-					yOffset = {
-						order = 4,
-						name = L["Y-Offset"],
-						type = "range",
-						sliderElvUI = true,
-						min = function() return -(E.db.nameplates.clickableHeight or 75) end,
-						max = function() return (E.db.nameplates.clickableHeight or 75) end,
 						step = 1,
 					},
 					healPrediction = {
