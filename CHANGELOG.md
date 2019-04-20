@@ -1,7 +1,8 @@
 ### Version 11.11 [  ]
 
 **New Additions:**  
-
+Add debuffs for Crucible of Storms.  
+Added Target Marker Style Fitler. (Thanks @wing5wong)  
 
 **Bug Fixes:**  
 Fixed Nameplate Stagger texture.  
@@ -12,6 +13,10 @@ Fixed Fader from properly fading the Pet Frame out when combat ends.
 Fixed "button.db" error in Nameplate Aura code.  
 Fixed a dropdown text position if the Communities Frame is minimized.  
 Fixed Nameplate Class Bar error "ClassPower.lua line 133: attempt to index field '?' (a userdata value)".  
+Fixed Enchant Text on Item Level and Minimap Location Text not clipping properly on non english clients. (Thanks @Bunny67)  
+Fixed Name Fonts getting replaced even though Replace Blizzard Fonts is checked off. (#1269)  
+Fixed "Attempt to index local 'threat' (a nil value)". (#1277)  
+Fixed error when you disable a Custom Text.  
 
 **Misc. Changes:**  
 Unitframe Status Bars will now sync their textures onto the background space when not using transparent.  
@@ -20,6 +25,9 @@ Attempted to fix PossessBarFrame, MainMenuBar, etc.. taint errors.
 Cleaned up some of the code which handles Player Role in the UI, this fixed the Timewalking Threat being backwards.  
 Tweaked the Tooltips in the Config so it will display the hard limits (min, max, decimal step) and only display a tooltip when it has other information than just name.  
 Limited the Nameplate Low Health Threshold to '80%'.  
+Fixed some Ace3 skin weirdness.  
+Cleaned up some of the Animation code. (Thanks @Grey)  
+Reworked how ElvUI unsnaps textures, textures will be unsnapped globally now.  
 
 ___
 ### Version 11.10 [ April 9th 2019 ]
