@@ -35,24 +35,10 @@ local function LoadSkin()
 		button_icon:SetInside()
 	end
 
-	-- Copied from Blizzard
-	local gemTypeInfo ={
-		Yellow = {r=0.97, g=0.82, b=0.29},
-		Red = {r=1, g=0.47, b=0.47},
-		Blue = {r=0.47, g=0.67, b=1},
-		Hydraulic = {r=1, g=1, b=1},
-		Cogwheel = {r=1, g=1, b=1},
-		Meta = {r=1, g=1, b=1},
-		Prismatic = {r=1, g=1, b=1},
-		PunchcardRed = {r=1, g=0.47, b=0.47},
-		PunchcardYellow = {r=0.97, g=0.82, b=0.29},
-		PunchcardBlue = {r=0.47, g=0.67, b=1},
-	}
-
 	hooksecurefunc("ItemSocketingFrame_Update", function()
 		for i, socket in ipairs(_G.ItemSocketingFrame.Sockets) do
 			local gemColor = GetSocketTypes(i);
-			local color = gemTypeInfo[gemColor]
+			local color = E.GemTypeInfo[gemColor]
 			socket:SetBackdropBorderColor(color.r, color.g, color.b)
 		end
 	end)
