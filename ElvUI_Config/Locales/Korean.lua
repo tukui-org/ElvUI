@@ -2,6 +2,16 @@
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "koKR")
 if not L then return end
 
+L["Raid Target"] = "공격대 타겟"
+L["Blue Square"] = "파란색 사각형"
+L["Green Triangle"] = "녹색 삼각형"
+L["Orange Circle"] = "주황색 원"
+L["Purple Diamond"] = "자주색 다이아몬드"
+L["Red Cross"] = "국제 적십자사"
+L["White Moon"] = "하얀 달"
+L["White Skull"] = "흰 두개골"
+L["Yellow Star"] = "황색 별"
+
 L["# Displayed Auras"] = "표시되는 효과 갯수"
 L["%s and then %s"] = "%s 이후 %s"
 L["24-Hour Time"] = "24시제로 표시"

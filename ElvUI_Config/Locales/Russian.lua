@@ -2,6 +2,16 @@
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 if not L then return end
 
+L["Raid Target"] = "Рейд цель"
+L["Blue Square"] = "Синий квадрат"
+L["Green Triangle"] = "Зеленый треугольник"
+L["Orange Circle"] = "Оранжевый круг"
+L["Purple Diamond"] = "Фиолетовый бриллиант"
+L["Red Cross"] = "красный Крест"
+L["White Moon"] = "Белая Луна"
+L["White Skull"] = "Белый череп"
+L["Yellow Star"] = "Желтая звезда"
+
 L["# Displayed Auras"] = "Кол-во аур"
 L["%s and then %s"] = "%s, а затем %s"
 L["24-Hour Time"] = "24х часовой формат"
