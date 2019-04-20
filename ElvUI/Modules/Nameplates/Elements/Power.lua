@@ -53,8 +53,10 @@ function NP:Power_UpdateColor(event, unit)
 			t = self.colors.power[_G.ALTERNATE_POWER_INDEX]
 		end
 
-		if(element.useAtlas and t and t.atlas) then
-			atlas = t.atlas
+		local atlasPath = self.colors.power[ptoken or ptype]
+
+		if(element.useAtlas and atlasPath and atlasPath.atlas) then
+			atlas = atlasPath.atlas
 		end
 	elseif(element.colorClass and UnitIsPlayer(unit)) or
 		(element.colorClassNPC and not UnitIsPlayer(unit)) or
