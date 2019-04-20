@@ -16,6 +16,7 @@ local GetSpellCooldown = GetSpellCooldown
 local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
 local GetTime = GetTime
+local IsResting = IsResting
 local PowerBarColor = PowerBarColor
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitHealth = UnitHealth
@@ -905,6 +906,15 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
+	--Try to match according to raid target conditions
+	if not failed and trigger.isResting.enable then
+		condition = false
+		
+		condition = IsResting()
+	
+		failed = not condition
+	end
+
 	--Callback for Plugins
 	if mod.CustomStyleConditions then
 		failed = mod:CustomStyleConditions(frame, filter, trigger, failed)
@@ -986,6 +996,7 @@ mod.StyleFilterPlateEvents = { -- events watched inside of ouf, which is called 
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
 	'PLAYER_TARGET_CHANGED',
 	'PLAYER_FOCUS_CHANGED',
+	'PLAYER_UPDATE_RESTING',
 	'RAID_TARGET_UPDATE',
 	'SPELL_UPDATE_COOLDOWN',
 	'UNIT_AURA',
