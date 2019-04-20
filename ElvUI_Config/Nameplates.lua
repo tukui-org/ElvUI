@@ -743,52 +743,60 @@ local function UpdateFilterGroup()
 					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]] = value; NP:ConfigureAll() end,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
-						isTarget = {
-							name = L["Is Targeted"],
-							desc = L["If enabled then the filter will only activate when you are targeting the unit."],
-							order = 1,
-							type = 'toggle',
-						},
-						notTarget = {
-							name = L["Not Targeted"],
-							desc = L["If enabled then the filter will only activate when you are not targeting the unit."],
+						types = {
+							name = "",
+							type = "group",
+							guiInline = true,
 							order = 2,
-							type = 'toggle',
-						},
-						spacer2 = {
-							order = 3,
-							type = 'description',
-							name = '',
-						},
-						targetMe = {
-							name = L["Is Targeting Player"],
-							desc = L["If enabled then the filter will only activate when the unit is targeting you."],
-							order = 4,
-							type = 'toggle',
-						},
-						notTargetMe = {
-							name = L["Not Targeting Player"],
-							desc = L["If enabled then the filter will only activate when the unit is not targeting you."],
-							order = 5,
-							type = 'toggle',
-						},
-						spacer3 = {
-							order = 6,
-							type = 'description',
-							name = '',
-						},
-						isFocus = {
-							name = L["Is Focused"],
-							desc = L["If enabled then the filter will only activate when you are focusing the unit."],
-							order = 7,
-							type = 'toggle',
-						},
-						notFocus = {
-							name = L["Not Focused"],
-							desc = L["If enabled then the filter will only activate when you are not focusing the unit."],
-							order = 8,
-							type = 'toggle',
-						},
+							args = {
+								isTarget = {
+									name = L["Is Targeted"],
+									desc = L["If enabled then the filter will only activate when you are targeting the unit."],
+									order = 1,
+									type = 'toggle',
+								},
+								notTarget = {
+									name = L["Not Targeted"],
+									desc = L["If enabled then the filter will only activate when you are not targeting the unit."],
+									order = 2,
+									type = 'toggle',
+								},
+								spacer2 = {
+									order = 3,
+									type = 'description',
+									name = '',
+								},
+								targetMe = {
+									name = L["Is Targeting Player"],
+									desc = L["If enabled then the filter will only activate when the unit is targeting you."],
+									order = 4,
+									type = 'toggle',
+								},
+								notTargetMe = {
+									name = L["Not Targeting Player"],
+									desc = L["If enabled then the filter will only activate when the unit is not targeting you."],
+									order = 5,
+									type = 'toggle',
+								},
+								spacer3 = {
+									order = 6,
+									type = 'description',
+									name = '',
+								},
+								isFocus = {
+									name = L["Is Focused"],
+									desc = L["If enabled then the filter will only activate when you are focusing the unit."],
+									order = 7,
+									type = 'toggle',
+								},
+								notFocus = {
+									name = L["Not Focused"],
+									desc = L["If enabled then the filter will only activate when you are not focusing the unit."],
+									order = 8,
+									type = 'toggle',
+								},
+							}
+						}
 					}
 				},
 				casting = {
@@ -860,34 +868,42 @@ local function UpdateFilterGroup()
 					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]] = value; NP:ConfigureAll() end,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
-						inCombat = {
-							name = L["Player in Combat"],
-							desc = L["If enabled then the filter will only activate when you are in combat."],
-							order = 1,
-							type = 'toggle',
-						},
-						outOfCombat = {
-							name = L["Player Out of Combat"],
-							desc = L["If enabled then the filter will only activate when you are out of combat."],
+						types = {
+							name = "",
+							type = "group",
+							guiInline = true,
 							order = 2,
-							type = 'toggle',
-						},
-						spacer1 = {
-							order = 3,
-							type = 'description',
-							name = '',
-						},
-						inCombatUnit = {
-							name = L["Unit in Combat"],
-							desc = L["If enabled then the filter will only activate when the unit is in combat."],
-							order = 4,
-							type = 'toggle',
-						},
-						outOfCombatUnit = {
-							name = L["Unit Out of Combat"],
-							desc = L["If enabled then the filter will only activate when the unit is out of combat."],
-							order = 5,
-							type = 'toggle',
+							args = {
+								inCombat = {
+									name = L["Player in Combat"],
+									desc = L["If enabled then the filter will only activate when you are in combat."],
+									order = 1,
+									type = 'toggle',
+								},
+								outOfCombat = {
+									name = L["Player Out of Combat"],
+									desc = L["If enabled then the filter will only activate when you are out of combat."],
+									order = 2,
+									type = 'toggle',
+								},
+								spacer1 = {
+									order = 3,
+									type = 'description',
+									name = '',
+								},
+								inCombatUnit = {
+									name = L["Unit in Combat"],
+									desc = L["If enabled then the filter will only activate when the unit is in combat."],
+									order = 4,
+									type = 'toggle',
+								},
+								outOfCombatUnit = {
+									name = L["Unit Out of Combat"],
+									desc = L["If enabled then the filter will only activate when the unit is out of combat."],
+									order = 5,
+									type = 'toggle',
+								}
+							}
 						}
 					},
 				},
@@ -913,21 +929,29 @@ local function UpdateFilterGroup()
 					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.role[info[#info]] = value; NP:ConfigureAll() end,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
-						tank = {
-							type = 'toggle',
-							order = 1,
-							name = _G.TANK,
-						},
-						healer = {
-							type = 'toggle',
+						types = {
+							name = "",
+							type = "group",
+							guiInline = true,
 							order = 2,
-							name = _G.HEALER,
-						},
-						damager = {
-							type = 'toggle',
-							order = 3,
-							name = _G.DAMAGER,
-						},
+							args = {
+								tank = {
+									type = 'toggle',
+									order = 1,
+									name = _G.TANK,
+								},
+								healer = {
+									type = 'toggle',
+									order = 2,
+									name = _G.HEALER,
+								},
+								damager = {
+									type = 'toggle',
+									order = 3,
+									name = _G.DAMAGER,
+								},
+							}
+						}
 					}
 				},
 				classification = {
@@ -1569,46 +1593,54 @@ local function UpdateFilterGroup()
 					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.raidTarget[info[#info]] = value; NP:ConfigureAll() end,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
-						star = {
-							type = 'toggle',
-							order = 1,
-							name = format(raidTargetIcon, 1, _G.RAID_TARGET_1),
-						},
-						circle = {
-							type = 'toggle',
+						types = {
+							name = "",
+							type = "group",
+							guiInline = true,
 							order = 2,
-							name = format(raidTargetIcon, 2, _G.RAID_TARGET_2),
-						},
-						diamond = {
-							type = 'toggle',
-							order = 3,
-							name = format(raidTargetIcon, 3, _G.RAID_TARGET_3),
-						},
-						triangle = {
-							type = 'toggle',
-							order = 4,
-							name = format(raidTargetIcon, 4, _G.RAID_TARGET_4),
-						},
-						moon = {
-							type = 'toggle',
-							order = 5,
-							name = format(raidTargetIcon, 5, _G.RAID_TARGET_5),
-						},
-						square = {
-							type = 'toggle',
-							order = 6,
-							name = format(raidTargetIcon, 6, _G.RAID_TARGET_6),
-						},
-						cross = {
-							type = 'toggle',
-							order = 7,
-							name = format(raidTargetIcon, 7, _G.RAID_TARGET_7),
-						},
-						skull = {
-							type = 'toggle',
-							order = 8,
-							name = format(raidTargetIcon, 8, _G.RAID_TARGET_8),
-						},
+							args = {
+								star = {
+									type = 'toggle',
+									order = 1,
+									name = format(raidTargetIcon, 1, _G.RAID_TARGET_1),
+								},
+								circle = {
+									type = 'toggle',
+									order = 2,
+									name = format(raidTargetIcon, 2, _G.RAID_TARGET_2),
+								},
+								diamond = {
+									type = 'toggle',
+									order = 3,
+									name = format(raidTargetIcon, 3, _G.RAID_TARGET_3),
+								},
+								triangle = {
+									type = 'toggle',
+									order = 4,
+									name = format(raidTargetIcon, 4, _G.RAID_TARGET_4),
+								},
+								moon = {
+									type = 'toggle',
+									order = 5,
+									name = format(raidTargetIcon, 5, _G.RAID_TARGET_5),
+								},
+								square = {
+									type = 'toggle',
+									order = 6,
+									name = format(raidTargetIcon, 6, _G.RAID_TARGET_6),
+								},
+								cross = {
+									type = 'toggle',
+									order = 7,
+									name = format(raidTargetIcon, 7, _G.RAID_TARGET_7),
+								},
+								skull = {
+									type = 'toggle',
+									order = 8,
+									name = format(raidTargetIcon, 8, _G.RAID_TARGET_8),
+								},
+							}
+						}
 					}
 				},
 			},
