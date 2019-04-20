@@ -33,6 +33,7 @@ local UnitName = UnitName
 local UnitReaction = UnitReaction
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
+local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
 local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
 local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
@@ -427,8 +428,11 @@ end
 function NP:ConfigureAll()
 	NP:StyleFilterConfigure() -- keep this at the top
 
-	C_NamePlate_SetNamePlateSelfSize(NP.db.clickableWidth, NP.db.clickableHeight)
-	C_NamePlate_SetNamePlateEnemySize(NP.db.clickableWidth, NP.db.clickableHeight)
+	local width, height = NP.db.clickableWidth * E.global.general.UIScale, NP.db.clickableHeight * E.global.general.UIScale
+
+	C_NamePlate_SetNamePlateSelfSize(width, height)
+	C_NamePlate_SetNamePlateEnemySize(width, height)
+	C_NamePlate_SetNamePlateFriendlySize(width, height)
 
 	NP:PLAYER_REGEN_ENABLED()
 
