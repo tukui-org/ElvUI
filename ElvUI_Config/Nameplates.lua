@@ -4101,28 +4101,6 @@ E.Options.args.nameplate = {
 							desc = L["Only load nameplates for units within this range."],
 							min = 10, max = 100, step = 1,
 						},
-						clickableWidth = {
-							order = 6,
-							type = "range",
-							name = L["Clickable Width"],
-							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
-							min = 50, max = 250, step = 1,
-							set = function(info, value)
-								E.db.nameplates.clickableWidth = value
-								NP:ConfigureAll();
-							end,
-						},
-						clickableHeight = {
-							order = 7,
-							type = "range",
-							name = L["Clickable Height"],
-							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
-							min = 10, max = 75, step = 1,
-							set = function(info, value)
-								E.db.nameplates.clickableHeight = value
-								NP:ConfigureAll();
-							end,
-						},
 						statusbar = {
 							order = 8,
 							type = "select",
@@ -4185,6 +4163,86 @@ E.Options.args.nameplate = {
 									type = "toggle",
 									name = L["Enemy"],
 									set = function(info, value) E.db.nameplates.clickThrough.enemy = value; NP:SetNamePlateEnemyClickThrough() end,
+								},
+							},
+						},
+						plateSize = {
+							order = 16,
+							type = "group",
+							guiInline = true,
+							name = L["Plate Size"],
+							args = {
+								personal = {
+									order = 1,
+									type = "group",
+									guiInline = true,
+									name = L["Personal"],
+									get = function(info) return E.db.nameplates.plateSize[info[#info]] end,
+									set = function(info, value) E.db.nameplates.plateSize[info[#info]] = value; NP:ConfigureAll() end,
+									args = {
+										personalWidth = {
+											order = 1,
+											type = "range",
+											name = L["Clickable Width"],
+											desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
+											min = 50, max = 250, step = 1,
+										},
+										personalHeight = {
+											order = 2,
+											type = "range",
+											name = L["Clickable Height"],
+											desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
+											min = 10, max = 75, step = 1,
+										},
+									},
+								},
+								friendly = {
+									order = 2,
+									type = "group",
+									guiInline = true,
+									name = L["Friendly"],
+									get = function(info) return E.db.nameplates.plateSize[info[#info]] end,
+									set = function(info, value) E.db.nameplates.plateSize[info[#info]] = value; NP:ConfigureAll() end,
+									args = {
+										friendlyWidth = {
+											order = 1,
+											type = "range",
+											name = L["Clickable Width"],
+											desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
+											min = 50, max = 250, step = 1,
+										},
+										friendlyHeight = {
+											order = 2,
+											type = "range",
+											name = L["Clickable Height"],
+											desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
+											min = 10, max = 75, step = 1,
+										},
+									},
+								},
+								enemy = {
+									order = 3,
+									type = "group",
+									guiInline = true,
+									name = L["Enemy"],
+									get = function(info) return E.db.nameplates.plateSize[info[#info]] end,
+									set = function(info, value) E.db.nameplates.plateSize[info[#info]] = value; NP:ConfigureAll() end,
+									args = {
+										enemyWidth = {
+											order = 1,
+											type = "range",
+											name = L["Clickable Width"],
+											desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
+											min = 50, max = 250, step = 1,
+										},
+										enemyHeight = {
+											order = 2,
+											type = "range",
+											name = L["Clickable Height"],
+											desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
+											min = 10, max = 75, step = 1,
+										},
+									},
 								},
 							},
 						},

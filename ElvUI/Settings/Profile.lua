@@ -318,12 +318,18 @@ P.nameplates = {
 	cutawayHealth = false,
 	cutawayHealthFadeOutTime = 0.6,
 	cutawayHealthLength = 0.3,
-	clickableWidth = 150,
-	clickableHeight = 30,
 	clickThrough = {
 		personal = false,
 		friendly = false,
 		enemy = false,
+	},
+	plateSize ={
+		personalWidth = 150,
+		personalHeight = 30,
+		friendlyWidth = 150,
+		friendlyHeight = 30,
+		enemyWidth = 150,
+		enemyHeight = 30,
 	},
 	colors = {
 		glowColor = {r = 1, g = 1, b = 1, a = 1},
