@@ -180,7 +180,7 @@ end
 
 function NP:StyleTargetPlate(nameplate)
 	nameplate:Point('CENTER')
-	nameplate:Size(self.db.clickableWidth, self.db.clickableHeight)
+	nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	nameplate:SetScale(E.global.general.UIScale)
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
