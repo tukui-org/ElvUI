@@ -9,6 +9,7 @@ local gsub, tinsert, tremove, sort, wipe = gsub, tinsert, tremove, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
 local GetLocale = GetLocale
+local GetRaidTargetIndex = GetRaidTargetIndex
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpellCharges = GetSpellCharges
 local GetSpellCooldown = GetSpellCooldown
@@ -524,9 +525,10 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 end
 
 function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
-	local _, condition, inCombat, questBoss, reaction, spell, classification, instanceType, instanceDifficulty,
-	talentSelected, pvpTalent, talentRows, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, mySpecID, creatureType,
-	power, maxPower, percPower, underPowerThreshold, overPowerThreshold, powerUnit, health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold, healthUnit;
+	local _, classification, condition, creatureType, curLevel, health, healthUnit, inCombat, instanceDifficulty, instanceType,
+	level, matchMyLevel, maxHealth, maxLevel, maxPower, minLevel, myLevel, mySpecID, overHealthThreshold, overPowerThreshold,
+	percHealth, percPower, power, powerUnit, pvpTalent, questBoss, raidTarget, reaction, spell, talentRows,talentSelected, 
+	underHealthThreshold, underPowerThreshold;
 
 	local isCasting = frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
 	local matchMyClass = false --Only check spec when we match the class condition
@@ -885,6 +887,24 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		end
 	end
 
+	--Try to match according to raid target conditions
+	if not failed and (trigger.raidTarget.yellowStar or trigger.raidTarget.orangeCircle or trigger.raidTarget.purpleDiamond or trigger.raidTarget.greenTriangle or trigger.raidTarget.whiteMoon or trigger.raidTarget.blueSquare or trigger.raidTarget.redCross or trigger.raidTarget.whiteSkull) then
+		raidTarget = GetRaidTargetIndex(frame.unit)
+		condition = false
+
+		if (raidTarget == 1 and trigger.raidTarget.yellowStar)
+		or (raidTarget == 2 and trigger.raidTarget.orangeCircle)
+		or (raidTarget == 3 and trigger.raidTarget.purpleDiamond)
+		or (raidTarget == 4 and trigger.raidTarget.greenTriangle)
+		or (raidTarget == 5 and trigger.raidTarget.whiteMoon)
+		or (raidTarget == 6 and trigger.raidTarget.blueSquare)
+		or (raidTarget == 7 and trigger.raidTarget.redCross)
+		or (raidTarget == 8 and trigger.raidTarget.whiteSkull) then
+			condition = true
+		end
+		failed = not condition
+	end
+
 	--Callback for Plugins
 	if mod.CustomStyleConditions then
 		failed = mod:CustomStyleConditions(frame, filter, trigger, failed)
@@ -935,6 +955,10 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	['PLAYER_FOCUS_CHANGED'] = function(self)
 		self.isFocused = self.unit and UnitIsUnit(self.unit, 'focus') or nil
 	end,
+	['RAID_TARGET_UPDATED'] = function(self, _, unit)
+		unit = unit or self.unit
+		self.isRaidTarget = GetRaidTargetIndex(unit) or nil
+	end,
 	['UNIT_TARGET'] = function(self, _, unit)
 		unit = unit or self.unit
 		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
@@ -962,10 +986,12 @@ mod.StyleFilterPlateEvents = { -- events watched inside of ouf, which is called 
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
 	'PLAYER_TARGET_CHANGED',
 	'PLAYER_FOCUS_CHANGED',
+	'RAID_TARGET_UPDATE',
 	'SPELL_UPDATE_COOLDOWN',
 	'UNIT_AURA',
 	'UNIT_DISPLAYPOWER',
 	'UNIT_FACTION',
+	'UNIT_FLAGS',
 	'UNIT_HEALTH',
 	'UNIT_HEALTH_FREQUENT',
 	'UNIT_MAXHEALTH',
@@ -974,7 +1000,6 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_POWER_UPDATE',
 	'UNIT_TARGET',
 	'UNIT_THREAT_LIST_UPDATE',
-	'UNIT_FLAGS'
 }
 
 function mod:StyleFilterWatchEvents()
@@ -1077,6 +1102,10 @@ function mod:StyleFilterConfigure()
 							break
 						end
 					end
+				end
+
+				if filter.triggers.raidTarget then
+					mod.StyleFilterTriggerEvents.RAID_TARGET_UPDATE = true
 				end
 			end
 		end
@@ -1198,6 +1227,9 @@ function mod:StyleFilterEvents(nameplate)
 	end
 	if not nameplate:IsEventRegistered('PLAYER_FOCUS_CHANGED') then
 		nameplate:RegisterEvent('PLAYER_FOCUS_CHANGED', E.noop, true)
+	end
+	if not nameplate:IsEventRegistered('RAID_TARGET_UPDATE') then
+		nameplate:RegisterEvent('RAID_TARGET_UPDATE', E.noop, true)
 	end
 	if not nameplate:IsEventRegistered('SPELL_UPDATE_COOLDOWN') then
 		nameplate:RegisterEvent('SPELL_UPDATE_COOLDOWN', E.noop, true)

@@ -1577,6 +1577,56 @@ local function UpdateFilterGroup()
 						}
 					}
 				},
+				raidTarget = {
+					order = 24,
+					type = 'group',
+					name = L["Raid Target"],
+					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.raidTarget[info[#info]] end,
+					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.raidTarget[info[#info]] = value; NP:ConfigureAll() end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					args = {
+						yellowStar = {
+							type = 'toggle',
+							order = 1,
+							name = L["Yellow Star"],
+						},
+						orangeCircle = {
+							type = 'toggle',
+							order = 2,
+							name = L["Orange Circle"],
+						},
+						purpleDiamond = {
+							type = 'toggle',
+							order = 3,
+							name = L["Purple Diamond"],
+						},
+						greenTriangle = {
+							type = 'toggle',
+							order = 4,
+							name = L["Green Triangle"],
+						},
+						whiteMoon = {
+							type = 'toggle',
+							order = 5,
+							name = L["White Moon"],
+						},
+						blueSquare = {
+							type = 'toggle',
+							order = 6,
+							name = L["Blue Square"],
+						},
+						redCross = {
+							type = 'toggle',
+							order = 7,
+							name = L["Red Cross"],
+						},
+						whiteSkull = {
+							type = 'toggle',
+							order = 7,
+							name = L["White Skull"],
+						},
+					}
+				},
 			},
 		}
 		E.Options.args.nameplate.args.filters.args.actions = {
