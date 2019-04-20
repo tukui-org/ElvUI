@@ -17,7 +17,7 @@ local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
 
-local raidTargetIcon = "%s |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%s:0|t"
+local raidTargetIcon = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%s:0|t %s"
 local selectedNameplateFilter
 
 local positionValues = {
@@ -1572,42 +1572,42 @@ local function UpdateFilterGroup()
 						star = {
 							type = 'toggle',
 							order = 1,
-							name = format(raidTargetIcon, _G.RAID_TARGET_1, 1),
+							name = format(raidTargetIcon, 1, _G.RAID_TARGET_1),
 						},
 						circle = {
 							type = 'toggle',
 							order = 2,
-							name = format(raidTargetIcon, _G.RAID_TARGET_2, 2),
+							name = format(raidTargetIcon, 2, _G.RAID_TARGET_2),
 						},
 						diamond = {
 							type = 'toggle',
 							order = 3,
-							name = format(raidTargetIcon, _G.RAID_TARGET_3, 3),
+							name = format(raidTargetIcon, 3, _G.RAID_TARGET_3),
 						},
 						triangle = {
 							type = 'toggle',
 							order = 4,
-							name = format(raidTargetIcon, _G.RAID_TARGET_4, 4),
+							name = format(raidTargetIcon, 4, _G.RAID_TARGET_4),
 						},
 						moon = {
 							type = 'toggle',
 							order = 5,
-							name = format(raidTargetIcon, _G.RAID_TARGET_5, 5),
+							name = format(raidTargetIcon, 5, _G.RAID_TARGET_5),
 						},
 						square = {
 							type = 'toggle',
 							order = 6,
-							name = format(raidTargetIcon, _G.RAID_TARGET_6, 6),
+							name = format(raidTargetIcon, 6, _G.RAID_TARGET_6),
 						},
 						cross = {
 							type = 'toggle',
 							order = 7,
-							name = format(raidTargetIcon, _G.RAID_TARGET_7, 7),
+							name = format(raidTargetIcon, 7, _G.RAID_TARGET_7),
 						},
 						skull = {
 							type = 'toggle',
 							order = 8,
-							name = format(raidTargetIcon, _G.RAID_TARGET_8, 8),
+							name = format(raidTargetIcon, 8, _G.RAID_TARGET_8),
 						},
 					}
 				},
