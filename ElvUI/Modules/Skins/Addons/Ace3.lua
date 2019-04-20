@@ -20,8 +20,6 @@ function S:Ace3_SkinDropdownPullout()
 
 				local t = self.obj.dropdown.slider:GetThumbTexture()
 				t:SetVertexColor(1, .82, 0, 0.8)
-				t:SetSnapToPixelGrid(false)
-				t:SetTexelSnappingBias(0)
 			end
 		end
 	end
@@ -239,21 +237,15 @@ function S:Ace3_RegisterAsWidget(widget)
 		colorSwatch:ClearAllPoints()
 		colorSwatch:SetParent(frame.backdrop)
 		colorSwatch:SetInside(frame.backdrop)
-		colorSwatch:SetSnapToPixelGrid(false)
-		colorSwatch:SetTexelSnappingBias(0)
 
 		if colorSwatch.background then
 			colorSwatch.background:SetColorTexture(0, 0, 0, 0)
-			colorSwatch.background:SetSnapToPixelGrid(false)
-			colorSwatch.background:SetTexelSnappingBias(0)
 		end
 
 		if colorSwatch.checkers then
 			colorSwatch.checkers:ClearAllPoints()
 			colorSwatch.checkers:SetParent(frame.backdrop)
 			colorSwatch.checkers:SetInside(frame.backdrop)
-			colorSwatch.checkers:SetSnapToPixelGrid(false)
-			colorSwatch.checkers:SetTexelSnappingBias(0)
 		end
 	elseif TYPE == 'Icon' then
 		widget.frame:StripTextures()

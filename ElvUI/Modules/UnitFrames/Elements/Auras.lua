@@ -54,8 +54,6 @@ function UF:Construct_AuraIcon(button)
 	button.icon:SetInside(button, offset, offset)
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
-	button.icon:SetSnapToPixelGrid(false)
-	button.icon:SetTexelSnappingBias(0)
 
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', 1, 1)

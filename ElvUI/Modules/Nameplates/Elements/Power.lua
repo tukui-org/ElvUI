@@ -118,10 +118,6 @@ function NP:Construct_Power(nameplate)
 	Power:CreateBackdrop('Transparent')
 	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
 
-	local statusBarTexture = Power:GetStatusBarTexture()
-	statusBarTexture:SetSnapToPixelGrid(false)
-	statusBarTexture:SetTexelSnappingBias(0)
-
 	NP.StatusBars[Power] = true
 
 	Power.frequentUpdates = true --Azil, keep this for now. It seems it may prevent event bugs

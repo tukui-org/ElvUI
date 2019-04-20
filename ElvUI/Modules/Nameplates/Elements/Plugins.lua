@@ -87,8 +87,6 @@ function NP:Construct_TargetIndicator(nameplate)
 
 	for _, object in pairs({'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator'}) do
 		TargetIndicator[object] = TargetIndicator:CreateTexture(nil, 'BACKGROUND', nil, -5)
-		TargetIndicator[object]:SetSnapToPixelGrid(false)
-		TargetIndicator[object]:SetTexelSnappingBias(0)
 		TargetIndicator[object]:Hide()
 	end
 
@@ -165,8 +163,6 @@ function NP:Construct_Highlight(nameplate)
 	Highlight:SetFrameLevel(9)
 
 	Highlight.texture = Highlight:CreateTexture(nil, 'ARTWORK')
-	Highlight.texture:SetSnapToPixelGrid(false)
-	Highlight.texture:SetTexelSnappingBias(0)
 
 	return Highlight
 end
