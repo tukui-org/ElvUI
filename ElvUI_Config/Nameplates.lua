@@ -1184,7 +1184,7 @@ local function UpdateFilterGroup()
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
+								if match(value, "^[%s%p]-$") or not GetSpellInfo(value) then
 									return
 								end
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[value] = "ONCD";
