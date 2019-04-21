@@ -240,7 +240,7 @@ end
 function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
 	local total, count, isSpell, timeLeft, hasMinTime, hasMaxTime, minTimeAllow, maxTimeAllow = 0, 0
 	for name, value in pairs(names) do
-		if value == true then --only if they are turned on
+		if value then --only if they are turned on
 			total = total + 1 --keep track of the names
 		end
 
@@ -249,7 +249,7 @@ function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, min
 				local button = auras[i]
 				if button and button:IsShown() then
 					isSpell = (button.name and button.name == name) or (button.spellID and button.spellID == tonumber(name))
-					if isSpell and (value == true) then
+					if isSpell and value then
 						hasMinTime = minTimeLeft and minTimeLeft ~= 0
 						hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
 						timeLeft = (hasMinTime or hasMaxTime) and button.expiration and (button.expiration - GetTime())
@@ -344,7 +344,7 @@ function mod:StyleFilterNameChanged()
 end
 
 function mod:StyleFilterBorderLock(backdrop, switch)
-	if switch == true then
+	if switch then
 		backdrop.ignoreBorderColors = true --but keep the backdrop updated
 	else
 		backdrop.ignoreBorderColors = nil --restore these borders to be updated
@@ -534,7 +534,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	if trigger.names and next(trigger.names) then
 		local pass
 		for name, value in pairs(trigger.names) do
-			if value == true then --only check names that are checked
+			if value then --only check names that are checked
 				pass = 1
 				if tonumber(name) then --check as guid
 					if frame.npcID and (name == frame.npcID) then
@@ -558,7 +558,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	if trigger.casting and trigger.casting.spells and next(trigger.casting.spells) then
 		local pass
 		for spellName, value in pairs(trigger.casting.spells) do
-			if value == true then --only check spell that are checked
+			if value then --only check spell that are checked
 				pass = 1
 				if frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling) then
 					local spell = frame.Castbar.Text:GetText() --Make sure we can check spell name
@@ -969,7 +969,7 @@ function mod:StyleFilterConfigure()
 				if filter.triggers.casting then
 					if next(filter.triggers.casting.spells) then
 						for _, value in pairs(filter.triggers.casting.spells) do
-							if value == true then
+							if value then
 								mod.StyleFilterTriggerEvents.FAKE_Casting = 0
 								break
 							end
@@ -1024,7 +1024,7 @@ function mod:StyleFilterConfigure()
 
 				if next(filter.triggers.names) then
 					for _, value in pairs(filter.triggers.names) do
-						if value == true then
+						if value then
 							mod.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = true
 							break
 						end
@@ -1047,7 +1047,7 @@ function mod:StyleFilterConfigure()
 
 				if next(filter.triggers.buffs.names) then
 					for _, value in pairs(filter.triggers.buffs.names) do
-						if value == true then
+						if value then
 							mod.StyleFilterTriggerEvents.UNIT_AURA = true
 							break
 						end
@@ -1056,7 +1056,7 @@ function mod:StyleFilterConfigure()
 
 				if next(filter.triggers.debuffs.names) then
 					for _, value in pairs(filter.triggers.debuffs.names) do
-						if value == true then
+						if value then
 							mod.StyleFilterTriggerEvents.UNIT_AURA = true
 							break
 						end
