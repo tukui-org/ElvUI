@@ -6,7 +6,7 @@ function UF:Construct_DebuffHighlight(frame)
 	dbh:SetInside(frame.Health.backdrop)
 	dbh:SetTexture(E.media.blankTex)
 	dbh:SetVertexColor(0, 0, 0, 0)
-	dbh:SetBlendMode("ADD")
+	dbh:SetBlendMode(UF.db.colors.debuffHighlight.blendMode)
 	frame.DebuffHighlightFilter = true
 	frame.DebuffHighlightAlpha = 0.45
 	frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors

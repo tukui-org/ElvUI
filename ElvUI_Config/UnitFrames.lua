@@ -98,6 +98,14 @@ local colorOverrideValues = {
 	['FORCE_OFF'] = L["Force Off"],
 }
 
+local blendModeValues = {
+	['DISABLE'] = L["Disable"],
+	['BLEND'] = L["Blend"],
+	['ADD'] = L["Add"],
+	['MOD'] = L["Mod"],
+	['ALPHAKEY'] = L["AlphaKey"],
+}
+
 local CUSTOMTEXT_CONFIGS = {}
 
 local carryFilterFrom, carryFilterTo
@@ -3452,6 +3460,14 @@ E.Options.args.unitframe = {
 									type = 'color',
 									hasAlpha = true,
 								},
+								blendMode = {
+									order = 5,
+									name = L["Blend Mode"],
+									type = 'select',
+									values = blendModeValues,
+									get = function(info) return E.db.unitframe.colors.debuffHighlight[info[#info]] end,
+									set = function(info, value) E.db.unitframe.colors.debuffHighlight[info[#info]] = value; UF:Update_AllFrames(); end
+								}
 							},
 						},
 					},
