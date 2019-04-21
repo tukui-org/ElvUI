@@ -1237,6 +1237,9 @@ function mod:StyleFilterEvents(nameplate)
 	if not nameplate:IsEventRegistered('PLAYER_FOCUS_CHANGED') then
 		nameplate:RegisterEvent('PLAYER_FOCUS_CHANGED', E.noop, true)
 	end
+	if not nameplate:IsEventRegistered('PLAYER_UPDATE_RESTING') then
+		nameplate:RegisterEvent('PLAYER_UPDATE_RESTING', E.noop, true)
+	end
 	if not nameplate:IsEventRegistered('RAID_TARGET_UPDATE') then
 		nameplate:RegisterEvent('RAID_TARGET_UPDATE', E.noop, true)
 	end

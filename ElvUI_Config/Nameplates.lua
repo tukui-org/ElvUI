@@ -852,7 +852,7 @@ local function UpdateFilterGroup()
 				combat = {
 					order = 9,
 					type = 'group',
-					name = _G.COMBAT,
+					name = L["Unit Conditions"],
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]] end,
 					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]] = value; NP:ConfigureAll() end,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
@@ -863,29 +863,40 @@ local function UpdateFilterGroup()
 							guiInline = true,
 							order = 2,
 							args = {
+								isResting = {
+									type = 'toggle',
+									name = L["Player is Resting"],
+									order = 1,
+								},
 								inCombat = {
 									name = L["Player in Combat"],
 									desc = L["If enabled then the filter will only activate when you are in combat."],
-									order = 1,
 									type = 'toggle',
+									order = 2,
 								},
 								outOfCombat = {
 									name = L["Player Out of Combat"],
 									desc = L["If enabled then the filter will only activate when you are out of combat."],
-									order = 2,
 									type = 'toggle',
+									order = 3,
+								},
+								spacer1 = {
+									type = 'description',
+									name = " ",
+									width = 'full',
+									order = 5,
 								},
 								inCombatUnit = {
 									name = L["Unit in Combat"],
 									desc = L["If enabled then the filter will only activate when the unit is in combat."],
-									order = 4,
 									type = 'toggle',
+									order = 6,
 								},
 								outOfCombatUnit = {
 									name = L["Unit Out of Combat"],
 									desc = L["If enabled then the filter will only activate when the unit is out of combat."],
-									order = 5,
 									type = 'toggle',
+									order = 7,
 								}
 							}
 						}
@@ -1622,22 +1633,6 @@ local function UpdateFilterGroup()
 								},
 							}
 						}
-					}
-				},
-				isResting = {
-					name = _G.TUTORIAL_TITLE30 ,
-					order = 25,
-					type = 'group',
-					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.isResting[info[#info]] end,
-					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.isResting[info[#info]] = value; NP:ConfigureAll() end,
-					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
-					args = {
-						enable = {
-							type = 'toggle',
-							order = 1,
-							name = L["Enable"],
-							width = 'full'
-						},
 					}
 				}
 			},
