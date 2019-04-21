@@ -886,7 +886,8 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	end,
 	['UNIT_ENTERED_VEHICLE'] = mod.VehicleFunction,
 	['UNIT_EXITED_VEHICLE'] = mod.VehicleFunction,
-	['UNIT_EXITING_VEHICLE'] = mod.VehicleFunction
+	['UNIT_EXITING_VEHICLE'] = mod.VehicleFunction,
+	['VEHICLE_UPDATE'] = mod.VehicleFunction
 }
 
 function mod:StyleFilterSetVariables(nameplate)
@@ -910,8 +911,8 @@ mod.StyleFilterPlateEvents = { -- events watched inside of ouf, which is called 
 	['NAME_PLATE_UNIT_ADDED'] = 1 -- rest is populated from `StyleFilterDefaultEvents` as needed
 }
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
-	'PLAYER_TARGET_CHANGED',
 	'PLAYER_FOCUS_CHANGED',
+	'PLAYER_TARGET_CHANGED',
 	'PLAYER_UPDATE_RESTING',
 	'RAID_TARGET_UPDATE',
 	'SPELL_UPDATE_COOLDOWN',
@@ -930,6 +931,7 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_POWER_UPDATE',
 	'UNIT_TARGET',
 	'UNIT_THREAT_LIST_UPDATE',
+	'VEHICLE_UPDATE',
 }
 
 function mod:StyleFilterWatchEvents()
@@ -1003,6 +1005,7 @@ function mod:StyleFilterConfigure()
 					mod.StyleFilterTriggerEvents.UNIT_ENTERED_VEHICLE = true
 					mod.StyleFilterTriggerEvents.UNIT_EXITED_VEHICLE = true
 					mod.StyleFilterTriggerEvents.UNIT_EXITING_VEHICLE = true
+					mod.StyleFilterTriggerEvents.VEHICLE_UPDATE = true
 				end
 
 				if next(filter.triggers.names) then
@@ -1161,6 +1164,7 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterRegister(nameplate,'UNIT_FLAGS')
 	mod:StyleFilterRegister(nameplate,'UNIT_TARGET')
 	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_LIST_UPDATE')
+	mod:StyleFilterRegister(nameplate,'VEHICLE_UPDATE', true)
 
 	mod:StyleFilterEventWatch(nameplate)
 end
