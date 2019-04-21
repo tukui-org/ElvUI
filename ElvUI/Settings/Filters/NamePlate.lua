@@ -190,10 +190,12 @@ E.StyleFilterDefaults = {
 			maxTimeLeft = 0,
 		},
 		isResting = false,
+		-- combat
 		inCombat = false,
 		outOfCombat = false,
 		inCombatUnit = false,
 		outOfCombatUnit = false,
+		-- vehicle
 		inVehicle = false,
 		outOfVehicle = false,
 		inVehicleUnit = false,
