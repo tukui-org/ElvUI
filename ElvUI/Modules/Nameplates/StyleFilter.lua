@@ -363,15 +363,15 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if HealthColorChanged then
 		frame.StyleChanged = true
 		frame.HealthColorChanged = actions.color.healthColor
-		frame.Health:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
+		frame.Health:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a)
 		--[[if frame.CutawayHealth then
-			frame.CutawayHealth:SetStatusBarColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a);
+			frame.CutawayHealth:SetStatusBarColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a)
 		end]]
 	end
 	if PowerColorChanged then
 		frame.StyleChanged = true
 		frame.PowerColorChanged = true
-		frame.Power:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a);
+		frame.Power:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a)
 	end
 	if BorderChanged then
 		frame.StyleChanged = true
@@ -468,9 +468,9 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
-		frame.Health:SetStatusBarColor(frame.Health.r, frame.Health.g, frame.Health.b);
+		frame.Health:SetStatusBarColor(frame.Health.r, frame.Health.g, frame.Health.b)
 		--[[if frame.CutawayHealth then
-			frame.CutawayHealth:SetStatusBarColor(frame.Health.r * 1.5, frame.Health.g * 1.5, frame.Health.b * 1.5, 1);
+			frame.CutawayHealth:SetStatusBarColor(frame.Health.r * 1.5, frame.Health.g * 1.5, frame.Health.b * 1.5, 1)
 		end]]
 	end
 	if PowerColorChanged then
@@ -817,7 +817,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	if mod.StyleFilterCustomCheck and (mod:StyleFilterCustomCheck(frame, filter, trigger) == false) then return end
 
 	-- Pass it along
-	mod:StyleFilterPass(frame, filter.actions);
+	mod:StyleFilterPass(frame, filter.actions)
 end
 
 function mod:StyleFilterPass(frame, actions)
@@ -1070,7 +1070,7 @@ function mod:StyleFilterUpdate(frame, event)
 
 	local filter
 	for filterNum in ipairs(mod.StyleFilterTriggerList) do
-		filter = E.global.nameplate.filters[mod.StyleFilterTriggerList[filterNum][1]];
+		filter = E.global.nameplate.filters[mod.StyleFilterTriggerList[filterNum][1]]
 		if filter then
 			mod:StyleFilterConditionCheck(frame, filter, filter.triggers)
 		end
@@ -1198,21 +1198,21 @@ end
 function mod:StyleFilterClearDefaults()
 	for filterName, filterTable in pairs(E.global.nameplate.filters) do
 		if G.nameplate.filters[filterName] then
-			local defaultTable = E:CopyTable({}, E.StyleFilterDefaults);
-			E:CopyTable(defaultTable, G.nameplate.filters[filterName]);
-			removeDefaults(filterTable, defaultTable);
+			local defaultTable = E:CopyTable({}, E.StyleFilterDefaults)
+			E:CopyTable(defaultTable, G.nameplate.filters[filterName])
+			removeDefaults(filterTable, defaultTable)
 		else
-			removeDefaults(filterTable, E.StyleFilterDefaults);
+			removeDefaults(filterTable, E.StyleFilterDefaults)
 		end
 	end
 end
 
 function mod:StyleFilterCopyDefaults(tbl)
-	copyDefaults(tbl, E.StyleFilterDefaults);
+	copyDefaults(tbl, E.StyleFilterDefaults)
 end
 
 function mod:StyleFilterInitialize()
 	for _, filterTable in pairs(E.global.nameplate.filters) do
-		mod:StyleFilterCopyDefaults(filterTable);
+		mod:StyleFilterCopyDefaults(filterTable)
 	end
 end
