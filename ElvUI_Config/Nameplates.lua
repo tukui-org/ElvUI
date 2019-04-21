@@ -1624,6 +1624,22 @@ local function UpdateFilterGroup()
 						}
 					}
 				},
+				isResting = {
+					name = _G.TUTORIAL_TITLE30 ,
+					order = 25,
+					type = 'group',
+					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.isResting[info[#info]] end,
+					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.isResting[info[#info]] = value; NP:ConfigureAll() end,
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					args = {
+						enable = {
+							type = 'toggle',
+							order = 1,
+							name = L["Enable"],
+							width = 'full'
+						},
+					}
+				}
 			},
 		}
 		E.Options.args.nameplate.args.filters.args.actions = {

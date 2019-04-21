@@ -49,6 +49,9 @@ E.StyleFilterDefaults = {
 			interruptible = false,
 			spells = {},
 		},
+		isResting = {
+			enable = false,
+		},
 		role = {
 			tank = false,
 			healer = false,
