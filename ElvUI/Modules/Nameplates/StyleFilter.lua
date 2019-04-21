@@ -1229,32 +1229,22 @@ do -- oUF style filter inject watch functions without actually registering any e
 	end
 end
 
+function mod:StyleFilterRegister(nameplate, event, unitless, func)
+	if not nameplate:IsEventRegistered(event) then
+		nameplate:RegisterEvent(event, func or E.noop, unitless)
+	end
+end
+
 -- events we actually register on plates when they aren't added
 function mod:StyleFilterEvents(nameplate)
-	if not nameplate:IsEventRegistered('PLAYER_TARGET_CHANGED') then
-		nameplate:RegisterEvent('PLAYER_TARGET_CHANGED', E.noop, true)
-	end
-	if not nameplate:IsEventRegistered('PLAYER_FOCUS_CHANGED') then
-		nameplate:RegisterEvent('PLAYER_FOCUS_CHANGED', E.noop, true)
-	end
-	if not nameplate:IsEventRegistered('PLAYER_UPDATE_RESTING') then
-		nameplate:RegisterEvent('PLAYER_UPDATE_RESTING', E.noop, true)
-	end
-	if not nameplate:IsEventRegistered('RAID_TARGET_UPDATE') then
-		nameplate:RegisterEvent('RAID_TARGET_UPDATE', E.noop, true)
-	end
-	if not nameplate:IsEventRegistered('SPELL_UPDATE_COOLDOWN') then
-		nameplate:RegisterEvent('SPELL_UPDATE_COOLDOWN', E.noop, true)
-	end
-	if not nameplate:IsEventRegistered('UNIT_THREAT_LIST_UPDATE') then
-		nameplate:RegisterEvent('UNIT_THREAT_LIST_UPDATE', E.noop)
-	end
-	if not nameplate:IsEventRegistered('UNIT_FLAGS') then
-		nameplate:RegisterEvent('UNIT_FLAGS', E.noop)
-	end
-	if not nameplate:IsEventRegistered('UNIT_TARGET') then
-		nameplate:RegisterEvent('UNIT_TARGET', E.noop)
-	end
+	mod:StyleFilterRegister(nameplate,'PLAYER_FOCUS_CHANGED', true)
+	mod:StyleFilterRegister(nameplate,'PLAYER_TARGET_CHANGED', true)
+	mod:StyleFilterRegister(nameplate,'PLAYER_UPDATE_RESTING', true)
+	mod:StyleFilterRegister(nameplate,'RAID_TARGET_UPDATE', true)
+	mod:StyleFilterRegister(nameplate,'SPELL_UPDATE_COOLDOWN', true)
+	mod:StyleFilterRegister(nameplate,'UNIT_FLAGS')
+	mod:StyleFilterRegister(nameplate,'UNIT_TARGET')
+	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_LIST_UPDATE')
 
 	mod:StyleFilterEventWatch(nameplate)
 end
