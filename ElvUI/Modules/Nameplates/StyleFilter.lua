@@ -225,16 +225,16 @@ function mod:StyleFilterAuraWait(frame, button, varTimerName, timeLeft, mTimeLef
 		local updateIn = timeLeft-mTimeLeft
 		if updateIn > 0 then
 			-- also add a tenth of a second to updateIn to prevent the timer from firing on the same second
-            button[varTimerName] = C_Timer_NewTimer(updateIn+0.1, function()
+			button[varTimerName] = C_Timer_NewTimer(updateIn+0.1, function()
 				if frame and frame:IsShown() then
 					mod:StyleFilterUpdate(frame, 'FAKE_AuraWaitTimer')
-                end
-                if button and button[varTimerName] then
-	                button[varTimerName] = nil
-	            end
-            end)
+				end
+				if button and button[varTimerName] then
+					button[varTimerName] = nil
+				end
+			end)
 		end
-    end
+	end
 end
 
 function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
@@ -602,9 +602,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Quest Boss
 	if trigger.questBoss and not UnitIsQuestBoss(frame.unit) then return end
 
-	-- inVehicleUnit
-	if trigger.inVehicleUnit and not frame.UnitInVehicle then return end
-
 	-- Player Combat
 	if trigger.inCombat or trigger.outOfCombat then
 		local inCombat = UnitAffectingCombat("player")
@@ -630,6 +627,11 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Unit Focus
 	if trigger.isFocus or trigger.notFocus then
 		if not ((trigger.isFocus and frame.isFocused) or (trigger.notFocus and not frame.isFocused)) then return end
+	end
+
+	-- Unit Vehicle
+	if trigger.inVehicleUnit or trigger.outOfVehicleUnit then
+		if not ((trigger.inVehicleUnit and frame.inVehicle) or (trigger.outOfVehicleUnit and not frame.inVehicle)) then return end
 	end
 
 	-- Classification
@@ -850,6 +852,11 @@ function mod:StyleFilterSort(place)
 	end
 end
 
+function mod:VehicleFunction(_, unit)
+	unit = unit or self.unit
+	self.inVehicle = UnitInVehicle(unit) or nil
+end
+
 mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	['PLAYER_TARGET_CHANGED'] = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
@@ -860,19 +867,13 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	['RAID_TARGET_UPDATE'] = function(self)
 		self.RaidTargetIndex = self.unit and GetRaidTargetIndex(self.unit) or nil
 	end,
-	['UNIT_ENTERED_VEHICLE'] = function(self)
-		self.UnitInVehicle = self.unit and UnitInVehicle(self.unit) or nil
-	end,
-	['UNIT_EXITED_VEHICLE'] = function(self)
-		self.UnitInVehicle = self.unit and UnitInVehicle(self.unit) or nil
-	end,
-	['UNIT_EXITING_VEHICLE'] = function(self)
-		self.UnitInVehicle = self.unit and UnitInVehicle(self.unit) or nil
-	end,
 	['UNIT_TARGET'] = function(self, _, unit)
 		unit = unit or self.unit
 		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
-	end
+	end,
+	['UNIT_ENTERED_VEHICLE'] = mod.VehicleFunction,
+	['UNIT_EXITED_VEHICLE'] = mod.VehicleFunction,
+	['UNIT_EXITING_VEHICLE'] = mod.VehicleFunction
 }
 
 function mod:StyleFilterSetVariables(nameplate)
@@ -884,10 +885,10 @@ end
 function mod:StyleFilterClearVariables(nameplate)
 	nameplate.isTarget = nil
 	nameplate.isFocused = nil
+	nameplate.inVehicle = nil
 	nameplate.isTargetingMe = nil
 	nameplate.RaidTargetIndex = nil
 	nameplate.ThreatScale = nil
-	nameplate.UnitInVehicle = nil
 end
 
 mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
@@ -968,8 +969,8 @@ function mod:StyleFilterConfigure()
 				end
 
 				if filter.triggers.isResting then
-                    mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = true
-                end
+					mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = true
+				end
 
 				if filter.triggers.healthThreshold then
 					mod.StyleFilterTriggerEvents.UNIT_HEALTH = true
@@ -992,10 +993,6 @@ function mod:StyleFilterConfigure()
 					mod.StyleFilterTriggerEvents.UNIT_EXITED_VEHICLE = true
 					mod.StyleFilterTriggerEvents.UNIT_EXITING_VEHICLE = true
 				end
-
-				if filter.triggers.isResting then
-                    mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = true
-                end
 
 				if next(filter.triggers.names) then
 					for _, value in pairs(filter.triggers.names) do
@@ -1163,12 +1160,12 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterRegister(nameplate,'PLAYER_UPDATE_RESTING', true)
 	mod:StyleFilterRegister(nameplate,'RAID_TARGET_UPDATE', true)
 	mod:StyleFilterRegister(nameplate,'SPELL_UPDATE_COOLDOWN', true)
+	mod:StyleFilterRegister(nameplate,'UNIT_ENTERED_VEHICLE')
+	mod:StyleFilterRegister(nameplate,'UNIT_EXITED_VEHICLE')
+	mod:StyleFilterRegister(nameplate,'UNIT_EXITING_VEHICLE')
 	mod:StyleFilterRegister(nameplate,'UNIT_FLAGS')
 	mod:StyleFilterRegister(nameplate,'UNIT_TARGET')
 	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_LIST_UPDATE')
-	mod:StyleFilterRegister(nameplate,'UNIT_ENTERED_VEHICLE')
-	mod:StyleFilterRegister(nameplate,'UNIT_EXITED_VEHICLE')
-	mod:StyleFilterRegister(nameplate,'UNIT_EXITING_VEHICLE', true)
 
 	mod:StyleFilterEventWatch(nameplate)
 end

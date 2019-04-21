@@ -899,8 +899,13 @@ local function UpdateFilterGroup()
 									order = 7,
 								},
 								inVehicleUnit = {
-									name = _G.BINDING_HEADER_VEHICLE,
+									name = L["Unit in Vehicle"],
 									order = 8,
+									type = 'toggle',
+								},
+								outOfVehicleUnit = {
+									name = L["Unit Out of Vehicle"],
+									order = 9,
 									type = 'toggle',
 								},
 							}
