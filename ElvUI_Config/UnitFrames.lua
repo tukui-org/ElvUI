@@ -2505,17 +2505,6 @@ E.Options.args.unitframe = {
 							disabled = function() return E.private.general.pixelPerfect end,
 							set = function(info, value) E.db.unitframe[info[#info]] = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
-						debuffHighlighting = {
-							order = 3,
-							name = L["Debuff Highlighting"],
-							desc = L["Color the unit healthbar if there is a debuff that can be dispelled by you."],
-							type = 'select',
-							values = {
-								['NONE'] = NONE,
-								['GLOW'] = L["Glow"],
-								['FILL'] = L["Fill"]
-							},
-						},
 						smartRaidFilter = {
 							order = 4,
 							name = L["Smart Raid Filter"],
@@ -3436,38 +3425,57 @@ E.Options.args.unitframe = {
 								UF:Update_AllFrames()
 							end,
 							args = {
-								Magic = {
+								debuffHighlighting = {
 									order = 1,
-									name = ENCOUNTER_JOURNAL_SECTION_FLAG7,--Magic Effect
-									type = 'color',
-									hasAlpha = true,
-								},
-								Curse = {
-									order = 2,
-									name = ENCOUNTER_JOURNAL_SECTION_FLAG8,--Curse Effect
-									type = 'color',
-									hasAlpha = true,
-								},
-								Disease = {
-									order = 3,
-									name = ENCOUNTER_JOURNAL_SECTION_FLAG10,--Disease Effect
-									type = 'color',
-									hasAlpha = true,
-								},
-								Poison = {
-									order = 4,
-									name = ENCOUNTER_JOURNAL_SECTION_FLAG9,--Poison Effect
-									type = 'color',
-									hasAlpha = true,
+									name = L["Debuff Highlighting"],
+									desc = L["Color the unit healthbar if there is a debuff that can be dispelled by you."],
+									type = 'select',
+									get = function(info) return E.db.unitframe[info[#info]] end,
+									set = function(info, value) E.db.unitframe[info[#info]] = value end,
+									values = {
+										['NONE'] = NONE,
+										['GLOW'] = L["Glow"],
+										['FILL'] = L["Fill"]
+									},
 								},
 								blendMode = {
-									order = 5,
+									order = 2,
 									name = L["Blend Mode"],
 									type = 'select',
 									values = blendModeValues,
 									get = function(info) return E.db.unitframe.colors.debuffHighlight[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors.debuffHighlight[info[#info]] = value; UF:Update_AllFrames(); end
-								}
+								},
+								spacer1 = {
+									order = 3,
+									type = "description",
+									name = " ",
+									width = 'full'
+								},
+								Magic = {
+									order = 4,
+									name = ENCOUNTER_JOURNAL_SECTION_FLAG7,--Magic Effect
+									type = 'color',
+									hasAlpha = true,
+								},
+								Curse = {
+									order = 5,
+									name = ENCOUNTER_JOURNAL_SECTION_FLAG8,--Curse Effect
+									type = 'color',
+									hasAlpha = true,
+								},
+								Disease = {
+									order = 6,
+									name = ENCOUNTER_JOURNAL_SECTION_FLAG10,--Disease Effect
+									type = 'color',
+									hasAlpha = true,
+								},
+								Poison = {
+									order = 7,
+									name = ENCOUNTER_JOURNAL_SECTION_FLAG9,--Poison Effect
+									type = 'color',
+									hasAlpha = true,
+								},
 							},
 						},
 					},
