@@ -527,7 +527,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 end
 
-function mod:StyleFilterConditionCheck(frame, filter, trigger)
+function mod:StyleFilterConditionCheck(frame, filter, trigger, passed)
 	-- Name or GUID
 	if trigger.names and next(trigger.names) then
 		local pass
@@ -545,7 +545,11 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 						break
 		end end end end
 
-		if pass == 1 then return end
+		if pass == 1 then
+			return
+		elseif pass == 2 then
+			passed = true
+		end
 	end
 
 	-- Casting Spell
@@ -566,14 +570,18 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end end end end end
 
 		--If we cant check spell name, we ignore this trigger when the castbar is shown
-		if pass == 1 then return end
+		if pass == 1 then
+			return
+		elseif pass == 2 then
+			passed = true
+		end
 	end
 
 	-- Casting Interruptible
 	if trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible) then
 		if not (frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
 		and ((trigger.casting.interruptible and not frame.Castbar.notInterruptible)
-		or (trigger.casting.notInterruptible and frame.Castbar.notInterruptible))) then return end
+		or (trigger.casting.notInterruptible and frame.Castbar.notInterruptible))) then return else passed = true end
 	end
 
 	-- Health
@@ -583,7 +591,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		local percHealth = (maxHealth and (maxHealth > 0) and health/maxHealth) or 0
 		local underHealthThreshold = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0) and (trigger.underHealthThreshold > percHealth)
 		local overHealthThreshold = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0) and (trigger.overHealthThreshold < percHealth)
-		if not (underHealthThreshold or overHealthThreshold) then return end
+		if not (underHealthThreshold or overHealthThreshold) then return else passed = true end
 	end
 
 	-- Power
@@ -593,45 +601,49 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		local percPower = (maxPower and (maxPower > 0) and power/maxPower) or 0
 		local underPowerThreshold = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0) and (trigger.underPowerThreshold > percPower)
 		local overPowerThreshold = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0) and (trigger.overPowerThreshold < percPower)
-		if not (underPowerThreshold or overPowerThreshold) then return end
+		if not (underPowerThreshold or overPowerThreshold) then return else passed = true end
 	end
 
 	-- Resting
-	if trigger.isResting and not IsResting() then return end
+	if trigger.isResting then
+		if not IsResting() then return else passed = true end
+	end
 
 	-- Quest Boss
-	if trigger.questBoss and not UnitIsQuestBoss(frame.unit) then return end
+	if trigger.questBoss then
+		if not UnitIsQuestBoss(frame.unit) then return else passed = true end
+	end
 
 	-- Player Combat
 	if trigger.inCombat or trigger.outOfCombat then
 		local inCombat = UnitAffectingCombat("player")
-		if not ((trigger.inCombat and inCombat) or (trigger.outOfCombat and not inCombat)) then return end
+		if not ((trigger.inCombat and inCombat) or (trigger.outOfCombat and not inCombat)) then return else passed = true end
 	end
 
 	-- Unit Combat
 	if trigger.inCombatUnit or trigger.outOfCombatUnit then
 		local inCombat = UnitAffectingCombat(frame.unit)
-		if not ((trigger.inCombatUnit and inCombat) or (trigger.outOfCombatUnit and not inCombat)) then return end
+		if not ((trigger.inCombatUnit and inCombat) or (trigger.outOfCombatUnit and not inCombat)) then return else passed = true end
 	end
 
 	-- Player Target
 	if trigger.isTarget or trigger.notTarget then
-		if not ((trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget)) then return end
+		if not ((trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget)) then return else passed = true end
 	end
 
 	-- Unit Target
 	if trigger.targetMe or trigger.notTargetMe then
-		if not ((trigger.targetMe and frame.isTargetingMe) or (trigger.notTargetMe and not frame.isTargetingMe)) then return end
+		if not ((trigger.targetMe and frame.isTargetingMe) or (trigger.notTargetMe and not frame.isTargetingMe)) then return else passed = true end
 	end
 
 	-- Unit Focus
 	if trigger.isFocus or trigger.notFocus then
-		if not ((trigger.isFocus and frame.isFocused) or (trigger.notFocus and not frame.isFocused)) then return end
+		if not ((trigger.isFocus and frame.isFocused) or (trigger.notFocus and not frame.isFocused)) then return else passed = true end
 	end
 
 	-- Unit Vehicle
 	if trigger.inVehicleUnit or trigger.outOfVehicleUnit then
-		if not ((trigger.inVehicleUnit and frame.inVehicle) or (trigger.outOfVehicleUnit and not frame.inVehicle)) then return end
+		if not ((trigger.inVehicleUnit and frame.inVehicle) or (trigger.outOfVehicleUnit and not frame.inVehicle)) then return else passed = true end
 	end
 
 	-- Classification
@@ -643,7 +655,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		or (trigger.classification.rare		   and frame.classification == "rare")
 		or (trigger.classification.normal	   and frame.classification == "normal")
 		or (trigger.classification.trivial	   and frame.classification == "trivial")
-		or (trigger.classification.minus	   and frame.classification == "minus"))) then return end
+		or (trigger.classification.minus	   and frame.classification == "minus"))) then return else passed = true end
 	end
 
 	-- Group Role
@@ -651,19 +663,19 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if not (E.myrole
 		and ((trigger.role.tank and E.myrole == "TANK")
 		or (trigger.role.healer and E.myrole == "HEALER")
-		or (trigger.role.damager and E.myrole == "DAMAGER"))) then return end
+		or (trigger.role.damager and E.myrole == "DAMAGER"))) then return else passed = true end
 	end
 
 	do -- Class
 		local matchMyClass --Only check spec when we match the class
 		if trigger.class and next(trigger.class) then
 			matchMyClass = trigger.class[E.myclass] and trigger.class[E.myclass].enabled
-			if not matchMyClass then return end
+			if not matchMyClass then return else passed = true end
 		end
 
 		-- Specialization
 		if matchMyClass and (trigger.class[E.myclass] and trigger.class[E.myclass].specs and next(trigger.class[E.myclass].specs)) then
-			if not (trigger.class[E.myclass].specs[E.myspec and GetSpecializationInfo(E.myspec)]) then return end
+			if not (trigger.class[E.myclass].specs[E.myspec and GetSpecializationInfo(E.myspec)]) then return else passed = true end
 		end
 	end
 
@@ -678,7 +690,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 			or (trigger.instanceType.party	  and instanceType == "party")
 			or (trigger.instanceType.raid	  and instanceType == "raid")
 			or (trigger.instanceType.arena	  and instanceType == "arena")
-			or (trigger.instanceType.pvp	  and instanceType == "pvp"))) then return end
+			or (trigger.instanceType.pvp	  and instanceType == "pvp"))) then return else passed = true end
 		end
 
 		-- Difficulty
@@ -692,7 +704,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 				or (dungeon.heroic		and instanceDifficulty == 2)
 				or (dungeon.mythic		and instanceDifficulty == 23)
 				or (dungeon["mythic+"]	and instanceDifficulty == 8)
-				or (dungeon.timewalking	and instanceDifficulty == 24))) then return end
+				or (dungeon.timewalking	and instanceDifficulty == 24))) then return else passed = true end
 			end
 
 			local raid = trigger.instanceDifficulty.raid
@@ -706,7 +718,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 				or (raid.legacy10normal	and instanceDifficulty == 3)
 				or (raid.legacy25normal	and instanceDifficulty == 4)
 				or (raid.legacy10heroic	and instanceDifficulty == 5)
-				or (raid.legacy25heroic	and instanceDifficulty == 6))) then return end
+				or (raid.legacy25heroic	and instanceDifficulty == 6))) then return else passed = true end
 			end
 		end
 	end
@@ -739,7 +751,9 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 			end
 		end
 
-		if not pass then
+		if pass then
+			passed = true
+		else
 			return
 		end
 	end
@@ -752,7 +766,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		local minLevel = (trigger.minlevel and trigger.minlevel ~= 0 and (trigger.minlevel <= level))
 		local maxLevel = (trigger.maxlevel and trigger.maxlevel ~= 0 and (trigger.maxlevel >= level))
 		local matchMyLevel = trigger.mylevel and (level == myLevel)
-		if not (curLevel or minLevel or maxLevel or matchMyLevel) then return end
+		if not (curLevel or minLevel or maxLevel or matchMyLevel) then return else passed = true end
 	end
 
 	-- Unit Type
@@ -763,12 +777,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		or (trigger.nameplateType.enemyPlayer	 and frame.frameType == 'ENEMY_PLAYER')
 		or (trigger.nameplateType.enemyNPC		 and frame.frameType == 'ENEMY_NPC')
 		or (trigger.nameplateType.healer		 and frame.frameType == 'HEALER')
-		or (trigger.nameplateType.player		 and frame.frameType == 'PLAYER'))) then return end
+		or (trigger.nameplateType.player		 and frame.frameType == 'PLAYER'))) then return else passed = true end
 	end
 
 	-- Creature Type
 	if trigger.creatureType and trigger.creatureType.enable then
-		if not trigger.creatureType[E.CreatureTypes[frame.creatureType]] then return end
+		if not trigger.creatureType[E.CreatureTypes[frame.creatureType]] then return else passed = true end
 	end
 
 	-- Reaction (or Reputation) Type
@@ -782,22 +796,22 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		or (reaction == 5 and trigger.reactionType.friendly)
 		or (reaction == 6 and trigger.reactionType.honored)
 		or (reaction == 7 and trigger.reactionType.revered)
-		or (reaction == 8 and trigger.reactionType.exalted))) then return end
+		or (reaction == 8 and trigger.reactionType.exalted))) then return else passed = true end
 	end
 
 	--Try to match according to cooldown conditions
 	if trigger.cooldowns and trigger.cooldowns.names and next(trigger.cooldowns.names) then
-		if mod:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll) == false then return end -- will be nil if none are set to ONCD or OFFCD
+		if mod:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll) == false then return else passed = true end -- will be nil if none are set to ONCD or OFFCD
 	end
 
 	--Try to match according to buff aura conditions
 	if trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-		if mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft) == false then return end -- will be nil if none are selected
+		if mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft) == false then return else passed = true end -- will be nil if none are selected
 	end
 
 	--Try to match according to debuff aura conditions
 	if trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
-		if mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft) == false then return end -- will be nil if none are selected
+		if mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft) == false then return else passed = true end -- will be nil if none are selected
 	end
 
 	--Try to match according to raid target conditions
@@ -810,14 +824,22 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		or (frame.RaidTargetIndex == 5 and trigger.raidTarget.moon)
 		or (frame.RaidTargetIndex == 6 and trigger.raidTarget.square)
 		or (frame.RaidTargetIndex == 7 and trigger.raidTarget.cross)
-		or (frame.RaidTargetIndex == 8 and trigger.raidTarget.skull))) then return end
+		or (frame.RaidTargetIndex == 8 and trigger.raidTarget.skull))) then return else passed = true end
 	end
 
 	-- Plugin Callback
-	if mod.StyleFilterCustomCheck and (mod:StyleFilterCustomCheck(frame, filter, trigger) == false) then return end
+	if mod.StyleFilterCustomCheck then
+		if mod:StyleFilterCustomCheck(frame, filter, trigger) == false then
+			return
+		else
+			passed = true
+		end
+	end
 
 	-- Pass it along
-	mod:StyleFilterPass(frame, filter.actions)
+	if passed then
+		mod:StyleFilterPass(frame, filter.actions)
+	end
 end
 
 function mod:StyleFilterPass(frame, actions)
