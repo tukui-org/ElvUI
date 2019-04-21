@@ -1356,7 +1356,6 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime);
 		elseif (chatType == "LOOT") then
 			-- Append [Share] hyperlink if this is a valid social item and you are the looter.
-			-- arg5 contains the name of the player who looted
 			if (arg12 == E.myguid and C_SocialIsSocialEnabled()) then
 				local itemID, creationContext = GetItemInfoFromHyperlink(arg1);
 				if (itemID and C_SocialGetLastItem() == itemID) then
