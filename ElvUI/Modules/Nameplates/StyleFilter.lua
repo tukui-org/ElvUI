@@ -892,7 +892,6 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	end,
 	['UNIT_ENTERED_VEHICLE'] = mod.VehicleFunction,
 	['UNIT_EXITED_VEHICLE'] = mod.VehicleFunction,
-	['UNIT_EXITING_VEHICLE'] = mod.VehicleFunction,
 	['VEHICLE_UPDATE'] = mod.VehicleFunction
 }
 
@@ -926,7 +925,6 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_DISPLAYPOWER',
 	'UNIT_ENTERED_VEHICLE',
 	'UNIT_EXITED_VEHICLE',
-	'UNIT_EXITING_VEHICLE',
 	'UNIT_FACTION',
 	'UNIT_FLAGS',
 	'UNIT_HEALTH',
@@ -1010,7 +1008,6 @@ function mod:StyleFilterConfigure()
 				if filter.triggers.unitInVehicle then
 					mod.StyleFilterTriggerEvents.UNIT_ENTERED_VEHICLE = true
 					mod.StyleFilterTriggerEvents.UNIT_EXITED_VEHICLE = true
-					mod.StyleFilterTriggerEvents.UNIT_EXITING_VEHICLE = true
 					mod.StyleFilterTriggerEvents.VEHICLE_UPDATE = true
 				end
 
@@ -1166,7 +1163,6 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterRegister(nameplate,'SPELL_UPDATE_COOLDOWN', true)
 	mod:StyleFilterRegister(nameplate,'UNIT_ENTERED_VEHICLE')
 	mod:StyleFilterRegister(nameplate,'UNIT_EXITED_VEHICLE')
-	mod:StyleFilterRegister(nameplate,'UNIT_EXITING_VEHICLE')
 	mod:StyleFilterRegister(nameplate,'UNIT_FLAGS')
 	mod:StyleFilterRegister(nameplate,'UNIT_TARGET')
 	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_LIST_UPDATE')
