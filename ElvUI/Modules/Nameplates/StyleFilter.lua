@@ -297,7 +297,7 @@ function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 end
 
 function mod:StyleFilterFinishedFlash(requested)
-	if self and not requested then self:Play() end
+	if not requested then self:Play() end
 end
 
 function mod:StyleFilterSetupFlash(FlashTexture)
