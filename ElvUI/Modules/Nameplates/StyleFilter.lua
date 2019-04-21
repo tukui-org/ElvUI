@@ -602,6 +602,9 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Quest Boss
 	if trigger.questBoss and not UnitIsQuestBoss(frame.unit) then return end
 
+	-- inVehicleUnit
+	if trigger.inVehicleUnit and not frame.UnitInVehicle then return end
+
 	-- Player Combat
 	if trigger.inCombat or trigger.outOfCombat then
 		local inCombat = UnitAffectingCombat("player")
@@ -808,8 +811,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		or (frame.RaidTargetIndex == 8 and trigger.raidTarget.skull))) then return end
 	end
 
-	if trigger.inVehicleUnit and not frame.UnitInVehicle then return end
-
 	-- Plugin Callback
 	if mod.StyleFilterCustomCheck and (mod:StyleFilterCustomCheck(frame, filter, trigger) == false) then return end
 
@@ -965,7 +966,7 @@ function mod:StyleFilterConfigure()
 				if filter.triggers.isFocus or filter.triggers.notFocus then
 					mod.StyleFilterTriggerEvents.PLAYER_FOCUS_CHANGED = true
 				end
-				
+
 				if filter.triggers.isResting then
                     mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = true
                 end
