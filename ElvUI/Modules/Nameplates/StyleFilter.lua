@@ -233,9 +233,7 @@ function mod:StyleFilterAuraWait(frame, button, varTimerName, timeLeft, mTimeLef
 					button[varTimerName] = nil
 				end
 			end)
-		end
-	end
-end
+end end end
 
 function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
 	local total, count = 0, 0
@@ -259,13 +257,7 @@ function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, min
 							end
 							if minTimeAllow and maxTimeAllow then
 								count = count + 1 --keep track of how many matches we have
-							end
-						end
-					end
-				end
-			end
-		end
-	end
+	end end end end end end end
 
 	if total == 0 then
 		return nil --If no auras are checked just pass nil, we dont need to run the filter here.
@@ -295,10 +287,7 @@ function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 				or (charges == nil and (duration <= gcd and value == "OFFCD")) then --no charges exist and the duration of the cooldown is at or below the current GCD cooldown spell then it is not on cooldown.
 					count = count + 1
 					--print(((charges and charges == 0 and value == "ONCD") and name.." (charge) passes because it is on cd") or ((charges and charges > 0 and value == "OFFCD") and name.." (charge) passes because it is offcd") or ((charges == nil and (duration > gcd and value == "ONCD")) and name.."passes because it is on cd.") or ((charges == nil and (duration <= gcd and value == "OFFCD")) and name.." passes because it is off cd."))
-				end
-			end
-		end
-	end
+	end end end end
 
 	if total == 0 then
 		return nil
@@ -721,9 +710,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 				or (raid.legacy25normal	and instanceDifficulty == 4)
 				or (raid.legacy10heroic	and instanceDifficulty == 5)
 				or (raid.legacy25heroic	and instanceDifficulty == 6)) then passed = true else return end
-			end
-		end
-	end
+	end end end
 
 	-- Talents
 	if trigger.talent.enabled then
@@ -749,9 +736,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 				elseif trigger.talent.requireAll then
 					pass = false -- fail because requireAll
 					break
-				end
-			end
-		end
+		end end end
 
 		if pass then passed = true else return end
 	end
@@ -972,9 +957,7 @@ function mod:StyleFilterConfigure()
 							if value then
 								mod.StyleFilterTriggerEvents.FAKE_Casting = 0
 								break
-							end
-						end
-					end
+					end end end
 
 					if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
 						mod.StyleFilterTriggerEvents.FAKE_Casting = 0
@@ -1027,9 +1010,7 @@ function mod:StyleFilterConfigure()
 						if value then
 							mod.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = true
 							break
-						end
-					end
-				end
+				end end end
 
 				if filter.triggers.inCombat or filter.triggers.outOfCombat or filter.triggers.inCombatUnit or filter.triggers.outOfCombatUnit then
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
@@ -1041,30 +1022,22 @@ function mod:StyleFilterConfigure()
 						if value == "ONCD" or value == "OFFCD" then
 							mod.StyleFilterTriggerEvents.SPELL_UPDATE_COOLDOWN = true
 							break
-						end
-					end
-				end
+				end end end
 
 				if next(filter.triggers.buffs.names) then
 					for _, value in pairs(filter.triggers.buffs.names) do
 						if value then
 							mod.StyleFilterTriggerEvents.UNIT_AURA = true
 							break
-						end
-					end
-				end
+				end end end
 
 				if next(filter.triggers.debuffs.names) then
 					for _, value in pairs(filter.triggers.debuffs.names) do
 						if value then
 							mod.StyleFilterTriggerEvents.UNIT_AURA = true
 							break
-						end
-					end
-				end
-			end
-		end
-	end
+				end end end
+	end end end
 
 	mod:StyleFilterWatchEvents()
 
@@ -1134,8 +1107,7 @@ do -- oUF style filter inject watch functions without actually registering any e
 						end
 
 						return
-					end
-				end
+				end end
 
 				tinsert(curev, update)
 			end
@@ -1154,11 +1126,9 @@ do -- oUF style filter inject watch functions without actually registering any e
 				for _, infunc in next, curev do
 					if infunc == update then
 						return true
-					end
-				end
+				end end
 			end
-		end
-	end
+	end end
 
 	function mod:StyleFilterEventWatch(frame)
 		for _, event in ipairs(mod.StyleFilterDefaultEvents) do
@@ -1169,9 +1139,7 @@ do -- oUF style filter inject watch functions without actually registering any e
 				end
 			elseif holdsEvent then
 				oUF_fake_register(frame, event, true)
-			end
-		end
-	end
+	end end end
 end
 
 function mod:StyleFilterRegister(nameplate, event, unitless, func)
