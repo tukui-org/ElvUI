@@ -526,9 +526,9 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 end
 
-function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
+function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Name or GUID
-	if not failed and trigger.names and next(trigger.names) then
+	if trigger.names and next(trigger.names) then
 		local pass
 		for name, value in pairs(trigger.names) do
 			if value == true then --only check names that are checked
@@ -542,15 +542,13 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 					if name and name ~= "" and (name == frame.unitName) then
 						pass = 2
 						break
-					end
-				end
-			end
-		end
-		if pass then failed = pass == 1 end
+		end end end end
+
+		if pass == 1 then return end
 	end
 
 	-- Casting Spell
-	if not failed and (trigger.casting and trigger.casting.spells) and next(trigger.casting.spells) then
+	if trigger.casting and trigger.casting.spells and next(trigger.casting.spells) then
 		local pass
 		for spellName, value in pairs(trigger.casting.spells) do
 			if value == true then --only check spell that are checked
@@ -564,142 +562,136 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 						if spellName and spellName == spell then
 							pass = 2
 							break
-						end
-					end
-				end
-			end
-		end
-		if pass then failed = pass == 1 end --If we cant check spell name, we ignore this trigger when the castbar is shown
+		end end end end end
+
+		--If we cant check spell name, we ignore this trigger when the castbar is shown
+		if pass == 1 then return end
 	end
 
 	-- Casting Interruptible
-	if not failed and (trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible)) then
-		failed = not (frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
+	if trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible) then
+		if not (frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
 		and ((trigger.casting.interruptible and not frame.Castbar.notInterruptible)
-		or (trigger.casting.notInterruptible and frame.Castbar.notInterruptible)))
+		or (trigger.casting.notInterruptible and frame.Castbar.notInterruptible))) then return end
 	end
 
 	-- Health
-	if not failed and trigger.healthThreshold then
+	if trigger.healthThreshold then
 		local healthUnit = (trigger.healthUsePlayer and "player") or frame.unit
 		local health, maxHealth = UnitHealth(healthUnit), UnitHealthMax(healthUnit)
 		local percHealth = (maxHealth and (maxHealth > 0) and health/maxHealth) or 0
 		local underHealthThreshold = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0) and (trigger.underHealthThreshold > percHealth)
 		local overHealthThreshold = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0) and (trigger.overHealthThreshold < percHealth)
-		failed = not (underHealthThreshold or overHealthThreshold)
+		if not (underHealthThreshold or overHealthThreshold) then return end
 	end
 
 	-- Power
-	if not failed and trigger.powerThreshold then
+	if trigger.powerThreshold then
 		local powerUnit = (trigger.powerUsePlayer and "player") or frame.unit
 		local power, maxPower = UnitPower(powerUnit, frame.PowerType), UnitPowerMax(powerUnit, frame.PowerType)
 		local percPower = (maxPower and (maxPower > 0) and power/maxPower) or 0
 		local underPowerThreshold = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0) and (trigger.underPowerThreshold > percPower)
 		local overPowerThreshold = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0) and (trigger.overPowerThreshold < percPower)
-		failed = not (underPowerThreshold or overPowerThreshold)
+		if not (underPowerThreshold or overPowerThreshold) then return end
 	end
 
 	-- Resting
-	if not failed and trigger.isResting then
-		failed = not IsResting()
-	end
+	if trigger.isResting and not IsResting() then return end
 
 	-- Quest Boss
-	if not failed and trigger.questBoss then
-		failed = not UnitIsQuestBoss(frame.unit)
-	end
+	if trigger.questBoss and not UnitIsQuestBoss(frame.unit) then return end
 
 	-- Player Combat
-	if not failed and (trigger.inCombat or trigger.outOfCombat) then
+	if trigger.inCombat or trigger.outOfCombat then
 		local inCombat = UnitAffectingCombat("player")
-		failed = not ((trigger.inCombat and inCombat) or (trigger.outOfCombat and not inCombat))
+		if not ((trigger.inCombat and inCombat) or (trigger.outOfCombat and not inCombat)) then return end
 	end
 
 	-- Unit Combat
-	if not failed and (trigger.inCombatUnit or trigger.outOfCombatUnit) then
+	if trigger.inCombatUnit or trigger.outOfCombatUnit then
 		local inCombat = UnitAffectingCombat(frame.unit)
-		failed = not ((trigger.inCombatUnit and inCombat) or (trigger.outOfCombatUnit and not inCombat))
+		if not ((trigger.inCombatUnit and inCombat) or (trigger.outOfCombatUnit and not inCombat)) then return end
 	end
 
 	-- Player Target
-	if not failed and (trigger.isTarget or trigger.notTarget) then
-		failed = not ((trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget))
+	if trigger.isTarget or trigger.notTarget then
+		if not ((trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget)) then return end
 	end
 
 	-- Unit Target
-	if not failed and (trigger.targetMe or trigger.notTargetMe) then
-		failed = not ((trigger.targetMe and frame.isTargetingMe) or (trigger.notTargetMe and not frame.isTargetingMe))
+	if trigger.targetMe or trigger.notTargetMe then
+		if not ((trigger.targetMe and frame.isTargetingMe) or (trigger.notTargetMe and not frame.isTargetingMe)) then return end
 	end
 
 	-- Unit Focus
-	if not failed and (trigger.isFocus or trigger.notFocus) then
-		failed = not ((trigger.isFocus and frame.isFocused) or (trigger.notFocus and not frame.isFocused))
+	if trigger.isFocus or trigger.notFocus then
+		if not ((trigger.isFocus and frame.isFocused) or (trigger.notFocus and not frame.isFocused)) then return end
 	end
 
 	-- Classification
-	if not failed and (trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus) then
-		failed = not (frame.classification
+	if trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus then
+		if not (frame.classification
 		and ((trigger.classification.worldboss and frame.classification == "worldboss")
 		or (trigger.classification.rareelite   and frame.classification == "rareelite")
 		or (trigger.classification.elite	   and frame.classification == "elite")
 		or (trigger.classification.rare		   and frame.classification == "rare")
 		or (trigger.classification.normal	   and frame.classification == "normal")
 		or (trigger.classification.trivial	   and frame.classification == "trivial")
-		or (trigger.classification.minus	   and frame.classification == "minus")))
+		or (trigger.classification.minus	   and frame.classification == "minus"))) then return end
 	end
 
 	-- Group Role
-	if not failed and (trigger.role.tank or trigger.role.healer or trigger.role.damager) then
-		failed = not (E.myrole
+	if trigger.role.tank or trigger.role.healer or trigger.role.damager then
+		if not (E.myrole
 		and ((trigger.role.tank and E.myrole == "TANK")
 		or (trigger.role.healer and E.myrole == "HEALER")
-		or (trigger.role.damager and E.myrole == "DAMAGER")))
+		or (trigger.role.damager and E.myrole == "DAMAGER"))) then return end
 	end
 
 	do -- Class
 		local matchMyClass --Only check spec when we match the class
-		if not failed and trigger.class and next(trigger.class) then
+		if trigger.class and next(trigger.class) then
 			matchMyClass = trigger.class[E.myclass] and trigger.class[E.myclass].enabled
-			failed = not matchMyClass
+			if not matchMyClass then return end
 		end
 
 		-- Specialization
-		if not failed and matchMyClass and (trigger.class[E.myclass] and trigger.class[E.myclass].specs and next(trigger.class[E.myclass].specs)) then
-			failed = not (trigger.class[E.myclass].specs[E.myspec and GetSpecializationInfo(E.myspec)])
+		if matchMyClass and (trigger.class[E.myclass] and trigger.class[E.myclass].specs and next(trigger.class[E.myclass].specs)) then
+			if not (trigger.class[E.myclass].specs[E.myspec and GetSpecializationInfo(E.myspec)]) then return end
 		end
 	end
 
 	do -- Instance
 		-- Type
 		local _, instanceType, instanceDifficulty
-		if not failed and (trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp) then
+		if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
 			_, instanceType, instanceDifficulty = GetInstanceInfo()
-			failed = not (instanceType
+			if not (instanceType
 			and ((trigger.instanceType.none	  and instanceType == "none")
 			or (trigger.instanceType.scenario and instanceType == "scenario")
 			or (trigger.instanceType.party	  and instanceType == "party")
 			or (trigger.instanceType.raid	  and instanceType == "raid")
 			or (trigger.instanceType.arena	  and instanceType == "arena")
-			or (trigger.instanceType.pvp	  and instanceType == "pvp")))
+			or (trigger.instanceType.pvp	  and instanceType == "pvp"))) then return end
 		end
 
 		-- Difficulty
-		if not failed and (trigger.instanceType.party or trigger.instanceType.raid) then
+		if trigger.instanceType.party or trigger.instanceType.raid then
 			if not instanceDifficulty then _, _, instanceDifficulty = GetInstanceInfo() end
 
 			local dungeon = trigger.instanceDifficulty.dungeon
 			if trigger.instanceType.party and instanceType == "party" and (dungeon.normal or dungeon.heroic or dungeon.mythic or dungeon["mythic+"] or dungeon.timewalking) then
-				failed = not (instanceDifficulty
+				if not (instanceDifficulty
 				and ((dungeon.normal	and instanceDifficulty == 1)
 				or (dungeon.heroic		and instanceDifficulty == 2)
 				or (dungeon.mythic		and instanceDifficulty == 23)
 				or (dungeon["mythic+"]	and instanceDifficulty == 8)
-				or (dungeon.timewalking	and instanceDifficulty == 24)))
+				or (dungeon.timewalking	and instanceDifficulty == 24))) then return end
 			end
 
 			local raid = trigger.instanceDifficulty.raid
 			if trigger.instanceType.raid and instanceType == "raid" and (raid.lfr or raid.normal or raid.heroic or raid.mythic or raid.timewalking or raid.legacy10normal or raid.legacy25normal or raid.legacy10heroic or raid.legacy25heroic) then
-				failed = not (instanceDifficulty
+				if not (instanceDifficulty
 				and ((raid.lfr			and (instanceDifficulty == 7 or instanceDifficulty == 17))
 				or (raid.normal			and instanceDifficulty == 14)
 				or (raid.heroic			and instanceDifficulty == 15)
@@ -708,19 +700,19 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 				or (raid.legacy10normal	and instanceDifficulty == 3)
 				or (raid.legacy25normal	and instanceDifficulty == 4)
 				or (raid.legacy10heroic	and instanceDifficulty == 5)
-				or (raid.legacy25heroic	and instanceDifficulty == 6)))
+				or (raid.legacy25heroic	and instanceDifficulty == 6))) then return end
 			end
 		end
 	end
 
 	-- Talents
-	if not failed and trigger.talent.enabled then
+	if trigger.talent.enabled then
 		local pvpTalent = trigger.talent.type == "pvp"
 		local talentRows = (pvpTalent and 4) or 7
 		local selected, pass
 
 		for i = 1, talentRows do
-			if (trigger.talent["tier"..i.."enabled"] and trigger.talent["tier"..i].column > 0) then
+			if trigger.talent["tier"..i.."enabled"] and trigger.talent["tier"..i].column > 0 then
 				if pvpTalent then
 					-- column is actually the talentID for pvpTalents
 					local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(i)
@@ -735,46 +727,48 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 						break -- break when not using requireAll because we matched one
 					end
 				elseif trigger.talent.requireAll then
-					pass = false -- fail because requireAll failed
-					break -- break because requireAll failed
+					pass = false -- fail because requireAll
+					break
 				end
 			end
 		end
 
-		failed = not pass
+		if not pass then
+			return
+		end
 	end
 
 	-- Level
-	if not failed and trigger.level then
+	if trigger.level then
 		local myLevel = UnitLevel('player')
 		local level = (frame.unit == 'player' and myLevel) or UnitLevel(frame.unit)
 		local curLevel = (trigger.curlevel and trigger.curlevel ~= 0 and (trigger.curlevel == level))
 		local minLevel = (trigger.minlevel and trigger.minlevel ~= 0 and (trigger.minlevel <= level))
 		local maxLevel = (trigger.maxlevel and trigger.maxlevel ~= 0 and (trigger.maxlevel >= level))
 		local matchMyLevel = trigger.mylevel and (level == myLevel)
-		failed = not (curLevel or minLevel or maxLevel or matchMyLevel)
+		if not (curLevel or minLevel or maxLevel or matchMyLevel) then return end
 	end
 
 	-- Unit Type
-	if not failed and trigger.nameplateType and trigger.nameplateType.enable then
-		failed = not (frame.frameType
+	if trigger.nameplateType and trigger.nameplateType.enable then
+		if not (frame.frameType
 		and ((trigger.nameplateType.friendlyPlayer and frame.frameType == 'FRIENDLY_PLAYER')
 		or (trigger.nameplateType.friendlyNPC	 and frame.frameType == 'FRIENDLY_NPC')
 		or (trigger.nameplateType.enemyPlayer	 and frame.frameType == 'ENEMY_PLAYER')
 		or (trigger.nameplateType.enemyNPC		 and frame.frameType == 'ENEMY_NPC')
 		or (trigger.nameplateType.healer		 and frame.frameType == 'HEALER')
-		or (trigger.nameplateType.player		 and frame.frameType == 'PLAYER')))
+		or (trigger.nameplateType.player		 and frame.frameType == 'PLAYER'))) then return end
 	end
 
 	-- Creature Type
-	if not failed and trigger.creatureType and trigger.creatureType.enable then
-		failed = not trigger.creatureType[E.CreatureTypes[frame.creatureType]]
+	if trigger.creatureType and trigger.creatureType.enable then
+		if not trigger.creatureType[E.CreatureTypes[frame.creatureType]] then return end
 	end
 
 	-- Reaction (or Reputation) Type
-	if not failed and trigger.reactionType and trigger.reactionType.enable then
+	if trigger.reactionType and trigger.reactionType.enable then
 		local reaction = (trigger.reactionType.reputation and frame.repReaction) or frame.reaction
-		failed = not (reaction
+		if not (reaction
 		and ((reaction == 1 and trigger.reactionType.hated)
 		or (reaction == 2 and trigger.reactionType.hostile)
 		or (reaction == 3 and trigger.reactionType.unfriendly)
@@ -782,30 +776,27 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		or (reaction == 5 and trigger.reactionType.friendly)
 		or (reaction == 6 and trigger.reactionType.honored)
 		or (reaction == 7 and trigger.reactionType.revered)
-		or (reaction == 8 and trigger.reactionType.exalted)))
+		or (reaction == 8 and trigger.reactionType.exalted))) then return end
 	end
 
 	--Try to match according to cooldown conditions
-	if not failed and trigger.cooldowns and trigger.cooldowns.names and next(trigger.cooldowns.names) then
-		local passed = mod:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll)
-		if passed ~= nil then failed = not passed end -- will be nil if none are set to ONCD or OFFCD
+	if trigger.cooldowns and trigger.cooldowns.names and next(trigger.cooldowns.names) then
+		if mod:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll) == false then return end -- will be nil if none are set to ONCD or OFFCD
 	end
 
 	--Try to match according to buff aura conditions
-	if not failed and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-		local passed = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
-		if passed ~= nil then failed = not passed end -- will be nil if none are selected
+	if trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
+		if mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft) == false then return end -- will be nil if none are selected
 	end
 
 	--Try to match according to debuff aura conditions
-	if not failed and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
-		local passed = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
-		if passed ~= nil then failed = not passed end -- will be nil if none are selected
+	if trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
+		if mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft) == false then return end -- will be nil if none are selected
 	end
 
 	--Try to match according to raid target conditions
-	if not failed and (trigger.raidTarget.star or trigger.raidTarget.circle or trigger.raidTarget.diamond or trigger.raidTarget.triangle or trigger.raidTarget.moon or trigger.raidTarget.square or trigger.raidTarget.cross or trigger.raidTarget.skull) then
-		failed = not (frame.RaidTargetIndex
+	if trigger.raidTarget.star or trigger.raidTarget.circle or trigger.raidTarget.diamond or trigger.raidTarget.triangle or trigger.raidTarget.moon or trigger.raidTarget.square or trigger.raidTarget.cross or trigger.raidTarget.skull then
+		if not (frame.RaidTargetIndex
 		and ((frame.RaidTargetIndex == 1 and trigger.raidTarget.star)
 		or (frame.RaidTargetIndex == 2 and trigger.raidTarget.circle)
 		or (frame.RaidTargetIndex == 3 and trigger.raidTarget.diamond)
@@ -813,18 +804,14 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		or (frame.RaidTargetIndex == 5 and trigger.raidTarget.moon)
 		or (frame.RaidTargetIndex == 6 and trigger.raidTarget.square)
 		or (frame.RaidTargetIndex == 7 and trigger.raidTarget.cross)
-		or (frame.RaidTargetIndex == 8 and trigger.raidTarget.skull)))
+		or (frame.RaidTargetIndex == 8 and trigger.raidTarget.skull))) then return end
 	end
 
-	--Callback for Plugins
-	if mod.CustomStyleConditions then
-		failed = mod:CustomStyleConditions(frame, filter, trigger, failed)
-	end
+	-- Plugin Callback
+	if mod.StyleFilterCustomCheck and (mod:StyleFilterCustomCheck(frame, filter, trigger) == false) then return end
 
-	--If failed is nil it means the filter is empty so we dont run FilterStyle
-	if failed == false then --The conditions didn't fail so pass to FilterStyle
-		mod:StyleFilterPass(frame, filter.actions);
-	end
+	-- Pass it along
+	mod:StyleFilterPass(frame, filter.actions);
 end
 
 function mod:StyleFilterPass(frame, actions)
