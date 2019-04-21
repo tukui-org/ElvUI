@@ -2968,53 +2968,59 @@ E.Options.args.unitframe = {
 									get = function(info) return E.db.unitframe.colors[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 								},
-								MANA = {
+								spacer2 = {
 									order = 4,
+									type = "description",
+									name = " ",
+									width = 'full'
+								},
+								MANA = {
+									order = 5,
 									name = MANA,
 									type = 'color',
 								},
 								RAGE = {
-									order = 5,
+									order = 6,
 									name = RAGE,
 									type = 'color',
 								},
 								FOCUS = {
-									order = 6,
+									order = 7,
 									name = FOCUS,
 									type = 'color',
 								},
 								ENERGY = {
-									order = 7,
+									order = 8,
 									name = ENERGY,
 									type = 'color',
 								},
 								RUNIC_POWER = {
-									order = 8,
+									order = 9,
 									name = RUNIC_POWER,
 									type = 'color',
 								},
 								PAIN = {
-									order = 9,
+									order = 10,
 									name = PAIN,
 									type = 'color',
 								},
 								FURY = {
-									order = 10,
+									order = 11,
 									name = FURY,
 									type = 'color',
 								},
 								LUNAR_POWER = {
-									order = 11,
+									order = 12,
 									name = LUNAR_POWER,
 									type = 'color'
 								},
 								INSANITY = {
-									order = 12,
+									order = 13,
 									name = INSANITY,
 									type = 'color'
 								},
 								MAELSTROM = {
-									order = 13,
+									order = 14,
 									name = MAELSTROM,
 									type = 'color'
 								},
@@ -3198,7 +3204,7 @@ E.Options.args.unitframe = {
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 								},
 								castReactionColor = {
-									order = 0,
+									order = 1,
 									type = 'toggle',
 									name = L["Reaction Castbars"],
 									desc = L["Color castbars by the reaction type of non-player units."],
@@ -3213,13 +3219,19 @@ E.Options.args.unitframe = {
 									get = function(info) return E.db.unitframe.colors[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 								},
-								castColor = {
+								spacer1 = {
 									order = 3,
+									type = "description",
+									name = " ",
+									width = 'full'
+								},
+								castColor = {
+									order = 4,
 									name = L["Interruptable"],
 									type = 'color',
 								},
 								castNoInterrupt = {
-									order = 4,
+									order = 5,
 									name = L["Non-Interruptable"],
 									type = 'color',
 								},
@@ -3249,6 +3261,12 @@ E.Options.args.unitframe = {
 									name = L["Color Turtle Buffs"],
 									desc = L["Color all buffs that reduce the unit's incoming damage."],
 									type = 'toggle',
+								},
+								spacer1 = {
+									order = 3,
+									type = "description",
+									name = " ",
+									width = 'full'
 								},
 								BUFFS = {
 									order = 10,
@@ -3320,44 +3338,8 @@ E.Options.args.unitframe = {
 								UF:Update_AllFrames()
 							end,
 							args = {
-								personal = {
-									order = 1,
-									name = L["Personal"],
-									type = 'color',
-									hasAlpha = true,
-								},
-								others = {
-									order = 2,
-									name = L["Others"],
-									type = 'color',
-									hasAlpha = true,
-								},
-								absorbs = {
-									order = 2,
-									name = L["Absorbs"],
-									type = 'color',
-									hasAlpha = true,
-								},
-								healAbsorbs = {
-									order = 3,
-									name = L["Heal Absorbs"],
-									type = 'color',
-									hasAlpha = true,
-								},
-								overabsorbs = {
-									order = 4,
-									name = L["Over Absorbs"],
-									type = 'color',
-									hasAlpha = true,
-								},
-								overhealabsorbs = {
-									order = 4,
-									name = L["Over Heal Absorbs"],
-									type = 'color',
-									hasAlpha = true,
-								},
 								maxOverflow = {
-									order = 6,
+									order = 1,
 									type = "range",
 									name = L["Max Overflow"],
 									desc = L["Max amount of overflow allowed to extend past the end of the health bar."],
@@ -3365,6 +3347,48 @@ E.Options.args.unitframe = {
 									min = 0, max = 1, step = 0.01,
 									get = function(info) return E.db.unitframe.colors.healPrediction.maxOverflow end,
 									set = function(info, value) E.db.unitframe.colors.healPrediction.maxOverflow = value; UF:Update_AllFrames() end,
+								},
+								spacer1 = {
+									order = 2,
+									type = "description",
+									name = " ",
+									width = 'full'
+								},
+								personal = {
+									order = 3,
+									name = L["Personal"],
+									type = 'color',
+									hasAlpha = true,
+								},
+								others = {
+									order = 4,
+									name = L["Others"],
+									type = 'color',
+									hasAlpha = true,
+								},
+								absorbs = {
+									order = 5,
+									name = L["Absorbs"],
+									type = 'color',
+									hasAlpha = true,
+								},
+								healAbsorbs = {
+									order = 6,
+									name = L["Heal Absorbs"],
+									type = 'color',
+									hasAlpha = true,
+								},
+								overabsorbs = {
+									order = 7,
+									name = L["Over Absorbs"],
+									type = 'color',
+									hasAlpha = true,
+								},
+								overhealabsorbs = {
+									order = 8,
+									name = L["Over Heal Absorbs"],
+									type = 'color',
+									hasAlpha = true,
 								},
 							},
 						},
