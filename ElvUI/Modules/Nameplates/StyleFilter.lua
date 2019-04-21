@@ -238,29 +238,28 @@ function mod:StyleFilterAuraWait(frame, button, varTimerName, timeLeft, mTimeLef
 end
 
 function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
-	local total, count, isSpell, timeLeft, hasMinTime, hasMaxTime, minTimeAllow, maxTimeAllow = 0, 0
+	local total, count = 0, 0
 	for name, value in pairs(names) do
 		if value then --only if they are turned on
 			total = total + 1 --keep track of the names
-		end
 
-		if auras.createdIcons and auras.createdIcons > 0 then
-			for i = 1, auras.createdIcons do
-				local button = auras[i]
-				if button and button:IsShown() then
-					isSpell = (button.name and button.name == name) or (button.spellID and button.spellID == tonumber(name))
-					if isSpell and value then
-						hasMinTime = minTimeLeft and minTimeLeft ~= 0
-						hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
-						timeLeft = (hasMinTime or hasMaxTime) and button.expiration and (button.expiration - GetTime())
-						minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
-						maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
-						if timeLeft then -- if we use a min/max time setting; we must create a delay timer
-							if hasMinTime then mod:StyleFilterAuraWait(frame, button, 'hasMinTimer', timeLeft, minTimeLeft) end
-							if hasMaxTime then mod:StyleFilterAuraWait(frame, button, 'hasMaxTimer', timeLeft, maxTimeLeft) end
-						end
-						if minTimeAllow and maxTimeAllow then
-							count = count + 1 --keep track of how many matches we have
+			if auras.createdIcons and auras.createdIcons > 0 then
+				for i = 1, auras.createdIcons do
+					local button = auras[i]
+					if button and button:IsShown() then
+						if (button.name and button.name == name) or (button.spellID and button.spellID == tonumber(name)) then
+							local hasMinTime = minTimeLeft and minTimeLeft ~= 0
+							local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
+							local timeLeft = (hasMinTime or hasMaxTime) and button.expiration and (button.expiration - GetTime())
+							local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
+							local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
+							if timeLeft then -- if we use a min/max time setting; we must create a delay timer
+								if hasMinTime then mod:StyleFilterAuraWait(frame, button, 'hasMinTimer', timeLeft, minTimeLeft) end
+								if hasMaxTime then mod:StyleFilterAuraWait(frame, button, 'hasMaxTimer', timeLeft, maxTimeLeft) end
+							end
+							if minTimeAllow and maxTimeAllow then
+								count = count + 1 --keep track of how many matches we have
+							end
 						end
 					end
 				end
@@ -279,15 +278,16 @@ function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, min
 end
 
 function mod:StyleFilterCooldownCheck(names, mustHaveAll)
-	local total, count, duration, charges = 0, 0
+	local total, count = 0, 0
 	local _, gcd = GetSpellCooldown(61304)
 
 	for name, value in pairs(names) do
 		if GetSpellInfo(name) then --check spell name valid, GetSpellCharges/GetSpellCooldown will return nil if not known by your class
 			if value == "ONCD" or value == "OFFCD" then --only if they are turned on
 				total = total + 1 --keep track of the names
-				charges = GetSpellCharges(name)
-				_, duration = GetSpellCooldown(name)
+
+				local charges = GetSpellCharges(name)
+				local _, duration = GetSpellCooldown(name)
 
 				if (charges and charges == 0 and value == "ONCD") --charges exist and the current number of charges is 0 means that it is completely on cooldown.
 				or (charges and charges > 0 and value == "OFFCD") --charges exist and the current number of charges is greater than 0 means it is not on cooldown.
@@ -1096,9 +1096,8 @@ function mod:StyleFilterUpdate(frame, event)
 
 	mod:StyleFilterClear(frame)
 
-	local filter
 	for filterNum in ipairs(mod.StyleFilterTriggerList) do
-		filter = E.global.nameplate.filters[mod.StyleFilterTriggerList[filterNum][1]]
+		local filter = E.global.nameplate.filters[mod.StyleFilterTriggerList[filterNum][1]]
 		if filter then
 			mod:StyleFilterConditionCheck(frame, filter, filter.triggers)
 		end
