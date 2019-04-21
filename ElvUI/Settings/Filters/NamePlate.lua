@@ -64,6 +64,16 @@ E.StyleFilterDefaults = {
 			minus = false,
 		},
 		class = {}, -- this can stay empty we only will accept values that exist
+		raidTarget = {
+			star = false,
+			circle = false,
+			diamond = false,
+			triangle = false,
+			moon = false,
+			square = false,
+			cross = false,
+			skull = false
+		},
 		talent = {
 			type = 'normal',
 			enabled = false,
@@ -179,10 +189,13 @@ E.StyleFilterDefaults = {
 			minTimeLeft = 0,
 			maxTimeLeft = 0,
 		},
+		isResting = false,
 		inCombat = false,
 		outOfCombat = false,
 		inCombatUnit = false,
 		outOfCombatUnit = false,
+		inVehicleUnit = false,
+		outOfVehicleUnit = false,
 	},
 	actions = {
 		color = {

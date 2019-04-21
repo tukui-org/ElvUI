@@ -318,12 +318,18 @@ P.nameplates = {
 	cutawayHealth = false,
 	cutawayHealthFadeOutTime = 0.6,
 	cutawayHealthLength = 0.3,
-	clickableWidth = 150,
-	clickableHeight = 30,
 	clickThrough = {
 		personal = false,
 		friendly = false,
 		enemy = false,
+	},
+	plateSize ={
+		personalWidth = 150,
+		personalHeight = 30,
+		friendlyWidth = 150,
+		friendlyHeight = 30,
+		enemyWidth = 150,
+		enemyHeight = 30,
 	},
 	colors = {
 		glowColor = {r = 1, g = 1, b = 1, a = 1},
@@ -356,12 +362,12 @@ P.nameplates = {
 		power = {
 			ENERGY = {r = 0.65, g = 0.63, b = 0.35},
 			FOCUS = {r = 0.71, g = 0.43, b = 0.27},
-			FURY = {r = 227/255, g = 126/255, b = 39/255},
-			INSANITY = {r = 0.55, g = 0.14, b = 0.69},
-			LUNAR_POWER = {r = .9, g = .86, b = .12},
-			MAELSTROM = {r = 0, g = 0.5, b = 1},
+			FURY = {r = 227/255, g = 126/255, b = 39/255, atlas = '_DemonHunter-DemonicFuryBar'},
+			INSANITY = {r = 0.55, g = 0.14, b = 0.69, atlas = '_Priest-InsanityBar'},
+			LUNAR_POWER = {r = .9, g = .86, b = .12, atlas = '_Druid-LunarBar'},
+			MAELSTROM = {r = 0, g = 0.5, b = 1, atlas = '_Shaman-MaelstromBar'},
 			MANA = {r = 0.31, g = 0.45, b = 0.63},
-			PAIN = {r = 225/255, g = 225/255, b = 225/255},
+			PAIN = {r = 225/255, g = 225/255, b = 225/255, atlas = '_DemonHunter-DemonicPainBar'},
 			RAGE = {r = 0.78, g = 0.25, b = 0.25},
 			RUNIC_POWER = {r = 0, g = 0.82, b = 1},
 		},
@@ -490,7 +496,6 @@ P.nameplates = {
 				enable = true,
 				healPrediction = true,
 				height = 10,
-				yOffset = 0,
 				text = {
 					enable = false,
 					format = '[health:percent]',
@@ -503,7 +508,6 @@ P.nameplates = {
 					fontSize = 11,
 				},
 				useClassColor = true,
-				width = 150,
 			},
 			name = {
 				enable = false,
@@ -709,9 +713,7 @@ P.nameplates = {
 			health = {
 				enable = true,
 				height = 10,
-				width = 150,
 				healPrediction = false,
-				yOffset = 0,
 				text = {
 					enable = true,
 					format = '[health:percent]',
@@ -925,9 +927,7 @@ P.nameplates = {
 			health = {
 				enable = true,
 				height = 10,
-				width = 150,
 				healPrediction = false,
-				yOffset = 0,
 				text = {
 					enable = true,
 					format = '[health:percent]',
@@ -1138,9 +1138,7 @@ P.nameplates = {
 			health = {
 				enable = true,
 				height = 10,
-				width = 150,
 				healPrediction = false,
-				yOffset = 0,
 				text = {
 					enable = true,
 					format = '[health:percent]',
@@ -1358,9 +1356,7 @@ P.nameplates = {
 			health = {
 				enable = true,
 				height = 10,
-				width = 150,
 				healPrediction = false,
-				yOffset = 0,
 				text = {
 					enable = true,
 					format = '[health:percent]',

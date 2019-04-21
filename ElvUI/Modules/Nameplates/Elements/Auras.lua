@@ -164,8 +164,8 @@ function NP:Configure_Auras(nameplate, auras, db)
 		index = index + 1
 	end
 
-	local mult = floor(NP.db.clickableWidth / db.size) < db.numAuras
-	auras:Size(NP.db.clickableWidth, (mult and 1 or 2) * db.size)
+	local mult = floor((nameplate.width or 150) / db.size) < db.numAuras
+	auras:Size((nameplate.width or 150), (mult and 1 or 2) * db.size)
 	auras:ClearAllPoints()
 	auras:Point(E.InversePoints[db.anchorPoint] or 'TOPRIGHT', db.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.anchorPoint or 'TOPRIGHT', db.xOffset, db.yOffset)
 end

@@ -9,16 +9,19 @@ local gsub, tinsert, tremove, sort, wipe = gsub, tinsert, tremove, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
 local GetLocale = GetLocale
+local GetRaidTargetIndex = GetRaidTargetIndex
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpellCharges = GetSpellCharges
 local GetSpellCooldown = GetSpellCooldown
 local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
 local GetTime = GetTime
+local IsResting = IsResting
 local PowerBarColor = PowerBarColor
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local UnitInVehicle = UnitInVehicle
 local UnitIsQuestBoss = UnitIsQuestBoss
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitIsUnit = UnitIsUnit
@@ -222,16 +225,16 @@ function mod:StyleFilterAuraWait(frame, button, varTimerName, timeLeft, mTimeLef
 		local updateIn = timeLeft-mTimeLeft
 		if updateIn > 0 then
 			-- also add a tenth of a second to updateIn to prevent the timer from firing on the same second
-            button[varTimerName] = C_Timer_NewTimer(updateIn+0.1, function()
+			button[varTimerName] = C_Timer_NewTimer(updateIn+0.1, function()
 				if frame and frame:IsShown() then
 					mod:StyleFilterUpdate(frame, 'FAKE_AuraWaitTimer')
-                end
-                if button and button[varTimerName] then
-	                button[varTimerName] = nil
-	            end
-            end)
+				end
+				if button and button[varTimerName] then
+					button[varTimerName] = nil
+				end
+			end)
 		end
-    end
+	end
 end
 
 function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
@@ -280,18 +283,19 @@ function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 	local _, gcd = GetSpellCooldown(61304)
 
 	for name, value in pairs(names) do
-		if value == "ONCD" or value == "OFFCD" then --only if they are turned on
-			total = total + 1 --keep track of the names
+		if GetSpellInfo(name) then --check spell name valid, GetSpellCharges/GetSpellCooldown will return nil if not known by your class
+			if value == "ONCD" or value == "OFFCD" then --only if they are turned on
+				total = total + 1 --keep track of the names
+				charges = GetSpellCharges(name)
+				_, duration = GetSpellCooldown(name)
 
-			charges = GetSpellCharges(name)
-			_, duration = GetSpellCooldown(name)
-
-			if (charges and charges == 0 and value == "ONCD") --charges exist and the current number of charges is 0 means that it is completely on cooldown.
-			or (charges and charges > 0 and value == "OFFCD") --charges exist and the current number of charges is greater than 0 means it is not on cooldown.
-			or (charges == nil and (duration > gcd and value == "ONCD")) --no charges exist and the duration of the cooldown is greater than the GCD spells current cooldown then it is on cooldown.
-			or (charges == nil and (duration <= gcd and value == "OFFCD")) then --no charges exist and the duration of the cooldown is at or below the current GCD cooldown spell then it is not on cooldown.
-				count = count + 1
-				--print(((charges and charges == 0 and value == "ONCD") and name.." (charge) passes because it is on cd") or ((charges and charges > 0 and value == "OFFCD") and name.." (charge) passes because it is offcd") or ((charges == nil and (duration > gcd and value == "ONCD")) and name.."passes because it is on cd.") or ((charges == nil and (duration <= gcd and value == "OFFCD")) and name.." passes because it is off cd."))
+				if (charges and charges == 0 and value == "ONCD") --charges exist and the current number of charges is 0 means that it is completely on cooldown.
+				or (charges and charges > 0 and value == "OFFCD") --charges exist and the current number of charges is greater than 0 means it is not on cooldown.
+				or (charges == nil and (duration > gcd and value == "ONCD")) --no charges exist and the duration of the cooldown is greater than the GCD spells current cooldown then it is on cooldown.
+				or (charges == nil and (duration <= gcd and value == "OFFCD")) then --no charges exist and the duration of the cooldown is at or below the current GCD cooldown spell then it is not on cooldown.
+					count = count + 1
+					--print(((charges and charges == 0 and value == "ONCD") and name.." (charge) passes because it is on cd") or ((charges and charges > 0 and value == "OFFCD") and name.." (charge) passes because it is offcd") or ((charges == nil and (duration > gcd and value == "ONCD")) and name.."passes because it is on cd.") or ((charges == nil and (duration <= gcd and value == "OFFCD")) and name.." passes because it is off cd."))
+				end
 			end
 		end
 	end
@@ -359,15 +363,15 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if HealthColorChanged then
 		frame.StyleChanged = true
 		frame.HealthColorChanged = actions.color.healthColor
-		frame.Health:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a);
+		frame.Health:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a)
 		--[[if frame.CutawayHealth then
-			frame.CutawayHealth:SetStatusBarColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a);
+			frame.CutawayHealth:SetStatusBarColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a)
 		end]]
 	end
 	if PowerColorChanged then
 		frame.StyleChanged = true
 		frame.PowerColorChanged = true
-		frame.Power:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a);
+		frame.Power:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a)
 	end
 	if BorderChanged then
 		frame.StyleChanged = true
@@ -411,7 +415,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if AlphaChanged then
 		frame.StyleChanged = true
 		frame.AlphaChanged = true
-		E:UIFrameFadeIn(frame, 0, 0, actions.alpha / 100)
+		mod:PlateFade(frame, 0, 0, actions.alpha / 100)
 	end
 	if NameColorChanged then
 		frame.StyleChanged = true
@@ -450,7 +454,7 @@ function mod:StyleFilterUpdatePlate(frame, nameOnly)
 	end
 
 	if not nameOnly then
-		E:UIFrameFadeIn(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
 	end
 end
 
@@ -464,9 +468,9 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
-		frame.Health:SetStatusBarColor(frame.Health.r, frame.Health.g, frame.Health.b);
+		frame.Health:SetStatusBarColor(frame.Health.r, frame.Health.g, frame.Health.b)
 		--[[if frame.CutawayHealth then
-			frame.CutawayHealth:SetStatusBarColor(frame.Health.r * 1.5, frame.Health.g * 1.5, frame.Health.b * 1.5, 1);
+			frame.CutawayHealth:SetStatusBarColor(frame.Health.r * 1.5, frame.Health.g * 1.5, frame.Health.b * 1.5, 1)
 		end]]
 	end
 	if PowerColorChanged then
@@ -505,7 +509,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if AlphaChanged then
 		frame.AlphaChanged = nil
-		E:UIFrameFadeIn(frame, mod.db.fadeIn and 1 or 0, 0, 1)
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1)
 	end
 	if NameColorChanged then
 		frame.NameColorChanged = nil
@@ -523,377 +527,297 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 end
 
-function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
-	local _, condition, inCombat, questBoss, reaction, spell, classification, instanceType, instanceDifficulty,
-	talentSelected, pvpTalent, talentRows, level, myLevel, curLevel, minLevel, maxLevel, matchMyLevel, mySpecID, creatureType,
-	power, maxPower, percPower, underPowerThreshold, overPowerThreshold, powerUnit, health, maxHealth, percHealth, underHealthThreshold, overHealthThreshold, healthUnit;
-
-	local isCasting = frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
-	local matchMyClass = false --Only check spec when we match the class condition
-
-	if not failed and trigger.names and next(trigger.names) then
-		condition = 0
+function mod:StyleFilterConditionCheck(frame, filter, trigger)
+	-- Name or GUID
+	if trigger.names and next(trigger.names) then
+		local pass
 		for name, value in pairs(trigger.names) do
 			if value == true then --only check names that are checked
-				condition = 1
+				pass = 1
 				if tonumber(name) then --check as guid
 					if frame.npcID and (name == frame.npcID) then
-						condition = 2
+						pass = 2
 						break
 					end
 				else
 					if name and name ~= "" and (name == frame.unitName) then
-						condition = 2
+						pass = 2
 						break
-					end
-				end
-			end
-		end
-		if condition ~= 0 then
-			failed = (condition == 1)
-		end
+		end end end end
+
+		if pass == 1 then return end
 	end
 
-	--Try to match by casting spell name or spell id
-	if not failed and (trigger.casting and trigger.casting.spells) and next(trigger.casting.spells) then
-		condition = 0
-
+	-- Casting Spell
+	if trigger.casting and trigger.casting.spells and next(trigger.casting.spells) then
+		local pass
 		for spellName, value in pairs(trigger.casting.spells) do
 			if value == true then --only check spell that are checked
-				condition = 1
-				if isCasting then
-					spell = frame.Castbar.Text:GetText() --Make sure we can check spell name
+				pass = 1
+				if frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling) then
+					local spell = frame.Castbar.Text:GetText() --Make sure we can check spell name
 					if spell and spell ~= "" and spell ~= FAILED and spell ~= INTERRUPTED then
 						if tonumber(spellName) then
 							spellName = GetSpellInfo(spellName)
 						end
 						if spellName and spellName == spell then
-							condition = 2
+							pass = 2
 							break
-						end
-					end
-				end
+		end end end end end
+
+		--If we cant check spell name, we ignore this trigger when the castbar is shown
+		if pass == 1 then return end
+	end
+
+	-- Casting Interruptible
+	if trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible) then
+		if not (frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
+		and ((trigger.casting.interruptible and not frame.Castbar.notInterruptible)
+		or (trigger.casting.notInterruptible and frame.Castbar.notInterruptible))) then return end
+	end
+
+	-- Health
+	if trigger.healthThreshold then
+		local healthUnit = (trigger.healthUsePlayer and "player") or frame.unit
+		local health, maxHealth = UnitHealth(healthUnit), UnitHealthMax(healthUnit)
+		local percHealth = (maxHealth and (maxHealth > 0) and health/maxHealth) or 0
+		local underHealthThreshold = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0) and (trigger.underHealthThreshold > percHealth)
+		local overHealthThreshold = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0) and (trigger.overHealthThreshold < percHealth)
+		if not (underHealthThreshold or overHealthThreshold) then return end
+	end
+
+	-- Power
+	if trigger.powerThreshold then
+		local powerUnit = (trigger.powerUsePlayer and "player") or frame.unit
+		local power, maxPower = UnitPower(powerUnit, frame.PowerType), UnitPowerMax(powerUnit, frame.PowerType)
+		local percPower = (maxPower and (maxPower > 0) and power/maxPower) or 0
+		local underPowerThreshold = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0) and (trigger.underPowerThreshold > percPower)
+		local overPowerThreshold = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0) and (trigger.overPowerThreshold < percPower)
+		if not (underPowerThreshold or overPowerThreshold) then return end
+	end
+
+	-- Resting
+	if trigger.isResting and not IsResting() then return end
+
+	-- Quest Boss
+	if trigger.questBoss and not UnitIsQuestBoss(frame.unit) then return end
+
+	-- Player Combat
+	if trigger.inCombat or trigger.outOfCombat then
+		local inCombat = UnitAffectingCombat("player")
+		if not ((trigger.inCombat and inCombat) or (trigger.outOfCombat and not inCombat)) then return end
+	end
+
+	-- Unit Combat
+	if trigger.inCombatUnit or trigger.outOfCombatUnit then
+		local inCombat = UnitAffectingCombat(frame.unit)
+		if not ((trigger.inCombatUnit and inCombat) or (trigger.outOfCombatUnit and not inCombat)) then return end
+	end
+
+	-- Player Target
+	if trigger.isTarget or trigger.notTarget then
+		if not ((trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget)) then return end
+	end
+
+	-- Unit Target
+	if trigger.targetMe or trigger.notTargetMe then
+		if not ((trigger.targetMe and frame.isTargetingMe) or (trigger.notTargetMe and not frame.isTargetingMe)) then return end
+	end
+
+	-- Unit Focus
+	if trigger.isFocus or trigger.notFocus then
+		if not ((trigger.isFocus and frame.isFocused) or (trigger.notFocus and not frame.isFocused)) then return end
+	end
+
+	-- Unit Vehicle
+	if trigger.inVehicleUnit or trigger.outOfVehicleUnit then
+		if not ((trigger.inVehicleUnit and frame.inVehicle) or (trigger.outOfVehicleUnit and not frame.inVehicle)) then return end
+	end
+
+	-- Classification
+	if trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus then
+		if not (frame.classification
+		and ((trigger.classification.worldboss and frame.classification == "worldboss")
+		or (trigger.classification.rareelite   and frame.classification == "rareelite")
+		or (trigger.classification.elite	   and frame.classification == "elite")
+		or (trigger.classification.rare		   and frame.classification == "rare")
+		or (trigger.classification.normal	   and frame.classification == "normal")
+		or (trigger.classification.trivial	   and frame.classification == "trivial")
+		or (trigger.classification.minus	   and frame.classification == "minus"))) then return end
+	end
+
+	-- Group Role
+	if trigger.role.tank or trigger.role.healer or trigger.role.damager then
+		if not (E.myrole
+		and ((trigger.role.tank and E.myrole == "TANK")
+		or (trigger.role.healer and E.myrole == "HEALER")
+		or (trigger.role.damager and E.myrole == "DAMAGER"))) then return end
+	end
+
+	do -- Class
+		local matchMyClass --Only check spec when we match the class
+		if trigger.class and next(trigger.class) then
+			matchMyClass = trigger.class[E.myclass] and trigger.class[E.myclass].enabled
+			if not matchMyClass then return end
+		end
+
+		-- Specialization
+		if matchMyClass and (trigger.class[E.myclass] and trigger.class[E.myclass].specs and next(trigger.class[E.myclass].specs)) then
+			if not (trigger.class[E.myclass].specs[E.myspec and GetSpecializationInfo(E.myspec)]) then return end
+		end
+	end
+
+	do -- Instance
+		-- Type
+		local _, instanceType, instanceDifficulty
+		if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
+			_, instanceType, instanceDifficulty = GetInstanceInfo()
+			if not (instanceType
+			and ((trigger.instanceType.none	  and instanceType == "none")
+			or (trigger.instanceType.scenario and instanceType == "scenario")
+			or (trigger.instanceType.party	  and instanceType == "party")
+			or (trigger.instanceType.raid	  and instanceType == "raid")
+			or (trigger.instanceType.arena	  and instanceType == "arena")
+			or (trigger.instanceType.pvp	  and instanceType == "pvp"))) then return end
+		end
+
+		-- Difficulty
+		if trigger.instanceType.party or trigger.instanceType.raid then
+			if not instanceDifficulty then _, _, instanceDifficulty = GetInstanceInfo() end
+
+			local dungeon = trigger.instanceDifficulty.dungeon
+			if trigger.instanceType.party and instanceType == "party" and (dungeon.normal or dungeon.heroic or dungeon.mythic or dungeon["mythic+"] or dungeon.timewalking) then
+				if not (instanceDifficulty
+				and ((dungeon.normal	and instanceDifficulty == 1)
+				or (dungeon.heroic		and instanceDifficulty == 2)
+				or (dungeon.mythic		and instanceDifficulty == 23)
+				or (dungeon["mythic+"]	and instanceDifficulty == 8)
+				or (dungeon.timewalking	and instanceDifficulty == 24))) then return end
+			end
+
+			local raid = trigger.instanceDifficulty.raid
+			if trigger.instanceType.raid and instanceType == "raid" and (raid.lfr or raid.normal or raid.heroic or raid.mythic or raid.timewalking or raid.legacy10normal or raid.legacy25normal or raid.legacy10heroic or raid.legacy25heroic) then
+				if not (instanceDifficulty
+				and ((raid.lfr			and (instanceDifficulty == 7 or instanceDifficulty == 17))
+				or (raid.normal			and instanceDifficulty == 14)
+				or (raid.heroic			and instanceDifficulty == 15)
+				or (raid.mythic			and instanceDifficulty == 16)
+				or (raid.timewalking	and instanceDifficulty == 33)
+				or (raid.legacy10normal	and instanceDifficulty == 3)
+				or (raid.legacy25normal	and instanceDifficulty == 4)
+				or (raid.legacy10heroic	and instanceDifficulty == 5)
+				or (raid.legacy25heroic	and instanceDifficulty == 6))) then return end
 			end
 		end
-		if condition ~= 0 then --If we cant check spell name, we ignore this trigger when the castbar is shown
-			failed = (condition == 1)
-		end
 	end
 
-	--Try to match by casting interruptible
-	if not failed and (trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible)) then
-		condition = false
-		if isCasting and ((trigger.casting.interruptible and not frame.Castbar.notInterruptible) or (trigger.casting.notInterruptible and frame.Castbar.notInterruptible)) then
-			condition = true
-		end
-		failed = not condition
-	end
-
-	--Try to match by player health conditions
-	if not failed and trigger.healthThreshold then
-		condition = false
-		healthUnit = (trigger.healthUsePlayer and "player") or frame.unit
-		health, maxHealth = UnitHealth(healthUnit), UnitHealthMax(healthUnit)
-		percHealth = (maxHealth and (maxHealth > 0) and health/maxHealth) or 0
-		underHealthThreshold = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0) and (trigger.underHealthThreshold > percHealth)
-		overHealthThreshold = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0) and (trigger.overHealthThreshold < percHealth)
-		if underHealthThreshold or overHealthThreshold then
-			condition = true
-		end
-		failed = not condition
-	end
-
-	--Try to match by power conditions
-	if not failed and trigger.powerThreshold then
-		condition = false
-		powerUnit = (trigger.powerUsePlayer and "player") or frame.unit
-		power, maxPower = UnitPower(powerUnit, frame.PowerType), UnitPowerMax(powerUnit, frame.PowerType)
-		percPower = (maxPower and (maxPower > 0) and power/maxPower) or 0
-		underPowerThreshold = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0) and (trigger.underPowerThreshold > percPower)
-		overPowerThreshold = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0) and (trigger.overPowerThreshold < percPower)
-		if underPowerThreshold or overPowerThreshold then
-			condition = true
-		end
-		failed = not condition
-	end
-
-	--Try to match by player combat conditions
-	if not failed and (trigger.inCombat or trigger.outOfCombat) then
-		condition = false
-		inCombat = UnitAffectingCombat("player")
-		if (trigger.inCombat and inCombat) or (trigger.outOfCombat and not inCombat) then
-			condition = true
-		end
-		failed = not condition
-	end
-
-	--Try to match by unit combat conditions
-	if not failed and (trigger.inCombatUnit or trigger.outOfCombatUnit) then
-		condition = false
-		inCombat = UnitAffectingCombat(frame.unit)
-		if (trigger.inCombatUnit and inCombat) or (trigger.outOfCombatUnit and not inCombat) then
-			condition = true
-		end
-		failed = not condition
-	end
-
-	--Try to match by player target conditions
-	if not failed and (trigger.isTarget or trigger.notTarget) then
-		condition = false
-		if (trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget) then
-			condition = true
-		end
-		failed = not condition
-	end
-
-	--Try to match by unit target conditions
-	if not failed and (trigger.targetMe or trigger.notTargetMe) then
-		condition = false
-		if (trigger.targetMe and frame.isTargetingMe) or (trigger.notTargetMe and not frame.isTargetingMe) then
-			condition = true
-		end
-		failed = not condition
-	end
-
-	--Try to match by unit focus conditions
-	if not failed and (trigger.isFocus or trigger.notFocus) then
-		condition = false
-		if (trigger.isFocus and frame.isFocused) or (trigger.notFocus and not frame.isFocused) then
-			condition = true
-		end
-		failed = not condition
-	end
-
-	--Try to match if unit is a quest boss
-	if not failed and trigger.questBoss then
-		condition = false
-		questBoss = UnitIsQuestBoss(frame.unit)
-		if questBoss then
-			condition = true
-		end
-		failed = not condition
-	end
-
-	--Try to match by class conditions
-	if not failed and trigger.class and next(trigger.class) then
-		condition = false
-		if trigger.class[E.myclass] and trigger.class[E.myclass].enabled then
-			condition = true
-			matchMyClass = true
-		end
-		failed = not condition
-	end
-
-	--Try to match by spec conditions
-	if not failed and matchMyClass and (trigger.class[E.myclass] and trigger.class[E.myclass].specs and next(trigger.class[E.myclass].specs)) then
-		condition = false
-		mySpecID = E.myspec and GetSpecializationInfo(E.myspec)
-		if mySpecID and trigger.class[E.myclass].specs[mySpecID] then
-			condition = true
-		end
-		failed = not condition
-	end
-
-	--Try to match by classification conditions
-	if not failed and (trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus) then
-		condition = false
-		classification = frame.classification
-		if classification
-		and ((trigger.classification.worldboss and classification == "worldboss")
-		or (trigger.classification.rareelite   and classification == "rareelite")
-		or (trigger.classification.elite	   and classification == "elite")
-		or (trigger.classification.rare		   and classification == "rare")
-		or (trigger.classification.normal	   and classification == "normal")
-		or (trigger.classification.trivial	   and classification == "trivial")
-		or (trigger.classification.minus	   and classification == "minus")) then
-			condition = true
-		end
-		failed = not condition
-	end
-
-	--Try to match by role conditions
-	if not failed and (trigger.role.tank or trigger.role.healer or trigger.role.damager) then
-		condition = false
-		if E.myrole and ((trigger.role.tank and E.myrole == "TANK") or (trigger.role.healer and E.myrole == "HEALER") or (trigger.role.damager and E.myrole == "DAMAGER")) then
-			condition = true
-		end
-		failed = not condition
-	end
-
-	--Try to match by instance conditions
-	if not failed and (trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp) then
-		condition = false
-		_, instanceType, instanceDifficulty = GetInstanceInfo()
-		if instanceType
-		and ((trigger.instanceType.none	  and instanceType == "none")
-		or (trigger.instanceType.scenario and instanceType == "scenario")
-		or (trigger.instanceType.party	  and instanceType == "party")
-		or (trigger.instanceType.raid	  and instanceType == "raid")
-		or (trigger.instanceType.arena	  and instanceType == "arena")
-		or (trigger.instanceType.pvp	  and instanceType == "pvp")) then
-			condition = true
-		end
-		failed = not condition
-	end
-
-	--Try to match by instance difficulty
-	if not failed and (trigger.instanceType.party or trigger.instanceType.raid) then
-		if trigger.instanceType.party and instanceType == "party" and (trigger.instanceDifficulty.dungeon.normal or trigger.instanceDifficulty.dungeon.heroic or trigger.instanceDifficulty.dungeon.mythic or trigger.instanceDifficulty.dungeon["mythic+"] or trigger.instanceDifficulty.dungeon.timewalking) then
-			condition = false;
-			if ((trigger.instanceDifficulty.dungeon.normal		and instanceDifficulty == 1)
-			or (trigger.instanceDifficulty.dungeon.heroic		and instanceDifficulty == 2)
-			or (trigger.instanceDifficulty.dungeon.mythic		and instanceDifficulty == 23)
-			or (trigger.instanceDifficulty.dungeon["mythic+"]	and instanceDifficulty == 8)
-			or (trigger.instanceDifficulty.dungeon.timewalking	and instanceDifficulty == 24)) then
-				condition = true
-			end
-			failed = not condition;
-		end
-
-		if trigger.instanceType.raid and instanceType == "raid" and
-			(trigger.instanceDifficulty.raid.lfr or trigger.instanceDifficulty.raid.normal or trigger.instanceDifficulty.raid.heroic or trigger.instanceDifficulty.raid.mythic or trigger.instanceDifficulty.raid.timewalking
-			or trigger.instanceDifficulty.raid.legacy10normal or trigger.instanceDifficulty.raid.legacy25normal or trigger.instanceDifficulty.raid.legacy10heroic or trigger.instanceDifficulty.raid.legacy25heroic) then
-			condition = false;
-			if ((trigger.instanceDifficulty.raid.lfr           and (instanceDifficulty == 7 or instanceDifficulty == 17))
-			or (trigger.instanceDifficulty.raid.normal         and instanceDifficulty == 14)
-			or (trigger.instanceDifficulty.raid.heroic         and instanceDifficulty == 15)
-			or (trigger.instanceDifficulty.raid.mythic         and instanceDifficulty == 16)
-			or (trigger.instanceDifficulty.raid.timewalking    and instanceDifficulty == 33)
-			or (trigger.instanceDifficulty.raid.legacy10normal and instanceDifficulty == 3)
-			or (trigger.instanceDifficulty.raid.legacy25normal and instanceDifficulty == 4)
-			or (trigger.instanceDifficulty.raid.legacy10heroic and instanceDifficulty == 5)
-			or (trigger.instanceDifficulty.raid.legacy25heroic and instanceDifficulty == 6)) then
-				condition = true
-			end
-			failed = not condition
-		end
-	end
-
-	--Try to match by talent conditions
-	if not failed and trigger.talent.enabled then
-		condition = false
-
-		pvpTalent = trigger.talent.type == "pvp"
-		talentRows = (pvpTalent and 4) or 7
+	-- Talents
+	if trigger.talent.enabled then
+		local pvpTalent = trigger.talent.type == "pvp"
+		local talentRows = (pvpTalent and 4) or 7
+		local selected, pass
 
 		for i = 1, talentRows do
-			if (trigger.talent["tier"..i.."enabled"] and trigger.talent["tier"..i].column > 0) then
+			if trigger.talent["tier"..i.."enabled"] and trigger.talent["tier"..i].column > 0 then
 				if pvpTalent then
 					-- column is actually the talentID for pvpTalents
 					local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(i)
-					talentSelected = (slotInfo and slotInfo.selectedTalentID) == trigger.talent["tier"..i].column
+					selected = (slotInfo and slotInfo.selectedTalentID) == trigger.talent["tier"..i].column
 				else
-					talentSelected = select(4, GetTalentInfo(i, trigger.talent["tier"..i].column, 1))
+					selected = select(4, GetTalentInfo(i, trigger.talent["tier"..i].column, 1))
 				end
 
-				if (talentSelected and not trigger.talent["tier"..i].missing) or (trigger.talent["tier"..i].missing and not talentSelected) then
-					condition = true
+				if (selected and not trigger.talent["tier"..i].missing) or (trigger.talent["tier"..i].missing and not selected) then
+					pass = true
 					if not trigger.talent.requireAll then
 						break -- break when not using requireAll because we matched one
 					end
 				elseif trigger.talent.requireAll then
-					condition = false -- fail because requireAll failed
-					break -- break because requireAll failed
+					pass = false -- fail because requireAll
+					break
 				end
 			end
 		end
 
-		failed = not condition
+		if not pass then
+			return
+		end
 	end
 
-	--Try to match by level conditions
-	if not failed and trigger.level then
-		condition = false
-		myLevel = UnitLevel('player')
-		level = (frame.unit == 'player' and myLevel) or UnitLevel(frame.unit)
-		curLevel = (trigger.curlevel and trigger.curlevel ~= 0 and (trigger.curlevel == level))
-		minLevel = (trigger.minlevel and trigger.minlevel ~= 0 and (trigger.minlevel <= level))
-		maxLevel = (trigger.maxlevel and trigger.maxlevel ~= 0 and (trigger.maxlevel >= level))
-		matchMyLevel = trigger.mylevel and (level == myLevel)
-		if curLevel or minLevel or maxLevel or matchMyLevel then
-			condition = true
-		end
-		failed = not condition
+	-- Level
+	if trigger.level then
+		local myLevel = UnitLevel('player')
+		local level = (frame.unit == 'player' and myLevel) or UnitLevel(frame.unit)
+		local curLevel = (trigger.curlevel and trigger.curlevel ~= 0 and (trigger.curlevel == level))
+		local minLevel = (trigger.minlevel and trigger.minlevel ~= 0 and (trigger.minlevel <= level))
+		local maxLevel = (trigger.maxlevel and trigger.maxlevel ~= 0 and (trigger.maxlevel >= level))
+		local matchMyLevel = trigger.mylevel and (level == myLevel)
+		if not (curLevel or minLevel or maxLevel or matchMyLevel) then return end
 	end
 
-	--Try to match by unit type
-	if not failed and trigger.nameplateType and trigger.nameplateType.enable then
-		condition = false
-
-		if (trigger.nameplateType.friendlyPlayer and frame.frameType=='FRIENDLY_PLAYER')
-		or (trigger.nameplateType.friendlyNPC	 and frame.frameType=='FRIENDLY_NPC')
-		or (trigger.nameplateType.enemyPlayer	 and frame.frameType=='ENEMY_PLAYER')
-		or (trigger.nameplateType.enemyNPC		 and frame.frameType=='ENEMY_NPC')
-		or (trigger.nameplateType.healer		 and frame.frameType=='HEALER')
-		or (trigger.nameplateType.player		 and frame.frameType=='PLAYER') then
-			condition = true
-		end
-
-		failed = not condition
+	-- Unit Type
+	if trigger.nameplateType and trigger.nameplateType.enable then
+		if not (frame.frameType
+		and ((trigger.nameplateType.friendlyPlayer and frame.frameType == 'FRIENDLY_PLAYER')
+		or (trigger.nameplateType.friendlyNPC	 and frame.frameType == 'FRIENDLY_NPC')
+		or (trigger.nameplateType.enemyPlayer	 and frame.frameType == 'ENEMY_PLAYER')
+		or (trigger.nameplateType.enemyNPC		 and frame.frameType == 'ENEMY_NPC')
+		or (trigger.nameplateType.healer		 and frame.frameType == 'HEALER')
+		or (trigger.nameplateType.player		 and frame.frameType == 'PLAYER'))) then return end
 	end
 
-	--Try to match by creature conditions
-	if not failed and trigger.creatureType and trigger.creatureType.enable then
-		condition = false
-		creatureType = E.CreatureTypes[frame.creatureType]
-		if creatureType and trigger.creatureType[creatureType] then
-			condition = true
-		end
-		failed = not condition
+	-- Creature Type
+	if trigger.creatureType and trigger.creatureType.enable then
+		if not trigger.creatureType[E.CreatureTypes[frame.creatureType]] then return end
 	end
 
-	--Try to match by Reaction (or Reputation) type
-	if not failed and trigger.reactionType and trigger.reactionType.enable then
-		reaction = (trigger.reactionType.reputation and frame.repReaction) or frame.reaction
-		condition = false
-
-		if (reaction==1 and trigger.reactionType.hated)
-		or (reaction==2 and trigger.reactionType.hostile)
-		or (reaction==3 and trigger.reactionType.unfriendly)
-		or (reaction==4 and trigger.reactionType.neutral)
-		or (reaction==5 and trigger.reactionType.friendly)
-		or (reaction==6 and trigger.reactionType.honored)
-		or (reaction==7 and trigger.reactionType.revered)
-		or (reaction==8 and trigger.reactionType.exalted) then
-			condition = true
-		end
-
-		failed = not condition
+	-- Reaction (or Reputation) Type
+	if trigger.reactionType and trigger.reactionType.enable then
+		local reaction = (trigger.reactionType.reputation and frame.repReaction) or frame.reaction
+		if not (reaction
+		and ((reaction == 1 and trigger.reactionType.hated)
+		or (reaction == 2 and trigger.reactionType.hostile)
+		or (reaction == 3 and trigger.reactionType.unfriendly)
+		or (reaction == 4 and trigger.reactionType.neutral)
+		or (reaction == 5 and trigger.reactionType.friendly)
+		or (reaction == 6 and trigger.reactionType.honored)
+		or (reaction == 7 and trigger.reactionType.revered)
+		or (reaction == 8 and trigger.reactionType.exalted))) then return end
 	end
 
 	--Try to match according to cooldown conditions
-	if not failed and trigger.cooldowns and trigger.cooldowns.names and next(trigger.cooldowns.names) then
-		condition = mod:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll)
-		if condition ~= nil then --Condition will be nil if none are set to ONCD or OFFCD
-			failed = not condition
-		end
+	if trigger.cooldowns and trigger.cooldowns.names and next(trigger.cooldowns.names) then
+		if mod:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll) == false then return end -- will be nil if none are set to ONCD or OFFCD
 	end
 
 	--Try to match according to buff aura conditions
-	if not failed and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-		condition = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
-		if condition ~= nil then --Condition will be nil if none are selected
-			failed = not condition
-		end
+	if trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
+		if mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft) == false then return end -- will be nil if none are selected
 	end
 
 	--Try to match according to debuff aura conditions
-	if not failed and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
-		condition = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
-		if condition ~= nil then --Condition will be nil if none are selected
-			failed = not condition
-		end
+	if trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
+		if mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft) == false then return end -- will be nil if none are selected
 	end
 
-	--Callback for Plugins
-	if mod.CustomStyleConditions then
-		failed = mod:CustomStyleConditions(frame, filter, trigger, failed)
+	--Try to match according to raid target conditions
+	if trigger.raidTarget.star or trigger.raidTarget.circle or trigger.raidTarget.diamond or trigger.raidTarget.triangle or trigger.raidTarget.moon or trigger.raidTarget.square or trigger.raidTarget.cross or trigger.raidTarget.skull then
+		if not (frame.RaidTargetIndex
+		and ((frame.RaidTargetIndex == 1 and trigger.raidTarget.star)
+		or (frame.RaidTargetIndex == 2 and trigger.raidTarget.circle)
+		or (frame.RaidTargetIndex == 3 and trigger.raidTarget.diamond)
+		or (frame.RaidTargetIndex == 4 and trigger.raidTarget.triangle)
+		or (frame.RaidTargetIndex == 5 and trigger.raidTarget.moon)
+		or (frame.RaidTargetIndex == 6 and trigger.raidTarget.square)
+		or (frame.RaidTargetIndex == 7 and trigger.raidTarget.cross)
+		or (frame.RaidTargetIndex == 8 and trigger.raidTarget.skull))) then return end
 	end
 
-	--If failed is nil it means the filter is empty so we dont run FilterStyle
-	if failed == false then --The conditions didn't fail so pass to FilterStyle
-		mod:StyleFilterPass(frame, filter.actions);
-	end
+	-- Plugin Callback
+	if mod.StyleFilterCustomCheck and (mod:StyleFilterCustomCheck(frame, filter, trigger) == false) then return end
+
+	-- Pass it along
+	mod:StyleFilterPass(frame, filter.actions)
 end
 
 function mod:StyleFilterPass(frame, actions)
@@ -928,6 +852,11 @@ function mod:StyleFilterSort(place)
 	end
 end
 
+function mod:VehicleFunction(_, unit)
+	unit = unit or self.unit
+	self.inVehicle = UnitInVehicle(unit) or nil
+end
+
 mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	['PLAYER_TARGET_CHANGED'] = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
@@ -935,10 +864,16 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	['PLAYER_FOCUS_CHANGED'] = function(self)
 		self.isFocused = self.unit and UnitIsUnit(self.unit, 'focus') or nil
 	end,
+	['RAID_TARGET_UPDATE'] = function(self)
+		self.RaidTargetIndex = self.unit and GetRaidTargetIndex(self.unit) or nil
+	end,
 	['UNIT_TARGET'] = function(self, _, unit)
 		unit = unit or self.unit
 		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
-	end
+	end,
+	['UNIT_ENTERED_VEHICLE'] = mod.VehicleFunction,
+	['UNIT_EXITED_VEHICLE'] = mod.VehicleFunction,
+	['UNIT_EXITING_VEHICLE'] = mod.VehicleFunction
 }
 
 function mod:StyleFilterSetVariables(nameplate)
@@ -950,7 +885,9 @@ end
 function mod:StyleFilterClearVariables(nameplate)
 	nameplate.isTarget = nil
 	nameplate.isFocused = nil
+	nameplate.inVehicle = nil
 	nameplate.isTargetingMe = nil
+	nameplate.RaidTargetIndex = nil
 	nameplate.ThreatScale = nil
 end
 
@@ -962,10 +899,16 @@ mod.StyleFilterPlateEvents = { -- events watched inside of ouf, which is called 
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
 	'PLAYER_TARGET_CHANGED',
 	'PLAYER_FOCUS_CHANGED',
+	'PLAYER_UPDATE_RESTING',
+	'RAID_TARGET_UPDATE',
 	'SPELL_UPDATE_COOLDOWN',
 	'UNIT_AURA',
 	'UNIT_DISPLAYPOWER',
+	'UNIT_ENTERED_VEHICLE',
+	'UNIT_EXITED_VEHICLE',
+	'UNIT_EXITING_VEHICLE',
 	'UNIT_FACTION',
+	'UNIT_FLAGS',
 	'UNIT_HEALTH',
 	'UNIT_HEALTH_FREQUENT',
 	'UNIT_MAXHEALTH',
@@ -974,7 +917,6 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_POWER_UPDATE',
 	'UNIT_TARGET',
 	'UNIT_THREAT_LIST_UPDATE',
-	'UNIT_FLAGS'
 }
 
 function mod:StyleFilterWatchEvents()
@@ -1026,6 +968,10 @@ function mod:StyleFilterConfigure()
 					mod.StyleFilterTriggerEvents.PLAYER_FOCUS_CHANGED = true
 				end
 
+				if filter.triggers.isResting then
+					mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = true
+				end
+
 				if filter.triggers.healthThreshold then
 					mod.StyleFilterTriggerEvents.UNIT_HEALTH = true
 					mod.StyleFilterTriggerEvents.UNIT_MAXHEALTH = true
@@ -1036,6 +982,16 @@ function mod:StyleFilterConfigure()
 					mod.StyleFilterTriggerEvents.UNIT_POWER_UPDATE = true
 					mod.StyleFilterTriggerEvents.UNIT_POWER_FREQUENT = true
 					mod.StyleFilterTriggerEvents.UNIT_DISPLAYPOWER = true
+				end
+
+				if filter.triggers.raidTarget then
+					mod.StyleFilterTriggerEvents.RAID_TARGET_UPDATE = true
+				end
+
+				if filter.triggers.unitInVehicle then
+					mod.StyleFilterTriggerEvents.UNIT_ENTERED_VEHICLE = true
+					mod.StyleFilterTriggerEvents.UNIT_EXITED_VEHICLE = true
+					mod.StyleFilterTriggerEvents.UNIT_EXITING_VEHICLE = true
 				end
 
 				if next(filter.triggers.names) then
@@ -1114,9 +1070,9 @@ function mod:StyleFilterUpdate(frame, event)
 
 	local filter
 	for filterNum in ipairs(mod.StyleFilterTriggerList) do
-		filter = E.global.nameplate.filters[mod.StyleFilterTriggerList[filterNum][1]];
+		filter = E.global.nameplate.filters[mod.StyleFilterTriggerList[filterNum][1]]
 		if filter then
-			mod:StyleFilterConditionCheck(frame, filter, filter.triggers, nil)
+			mod:StyleFilterConditionCheck(frame, filter, filter.triggers)
 		end
 	end
 end
@@ -1191,118 +1147,50 @@ do -- oUF style filter inject watch functions without actually registering any e
 	end
 end
 
+function mod:StyleFilterRegister(nameplate, event, unitless, func)
+	if not nameplate:IsEventRegistered(event) then
+		nameplate:RegisterEvent(event, func or E.noop, unitless)
+	end
+end
+
 -- events we actually register on plates when they aren't added
 function mod:StyleFilterEvents(nameplate)
-	if not nameplate:IsEventRegistered('PLAYER_TARGET_CHANGED') then
-		nameplate:RegisterEvent('PLAYER_TARGET_CHANGED', E.noop, true)
-	end
-	if not nameplate:IsEventRegistered('PLAYER_FOCUS_CHANGED') then
-		nameplate:RegisterEvent('PLAYER_FOCUS_CHANGED', E.noop, true)
-	end
-	if not nameplate:IsEventRegistered('SPELL_UPDATE_COOLDOWN') then
-		nameplate:RegisterEvent('SPELL_UPDATE_COOLDOWN', E.noop, true)
-	end
-	if not nameplate:IsEventRegistered('UNIT_THREAT_LIST_UPDATE') then
-		nameplate:RegisterEvent('UNIT_THREAT_LIST_UPDATE', E.noop)
-	end
-	if not nameplate:IsEventRegistered('UNIT_FLAGS') then
-		nameplate:RegisterEvent('UNIT_FLAGS', E.noop)
-	end
-	if not nameplate:IsEventRegistered('UNIT_TARGET') then
-		nameplate:RegisterEvent('UNIT_TARGET', E.noop)
-	end
+	mod:StyleFilterRegister(nameplate,'PLAYER_FOCUS_CHANGED', true)
+	mod:StyleFilterRegister(nameplate,'PLAYER_TARGET_CHANGED', true)
+	mod:StyleFilterRegister(nameplate,'PLAYER_UPDATE_RESTING', true)
+	mod:StyleFilterRegister(nameplate,'RAID_TARGET_UPDATE', true)
+	mod:StyleFilterRegister(nameplate,'SPELL_UPDATE_COOLDOWN', true)
+	mod:StyleFilterRegister(nameplate,'UNIT_ENTERED_VEHICLE')
+	mod:StyleFilterRegister(nameplate,'UNIT_EXITED_VEHICLE')
+	mod:StyleFilterRegister(nameplate,'UNIT_EXITING_VEHICLE')
+	mod:StyleFilterRegister(nameplate,'UNIT_FLAGS')
+	mod:StyleFilterRegister(nameplate,'UNIT_TARGET')
+	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_LIST_UPDATE')
 
 	mod:StyleFilterEventWatch(nameplate)
 end
 
--- Shamelessy taken from AceDB-3.0
+-- Shamelessy taken from AceDB-3.0 and stripped down by Simpy
 local function copyDefaults(dest, src)
-	-- this happens if some value in the SV overwrites our default value with a non-table
-	--if type(dest) ~= "table" then return end
 	for k, v in pairs(src) do
-		if k == "*" or k == "**" then
-			if type(v) == "table" then
-				-- This is a metatable used for table defaults
-				local mt = {
-					-- This handles the lookup and creation of new subtables
-					__index = function(t,k)
-							if k == nil then return nil end
-							local tbl = {}
-							copyDefaults(tbl, v)
-							rawset(t, k, tbl)
-							return tbl
-						end,
-				}
-				setmetatable(dest, mt)
-				-- handle already existing tables in the SV
-				for dk, dv in pairs(dest) do
-					if not rawget(src, dk) and type(dv) == "table" then
-						copyDefaults(dv, v)
-					end
-				end
-			else
-				-- Values are not tables, so this is just a simple return
-				local mt = {__index = function(_,k) return k~=nil and v or nil end}
-				setmetatable(dest, mt)
-			end
-		elseif type(v) == "table" then
+		if type(v) == "table" then
 			if not rawget(dest, k) then rawset(dest, k, {}) end
-			if type(dest[k]) == "table" then
-				copyDefaults(dest[k], v)
-				if src['**'] then
-					copyDefaults(dest[k], src['**'])
-				end
-			end
-		else
-			if rawget(dest, k) == nil then
-				rawset(dest, k, v)
-			end
+			if type(dest[k]) == "table" then copyDefaults(dest[k], v) end
+		elseif rawget(dest, k) == nil then
+			rawset(dest, k, v)
 		end
 	end
 end
 
-local function removeDefaults(db, defaults, blocker)
-	-- remove all metatables from the db, so we don't accidentally create new sub-tables through them
+local function removeDefaults(db, defaults)
 	setmetatable(db, nil)
-	-- loop through the defaults and remove their content
+
 	for k,v in pairs(defaults) do
-		if k == "*" or k == "**" then
-			if type(v) == "table" then
-				-- Loop through all the actual k,v pairs and remove
-				for key, value in pairs(db) do
-					if type(value) == "table" then
-						-- if the key was not explicitly specified in the defaults table, just strip everything from * and ** tables
-						if defaults[key] == nil and (not blocker or blocker[key] == nil) then
-							removeDefaults(value, v)
-							-- if the table is empty afterwards, remove it
-							if next(value) == nil then
-								db[key] = nil
-							end
-						-- if it was specified, only strip ** content, but block values which were set in the key table
-						elseif k == "**" then
-							removeDefaults(value, v, defaults[key])
-						end
-					end
-				end
-			elseif k == "*" then
-				-- check for non-table default
-				for key, value in pairs(db) do
-					if defaults[key] == nil and v == value then
-						db[key] = nil
-					end
-				end
-			end
-		elseif type(v) == "table" and type(db[k]) == "table" then
-			-- if a blocker was set, dive into it, to allow multi-level defaults
-			removeDefaults(db[k], v, blocker and blocker[k])
-			if next(db[k]) == nil then
-				db[k] = nil
-			end
-		else
-			-- check if the current value matches the default, and that its not blocked by another defaults table
-			if db[k] == defaults[k] and (not blocker or blocker[k] == nil) then
-				db[k] = nil
-			end
+		if type(v) == "table" and type(db[k]) == "table" then
+			removeDefaults(db[k], v)
+			if next(db[k]) == nil then db[k] = nil end
+		elseif db[k] == defaults[k] then
+			db[k] = nil
 		end
 	end
 end
@@ -1310,21 +1198,21 @@ end
 function mod:StyleFilterClearDefaults()
 	for filterName, filterTable in pairs(E.global.nameplate.filters) do
 		if G.nameplate.filters[filterName] then
-			local defaultTable = E:CopyTable({}, E.StyleFilterDefaults);
-			E:CopyTable(defaultTable, G.nameplate.filters[filterName]);
-			removeDefaults(filterTable, defaultTable);
+			local defaultTable = E:CopyTable({}, E.StyleFilterDefaults)
+			E:CopyTable(defaultTable, G.nameplate.filters[filterName])
+			removeDefaults(filterTable, defaultTable)
 		else
-			removeDefaults(filterTable, E.StyleFilterDefaults);
+			removeDefaults(filterTable, E.StyleFilterDefaults)
 		end
 	end
 end
 
 function mod:StyleFilterCopyDefaults(tbl)
-	copyDefaults(tbl, E.StyleFilterDefaults);
+	copyDefaults(tbl, E.StyleFilterDefaults)
 end
 
 function mod:StyleFilterInitialize()
 	for _, filterTable in pairs(E.global.nameplate.filters) do
-		mod:StyleFilterCopyDefaults(filterTable);
+		mod:StyleFilterCopyDefaults(filterTable)
 	end
 end

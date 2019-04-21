@@ -108,7 +108,9 @@ function NP:Update_Health(nameplate)
 			nameplate:EnableElement('Health')
 		end
 
-		nameplate.Health:Point('CENTER', nameplate, 'CENTER', 0, db.health.yOffset)
+		nameplate.Health:Point('CENTER')
+		nameplate.Health:Point('LEFT')
+		nameplate.Health:Point('RIGHT')
 
 		E:SetSmoothing(nameplate.Health, NP.db.smoothbars)
 	else
@@ -130,7 +132,7 @@ function NP:Update_Health(nameplate)
 
 	nameplate.Health.width = db.health.width
 	nameplate.Health.height = db.health.height
-	nameplate.Health:Size(db.health.width, db.health.height)
+	nameplate.Health:Height(db.health.height)
 end
 
 function NP:Construct_HealthPrediction(nameplate)
