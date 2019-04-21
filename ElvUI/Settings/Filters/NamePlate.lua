@@ -49,9 +49,6 @@ E.StyleFilterDefaults = {
 			interruptible = false,
 			spells = {},
 		},
-		isResting = {
-			enable = false,
-		},
 		role = {
 			tank = false,
 			healer = false,
@@ -192,6 +189,7 @@ E.StyleFilterDefaults = {
 			minTimeLeft = 0,
 			maxTimeLeft = 0,
 		},
+		isResting = false,
 		inCombat = false,
 		outOfCombat = false,
 		inCombatUnit = false,
