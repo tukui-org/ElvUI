@@ -2,7 +2,7 @@
 
 **New Additions:**  
 Add debuffs for Crucible of Storms.  
-Added Target Marker Style Filter. (Thanks @wing5wong)  
+Added Style Filters: Raid Target Marker, Is Resting, In/Out of Vehicle. (#469 #1253 and #1278 - Thanks @wing5wong)  
 
 **Bug Fixes:**  
 Fixed Nameplate Stagger texture.  
@@ -18,6 +18,7 @@ Fixed Name Fonts getting replaced even though Replace Blizzard Fonts is checked 
 Fixed "Attempt to index local 'threat' (a nil value)". (#1277)  
 Fixed error when you disable a Custom Text.  
 Fixed Nameplate Power Use Atlas Textures option.  
+Fixed Twitter icon not appearing for items in chat. (#1281)  
 
 **Misc. Changes:**  
 Unitframe Status Bars will now sync their textures onto the background space when not using transparent.  
