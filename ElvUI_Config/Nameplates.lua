@@ -863,23 +863,29 @@ local function UpdateFilterGroup()
 							guiInline = true,
 							order = 2,
 							args = {
-								isResting = {
-									type = 'toggle',
-									name = L["Player is Resting"],
-									desc = L["If enabled then the filter will only activate when you are resting at an Inn."],
-									order = 1,
-								},
 								inCombat = {
 									name = L["Player in Combat"],
 									desc = L["If enabled then the filter will only activate when you are in combat."],
 									type = 'toggle',
-									order = 2,
+									order = 1,
 								},
 								outOfCombat = {
 									name = L["Player Out of Combat"],
 									desc = L["If enabled then the filter will only activate when you are out of combat."],
 									type = 'toggle',
+									order = 2,
+								},
+								inCombatUnit = {
+									name = L["Unit in Combat"],
+									desc = L["If enabled then the filter will only activate when the unit is in combat."],
+									type = 'toggle',
 									order = 3,
+								},
+								outOfCombatUnit = {
+									name = L["Unit Out of Combat"],
+									desc = L["If enabled then the filter will only activate when the unit is out of combat."],
+									type = 'toggle',
+									order = 4,
 								},
 								spacer1 = {
 									type = 'description',
@@ -887,17 +893,17 @@ local function UpdateFilterGroup()
 									width = 'full',
 									order = 5,
 								},
-								inCombatUnit = {
-									name = L["Unit in Combat"],
-									desc = L["If enabled then the filter will only activate when the unit is in combat."],
-									type = 'toggle',
+								inVehicle = {
+									name = L["Player in Vehicle"],
+									desc = L["If enabled then the filter will only activate when you are in a Vehicle."],
 									order = 6,
-								},
-								outOfCombatUnit = {
-									name = L["Unit Out of Combat"],
-									desc = L["If enabled then the filter will only activate when the unit is out of combat."],
 									type = 'toggle',
+								},
+								outOfVehicle = {
+									name = L["Player Out of Vehicle"],
+									desc = L["If enabled then the filter will only activate when you are not in a Vehicle."],
 									order = 7,
+									type = 'toggle',
 								},
 								inVehicleUnit = {
 									name = L["Unit in Vehicle"],
@@ -910,6 +916,18 @@ local function UpdateFilterGroup()
 									desc = L["If enabled then the filter will only activate when the unit is not in a Vehicle."],
 									order = 9,
 									type = 'toggle',
+								},
+								spacer2 = {
+									type = 'description',
+									name = " ",
+									width = 'full',
+									order = 10,
+								},
+								isResting = {
+									type = 'toggle',
+									name = L["Player is Resting"],
+									desc = L["If enabled then the filter will only activate when you are resting at an Inn."],
+									order = 11,
 								},
 							}
 						}

@@ -194,6 +194,8 @@ E.StyleFilterDefaults = {
 		outOfCombat = false,
 		inCombatUnit = false,
 		outOfCombatUnit = false,
+		inVehicle = false,
+		outOfVehicle = false,
 		inVehicleUnit = false,
 		outOfVehicleUnit = false,
 	},

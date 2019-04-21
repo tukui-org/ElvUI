@@ -39,7 +39,7 @@ local FallbackColor = {r=1, b=1, g=1}
 
 do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value').
 	local c, locale = {}, GetLocale()
-	if locale == "frFR" then
+	if locale == 'frFR' then
 		c['Aberration'] = 'Aberration'
 		c['Bête'] = 'Beast'
 		c['Bestiole'] = 'Critter'
@@ -55,7 +55,7 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 		c['Mort-vivant'] = 'Undead'
 		c['Mascotte sauvage'] = 'Wild Pet'
 		c['Familier pacifique'] = 'Non-combat Pet'
-	elseif locale == "deDE" then
+	elseif locale == 'deDE' then
 		c['Anomalie'] = 'Aberration'
 		c['Wildtier'] = 'Beast'
 		c['Kleintier'] = 'Critter'
@@ -71,7 +71,7 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 		c['Untoter'] = 'Undead'
 		c['Ungezähmtes Tier'] = 'Wild Pet'
 		c['Haustier'] = 'Non-combat Pet'
-	elseif locale == "koKR" then
+	elseif locale == 'koKR' then
 		c['돌연변이'] = 'Aberration'
 		c['야수'] = 'Beast'
 		c['동물'] = 'Critter'
@@ -87,7 +87,7 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 		c['언데드'] = 'Undead'
 		c['야생 애완동물'] = 'Wild Pet'
 		c['애완동물'] = 'Non-combat Pet'
-	elseif locale == "ruRU" then
+	elseif locale == 'ruRU' then
 		c['Аберрация'] = 'Aberration'
 		c['Животное'] = 'Beast'
 		c['Существо'] = 'Critter'
@@ -103,7 +103,7 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 		c['Нежить'] = 'Undead'
 		c['дикий питомец'] = 'Wild Pet'
 		c['Спутник'] = 'Non-combat Pet'
-	elseif locale == "zhCN" then
+	elseif locale == 'zhCN' then
 		c['畸变'] = 'Aberration'
 		c['野兽'] = 'Beast'
 		c['小动物'] = 'Critter'
@@ -119,7 +119,7 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 		c['亡灵'] = 'Undead'
 		c['野生宠物'] = 'Wild Pet'
 		c['非战斗宠物'] = 'Non-combat Pet'
-	elseif locale == "zhTW" then
+	elseif locale == 'zhTW' then
 		c['畸變'] = 'Aberration'
 		c['野獸'] = 'Beast'
 		c['小動物'] = 'Critter'
@@ -135,7 +135,7 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 		c['不死族'] = 'Undead'
 		c['野生寵物'] = 'Wild Pet'
 		c['非戰鬥寵物'] = 'Non-combat Pet'
-	elseif locale == "esES" then
+	elseif locale == 'esES' then
 		c['Desviación'] = 'Aberration'
 		c['Bestia'] = 'Beast'
 		c['Alma'] = 'Critter'
@@ -151,7 +151,7 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 		c['No-muerto'] = 'Undead'
 		c['Mascota salvaje'] = 'Wild Pet'
 		c['Mascota no combatiente'] = 'Non-combat Pet'
-	elseif locale == "esMX" then
+	elseif locale == 'esMX' then
 		c['Desviación'] = 'Aberration'
 		c['Bestia'] = 'Beast'
 		c['Alma'] = 'Critter'
@@ -167,7 +167,7 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 		c['No-muerto'] = 'Undead'
 		c['Mascota salvaje'] = 'Wild Pet'
 		c['Mascota mansa'] = 'Non-combat Pet'
-	elseif locale == "ptBR" then
+	elseif locale == 'ptBR' then
 		c['Aberração'] = 'Aberration'
 		c['Fera'] = 'Beast'
 		c['Bicho'] = 'Critter'
@@ -183,7 +183,7 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 		c['Renegado'] = 'Undead'
 		c['Mascote Selvagem'] = 'Wild Pet'
 		c['Mascote não-combatente'] = 'Non-combat Pet'
-	elseif locale == "itIT" then
+	elseif locale == 'itIT' then
 		c['Aberrazione'] = 'Aberration'
 		c['Bestia'] = 'Beast'
 		c['Animale'] = 'Critter'
@@ -275,18 +275,18 @@ function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 
 	for name, value in pairs(names) do
 		if GetSpellInfo(name) then --check spell name valid, GetSpellCharges/GetSpellCooldown will return nil if not known by your class
-			if value == "ONCD" or value == "OFFCD" then --only if they are turned on
+			if value == 'ONCD' or value == 'OFFCD' then --only if they are turned on
 				total = total + 1 --keep track of the names
 
 				local charges = GetSpellCharges(name)
 				local _, duration = GetSpellCooldown(name)
 
-				if (charges and charges == 0 and value == "ONCD") --charges exist and the current number of charges is 0 means that it is completely on cooldown.
-				or (charges and charges > 0 and value == "OFFCD") --charges exist and the current number of charges is greater than 0 means it is not on cooldown.
-				or (charges == nil and (duration > gcd and value == "ONCD")) --no charges exist and the duration of the cooldown is greater than the GCD spells current cooldown then it is on cooldown.
-				or (charges == nil and (duration <= gcd and value == "OFFCD")) then --no charges exist and the duration of the cooldown is at or below the current GCD cooldown spell then it is not on cooldown.
+				if (charges and charges == 0 and value == 'ONCD') --charges exist and the current number of charges is 0 means that it is completely on cooldown.
+				or (charges and charges > 0 and value == 'OFFCD') --charges exist and the current number of charges is greater than 0 means it is not on cooldown.
+				or (charges == nil and (duration > gcd and value == 'ONCD')) --no charges exist and the duration of the cooldown is greater than the GCD spells current cooldown then it is on cooldown.
+				or (charges == nil and (duration <= gcd and value == 'OFFCD')) then --no charges exist and the duration of the cooldown is at or below the current GCD cooldown spell then it is not on cooldown.
 					count = count + 1
-					--print(((charges and charges == 0 and value == "ONCD") and name.." (charge) passes because it is on cd") or ((charges and charges > 0 and value == "OFFCD") and name.." (charge) passes because it is offcd") or ((charges == nil and (duration > gcd and value == "ONCD")) and name.."passes because it is on cd.") or ((charges == nil and (duration <= gcd and value == "OFFCD")) and name.." passes because it is off cd."))
+					--print(((charges and charges == 0 and value == 'ONCD') and name..' (charge) passes because it is on cd') or ((charges and charges > 0 and value == 'OFFCD') and name..' (charge) passes because it is offcd') or ((charges == nil and (duration > gcd and value == 'ONCD')) and name..'passes because it is on cd.') or ((charges == nil and (duration <= gcd and value == 'OFFCD')) and name..' passes because it is off cd.'))
 	end end end end
 
 	if total == 0 then
@@ -301,18 +301,18 @@ function mod:StyleFilterFinishedFlash(requested)
 end
 
 function mod:StyleFilterSetupFlash(FlashTexture)
-	FlashTexture.anim = FlashTexture:CreateAnimationGroup("Flash")
-	FlashTexture.anim.fadein = FlashTexture.anim:CreateAnimation("ALPHA", "FadeIn")
+	FlashTexture.anim = FlashTexture:CreateAnimationGroup('Flash')
+	FlashTexture.anim.fadein = FlashTexture.anim:CreateAnimation('ALPHA', 'FadeIn')
 	FlashTexture.anim.fadein:SetFromAlpha(0)
 	FlashTexture.anim.fadein:SetToAlpha(1)
 	FlashTexture.anim.fadein:SetOrder(2)
 
-	FlashTexture.anim.fadeout = FlashTexture.anim:CreateAnimation("ALPHA", "FadeOut")
+	FlashTexture.anim.fadeout = FlashTexture.anim:CreateAnimation('ALPHA', 'FadeOut')
 	FlashTexture.anim.fadeout:SetFromAlpha(1)
 	FlashTexture.anim.fadeout:SetToAlpha(0)
 	FlashTexture.anim.fadeout:SetOrder(1)
 
-	FlashTexture.anim:SetScript("OnFinished", mod.StyleFilterFinishedFlash)
+	FlashTexture.anim:SetScript('OnFinished', mod.StyleFilterFinishedFlash)
 end
 
 function mod:StyleFilterPlateStyled(frame)
@@ -376,7 +376,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.StyleChanged = true
 		frame.FlashingHealth = true
 		if not TextureChanged then
-			frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", mod.db.statusbar))
+			frame.FlashTexture:SetTexture(LSM:Fetch('statusbar', mod.db.statusbar))
 		end
 		frame.FlashTexture:SetVertexColor(actions.flash.color.r, actions.flash.color.g, actions.flash.color.b)
 		if not frame.FlashTexture.anim then
@@ -390,10 +390,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if TextureChanged then
 		frame.StyleChanged = true
 		frame.TextureChanged = true
-		frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
-		frame.Health:SetStatusBarTexture(LSM:Fetch("statusbar", actions.texture.texture))
+		frame.Highlight.texture:SetTexture(LSM:Fetch('statusbar', actions.texture.texture))
+		frame.Health:SetStatusBarTexture(LSM:Fetch('statusbar', actions.texture.texture))
 		if FlashingHealth then
-			frame.FlashTexture:SetTexture(LSM:Fetch("statusbar", actions.texture.texture))
+			frame.FlashTexture:SetTexture(LSM:Fetch('statusbar', actions.texture.texture))
 		end
 	end
 	if ScaleChanged then
@@ -485,8 +485,8 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if TextureChanged then
 		frame.TextureChanged = nil
-		frame.Highlight.texture:SetTexture(LSM:Fetch("statusbar", mod.db.statusbar))
-		frame.Health:SetStatusBarTexture(LSM:Fetch("statusbar", mod.db.statusbar))
+		frame.Highlight.texture:SetTexture(LSM:Fetch('statusbar', mod.db.statusbar))
+		frame.Health:SetStatusBarTexture(LSM:Fetch('statusbar', mod.db.statusbar))
 	end
 	if ScaleChanged then
 		frame.ScaleChanged = nil
@@ -577,7 +577,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Health
 	if trigger.healthThreshold then
-		local healthUnit = (trigger.healthUsePlayer and "player") or frame.unit
+		local healthUnit = (trigger.healthUsePlayer and 'player') or frame.unit
 		local health, maxHealth = UnitHealth(healthUnit), UnitHealthMax(healthUnit)
 		local percHealth = (maxHealth and (maxHealth > 0) and health/maxHealth) or 0
 		local underHealthThreshold = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0) and (trigger.underHealthThreshold > percHealth)
@@ -587,7 +587,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Power
 	if trigger.powerThreshold then
-		local powerUnit = (trigger.powerUsePlayer and "player") or frame.unit
+		local powerUnit = (trigger.powerUsePlayer and 'player') or frame.unit
 		local power, maxPower = UnitPower(powerUnit, frame.PowerType), UnitPowerMax(powerUnit, frame.PowerType)
 		local percPower = (maxPower and (maxPower > 0) and power/maxPower) or 0
 		local underPowerThreshold = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0) and (trigger.underPowerThreshold > percPower)
@@ -607,7 +607,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Player Combat
 	if trigger.inCombat or trigger.outOfCombat then
-		local inCombat = UnitAffectingCombat("player")
+		local inCombat = UnitAffectingCombat('player')
 		if (trigger.inCombat and inCombat) or (trigger.outOfCombat and not inCombat) then passed = true else return end
 	end
 
@@ -632,6 +632,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if (trigger.isFocus and frame.isFocused) or (trigger.notFocus and not frame.isFocused) then passed = true else return end
 	end
 
+	-- Player Vehicle
+	if trigger.inVehicle or trigger.outOfVehicle then
+		local inVehicle = UnitInVehicle('player')
+		if (trigger.inVehicle and inVehicle) or (trigger.outOfVehicle and not inVehicle) then passed = true else return end
+	end
+
 	-- Unit Vehicle
 	if trigger.inVehicleUnit or trigger.outOfVehicleUnit then
 		if (trigger.inVehicleUnit and frame.inVehicle) or (trigger.outOfVehicleUnit and not frame.inVehicle) then passed = true else return end
@@ -640,21 +646,21 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Classification
 	if trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus then
 		if frame.classification
-		and ((trigger.classification.worldboss and frame.classification == "worldboss")
-		or (trigger.classification.rareelite   and frame.classification == "rareelite")
-		or (trigger.classification.elite	   and frame.classification == "elite")
-		or (trigger.classification.rare		   and frame.classification == "rare")
-		or (trigger.classification.normal	   and frame.classification == "normal")
-		or (trigger.classification.trivial	   and frame.classification == "trivial")
-		or (trigger.classification.minus	   and frame.classification == "minus")) then passed = true else return end
+		and ((trigger.classification.worldboss and frame.classification == 'worldboss')
+		or (trigger.classification.rareelite   and frame.classification == 'rareelite')
+		or (trigger.classification.elite	   and frame.classification == 'elite')
+		or (trigger.classification.rare		   and frame.classification == 'rare')
+		or (trigger.classification.normal	   and frame.classification == 'normal')
+		or (trigger.classification.trivial	   and frame.classification == 'trivial')
+		or (trigger.classification.minus	   and frame.classification == 'minus')) then passed = true else return end
 	end
 
 	-- Group Role
 	if trigger.role.tank or trigger.role.healer or trigger.role.damager then
 		if E.myrole
-		and ((trigger.role.tank and E.myrole == "TANK")
-		or (trigger.role.healer and E.myrole == "HEALER")
-		or (trigger.role.damager and E.myrole == "DAMAGER")) then passed = true else return end
+		and ((trigger.role.tank and E.myrole == 'TANK')
+		or (trigger.role.healer and E.myrole == 'HEALER')
+		or (trigger.role.damager and E.myrole == 'DAMAGER')) then passed = true else return end
 	end
 
 	do -- Class
@@ -676,12 +682,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
 			_, instanceType, instanceDifficulty = GetInstanceInfo()
 			if instanceType
-			and ((trigger.instanceType.none	  and instanceType == "none")
-			or (trigger.instanceType.scenario and instanceType == "scenario")
-			or (trigger.instanceType.party	  and instanceType == "party")
-			or (trigger.instanceType.raid	  and instanceType == "raid")
-			or (trigger.instanceType.arena	  and instanceType == "arena")
-			or (trigger.instanceType.pvp	  and instanceType == "pvp")) then passed = true else return end
+			and ((trigger.instanceType.none	  and instanceType == 'none')
+			or (trigger.instanceType.scenario and instanceType == 'scenario')
+			or (trigger.instanceType.party	  and instanceType == 'party')
+			or (trigger.instanceType.raid	  and instanceType == 'raid')
+			or (trigger.instanceType.arena	  and instanceType == 'arena')
+			or (trigger.instanceType.pvp	  and instanceType == 'pvp')) then passed = true else return end
 		end
 
 		-- Difficulty
@@ -689,17 +695,17 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 			if not instanceDifficulty then _, _, instanceDifficulty = GetInstanceInfo() end
 
 			local dungeon = trigger.instanceDifficulty.dungeon
-			if trigger.instanceType.party and instanceType == "party" and (dungeon.normal or dungeon.heroic or dungeon.mythic or dungeon["mythic+"] or dungeon.timewalking) then
+			if trigger.instanceType.party and instanceType == 'party' and (dungeon.normal or dungeon.heroic or dungeon.mythic or dungeon['mythic+'] or dungeon.timewalking) then
 				if instanceDifficulty
 				and ((dungeon.normal	and instanceDifficulty == 1)
 				or (dungeon.heroic		and instanceDifficulty == 2)
 				or (dungeon.mythic		and instanceDifficulty == 23)
-				or (dungeon["mythic+"]	and instanceDifficulty == 8)
+				or (dungeon['mythic+']	and instanceDifficulty == 8)
 				or (dungeon.timewalking	and instanceDifficulty == 24)) then passed = true else return end
 			end
 
 			local raid = trigger.instanceDifficulty.raid
-			if trigger.instanceType.raid and instanceType == "raid" and (raid.lfr or raid.normal or raid.heroic or raid.mythic or raid.timewalking or raid.legacy10normal or raid.legacy25normal or raid.legacy10heroic or raid.legacy25heroic) then
+			if trigger.instanceType.raid and instanceType == 'raid' and (raid.lfr or raid.normal or raid.heroic or raid.mythic or raid.timewalking or raid.legacy10normal or raid.legacy25normal or raid.legacy10heroic or raid.legacy25heroic) then
 				if instanceDifficulty
 				and ((raid.lfr			and (instanceDifficulty == 7 or instanceDifficulty == 17))
 				or (raid.normal			and instanceDifficulty == 14)
@@ -714,21 +720,21 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Talents
 	if trigger.talent.enabled then
-		local pvpTalent = trigger.talent.type == "pvp"
+		local pvpTalent = trigger.talent.type == 'pvp'
 		local talentRows = (pvpTalent and 4) or 7
 		local selected, pass
 
 		for i = 1, talentRows do
-			if trigger.talent["tier"..i.."enabled"] and trigger.talent["tier"..i].column > 0 then
+			if trigger.talent['tier'..i..'enabled'] and trigger.talent['tier'..i].column > 0 then
 				if pvpTalent then
 					-- column is actually the talentID for pvpTalents
 					local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(i)
-					selected = (slotInfo and slotInfo.selectedTalentID) == trigger.talent["tier"..i].column
+					selected = (slotInfo and slotInfo.selectedTalentID) == trigger.talent['tier'..i].column
 				else
-					selected = select(4, GetTalentInfo(i, trigger.talent["tier"..i].column, 1))
+					selected = select(4, GetTalentInfo(i, trigger.talent['tier'..i].column, 1))
 				end
 
-				if (selected and not trigger.talent["tier"..i].missing) or (trigger.talent["tier"..i].missing and not selected) then
+				if (selected and not trigger.talent['tier'..i].missing) or (trigger.talent['tier'..i].missing and not selected) then
 					pass = true
 					if not trigger.talent.requireAll then
 						break -- break when not using requireAll because we matched one
@@ -834,7 +840,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 end
 
 function mod:StyleFilterPass(frame, actions)
-	local healthBarEnabled = (frame.frameType and mod.db.units[frame.frameType].health.enable) or (mod.db.displayStyle ~= "ALL") or (frame.isTarget and mod.db.alwaysShowTargetHealth)
+	local healthBarEnabled = (frame.frameType and mod.db.units[frame.frameType].health.enable) or (mod.db.displayStyle ~= 'ALL') or (frame.isTarget and mod.db.alwaysShowTargetHealth)
 	local powerBarEnabled = frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable
 	local healthBarShown = healthBarEnabled and frame.Health:IsShown()
 
@@ -1022,7 +1028,7 @@ function mod:StyleFilterConfigure()
 
 				if next(filter.triggers.cooldowns.names) then
 					for _, value in pairs(filter.triggers.cooldowns.names) do
-						if value == "ONCD" or value == "OFFCD" then
+						if value == 'ONCD' or value == 'OFFCD' then
 							mod.StyleFilterTriggerEvents.SPELL_UPDATE_COOLDOWN = true
 							break
 				end end end
@@ -1172,9 +1178,9 @@ end
 -- Shamelessy taken from AceDB-3.0 and stripped down by Simpy
 local function copyDefaults(dest, src)
 	for k, v in pairs(src) do
-		if type(v) == "table" then
+		if type(v) == 'table' then
 			if not rawget(dest, k) then rawset(dest, k, {}) end
-			if type(dest[k]) == "table" then copyDefaults(dest[k], v) end
+			if type(dest[k]) == 'table' then copyDefaults(dest[k], v) end
 		elseif rawget(dest, k) == nil then
 			rawset(dest, k, v)
 		end
@@ -1185,7 +1191,7 @@ local function removeDefaults(db, defaults)
 	setmetatable(db, nil)
 
 	for k,v in pairs(defaults) do
-		if type(v) == "table" and type(db[k]) == "table" then
+		if type(v) == 'table' and type(db[k]) == 'table' then
 			removeDefaults(db[k], v)
 			if next(db[k]) == nil then db[k] = nil end
 		elseif db[k] == defaults[k] then
