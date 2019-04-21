@@ -527,7 +527,9 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 end
 
-function mod:StyleFilterConditionCheck(frame, filter, trigger, passed)
+function mod:StyleFilterConditionCheck(frame, filter, trigger)
+	local passed -- skip StyleFilterPass when triggers are empty
+
 	-- Name or GUID
 	if trigger.names and next(trigger.names) then
 		local pass
@@ -810,22 +812,34 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, passed)
 
 	--Try to match according to cooldown conditions
 	if trigger.cooldowns and trigger.cooldowns.names and next(trigger.cooldowns.names) then
-		if mod:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll) == false then return else passed = true end -- will be nil if none are set to ONCD or OFFCD
+		local cooldown = mod:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll)
+		if cooldown ~= nil then -- ignore if none are set to ONCD or OFFCD
+			if cooldown then passed = true else return end
+		end
 	end
 
 	--Try to match according to buff aura conditions
 	if trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-		if mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft) == false then return else passed = true end -- will be nil if none are selected
+		local buffs = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
+		if buffs ~= nil then -- ignore if none are selected
+			if buffs then passed = true else return end
+		end
 	end
 
 	--Try to match according to debuff aura conditions
 	if trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
-		if mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft) == false then return else passed = true end -- will be nil if none are selected
+		local debuffs = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
+		if debuffs ~= nil then -- ignore if none are selected
+			if debuffs then passed = true else return end
+		end
 	end
 
 	-- Plugin Callback
 	if mod.StyleFilterCustomCheck then
-		if mod:StyleFilterCustomCheck(frame, filter, trigger) == false then return else passed = true end
+		local custom = mod:StyleFilterCustomCheck(frame, filter, trigger)
+		if custom ~= nil then -- ignore if nil return
+			if custom then passed = true else return end
+		end
 	end
 
 	-- Pass it along
