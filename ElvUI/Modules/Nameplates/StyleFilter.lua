@@ -636,18 +636,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not ((trigger.isFocus and frame.isFocused) or (trigger.notFocus and not frame.isFocused))
 	end
 
-	-- Class
-	local matchMyClass --Only check spec when we match the class
-	if not failed and trigger.class and next(trigger.class) then
-		matchMyClass = trigger.class[E.myclass] and trigger.class[E.myclass].enabled
-		failed = not matchMyClass
-	end
-
-	-- Specialization
-	if not failed and matchMyClass and (trigger.class[E.myclass] and trigger.class[E.myclass].specs and next(trigger.class[E.myclass].specs)) then
-		failed = not (trigger.class[E.myclass].specs[E.myspec and GetSpecializationInfo(E.myspec)])
-	end
-
 	-- Classification
 	if not failed and (trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus) then
 		failed = not (frame.classification
@@ -668,45 +656,60 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		or (trigger.role.damager and E.myrole == "DAMAGER")))
 	end
 
-	-- Instance Type
-	local _, instanceType, instanceDifficulty
-	if not failed and (trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp) then
-		_, instanceType, instanceDifficulty = GetInstanceInfo()
-		failed = not (instanceType
-		and ((trigger.instanceType.none	  and instanceType == "none")
-		or (trigger.instanceType.scenario and instanceType == "scenario")
-		or (trigger.instanceType.party	  and instanceType == "party")
-		or (trigger.instanceType.raid	  and instanceType == "raid")
-		or (trigger.instanceType.arena	  and instanceType == "arena")
-		or (trigger.instanceType.pvp	  and instanceType == "pvp")))
-	end
-
-	-- Instance Difficulty
-	if not failed and (trigger.instanceType.party or trigger.instanceType.raid) then
-		if not instanceDifficulty then _, _, instanceDifficulty = GetInstanceInfo() end
-
-		local dungeon = trigger.instanceDifficulty.dungeon
-		if trigger.instanceType.party and instanceType == "party" and (dungeon.normal or dungeon.heroic or dungeon.mythic or dungeon["mythic+"] or dungeon.timewalking) then
-			failed = not (instanceDifficulty
-			and ((dungeon.normal	and instanceDifficulty == 1)
-			or (dungeon.heroic		and instanceDifficulty == 2)
-			or (dungeon.mythic		and instanceDifficulty == 23)
-			or (dungeon["mythic+"]	and instanceDifficulty == 8)
-			or (dungeon.timewalking	and instanceDifficulty == 24)))
+	do -- Class
+		local matchMyClass --Only check spec when we match the class
+		if not failed and trigger.class and next(trigger.class) then
+			matchMyClass = trigger.class[E.myclass] and trigger.class[E.myclass].enabled
+			failed = not matchMyClass
 		end
 
-		local raid = trigger.instanceDifficulty.raid
-		if trigger.instanceType.raid and instanceType == "raid" and (raid.lfr or raid.normal or raid.heroic or raid.mythic or raid.timewalking or raid.legacy10normal or raid.legacy25normal or raid.legacy10heroic or raid.legacy25heroic) then
-			failed = not (instanceDifficulty
-			and ((raid.lfr			and (instanceDifficulty == 7 or instanceDifficulty == 17))
-			or (raid.normal			and instanceDifficulty == 14)
-			or (raid.heroic			and instanceDifficulty == 15)
-			or (raid.mythic			and instanceDifficulty == 16)
-			or (raid.timewalking	and instanceDifficulty == 33)
-			or (raid.legacy10normal	and instanceDifficulty == 3)
-			or (raid.legacy25normal	and instanceDifficulty == 4)
-			or (raid.legacy10heroic	and instanceDifficulty == 5)
-			or (raid.legacy25heroic	and instanceDifficulty == 6)))
+		-- Specialization
+		if not failed and matchMyClass and (trigger.class[E.myclass] and trigger.class[E.myclass].specs and next(trigger.class[E.myclass].specs)) then
+			failed = not (trigger.class[E.myclass].specs[E.myspec and GetSpecializationInfo(E.myspec)])
+		end
+	end
+
+	do -- Instance
+		-- Type
+		local _, instanceType, instanceDifficulty
+		if not failed and (trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp) then
+			_, instanceType, instanceDifficulty = GetInstanceInfo()
+			failed = not (instanceType
+			and ((trigger.instanceType.none	  and instanceType == "none")
+			or (trigger.instanceType.scenario and instanceType == "scenario")
+			or (trigger.instanceType.party	  and instanceType == "party")
+			or (trigger.instanceType.raid	  and instanceType == "raid")
+			or (trigger.instanceType.arena	  and instanceType == "arena")
+			or (trigger.instanceType.pvp	  and instanceType == "pvp")))
+		end
+
+		-- Difficulty
+		if not failed and (trigger.instanceType.party or trigger.instanceType.raid) then
+			if not instanceDifficulty then _, _, instanceDifficulty = GetInstanceInfo() end
+
+			local dungeon = trigger.instanceDifficulty.dungeon
+			if trigger.instanceType.party and instanceType == "party" and (dungeon.normal or dungeon.heroic or dungeon.mythic or dungeon["mythic+"] or dungeon.timewalking) then
+				failed = not (instanceDifficulty
+				and ((dungeon.normal	and instanceDifficulty == 1)
+				or (dungeon.heroic		and instanceDifficulty == 2)
+				or (dungeon.mythic		and instanceDifficulty == 23)
+				or (dungeon["mythic+"]	and instanceDifficulty == 8)
+				or (dungeon.timewalking	and instanceDifficulty == 24)))
+			end
+
+			local raid = trigger.instanceDifficulty.raid
+			if trigger.instanceType.raid and instanceType == "raid" and (raid.lfr or raid.normal or raid.heroic or raid.mythic or raid.timewalking or raid.legacy10normal or raid.legacy25normal or raid.legacy10heroic or raid.legacy25heroic) then
+				failed = not (instanceDifficulty
+				and ((raid.lfr			and (instanceDifficulty == 7 or instanceDifficulty == 17))
+				or (raid.normal			and instanceDifficulty == 14)
+				or (raid.heroic			and instanceDifficulty == 15)
+				or (raid.mythic			and instanceDifficulty == 16)
+				or (raid.timewalking	and instanceDifficulty == 33)
+				or (raid.legacy10normal	and instanceDifficulty == 3)
+				or (raid.legacy25normal	and instanceDifficulty == 4)
+				or (raid.legacy10heroic	and instanceDifficulty == 5)
+				or (raid.legacy25heroic	and instanceDifficulty == 6)))
+			end
 		end
 	end
 
@@ -1054,7 +1057,7 @@ function mod:StyleFilterUpdate(frame, event)
 	for filterNum in ipairs(mod.StyleFilterTriggerList) do
 		filter = E.global.nameplate.filters[mod.StyleFilterTriggerList[filterNum][1]];
 		if filter then
-			mod:StyleFilterConditionCheck(frame, filter, filter.triggers, nil)
+			mod:StyleFilterConditionCheck(frame, filter, filter.triggers)
 		end
 	end
 end
