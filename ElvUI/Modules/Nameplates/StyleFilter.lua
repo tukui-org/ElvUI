@@ -415,7 +415,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if AlphaChanged then
 		frame.StyleChanged = true
 		frame.AlphaChanged = true
-		E:UIFrameFadeIn(frame, 0, 0, actions.alpha / 100)
+		mod:PlateFade(frame, 0, 0, actions.alpha / 100)
 	end
 	if NameColorChanged then
 		frame.StyleChanged = true
@@ -454,7 +454,7 @@ function mod:StyleFilterUpdatePlate(frame, nameOnly)
 	end
 
 	if not nameOnly then
-		E:UIFrameFadeIn(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
 	end
 end
 
@@ -509,7 +509,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if AlphaChanged then
 		frame.AlphaChanged = nil
-		E:UIFrameFadeIn(frame, mod.db.fadeIn and 1 or 0, 0, 1)
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1)
 	end
 	if NameColorChanged then
 		frame.NameColorChanged = nil

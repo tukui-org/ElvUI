@@ -476,6 +476,20 @@ function NP:ConfigureAll()
 	NP:SetNamePlateClickThrough()
 end
 
+function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
+	if not nameplate.FadePlate then
+		nameplate.FadePlate = {}
+	else
+		nameplate.FadePlate.fadeTimer = nil
+	end
+
+	nameplate.FadePlate.timeToFade = timeToFade
+	nameplate.FadePlate.startAlpha = startAlpha
+	nameplate.FadePlate.endAlpha = endAlpha
+
+	E:UIFrameFade(nameplate, nameplate.FadePlate)
+end
+
 function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'NAME_PLATE_UNIT_ADDED' then
 		NP:StyleFilterClear(nameplate) -- keep this at the top
@@ -532,8 +546,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:ScalePlate(nameplate, NP.db.units.TARGET.scale, true)
 		end
 
-		if nameplate:IsShown() and NP.db.fadeIn then
-			E:UIFrameFadeIn(nameplate, 1, 0, 1)
+		if NP.db.fadeIn then
+			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
