@@ -535,6 +535,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 	local isCasting = frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
 	local matchMyClass = false --Only check spec when we match the class condition
 
+	-- Name or GUID
 	if not failed and trigger.names and next(trigger.names) then
 		condition = 0
 		for name, value in pairs(trigger.names) do
@@ -558,7 +559,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		end
 	end
 
-	--Try to match by casting spell name or spell id
+	-- Casting Spell
 	if not failed and (trigger.casting and trigger.casting.spells) and next(trigger.casting.spells) then
 		condition = 0
 
@@ -584,7 +585,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		end
 	end
 
-	--Try to match by casting interruptible
+	-- Casting Interruptible
 	if not failed and (trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible)) then
 		condition = false
 		if isCasting and ((trigger.casting.interruptible and not frame.Castbar.notInterruptible) or (trigger.casting.notInterruptible and frame.Castbar.notInterruptible)) then
@@ -593,7 +594,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by player health conditions
+	-- Health
 	if not failed and trigger.healthThreshold then
 		condition = false
 		healthUnit = (trigger.healthUsePlayer and "player") or frame.unit
@@ -607,7 +608,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by power conditions
+	-- Power
 	if not failed and trigger.powerThreshold then
 		condition = false
 		powerUnit = (trigger.powerUsePlayer and "player") or frame.unit
@@ -621,7 +622,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by player combat conditions
+	-- Resting
+	if not failed and trigger.isResting then
+		failed = not IsResting()
+	end
+
+	-- Player Combat
 	if not failed and (trigger.inCombat or trigger.outOfCombat) then
 		condition = false
 		inCombat = UnitAffectingCombat("player")
@@ -631,7 +637,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by unit combat conditions
+	-- Unit Combat
 	if not failed and (trigger.inCombatUnit or trigger.outOfCombatUnit) then
 		condition = false
 		inCombat = UnitAffectingCombat(frame.unit)
@@ -641,7 +647,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by player target conditions
+	-- Player Target
 	if not failed and (trigger.isTarget or trigger.notTarget) then
 		condition = false
 		if (trigger.isTarget and frame.isTarget) or (trigger.notTarget and not frame.isTarget) then
@@ -650,7 +656,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by unit target conditions
+	-- Unit Target
 	if not failed and (trigger.targetMe or trigger.notTargetMe) then
 		condition = false
 		if (trigger.targetMe and frame.isTargetingMe) or (trigger.notTargetMe and not frame.isTargetingMe) then
@@ -659,7 +665,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by unit focus conditions
+	-- Unit Focus
 	if not failed and (trigger.isFocus or trigger.notFocus) then
 		condition = false
 		if (trigger.isFocus and frame.isFocused) or (trigger.notFocus and not frame.isFocused) then
@@ -668,7 +674,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match if unit is a quest boss
+	-- Quest Boss
 	if not failed and trigger.questBoss then
 		condition = false
 		questBoss = UnitIsQuestBoss(frame.unit)
@@ -678,7 +684,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by class conditions
+	-- Class
 	if not failed and trigger.class and next(trigger.class) then
 		condition = false
 		if trigger.class[E.myclass] and trigger.class[E.myclass].enabled then
@@ -688,7 +694,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by spec conditions
+	-- Specialization
 	if not failed and matchMyClass and (trigger.class[E.myclass] and trigger.class[E.myclass].specs and next(trigger.class[E.myclass].specs)) then
 		condition = false
 		mySpecID = E.myspec and GetSpecializationInfo(E.myspec)
@@ -698,7 +704,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by classification conditions
+	-- Classification
 	if not failed and (trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus) then
 		condition = false
 		classification = frame.classification
@@ -715,7 +721,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by role conditions
+	-- Group Role
 	if not failed and (trigger.role.tank or trigger.role.healer or trigger.role.damager) then
 		condition = false
 		if E.myrole and ((trigger.role.tank and E.myrole == "TANK") or (trigger.role.healer and E.myrole == "HEALER") or (trigger.role.damager and E.myrole == "DAMAGER")) then
@@ -724,7 +730,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by instance conditions
+	-- Instance Type
 	if not failed and (trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp) then
 		condition = false
 		_, instanceType, instanceDifficulty = GetInstanceInfo()
@@ -740,7 +746,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by instance difficulty
+	-- Instance Difficulty
 	if not failed and (trigger.instanceType.party or trigger.instanceType.raid) then
 		if trigger.instanceType.party and instanceType == "party" and (trigger.instanceDifficulty.dungeon.normal or trigger.instanceDifficulty.dungeon.heroic or trigger.instanceDifficulty.dungeon.mythic or trigger.instanceDifficulty.dungeon["mythic+"] or trigger.instanceDifficulty.dungeon.timewalking) then
 			condition = false;
@@ -773,7 +779,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		end
 	end
 
-	--Try to match by talent conditions
+	-- Talents
 	if not failed and trigger.talent.enabled then
 		condition = false
 
@@ -805,7 +811,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by level conditions
+	-- Level
 	if not failed and trigger.level then
 		condition = false
 		myLevel = UnitLevel('player')
@@ -820,7 +826,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by unit type
+	-- Unit Type
 	if not failed and trigger.nameplateType and trigger.nameplateType.enable then
 		condition = false
 
@@ -836,7 +842,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by creature conditions
+	-- Creature Type
 	if not failed and trigger.creatureType and trigger.creatureType.enable then
 		condition = false
 		creatureType = E.CreatureTypes[frame.creatureType]
@@ -846,7 +852,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 		failed = not condition
 	end
 
-	--Try to match by Reaction (or Reputation) type
+	-- Reaction (or Reputation) Type
 	if not failed and trigger.reactionType and trigger.reactionType.enable then
 		reaction = (trigger.reactionType.reputation and frame.repReaction) or frame.reaction
 		condition = false
@@ -904,15 +910,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger, failed)
 			condition = true
 		end
 
-		failed = not condition
-	end
-
-	--Try to match according to raid target conditions
-	if not failed and trigger.isResting.enable then
-		condition = false
-		
-		condition = IsResting()
-	
 		failed = not condition
 	end
 
