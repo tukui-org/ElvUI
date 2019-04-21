@@ -748,6 +748,7 @@ L["Name"] = "Имя"
 L["Name: Current / Max - Percent"] = "Название: Текущее / Максимальное - Процент"
 L["Name: Current / Max"] = "Название: Текущее / Максимальное"
 L["Name: Percent"] = "Название: Процент"
+L["NamePlate Size"] = true
 L["NamePlate Style Filters"] = "Фильтры стилей индикаторов здоровья"
 L["Nameplate"] = "Индикатор здоровья"
 L["NamePlates"] = "Индикаторы здоровья"

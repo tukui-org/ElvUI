@@ -750,6 +750,7 @@ L["Name"] = "姓名"
 L["Name: Current / Max - Percent"] = "名稱: 當前 / 最大 - 百分比"
 L["Name: Current / Max"] = "名稱: 當前 / 最大"
 L["Name: Percent"] = "名稱: 百分比"
+L["NamePlate Size"] = true
 L["NamePlate Style Filters"] = "姓名版樣式過濾器"
 L["Nameplate"] = "姓名板"
 L["NamePlates"] = "姓名板(血條)"
