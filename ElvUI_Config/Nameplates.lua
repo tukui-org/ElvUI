@@ -897,7 +897,12 @@ local function UpdateFilterGroup()
 									desc = L["If enabled then the filter will only activate when the unit is out of combat."],
 									type = 'toggle',
 									order = 7,
-								}
+								},
+								inVehicleUnit = {
+									name = _G.BINDING_HEADER_VEHICLE,
+									order = 8,
+									type = 'toggle',
+								},
 							}
 						}
 					},
@@ -1634,7 +1639,7 @@ local function UpdateFilterGroup()
 							}
 						}
 					}
-				}
+				},
 			},
 		}
 		E.Options.args.nameplate.args.filters.args.actions = {

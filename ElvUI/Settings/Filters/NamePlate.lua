@@ -93,6 +93,7 @@ E.StyleFilterDefaults = {
 			tier7enabled = false,
 			tier7 = {missing = false, column = 0},
 		},
+		inVehicleUnit = false,
 		curlevel = 0,
 		maxlevel = 0,
 		minlevel = 0,
@@ -194,6 +195,7 @@ E.StyleFilterDefaults = {
 		outOfCombat = false,
 		inCombatUnit = false,
 		outOfCombatUnit = false,
+		isResting = false,
 	},
 	actions = {
 		color = {

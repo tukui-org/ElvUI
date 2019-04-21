@@ -21,6 +21,7 @@ local PowerBarColor = PowerBarColor
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local UnitInVehicle = UnitInVehicle
 local UnitIsQuestBoss = UnitIsQuestBoss
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitIsUnit = UnitIsUnit
@@ -807,6 +808,8 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		or (frame.RaidTargetIndex == 8 and trigger.raidTarget.skull))) then return end
 	end
 
+	if trigger.inVehicleUnit and not frame.UnitInVehicle then return end
+
 	-- Plugin Callback
 	if mod.StyleFilterCustomCheck and (mod:StyleFilterCustomCheck(frame, filter, trigger) == false) then return end
 
@@ -856,6 +859,15 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	['RAID_TARGET_UPDATE'] = function(self)
 		self.RaidTargetIndex = self.unit and GetRaidTargetIndex(self.unit) or nil
 	end,
+	['UNIT_ENTERED_VEHICLE'] = function(self)
+		self.UnitInVehicle = self.unit and UnitInVehicle(self.unit) or nil
+	end,
+	['UNIT_EXITED_VEHICLE'] = function(self)
+		self.UnitInVehicle = self.unit and UnitInVehicle(self.unit) or nil
+	end,
+	['UNIT_EXITING_VEHICLE'] = function(self)
+		self.UnitInVehicle = self.unit and UnitInVehicle(self.unit) or nil
+	end,
 	['UNIT_TARGET'] = function(self, _, unit)
 		unit = unit or self.unit
 		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
@@ -874,6 +886,7 @@ function mod:StyleFilterClearVariables(nameplate)
 	nameplate.isTargetingMe = nil
 	nameplate.RaidTargetIndex = nil
 	nameplate.ThreatScale = nil
+	nameplate.UnitInVehicle = nil
 end
 
 mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
@@ -889,6 +902,9 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'SPELL_UPDATE_COOLDOWN',
 	'UNIT_AURA',
 	'UNIT_DISPLAYPOWER',
+	'UNIT_ENTERED_VEHICLE',
+	'UNIT_EXITED_VEHICLE',
+	'UNIT_EXITING_VEHICLE',
 	'UNIT_FACTION',
 	'UNIT_FLAGS',
 	'UNIT_HEALTH',
@@ -949,6 +965,10 @@ function mod:StyleFilterConfigure()
 				if filter.triggers.isFocus or filter.triggers.notFocus then
 					mod.StyleFilterTriggerEvents.PLAYER_FOCUS_CHANGED = true
 				end
+				
+				if filter.triggers.isResting then
+                    mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = true
+                end
 
 				if filter.triggers.healthThreshold then
 					mod.StyleFilterTriggerEvents.UNIT_HEALTH = true
@@ -965,6 +985,16 @@ function mod:StyleFilterConfigure()
 				if filter.triggers.raidTarget then
 					mod.StyleFilterTriggerEvents.RAID_TARGET_UPDATE = true
 				end
+
+				if filter.triggers.unitInVehicle then
+					mod.StyleFilterTriggerEvents.UNIT_ENTERED_VEHICLE = true
+					mod.StyleFilterTriggerEvents.UNIT_EXITED_VEHICLE = true
+					mod.StyleFilterTriggerEvents.UNIT_EXITING_VEHICLE = true
+				end
+
+				if filter.triggers.isResting then
+                    mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = true
+                end
 
 				if next(filter.triggers.names) then
 					for _, value in pairs(filter.triggers.names) do
@@ -1135,6 +1165,9 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterRegister(nameplate,'UNIT_FLAGS')
 	mod:StyleFilterRegister(nameplate,'UNIT_TARGET')
 	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_LIST_UPDATE')
+	mod:StyleFilterRegister(nameplate,'UNIT_ENTERED_VEHICLE')
+	mod:StyleFilterRegister(nameplate,'UNIT_EXITED_VEHICLE')
+	mod:StyleFilterRegister(nameplate,'UNIT_EXITING_VEHICLE', true)
 
 	mod:StyleFilterEventWatch(nameplate)
 end
