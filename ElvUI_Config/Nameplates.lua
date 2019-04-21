@@ -820,9 +820,8 @@ local function UpdateFilterGroup()
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
-									return
-								end
+								if match(value, "^[%s%p]-$") or not GetSpellInfo(value) then return end
+
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells[value] = true;
 								UpdateFilterGroup();
 								NP:ConfigureAll()
@@ -1184,9 +1183,8 @@ local function UpdateFilterGroup()
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") or not GetSpellInfo(value) then
-									return
-								end
+								if match(value, "^[%s%p]-$") or not GetSpellInfo(value) then return end
+
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[value] = "ONCD";
 								UpdateFilterGroup();
 								NP:ConfigureAll()
@@ -1254,9 +1252,8 @@ local function UpdateFilterGroup()
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
-									return
-								end
+								if match(value, "^[%s%p]-$") or not GetSpellInfo(value) then return end
+
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = true;
 								UpdateFilterGroup();
 								NP:ConfigureAll()
@@ -1325,9 +1322,8 @@ local function UpdateFilterGroup()
 							type = 'input',
 							get = function(info) return "" end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
-									return
-								end
+								if match(value, "^[%s%p]-$") or not GetSpellInfo(value) then return end
+
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = true;
 								UpdateFilterGroup();
 								NP:ConfigureAll()
