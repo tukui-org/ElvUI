@@ -1,6 +1,7 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "esES") or ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "esMX")
-
+L["Negative Match"] = true
+L["Match if Name or NPC ID is NOT in the list."] = true
 L["# Displayed Auras"] = true
 L["%s and then %s"] = "%s y entonces %s"
 L["24-Hour Time"] = "Tiempo de 24 horas"

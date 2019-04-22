@@ -521,51 +521,19 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Name or GUID
 	if trigger.names and next(trigger.names) then
-		local pass
-		for name, value in pairs(trigger.names) do
-			if value then --only check names that are checked
-				pass = 1
-				if tonumber(name) then --check as guid
-					if frame.npcID and (name == frame.npcID) then
-						pass = 2
-						break
-					end
-				else
-					if name and name ~= "" and (name == frame.unitName) then
-						pass = 2
-						break
-		end end end end
-
-		if pass == 2 then
-			passed = true
-		elseif pass == 1 then
-			return
-		end
+		local matched = trigger.names[frame.unitName] or trigger.names[frame.npcID]
+		passed = (not trigger.negativeMatch and matched) or (trigger.negativeMatch and not matched)
+		if not passed then return end
 	end
 
 	-- Casting Spell
 	if trigger.casting and trigger.casting.spells and next(trigger.casting.spells) then
-		local pass
-		for spellName, value in pairs(trigger.casting.spells) do
-			if value then --only check spell that are checked
-				pass = 1
-				if frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling) then
-					local spell = frame.Castbar.Text:GetText() --Make sure we can check spell name
-					if spell and spell ~= "" and spell ~= FAILED and spell ~= INTERRUPTED then
-						if tonumber(spellName) then
-							spellName = GetSpellInfo(spellName)
-						end
-						if spellName and spellName == spell then
-							pass = 2
-							break
-		end end end end end
-
-		--If we cant check spell name, we ignore this trigger when the castbar is shown
-		if pass == 2 then
-			passed = true
-		elseif pass == 1 then
-			return
+		passed = false
+		if frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling) then
+			local spell = frame.Castbar.spellID
+			passed = trigger.casting.spells[spell] or trigger.casting.spells[GetSpellInfo(spell)]
 		end
+		if not passed then return end
 	end
 
 	-- Casting Interruptible
@@ -645,22 +613,13 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Classification
 	if trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus then
-		if frame.classification
-		and ((trigger.classification.worldboss and frame.classification == 'worldboss')
-		or (trigger.classification.rareelite   and frame.classification == 'rareelite')
-		or (trigger.classification.elite	   and frame.classification == 'elite')
-		or (trigger.classification.rare		   and frame.classification == 'rare')
-		or (trigger.classification.normal	   and frame.classification == 'normal')
-		or (trigger.classification.trivial	   and frame.classification == 'trivial')
-		or (trigger.classification.minus	   and frame.classification == 'minus')) then passed = true else return end
+		if trigger.classification[frame.classification] then passed = true else return end
 	end
 
 	-- Group Role
 	if trigger.role.tank or trigger.role.healer or trigger.role.damager then
-		if E.myrole
-		and ((trigger.role.tank and E.myrole == 'TANK')
-		or (trigger.role.healer and E.myrole == 'HEALER')
-		or (trigger.role.damager and E.myrole == 'DAMAGER')) then passed = true else return end
+		-- E.myrole returns uppercase values
+		if E.myrole and trigger.role[string.lower(E.myrole)] then passed = true else return end
 	end
 
 	do -- Class
@@ -681,13 +640,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		local _, instanceType, instanceDifficulty
 		if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
 			_, instanceType, instanceDifficulty = GetInstanceInfo()
-			if instanceType
-			and ((trigger.instanceType.none	  and instanceType == 'none')
-			or (trigger.instanceType.scenario and instanceType == 'scenario')
-			or (trigger.instanceType.party	  and instanceType == 'party')
-			or (trigger.instanceType.raid	  and instanceType == 'raid')
-			or (trigger.instanceType.arena	  and instanceType == 'arena')
-			or (trigger.instanceType.pvp	  and instanceType == 'pvp')) then passed = true else return end
+			if trigger.instanceType[instanceType] then passed = true else return end
 		end
 
 		-- Difficulty
@@ -760,13 +713,10 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Unit Type
 	if trigger.nameplateType and trigger.nameplateType.enable then
-		if frame.frameType
-		and ((trigger.nameplateType.friendlyPlayer and frame.frameType == 'FRIENDLY_PLAYER')
-		or (trigger.nameplateType.friendlyNPC	 and frame.frameType == 'FRIENDLY_NPC')
-		or (trigger.nameplateType.enemyPlayer	 and frame.frameType == 'ENEMY_PLAYER')
-		or (trigger.nameplateType.enemyNPC		 and frame.frameType == 'ENEMY_NPC')
-		or (trigger.nameplateType.healer		 and frame.frameType == 'HEALER')
-		or (trigger.nameplateType.player		 and frame.frameType == 'PLAYER')) then passed = true else return end
+		local unitTypes = {
+			['FRIENDLY_PLAYER'] = 'friendlyPlayer'; ['FRIENDLY_NPC'] = 'friendlyNPC';
+			 ['ENEMY_PLAYER'] = 'enemyPlayer'; ['ENEMY_NPC'] = 'enemyNPC'; ['HEALER'] = 'healer'; ['PLAYER'] = 'player';}
+		if trigger.nameplateType[unitTypes[frame.frameType]] then passed = true else return end
 	end
 
 	-- Creature Type
@@ -777,28 +727,15 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Reaction (or Reputation) Type
 	if trigger.reactionType and trigger.reactionType.enable then
 		local reaction = (trigger.reactionType.reputation and frame.repReaction) or frame.reaction
-		if reaction
-		and ((reaction == 1 and trigger.reactionType.hated)
-		or (reaction == 2 and trigger.reactionType.hostile)
-		or (reaction == 3 and trigger.reactionType.unfriendly)
-		or (reaction == 4 and trigger.reactionType.neutral)
-		or (reaction == 5 and trigger.reactionType.friendly)
-		or (reaction == 6 and trigger.reactionType.honored)
-		or (reaction == 7 and trigger.reactionType.revered)
-		or (reaction == 8 and trigger.reactionType.exalted)) then passed = true else return end
+		local reactions = { [1] = 'hated'; [2] = 'hostile', [3] = 'unfriendly', [4] = 'neutral', [5] = 'friendly', [6] = 'honored', [7] = 'revered', [8] = 'exalted'}
+		if trigger.reactionType[reactions[reaction]]then passed = true else return end
 	end
 
 	--Try to match according to raid target conditions
 	if trigger.raidTarget.star or trigger.raidTarget.circle or trigger.raidTarget.diamond or trigger.raidTarget.triangle or trigger.raidTarget.moon or trigger.raidTarget.square or trigger.raidTarget.cross or trigger.raidTarget.skull then
-		if frame.RaidTargetIndex
-		and ((frame.RaidTargetIndex == 1 and trigger.raidTarget.star)
-		or (frame.RaidTargetIndex == 2 and trigger.raidTarget.circle)
-		or (frame.RaidTargetIndex == 3 and trigger.raidTarget.diamond)
-		or (frame.RaidTargetIndex == 4 and trigger.raidTarget.triangle)
-		or (frame.RaidTargetIndex == 5 and trigger.raidTarget.moon)
-		or (frame.RaidTargetIndex == 6 and trigger.raidTarget.square)
-		or (frame.RaidTargetIndex == 7 and trigger.raidTarget.cross)
-		or (frame.RaidTargetIndex == 8 and trigger.raidTarget.skull)) then passed = true else return end
+		local raidTargets = { [1] = 'star'; [2] = 'circle', [3] = 'diamond', [4] = 'triangle', [5] = 'moon', [6] = 'square', [7] = 'cross', [8] = 'skull'}
+		if trigger.raidTarget[raidTargets[frame.RaidTargetIndex]]
+		then passed = true else return end
 	end
 
 	--Try to match according to cooldown conditions

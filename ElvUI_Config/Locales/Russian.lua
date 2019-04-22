@@ -1,6 +1,7 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "ruRU")
-
+L["Negative Match"] = true
+L["Match if Name or NPC ID is NOT in the list."] = true
 L["# Displayed Auras"] = "Кол-во аур"
 L["%s and then %s"] = "%s, а затем %s"
 L["24-Hour Time"] = "24х часовой формат"
