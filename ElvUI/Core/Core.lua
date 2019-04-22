@@ -607,7 +607,7 @@ function E:CheckRole()
 	self.myspec = GetSpecialization()
 	self.myrole = E:GetPlayerRole()
 
-	-- myrole = group role; TANK, HEALER, DAMAGE
+	-- myrole = group role; TANK, HEALER, DAMAGER
 	-- role   = class role; Tank, Melee, Caster
 
 	local role

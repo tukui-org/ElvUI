@@ -49,7 +49,7 @@ mod.TriggerConditions = {
 	roles = {
 		['TANK'] = 'tank',
 		['HEALER'] = 'healer',
-		['DAMAGE'] = 'damager'
+		['DAMAGER'] = 'damager'
 	},
 	difficulties = {
 		-- dungeons
@@ -661,14 +661,17 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	do -- Class
 		local matchMyClass --Only check spec when we match the class
-		if trigger.class and next(trigger.class) then
-			matchMyClass = trigger.class[E.myclass] and trigger.class[E.myclass].enabled
+		if trigger.class and next(trigger.class) and (trigger.class[E.myclass] ~= nil) then
+			matchMyClass = trigger.class[E.myclass].enabled
 			if matchMyClass then passed = true else return end
 		end
 
 		-- Specialization
 		if matchMyClass and (trigger.class[E.myclass] and trigger.class[E.myclass].specs and next(trigger.class[E.myclass].specs)) then
-			if trigger.class[E.myclass].specs[E.myspec and GetSpecializationInfo(E.myspec)] then passed = true else return end
+			local spec = trigger.class[E.myclass].specs[E.myspec and GetSpecializationInfo(E.myspec)]
+			if spec ~= nil then
+				if spec then passed = true else return end
+			end
 		end
 	end
 
