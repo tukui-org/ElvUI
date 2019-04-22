@@ -95,9 +95,9 @@ local colorOverrideValues = {
 local blendModeValues = {
 	['DISABLE'] = L["Disable"],
 	['BLEND'] = L["Blend"],
-	['ADD'] = L["Add"],
-	['MOD'] = L["Mod"],
-	['ALPHAKEY'] = L["AlphaKey"],
+	['ADD'] = L["Additive Blend"],
+	['MOD'] = L["Modulating Blend"],
+	['ALPHAKEY'] = L["Alpha Key"],
 }
 
 local CUSTOMTEXT_CONFIGS = {}
