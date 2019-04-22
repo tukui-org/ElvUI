@@ -103,6 +103,7 @@ local function resetAttributes(self)
 	self.channeling = nil
 	self.notInterruptible = nil
 	self.spellID = nil
+	self.spellName = nil -- ElvUI
 end
 
 -- ElvUI block

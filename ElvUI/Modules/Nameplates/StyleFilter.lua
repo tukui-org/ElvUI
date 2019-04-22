@@ -735,11 +735,9 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Casting Spell
 	if trigger.casting and trigger.casting.spells and next(trigger.casting.spells) then
-		if frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling) then
-			local spell = trigger.casting.spells[frame.Castbar.spellID] or trigger.casting.spells[frame.Castbar.spellName]
-			if spell ~= nil then -- ignore if none are selected
-				if spell then passed = true else return end
-			end
+		local spell = trigger.casting.spells[frame.Castbar and frame.Castbar.spellID] or trigger.casting.spells[frame.Castbar and frame.Castbar.spellName]
+		if spell ~= nil then -- ignore if none are selected
+			if spell then passed = true else return end
 		end
 	end
 
