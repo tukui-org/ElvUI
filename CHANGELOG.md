@@ -31,6 +31,7 @@ Fixed some Ace3 skin weirdness.
 Cleaned up some of the Animation code. (Thanks @Grey)  
 Reworked how ElvUI unsnaps textures, textures will be unsnapped globally now.  
 Nameplate width is now bound to it's clickable width.  
+The Bag Bar and Vendor Greys tabs are now again available if the All In One Bag is disabled.  
 
 ___
 ### Version 11.10 [ April 9th 2019 ]
