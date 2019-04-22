@@ -2,7 +2,10 @@
 
 **New Additions:**  
 Add debuffs for Crucible of Storms.  
-Added Style Filters: Raid Target Marker, Is Resting, In/Out of Vehicle. (#469 #1253 and #1278 - Thanks @wing5wong)  
+Added the ability to swap language in the configuration window to the language of your choice. (*CURRENTLY WIP*)  
+Added Style Filters: Raid Target Marker, Not Name, Is Resting, and Unit/Player In/Out of Vehicle. (#469 #1253 and #1278 - Thanks @wing5wong)  
+Added "Tank, Healer, Damage" sort option to party and raid frames. (Thanks @wing5wong)  
+Added Debuff Highlight mode options. (Thanks @wing5wong)  
 
 **Bug Fixes:**  
 Fixed Nameplate Stagger texture.  
@@ -19,6 +22,8 @@ Fixed "Attempt to index local 'threat' (a nil value)". (#1277)
 Fixed error when you disable a Custom Text.  
 Fixed Nameplate Power Use Atlas Textures option.  
 Fixed Twitter icon not appearing for items in chat. (#1281)  
+Fixed an issue with Nameplate health coloring in some cases.  
+Fixed Stagger visibility toggling. (Thanks oUF <3)  
 
 **Misc. Changes:**  
 Unitframe Status Bars will now sync their textures onto the background space when not using transparent.  
