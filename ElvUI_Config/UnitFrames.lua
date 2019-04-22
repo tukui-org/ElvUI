@@ -1,19 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local C = select(2, ...)
 local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule("NamePlates")
 
 local _G = _G
 local format, gsub, ipairs, pairs, select, strmatch, strsplit = format, gsub, ipairs, pairs, select, strmatch, strsplit
 local tconcat, tinsert, tremove, type, wipe, tonumber = table.concat, tinsert, tremove, type, wipe, tonumber
-local BLOCK, FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR = BLOCK, FRIEND, ENEMY, SHOW, HIDE, DELETE, NONE, FILTERS, FONT_SIZE, COLOR
 local GetScreenWidth = GetScreenWidth
 local IsAddOnLoaded = IsAddOnLoaded
-
-local CUSTOM, DISABLE, DEFAULT, COLORS = CUSTOM, DISABLE, DEFAULT, COLORS
-local SHIFT_KEY, ALT_KEY, CTRL_KEY = SHIFT_KEY, ALT_KEY, CTRL_KEY
-local HEALTH, MANA, NAME, PLAYER, CLASS, ROLE, GROUP = HEALTH, MANA, NAME, PLAYER, CLASS, ROLE, GROUP
-local CHI_POWER, RAGE, FOCUS, ENERGY, PAIN, FURY, INSANITY, MAELSTROM, RUNIC_POWER, HOLY_POWER, LUNAR_POWER = CHI_POWER, RAGE, FOCUS, ENERGY, PAIN, FURY, INSANITY, MAELSTROM, RUNIC_POWER, HOLY_POWER, LUNAR_POWER
-local POWER_TYPE_ARCANE_CHARGES, SOUL_SHARDS, RUNES = POWER_TYPE_ARCANE_CHARGES, SOUL_SHARDS, RUNES
 
 -- GLOBALS: ElvUF_Parent, ElvUF_Player, ElvUF_Pet, ElvUF_PetTarget, ElvUF_Party, ElvUF_Raidpet
 -- GLOBALS: ElvUF_Target, ElvUF_TargetTarget, ElvUF_TargetTargetTarget, ElvUF_Focus, ElvUF_FocusTarget
@@ -52,7 +46,7 @@ local threatValues = {
 	['ICONRIGHT'] = L["Icon: RIGHT"],
 	['ICONTOP'] = L["Icon: TOP"],
 	['ICONBOTTOM'] = L["Icon: BOTTOM"],
-	['NONE'] = NONE,
+	['NONE'] = L.NONE,
 }
 
 local petAnchors = {
@@ -85,7 +79,7 @@ local growthDirectionValues = {
 }
 
 local smartAuraPositionValues = {
-	["DISABLED"] = DISABLE,
+	["DISABLED"] = L.DISABLE,
 	["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 	["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 	["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
@@ -238,8 +232,8 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 					['TIME_REMAINING_REVERSE'] = L["Time Remaining Reverse"],
 					['TIME_DURATION'] = L["Duration"],
 					['TIME_DURATION_REVERSE'] = L["Duration Reverse"],
-					['NAME'] = NAME,
-					['NONE'] = NONE,
+					['NAME'] = L.NAME,
+					['NONE'] = L.NONE,
 				},
 			},
 			friendlyAuraType = {
@@ -282,7 +276,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				min = 0, softMax = 20, step = 1,
 			},
 			filters = {
-				name = FILTERS,
+				name = L.FILTERS,
 				guiInline = true,
 				type = 'group',
 				order = 500,
@@ -490,9 +484,9 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				values = {
 					['TIME_REMAINING'] = L["Time Remaining"],
 					['DURATION'] = L["Duration"],
-					['NAME'] = NAME,
+					['NAME'] = L.NAME,
 					['INDEX'] = L["Index"],
-					["PLAYER"] = PLAYER,
+					["PLAYER"] = L.PLAYER,
 				},
 			},
 			sortDirection = {
@@ -521,7 +515,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 					},
 					countFontSize = {
 						order = 2,
-						name = FONT_SIZE,
+						name = L.FONT_SIZE,
 						type = "range",
 						min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
 					},
@@ -530,12 +524,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 						name = L["Font Outline"],
 						desc = L["Set the font outline."],
 						type = "select",
-						values = {
-							['NONE'] = NONE,
-							['OUTLINE'] = 'OUTLINE',
-							['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-							['THICKOUTLINE'] = 'THICKOUTLINE',
-						},
+						values = C.Values.FOntFlags,
 					},
 				}
 			},
@@ -571,7 +560,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				}
 			},
 			filters = {
-				name = FILTERS,
+				name = L.FILTERS,
 				guiInline = true,
 				type = 'group',
 				order = 500,
@@ -891,7 +880,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 			},
 			forceshow = {
 				order = 3,
-				name = SHOW..' / '..HIDE,
+				name = L.SHOW..' / '..L.HIDE,
 				func = function()
 					local frameName = E:StringTitle(groupName)
 					frameName = "ElvUF_"..frameName
@@ -1135,7 +1124,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				tickColor = {
 					order = 2,
 					type = "color",
-					name = COLOR,
+					name = L.COLOR,
 					hasAlpha = true,
 					get = function(info)
 						local c = E.db.unitframe.units[groupName].castbar.tickColor
@@ -1323,7 +1312,7 @@ local function CreateCustomTextGroup(unit, objectName)
 			delete = {
 				type = 'execute',
 				order = 2,
-				name = DELETE,
+				name = L.DELETE,
 				func = function()
 					E.Options.args.unitframe.args[unit].args.customText.args[objectName] = nil;
 					E.db.unitframe.units[unit].customTexts[objectName] = nil;
@@ -1374,7 +1363,7 @@ local function CreateCustomTextGroup(unit, objectName)
 			},
 			size = {
 				order = 5,
-				name = FONT_SIZE,
+				name = L.FONT_SIZE,
 				type = "range",
 				min = 4, max = 212, step = 1,
 			},
@@ -1383,12 +1372,7 @@ local function CreateCustomTextGroup(unit, objectName)
 				name = L["Font Outline"],
 				desc = L["Set the font outline."],
 				type = "select",
-				values = {
-					['NONE'] = NONE,
-					['OUTLINE'] = 'OUTLINE',
-					['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-					['THICKOUTLINE'] = 'THICKOUTLINE',
-				},
+				values = C.Values.FontFlags,
 			},
 			justifyH = {
 				order = 7,
@@ -2029,19 +2013,14 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 			fontSize = {
 				order = 6,
 				type = 'range',
-				name = FONT_SIZE,
+				name = L.FONT_SIZE,
 				min = 7, max = 212, step = 1,
 			},
 			fontOutline = {
 				order = 7,
 				type = "select",
 				name = L["Font Outline"],
-				values = {
-					["NONE"] = NONE,
-					["OUTLINE"] = "OUTLINE",
-					["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-					["THICKOUTLINE"] = "THICKOUTLINE",
-				},
+				values = C.Values.FontFlags,
 			},
 			xOffset = {
 				order = 8,
@@ -2090,7 +2069,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 					color = {
 						order = 4,
 						type = "color",
-						name = COLOR,
+						name = L.COLOR,
 						hasAlpha = true,
 						get = function(info)
 							local c = E.db.unitframe.units.raid.rdebuffs.duration.color
@@ -2134,7 +2113,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 					color = {
 						order = 4,
 						type = "color",
-						name = COLOR,
+						name = L.COLOR,
 						hasAlpha = true,
 						get = function(info)
 							local c = E.db.unitframe.units[groupName].rdebuffs.stack.color
@@ -2242,7 +2221,7 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 			colors = {
 				order = 4,
 				type = "execute",
-				name = COLORS,
+				name = L.COLORS,
 				buttonElvUI = true,
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
 				disabled = function() return not E.UnitFrames.Initialized end,
@@ -2314,7 +2293,7 @@ E.Options.args.unitframe = {
 		colorsShortcut = {
 			order = 8,
 			type = "execute",
-			name = COLORS,
+			name = L.COLORS,
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2343,7 +2322,7 @@ E.Options.args.unitframe = {
 		targetShortcut = {
 			order = 12,
 			type = "execute",
-			name = TARGET,
+			name = L.TARGET,
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "target") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2388,7 +2367,7 @@ E.Options.args.unitframe = {
 		petShortcut = {
 			order = 18,
 			type = "execute",
-			name = PET,
+			name = L.PET,
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "pet") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2430,7 +2409,7 @@ E.Options.args.unitframe = {
 		partyShortcut = {
 			order = 24,
 			type = "execute",
-			name = PARTY,
+			name = L.PARTY,
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "party") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2475,7 +2454,7 @@ E.Options.args.unitframe = {
 		tankShortcut = {
 			order = 30,
 			type = "execute",
-			name = TANK,
+			name = L.TANK,
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "unitframe", "tank") end,
 			disabled = function() return not E.UnitFrames.Initialized end,
@@ -2524,10 +2503,10 @@ E.Options.args.unitframe = {
 							name = L["Blacklist Modifier"],
 							desc = L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."],
 							values = {
-								['NONE'] = NONE,
-								['SHIFT'] = SHIFT_KEY,
-								['ALT'] = ALT_KEY,
-								['CTRL'] = CTRL_KEY,
+								['NONE'] = L.NONE,
+								['SHIFT'] = L.SHIFT_KEY_TEXT,
+								['ALT'] = L.ALT_KEY_TEXT,
+								['CTRL'] = L.CTRL_KEY_TEXT,
 							},
 						},
 						resetFilters = {
@@ -2577,7 +2556,7 @@ E.Options.args.unitframe = {
 								},
 								fontSize = {
 									order = 5,
-									name = FONT_SIZE,
+									name = L.FONT_SIZE,
 									desc = L["Set the font size for unitframes."],
 									type = "range",
 									min = 4, max = 212, step = 1,
@@ -2588,12 +2567,7 @@ E.Options.args.unitframe = {
 									name = L["Font Outline"],
 									desc = L["Set the font outline."],
 									type = "select",
-									values = {
-										['NONE'] = NONE,
-										['OUTLINE'] = 'OUTLINE',
-										['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-										['THICKOUTLINE'] = 'THICKOUTLINE',
-									},
+									values = C.Values.FontFlags,
 									set = function(info, value) E.db.unitframe[info[#info]] = value; UF:Update_FontStrings() end,
 								},
 							},
@@ -2652,7 +2626,7 @@ E.Options.args.unitframe = {
 								},
 								color = {
 									order = 4,
-									name = COLOR,
+									name = L.COLOR,
 									type = 'color',
 									hasAlpha = true,
 								},
@@ -2699,7 +2673,7 @@ E.Options.args.unitframe = {
 								},
 								color = {
 									order = 4,
-									name = COLOR,
+									name = L.COLOR,
 									type = 'color',
 									hasAlpha = true,
 								},
@@ -2760,7 +2734,7 @@ E.Options.args.unitframe = {
 								},
 								color = {
 									order = 5,
-									name = COLOR,
+									name = L.COLOR,
 									type = 'color',
 									hasAlpha = true,
 								},
@@ -2772,14 +2746,14 @@ E.Options.args.unitframe = {
 					order = 3,
 					type = 'group',
 					childGroups = "tree",
-					name = COLORS,
+					name = L.COLORS,
 					get = function(info) return E.db.unitframe.colors[info[#info]] end,
 					set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 					args = {
 						header = {
 							order = 0,
 							type = "header",
-							name = COLORS,
+							name = L.COLORS,
 						},
 						borderColor = {
 							order = 1,
@@ -2800,7 +2774,7 @@ E.Options.args.unitframe = {
 						healthGroup = {
 							order = 2,
 							type = 'group',
-							name = HEALTH,
+							name = L.HEALTH,
 							get = function(info)
 								local t = E.db.unitframe.colors[info[#info]]
 								local d = P.unitframe.colors[info[#info]]
@@ -2976,52 +2950,52 @@ E.Options.args.unitframe = {
 								},
 								MANA = {
 									order = 5,
-									name = MANA,
+									name = L.MANA,
 									type = 'color',
 								},
 								RAGE = {
 									order = 6,
-									name = RAGE,
+									name = L.RAGE,
 									type = 'color',
 								},
 								FOCUS = {
 									order = 7,
-									name = FOCUS,
+									name = L.FOCUS,
 									type = 'color',
 								},
 								ENERGY = {
 									order = 8,
-									name = ENERGY,
+									name = L.ENERGY,
 									type = 'color',
 								},
 								RUNIC_POWER = {
 									order = 9,
-									name = RUNIC_POWER,
+									name = L.RUNIC_POWER,
 									type = 'color',
 								},
 								PAIN = {
 									order = 10,
-									name = PAIN,
+									name = L.PAIN,
 									type = 'color',
 								},
 								FURY = {
 									order = 11,
-									name = FURY,
+									name = L.FURY,
 									type = 'color',
 								},
 								LUNAR_POWER = {
 									order = 12,
-									name = LUNAR_POWER,
+									name = L.LUNAR_POWER,
 									type = 'color'
 								},
 								INSANITY = {
 									order = 13,
-									name = INSANITY,
+									name = L.INSANITY,
 									type = 'color'
 								},
 								MAELSTROM = {
 									order = 14,
-									name = MAELSTROM,
+									name = L.MAELSTROM,
 									type = 'color'
 								},
 							},
@@ -3109,7 +3083,7 @@ E.Options.args.unitframe = {
 								},
 								['6'] = {
 									order = 6,
-									name = PARTY,
+									name = L.PARTY,
 									type = 'color',
 								},
 								['7'] = {
@@ -3478,25 +3452,25 @@ E.Options.args.unitframe = {
 								},
 								Magic = {
 									order = 4,
-									name = ENCOUNTER_JOURNAL_SECTION_FLAG7,--Magic Effect
+									name = L.ENCOUNTER_JOURNAL_SECTION_FLAG7,--Magic Effect
 									type = 'color',
 									hasAlpha = true,
 								},
 								Curse = {
 									order = 5,
-									name = ENCOUNTER_JOURNAL_SECTION_FLAG8,--Curse Effect
+									name = L.ENCOUNTER_JOURNAL_SECTION_FLAG8,--Curse Effect
 									type = 'color',
 									hasAlpha = true,
 								},
 								Disease = {
 									order = 6,
-									name = ENCOUNTER_JOURNAL_SECTION_FLAG10,--Disease Effect
+									name = L.ENCOUNTER_JOURNAL_SECTION_FLAG10,--Disease Effect
 									type = 'color',
 									hasAlpha = true,
 								},
 								Poison = {
 									order = 7,
-									name = ENCOUNTER_JOURNAL_SECTION_FLAG9,--Poison Effect
+									name = L.ENCOUNTER_JOURNAL_SECTION_FLAG9,--Poison Effect
 									type = 'color',
 									hasAlpha = true,
 								},
@@ -3525,7 +3499,7 @@ E.Options.args.unitframe = {
 						target = {
 							order = 2,
 							type = 'toggle',
-							name = TARGET,
+							name = L.TARGET,
 							desc = L["Disables the target and target of target unitframes."],
 						},
 						focus = {
@@ -3547,7 +3521,7 @@ E.Options.args.unitframe = {
 						party = {
 							order = 6,
 							type = 'toggle',
-							name = PARTY,
+							name = L.PARTY,
 						},
 						raid = {
 							order = 7,
@@ -3992,8 +3966,8 @@ E.Options.args.unitframe.args.player = {
 					sortByValue = true,
 					name = L["Texture"],
 					values = {
-						["CUSTOM"] = CUSTOM,
-						["DEFAULT"] = DEFAULT,
+						["CUSTOM"] = L.CUSTOM,
+						["DEFAULT"] = L.DEFAULT,
 						["RESTING"] = E:TextureString(E.Media.Textures.Resting, ":14"),
 						["RESTING1"] = E:TextureString(E.Media.Textures.Resting1, ":14"),
 					},
@@ -4039,7 +4013,7 @@ E.Options.args.unitframe.args.player = {
 				color = {
 					order = 4,
 					type = "color",
-					name = COLOR,
+					name = L.COLOR,
 					hasAlpha = true,
 					disabled = function()
 						return E.db.unitframe.units.player.CombatIcon.defaultColor
@@ -4091,8 +4065,8 @@ E.Options.args.unitframe.args.player = {
 					sortByValue = true,
 					name = L["Texture"],
 					values = {
-						["CUSTOM"] = CUSTOM,
-						["DEFAULT"] = DEFAULT,
+						["CUSTOM"] = L.CUSTOM,
+						["DEFAULT"] = L.DEFAULT,
 						["COMBAT"] = E:TextureString(E.Media.Textures.Combat, ":14"),
 						["PLATINUM"] = [[|TInterface\Challenges\ChallengeMode_Medal_Platinum:14|t]],
 						["ATTACK"] = [[|TInterface\CURSOR\Attack:14|t]],
@@ -4227,7 +4201,7 @@ E.Options.args.unitframe.args.player = {
 
 --Target
 E.Options.args.unitframe.args.target = {
-	name = TARGET,
+	name = L.TARGET,
 	type = 'group',
 	order = 400,
 	childGroups = "tab",
@@ -4555,7 +4529,7 @@ E.Options.args.unitframe.args.targettarget = {
 					name = L["Smart Aura Position"],
 					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 					values = {
-						["DISABLED"] = DISABLE,
+						["DISABLED"] = L.DISABLE,
 						["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 						["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 					},
@@ -5005,7 +4979,7 @@ E.Options.args.unitframe.args.focustarget = {
 
 --Pet
 E.Options.args.unitframe.args.pet = {
-	name = PET,
+	name = L.PET,
 	type = 'group',
 	order = 800,
 	childGroups = "tab",
@@ -5144,7 +5118,7 @@ E.Options.args.unitframe.args.pet = {
 				},
 				fontSize = {
 					type = 'range',
-					name = FONT_SIZE,
+					name = L.FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -5653,7 +5627,7 @@ E.Options.args.unitframe.args.arena = {
 
 --Party Frames
 E.Options.args.unitframe.args.party = {
-	name = PARTY,
+	name = L.PARTY,
 	type = 'group',
 	order = 1100,
 	childGroups = "tab",
@@ -5858,16 +5832,15 @@ E.Options.args.unitframe.args.party = {
 							order = 1,
 							name = L["Group By"],
 							desc = L["Set the order that the group will sort."],
-							customWidth = 250,
 							type = 'select',
 							values = {
-								['CLASS'] = CLASS,
-								['CLASSROLE'] = CLASS..' & '..ROLE,
+								['CLASS'] = L.CLASS,
+								['CLASSROLE'] = L.CLASS..' & '..L.ROLE,
 								['ROLE'] = L["Role: Tank, Healer, Damage"],
 								['ROLE2'] = L["Role: Tank, Damage, Healer"],
+								['NAME'] = L.NAME,
 								['MTMA'] = L["Main Tanks / Main Assist"],
-								['NAME'] = NAME,
-								['GROUP'] = GROUP,
+								['GROUP'] = L.GROUP,
 							},
 						},
 						sortDir = {
@@ -5936,7 +5909,7 @@ E.Options.args.unitframe.args.party = {
 				},
 				fontSize = {
 					type = 'range',
-					name = FONT_SIZE,
+					name = L.FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -6512,13 +6485,13 @@ E.Options.args.unitframe.args.raid = {
 							customWidth = 250,
 							type = 'select',
 							values = {
-								['CLASS'] = CLASS,
-								['CLASSROLE'] = CLASS..' & '..ROLE,
+								['CLASS'] = L.CLASS,
+								['CLASSROLE'] = L.CLASS..' & '..L.ROLE,
 								['ROLE'] = L["Role: Tank, Healer, Damage"],
 								['ROLE2'] = L["Role: Tank, Damage, Healer"],
+								['NAME'] = L.NAME,
 								['MTMA'] = L["Main Tanks / Main Assist"],
-								['NAME'] = NAME,
-								['GROUP'] = GROUP,
+								['GROUP'] = L.GROUP,
 							},
 						},
 						sortDir = {
@@ -6596,7 +6569,7 @@ E.Options.args.unitframe.args.raid = {
 				},
 				fontSize = {
 					type = 'range',
-					name = FONT_SIZE,
+					name = L.FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -6984,13 +6957,13 @@ E.Options.args.unitframe.args.raid40 = {
 							customWidth = 250,
 							type = 'select',
 							values = {
-								['CLASS'] = CLASS,
-								['CLASSROLE'] = CLASS..' & '..ROLE,
+								['CLASS'] = L.CLASS,
+								['CLASSROLE'] = L.CLASS..' & '..L.ROLE,
 								['ROLE'] = L["Role: Tank, Healer, Damage"],
 								['ROLE2'] = L["Role: Tank, Damage, Healer"],
+								['NAME'] = L.NAME,
 								['MTMA'] = L["Main Tanks / Main Assist"],
-								['NAME'] = NAME,
-								['GROUP'] = GROUP,
+								['GROUP'] = L.GROUP,
 							},
 						},
 						sortDir = {
@@ -7068,7 +7041,7 @@ E.Options.args.unitframe.args.raid40 = {
 				},
 				fontSize = {
 					type = 'range',
-					name = FONT_SIZE,
+					name = L.FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -7443,7 +7416,7 @@ E.Options.args.unitframe.args.raidpet = {
 							values = {
 								['NAME'] = L["Owners Name"],
 								['PETNAME'] = L["Pet Name"],
-								['GROUP'] = GROUP,
+								['GROUP'] = L.GROUP,
 							},
 						},
 						sortDir = {
@@ -7521,7 +7494,7 @@ E.Options.args.unitframe.args.raidpet = {
 				},
 				fontSize = {
 					type = 'range',
-					name = FONT_SIZE,
+					name = L.FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -7538,7 +7511,7 @@ E.Options.args.unitframe.args.raidpet = {
 
 --Tank Frames
 E.Options.args.unitframe.args.tank = {
-	name = TANK,
+	name = L.TANK,
 	type = 'group',
 	order = 1300,
 	childGroups = "tab",
@@ -7711,7 +7684,7 @@ E.Options.args.unitframe.args.tank = {
 				},
 				fontSize = {
 					type = 'range',
-					name = FONT_SIZE,
+					name = L.FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -7917,7 +7890,7 @@ E.Options.args.unitframe.args.assist = {
 				},
 				fontSize = {
 					type = 'range',
-					name = FONT_SIZE,
+					name = L.FONT_SIZE,
 					order = 4,
 					min = 7, max = 212, step = 1,
 				},
@@ -7997,38 +7970,20 @@ if P.unitframe.colors.classResources[E.myclass] then
 	if E.myclass == 'PALADIN' then
 		E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
-			name = HOLY_POWER,
+			name = L.HOLY_POWER,
 			order = ORDER,
 		}
 	elseif E.myclass == 'MAGE' then
 		E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
-			name = POWER_TYPE_ARCANE_CHARGES,
+			name = L.POWER_TYPE_ARCANE_CHARGES,
 			order = ORDER,
 		}
-	elseif E.myclass == 'ROGUE' then
-		for i = 1, 5 do
-			E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
-				type = 'color',
-				name = L["Anticipation"]..' #'..i,
-				order = ORDER+i,
-				get = function(info)
-					local t = E.db.unitframe.colors.classResources.ROGUE[i]
-					local d = P.unitframe.colors.classResources.ROGUE[i]
-					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-				end,
-				set = function(info, r, g, b)
-					local t = E.db.unitframe.colors.classResources.ROGUE[i]
-					t.r, t.g, t.b = r, g, b
-					UF:Update_AllFrames()
-				end,
-			}
-		end
 	elseif E.myclass == 'MONK' then
 		for i = 1, 6 do
 			E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
 				type = 'color',
-				name = CHI_POWER..' #'..i,
+				name = L.CHI_POWER..' #'..i,
 				order = ORDER+i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.MONK[i]
@@ -8045,13 +8000,13 @@ if P.unitframe.colors.classResources[E.myclass] then
 	elseif E.myclass == 'WARLOCK' then
 		E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
-			name = SOUL_SHARDS,
+			name = L.SOUL_SHARDS,
 			order = ORDER,
 		}
 	elseif E.myclass == 'DEATHKNIGHT' then
 		E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
-			name = RUNES,
+			name = L.RUNES,
 			order = ORDER,
 		}
 	end
@@ -8066,7 +8021,7 @@ if E.myclass == 'DEATHKNIGHT' then
 		values = {
 			['asc'] = L["Ascending"],
 			['desc'] = L["Descending"],
-			['NONE'] = NONE,
+			['NONE'] = L.NONE,
 		},
 		get = function(info) return E.db.unitframe.units.player.classbar[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
