@@ -1,7 +1,13 @@
 -- English localization file for enUS and enGB.
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
-
+L["Blend Mode"] = true
+L["Blend"] = true
+L["Additive Blend"] = true
+L["Modulating Blend"] = true
+L["Alpha Key"] = true
+L["Role: Tank, Healer, Damage"] = true
+L["Role: Tank, Damage, Healer"] = true
 L[" |cff00ff00bound to |r"] = true
 L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = true
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = true
