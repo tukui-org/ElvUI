@@ -570,6 +570,17 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if underPowerThreshold or overPowerThreshold then passed = true else return end
 	end
 
+	-- Level
+	if trigger.level then
+		local myLevel = UnitLevel('player')
+		local level = (frame.unit == 'player' and myLevel) or UnitLevel(frame.unit)
+		local curLevel = (trigger.curlevel and trigger.curlevel ~= 0 and (trigger.curlevel == level))
+		local minLevel = (trigger.minlevel and trigger.minlevel ~= 0 and (trigger.minlevel <= level))
+		local maxLevel = (trigger.maxlevel and trigger.maxlevel ~= 0 and (trigger.maxlevel >= level))
+		local matchMyLevel = trigger.mylevel and (level == myLevel)
+		if curLevel or minLevel or maxLevel or matchMyLevel then passed = true else return end
+	end
+
 	-- Resting
 	if trigger.isResting then
 		if IsResting() then passed = true else return end
@@ -626,6 +637,26 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Group Role
 	if trigger.role.tank or trigger.role.healer or trigger.role.damager then
 		if trigger.role[mod.TriggerConditions.roles[E.myrole]] then passed = true else return end
+	end
+
+	-- Unit Type
+	if trigger.nameplateType and trigger.nameplateType.enable then
+		if trigger.nameplateType[mod.TriggerConditions.frameTypes[frame.frameType]] then passed = true else return end
+	end
+
+	-- Creature Type
+	if trigger.creatureType and trigger.creatureType.enable then
+		if trigger.creatureType[E.CreatureTypes[frame.creatureType]] then passed = true else return end
+	end
+
+	-- Reaction (or Reputation) Type
+	if trigger.reactionType and trigger.reactionType.enable then
+		if trigger.reactionType[mod.TriggerConditions.reactions[(trigger.reactionType.reputation and frame.repReaction) or frame.reaction]] then passed = true else return end
+	end
+
+	--Try to match according to raid target conditions
+	if trigger.raidTarget.star or trigger.raidTarget.circle or trigger.raidTarget.diamond or trigger.raidTarget.triangle or trigger.raidTarget.moon or trigger.raidTarget.square or trigger.raidTarget.cross or trigger.raidTarget.skull then
+		if trigger.raidTarget[mod.TriggerConditions.raidTargets[frame.RaidTargetIndex]] then passed = true else return end
 	end
 
 	do -- Class
@@ -693,37 +724,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end end end
 
 		if pass then passed = true else return end
-	end
-
-	-- Level
-	if trigger.level then
-		local myLevel = UnitLevel('player')
-		local level = (frame.unit == 'player' and myLevel) or UnitLevel(frame.unit)
-		local curLevel = (trigger.curlevel and trigger.curlevel ~= 0 and (trigger.curlevel == level))
-		local minLevel = (trigger.minlevel and trigger.minlevel ~= 0 and (trigger.minlevel <= level))
-		local maxLevel = (trigger.maxlevel and trigger.maxlevel ~= 0 and (trigger.maxlevel >= level))
-		local matchMyLevel = trigger.mylevel and (level == myLevel)
-		if curLevel or minLevel or maxLevel or matchMyLevel then passed = true else return end
-	end
-
-	-- Unit Type
-	if trigger.nameplateType and trigger.nameplateType.enable then
-		if trigger.nameplateType[mod.TriggerConditions.frameTypes[frame.frameType]] then passed = true else return end
-	end
-
-	-- Creature Type
-	if trigger.creatureType and trigger.creatureType.enable then
-		if trigger.creatureType[E.CreatureTypes[frame.creatureType]] then passed = true else return end
-	end
-
-	-- Reaction (or Reputation) Type
-	if trigger.reactionType and trigger.reactionType.enable then
-		if trigger.reactionType[mod.TriggerConditions.reactions[(trigger.reactionType.reputation and frame.repReaction) or frame.reaction]] then passed = true else return end
-	end
-
-	--Try to match according to raid target conditions
-	if trigger.raidTarget.star or trigger.raidTarget.circle or trigger.raidTarget.diamond or trigger.raidTarget.triangle or trigger.raidTarget.moon or trigger.raidTarget.square or trigger.raidTarget.cross or trigger.raidTarget.skull then
-		if trigger.raidTarget[mod.TriggerConditions.raidTargets[frame.RaidTargetIndex]] then passed = true else return end
 	end
 
 	-- Casting Interruptible
