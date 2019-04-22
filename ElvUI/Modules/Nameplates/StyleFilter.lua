@@ -718,8 +718,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Reaction (or Reputation) Type
 	if trigger.reactionType and trigger.reactionType.enable then
-		local reaction = (trigger.reactionType.reputation and frame.repReaction) or frame.reaction
-		if trigger.reactionType[mod.TriggerConditions.reactions[reaction]] then passed = true else return end
+		if trigger.reactionType[mod.TriggerConditions.reactions[(trigger.reactionType.reputation and frame.repReaction) or frame.reaction]] then passed = true else return end
 	end
 
 	--Try to match according to raid target conditions
