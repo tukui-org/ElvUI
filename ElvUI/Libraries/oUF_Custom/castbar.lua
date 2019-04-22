@@ -147,6 +147,7 @@ local function CastStart(self, event, unit)
 	element.holdTime = 0
 	element.castID = castID
 	element.spellID = spellID
+	element.spellName = name -- ElvUI
 
 	-- ElvUI block
 	element.extraTickRatio = 0

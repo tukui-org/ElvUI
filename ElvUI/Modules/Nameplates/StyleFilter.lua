@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
 local setmetatable, tonumber, type, unpack = setmetatable, tonumber, type, unpack
-local gsub, tinsert, tremove, sort, wipe = gsub, tinsert, tremove, sort, wipe
+local gsub, tinsert, tremove, sort, wipe, strlower = gsub, tinsert, tremove, sort, wipe, strlower
 
 local GetInstanceInfo = GetInstanceInfo
 local GetLocale = GetLocale
@@ -32,10 +32,40 @@ local UnitPowerMax = UnitPowerMax
 local hooksecurefunc = hooksecurefunc
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
-local INTERRUPTED = INTERRUPTED
-local FAILED = FAILED
 
 local FallbackColor = {r=1, b=1, g=1}
+
+mod.TriggerConditions = {
+	unitTypes = {
+		['FRIENDLY_PLAYER'] = 'friendlyPlayer',
+		['FRIENDLY_NPC'] = 'friendlyNPC',
+		['ENEMY_PLAYER'] = 'enemyPlayer',
+		['ENEMY_NPC'] = 'enemyNPC',
+		['HEALER'] = 'healer',
+		['PLAYER'] = 'player'
+	},
+	difficulties = {
+		-- dungeons
+		[1] = 'normal',
+		[2] = 'heroic',
+		[8] = 'mythic+',
+		[23] = 'mythic',
+		[24] = 'timewalking',
+		-- raids
+		[7] = 'lfr',
+		[17] = 'lfr',
+		[14] = 'normal',
+		[15] = 'heroic',
+		[16] = 'mythic',
+		[33] = 'timewalking',
+		[3] = 'legacy10normal',
+		[4] = 'legacy25normal',
+		[5] = 'legacy10heroic',
+		[6] = 'legacy25heroic',
+	},
+	reactions = {'hated', 'hostile', 'unfriendly', 'neutral', 'friendly', 'honored', 'revered', 'exalted'},
+	raidTargets = {'star', 'circle', 'diamond', 'triangle', 'moon', 'square', 'cross', 'skull'}
+}
 
 do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value').
 	local c, locale = {}, GetLocale()
@@ -519,30 +549,6 @@ end
 function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	local passed -- skip StyleFilterPass when triggers are empty
 
-	-- Name or GUID
-	if trigger.names and next(trigger.names) then
-		local matched = trigger.names[frame.unitName] or trigger.names[frame.npcID]
-		passed = (not trigger.negativeMatch and matched) or (trigger.negativeMatch and not matched)
-		if not passed then return end
-	end
-
-	-- Casting Spell
-	if trigger.casting and trigger.casting.spells and next(trigger.casting.spells) then
-		passed = false
-		if frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling) then
-			local spell = frame.Castbar.spellID
-			passed = trigger.casting.spells[spell] or trigger.casting.spells[GetSpellInfo(spell)]
-		end
-		if not passed then return end
-	end
-
-	-- Casting Interruptible
-	if trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible) then
-		if frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
-		and ((trigger.casting.interruptible and not frame.Castbar.notInterruptible)
-		or (trigger.casting.notInterruptible and frame.Castbar.notInterruptible)) then passed = true else return end
-	end
-
 	-- Health
 	if trigger.healthThreshold then
 		local healthUnit = (trigger.healthUsePlayer and 'player') or frame.unit
@@ -618,8 +624,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Group Role
 	if trigger.role.tank or trigger.role.healer or trigger.role.damager then
-		-- E.myrole returns uppercase values
-		if E.myrole and trigger.role[string.lower(E.myrole)] then passed = true else return end
+		if E.myrole and trigger.role[strlower(E.myrole)] then passed = true else return end
 	end
 
 	do -- Class
@@ -636,40 +641,29 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	do -- Instance
+		local _, Type, Difficulty
+
 		-- Type
-		local _, instanceType, instanceDifficulty
 		if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
-			_, instanceType, instanceDifficulty = GetInstanceInfo()
-			if trigger.instanceType[instanceType] then passed = true else return end
+			_, Type, Difficulty = GetInstanceInfo()
+			if trigger.instanceType[Type] then passed = true else return end
 		end
 
 		-- Difficulty
 		if trigger.instanceType.party or trigger.instanceType.raid then
-			if not instanceDifficulty then _, _, instanceDifficulty = GetInstanceInfo() end
+			if not Difficulty then _, _, Difficulty = GetInstanceInfo() end
 
 			local dungeon = trigger.instanceDifficulty.dungeon
-			if trigger.instanceType.party and instanceType == 'party' and (dungeon.normal or dungeon.heroic or dungeon.mythic or dungeon['mythic+'] or dungeon.timewalking) then
-				if instanceDifficulty
-				and ((dungeon.normal	and instanceDifficulty == 1)
-				or (dungeon.heroic		and instanceDifficulty == 2)
-				or (dungeon.mythic		and instanceDifficulty == 23)
-				or (dungeon['mythic+']	and instanceDifficulty == 8)
-				or (dungeon.timewalking	and instanceDifficulty == 24)) then passed = true else return end
+			if trigger.instanceType.party and Type == 'party' and (dungeon.normal or dungeon.heroic or dungeon.mythic or dungeon['mythic+'] or dungeon.timewalking) then
+				if dungeon[mod.TriggerConditions.difficulties[Difficulty]] then passed = true else return end
 			end
 
 			local raid = trigger.instanceDifficulty.raid
-			if trigger.instanceType.raid and instanceType == 'raid' and (raid.lfr or raid.normal or raid.heroic or raid.mythic or raid.timewalking or raid.legacy10normal or raid.legacy25normal or raid.legacy10heroic or raid.legacy25heroic) then
-				if instanceDifficulty
-				and ((raid.lfr			and (instanceDifficulty == 7 or instanceDifficulty == 17))
-				or (raid.normal			and instanceDifficulty == 14)
-				or (raid.heroic			and instanceDifficulty == 15)
-				or (raid.mythic			and instanceDifficulty == 16)
-				or (raid.timewalking	and instanceDifficulty == 33)
-				or (raid.legacy10normal	and instanceDifficulty == 3)
-				or (raid.legacy25normal	and instanceDifficulty == 4)
-				or (raid.legacy10heroic	and instanceDifficulty == 5)
-				or (raid.legacy25heroic	and instanceDifficulty == 6)) then passed = true else return end
-	end end end
+			if trigger.instanceType.raid and Type == 'raid' and (raid.lfr or raid.normal or raid.heroic or raid.mythic or raid.timewalking or raid.legacy10normal or raid.legacy25normal or raid.legacy10heroic or raid.legacy25heroic) then
+				if raid[mod.TriggerConditions.difficulties[Difficulty]] then passed = true else return end
+			end
+		end
+	end
 
 	-- Talents
 	if trigger.talent.enabled then
@@ -713,10 +707,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Unit Type
 	if trigger.nameplateType and trigger.nameplateType.enable then
-		local unitTypes = {
-			['FRIENDLY_PLAYER'] = 'friendlyPlayer'; ['FRIENDLY_NPC'] = 'friendlyNPC';
-			 ['ENEMY_PLAYER'] = 'enemyPlayer'; ['ENEMY_NPC'] = 'enemyNPC'; ['HEALER'] = 'healer'; ['PLAYER'] = 'player';}
-		if trigger.nameplateType[unitTypes[frame.frameType]] then passed = true else return end
+		if trigger.nameplateType[mod.TriggerConditions.unitTypes[frame.frameType]] then passed = true else return end
 	end
 
 	-- Creature Type
@@ -727,15 +718,37 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Reaction (or Reputation) Type
 	if trigger.reactionType and trigger.reactionType.enable then
 		local reaction = (trigger.reactionType.reputation and frame.repReaction) or frame.reaction
-		local reactions = { [1] = 'hated'; [2] = 'hostile', [3] = 'unfriendly', [4] = 'neutral', [5] = 'friendly', [6] = 'honored', [7] = 'revered', [8] = 'exalted'}
-		if trigger.reactionType[reactions[reaction]]then passed = true else return end
+		if trigger.reactionType[mod.TriggerConditions.reactions[reaction]] then passed = true else return end
 	end
 
 	--Try to match according to raid target conditions
 	if trigger.raidTarget.star or trigger.raidTarget.circle or trigger.raidTarget.diamond or trigger.raidTarget.triangle or trigger.raidTarget.moon or trigger.raidTarget.square or trigger.raidTarget.cross or trigger.raidTarget.skull then
-		local raidTargets = { [1] = 'star'; [2] = 'circle', [3] = 'diamond', [4] = 'triangle', [5] = 'moon', [6] = 'square', [7] = 'cross', [8] = 'skull'}
-		if trigger.raidTarget[raidTargets[frame.RaidTargetIndex]]
-		then passed = true else return end
+		if trigger.raidTarget[mod.TriggerConditions.raidTargets[frame.RaidTargetIndex]] then passed = true else return end
+	end
+
+	-- Casting Interruptible
+	if trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible) then
+		if frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
+		and ((trigger.casting.interruptible and not frame.Castbar.notInterruptible)
+		or (trigger.casting.notInterruptible and frame.Castbar.notInterruptible)) then passed = true else return end
+	end
+
+	-- Casting Spell
+	if trigger.casting and trigger.casting.spells and next(trigger.casting.spells) then
+		if frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling) then
+			local spell = trigger.casting.spells[frame.Castbar.spellID] or trigger.casting.spells[frame.Castbar.spellName]
+			if spell ~= nil then -- ignore if none are selected
+				if spell then passed = true else return end
+			end
+		end
+	end
+
+	-- Name or GUID
+	if trigger.names and next(trigger.names) then
+		local name = trigger.names[frame.unitName] or trigger.names[frame.npcID]
+		if name ~= nil then -- ignore if none are selected
+			if (not trigger.negativeMatch and name) or (trigger.negativeMatch and not name) then passed = true else return end
+		end
 	end
 
 	--Try to match according to cooldown conditions
@@ -748,17 +761,17 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	--Try to match according to buff aura conditions
 	if trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-		local buffs = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
-		if buffs ~= nil then -- ignore if none are selected
-			if buffs then passed = true else return end
+		local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
+		if buff ~= nil then -- ignore if none are selected
+			if buff then passed = true else return end
 		end
 	end
 
 	--Try to match according to debuff aura conditions
 	if trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
-		local debuffs = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
-		if debuffs ~= nil then -- ignore if none are selected
-			if debuffs then passed = true else return end
+		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
+		if debuff ~= nil then -- ignore if none are selected
+			if debuff then passed = true else return end
 		end
 	end
 
