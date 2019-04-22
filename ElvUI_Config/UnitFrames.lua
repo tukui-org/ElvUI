@@ -524,7 +524,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 						name = L["Font Outline"],
 						desc = L["Set the font outline."],
 						type = "select",
-						values = C.Values.FOntFlags,
+						values = C.Values.FontFlags,
 					},
 				}
 			},
