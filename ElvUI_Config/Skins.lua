@@ -128,7 +128,7 @@ E.Options.args.skins = {
 				},
 				binding = {
 					type = "toggle",
-					name = L.KEY_BINDING,
+					name = L.KEY_BINDINGS,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				gbank = {

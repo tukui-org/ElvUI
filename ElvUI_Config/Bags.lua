@@ -10,7 +10,7 @@ local GameTooltip = _G.GameTooltip
 
 E.Options.args.bags = {
 	type = 'group',
-	name = L["Bags"],
+	name = L.BAGSLOT,
 	childGroups = "tab",
 	get = function(info) return E.db.bags[info[#info]] end,
 	set = function(info, value) E.db.bags[info[#info]] = value end,
