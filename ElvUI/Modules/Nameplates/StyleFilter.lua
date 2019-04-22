@@ -368,11 +368,7 @@ function mod:StyleFilterNameChanged()
 end
 
 function mod:StyleFilterBorderLock(backdrop, switch)
-	if switch then
-		backdrop.ignoreBorderColors = true --but keep the backdrop updated
-	else
-		backdrop.ignoreBorderColors = nil --restore these borders to be updated
-	end
+	backdrop.ignoreBorderColors = switch --but keep the backdrop updated
 end
 
 function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
@@ -506,10 +502,10 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if BorderChanged then
 		frame.BorderChanged = nil
-		mod:StyleFilterBorderLock(frame.Health.backdrop, false)
+		mod:StyleFilterBorderLock(frame.Health.backdrop)
 		frame.Health.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
-			mod:StyleFilterBorderLock(frame.Power.backdrop, false)
+			mod:StyleFilterBorderLock(frame.Power.backdrop)
 			frame.Power.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end
