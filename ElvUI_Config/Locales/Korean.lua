@@ -1,5 +1,5 @@
 -- Korean localization file for koKR.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "koKR")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "koKR")
 
 L["# Displayed Auras"] = "표시되는 효과 갯수"
 L["%s and then %s"] = "%s 이후 %s"

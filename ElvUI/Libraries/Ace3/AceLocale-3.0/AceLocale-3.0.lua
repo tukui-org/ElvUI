@@ -108,7 +108,8 @@ function AceLocale:NewLocale(application, locale, isDefault, silent)
 
 	-- ElvUI block
 	if (not app[locale]) or (app[locale] and type(app[locale]) ~= 'table') then
-		app[locale] = setmetatable({}, silent and readmetasilent or readmeta)
+		--	app[locale] = setmetatable({}, silent and readmetasilent or readmeta) -- To find missing keys
+		app[locale] = setmetatable({}, readmetasilent)
 	end
 
 	registering = app[locale] -- remember globally for writeproxy and writedefaultproxy

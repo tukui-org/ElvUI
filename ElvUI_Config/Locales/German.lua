@@ -1,5 +1,5 @@
 -- German localization file for deDE.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "deDE")
 
 L["# Displayed Auras"] = "# angezeigte Auren"
 L["%s and then %s"] = "%s und dann %s"

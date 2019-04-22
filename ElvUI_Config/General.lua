@@ -1,5 +1,5 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local C = select(2, ...)
+local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local C, L = unpack(select(2, ...))
 local Misc = E:GetModule('Misc')
 local Layout = E:GetModule('Layout')
 local Totems = E:GetModule('Totems')
@@ -155,6 +155,16 @@ E.Options.args.general = {
 						E:SetSmoothingAmount(value)
 					end,
 				},
+				configLocale = {
+					order = 14,
+					type = "select",
+					name = L["Language"],
+					set = function(info, value) E.db.general.configLocale = value; E:StaticPopup_Show("CONFIG_RL") end,
+					values = {
+						["enUS"] = "English",
+						["frFR"] = "French",
+					},
+				}
 			},
 		},
 		media = {

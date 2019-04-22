@@ -1,5 +1,5 @@
 -- Taiwanese localization file for zhTW.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "zhTW")
 
 L["# Displayed Auras"] = "顯示光環的數量"
 L["%s and then %s"] = "%s 與 %s"
