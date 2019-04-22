@@ -728,14 +728,14 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Casting Interruptible
 	if trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible) then
-		if frame.Castbar and (frame.Castbar.casting or frame.Castbar.channeling)
+		if (frame.Castbar.casting or frame.Castbar.channeling)
 		and ((trigger.casting.interruptible and not frame.Castbar.notInterruptible)
 		or (trigger.casting.notInterruptible and frame.Castbar.notInterruptible)) then passed = true else return end
 	end
 
 	-- Casting Spell
 	if trigger.casting and trigger.casting.spells and next(trigger.casting.spells) then
-		local spell = trigger.casting.spells[frame.Castbar and frame.Castbar.spellID] or trigger.casting.spells[frame.Castbar and frame.Castbar.spellName]
+		local spell = trigger.casting.spells[frame.Castbar.spellID] or trigger.casting.spells[frame.Castbar.spellName]
 		if spell ~= nil then -- ignore if none are selected
 			if spell then passed = true else return end
 		end
