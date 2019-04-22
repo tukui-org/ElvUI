@@ -733,7 +733,15 @@ local function UpdateFilterGroup()
 								UpdateFilterGroup();
 								NP:ConfigureAll()
 							end,
-						}
+						},
+						negativeMatch = {
+							order = 3,
+							name = L["Negative Match"],
+							desc = L["Match if Name or NPC ID is NOT in the list."],
+							type = 'toggle',
+							get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]] end,
+							set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]] = value; NP:ConfigureAll() end,
+						},
 					},
 				},
 				targeting = {

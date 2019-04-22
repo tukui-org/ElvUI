@@ -1,6 +1,7 @@
 -- Taiwanese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "zhTW")
-
+L["Negative Match"] = true
+L["Match if Name or NPC ID is NOT in the list."] = true
 L["# Displayed Auras"] = "顯示光環的數量"
 L["%s and then %s"] = "%s 與 %s"
 L["24-Hour Time"] = "24小時制"

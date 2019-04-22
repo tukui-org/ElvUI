@@ -1,7 +1,7 @@
 -- English localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "enUS", true, true)
-
-L["Raid Target"] = true
+L["Negative Match"] = true
+L["Match if Name or NPC ID is NOT in the list."] = true
 L["# Displayed Auras"] = true
 L["%s and then %s"] = true
 L["24-Hour Time"] = true
@@ -887,7 +887,6 @@ L["Raid Difficulty"] = true
 L["Raid Frame"] = true
 L["Raid Icon"] = true
 L["Raid Only"] = true
-L["Raid Target"] = true
 L["Raid-Wide Sorting"] = true
 L["RaidDebuff Indicator"] = true
 L["Range"] = true

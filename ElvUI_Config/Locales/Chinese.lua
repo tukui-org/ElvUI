@@ -1,6 +1,7 @@
 -- Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "zhCN")
-
+L["Negative Match"] = true
+L["Match if Name or NPC ID is NOT in the list."] = true
 L["# Displayed Auras"] = "显示光环的数量"
 L["%s and then %s"] = "%s 于 %s"
 L["24-Hour Time"] = "24小时制"
