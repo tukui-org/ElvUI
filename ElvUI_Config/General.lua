@@ -158,9 +158,10 @@ E.Options.args.general = {
 				configLocale = {
 					order = 14,
 					type = "select",
-					name = L["Language"],
+					name = L.LANGUAGE,
 					set = function(info, value) E.db.general.configLocale = value; E:StaticPopup_Show("CONFIG_RL") end,
 					values = {
+						["deDE"] = "German",
 						["enUS"] = "English",
 						["frFR"] = "French",
 					},
