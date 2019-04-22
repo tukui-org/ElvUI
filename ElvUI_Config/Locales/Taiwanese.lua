@@ -1,7 +1,6 @@
 -- Taiwanese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "zhTW")
-L["Negative Match"] = true
-L["Match if Name or NPC ID is NOT in the list."] = true
+
 L["# Displayed Auras"] = "顯示光環的數量"
 L["%s and then %s"] = "%s 與 %s"
 L["24-Hour Time"] = "24小時制"
@@ -595,8 +594,8 @@ L["If enabled then the filter will only activate when the unit is not targeting 
 L["If enabled then the filter will only activate when the unit is out of combat."] = "如果選中則過濾器只會在單位不在戰鬥中的時候啟動"
 L["If enabled then the filter will only activate when the unit is targeting you."] = "如果選中則過濾器只會在單位選中你的時候啟動"
 L["If enabled then the filter will only activate when you are focusing the unit."] = "如果選中則過濾器只會在你設其為專注目標時啟動"
-L["If enabled then the filter will only activate when you are in combat."] = "如果選中則過濾器只會在戰鬥中啟動"
 L["If enabled then the filter will only activate when you are in a Vehicle."] = true
+L["If enabled then the filter will only activate when you are in combat."] = "如果選中則過濾器只會在戰鬥中啟動"
 L["If enabled then the filter will only activate when you are not focusing the unit."] = "如果選中則過濾器只會在你沒有設其為專注目標時啟動"
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = "如果選中則過濾器只會在你沒有選中單位的時候啟動"
@@ -699,6 +698,7 @@ L["Map Opacity When Moving"] = "移動時地圖透明度"
 L["Maps"] = "地圖"
 L["Masque Support"] = "Masque 支援"
 L["Match Frame Width"] = "匹配視窗寬度"
+L["Match if Name or NPC ID is NOT in the list."] = true
 L["Match Player Level"] = "符合玩家等級"
 L["Match this trigger if the talent is not selected"] = "在未選擇改天賦時激活這個觸發器"
 L["Max Alpha"] = "最大透明度"
@@ -756,6 +756,7 @@ L["NamePlate Size"] = true
 L["NamePlate Style Filters"] = "姓名版樣式過濾器"
 L["Nameplate"] = "姓名板"
 L["NamePlates"] = "姓名板(血條)"
+L["Negative Match"] = true
 L["Neutral"] = "中立"
 L["Never Hide"] = "從不隱藏"
 L["No Alert In Combat"] = "戰鬥中不警報"

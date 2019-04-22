@@ -1,7 +1,6 @@
 -- Portuguese localization file for ptBR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "ptBR")
-L["Negative Match"] = true
-L["Match if Name or NPC ID is NOT in the list."] = true
+
 L["# Displayed Auras"] = true
 L["%s and then %s"] = "%s e depois %s"
 L["24-Hour Time"] = "24 horas"
@@ -594,8 +593,8 @@ L["If enabled then the filter will only activate when the unit is not targeting 
 L["If enabled then the filter will only activate when the unit is out of combat."] = true
 L["If enabled then the filter will only activate when the unit is targeting you."] = true
 L["If enabled then the filter will only activate when you are focusing the unit."] = true
-L["If enabled then the filter will only activate when you are in combat."] = true
 L["If enabled then the filter will only activate when you are in a Vehicle."] = true
+L["If enabled then the filter will only activate when you are in combat."] = true
 L["If enabled then the filter will only activate when you are not focusing the unit."] = true
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = true
@@ -698,6 +697,7 @@ L["Map Opacity When Moving"] = true
 L["Maps"] = true
 L["Masque Support"] = true
 L["Match Frame Width"] = "Igualar comprimento do quadro"
+L["Match if Name or NPC ID is NOT in the list."] = true
 L["Match Player Level"] = true
 L["Match this trigger if the talent is not selected"] = true
 L["Max Alpha"] = true
@@ -755,6 +755,7 @@ L["NamePlate Size"] = true
 L["NamePlate Style Filters"] = true
 L["Nameplate"] = true
 L["NamePlates"] = "Placas de Identificação"
+L["Negative Match"] = true
 L["Neutral"] = "Neutro"
 L["Never Hide"] = "Nunca Esconder"
 L["No Alert In Combat"] = true

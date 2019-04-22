@@ -1,7 +1,6 @@
 -- Korean localization file for koKR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "koKR")
-L["Negative Match"] = true
-L["Match if Name or NPC ID is NOT in the list."] = true
+
 L["# Displayed Auras"] = "표시되는 효과 갯수"
 L["%s and then %s"] = "%s 이후 %s"
 L["24-Hour Time"] = "24시제로 표시"
@@ -593,8 +592,8 @@ L["If enabled then the filter will only activate when the unit is not targeting 
 L["If enabled then the filter will only activate when the unit is out of combat."] = "활성화하면 유닛이 비전투 중일때만 필터가 작동합니다."
 L["If enabled then the filter will only activate when the unit is targeting you."] = "활성화하면 유닛이 자신을 대상으로 잡고 있을 때만 필터가 작동합니다."
 L["If enabled then the filter will only activate when you are focusing the unit."] = true
-L["If enabled then the filter will only activate when you are in combat."] = "활성화하면 자신이 전투 중일때만 필터가 작동합니다."
 L["If enabled then the filter will only activate when you are in a Vehicle."] = true
+L["If enabled then the filter will only activate when you are in combat."] = "활성화하면 자신이 전투 중일때만 필터가 작동합니다."
 L["If enabled then the filter will only activate when you are not focusing the unit."] = true
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = "활성화하면 자신이 유닛을 대상으로 잡고 있지 않을 때만 필터가 작동합니다."
@@ -697,6 +696,7 @@ L["Map Opacity When Moving"] = "이동시 지도 불투명도"
 L["Maps"] = "지도"
 L["Masque Support"] = "Masque 지원"
 L["Match Frame Width"] = "프레임 너비와 맞춤"
+L["Match if Name or NPC ID is NOT in the list."] = true
 L["Match Player Level"] = true
 L["Match this trigger if the talent is not selected"] = true
 L["Max Alpha"] = true
@@ -754,6 +754,7 @@ L["NamePlate Size"] = true
 L["NamePlate Style Filters"] = "이름표 스타일 필터"
 L["Nameplate"] = true
 L["NamePlates"] = "이름표"
+L["Negative Match"] = true
 L["Neutral"] = "중립"
 L["Never Hide"] = "항시 표시"
 L["No Alert In Combat"] = "전투 중 알리지 않기"

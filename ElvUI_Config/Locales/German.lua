@@ -1,7 +1,6 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "deDE")
-L["Negative Match"] = true
-L["Match if Name or NPC ID is NOT in the list."] = true
+
 L["# Displayed Auras"] = "# angezeigte Auren"
 L["%s and then %s"] = "%s und dann %s"
 L["24-Hour Time"] = "24-Stunden-Format"
@@ -596,8 +595,8 @@ L["If enabled then the filter will only activate when the unit is not targeting 
 L["If enabled then the filter will only activate when the unit is out of combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit nicht im Kampf ist."
 L["If enabled then the filter will only activate when the unit is targeting you."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit dich als Ziel hat."
 L["If enabled then the filter will only activate when you are focusing the unit."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du die Einheit fokussierst."
-L["If enabled then the filter will only activate when you are in combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du im Kampf bist."
 L["If enabled then the filter will only activate when you are in a Vehicle."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du in einem Fahrzeug bist."
+L["If enabled then the filter will only activate when you are in combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du im Kampf bist."
 L["If enabled then the filter will only activate when you are not focusing the unit."] = "Wenn eigeschaltet, wird der Filter nur aktiviert, wenn du die Einheit nicht fokussierst."
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du nicht in einem Fahrzeug bist."
 L["If enabled then the filter will only activate when you are not targeting the unit."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du die Einheit nicht im Ziel hast."
@@ -700,6 +699,7 @@ L["Map Opacity When Moving"] = "Deckkraft der Karte während der Bewegung"
 L["Maps"] = "Karten"
 L["Masque Support"] = "Masque Unterstützung"
 L["Match Frame Width"] = "Passende Fensterbreite"
+L["Match if Name or NPC ID is NOT in the list."] = true
 L["Match Player Level"] = "Entspreche Spieler Level"
 L["Match this trigger if the talent is not selected"] = "Passe diesen Auslöser an, wenn das Talent nicht ausgewählt ist."
 L["Max Alpha"] = true
@@ -757,6 +757,7 @@ L["NamePlate Size"] = "Namensplaketten Größe"
 L["NamePlate Style Filters"] = "Namensplaketten Stil Filter"
 L["Nameplate"] = "Namensplakette"
 L["NamePlates"] = "Namensplaketten"
+L["Negative Match"] = true
 L["Neutral"] = "Neutral"
 L["Never Hide"] = "Niemals verstecken"
 L["No Alert In Combat"] = "Kein Alarm im Kampf"

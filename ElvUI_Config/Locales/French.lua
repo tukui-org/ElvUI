@@ -1,7 +1,6 @@
 -- French localization file for frFR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "frFR")
-L["Negative Match"] = true
-L["Match if Name or NPC ID is NOT in the list."] = true
+
 L["# Displayed Auras"] = "Auras affichées"
 L["%s and then %s"] = "%s et alors %s"
 L["24-Hour Time"] = "Mode 24 Heures"
@@ -593,8 +592,8 @@ L["If enabled then the filter will only activate when the unit is not targeting 
 L["If enabled then the filter will only activate when the unit is out of combat."] = true
 L["If enabled then the filter will only activate when the unit is targeting you."] = true
 L["If enabled then the filter will only activate when you are focusing the unit."] = true
-L["If enabled then the filter will only activate when you are in combat."] = true
 L["If enabled then the filter will only activate when you are in a Vehicle."] = true
+L["If enabled then the filter will only activate when you are in combat."] = true
 L["If enabled then the filter will only activate when you are not focusing the unit."] = true
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = true
@@ -697,6 +696,7 @@ L["Map Opacity When Moving"] = "Opacité de la carte en mouvement"
 L["Maps"] = "Cartes"
 L["Masque Support"] = "Support de Maque"
 L["Match Frame Width"] = "Accorder à la largeur du cadre"
+L["Match if Name or NPC ID is NOT in the list."] = true
 L["Match Player Level"] = true
 L["Match this trigger if the talent is not selected"] = true
 L["Max Alpha"] = true
@@ -754,6 +754,7 @@ L["NamePlate Size"] = true
 L["NamePlate Style Filters"] = true
 L["Nameplate"] = true
 L["NamePlates"] = "Noms"
+L["Negative Match"] = true
 L["Neutral"] = "Neutre"
 L["Never Hide"] = "Jamais caché"
 L["No Alert In Combat"] = "Pas d'alerte en combat"
