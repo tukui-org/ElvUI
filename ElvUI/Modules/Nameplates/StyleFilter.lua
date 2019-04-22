@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
 local setmetatable, tonumber, type, unpack = setmetatable, tonumber, type, unpack
-local gsub, tinsert, tremove, sort, wipe, strlower = gsub, tinsert, tremove, sort, wipe, strlower
+local gsub, tinsert, tremove, sort, wipe = gsub, tinsert, tremove, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
 local GetLocale = GetLocale
@@ -45,6 +45,11 @@ mod.TriggerConditions = {
 		['ENEMY_NPC'] = 'enemyNPC',
 		['HEALER'] = 'healer',
 		['PLAYER'] = 'player'
+	},
+	roles = {
+		['TANK'] = 'tank',
+		['HEALER'] = 'healer',
+		['DAMAGE'] = 'damager'
 	},
 	difficulties = {
 		-- dungeons
@@ -624,7 +629,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Group Role
 	if trigger.role.tank or trigger.role.healer or trigger.role.damager then
-		if E.myrole and trigger.role[strlower(E.myrole)] then passed = true else return end
+		if trigger.role[mod.TriggerConditions.roles[E.myrole]] then passed = true else return end
 	end
 
 	do -- Class
