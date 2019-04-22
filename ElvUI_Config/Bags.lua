@@ -493,7 +493,6 @@ E.Options.args.bags = {
 			name = L["Bag-Bar"],
 			get = function(info) return E.db.bags.bagBar[info[#info]] end,
 			set = function(info, value) E.db.bags.bagBar[info[#info]] = value; B:SizeAndPositionBagBar() end,
-			--disabled = function() return not E.Bags.Initialized end,
 			args = {
 				header = {
 					order = 0,
@@ -694,7 +693,6 @@ E.Options.args.bags = {
 			name = L["Vendor Grays"],
 			get = function(info) return E.db.bags.vendorGrays[info[#info]] end,
 			set = function(info, value) E.db.bags.vendorGrays[info[#info]] = value; B:UpdateSellFrameSettings() end,
-			--disabled = function() return not E.Bags.Initialized end,
 			args = {
 				header = {
 					order = 0,
