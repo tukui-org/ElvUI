@@ -660,43 +660,31 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	do -- Class
-		local matchMyClass --Only check spec when we match the class
-		if trigger.class and next(trigger.class) and (trigger.class[E.myclass] ~= nil) then
-			matchMyClass = trigger.class[E.myclass].enabled
-			if matchMyClass then passed = true else return end
-		end
+		local Class = trigger.class and next(trigger.class) and trigger.class[E.myclass]
+		if Class ~= nil then
+			if Class.enabled then
+				passed = true
 
-		-- Specialization
-		if matchMyClass and (trigger.class[E.myclass] and trigger.class[E.myclass].specs and next(trigger.class[E.myclass].specs)) then
-			local spec = trigger.class[E.myclass].specs[E.myspec and GetSpecializationInfo(E.myspec)]
-			if spec ~= nil then
-				if spec then passed = true else return end
+				-- Specialization
+				if Class.specs and next(Class.specs) and (Class.specs[E.myspec and GetSpecializationInfo(E.myspec)] == false) then return end
+			else
+				return
 			end
 		end
 	end
 
-	do -- Instance
-		local _, Type, Difficulty
+	-- Instance Type
+	if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
+		local _, Type, Difficulty = GetInstanceInfo()
+		if trigger.instanceType[Type] then
+			passed = true
 
-		-- Type
-		if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
-			_, Type, Difficulty = GetInstanceInfo()
-			if trigger.instanceType[Type] then passed = true else return end
-		end
-
-		-- Difficulty
-		if trigger.instanceType.party or trigger.instanceType.raid then
-			if not Difficulty then _, _, Difficulty = GetInstanceInfo() end
-
-			local dungeon = trigger.instanceDifficulty.dungeon
-			if trigger.instanceType.party and Type == 'party' and (dungeon.normal or dungeon.heroic or dungeon.mythic or dungeon['mythic+'] or dungeon.timewalking) then
-				if dungeon[mod.TriggerConditions.difficulties[Difficulty]] then passed = true else return end
-			end
-
-			local raid = trigger.instanceDifficulty.raid
-			if trigger.instanceType.raid and Type == 'raid' and (raid.lfr or raid.normal or raid.heroic or raid.mythic or raid.timewalking or raid.legacy10normal or raid.legacy25normal or raid.legacy10heroic or raid.legacy25heroic) then
-				if raid[mod.TriggerConditions.difficulties[Difficulty]] then passed = true else return end
-			end
+			-- Instance Difficulty
+			local difficulty = mod.TriggerConditions.difficulties[Difficulty]
+			if Type == 'party' and (trigger.instanceDifficulty.dungeon[difficulty] == false) then return
+			elseif Type == 'raid' and (trigger.instanceDifficulty.raid[difficulty] == false) then return end
+		else
+			return
 		end
 	end
 
