@@ -741,14 +741,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	-- Name or GUID
-	if trigger.names and next(trigger.names) then
-		local name = trigger.names[frame.unitName] or trigger.names[frame.npcID]
-		if name ~= nil then -- ignore if none are selected
-			if (not trigger.negativeMatch and name) or (trigger.negativeMatch and not name) then passed = true else return end
-		end
-	end
-
 	--Try to match according to cooldown conditions
 	if trigger.cooldowns and trigger.cooldowns.names and next(trigger.cooldowns.names) then
 		local cooldown = mod:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll)
@@ -770,6 +762,18 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
+		end
+	end
+
+	-- Name or GUID
+	if trigger.names and next(trigger.names) then
+		for _, value in pairs(trigger.names) do
+			if value then -- only run if at least one is selected
+				local name = trigger.names[frame.unitName] or trigger.names[frame.npcID]
+				if (not trigger.negativeMatch and name) or (trigger.negativeMatch and not name) then passed = true else return end
+
+				break -- we can execute this once on the first enabled option then kill the loop
+			end
 		end
 	end
 
