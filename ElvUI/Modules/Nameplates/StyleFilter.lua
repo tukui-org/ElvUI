@@ -36,7 +36,9 @@ local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTal
 local FallbackColor = {r=1, b=1, g=1}
 
 mod.TriggerConditions = {
-	unitTypes = {
+	reactions = {'hated', 'hostile', 'unfriendly', 'neutral', 'friendly', 'honored', 'revered', 'exalted'},
+	raidTargets = {'star', 'circle', 'diamond', 'triangle', 'moon', 'square', 'cross', 'skull'},
+	frameTypes = {
 		['FRIENDLY_PLAYER'] = 'friendlyPlayer',
 		['FRIENDLY_NPC'] = 'friendlyNPC',
 		['ENEMY_PLAYER'] = 'enemyPlayer',
@@ -62,9 +64,7 @@ mod.TriggerConditions = {
 		[4] = 'legacy25normal',
 		[5] = 'legacy10heroic',
 		[6] = 'legacy25heroic',
-	},
-	reactions = {'hated', 'hostile', 'unfriendly', 'neutral', 'friendly', 'honored', 'revered', 'exalted'},
-	raidTargets = {'star', 'circle', 'diamond', 'triangle', 'moon', 'square', 'cross', 'skull'}
+	}
 }
 
 do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value').
@@ -707,7 +707,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Unit Type
 	if trigger.nameplateType and trigger.nameplateType.enable then
-		if trigger.nameplateType[mod.TriggerConditions.unitTypes[frame.frameType]] then passed = true else return end
+		if trigger.nameplateType[mod.TriggerConditions.frameTypes[frame.frameType]] then passed = true else return end
 	end
 
 	-- Creature Type
