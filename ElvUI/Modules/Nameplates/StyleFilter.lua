@@ -34,6 +34,7 @@ local UnitPowerMax = UnitPowerMax
 local hooksecurefunc = hooksecurefunc
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
+local unitExists = E.oUF.Private.unitExists
 
 local FallbackColor = {r=1, b=1, g=1}
 
@@ -560,9 +561,9 @@ end
 function mod:StyleFilterThreatUpdate(frame, unit)
 	mod.ThreatIndicator_PreUpdate(frame.ThreatIndicator, frame.unit)
 
-	if _G.ElvUF.Private.unitExists(unit) then
+	if unitExists(unit) then
 		local feedbackUnit = frame.ThreatIndicator.feedbackUnit
-		if feedbackUnit and (feedbackUnit ~= unit) and _G.ElvUF.Private.unitExists(feedbackUnit) then
+		if feedbackUnit and (feedbackUnit ~= unit) and unitExists(feedbackUnit) then
 			frame.ThreatStatus = UnitThreatSituation(feedbackUnit, unit)
 		else
 			frame.ThreatStatus = UnitThreatSituation(unit)
