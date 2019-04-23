@@ -432,8 +432,10 @@ function NP:ConfigureAll()
 
 	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 		_G.ElvNP_Player:Enable()
+		_G.ElvNP_StaticSecure:Show()
 	else
 		_G.ElvNP_Player:Disable()
+		_G.ElvNP_StaticSecure:Hide()
 	end
 
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
@@ -628,6 +630,7 @@ function NP:Initialize()
 	StaticSecure:Point('BOTTOMRIGHT', _G.ElvNP_PlayerMover)
 	StaticSecure:Point('TOPLEFT', _G.ElvNP_PlayerMover)
 	StaticSecure.unit = 'player' -- Needed for OnEnter, OnLeave
+	StaticSecure:Hide()
 
 	ElvUF:Spawn('player', 'ElvNP_Test')
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
