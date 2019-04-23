@@ -666,7 +666,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 				passed = true
 
 				-- Specialization
-				if Class.specs and next(Class.specs) and (Class.specs[E.myspec and GetSpecializationInfo(E.myspec)] == false) then return end
+				if Class.specs and next(Class.specs) and not Class.specs[E.myspec and GetSpecializationInfo(E.myspec)] then return end
 			else
 				return
 			end
@@ -680,9 +680,17 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 			passed = true
 
 			-- Instance Difficulty
-			local difficulty = mod.TriggerConditions.difficulties[Difficulty]
-			if Type == 'party' and (trigger.instanceDifficulty.dungeon[difficulty] == false) then return
-			elseif Type == 'raid' and (trigger.instanceDifficulty.raid[difficulty] == false) then return end
+			if Type == 'party' then
+				local D = trigger.instanceDifficulty.dungeon
+				if D.normal or D.heroic or D.mythic or D['mythic+'] or D.timewalking then
+					if not D[mod.TriggerConditions.difficulties[Difficulty]] then return end
+				end
+			elseif Type == 'raid' then
+				local R = trigger.instanceDifficulty.raid
+				if R.lfr or R.normal or R.heroic or R.mythic or R.timewalking or R.legacy10normal or R.legacy25normal or R.legacy10heroic or R.legacy25heroic then
+					if not R[mod.TriggerConditions.difficulties[Difficulty]] then return end
+				end
+			end
 		else
 			return
 		end
