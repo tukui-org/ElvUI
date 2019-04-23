@@ -61,8 +61,8 @@ function NP:CopySettings(from, to)
 end
 
 function NP:CVarReset()
+	SetCVar('nameplateMinAlpha', 1)
 	SetCVar('nameplateMaxAlpha', 1)
-	SetCVar('nameplateMinAlpha', 0)
 	SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
 	SetCVar('nameplateGlobalScale', 1)
 	SetCVar('NamePlateHorizontalScale', 1)
