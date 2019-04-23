@@ -262,11 +262,6 @@ function NP:StylePlate(nameplate)
 		nameplate.Stagger = NP:Construct_Stagger(nameplate)
 	end
 
-	if nameplate == _G.ElvNP_Player then
-		nameplate:SetScript('OnEnter', _G.UnitFrame_OnEnter)
-		nameplate:SetScript('OnLeave', _G.UnitFrame_OnLeave)
-	end
-
 	NP.Plates[nameplate] = nameplate:GetName()
 
 	NP:StyleFilterPlateStyled(nameplate)
@@ -381,7 +376,7 @@ end
 
 function NP:SetNamePlateSelfClickThrough()
 	C_NamePlate_SetNamePlateSelfClickThrough(NP.db.clickThrough.personal)
-	_G.ElvNP_Player:EnableMouse(not NP.db.clickThrough.personal)
+	_G.ElvNP_StaticSecure:EnableMouse(not NP.db.clickThrough.personal)
 end
 
 function NP:SetNamePlateFriendlyClickThrough()
