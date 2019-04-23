@@ -535,7 +535,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if ScaleChanged then
 		frame.ScaleChanged = nil
-		mod:ScalePlate(frame, 1)
+		mod:ScalePlate(frame, frame.ThreatScale or 1)
 	end
 	if AlphaChanged then
 		frame.AlphaChanged = nil
