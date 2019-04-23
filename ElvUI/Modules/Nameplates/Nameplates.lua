@@ -538,7 +538,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:SetupTarget(nameplate)
 		end
 
-		if NP.db.fadeIn then
+		-- Fade In when the option is ON and it's not the Disabled Static Player Nameplate
+		if NP.db.fadeIn and not (nameplate == _G.ElvNP_Player and not _G.ElvNP_Player:IsEnabled()) then
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
