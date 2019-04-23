@@ -31,7 +31,7 @@ G.nameplate.filters = {
 			requireTarget = true,
 		},
 		actions = {
-			alpha = 50
+			alpha = 30
 		}
 	},
 	ElvUI_Explosives = {
