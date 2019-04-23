@@ -3,9 +3,11 @@
 **New Additions:**  
 Add debuffs for Crucible of Storms.  
 Added the ability to swap language in the configuration window to the language of your choice. (*CURRENTLY WIP*)  
-Added Style Filters: Raid Target Marker, Not Name, Is Resting, and Unit/Player In/Out of Vehicle. (#469 #1253 and #1278 - Thanks @wing5wong)  
 Added "Tank, Healer, Damage" sort option to party and raid frames. (Thanks @wing5wong)  
 Added Debuff Highlight mode options. (Thanks @wing5wong)  
+[Style Filter] Added Triggers- Raid Target Marker, Not Name, Is Resting, and Unit/Player In/Out of Vehicle. (#469 #1253 and #1278 - Thanks @wing5wong)  
+[Style Filter] Added Triggers- Threat conditions and Target> Require Target (used in ElvUI_NonTarget).  
+[Style Filter] Added Default Filters- ElvUI_NonTarget, ElvUI_Target, ElvUI_Boss, and ElvUI_Explosives. (Note: NonTarget is used to replace the NonTarget Alpha option and Target is used to replace the Target Scale option. The other two have had their names updated, so if you changed settings of them (Boss or Explosives), you can go ahead and delete them yourself now).  
 
 **Bug Fixes:**  
 Fixed Nameplate Stagger texture.  
@@ -37,6 +39,8 @@ Cleaned up some of the Animation code. (Thanks @Grey)
 Reworked how ElvUI unsnaps textures, textures will be unsnapped globally now.  
 Nameplate width is now bound to it's clickable width.  
 The Bag Bar and Vendor Greys tabs are now again available if the All In One Bag is disabled.  
+[Style Filter] Fixed Static Player Nameplate to no longer taint from filters.  
+[Style Filter] Cleaned a decent amount of the trigger condition check code with the help of @wing5wong.  
 
 ___
 ### Version 11.10 [ April 9th 2019 ]
