@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
-local ElvUF = E.oUF
+local oUF = E.oUF
 
 --Lua functions
 local _G = _G
@@ -580,8 +580,8 @@ function NP:Initialize()
 	if E.private.nameplates.enable ~= true then return end
 	NP.Initialized = true
 
-	ElvUF:RegisterStyle('ElvNP', function(frame, unit) NP:Style(frame, unit) end)
-	ElvUF:SetActiveStyle('ElvNP')
+	oUF:RegisterStyle('ElvNP', function(frame, unit) NP:Style(frame, unit) end)
+	oUF:SetActiveStyle('ElvNP')
 
 	NP.Plates = {}
 	NP.PlateGUID = {}
@@ -605,7 +605,7 @@ function NP:Initialize()
 		end
 	end)
 
-	ElvUF:Spawn('player', 'ElvNP_Player', '')
+	oUF:Spawn('player', 'ElvNP_Player', '')
 	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Player:SetScale(E.mult)
@@ -625,7 +625,7 @@ function NP:Initialize()
 	StaticSecure.unit = 'player' -- Needed for OnEnter, OnLeave
 	StaticSecure:Hide()
 
-	ElvUF:Spawn('player', 'ElvNP_Test')
+	oUF:Spawn('player', 'ElvNP_Test')
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
 	_G.ElvNP_Test:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Test:SetScale(1)
@@ -637,7 +637,7 @@ function NP:Initialize()
 	_G.ElvNP_Test:Disable()
 	NP:DisablePlate(_G.ElvNP_Test)
 
-	ElvUF:Spawn('player', 'ElvNP_TargetClassPower')
+	oUF:Spawn('player', 'ElvNP_TargetClassPower')
 	_G.ElvNP_TargetClassPower:SetScale(1)
 	_G.ElvNP_TargetClassPower:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_TargetClassPower.frameType = 'TARGET'
@@ -648,7 +648,7 @@ function NP:Initialize()
 	NP.PlayerNamePlateAnchor:EnableMouse(false)
 	NP.PlayerNamePlateAnchor:Hide()
 
-	ElvUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit) NP:NamePlateCallBack(nameplate, event, unit) end)
+	oUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit) NP:NamePlateCallBack(nameplate, event, unit) end)
 
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
