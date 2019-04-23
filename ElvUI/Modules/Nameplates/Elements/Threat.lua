@@ -12,8 +12,6 @@ local UnitIsTapDenied = UnitIsTapDenied
 function NP:ThreatIndicator_PreUpdate(unit)
 	local ROLE = NP.IsInGroup and (UnitExists(unit..'target') and not UnitIsUnit(unit..'target', 'player')) and NP.GroupRoles[UnitName(unit..'target')] or 'NONE'
 
-	self.__owner.ThreatScale = nil
-
 	if ROLE == 'TANK' then
 		self.feedbackUnit = unit..'target'
 		self.offTank = E.myrole == 'TANK'
@@ -23,6 +21,11 @@ function NP:ThreatIndicator_PreUpdate(unit)
 		self.offTank = false
 		self.isTank = E.myrole == 'TANK'
 	end
+
+	self.__owner.ThreatScale = nil
+	self.__owner.ThreatStatus = nil
+	self.__owner.ThreatOffTank = self.offTank
+	self.__owner.ThreatIsTank = self.isTank
 end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
@@ -37,6 +40,8 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		self.__owner.Health.colorReaction = false
 		self.__owner.Health.colorSmooth = false
 		self.__owner.Health.colorHealth = false
+
+		self.__owner.ThreatStatus = status
 
 		local Color, Scale
 		if (status == 3) then -- securely tanking

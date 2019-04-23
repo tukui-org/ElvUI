@@ -25,6 +25,7 @@ local UnitHealthMax = UnitHealthMax
 local UnitInVehicle = UnitInVehicle
 local UnitIsQuestBoss = UnitIsQuestBoss
 local UnitIsTapDenied = UnitIsTapDenied
+local UnitThreatSituation = UnitThreatSituation
 local UnitIsUnit = UnitIsUnit
 local UnitLevel = UnitLevel
 local UnitPower = UnitPower
@@ -51,6 +52,18 @@ mod.TriggerConditions = {
 		['TANK'] = 'tank',
 		['HEALER'] = 'healer',
 		['DAMAGER'] = 'damager'
+	},
+	tankThreat = {
+		[0] = 3, 2, 1, 0
+	},
+	threat = {
+		[-3] = 'offTank',
+		[-2] = 'offTankBadTransition',
+		[-1] = 'offTankGoodTransition',
+		[0] = 'good',
+		[1] = 'badTransition',
+		[2] = 'goodTransition',
+		[3] = 'bad'
 	},
 	difficulties = {
 		-- dungeons
@@ -522,7 +535,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if ScaleChanged then
 		frame.ScaleChanged = nil
-		mod:ScalePlate(frame, frame.ThreatScale or 1)
+		mod:ScalePlate(frame, 1)
 	end
 	if AlphaChanged then
 		frame.AlphaChanged = nil
@@ -541,6 +554,19 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	if NameOnlyChanged then
 		frame.NameOnlyChanged = nil
 		mod:StyleFilterUpdatePlate(frame, true)
+	end
+end
+
+function mod:StyleFilterThreatUpdate(frame, unit)
+	mod.ThreatIndicator_PreUpdate(frame.ThreatIndicator, frame.unit)
+
+	if _G.ElvUF.Private.unitExists(unit) then
+		local feedbackUnit = frame.ThreatIndicator.feedbackUnit
+		if feedbackUnit and (feedbackUnit ~= unit) and _G.ElvUF.Private.unitExists(feedbackUnit) then
+			frame.ThreatStatus = UnitThreatSituation(feedbackUnit, unit)
+		else
+			frame.ThreatStatus = UnitThreatSituation(unit)
+		end
 	end
 end
 
@@ -654,6 +680,18 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Reaction (or Reputation) Type
 	if trigger.reactionType and trigger.reactionType.enable then
 		if trigger.reactionType[mod.TriggerConditions.reactions[(trigger.reactionType.reputation and frame.repReaction) or frame.reaction]] then passed = true else return end
+	end
+
+	if trigger.threat and trigger.threat.enable then
+		if trigger.threat.good or trigger.threat.goodTransition or trigger.threat.badTransition or trigger.threat.bad or trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition then
+			if not mod.db.threat.enable then -- force grab the values we need :3
+				mod:StyleFilterThreatUpdate(frame, frame.unit)
+			end
+
+			local checkOffTank = trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition
+			local status = (checkOffTank and frame.ThreatOffTank and frame.ThreatStatus and (frame.ThreatStatus * -1)) or (not checkOffTank and ((frame.ThreatIsTank and mod.TriggerConditions.tankThreat[frame.ThreatStatus]) or frame.ThreatStatus)) or nil
+			if trigger.threat[mod.TriggerConditions.threat[status]] then passed = true else return end
+		end
 	end
 
 	--Try to match according to raid target conditions
@@ -862,6 +900,9 @@ function mod:StyleFilterClearVariables(nameplate)
 	nameplate.isTargetingMe = nil
 	nameplate.RaidTargetIndex = nil
 	nameplate.ThreatScale = nil
+	nameplate.ThreatStatus = nil
+	nameplate.ThreatOffTank = nil
+	nameplate.ThreatIsTank = nil
 end
 
 mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
@@ -889,6 +930,7 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_POWER_UPDATE',
 	'UNIT_TARGET',
 	'UNIT_THREAT_LIST_UPDATE',
+	'UNIT_THREAT_SITUATION_UPDATE',
 	'VEHICLE_UPDATE',
 }
 
@@ -971,6 +1013,11 @@ function mod:StyleFilterConfigure()
 							mod.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = true
 							break
 				end end end
+
+				if filter.triggers.threat and filter.triggers.threat.enable then
+					mod.StyleFilterTriggerEvents.UNIT_THREAT_SITUATION_UPDATE = true
+					mod.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
+				end
 
 				if filter.triggers.inCombat or filter.triggers.outOfCombat or filter.triggers.inCombatUnit or filter.triggers.outOfCombatUnit then
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
@@ -1120,6 +1167,7 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterRegister(nameplate,'UNIT_FLAGS')
 	mod:StyleFilterRegister(nameplate,'UNIT_TARGET')
 	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_LIST_UPDATE')
+	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_SITUATION_UPDATE')
 	mod:StyleFilterRegister(nameplate,'VEHICLE_UPDATE', true)
 
 	mod:StyleFilterEventWatch(nameplate)

@@ -1403,9 +1403,83 @@ local function UpdateFilterGroup()
 						}
 					},
 				},
+				threat = {
+					name = L["Threat"],
+					order = 20,
+					type = "group",
+					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
+					args = {
+						enable = {
+							name = L["Enable"],
+							order = 0,
+							type = 'toggle',
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.threat and E.global.nameplate.filters[selectedNameplateFilter].triggers.threat.enable
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.threat.enable = value
+								NP:ConfigureAll()
+							end,
+						},
+						types = {
+							name = "",
+							type = "group",
+							guiInline = true,
+							order = 1,
+							get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.threat[info[#info]] end,
+							set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.threat[info[#info]] = value; NP:ConfigureAll() end,
+							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or not E.global.nameplate.filters[selectedNameplateFilter].triggers.threat.enable end,
+							args = {
+								good = {
+									name = L["Good"],
+									order = 1,
+									type = 'toggle',
+								},
+								goodTransition = {
+									name = L["Good Transition"],
+									order = 2,
+									type = 'toggle',
+								},
+								badTransition = {
+									name = L["Bad Transition"],
+									order = 3,
+									type = 'toggle',
+								},
+								bad = {
+									name = L["Bad"],
+									order = 4,
+									type = 'toggle',
+								},
+								spacer1 = {
+									order = 5,
+									type = "description",
+									name = " ",
+									width = 'full'
+								},
+								offTank = {
+									name = L["Off Tank"],
+									order = 6,
+									type = 'toggle',
+								},
+								offTankGoodTransition = {
+									name = L["Off Tank Good Transtion"],
+									customWidth = 200,
+									order = 7,
+									type = 'toggle',
+								},
+								offTankBadTransition = {
+									name = L["Off Tank Bad Transtion"],
+									customWidth = 200,
+									order = 8,
+									type = 'toggle',
+								},
+							},
+						},
+					},
+				},
 				nameplateType = {
 					name = L["Unit Type"],
-					order = 20,
+					order = 21,
 					type = "group",
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
@@ -1461,7 +1535,7 @@ local function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 21,
+					order = 22,
 					type = "group",
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType and E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType[info[#info]] end,
 					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType[info[#info]] = value; NP:ConfigureAll() end,
@@ -1537,7 +1611,7 @@ local function UpdateFilterGroup()
 				},
 				creatureType = {
 					name = L["Creature Type"],
-					order = 22,
+					order = 23,
 					type = 'group',
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType[info[#info]] end,
 					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType[info[#info]] = value; NP:ConfigureAll() end,
@@ -1560,7 +1634,7 @@ local function UpdateFilterGroup()
 					}
 				},
 				instanceType = {
-					order = 23,
+					order = 24,
 					type = 'group',
 					name = L["Instance Type"],
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType[info[#info]] end,
@@ -1624,7 +1698,7 @@ local function UpdateFilterGroup()
 					}
 				},
 				raidTarget = {
-					order = 24,
+					order = 25,
 					type = 'group',
 					name = L.BINDING_HEADER_RAID_TARGET,
 					get = function(info) return E.global.nameplate.filters[selectedNameplateFilter].triggers.raidTarget[info[#info]] end,
