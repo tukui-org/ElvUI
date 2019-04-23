@@ -131,9 +131,6 @@ function NP:PLAYER_REGEN_DISABLED()
 end
 
 function NP:PLAYER_REGEN_ENABLED()
-	SetCVar("nameplateMaxAlpha", 1)
-	SetCVar("nameplateMinAlpha", 1)
-
 	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
 		SetCVar('nameplateShowFriends', 0);
 	elseif (NP.db.showFriendlyCombat == 'TOGGLE_OFF') then
