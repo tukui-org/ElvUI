@@ -411,6 +411,8 @@ end
 function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, GetInstanceInfo())
 	NP:UpdatePlate(_G.ElvNP_Player)
+	-- Keep the Nameplate Options always up to date
+	_G.NamePlateDriverFrame:UpdateNamePlateOptions()
 end
 
 function NP:ConfigureAll()
