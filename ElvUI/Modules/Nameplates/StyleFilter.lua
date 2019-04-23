@@ -703,16 +703,18 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		local selected, pass
 
 		for i = 1, talentRows do
-			if trigger.talent['tier'..i..'enabled'] and trigger.talent['tier'..i].column > 0 then
+			local Tier = 'tier'..i
+			local Talent = trigger.talent[Tier]
+			if trigger.talent[Tier..'enabled'] and Talent.column > 0 then
 				if pvpTalent then
 					-- column is actually the talentID for pvpTalents
 					local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(i)
-					selected = (slotInfo and slotInfo.selectedTalentID) == trigger.talent['tier'..i].column
+					selected = (slotInfo and slotInfo.selectedTalentID) == Talent.column
 				else
-					selected = select(4, GetTalentInfo(i, trigger.talent['tier'..i].column, 1))
+					selected = select(4, GetTalentInfo(i, Talent.column, 1))
 				end
 
-				if (selected and not trigger.talent['tier'..i].missing) or (trigger.talent['tier'..i].missing and not selected) then
+				if (selected and not Talent.missing) or (Talent.missing and not selected) then
 					pass = true
 					if not trigger.talent.requireAll then
 						break -- break when not using requireAll because we matched one
