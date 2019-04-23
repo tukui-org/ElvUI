@@ -616,13 +616,21 @@ function NP:Initialize()
 	end)
 
 	ElvUF:Spawn('player', 'ElvNP_Player', '')
-	_G.ElvNP_Player:EnableMouse(true)
-	_G.ElvNP_Player:SetAttribute('toggleForVehicle', true)
 	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	_G.ElvNP_Player:EnableMouse(true)
 	_G.ElvNP_Player:SetScale(E.mult)
 	_G.ElvNP_Player.frameType = 'PLAYER'
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
+
+	local StaticSecure = CreateFrame('Button', 'ElvNP_StaticSecure', _G.UIParent, 'SecureActionButtonTemplate')
+	StaticSecure:SetAttribute('unit', 'player')
+	StaticSecure:SetAttribute('type', 'target')
+	StaticSecure:SetScript('OnEnter', _G.UnitFrame_OnEnter)
+	StaticSecure:SetScript('OnLeave', _G.UnitFrame_OnLeave)
+	StaticSecure:Point('BOTTOMRIGHT', _G.ElvNP_PlayerMover)
+	StaticSecure:Point('TOPLEFT', _G.ElvNP_PlayerMover)
+	StaticSecure.unit = 'player' -- Needed for OnEnter, OnLeave
 
 	ElvUF:Spawn('player', 'ElvNP_Test')
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
