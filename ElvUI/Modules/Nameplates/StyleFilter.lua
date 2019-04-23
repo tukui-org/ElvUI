@@ -19,6 +19,7 @@ local GetTime = GetTime
 local IsResting = IsResting
 local PowerBarColor = PowerBarColor
 local UnitAffectingCombat = UnitAffectingCombat
+local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitInVehicle = UnitInVehicle
@@ -435,7 +436,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if AlphaChanged then
 		frame.StyleChanged = true
 		frame.AlphaChanged = true
-		mod:PlateFade(frame, 0, 0, actions.alpha / 100)
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame:GetAlpha(), actions.alpha / 100)
 	end
 	if NameColorChanged then
 		frame.StyleChanged = true
@@ -521,15 +522,11 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if ScaleChanged then
 		frame.ScaleChanged = nil
-		if frame.isTarget then
-			mod:ScalePlate(frame, mod.db.units.TARGET.scale, true)
-		else
-			mod:ScalePlate(frame, frame.ThreatScale or 1)
-		end
+		mod:ScalePlate(frame, frame.ThreatScale or 1)
 	end
 	if AlphaChanged then
 		frame.AlphaChanged = nil
-		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1)
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame.FadePlate.endAlpha, 1)
 	end
 	if NameColorChanged then
 		frame.NameColorChanged = nil
@@ -589,6 +586,11 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Quest Boss
 	if trigger.questBoss then
 		if UnitIsQuestBoss(frame.unit) then passed = true else return end
+	end
+
+	-- Require Target
+	if trigger.requireTarget then
+		if UnitExists('target') then passed = true else return end
 	end
 
 	-- Player Combat

@@ -6,18 +6,37 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
 G.nameplate.filters = {
-	Boss = {
+	ElvUI_Boss = {
 		triggers = {
 			level = true,
 			curlevel = -1,
+			priority = 2,
 		},
 		actions = {
 			usePortrait = true,
 			scale = 1.15,
 		},
 	},
-	Explosives = {
+	ElvUI_Target = {
 		triggers = {
+			isTarget = true,
+		},
+		actions = {
+			scale = 1.2
+		}
+	},
+	ElvUI_NonTarget = {
+		triggers = {
+			notTarget = true,
+			requireTarget = true,
+		},
+		actions = {
+			alpha = 50
+		}
+	},
+	ElvUI_Explosives = {
+		triggers = {
+			priority = 2,
 			nameplateType = {
 				enable = true,
 				enemyNPC = true,
@@ -43,6 +62,7 @@ E.StyleFilterDefaults = {
 		targetMe = false,
 		isTarget = false,
 		notTarget = false,
+		requireTarget = false,
 		questBoss = false,
 		level = false,
 		casting = {
@@ -224,7 +244,7 @@ E.StyleFilterDefaults = {
 		hide = false,
 		usePortrait = false,
 		nameOnly = false,
-		scale = 1.0,
+		scale = 1,
 		alpha = -1,
 	},
 }

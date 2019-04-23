@@ -61,8 +61,8 @@ function NP:CopySettings(from, to)
 end
 
 function NP:CVarReset()
-	SetCVar("nameplateOccludedAlphaMult", .5)
-	SetCVar("nameplateMinAlpha", GetCVarDefault("nameplateMinAlpha"))
+	SetCVar('nameplateMaxAlpha', 1)
+	SetCVar('nameplateMinAlpha', 0)
 	SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
 	SetCVar('nameplateGlobalScale', 1)
 	SetCVar('NamePlateHorizontalScale', 1)
@@ -75,7 +75,6 @@ function NP:CVarReset()
 	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
 	SetCVar('nameplateMinScale', 1)
 	SetCVar('nameplateMinScaleDistance', 0)
-	SetCVar('nameplateSelectedScale', 1)
 	SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
 	SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'))
 	SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
@@ -106,7 +105,6 @@ function NP:SetCVars()
 	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions or NP.db.units.ENEMY_NPC.minions) and 1 or 0)
 	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors and 1 or 0)
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
-	SetCVar('nameplateSelectedScale', NP.db.units.TARGET.scale)
 
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
@@ -119,9 +117,6 @@ function NP:SetCVars()
 end
 
 function NP:PLAYER_REGEN_DISABLED()
-	SetCVar("nameplateMaxAlpha", NP.db.units.TARGET.nonTargetTransparency)
-	SetCVar("nameplateMinAlpha", NP.db.units.TARGET.nonTargetTransparency)
-
 	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
 		SetCVar('nameplateShowFriends', 1);
 	elseif (NP.db.showFriendlyCombat == 'TOGGLE_OFF') then
@@ -540,7 +535,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if nameplate.isTarget then
 			NP:SetupTarget(nameplate)
-			NP:ScalePlate(nameplate, NP.db.units.TARGET.scale, true)
 		end
 
 		if NP.db.fadeIn then
@@ -567,7 +561,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP:StyleFilterClearVariables(nameplate)
 	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
 		NP:SetupTarget(nameplate) -- pass it, even as nil here
-		NP:ScalePlate(nameplate, NP.db.units.TARGET.scale, true)
 	end
 end
 

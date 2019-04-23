@@ -1702,6 +1702,16 @@ function E:DBConversions()
 		E.db.nameplates.lowHealthThreshold = 0.8
 	end
 
+	if E.db.nameplates.units.TARGET.nonTargetTransparency ~= nil then
+		E.global.nameplate.filters.ElvUI_NonTarget.actions.alpha = E.db.nameplates.units.TARGET.nonTargetTransparency * 100
+		E.db.nameplates.units.TARGET.nonTargetTransparency = nil
+	end
+
+	if E.db.nameplates.units.TARGET.scale ~= nil then
+		E.global.nameplate.filters.ElvUI_Target.actions.scale = E.db.nameplates.units.TARGET.scale
+		E.db.nameplates.units.TARGET.scale = nil
+	end
+
 	if not E.db.chat.panelColorConverted then
 		local color = E.db.general.backdropfadecolor
 		E.db.chat.panelColor = {r = color.r, g = color.g, b = color.b, a = color.a}

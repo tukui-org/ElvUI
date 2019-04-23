@@ -432,16 +432,10 @@ P.nameplates = {
 	},
 	displayStyle = 'ALL',
 	filters = {
-		Boss = {
-			triggers = {
-				enable = false,
-			},
-		},
-		Explosives = {
-			triggers = {
-				enable = true,
-			},
-		},
+		ElvUI_Boss = {triggers = {enable = true}},
+		ElvUI_Target = {triggers = {enable = true}},
+		ElvUI_NonTarget = {triggers = {enable = true}},
+		ElvUI_Explosives = {triggers = {enable = true}},
 	},
 	font = 'PT Sans Narrow',
 	fontOutline = 'OUTLINE',
@@ -682,9 +676,7 @@ P.nameplates = {
 		},
 		TARGET = {
 			enable = true,
-			nonTargetTransparency = 0.5,
 			glowStyle = 'style4',
-			scale = 1.1,
 			classpower = {
 				enable = false,
 				classColor = false,
