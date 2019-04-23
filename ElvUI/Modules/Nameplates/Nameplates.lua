@@ -469,6 +469,10 @@ function NP:ConfigureAll()
 	NP:SetNamePlateClickThrough()
 end
 
+function NP:PlateFadeFinish()
+	self.FadePlate.Fading = nil
+end
+
 function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 	if not nameplate.FadePlate then
 		nameplate.FadePlate = {}
@@ -479,8 +483,13 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 	nameplate.FadePlate.timeToFade = timeToFade
 	nameplate.FadePlate.startAlpha = startAlpha
 	nameplate.FadePlate.endAlpha = endAlpha
+	nameplate.FadePlate.finishedFunc = NP.PlateFadeFinish
+	nameplate.FadePlate.finishedArg1 = nameplate
 
-	E:UIFrameFade(nameplate, nameplate.FadePlate)
+	if not nameplate.FadePlate.Fading then
+		E:UIFrameFade(nameplate, nameplate.FadePlate)
+		nameplate.FadePlate.Fading = true
+	end
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
