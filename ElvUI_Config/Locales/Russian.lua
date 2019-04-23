@@ -1,6 +1,5 @@
 -- Russian localization file for ruRU.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
-if not L then return end
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "ruRU")
 
 L["# Displayed Auras"] = "Кол-во аур"
 L["%s and then %s"] = "%s, а затем %s"
@@ -593,8 +592,10 @@ L["If enabled then the filter will only activate when the unit is not targeting 
 L["If enabled then the filter will only activate when the unit is out of combat."] = "Если включено, фильтр будет активирован только когда юнит вне боя."
 L["If enabled then the filter will only activate when the unit is targeting you."] = "Если включено, фильтр будет активирован только когда вы являетесь целью юнита."
 L["If enabled then the filter will only activate when you are focusing the unit."] = "Если включено, фильтр будет активирован только когда юнит является запомненой целью."
+L["If enabled then the filter will only activate when you are in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are in combat."] = "Если включено, фильтр будет активирован только когда вы в бою."
 L["If enabled then the filter will only activate when you are not focusing the unit."] =  "Если включено, фильтр будет активирован только когда юнит не является запомненой целью."
+L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = "Если включено, фильтр будет активирован только когда юнит не является вашей целью."
 L["If enabled then the filter will only activate when you are out of combat."] = "Если включено, фильтр будет активирован только когда вы вне боя."
 L["If enabled then the filter will only activate when you are resting at an Inn."] = true
@@ -695,6 +696,7 @@ L["Map Opacity When Moving"] = "Прозрачность карты в движ�
 L["Maps"] = "Карты"
 L["Masque Support"] = "Поддержка Masque"
 L["Match Frame Width"] = "По ширине рамки"
+L["Match if Name or NPC ID is NOT in the list."] = true
 L["Match Player Level"] = "Соответствие уровню игрока"
 L["Match this trigger if the talent is not selected"] = "Проверять этот триггер, если талант не выбран."
 L["Max Alpha"] = "Максимальная видимость"
@@ -752,6 +754,7 @@ L["NamePlate Size"] = true
 L["NamePlate Style Filters"] = "Фильтры стилей индикаторов здоровья"
 L["Nameplate"] = "Индикатор здоровья"
 L["NamePlates"] = "Индикаторы здоровья"
+L["Negative Match"] = true
 L["Neutral"] = "Нейтральный"
 L["Never Hide"] = "Никогда не скрывать"
 L["No Alert In Combat"] = "Без оповещений в бою"
@@ -829,8 +832,10 @@ L["Pin Voice Buttons"] = "Закрепить голосовой чат"
 L["Player Frame Aura Bars"] = "Полосы аур рамки игрока"
 L["Player Health"] = "Здоровье игрока"
 L["Player in Combat"] = "Игрок в бою"
+L["Player in Vehicle"] = true
 L["Player is Resting"] = true
 L["Player Out of Combat"] = "Игрок вне боя"
+L["Player Out of Vehicle"] = true
 L["Player Power"] = "Ресурс игрока"
 L["Player Target"] = "Цель игрока"
 L["Player Titles"] = "Звания игроков"

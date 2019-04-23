@@ -2,7 +2,13 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhCN")
 if not L then return end
-
+L["Blend Mode"] = true
+L["Blend"] = true
+L["Additive Blend"] = true
+L["Modulating Blend"] = true
+L["Alpha Key"] = true
+L["Role: Tank, Healer, Damage"] = true
+L["Role: Tank, Damage, Healer"] = true
 L[" |cff00ff00bound to |r"] = " |cff00ff00绑定到 |r"
 L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = "%s 个框架锚点冲突，请移动buff或者debuff锚点让他们彼此不依附。暂时强制debuff依附到主框架。"
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 试图与你分享过滤器配置. 你是否接受?"

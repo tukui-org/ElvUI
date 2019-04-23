@@ -621,7 +621,7 @@ function E:CheckRole()
 	self.myspec = GetSpecialization()
 	self.myrole = E:GetPlayerRole()
 
-	-- myrole = group role; TANK, HEALER, DAMAGE
+	-- myrole = group role; TANK, HEALER, DAMAGER
 	-- role   = class role; Tank, Melee, Caster
 
 	local role
@@ -1714,6 +1714,16 @@ function E:DBConversions()
 
 	if E.db.nameplates.lowHealthThreshold > 0.8 then
 		E.db.nameplates.lowHealthThreshold = 0.8
+	end
+
+	if E.db.nameplates.units.TARGET.nonTargetTransparency ~= nil then
+		E.global.nameplate.filters.ElvUI_NonTarget.actions.alpha = E.db.nameplates.units.TARGET.nonTargetTransparency * 100
+		E.db.nameplates.units.TARGET.nonTargetTransparency = nil
+	end
+
+	if E.db.nameplates.units.TARGET.scale ~= nil then
+		E.global.nameplate.filters.ElvUI_Target.actions.scale = E.db.nameplates.units.TARGET.scale
+		E.db.nameplates.units.TARGET.scale = nil
 	end
 
 	if not E.db.chat.panelColorConverted then

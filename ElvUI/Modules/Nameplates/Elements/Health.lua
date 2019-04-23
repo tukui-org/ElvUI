@@ -89,6 +89,8 @@ function NP:Construct_Health(nameplate)
 	nameplate.FlashTexture:Point("TOPRIGHT", statusBarTexture, "TOPRIGHT")
 	nameplate.FlashTexture:Hide()
 
+	Health.colorTapping = true
+	Health.colorSelection = true
 	Health.frequentUpdates = true --Azil, keep this for now. It seems it may prevent event bugs
 	Health.UpdateColor = NP.Health_UpdateColor
 
@@ -99,9 +101,9 @@ function NP:Update_Health(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	nameplate.Health.colorTapping = true
+	nameplate.Health.colorSelection = true
 	nameplate.Health.colorClass = db.health.useClassColor
 	nameplate.Health.considerSelectionInCombatHostile = true
-	nameplate.Health.colorSelection = true
 
 	if db.health.enable then
 		if not nameplate:IsElementEnabled('Health') then

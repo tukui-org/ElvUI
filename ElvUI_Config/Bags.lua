@@ -1,4 +1,5 @@
-local E, L, V, P, G, _ = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local C, L = unpack(select(2, ...))
 local B = E:GetModule('Bags')
 
 local _G = _G
@@ -9,7 +10,7 @@ local GameTooltip = _G.GameTooltip
 
 E.Options.args.bags = {
 	type = 'group',
-	name = L["Bags"],
+	name = L.BAGSLOT,
 	childGroups = "tab",
 	get = function(info) return E.db.bags[info[#info]] end,
 	set = function(info, value) E.db.bags[info[#info]] = value end,
@@ -58,7 +59,7 @@ E.Options.args.bags = {
 					values = {
 						['SMART'] = L["Smart"],
 						['FULL'] = L["Full"],
-						['SHORT'] = SHORT,
+						['SHORT'] = L.SHORT,
 						['SHORTINT'] = L["Short (Whole Numbers)"],
 						['CONDENSED'] = L["Condensed"],
 						['BLIZZARD'] = L["Blizzard Style"],
@@ -130,7 +131,7 @@ E.Options.args.bags = {
 				reverseLoot = {
 					order = 12,
 					type = "toggle",
-					name = REVERSE_NEW_LOOT_TEXT,
+					name = L.REVERSE_NEW_LOOT_TEXT,
 					set = function(info, value)
 						E.db.bags.reverseLoot = value;
 						SetInsertItemsLeftToRight(value)
@@ -192,7 +193,7 @@ E.Options.args.bags = {
 						countFontColor = {
 							order = 2,
 							type = 'color',
-							name = COLOR,
+							name = L.COLOR,
 							get = function(info)
 								local t = E.db.bags[info[#info]]
 								local d = P.bags[info[#info]]
@@ -207,7 +208,7 @@ E.Options.args.bags = {
 						countFontSize = {
 							order = 3,
 							type = "range",
-							name = FONT_SIZE,
+							name = L.FONT_SIZE,
 							min = 4, max = 212, step = 1,
 							set = function(info, value) E.db.bags.countFontSize = value; B:UpdateCountDisplay() end,
 						},
@@ -216,12 +217,7 @@ E.Options.args.bags = {
 							type = "select",
 							name = L["Font Outline"],
 							set = function(info, value) E.db.bags.countFontOutline = value; B:UpdateCountDisplay() end,
-							values = {
-								['NONE'] = NONE,
-								['OUTLINE'] = 'OUTLINE',
-								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-								['THICKOUTLINE'] = 'THICKOUTLINE',
-							},
+							values = C.Values.FontFlags,
 						},
 					},
 				},
@@ -281,7 +277,7 @@ E.Options.args.bags = {
 						itemLevelFontSize = {
 							order = 6,
 							type = "range",
-							name = FONT_SIZE,
+							name = L.FONT_SIZE,
 							min = 4, max = 212, step = 1,
 							disabled = function() return not E.db.bags.itemLevel end,
 							set = function(info, value) E.db.bags.itemLevelFontSize = value; B:UpdateItemLevelDisplay() end,
@@ -292,12 +288,7 @@ E.Options.args.bags = {
 							name = L["Font Outline"],
 							disabled = function() return not E.db.bags.itemLevel end,
 							set = function(info, value) E.db.bags.itemLevelFontOutline = value; B:UpdateItemLevelDisplay() end,
-							values = {
-								['NONE'] = NONE,
-								['OUTLINE'] = 'OUTLINE',
-								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-								['THICKOUTLINE'] = 'THICKOUTLINE',
-							},
+							values = C.Values.FontFlags,
 						},
 					},
 				},
@@ -351,13 +342,13 @@ E.Options.args.bags = {
 		colorGroup = {
 			order = 5,
 			type = "group",
-			name = COLORS,
+			name = L.COLORS,
 			disabled = function() return not E.Bags.Initialized end,
 			args = {
 				header = {
 					order = 1,
 					type = "header",
-					name = COLORS
+					name = L.COLORS
 				},
 				bags = {
 					order = 2,
@@ -390,7 +381,7 @@ E.Options.args.bags = {
 								inscription = {
 									order = 2,
 									type = 'color',
-									name = INSCRIPTION,
+									name = L.INSCRIPTION,
 								},
 								herbs = {
 									order = 3,
@@ -420,12 +411,12 @@ E.Options.args.bags = {
 								fishing = {
 									order = 8,
 									type = 'color',
-									name = PROFESSIONS_FISHING,
+									name = L.PROFESSIONS_FISHING,
 								},
 								cooking = {
 									order = 9,
 									type = 'color',
-									name = PROFESSIONS_COOKING,
+									name = L.PROFESSIONS_COOKING,
 								},
 							},
 						},
@@ -449,17 +440,17 @@ E.Options.args.bags = {
 								equipment = {
 									order = 1,
 									type = 'color',
-									name = BAG_FILTER_EQUIPMENT,
+									name = L.BAG_FILTER_EQUIPMENT,
 								},
 								consumables = {
 									order = 2,
 									type = 'color',
-									name = BAG_FILTER_CONSUMABLES,
+									name = L.BAG_FILTER_CONSUMABLES,
 								},
 								tradegoods = {
 									order = 3,
 									type = 'color',
-									name = BAG_FILTER_TRADE_GOODS,
+									name = L.BAG_FILTER_TRADE_GOODS,
 								},
 							},
 						},
@@ -468,7 +459,7 @@ E.Options.args.bags = {
 				items = {
 					order = 3,
 					type = "group",
-					name = ITEMS,
+					name = L.ITEMS,
 					guiInline = true,
 					get = function(info)
 						local t = E.db.bags.colors.items[info[#info]]
@@ -490,7 +481,7 @@ E.Options.args.bags = {
 						questItem = {
 							order = 2,
 							type = "color",
-							name = ITEM_BIND_QUEST
+							name = L.ITEM_BIND_QUEST
 						}
 					}
 				}
@@ -502,7 +493,6 @@ E.Options.args.bags = {
 			name = L["Bag-Bar"],
 			get = function(info) return E.db.bags.bagBar[info[#info]] end,
 			set = function(info, value) E.db.bags.bagBar[info[#info]] = value; B:SizeAndPositionBagBar() end,
-			disabled = function() return not E.Bags.Initialized end,
 			args = {
 				header = {
 					order = 0,
@@ -703,7 +693,6 @@ E.Options.args.bags = {
 			name = L["Vendor Grays"],
 			get = function(info) return E.db.bags.vendorGrays[info[#info]] end,
 			set = function(info, value) E.db.bags.vendorGrays[info[#info]] = value; B:UpdateSellFrameSettings() end,
-			disabled = function() return not E.Bags.Initialized end,
 			args = {
 				header = {
 					order = 0,

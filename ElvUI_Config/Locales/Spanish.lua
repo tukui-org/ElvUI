@@ -1,6 +1,5 @@
 -- Spanish localization file for esES and esMX.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esES") or ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
-if not L then return end
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "esES") or ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "esMX")
 
 L["# Displayed Auras"] = true
 L["%s and then %s"] = "%s y entonces %s"
@@ -593,8 +592,10 @@ L["If enabled then the filter will only activate when the unit is not targeting 
 L["If enabled then the filter will only activate when the unit is out of combat."] = true
 L["If enabled then the filter will only activate when the unit is targeting you."] = true
 L["If enabled then the filter will only activate when you are focusing the unit."] = true
+L["If enabled then the filter will only activate when you are in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are in combat."] = true
 L["If enabled then the filter will only activate when you are not focusing the unit."] = true
+L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = true
 L["If enabled then the filter will only activate when you are out of combat."] = true
 L["If enabled then the filter will only activate when you are resting at an Inn."] = true
@@ -695,6 +696,7 @@ L["Map Opacity When Moving"] = true
 L["Maps"] = "Mapas"
 L["Masque Support"] = true
 L["Match Frame Width"] = "Coincidir con la Anchura del Marco"
+L["Match if Name or NPC ID is NOT in the list."] = true
 L["Match Player Level"] = true
 L["Match this trigger if the talent is not selected"] = true
 L["Max Alpha"] = true
@@ -752,6 +754,7 @@ L["NamePlate Size"] = true
 L["NamePlate Style Filters"] = true
 L["Nameplate"] = true
 L["NamePlates"] = "Placas de Nombre"
+L["Negative Match"] = true
 L["Neutral"] = "Neutral"
 L["Never Hide"] = "Nunca Ocultar"
 L["No Alert In Combat"] = true
@@ -829,8 +832,10 @@ L["Pin Voice Buttons"] = true
 L["Player Frame Aura Bars"] = true
 L["Player Health"] = true
 L["Player in Combat"] = true
+L["Player in Vehicle"] = true
 L["Player is Resting"] = true
 L["Player Out of Combat"] = true
+L["Player Out of Vehicle"] = true
 L["Player Power"] = true
 L["Player Target"] = true
 L["Player Titles"] = "Títulos de Jugador"

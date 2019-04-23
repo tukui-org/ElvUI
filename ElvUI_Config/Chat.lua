@@ -1,4 +1,5 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local C, L = unpack(select(2, ...))
 local CH = E:GetModule('Chat')
 local Bags = E:GetModule('Bags')
 local Layout = E:GetModule('Layout')
@@ -207,7 +208,7 @@ E.Options.args.chat = {
 				voicechatGroup = {
 					order = 21,
 					type = 'group',
-					name = _G.BINDING_HEADER_VOICE_CHAT,
+					name = L.BINDING_HEADER_VOICE_CHAT,
 					guiInline = true,
 					args = {
 						hideVoiceButtons = {
@@ -246,7 +247,7 @@ E.Options.args.chat = {
 				timestampGroup = {
 					order = 22,
 					type = 'group',
-					name = TIMESTAMPS_LABEL,
+					name = L.TIMESTAMPS_LABEL,
 					guiInline = true,
 					args = {
 						useCustomTimeColor = {
@@ -274,10 +275,10 @@ E.Options.args.chat = {
 						timeStampFormat = {
 							order = 3,
 							type = 'select',
-							name = TIMESTAMPS_LABEL,
-							desc = OPTION_TOOLTIP_TIMESTAMPS,
+							name = L.TIMESTAMPS_LABEL,
+							desc = L.OPTION_TOOLTIP_TIMESTAMPS,
 							values = {
-								['NONE'] = NONE,
+								['NONE'] = L.NONE,
 								["%I:%M "] = "03:27",
 								["%I:%M:%S "] = "03:27:32",
 								["%I:%M %p "] = "03:27 PM",
@@ -520,12 +521,7 @@ E.Options.args.chat = {
 					name = L["Font Outline"],
 					desc = L["Set the font outline."],
 					type = "select",
-					values = {
-						['NONE'] = NONE,
-						['OUTLINE'] = 'OUTLINE',
-						['MONOCHROMEOUTLINE'] = 'MONOCHROMEOUTLINE',
-						['THICKOUTLINE'] = 'THICKOUTLINE',
-					},
+					values = C.Values.FontFlags,
 				},
 				tabFont = {
 					type = "select", dialogControl = 'LSM30_Font',
@@ -544,13 +540,7 @@ E.Options.args.chat = {
 					name = L["Tab Font Outline"],
 					desc = L["Set the font outline."],
 					type = "select",
-					values = {
-						['NONE'] = NONE,
-						['OUTLINE'] = 'OUTLINE',
-
-						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-						['THICKOUTLINE'] = 'THICKOUTLINE',
-					},
+					values = C.Values.FontFlags,
 				},
 			},
 		},

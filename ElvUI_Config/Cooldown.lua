@@ -1,5 +1,5 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, GlobalDB
-local COLORS = COLORS
+local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local C, L = unpack(select(2, ...))
 local pairs = pairs
 
 -- GLOBALS: AceGUIWidgetLSMlists
@@ -209,12 +209,7 @@ local function group(order, db, label)
 						order = 5,
 						type = "select",
 						name = L["Font Outline"],
-						values = {
-							['NONE'] = NONE,
-							['OUTLINE'] = 'OUTLINE',
-							['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-							['THICKOUTLINE'] = 'THICKOUTLINE',
-						},
+						values = C.Values.FontFlags,
 					},
 				}
 			}
@@ -232,7 +227,7 @@ local function group(order, db, label)
 		end
 
 		-- rename the tab
-		E.Options.args.cooldown.args[db].args.colorGroup.name = COLORS
+		E.Options.args.cooldown.args[db].args.colorGroup.name = L.COLORS
 
 		-- move hide blizzard option into the top toggles, keeping order 3 is fine and correct.
 		E.Options.args.cooldown.args.hideBlizzard = E.Options.args.cooldown.args[db].args.hideBlizzard
@@ -272,7 +267,7 @@ E.Options.args.cooldown = {
 }
 
 group(5,  'global',     L["Global"])
-group(6,  'auras',      BUFFOPTIONS_LABEL)
+group(6,  'auras',      L.BUFFOPTIONS_LABEL)
 group(7,  'actionbar',  L["ActionBars"])
 group(8,  'bags',       L["Bags"])
 group(9,  'nameplates', L["NamePlates"])

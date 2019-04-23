@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
-local ElvUF = E.oUF
+local oUF = E.oUF
 
 local _G = _G
 local unpack, max = unpack, max
@@ -22,7 +22,7 @@ function NP:ClassPower_UpdateColor(powerType)
 	if color then
 		r, g, b = color.r, color.g, color.b
 	else
-		color = ElvUF.colors.power[powerType]
+		color = oUF.colors.power[powerType]
 		r, g, b = unpack(color)
 	end
 

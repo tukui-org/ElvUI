@@ -1,4 +1,5 @@
-local E, L, V, P, G, _ = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local C, L = unpack(select(2, ...))
 local A = E:GetModule('Auras')
 
 local format = string.format
@@ -112,7 +113,7 @@ end
 
 E.Options.args.auras = {
 	type = 'group',
-	name = BUFFOPTIONS_LABEL,
+	name = L.BUFFOPTIONS_LABEL,
 	childGroups = "tab",
 	get = function(info) return E.db.auras[info[#info]] end,
 	set = function(info, value) E.db.auras[info[#info]] = value; A:UpdateHeader(ElvUIPlayerBuffs); A:UpdateHeader(ElvUIPlayerDebuffs) end,
@@ -170,12 +171,7 @@ E.Options.args.auras = {
 					name = L["Font Outline"],
 					desc = L["Set the font outline."],
 					type = "select",
-					values = {
-						['NONE'] = NONE,
-						['OUTLINE'] = 'OUTLINE',
-						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-						['THICKOUTLINE'] = 'THICKOUTLINE',
-					},
+					values = C.Values.FontFlags,
 				},
 				timeXOffset = {
 					order = 5,

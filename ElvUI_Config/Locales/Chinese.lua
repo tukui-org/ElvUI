@@ -1,6 +1,5 @@
 -- Chinese localization file for zhCN.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
-if not L then return end
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "zhCN")
 
 L["# Displayed Auras"] = "显示光环的数量"
 L["%s and then %s"] = "%s 于 %s"
@@ -595,8 +594,10 @@ L["If enabled then the filter will only activate when the unit is not targeting 
 L["If enabled then the filter will only activate when the unit is out of combat."] = "启用后过滤器仅仅在单位不在战斗中的时候激活"
 L["If enabled then the filter will only activate when the unit is targeting you."] = "启用后过滤器仅仅在单位目标为你的时候激活"
 L["If enabled then the filter will only activate when you are focusing the unit."] = "启用后过滤器仅仅在单位为焦点的时候激活"
+L["If enabled then the filter will only activate when you are in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are in combat."] = "启用后过滤器仅仅在你在战斗中的时候激活"
 L["If enabled then the filter will only activate when you are not focusing the unit."] = "启用后过滤器仅仅在单位不为焦点的时候激活"
+L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = "启用后过滤器仅仅对非当前目标激活"
 L["If enabled then the filter will only activate when you are out of combat."] = "启用后过滤器仅仅在你不在战斗中的时候激活"
 L["If enabled then the filter will only activate when you are resting at an Inn."] = true
@@ -697,6 +698,7 @@ L["Map Opacity When Moving"] = "移动时地图透明度"
 L["Maps"] = "地图"
 L["Masque Support"] = "Masque支持"
 L["Match Frame Width"] = "匹配框体宽度"
+L["Match if Name or NPC ID is NOT in the list."] = true
 L["Match Player Level"] = "符合玩家等级"
 L["Match this trigger if the talent is not selected"] = "如果该天赋没有选择则激活这个触发器"
 L["Max Alpha"] = "最大透明度"
@@ -754,6 +756,7 @@ L["NamePlate Size"] = true
 L["NamePlate Style Filters"] = "姓名板样式过滤器"
 L["Nameplate"] = "姓名板"
 L["NamePlates"] = "姓名板"
+L["Negative Match"] = true
 L["Neutral"] = "中立"
 L["Never Hide"] = "从不隐藏"
 L["No Alert In Combat"] = "战斗中不警报"
@@ -831,8 +834,10 @@ L["Pin Voice Buttons"] = "固定语音按钮"
 L["Player Frame Aura Bars"] = "玩家框架光环条"
 L["Player Health"] = "玩家血量"
 L["Player in Combat"] = "玩家战斗中"
+L["Player in Vehicle"] = true
 L["Player is Resting"] = true
 L["Player Out of Combat"] = "玩家战斗外"
+L["Player Out of Vehicle"] = true
 L["Player Power"] = "玩家能量"
 L["Player Target"] = "玩家目标"
 L["Player Titles"] = "玩家头衔"

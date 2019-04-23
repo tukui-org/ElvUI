@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
-local ElvUF = E.oUF
+local oUF = E.oUF
 
 --Lua functions
 local _G = _G
@@ -61,8 +61,8 @@ function NP:CopySettings(from, to)
 end
 
 function NP:CVarReset()
-	SetCVar("nameplateOccludedAlphaMult", .5)
-	SetCVar("nameplateMinAlpha", GetCVarDefault("nameplateMinAlpha"))
+	SetCVar('nameplateMinAlpha', 1)
+	SetCVar('nameplateMaxAlpha', 1)
 	SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
 	SetCVar('nameplateGlobalScale', 1)
 	SetCVar('NamePlateHorizontalScale', 1)
@@ -75,7 +75,6 @@ function NP:CVarReset()
 	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
 	SetCVar('nameplateMinScale', 1)
 	SetCVar('nameplateMinScaleDistance', 0)
-	SetCVar('nameplateSelectedScale', 1)
 	SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
 	SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'))
 	SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
@@ -106,7 +105,6 @@ function NP:SetCVars()
 	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions or NP.db.units.ENEMY_NPC.minions) and 1 or 0)
 	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors and 1 or 0)
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
-	SetCVar('nameplateSelectedScale', NP.db.units.TARGET.scale)
 
 	if NP.db.questIcon then
 		SetCVar('showQuestTrackingTooltips', 1)
@@ -119,9 +117,6 @@ function NP:SetCVars()
 end
 
 function NP:PLAYER_REGEN_DISABLED()
-	SetCVar("nameplateMaxAlpha", NP.db.units.TARGET.nonTargetTransparency)
-	SetCVar("nameplateMinAlpha", NP.db.units.TARGET.nonTargetTransparency)
-
 	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
 		SetCVar('nameplateShowFriends', 1);
 	elseif (NP.db.showFriendlyCombat == 'TOGGLE_OFF') then
@@ -136,9 +131,6 @@ function NP:PLAYER_REGEN_DISABLED()
 end
 
 function NP:PLAYER_REGEN_ENABLED()
-	SetCVar("nameplateMaxAlpha", 1)
-	SetCVar("nameplateMinAlpha", 1)
-
 	if (NP.db.showFriendlyCombat == 'TOGGLE_ON') then
 		SetCVar('nameplateShowFriends', 0);
 	elseif (NP.db.showFriendlyCombat == 'TOGGLE_OFF') then
@@ -262,17 +254,14 @@ function NP:StylePlate(nameplate)
 		nameplate.Stagger = NP:Construct_Stagger(nameplate)
 	end
 
-	if nameplate == _G.ElvNP_Player then
-		nameplate:SetScript('OnEnter', _G.UnitFrame_OnEnter)
-		nameplate:SetScript('OnLeave', _G.UnitFrame_OnLeave)
-	end
-
 	NP.Plates[nameplate] = nameplate:GetName()
 
 	NP:StyleFilterPlateStyled(nameplate)
 end
 
 function NP:UpdatePlate(nameplate)
+	if nameplate == _G.ElvNP_Player and not _G.ElvNP_Player:IsEnabled() then return end
+
 	NP:Update_Tags(nameplate)
 	NP:Update_Highlight(nameplate)
 
@@ -381,7 +370,7 @@ end
 
 function NP:SetNamePlateSelfClickThrough()
 	C_NamePlate_SetNamePlateSelfClickThrough(NP.db.clickThrough.personal)
-	_G.ElvNP_Player:EnableMouse(not NP.db.clickThrough.personal)
+	_G.ElvNP_StaticSecure:EnableMouse(not NP.db.clickThrough.personal)
 end
 
 function NP:SetNamePlateFriendlyClickThrough()
@@ -422,6 +411,8 @@ end
 function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, GetInstanceInfo())
 	NP:UpdatePlate(_G.ElvNP_Player)
+	-- Keep the Nameplate Options always up to date
+	_G.NamePlateDriverFrame:UpdateNamePlateOptions()
 end
 
 function NP:ConfigureAll()
@@ -437,8 +428,10 @@ function NP:ConfigureAll()
 
 	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 		_G.ElvNP_Player:Enable()
+		_G.ElvNP_StaticSecure:Show()
 	else
 		_G.ElvNP_Player:Disable()
+		_G.ElvNP_StaticSecure:Hide()
 	end
 
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
@@ -543,10 +536,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if nameplate.isTarget then
 			NP:SetupTarget(nameplate)
-			NP:ScalePlate(nameplate, NP.db.units.TARGET.scale, true)
 		end
 
-		if NP.db.fadeIn then
+		-- Fade In when the option is ON and it's not the Disabled Static Player Nameplate
+		if NP.db.fadeIn and not (nameplate == _G.ElvNP_Player and not _G.ElvNP_Player:IsEnabled()) then
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
@@ -570,7 +563,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP:StyleFilterClearVariables(nameplate)
 	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
 		NP:SetupTarget(nameplate) -- pass it, even as nil here
-		NP:ScalePlate(nameplate, NP.db.units.TARGET.scale, true)
 	end
 end
 
@@ -590,8 +582,8 @@ function NP:Initialize()
 	if E.private.nameplates.enable ~= true then return end
 	NP.Initialized = true
 
-	ElvUF:RegisterStyle('ElvNP', function(frame, unit) NP:Style(frame, unit) end)
-	ElvUF:SetActiveStyle('ElvNP')
+	oUF:RegisterStyle('ElvNP', function(frame, unit) NP:Style(frame, unit) end)
+	oUF:SetActiveStyle('ElvNP')
 
 	NP.Plates = {}
 	NP.PlateGUID = {}
@@ -615,17 +607,27 @@ function NP:Initialize()
 		end
 	end)
 
-	ElvUF:Spawn('player', 'ElvNP_Player')
-	_G.ElvNP_Player:EnableMouse(true)
-	_G.ElvNP_Player:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
-	_G.ElvNP_Player:SetAttribute('toggleForVehicle', true)
+	oUF:Spawn('player', 'ElvNP_Player', '')
 	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Player:SetScale(E.mult)
 	_G.ElvNP_Player.frameType = 'PLAYER'
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
 
-	ElvUF:Spawn('player', 'ElvNP_Test')
+	local StaticSecure = CreateFrame('Button', 'ElvNP_StaticSecure', _G.UIParent, 'SecureUnitButtonTemplate')
+	StaticSecure:SetAttribute('unit', 'player')
+	StaticSecure:SetAttribute('*type1', 'target')
+	StaticSecure:SetAttribute('*type2', 'togglemenu')
+	StaticSecure:SetAttribute('toggleForVehicle', true)
+	StaticSecure:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
+	StaticSecure:SetScript('OnEnter', _G.UnitFrame_OnEnter)
+	StaticSecure:SetScript('OnLeave', _G.UnitFrame_OnLeave)
+	StaticSecure:Point('BOTTOMRIGHT', _G.ElvNP_PlayerMover)
+	StaticSecure:Point('TOPLEFT', _G.ElvNP_PlayerMover)
+	StaticSecure.unit = 'player' -- Needed for OnEnter, OnLeave
+	StaticSecure:Hide()
+
+	oUF:Spawn('player', 'ElvNP_Test')
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
 	_G.ElvNP_Test:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Test:SetScale(1)
@@ -637,7 +639,7 @@ function NP:Initialize()
 	_G.ElvNP_Test:Disable()
 	NP:DisablePlate(_G.ElvNP_Test)
 
-	ElvUF:Spawn('player', 'ElvNP_TargetClassPower')
+	oUF:Spawn('player', 'ElvNP_TargetClassPower')
 	_G.ElvNP_TargetClassPower:SetScale(1)
 	_G.ElvNP_TargetClassPower:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_TargetClassPower.frameType = 'TARGET'
@@ -648,7 +650,7 @@ function NP:Initialize()
 	NP.PlayerNamePlateAnchor:EnableMouse(false)
 	NP.PlayerNamePlateAnchor:Hide()
 
-	ElvUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit) NP:NamePlateCallBack(nameplate, event, unit) end)
+	oUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit) NP:NamePlateCallBack(nameplate, event, unit) end)
 
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
