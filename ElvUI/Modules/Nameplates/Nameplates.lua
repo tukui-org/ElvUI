@@ -473,10 +473,7 @@ end
 
 function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 	if not nameplate.FadePlate then
-		nameplate.FadePlate = {
-			finishedFunc = NP.PlateFadeFinish,
-			finishedArg1 = nameplate
-		}
+		nameplate.FadePlate = {}
 	else
 		nameplate.FadePlate.fadeTimer = nil
 	end
@@ -484,6 +481,8 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 	nameplate.FadePlate.timeToFade = timeToFade
 	nameplate.FadePlate.startAlpha = startAlpha
 	nameplate.FadePlate.endAlpha = endAlpha
+	nameplate.FadePlate.finishedFunc = NP.PlateFadeFinish
+	nameplate.FadePlate.finishedArg1 = nameplate
 
 	if not nameplate.FadePlate.Fading then
 		E:UIFrameFade(nameplate, nameplate.FadePlate)
