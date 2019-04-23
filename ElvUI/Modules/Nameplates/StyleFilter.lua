@@ -699,10 +699,9 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Talents
 	if trigger.talent.enabled then
 		local pvpTalent = trigger.talent.type == 'pvp'
-		local talentRows = (pvpTalent and 4) or 7
-		local selected, pass
+		local selected, complete
 
-		for i = 1, talentRows do
+		for i = 1, (pvpTalent and 4) or 7 do
 			local Tier = 'tier'..i
 			local Talent = trigger.talent[Tier]
 			if trigger.talent[Tier..'enabled'] and Talent.column > 0 then
@@ -715,16 +714,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 				end
 
 				if (selected and not Talent.missing) or (Talent.missing and not selected) then
-					pass = true
+					complete = true
 					if not trigger.talent.requireAll then
 						break -- break when not using requireAll because we matched one
 					end
 				elseif trigger.talent.requireAll then
-					pass = false -- fail because requireAll
+					complete = false -- fail because requireAll
 					break
 		end end end
 
-		if pass then passed = true else return end
+		if complete then passed = true else return end
 	end
 
 	-- Casting Interruptible
