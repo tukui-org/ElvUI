@@ -618,6 +618,7 @@ function NP:Initialize()
 	ElvUF:Spawn('player', 'ElvNP_Player', '')
 	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	_G.ElvNP_Player:SetAttribute('toggleForVehicle', true)
 	_G.ElvNP_Player:EnableMouse(true)
 	_G.ElvNP_Player:SetScale(E.mult)
 	_G.ElvNP_Player.frameType = 'PLAYER'
