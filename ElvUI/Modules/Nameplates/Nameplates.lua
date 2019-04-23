@@ -623,9 +623,10 @@ function NP:Initialize()
 	_G.ElvNP_Player.frameType = 'PLAYER'
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
 
-	local StaticSecure = CreateFrame('Button', 'ElvNP_StaticSecure', _G.UIParent, 'SecureActionButtonTemplate')
+	local StaticSecure = CreateFrame('Button', 'ElvNP_StaticSecure', _G.UIParent, 'SecureUnitButtonTemplate')
 	StaticSecure:SetAttribute('unit', 'player')
-	StaticSecure:SetAttribute('type', 'target')
+	StaticSecure:SetAttribute('*type1', 'target')
+	StaticSecure:SetAttribute('*type2', 'togglemenu')
 	StaticSecure:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
 	StaticSecure:SetScript('OnEnter', _G.UnitFrame_OnEnter)
 	StaticSecure:SetScript('OnLeave', _G.UnitFrame_OnLeave)
