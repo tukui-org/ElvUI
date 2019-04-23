@@ -288,7 +288,7 @@ function NP:UpdatePlate(nameplate)
 			NP:Update_Stagger(nameplate)
 		end
 
-		if nameplate == _G.ElvNP_Player then
+		if (nameplate == _G.ElvNP_Player) and _G.ElvNP_Player:IsEnabled() then
 			NP:Update_Fader(nameplate)
 		end
 
