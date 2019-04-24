@@ -13,7 +13,6 @@
 	<Script file='Bags.lua'/>
 	<Script file='Barber.lua'/>
 	<Script file='BGMap.lua'/>
-	<Script file='BGScore.lua'/>
 	<Script file='Binding.lua'/>
 	<Script file='BlackMarket.lua'/>
 	<Script file='BlizzardOptions.lua'/>
@@ -59,6 +58,7 @@
 	<Script file='PetBattle.lua'/>
 	<Script file='Petition.lua'/>
 	<Script file='PVP.lua'/>
+	<Script file='PVPMatch.lua'/>
 	<Script file='Quest.lua'/>
 	<Script file='QuestChoice.lua'/>
 	<Script file='Raid.lua'/>
