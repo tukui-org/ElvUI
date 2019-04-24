@@ -55,9 +55,11 @@ local function LoadSkin()
 		"LFDReadyCheckPopup",
 		"DropDownList1Backdrop",
 		"DropDownList1MenuBackdrop",
+		"ElvUI_StaticPopup1",
 	}
 
 	for i = 1, #skins do
+		_G[skins[i]]:StripTextures()
 		_G[skins[i]]:SetTemplate("Transparent")
 	end
 
