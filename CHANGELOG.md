@@ -3,8 +3,8 @@
 **New Additions:**  
 Add debuffs for Crucible of Storms.  
 Added the ability to swap language in the configuration window to the language of your choice. (*CURRENTLY WIP*)  
-Added "Tank, Healer, Damage" sort option to party and raid frames. (Thanks @wing5wong)  
-Added Debuff Highlight mode options. (Thanks @wing5wong)  
+Added "Tank, Damage, Healer" sort option to party and raid frames. (Thanks @wing5wong)  
+Added Debuff Highlight mode options. (#726 - Thanks @wing5wong)  
 [Style Filter] Added Triggers- Raid Target Marker, Not Name, Is Resting, and Unit/Player In/Out of Vehicle. (#469 #1253 and #1278 - Thanks @wing5wong)  
 [Style Filter] Added Triggers- Threat conditions and Target> Require Target (used in ElvUI_NonTarget).  
 [Style Filter] Added Default Filters- ElvUI_NonTarget, ElvUI_Target, ElvUI_Boss, and ElvUI_Explosives. (Note: NonTarget is used to replace the NonTarget Alpha option and Target is used to replace the Target Scale option. The other two have had their names updated, so if you changed settings of them (Boss or Explosives), you can go ahead and delete them yourself now).  
