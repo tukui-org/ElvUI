@@ -223,7 +223,7 @@ function NP:Update_Fader(nameplate)
 		if nameplate:IsElementEnabled('Fader') then
 			nameplate:DisableElement('Fader')
 
-			E:UIFrameFadeIn(nameplate, 1, nameplate:GetAlpha(), 1)
+			NP:PlateFade(nameplate, 1, nameplate:GetAlpha(), 1)
 		end
 	else
 		if not nameplate.Fader then
