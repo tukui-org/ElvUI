@@ -164,6 +164,8 @@ E.Options.args.general = {
 						["deDE"] = "German",
 						["enUS"] = "English",
 						["frFR"] = "French",
+						["zhCN"] = "Chinese",
+						["ptBR"] = "Portuguese",
 					},
 				}
 			},
