@@ -11,6 +11,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgscore ~= true then return end
 
 	-- Macro to show the PVPMatchScoreboard: /run PVPMatchScoreboard:Show()
+	local PVPMatchScoreboard = _G.PVPMatchScoreboard
 
 	-- Macro to show the PVPMatchResults: /run PVPMatchResults:Show()
 	local PVPMatchResults = _G.PVPMatchResults
