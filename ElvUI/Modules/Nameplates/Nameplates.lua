@@ -261,8 +261,6 @@ function NP:StylePlate(nameplate)
 end
 
 function NP:UpdatePlate(nameplate)
-	if nameplate == _G.ElvNP_Player and not _G.ElvNP_Player:IsEnabled() then return end
-
 	NP:Update_Tags(nameplate)
 	NP:Update_Highlight(nameplate)
 
