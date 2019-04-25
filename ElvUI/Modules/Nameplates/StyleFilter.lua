@@ -718,23 +718,19 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
 		local _, Type, Difficulty = GetInstanceInfo()
 		if trigger.instanceType[Type] then
-			passed = true
-
 			-- Instance Difficulty
-			if Type == 'party' then
-				local D = trigger.instanceDifficulty.dungeon
-				if D.normal or D.heroic or D.mythic or D['mythic+'] or D.timewalking then
-					if not D[mod.TriggerConditions.difficulties[Difficulty]] then return end
-				end
-			elseif Type == 'raid' then
-				local R = trigger.instanceDifficulty.raid
-				if R.lfr or R.normal or R.heroic or R.mythic or R.timewalking or R.legacy10normal or R.legacy25normal or R.legacy10heroic or R.legacy25heroic then
-					if not R[mod.TriggerConditions.difficulties[Difficulty]] then return end
+			Type = ((Type == 'party' and 'dungeon') or Type) -- dungeon/raid - GetInstanceInfo() and trigger.instanceType use 'party' but trigger.instanceDifficulty uses 'dungeon'
+			if(Type == 'raid' or Type == 'dungeon') then
+				local D = trigger.instanceDifficulty[Type]
+				for _, value in pairs(D) do
+					if value then
+						if not D[mod.TriggerConditions.difficulties[Difficulty]] then return end -- any difficulty option is checked
+						break
+					end
 				end
 			end
-		else
-			return
-		end
+			passed = true
+		else return end
 	end
 
 	-- Talents
@@ -812,7 +808,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 			if value then -- only run if at least one is selected
 				local name = trigger.names[frame.unitName] or trigger.names[frame.npcID]
 				if (not trigger.negativeMatch and name) or (trigger.negativeMatch and not name) then passed = true else return end
-
 				break -- we can execute this once on the first enabled option then kill the loop
 			end
 		end
