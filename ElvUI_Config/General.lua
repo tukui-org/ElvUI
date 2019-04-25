@@ -165,6 +165,7 @@ E.Options.args.general = {
 						["enUS"] = "English",
 						["frFR"] = "French",
 						["zhCN"] = "Chinese",
+						["zhTW"] = "Traditional Chinese",
 						["ptBR"] = "Portuguese",
 					},
 				}
