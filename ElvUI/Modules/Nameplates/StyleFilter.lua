@@ -649,7 +649,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Unit Pet
 	if trigger.isPet then
-		if frame.isControlled and not frame.isPlayer then passed = true else return end
+		if frame.isPlayerControlled and not frame.isPlayer then passed = true else return end
 	end
 
 	-- Player Vehicle
