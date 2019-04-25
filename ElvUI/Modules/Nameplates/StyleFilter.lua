@@ -966,26 +966,36 @@ function mod:StyleFilterConfigure()
 				end
 
 				-- real events
-				mod.StyleFilterTriggerEvents.PLAYER_TARGET_CHANGED = true
+				mod.StyleFilterTriggerEvents.PLAYER_TARGET_CHANGED = 1
 
 				if filter.triggers.reactionType and filter.triggers.reactionType.enable then
-					mod.StyleFilterTriggerEvents.UNIT_FACTION = true
+					mod.StyleFilterTriggerEvents.UNIT_FACTION = 1
 				end
 
 				if filter.triggers.targetMe or filter.triggers.notTargetMe then
-					mod.StyleFilterTriggerEvents.UNIT_TARGET = true
+					mod.StyleFilterTriggerEvents.UNIT_TARGET = 1
 				end
 
 				if filter.triggers.isFocus or filter.triggers.notFocus then
-					mod.StyleFilterTriggerEvents.PLAYER_FOCUS_CHANGED = true
+					mod.StyleFilterTriggerEvents.PLAYER_FOCUS_CHANGED = 1
 				end
 
 				if filter.triggers.isResting then
-					mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = true
+					mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = 1
 				end
 
 				if filter.triggers.isPet then
-					mod.StyleFilterTriggerEvents.UNIT_PET = true
+					mod.StyleFilterTriggerEvents.UNIT_PET = 1
+				end
+
+				if filter.triggers.raidTarget then
+					mod.StyleFilterTriggerEvents.RAID_TARGET_UPDATE = 1
+				end
+
+				if filter.triggers.unitInVehicle then
+					mod.StyleFilterTriggerEvents.UNIT_ENTERED_VEHICLE = 1
+					mod.StyleFilterTriggerEvents.UNIT_EXITED_VEHICLE = 1
+					mod.StyleFilterTriggerEvents.VEHICLE_UPDATE = 1
 				end
 
 				if filter.triggers.healthThreshold then
@@ -1000,23 +1010,6 @@ function mod:StyleFilterConfigure()
 					mod.StyleFilterTriggerEvents.UNIT_DISPLAYPOWER = true
 				end
 
-				if filter.triggers.raidTarget then
-					mod.StyleFilterTriggerEvents.RAID_TARGET_UPDATE = true
-				end
-
-				if filter.triggers.unitInVehicle then
-					mod.StyleFilterTriggerEvents.UNIT_ENTERED_VEHICLE = true
-					mod.StyleFilterTriggerEvents.UNIT_EXITED_VEHICLE = true
-					mod.StyleFilterTriggerEvents.VEHICLE_UPDATE = true
-				end
-
-				if next(filter.triggers.names) then
-					for _, value in pairs(filter.triggers.names) do
-						if value then
-							mod.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = true
-							break
-				end end end
-
 				if filter.triggers.threat and filter.triggers.threat.enable then
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_SITUATION_UPDATE = true
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
@@ -1027,10 +1020,17 @@ function mod:StyleFilterConfigure()
 					mod.StyleFilterTriggerEvents.UNIT_FLAGS = true
 				end
 
+				if next(filter.triggers.names) then
+					for _, value in pairs(filter.triggers.names) do
+						if value then
+							mod.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = 1
+							break
+				end end end
+
 				if next(filter.triggers.cooldowns.names) then
 					for _, value in pairs(filter.triggers.cooldowns.names) do
 						if value == 'ONCD' or value == 'OFFCD' then
-							mod.StyleFilterTriggerEvents.SPELL_UPDATE_COOLDOWN = true
+							mod.StyleFilterTriggerEvents.SPELL_UPDATE_COOLDOWN = 1
 							break
 				end end end
 
@@ -1067,7 +1067,7 @@ end
 function mod:StyleFilterUpdate(frame, event)
 	if not (frame and mod.StyleFilterTriggerEvents[event]) then return end
 
-	if mod.StyleFilterTriggerEvents[event] ~= 1 then
+	if mod.StyleFilterTriggerEvents[event] == true then -- skip on 1 or 0
 		if not frame.StyleFilterWaitTime then
 			frame.StyleFilterWaitTime = GetTime()
 		elseif GetTime() > (frame.StyleFilterWaitTime + 0.1) then
