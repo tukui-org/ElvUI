@@ -718,18 +718,15 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
 		local _, Type, Difficulty = GetInstanceInfo()
 		if trigger.instanceType[Type] then
+			passed = true
+
 			-- Instance Difficulty
-			Type = ((Type == 'party' and 'dungeon') or Type) -- dungeon/raid - GetInstanceInfo() and trigger.instanceType use 'party' but trigger.instanceDifficulty uses 'dungeon'
-			if(Type == 'raid' or Type == 'dungeon') then
-				local D = trigger.instanceDifficulty[Type]
+			if Type == 'raid' or Type == 'party' then
+				local D = trigger.instanceDifficulty[(Type == 'party' and 'dungeon') or Type]
 				for _, value in pairs(D) do
-					if value then
-						if not D[mod.TriggerConditions.difficulties[Difficulty]] then return end -- any difficulty option is checked
-						break
-					end
+					if value and not D[mod.TriggerConditions.difficulties[Difficulty]] then return end
 				end
 			end
-			passed = true
 		else return end
 	end
 
