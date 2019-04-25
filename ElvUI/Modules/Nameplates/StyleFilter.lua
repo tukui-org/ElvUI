@@ -1065,9 +1065,10 @@ function mod:StyleFilterConfigure()
 end
 
 function mod:StyleFilterUpdate(frame, event)
-	if not (frame and mod.StyleFilterTriggerEvents[event]) then return end
+	local hasEvent = frame and mod.StyleFilterTriggerEvents[event]
 
-	if mod.StyleFilterTriggerEvents[event] == true then -- skip on 1 or 0
+	if not hasEvent then return
+	elseif hasEvent == true then -- skip on 1 or 0
 		if not frame.StyleFilterWaitTime then
 			frame.StyleFilterWaitTime = GetTime()
 		elseif GetTime() > (frame.StyleFilterWaitTime + 0.1) then
