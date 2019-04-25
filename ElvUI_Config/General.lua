@@ -165,15 +165,15 @@ E.Options.args.general = {
 						E:StaticPopup_Show("UISCALE_CHANGE")
 					end,
 					values = {
-						["deDE"] = "German",
+						["deDE"] = "Deutsch",
 						["enUS"] = "English",
-						["esMX"] = "Spanish",
-						["frFR"] = "French",
-						["koKR"] = "Korean",
-						["ptBR"] = "Portuguese",
-						["ruRU"] = "Russian",
-						["zhCN"] = "Simplified Chinese",
-						["zhTW"] = "Traditional Chinese",
+						["esMX"] = "Español",
+						["frFR"] = "Français",
+						["ptBR"] = "Português",
+						["ruRU"] = "Русский",
+						["zhCN"] = "简体中文",
+						["zhTW"] = "繁体中文",
+						["koKR"] = "한국어",
 					},
 				}
 			},
