@@ -1641,7 +1641,12 @@ function E:DBConversions()
 	end
 
 	if E.global.general.locale == 'auto' then
-		E.global.general.locale = GetLocale()
+		local lang = GetLocale()
+
+		if lang == 'esES' then lang = 'esMX' end
+		if lang == 'itIT' then lang = 'enUS' end
+
+		E.global.general.locale = lang
 	end
 
 	--Combat & Resting Icon options update
