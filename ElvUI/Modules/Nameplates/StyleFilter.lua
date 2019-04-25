@@ -30,6 +30,8 @@ local UnitIsUnit = UnitIsUnit
 local UnitLevel = UnitLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitIsPlayer = UnitIsPlayer
 
 local hooksecurefunc = hooksecurefunc
 local C_Timer_NewTimer = C_Timer.NewTimer
@@ -647,6 +649,11 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if (trigger.isFocus and frame.isFocused) or (trigger.notFocus and not frame.isFocused) then passed = true else return end
 	end
 
+	-- Unit Pet
+	if trigger.isPet then
+		if(UnitPlayerControlled(frame.unit) and not UnitIsPlayer(frame.unit)) then passed = true else return end
+	end
+
 	-- Player Vehicle
 	if trigger.inVehicle or trigger.outOfVehicle then
 		local inVehicle = UnitInVehicle('player')
@@ -918,6 +925,7 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_HEALTH',
 	'UNIT_HEALTH_FREQUENT',
 	'UNIT_MAXHEALTH',
+	'UNIT_PET',
 	'UNIT_NAME_UPDATE',
 	'UNIT_POWER_FREQUENT',
 	'UNIT_POWER_UPDATE',
@@ -976,6 +984,10 @@ function mod:StyleFilterConfigure()
 
 				if filter.triggers.isResting then
 					mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = true
+				end
+
+				if filter.triggers.isPet then
+					mod.StyleFilterTriggerEvents.UNIT_PET = true
 				end
 
 				if filter.triggers.healthThreshold then

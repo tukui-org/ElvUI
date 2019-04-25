@@ -944,6 +944,12 @@ local function UpdateFilterGroup()
 									desc = L["If enabled then the filter will only activate when you are resting at an Inn."],
 									order = 11,
 								},
+								isPet = {
+									type = 'toggle',
+									name = L["Unit is Pet"],
+									desc = L["If enabled then the filter will only activate when the unit is a player's pet"],
+									order = 12,
+								},
 							}
 						}
 					},

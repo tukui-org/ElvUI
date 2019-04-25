@@ -220,6 +220,7 @@ E.StyleFilterDefaults = {
 			maxTimeLeft = 0,
 		},
 		isResting = false,
+		isPet = false,
 		-- combat
 		inCombat = false,
 		outOfCombat = false,
