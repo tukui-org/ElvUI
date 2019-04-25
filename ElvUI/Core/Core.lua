@@ -30,6 +30,7 @@ local gsub, strmatch, strjoin = gsub, match, strjoin
 local format, find, strrep, len, sub = format, strfind, strrep, strlen, strsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local GetLocale = GetLocale
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
 local GetChannelName = GetChannelName
 local GetFunctionCPUUsage = GetFunctionCPUUsage
@@ -1631,6 +1632,18 @@ function E:InitializeModules()
 end
 
 function E:DBConversions()
+	--Fix issue where UIScale was incorrectly stored as string
+	E.global.general.UIScale = tonumber(E.global.general.UIScale)
+
+	--Not sure how this one happens, but prevent it in any case
+	if E.global.general.UIScale <= 0 then
+		E.global.general.UIScale = G.general.UIScale
+	end
+
+	if E.global.general.locale == 'auto' then
+		E.global.general.locale = GetLocale()
+	end
+
 	--Combat & Resting Icon options update
 	if E.db.unitframe.units.player.combatIcon ~= nil then
 		E.db.unitframe.units.player.CombatIcon.enable = E.db.unitframe.units.player.combatIcon
@@ -1754,14 +1767,6 @@ function E:DBConversions()
 			E.db.tooltip.factionColors[i] = E:CopyTable(newTable, oldTable)
 			E.db.tooltip.factionColors[''..i] = nil
 		end
-	end
-
-	--Fix issue where UIScale was incorrectly stored as string
-	E.global.general.UIScale = tonumber(E.global.general.UIScale)
-
-	--Not sure how this one happens, but prevent it in any case
-	if E.global.general.UIScale <= 0 then
-		E.global.general.UIScale = G.general.UIScale
 	end
 
 	--v11 Nameplates Reset

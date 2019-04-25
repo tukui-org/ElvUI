@@ -253,6 +253,7 @@ local blacklistedKeys = {
 		userInformedNewChanges1 = true,
 		general = {
 			UIScale = true,
+			locale = true,
 			version = true,
 			eyefinity = true,
 			ignoreScalePopup = true,
