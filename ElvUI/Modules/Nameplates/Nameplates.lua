@@ -13,10 +13,10 @@ local wipe = wipe
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
+local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
-local GetInstanceInfo = GetInstanceInfo
 local SetCVar, GetCVarDefault = SetCVar, GetCVarDefault
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
@@ -30,6 +30,7 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
+local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
@@ -502,6 +503,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.reaction = UnitReaction('player', unit)
 		nameplate.classification = UnitClassification(unit)
 		nameplate.creatureType = UnitCreatureType(unit)
+		nameplate.isControlled = UnitPlayerControlled(unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.unitGUID = UnitGUID(unit)
 		nameplate.unitName = UnitName(unit)

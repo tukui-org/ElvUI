@@ -30,8 +30,6 @@ local UnitIsUnit = UnitIsUnit
 local UnitLevel = UnitLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
-local UnitPlayerControlled = UnitPlayerControlled
-local UnitIsPlayer = UnitIsPlayer
 
 local hooksecurefunc = hooksecurefunc
 local C_Timer_NewTimer = C_Timer.NewTimer
@@ -651,7 +649,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Unit Pet
 	if trigger.isPet then
-		if(UnitPlayerControlled(frame.unit) and not UnitIsPlayer(frame.unit)) then passed = true else return end
+		if frame.isControlled and not frame.isPlayer then passed = true else return end
 	end
 
 	-- Player Vehicle
