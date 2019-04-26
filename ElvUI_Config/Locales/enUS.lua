@@ -1,5 +1,5 @@
 -- English localization file for enUS and enGB.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "enUS", true, true)
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
 
 L["# Displayed Auras"] = true
 L["%s and then %s"] = true

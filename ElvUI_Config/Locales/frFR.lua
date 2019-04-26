@@ -1,5 +1,5 @@
 -- French localization file for frFR.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "frFR")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "frFR")
 
 L["# Displayed Auras"] = "Auras affichées"
 L["%s and then %s"] = "%s et alors %s"

@@ -1,5 +1,5 @@
 -- Simplified Chinese localization file for zhCN.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "zhCN")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 
 L["# Displayed Auras"] = "显示光环的数量"
 L["%s and then %s"] = "%s 于 %s"

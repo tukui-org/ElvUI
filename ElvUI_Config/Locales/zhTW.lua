@@ -1,5 +1,5 @@
 -- Traditional Chinese localization file for zhTW.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI_Config", "zhTW")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
 
 L["# Displayed Auras"] = "顯示光環的數量"
 L["%s and then %s"] = "%s 與 %s"
