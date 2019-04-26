@@ -162,7 +162,7 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.locale end,
 					set = function(info, value)
 						E.global.general.locale = value
-						E:StaticPopup_Show("UISCALE_CHANGE")
+						E:StaticPopup_Show("CONFIG_RL")
 					end,
 					values = {
 						["deDE"] = "Deutsch",
