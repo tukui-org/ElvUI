@@ -1217,23 +1217,23 @@ local function UpdateFilterGroup()
 							set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.keyMod[info[#info]] = value; NP:ConfigureAll() end,
 							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or not E.global.nameplate.filters[selectedNameplateFilter].triggers.keyMod.enable end,
 							args = {
-								Modifier = {
-									name = L["Any"],
-									order = 1,
-									type = 'toggle',
-								},
 								Shift = {
 									name = L["Shift"],
-									order = 2,
+									order = 1,
 									type = 'toggle',
 								},
 								Alt = {
 									name = L["Alt"],
-									order = 3,
+									order = 2,
 									type = 'toggle',
 								},
 								Control = {
 									name = L["Control"],
+									order = 3,
+									type = 'toggle',
+								},
+								Modifier = {
+									name = L["Any"],
 									order = 4,
 									type = 'toggle',
 								},
