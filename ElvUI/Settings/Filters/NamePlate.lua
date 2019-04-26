@@ -66,6 +66,10 @@ E.StyleFilterDefaults = {
 		questBoss = false,
 		level = false,
 		casting = {
+			isCasting = false,
+			isChanneling = false,
+			notCasting = false,
+			notChanneling = false,
 			interruptible = false,
 			spells = {},
 		},

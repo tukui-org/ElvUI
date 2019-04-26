@@ -787,6 +787,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if complete then passed = true else return end
 	end
 
+	-- Casting
+	if trigger.casting and (trigger.casting.isCasting or trigger.casting.isChanneling or trigger.casting.notCasting or trigger.casting.notChanneling) then
+		if (trigger.casting.isCasting and frame.Castbar.casting) or (trigger.casting.isChanneling and frame.Castbar.channeling)
+		or (trigger.casting.notCasting and not frame.Castbar.casting) or (trigger.casting.notChanneling and not frame.Castbar.channeling) then passed = true else return end
+	end
+
 	-- Casting Interruptible
 	if trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible) then
 		if (frame.Castbar.casting or frame.Castbar.channeling)
@@ -983,7 +989,8 @@ function mod:StyleFilterConfigure()
 								break
 					end end end
 
-					if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
+					if (filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible)
+					or (filter.triggers.casting.isCasting or filter.triggers.casting.isChanneling or filter.triggers.casting.notCasting or filter.triggers.casting.notChanneling) then
 						mod.StyleFilterTriggerEvents.FAKE_Casting = 0
 					end
 				end

@@ -812,25 +812,52 @@ local function UpdateFilterGroup()
 					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.casting[info[#info]] = value; NP:ConfigureAll() end,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
-						interruptible = {
+						isCasting = {
 							type = 'toggle',
 							order = 1,
+							name = L["Is Casting"],
+						},
+						notCasting = {
+							type = 'toggle',
+							order = 2,
+							name = L["Not Casting"],
+						},
+						isChanneling = {
+							type = 'toggle',
+							order = 3,
+							name = L["Is Channeling"],
+						},
+						notChanneling = {
+							type = 'toggle',
+							order = 4,
+							name = L["Not Channeling"],
+						},
+						spacer1 = {
+							order = 5,
+							type = 'description',
+							name = '',
+							width = 'full'
+						},
+						interruptible = {
+							type = 'toggle',
+							order = 6,
 							name = L["Interruptible"],
 							desc = L["If enabled then the filter will only activate if the unit is casting interruptible spells."],
 						},
 						notInterruptible = {
 							type = 'toggle',
-							order = 2,
+							order = 7,
 							name = L["Non-Interruptable"],
 							desc = L["If enabled then the filter will only activate if the unit is casting not interruptible spells."],
 						},
 						spacer2 = {
-							order = 3,
+							order = 8,
 							type = 'description',
 							name = '',
+							width = 'full'
 						},
 						addSpell = {
-							order = 4,
+							order = 9,
 							name = L["Add Spell ID or Name"],
 							type = 'input',
 							get = function(info) return "" end,
@@ -843,7 +870,7 @@ local function UpdateFilterGroup()
 							end,
 						},
 						removeSpell = {
-							order = 5,
+							order = 10,
 							name = L["Remove Spell ID or Name"],
 							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 							type = 'input',
@@ -858,7 +885,7 @@ local function UpdateFilterGroup()
 							end,
 						},
 						description = {
-							order = 6,
+							order = 11,
 							type = "descriptiption",
 							name = L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."],
 						},
