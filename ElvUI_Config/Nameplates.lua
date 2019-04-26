@@ -1218,17 +1218,17 @@ local function UpdateFilterGroup()
 							disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or not E.global.nameplate.filters[selectedNameplateFilter].triggers.keyMod.enable end,
 							args = {
 								Shift = {
-									name = L["Shift"],
+									name = L["SHIFT_KEY_TEXT"],
 									order = 1,
 									type = 'toggle',
 								},
 								Alt = {
-									name = L["Alt"],
+									name = L["ALT_KEY_TEXT"],
 									order = 2,
 									type = 'toggle',
 								},
 								Control = {
-									name = L["Control"],
+									name = L["CTRL_KEY_TEXT"],
 									order = 3,
 									type = 'toggle',
 								},
