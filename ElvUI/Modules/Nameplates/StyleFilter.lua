@@ -54,6 +54,18 @@ mod.TriggerConditions = {
 		['HEALER'] = 'healer',
 		['DAMAGER'] = 'damager'
 	},
+	keys = {
+		Modifier = _G.IsModifierKeyDown,
+		Shift = _G.IsShiftKeyDown,
+		Alt = _G.IsAltKeyDown,
+		Control = _G.IsControlKeyDown,
+		LeftShift = _G.IsLeftShiftKeyDown,
+		LeftAlt = _G.IsLeftAltKeyDown,
+		LeftControl = _G.IsLeftControlKeyDown,
+		RightShift = _G.IsRightShiftKeyDown,
+		RightAlt = _G.IsRightAltKeyDown,
+		RightControl = _G.IsRightControlKeyDown,
+	},
 	tankThreat = {
 		[0] = 3, 2, 1, 0
 	},
@@ -683,6 +695,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if trigger.creatureType[E.CreatureTypes[frame.creatureType]] then passed = true else return end
 	end
 
+	-- Key Modifier
+	if trigger.keyMod and trigger.keyMod.enable then
+		for key, value in pairs(trigger.keyMod) do
+			local isDown = mod.TriggerConditions.keys[key]
+			if value and isDown then
+				if isDown() then passed = true else return end
+			end
+		end
+	end
+
 	-- Reaction (or Reputation) Type
 	if trigger.reactionType and trigger.reactionType.enable then
 		if trigger.reactionType[mod.TriggerConditions.reactions[(trigger.reactionType.reputation and frame.repReaction) or frame.reaction]] then passed = true else return end
@@ -909,6 +931,7 @@ mod.StyleFilterPlateEvents = { -- events watched inside of ouf, which is called 
 	['NAME_PLATE_UNIT_ADDED'] = 1 -- rest is populated from `StyleFilterDefaultEvents` as needed
 }
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
+	'MODIFIER_STATE_CHANGED',
 	'PLAYER_FOCUS_CHANGED',
 	'PLAYER_TARGET_CHANGED',
 	'PLAYER_UPDATE_RESTING',
@@ -923,8 +946,8 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_HEALTH',
 	'UNIT_HEALTH_FREQUENT',
 	'UNIT_MAXHEALTH',
-	'UNIT_PET',
 	'UNIT_NAME_UPDATE',
+	'UNIT_PET',
 	'UNIT_POWER_FREQUENT',
 	'UNIT_POWER_UPDATE',
 	'UNIT_TARGET',
@@ -970,6 +993,10 @@ function mod:StyleFilterConfigure()
 
 				if filter.triggers.reactionType and filter.triggers.reactionType.enable then
 					mod.StyleFilterTriggerEvents.UNIT_FACTION = 1
+				end
+
+				if filter.triggers.keyMod and filter.triggers.keyMod.enable then
+					mod.StyleFilterTriggerEvents.MODIFIER_STATE_CHANGED = 1
 				end
 
 				if filter.triggers.targetMe or filter.triggers.notTargetMe then
@@ -1161,6 +1188,7 @@ end
 
 -- events we actually register on plates when they aren't added
 function mod:StyleFilterEvents(nameplate)
+	mod:StyleFilterRegister(nameplate,'MODIFIER_STATE_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_FOCUS_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_TARGET_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_UPDATE_RESTING', true)
