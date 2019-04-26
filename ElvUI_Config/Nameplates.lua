@@ -812,49 +812,51 @@ local function UpdateFilterGroup()
 					set = function(info, value) E.global.nameplate.filters[selectedNameplateFilter].triggers.casting[info[#info]] = value; NP:ConfigureAll() end,
 					disabled = function() return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and E.db.nameplates.filters[selectedNameplateFilter].triggers and E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) end,
 					args = {
-						isCasting = {
-							type = 'toggle',
-							order = 1,
-							name = L["Is Casting"],
-						},
-						notCasting = {
-							type = 'toggle',
+						types = {
+							name = "",
+							type = "group",
+							guiInline = true,
 							order = 2,
-							name = L["Not Casting"],
-						},
-						isChanneling = {
-							type = 'toggle',
-							order = 3,
-							name = L["Is Channeling"],
-						},
-						notChanneling = {
-							type = 'toggle',
-							order = 4,
-							name = L["Not Channeling"],
-						},
-						spacer1 = {
-							order = 5,
-							type = 'description',
-							name = '',
-							width = 'full'
-						},
-						interruptible = {
-							type = 'toggle',
-							order = 6,
-							name = L["Interruptible"],
-							desc = L["If enabled then the filter will only activate if the unit is casting interruptible spells."],
-						},
-						notInterruptible = {
-							type = 'toggle',
-							order = 7,
-							name = L["Non-Interruptable"],
-							desc = L["If enabled then the filter will only activate if the unit is casting not interruptible spells."],
-						},
-						spacer2 = {
-							order = 8,
-							type = 'description',
-							name = '',
-							width = 'full'
+							args = {
+								isCasting = {
+									type = 'toggle',
+									order = 1,
+									name = L["Is Casting"],
+								},
+								notCasting = {
+									type = 'toggle',
+									order = 2,
+									name = L["Not Casting"],
+								},
+								isChanneling = {
+									type = 'toggle',
+									order = 3,
+									name = L["Is Channeling"],
+								},
+								notChanneling = {
+									type = 'toggle',
+									order = 4,
+									name = L["Not Channeling"],
+								},
+								spacer1 = {
+									order = 5,
+									type = 'description',
+									name = '',
+									width = 'full'
+								},
+								interruptible = {
+									type = 'toggle',
+									order = 6,
+									name = L["Interruptible"],
+									desc = L["If enabled then the filter will only activate if the unit is casting interruptible spells."],
+								},
+								notInterruptible = {
+									type = 'toggle',
+									order = 7,
+									name = L["Non-Interruptable"],
+									desc = L["If enabled then the filter will only activate if the unit is casting not interruptible spells."],
+								},
+							}
 						},
 						addSpell = {
 							order = 9,
