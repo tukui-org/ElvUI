@@ -4,8 +4,6 @@ local AddOnName, Engine = ...
 Engine[1] = {}
 Engine[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
 
-_G[AddOnName] = Engine
-
 local C, L = Engine[1], Engine[2]
 
 C.Values = { FontFlags = { ['NONE'] = L.NONE, ['OUTLINE'] = 'OUTLINE', ['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE', ['THICKOUTLINE'] = 'THICKOUTLINE' } }
