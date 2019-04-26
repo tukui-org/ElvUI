@@ -7,5 +7,5 @@
 	<Script file="ptBR.lua"/>
 	<Script file="ruRU.lua"/>
 	<Script file="zhTW.lua"/>
-	<Script file="znCN.lua"/>
+	<Script file="zhCN.lua"/>
 </Ui>
