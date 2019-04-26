@@ -167,13 +167,13 @@ E.Options.args.general = {
 					values = {
 						["deDE"] = "Deutsch",
 						["enUS"] = "English",
-						["esMX"] = "Español",
+					--	["esMX"] = "Español",
 						["frFR"] = "Français",
-						["ptBR"] = "Português",
-						["ruRU"] = "Русский",
+					--	["ptBR"] = "Português",
+					--	["ruRU"] = "Русский",
 						["zhCN"] = "简体中文",
 						["zhTW"] = "繁体中文",
-						["koKR"] = "한국어",
+					--	["koKR"] = "한국어",
 					},
 				}
 			},
