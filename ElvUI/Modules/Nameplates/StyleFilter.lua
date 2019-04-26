@@ -55,16 +55,16 @@ mod.TriggerConditions = {
 		['DAMAGER'] = 'damager'
 	},
 	keys = {
-		Modifier = _G.IsModifierKeyDown,
-		Shift = _G.IsShiftKeyDown,
-		Alt = _G.IsAltKeyDown,
-		Control = _G.IsControlKeyDown,
-		LeftShift = _G.IsLeftShiftKeyDown,
-		LeftAlt = _G.IsLeftAltKeyDown,
-		LeftControl = _G.IsLeftControlKeyDown,
-		RightShift = _G.IsRightShiftKeyDown,
-		RightAlt = _G.IsRightAltKeyDown,
-		RightControl = _G.IsRightControlKeyDown,
+		Modifier = IsModifierKeyDown,
+		Shift = IsShiftKeyDown,
+		Alt = IsAltKeyDown,
+		Control = IsControlKeyDown,
+		LeftShift = IsLeftShiftKeyDown,
+		LeftAlt = IsLeftAltKeyDown,
+		LeftControl = IsLeftControlKeyDown,
+		RightShift = IsRightShiftKeyDown,
+		RightAlt = IsRightAltKeyDown,
+		RightControl = IsRightControlKeyDown,
 	},
 	tankThreat = {
 		[0] = 3, 2, 1, 0
