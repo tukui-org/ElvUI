@@ -57,7 +57,7 @@ L["ANCHOR_CURSOR_RIGHT"] = "鼠标指针右侧"
 L["Announce Interrupts"] = "打断通告"
 L["Announce when you interrupt a spell to the specified chat channel."] = "在指定聊天频道通知打断信息"
 L["Anticipation"] = "预感"
-L["Any"] = true
+L["Any"] = "任意"
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "把该字体设置应用到所有ElvUI设置中去,但是某些设置并不会被改变"
 L["Applies the primary texture to all statusbars."] = "将主要材质应用到所有状态条"
 L["Apply Font To All"] = "应用字体到所有"
@@ -142,7 +142,7 @@ L["BG Score"] = "战场记分"
 L["Blacklist Modifier"] = "黑名单功能键"
 L["Blacklist"] = "黑名单"
 L["Blizzard Style"] = "暴雪样式"
-L["Blizzard"] = true
+L["Blizzard"] = "暴雪原生"
 L["BlizzUI Improvements"] = "暴雪界面优化"
 L["Block Combat Click"] = "战斗中屏蔽点击"
 L["Block Combat Hover"] = "战斗中屏蔽提示"
@@ -150,7 +150,7 @@ L["Block Mouseover Glow"] = "屏蔽鼠标指向高亮"
 L["Block Target Glow"] = "屏蔽目标高亮"
 L["Blocks all click events while in combat."] = "战斗中禁用点击事件"
 L["Blocks datatext tooltip from showing in combat."] = "战斗中禁用鼠标提示"
-L["BoE"] = true
+L["BoE"] = "装备后绑定"
 L["Bonus Reward Position"] = "额外奖励位置"
 L["Border Color"] = "边框颜色"
 L["Border Glow"] = "边框发光"
@@ -166,7 +166,7 @@ L["Bottom"] = "下"
 L["BottomLeftMiniPanel"] = "小地图左下内侧"
 L["BottomMiniPanel"] = "小地图底部内侧"
 L["BottomRightMiniPanel"] = "小地图右下内侧"
-L["BoU"] = true
+L["BoU"] = "使用后绑定"
 L["Buff Indicator"] = "增益指示器"
 L["Buffs"] = "增益光环"
 L["Button Size (Bag)"] = "背包格子尺寸"
@@ -203,8 +203,8 @@ L["CheckBox Skin"] = "勾选框皮肤"
 L["Choose Export Format"] = "选择导出格式"
 L["Choose UIPARENT to prevent it from hiding with the unitframe."] = "使用UIPARENT来防止它随框体隐藏"
 L["Choose What To Export"] = "选择导出内容"
-L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."] = true
-L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."] = "选择何时显示提示.如果选择了设置键, 你需要按住它来显示提示"
+L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."] = "战斗中如何显示鼠标提示. 如果选择了修饰键，你需要按住它来显示鼠标提示."
+L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."] = "如何显示鼠标提示. 如果选择了修饰键, 你需要按住它来显示鼠标提示."
 L["Clamp nameplates to the top of the screen when outside of view."] = "当姓名板在屏幕外面时将他们紧靠在屏幕上方"
 L["Clamp Nameplates"] = "紧靠姓名板"
 L["Class Backdrop"] = "生命条背景职业色"
@@ -579,30 +579,30 @@ L["Icon: TOPLEFT"] = "图标: 顶部左侧"
 L["Icon: TOPRIGHT"] = "图标: 顶部右侧"
 L["Icons and Text (Short)"] = "图标和文字(短)"
 L["Icons and Text"] = "图标和文字"
-L["If enabled then it checks if auras are missing instead of being present on the unit."] = "启用后将会检查光环是否缺失而不是光环是否存在"
+L["If enabled then it checks if auras are missing instead of being present on the unit."] = "启用后将会检查光环是否缺失而不是光环是否存在."
 L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."] = "启用后要求满足所有光环. 否则只要求任一光环存在即可激活."
-L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = "启用后要求满足所有冷却. 否则只要求任一冷却存在即可激活"
-L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."] = "启用后则过滤器仅仅在单位等级大于等于该值的时候激活"
-L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."] = "启用后则过滤器仅仅在单位等级小于等于该值的时候激活"
-L["If enabled then the filter will only activate if the level of the unit matches this value."] = "启用后过滤器仅仅在单位等级符合该值的时候激活"
-L["If enabled then the filter will only activate if the level of the unit matches your own."] = "启用后过滤器仅仅在单位等级符合你的等级的时候激活"
-L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "启用后过滤器仅仅在单位施放可打断技能的时候激活"
-L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "启用后过滤器仅仅在单位施放不可打断技能的时候激活"
-L["If enabled then the filter will only activate when the unit is in a Vehicle."] = true
-L["If enabled then the filter will only activate when the unit is in combat."] = "启用后过滤器仅仅在单位在战斗中的时候激活"
-L["If enabled then the filter will only activate when the unit is not in a Vehicle."] = true
-L["If enabled then the filter will only activate when the unit is not targeting you."] = "启用后过滤器仅仅在单位目标不为你的时候激活"
-L["If enabled then the filter will only activate when the unit is out of combat."] = "启用后过滤器仅仅在单位不在战斗中的时候激活"
-L["If enabled then the filter will only activate when the unit is targeting you."] = "启用后过滤器仅仅在单位目标为你的时候激活"
-L["If enabled then the filter will only activate when you are focusing the unit."] = "启用后过滤器仅仅在单位为焦点的时候激活"
-L["If enabled then the filter will only activate when you are in a Vehicle."] = true
-L["If enabled then the filter will only activate when you are in combat."] = "启用后过滤器仅仅在你在战斗中的时候激活"
-L["If enabled then the filter will only activate when you are not focusing the unit."] = "启用后过滤器仅仅在单位不为焦点的时候激活"
-L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
-L["If enabled then the filter will only activate when you are not targeting the unit."] = "启用后过滤器仅仅对非当前目标激活"
-L["If enabled then the filter will only activate when you are out of combat."] = "启用后过滤器仅仅在你不在战斗中的时候激活"
-L["If enabled then the filter will only activate when you are resting at an Inn."] = true
-L["If enabled then the filter will only activate when you are targeting the unit."] = "启用后过滤器仅仅对当前目标激活"
+L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."] = "启用后要求满足所有冷却. 否则只要求任一冷却存在即可激活."
+L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."] = "启用后过滤器仅在单位等级大于等于该值的时候激活."
+L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."] = "启用后过滤器仅在单位等级小于等于该值的时候激活."
+L["If enabled then the filter will only activate if the level of the unit matches this value."] = "启用后过滤器仅在单位等级符合该值的时候激活."
+L["If enabled then the filter will only activate if the level of the unit matches your own."] = "启用后过滤器仅在单位等级符合你的等级的时候激活."
+L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "启用后过滤器仅在单位施放可打断技能的时候激活."
+L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "启用后过滤器仅在单位施放不可打断技能的时候激活."
+L["If enabled then the filter will only activate when the unit is in a Vehicle."] = "启用后过滤器仅在单位在载具中的时候激活."
+L["If enabled then the filter will only activate when the unit is in combat."] = "启用后过滤器仅在单位在战斗中的时候激活."
+L["If enabled then the filter will only activate when the unit is not in a Vehicle."] = "启用后过滤器仅在单位不在载具中的时候激活."
+L["If enabled then the filter will only activate when the unit is not targeting you."] = "启用后过滤器仅在单位目标不为你的时候激活."
+L["If enabled then the filter will only activate when the unit is out of combat."] = "启用后过滤器仅在单位不在战斗中的时候激活."
+L["If enabled then the filter will only activate when the unit is targeting you."] = "启用后过滤器仅在单位目标为你的时候激活."
+L["If enabled then the filter will only activate when you are focusing the unit."] = "启用后过滤器仅在单位为焦点的时候激活."
+L["If enabled then the filter will only activate when you are in a Vehicle."] = "启用后过滤器仅在你在载具中的时候激活."
+L["If enabled then the filter will only activate when you are in combat."] = "启用后过滤器仅在你在战斗中的时候激活."
+L["If enabled then the filter will only activate when you are not focusing the unit."] = "启用后过滤器仅在单位不为焦点的时候激活."
+L["If enabled then the filter will only activate when you are not in a Vehicle."] = "启用后过滤器仅在你不在载具中的时候激活."
+L["If enabled then the filter will only activate when you are not targeting the unit."] = "启用后过滤器仅对非当前目标激活."
+L["If enabled then the filter will only activate when you are out of combat."] = "启用后过滤器仅在你不在战斗中的时候激活."
+L["If enabled then the filter will only activate when you are resting at an Inn."] = "启用后过滤器仅在你在休息区的时候激活."
+L["If enabled then the filter will only activate when you are targeting the unit."] = "启用后过滤器仅对当前目标激活."
 L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = "启用后这个货币将在'货币'信息文字中显示"
 L["If not set to 0 then override the size of the aura icon to this."] = "如果不为0, 此值将覆盖光环图标的尺寸"
 L["If not set to true then the server time will be displayed instead."] = "若关闭此选项将显示服务器时间"
@@ -614,7 +614,7 @@ L["If this threshold is used then the health of the unit needs to be lower than 
 L["If this threshold is used then the power of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."] = "如果这个阈值被设置则单位的能量需要比设定值更高才会将过滤器激活. 设为0以禁用."
 L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."] = "如果这个阈值被设置则单位的能量需要比设定值更低才会将过滤器激活. 设为0以禁用."
 L["If you have a lot of 3D Portraits active then it will likely have a big impact on your FPS. Disable some portraits if you experience FPS issues."] = "如果你同时激活了很多3D头像你很可能有帧数的影响.如果你有这方面的问题请禁用一部分头像"
-L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = true
+L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "如果你不希望显示某个光环图标或者光环条，只需要按住shift并右键点击它."
 L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."] = "如果你有任何已安装的插件支持该功能, 你可以在下面的下拉菜单找到它们"
 L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."] = "如果不锁定动作条, 那么当你试图移动技能时你可能会在鼠标按下技能键时使用技能"
 L["Ignore mouse events."] = "忽略鼠标事件"
@@ -638,8 +638,8 @@ L["Instance Type"] = "副本类型"
 L["Interruptable"] = "可打断颜色"
 L["Interruptible"] = "可打断"
 L["Invert Grouping Order"] = "反转队伍排序"
-L["Is Channeling"] = true
-L["Is Casting"] = true
+L["Is Channeling"] = "正在引导"
+L["Is Casting"] = "正在施法"
 L["Is Focused"] = "当前焦点"
 L["Is PvP Talents"] = "PvP天赋"
 L["Is Targeted"] = "当前目标"
@@ -653,7 +653,7 @@ L["Item Upgrade"] = "装备升级"
 L["JustifyH"] = "水平对齐"
 L["Key Down"] = "按下施法"
 L["Keybind Mode"] = "键位设置模式"
-L["Key Modifiers"] = true
+L["Key Modifiers"] = "修饰键"
 L["Keybind Text Position"] = "快捷键文字位置"
 L["Keybind Text X-Offset"] = "快捷键文字X偏移"
 L["Keybind Text Y-Offset"] = "快捷键文字Y偏移"
@@ -662,11 +662,11 @@ L["Keyword Alert"] = "关键字警报"
 L["Keywords"] = "关键字"
 L["Latency"] = "延迟"
 L["Leatherworking"] = "制皮"
-L["Left Alt"] = true
-L["Left Control"] = true
+L["Left Alt"] = "左Alt键"
+L["Left Control"] = "左Ctrl键"
 L["Left Only"] = "仅显示左边"
 L["Left to Right"] = "左到右"
-L["Left Shift"] = true
+L["Left Shift"] = "左Shift键"
 L["left"] = "左"
 L["Left"] = "左"
 L["LeftChatDataPanel"] = "左聊天框"
@@ -759,7 +759,7 @@ L["Name"] = "姓名"
 L["Name: Current / Max - Percent"] = "名字: 当前值 / 最大值 - 百分比"
 L["Name: Current / Max"] = "名字: 当前值 / 最大值"
 L["Name: Percent"] = "名字: 百分比"
-L["NamePlate Size"] = true
+L["NamePlate Size"] = "姓名板尺寸"
 L["NamePlate Style Filters"] = "姓名板样式过滤器"
 L["Nameplate"] = "姓名板"
 L["NamePlates"] = "姓名板"
@@ -771,8 +771,8 @@ L["No Sorting"] = "不排序"
 L["Non-Interruptable"] = "不可打断"
 L["Non-Raid Frame"] = "非团队框架"
 L["Non-Target Alpha"] = "非目标透明度"
-L["Not Casting"] = true
-L["Not Focused"] = true
+L["Not Channeling"] = "未引导"
+L["Not Casting"] = "未施法"
 L["Not Focused"] = "非焦点"
 L["Not Targeted"] = "非目标"
 L["Not Targeting Player"] = "目标不为玩家"
@@ -842,11 +842,11 @@ L["Phase Indicator"] = "位面指示器"
 L["Pin Voice Buttons"] = "固定语音按钮"
 L["Player Frame Aura Bars"] = "玩家框架光环条"
 L["Player Health"] = "玩家血量"
-L["Player in Combat"] = "玩家战斗中"
-L["Player in Vehicle"] = true
-L["Player is Resting"] = true
-L["Player Out of Combat"] = "玩家战斗外"
-L["Player Out of Vehicle"] = true
+L["Player in Combat"] = "玩家在战斗中"
+L["Player in Vehicle"] = "玩家在载具中"
+L["Player is Resting"] = "玩家在休息区中"
+L["Player Out of Combat"] = "玩家不在战斗中"
+L["Player Out of Vehicle"] = "玩家不在载具中"
 L["Player Power"] = "玩家能量"
 L["Player Target"] = "玩家目标"
 L["Player Titles"] = "玩家头衔"
@@ -888,7 +888,7 @@ L["Quest Boss"] = "任务怪物"
 L["Quest Choice"] = "任务选择"
 L["Quest Frames"] = "任务"
 L["Quest Icon"] = "任务图标"
-L["Quest Starter"] = true
+L["Quest Starter"] = "任务初始道具"
 L["Quick Join Messages"] = "快速加入消息"
 L["Raid Difficulty"] = "副本难度"
 L["Raid Frame"] = "团队"
@@ -942,13 +942,13 @@ L["Reverse Fill Direction"] = "翻转填充方向"
 L["Reverse Fill"] = "反转填充"
 L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."] = "启用时该模块将在全局禁用时启用, 全局启用是禁用."
 L["Reverse Toggle"] = "反转开关"
-L["Right Alt"] = true
-L["Right Control"] = true
+L["Right Alt"] = "右Alt键"
+L["Right Control"] = "右Ctrl键"
 L["Right Only"] = "仅显示右边"
 L["Right Panel Height"] = "右面板高度"
 L["Right Panel Width"] = "右面板宽度"
 L["Right to Left"] = "右到左"
-L["Right Shift"] = true
+L["Right Shift"] = "右Shift键"
 L["right"] = "右"
 L["Right"] = "右"
 L["RightChatDataPanel"] = "右聊天框"
@@ -1220,11 +1220,11 @@ L["Under Health Threshold"] = "低于血量阈值"
 L["Under Power Threshold"] = "低于能量阈值"
 L["Unfriendly"] = "非友好"
 L["Uniform Threshold"] = "统一阈值"
-L["Unit Conditions"] = true
-L["Unit in Combat"] = "单位战斗中"
-L["Unit in Vehicle"] = true
-L["Unit Out of Combat"] = "单位战斗外"
-L["Unit Out of Vehicle"] = true
+L["Unit Conditions"] = "单位状态"
+L["Unit in Combat"] = "单位在战斗中"
+L["Unit in Vehicle"] = "单位在载具中"
+L["Unit Out of Combat"] = "单位不在战斗中"
+L["Unit Out of Vehicle"] = "单位不在载具中"
 L["Unit Prefix Style"] = "单位缩写"
 L["Unit Target"] = "单位目标"
 L["Unit Type"] = "单位类型"
@@ -1283,7 +1283,7 @@ L["When enabled the nameplate will stay visible in a locked position."] = "启�
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "显示团队中目标与你目前鼠标提示目标相同的队友"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "处于战场时, 在主信息文字条显示你的战场得分信息"
 L["When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel."] = "当你开始输入消息时此选项的启用将会让你保留最后一次聊天的频道, 如果关闭将始终使用说话频道"
-L["When true, the header includes the player when not in a raid."] = "若启用,队伍中将显示玩家"
+L["When true, the header includes the player when not in a raid."] = "若启用, 队伍中将显示玩家"
 L["When using Static Position, this option also requires the target to be attackable."] = "当使用固定位置时, 这个选项也将要求目标可被攻击"
 L["When you go AFK display the AFK screen."] = "当你离开时显示AFK界面"
 L["Whisper Alert"] = "密语警报"
@@ -1299,8 +1299,8 @@ L["X-Offset"] = "X偏移"
 L["xOffset"] = "X轴偏移"
 L["Y-Offset"] = "Y偏移"
 L["yOffset"] = "Y轴偏移"
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
+L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "|cffD3CF00\"%s\"|r 设置将从你当前配置文件 |cff4beb2c\"%s\"|r 导出到 |cff4beb2c\"%s\"|r 配置文件中. 你确定吗?"
+L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "|cffD3CF00\"%s\"|r 设置将从 |cff4beb2c\"%s\"|r 配置文件导入到你当前配置文件 |cff4beb2c\"%s\"|r 中. 你确定吗?"
 L["You cannot copy settings from the same unit."] = "你不能从相同的单位复制设定"
 L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."] = "你不能移除一个内建技能, 仅能停用此技能"
 L["You must be targeting a player."] = "你必须以一名玩家为目标"
@@ -1338,35 +1338,35 @@ L["SKINS_DESC"] = "调整外观设定"
 L["TOGGLESKIN_DESC"] = "启用/停用此外观"
 L["TOOLTIP_DESC"] = "鼠标提示信息设定选项"
 L["UNITFRAME_DESC"] = "修改单位框架设定"
-L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
+L["SEARCH_SYNTAX_DESC"] = [=[因为新增了LibItemSearch，你现在可以使用更高级的物品检索. 下面是一份检索语法的文档. 查看完整说明: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
-Specific Searching:
-    • q:[quality] or quality:[quality]. For instance, q:epic will find all epic items.
-    • l:[level], lvl:[level] or level:[level]. For example, l:30 will find all items with level 30.
-    • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
-    • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
-    • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
-    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
-    • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
-
-
-Search Operators:
-    • ! : Negates a search. For example, !q:epic will find all items that are NOT epic.
-    • | : Joins two searches. Typing q:epic | t:weapon will find all items that are either epic OR weapons.
-    • & : Intersects two searches. For instance, q:epic & t:weapon will find all items that are epic AND weapons
-    • >, <, <=, => : Performs comparisons on numerical searches. For example, typing lvl: >30 will find all items with level HIGHER than 30.
+特性检索:
+    • q:[品质] 或 quality:[品质]. 例如, 输入 q:史诗 会检索所有史诗物品.
+    • l:[物品等级], lvl:[物品等级] 或 level:[物品等级]. 例如, 输入 l:30 会检索所有物品等级为30的物品.
+    • t:[类型], type:[类型] 或 slot:[类型]. 例如, 输入 t:武器 会检索所有武器类型的物品.
+    • n:[名称] 或 name:[名称]. 例如, 输入 n:muffins 会检索所有包含"muffins"字样的物品.
+    • s:[方案名称] 或 set:[方案名称]. 例如, 输入 set:fire 会检索所有以fire开头命名的装备配置方案中的物品.
+    • r:[等级], reg:[等级], rl:[等级], regl:[等级] 或 reqlvl:[等级]. 例如, 输入 reqlvl:30 会检索所有需要等级达到30才可以使用的物品.
+    • tt:[提示文字], tip:[提示文字] 或 tooltip:[提示文字]. 例如, 输入 tt:绑定 会检索所有鼠标提示文字中包含"绑定"字样的物品.
 
 
-The following search keywords can also be used:
-    • soulbound, bound, bop : Bind on pickup items.
-    • bou : Bind on use items.
-    • boe : Bind on equip items.
-    • boa : Bind on account items.
-    • quest : Quest bound items.
-    • reagent, crafting : Profession reagents.
-    • keystone : Mythic Keystone.
-    • followers : Follower items.
-    • champions : Champion equipment.]=]
+检索运算符:
+    • ! : 反向检索. 例如, 输入 !q:史诗 会检索所有非史诗的物品.
+    • | : 并集检索. 例如, 输入 q:史诗 | t:武器 会检索所有品质为史诗或类型为武器的物品.
+    • & : 交集检索. 例如, 输入 q:史诗 & t:武器 会检索所有品质为史诗并且类型是武器的物品
+    • >, <, <=, => : 对数值进行比较的检索. 例如, 输入 lvl: >30 会检索所有物品等级大于30的物品.
+
+
+还可以使用下列检索关键字:
+    • soulbound, bound, bop : 拾取绑定物品.
+    • bou : 使用绑定物品.
+    • boe : 装备绑定物品.
+    • boa : 账号绑定物品.
+    • quest : 任务绑定物品.
+    • reagent, crafting : 专业技能物品.
+    • keystone : 史诗钥石.
+    • followers : 追随者物品.
+    • champions : 随从装备.]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[和宏写法类似, 能根据不同姿态切换动作条.
