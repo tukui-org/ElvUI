@@ -66,6 +66,10 @@ E.StyleFilterDefaults = {
 		questBoss = false,
 		level = false,
 		casting = {
+			isCasting = false,
+			isChanneling = false,
+			notCasting = false,
+			notChanneling = false,
 			interruptible = false,
 			spells = {},
 		},
@@ -136,6 +140,7 @@ E.StyleFilterDefaults = {
 		overPowerThreshold = 0,
 		names = {},
 		creatureType = {
+			enable = false,
 			Aberration = false,
 			Beast = false,
 			Critter = false,
@@ -181,6 +186,19 @@ E.StyleFilterDefaults = {
 			arena = false,
 			pvp = false,
 		},
+		keyMod = {
+			enable = false,
+			Modifier = false,
+			Shift = false,
+			Alt = false,
+			Control = false,
+			LeftShift = false,
+			LeftAlt = false,
+			LeftControl = false,
+			RightShift = false,
+			RightAlt = false,
+			RightControl = false,
+		},
 		instanceDifficulty = {
 			dungeon = {
 				normal = false,
@@ -220,6 +238,7 @@ E.StyleFilterDefaults = {
 			maxTimeLeft = 0,
 		},
 		isResting = false,
+		isPet = false,
 		-- combat
 		inCombat = false,
 		outOfCombat = false,

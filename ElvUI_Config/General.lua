@@ -92,7 +92,7 @@ E.Options.args.general = {
 					desc = L["Attempt to support eyefinity/nvidia surround."],
 					type = "toggle",
 					get = function(info) return E.global.general.eyefinity end,
-					set = function(info, value) E.global.general[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+					set = function(info, value) E.global.general.eyefinity = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				taintLog = {
 					order = 7,
@@ -155,15 +155,25 @@ E.Options.args.general = {
 						E:SetSmoothingAmount(value)
 					end,
 				},
-				configLocale = {
+				locale = {
 					order = 14,
 					type = "select",
 					name = L.LANGUAGE,
-					set = function(info, value) E.db.general.configLocale = value; E:StaticPopup_Show("CONFIG_RL") end,
+					get = function(info) return E.global.general.locale end,
+					set = function(info, value)
+						E.global.general.locale = value
+						E:StaticPopup_Show("CONFIG_RL")
+					end,
 					values = {
-						["deDE"] = "German",
+						["deDE"] = "Deutsch",
 						["enUS"] = "English",
-						["frFR"] = "French",
+						["esMX"] = "Español",
+						["frFR"] = "Français",
+						["ptBR"] = "Português",
+						["ruRU"] = "Русский",
+						["zhCN"] = "简体中文",
+						["zhTW"] = "繁体中文",
+						["koKR"] = "한국어",
 					},
 				}
 			},

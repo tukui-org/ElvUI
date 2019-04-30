@@ -54,6 +54,18 @@ mod.TriggerConditions = {
 		['HEALER'] = 'healer',
 		['DAMAGER'] = 'damager'
 	},
+	keys = {
+		Modifier = IsModifierKeyDown,
+		Shift = IsShiftKeyDown,
+		Alt = IsAltKeyDown,
+		Control = IsControlKeyDown,
+		LeftShift = IsLeftShiftKeyDown,
+		LeftAlt = IsLeftAltKeyDown,
+		LeftControl = IsLeftControlKeyDown,
+		RightShift = IsRightShiftKeyDown,
+		RightAlt = IsRightAltKeyDown,
+		RightControl = IsRightControlKeyDown,
+	},
 	tankThreat = {
 		[0] = 3, 2, 1, 0
 	},
@@ -647,6 +659,11 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if (trigger.isFocus and frame.isFocused) or (trigger.notFocus and not frame.isFocused) then passed = true else return end
 	end
 
+	-- Unit Pet
+	if trigger.isPet then
+		if frame.isPlayerControlled and not frame.isPlayer then passed = true else return end
+	end
+
 	-- Player Vehicle
 	if trigger.inVehicle or trigger.outOfVehicle then
 		local inVehicle = UnitInVehicle('player')
@@ -676,6 +693,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Creature Type
 	if trigger.creatureType and trigger.creatureType.enable then
 		if trigger.creatureType[E.CreatureTypes[frame.creatureType]] then passed = true else return end
+	end
+
+	-- Key Modifier
+	if trigger.keyMod and trigger.keyMod.enable then
+		for key, value in pairs(trigger.keyMod) do
+			local isDown = mod.TriggerConditions.keys[key]
+			if value and isDown then
+				if isDown() then passed = true else return end
+			end
+		end
 	end
 
 	-- Reaction (or Reputation) Type
@@ -721,20 +748,13 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 			passed = true
 
 			-- Instance Difficulty
-			if Type == 'party' then
-				local D = trigger.instanceDifficulty.dungeon
-				if D.normal or D.heroic or D.mythic or D['mythic+'] or D.timewalking then
-					if not D[mod.TriggerConditions.difficulties[Difficulty]] then return end
-				end
-			elseif Type == 'raid' then
-				local R = trigger.instanceDifficulty.raid
-				if R.lfr or R.normal or R.heroic or R.mythic or R.timewalking or R.legacy10normal or R.legacy25normal or R.legacy10heroic or R.legacy25heroic then
-					if not R[mod.TriggerConditions.difficulties[Difficulty]] then return end
+			if Type == 'raid' or Type == 'party' then
+				local D = trigger.instanceDifficulty[(Type == 'party' and 'dungeon') or Type]
+				for _, value in pairs(D) do
+					if value and not D[mod.TriggerConditions.difficulties[Difficulty]] then return end
 				end
 			end
-		else
-			return
-		end
+		else return end
 	end
 
 	-- Talents
@@ -767,18 +787,28 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if complete then passed = true else return end
 	end
 
-	-- Casting Interruptible
-	if trigger.casting and (trigger.casting.interruptible or trigger.casting.notInterruptible) then
-		if (frame.Castbar.casting or frame.Castbar.channeling)
-		and ((trigger.casting.interruptible and not frame.Castbar.notInterruptible)
-		or (trigger.casting.notInterruptible and frame.Castbar.notInterruptible)) then passed = true else return end
-	end
+	-- Casting
+	if trigger.casting then
+		local b, c = frame.Castbar, trigger.casting
 
-	-- Casting Spell
-	if trigger.casting and trigger.casting.spells and next(trigger.casting.spells) then
-		local spell = trigger.casting.spells[frame.Castbar.spellID] or trigger.casting.spells[frame.Castbar.spellName]
-		if spell ~= nil then -- ignore if none are selected
-			if spell then passed = true else return end
+		-- Status
+		if c.isCasting or c.isChanneling or c.notCasting or c.notChanneling then
+			if (c.isCasting and b.casting) or (c.isChanneling and b.channeling)
+			or (c.notCasting and not b.casting) or (c.notChanneling and not b.channeling) then passed = true else return end
+		end
+
+		-- Interruptible
+		if c.interruptible or c.notInterruptible then
+			if (b.casting or b.channeling) and ((c.interruptible and not b.notInterruptible)
+			or (c.notInterruptible and b.notInterruptible)) then passed = true else return end
+		end
+
+		-- Spell
+		if c.spells and next(c.spells) then
+			local spell = c.spells[b.spellID] or c.spells[b.spellName]
+			if spell ~= nil then -- ignore if none are selected
+				if spell then passed = true else return end
+			end
 		end
 	end
 
@@ -812,7 +842,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 			if value then -- only run if at least one is selected
 				local name = trigger.names[frame.unitName] or trigger.names[frame.npcID]
 				if (not trigger.negativeMatch and name) or (trigger.negativeMatch and not name) then passed = true else return end
-
 				break -- we can execute this once on the first enabled option then kill the loop
 			end
 		end
@@ -912,6 +941,7 @@ mod.StyleFilterPlateEvents = { -- events watched inside of ouf, which is called 
 	['NAME_PLATE_UNIT_ADDED'] = 1 -- rest is populated from `StyleFilterDefaultEvents` as needed
 }
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
+	'MODIFIER_STATE_CHANGED',
 	'PLAYER_FOCUS_CHANGED',
 	'PLAYER_TARGET_CHANGED',
 	'PLAYER_UPDATE_RESTING',
@@ -927,6 +957,7 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_HEALTH_FREQUENT',
 	'UNIT_MAXHEALTH',
 	'UNIT_NAME_UPDATE',
+	'UNIT_PET',
 	'UNIT_POWER_FREQUENT',
 	'UNIT_POWER_UPDATE',
 	'UNIT_TARGET',
@@ -962,28 +993,47 @@ function mod:StyleFilterConfigure()
 								break
 					end end end
 
-					if filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible then
+					if (filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible)
+					or (filter.triggers.casting.isCasting or filter.triggers.casting.isChanneling or filter.triggers.casting.notCasting or filter.triggers.casting.notChanneling) then
 						mod.StyleFilterTriggerEvents.FAKE_Casting = 0
 					end
 				end
 
 				-- real events
-				mod.StyleFilterTriggerEvents.PLAYER_TARGET_CHANGED = true
+				mod.StyleFilterTriggerEvents.PLAYER_TARGET_CHANGED = 1
 
 				if filter.triggers.reactionType and filter.triggers.reactionType.enable then
-					mod.StyleFilterTriggerEvents.UNIT_FACTION = true
+					mod.StyleFilterTriggerEvents.UNIT_FACTION = 1
+				end
+
+				if filter.triggers.keyMod and filter.triggers.keyMod.enable then
+					mod.StyleFilterTriggerEvents.MODIFIER_STATE_CHANGED = 1
 				end
 
 				if filter.triggers.targetMe or filter.triggers.notTargetMe then
-					mod.StyleFilterTriggerEvents.UNIT_TARGET = true
+					mod.StyleFilterTriggerEvents.UNIT_TARGET = 1
 				end
 
 				if filter.triggers.isFocus or filter.triggers.notFocus then
-					mod.StyleFilterTriggerEvents.PLAYER_FOCUS_CHANGED = true
+					mod.StyleFilterTriggerEvents.PLAYER_FOCUS_CHANGED = 1
 				end
 
 				if filter.triggers.isResting then
-					mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = true
+					mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = 1
+				end
+
+				if filter.triggers.isPet then
+					mod.StyleFilterTriggerEvents.UNIT_PET = 1
+				end
+
+				if filter.triggers.raidTarget then
+					mod.StyleFilterTriggerEvents.RAID_TARGET_UPDATE = 1
+				end
+
+				if filter.triggers.unitInVehicle then
+					mod.StyleFilterTriggerEvents.UNIT_ENTERED_VEHICLE = 1
+					mod.StyleFilterTriggerEvents.UNIT_EXITED_VEHICLE = 1
+					mod.StyleFilterTriggerEvents.VEHICLE_UPDATE = 1
 				end
 
 				if filter.triggers.healthThreshold then
@@ -998,23 +1048,6 @@ function mod:StyleFilterConfigure()
 					mod.StyleFilterTriggerEvents.UNIT_DISPLAYPOWER = true
 				end
 
-				if filter.triggers.raidTarget then
-					mod.StyleFilterTriggerEvents.RAID_TARGET_UPDATE = true
-				end
-
-				if filter.triggers.unitInVehicle then
-					mod.StyleFilterTriggerEvents.UNIT_ENTERED_VEHICLE = true
-					mod.StyleFilterTriggerEvents.UNIT_EXITED_VEHICLE = true
-					mod.StyleFilterTriggerEvents.VEHICLE_UPDATE = true
-				end
-
-				if next(filter.triggers.names) then
-					for _, value in pairs(filter.triggers.names) do
-						if value then
-							mod.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = true
-							break
-				end end end
-
 				if filter.triggers.threat and filter.triggers.threat.enable then
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_SITUATION_UPDATE = true
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
@@ -1025,10 +1058,17 @@ function mod:StyleFilterConfigure()
 					mod.StyleFilterTriggerEvents.UNIT_FLAGS = true
 				end
 
+				if next(filter.triggers.names) then
+					for _, value in pairs(filter.triggers.names) do
+						if value then
+							mod.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = 1
+							break
+				end end end
+
 				if next(filter.triggers.cooldowns.names) then
 					for _, value in pairs(filter.triggers.cooldowns.names) do
 						if value == 'ONCD' or value == 'OFFCD' then
-							mod.StyleFilterTriggerEvents.SPELL_UPDATE_COOLDOWN = true
+							mod.StyleFilterTriggerEvents.SPELL_UPDATE_COOLDOWN = 1
 							break
 				end end end
 
@@ -1063,9 +1103,10 @@ function mod:StyleFilterConfigure()
 end
 
 function mod:StyleFilterUpdate(frame, event)
-	if not (frame and mod.StyleFilterTriggerEvents[event]) then return end
+	local hasEvent = frame and mod.StyleFilterTriggerEvents[event]
 
-	if mod.StyleFilterTriggerEvents[event] ~= 1 then
+	if not hasEvent then return
+	elseif hasEvent == true then -- skip on 1 or 0
 		if not frame.StyleFilterWaitTime then
 			frame.StyleFilterWaitTime = GetTime()
 		elseif GetTime() > (frame.StyleFilterWaitTime + 0.1) then
@@ -1158,6 +1199,7 @@ end
 
 -- events we actually register on plates when they aren't added
 function mod:StyleFilterEvents(nameplate)
+	mod:StyleFilterRegister(nameplate,'MODIFIER_STATE_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_FOCUS_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_TARGET_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_UPDATE_RESTING', true)
