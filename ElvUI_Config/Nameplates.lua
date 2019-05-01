@@ -893,14 +893,20 @@ local function UpdateFilterGroup()
 							end,
 						},
 						description1 = {
-							order = 11,
+							order = 12,
 							type = "description",
 							name = L["You do not need to use 'Is Casting Anything' or 'Is Channeling Anything' for these spells to trigger."],
 						},
 						description2 = {
-							order = 12,
+							order = 13,
 							type = "description",
 							name = L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."],
+						},
+						notSpell = {
+							type = 'toggle',
+							order = -2,
+							name = L["Not Spell"],
+							desc = L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."]
 						},
 					}
 				},

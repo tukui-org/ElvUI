@@ -795,7 +795,8 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if c.spells and next(c.spells) then
 			for _, value in pairs(c.spells) do
 				if value then -- only run if at least one is selected
-					if c.spells[tostring(b.spellID)] or c.spells[b.spellName] then passed = true else return end
+					local castingSpell = c.spells[tostring(b.spellID)] or c.spells[b.spellName]
+					if (c.notSpell and not castingSpell) or (castingSpell and not c.notSpell) then passed = true else return end
 					break -- we can execute this once on the first enabled option then kill the loop
 				end
 			end

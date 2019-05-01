@@ -71,6 +71,7 @@ E.StyleFilterDefaults = {
 			notCasting = false,
 			notChanneling = false,
 			interruptible = false,
+			notSpell = false,
 			spells = {},
 		},
 		role = {
