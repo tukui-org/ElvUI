@@ -710,6 +710,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if trigger.reactionType[mod.TriggerConditions.reactions[(trigger.reactionType.reputation and frame.repReaction) or frame.reaction]] then passed = true else return end
 	end
 
+	-- Threat
 	if trigger.threat and trigger.threat.enable then
 		if trigger.threat.good or trigger.threat.goodTransition or trigger.threat.badTransition or trigger.threat.bad or trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition then
 			if not mod.db.threat.enable then -- force grab the values we need :3
