@@ -791,6 +791,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	if trigger.casting then
 		local b, c = frame.Castbar, trigger.casting
 
+		-- Spell
+		if c.spells and next(c.spells) then
+			for _, value in pairs(c.spells) do
+				if value then -- only run if at least one is selected
+					if c.spells[tostring(b.spellID)] or c.spells[b.spellName] then passed = true else return end
+					break -- we can execute this once on the first enabled option then kill the loop
+				end
+			end
+		end
+
 		-- Status
 		if c.isCasting or c.isChanneling or c.notCasting or c.notChanneling then
 			if (c.isCasting and b.casting) or (c.isChanneling and b.channeling)
@@ -801,14 +811,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if c.interruptible or c.notInterruptible then
 			if (b.casting or b.channeling) and ((c.interruptible and not b.notInterruptible)
 			or (c.notInterruptible and b.notInterruptible)) then passed = true else return end
-		end
-
-		-- Spell
-		if c.spells and next(c.spells) then
-			local spell = c.spells[b.spellID] or c.spells[b.spellName]
-			if spell ~= nil then -- ignore if none are selected
-				if spell then passed = true else return end
-			end
 		end
 	end
 

@@ -821,22 +821,28 @@ local function UpdateFilterGroup()
 								isCasting = {
 									type = 'toggle',
 									order = 1,
-									name = L["Is Casting"],
+									name = L["Is Casting Anything"],
+									desc = L["If enabled then the filter will activate if the unit is casting anything."]
 								},
 								notCasting = {
 									type = 'toggle',
 									order = 2,
-									name = L["Not Casting"],
+									name = L["Not Casting Anything"],
+									desc = L["If enabled then the filter will activate if the unit is not casting anything."]
 								},
 								isChanneling = {
 									type = 'toggle',
 									order = 3,
-									name = L["Is Channeling"],
+									customWidth = 200,
+									name = L["Is Channeling Anything"],
+									desc = L["If enabled then the filter will activate if the unit is channeling anything."]
 								},
 								notChanneling = {
 									type = 'toggle',
 									order = 4,
-									name = L["Not Channeling"],
+									customWidth = 200,
+									name = L["Not Channeling Anything"],
+									desc = L["If enabled then the filter will activate if the unit is not channeling anything."]
 								},
 								spacer1 = {
 									order = 5,
@@ -886,9 +892,14 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 						},
-						description = {
+						description1 = {
 							order = 11,
-							type = "descriptiption",
+							type = "description",
+							name = L["You do not need to use 'Is Casting Anything' or 'Is Channeling Anything' for these spells to trigger."],
+						},
+						description2 = {
+							order = 12,
+							type = "description",
 							name = L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."],
 						},
 					}
