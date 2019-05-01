@@ -1096,10 +1096,6 @@ function mod:StyleFilterConfigure()
 	if next(mod.StyleFilterTriggerList) then
 		sort(mod.StyleFilterTriggerList, mod.StyleFilterSort) -- sort by priority
 	else
-		if _G.ElvNP_Player then
-			mod:StyleFilterClear(_G.ElvNP_Player)
-		end
-
 		for nameplate in pairs(mod.Plates) do
 			mod:StyleFilterClear(nameplate)
 		end
