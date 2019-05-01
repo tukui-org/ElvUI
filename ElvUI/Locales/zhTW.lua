@@ -1,7 +1,7 @@
 -- Traditional Chinese localization file for zhTW.
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhTW")
-if not L then return end
+
 L["Blend Mode"] = "混合模式"
 L["Blend"] = "混合"
 L["Additive Blend"] = "覆蓋混合"
