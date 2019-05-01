@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 --Lua functions
@@ -7,6 +7,7 @@ local select = select
 local hooksecurefunc = hooksecurefunc
 
 local oldRegisterAsWidget, oldRegisterAsContainer
+
 function S:Ace3_SkinDropdownPullout()
 	if self and self.obj then
 		if self.obj.pullout and self.obj.pullout.frame then
@@ -28,8 +29,8 @@ end
 function S:Ace3_CheckBoxIsEnableSwitch(widget)
 	local text = widget.text and widget.text:GetText()
 	if text then
-		local enabled, disabled = text == L.GREEN_ENABLE, text == L.RED_ENABLE
-		local isSwitch = (text == L.Enable) or enabled or disabled
+		local enabled, disabled = text == S.Ace3_L.GREEN_ENABLE, text == S.Ace3_L.RED_ENABLE
+		local isSwitch = (text == S.Ace3_L.Enable) or enabled or disabled
 		return isSwitch, enabled, disabled
 	end
 end
@@ -65,7 +66,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		hooksecurefunc(widget, "SetValue", function(w, checked)
 			if S:Ace3_CheckBoxIsEnableSwitch(w) then
-				w:SetLabel(checked and L.GREEN_ENABLE or L.RED_ENABLE)
+				w:SetLabel(checked and S.Ace3_L.GREEN_ENABLE or S.Ace3_L.RED_ENABLE)
 			end
 		end)
 
@@ -353,6 +354,8 @@ end
 
 function S:HookAce3(AceGUI)
 	if not AceGUI then return end
+
+	S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
 
 	oldRegisterAsWidget = AceGUI.RegisterAsWidget
 	AceGUI.RegisterAsWidget = S.Ace3_RegisterAsWidget
