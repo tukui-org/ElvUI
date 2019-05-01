@@ -213,7 +213,18 @@ local function LoadSkin()
 			end
 		end)
 		for j = 1, 4 do
-			S:HandleButton(StaticPopup["button"..j])
+			local button = StaticPopup["button"..j]
+			S:HandleButton(button)
+
+			button.Flash:Hide()
+
+			button:CreateShadow(5)
+			button.shadow:SetAlpha(0)
+			button.shadow:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+
+			local anim1, anim2 = button.PulseAnim:GetAnimations()
+			anim1:SetTarget(button.shadow)
+			anim2:SetTarget(button.shadow)
 		end
 		_G["StaticPopup"..i.."EditBox"]:SetFrameLevel(_G["StaticPopup"..i.."EditBox"]:GetFrameLevel()+1)
 		S:HandleEditBox(_G["StaticPopup"..i.."EditBox"])
