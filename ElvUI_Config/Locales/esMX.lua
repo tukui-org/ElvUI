@@ -1,5 +1,5 @@
 -- Spanish localization file for esES and esMX.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esES") or ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
 L["# Displayed Auras"] = true
 L["%s and then %s"] = "%s y entonces %s"
