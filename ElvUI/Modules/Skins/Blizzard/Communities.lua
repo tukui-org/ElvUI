@@ -345,7 +345,7 @@ local function LoadSkin()
 		_G[frame]:StripTextures()
 	end
 
-	hooksecurefunc("CommunitiesGuildNewsButton_SetNews", function(button)
+	hooksecurefunc("GuildNewsButton_SetNews", function(button)
 		if button.header:IsShown() then
 			button.header:SetAlpha(0)
 		end
