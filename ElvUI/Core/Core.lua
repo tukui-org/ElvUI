@@ -1,5 +1,14 @@
 local ElvUI = select(2, ...)
-ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', false) -- Locale doesn't exist yet, make it exist.
+
+local gameLocale
+do -- Locale doesn't exist yet, make it exist.
+	local convert = {['enGB'] = 'enUS', ['esES'] = 'esMX', ['itIT'] = 'enUS'}
+	local lang = GetLocale()
+
+	gameLocale = convert[lang] or lang or 'enUS'
+	ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', gameLocale)
+end
+
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local ActionBars = E:GetModule('ActionBars')
@@ -30,7 +39,6 @@ local gsub, strmatch, strjoin = gsub, match, strjoin
 local format, find, strrep, len, sub = format, strfind, strrep, strlen, strsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local GetLocale = GetLocale
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
 local GetChannelName = GetChannelName
 local GetFunctionCPUUsage = GetFunctionCPUUsage
@@ -1640,13 +1648,8 @@ function E:DBConversions()
 		E.global.general.UIScale = G.general.UIScale
 	end
 
-	if E.global.general.locale == 'auto' then
-		local lang = GetLocale()
-
-		if lang == 'esES' then lang = 'esMX' end
-		if lang == 'itIT' then lang = 'enUS' end
-
-		E.global.general.locale = lang
+	if gameLocale and E.global.general.locale == 'auto' then
+		E.global.general.locale = gameLocale
 	end
 
 	--Combat & Resting Icon options update
