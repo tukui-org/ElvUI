@@ -56,4 +56,4 @@ local function LoadSkin()
 	end
 end
 
-S:AddCallback("PVPMatch", LoadSkin)
+S:AddCallbackForAddon("Blizzard_PVPMatch", "PVPMatch", LoadSkin)
