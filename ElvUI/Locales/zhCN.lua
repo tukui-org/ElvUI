@@ -1,7 +1,7 @@
 -- Simplified Chinese localization file for zhCN.
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhCN")
-if not L then return end
+
 L["Blend Mode"] = true
 L["Blend"] = true
 L["Additive Blend"] = true

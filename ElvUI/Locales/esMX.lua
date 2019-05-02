@@ -1,7 +1,7 @@
 -- Spanish localization file for esES and esMX.
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local L = E.Libs.ACL:NewLocale("ElvUI", "esES") or E.Libs.ACL:NewLocale("ElvUI", "esMX")
-if not L then return end
+local L = E.Libs.ACL:NewLocale("ElvUI", "esMX")
+
 L["Blend Mode"] = true
 L["Blend"] = true
 L["Additive Blend"] = true
