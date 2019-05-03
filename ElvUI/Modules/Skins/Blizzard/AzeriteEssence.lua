@@ -8,7 +8,7 @@ local pairs = pairs
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AzeriteEssence ~= true then return end
-
+	if not C_AzeriteEssence.CanOpenUI() then return end
 	--Probably Temp name
 	local AzeriteEssenceUI = _G.AzeriteEssenceUI
 	S:HandlePortraitFrame(AzeriteEssenceUI, true)
