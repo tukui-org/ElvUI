@@ -469,26 +469,20 @@ function NP:ConfigureAll()
 	NP:SetNamePlateClickThrough()
 end
 
-function NP:PlateFadeFinish()
-	self.FadePlate.Fading = nil
-end
-
 function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
-	if not nameplate.FadePlate then
-		nameplate.FadePlate = {}
-	else
-		nameplate.FadePlate.fadeTimer = nil
+	-- we need our own function because we want a smooth transition and dont want it to force update every pass.
+	-- its controlled by fadeTimer which is reset when UIFrameFadeOut or UIFrameFadeIn code runs.
+
+	if not nameplate.FadeObject then
+		nameplate.FadeObject = {}
 	end
 
-	nameplate.FadePlate.timeToFade = timeToFade
-	nameplate.FadePlate.startAlpha = startAlpha
-	nameplate.FadePlate.endAlpha = endAlpha
-	nameplate.FadePlate.finishedFunc = NP.PlateFadeFinish
-	nameplate.FadePlate.finishedArg1 = nameplate
+	nameplate.FadeObject.timeToFade = timeToFade
+	nameplate.FadeObject.startAlpha = startAlpha
+	nameplate.FadeObject.endAlpha = endAlpha
 
-	if not nameplate.FadePlate.Fading then
-		E:UIFrameFade(nameplate, nameplate.FadePlate)
-		nameplate.FadePlate.Fading = true
+	if not nameplate.FadeObject.fadeTimer then
+		E:UIFrameFade(nameplate, nameplate.FadeObject)
 	end
 end
 
