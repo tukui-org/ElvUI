@@ -228,7 +228,7 @@ function NP:PostUpdateAura(unit, button)
 		end
 	end
 
-	if button.needsUpdateCooldownPosition then
+	if button.needsUpdateCooldownPosition and (button.cd and button.cd.timer and button.cd.timer.text) then
 		NP:UpdateAuraCooldownPosition(button)
 	end
 end
@@ -254,18 +254,16 @@ function NP:UpdateAuraSettings(button)
 end
 
 function NP:UpdateAuraCooldownPosition(button)
-	if button.cd and button.cd.timer and button.cd.timer.text then
-		button.cd.timer.text:ClearAllPoints()
-		local point = (button.db and button.db.durationPosition) or 'CENTER'
-		if point == 'CENTER' then
-			button.cd.timer.text:Point(point, 1, 0)
-		else
-			local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
-			button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
-		end
-
-		button.needsUpdateCooldownPosition = nil
+	button.cd.timer.text:ClearAllPoints()
+	local point = (button.db and button.db.durationPosition) or 'CENTER'
+	if point == 'CENTER' then
+		button.cd.timer.text:Point(point, 1, 0)
+	else
+		local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
+		button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
 	end
+
+	button.needsUpdateCooldownPosition = nil
 end
 
 function NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, ...)

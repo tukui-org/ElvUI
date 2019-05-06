@@ -113,18 +113,16 @@ local function ReverseUpdate(frame)
 end
 
 function UF:UpdateAuraCooldownPosition(button)
-	if button.cd and button.cd.timer and button.cd.timer.text then
-		button.cd.timer.text:ClearAllPoints()
-		local point = (button.db and button.db.durationPosition) or 'CENTER'
-		if point == 'CENTER' then
-			button.cd.timer.text:Point(point, 1, 0)
-		else
-			local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
-			button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
-		end
-
-		button.needsUpdateCooldownPosition = nil
+	button.cd.timer.text:ClearAllPoints()
+	local point = (button.db and button.db.durationPosition) or 'CENTER'
+	if point == 'CENTER' then
+		button.cd.timer.text:Point(point, 1, 0)
+	else
+		local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
+		button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
 	end
+
+	button.needsUpdateCooldownPosition = nil
 end
 
 function UF:Configure_Auras(frame, auraType)
@@ -368,7 +366,7 @@ function UF:PostUpdateAura(unit, button)
 		end
 	end
 
-	if button.needsUpdateCooldownPosition then
+	if button.needsUpdateCooldownPosition and (button.cd and button.cd.timer and button.cd.timer.text) then
 		UF:UpdateAuraCooldownPosition(button)
 	end
 end
