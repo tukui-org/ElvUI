@@ -112,7 +112,7 @@ local function onRangeUpdate(_, elapsed)
 
 	if timer >= .20 then
 		for _, object in next, onRangeObjects do
-			if object:IsShown() then
+			if object:IsVisible() then
 				object.Fader:ForceUpdate()
 			end
 		end
