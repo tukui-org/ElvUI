@@ -112,9 +112,7 @@ function NP:Construct_Auras(nameplate)
 	Debuffs.PostUpdateIcon = NP.Debuffs_PostUpdateIcon
 	Debuffs.CustomFilter = NP.Debuffs_CustomFilter
 
-	nameplate.Auras = Auras
-	nameplate.Buffs = Buffs
-	nameplate.Debuffs = Debuffs
+	nameplate.Auras_, nameplate.Buffs_, nameplate.Debuffs_ = Auras, Buffs, Debuffs
 end
 
 function NP:Construct_AuraIcon(button)
@@ -179,24 +177,40 @@ function NP:Update_Auras(nameplate)
 		end
 
 		if db.auras.enable then
-			nameplate.Debuffs:Hide()
-			nameplate.Buffs:Hide()
+			if nameplate.Debuffs then
+				nameplate.Debuffs:Hide()
+				nameplate.Debuffs = nil
+			end
+
+			if nameplate.Buffs then
+				nameplate.Buffs:Hide()
+				nameplate.Buffs = nil
+			end
+
+			nameplate.Auras = nameplate.Auras_
 			nameplate.Auras:Show()
 		else
-			nameplate.Auras:Hide()
+			if nameplate.Auras then
+				nameplate.Auras:Hide()
+				nameplate.Auras = nil
+			end
 
 			if db.debuffs.enable then
+				nameplate.Debuffs = nameplate.Debuffs_
 				NP:Configure_Auras(nameplate, nameplate.Debuffs, db.debuffs)
 				nameplate.Debuffs:Show()
 			else
 				nameplate.Debuffs:Hide()
+				nameplate.Debuffs = nil
 			end
 
 			if db.buffs.enable then
+				nameplate.Buffs = nameplate.Buffs_
 				NP:Configure_Auras(nameplate, nameplate.Buffs, db.buffs)
 				nameplate.Buffs:Show()
 			else
 				nameplate.Buffs:Hide()
+				nameplate.Buffs = nil
 			end
 		end
 	else
