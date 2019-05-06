@@ -164,7 +164,11 @@ function E:UIFrameFade_OnUpdate(elapsed)
 
 		for frame, info in next, FADEFRAMES do
 			-- Reset the timer if there isn't one, this is just an internal counter
-			info.fadeTimer = (info.fadeTimer or 0) + (elapsed + FADEMANAGER.delay)
+			if frame:IsVisible() then
+				info.fadeTimer = (info.fadeTimer or 0) + (elapsed + FADEMANAGER.delay)
+			else
+				info.fadeTimer = info.timeToFade + 1
+			end
 
 			-- If the fadeTimer is less then the desired fade time then set the alpha otherwise hold the fade state, call the finished function, or just finish the fade
 			if info.fadeTimer < info.timeToFade then
