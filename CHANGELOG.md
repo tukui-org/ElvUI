@@ -7,7 +7,7 @@ Added "Tank, Damage, Healer" sort option to party and raid frames. (Thanks @wing
 Added Debuff Highlight mode options. (#726 - Thanks @wing5wong)  
 Added skin for RaidProfiles New Profile Popup.  
 [Style Filter] Added Triggers- Raid Target Marker, Not Name, Is Resting, Is Pet, and Unit/Player In/Out of Vehicle. (#469 #1253 #1278 and #1285 - Thanks @wing5wong)  
-[Style Filter] Added Triggers- Threat conditions, New Casting (or not Casting) triggers, Key Modifiers, and Target: Require Target (used in ElvUI_NonTarget).  
+[Style Filter] Added Triggers- Threat conditions, New Casting (or not Casting; or Casting:NotSpell) triggers, Key Modifiers, and Target: Require Target (used in ElvUI_NonTarget).  
 [Style Filter] Added Default Filters- ElvUI_NonTarget, ElvUI_Target, ElvUI_Boss, and ElvUI_Explosives. (Note: NonTarget is used to replace the NonTarget Alpha option and Target is used to replace the Target Scale option. The other two have had their names updated, so if you changed settings of them (Boss or Explosives), you can go ahead and delete them yourself now).  
 
 **Bug Fixes:**  
@@ -28,6 +28,10 @@ Fixed Twitter icon not appearing for items in chat. (#1281)
 Fixed an issue with Nameplate health coloring in some cases.  
 Fixed Stagger visibility toggling. (Thanks oUF <3)  
 Fixed an issue on the Gossip Skin with our Close Button.  
+Fixed some Nameplate CVar issues.  
+[Lag Fix] Tweak our oUF_Fader slightly and recoded the UIFrameFade to solve various CPU lags with UpdateRange.  
+[Lag Fix] Removed a spammy event (UNIT_AURA) from the PetBar as this was causing it to execute far more than needed.  
+[Lag Fix] Reworked how we send calls to the UpdateAuraCooldownPosition functions and on NamePlate Auras to save on CPU time.  
 
 **Misc. Changes:**  
 Unitframe Status Bars will now sync their textures onto the background space when not using transparent.  
@@ -43,6 +47,7 @@ Nameplate width is now bound to it's clickable width.
 The Bag Bar and Vendor Greys tabs are now again available if the All In One Bag is disabled.  
 [Style Filter] Fixed Static Player Nameplate to no longer taint from filters.  
 [Style Filter] Cleaned a decent amount of the trigger condition check code with the help of @wing5wong.  
+Add shadow instead flash texture for StaticPopup buttons (Thanks @Bunny67)  
 
 ___
 ### Version 11.10 [ April 9th 2019 ]
