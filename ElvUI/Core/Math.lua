@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Lua functions
-local tinsert, tremove, next = tinsert, tremove, next
+local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
 local select, tonumber, assert, type, unpack = select, tonumber, assert, type, unpack
 local atan2, modf, ceil, floor, abs, sqrt, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, mod
 local format, strfind, strsub, strupper, gsub, gmatch, utf8sub = format, strfind, strsub, strupper, gsub, gmatch, string.utf8sub
@@ -13,65 +13,35 @@ local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local C_Timer_After = C_Timer.After
 
+E.ShortPrefixValues = {}
+E.ShortPrefixStyles = {
+	["CHINESE"] = {{1e8,"Y"}, {1e4,"W"}},
+	["ENGLISH"] = {{1e12,"T"}, {1e9,"B"}, {1e6,"M"}, {1e3,"K"}},
+	["GERMAN"] = {{1e12,"Bio"}, {1e9,"Mrd"}, {1e6,"Mio"}, {1e3,"Tsd"}},
+	["KOREAN"] = {{1e8,"억"}, {1e4,"만"}, {1e3,"천"}},
+	["METRIC"] = {{1e12,"T"}, {1e9,"G"}, {1e6,"M"}, {1e3,"k"}}
+}
+
+function E:BuildShortValues(decimalLength, prefixStyle)
+	wipe(E.ShortPrefixValues)
+	E.ShortPrefixValues = E:CopyTable(E.ShortPrefixValues, E.ShortPrefixStyles[prefixStyle])
+	E.ShortValueDec = format("%%.%df", decimalLength or 1)
+
+	for _, prefix in ipairs(E.ShortPrefixValues) do
+		prefix[2] = E.ShortValueDec..prefix[2]
+	end
+end
+
 --Return short value of a number
 function E:ShortValue(v)
-	local shortValueDec = format("%%.%df", E.db.general.decimalLength or 1)
-	local shortValue = abs(v)
-	if E.db.general.numberPrefixStyle == "METRIC" then
-		if shortValue >= 1e12 then
-			return format(shortValueDec.."T", v / 1e12)
-		elseif shortValue >= 1e9 then
-			return format(shortValueDec.."G", v / 1e9)
-		elseif shortValue >= 1e6 then
-			return format(shortValueDec.."M", v / 1e6)
-		elseif shortValue >= 1e3 then
-			return format(shortValueDec.."k", v / 1e3)
-		else
-			return format("%.0f", v)
-		end
-	elseif E.db.general.numberPrefixStyle == "CHINESE" then
-		if shortValue >= 1e8 then
-			return format(shortValueDec.."Y", v / 1e8)
-		elseif shortValue >= 1e4 then
-			return format(shortValueDec.."W", v / 1e4)
-		else
-			return format("%.0f", v)
-		end
-	elseif E.db.general.numberPrefixStyle == "KOREAN" then
-		if shortValue >= 1e8 then
-			return format(shortValueDec.."억", v / 1e8)
-		elseif shortValue >= 1e4 then
-			return format(shortValueDec.."만", v / 1e4)
-		elseif shortValue >= 1e3 then
-			return format(shortValueDec.."천", v / 1e3)
-		else
-			return format("%.0f", v)
-		end
-	elseif E.db.general.numberPrefixStyle == "GERMAN" then
-		if shortValue >= 1e12 then
-			return format(shortValueDec.."Bio", v / 1e12)
-		elseif shortValue >= 1e9 then
-			return format(shortValueDec.."Mrd", v / 1e9)
-		elseif shortValue >= 1e6 then
-			return format(shortValueDec.."Mio", v / 1e6)
-		elseif shortValue >= 1e3 then
-			return format(shortValueDec.."Tsd", v / 1e3)
-		else
-			return format("%.0f", v)
-		end
-	else
-		if shortValue >= 1e12 then
-			return format(shortValueDec.."T", v / 1e12)
-		elseif shortValue >= 1e9 then
-			return format(shortValueDec.."B", v / 1e9)
-		elseif shortValue >= 1e6 then
-			return format(shortValueDec.."M", v / 1e6)
-		elseif shortValue >= 1e3 then
-			return format(shortValueDec.."K", v / 1e3)
-		else
-			return format("%.0f", v)
+	local abs_v = (v < 0 and v * -1) or v
+	for _, prefix in ipairs(E.ShortPrefixValues) do
+		if abs_v >= prefix[1] then
+			return format(prefix[2], v / prefix[1])
 		end
 	end
+
+	return format("%.0f", v)
 end
 
 function E:IsEvenNumber(num)
