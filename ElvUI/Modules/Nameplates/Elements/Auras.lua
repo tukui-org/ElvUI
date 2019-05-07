@@ -199,7 +199,7 @@ function NP:Update_Auras(nameplate)
 				nameplate.Debuffs = nameplate.Debuffs_
 				NP:Configure_Auras(nameplate, nameplate.Debuffs, db.debuffs)
 				nameplate.Debuffs:Show()
-			else
+			elseif nameplate.Debuffs then
 				nameplate.Debuffs:Hide()
 				nameplate.Debuffs = nil
 			end
@@ -208,7 +208,7 @@ function NP:Update_Auras(nameplate)
 				nameplate.Buffs = nameplate.Buffs_
 				NP:Configure_Auras(nameplate, nameplate.Buffs, db.buffs)
 				nameplate.Buffs:Show()
-			else
+			elseif nameplate.Buffs then
 				nameplate.Buffs:Hide()
 				nameplate.Buffs = nil
 			end
