@@ -206,6 +206,7 @@ P.bags = {
 	moneyFormat = 'SMART',
 	moneyCoins = true,
 	junkIcon = false,
+	junkDesaturate = false,
 	scrapIcon = false,
 	upgradeIcon = true,
 	newItemGlow = true,
