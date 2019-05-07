@@ -22,7 +22,7 @@ E.ShortPrefixStyles = {
 	["METRIC"] = {{1e12,"T"}, {1e9,"G"}, {1e6,"M"}, {1e3,"k"}}
 }
 
-function E:BuildShortValues(decimalLength, prefixStyle)
+function E:BuildPrefixValues(decimalLength, prefixStyle)
 	if next(E.ShortPrefixValues) then wipe(E.ShortPrefixValues) end
 
 	E.ShortPrefixValues = E:CopyTable(E.ShortPrefixValues, E.ShortPrefixStyles[prefixStyle])
