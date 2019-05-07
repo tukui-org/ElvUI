@@ -475,7 +475,10 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 	-- we need our own function because we want a smooth transition and dont want it to force update every pass.
 	-- its controlled by fadeTimer which is reset when UIFrameFadeOut or UIFrameFadeIn code runs.
 
-	if not nameplate.FadeObject then
+	if nameplate.FadeObject then
+		nameplate.FadeObject.diffAlpha = nil
+		nameplate.FadeObject.fadeTimer = nil
+	else
 		nameplate.FadeObject = {}
 	end
 
@@ -483,9 +486,7 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 	nameplate.FadeObject.startAlpha = startAlpha
 	nameplate.FadeObject.endAlpha = endAlpha
 
-	if not nameplate.FadeObject.fadeTimer then
-		E:UIFrameFade(nameplate, nameplate.FadeObject)
-	end
+	E:UIFrameFade(nameplate, nameplate.FadeObject)
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
