@@ -1790,7 +1790,7 @@ end
 local CPU_USAGE = {}
 local function CompareCPUDiff(showall, minCalls)
 	local greatestUsage, greatestCalls, greatestName, newName, newFunc
-	local greatestDiff, lastModule, mod, newUsage, calls, differance = 0
+	local greatestDiff, lastModule, mod, usage, calls, diff = 0
 
 	for name, oldUsage in pairs(CPU_USAGE) do
 		newName, newFunc = strmatch(name, '^([^:]+):(.+)$')
@@ -1801,19 +1801,19 @@ local function CompareCPUDiff(showall, minCalls)
 				mod = E:GetModule(newName, true) or E
 				lastModule = newName
 			end
-			newUsage, calls = GetFunctionCPUUsage(mod[newFunc], true)
-			differance = newUsage - oldUsage
+			usage, calls = GetFunctionCPUUsage(mod[newFunc], true)
+			diff = usage - oldUsage
 			if showall and (calls > minCalls) then
-				E:Print('Name('..name..')  Calls('..calls..') Diff('..(differance > 0 and format('%.3f', differance) or 0)..')')
+				E:Print('Name('..name..')  Calls('..calls..') MS('..(usage or 0)..') Diff('..(diff > 0 and format('%.3f', diff) or 0)..')')
 			end
-			if (differance > greatestDiff) and calls > minCalls then
-				greatestName, greatestUsage, greatestCalls, greatestDiff = name, newUsage, calls, differance
+			if (diff > greatestDiff) and calls > minCalls then
+				greatestName, greatestUsage, greatestCalls, greatestDiff = name, usage, calls, diff
 			end
 		end
 	end
 
 	if greatestName then
-		E:Print(greatestName.. ' had the CPU usage difference of: '..(greatestUsage > 0 and format('%.3f', greatestUsage) or 0)..'ms. And has been called '.. greatestCalls..' times.')
+		E:Print(greatestName.. ' had the CPU usage of: '..(greatestUsage > 0 and format('%.3f', greatestUsage) or 0)..'ms. And has been called '.. greatestCalls..' times.')
 	else
 		E:Print('CPU Usage: No CPU Usage differences found.')
 	end
