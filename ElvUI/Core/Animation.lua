@@ -157,10 +157,10 @@ local FADEFRAMES, FADEMANAGER = {}, CreateFrame('FRAME')
 FADEMANAGER.delay = 0.05
 
 function E:UIFrameFade_OnUpdate(elapsed)
-	FADEMANAGER.elapsed = (FADEMANAGER.elapsed or 0) + elapsed
+	FADEMANAGER.timer = (FADEMANAGER.timer or 0) + elapsed
 
-	if FADEMANAGER.elapsed > FADEMANAGER.delay then
-		FADEMANAGER.elapsed = 0
+	if FADEMANAGER.timer > FADEMANAGER.delay then
+		FADEMANAGER.timer = 0
 
 		for frame, info in next, FADEFRAMES do
 			-- Reset the timer if there isn't one, this is just an internal counter
