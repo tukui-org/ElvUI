@@ -106,18 +106,17 @@ local function ForceUpdate(element)
 	return Update(element.__owner, "ForceUpdate", element.__owner.unit)
 end
 
-local timer = 0
-local function onRangeUpdate(_, elapsed)
-	timer = timer + elapsed
+local function onRangeUpdate(frame, elapsed)
+	frame.timer = (frame.timer or 0) + elapsed
 
-	if timer >= .20 then
+	if frame.timer >= .20 then
 		for _, object in next, onRangeObjects do
 			if object:IsVisible() then
 				object.Fader:ForceUpdate()
 			end
 		end
 
-		timer = 0
+		frame.timer = 0
 	end
 end
 
