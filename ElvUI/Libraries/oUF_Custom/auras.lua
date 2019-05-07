@@ -71,28 +71,28 @@ local oUF = ns.oUF
 local VISIBLE = 1
 local HIDDEN = 0
 
+local _G = _G
+local tinsert = tinsert
 local CreateFrame = CreateFrame
-local GameTooltip = GameTooltip
 local GetSpellInfo = GetSpellInfo
 local UnitAura = UnitAura
 local UnitIsUnit = UnitIsUnit
 
-local tinsert = tinsert
 local floor, min = math.floor, math.min
 
 local function UpdateTooltip(self)
-	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
+	_G.GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
 end
 
 local function onEnter(self)
 	if(not self:IsVisible()) then return end
 
-	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMRIGHT')
+	_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMRIGHT')
 	self:UpdateTooltip()
 end
 
 local function onLeave()
-	GameTooltip:Hide()
+	_G.GameTooltip:Hide()
 end
 
 local function createAuraIcon(element, index)
