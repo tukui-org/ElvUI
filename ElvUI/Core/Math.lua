@@ -22,23 +22,23 @@ E.ShortPrefixStyles = {
 	["METRIC"] = {{1e12,"T"}, {1e9,"G"}, {1e6,"M"}, {1e3,"k"}}
 }
 
-function E:BuildPrefixValues(decimalLength, prefixStyle)
+function E:BuildPrefixValues()
 	if next(E.ShortPrefixValues) then wipe(E.ShortPrefixValues) end
 
-	E.ShortPrefixValues = E:CopyTable(E.ShortPrefixValues, E.ShortPrefixStyles[prefixStyle])
-	E.ShortValueDec = format("%%.%df", decimalLength or 1)
+	E.ShortPrefixValues = E:CopyTable(E.ShortPrefixValues, E.ShortPrefixStyles[E.db.general.numberPrefixStyle])
+	E.ShortValueDec = format("%%.%df", E.db.general.decimalLength or 1)
 
-	for _, prefix in ipairs(E.ShortPrefixValues) do
-		prefix[2] = E.ShortValueDec..prefix[2]
+	for _, style in ipairs(E.ShortPrefixValues) do
+		style[2] = E.ShortValueDec..style[2]
 	end
 end
 
 --Return short value of a number
 function E:ShortValue(v)
 	local abs_v = (v < 0 and v * -1) or v
-	for _, prefix in ipairs(E.ShortPrefixValues) do
-		if abs_v >= prefix[1] then
-			return format(prefix[2], v / prefix[1])
+	for _, style in ipairs(E.ShortPrefixValues) do
+		if abs_v >= style[1] then
+			return format(style[2], v / style[1])
 		end
 	end
 

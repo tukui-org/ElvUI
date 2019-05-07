@@ -1938,7 +1938,7 @@ function E:Initialize()
 	self:UIScale()
 
 	if not E.db.general.cropIcon then E.TexCoords = {0, 1, 0, 1} end
-	self:BuildPrefixValues(E.db.general.decimalLength, E.db.general.numberPrefixStyle)
+	self:BuildPrefixValues()
 
 	self:LoadCommands() --Load Commands
 	self:InitializeModules() --Load Modules

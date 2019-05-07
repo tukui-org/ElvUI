@@ -129,7 +129,7 @@ E.Options.args.general = {
 					min = 0, max = 4, step = 1,
 					set = function(info, value)
 						E.db.general.decimalLength = value
-						E:BuildPrefixValues(E.db.general.decimalLength, E.db.general.numberPrefixStyle)
+						E:BuildPrefixValues()
 						E:StaticPopup_Show("CONFIG_RL")
 					end,
 				},
@@ -140,7 +140,7 @@ E.Options.args.general = {
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
 					set = function(info, value)
 						E.db.general.numberPrefixStyle = value
-						E:BuildPrefixValues(E.db.general.decimalLength, E.db.general.numberPrefixStyle)
+						E:BuildPrefixValues()
 						E:StaticPopup_Show("CONFIG_RL")
 					end,
 					values = {
