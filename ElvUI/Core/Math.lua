@@ -23,7 +23,8 @@ E.ShortPrefixStyles = {
 }
 
 function E:BuildShortValues(decimalLength, prefixStyle)
-	wipe(E.ShortPrefixValues)
+	if next(E.ShortPrefixValues) then wipe(E.ShortPrefixValues) end
+
 	E.ShortPrefixValues = E:CopyTable(E.ShortPrefixValues, E.ShortPrefixStyles[prefixStyle])
 	E.ShortValueDec = format("%%.%df", decimalLength or 1)
 
