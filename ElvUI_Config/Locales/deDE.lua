@@ -335,6 +335,7 @@ L["Defines the sort order of the selected sort method."] = "Legt die Sortierreih
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "Entferne einen erstellten Filter. Es können nur benutzerdefinierte Filter entfernt werden."
 L["Delete Filter"] = "Filter löschen"
 L["Desaturate Cooldowns"] = "Auf Cooldown entsättigt"
+L["Desaturate Junk Items"] = "Verblasste Müll Symbole"
 L["Desaturate Voice Icons"] = "Verblasste Sprach Symbole"
 L["Desaturated Icon"] = "Entsättigtes Symbol"
 L["Descending"] = "Absteigend"

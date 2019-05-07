@@ -85,7 +85,6 @@ E.Options.args.bags = {
 					order = 5,
 					type = 'toggle',
 					name = L["Desaturate Junk Items"],
-					desc = L["Desaturate all grey items that can be vendored."],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
 				},
 				upgradeIcon = {

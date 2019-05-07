@@ -334,6 +334,7 @@ L["Defines the sort order of the selected sort method."] = "定义排序方式�
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "删除一个创建的过滤器, 你不能删除内建的过滤器, 只能删除你自已创建的"
 L["Delete Filter"] = "删除过滤器"
 L["Desaturate Cooldowns"] = "冷却中褪色"
+L["Desaturate Junk Items"] = true
 L["Desaturate Voice Icons"] = "褪色语音按钮"
 L["Desaturated Icon"] = "图标褪色"
 L["Descending"] = "降序"

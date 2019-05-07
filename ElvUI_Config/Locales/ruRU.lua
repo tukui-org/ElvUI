@@ -334,6 +334,7 @@ L["Defines the sort order of the selected sort method."] = "Определяет
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "Удалить созданный фильтр. Вы не можете удалять фильтры по умолчанию, только созданные вручную."
 L["Delete Filter"] = "Удалить фильтр"
 L["Desaturate Cooldowns"] = "Обесцветить при кулдауне"
+L["Desaturate Junk Items"] = true
 L["Desaturate Voice Icons"] = "Обесцветить иконки голосового чатаЫ"
 L["Desaturated Icon"] = "Бесцветная иконка"
 L["Descending"] = "Нисходящее"

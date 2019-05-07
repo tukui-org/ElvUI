@@ -334,6 +334,7 @@ L["Defines the sort order of the selected sort method."] = "선택한 '정렬 �
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "생성된 필터를 제거합니다. 단, 추가로 생성한 필터만 제거가 가능합니다."
 L["Delete Filter"] = "필터 삭제"
 L["Desaturate Cooldowns"] = "재사용 대기중일 때 흑백처리"
+L["Desaturate Junk Items"] = true
 L["Desaturate Voice Icons"] = true
 L["Desaturated Icon"] = true
 L["Descending"] = "내림차순"
