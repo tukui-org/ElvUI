@@ -9,6 +9,7 @@ Added skin for RaidProfiles New Profile Popup.
 [Style Filter] Added Triggers- Raid Target Marker, Not Name, Is Resting, Is Pet, and Unit/Player In/Out of Vehicle. (#469 #1253 #1278 and #1285 - Thanks @wing5wong)  
 [Style Filter] Added Triggers- Threat conditions, New Casting (or not Casting; or Casting:NotSpell) triggers, Key Modifiers, and Target: Require Target (used in ElvUI_NonTarget).  
 [Style Filter] Added Default Filters- ElvUI_NonTarget, ElvUI_Target, ElvUI_Boss, and ElvUI_Explosives. (Note: NonTarget is used to replace the NonTarget Alpha option and Target is used to replace the Target Scale option. The other two have had their names updated, so if you changed settings of them (Boss or Explosives), you can go ahead and delete them yourself now).  
+Added option to desaturate grey items in bags. (#1305)  
 
 **Bug Fixes:**  
 Fixed Nameplate Stagger texture.  
