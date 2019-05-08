@@ -35,10 +35,10 @@ end
 
 --Return short value of a number
 function E:ShortValue(v)
-	local abs_v = (v < 0 and v * -1) or v
-	for _, style in ipairs(E.ShortPrefixValues) do
-		if abs_v >= style[1] then
-			return format(style[2], v / style[1])
+	local abs_v = v<0 and -v or v
+	for i=1, #E.ShortPrefixValues do
+		if abs_v >= E.ShortPrefixValues[i][1] then
+			return format(E.ShortPrefixValues[i][2], v / E.ShortPrefixValues[i][1])
 		end
 	end
 
