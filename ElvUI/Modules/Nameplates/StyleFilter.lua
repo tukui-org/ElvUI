@@ -2,9 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
-local _G = _G
 local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
-local setmetatable, tonumber, type, unpack = setmetatable, tonumber, type, unpack
+local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local gsub, tinsert, tremove, sort, wipe = gsub, tinsert, tremove, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
@@ -552,7 +551,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if AlphaChanged then
 		frame.AlphaChanged = nil
-		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame.FadePlate.endAlpha, 1)
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, (frame.FadeObject and frame.FadeObject.endAlpha) or 0.5, 1)
 	end
 	if NameColorChanged then
 		frame.NameColorChanged = nil

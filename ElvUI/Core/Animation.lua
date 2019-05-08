@@ -4,7 +4,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Lua functions
-local random, tremove, strsub = random, tremove, strsub
+local random, next, unpack, strsub = random, next, unpack, strsub
 --WoW API / Variables
 
 E.AnimShake = {{-9,7,-7,12}, {-5,9,-9,5}, {-5,7,-7,5}, {-9,9,-9,9}, {-5,7,-7,5}, {-9,7,-9,5}}
@@ -153,117 +153,139 @@ function E:SlideOut(obj, customName)
 	obj[customName].out1:Play()
 end
 
-local frameFadeManager = CreateFrame('FRAME')
-local FADEFRAMES = {}
+local FADEFRAMES, FADEMANAGER = {}, CreateFrame('FRAME')
+FADEMANAGER.delay = 0.05
 
 function E:UIFrameFade_OnUpdate(elapsed)
-	local index = 1
-	local frame, fadeInfo
-	while FADEFRAMES[index] do
-		frame = FADEFRAMES[index]
-		fadeInfo = FADEFRAMES[index].fadeInfo
+	FADEMANAGER.timer = (FADEMANAGER.timer or 0) + elapsed
 
-		-- Reset the timer if there isn't one, this is just an internal counter
-		fadeInfo.fadeTimer = (fadeInfo.fadeTimer or 0) + elapsed
-		fadeInfo.fadeTimer = fadeInfo.fadeTimer + elapsed
+	if FADEMANAGER.timer > FADEMANAGER.delay then
+		FADEMANAGER.timer = 0
 
-		-- If the fadeTimer is less then the desired fade time then set the alpha otherwise hold the fade state, call the finished function, or just finish the fade
-		if fadeInfo.fadeTimer < fadeInfo.timeToFade then
-			if fadeInfo.mode == 'IN' then
-				frame:SetAlpha((fadeInfo.fadeTimer / fadeInfo.timeToFade) * (fadeInfo.endAlpha - fadeInfo.startAlpha) + fadeInfo.startAlpha)
-			elseif fadeInfo.mode == 'OUT' then
-				frame:SetAlpha(((fadeInfo.timeToFade - fadeInfo.fadeTimer) / fadeInfo.timeToFade) * (fadeInfo.startAlpha - fadeInfo.endAlpha)  + fadeInfo.endAlpha)
-			end
-		else
-			frame:SetAlpha(fadeInfo.endAlpha)
-			-- If there is a fadeHoldTime then wait until its passed to continue on
-			if fadeInfo.fadeHoldTime and fadeInfo.fadeHoldTime > 0  then
-				fadeInfo.fadeHoldTime = fadeInfo.fadeHoldTime - elapsed
+		for frame, info in next, FADEFRAMES do
+			-- Reset the timer if there isn't one, this is just an internal counter
+			if frame:IsVisible() then
+				info.fadeTimer = (info.fadeTimer or 0) + (elapsed + FADEMANAGER.delay)
 			else
-				-- Complete the fade and call the finished function if there is one
-				E:UIFrameFadeRemoveFrame(frame)
-				if fadeInfo.finishedFunc then
-					fadeInfo.finishedFunc(fadeInfo.finishedArg1, fadeInfo.finishedArg2, fadeInfo.finishedArg3, fadeInfo.finishedArg4)
-					fadeInfo.finishedFunc = nil
+				info.fadeTimer = info.timeToFade + 1
+			end
+
+			-- If the fadeTimer is less then the desired fade time then set the alpha otherwise hold the fade state, call the finished function, or just finish the fade
+			if info.fadeTimer < info.timeToFade then
+				if info.mode == 'IN' then
+					frame:SetAlpha((info.fadeTimer / info.timeToFade) * info.diffAlpha + info.startAlpha)
+				else
+					frame:SetAlpha(((info.timeToFade - info.fadeTimer) / info.timeToFade) * info.diffAlpha + info.endAlpha)
+				end
+			else
+				frame:SetAlpha(info.endAlpha)
+
+				-- If there is a fadeHoldTime then wait until its passed to continue on
+				if info.fadeHoldTime and info.fadeHoldTime > 0  then
+					info.fadeHoldTime = info.fadeHoldTime - elapsed
+				else
+					-- Complete the fade and call the finished function if there is one
+					E:UIFrameFadeRemoveFrame(frame)
+
+					if info.finishedFunc then
+						if info.finishedArgs then
+							info.finishedFunc(unpack(info.finishedArgs))
+						else -- optional method
+							info.finishedFunc(info.finishedArg1, info.finishedArg2, info.finishedArg3, info.finishedArg4, info.finishedArg5)
+						end
+
+						if not info.finishedFuncKeep then
+							info.finishedFunc = nil
+						end
+					end
 				end
 			end
 		end
 
-		index = index + 1
-	end
-
-	if #FADEFRAMES == 0 then
-		frameFadeManager:SetScript('OnUpdate', nil)
+		if not next(FADEFRAMES) then
+			FADEMANAGER:SetScript('OnUpdate', nil)
+		end
 	end
 end
 
 -- Generic fade function
-function E:UIFrameFade(frame, fadeInfo)
-	if not frame then return end
+function E:UIFrameFade(frame, info)
+	if not frame or frame:IsForbidden() then return end
 
-	if not fadeInfo.mode then
-		fadeInfo.mode = 'IN'
+	frame.fadeInfo = info
+
+	if not info.mode then
+		info.mode = 'IN'
 	end
 
-	if fadeInfo.mode == 'IN' then
-		if not fadeInfo.startAlpha then
-			fadeInfo.startAlpha = 0
-		end
-		if not fadeInfo.endAlpha then
-			fadeInfo.endAlpha = 1.0
-		end
-	elseif fadeInfo.mode == 'OUT' then
-		if not fadeInfo.startAlpha then
-			fadeInfo.startAlpha = 1.0
-		end
-		if not fadeInfo.endAlpha then
-			fadeInfo.endAlpha = 0
-		end
+	if info.mode == 'IN' then
+		if not info.startAlpha then info.startAlpha = 0 end
+		if not info.endAlpha then info.endAlpha = 1 end
+		if not info.diffAlpha then info.diffAlpha = info.endAlpha - info.startAlpha end
+	else
+		if not info.startAlpha then info.startAlpha = 1 end
+		if not info.endAlpha then info.endAlpha = 0 end
+		if not info.diffAlpha then info.diffAlpha = info.startAlpha - info.endAlpha end
 	end
 
-	frame:SetAlpha(fadeInfo.startAlpha)
-	frame.fadeInfo = fadeInfo
+	frame:SetAlpha(info.startAlpha)
 
 	if not frame:IsProtected() then
 		frame:Show()
 	end
 
-	for index = 1, #FADEFRAMES do
-		-- If frame is already set to fade then return
-		if FADEFRAMES[index] == frame then
-			return
-		end
+	if not FADEFRAMES[frame] then
+		FADEFRAMES[frame] = info -- read below comment
+		FADEMANAGER:SetScript('OnUpdate', E.UIFrameFade_OnUpdate)
+	else
+		FADEFRAMES[frame] = info -- keep these both, we need this updated in the event its changed to another ref from a plugin or sth, don't move it up!
 	end
-
-	FADEFRAMES[#FADEFRAMES + 1] = frame
-	frameFadeManager:SetScript('OnUpdate', E.UIFrameFade_OnUpdate)
 end
 
 -- Convenience function to do a simple fade in
 function E:UIFrameFadeIn(frame, timeToFade, startAlpha, endAlpha)
-	local fadeInfo = {}
-	fadeInfo.mode = 'IN'
-	fadeInfo.timeToFade = timeToFade
-	fadeInfo.startAlpha = startAlpha
-	fadeInfo.endAlpha = endAlpha
-	E:UIFrameFade(frame, fadeInfo)
+	if not frame or frame:IsForbidden() then return end
+
+	if frame.FadeObject then
+		frame.FadeObject.fadeTimer = nil
+	else
+		frame.FadeObject = {}
+	end
+
+	frame.FadeObject.mode = 'IN'
+	frame.FadeObject.timeToFade = timeToFade
+	frame.FadeObject.startAlpha = startAlpha
+	frame.FadeObject.endAlpha = endAlpha
+	frame.FadeObject.diffAlpha = endAlpha - startAlpha
+
+	E:UIFrameFade(frame, frame.FadeObject)
 end
 
 -- Convenience function to do a simple fade out
 function E:UIFrameFadeOut(frame, timeToFade, startAlpha, endAlpha)
-	local fadeInfo = {}
-	fadeInfo.mode = 'OUT'
-	fadeInfo.timeToFade = timeToFade
-	fadeInfo.startAlpha = startAlpha
-	fadeInfo.endAlpha = endAlpha
-	E:UIFrameFade(frame, fadeInfo)
+	if not frame or frame:IsForbidden() then return end
+
+	if frame.FadeObject then
+		frame.FadeObject.fadeTimer = nil
+	else
+		frame.FadeObject = {}
+	end
+
+	frame.FadeObject.mode = 'OUT'
+	frame.FadeObject.timeToFade = timeToFade
+	frame.FadeObject.startAlpha = startAlpha
+	frame.FadeObject.endAlpha = endAlpha
+	frame.FadeObject.diffAlpha = startAlpha - endAlpha
+
+	E:UIFrameFade(frame, frame.FadeObject)
 end
 
 function E:UIFrameFadeRemoveFrame(frame)
-	for index = 1, #FADEFRAMES do
-		if frame == FADEFRAMES[index] then
-			tremove(FADEFRAMES, index)
-			break
+	if frame and FADEFRAMES[frame] then
+		if frame.FadeObject then
+			frame.FadeObject.fadeTimer = nil
 		end
+
+		FADEFRAMES[frame] = nil
 	end
 end

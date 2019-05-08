@@ -127,20 +127,28 @@ E.Options.args.general = {
 					name = L["Decimal Length"],
 					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
 					min = 0, max = 4, step = 1,
-					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
+					set = function(info, value)
+						E.db.general.decimalLength = value
+						E:BuildPrefixValues()
+						E:StaticPopup_Show("CONFIG_RL")
+					end,
 				},
 				numberPrefixStyle = {
 					order = 12,
 					type = "select",
 					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
-					set = function(info, value) E.db.general.numberPrefixStyle = value; E:StaticPopup_Show("CONFIG_RL") end,
+					set = function(info, value)
+						E.db.general.numberPrefixStyle = value
+						E:BuildPrefixValues()
+						E:StaticPopup_Show("CONFIG_RL")
+					end,
 					values = {
-						["METRIC"] = "Metric (k, M, G)",
-						["ENGLISH"] = "English (K, M, B)",
 						["CHINESE"] = "Chinese (W, Y)",
+						["ENGLISH"] = "English (K, M, B)",
+						["GERMAN"] = "German (Tsd, Mio, Mrd)",
 						["KOREAN"] = "Korean (천, 만, 억)",
-						["GERMAN"] = "German (Tsd, Mio, Mrd)"
+						["METRIC"] = "Metric (k, M, G)"
 					},
 				},
 				smoothingAmount = {

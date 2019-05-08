@@ -336,6 +336,7 @@ L["Defines the sort order of the selected sort method."] = true
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = true
 L["Delete Filter"] = true
 L["Desaturate Cooldowns"] = true
+L["Desaturate Junk Items"] = true
 L["Desaturate Voice Icons"] = true
 L["Desaturated Icon"] = true
 L["Descending"] = true

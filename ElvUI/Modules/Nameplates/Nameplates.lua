@@ -13,11 +13,13 @@ local wipe = wipe
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
+local GetCVar = GetCVar
+local GetCVarDefault = GetCVarDefault
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
-local SetCVar, GetCVarDefault = SetCVar, GetCVarDefault
+local SetCVar = SetCVar
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitCreatureType = UnitCreatureType
@@ -32,12 +34,12 @@ local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
-local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
-local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
-local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
+local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
+local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
+local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 
 local function CopySettings(from, to)
 	for setting, value in pairs(from) do
@@ -107,13 +109,16 @@ function NP:SetCVars()
 	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors and 1 or 0)
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
 
-	if NP.db.questIcon then
+	if NP.db.units.ENEMY_NPC.questIcon.enable or NP.db.units.FRIENDLY_NPC.questIcon.enable then
 		SetCVar('showQuestTrackingTooltips', 1)
 	end
 
 	if NP.db.clampToScreen then
 		SetCVar('nameplateOtherTopInset', 0.08)
 		SetCVar('nameplateOtherBottomInset', 0.1)
+	elseif GetCVar('nameplateOtherTopInset') == '0.08' and GetCVar('nameplateOtherBottomInset') == '0.1' then
+		SetCVar('nameplateOtherTopInset', -1)
+		SetCVar('nameplateOtherBottomInset', -1)
 	end
 end
 
@@ -466,26 +471,23 @@ function NP:ConfigureAll()
 	NP:SetNamePlateClickThrough()
 end
 
-function NP:PlateFadeFinish()
-	self.FadePlate.Fading = nil
-end
-
 function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
-	if not nameplate.FadePlate then
-		nameplate.FadePlate = {}
-	else
-		nameplate.FadePlate.fadeTimer = nil
+	-- we need our own function because we want a smooth transition and dont want it to force update every pass.
+	-- its controlled by fadeTimer which is reset when UIFrameFadeOut or UIFrameFadeIn code runs.
+
+	if not nameplate.FadeObject then
+		nameplate.FadeObject = {}
 	end
 
-	nameplate.FadePlate.timeToFade = timeToFade
-	nameplate.FadePlate.startAlpha = startAlpha
-	nameplate.FadePlate.endAlpha = endAlpha
-	nameplate.FadePlate.finishedFunc = NP.PlateFadeFinish
-	nameplate.FadePlate.finishedArg1 = nameplate
+	nameplate.FadeObject.timeToFade = timeToFade
+	nameplate.FadeObject.startAlpha = startAlpha
+	nameplate.FadeObject.endAlpha = endAlpha
+	nameplate.FadeObject.diffAlpha = endAlpha - startAlpha
 
-	if not nameplate.FadePlate.Fading then
-		E:UIFrameFade(nameplate, nameplate.FadePlate)
-		nameplate.FadePlate.Fading = true
+	if nameplate.FadeObject.fadeTimer then
+		nameplate.FadeObject.fadeTimer = 0
+	else
+		E:UIFrameFade(nameplate, nameplate.FadeObject)
 	end
 end
 

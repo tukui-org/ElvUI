@@ -71,19 +71,28 @@ local oUF = ns.oUF
 local VISIBLE = 1
 local HIDDEN = 0
 
+local _G = _G
+local tinsert = tinsert
+local CreateFrame = CreateFrame
+local GetSpellInfo = GetSpellInfo
+local UnitAura = UnitAura
+local UnitIsUnit = UnitIsUnit
+
+local floor, min = math.floor, math.min
+
 local function UpdateTooltip(self)
-	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
+	_G.GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
 end
 
 local function onEnter(self)
 	if(not self:IsVisible()) then return end
 
-	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMRIGHT')
+	_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMRIGHT')
 	self:UpdateTooltip()
 end
 
 local function onLeave()
-	GameTooltip:Hide()
+	_G.GameTooltip:Hide()
 end
 
 local function createAuraIcon(element, index)
@@ -135,8 +144,8 @@ local function createAuraIcon(element, index)
 	return button
 end
 
-local function customFilter(element, unit, button, name)
-	if((element.onlyShowPlayer and button.isPlayer) or (not element.onlyShowPlayer and name)) then
+local function customFilter(element, _, button, name)
+	if (element.onlyShowPlayer and button.isPlayer) or (not element.onlyShowPlayer and name) then
 		return true
 	end
 end
@@ -150,7 +159,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 	if element.forceShow then
 		spellID = 47540
 		name, _, texture = GetSpellInfo(spellID)
-		count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, canApplyAura, isBossDebuff = 5, 'Magic', 0, 60, 'player', nil, nil, nil, nil
+		count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, isBossDebuff = 5, 'Magic', 0, 60, 'player', nil, nil, nil
 	end
 	-- end Block
 
@@ -170,7 +179,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			--]]
 			button = (element.CreateIcon or createAuraIcon) (element, position)
 
-			table.insert(element, button)
+			tinsert(element, button)
 			element.createdIcons = element.createdIcons + 1
 		end
 
@@ -273,7 +282,7 @@ local function SetPosition(element, from, to)
 	local anchor = element.initialAnchor or 'BOTTOMLEFT'
 	local growthx = (element['growth-x'] == 'LEFT' and -1) or 1
 	local growthy = (element['growth-y'] == 'DOWN' and -1) or 1
-	local cols = math.floor(element:GetWidth() / sizex + 0.5)
+	local cols = floor(element:GetWidth() / sizex + 0.5)
 
 	for i = from, to do
 		local button = element[i]
@@ -281,7 +290,7 @@ local function SetPosition(element, from, to)
 		-- Bail out if the to range is out of scope.
 		if(not button) then break end
 		local col = (i - 1) % cols
-		local row = math.floor((i - 1) / cols)
+		local row = floor((i - 1) / cols)
 
 		button:ClearAllPoints()
 		button:SetPoint(anchor, element, anchor, col * sizex * growthx, row * sizey * growthy)
@@ -315,7 +324,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	return visible, hidden
 end
 
-local function UpdateAuras(self, event, unit)
+local function UpdateAuras(self, _, unit)
 	if(self.unit ~= unit) then return end
 
 	local auras = self.Auras
@@ -332,7 +341,7 @@ local function UpdateAuras(self, event, unit)
 		local numDebuffs = auras.numDebuffs or 40
 		local max = auras.numTotal or numBuffs + numDebuffs
 
-		local visibleBuffs, hiddenBuffs = filterIcons(auras, unit, auras.buffFilter or auras.filter or 'HELPFUL', math.min(numBuffs, max), nil, 0, true)
+		local visibleBuffs = filterIcons(auras, unit, auras.buffFilter or auras.filter or 'HELPFUL', min(numBuffs, max), nil, 0, true)
 
 		local hasGap
 		if(visibleBuffs ~= 0 and auras.gap) then
@@ -342,7 +351,7 @@ local function UpdateAuras(self, event, unit)
 			local button = auras[visibleBuffs]
 			if(not button) then
 				button = (auras.CreateIcon or createAuraIcon) (auras, visibleBuffs)
-				table.insert(auras, button)
+				tinsert(auras, button)
 				auras.createdIcons = auras.createdIcons + 1
 			end
 
@@ -369,7 +378,7 @@ local function UpdateAuras(self, event, unit)
 			end
 		end
 
-		local visibleDebuffs, hiddenDebuffs = filterIcons(auras, unit, auras.debuffFilter or auras.filter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
+		local visibleDebuffs = filterIcons(auras, unit, auras.debuffFilter or auras.filter or 'HARMFUL', min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
 		auras.visibleDebuffs = visibleDebuffs
 
 		if(hasGap and visibleDebuffs == 0) then
@@ -423,7 +432,7 @@ local function UpdateAuras(self, event, unit)
 		if(buffs.PreUpdate) then buffs:PreUpdate(unit) end
 
 		local numBuffs = buffs.num or 32
-		local visibleBuffs, hiddenBuffs = filterIcons(buffs, unit, buffs.filter or 'HELPFUL', numBuffs)
+		local visibleBuffs = filterIcons(buffs, unit, buffs.filter or 'HELPFUL', numBuffs)
 		buffs.visibleBuffs = visibleBuffs
 
 		local fromRange, toRange
@@ -444,7 +453,7 @@ local function UpdateAuras(self, event, unit)
 		if(debuffs.PreUpdate) then debuffs:PreUpdate(unit) end
 
 		local numDebuffs = debuffs.num or 40
-		local visibleDebuffs, hiddenDebuffs = filterIcons(debuffs, unit, debuffs.filter or 'HARMFUL', numDebuffs, true)
+		local visibleDebuffs = filterIcons(debuffs, unit, debuffs.filter or 'HARMFUL', numDebuffs, true)
 		debuffs.visibleDebuffs = visibleDebuffs
 
 		local fromRange, toRange

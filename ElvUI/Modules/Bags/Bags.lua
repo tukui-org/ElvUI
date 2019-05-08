@@ -236,7 +236,7 @@ function B:SetSearch(query)
 				local button = bagFrame.Bags[bagID][slotID];
 				local success, result = pcall(method, Search, link, query)
 				if empty or (success and result) then
-					SetItemButtonDesaturated(button);
+					SetItemButtonDesaturated(button, button.locked or button.junkDesaturate);
 					button.searchOverlay:Hide();
 					button:SetAlpha(1);
 				else
@@ -254,7 +254,7 @@ function B:SetSearch(query)
 			local button = _G["ElvUIReagentBankFrameItem"..slotID]
 			local success, result = pcall(method, Search, link, query)
 			if empty or (success and result) then
-				SetItemButtonDesaturated(button);
+				SetItemButtonDesaturated(button, button.locked or button.junkDesaturate);
 				button.searchOverlay:Hide();
 				button:SetAlpha(1);
 			else
@@ -289,7 +289,7 @@ function B:SetGuildBankSearch(query)
 				local button = _G["GuildBankColumn"..col.."Button"..btn]
 				local success, result = pcall(method, Search, link, query)
 				if empty or (success and result) then
-					SetItemButtonDesaturated(button);
+					SetItemButtonDesaturated(button, button.locked or button.junkDesaturate);
 					button.searchOverlay:Hide();
 					button:SetAlpha(1);
 				else
@@ -488,7 +488,7 @@ function B:UpdateSlot(bagID, slotID)
 	local assignedBag = self.Bags[assignedID] and self.Bags[assignedID].assigned
 
 	local texture, count, locked, rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.rarity = nil, rarity
+	slot.name, slot.rarity, slot.locked = nil, rarity, locked
 
 	local clink = GetContainerItemLink(bagID, slotID)
 
@@ -501,8 +501,11 @@ function B:UpdateSlot(bagID, slotID)
 		slot.Azerite:Hide()
 	end
 
+	slot.isJunk = (slot.rarity and slot.rarity == LE_ITEM_QUALITY_POOR) and not noValue
+	slot.junkDesaturate = slot.isJunk and E.db.bags.junkDesaturate
+
 	if slot.JunkIcon then
-		if slot.rarity and (slot.rarity == LE_ITEM_QUALITY_POOR and not noValue) and E.db.bags.junkIcon then
+		if slot.isJunk and E.db.bags.junkIcon then
 			slot.JunkIcon:Show()
 		else
 			slot.JunkIcon:Hide()
@@ -655,7 +658,7 @@ function B:UpdateSlot(bagID, slotID)
 
 	SetItemButtonTexture(slot, texture);
 	SetItemButtonCount(slot, count);
-	SetItemButtonDesaturated(slot, locked);
+	SetItemButtonDesaturated(slot, slot.locked or slot.junkDesaturate);
 
 	if _G.GameTooltip:GetOwner() == slot and not slot.hasItem then
 		B:Tooltip_Hide()
@@ -1322,7 +1325,7 @@ function B:UpdateReagentSlot(slotID)
 		slot.questIcon:Hide();
 	end
 
-	slot.name, slot.rarity = nil, nil;
+	slot.name, slot.rarity, slot.locked = nil, nil, locked
 
 	local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
 	CooldownFrame_Set(slot.Cooldown, start, duration, enable)
@@ -1378,7 +1381,7 @@ function B:UpdateReagentSlot(slotID)
 
 	SetItemButtonTexture(slot, texture);
 	SetItemButtonCount(slot, count);
-	SetItemButtonDesaturated(slot, locked);
+	SetItemButtonDesaturated(slot, slot.locked);
 end
 
 function B:UpdateAll()
