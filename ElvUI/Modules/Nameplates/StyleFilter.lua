@@ -717,7 +717,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 			end
 
 			local checkOffTank = trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition
-			local status = (checkOffTank and frame.ThreatOffTank and frame.ThreatStatus and (frame.ThreatStatus * -1)) or (not checkOffTank and ((frame.ThreatIsTank and mod.TriggerConditions.tankThreat[frame.ThreatStatus]) or frame.ThreatStatus)) or nil
+			local status = (checkOffTank and frame.ThreatOffTank and frame.ThreatStatus and -frame.ThreatStatus) or (not checkOffTank and ((frame.ThreatIsTank and mod.TriggerConditions.tankThreat[frame.ThreatStatus]) or frame.ThreatStatus)) or nil
 			if trigger.threat[mod.TriggerConditions.threat[status]] then passed = true else return end
 		end
 	end
