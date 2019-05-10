@@ -400,7 +400,7 @@ function UF:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	if db.priority ~= '' then
 		local isUnit = unit and caster and UnitIsUnit(unit, caster)
 		local canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType))
-		filterCheck, spellPriority = UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", db.priority))
+		filterCheck, spellPriority = UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(',', db.priority))
 		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
 	else
 		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders

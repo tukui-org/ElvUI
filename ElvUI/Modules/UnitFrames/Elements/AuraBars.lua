@@ -183,19 +183,18 @@ function UF.SortAuraBarName(a, b)
 end
 
 function UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, ...)
-	local friendCheck, filterName, filter, filterType, spellList, spell
 	for i=1, select('#', ...) do
-		filterName = select(i, ...)
-		friendCheck = (isFriend and strmatch(filterName, "^Friendly:([^,]*)")) or (not isFriend and strmatch(filterName, "^Enemy:([^,]*)")) or nil
+		local filterName = select(i, ...)
+		local friendCheck = (isFriend and strmatch(filterName, "^Friendly:([^,]*)")) or (not isFriend and strmatch(filterName, "^Enemy:([^,]*)")) or nil
 		if friendCheck ~= false then
 			if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
 				filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
 			end
-			filter = E.global.unitframe.aurafilters[filterName]
+			local filter = E.global.unitframe.aurafilters[filterName]
 			if filter then
-				filterType = filter.type
-				spellList = filter.spells
-				spell = spellList and (spellList[spellID] or spellList[name])
+				local filterType = filter.type
+				local spellList = filter.spells
+				local spell = spellList and (spellList[spellID] or spellList[name])
 
 				if filterType and (filterType == 'Whitelist') and (spell and spell.enable) and allowDuration then
 					return true, spell.priority -- this is the only difference from auarbars code
@@ -251,7 +250,7 @@ function UF:AuraBarFilter(unit, name, _, _, debuffType, duration, _, unitCaster,
 		local auraType = (isFriend and db.friendlyAuraType) or (not isFriend and db.enemyAuraType)
 		canDispell = (auraType == 'HELPFUL' and isStealable) or (auraType == 'HARMFUL' and debuffType and E:IsDispellableByMe(debuffType))
 		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
-		filterCheck = UF:CheckFilter(name, unitCaster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", db.priority))
+		filterCheck = UF:CheckFilter(name, unitCaster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(',', db.priority))
 	else
 		filterCheck = true -- Allow all auras to be shown when the filter list is empty
 	end
