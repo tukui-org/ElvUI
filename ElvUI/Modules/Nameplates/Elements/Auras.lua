@@ -281,20 +281,19 @@ function NP:UpdateAuraCooldownPosition(button)
 end
 
 function NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, ...)
-	local friendCheck, filterName, filter, filterType, spellList, spell
 	for i=1, select('#', ...) do
-		filterName = select(i, ...)
+		local filterName = select(i, ...)
 		if not filterName then return true end
-		friendCheck = (isFriend and strmatch(filterName, '^Friendly:([^,]*)')) or (not isFriend and strmatch(filterName, '^Enemy:([^,]*)')) or nil
+		local friendCheck = (isFriend and strmatch(filterName, '^Friendly:([^,]*)')) or (not isFriend and strmatch(filterName, '^Enemy:([^,]*)')) or nil
 		if friendCheck ~= false then
 			if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
 				filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
 			end
-			filter = E.global.unitframe.aurafilters[filterName]
+			local filter = E.global.unitframe.aurafilters[filterName]
 			if filter then
-				filterType = filter.type
-				spellList = filter.spells
-				spell = spellList and (spellList[spellID] or spellList[name])
+				local filterType = filter.type
+				local spellList = filter.spells
+				local spell = spellList and (spellList[spellID] or spellList[name])
 
 				if filterType and (filterType == 'Whitelist') and (spell and spell.enable) and allowDuration then
 					return true
