@@ -1,10 +1,10 @@
-local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 23
+local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 24
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
 --Lua functions
 local pairs, tonumber, strmatch, strsub = pairs, tonumber, strmatch, strsub
-local format, strsplit, strlen, gsub, ceil = format, strsplit, strlen, gsub, ceil
+local format, gmatch, strlen, gsub, ceil = format, gmatch, strlen, gsub, ceil
 --WoW API / Variables
 local GetNumGroupMembers = GetNumGroupMembers
 local GetLocale, IsInGuild = GetLocale, IsInGuild
@@ -79,7 +79,7 @@ end
 --
 ------------------------------
 function lib:RegisterPlugin(name, callback, isLib)
-    local plugin = {
+	local plugin = {
 		name = name,
 		callback = callback,
 		version = name == MAJOR and MINOR or GetAddOnMetadata(name, 'Version')
@@ -153,23 +153,23 @@ end
 
 function lib:GetPluginOptions()
 	ElvUI[1].Options.args.plugins = {
-        order = -10,
-        type = 'group',
-        name = HDR_CONFIG,
-        guiInline = false,
-        args = {
-            pluginheader = {
-                order = 1,
-                type = 'header',
-                name = format(HDR_INFORMATION, MINOR),
-            },
-            plugins = {
-                order = 2,
-                type = 'description',
-                name = lib:GeneratePluginList(),
-            },
-        }
-    }
+		order = -10,
+		type = 'group',
+		name = HDR_CONFIG,
+		guiInline = false,
+		args = {
+			pluginheader = {
+				order = 1,
+				type = 'header',
+				name = format(HDR_INFORMATION, MINOR),
+			},
+			plugins = {
+				order = 2,
+				type = 'description',
+				name = lib:GeneratePluginList(),
+			},
+		}
+	}
 end
 
 function lib:VersionCheck(event, prefix, message, _, sender)
@@ -179,22 +179,17 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 		if sender == lib.myName then return end
 
 		if not E.pluginRecievedOutOfDateMessage then
-			local name, version, plugin, Pname, Pver, ver
-			for _, p in pairs({strsplit(';',message)}) do
-				if not strmatch(p, '^%s-$') then
-					name, version = strmatch(p, '([%w_]+)=([%d%p]+)')
-					plugin = name and lib.plugins[name]
-
-					if version and plugin and plugin.version and (plugin.version ~= 'BETA') then
-						Pver, ver = tonumber(plugin.version), tonumber(version)
-						if (ver and Pver) and (ver > Pver) then
-							plugin.old, plugin.newversion = true, ver
-							Pname = GetAddOnMetadata(plugin.name, 'Title')
-							E:Print(format(MSG_OUTDATED,Pname,plugin.version,plugin.newversion))
-							ElvUI[1].pluginRecievedOutOfDateMessage = true
-						elseif (ver and Pver) and (ver < Pver) then
-							lib:DelayedSendVersionCheck()
-						end
+			for name, version in gmatch(message, '([^=]+)=([%d%p]+);') do
+				local plugin = name and lib.plugins[name]
+				if version and plugin and plugin.version and (plugin.version ~= 'BETA') then
+					local Pver, ver = tonumber(plugin.version), tonumber(version)
+					if (ver and Pver) and (ver > Pver) then
+						plugin.old, plugin.newversion = true, ver
+						local Pname = GetAddOnMetadata(plugin.name, 'Title')
+						E:Print(format(MSG_OUTDATED,Pname,plugin.version,plugin.newversion))
+						ElvUI[1].pluginRecievedOutOfDateMessage = true
+					elseif (ver and Pver) and (ver < Pver) then
+						lib:DelayedSendVersionCheck()
 					end
 				end
 			end
