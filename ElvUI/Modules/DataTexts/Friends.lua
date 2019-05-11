@@ -426,6 +426,10 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 	lastTooltipXLineHeader = nil
 
+	-- Header
+	DT.tooltip:AddLine(E.title..FRIENDS)
+	DT.tooltip:AddLine(" ")
+
 	local onlineFriends = C_FriendList_GetNumOnlineFriends()
 	local numberOfFriends = C_FriendList_GetNumFriends()
 	local totalBNet, numBNetOnline = BNGetNumFriends()

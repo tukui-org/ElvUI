@@ -48,6 +48,10 @@ end
 local function OnEnter(self, _, noUpdate)
 	DT:SetupTooltip(self)
 
+	-- Header
+	DT.tooltip:AddLine(E.title..L["BfA Missions"])
+	DT.tooltip:AddLine(" ")
+
 	if(not noUpdate) then
 		DT.tooltip:Hide()
 		C_Garrison_RequestLandingPageShipmentInfo()

@@ -93,6 +93,10 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
+	-- Header
+	DT.tooltip:AddLine(E.title..L["Avoidance Breakdown"])
+	DT.tooltip:AddLine(" ")
+
 	if targetlv > 1 then
 		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], strjoin("", " (", L["lvl"], " ", targetlv, ")"))
 	elseif targetlv == -1 then

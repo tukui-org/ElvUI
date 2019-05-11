@@ -77,6 +77,11 @@ end
 local myGold = {}
 local function OnEnter(self)
 	DT:SetupTooltip(self)
+
+	-- Header
+	DT.tooltip:AddLine(E.title..L["Gold"])
+	DT.tooltip:AddLine(" ")
+
 	local textOnly = not E.db.datatexts.goldCoins and true or false
 	local style = E.db.datatexts.goldFormat or "BLIZZARD"
 
