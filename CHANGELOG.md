@@ -34,6 +34,8 @@ Fixed some Nameplate CVar issues.
 [Lag Fix] Tweak our oUF_Fader slightly and recoded the UIFrameFade to solve various CPU lags with UpdateRange.  
 [Lag Fix] Removed a spammy event (UNIT_AURA) from the PetBar as this was causing it to execute far more than needed.  
 [Lag Fix] Reworked how we send calls to the UpdateAuraCooldownPosition functions and on NamePlate Auras to save on CPU time.  
+[Lag Fix] Stopped code execution of some functions when our interrupt announce or nameplate auras have been disabled.  
+[Lag Fix] We believe we have finally resolved the preformance degrade/reaping issue, which was caused from the texts on UnitFrame and NamePlates causing a code stack which eventually would drain FPS.  
 
 **Misc. Changes:**  
 Unitframe Status Bars will now sync their textures onto the background space when not using transparent.  
@@ -51,6 +53,7 @@ The Bag Bar and Vendor Greys tabs are now again available if the All In One Bag 
 [Style Filter] Cleaned a decent amount of the trigger condition check code with the help of @wing5wong.  
 Add shadow instead flash texture for StaticPopup buttons (Thanks @Bunny67)  
 Added a Header to our Datatexts.
+Fixed an issue and garbage leak with the plugin version checker.  
 
 ___
 ### Version 11.10 [ April 9th 2019 ]
