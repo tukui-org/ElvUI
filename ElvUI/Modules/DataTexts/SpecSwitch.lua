@@ -74,6 +74,10 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
+	-- Header
+	DT.tooltip:AddLine(E.title..L["Talent/Loot Specialization"])
+	DT.tooltip:AddLine(" ")
+
 	for i = 1, GetNumSpecializations() do
 		local _, name = GetSpecializationInfo(i);
 		if name then

@@ -883,6 +883,14 @@ E.Options.args.general = {
 						['RAID_ONLY'] = L["Raid Only"],
 						["EMOTE"] = L.CHAT_MSG_EMOTE,
 					},
+					set = function(info, value)
+						E.db.general[info[#info]] = value
+						if value == 'NONE' then
+							Misc:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+						else
+							Misc:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+						end
+					end,
 				},
 				autoRepair = {
 					order = 2,

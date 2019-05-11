@@ -21,6 +21,10 @@ local lastPanel;
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
+	-- Header
+	DT.tooltip:AddLine(E.title..STAT_LIFESTEAL)
+	DT.tooltip:AddLine(" ")
+
 	local text, tooltip;
 	text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_LIFESTEAL).." "..format("%.2F%%", GetLifesteal())..FONT_COLOR_CODE_CLOSE
 	tooltip = format(CR_LIFESTEAL_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(CR_LIFESTEAL)), GetCombatRatingBonus(CR_LIFESTEAL))

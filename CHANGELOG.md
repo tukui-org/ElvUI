@@ -10,6 +10,7 @@ Added skin for RaidProfiles New Profile Popup.
 [Style Filter] Added Triggers- Threat conditions, New Casting (or not Casting; or Casting:NotSpell) triggers, Key Modifiers, and Target: Require Target (used in ElvUI_NonTarget).  
 [Style Filter] Added Default Filters- ElvUI_NonTarget, ElvUI_Target, ElvUI_Boss, and ElvUI_Explosives. (Note: NonTarget is used to replace the NonTarget Alpha option and Target is used to replace the Target Scale option. The other two have had their names updated, so if you changed settings of them (Boss or Explosives), you can go ahead and delete them yourself now).  
 Added option to desaturate grey items in bags. (#1305)  
+Added World Latency to our System Datatext.  
 
 **Bug Fixes:**  
 Fixed Nameplate Stagger texture.  
@@ -33,6 +34,8 @@ Fixed some Nameplate CVar issues.
 [Lag Fix] Tweak our oUF_Fader slightly and recoded the UIFrameFade to solve various CPU lags with UpdateRange.  
 [Lag Fix] Removed a spammy event (UNIT_AURA) from the PetBar as this was causing it to execute far more than needed.  
 [Lag Fix] Reworked how we send calls to the UpdateAuraCooldownPosition functions and on NamePlate Auras to save on CPU time.  
+[Lag Fix] Stopped code execution of some functions when our interrupt announce or nameplate auras have been disabled.  
+[Lag Fix] We believe we have finally resolved the preformance degrade/reaping issue, which was caused from the texts on UnitFrame and NamePlates causing a code stack which eventually would drain FPS.  
 
 **Misc. Changes:**  
 Unitframe Status Bars will now sync their textures onto the background space when not using transparent.  
@@ -49,6 +52,8 @@ The Bag Bar and Vendor Greys tabs are now again available if the All In One Bag 
 [Style Filter] Fixed Static Player Nameplate to no longer taint from filters.  
 [Style Filter] Cleaned a decent amount of the trigger condition check code with the help of @wing5wong.  
 Add shadow instead flash texture for StaticPopup buttons (Thanks @Bunny67)  
+Added a Header to our Datatexts.
+Fixed an issue and garbage leak with the plugin version checker.  
 
 ___
 ### Version 11.10 [ April 9th 2019 ]

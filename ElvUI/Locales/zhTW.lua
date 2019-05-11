@@ -333,6 +333,7 @@ L["Voice Overlay"] = "語音浮層"
 L["Waist"] = "腰部"
 L["Welcome to ElvUI version %s!"] = "歡迎使用 ElvUI %s 版！"
 L["whispers"] = "密語"
+L["World Latency:"] = true
 L["World Protocol:"] = "世界協議:"
 L["WoW Token:"] = "魔獸代幣:"
 L["Wrist"] = "護腕"

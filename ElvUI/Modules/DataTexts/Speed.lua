@@ -21,6 +21,10 @@ local lastPanel;
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
+	-- Header
+	DT.tooltip:AddLine(E.title..STAT_SPEED)
+	DT.tooltip:AddLine(" ")
+
 	local text, tooltip;
 	text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_SPEED).." "..format("%.2F%%", GetSpeed())..FONT_COLOR_CODE_CLOSE
 	tooltip = format(CR_SPEED_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(CR_SPEED)), GetCombatRatingBonus(CR_SPEED))

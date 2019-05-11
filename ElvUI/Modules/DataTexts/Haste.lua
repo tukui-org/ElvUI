@@ -33,6 +33,10 @@ end
 local OnEnter = function(self)
 	DT:SetupTooltip(self)
 
+	-- Header
+	DT.tooltip:AddLine(E.title..STAT_HASTE)
+	DT.tooltip:AddLine(" ")
+
 	local rating = CR_HASTE_MELEE;
 	local classTooltip = _G["STAT_HASTE_"..E.myclass.."_TOOLTIP"]
 	local haste = GetHaste()

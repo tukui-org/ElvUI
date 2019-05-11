@@ -64,12 +64,11 @@ function M:ErrorFrameToggle(event)
 end
 
 function M:COMBAT_LOG_EVENT_UNFILTERED()
-	local _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo()
-	if E.db.general.interruptAnnounce == "NONE" then return end -- No Announcement configured, exit.
-	if not (event == "SPELL_INTERRUPT" and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet'))) then return end -- No announce-able interrupt from player or pet, exit.
-
 	local inGroup, inRaid, inPartyLFG = IsInGroup(), IsInRaid(), IsPartyLFG()
 	if not inGroup then return end -- not in group, exit.
+
+	local _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo()
+	if not (event == "SPELL_INTERRUPT" and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet'))) then return end -- No announce-able interrupt from player or pet, exit.
 
 	--Skirmish/non-rated arenas need to use INSTANCE_CHAT but IsPartyLFG() returns "false"
 	local _, instanceType = IsInInstance()
@@ -82,22 +81,17 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 		inRaid = false --IsInRaid() returns true for arenas and they should not be considered a raid
 	end
 
-	if E.db.general.interruptAnnounce == "PARTY" then
-		SendChatMessage(format(INTERRUPT_MSG, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")
-	elseif E.db.general.interruptAnnounce == "RAID" then
-		if inRaid then
-			SendChatMessage(format(INTERRUPT_MSG, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "RAID")
-		else
-			SendChatMessage(format(INTERRUPT_MSG, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")
-		end
-	elseif E.db.general.interruptAnnounce == "RAID_ONLY" then
-		if inRaid then
-			SendChatMessage(format(INTERRUPT_MSG, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "RAID")
-		end
-	elseif E.db.general.interruptAnnounce == "SAY" then
-		SendChatMessage(format(INTERRUPT_MSG, destName, spellID, spellName), "SAY")
-	elseif E.db.general.interruptAnnounce == "EMOTE" then
-		SendChatMessage(format(INTERRUPT_MSG, destName, spellID, spellName), "EMOTE")
+	local interruptAnnounce, msg = E.db.general.interruptAnnounce, format(INTERRUPT_MSG, destName, spellID, spellName)
+	if interruptAnnounce == "PARTY" then
+		SendChatMessage(msg, inPartyLFG and "INSTANCE_CHAT" or "PARTY")
+	elseif interruptAnnounce == "RAID" then
+		SendChatMessage(msg, inPartyLFG and "INSTANCE_CHAT" or (inRaid and "RAID" or "PARTY"))
+	elseif interruptAnnounce == "RAID_ONLY" and inRaid then
+		SendChatMessage(msg, inPartyLFG and "INSTANCE_CHAT" or "RAID")
+	elseif interruptAnnounce == "SAY" then
+		SendChatMessage(msg, "SAY")
+	elseif interruptAnnounce == "EMOTE" then
+		SendChatMessage(msg, "EMOTE")
 	end
 end
 
@@ -343,7 +337,7 @@ function M:Initialize()
 	self:RegisterEvent('MERCHANT_SHOW')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')
-	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	if E.db.general.interruptAnnounce ~= "NONE" then self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED") end
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_HORDE', 'PVPMessageEnhancement')
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_ALLIANCE', 'PVPMessageEnhancement')
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')

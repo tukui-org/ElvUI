@@ -21,6 +21,10 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 	DT.tooltip:ClearLines()
 
+	-- Header
+	DT.tooltip:AddLine(E.title..STAT_MASTERY)
+	DT.tooltip:AddLine(" ")
+
 	local primaryTalentTree = GetSpecialization();
 
 	if (primaryTalentTree) then

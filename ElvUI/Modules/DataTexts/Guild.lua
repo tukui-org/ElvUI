@@ -220,6 +220,10 @@ local function OnEnter(self, _, noUpdate)
 
 	DT:SetupTooltip(self)
 
+	-- Header
+	DT.tooltip:AddLine(E.title..GUILD)
+	DT.tooltip:AddLine(" ")
+
 	local total, _, online = GetNumGuildMembers()
 	if #guildTable == 0 then BuildGuildTable() end
 

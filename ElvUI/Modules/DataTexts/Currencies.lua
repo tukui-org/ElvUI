@@ -61,6 +61,10 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
+	-- Header
+	DT.tooltip:AddLine(E.title..CURRENCY)
+	DT.tooltip:AddLine(" ")
+
 	DT.tooltip:AddDoubleLine(L["Gold"]..":", goldText, nil, nil, nil, 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 

@@ -92,6 +92,11 @@ local function OnEnter(self)
 	end
 
 	DT:SetupTooltip(self)
+
+	-- Header
+	DT.tooltip:AddLine(E.title..BATTLEGROUND_HOLIDAY)
+	DT.tooltip:AddLine(" ")
+
 	local numCTA = 0
 	local addTooltipHeader = true
 	for i=1, GetNumRandomDungeons() do

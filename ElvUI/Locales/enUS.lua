@@ -333,6 +333,7 @@ L["Voice Overlay"] = true
 L["Waist"] = true
 L["Welcome to ElvUI version %s!"] = true
 L["whispers"] = true
+L["World Latency:"] = true
 L["World Protocol:"] = true
 L["WoW Token:"] = true
 L["Wrist"] = true

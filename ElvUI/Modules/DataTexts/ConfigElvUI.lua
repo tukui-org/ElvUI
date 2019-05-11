@@ -37,6 +37,10 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
+	-- Header
+	DT.tooltip:AddLine(E.title..L["Config"])
+	DT.tooltip:AddLine(" ")
+
 	DT.tooltip:AddDoubleLine(L["Left Click:"], L["Toggle Configuration"], 1, 1, 1)
 	DT.tooltip:AddDoubleLine(L["Hold Shift + Right Click:"], reloadText, 1, 1, 1)
 	if plugins then
