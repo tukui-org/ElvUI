@@ -4073,19 +4073,6 @@ local function GetUnitSettings(unit, name)
 	return group
 end
 
-local yOffsetUnits = {"PLAYER","FRIENDLY_PLAYER","FRIENDLY_NPC","ENEMY_PLAYER","ENEMY_NPC"}
-local updateUnitsHealthYoffset = function(value, oldValue)
-	for _, unit in pairs(yOffsetUnits) do
-		local unitYoffset = E.db.nameplates.units[unit].health.yOffset
-		local isNegative = unitYoffset < 0
-		if unitYoffset > value or (isNegative and unitYoffset < -value) then -- overflow
-			E.db.nameplates.units[unit].health.yOffset = value
-		elseif oldValue and unitYoffset ~= 0 then -- dont update if its zero
-			E.db.nameplates.units[unit].health.yOffset = unitYoffset - (oldValue-value) -- add the difference
-		end
-	end
-end
-
 E.Options.args.nameplate = {
 	type = "group",
 	name = L["NamePlates"],
