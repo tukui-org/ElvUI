@@ -333,6 +333,7 @@ L["Voice Overlay"] = "음성 오버레이"
 L["Waist"] = "허리"
 L["Welcome to ElvUI version %s!"] = "ElvUI 버전 %s에 오신 것을 환영합니다!"
 L["whispers"] = "귓"
+L["World Latency:"] = true
 L["World Protocol:"] = true
 L["WoW Token:"] = true
 L["Wrist"] = "손목"

@@ -120,6 +120,7 @@ local function OnEnter(self)
 	local bandwidth = GetAvailableBandwidth()
 
 	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, select(3, GetNetStats())), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	DT.tooltip:AddDoubleLine(L["World Latency:"], format(homeLatencyString, select(4, GetNetStats())), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 
 	if GetCVarBool("useIPv6") then
 		local ipTypeHome, ipTypeWorld = GetNetIpTypes();
