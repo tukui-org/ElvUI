@@ -29,7 +29,6 @@ local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
 local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
 local VOICE_CHAT_BATTLEGROUND = VOICE_CHAT_BATTLEGROUND
 local WINTERGRASP_IN_PROGRESS = WINTERGRASP_IN_PROGRESS
-local TIME_LABEL = TIME_LABEL:gsub(':$', '')
 
 local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS.."(s)"
 local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
@@ -149,10 +148,8 @@ local function OnEnter(self)
 		end
 	end
 
-	-- Header
-	DT.tooltip:AddLine(E.title..TIME_LABEL)
-
 	local addedHeader = false
+
 	for i = 1, GetNumWorldPVPAreas() do
 		local _, localizedName, isActive, _, startTime, canEnter = GetWorldPVPAreaInfo(i)
 		if canEnter then
@@ -191,7 +188,9 @@ local function OnEnter(self)
 	end
 
 	if next(lockedInstances.raids) then
-		DT.tooltip:AddLine(" ")
+		if DT.tooltip:NumLines() > 0 then
+			DT.tooltip:AddLine(" ")
+		end
 		DT.tooltip:AddLine(L["Saved Raid(s)"])
 
 		sort(lockedInstances.raids, sortFunc)
@@ -211,7 +210,9 @@ local function OnEnter(self)
 	end
 
 	if next(lockedInstances.dungeons) then
-		DT.tooltip:AddLine(" ")
+		if DT.tooltip:NumLines() > 0 then
+			DT.tooltip:AddLine(" ")
+		end
 		DT.tooltip:AddLine(L["Saved Dungeon(s)"])
 
 		sort(lockedInstances.dungeons, sortFunc)
@@ -239,19 +240,22 @@ local function OnEnter(self)
 	sort(worldbossLockoutList, sortFunc)
 	for i = 1,#worldbossLockoutList do
 		local name, reset = unpack(worldbossLockoutList[i])
-		if reset then
-			if not addedLine then
-				DT.tooltip:AddLine(" ")
+		if(reset) then
+			if(not addedLine) then
+				if DT.tooltip:NumLines() > 0 then
+					DT.tooltip:AddLine(" ")
+				end
 				DT.tooltip:AddLine(WORLD_BOSSES_TEXT)
 				addedLine = true
 			end
-
 			DT.tooltip:AddDoubleLine(name, SecondsToTime(reset, true, nil, 3), 1, 1, 1, 0.8, 0.8, 0.8)
 		end
 	end
 
 	local Hr, Min, AmPm = CalculateTimeValues(true)
-	DT.tooltip:AddLine(" ")
+	if DT.tooltip:NumLines() > 0 then
+		DT.tooltip:AddLine(" ")
+	end
 	if AmPm == -1 then
 		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME,
 			format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
