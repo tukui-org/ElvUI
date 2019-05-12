@@ -52,7 +52,6 @@ The Bag Bar and Vendor Greys tabs are now again available if the All In One Bag 
 [Style Filter] Fixed Static Player Nameplate to no longer taint from filters.  
 [Style Filter] Cleaned a decent amount of the trigger condition check code with the help of @wing5wong.  
 Add shadow instead flash texture for StaticPopup buttons (Thanks @Bunny67)  
-Added a Header to our Datatexts.
 Fixed an issue and garbage leak with the plugin version checker.  
 
 ___
