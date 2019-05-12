@@ -45,7 +45,6 @@ local function OnEnter(self)
 	if not index then return; end
 
 	DT:SetupTooltip(self)
-
 	DT.tooltip:SetCurrencyToken(index)
 	DT.tooltip:Show()
 end

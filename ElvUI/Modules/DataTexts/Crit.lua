@@ -30,10 +30,6 @@ local lastPanel;
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	-- Header
-	DT.tooltip:AddLine(E.title..STAT_CRITICAL_STRIKE)
-	DT.tooltip:AddLine(" ")
-
 	local text, tooltip;
 	if E.role == "Caster" then
 		text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, SPELL_CRIT_CHANCE).." "..format("%.2F%%", GetSpellCritChance(1))..FONT_COLOR_CODE_CLOSE

@@ -25,10 +25,6 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	-- Header
-	DT.tooltip:AddLine(E.title..ARMOR)
-	DT.tooltip:AddLine(" ")
-
 	DT.tooltip:AddLine(L["Mitigation By Level: "])
 	DT.tooltip:AddLine(' ')
 

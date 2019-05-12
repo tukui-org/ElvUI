@@ -120,10 +120,6 @@ local function OnEnter(self)
 	local bandwidth = GetAvailableBandwidth()
 	local _, _, homePing, worldPing = GetNetStats()
 
-	-- Header
-	DT.tooltip:AddLine(E.title..L["System"])
-	DT.tooltip:AddLine(" ")
-
 	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, homePing), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	DT.tooltip:AddDoubleLine(L["World Latency:"], format(homeLatencyString, worldPing), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 

@@ -21,10 +21,6 @@ local quickJoinGroups, quickJoin = nil, {}
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	-- Header
-	DT.tooltip:AddLine(E.title..QUICK_JOIN)
-	DT.tooltip:AddLine(" ")
-
 	if not next(quickJoin) then return end
 
 	DT.tooltip:AddLine(QUICK_JOIN, nil, nil, nil, true);
