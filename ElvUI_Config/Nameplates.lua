@@ -4255,17 +4255,6 @@ E.Options.args.nameplate = {
 								['OVERLAP'] = L.UNIT_NAMEPLATES_TYPE_1,
 							},
 						},
-						displayStyle = {
-							type = "select",
-							order = 2,
-							name = L["Display Style"],
-							desc = L["Controls which nameplates will be displayed."],
-							values = {
-								["ALL"] = L.ALL,
-								["BLIZZARD"] = L["Target, Quest, Combat"],
-								["TARGET"] = L["Only Show Target"],
-							},
-						},
 						showEnemyCombat = {
 							order = 3,
 							type = "select",
@@ -4362,6 +4351,43 @@ E.Options.args.nameplate = {
 									type = "toggle",
 									name = L["Enemy"],
 									set = function(info, value) E.db.nameplates.clickThrough.enemy = value; NP:SetNamePlateEnemyClickThrough() end,
+								},
+							},
+						},
+						visibility = {
+							order = 16,
+							type = "group",
+							guiInline = true,
+							name = L["Visibility"],
+							get = function(info) return E.db.nameplates.visibility[info[#info]] end,
+							set = function(info, value) E.db.nameplates.visibility[info[#info]] = value; NP:SetCVars() NP:ConfigureAll() end,
+							args = {
+								nameplateShowAll = {
+									order = 1,
+									type = "toggle",
+									name = L["Always Show NamePlates"],
+								},
+								UnitNameNPC = {
+									order = 2,
+									type = "toggle",
+									name = L["All NPCs"],
+									set = function(info, value) E.db.nameplates.visibility[info[#info]] = value; E.db.nameplates.visibility.UnitNameHostleNPC = false; NP:SetCVars() NP:ConfigureAll() end,
+								},
+								UnitNameFriendlySpecialNPCName ={
+									order = 3,
+									type = "toggle",
+									name = L["Quest Objective & NPCs"],
+								},
+								UnitNameHostleNPC = {
+									order = 4,
+									type = "toggle",
+									name = L["Hostile NPCs"],
+									disabled = function() return E.db.nameplates.visibility.UnitNameNPC end,
+								},
+								UnitNameInteractiveNPC = {
+									order = 5,
+									type = "toggle",
+									name = L["Interactive NPCs"],
 								},
 							},
 						},
@@ -5166,3 +5192,35 @@ for i = 1, 6 do
 		end,
 	}
 end
+
+E.Options.args.tagGroup = {
+	order = 925,
+	type = "group",
+	name = L["Available Tags"],
+	args = {}
+}
+
+for Tag in next, E.oUF.Tags.Methods do
+	E.Options.args.tagGroup.args[Tag] = {
+		type = 'description',
+		fontSize = 'medium',
+		name = Tag,
+	}
+end
+
+E.Options.args.EventTrace = {
+	order = -50,
+	type = "group",
+	name = L["Event Trace"],
+	args = {}
+}
+
+local Frame = CreateFrame('Frame')
+Frame:RegisterAllEvents()
+Frame:SetScript('OnEvent', function(self, event, ...)
+	E.Options.args.EventTrace.args[event] = {
+		type = 'description',
+		fontSize = 'medium',
+		name = event,
+	}
+end)
