@@ -21,9 +21,9 @@ function DT:Initialize()
 	TT:HookScript(self.tooltip, 'OnShow', 'SetStyle')
 
 	-- Ignore header font size on DatatextTooltip
-	local font = E.Libs.LSM:Fetch("font", TT.db.font)
-	local fontOutline = TT.db.fontOutline
-	local textSize = TT.db.textFontSize
+	local font = E.Libs.LSM:Fetch("font", E.db.tooltip.font)
+	local fontOutline = E.db.tooltip.fontOutline
+	local textSize = E.db.tooltip.textFontSize
 	_G.DatatextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
 	_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
 
