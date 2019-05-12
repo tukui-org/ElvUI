@@ -51,6 +51,10 @@ end
 function DT:BattlegroundStats()
 	DT:SetupTooltip(self)
 
+	-- Header
+	DT.tooltip:AddLine(E.title..BATTLEGROUND)
+	DT.tooltip:AddLine(" ")
+
 	local classColor = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass]) or _G.RAID_CLASS_COLORS[E.myclass]
 	local numStatInfo = GetNumBattlefieldStats()
 	if numStatInfo then
