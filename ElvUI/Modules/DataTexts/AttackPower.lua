@@ -43,10 +43,6 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	-- Header
-	DT.tooltip:AddLine(E.title..STAT_ATTACK_POWER)
-	DT.tooltip:AddLine(" ")
-
 	if E.myclass == "HUNTER" then
 		local OverrideAPBySpellPower = GetOverrideAPBySpellPower()
 		if (OverrideAPBySpellPower ~= nil) then

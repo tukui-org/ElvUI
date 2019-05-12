@@ -31,10 +31,6 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	-- Header
-	DT.tooltip:AddLine(E.title..L["Bags"])
-	DT.tooltip:AddLine(" ")
-
 	for i = 1, MAX_WATCHED_TOKENS do
 		local name, count = GetBackpackCurrencyInfo(i)
 		if name and i == 1 then
