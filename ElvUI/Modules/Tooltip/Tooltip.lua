@@ -763,6 +763,12 @@ function TT:SetTooltipFonts()
 		end
 	end
 
+	-- Ignore header font size on DatatextTooltip
+	if _G.DatatextTooltip then
+		_G.DatatextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
+		_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
+	end
+
 	--These show when you compare items ("Currently Equipped", name of item, item level)
 	--Since they appear at the top of the tooltip, we set it to use the header font size.
 	_G.ShoppingTooltip1TextLeft1:FontTemplate(font, headerSize, fontOutline)
