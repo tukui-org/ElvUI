@@ -113,6 +113,7 @@ function NP:Construct_Auras(nameplate)
 	Debuffs.CustomFilter = NP.Debuffs_CustomFilter
 
 	nameplate.Auras_, nameplate.Buffs_, nameplate.Debuffs_ = Auras, Buffs, Debuffs
+	nameplate.Auras, nameplate.Buffs, nameplate.Debuffs = Auras, Buffs, Debuffs
 end
 
 function NP:Construct_AuraIcon(button)
