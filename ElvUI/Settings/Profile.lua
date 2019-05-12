@@ -431,7 +431,6 @@ P.nameplates = {
 			fontSize = 18,
 		},
 	},
-	displayStyle = 'ALL',
 	filters = {
 		ElvUI_Boss = {triggers = {enable = true}},
 		ElvUI_Target = {triggers = {enable = true}},
@@ -457,6 +456,13 @@ P.nameplates = {
 		badScale = 1.2,
 		useThreatColor = true,
 		indicator = false,
+	},
+	visibility = {
+		nameplateShowAll = true,
+		UnitNameNPC = true,
+		UnitNameFriendlySpecialNPCName = true,
+		UnitNameHostleNPC = false,
+		UnitNameInteractiveNPC = true,
 	},
 	units = {
 		PLAYER = {

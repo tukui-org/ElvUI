@@ -97,7 +97,11 @@ function NP:SetCVars()
 	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
 	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
 
-	-- SetCVar('nameplateShowAll', 1) -- NP Show Always
+	SetCVar('nameplateShowAll', NP.db.visibility.nameplateShowAll and 1 or 0) -- NP Show Always
+	SetCVar('UnitNameFriendlySpecialNPCName', NP.db.visibility.UnitNameFriendlySpecialNPCName and 1 or 0) -- Quest Only
+	SetCVar('UnitNameNPC', NP.db.visibility.UnitNameNPC and 1 or 0) -- All NPC Hostile / Friendly
+	SetCVar('UnitNameHostleNPC', NP.db.visibility.UnitNameHostleNPC and 1 or 0) -- Hositle
+	SetCVar('UnitNameInteractiveNPC', NP.db.visibility.UnitNameInteractiveNPC and 1 or 0) -- Interactive
 
 	SetCVar('NameplatePersonalShowAlways', NP.db.units.PLAYER.visibility.showAlways and 1 or 0)
 	SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
@@ -323,6 +327,8 @@ function NP:DisablePlate(nameplate, nameOnly)
 	if E.myclass == 'DEATHKNIGHT' and nameplate:IsElementEnabled('Runes') then nameplate:DisableElement('Runes') end
 	if E.myclass == 'MONK' and nameplate:IsElementEnabled('Stagger') then nameplate:DisableElement('Stagger') end
 
+	NP:Update_Tags(nameplate)
+
 	nameplate.Health.Text:Hide()
 	nameplate.Power.Text:Hide()
 	nameplate.Name:Hide()
@@ -339,6 +345,8 @@ function NP:DisablePlate(nameplate, nameOnly)
 			nameplate.Title:ClearAllPoints()
 			nameplate.Title:SetPoint('TOP', nameplate.Name, 'BOTTOM', 0, -2)
 		end
+	else
+		if nameplate:IsElementEnabled('Highlight') then nameplate:DisableElement('Hightlight') end
 	end
 end
 
