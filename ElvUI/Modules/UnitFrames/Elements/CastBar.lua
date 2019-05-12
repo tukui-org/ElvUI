@@ -251,26 +251,27 @@ end
 function UF:CustomCastDelayText(duration)
 	local db = self:GetParent().db
 	if not db then return end
+	db = db.castbar.format
 
 	if self.channeling then
-		if db.castbar.format == 'CURRENT' then
-			self.Time:SetText(("%.1f |cffaf5050%.1f|r"):format(abs(duration - self.max), self.delay))
-		elseif db.castbar.format == 'CURRENTMAX' then
-			self.Time:SetText(("%.1f / %.1f |cffaf5050%.1f|r"):format(duration, self.max, self.delay))
-		elseif db.castbar.format == 'REMAINING' then
-			self.Time:SetText(("%.1f |cffaf5050%.1f|r"):format(duration, self.delay))
-		elseif db.castbar.format == 'REMAININGMAX' then
-			self.Time:SetText(("%.1f / %.1f |cffaf5050%.1f|r"):format(abs(duration - self.max), self.max, self.delay))
+		if db == 'CURRENT' then
+			self.Time:SetFormattedText("%.1f |cffaf5050%.1f|r", abs(duration - self.max), self.delay)
+		elseif db == 'CURRENTMAX' then
+			self.Time:SetFormattedText("%.1f / %.1f |cffaf5050%.1f|r", duration, self.max, self.delay)
+		elseif db == 'REMAINING' then
+			self.Time:SetFormattedText("%.1f |cffaf5050%.1f|r", duration, self.delay)
+		elseif db == 'REMAININGMAX' then
+			self.Time:SetFormattedText("%.1f / %.1f |cffaf5050%.1f|r", abs(duration - self.max), self.max, self.delay)
 		end
 	else
-		if db.castbar.format == 'CURRENT' then
-			self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(duration, "+", self.delay))
-		elseif db.castbar.format == 'CURRENTMAX' then
-			self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(duration, self.max, "+", self.delay))
-		elseif db.castbar.format == 'REMAINING' then
-			self.Time:SetText(("%.1f |cffaf5050%s %.1f|r"):format(abs(duration - self.max), "+", self.delay))
-		elseif db.castbar.format == 'REMAININGMAX' then
-			self.Time:SetText(("%.1f / %.1f |cffaf5050%s %.1f|r"):format(abs(duration - self.max), self.max, "+", self.delay))
+		if db == 'CURRENT' then
+			self.Time:SetFormattedText("%.1f |cffaf5050%s %.1f|r", duration, "+", self.delay)
+		elseif db == 'CURRENTMAX' then
+			self.Time:SetFormattedText("%.1f / %.1f |cffaf5050%s %.1f|r", duration, self.max, "+", self.delay)
+		elseif db == 'REMAINING' then
+			self.Time:SetFormattedText("%.1f |cffaf5050%s %.1f|r", abs(duration - self.max), "+", self.delay)
+		elseif db == 'REMAININGMAX' then
+			self.Time:SetFormattedText("%.1f / %.1f |cffaf5050%s %.1f|r", abs(duration - self.max), self.max, "+", self.delay)
 		end
 	end
 end
@@ -278,26 +279,27 @@ end
 function UF:CustomTimeText(duration)
 	local db = self:GetParent().db
 	if not db then return end
+	db = db.castbar.format
 
 	if self.channeling then
-		if db.castbar.format == 'CURRENT' then
-			self.Time:SetText(("%.1f"):format(abs(duration - self.max)))
-		elseif db.castbar.format == 'CURRENTMAX' then
-			self.Time:SetText(("%.1f / %.1f"):format(abs(duration - self.max), self.max))
-		elseif db.castbar.format == 'REMAINING' then
-			self.Time:SetText(("%.1f"):format(duration))
-		elseif db.castbar.format == 'REMAININGMAX' then
-			self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
+		if db == 'CURRENT' then
+			self.Time:SetFormattedText("%.1f", abs(duration - self.max))
+		elseif db == 'CURRENTMAX' then
+			self.Time:SetFormattedText("%.1f / %.1f", abs(duration - self.max), self.max)
+		elseif db == 'REMAINING' then
+			self.Time:SetFormattedText("%.1f", duration)
+		elseif db == 'REMAININGMAX' then
+			self.Time:SetFormattedText("%.1f / %.1f", duration, self.max)
 		end
 	else
-		if db.castbar.format == 'CURRENT' then
-			self.Time:SetText(("%.1f"):format(duration))
-		elseif db.castbar.format == 'CURRENTMAX' then
-			self.Time:SetText(("%.1f / %.1f"):format(duration, self.max))
-		elseif db.castbar.format == 'REMAINING' then
-			self.Time:SetText(("%.1f"):format(abs(duration - self.max)))
-		elseif db.castbar.format == 'REMAININGMAX' then
-			self.Time:SetText(("%.1f / %.1f"):format(abs(duration - self.max), self.max))
+		if db == 'CURRENT' then
+			self.Time:SetFormattedText("%.1f", duration)
+		elseif db == 'CURRENTMAX' then
+			self.Time:SetFormattedText("%.1f / %.1f", duration, self.max)
+		elseif db == 'REMAINING' then
+			self.Time:SetFormattedText("%.1f", abs(duration - self.max))
+		elseif db == 'REMAININGMAX' then
+			self.Time:SetFormattedText("%.1f / %.1f", abs(duration - self.max), self.max)
 		end
 	end
 end
