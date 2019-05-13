@@ -761,6 +761,7 @@ L["Name"] = "Nombre"
 L["Name: Current / Max - Percent"] = true
 L["Name: Current / Max"] = true
 L["Name: Percent"] = true
+L["Name Visibility"] = true
 L["NamePlate Size"] = true
 L["NamePlate Style Filters"] = true
 L["Nameplate"] = true
