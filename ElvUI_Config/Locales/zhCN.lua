@@ -763,6 +763,7 @@ L["Name"] = "姓名"
 L["Name: Current / Max - Percent"] = "名字: 当前值 / 最大值 - 百分比"
 L["Name: Current / Max"] = "名字: 当前值 / 最大值"
 L["Name: Percent"] = "名字: 百分比"
+L["Name Visibility"] = true
 L["NamePlate Size"] = "姓名板尺寸"
 L["NamePlate Style Filters"] = "姓名板样式过滤器"
 L["Nameplate"] = "姓名板"

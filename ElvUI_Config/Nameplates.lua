@@ -4327,19 +4327,21 @@ E.Options.args.nameplate = {
 							desc = L["Bars will transition smoothly."],
 							set = function(info, value) E.db.nameplates[info[#info]] = value; NP:ConfigureAll(); end,
 						},
+						nameplateShowAll = {
+							order = 14,
+							type = "toggle",
+							name = L.UNIT_NAMEPLATES_AUTOMODE,
+							get = function(info) return E.db.nameplates.visibility.nameplateShowAll end,
+							set = function(info, value) E.db.nameplates.visibility.nameplateShowAll = value; NP:SetCVars() NP:ConfigureAll() end,
+						},
 						visibility = {
 							order = 14,
 							type = "group",
 							guiInline = true,
-							name = L["Visibility"],
+							name = L["Name Visibility"],
 							get = function(info) return E.db.nameplates.visibility[info[#info]] end,
 							set = function(info, value) E.db.nameplates.visibility[info[#info]] = value; NP:SetCVars() NP:ConfigureAll() end,
 							args = {
-								nameplateShowAll = {
-									order = 1,
-									type = "toggle",
-									name = L.UNIT_NAMEPLATES_AUTOMODE,
-								},
 								UnitNameNPC = {
 									order = 2,
 									type = "toggle",
