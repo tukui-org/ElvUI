@@ -4327,6 +4327,43 @@ E.Options.args.nameplate = {
 							desc = L["Bars will transition smoothly."],
 							set = function(info, value) E.db.nameplates[info[#info]] = value; NP:ConfigureAll(); end,
 						},
+						visibility = {
+							order = 14,
+							type = "group",
+							guiInline = true,
+							name = L["Visibility"],
+							get = function(info) return E.db.nameplates.visibility[info[#info]] end,
+							set = function(info, value) E.db.nameplates.visibility[info[#info]] = value; NP:SetCVars() NP:ConfigureAll() end,
+							args = {
+								nameplateShowAll = {
+									order = 1,
+									type = "toggle",
+									name = L.UNIT_NAMEPLATES_AUTOMODE,
+								},
+								UnitNameNPC = {
+									order = 2,
+									type = "toggle",
+									name = L.NPC_NAMES_DROPDOWN_ALL,
+									set = function(info, value) E.db.nameplates.visibility[info[#info]] = value; E.db.nameplates.visibility.UnitNameHostleNPC = false; NP:SetCVars() NP:ConfigureAll() end,
+								},
+								UnitNameFriendlySpecialNPCName ={
+									order = 3,
+									type = "toggle",
+									name = L.NPC_NAMES_DROPDOWN_TRACKED,
+								},
+								UnitNameHostleNPC = {
+									order = 4,
+									type = "toggle",
+									name = L.NPC_NAMES_DROPDOWN_HOSTILE,
+									disabled = function() return E.db.nameplates.visibility.UnitNameNPC end,
+								},
+								UnitNameInteractiveNPC = {
+									order = 5,
+									type = "toggle",
+									name = L.NPC_NAMES_DROPDOWN_INTERACTIVE,
+								},
+							},
+						},
 						clickThrough = {
 							order = 15,
 							type = "group",
@@ -4351,43 +4388,6 @@ E.Options.args.nameplate = {
 									type = "toggle",
 									name = L["Enemy"],
 									set = function(info, value) E.db.nameplates.clickThrough.enemy = value; NP:SetNamePlateEnemyClickThrough() end,
-								},
-							},
-						},
-						visibility = {
-							order = 16,
-							type = "group",
-							guiInline = true,
-							name = L["Visibility"],
-							get = function(info) return E.db.nameplates.visibility[info[#info]] end,
-							set = function(info, value) E.db.nameplates.visibility[info[#info]] = value; NP:SetCVars() NP:ConfigureAll() end,
-							args = {
-								nameplateShowAll = {
-									order = 1,
-									type = "toggle",
-									name = L["Always Show NamePlates"],
-								},
-								UnitNameNPC = {
-									order = 2,
-									type = "toggle",
-									name = L["All NPCs"],
-									set = function(info, value) E.db.nameplates.visibility[info[#info]] = value; E.db.nameplates.visibility.UnitNameHostleNPC = false; NP:SetCVars() NP:ConfigureAll() end,
-								},
-								UnitNameFriendlySpecialNPCName ={
-									order = 3,
-									type = "toggle",
-									name = L["Quest Objective & NPCs"],
-								},
-								UnitNameHostleNPC = {
-									order = 4,
-									type = "toggle",
-									name = L["Hostile NPCs"],
-									disabled = function() return E.db.nameplates.visibility.UnitNameNPC end,
-								},
-								UnitNameInteractiveNPC = {
-									order = 5,
-									type = "toggle",
-									name = L["Interactive NPCs"],
 								},
 							},
 						},
