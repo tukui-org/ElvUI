@@ -4354,13 +4354,13 @@ E.Options.args.nameplate = {
 								UnitNameHostleNPC = {
 									order = 4,
 									type = "toggle",
-									name = L.NPC_NAMES_DROPDOWN_HOSTILE,
+									name = L["Hostile NPCs"],
 									disabled = function() return E.db.nameplates.visibility.UnitNameNPC end,
 								},
 								UnitNameInteractiveNPC = {
 									order = 5,
 									type = "toggle",
-									name = L.NPC_NAMES_DROPDOWN_INTERACTIVE,
+									name = L["Interactive NPCs"],
 								},
 							},
 						},
