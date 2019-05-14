@@ -20,6 +20,7 @@ local IsActiveBattlefieldArena = IsActiveBattlefieldArena
 local IsAddOnLoaded = IsAddOnLoaded
 local IsArenaSkirmish = IsArenaSkirmish
 local IsGuildMember = IsGuildMember
+local IsCharacterFriend = IsCharacterFriend
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local IsPartyLFG, IsInInstance = IsPartyLFG, IsInInstance
 local IsShiftKeyDown = IsShiftKeyDown
@@ -180,21 +181,22 @@ function M:PVPMessageEnhancement(_, msg)
 	end
 end
 
-local hideStatic = false;
+local hideStatic
 function M:AutoInvite(event, _, _, _, _, _, _, inviterGUID)
-	if not E.db.general.autoAcceptInvite then return; end
+	if not (E.db.general.autoAcceptInvite and inviterGUID and inviterGUID ~= "") then return end
 
 	if event == "PARTY_INVITE_REQUEST" then
-		if _G.QueueStatusMinimapButton:IsShown() then return end -- Prevent losing que inside LFD if someone invites you to group
-		if IsInGroup() then return end
-		hideStatic = true
-		if BNGetGameAccountInfoByGUID(inviterGUID) or IsGuildMember(inviterGUID) then
+		-- Prevent losing que inside LFD if someone invites you to group
+		if _G.QueueStatusMinimapButton:IsShown() or IsInGroup() then return end
+
+		if BNGetGameAccountInfoByGUID(inviterGUID) or IsCharacterFriend(inviterGUID) or IsGuildMember(inviterGUID) then
+			hideStatic = true
 			AcceptGroup()
 		end
-	elseif event == "GROUP_ROSTER_UPDATE" and hideStatic == true then
+	elseif event == "GROUP_ROSTER_UPDATE" and hideStatic then
 		StaticPopupSpecial_Hide(_G.LFGInvitePopup) --New LFD popup when invited in custom created group
 		StaticPopup_Hide("PARTY_INVITE")
-		hideStatic = false
+		hideStatic = nil
 	end
 end
 
