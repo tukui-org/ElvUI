@@ -86,23 +86,7 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 end
 
 do -- Auto Repair Functions
-	local TYPE, COST, POSS, STATUS
-	function M:AutoRepairOutput()
-		if TYPE == 'GUILD' then
-			if STATUS == "GUILD_REPAIR_FAILED" then
-				M:AttemptAutoRepair(true) --Try using player money instead
-			else
-				E:Print(L["Your items have been repaired using guild bank funds for: "]..E:FormatMoney(COST, "SMART", true)) --Amount, style, textOnly
-			end
-		elseif TYPE == "PLAYER" then
-			if STATUS == "PLAYER_REPAIR_FAILED" then
-				E:Print(L["You don't have enough money to repair."])
-			else
-				E:Print(L["Your items have been repaired for: "]..E:FormatMoney(COST, "SMART", true)) --Amount, style, textOnly
-			end
-		end
-	end
-
+	local STATUS, TYPE, COST, POSS
 	function M:AttemptAutoRepair(playerOverride)
 		STATUS, TYPE, COST, POSS = "", E.db.general.autoRepair, GetRepairAllCost()
 
@@ -116,6 +100,22 @@ do -- Auto Repair Functions
 
 			--Delay this a bit so we have time to catch the outcome of first repair attempt
 			E:Delay(0.5, M.AutoRepairOutput)
+		end
+	end
+
+	function M:AutoRepairOutput()
+		if TYPE == 'GUILD' then
+			if STATUS == "GUILD_REPAIR_FAILED" then
+				M:AttemptAutoRepair(true) --Try using player money instead
+			else
+				E:Print(L["Your items have been repaired using guild bank funds for: "]..E:FormatMoney(COST, "SMART", true)) --Amount, style, textOnly
+			end
+		elseif TYPE == "PLAYER" then
+			if STATUS == "PLAYER_REPAIR_FAILED" then
+				E:Print(L["You don't have enough money to repair."])
+			else
+				E:Print(L["Your items have been repaired for: "]..E:FormatMoney(COST, "SMART", true)) --Amount, style, textOnly
+			end
 		end
 	end
 
