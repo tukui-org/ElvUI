@@ -53,6 +53,7 @@ The Bag Bar and Vendor Greys tabs are now again available if the All In One Bag 
 [Style Filter] Cleaned a decent amount of the trigger condition check code with the help of @wing5wong.  
 Add shadow instead flash texture for StaticPopup buttons (Thanks @Bunny67)  
 Fixed an issue and garbage leak with the plugin version checker.  
+Fixed DataText header text using the Tooltip Header size when it was not supposed too.  
 
 ___
 ### Version 11.10 [ April 9th 2019 ]
