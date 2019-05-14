@@ -87,7 +87,7 @@ end
 
 do -- Auto Repair Functions
 	local TYPE, COST, POSS, STATUS
-	local function RepairOutput()
+	function M:AutoRepairOutput()
 		if TYPE == 'GUILD' then
 			if STATUS == "GUILD_REPAIR_FAILED" then
 				M:AttemptAutoRepair(true) --Try using player money instead
@@ -115,7 +115,7 @@ do -- Auto Repair Functions
 			RepairAllItems(TYPE == 'GUILD')
 
 			--Delay this a bit so we have time to catch the outcome of first repair attempt
-			E:Delay(0.5, RepairOutput)
+			E:Delay(0.5, M.AutoRepairOutput)
 		end
 	end
 
