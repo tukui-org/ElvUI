@@ -487,7 +487,7 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 		nameplate.FadeObject = {}
 	end
 
-	nameplate.FadeObject.timeToFade = timeToFade
+	nameplate.FadeObject.timeToFade = (nameplate.isTarget and 0) or timeToFade
 	nameplate.FadeObject.startAlpha = startAlpha
 	nameplate.FadeObject.endAlpha = endAlpha
 	nameplate.FadeObject.diffAlpha = endAlpha - startAlpha
