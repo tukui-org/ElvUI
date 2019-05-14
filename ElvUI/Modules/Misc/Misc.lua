@@ -4,38 +4,29 @@ local Bags = E:GetModule('Bags')
 
 --Lua functions
 local _G = _G
-local format, gsub = format, gsub
+local format = format
 --WoW API / Variables
 local AcceptGroup = AcceptGroup
-local BNGetFriendGameAccountInfo = BNGetFriendGameAccountInfo
-local BNGetFriendInfo = BNGetFriendInfo
-local BNGetNumFriendGameAccounts = BNGetNumFriendGameAccounts
-local BNGetNumFriends = BNGetNumFriends
+local BNGetGameAccountInfoByGUID = BNGetGameAccountInfoByGUID
 local CanGuildBankRepair = CanGuildBankRepair
 local CanMerchantRepair = CanMerchantRepair
 local GetCVarBool, SetCVar = GetCVarBool, SetCVar
-local GetFriendInfo = GetFriendInfo
 local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
-local GetGuildRosterInfo = GetGuildRosterInfo
-local GetNumFriends = GetNumFriends
 local GetNumGroupMembers = GetNumGroupMembers
-local GetNumGuildMembers = GetNumGuildMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRepairAllCost = GetRepairAllCost
-local GuildRoster = GuildRoster
 local InCombatLockdown = InCombatLockdown
 local IsActiveBattlefieldArena = IsActiveBattlefieldArena
 local IsAddOnLoaded = IsAddOnLoaded
 local IsArenaSkirmish = IsArenaSkirmish
+local IsGuildMember = IsGuildMember
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
-local IsInGuild = IsInGuild
 local IsPartyLFG, IsInInstance = IsPartyLFG, IsInInstance
 local IsShiftKeyDown = IsShiftKeyDown
 local LeaveParty = LeaveParty
 local RaidNotice_AddMessage = RaidNotice_AddMessage
 local RepairAllItems = RepairAllItems
 local SendChatMessage = SendChatMessage
-local ShowFriends = ShowFriends
 local StaticPopup_Hide = StaticPopup_Hide
 local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
 local UninviteUnit = UninviteUnit
@@ -44,7 +35,6 @@ local UnitGUID = UnitGUID
 local UnitInRaid = UnitInRaid
 local UnitName = UnitName
 
-local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local C_Timer_After = C_Timer.After
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
@@ -106,27 +96,25 @@ local function AttemptAutoRepair(playerOverride)
 		autoRepair = 'PLAYER'
 	end
 
-	if cost > 0 then
-		if possible then
-			RepairAllItems(autoRepair == 'GUILD')
+	if cost > 0 and possible then
+		RepairAllItems(autoRepair == 'GUILD')
 
-			--Delay this a bit so we have time to catch the outcome of first repair attempt
-			C_Timer_After(0.5, function()
-				if autoRepair == 'GUILD' then
-					if autoRepairStatus == "GUILD_REPAIR_FAILED" then
-						AttemptAutoRepair(true) --Try using player money instead
-					else
-						E:Print(L["Your items have been repaired using guild bank funds for: "]..E:FormatMoney(cost, "SMART", true)) --Amount, style, textOnly
-					end
-				elseif autoRepair == "PLAYER" then
-					if autoRepairStatus == "PLAYER_REPAIR_FAILED" then
-						E:Print(L["You don't have enough money to repair."])
-					else
-						E:Print(L["Your items have been repaired for: "]..E:FormatMoney(cost, "SMART", true)) --Amount, style, textOnly
-					end
+		--Delay this a bit so we have time to catch the outcome of first repair attempt
+		C_Timer_After(0.5, function()
+			if autoRepair == 'GUILD' then
+				if autoRepairStatus == "GUILD_REPAIR_FAILED" then
+					AttemptAutoRepair(true) --Try using player money instead
+				else
+					E:Print(L["Your items have been repaired using guild bank funds for: "]..E:FormatMoney(cost, "SMART", true)) --Amount, style, textOnly
 				end
-			end)
-		end
+			elseif autoRepair == "PLAYER" then
+				if autoRepairStatus == "PLAYER_REPAIR_FAILED" then
+					E:Print(L["You don't have enough money to repair."])
+				else
+					E:Print(L["Your items have been repaired for: "]..E:FormatMoney(cost, "SMART", true)) --Amount, style, textOnly
+				end
+			end
+		end)
 	end
 end
 
@@ -193,74 +181,15 @@ function M:PVPMessageEnhancement(_, msg)
 end
 
 local hideStatic = false;
-local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','');
-function M:AutoInvite(event, leaderName)
+function M:AutoInvite(event, _, _, _, _, _, _, inviterGUID)
 	if not E.db.general.autoAcceptInvite then return; end
 
 	if event == "PARTY_INVITE_REQUEST" then
 		if _G.QueueStatusMinimapButton:IsShown() then return end -- Prevent losing que inside LFD if someone invites you to group
 		if IsInGroup() then return end
 		hideStatic = true
-
-		-- Update Guild and Friendlist
-		if GetNumFriends() > 0 then ShowFriends() end
-		if IsInGuild() then GuildRoster() end
-
-		local friendName, guildMemberName, memberName, numGameAccounts, isOnline, accountName, bnToonName, bnClient, bnRealm, bnAcceptedInvite, _;
-		local inGroup = false;
-
-		for friendIndex = 1, GetNumFriends() do
-			friendName = GetFriendInfo(friendIndex) --this is already stripped of your own realm
-			if friendName and (friendName == leaderName) then
-				AcceptGroup()
-				inGroup = true
-				break
-			end
-		end
-
-		if not inGroup then
-			for guildIndex = 1, GetNumGuildMembers(true) do
-				guildMemberName = GetGuildRosterInfo(guildIndex)
-				memberName = guildMemberName and gsub(guildMemberName, '%-'..PLAYER_REALM, '')
-				if memberName and (memberName == leaderName) then
-					AcceptGroup()
-					inGroup = true
-					break
-				end
-			end
-		end
-
-		if not inGroup then
-			for bnIndex = 1, BNGetNumFriends() do
-				_, accountName, _, _, _, _, _, isOnline = BNGetFriendInfo(bnIndex);
-				if isOnline then
-					if accountName and (accountName == leaderName) then
-						AcceptGroup()
-						bnAcceptedInvite = true
-					end
-					if not bnAcceptedInvite then
-						numGameAccounts = BNGetNumFriendGameAccounts(bnIndex);
-						if numGameAccounts > 0 then
-							for toonIndex = 1, numGameAccounts do
-								_, bnToonName, bnClient, bnRealm = BNGetFriendGameAccountInfo(bnIndex, toonIndex);
-								if bnClient == BNET_CLIENT_WOW then
-									if bnRealm and bnRealm ~= '' and bnRealm ~= PLAYER_REALM then
-										bnToonName = format('%s-%s', bnToonName, bnRealm)
-									end
-									if bnToonName and (bnToonName == leaderName) then
-										AcceptGroup()
-										bnAcceptedInvite = true
-										break
-									end
-								end
-							end
-						end
-					end
-					if bnAcceptedInvite then
-						break
-					end
-				end
-			end
+		if BNGetGameAccountInfoByGUID(inviterGUID) or IsGuildMember(inviterGUID) then
+			AcceptGroup()
 		end
 	elseif event == "GROUP_ROSTER_UPDATE" and hideStatic == true then
 		StaticPopupSpecial_Hide(_G.LFGInvitePopup) --New LFD popup when invited in custom created group
