@@ -36,7 +36,6 @@ local UnitGUID = UnitGUID
 local UnitInRaid = UnitInRaid
 local UnitName = UnitName
 
-local C_Timer_After = C_Timer.After
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
@@ -86,48 +85,46 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 end
 
-local autoRepairStatus
-local function AttemptAutoRepair(playerOverride)
-	autoRepairStatus = ""
-	local autoRepair = E.db.general.autoRepair
-	local cost, possible = GetRepairAllCost()
-	local withdrawLimit = GetGuildBankWithdrawMoney();
-	--This check evaluates to true even if the guild bank has 0 gold, so we add an override
-	if autoRepair == 'GUILD' and ((not CanGuildBankRepair() or cost > withdrawLimit) or playerOverride) then
-		autoRepair = 'PLAYER'
-	end
-
-	if cost > 0 and possible then
-		RepairAllItems(autoRepair == 'GUILD')
-
-		--Delay this a bit so we have time to catch the outcome of first repair attempt
-		C_Timer_After(0.5, function()
-			if autoRepair == 'GUILD' then
-				if autoRepairStatus == "GUILD_REPAIR_FAILED" then
-					AttemptAutoRepair(true) --Try using player money instead
-				else
-					E:Print(L["Your items have been repaired using guild bank funds for: "]..E:FormatMoney(cost, "SMART", true)) --Amount, style, textOnly
-				end
-			elseif autoRepair == "PLAYER" then
-				if autoRepairStatus == "PLAYER_REPAIR_FAILED" then
-					E:Print(L["You don't have enough money to repair."])
-				else
-					E:Print(L["Your items have been repaired for: "]..E:FormatMoney(cost, "SMART", true)) --Amount, style, textOnly
-				end
+do -- Auto Repair Functions
+	local TYPE, COST, POSS, STATUS
+	local function RepairOutput()
+		if TYPE == 'GUILD' then
+			if STATUS == "GUILD_REPAIR_FAILED" then
+				M:AttemptAutoRepair(true) --Try using player money instead
+			else
+				E:Print(L["Your items have been repaired using guild bank funds for: "]..E:FormatMoney(COST, "SMART", true)) --Amount, style, textOnly
 			end
-		end)
+		elseif TYPE == "PLAYER" then
+			if STATUS == "PLAYER_REPAIR_FAILED" then
+				E:Print(L["You don't have enough money to repair."])
+			else
+				E:Print(L["Your items have been repaired for: "]..E:FormatMoney(COST, "SMART", true)) --Amount, style, textOnly
+			end
+		end
 	end
-end
 
-local function VendorGrays()
-	Bags:VendorGrays()
-end
+	function M:AttemptAutoRepair(playerOverride)
+		STATUS, TYPE, COST, POSS = "", E.db.general.autoRepair, GetRepairAllCost()
 
-function M:UI_ERROR_MESSAGE(_, messageType)
-	if messageType == LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY then
-		autoRepairStatus = "GUILD_REPAIR_FAILED"
-	elseif messageType == LE_GAME_ERR_NOT_ENOUGH_MONEY then
-		autoRepairStatus = "PLAYER_REPAIR_FAILED"
+		if POSS and COST > 0 then
+			--This check evaluates to true even if the guild bank has 0 gold, so we add an override
+			if TYPE == 'GUILD' and (playerOverride or (not CanGuildBankRepair() or COST > GetGuildBankWithdrawMoney())) then
+				TYPE = 'PLAYER'
+			end
+
+			RepairAllItems(TYPE == 'GUILD')
+
+			--Delay this a bit so we have time to catch the outcome of first repair attempt
+			E:Delay(0.5, RepairOutput)
+		end
+	end
+
+	function M:UI_ERROR_MESSAGE(_, messageType)
+		if messageType == LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY then
+			STATUS = "GUILD_REPAIR_FAILED"
+		elseif messageType == LE_GAME_ERR_NOT_ENOUGH_MONEY then
+			STATUS = "PLAYER_REPAIR_FAILED"
+		end
 	end
 end
 
@@ -138,19 +135,17 @@ function M:MERCHANT_CLOSED()
 end
 
 function M:MERCHANT_SHOW()
-	if E.db.bags.vendorGrays.enable then
-		C_Timer_After(0.5, VendorGrays)
-	end
+	if E.db.bags.vendorGrays.enable then E:Delay(0.5, Bags.VendorGrays, Bags) end
 
-	local autoRepair = E.db.general.autoRepair
-	if IsShiftKeyDown() or autoRepair == 'NONE' or not CanMerchantRepair() then return end
+	if E.db.general.autoRepair == 'NONE' or IsShiftKeyDown() or not CanMerchantRepair() then return end
 
 	--Prepare to catch "not enough money" messages
 	self:RegisterEvent("UI_ERROR_MESSAGE")
+
 	--Use this to unregister events afterwards
 	self:RegisterEvent("MERCHANT_CLOSED")
 
-	AttemptAutoRepair()
+	M:AttemptAutoRepair()
 end
 
 function M:DisbandRaidGroup()
