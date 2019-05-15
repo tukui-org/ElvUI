@@ -591,6 +591,11 @@ function NP:HideInterfaceOptions()
 		o:SetAlpha(0)
 		o:Hide()
 	end
+
+	local o = _G['InterfaceOptionsNamesPanelNPCNamesDropDown']
+	o:SetSize(0.0001, 0.0001)
+	o:SetAlpha(0)
+	o:Hide()
 end
 
 function NP:Initialize()
