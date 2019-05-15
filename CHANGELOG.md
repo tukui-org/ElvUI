@@ -1,8 +1,16 @@
-### Version 11.11 [  ]
+### Version 11.12 [  ]
+
+**New Additions:**  
+
+**Bug Fixes:**  
+
+**Misc. Changes:**  
+
+### Version 11.11 [ May 14th 2019 ]
 
 **New Additions:**  
 Add debuffs for Crucible of Storms.  
-Added the ability to swap language in the configuration window to the language of your choice. (*CURRENTLY WIP*)  
+Added the ability to swap language in the configuration window to the language of your choice.  
 Added "Tank, Damage, Healer" sort option to party and raid frames. (Thanks @wing5wong)  
 Added Debuff Highlight mode options. (#726 - Thanks @wing5wong)  
 Added skin for RaidProfiles New Profile Popup.  
