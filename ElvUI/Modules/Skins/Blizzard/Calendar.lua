@@ -19,24 +19,6 @@ local function LoadSkin()
 	S:HandleCloseButton(_G.CalendarCloseButton)
 	_G.CalendarCloseButton:Point("TOPRIGHT", CalendarFrame, "TOPRIGHT", -4, -4)
 
-	for i = 1, 9 do
-		select(i, _G.CalendarViewEventFrame:GetRegions()):Hide()
-	end
-	select(15, _G.CalendarViewEventFrame:GetRegions()):Hide()
-
-	for i = 1, 9 do
-		select(i, _G.CalendarViewHolidayFrame:GetRegions()):Hide()
-		select(i, _G.CalendarViewRaidFrame:GetRegions()):Hide()
-	end
-
-	for i = 1, 3 do
-		select(i, _G.CalendarCreateEventTitleFrame:GetRegions()):Hide()
-		select(i, _G.CalendarViewEventTitleFrame:GetRegions()):Hide()
-		select(i, _G.CalendarViewHolidayTitleFrame:GetRegions()):Hide()
-		select(i, _G.CalendarViewRaidTitleFrame:GetRegions()):Hide()
-		select(i, _G.CalendarMassInviteTitleFrame:GetRegions()):Hide()
-	end
-
 	for i = 1, 7 do
 		_G["CalendarWeekday"..i.."Background"]:SetAlpha(0)
 	end
@@ -50,7 +32,7 @@ local function LoadSkin()
 	select(5, _G.CalendarViewHolidayCloseButton:GetRegions()):Hide()
 	select(5, _G.CalendarViewRaidCloseButton:GetRegions()):Hide()
 	select(5, _G.CalendarMassInviteCloseButton:GetRegions()):Hide()
-	_G.CalendarCreateEventBackground:Hide()
+	--_G.CalendarCreateEventBackground:Hide()
 	_G.CalendarCreateEventFrameButtonBackground:Hide()
 	_G.CalendarCreateEventMassInviteButtonBorder:Hide()
 	_G.CalendarCreateEventCreateButtonBorder:Hide()
