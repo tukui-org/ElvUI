@@ -1,5 +1,14 @@
 local ElvUI = select(2, ...)
-ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', false) -- Locale doesn't exist yet, make it exist.
+
+local gameLocale
+do -- Locale doesn't exist yet, make it exist.
+	local convert = {['enGB'] = 'enUS', ['esES'] = 'esMX', ['itIT'] = 'enUS'}
+	local lang = GetLocale()
+
+	gameLocale = convert[lang] or lang or 'enUS'
+	ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', gameLocale)
+end
+
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local ActionBars = E:GetModule('ActionBars')
@@ -26,17 +35,15 @@ local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local assert, type, pcall, date, print = assert, type, pcall, date, print
 local twipe, tinsert, tremove, next = wipe, tinsert, tremove, next
-local gsub, strmatch, strjoin = gsub, match, strjoin
+local gsub, strmatch, strjoin = gsub, strmatch, strjoin
 local format, find, strrep, len, sub = format, strfind, strrep, strlen, strsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
 local GetChannelName = GetChannelName
-local GetCombatRatingBonus = GetCombatRatingBonus
-local GetDodgeChance, GetParryChance = GetDodgeChance, GetParryChance
 local GetFunctionCPUUsage = GetFunctionCPUUsage
 local GetNumGroupMembers = GetNumGroupMembers
-local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGroup
+local GetSpecialization = GetSpecialization
 local GetSpecializationRole = GetSpecializationRole
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
@@ -51,12 +58,10 @@ local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
 local WrapTextInColorCode = WrapTextInColorCode
-local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
+local UnitStat, UnitAttackPower = UnitStat, UnitAttackPower
 local hooksecurefunc = hooksecurefunc
-local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
-local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local MAX_WOW_CHAT_CHANNELS = MAX_WOW_CHAT_CHANNELS
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local C_ChatInfo_GetNumActiveChannels = C_ChatInfo.GetNumActiveChannels
@@ -139,14 +144,6 @@ E.DispelClasses = {
 	['MAGE'] = {
 		['Curse'] = true
 	}
-}
-
-E.HealingClasses = {
-	PALADIN = 1,
-	SHAMAN = 3,
-	DRUID = 4,
-	MONK = 2,
-	PRIEST = {1, 2}
 }
 
 E.ClassRole = {
@@ -607,23 +604,6 @@ E.snapBars[#E.snapBars + 1] = E.UIParent
 E.HiddenFrame = CreateFrame('Frame')
 E.HiddenFrame:Hide()
 
-function E:CheckTalentTree(tree)
-	local activeSpec = GetActiveSpecGroup()
-	local currentSpec = activeSpec and GetSpecialization(false, false, activeSpec)
-
-	if currentSpec and type(tree) == 'number' then
-		return tree == currentSpec
-	elseif currentSpec and type(tree) == 'table' then
-		for _, index in pairs(tree) do
-			if index == currentSpec then
-				return true
-			end
-		end
-	end
-
-	return false
-end
-
 function E:IsDispellableByMe(debuffType)
 	if not self.DispelClasses[self.myclass] then return end
 
@@ -633,25 +613,17 @@ function E:IsDispellableByMe(debuffType)
 end
 
 function E:CheckRole()
-	local talentTree = GetSpecialization()
-	self.myspec = talentTree
+	self.myspec = GetSpecialization()
+	self.myrole = E:GetPlayerRole()
 
-	local IsInPvPGear, role = false
+	-- myrole = group role; TANK, HEALER, DAMAGER
+	-- role   = class role; Tank, Melee, Caster
 
-	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
-	if resilperc > GetDodgeChance() and resilperc > GetParryChance() and UnitLevel('player') == MAX_PLAYER_LEVEL then
-		IsInPvPGear = true
-	end
-
+	local role
 	if type(self.ClassRole[self.myclass]) == 'string' then
 		role = self.ClassRole[self.myclass]
-	elseif talentTree then
-		role = self.ClassRole[self.myclass][talentTree]
-	end
-
-	--Check for PvP gear
-	if role == 'Tank' and IsInPvPGear then
-		role = 'Melee'
+	elseif self.myspec then
+		role = self.ClassRole[self.myclass][self.myspec]
 	end
 
 	if not role then
@@ -672,12 +644,8 @@ function E:CheckRole()
 		self.callbacks:Fire('RoleChanged')
 	end
 
-	if self.HealingClasses[self.myclass] ~= nil and self.myclass ~= 'PRIEST' then
-		if self:CheckTalentTree(self.HealingClasses[self.myclass]) then
-			self.DispelClasses[self.myclass].Magic = true
-		else
-			self.DispelClasses[self.myclass].Magic = false
-		end
+	if self.myrole and self.DispelClasses[self.myclass] ~= nil then
+		self.DispelClasses[self.myclass].Magic = (self.myrole == 'HEALER')
 	end
 end
 
@@ -1672,6 +1640,18 @@ function E:InitializeModules()
 end
 
 function E:DBConversions()
+	--Fix issue where UIScale was incorrectly stored as string
+	E.global.general.UIScale = tonumber(E.global.general.UIScale)
+
+	--Not sure how this one happens, but prevent it in any case
+	if E.global.general.UIScale <= 0 then
+		E.global.general.UIScale = G.general.UIScale
+	end
+
+	if gameLocale and E.global.general.locale == 'auto' then
+		E.global.general.locale = gameLocale
+	end
+
 	--Combat & Resting Icon options update
 	if E.db.unitframe.units.player.combatIcon ~= nil then
 		E.db.unitframe.units.player.CombatIcon.enable = E.db.unitframe.units.player.combatIcon
@@ -1739,6 +1719,20 @@ function E:DBConversions()
 		E.db.nameplates.durationFontOutline = nil
 	end
 
+	if E.db.nameplates.lowHealthThreshold > 0.8 then
+		E.db.nameplates.lowHealthThreshold = 0.8
+	end
+
+	if E.db.nameplates.units.TARGET.nonTargetTransparency ~= nil then
+		E.global.nameplate.filters.ElvUI_NonTarget.actions.alpha = E.db.nameplates.units.TARGET.nonTargetTransparency * 100
+		E.db.nameplates.units.TARGET.nonTargetTransparency = nil
+	end
+
+	if E.db.nameplates.units.TARGET.scale ~= nil then
+		E.global.nameplate.filters.ElvUI_Target.actions.scale = E.db.nameplates.units.TARGET.scale
+		E.db.nameplates.units.TARGET.scale = nil
+	end
+
 	if not E.db.chat.panelColorConverted then
 		local color = E.db.general.backdropfadecolor
 		E.db.chat.panelColor = {r = color.r, g = color.g, b = color.b, a = color.a}
@@ -1762,6 +1756,17 @@ function E:DBConversions()
 		end
 	end
 
+	--Health Backdrop Multiplier
+	if E.db.unitframe.colors.healthmultiplier ~= nil then
+		if E.db.unitframe.colors.healthmultiplier > 0.75 then
+			E.db.unitframe.colors.healthMultiplier = 0.75
+		else
+			E.db.unitframe.colors.healthMultiplier = E.db.unitframe.colors.healthmultiplier
+		end
+
+		E.db.unitframe.colors.healthmultiplier = nil
+	end
+
 	--Tooltip FactionColors Setting
 	for i=1, 8 do
 		local oldTable = E.db.tooltip.factionColors[''..i]
@@ -1770,14 +1775,6 @@ function E:DBConversions()
 			E.db.tooltip.factionColors[i] = E:CopyTable(newTable, oldTable)
 			E.db.tooltip.factionColors[''..i] = nil
 		end
-	end
-
-	--Fix issue where UIScale was incorrectly stored as string
-	E.global.general.UIScale = tonumber(E.global.general.UIScale)
-
-	--Not sure how this one happens, but prevent it in any case
-	if E.global.general.UIScale <= 0 then
-		E.global.general.UIScale = G.general.UIScale
 	end
 
 	--v11 Nameplates Reset
@@ -1793,7 +1790,7 @@ end
 local CPU_USAGE = {}
 local function CompareCPUDiff(showall, minCalls)
 	local greatestUsage, greatestCalls, greatestName, newName, newFunc
-	local greatestDiff, lastModule, mod, newUsage, calls, differance = 0
+	local greatestDiff, lastModule, mod, usage, calls, diff = 0
 
 	for name, oldUsage in pairs(CPU_USAGE) do
 		newName, newFunc = strmatch(name, '^([^:]+):(.+)$')
@@ -1804,19 +1801,19 @@ local function CompareCPUDiff(showall, minCalls)
 				mod = E:GetModule(newName, true) or E
 				lastModule = newName
 			end
-			newUsage, calls = GetFunctionCPUUsage(mod[newFunc], true)
-			differance = newUsage - oldUsage
+			usage, calls = GetFunctionCPUUsage(mod[newFunc], true)
+			diff = usage - oldUsage
 			if showall and (calls > minCalls) then
-				E:Print('Name('..name..')  Calls('..calls..') Diff('..(differance > 0 and format('%.3f', differance) or 0)..')')
+				E:Print('Name('..name..')  Calls('..calls..') MS('..(usage or 0)..') Diff('..(diff > 0 and format('%.3f', diff) or 0)..')')
 			end
-			if (differance > greatestDiff) and calls > minCalls then
-				greatestName, greatestUsage, greatestCalls, greatestDiff = name, newUsage, calls, differance
+			if (diff > greatestDiff) and calls > minCalls then
+				greatestName, greatestUsage, greatestCalls, greatestDiff = name, usage, calls, diff
 			end
 		end
 	end
 
 	if greatestName then
-		E:Print(greatestName.. ' had the CPU usage difference of: '..(greatestUsage > 0 and format('%.3f', greatestUsage) or 0)..'ms. And has been called '.. greatestCalls..' times.')
+		E:Print(greatestName.. ' had the CPU usage of: '..(greatestUsage > 0 and format('%.3f', greatestUsage) or 0)..'ms. And has been called '.. greatestCalls..' times.')
 	else
 		E:Print('CPU Usage: No CPU Usage differences found.')
 	end
@@ -1940,9 +1937,8 @@ function E:Initialize()
 	self:DBConversions()
 	self:UIScale()
 
-	if not E.db.general.cropIcon then
-		E.TexCoords = {0, 1, 0, 1}
-	end
+	if not E.db.general.cropIcon then E.TexCoords = {0, 1, 0, 1} end
+	self:BuildPrefixValues()
 
 	self:LoadCommands() --Load Commands
 	self:InitializeModules() --Load Modules

@@ -103,6 +103,7 @@ local function resetAttributes(self)
 	self.channeling = nil
 	self.notInterruptible = nil
 	self.spellID = nil
+	self.spellName = nil -- ElvUI
 end
 
 -- ElvUI block
@@ -147,6 +148,7 @@ local function CastStart(self, event, unit)
 	element.holdTime = 0
 	element.castID = castID
 	element.spellID = spellID
+	element.spellName = name -- ElvUI
 
 	-- ElvUI block
 	element.extraTickRatio = 0

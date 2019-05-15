@@ -206,6 +206,7 @@ P.bags = {
 	moneyFormat = 'SMART',
 	moneyCoins = true,
 	junkIcon = false,
+	junkDesaturate = false,
 	scrapIcon = false,
 	upgradeIcon = true,
 	newItemGlow = true,
@@ -318,12 +319,18 @@ P.nameplates = {
 	cutawayHealth = false,
 	cutawayHealthFadeOutTime = 0.6,
 	cutawayHealthLength = 0.3,
-	clickableWidth = 150,
-	clickableHeight = 30,
 	clickThrough = {
 		personal = false,
 		friendly = false,
 		enemy = false,
+	},
+	plateSize ={
+		personalWidth = 150,
+		personalHeight = 30,
+		friendlyWidth = 150,
+		friendlyHeight = 30,
+		enemyWidth = 150,
+		enemyHeight = 30,
 	},
 	colors = {
 		glowColor = {r = 1, g = 1, b = 1, a = 1},
@@ -356,12 +363,12 @@ P.nameplates = {
 		power = {
 			ENERGY = {r = 0.65, g = 0.63, b = 0.35},
 			FOCUS = {r = 0.71, g = 0.43, b = 0.27},
-			FURY = {r = 227/255, g = 126/255, b = 39/255},
-			INSANITY = {r = 0.55, g = 0.14, b = 0.69},
-			LUNAR_POWER = {r = .9, g = .86, b = .12},
-			MAELSTROM = {r = 0, g = 0.5, b = 1},
+			FURY = {r = 227/255, g = 126/255, b = 39/255, atlas = '_DemonHunter-DemonicFuryBar'},
+			INSANITY = {r = 0.55, g = 0.14, b = 0.69, atlas = '_Priest-InsanityBar'},
+			LUNAR_POWER = {r = .9, g = .86, b = .12, atlas = '_Druid-LunarBar'},
+			MAELSTROM = {r = 0, g = 0.5, b = 1, atlas = '_Shaman-MaelstromBar'},
 			MANA = {r = 0.31, g = 0.45, b = 0.63},
-			PAIN = {r = 225/255, g = 225/255, b = 225/255},
+			PAIN = {r = 225/255, g = 225/255, b = 225/255, atlas = '_DemonHunter-DemonicPainBar'},
 			RAGE = {r = 0.78, g = 0.25, b = 0.25},
 			RUNIC_POWER = {r = 0, g = 0.82, b = 1},
 		},
@@ -370,15 +377,11 @@ P.nameplates = {
 			[ 1] = {r = 255/255, g = 129/255, b = 050/255}, -- UNFRIENDLY
 			[ 2] = {r = 255/255, g = 217/255, b = 050/255}, -- NEUTRAL
 			[ 3] = {r = 050/255, g = 180/255, b = 000/255}, -- FRIENDLY
-			[ 4] = {r = 050/255, g = 100/255, b = 255/255}, -- PLAYER_SIMPLE
 			[ 5] = {r = 102/255, g = 136/255, b = 255/255}, -- PLAYER_EXTENDED
 			[ 6] = {r = 102/255, g = 050/255, b = 255/255}, -- PARTY
 			[ 7] = {r = 187/255, g = 050/255, b = 255/255}, -- PARTY_PVP
 			[ 8] = {r = 050/255, g = 255/255, b = 108/255}, -- FRIEND
 			[ 9] = {r = 153/255, g = 153/255, b = 153/255}, -- DEAD
-			--[10] = {}, -- COMMENTATOR_TEAM_1, unavailable to players
-			--[11] = {}, -- COMMENTATOR_TEAM_2, unavailable to players
-			[12] = {r = 017/255, g = 221/255, b = 255/255}, -- SELF, buggy
 			[13] = {r = 025/255, g = 147/255, b = 072/255}, -- BATTLEGROUND_FRIENDLY_PVP
 		},
 		classResources = {
@@ -428,18 +431,11 @@ P.nameplates = {
 			fontSize = 18,
 		},
 	},
-	displayStyle = 'ALL',
 	filters = {
-		Boss = {
-			triggers = {
-				enable = false,
-			},
-		},
-		Explosives = {
-			triggers = {
-				enable = true,
-			},
-		},
+		ElvUI_Boss = {triggers = {enable = true}},
+		ElvUI_Target = {triggers = {enable = true}},
+		ElvUI_NonTarget = {triggers = {enable = true}},
+		ElvUI_Explosives = {triggers = {enable = true}},
 	},
 	font = 'PT Sans Narrow',
 	fontOutline = 'OUTLINE',
@@ -460,6 +456,13 @@ P.nameplates = {
 		badScale = 1.2,
 		useThreatColor = true,
 		indicator = false,
+	},
+	visibility = {
+		nameplateShowAll = true,
+		UnitNameNPC = true,
+		UnitNameFriendlySpecialNPCName = true,
+		UnitNameHostleNPC = false,
+		UnitNameInteractiveNPC = true,
 	},
 	units = {
 		PLAYER = {
@@ -494,7 +497,6 @@ P.nameplates = {
 				enable = true,
 				healPrediction = true,
 				height = 10,
-				yOffset = 0,
 				text = {
 					enable = false,
 					format = '[health:percent]',
@@ -507,7 +509,6 @@ P.nameplates = {
 					fontSize = 11,
 				},
 				useClassColor = true,
-				width = 150,
 			},
 			name = {
 				enable = false,
@@ -682,9 +683,7 @@ P.nameplates = {
 		},
 		TARGET = {
 			enable = true,
-			nonTargetTransparency = 0.5,
 			glowStyle = 'style4',
-			scale = 1.1,
 			classpower = {
 				enable = false,
 				classColor = false,
@@ -713,9 +712,7 @@ P.nameplates = {
 			health = {
 				enable = true,
 				height = 10,
-				width = 150,
 				healPrediction = false,
-				yOffset = 0,
 				text = {
 					enable = true,
 					format = '[health:percent]',
@@ -929,9 +926,7 @@ P.nameplates = {
 			health = {
 				enable = true,
 				height = 10,
-				width = 150,
 				healPrediction = false,
-				yOffset = 0,
 				text = {
 					enable = true,
 					format = '[health:percent]',
@@ -1142,9 +1137,7 @@ P.nameplates = {
 			health = {
 				enable = true,
 				height = 10,
-				width = 150,
 				healPrediction = false,
-				yOffset = 0,
 				text = {
 					enable = true,
 					format = '[health:percent]',
@@ -1362,9 +1355,7 @@ P.nameplates = {
 			health = {
 				enable = true,
 				height = 10,
-				width = 150,
 				healPrediction = false,
-				yOffset = 0,
 				text = {
 					enable = true,
 					format = '[health:percent]',
@@ -1852,7 +1843,7 @@ P.unitframe = {
 		customhealthbackdrop = false,
 		useDeadBackdrop = false,
 		classbackdrop = false,
-		healthmultiplier = 0,
+		healthMultiplier = 0,
 		auraBarByType = true,
 		auraBarTurtle = true,
 		auraBarTurtleColor = {r = 143/255, g = 101/255, b = 158/255},
@@ -1899,15 +1890,11 @@ P.unitframe = {
 			[ 1] = {r = 255/255, g = 129/255, b = 050/255}, -- UNFRIENDLY
 			[ 2] = {r = 255/255, g = 217/255, b = 050/255}, -- NEUTRAL
 			[ 3] = {r = 050/255, g = 180/255, b = 000/255}, -- FRIENDLY
-			[ 4] = {r = 050/255, g = 100/255, b = 255/255}, -- PLAYER_SIMPLE
 			[ 5] = {r = 102/255, g = 136/255, b = 255/255}, -- PLAYER_EXTENDED
 			[ 6] = {r = 102/255, g = 050/255, b = 255/255}, -- PARTY
 			[ 7] = {r = 187/255, g = 050/255, b = 255/255}, -- PARTY_PVP
 			[ 8] = {r = 050/255, g = 255/255, b = 108/255}, -- FRIEND
 			[ 9] = {r = 153/255, g = 153/255, b = 153/255}, -- DEAD
-			--[10] = {}, -- COMMENTATOR_TEAM_1, unavailable to players
-			--[11] = {}, -- COMMENTATOR_TEAM_2, unavailable to players
-			[12] = {r = 017/255, g = 221/255, b = 255/255}, -- SELF, buggy
 			[13] = {r = 025/255, g = 147/255, b = 072/255}, -- BATTLEGROUND_FRIENDLY_PVP
 		},
 		healPrediction = {
@@ -1925,7 +1912,6 @@ P.unitframe = {
 			color = {r = 1, g = 1, b = 1, a = 1},
 		},
 		classResources = {
-			bgColor = {r = 0.1,g = 0.1,b = 0.1, a = 1},
 			comboPoints = {
 				[1] = {r = 0.69, g = 0.31, b = 0.31},
 				[2] = {r = 0.65, g = 0.63, b = 0.34},
@@ -1967,6 +1953,7 @@ P.unitframe = {
 			Curse = {r = 0.6, g = 0, b = 1, a = 0.45},
 			Disease = {r = 0.6, g = 0.4, b = 0, a = 0.45},
 			Poison = {r = 0, g = 0.6, b = 0, a = 0.45},
+			blendMode = "ADD",
 		},
 	},
 	units = {

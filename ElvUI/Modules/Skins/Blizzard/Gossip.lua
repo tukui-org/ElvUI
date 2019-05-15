@@ -75,7 +75,6 @@ local function LoadSkin()
 
 	_G.GossipFrameGreetingGoodbyeButton:StripTextures()
 	S:HandleButton(_G.GossipFrameGreetingGoodbyeButton)
-	S:HandleCloseButton(_G.GossipFrameCloseButton,GossipFrame.backdrop)
 
 	local NPCFriendshipStatusBar = _G.NPCFriendshipStatusBar
 	NPCFriendshipStatusBar:StripTextures()

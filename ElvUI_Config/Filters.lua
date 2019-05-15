@@ -1,4 +1,5 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local C, L = unpack(select(2, ...))
 local UF = E:GetModule('UnitFrames');
 
 local type = type
@@ -9,8 +10,6 @@ local tostring = tostring
 local gsub = string.gsub
 local match = string.match
 local format = string.format
-local COLOR = COLOR
-local NONE = NONE
 local GetSpellInfo = GetSpellInfo
 
 -- GLOBALS: MAX_PLAYER_LEVEL
@@ -219,7 +218,7 @@ local function UpdateFilterGroup()
 					end,
 				},
 				color = {
-					name = COLOR,
+					name = L.COLOR,
 					type = 'color',
 					order = 1,
 					hasAlpha = true,
@@ -372,7 +371,7 @@ local function UpdateFilterGroup()
 			guiInline = true,
 			args = {
 				color = {
-					name = COLOR,
+					name = L.COLOR,
 					type = 'color',
 					order = 1,
 					get = function(info)
@@ -582,11 +581,11 @@ local function UpdateFilterGroup()
 							values = {
 								['coloredIcon'] = L["Colored Icon"],
 								['texturedIcon'] = L["Textured Icon"],
-								['NONE'] = NONE,
+								['NONE'] = L.NONE,
 							},
 						},
 						color = {
-							name = COLOR,
+							name = L.COLOR,
 							type = 'color',
 							order = 6,
 							get = function(info)
@@ -839,11 +838,11 @@ local function UpdateFilterGroup()
 						values = {
 							['coloredIcon'] = L["Colored Icon"],
 							['texturedIcon'] = L["Textured Icon"],
-							['NONE'] = NONE,
+							['NONE'] = L.NONE,
 						},
 					},
 					color = {
-						name = COLOR,
+						name = L.COLOR,
 						type = 'color',
 						order = 6,
 						get = function(info)
@@ -1098,11 +1097,11 @@ local function UpdateFilterGroup()
 						values = {
 							['coloredIcon'] = L["Colored Icon"],
 							['texturedIcon'] = L["Textured Icon"],
-							['NONE'] = NONE,
+							['NONE'] = L.NONE,
 						},
 					},
 					color = {
-						name = COLOR,
+						name = L.COLOR,
 						type = 'color',
 						order = 6,
 						get = function(info)
@@ -1399,7 +1398,7 @@ end
 
 E.Options.args.filters = {
 	type = 'group',
-	name = FILTERS,
+	name = L.FILTERS,
 	order = -10, --Always Last Hehehe
 	args = {
 		createFilter = {
@@ -1448,7 +1447,7 @@ E.Options.args.filters = {
 			end,
 			values = function()
 				local filters = {}
-				filters[''] = NONE
+				filters[''] = L.NONE
 				local list = E.global.unitframe.aurafilters
 				if not list then return end
 				for filter in pairs(list) do

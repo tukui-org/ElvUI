@@ -112,9 +112,8 @@ function NP:Construct_Auras(nameplate)
 	Debuffs.PostUpdateIcon = NP.Debuffs_PostUpdateIcon
 	Debuffs.CustomFilter = NP.Debuffs_CustomFilter
 
-	nameplate.Auras = Auras
-	nameplate.Buffs = Buffs
-	nameplate.Debuffs = Debuffs
+	nameplate.Auras_, nameplate.Buffs_, nameplate.Debuffs_ = Auras, Buffs, Debuffs
+	nameplate.Auras, nameplate.Buffs, nameplate.Debuffs = Auras, Buffs, Debuffs
 end
 
 function NP:Construct_AuraIcon(button)
@@ -124,11 +123,9 @@ function NP:Construct_AuraIcon(button)
 	button.cd:SetReverse(true)
 	button.cd:SetInside(button)
 
-	button.icon:SetInside()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
-	button.icon:SetSnapToPixelGrid(false)
-	button.icon:SetTexelSnappingBias(0)
+	button.icon:SetInside()
 
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', 1, 1)
@@ -166,8 +163,8 @@ function NP:Configure_Auras(nameplate, auras, db)
 		index = index + 1
 	end
 
-	local mult = floor(NP.db.clickableWidth / db.size) < db.numAuras
-	auras:Size(NP.db.clickableWidth, (mult and 1 or 2) * db.size)
+	local mult = floor((nameplate.width or 150) / db.size) < db.numAuras
+	auras:Size((nameplate.width or 150), (mult and 1 or 2) * db.size)
 	auras:ClearAllPoints()
 	auras:Point(E.InversePoints[db.anchorPoint] or 'TOPRIGHT', db.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.anchorPoint or 'TOPRIGHT', db.xOffset, db.yOffset)
 end
@@ -181,24 +178,40 @@ function NP:Update_Auras(nameplate)
 		end
 
 		if db.auras.enable then
-			nameplate.Debuffs:Hide()
-			nameplate.Buffs:Hide()
+			if nameplate.Debuffs then
+				nameplate.Debuffs:Hide()
+				nameplate.Debuffs = nil
+			end
+
+			if nameplate.Buffs then
+				nameplate.Buffs:Hide()
+				nameplate.Buffs = nil
+			end
+
+			nameplate.Auras = nameplate.Auras_
 			nameplate.Auras:Show()
 		else
-			nameplate.Auras:Hide()
+			if nameplate.Auras then
+				nameplate.Auras:Hide()
+				nameplate.Auras = nil
+			end
 
 			if db.debuffs.enable then
+				nameplate.Debuffs = nameplate.Debuffs_
 				NP:Configure_Auras(nameplate, nameplate.Debuffs, db.debuffs)
 				nameplate.Debuffs:Show()
-			else
+			elseif nameplate.Debuffs then
 				nameplate.Debuffs:Hide()
+				nameplate.Debuffs = nil
 			end
 
 			if db.buffs.enable then
+				nameplate.Buffs = nameplate.Buffs_
 				NP:Configure_Auras(nameplate, nameplate.Buffs, db.buffs)
 				nameplate.Buffs:Show()
-			else
+			elseif nameplate.Buffs then
 				nameplate.Buffs:Hide()
+				nameplate.Buffs = nil
 			end
 		end
 	else
@@ -230,7 +243,7 @@ function NP:PostUpdateAura(unit, button)
 		end
 	end
 
-	if button.needsUpdateCooldownPosition then
+	if button.needsUpdateCooldownPosition and (button.cd and button.cd.timer and button.cd.timer.text) then
 		NP:UpdateAuraCooldownPosition(button)
 	end
 end
@@ -250,41 +263,38 @@ function NP:UpdateAuraSettings(button)
 		end
 	end
 
-	button:Size(button.db.size or 26)
+	button:Size((button.db and button.db.size) or 26)
 
 	button.needsUpdateCooldownPosition = true
 end
 
 function NP:UpdateAuraCooldownPosition(button)
-	if button.cd and button.cd.timer and button.cd.timer.text then
-		button.cd.timer.text:ClearAllPoints()
-		local point = (button.db and button.db.durationPosition) or 'CENTER'
-		if point == 'CENTER' then
-			button.cd.timer.text:Point(point, 1, 0)
-		else
-			local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
-			button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
-		end
-
-		button.needsUpdateCooldownPosition = nil
+	button.cd.timer.text:ClearAllPoints()
+	local point = (button.db and button.db.durationPosition) or 'CENTER'
+	if point == 'CENTER' then
+		button.cd.timer.text:Point(point, 1, 0)
+	else
+		local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
+		button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
 	end
+
+	button.needsUpdateCooldownPosition = nil
 end
 
 function NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, ...)
-	local friendCheck, filterName, filter, filterType, spellList, spell
 	for i=1, select('#', ...) do
-		filterName = select(i, ...)
+		local filterName = select(i, ...)
 		if not filterName then return true end
-		friendCheck = (isFriend and strmatch(filterName, '^Friendly:([^,]*)')) or (not isFriend and strmatch(filterName, '^Enemy:([^,]*)')) or nil
+		local friendCheck = (isFriend and strmatch(filterName, '^Friendly:([^,]*)')) or (not isFriend and strmatch(filterName, '^Enemy:([^,]*)')) or nil
 		if friendCheck ~= false then
 			if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
 				filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
 			end
-			filter = E.global.unitframe.aurafilters[filterName]
+			local filter = E.global.unitframe.aurafilters[filterName]
 			if filter then
-				filterType = filter.type
-				spellList = filter.spells
-				spell = spellList and (spellList[spellID] or spellList[name])
+				local filterType = filter.type
+				local spellList = filter.spells
+				local spell = spellList and (spellList[spellID] or spellList[name])
 
 				if filterType and (filterType == 'Whitelist') and (spell and spell.enable) and allowDuration then
 					return true

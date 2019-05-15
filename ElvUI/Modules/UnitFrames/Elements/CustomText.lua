@@ -12,7 +12,6 @@ function UF:Configure_CustomTexts(frame)
 	for objectName, object in pairs(frame.customTexts) do
 		if (not db.customTexts) or (db.customTexts and not db.customTexts[objectName]) then
 			object:Hide()
-			frame.customTexts[objectName] = nil
 		end
 	end
 

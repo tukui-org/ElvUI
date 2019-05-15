@@ -442,7 +442,7 @@ function S:HandleEditBox(frame)
 	end
 end
 
-function S:HandleDropDownBox(frame, width)
+function S:HandleDropDownBox(frame, width, override)
 	if frame.backdrop then return end
 
 	local FrameName = frame.GetName and frame:GetName()
@@ -470,8 +470,10 @@ function S:HandleDropDownBox(frame, width)
 
 		if right then
 			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (right and -3) or 0, 0)
-		elseif left then -- for now only on the Communities.StreamDropdown?
-			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and -15) or 0, 0)
+		elseif left and override then -- for now only on the Communities.StreamDropdown in minimized mode >.>
+			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and 1) or -1, 0)
+		elseif left then
+			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and -20) or -1, 0)
 		else
 			text:Point(a, frame.backdrop, c, (left and 10) or d, e-3)
 		end
@@ -626,8 +628,7 @@ end
 
 function S:HandleIcon(icon, backdrop)
 	icon:SetTexCoord(unpack(E.TexCoords))
-	icon:SetSnapToPixelGrid(false)
-	icon:SetTexelSnappingBias(0)
+
 	if backdrop then
 		icon:CreateBackdrop()
 	end
@@ -707,8 +708,6 @@ function S:HandleSliderFrame(frame)
 	local thumb = frame:GetThumbTexture()
 	thumb:SetVertexColor(1, .82, 0, 0.8)
 	thumb:Size(SIZE-2,SIZE-2)
-	thumb:SetSnapToPixelGrid(false)
-	thumb:SetTexelSnappingBias(0)
 
 	if orientation == 'VERTICAL' then
 		frame:Width(SIZE)

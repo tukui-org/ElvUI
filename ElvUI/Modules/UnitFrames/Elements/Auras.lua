@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 
 --Lua functions
 local _G = _G
-local unpack, strfind, format, tinsert, strsplit, sort, ceil = unpack, strfind, format, tinsert, strsplit, sort, ceil
+local unpack, strfind, format, strsplit, sort, ceil = unpack, strfind, format, strsplit, sort, ceil
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
@@ -54,8 +54,6 @@ function UF:Construct_AuraIcon(button)
 	button.icon:SetInside(button, offset, offset)
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
-	button.icon:SetSnapToPixelGrid(false)
-	button.icon:SetTexelSnappingBias(0)
 
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', 1, 1)
@@ -115,18 +113,16 @@ local function ReverseUpdate(frame)
 end
 
 function UF:UpdateAuraCooldownPosition(button)
-	if button.cd and button.cd.timer and button.cd.timer.text then
-		button.cd.timer.text:ClearAllPoints()
-		local point = (button.db and button.db.durationPosition) or 'CENTER'
-		if point == 'CENTER' then
-			button.cd.timer.text:Point(point, 1, 0)
-		else
-			local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
-			button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
-		end
-
-		button.needsUpdateCooldownPosition = nil
+	button.cd.timer.text:ClearAllPoints()
+	local point = (button.db and button.db.durationPosition) or 'CENTER'
+	if point == 'CENTER' then
+		button.cd.timer.text:Point(point, 1, 0)
+	else
+		local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
+		button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
 	end
+
+	button.needsUpdateCooldownPosition = nil
 end
 
 function UF:Configure_Auras(frame, auraType)
@@ -370,7 +366,7 @@ function UF:PostUpdateAura(unit, button)
 		end
 	end
 
-	if button.needsUpdateCooldownPosition then
+	if button.needsUpdateCooldownPosition and (button.cd and button.cd.timer and button.cd.timer.text) then
 		UF:UpdateAuraCooldownPosition(button)
 	end
 end
@@ -404,7 +400,7 @@ function UF:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	if db.priority ~= '' then
 		local isUnit = unit and caster and UnitIsUnit(unit, caster)
 		local canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType))
-		filterCheck, spellPriority = UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(",", db.priority))
+		filterCheck, spellPriority = UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(',', db.priority))
 		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
 	else
 		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders

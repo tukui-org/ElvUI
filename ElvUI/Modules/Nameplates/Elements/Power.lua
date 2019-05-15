@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local oUF = E.oUF
 
 -- Cache global variables
 -- Lua functions
@@ -14,7 +15,7 @@ local UnitClass = UnitClass
 local UnitReaction = UnitReaction
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
-local UnitSelectionType = UnitSelectionType
+local unitSelectionType = oUF.Private.unitSelectionType
 
 function NP:Power_UpdateColor(event, unit)
 	if self.unit ~= unit then return end
@@ -60,8 +61,8 @@ function NP:Power_UpdateColor(event, unit)
 		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
 		local _, class = UnitClass(unit)
 		t = self.colors.class[class]
-	elseif(element.colorSelection and UnitSelectionType(unit, element.considerSelectionInCombatHostile)) then
-		t = NP.db.colors.selection[UnitSelectionType(unit, element.considerSelectionInCombatHostile)]
+	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
+		t = NP.db.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
 		local reaction = UnitReaction(unit, 'player')
 		if reaction <= 3 then reaction = 'bad' elseif reaction == 4 then reaction = 'neutral' else reaction = 'good' end
@@ -86,11 +87,7 @@ function NP:Power_UpdateColor(event, unit)
 		end
 	end
 
-	local bg = element.bg
-	if(bg and b) then
-		local mu = bg.multiplier or 1
-		bg:SetVertexColor(r * mu, g * mu, b * mu)
-	end
+	if element.bg and b then element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier) end
 
 	if(element.PostUpdateColor) then
 		element:PostUpdateColor(unit, r, g, b)
@@ -102,7 +99,7 @@ function NP:Power_PostUpdate(unit, cur, min, max)
 
 	if not db then return end
 
-	if db.power.displayAltPower and not self.displayType then
+	if self.__owner.frameType ~= 'PLAYER' and db.power.displayAltPower and not self.displayType then
 		self:Hide()
 		return
 	end
@@ -120,10 +117,6 @@ function NP:Construct_Power(nameplate)
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent')
 	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
-
-	local statusBarTexture = Power:GetStatusBarTexture()
-	statusBarTexture:SetSnapToPixelGrid(false)
-	statusBarTexture:SetTexelSnappingBias(0)
 
 	NP.StatusBars[Power] = true
 

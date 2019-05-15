@@ -69,7 +69,7 @@ local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
-local UnitExists = Private.UnitExists
+local unitExists = Private.unitExists
 
 local _PATTERN = '%[..-%]+'
 
@@ -558,7 +558,7 @@ local function createOnUpdate(timer)
 		frame:SetScript('OnUpdate', function(self, elapsed)
 			if(total >= timer) then
 				for _, fs in next, strings do
-					if(fs.parent:IsShown() and UnitExists(fs.parent.unit)) then
+					if(fs.parent:IsShown() and unitExists(fs.parent.unit)) then
 						fs:UpdateTag()
 					end
 				end

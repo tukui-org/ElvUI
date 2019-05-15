@@ -116,7 +116,7 @@ function frame_metatable.__index:RegisterEvent(event, func, unitless)
 			table.insert(curev, func)
 		end
 
-		if(unitless) then
+		if(unitless or self.__eventless) then
 			-- re-register the event in case we have mixed registration
 			registerEvent(self, event)
 			if(self.unitEvents) then
@@ -130,7 +130,7 @@ function frame_metatable.__index:RegisterEvent(event, func, unitless)
 			self:SetScript('OnEvent', onEvent)
 		end
 
-		if(unitless) then
+		if(unitless or self.__eventless) then
 			registerEvent(self, event)
 		else
 			self.unitEvents = self.unitEvents or {}

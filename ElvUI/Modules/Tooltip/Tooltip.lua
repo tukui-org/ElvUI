@@ -330,13 +330,14 @@ local inspectColorFallback = {1,1,1}
 function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
 	local specName = self:GetSpecializationInfo('mouseover')
 	if specName and itemLevel then
-		local unitColor = inspectGUIDCache[unitGUID].unitColor
+		local inspectCache = inspectGUIDCache[unitGUID]
+		if inspectCache then
+			inspectCache.time = GetTime()
+			inspectCache.itemLevel = itemLevel
+			inspectCache.specName = specName
+		end
 
-		inspectGUIDCache[unitGUID].time = GetTime()
-		inspectGUIDCache[unitGUID].itemLevel = itemLevel
-		inspectGUIDCache[unitGUID].specName = specName
-
-		GameTooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, unpack(unitColor or inspectColorFallback))
+		GameTooltip:AddDoubleLine(_G.SPECIALIZATION..":", specName, nil, nil, nil, unpack((inspectCache and inspectCache.unitColor) or inspectColorFallback))
 		GameTooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 		GameTooltip:Show()
 	end
@@ -760,6 +761,12 @@ function TT:SetTooltipFonts()
 			_G["GameTooltipMoneyFrame"..i.."SilverButtonText"]:FontTemplate(font, textSize, fontOutline)
 			_G["GameTooltipMoneyFrame"..i.."CopperButtonText"]:FontTemplate(font, textSize, fontOutline)
 		end
+	end
+
+	-- Ignore header font size on DatatextTooltip
+	if _G.DatatextTooltip then
+		_G.DatatextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
+		_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
 	end
 
 	--These show when you compare items ("Currently Equipped", name of item, item level)

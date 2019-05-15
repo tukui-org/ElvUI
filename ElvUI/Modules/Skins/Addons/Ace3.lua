@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 --Lua functions
@@ -7,6 +7,7 @@ local select = select
 local hooksecurefunc = hooksecurefunc
 
 local oldRegisterAsWidget, oldRegisterAsContainer
+
 function S:Ace3_SkinDropdownPullout()
 	if self and self.obj then
 		if self.obj.pullout and self.obj.pullout.frame then
@@ -20,8 +21,6 @@ function S:Ace3_SkinDropdownPullout()
 
 				local t = self.obj.dropdown.slider:GetThumbTexture()
 				t:SetVertexColor(1, .82, 0, 0.8)
-				t:SetSnapToPixelGrid(false)
-				t:SetTexelSnappingBias(0)
 			end
 		end
 	end
@@ -30,8 +29,8 @@ end
 function S:Ace3_CheckBoxIsEnableSwitch(widget)
 	local text = widget.text and widget.text:GetText()
 	if text then
-		local enabled, disabled = text == L.GREEN_ENABLE, text == L.RED_ENABLE
-		local isSwitch = (text == L.Enable) or enabled or disabled
+		local enabled, disabled = text == S.Ace3_L.GREEN_ENABLE, text == S.Ace3_L.RED_ENABLE
+		local isSwitch = (text == S.Ace3_L.Enable) or enabled or disabled
 		return isSwitch, enabled, disabled
 	end
 end
@@ -67,7 +66,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		hooksecurefunc(widget, "SetValue", function(w, checked)
 			if S:Ace3_CheckBoxIsEnableSwitch(w) then
-				w:SetLabel(checked and L.GREEN_ENABLE or L.RED_ENABLE)
+				w:SetLabel(checked and S.Ace3_L.GREEN_ENABLE or S.Ace3_L.RED_ENABLE)
 			end
 		end)
 
@@ -239,21 +238,15 @@ function S:Ace3_RegisterAsWidget(widget)
 		colorSwatch:ClearAllPoints()
 		colorSwatch:SetParent(frame.backdrop)
 		colorSwatch:SetInside(frame.backdrop)
-		colorSwatch:SetSnapToPixelGrid(false)
-		colorSwatch:SetTexelSnappingBias(0)
 
 		if colorSwatch.background then
 			colorSwatch.background:SetColorTexture(0, 0, 0, 0)
-			colorSwatch.background:SetSnapToPixelGrid(false)
-			colorSwatch.background:SetTexelSnappingBias(0)
 		end
 
 		if colorSwatch.checkers then
 			colorSwatch.checkers:ClearAllPoints()
 			colorSwatch.checkers:SetParent(frame.backdrop)
 			colorSwatch.checkers:SetInside(frame.backdrop)
-			colorSwatch.checkers:SetSnapToPixelGrid(false)
-			colorSwatch.checkers:SetTexelSnappingBias(0)
 		end
 	elseif TYPE == 'Icon' then
 		widget.frame:StripTextures()
@@ -266,6 +259,7 @@ function S:Ace3_RegisterAsContainer(widget)
 	if not E.private.skins.ace3.enable then
 		return oldRegisterAsContainer(self, widget)
 	end
+
 	local TYPE = widget.type
 	if TYPE == 'ScrollFrame' then
 		S:HandleScrollBar(widget.scrollbar)
@@ -285,7 +279,14 @@ function S:Ace3_RegisterAsContainer(widget)
 			frame:StripTextures()
 			S:HandleCloseButton(frame.obj.closebutton)
 		end
-		frame:SetTemplate('Transparent')
+
+		if TYPE == 'InlineGroup' then
+			frame:SetTemplate('Transparent')
+			frame.ignoreBackdropColors = true
+			frame:SetBackdropColor(0, 0, 0, 0.25)
+		else
+			frame:SetTemplate('Transparent')
+		end
 
 		if widget.treeframe then
 			widget.treeframe:SetTemplate('Transparent')
@@ -343,8 +344,9 @@ function S:Ace3_RegisterAsContainer(widget)
 		end
 	elseif TYPE == 'SimpleGroup' then
 		local frame = widget.content:GetParent()
-		frame:SetTemplate('Transparent', nil, true) --ignore border updates
-		frame:SetBackdropBorderColor(0,0,0,0) --Make border completely transparent
+		frame:SetTemplate('Transparent')
+		frame.ignoreBackdropColors = true
+		frame:SetBackdropColor(0, 0, 0, 0.25)
 	end
 
 	return oldRegisterAsContainer(self, widget)
@@ -352,6 +354,8 @@ end
 
 function S:HookAce3(AceGUI)
 	if not AceGUI then return end
+
+	S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
 
 	oldRegisterAsWidget = AceGUI.RegisterAsWidget
 	AceGUI.RegisterAsWidget = S.Ace3_RegisterAsWidget

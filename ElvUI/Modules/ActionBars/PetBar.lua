@@ -302,15 +302,14 @@ function AB:CreateBarPet()
 	_G.PetActionBarFrame.showgrid = 1;
 	PetActionBar_ShowGrid();
 
-	self:RegisterEvent('SPELLS_CHANGED', 'UpdatePet')
-	self:RegisterEvent('PLAYER_CONTROL_GAINED', 'UpdatePet');
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdatePet');
-	self:RegisterEvent('PLAYER_CONTROL_LOST', 'UpdatePet');
 	self:RegisterEvent('PET_BAR_UPDATE', 'UpdatePet');
-	self:RegisterEvent('UNIT_PET', 'UpdatePet');
-	self:RegisterEvent('UNIT_FLAGS', 'UpdatePet');
-	self:RegisterEvent('UNIT_AURA', 'UpdatePet');
+	self:RegisterEvent('PLAYER_CONTROL_GAINED', 'UpdatePet');
+	self:RegisterEvent('PLAYER_CONTROL_LOST', 'UpdatePet');
+	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdatePet');
 	self:RegisterEvent('PLAYER_FARSIGHT_FOCUS_CHANGED', 'UpdatePet');
+	self:RegisterEvent('SPELLS_CHANGED', 'UpdatePet')
+	self:RegisterEvent('UNIT_FLAGS', 'UpdatePet');
+	self:RegisterEvent('UNIT_PET', 'UpdatePet');
 	self:RegisterEvent('PET_BAR_UPDATE_COOLDOWN', PetActionBar_UpdateCooldowns);
 
 	E:CreateMover(bar, 'PetAB', L["Pet Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,barPet');
@@ -324,8 +323,6 @@ function AB:CreateBarPet()
 		if not button.ICON then
 			button.ICON = button:CreateTexture("PetActionButton"..i..'ICON')
 			button.ICON:SetTexCoord(unpack(E.TexCoords))
-			button.ICON:SetSnapToPixelGrid(false)
-			button.ICON:SetTexelSnappingBias(0)
 			button.ICON:SetInside()
 
 			if button.pushed then

@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local oUF = E.oUF
 
 -- Cache global variables
 -- Lua functions
@@ -11,9 +12,9 @@ local UnitIsTapDenied = UnitIsTapDenied
 local UnitThreatSituation = UnitThreatSituation
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
-local UnitSelectionType = UnitSelectionType
 local UnitReaction = UnitReaction
 local CreateFrame = CreateFrame
+local unitSelectionType = oUF.Private.unitSelectionType
 
 function NP:Health_UpdateColor(event, unit)
 	if(not unit or self.unit ~= unit) then return end
@@ -33,8 +34,10 @@ function NP:Health_UpdateColor(event, unit)
 		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
 		local _, class = UnitClass(unit)
 		t = self.colors.class[class]
-	elseif(element.colorSelection and UnitSelectionType(unit, element.considerSelectionInCombatHostile)) then
-		t = NP.db.colors.selection[UnitSelectionType(unit, element.considerSelectionInCombatHostile)]
+	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
+		local Selection = unitSelectionType(unit, element.considerSelectionInCombatHostile)
+		if Selection == 3 then Selection = UnitPlayerControlled(unit) and 5 or 3 end
+		t = NP.db.colors.selection[Selection]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
 		local reaction = UnitReaction(unit, 'player')
 		if reaction <= 3 then reaction = 'bad' elseif reaction == 4 then reaction = 'neutral' else reaction = 'good' end
@@ -42,7 +45,7 @@ function NP:Health_UpdateColor(event, unit)
 	elseif(element.colorSmooth) then
 		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
 	elseif(element.colorHealth) then
-		t = self.colors.health
+		t = NP.db.colors.health
 	end
 
 	if(t) then
@@ -54,14 +57,10 @@ function NP:Health_UpdateColor(event, unit)
 		r, g, b = self.HealthColorChanged.r, self.HealthColorChanged.g, self.HealthColorChanged.b -- use the style filter values
 	end
 
-	if(b) then
+	if b then
 		element:SetStatusBarColor(r, g, b)
 
-		local bg = element.bg
-		if(bg) then
-			local mu = bg.multiplier or 1
-			bg:SetVertexColor(r * mu, g * mu, b * mu)
-		end
+		if element.bg then element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier) end
 	end
 
 	if(element.PostUpdateColor) then
@@ -84,17 +83,14 @@ function NP:Construct_Health(nameplate)
 	NP.StatusBars[Health] = true
 
 	local statusBarTexture = Health:GetStatusBarTexture()
-	statusBarTexture:SetSnapToPixelGrid(false)
-	statusBarTexture:SetTexelSnappingBias(0)
-
 	nameplate.FlashTexture = Health:CreateTexture(nameplate:GetDebugName()..'FlashTexture', "OVERLAY")
 	nameplate.FlashTexture:SetTexture(E.Libs.LSM:Fetch("background", "ElvUI Blank"))
 	nameplate.FlashTexture:Point("BOTTOMLEFT", statusBarTexture, "BOTTOMLEFT")
 	nameplate.FlashTexture:Point("TOPRIGHT", statusBarTexture, "TOPRIGHT")
-	nameplate.FlashTexture:SetSnapToPixelGrid(false)
-	nameplate.FlashTexture:SetTexelSnappingBias(0)
 	nameplate.FlashTexture:Hide()
 
+	Health.colorTapping = true
+	Health.colorSelection = true
 	Health.frequentUpdates = true --Azil, keep this for now. It seems it may prevent event bugs
 	Health.UpdateColor = NP.Health_UpdateColor
 
@@ -105,16 +101,18 @@ function NP:Update_Health(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	nameplate.Health.colorTapping = true
-	nameplate.Health.colorClass = db.health.useClassColor
 	nameplate.Health.colorSelection = true
-	nameplate.Health.colorReaction = true
+	nameplate.Health.colorClass = db.health.useClassColor
+	nameplate.Health.considerSelectionInCombatHostile = true
 
 	if db.health.enable then
 		if not nameplate:IsElementEnabled('Health') then
 			nameplate:EnableElement('Health')
 		end
 
-		nameplate.Health:Point('CENTER', nameplate, 'CENTER', 0, db.health.yOffset)
+		nameplate.Health:Point('CENTER')
+		nameplate.Health:Point('LEFT')
+		nameplate.Health:Point('RIGHT')
 
 		E:SetSmoothing(nameplate.Health, NP.db.smoothbars)
 	else
@@ -136,7 +134,7 @@ function NP:Update_Health(nameplate)
 
 	nameplate.Health.width = db.health.width
 	nameplate.Health.height = db.health.height
-	nameplate.Health:Size(db.health.width, db.health.height)
+	nameplate.Health:Height(db.health.height)
 end
 
 function NP:Construct_HealthPrediction(nameplate)
@@ -149,10 +147,6 @@ function NP:Construct_HealthPrediction(nameplate)
 		HealthPrediction[Bar]:Point('TOP')
 		HealthPrediction[Bar]:Point('BOTTOM')
 		HealthPrediction[Bar]:Width(150)
-
-		local statusBarTexture = HealthPrediction[Bar]:GetStatusBarTexture()
-		statusBarTexture:SetSnapToPixelGrid(false)
-		statusBarTexture:SetTexelSnappingBias(0)
 
 		NP.StatusBars[HealthPrediction[Bar]] = true
 	end

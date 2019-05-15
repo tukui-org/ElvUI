@@ -87,8 +87,6 @@ function NP:Construct_TargetIndicator(nameplate)
 
 	for _, object in pairs({'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator'}) do
 		TargetIndicator[object] = TargetIndicator:CreateTexture(nil, 'BACKGROUND', nil, -5)
-		TargetIndicator[object]:SetSnapToPixelGrid(false)
-		TargetIndicator[object]:SetTexelSnappingBias(0)
 		TargetIndicator[object]:Hide()
 	end
 
@@ -147,8 +145,7 @@ function NP:Update_TargetIndicator(nameplate)
 		end
 
 		if nameplate.TargetIndicator.Spark and (GlowStyle == 'style2' or GlowStyle == 'style6' or GlowStyle == 'style8') then
-			local scale = NP.db.units.TARGET.useScale and (NP.db.units.TARGET.scale >= .75 and NP.db.units.TARGET.scale or .75) or 1
-			local size = (E.Border + 14) * scale;
+			local size = E.Border + 14;
 
 			nameplate.TargetIndicator.Spark:Point('TOPLEFT', nameplate.Health, 'TOPLEFT', -(size * 2), size)
 			nameplate.TargetIndicator.Spark:Point('BOTTOMRIGHT', nameplate.Health, 'BOTTOMRIGHT', (size * 2), -size)
@@ -165,8 +162,6 @@ function NP:Construct_Highlight(nameplate)
 	Highlight:SetFrameLevel(9)
 
 	Highlight.texture = Highlight:CreateTexture(nil, 'ARTWORK')
-	Highlight.texture:SetSnapToPixelGrid(false)
-	Highlight.texture:SetTexelSnappingBias(0)
 
 	return Highlight
 end
@@ -228,7 +223,7 @@ function NP:Update_Fader(nameplate)
 		if nameplate:IsElementEnabled('Fader') then
 			nameplate:DisableElement('Fader')
 
-			E:UIFrameFadeIn(nameplate, 1, nameplate:GetAlpha(), 1)
+			NP:PlateFade(nameplate, 1, nameplate:GetAlpha(), 1)
 		end
 	else
 		if not nameplate.Fader then

@@ -20,6 +20,13 @@ function DT:Initialize()
 	self.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
 	TT:HookScript(self.tooltip, 'OnShow', 'SetStyle')
 
+	-- Ignore header font size on DatatextTooltip
+	local font = E.Libs.LSM:Fetch("font", E.db.tooltip.font)
+	local fontOutline = E.db.tooltip.fontOutline
+	local textSize = E.db.tooltip.textFontSize
+	_G.DatatextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
+	_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
+
 	self:RegisterLDB()
 	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
 

@@ -2,7 +2,7 @@
 -- @class file
 -- @name AceLocale-3.0
 -- @release $Id: AceLocale-3.0.lua 1035 2011-07-09 03:20:13Z kaelten $
-local MAJOR,MINOR = "AceLocale-3.0", 6
+local MAJOR,MINOR = "AceLocale-3.0-ElvUI", 6
 
 local AceLocale, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
@@ -102,7 +102,7 @@ function AceLocale:NewLocale(application, locale, isDefault, silent)
 	end
 
 	if not app then
-		if silent=="raw" then
+		if silent == "raw" then
 			app = {}
 		else
 			app = setmetatable({}, silent and readmetasilent or readmeta)
@@ -111,11 +111,14 @@ function AceLocale:NewLocale(application, locale, isDefault, silent)
 		AceLocale.appnames[app] = application
 	end
 
-	if locale ~= gameLocale and not isDefault then
-		return -- nop, we don't need these translations
+	-- ElvUI block
+	if (not app[locale]) or (app[locale] and type(app[locale]) ~= 'table') then
+		--	app[locale] = setmetatable({}, silent and readmetasilent or readmeta) -- To find missing keys
+		app[locale] = setmetatable({}, readmetasilent)
 	end
 
-	registering = app -- remember globally for writeproxy and writedefaultproxy
+	registering = app[locale] -- remember globally for writeproxy and writedefaultproxy
+	-- end block
 
 	if isDefault then
 		return writedefaultproxy
@@ -129,9 +132,16 @@ end
 -- @param application Unique name of addon / module
 -- @param silent If true, the locale is optional, silently return nil if it's not found (defaults to false, optional)
 -- @return The locale table for the current language.
-function AceLocale:GetLocale(application, silent)
-	if not silent and not AceLocale.apps[application] then
-		error("Usage: GetLocale(application[, silent]): 'application' - No locales registered for '"..tostring(application).."'", 2)
+--- Modified by ElvUI to add `locale` as second arg
+function AceLocale:GetLocale(application, locale, silent)
+	if type(locale) == "boolean" then
+		silent = locale
+		locale = gameLocale
 	end
-	return AceLocale.apps[application]
+
+	if not silent and not AceLocale.apps[application] then
+		error("Usage: GetLocale(application[,locale[, silent]]): 'application' - No locales registered for '"..tostring(application).."'", 2)
+	end
+
+	return AceLocale.apps[application][locale] or AceLocale.apps[application][gameLocale] -- Just in case the table doesn't exist it reverts to default
 end

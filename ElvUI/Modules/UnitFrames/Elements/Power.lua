@@ -217,7 +217,6 @@ function UF:Configure_Power(frame)
 			E.FrameLocks[power] = nil
 			power:SetParent(frame)
 		end
-
 	elseif frame:IsElementEnabled('Power') then
 		frame:DisableElement('Power')
 		power:Hide()
@@ -226,6 +225,9 @@ function UF:Configure_Power(frame)
 
 	--Transparency Settings
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
+
+	--Prediction Texture; keep under ToggleTransparentStatusBar
+	UF:UpdatePredictionStatusBar(frame.PowerPrediction, frame.Power, "Power")
 end
 
 local tokens = {[0]="MANA","RAGE","FOCUS","ENERGY","RUNIC_POWER"}
@@ -237,8 +239,11 @@ function UF:PostUpdatePowerColor()
 
 		if not self.colorClass then
 			self:SetStatusBarColor(color[1], color[2], color[3])
-			local mu = self.bg.multiplier or 1
-			self.bg:SetVertexColor(color[1] * mu, color[2] * mu, color[3] * mu)
+
+			if self.bg then
+				local mu = self.bg.multiplier or 1
+				self.bg:SetVertexColor(color[1] * mu, color[2] * mu, color[3] * mu)
+			end
 		end
 	end
 end
@@ -251,10 +256,5 @@ function UF:PostUpdatePower(unit, _, _, max)
 
 	if parent.db and parent.db.power and parent.db.power.hideonnpc then
 		UF:PostNamePosition(parent, unit)
-	end
-
-	--Force update to AdditionalPower in order to reposition text if necessary
-	if parent:IsElementEnabled("AdditionalPower") then
-		E:Delay(0.01, parent.AdditionalPower.ForceUpdate, parent.AdditionalPower) --Delay it slightly so Power text has a chance to clear itself first
 	end
 end

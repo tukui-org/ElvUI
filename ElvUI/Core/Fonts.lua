@@ -41,12 +41,12 @@ function E:UpdateBlizzardFonts()
 		COMBAT = E.Media.Fonts.Invisible
 	end
 
-	--_G.NAMEPLATE_FONT		= NAMEFONT
-	_G.UNIT_NAME_FONT		= NAMEFONT
-	_G.DAMAGE_TEXT_FONT		= COMBAT
-	_G.STANDARD_TEXT_FONT	= NORMAL
+	if E.private.general.replaceBlizzFonts then
+		--_G.NAMEPLATE_FONT		= NAMEFONT
+		_G.UNIT_NAME_FONT		= NAMEFONT
+		_G.DAMAGE_TEXT_FONT		= COMBAT
+		_G.STANDARD_TEXT_FONT	= NORMAL
 
-	if self.private.general.replaceBlizzFonts then
 		--SetFont(_G.NumberFontNormal,					LSM:Fetch('font', 'Homespun'), 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0)
 		--SetFont(_G.GameFontNormalSmall,					NORMAL, 12, nil, nil, nil, nil, nil, nil, nil, unpack(E.media.rgbvaluecolor))
 		SetFont(_G.AchievementFont_Small,				NORMAL, self.db.general.fontSize)			-- Achiev dates

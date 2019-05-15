@@ -1,4 +1,5 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local C, L = unpack(select(2, ...))
 local AB = E:GetModule('ActionBars')
 local group
 
@@ -6,12 +7,6 @@ local _G = _G
 local pairs = pairs
 local SetCVar = SetCVar
 local GameTooltip = _G.GameTooltip
-local FONT_SIZE = FONT_SIZE
-local NONE, COLOR, COLORS = NONE, COLOR, COLORS
-local SHIFT_KEY, ALT_KEY, CTRL_KEY = SHIFT_KEY, ALT_KEY, CTRL_KEY
-local OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN = OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN
-local LOCK_ACTIONBAR_TEXT = LOCK_ACTIONBAR_TEXT
-local PICKUP_ACTION_KEY_TEXT = PICKUP_ACTION_KEY_TEXT
 
 -- GLOBALS: NUM_ACTIONBAR_BUTTONS, NUM_PET_ACTION_SLOTS
 -- GLOBALS: LOCK_ACTIONBAR, MICRO_BUTTONS
@@ -70,13 +65,13 @@ local function BuildABConfig()
 				order = 6,
 				type = 'toggle',
 				name = L["Key Down"],
-				desc = OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN,
+				desc = L.OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN,
 				disabled = function() return not E.private.actionbar.enable end,
 			},
 			lockActionBars = {
 				order = 7,
 				type = "toggle",
-				name = LOCK_ACTIONBAR_TEXT,
+				name = L.LOCK_ACTIONBAR_TEXT,
 				desc = L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."],
 				set = function(info, value)
 					E.db.actionbar[info[#info]] = value;
@@ -158,14 +153,14 @@ local function BuildABConfig()
 			movementModifier = {
 				order = 15,
 				type = 'select',
-				name = PICKUP_ACTION_KEY_TEXT,
+				name = L.PICKUP_ACTION_KEY_TEXT,
 				desc = L["The button you must hold down in order to drag an ability to another action button."],
 				disabled = function() return (not E.private.actionbar.enable or not E.db.actionbar.lockActionBars) end,
 				values = {
-					['NONE'] = NONE,
-					['SHIFT'] = SHIFT_KEY,
-					['ALT'] = ALT_KEY,
-					['CTRL'] = CTRL_KEY,
+					['NONE'] = L.NONE,
+					['SHIFT'] = L.SHIFT_KEY_TEXT,
+					['ALT'] = L.ALT_KEY_TEXT,
+					['CTRL'] = L.CTRL_KEY_TEXT,
 				},
 			},
 			globalFadeAlpha = {
@@ -180,7 +175,7 @@ local function BuildABConfig()
 			colorGroup = {
 				order = 20,
 				type = "group",
-				name = COLORS,
+				name = L.COLORS,
 				guiInline = true,
 				get = function(info)
 					local t = E.db.actionbar[info[#info]]
@@ -234,7 +229,7 @@ local function BuildABConfig()
 					},
 					fontSize = {
 						order = 5,
-						name = FONT_SIZE,
+						name = L.FONT_SIZE,
 						type = "range",
 						min = 4, max = 212, step = 1,
 					},
@@ -243,18 +238,12 @@ local function BuildABConfig()
 						name = L["Font Outline"],
 						desc = L["Set the font outline."],
 						type = "select",
-						values = {
-							['NONE'] = NONE,
-							['OUTLINE'] = 'OUTLINE',
-
-							['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-							['THICKOUTLINE'] = 'THICKOUTLINE',
-						},
+						values = C.Values.FontFlags,
 					},
 					fontColor = {
 						type = 'color',
 						order = 7,
-						name = COLOR,
+						name = L.COLOR,
 						width = 'full',
 						get = function(info)
 							local t = E.db.actionbar[info[#info]]

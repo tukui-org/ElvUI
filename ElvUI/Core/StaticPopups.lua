@@ -50,7 +50,6 @@ E.PopupDialogs.ELVUI_UPDATED_WHILE_RUNNING = {
 
 		self.button1:Hide()
 	end,
-	timeout = 0,
 	whileDead = 1,
 }
 
@@ -127,7 +126,6 @@ E.PopupDialogs.ELVUI_EDITBOX = {
 		self:ClearFocus()
 	end,
 	OnAccept = E.noop,
-	timeout = 0,
 	whileDead = 1,
 	preferredIndex = 3,
 	hideOnEscape = 1,
@@ -159,7 +157,6 @@ E.PopupDialogs.CONFIRM_LOSE_BINDING_CHANGES = {
 		local isChecked = ElvUIBindPopupWindowCheckButton:GetChecked()
 		ElvUIBindPopupWindowCheckButton:SetChecked(not isChecked)
 	end,
-	timeout = 0,
 	whileDead = 1,
 	showAlert = 1,
 };
@@ -170,7 +167,6 @@ E.PopupDialogs.TUKUI_ELVUI_INCOMPATIBLE = {
 	OnCancel = function() DisableAddOn("Tukui"); ReloadUI() end,
 	button1 = 'ElvUI',
 	button2 = 'Tukui',
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -181,7 +177,6 @@ E.PopupDialogs.DISABLE_INCOMPATIBLE_ADDON = {
 	OnCancel = function() E:StaticPopup_Hide('DISABLE_INCOMPATIBLE_ADDON'); E:StaticPopup_Show('INCOMPATIBLE_ADDON', E.PopupDialogs.INCOMPATIBLE_ADDON.addon, E.PopupDialogs.INCOMPATIBLE_ADDON.module) end,
 	button1 = L["I Swear"],
 	button2 = DECLINE,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -195,7 +190,6 @@ E.PopupDialogs.INCOMPATIBLE_ADDON = {
 		E:StaticPopup_Hide('INCOMPATIBLE_ADDON')
 		E:StaticPopup_Show('DISABLE_INCOMPATIBLE_ADDON');
 	end,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -208,7 +202,6 @@ E.PopupDialogs.UISCALE_CHANGE = {
 	button2 = CANCEL,
 	button3 = L["Preview Changes"],
 	OnAlt = function() E:PixelScaleChanged('UISCALE_CHANGE') end,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false
 }
@@ -217,7 +210,6 @@ E.PopupDialogs.PIXELPERFECT_CHANGED = {
 	text = L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."],
 	button1 = ACCEPT,
 	OnAccept = E.noop,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -226,7 +218,6 @@ E.PopupDialogs.CONFIGAURA_SET = {
 	text = L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."],
 	button1 = ACCEPT,
 	OnAccept = E.noop,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -236,7 +227,6 @@ E.PopupDialogs.FAILED_UISCALE = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function() E.global.general.autoScale = false; ReloadUI(); end,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -246,7 +236,6 @@ E.PopupDialogs.CONFIG_RL = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = ReloadUI,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -256,7 +245,6 @@ E.PopupDialogs.GLOBAL_RL = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = ReloadUI,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -266,7 +254,6 @@ E.PopupDialogs.PRIVATE_RL = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = ReloadUI,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -296,7 +283,6 @@ E.PopupDialogs.RESET_UF_UNIT = {
 			E:Print(L["Error resetting UnitFrame."]);
 		end
 	end,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -318,7 +304,6 @@ E.PopupDialogs.RESET_UF_AF = {
 			end
 		end
 	end,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -337,7 +322,6 @@ E.PopupDialogs.RESET_NP_AF = {
 			end
 		end
 	end,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -348,7 +332,6 @@ E.PopupDialogs.KEYBIND_MODE = {
 	button2 = L["Discard"],
 	OnAccept = function() AB:DeactivateBindMode(true) end,
 	OnCancel = function() AB:DeactivateBindMode(false) end,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -376,21 +359,18 @@ E.PopupDialogs.BUY_BANK_SLOT = {
 		MoneyFrame_Update(self.moneyFrame, GetBankSlotCost())
 	end,
 	hasMoneyFrame = 1,
-	timeout = 0,
 	hideOnEscape = 1,
 }
 
 E.PopupDialogs.CANNOT_BUY_BANK_SLOT = {
 	text = L["Can't buy anymore slots!"],
 	button1 = ACCEPT,
-	timeout = 0,
 	whileDead = 1,
 }
 
 E.PopupDialogs.NO_BANK_BAGS = {
 	text = L["You must purchase a bank slot first!"],
 	button1 = ACCEPT,
-	timeout = 0,
 	whileDead = 1,
 }
 
@@ -401,7 +381,6 @@ E.PopupDialogs.RESETUI_CHECK = {
 	OnAccept = function()
 		E:ResetAllUI()
 	end,
-	timeout = 0,
 	whileDead = 1,
 }
 
@@ -416,7 +395,6 @@ E.PopupDialogs.HARLEM_SHAKE = {
 			return true
 		end
 	end,
-	timeout = 0,
 	whileDead = 1,
 }
 
@@ -426,7 +404,6 @@ E.PopupDialogs.HELLO_KITTY = {
 	OnAccept = function()
 		E:SetupHelloKitty()
 	end,
-	timeout = 0,
 	whileDead = 1,
 }
 
@@ -446,7 +423,6 @@ E.PopupDialogs.HELLO_KITTY_END = {
 		SetCVar("Sound_EnableAllSound", E.oldEnableAllSound)
 		SetCVar("Sound_EnableMusic", E.oldEnableMusic)
 	end,
-	timeout = 0,
 	whileDead = 1,
 }
 
@@ -455,7 +431,6 @@ E.PopupDialogs.DISBAND_RAID = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function() Misc:DisbandRaidGroup() end,
-	timeout = 0,
 	whileDead = 1,
 }
 
@@ -463,7 +438,6 @@ E.PopupDialogs.CONFIRM_LOOT_DISTRIBUTION = {
 	text = CONFIRM_LOOT_DISTRIBUTION,
 	button1 = YES,
 	button2 = NO,
-	timeout = 0,
 	hideOnEscape = 1,
 }
 
@@ -471,7 +445,6 @@ E.PopupDialogs.RESET_PROFILE_PROMPT = {
 	text = L["Are you sure you want to reset all the settings on this profile?"],
 	button1 = YES,
 	button2 = NO,
-	timeout = 0,
 	hideOnEscape = 1,
 	OnAccept = function() E:ResetProfile() end,
 }
@@ -479,7 +452,6 @@ E.PopupDialogs.RESET_PROFILE_PROMPT = {
 E.PopupDialogs.WARNING_BLIZZARD_ADDONS = {
 	text = L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."],
 	button1 = OKAY,
-	timeout = 0,
 	hideOnEscape = false,
 	OnAccept = function() EnableAddOn("Blizzard_CompactRaidFrames"); ReloadUI(); end,
 }
@@ -529,7 +501,6 @@ E.PopupDialogs.APPLY_FONT_WARNING = {
 	OnCancel = function() E:StaticPopup_Hide('APPLY_FONT_WARNING'); end,
 	button1 = YES,
 	button2 = CANCEL,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -537,7 +508,6 @@ E.PopupDialogs.APPLY_FONT_WARNING = {
 E.PopupDialogs.MODULE_COPY_CONFIRM = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -572,7 +542,6 @@ E.PopupDialogs.UI_SCALE_CHANGES_INFORM = {
 			end
 		end)
 	end,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -587,7 +556,6 @@ E.PopupDialogs.SCRIPT_PROFILE = {
 	end,
 	OnCancel = E.noop,
 	showAlert = 1,
-	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -639,7 +607,6 @@ E.PopupDialogs.MAJOR_RELEASE_NAMEPLATES = {
 			self:GetParent():Hide();
 		end
 	end,
-	timeout = 0,
 	whileDead = true,
 	hideOnEscape = false,
 	showAlert = true,
@@ -808,41 +775,43 @@ function E:StaticPopup_OnHide()
 end
 
 function E:StaticPopup_OnUpdate(elapsed)
-	if ( self.timeleft and self.timeleft > 0 ) then
-		local which = self.which;
-		local timeleft = self.timeleft - elapsed;
-		if ( timeleft <= 0 ) then
-			if ( not E.PopupDialogs[which].timeoutInformationalOnly ) then
-				self.timeleft = 0;
-				local OnCancel = E.PopupDialogs[which].OnCancel;
-				if ( OnCancel ) then
-					OnCancel(self, self.data, "timeout");
+	local info = E.PopupDialogs[self.which]
+
+	if self.timeleft and self.timeleft > 0 then
+		self.timeleft = self.timeleft - elapsed
+		if self.timeleft <= 0 then
+			if not info.timeoutInformationalOnly then
+				self.timeleft = nil
+
+				if info.OnCancel then
+					info.OnCancel(self, self.data, "timeout")
 				end
-				self:Hide();
+
+				self:Hide()
 			end
-			return;
+
+			return
 		end
-		self.timeleft = timeleft;
 	end
 
-	if ( self.startDelay ) then
-		local which = self.which;
-		local timeleft = self.startDelay - elapsed;
-		if ( timeleft <= 0 ) then
-			self.startDelay = nil;
-			local text = _G[self:GetName().."Text"];
-			text:SetFormattedText(E.PopupDialogs[which].text, text.text_arg1, text.text_arg2);
-			local button1 = _G[self:GetName().."Button1"];
-			button1:Enable();
-			StaticPopup_Resize(self, which);
-			return;
+	if self.startDelay then
+		self.startDelay = self.startDelay - elapsed
+		if self.startDelay <= 0 then
+			self.startDelay = nil
+
+			local name = self:GetName()
+			local text = _G[name.."Text"]
+			text:SetFormattedText(info.text, text.text_arg1, text.text_arg2)
+			_G[name.."Button1"]:Enable()
+
+			StaticPopup_Resize(self, self.which)
+
+			return
 		end
-		self.startDelay = timeleft;
 	end
 
-	local onUpdate = E.PopupDialogs[self.which].OnUpdate;
-	if ( onUpdate ) then
-		onUpdate(self, elapsed);
+	if info.OnUpdate then
+		info.OnUpdate(self, elapsed)
 	end
 end
 

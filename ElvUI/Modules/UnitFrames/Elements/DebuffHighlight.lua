@@ -31,7 +31,10 @@ end
 function UF:Configure_DebuffHighlight(frame)
 	if E.db.unitframe.debuffHighlighting ~= 'NONE' then
 		frame:EnableElement('DebuffHighlight')
+
+		frame.DebuffHighlight:SetBlendMode(UF.db.colors.debuffHighlight.blendMode)
 		frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
+
 		if E.db.unitframe.debuffHighlighting == 'GLOW' then
 			frame.DebuffHighlightBackdrop = true
 			if frame.ThreatIndicator then

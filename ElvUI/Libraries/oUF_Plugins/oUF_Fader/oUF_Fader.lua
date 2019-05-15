@@ -23,7 +23,7 @@ local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 
 -- These variables will be left-over when disabled if they were used (for reuse later if they become re-enabled):
----- Fader.anim, Fader.HoverHooked, Fader.TargetHooked
+---- Fader.HoverHooked, Fader.TargetHooked
 
 local E -- ElvUI engine defined in ClearTimers
 local MIN_ALPHA, MAX_ALPHA = .35, 1
@@ -44,25 +44,11 @@ local function ClearTimers(element)
 	end
 end
 
-local function FadeOut(anim, frame, timeToFade, startAlpha, endAlpha)
-	anim.timeToFade = timeToFade
-	anim.startAlpha = startAlpha
-	anim.endAlpha = endAlpha
-
-	E:UIFrameFade(frame, anim)
-end
-
 local function ToggleAlpha(self, element, endAlpha)
 	element:ClearTimers()
 
 	if element.Smooth then
-		if not element.anim then
-			element.anim = { mode = 'OUT' }
-		else
-			element.anim.fadeTimer = nil
-		end
-
-		FadeOut(element.anim, self, element.Smooth, self:GetAlpha(), endAlpha)
+		E:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), endAlpha)
 	else
 		self:SetAlpha(endAlpha)
 	end
@@ -120,18 +106,17 @@ local function ForceUpdate(element)
 	return Update(element.__owner, "ForceUpdate", element.__owner.unit)
 end
 
-local timer = 0
-local function onRangeUpdate(_, elapsed)
-	timer = timer + elapsed
+local function onRangeUpdate(frame, elapsed)
+	frame.timer = (frame.timer or 0) + elapsed
 
-	if timer >= .20 then
+	if frame.timer >= .20 then
 		for _, object in next, onRangeObjects do
-			if object:IsShown() then
+			if object:IsVisible() then
 				object.Fader:ForceUpdate()
 			end
 		end
 
-		timer = 0
+		frame.timer = 0
 	end
 end
 
@@ -197,8 +182,9 @@ local options = {
 		enable = function(self)
 			self:RegisterEvent('PLAYER_REGEN_ENABLED', Update, true)
 			self:RegisterEvent('PLAYER_REGEN_DISABLED', Update, true)
+			self:RegisterEvent('UNIT_FLAGS', Update)
 		end,
-		events = {'PLAYER_REGEN_ENABLED','PLAYER_REGEN_DISABLED'}
+		events = {'PLAYER_REGEN_ENABLED','PLAYER_REGEN_DISABLED','UNIT_FLAGS'}
 	},
 	Target = { --[[ UnitTarget, PlayerTarget ]]
 		enable = function(self)

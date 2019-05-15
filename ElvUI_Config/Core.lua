@@ -1,4 +1,13 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local AddOnName, Engine = ...
+
+Engine[1] = {}
+Engine[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
+
+local C, L = Engine[1], Engine[2]
+
+C.Values = { FontFlags = { ['NONE'] = L.NONE, ['OUTLINE'] = 'OUTLINE', ['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE', ['THICKOUTLINE'] = 'THICKOUTLINE' } }
+
 local D = E:GetModule('Distributor')
 local format = format
 local sort, tinsert = sort, tinsert
@@ -238,7 +247,6 @@ local function ExportImport_Open(mode)
 	Frame.frame:SetFrameStrata("FULLSCREEN_DIALOG")
 	Frame:SetLayout("flow")
 
-
 	local Box = E.Libs.AceGUI:Create("MultiLineEditBox");
 	Box:SetNumLines(30)
 	Box:DisableButton(true)
@@ -318,7 +326,6 @@ local function ExportImport_Open(mode)
 				Box.editBox:HighlightText();
 			end
 		end)
-
 	elseif mode == "import" then
 		Frame:SetTitle(L["Import Profile"])
 		local importButton = E.Libs.AceGUI:Create("Button-ElvUI") --This version changes text color on SetDisabled

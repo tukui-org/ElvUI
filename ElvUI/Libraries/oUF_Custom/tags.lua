@@ -570,7 +570,7 @@ local function createOnUpdate(timer)
 		frame:SetScript('OnUpdate', function(self, elapsed)
 			if(total >= timer) then
 				for _, fs in next, strings do
-					if(fs.parent:IsShown() and UnitExists(fs.parent.unit)) then
+					if (fs:IsShown() and fs.parent:IsShown() and UnitExists(fs.parent.unit)) then
 						fs:UpdateTag()
 					end
 				end
@@ -937,3 +937,4 @@ oUF.Tags = {
 }
 
 oUF:RegisterMetaFunction('Tag', Tag, true)
+oUF:RegisterMetaFunction('Untag', Untag, true)

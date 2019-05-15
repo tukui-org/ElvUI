@@ -973,6 +973,28 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[282834] = Defaults(), -- Kimbul's Wrath
 		[286811] = Defaults(), -- Akunda's Wrath
 		[286838] = Defaults(), -- Static Orb
+
+	--Crucible of Storms
+		--The Restless Cabal
+		[282386] = Defaults(), -- Aphotic Blast
+		[282384] = Defaults(), -- Shear Mind
+		[282566] = Defaults(), -- Promises of Power
+		[282561] = Defaults(), -- Dark Herald
+		[282432] = Defaults(), -- Crushing Doubt
+		[282589] = Defaults(), -- Mind Scramble
+		[292826] = Defaults(), -- Mind Scramble
+
+		--Fa'thuul the Feared
+		[284851] = Defaults(), -- Touch of the End
+		[286459] = Defaults(), -- Feedback: Void
+		[286457] = Defaults(), -- Feedback: Ocean
+		[286458] = Defaults(), -- Feedback: Storm
+		[285367] = Defaults(), -- Piercing Gaze of N'Zoth
+		[284733] = Defaults(), -- Embrace of the Void
+		[284722] = Defaults(), -- Umbral Shell
+		[285345] = Defaults(), -- Maddening Eyes of N'Zoth
+		[285477] = Defaults(), -- Obscurity
+		[285652] = Defaults(), -- Insatiable Torment
 	},
 }
 

@@ -602,8 +602,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if icon then
 		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetSnapToPixelGrid(false)
-		icon:SetTexelSnappingBias(0)
 		icon:SetInside()
 	end
 
@@ -826,6 +824,10 @@ function AB:DisableBlizzard()
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
 	self:SecureHook('BlizzardOptionsPanel_OnEvent')
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
+
+	for _, frame in pairs({"MainMenuBar", "StanceBarFrame", "PossessBarFrame", "PETACTIONBAR_YPOS", "MULTICASTACTIONBAR_YPOS", 	"MultiBarBottomLeft", "MultiBarBottomRight", "MultiCastActionBarFrame", "ExtraActionBarFrame"}) do
+		UIPARENT_MANAGED_FRAME_POSITIONS[frame] = nil
+	end
 
 	if _G.PlayerTalentFrame then
 		_G.PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
@@ -1063,6 +1065,7 @@ function AB:UpdateChargeCooldown(button, duration)
 	cd.hideText = (duration and duration > 1.5) or (AB.db.chargeCooldown == false) or nil
 	if cd.timer and (oldstate ~= cd.hideText) then
 		E:Cooldown_ForceUpdate(cd.timer)
+		E:ToggleBlizzardCooldownText(cd, cd.timer)
 	end
 end
 

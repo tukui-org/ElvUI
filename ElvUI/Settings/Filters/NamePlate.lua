@@ -6,18 +6,37 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
 G.nameplate.filters = {
-	Boss = {
+	ElvUI_Boss = {
 		triggers = {
 			level = true,
 			curlevel = -1,
+			priority = 2,
 		},
 		actions = {
 			usePortrait = true,
 			scale = 1.15,
 		},
 	},
-	Explosives = {
+	ElvUI_Target = {
 		triggers = {
+			isTarget = true,
+		},
+		actions = {
+			scale = 1.2
+		}
+	},
+	ElvUI_NonTarget = {
+		triggers = {
+			notTarget = true,
+			requireTarget = true,
+		},
+		actions = {
+			alpha = 30
+		}
+	},
+	ElvUI_Explosives = {
+		triggers = {
+			priority = 2,
 			nameplateType = {
 				enable = true,
 				enemyNPC = true,
@@ -43,10 +62,16 @@ E.StyleFilterDefaults = {
 		targetMe = false,
 		isTarget = false,
 		notTarget = false,
+		requireTarget = false,
 		questBoss = false,
 		level = false,
 		casting = {
+			isCasting = false,
+			isChanneling = false,
+			notCasting = false,
+			notChanneling = false,
 			interruptible = false,
+			notSpell = false,
 			spells = {},
 		},
 		role = {
@@ -64,6 +89,16 @@ E.StyleFilterDefaults = {
 			minus = false,
 		},
 		class = {}, -- this can stay empty we only will accept values that exist
+		raidTarget = {
+			star = false,
+			circle = false,
+			diamond = false,
+			triangle = false,
+			moon = false,
+			square = false,
+			cross = false,
+			skull = false
+		},
 		talent = {
 			type = 'normal',
 			enabled = false,
@@ -83,6 +118,16 @@ E.StyleFilterDefaults = {
 			tier7enabled = false,
 			tier7 = {missing = false, column = 0},
 		},
+		threat = {
+			enable = false,
+			good = false,
+			goodTransition = false,
+			badTransition = false,
+			bad = false,
+			offTank = false,
+			offTankGoodTransition = false,
+			offTankBadTransition = false,
+		},
 		curlevel = 0,
 		maxlevel = 0,
 		minlevel = 0,
@@ -96,6 +141,7 @@ E.StyleFilterDefaults = {
 		overPowerThreshold = 0,
 		names = {},
 		creatureType = {
+			enable = false,
 			Aberration = false,
 			Beast = false,
 			Critter = false,
@@ -141,6 +187,19 @@ E.StyleFilterDefaults = {
 			arena = false,
 			pvp = false,
 		},
+		keyMod = {
+			enable = false,
+			Modifier = false,
+			Shift = false,
+			Alt = false,
+			Control = false,
+			LeftShift = false,
+			LeftAlt = false,
+			LeftControl = false,
+			RightShift = false,
+			RightAlt = false,
+			RightControl = false,
+		},
 		instanceDifficulty = {
 			dungeon = {
 				normal = false,
@@ -179,10 +238,18 @@ E.StyleFilterDefaults = {
 			minTimeLeft = 0,
 			maxTimeLeft = 0,
 		},
+		isResting = false,
+		isPet = false,
+		-- combat
 		inCombat = false,
 		outOfCombat = false,
 		inCombatUnit = false,
 		outOfCombatUnit = false,
+		-- vehicle
+		inVehicle = false,
+		outOfVehicle = false,
+		inVehicleUnit = false,
+		outOfVehicleUnit = false,
 	},
 	actions = {
 		color = {
@@ -207,7 +274,7 @@ E.StyleFilterDefaults = {
 		hide = false,
 		usePortrait = false,
 		nameOnly = false,
-		scale = 1.0,
+		scale = 1,
 		alpha = -1,
 	},
 }

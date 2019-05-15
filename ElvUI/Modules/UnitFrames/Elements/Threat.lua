@@ -33,7 +33,8 @@ function UF:Construct_Threat(frame)
 end
 
 function UF:Configure_Threat(frame)
-	if not frame.VARIABLES_SET then return end
+	if not (frame.VARIABLES_SET and frame.ThreatIndicator) then return end
+
 	local threat = frame.ThreatIndicator
 	local db = frame.db
 

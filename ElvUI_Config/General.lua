@@ -1,4 +1,5 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local C, L = unpack(select(2, ...))
 local Misc = E:GetModule('Misc')
 local Layout = E:GetModule('Layout')
 local Totems = E:GetModule('Totems')
@@ -60,7 +61,7 @@ E.Options.args.general = {
 				UIScale = {
 					order = 3,
 					type = "range",
-					name = UI_SCALE,
+					name = L.UI_SCALE,
 					min = 0.1, max = 1.25, step = 0.00001,
 					softMin = 0.40, softMax = 1.15, bigStep = 0.01,
 					get = function(info) return E.global.general.UIScale end,
@@ -91,7 +92,7 @@ E.Options.args.general = {
 					desc = L["Attempt to support eyefinity/nvidia surround."],
 					type = "toggle",
 					get = function(info) return E.global.general.eyefinity end,
-					set = function(info, value) E.global.general[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+					set = function(info, value) E.global.general.eyefinity = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				taintLog = {
 					order = 7,
@@ -126,20 +127,28 @@ E.Options.args.general = {
 					name = L["Decimal Length"],
 					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
 					min = 0, max = 4, step = 1,
-					set = function(info, value) E.db.general.decimalLength = value; E:StaticPopup_Show("GLOBAL_RL") end,
+					set = function(info, value)
+						E.db.general.decimalLength = value
+						E:BuildPrefixValues()
+						E:StaticPopup_Show("CONFIG_RL")
+					end,
 				},
 				numberPrefixStyle = {
 					order = 12,
 					type = "select",
 					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
-					set = function(info, value) E.db.general.numberPrefixStyle = value; E:StaticPopup_Show("CONFIG_RL") end,
+					set = function(info, value)
+						E.db.general.numberPrefixStyle = value
+						E:BuildPrefixValues()
+						E:StaticPopup_Show("CONFIG_RL")
+					end,
 					values = {
-						["METRIC"] = "Metric (k, M, G)",
-						["ENGLISH"] = "English (K, M, B)",
 						["CHINESE"] = "Chinese (W, Y)",
+						["ENGLISH"] = "English (K, M, B)",
+						["GERMAN"] = "German (Tsd, Mio, Mrd)",
 						["KOREAN"] = "Korean (천, 만, 억)",
-						["GERMAN"] = "German (Tsd, Mio, Mrd)"
+						["METRIC"] = "Metric (k, M, G)"
 					},
 				},
 				smoothingAmount = {
@@ -154,6 +163,27 @@ E.Options.args.general = {
 						E:SetSmoothingAmount(value)
 					end,
 				},
+				locale = {
+					order = 14,
+					type = "select",
+					name = L.LANGUAGE,
+					get = function(info) return E.global.general.locale end,
+					set = function(info, value)
+						E.global.general.locale = value
+						E:StaticPopup_Show("CONFIG_RL")
+					end,
+					values = {
+						["deDE"] = "Deutsch",
+						["enUS"] = "English",
+						["esMX"] = "Español",
+						["frFR"] = "Français",
+						["ptBR"] = "Português",
+						["ruRU"] = "Русский",
+						["zhCN"] = "简体中文",
+						["zhTW"] = "繁体中文",
+						["koKR"] = "한국어",
+					},
+				}
 			},
 		},
 		media = {
@@ -176,7 +206,7 @@ E.Options.args.general = {
 					args = {
 						fontSize = {
 							order = 1,
-							name = FONT_SIZE,
+							name = L.FONT_SIZE,
 							desc = L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"],
 							type = "range",
 							min = 4, max = 32, step = 1,
@@ -194,12 +224,7 @@ E.Options.args.general = {
 							type = "select",
 							order = 3,
 							name = L["Font Outline"],
-							values = {
-								["NONE"] = NONE,
-								["OUTLINE"] = "OUTLINE",
-								["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-								["THICKOUTLINE"] = "THICKOUTLINE",
-							},
+							values = C.Values.FontFlags,
 							set = function(info, value) E.db.general[info[#info]] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
 						},
 						applyFontToAll = {
@@ -423,7 +448,7 @@ E.Options.args.general = {
 						['backdrop'] = L["Skin Backdrop"],
 						['nobackdrop'] = L["Remove Backdrop"],
 						['backdrop_noborder'] = L["Skin Backdrop (No Borders)"],
-						['disabled'] = DISABLE
+						['disabled'] = L.DISABLE
 					}
 				},
 				chatBubbleFont = {
@@ -436,19 +461,14 @@ E.Options.args.general = {
 				chatBubbleFontSize = {
 					order = 4,
 					type = "range",
-					name = FONT_SIZE,
+					name = L.FONT_SIZE,
 					min = 4, max = 212, step = 1,
 				},
 				chatBubbleFontOutline = {
 					order = 5,
 					type = "select",
 					name = L["Font Outline"],
-					values = {
-						["NONE"] = NONE,
-						["OUTLINE"] = "OUTLINE",
-						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-						["THICKOUTLINE"] = "THICKOUTLINE",
-					},
+					values = C.Values.FontFlags,
 				},
 				chatBubbleName = {
 					order = 6,
@@ -528,7 +548,7 @@ E.Options.args.general = {
 				},
 				textSize = {
 					order = 43,
-					name = FONT_SIZE,
+					name = L.FONT_SIZE,
 					type = "range",
 					min = 6, max = 22, step = 1,
 					set = function(info, value) E.db.general.threat.textSize = value; Threat:UpdatePosition() end,
@@ -538,12 +558,7 @@ E.Options.args.general = {
 					type = "select",
 					name = L["Font Outline"],
 					set = function(info, value) E.db.general.threat.textOutline = value; Threat:UpdatePosition() end,
-					values = {
-						["NONE"] = NONE,
-						["OUTLINE"] = "OUTLINE",
-						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-						["THICKOUTLINE"] = "THICKOUTLINE",
-					},
+					values = C.Values.FontFlags,
 				},
 			},
 		},
@@ -618,7 +633,7 @@ E.Options.args.general = {
 						statusBarColor = {
 							type = 'color',
 							order = 4,
-							name = COLOR,
+							name = L.COLOR,
 							disabled = function()
 								return E.db.general.altPowerBar.statusBarColorGradient
 							end,
@@ -656,7 +671,7 @@ E.Options.args.general = {
 						},
 						fontSize = {
 							order = 2,
-							name = FONT_SIZE,
+							name = L.FONT_SIZE,
 							type = "range",
 							min = 6, max = 22, step = 1,
 						},
@@ -664,12 +679,7 @@ E.Options.args.general = {
 							order = 3,
 							type = "select",
 							name = L["Font Outline"],
-							values = {
-								["NONE"] = NONE,
-								["OUTLINE"] = "OUTLINE",
-								["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-								["THICKOUTLINE"] = "THICKOUTLINE",
-							},
+							values = C.Values.FontFlags,
 						},
 						textFormat = {
 							order = 4,
@@ -677,8 +687,8 @@ E.Options.args.general = {
 							name = L["Text Format"],
 							sortByValue = true,
 							values = {
-								NONE = NONE,
-								NAME = NAME,
+								NONE = L.NONE,
+								NAME = L.NAME,
 								NAMEPERC = L["Name: Percent"],
 								NAMECURMAX = L["Name: Current / Max"],
 								NAMECURMAXPERC = L["Name: Current / Max - Percent"],
@@ -742,7 +752,7 @@ E.Options.args.general = {
 				raidUtility = {
 					order = 6,
 					type = "toggle",
-					name = RAID_CONTROL,
+					name = L.RAID_CONTROL,
 					desc = L["Enables the ElvUI Raid Control panel."],
 					get = function(info) return E.private.general.raidUtility end,
 					set = function(info, value) E.private.general.raidUtility = value; E:StaticPopup_Show("PRIVATE_RL") end
@@ -833,19 +843,14 @@ E.Options.args.general = {
 								itemLevelFontSize = {
 									order = 2,
 									type = "range",
-									name = FONT_SIZE,
+									name = L.FONT_SIZE,
 									min = 4, max = 40, step = 1,
 								},
 								itemLevelFontOutline = {
 									order = 3,
 									type = "select",
 									name = L["Font Outline"],
-									values = {
-										["NONE"] = NONE,
-										["OUTLINE"] = "OUTLINE",
-										["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-										["THICKOUTLINE"] = "THICKOUTLINE",
-									},
+									values = C.Values.FontFlags,
 								},
 							},
 						},
@@ -871,13 +876,21 @@ E.Options.args.general = {
 					desc = L["Announce when you interrupt a spell to the specified chat channel."],
 					type = 'select',
 					values = {
-						['NONE'] = NONE,
-						['SAY'] = SAY,
+						['NONE'] = L.NONE,
+						['SAY'] = L.SAY,
 						['PARTY'] = L["Party Only"],
 						['RAID'] = L["Party / Raid"],
 						['RAID_ONLY'] = L["Raid Only"],
-						["EMOTE"] = CHAT_MSG_EMOTE,
+						["EMOTE"] = L.CHAT_MSG_EMOTE,
 					},
+					set = function(info, value)
+						E.db.general[info[#info]] = value
+						if value == 'NONE' then
+							Misc:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+						else
+							Misc:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+						end
+					end,
 				},
 				autoRepair = {
 					order = 2,
@@ -885,9 +898,9 @@ E.Options.args.general = {
 					desc = L["Automatically repair using the following method when visiting a merchant."],
 					type = 'select',
 					values = {
-						['NONE'] = NONE,
-						['GUILD'] = GUILD,
-						['PLAYER'] = PLAYER,
+						['NONE'] = L.NONE,
+						['GUILD'] = L.GUILD,
+						['PLAYER'] = L.PLAYER,
 					},
 				},
 				autoAcceptInvite = {

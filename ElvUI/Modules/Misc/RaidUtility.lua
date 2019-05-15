@@ -180,9 +180,8 @@ local function UpdateIcons(self)
 	end
 
 	if (not raid) and party then -- only need this party (we believe)
-		local myRole = E:GetPlayerRole()
-		if myRole then
-			count[myRole] = (count[myRole] or 0) + 1
+		if E.myrole then
+			count[E.myrole] = (count[E.myrole] or 0) + 1
 		end
 	end
 

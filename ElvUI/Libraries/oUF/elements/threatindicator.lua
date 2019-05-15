@@ -32,7 +32,7 @@ local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
-local UnitExists = Private.UnitExists
+local unitExists = Private.unitExists
 
 local function Update(self, event, unit)
 	if(unit ~= self.unit) then return end
@@ -51,8 +51,8 @@ local function Update(self, event, unit)
 
 	local status
 	-- BUG: Non-existent '*target' or '*pet' units cause UnitThreatSituation() errors
-	if(UnitExists(unit)) then
-		if(feedbackUnit and feedbackUnit ~= unit and UnitExists(feedbackUnit)) then
+	if(unitExists(unit)) then
+		if(feedbackUnit and feedbackUnit ~= unit and unitExists(feedbackUnit)) then
 			status = UnitThreatSituation(feedbackUnit, unit)
 		else
 			status = UnitThreatSituation(unit)

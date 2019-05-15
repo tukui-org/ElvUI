@@ -1,9 +1,7 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local C, L = unpack(select(2, ...))
 local UF = E:GetModule('UnitFrames')
 local MC = E:GetModule('ModuleCopy')
-
-local XPBAR_LABEL, MINIMAP_LABEL = XPBAR_LABEL, MINIMAP_LABEL
-local REPUTATION, HONOR, COLORS = REPUTATION, HONOR, COLORS
 
 --Actionbars
 local function CreateActionbarsConfig()
@@ -147,21 +145,21 @@ local function CreateDatatbarsConfig()
 	config.args.experience = {
 		order = 2,
 		type = "toggle",
-		name = XPBAR_LABEL,
+		name = L.XPBAR_LABEL,
 		get = function(info) return E.global.profileCopy.databars[info[#info]] end,
 		set = function(info, value) E.global.profileCopy.databars[info[#info]] = value; end
 	}
 	config.args.reputation = {
 		order = 3,
 		type = "toggle",
-		name = REPUTATION,
+		name = L.REPUTATION,
 		get = function(info) return E.global.profileCopy.databars[info[#info]] end,
 		set = function(info, value) E.global.profileCopy.databars[info[#info]] = value; end
 	}
 	config.args.honor = {
 		order = 4,
 		type = "toggle",
-		name = HONOR,
+		name = L.HONOR,
 		get = function(info) return E.global.profileCopy.databars[info[#info]] end,
 		set = function(info, value) E.global.profileCopy.databars[info[#info]] = value; end
 	}
@@ -203,7 +201,7 @@ local function CreateGeneralConfig()
 	config.args.minimap = {
 		order = 3,
 		type = "toggle",
-		name = MINIMAP_LABEL,
+		name = L.MINIMAP_LABEL,
 		get = function(info) return E.global.profileCopy.general[info[#info]] end,
 		set = function(info, value) E.global.profileCopy.general[info[#info]] = value; end
 	}
@@ -335,7 +333,7 @@ local function CreateUnitframesConfig()
 		order = 3,
 		type = "group",
 		guiInline = true,
-		name = COLORS,
+		name = L.COLORS,
 		get = function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end,
 		set = function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end,
 		args = {
@@ -417,7 +415,7 @@ local function CreateUnitframesConfig()
 			["pet"] = {
 				order = 7,
 				type = "toggle",
-				name = PET,
+				name = L.PET,
 			},
 			["pettarget"] = {
 				order = 8,
@@ -437,7 +435,7 @@ local function CreateUnitframesConfig()
 			["party"] = {
 				order = 11,
 				type = "toggle",
-				name = PARTY,
+				name = L.PARTY,
 			},
 			["raid"] = {
 				order = 12,
@@ -457,7 +455,7 @@ local function CreateUnitframesConfig()
 			["tank"] = {
 				order = 15,
 				type = "toggle",
-				name = TANK,
+				name = L.TANK,
 			},
 			["assist"] = {
 				order = 16,

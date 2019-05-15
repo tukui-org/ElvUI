@@ -1,4 +1,5 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local C, L = unpack(select(2, ...))
 local mod = E:GetModule('DataBars')
 
 E.Options.args.databars = {
@@ -23,12 +24,12 @@ E.Options.args.databars = {
 			get = function(info) return mod.db.experience[info[#info]] end,
 			set = function(info, value) mod.db.experience[info[#info]] = value; mod:UpdateExperienceDimensions() end,
 			type = "group",
-			name = XPBAR_LABEL,
+			name = L.XPBAR_LABEL,
 			args = {
 				header = {
 					order = 0,
 					type = "header",
-					name = XPBAR_LABEL,
+					name = L.XPBAR_LABEL,
 				},
 				enable = {
 					order = 1,
@@ -94,7 +95,7 @@ E.Options.args.databars = {
 				},
 				textSize = {
 					order = 11,
-					name = FONT_SIZE,
+					name = L.FONT_SIZE,
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
@@ -102,12 +103,7 @@ E.Options.args.databars = {
 					order = 12,
 					type = "select",
 					name = L["Font Outline"],
-					values = {
-						["NONE"] = NONE,
-						["OUTLINE"] = "OUTLINE",
-						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-						["THICKOUTLINE"] = "THICKOUTLINE",
-					},
+					values = C.Values.FontFlags,
 				},
 				textFormat = {
 					order = 13,
@@ -115,7 +111,7 @@ E.Options.args.databars = {
 					name = L["Text Format"],
 					width = "double",
 					values = {
-						NONE = NONE,
+						NONE = L.NONE,
 						PERCENT = L["Percent"],
 						CUR = L["Current"],
 						REM = L["Remaining"],
@@ -133,12 +129,12 @@ E.Options.args.databars = {
 			get = function(info) return mod.db.reputation[info[#info]] end,
 			set = function(info, value) mod.db.reputation[info[#info]] = value; mod:UpdateReputationDimensions() end,
 			type = "group",
-			name = REPUTATION,
+			name = L.REPUTATION,
 			args = {
 				header = {
 					order = 0,
 					type = "header",
-					name = REPUTATION,
+					name = L.REPUTATION,
 				},
 				enable = {
 					order = 1,
@@ -203,7 +199,7 @@ E.Options.args.databars = {
 				},
 				textSize = {
 					order = 11,
-					name = FONT_SIZE,
+					name = L.FONT_SIZE,
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
@@ -211,12 +207,7 @@ E.Options.args.databars = {
 					order = 12,
 					type = "select",
 					name = L["Font Outline"],
-					values = {
-						["NONE"] = NONE,
-						["OUTLINE"] = "OUTLINE",
-						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-						["THICKOUTLINE"] = "THICKOUTLINE",
-					},
+					values = C.Values.FontFlags,
 				},
 				textFormat = {
 					order = 13,
@@ -224,7 +215,7 @@ E.Options.args.databars = {
 					name = L["Text Format"],
 					width = "double",
 					values = {
-						NONE = NONE,
+						NONE = L.NONE,
 						CUR = L["Current"],
 						REM = L["Remaining"],
 						PERCENT = L["Percent"],
@@ -242,12 +233,12 @@ E.Options.args.databars = {
 			get = function(info) return mod.db.honor[info[#info]] end,
 			set = function(info, value) mod.db.honor[info[#info]] = value; mod:UpdateHonorDimensions() end,
 			type = "group",
-			name = HONOR,
+			name = L.HONOR,
 			args = {
 				header = {
 					order = 0,
 					type = "header",
-					name = HONOR,
+					name = L.HONOR,
 				},
 				enable = {
 					order = 1,
@@ -319,7 +310,7 @@ E.Options.args.databars = {
 				},
 				textSize = {
 					order = 12,
-					name = FONT_SIZE,
+					name = L.FONT_SIZE,
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
@@ -327,12 +318,7 @@ E.Options.args.databars = {
 					order = 13,
 					type = "select",
 					name = L["Font Outline"],
-					values = {
-						["NONE"] = NONE,
-						["OUTLINE"] = "OUTLINE",
-						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-						["THICKOUTLINE"] = "THICKOUTLINE",
-					},
+					values = C.Values.FontFlags,
 				},
 				textFormat = {
 					order = 14,
@@ -340,7 +326,7 @@ E.Options.args.databars = {
 					name = L["Text Format"],
 					width = "double",
 					values = {
-						NONE = NONE,
+						NONE = L.NONE,
 						PERCENT = L["Percent"],
 						CUR = L["Current"],
 						REM = L["Remaining"],
@@ -423,7 +409,7 @@ E.Options.args.databars = {
 				},
 				textSize = {
 					order = 10,
-					name = FONT_SIZE,
+					name = L.FONT_SIZE,
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
@@ -431,12 +417,7 @@ E.Options.args.databars = {
 					order = 11,
 					type = "select",
 					name = L["Font Outline"],
-					values = {
-						["NONE"] = NONE,
-						["OUTLINE"] = "OUTLINE",
-						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-						["THICKOUTLINE"] = "THICKOUTLINE",
-					},
+					values = C.Values.FontFlags,
 				},
 				textFormat = {
 					order = 12,
@@ -444,7 +425,7 @@ E.Options.args.databars = {
 					name = L["Text Format"],
 					width = "double",
 					values = {
-						NONE = NONE,
+						NONE = L.NONE,
 						CUR = L["Current"],
 						REM = L["Remaining"],
 						PERCENT = L["Percent"],

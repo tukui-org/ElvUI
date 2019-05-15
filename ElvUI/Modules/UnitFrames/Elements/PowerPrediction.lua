@@ -7,8 +7,12 @@ local hooksecurefunc = hooksecurefunc
 
 function UF:Construct_PowerPrediction(frame)
 	local mainBar = CreateFrame('StatusBar', nil, frame.Power)
+	mainBar.parent = frame.Power
 	UF.statusbars[mainBar] = true
 	mainBar:Hide()
+
+	local texture = (not frame.Power.isTransparent and frame.Power:GetStatusBarTexture()) or E.media.blankTex
+	UF:Update_StatusBar(mainBar, texture)
 
 	local PowerPrediction = { mainBar = mainBar, parent = frame }
 
