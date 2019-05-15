@@ -2271,7 +2271,17 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						sliderElvUI = true,
 						min = 4,
-						max = function() return (E.db.nameplates.clickableHeight or 20) end,
+						max = function()
+							if unit == 'PLAYER' then
+								return (NP.db.plateSize.personalHeight or 20)
+							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+								return (NP.db.plateSize.friendlyHeight or 20)
+							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+								return (NP.db.plateSize.enemyHeight or 20)
+							else
+								return 20
+							end
+						end,
 						step = 1,
 					},
 					healPrediction = {
@@ -2393,7 +2403,17 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						sliderElvUI = true,
 						min = 50,
-						max = function() return (E.db.nameplates.clickableWidth or 250) end,
+						max = function()
+							if unit == 'PLAYER' then
+								return (NP.db.plateSize.personalWidth or 250)
+							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+								return (NP.db.plateSize.friendlyWidth or 250)
+							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+								return (NP.db.plateSize.enemyWidth or 250)
+							else
+								return 250
+							end
+						end,
 						step = 1,
 					},
 					height = {
@@ -2402,7 +2422,17 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						sliderElvUI = true,
 						min = 4,
-						max = function() return (E.db.nameplates.clickableHeight or 20) end,
+						max = function()
+							if unit == 'PLAYER' then
+								return (NP.db.plateSize.personalHeight or 20)
+							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+								return (NP.db.plateSize.friendlyHeight or 20)
+							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+								return (NP.db.plateSize.enemyHeight or 20)
+							else
+								return 20
+							end
+						end,
 						step = 1,
 					},
 					xOffset = {
@@ -2561,7 +2591,17 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						sliderElvUI = true,
 						min = 50,
-						max = function() return (E.db.nameplates.clickableWidth or 250) end,
+						max = function()
+							if unit == 'PLAYER' then
+								return (NP.db.plateSize.personalWidth or 250)
+							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+								return (NP.db.plateSize.friendlyWidth or 250)
+							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+								return (NP.db.plateSize.enemyWidth or 250)
+							else
+								return 250
+							end
+						end,
 						step = 1,
 					},
 					height = {
@@ -2570,7 +2610,17 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						sliderElvUI = true,
 						min = 4,
-						max = function() return (E.db.nameplates.clickableHeight or 20) end,
+						max = function()
+							if unit == 'PLAYER' then
+								return (NP.db.plateSize.personalHeight or 20)
+							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+								return (NP.db.plateSize.friendlyHeight or 20)
+							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+								return (NP.db.plateSize.enemyHeight or 20)
+							else
+								return 20
+							end
+						end,
 						step = 1,
 					},
 					xOffset = {
@@ -2839,7 +2889,8 @@ local function GetUnitSettings(unit, name)
 									["BOTTOMLEFT"] = "BOTTOMLEFT",
 									["BOTTOMRIGHT"] = "BOTTOMRIGHT",
 									["RIGHT"] = "RIGHT",
-									["TOPRIGHT"] = "TOPRIGHT",								},
+									["TOPRIGHT"] = "TOPRIGHT",
+								},
 							},
 						}
 					},
@@ -3708,7 +3759,17 @@ local function GetUnitSettings(unit, name)
 					type = "range",
 					sliderElvUI = true,
 					min = 50,
-					max = function() return (E.db.nameplates.clickableWidth or 250) end,
+					max = function()
+							if unit == 'PLAYER' then
+								return (NP.db.plateSize.personalWidth or 250)
+							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+								return (NP.db.plateSize.friendlyWidth or 250)
+							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+								return (NP.db.plateSize.enemyWidth or 250)
+							else
+								return 250
+							end
+						end,
 					set = function(info, value) E.db.nameplates.units[unit].classpower[info[#info]] = value; NP:ConfigureAll() end,
 					step = 1,
 				},
@@ -3718,7 +3779,17 @@ local function GetUnitSettings(unit, name)
 					type = "range",
 					sliderElvUI = true,
 					min = 4,
-					max = function() return (E.db.nameplates.clickableHeight or 20) end,
+					max = function()
+							if unit == 'PLAYER' then
+								return (NP.db.plateSize.personalHeight or 20)
+							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+								return (NP.db.plateSize.friendlyHeight or 20)
+							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+								return (NP.db.plateSize.enemyHeight or 20)
+							else
+								return 20
+							end
+						end,
 					step = 1,
 				},
 				xOffset = {
