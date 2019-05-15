@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 --Lua functions
 local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
-local select, tonumber, assert, type, unpack = select, tonumber, assert, type, unpack
+local select, tonumber, type, unpack = select, tonumber, type, unpack
 local atan2, modf, ceil, floor, abs, sqrt, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, mod
 local format, strfind, strsub, strupper, gsub, gmatch, utf8sub = format, strfind, strsub, strupper, gsub, gmatch, string.utf8sub
 --WoW API / Variables
@@ -177,10 +177,6 @@ local gftStyles = {
 }
 
 function E:GetFormattedText(style, min, max)
-	assert(gftStyles[style], 'Invalid format style: '..style)
-	assert(min, 'You need to provide a current value. Usage: E:GetFormattedText(style, min, max)')
-	assert(max, 'You need to provide a maximum value. Usage: E:GetFormattedText(style, min, max)')
-
 	if max == 0 then max = 1 end
 
 	local gftUseStyle

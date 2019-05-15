@@ -2,7 +2,7 @@ local E = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, Global
 local AddOnName, Engine = ...
 
 Engine[1] = {}
-Engine[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
+Engine[2] = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
 
 local C, L = Engine[1], Engine[2]
 

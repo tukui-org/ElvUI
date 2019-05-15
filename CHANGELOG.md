@@ -1,8 +1,16 @@
-### Version 11.11 [  ]
+### Version 11.12 [  ]
+
+**New Additions:**  
+
+**Bug Fixes:**  
+
+**Misc. Changes:**  
+
+### Version 11.11 [ May 14th 2019 ]
 
 **New Additions:**  
 Add debuffs for Crucible of Storms.  
-Added the ability to swap language in the configuration window to the language of your choice. (*CURRENTLY WIP*)  
+Added the ability to swap language in the configuration window to the language of your choice.  
 Added "Tank, Damage, Healer" sort option to party and raid frames. (Thanks @wing5wong)  
 Added Debuff Highlight mode options. (#726 - Thanks @wing5wong)  
 Added skin for RaidProfiles New Profile Popup.  
@@ -53,6 +61,7 @@ The Bag Bar and Vendor Greys tabs are now again available if the All In One Bag 
 [Style Filter] Cleaned a decent amount of the trigger condition check code with the help of @wing5wong.  
 Add shadow instead flash texture for StaticPopup buttons (Thanks @Bunny67)  
 Fixed an issue and garbage leak with the plugin version checker.  
+Fixed DataText header text using the Tooltip Header size when it was not supposed too.  
 
 ___
 ### Version 11.10 [ April 9th 2019 ]

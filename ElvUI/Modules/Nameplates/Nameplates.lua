@@ -487,7 +487,7 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 		nameplate.FadeObject = {}
 	end
 
-	nameplate.FadeObject.timeToFade = timeToFade
+	nameplate.FadeObject.timeToFade = (nameplate.isTarget and 0) or timeToFade
 	nameplate.FadeObject.startAlpha = startAlpha
 	nameplate.FadeObject.endAlpha = endAlpha
 	nameplate.FadeObject.diffAlpha = endAlpha - startAlpha
@@ -583,7 +583,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 	end
 end
 
-local optionsTable = {'EnemyMinus','EnemyMinions','FriendlyMinions','PersonalResource','PersonalResourceOnEnemy','MotionDropDown'}
+local optionsTable = {'EnemyMinus','EnemyMinions','FriendlyMinions','PersonalResource','PersonalResourceOnEnemy','MotionDropDown', 'ShowAll'}
 function NP:HideInterfaceOptions()
 	for _, x in pairs(optionsTable) do
 		local o = _G['InterfaceOptionsNamesPanelUnitNameplates'..x]
@@ -591,6 +591,11 @@ function NP:HideInterfaceOptions()
 		o:SetAlpha(0)
 		o:Hide()
 	end
+
+	local o = _G['InterfaceOptionsNamesPanelNPCNamesDropDown']
+	o:SetSize(0.0001, 0.0001)
+	o:SetAlpha(0)
+	o:Hide()
 end
 
 function NP:Initialize()
