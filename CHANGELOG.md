@@ -5,6 +5,9 @@
 **Bug Fixes:**  
 
 **Misc. Changes:**  
+Disabled Boss Style Filter again by default.  
+Hide the Nameplate Name settings in blizzard options, as we have these in our config now.  
+Fixed Style Filter Class Trigger. (#1310)  
 
 ### Version 11.11 [ May 14th 2019 ]
 
