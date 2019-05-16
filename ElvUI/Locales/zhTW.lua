@@ -91,7 +91,6 @@ L["Deficit:"] = "赤字:"
 L["Delete gray items?"] = "刪除灰色物品?"
 L["Deposit Reagents"] = "存入材料"
 L["Desaturate all grey items that can be vendored."] = true
-L["Desaturate Junk Items"] = true
 L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = "偵測到你的 ElvUI 設定插件已過期. 這可能是因為你的 Tukui 客戶端已過期. 請拜訪我們的下載頁面並更新 Tukui 客戶端然後再重新安裝 ElvUI. ElvUI 設定插件過期會造成某些選項遺失"
 L["Disable Warning"] = "停用警告"
 L["Disable"] = "停用"

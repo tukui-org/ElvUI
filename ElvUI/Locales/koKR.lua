@@ -91,7 +91,6 @@ L["Deficit:"] = "손해:"
 L["Delete gray items?"] = "잡템을 삭제하시겠습니까?"
 L["Deposit Reagents"] = _G.REAGENTBANK_DEPOSIT
 L["Desaturate all grey items that can be vendored."] = true
-L["Desaturate Junk Items"] = true
 L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = "ElvUI_Config 가 오래된 버전입니다. Tukui Client 프로그램을 쓰고 있으면 클라이언트를 업데이트하고 ElvUI를 재설치하세요."
 L["Disable Warning"] = "비활성화 경고"
 L["Disable"] = "비활성화"
