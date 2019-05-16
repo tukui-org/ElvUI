@@ -97,12 +97,6 @@ function NP:SetCVars()
 	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
 	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
 
-	SetCVar('nameplateShowAll', NP.db.visibility.nameplateShowAll and 1 or 0) -- NP Show Always
-	SetCVar('UnitNameFriendlySpecialNPCName', NP.db.visibility.UnitNameFriendlySpecialNPCName and 1 or 0) -- Quest Only
-	SetCVar('UnitNameNPC', NP.db.visibility.UnitNameNPC and 1 or 0) -- All NPC Hostile / Friendly
-	SetCVar('UnitNameHostleNPC', NP.db.visibility.UnitNameHostleNPC and 1 or 0) -- Hositle
-	SetCVar('UnitNameInteractiveNPC', NP.db.visibility.UnitNameInteractiveNPC and 1 or 0) -- Interactive
-
 	SetCVar('NameplatePersonalShowAlways', NP.db.units.PLAYER.visibility.showAlways and 1 or 0)
 	SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
 	SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
@@ -112,6 +106,7 @@ function NP:SetCVars()
 	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions or NP.db.units.ENEMY_NPC.minions) and 1 or 0)
 	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors and 1 or 0)
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
+	SetCVar('nameplateShowAll', NP.db.visibility.nameplateShowAll and 1 or 0) -- NP Show Always
 
 	if NP.db.units.ENEMY_NPC.questIcon.enable or NP.db.units.FRIENDLY_NPC.questIcon.enable then
 		SetCVar('showQuestTrackingTooltips', 1)
@@ -583,7 +578,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 	end
 end
 
-local optionsTable = {'EnemyMinus','EnemyMinions','FriendlyMinions','PersonalResource','PersonalResourceOnEnemy','MotionDropDown', 'ShowAll'}
+local optionsTable = {'EnemyMinus','EnemyMinions','FriendlyMinions','PersonalResource','PersonalResourceOnEnemy','MotionDropDown','ShowAll'}
 function NP:HideInterfaceOptions()
 	for _, x in pairs(optionsTable) do
 		local o = _G['InterfaceOptionsNamesPanelUnitNameplates'..x]
@@ -591,11 +586,6 @@ function NP:HideInterfaceOptions()
 		o:SetAlpha(0)
 		o:Hide()
 	end
-
-	local o = _G['InterfaceOptionsNamesPanelNPCNamesDropDown']
-	o:SetSize(0.0001, 0.0001)
-	o:SetAlpha(0)
-	o:Hide()
 end
 
 function NP:Initialize()
