@@ -487,6 +487,9 @@ local function LoadSkin()
 	--Currency
 	hooksecurefunc("TokenFrame_Update", UpdateCurrencySkins)
 	hooksecurefunc(_G.TokenFrameContainer, "update", UpdateCurrencySkins)
+
+	-- Tutorials
+	S:HandleCloseButton(_G.PaperDollItemsFrame.HelpTipBox.CloseButton)
 end
 
 S:AddCallback("Character", LoadSkin)
