@@ -1,6 +1,7 @@
 -- Portuguese localization file for ptBR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ptBR")
 
+L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."] = true
 L["# Displayed Auras"] = true
 L["%s and then %s"] = "%s e depois %s"
 L["24-Hour Time"] = "24 horas"

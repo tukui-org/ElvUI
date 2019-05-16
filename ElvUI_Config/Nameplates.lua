@@ -3718,6 +3718,7 @@ local function GetUnitSettings(unit, name)
 					order = 1,
 					type = "toggle",
 					name = L["Always Show"],
+					desc = L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."]
 				},
 				showInCombat = {
 					order = 2,
@@ -3991,6 +3992,13 @@ local function GetUnitSettings(unit, name)
 				type = "toggle",
 				order = 103,
 				name = L.UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
+			}
+		else
+			group.args.general.args.showAlways = {
+				order = 102,
+				type = "toggle",
+				name = L["Always Show"],
+				desc = L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."]
 			}
 		end
 	end
