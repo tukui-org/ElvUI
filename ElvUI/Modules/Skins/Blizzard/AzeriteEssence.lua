@@ -15,7 +15,10 @@ local function LoadSkin()
 
 	-- Reposition the Level Badge
 	AzeriteEssenceUI.PowerLevelBadgeFrame:ClearAllPoints()
-	AzeriteEssenceUI.PowerLevelBadgeFrame:SetPoint("TOPLEFT", 0, 0)
+	AzeriteEssenceUI.PowerLevelBadgeFrame:SetPoint('TOPLEFT')
+
+	AzeriteEssenceUI.PowerLevelBadgeFrame.Ring:Hide()
+	AzeriteEssenceUI.PowerLevelBadgeFrame.BackgroundBlack:Hide()
 
 	S:HandlePortraitFrame(AzeriteEssenceUI, true)
 	S:HandleScrollBar(AzeriteEssenceUI.EssenceList.ScrollBar)
@@ -29,7 +32,13 @@ local function LoadSkin()
 		--button.PendingGlow:SetTexture() --needs some love
 	end
 
-	-- ToDO: Skin the HeaderButton
+	AzeriteEssenceUI:HookScript("OnShow", function(self)
+		self.EssenceList.HeaderButton:StripTextures()
+		if not self.EssenceList.HeaderButton.backdrop then
+			self.EssenceList.HeaderButton:CreateBackdrop('Transparent')
+			self.EssenceList.HeaderButton.backdrop:SetAllPoints()
+		end
+	end)
 end
 
 S:AddCallbackForAddon("Blizzard_AzeriteEssenceUI", "AzeriteEssenceUI", LoadSkin)
