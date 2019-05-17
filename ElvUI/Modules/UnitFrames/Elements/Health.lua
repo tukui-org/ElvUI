@@ -212,7 +212,7 @@ function UF:Configure_HealthBar(frame)
 	end
 
 	--Transparency Settings
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true, nil, (db.health and db.health.reverseFill))
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, frame.USE_PORTRAIT and not frame.USE_PORTRAIT_OVERLAY, nil, db.health and db.health.reverseFill)
 
 	--Prediction Texture; keep under ToggleTransparentStatusBar
 	UF:UpdatePredictionStatusBar(frame.HealthPrediction, frame.Health, "Health")

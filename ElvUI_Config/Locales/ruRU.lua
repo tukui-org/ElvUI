@@ -1,6 +1,7 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 
+L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."] = true
 L["# Displayed Auras"] = "Кол-во аур"
 L["%s and then %s"] = "%s, а затем %s"
 L["24-Hour Time"] = "24х часовой формат"
@@ -307,7 +308,7 @@ L["Custom Currencies"] = "Свои валюты"
 L["Custom Currency"] = "Своя валюта"
 L["Custom Dead Backdrop"] = "Свой фон мертвого"
 L["Custom Faction Colors"] = "Свои цвета отношения"
-L["Custom Health Backdrop"] = "Свой фон полосы здоровья"
+L["Custom Backdrop"] = true
 L["Custom Power Prediction Color"] = "Свой цвет предсказания ресурса"
 L["Custom Texts"] = "Свой текст"
 L["Custom Texture"] = "Своя текстура"
@@ -639,6 +640,8 @@ L["Instance Type"] = "Тип подземелья"
 L["Interactive NPCs"] = true
 L["Interruptable"] = "Прерываемые"
 L["Interruptible"] = "Прерываемые"
+L["Invert Colors"] = true
+L["Invert foreground and background colors."] = true
 L["Invert Grouping Order"] = "Инвертировать порядок группировки"
 L["Is Casting Anything"] = true
 L["Is Channeling Anything"] = true
@@ -1258,7 +1261,7 @@ L["Use Real ID BattleTag"] = "Использовать BattleTag"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Используйте Shift+ЛКМ для переключения между дружественным, враждебным или нормальным режимами. В нормальном режиме фильтр будет проверять все юниты. В дружеском только дружественные, во враждебном только враждебные."
 L["Use Static Position"] = "Фиксированная позиция"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Использовать этот цвет для юнитов, которых держит другой танк."
-L["Use the custom health backdrop color instead of a multiple of the main health color."] = "Использовать свой фоновый цвет вместо основного цвета полосы здоровья."
+L["Use the custom backdrop color instead of a multiple of the main color."] = true
 L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = "Использовать фильтр \"Buff Indicator (Profile)\", привязанный к профилю вместо глобального."
 L["Use thin borders on certain unitframe elements."] = "Использовать тонкие границы на некоторых элементах рамок юнитов."
 L["Use this backdrop color for units that are dead or ghosts."] = "Использовать этот цвет фона для юнитов, которые мертвы или бегут с кладбища."

@@ -91,7 +91,6 @@ L["Deficit:"] = "Déficit:"
 L["Delete gray items?"] = true
 L["Deposit Reagents"] = "Depositar Componentes"
 L["Desaturate all grey items that can be vendored."] = true
-L["Desaturate Junk Items"] = true
 L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = "Se ha detectado que tu addon de ElvUI Config está desactualizado. Ésto puede darse como resultado de que tu cliente Tukui esté desactualizado. Por favor visita nuestra página de descargas y actualiza tu cliente Tukui y entonces reinstala ElvUI. No tener tu addon ElvUI Config actualizado podría resultar en opciones faltantes."
 L["Disable Warning"] = "Deshabilitar Advertencia"
 L["Disable"] = "Desactivar"

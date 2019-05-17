@@ -722,22 +722,18 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	--Try to match according to raid target conditions
+	-- Raid Target
 	if trigger.raidTarget.star or trigger.raidTarget.circle or trigger.raidTarget.diamond or trigger.raidTarget.triangle or trigger.raidTarget.moon or trigger.raidTarget.square or trigger.raidTarget.cross or trigger.raidTarget.skull then
 		if trigger.raidTarget[mod.TriggerConditions.raidTargets[frame.RaidTargetIndex]] then passed = true else return end
 	end
 
-	do -- Class
-		local Class = trigger.class and next(trigger.class) and trigger.class[E.myclass]
-		if Class ~= nil then
-			if Class.enabled then
-				passed = true
-
-				-- Specialization
-				if Class.specs and next(Class.specs) and not Class.specs[E.myspec and GetSpecializationInfo(E.myspec)] then return end
-			else
-				return
-			end
+	-- Class and Specialization
+	if trigger.class and next(trigger.class) then
+		local Class = trigger.class[E.myclass]
+		if not Class or (Class.specs and next(Class.specs) and not Class.specs[E.myspec and GetSpecializationInfo(E.myspec)]) then
+			return
+		else
+			passed = true
 		end
 	end
 
@@ -815,7 +811,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	--Try to match according to cooldown conditions
+	-- Cooldown
 	if trigger.cooldowns and trigger.cooldowns.names and next(trigger.cooldowns.names) then
 		local cooldown = mod:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll)
 		if cooldown ~= nil then -- ignore if none are set to ONCD or OFFCD
@@ -823,7 +819,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	--Try to match according to buff aura conditions
+	-- Buffs
 	if trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
 		local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
 		if buff ~= nil then -- ignore if none are selected
@@ -831,7 +827,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	--Try to match according to debuff aura conditions
+	-- Debuffs
 	if trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
 		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
 		if debuff ~= nil then -- ignore if none are selected

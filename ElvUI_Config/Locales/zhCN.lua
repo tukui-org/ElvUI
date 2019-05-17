@@ -1,6 +1,7 @@
 -- Simplified Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 
+L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."] = true
 L["# Displayed Auras"] = "显示光环的数量"
 L["%s and then %s"] = "%s 于 %s"
 L["24-Hour Time"] = "24小时制"
@@ -307,7 +308,7 @@ L["Custom Currencies"] = "自定义货币"
 L["Custom Currency"] = "自定义货币"
 L["Custom Dead Backdrop"] = "自定义死亡背景"
 L["Custom Faction Colors"] = "自定义声望颜色"
-L["Custom Health Backdrop"] = "自定义生命条背景"
+L["Custom Backdrop"] = true
 L["Custom Power Prediction Color"] = "自定义能量预估颜色"
 L["Custom Texts"] = "自定义字体"
 L["Custom Texture"] = "自定义材质"
@@ -641,6 +642,8 @@ L["Instance Type"] = "副本类型"
 L["Interactive NPCs"] = "可交互的NPC"
 L["Interruptable"] = "可打断颜色"
 L["Interruptible"] = "可打断"
+L["Invert Colors"] = true
+L["Invert foreground and background colors."] = true
 L["Invert Grouping Order"] = "反转队伍排序"
 L["Is Casting Anything"] = true
 L["Is Channeling Anything"] = true
@@ -1259,7 +1262,7 @@ L["Use Real ID BattleTag"] = "显示战网昵称"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "使用Shift+左键来改变友方/敌方/普通状态. 普通状态将允许过滤器检查所有单位. 友方/敌方将只检查对应单位."
 L["Use Static Position"] = "固定位置"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "当另一个坦克更有效的坦住时姓名板使用被坦住的颜色"
-L["Use the custom health backdrop color instead of a multiple of the main health color."] = "自定义生命条背景色"
+L["Use the custom backdrop color instead of a multiple of the main color."] = true
 L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = "使用配置文件内的增益指示器而不是全局的"
 L["Use thin borders on certain unitframe elements."] = "使用细边框"
 L["Use this backdrop color for units that are dead or ghosts."] = "死亡或灵魂状态背景"

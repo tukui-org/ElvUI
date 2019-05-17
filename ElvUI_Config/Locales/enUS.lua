@@ -1,6 +1,7 @@
 -- English localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
 
+L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."] = true
 L["# Displayed Auras"] = true
 L["%s and then %s"] = true
 L["24-Hour Time"] = true
@@ -309,7 +310,7 @@ L["Custom Currencies"] = true
 L["Custom Currency"] = true
 L["Custom Dead Backdrop"] = true
 L["Custom Faction Colors"] = true
-L["Custom Health Backdrop"] = true
+L["Custom Backdrop"] = true
 L["Custom Power Prediction Color"] = true
 L["Custom Texts"] = true
 L["Custom Texture"] = true
@@ -643,6 +644,8 @@ L["Instance Type"] = true
 L["Interactive NPCs"] = true
 L["Interruptable"] = true
 L["Interruptible"] = true
+L["Invert Colors"] = true
+L["Invert foreground and background colors."] = true
 L["Invert Grouping Order"] = true
 L["Is Casting Anything"] = true
 L["Is Channeling Anything"] = true
@@ -1262,7 +1265,7 @@ L["Use Real ID BattleTag"] = true
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true
 L["Use Static Position"] = true
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = true
-L["Use the custom health backdrop color instead of a multiple of the main health color."] = true
+L["Use the custom backdrop color instead of a multiple of the main color."] = true
 L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = true
 L["Use thin borders on certain unitframe elements."] = true
 L["Use this backdrop color for units that are dead or ghosts."] = true

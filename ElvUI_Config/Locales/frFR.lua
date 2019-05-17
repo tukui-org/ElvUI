@@ -1,6 +1,7 @@
 -- French localization file for frFR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "frFR")
 
+L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."] = true
 L["# Displayed Auras"] = "Auras affichées"
 L["%s and then %s"] = "%s et alors %s"
 L["24-Hour Time"] = "Mode 24 Heures"
@@ -307,7 +308,7 @@ L["Custom Currencies"] = "Monnaies actuelles"
 L["Custom Currency"] = "Monnaie actuelle"
 L["Custom Dead Backdrop"] = "Fond 'mort' personnalisé"
 L["Custom Faction Colors"] = "Couleur de la faction"
-L["Custom Health Backdrop"] = "Fond de vie personnalisé"
+L["Custom Backdrop"] = true
 L["Custom Power Prediction Color"] = true
 L["Custom Texts"] = "Textes personnalisés"
 L["Custom Texture"] = true
@@ -640,6 +641,8 @@ L["Instance Type"] = "Type d'instance"
 L["Interactive NPCs"] = true
 L["Interruptable"] = "Interruptible"
 L["Interruptible"] = "interrompable"
+L["Invert Colors"] = true
+L["Invert foreground and background colors."] = true
 L["Invert Grouping Order"] = "Inverser l'ordre des groupes"
 L["Is Casting Anything"] = true
 L["Is Channeling Anything"] = true
@@ -1258,7 +1261,7 @@ L["Use Real ID BattleTag"] = true
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true
 L["Use Static Position"] = true
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = true
-L["Use the custom health backdrop color instead of a multiple of the main health color."] = "Utilise une couleur personnalisé pour colorer le fond de la barre de vie au lieu d'utiliser la couleur par défaut."
+L["Use the custom backdrop color instead of a multiple of the main color."] = true
 L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = "Utilisez un profil spécifique pour les filtres d'indicateur d'amélioration au lieu d'utiliser le filtre global."
 L["Use thin borders on certain unitframe elements."] = "Utiliser les bordures fines sur certains cadres d'unités."
 L["Use this backdrop color for units that are dead or ghosts."] = "Utiliser cette couleur de fond pour les joueurs morts ou en fantômes"

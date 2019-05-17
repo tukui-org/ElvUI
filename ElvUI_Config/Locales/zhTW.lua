@@ -1,6 +1,7 @@
 -- Traditional Chinese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
 
+L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."] = true
 L["# Displayed Auras"] = "顯示光環的數量"
 L["%s and then %s"] = "%s 與 %s"
 L["24-Hour Time"] = "24小時制"
@@ -308,7 +309,7 @@ L["Custom Currencies"] = "自定義貨幣"
 L["Custom Currency"] = "自定義貨幣"
 L["Custom Dead Backdrop"] = "自定義死亡背景"
 L["Custom Faction Colors"] = "自定義聲望顏色"
-L["Custom Health Backdrop"] = "自定義生命條背景"
+L["Custom Backdrop"] = true
 L["Custom Power Prediction Color"] = "自定義能量預測顏色"
 L["Custom Texts"] = "自定義字體"
 L["Custom Texture"] = "自定義材質"
@@ -641,6 +642,8 @@ L["Instance Type"] = "副本類型"
 L["Interactive NPCs"] = true
 L["Interruptable"] = "可斷法的施法顏色"
 L["Interruptible"] = "可打斷"
+L["Invert Colors"] = true
+L["Invert foreground and background colors."] = true
 L["Invert Grouping Order"] = "反轉隊伍排序"
 L["Is Casting Anything"] = true
 L["Is Channeling Anything"] = true
@@ -1260,7 +1263,7 @@ L["Use Real ID BattleTag"] = "使用 Real ID BattleTag"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true
 L["Use Static Position"] = "固定位置"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "當另一個坦克更有效的坦住時姓名板使用被坦住的顏色"
-L["Use the custom health backdrop color instead of a multiple of the main health color."] = "自定義生命條背景色."
+L["Use the custom backdrop color instead of a multiple of the main color."] = true
 L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = "使用配置文件內的增益指示器而不是全域的"
 L["Use thin borders on certain unitframe elements."] = "使用細邊框"
 L["Use this backdrop color for units that are dead or ghosts."] = "死亡或靈魂狀態背景"

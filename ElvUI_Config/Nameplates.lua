@@ -3718,6 +3718,7 @@ local function GetUnitSettings(unit, name)
 					order = 1,
 					type = "toggle",
 					name = L["Always Show"],
+					desc = L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."]
 				},
 				showInCombat = {
 					order = 2,
@@ -3991,6 +3992,13 @@ local function GetUnitSettings(unit, name)
 				type = "toggle",
 				order = 103,
 				name = L.UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
+			}
+		else
+			group.args.general.args.showAlways = {
+				order = 102,
+				type = "toggle",
+				name = L["Always Show"],
+				desc = L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."]
 			}
 		end
 	end
@@ -4327,7 +4335,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						showEnemyCombat = {
-							order = 3,
+							order = 2,
 							type = "select",
 							name = L["Enemy Combat Toggle"],
 							desc = L["Control enemy nameplates toggling on or off when in combat."],
@@ -4342,7 +4350,7 @@ E.Options.args.nameplate = {
 							end,
 						},
 						showFriendlyCombat = {
-							order = 4,
+							order = 3,
 							type = "select",
 							name = L["Friendly Combat Toggle"],
 							desc = L["Control friendly nameplates toggling on or off when in combat."],
@@ -4353,92 +4361,61 @@ E.Options.args.nameplate = {
 							},
 							set = function(info, value) E.db.nameplates[info[#info]] = value; NP:PLAYER_REGEN_ENABLED() end,
 						},
-						loadDistance = {
-							order = 5,
-							type = "range",
-							name = L["Load Distance"],
-							desc = L["Only load nameplates for units within this range."],
-							min = 10, max = 100, step = 1,
-						},
 						statusbar = {
-							order = 8,
+							order = 5,
 							type = "select",
 							dialogControl = 'LSM30_Statusbar',
 							name = L["StatusBar Texture"],
 							values = _G.AceGUIWidgetLSMlists.statusbar,
 						},
-						highlight = {
-							order = 9,
-							type = "toggle",
-							name = L["Highlight on NamePlate"],
-						},
-						fadeIn = {
-							order = 10,
-							type = "toggle",
-							name = L["Fade-in on Shown"],
-						},
-						clampToScreen = {
-							order = 11,
-							type = "toggle",
-							name = L["Clamp Nameplates"],
-							desc = L["Clamp nameplates to the top of the screen when outside of view."],
+						loadDistance = {
+							order = 6,
+							type = "range",
+							name = L["Load Distance"],
+							desc = L["Only load nameplates for units within this range."],
+							min = 10, max = 100, step = 1,
 						},
 						lowHealthThreshold = {
-							order = 12,
+							order = 7,
 							name = L["Low Health Threshold"],
 							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
 							type = "range",
 							isPercent = true,
 							min = 0, softMax = 0.5, max = 0.8, step = 0.01,
 						},
+						nameplateShowAll = {
+							order = 8,
+							type = "toggle",
+							name = L.UNIT_NAMEPLATES_AUTOMODE,
+							customWidth = 250,
+							get = function(info) return E.db.nameplates.visibility.nameplateShowAll end,
+							set = function(info, value) E.db.nameplates.visibility.nameplateShowAll = value; NP:SetCVars() NP:ConfigureAll() end,
+						},
+						fadeIn = {
+							order = 9,
+							type = "toggle",
+							name = L["Fade-in on Shown"],
+						},
+						highlight = {
+							order = 10,
+							type = "toggle",
+							name = L["Highlight on NamePlate"],
+						},
 						smoothbars = {
 							type = 'toggle',
-							order = 13,
+							order = 11,
 							name = L["Smooth Bars"],
 							desc = L["Bars will transition smoothly."],
 							set = function(info, value) E.db.nameplates[info[#info]] = value; NP:ConfigureAll(); end,
 						},
-						nameplateShowAll = {
-							order = 14,
+						clampToScreen = {
+							order = 12,
 							type = "toggle",
-							name = L.UNIT_NAMEPLATES_AUTOMODE,
-							get = function(info) return E.db.nameplates.visibility.nameplateShowAll end,
-							set = function(info, value) E.db.nameplates.visibility.nameplateShowAll = value; NP:SetCVars() NP:ConfigureAll() end,
-						},
-						visibility = {
-							order = 14,
-							type = "group",
-							guiInline = true,
-							name = L["Name Visibility"],
-							get = function(info) return E.db.nameplates.visibility[info[#info]] end,
-							set = function(info, value) E.db.nameplates.visibility[info[#info]] = value; NP:SetCVars() NP:ConfigureAll() end,
-							args = {
-								UnitNameNPC = {
-									order = 2,
-									type = "toggle",
-									name = L.NPC_NAMES_DROPDOWN_ALL,
-									set = function(info, value) E.db.nameplates.visibility[info[#info]] = value; E.db.nameplates.visibility.UnitNameHostleNPC = false; NP:SetCVars() NP:ConfigureAll() end,
-								},
-								UnitNameFriendlySpecialNPCName ={
-									order = 3,
-									type = "toggle",
-									name = L.NPC_NAMES_DROPDOWN_TRACKED,
-								},
-								UnitNameHostleNPC = {
-									order = 4,
-									type = "toggle",
-									name = L["Hostile NPCs"],
-									disabled = function() return E.db.nameplates.visibility.UnitNameNPC end,
-								},
-								UnitNameInteractiveNPC = {
-									order = 5,
-									type = "toggle",
-									name = L["Interactive NPCs"],
-								},
-							},
+							name = L["Clamp Nameplates"],
+							desc = L["Clamp nameplates to the top of the screen when outside of view."],
 						},
 						clickThrough = {
-							order = 15,
+							order = 13,
 							type = "group",
 							guiInline = true,
 							name = L["Click Through"],
@@ -4465,7 +4442,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						plateSize = {
-							order = 16,
+							order = 19,
 							type = "group",
 							guiInline = true,
 							name = L["NamePlate Size"],

@@ -1,10 +1,18 @@
 ### Version 11.12 [  ]
 
 **New Additions:**  
+Added options to invert the CastBar, AuraBars, and Power colors on UnitFrame status bars when in transparent mode; as well as added custom backdrop options for these status bars.  
+Added nameplate friendly npc option "always show" this is used to toggle npc nameplates using blizzards setting; so that they can go into blizzard name-only mode.  
 
 **Bug Fixes:**  
+Fixed attempt to index field 'CompactUnitFrameProfilesNewProfileDialog'. (#1314)  
+Fixed double player nameplate when using the config (again). (#1316)  
+Fixed player nameplate not fading in when hovered.  
 
 **Misc. Changes:**  
+Removed the Nameplate Name Visibilty settings because this just caused some confusion.  
+Disabled Boss Style Filter again by default. (Sorry for this everyone <3)  
+Fixed Style Filter Class Trigger. (#1310)  
 
 ### Version 11.11 [ May 14th 2019 ]
 

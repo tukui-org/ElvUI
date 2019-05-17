@@ -219,7 +219,6 @@ function NP:Update_Fader(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if (not db.visibility) or db.visibility.showAlways then
-
 		if nameplate:IsElementEnabled('Fader') then
 			nameplate:DisableElement('Fader')
 
@@ -235,7 +234,7 @@ function NP:Update_Fader(nameplate)
 
 			nameplate.Fader:SetOption('MinAlpha', 0)
 			nameplate.Fader:SetOption('Smooth', 0.5)
-			nameplate.Fader:SetOption('Hover', true)
+			nameplate.Fader:SetOption('Hover', (nameplate == _G.ElvNP_Player and _G.ElvNP_StaticSecure) or true)
 			nameplate.Fader:SetOption('Power', true)
 			nameplate.Fader:SetOption('Health', true)
 			nameplate.Fader:SetOption('Casting', true)
