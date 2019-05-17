@@ -1,7 +1,6 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
-L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."] = true
 L["# Displayed Auras"] = "# angezeigte Auren"
 L["%s and then %s"] = "%s und dann %s"
 L["24-Hour Time"] = "24-Stunden-Format"
@@ -28,7 +27,7 @@ L["Add SpellID"] = "ZauberID hinzufügen"
 L["Additional Power Prediction Color"] = "Zusätzliche Kraft Verbrauch Farbe"
 L["Additional Power Text"] = "Zusätzlicher Kraft Text"
 L["Additional spacing between each individual group."] = "Zusätzlicher Abstand zwischen jeder Gruppe."
-L["AddOn Manager"] = true
+L["AddOn Manager"] = true --No need to translate
 L["Adds an arrow infront of the chat lines to copy the entire line."] = "Fügt einen Pfeil vor der Chatzeile hinzu um die gesamte Zeile zu kopieren."
 L["Adjust the height of your right chat panel."] = "Passe die Höhe des rechten Chatfensters an."
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "Bestimme die Position der Bedrohungsleiste in den rechten oder linken Infotextleisten."
@@ -1171,6 +1170,7 @@ L["This dictates the size of the icon when it is not attached to the castbar."] 
 L["This feature will allow you to transfer settings to other characters."] = "Dieses Feature erlaubt es dir Einstellungen an andere Charaktere zu schicken."
 L["This is for Customized Icons in your Interface/Icons folder."] = "Dieses ist für Benutzerdefinierte Symbole in deinem Interface/Icon Ordner."
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "Dieses öffnet die Farbeinstellung für die Einheitenfenster. Diese Einstellungen wirken sich auf alle Einheitenfenster aus."
+L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."] = "Diese Option steuert die Blizzard Einstellung, ob die Namensplaketten angezeigt werden sollen oder nicht."
 L["This option will force hide Blizzard's cooldown text if it's enabled at [Interface > ActionBars > Show Numbers on Cooldown]."] = "Diese Option erzwingt das Ausblenden des Blizzard's Cooldown Text, wenn er unter [Interface - Aktionsleisten - Zahlen für Abklingzeiten anzeigen] aktiviert ist."
 L["This section will allow you to copy settings to a select module from or to a different profile."] = "Diese Sektion erlaubt dir die Einstellungen von einem ausgewählten Module zu oder von einen anderen Profil zu kopieren."
 L["This section will help reset specfic settings back to default."] = "Diese Sektion wird dir dabei helfen spezifische Einstellungen zurückzusetzen."
