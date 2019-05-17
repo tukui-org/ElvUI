@@ -10,6 +10,7 @@ Fixed error: attempt to index field 'CompactUnitFrameProfilesNewProfileDialog'. 
 Fixed double player nameplate when changing specific settings in the config. (#1316)  
 Fixed player nameplate not fading in when hovered.  
 Fixed the portrait and health backdrop bleeding on UnitFrames health when they fade on range, specifically for BuG.  
+Fixed StyleFilter error line 305: attempt to index locale 'auras' (a nil value).  
 
 **Misc. Changes:**  
 Added an option to allow the portrait on UnitFrames to truely overlay the health, including the backdrop.  
