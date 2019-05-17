@@ -89,7 +89,7 @@ local function Update(self, _, unit)
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
 		(element.Vehicle and UnitHasVehicleUI(unit)) or
-		(element.Hover and (GetMouseFocus() == self))
+		(element.Hover and GetMouseFocus() == (self.__object or self))
 	then
 		ToggleAlpha(self, element, element.MaxAlpha)
 	else
@@ -121,8 +121,9 @@ local function onRangeUpdate(frame, elapsed)
 end
 
 local function HoverScript(self)
-	if self.Fader and self.Fader.HoverHooked == 1 then
-		self.Fader:ForceUpdate()
+	local Fader = self.__fader or self.Fader
+	if Fader and Fader.HoverHooked == 1 then
+		Fader:ForceUpdate()
 	end
 end
 
@@ -166,8 +167,9 @@ local options = {
 	Hover = {
 		enable = function(self)
 			if not self.Fader.HoverHooked then
-				self:HookScript('OnEnter', HoverScript)
-				self:HookScript('OnLeave', HoverScript)
+				local Frame = self.__object or self
+				Frame:HookScript('OnEnter', HoverScript)
+				Frame:HookScript('OnLeave', HoverScript)
 			end
 
 			self.Fader.HoverHooked = 1 -- on state
@@ -281,6 +283,11 @@ local function SetOption(element, opt, state)
 		element[opt] = state
 
 		if state then
+			if type(state) == 'table' then
+				state.__fader = element
+				element.__owner.__object = state
+			end
+
 			if options[option].enable then
 				options[option].enable(element.__owner, state)
 			end

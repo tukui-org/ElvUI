@@ -215,7 +215,7 @@ function NP:Update_HealerSpecs(nameplate)
 	end
 end
 
-function NP:Update_Fader(nameplate)
+function NP:Update_Fader(nameplate, hoverTarget)
 	local db = NP.db.units[nameplate.frameType]
 
 	if (not db.visibility) or db.visibility.showAlways then
@@ -234,7 +234,7 @@ function NP:Update_Fader(nameplate)
 
 			nameplate.Fader:SetOption('MinAlpha', 0)
 			nameplate.Fader:SetOption('Smooth', 0.5)
-			nameplate.Fader:SetOption('Hover', true)
+			nameplate.Fader:SetOption('Hover', hoverTarget or true)
 			nameplate.Fader:SetOption('Power', true)
 			nameplate.Fader:SetOption('Health', true)
 			nameplate.Fader:SetOption('Casting', true)
