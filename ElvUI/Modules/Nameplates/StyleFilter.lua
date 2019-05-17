@@ -729,13 +729,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Class
 	if trigger.class and next(trigger.class) then
-		local Class
-		for key, trig in pairs(trigger.class) do
-			if trig.enabled and key == E.myclass then
-				Class = trigger.class[E.myclass]
-				break
-			end
-		end
+		local Class = trigger.class[E.myclass]
 		if not Class or (Class.specs and next(Class.specs) and not Class.specs[E.myspec and GetSpecializationInfo(E.myspec)]) then
 			return
 		end
