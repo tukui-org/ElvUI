@@ -732,6 +732,8 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		local Class = trigger.class[E.myclass]
 		if not Class or (Class.specs and next(Class.specs) and not Class.specs[E.myspec and GetSpecializationInfo(E.myspec)]) then
 			return
+		else
+			passed = true
 		end
 	end
 
