@@ -289,7 +289,10 @@ function UF:ColorizeAuraBars()
 
 		if colors then
 			sb:SetStatusBarColor(colors.r, colors.g, colors.b)
-			UF.UpdateBackdropTextureColor(sb, colors.r, colors.g, colors.b)
+
+			if not sb.hookedColor then
+				UF.UpdateBackdropTextureColor(sb, colors.r, colors.g, colors.b)
+			end
 		else
 			local r, g, b = sb:GetStatusBarColor()
 			UF.UpdateBackdropTextureColor(sb, r, g, b)
