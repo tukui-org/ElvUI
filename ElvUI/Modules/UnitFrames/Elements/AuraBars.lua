@@ -275,10 +275,8 @@ function UF:ColorizeAuraBars()
 			colors = E.db.unitframe.colors.auraBarTurtleColor
 		end
 
-		if UF.db.colors.transparentAurabars and not sb.isTransparent then
-			UF:ToggleTransparentStatusBar(true, sb, sb.bg, nil, true)
-		elseif sb.isTransparent and not UF.db.colors.transparentAurabars then
-			UF:ToggleTransparentStatusBar(false, sb, sb.bg, nil, true)
+		if (UF.db.colors.transparentAurabars and not sb.isTransparent) or (sb.isTransparent and (not UF.db.colors.transparentAurabars or sb.invertColors ~= UF.db.colors.invertAurabars)) then
+			UF:ToggleTransparentStatusBar(UF.db.colors.transparentAurabars, sb, sb.bg, nil, UF.db.colors.invertAurabars)
 		elseif sb.bg then
 			local sbTexture = sb:GetStatusBarTexture()
 			if not sb.bg:GetTexture() then
