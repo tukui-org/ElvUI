@@ -106,7 +106,7 @@ function NP:SetCVars()
 	SetCVar('nameplateShowFriendlyMinions', NP.db.units.FRIENDLY_PLAYER.minions and 1 or 0)
 	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions or NP.db.units.ENEMY_NPC.minions) and 1 or 0)
 	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors and 1 or 0)
-	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition == true or NP.db.units.PLAYER.enable ~= true) and 0 or 1)
+	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition or not NP.db.units.PLAYER.enable) and 0 or 1)
 	SetCVar('nameplateShowAll', NP.db.visibility.nameplateShowAll and 1 or 0) -- NP Show Always
 
 	if NP.db.units.ENEMY_NPC.questIcon.enable or NP.db.units.FRIENDLY_NPC.questIcon.enable then
@@ -341,8 +341,8 @@ function NP:DisablePlate(nameplate, nameOnly)
 			nameplate.Title:ClearAllPoints()
 			nameplate.Title:SetPoint('TOP', nameplate.Name, 'BOTTOM', 0, -2)
 		end
-	else
-		if nameplate:IsElementEnabled('Highlight') then nameplate:DisableElement('Hightlight') end
+	elseif nameplate:IsElementEnabled('Highlight') then
+		nameplate:DisableElement('Hightlight')
 	end
 end
 
@@ -438,37 +438,40 @@ function NP:ConfigureAll()
 	else
 		_G.ElvNP_Player:Disable()
 		_G.ElvNP_StaticSecure:Hide()
+		NP:DisablePlate(_G.ElvNP_Player)
 	end
 
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 
 	for nameplate in pairs(NP.Plates) do
-		NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
+		if not (_G.ElvNP_Player == nameplate and not NP.db.units.PLAYER.useStaticPosition) then
+			NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
 
-		if nameplate.frameType == 'PLAYER' then
-			nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-		elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
-			nameplate:Size(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
-		else
-			nameplate:Size(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
+			if nameplate.frameType == 'PLAYER' then
+				nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+			elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
+				nameplate:Size(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
+			else
+				nameplate:Size(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
+			end
+
+			NP:UpdatePlate(nameplate)
+
+			if nameplate.isTarget then
+				NP:SetupTarget(nameplate)
+			end
+
+			nameplate:UpdateAllElements('ForceUpdate')
+
+			if nameplate.frameType == 'PLAYER' then
+				NP.PlayerNamePlateAnchor:ClearAllPoints()
+				NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+				NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+				NP.PlayerNamePlateAnchor:Show()
+			end
+
+			NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this at the end of the loop
 		end
-
-		NP:UpdatePlate(nameplate)
-
-		if nameplate.isTarget then
-			NP:SetupTarget(nameplate)
-		end
-
-		nameplate:UpdateAllElements('ForceUpdate')
-
-		if nameplate.frameType == 'PLAYER' then
-			NP.PlayerNamePlateAnchor:ClearAllPoints()
-			NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
-			NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
-			NP.PlayerNamePlateAnchor:Show()
-		end
-
-		NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this at the end of the loop
 	end
 
 	NP:Update_StatusBars()
@@ -560,7 +563,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		NP:StyleFilterClear(nameplate) -- keep this at the top
 
-		if nameplate.frameType == 'PLAYER' and nameplate ~= _G.ElvNP_Test then
+		if nameplate.frameType == 'PLAYER' and (nameplate ~= _G.ElvNP_Test) then
 			NP.PlayerNamePlateAnchor:Hide()
 		end
 
