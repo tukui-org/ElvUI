@@ -1573,12 +1573,14 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 				type = 'range',
 				name = L["Width"],
 				min = 15, max = 150, step = 1,
+				disabled = function() return E.db.unitframe.units[groupName].portrait.overlay or (E.db.unitframe.units[groupName].portrait.style ~= '2D') end,
 			},
 			rotation = {
 				order = 7,
 				type = 'range',
 				name = L["Model Rotation"],
 				min = 0, max = 360, step = 1,
+				disabled = function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end,
 			},
 			camDistanceScale = {
 				order = 8,
@@ -1586,6 +1588,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 				name = L["Camera Distance Scale"],
 				desc = L["How far away the portrait is from the camera."],
 				min = 0.01, max = 4, step = 0.01,
+				disabled = function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end,
 			},
 			xOffset = {
 				order = 9,
@@ -1593,6 +1596,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 				name = L["xOffset"],
 				desc = L["Position the Model horizontally."],
 				min = -1, max = 1, step = 0.01,
+				disabled = function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end,
 			},
 			yOffset = {
 				order = 10,
@@ -1600,6 +1604,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 				name = L["yOffset"],
 				desc = L["Position the Model vertically."],
 				min = -1, max = 1, step = 0.01,
+				disabled = function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end,
 			},
 		},
 	}
