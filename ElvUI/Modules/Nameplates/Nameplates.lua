@@ -295,7 +295,7 @@ function NP:UpdatePlate(nameplate)
 		end
 
 		if nameplate == _G.ElvNP_Player then
-			NP:Update_Fader(nameplate, _G.ElvNP_StaticSecure)
+			NP:Update_Fader(nameplate)
 		end
 
 		if nameplate.isTarget then
