@@ -2088,6 +2088,7 @@ P.unitframe = {
 				enable = false,
 				width = 45,
 				overlay = false,
+				fullOverlay = false,
 				camDistanceScale = 2,
 				rotation = 0,
 				style = '3D',
