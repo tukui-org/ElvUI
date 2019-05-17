@@ -8050,12 +8050,67 @@ E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.class
 		t.r, t.g, t.b = r, g, b
 		UF:Update_AllFrames()
 	end,
-	args = {}
+	args = {
+		--[=[transparentClasspower = {
+			order = 1,
+			type = 'toggle',
+			name = L["Transparent"],
+			desc = L["Make textures transparent."],
+			get = function(info) return E.db.unitframe.colors[info[#info]] end,
+			set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
+		},
+		invertClasspower = {
+			order = 2,
+			type = 'toggle',
+			name = L["Invert Colors"],
+			desc = L["Invert foreground and background colors."],
+			disabled = function() return not E.db.unitframe.colors.transparentClasspower end,
+			get = function(info) return E.db.unitframe.colors[info[#info]] end,
+			set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
+		},
+		spacer1 = {
+			order = 3,
+			type = "description",
+			name = " ",
+			width = 'full'
+		},]=]
+		customclasspowerbackdrop = {
+			order = 4,
+			type = 'toggle',
+			name = L["Custom Backdrop"],
+			desc = L["Use the custom backdrop color instead of a multiple of the main color."],
+			get = function(info) return E.db.unitframe.colors[info[#info]] end,
+			set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
+		},
+		classpower_backdrop = {
+			order = 5,
+			type = 'color',
+			name = L["Custom Backdrop"],
+			desc = L["Use the custom backdrop color instead of a multiple of the main color."],
+			disabled = function() return not E.db.unitframe.colors.customclasspowerbackdrop end,
+			get = function(info)
+				local t = E.db.unitframe.colors[info[#info]]
+				local d = P.unitframe.colors[info[#info]]
+				return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+			end,
+			set = function(info, r, g, b)
+				local t = E.db.unitframe.colors[info[#info]]
+				t.r, t.g, t.b = r, g, b
+				UF:Update_AllFrames()
+			end,
+		},
+		spacer2 = {
+			order = 6,
+			type = "description",
+			name = " ",
+			width = 'full'
+		},
+	}
 }
 
 for i = 1, 3 do
 	E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args['combo'..i] = {
-		order = i+2,
+		order = i+10,
 		type = 'color',
 		name = L["Combo Point"]..' #'..i,
 		get = function(info)
@@ -8073,14 +8128,14 @@ end
 
 
 if P.unitframe.colors.classResources[E.myclass] then
-	E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args.spacer2 = {
-		order = 10,
+	E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args.spacer5 = {
+		order = 20,
 		name = ' ',
 		type = 'description',
 		width = 'full',
 	}
 
-	local ORDER = 20
+	local ORDER = 30
 	if E.myclass == 'PALADIN' then
 		E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
