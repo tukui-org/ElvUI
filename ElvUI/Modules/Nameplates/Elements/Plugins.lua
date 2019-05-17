@@ -219,7 +219,6 @@ function NP:Update_Fader(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if (not db.visibility) or db.visibility.showAlways then
-
 		if nameplate:IsElementEnabled('Fader') then
 			nameplate:DisableElement('Fader')
 

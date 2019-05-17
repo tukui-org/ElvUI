@@ -418,7 +418,10 @@ end
 
 function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, GetInstanceInfo())
-	NP:UpdatePlate(_G.ElvNP_Player)
+
+	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
+		NP:UpdatePlate(_G.ElvNP_Player)
+	end
 end
 
 function NP:ConfigureAll()
@@ -436,15 +439,15 @@ function NP:ConfigureAll()
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_StaticSecure:Show()
 	else
+		NP:DisablePlate(_G.ElvNP_Player)
 		_G.ElvNP_Player:Disable()
 		_G.ElvNP_StaticSecure:Hide()
-		NP:DisablePlate(_G.ElvNP_Player)
 	end
 
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 
 	for nameplate in pairs(NP.Plates) do
-		if not (_G.ElvNP_Player == nameplate and not NP.db.units.PLAYER.useStaticPosition) then
+		if _G.ElvNP_Player ~= nameplate or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) then
 			NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
 
 			if nameplate.frameType == 'PLAYER' then
@@ -554,8 +557,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:SetupTarget(nameplate)
 		end
 
-		-- Fade In when the option is ON and it's not the Disabled Static Player Nameplate
-		if NP.db.fadeIn and not (nameplate == _G.ElvNP_Player and not _G.ElvNP_Player:IsEnabled()) then
+		if NP.db.fadeIn and (nameplate ~= _G.ElvNP_Player or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition)) then
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
