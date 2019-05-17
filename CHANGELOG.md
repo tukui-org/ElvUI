@@ -9,9 +9,10 @@ Added nameplate friendly npc option "always show" this is used to toggle npc nam
 Fixed error: attempt to index field 'CompactUnitFrameProfilesNewProfileDialog'. (#1314)  
 Fixed double player nameplate when changing specific settings in the config. (#1316)  
 Fixed player nameplate not fading in when hovered.  
-Fixed the backdrop bleeding on UnitFrames health when they fade on range, specifically for BuG.  
+Fixed the portrait and health backdrop bleeding on UnitFrames health when they fade on range, specifically for BuG.  
 
 **Misc. Changes:**  
+Added an option to allow the portrait on UnitFrames to truely overlay the health, including the backdrop.  
 Removed the Nameplate Name Visibilty settings because this just caused some confusion.  
 Disabled Boss Style Filter again by default. (Sorry for this everyone <3)  
 Fixed Style Filter Class Trigger. (#1310)  
