@@ -820,7 +820,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Buffs
-	if trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
+	if frame.Buffs and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
 		local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
 		if buff ~= nil then -- ignore if none are selected
 			if buff then passed = true else return end
@@ -828,7 +828,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Debuffs
-	if trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
+	if frame.Debuffs and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
 		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
