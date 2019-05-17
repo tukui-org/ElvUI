@@ -5,8 +5,8 @@ Added options to invert the CastBar, AuraBars, and Power colors on UnitFrame sta
 Added nameplate friendly npc option "always show" this is used to toggle npc nameplates using blizzards setting; so that they can go into blizzard name-only mode.  
 
 **Bug Fixes:**  
-Fixed attempt to index field 'CompactUnitFrameProfilesNewProfileDialog'. (#1314)  
-Fixed double player nameplate when using the config (again). (#1316)  
+Fixed error: attempt to index field 'CompactUnitFrameProfilesNewProfileDialog'. (#1314)  
+Fixed double player nameplate when changing specific settings in the config. (#1316)  
 Fixed player nameplate not fading in when hovered.  
 
 **Misc. Changes:**  
