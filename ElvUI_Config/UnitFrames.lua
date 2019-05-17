@@ -2843,22 +2843,22 @@ E.Options.args.unitframe = {
 									get = function(info) return E.db.unitframe.colors[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 								},
-								customhealthbackdrop = {
-									order = 8,
-									type = 'toggle',
-									name = L["Custom Backdrop"],
-									desc = L["Use the custom backdrop color instead of a multiple of the main color."],
-									get = function(info) return E.db.unitframe.colors[info[#info]] end,
-									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
-								},
 								classbackdrop = {
-									order = 9,
+									order = 8,
 									type = 'toggle',
 									name = L["Class Backdrop"],
 									desc = L["Color the health backdrop by class or reaction."],
 									get = function(info) return E.db.unitframe.colors[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 									disabled = function() return E.db.unitframe.colors.customhealthbackdrop end
+								},
+								customhealthbackdrop = {
+									order = 9,
+									type = 'toggle',
+									name = L["Custom Backdrop"],
+									desc = L["Use the custom backdrop color instead of a multiple of the main color."],
+									get = function(info) return E.db.unitframe.colors[info[#info]] end,
+									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 								},
 								healthMultiplier = {
 									order = 10,
@@ -2869,20 +2869,21 @@ E.Options.args.unitframe = {
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 									disabled = function() return E.db.unitframe.colors.customhealthbackdrop end
 								},
-								health = {
+								health_backdrop = {
 									order = 20,
 									type = 'color',
-									name = L["Health"],
+									name = L["Health Backdrop"],
+									disabled = function() return not E.db.unitframe.colors.customhealthbackdrop end
 								},
 								tapped = {
 									order = 21,
 									type = 'color',
 									name = L["Tapped"],
 								},
-								health_backdrop = {
+								health = {
 									order = 22,
 									type = 'color',
-									name = L["Health Backdrop"],
+									name = L["Health"],
 								},
 								disconnected = {
 									order = 23,
@@ -2914,8 +2915,25 @@ E.Options.args.unitframe = {
 								NP:ConfigureAll()
 							end,
 							args = {
-								powerselection = {
+								transparentPower = {
 									order = 1,
+									type = 'toggle',
+									name = L["Transparent"],
+									desc = L["Make textures transparent."],
+									get = function(info) return E.db.unitframe.colors[info[#info]] end,
+									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
+								},
+								invertPower = {
+									order = 2,
+									type = 'toggle',
+									name = L["Invert Colors"],
+									desc = L["Invert foreground and background colors."],
+									disabled = function() return not E.db.unitframe.colors.transparentPower end,
+									get = function(info) return E.db.unitframe.colors[info[#info]] end,
+									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
+								},
+								powerselection = {
+									order = 3,
 									type = 'toggle',
 									name = L["Selection Power"],
 									desc = L["Color power by color selection."],
@@ -2923,7 +2941,7 @@ E.Options.args.unitframe = {
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 								},
 								powerclass = {
-									order = 2,
+									order = 4,
 									type = 'toggle',
 									name = L["Class Power"],
 									desc = L["Color power by classcolor or reaction."],
@@ -2932,32 +2950,46 @@ E.Options.args.unitframe = {
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 								},
 								--[=[powerthreat = {
-									order = 3,
+									order = 4,
 									type = 'toggle',
 									name = L["Threat Power"],
 									desc = L["Color power by threat status."],
 									get = function(info) return E.db.unitframe.colors[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 								},]=]
-								transparentPower = {
-									order = 4,
-									type = 'toggle',
-									name = L["Transparent"],
-									desc = L["Make textures transparent."],
-									get = function(info) return E.db.unitframe.colors[info[#info]] end,
-									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
-								},
-								invertPower = {
-									order = 5,
-									type = 'toggle',
-									name = L["Invert Colors"],
-									desc = L["Invert foreground and background colors."],
-									disabled = function() return not E.db.unitframe.colors.transparentPower end,
-									get = function(info) return E.db.unitframe.colors[info[#info]] end,
-									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
-								},
 								spacer2 = {
+									order = 5,
+									type = "description",
+									name = " ",
+									width = 'full'
+								},
+								custompowerbackdrop = {
 									order = 6,
+									type = 'toggle',
+									name = L["Custom Backdrop"],
+									desc = L["Use the custom backdrop color instead of a multiple of the main color."],
+									get = function(info) return E.db.unitframe.colors[info[#info]] end,
+									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
+								},
+								power_backdrop = {
+									order = 7,
+									type = 'color',
+									name = L["Custom Backdrop"],
+									desc = L["Use the custom backdrop color instead of a multiple of the main color."],
+									disabled = function() return not E.db.unitframe.colors.custompowerbackdrop end,
+									get = function(info)
+										local t = E.db.unitframe.colors[info[#info]]
+										local d = P.unitframe.colors[info[#info]]
+										return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+									end,
+									set = function(info, r, g, b)
+										local t = E.db.unitframe.colors[info[#info]]
+										t.r, t.g, t.b = r, g, b
+										UF:Update_AllFrames()
+									end,
+								},
+								spacer3 = {
+									order = 8,
 									type = "description",
 									name = " ",
 									width = 'full'
@@ -3068,13 +3100,34 @@ E.Options.args.unitframe = {
 									name = " ",
 									width = 'full'
 								},
-								castColor = {
+								customcastbarbackdrop = {
 									order = 6,
+									type = 'toggle',
+									name = L["Custom Backdrop"],
+									desc = L["Use the custom backdrop color instead of a multiple of the main color."],
+									get = function(info) return E.db.unitframe.colors[info[#info]] end,
+									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
+								},
+								castbar_backdrop = {
+									order = 7,
+									type = 'color',
+									name = L["Custom Backdrop"],
+									desc = L["Use the custom backdrop color instead of a multiple of the main color."],
+									disabled = function() return not E.db.unitframe.colors.customcastbarbackdrop end
+								},
+								spacer2 = {
+									order = 8,
+									type = "description",
+									name = " ",
+									width = 'full'
+								},
+								castColor = {
+									order = 9,
 									name = L["Interruptable"],
 									type = 'color',
 								},
 								castNoInterrupt = {
-									order = 7,
+									order = 10,
 									name = L["Non-Interruptable"],
 									type = 'color',
 								},
@@ -3120,6 +3173,37 @@ E.Options.args.unitframe = {
 									name = " ",
 									width = 'full'
 								},
+								customaurabarbackdrop = {
+									order = 6,
+									type = 'toggle',
+									name = L["Custom Backdrop"],
+									desc = L["Use the custom backdrop color instead of a multiple of the main color."],
+									get = function(info) return E.db.unitframe.colors[info[#info]] end,
+									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
+								},
+								aurabar_backdrop = {
+									order = 7,
+									type = 'color',
+									name = L["Custom Backdrop"],
+									desc = L["Use the custom backdrop color instead of a multiple of the main color."],
+									disabled = function() return not E.db.unitframe.colors.customaurabarbackdrop end,
+									get = function(info)
+										local t = E.db.unitframe.colors[info[#info]]
+										local d = P.unitframe.colors[info[#info]]
+										return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+									end,
+									set = function(info, r, g, b)
+										local t = E.db.unitframe.colors[info[#info]]
+										t.r, t.g, t.b = r, g, b
+										UF:Update_AllFrames()
+									end,
+								},
+								spacer2 = {
+									order = 8,
+									type = "description",
+									name = " ",
+									width = 'full'
+								},
 								BUFFS = {
 									order = 10,
 									name = L["Buffs"],
@@ -3132,9 +3216,7 @@ E.Options.args.unitframe = {
 									set = function(info, r, g, b)
 										if E:CheckClassColor(r, g, b) then
 											local classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass])
-											r = classColor.r
-											g = classColor.g
-											b = classColor.b
+											r, g, b = classColor.r, classColor.g, classColor.b
 										end
 
 										local t = E.db.unitframe.colors.auraBarBuff

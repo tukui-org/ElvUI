@@ -271,19 +271,22 @@ function UF:ColorizeAuraBars()
 		local spellID = sb.aura.spellID
 		local colors = E.global.unitframe.AuraBarColors[spellID] or E.global.unitframe.AuraBarColors[tostring(spellID)] or E.global.unitframe.AuraBarColors[spellName]
 
+		sb.custom_backdrop = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop
 		if E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName]) and not colors and (spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)) then
 			colors = E.db.unitframe.colors.auraBarTurtleColor
 		end
 
-		if (UF.db.colors.transparentAurabars and not sb.isTransparent) or (sb.isTransparent and (not UF.db.colors.transparentAurabars or sb.invertColors ~= UF.db.colors.invertAurabars)) then
-			UF:ToggleTransparentStatusBar(UF.db.colors.transparentAurabars, sb, sb.bg, nil, UF.db.colors.invertAurabars)
-		elseif sb.bg then
-			local sbTexture = sb:GetStatusBarTexture()
-			if not sb.bg:GetTexture() then
-				UF:Update_StatusBar(sb.bg, sbTexture:GetTexture())
-			end
+		if sb.bg then
+			if (UF.db.colors.transparentAurabars and not sb.isTransparent) or (sb.isTransparent and (not UF.db.colors.transparentAurabars or sb.invertColors ~= UF.db.colors.invertAurabars)) then
+				UF:ToggleTransparentStatusBar(UF.db.colors.transparentAurabars, sb, sb.bg, nil, UF.db.colors.invertAurabars)
+			else
+				local sbTexture = sb:GetStatusBarTexture()
+				if not sb.bg:GetTexture() then
+					UF:Update_StatusBar(sb.bg, sbTexture:GetTexture())
+				end
 
-			UF:SetStatusBarBackdropPoints(sb, sbTexture, sb.bg)
+				UF:SetStatusBarBackdropPoints(sb, sbTexture, sb.bg)
+			end
 		end
 
 		if colors then

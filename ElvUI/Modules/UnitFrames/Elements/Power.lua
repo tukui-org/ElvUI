@@ -222,6 +222,8 @@ function UF:Configure_Power(frame)
 		frame:Tag(power.value, "")
 	end
 
+	frame.Power.custom_backdrop = UF.db.colors.custompowerbackdrop and UF.db.colors.power_backdrop
+
 	--Transparency Settings
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.BG, nil, UF.db.colors.invertPower)
 

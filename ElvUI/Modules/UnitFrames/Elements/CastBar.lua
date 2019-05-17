@@ -235,6 +235,7 @@ function UF:Configure_Castbar(frame)
 		end
 	end
 
+	castbar.custom_backdrop = UF.db.colors.customcastbarbackdrop and UF.db.colors.castbar_backdrop
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, castbar, castbar.bg, nil, UF.db.colors.invertCastbar)
 
 	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
