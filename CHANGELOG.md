@@ -9,6 +9,7 @@ Added nameplate friendly npc option "always show" this is used to toggle npc nam
 Fixed error: attempt to index field 'CompactUnitFrameProfilesNewProfileDialog'. (#1314)  
 Fixed double player nameplate when changing specific settings in the config. (#1316)  
 Fixed player nameplate not fading in when hovered.  
+Fixed the backdrop bleeding on UnitFrames health when they fade on range, specifically for BuG.  
 
 **Misc. Changes:**  
 Removed the Nameplate Name Visibilty settings because this just caused some confusion.  
