@@ -45,13 +45,14 @@ function UF:Configure_Portrait(frame, dontHide)
 
 		local healthFrameLevel = frame.Health:GetFrameLevel()
 		portrait.overlay:SetFrameLevel(healthFrameLevel + (db.portrait.fullOverlay and 1 or 5))
-		portrait:SetFrameLevel(healthFrameLevel)
 
 		portrait:ClearAllPoints()
 		portrait.backdrop:ClearAllPoints()
 		if frame.USE_PORTRAIT_OVERLAY then
 			if db.portrait.style == '2D' then
 				portrait:SetParent(frame.Health)
+			else
+				portrait:SetFrameLevel(healthFrameLevel)
 			end
 
 			portrait:SetAlpha(0.35)
@@ -84,8 +85,11 @@ function UF:Configure_Portrait(frame, dontHide)
 				portrait:Show()
 			end
 			portrait.backdrop:Show()
+
 			if db.portrait.style == '2D' then
 				portrait:SetParent(frame)
+			else
+				portrait:SetFrameLevel(healthFrameLevel)
 			end
 
 			if frame.ORIENTATION == "LEFT" then
