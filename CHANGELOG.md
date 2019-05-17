@@ -1,7 +1,8 @@
 ### Version 11.12 [  ]
 
 **New Additions:**  
-Added options to invert the CastBar, AuraBars, and Power colors on UnitFrame status bars when in transparent mode; as well as added custom backdrop options for these status bars.  
+Added options to invert the CastBar, AuraBars, and Power colors on UnitFrames status bars when in transparent mode; as well as added custom backdrop options for these status bars.  
+Added custom backdrop for ClassBars on UnitFrames.  
 Added nameplate friendly npc option "always show" this is used to toggle npc nameplates using blizzards setting; so that they can go into blizzard name-only mode.  
 
 **Bug Fixes:**  
