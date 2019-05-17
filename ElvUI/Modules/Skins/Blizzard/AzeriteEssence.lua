@@ -16,13 +16,13 @@ local function LoadSkin()
 	-- Reposition the Level Badge
 	AzeriteEssenceUI.PowerLevelBadgeFrame:ClearAllPoints()
 	AzeriteEssenceUI.PowerLevelBadgeFrame:SetPoint('TOPLEFT')
-
 	AzeriteEssenceUI.PowerLevelBadgeFrame.Ring:Hide()
 	AzeriteEssenceUI.PowerLevelBadgeFrame.BackgroundBlack:Hide()
 
 	S:HandlePortraitFrame(AzeriteEssenceUI, true)
 	S:HandleScrollBar(AzeriteEssenceUI.EssenceList.ScrollBar)
 
+	-- Essence List on the right
 	for _, button in pairs(AzeriteEssenceUI.EssenceList.buttons) do
 		button:DisableDrawLayer('ARTWORK')
 		S:HandleIcon(button.Icon)
@@ -32,7 +32,8 @@ local function LoadSkin()
 		--button.PendingGlow:SetTexture() --needs some love
 	end
 
-	AzeriteEssenceUI:HookScript("OnShow", function(self)
+	-- Header on the Essence List
+	AzeriteEssenceUI:HookScript('OnShow', function(self)
 		self.EssenceList.HeaderButton:StripTextures()
 		if not self.EssenceList.HeaderButton.backdrop then
 			self.EssenceList.HeaderButton:CreateBackdrop('Transparent')
