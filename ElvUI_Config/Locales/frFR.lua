@@ -1522,6 +1522,7 @@ L["MACROS"] = "Macros";
 L["MAELSTROM"] = "Maelström";
 L["MAIL_LABEL"] = "Courrier";
 L["MANA"] = "Mana";
+L["RAGE"] = "Rage";
 L["MAP_FADE_TEXT"] = "Disparition de la carte en mouvement";
 L["MINIMAP_LABEL"] = "Minicarte";
 L["NAME"] = "Nom";

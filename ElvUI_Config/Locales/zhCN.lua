@@ -1523,6 +1523,7 @@ L["MACROS"] = "宏命令设置";
 L["MAELSTROM"] = "漩涡";
 L["MAIL_LABEL"] = "信件";
 L["MANA"] = "法力值";
+L["RAGE"] = "怒气";
 L["MAP_FADE_TEXT"] = "移动时地图透明";
 L["MINIMAP_LABEL"] = "微缩地图";
 L["NAME"] = "名字";

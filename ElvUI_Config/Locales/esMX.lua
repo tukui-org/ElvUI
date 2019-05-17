@@ -1522,6 +1522,7 @@ L["MACROS"] = "Macros";
 L["MAELSTROM"] = "Vorágine";
 L["MAIL_LABEL"] = "Correo";
 L["MANA"] = "Maná";
+L["RAGE"] = "Ira";
 L["MAP_FADE_TEXT"] = "Atenuar mapa al moverse";
 L["MINIMAP_LABEL"] = "Minimapa";
 L["NAME"] = "Nombre";

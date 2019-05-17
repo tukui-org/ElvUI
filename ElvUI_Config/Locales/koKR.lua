@@ -1575,6 +1575,7 @@ L["MACROS"] = "매크로 설정";
 L["MAELSTROM"] = "소용돌이";
 L["MAIL_LABEL"] = "우편";
 L["MANA"] = "마나";
+L["RAGE"] = "분노";
 L["MAP_FADE_TEXT"] = "이동 시 지도 투명화";
 L["MINIMAP_LABEL"] = "미니맵";
 L["NAME"] = "이름";

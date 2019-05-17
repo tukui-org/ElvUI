@@ -1516,6 +1516,7 @@ L["MACROS"] = "Macros";
 L["MAELSTROM"] = "Maelstrom";
 L["MAIL_LABEL"] = "Mail";
 L["MANA"] = "Mana";
+L["RAGE"] = "Rage";
 L["MAP_FADE_TEXT"] = "Fade Map When Moving";
 L["MINIMAP_LABEL"] = "Minimap";
 L["NAME"] = "Name";

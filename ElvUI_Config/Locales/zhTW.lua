@@ -1524,6 +1524,7 @@ L["MACROS"] = "巨集設定";
 L["MAELSTROM"] = "元能";
 L["MAIL_LABEL"] = "郵件";
 L["MANA"] = "法力";
+L["RAGE"] = "怒氣";
 L["MAP_FADE_TEXT"] = "移動時淡化地圖";
 L["MINIMAP_LABEL"] = "小地圖";
 L["NAME"] = "名稱";
