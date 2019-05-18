@@ -180,7 +180,7 @@ E.Options.args.general = {
 						["ptBR"] = "Português",
 						["ruRU"] = "Русский",
 						["zhCN"] = "简体中文",
-						["zhTW"] = "繁体中文",
+						["zhTW"] = "正體中文",
 						["koKR"] = "한국어",
 					},
 				}
