@@ -249,8 +249,6 @@ local blacklistedKeys = {
 	},
 	private = {},
 	global = {
-		uiScaleInformed = true,
-		userInformedNewChanges1 = true,
 		general = {
 			UIScale = true,
 			locale = true,

@@ -512,40 +512,6 @@ E.PopupDialogs.MODULE_COPY_CONFIRM = {
 	hideOnEscape = false,
 }
 
-E.PopupDialogs.UI_SCALE_CHANGES_INFORM = {
-	text = L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."],
-	button1 = L["Use CVar Value"],
-	button2 = L["Auto Scale"],
-	button3 = CANCEL,
-	OnAccept = function()
-		E.global.general.UIScale = E.clippedUiScaleCVar
-		E.global.uiScaleInformed = true
-		E:StaticPopup_Show("UISCALE_CHANGE")
-	end,
-	OnCancel = function()
-		E.global.general.UIScale = E:PixelClip(E:PixelBestSize())
-		E.global.uiScaleInformed = true
-		E:StaticPopup_Show("UISCALE_CHANGE")
-	end,
-	OnAlt = function()
-		E.global.uiScaleInformed = true
-	end,
-	OnShow = function(popup)
-		popup.button1:Disable()
-		popup.button2:Disable()
-		popup.button3:Disable()
-		E:Delay(10, function()
-			if popup and popup.button1 then
-				popup.button1:Enable()
-				popup.button2:Enable()
-				popup.button3:Enable()
-			end
-		end)
-	end,
-	whileDead = 1,
-	hideOnEscape = false,
-}
-
 E.PopupDialogs.SCRIPT_PROFILE = {
 	text = L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"],
 	button1 = L["Disable"],
@@ -558,60 +524,6 @@ E.PopupDialogs.SCRIPT_PROFILE = {
 	showAlert = 1,
 	whileDead = 1,
 	hideOnEscape = false,
-}
-
-E.PopupDialogs.MAJOR_RELEASE_NAMEPLATES = {
-	text = "A new major release of ElvUI is coming with patch 8.1.5 on March 12th. Nameplate settings will be reset in this release. Make sure you are prepared. Visit the link below for details.",
-	button1 = OKAY,
-	OnAccept = function()
-		E.global.nameplatesResetInformed = true
-	end,
-	OnShow = function(popup)
-		popup.button1:Disable()
-		E:Delay(10, function()
-			if popup then
-				popup.hideOnEscape = true
-				if popup.button1 then
-					popup.button1:Enable()
-				end
-			end
-		end)
-		popup.editBox.width = popup.editBox:GetWidth()
-		popup.editBox:Width(220)
-		popup.editBox:SetText("https://tukui.org/news.php")
-		popup.editBox:HighlightText()
-	end,
-	OnHide = function(self)
-		self.editBox:Width(self.editBox.width or 50)
-		self.editBox.width = nil
-	end,
-	EditBoxOnTextChanged = function(self)
-		if(self:GetText() ~= "https://tukui.org/news.php") then
-			self:SetText("https://tukui.org/news.php")
-		end
-		self:HighlightText()
-		self:ClearFocus()
-		ChatEdit_FocusActiveWindow();
-	end,
-	EditBoxOnEnterPressed = function(self)
-		if self:GetParent().hideOnEscape == true then
-			E.global.nameplatesResetInformed = true
-			ChatEdit_FocusActiveWindow();
-			self:GetParent():Hide();
-		end
-	end,
-	EditBoxOnEscapePressed = function(self)
-		if self:GetParent().hideOnEscape == true then
-			E.global.nameplatesResetInformed = true
-			ChatEdit_FocusActiveWindow();
-			self:GetParent():Hide();
-		end
-	end,
-	whileDead = true,
-	hideOnEscape = false,
-	showAlert = true,
-	hasEditBox = true,
-	enterClicksFirstButton = true,
 }
 
 local MAX_STATIC_POPUPS = 4
