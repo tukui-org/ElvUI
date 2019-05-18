@@ -1776,6 +1776,11 @@ function E:DBConversions()
 		NamePlates:CVarReset()
 		E.db.v11NamePlateReset = true
 	end
+
+	-- Wipe some old variables off profiles
+	if E.global.uiScaleInformed then E.global.uiScaleInformed = nil end
+	if E.global.nameplatesResetInformed then E.global.nameplatesResetInformed = nil end
+	if E.global.userInformedNewChanges1 then E.global.userInformedNewChanges1 = nil end
 end
 
 local CPU_USAGE = {}
