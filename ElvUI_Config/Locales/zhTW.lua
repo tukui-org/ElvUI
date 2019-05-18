@@ -491,6 +491,7 @@ L["Friendly"] = "友好"
 L["FRIENDLY_NPC"] = "友方NPC"
 L["FRIENDLY_PLAYER"] = "友方玩家"
 L["Full"] = "滿"
+L["Full Overlay"] = true
 L["Gems"] = "寶石"
 L["General Options"] = "常規選項"
 L["General"] = "一般設定"
@@ -1171,6 +1172,7 @@ L["This dictates the size of the icon when it is not attached to the castbar."] 
 L["This feature will allow you to transfer settings to other characters."] = "此功能將使你設置轉移給其他角色."
 L["This is for Customized Icons in your Interface/Icons folder."] = "取決於你是否在 Interface/Icons 資料夾中放置了自定義圖標"
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "這將開啟單位框架顏色設置.這些設置會影響所有單位框架"
+L["This option allows the overlay to span the whole health, including the background."] = true
 L["This option will force hide Blizzard's cooldown text if it's enabled at [Interface > ActionBars > Show Numbers on Cooldown]."] = "如果你開啟了 [介面 > 快捷列 > 顯示冷卻時間]，這個選項將強制隱藏暴雪的冷卻文字."
 L["This section will allow you to copy settings to a select module from or to a different profile."] = "這個部分允許你複製到或是匯入其他的設定文件所選擇的部分的模組設定"
 L["This section will help reset specfic settings back to default."] = "這個部分會幫助你重置指定的模組設定回預設值"

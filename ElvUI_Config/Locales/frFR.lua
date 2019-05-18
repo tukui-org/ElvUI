@@ -490,6 +490,7 @@ L["Friendly"] = "Amical"
 L["FRIENDLY_NPC"] = "PNJ alliés"
 L["FRIENDLY_PLAYER"] = "Joueur allié"
 L["Full"] = "Plein"
+L["Full Overlay"] = true
 L["Gems"] = true
 L["General Options"] = "Options générales"
 L["General"] = "Général"
@@ -1169,6 +1170,7 @@ L["This dictates the size of the icon when it is not attached to the castbar."] 
 L["This feature will allow you to transfer settings to other characters."] = "Cette fonctionnalité vous permettra de transférer les paramètres à d'autres personnages."
 L["This is for Customized Icons in your Interface/Icons folder."] = true
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "Ouvre la configuration des couleurs des unités. Ces options impactent toutes les barres d'unités."
+L["This option allows the overlay to span the whole health, including the background."] = true
 L["This option will force hide Blizzard's cooldown text if it's enabled at [Interface > ActionBars > Show Numbers on Cooldown]."] = true
 L["This section will allow you to copy settings to a select module from or to a different profile."] = true
 L["This section will help reset specfic settings back to default."] = true

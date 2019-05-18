@@ -489,6 +489,7 @@ L["Friendly"] = "Дружественный"
 L["FRIENDLY_NPC"] = "Дружественный НИП"
 L["FRIENDLY_PLAYER"] = "Дружественный игрок"
 L["Full"] = "Полный"
+L["Full Overlay"] = true
 L["Gems"] = "Самоцветы"
 L["General Options"] = "Общие"
 L["General"] = "Общие"
@@ -1169,6 +1170,7 @@ L["This dictates the size of the icon when it is not attached to the castbar."] 
 L["This feature will allow you to transfer settings to other characters."] = "Эта функция позволит Вам передавать свои настройки другим персонажам."
 L["This is for Customized Icons in your Interface/Icons folder."] = "Используется для кастомных иконок в папке Interface/Icons"
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "Открывает опции окрашивания рамок юнитов. Эти настройки влияют на все рамки."
+L["This option allows the overlay to span the whole health, including the background."] = true
 L["This option will force hide Blizzard's cooldown text if it's enabled at [Interface > ActionBars > Show Numbers on Cooldown]."] = "Эта опция принудительно скроет текст восстановления Blizzard, если он включен в Интерфейс > Панели команд > Отсчет времени восстановления."
 L["This section will allow you to copy settings to a select module from or to a different profile."] = "Эта секция позволит вам копировать настройки выбранного модуля в или из другого профиля."
 L["This section will help reset specfic settings back to default."] = "Эта секция поможет вернуть настройки конкретного модуля на умолчания."

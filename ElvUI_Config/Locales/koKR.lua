@@ -489,6 +489,7 @@ L["FRIENDLY_NPC"] = "우호적인 NPC"
 L["FRIENDLY_PLAYER"] = "우호적인 플레이어"
 L["FRIENDLY_PLAYER"] = "우호적인 플레이어"
 L["Full"] = "전체"
+L["Full Overlay"] = true
 L["Gems"] = true
 L["General Options"] = "일반 설정"
 L["General"] = "일반"
@@ -1169,6 +1170,7 @@ L["This dictates the size of the icon when it is not attached to the castbar."] 
 L["This feature will allow you to transfer settings to other characters."] = "전송 기능을 통해 대상에게 자신의 설정을 넘겨줄 수 있습니다."
 L["This is for Customized Icons in your Interface/Icons folder."] = true
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "유닛프레임 색상 설정을 엽니다. 이 설정은 모든 유닛프레임에 영향을 미칩니다."
+L["This option allows the overlay to span the whole health, including the background."] = true
 L["This option will force hide Blizzard's cooldown text if it's enabled at [Interface > ActionBars > Show Numbers on Cooldown]."] = true
 L["This section will allow you to copy settings to a select module from or to a different profile."] = true
 L["This section will help reset specfic settings back to default."] = true
