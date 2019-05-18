@@ -16,6 +16,7 @@ Fixed StyleFilter error line 305: attempt to index locale 'auras' (a nil value).
 Added an option to allow the portrait on UnitFrames to truely overlay the health, including the backdrop.  
 Removed the Nameplate Name Visibilty settings because this just caused some confusion.  
 Disabled Boss Style Filter again by default. (Sorry for this everyone <3)  
+Unchecked the Player Nameplate in UnitType on the ElvUI_NonTarget StyleFilter, so that it will not fade out the player plate when targeting something.  
 Fixed Style Filter Class Trigger. (#1310)  
 
 ### Version 11.11 [ May 14th 2019 ]
