@@ -2385,7 +2385,7 @@ function CH:HandleChatVoiceIcons()
 			Skins:HandleButton(button, nil, nil, nil, true)
 
 			if index == 1 then
-				button:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -2)
+				button:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -3) -- This also change the position for new chat tabs 0.o
 			else
 				button:SetPoint("RIGHT", channelButtons[index-1], "LEFT")
 			end
