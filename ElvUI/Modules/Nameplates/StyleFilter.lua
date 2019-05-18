@@ -45,7 +45,6 @@ mod.TriggerConditions = {
 		['FRIENDLY_NPC'] = 'friendlyNPC',
 		['ENEMY_PLAYER'] = 'enemyPlayer',
 		['ENEMY_NPC'] = 'enemyNPC',
-		['HEALER'] = 'healer',
 		['PLAYER'] = 'player'
 	},
 	roles = {

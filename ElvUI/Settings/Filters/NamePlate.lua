@@ -29,6 +29,13 @@ G.nameplate.filters = {
 		triggers = {
 			notTarget = true,
 			requireTarget = true,
+			nameplateType = {
+				enable = true,
+				friendlyPlayer = true,
+				friendlyNPC = true,
+				enemyPlayer = true,
+				enemyNPC = true
+			},
 		},
 		actions = {
 			alpha = 30
@@ -162,10 +169,9 @@ E.StyleFilterDefaults = {
 			enable = false,
 			friendlyPlayer = false,
 			friendlyNPC = false,
-			healer = false,
 			enemyPlayer = false,
 			enemyNPC = false,
-			neutral = false
+			player = false
 		},
 		reactionType = {
 			enabled = false,
