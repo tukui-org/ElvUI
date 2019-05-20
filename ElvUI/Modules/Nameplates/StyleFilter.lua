@@ -975,110 +975,109 @@ function mod:StyleFilterConfigure()
 	wipe(mod.StyleFilterTriggerEvents)
 
 	for filterName, filter in pairs(E.global.nameplate.filters) do
-		if filter.triggers and E.db.nameplates and E.db.nameplates.filters then
+		local t = filter.triggers
+		if t and E.db.nameplates and E.db.nameplates.filters then
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
-				tinsert(mod.StyleFilterTriggerList, {filterName, filter.triggers.priority or 1})
+				tinsert(mod.StyleFilterTriggerList, {filterName, t.priority or 1})
 
 				-- NOTE: 0 for fake events, 1 to override StyleFilterWaitTime
 				mod.StyleFilterTriggerEvents.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
 				mod.StyleFilterTriggerEvents.NAME_PLATE_UNIT_ADDED = 1
+				mod.StyleFilterTriggerEvents.PLAYER_TARGET_CHANGED = 1
 
-				if filter.triggers.casting then
-					if next(filter.triggers.casting.spells) then
-						for _, value in pairs(filter.triggers.casting.spells) do
+				if t.casting then
+					if next(t.casting.spells) then
+						for _, value in pairs(t.casting.spells) do
 							if value then
 								mod.StyleFilterTriggerEvents.FAKE_Casting = 0
 								break
 					end end end
 
-					if (filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible)
-					or (filter.triggers.casting.isCasting or filter.triggers.casting.isChanneling or filter.triggers.casting.notCasting or filter.triggers.casting.notChanneling) then
+					if (t.casting.interruptible or t.casting.notInterruptible)
+					or (t.casting.isCasting or t.casting.isChanneling or t.casting.notCasting or t.casting.notChanneling) then
 						mod.StyleFilterTriggerEvents.FAKE_Casting = 0
 					end
 				end
 
-				-- real events
-				mod.StyleFilterTriggerEvents.PLAYER_TARGET_CHANGED = 1
-
-				if filter.triggers.reactionType and filter.triggers.reactionType.enable then
+				if t.reactionType and t.reactionType.enable then
 					mod.StyleFilterTriggerEvents.UNIT_FACTION = 1
 				end
 
-				if filter.triggers.keyMod and filter.triggers.keyMod.enable then
+				if t.keyMod and t.keyMod.enable then
 					mod.StyleFilterTriggerEvents.MODIFIER_STATE_CHANGED = 1
 				end
 
-				if filter.triggers.targetMe or filter.triggers.notTargetMe then
+				if t.targetMe or t.notTargetMe then
 					mod.StyleFilterTriggerEvents.UNIT_TARGET = 1
 				end
 
-				if filter.triggers.isFocus or filter.triggers.notFocus then
+				if t.isFocus or t.notFocus then
 					mod.StyleFilterTriggerEvents.PLAYER_FOCUS_CHANGED = 1
 				end
 
-				if filter.triggers.isResting then
+				if t.isResting then
 					mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = 1
 				end
 
-				if filter.triggers.isPet then
+				if t.isPet then
 					mod.StyleFilterTriggerEvents.UNIT_PET = 1
 				end
 
-				if filter.triggers.raidTarget then
+				if t.raidTarget then
 					mod.StyleFilterTriggerEvents.RAID_TARGET_UPDATE = 1
 				end
 
-				if filter.triggers.unitInVehicle then
+				if t.unitInVehicle then
 					mod.StyleFilterTriggerEvents.UNIT_ENTERED_VEHICLE = 1
 					mod.StyleFilterTriggerEvents.UNIT_EXITED_VEHICLE = 1
 					mod.StyleFilterTriggerEvents.VEHICLE_UPDATE = 1
 				end
 
-				if filter.triggers.healthThreshold then
+				if t.healthThreshold then
 					mod.StyleFilterTriggerEvents.UNIT_HEALTH = true
 					mod.StyleFilterTriggerEvents.UNIT_MAXHEALTH = true
 					mod.StyleFilterTriggerEvents.UNIT_HEALTH_FREQUENT = true
 				end
 
-				if filter.triggers.powerThreshold then
+				if t.powerThreshold then
 					mod.StyleFilterTriggerEvents.UNIT_POWER_UPDATE = true
 					mod.StyleFilterTriggerEvents.UNIT_POWER_FREQUENT = true
 					mod.StyleFilterTriggerEvents.UNIT_DISPLAYPOWER = true
 				end
 
-				if filter.triggers.threat and filter.triggers.threat.enable then
+				if t.threat and t.threat.enable then
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_SITUATION_UPDATE = true
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
 				end
 
-				if filter.triggers.inCombat or filter.triggers.outOfCombat or filter.triggers.inCombatUnit or filter.triggers.outOfCombatUnit then
+				if t.inCombat or t.outOfCombat or t.inCombatUnit or t.outOfCombatUnit then
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
 					mod.StyleFilterTriggerEvents.UNIT_FLAGS = true
 				end
 
-				if next(filter.triggers.names) then
-					for _, value in pairs(filter.triggers.names) do
+				if t.names and next(t.names) then
+					for _, value in pairs(t.names) do
 						if value then
 							mod.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = 1
 							break
 				end end end
 
-				if next(filter.triggers.cooldowns.names) then
-					for _, value in pairs(filter.triggers.cooldowns.names) do
+				if t.cooldowns and t.cooldowns.names and next(t.cooldowns.names) then
+					for _, value in pairs(t.cooldowns.names) do
 						if value == 'ONCD' or value == 'OFFCD' then
 							mod.StyleFilterTriggerEvents.SPELL_UPDATE_COOLDOWN = 1
 							break
 				end end end
 
-				if next(filter.triggers.buffs.names) then
-					for _, value in pairs(filter.triggers.buffs.names) do
+				if t.buffs and t.buffs.names and next(t.buffs.names) then
+					for _, value in pairs(t.buffs.names) do
 						if value then
 							mod.StyleFilterTriggerEvents.UNIT_AURA = true
 							break
 				end end end
 
-				if next(filter.triggers.debuffs.names) then
-					for _, value in pairs(filter.triggers.debuffs.names) do
+				if t.debuffs and t.debuffs.names and next(t.debuffs.names) then
+					for _, value in pairs(t.debuffs.names) do
 						if value then
 							mod.StyleFilterTriggerEvents.UNIT_AURA = true
 							break
