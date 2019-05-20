@@ -3864,12 +3864,46 @@ local function GetUnitSettings(unit, name)
 			type = "toggle",
 			order = 103,
 			name = L.UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
+			set = function(info, value) E.db.nameplates.units[unit].minions = value;
+				E.db.nameplates.units[unit].minionVisibility.guardians = value;
+				E.db.nameplates.units[unit].minionVisibility.totems = value;
+				E.db.nameplates.units[unit].minionVisibility.pets = value;
+				NP:SetCVars();
+				NP:ConfigureAll() end,
+		}
+		group.args.general.args.minionVisibility = {
+			type = "group",
+			order = 104,
+			guiInline = true,
+			name = L.UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
+			get = function(info) return E.db.nameplates.units[unit].minionVisibility[info[#info]] end,
+			set = function(info, value) E.db.nameplates.units[unit].minionVisibility[info[#info]] = value;
+				NP:SetCVars();
+				NP:ConfigureAll() end,
+			args = {
+				guardians = {
+					type = "toggle",
+					order = 1,
+					name = L.Guardians,
+				},
+				pets = {
+					type = "toggle",
+					order = 2,
+					name = L.Pets,
+				},
+				totems = {
+					type = "toggle",
+					order = 3,
+					name = L.Totems,
+				}
+			}
 		}
 		group.args.healthGroup.args.useClassColor = {
-			order = 104,
+			order = 105,
 			type = "toggle",
 			name = L["Use Class Color"],
 		}
+
 	elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
 		group.args.eliteIcon = {
 			order = 12,
@@ -3992,6 +4026,39 @@ local function GetUnitSettings(unit, name)
 				type = "toggle",
 				order = 103,
 				name = L.UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
+				set = function(info, value) E.db.nameplates.units[unit].minions = value;
+					E.db.nameplates.units[unit].minionVisibility.guardians = value;
+					E.db.nameplates.units[unit].minionVisibility.totems = value;
+					E.db.nameplates.units[unit].minionVisibility.pets = value;
+					NP:SetCVars();
+					NP:ConfigureAll() end,
+			}
+			group.args.general.args.minionVisibility = {
+				type = "group",
+				order = 104,
+				guiInline = true,
+				name = L.UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
+				get = function(info) return E.db.nameplates.units[unit].minionVisibility[info[#info]] end,
+				set = function(info, value) E.db.nameplates.units[unit].minionVisibility[info[#info]] = value;
+					NP:SetCVars();
+					NP:ConfigureAll() end,
+				args = {
+					guardians = {
+						type = "toggle",
+						order = 1,
+						name = L.Guardians,
+					},
+					pets = {
+						type = "toggle",
+						order = 2,
+						name = L.Pets,
+					},
+					totems = {
+						type = "toggle",
+						order = 3,
+						name = L.Totems,
+					}
+				}
 			}
 		else
 			group.args.general.args.showAlways = {
