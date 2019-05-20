@@ -4398,7 +4398,7 @@ E.Options.args.nameplate = {
 								showAlways = {
 									order = 1,
 									type = "toggle",
-									name = L["Always Show Personal"],
+									name = L["Always Show Player"],
 									get = function(info) return E.db.nameplates.units.PLAYER.visibility.showAlways end,
 									set = function(info, value) E.db.nameplates.units.PLAYER.visibility.showAlways = value; NP:SetCVars() NP:ConfigureAll() end,
 								},
