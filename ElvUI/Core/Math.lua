@@ -241,43 +241,44 @@ function E:AbbreviateString(str, allUpper)
 	return newString
 end
 
+function E:WaitFunc(elapse)
+	local i = 1
+	while i <= #E.WaitTable do
+		local data = E.WaitTable[i]
+		if data[1] > elapse then
+			data[1], i = data[1] - elapse, i + 1
+		else
+			tremove(E.WaitTable, i)
+			data[2](unpack(data[3]))
+
+			if #E.WaitTable == 0 then
+				E.WaitFrame:Hide()
+			end
+		end
+	end
+end
+
+E.WaitTable = {}
+E.WaitFrame = CreateFrame("Frame", "ElvUI_WaitFrame", _G.UIParent)
+E.WaitFrame:SetScript("onUpdate", E.WaitFunc)
+
 --Add time before calling a function
-local waitTable = {}
-local waitFrame
 function E:Delay(delay, func, ...)
-	if (type(delay) ~= "number") or (type(func) ~= "function") then
+	if type(delay) ~= "number" or type(func) ~= "function" then
 		return false
 	end
 
-	if delay < 0.01 then
-		delay = 0.01 -- Restrict to the lowest time that the C_Timer API allows us
+	-- Restrict to the lowest time that the C_Timer API allows us
+	if delay < 0.01 then delay = 0.01 end
+
+	if select('#', ...) <= 0 then
+		C_Timer_After(delay, func)
+	else
+		tinsert(E.WaitTable,{delay,func,{...}})
+		E.WaitFrame:Show()
 	end
 
-	local extend = {...}
-	if not next(extend) then
-		C_Timer_After(delay, func)
-		return true
-	else
-		if waitFrame == nil then
-			waitFrame = CreateFrame("Frame","WaitFrame", E.UIParent)
-			waitFrame:SetScript("onUpdate",function (_,elapse)
-				local i, count = 1, #waitTable
-				while i <= count do
-					local waitRecord = waitTable[i]
-					if waitRecord[1] > elapse then
-						waitRecord[1] = waitRecord[1] - elapse
-						i = i + 1
-					else
-						count = count - 1
-						tremove(waitTable,i)
-						waitRecord[2](unpack(waitRecord[3]))
-					end
-				end
-			end)
-		end
-		tinsert(waitTable,{delay,func,extend})
-		return true
-	end
+	return true
 end
 
 function E:StringTitle(str)
