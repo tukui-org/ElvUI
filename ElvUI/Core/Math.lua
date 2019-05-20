@@ -260,7 +260,7 @@ end
 
 E.WaitTable = {}
 E.WaitFrame = CreateFrame("Frame", "ElvUI_WaitFrame", _G.UIParent)
-E.WaitFrame:SetScript("onUpdate", E.WaitFunc)
+E.WaitFrame:SetScript("OnUpdate", E.WaitFunc)
 
 --Add time before calling a function
 function E:Delay(delay, func, ...)
