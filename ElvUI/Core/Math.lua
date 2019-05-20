@@ -263,16 +263,14 @@ function E:Delay(delay, func, ...)
 			waitFrame:SetScript("onUpdate",function (_,elapse)
 				local i, count = 1, #waitTable
 				while i <= count do
-					local waitRecord = tremove(waitTable,i)
-					local waitDelay = tremove(waitRecord,1)
-					local waitFunc = tremove(waitRecord,1)
-					local waitParams = tremove(waitRecord,1)
-					if waitDelay > elapse then
-						tinsert(waitTable,i,{waitDelay-elapse,waitFunc,waitParams})
+					local waitRecord = waitTable[i]
+					if waitRecord[1] > elapse then
+						waitRecord[1] = waitRecord[1] - elapse
 						i = i + 1
 					else
 						count = count - 1
-						waitFunc(unpack(waitParams))
+						tremove(waitTable,i)
+						waitRecord[2](unpack(waitRecord[3]))
 					end
 				end
 			end)
