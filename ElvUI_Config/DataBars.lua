@@ -24,12 +24,12 @@ E.Options.args.databars = {
 			get = function(info) return mod.db.experience[info[#info]] end,
 			set = function(info, value) mod.db.experience[info[#info]] = value; mod:UpdateExperienceDimensions() end,
 			type = "group",
-			name = L.XPBAR_LABEL,
+			name = L["XPBAR_LABEL"],
 			args = {
 				header = {
 					order = 0,
 					type = "header",
-					name = L.XPBAR_LABEL,
+					name = L["XPBAR_LABEL"],
 				},
 				enable = {
 					order = 1,
@@ -95,7 +95,7 @@ E.Options.args.databars = {
 				},
 				textSize = {
 					order = 11,
-					name = L.FONT_SIZE,
+					name = L["FONT_SIZE"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
@@ -111,7 +111,7 @@ E.Options.args.databars = {
 					name = L["Text Format"],
 					width = "double",
 					values = {
-						NONE = L.NONE,
+						NONE = L["NONE"],
 						PERCENT = L["Percent"],
 						CUR = L["Current"],
 						REM = L["Remaining"],
@@ -129,12 +129,12 @@ E.Options.args.databars = {
 			get = function(info) return mod.db.reputation[info[#info]] end,
 			set = function(info, value) mod.db.reputation[info[#info]] = value; mod:UpdateReputationDimensions() end,
 			type = "group",
-			name = L.REPUTATION,
+			name = L["REPUTATION"],
 			args = {
 				header = {
 					order = 0,
 					type = "header",
-					name = L.REPUTATION,
+					name = L["REPUTATION"],
 				},
 				enable = {
 					order = 1,
@@ -199,7 +199,7 @@ E.Options.args.databars = {
 				},
 				textSize = {
 					order = 11,
-					name = L.FONT_SIZE,
+					name = L["FONT_SIZE"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
@@ -215,7 +215,7 @@ E.Options.args.databars = {
 					name = L["Text Format"],
 					width = "double",
 					values = {
-						NONE = L.NONE,
+						NONE = L["NONE"],
 						CUR = L["Current"],
 						REM = L["Remaining"],
 						PERCENT = L["Percent"],
@@ -233,12 +233,12 @@ E.Options.args.databars = {
 			get = function(info) return mod.db.honor[info[#info]] end,
 			set = function(info, value) mod.db.honor[info[#info]] = value; mod:UpdateHonorDimensions() end,
 			type = "group",
-			name = L.HONOR,
+			name = L["HONOR"],
 			args = {
 				header = {
 					order = 0,
 					type = "header",
-					name = L.HONOR,
+					name = L["HONOR"],
 				},
 				enable = {
 					order = 1,
@@ -310,7 +310,7 @@ E.Options.args.databars = {
 				},
 				textSize = {
 					order = 12,
-					name = L.FONT_SIZE,
+					name = L["FONT_SIZE"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
@@ -326,7 +326,7 @@ E.Options.args.databars = {
 					name = L["Text Format"],
 					width = "double",
 					values = {
-						NONE = L.NONE,
+						NONE = L["NONE"],
 						PERCENT = L["Percent"],
 						CUR = L["Current"],
 						REM = L["Remaining"],
@@ -409,7 +409,7 @@ E.Options.args.databars = {
 				},
 				textSize = {
 					order = 10,
-					name = L.FONT_SIZE,
+					name = L["FONT_SIZE"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
@@ -425,7 +425,7 @@ E.Options.args.databars = {
 					name = L["Text Format"],
 					width = "double",
 					values = {
-						NONE = L.NONE,
+						NONE = L["NONE"],
 						CUR = L["Current"],
 						REM = L["Remaining"],
 						PERCENT = L["Percent"],

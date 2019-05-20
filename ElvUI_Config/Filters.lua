@@ -218,7 +218,7 @@ local function UpdateFilterGroup()
 					end,
 				},
 				color = {
-					name = L.COLOR,
+					name = L["COLOR"],
 					type = 'color',
 					order = 1,
 					hasAlpha = true,
@@ -371,7 +371,7 @@ local function UpdateFilterGroup()
 			guiInline = true,
 			args = {
 				color = {
-					name = L.COLOR,
+					name = L["COLOR"],
 					type = 'color',
 					order = 1,
 					get = function(info)
@@ -581,11 +581,11 @@ local function UpdateFilterGroup()
 							values = {
 								['coloredIcon'] = L["Colored Icon"],
 								['texturedIcon'] = L["Textured Icon"],
-								['NONE'] = L.NONE,
+								['NONE'] = L["NONE"],
 							},
 						},
 						color = {
-							name = L.COLOR,
+							name = L["COLOR"],
 							type = 'color',
 							order = 6,
 							get = function(info)
@@ -838,11 +838,11 @@ local function UpdateFilterGroup()
 						values = {
 							['coloredIcon'] = L["Colored Icon"],
 							['texturedIcon'] = L["Textured Icon"],
-							['NONE'] = L.NONE,
+							['NONE'] = L["NONE"],
 						},
 					},
 					color = {
-						name = L.COLOR,
+						name = L["COLOR"],
 						type = 'color',
 						order = 6,
 						get = function(info)
@@ -1097,11 +1097,11 @@ local function UpdateFilterGroup()
 						values = {
 							['coloredIcon'] = L["Colored Icon"],
 							['texturedIcon'] = L["Textured Icon"],
-							['NONE'] = L.NONE,
+							['NONE'] = L["NONE"],
 						},
 					},
 					color = {
-						name = L.COLOR,
+						name = L["COLOR"],
 						type = 'color',
 						order = 6,
 						get = function(info)
@@ -1398,7 +1398,7 @@ end
 
 E.Options.args.filters = {
 	type = 'group',
-	name = L.FILTERS,
+	name = L["FILTERS"],
 	order = -10, --Always Last Hehehe
 	args = {
 		createFilter = {
@@ -1447,7 +1447,7 @@ E.Options.args.filters = {
 			end,
 			values = function()
 				local filters = {}
-				filters[''] = L.NONE
+				filters[''] = L["NONE"]
 				local list = E.global.unitframe.aurafilters
 				if not list then return end
 				for filter in pairs(list) do
