@@ -109,6 +109,15 @@ function NP:SetCVars()
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition or not NP.db.units.PLAYER.enable) and 0 or 1)
 	SetCVar('nameplateShowAll', NP.db.visibility.nameplateShowAll and 1 or 0) -- NP Show Always
 
+	SetCVar('nameplateShowFriendlyGuardians', NP.db.units.FRIENDLY_PLAYER.minionVisibility.guardians and 1 or 0)
+	SetCVar('nameplateShowEnemyGuardians', (NP.db.units.ENEMY_PLAYER.minionVisibility.guardians or NP.db.units.ENEMY_NPC.minionVisibility.guardians) and 1 or 0)
+	
+	SetCVar('nameplateShowFriendlyPets', NP.db.units.FRIENDLY_PLAYER.minionVisibility.pets and 1 or 0)
+	SetCVar('nameplateShowEnemyPets', (NP.db.units.ENEMY_PLAYER.minionVisibility.pets or NP.db.units.ENEMY_NPC.minionVisibility.pets) and 1 or 0)
+	
+	SetCVar('nameplateShowFriendlyTotems', NP.db.units.FRIENDLY_PLAYER.minionVisibility.totems and 1 or 0)
+	SetCVar('nameplateShowEnemyTotems', (NP.db.units.ENEMY_PLAYER.minionVisibility.totems or NP.db.units.ENEMY_NPC.minionVisibility.totems) and 1 or 0)
+
 	if NP.db.units.ENEMY_NPC.questIcon.enable or NP.db.units.FRIENDLY_NPC.questIcon.enable then
 		SetCVar('showQuestTrackingTooltips', 1)
 	end

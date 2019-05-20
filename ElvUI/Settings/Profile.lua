@@ -708,6 +708,11 @@ P.nameplates = {
 				yOffset = -5,
 			},
 			minions = false,
+			minionVisibility = {
+				guardians = false,
+				pets = false,
+				totems = false,
+			},
 			markHealers = true,
 			health = {
 				enable = true,
@@ -922,6 +927,11 @@ P.nameplates = {
 				yOffset = -5,
 			},
 			minions = false,
+			minionVisibility = {
+				guardians = false,
+				pets = false,
+				totems = false,
+			},
 			markHealers = true,
 			health = {
 				enable = true,
@@ -1353,6 +1363,11 @@ P.nameplates = {
 				yOffset = -5,
 			},
 			minors = true,
+			minionVisibility = {
+				guardians = false,
+				pets = false,
+				totems = false,
+			},
 			health = {
 				enable = true,
 				height = 10,
