@@ -94,17 +94,6 @@ function NP:CVarReset()
 end
 
 function NP:SetCVars()
-	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
-	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
-
-	SetCVar('NameplatePersonalShowAlways', NP.db.units.PLAYER.visibility.showAlways and 1 or 0)
-	SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
-	SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
-	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
-
-	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition or not NP.db.units.PLAYER.enable) and 0 or 1)
-	SetCVar('nameplateShowAll', NP.db.visibility.showAll and 1 or 0) -- NP Show Always
-
 	if NP.db.units.ENEMY_NPC.questIcon.enable or NP.db.units.FRIENDLY_NPC.questIcon.enable then
 		SetCVar('showQuestTrackingTooltips', 1)
 	end
@@ -117,7 +106,17 @@ function NP:SetCVars()
 		SetCVar('nameplateOtherBottomInset', -1)
 	end
 
+	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
+	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
+
+	SetCVar('NameplatePersonalShowAlways', NP.db.units.PLAYER.visibility.showAlways and 1 or 0)
+	SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
+	SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
+	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
+
 	-- the order of these is important !!
+	SetCVar('nameplateShowAll', NP.db.visibility.showAll and 1 or 0)
+	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition or not NP.db.units.PLAYER.enable) and 0 or 1)
 	SetCVar('nameplateShowEnemyMinions', NP.db.visibility.enemy.minions and 1 or 0)
 	SetCVar('nameplateShowEnemyGuardians', NP.db.visibility.enemy.guardians and 1 or 0)
 	SetCVar('nameplateShowEnemyMinus', NP.db.visibility.enemy.minus and 1 or 0)
