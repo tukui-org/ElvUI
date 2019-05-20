@@ -462,14 +462,14 @@ P.nameplates = {
 		enemy = {
 			guardians = false,
 			minions = false,
-			minus = false,
+			minus = true,
 			pets = false,
 			totems = false,
 		},
 		friendly = {
 			guardians = false,
 			minions = false,
-			npcs = false,
+			npcs = true,
 			pets = false,
 			totems = false,
 		},
