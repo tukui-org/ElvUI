@@ -111,10 +111,8 @@ function NP:SetCVars()
 
 	SetCVar('nameplateShowFriendlyGuardians', NP.db.units.FRIENDLY_PLAYER.minionVisibility.guardians and 1 or 0)
 	SetCVar('nameplateShowEnemyGuardians', (NP.db.units.ENEMY_PLAYER.minionVisibility.guardians or NP.db.units.ENEMY_NPC.minionVisibility.guardians) and 1 or 0)
-	
 	SetCVar('nameplateShowFriendlyPets', NP.db.units.FRIENDLY_PLAYER.minionVisibility.pets and 1 or 0)
 	SetCVar('nameplateShowEnemyPets', (NP.db.units.ENEMY_PLAYER.minionVisibility.pets or NP.db.units.ENEMY_NPC.minionVisibility.pets) and 1 or 0)
-	
 	SetCVar('nameplateShowFriendlyTotems', NP.db.units.FRIENDLY_PLAYER.minionVisibility.totems and 1 or 0)
 	SetCVar('nameplateShowEnemyTotems', (NP.db.units.ENEMY_PLAYER.minionVisibility.totems or NP.db.units.ENEMY_NPC.minionVisibility.totems) and 1 or 0)
 

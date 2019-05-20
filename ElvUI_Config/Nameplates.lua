@@ -3860,17 +3860,6 @@ local function GetUnitSettings(unit, name)
 			name = L["Healer Icon"],
 			desc = L["Display a healer icon over known healers inside battlegrounds or arenas."],
 		}
-		group.args.general.args.minions = {
-			type = "toggle",
-			order = 103,
-			name = L.UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
-			set = function(info, value) E.db.nameplates.units[unit].minions = value;
-				E.db.nameplates.units[unit].minionVisibility.guardians = value;
-				E.db.nameplates.units[unit].minionVisibility.totems = value;
-				E.db.nameplates.units[unit].minionVisibility.pets = value;
-				NP:SetCVars();
-				NP:ConfigureAll() end,
-		}
 		group.args.general.args.minionVisibility = {
 			type = "group",
 			order = 104,
@@ -4021,17 +4010,6 @@ local function GetUnitSettings(unit, name)
 				type = 'toggle',
 				order = 102,
 				name = L.UNIT_NAMEPLATES_SHOW_ENEMY_MINUS,
-			}
-			group.args.general.args.minions = {
-				type = "toggle",
-				order = 103,
-				name = L.UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
-				set = function(info, value) E.db.nameplates.units[unit].minions = value;
-					E.db.nameplates.units[unit].minionVisibility.guardians = value;
-					E.db.nameplates.units[unit].minionVisibility.totems = value;
-					E.db.nameplates.units[unit].minionVisibility.pets = value;
-					NP:SetCVars();
-					NP:ConfigureAll() end,
 			}
 			group.args.general.args.minionVisibility = {
 				type = "group",
