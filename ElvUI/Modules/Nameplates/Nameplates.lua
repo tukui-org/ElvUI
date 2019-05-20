@@ -102,19 +102,20 @@ function NP:SetCVars()
 	SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
 	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
 
-	SetCVar('nameplateShowFriendlyNPCs', NP.db.units.FRIENDLY_NPC.showAlways and 1 or 0)
-	SetCVar('nameplateShowFriendlyMinions', NP.db.units.FRIENDLY_PLAYER.minions and 1 or 0)
-	SetCVar('nameplateShowEnemyMinions', (NP.db.units.ENEMY_PLAYER.minions or NP.db.units.ENEMY_NPC.minions) and 1 or 0)
-	SetCVar('nameplateShowEnemyMinus', NP.db.units.ENEMY_NPC.minors and 1 or 0)
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition or not NP.db.units.PLAYER.enable) and 0 or 1)
-	SetCVar('nameplateShowAll', NP.db.visibility.nameplateShowAll and 1 or 0) -- NP Show Always
+	SetCVar('nameplateShowAll', NP.db.visibility.showAll and 1 or 0) -- NP Show Always
 
-	SetCVar('nameplateShowFriendlyGuardians', NP.db.units.FRIENDLY_PLAYER.minionVisibility.guardians and 1 or 0)
-	SetCVar('nameplateShowEnemyGuardians', (NP.db.units.ENEMY_PLAYER.minionVisibility.guardians or NP.db.units.ENEMY_NPC.minionVisibility.guardians) and 1 or 0)
-	SetCVar('nameplateShowFriendlyPets', NP.db.units.FRIENDLY_PLAYER.minionVisibility.pets and 1 or 0)
-	SetCVar('nameplateShowEnemyPets', (NP.db.units.ENEMY_PLAYER.minionVisibility.pets or NP.db.units.ENEMY_NPC.minionVisibility.pets) and 1 or 0)
-	SetCVar('nameplateShowFriendlyTotems', NP.db.units.FRIENDLY_PLAYER.minionVisibility.totems and 1 or 0)
-	SetCVar('nameplateShowEnemyTotems', (NP.db.units.ENEMY_PLAYER.minionVisibility.totems or NP.db.units.ENEMY_NPC.minionVisibility.totems) and 1 or 0)
+	SetCVar('nameplateShowEnemyGuardians', NP.db.visibility.enemy.guardians and 1 or 0)
+	SetCVar('nameplateShowEnemyMinions', NP.db.visibility.enemy.minions and 1 or 0)
+	SetCVar('nameplateShowEnemyMinus', NP.db.visibility.enemy.minors and 1 or 0)
+	SetCVar('nameplateShowEnemyPets', NP.db.visibility.enemy.pets and 1 or 0)
+	SetCVar('nameplateShowEnemyTotems', NP.db.visibility.enemy.totems and 1 or 0)
+
+	SetCVar('nameplateShowFriendlyGuardians', NP.db.visibility.friendly.guardians and 1 or 0)
+	SetCVar('nameplateShowFriendlyMinions', NP.db.visibility.friendly.minions and 1 or 0)
+	SetCVar('nameplateShowFriendlyNPCs', NP.db.visibility.friendly.npcs and 1 or 0)
+	SetCVar('nameplateShowFriendlyPets', NP.db.visibility.friendly.pets and 1 or 0)
+	SetCVar('nameplateShowFriendlyTotems', NP.db.visibility.friendly.totems and 1 or 0)
 
 	if NP.db.units.ENEMY_NPC.questIcon.enable or NP.db.units.FRIENDLY_NPC.questIcon.enable then
 		SetCVar('showQuestTrackingTooltips', 1)

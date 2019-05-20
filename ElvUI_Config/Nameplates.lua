@@ -2284,6 +2284,13 @@ local function GetUnitSettings(unit, name)
 						end,
 						step = 1,
 					},
+					width = {
+						order = 4,
+						type = "execute",
+						name = L["Width"],
+						buttonElvUI = true,
+						func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general", "clickableRange") end,
+					},
 					healPrediction = {
 						order = 5,
 						name = L["Heal Prediction"],
@@ -3860,39 +3867,11 @@ local function GetUnitSettings(unit, name)
 			name = L["Healer Icon"],
 			desc = L["Display a healer icon over known healers inside battlegrounds or arenas."],
 		}
-		group.args.general.args.minionVisibility = {
-			type = "group",
-			order = 104,
-			guiInline = true,
-			name = L.UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
-			get = function(info) return E.db.nameplates.units[unit].minionVisibility[info[#info]] end,
-			set = function(info, value) E.db.nameplates.units[unit].minionVisibility[info[#info]] = value;
-				NP:SetCVars();
-				NP:ConfigureAll() end,
-			args = {
-				guardians = {
-					type = "toggle",
-					order = 1,
-					name = L.Guardians,
-				},
-				pets = {
-					type = "toggle",
-					order = 2,
-					name = L.Pets,
-				},
-				totems = {
-					type = "toggle",
-					order = 3,
-					name = L.Totems,
-				}
-			}
-		}
 		group.args.healthGroup.args.useClassColor = {
 			order = 105,
 			type = "toggle",
 			name = L["Use Class Color"],
 		}
-
 	elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
 		group.args.eliteIcon = {
 			order = 12,
@@ -4005,47 +3984,6 @@ local function GetUnitSettings(unit, name)
 			name = L["Show Title"],
 			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."]
 		}
-		if unit == "ENEMY_NPC" then
-			group.args.general.args.minor = {
-				type = 'toggle',
-				order = 102,
-				name = L.UNIT_NAMEPLATES_SHOW_ENEMY_MINUS,
-			}
-			group.args.general.args.minionVisibility = {
-				type = "group",
-				order = 104,
-				guiInline = true,
-				name = L.UNIT_NAMEPLATES_SHOW_ENEMY_MINIONS,
-				get = function(info) return E.db.nameplates.units[unit].minionVisibility[info[#info]] end,
-				set = function(info, value) E.db.nameplates.units[unit].minionVisibility[info[#info]] = value;
-					NP:SetCVars();
-					NP:ConfigureAll() end,
-				args = {
-					guardians = {
-						type = "toggle",
-						order = 1,
-						name = L.Guardians,
-					},
-					pets = {
-						type = "toggle",
-						order = 2,
-						name = L.Pets,
-					},
-					totems = {
-						type = "toggle",
-						order = 3,
-						name = L.Totems,
-					}
-				}
-			}
-		else
-			group.args.general.args.showAlways = {
-				order = 102,
-				type = "toggle",
-				name = L["Always Show"],
-				desc = L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."]
-			}
-		end
 	end
 
 	-- start groups at 30
@@ -4428,23 +4366,21 @@ E.Options.args.nameplate = {
 							isPercent = true,
 							min = 0, softMax = 0.5, max = 0.8, step = 0.01,
 						},
-						nameplateShowAll = {
+						spacer1 = {
 							order = 8,
-							type = "toggle",
-							name = L.UNIT_NAMEPLATES_AUTOMODE,
-							customWidth = 250,
-							get = function(info) return E.db.nameplates.visibility.nameplateShowAll end,
-							set = function(info, value) E.db.nameplates.visibility.nameplateShowAll = value; NP:SetCVars() NP:ConfigureAll() end,
-						},
-						fadeIn = {
-							order = 9,
-							type = "toggle",
-							name = L["Fade-in on Shown"],
+							type = 'description',
+							name = ' ',
+							width = 'full'
 						},
 						highlight = {
+							order = 9,
+							type = "toggle",
+							name = L["Hover Highlight"],
+						},
+						fadeIn = {
 							order = 10,
 							type = "toggle",
-							name = L["Highlight on NamePlate"],
+							name = L["Alpha Fading"],
 						},
 						smoothbars = {
 							type = 'toggle',
@@ -4459,10 +4395,102 @@ E.Options.args.nameplate = {
 							name = L["Clamp Nameplates"],
 							desc = L["Clamp nameplates to the top of the screen when outside of view."],
 						},
-						clickThrough = {
-							order = 13,
+						plateVisibility = {
+							order = 51,
 							type = "group",
-							guiInline = true,
+							childGroups = "tabs",
+							name = L["Visibility"],
+							args = {
+								showAll = {
+									order = 0,
+									type = "toggle",
+									customWidth = 250,
+									name = L.UNIT_NAMEPLATES_AUTOMODE,
+									get = function(info) return E.db.nameplates.visibility.showAll end,
+									set = function(info, value) E.db.nameplates.visibility.showAll = value; NP:SetCVars() NP:ConfigureAll() end,
+								},
+								enemyVisibility = {
+									type = "group",
+									order = 1,
+									guiInline = true,
+									name = L["Enemy"],
+									disabled = function() return not E.db.nameplates.visibility.showAll end,
+									get = function(info) return E.db.nameplates.visibility.enemy[info[#info]] end,
+									set = function(info, value) E.db.nameplates.visibility.enemy[info[#info]] = value;
+										NP:SetCVars();
+										NP:ConfigureAll() end,
+									args = {
+										guardians = {
+											type = "toggle",
+											order = 1,
+											name = L.Guardians,
+										},
+										minions = {
+											type = "toggle",
+											order = 2,
+											name = L.Minions,
+										},
+										minors = {
+											type = "toggle",
+											order = 3,
+											name = L.Minors,
+										},
+										pets = {
+											type = "toggle",
+											order = 4,
+											name = L.Pets,
+										},
+										totems = {
+											type = "toggle",
+											order = 5,
+											name = L.Totems,
+										}
+									}
+								},
+								friendlyVisibility = {
+									type = "group",
+									order = 2,
+									guiInline = true,
+									name = L["Friendly"],
+									disabled = function() return not E.db.nameplates.visibility.showAll end,
+									get = function(info) return E.db.nameplates.visibility.friendly[info[#info]] end,
+									set = function(info, value) E.db.nameplates.visibility.friendly[info[#info]] = value;
+										NP:SetCVars();
+										NP:ConfigureAll() end,
+									args = {
+										guardians = {
+											type = "toggle",
+											order = 1,
+											name = L.Guardians,
+										},
+										minions = {
+											type = "toggle",
+											order = 2,
+											name = L.Minions,
+										},
+										npcs = {
+											type = "toggle",
+											order = 3,
+											name = L.NPC,
+										},
+										pets = {
+											type = "toggle",
+											order = 4,
+											name = L.Pets,
+										},
+										totems = {
+											type = "toggle",
+											order = 5,
+											name = L.Totems,
+										}
+									}
+								},
+							}
+						},
+						clickThrough = {
+							order = 54,
+							type = "group",
+							childGroups = "tabs",
 							name = L["Click Through"],
 							get = function(info) return E.db.nameplates.clickThrough[info[#info]] end,
 							args = {
@@ -4486,11 +4514,11 @@ E.Options.args.nameplate = {
 								},
 							},
 						},
-						plateSize = {
-							order = 19,
+						clickableRange = {
+							order = 53,
 							type = "group",
-							guiInline = true,
-							name = L["NamePlate Size"],
+							childGroups = "tabs",
+							name = L["Clickable Range"],
 							args = {
 								personal = {
 									order = 1,

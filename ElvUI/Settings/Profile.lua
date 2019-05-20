@@ -458,11 +458,21 @@ P.nameplates = {
 		indicator = false,
 	},
 	visibility = {
-		nameplateShowAll = true,
-		UnitNameNPC = true,
-		UnitNameFriendlySpecialNPCName = true,
-		UnitNameHostleNPC = false,
-		UnitNameInteractiveNPC = true,
+		showAll = true,
+		enemy = {
+			guardians = false,
+			minions = false,
+			minors = false,
+			pets = false,
+			totems = false,
+		},
+		friendly = {
+			guardians = false,
+			minions = false,
+			npcs = false,
+			pets = false,
+			totems = false,
+		},
 	},
 	units = {
 		PLAYER = {
@@ -707,12 +717,6 @@ P.nameplates = {
 				xOffset = 3,
 				yOffset = -5,
 			},
-			minions = false,
-			minionVisibility = {
-				guardians = false,
-				pets = false,
-				totems = false,
-			},
 			markHealers = true,
 			health = {
 				enable = true,
@@ -925,12 +929,6 @@ P.nameplates = {
 				width = 28,
 				xOffset = 3,
 				yOffset = -5,
-			},
-			minions = false,
-			minionVisibility = {
-				guardians = false,
-				pets = false,
-				totems = false,
 			},
 			markHealers = true,
 			health = {
@@ -1363,11 +1361,6 @@ P.nameplates = {
 				yOffset = -5,
 			},
 			minors = true,
-			minionVisibility = {
-				guardians = false,
-				pets = false,
-				totems = false,
-			},
 			health = {
 				enable = true,
 				height = 10,
