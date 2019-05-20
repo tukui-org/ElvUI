@@ -1796,7 +1796,7 @@ function E:DBConversions()
 		E.db.nameplates.units.FRIENDLY_PLAYER.minions = nil
 	end
 	if E.db.nameplates.units.ENEMY_NPC.minors ~= nil then
-		E.db.nameplates.visibility.enemy.minors = E.db.nameplates.units.ENEMY_NPC.minors
+		E.db.nameplates.visibility.enemy.minus = E.db.nameplates.units.ENEMY_NPC.minors
 		E.db.nameplates.units.ENEMY_NPC.minors = nil
 	end
 	if E.db.nameplates.units.ENEMY_PLAYER.minions ~= nil or E.db.nameplates.units.ENEMY_NPC.minions ~= nil then

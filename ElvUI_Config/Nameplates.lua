@@ -4430,10 +4430,10 @@ E.Options.args.nameplate = {
 											order = 2,
 											name = L["Minions"],
 										},
-										minors = {
+										minus = {
 											type = "toggle",
 											order = 3,
-											name = L["Minors"],
+											name = L["Minus"],
 										},
 										pets = {
 											type = "toggle",

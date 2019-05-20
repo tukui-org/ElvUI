@@ -462,7 +462,7 @@ P.nameplates = {
 		enemy = {
 			guardians = false,
 			minions = false,
-			minors = false,
+			minus = false,
 			pets = false,
 			totems = false,
 		},
@@ -1360,7 +1360,6 @@ P.nameplates = {
 				xOffset = 3,
 				yOffset = -5,
 			},
-			minors = true,
 			health = {
 				enable = true,
 				height = 10,

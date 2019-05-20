@@ -107,7 +107,7 @@ function NP:SetCVars()
 
 	SetCVar('nameplateShowEnemyGuardians', NP.db.visibility.enemy.guardians and 1 or 0)
 	SetCVar('nameplateShowEnemyMinions', NP.db.visibility.enemy.minions and 1 or 0)
-	SetCVar('nameplateShowEnemyMinus', NP.db.visibility.enemy.minors and 1 or 0)
+	SetCVar('nameplateShowEnemyMinus', NP.db.visibility.enemy.minus and 1 or 0)
 	SetCVar('nameplateShowEnemyPets', NP.db.visibility.enemy.pets and 1 or 0)
 	SetCVar('nameplateShowEnemyTotems', NP.db.visibility.enemy.totems and 1 or 0)
 
