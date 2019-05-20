@@ -48,6 +48,7 @@ L["Alpha"] = "透明度"
 L["Always Display"] = "總是顯示"
 L["Always Hide"] = "總是隱藏"
 L["Always Show Realm"] = "總是顯示伺服器"
+L["Always Show Personal"] = true
 L["Always Show"] = "始終顯示"
 L["An X offset (in pixels) to be used when anchoring new frames."] = "錨定新框架時的X軸偏移(單位:像素)"
 L["An Y offset (in pixels) to be used when anchoring new frames."] = "錨定新框架時的Y軸偏移(單位:像素)"

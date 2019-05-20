@@ -48,6 +48,7 @@ L["Alpha"] = "Transparence"
 L["Always Display"] = "Toujours afficher"
 L["Always Hide"] = "Toujours masqué"
 L["Always Show Realm"] = true
+L["Always Show Personal"] = true
 L["Always Show"] = "Toujours visible"
 L["An X offset (in pixels) to be used when anchoring new frames."] = "Un décalage X (en pixels) à utiliser lors d'un ancrage d'une nouvelle fenêtre."
 L["An Y offset (in pixels) to be used when anchoring new frames."] = "Un décalage Y (en pixels) à utiliser lors d'un ancrage d'une nouvelle fenêtre."

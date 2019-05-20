@@ -48,6 +48,7 @@ L["Alpha"] = "투명도"
 L["Always Display"] = "항상 표시"
 L["Always Hide"] = "표시하지 않음"
 L["Always Show Realm"] = true
+L["Always Show Personal"] = true
 L["Always Show"] = "항상 표시"
 L["An X offset (in pixels) to be used when anchoring new frames."] = "기준 프레임에서 가로로 얼마만큼 떨어져 있을지를 결정합니다."
 L["An Y offset (in pixels) to be used when anchoring new frames."] = "기준 프레임에서 세로로 얼마만큼 떨어져 있을지를 결정합니다."

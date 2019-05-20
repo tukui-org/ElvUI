@@ -3713,42 +3713,6 @@ local function GetUnitSettings(unit, name)
 
 	-- start groups at 12, options at 100
 	if unit == "PLAYER" then
-		group.args.general.args.visibility = {
-			order = 12,
-			type = "group",
-			guiInline = true,
-			name = L["Visibility"],
-			get = function(info) return E.db.nameplates.units[unit].visibility[info[#info]] end,
-			set = function(info, value) E.db.nameplates.units[unit].visibility[info[#info]] = value; NP:SetCVars(); NP:ConfigureAll() end,
-			args = {
-				showAlways = {
-					order = 1,
-					type = "toggle",
-					name = L["Always Show"],
-					desc = L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."]
-				},
-				showInCombat = {
-					order = 2,
-					type = "toggle",
-					name = L["Show In Combat"],
-					disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
-				},
-				showWithTarget = {
-					order = 2,
-					type = "toggle",
-					name = L["Show With Target"],
-					desc = L["When using Static Position, this option also requires the target to be attackable."],
-					disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
-				},
-				hideDelay = {
-					order = 4,
-					type = "range",
-					name = L["Hide Delay"],
-					min = 0, max = 20, step = 1,
-					disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
-				},
-			},
-		}
 		group.args.classBarGroup = {
 			order = 13,
 			type = "group",
@@ -3831,15 +3795,22 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 		}
-		group.args.general.args.useStaticPosition = {
+		group.args.general.args.visibilityShortcut = {
 			order = 100,
+			type = "execute",
+			name = L["Visibility"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general", "plateVisibility") end,
+		}
+		group.args.general.args.useStaticPosition = {
+			order = 101,
 			type = "toggle",
 			name = L["Use Static Position"],
 			desc = L["When enabled the nameplate will stay visible in a locked position."],
 			disabled = function() return not E.db.nameplates.units[unit].enable end,
 		}
 		group.args.healthGroup.args.useClassColor = {
-			order = 101,
+			order = 10,
 			type = "toggle",
 			name = L["Use Class Color"],
 		}
@@ -3850,25 +3821,32 @@ local function GetUnitSettings(unit, name)
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
 		}
 	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+		group.args.general.args.visibilityShortcut = {
+			order = 100,
+			type = "execute",
+			name = L["Visibility"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general", "plateVisibility") end,
+		}
 		group.args.general.args.nameOnly = {
 			type = 'toggle',
-			order = 100,
+			order = 101,
 			name = L["Name Only"],
 		}
 		group.args.general.args.showTitle = {
 			type = 'toggle',
-			order = 101,
+			order = 102,
 			name = L["Show Title"],
 			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."],
 		}
 		group.args.general.args.markHealers = {
 			type = "toggle",
-			order = 102,
+			order = 103,
 			name = L["Healer Icon"],
 			desc = L["Display a healer icon over known healers inside battlegrounds or arenas."],
 		}
 		group.args.healthGroup.args.useClassColor = {
-			order = 105,
+			order = 10,
 			type = "toggle",
 			name = L["Use Class Color"],
 		}
@@ -3973,14 +3951,21 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 		}
+		group.args.general.args.visibilityShortcut = {
+			order = 100,
+			type = "execute",
+			name = L["Visibility"],
+			buttonElvUI = true,
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general", "plateVisibility") end,
+		}
 		group.args.general.args.nameOnly = {
 			type = 'toggle',
-			order = 100,
+			order = 101,
 			name = L["Name Only"],
 		}
 		group.args.general.args.showTitle = {
 			type = 'toggle',
-			order = 101,
+			order = 102,
 			name = L["Show Title"],
 			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."]
 		}
@@ -4406,12 +4391,50 @@ E.Options.args.nameplate = {
 									type = "toggle",
 									customWidth = 250,
 									name = L["UNIT_NAMEPLATES_AUTOMODE"],
+									desc = L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."],
 									get = function(info) return E.db.nameplates.visibility.showAll end,
 									set = function(info, value) E.db.nameplates.visibility.showAll = value; NP:SetCVars() NP:ConfigureAll() end,
 								},
+								showAlways = {
+									order = 1,
+									type = "toggle",
+									name = L["Always Show Personal"],
+									get = function(info) return E.db.nameplates.units.PLAYER.visibility.showAlways end,
+									set = function(info, value) E.db.nameplates.units.PLAYER.visibility.showAlways = value; NP:SetCVars() NP:ConfigureAll() end,
+								},
+								playerVisibility = {
+									order = 2,
+									type = "group",
+									guiInline = true,
+									name = L["Player"],
+									get = function(info) return E.db.nameplates.units.PLAYER.visibility[info[#info]] end,
+									set = function(info, value) E.db.nameplates.units.PLAYER.visibility[info[#info]] = value; NP:SetCVars(); NP:ConfigureAll() end,
+									args = {
+										showInCombat = {
+											order = 2,
+											type = "toggle",
+											name = L["Show In Combat"],
+											disabled = function() return E.db.nameplates.units.PLAYER.visibility.showAlways end,
+										},
+										showWithTarget = {
+											order = 2,
+											type = "toggle",
+											name = L["Show With Target"],
+											desc = L["When using Static Position, this option also requires the target to be attackable."],
+											disabled = function() return E.db.nameplates.units.PLAYER.visibility.showAlways end,
+										},
+										hideDelay = {
+											order = 4,
+											type = "range",
+											name = L["Hide Delay"],
+											min = 0, max = 20, step = 1,
+											disabled = function() return E.db.nameplates.units.PLAYER.visibility.showAlways end,
+										},
+									},
+								},
 								enemyVisibility = {
 									type = "group",
-									order = 1,
+									order = 3,
 									guiInline = true,
 									name = L["Enemy"],
 									disabled = function() return not E.db.nameplates.visibility.showAll end,
@@ -4449,7 +4472,7 @@ E.Options.args.nameplate = {
 								},
 								friendlyVisibility = {
 									type = "group",
-									order = 2,
+									order = 4,
 									guiInline = true,
 									name = L["Friendly"],
 									disabled = function() return not E.db.nameplates.visibility.showAll end,
