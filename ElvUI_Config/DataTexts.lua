@@ -324,7 +324,7 @@ E.Options.args.datatexts = {
 						E.db.datatexts[info[#info]] = value
 						if E.db.LeftChatPanelFaded then
 							E.db.LeftChatPanelFaded = true;
-							HideLeftChat()
+							_G.HideLeftChat()
 						end
 						Chat:UpdateAnchors()
 						Layout:ToggleChatPanels()
@@ -339,7 +339,7 @@ E.Options.args.datatexts = {
 						E.db.datatexts[info[#info]] = value
 						if E.db.RightChatPanelFaded then
 							E.db.RightChatPanelFaded = true;
-							HideRightChat()
+							_G.HideRightChat()
 						end
 						Chat:UpdateAnchors()
 						Layout:ToggleChatPanels()

@@ -3,6 +3,7 @@ local C, L = unpack(select(2, ...))
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
+local tonumber = tonumber
 local GameTooltip = _G.GameTooltip
 local GameTooltipStatusBar = _G.GameTooltipStatusBar
 

@@ -135,7 +135,7 @@ local function UpdateFilterGroup()
 							end
 							if filter:lower():find(searchText) then filters[filter] = filter end
 						end
-						if not next(filters) then filters[''] = NONE end
+						if not next(filters) then filters[''] = L["NONE"] end
 						return filters
 					end,
 				},
@@ -316,7 +316,7 @@ local function UpdateFilterGroup()
 							end
 							if filter:lower():find(searchText) then filters[filter] = filter end
 						end
-						if not next(filters) then filters[''] = NONE end
+						if not next(filters) then filters[''] = L["NONE"] end
 						return filters
 					end,
 				},
@@ -1277,7 +1277,7 @@ local function UpdateFilterGroup()
 							end
 							if filter:lower():find(searchText) then filters[filter] = filter end
 						end
-						if not next(filters) then filters[''] = NONE end
+						if not next(filters) then filters[''] = L["NONE"] end
 						return filters
 					end,
 				},
