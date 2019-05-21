@@ -98,7 +98,8 @@ AddOn.Libs = {
 	ItemSearch = _G.LibStub('LibItemSearch-1.2-ElvUI'),
 	Compress = _G.LibStub('LibCompress'),
 	Base64 = _G.LibStub('LibBase64-1.0-ElvUI'),
-	Masque = _G.LibStub('Masque', true)
+	Masque = _G.LibStub('Masque', true),
+	Translit = _G.LibStub('LibTranslit-1.0')
 } -- added on ElvUI_Config load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
 
 -- backwards compatible for plugins
