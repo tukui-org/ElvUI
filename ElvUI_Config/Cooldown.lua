@@ -227,7 +227,7 @@ local function group(order, db, label)
 		end
 
 		-- rename the tab
-		E.Options.args.cooldown.args[db].args.colorGroup.name = L["COLORS"],
+		E.Options.args.cooldown.args[db].args.colorGroup.name = L["COLORS"]
 
 		-- move hide blizzard option into the top toggles, keeping order 3 is fine and correct.
 		E.Options.args.cooldown.args.hideBlizzard = E.Options.args.cooldown.args[db].args.hideBlizzard
