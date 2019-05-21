@@ -4542,7 +4542,7 @@ E.Options.args.nameplate = {
 							order = 52,
 							type = "group",
 							childGroups = "tabs",
-							name = L["Clickable Range"],
+							name = L["Size"],
 							args = {
 								personal = {
 									order = 1,
@@ -4555,8 +4555,8 @@ E.Options.args.nameplate = {
 										personalWidth = {
 											order = 1,
 											type = "range",
-											name = L["Clickable Width"],
-											desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
+											name = L["Clickable Width / Width"],
+											desc = L["Controls the width and how big of an area on the screen will accept clicks to target unit."],
 											min = 50, max = 250, step = 1,
 										},
 										personalHeight = {
@@ -4579,8 +4579,8 @@ E.Options.args.nameplate = {
 										friendlyWidth = {
 											order = 1,
 											type = "range",
-											name = L["Clickable Width"],
-											desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
+											name = L["Clickable Width / Width"],
+											desc = L["Change the width and controls how big of an area on the screen will accept clicks to target unit."],
 											min = 50, max = 250, step = 1,
 										},
 										friendlyHeight = {
@@ -4603,8 +4603,8 @@ E.Options.args.nameplate = {
 										enemyWidth = {
 											order = 1,
 											type = "range",
-											name = L["Clickable Width"],
-											desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
+											name = L["Clickable Width / Width"],
+											desc = L["Change the width and controls how big of an area on the screen will accept clicks to target unit."],
 											min = 50, max = 250, step = 1,
 										},
 										enemyHeight = {
