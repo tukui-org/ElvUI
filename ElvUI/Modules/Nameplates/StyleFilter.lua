@@ -409,14 +409,13 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.StyleChanged = true
 		frame.HealthColorChanged = actions.color.healthColor
 		frame.Health:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a)
-		--[[if frame.CutawayHealth then
-			frame.CutawayHealth:SetStatusBarColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a)
-		end]]
+		frame.Cutaway.Health:SetStatusBarColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a)
 	end
 	if PowerColorChanged then
 		frame.StyleChanged = true
 		frame.PowerColorChanged = true
-		frame.Power:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a)
+        frame.Power:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a)
+        frame.Cutaway.Power:SetStatusBarColor(actions.color.powerColor.r * 1.5, actions.color.powerColor.g * 1.5, actions.color.powerColor.b * 1.5, actions.color.powerColor.a)
 	end
 	if BorderChanged then
 		frame.StyleChanged = true
@@ -514,15 +513,14 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
 		frame.Health:SetStatusBarColor(frame.Health.r, frame.Health.g, frame.Health.b)
-		--[[if frame.CutawayHealth then
-			frame.CutawayHealth:SetStatusBarColor(frame.Health.r * 1.5, frame.Health.g * 1.5, frame.Health.b * 1.5, 1)
-		end]]
+		frame.Cutaway.Health:SetStatusBarColor(frame.Health.r * 1.5, frame.Health.g * 1.5, frame.Health.b * 1.5, 1)
 	end
 	if PowerColorChanged then
 		frame.PowerColorChanged = nil
 		local color = E.db.unitframe.colors.power[frame.Power.token] or PowerBarColor[frame.Power.token] or FallbackColor
 		if color then
-			frame.Power:SetStatusBarColor(color.r, color.g, color.b)
+            frame.Power:SetStatusBarColor(color.r, color.g, color.b)
+            frame.Cutaway.Power:SetStatusBarColor(color.r * 1.5, color.g * 1.5, color.b * 1.5, 1)
 		end
 	end
 	if BorderChanged then

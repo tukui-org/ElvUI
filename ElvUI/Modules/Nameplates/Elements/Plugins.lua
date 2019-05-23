@@ -248,10 +248,10 @@ function NP:Update_Fader(nameplate)
 	end
 end
 
---[[function NP:Construct_Cutaway(nameplate)
+function NP:Construct_Cutaway(nameplate)
 	local Cutaway = CreateFrame('Frame', nameplate:GetDebugName()..'Cutaway', nameplate)
 
-	Cutaway.Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'CutawayHealth', nameplate.Health)
+	Cutaway.Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'cutaway health', nameplate.Health)
 	Cutaway.Health:SetAllPoints()
 	Cutaway.Health:SetFrameLevel(4)
 	Cutaway.Health:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
@@ -264,4 +264,24 @@ end
 	NP.StatusBars[Cutaway.Power] = true
 
 	return Cutaway
-end]]
+end
+
+function NP:Update_Cutaway(nameplate)
+    local eitherEnabled = NP.db.cutaway.health.enabled or NP.db.cutaway.power.enabled;
+    if not eitherEnabled then
+        if nameplate:IsElementEnabled('Cutaway') then
+            nameplate:DisableElement('Cutaway')
+        end
+    else
+        if not nameplate:IsElementEnabled('Cutaway') then
+            nameplate:EnableElement('Cutaway')
+        end
+        nameplate.Cutaway.Health.enabled = NP.db.cutaway.health.enabled
+        nameplate.Cutaway.Health.lengthBeforeFade = NP.db.cutaway.health.lengthBeforeFade
+        nameplate.Cutaway.Health.fadeOutTime = NP.db.cutaway.health.fadeOutTime
+
+        nameplate.Cutaway.Power.enabled = NP.db.cutaway.power.enabled
+        nameplate.Cutaway.Power.lengthBeforeFade = NP.db.cutaway.power.lengthBeforeFade
+        nameplate.Cutaway.Power.fadeOutTime = NP.db.cutaway.power.fadeOutTime
+    end
+end

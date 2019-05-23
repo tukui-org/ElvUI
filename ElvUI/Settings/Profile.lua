@@ -316,9 +316,6 @@ P.bags = {
 P.nameplates = {
 	smoothbars = false,
 	clampToScreen = false,
-	cutawayHealth = false,
-	cutawayHealthFadeOutTime = 0.6,
-	cutawayHealthLength = 0.3,
 	clickThrough = {
 		personal = false,
 		friendly = false,
@@ -473,7 +470,19 @@ P.nameplates = {
 			pets = false,
 			totems = false,
 		},
-	},
+    },
+    cutaway =  {
+        health = {
+            enabled = false,
+            fadeOutTime = 0.6,
+            lengthBeforeFade = 0.3,
+        },
+        power = {
+            enabled = false,
+            fadeOutTime = 0.6,
+            lengthBeforeFade = 0.3,
+        },
+    },
 	units = {
 		PLAYER = {
 			enable = false,
