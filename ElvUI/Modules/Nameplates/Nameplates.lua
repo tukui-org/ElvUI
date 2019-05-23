@@ -623,6 +623,7 @@ function NP:Initialize()
 	end
 
 	hooksecurefunc(_G.NamePlateDriverFrame, 'SetupClassNameplateBars', function(frame)
+		if not frame or frame:IsForbidden() then return end
 		if frame.classNamePlateMechanicFrame then
 			frame.classNamePlateMechanicFrame:Hide()
 		end
