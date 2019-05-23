@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
--- Cache global variables
--- Lua functions
+local _G = _G
 local pairs, unpack = pairs, unpack
--- WoW API / Variables
 local CreateFrame = CreateFrame
 
 function NP:Construct_QuestIcons(nameplate)

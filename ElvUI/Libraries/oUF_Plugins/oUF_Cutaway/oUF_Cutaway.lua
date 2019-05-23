@@ -9,20 +9,17 @@ assert(oUF, 'oUF_Cutaway was unable to locate oUF install.')
         .lengthBeforeFade: How long it takes before the cutaway begins to fade, defaults to 0.3 seconds
 ]]
 
--- Cache global variables
--- Lua functions
--- WoW API / Variables
+-- GLOBALS: ElvUI
+
 local C_Timer_After = C_Timer.After
 local hooksecurefunc = hooksecurefunc
-local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
-local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitIsTapDenied = UnitIsTapDenied
 
 local function CreateFadeClosure(element)
     return function()
-        E:UIFrameFadeOut(element, element.fadeOutTime, 1, 0)
+        ElvUI[1]:UIFrameFadeOut(element, element.fadeOutTime, 1, 0)
         C_Timer_After(element.fadeOutTime, function() element.ready = false; element.playing = false end);
     end
 end
