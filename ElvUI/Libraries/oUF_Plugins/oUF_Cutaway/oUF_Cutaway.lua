@@ -16,18 +16,21 @@ local UnitHealthMax = UnitHealthMax
 local UnitPowerMax = UnitPowerMax
 local UnitIsTapDenied = UnitIsTapDenied
 
-local E
-local function fadeClosure(self)
-	if not E then E = ElvUI[1] end
-	if not self.FadeObject then
-		self.FadeObject = {
+local E -- holder
+local function fadeClosure(element)
+	if not element.FadeObject then
+		element.FadeObject = {
 			finishedFuncKeep = true,
-			finishedArg1 = self,
-			finishedFunc = function() self.ready = nil; self.playing = nil end
+			finishedArg1 = element,
+			finishedFunc = function(self)
+				self.ready = nil
+				self.playing = nil
+			end
 		}
 	end
 
-	E:UIFrameFadeOut(self, self.fadeOutTime, 1, 0)
+	if not E then E = ElvUI[1] end
+	E:UIFrameFadeOut(element, element.fadeOutTime, 1, 0)
 end
 
 local function Health_PreUpdate(self, unit)
@@ -48,7 +51,7 @@ local function Health_PostUpdate(self, unit, cur, max)
 		element:SetAlpha(1)
 
 		if not E then E = ElvUI[1] end
-		ElvUI[1]:Delay(element.lengthBeforeFade, fadeClosure, element)
+		E:Delay(element.lengthBeforeFade, fadeClosure, element)
 
 		element.playing = true
 	else
@@ -80,7 +83,7 @@ local function Power_PostUpdate(self, unit, cur, max)
 		element:SetAlpha(1)
 
 		if not E then E = ElvUI[1] end
-		ElvUI[1]:Delay(element.lengthBeforeFade, fadeClosure, element)
+		E:Delay(element.lengthBeforeFade, fadeClosure, element)
 
 		element.playing = true
 	else
