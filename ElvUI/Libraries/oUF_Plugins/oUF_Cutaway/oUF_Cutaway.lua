@@ -57,6 +57,7 @@ local function Health_PostUpdate(self, unit, cur, max)
 
 		element.playing = true
 	else
+		element:SetValue(0)
 		element.ready = nil
 		element.playing = nil
 	end
@@ -89,6 +90,7 @@ local function Power_PostUpdate(self, unit, cur, max)
 
 		element.playing = true
 	else
+		element:SetValue(0)
 		element.ready = nil
 		element.playing = nil
 	end
