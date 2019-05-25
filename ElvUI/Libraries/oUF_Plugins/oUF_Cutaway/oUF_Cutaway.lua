@@ -11,24 +11,29 @@ assert(oUF, 'oUF_Cutaway was unable to locate oUF install.')
 
 -- GLOBALS: ElvUI
 
-local C_Timer_After = C_Timer.After
 local hooksecurefunc = hooksecurefunc
 local UnitHealthMax = UnitHealthMax
 local UnitPowerMax = UnitPowerMax
 local UnitIsTapDenied = UnitIsTapDenied
 
-local function CreateFadeClosure(element)
-    return function()
-        ElvUI[1]:UIFrameFadeOut(element, element.fadeOutTime, 1, 0)
-        C_Timer_After(element.fadeOutTime, function() element.ready = false; element.playing = false end);
+local E
+local function fadeClosure(self)
+    if not E then E = ElvUI[1] end
+    if not self.FadeObject then
+        self.FadeObject = {
+            finishedFuncKeep = true,
+            finishedArg1 = self,
+            finishedFunc = function() self.ready = nil; self.playing = nil end
+        }
     end
+
+    E:UIFrameFadeOut(self, self.fadeOutTime, 1, 0)
 end
 
 local function Health_PreUpdate(self, unit)
     local element = self.__owner.Cutaway.Health
-    if element.ready or UnitIsTapDenied(unit) or not element.enabled then
-        return
-    end
+    if element.ready or (not element.enabled) or UnitIsTapDenied(unit) then return end
+
     element.cur = self:GetValue() or 0
     element:SetValue(element.cur)
     element:SetMinMaxValues(0, UnitHealthMax(unit) or 1)
@@ -37,19 +42,18 @@ end
 
 local function Health_PostUpdate(self, unit, cur, max)
     local element = self.__owner.Cutaway.Health
-    if not element.ready or element.playing then
-        return
-    end
+    if not element.ready or element.playing then return end
+
     if (element.cur or 0) > (cur) then
-        if (not element.closure) then
-            element.closure = CreateFadeClosure(element)
-        end
         element:SetAlpha(1)
-        C_Timer_After(element.lengthBeforeFade, element.closure)
+
+        if not E then E = ElvUI[1] end
+        ElvUI[1]:Delay(element.lengthBeforeFade, fadeClosure, element)
+
         element.playing = true
     else
-        element.ready = false
-        element.playing = false
+        element.ready = nil
+        element.playing = nil
     end
 end
 
@@ -60,9 +64,8 @@ end
 
 local function Power_PreUpdate(self, unit)
     local element = self.__owner.Cutaway.Power
-    if element.ready or not element.enabled then
-        return
-    end
+    if element.ready or not element.enabled then return end
+
     element.cur = self:GetValue() or 0
     element:SetValue(element.cur)
     element:SetMinMaxValues(0, UnitPowerMax(unit) or 1)
@@ -71,19 +74,18 @@ end
 
 local function Power_PostUpdate(self, unit, cur, max)
     local element = self.__owner.Cutaway.Power
-    if not element.ready or element.playing then
-        return
-    end
+    if not element.ready or element.playing then return end
+
     if (element.cur or 1) > (cur) then
-        if (not element.closure) then
-            element.closure = CreateFadeClosure(element)
-        end
         element:SetAlpha(1)
-        C_Timer_After(element.lengthBeforeFade, element.closure)
+
+        if not E then E = ElvUI[1] end
+        ElvUI[1]:Delay(element.lengthBeforeFade, fadeClosure, element)
+
         element.playing = true
     else
-        element.ready = false
-        element.playing = false
+        element.ready = nil
+        element.playing = nil
     end
 end
 
@@ -93,14 +95,14 @@ local function Power_PostUpdateColor(self, _, _, _, _)
 end
 
 local function Enable(self)
-    local element = self.Cutaway
+    local element = self and self.Cutaway
     if (element) then
         if (element.Health and element.Health:IsObjectType("StatusBar") and not element.Health:GetStatusBarTexture()) then
-            element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+            element.Health:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
         end
 
         if (element.Power and element.Power:IsObjectType("StatusBar") and not element.Power:GetStatusBarTexture()) then
-            element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+            element.Health:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
         end
 
         if element.Health and self.Health then
@@ -108,6 +110,7 @@ local function Enable(self)
 
             element.Health.lengthBeforeFade = element.Health.lengthBeforeFade or 0.3
             element.Health.fadeOutTime = element.Health.fadeOutTime or 0.6
+            element.Power:Show()
 
             if not element.Health.hasCutawayHook then
                 if self.Health.PreUpdate then
@@ -137,6 +140,7 @@ local function Enable(self)
 
             element.Power.lengthBeforeFade = element.Power.lengthBeforeFade or 0.3
             element.Power.fadeOutTime = element.Power.fadeOutTime or 0.6
+            element.Power:Show()
 
             if not element.Power.hasCutawayHook then
                 if self.Power.PreUpdate then
@@ -160,6 +164,7 @@ local function Enable(self)
                 element.Power.hasCutawayHook = true
             end
         end
+
         element:Show()
 
         return true
@@ -167,9 +172,15 @@ local function Enable(self)
 end
 
 local function Disable(self)
-    local element = self.Cutaway
-    if (element) then
-        element:Hide()
+    if self and self.Cutaway then
+        self.Cutaway:Hide()
+
+        if self.Cutaway.Health then
+            self.Cutaway.Health:Hide()
+        end
+        if self.Cutaway.Power then
+            self.Cutaway.Power:Hide()
+        end
     end
 end
 
