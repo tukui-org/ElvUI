@@ -249,7 +249,7 @@ end
 function NP:Construct_Cutaway(nameplate)
 	local Cutaway = CreateFrame('Frame', nameplate:GetDebugName()..'Cutaway', nameplate)
 
-	Cutaway.Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'cutaway health', nameplate.Health)
+	Cutaway.Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'CutawayHealth', nameplate.Health)
 	Cutaway.Health:SetAllPoints()
 	Cutaway.Health:SetFrameLevel(4)
 	Cutaway.Health:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
