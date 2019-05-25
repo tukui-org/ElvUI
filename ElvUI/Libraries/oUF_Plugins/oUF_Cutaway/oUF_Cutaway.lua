@@ -105,7 +105,7 @@ local function Enable(self)
 		end
 
 		if (element.Power and element.Power:IsObjectType("StatusBar") and not element.Power:GetStatusBarTexture()) then
-			element.Health:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+			element.Power:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 
 		if element.Health and self.Health then
