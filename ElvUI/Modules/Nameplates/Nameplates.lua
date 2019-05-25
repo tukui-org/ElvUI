@@ -586,6 +586,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP.PlateGUID[nameplate.unitGUID] = nil
 		end
 
+		-- cutaway needs this
 		nameplate.Health.cur = nil
 		nameplate.Power.cur = nil
 

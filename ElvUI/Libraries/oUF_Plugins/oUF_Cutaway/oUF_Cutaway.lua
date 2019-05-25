@@ -20,6 +20,7 @@ local E -- holder
 local function closureFunc(self)
 	self.ready = nil
 	self.playing = nil
+	self.cur = nil
 end
 
 local function fadeClosure(element)
@@ -36,21 +37,20 @@ local function fadeClosure(element)
 end
 
 local function Health_PreUpdate(self, unit)
-	local plate = self.__owner
-	local element = plate.Cutaway.Health
-	if (not element.enabled or not plate.Health.cur) or element.ready or UnitIsTapDenied(unit) then return end
+	local element = self.__owner.Cutaway.Health
+	if (not element.enabled or not self.cur) or element.ready or UnitIsTapDenied(unit) then return end
 
-	element.cur = plate.Health.cur
+	element.cur = self.cur
 	element:SetValue(element.cur)
 	element:SetMinMaxValues(0, UnitHealthMax(unit) or 1)
 	element.ready = true
 end
 
-local function Health_PostUpdate(self, unit, cur, max)
+local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	local element = self.__owner.Cutaway.Health
 	if (not element.ready or not element.cur) or element.playing then return end
 
-	if (element.cur > cur) then
+	if (element.cur - curHealth) > (maxHealth * 0.01) then
 		element:SetAlpha(1)
 
 		if not E then E = ElvUI[1] end
@@ -58,9 +58,8 @@ local function Health_PostUpdate(self, unit, cur, max)
 
 		element.playing = true
 	else
-		element:SetValue(0)
-		element.ready = nil
-		element.playing = nil
+		element:SetAlpha(0)
+		closureFunc(element)
 	end
 end
 
@@ -70,21 +69,20 @@ local function Health_PostUpdateColor(self, _, _, _, _)
 end
 
 local function Power_PreUpdate(self, unit)
-	local plate = self.__owner
-	local element = plate.Cutaway.Power
-	if (not element.enabled or not plate.Power.cur) or element.ready then return end
+	local element = self.__owner.Cutaway.Power
+	if (not element.enabled or not self.cur) or element.ready then return end
 
-	element.cur = plate.Power.cur
-	element:SetValue(plate.Power.cur)
+	element.cur = self.cur
+	element:SetValue(element.cur)
 	element:SetMinMaxValues(0, UnitPowerMax(unit) or 1)
 	element.ready = true
 end
 
-local function Power_PostUpdate(self, unit, cur, max)
+local function Power_PostUpdate(self, unit, curPower, maxPower)
 	local element = self.__owner.Cutaway.Power
 	if (not element.ready or not element.cur) or element.playing then return end
 
-	if element.cur > cur then
+	if (element.cur - curPower) > (maxPower * 0.1) then
 		element:SetAlpha(1)
 
 		if not E then E = ElvUI[1] end
@@ -92,9 +90,8 @@ local function Power_PostUpdate(self, unit, cur, max)
 
 		element.playing = true
 	else
-		element:SetValue(0)
-		element.ready = nil
-		element.playing = nil
+		element:SetAlpha(0)
+		closureFunc(element)
 	end
 end
 
