@@ -315,7 +315,7 @@ local function UpdateTalentSection()
 			E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers.args["spacer"..i] = {
 				order = order,
 				type = 'description',
-				name = '',
+				name = ' ',
 			}
 			order = order+1
 		end
@@ -696,7 +696,7 @@ local function UpdateFilterGroup()
 				spacer1 = {
 					order = 3,
 					type = 'description',
-					name = '',
+					name = ' ',
 				},
 				names = {
 					name = L["Name"],
@@ -847,7 +847,7 @@ local function UpdateFilterGroup()
 								spacer1 = {
 									order = 5,
 									type = 'description',
-									name = '',
+									name = ' ',
 									width = 'full'
 								},
 								interruptible = {
@@ -4189,7 +4189,7 @@ E.Options.args.nameplate = {
 		cutawayShortcut = {
 			order = 10,
 			type = "execute",
-			name = L["Cutaway Health/Power"],
+			name = L["Cutaway Bars"],
 			buttonElvUI = true,
 			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "cutaway") end,
 			disabled = function() return not E.NamePlates.Initialized end,
@@ -4542,7 +4542,7 @@ E.Options.args.nameplate = {
 							order = 52,
 							type = "group",
 							childGroups = "tabs",
-							name = L["Size"],
+							name = L["Clickable Size"],
 							args = {
 								personal = {
 									order = 1,
@@ -4618,8 +4618,78 @@ E.Options.args.nameplate = {
 								},
 							},
 						},
-						threatGroup = {
+						cutaway = {
 							order = 53,
+							type = 'group',
+							childGroups = "tabs",
+							name = L["Cutaway Bars"],
+							args = {
+								health = {
+									order = 1,
+									type = "group",
+									guiInline = true,
+									name = L["Health"],
+									get = function(info) return E.db.nameplates.cutaway.health[info[#info]] end,
+									set = function(info, value) E.db.nameplates.cutaway.health[info[#info]] = value; NP:ConfigureAll() end,
+									args = {
+										enabled = {
+											type = 'toggle',
+											order = 1,
+											name = L["Enable"],
+										 },
+										 lengthBeforeFade = {
+											type = 'range',
+											order = 2,
+											name = L["Fade Out Delay"],
+											desc = L["How much time before the cutaway health starts to fade."],
+											min = 0.1, max = 1, step = 0.1,
+											disabled = function() return not E.db.nameplates.cutaway.health.enabled end,
+										},
+										fadeOutTime = {
+											type = 'range',
+											order = 3,
+											name = L["Fade Out"],
+											desc = L["How long the cutaway health will take to fade out."],
+											min = 0.1, max = 1, step = 0.1,
+											disabled = function() return not E.db.nameplates.cutaway.health.enabled end,
+										},
+									},
+								},
+								power = {
+									order = 2,
+									type = "group",
+									name = L["Power"],
+									guiInline = true,
+									get = function(info) return E.db.nameplates.cutaway.power[info[#info]] end,
+									set = function(info, value) E.db.nameplates.cutaway.power[info[#info]] = value; NP:ConfigureAll() end,
+									args = {
+										enabled = {
+											type = 'toggle',
+											order = 1,
+											name = L["Enable"],
+										 },
+										 lengthBeforeFade = {
+											type = 'range',
+											order = 2,
+											name = L["Fade Out Delay"],
+											desc = L["How much time before the cutaway power starts to fade."],
+											min = 0.1, max = 1, step = 0.1,
+											disabled = function() return not E.db.nameplates.cutaway.power.enabled end,
+										},
+										fadeOutTime = {
+											type = 'range',
+											order = 3,
+											name = L["Fade Out"],
+											desc = L["How long the cutaway power will take to fade out."],
+											min = 0.1, max = 1, step = 0.1,
+											disabled = function() return not E.db.nameplates.cutaway.power.enabled end,
+										},
+									},
+								},
+							},
+						},
+						threatGroup = {
+							order = 54,
 							type = "group",
 							name = L["Threat"],
 							childGroups = "tabs",
@@ -4665,76 +4735,6 @@ E.Options.args.nameplate = {
 									min = 0.5, max = 1.5, softMin = .75, softMax = 1.25, step = 0.01,
 									disabled = function() return not E.db.nameplates.threat.enable end,
 								},
-							},
-						},
-						cutaway = {
-							order = 54,
-							type = 'group',
-							childGroups = "tabs",
-							name = L["Cutaway Health/Power"],
-							args = {
-                                health = {
-                                    order = 1,
-                                    type = "group",
-                                    guiInline = true,
-                                    name = L["Health"],
-                                    get = function(info) return E.db.nameplates.cutaway.health[info[#info]] end,
-                                    set = function(info, value) E.db.nameplates.cutaway.health[info[#info]] = value; NP:ConfigureAll() end,
-                                    args = {
-								        enabled = {
-									        type = 'toggle',
-									        order = 1,
-									        name = L["Enable"],
-                                         },
-		    						     lengthBeforeFade = {
-									        type = 'range',
-									        order = 2,
-									        name = L["Fade Out Delay"],
-									        desc = L["How much time before the cutaway health starts to fade."],
-                                            min = 0.1, max = 1, step = 0.1,
-                                            disabled = function() return not E.db.nameplates.cutaway.health.enabled end,
-                                        },
-                                        fadeOutTime = {
-                                            type = 'range',
-                                            order = 3,
-                                            name = L["Fade Out"],
-                                            desc = L["How long the cutaway health will take to fade out."],
-                                            min = 0.1, max = 1, step = 0.1,
-                                            disabled = function() return not E.db.nameplates.cutaway.health.enabled end,
-                                        },
-                                    },
-                                },
-                                power = {
-                                    order = 2,
-                                    type = "group",
-                                    name = L["Power"],
-                                    guiInline = true,
-                                    get = function(info) return E.db.nameplates.cutaway.power[info[#info]] end,
-                                    set = function(info, value) E.db.nameplates.cutaway.power[info[#info]] = value; NP:ConfigureAll() end,
-                                    args = {
-								        enabled = {
-									        type = 'toggle',
-									        order = 1,
-									        name = L["Enable"],
-                                         },
-		    						     lengthBeforeFade = {
-									        type = 'range',
-									        order = 2,
-									        name = L["Fade Out Delay"],
-									        desc = L["How much time before the cutaway power starts to fade."],
-                                            min = 0.1, max = 1, step = 0.1,
-                                            disabled = function() return not E.db.nameplates.cutaway.power.enabled end,
-                                        },
-                                        fadeOutTime = {
-                                            type = 'range',
-                                            order = 3,
-                                            name = L["Fade Out"],
-                                            desc = L["How long the cutaway power will take to fade out."],
-                                            min = 0.1, max = 1, step = 0.1,
-                                            disabled = function() return not E.db.nameplates.cutaway.power.enabled end,
-                                        },
-                                    },
-                                },
 							},
 						},
 					},
@@ -5252,8 +5252,45 @@ E.Options.args.nameplate = {
 			set = function(info, value) E.db.nameplates.units.TARGET[info[#info]] = value; NP:SetCVars() NP:ConfigureAll() end,
 			disabled = function() return not E.NamePlates.Initialized end,
 			args = {
-				classBarGroup = {
+				glowStyle = {
 					order = 1,
+					type = "select",
+					customWidth = 225,
+					name = L["Target/Low Health Indicator"],
+					values = {
+						['none'] = L["NONE"],
+						['style1'] = L["Border Glow"],
+						['style2'] = L["Background Glow"],
+						['style3'] = L["Top Arrow"],
+						['style4'] = L["Side Arrows"],
+						['style5'] = L["Border Glow"].." + "..L["Top Arrow"],
+						['style6'] = L["Background Glow"].." + "..L["Top Arrow"],
+						['style7'] = L["Border Glow"].." + "..L["Side Arrows"],
+						['style8'] = L["Background Glow"].." + "..L["Side Arrows"],
+					},
+				},
+				nonTargetAlphaShortcut = {
+					order = 2,
+					type = "execute",
+					name = L["Non-Target Alpha"],
+					buttonElvUI = true,
+					func = function() ACD:SelectGroup("ElvUI", "nameplate", "filters", "actions"); selectedNameplateFilter = 'ElvUI_NonTarget'; UpdateFilterGroup() end,
+				},
+				targetScaleShortcut = {
+					order = 3,
+					type = "execute",
+					name = L["Scale"],
+					buttonElvUI = true,
+					func = function() ACD:SelectGroup("ElvUI", "nameplate", "filters", "actions"); selectedNameplateFilter = 'ElvUI_Target'; UpdateFilterGroup() end,
+				},
+				spacer1 = {
+					order = 4,
+					type = 'description',
+					name = ' ',
+					width = 'full'
+				},
+				classBarGroup = {
+					order = 10,
 					type = "group",
 					name = L["Classbar"],
 					guiInline = true,
@@ -5307,37 +5344,6 @@ E.Options.args.nameplate = {
 							hidden = function() return (E.myclass ~= 'DEATHKNIGHT') end,
 						},
 					},
-				},
-				glowStyle = {
-					order = 2,
-					type = "select",
-					customWidth = 225,
-					name = L["Target/Low Health Indicator"],
-					values = {
-						['none'] = L["NONE"],
-						['style1'] = L["Border Glow"],
-						['style2'] = L["Background Glow"],
-						['style3'] = L["Top Arrow"],
-						['style4'] = L["Side Arrows"],
-						['style5'] = L["Border Glow"].." + "..L["Top Arrow"],
-						['style6'] = L["Background Glow"].." + "..L["Top Arrow"],
-						['style7'] = L["Border Glow"].." + "..L["Side Arrows"],
-						['style8'] = L["Background Glow"].." + "..L["Side Arrows"],
-					},
-				},
-				nonTargetAlphaShortcut = {
-					order = 3,
-					type = "execute",
-					name = L["Non-Target Alpha"],
-					buttonElvUI = true,
-					func = function() ACD:SelectGroup("ElvUI", "nameplate", "filters", "actions"); selectedNameplateFilter = 'ElvUI_NonTarget'; UpdateFilterGroup() end,
-				},
-				targetScaleShortcut = {
-					order = 4,
-					type = "execute",
-					name = L["Scale"],
-					buttonElvUI = true,
-					func = function() ACD:SelectGroup("ElvUI", "nameplate", "filters", "actions"); selectedNameplateFilter = 'ElvUI_Target'; UpdateFilterGroup() end,
 				},
 			},
 		},
