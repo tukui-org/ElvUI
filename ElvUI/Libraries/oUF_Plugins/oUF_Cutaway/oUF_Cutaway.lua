@@ -36,10 +36,11 @@ local function fadeClosure(element)
 end
 
 local function Health_PreUpdate(self, unit)
-	local element = self.__owner.Cutaway.Health
-	if (not element.enabled) or element.ready or UnitIsTapDenied(unit) then return end
+	local plate = self.__owner
+	local element = plate.Cutaway.Health
+	if (not element.enabled or not plate.Health.cur) or element.ready or UnitIsTapDenied(unit) then return end
 
-	element.cur = self:GetValue() or 0
+	element.cur = plate.Health.cur
 	element:SetValue(element.cur)
 	element:SetMinMaxValues(0, UnitHealthMax(unit) or 1)
 	element.ready = true
@@ -47,9 +48,9 @@ end
 
 local function Health_PostUpdate(self, unit, cur, max)
 	local element = self.__owner.Cutaway.Health
-	if not element.ready or element.playing then return end
+	if (not element.ready or not element.cur) or element.playing then return end
 
-	if (element.cur or 0) > cur then
+	if (element.cur > cur) then
 		element:SetAlpha(1)
 
 		if not E then E = ElvUI[1] end
@@ -69,20 +70,21 @@ local function Health_PostUpdateColor(self, _, _, _, _)
 end
 
 local function Power_PreUpdate(self, unit)
-	local element = self.__owner.Cutaway.Power
-	if (not element.enabled) or element.ready then return end
+	local plate = self.__owner
+	local element = plate.Cutaway.Power
+	if (not element.enabled or not plate.Power.cur) or element.ready then return end
 
-	element.cur = self:GetValue() or 0
-	element:SetValue(element.cur)
+	element.cur = plate.Power.cur
+	element:SetValue(plate.Power.cur)
 	element:SetMinMaxValues(0, UnitPowerMax(unit) or 1)
 	element.ready = true
 end
 
 local function Power_PostUpdate(self, unit, cur, max)
 	local element = self.__owner.Cutaway.Power
-	if not element.ready or element.playing then return end
+	if (not element.ready or not element.cur) or element.playing then return end
 
-	if (element.cur or 1) > cur then
+	if element.cur > cur then
 		element:SetAlpha(1)
 
 		if not E then E = ElvUI[1] end
@@ -117,6 +119,8 @@ local function Enable(self)
 
 			element.Health.lengthBeforeFade = element.Health.lengthBeforeFade or 0.3
 			element.Health.fadeOutTime = element.Health.fadeOutTime or 0.6
+			element.Health:SetMinMaxValues(0, 1)
+			element.Health:SetValue(0)
 			element.Health:Show()
 
 			if not element.Health.hasCutawayHook then
@@ -147,6 +151,8 @@ local function Enable(self)
 
 			element.Power.lengthBeforeFade = element.Power.lengthBeforeFade or 0.3
 			element.Power.fadeOutTime = element.Power.fadeOutTime or 0.6
+			element.Power:SetMinMaxValues(0, 1)
+			element.Power:SetValue(0)
 			element.Power:Show()
 
 			if not element.Power.hasCutawayHook then

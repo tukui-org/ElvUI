@@ -586,6 +586,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP.PlateGUID[nameplate.unitGUID] = nil
 		end
 
+		nameplate.Health.cur = nil
+		nameplate.Power.cur = nil
+
 		NP:StyleFilterClearVariables(nameplate)
 	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
 		NP:SetupTarget(nameplate) -- pass it, even as nil here
