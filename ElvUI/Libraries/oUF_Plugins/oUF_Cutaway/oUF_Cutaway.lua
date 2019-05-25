@@ -47,7 +47,7 @@ local function Health_PostUpdate(self, unit, cur, max)
 	local element = self.__owner.Cutaway.Health
 	if not element.ready or element.playing then return end
 
-	if (element.cur or 0) > (cur) then
+	if (element.cur or 0) > cur then
 		element:SetAlpha(1)
 
 		if not E then E = ElvUI[1] end
@@ -79,7 +79,7 @@ local function Power_PostUpdate(self, unit, cur, max)
 	local element = self.__owner.Cutaway.Power
 	if not element.ready or element.playing then return end
 
-	if (element.cur or 1) > (cur) then
+	if (element.cur or 1) > cur then
 		element:SetAlpha(1)
 
 		if not E then E = ElvUI[1] end
