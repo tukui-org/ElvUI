@@ -249,13 +249,21 @@ end
 function NP:Construct_Cutaway(nameplate)
 	local Cutaway = CreateFrame('Frame', nameplate:GetDebugName()..'Cutaway', nameplate)
 
-	Cutaway.Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'CutawayHealth', nameplate.Health)
-	Cutaway.Health:SetStatusBarTexture(E.media.blankTex)
+    Cutaway.Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'CutawayHealth', nameplate.Health)
+    if NP.db.cutaway.health.forceBlankTexture then
+        Cutaway.Health:SetStatusBarTexture(E.media.blankTex)
+    else
+        NP.StatusBars[Cutaway.Health] = true
+    end
 	Cutaway.Health:SetFrameLevel(4)
 	Cutaway.Health:SetAllPoints()
 
-	Cutaway.Power = CreateFrame('StatusBar', nameplate:GetDebugName()..'CutawayPower', nameplate.Power)
-	Cutaway.Power:SetStatusBarTexture(E.media.blankTex)
+    Cutaway.Power = CreateFrame('StatusBar', nameplate:GetDebugName()..'CutawayPower', nameplate.Power)
+    if NP.db.cutaway.power.forceBlankTexture then
+        Cutaway.Power:SetStatusBarTexture(E.media.blankTex)
+    else
+        NP.StatusBars[Cutaway.Power] = true
+    end
 	Cutaway.Power:SetFrameLevel(4)
 	Cutaway.Power:SetAllPoints()
 

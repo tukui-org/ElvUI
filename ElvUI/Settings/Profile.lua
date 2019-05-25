@@ -476,11 +476,13 @@ P.nameplates = {
             enabled = false,
             fadeOutTime = 0.6,
             lengthBeforeFade = 0.3,
+            forceBlankTexture = true,
         },
         power = {
             enabled = false,
             fadeOutTime = 0.6,
             lengthBeforeFade = 0.3,
+            forceBlankTexture = true,
         },
     },
 	units = {
