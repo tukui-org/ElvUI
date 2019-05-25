@@ -115,7 +115,7 @@ local function Enable(self)
 
 			element.Health.lengthBeforeFade = element.Health.lengthBeforeFade or 0.3
 			element.Health.fadeOutTime = element.Health.fadeOutTime or 0.6
-			element.Power:Show()
+			element.Health:Show()
 
 			if not element.Health.hasCutawayHook then
 				if self.Health.PreUpdate then
