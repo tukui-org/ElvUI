@@ -17,15 +17,17 @@ local UnitPowerMax = UnitPowerMax
 local UnitIsTapDenied = UnitIsTapDenied
 
 local E -- holder
+local function closureFunc(self)
+	self.ready = nil
+	self.playing = nil
+end
+
 local function fadeClosure(element)
 	if not element.FadeObject then
 		element.FadeObject = {
 			finishedFuncKeep = true,
 			finishedArg1 = element,
-			finishedFunc = function(self)
-				self.ready = nil
-				self.playing = nil
-			end
+			finishedFunc = closureFunc
 		}
 	end
 
