@@ -35,7 +35,7 @@ end
 
 local function Health_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Health
-	if element.ready or (not element.enabled) or UnitIsTapDenied(unit) then return end
+	if (not element.enabled) or element.ready or UnitIsTapDenied(unit) then return end
 
 	element.cur = self:GetValue() or 0
 	element:SetValue(element.cur)
@@ -67,7 +67,7 @@ end
 
 local function Power_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Power
-	if element.ready or not element.enabled then return end
+	if (not element.enabled) or element.ready then return end
 
 	element.cur = self:GetValue() or 0
 	element:SetValue(element.cur)
