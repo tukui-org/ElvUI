@@ -487,8 +487,6 @@ function NP:ConfigureAll()
 
 	NP:Update_StatusBars()
 	NP:SetNamePlateClickThrough()
-
-	_G.NamePlateDriverFrame:UpdateNamePlateOptions()
 end
 
 function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
@@ -629,6 +627,13 @@ function NP:Initialize()
 		BlizzPlateManaBar:UnregisterAllEvents()
 	end
 
+	hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', function()
+		local Scale = E.global.general.UIScale
+		C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * Scale, NP.db.plateSize.personalHeight * Scale)
+		C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * Scale, NP.db.plateSize.enemyHeight * Scale)
+		C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * Scale, NP.db.plateSize.friendlyHeight * Scale)
+	end)
+
 	hooksecurefunc(_G.NamePlateDriverFrame, 'SetupClassNameplateBars', function(frame)
 		if not frame or frame:IsForbidden() then return end
 		if frame.classNamePlateMechanicFrame then
@@ -698,8 +703,6 @@ function NP:Initialize()
 	NP:GROUP_ROSTER_UPDATE()
 	NP:SetCVars()
 	NP:ConfigureAll()
-
-	_G.NamePlateDriverFrame:UpdateNamePlateOptions()
 end
 
 local function InitializeCallback()
