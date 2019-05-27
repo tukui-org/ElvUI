@@ -204,7 +204,7 @@ local function LoadSkin()
 	}
 
 	for _, roleButton in pairs(roleButtons) do
-		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton, true)
+		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton)
 		roleButton:DisableDrawLayer("ARTWORK")
 		roleButton:DisableDrawLayer("OVERLAY")
 
@@ -471,6 +471,11 @@ local function LoadSkin()
 	_G.LFGInvitePopup:SetTemplate("Transparent")
 	S:HandleButton(_G.LFGInvitePopupAcceptButton)
 	S:HandleButton(_G.LFGInvitePopupDeclineButton)
+
+	-- If this skins it, we must look at the function at line: 206
+	S:HandleCheckBox(_G.LFGInvitePopupRoleButtonTank.checkButton)
+	S:HandleCheckBox(_G.LFGInvitePopupRoleButtonHealer.checkButton)
+	S:HandleCheckBox(_G.LFGInvitePopupRoleButtonDPS.checkButton)
 
 	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName().."BackfillButton"])
 	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName().."NoBackfillButton"])
