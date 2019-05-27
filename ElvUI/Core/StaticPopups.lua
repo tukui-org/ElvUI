@@ -138,13 +138,6 @@ E.PopupDialogs.CLIENT_UPDATE_REQUEST = {
 	showAlert = 1,
 }
 
-E.PopupDialogs.CLIQUE_ADVERT = {
-	text = L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."],
-	button1 = YES,
-	OnAccept = E.noop,
-	showAlert = 1,
-}
-
 E.PopupDialogs.CONFIRM_LOSE_BINDING_CHANGES = {
 	text = CONFIRM_LOSE_BINDING_CHANGES,
 	button1 = OKAY,
@@ -204,31 +197,6 @@ E.PopupDialogs.UISCALE_CHANGE = {
 	OnAlt = function() E:PixelScaleChanged('UISCALE_CHANGE') end,
 	whileDead = 1,
 	hideOnEscape = false
-}
-
-E.PopupDialogs.PIXELPERFECT_CHANGED = {
-	text = L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."],
-	button1 = ACCEPT,
-	OnAccept = E.noop,
-	whileDead = 1,
-	hideOnEscape = false,
-}
-
-E.PopupDialogs.CONFIGAURA_SET = {
-	text = L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."],
-	button1 = ACCEPT,
-	OnAccept = E.noop,
-	whileDead = 1,
-	hideOnEscape = false,
-}
-
-E.PopupDialogs.FAILED_UISCALE = {
-	text = L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."],
-	button1 = ACCEPT,
-	button2 = CANCEL,
-	OnAccept = function() E.global.general.autoScale = false; ReloadUI(); end,
-	whileDead = 1,
-	hideOnEscape = false,
 }
 
 E.PopupDialogs.CONFIG_RL = {
@@ -322,16 +290,6 @@ E.PopupDialogs.RESET_NP_AF = {
 			end
 		end
 	end,
-	whileDead = 1,
-	hideOnEscape = false,
-}
-
-E.PopupDialogs.KEYBIND_MODE = {
-	text = L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."],
-	button1 = L["Save"],
-	button2 = L["Discard"],
-	OnAccept = function() AB:DeactivateBindMode(true) end,
-	OnCancel = function() AB:DeactivateBindMode(false) end,
 	whileDead = 1,
 	hideOnEscape = false,
 }
