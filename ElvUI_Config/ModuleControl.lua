@@ -145,21 +145,21 @@ local function CreateDatatbarsConfig()
 	config.args.experience = {
 		order = 2,
 		type = "toggle",
-		name = L.XPBAR_LABEL,
+		name = L["XPBAR_LABEL"],
 		get = function(info) return E.global.profileCopy.databars[info[#info]] end,
 		set = function(info, value) E.global.profileCopy.databars[info[#info]] = value; end
 	}
 	config.args.reputation = {
 		order = 3,
 		type = "toggle",
-		name = L.REPUTATION,
+		name = L["REPUTATION"],
 		get = function(info) return E.global.profileCopy.databars[info[#info]] end,
 		set = function(info, value) E.global.profileCopy.databars[info[#info]] = value; end
 	}
 	config.args.honor = {
 		order = 4,
 		type = "toggle",
-		name = L.HONOR,
+		name = L["HONOR"],
 		get = function(info) return E.global.profileCopy.databars[info[#info]] end,
 		set = function(info, value) E.global.profileCopy.databars[info[#info]] = value; end
 	}
@@ -201,7 +201,7 @@ local function CreateGeneralConfig()
 	config.args.minimap = {
 		order = 3,
 		type = "toggle",
-		name = L.MINIMAP_LABEL,
+		name = L["MINIMAP_LABEL"],
 		get = function(info) return E.global.profileCopy.general[info[#info]] end,
 		set = function(info, value) E.global.profileCopy.general[info[#info]] = value; end
 	}
@@ -333,7 +333,7 @@ local function CreateUnitframesConfig()
 		order = 3,
 		type = "group",
 		guiInline = true,
-		name = L.COLORS,
+		name = L["COLORS"],
 		get = function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end,
 		set = function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end,
 		args = {
@@ -415,7 +415,7 @@ local function CreateUnitframesConfig()
 			["pet"] = {
 				order = 7,
 				type = "toggle",
-				name = L.PET,
+				name = L["PET"],
 			},
 			["pettarget"] = {
 				order = 8,
@@ -435,7 +435,7 @@ local function CreateUnitframesConfig()
 			["party"] = {
 				order = 11,
 				type = "toggle",
-				name = L.PARTY,
+				name = L["PARTY"],
 			},
 			["raid"] = {
 				order = 12,
@@ -455,7 +455,7 @@ local function CreateUnitframesConfig()
 			["tank"] = {
 				order = 15,
 				type = "toggle",
-				name = L.TANK,
+				name = L["TANK"],
 			},
 			["assist"] = {
 				order = 16,

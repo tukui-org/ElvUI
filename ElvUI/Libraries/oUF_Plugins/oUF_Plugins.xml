@@ -6,4 +6,5 @@
 	<Script file="oUF_Trinkets\oUF_Trinkets.lua"/>
 	<Script file="oUF_Fader\oUF_Fader.lua"/>
 	<Script file='oUF_PVPSpecIcons\oUF_PVPSpecIcons.lua'/>
+    <Script file="oUF_Cutaway\oUF_Cutaway.lua"/>
 </Ui>

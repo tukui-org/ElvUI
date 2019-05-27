@@ -6,7 +6,7 @@ Engine[2] = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
 
 local C, L = Engine[1], Engine[2]
 
-C.Values = { FontFlags = { ['NONE'] = L.NONE, ['OUTLINE'] = 'OUTLINE', ['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE', ['THICKOUTLINE'] = 'THICKOUTLINE' } }
+C.Values = { FontFlags = { ['NONE'] = L["NONE"], ['OUTLINE'] = 'OUTLINE', ['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE', ['THICKOUTLINE'] = 'THICKOUTLINE' } }
 
 local D = E:GetModule('Distributor')
 local format = format

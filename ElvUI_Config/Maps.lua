@@ -16,12 +16,12 @@ E.Options.args.maps = {
 		worldMap = {
 			order = 1,
 			type = "group",
-			name = L.WORLD_MAP,
+			name = L["WORLD_MAP"],
 			args = {
 				header = {
 					order = 0,
 					type = "header",
-					name = L.WORLD_MAP,
+					name = L["WORLD_MAP"],
 				},
 				generalGroup = {
 					order = 1,
@@ -54,7 +54,7 @@ E.Options.args.maps = {
 						fadeMapWhenMoving = {
 							order = 4,
 							type = "toggle",
-							name = L.MAP_FADE_TEXT,
+							name = L["MAP_FADE_TEXT"],
 							get = function(info) return E.global.general.fadeMapWhenMoving end,
 							set = function(info, value)
 								E.global.general.fadeMapWhenMoving = value;
@@ -141,14 +141,14 @@ E.Options.args.maps = {
 		minimap = {
 			order = 2,
 			type = "group",
-			name = L.MINIMAP_LABEL,
+			name = L["MINIMAP_LABEL"],
 			get = function(info) return E.db.general.minimap[info[#info]] end,
 			childGroups = "tab",
 			args = {
 				header = {
 					order = 0,
 					type = "header",
-					name = L.MINIMAP_LABEL,
+					name = L["MINIMAP_LABEL"],
 				},
 				generalGroup = {
 					order = 1,
@@ -207,7 +207,7 @@ E.Options.args.maps = {
 						locationFontSize = {
 							order = 3,
 							type = "range",
-							name = L.FONT_SIZE,
+							name = L["FONT_SIZE"],
 							min = 6, max = 36, step = 1,
 							set = function(info, value) E.db.general.minimap.locationFontSize = value; MM:Update_ZoneText() end,
 							disabled = function() return not E.private.general.minimap.enable end,
@@ -254,7 +254,7 @@ E.Options.args.maps = {
 						classHall = {
 							order = 1,
 							type = "group",
-							name = L.GARRISON_LANDING_PAGE_TITLE,
+							name = L["GARRISON_LANDING_PAGE_TITLE"],
 							get = function(info) return E.db.general.minimap.icons.classHall[info[#info]] end,
 							set = function(info, value) E.db.general.minimap.icons.classHall[info[#info]] = value; MM:UpdateSettings() end,
 							args = {
@@ -375,7 +375,7 @@ E.Options.args.maps = {
 						mail = {
 							order = 3,
 							type = "group",
-							name = L.MAIL_LABEL,
+							name = L["MAIL_LABEL"],
 							get = function(info) return E.db.general.minimap.icons.mail[info[#info]] end,
 							set = function(info, value) E.db.general.minimap.icons.mail[info[#info]] = value; MM:UpdateSettings() end,
 							args = {
@@ -513,7 +513,7 @@ E.Options.args.maps = {
 						challengeMode = {
 							order = 6,
 							type = "group",
-							name = L.CHALLENGE_MODE,
+							name = L["CHALLENGE_MODE"],
 							get = function(info) return E.db.general.minimap.icons.challengeMode[info[#info]] end,
 							set = function(info, value) E.db.general.minimap.icons.challengeMode[info[#info]] = value; MM:UpdateSettings() end,
 							args = {

@@ -316,9 +316,6 @@ P.bags = {
 P.nameplates = {
 	smoothbars = false,
 	clampToScreen = false,
-	cutawayHealth = false,
-	cutawayHealthFadeOutTime = 0.6,
-	cutawayHealthLength = 0.3,
 	clickThrough = {
 		personal = false,
 		friendly = false,
@@ -458,12 +455,36 @@ P.nameplates = {
 		indicator = false,
 	},
 	visibility = {
-		nameplateShowAll = true,
-		UnitNameNPC = true,
-		UnitNameFriendlySpecialNPCName = true,
-		UnitNameHostleNPC = false,
-		UnitNameInteractiveNPC = true,
-	},
+		showAll = true,
+		enemy = {
+			guardians = false,
+			minions = false,
+			minus = true,
+			pets = false,
+			totems = false,
+		},
+		friendly = {
+			guardians = false,
+			minions = false,
+			npcs = true,
+			pets = false,
+			totems = false,
+		},
+    },
+    cutaway =  {
+        health = {
+            enabled = false,
+            fadeOutTime = 0.6,
+            lengthBeforeFade = 0.3,
+            forceBlankTexture = true,
+        },
+        power = {
+            enabled = false,
+            fadeOutTime = 0.6,
+            lengthBeforeFade = 0.3,
+            forceBlankTexture = true,
+        },
+    },
 	units = {
 		PLAYER = {
 			enable = false,
@@ -707,7 +728,6 @@ P.nameplates = {
 				xOffset = 3,
 				yOffset = -5,
 			},
-			minions = false,
 			markHealers = true,
 			health = {
 				enable = true,
@@ -921,7 +941,6 @@ P.nameplates = {
 				xOffset = 3,
 				yOffset = -5,
 			},
-			minions = false,
 			markHealers = true,
 			health = {
 				enable = true,
@@ -1352,7 +1371,6 @@ P.nameplates = {
 				xOffset = 3,
 				yOffset = -5,
 			},
-			minors = true,
 			health = {
 				enable = true,
 				height = 10,
@@ -1845,6 +1863,7 @@ P.unitframe = {
 		custompowerbackdrop = false,
 		customcastbarbackdrop = false,
 		customaurabarbackdrop = false,
+		customclasspowerbackdrop = false,
 		useDeadBackdrop = false,
 		classbackdrop = false,
 		healthMultiplier = 0,
@@ -1855,9 +1874,11 @@ P.unitframe = {
 		transparentPower = false,
 		transparentCastbar = false,
 		transparentAurabars = false,
+		transparentClasspower = false,
 		invertCastBar = false,
 		invertAurabars = false,
 		invertPower = false,
+		invertClasspower = false,
 		castColor = { r = .31, g = .31, b = .31 },
 		castNoInterrupt = { r = 0.78, g = 0.25, b = 0.25 },
 		castClassColor = false,
@@ -1866,6 +1887,7 @@ P.unitframe = {
 		health_backdrop = { r = .8, g = .01, b = .01 },
 		health_backdrop_dead = { r = .8, g = .01, b = .01 },
 		castbar_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
+		classpower_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
 		aurabar_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
 		power_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
 		tapped = { r = 0.55, g = 0.57, b = 0.61},
@@ -2084,6 +2106,7 @@ P.unitframe = {
 				enable = false,
 				width = 45,
 				overlay = false,
+				fullOverlay = false,
 				camDistanceScale = 2,
 				rotation = 0,
 				style = '3D',

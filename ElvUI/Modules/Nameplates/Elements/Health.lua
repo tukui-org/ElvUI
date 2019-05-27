@@ -63,9 +63,9 @@ function NP:Health_UpdateColor(event, unit)
 		if element.bg then element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier) end
 	end
 
-	if(element.PostUpdateColor) then
-		element:PostUpdateColor(unit, r, g, b)
-	end
+    if(element.PostUpdateColor) then
+        element:PostUpdateColor(unit, r, g, b)
+    end
 end
 
 function NP:Construct_Health(nameplate)

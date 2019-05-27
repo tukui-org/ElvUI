@@ -281,16 +281,18 @@ function UF:ColorizeAuraBars()
 				UF:ToggleTransparentStatusBar(UF.db.colors.transparentAurabars, sb, sb.bg, nil, UF.db.colors.invertAurabars)
 			else
 				local sbTexture = sb:GetStatusBarTexture()
-				if not sb.bg:GetTexture() then
-					UF:Update_StatusBar(sb.bg, sbTexture:GetTexture())
-				end
+				if not sb.bg:GetTexture() then UF:Update_StatusBar(sb.bg, sbTexture:GetTexture()) end
 
 				UF:SetStatusBarBackdropPoints(sb, sbTexture, sb.bg)
 			end
 		end
 
 		if colors then
-			UF.UpdateBackdropTextureColor(sb, colors.r, colors.g, colors.b)
+			sb:SetStatusBarColor(colors.r, colors.g, colors.b)
+
+			if not sb.hookedColor then
+				UF.UpdateBackdropTextureColor(sb, colors.r, colors.g, colors.b)
+			end
 		else
 			local r, g, b = sb:GetStatusBarColor()
 			UF.UpdateBackdropTextureColor(sb, r, g, b)

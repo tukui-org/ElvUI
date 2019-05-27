@@ -1,19 +1,26 @@
 ### Version 11.12 [  ]
 
 **New Additions:**  
-Added options to invert the CastBar, AuraBars, and Power colors on UnitFrame status bars when in transparent mode; as well as added custom backdrop options for these status bars.  
+Added options to invert the CastBar, AuraBars, and Power colors on UnitFrames status bars when in transparent mode; as well as added custom backdrop options for these status bars.  
+Added custom backdrop for ClassBars on UnitFrames.  
 Added nameplate friendly npc option "always show" this is used to toggle npc nameplates using blizzards setting; so that they can go into blizzard name-only mode.  
 
 **Bug Fixes:**  
-Fixed attempt to index field 'CompactUnitFrameProfilesNewProfileDialog'. (#1314)  
-Fixed double player nameplate when using the config (again). (#1316)  
+Fixed Style Filter Class Trigger. (#1310)  
+Fixed error: attempt to index field 'CompactUnitFrameProfilesNewProfileDialog'. (#1314)  
+Fixed double player nameplate when changing specific settings in the config. (#1316)  
 Fixed player nameplate not fading in when hovered.  
+Fixed the portrait and health backdrop bleeding on UnitFrames health when they fade on range, specifically for BuG.  
+Fixed StyleFilter error line 305: attempt to index locale 'auras' (a nil value).  
 
 **Misc. Changes:**  
+Added an option to allow the portrait on UnitFrames to truely overlay the health, including the backdrop.  
 Removed the Nameplate Name Visibilty settings because this just caused some confusion.  
 Disabled Boss Style Filter again by default. (Sorry for this everyone <3)  
-Fixed Style Filter Class Trigger. (#1310)  
+Tweaked the default ElvUI_NonTarget StyleFilter, so that it will not fade out the player plate when targeting something.  
+Various minor performance improvements.  
 
+___
 ### Version 11.11 [ May 14th 2019 ]
 
 **New Additions:**  
