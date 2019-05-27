@@ -487,6 +487,8 @@ function NP:ConfigureAll()
 
 	NP:Update_StatusBars()
 	NP:SetNamePlateClickThrough()
+
+	_G.NamePlateDriverFrame:UpdateNamePlateOptions()
 end
 
 function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
@@ -696,6 +698,8 @@ function NP:Initialize()
 	NP:GROUP_ROSTER_UPDATE()
 	NP:SetCVars()
 	NP:ConfigureAll()
+
+	_G.NamePlateDriverFrame:UpdateNamePlateOptions()
 end
 
 local function InitializeCallback()
