@@ -6,6 +6,7 @@ Added custom backdrop for ClassBars on UnitFrames.
 Added nameplate friendly npc option "always show" this is used to toggle npc nameplates using blizzards setting; so that they can go into blizzard name-only mode.  
 
 **Bug Fixes:**  
+Fixed Style Filter Class Trigger. (#1310)  
 Fixed error: attempt to index field 'CompactUnitFrameProfilesNewProfileDialog'. (#1314)  
 Fixed double player nameplate when changing specific settings in the config. (#1316)  
 Fixed player nameplate not fading in when hovered.  
@@ -17,8 +18,9 @@ Added an option to allow the portrait on UnitFrames to truely overlay the health
 Removed the Nameplate Name Visibilty settings because this just caused some confusion.  
 Disabled Boss Style Filter again by default. (Sorry for this everyone <3)  
 Tweaked the default ElvUI_NonTarget StyleFilter, so that it will not fade out the player plate when targeting something.  
-Fixed Style Filter Class Trigger. (#1310)  
+Various minor performance improvements.  
 
+___
 ### Version 11.11 [ May 14th 2019 ]
 
 **New Additions:**  
