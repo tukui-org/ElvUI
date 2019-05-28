@@ -61,7 +61,7 @@ function AB:HandleMicroButton(button)
 	local disabled = button:GetDisabledTexture()
 
 	local f = CreateFrame("Frame", nil, button)
-	f:SetFrameLevel(400)
+	f:SetFrameLevel(1)
 	f:SetFrameStrata("BACKGROUND")
 	f:SetTemplate(nil, true)
 	f:SetOutside(button)
