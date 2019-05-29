@@ -16,7 +16,7 @@ MC.InternalOptions = {
 
 --Default template for a config group for a single module.
 --Contains header, general group toggle (shown only if the setting actually exists) and imports button.
---Usage as seen in ElvUI_Config\modulecopy.lua
+--Usage as seen in ElvUI_OptionsUI\modulecopy.lua
 function MC:CreateModuleConfigGroup(Name, section, pluginSection)
 	local config = {
 		order = 10,

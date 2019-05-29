@@ -780,6 +780,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[272388] = Defaults(), -- Shadow Barrage
 		[271640] = Defaults(), -- Dark Revelation
 		[268796] = Defaults(), -- Impaling Spear
+		[268419] = Defaults(), -- Gale Slash
 
 		--Motherlode
 		[263074] = Defaults(), -- Festering Bite

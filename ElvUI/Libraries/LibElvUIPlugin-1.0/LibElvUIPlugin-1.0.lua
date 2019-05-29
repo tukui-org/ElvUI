@@ -1,4 +1,4 @@
-local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 24
+local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 25
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -70,7 +70,7 @@ end
 -- Plugin table format:
 --   { name (string) - The name of the plugin,
 --     version (string) - The version of the plugin,
---     optionCallback (string) - The callback to call when ElvUI_Config is loaded
+--     optionCallback (string) - The callback to call when ElvUI_OptionsUI is loaded
 --   }
 --
 --
@@ -100,7 +100,7 @@ function lib:RegisterPlugin(name, callback, isLib)
 		lib.registeredPrefix = true
 	end
 
-	local loaded = IsAddOnLoaded('ElvUI_Config')
+	local loaded = IsAddOnLoaded('ElvUI_OptionsUI')
 	if not loaded then
 		lib.CFFrame:RegisterEvent('ADDON_LOADED')
 	elseif loaded then
@@ -131,8 +131,8 @@ function lib:DelayedSendVersionCheck(delay)
 	end
 end
 
-function lib:ConfigLoaded(_, addon)
-	if addon == 'ElvUI_Config' then
+function lib:OptionsUILoaded(_, addon)
+	if addon == 'ElvUI_OptionsUI' then
 		for _, plugin in pairs(lib.plugins) do
 			if plugin.callback then
 				plugin.callback()
@@ -277,6 +277,6 @@ lib.VCFrame = CreateFrame('Frame')
 lib.VCFrame:SetScript('OnEvent', lib.VersionCheck)
 
 lib.CFFrame = CreateFrame('Frame')
-lib.CFFrame:SetScript('OnEvent', lib.ConfigLoaded)
+lib.CFFrame:SetScript('OnEvent', lib.OptionsUILoaded)
 
 lib:RegisterPlugin(MAJOR, lib.GetPluginOptions)
