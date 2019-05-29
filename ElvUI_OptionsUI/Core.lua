@@ -156,7 +156,8 @@ local DEVELOPERS = {
 	"Nightcracker",
 	"Omega1970",
 	"Hydrazine",
-	"Blazeflack",
+    "Blazeflack",
+    "NihilisticPandemonium",
 	"|cffff7d0aMerathilis|r",
 	"|cFF8866ccSimpy|r",
 	"|cFF0070DEAzilroka|r",
@@ -429,7 +430,7 @@ local function ExportImport_Open(mode)
 	Label1:SetText('')
 	Label2:SetText('')
 
-	--Close ElvUI Config
+	--Close ElvUI OptionsUI
 	E.Libs.AceConfigDialog:Close("ElvUI")
 
 	GameTooltip_Hide() --The tooltip from the Export/Import button stays on screen, so hide it
@@ -512,3 +513,7 @@ E.Options.args.profiles.plugins.ElvUI = {
 		func = function() ExportImport_Open("import") end,
 	},
 }
+
+if GetAddOnEnableState(nil, "ElvUI_Config") ~= 0 then
+    E:StaticPopup_Show("ELVUI_CONFIG_FOUND")
+end

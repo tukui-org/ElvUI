@@ -256,7 +256,7 @@ E.Options.args.general = {
 							order = 7,
 							type = 'toggle',
 							name = L["Replace Blizzard Fonts"],
-							desc = L["Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI config. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default."],
+							desc = L["Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI Options. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default."],
 							get = function(info) return E.private.general[info[#info]] end,
 							set = function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
 						},
