@@ -572,6 +572,14 @@ function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, forceSaturation)
 		hooksecurefunc(frame, "SetHighlightTexture", function(checkbox, texPath)
 			if texPath ~= "" then checkbox:SetHighlightTexture("") end
 		end)
+		hooksecurefunc(frame, "SetCheckedTexture", function(checkbox, texPath)
+			if texPath == E.Media.Textures.Melli or texPath == "Interface\\Buttons\\UI-CheckBox-Check" then return end
+			if E.private.skins.checkBoxSkin then
+				checkbox:SetCheckedTexture(E.Media.Textures.Melli)
+			else
+				checkbox:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
+			end
+		end)
 	end
 
 	frame.isSkinned = true
