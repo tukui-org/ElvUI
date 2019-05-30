@@ -44,6 +44,19 @@ function UF:Construct_Debuffs(frame)
 	return debuffs
 end
 
+local function OnClick(btn)
+	local mod = E.db.unitframe.auraBlacklistModifier
+	if mod == "NONE" or not ((mod == "SHIFT" and IsShiftKeyDown()) or (mod == "ALT" and IsAltKeyDown()) or (mod == "CTRL" and IsControlKeyDown())) then return end
+	local auraName = btn.name
+
+	if auraName then
+		E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
+		E.global.unitframe.aurafilters.Blacklist.spells[btn.spellID] = { enable = true, priority = 0 }
+
+		UF:Update_AllFrames()
+	end
+end
+
 function UF:Construct_AuraIcon(button)
 	local offset = UF.thinBorders and E.mult or E.Border
 	button:SetTemplate(nil, nil, nil, UF.thinBorders, true)
@@ -63,17 +76,7 @@ function UF:Construct_AuraIcon(button)
 	button.stealable:SetTexture()
 
 	button:RegisterForClicks('RightButtonUp')
-	button:SetScript('OnClick', function(btn)
-		if E.db.unitframe.auraBlacklistModifier == "NONE" or not ((E.db.unitframe.auraBlacklistModifier == "SHIFT" and IsShiftKeyDown()) or (E.db.unitframe.auraBlacklistModifier == "ALT" and IsAltKeyDown()) or (E.db.unitframe.auraBlacklistModifier == "CTRL" and IsControlKeyDown())) then return; end
-		local auraName = btn.name
-
-		if auraName then
-			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
-			E.global.unitframe.aurafilters.Blacklist.spells[btn.spellID] = { enable = true, priority = 0 }
-
-			UF:Update_AllFrames()
-		end
-	end)
+	button:SetScript('OnClick', OnClick)
 
 	button.cd.CooldownOverride = 'unitframe'
 	E:RegisterCooldown(button.cd)
