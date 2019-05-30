@@ -21,6 +21,7 @@ Fixed error - StyleFilter 1071: attempt to index field 'cooldowns' (a nil value)
 Fixed error - Nameplates 627: Attempt to access forbidden object from code tainted by an AddOn.  
 Fixed bind mode for extra action button.  
 Fixed skin for invite role check boxes.  
+Fixed Nameplates in stacking mode on initial login.  
 
 **Misc. Changes:**  
 Added an option to allow the portrait on UnitFrames to truely overlay the health, including the backdrop.  
