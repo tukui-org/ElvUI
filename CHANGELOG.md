@@ -9,6 +9,7 @@ Added custom backdrop for ClassBars on UnitFrames.
 Added nameplate friendly npc option "always show" this is used to toggle npc nameplates using blizzards setting; so that they can go into blizzard name-only mode.  
 Added Glimmer of Light to the Paladin BuffIndicator.  
 Addeed Gale Slash to RaidDebuffs.  
+Added new Tags, which allows transliteration. E.g. 'name:medium:translit'. For more tags, visit our Custom Tag Guide on our forum.  
 
 **Bug Fixes:**  
 Fixed Style Filter Class Trigger. (#1310)  
