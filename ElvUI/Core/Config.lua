@@ -16,8 +16,7 @@ local EditBox_ClearFocus = EditBox_ClearFocus
 local RESET = RESET
 -- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
 
-local grid
-local selectedValue = 'ALL'
+local selectedValue, grid = 'ALL'
 
 E.ConfigModeLayouts = {
 	'ALL',

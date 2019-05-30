@@ -37,13 +37,13 @@ end
 
 function E:LuaError(msg)
 	msg = lower(msg)
-	if (msg == "on") then
+	if msg == "on" then
 		DisableAllAddOns()
 		EnableAddOn("ElvUI")
 		EnableAddOn("ElvUI_OptionsUI")
 		SetCVar("scriptErrors", 1)
 		ReloadUI()
-	elseif (msg == "off") then
+	elseif msg == "off" then
 		SetCVar("scriptErrors", 0)
 		E:Print("Lua errors off.")
 	else
@@ -73,6 +73,8 @@ function E:DelayScriptCall(msg)
 	end
 end
 
+-- make this a locale later?
+local MassKickMessage = "Guild Cleanup Results: Removed all guild members below rank %s, that have a minimal level of %s, and have not been online for at least: %s days."
 function E:MassGuildKick(msg)
 	local minLevel, minDays, minRankIndex = split(",", msg)
 	minRankIndex = tonumber(minRankIndex)
@@ -103,24 +105,14 @@ function E:MassGuildKick(msg)
 
 		if not connected then
 			local years, months, days = GetGuildRosterLastOnline(i)
-			if
-				days ~= nil and ((years > 0 or months > 0 or days >= minDays) and rankIndex >= minRankIndex) and
-					note ~= nil and
-					officerNote ~= nil and
-					(level <= minLevelx)
-			then
+			if days ~= nil and ((years > 0 or months > 0 or days >= minDays) and rankIndex >= minRankIndex)
+			and note ~= nil and officerNote ~= nil and (level <= minLevelx) then
 				GuildUninvite(name)
 			end
 		end
 	end
 
-	SendChatMessage(
-		"Guild Cleanup Results: Removed all guild members below rank " ..
-			GuildControlGetRankName(minRankIndex) ..
-				", that have a minimal level of " ..
-					minLevel .. ", and have not been online for at least: " .. minDays .. " days.",
-		"GUILD"
-	)
+	SendChatMessage(format(MassKickMessage, GuildControlGetRankName(minRankIndex), minLevel, minDays), "GUILD")
 end
 
 local num_frames = 0
@@ -131,16 +123,14 @@ local f = CreateFrame("Frame")
 f:Hide()
 f:SetScript("OnUpdate", OnUpdate)
 
-local toggleMode, debugTimer = false, 0
+local toggleMode, debugTimer, cpuImpactMessage = false, 0, "Consumed %sms per frame. Each frame took %sms to render."
 function E:GetCPUImpact()
 	if not GetCVarBool("scriptProfile") then
-		E:Print(
-			"For `/cpuimpact` to work, you need to enable script profiling via: `/console scriptProfile 1` then reload. Disable after testing by setting it back to 0."
-		)
+		E:Print("For `/cpuimpact` to work, you need to enable script profiling via: `/console scriptProfile 1` then reload. Disable after testing by setting it back to 0.")
 		return
 	end
 
-	if (not toggleMode) then
+	if not toggleMode then
 		ResetCPUUsage()
 		toggleMode, num_frames, debugTimer = true, 0, debugprofilestop()
 		self:Print("CPU Impact being calculated, type /cpuimpact to get results when you are ready.")
@@ -153,12 +143,7 @@ function E:GetCPUImpact()
 		local per, passed =
 			((num_frames == 0 and 0) or (GetAddOnCPUUsage("ElvUI") / num_frames)),
 			((num_frames == 0 and 0) or (ms_passed / num_frames))
-		self:Print(
-			"Consumed " ..
-				(per and per > 0 and format("%.3f", per) or 0) ..
-					"ms per frame. Each frame took " ..
-						(passed and passed > 0 and format("%.3f", passed) or 0) .. "ms to render."
-		)
+		self:Print(format(cpuImpactMessage, per and per > 0 and format("%.3f", per) or 0, passed and passed > 0 and format("%.3f", passed) or 0))
 		toggleMode = false
 	end
 end

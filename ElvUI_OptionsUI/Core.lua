@@ -203,37 +203,25 @@ local TESTERS = {
 	"Catok"
 }
 
-sort(
-	DONATORS,
-	function(a, b)
-		return a < b
-	end
-) --Alphabetize
-for _, donatorName in pairs(DONATORS) do
-	tinsert(E.CreditsList, donatorName)
-	DONATOR_STRING = DONATOR_STRING .. LINE_BREAK .. donatorName
+local function SortList(a, b)
+	return a < b
 end
 
-sort(
-	DEVELOPERS,
-	function(a, b)
-		return a < b
-	end
-) --Alphabetize
-for _, devName in pairs(DEVELOPERS) do
-	tinsert(E.CreditsList, devName)
-	DEVELOPER_STRING = DEVELOPER_STRING .. LINE_BREAK .. devName
-end
+sort(DONATORS, SortList)
+sort(DEVELOPERS, SortList)
+sort(TESTERS, SortList)
 
-sort(
-	TESTERS,
-	function(a, b)
-		return a < b
-	end
-) --Alphabetize
-for _, testerName in pairs(TESTERS) do
-	tinsert(E.CreditsList, testerName)
-	TESTER_STRING = TESTER_STRING .. LINE_BREAK .. testerName
+for _, name in pairs(DONATORS) do
+	tinsert(E.CreditsList, name)
+	DONATOR_STRING = DONATOR_STRING .. LINE_BREAK .. name
+end
+for _, name in pairs(DEVELOPERS) do
+	tinsert(E.CreditsList, name)
+	DEVELOPER_STRING = DEVELOPER_STRING .. LINE_BREAK .. name
+end
+for _, name in pairs(TESTERS) do
+	tinsert(E.CreditsList, name)
+	TESTER_STRING = TESTER_STRING .. LINE_BREAK .. name
 end
 
 E.Options.args.credits = {
@@ -244,11 +232,11 @@ E.Options.args.credits = {
 		text = {
 			order = 1,
 			type = "description",
-			name = L["ELVUI_CREDITS"] ..
-				"\n\n" ..
-					L["Coding:"] ..
-						DEVELOPER_STRING ..
-							"\n\n" .. L["Testing:"] .. TESTER_STRING .. "\n\n" .. L["Donations:"] .. DONATOR_STRING
+			name =
+				L["ELVUI_CREDITS"] .. "\n\n" ..
+				L["Coding:"] .. DEVELOPER_STRING .. "\n\n" ..
+				L["Testing:"] .. TESTER_STRING .. "\n\n" ..
+				L["Donations:"] .. DONATOR_STRING
 		}
 	}
 }
@@ -526,13 +514,12 @@ E.Options.args.profiles.plugins.ElvUI = {
 		type = "execute",
 		order = 91,
 		func = function()
-			if
-				not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or
-					UnitIsUnit("player", "target")
-			then
+			if not UnitExists("target") or not UnitIsPlayer("target")
+			or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
 				E:Print(L["You must be targeting a player."])
 				return
 			end
+
 			local name, server = UnitName("target")
 			if name and (not server or server == "") then
 				D:Distribute(name)
@@ -547,10 +534,8 @@ E.Options.args.profiles.plugins.ElvUI = {
 		type = "execute",
 		order = 92,
 		func = function()
-			if
-				not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or
-					UnitIsUnit("player", "target")
-			then
+			if not UnitExists("target") or not UnitIsPlayer("target")
+			or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
 				E:Print(L["You must be targeting a player."])
 				return
 			end
