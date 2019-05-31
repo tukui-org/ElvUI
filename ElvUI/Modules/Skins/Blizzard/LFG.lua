@@ -64,12 +64,6 @@ local function SkinItemButton(parentFrame, _, index)
 		item.Icon:SetParent(item.backdrop)
 		item.Icon:SetInside()
 
-		local r, g, b, a = item.IconBorder:GetVertexColor()
-		if r then
-			item.IconBorder:SetTexture()
-			item.backdrop:SetBackdropBorderColor(r, g, b, a)
-		end
-
 		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
 			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 			self:SetTexture()
@@ -77,6 +71,12 @@ local function SkinItemButton(parentFrame, _, index)
 		hooksecurefunc(item.IconBorder, "Hide", function(self)
 			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
+
+		local r, g, b, a = item.IconBorder:GetVertexColor()
+		if r then
+			item.IconBorder:SetTexture()
+			item.backdrop:SetBackdropBorderColor(r, g, b, a)
+		end
 
 		item.Count:SetDrawLayer("OVERLAY")
 		item.Count:SetParent(item.backdrop)
