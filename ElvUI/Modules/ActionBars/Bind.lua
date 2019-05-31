@@ -242,7 +242,9 @@ function AB:BindUpdate(button, spellmacro)
 			bind.button.bindstring = bind.button.keyBoundTarget
 		else
 			local modact = 1+(bind.button.action-1)%12;
-			if bind.button.action < 25 or bind.button.action > 72 then
+			if bind.button.name == 'ExtraActionButton1' then
+				bind.button.bindstring = "EXTRAACTIONBUTTON1";
+			elseif bind.button.action < 25 or bind.button.action > 72 then
 				bind.button.bindstring = "ACTIONBUTTON"..modact;
 			elseif bind.button.action < 73 and bind.button.action > 60 then
 				bind.button.bindstring = "MULTIACTIONBAR1BUTTON"..modact;

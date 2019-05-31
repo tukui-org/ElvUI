@@ -4,7 +4,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
 local select, tonumber, type, unpack = select, tonumber, type, unpack
 local atan2, modf, ceil, floor, abs, sqrt, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, mod
-local format, strfind, strsub, strupper, gsub, gmatch, utf8sub = format, strfind, strsub, strupper, gsub, gmatch, string.utf8sub
+local format, strsub, strupper, gsub, gmatch, utf8sub = format, strsub, strupper, gsub, gmatch, string.utf8sub
+local tostring, pairs = tostring, pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
@@ -22,6 +23,15 @@ E.ShortPrefixStyles = {
 	["METRIC"] = {{1e12,"T"}, {1e9,"G"}, {1e6,"M"}, {1e3,"k"}}
 }
 
+local gftStyles = {
+	['CURRENT'] = '%s',
+	['CURRENT_MAX'] = '%s - %s',
+	['CURRENT_PERCENT'] = '%s - %.1f%%',
+	['CURRENT_MAX_PERCENT'] = '%s - %s | %.1f%%',
+	['PERCENT'] = '%.1f%%',
+	['DEFICIT'] = '-%s',
+}
+
 function E:BuildPrefixValues()
 	if next(E.ShortPrefixValues) then wipe(E.ShortPrefixValues) end
 
@@ -30,6 +40,11 @@ function E:BuildPrefixValues()
 
 	for _, style in ipairs(E.ShortPrefixValues) do
 		style[2] = E.ShortValueDec..style[2]
+	end
+
+	local gftDec = tostring(E.db.general.decimalLength or 1)
+	for style, str in pairs(gftStyles) do
+		gftStyles[style] = gsub(str,"%d",gftDec)
 	end
 end
 
@@ -165,28 +180,10 @@ function E:GetXYOffset(position, override)
 	end
 end
 
-local gftStyles = {
-	-- keep percents in this table with `PERCENT` in the key, and `%.1f%%` in the value somewhere.
-	-- we use these two things to follow our setting for decimal length. they need to be EXACT.
-	['CURRENT'] = '%s',
-	['CURRENT_MAX'] = '%s - %s',
-	['CURRENT_PERCENT'] = '%s - %.1f%%',
-	['CURRENT_MAX_PERCENT'] = '%s - %s | %.1f%%',
-	['PERCENT'] = '%.1f%%',
-	['DEFICIT'] = '-%s'
-}
-
 function E:GetFormattedText(style, min, max)
 	if max == 0 then max = 1 end
 
-	local gftUseStyle
-	local gftDec = E.db.general.decimalLength or 1
-	if (gftDec ~= 1) and strfind(style, 'PERCENT') then
-		gftUseStyle = gsub(gftStyles[style], '%%%.1f%%%%', '%%.'..gftDec..'f%%%%')
-	else
-		gftUseStyle = gftStyles[style]
-	end
-
+	local gftUseStyle = gftStyles[style]
 	if style == 'DEFICIT' then
 		local gftDeficit = max - min
 		return ((gftDeficit > 0) and format(gftUseStyle, E:ShortValue(gftDeficit))) or ''
@@ -245,45 +242,44 @@ function E:AbbreviateString(str, allUpper)
 	return newString
 end
 
+function E:WaitFunc(elapse)
+	local i = 1
+	while i <= #E.WaitTable do
+		local data = E.WaitTable[i]
+		if data[1] > elapse then
+			data[1], i = data[1] - elapse, i + 1
+		else
+			tremove(E.WaitTable, i)
+			data[2](unpack(data[3]))
+
+			if #E.WaitTable == 0 then
+				E.WaitFrame:Hide()
+			end
+		end
+	end
+end
+
+E.WaitTable = {}
+E.WaitFrame = CreateFrame("Frame", "ElvUI_WaitFrame", _G.UIParent)
+E.WaitFrame:SetScript("OnUpdate", E.WaitFunc)
+
 --Add time before calling a function
-local waitTable = {}
-local waitFrame
 function E:Delay(delay, func, ...)
-	if (type(delay) ~= "number") or (type(func) ~= "function") then
+	if type(delay) ~= "number" or type(func) ~= "function" then
 		return false
 	end
 
-	if delay < 0.01 then
-		delay = 0.01 -- Restrict to the lowest time that the C_Timer API allows us
+	-- Restrict to the lowest time that the C_Timer API allows us
+	if delay < 0.01 then delay = 0.01 end
+
+	if select('#', ...) <= 0 then
+		C_Timer_After(delay, func)
+	else
+		tinsert(E.WaitTable,{delay,func,{...}})
+		E.WaitFrame:Show()
 	end
 
-	local extend = {...}
-	if not next(extend) then
-		C_Timer_After(delay, func)
-		return true
-	else
-		if waitFrame == nil then
-			waitFrame = CreateFrame("Frame","WaitFrame", E.UIParent)
-			waitFrame:SetScript("onUpdate",function (_,elapse)
-				local i, count = 1, #waitTable
-				while i <= count do
-					local waitRecord = tremove(waitTable,i)
-					local waitDelay = tremove(waitRecord,1)
-					local waitFunc = tremove(waitRecord,1)
-					local waitParams = tremove(waitRecord,1)
-					if waitDelay > elapse then
-						tinsert(waitTable,i,{waitDelay-elapse,waitFunc,waitParams})
-						i = i + 1
-					else
-						count = count - 1
-						waitFunc(unpack(waitParams))
-					end
-				end
-			end)
-		end
-		tinsert(waitTable,{delay,func,extend})
-		return true
-	end
+	return true
 end
 
 function E:StringTitle(str)

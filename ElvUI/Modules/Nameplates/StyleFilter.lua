@@ -45,7 +45,6 @@ mod.TriggerConditions = {
 		['FRIENDLY_NPC'] = 'friendlyNPC',
 		['ENEMY_PLAYER'] = 'enemyPlayer',
 		['ENEMY_NPC'] = 'enemyNPC',
-		['HEALER'] = 'healer',
 		['PLAYER'] = 'player'
 	},
 	roles = {
@@ -410,14 +409,13 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		frame.StyleChanged = true
 		frame.HealthColorChanged = actions.color.healthColor
 		frame.Health:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a)
-		--[[if frame.CutawayHealth then
-			frame.CutawayHealth:SetStatusBarColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a)
-		end]]
+		frame.Cutaway.Health:SetStatusBarColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a)
 	end
 	if PowerColorChanged then
 		frame.StyleChanged = true
 		frame.PowerColorChanged = true
-		frame.Power:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a)
+        frame.Power:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a)
+        frame.Cutaway.Power:SetStatusBarColor(actions.color.powerColor.r * 1.5, actions.color.powerColor.g * 1.5, actions.color.powerColor.b * 1.5, actions.color.powerColor.a)
 	end
 	if BorderChanged then
 		frame.StyleChanged = true
@@ -515,15 +513,14 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
 		frame.Health:SetStatusBarColor(frame.Health.r, frame.Health.g, frame.Health.b)
-		--[[if frame.CutawayHealth then
-			frame.CutawayHealth:SetStatusBarColor(frame.Health.r * 1.5, frame.Health.g * 1.5, frame.Health.b * 1.5, 1)
-		end]]
+		frame.Cutaway.Health:SetStatusBarColor(frame.Health.r * 1.5, frame.Health.g * 1.5, frame.Health.b * 1.5, 1)
 	end
 	if PowerColorChanged then
 		frame.PowerColorChanged = nil
 		local color = E.db.unitframe.colors.power[frame.Power.token] or PowerBarColor[frame.Power.token] or FallbackColor
 		if color then
-			frame.Power:SetStatusBarColor(color.r, color.g, color.b)
+            frame.Power:SetStatusBarColor(color.r, color.g, color.b)
+            frame.Cutaway.Power:SetStatusBarColor(color.r * 1.5, color.g * 1.5, color.b * 1.5, 1)
 		end
 	end
 	if BorderChanged then
@@ -722,22 +719,18 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	--Try to match according to raid target conditions
+	-- Raid Target
 	if trigger.raidTarget.star or trigger.raidTarget.circle or trigger.raidTarget.diamond or trigger.raidTarget.triangle or trigger.raidTarget.moon or trigger.raidTarget.square or trigger.raidTarget.cross or trigger.raidTarget.skull then
 		if trigger.raidTarget[mod.TriggerConditions.raidTargets[frame.RaidTargetIndex]] then passed = true else return end
 	end
 
-	do -- Class
-		local Class = trigger.class and next(trigger.class) and trigger.class[E.myclass]
-		if Class ~= nil then
-			if Class.enabled then
-				passed = true
-
-				-- Specialization
-				if Class.specs and next(Class.specs) and not Class.specs[E.myspec and GetSpecializationInfo(E.myspec)] then return end
-			else
-				return
-			end
+	-- Class and Specialization
+	if trigger.class and next(trigger.class) then
+		local Class = trigger.class[E.myclass]
+		if not Class or (Class.specs and next(Class.specs) and not Class.specs[E.myspec and GetSpecializationInfo(E.myspec)]) then
+			return
+		else
+			passed = true
 		end
 	end
 
@@ -815,7 +808,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	--Try to match according to cooldown conditions
+	-- Cooldown
 	if trigger.cooldowns and trigger.cooldowns.names and next(trigger.cooldowns.names) then
 		local cooldown = mod:StyleFilterCooldownCheck(trigger.cooldowns.names, trigger.cooldowns.mustHaveAll)
 		if cooldown ~= nil then -- ignore if none are set to ONCD or OFFCD
@@ -823,16 +816,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	--Try to match according to buff aura conditions
-	if trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
+	-- Buffs
+	if frame.Buffs and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
 		local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
 		if buff ~= nil then -- ignore if none are selected
 			if buff then passed = true else return end
 		end
 	end
 
-	--Try to match according to debuff aura conditions
-	if trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
+	-- Debuffs
+	if frame.Debuffs and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
 		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
@@ -980,110 +973,109 @@ function mod:StyleFilterConfigure()
 	wipe(mod.StyleFilterTriggerEvents)
 
 	for filterName, filter in pairs(E.global.nameplate.filters) do
-		if filter.triggers and E.db.nameplates and E.db.nameplates.filters then
+		local t = filter.triggers
+		if t and E.db.nameplates and E.db.nameplates.filters then
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
-				tinsert(mod.StyleFilterTriggerList, {filterName, filter.triggers.priority or 1})
+				tinsert(mod.StyleFilterTriggerList, {filterName, t.priority or 1})
 
 				-- NOTE: 0 for fake events, 1 to override StyleFilterWaitTime
 				mod.StyleFilterTriggerEvents.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
 				mod.StyleFilterTriggerEvents.NAME_PLATE_UNIT_ADDED = 1
+				mod.StyleFilterTriggerEvents.PLAYER_TARGET_CHANGED = 1
 
-				if filter.triggers.casting then
-					if next(filter.triggers.casting.spells) then
-						for _, value in pairs(filter.triggers.casting.spells) do
+				if t.casting then
+					if next(t.casting.spells) then
+						for _, value in pairs(t.casting.spells) do
 							if value then
 								mod.StyleFilterTriggerEvents.FAKE_Casting = 0
 								break
 					end end end
 
-					if (filter.triggers.casting.interruptible or filter.triggers.casting.notInterruptible)
-					or (filter.triggers.casting.isCasting or filter.triggers.casting.isChanneling or filter.triggers.casting.notCasting or filter.triggers.casting.notChanneling) then
+					if (t.casting.interruptible or t.casting.notInterruptible)
+					or (t.casting.isCasting or t.casting.isChanneling or t.casting.notCasting or t.casting.notChanneling) then
 						mod.StyleFilterTriggerEvents.FAKE_Casting = 0
 					end
 				end
 
-				-- real events
-				mod.StyleFilterTriggerEvents.PLAYER_TARGET_CHANGED = 1
-
-				if filter.triggers.reactionType and filter.triggers.reactionType.enable then
+				if t.reactionType and t.reactionType.enable then
 					mod.StyleFilterTriggerEvents.UNIT_FACTION = 1
 				end
 
-				if filter.triggers.keyMod and filter.triggers.keyMod.enable then
+				if t.keyMod and t.keyMod.enable then
 					mod.StyleFilterTriggerEvents.MODIFIER_STATE_CHANGED = 1
 				end
 
-				if filter.triggers.targetMe or filter.triggers.notTargetMe then
+				if t.targetMe or t.notTargetMe then
 					mod.StyleFilterTriggerEvents.UNIT_TARGET = 1
 				end
 
-				if filter.triggers.isFocus or filter.triggers.notFocus then
+				if t.isFocus or t.notFocus then
 					mod.StyleFilterTriggerEvents.PLAYER_FOCUS_CHANGED = 1
 				end
 
-				if filter.triggers.isResting then
+				if t.isResting then
 					mod.StyleFilterTriggerEvents.PLAYER_UPDATE_RESTING = 1
 				end
 
-				if filter.triggers.isPet then
+				if t.isPet then
 					mod.StyleFilterTriggerEvents.UNIT_PET = 1
 				end
 
-				if filter.triggers.raidTarget then
+				if t.raidTarget then
 					mod.StyleFilterTriggerEvents.RAID_TARGET_UPDATE = 1
 				end
 
-				if filter.triggers.unitInVehicle then
+				if t.unitInVehicle then
 					mod.StyleFilterTriggerEvents.UNIT_ENTERED_VEHICLE = 1
 					mod.StyleFilterTriggerEvents.UNIT_EXITED_VEHICLE = 1
 					mod.StyleFilterTriggerEvents.VEHICLE_UPDATE = 1
 				end
 
-				if filter.triggers.healthThreshold then
+				if t.healthThreshold then
 					mod.StyleFilterTriggerEvents.UNIT_HEALTH = true
 					mod.StyleFilterTriggerEvents.UNIT_MAXHEALTH = true
 					mod.StyleFilterTriggerEvents.UNIT_HEALTH_FREQUENT = true
 				end
 
-				if filter.triggers.powerThreshold then
+				if t.powerThreshold then
 					mod.StyleFilterTriggerEvents.UNIT_POWER_UPDATE = true
 					mod.StyleFilterTriggerEvents.UNIT_POWER_FREQUENT = true
 					mod.StyleFilterTriggerEvents.UNIT_DISPLAYPOWER = true
 				end
 
-				if filter.triggers.threat and filter.triggers.threat.enable then
+				if t.threat and t.threat.enable then
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_SITUATION_UPDATE = true
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
 				end
 
-				if filter.triggers.inCombat or filter.triggers.outOfCombat or filter.triggers.inCombatUnit or filter.triggers.outOfCombatUnit then
+				if t.inCombat or t.outOfCombat or t.inCombatUnit or t.outOfCombatUnit then
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
 					mod.StyleFilterTriggerEvents.UNIT_FLAGS = true
 				end
 
-				if next(filter.triggers.names) then
-					for _, value in pairs(filter.triggers.names) do
+				if t.names and next(t.names) then
+					for _, value in pairs(t.names) do
 						if value then
 							mod.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = 1
 							break
 				end end end
 
-				if next(filter.triggers.cooldowns.names) then
-					for _, value in pairs(filter.triggers.cooldowns.names) do
+				if t.cooldowns and t.cooldowns.names and next(t.cooldowns.names) then
+					for _, value in pairs(t.cooldowns.names) do
 						if value == 'ONCD' or value == 'OFFCD' then
 							mod.StyleFilterTriggerEvents.SPELL_UPDATE_COOLDOWN = 1
 							break
 				end end end
 
-				if next(filter.triggers.buffs.names) then
-					for _, value in pairs(filter.triggers.buffs.names) do
+				if t.buffs and t.buffs.names and next(t.buffs.names) then
+					for _, value in pairs(t.buffs.names) do
 						if value then
 							mod.StyleFilterTriggerEvents.UNIT_AURA = true
 							break
 				end end end
 
-				if next(filter.triggers.debuffs.names) then
-					for _, value in pairs(filter.triggers.debuffs.names) do
+				if t.debuffs and t.debuffs.names and next(t.debuffs.names) then
+					for _, value in pairs(t.debuffs.names) do
 						if value then
 							mod.StyleFilterTriggerEvents.UNIT_AURA = true
 							break

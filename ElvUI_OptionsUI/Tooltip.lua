@@ -3,6 +3,7 @@ local C, L = unpack(select(2, ...))
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
+local tonumber = tonumber
 local GameTooltip = _G.GameTooltip
 local GameTooltipStatusBar = _G.GameTooltipStatusBar
 
@@ -76,13 +77,13 @@ E.Options.args.tooltip = {
 						["BAGS_ONLY"] = L["Bags Only"],
 						["BANK_ONLY"] = L["Bank Only"],
 						["BOTH"] = L["Both"],
-						["NONE"] = L.NONE,
+						["NONE"] = L["NONE"],
 					},
 				},
 				colorAlpha = {
 					order = 6,
 					type = "range",
-					name = L.OPACITY,
+					name = L["OPACITY"],
 					isPercent = true,
 					min = 0, max = 1, step = 0.01,
 				},
@@ -130,7 +131,7 @@ E.Options.args.tooltip = {
 				role = {
 					order = 13,
 					type = 'toggle',
-					name = L.ROLE,
+					name = L["ROLE"],
 					desc = L["Display the unit role in the tooltip."],
 				},
 				fontGroup = {
@@ -235,9 +236,9 @@ E.Options.args.tooltip = {
 					values = {
 						['ALL'] = L["Always Hide"],
 						['NONE'] = L["Never Hide"],
-						['SHIFT'] = L.SHIFT_KEY_TEXT,
-						['ALT'] = L.ALT_KEY_TEXT,
-						['CTRL'] = L.CTRL_KEY_TEXT
+						['SHIFT'] = L["SHIFT_KEY_TEXT"],
+						['ALT'] = L["ALT_KEY_TEXT"],
+						['CTRL'] = L["CTRL_KEY_TEXT"],
 					},
 				},
 				bags = {
@@ -248,9 +249,9 @@ E.Options.args.tooltip = {
 					values = {
 						['ALL'] = L["Always Hide"],
 						['NONE'] = L["Never Hide"],
-						['SHIFT'] = L.SHIFT_KEY_TEXT,
-						['ALT'] = L.ALT_KEY_TEXT,
-						['CTRL'] = L.CTRL_KEY_TEXT
+						['SHIFT'] = L["SHIFT_KEY_TEXT"],
+						['ALT'] = L["ALT_KEY_TEXT"],
+						['CTRL'] = L["CTRL_KEY_TEXT"],
 					},
 				},
 				unitFrames = {
@@ -261,15 +262,15 @@ E.Options.args.tooltip = {
 					values = {
 						['ALL'] = L["Always Hide"],
 						['NONE'] = L["Never Hide"],
-						['SHIFT'] = L.SHIFT_KEY_TEXT,
-						['ALT'] = L.ALT_KEY_TEXT,
-						['CTRL'] = L.CTRL_KEY_TEXT
+						['SHIFT'] = L["SHIFT_KEY_TEXT"],
+						['ALT'] = L["ALT_KEY_TEXT"],
+						['CTRL'] = L["CTRL_KEY_TEXT"],
 					},
 				},
 				combat = {
 					order = 4,
 					type = 'toggle',
-					name = L.COMBAT,
+					name = L["COMBAT"],
 					desc = L["Hide tooltip while in combat."],
 				},
 				combatOverride = {
@@ -280,9 +281,9 @@ E.Options.args.tooltip = {
 					disabled = function() return not E.db.tooltip.visibility.combat end,
 					values = {
 						['ALL'] = L["Always Hide"],
-						['SHIFT'] = L.SHIFT_KEY_TEXT,
-						['ALT'] = L.ALT_KEY_TEXT,
-						['CTRL'] = L.CTRL_KEY_TEXT
+						['SHIFT'] = L["SHIFT_KEY_TEXT"],
+						['ALT'] = L["ALT_KEY_TEXT"],
+						['CTRL'] = L["CTRL_KEY_TEXT"],
 					},
 				},
 			},
@@ -349,7 +350,7 @@ E.Options.args.tooltip = {
 				},
 				fontSize = {
 					order = 5,
-					name = L.FONT_SIZE,
+					name = L["FONT_SIZE"],
 					type = "range",
 					min = 4, max = 500, step = 1,
 					set = function(info, value)

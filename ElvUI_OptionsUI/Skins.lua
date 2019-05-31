@@ -83,27 +83,27 @@ E.Options.args.skins = {
 			args = {
 				deathRecap = {
 					type = 'toggle',
-					name = L.DEATH_RECAP_TITLE,
+					name = L["DEATH_RECAP_TITLE"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				garrison = {
 					type = 'toggle',
-					name = L.GARRISON_LOCATION_TOOLTIP,
+					name = L["GARRISON_LOCATION_TOOLTIP"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				bmah = {
 					type = 'toggle',
-					name = L.BLACK_MARKET_AUCTION_HOUSE,
+					name = L["BLACK_MARKET_AUCTION_HOUSE"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				transmogrify = {
 					type = 'toggle',
-					name = L.TRANSMOGRIFY,
+					name = L["TRANSMOGRIFY"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				encounterjournal = {
 					type = "toggle",
-					name = L.ENCOUNTER_JOURNAL,
+					name = L["ENCOUNTER_JOURNAL"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				calendar = {
@@ -113,7 +113,7 @@ E.Options.args.skins = {
 				},
 				achievement = {
 					type = "toggle",
-					name = L.ACHIEVEMENTS,
+					name = L["ACHIEVEMENTS"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				lfguild = {
@@ -123,17 +123,17 @@ E.Options.args.skins = {
 				},
 				inspect = {
 					type = "toggle",
-					name = L.INSPECT,
+					name = L["INSPECT"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				binding = {
 					type = "toggle",
-					name = L.KEY_BINDINGS,
+					name = L["KEY_BINDINGS"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				gbank = {
 					type = "toggle",
-					name = L.GUILD_BANK,
+					name = L["GUILD_BANK"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				archaeology = {
@@ -148,12 +148,12 @@ E.Options.args.skins = {
 				},
 				guild = {
 					type = "toggle",
-					name = L.GUILD,
+					name = L["GUILD"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				tradeskill = {
 					type = "toggle",
-					name = L.TRADESKILLS,
+					name = L["TRADESKILLS"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				raid = {
@@ -163,27 +163,27 @@ E.Options.args.skins = {
 				},
 				talent = {
 					type = "toggle",
-					name = L.TALENTS,
+					name = L["TALENTS"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				auctionhouse = {
 					type = "toggle",
-					name = L.AUCTIONS,
+					name = L["AUCTIONS"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				timemanager = {
 					type = "toggle",
-					name = L.TIMEMANAGER_TITLE,
+					name = L["TIMEMANAGER_TITLE"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				barber = {
 					type = "toggle",
-					name = L.BARBERSHOP,
+					name = L["BARBERSHOP"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				macro = {
 					type = "toggle",
-					name = L.MACROS,
+					name = L["MACROS"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				debug = {
@@ -233,7 +233,7 @@ E.Options.args.skins = {
 				},
 				trade = {
 					type = "toggle",
-					name = L.TRADE,
+					name = L["TRADE"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				gossip = {
@@ -243,12 +243,12 @@ E.Options.args.skins = {
 				},
 				worldmap = {
 					type = "toggle",
-					name = L.WORLD_MAP,
+					name = L["WORLD_MAP"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				taxi = {
 					type = "toggle",
-					name = L.FLIGHT_MAP,
+					name = L["FLIGHT_MAP"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				tooltip = {
@@ -258,12 +258,12 @@ E.Options.args.skins = {
 				},
 				lfg = {
 					type = "toggle",
-					name = L.LFG_TITLE,
+					name = L["LFG_TITLE"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				collections = {
 					type = "toggle",
-					name = L.COLLECTIONS,
+					name = L["COLLECTIONS"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				quest = {
@@ -278,7 +278,7 @@ E.Options.args.skins = {
 				},
 				dressingroom = {
 					type = "toggle",
-					name = L.DRESSUP_FRAME,
+					name = L["DRESSUP_FRAME"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				pvp = {
@@ -293,12 +293,12 @@ E.Options.args.skins = {
 				},
 				friends = {
 					type = "toggle",
-					name = L.FRIENDS,
+					name = L["FRIENDS"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				spellbook = {
 					type = "toggle",
-					name = L.SPELLBOOK,
+					name = L["SPELLBOOK"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				character = {
@@ -343,12 +343,12 @@ E.Options.args.skins = {
 				},
 				losscontrol = {
 					type = "toggle",
-					name = L.LOSS_OF_CONTROL,
+					name = L["LOSS_OF_CONTROL"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				voidstorage = {
 					type = "toggle",
-					name = L.VOID_STORAGE,
+					name = L["VOID_STORAGE"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				itemUpgrade = {
@@ -373,7 +373,7 @@ E.Options.args.skins = {
 				},
 				objectiveTracker = {
 					type = "toggle",
-					name = L.OBJECTIVES_TRACKER_LABEL,
+					name = L["OBJECTIVES_TRACKER_LABEL"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				orderhall = {
@@ -383,7 +383,7 @@ E.Options.args.skins = {
 				},
 				artifact = {
 					type = "toggle",
-					name = L.ITEM_QUALITY6_DESC,
+					name = L["ITEM_QUALITY6_DESC"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				talkinghead = {
@@ -393,12 +393,12 @@ E.Options.args.skins = {
 				},
 				AdventureMap = {
 					type = "toggle",
-					name = L.ADVENTURE_MAP_TITLE,
+					name = L["ADVENTURE_MAP_TITLE"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				Obliterum = {
 					type = "toggle",
-					name = L.OBLITERUM_FORGE_TITLE,
+					name = L["OBLITERUM_FORGE_TITLE"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				Contribution = {
@@ -408,7 +408,7 @@ E.Options.args.skins = {
 				},
 				BlizzardOptions = {
 					type = "toggle",
-					name = L.INTERFACE_OPTIONS,
+					name = L["INTERFACE_OPTIONS"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				Warboard = {
@@ -423,7 +423,7 @@ E.Options.args.skins = {
 				},
 				Channels  = {
 					type = "toggle",
-					name = L.CHANNELS,
+					name = L["CHANNELS"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				AzeriteUI = {
@@ -433,12 +433,12 @@ E.Options.args.skins = {
 				},
 				Communities = {
 					type = "toggle",
-					name = L.COMMUNITIES,
+					name = L["COMMUNITIES"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				Scrapping = {
 					type = "toggle",
-					name = L.SCRAP_BUTTON,
+					name = L["SCRAP_BUTTON"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				IslandsPartyPose = {
@@ -448,12 +448,12 @@ E.Options.args.skins = {
 				},
 				IslandQueue = {
 					type = "toggle",
-					name = L.ISLANDS_HEADER,
+					name = L["ISLANDS_HEADER"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				AzeriteRespec = {
 					type = "toggle",
-					name = L.AZERITE_RESPEC_TITLE,
+					name = L["AZERITE_RESPEC_TITLE"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				GMChat = {

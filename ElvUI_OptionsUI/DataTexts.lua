@@ -16,7 +16,7 @@ function DT:PanelLayoutOptions()
 	for name, data in pairs(DT.RegisteredDataTexts) do
 		datatexts[name] = data.localizedName or L[name]
 	end
-	datatexts[''] = L.NONE
+	datatexts[''] = L["NONE"]
 
 	local order
 	local table = E.Options.args.datatexts.args.panels.args
@@ -67,7 +67,7 @@ local function CreateCustomCurrencyOptions(currencyID)
 				removeDT = {
 					order = 1,
 					type = "execute",
-					name = L.DELETE,
+					name = L["DELETE"],
 					func = function()
 						--Remove stored entries of this currency datatext
 						DT:RemoveCustomCurrency(currency.NAME)
@@ -285,7 +285,7 @@ E.Options.args.datatexts = {
 						},
 						fontSize = {
 							order = 2,
-							name = L.FONT_SIZE,
+							name = L["FONT_SIZE"],
 							type = "range",
 							min = 4, max = 212, step = 1,
 						},
@@ -324,7 +324,7 @@ E.Options.args.datatexts = {
 						E.db.datatexts[info[#info]] = value
 						if E.db.LeftChatPanelFaded then
 							E.db.LeftChatPanelFaded = true;
-							HideLeftChat()
+							_G.HideLeftChat()
 						end
 						Chat:UpdateAnchors()
 						Layout:ToggleChatPanels()
@@ -339,7 +339,7 @@ E.Options.args.datatexts = {
 						E.db.datatexts[info[#info]] = value
 						if E.db.RightChatPanelFaded then
 							E.db.RightChatPanelFaded = true;
-							HideRightChat()
+							_G.HideRightChat()
 						end
 						Chat:UpdateAnchors()
 						Layout:ToggleChatPanels()
@@ -425,12 +425,12 @@ E.Options.args.datatexts = {
 		currencies = {
 			order = 5,
 			type = "group",
-			name = L.CURRENCY,
+			name = L["CURRENCY"],
 			args = {
 				header = {
 					order = 1,
 					type = "header",
-					name = L.CURRENCY,
+					name = L["CURRENCY"],
 				},
 				displayedCurrency = {
 					order = 2,
@@ -462,7 +462,7 @@ E.Options.args.datatexts = {
 					values = {
 						['SMART'] = L["Smart"],
 						['FULL'] = L["Full"],
-						['SHORT'] = L.SHORT,
+						['SHORT'] = L["SHORT"],
 						['SHORTINT'] = L["Short (Whole Numbers)"],
 						['CONDENSED'] = L["Condensed"],
 						['BLIZZARD'] = L["Blizzard Style"],
@@ -509,12 +509,12 @@ E.Options.args.datatexts = {
 		friends = {
 			order = 7,
 			type = "group",
-			name = L.FRIENDS,
+			name = L["FRIENDS"],
 			args = {
 				header = {
 					order = 0,
 					type = "header",
-					name = L.FRIENDS,
+					name = L["FRIENDS"],
 				},
 				description = {
 					order = 1,
@@ -525,19 +525,19 @@ E.Options.args.datatexts = {
 					order = 2,
 					type = "group",
 					guiInline = true,
-					name = L.HIDE,
+					name = L["HIDE"],
 					args = {
 						hideAFK = {
 							order = 1,
 							type = 'toggle',
-							name = L.AFK,
+							name = L["AFK"],
 							get = function(info) return E.db.datatexts.friends.hideAFK end,
 							set = function(info, value) E.db.datatexts.friends.hideAFK = value; DT:LoadDataTexts() end,
 						},
 						hideDND = {
 							order = 2,
 							type = 'toggle',
-							name = L.DND,
+							name = L["DND"],
 							get = function(info) return E.db.datatexts.friends.hideDND end,
 							set = function(info, value) E.db.datatexts.friends.hideDND = value; DT:LoadDataTexts() end,
 						},

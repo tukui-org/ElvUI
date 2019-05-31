@@ -20,6 +20,7 @@ local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
 local DeleteCursorItem = DeleteCursorItem
 local DepositReagentBank = DepositReagentBank
+local GameTooltip_Hide = GameTooltip_Hide
 local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetBagSlotFlag = GetBagSlotFlag
@@ -146,10 +147,6 @@ function B:Tooltip_Show()
 	end
 
 	GameTooltip:Show()
-end
-
-function B:Tooltip_Hide()
-	_G.GameTooltip:Hide()
 end
 
 function B:DisableBlizzard()
@@ -661,7 +658,7 @@ function B:UpdateSlot(bagID, slotID)
 	SetItemButtonDesaturated(slot, slot.locked or slot.junkDesaturate);
 
 	if _G.GameTooltip:GetOwner() == slot and not slot.hasItem then
-		B:Tooltip_Hide()
+		GameTooltip_Hide()
 	end
 end
 
@@ -1715,7 +1712,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.reagentToggle:StyleButton(nil, true)
 		f.reagentToggle.ttText = L["Show/Hide Reagents"];
 		f.reagentToggle:SetScript("OnEnter", self.Tooltip_Show)
-		f.reagentToggle:SetScript("OnLeave", self.Tooltip_Hide)
+		f.reagentToggle:SetScript("OnLeave", GameTooltip_Hide)
 		f.reagentToggle:SetScript("OnClick", function()
 			PlaySound(841) --IG_CHARACTER_INFO_TAB
 			B:ShowBankTab(f, f.holderFrame:IsShown())
@@ -1774,7 +1771,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.depositButton:StyleButton(nil, true)
 		f.depositButton.ttText = L["Deposit Reagents"]
 		f.depositButton:SetScript("OnEnter", self.Tooltip_Show)
-		f.depositButton:SetScript("OnLeave", self.Tooltip_Hide)
+		f.depositButton:SetScript("OnLeave", GameTooltip_Hide)
 		f.depositButton:SetScript('OnClick', function()
 			PlaySound(852) --IG_MAINMENU_OPTION
 			DepositReagentBank()
@@ -1793,7 +1790,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.depositButtonBank:StyleButton(nil, true)
 		f.depositButtonBank.ttText = L["Deposit Reagents"]
 		f.depositButtonBank:SetScript("OnEnter", self.Tooltip_Show)
-		f.depositButtonBank:SetScript("OnLeave", self.Tooltip_Hide)
+		f.depositButtonBank:SetScript("OnLeave", GameTooltip_Hide)
 		f.depositButtonBank:SetScript('OnClick', function()
 			PlaySound(852) --IG_MAINMENU_OPTION
 			DepositReagentBank()
@@ -1814,7 +1811,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.bagsButton.ttText = L["Toggle Bags"]
 		f.bagsButton.ttText2 = format("|cffFFFFFF%s|r", L["Right Click the bag icon to assign a type of item to this bag."])
 		f.bagsButton:SetScript("OnEnter", self.Tooltip_Show)
-		f.bagsButton:SetScript("OnLeave", self.Tooltip_Hide)
+		f.bagsButton:SetScript("OnLeave", GameTooltip_Hide)
 		f.bagsButton:SetScript('OnClick', function()
 			local numSlots = GetNumBankSlots()
 			PlaySound(852) --IG_MAINMENU_OPTION
@@ -1838,7 +1835,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.purchaseBagButton:StyleButton(nil, true)
 		f.purchaseBagButton.ttText = L["Purchase Bags"]
 		f.purchaseBagButton:SetScript("OnEnter", self.Tooltip_Show)
-		f.purchaseBagButton:SetScript("OnLeave", self.Tooltip_Hide)
+		f.purchaseBagButton:SetScript("OnLeave", GameTooltip_Hide)
 		f.purchaseBagButton:SetScript("OnClick", function()
 			local _, full = GetNumBankSlots()
 			if full then
@@ -1937,7 +1934,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.bagsButton.ttText = L["Toggle Bags"]
 		f.bagsButton.ttText2 = format("|cffFFFFFF%s|r", L["Right Click the bag icon to assign a type of item to this bag."])
 		f.bagsButton:SetScript("OnEnter", self.Tooltip_Show)
-		f.bagsButton:SetScript("OnLeave", self.Tooltip_Hide)
+		f.bagsButton:SetScript("OnLeave", GameTooltip_Hide)
 		f.bagsButton:SetScript('OnClick', function() ToggleFrame(f.ContainerHolder) end)
 
 		--Vendor Grays
@@ -1954,7 +1951,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.vendorGraysButton:StyleButton(nil, true)
 		f.vendorGraysButton.ttText = L["Vendor / Delete Grays"]
 		f.vendorGraysButton:SetScript("OnEnter", self.Tooltip_Show)
-		f.vendorGraysButton:SetScript("OnLeave", self.Tooltip_Hide)
+		f.vendorGraysButton:SetScript("OnLeave", GameTooltip_Hide)
 		f.vendorGraysButton:SetScript("OnClick", B.VendorGrayCheck)
 
 		--Search

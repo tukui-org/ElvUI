@@ -132,15 +132,8 @@ E.PopupDialogs.ELVUI_EDITBOX = {
 }
 
 E.PopupDialogs.CLIENT_UPDATE_REQUEST = {
-	text = L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."],
+	text = L["Detected that your ElvUI OptionsUI addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI OptionsUI addon up to date will result in missing options."],
 	button1 = OKAY,
-	OnAccept = E.noop,
-	showAlert = 1,
-}
-
-E.PopupDialogs.CLIQUE_ADVERT = {
-	text = L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."],
-	button1 = YES,
 	OnAccept = E.noop,
 	showAlert = 1,
 }
@@ -206,31 +199,6 @@ E.PopupDialogs.UISCALE_CHANGE = {
 	hideOnEscape = false
 }
 
-E.PopupDialogs.PIXELPERFECT_CHANGED = {
-	text = L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."],
-	button1 = ACCEPT,
-	OnAccept = E.noop,
-	whileDead = 1,
-	hideOnEscape = false,
-}
-
-E.PopupDialogs.CONFIGAURA_SET = {
-	text = L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."],
-	button1 = ACCEPT,
-	OnAccept = E.noop,
-	whileDead = 1,
-	hideOnEscape = false,
-}
-
-E.PopupDialogs.FAILED_UISCALE = {
-	text = L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."],
-	button1 = ACCEPT,
-	button2 = CANCEL,
-	OnAccept = function() E.global.general.autoScale = false; ReloadUI(); end,
-	whileDead = 1,
-	hideOnEscape = false,
-}
-
 E.PopupDialogs.CONFIG_RL = {
 	text = L["One or more of the changes you have made require a ReloadUI."],
 	button1 = ACCEPT,
@@ -273,7 +241,7 @@ E.PopupDialogs.RESET_UF_UNIT = {
 				UF:CreateAndUpdateHeaderGroup(self.data.unit, nil, nil, true);
 			end
 
-			if IsAddOnLoaded("ElvUI_Config") then
+			if IsAddOnLoaded("ElvUI_OptionsUI") then
 				local ACD = E.Libs.AceConfigDialog
 				if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
 					ACD:SelectGroup("ElvUI", "unitframe", self.data.unit);
@@ -322,16 +290,6 @@ E.PopupDialogs.RESET_NP_AF = {
 			end
 		end
 	end,
-	whileDead = 1,
-	hideOnEscape = false,
-}
-
-E.PopupDialogs.KEYBIND_MODE = {
-	text = L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."],
-	button1 = L["Save"],
-	button2 = L["Discard"],
-	OnAccept = function() AB:DeactivateBindMode(true) end,
-	OnCancel = function() AB:DeactivateBindMode(false) end,
 	whileDead = 1,
 	hideOnEscape = false,
 }
@@ -512,40 +470,6 @@ E.PopupDialogs.MODULE_COPY_CONFIRM = {
 	hideOnEscape = false,
 }
 
-E.PopupDialogs.UI_SCALE_CHANGES_INFORM = {
-	text = L["This release of ElvUI contains changes to how we handle UI scale. See changelog for specifics. We need to set your UI scale again in order to use a new system. It appears your old UI scale was %s.\n\nYou can either apply this value, or use the 'Auto Scale' function to apply the UI scale that is considered the most optimal for your resolution.\n\nYou also have the option of choosing your own UI scale in the General section of the ElvUI config. In theory ElvUI should be able to look pixel perfect with any UI scale now but there may be a few issues with the ingame config."],
-	button1 = L["Use CVar Value"],
-	button2 = L["Auto Scale"],
-	button3 = CANCEL,
-	OnAccept = function()
-		E.global.general.UIScale = E.clippedUiScaleCVar
-		E.global.uiScaleInformed = true
-		E:StaticPopup_Show("UISCALE_CHANGE")
-	end,
-	OnCancel = function()
-		E.global.general.UIScale = E:PixelClip(E:PixelBestSize())
-		E.global.uiScaleInformed = true
-		E:StaticPopup_Show("UISCALE_CHANGE")
-	end,
-	OnAlt = function()
-		E.global.uiScaleInformed = true
-	end,
-	OnShow = function(popup)
-		popup.button1:Disable()
-		popup.button2:Disable()
-		popup.button3:Disable()
-		E:Delay(10, function()
-			if popup and popup.button1 then
-				popup.button1:Enable()
-				popup.button2:Enable()
-				popup.button3:Enable()
-			end
-		end)
-	end,
-	whileDead = 1,
-	hideOnEscape = false,
-}
-
 E.PopupDialogs.SCRIPT_PROFILE = {
 	text = L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"],
 	button1 = L["Disable"],
@@ -560,58 +484,12 @@ E.PopupDialogs.SCRIPT_PROFILE = {
 	hideOnEscape = false,
 }
 
-E.PopupDialogs.MAJOR_RELEASE_NAMEPLATES = {
-	text = "A new major release of ElvUI is coming with patch 8.1.5 on March 12th. Nameplate settings will be reset in this release. Make sure you are prepared. Visit the link below for details.",
-	button1 = OKAY,
-	OnAccept = function()
-		E.global.nameplatesResetInformed = true
-	end,
-	OnShow = function(popup)
-		popup.button1:Disable()
-		E:Delay(10, function()
-			if popup then
-				popup.hideOnEscape = true
-				if popup.button1 then
-					popup.button1:Enable()
-				end
-			end
-		end)
-		popup.editBox.width = popup.editBox:GetWidth()
-		popup.editBox:Width(220)
-		popup.editBox:SetText("https://tukui.org/news.php")
-		popup.editBox:HighlightText()
-	end,
-	OnHide = function(self)
-		self.editBox:Width(self.editBox.width or 50)
-		self.editBox.width = nil
-	end,
-	EditBoxOnTextChanged = function(self)
-		if(self:GetText() ~= "https://tukui.org/news.php") then
-			self:SetText("https://tukui.org/news.php")
-		end
-		self:HighlightText()
-		self:ClearFocus()
-		ChatEdit_FocusActiveWindow();
-	end,
-	EditBoxOnEnterPressed = function(self)
-		if self:GetParent().hideOnEscape == true then
-			E.global.nameplatesResetInformed = true
-			ChatEdit_FocusActiveWindow();
-			self:GetParent():Hide();
-		end
-	end,
-	EditBoxOnEscapePressed = function(self)
-		if self:GetParent().hideOnEscape == true then
-			E.global.nameplatesResetInformed = true
-			ChatEdit_FocusActiveWindow();
-			self:GetParent():Hide();
-		end
-	end,
-	whileDead = true,
-	hideOnEscape = false,
-	showAlert = true,
-	hasEditBox = true,
-	enterClicksFirstButton = true,
+E.PopupDialogs.ELVUI_CONFIG_FOUND = {
+    text = L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."],
+    button1 = ACCEPT,
+    whileDead = 1,
+    hideOnEscape = false,
+
 }
 
 local MAX_STATIC_POPUPS = 4
@@ -632,7 +510,7 @@ function E:StaticPopup_OnShow()
 	end
 
 	-- boost static popups over ace gui
-	if IsAddOnLoaded("ElvUI_Config") then
+	if IsAddOnLoaded("ElvUI_OptionsUI") then
 		local ACD = E.Libs.AceConfigDialog
 		if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
 			self.frameStrataIncreased = true

@@ -57,7 +57,6 @@ local GetAddOnEnableState = GetAddOnEnableState
 local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
-local WrapTextInColorCode = WrapTextInColorCode
 local UnitStat, UnitAttackPower = UnitStat, UnitAttackPower
 local hooksecurefunc = hooksecurefunc
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
@@ -473,15 +472,6 @@ function E:PLAYER_ENTERING_WORLD()
 	elseif self.BGTimer then
 		self:CancelTimer(self.BGTimer)
 		self.BGTimer = nil
-	end
-
-	if not E.global.uiScaleInformed then
-		E.clippedUiScaleCVar = E:PixelClip(GetCVar("uiScale"))
-		E:StaticPopup_Show("UI_SCALE_CHANGES_INFORM", WrapTextInColorCode(E.clippedUiScaleCVar, "fffe7b2c"))
-	end
-
-	if not E.global.nameplatesResetInformed then
-		E:StaticPopup_Show("MAJOR_RELEASE_NAMEPLATES")
 	end
 end
 
@@ -1784,6 +1774,34 @@ function E:DBConversions()
 		E.db.nameplates.filters = E:CopyTable({}, styleFilters)
 		NamePlates:CVarReset()
 		E.db.v11NamePlateReset = true
+	end
+
+	-- Wipe some old variables off profiles
+	if E.global.uiScaleInformed then E.global.uiScaleInformed = nil end
+	if E.global.nameplatesResetInformed then E.global.nameplatesResetInformed = nil end
+	if E.global.userInformedNewChanges1 then E.global.userInformedNewChanges1 = nil end
+
+	-- cvar nameplate visibility stuff
+	if E.db.nameplates.visibility.nameplateShowAll ~= nil then
+		E.db.nameplates.visibility.showAll = E.db.nameplates.visibility.nameplateShowAll
+		E.db.nameplates.visibility.nameplateShowAll = nil
+	end
+	if E.db.nameplates.units.FRIENDLY_NPC.showAlways ~= nil then
+		E.db.nameplates.visibility.friendly.npcs = E.db.nameplates.units.FRIENDLY_NPC.showAlways
+		E.db.nameplates.units.FRIENDLY_NPC.showAlways = nil
+	end
+	if E.db.nameplates.units.FRIENDLY_PLAYER.minions ~= nil then
+		E.db.nameplates.visibility.friendly.minions = E.db.nameplates.units.FRIENDLY_PLAYER.minions
+		E.db.nameplates.units.FRIENDLY_PLAYER.minions = nil
+	end
+	if E.db.nameplates.units.ENEMY_NPC.minors ~= nil then
+		E.db.nameplates.visibility.enemy.minus = E.db.nameplates.units.ENEMY_NPC.minors
+		E.db.nameplates.units.ENEMY_NPC.minors = nil
+	end
+	if E.db.nameplates.units.ENEMY_PLAYER.minions ~= nil or E.db.nameplates.units.ENEMY_NPC.minions ~= nil then
+		E.db.nameplates.visibility.enemy.minions = E.db.nameplates.units.ENEMY_PLAYER.minions or E.db.nameplates.units.ENEMY_NPC.minions
+		E.db.nameplates.units.ENEMY_PLAYER.minions = nil
+		E.db.nameplates.units.ENEMY_NPC.minions = nil
 	end
 end
 

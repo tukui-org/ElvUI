@@ -24,7 +24,7 @@ local function AreOtherAddOnsEnabled()
 	local name
 	for i = 1, GetNumAddOns() do
 		name = GetAddOnInfo(i)
-		if ((name ~= "ElvUI" and name ~= "ElvUI_Config") and IsAddOnEnabled(name)) then --Loaded or load on demand
+		if ((name ~= "ElvUI" and name ~= "ElvUI_OptionsUI") and IsAddOnEnabled(name)) then --Loaded or load on demand
 			return "Yes"
 		end
 	end

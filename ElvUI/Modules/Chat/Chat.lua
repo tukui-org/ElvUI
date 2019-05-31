@@ -849,7 +849,7 @@ function CH:PositionChat(override)
 				if E.db.datatexts.leftChatPanel then
 					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
 				else
-					BASE_OFFSET = BASE_OFFSET - 25
+					BASE_OFFSET = BASE_OFFSET - 24
 					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "BOTTOMLEFT", 1, 1)
 				end
 				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
@@ -2385,7 +2385,7 @@ function CH:HandleChatVoiceIcons()
 			Skins:HandleButton(button, nil, nil, nil, true)
 
 			if index == 1 then
-				button:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -2)
+				button:SetPoint('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 3, -3) -- This also change the position for new chat tabs 0.o
 			else
 				button:SetPoint("RIGHT", channelButtons[index-1], "LEFT")
 			end

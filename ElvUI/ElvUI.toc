@@ -1,6 +1,6 @@
 ## Interface: 80100
 ## Author: Elv
-## Version: 11.11
+## Version: 11.12
 ## Title: |cfffe7b2cElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB
@@ -8,14 +8,14 @@
 ## OptionalDeps: Blizzard_PetJournal, SharedMedia, Tukui, SunnArt, Gatherer, Masque
 ## X-oUF: ElvUF
 ## X-Tukui-ProjectID: -2
-## X-Tukui-ProjectFolders: ElvUI_Config, ElvUI
+## X-Tukui-ProjectFolders: ElvUI_OptionsUI, ElvUI
 
 Developer\Load_Developer.xml
 Libraries\Load_Libraries.xml
 init.lua
 Locales\Load_Locales.xml
 Media\Load_Media.xml
-Settings\Load_Config.xml
+Settings\Load_Settings.xml
 Core\Load_Core.xml
 Layout\Load_Layout.xml
 Modules\Load_Modules.xml

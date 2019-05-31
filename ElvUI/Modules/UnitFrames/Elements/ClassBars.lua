@@ -351,9 +351,14 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged)
 		UF:Configure_ClassBar(frame, current)
 	end
 
+	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
 	for i=1, #self do
-		local r, g, b = self[i]:GetStatusBarColor()
-		self[i].bg:SetVertexColor(r * .35, g * .35, b * .35)
+		if custom_backdrop then
+			self[i].bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+		else
+			local r, g, b = self[i]:GetStatusBarColor()
+			self[i].bg:SetVertexColor(r * .35, g * .35, b * .35)
+		end
 
 		if maxBars and (i <= maxBars) then
 			self[i].bg:Show()
@@ -409,6 +414,13 @@ function UF:PostVisibilityRunes(enabled)
 	else
 		frame.ClassBar = "ClassPower"
 		frame.MAX_CLASS_BAR = MAX_COMBO_POINTS
+	end
+
+	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
+	if custom_backdrop then
+		for i=1, #self do
+			self[i].bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+		end
 	end
 end
 
@@ -493,6 +505,12 @@ function UF:PostUpdateAdditionalPower(_, MIN, MAX, event)
 		else --Text disabled
 			self.text:SetText('')
 		end
+
+		local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
+		if custom_backdrop then
+			self.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+		end
+
 		self:Show()
 	else --Bar disabled
 		self.text:SetText('')

@@ -235,7 +235,8 @@ function UF:Configure_Castbar(frame)
 		end
 	end
 
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, castbar, castbar.bg, nil, true)
+	castbar.custom_backdrop = UF.db.colors.customcastbarbackdrop and UF.db.colors.castbar_backdrop
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, castbar, castbar.bg, nil, UF.db.colors.invertCastbar)
 
 	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 		frame:EnableElement('Castbar')
@@ -424,20 +425,16 @@ function UF:PostCastStart(unit)
 	local colors = ElvUF.colors
 	local r, g, b = colors.castColor[1], colors.castColor[2], colors.castColor[3]
 
-	local t
-	if UF.db.colors.castClassColor and UnitIsPlayer(unit) then
-		local _, class = UnitClass(unit)
-		t = ElvUF.colors.class[class]
-	elseif UF.db.colors.castReactionColor and UnitReaction(unit, 'player') then
-		t = ElvUF.colors.reaction[UnitReaction(unit, "player")]
-	end
-
-	if t then
-		r, g, b = t[1], t[2], t[3]
-	end
-
-	if self.notInterruptible and unit ~= "player" and UnitCanAttack("player", unit) then
+	if (self.notInterruptible and unit ~= "player") and UnitCanAttack("player", unit) then
 		r, g, b = colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
+	elseif UF.db.colors.castClassColor and UnitIsPlayer(unit) then
+		local _, Class = UnitClass(unit)
+		local t = Class and ElvUF.colors.class[Class]
+		if t then r, g, b = t[1], t[2], t[3] end
+	elseif UF.db.colors.castReactionColor then
+		local Reaction = UnitReaction(unit, 'player')
+		local t = Reaction and ElvUF.colors.reaction[Reaction]
+		if t then r, g, b = t[1], t[2], t[3] end
 	end
 
 	self:SetStatusBarColor(r, g, b)
@@ -456,20 +453,16 @@ function UF:PostCastInterruptible(unit)
 	local colors = ElvUF.colors
 	local r, g, b = colors.castColor[1], colors.castColor[2], colors.castColor[3]
 
-	local t
-	if UF.db.colors.castClassColor and UnitIsPlayer(unit) then
-		local _, class = UnitClass(unit)
-		t = ElvUF.colors.class[class]
-	elseif UF.db.colors.castReactionColor and UnitReaction(unit, 'player') then
-		t = ElvUF.colors.reaction[UnitReaction(unit, "player")]
-	end
-
-	if(t) then
-		r, g, b = t[1], t[2], t[3]
-	end
-
 	if self.notInterruptible and UnitCanAttack("player", unit) then
 		r, g, b = colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
+	elseif UF.db.colors.castClassColor and UnitIsPlayer(unit) then
+		local _, Class = UnitClass(unit)
+		local t = Class and ElvUF.colors.class[Class]
+		if t then r, g, b = t[1], t[2], t[3] end
+	elseif UF.db.colors.castReactionColor then
+		local Reaction = UnitReaction(unit, 'player')
+		local t = Reaction and ElvUF.colors.reaction[Reaction]
+		if t then r, g, b = t[1], t[2], t[3] end
 	end
 
 	self:SetStatusBarColor(r, g, b)

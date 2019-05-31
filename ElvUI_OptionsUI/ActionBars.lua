@@ -33,7 +33,7 @@ local function BuildABConfig()
 				order = 1,
 				type = "execute",
 				name = L["Keybind Mode"],
-				func = function() AB:ActivateBindMode(); E:ToggleConfig(); GameTooltip:Hide(); end,
+				func = function() AB:ActivateBindMode(); E:ToggleOptionsUI(); GameTooltip:Hide(); end,
 				disabled = function() return not E.private.actionbar.enable end,
 			},
 			spacer = {
@@ -65,13 +65,13 @@ local function BuildABConfig()
 				order = 6,
 				type = 'toggle',
 				name = L["Key Down"],
-				desc = L.OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN,
+				desc = L["OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN"],
 				disabled = function() return not E.private.actionbar.enable end,
 			},
 			lockActionBars = {
 				order = 7,
 				type = "toggle",
-				name = L.LOCK_ACTIONBAR_TEXT,
+				name = L["LOCK_ACTIONBAR_TEXT"],
 				desc = L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."],
 				set = function(info, value)
 					E.db.actionbar[info[#info]] = value;
@@ -153,14 +153,14 @@ local function BuildABConfig()
 			movementModifier = {
 				order = 15,
 				type = 'select',
-				name = L.PICKUP_ACTION_KEY_TEXT,
+				name = L["PICKUP_ACTION_KEY_TEXT"],
 				desc = L["The button you must hold down in order to drag an ability to another action button."],
 				disabled = function() return (not E.private.actionbar.enable or not E.db.actionbar.lockActionBars) end,
 				values = {
-					['NONE'] = L.NONE,
-					['SHIFT'] = L.SHIFT_KEY_TEXT,
-					['ALT'] = L.ALT_KEY_TEXT,
-					['CTRL'] = L.CTRL_KEY_TEXT,
+					['NONE'] = L["NONE"],
+					['SHIFT'] = L["SHIFT_KEY_TEXT"],
+					['ALT'] = L["ALT_KEY_TEXT"],
+					['CTRL'] = L["CTRL_KEY_TEXT"],
 				},
 			},
 			globalFadeAlpha = {
@@ -175,7 +175,7 @@ local function BuildABConfig()
 			colorGroup = {
 				order = 20,
 				type = "group",
-				name = L.COLORS,
+				name = L["COLORS"],
 				guiInline = true,
 				get = function(info)
 					local t = E.db.actionbar[info[#info]]
@@ -229,7 +229,7 @@ local function BuildABConfig()
 					},
 					fontSize = {
 						order = 5,
-						name = L.FONT_SIZE,
+						name = L["FONT_SIZE"],
 						type = "range",
 						min = 4, max = 212, step = 1,
 					},
@@ -243,7 +243,7 @@ local function BuildABConfig()
 					fontColor = {
 						type = 'color',
 						order = 7,
-						name = L.COLOR,
+						name = L["COLOR"],
 						width = 'full',
 						get = function(info)
 							local t = E.db.actionbar[info[#info]]

@@ -454,7 +454,7 @@ function UF:Update_StatusBars()
 				statusbar:SetTexture(statusBarTexture)
 			end
 
-			UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
+			UF:Update_StatusBar(statusbar.bg or statusbar.BG, (not useBlank and statusBarTexture) or E.media.blankTex)
 		end
 	end
 end
@@ -1361,8 +1361,13 @@ function UF:UpdateBackdropTextureColor(r, g, b)
 		end
 	end
 
-	if self.bg and self.bg:IsObjectType('Texture') and not self.bg.multiplier then
-		self.bg:SetVertexColor(r * m, g * m, b * m)
+	local bg = self.bg or self.BG
+	if bg and bg:IsObjectType('Texture') and not bg.multiplier then
+		if self.custom_backdrop then
+			bg:SetVertexColor(self.custom_backdrop.r, self.custom_backdrop.g, self.custom_backdrop.b)
+		else
+			bg:SetVertexColor(r * m, g * m, b * m)
+		end
 	end
 end
 
@@ -1421,7 +1426,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		end
 
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
-		UF:Update_StatusBar(statusBar.bg, E.media.blankTex)
+		UF:Update_StatusBar(statusBar.bg or statusBar.BG, E.media.blankTex)
 
 		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end --Needed for Power element
 
@@ -1435,7 +1440,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 
 		local texture = LSM:Fetch("statusbar", self.db.statusbar)
 		statusBar:SetStatusBarTexture(texture)
-		UF:Update_StatusBar(statusBar.bg, texture)
+		UF:Update_StatusBar(statusBar.bg or statusBar.BG, texture)
 
 		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end
 

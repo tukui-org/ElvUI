@@ -75,17 +75,10 @@ function UF:Configure_HealComm(frame)
 			frame:EnableElement('HealthPrediction')
 		end
 
-		if frame.USE_PORTRAIT_OVERLAY then
-			myBar:SetParent(frame.Portrait.overlay)
-			otherBar:SetParent(frame.Portrait.overlay)
-			absorbBar:SetParent(frame.Portrait.overlay)
-			healAbsorbBar:SetParent(frame.Portrait.overlay)
-		else
-			myBar:SetParent(frame.Health)
-			otherBar:SetParent(frame.Health)
-			absorbBar:SetParent(frame.Health)
-			healAbsorbBar:SetParent(frame.Health)
-		end
+		myBar:SetParent(frame.Health)
+		otherBar:SetParent(frame.Health)
+		absorbBar:SetParent(frame.Health)
+		healAbsorbBar:SetParent(frame.Health)
 
 		if frame.db.health then
 			local orientation = frame.db.health.orientation or frame.Health:GetOrientation()

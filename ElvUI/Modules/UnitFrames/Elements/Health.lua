@@ -179,16 +179,6 @@ function UF:Configure_HealthBar(frame)
 		end
 	end
 
-	health.bg:ClearAllPoints()
-	if not frame.USE_PORTRAIT_OVERLAY then
-		health.bg:SetParent(health)
-		health.bg:SetAllPoints()
-	else
-		health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-		health.bg:Point('TOPRIGHT', health)
-		health.bg:SetParent(frame.Portrait.overlay)
-	end
-
 	if db.health then
 		if db.health.reverseFill then
 			health:SetReverseFill(true)
@@ -212,7 +202,7 @@ function UF:Configure_HealthBar(frame)
 	end
 
 	--Transparency Settings
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true, nil, (db.health and db.health.reverseFill))
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true, nil, db.health and db.health.reverseFill)
 
 	--Prediction Texture; keep under ToggleTransparentStatusBar
 	UF:UpdatePredictionStatusBar(frame.HealthPrediction, frame.Health, "Health")
@@ -265,8 +255,8 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 			local reaction, color = (UnitReaction(unit, 'player'))
 
 			if UnitIsPlayer(unit) then
-				local _, class = UnitClass(unit)
-				color = parent.colors.class[class]
+				local _, Class = UnitClass(unit)
+				color = parent.colors.class[Class]
 			elseif reaction then
 				color = parent.colors.reaction[reaction]
 			end

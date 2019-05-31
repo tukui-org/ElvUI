@@ -240,9 +240,9 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 			end
 
 			if self.db.guildRanks then
-				_G.GameTooltipTextLeft2:SetText(("<|cff00ff10%s|r> [|cff00ff10%s|r]"):format(guildName, guildRankName))
+				_G.GameTooltipTextLeft2:SetFormattedText("<|cff00ff10%s|r> [|cff00ff10%s|r]", guildName, guildRankName)
 			else
-				_G.GameTooltipTextLeft2:SetText(("<|cff00ff10%s|r>"):format(guildName))
+				_G.GameTooltipTextLeft2:SetFormattedText("<|cff00ff10%s|r>", guildName)
 			end
 
 			lineOffset = 3

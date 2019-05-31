@@ -98,8 +98,9 @@ AddOn.Libs = {
 	ItemSearch = _G.LibStub('LibItemSearch-1.2-ElvUI'),
 	Compress = _G.LibStub('LibCompress'),
 	Base64 = _G.LibStub('LibBase64-1.0-ElvUI'),
-	Masque = _G.LibStub('Masque', true)
-} -- added on ElvUI_Config load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
+	Masque = _G.LibStub('Masque', true),
+	Translit = _G.LibStub('LibTranslit-1.0')
+} -- added on ElvUI_OptionsUI load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
 
 -- backwards compatible for plugins
 AddOn.LSM = AddOn.Libs.LSM
@@ -182,7 +183,7 @@ function AddOn:OnInitialize()
 	local GameMenuButton = CreateFrame("Button", nil, GameMenuFrame, "GameMenuButtonTemplate")
 	GameMenuButton:SetText(format("|cfffe7b2c%s|r", AddOnName))
 	GameMenuButton:SetScript("OnClick", function()
-		AddOn:ToggleConfig()
+		AddOn:ToggleOptionsUI()
 		HideUIPanel(GameMenuFrame)
 	end)
 	GameMenuFrame[AddOnName] = GameMenuButton
@@ -214,14 +215,14 @@ LoadUI:SetScript("OnEvent", function()
 end)
 
 function AddOn:PLAYER_REGEN_ENABLED()
-	self:ToggleConfig()
+	self:ToggleOptionsUI()
 	self:UnregisterEvent('PLAYER_REGEN_ENABLED');
 end
 
 function AddOn:PLAYER_REGEN_DISABLED()
 	local err = false;
 
-	if IsAddOnLoaded("ElvUI_Config") then
+	if IsAddOnLoaded("ElvUI_OptionsUI") then
 		local ACD = self.Libs.AceConfigDialog
 		if ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName] then
 			self:RegisterEvent('PLAYER_REGEN_ENABLED');
@@ -292,26 +293,26 @@ function AddOn:ConfigStopMovingOrSizing()
 end
 
 local pageNodes = {}
-function AddOn:ToggleConfig(msg)
+function AddOn:ToggleOptionsUI(msg)
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return;
 	end
 
-	if not IsAddOnLoaded("ElvUI_Config") then
+	if not IsAddOnLoaded("ElvUI_OptionsUI") then
 		local noConfig
-		local _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
+		local _, _, _, _, reason = GetAddOnInfo("ElvUI_OptionsUI")
 		if reason ~= "MISSING" and reason ~= "DISABLED" then
 			self.GUIFrame = false
-			LoadAddOn("ElvUI_Config")
+			LoadAddOn("ElvUI_OptionsUI")
 
 			--For some reason, GetAddOnInfo reason is "DEMAND_LOADED" even if the addon is disabled.
 			--Workaround: Try to load addon and check if it is loaded right after.
-			if not IsAddOnLoaded("ElvUI_Config") then noConfig = true end
+			if not IsAddOnLoaded("ElvUI_OptionsUI") then noConfig = true end
 
-			-- version check elvui config if it's actually enabled
-			if (not noConfig) and GetAddOnMetadata("ElvUI_Config", "Version") ~= "1.06" then
+			-- version check elvui options if it's actually enabled
+			if (not noConfig) and GetAddOnMetadata("ElvUI_OptionsUI", "Version") ~= "1.06" then
 				self:StaticPopup_Show("CLIENT_UPDATE_REQUEST")
 			end
 		else
@@ -319,7 +320,7 @@ function AddOn:ToggleConfig(msg)
 		end
 
 		if noConfig then
-			self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found or is disabled.|r")
+			self:Print("|cffff0000Error -- Addon 'ElvUI_OptionsUI' not found or is disabled.|r")
 			return
 		end
 	end

@@ -780,6 +780,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[272388] = Defaults(), -- Shadow Barrage
 		[271640] = Defaults(), -- Dark Revelation
 		[268796] = Defaults(), -- Impaling Spear
+		[268419] = Defaults(), -- Gale Slash
 
 		--Motherlode
 		[263074] = Defaults(), -- Festering Bite
@@ -1079,6 +1080,7 @@ G.unitframe.buffwatch = {
 		[1044]   = ClassBuff(1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true),  -- Hand of Freedom
 		[6940]   = ClassBuff(6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true), -- Hand of Sacrifice
 		[223306] = ClassBuff(223306, 'BOTTOMLEFT', {0.7, 0.7, 0.3}),       -- Bestow Faith
+		[287280] = ClassBuff(287280, 'TOPLEFT', {0.2, 0.8, 0.2}),          -- Glimmer of Light (Artifact HoT)
 	},
 	SHAMAN = {
 		[61295]  = ClassBuff(61295, "TOPRIGHT", {0.7, 0.3, 0.7}),   	 -- Riptide

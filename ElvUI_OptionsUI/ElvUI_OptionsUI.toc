@@ -1,7 +1,7 @@
 ## Interface: 80100
 ## Author: Elv
 ## Version: 1.06
-## Title: |cfffe7b2cElvUI Config|r
+## Title: |cfffe7b2cElvUI OptionsUI|r
 ## Notes: Options for ElvUI.
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1

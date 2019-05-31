@@ -22,9 +22,6 @@ function UF:Construct_Portrait(frame, type)
 
 	portrait.PostUpdate = self.PortraitUpdate
 
-	portrait.overlay = CreateFrame("Frame", nil, frame)
-	portrait.overlay:SetFrameLevel(frame.Health:GetFrameLevel() + 5) --Set to "frame.Health:GetFrameLevel()" if you don't want portrait cut off.
-
 	return portrait
 end
 
@@ -47,28 +44,47 @@ function UF:Configure_Portrait(frame, dontHide)
 		portrait:ClearAllPoints()
 		portrait.backdrop:ClearAllPoints()
 		if frame.USE_PORTRAIT_OVERLAY then
-			if db.portrait.style == '3D' then
-				portrait:SetFrameLevel(frame.Health:GetFrameLevel())
-			else
+			if db.portrait.style == '2D' then
 				portrait:SetParent(frame.Health)
+			else
+				portrait:SetFrameLevel(frame.Health:GetFrameLevel())
 			end
 
-			portrait:SetAllPoints(frame.Health)
 			portrait:SetAlpha(0.35)
 			if not dontHide then
 				portrait:Show()
 			end
 			portrait.backdrop:Hide()
+
+			portrait:ClearAllPoints()
+			if db.portrait.fullOverlay then
+				portrait:SetAllPoints(frame.Health)
+			else
+				local healthTex = frame.Health:GetStatusBarTexture()
+				if db.health.reverseFill then
+					portrait:Point("TOPLEFT", healthTex, "TOPLEFT")
+					portrait:Point("BOTTOMLEFT", healthTex, "BOTTOMLEFT")
+					portrait:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT")
+				else
+					portrait:Point("TOPLEFT", frame.Health, "TOPLEFT")
+					portrait:Point("BOTTOMRIGHT", healthTex, "BOTTOMRIGHT")
+					portrait:Point("BOTTOMLEFT", healthTex, "BOTTOMLEFT")
+				end
+			end
 		else
+			portrait:ClearAllPoints()
+			portrait:SetAllPoints()
+
 			portrait:SetAlpha(1)
 			if not dontHide then
 				portrait:Show()
 			end
 			portrait.backdrop:Show()
-			if db.portrait.style == '3D' then
-				portrait:SetFrameLevel(frame.Health:GetFrameLevel() -4) --Make sure portrait is behind Health and Power
-			else
+
+			if db.portrait.style == '2D' then
 				portrait:SetParent(frame)
+			else
+				portrait:SetFrameLevel(frame.Health:GetFrameLevel())
 			end
 
 			if frame.ORIENTATION == "LEFT" then

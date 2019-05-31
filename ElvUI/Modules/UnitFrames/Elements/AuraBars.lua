@@ -18,6 +18,18 @@ local UnitIsUnit = UnitIsUnit
 local UnitCanAttack = UnitCanAttack
 -- GLOBALS: ElvUF_Player
 
+local function OnClick(self)
+	local mod = E.db.unitframe.auraBlacklistModifier
+	if mod == "NONE" or not ((mod == "SHIFT" and IsShiftKeyDown()) or (mod == "ALT" and IsAltKeyDown()) or (mod == "CTRL" and IsControlKeyDown())) then return end
+	local auraName = self:GetParent().aura.name
+
+	if auraName then
+		E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
+		E.global.unitframe.aurafilters.Blacklist.spells[auraName] = { enable = true, priority = 0 }
+		UF:Update_AllFrames()
+	end
+end
+
 function UF:Construct_AuraBars()
 	local bar = self.statusBar
 
@@ -45,16 +57,7 @@ function UF:Construct_AuraBars()
 	bar.bg:Show()
 
 	bar.iconHolder:RegisterForClicks('RightButtonUp')
-	bar.iconHolder:SetScript('OnClick', function(self)
-		if E.db.unitframe.auraBlacklistModifier == "NONE" or not ((E.db.unitframe.auraBlacklistModifier == "SHIFT" and IsShiftKeyDown()) or (E.db.unitframe.auraBlacklistModifier == "ALT" and IsAltKeyDown()) or (E.db.unitframe.auraBlacklistModifier == "CTRL" and IsControlKeyDown())) then return; end
-		local auraName = self:GetParent().aura.name
-
-		if auraName then
-			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
-			E.global.unitframe.aurafilters.Blacklist.spells[auraName] = { enable = true, priority = 0 }
-			UF:Update_AllFrames()
-		end
-	end)
+	bar.iconHolder:SetScript('OnClick', OnClick)
 end
 
 function UF:Construct_AuraBarHeader(frame)
@@ -271,25 +274,28 @@ function UF:ColorizeAuraBars()
 		local spellID = sb.aura.spellID
 		local colors = E.global.unitframe.AuraBarColors[spellID] or E.global.unitframe.AuraBarColors[tostring(spellID)] or E.global.unitframe.AuraBarColors[spellName]
 
+		sb.custom_backdrop = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop
 		if E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName]) and not colors and (spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)) then
 			colors = E.db.unitframe.colors.auraBarTurtleColor
 		end
 
-		if UF.db.colors.transparentAurabars and not sb.isTransparent then
-			UF:ToggleTransparentStatusBar(true, sb, sb.bg, nil, true)
-		elseif sb.isTransparent and not UF.db.colors.transparentAurabars then
-			UF:ToggleTransparentStatusBar(false, sb, sb.bg, nil, true)
-		elseif sb.bg then
-			local sbTexture = sb:GetStatusBarTexture()
-			if not sb.bg:GetTexture() then
-				UF:Update_StatusBar(sb.bg, sbTexture:GetTexture())
-			end
+		if sb.bg then
+			if (UF.db.colors.transparentAurabars and not sb.isTransparent) or (sb.isTransparent and (not UF.db.colors.transparentAurabars or sb.invertColors ~= UF.db.colors.invertAurabars)) then
+				UF:ToggleTransparentStatusBar(UF.db.colors.transparentAurabars, sb, sb.bg, nil, UF.db.colors.invertAurabars)
+			else
+				local sbTexture = sb:GetStatusBarTexture()
+				if not sb.bg:GetTexture() then UF:Update_StatusBar(sb.bg, sbTexture:GetTexture()) end
 
-			UF:SetStatusBarBackdropPoints(sb, sbTexture, sb.bg)
+				UF:SetStatusBarBackdropPoints(sb, sbTexture, sb.bg)
+			end
 		end
 
 		if colors then
-			UF.UpdateBackdropTextureColor(sb, colors.r, colors.g, colors.b)
+			sb:SetStatusBarColor(colors.r, colors.g, colors.b)
+
+			if not sb.hookedColor then
+				UF.UpdateBackdropTextureColor(sb, colors.r, colors.g, colors.b)
+			end
 		else
 			local r, g, b = sb:GetStatusBarColor()
 			UF.UpdateBackdropTextureColor(sb, r, g, b)

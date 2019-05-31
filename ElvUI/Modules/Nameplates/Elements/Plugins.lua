@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
--- Cache global variables
--- Lua functions
+local _G = _G
 local pairs, unpack = pairs, unpack
--- WoW API / Variables
 local CreateFrame = CreateFrame
 
 function NP:Construct_QuestIcons(nameplate)
@@ -219,7 +217,6 @@ function NP:Update_Fader(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if (not db.visibility) or db.visibility.showAlways then
-
 		if nameplate:IsElementEnabled('Fader') then
 			nameplate:DisableElement('Fader')
 
@@ -235,7 +232,7 @@ function NP:Update_Fader(nameplate)
 
 			nameplate.Fader:SetOption('MinAlpha', 0)
 			nameplate.Fader:SetOption('Smooth', 0.5)
-			nameplate.Fader:SetOption('Hover', true)
+			nameplate.Fader:SetOption('Hover', (nameplate == _G.ElvNP_Player and _G.ElvNP_StaticSecure) or true)
 			nameplate.Fader:SetOption('Power', true)
 			nameplate.Fader:SetOption('Health', true)
 			nameplate.Fader:SetOption('Casting', true)
@@ -249,20 +246,48 @@ function NP:Update_Fader(nameplate)
 	end
 end
 
---[[function NP:Construct_Cutaway(nameplate)
+function NP:Construct_Cutaway(nameplate)
 	local Cutaway = CreateFrame('Frame', nameplate:GetDebugName()..'Cutaway', nameplate)
 
 	Cutaway.Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'CutawayHealth', nameplate.Health)
-	Cutaway.Health:SetAllPoints()
+	if NP.db.cutaway.health.forceBlankTexture then
+		Cutaway.Health:SetStatusBarTexture(E.media.blankTex)
+	else
+		Cutaway.Health:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+		NP.StatusBars[Cutaway.Health] = true
+	end
 	Cutaway.Health:SetFrameLevel(4)
-	Cutaway.Health:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
-	NP.StatusBars[Cutaway.Health] = true
+	Cutaway.Health:SetAllPoints()
 
 	Cutaway.Power = CreateFrame('StatusBar', nameplate:GetDebugName()..'CutawayPower', nameplate.Power)
-	Cutaway.Power:SetAllPoints()
+	if NP.db.cutaway.power.forceBlankTexture then
+		Cutaway.Power:SetStatusBarTexture(E.media.blankTex)
+	else
+		Cutaway.Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+		NP.StatusBars[Cutaway.Power] = true
+	end
 	Cutaway.Power:SetFrameLevel(4)
-	Cutaway.Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
-	NP.StatusBars[Cutaway.Power] = true
+	Cutaway.Power:SetAllPoints()
 
 	return Cutaway
-end]]
+end
+
+function NP:Update_Cutaway(nameplate)
+	local eitherEnabled = NP.db.cutaway.health.enabled or NP.db.cutaway.power.enabled;
+	if not eitherEnabled then
+		if nameplate:IsElementEnabled('Cutaway') then
+			nameplate:DisableElement('Cutaway')
+		end
+	else
+		if not nameplate:IsElementEnabled('Cutaway') then
+			nameplate:EnableElement('Cutaway')
+		end
+		nameplate.Cutaway.Health.enabled = NP.db.cutaway.health.enabled
+		nameplate.Cutaway.Health.lengthBeforeFade = NP.db.cutaway.health.lengthBeforeFade
+		nameplate.Cutaway.Health.fadeOutTime = NP.db.cutaway.health.fadeOutTime
+
+		nameplate.Cutaway.Power.enabled = NP.db.cutaway.power.enabled
+		nameplate.Cutaway.Power.lengthBeforeFade = NP.db.cutaway.power.lengthBeforeFade
+		nameplate.Cutaway.Power.fadeOutTime = NP.db.cutaway.power.fadeOutTime
+	end
+end

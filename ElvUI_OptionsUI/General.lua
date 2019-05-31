@@ -61,7 +61,7 @@ E.Options.args.general = {
 				UIScale = {
 					order = 3,
 					type = "range",
-					name = L.UI_SCALE,
+					name = L["UI_SCALE"],
 					min = 0.1, max = 1.25, step = 0.00001,
 					softMin = 0.40, softMax = 1.15, bigStep = 0.01,
 					get = function(info) return E.global.general.UIScale end,
@@ -166,7 +166,7 @@ E.Options.args.general = {
 				locale = {
 					order = 14,
 					type = "select",
-					name = L.LANGUAGE,
+					name = L["LANGUAGE"],
 					get = function(info) return E.global.general.locale end,
 					set = function(info, value)
 						E.global.general.locale = value
@@ -180,7 +180,7 @@ E.Options.args.general = {
 						["ptBR"] = "Português",
 						["ruRU"] = "Русский",
 						["zhCN"] = "简体中文",
-						["zhTW"] = "繁体中文",
+						["zhTW"] = "正體中文",
 						["koKR"] = "한국어",
 					},
 				}
@@ -206,7 +206,7 @@ E.Options.args.general = {
 					args = {
 						fontSize = {
 							order = 1,
-							name = L.FONT_SIZE,
+							name = L["FONT_SIZE"],
 							desc = L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"],
 							type = "range",
 							min = 4, max = 32, step = 1,
@@ -256,7 +256,7 @@ E.Options.args.general = {
 							order = 7,
 							type = 'toggle',
 							name = L["Replace Blizzard Fonts"],
-							desc = L["Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI config. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default."],
+							desc = L["Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI Options. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default."],
 							get = function(info) return E.private.general[info[#info]] end,
 							set = function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
 						},
@@ -448,7 +448,7 @@ E.Options.args.general = {
 						['backdrop'] = L["Skin Backdrop"],
 						['nobackdrop'] = L["Remove Backdrop"],
 						['backdrop_noborder'] = L["Skin Backdrop (No Borders)"],
-						['disabled'] = L.DISABLE
+						['disabled'] = L["DISABLE"],
 					}
 				},
 				chatBubbleFont = {
@@ -461,7 +461,7 @@ E.Options.args.general = {
 				chatBubbleFontSize = {
 					order = 4,
 					type = "range",
-					name = L.FONT_SIZE,
+					name = L["FONT_SIZE"],
 					min = 4, max = 212, step = 1,
 				},
 				chatBubbleFontOutline = {
@@ -548,7 +548,7 @@ E.Options.args.general = {
 				},
 				textSize = {
 					order = 43,
-					name = L.FONT_SIZE,
+					name = L["FONT_SIZE"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 					set = function(info, value) E.db.general.threat.textSize = value; Threat:UpdatePosition() end,
@@ -633,7 +633,7 @@ E.Options.args.general = {
 						statusBarColor = {
 							type = 'color',
 							order = 4,
-							name = L.COLOR,
+							name = L["COLOR"],
 							disabled = function()
 								return E.db.general.altPowerBar.statusBarColorGradient
 							end,
@@ -671,7 +671,7 @@ E.Options.args.general = {
 						},
 						fontSize = {
 							order = 2,
-							name = L.FONT_SIZE,
+							name = L["FONT_SIZE"],
 							type = "range",
 							min = 6, max = 22, step = 1,
 						},
@@ -687,8 +687,8 @@ E.Options.args.general = {
 							name = L["Text Format"],
 							sortByValue = true,
 							values = {
-								NONE = L.NONE,
-								NAME = L.NAME,
+								NONE = L["NONE"],
+								NAME = L["NAME"],
 								NAMEPERC = L["Name: Percent"],
 								NAMECURMAX = L["Name: Current / Max"],
 								NAMECURMAXPERC = L["Name: Current / Max - Percent"],
@@ -752,7 +752,7 @@ E.Options.args.general = {
 				raidUtility = {
 					order = 6,
 					type = "toggle",
-					name = L.RAID_CONTROL,
+					name = L["RAID_CONTROL"],
 					desc = L["Enables the ElvUI Raid Control panel."],
 					get = function(info) return E.private.general.raidUtility end,
 					set = function(info, value) E.private.general.raidUtility = value; E:StaticPopup_Show("PRIVATE_RL") end
@@ -843,7 +843,7 @@ E.Options.args.general = {
 								itemLevelFontSize = {
 									order = 2,
 									type = "range",
-									name = L.FONT_SIZE,
+									name = L["FONT_SIZE"],
 									min = 4, max = 40, step = 1,
 								},
 								itemLevelFontOutline = {
@@ -876,12 +876,12 @@ E.Options.args.general = {
 					desc = L["Announce when you interrupt a spell to the specified chat channel."],
 					type = 'select',
 					values = {
-						['NONE'] = L.NONE,
-						['SAY'] = L.SAY,
+						['NONE'] = L["NONE"],
+						['SAY'] = L["SAY"],
 						['PARTY'] = L["Party Only"],
 						['RAID'] = L["Party / Raid"],
 						['RAID_ONLY'] = L["Raid Only"],
-						["EMOTE"] = L.CHAT_MSG_EMOTE,
+						["EMOTE"] = L["CHAT_MSG_EMOTE"],
 					},
 					set = function(info, value)
 						E.db.general[info[#info]] = value
@@ -898,9 +898,9 @@ E.Options.args.general = {
 					desc = L["Automatically repair using the following method when visiting a merchant."],
 					type = 'select',
 					values = {
-						['NONE'] = L.NONE,
-						['GUILD'] = L.GUILD,
-						['PLAYER'] = L.PLAYER,
+						['NONE'] = L["NONE"],
+						['GUILD'] = L["GUILD"],
+						['PLAYER'] = L["PLAYER"],
 					},
 				},
 				autoAcceptInvite = {

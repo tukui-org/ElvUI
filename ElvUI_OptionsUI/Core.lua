@@ -1,23 +1,30 @@
-local E = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AddOnName, Engine = ...
 
 Engine[1] = {}
-Engine[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
+Engine[2] = E.Libs.ACL:GetLocale("ElvUI", E.global.general.locale or "enUS")
 
 local C, L = Engine[1], Engine[2]
 
-C.Values = { FontFlags = { ['NONE'] = L.NONE, ['OUTLINE'] = 'OUTLINE', ['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE', ['THICKOUTLINE'] = 'THICKOUTLINE' } }
+C.Values = {
+	FontFlags = {
+		["NONE"] = L["NONE"],
+		["OUTLINE"] = "OUTLINE",
+		["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+		["THICKOUTLINE"] = "THICKOUTLINE"
+	}
+}
 
-local D = E:GetModule('Distributor')
+local D = E:GetModule("Distributor")
 local format = format
 local sort, tinsert = sort, tinsert
 
 local _G = _G
-E.Libs.AceGUI = _G.LibStub('AceGUI-3.0')
-E.Libs.AceConfig = _G.LibStub('AceConfig-3.0-ElvUI')
-E.Libs.AceConfigDialog = _G.LibStub('AceConfigDialog-3.0-ElvUI')
-E.Libs.AceConfigRegistry = _G.LibStub('AceConfigRegistry-3.0-ElvUI')
-E.Libs.AceDBOptions = _G.LibStub('AceDBOptions-3.0')
+E.Libs.AceGUI = _G.LibStub("AceGUI-3.0")
+E.Libs.AceConfig = _G.LibStub("AceConfig-3.0-ElvUI")
+E.Libs.AceConfigDialog = _G.LibStub("AceConfigDialog-3.0-ElvUI")
+E.Libs.AceConfigRegistry = _G.LibStub("AceConfigRegistry-3.0-ElvUI")
+E.Libs.AceDBOptions = _G.LibStub("AceDBOptions-3.0")
 
 local UnitName = UnitName
 local UnitExists = UnitExists
@@ -40,8 +47,8 @@ E.Options.args = {
 	ElvUI_Header = {
 		order = 1,
 		type = "header",
-		name = L["Version"]..format(": |cff99ff33%s|r",E.version),
-		width = "full",
+		name = L["Version"] .. format(": |cff99ff33%s|r", E.version),
+		width = "full"
 	},
 	RepositionWindow = {
 		order = 2,
@@ -61,22 +68,28 @@ E.Options.args = {
 					E.GUIFrame.obj:ApplyStatus()
 				end
 			end
-		end,
+		end
 	},
 	ToggleTutorial = {
 		order = 3,
-		type = 'execute',
+		type = "execute",
 		name = L["Toggle Tutorials"],
 		customWidth = 150,
-		func = function() E:Tutorials(true); E:ToggleConfig()  end,
+		func = function()
+			E:Tutorials(true)
+			E:ToggleOptionsUI()
+		end
 	},
 	Install = {
 		order = 4,
-		type = 'execute',
+		type = "execute",
 		name = L["Install"],
 		customWidth = 100,
 		desc = L["Run the installation process."],
-		func = function() E:Install(); E:ToggleConfig() end,
+		func = function()
+			E:Install()
+			E:ToggleOptionsUI()
+		end
 	},
 	ResetAllMovers = {
 		order = 5,
@@ -84,7 +97,9 @@ E.Options.args = {
 		name = L["Reset Anchors"],
 		customWidth = 150,
 		desc = L["Reset all frames to their original positions."],
-		func = function() E:ResetUI() end,
+		func = function()
+			E:ResetUI()
+		end
 	},
 	ToggleAnchors = {
 		order = 6,
@@ -92,16 +107,22 @@ E.Options.args = {
 		name = L["Toggle Anchors"],
 		customWidth = 150,
 		desc = L["Unlock various elements of the UI to be repositioned."],
-		func = function() E:ToggleConfigMode() end,
+		func = function()
+			E:ToggleMoveMode()
+		end
 	},
 	LoginMessage = {
 		order = 7,
-		type = 'toggle',
+		type = "toggle",
 		name = L["Login Message"],
 		customWidth = 150,
-		get = function(info) return E.db.general.loginmessage end,
-		set = function(info, value) E.db.general.loginmessage = value end,
-	},
+		get = function(info)
+			return E.db.general.loginmessage
+		end,
+		set = function(info, value)
+			E.db.general.loginmessage = value
+		end
+	}
 }
 
 local DONATOR_STRING = ""
@@ -157,9 +178,10 @@ local DEVELOPERS = {
 	"Omega1970",
 	"Hydrazine",
 	"Blazeflack",
+	"NihilisticPandemonium",
 	"|cffff7d0aMerathilis|r",
 	"|cFF8866ccSimpy|r",
-	"|cFF0070DEAzilroka|r",
+	"|cFF0070DEAzilroka|r"
 }
 
 local TESTERS = {
@@ -181,22 +203,25 @@ local TESTERS = {
 	"Catok"
 }
 
-sort(DONATORS, function(a,b) return a < b end) --Alphabetize
-for _, donatorName in pairs(DONATORS) do
-	tinsert(E.CreditsList, donatorName)
-	DONATOR_STRING = DONATOR_STRING..LINE_BREAK..donatorName
+local function SortList(a, b)
+	return a < b
 end
 
-sort(DEVELOPERS, function(a,b) return a < b end) --Alphabetize
-for _, devName in pairs(DEVELOPERS) do
-	tinsert(E.CreditsList, devName)
-	DEVELOPER_STRING = DEVELOPER_STRING..LINE_BREAK..devName
-end
+sort(DONATORS, SortList)
+sort(DEVELOPERS, SortList)
+sort(TESTERS, SortList)
 
-sort(TESTERS, function(a,b) return a < b end) --Alphabetize
-for _, testerName in pairs(TESTERS) do
-	tinsert(E.CreditsList, testerName)
-	TESTER_STRING = TESTER_STRING..LINE_BREAK..testerName
+for _, name in pairs(DONATORS) do
+	tinsert(E.CreditsList, name)
+	DONATOR_STRING = DONATOR_STRING .. LINE_BREAK .. name
+end
+for _, name in pairs(DEVELOPERS) do
+	tinsert(E.CreditsList, name)
+	DEVELOPER_STRING = DEVELOPER_STRING .. LINE_BREAK .. name
+end
+for _, name in pairs(TESTERS) do
+	tinsert(E.CreditsList, name)
+	TESTER_STRING = TESTER_STRING .. LINE_BREAK .. name
 end
 
 E.Options.args.credits = {
@@ -207,9 +232,13 @@ E.Options.args.credits = {
 		text = {
 			order = 1,
 			type = "description",
-			name = L["ELVUI_CREDITS"]..'\n\n'..L["Coding:"]..DEVELOPER_STRING..'\n\n'..L["Testing:"]..TESTER_STRING..'\n\n'..L["Donations:"]..DONATOR_STRING,
-		},
-	},
+			name =
+				L["ELVUI_CREDITS"] .. "\n\n" ..
+				L["Coding:"] .. DEVELOPER_STRING .. "\n\n" ..
+				L["Testing:"] .. TESTER_STRING .. "\n\n" ..
+				L["Donations:"] .. DONATOR_STRING
+		}
+	}
 }
 
 local profileTypeItems = {
@@ -217,24 +246,24 @@ local profileTypeItems = {
 	["private"] = L["Private (Character Settings)"],
 	["global"] = L["Global (Account Settings)"],
 	["filters"] = L["Aura Filters"],
-	["styleFilters"] = L["NamePlate Style Filters"],
+	["styleFilters"] = L["NamePlate Style Filters"]
 }
 local profileTypeListOrder = {
 	"profile",
 	"private",
 	"global",
 	"filters",
-	"styleFilters",
+	"styleFilters"
 }
 local exportTypeItems = {
 	["text"] = L["Text"],
 	["luaTable"] = L["Table"],
-	["luaPlugin"] = L["Plugin"],
+	["luaPlugin"] = L["Plugin"]
 }
 local exportTypeListOrder = {
 	"text",
 	"luaTable",
-	"luaPlugin",
+	"luaPlugin"
 }
 
 local exportString = ""
@@ -247,7 +276,7 @@ local function ExportImport_Open(mode)
 	Frame.frame:SetFrameStrata("FULLSCREEN_DIALOG")
 	Frame:SetLayout("flow")
 
-	local Box = E.Libs.AceGUI:Create("MultiLineEditBox");
+	local Box = E.Libs.AceGUI:Create("MultiLineEditBox")
 	Box:SetNumLines(30)
 	Box:DisableButton(true)
 	Box:SetWidth(800)
@@ -296,82 +325,99 @@ local function ExportImport_Open(mode)
 		exportButton:SetAutoWidth(true)
 		local function OnClick(self)
 			--Clear labels
-			Label1:SetText('')
-			Label2:SetText('')
+			Label1:SetText("")
+			Label2:SetText("")
 
 			local profileType, exportFormat = ProfileTypeDropdown:GetValue(), ExportFormatDropdown:GetValue()
 			local profileKey, profileExport = D:ExportProfile(profileType, exportFormat)
 			if not profileKey or not profileExport then
 				Label1:SetText(L["Error exporting profile!"])
 			else
-				Label1:SetText(format("%s: %s%s|r", L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType]))
+				Label1:SetText(
+					format("%s: %s%s|r", L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType])
+				)
 				if profileType == "profile" then
 					Label2:SetText(format("%s: %s%s|r", L["Profile Name"], E.media.hexvaluecolor, profileKey))
 				end
 			end
-			Box:SetText(profileExport);
-			Box.editBox:HighlightText();
-			Box:SetFocus();
+			Box:SetText(profileExport)
+			Box.editBox:HighlightText()
+			Box:SetFocus()
 			exportString = profileExport
 		end
 		exportButton:SetCallback("OnClick", OnClick)
 		Frame:AddChild(exportButton)
 
 		--Set scripts
-		Box.editBox:SetScript("OnChar", function() Box:SetText(exportString); Box.editBox:HighlightText(); end);
-		Box.editBox:SetScript("OnTextChanged", function(self, userInput)
-			if userInput then
-				--Prevent user from changing export string
+		Box.editBox:SetScript(
+			"OnChar",
+			function()
 				Box:SetText(exportString)
-				Box.editBox:HighlightText();
+				Box.editBox:HighlightText()
 			end
-		end)
+		)
+		Box.editBox:SetScript(
+			"OnTextChanged",
+			function(self, userInput)
+				if userInput then
+					--Prevent user from changing export string
+					Box:SetText(exportString)
+					Box.editBox:HighlightText()
+				end
+			end
+		)
 	elseif mode == "import" then
 		Frame:SetTitle(L["Import Profile"])
 		local importButton = E.Libs.AceGUI:Create("Button-ElvUI") --This version changes text color on SetDisabled
 		importButton:SetDisabled(true)
 		importButton:SetText(L["Import Now"])
 		importButton:SetAutoWidth(true)
-		importButton:SetCallback("OnClick", function()
-			--Clear labels
-			Label1:SetText('')
-			Label2:SetText('')
+		importButton:SetCallback(
+			"OnClick",
+			function()
+				--Clear labels
+				Label1:SetText("")
+				Label2:SetText("")
 
-			local text
-			local success = D:ImportProfile(Box:GetText())
-			if success then
-				text = L["Profile imported successfully!"]
-			else
-				text = L["Error decoding data. Import string may be corrupted!"]
+				local text
+				local success = D:ImportProfile(Box:GetText())
+				if success then
+					text = L["Profile imported successfully!"]
+				else
+					text = L["Error decoding data. Import string may be corrupted!"]
+				end
+				Label1:SetText(text)
 			end
-			Label1:SetText(text)
-		end)
+		)
 		Frame:AddChild(importButton)
 
 		local decodeButton = E.Libs.AceGUI:Create("Button-ElvUI")
 		decodeButton:SetDisabled(true)
 		decodeButton:SetText(L["Decode Text"])
 		decodeButton:SetAutoWidth(true)
-		decodeButton:SetCallback("OnClick", function()
-			--Clear labels
-			Label1:SetText('')
-			Label2:SetText('')
-			local decodedText
-			local profileType, profileKey, profileData = D:Decode(Box:GetText())
-			if profileData then
-				decodedText = E:TableToLuaString(profileData)
+		decodeButton:SetCallback(
+			"OnClick",
+			function()
+				--Clear labels
+				Label1:SetText("")
+				Label2:SetText("")
+				local decodedText
+				local profileType, profileKey, profileData = D:Decode(Box:GetText())
+				if profileData then
+					decodedText = E:TableToLuaString(profileData)
+				end
+				local importText = D:CreateProfileExport(decodedText, profileType, profileKey)
+				Box:SetText(importText)
 			end
-			local importText = D:CreateProfileExport(decodedText, profileType, profileKey)
-			Box:SetText(importText)
-		end)
+		)
 		Frame:AddChild(decodeButton)
 
 		local oldText = ""
 		local function OnTextChanged()
 			local text = Box:GetText()
 			if text == "" then
-				Label1:SetText('')
-				Label2:SetText('')
+				Label1:SetText("")
+				Label2:SetText("")
 				importButton:SetDisabled(true)
 				decodeButton:SetDisabled(true)
 			elseif oldText ~= text then
@@ -385,11 +431,13 @@ local function ExportImport_Open(mode)
 				local profileType, profileKey = D:Decode(text)
 				if not profileType or (profileType and profileType == "profile" and not profileKey) then
 					Label1:SetText(L["Error decoding data. Import string may be corrupted!"])
-					Label2:SetText('')
+					Label2:SetText("")
 					importButton:SetDisabled(true)
 					decodeButton:SetDisabled(true)
 				else
-					Label1:SetText(format("%s: %s%s|r", L["Importing"], E.media.hexvaluecolor, profileTypeItems[profileType] or ""))
+					Label1:SetText(
+						format("%s: %s%s|r", L["Importing"], E.media.hexvaluecolor, profileTypeItems[profileType] or "")
+					)
 					if profileType == "profile" then
 						Label2:SetText(format("%s: %s%s|r", L["Profile Name"], E.media.hexvaluecolor, profileKey))
 					end
@@ -406,37 +454,40 @@ local function ExportImport_Open(mode)
 
 		Box.editBox:SetFocus()
 		--Set scripts
-		Box.editBox:SetScript("OnChar", nil);
+		Box.editBox:SetScript("OnChar", nil)
 		Box.editBox:SetScript("OnTextChanged", OnTextChanged)
 	end
 
-	Frame:SetCallback("OnClose", function(widget)
-		--Restore changed scripts
-		Box.editBox:SetScript("OnChar", nil)
-		Box.editBox:SetScript("OnTextChanged", Box.editBox.OnTextChangedOrig)
-		Box.editBox:SetScript("OnCursorChanged", Box.editBox.OnCursorChangedOrig)
-		Box.editBox.OnTextChangedOrig = nil
-		Box.editBox.OnCursorChangedOrig = nil
+	Frame:SetCallback(
+		"OnClose",
+		function(widget)
+			--Restore changed scripts
+			Box.editBox:SetScript("OnChar", nil)
+			Box.editBox:SetScript("OnTextChanged", Box.editBox.OnTextChangedOrig)
+			Box.editBox:SetScript("OnCursorChanged", Box.editBox.OnCursorChangedOrig)
+			Box.editBox.OnTextChangedOrig = nil
+			Box.editBox.OnCursorChangedOrig = nil
 
-		--Clear stored export string
-		exportString = ""
+			--Clear stored export string
+			exportString = ""
 
-		E.Libs.AceGUI:Release(widget)
-		E.Libs.AceConfigDialog:Open("ElvUI")
-	end)
+			E.Libs.AceGUI:Release(widget)
+			E.Libs.AceConfigDialog:Open("ElvUI")
+		end
+	)
 
 	--Clear default text
-	Label1:SetText('')
-	Label2:SetText('')
+	Label1:SetText("")
+	Label2:SetText("")
 
-	--Close ElvUI Config
+	--Close ElvUI OptionsUI
 	E.Libs.AceConfigDialog:Close("ElvUI")
 
 	GameTooltip_Hide() --The tooltip from the Export/Import button stays on screen, so hide it
 end
 
 --Create Profiles Table
-E.Options.args.profiles = E.Libs.AceDBOptions:GetOptionsTable(E.data);
+E.Options.args.profiles = E.Libs.AceDBOptions:GetOptionsTable(E.data)
 E.Libs.AceConfig:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles)
 E.Options.args.profiles.order = -10
 
@@ -449,39 +500,42 @@ end
 E.Options.args.profiles.plugins.ElvUI = {
 	spacer = {
 		order = 89,
-		type = 'description',
-		name = '\n\n',
+		type = "description",
+		name = "\n\n"
 	},
 	desc = {
 		name = L["This feature will allow you to transfer settings to other characters."],
-		type = 'description',
-		order = 90,
+		type = "description",
+		order = 90
 	},
 	distributeProfile = {
 		name = L["Share Current Profile"],
 		desc = L["Sends your current profile to your target."],
-		type = 'execute',
+		type = "execute",
 		order = 91,
 		func = function()
-			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
+			if not UnitExists("target") or not UnitIsPlayer("target")
+			or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
 				E:Print(L["You must be targeting a player."])
 				return
 			end
+
 			local name, server = UnitName("target")
 			if name and (not server or server == "") then
 				D:Distribute(name)
 			elseif server then
 				D:Distribute(name, true)
 			end
-		end,
+		end
 	},
 	distributeGlobal = {
 		name = L["Share Filters"],
 		desc = L["Sends your filter settings to your target."],
-		type = 'execute',
+		type = "execute",
 		order = 92,
 		func = function()
-			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
+			if not UnitExists("target") or not UnitIsPlayer("target")
+			or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
 				E:Print(L["You must be targeting a player."])
 				return
 			end
@@ -492,23 +546,31 @@ E.Options.args.profiles.plugins.ElvUI = {
 			elseif server then
 				D:Distribute(name, true, true)
 			end
-		end,
+		end
 	},
 	spacer2 = {
 		order = 93,
-		type = 'description',
-		name = '',
+		type = "description",
+		name = ""
 	},
 	exportProfile = {
 		name = L["Export Profile"],
-		type = 'execute',
+		type = "execute",
 		order = 94,
-		func = function() ExportImport_Open("export") end,
+		func = function()
+			ExportImport_Open("export")
+		end
 	},
 	importProfile = {
 		name = L["Import Profile"],
-		type = 'execute',
+		type = "execute",
 		order = 95,
-		func = function() ExportImport_Open("import") end,
-	},
+		func = function()
+			ExportImport_Open("import")
+		end
+	}
 }
+
+if GetAddOnEnableState(nil, "ElvUI_Config") ~= 0 then
+	E:StaticPopup_Show("ELVUI_CONFIG_FOUND")
+end
