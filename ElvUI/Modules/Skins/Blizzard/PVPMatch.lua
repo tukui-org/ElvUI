@@ -14,9 +14,9 @@ local function LoadSkin()
 	-- Macro to show the PVPMatchScoreboard: /run PVPMatchScoreboard:Show()
 	local PVPMatchScoreboard = _G.PVPMatchScoreboard
 	PVPMatchScoreboard:StripTextures()
+	PVPMatchScoreboard:DisableDrawLayer("BORDER")
 	PVPMatchScoreboard:SetTemplate('Transparent')
 
-	--Inset. Monitor this, if it not hide too much
 	PVPMatchScoreboard.Content:StripTextures()
 
 	S:HandleScrollBar(PVPMatchScoreboard.Content.ScrollFrame.ScrollBar)
@@ -36,14 +36,15 @@ local function LoadSkin()
 	-- Macro to show the PVPMatchResults: /run PVPMatchResults:Show()
 	local PVPMatchResults = _G.PVPMatchResults
 	PVPMatchResults:StripTextures()
+	PVPMatchResults:DisableDrawLayer("BORDER")
 	PVPMatchResults:SetTemplate('Transparent')
 
-	--Inset. Monitor this, if it not hide too much
 	PVPMatchResults.content:StripTextures()
 	PVPMatchResults.content.tabContainer:StripTextures()
 
 	S:HandleScrollBar(PVPMatchResults.content.scrollFrame.scrollBar)
 	S:HandleCloseButton(PVPMatchResults.CloseButton)
+	S:HandleButton(PVPMatchResults.buttonContainer.leaveButton)
 
 	local tabs = {
 		PVPMatchResults.content.tabContainer.tabGroup.tab1,
