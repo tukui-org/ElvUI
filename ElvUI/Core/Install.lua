@@ -12,7 +12,6 @@ local tinsert = tinsert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local SetCVar = SetCVar
-local PlaySoundFile = PlaySoundFile
 local ReloadUI = ReloadUI
 local UIFrameFadeOut = UIFrameFadeOut
 local ChatFrame_AddMessageGroup = ChatFrame_AddMessageGroup
@@ -723,7 +722,6 @@ function E:Install()
 		imsg:Hide()
 		imsg:SetScript('OnShow', function(f)
 			if f.message then
-				PlaySoundFile([[Sound\Interface\LevelUp.wav]])
 				f.text:SetText(f.message)
 				UIFrameFadeOut(f, 3.5, 1, 0)
 				E:Delay(4, f.Hide, f)
