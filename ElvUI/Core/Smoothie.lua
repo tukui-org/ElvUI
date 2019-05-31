@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 -- Credit: ls- (lightspark)
 local abs, next, Lerp = abs, next, Lerp
+local tonumber, assert = tonumber, assert
 local activeObjects = {}
 local handledObjects = {}
 local TARGET_FPS = 60

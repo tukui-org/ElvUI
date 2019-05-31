@@ -204,7 +204,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 			elseif IsShiftKeyDown() then --Allow hiding a mover temporarily
 				self:Hide()
 			elseif self.configString then --OpenConfig
-				E:ToggleConfig(self.configString)
+				E:ToggleOptionsUI(self.configString)
 			end
 		end
 	end

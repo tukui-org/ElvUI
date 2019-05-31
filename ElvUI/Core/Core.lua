@@ -57,7 +57,6 @@ local GetAddOnEnableState = GetAddOnEnableState
 local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
-local WrapTextInColorCode = WrapTextInColorCode
 local UnitStat, UnitAttackPower = UnitStat, UnitAttackPower
 local hooksecurefunc = hooksecurefunc
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME

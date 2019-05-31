@@ -33,7 +33,7 @@ local function BuildABConfig()
 				order = 1,
 				type = "execute",
 				name = L["Keybind Mode"],
-				func = function() AB:ActivateBindMode(); E:ToggleConfig(); GameTooltip:Hide(); end,
+				func = function() AB:ActivateBindMode(); E:ToggleOptionsUI(); GameTooltip:Hide(); end,
 				disabled = function() return not E.private.actionbar.enable end,
 			},
 			spacer = {

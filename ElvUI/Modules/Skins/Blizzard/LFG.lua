@@ -72,6 +72,12 @@ local function SkinItemButton(parentFrame, _, index)
 			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
+		local r, g, b, a = item.IconBorder:GetVertexColor()
+		if r then
+			item.IconBorder:SetTexture()
+			item.backdrop:SetBackdropBorderColor(r, g, b, a)
+		end
+
 		item.Count:SetDrawLayer("OVERLAY")
 		item.Count:SetParent(item.backdrop)
 
@@ -107,6 +113,7 @@ end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
+
 
 	local PVEFrame = _G.PVEFrame
 	S:HandlePortraitFrame(PVEFrame, true)
@@ -186,7 +193,7 @@ local function LoadSkin()
 	_G.LFGDungeonReadyDialog.bottomArt:SetAlpha(0)
 	S:HandleCloseButton(_G.LFGDungeonReadyStatusCloseButton)
 
-	local roleButtons = {
+	local RoleButtons1 = {
 		_G.LFDQueueFrameRoleButtonHealer,
 		_G.LFDQueueFrameRoleButtonDPS,
 		_G.LFDQueueFrameRoleButtonLeader,
@@ -203,7 +210,7 @@ local function LoadSkin()
 		_G.LFGListApplicationDialog.DamagerButton,
 	}
 
-	for _, roleButton in pairs(roleButtons) do
+	for _, roleButton in pairs(RoleButtons1) do
 		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton, true)
 		roleButton:DisableDrawLayer("ARTWORK")
 		roleButton:DisableDrawLayer("OVERLAY")
@@ -408,21 +415,20 @@ local function LoadSkin()
 	S:HandleButton(_G.LFRQueueFrameFindGroupButton)
 	S:HandleButton(_G.LFRQueueFrameAcceptCommentButton)
 
+	local RoleButtons2 = {
+		_G.LFRQueueFrameRoleButtonHealer,
+		_G.LFRQueueFrameRoleButtonDPS,
+		_G.LFRQueueFrameRoleButtonTank,
+	}
+
 	S:HandleScrollBar(_G.LFRQueueFrameCommentScrollFrameScrollBar)
 	S:HandleScrollBar(_G.LFDQueueFrameSpecificListScrollFrameScrollBar)
 	_G.LFDQueueFrameSpecificListScrollFrame:StripTextures()
 	_G.RaidBrowserFrame:HookScript('OnShow', function()
 		if not _G.LFRQueueFrameSpecificListScrollFrameScrollBar.skinned then
 			S:HandleScrollBar(_G.LFRQueueFrameSpecificListScrollFrameScrollBar)
-
-			local RoleButtons = {
-				_G.LFRQueueFrameRoleButtonHealer,
-				_G.LFRQueueFrameRoleButtonDPS,
-				_G.LFRQueueFrameRoleButtonTank,
-			}
-
 			_G.LFRBrowseFrame:StripTextures()
-			for _, roleButton in pairs(RoleButtons) do
+			for _, roleButton in pairs(RoleButtons2) do
 				roleButton:SetNormalTexture("")
 				S:HandleCheckBox(roleButton.checkButton, nil, true)
 				roleButton:GetChildren():SetFrameLevel(roleButton:GetChildren():GetFrameLevel() + 1)
@@ -449,7 +455,7 @@ local function LoadSkin()
 					if texPath ~= nil then
 						self:SetTexture();
 					end
-				end	)
+				end)
 			end
 
 			for i=1, 7 do

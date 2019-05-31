@@ -16,8 +16,7 @@ local EditBox_ClearFocus = EditBox_ClearFocus
 local RESET = RESET
 -- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
 
-local grid
-local selectedValue = 'ALL'
+local selectedValue, grid = 'ALL'
 
 E.ConfigModeLayouts = {
 	'ALL',
@@ -56,7 +55,7 @@ function E:Grid_Hide()
 	end
 end
 
-function E:ToggleConfigMode(override, configType)
+function E:ToggleMoveMode(override, configType)
 	if InCombatLockdown() then return; end
 	if override ~= nil and override ~= '' then E.ConfigurationMode = override end
 
@@ -181,7 +180,7 @@ end
 
 local function ConfigMode_OnClick(self)
 	selectedValue = self.value
-	E:ToggleConfigMode(false, self.value)
+	E:ToggleMoveMode(false, self.value)
 	_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, self.value);
 end
 
@@ -291,7 +290,7 @@ function E:CreateMoverPopup()
 	_G[lock:GetName() .. "Text"]:SetText(L["Lock"])
 
 	lock:SetScript("OnClick", function()
-		E:ToggleConfigMode(true)
+		E:ToggleMoveMode(true)
 
 		if IsAddOnLoaded("ElvUI_OptionsUI") and E.Libs.AceConfigDialog then
 			E.Libs.AceConfigDialog:Open('ElvUI')
@@ -350,7 +349,7 @@ function E:CreateMoverPopup()
 		if mover:IsShown() then
 			mover:Hide()
 			E:Grid_Hide()
-			E:ToggleConfigMode(true)
+			E:ToggleMoveMode(true)
 		end
 	end)
 

@@ -40,9 +40,6 @@ function B:Initialize()
 		end
 	end)
 
-	-- Fix Guild Set Rank Error introduced in Patch 27326
-	_G.GuildControlUIRankSettingsFrameRosterLabel = CreateFrame("Frame", nil, E.HiddenFrame)
-
 	-- MicroButton Talent Alert
 	local TalentMicroButtonAlert = _G.TalentMicroButtonAlert
 	if TalentMicroButtonAlert then -- why do we need to check this?

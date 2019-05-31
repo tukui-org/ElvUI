@@ -183,7 +183,7 @@ function AddOn:OnInitialize()
 	local GameMenuButton = CreateFrame("Button", nil, GameMenuFrame, "GameMenuButtonTemplate")
 	GameMenuButton:SetText(format("|cfffe7b2c%s|r", AddOnName))
 	GameMenuButton:SetScript("OnClick", function()
-		AddOn:ToggleConfig()
+		AddOn:ToggleOptionsUI()
 		HideUIPanel(GameMenuFrame)
 	end)
 	GameMenuFrame[AddOnName] = GameMenuButton
@@ -215,7 +215,7 @@ LoadUI:SetScript("OnEvent", function()
 end)
 
 function AddOn:PLAYER_REGEN_ENABLED()
-	self:ToggleConfig()
+	self:ToggleOptionsUI()
 	self:UnregisterEvent('PLAYER_REGEN_ENABLED');
 end
 
@@ -293,7 +293,7 @@ function AddOn:ConfigStopMovingOrSizing()
 end
 
 local pageNodes = {}
-function AddOn:ToggleConfig(msg)
+function AddOn:ToggleOptionsUI(msg)
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')

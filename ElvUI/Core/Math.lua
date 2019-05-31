@@ -5,6 +5,7 @@ local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipair
 local select, tonumber, type, unpack = select, tonumber, type, unpack
 local atan2, modf, ceil, floor, abs, sqrt, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, mod
 local format, strsub, strupper, gsub, gmatch, utf8sub = format, strsub, strupper, gsub, gmatch, string.utf8sub
+local tostring, pairs = tostring, pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition

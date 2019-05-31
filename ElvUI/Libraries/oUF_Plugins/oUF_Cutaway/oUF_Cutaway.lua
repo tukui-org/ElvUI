@@ -1,6 +1,6 @@
 local _, ns = ...
 local oUF = oUF or ns.oUF
-assert(oUF, 'oUF_Cutaway was unable to locate oUF install.')
+assert(oUF, "oUF_Cutaway was unable to locate oUF install.")
 
 --[[
 	Configuration values for both health and power:
@@ -8,7 +8,6 @@ assert(oUF, 'oUF_Cutaway was unable to locate oUF install.')
 		.fadeOutTime: How long it takes the cutaway health to fade, defaults to 0.6 seconds
 		.lengthBeforeFade: How long it takes before the cutaway begins to fade, defaults to 0.3 seconds
 ]]
-
 -- GLOBALS: ElvUI
 
 local hooksecurefunc = hooksecurefunc
@@ -16,7 +15,7 @@ local UnitHealthMax = UnitHealthMax
 local UnitPowerMax = UnitPowerMax
 local UnitIsTapDenied = UnitIsTapDenied
 
-local E -- holder
+local E  -- holder
 local function closureFunc(self)
 	self.ready = nil
 	self.playing = nil
@@ -32,13 +31,17 @@ local function fadeClosure(element)
 		}
 	end
 
-	if not E then E = ElvUI[1] end
+	if not E then
+		E = ElvUI[1]
+	end
 	E:UIFrameFadeOut(element, element.fadeOutTime, 1, 0)
 end
 
 local function Health_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Health
-	if (not element.enabled or not self.cur) or element.ready or UnitIsTapDenied(unit) then return end
+	if (not element.enabled or not self.cur) or element.ready or UnitIsTapDenied(unit) then
+		return
+	end
 
 	element.cur = self.cur
 	element:SetValue(element.cur)
@@ -48,12 +51,16 @@ end
 
 local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	local element = self.__owner.Cutaway.Health
-	if (not element.ready or not element.cur) or element.playing then return end
+	if (not element.ready or not element.cur or not curHealth or not maxHealth) or element.playing then
+		return
+	end
 
 	if (element.cur - curHealth) > (maxHealth * 0.01) then
 		element:SetAlpha(1)
 
-		if not E then E = ElvUI[1] end
+		if not E then
+			E = ElvUI[1]
+		end
 		E:Delay(element.lengthBeforeFade, fadeClosure, element)
 
 		element.playing = true
@@ -70,7 +77,9 @@ end
 
 local function Power_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Power
-	if (not element.enabled or not self.cur) or element.ready then return end
+	if (not element.enabled or not self.cur) or element.ready then
+		return
+	end
 
 	element.cur = self.cur
 	element:SetValue(element.cur)
@@ -80,12 +89,16 @@ end
 
 local function Power_PostUpdate(self, unit, curPower, maxPower)
 	local element = self.__owner.Cutaway.Power
-	if (not element.ready or not element.cur) or element.playing then return end
+	if (not element.ready or not element.cur or not curPower or not maxPower) or element.playing then
+		return
+	end
 
 	if (element.cur - curPower) > (maxPower * 0.1) then
 		element:SetAlpha(1)
 
-		if not E then E = ElvUI[1] end
+		if not E then
+			E = ElvUI[1]
+		end
 		E:Delay(element.lengthBeforeFade, fadeClosure, element)
 
 		element.playing = true
