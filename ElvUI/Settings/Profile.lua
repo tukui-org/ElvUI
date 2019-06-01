@@ -1145,7 +1145,6 @@ P.nameplates = {
 			enable = true,
 			showTitle = true,
 			nameOnly = false,
-			showAlways = true,
 			portrait = {
 				enable = false,
 				position = 'RIGHT',

@@ -4479,8 +4479,9 @@ E.Options.args.nameplate = {
 									disabled = function() return not E.db.nameplates.visibility.showAll end,
 									get = function(info) return E.db.nameplates.visibility.friendly[info[#info]] end,
 									set = function(info, value) E.db.nameplates.visibility.friendly[info[#info]] = value;
-										NP:SetCVars();
-										NP:ConfigureAll() end,
+										NP:SetCVars()
+										NP:ConfigureAll()
+									end,
 									args = {
 										guardians = {
 											type = "toggle",
