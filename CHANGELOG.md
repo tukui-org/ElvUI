@@ -4,10 +4,10 @@
 
 
 **Bug Fixes:**  
-
+Fixed nameplate NPC visibility option always on after reload or login.  
 
 **Misc. Changes:**  
-
+Added skin support for Objective Tracker timer bars.  
 
 ___
 ### Version 11.12 [ May 31st 2019 ]
