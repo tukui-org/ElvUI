@@ -2274,9 +2274,9 @@ local function GetUnitSettings(unit, name)
 						max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalHeight or 20)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyHeight or 20)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyHeight or 20)
 							else
 								return 20
@@ -2413,9 +2413,9 @@ local function GetUnitSettings(unit, name)
 						max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalWidth or 250)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyWidth or 250)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyWidth or 250)
 							else
 								return 250
@@ -2432,9 +2432,9 @@ local function GetUnitSettings(unit, name)
 						max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalHeight or 20)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyHeight or 20)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyHeight or 20)
 							else
 								return 20
@@ -2601,9 +2601,9 @@ local function GetUnitSettings(unit, name)
 						max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalWidth or 250)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyWidth or 250)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyWidth or 250)
 							else
 								return 250
@@ -2620,9 +2620,9 @@ local function GetUnitSettings(unit, name)
 						max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalHeight or 20)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyHeight or 20)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyHeight or 20)
 							else
 								return 20
@@ -3734,9 +3734,9 @@ local function GetUnitSettings(unit, name)
 					max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalWidth or 250)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyWidth or 250)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyWidth or 250)
 							else
 								return 250
@@ -3754,9 +3754,9 @@ local function GetUnitSettings(unit, name)
 					max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalHeight or 20)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyHeight or 20)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyHeight or 20)
 							else
 								return 20
@@ -4479,8 +4479,9 @@ E.Options.args.nameplate = {
 									disabled = function() return not E.db.nameplates.visibility.showAll end,
 									get = function(info) return E.db.nameplates.visibility.friendly[info[#info]] end,
 									set = function(info, value) E.db.nameplates.visibility.friendly[info[#info]] = value;
-										NP:SetCVars();
-										NP:ConfigureAll() end,
+										NP:SetCVars()
+										NP:ConfigureAll()
+									end,
 									args = {
 										guardians = {
 											type = "toggle",

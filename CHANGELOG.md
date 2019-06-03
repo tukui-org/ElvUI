@@ -1,4 +1,16 @@
-### Version 11.12 [  ]
+### Version 11.13 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+Fixed nameplate NPC visibility option always on after reload or login.  
+
+**Misc. Changes:**  
+Added skin support for Objective Tracker timer bars.  
+
+___
+### Version 11.12 [ May 31st 2019 ]
 
 **Important Changes:**  
 ElvUI_Config has been renamed to ElvUI_OptionsUI.  
@@ -7,9 +19,9 @@ ElvUI_Config has been renamed to ElvUI_OptionsUI.
 Added options to invert the CastBar, AuraBars, and Power colors on UnitFrames status bars when in transparent mode; as well as added custom backdrop options for these status bars.  
 Added custom backdrop for ClassBars on UnitFrames.  
 Added nameplate friendly npc option "always show" this is used to toggle npc nameplates using blizzards setting; so that they can go into blizzard name-only mode.  
-Added Glimmer of Light to the Paladin BuffIndicator.  
-Addeed Gale Slash to RaidDebuffs.  
 Added new Tags, which allows transliteration. E.g. 'name:medium:translit'. For more tags, visit our Custom Tag Guide on our forum.  
+Added Glimmer of Light for Paladins to the BuffIndicator.  
+Added Gale Slash to RaidDebuffs.  
 
 **Bug Fixes:**  
 Fixed Style Filter Class Trigger. (#1310)  
@@ -17,9 +29,9 @@ Fixed error: attempt to index field 'CompactUnitFrameProfilesNewProfileDialog'. 
 Fixed double player nameplate when changing specific settings in the config. (#1316)  
 Fixed player nameplate not fading in when hovered.  
 Fixed the portrait and health backdrop bleeding on UnitFrames health when they fade on range, specifically for BuG.  
-Fixed error - StyleFilter 305: attempt to index locale 'auras' (a nil value).  
-Fixed error - StyleFilter 1071: attempt to index field 'cooldowns' (a nil value).  
-Fixed error - Nameplates 627: Attempt to access forbidden object from code tainted by an AddOn.  
+Fixed error: StyleFilter attempt to index locale 'auras' (a nil value).  
+Fixed error: StyleFilter attempt to index field 'cooldowns' (a nil value).  
+Fixed error: Nameplates attempt to access forbidden object from code tainted by an AddOn.  
 Fixed bind mode for extra action button.  
 Fixed skin for invite role check boxes.  
 Fixed Nameplates in stacking mode on initial login.  
