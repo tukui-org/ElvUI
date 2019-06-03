@@ -27,6 +27,7 @@ local function UpdateNames(self)
 	end
 end
 
+-- Maybe deprecated. Blizzards changes the Community Code every 3 builds -.-
 local function HandleRoleChecks(button, ...)
 	button:StripTextures()
 	button:DisableDrawLayer("ARTWORK")
@@ -164,19 +165,20 @@ local function LoadSkin()
 
 	-- GuildFinder Frame
 	CommunitiesFrame.GuildFinderFrame:StripTextures()
-	S:HandleDropDownBox(CommunitiesFrame.GuildFinderFrame.OptionsList.ClubFocusDropdown)
-	S:HandleDropDownBox(CommunitiesFrame.GuildFinderFrame.OptionsList.ClubSizeDropdown)
+	S:HandleButton(CommunitiesFrame.GuildFinderFrame.FindAGuildButton)
+	--S:HandleDropDownBox(CommunitiesFrame.GuildFinderFrame.OptionsList.ClubFocusDropdown)
+	--S:HandleDropDownBox(CommunitiesFrame.GuildFinderFrame.OptionsList.ClubSizeDropdown)
 
-	HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.TankRoleFrame, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-	HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.HealerRoleFrame, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-	HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.DpsRoleFrame, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+	--HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.TankRoleFrame, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+	--HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.HealerRoleFrame, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	--HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.DpsRoleFrame, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
 
-	S:HandleEditBox(CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox)
-	CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
-	CommunitiesFrame.GuildFinderFrame.OptionsList.Search:ClearAllPoints()
-	CommunitiesFrame.GuildFinderFrame.OptionsList.Search:SetPoint("TOP", CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 0, -3)
-	S:HandleButton(CommunitiesFrame.GuildFinderFrame.OptionsList.Search)
-	S:HandleButton(CommunitiesFrame.GuildFinderFrame.PendingClubs)
+	--S:HandleEditBox(CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox)
+	--CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
+	--CommunitiesFrame.GuildFinderFrame.OptionsList.Search:ClearAllPoints()
+	--CommunitiesFrame.GuildFinderFrame.OptionsList.Search:SetPoint("TOP", CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 0, -3)
+	--S:HandleButton(CommunitiesFrame.GuildFinderFrame.OptionsList.Search)
+	--S:HandleButton(CommunitiesFrame.GuildFinderFrame.PendingClubs)
 
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
