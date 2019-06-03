@@ -246,6 +246,8 @@ E.StyleFilterDefaults = {
 		},
 		isResting = false,
 		isPet = false,
+		isTapDenied = false,
+		isNotTapDenied = false,
 		-- combat
 		inCombat = false,
 		outOfCombat = false,
