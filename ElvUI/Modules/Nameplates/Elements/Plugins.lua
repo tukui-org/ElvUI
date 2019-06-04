@@ -4,6 +4,8 @@ local NP = E:GetModule('NamePlates')
 local _G = _G
 local pairs, unpack = pairs, unpack
 local CreateFrame = CreateFrame
+local GetCVar = GetCVar
+local GetCVarBool = GetCVarBool
 
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nameplate:GetDebugName()..'QuestIcons', nameplate)
@@ -216,7 +218,7 @@ end
 function NP:Update_Fader(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if (not db.visibility) or db.visibility.showAlways then
+	if (nameplate.frameType ~= 'PLAYER') or nameplate.frameType == 'PLAYER' and GetCVarBool('NameplatePersonalShowAlways') then
 		if nameplate:IsElementEnabled('Fader') then
 			nameplate:DisableElement('Fader')
 
@@ -238,9 +240,9 @@ function NP:Update_Fader(nameplate)
 			nameplate.Fader:SetOption('Casting', true)
 		end
 
-		nameplate.Fader:SetOption('PlayerTarget', db.visibility.showWithTarget)
-		nameplate.Fader:SetOption('Combat', db.visibility.showInCombat)
-		nameplate.Fader:SetOption('Delay', db.visibility.hideDelay)
+		nameplate.Fader:SetOption('PlayerTarget', GetCVarBool('NameplatePersonalShowWithTarget'))
+		nameplate.Fader:SetOption('Combat', GetCVarBool('NameplatePersonalShowInCombat'))
+		nameplate.Fader:SetOption('Delay', GetCVar('NameplatePersonalHideDelayAlpha'))
 
 		nameplate.Fader:ForceUpdate()
 	end

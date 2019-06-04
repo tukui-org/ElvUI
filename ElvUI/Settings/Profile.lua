@@ -452,23 +452,6 @@ P.nameplates = {
 		useThreatColor = true,
 		indicator = false,
 	},
-	visibility = {
-		showAll = true,
-		enemy = {
-			guardians = false,
-			minions = false,
-			minus = true,
-			pets = false,
-			totems = false,
-		},
-		friendly = {
-			guardians = false,
-			minions = false,
-			npcs = true,
-			pets = false,
-			totems = false,
-		},
-	},
 	cutaway =  {
 		health = {
 			enabled = false,
