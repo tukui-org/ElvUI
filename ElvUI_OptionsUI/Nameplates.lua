@@ -4488,6 +4488,7 @@ E.Options.args.nameplate = {
 									get = function(info) return GetCVarBool(info[#info]) end,
 									set = function(info, value)
 										SetCVar(info[#info], value == true and 1 or 0)
+										NP:SetCVars()
 										NP:ConfigureAll()
 									end,
 									args = {
@@ -4527,6 +4528,7 @@ E.Options.args.nameplate = {
 									get = function(info) return GetCVarBool(info[#info]) end,
 									set = function(info, value)
 										SetCVar(info[#info], value == true and 1 or 0)
+										NP:SetCVars()
 										NP:ConfigureAll()
 									end,
 									args = {
