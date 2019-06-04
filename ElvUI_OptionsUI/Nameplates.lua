@@ -4364,7 +4364,7 @@ E.Options.args.nameplate = {
 							desc = L["Percentage amount for vertical overlap of Nameplates."],
 							min = 0, max = 3, step = 0.1,
 							get = function() return tonumber(GetCVar('nameplateOverlapV')) end,
-							set = function(_, value) tonumber(SetCVar('nameplateOverlapV', value)) end,
+							set = function(_, value) SetCVar('nameplateOverlapV', value) end,
 						},
 						lowHealthThreshold = {
 							order = 8,
