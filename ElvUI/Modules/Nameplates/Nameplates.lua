@@ -108,6 +108,7 @@ function NP:SetCVars()
 
 	SetCVar('nameplateMaxDistance', NP.db.loadDistance)
 	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
+	SetCVar('nameplateOverlapV', NP.db.overlapV) -- Please check
 
 	SetCVar('NameplatePersonalShowAlways', NP.db.units.PLAYER.visibility.showAlways and 1 or 0)
 	SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
