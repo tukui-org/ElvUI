@@ -4311,9 +4311,11 @@ E.Options.args.nameplate = {
 							order = 1,
 							name = L["UNIT_NAMEPLATES_TYPES"],
 							desc = L["Set to either stack nameplates vertically or allow them to overlap."],
+							get = function() return tonumber(GetCVar('nameplateMotion')) end,
+							set = function(_, value) SetCVar('nameplateMotion', value) end,
 							values = {
-								['STACKED'] = L["UNIT_NAMEPLATES_TYPE_2"],
-								['OVERLAP'] = L["UNIT_NAMEPLATES_TYPE_1"],
+								[0] = L["UNIT_NAMEPLATES_TYPE_1"],
+								[1] = L["UNIT_NAMEPLATES_TYPE_2"],
 							},
 						},
 						showEnemyCombat = {

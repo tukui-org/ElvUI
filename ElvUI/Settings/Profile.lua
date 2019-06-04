@@ -438,7 +438,6 @@ P.nameplates = {
 	fontOutline = 'OUTLINE',
 	fontSize = 11,
 	lowHealthThreshold = 0.4,
-	motionType =  'STACKED',
 	nameColoredGlow = false,
 	showEnemyCombat = 'DISABLED',
 	showFriendlyCombat = 'DISABLED',
