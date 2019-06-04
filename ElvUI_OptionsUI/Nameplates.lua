@@ -17,6 +17,8 @@ local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
+local SetCVar = SetCVar
+local GetCVar = GetCVar
 
 local raidTargetIcon = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%s:0|t %s"
 local selectedNameplateFilter
@@ -4361,6 +4363,8 @@ E.Options.args.nameplate = {
 							name = L["Overlap Vertical"],
 							desc = L["Percentage amount for vertical overlap of Nameplates."],
 							min = 0, max = 3, step = 0.1,
+							get = function() return tonumber(GetCVar('nameplateOverlapV')) end,
+							set = function(_, value) tonumber(SetCVar('nameplateOverlapV', value)) end,
 						},
 						lowHealthThreshold = {
 							order = 8,

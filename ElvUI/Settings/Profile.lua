@@ -438,7 +438,6 @@ P.nameplates = {
 	fontOutline = 'OUTLINE',
 	fontSize = 11,
 	loadDistance = 40,
-	overlapV = 1.1,
 	lowHealthThreshold = 0.4,
 	motionType =  'STACKED',
 	nameColoredGlow = false,
