@@ -662,8 +662,8 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Unit Tap Denied
 	if trigger.isTapDenied or trigger.isNotTapDenied then
-		local isTapDenied = UnitIsTapDenied(frame.unit)
-		if (trigger.isTapDenied and isTapDenied) or (trigger.isNotTapDenied and not isTapDenied) then passed = true else return end
+		local tapDenied = UnitIsTapDenied(frame.unit)
+		if (trigger.isTapDenied and tapDenied) or (trigger.isNotTapDenied and not tapDenied) then passed = true else return end
 	end
 
 	-- Player Vehicle
@@ -1028,7 +1028,7 @@ function mod:StyleFilterConfigure()
 				end
 
 				if t.isTapDenied or t.isNotTapDenied then
-					mod.StyleFilterTriggerEvents.UNIT_FLAGS = 1
+					mod.StyleFilterTriggerEvents.UNIT_FLAGS = true
 				end
 
 				if t.raidTarget then
