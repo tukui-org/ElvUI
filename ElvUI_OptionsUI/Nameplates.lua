@@ -4366,8 +4366,17 @@ E.Options.args.nameplate = {
 							get = function() return tonumber(GetCVar('nameplateOverlapV')) end,
 							set = function(_, value) SetCVar('nameplateOverlapV', value) end,
 						},
-						lowHealthThreshold = {
+						overlapH = {
 							order = 8,
+							type = "range",
+							name = L["Overlap Horizontal"],
+							desc = L["Percentage amount for horizontal overlap of Nameplates."],
+							min = 0, max = 3, step = 0.1,
+							get = function() return tonumber(GetCVar('nameplateOverlapH')) end,
+							set = function(_, value) SetCVar('nameplateOverlapH', value) end,
+						},
+						lowHealthThreshold = {
+							order = 9,
 							name = L["Low Health Threshold"],
 							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
 							type = "range",
@@ -4375,30 +4384,30 @@ E.Options.args.nameplate = {
 							min = 0, softMax = 0.5, max = 0.8, step = 0.01,
 						},
 						spacer1 = {
-							order = 9,
+							order = 10,
 							type = 'description',
 							name = ' ',
 							width = 'full'
 						},
 						highlight = {
-							order = 10,
+							order = 11,
 							type = "toggle",
 							name = L["Hover Highlight"],
 						},
 						fadeIn = {
-							order = 11,
+							order = 12,
 							type = "toggle",
 							name = L["Alpha Fading"],
 						},
 						smoothbars = {
 							type = 'toggle',
-							order = 12,
+							order = 13,
 							name = L["Smooth Bars"],
 							desc = L["Bars will transition smoothly."],
 							set = function(info, value) E.db.nameplates[info[#info]] = value; NP:ConfigureAll(); end,
 						},
 						clampToScreen = {
-							order = 13,
+							order = 14,
 							type = "toggle",
 							name = L["Clamp Nameplates"],
 							desc = L["Clamp nameplates to the top of the screen when outside of view."],
