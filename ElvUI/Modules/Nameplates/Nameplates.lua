@@ -107,7 +107,19 @@ function NP:SetCVars()
 		SetCVar('nameplateOtherBottomInset', -1)
 	end
 
+	-- the order of these is important !!
+	SetCVar('nameplateShowAll', GetCVar('nameplateShowAll'))
 	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition or not NP.db.units.PLAYER.enable) and 0 or 1)
+	SetCVar('nameplateShowEnemyMinions', GetCVar('nameplateShowEnemyMinions'))
+	SetCVar('nameplateShowEnemyGuardians', GetCVar('nameplateShowEnemyGuardians'))
+	SetCVar('nameplateShowEnemyMinus', GetCVar('nameplateShowEnemyMinus'))
+	SetCVar('nameplateShowEnemyPets', GetCVar('nameplateShowEnemyPets'))
+	SetCVar('nameplateShowEnemyTotems', GetCVar('nameplateShowEnemyTotems'))
+	SetCVar('nameplateShowFriendlyMinions', GetCVar('nameplateShowFriendlyMinions'))
+	SetCVar('nameplateShowFriendlyGuardians', GetCVar('nameplateShowFriendlyGuardians'))
+	SetCVar('nameplateShowFriendlyNPCs', GetCVar('nameplateShowFriendlyNPCs'))
+	SetCVar('nameplateShowFriendlyPets', GetCVar('nameplateShowFriendlyPets'))
+	SetCVar('nameplateShowFriendlyTotems', GetCVar('nameplateShowFriendlyTotems'))
 end
 
 function NP:PLAYER_REGEN_DISABLED()
