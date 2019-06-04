@@ -4356,6 +4356,8 @@ E.Options.args.nameplate = {
 							name = L["Load Distance"],
 							desc = L["Only load nameplates for units within this range."],
 							min = 10, max = 100, step = 1,
+							get = function() return tonumber(GetCVar('nameplateMaxDistance')) end,
+							set = function(_, value) SetCVar('nameplateMaxDistance', value) end,
 						},
 						overlapV = {
 							order = 7,
