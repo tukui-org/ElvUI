@@ -4360,7 +4360,6 @@ E.Options.args.nameplate = {
 							type = "range",
 							name = L["Overlap Vertical"],
 							desc = L["Percentage amount for vertical overlap of Nameplates."],
-							isPercent = true,
 							min = 0, max = 3, step = 0.1,
 						},
 						lowHealthThreshold = {
