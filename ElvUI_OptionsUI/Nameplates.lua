@@ -17,8 +17,9 @@ local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
-local SetCVar = SetCVar
 local GetCVar = GetCVar
+local GetCVarBool = GetCVarBool
+local SetCVar = SetCVar
 
 local raidTargetIcon = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%s:0|t %s"
 local selectedNameplateFilter
