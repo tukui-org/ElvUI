@@ -5425,34 +5425,36 @@ for i = 1, 6 do
 	}
 end
 
--- E.Options.args.tagGroup = {
--- 	order = 925,
--- 	type = "group",
--- 	name = L["Available Tags"],
--- 	args = {}
--- }
+--[=[
+E.Options.args.tagGroup = {
+	order = 925,
+	type = "group",
+	name = L["Available Tags"],
+	args = {}
+}
 
--- for Tag in next, E.oUF.Tags.Methods do
--- 	E.Options.args.tagGroup.args[Tag] = {
--- 		type = 'description',
--- 		fontSize = 'medium',
--- 		name = Tag,
--- 	}
--- end
+for Tag in next, E.oUF.Tags.Methods do
+	E.Options.args.tagGroup.args[Tag] = {
+		type = 'description',
+		fontSize = 'medium',
+		name = Tag,
+	}
+end
 
--- E.Options.args.EventTrace = {
--- 	order = -50,
--- 	type = "group",
--- 	name = L["Event Trace"],
--- 	args = {}
--- }
+E.Options.args.EventTrace = {
+	order = -50,
+	type = "group",
+	name = L["Event Trace"],
+	args = {}
+}
 
--- local Frame = CreateFrame('Frame')
--- Frame:RegisterAllEvents()
--- Frame:SetScript('OnEvent', function(self, event, ...)
--- 	E.Options.args.EventTrace.args[event] = {
--- 		type = 'description',
--- 		fontSize = 'medium',
--- 		name = event,
--- 	}
--- end)
+local Frame = CreateFrame('Frame')
+Frame:RegisterAllEvents()
+Frame:SetScript('OnEvent', function(self, event, ...)
+	E.Options.args.EventTrace.args[event] = {
+		type = 'description',
+		fontSize = 'medium',
+		name = event,
+	}
+end)
+]=]
