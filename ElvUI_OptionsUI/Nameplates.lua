@@ -19,7 +19,6 @@ local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
 local SetCVar = SetCVar
 local GetCVar = GetCVar
-local GetCVarBool = GetCVarBool
 
 local raidTargetIcon = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%s:0|t %s"
 local selectedNameplateFilter
@@ -4312,11 +4311,9 @@ E.Options.args.nameplate = {
 							order = 1,
 							name = L["UNIT_NAMEPLATES_TYPES"],
 							desc = L["Set to either stack nameplates vertically or allow them to overlap."],
-							get = function() return tonumber(GetCVar('nameplateMotion')) end,
-							set = function(_, value) SetCVar('nameplateMotion', value) end,
 							values = {
-								[0] = L["UNIT_NAMEPLATES_TYPE_1"],
-								[1] = L["UNIT_NAMEPLATES_TYPE_2"],
+								['STACKED'] = L["UNIT_NAMEPLATES_TYPE_2"],
+								['OVERLAP'] = L["UNIT_NAMEPLATES_TYPE_1"],
 							},
 						},
 						showEnemyCombat = {
@@ -4359,8 +4356,6 @@ E.Options.args.nameplate = {
 							name = L["Load Distance"],
 							desc = L["Only load nameplates for units within this range."],
 							min = 10, max = 100, step = 1,
-							get = function() return tonumber(GetCVar('nameplateMaxDistance')) end,
-							set = function(_, value) SetCVar('nameplateMaxDistance', value) end,
 						},
 						overlapV = {
 							order = 7,
@@ -4437,45 +4432,44 @@ E.Options.args.nameplate = {
 									customWidth = 250,
 									name = L["UNIT_NAMEPLATES_AUTOMODE"],
 									desc = L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."],
-									get = function() return GetCVarBool('nameplateShowAll') end,
-									set = function(info, value) SetCVar('nameplateShowAll', value == true and 1 or 0) NP:ConfigureAll() end,
+									get = function(info) return E.db.nameplates.visibility.showAll end,
+									set = function(info, value) E.db.nameplates.visibility.showAll = value; NP:SetCVars() NP:ConfigureAll() end,
 								},
 								showAlways = {
 									order = 1,
 									type = "toggle",
 									name = L["Always Show Player"],
-									get = function(info) return GetCVarBool('NameplatePersonalShowAlways') end,
-									set = function(_, value) SetCVar('NameplatePersonalShowAlways', value == true and 1 or 0) NP:ConfigureAll() end,
+									disabled = function() return not E.db.nameplates.units.PLAYER.enable end,
+									get = function(info) return E.db.nameplates.units.PLAYER.visibility.showAlways end,
+									set = function(info, value) E.db.nameplates.units.PLAYER.visibility.showAlways = value; NP:SetCVars() NP:ConfigureAll() end,
 								},
 								playerVisibility = {
 									order = 2,
 									type = "group",
 									guiInline = true,
 									name = L["Player"],
-									disabled = function() return GetCVarBool('NameplatePersonalShowAlways') end,
+									get = function(info) return E.db.nameplates.units.PLAYER.visibility[info[#info]] end,
+									set = function(info, value) E.db.nameplates.units.PLAYER.visibility[info[#info]] = value; NP:SetCVars(); NP:ConfigureAll() end,
 									args = {
 										showInCombat = {
 											order = 2,
 											type = "toggle",
 											name = L["Show In Combat"],
-											get = function(info) return GetCVarBool('NameplatePersonalShowInCombat') end,
-											set = function(_, value) SetCVar('NameplatePersonalShowInCombat', value == true and 1 or 0) NP:ConfigureAll() end,
+											disabled = function() return not E.db.nameplates.units.PLAYER.enable or E.db.nameplates.units.PLAYER.visibility.showAlways end,
 										},
 										showWithTarget = {
 											order = 2,
 											type = "toggle",
 											name = L["Show With Target"],
 											desc = L["When using Static Position, this option also requires the target to be attackable."],
-											get = function(info) return GetCVarBool('NameplatePersonalShowWithTarget') end,
-											set = function(_, value) SetCVar('NameplatePersonalShowWithTarget', value == true and 1 or 0) NP:ConfigureAll() end,
+											disabled = function() return not E.db.nameplates.units.PLAYER.enable or E.db.nameplates.units.PLAYER.visibility.showAlways end,
 										},
 										hideDelay = {
 											order = 4,
 											type = "range",
 											name = L["Hide Delay"],
 											min = 0, max = 20, step = 1,
-											get = function(info) return tonumber(GetCVar('NameplatePersonalHideDelayAlpha')) end,
-											set = function(_, value) SetCVar('NameplatePersonalHideDelayAlpha', value) NP:ConfigureAll() end,
+											disabled = function() return not E.db.nameplates.units.PLAYER.enable or E.db.nameplates.units.PLAYER.visibility.showAlways end,
 										},
 									},
 								},
@@ -4484,35 +4478,33 @@ E.Options.args.nameplate = {
 									order = 3,
 									guiInline = true,
 									name = L["Enemy"],
-									disabled = function() return not GetCVarBool('nameplateShowAll') end,
-									get = function(info) return GetCVarBool(info[#info]) end,
-									set = function(info, value)
-										SetCVar(info[#info], value == true and 1 or 0)
-										NP:SetCVars()
-										NP:ConfigureAll()
-									end,
+									disabled = function() return not E.db.nameplates.visibility.showAll end,
+									get = function(info) return E.db.nameplates.visibility.enemy[info[#info]] end,
+									set = function(info, value) E.db.nameplates.visibility.enemy[info[#info]] = value;
+										NP:SetCVars();
+										NP:ConfigureAll() end,
 									args = {
-										nameplateShowEnemyGuardians = {
+										guardians = {
 											type = "toggle",
 											order = 1,
 											name = L["Guardians"],
 										},
-										nameplateShowEnemyMinions = {
+										minions = {
 											type = "toggle",
 											order = 2,
 											name = L["Minions"],
 										},
-										nameplateShowEnemyMinus = {
+										minus = {
 											type = "toggle",
 											order = 3,
 											name = L["Minus"],
 										},
-										nameplateShowEnemyPets = {
+										pets = {
 											type = "toggle",
 											order = 4,
 											name = L["Pets"],
 										},
-										nameplateShowEnemyTotems = {
+										totems = {
 											type = "toggle",
 											order = 5,
 											name = L["Totems"],
@@ -4524,35 +4516,34 @@ E.Options.args.nameplate = {
 									order = 4,
 									guiInline = true,
 									name = L["Friendly"],
-									disabled = function() return not GetCVarBool('nameplateShowAll') end,
-									get = function(info) return GetCVarBool(info[#info]) end,
-									set = function(info, value)
-										SetCVar(info[#info], value == true and 1 or 0)
+									disabled = function() return not E.db.nameplates.visibility.showAll end,
+									get = function(info) return E.db.nameplates.visibility.friendly[info[#info]] end,
+									set = function(info, value) E.db.nameplates.visibility.friendly[info[#info]] = value;
 										NP:SetCVars()
 										NP:ConfigureAll()
 									end,
 									args = {
-										nameplateShowFriendlyGuardians = {
+										guardians = {
 											type = "toggle",
 											order = 1,
 											name = L["Guardians"],
 										},
-										nameplateShowFriendlyMinions = {
+										minions = {
 											type = "toggle",
 											order = 2,
 											name = L["Minions"],
 										},
-										nameplateShowFriendlyNPCs = {
+										npcs = {
 											type = "toggle",
 											order = 3,
 											name = L["NPC"],
 										},
-										nameplateShowFriendlyPets = {
+										pets = {
 											type = "toggle",
 											order = 4,
 											name = L["Pets"],
 										},
-										nameplateShowFriendlyTotems = {
+										totems = {
 											type = "toggle",
 											order = 5,
 											name = L["Totems"],

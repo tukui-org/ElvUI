@@ -437,7 +437,9 @@ P.nameplates = {
 	font = 'PT Sans Narrow',
 	fontOutline = 'OUTLINE',
 	fontSize = 11,
+	loadDistance = 40,
 	lowHealthThreshold = 0.4,
+	motionType =  'STACKED',
 	nameColoredGlow = false,
 	showEnemyCombat = 'DISABLED',
 	showFriendlyCombat = 'DISABLED',
@@ -451,6 +453,23 @@ P.nameplates = {
 		badScale = 1.2,
 		useThreatColor = true,
 		indicator = false,
+	},
+	visibility = {
+		showAll = true,
+		enemy = {
+			guardians = false,
+			minions = false,
+			minus = true,
+			pets = false,
+			totems = false,
+		},
+		friendly = {
+			guardians = false,
+			minions = false,
+			npcs = true,
+			pets = false,
+			totems = false,
+		},
 	},
 	cutaway =  {
 		health = {
