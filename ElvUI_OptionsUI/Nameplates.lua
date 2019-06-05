@@ -4381,7 +4381,7 @@ E.Options.args.nameplate = {
 							name = L["Nameplate at Base"],
 							desc = L["Position other Nameplates at the base, rather than overhead."],
 							get = function() return GetCVarBool('nameplateOtherAtBase') end,
-							set = function(_, value) SetCVar('nameplateOtherAtBase', value == true and 2 or 0) end,
+							set = function(_, value) SetCVar('nameplateOtherAtBase', value and 2 or 0) end,
 						},
 						lowHealthThreshold = {
 							order = 10,
