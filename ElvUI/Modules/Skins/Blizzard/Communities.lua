@@ -347,7 +347,9 @@ local function LoadSkin()
 		_G[frame]:StripTextures()
 	end
 
-	hooksecurefunc("GuildNewsButton_SetNews", function(button)
+	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoMOTDScrollFrameScrollBar)
+
+	hooksecurefunc("CommunitiesGuildNewsButton_SetNews", function(button)
 		if button.header:IsShown() then
 			button.header:SetAlpha(0)
 		end

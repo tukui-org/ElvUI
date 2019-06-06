@@ -1,7 +1,8 @@
 ### Version 11.13 [  ]
 
 **New Additions:**  
-
+Added option to change the vertical/horizontal overlap of the Nameplates.  
+Added option to change the Nameplate position: 'Nameplate at Base'.  
 
 **Bug Fixes:**  
 Fixed nameplate NPC visibility option always on after reload or login.  
