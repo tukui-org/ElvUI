@@ -19,6 +19,9 @@ local function LoadSkin()
 	AzeriteEssenceUI.PowerLevelBadgeFrame.Ring:Hide()
 	AzeriteEssenceUI.PowerLevelBadgeFrame.BackgroundBlack:Hide()
 
+	AzeriteEssenceUI.OrbBackground:SetAllPoints(AzeriteEssenceUI.ItemModelScene)
+	AzeriteEssenceUI.OrbRing:SetSize(483, 480)
+
 	S:HandlePortraitFrame(AzeriteEssenceUI, true)
 	S:HandleScrollBar(AzeriteEssenceUI.EssenceList.ScrollBar)
 
