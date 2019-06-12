@@ -6,6 +6,7 @@ local _G = _G
 local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 --WoW API / Variables
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
+local C_GuildInfo_GetGuildNewsInfo = C_GuildInfo.GetGuildNewsInfo
 local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -349,9 +350,12 @@ local function LoadSkin()
 
 	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoMOTDScrollFrameScrollBar)
 
-	hooksecurefunc("CommunitiesGuildNewsButton_SetNews", function(button)
-		if button.header:IsShown() then
-			button.header:SetAlpha(0)
+	hooksecurefunc("GuildNewsButton_SetNews", function(button, news_id)
+		local newsInfo = C_GuildInfo_GetGuildNewsInfo(news_id)
+		if newsInfo then
+			if button.header:IsShown() then
+				button.header:SetAlpha(0)
+			end
 		end
 	end)
 
