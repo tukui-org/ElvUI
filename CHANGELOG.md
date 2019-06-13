@@ -3,6 +3,7 @@
 **New Additions:**  
 Added option to change the vertical/horizontal overlap of the Nameplates.  
 Added option to change the Nameplate position: 'Nameplate at Base'.  
+[Style Filter] Added Triggers- Unit Is Tap Denied, Unit is Not Tap Denied (!169).  
 
 **Bug Fixes:**  
 Fixed nameplate NPC visibility option always on after reload or login.  
