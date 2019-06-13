@@ -3,12 +3,15 @@
 **New Additions:**  
 Added option to change the vertical/horizontal overlap of the Nameplates.  
 Added option to change the Nameplate position: 'Nameplate at Base'.  
+[Style Filter] Added Triggers- Unit Is Tap Denied, Unit is Not Tap Denied. (!169)  
 
 **Bug Fixes:**  
 Fixed nameplate NPC visibility option always on after reload or login.  
 
 **Misc. Changes:**  
 Added skin support for Objective Tracker timer bars.  
+Skinned a missing Scrollbar for the GMOTD on the CommunitiesFrame.  
+Prevented right-aligned Ace3 dropdowns (and SharedMedia dropdowns) cutting off when the text is wider than the box. (!171)  
 
 ___
 ### Version 11.12 [ May 31st 2019 ]
