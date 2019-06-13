@@ -373,8 +373,11 @@ end
 -------------------------------------------------------------
 local function PostUpdateRunes(self)
 	local useRunes = not UnitHasVehicleUI('player')
-	self:SetShown(useRunes)
-	UF.PostVisibilityRunes(self, useRunes)
+	if useRunes then
+		self:Show()
+	else
+		self:Hide()
+	end
 end
 
 function UF:Construct_DeathKnightResourceBar(frame)
