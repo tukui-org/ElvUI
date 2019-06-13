@@ -10,6 +10,9 @@ Fixed nameplate NPC visibility option always on after reload or login.
 
 **Misc. Changes:**  
 Added skin support for Objective Tracker timer bars.  
+Skinned a missing Scrollbar for the GMOTD on the CommunitiesFrame.  
+Prevented right-aligned Ace3 dropdowns (and SharedMedia dropdowns) cutting off when the text is wider than the box.  
+
 
 ___
 ### Version 11.12 [ May 31st 2019 ]
