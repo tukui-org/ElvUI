@@ -7,6 +7,7 @@ Added option to change the Nameplate position: 'Nameplate at Base'.
 
 **Bug Fixes:**  
 Fixed nameplate NPC visibility option always on after reload or login.  
+Fixed an issue with DK runes after vehicle exit. (#1280)  
 
 **Misc. Changes:**  
 Added skin support for Objective Tracker timer bars.  
