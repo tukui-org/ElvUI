@@ -853,9 +853,6 @@ local function Tag(self, fs, tagstr, ...)
 		self:Untag(fs)
 	end
 
-	fs.parent = self
-	fs.UpdateTag = getTagFunc(tagstr)
-
 	-- ElvUI
 	for escapeSequence, replacement in next, escapeSequences do
 		while tagstr:find(escapeSequence) do
@@ -889,6 +886,9 @@ local function Tag(self, fs, tagstr, ...)
 		end
 	end
 	-- end block
+
+	fs.parent = self
+	fs.UpdateTag = getTagFunc(tagstr)
 
 	if(self.__eventless or fs.frequentUpdates) or containsOnUpdate then -- ElvUI changed
 		local timer
