@@ -783,6 +783,7 @@ local taggedFS = {}
 
 --[[ Tags: frame:Tag(fs, tagstr, ...)
 Used to register a tag on a unit frame.
+
 * self   - the unit frame on which to register the tag
 * fs     - the font string to display the tag (FontString)
 * tagstr - the tag string (string)
@@ -835,6 +836,7 @@ end
 
 --[[ Tags: frame:Untag(fs)
 Used to unregister a tag from a unit frame.
+
 * self - the unit frame from which to unregister the tag
 * fs   - the font string holding the tag (FontString)
 --]]
