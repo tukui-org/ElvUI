@@ -73,8 +73,8 @@ local _G = _G
 local pcall, type, unpack = pcall, type, unpack
 local next, select, pairs = next, select, pairs
 local error, rawset, rawget = error, rawset, rawget
-local format, tinsert, tremove = format, tinsert, tremove
-local loadstring, assert, getfenv, setfenv = loadstring, assert, getfenv, setfenv
+local assert, getfenv, setfenv = assert, getfenv, setfenv
+local loadstring, format, tinsert, tremove = loadstring, format, tinsert, tremove
 local ShowBossFrameWhenUninteractable = ShowBossFrameWhenUninteractable
 local CreateFrame = CreateFrame
 
@@ -569,7 +569,7 @@ local unitlessEvents = {
 
 local events = {}
 local eventFrame = CreateFrame('Frame')
-eventFrame:SetScript('OnEvent', function(self, event, unit)
+eventFrame:SetScript('OnEvent', function(_, event, unit)
 	local strings = events[event]
 	if(strings) then
 		for _, fs in next, strings do
@@ -589,7 +589,7 @@ local function createOnUpdate(timer)
 		local frame = CreateFrame('Frame')
 		local strings = eventlessUnits[timer]
 
-		frame:SetScript('OnUpdate', function(self, elapsed)
+		frame:SetScript('OnUpdate', function(_, elapsed)
 			if(total >= timer) then
 				for _, fs in next, strings do
 					if (fs:IsShown() and fs.parent:IsShown() and UnitExists(fs.parent.unit)) then
@@ -777,8 +777,8 @@ local function getTagFunc(tagstr)
 
 				_ENV._COLORS = parent.colors
 				_ENV._FRAME = parent
-				for i, func in next, args do
-					tmp[i] = func(unit, realUnit) or ''
+				for i, f in next, args do
+					tmp[i] = f(unit, realUnit) or ''
 				end
 
 				-- We do 1, numTags because tmp can hold several unneeded variables.
@@ -855,7 +855,6 @@ local function Tag(self, fs, tagstr, ...)
 
 	fs.parent = self
 	fs.UpdateTag = getTagFunc(tagstr)
-
 
 	-- ElvUI
 	for escapeSequence, replacement in pairs(escapeSequences) do
@@ -954,7 +953,7 @@ oUF.Tags = {
 	Events = tagEvents,
 	SharedEvents = unitlessEvents,
 	Vars = vars,
-	RefreshMethods = function(self, tag)
+	RefreshMethods = function(_, tag)
 		if(not tag) then return end
 
 		funcPool['[' .. tag .. ']'] = nil
@@ -976,7 +975,7 @@ oUF.Tags = {
 			end
 		end
 	end,
-	RefreshEvents = function(self, tag)
+	RefreshEvents = function(_, tag)
 		if(not tag) then return end
 
 		tag = '%[' .. tag .. '%]'
