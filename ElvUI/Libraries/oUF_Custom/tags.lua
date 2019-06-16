@@ -621,13 +621,13 @@ local function Update(self)
 end
 
 -- ElvUI block
-local OnEnter = function(self)
+local onEnter = function(self)
 	for fs in next, self.__mousetags do
 		fs:SetAlpha(1)
 	end
 end
 
-local OnLeave = function(self)
+local onLeave = function(self)
 	for fs in next, self.__mousetags do
 		fs:SetAlpha(0)
 	end
@@ -864,8 +864,8 @@ local function Tag(self, fs, tagstr, ...)
 		self.__mousetags[fs] = true
 		fs:SetAlpha(0)
 		if not self.__HookFunc then
-			self:HookScript('OnEnter', OnEnter)
-			self:HookScript('OnLeave', OnLeave)
+			self:HookScript('OnEnter', onEnter)
+			self:HookScript('OnLeave', onLeave)
 			self.__HookFunc = true;
 		end
 		tagstr = tagstr:gsub('%[mouseover%]', '')
