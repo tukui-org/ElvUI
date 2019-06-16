@@ -70,8 +70,8 @@ local oUF = ns.oUF
 
 -- ElvUI
 local _G = _G
+local next, select = next, select
 local pcall, type, unpack = pcall, type, unpack
-local next, select, pairs = next, select, pairs
 local error, rawset, rawget = error, rawset, rawget
 local assert, getfenv, setfenv = assert, getfenv, setfenv
 local loadstring, format, tinsert, tremove = loadstring, format, tinsert, tremove
@@ -622,13 +622,13 @@ end
 
 -- ElvUI block
 local OnEnter = function(self)
-	for fs in pairs(self.__mousetags) do
+	for fs in next, self.__mousetags do
 		fs:SetAlpha(1)
 	end
 end
 
 local OnLeave = function(self)
-	for fs in pairs(self.__mousetags) do
+	for fs in next, self.__mousetags do
 		fs:SetAlpha(0)
 	end
 end
@@ -857,7 +857,7 @@ local function Tag(self, fs, tagstr, ...)
 	fs.UpdateTag = getTagFunc(tagstr)
 
 	-- ElvUI
-	for escapeSequence, replacement in pairs(escapeSequences) do
+	for escapeSequence, replacement in next, escapeSequences do
 		while tagstr:find(escapeSequence) do
 			tagstr = tagstr:gsub(escapeSequence, replacement)
 		end
@@ -952,6 +952,7 @@ oUF.Tags = {
 	Methods = tags,
 	Events = tagEvents,
 	SharedEvents = unitlessEvents,
+	OnUpdateThrottle = onUpdateDelay, -- ElvUI
 	Vars = vars,
 	RefreshMethods = function(_, tag)
 		if(not tag) then return end
