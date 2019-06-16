@@ -713,7 +713,6 @@ local function getTagFunc(tagstr)
 					return self:SetText(bracket)
 				end
 				-- end block
-				return error(format('Attempted to use invalid tag %s.', bracket), 3)
 			end
 		end
 
