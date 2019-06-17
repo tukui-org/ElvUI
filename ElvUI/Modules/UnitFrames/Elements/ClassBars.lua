@@ -373,8 +373,11 @@ end
 -------------------------------------------------------------
 local function PostUpdateRunes(self)
 	local useRunes = not UnitHasVehicleUI('player')
-	self:SetShown(useRunes)
-	UF.PostVisibilityRunes(self, useRunes)
+	if useRunes then
+		self:Show()
+	else
+		self:Hide()
+	end
 end
 
 function UF:Construct_DeathKnightResourceBar(frame)
@@ -405,6 +408,8 @@ function UF:Construct_DeathKnightResourceBar(frame)
 	return runes
 end
 
+-- Keep it for now. Maybe obsolete!
+--[[
 function UF:PostVisibilityRunes(enabled)
 	local frame = self.origParent or self:GetParent()
 
@@ -422,7 +427,7 @@ function UF:PostVisibilityRunes(enabled)
 			self[i].bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
 		end
 	end
-end
+end]]
 
 -------------------------------------------------------------
 -- ALTERNATIVE MANA BAR

@@ -68,12 +68,19 @@ in the `oUF.Tags.SharedEvents` table as follows: `oUF.Tags.SharedEvents.EVENT_NA
 local _, ns = ...
 local oUF = ns.oUF
 
+-- ElvUI
+local _G = _G
+local next, select = next, select
+local pcall, type, unpack = pcall, type, unpack
+local error, rawset, rawget = error, rawset, rawget
+local assert, getfenv, setfenv = assert, getfenv, setfenv
+local loadstring, format, tinsert, tremove = loadstring, format, tinsert, tremove
+local ShowBossFrameWhenUninteractable = ShowBossFrameWhenUninteractable
+local CreateFrame = CreateFrame
+
 local function UnitExists(unit)
 	return unit and (_G.UnitExists(unit) or ShowBossFrameWhenUninteractable(unit))
 end
-
--- ElvUI
-local tinsert = table.insert
 -- end block
 
 local _PATTERN = '%[..-%]+'
@@ -94,7 +101,7 @@ local _ENV = {
 		end
 		-- end block
 
-		return string.format('|cff%02x%02x%02x', r * 255, g * 255, b * 255)
+		return format('|cff%02x%02x%02x', r * 255, g * 255, b * 255)
 	end,
 }
 _ENV.ColorGradient = function(...)
@@ -457,38 +464,55 @@ local tags = setmetatable(
 	},
 	{
 		__index = function(self, key)
-			local tagFunc = tagStrings[key]
-			if(tagFunc) then
-				local func, err = loadstring('return ' .. tagFunc)
+			local tagString = tagStrings[key]
+			if(tagString) then
+				self[key] = tagString
+				tagStrings[key] = nil
+			end
+
+			return rawget(self, key)
+		end,
+		__newindex = function(self, key, val)
+			if(type(val) == 'string') then
+				local func, err = loadstring('return ' .. val)
 				if(func) then
-					func = func()
-
-					-- Want to trigger __newindex, so no rawset.
-					self[key] = func
-					tagStrings[key] = nil
-
-					return func
+					val = func()
 				else
 					error(err, 3)
 				end
 			end
-		end,
-		__newindex = function(self, key, val)
-			if(type(val) == 'string') then
-				tagStrings[key] = val
-			elseif(type(val) == 'function') then
-				-- So we don't clash with any custom envs.
-				if(getfenv(val) == _G) then
-					setfenv(val, _PROXY)
-				end
 
-				rawset(self, key, val)
+			assert(type(val) == 'function', 'Tag function must be a function or a string that evaluates to a function.')
+
+			-- We don't want to clash with any custom envs
+			if(getfenv(val) == _G) then
+				-- pcall is needed for cases when Blizz functions are passed as
+				-- strings, for intance, 'UnitPowerMax', an attempt to set a
+				-- custom env will result in an error
+				pcall(setfenv, val, _PROXY)
 			end
+
+			rawset(self, key, val)
 		end,
 	}
 )
 
 _ENV._TAGS = tags
+
+local vars = setmetatable({}, {
+	__newindex = function(self, key, val)
+		if(type(val) == 'string') then
+			local func = loadstring('return ' .. val)
+			if(func) then
+				val = func() or val
+			end
+		end
+
+		rawset(self, key, val)
+	end,
+})
+
+_ENV._VARS = vars
 
 local tagEvents = {
 	['affix']               = 'UNIT_CLASSIFICATION_CHANGED',
@@ -544,8 +568,8 @@ local unitlessEvents = {
 }
 
 local events = {}
-local frame = CreateFrame('Frame')
-frame:SetScript('OnEvent', function(self, event, unit)
+local eventFrame = CreateFrame('Frame')
+eventFrame:SetScript('OnEvent', function(_, event, unit)
 	local strings = events[event]
 	if(strings) then
 		for _, fs in next, strings do
@@ -560,14 +584,12 @@ local onUpdates = {}
 local eventlessUnits = {}
 
 local function createOnUpdate(timer)
-	local OnUpdate = onUpdates[timer]
-
-	if(not OnUpdate) then
+	if(not onUpdates[timer]) then
 		local total = timer
 		local frame = CreateFrame('Frame')
 		local strings = eventlessUnits[timer]
 
-		frame:SetScript('OnUpdate', function(self, elapsed)
+		frame:SetScript('OnUpdate', function(_, elapsed)
 			if(total >= timer) then
 				for _, fs in next, strings do
 					if (fs:IsShown() and fs.parent:IsShown() and UnitExists(fs.parent.unit)) then
@@ -592,62 +614,21 @@ Used to update all tags on a frame.
 --]]
 local function Update(self)
 	if(self.__tags) then
-		for _, fs in next, self.__tags do
+		for fs in next, self.__tags do
 			fs:UpdateTag()
 		end
 	end
 end
 
-local function getTagName(tag)
-	local tagStart = (tag:match('>+()') or 2)
-	local tagEnd = tag:match('.*()<+')
-	tagEnd = (tagEnd and tagEnd - 1) or -2
-
-	return tag:sub(tagStart, tagEnd), tagStart, tagEnd
-end
-
-local function registerEvent(fontstr, event)
-	if(not events[event]) then events[event] = {} end
-
-	frame:RegisterEvent(event)
-	tinsert(events[event], fontstr) -- ElvUI changed
-end
-
-local function registerEvents(fontstr, tagstr)
-	for tag in tagstr:gmatch(_PATTERN) do
-		tag = getTagName(tag)
-		local tagevents = tagEvents[tag]
-		if(tagevents) then
-			for event in tagevents:gmatch('%S+') do
-				registerEvent(fontstr, event)
-			end
-		end
-	end
-end
-
-local function unregisterEvents(fontstr)
-	for event, data in next, events do
-		for i, tagfsstr in next, data do
-			if(tagfsstr == fontstr) then
-				if(#data == 1) then
-					frame:UnregisterEvent(event)
-				end
-
-				table.remove(data, i)
-			end
-		end
-	end
-end
-
 -- ElvUI block
-local OnEnter = function(self)
-	for _, fs in pairs(self.__mousetags) do
+local onEnter = function(self)
+	for fs in next, self.__mousetags do
 		fs:SetAlpha(1)
 	end
 end
 
-local OnLeave = function(self)
-	for _, fs in pairs(self.__mousetags) do
+local onLeave = function(self)
+	for fs in next, self.__mousetags do
 		fs:SetAlpha(0)
 	end
 end
@@ -665,72 +646,18 @@ local tagPool = {}
 local funcPool = {}
 local tmp = {}
 
---[[ Tags: frame:Tag(fs, tagstr, ...)
-Used to register a tag on a unit frame.
+local function getTagName(tag)
+	local tagStart = (tag:match('>+()') or 2)
+	local tagEnd = tag:match('.*()<+')
+	tagEnd = (tagEnd and tagEnd - 1) or -2
 
-* self   - the unit frame on which to register the tag
-* fs     - the font string to display the tag (FontString)
-* tagstr - the tag string (string)
-* ...    - additional optional unitID(s) the tag should update for
---]]
-local function Tag(self, fs, tagstr, ...)
-	if(not fs or not tagstr) then return end
+	return tag:sub(tagStart, tagEnd), tagStart, tagEnd
+end
 
-	if(not self.__tags) then
-		self.__tags = {}
-		self.__mousetags = {} -- ElvUI
-		table.insert(self.__elements, Update)
-	else
-		-- Since people ignore everything that's good practice - unregister the tag
-		-- if it already exists.
-		for _, tag in pairs(self.__tags) do
-			if(fs == tag) then
-				-- We don't need to remove it from the __tags table as Untag handles
-				-- that for us.
-				self:Untag(fs)
-			end
-		end
-	end
-
-	fs.parent = self
-
-	-- ElvUI
-	for escapeSequence, replacement in pairs(escapeSequences) do
-		while tagstr:find(escapeSequence) do
-			tagstr = tagstr:gsub(escapeSequence, replacement)
-		end
-	end
-
-	if tagstr:find('%[mouseover%]') then
-		tinsert(self.__mousetags, fs)
-		fs:SetAlpha(0)
-		if not self.__HookFunc then
-			self:HookScript('OnEnter', OnEnter)
-			self:HookScript('OnLeave', OnLeave)
-			self.__HookFunc = true;
-		end
-		tagstr = tagstr:gsub('%[mouseover%]', '')
-	else
-		for index, fontString in pairs(self.__mousetags) do
-			if fontString == fs then
-				self.__mousetags[index] = nil;
-				fs:SetAlpha(1)
-			end
-		end
-	end
-
-	local containsOnUpdate
-	for tag in tagstr:gmatch(_PATTERN) do
-		tag = getTagName(tag)
-		if not tagEvents[tag] then
-			containsOnUpdate = onUpdateDelay[tag] or 0.15;
-		end
-	end
-	-- end block
-
+local function getTagFunc(tagstr)
 	local func = tagPool[tagstr]
 	if(not func) then
-		local format, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
+		local FORMAT, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
 		local args = {}
 
 		for bracket in tagstr:gmatch(_PATTERN) do
@@ -778,7 +705,7 @@ local function Tag(self, fs, tagstr, ...)
 			end
 
 			if(tagFunc) then
-				table.insert(args, tagFunc)
+				tinsert(args, tagFunc)
 			else
 				-- ElvUI changed
 				numTags = -1
@@ -800,7 +727,7 @@ local function Tag(self, fs, tagstr, ...)
 				_ENV._COLORS = parent.colors
 				_ENV._FRAME = parent
 				return self:SetFormattedText(
-					format,
+					FORMAT,
 					args[1](parent.unit, realUnit) or ''
 				)
 			end
@@ -816,7 +743,7 @@ local function Tag(self, fs, tagstr, ...)
 				_ENV._COLORS = parent.colors
 				_ENV._FRAME = parent
 				return self:SetFormattedText(
-					format,
+					FORMAT,
 					args[1](unit, realUnit) or '',
 					args[2](unit, realUnit) or ''
 				)
@@ -833,7 +760,7 @@ local function Tag(self, fs, tagstr, ...)
 				_ENV._COLORS = parent.colors
 				_ENV._FRAME = parent
 				return self:SetFormattedText(
-					format,
+					FORMAT,
 					args[1](unit, realUnit) or '',
 					args[2](unit, realUnit) or '',
 					args[3](unit, realUnit) or ''
@@ -850,12 +777,12 @@ local function Tag(self, fs, tagstr, ...)
 
 				_ENV._COLORS = parent.colors
 				_ENV._FRAME = parent
-				for i, func in next, args do
-					tmp[i] = func(unit, realUnit) or ''
+				for i, f in next, args do
+					tmp[i] = f(unit, realUnit) or ''
 				end
 
 				-- We do 1, numTags because tmp can hold several unneeded variables.
-				return self:SetFormattedText(format, unpack(tmp, 1, numTags))
+				return self:SetFormattedText(FORMAT, unpack(tmp, 1, numTags))
 			end
 		end
 
@@ -865,9 +792,104 @@ local function Tag(self, fs, tagstr, ...)
 		end
 		-- end block
 	end
-	fs.UpdateTag = func
 
-	local unit = self.unit
+	return func
+end
+
+local function registerEvent(fontstr, event)
+	if(not events[event]) then events[event] = {} end
+
+	eventFrame:RegisterEvent(event)
+	tinsert(events[event], fontstr)
+end
+
+local function registerEvents(fontstr, tagstr)
+	for tag in tagstr:gmatch(_PATTERN) do
+		tag = getTagName(tag)
+		local tagevents = tagEvents[tag]
+		if(tagevents) then
+			for event in tagevents:gmatch('%S+') do
+				registerEvent(fontstr, event)
+			end
+		end
+	end
+end
+
+local function unregisterEvents(fontstr)
+	for event, data in next, events do
+		for i, tagfsstr in next, data do
+			if(tagfsstr == fontstr) then
+				if(#data == 1) then
+					eventFrame:UnregisterEvent(event)
+				end
+
+				tremove(data, i)
+			end
+		end
+	end
+end
+
+local taggedFS = {}
+
+--[[ Tags: frame:Tag(fs, tagstr, ...)
+Used to register a tag on a unit frame.
+
+* self   - the unit frame on which to register the tag
+* fs     - the font string to display the tag (FontString)
+* tagstr - the tag string (string)
+* ...    - additional optional unitID(s) the tag should update for
+--]]
+local function Tag(self, fs, tagstr, ...)
+	if(not fs or not tagstr) then return end
+
+	if(not self.__tags) then
+		self.__tags = {}
+		self.__mousetags = {} -- ElvUI
+
+		tinsert(self.__elements, Update)
+	elseif(self.__tags[fs]) then
+		-- We don't need to remove it from the __tags table as Untag handles
+		-- that for us.
+		self:Untag(fs)
+	end
+
+	-- ElvUI
+	for escapeSequence, replacement in next, escapeSequences do
+		while tagstr:find(escapeSequence) do
+			tagstr = tagstr:gsub(escapeSequence, replacement)
+		end
+	end
+
+	if tagstr:find('%[mouseover%]') then
+		self.__mousetags[fs] = true
+		fs:SetAlpha(0)
+		if not self.__HookFunc then
+			self:HookScript('OnEnter', onEnter)
+			self:HookScript('OnLeave', onLeave)
+			self.__HookFunc = true;
+		end
+		tagstr = tagstr:gsub('%[mouseover%]', '')
+	else
+		for fontString in next, self.__mousetags do
+			if fontString == fs then
+				self.__mousetags[fontString] = nil
+				fs:SetAlpha(1)
+			end
+		end
+	end
+
+	local containsOnUpdate
+	for tag in tagstr:gmatch(_PATTERN) do
+		tag = getTagName(tag)
+		if not tagEvents[tag] then
+			containsOnUpdate = onUpdateDelay[tag] or 0.15;
+		end
+	end
+	-- end block
+
+	fs.parent = self
+	fs.UpdateTag = getTagFunc(tagstr)
+
 	if(self.__eventless or fs.frequentUpdates) or containsOnUpdate then -- ElvUI changed
 		local timer
 		if(type(fs.frequentUpdates) == 'number') then
@@ -893,13 +915,13 @@ local function Tag(self, fs, tagstr, ...)
 			end
 
 			for index = 1, select('#', ...) do
-				local unit = select(index, ...)
-				fs.extraUnits[unit] = true
+				fs.extraUnits[select(index, ...)] = true
 			end
 		end
 	end
 
-	tinsert(self.__tags, fs) -- ElvUI changed
+	taggedFS[fs] = tagstr
+	self.__tags[fs] = true
 end
 
 --[[ Tags: frame:Untag(fs)
@@ -915,18 +937,15 @@ local function Untag(self, fs)
 	for _, timers in next, eventlessUnits do
 		for i, fontstr in next, timers do
 			if(fs == fontstr) then
-				table.remove(timers, i)
+				tremove(timers, i)
 			end
 		end
 	end
 
-	for i, fontstr in next, self.__tags do
-		if(fontstr == fs) then
-			table.remove(self.__tags, i)
-		end
-	end
-
 	fs.UpdateTag = nil
+
+	taggedFS[fs] = nil
+	self.__tags[fs] = nil
 end
 
 oUF.Tags = {
@@ -934,6 +953,44 @@ oUF.Tags = {
 	Events = tagEvents,
 	SharedEvents = unitlessEvents,
 	OnUpdateThrottle = onUpdateDelay, -- ElvUI
+	Vars = vars,
+	RefreshMethods = function(_, tag)
+		if(not tag) then return end
+
+		funcPool['[' .. tag .. ']'] = nil
+
+		tag = '%[' .. tag .. '%]'
+		for tagstr, func in next, tagPool do
+			if(tagstr:match(tag)) then
+				tagPool[tagstr] = nil
+
+				for fs in next, taggedFS do
+					if(fs.UpdateTag == func) then
+						fs.UpdateTag = getTagFunc(tagstr)
+
+						if(fs:IsVisible()) then
+							fs:UpdateTag()
+						end
+					end
+				end
+			end
+		end
+	end,
+	RefreshEvents = function(_, tag)
+		if(not tag) then return end
+
+		tag = '%[' .. tag .. '%]'
+		for tagstr in next, tagPool do
+			if(tagstr:match(tag)) then
+				for fs, ts in next, taggedFS do
+					if(ts == tagstr) then
+						unregisterEvents(fs)
+						registerEvents(fs, tagstr)
+					end
+				end
+			end
+		end
+	end,
 }
 
 oUF:RegisterMetaFunction('Tag', Tag, true)
