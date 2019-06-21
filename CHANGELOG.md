@@ -4,6 +4,7 @@
 Added option to change the vertical/horizontal overlap of the Nameplates.  
 Added option to change the Nameplate position: 'Nameplate at Base'.  
 [Style Filter] Added Triggers- Unit Is Tap Denied, Unit is Not Tap Denied. (!169)  
+[8.2] Added new skin for AzeriteEssenceUI. Probably some "new" Skins are missing.  
 
 **Bug Fixes:**  
 Fixed nameplate NPC visibility option always on after reload or login.  
@@ -13,6 +14,8 @@ Fixed an issue with DK runes after vehicle exit. (#1280)
 Added skin support for Objective Tracker timer bars.  
 Skinned a missing Scrollbar for the GMOTD on the CommunitiesFrame.  
 Prevented right-aligned Ace3 dropdowns (and SharedMedia dropdowns) cutting off when the text is wider than the box. (!171)  
+[8.2] Take account to the new Blizzard-Nameplate system.  
+[8.2] Updated existing skins with 8.2 changes.  
 
 ___
 ### Version 11.12 [ May 31st 2019 ]
