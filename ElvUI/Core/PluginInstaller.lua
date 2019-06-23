@@ -59,7 +59,7 @@ local tinsert, tremove = tinsert, tremove
 local format = string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local PlaySoundFile = PlaySoundFile
+local PlaySound = PlaySound
 local UIFrameFadeOut = UIFrameFadeOut
 local CreateAnimationGroup = CreateAnimationGroup
 local CONTINUE, PREVIOUS, UNKNOWN = CONTINUE, PREVIOUS, UNKNOWN
@@ -156,7 +156,7 @@ function PI:CreateStepComplete()
 	imsg:Hide()
 	imsg:SetScript('OnShow', function(frame)
 		if frame.message then
-			PlaySoundFile([[Sound\Interface\LevelUp.wav]])
+			PlaySound(888) -- LevelUp Sound
 			frame.text:SetText(frame.message)
 			UIFrameFadeOut(frame, 3.5, 1, 0)
 			E:Delay(4, frame.Hide, frame)
