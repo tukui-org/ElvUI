@@ -519,34 +519,37 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 end
 
 local function SkinLootWonAlert(frame)
-	frame:SetAlpha(1)
-
 	if not frame.hooked then
 		hooksecurefunc(frame, "SetAlpha", forceAlpha)
 		frame.hooked = true
 	end
 
+	frame:SetAlpha(1)
 	frame.Background:Kill()
-	frame.lootItem.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	frame.lootItem.Icon:SetDrawLayer("BORDER")
-	frame.lootItem.IconBorder:Kill()
+
+	local lootItem = frame.lootItem or frame
+	lootItem.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	lootItem.Icon:SetDrawLayer("BORDER")
+	lootItem.IconBorder:Kill()
+	lootItem.SpecRing:SetTexture("")
+
 	frame.glow:Kill()
 	frame.shine:Kill()
 	frame.BGAtlas:Kill()
 	frame.PvPBackground:Kill()
 
 	-- Icon border
-	if not frame.lootItem.Icon.b then
-		frame.lootItem.Icon.b = CreateFrame("Frame", nil, frame)
-		frame.lootItem.Icon.b:SetTemplate()
-		frame.lootItem.Icon.b:SetOutside(frame.lootItem.Icon)
-		frame.lootItem.Icon:SetParent(frame.lootItem.Icon.b)
+	if not lootItem.Icon.b then
+		lootItem.Icon.b = CreateFrame("Frame", nil, frame)
+		lootItem.Icon.b:SetTemplate()
+		lootItem.Icon.b:SetOutside(lootItem.Icon)
+		lootItem.Icon:SetParent(lootItem.Icon.b)
 	end
 
 	if not frame.backdrop then
 		frame:CreateBackdrop("Transparent")
-		frame.backdrop:Point('TOPLEFT', frame.lootItem.Icon.b, 'TOPLEFT', -4, 4)
-		frame.backdrop:Point('BOTTOMRIGHT', frame.lootItem.Icon.b, 'BOTTOMRIGHT', 180, -4)
+		frame.backdrop:Point('TOPLEFT', lootItem.Icon.b, 'TOPLEFT', -4, 4)
+		frame.backdrop:Point('BOTTOMRIGHT', lootItem.Icon.b, 'BOTTOMRIGHT', 180, -4)
 	end
 end
 
@@ -769,6 +772,7 @@ local function LoadSkin()
 	hooksecurefunc(_G.NewToyAlertSystem, "setUpFunction", SkinNewPetAlert)
 
 	--[[ STATIC SKINNING ]]--
+
 	--Bonus Roll Money
 	local frame = _G.BonusRollMoneyWonFrame
 	frame:SetAlpha(1)
@@ -791,19 +795,21 @@ local function LoadSkin()
 	frame:SetAlpha(1)
 	hooksecurefunc(frame, "SetAlpha", forceAlpha)
 	frame.Background:Kill()
-	frame.lootItem.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	frame.lootItem.IconBorder:Kill()
 	frame.glow:Kill()
 	frame.shine:Kill()
+
+	local lootItem = frame.lootItem or frame
+	lootItem.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	lootItem.IconBorder:Kill()
 	-- Icon border
-	frame.lootItem.Icon.b = CreateFrame("Frame", nil, frame)
-	frame.lootItem.Icon.b:SetTemplate()
-	frame.lootItem.Icon.b:SetOutside(frame.lootItem.Icon)
-	frame.lootItem.Icon:SetParent(frame.lootItem.Icon.b)
+	lootItem.Icon.b = CreateFrame("Frame", nil, frame)
+	lootItem.Icon.b:SetTemplate()
+	lootItem.Icon.b:SetOutside(lootItem.Icon)
+	lootItem.Icon:SetParent(lootItem.Icon.b)
 	--Create Backdrop
 	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame.lootItem.Icon.b, 'TOPLEFT', -4, 4)
-	frame.backdrop:Point('BOTTOMRIGHT', frame.lootItem.Icon.b, 'BOTTOMRIGHT', 180, -4)
+	frame.backdrop:Point('TOPLEFT', lootItem.Icon.b, 'TOPLEFT', -4, 4)
+	frame.backdrop:Point('BOTTOMRIGHT', lootItem.Icon.b, 'BOTTOMRIGHT', 180, -4)
 end
 
 S:AddCallback("Alerts", LoadSkin)
