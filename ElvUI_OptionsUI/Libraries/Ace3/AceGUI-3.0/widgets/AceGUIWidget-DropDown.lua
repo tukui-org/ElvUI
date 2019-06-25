@@ -3,8 +3,8 @@ local AceGUI = LibStub("AceGUI-3.0")
 
 -- Lua APIs
 local min, max, floor = math.min, math.max, math.floor
-local select, pairs, ipairs, type = select, pairs, ipairs, type
-local tsort = table.sort
+local select, pairs, ipairs, type, tostring = select, pairs, ipairs, type, tostring
+local tonumber, tsort, error = tonumber, table.sort, error
 
 -- WoW APIs
 local PlaySound = PlaySound

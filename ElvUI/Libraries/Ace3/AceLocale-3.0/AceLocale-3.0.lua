@@ -97,7 +97,7 @@ function AceLocale:NewLocale(application, locale, isDefault, silent)
 	end
 
 	if not app then
-		if silent == "raw" then
+		if silent=="raw" then
 			app = {}
 		else
 			app = setmetatable({}, silent and readmetasilent or readmeta)
