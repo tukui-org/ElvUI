@@ -6,6 +6,7 @@ local _G = _G
 local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 --WoW API / Variables
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
+local C_GuildInfo_GetGuildNewsInfo = C_GuildInfo.GetGuildNewsInfo
 local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -25,6 +26,21 @@ local function UpdateNames(self)
 			self.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
 		end
 	end
+end
+
+-- Maybe deprecated. Blizzards changes the Community Code every 3 builds -.-
+local function HandleRoleChecks(button, ...)
+	button:StripTextures()
+	button:DisableDrawLayer("ARTWORK")
+	button:DisableDrawLayer("OVERLAY")
+
+	button.bg = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
+	button.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	button.bg:SetTexCoord(...)
+	button.bg:Point("CENTER")
+	button.bg:Size(40)
+	button.bg:SetAlpha(0.6)
+	S:HandleCheckBox(button.CheckBox)
 end
 
 local function LoadSkin()
@@ -118,12 +134,10 @@ local function LoadSkin()
 	CommunitiesFrame.MaximizeMinimizeFrame:ClearAllPoints()
 	CommunitiesFrame.MaximizeMinimizeFrame:Point("RIGHT", CommunitiesFrame.CloseButton, "LEFT", 12, 0)
 
-
 	S:HandleButton(CommunitiesFrame.InviteButton)
 	CommunitiesFrame.AddToChatButton:ClearAllPoints()
 	CommunitiesFrame.AddToChatButton:Point("BOTTOM", CommunitiesFrame.ChatEditBox, "BOTTOMRIGHT", -5, -30) -- needs probably adjustment
 	S:HandleButton(CommunitiesFrame.AddToChatButton)
-	S:HandleButton(CommunitiesFrame.GuildFinderFrame.FindAGuildButton)
 
 	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
 	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
@@ -147,10 +161,25 @@ local function LoadSkin()
 	CommunitiesFrame.Chat:StripTextures()
 	CommunitiesFrame.Chat.InsetFrame:SetTemplate("Transparent")
 
-	CommunitiesFrame.GuildFinderFrame:StripTextures()
-
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
+
+	-- GuildFinder Frame
+	CommunitiesFrame.GuildFinderFrame:StripTextures()
+	S:HandleButton(CommunitiesFrame.GuildFinderFrame.FindAGuildButton)
+	--S:HandleDropDownBox(CommunitiesFrame.GuildFinderFrame.OptionsList.ClubFocusDropdown)
+	--S:HandleDropDownBox(CommunitiesFrame.GuildFinderFrame.OptionsList.ClubSizeDropdown)
+
+	--HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.TankRoleFrame, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+	--HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.HealerRoleFrame, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	--HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.DpsRoleFrame, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+
+	--S:HandleEditBox(CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox)
+	--CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
+	--CommunitiesFrame.GuildFinderFrame.OptionsList.Search:ClearAllPoints()
+	--CommunitiesFrame.GuildFinderFrame.OptionsList.Search:SetPoint("TOP", CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 0, -3)
+	--S:HandleButton(CommunitiesFrame.GuildFinderFrame.OptionsList.Search)
+	--S:HandleButton(CommunitiesFrame.GuildFinderFrame.PendingClubs)
 
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
@@ -319,9 +348,14 @@ local function LoadSkin()
 		_G[frame]:StripTextures()
 	end
 
-	hooksecurefunc("CommunitiesGuildNewsButton_SetNews", function(button)
-		if button.header:IsShown() then
-			button.header:SetAlpha(0)
+	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoMOTDScrollFrameScrollBar)
+
+	hooksecurefunc("GuildNewsButton_SetNews", function(button, news_id)
+		local newsInfo = C_GuildInfo_GetGuildNewsInfo(news_id)
+		if newsInfo then
+			if button.header:IsShown() then
+				button.header:SetAlpha(0)
+			end
 		end
 	end)
 

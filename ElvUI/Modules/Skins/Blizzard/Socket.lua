@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local unpack = unpack
+local ipairs, unpack = ipairs, unpack
 --WoW API / Variables
 local GetNumSockets = GetNumSockets
 local GetSocketTypes = GetSocketTypes
@@ -36,15 +36,10 @@ local function LoadSkin()
 	end
 
 	hooksecurefunc("ItemSocketingFrame_Update", function()
-		local numSockets = GetNumSockets();
-		for i=1, numSockets do
-			local color = _G.GEM_TYPE_INFO[GetSocketTypes(i)]
-
-			if color then
-				local button = _G["ItemSocketingSocket"..i]
-				button:SetBackdropColor(color.r, color.g, color.b, 0.15)
-				button:SetBackdropBorderColor(color.r, color.g, color.b)
-			end
+		for i, socket in ipairs(_G.ItemSocketingFrame.Sockets) do
+			local gemColor = GetSocketTypes(i)
+			local color = E.GemTypeInfo[gemColor]
+			socket:SetBackdropBorderColor(color.r, color.g, color.b)
 		end
 	end)
 

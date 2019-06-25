@@ -59,7 +59,6 @@ function B:MoveObjectiveFrame()
 	B:SetObjectiveFrameHeight()
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
 
-
 	ObjectiveTrackerFrame:SetMovable(true)
 
 	if ObjectiveTrackerFrame:IsMovable() then

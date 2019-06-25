@@ -137,6 +137,7 @@ V.skins = {
 		IslandQueue = true,
 		IslandsPartyPose = true,
 		GMChat = true,
+		AzeriteEssence = true,
 	},
 }
 

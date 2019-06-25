@@ -2188,9 +2188,6 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 			end
 		end
 
-		-- ignore groups created by the addon World Quest Group Finder/World Quest Tracker/World Quest Assistant/HandyNotes_Argus to reduce spam
-		if comment and (strfind(comment, "World Quest Group Finder") or strfind(comment, "World Quest Tracker") or strfind(comment, "World Quest Assistant") or strfind(comment, "HandyNotes_Argus")) then return end
-
 		if activityID or firstQueue.queueData.activityID then
 			fullName = C_LFGList_GetActivityInfo(activityID or firstQueue.queueData.activityID)
 		end

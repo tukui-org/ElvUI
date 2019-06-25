@@ -99,6 +99,21 @@ local function SkinProgressBars(_, _, line)
 	end
 end
 
+local function SkinTimerBars(_, _, line)
+	local timerBar = line and line.TimerBar
+	local bar = timerBar and timerBar.Bar
+
+	if not timerBar.isSkinned then
+		bar:Height(18)
+		bar:StripTextures()
+		bar:CreateBackdrop("Transparent")
+		bar:SetStatusBarTexture(E.media.normTex)
+		E:RegisterStatusBar(bar)
+
+		timerBar.isSkinned = true
+	end
+end
+
 local function PositionFindGroupButton(block, button)
 	if button and button.GetPoint then
 		local a, b, c, d, e = button:GetPoint()
@@ -151,8 +166,11 @@ local function LoadSkin()
 	hooksecurefunc("QuestObjectiveSetupBlockButton_FindGroup",SkinFindGroupButton)			--[Skin]: The eye
 	hooksecurefunc(_G.BONUS_OBJECTIVE_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)		--[Skin]: Bonus Objective Progress Bar
 	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)			--[Skin]: World Quest Progress Bar
-	hooksecurefunc(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)		--[Skin]: Quest Progress Bar
-	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)				--[Skin]: Scenario Progress Bar
+	hooksecurefunc(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)	--[Skin]: Quest Progress Bar
+	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)			--[Skin]: Scenario Progress Bar
+	hooksecurefunc(_G.QUEST_TRACKER_MODULE,"AddTimerBar",SkinTimerBars)						--[Skin]: Quest Timer Bar
+	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,"AddTimerBar",SkinTimerBars)					--[Skin]: Scenario Timer Bar
+	hooksecurefunc(_G.ACHIEVEMENT_TRACKER_MODULE,"AddTimerBar",SkinTimerBars)				--[Skin]: Achievement Timer Bar
 	hooksecurefunc(_G.QUEST_TRACKER_MODULE,"SetBlockHeader",SkinItemButton)					--[Skin]: Quest Item Buttons
 	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,"AddObjective",SkinItemButton)				--[Skin]: World Quest Item Buttons
 end

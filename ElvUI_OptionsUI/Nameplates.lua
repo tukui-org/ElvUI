@@ -17,6 +17,9 @@ local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
+local GetCVar = GetCVar
+local GetCVarBool = GetCVarBool
+local SetCVar = SetCVar
 
 local raidTargetIcon = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%s:0|t %s"
 local selectedNameplateFilter
@@ -993,8 +996,20 @@ local function UpdateFilterGroup()
 								isPet = {
 									type = 'toggle',
 									name = L["Unit is Pet"],
-									desc = L["If enabled then the filter will only activate when the unit is a player's pet"],
+									desc = L["If enabled then the filter will only activate when the unit is a player's pet."],
 									order = 12,
+								},
+								isTapDenied = {
+									type = 'toggle',
+									name = L["Unit is Tap Denied"],
+									desc = L["If enabled then the filter will only activate when the unit is tap denied."],
+									order = 13,
+								},
+								isNotTapDenied = {
+									type = 'toggle',
+									name = L["Unit is Not Tap Denied"],
+									desc = L["If enabled then the filter will only activate when the unit is not tap denied."],
+									order = 14,
 								},
 							}
 						}
@@ -2274,9 +2289,9 @@ local function GetUnitSettings(unit, name)
 						max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalHeight or 20)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyHeight or 20)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyHeight or 20)
 							else
 								return 20
@@ -2413,9 +2428,9 @@ local function GetUnitSettings(unit, name)
 						max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalWidth or 250)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyWidth or 250)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyWidth or 250)
 							else
 								return 250
@@ -2432,9 +2447,9 @@ local function GetUnitSettings(unit, name)
 						max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalHeight or 20)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyHeight or 20)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyHeight or 20)
 							else
 								return 20
@@ -2601,9 +2616,9 @@ local function GetUnitSettings(unit, name)
 						max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalWidth or 250)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyWidth or 250)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyWidth or 250)
 							else
 								return 250
@@ -2620,9 +2635,9 @@ local function GetUnitSettings(unit, name)
 						max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalHeight or 20)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyHeight or 20)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyHeight or 20)
 							else
 								return 20
@@ -3734,9 +3749,9 @@ local function GetUnitSettings(unit, name)
 					max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalWidth or 250)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyWidth or 250)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyWidth or 250)
 							else
 								return 250
@@ -3754,9 +3769,9 @@ local function GetUnitSettings(unit, name)
 					max = function()
 							if unit == 'PLAYER' then
 								return (NP.db.plateSize.personalHeight or 20)
-							elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+							elseif unit == "FRIENDLY_PLAYER" or unit == "FRIENDLY_NPC" then
 								return (NP.db.plateSize.friendlyHeight or 20)
-							elseif unit == "ENEMY_NPC" or unit == "FRIENDLY_NPC" then
+							elseif unit == "ENEMY_PLAYER" or unit == "ENEMY_NPC" then
 								return (NP.db.plateSize.enemyHeight or 20)
 							else
 								return 20
@@ -4343,8 +4358,34 @@ E.Options.args.nameplate = {
 							desc = L["Only load nameplates for units within this range."],
 							min = 10, max = 100, step = 1,
 						},
-						lowHealthThreshold = {
+						overlapV = {
 							order = 7,
+							type = "range",
+							name = L["Overlap Vertical"],
+							desc = L["Percentage amount for vertical overlap of Nameplates."],
+							min = 0, max = 3, step = 0.1,
+							get = function() return tonumber(GetCVar('nameplateOverlapV')) end,
+							set = function(_, value) SetCVar('nameplateOverlapV', value) end,
+						},
+						overlapH = {
+							order = 8,
+							type = "range",
+							name = L["Overlap Horizontal"],
+							desc = L["Percentage amount for horizontal overlap of Nameplates."],
+							min = 0, max = 3, step = 0.1,
+							get = function() return tonumber(GetCVar('nameplateOverlapH')) end,
+							set = function(_, value) SetCVar('nameplateOverlapH', value) end,
+						},
+						otherAtBase = {
+							order = 9,
+							type = "toggle",
+							name = L["Nameplate at Base"],
+							desc = L["Position other Nameplates at the base, rather than overhead."],
+							get = function() return GetCVarBool('nameplateOtherAtBase') end,
+							set = function(_, value) SetCVar('nameplateOtherAtBase', value and 2 or 0) end,
+						},
+						lowHealthThreshold = {
+							order = 10,
 							name = L["Low Health Threshold"],
 							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
 							type = "range",
@@ -4352,30 +4393,30 @@ E.Options.args.nameplate = {
 							min = 0, softMax = 0.5, max = 0.8, step = 0.01,
 						},
 						spacer1 = {
-							order = 8,
+							order = 11,
 							type = 'description',
 							name = ' ',
 							width = 'full'
 						},
 						highlight = {
-							order = 9,
+							order = 12,
 							type = "toggle",
 							name = L["Hover Highlight"],
 						},
 						fadeIn = {
-							order = 10,
+							order = 13,
 							type = "toggle",
 							name = L["Alpha Fading"],
 						},
 						smoothbars = {
 							type = 'toggle',
-							order = 11,
+							order = 14,
 							name = L["Smooth Bars"],
 							desc = L["Bars will transition smoothly."],
 							set = function(info, value) E.db.nameplates[info[#info]] = value; NP:ConfigureAll(); end,
 						},
 						clampToScreen = {
-							order = 12,
+							order = 15,
 							type = "toggle",
 							name = L["Clamp Nameplates"],
 							desc = L["Clamp nameplates to the top of the screen when outside of view."],
@@ -4479,8 +4520,9 @@ E.Options.args.nameplate = {
 									disabled = function() return not E.db.nameplates.visibility.showAll end,
 									get = function(info) return E.db.nameplates.visibility.friendly[info[#info]] end,
 									set = function(info, value) E.db.nameplates.visibility.friendly[info[#info]] = value;
-										NP:SetCVars();
-										NP:ConfigureAll() end,
+										NP:SetCVars()
+										NP:ConfigureAll()
+									end,
 									args = {
 										guardians = {
 											type = "toggle",
@@ -5384,34 +5426,36 @@ for i = 1, 6 do
 	}
 end
 
--- E.Options.args.tagGroup = {
--- 	order = 925,
--- 	type = "group",
--- 	name = L["Available Tags"],
--- 	args = {}
--- }
+--[=[
+E.Options.args.tagGroup = {
+	order = 925,
+	type = "group",
+	name = L["Available Tags"],
+	args = {}
+}
 
--- for Tag in next, E.oUF.Tags.Methods do
--- 	E.Options.args.tagGroup.args[Tag] = {
--- 		type = 'description',
--- 		fontSize = 'medium',
--- 		name = Tag,
--- 	}
--- end
+for Tag in next, E.oUF.Tags.Methods do
+	E.Options.args.tagGroup.args[Tag] = {
+		type = 'description',
+		fontSize = 'medium',
+		name = Tag,
+	}
+end
 
--- E.Options.args.EventTrace = {
--- 	order = -50,
--- 	type = "group",
--- 	name = L["Event Trace"],
--- 	args = {}
--- }
+E.Options.args.EventTrace = {
+	order = -50,
+	type = "group",
+	name = L["Event Trace"],
+	args = {}
+}
 
--- local Frame = CreateFrame('Frame')
--- Frame:RegisterAllEvents()
--- Frame:SetScript('OnEvent', function(self, event, ...)
--- 	E.Options.args.EventTrace.args[event] = {
--- 		type = 'description',
--- 		fontSize = 'medium',
--- 		name = event,
--- 	}
--- end)
+local Frame = CreateFrame('Frame')
+Frame:RegisterAllEvents()
+Frame:SetScript('OnEvent', function(self, event, ...)
+	E.Options.args.EventTrace.args[event] = {
+		type = 'description',
+		fontSize = 'medium',
+		name = event,
+	}
+end)
+]=]

@@ -124,6 +124,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		text:ClearAllPoints()
 		text:SetJustifyH('RIGHT')
 		text:Point('RIGHT', button, 'LEFT', -3, 0)
+		text:Point('LEFT', frame.backdrop, 'LEFT', 2, 0)
 
 		button:SetParent(frame.backdrop)
 		text:SetParent(frame.backdrop)
@@ -146,6 +147,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		frame.text:ClearAllPoints()
 		frame.text:Point('RIGHT', button, 'LEFT', -2, 0)
+		frame.text:Point('LEFT', frame.backdrop, 'LEFT', 2, 0)
 
 		button:ClearAllPoints()
 		button:Point('TOPLEFT', frame.backdrop, 'TOPRIGHT', -22, -2)

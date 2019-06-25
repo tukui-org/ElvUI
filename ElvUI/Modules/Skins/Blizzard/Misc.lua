@@ -55,9 +55,11 @@ local function LoadSkin()
 		"LFDReadyCheckPopup",
 		"DropDownList1Backdrop",
 		"DropDownList1MenuBackdrop",
+		"ElvUI_StaticPopup1",
 	}
 
 	for i = 1, #skins do
+		_G[skins[i]]:StripTextures()
 		_G[skins[i]]:SetTemplate("Transparent")
 	end
 
@@ -132,6 +134,7 @@ local function LoadSkin()
 		-- Skin the ElvUI Menu Button
 		S:HandleButton(_G.GameMenuFrame.ElvUI)
 
+		_G.GameMenuFrame:StripTextures()
 		_G.GameMenuFrame:SetTemplate("Transparent")
 		_G.GameMenuFrameHeader:SetTexture()
 		_G.GameMenuFrameHeader:ClearAllPoints()
