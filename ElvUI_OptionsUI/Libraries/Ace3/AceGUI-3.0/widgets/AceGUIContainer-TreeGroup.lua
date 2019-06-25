@@ -209,6 +209,8 @@ local function Button_OnEnter(frame)
 
 	if self.enabletooltips then
 		GameTooltip:SetOwner(frame, "ANCHOR_NONE")
+
+		GameTooltip:ClearAllPoints()
 		GameTooltip:SetPoint("LEFT",frame,"RIGHT")
 		GameTooltip:SetText(frame.text:GetText() or "", 1, .82, 0, true)
 
