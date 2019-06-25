@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 70
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 71
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -1525,6 +1525,7 @@ local function TreeOnButtonEnter(widget, event, uniquevalue, button)
 	if type(desc) == "string" then
 		GameTooltip:SetOwner(button, "ANCHOR_CURSOR")
 
+		GameTooltip:ClearAllPoints()
 		if widget.type == "TabGroup" then
 			GameTooltip:SetPoint("BOTTOM",button,"TOP")
 		else
