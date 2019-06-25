@@ -10,6 +10,12 @@ local hooksecurefunc = hooksecurefunc
 
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
+function E:PointsRestricted(frame)
+	if frame and frame.GetPoint and not pcall(frame.GetPoint, frame) then
+		return true
+	end
+end
+
 -- ls, Azil, and Simpy made this to replace Blizzard's SetBackdrop API while the textures can't snap
 E.PixelBorders = {"TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT", "TOP", "BOTTOM", "LEFT", "RIGHT"}
 function E:SetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft, insetRight, insetTop, insetBottom)
@@ -201,7 +207,7 @@ local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
 	anchor = anchor or obj:GetParent()
 
 	assert(anchor)
-	if obj:GetPoint() then
+	if E:PointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
@@ -216,7 +222,7 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 	anchor = anchor or obj:GetParent()
 
 	assert(anchor)
-	if obj:GetPoint() then
+	if E:PointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
