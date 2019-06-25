@@ -10,9 +10,17 @@ local hooksecurefunc = hooksecurefunc
 
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
+
+-- 8.2 restricted frame check
 function E:PointsRestricted(frame)
-	if frame and frame.GetPoint and not pcall(frame.GetPoint, frame) then
+	if frame and not pcall(frame.GetPoint, frame) then
 		return true
+	end
+end
+
+function E:SafeGetPoint(frame)
+	if frame and frame.GetPoint and not E:PointsRestricted(frame) then
+		return frame:GetPoint()
 	end
 end
 
