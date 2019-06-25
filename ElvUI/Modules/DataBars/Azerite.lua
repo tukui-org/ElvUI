@@ -10,6 +10,7 @@ local format = string.format
 local C_AzeriteItem_FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
 local C_AzeriteItem_GetPowerLevel = C_AzeriteItem.GetPowerLevel
+local C_AzeriteItem_IsAzeriteItemAtMaxLevel = C_AzeriteItem.IsAzeriteItemAtMaxLevel
 local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
 local ARTIFACT_POWER = ARTIFACT_POWER
@@ -29,7 +30,7 @@ function mod:UpdateAzerite(event, unit)
 	local bar = self.azeriteBar
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
 
-	if not azeriteItemLocation or (event == "PLAYER_REGEN_DISABLED" and self.db.azerite.hideInCombat) then
+	if not azeriteItemLocation or (event == "PLAYER_REGEN_DISABLED" and self.db.azerite.hideInCombat) or C_AzeriteItem_IsAzeriteItemAtMaxLevel() then
 		bar:Hide()
 	elseif azeriteItemLocation and (not self.db.azerite.hideInCombat or not InCombatLockdown()) then
 		bar:Show()

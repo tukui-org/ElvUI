@@ -1125,7 +1125,12 @@ end
 local hiddenParent = CreateFrame("Frame", nil, _G.UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
-local HandleFrame = function(baseName)
+
+local function insecureOnShow(self)
+	self:Hide()
+end
+
+local HandleFrame = function(baseName, doNotReparent)
 	local frame
 	if (type(baseName) == 'string') then
 		frame = _G[baseName]
@@ -1137,8 +1142,9 @@ local HandleFrame = function(baseName)
 		frame:UnregisterAllEvents()
 		frame:Hide()
 
-		-- Keep frame hidden without causing taint
-		frame:SetParent(hiddenParent)
+		if(not doNotReparent) then
+			frame:SetParent(hiddenParent)
+		end
 
 		local health = frame.healthBar or frame.healthbar
 		if (health) then
@@ -1230,7 +1236,9 @@ function ElvUF:DisableBlizzard(unit)
 	elseif (unit:match('nameplate%d+$')) then
 		local frame = C_NamePlate_GetNamePlateForUnit(unit)
 		if (frame and frame.UnitFrame) then
-			HandleFrame(frame.UnitFrame)
+			frame.UnitFrame:HookScript('OnShow', insecureOnShow)
+
+			HandleFrame(frame.UnitFrame, true)
 		end
 	end
 end

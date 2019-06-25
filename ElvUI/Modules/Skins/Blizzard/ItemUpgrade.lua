@@ -7,24 +7,44 @@ local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local GetItemUpgradeItemInfo = GetItemUpgradeItemInfo
+local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.itemUpgrade ~= true then return end
 
 	local ItemUpgradeFrame = _G.ItemUpgradeFrame
 	S:HandlePortraitFrame(ItemUpgradeFrame, true)
-	S:HandleItemButton(ItemUpgradeFrame.ItemButton, true)
+
+	local ItemButton = ItemUpgradeFrame.ItemButton
+	ItemButton:CreateBackdrop()
+	ItemButton.backdrop:SetAllPoints()
+	ItemButton.Frame:SetTexture("")
+	ItemButton:SetPushedTexture("")
+	S:HandleItemButton(ItemButton)
+
+	local Highlight = ItemButton:GetHighlightTexture()
+	Highlight:SetColorTexture(1, 1, 1, .25)
 
 	hooksecurefunc('ItemUpgradeFrame_Update', function()
-		if GetItemUpgradeItemInfo() then
-			ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(1)
-			ItemUpgradeFrame.ItemButton.IconTexture:SetTexCoord(unpack(E.TexCoords))
+		local icon, _, quality = GetItemUpgradeItemInfo()
+		if icon then
+			ItemButton.IconTexture:SetTexCoord(unpack(E.TexCoords))
+			local color = BAG_ITEM_QUALITY_COLORS[quality or 1]
+			ItemButton.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		else
-			ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(0)
+			ItemButton.IconTexture:SetTexture("")
+			ItemButton.backdrop:SetBackdropBorderColor(0, 0, 0)
 		end
 	end)
 
+	local TextFrame = ItemUpgradeFrame.TextFrame
+	TextFrame:StripTextures()
+	TextFrame:CreateBackdrop('Transparent')
+	TextFrame.backdrop:SetPoint("TOPLEFT", ItemButton.IconTexture, "TOPRIGHT", 3, E.mult)
+	TextFrame.backdrop:SetPoint("BOTTOMRIGHT", -6, 2)
+
 	_G.ItemUpgradeFrameMoneyFrame:StripTextures()
+	S:HandleIcon(_G.ItemUpgradeFrameMoneyFrame.Currency.icon)
 	S:HandleButton(_G.ItemUpgradeFrameUpgradeButton, true)
 	ItemUpgradeFrame.FinishedGlow:Kill()
 	ItemUpgradeFrame.ButtonFrame:DisableDrawLayer('BORDER')

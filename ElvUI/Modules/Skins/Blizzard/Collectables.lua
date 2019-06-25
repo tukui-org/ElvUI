@@ -84,6 +84,13 @@ local function LoadSkin()
 	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateLeftButton)
 	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateRightButton)
 
+	-- New Mount Equip. 8.2
+	MountJournal.BottomLeftInset:StripTextures()
+	MountJournal.BottomLeftInset:CreateBackdrop("Transparent")
+	MountJournal.BottomLeftInset.SlotButton:StripTextures()
+	S:HandleIcon(MountJournal.BottomLeftInset.SlotButton.ItemIcon)
+	S:HandleButton(MountJournal.BottomLeftInset.SlotButton)
+
 	for _, bu in pairs(MountJournal.ListScrollFrame.buttons) do
 		bu:CreateBackdrop("Transparent")
 		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
@@ -109,9 +116,6 @@ local function LoadSkin()
 			end
 		end)
 
-		hooksecurefunc(bu.unusable, 'Show', function() bu.icon:SetVertexColor(.4, .1, .1) bu.backdrop:SetBackdropColor(.4, .1, .1, .65) end)
-		hooksecurefunc(bu.unusable, 'Hide', function() bu.icon:SetVertexColor(1, 1, 1) bu.backdrop:SetBackdropColor(0, 0, 0, .65) end)
-
 		hooksecurefunc(bu.selectedTexture, 'Show', function()
 			bu.name:SetTextColor(1, .8, .1)
 			bu.backdrop:SetBackdropBorderColor(1, .8, .1)
@@ -125,7 +129,6 @@ local function LoadSkin()
 		end)
 
 		bu:SetHighlightTexture(nil)
-		bu.unusable:SetAlpha(0)
 		bu.iconBorder:SetTexture()
 		bu.background:SetTexture()
 		bu.selectedTexture:SetTexture()
