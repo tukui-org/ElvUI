@@ -2550,8 +2550,9 @@ function B:Initialize()
 
 	_G.BankFrame:SetScale(0.0001)
 	_G.BankFrame:SetAlpha(0)
-	_G.BankFrame:Point("TOPLEFT")
 	_G.BankFrame:SetScript("OnShow", nil)
+	_G.BankFrame:ClearAllPoints()
+	_G.BankFrame:Point("TOPLEFT")
 
 	--Enable/Disable "Loot to Leftmost Bag"
 	SetInsertItemsLeftToRight(E.db.bags.reverseLoot)

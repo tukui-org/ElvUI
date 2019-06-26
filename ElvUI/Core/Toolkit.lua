@@ -10,6 +10,19 @@ local hooksecurefunc = hooksecurefunc
 
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
+-- 8.2 restricted frame check
+function E:PointsRestricted(frame)
+	if frame and not pcall(frame.GetPoint, frame) then
+		return true
+	end
+end
+
+function E:SafeGetPoint(frame)
+	if frame and frame.GetPoint and not E:PointsRestricted(frame) then
+		return frame:GetPoint()
+	end
+end
+
 -- ls, Azil, and Simpy made this to replace Blizzard's SetBackdrop API while the textures can't snap
 E.PixelBorders = {"TOPLEFT", "TOPRIGHT", "BOTTOMLEFT", "BOTTOMRIGHT", "TOP", "BOTTOM", "LEFT", "RIGHT"}
 function E:SetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft, insetRight, insetTop, insetBottom)
@@ -201,7 +214,7 @@ local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
 	anchor = anchor or obj:GetParent()
 
 	assert(anchor)
-	if obj:GetPoint() then
+	if E:PointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
@@ -216,7 +229,7 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 	anchor = anchor or obj:GetParent()
 
 	assert(anchor)
-	if obj:GetPoint() then
+	if E:PointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
@@ -413,8 +426,15 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	end
 
 	fs:SetFont(font, fontSize, fontStyle)
-	fs:SetShadowColor(0, 0, 0, (fontStyle and fontStyle ~= 'NONE' and 0.2) or 1)
-	fs:SetShadowOffset(E.mult or 1, -(E.mult or 1))
+
+	if fontStyle == 'NONE' then
+		local s = E.mult or 1
+		fs:SetShadowOffset(s, -s/2)
+		fs:SetShadowColor(0, 0, 0, 1)
+	else
+		fs:SetShadowOffset(0, 0)
+		fs:SetShadowColor(0, 0, 0, 0)
+	end
 
 	E.texts[fs] = true
 end

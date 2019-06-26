@@ -10,7 +10,7 @@
 -- make into AceSerializer.
 -- @class file
 -- @name AceSerializer-3.0
--- @release $Id: AceSerializer-3.0.lua 1135 2015-09-19 20:39:16Z nevcairiel $
+-- @release $Id: AceSerializer-3.0.lua 1202 2019-05-15 23:11:22Z nevcairiel $
 local MAJOR,MINOR = "AceSerializer-3.0", 5
 local AceSerializer, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 

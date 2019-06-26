@@ -24,7 +24,7 @@
 -- f:AddChild(btn)
 -- @class file
 -- @name AceGUI-3.0
--- @release $Id: AceGUI-3.0.lua 1193 2018-08-02 12:24:37Z funkydude $
+-- @release $Id: AceGUI-3.0.lua 1202 2019-05-15 23:11:22Z nevcairiel $
 local ACEGUI_MAJOR, ACEGUI_MINOR = "AceGUI-3.0", 36
 local AceGUI, oldminor = LibStub:NewLibrary(ACEGUI_MAJOR, ACEGUI_MINOR)
 
@@ -36,10 +36,6 @@ local select, pairs, next, type = select, pairs, next, type
 local error, assert = error, assert
 local setmetatable, rawget = setmetatable, rawget
 local math_max = math.max
-
-local ipairs, wipe = ipairs, wipe
-local max, min, ceil = max, min, ceil
-local unpack = unpack
 
 -- WoW APIs
 local UIParent = UIParent

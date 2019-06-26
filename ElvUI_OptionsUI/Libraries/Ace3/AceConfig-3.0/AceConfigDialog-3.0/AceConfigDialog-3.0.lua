@@ -1,13 +1,13 @@
 --- AceConfigDialog-3.0 generates AceGUI-3.0 based windows based on option tables.
 -- @class file
 -- @name AceConfigDialog-3.0
--- @release $Id: AceConfigDialog-3.0.lua 1197 2019-01-21 23:41:10Z nevcairiel $
+-- @release $Id: AceConfigDialog-3.0.lua 1210 2019-06-25 23:45:43Z nevcairiel $
 
 local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 70
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 72
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -56,18 +56,18 @@ local width_multiplier = 170
 --[[
 Group Types
   Tree 	- All Descendant Groups will all become nodes on the tree, direct child options will appear above the tree
-  		- Descendant Groups with inline=true and thier children will not become nodes
+        - Descendant Groups with inline=true and thier children will not become nodes
 
   Tab	- Direct Child Groups will become tabs, direct child options will appear above the tab control
-  		- Grandchild groups will default to inline unless specified otherwise
+        - Grandchild groups will default to inline unless specified otherwise
 
   Select- Same as Tab but with entries in a dropdown rather than tabs
 
 
   Inline Groups
-  	- Will not become nodes of a select group, they will be effectivly part of thier parent group seperated by a border
-  	- If declared on a direct child of a root node of a select group, they will appear above the group container control
-  	- When a group is displayed inline, all descendants will also be inline members of the group
+    - Will not become nodes of a select group, they will be effectivly part of thier parent group seperated by a border
+    - If declared on a direct child of a root node of a select group, they will appear above the group container control
+    - When a group is displayed inline, all descendants will also be inline members of the group
 
 ]]
 
@@ -505,6 +505,7 @@ local function OptionOnMouseOver(widget, event)
 	local path = user.path
 	local appName = user.appName
 
+	-- modified by ElvUI
 	if opt.descStyle and opt.descStyle ~= "tooltip" then return end
 
 	local name = GetOptionsMemberValue("name", opt, options, path, appName)
@@ -858,6 +859,8 @@ end
 local function ActivateSlider(widget, event, value)
 	local option = widget:GetUserData("option")
 	local min, max, step = option.min or (not option.softMin and 0 or nil), option.max or (not option.softMax and 100 or nil), option.step
+
+	-- checks added by elvui
 	if type(min) == 'function' then min = min() end
 	if type(max) == 'function' then max = max() end
 
@@ -1081,6 +1084,10 @@ local function CreateControl(userControlType, fallbackControlType)
 	return control
 end
 
+local function sortTblAsStrings(x,y)
+	return tostring(x) < tostring(y) -- Support numbers as keys
+end
+
 --[[
 	options - root of the options table being fed
 	container - widget that controls will be placed in
@@ -1214,6 +1221,7 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 
 				elseif v.type == "select" then
 					local values = GetOptionsMemberValue("values", v, options, path, appName)
+					local sorting = GetOptionsMemberValue("sorting", v, options, path, appName)
 					if v.style == "radio" then
 						local disabled = CheckOptionDisabled(v, options, path, appName)
 						local width = GetOptionsMemberValue("width",v,options,path,appName)
@@ -1224,12 +1232,14 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 
 						control:PauseLayout()
 						local optionValue = GetOptionsMemberValue("get",v, options, path, appName)
-						local t = {}
-						for value, text in pairs(values) do
-							t[#t+1]=value
+						if not sorting then
+							sorting = {}
+							for value, text in pairs(values) do
+								sorting[#sorting+1]=value
+							end
+							tsort(sorting, sortTblAsStrings)
 						end
-						tsort(t)
-						for k, value in ipairs(t) do
+						for k, value in ipairs(sorting) do
 							local text = values[value]
 							local radio = gui:Create("CheckBox")
 							radio:SetLabel(text)
@@ -1265,7 +1275,7 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 							itemType = nil
 						end
 						control:SetLabel(name)
-						control:SetList(values, nil, itemType, sortByValue)
+						control:SetList(values, sorting, itemType, sortByValue)
 						local value = GetOptionsMemberValue("get",v, options, path, appName)
 						if not values[value] then
 							value = nil
@@ -1525,6 +1535,7 @@ local function TreeOnButtonEnter(widget, event, uniquevalue, button)
 	if type(desc) == "string" then
 		GameTooltip:SetOwner(button, "ANCHOR_CURSOR")
 
+		GameTooltip:ClearAllPoints()
 		if widget.type == "TabGroup" then
 			GameTooltip:SetPoint("BOTTOM",button,"TOP")
 		else

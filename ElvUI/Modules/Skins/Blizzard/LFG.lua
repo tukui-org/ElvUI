@@ -538,6 +538,7 @@ local function LoadSkin()
 	S:HandleButton(_G.LFGListApplicationDialog.CancelButton)
 	S:HandleEditBox(_G.LFGListApplicationDialogDescription)
 
+	_G.LFGListInviteDialog:StripTextures()
 	_G.LFGListInviteDialog:SetTemplate("Transparent")
 	S:HandleButton(_G.LFGListInviteDialog.AcknowledgeButton)
 	S:HandleButton(_G.LFGListInviteDialog.AcceptButton)
