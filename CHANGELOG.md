@@ -7,7 +7,7 @@
 Attempted fix for Toolkit and AceConfigDialog restricted regions error.
 
 **Misc. Changes:**  
-
+Added Prismatic Manapearls to our currencies DataText. #1372  
 
 ___
 ### Version 11.13 [ June 25th 2019 ]
