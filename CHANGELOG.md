@@ -7,7 +7,8 @@
 Attempted fix for two Toolkit errors (cause by nameplate and bankframe code) and AceConfigDialog restricted regions error.  
 
 **Misc. Changes:**  
-Added Prismatic Manapearls to our currencies DataText. #1372  
+Added Prismatic Manapearls to our currencies DataText. (#1372)  
+Changed the Font Shadow styling around the UI.  
 
 ___
 ### Version 11.13 [ June 25th 2019 ]

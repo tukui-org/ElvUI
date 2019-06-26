@@ -426,8 +426,15 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	end
 
 	fs:SetFont(font, fontSize, fontStyle)
-	fs:SetShadowColor(0, 0, 0, (fontStyle and fontStyle ~= 'NONE' and 0.2) or 1)
-	fs:SetShadowOffset(E.mult or 1, -(E.mult or 1))
+
+	if fontStyle == 'NONE' then
+		local s = E.mult or 1
+		fs:SetShadowOffset(s, -s/2)
+		fs:SetShadowColor(0, 0, 0, 1)
+	else
+		fs:SetShadowOffset(0, 0)
+		fs:SetShadowColor(0, 0, 0, 0)
+	end
 
 	E.texts[fs] = true
 end
