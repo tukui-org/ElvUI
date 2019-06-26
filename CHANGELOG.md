@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-
+Attempted fix for Toolkit and AceConfigDialog restricted regions error.
 
 **Misc. Changes:**  
 
