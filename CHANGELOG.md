@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-Attempted fix for Toolkit and AceConfigDialog restricted regions error.
+Attempted fix for two Toolkit errors (cause by nameplate and bankframe code) and AceConfigDialog restricted regions error.  
 
 **Misc. Changes:**  
 Added Prismatic Manapearls to our currencies DataText. #1372  
