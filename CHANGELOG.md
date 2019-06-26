@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-
+Fixed Minimap colored green when ElvUI Minimap is disabled.  
 
 **Misc. Changes:**  
 
