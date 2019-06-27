@@ -45,6 +45,7 @@ local function LoadSkin()
 	S:HandleScrollBar(PVPMatchResults.content.scrollFrame.scrollBar)
 	S:HandleCloseButton(PVPMatchResults.CloseButton)
 	S:HandleButton(PVPMatchResults.buttonContainer.leaveButton)
+	S:HandleButton(PVPMatchResults.buttonContainer.requeueButton)
 
 	local tabs = {
 		PVPMatchResults.content.tabContainer.tabGroup.tab1,
