@@ -6,6 +6,7 @@ Added debuffs in Eternal Palace.
 
 **Bug Fixes:**  
 Fixed Minimap colored green when ElvUI Minimap is disabled.  
+Skinned a missing button on the new PVPMatch skin.  
 
 **Misc. Changes:**  
 
