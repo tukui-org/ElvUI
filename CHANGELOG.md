@@ -1,7 +1,8 @@
 ### Version 11.15 [  ]
 
 **New Additions:**  
-
+Added new consumable buffs.
+Added debuffs in Eternal Palace.
 
 **Bug Fixes:**  
 Fixed Minimap colored green when ElvUI Minimap is disabled.  
