@@ -585,6 +585,15 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[178207] = Defaults(), -- Drums of Fury
 		[230935] = Defaults(), -- Drums of the Mountain (Legion)
 		[256740] = Defaults(), -- Drums of the Maelstrom (BfA)
+		[298155] = Defaults(), -- Superior Steelskin Potion
+		[298152] = Defaults(), -- Superior Battle Potion of Intellect
+		[298146] = Defaults(), -- Superior Battle Potion of Agility
+		[298154] = Defaults(), -- Superior Battle Potion of Strength
+		[298153] = Defaults(), -- Superior Battle Potion of Stamina
+		[298836] = Defaults(), -- Greater Flask of the Currents
+		[298837] = Defaults(), -- Greater Flask of Endless Fathoms
+		[298839] = Defaults(), -- Greater Flask of the Vast Horizon
+		[298841] = Defaults(), -- Greater Flask of the Undertow
 	},
 }
 
