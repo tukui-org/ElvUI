@@ -23,6 +23,9 @@ local function Update(self, ...)
 	local element = self.NazjatarFollowerXP
 	if (not self.npcID) then
 		element:Hide()
+		if element.Rank then
+			element.Rank:Hide()
+		end
 		return
 	end
 
@@ -33,6 +36,9 @@ local function Update(self, ...)
 	local widgetID = NPCIDToWidgetIDMap[tonumber(self.npcID)]
 	if not widgetID then
 		element:Hide()
+		if element.Rank then
+			element.Rank:Hide()
+		end
 		return
 	end
 
@@ -42,6 +48,7 @@ local function Update(self, ...)
 
 	if (element.Rank) then
 		element.Rank:SetText(rank)
+		element.Rank:Show()
 	end
 
 	element:Show()
@@ -74,7 +81,9 @@ local function Disable(self)
 	local element = self.NazjatarFollowerXP
 	if (element) then
 		element:Hide()
-
+		if element.Rank then
+			element.Rank:Hide()
+		end
 		self:UnregisterEvent("UPDATE_UI_WIDGET", Path)
 	end
 end
