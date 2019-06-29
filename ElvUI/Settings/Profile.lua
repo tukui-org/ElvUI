@@ -1357,6 +1357,9 @@ P.nameplates = {
 				xOffset = 0,
 				yOffset = 0,
 			},
+			nazjatarFollowerXP = {
+				enable = true,
+			}
 		},
 		ENEMY_NPC = {
 			enable = true,
