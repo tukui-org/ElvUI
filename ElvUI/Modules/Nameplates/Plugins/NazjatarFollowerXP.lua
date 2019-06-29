@@ -3,7 +3,7 @@ local oUF = E.oUF
 
 local NPCIDToWidgetIDMap = {
 	[154304] = 1940, -- Farseer Ori
-	--[0] = 1613, -- Hunter Akana
+	[150202] = 1613, -- Hunter Akana
 	[154371] = 1966, -- Bladesman Inowari
 	--[0] = 1621, -- Neri Sharpfin
 	[151310] = 1622, -- Poen Gillbrack
