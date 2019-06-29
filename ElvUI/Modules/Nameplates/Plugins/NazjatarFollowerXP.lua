@@ -71,7 +71,7 @@ local function Enable(self)
 end
 
 local function Disable(self)
-	local element = self.QuestIcons
+	local element = self.NazjatarFollowerXP
 	if (element) then
 		element:Hide()
 
