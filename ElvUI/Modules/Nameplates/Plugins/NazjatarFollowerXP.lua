@@ -7,7 +7,7 @@ local NPCIDToWidgetIDMap = {
 	[154371] = 1966 -- Bladesman Inowari
 	--[0] = 1621, -- Neri Sharpfin
 	[151310] = 1622, -- Poen Gillbrack
-	--[0] = 1920 -- Vim Brineheart
+	[151309] = 1920 -- Vim Brineheart
 }
 
 local function GetBodyguardXP(widgetID)
