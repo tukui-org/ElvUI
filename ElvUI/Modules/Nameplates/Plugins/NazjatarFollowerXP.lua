@@ -6,7 +6,7 @@ local NPCIDToWidgetIDMap = {
 	--[0] = 1613, -- Hunter Akana
 	[154371] = 1966 -- Bladesman Inowari
 	--[0] = 1621, -- Neri Sharpfin
-	--[0] = 1622, -- Poen Gillbrack
+	[151310] = 1622, -- Poen Gillbrack
 	--[0] = 1920 -- Vim Brineheart
 }
 
