@@ -1,4 +1,4 @@
-local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 25
+local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 26
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -133,6 +133,7 @@ end
 
 function lib:OptionsUILoaded(_, addon)
 	if addon == 'ElvUI_OptionsUI' then
+		lib:GetPluginOptions()
 		for _, plugin in pairs(lib.plugins) do
 			if plugin.callback then
 				plugin.callback()
@@ -278,5 +279,3 @@ lib.VCFrame:SetScript('OnEvent', lib.VersionCheck)
 
 lib.CFFrame = CreateFrame('Frame')
 lib.CFFrame:SetScript('OnEvent', lib.OptionsUILoaded)
-
-lib:RegisterPlugin(MAJOR, lib.GetPluginOptions)
