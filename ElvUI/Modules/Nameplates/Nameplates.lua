@@ -262,8 +262,8 @@ function NP:StylePlate(nameplate)
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
 	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate.RaisedElement)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
-	--nameplate.NazjatarFollowerXP = NP:Construct_NazjatarFollowerXP(nameplate)
-	--nameplate.NazjatarFollowerXP.Rank = NP:Construct_TagText(nameplate.RaisedElement)
+	nameplate.NazjatarFollowerXP = NP:Construct_NazjatarFollowerXP(nameplate)
+	nameplate.NazjatarFollowerXP.Rank = NP:Construct_TagText(nameplate.RaisedElement)
 
 	NP:Construct_Auras(nameplate)
 
@@ -307,7 +307,7 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_RaidTargetIndicator(nameplate)
 		NP:Update_HealerSpecs(nameplate)
 		NP:Update_Cutaway(nameplate)
-		--NP:Update_NazjatarFollowerXP(nameplate)
+		NP:Update_NazjatarFollowerXP(nameplate)
 
 		if E.myclass == "DEATHKNIGHT" then
 			NP:Update_Runes(nameplate)
