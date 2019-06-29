@@ -264,6 +264,7 @@ function NP:StylePlate(nameplate)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
 	nameplate.NazjatarFollowerXP = NP:Construct_NazjatarFollowerXP(nameplate)
 	nameplate.NazjatarFollowerXP.Rank = NP:Construct_TagText(nameplate.RaisedElement)
+	nameplate.NazjatarFollowerXP.ProgressText = NP:Construct_TagText(nameplate.RaisedElement)
 
 	NP:Construct_Auras(nameplate)
 

@@ -5,7 +5,7 @@ local NPCIDToWidgetIDMap = {
 	[154304] = 1940, -- Farseer Ori
 	[150202] = 1613, -- Hunter Akana
 	[154297] = 1966, -- Bladesman Inowari
-	--[0] = 1621, -- Neri Sharpfin
+	[151300] = 1621, -- Neri Sharpfin
 	[151310] = 1622, -- Poen Gillbrack
 	[151309] = 1920 -- Vim Brineheart
 }
@@ -21,11 +21,15 @@ end
 
 local function Update(self, ...)
 	local element = self.NazjatarFollowerXP
-	if (not self.npcID) then
+	if (not self.npcID or not self.unit or not UnitIsOwnerOrControllerOfUnit("player", self.unit)) then
 		element:Hide()
 		if element.Rank then
 			element.Rank:Hide()
 		end
+		if element.ProgressText then
+			element.ProgressText:Hide()
+		end
+
 		return
 	end
 
@@ -39,6 +43,9 @@ local function Update(self, ...)
 		if element.Rank then
 			element.Rank:Hide()
 		end
+		if element.ProgressText then
+			element.ProgressText:Hide()
+		end
 		return
 	end
 
@@ -49,6 +56,11 @@ local function Update(self, ...)
 	if (element.Rank) then
 		element.Rank:SetText(rank)
 		element.Rank:Show()
+	end
+
+	if element.ProgressText then
+		element.ProgressText:SetText(("%d / %d"):format(cur, next))
+		element.ProgressText:Show()
 	end
 
 	element:Show()
@@ -84,6 +96,10 @@ local function Disable(self)
 		if element.Rank then
 			element.Rank:Hide()
 		end
+		if element.ProgressText then
+			element.ProgressText:Hide()
+		end
+
 		self:UnregisterEvent("UPDATE_UI_WIDGET", Path)
 	end
 end

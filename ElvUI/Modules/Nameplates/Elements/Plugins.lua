@@ -329,10 +329,12 @@ end
 
 function NP:Update_NazjatarFollowerXP(nameplate)
 	nameplate.NazjatarFollowerXP:SetHeight(10)
-	nameplate.NazjatarFollowerXP:SetPoint("TOPLEFT", nameplate.Health, "BOTTOMLEFT")
-	nameplate.NazjatarFollowerXP:SetPoint("TOPRIGHT", nameplate.Health, "BOTTOMRIGHT")
+	nameplate.NazjatarFollowerXP:SetPoint("TOPLEFT", nameplate.Castbar, "BOTTOMLEFT", 0, -4)
+	nameplate.NazjatarFollowerXP:SetPoint("TOPRIGHT", nameplate.Castbar, "BOTTOMRIGHT", 0, -4)
+	nameplate.NazjatarFollowerXP:SetStatusBarColor(0.89, 0.89, 0)
 
 	nameplate.NazjatarFollowerXP.Rank:SetPoint("RIGHT", nameplate.NazjatarFollowerXP, "LEFT", -4, 0)
+	nameplate.NazjatarFollowerXP.ProgressText:SetPoint("CENTER", nameplate.NazjatarFollowerXP, "CENTER")
 
 	nameplate.NazjatarFollowerXP:ForceUpdate()
 end
