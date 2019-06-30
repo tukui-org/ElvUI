@@ -598,6 +598,7 @@ L["If enabled then the filter will only activate if the unit is casting interrup
 L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "Если включено, то фильтр будет активирован, когда юнит произносит не прерываемое заклинание."
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = "Если включено, то фильтр будет активирован, когда юнит не произносит или поддерживает одно из выбранных заклинаний."
 L["If enabled then the filter will only activate when the unit is a player's pet."] =  "Если включено, то фильтр будет активирован, когда юнит является питомцем игрока."
+L["If enabled then the filter will only activate when the unit is not a player's pet."] = true
 L["If enabled then the filter will only activate when the unit is in a Vehicle."] =  "Если включено, то фильтр будет активирован, когда юнит в транспорте."
 L["If enabled then the filter will only activate when the unit is in combat."] = "Если включено, фильтр будет активирован только когда юнит в бою."
 L["If enabled then the filter will only activate when the unit is not in a Vehicle."] =  "Если включено, то фильтр будет активирован, когда юнит не в транспорте."
@@ -1258,6 +1259,7 @@ L["Unit in Combat"] = "Юнит в бою"
 L["Unit in Vehicle"] = "Юнит в транспорте"
 L["Unit is Not Tap Denied"] = "Юнита можно тагнуть"
 L["Unit is Pet"] = "Юнит = питомец"
+L["Unit is Not Pet"] = true
 L["Unit is Tap Denied"] = "Юнита нельзя тапнуть"
 L["Unit Out of Combat"] = "Юнит вне боя"
 L["Unit Out of Vehicle"] = "Юнит не в транспорте"

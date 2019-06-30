@@ -598,6 +598,7 @@ L["If enabled then the filter will only activate if the unit is casting interrup
 L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "활성화하면 유닛이 차단 불가능한 주문을 시전하고 있을 경우에만 필터가 작동합니다."
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = true
 L["If enabled then the filter will only activate when the unit is a player's pet."] = true
+L["If enabled then the filter will only activate when the unit is not a player's pet."] = true
 L["If enabled then the filter will only activate when the unit is in a Vehicle."] = true
 L["If enabled then the filter will only activate when the unit is in combat."] = "활성화하면 유닛이 전투 중일때만 필터가 작동합니다."
 L["If enabled then the filter will only activate when the unit is not in a Vehicle."] = true
@@ -1258,6 +1259,7 @@ L["Unit in Combat"] = "유닛 전투중"
 L["Unit in Vehicle"] = true
 L["Unit is Not Tap Denied"] = true
 L["Unit is Pet"] = true
+L["Unit is Not Pet"] = true
 L["Unit is Tap Denied"] = true
 L["Unit Out of Combat"] = "유닛 비전투"
 L["Unit Out of Vehicle"] = true

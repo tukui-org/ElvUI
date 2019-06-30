@@ -656,8 +656,9 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Unit Pet
-	if trigger.isPet then
-		if frame.isPlayerControlled and not frame.isPlayer then passed = true else return end
+	if trigger.isPet or trigger.isNotPet then
+		local isPet = frame.isPlayerControlled and not frame.isPlayer
+		if (trigger.isPet and isPet or trigger.isNotPet and not isPet) then passed = true else return end
 	end
 
 	-- Unit Tap Denied

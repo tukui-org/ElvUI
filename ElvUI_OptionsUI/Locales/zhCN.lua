@@ -600,6 +600,7 @@ L["If enabled then the filter will only activate if the unit is casting interrup
 L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "启用后过滤器仅在单位施放不可打断技能的时候激活."
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = "启用后过滤器仅在单位未施放或引导任一勾选的技能时激活."
 L["If enabled then the filter will only activate when the unit is a player's pet."] = true
+L["If enabled then the filter will only activate when the unit is not a player's pet."] = true
 L["If enabled then the filter will only activate when the unit is in a Vehicle."] = "启用后过滤器仅在单位在载具中的时候激活."
 L["If enabled then the filter will only activate when the unit is in combat."] = "启用后过滤器仅在单位在战斗中的时候激活."
 L["If enabled then the filter will only activate when the unit is not in a Vehicle."] = "启用后过滤器仅在单位不在载具中的时候激活."
@@ -1259,6 +1260,7 @@ L["Unit in Combat"] = "单位在战斗中"
 L["Unit in Vehicle"] = "单位在载具中"
 L["Unit is Not Tap Denied"] = true
 L["Unit is Pet"] = true
+L["Unit is Not Pet"] = true
 L["Unit is Tap Denied"] = true
 L["Unit Out of Combat"] = "单位不在战斗中"
 L["Unit Out of Vehicle"] = "单位不在载具中"

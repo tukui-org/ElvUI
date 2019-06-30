@@ -10,7 +10,7 @@ Fixed Minimap colored green when ElvUI Minimap is disabled.
 Skinned a missing button on the new PVPMatch skin.  
 
 **Misc. Changes:**  
-
+Added "Not Pet" condition to the Nameplate Style Filters, activates when the unit is not a player's pet.
 
 ___
 ### Version 11.14 [ June 26th 2019 ]

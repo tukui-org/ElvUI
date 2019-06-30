@@ -598,6 +598,7 @@ L["If enabled then the filter will only activate if the unit is casting interrup
 L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = true
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = true
 L["If enabled then the filter will only activate when the unit is a player's pet."] = true
+L["If enabled then the filter will only activate when the unit is not a player's pet."] = true
 L["If enabled then the filter will only activate when the unit is in a Vehicle."] = true
 L["If enabled then the filter will only activate when the unit is in combat."] = true
 L["If enabled then the filter will only activate when the unit is not in a Vehicle."] = true
@@ -1258,6 +1259,7 @@ L["Unit in Combat"] = true
 L["Unit in Vehicle"] = true
 L["Unit is Not Tap Denied"] = true
 L["Unit is Pet"] = true
+L["Unit is Not Pet"] = true
 L["Unit is Tap Denied"] = true
 L["Unit Out of Combat"] = true
 L["Unit Out of Vehicle"] = true
