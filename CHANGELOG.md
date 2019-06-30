@@ -3,7 +3,7 @@
 **New Additions:**  
 Added new consumable buffs.
 Added debuffs in Eternal Palace.
-Added a new element to Friendly NPC nameplates to disably an XP Bar for the Nazjtar Bodyguards.
+Added a new element to Friendly NPC nameplates to display an XP Bar for the Nazjtar Bodyguards.
 
 **Bug Fixes:**  
 Fixed Minimap colored green when ElvUI Minimap is disabled.  
