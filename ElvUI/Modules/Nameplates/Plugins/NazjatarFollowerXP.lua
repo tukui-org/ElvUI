@@ -10,6 +10,15 @@ local NPCIDToWidgetIDMap = {
 	[151309] = 1920 -- Vim Brineheart
 }
 
+local CampfireNPCIDToWidgetIDMap = {
+	[149805] = 1940, -- Farseer Ori
+	[149804] = 1613, -- Hunter Akana
+	[149803] = 1966, -- Bladesman Inowari
+	[149904] = 1621, -- Neri Sharpfin
+	[149902] = 1622, -- Poen Gillbrack
+	[149906] = 1920 -- Vim Brineheart
+}
+
 local function GetBodyguardXP(widgetID)
 	local widget = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo(widgetID)
 	local rank = string.match(widget.overrideBarText, "%d+")
@@ -21,7 +30,11 @@ end
 
 local function Update(self, ...)
 	local element = self.NazjatarFollowerXP
-	if (not self.npcID or not self.unit or not UnitIsOwnerOrControllerOfUnit("player", self.unit)) then
+	local npcID = tonumber(self.npcID)
+	local shouldDisplay =
+		npcID and (NPCIDToWidgetIDMap[npcID] and self.unit and UnitIsOwnerOrControllerOfUnit("player", self.unit)) or
+		CampfireNPCIDToWidgetIDMap[npcID]
+	if (not shouldDisplay) then
 		element:Hide()
 		if element.Rank then
 			element.Rank:Hide()
@@ -37,7 +50,7 @@ local function Update(self, ...)
 		element:PreUpdate()
 	end
 
-	local widgetID = NPCIDToWidgetIDMap[tonumber(self.npcID)]
+	local widgetID = NPCIDToWidgetIDMap[npcID] or CampfireNPCIDToWidgetIDMap[npcID]
 	if not widgetID then
 		element:Hide()
 		if element.Rank then
