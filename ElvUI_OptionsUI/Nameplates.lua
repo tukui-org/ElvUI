@@ -3984,6 +3984,39 @@ local function GetUnitSettings(unit, name)
 			name = L["Show Title"],
 			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."]
 		}
+		if unit == "FRIENDLY_NPC" then
+			group.args.nazjatarFollowerXP = {
+				order = 14,
+				type = "group",
+				name =L["Nazjatar Follower XP"],
+				args = {
+					["enable"] = {
+						order = 1,
+						type = "toggle",
+						name = L["Enable"],
+						get = function(info) return E.db.nameplates.units[unit].nazjatarFollowerXP[info[#info]] end,
+						set = function(info, value) E.db.nameplates.units[unit].nazjatarFollowerXP[info[#info]] = value; NP:ConfigureAll() end,
+					},
+					["color"] = {
+						order = 2,
+						type = "color",
+						name = L["COLOR"],
+						type = 'color',
+							hasAlpha = false,
+							disabled = function() return not E.db.nameplates.units[unit].nazjatarFollowerXP.enable end,
+							get = function(info)
+								local t = E.db.nameplates.units[unit].nazjatarFollowerXP.color
+								return t.r, t.g, t.b
+							end,
+							set = function(info, r, g, b)
+								local t = E.db.nameplates.units[unit].nazjatarFollowerXP.color
+								t.r, t.g, t.b = r, g, b
+								NP:ConfigureAll()
+							end,
+					}
+				}
+			}
+		end
 	end
 
 	-- start groups at 30

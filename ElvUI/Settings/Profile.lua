@@ -1359,6 +1359,11 @@ P.nameplates = {
 			},
 			nazjatarFollowerXP = {
 				enable = true,
+				color = {
+					r = 0.529,
+					g = 0.808,
+					b = 0.922
+				}
 			}
 		},
 		ENEMY_NPC = {
