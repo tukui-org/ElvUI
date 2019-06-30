@@ -1175,17 +1175,29 @@ local function UpdateFilterGroup()
 									desc = L["If enabled then the filter will only activate when the unit is not a player's pet."],
 									order = 13
 								},
+								isPlayerControlled = {
+									type = "toggle",
+									name = L["Unit is Player Controlled"],
+									desc = L["If enabled then the filter will only activate when the unit is controlled by the player."],
+									order = 14
+								},
+								isNotPlayerControlled = {
+									type = "toggle",
+									name = L["Unit is Not Player Controlled"],
+									desc = L["If enabled then the filter will only activate when the unit is not controlled by the player."],
+									order = 15
+								},
 								isTapDenied = {
 									type = "toggle",
 									name = L["Unit is Tap Denied"],
 									desc = L["If enabled then the filter will only activate when the unit is tap denied."],
-									order = 14
+									order = 16
 								},
 								isNotTapDenied = {
 									type = "toggle",
 									name = L["Unit is Not Tap Denied"],
 									desc = L["If enabled then the filter will only activate when the unit is not tap denied."],
-									order = 15
+									order = 17
 								}
 							}
 						}

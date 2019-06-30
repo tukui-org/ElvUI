@@ -247,6 +247,8 @@ E.StyleFilterDefaults = {
 		isResting = false,
 		isPet = false,
 		isNotPet = false,
+		isPlayerControlled = false,
+		isNotPlayerControlled = false,
 		isTapDenied = false,
 		isNotTapDenied = false,
 		-- combat
