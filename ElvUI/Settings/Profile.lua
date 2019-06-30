@@ -1359,6 +1359,7 @@ P.nameplates = {
 			},
 			nazjatarFollowerXP = {
 				enable = true,
+				yOffset = -4,
 				color = {
 					r = 0.529,
 					g = 0.808,

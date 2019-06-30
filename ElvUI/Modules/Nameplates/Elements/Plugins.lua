@@ -338,8 +338,8 @@ function NP:Update_NazjatarFollowerXP(nameplate)
 			nameplate:EnableElement("NazjatarFollowerXP")
 		end
 		nameplate.NazjatarFollowerXP:SetHeight(10)
-		nameplate.NazjatarFollowerXP:SetPoint("TOPLEFT", nameplate.Castbar, "BOTTOMLEFT", 0, -4)
-		nameplate.NazjatarFollowerXP:SetPoint("TOPRIGHT", nameplate.Castbar, "BOTTOMRIGHT", 0, -4)
+		nameplate.NazjatarFollowerXP:SetPoint("TOPLEFT", nameplate.Castbar, "BOTTOMLEFT", 0, db.nazjatarFollowerXP.yOffset)
+		nameplate.NazjatarFollowerXP:SetPoint("TOPRIGHT", nameplate.Castbar, "BOTTOMRIGHT", 0, db.nazjatarFollowerXP.yOffset)
 		local color = db.nazjatarFollowerXP.color
 		nameplate.NazjatarFollowerXP:SetStatusBarColor(color.r, color.g, color.b)
 
