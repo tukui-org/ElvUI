@@ -6,10 +6,10 @@ local _G = _G
 local select = select
 local strjoin = strjoin
 --WoW API / Variables
+local C_PvP_GetMatchPVPStatIDs = C_PvP.GetMatchPVPStatIDs
+local C_PvP_GetMatchPVPStatColumn = C_PvP.GetMatchPVPStatColumn
 local GetBattlefieldScore = GetBattlefieldScore
-local GetNumBattlefieldStats = GetNumBattlefieldStats
 local GetNumBattlefieldScores = GetNumBattlefieldScores
-local GetBattlefieldStatInfo = GetBattlefieldStatInfo
 local GetBattlefieldStatData = GetBattlefieldStatData
 
 local lastPanel
@@ -52,8 +52,8 @@ function DT:BattlegroundStats()
 	DT:SetupTooltip(self)
 
 	local classColor = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass]) or _G.RAID_CLASS_COLORS[E.myclass]
-	local numStatInfo = GetNumBattlefieldStats()
-	if numStatInfo then
+	local pvpStatIDs = C_PvP_GetMatchPVPStatIDs()
+	if pvpStatIDs then
 		for index = 1, GetNumBattlefieldScores() do
 			local name = GetBattlefieldScore(index)
 			if name and name == E.myname then
@@ -61,8 +61,8 @@ function DT:BattlegroundStats()
 				DT.tooltip:AddLine(" ")
 
 				-- Add extra statistics to watch based on what BG you are in.
-				for x = 1, numStatInfo do
-					DT.tooltip:AddDoubleLine(GetBattlefieldStatInfo(x), GetBattlefieldStatData(index, x), 1,1,1)
+				for x = 1, #pvpStatIDs do
+					DT.tooltip:AddDoubleLine(C_PvP_GetMatchPVPStatColumn(pvpStatIDs[x]), GetBattlefieldStatData(index, x), 1,1,1)
 				end
 
 				break

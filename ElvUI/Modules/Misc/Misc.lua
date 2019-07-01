@@ -20,7 +20,7 @@ local IsActiveBattlefieldArena = IsActiveBattlefieldArena
 local IsAddOnLoaded = IsAddOnLoaded
 local IsArenaSkirmish = IsArenaSkirmish
 local IsGuildMember = IsGuildMember
-local IsCharacterFriend = IsCharacterFriend
+local C_FriendList_IsFriend = C_FriendList.IsFriend
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local IsPartyLFG, IsInInstance = IsPartyLFG, IsInInstance
 local IsShiftKeyDown = IsShiftKeyDown
@@ -184,7 +184,7 @@ function M:AutoInvite(event, _, _, _, _, _, _, inviterGUID)
 		-- Prevent losing que inside LFD if someone invites you to group
 		if _G.QueueStatusMinimapButton:IsShown() or IsInGroup() or (not inviterGUID or inviterGUID == "") then return end
 
-		if BNGetGameAccountInfoByGUID(inviterGUID) or IsCharacterFriend(inviterGUID) or IsGuildMember(inviterGUID) then
+		if BNGetGameAccountInfoByGUID(inviterGUID) or C_FriendList_IsFriend(inviterGUID) or IsGuildMember(inviterGUID) then
 			hideStatic = true
 			AcceptGroup()
 		end

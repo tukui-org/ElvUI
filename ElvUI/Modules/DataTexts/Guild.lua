@@ -14,7 +14,7 @@ local GetGuildRosterMOTD = GetGuildRosterMOTD
 local GetMouseFocus = GetMouseFocus
 local GetNumGuildMembers = GetNumGuildMembers
 local GetQuestDifficultyColor = GetQuestDifficultyColor
-local GuildRoster = GuildRoster
+local C_GuildInfo_GuildRoster = C_GuildInfo.GuildRoster
 local InviteToGroup = InviteToGroup
 local IsInGuild = IsInGuild
 local IsShiftKeyDown = IsShiftKeyDown
@@ -114,14 +114,14 @@ local eventHandlers = {
 	["PLAYER_ENTERING_WORLD"] = function()
 		if not _G.GuildFrame and IsInGuild() then
 			LoadAddOn("Blizzard_GuildUI")
-			GuildRoster()
+			C_GuildInfo_GuildRoster()
 		end
 	end,
 	-- Guild Roster updated, so rebuild the guild table
 	["GUILD_ROSTER_UPDATE"] = function(self)
 		if(resendRequest) then
 			resendRequest = false;
-			return GuildRoster()
+			return C_GuildInfo_GuildRoster()
 		else
 			BuildGuildTable()
 			UpdateGuildMessage()
@@ -130,7 +130,7 @@ local eventHandlers = {
 			end
 		end
 	end,
-	["PLAYER_GUILD_UPDATE"] = GuildRoster,
+	["PLAYER_GUILD_UPDATE"] = C_GuildInfo_GuildRoster,
 	-- our guild message of the day changed
 	["GUILD_MOTD"] = function (self, arg1)
 		guildMotD = arg1
@@ -272,7 +272,7 @@ local function OnEnter(self, _, noUpdate)
 	DT.tooltip:Show()
 
 	if not noUpdate then
-		GuildRoster()
+		C_GuildInfo_GuildRoster()
 	end
 end
 

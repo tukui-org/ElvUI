@@ -17,7 +17,6 @@ local BNInviteFriend = BNInviteFriend
 local BNRequestInviteFriend = BNRequestInviteFriend
 local BNSetCustomMessage = BNSetCustomMessage
 local GetDisplayedInviteType = GetDisplayedInviteType
-local GetFriendInfo = GetFriendInfo
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetRealmName = GetRealmName
 local InviteToGroup = InviteToGroup
@@ -164,11 +163,11 @@ end
 local function BuildFriendTable(total)
 	wipe(friendTable)
 	for i = 1, total do
-		local name, level, class, area, connected, status, note, _, guid = GetFriendInfo(i)
+		local info = C_FriendList.GetFriendInfoByIndex(i)
 
-		if status == "<".._G.AFK..">" then
+		if info.afk then
 			status = statusTable[1]
-		elseif status == "<".._G.DND..">" then
+		elseif info.dnd then
 			status = statusTable[2]
 		else
 			status = statusTable[3]
@@ -176,10 +175,10 @@ local function BuildFriendTable(total)
 
 		if connected then
 			--other non-english locales require this
-			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if info.className == v then info.className = k end end
+			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if info.className == v then info.className = k end end
 
-			friendTable[i] = { name, level, class, area, connected, status, note, guid }
+			friendTable[i] = { info.name, info.level, info.className, info.area, info.connected, status, info.notes, info.guid }
 		end
 	end
 	if next(friendTable) then

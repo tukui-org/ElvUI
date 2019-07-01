@@ -6,7 +6,7 @@ local _G = _G
 local next, pairs, select, unpack = next, pairs, select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local CanViewOfficerNote = CanViewOfficerNote
+local C_GuildInfo_CanViewOfficerNote = C_GuildInfo.CanViewOfficerNote
 local hooksecurefunc = hooksecurefunc
 
 local function LoadSkin()
@@ -136,7 +136,7 @@ local function LoadSkin()
 	local GuildMemberDetailRankLabel = _G.GuildMemberDetailRankLabel
 	hooksecurefunc(GuildMemberDetailFrame, "SetHeight", function(_, _, breakLoop)
 		if breakLoop then return; end
-		if CanViewOfficerNote() then
+		if C_GuildInfo_CanViewOfficerNote() then
 			GuildMemberDetailFrame:Height(_G.GUILD_DETAIL_OFFICER_HEIGHT + 50 + GuildMemberDetailName:GetHeight() + GuildMemberDetailRankLabel:GetHeight(), true)
 		else
 			GuildMemberDetailFrame:Height(_G.GUILD_DETAIL_NORM_HEIGHT + 50 + GuildMemberDetailName:GetHeight() + GuildMemberDetailRankLabel:GetHeight(), true)
