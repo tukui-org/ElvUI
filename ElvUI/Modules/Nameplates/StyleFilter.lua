@@ -29,6 +29,7 @@ local UnitIsUnit = UnitIsUnit
 local UnitLevel = UnitLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
+local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
 
 local hooksecurefunc = hooksecurefunc
 local C_Timer_NewTimer = C_Timer.NewTimer
