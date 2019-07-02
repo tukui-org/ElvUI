@@ -165,21 +165,13 @@ local function BuildFriendTable(total)
 	wipe(friendTable)
 	for i = 1, total do
 		local info = C_FriendList_GetFriendInfoByIndex(i)
-		local className, status = info.className
-
-		if info.afk then
-			status = statusTable[1]
-		elseif info.dnd then
-			status = statusTable[2]
-		else
-			status = statusTable[3]
-		end
-
-		if info.connected then
+		if info and info.connected then
 			--other non-english locales require this
-			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if className == v then className = k end end
-			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if className == v then className = k end end
+			local className = info.className
+			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if className == v then className = k;break end end
+			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if className == v then className = k;break end end
 
+			local status = statusTable[(info.afk and 1) or (info.dnd and 2) or 3]
 			friendTable[i] = { info.name, info.level, className, info.area, info.connected, status, info.notes, info.guid }
 		end
 	end
@@ -217,8 +209,8 @@ end
 
 local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid, gameText)
 	if class and class ~= "" then --other non-english locales require this
-		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k;break end end
+		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k;break end end
 	end
 
 	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
