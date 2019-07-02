@@ -655,8 +655,11 @@ end
 
 function E:LocalizedClassName(Class)
 	if Class and Class ~= "" then --other non-english locales require this
-		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if Class == v then Class = k;break end end
-		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if Class == v then Class = k;break end end
+		local changed
+		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if Class == v then Class, changed = k, true;break end end
+		if not changed then
+			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if Class == v then Class = k;break end end
+		end
 		return Class
 	end
 end
