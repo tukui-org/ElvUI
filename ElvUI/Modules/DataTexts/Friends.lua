@@ -164,6 +164,7 @@ local function BuildFriendTable(total)
 	wipe(friendTable)
 	for i = 1, total do
 		local info = C_FriendList.GetFriendInfoByIndex(i)
+		local className, status = info.className, nil
 
 		if info.afk then
 			status = statusTable[1]
@@ -175,10 +176,10 @@ local function BuildFriendTable(total)
 
 		if connected then
 			--other non-english locales require this
-			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if info.className == v then info.className = k end end
-			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if info.className == v then info.className = k end end
+			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if className == v then className = k end end
+			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if className == v then className = k end end
 
-			friendTable[i] = { info.name, info.level, info.className, info.area, info.connected, status, info.notes, info.guid }
+			friendTable[i] = { info.name, info.level, className, info.area, info.connected, status, info.notes, info.guid }
 		end
 	end
 	if next(friendTable) then
