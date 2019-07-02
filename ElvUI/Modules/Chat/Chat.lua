@@ -1129,8 +1129,7 @@ function CH:GetBNFriendColor(name, id, useBTag)
 		_, _, _, _, _, _, _, Class = BNGetGameAccountInfo(bnetIDGameAccount)
 	end
 
-	Class = E:LocalizedClassName(Class)
-	Class = Class and Class ~= '' and gsub(strupper(Class),'%s','')
+	Class = E:UnlocalizedClassName(Class)
 	local COLOR = Class and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[Class] or _G.RAID_CLASS_COLORS[Class])
 
 	return (COLOR and format('|c%s%s|r', COLOR.colorStr, TAG or name)) or TAG or name, isBattleTagPresence and BATTLE_TAG

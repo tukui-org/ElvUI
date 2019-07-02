@@ -653,14 +653,13 @@ function E:CheckRole()
 	end
 end
 
-function E:LocalizedClassName(Class)
-	if Class and Class ~= "" then --other non-english locales require this
-		local changed
-		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if Class == v then Class, changed = k, true;break end end
-		if not changed then
-			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if Class == v then Class = k;break end end
-		end
-		return Class
+do -- other non-english locales require this
+	E.LocalizedClasses = {}
+	for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do E.LocalizedClasses[v] = k end
+	for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do E.LocalizedClasses[v] = k end
+
+	function E:UnlocalizedClassName(className)
+		return (className and className ~= "") and E.LocalizedClasses[className]
 	end
 end
 

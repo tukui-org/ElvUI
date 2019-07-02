@@ -166,7 +166,7 @@ local function BuildFriendTable(total)
 	for i = 1, total do
 		local info = C_FriendList_GetFriendInfoByIndex(i)
 		if info and info.connected then
-			local className = E:LocalizedClassName(info.className) or ""
+			local className = E:UnlocalizedClassName(info.className) or ""
 			local status = statusTable[(info.afk and 1) or (info.dnd and 2) or 3]
 			friendTable[i] = { info.name, info.level, className, info.area, info.connected, status, info.notes, info.guid }
 		end
@@ -204,7 +204,7 @@ local function clientSort(a, b)
 end
 
 local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, className, zoneName, level, guid, gameText)
-	className = E:LocalizedClassName(className) or ""
+	className = E:UnlocalizedClassName(className) or ""
 	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or ""
 	BNTable[bnIndex] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, className, zoneName, level, guid, gameText }
 
