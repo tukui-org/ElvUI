@@ -166,11 +166,7 @@ local function BuildFriendTable(total)
 	for i = 1, total do
 		local info = C_FriendList_GetFriendInfoByIndex(i)
 		if info and info.connected then
-			--other non-english locales require this
-			local className = info.className
-			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if className == v then className = k;break end end
-			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if className == v then className = k;break end end
-
+			local className = E:LocalizedClassName(info.className) or ""
 			local status = statusTable[(info.afk and 1) or (info.dnd and 2) or 3]
 			friendTable[i] = { info.name, info.level, className, info.area, info.connected, status, info.notes, info.guid }
 		end
@@ -207,14 +203,10 @@ local function clientSort(a, b)
 	end
 end
 
-local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid, gameText)
-	if class and class ~= "" then --other non-english locales require this
-		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k;break end end
-		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k;break end end
-	end
-
-	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
-	BNTable[bnIndex] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid, gameText }
+local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, className, zoneName, level, guid, gameText)
+	className = E:LocalizedClassName(className) or ""
+	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or ""
+	BNTable[bnIndex] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, className, zoneName, level, guid, gameText }
 
 	if tableList[client] then
 		tableList[client][#tableList[client]+1] = BNTable[bnIndex]

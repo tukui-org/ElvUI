@@ -653,6 +653,14 @@ function E:CheckRole()
 	end
 end
 
+function E:LocalizedClassName(Class)
+	if Class and Class ~= "" then --other non-english locales require this
+		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if Class == v then Class = k;break end end
+		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if Class == v then Class = k;break end end
+		return Class
+	end
+end
+
 function E:IncompatibleAddOn(addon, module)
 	E.PopupDialogs.INCOMPATIBLE_ADDON.button1 = addon
 	E.PopupDialogs.INCOMPATIBLE_ADDON.button2 = 'ElvUI '..module
