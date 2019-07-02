@@ -654,12 +654,12 @@ function E:CheckRole()
 end
 
 do -- other non-english locales require this
-	E.LocalizedClasses = {}
-	for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do E.LocalizedClasses[v] = k end
-	for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do E.LocalizedClasses[v] = k end
+	E.UnlocalizedClasses = {}
+	for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do E.UnlocalizedClasses[v] = k end
+	for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do E.UnlocalizedClasses[v] = k end
 
 	function E:UnlocalizedClassName(className)
-		return (className and className ~= "") and E.LocalizedClasses[className]
+		return (className and className ~= "") and E.UnlocalizedClasses[className]
 	end
 end
 
