@@ -31,6 +31,7 @@ local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local C_FriendList_GetNumFriends = C_FriendList.GetNumFriends
 local C_FriendList_GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
+local C_FriendList_GetFriendInfoByIndex = C_FriendList.GetFriendInfoByIndex
 local ChatFrame_SendBNetTell = ChatFrame_SendBNetTell
 
 -- create a popup
@@ -163,8 +164,8 @@ end
 local function BuildFriendTable(total)
 	wipe(friendTable)
 	for i = 1, total do
-		local info = C_FriendList.GetFriendInfoByIndex(i)
-		local className, status = info.className, nil
+		local info = C_FriendList_GetFriendInfoByIndex(i)
+		local className, status = info.className
 
 		if info.afk then
 			status = statusTable[1]
@@ -174,7 +175,7 @@ local function BuildFriendTable(total)
 			status = statusTable[3]
 		end
 
-		if connected then
+		if info.connected then
 			--other non-english locales require this
 			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if className == v then className = k end end
 			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if className == v then className = k end end
