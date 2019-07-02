@@ -659,7 +659,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		if nameplate.unitGUID then
-			NP:UpdatePlateGUID(nameplate, nil)
+			NP:UpdatePlateGUID(nameplate)
 		end
 
 		-- cutaway needs this
