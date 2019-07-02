@@ -575,7 +575,6 @@ end
 
 function NP:UpdatePlateGUID(nameplate, guid)
 	NP.PlateGUID[nameplate.unitGUID] = (guid and nameplate) or nil
-	nameplate.unitGUID = guid
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
@@ -596,7 +595,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.unitName = UnitName(unit)
 		nameplate.npcID = nameplate.unitGUID and select(6, strsplit("-", nameplate.unitGUID))
 
-		NP:UpdatePlateGUID(nameplate, nameplate.unitGUID)
+		if nameplate.unitGUID then
+			NP:UpdatePlateGUID(nameplate, nameplate.unitGUID)
+		end
+
 		NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
 
 		if UnitIsUnit(unit, "player") and NP.db.units.PLAYER.enable then
@@ -656,11 +658,14 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:ScalePlate(nameplate, 1, true)
 		end
 
+		if nameplate.unitGUID then
+			NP:UpdatePlateGUID(nameplate, nil)
+		end
+
 		-- cutaway needs this
 		nameplate.Health.cur = nil
 		nameplate.Power.cur = nil
 
-		NP:UpdatePlateGUID(nameplate, nil)
 		NP:StyleFilterClearVariables(nameplate)
 	elseif event == "PLAYER_TARGET_CHANGED" then -- we need to check if nameplate exists in here
 		NP:SetupTarget(nameplate) -- pass it, even as nil here
