@@ -604,6 +604,8 @@ L["If enabled then the filter will only activate when the unit is a player's pet
 L["If enabled then the filter will only activate when the unit is not a player's pet."] = true
 L["If enabled then the filter will only activate when the unit is controlled by the player."] = true
 L["If enabled then the filter will only activate when the unit is not controlled by the player."] = true
+L["If enabled then the filter will only activate when the unit is pvp-flagged."] = true
+L["If enabled then the filter will only activate when the unit is not pvp-flagged."] = true
 L["If enabled then the filter will only activate when the unit is in a Vehicle."] = "Wenn eingeschlatet, wird der Filter nur aktiviert wenn die Einheit in einem Fahrzeug ist."
 L["If enabled then the filter will only activate when the unit is in combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn die Einheit im Kampf ist."
 L["If enabled then the filter will only activate when the unit is not in a Vehicle."] = "Wenn eingeschlatet, wird der Filter nur aktiviert, wenn die Einheit nicht in einem Fahrzeug ist."
@@ -1268,6 +1270,8 @@ L["Unit is Not Tap Denied"] = "Einheit ist nicht beansprucht"
 L["Unit is Pet"] = "Einheit ist Begleiter"
 L["Unit is Player Controlled"] = true
 L["Unit is Not Player Controlled"] = true
+L["Unit is PvP"] = true
+L["Unit is Not PvP"] = true
 L["Unit is Not Pet"] = true
 L["Unit is Tap Denied"] = "Einheit ist beansprucht"
 L["Unit Out of Combat"] = "Einheit nicht im Kampf"

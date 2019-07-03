@@ -249,6 +249,8 @@ E.StyleFilterDefaults = {
 		isNotPet = false,
 		isPlayerControlled = false,
 		isNotPlayerControlled = false,
+		isPvP = false,
+		isNotPvP = false,
 		isTapDenied = false,
 		isNotTapDenied = false,
 		-- combat

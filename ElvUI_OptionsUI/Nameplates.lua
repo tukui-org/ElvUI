@@ -1187,17 +1187,29 @@ local function UpdateFilterGroup()
 									desc = L["If enabled then the filter will only activate when the unit is not controlled by the player."],
 									order = 15
 								},
+								isPvP = {
+									type = "toggle",
+									name = L["Unit is PvP"],
+									desc = L["If enabled then the filter will only activate when the unit is pvp-flagged."],
+									order = 16
+								},
+								isNotPvP = {
+									type = "toggle",
+									name = L["Unit is Not PvP"],
+									desc = L["If enabled then the filter will only activate when the unit is not pvp-flagged."],
+									order = 17
+								},
 								isTapDenied = {
 									type = "toggle",
 									name = L["Unit is Tap Denied"],
 									desc = L["If enabled then the filter will only activate when the unit is tap denied."],
-									order = 16
+									order = 18
 								},
 								isNotTapDenied = {
 									type = "toggle",
 									name = L["Unit is Not Tap Denied"],
 									desc = L["If enabled then the filter will only activate when the unit is not tap denied."],
-									order = 17
+									order = 19
 								}
 							}
 						}

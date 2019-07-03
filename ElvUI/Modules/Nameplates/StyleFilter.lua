@@ -668,6 +668,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if (trigger.isPlayerControlled and playerControlled or trigger.isNotPlayerControlled and not playerControlled) then passed = true else return end
 	end
 
+	-- Unit PvP
+	if trigger.isPvP or trigger.isNotPvP then
+		local isPvP = UnitIsPVP(frame.unit)
+		if (trigger.isPvP and isPvP or trigger.isNotPvP and not isPvP) then passed = true else return end
+	end
+
 	-- Unit Tap Denied
 	if trigger.isTapDenied or trigger.isNotTapDenied then
 		local tapDenied = UnitIsTapDenied(frame.unit)

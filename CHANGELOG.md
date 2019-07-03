@@ -12,6 +12,7 @@ Skinned a missing button on the new PVPMatch skin.
 **Misc. Changes:**  
 Added "Not Pet" condition to the Nameplate Style Filters, activates when the unit is not a player's pet.  
 Added "Player Controlled" and "Not Player Controlled" conditions to the Nameplate Style Filters, activating when a unit is controlled by the active player or not.  
+Added "Is PvP" and "is Not PvP" conditions to the name Nameplate Style Filters, activating when a unit is flagged for pvp or not.  
 
 ___
 ### Version 11.14 [ June 26th 2019 ]
