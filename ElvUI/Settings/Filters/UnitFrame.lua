@@ -585,6 +585,15 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[178207] = Defaults(), -- Drums of Fury
 		[230935] = Defaults(), -- Drums of the Mountain (Legion)
 		[256740] = Defaults(), -- Drums of the Maelstrom (BfA)
+		[298155] = Defaults(), -- Superior Steelskin Potion
+		[298152] = Defaults(), -- Superior Battle Potion of Intellect
+		[298146] = Defaults(), -- Superior Battle Potion of Agility
+		[298154] = Defaults(), -- Superior Battle Potion of Strength
+		[298153] = Defaults(), -- Superior Battle Potion of Stamina
+		[298836] = Defaults(), -- Greater Flask of the Currents
+		[298837] = Defaults(), -- Greater Flask of Endless Fathoms
+		[298839] = Defaults(), -- Greater Flask of the Vast Horizon
+		[298841] = Defaults(), -- Greater Flask of the Undertow
 	},
 }
 
@@ -996,6 +1005,84 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[285345] = Defaults(), -- Maddening Eyes of N'Zoth
 		[285477] = Defaults(), -- Obscurity
 		[285652] = Defaults(), -- Insatiable Torment
+
+	--Eternal Palace
+		--Lady Ashvane
+		[296693] = Defaults(), -- Waterlogged
+		[296725] = Defaults(), -- Barnacle Bash
+		[296942] = Defaults(), -- Arcing Azerite
+		[296938] = Defaults(), -- Arcing Azerite
+		[296941] = Defaults(), -- Arcing Azerite
+		[296939] = Defaults(), -- Arcing Azerite
+		[296943] = Defaults(), -- Arcing Azerite
+		[296940] = Defaults(), -- Arcing Azerite
+		[296752] = Defaults(), -- Cutting Coral
+		[297333] = Defaults(), -- Briny Bubble
+		[297397] = Defaults(), -- Briny Bubble
+
+		--Abyssal Commander Sivara
+		--[294715] = Defaults(), -- Toxic Brand
+		--[294711] = Defaults(), -- Frost Mark
+		[300701] = Defaults(), -- Rimefrost
+		[300705] = Defaults(), -- Septic Taint
+		[294847] = Defaults(), -- Unstable Mixture
+		[295850] = Defaults(), -- Delirious
+		[295421] = Defaults(), -- Overflowing Venom
+		[295807] = Defaults(), -- Frozen
+		[300883] = Defaults(), -- Inversion Sickness
+		[295705] = Defaults(), -- Toxic Bolt
+
+		--The Queen’s Court
+		[301830] = Defaults(), -- Pashmar's Touch
+		[296851] = Defaults(), -- Fanatical Verdict
+		[297836] = Defaults(), -- Potent Spark
+		[297586] = Defaults(), -- Suffering
+		[304410] = Defaults(), -- Repeat Performance
+		[299914] = Defaults(), -- Frenetic Charge
+		[303306] = Defaults(), -- Sphere of Influence
+		[300545] = Defaults(), -- Mighty Rupture
+
+		--Radiance of Azshara
+		[296566] = Defaults(), -- Tide Fist
+		[296737] = Defaults(), -- Arcane Bomb
+		[296746] = Defaults(), -- Arcane Bomb
+		[295920] = Defaults(), -- Ancient Tempest
+		[296462] = Defaults(), -- Squall Trap
+		[299152] = Defaults(), -- Waterlogged
+
+		--Orgozoa
+		[298156] = Defaults(), -- Desensitizing Sting
+		[298306] = Defaults(), -- Incubation Fluid
+
+		--Blackwater Behemoth
+		[292127] = Defaults(), -- Darkest Depths
+		[292138] = Defaults(), -- Radiant Biomass
+		[292167] = Defaults(), -- Toxic Spine
+		[301494] = Defaults(), -- Piercing Barb
+
+		--Za’qul
+		[295495] = Defaults(), -- Mind Tether
+		[295480] = Defaults(), -- Mind Tether
+		[295249] = Defaults(), -- Delirium Realm
+		[303819] = Defaults(), -- Nightmare Pool
+		[293509] = Defaults(), -- Manifest Nightmares
+		[295327] = Defaults(), -- Shattered Psyche
+		[294545] = Defaults(), -- Portal of Madness
+		[298192] = Defaults(), -- Dark Beyond
+		[292963] = Defaults(), -- Dread
+		[300133] = Defaults(), -- Snapped
+
+		--Queen Azshara
+		[298781] = Defaults(), -- Arcane Orb
+		[297907] = Defaults(), -- Cursed Heart
+		[302999] = Defaults(), -- Arcane Vulnerability
+		[302141] = Defaults(), -- Beckon
+		[299276] = Defaults(), -- Sanction
+		[303657] = Defaults(), -- Arcane Burst
+		[298756] = Defaults(), -- Serrated Edge
+		[301078] = Defaults(), -- Charged Spear
+		[298014] = Defaults(), -- Cold Blast
+		[298018] = Defaults(), -- Frozen
 	},
 }
 

@@ -653,6 +653,16 @@ function E:CheckRole()
 	end
 end
 
+do -- other non-english locales require this
+	E.UnlocalizedClasses = {}
+	for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do E.UnlocalizedClasses[v] = k end
+	for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do E.UnlocalizedClasses[v] = k end
+
+	function E:UnlocalizedClassName(className)
+		return (className and className ~= "") and E.UnlocalizedClasses[className]
+	end
+end
+
 function E:IncompatibleAddOn(addon, module)
 	E.PopupDialogs.INCOMPATIBLE_ADDON.button1 = addon
 	E.PopupDialogs.INCOMPATIBLE_ADDON.button2 = 'ElvUI '..module

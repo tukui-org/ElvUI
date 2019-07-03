@@ -251,7 +251,7 @@ end
 
 function UF:CustomCastDelayText(duration)
 	local db = self:GetParent().db
-	if not db then return end
+	if not (db and db.castbar) then return end
 	db = db.castbar.format
 
 	if self.channeling then
@@ -279,7 +279,7 @@ end
 
 function UF:CustomTimeText(duration)
 	local db = self:GetParent().db
-	if not db then return end
+	if not (db and db.castbar) then return end
 	db = db.castbar.format
 
 	if self.channeling then

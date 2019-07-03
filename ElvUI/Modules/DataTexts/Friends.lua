@@ -17,7 +17,6 @@ local BNInviteFriend = BNInviteFriend
 local BNRequestInviteFriend = BNRequestInviteFriend
 local BNSetCustomMessage = BNSetCustomMessage
 local GetDisplayedInviteType = GetDisplayedInviteType
-local GetFriendInfo = GetFriendInfo
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetRealmName = GetRealmName
 local InviteToGroup = InviteToGroup
@@ -32,6 +31,7 @@ local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local C_FriendList_GetNumFriends = C_FriendList.GetNumFriends
 local C_FriendList_GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
+local C_FriendList_GetFriendInfoByIndex = C_FriendList.GetFriendInfoByIndex
 local ChatFrame_SendBNetTell = ChatFrame_SendBNetTell
 
 -- create a popup
@@ -164,22 +164,11 @@ end
 local function BuildFriendTable(total)
 	wipe(friendTable)
 	for i = 1, total do
-		local name, level, class, area, connected, status, note, _, guid = GetFriendInfo(i)
-
-		if status == "<".._G.AFK..">" then
-			status = statusTable[1]
-		elseif status == "<".._G.DND..">" then
-			status = statusTable[2]
-		else
-			status = statusTable[3]
-		end
-
-		if connected then
-			--other non-english locales require this
-			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-			for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
-
-			friendTable[i] = { name, level, class, area, connected, status, note, guid }
+		local info = C_FriendList_GetFriendInfoByIndex(i)
+		if info and info.connected then
+			local className = E:UnlocalizedClassName(info.className) or ""
+			local status = statusTable[(info.afk and 1) or (info.dnd and 2) or 3]
+			friendTable[i] = { info.name, info.level, className, info.area, info.connected, status, info.notes, info.guid }
 		end
 	end
 	if next(friendTable) then
@@ -214,14 +203,10 @@ local function clientSort(a, b)
 	end
 end
 
-local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid, gameText)
-	if class and class ~= "" then --other non-english locales require this
-		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-		for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
-	end
-
-	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
-	BNTable[bnIndex] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, class, zoneName, level, guid, gameText }
+local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, className, zoneName, level, guid, gameText)
+	className = E:UnlocalizedClassName(className) or ""
+	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or ""
+	BNTable[bnIndex] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, realmName, faction, race, className, zoneName, level, guid, gameText }
 
 	if tableList[client] then
 		tableList[client][#tableList[client]+1] = BNTable[bnIndex]

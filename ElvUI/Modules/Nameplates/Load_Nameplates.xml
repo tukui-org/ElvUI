@@ -18,4 +18,5 @@
 	<Script file="Plugins\Highlight.lua"/>
 	<Script file="Plugins\QuestIcons.lua"/>
 	<Script file="Plugins\TargetIndicator.lua"/>
+	<Script file="Plugins\NazjatarFollowerXP.lua"/>
 </Ui>

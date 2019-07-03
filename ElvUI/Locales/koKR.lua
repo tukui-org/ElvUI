@@ -201,6 +201,7 @@ L["Mobile"] = true
 L["Modulating Blend"] = true
 L["Mov. Speed:"] = _G.STAT_MOVEMENT_SPEED
 L["MT Frames"] = "방어전담 프레임"
+L["Nazjatar Follower XP"] = true
 L["Naval Mission(s) Report:"] = "해상 임무 보고서"
 L["No bindings set."] = "설정한 단축키가 없습니다."
 L["No gray items to delete."] = "잡동사니가 없습니다."
@@ -359,6 +360,12 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "클릭 : 전문화 교체"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "우클릭 : 전리품 획득 전문화 변경"
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF쉬프트 + 클릭:|r 특성 전문화창 보기"
+L["Farseer Ori"] = true
+L["Hunter Akana"] = true
+L["Bladesman Inowari"] = true
+L["Neri Sharpfin"] = true
+L["Poen Gillbrack"] = true
+L["Vim Brineheart"] = true
 
 ----------------------------------
 L["RED_ENABLE"] = "|cFFff3333사용|r"

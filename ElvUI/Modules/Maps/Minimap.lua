@@ -404,7 +404,7 @@ function M:Initialize()
 	self:UpdateSettings()
 
 	if not E.private.general.minimap.enable then
-		_G.Minimap:SetMaskTexture('Textures\\MinimapMask')
+		_G.Minimap:SetMaskTexture(186178) -- textures/minimapmask.blp
 		return
 	end
 

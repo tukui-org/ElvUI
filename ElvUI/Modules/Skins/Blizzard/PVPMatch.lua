@@ -15,9 +15,10 @@ local function LoadSkin()
 	local PVPMatchScoreboard = _G.PVPMatchScoreboard
 	PVPMatchScoreboard:StripTextures()
 	PVPMatchScoreboard:DisableDrawLayer("BORDER")
-	PVPMatchScoreboard:SetTemplate('Transparent')
+	PVPMatchScoreboard:CreateBackdrop('Transparent')
 
 	PVPMatchScoreboard.Content:StripTextures()
+	PVPMatchScoreboard.Content.TabContainer.InsetBorderTop:Hide()
 
 	S:HandleScrollBar(PVPMatchScoreboard.Content.ScrollFrame.ScrollBar)
 	S:HandleCloseButton(PVPMatchScoreboard.CloseButton)
@@ -37,7 +38,7 @@ local function LoadSkin()
 	local PVPMatchResults = _G.PVPMatchResults
 	PVPMatchResults:StripTextures()
 	PVPMatchResults:DisableDrawLayer("BORDER")
-	PVPMatchResults:SetTemplate('Transparent')
+	PVPMatchResults:CreateBackdrop('Transparent')
 
 	PVPMatchResults.content:StripTextures()
 	PVPMatchResults.content.tabContainer:StripTextures()
@@ -45,6 +46,7 @@ local function LoadSkin()
 	S:HandleScrollBar(PVPMatchResults.content.scrollFrame.scrollBar)
 	S:HandleCloseButton(PVPMatchResults.CloseButton)
 	S:HandleButton(PVPMatchResults.buttonContainer.leaveButton)
+	S:HandleButton(PVPMatchResults.buttonContainer.requeueButton)
 
 	local tabs = {
 		PVPMatchResults.content.tabContainer.tabGroup.tab1,
