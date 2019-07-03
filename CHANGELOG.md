@@ -5,7 +5,7 @@ Added new consumable buffs.
 Added debuffs in Eternal Palace.  
 Added a new element to Friendly NPC nameplates to display an XP Bar for the Nazjatar Bodyguards.  
 New Nameplate Style Filter Unit Conditions:  
-- "Not Pet": Activated when the unit is not a player's pet.  
+- "Not Pet": Activated when the unit is not the player's pet.  
 - "Player Controlled" / "Not Player Controlled": Activated when a unit is controlled by the active player or not.  
 - "Owned by Player" / "Not Owned By Player": Activated when a unit is owned by the active player or not.  
 - "Is PvP" / "Is Not PvP": Activated when a unit is flagged for pvp or not.   
