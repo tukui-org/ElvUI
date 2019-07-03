@@ -15,6 +15,10 @@ Added "Player Controlled" and "Not Player Controlled" conditions to the Nameplat
 Added "Is PvP" and "is Not PvP" conditions to the name Nameplate Style Filters, activating when a unit is flagged for pvp or not.  
 Added Nazjatar Follower XP to the BfA Missions Datatext when in Nazjatar.  
 
+**Known Issues:**
+Return to graveyard background is still missing.  
+Adjusting the classbar position on nameplates while targeting something throws an error related to the new nameplate restriction (but works after retargeting)  
+
 ___
 ### Version 11.14 [ June 26th 2019 ]
 
