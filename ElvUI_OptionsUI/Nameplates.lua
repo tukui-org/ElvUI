@@ -1166,50 +1166,62 @@ local function UpdateFilterGroup()
 								isPet = {
 									type = "toggle",
 									name = L["Unit is Pet"],
-									desc = L["If enabled then the filter will only activate when the unit is a player's pet."],
+									desc = L["If enabled then the filter will only activate when the unit is the player's pet."],
 									order = 12
 								},
 								isNotPet= {
 									type = "toggle",
 									name =L["Unit is Not Pet"],
-									desc = L["If enabled then the filter will only activate when the unit is not a player's pet."],
+									desc = L["If enabled then the filter will only activate when the unit is not the player's pet."],
 									order = 13
 								},
 								isPlayerControlled = {
 									type = "toggle",
 									name = L["Unit is Player Controlled"],
-									desc = L["If enabled then the filter will only activate when the unit is controlled by the player."],
+									desc = L["If enabled then the filter will only activate when the unit is controlled by a player."],
 									order = 14
 								},
 								isNotPlayerControlled = {
 									type = "toggle",
 									name = L["Unit is Not Player Controlled"],
-									desc = L["If enabled then the filter will only activate when the unit is not controlled by the player."],
+									desc = L["If enabled then the filter will only activate when the unit is not controlled by a player."],
 									order = 15
+								},
+								isOwnedByPlayer = {
+									type = "toggle",
+									name = L["Unit is Owned By Player"],
+									desc = L["If enabled then the filter will only activate when the unit is owned by the player."],
+									order = 16
+								},
+								isNotOwnedByPlayer = {
+									type = "toggle",
+									name = L["Unit is Not Owned By Player"],
+									desc = L["If enabled then the filter will only activate when the unit is not owned by the player."],
+									order = 17
 								},
 								isPvP = {
 									type = "toggle",
 									name = L["Unit is PvP"],
 									desc = L["If enabled then the filter will only activate when the unit is pvp-flagged."],
-									order = 16
+									order = 18
 								},
 								isNotPvP = {
 									type = "toggle",
 									name = L["Unit is Not PvP"],
 									desc = L["If enabled then the filter will only activate when the unit is not pvp-flagged."],
-									order = 17
+									order = 19
 								},
 								isTapDenied = {
 									type = "toggle",
 									name = L["Unit is Tap Denied"],
 									desc = L["If enabled then the filter will only activate when the unit is tap denied."],
-									order = 18
+									order = 20
 								},
 								isNotTapDenied = {
 									type = "toggle",
 									name = L["Unit is Not Tap Denied"],
 									desc = L["If enabled then the filter will only activate when the unit is not tap denied."],
-									order = 19
+									order = 21
 								}
 							}
 						}

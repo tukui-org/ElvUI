@@ -601,6 +601,8 @@ L["If enabled then the filter will only activate when the unit is a player's pet
 L["If enabled then the filter will only activate when the unit is not a player's pet."] = true
 L["If enabled then the filter will only activate when the unit is controlled by the player."] = true
 L["If enabled then the filter will only activate when the unit is not controlled by the player."] = true
+L["If enabled then the filter will only activate when the unit is owned by the player."] = true
+L["If enabled then the filter will only activate when the unit is not owned by the player."] = true
 L["If enabled then the filter will only activate when the unit is pvp-flagged."] = true
 L["If enabled then the filter will only activate when the unit is not pvp-flagged."] = true
 L["If enabled then the filter will only activate when the unit is in a Vehicle."] =  "Если включено, то фильтр будет активирован, когда юнит в транспорте."
@@ -1265,6 +1267,8 @@ L["Unit is Not Tap Denied"] = "Юнита можно тагнуть"
 L["Unit is Pet"] = "Юнит = питомец"
 L["Unit is Player Controlled"] = true
 L["Unit is Not Player Controlled"] = true
+L["Unit is Owned By Player"] = true
+L["Unit is Not Owned By Player"] = true
 L["Unit is PvP"] = true
 L["Unit is Not PvP"] = true
 L["Unit is Not Pet"] = true
