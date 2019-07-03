@@ -201,6 +201,7 @@ L["Mobile"] = "Мобильный"
 L["Modulating Blend"] = "Модулирующие смешивание" --Check back later
 L["Mov. Speed:"] = _G.STAT_MOVEMENT_SPEED
 L["MT Frames"] = "Танки"
+L["Nazjatar Follower XP"] = true
 L["Naval Mission(s) Report:"] = "Отчет морских миссий:"
 L["No bindings set."] = "Нет назначений"
 L["No gray items to delete."] = "Нет предметов серого качества для удаления."
@@ -359,6 +360,12 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFFЛКМ:|r Изменить набор талантов"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFПКМ:|r Изменить специализацию для получения добычи"
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + ЛКМ:|r Показать окно специализации"
+L["Farseer Ori"] = true
+L["Hunter Akana"] = true
+L["Bladesman Inowari"] = true
+L["Neri Sharpfin"] = true
+L["Poen Gillbrack"] = true
+L["Vim Brineheart"] = true
 
 ----------------------------------
 L["RED_ENABLE"] = "|cFFff3333Включить|r"

@@ -201,6 +201,7 @@ L["Mobile"] = true
 L["Modulating Blend"] = true
 L["Mov. Speed:"] = STAT_MOVEMENT_SPEED
 L["MT Frames"] = "Quadro do Tank Principal"
+L["Nazjatar Follower XP"] = true
 L["Naval Mission(s) Report:"] = true
 L["No bindings set."] = "Sem atalhos definidos"
 L["No gray items to delete."] = "Nenhum item cinzento para destruir."
@@ -358,6 +359,12 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFFClique Esquerdo:|r Altera Especialização de Talento"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFClique Direito:|r Altera a Especialização de Saque"
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = true
+L["Farseer Ori"] = true
+L["Hunter Akana"] = true
+L["Bladesman Inowari"] = true
+L["Neri Sharpfin"] = true
+L["Poen Gillbrack"] = true
+L["Vim Brineheart"] = true
 
 ----------------------------------
 L["RED_ENABLE"] = "|cFFff3333Ativar|r"

@@ -201,6 +201,7 @@ L["Mobile"] = "掌上設備"
 L["Modulating Blend"] = "無視 Alpha 通道混合"
 L["Mov. Speed:"] = _G.STAT_MOVEMENT_SPEED
 L["MT Frames"] = "主坦克框架"
+L["Nazjatar Follower XP"] = true
 L["Naval Mission(s) Report:"] = "海軍任務報告"
 L["No bindings set."] = "未設定快捷綁定."
 L["No gray items to delete."] = "沒有可刪除的灰色物品."
@@ -359,6 +360,12 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFF左鍵:|r 變更目前職業專精"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFF右鍵:|r 變更目前拾取專精"
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + 左鍵:|r 顯示天賦專精介面"
+L["Farseer Ori"] = true
+L["Hunter Akana"] = true
+L["Bladesman Inowari"] = true
+L["Neri Sharpfin"] = true
+L["Poen Gillbrack"] = true
+L["Vim Brineheart"] = true
 
 ----------------------------------
 L["RED_ENABLE"] = "|cFFff3333啟用|r"

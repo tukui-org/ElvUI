@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
+local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 
 local NPCIDToWidgetIDMap = {
 	[154304] = 1940, -- Farseer Ori
@@ -20,7 +21,7 @@ local CampfireNPCIDToWidgetIDMap = {
 }
 
 local function GetBodyguardXP(widgetID)
-	local widget = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo(widgetID)
+	local widget = C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
 	local rank = string.match(widget.overrideBarText, "%d+")
 	local cur = widget.barValue - widget.barMin
 	local next = widget.barMax - widget.barMin
