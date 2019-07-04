@@ -19,8 +19,9 @@ Added Nazjatar Follower XP to the BfA Missions Datatext when in Nazjatar.
 The "Is Pet" and the new "Is Not Pet" Nameplate Style Filter now only activate with regard to the active player's pet unit.  Use the new "Player Controlled" / "Not Player Controlled" conditions to match the old behavior.  
 
 **Known Issues:**  
-Adjusting the classbar position on nameplates while targeting something throws an error related to the new nameplate restriction (but works after retargeting)  
+Adjusting the classbar position on nameplates while targeting something throws an error related to the new nameplate restriction (but works after retargeting).  
 Moving the General chat tab causes an error, please avoid trying to move it while we continue to investigate a fix, hopefully coming in 11.16.  
+
 ___
 ### Version 11.14 [ June 26th 2019 ]
 

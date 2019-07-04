@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
+
+local strmatch, tonumber = strmatch, tonumber
+local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
 local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 
 local NPCIDToWidgetIDMap = {
@@ -21,16 +24,20 @@ local CampfireNPCIDToWidgetIDMap = {
 }
 
 local function GetBodyguardXP(widgetID)
-	local widget = C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
-	local rank = string.match(widget.overrideBarText, "%d+")
+	local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
+	if not widget then return end
+
+	local rank = strmatch(widget.overrideBarText, "%d+")
 	local cur = widget.barValue - widget.barMin
 	local next = widget.barMax - widget.barMin
 	local total = widget.barValue
 	return rank, cur, next, total
 end
 
-local function Update(self, ...)
+local function Update(self)
 	local element = self.NazjatarFollowerXP
+	if not element then return end
+
 	local npcID = tonumber(self.npcID)
 	local shouldDisplay =
 		npcID and (NPCIDToWidgetIDMap[npcID] and self.unit and UnitIsOwnerOrControllerOfUnit("player", self.unit)) or
@@ -64,6 +71,8 @@ local function Update(self, ...)
 	end
 
 	local rank, cur, next, total = GetBodyguardXP(widgetID)
+	if not rank then return end
+
 	element:SetMinMaxValues(0, next)
 	element:SetValue(cur)
 
