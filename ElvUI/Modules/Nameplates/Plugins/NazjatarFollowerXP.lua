@@ -35,7 +35,7 @@ local function GetBodyguardXP(widgetID)
 end
 
 local function Update(self)
-	local element = self and self.NazjatarFollowerXP
+	local element = self.NazjatarFollowerXP
 	if not element then return end
 
 	local npcID = tonumber(self.npcID)
