@@ -1,3 +1,16 @@
+### Version 11.16 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+Fixed an issue with our chat to error out if you try to move it.  
+
+
+**Misc. Changes:**  
+
+
+___
 ### Version 11.15 [ July 3rd 2019 ]
 
 **New Additions:**  
