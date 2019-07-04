@@ -22,15 +22,15 @@ local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitInVehicle = UnitInVehicle
+local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
+local UnitIsPVP = UnitIsPVP
 local UnitIsQuestBoss = UnitIsQuestBoss
 local UnitIsTapDenied = UnitIsTapDenied
-local UnitThreatSituation = UnitThreatSituation
 local UnitIsUnit = UnitIsUnit
 local UnitLevel = UnitLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
-local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
-local UnitName = UnitName
+local UnitThreatSituation = UnitThreatSituation
 
 local hooksecurefunc = hooksecurefunc
 local C_Timer_NewTimer = C_Timer.NewTimer
@@ -659,8 +659,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Unit Pet
 	if trigger.isPet or trigger.isNotPet then
-		local isPet = UnitExists("pet") and UnitName(frame.unit) == UnitName("pet")
-		if (trigger.isPet and isPet or trigger.isNotPet and not isPet) then passed = true else return end
+		if (trigger.isPet and frame.isPet or trigger.isNotPet and not frame.isPet) then passed = true else return end
 	end
 
 	-- Unit Player Controlled
