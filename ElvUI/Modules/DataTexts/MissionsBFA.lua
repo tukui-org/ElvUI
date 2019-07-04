@@ -3,20 +3,21 @@ local DT = E:GetModule("DataTexts")
 
 --Lua functions
 local _G = _G
-local format = format
-local sort = sort
-local ipairs = ipairs
+local format, sort, ipairs = format, sort, ipairs
+local select, unpack, strmatch = select, unpack, strmatch
 --WoW API / Variables
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
 local GetMouseFocus = GetMouseFocus
 local GetQuestObjectiveInfo = GetQuestObjectiveInfo
+local GOAL_COMPLETED = GOAL_COMPLETED
+local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 local HideUIPanel = HideUIPanel
 local IsQuestFlaggedCompleted = IsQuestFlaggedCompleted
 local SecondsToTime = SecondsToTime
 local ShowGarrisonLandingPage = ShowGarrisonLandingPage
 local UnitLevel = UnitLevel
-local GREEN_FONT_COLOR = GREEN_FONT_COLOR
+local UnitPosition = UnitPosition
 local C_Garrison_GetCompleteTalent = C_Garrison.GetCompleteTalent
 local C_Garrison_GetFollowerShipments = C_Garrison.GetFollowerShipments
 local C_Garrison_GetInProgressMissions = C_Garrison.GetInProgressMissions
@@ -26,17 +27,16 @@ local C_Garrison_GetTalentTreeInfoForID = C_Garrison.GetTalentTreeInfoForID
 local C_Garrison_HasGarrison = C_Garrison.HasGarrison
 local C_Garrison_RequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
 local C_IslandsQueue_GetIslandsWeeklyQuestID = C_IslandsQueue.GetIslandsWeeklyQuestID
-local FOLLOWERLIST_LABEL_TROOPS = FOLLOWERLIST_LABEL_TROOPS
-local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
-local GOAL_COMPLETED = GOAL_COMPLETED
-local ISLANDS_HEADER = ISLANDS_HEADER
-local ISLANDS_QUEUE_FRAME_TITLE = ISLANDS_QUEUE_FRAME_TITLE
-local ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS
+local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 local LE_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH
 local LE_FOLLOWER_TYPE_GARRISON_8_0 = LE_FOLLOWER_TYPE_GARRISON_8_0
 local LE_GARRISON_TYPE_8_0 = LE_GARRISON_TYPE_8_0
+local ISLANDS_HEADER = ISLANDS_HEADER
+local ISLANDS_QUEUE_FRAME_TITLE = ISLANDS_QUEUE_FRAME_TITLE
+local ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS
+local FOLLOWERLIST_LABEL_TROOPS = FOLLOWERLIST_LABEL_TROOPS
+local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
-local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 
 local Widget_IDs = {
 	["Alliance"] = {
@@ -61,8 +61,10 @@ local NAZJATAR_MAP_ID = 1718
 local lastPanel
 
 local function GetBodyguardXP(widgetID)
-	local widget = C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
-	local rank = string.match(widget.overrideBarText, "%d+")
+	local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
+	if not widget then return end
+
+	local rank = strmatch(widget.overrideBarText, "%d+")
 	local cur = widget.barValue - widget.barMin
 	local next = widget.barMax - widget.barMin
 	local total = widget.barValue
@@ -194,13 +196,15 @@ local function OnEnter(self, _, noUpdate)
 
 	local hasNazjatarBodyguardXP = false
 	local widgetGroup = Widget_IDs[E.myfaction]
-	if (select(4, UnitPosition("player")) == NAZJATAR_MAP_ID and widgetGroup and IsQuestFlaggedCompleted(widgetGroup[1])) then
+	if (widgetGroup and IsQuestFlaggedCompleted(widgetGroup[1]) and select(4, UnitPosition("player")) == NAZJATAR_MAP_ID) then
 		DT.tooltip:AddLine(" ")
 		DT.tooltip:AddLine(L["Nazjatar Follower XP"])
 		for i = 2, 4 do
 			local npcName, widgetID = unpack(widgetGroup[i])
-			local rank, cur, next, total = GetBodyguardXP(widgetID)
-			DT.tooltip:AddDoubleLine(npcName, BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, next), 1, 1, 1)
+			local rank, cur, next = GetBodyguardXP(widgetID)
+			if npcName and rank then
+				DT.tooltip:AddDoubleLine(npcName, BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, next), 1, 1, 1)
+			end
 		end
 		hasNazjatarBodyguardXP = true
 	end
