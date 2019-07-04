@@ -201,7 +201,7 @@ L["Mobile"] = "Handy"
 L["Modulating Blend"] = "Modulierende Überblendung"
 L["Mov. Speed:"] = _G.STAT_MOVEMENT_SPEED
 L["MT Frames"] = "MT-Fenster"
-L["Nazjatar Follower XP"] = true
+L["Nazjatar Follower XP"] = "Nazjatar Begleiter EP"
 L["Naval Mission(s) Report:"] = "Marine Missionsbericht:"
 L["No bindings set."] = "Keine Belegungen gesetzt."
 L["No gray items to delete."] = "Es sind keine grauen Gegenstände zum Löschen vorhanden."
@@ -362,12 +362,12 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFFLinksklick:|r Talentspezialisierung ändern"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFRechtsklick:|r Beutespezialisierung ändern"
 L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + Linksklick:|r Zeige Talent Spezialisierung UI"
-L["Farseer Ori"] = true
-L["Hunter Akana"] = true
-L["Bladesman Inowari"] = true
-L["Neri Sharpfin"] = true
-L["Poen Gillbrack"] = true
-L["Vim Brineheart"] = true
+L["Farseer Ori"] = "Scharfseher Ori"
+L["Hunter Akana"] = "Jäger Akana"
+L["Bladesman Inowari"] = "Klingenkämpfer Inowari"
+L["Neri Sharpfin"] = "Neri Scharffinne"
+L["Poen Gillbrack"] = "Poen Kiembrack"
+L["Vim Brineheart"] = "Vim Salzherz"
 
 ----------------------------------
 L["RED_ENABLE"] = "|cFFff3333Eingeschaltet|r"
