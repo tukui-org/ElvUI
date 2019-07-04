@@ -1,4 +1,4 @@
-### Version 11.15 [ July 4th 2019 ]
+### Version 11.15 [ July 3rd 2019 ]
 
 **New Additions:**  
 Added new consumable buffs.  
