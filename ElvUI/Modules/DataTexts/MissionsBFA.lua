@@ -56,7 +56,7 @@ local Widget_IDs = {
 local WARRESOURCES_CURRENCY = 1560
 local WARRESOURCES_ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(WARRESOURCES_CURRENCY)))
 local BODYGUARD_LEVEL_XP_FORMAT = L["Rank"] .. " %d (%d/%d)"
-local NAZJATAR_MAP_ID = 1718
+local NAZJATAR_MAP_ID = 1355
 
 local lastPanel
 
@@ -196,7 +196,7 @@ local function OnEnter(self, _, noUpdate)
 
 	local hasNazjatarBodyguardXP = false
 	local widgetGroup = Widget_IDs[E.myfaction]
-	if (widgetGroup and IsQuestFlaggedCompleted(widgetGroup[1]) and select(4, UnitPosition("player")) == NAZJATAR_MAP_ID) then
+	if (E.MapInfo.mapID == NAZJATAR_MAP_ID and widgetGroup and IsQuestFlaggedCompleted(widgetGroup[1]) and ) then
 		DT.tooltip:AddLine(" ")
 		DT.tooltip:AddLine(L["Nazjatar Follower XP"])
 		for i = 2, 4 do
