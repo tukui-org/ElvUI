@@ -62,7 +62,9 @@ local lastPanel
 
 local function GetBodyguardXP(widgetID)
 	local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
-	if not widget then return end
+	if not widget then
+		return
+	end
 
 	local rank = strmatch(widget.overrideBarText, "%d+")
 	local cur = widget.barValue - widget.barMin
@@ -196,7 +198,7 @@ local function OnEnter(self, _, noUpdate)
 
 	local hasNazjatarBodyguardXP = false
 	local widgetGroup = Widget_IDs[E.myfaction]
-	if (E.MapInfo.mapID == NAZJATAR_MAP_ID and widgetGroup and IsQuestFlaggedCompleted(widgetGroup[1]) and ) then
+	if (E.MapInfo.mapID == NAZJATAR_MAP_ID and widgetGroup and IsQuestFlaggedCompleted(widgetGroup[1])) then
 		DT.tooltip:AddLine(" ")
 		DT.tooltip:AddLine(L["Nazjatar Follower XP"])
 		for i = 2, 4 do
