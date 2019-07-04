@@ -2390,14 +2390,14 @@ function CH:HandleChatVoiceIcons()
 		channelButtons[3]:HookScript("OnShow", CH.RepositionChatVoiceIcons)
 		channelButtons[3]:HookScript("OnHide", CH.RepositionChatVoiceIcons) -- dont think this is needed but meh
 
-		hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y)
+		hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y, stopLoop)
 			if anchor == _G.GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
 				frame:Point(point, anchor, attachTo, -3, -6)
-			elseif point == "BOTTOMRIGHT" and anchor ~= channelButtons[3] and anchor ~= channelButtons[1] and not _G.GeneralDockManagerOverflowButton:IsShown() then
+			elseif point == "BOTTOMRIGHT" and anchor ~= channelButtons[3] and anchor ~= channelButtons[1] and not _G.GeneralDockManagerOverflowButton:IsShown() and not stopLoop then
 				if channelButtons[3]:IsShown() then
-					frame:Point("BOTTOMRIGHT", channelButtons[3], "BOTTOMLEFT")
+					frame:Point(point, anchor, attachTo, -30, -5, true)
 				else
-					frame:Point("BOTTOMRIGHT", channelButtons[1], "BOTTOMLEFT")
+					frame:Point(point, anchor, attachTo, -10, -5, true)
 				end
 			end
 		end)
