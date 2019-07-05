@@ -85,19 +85,12 @@ function M:UpdateCoords(OnShow)
 	if not WorldMapFrame:IsShown() then return end
 
 	if WorldMapFrame.ScrollContainer:IsMouseOver() then
-		local scale = WorldMapFrame.ScrollContainer:GetEffectiveScale()
-		local width = WorldMapFrame.ScrollContainer:GetWidth()
-		local height = WorldMapFrame.ScrollContainer:GetHeight()
-		local centerX, centerY = WorldMapFrame.ScrollContainer:GetCenter()
-		local x, y = GetCursorPosition()
+		local x, y = WorldMapFrame.ScrollContainer:GetNormalizedCursorPosition()
 
-		local adjustedX = x and ((x / scale - (centerX - (width/2))) / width)
-		local adjustedY = y and ((centerY + (height/2) - y / scale) / height)
-
-		if adjustedX and adjustedY and (adjustedX >= 0 and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
-			adjustedX = E:Round(100 * adjustedX, 2)
-			adjustedY = E:Round(100 * adjustedY, 2)
-			CoordsHolder.mouseCoords:SetFormattedText("%s:   %.2f, %.2f", MOUSE_LABEL, adjustedX, adjustedY)
+		if x and y and x >= 0 and y >= 0 then
+			x = E:Round(100 * x, 2)
+			y = E:Round(100 * y, 2)
+			CoordsHolder.mouseCoords:SetFormattedText("%s:   %.2f, %.2f", MOUSE_LABEL, x, y)
 		else
 			CoordsHolder.mouseCoords:SetText('')
 		end
