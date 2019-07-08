@@ -5,7 +5,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local ipairs, unpack = ipairs, unpack
 --WoW API / Variables
-local GetNumSockets = GetNumSockets
 local GetSocketTypes = GetSocketTypes
 local hooksecurefunc = hooksecurefunc
 
