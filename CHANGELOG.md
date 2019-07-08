@@ -5,10 +5,11 @@
 
 **Bug Fixes:**  
 
-**Misc. Changes:**  
 
+**Misc. Changes:**  
 Added Name-only and showTitle options to the Player Nameplate that matches the options for other unit types.
 Added Title element to the Player Nameplate.
+Don't allow certain DataTexts not be toggled in combat. Blizzard restriction.  
 
 ___
 ### Version 11.16 [ July 4th 2019 ]
