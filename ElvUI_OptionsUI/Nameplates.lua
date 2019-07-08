@@ -4726,6 +4726,17 @@ local function GetUnitSettings(unit, name)
 				return not E.db.nameplates.units[unit].enable
 			end
 		}
+		group.args.general.args.nameOnly = {
+			type = "toggle",
+			order = 102,
+			name = L["Name Only"]
+		}
+		group.args.general.args.showTitle = {
+			type = "toggle",
+			order = 103,
+			name = L["Show Title"],
+			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."]
+		}
 		group.args.healthGroup.args.useClassColor = {
 			order = 10,
 			type = "toggle",
@@ -5031,7 +5042,7 @@ local function GetUnitSettings(unit, name)
 	end
 
 	-- start groups at 50
-	if unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" or unit == "FRIENDLY_NPC" or unit == "ENEMY_NPC" then
+	if unit == "PLAYER" or unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" or unit == "FRIENDLY_NPC" or unit == "ENEMY_NPC" then
 		group.args.titleGroup = {
 			order = 50,
 			name = L["UNIT_NAME_PLAYER_TITLE"],

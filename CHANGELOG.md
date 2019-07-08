@@ -1,4 +1,17 @@
-### Version 11.16 [  ]
+### Version 11.17 [  ]  
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+**Misc. Changes:**  
+
+Added Name-only and showTitle options to the Player Nameplate that matches the options for other unit types.
+Added Title element to the Player Nameplate.
+
+___
+### Version 11.16 [ July 4th 2019 ]
 
 **New Additions:**  
 
