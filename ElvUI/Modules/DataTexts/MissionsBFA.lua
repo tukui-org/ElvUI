@@ -37,6 +37,7 @@ local ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS
 local FOLLOWERLIST_LABEL_TROOPS = FOLLOWERLIST_LABEL_TROOPS
 local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
+local InCombatLockdown = InCombatLockdown
 
 local Widget_IDs = {
 	["Alliance"] = {
@@ -219,6 +220,8 @@ local function OnEnter(self, _, noUpdate)
 end
 
 local function OnClick()
+	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
+
 	if not (C_Garrison_HasGarrison(LE_GARRISON_TYPE_8_0)) then
 		return
 	end

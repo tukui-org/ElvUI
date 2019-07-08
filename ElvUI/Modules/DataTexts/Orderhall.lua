@@ -27,6 +27,7 @@ local GARRISON_TALENT_ORDER_ADVANCEMENT = GARRISON_TALENT_ORDER_ADVANCEMENT
 local LE_FOLLOWER_TYPE_GARRISON_7_0 = LE_FOLLOWER_TYPE_GARRISON_7_0
 local LE_GARRISON_TYPE_7_0 = LE_GARRISON_TYPE_7_0
 local ORDER_HALL_MISSIONS = ORDER_HALL_MISSIONS
+local InCombatLockdown = InCombatLockdown
 
 local GARRISON_CURRENCY = 1220
 local GARRISON_ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(GARRISON_CURRENCY)))
@@ -149,6 +150,8 @@ local function OnEnter(self, _, noUpdate)
 end
 
 local function OnClick()
+	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
+
 	if not (C_Garrison_HasGarrison(LE_GARRISON_TYPE_7_0)) then
 		return;
 	end

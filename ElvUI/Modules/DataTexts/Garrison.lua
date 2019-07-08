@@ -19,6 +19,7 @@ local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
 local LE_FOLLOWER_TYPE_GARRISON_6_0 = LE_FOLLOWER_TYPE_GARRISON_6_0
 local LE_FOLLOWER_TYPE_SHIPYARD_6_2 = LE_FOLLOWER_TYPE_SHIPYARD_6_2
 local LE_GARRISON_TYPE_6_0 = LE_GARRISON_TYPE_6_0
+local InCombatLockdown = InCombatLockdown
 
 local GARRISON_CURRENCY = 824
 local OIL_CURRENCY = 1101
@@ -123,6 +124,7 @@ end
 local garrisonType = LE_GARRISON_TYPE_6_0;
 
 local function OnClick()
+	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 	if not (C_Garrison_HasGarrison(garrisonType)) then
 		return;
 	end

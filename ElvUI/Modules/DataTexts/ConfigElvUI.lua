@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
+local _G = _G
 local pairs = pairs
 local strfind, strjoin = strfind, strjoin
 --WoW API / Variables
@@ -10,6 +11,7 @@ local GetAddOnMetadata = GetAddOnMetadata
 local GetNumAddOns = GetNumAddOns
 local IsShiftKeyDown = IsShiftKeyDown
 local ReloadUI = ReloadUI
+local InCombatLockdown = InCombatLockdown
 
 local displayString = ""
 local configText = "ElvUI"
@@ -51,6 +53,7 @@ local function OnEnter(self)
 end
 
 local function Click(self, button)
+	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 	if button == "LeftButton" or (button == "RightButton" and not IsShiftKeyDown()) then
 		E:ToggleOptionsUI()
 	elseif button == "RightButton" and IsShiftKeyDown() then
