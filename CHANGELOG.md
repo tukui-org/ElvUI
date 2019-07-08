@@ -1,7 +1,7 @@
 ### Version 11.17 [  ]  
 
 **New Additions:**  
-
+Added debuffs in Operation: Mechagon.  
 
 **Bug Fixes:**  
 
