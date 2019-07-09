@@ -1001,9 +1001,9 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 					E.recievedOutOfDateMessage = true
 				end
 			elseif msg and (msg < ver) then -- Send Message Back
-				if not SendMessageWaiting then
+				--[[if not SendMessageWaiting then
 					SendMessageWaiting = E:Delay(10, E.SendMessage)
-				end
+				end]]
 			end
 		end
 	elseif event == 'GROUP_ROSTER_UPDATE' then
