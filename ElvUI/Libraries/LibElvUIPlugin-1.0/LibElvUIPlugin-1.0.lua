@@ -199,7 +199,7 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 		local num = GetNumGroupMembers()
 		if num ~= lib.groupSize then
 			if num > 1 and num > lib.groupSize then
-				lib:DelayedSendVersionCheck()
+				--lib:DelayedSendVersionCheck()
 			end
 			lib.groupSize = num
 		end
