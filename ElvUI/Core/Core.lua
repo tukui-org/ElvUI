@@ -1012,6 +1012,12 @@ end
 
 _G.C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 
+local f = CreateFrame('Frame')
+f:RegisterEvent('CHAT_MSG_ADDON')
+f:RegisterEvent('GROUP_ROSTER_UPDATE')
+f:RegisterEvent('PLAYER_ENTERING_WORLD')
+f:SetScript('OnEvent', SendRecieve)
+
 function E:UpdateStart(skipCallback, skipUpdateDB)
 	if not skipUpdateDB then
 		E:UpdateDB()
