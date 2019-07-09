@@ -1,4 +1,4 @@
-### Version 11.17 [  ]  
+### Version 11.18 [  ]  
 
 **New Additions:**  
 Added debuffs in Operation: Mechagon.  
@@ -10,6 +10,18 @@ Added debuffs in Operation: Mechagon.
 Added Name-only and showTitle options to the Player Nameplate that matches the options for other unit types.
 Added Title element to the Player Nameplate.
 Don't allow certain DataTexts not be toggled in combat. Blizzard restriction.  
+
+___
+### Version 11.17 [ July 8th 2019 ]
+
+**New Additions:**
+
+
+**Bug Fixes:**
+
+
+**Misc. Changes:**
+Disabled replying to ElvUIGVC chat channel at Blizzards request.
 
 ___
 ### Version 11.16 [ July 4th 2019 ]
