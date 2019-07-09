@@ -2173,12 +2173,12 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 	local isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
 
 	if isLFGList and firstQueue and firstQueue.eligible then
-		local searchResultInfo, activityID, name, comment, leaderName, fullName, isLeader
+		local searchResultInfo, activityID, name, leaderName, fullName, isLeader
 
 		if firstQueue.queueData.lfgListID then
 			searchResultInfo = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
 			if searchResultInfo then
-				activityID, name, comment, leaderName = searchResultInfo.activityID, searchResultInfo.name, searchResultInfo.comment, searchResultInfo.leaderName
+				activityID, name, leaderName = searchResultInfo.activityID, searchResultInfo.name, searchResultInfo.leaderName
 				isLeader = self:SocialQueueIsLeader(playerName, leaderName)
 			end
 		end

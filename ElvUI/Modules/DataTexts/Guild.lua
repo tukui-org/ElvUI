@@ -24,6 +24,7 @@ local SetItemRef = SetItemRef
 local ToggleGuildFrame = ToggleGuildFrame
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
+local InCombatLockdown = InCombatLockdown
 
 local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
 local GUILD = GUILD
@@ -183,6 +184,7 @@ local function whisperClick(self, playerName)
 end
 
 local function Click(self, btn)
+	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 	if btn == "RightButton" and IsInGuild() then
 		DT.tooltip:Hide()
 

@@ -6,7 +6,6 @@ local _G = _G
 local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local GetCursorPosition = GetCursorPosition
 local SetCVar = SetCVar
 local SetUIPanelAttribute = SetUIPanelAttribute
 local MOUSE_LABEL = MOUSE_LABEL:gsub("|T.-|t","")
@@ -85,19 +84,9 @@ function M:UpdateCoords(OnShow)
 	if not WorldMapFrame:IsShown() then return end
 
 	if WorldMapFrame.ScrollContainer:IsMouseOver() then
-		local scale = WorldMapFrame.ScrollContainer:GetEffectiveScale()
-		local width = WorldMapFrame.ScrollContainer:GetWidth()
-		local height = WorldMapFrame.ScrollContainer:GetHeight()
-		local centerX, centerY = WorldMapFrame.ScrollContainer:GetCenter()
-		local x, y = GetCursorPosition()
-
-		local adjustedX = x and ((x / scale - (centerX - (width/2))) / width)
-		local adjustedY = y and ((centerY + (height/2) - y / scale) / height)
-
-		if adjustedX and adjustedY and (adjustedX >= 0 and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
-			adjustedX = E:Round(100 * adjustedX, 2)
-			adjustedY = E:Round(100 * adjustedY, 2)
-			CoordsHolder.mouseCoords:SetFormattedText("%s:   %.2f, %.2f", MOUSE_LABEL, adjustedX, adjustedY)
+		local x, y = WorldMapFrame.ScrollContainer:GetNormalizedCursorPosition()
+		if x and y and x >= 0 and y >= 0 then
+			CoordsHolder.mouseCoords:SetFormattedText("%s:   %.2f, %.2f", MOUSE_LABEL, x * 100, y * 100)
 		else
 			CoordsHolder.mouseCoords:SetText('')
 		end

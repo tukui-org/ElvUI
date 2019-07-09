@@ -40,7 +40,6 @@ local format, find, strrep, len, sub = format, strfind, strrep, strlen, strsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
-local GetChannelName = GetChannelName
 local GetFunctionCPUUsage = GetFunctionCPUUsage
 local GetNumGroupMembers = GetNumGroupMembers
 local GetSpecialization = GetSpecialization
@@ -49,7 +48,6 @@ local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInInstance, IsInGuild = IsInInstance, IsInGuild
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
-local JoinChannelByName = JoinChannelByName
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UnitFactionGroup = UnitFactionGroup
 local UnitGUID = UnitGUID
@@ -61,9 +59,7 @@ local UnitStat, UnitAttackPower = UnitStat, UnitAttackPower
 local hooksecurefunc = hooksecurefunc
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
-local MAX_WOW_CHAT_CHANNELS = MAX_WOW_CHAT_CHANNELS
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
-local C_ChatInfo_GetNumActiveChannels = C_ChatInfo.GetNumActiveChannels
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local C_Timer_After = C_Timer.After
@@ -85,6 +81,7 @@ E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar('gx
 E.screenwidth, E.screenheight = GetPhysicalScreenSize()
 E.isMacClient = IsMacClient()
 E.NewSign = '|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:14:14|t' -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
+E.InfoColor = '|cfffe7b2c'
 
 --Tables
 E.media = {}
@@ -961,13 +958,8 @@ function E:SendMessage()
 		C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID')
 	elseif IsInGroup() then
 		C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY')
-	else
-		local ElvUIGVC = GetChannelName('ElvUIGVC')
-		if ElvUIGVC and ElvUIGVC > 0 then
-			C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, 'CHANNEL', ElvUIGVC)
-		elseif IsInGuild() then
-			C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, 'GUILD')
-		end
+	elseif IsInGuild() then
+		C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, 'GUILD')
 	end
 
 	SendMessageWaiting = nil
@@ -999,10 +991,6 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 
 					E.recievedOutOfDateMessage = true
 				end
-			--[[elseif msg and (msg < ver) then -- Send Message Back
-				if not SendMessageWaiting then
-					SendMessageWaiting = E:Delay(10, E.SendMessage)
-				end]]
 			end
 		end
 	elseif event == 'GROUP_ROSTER_UPDATE' then
@@ -1023,32 +1011,6 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 end
 
 _G.C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
-
-local f = CreateFrame('Frame')
-f:RegisterEvent('CHAT_MSG_ADDON')
-f:RegisterEvent('GROUP_ROSTER_UPDATE')
-f:RegisterEvent('PLAYER_ENTERING_WORLD')
-f:SetScript('OnEvent', SendRecieve)
-f:SetScript('OnUpdate', function(self, elapsed)
-	self.delayed = (self.delayed or 0) + elapsed
-	if self.delayed > 25 then
-		local numActiveChannels = C_ChatInfo_GetNumActiveChannels()
-
-		if numActiveChannels and (numActiveChannels >= 1) then
-			if GetChannelName('ElvUIGVC') == 0 and numActiveChannels < MAX_WOW_CHAT_CHANNELS then
-				JoinChannelByName('ElvUIGVC', nil, nil, true)
-
-				if not SendMessageWaiting then
-					SendMessageWaiting = E:Delay(10, E.SendMessage)
-				end
-
-				self:SetScript('OnUpdate', nil)
-			end
-		end
-	elseif self.delayed > 45 then
-		self:SetScript('OnUpdate', nil)
-	end
-end)
 
 function E:UpdateStart(skipCallback, skipUpdateDB)
 	if not skipUpdateDB then

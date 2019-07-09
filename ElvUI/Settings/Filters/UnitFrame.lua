@@ -839,6 +839,25 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[266107] = Defaults(), -- Thirst for Blood
 		[260455] = Defaults(), -- Serrated Fangs
 
+		--Operation: Mechagon
+		[291928] = Defaults(), -- Giga-Zap
+		[292267] = Defaults(), -- Giga-Zap
+		[302274] = Defaults(), -- Fulminating Zap
+		[298669] = Defaults(), -- Taze
+		[295445] = Defaults(), -- Wreck
+		[294929] = Defaults(), -- Blazing Chomp
+		[297257] = Defaults(), -- Electrical Charge
+		[294855] = Defaults(), -- Blossom Blast
+		[291972] = Defaults(), -- Explosive Leap
+		[285443] = Defaults(), -- "Hidden" Flame Cannon
+		[291974] = Defaults(), -- Obnoxious Monologue
+		[296150] = Defaults(), -- Vent Blast
+		[298602] = Defaults(), -- Smoke Cloud
+		[296560] = Defaults(), -- Clinging Static
+		[297283] = Defaults(), -- Cave In
+		[291914] = Defaults(), -- Cutting Beam
+		[302384] = Defaults(), -- Static Discharge
+
 	-- Uldir
 		-- MOTHER
 		[268277] = Defaults(), -- Purifying Flame

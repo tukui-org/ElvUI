@@ -1,4 +1,4 @@
-local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 26
+local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 27
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -189,8 +189,6 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 						local Pname = GetAddOnMetadata(plugin.name, 'Title')
 						E:Print(format(MSG_OUTDATED,Pname,plugin.version,plugin.newversion))
 						ElvUI[1].pluginRecievedOutOfDateMessage = true
-					--[[elseif (ver and Pver) and (ver < Pver) then
-						lib:DelayedSendVersionCheck()]]
 					end
 				end
 			end
@@ -241,13 +239,8 @@ function lib:SendPluginVersionCheck(message)
 		ChatType = (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID'
 	elseif IsInGroup() then
 		ChatType = (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY'
-	else
-		local ElvUIGVC = GetChannelName('ElvUIGVC')
-		if ElvUIGVC and ElvUIGVC > 0 then
-			ChatType, Channel = 'CHANNEL', ElvUIGVC
-		elseif IsInGuild() then
-			ChatType = 'GUILD'
-		end
+	elseif IsInGuild() then
+		ChatType = 'GUILD'
 	end
 
 	if not ChatType then

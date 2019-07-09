@@ -4,6 +4,7 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local _G = _G
 local strjoin = strjoin
+local InCombatLockdown = InCombatLockdown
 
 local displayString = ""
 local inRestrictedArea = false
@@ -32,6 +33,7 @@ local function OnEvent(self)
 end
 
 local function Click()
+	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 	_G.ToggleFrame(_G.WorldMapFrame)
 end
 
