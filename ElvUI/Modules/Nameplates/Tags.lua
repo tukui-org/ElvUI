@@ -22,18 +22,6 @@ local UnitPVPName = UnitPVPName
 local LEVEL = LEVEL
 --GLOBALS: Hex
 
-oUF.Tags.Events['cast:name'] = 'UNIT_SPELLCAST_START UNIT_SPELLCAST_CHANNEL_START'
-oUF.Tags.Methods['cast:name'] = function(unit)
-	local name = UnitCastingInfo(unit) or UnitChannelInfo(unit)
-	return name or ''
-end
-
-oUF.Tags.Events['cast:time'] = 'UNIT_SPELLCAST_START UNIT_SPELLCAST_CHANNEL_START'
-oUF.Tags.Methods['cast:time'] = function(unit)
-	local name = UnitCastingInfo(unit) or UnitChannelInfo(unit)
-	return name or ''
-end
-
 oUF.Tags.Events['npctitle'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['npctitle'] = function(unit)
 	if (UnitIsPlayer(unit)) then
@@ -80,29 +68,6 @@ oUF.Tags.Methods['name:title'] = function(unit)
 		return UnitPVPName(unit)
 	end
 end
-
---[[
-	oUF.Tags.SharedEvents.COMBAT_LOG_EVENT_UNFILTERED = true
-
-	oUF.Tags.Events['interrupt'] = 'COMBAT_LOG_EVENT_UNFILTERED'
-	oUF.Tags.Methods['interrupt'] = function(unit)
-		local _, event, _, _, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
-
-		if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
-			return sourceName
-		end
-	end
-
-	oUF.Tags.Events['interrupt:classcolor'] = 'COMBAT_LOG_EVENT_UNFILTERED'
-	oUF.Tags.Methods['interrupt:classcolor'] = function(unit)
-		local _, event, _, _, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
-
-		if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
-			local class = select(2, UnitClass(sourceName)) or 'PRIEST'
-			return (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]):GenerateHexColorMarkup()..sourceName..'|r'
-		end
-	end
-]]
 
 oUF.Tags.Events['quest:title'] = 'UNIT_NAME_UPDATE UNIT_HEALTH'
 oUF.Tags.Methods['quest:title'] = function(unit)
