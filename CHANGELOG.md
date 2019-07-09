@@ -4,12 +4,12 @@
 Added debuffs in Operation: Mechagon.  
 
 **Bug Fixes:**  
-
+Fixed Minimap Coords when Map is zoomed. (Thanks AcidWeb)  
 
 **Misc. Changes:**  
-Added Name-only and showTitle options to the Player Nameplate that matches the options for other unit types.  
+Added Name Only and Show Title options to the Player Nameplate that matches the options for other unit types.  
 Added Title element to the Player Nameplate.  
-Don't allow certain DataTexts not be toggled in combat. Blizzard restriction.  
+Don't allow certain DataTexts not be toggled in combat because of Blizzard restriction.  
 Actually, we might as well just remove ElvUIGVC completely.  
 
 ___
