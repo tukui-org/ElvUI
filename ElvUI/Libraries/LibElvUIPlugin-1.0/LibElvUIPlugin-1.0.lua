@@ -190,7 +190,7 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 						E:Print(format(MSG_OUTDATED,Pname,plugin.version,plugin.newversion))
 						ElvUI[1].pluginRecievedOutOfDateMessage = true
 					elseif (ver and Pver) and (ver < Pver) then
-						lib:DelayedSendVersionCheck()
+						--lib:DelayedSendVersionCheck()
 					end
 				end
 			end
