@@ -234,7 +234,7 @@ function lib:SendPluginVersionCheck(message)
 		return
 	end
 
-	local ChatType, Channel
+	local ChatType
 	if IsInRaid() then
 		ChatType = (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID'
 	elseif IsInGroup() then
@@ -255,14 +255,14 @@ function lib:SendPluginVersionCheck(message)
 			splitMessage = strmatch(strsub(message, 1, maxChar), '.+;')
 			if splitMessage then -- incase the string is over 250 but doesnt contain `;`
 				message = gsub(message, '^'..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), '')
-				E:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType, Channel)
+				E:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType)
 				delay = delay + 1
 			end
 		end
 
 		E:Delay(delay, lib.ClearSendMessageWait)
 	else
-		C_ChatInfo_SendAddonMessage(lib.prefix, message, ChatType, Channel)
+		C_ChatInfo_SendAddonMessage(lib.prefix, message, ChatType)
 		lib.ClearSendMessageWait()
 	end
 end
