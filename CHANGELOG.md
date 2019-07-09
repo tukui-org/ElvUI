@@ -1,4 +1,13 @@
-### Version 11.18 [ July 9th 2019 ]  
+### Version 11.19 [  ]
+
+**New Additions:**  
+
+**Bug Fixes:**  
+
+**Misc. Changes:**  
+
+___
+### Version 11.18 [ July 9th 2019 ]
 
 **New Additions:**  
 Added debuffs in Operation: Mechagon.  
@@ -15,13 +24,13 @@ Actually, we might as well just remove ElvUIGVC completely.
 ___
 ### Version 11.17 [ July 8th 2019 ]
 
-**New Additions:**
+**New Additions:**  
 
 
-**Bug Fixes:**
+**Bug Fixes:**  
 
 
-**Misc. Changes:**
+**Misc. Changes:**  
 Disabled replying to ElvUIGVC chat channel at Blizzards request.  
 
 ___
@@ -529,7 +538,7 @@ Moved the options for the Talking Head to the skin section.
 Added Battle of Dazar'alor raid and M+ Season 2 affix debuffs to the RaidDebuffs filter.  
 
 ___
-**Version 10.85 [ January 4th 2019 ]**
+### Version 10.85 [ January 4th 2019 ]
 
 **New Additions:**  
 Added Weakened Soul back to our Buff Indicator.  
@@ -563,7 +572,7 @@ Hid the Recipient Portrait on the TradeFrame.
 ElvUI now staggers the updates that happen when a profile is changed. This should have minimal effect on existing plugins.  
 
 ___
-**Version 10.84 [ December 11th 2018 ]**
+### Version 10.84 [ December 11th 2018 ]
 
 **New Additions:**  
 Added option to use health texture also on the backdrop.  
@@ -587,7 +596,7 @@ Some Code improvements.
 Various Skin tweaks.  
 
 ___
-**Version 10.83 [ November 20th 2018 ]**
+### Version 10.83 [ November 20th 2018 ]
 
 **New Additions:**  
 Added Drain Life to channel ticks.  
@@ -644,7 +653,7 @@ Added ElvUIGVC chat channel for Version Checking (AddOn Communication) and Voice
 Time datatext will now use the 24 hour clock by default in non-US regions. (#839 - Credit: @Zucht).  
 
 ___
-**Version 10.82 [ September 18th 2018 ]**
+### Version 10.82 [ September 18th 2018 ]
 
 **New Additions:**  
 Added toggle option for the New Item Glow in your bags. (#452)  
@@ -660,7 +669,7 @@ Updated ArenaPrepFrame functions. (Thanks oUF)!
 Updated PvP, LFG & Talent skins.  
 
 ___
-**Version 10.81 [ September 6th 2018 ]**
+### Version 10.81 [ September 6th 2018 ]
 
 **New Additions:**  
 
@@ -673,7 +682,7 @@ Added BfA Dungeon debuffs to RaidDebuff filter. Credit: Dharwin & Rubgrsch.
 Removed T-18 4 PC Bonus from the Druid Buff Indicator.  
 
 ___
-**Version 10.80 [ September 2nd 2018 ]**
+### Version 10.80 [ September 2nd 2018 ]
 
 **New Additions:**  
 Added toggle option for Cutaway health on Nameplates.  
@@ -698,7 +707,7 @@ Removed Legion debuffs
 Updated BfA consumables buffs  
 
 ___
-**Version 10.79 [ August 20th 2018 ]**
+### Version 10.79 [ August 20th 2018 ]
 
 **New Additions:**  
 Added Tranquility channel ticks. (#586)  
@@ -737,7 +746,7 @@ Skin the QuickJoinToastButton.
 Updated Chat Emojis.  
 
 ___
-**Version 10.78 [ July 28th 2018 ]**
+### Version 10.78 [ July 28th 2018 ]
 
 **New Additions:**  
 
@@ -753,7 +762,7 @@ Re-enable the old Guild skin back.
 Updated Communities, PVP & Tooltip skins.  
 
 ___
-**Version 10.77 [ July 20th 2018 ]**
+### Version 10.77 [ July 20th 2018 ]
 
 **New Additions:**  
 Added a mover for the Chat buttons.  
@@ -768,7 +777,7 @@ Updated CommunitiesUI skin.
 Added support for chat filters for community channels displayed in the real chat window.  
 
 ___
-**Version 10.76 for patch 8.0 [ July 19th 2018 ]**
+### Version 10.76 for patch 8.0 [ July 19th 2018 ]
 
 **New Additions:**  
 
@@ -783,7 +792,7 @@ Fixed a texture issue in the Quest Log skin.
 Updated skinning of the 'TodayFrame' in the calendar. It uses skinning from Azilroka.  
 
 ___
-**Version 10.75 for patch 8.0 [ July 17th 2018 ]**
+### Version 10.75 for patch 8.0 [ July 17th 2018 ]
 
 **New Additions:**  
 New Cooldown settings, they can be found in the Cooldowns category.  
@@ -815,7 +824,7 @@ Simplify how the Chat module handles Chat Filters. (Thanks Ellypse)
 Changed how icons get shadowed in Guild bank and Bags module.  
 
 ___
-**Version 10.74 [ June 7th 2018 ]**
+### Version 10.74 [ June 7th 2018 ]
 
 **New Additions:**  
 Added "Group Spacing" option to party/raid frames. This allows you to separate each individual group.  
@@ -857,7 +866,7 @@ E:ShortValue will now floor values below 1000.
 Optimized nameplates a bit, by making sure updates on Blizzard plates would not continue firing after we replaced them with our own.  
 
 ___
-**Version 10.73 [ March 23rd 2018 ]**
+### Version 10.73 [ March 23rd 2018 ]
 
 **New Additions:**  
 Added color options for Debuff Highlighting.  
@@ -902,7 +911,7 @@ Updated the Quest and Upgrade Icon in the Bag module.
 Added Kin's Forging Strike to Raid Debuffs (for normal+ raids).  
 
 ___
-**Version 10.72 [ January 28th 2018 ]**
+### Version 10.72 [ January 28th 2018 ]
 
 **New Additions:**  
 None  
@@ -919,7 +928,7 @@ Sorted the Dropdown for Style Filters by Priority (rather than by Name).
 Skinned various tutorial frame close buttons.  
 
 ___
-**Version 10.71 [ January 23rd 2018 ]**
+### Version 10.71 [ January 23rd 2018 ]
 
 **New Additions:**  
 Added toggle option for the new handling of the "Unspent Talent Alert" frame.  
@@ -950,7 +959,7 @@ Style Filter border color action now applies to the Power Bar border as well.
 Stacks on nameplate auras will no longer be hidden when they reach 10 or above.  
 
 ___
-**Version 10.70 [ December 26th 2017 ]**
+### Version 10.70 [ December 26th 2017 ]
 
 **New Additions:**  
 Added new style filter triggers "Is Targeting Player" and "Is Not Targeting Player".  
@@ -997,7 +1006,7 @@ Reverted a backdrop color change on the TradeSkill frame.
 Changed the name format used for the ElvUI nameplates. Previously it was "ElvUI_Plate%d_UnitFrame" and now it is "ElvUI_NamePlate%d".  
 
 ___
-**Version 10.69 [ December 1st 2017 ]**
+### Version 10.69 [ December 1st 2017 ]
 
 **New Additions:**  
 Added visibility settings to the Stance Bar. By default it will hide in vehicles and pet battles.  
@@ -1031,7 +1040,7 @@ Changed Ace3 skin to no longer add border on SimpleGroup widgets.
 The Quest Choice skin is now enabled by default.  
 
 ___
-**Version 10.68 [ October 26th 2017 ]**
+### Version 10.68 [ October 26th 2017 ]
 
 **New Additions:**  
 Added option to show Quick Join messages as clickable links in chat.  
@@ -1060,7 +1069,7 @@ Code clean-up by Rubgrsch.
 Updated some aura filters.  
 
 ___
-**Version 10.67 [ October 2nd 2017 ]**
+### Version 10.67 [ October 2nd 2017 ]
 
 **New Additions:**  
 None
@@ -1072,7 +1081,7 @@ Fixed error with castbar element (for real this time).
 None
 
 ___
-**Version 10.66 [ October 2nd 2017 ]**
+### Version 10.66 [ October 2nd 2017 ]
 
 **New Additions:**  
 None
@@ -1084,7 +1093,7 @@ Fixed error in castbar element.
 None
 
 ___
-**Version 10.65 [ October 1st 2017 ]**
+### Version 10.65 [ October 1st 2017 ]
 
 **New Additions:**  
 None  
@@ -1096,7 +1105,7 @@ Fixed issue creating new style filters.
 None  
 
 ___
-**Version 10.64 [ October 1st 2017 ]**
+### Version 10.64 [ October 1st 2017 ]
 
 **New Additions:**  
 Added Korean option for the "Numer Prefix Style" setting. This will allow unitframe tags to use the Korean number annotations.  
@@ -1154,7 +1163,7 @@ Added skin for the TableAttributeDisplay frame.
 Added some additional spells to the RaidDebuffs and RaidBuffsElvUI filters for M+ dungeons.  
 
 ___
-**Version 10.63 [ September 9th 2017 ]**
+### Version 10.63 [ September 9th 2017 ]
 
 **New Additions:**  
 Added quest boss trigger to nameplate Style Filters.  
@@ -1179,7 +1188,7 @@ Removed caching of HandleModifiedItemClick to allow hooks to fire from other add
 Fixed spell ID for Consuming Hunger in the RaidDebuffs filter.  
 
 ___
-**Version 10.62 [ August 30th 2017 ]**
+### Version 10.62 [ August 30th 2017 ]
 
 **New Additions:**  
 The enabled state of a Style Filter for nameplates is now stored in your profile instead of being global.  
@@ -1199,7 +1208,7 @@ Disabled the "Boss" Style Filter by default.
 Updated LibActionButton.  
 
 ___
-**Version 10.61 [ August 29th 2017 ]**
+### Version 10.61 [ August 29th 2017 ]
 
 **New Additions:**  
 None  
@@ -1211,7 +1220,7 @@ Fixed issue which broke the Ace3 config of other addons.
 Reverted some changes to Profiles section of ElvUI.  
 
 ___
-**Version 10.60 [ August 29th 2017 ]**
+### Version 10.60 [ August 29th 2017 ]
 
 **New Additions:**  
 MAJOR: Added "Style Filters" to NamePlates, allowing you to perform various actions on specific units that match your chosen filter settings.  
@@ -1247,7 +1256,7 @@ Added shortcut buttons to the ActionBars and UnitFrames main pages.
 Added Drag&Drop support to AceConfig buttons for our new aura filtering system.  
 
 ___
-**Version 10.59 [ June 27th 2017 ]**  
+### Version 10.59 [ June 27th 2017 ]  
 
 **New Additions:**  
 None
