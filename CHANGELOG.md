@@ -1,4 +1,4 @@
-### Version 11.18 [  ]  
+### Version 11.18 [ July 9th 2019 ]  
 
 **New Additions:**  
 Added debuffs in Operation: Mechagon.  
@@ -7,9 +7,10 @@ Added debuffs in Operation: Mechagon.
 
 
 **Misc. Changes:**  
-Added Name-only and showTitle options to the Player Nameplate that matches the options for other unit types.
-Added Title element to the Player Nameplate.
+Added Name-only and showTitle options to the Player Nameplate that matches the options for other unit types.  
+Added Title element to the Player Nameplate.  
 Don't allow certain DataTexts not be toggled in combat. Blizzard restriction.  
+Actually, we might as well just remove ElvUIGVC completely.  
 
 ___
 ### Version 11.17 [ July 8th 2019 ]
@@ -21,7 +22,7 @@ ___
 
 
 **Misc. Changes:**
-Disabled replying to ElvUIGVC chat channel at Blizzards request.
+Disabled replying to ElvUIGVC chat channel at Blizzards request.  
 
 ___
 ### Version 11.16 [ July 4th 2019 ]
@@ -47,7 +48,7 @@ New Nameplate Style Filter Unit Conditions:
 - "Not Pet": Activated when the unit is not the player's pet.  
 - "Player Controlled" / "Not Player Controlled": Activated when a unit is controlled by the active player or not.  
 - "Owned by Player" / "Not Owned By Player": Activated when a unit is owned by the active player or not.  
-- "Is PvP" / "Is Not PvP": Activated when a unit is flagged for pvp or not.   
+- "Is PvP" / "Is Not PvP": Activated when a unit is flagged for pvp or not.  
 
 **Bug Fixes:**  
 Fixed Minimap colored green when ElvUI Minimap is disabled.  
@@ -803,7 +804,7 @@ Fixed [namecolor] not updating sometimes when it should.
 Fixed skin issue when using a dropdown in the config.  
 Fixed friendly nameplates not showing in Garrisons.  
 Fixed issue with tooltip compare being activated when it should not. (#471)  
-Fixed several issues with the Micro Bar.   
+Fixed several issues with the Micro Bar.  
 Fixed error in the Spellbook relating to our Vehicle Button on the minimap and position of the Minimap. (#434)  
 Fixed various issues with tooltips. (#472)  
 
