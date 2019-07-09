@@ -1,5 +1,5 @@
 local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 27
-local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
+local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
 --Lua functions
@@ -9,7 +9,7 @@ local format, gmatch, strlen, gsub, ceil = format, gmatch, strlen, gsub, ceil
 local GetNumGroupMembers = GetNumGroupMembers
 local GetLocale, IsInGuild = GetLocale, IsInGuild
 local CreateFrame, IsAddOnLoaded = CreateFrame, IsAddOnLoaded
-local GetAddOnMetadata, GetChannelName = GetAddOnMetadata, GetChannelName
+local GetAddOnMetadata = GetAddOnMetadata
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
