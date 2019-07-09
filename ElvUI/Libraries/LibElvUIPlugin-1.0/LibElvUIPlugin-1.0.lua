@@ -189,8 +189,8 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 						local Pname = GetAddOnMetadata(plugin.name, 'Title')
 						E:Print(format(MSG_OUTDATED,Pname,plugin.version,plugin.newversion))
 						ElvUI[1].pluginRecievedOutOfDateMessage = true
-					elseif (ver and Pver) and (ver < Pver) then
-						--lib:DelayedSendVersionCheck()
+					--[[elseif (ver and Pver) and (ver < Pver) then
+						lib:DelayedSendVersionCheck()]]
 					end
 				end
 			end
@@ -199,7 +199,7 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 		local num = GetNumGroupMembers()
 		if num ~= lib.groupSize then
 			if num > 1 and num > lib.groupSize then
-				--lib:DelayedSendVersionCheck()
+				lib:DelayedSendVersionCheck()
 			end
 			lib.groupSize = num
 		end
