@@ -597,6 +597,8 @@ L["If enabled then the filter will only activate if the level of the unit matche
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "활성화하면 유닛이 차단 가능한 주문을 시전하고 있을 경우에만 필터가 작동합니다."
 L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "활성화하면 유닛이 차단 불가능한 주문을 시전하고 있을 경우에만 필터가 작동합니다."
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = true
+L["If enabled then the filter will only activate when the unit can be atacked by the active player."] = true
+L["If enabled then the filter will only activate when the unit can not be atacked by the active player."] = true
 L["If enabled then the filter will only activate when the unit is a player's pet."] = true
 L["If enabled then the filter will only activate when the unit is not a player's pet."] = true
 L["If enabled then the filter will only activate when the unit is controlled by the player."] = true
@@ -871,6 +873,8 @@ L["Pets"] = true
 L["PetTarget"] = true
 L["Phase Indicator"] = "단계 표시기"
 L["Pin Voice Buttons"] = true
+L["Player Can Attack"] = true
+L["Player Can Not Attack"] = true
 L["Player Frame Aura Bars"] = true
 L["Player Health"] = "플레이어 생명력"
 L["Player in Combat"] = "플레이어 전투중"

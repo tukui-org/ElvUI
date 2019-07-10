@@ -597,6 +597,8 @@ L["If enabled then the filter will only activate if the level of the unit matche
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "Если включено, то фильтр будет активирован, когда юнит произносит прерываемое заклинание."
 L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "Если включено, то фильтр будет активирован, когда юнит произносит не прерываемое заклинание."
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = "Если включено, то фильтр будет активирован, когда юнит не произносит или поддерживает одно из выбранных заклинаний."
+L["If enabled then the filter will only activate when the unit can be atacked by the active player."] = true
+L["If enabled then the filter will only activate when the unit can not be atacked by the active player."] = true
 L["If enabled then the filter will only activate when the unit is a player's pet."] =  "Если включено, то фильтр будет активирован, когда юнит является питомцем игрока."
 L["If enabled then the filter will only activate when the unit is not a player's pet."] = "Если включено, то фильтр будет активирован, когда юнит не является питомцем игрока."
 L["If enabled then the filter will only activate when the unit is controlled by the player."] = "Если включено, то фильтр будет активирован, когда юнит под контролем игрока."
@@ -871,6 +873,8 @@ L["Pets"] = "Питомцы"
 L["PetTarget"] = "Цель питомца"
 L["Phase Indicator"] = "Индикатор фазы"
 L["Pin Voice Buttons"] = "Закрепить голосовой чат"
+L["Player Can Attack"] = true
+L["Player Can Not Attack"] = true
 L["Player Frame Aura Bars"] = "Полосы аур рамки игрока"
 L["Player Health"] = "Здоровье игрока"
 L["Player in Combat"] = "Игрок в бою"

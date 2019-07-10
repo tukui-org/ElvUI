@@ -1222,7 +1222,19 @@ local function UpdateFilterGroup()
 									name = L["Unit is Not Tap Denied"],
 									desc = L["If enabled then the filter will only activate when the unit is not tap denied."],
 									order = 21
-								}
+								},
+								playerCanAttack = {
+									type = "toggle",
+									name = L["Player Can Attack"],
+									desc = L["If enabled then the filter will only activate when the unit can be atacked by the active player."],
+									order = 22
+								},
+								playerCanNotAttack = {
+									type = "toggle",
+									name = L["Player Can Not Attack"],
+									desc = L["If enabled then the filter will only activate when the unit can not be atacked by the active player."],
+									order = 23
+								},
 							}
 						}
 					}

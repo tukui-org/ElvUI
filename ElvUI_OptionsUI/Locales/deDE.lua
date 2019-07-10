@@ -600,6 +600,8 @@ L["If enabled then the filter will only activate if the level of the unit matche
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit einen unterbrechbaren Zauber wirkt."
 L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit einen nicht unterbrechbaren Zauber wirkt."
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit nicht am Zaubern oder Kanalisieren vom ausgwähltem Zauber ist."
+L["If enabled then the filter will only activate when the unit can be atacked by the active player."] = true
+L["If enabled then the filter will only activate when the unit can not be atacked by the active player."] = true
 L["If enabled then the filter will only activate when the unit is a player's pet."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit ein Spieler Begleiter ist."
 L["If enabled then the filter will only activate when the unit is not a player's pet."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit kein Spieler Begleiter ist."
 L["If enabled then the filter will only activate when the unit is controlled by the player."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit vom Spieler kontrolliert wird."
@@ -874,6 +876,8 @@ L["Pets"] = "Begleiter"
 L["PetTarget"] = "Begleiter Ziel"
 L["Phase Indicator"] = "Phasen Indikator"
 L["Pin Voice Buttons"] = "Pin Sprachtasten"
+L["Player Can Attack"] = true
+L["Player Can Not Attack"] = true
 L["Player Frame Aura Bars"] = "Spielerfenster Aurenleiste"
 L["Player Health"] = "Spieler Gesundheit"
 L["Player in Combat"] = "Spieler im Kampf"

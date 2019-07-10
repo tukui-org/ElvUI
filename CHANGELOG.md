@@ -1,6 +1,7 @@
 ### Version 11.19 [  ]
 
 **New Additions:**  
+Added Player Can Attack and Player Can Not Attack unit conditions to Nameplate Style Filters.  
 
 **Bug Fixes:**  
 

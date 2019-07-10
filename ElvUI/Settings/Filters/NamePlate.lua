@@ -255,6 +255,8 @@ E.StyleFilterDefaults = {
 		isNotPvP = false,
 		isTapDenied = false,
 		isNotTapDenied = false,
+		playerCanAttack = false,
+		playerCanNotAttack = false,
 		-- combat
 		inCombat = false,
 		outOfCombat = false,

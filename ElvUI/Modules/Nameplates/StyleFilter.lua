@@ -31,6 +31,7 @@ local UnitLevel = UnitLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitThreatSituation = UnitThreatSituation
+local UnitCanAttack = UnitCanAttack
 
 local hooksecurefunc = hooksecurefunc
 local C_Timer_NewTimer = C_Timer.NewTimer
@@ -695,6 +696,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Unit Vehicle
 	if trigger.inVehicleUnit or trigger.outOfVehicleUnit then
 		if (trigger.inVehicleUnit and frame.inVehicle) or (trigger.outOfVehicleUnit and not frame.inVehicle) then passed = true else return end
+	end
+
+	-- Player Can Attack
+	if trigger.playerCanAttack or trigger.playerCanNotAttack then
+		local canAttack = UnitCanAttack("player", frame.unit)
+		if (trigger.playerCanAttack and canAttack) or (trigger.playerCanNotAttack and not canAttack) then passed = true else return end
 	end
 
 	-- Classification

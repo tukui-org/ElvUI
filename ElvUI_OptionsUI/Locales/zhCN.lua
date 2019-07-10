@@ -599,6 +599,8 @@ L["If enabled then the filter will only activate if the level of the unit matche
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "启用后过滤器仅在单位施放可打断技能的时候激活."
 L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "启用后过滤器仅在单位施放不可打断技能的时候激活."
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = "启用后过滤器仅在单位未施放或引导任一勾选的技能时激活."
+L["If enabled then the filter will only activate when the unit can be atacked by the active player."] = true
+L["If enabled then the filter will only activate when the unit can not be atacked by the active player."] = true
 L["If enabled then the filter will only activate when the unit is a player's pet."] = true
 L["If enabled then the filter will only activate when the unit is not a player's pet."] = true
 L["If enabled then the filter will only activate when the unit is controlled by the player."] = true
@@ -873,6 +875,8 @@ L["Pets"] = "宠物"
 L["PetTarget"] = "宠物的目标"
 L["Phase Indicator"] = "位面指示器"
 L["Pin Voice Buttons"] = "固定语音按钮"
+L["Player Can Attack"] = true
+L["Player Can Not Attack"] = true
 L["Player Frame Aura Bars"] = "玩家框架光环条"
 L["Player Health"] = "玩家血量"
 L["Player in Combat"] = "玩家在战斗中"
