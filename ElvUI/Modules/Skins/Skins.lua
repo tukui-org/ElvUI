@@ -1128,7 +1128,7 @@ end
 
 function S:SkinStatusBarWidget(widgetFrame)
 	local bar = widgetFrame.Bar;
-	if bar then
+	if bar and not bar.IsSkinned then
 		-- Hide StatusBar textures
 		if bar.BorderLeft then bar.BorderLeft:Hide() end
 		if bar.BorderRight then bar.BorderRight:Hide() end
@@ -1143,6 +1143,8 @@ function S:SkinStatusBarWidget(widgetFrame)
 
 		bar.backdrop:Point("TOPLEFT", -2, 2)
 		bar.backdrop:Point("BOTTOMRIGHT", 2, -2)
+
+		bar.IsSkinned = true
 	end
 end
 
@@ -1155,7 +1157,7 @@ end
 function S:SkinDoubleIconAndTextWidget(widgetFrame)
 end
 
-function S:SKinStackedResourceTrackerWidget(widgetFrame)
+function S:SkinStackedResourceTrackerWidget(widgetFrame)
 end
 
 function S:SkinIconTextAndCurrenciesWidget(widgetFrame)
@@ -1178,12 +1180,14 @@ end
 
 function S:SkinSpellDisplay(widgetFrame)
 	local spell = widgetFrame.Spell;
-	if spell then
+	if spell and not spell.IsSkinned then
 		spell.Border:Hide()
 		S:HandleIcon(spell.Icon)
 		spell.Icon:CreateBackdrop()
 		spell.Icon.backdrop:SetPoint("TOPLEFT", spell.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
 		spell.Icon.backdrop:SetPoint("BOTTOMRIGHT", spell.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
+
+		spell.IsSkinned = true
 	end
 end
 
@@ -1204,7 +1208,7 @@ S.WidgetSkinningFuncs = {
 	[W.DoubleStatusBar] = "SkinDoubleStatusBarWidget",
 	[W.IconTextAndBackground] = "SkinIconTextAndBackgroundWidget",
 	[W.DoubleIconAndText] = "SkinDoubleIconAndTextWidget",
-	[W.StackedResourceTracker] = "SKinStackedResourceTrackerWidget",
+	[W.StackedResourceTracker] = "SkinStackedResourceTrackerWidget",
 	[W.IconTextAndCurrencies] = "SkinIconTextAndCurrenciesWidget",
 	[W.TextWithState] = "SkinTextWithStateWidget",
 	[W.HorizontalCurrencies] = "SkinHorizontalCurrenciesWidget",
