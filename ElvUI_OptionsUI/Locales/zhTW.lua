@@ -599,8 +599,8 @@ L["If enabled then the filter will only activate if the level of the unit matche
 L["If enabled then the filter will only activate if the unit is casting interruptible spells."] = "如果選中則過濾器只會在單位施放可打斷技能的時候啟動"
 L["If enabled then the filter will only activate if the unit is casting not interruptible spells."] = "如果選中則過濾器只會在單位施放不可打斷技能的時候啟動"
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = true
-L["If enabled then the filter will only activate when the unit can be atacked by the active player."] = true
-L["If enabled then the filter will only activate when the unit can not be atacked by the active player."] = true
+L["If enabled then the filter will only activate when the unit can be attacked by the active player."] = true
+L["If enabled then the filter will only activate when the unit can not be attacked by the active player."] = true
 L["If enabled then the filter will only activate when the unit is a player's pet."] = true
 L["If enabled then the filter will only activate when the unit is not a player's pet."] = true
 L["If enabled then the filter will only activate when the unit is controlled by the player."] = true
