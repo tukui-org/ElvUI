@@ -1177,6 +1177,14 @@ function S:SkinTextureAndTextWidget(widgetFrame)
 end
 
 function S:SkinSpellDisplay(widgetFrame)
+	local spell = widgetFrame.Spell;
+	if spell then
+		spell.Border:Hide()
+		S:HandleIcon(spell.Icon)
+		spell.Icon:CreateBackdrop()
+		spell.Icon.backdrop:SetPoint("TOPLEFT", spell.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
+		spell.Icon.backdrop:SetPoint("BOTTOMRIGHT", spell.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
+	end
 end
 
 function S:SkinDoubleStateIconRow(widgetFrame)
