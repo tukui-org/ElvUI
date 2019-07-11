@@ -69,6 +69,8 @@ oUF.Tags.Methods['name:title'] = function(unit)
 	end
 end
 
+oUF.Tags.SharedEvents.QUEST_LOG_UPDATE = true
+
 oUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'
 oUF.Tags.Methods['quest:title'] = function(unit)
 	if UnitIsPlayer(unit) then
