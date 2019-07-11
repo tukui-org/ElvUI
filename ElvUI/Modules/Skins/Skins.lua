@@ -311,7 +311,7 @@ function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
 		end
 	end
 
-	if Thumb then
+	if Thumb and not Thumb.backdrop then
 		Thumb:SetTexture()
 		Thumb:CreateBackdrop(nil, true, true)
 		if not thumbTrimY then thumbTrimY = 3 end
@@ -637,7 +637,7 @@ end
 function S:HandleIcon(icon, backdrop)
 	icon:SetTexCoord(unpack(E.TexCoords))
 
-	if backdrop then
+	if backdrop and not icon.backdrop then
 		icon:CreateBackdrop()
 	end
 end
@@ -678,6 +678,7 @@ function S:HandleItemButton(b, shrinkIcon)
 			icon:SetTexture(texture)
 		end
 	end
+
 	b.isSkinned = true
 end
 
@@ -709,9 +710,11 @@ function S:HandleSliderFrame(frame)
 	local SIZE = 12
 
 	frame:StripTextures()
-	frame:CreateBackdrop()
-	frame.backdrop:SetAllPoints()
 	frame:SetThumbTexture(E.Media.Textures.Melli)
+	if not frame.backdrop then
+		frame:CreateBackdrop()
+		frame.backdrop:SetAllPoints()
+	end
 
 	local thumb = frame:GetThumbTexture()
 	thumb:SetVertexColor(1, .82, 0, 0.8)
@@ -1179,14 +1182,23 @@ function S:SkinTextureAndTextWidget(widgetFrame)
 end
 
 function S:SkinSpellDisplay(widgetFrame)
-	local spell = widgetFrame.Spell;
+	local spell = widgetFrame.Spell
+	if not spell then return end
 
-	if spell then
+	if spell.Border then
 		spell.Border:Hide()
+	end
+
+	if spell.Icon then
 		S:HandleIcon(spell.Icon)
-		spell.Icon:CreateBackdrop()
-		spell.Icon.backdrop:SetPoint("TOPLEFT", spell.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
-		spell.Icon.backdrop:SetPoint("BOTTOMRIGHT", spell.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
+
+		if not spell.Icon.backdrop then
+			spell.Icon:CreateBackdrop()
+		end
+
+		local x = E.PixelMode and 1 or 2
+		spell.Icon.backdrop:SetPoint("TOPLEFT", spell.Icon, -x, x)
+		spell.Icon.backdrop:SetPoint("BOTTOMRIGHT", spell.Icon, x, -x)
 	end
 end
 
