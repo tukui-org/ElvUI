@@ -5,6 +5,7 @@ Added Player Can Attack and Player Can Not Attack unit conditions to Nameplate S
 
 **Bug Fixes:**  
 Fixed Essences on Hearth of Azeroth showing incorrectly on the character page (similar to gems).  
+Fixed issue which caused the 'Smaller World Map' to not be displayed correctly on initial login.  
 
 **Misc. Changes:**  
 
