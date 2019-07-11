@@ -69,7 +69,7 @@ oUF.Tags.Methods['name:title'] = function(unit)
 	end
 end
 
-oUF.Tags.Events['quest:title'] = 'UNIT_NAME_UPDATE UNIT_HEALTH'
+oUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'
 oUF.Tags.Methods['quest:title'] = function(unit)
 	if UnitIsPlayer(unit) then
 		return
@@ -104,7 +104,7 @@ oUF.Tags.Methods['quest:title'] = function(unit)
 	end
 end
 
-oUF.Tags.Events['quest:info'] = 'UNIT_NAME_UPDATE UNIT_HEALTH'
+oUF.Tags.Events['quest:info'] = 'QUEST_LOG_UPDATE'
 oUF.Tags.Methods['quest:info'] = function(unit)
 	if UnitIsPlayer(unit) then
 		return
