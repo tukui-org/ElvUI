@@ -36,7 +36,7 @@ function M:CreateInspectTexture(slot, x, y)
 	texture:Size(14)
 
 	local backdrop = CreateFrame('Frame', nil, slot)
-	backdrop:SetTemplate()
+	backdrop:SetTemplate(nil, nil, true)
 	backdrop:SetBackdropColor(0,0,0,0)
 	backdrop:SetOutside(texture)
 	backdrop:Hide()
