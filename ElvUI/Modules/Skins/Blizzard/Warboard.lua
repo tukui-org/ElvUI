@@ -41,7 +41,6 @@ local function LoadSkin()
 		E:Delay(0.5, WarboardQuestChoiceDelayed, self)
 	end)
 
-	-- TODO Hide the "new" CloseButton.Border
 	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
 end
 
