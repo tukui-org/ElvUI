@@ -474,11 +474,13 @@ local function SkinGarrisonRandomMissionAlert(frame, _, _, _, _, _, quality)
 		frame.isSkinned = true
 	end
 
-	local color = ITEM_QUALITY_COLORS[quality]
-	if color then
-		frame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
-	else
-		frame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
+	if frame.PortraitFrame and frame.PortraitFrame.squareBG then
+		local color = quality and ITEM_QUALITY_COLORS[quality]
+		if color then
+			frame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
+		else
+			frame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
+		end
 	end
 end
 
