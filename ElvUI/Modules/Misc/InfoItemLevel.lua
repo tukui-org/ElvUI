@@ -134,11 +134,13 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, esse
 	end
 
 	for x = 1, 10 do
-		inspectItem["textureSlotBackdrop"..x]:Hide()
+		local texture = inspectItem["textureSlot"..x]
+		local backdrop = inspectItem["textureSlotBackdrop"..x]
+		backdrop:Hide()
 
 		if gems and next(gems) then
 			local index, gem = next(gems)
-			inspectItem["textureSlot"..x]:SetTexture(gem)
+			texture:SetTexture(gem)
 			gems[index] = nil
 		elseif essences and next(essences) then
 			local index, essence = next(essences)
@@ -150,13 +152,13 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, esse
 				r, g, b = 0.8, 0.8, 0.8
 			end
 
-			inspectItem["textureSlot"..x]:SetTexture(essence[1])
-			inspectItem["textureSlotBackdrop"..x]:SetBackdropBorderColor(r, g, b)
-			inspectItem["textureSlotBackdrop"..x]:Show()
+			texture:SetTexture(essence[1])
+			backdrop:SetBackdropBorderColor(r, g, b)
+			backdrop:Show()
 
 			essences[index] = nil
 		else
-			inspectItem["textureSlot"..x]:SetTexture()
+			texture:SetTexture()
 		end
 	end
 end
