@@ -51,9 +51,9 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	E.ScanTooltip:SetInventoryItem(unit, slot)
 	E.ScanTooltip:Show()
 
-	local iLvl, enchantText, enchantColors, itemLevelColors, gems
+	local iLvl, enchantText, enchantColors, itemLevelColors, gems, essences
 	if deepScan then
-		gems = E:ScanTooltipTextures(nil, true)
+		gems, essences = E:ScanTooltipTextures(nil, true)
 		for x = 1, E.ScanTooltip:NumLines() do
 			local line = _G["ElvUI_ScanTooltipTextLeft"..x]
 			if line then
@@ -85,7 +85,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	end
 
 	E.ScanTooltip:Hide()
-	return iLvl, enchantText, deepScan and gems, enchantColors, itemLevelColors
+	return iLvl, enchantText, deepScan and gems, deepScan and essences, enchantColors, itemLevelColors
 end
 
 --Credit ls & Acidweb

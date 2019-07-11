@@ -3,9 +3,11 @@ local M = E:GetModule('Misc')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local next = next
 local pairs = pairs
 local unpack = unpack
 local UnitGUID = UnitGUID
+local CreateFrame = CreateFrame
 
 local InspectItems = {
 	"HeadSlot",
@@ -32,7 +34,14 @@ function M:CreateInspectTexture(slot, x, y)
 	texture:Point("BOTTOM", slot, x, y)
 	texture:SetTexCoord(unpack(E.TexCoords))
 	texture:Size(14)
-	return texture
+
+	local backdrop = CreateFrame('Frame', nil, slot)
+	backdrop:SetTemplate()
+	backdrop:SetBackdropColor(0,0,0,0)
+	backdrop:SetOutside(texture)
+	backdrop:Hide()
+
+	return texture, backdrop
 end
 
 function M:GetInspectPoints(id)
@@ -111,7 +120,7 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	end
 end
 
-function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, enchantColors, itemLevelColors)
+function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors)
 	iLevelDB[i] = iLvl
 
 	inspectItem.enchantText:SetText(enchant)
@@ -125,7 +134,28 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, ench
 	end
 
 	for x = 1, 10 do
-		inspectItem["textureSlot"..x]:SetTexture(gems and gems[x])
+		inspectItem["textureSlotBackdrop"..x]:Hide()
+
+		if gems and next(gems) then
+			local index, gem = next(gems)
+			inspectItem["textureSlot"..x]:SetTexture(gem)
+			gems[index] = nil
+		elseif essences and next(essences) then
+			local index, essence = next(essences)
+
+			local r, g, b
+			if essence[2] == 'tooltip-heartofazerothessence-major' then
+				r, g, b = 0.8, 0.7, 0
+			else -- 'tooltip-heartofazerothessence-minor'
+				r, g, b = 0.8, 0.8, 0.8
+			end
+
+			inspectItem["textureSlot"..x]:SetTexture(essence[1])
+			inspectItem["textureSlotBackdrop"..x]:SetBackdropBorderColor(r, g, b)
+			inspectItem["textureSlotBackdrop"..x]:Show()
+
+			essences[index] = nil
+		end
 	end
 end
 
@@ -149,10 +179,10 @@ function M:TryGearAgain(frame, which, i, deepScan, iLevelDB, inspectItem)
 		if which == 'Inspect' and (not frame or not frame.unit) then return end
 
 		local unit = (which == 'Character' and 'player') or frame.unit
-		local iLvl, enchant, gems, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, deepScan)
+		local iLvl, enchant, gems, essences, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, deepScan)
 		if iLvl == 'tooSoon' then return end
 
-		M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, enchantColors, itemLevelColors)
+		M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors)
 	end)
 end
 
@@ -169,12 +199,12 @@ function M:UpdatePageInfo(frame, which, guid, event)
 			inspectItem.iLvlText:SetText('')
 
 			local unit = (which == 'Character' and 'player') or frame.unit
-			local iLvl, enchant, gems, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, true)
+			local iLvl, enchant, gems, essences, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, true)
 			if iLvl == 'tooSoon' then
 				if not waitForItems then waitForItems = true end
 				M:TryGearAgain(frame, which, i, true, iLevelDB, inspectItem)
 			else
-				M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, enchantColors, itemLevelColors)
+				M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors)
 			end
 		end
 	end
@@ -226,7 +256,7 @@ function M:CreateSlotStrings(frame, which)
 			for u=1, 10 do
 				local offset = 8+(u*16)
 				local newX = ((justify == "BOTTOMLEFT" or i == 17) and x+offset) or x-offset
-				slot["textureSlot"..u] = M:CreateInspectTexture(slot, newX, --[[newY or]] y)
+				slot["textureSlot"..u], slot["textureSlotBackdrop"..u] = M:CreateInspectTexture(slot, newX, --[[newY or]] y)
 			end
 		end
 	end
