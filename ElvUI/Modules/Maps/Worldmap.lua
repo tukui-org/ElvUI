@@ -167,6 +167,7 @@ function M:Initialize()
 
 		self:SecureHookScript(WorldMapFrame, 'OnShow', function()
 			if WorldMapFrame:IsMaximized() then
+				WorldMapFrame:UpdateMaximizedSize()
 				self:SetLargeWorldMap()
 			else
 				self:SetSmallWorldMap()
