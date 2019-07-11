@@ -155,6 +155,8 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, esse
 			inspectItem["textureSlotBackdrop"..x]:Show()
 
 			essences[index] = nil
+		else
+			inspectItem["textureSlot"..x]:SetTexture()
 		end
 	end
 end
