@@ -4,6 +4,7 @@
 Added Player Can Attack and Player Can Not Attack unit conditions to Nameplate Style Filters.  
 
 **Bug Fixes:**  
+Fixed Essences on Hearth of Azeroth showing incorrectly on the character page (similar to gems).  
 
 **Misc. Changes:**  
 
