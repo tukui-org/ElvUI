@@ -118,7 +118,7 @@ function AddOn:ScanTooltipTextures(clean, grabTextures)
 				if isEssence then
 					if not essences then essences = {} end
 
-					local selected = textures[i-1]
+					local selected = (textures[i-1] ~= 2975691 and textures[i-1]) or nil
 					essences[i] = {selected, tex:GetAtlas(), hasTexture}
 
 					if selected then
