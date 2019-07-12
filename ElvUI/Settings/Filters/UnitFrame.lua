@@ -1040,8 +1040,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[297397] = Defaults(), -- Briny Bubble
 
 		--Abyssal Commander Sivara
-		--[294715] = Defaults(), -- Toxic Brand
-		--[294711] = Defaults(), -- Frost Mark
 		[300701] = Defaults(), -- Rimefrost
 		[300705] = Defaults(), -- Septic Taint
 		[294847] = Defaults(), -- Unstable Mixture
@@ -1067,7 +1065,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[296746] = Defaults(), -- Arcane Bomb
 		[295920] = Defaults(), -- Ancient Tempest
 		[296462] = Defaults(), -- Squall Trap
-		[299152] = Defaults(), -- Waterlogged
 
 		--Orgozoa
 		[298156] = Defaults(), -- Desensitizing Sting
