@@ -153,9 +153,16 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, esse
 				r, g, b = 0.4, 0.4, 0.4
 			end
 
-			texture:SetTexture(essence[1])
+			local selected = essence[1]
+			texture:SetTexture(selected)
 			backdrop:SetBackdropBorderColor(r, g, b)
 			backdrop:Show()
+
+			if selected then
+				backdrop:SetBackdropColor(0,0,0,0)
+			else
+				backdrop:SetBackdropColor(unpack(E.media.backdropcolor))
+			end
 
 			essences[index] = nil
 		else
