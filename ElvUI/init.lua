@@ -107,25 +107,24 @@ AddOn.LSM = AddOn.Libs.LSM
 AddOn.Masque = AddOn.Libs.Masque
 
 function AddOn:ScanTooltipTextures(clean, grabTextures)
-	local textures, essences
+	local essenceTextureID, textures, essences = 2975691
 	for i = 1, 10 do
 		local tex = _G["ElvUI_ScanTooltipTexture"..i]
-		local hasTexture = tex and tex:GetTexture()
-		if hasTexture then
+		local texture = tex and tex:GetTexture()
+		if texture then
 			if grabTextures then
 				if not textures then textures = {} end
-				local isEssence = hasTexture == 2975691
-				if isEssence then
+				if texture == essenceTextureID then
 					if not essences then essences = {} end
 
-					local selected = (textures[i-1] ~= 2975691 and textures[i-1]) or nil
-					essences[i] = {selected, tex:GetAtlas(), hasTexture}
+					local selected = (textures[i-1] ~= essenceTextureID and textures[i-1]) or nil
+					essences[i] = {selected, tex:GetAtlas(), texture}
 
 					if selected then
 						textures[i-1] = nil
 					end
 				else
-					textures[i] = hasTexture
+					textures[i] = texture
 				end
 			end
 			if clean then
