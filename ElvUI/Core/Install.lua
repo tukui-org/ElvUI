@@ -146,6 +146,7 @@ local function SetupCVars(noDisplayMsg)
 	SetCVar("SpamFilter", 0)
 	SetCVar("cameraDistanceMaxZoomFactor", 2.6)
 	SetCVar("showQuestTrackingTooltips", 1)
+	SetCVar("fstack_preferParentKeys", 0) --Add back the frame names via fstack!
 
 	NP:CVarReset()
 
