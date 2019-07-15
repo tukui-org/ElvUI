@@ -877,10 +877,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Plugin Callback
-	if mod.StyleFilterCustomCheck then
-		local custom = mod:StyleFilterCustomCheck(frame, filter, trigger)
-		if custom ~= nil then -- ignore if nil return
-			if custom then passed = true else return end
+	if mod.StyleFilterCustomChecks then
+		for _, customCheck in pairs(mod.StyleFilterCustomChecks) do
+			local custom = customCheck(frame, filter, trigger)
+			if custom ~= nil then -- ignore if nil return
+				if custom then passed = true else return end
+			end
 		end
 	end
 
@@ -1242,6 +1244,18 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterRegister(nameplate,'VEHICLE_UPDATE', true)
 
 	mod:StyleFilterEventWatch(nameplate)
+end
+
+function mod:AddStyleFilterCustomCheck(name, func)
+	mod.StyleFilterCustomChecks = mod.StyleFilterCustomChecks or {}
+	mod.StyleFilterCustomChecks[name] = func
+end
+
+function mod:RemoveStyleFilterCustomCheck(name)
+	if not mod.StyleFilterCustomChecks then
+		return
+	end
+	mod.StyleFilterCustomChecks[name] = nil
 end
 
 -- Shamelessy taken from AceDB-3.0 and stripped down by Simpy
