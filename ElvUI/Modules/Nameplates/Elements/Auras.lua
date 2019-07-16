@@ -173,7 +173,8 @@ function NP:Update_Auras(nameplate, forceUpdate)
 	local db = NP.db.units[nameplate.frameType]
 
 	if db.auras.enable or db.debuffs.enable or db.buffs.enable then
-		if not nameplate:IsElementEnabled('Auras') then
+		local wasDisabled = not nameplate:IsElementEnabled('Auras')
+		if wasDisabled then
 			nameplate:EnableElement('Auras')
 		end
 
@@ -191,7 +192,7 @@ function NP:Update_Auras(nameplate, forceUpdate)
 			nameplate.Auras = nameplate.Auras_
 			nameplate.Auras:Show()
 
-			if forceUpdate then
+			if wasDisabled and forceUpdate then
 				nameplate.Auras:ForceUpdate()
 			end
 		else
@@ -205,7 +206,7 @@ function NP:Update_Auras(nameplate, forceUpdate)
 				NP:Configure_Auras(nameplate, nameplate.Debuffs, db.debuffs)
 				nameplate.Debuffs:Show()
 
-				if forceUpdate then
+				if wasDisabled and forceUpdate then
 					nameplate.Debuffs:ForceUpdate()
 				end
 			elseif nameplate.Debuffs then
@@ -218,7 +219,7 @@ function NP:Update_Auras(nameplate, forceUpdate)
 				NP:Configure_Auras(nameplate, nameplate.Buffs, db.buffs)
 				nameplate.Buffs:Show()
 
-				if forceUpdate then
+				if wasDisabled and forceUpdate then
 					nameplate.Buffs:ForceUpdate()
 				end
 			elseif nameplate.Buffs then
