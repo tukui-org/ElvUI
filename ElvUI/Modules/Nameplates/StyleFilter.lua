@@ -924,7 +924,7 @@ function mod:StyleFilterSort(place)
 	end
 end
 
-function mod:VehicleFunction(_, unit)
+function mod:StyleFilterVehicleFunction(_, unit)
 	unit = unit or self.unit
 	self.inVehicle = UnitInVehicle(unit) or nil
 end
@@ -943,9 +943,9 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 		unit = unit or self.unit
 		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
 	end,
-	['UNIT_ENTERED_VEHICLE'] = mod.VehicleFunction,
-	['UNIT_EXITED_VEHICLE'] = mod.VehicleFunction,
-	['VEHICLE_UPDATE'] = mod.VehicleFunction
+	['UNIT_ENTERED_VEHICLE'] = mod.StyleFilterVehicleFunction,
+	['UNIT_EXITED_VEHICLE'] = mod.StyleFilterVehicleFunction,
+	['VEHICLE_UPDATE'] = mod.StyleFilterVehicleFunction
 }
 
 function mod:StyleFilterSetVariables(nameplate)
@@ -1246,15 +1246,19 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterEventWatch(nameplate)
 end
 
-function mod:AddStyleFilterCustomCheck(name, func)
-	mod.StyleFilterCustomChecks = mod.StyleFilterCustomChecks or {}
+function mod:StyleFilterAddCustomCheck(name, func)
+	if not mod.StyleFilterCustomChecks then
+		mod.StyleFilterCustomChecks = {}
+	end
+
 	mod.StyleFilterCustomChecks[name] = func
 end
 
-function mod:RemoveStyleFilterCustomCheck(name)
+function mod:StyleFilterRemoveCustomCheck(name)
 	if not mod.StyleFilterCustomChecks then
 		return
 	end
+
 	mod.StyleFilterCustomChecks[name] = nil
 end
 
