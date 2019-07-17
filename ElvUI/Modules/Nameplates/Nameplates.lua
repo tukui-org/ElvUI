@@ -698,6 +698,8 @@ function NP:Initialize()
 		return
 	end
 	NP.Initialized = true
+	-- Remove this when the version is bumped
+	NP.supportsForceCreate = true
 
 	oUF:RegisterStyle(
 		"ElvNP",

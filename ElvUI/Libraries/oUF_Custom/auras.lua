@@ -68,6 +68,9 @@ button.isPlayer - indicates if the aura caster is the player or their vehicle (b
 local _, ns = ...
 local oUF = ns.oUF
 
+-- ElvUI changed block
+local CREATED = 2
+-- end block
 local VISIBLE = 1
 local HIDDEN = 0
 
@@ -156,10 +159,12 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 
 	-- ElvUI block
-	if element.forceShow then
+	if element.forceShow or element.forceCreate then
 		spellID = 47540
 		name, _, texture = GetSpellInfo(spellID)
-		count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, isBossDebuff = 5, 'Magic', 0, 60, 'player', nil, nil, nil
+		if element.forceShow then
+			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, isBossDebuff = 5, "Magic", 0, 60, "player", nil, nil, nil
+		end
 	end
 	-- end Block
 
@@ -270,6 +275,19 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			end
 
 			return VISIBLE
+		-- ElvUI changed block
+		elseif element.forceCreate then
+			local size = element.size or 16
+			button:SetSize(size, size)
+
+			button:Hide()
+
+			if (element.PostUpdateIcon) then
+				element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
+			end
+
+			return CREATED
+		-- end block
 		else
 			return HIDDEN
 		end
@@ -302,7 +320,10 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	local index = 1
 	local visible = 0
 	local hidden = 0
-	while(visible < limit) do
+	-- ElvUI changed block
+	local created = 0
+	-- end block
+	while (visible < limit) do
 		local result = updateIcon(element, unit, index, offset, filter, isDebuff, visible)
 		if(not result) then
 			break
@@ -310,12 +331,20 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 			visible = visible + 1
 		elseif(result == HIDDEN) then
 			hidden = hidden + 1
+		-- ElvUI changed block
+		elseif (result == CREATED) then
+			visible = visible + 1
+			created = created + 1
+		-- end block
 		end
 
 		index = index + 1
 	end
 
-	if(not dontHide) then
+	-- ElvUI changed block
+	visible = visible - created
+	-- end block
+	if (not dontHide) then
 		for i = visible + offset + 1, #element do
 			element[i]:Hide()
 		end
