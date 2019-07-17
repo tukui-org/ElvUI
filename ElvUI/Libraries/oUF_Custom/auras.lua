@@ -208,7 +208,8 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 
 		-- ElvUI changed block
 		local show = true
-		if not element.forceShow then
+		if element.forceCreate then show = false end
+		if not element.forceShow and not element.forceCreate then
 			show = (element.CustomFilter or customFilter) (element, unit, button, name, texture,
 				count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
 				canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,timeMod, effect1, effect2, effect3)
