@@ -332,7 +332,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 		elseif(result == HIDDEN) then
 			hidden = hidden + 1
 		-- ElvUI changed block
-		elseif (result == CREATED) then
+		elseif(result == CREATED) then
 			visible = visible + 1
 			created = created + 1
 		-- end block
