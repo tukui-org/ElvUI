@@ -1235,12 +1235,6 @@ local function UpdateFilterGroup()
 									desc = L["If enabled then the filter will only activate when the unit can not be atacked by the active player."],
 									order = 23
 								},
-								pluginSpacer = {
-									type = "description",
-									name = " ",
-									width = "full",
-									order = 49
-								},
 							}
 						}
 					}
@@ -2459,6 +2453,14 @@ local function UpdateFilterGroup()
 				}
 			}
 		}
+		if NP.StyleFilterCustomChecks then
+			E.Options.args.nameplate.args.filters.args.triggers.args.combat.args.types.args.pluginSpacer = {
+				type = "description",
+				name = " ",
+				width = "full",
+				order = 49
+			}
+		end
 		E.Options.args.nameplate.args.filters.args.actions = {
 			type = "group",
 			name = L["Actions"],
