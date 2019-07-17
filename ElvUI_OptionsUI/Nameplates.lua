@@ -1235,6 +1235,12 @@ local function UpdateFilterGroup()
 									desc = L["If enabled then the filter will only activate when the unit can not be atacked by the active player."],
 									order = 23
 								},
+								pluginSpacer = {
+									type = "description",
+									name = " ",
+									width = "full",
+									order = 49
+								},
 							}
 						}
 					}
