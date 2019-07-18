@@ -25,8 +25,8 @@ local CampfireNPCIDToWidgetIDMap = {
 }
 
 local NeededQuestIDs = {
-	["Horde"] = 57005,
-	["Alliance"] = 57006
+	["Horde"] = 55500,
+	["Alliance"] = 56156
 }
 
 local function GetBodyguardXP(widgetID)
@@ -49,7 +49,11 @@ local function Update(self)
 	end
 
 	local npcID, questID = tonumber(self.npcID), NeededQuestIDs[E.myfaction]
-	local shouldDisplay = (questID and IsQuestFlaggedCompleted(questID)) and (npcID and (NPCIDToWidgetIDMap[npcID] and self.unit and UnitIsOwnerOrControllerOfUnit("player", self.unit)) or CampfireNPCIDToWidgetIDMap[npcID])
+	local shouldDisplay =
+		(questID and IsQuestFlaggedCompleted(questID)) and
+		(npcID and
+			((NPCIDToWidgetIDMap[npcID] and self.unit and UnitIsOwnerOrControllerOfUnit("player", self.unit)) or
+				CampfireNPCIDToWidgetIDMap[npcID]))
 	if (not shouldDisplay) then
 		element:Hide()
 		if element.Rank then
@@ -118,6 +122,7 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent("UPDATE_UI_WIDGET", Path, true)
+		self:RegisterEvent("QUEST_LOG_UPDATE", Path, true)
 		return true
 	end
 end
@@ -134,6 +139,7 @@ local function Disable(self)
 		end
 
 		self:UnregisterEvent("UPDATE_UI_WIDGET", Path)
+		self:UnregisterEvent("QUEST_LOG_UPDATE", Path)
 	end
 end
 
