@@ -184,6 +184,14 @@ local function LoadSkin()
 
 	_G.SpellBookFrameTabButton1:ClearAllPoints()
 	_G.SpellBookFrameTabButton1:Point('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', 0, 2)
+
+	-- Some Texture Magic
+	hooksecurefunc("FormatProfession", function(frame, id)
+		local texture = select(2, GetProfessionInfo(id))
+		if frame.icon and texture then
+			frame.icon:SetTexture(texture)
+		end
+	end)
 end
 
 S:AddCallback("Spellbook", LoadSkin)
