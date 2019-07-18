@@ -187,6 +187,7 @@ local function LoadSkin()
 
 	-- Some Texture Magic
 	hooksecurefunc("FormatProfession", function(frame, id)
+		if not id then return end
 		local texture = select(2, GetProfessionInfo(id))
 		if frame.icon and texture then
 			frame.icon:SetTexture(texture)
