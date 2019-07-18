@@ -4,7 +4,6 @@ local oUF = E.oUF
 local strmatch, tonumber = strmatch, tonumber
 local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
 local IsQuestFlaggedCompleted = IsQuestFlaggedCompleted
-local UnitFactionGroup = UnitFactionGroup
 local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 
 local NPCIDToWidgetIDMap = {
