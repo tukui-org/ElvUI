@@ -128,9 +128,10 @@ local function LoadSkin()
 	S:HandleButton(_G.ScenarioQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
 	S:HandleScrollBar(_G.ScenarioQueueFrameRandomScrollFrameScrollBar);
 
-	_G.GroupFinderFrameGroupButton1.icon:SetTexture("Interface\\Icons\\INV_Helmet_08")
-	_G.GroupFinderFrameGroupButton2.icon:SetTexture("Interface\\Icons\\inv_helmet_06")
-	_G.GroupFinderFrameGroupButton3.icon:SetTexture("Interface\\Icons\\Icon_Scenarios")
+	_G.GroupFinderFrame.groupButton1.icon:SetTexture("Interface\\Icons\\INV_Helmet_08")
+	_G.GroupFinderFrame.groupButton2.icon:SetTexture("Interface\\LFGFrame\\UI-LFR-PORTRAIT")
+	_G.GroupFinderFrame.groupButton3.icon:SetTexture("Interface\\Icons\\Icon_Scenarios")
+	_G.GroupFinderFrame.groupButton4.icon:SetTexture("Interface\\Icons\\Achievement_General_StayClassy")
 
 	_G.LFGDungeonReadyDialogBackground:Kill()
 	S:HandleButton(_G.LFGDungeonReadyDialogEnterDungeonButton)
