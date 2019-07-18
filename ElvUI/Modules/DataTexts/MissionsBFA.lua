@@ -40,13 +40,13 @@ local InCombatLockdown = InCombatLockdown
 
 local Widget_IDs = {
 	["Alliance"] = {
-		57006, -- A Worthy Ally
+		56156, -- A Tempered Blade
 		{L["Farseer Ori"], 1940},
 		{L["Hunter Akana"], 1613},
 		{L["Bladesman Inowari"], 1966}
 	},
 	["Horde"] = {
-		57005, -- Becoming a Friend
+		55500, -- Save a Friend
 		{L["Neri Sharpfin"], 1621},
 		{L["Poen Gillbrack"], 1622},
 		{L["Vim Brineheart"], 1920}
@@ -219,7 +219,10 @@ local function OnEnter(self, _, noUpdate)
 end
 
 local function OnClick()
-	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
+	if InCombatLockdown() then
+		_G.UIErrorsFrame:AddMessage(E.InfoColor .. _G.ERR_NOT_IN_COMBAT)
+		return
+	end
 
 	if not (C_Garrison_HasGarrison(LE_GARRISON_TYPE_8_0)) then
 		return
