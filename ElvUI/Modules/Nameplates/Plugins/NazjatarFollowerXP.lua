@@ -3,6 +3,8 @@ local oUF = E.oUF
 
 local strmatch, tonumber = strmatch, tonumber
 local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
+local IsQuestFlaggedCompleted = IsQuestFlaggedCompleted
+local UnitFactionGroup = UnitFactionGroup
 local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 
 local NPCIDToWidgetIDMap = {
@@ -23,9 +25,16 @@ local CampfireNPCIDToWidgetIDMap = {
 	[149906] = 1920 -- Vim Brineheart
 }
 
+local NeededQuestIDs = {
+	["Horde"] = 57005,
+	["Alliance"] = 57006
+}
+
 local function GetBodyguardXP(widgetID)
 	local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
-	if not widget then return end
+	if not widget then
+		return
+	end
 
 	local rank = strmatch(widget.overrideBarText, "%d+")
 	local cur = widget.barValue - widget.barMin
@@ -36,12 +45,16 @@ end
 
 local function Update(self)
 	local element = self.NazjatarFollowerXP
-	if not element then return end
+	if not element then
+		return
+	end
 
 	local npcID = tonumber(self.npcID)
-	local shouldDisplay =
+	local properNPCDisplay =
 		npcID and (NPCIDToWidgetIDMap[npcID] and self.unit and UnitIsOwnerOrControllerOfUnit("player", self.unit)) or
 		CampfireNPCIDToWidgetIDMap[npcID]
+	local questCompleted = IsQuestFlaggedCompleted(NeededQuestIDs[UnitFactionGroup("player")])
+	local shouldDisplay = questCompleted and properNPCDisplay
 	if (not shouldDisplay) then
 		element:Hide()
 		if element.Rank then
@@ -71,7 +84,9 @@ local function Update(self)
 	end
 
 	local rank, cur, next, total = GetBodyguardXP(widgetID)
-	if not rank then return end
+	if not rank then
+		return
+	end
 
 	element:SetMinMaxValues(0, next)
 	element:SetValue(cur)
