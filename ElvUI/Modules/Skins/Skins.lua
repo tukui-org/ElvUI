@@ -1246,7 +1246,7 @@ function S:ADDON_LOADED(_, addon)
 		if not S.Lib_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('Lib') end -- NoTaint_UIDropDownMenu
 	end
 
-	if not S.SkinnedAce3 then
+	if not S.SkinnedAce3 or not S.StyledAce3 then
 		S:SkinAce3()
 	end
 
@@ -1363,10 +1363,17 @@ function S:AddCallback(eventName, loadFunc)
 end
 
 function S:SkinAce3()
-	local AceGUI = E.Libs.AceGUI
-	if not AceGUI then AceGUI = _G.LibStub('AceGUI-3.0', true) end
-	if AceGUI and (AceGUI.RegisterAsContainer ~= S.Ace3_RegisterAsContainer or AceGUI.RegisterAsWidget ~= S.Ace3_RegisterAsWidget) then
-		S:HookAce3(AceGUI)
+	if not S.SkinnedAce3 then
+		local AceGUI = E.Libs.AceGUI
+		if not AceGUI then AceGUI = _G.LibStub('AceGUI-3.0', true) end
+		if AceGUI and (AceGUI.RegisterAsContainer ~= S.Ace3_RegisterAsContainer or AceGUI.RegisterAsWidget ~= S.Ace3_RegisterAsWidget) then
+			S:HookAce3(AceGUI)
+		end
+	end
+
+	if not S.StyledAce3 then
+		local ACD = E.Libs.AceConfigDialog
+		if ACD then S:Ace3_SkinDialog(ACD) end
 	end
 end
 

@@ -354,9 +354,27 @@ function S:Ace3_RegisterAsContainer(widget)
 	return oldRegisterAsContainer(self, widget)
 end
 
-function S:StyleAceTooltip()
+function S:Ace3_StyleTooltip()
 	if not self or self:IsForbidden() then return end
 	self:SetTemplate('Transparent', nil, true)
+end
+
+function S:Ace3_SkinDialog(ACD)
+	if not ACD then return end
+
+	-- Skin Ace Tooltip and StaticPopup
+	if ACD.tooltip then
+		ACD.tooltip:HookScript('OnShow', S.Ace3_StyleTooltip)
+	end
+
+	if ACD.popup then
+		ACD.popup:SetTemplate('Transparent')
+		ACD.popup:GetChildren():StripTextures()
+		S:HandleButton(ACD.popup.accept, true)
+		S:HandleButton(ACD.popup.cancel, true)
+	end
+
+	S.StyledAce3 = true
 end
 
 function S:HookAce3(AceGUI)
@@ -369,14 +387,6 @@ function S:HookAce3(AceGUI)
 
 	oldRegisterAsContainer = AceGUI.RegisterAsContainer
 	AceGUI.RegisterAsContainer = S.Ace3_RegisterAsContainer
-
-	-- Skin Ace Tooltip and StaticPopup
-	local ACD = E.Libs.AceConfigDialog
-	ACD.tooltip:HookScript('OnShow', S.StyleAceTooltip)
-	ACD.popup:SetTemplate('Transparent')
-	ACD.popup:GetChildren():StripTextures()
-	S:HandleButton(ACD.popup.accept, true)
-	S:HandleButton(ACD.popup.cancel, true)
 
 	S.SkinnedAce3 = true
 end
