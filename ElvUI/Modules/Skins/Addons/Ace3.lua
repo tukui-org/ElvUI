@@ -359,34 +359,33 @@ function S:Ace3_StyleTooltip()
 	self:SetTemplate('Transparent', nil, true)
 end
 
-function S:Ace3_SkinDialog(ACD)
-	if S.StyledAce3 or not ACD then return end
+function S:Ace3_SkinTooltip(lib) -- lib: AceConfigDialog or AceGUI
+	if not lib or lib.ElvUISkinned then return end
 
-	-- Skin Ace Tooltip and StaticPopup
-	if ACD.tooltip then
-		S:SecureHookScript(ACD.tooltip, 'OnShow', S.Ace3_StyleTooltip)
+	if lib.tooltip then
+		S:SecureHookScript(lib.tooltip, 'OnShow', S.Ace3_StyleTooltip)
 	end
 
-	if ACD.popup then
-		ACD.popup:SetTemplate('Transparent')
-		ACD.popup:GetChildren():StripTextures()
-		S:HandleButton(ACD.popup.accept, true)
-		S:HandleButton(ACD.popup.cancel, true)
+	if lib.popup then -- StaticPopup
+		lib.popup:SetTemplate('Transparent')
+		lib.popup:GetChildren():StripTextures()
+		S:HandleButton(lib.popup.accept, true)
+		S:HandleButton(lib.popup.cancel, true)
 	end
 
-	S.StyledAce3 = true
+	lib.ElvUISkinned = true
 end
 
-function S:HookAce3(AceGUI)
-	if S.SkinnedAce3 or not AceGUI then return end
+function S:HookAce3(lib) -- lib: AceGUI
+	if not lib or lib.ElvUISkinned then return end
 
 	S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
 
-	oldRegisterAsWidget = AceGUI.RegisterAsWidget
-	AceGUI.RegisterAsWidget = S.Ace3_RegisterAsWidget
+	oldRegisterAsWidget = lib.RegisterAsWidget
+	lib.RegisterAsWidget = S.Ace3_RegisterAsWidget
 
-	oldRegisterAsContainer = AceGUI.RegisterAsContainer
-	AceGUI.RegisterAsContainer = S.Ace3_RegisterAsContainer
+	oldRegisterAsContainer = lib.RegisterAsContainer
+	lib.RegisterAsContainer = S.Ace3_RegisterAsContainer
 
-	S.SkinnedAce3 = true
+	S:Ace3_SkinTooltip(lib) -- skin tooltip and set variable ElvUISkinned to true
 end
