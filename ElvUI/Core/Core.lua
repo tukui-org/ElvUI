@@ -90,8 +90,6 @@ E.unitFrameElements = {}
 E.statusBars = {}
 E.texts = {}
 E.snapBars = {}
-E.RegisteredModules = {}
-E.RegisteredInitialModules = {}
 E.ModuleCallbacks = {['CallPriority'] = {}}
 E.InitialModuleCallbacks = {['CallPriority'] = {}}
 E.valueColorUpdateFuncs = {}
@@ -1530,7 +1528,7 @@ function E:ResetUI(...)
 end
 
 function E:RegisterModule(name, loadFunc)
-	if (loadFunc and type(loadFunc) == 'function') then --New method using callbacks
+	if loadFunc and type(loadFunc) == 'function' then --New method using callbacks
 		if self.initialized then
 			loadFunc()
 		else
@@ -1547,17 +1545,11 @@ function E:RegisterModule(name, loadFunc)
 			--Register loadFunc to be called when event is fired
 			E:RegisterCallback(name, loadFunc, E:GetModule(name))
 		end
-	else
-		if self.initialized then
-			self:GetModule(name):Initialize()
-		else
-			self.RegisteredModules[#self.RegisteredModules + 1] = name
-		end
 	end
 end
 
 function E:RegisterInitialModule(name, loadFunc)
-	if (loadFunc and type(loadFunc) == 'function') then --New method using callbacks
+	if loadFunc and type(loadFunc) == 'function' then --New method using callbacks
 		if self.InitialModuleCallbacks[name] then
 			--Don't allow a registered module name to be overwritten
 			E:Print('Invalid argument #1 to E:RegisterInitialModule (module name:', name, 'is already registered, please use a unique name)')
@@ -1570,28 +1562,14 @@ function E:RegisterInitialModule(name, loadFunc)
 
 		--Register loadFunc to be called when event is fired
 		E:RegisterCallback(name, loadFunc, E:GetModule(name))
-	else
-		self.RegisteredInitialModules[#self.RegisteredInitialModules + 1] = name
 	end
 end
 
 function E:InitializeInitialModules()
-	--Fire callbacks for any module using the new system
 	for index, moduleName in ipairs(self.InitialModuleCallbacks.CallPriority) do
 		self.InitialModuleCallbacks[moduleName] = nil
 		self.InitialModuleCallbacks.CallPriority[index] = nil
 		E.callbacks:Fire(moduleName)
-	end
-
-	--Old deprecated initialize method, we keep it for any plugins that may need it
-	for _, module in pairs(E.RegisteredInitialModules) do
-		module = self:GetModule(module, true)
-		if module and module.Initialize then
-			local _, catch = pcall(module.Initialize, module)
-			if catch and GetCVarBool('scriptErrors') == true then
-				_G.ScriptErrorsFrame:OnError(catch, false, false)
-			end
-		end
 	end
 end
 
@@ -1601,23 +1579,10 @@ function E:RefreshModulesDB()
 end
 
 function E:InitializeModules()
-	--Fire callbacks for any module using the new system
 	for index, moduleName in ipairs(self.ModuleCallbacks.CallPriority) do
 		self.ModuleCallbacks[moduleName] = nil
 		self.ModuleCallbacks.CallPriority[index] = nil
 		E.callbacks:Fire(moduleName)
-	end
-
-	--Old deprecated initialize method, we keep it for any plugins that may need it
-	for _, module in pairs(E.RegisteredModules) do
-		module = self:GetModule(module)
-		if module.Initialize then
-			local _, catch = pcall(module.Initialize, module)
-
-			if catch and GetCVarBool('scriptErrors') == true then
-				_G.ScriptErrorsFrame:OnError(catch, false, false)
-			end
-		end
 	end
 end
 
