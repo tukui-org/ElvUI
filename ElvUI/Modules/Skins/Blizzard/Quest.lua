@@ -362,7 +362,7 @@ local function LoadSkin()
 					local texType = type(texture)
 					if texType == 'number' or texType == 'string' then
 						if (texType == 'number' and PlusButtonIDs[texture])
-						or (texType == 'string' and texture:find("PlusButton")) then
+						or (texType == 'string' and strfind(texture, "PlusButton")) then
 							tex:SetTexture(E.Media.Textures.PlusButton)
 						else
 							tex:SetTexture(E.Media.Textures.MinusButton)
