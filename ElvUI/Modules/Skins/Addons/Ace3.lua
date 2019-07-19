@@ -6,6 +6,7 @@ local select = select
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
+local minorGUI, minorConfigDialog = 36, 76
 local oldRegisterAsWidget, oldRegisterAsContainer
 
 function S:Ace3_SkinDropdownPullout()
@@ -359,8 +360,11 @@ function S:Ace3_StyleTooltip()
 	self:SetTemplate('Transparent', nil, true)
 end
 
-function S:Ace3_SkinTooltip(lib) -- lib: AceConfigDialog or AceGUI
-	if not lib then return end
+function S:Ace3_SkinTooltip(lib, minor) -- lib: AceConfigDialog or AceGUI
+	-- we only check `minor` here when checking an instance of AceConfigDialog
+	-- we can safely ignore it when checking AceGUI because we minor check that
+	-- inside of its own function.
+	if not lib or (minor and minor < minorConfigDialog) then return end
 
 	if lib.tooltip and not S:IsHooked(lib.tooltip, 'OnShow') then
 		S:SecureHookScript(lib.tooltip, 'OnShow', S.Ace3_StyleTooltip)
@@ -374,8 +378,8 @@ function S:Ace3_SkinTooltip(lib) -- lib: AceConfigDialog or AceGUI
 	end
 end
 
-function S:HookAce3(lib) -- lib: AceGUI
-	if not lib then return end
+function S:HookAce3(lib, minor) -- lib: AceGUI
+	if not lib or (not minor or minor < minorGUI) then return end
 
 	if not S.Ace3_L then
 		S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
