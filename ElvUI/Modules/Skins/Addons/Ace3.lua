@@ -393,7 +393,7 @@ function S:HookAce3(lib) -- lib: AceGUI
 		lib.RegisterAsContainer = S.Ace3_RegisterAsContainer
 	end
 
-	S:Ace3_SkinTooltip(lib)
+	-- S:Ace3_SkinTooltip(lib)
 
 	lib.ElvUISkinned = true
 end

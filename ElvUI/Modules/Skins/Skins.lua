@@ -1340,11 +1340,13 @@ function S:SkinAce3()
 	if not AceGUI then AceGUI = _G.LibStub('AceGUI-3.0', true) end
 	if AceGUI and not AceGUI.ElvUISkinned then S:HookAce3(AceGUI) end
 
+	--[[
 	local EACD = E.Libs.AceConfigDialog
 	if EACD and not EACD.ElvUISkinned then S:Ace3_SkinTooltip(EACD) end
 
 	local ACD = _G.LibStub('AceConfigDialog-3.0', true)
 	if ACD and not ACD.ElvUISkinned then S:Ace3_SkinTooltip(ACD) end
+	]]
 end
 
 function S:Initialize()
