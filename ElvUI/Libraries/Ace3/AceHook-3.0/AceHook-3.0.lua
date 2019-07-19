@@ -9,7 +9,7 @@
 -- make into AceHook.
 -- @class file
 -- @name AceHook-3.0
--- @release $Id$
+-- @release $Id: AceHook-3.0.lua 1202 2019-05-15 23:11:22Z nevcairiel $
 local ACEHOOK_MAJOR, ACEHOOK_MINOR = "AceHook-3.0", 8
 local AceHook, oldminor = LibStub:NewLibrary(ACEHOOK_MAJOR, ACEHOOK_MINOR)
 

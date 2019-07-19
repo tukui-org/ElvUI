@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 ColorPicker Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "ColorPicker-ElvUI", 25
+local Type, Version = "ColorPicker-ElvUI", 26
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -50,7 +50,7 @@ local function Control_OnLeave(frame)
 end
 
 local function ColorSwatch_OnClick(frame)
-	HideUIPanel(ColorPickerFrame)
+	ColorPickerFrame:Hide()
 
 	local self = frame.obj
 	if not self.disabled then
@@ -72,7 +72,9 @@ local function ColorSwatch_OnClick(frame)
 		end
 
 		local r, g, b, a = self.r, self.g, self.b, self.a
-		if self.HasAlpha then ColorPickerFrame.opacity = 1 - (a or 0) end
+		if self.HasAlpha then
+			ColorPickerFrame.opacity = 1 - (a or 0)
+		end
 		ColorPickerFrame:SetColorRGB(r, g, b)
 
 		if ColorPPDefault and self.dR and self.dG and self.dB then
@@ -86,7 +88,7 @@ local function ColorSwatch_OnClick(frame)
 			ColorCallback(self, r, g, b, a, true)
 		end
 
-		ShowUIPanel(ColorPickerFrame)
+		ColorPickerFrame:Show()
 	end
 	AceGUI:ClearFocus()
 end
