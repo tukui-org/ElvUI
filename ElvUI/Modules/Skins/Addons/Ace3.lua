@@ -364,7 +364,7 @@ function S:Ace3_SkinDialog(ACD)
 
 	-- Skin Ace Tooltip and StaticPopup
 	if ACD.tooltip then
-		ACD.tooltip:HookScript('OnShow', S.Ace3_StyleTooltip)
+		S:SecureHookScript(ACD.tooltip, 'OnShow', S.Ace3_StyleTooltip)
 	end
 
 	if ACD.popup then
