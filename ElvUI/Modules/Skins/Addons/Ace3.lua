@@ -360,7 +360,7 @@ function S:Ace3_StyleTooltip()
 end
 
 function S:Ace3_SkinTooltip(lib) -- lib: AceConfigDialog or AceGUI
-	if not lib or lib.ElvUISkinned then return end
+	if not lib then return end
 
 	if lib.tooltip then
 		S:SecureHookScript(lib.tooltip, 'OnShow', S.Ace3_StyleTooltip)
@@ -373,11 +373,11 @@ function S:Ace3_SkinTooltip(lib) -- lib: AceConfigDialog or AceGUI
 		S:HandleButton(lib.popup.cancel, true)
 	end
 
-	lib.ElvUISkinned = true
+	return true
 end
 
 function S:HookAce3(lib) -- lib: AceGUI
-	if not lib or lib.ElvUISkinned then return end
+	if not lib then return end
 
 	S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
 
@@ -387,5 +387,7 @@ function S:HookAce3(lib) -- lib: AceGUI
 	oldRegisterAsContainer = lib.RegisterAsContainer
 	lib.RegisterAsContainer = S.Ace3_RegisterAsContainer
 
-	S:Ace3_SkinTooltip(lib) -- skin tooltip and set variable ElvUISkinned to true
+	S:Ace3_SkinTooltip(lib)
+
+	return true
 end
