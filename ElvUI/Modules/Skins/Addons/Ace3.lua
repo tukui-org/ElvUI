@@ -6,8 +6,14 @@ local select = select
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-local minorGUI, minorConfigDialog = 36, 76
+-- functions that were overwritten, we need these to
+-- finish the function call when our code executes!
 local oldRegisterAsWidget, oldRegisterAsContainer
+
+-- these do *not* need to match the current lib minor version
+-- these numbers are used to not attempt skinning way older
+-- versions of AceGUI and AceConfigDialog.
+local minorGUI, minorConfigDialog = 36, 76
 
 function S:Ace3_SkinDropdownPullout()
 	if self and self.obj then
@@ -40,6 +46,7 @@ function S:Ace3_RegisterAsWidget(widget)
 	if not E.private.skins.ace3.enable then
 		return oldRegisterAsWidget(self, widget)
 	end
+
 	local TYPE = widget.type
 	if TYPE == 'MultiLineEditBox' then
 		local frame = widget.frame
