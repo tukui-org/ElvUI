@@ -3,19 +3,14 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local gsub = gsub
-local pairs = pairs
-local ipairs = ipairs
-local select = select
-local unpack = unpack
-local strfind = string.find
+local gsub, type, pairs, ipairs, select, unpack, strfind = gsub, type, pairs, ipairs, select, unpack, strfind
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
 local GetMoney = GetMoney
 local CreateFrame = CreateFrame
 local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
+local hooksecurefunc = hooksecurefunc
 
 local PlusButtonIDs = {
 	[130835] = 'interface/buttons/ui-plusbutton-disabled.blp',
