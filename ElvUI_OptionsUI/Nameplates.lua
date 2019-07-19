@@ -2453,6 +2453,7 @@ local function UpdateFilterGroup()
 				}
 			}
 		}
+
 		if NP.StyleFilterCustomChecks then
 			E.Options.args.nameplate.args.filters.args.triggers.args.combat.args.types.args.pluginSpacer = {
 				type = "description",
@@ -2461,6 +2462,7 @@ local function UpdateFilterGroup()
 				order = 49
 			}
 		end
+
 		E.Options.args.nameplate.args.filters.args.actions = {
 			type = "group",
 			name = L["Actions"],
