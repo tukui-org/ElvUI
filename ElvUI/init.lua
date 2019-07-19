@@ -11,14 +11,7 @@ To load the AddOn engine inside another addon add this to the top of your file:
 ]]
 
 --Lua functions
-local _G = _G
-local min = min
-local format = format
-local pairs = pairs
-local strsplit = strsplit
-local tcopy = table.copy
-local unpack = unpack
-local wipe = wipe
+local _G, min, format, pairs, strsplit, unpack, wipe, type, tcopy = _G, min, format, pairs, strsplit, unpack, wipe, type, table.copy
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local issecurevariable = issecurevariable
@@ -39,16 +32,60 @@ local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuFrame = GameMenuFrame
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
-_G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
+_G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title")
 
 local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
 
-local AddOnName, Engine = ...;
-local AddOn = AceAddon:NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0', 'AceHook-3.0');
+local AddOnName, Engine = ...
+local AddOn = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0')
 AddOn.callbacks = AddOn.callbacks or CallbackHandler:New(AddOn)
-AddOn.DF = {}; AddOn.DF.profile = {}; AddOn.DF.global = {}; AddOn.privateVars = {}; AddOn.privateVars.profile = {}; -- Defaults
+AddOn.DF = {profile = {}, global = {}}; AddOn.privateVars = {profile = {}} -- Defaults
 AddOn.Options = {type = "group", name = AddOnName, args = {}}
+
+Engine[1] = AddOn
+Engine[2] = {}
+Engine[3] = AddOn.privateVars.profile
+Engine[4] = AddOn.DF.profile
+Engine[5] = AddOn.DF.global
+_G[AddOnName] = Engine
+
+do
+	AddOn.Libs = {}
+	AddOn.LibsMinor = {}
+	function AddOn:AddLib(name, major, minor)
+		if not name then return end
+
+		-- in this case: `major` is the lib table and `minor` is the minor version
+		if type(major) == 'table' and type(minor) == 'number' then
+			self.Libs[name], self.LibsMinor[name] = major, minor
+		else -- in this case: `major` is the lib name and `minor` is the silent switch
+			self.Libs[name], self.LibsMinor[name] = _G.LibStub(major, minor)
+		end
+	end
+
+	AddOn:AddLib('AceAddon', AceAddon, AceAddonMinor)
+	AddOn:AddLib('AceDB', 'AceDB-3.0')
+	AddOn:AddLib('EP', 'LibElvUIPlugin-1.0')
+	AddOn:AddLib('LSM', 'LibSharedMedia-3.0')
+	AddOn:AddLib('ACL', 'AceLocale-3.0-ElvUI')
+	AddOn:AddLib('LAB', 'LibActionButton-1.0-ElvUI')
+	AddOn:AddLib('LDB', 'LibDataBroker-1.1')
+	AddOn:AddLib('DualSpec', 'LibDualSpec-1.0')
+	AddOn:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
+	AddOn:AddLib('SpellRange', 'SpellRange-1.0')
+	AddOn:AddLib('ButtonGlow', 'LibButtonGlow-1.0', true)
+	AddOn:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
+	AddOn:AddLib('Compress', 'LibCompress')
+	AddOn:AddLib('Base64', 'LibBase64-1.0-ElvUI')
+	AddOn:AddLib('Masque', 'Masque', true)
+	AddOn:AddLib('Translit', 'LibTranslit-1.0')
+	-- added on ElvUI_OptionsUI load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
+
+	-- backwards compatible for plugins
+	AddOn.LSM = AddOn.Libs.LSM
+	AddOn.Masque = AddOn.Libs.Masque
+end
 
 AddOn.oUF = Engine.oUF
 AddOn.ActionBars = AddOn:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0')
@@ -74,49 +111,6 @@ AddOn.Tooltip = AddOn:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent
 AddOn.TotemBar = AddOn:NewModule('Totems','AceEvent-3.0')
 AddOn.UnitFrames = AddOn:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
 AddOn.WorldMap = AddOn:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-
-Engine[1] = AddOn
-Engine[2] = {}
-Engine[3] = AddOn.privateVars.profile
-Engine[4] = AddOn.DF.profile
-Engine[5] = AddOn.DF.global
-
-_G[AddOnName] = Engine
-
-AddOn.Libs = {}
-AddOn.LibsMinor = {}
-function AddOn:AddLib(name, major, minor)
-	if not name then return end
-
-	-- in this case: `major` is the lib table and `minor` is the minor version
-	if type(major) == 'table' and type(minor) == 'number' then
-		self.Libs[name], self.LibsMinor[name] = major, minor
-	else -- in this case: `major` is the lib name and `minor` is the silent switch
-		self.Libs[name], self.LibsMinor[name] = _G.LibStub(major, minor)
-	end
-end
-
-AddOn:AddLib('AceAddon', AceAddon, AceAddonMinor)
-AddOn:AddLib('AceDB', 'AceDB-3.0')
-AddOn:AddLib('EP', 'LibElvUIPlugin-1.0')
-AddOn:AddLib('LSM', 'LibSharedMedia-3.0')
-AddOn:AddLib('ACL', 'AceLocale-3.0-ElvUI')
-AddOn:AddLib('LAB', 'LibActionButton-1.0-ElvUI')
-AddOn:AddLib('LDB', 'LibDataBroker-1.1')
-AddOn:AddLib('DualSpec', 'LibDualSpec-1.0')
-AddOn:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
-AddOn:AddLib('SpellRange', 'SpellRange-1.0')
-AddOn:AddLib('ButtonGlow', 'LibButtonGlow-1.0', true)
-AddOn:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
-AddOn:AddLib('Compress', 'LibCompress')
-AddOn:AddLib('Base64', 'LibBase64-1.0-ElvUI')
-AddOn:AddLib('Masque', 'Masque', true)
-AddOn:AddLib('Translit', 'LibTranslit-1.0')
--- added on ElvUI_OptionsUI load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
-
--- backwards compatible for plugins
-AddOn.LSM = AddOn.Libs.LSM
-AddOn.Masque = AddOn.Libs.Masque
 
 function AddOn:ScanTooltipTextures(clean, grabTextures)
 	local essenceTextureID, textures, essences = 2975691
