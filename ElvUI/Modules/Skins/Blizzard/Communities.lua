@@ -28,21 +28,6 @@ local function UpdateNames(self)
 	end
 end
 
--- Maybe deprecated. Blizzards changes the Community Code every 3 builds -.-
-local function HandleRoleChecks(button, ...)
-	button:StripTextures()
-	button:DisableDrawLayer("ARTWORK")
-	button:DisableDrawLayer("OVERLAY")
-
-	button.bg = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
-	button.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	button.bg:SetTexCoord(...)
-	button.bg:Point("CENTER")
-	button.bg:Size(40)
-	button.bg:SetAlpha(0.6)
-	S:HandleCheckBox(button.CheckBox)
-end
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Communities ~= true then return end
 
@@ -169,10 +154,6 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.GuildFinderFrame.FindAGuildButton)
 	--S:HandleDropDownBox(CommunitiesFrame.GuildFinderFrame.OptionsList.ClubFocusDropdown)
 	--S:HandleDropDownBox(CommunitiesFrame.GuildFinderFrame.OptionsList.ClubSizeDropdown)
-
-	--HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.TankRoleFrame, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-	--HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.HealerRoleFrame, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-	--HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.DpsRoleFrame, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
 
 	--S:HandleEditBox(CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox)
 	--CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
