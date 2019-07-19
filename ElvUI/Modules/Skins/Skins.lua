@@ -1335,16 +1335,16 @@ function S:AddCallback(eventName, loadFunc)
 	E.RegisterCallback(E, eventName, loadFunc)
 end
 
+local ACE_GUI, ACE_TOOLTIP = 38, 76
 function S:SkinAce3()
-	local AceGUI = E.Libs.AceGUI
-	if not AceGUI then AceGUI = _G.LibStub('AceGUI-3.0', true) end
-	if AceGUI and not AceGUI.ElvUISkinned then S:HookAce3(AceGUI) end
+	local lib, minor = E.Libs.AceGUI, E.LibsMinor.AceGUI
+	if not lib then lib, minor = _G.LibStub('AceGUI-3.0', true) end
+	if (lib and minor == ACE_GUI) and not lib.ElvUISkinned then S:HookAce3(lib) end
 
-	local EACD = E.Libs.AceConfigDialog
-	if EACD and not EACD.ElvUISkinned then S:Ace3_SkinTooltip(EACD) end
-
-	local ACD = _G.LibStub('AceConfigDialog-3.0', true)
-	if ACD and not ACD.ElvUISkinned then S:Ace3_SkinTooltip(ACD) end
+	lib, minor = E.Libs.AceConfigDialog, E.LibsMinor.AceConfigDialog
+	if (lib and minor == ACE_TOOLTIP) and not lib.ElvUISkinned then S:Ace3_SkinTooltip(lib) end
+	lib, minor = _G.LibStub('AceConfigDialog-3.0', true)
+	if (lib and minor == ACE_TOOLTIP) and not lib.ElvUISkinned then S:Ace3_SkinTooltip(lib) end
 end
 
 function S:Initialize()

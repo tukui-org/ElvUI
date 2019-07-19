@@ -1,10 +1,12 @@
 local E = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local AddOnName, Engine = ...
+local D = E:GetModule("Distributor")
 
+local _, Engine = ...
 Engine[1] = {}
 Engine[2] = E.Libs.ACL:GetLocale("ElvUI", E.global.general.locale or "enUS")
-
 local C, L = Engine[1], Engine[2]
+
+local _G, format, sort, tinsert = _G, format, sort, tinsert
 
 C.Values = {
 	FontFlags = {
@@ -15,16 +17,11 @@ C.Values = {
 	}
 }
 
-local D = E:GetModule("Distributor")
-local format = format
-local sort, tinsert = sort, tinsert
-
-local _G = _G
-E.Libs.AceGUI = _G.LibStub("AceGUI-3.0")
-E.Libs.AceConfig = _G.LibStub("AceConfig-3.0-ElvUI")
-E.Libs.AceConfigDialog = _G.LibStub("AceConfigDialog-3.0-ElvUI")
-E.Libs.AceConfigRegistry = _G.LibStub("AceConfigRegistry-3.0-ElvUI")
-E.Libs.AceDBOptions = _G.LibStub("AceDBOptions-3.0")
+E:AddLib('AceGUI', 'AceGUI-3.0')
+E:AddLib('AceConfig', 'AceConfig-3.0-ElvUI')
+E:AddLib('AceConfigDialog', 'AceConfigDialog-3.0-ElvUI')
+E:AddLib('AceConfigRegistry', 'AceConfigRegistry-3.0-ElvUI')
+E:AddLib('AceDBOptions', 'AceDBOptions-3.0')
 
 local UnitName = UnitName
 local UnitExists = UnitExists
