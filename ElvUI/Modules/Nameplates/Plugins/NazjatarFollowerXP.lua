@@ -49,11 +49,9 @@ local function Update(self)
 	end
 
 	local npcID, questID = tonumber(self.npcID), NeededQuestIDs[E.myfaction]
-	local shouldDisplay =
-		(questID and IsQuestFlaggedCompleted(questID)) and
-		(npcID and
-			((NPCIDToWidgetIDMap[npcID] and self.unit and UnitIsOwnerOrControllerOfUnit("player", self.unit)) or
-				CampfireNPCIDToWidgetIDMap[npcID]))
+	local hasQuestCompleted = questID and IsQuestFlaggedCompleted(questID)
+	local isProperNPC = npcID and (NPCIDToWidgetIDMap[npcID] and self.unit and UnitIsOwnerOrControllerOfUnit("player", self.unit)) or CampfireNPCIDToWidgetIDMap[npcID]
+	local shouldDisplay = hasQuestCompleted and isProperNPC
 	if (not shouldDisplay) then
 		element:Hide()
 		if element.Rank then
