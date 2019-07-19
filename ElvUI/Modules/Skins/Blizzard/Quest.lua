@@ -17,6 +17,13 @@ local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
 
+local PlusButtonIDs = {
+	[130835] = 'interface/buttons/ui-plusbutton-disabled.blp',
+	[130836] = 'interface/buttons/ui-plusbutton-down.blp',
+	[130837] = 'interface/buttons/ui-plusbutton-hilight.blp',
+	[130838] = 'interface/buttons/ui-plusbutton-up.blp'
+}
+
 local function HandleReward(frame)
 	if (not frame) then return end
 
@@ -346,7 +353,6 @@ local function LoadSkin()
 
 	-- Skin the +/- buttons in the QuestLog
 	hooksecurefunc("QuestLogQuests_Update", function()
-		local tex, texture
 		for i = 6, _G.QuestMapFrame.QuestsFrame.Contents:GetNumChildren() do
 			local child = select(i, _G.QuestMapFrame.QuestsFrame.Contents:GetChildren())
 			if child and child.ButtonText and not child.Text then
@@ -355,11 +361,13 @@ local function LoadSkin()
 					child.buttonSized = true
 				end
 
-				tex = select(2, child:GetRegions())
+				local tex = select(2, child:GetRegions())
 				if tex and tex.GetTexture then
-					texture = tex:GetTexture()
-					if texture then
-						if texture:find("PlusButton") then
+					local texture = tex:GetTexture()
+					local texType = type(texture)
+					if texType == 'number' or texType == 'string' then
+						if (texType == 'number' and PlusButtonIDs[texture])
+						or (texType == 'string' and texture:find("PlusButton")) then
 							tex:SetTexture(E.Media.Textures.PlusButton)
 						else
 							tex:SetTexture(E.Media.Textures.MinusButton)
