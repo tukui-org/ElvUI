@@ -9,7 +9,7 @@
 -- make into AceEvent.
 -- @class file
 -- @name AceEvent-3.0
--- @release $Id: AceEvent-3.0.lua 1202 2019-05-15 23:11:22Z nevcairiel $
+-- @release $Id$
 local CallbackHandler = LibStub("CallbackHandler-1.0")
 
 local MAJOR, MINOR = "AceEvent-3.0", 4

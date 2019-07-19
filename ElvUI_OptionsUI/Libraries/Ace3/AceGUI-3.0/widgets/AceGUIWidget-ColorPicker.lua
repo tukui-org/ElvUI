@@ -13,7 +13,7 @@ local CreateFrame, UIParent = CreateFrame, UIParent
 
 -- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
 -- List them here for Mikk's FindGlobals script
--- GLOBALS: ShowUIPanel, HideUIPanel, ColorPickerFrame, OpacitySliderFrame, ColorPPDefault
+-- GLOBALS: ColorPickerFrame, OpacitySliderFrame, ColorPPDefault
 
 --[[-----------------------------------------------------------------------------
 Support functions
@@ -23,9 +23,10 @@ local function ColorCallback(self, r, g, b, a, isAlpha)
 	-- which is caused when we set values into the color picker again on `OnValueChanged`
 	if ColorPickerFrame.noColorCallback then return end
 
-	if not self.HasAlpha then a = 1 end
+	if not self.HasAlpha then
+		a = 1
+	end
 	self:SetColor(r, g, b, a)
-
 	if ColorPickerFrame:IsVisible() then
 		--colorpicker is still open
 		self:Fire("OnValueChanged", r, g, b, a)
@@ -51,7 +52,6 @@ end
 
 local function ColorSwatch_OnClick(frame)
 	ColorPickerFrame:Hide()
-
 	local self = frame.obj
 	if not self.disabled then
 		ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
@@ -195,7 +195,6 @@ local function Constructor()
 		frame       = frame,
 		type        = Type
 	}
-
 	for method, func in pairs(methods) do
 		widget[method] = func
 	end

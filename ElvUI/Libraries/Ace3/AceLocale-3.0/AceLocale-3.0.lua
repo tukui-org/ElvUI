@@ -1,7 +1,7 @@
 --- **AceLocale-3.0** manages localization in addons, allowing for multiple locale to be registered with fallback to the base locale for untranslated strings.
 -- @class file
 -- @name AceLocale-3.0
--- @release $Id: AceLocale-3.0.lua 1035 2011-07-09 03:20:13Z kaelten $
+-- @release $Id$
 local MAJOR,MINOR = "AceLocale-3.0-ElvUI", 6
 
 local AceLocale, oldminor = LibStub:NewLibrary(MAJOR, MINOR)

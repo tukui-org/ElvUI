@@ -24,7 +24,7 @@
 -- f:AddChild(btn)
 -- @class file
 -- @name AceGUI-3.0
--- @release $Id: AceGUI-3.0.lua 1218 2019-07-15 08:29:52Z nevcairiel $
+-- @release $Id$
 local ACEGUI_MAJOR, ACEGUI_MINOR = "AceGUI-3.0", 38
 local AceGUI, oldminor = LibStub:NewLibrary(ACEGUI_MAJOR, ACEGUI_MINOR)
 

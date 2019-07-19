@@ -1,7 +1,7 @@
 --- AceConfigDialog-3.0 generates AceGUI-3.0 based windows based on option tables.
 -- @class file
 -- @name AceConfigDialog-3.0
--- @release $Id: AceConfigDialog-3.0.lua 1220 2019-07-18 16:47:58Z funkydude $
+-- @release $Id$
 
 local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
@@ -214,7 +214,7 @@ local function GetOptionsMemberValue(membername, option, options, path, appName,
 		info.uiType = "dialog"
 		info.uiName = MAJOR
 
-		local a,b,c,d,e,f,g,h -- ElvUI adds e,f,g,h for default color
+		local a, b, c, d, e, f, g, h -- ElvUI adds e,f,g,h for default color
 		--using 4 returns for the get of a color type, increase if a type needs more
 		if type(member) == "function" then
 			--Call the function
