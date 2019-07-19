@@ -1528,7 +1528,7 @@ function E:ResetUI(...)
 end
 
 function E:RegisterModule(name, loadFunc)
-	if loadFunc and type(loadFunc) == 'function' then --New method using callbacks
+	if loadFunc and type(loadFunc) == 'function' then
 		if self.initialized then
 			loadFunc()
 		else
@@ -1549,7 +1549,7 @@ function E:RegisterModule(name, loadFunc)
 end
 
 function E:RegisterInitialModule(name, loadFunc)
-	if loadFunc and type(loadFunc) == 'function' then --New method using callbacks
+	if loadFunc and type(loadFunc) == 'function' then
 		if self.InitialModuleCallbacks[name] then
 			--Don't allow a registered module name to be overwritten
 			E:Print('Invalid argument #1 to E:RegisterInitialModule (module name:', name, 'is already registered, please use a unique name)')
