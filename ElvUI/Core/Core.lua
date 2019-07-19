@@ -33,7 +33,7 @@ local Masque = E.Libs.Masque
 --Lua functions
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local assert, type, pcall, date, print = assert, type, pcall, date, print
+local assert, type, date, print = assert, type, date, print
 local twipe, tinsert, tremove, next = wipe, tinsert, tremove, next
 local gsub, strmatch, strjoin = gsub, strmatch, strjoin
 local format, find, strrep, len, sub = format, strfind, strrep, strlen, strsub
