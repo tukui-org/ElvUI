@@ -1246,9 +1246,7 @@ function S:ADDON_LOADED(_, addon)
 		if not S.Lib_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('Lib') end -- NoTaint_UIDropDownMenu
 	end
 
-	if not S.SkinnedAce3 or not S.StyledAce3 then
-		S:SkinAce3()
-	end
+	S:SkinAce3()
 
 	if self.allowBypass[addon] then
 		if self.addonsToLoad[addon] then
