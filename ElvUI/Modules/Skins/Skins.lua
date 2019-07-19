@@ -1244,9 +1244,7 @@ function S:ADDON_LOADED(_, addon)
 		if not S.Lib_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('Lib') end -- NoTaint_UIDropDownMenu
 	end
 
-	if not S.SkinnedAce3 then
-		S:SkinAce3()
-	end
+	S:SkinAce3()
 
 	if self.allowBypass[addon] then
 		if self.addonCallbacks[addon] then
@@ -1340,25 +1338,20 @@ end
 function S:SkinAce3()
 	local AceGUI = E.Libs.AceGUI
 	if not AceGUI then AceGUI = _G.LibStub('AceGUI-3.0', true) end
-	if (AceGUI and not S.SkinnedGUI) and (AceGUI.RegisterAsContainer ~= S.Ace3_RegisterAsContainer or AceGUI.RegisterAsWidget ~= S.Ace3_RegisterAsWidget) then
-		S.SkinnedGUI = S:HookAce3(AceGUI)
-	end
+	if AceGUI and not AceGUI.ElvUISkinned then S:HookAce3(AceGUI) end
 
 	local EACD = E.Libs.AceConfigDialog
-	if EACD and not S.SkinnedEACD then S.SkinnedEACD = S:Ace3_SkinTooltip(EACD) end
+	if EACD and not EACD.ElvUISkinned then S:Ace3_SkinTooltip(EACD) end
 
 	local ACD = _G.LibStub('AceConfigDialog-3.0', true)
-	if ACD and not S.SkinnedACD then S.SkinnedACD = S:Ace3_SkinTooltip(ACD, true) end
-
-	-- AceGUI and our Tooltip and original Tooltip is skinned
-	if S.SkinnedGUI and S.SkinnedEACD and S.SkinnedACD then
-		S.SkinnedAce3 = true
-	end
+	if ACD and not ACD.ElvUISkinned then S:Ace3_SkinTooltip(ACD, true) end
 end
 
 function S:Initialize()
 	self.Initialized = true
 	self.db = E.private.skins
+
+	S:SkinAce3()
 
 	--Fire events for Blizzard addons that are already loaded
 	for addon in pairs(self.addonCallbacks) do
@@ -1377,8 +1370,6 @@ function S:Initialize()
 		self.nonAddonCallbacks.CallPriority[index] = nil
 		E.callbacks:Fire(event)
 	end
-
-	S:SkinAce3()
 
 	hooksecurefunc("TriStateCheckbox_SetState", function(_, checkButton)
 		if checkButton.forceSaturation then

@@ -360,7 +360,7 @@ function S:Ace3_StyleTooltip()
 end
 
 function S:Ace3_SkinTooltip(lib) -- lib: AceConfigDialog or AceGUI
-	if not lib then return end
+	if not lib or lib.ElvUISkinned then return end
 
 	if lib.tooltip then
 		S:SecureHookScript(lib.tooltip, 'OnShow', S.Ace3_StyleTooltip)
@@ -373,21 +373,27 @@ function S:Ace3_SkinTooltip(lib) -- lib: AceConfigDialog or AceGUI
 		S:HandleButton(lib.popup.cancel, true)
 	end
 
-	return true
+	lib.ElvUISkinned = true
 end
 
 function S:HookAce3(lib) -- lib: AceGUI
-	if not lib then return end
+	if not lib or lib.ElvUISkinned then return end
 
-	S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
+	if not S.Ace3_L then
+		S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
+	end
 
-	oldRegisterAsWidget = lib.RegisterAsWidget
-	lib.RegisterAsWidget = S.Ace3_RegisterAsWidget
+	if lib.RegisterAsWidget ~= S.Ace3_RegisterAsWidget then
+		oldRegisterAsWidget = lib.RegisterAsWidget
+		lib.RegisterAsWidget = S.Ace3_RegisterAsWidget
+	end
 
-	oldRegisterAsContainer = lib.RegisterAsContainer
-	lib.RegisterAsContainer = S.Ace3_RegisterAsContainer
+	if lib.RegisterAsContainer ~= S.Ace3_RegisterAsContainer then
+		oldRegisterAsContainer = lib.RegisterAsContainer
+		lib.RegisterAsContainer = S.Ace3_RegisterAsContainer
+	end
 
 	S:Ace3_SkinTooltip(lib)
 
-	return true
+	lib.ElvUISkinned = true
 end
