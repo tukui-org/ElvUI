@@ -360,7 +360,7 @@ function S:Ace3_StyleTooltip()
 end
 
 function S:Ace3_SkinDialog(ACD)
-	if not ACD then return end
+	if S.StyledAce3 or not ACD then return end
 
 	-- Skin Ace Tooltip and StaticPopup
 	if ACD.tooltip then
@@ -378,7 +378,7 @@ function S:Ace3_SkinDialog(ACD)
 end
 
 function S:HookAce3(AceGUI)
-	if not AceGUI then return end
+	if S.SkinnedAce3 or not AceGUI then return end
 
 	S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
 
