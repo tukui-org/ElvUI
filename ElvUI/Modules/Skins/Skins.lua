@@ -1337,8 +1337,7 @@ end
 
 local ACEGUI_MINOR, ACETOOLTIP_MINOR = 38, 76
 function S:SkinAce3()
-	local lib, minor = E.Libs.AceGUI, E.LibsMinor.AceGUI
-	if not lib then lib, minor = _G.LibStub('AceGUI-3.0', true) end
+	local lib, minor = _G.LibStub('AceGUI-3.0', true)
 	if lib and minor == ACEGUI_MINOR then S:HookAce3(lib) end
 
 	lib, minor = E.Libs.AceConfigDialog, E.LibsMinor.AceConfigDialog
