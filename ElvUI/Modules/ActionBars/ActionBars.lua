@@ -826,7 +826,7 @@ function AB:DisableBlizzard()
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 
 	for _, frame in pairs({"MainMenuBar", "StanceBarFrame", "PossessBarFrame", "PETACTIONBAR_YPOS", "MULTICASTACTIONBAR_YPOS", 	"MultiBarBottomLeft", "MultiBarBottomRight", "MultiCastActionBarFrame", "ExtraActionBarFrame"}) do
-		UIPARENT_MANAGED_FRAME_POSITIONS[frame] = nil
+		_G.UIPARENT_MANAGED_FRAME_POSITIONS[frame] = nil
 	end
 
 	if _G.PlayerTalentFrame then
