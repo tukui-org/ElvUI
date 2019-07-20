@@ -64,9 +64,7 @@ local function LoadSkin()
 	BattlefieldMapFrame.ScrollContainer:HookScript("OnMouseUp", function(_, btn)
 		if btn == "LeftButton" then
 			BattlefieldMapTab:StopMovingOrSizing()
-			if not _G.BattlefieldMapOptions.position then
-				_G.BattlefieldMapOptions.position = {}
-			end
+			if not _G.BattlefieldMapOptions.position then _G.BattlefieldMapOptions.position = {} end
 			_G.BattlefieldMapOptions.position.x, _G.BattlefieldMapOptions.position.y = BattlefieldMapTab:GetCenter()
 		elseif btn == "RightButton" then
 			_G.UIDropDownMenu_Initialize(BattlefieldMapTab.OptionsDropDown, InitializeOptionsDropDown, "MENU")
