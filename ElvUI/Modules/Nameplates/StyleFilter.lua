@@ -515,8 +515,10 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if HealthColorChanged then
 		frame.HealthColorChanged = nil
-		frame.Health:SetStatusBarColor(frame.Health.r, frame.Health.g, frame.Health.b)
-		frame.Cutaway.Health:SetStatusBarColor(frame.Health.r * 1.5, frame.Health.g * 1.5, frame.Health.b * 1.5, 1)
+		if frame.Health.r and frame.Health.g and frame.Health.b then
+			frame.Health:SetStatusBarColor(frame.Health.r, frame.Health.g, frame.Health.b)
+			frame.Cutaway.Health:SetStatusBarColor(frame.Health.r * 1.5, frame.Health.g * 1.5, frame.Health.b * 1.5, 1)
+		end
 	end
 	if PowerColorChanged then
 		frame.PowerColorChanged = nil
