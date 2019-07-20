@@ -1023,9 +1023,6 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	local frameName = frameNameOverride or frame:GetName() --We need override in case Blizzard fucks up the naming (guild bank)
 	local scrollFrame = _G[frameName.."ScrollFrame"]
 	local editBox = _G[frameName.."EditBox"]
-	-- We handle the skin in the files for now. (???)
-	--local okayButton = _G[frameName.."OkayButton"] or _G[frameName.."Okay"]
-	--local cancelButton = _G[frameName.."CancelButton"] or _G[frameName.."Cancel"]
 
 	frame:StripTextures()
 	frame.BorderBox:StripTextures()
@@ -1036,23 +1033,20 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	frame:Height(frame:GetHeight() + 10)
 	scrollFrame:Height(scrollFrame:GetHeight() + 10)
 
-	--S:HandleButton(okayButton)
-	--S:HandleButton(CancelButton)
-	--S:HandleEditBox(editBox)
-
-	--cancelButton:ClearAllPoints()
-	--cancelButton:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -5, 5)
-
 	for i = 1, numIcons do
 		local button = _G[buttonNameTemplate..i]
-		local icon = _G[button:GetName().."Icon"]
-		button:StripTextures()
-		button:SetTemplate()
-		button:StyleButton(true)
+		if button then
+			button:StripTextures()
+			button:SetTemplate()
+			button:StyleButton(true)
 
-		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:Point("TOPLEFT", E.mult, -E.mult)
-		icon:Point("BOTTOMRIGHT", -E.mult, E.mult)
+			local icon = _G[buttonNameTemplate..i.."Icon"]
+			if icon then
+				icon:SetTexCoord(unpack(E.TexCoords))
+				icon:Point("TOPLEFT", E.mult, -E.mult)
+				icon:Point("BOTTOMRIGHT", -E.mult, E.mult)
+			end
+		end
 	end
 end
 
