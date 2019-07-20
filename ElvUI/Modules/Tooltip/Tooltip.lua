@@ -204,12 +204,18 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 	local color
 	if UnitIsPlayer(unit) then
 		local localeClass, class = UnitClass(unit)
+		if not localeClass or not class then return end
+
 		local name, realm = UnitName(unit)
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
 		local pvpName = UnitPVPName(unit)
-		local relationship = UnitRealmRelationship(unit);
-		if not localeClass or not class then return; end
+		local relationship = UnitRealmRelationship(unit)
+
 		color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]
+
+		if not color then
+			color = _G.RAID_CLASS_COLORS.PRIEST
+		end
 
 		if self.db.playerTitles and pvpName then
 			name = pvpName
@@ -265,7 +271,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 				if role == "HEALER" then
 					role, r, g, b = L["Healer"], 0, 1, .59
 				elseif role == "TANK" then
-					role, r, g, b = TANK, .16, .31, .61
+					role, r, g, b = _G.TANK, .16, .31, .61
 				elseif role == "DAMAGER" then
 					role, r, g, b = L["DPS"], .77, .12, .24
 				end
@@ -285,6 +291,10 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 			else
 				color = _G.FACTION_BAR_COLORS[unitReaction]
 			end
+		end
+
+		if not color then
+			color = _G.RAID_CLASS_COLORS.PRIEST
 		end
 
 		local levelLine = self:GetLevelLine(tt, 2)
@@ -322,7 +332,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		end
 	end
 
-	return color or _G.RAID_CLASS_COLORS.PRIEST
+	return color
 end
 
 local inspectGUIDCache = {}
