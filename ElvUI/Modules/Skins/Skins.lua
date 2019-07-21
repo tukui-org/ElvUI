@@ -1241,29 +1241,16 @@ function S:ADDON_LOADED(_, addon)
 
 	S:SkinAce3()
 
-	if self.allowBypass[addon] then
-		if self.addonsToLoad[addon] then
-			--Load addons using the old deprecated register method
-			xpcall(self.addonsToLoad[addon], E.ErrorHandler)
-			self.addonsToLoad[addon] = nil
-		elseif self.addonCallbacks[addon] then
-			--Fire events to the skins that rely on this addon
-			for index, event in ipairs(self.addonCallbacks[addon].CallPriority) do
-				self.addonCallbacks[addon][event] = nil;
-				self.addonCallbacks[addon].CallPriority[index] = nil
-				E.callbacks:Fire(event)
-			end
-		end
-
-		return
-	elseif not E.initialized then
+	if not self.allowBypass[addon] and not E.initialized then
 		return
 	end
 
 	if self.addonsToLoad[addon] then
+		--Load addons using the old deprecated register method
 		xpcall(self.addonsToLoad[addon], E.ErrorHandler)
 		self.addonsToLoad[addon] = nil
 	elseif self.addonCallbacks[addon] then
+		--Fire events to the skins that rely on this addon
 		for index, event in ipairs(self.addonCallbacks[addon].CallPriority) do
 			self.addonCallbacks[addon][event] = nil;
 			self.addonCallbacks[addon].CallPriority[index] = nil
