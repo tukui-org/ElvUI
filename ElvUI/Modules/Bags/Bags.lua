@@ -2558,8 +2558,4 @@ function B:Initialize()
 	SetInsertItemsLeftToRight(E.db.bags.reverseLoot)
 end
 
-local function InitializeCallback()
-	B:Initialize()
-end
-
-E:RegisterModule(B:GetName(), InitializeCallback)
+E:RegisterModule(B:GetName())

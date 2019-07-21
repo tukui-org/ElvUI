@@ -872,8 +872,4 @@ function TT:Initialize()
 	keybindFrame = ElvUI_KeyBinder
 end
 
-local function InitializeCallback()
-	TT:Initialize()
-end
-
-E:RegisterModule(TT:GetName(), InitializeCallback)
+E:RegisterModule(TT:GetName())

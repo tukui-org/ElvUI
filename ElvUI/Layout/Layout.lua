@@ -517,8 +517,4 @@ function LO:CreateMinimapPanels()
 	DT:RegisterPanel(f, 1, 'ANCHOR_BOTTOMRIGHT', 0, -10)
 end
 
-local function InitializeCallback()
-	LO:Initialize()
-end
-
-E:RegisterModule(LO:GetName(), InitializeCallback)
+E:RegisterModule(LO:GetName())

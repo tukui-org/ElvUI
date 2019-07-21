@@ -1522,8 +1522,4 @@ function UF:Initialize()
 	self:UpdateRangeCheckSpells()
 end
 
-local function InitializeCallback()
-	UF:Initialize()
-end
-
-E:RegisterInitialModule(UF:GetName(), InitializeCallback)
+E:RegisterInitialModule(UF:GetName())

@@ -2812,8 +2812,4 @@ function CH:SetChatHeadOrientation(position)
 	end
 end
 
-local function InitializeCallback()
-	CH:Initialize()
-end
-
-E:RegisterModule(CH:GetName(), InitializeCallback)
+E:RegisterModule(CH:GetName())
