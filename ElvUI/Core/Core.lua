@@ -1529,39 +1529,47 @@ function E:ErrorHandler() -- self is arg1 `err`
 	return _G.geterrorhandler()(self)
 end
 
-function E:CallLoadedModule(name, silent, object, index)
+function E:CallLoadFunc(func, ...)
+	xpcall(func, E.ErrorHandler, ...)
+end
+
+function E:CallLoadedModule(obj, silent, object, index)
+	local name, func = unpack(obj)
 	local module = name and self:GetModule(name, silent)
-	if module and module.Initialize then
-		xpcall(function() module:Initialize() end, E.ErrorHandler)
-		if object and index then object[index] = nil end
-	-- remove this after TODO: loadFunc arg is done
-	else
-		print('xpcall temp warn:', name)
-	-- end comment
+
+	if not module then return end
+	if type(func) == 'string' then
+		E:CallLoadFunc(module[func], module)
+	elseif type(func) == 'function' then
+		E:CallLoadFunc(func, module)
+	elseif module.Initialize then
+		E:CallLoadFunc(module.Initialize, module)
 	end
+
+	if object and index then object[index] = nil end
 end
 
-function E:RegisterInitialModule(name, loadFunc) -- TODO: loadFunc accept function or string
-	self.RegisteredInitialModules[#self.RegisteredInitialModules + 1] = name
+function E:RegisterInitialModule(name, func)
+	self.RegisteredInitialModules[#self.RegisteredInitialModules + 1] = {name, func}
 end
 
-function E:RegisterModule(name, loadFunc) -- TODO: loadFunc accept function or string
+function E:RegisterModule(name, func)
 	if self.initialized then
-		E:CallLoadedModule(name)
+		E:CallLoadedModule({name, func})
 	else
-		self.RegisteredModules[#self.RegisteredModules + 1] = name
+		self.RegisteredModules[#self.RegisteredModules + 1] = {name, func}
 	end
 end
 
 function E:InitializeInitialModules()
-	for index, name in ipairs(E.RegisteredInitialModules) do
-		E:CallLoadedModule(name, true, E.RegisteredInitialModules, index)
+	for index, object in ipairs(E.RegisteredInitialModules) do
+		E:CallLoadedModule(object, true, E.RegisteredInitialModules, index)
 	end
 end
 
 function E:InitializeModules()
-	for index, name in pairs(E.RegisteredModules) do
-		E:CallLoadedModule(name, true, E.RegisteredModules, index)
+	for index, object in pairs(E.RegisteredModules) do
+		E:CallLoadedModule(object, true, E.RegisteredModules, index)
 	end
 end
 
