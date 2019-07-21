@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
+local tinsert, xpcall, wipe, geterrorhandler = tinsert, xpcall, wipe, geterrorhandler
 local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
@@ -1232,6 +1233,10 @@ function S:SkinWidgetContainer(widgetContainer)
 	end
 end
 
+local function errorhandler(err)
+	return geterrorhandler()(err)
+end
+
 function S:ADDON_LOADED(_, addon)
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
 		if not S.L_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('L') end -- LibUIDropDownMenu
@@ -1243,7 +1248,7 @@ function S:ADDON_LOADED(_, addon)
 	if self.allowBypass[addon] then
 		if self.addonsToLoad[addon] then
 			--Load addons using the old deprecated register method
-			self.addonsToLoad[addon]()
+			xpcall(self.addonsToLoad[addon], errorhandler)
 			self.addonsToLoad[addon] = nil
 		elseif self.addonCallbacks[addon] then
 			--Fire events to the skins that rely on this addon
@@ -1259,7 +1264,7 @@ function S:ADDON_LOADED(_, addon)
 	if not E.initialized then return end
 
 	if self.addonsToLoad[addon] then
-		self.addonsToLoad[addon]()
+		xpcall(self.addonsToLoad[addon], errorhandler)
 		self.addonsToLoad[addon] = nil
 	elseif self.addonCallbacks[addon] then
 		for index, event in ipairs(self.addonCallbacks[addon].CallPriority) do
@@ -1385,19 +1390,13 @@ function S:Initialize()
 	--Old deprecated load functions. We keep this for the time being in case plugins make use of it.
 	for addon, loadFunc in pairs(self.addonsToLoad) do
 		if IsAddOnLoaded(addon) then
-			self.addonsToLoad[addon] = nil;
-			local _, catch = pcall(loadFunc)
-			if catch and GetCVarBool('scriptErrors') then
-				_G.ScriptErrorsFrame:OnError(catch, false, false)
-			end
+			self.addonsToLoad[addon] = nil
+			xpcall(loadFunc, errorhandler)
 		end
 	end
 
 	for _, loadFunc in pairs(self.nonAddonsToLoad) do
-		local _, catch = pcall(loadFunc)
-		if catch and GetCVarBool('scriptErrors') then
-			_G.ScriptErrorsFrame:OnError(catch, false, false)
-		end
+		xpcall(loadFunc, errorhandler)
 	end
 
 	wipe(self.nonAddonsToLoad)
