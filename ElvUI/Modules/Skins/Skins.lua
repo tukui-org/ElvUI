@@ -1390,8 +1390,8 @@ function S:Initialize()
 	--Old deprecated load functions. We keep this for the time being in case plugins make use of it.
 	for addon, loadFunc in pairs(self.addonsToLoad) do
 		if IsAddOnLoaded(addon) then
-			self.addonsToLoad[addon] = nil
 			xpcall(loadFunc, errorhandler)
+			self.addonsToLoad[addon] = nil
 		end
 	end
 
