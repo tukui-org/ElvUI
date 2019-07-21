@@ -1530,13 +1530,12 @@ function E:ErrorHandler() -- self is arg1 `err`
 end
 
 function E:CallLoadedModule(name, silent, object, index)
-	local module = (type(name) == 'string' and self:GetModule(name, silent)) or name
-
+	local module = name and self:GetModule(name, silent)
 	if module and module.Initialize then
 		xpcall(function() module:Initialize() end, E.ErrorHandler)
 		if object and index then object[index] = nil end
 	-- remove this after TODO: loadFunc arg is done
-	elseif type(name) == 'string' then
+	else
 		print('xpcall temp warn:', name)
 	-- end comment
 	end
