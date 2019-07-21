@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 --Lua functions
 local _G = _G
 local format = format
-local tinsert = tinsert
+local tinsert, strmatch = tinsert, strmatch
 local select, tonumber = select, tonumber
 local next, max, wipe = next, max, wipe
 local utf8sub = string.utf8sub
@@ -19,6 +19,7 @@ local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
 -- GLOBALS: ElvUI_ScanTooltipTextLeft1
 
 local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
+local MATCH_ITEM_LEVEL_ALT = ITEM_LEVEL_ALT:gsub('%%d(%s?)%(%%d%)', '%%d+%1%%((%%d+)%%)')
 local MATCH_ENCHANT = ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.+)')
 local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 	INVTYPE_2HWEAPON = true,
@@ -31,8 +32,8 @@ local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 function E:InspectGearSlot(line, lineText, enchantText, enchantColors, iLvl, itemLevelColors)
 	local lr, lg, lb = line:GetTextColor()
 	local tr, tg, tb = ElvUI_ScanTooltipTextLeft1:GetTextColor()
-	local itemLevel = lineText and lineText:match(MATCH_ITEM_LEVEL)
-	local enchant = lineText:match(MATCH_ENCHANT)
+	local itemLevel = lineText and (strmatch(lineText, MATCH_ITEM_LEVEL_ALT) or strmatch(lineText, MATCH_ITEM_LEVEL))
+	local enchant = strmatch(lineText, MATCH_ENCHANT)
 	if enchant then
 		enchantText = utf8sub(enchant, 1, 18)
 		enchantColors = {lr, lg, lb}
@@ -76,7 +77,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 			local line = _G["ElvUI_ScanTooltipTextLeft"..x]
 			if line then
 				local lineText = line:GetText()
-				local itemLevel = lineText and lineText:match(MATCH_ITEM_LEVEL)
+				local itemLevel = lineText and (strmatch(lineText, MATCH_ITEM_LEVEL_ALT) or strmatch(lineText, MATCH_ITEM_LEVEL))
 				if itemLevel then
 					iLvl = tonumber(itemLevel)
 				end
