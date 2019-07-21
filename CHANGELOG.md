@@ -5,7 +5,11 @@ Added Player Can Attack and Player Can Not Attack unit conditions to Nameplate S
 
 **Bug Fixes:**  
 Fixed Essences on Hearth of Azeroth showing incorrectly on the character page (similar to gems).  
+Fixed Item Level showing incorrectly on the character page when in a gear scaled instance.  
 Fixed issue which caused the 'Smaller World Map' to not be displayed correctly on initial login.  
+Fixed Minimap Ping & Blizzard Tracking Menu to show in combat (right and middle is still ignored in combat).  
+Fixed the displaying of incorrect auras on Nameplates when StyleFilter "Name Only" ended (returning to normal nameplate).  
+Fixed Battleground map position saving. (#831)  
 
 **Misc. Changes:**  
 
