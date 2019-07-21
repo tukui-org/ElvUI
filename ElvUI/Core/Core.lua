@@ -1529,8 +1529,9 @@ function E:ResetUI(...)
 	self:ResetMovers(...)
 end
 
-function E:ErrorHandler(err)
-	return _G.geterrorhandler()(err)
+function E:ErrorHandler()
+	-- self is arg1 `err`
+	return _G.geterrorhandler()(self)
 end
 
 function E:RegisterModule(name, loadFunc)
