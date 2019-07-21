@@ -1534,13 +1534,14 @@ function E:CallLoadFunc(func, ...)
 end
 
 function E:CallLoadedModule(obj, silent, object, index)
-	local name, func = unpack(obj)
+	local name, func
+	if type(obj) == 'table' then name, func = unpack(obj) else name = obj end
 	local module = name and self:GetModule(name, silent)
 
 	if not module then return end
-	if type(func) == 'string' then
+	if func and type(func) == 'string' then
 		E:CallLoadFunc(module[func], module)
-	elseif type(func) == 'function' then
+	elseif func and type(func) == 'function' then
 		E:CallLoadFunc(func, module)
 	elseif module.Initialize then
 		E:CallLoadFunc(module.Initialize, module)
@@ -1550,14 +1551,14 @@ function E:CallLoadedModule(obj, silent, object, index)
 end
 
 function E:RegisterInitialModule(name, func)
-	self.RegisteredInitialModules[#self.RegisteredInitialModules + 1] = {name, func}
+	self.RegisteredInitialModules[#self.RegisteredInitialModules + 1] = (func and {name, func}) or name
 end
 
 function E:RegisterModule(name, func)
 	if self.initialized then
-		E:CallLoadedModule({name, func})
+		E:CallLoadedModule((func and {name, func}) or name)
 	else
-		self.RegisteredModules[#self.RegisteredModules + 1] = {name, func}
+		self.RegisteredModules[#self.RegisteredModules + 1] = (func and {name, func}) or name
 	end
 end
 
