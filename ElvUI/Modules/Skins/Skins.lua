@@ -1391,11 +1391,10 @@ function S:Initialize()
 		end
 	end
 
-	for _, loadFunc in pairs(self.nonAddonsToLoad) do
+	for index, loadFunc in ipairs(self.nonAddonsToLoad) do
 		xpcall(loadFunc, E.ErrorHandler)
+		self.nonAddonsToLoad[index] = nil
 	end
-
-	wipe(self.nonAddonsToLoad)
 
 	hooksecurefunc("TriStateCheckbox_SetState", function(_, checkButton)
 		if checkButton.forceSaturation then
