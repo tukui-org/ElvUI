@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local tinsert, xpcall, wipe, geterrorhandler = tinsert, xpcall, wipe, geterrorhandler
+local tinsert, xpcall, wipe = tinsert, xpcall, wipe
 local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
@@ -1233,10 +1233,6 @@ function S:SkinWidgetContainer(widgetContainer)
 	end
 end
 
-local function errorhandler(err)
-	return geterrorhandler()(err)
-end
-
 function S:ADDON_LOADED(_, addon)
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
 		if not S.L_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('L') end -- LibUIDropDownMenu
@@ -1248,7 +1244,7 @@ function S:ADDON_LOADED(_, addon)
 	if self.allowBypass[addon] then
 		if self.addonsToLoad[addon] then
 			--Load addons using the old deprecated register method
-			xpcall(self.addonsToLoad[addon], errorhandler)
+			xpcall(self.addonsToLoad[addon], E.ErrorHandler)
 			self.addonsToLoad[addon] = nil
 		elseif self.addonCallbacks[addon] then
 			--Fire events to the skins that rely on this addon
@@ -1264,7 +1260,7 @@ function S:ADDON_LOADED(_, addon)
 	if not E.initialized then return end
 
 	if self.addonsToLoad[addon] then
-		xpcall(self.addonsToLoad[addon], errorhandler)
+		xpcall(self.addonsToLoad[addon], E.ErrorHandler)
 		self.addonsToLoad[addon] = nil
 	elseif self.addonCallbacks[addon] then
 		for index, event in ipairs(self.addonCallbacks[addon].CallPriority) do
@@ -1282,7 +1278,7 @@ function S:RegisterSkin(name, loadFunc, forceLoad, bypass)
 	end
 
 	if forceLoad then
-		xpcall(loadFunc, errorhandler)
+		xpcall(loadFunc, E.ErrorHandler)
 		self.addonsToLoad[name] = nil
 	elseif name == 'ElvUI' then
 		tinsert(self.nonAddonsToLoad, loadFunc)
@@ -1390,13 +1386,13 @@ function S:Initialize()
 	--Old deprecated load functions. We keep this for the time being in case plugins make use of it.
 	for addon, loadFunc in pairs(self.addonsToLoad) do
 		if IsAddOnLoaded(addon) then
-			xpcall(loadFunc, errorhandler)
+			xpcall(loadFunc, E.ErrorHandler)
 			self.addonsToLoad[addon] = nil
 		end
 	end
 
 	for _, loadFunc in pairs(self.nonAddonsToLoad) do
-		xpcall(loadFunc, errorhandler)
+		xpcall(loadFunc, E.ErrorHandler)
 	end
 
 	wipe(self.nonAddonsToLoad)

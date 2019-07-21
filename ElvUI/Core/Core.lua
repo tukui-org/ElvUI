@@ -33,7 +33,7 @@ local Masque = E.Libs.Masque
 --Lua functions
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local assert, type, pcall, date, print = assert, type, pcall, date, print
+local assert, type, xpcall, date, print = assert, type, xpcall, date, print
 local twipe, tinsert, tremove, next = wipe, tinsert, tremove, next
 local gsub, strmatch, strjoin = gsub, strmatch, strjoin
 local format, find, strrep, len, sub = format, strfind, strrep, strlen, strsub
@@ -1529,9 +1529,8 @@ function E:ResetUI(...)
 	self:ResetMovers(...)
 end
 
-
-local function errorhandler(err)
-	return geterrorhandler()(err)
+function E:ErrorHandler(err)
+	return _G.geterrorhandler()(err)
 end
 
 function E:RegisterModule(name, loadFunc)
@@ -1556,7 +1555,7 @@ function E:RegisterModule(name, loadFunc)
 		if self.initialized then
 			local module = self:GetModule(name)
 			if module and module.Initialize then
-				xpcall(function() module:Initialize() end, errorhandler)
+				xpcall(function() module:Initialize() end, E.ErrorHandler)
 			end
 		else
 			self.RegisteredModules[#self.RegisteredModules + 1] = name
@@ -1594,7 +1593,7 @@ function E:InitializeInitialModules()
 	for _, module in pairs(E.RegisteredInitialModules) do
 		module = self:GetModule(module, true)
 		if module and module.Initialize then
-			xpcall(function() module:Initialize() end, errorhandler)
+			xpcall(function() module:Initialize() end, E.ErrorHandler)
 		end
 	end
 end
@@ -1615,7 +1614,7 @@ function E:InitializeModules()
 	for _, module in pairs(E.RegisteredModules) do
 		module = self:GetModule(module)
 		if module.Initialize then
-			xpcall(function() module:Initialize() end, errorhandler)
+			xpcall(function() module:Initialize() end, E.ErrorHandler)
 		end
 	end
 end
