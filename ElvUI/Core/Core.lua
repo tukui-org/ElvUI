@@ -1529,6 +1529,11 @@ function E:ResetUI(...)
 	self:ResetMovers(...)
 end
 
+
+local function errorhandler(err)
+	return geterrorhandler()(err)
+end
+
 function E:RegisterModule(name, loadFunc)
 	if loadFunc and type(loadFunc) == 'function' then
 		if self.initialized then
@@ -1549,7 +1554,10 @@ function E:RegisterModule(name, loadFunc)
 		end
 	else
 		if self.initialized then
-			self:GetModule(name):Initialize()
+			local module = self:GetModule(name)
+			if module and module.Initialize then
+				xpcall(function() module:Initialize() end, errorhandler)
+			end
 		else
 			self.RegisteredModules[#self.RegisteredModules + 1] = name
 		end
@@ -1583,14 +1591,10 @@ function E:InitializeInitialModules()
 		E.callbacks:Fire(moduleName)
 	end
 
-	--Old deprecated initialize method, we keep it for any plugins that may need it
 	for _, module in pairs(E.RegisteredInitialModules) do
 		module = self:GetModule(module, true)
 		if module and module.Initialize then
-			local _, catch = pcall(module.Initialize, module)
-			if catch and GetCVarBool('scriptErrors') == true then
-				_G.ScriptErrorsFrame:OnError(catch, false, false)
-			end
+			xpcall(function() module:Initialize() end, errorhandler)
 		end
 	end
 end
@@ -1608,15 +1612,10 @@ function E:InitializeModules()
 		E.callbacks:Fire(moduleName)
 	end
 
-	--Old deprecated initialize method, we keep it for any plugins that may need it
 	for _, module in pairs(E.RegisteredModules) do
 		module = self:GetModule(module)
 		if module.Initialize then
-			local _, catch = pcall(module.Initialize, module)
-
-			if catch and GetCVarBool('scriptErrors') == true then
-				_G.ScriptErrorsFrame:OnError(catch, false, false)
-			end
+			xpcall(function() module:Initialize() end, errorhandler)
 		end
 	end
 end
