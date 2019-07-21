@@ -1282,12 +1282,12 @@ function S:RegisterSkin(name, loadFunc, forceLoad, bypass)
 	end
 
 	if forceLoad then
-		loadFunc()
-		self.addonsToLoad[name] = nil;
+		xpcall(loadFunc, errorhandler)
+		self.addonsToLoad[name] = nil
 	elseif name == 'ElvUI' then
 		tinsert(self.nonAddonsToLoad, loadFunc)
 	else
-		self.addonsToLoad[name] = loadFunc;
+		self.addonsToLoad[name] = loadFunc
 	end
 end
 
