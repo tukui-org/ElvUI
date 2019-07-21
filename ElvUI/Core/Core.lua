@@ -92,8 +92,6 @@ E.texts = {}
 E.snapBars = {}
 E.RegisteredModules = {}
 E.RegisteredInitialModules = {}
-E.ModuleCallbacks = {['CallPriority'] = {}}
-E.InitialModuleCallbacks = {['CallPriority'] = {}}
 E.valueColorUpdateFuncs = {}
 E.TexCoords = {.08, .92, .08, .92}
 E.FrameLocks = {}
@@ -421,9 +419,7 @@ end
 --Update font/texture paths when they are registered by the addon providing them
 --This helps fix most of the issues with fonts or textures reverting to default because the addon providing them is loading after ElvUI.
 --We use a wrapper to avoid errors in :UpdateMedia because "self" is passed to the function with a value other than ElvUI.
-local function LSMCallback()
-	E:UpdateMedia()
-end
+local function LSMCallback() E:UpdateMedia() end
 LSM.RegisterCallback(E, 'LibSharedMedia_Registered', LSMCallback)
 
 local MasqueGroupState = {}
@@ -1533,90 +1529,49 @@ function E:ErrorHandler() -- self is arg1 `err`
 	return _G.geterrorhandler()(self)
 end
 
-function E:RegisterModule(name, loadFunc)
-	if (loadFunc and type(loadFunc) == 'function') then --New method using callbacks
-		if self.initialized then
-			xpcall(loadFunc, E.ErrorHandler)
-		else
-			if self.ModuleCallbacks[name] then
-				--Don't allow a registered module name to be overwritten
-				E:Print('Invalid argument #1 to E:RegisterModule (module name:', name, 'is already registered, please use a unique name)')
-				return
-			end
+function E:CallLoadedModule(name, silent, object, index)
+	local module
+	if type(name) == 'string' then
+		module = self:GetModule(name, silent)
+	end
 
-			--Add module name to registry
-			self.ModuleCallbacks[name] = true
-			self.ModuleCallbacks.CallPriority[#self.ModuleCallbacks.CallPriority + 1] = name
-
-			--Register loadFunc to be called when event is fired
-			E:RegisterCallback(name, loadFunc, E:GetModule(name))
-		end
-	else
-		if self.initialized then
-			local module = self:GetModule(name)
-			if module and module.Initialize then
-				xpcall(function() module:Initialize() end, E.ErrorHandler)
-			end
-		else
-			self.RegisteredModules[#self.RegisteredModules + 1] = name
-		end
+	if module and module.Initialize then
+		xpcall(function() module:Initialize() end, E.ErrorHandler)
+		if object and index then object[index] = nil end
+	-- remove this after TODO: loadFunc arg is done
+	elseif module then
+		print('xpcall temp warn:', name)
+	-- end comment
 	end
 end
 
-function E:RegisterInitialModule(name, loadFunc)
-	if (loadFunc and type(loadFunc) == 'function') then --New method using callbacks
-		if self.InitialModuleCallbacks[name] then
-			--Don't allow a registered module name to be overwritten
-			E:Print('Invalid argument #1 to E:RegisterInitialModule (module name:', name, 'is already registered, please use a unique name)')
-			return
-		end
+function E:RegisterInitialModule(name, loadFunc) -- TODO: loadFunc accept function or string
+	self.RegisteredInitialModules[#self.RegisteredInitialModules + 1] = name
+end
 
-		--Add module name to registry
-		self.InitialModuleCallbacks[name] = true
-		self.InitialModuleCallbacks.CallPriority[#self.InitialModuleCallbacks.CallPriority + 1] = name
-
-		--Register loadFunc to be called when event is fired
-		E:RegisterCallback(name, loadFunc, E:GetModule(name))
+function E:RegisterModule(name, loadFunc) -- TODO: loadFunc accept function or string
+	if self.initialized then
+		E:CallLoadedModule(name)
 	else
-		self.RegisteredInitialModules[#self.RegisteredInitialModules + 1] = name
+		self.RegisteredModules[#self.RegisteredModules + 1] = name
 	end
 end
 
 function E:InitializeInitialModules()
-	--Fire callbacks for any module using the new system
-	for index, moduleName in ipairs(self.InitialModuleCallbacks.CallPriority) do
-		self.InitialModuleCallbacks[moduleName] = nil
-		self.InitialModuleCallbacks.CallPriority[index] = nil
-		E.callbacks:Fire(moduleName)
+	for index, name in ipairs(E.RegisteredInitialModules) do
+		E:CallLoadedModule(name, true, E.RegisteredInitialModules, index)
 	end
+end
 
-	for _, module in pairs(E.RegisteredInitialModules) do
-		module = self:GetModule(module, true)
-		if module and module.Initialize then
-			xpcall(function() module:Initialize() end, E.ErrorHandler)
-		end
+function E:InitializeModules()
+	for index, name in pairs(E.RegisteredModules) do
+		E:CallLoadedModule(name, true, E.RegisteredModules, index)
 	end
 end
 
 function E:RefreshModulesDB()
 	twipe(UnitFrames.db)
 	UnitFrames.db = self.db.unitframe
-end
-
-function E:InitializeModules()
-	--Fire callbacks for any module using the new system
-	for index, moduleName in ipairs(self.ModuleCallbacks.CallPriority) do
-		self.ModuleCallbacks[moduleName] = nil
-		self.ModuleCallbacks.CallPriority[index] = nil
-		E.callbacks:Fire(moduleName)
-	end
-
-	for _, module in pairs(E.RegisteredModules) do
-		module = self:GetModule(module)
-		if module.Initialize then
-			xpcall(function() module:Initialize() end, E.ErrorHandler)
-		end
-	end
 end
 
 function E:DBConversions()
