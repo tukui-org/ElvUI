@@ -1536,7 +1536,7 @@ end
 function E:RegisterModule(name, loadFunc)
 	if (loadFunc and type(loadFunc) == 'function') then --New method using callbacks
 		if self.initialized then
-			loadFunc()
+			xpcall(loadFunc, E.ErrorHandler)
 		else
 			if self.ModuleCallbacks[name] then
 				--Don't allow a registered module name to be overwritten
