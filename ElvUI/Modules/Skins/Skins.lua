@@ -9,6 +9,8 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
+S.addonsToLoad = {}
+S.nonAddonsToLoad = {}
 S.allowBypass = {}
 S.addonCallbacks = {}
 S.nonAddonCallbacks = {["CallPriority"] = {}}
@@ -1239,7 +1241,11 @@ function S:ADDON_LOADED(_, addon)
 	S:SkinAce3()
 
 	if self.allowBypass[addon] then
-		if self.addonCallbacks[addon] then
+		if self.addonsToLoad[addon] then
+			--Load addons using the old deprecated register method
+			self.addonsToLoad[addon]()
+			self.addonsToLoad[addon] = nil
+		elseif self.addonCallbacks[addon] then
 			--Fire events to the skins that rely on this addon
 			for index, event in ipairs(self.addonCallbacks[addon].CallPriority) do
 				self.addonCallbacks[addon][event] = nil;
@@ -1252,12 +1258,31 @@ function S:ADDON_LOADED(_, addon)
 
 	if not E.initialized then return end
 
-	if self.addonCallbacks[addon] then
+	if self.addonsToLoad[addon] then
+		self.addonsToLoad[addon]()
+		self.addonsToLoad[addon] = nil
+	elseif self.addonCallbacks[addon] then
 		for index, event in ipairs(self.addonCallbacks[addon].CallPriority) do
 			self.addonCallbacks[addon][event] = nil;
 			self.addonCallbacks[addon].CallPriority[index] = nil
 			E.callbacks:Fire(event)
 		end
+	end
+end
+
+--Old deprecated register function. Keep it for the time being for any plugins that may need it.
+function S:RegisterSkin(name, loadFunc, forceLoad, bypass)
+	if bypass then
+		self.allowBypass[name] = true;
+	end
+
+	if forceLoad then
+		loadFunc()
+		self.addonsToLoad[name] = nil;
+	elseif name == 'ElvUI' then
+		tinsert(self.nonAddonsToLoad, loadFunc)
+	else
+		self.addonsToLoad[name] = loadFunc;
 	end
 end
 
@@ -1356,6 +1381,26 @@ function S:Initialize()
 		self.nonAddonCallbacks.CallPriority[index] = nil
 		E.callbacks:Fire(event)
 	end
+
+	--Old deprecated load functions. We keep this for the time being in case plugins make use of it.
+	for addon, loadFunc in pairs(self.addonsToLoad) do
+		if IsAddOnLoaded(addon) then
+			self.addonsToLoad[addon] = nil;
+			local _, catch = pcall(loadFunc)
+			if catch and GetCVarBool('scriptErrors') then
+				_G.ScriptErrorsFrame:OnError(catch, false, false)
+			end
+		end
+	end
+
+	for _, loadFunc in pairs(self.nonAddonsToLoad) do
+		local _, catch = pcall(loadFunc)
+		if catch and GetCVarBool('scriptErrors') then
+			_G.ScriptErrorsFrame:OnError(catch, false, false)
+		end
+	end
+
+	wipe(self.nonAddonsToLoad)
 
 	hooksecurefunc("TriStateCheckbox_SetState", function(_, checkButton)
 		if checkButton.forceSaturation then
