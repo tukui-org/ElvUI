@@ -1254,10 +1254,11 @@ function S:ADDON_LOADED(_, addon)
 				E.callbacks:Fire(event)
 			end
 		end
+
+		return
+	elseif not E.initialized then
 		return
 	end
-
-	if not E.initialized then return end
 
 	if self.addonsToLoad[addon] then
 		xpcall(self.addonsToLoad[addon], E.ErrorHandler)
@@ -1274,7 +1275,7 @@ end
 --Old deprecated register function. Keep it for the time being for any plugins that may need it.
 function S:RegisterSkin(name, loadFunc, forceLoad, bypass)
 	if bypass then
-		self.allowBypass[name] = true;
+		self.allowBypass[name] = true
 	end
 
 	if forceLoad then
@@ -1292,6 +1293,9 @@ end
 function S:AddCallbackForAddon(addonName, eventName, loadFunc, forceLoad, bypass)
 	if not addonName or type(addonName) ~= "string" then
 		E:Print("Invalid argument #1 to S:AddCallbackForAddon (string expected)")
+		return
+	elseif eventName == 'CallPriority' then
+		E:Print("Invalid argument #2 to S:AddCallbackForAddon ('CallPriority' is not allowed)")
 		return
 	elseif not eventName or type(eventName) ~= "string" then
 		E:Print("Invalid argument #2 to S:AddCallbackForAddon (string expected)")
@@ -1331,7 +1335,10 @@ end
 --Add callback for skin that does not rely on a another addon.
 --These events will be fired when the Skins module is initialized.
 function S:AddCallback(eventName, loadFunc)
-	if not eventName or type(eventName) ~= "string" then
+	if eventName == 'CallPriority' then
+		E:Print("Invalid argument #1 to S:AddCallback ('CallPriority' is not allowed)")
+		return
+	elseif not eventName or type(eventName) ~= "string" then
 		E:Print("Invalid argument #1 to S:AddCallback (string expected)")
 		return
 	elseif not loadFunc or type(loadFunc) ~= "function" then
