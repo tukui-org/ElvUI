@@ -59,6 +59,6 @@ function UF:Configure_Cutaway(frame)
 		power.enabled = db.cutaway.power.enabled
 		power.lengthBeforeFade = db.cutaway.power.lengthBeforeFade
 		power.fadeOutTime = db.cutaway.power.fadeOutTime
-		frame.Power:PostUpdateColor(frame.unit)
+		frame.Power:PostUpdateColor()
 	end
 end
