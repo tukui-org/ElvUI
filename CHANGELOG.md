@@ -2,6 +2,7 @@
 
 **New Additions:**  
 Added Player Can Attack and Player Can Not Attack unit conditions to Nameplate Style Filters.  
+Added Cutaway Health and Power (when appropriate) to all of the unitframes.  It is disabled by default.  
 
 **Bug Fixes:**  
 Fixed Essences on Hearth of Azeroth showing incorrectly on the character page (similar to gems).  
@@ -12,6 +13,8 @@ Fixed the displaying of incorrect auras on Nameplates when StyleFilter "Name Onl
 Fixed Battleground map position saving. (#831)  
 
 **Misc. Changes:**  
+Module initialization and skin registration is now handled by xpcall providing better debug stacks for us to investigate and fix problems.  As such, directly using :Initialize to initialize modules is no longer deprecated,
+and S:RegisterSkin has returned as the preferred method for registering a skin.  
 
 ___
 ### Version 11.18 [ July 9th 2019 ]
