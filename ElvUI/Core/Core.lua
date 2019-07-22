@@ -1525,11 +1525,9 @@ function E:ResetUI(...)
 	self:ResetMovers(...)
 end
 
-function E:ErrorHandler() -- self is arg1 `err`
-	return _G.geterrorhandler()(self)
+local function errorhandler(err)
+	return _G.geterrorhandler()(err)
 end
-
-local errorhandler = E.ErrorHandler
 
 function E:CallLoadFunc(func, ...)
 	xpcall(func, errorhandler, ...)

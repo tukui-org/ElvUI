@@ -3,14 +3,12 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local tinsert, xpcall, wipe = tinsert, xpcall, wipe
+local tinsert, xpcall = tinsert, xpcall
 local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-
-local errorhandler = E.ErrorHandler
 
 S.allowBypass = {}
 S.addonsToLoad = {}
@@ -1231,6 +1229,10 @@ function S:SkinWidgetContainer(widgetContainer)
 			S[S.WidgetSkinningFuncs[child.widgetType]](S, child)
 		end
 	end
+end
+
+local function errorhandler(err)
+	return _G.geterrorhandler()(err)
 end
 
 function S:CallLoadedAddon(addonName, object)
