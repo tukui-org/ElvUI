@@ -34,7 +34,7 @@ local function fadeClosure(element)
 	if not E then
 		E = ElvUI[1]
 	end
-	E:UIFrameFadeOut(element, element.fadeOutTime, 1, 0)
+	E:UIFrameFadeOut(element, element.fadeOutTime, element.__parentElement:GetAlpha(), 0)
 end
 
 local function Health_PreUpdate(self, unit)
@@ -131,6 +131,7 @@ local function Enable(self)
 			element.Health.fadeOutTime = element.Health.fadeOutTime or 0.6
 			element.Health:SetMinMaxValues(0, 1)
 			element.Health:SetValue(0)
+			element.Health.__parentElement = self.Health
 			element.Health:Show()
 
 			if not element.Health.hasCutawayHook then
@@ -163,6 +164,7 @@ local function Enable(self)
 			element.Power.fadeOutTime = element.Power.fadeOutTime or 0.6
 			element.Power:SetMinMaxValues(0, 1)
 			element.Power:SetValue(0)
+			element.Power.__parentElement = self.Power
 			element.Power:Show()
 
 			if not element.Power.hasCutawayHook then
