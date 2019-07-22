@@ -6,14 +6,14 @@ function UF:Construct_Cutaway(frame)
 
 	local cutawayHealth = CreateFrame("StatusBar", nil, frame.Health)
 	cutawayHealth:SetStatusBarTexture(E.media.blankTex)
-	cutawayHealth:SetFrameLevel(9)
+	cutawayHealth:SetFrameLevel(10)
 	cutawayHealth:SetAllPoints(frame.Health)
 
 	local cutawayPower
 	if frame.Power then
 		cutawayPower = CreateFrame("StatusBar", nil, frame.Power)
 		cutawayPower:SetStatusBarTexture(E.media.blankTex)
-		cutawayPower:SetFrameLevel(frame.Power:GetFrameLevel() - 1)
+		cutawayPower:SetFrameLevel(frame.Power:GetFrameLevel())
 		cutawayPower:SetAllPoints()
 	end
 
@@ -55,7 +55,7 @@ function UF:Configure_Cutaway(frame)
 			power:SetReverseFill(false)
 		end
 
-		power:SetFrameLevel(frame.Power:GetFrameLevel() - 1)
+		power:SetFrameLevel(frame.Power:GetFrameLevel())
 		power.enabled = db.cutaway.power.enabled
 		power.lengthBeforeFade = db.cutaway.power.lengthBeforeFade
 		power.fadeOutTime = db.cutaway.power.fadeOutTime
