@@ -96,7 +96,6 @@ local function Update(self)
 
 	if (element.Rank) then
 		element.Rank:SetText(rank)
-		element.Rank:SetShown(nrank < MAX_RANK)
 	end
 
 	if element.ProgressText then
