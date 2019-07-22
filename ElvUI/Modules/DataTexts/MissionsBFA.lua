@@ -206,7 +206,7 @@ local function OnEnter(self, _, noUpdate)
 			local npcName, widgetID = unpack(widgetGroup[i])
 			local rank, cur, next = GetBodyguardXP(widgetID)
 			if npcName and rank then
-				if rank == NAZJATAR_BODYGUARD_MAX_RANK then
+				if tonumber(rank) == NAZJATAR_BODYGUARD_MAX_RANK then
 					DT.tooltip:AddDoubleLine(npcName, L["Max Rank"])
 				else
 					DT.tooltip:AddDoubleLine(npcName, BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, next), 1, 1, 1)

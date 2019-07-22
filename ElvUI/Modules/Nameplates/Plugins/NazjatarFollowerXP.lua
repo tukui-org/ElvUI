@@ -86,20 +86,21 @@ local function Update(self)
 		return
 	end
 
-	if rank == MAX_RANK then
+	local nrank = tonumber(rank)
+	if nrank == MAX_RANK then
 		element:SetMinMaxValues(0, 1)
 	else
 		element:SetMinMaxValues(0, next)
 	end
-	element:SetValue(rank == MAX_RANK and 1 or cur)
+	element:SetValue(nrank == MAX_RANK and 1 or cur)
 
 	if (element.Rank) then
 		element.Rank:SetText(rank)
-		element.Rank:SetShown(rank < MAX_RANK)
+		element.Rank:SetShown(nrank < MAX_RANK)
 	end
 
 	if element.ProgressText then
-		if rank == MAX_RANK then
+		if nrank == MAX_RANK then
 			element.ProgressText:SetText(L["Max Rank"])
 		else
 			element.ProgressText:SetText(("%d / %d"):format(cur, next))
