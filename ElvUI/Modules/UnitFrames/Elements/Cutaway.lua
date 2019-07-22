@@ -45,7 +45,7 @@ function UF:Configure_Cutaway(frame)
 		health.enabled = db.cutaway.health.enabled
 		health.lengthBeforeFade = db.cutaway.health.lengthBeforeFade
 		health.fadeOutTime = db.cutaway.health.fadeOutTime
-		frame.Health:PostUpdateColor()
+		frame.Health:PostUpdateColor(frame.unit)
 	end
 
 	if power and frame.USE_POWERBAR then
@@ -59,6 +59,6 @@ function UF:Configure_Cutaway(frame)
 		power.enabled = db.cutaway.power.enabled
 		power.lengthBeforeFade = db.cutaway.power.lengthBeforeFade
 		power.fadeOutTime = db.cutaway.power.fadeOutTime
-		frame.Power:PostUpdateColor()
+		frame.Power:PostUpdateColor(frame.unit)
 	end
 end
