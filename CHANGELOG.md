@@ -1,4 +1,4 @@
-### Version 11.19 [  ]
+### Version 11.19 [ July 22nd 2019 ]
 
 **New Additions:**  
 Added Player Can Attack and Player Can Not Attack unit conditions to Nameplate Style Filters.  
