@@ -192,6 +192,7 @@ L["Loss Control Icon"] = "Иконка потери контроля"
 L["lvl"] = "ур."
 L["MA Frames"] = "Помощники"
 L["Main Hand"] = "Правая рука"
+L["Max Rank"] = true
 L["Micro Bar"] = "Микроменю"
 L["Minimap"] = "Миникарта"
 L["MirrorTimer"] = "Таймер"

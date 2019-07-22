@@ -192,6 +192,7 @@ L["Loss Control Icon"] = "失去控制圖示"
 L["lvl"] = "等級"
 L["MA Frames"] = "主助理框架"
 L["Main Hand"] = "主手"
+L["Max Rank"] = true
 L["Micro Bar"] = "微型系統菜單"
 L["Minimap"] = "小地圖"
 L["MirrorTimer"] = "鏡像計時器"

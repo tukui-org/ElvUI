@@ -192,6 +192,7 @@ L["Loss Control Icon"] = "Kontrollverlustsymbol"
 L["lvl"] = "lvl"
 L["MA Frames"] = "MA-Fenster"
 L["Main Hand"] = "Waffenhand"
+L["Max Rank"] = true
 L["Micro Bar"] = "Mikroleiste"
 L["Minimap"] = "Minimap"
 L["MirrorTimer"] = "Spiegel Zeitgeber"

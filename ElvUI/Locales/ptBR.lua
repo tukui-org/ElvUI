@@ -192,6 +192,7 @@ L["Loss Control Icon"] = "Ícone de Perda de Controle"
 L["lvl"] = "nível"
 L["MA Frames"] = "Quadro do Assistente Principal"
 L["Main Hand"] = "Mão Principal"
+L["Max Rank"] = true
 L["Micro Bar"] = "Micro Barra"
 L["Minimap"] = "Minimapa"
 L["MirrorTimer"] = true

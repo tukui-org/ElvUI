@@ -192,6 +192,7 @@ L["Loss Control Icon"] = "Icono de Pérdida de Control"
 L["lvl"] = "Niv"
 L["MA Frames"] = "Marcos de AP"
 L["Main Hand"] = "Mano Derecha"
+L["Max Rank"] = true
 L["Micro Bar"] = "Micro Barra"
 L["Minimap"] = "Minimapa"
 L["MirrorTimer"] = true

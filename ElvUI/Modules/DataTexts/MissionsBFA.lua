@@ -57,6 +57,7 @@ local WARRESOURCES_CURRENCY = 1560
 local WARRESOURCES_ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(WARRESOURCES_CURRENCY)))
 local BODYGUARD_LEVEL_XP_FORMAT = L["Rank"] .. " %d (%d/%d)"
 local NAZJATAR_MAP_ID = 1355
+local NAZJATAR_BODYGUARD_MAX_RANK = 30
 
 local lastPanel
 
@@ -205,7 +206,11 @@ local function OnEnter(self, _, noUpdate)
 			local npcName, widgetID = unpack(widgetGroup[i])
 			local rank, cur, next = GetBodyguardXP(widgetID)
 			if npcName and rank then
-				DT.tooltip:AddDoubleLine(npcName, BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, next), 1, 1, 1)
+				if rank == NAZJATAR_BODYGUARD_MAX_RANK then
+					DT.tooltip:AddDoubleLine(npcName, L["Max Rank"])
+				else
+					DT.tooltip:AddDoubleLine(npcName, BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, next), 1, 1, 1)
+				end
 			end
 		end
 		hasNazjatarBodyguardXP = true

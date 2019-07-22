@@ -192,6 +192,7 @@ L["Loss Control Icon"] = "Icône de la perte de contrôle"
 L["lvl"] = "niveau"
 L["MA Frames"] = "Cadres de l'assistant principal"
 L["Main Hand"] = "Main droite"
+L["Max Rank"] = true
 L["Micro Bar"] = "Micro Barre"
 L["Minimap"] = "Minicarte"
 L["MirrorTimer"] = "Timer mirroir"

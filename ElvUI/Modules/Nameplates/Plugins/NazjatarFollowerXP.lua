@@ -29,6 +29,8 @@ local NeededQuestIDs = {
 	["Alliance"] = 56156
 }
 
+local MAX_RANK = 30
+
 local function GetBodyguardXP(widgetID)
 	local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
 	if not widget then
@@ -84,16 +86,24 @@ local function Update(self)
 		return
 	end
 
-	element:SetMinMaxValues(0, next)
-	element:SetValue(cur)
+	if rank == MAX_RANK then
+		element:SetMinMaxValues(0, 1)
+	else
+		element:SetMinMaxValues(0, next)
+	end
+	element:SetValue(rank == MAX_RANK and 1 or cur)
 
 	if (element.Rank) then
 		element.Rank:SetText(rank)
-		element.Rank:Show()
+		element.Rank:SetShown(rank < MAX_RANK)
 	end
 
 	if element.ProgressText then
-		element.ProgressText:SetText(("%d / %d"):format(cur, next))
+		if rank == MAX_RANK then
+			element.ProgressText:SetText(L["Max Rank"])
+		else
+			element.ProgressText:SetText(("%d / %d"):format(cur, next))
+		end
 		element.ProgressText:Show()
 	end
 

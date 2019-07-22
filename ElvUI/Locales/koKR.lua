@@ -192,6 +192,7 @@ L["Loss Control Icon"] = "제어손실 표시"
 L["lvl"] = "레벨"
 L["MA Frames"] = "지원공격 전담 프레임"
 L["Main Hand"] = "주장비"
+L["Max Rank"] = true
 L["Micro Bar"] = "메뉴모음 바"
 L["Minimap"] = "미니맵"
 L["MirrorTimer"] = "미러 타이머"

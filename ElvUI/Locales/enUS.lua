@@ -192,6 +192,7 @@ L["Loss Control Icon"] = true
 L["lvl"] = true
 L["MA Frames"] = true
 L["Main Hand"] = true
+L["Max Rank"] = true
 L["Micro Bar"] = true
 L["Minimap"] = true
 L["MirrorTimer"] = true
