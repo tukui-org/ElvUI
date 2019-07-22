@@ -1571,7 +1571,7 @@ function E:InitializeInitialModules()
 end
 
 function E:InitializeModules()
-	for index, object in pairs(E.RegisteredModules) do
+	for index, object in ipairs(E.RegisteredModules) do
 		E:CallLoadedModule(object, true, E.RegisteredModules, index)
 	end
 end
