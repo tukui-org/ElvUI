@@ -2,7 +2,7 @@
 
 **New Additions:**  
 
-**Bug Fixes:**
+**Bug Fixes:**  
 
 **Misc. Changes:**  
 
