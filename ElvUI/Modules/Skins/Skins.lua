@@ -10,6 +10,8 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
+local errorhandler = E.ErrorHandler
+
 S.allowBypass = {}
 S.addonsToLoad = {}
 S.nonAddonsToLoad = {}
@@ -1234,10 +1236,10 @@ end
 function S:CallLoadedAddon(addonName, object)
 	if type(object) == 'table' then
 		for _, loadFunc in ipairs(object) do
-			xpcall(loadFunc, E.ErrorHandler)
+			xpcall(loadFunc, errorhandler)
 		end
 	else
-		xpcall(object, E.ErrorHandler)
+		xpcall(object, errorhandler)
 	end
 
 	self.addonsToLoad[addonName] = nil
@@ -1266,7 +1268,7 @@ function S:RegisterSkin(addonName, loadFunc, forceLoad, bypass)
 	end
 
 	if forceLoad then
-		xpcall(loadFunc, E.ErrorHandler)
+		xpcall(loadFunc, errorhandler)
 		self.addonsToLoad[addonName] = nil
 	elseif addonName == 'ElvUI' then
 		tinsert(self.nonAddonsToLoad, loadFunc)
@@ -1309,7 +1311,7 @@ function S:Initialize()
 	end
 
 	for index, loadFunc in ipairs(self.nonAddonsToLoad) do
-		xpcall(loadFunc, E.ErrorHandler)
+		xpcall(loadFunc, errorhandler)
 		self.nonAddonsToLoad[index] = nil
 	end
 

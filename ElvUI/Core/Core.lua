@@ -1529,8 +1529,10 @@ function E:ErrorHandler() -- self is arg1 `err`
 	return _G.geterrorhandler()(self)
 end
 
+local errorhandler = E.ErrorHandler
+
 function E:CallLoadFunc(func, ...)
-	xpcall(func, E.ErrorHandler, ...)
+	xpcall(func, errorhandler, ...)
 end
 
 function E:CallLoadedModule(obj, silent, object, index)
