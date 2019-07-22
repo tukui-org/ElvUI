@@ -3,17 +3,16 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
+local tinsert, xpcall, wipe = tinsert, xpcall, wipe
 local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
+S.allowBypass = {}
 S.addonsToLoad = {}
 S.nonAddonsToLoad = {}
-S.allowBypass = {}
-S.addonCallbacks = {}
-S.nonAddonCallbacks = {["CallPriority"] = {}}
 
 S.Blizzard = {}
 S.Blizzard.Regions = {
@@ -1232,7 +1231,19 @@ function S:SkinWidgetContainer(widgetContainer)
 	end
 end
 
-function S:ADDON_LOADED(_, addon)
+function S:CallLoadedAddon(addonName, object)
+	if type(object) == 'table' then
+		for _, loadFunc in ipairs(object) do
+			xpcall(loadFunc, E.ErrorHandler)
+		end
+	else
+		xpcall(object, E.ErrorHandler)
+	end
+
+	self.addonsToLoad[addonName] = nil
+end
+
+function S:ADDON_LOADED(_, addonName)
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
 		if not S.L_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('L') end -- LibUIDropDownMenu
 		if not S.Lib_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('Lib') end -- NoTaint_UIDropDownMenu
@@ -1240,116 +1251,43 @@ function S:ADDON_LOADED(_, addon)
 
 	S:SkinAce3()
 
-	if self.allowBypass[addon] then
-		if self.addonsToLoad[addon] then
-			--Load addons using the old deprecated register method
-			self.addonsToLoad[addon]()
-			self.addonsToLoad[addon] = nil
-		elseif self.addonCallbacks[addon] then
-			--Fire events to the skins that rely on this addon
-			for index, event in ipairs(self.addonCallbacks[addon].CallPriority) do
-				self.addonCallbacks[addon][event] = nil;
-				self.addonCallbacks[addon].CallPriority[index] = nil
-				E.callbacks:Fire(event)
-			end
-		end
+	if not self.allowBypass[addonName] and not E.initialized then
 		return
 	end
 
-	if not E.initialized then return end
-
-	if self.addonsToLoad[addon] then
-		self.addonsToLoad[addon]()
-		self.addonsToLoad[addon] = nil
-	elseif self.addonCallbacks[addon] then
-		for index, event in ipairs(self.addonCallbacks[addon].CallPriority) do
-			self.addonCallbacks[addon][event] = nil;
-			self.addonCallbacks[addon].CallPriority[index] = nil
-			E.callbacks:Fire(event)
-		end
+	if self.addonsToLoad[addonName] then
+		S:CallLoadedAddon(addonName, self.addonsToLoad[addonName])
 	end
 end
 
---Old deprecated register function. Keep it for the time being for any plugins that may need it.
-function S:RegisterSkin(name, loadFunc, forceLoad, bypass)
+function S:RegisterSkin(addonName, loadFunc, forceLoad, bypass)
 	if bypass then
-		self.allowBypass[name] = true;
+		self.allowBypass[addonName] = true
 	end
 
 	if forceLoad then
-		loadFunc()
-		self.addonsToLoad[name] = nil;
-	elseif name == 'ElvUI' then
+		xpcall(loadFunc, E.ErrorHandler)
+		self.addonsToLoad[addonName] = nil
+	elseif addonName == 'ElvUI' then
 		tinsert(self.nonAddonsToLoad, loadFunc)
 	else
-		self.addonsToLoad[name] = loadFunc;
+		local addon = self.addonsToLoad[addonName]
+		if type(addon) == 'function' then
+			self.addonsToLoad[addonName] = {addon, loadFunc}
+		elseif type(addon) == 'table' then
+			tinsert(self.addonsToLoad[addonName], loadFunc)
+		else
+			self.addonsToLoad[addonName] = loadFunc
+		end
 	end
 end
 
---Add callback for skin that relies on another addon.
---These events will be fired when the addon is loaded.
-function S:AddCallbackForAddon(addonName, eventName, loadFunc, forceLoad, bypass)
-	if not addonName or type(addonName) ~= "string" then
-		E:Print("Invalid argument #1 to S:AddCallbackForAddon (string expected)")
-		return
-	elseif not eventName or type(eventName) ~= "string" then
-		E:Print("Invalid argument #2 to S:AddCallbackForAddon (string expected)")
-		return
-	elseif not loadFunc or type(loadFunc) ~= "function" then
-		E:Print("Invalid argument #3 to S:AddCallbackForAddon (function expected)")
-		return
-	end
-
-	if bypass then
-		self.allowBypass[addonName] = true;
-	end
-
-	--Create an event registry for this addon, so that we can fire multiple events when this addon is loaded
-	if not self.addonCallbacks[addonName] then
-		self.addonCallbacks[addonName] = {["CallPriority"] = {}}
-	end
-
-	if self.addonCallbacks[addonName][eventName] or E.ModuleCallbacks[eventName] or E.InitialModuleCallbacks[eventName] then
-		--Don't allow a registered callback to be overwritten
-		E:Print("Invalid argument #2 to S:AddCallbackForAddon (event name:", eventName, "is already registered, please use a unique event name)")
-		return
-	end
-
-	--Register loadFunc to be called when event is fired
-	E.RegisterCallback(E, eventName, loadFunc)
-
-	if forceLoad then
-		E.callbacks:Fire(eventName)
-	else
-		--Insert eventName in this addons' registry
-		self.addonCallbacks[addonName][eventName] = true
-		self.addonCallbacks[addonName].CallPriority[#self.addonCallbacks[addonName].CallPriority + 1] = eventName
-	end
+function S:AddCallbackForAddon(addonName, _, loadFunc, forceLoad, bypass) -- arg2 `eventName` deprecated from RegisterSkin xpcall update
+	S:RegisterSkin(addonName, loadFunc, forceLoad, bypass)
 end
 
---Add callback for skin that does not rely on a another addon.
---These events will be fired when the Skins module is initialized.
-function S:AddCallback(eventName, loadFunc)
-	if not eventName or type(eventName) ~= "string" then
-		E:Print("Invalid argument #1 to S:AddCallback (string expected)")
-		return
-	elseif not loadFunc or type(loadFunc) ~= "function" then
-		E:Print("Invalid argument #2 to S:AddCallback (function expected)")
-		return
-	end
-
-	if self.nonAddonCallbacks[eventName] or E.ModuleCallbacks[eventName] or E.InitialModuleCallbacks[eventName] then
-		--Don't allow a registered callback to be overwritten
-		E:Print("Invalid argument #1 to S:AddCallback (event name:", eventName, "is already registered, please use a unique event name)")
-		return
-	end
-
-	--Add event name to registry
-	self.nonAddonCallbacks[eventName] = true
-	self.nonAddonCallbacks.CallPriority[#self.nonAddonCallbacks.CallPriority + 1] = eventName
-
-	--Register loadFunc to be called when event is fired
-	E.RegisterCallback(E, eventName, loadFunc)
+function S:AddCallback(_, loadFunc) -- arg1 `eventName` deprecated from RegisterSkin xpcall update
+	S:RegisterSkin('ElvUI', loadFunc)
 end
 
 function S:SkinAce3()
@@ -1364,43 +1302,16 @@ function S:Initialize()
 
 	S:SkinAce3()
 
-	--Fire events for Blizzard addons that are already loaded
-	for addon in pairs(self.addonCallbacks) do
-		if IsAddOnLoaded(addon) then
-			for index, event in ipairs(S.addonCallbacks[addon].CallPriority) do
-				self.addonCallbacks[addon][event] = nil;
-				self.addonCallbacks[addon].CallPriority[index] = nil
-				E.callbacks:Fire(event)
-			end
+	for addonName, object in pairs(self.addonsToLoad) do
+		if IsAddOnLoaded(addonName) then
+			S:CallLoadedAddon(addonName, object)
 		end
 	end
 
-	--Fire event for all skins that doesn't rely on a Blizzard addon
-	for index, event in ipairs(self.nonAddonCallbacks.CallPriority) do
-		self.nonAddonCallbacks[event] = nil;
-		self.nonAddonCallbacks.CallPriority[index] = nil
-		E.callbacks:Fire(event)
+	for index, loadFunc in ipairs(self.nonAddonsToLoad) do
+		xpcall(loadFunc, E.ErrorHandler)
+		self.nonAddonsToLoad[index] = nil
 	end
-
-	--Old deprecated load functions. We keep this for the time being in case plugins make use of it.
-	for addon, loadFunc in pairs(self.addonsToLoad) do
-		if IsAddOnLoaded(addon) then
-			self.addonsToLoad[addon] = nil;
-			local _, catch = pcall(loadFunc)
-			if catch and GetCVarBool('scriptErrors') then
-				_G.ScriptErrorsFrame:OnError(catch, false, false)
-			end
-		end
-	end
-
-	for _, loadFunc in pairs(self.nonAddonsToLoad) do
-		local _, catch = pcall(loadFunc)
-		if catch and GetCVarBool('scriptErrors') then
-			_G.ScriptErrorsFrame:OnError(catch, false, false)
-		end
-	end
-
-	wipe(self.nonAddonsToLoad)
 
 	hooksecurefunc("TriStateCheckbox_SetState", function(_, checkButton)
 		if checkButton.forceSaturation then
@@ -1416,9 +1327,4 @@ function S:Initialize()
 end
 
 S:RegisterEvent('ADDON_LOADED')
-
-local function InitializeCallback()
-	S:Initialize()
-end
-
-E:RegisterModule(S:GetName(), InitializeCallback)
+E:RegisterModule(S:GetName())

@@ -577,8 +577,4 @@ E.PopupDialogs.IMPORT_RL = {
 	preferredIndex = 3
 }
 
-local function InitializeCallback()
-	D:Initialize()
-end
-
-E:RegisterModule(D:GetName(), InitializeCallback)
+E:RegisterModule(D:GetName())

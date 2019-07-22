@@ -1189,8 +1189,4 @@ function AB:Initialize()
 	_G.SpellFlyout:HookScript("OnShow", AB.SetupFlyoutButton)
 end
 
-local function InitializeCallback()
-	AB:Initialize()
-end
-
-E:RegisterModule(AB:GetName(), InitializeCallback)
+E:RegisterModule(AB:GetName())

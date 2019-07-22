@@ -267,8 +267,4 @@ function MC:Initialize()
 	self.Initialized = true
 end
 
-local function InitializeCallback()
-	MC:Initialize()
-end
-
-E:RegisterModule(MC:GetName(), InitializeCallback)
+E:RegisterModule(MC:GetName())

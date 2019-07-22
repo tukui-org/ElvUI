@@ -356,8 +356,4 @@ function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onE
 	end
 end
 
-local function InitializeCallback()
-	DT:Initialize()
-end
-
-E:RegisterModule(DT:GetName(), InitializeCallback)
+E:RegisterModule(DT:GetName())

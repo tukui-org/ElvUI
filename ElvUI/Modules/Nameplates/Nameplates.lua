@@ -834,8 +834,4 @@ function NP:Initialize()
 	NP:ConfigureAll()
 end
 
-local function InitializeCallback()
-	NP:Initialize()
-end
-
-E:RegisterModule(NP:GetName(), InitializeCallback)
+E:RegisterModule(NP:GetName())

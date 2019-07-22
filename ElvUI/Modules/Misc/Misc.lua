@@ -292,8 +292,4 @@ function M:Initialize()
 	end
 end
 
-local function InitializeCallback()
-	M:Initialize()
-end
-
-E:RegisterModule(M:GetName(), InitializeCallback)
+E:RegisterModule(M:GetName())
