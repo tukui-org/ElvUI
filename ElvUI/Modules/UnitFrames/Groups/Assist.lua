@@ -27,6 +27,7 @@ function UF:Construct_AssistFrames()
 	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
 	self.Fader = UF:Construct_Fader()
+	self.Cutaway = UF:Construct_Cutaway(self)
 
 	if not self.isChild then
 		self.Buffs = UF:Construct_Buffs(self)
@@ -149,6 +150,9 @@ function UF:Update_AssistFrames(frame, db)
 	UF:Configure_Fader(frame)
 
 	UF:Configure_RaidIcon(frame)
+
+	--Cutaway
+	UF:Configure_Cutaway(frame)
 
 	if not frame.isChild then
 		--Auras

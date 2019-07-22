@@ -38,6 +38,7 @@ function UF:Construct_BossFrames(frame)
 	frame.AlternativePower = self:Construct_AltPowerBar(frame)
 	frame.ClassBar = "AlternativePower"
 	frame.Fader = self:Construct_Fader()
+	frame.Cutaway = self:Construct_Cutaway(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame:SetAttribute("type2", "focus")
@@ -130,6 +131,9 @@ function UF:Update_BossFrames(frame, db)
 
 	--Fader
 	UF:Configure_Fader(frame)
+
+	--Cutaway
+	UF:Configure_Cutaway(frame)
 
 	frame:ClearAllPoints()
 	if frame.index == 1 then

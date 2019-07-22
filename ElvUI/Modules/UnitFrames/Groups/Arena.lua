@@ -107,6 +107,8 @@ function UF:Construct_ArenaFrames(frame)
 		frame.PostUpdate = self.PostUpdateArenaFrame -- used to hide arena prep info
 	end
 
+	frame.Cutaway = self:Construct_Cutaway(frame)
+
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
 	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', L["Arena Frames"], nil, nil, nil, 'ALL,ARENA', nil, 'unitframe,arena,generalGroup')
 	frame.mover = ArenaHeader.mover
@@ -187,6 +189,9 @@ function UF:Update_ArenaFrames(frame, db)
 
 	--Heal Prediction
 	UF:Configure_HealComm(frame)
+
+	--Cutaway
+	UF:Configure_Cutaway(frame)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)

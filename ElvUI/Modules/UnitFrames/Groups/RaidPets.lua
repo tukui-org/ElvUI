@@ -36,6 +36,8 @@ function UF:Construct_RaidpetFrames()
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 	self.HealthPrediction = UF:Construct_HealComm(self)
 	self.Fader = UF:Construct_Fader()
+	self.Cutaway = UF:Construct_Cutaway(self)
+
 	self.customTexts = {}
 
 	self.unitframeType = "raidpet"
@@ -162,6 +164,9 @@ function UF:Update_RaidpetFrames(frame, db)
 
 	--BuffIndicator
 	UF:UpdateAuraWatch(frame, true) --2nd argument is the petOverride
+
+	--Cutaway
+	UF:Configure_Cutaway(frame)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)

@@ -23,6 +23,7 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.Fader = self:Construct_Fader()
+	frame.Cutaway = self:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
 	frame:Point('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
@@ -94,6 +95,9 @@ function UF:Update_PetTargetFrame(frame, db)
 
 	--Fader
 	UF:Configure_Fader(frame)
+
+	--Cutaway
+	UF:Configure_Cutaway(frame)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)

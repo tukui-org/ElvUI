@@ -2247,6 +2247,20 @@ P.unitframe = {
 				enable = true,
 				width = 10,
 			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+				power = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+			},
 		},
 		target = {
 			enable = true,
@@ -2432,6 +2446,20 @@ P.unitframe = {
 				xOffset = 0,
 				yOffset = 8,
 			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+				power = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+			},
 		},
 		targettarget = {
 			enable = true,
@@ -2548,6 +2576,20 @@ P.unitframe = {
 				xOffset = 0,
 				yOffset = 8,
 			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+				power = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+			},
 		},
 		targettargettarget = {
 			enable = false,
@@ -2662,6 +2704,20 @@ P.unitframe = {
 				attachToObject = 'Frame',
 				xOffset = 0,
 				yOffset = 8,
+			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+				power = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
 			},
 		},
 		focus = {
@@ -2824,6 +2880,20 @@ P.unitframe = {
 				xOffset = 0,
 				yOffset = 8,
 			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+				power = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+			},
 		},
 		focustarget = {
 			enable = false,
@@ -2938,6 +3008,20 @@ P.unitframe = {
 				attachToObject = 'Frame',
 				xOffset = 0,
 				yOffset = 8,
+			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+				power = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
 			},
 		},
 		pet = {
@@ -3094,6 +3178,20 @@ P.unitframe = {
 					frameLevel = 1,
 				},
 			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+				power = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+			},
 		},
 		pettarget = {
 			enable = false,
@@ -3200,6 +3298,20 @@ P.unitframe = {
 				priority = 'Blacklist,Personal,Boss,RaidDebuffs', --PetTarget Debuffs
 				xOffset = 0,
 				yOffset = 0,
+			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+				power = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
 			},
 		},
 		boss = {
@@ -3343,6 +3455,20 @@ P.unitframe = {
 				attachToObject = 'Frame',
 				xOffset = 0,
 				yOffset = 8,
+			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+				power = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
 			},
 		},
 		arena = {
@@ -3491,6 +3617,20 @@ P.unitframe = {
 				size = 46,
 				xOffset = 1,
 				yOffset = 0,
+			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+				power = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
 			},
 		},
 		party = {
@@ -3764,6 +3904,20 @@ P.unitframe = {
 				xOffset = 0,
 				yOffset = 0,
 			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+				power = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+			},
 		},
 		raid = {
 			enable = true,
@@ -3972,6 +4126,20 @@ P.unitframe = {
 				attachToObject = 'Frame',
 				xOffset = 0,
 				yOffset = 0,
+			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+				power = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
 			},
 		},
 		raid40 = {
@@ -4182,6 +4350,20 @@ P.unitframe = {
 				xOffset = 0,
 				yOffset = 0,
 			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+				power = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+			},
 		},
 		raidpet = {
 			enable = false,
@@ -4327,6 +4509,14 @@ P.unitframe = {
 				xOffset = 0,
 				yOffset = 8,
 			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+			},
 		},
 		tank = {
 			enable = true,
@@ -4462,6 +4652,14 @@ P.unitframe = {
 					yOffset = 8,
 				},
 			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
+				},
+			},
 		},
 		assist = {
 			enable = true,
@@ -4595,6 +4793,14 @@ P.unitframe = {
 					attachToObject = 'Frame',
 					xOffset = 0,
 					yOffset = 8,
+				},
+			},
+			cutaway =  {
+				health = {
+					enabled = false,
+					fadeOutTime = 0.6,
+					lengthBeforeFade = 0.3,
+					forceBlankTexture = true,
 				},
 			},
 		},

@@ -52,6 +52,8 @@ function UF:Construct_Raid40Frames()
 	self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
 	self.HealthPrediction = UF:Construct_HealComm(self)
 	self.Fader = UF:Construct_Fader()
+	self.Cutaway = UF:Construct_Cutaway(self)
+
 	self.customTexts = {}
 
 	self.unitframeType = "raid40"
@@ -238,6 +240,9 @@ function UF:Update_Raid40Frames(frame, db)
 
 	-- PhaseIndicator
 	UF:Configure_PhaseIcon(frame)
+
+	--Cutaway
+	UF:Configure_Cutaway(frame)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end

@@ -52,6 +52,7 @@ function UF:Construct_RaidFrames()
 	self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
 	self.HealthPrediction = UF:Construct_HealComm(self)
 	self.Fader = UF:Construct_Fader()
+	self.Cutaway = UF:Construct_Cutaway(self)
 
 	self.customTexts = {}
 	self.InfoPanel = UF:Construct_InfoPanel(self)
@@ -239,6 +240,9 @@ function UF:Update_RaidFrames(frame, db)
 
 	-- PhaseIndicator
 	UF:Configure_PhaseIcon(frame)
+
+	--Cutaway
+	UF:Configure_Cutaway(frame)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end

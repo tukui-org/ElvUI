@@ -31,6 +31,7 @@ function UF:Construct_PetFrame(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.Fader = self:Construct_Fader()
+	frame.Cutaway = self:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
@@ -111,6 +112,9 @@ function UF:Update_PetFrame(frame, db)
 
 	--AuraBars
 	UF:Configure_AuraBars(frame)
+
+	--Cutaway
+	UF:Configure_Cutaway(frame)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)

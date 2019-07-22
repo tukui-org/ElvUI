@@ -37,6 +37,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	frame.Fader = self:Construct_Fader()
+	frame.Cutaway = self:Construct_Cutaway(frame)
 
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
@@ -118,6 +119,9 @@ function UF:Update_FocusFrame(frame, db)
 
 	--AuraBars
 	UF:Configure_AuraBars(frame)
+
+	--Cutaway
+	UF:Configure_Cutaway(frame)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
