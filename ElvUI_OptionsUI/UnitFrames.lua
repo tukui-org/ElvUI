@@ -6452,7 +6452,7 @@ E.Options.args.unitframe.args.party = {
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'party'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'party'),
 		phaseIndicator = {
 			order = 5005,
 			type = 'group',
@@ -6974,7 +6974,7 @@ E.Options.args.unitframe.args.raid = {
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'raid'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raid'),
 	},
 }
 
@@ -7447,7 +7447,7 @@ E.Options.args.unitframe.args.raid40 = {
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'raid40'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 	},
 }
 
@@ -7700,7 +7700,7 @@ E.Options.args.unitframe.args.raidpet = {
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'raidpet'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		buffIndicator = {
 			order = 701,
 			type = 'group',
@@ -7891,7 +7891,7 @@ E.Options.args.unitframe.args.tank = {
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'tank'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'tank'),
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'tank'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'tank'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'tank'),
 		buffIndicator = {
 			order = 701,
 			type = 'group',
@@ -8098,7 +8098,7 @@ E.Options.args.unitframe.args.assist = {
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'assist'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'assist'),
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'assist'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'assist'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'assist'),
 		buffIndicator = {
 			order = 702,
 			type = 'group',
