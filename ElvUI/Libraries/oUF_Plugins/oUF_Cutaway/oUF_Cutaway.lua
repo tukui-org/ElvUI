@@ -45,6 +45,7 @@ local function Health_PreUpdate(self, unit)
 	end
 
 	element.cur = self.cur
+	element.unit = unit
 	element:SetValue(element.cur)
 	element:SetMinMaxValues(0, max)
 	element.ready = true
@@ -52,7 +53,7 @@ end
 
 local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	local element = self.__owner.Cutaway.Health
-	if (not element.ready or not element.cur or not curHealth or not maxHealth) or element.playing then
+	if (not element.ready or not element.cur or not curHealth or not maxHealth) or element.playing or element.unit ~= unit then
 		return
 	end
 
@@ -84,6 +85,7 @@ local function Power_PreUpdate(self, unit)
 	end
 
 	element.cur = self.cur
+	element.unit = unit
 	element:SetValue(element.cur)
 	element:SetMinMaxValues(0, max)
 	element.ready = true
@@ -91,7 +93,7 @@ end
 
 local function Power_PostUpdate(self, unit, curPower, maxPower)
 	local element = self.__owner.Cutaway.Power
-	if (not element.ready or not element.cur or not curPower or not maxPower) or element.playing then
+	if (not element.ready or not element.cur or not curPower or not maxPower) or element.playing or element.unit ~= unit then
 		return
 	end
 
