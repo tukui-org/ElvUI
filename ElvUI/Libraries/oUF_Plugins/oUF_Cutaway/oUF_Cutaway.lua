@@ -39,13 +39,14 @@ end
 
 local function Health_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Health
-	if (not element.enabled or not self.cur) or element.ready or UnitIsTapDenied(unit) or not UnitHealthMax(unit) then
+	local max = UnitHealthMax(unit)
+	if (not element.enabled or not self.cur) or element.ready or UnitIsTapDenied(unit) or not max then
 		return
 	end
 
 	element.cur = self.cur
 	element:SetValue(element.cur)
-	element:SetMinMaxValues(0, UnitHealthMax(unit))
+	element:SetMinMaxValues(0, max)
 	element.ready = true
 end
 
@@ -77,13 +78,14 @@ end
 
 local function Power_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Power
-	if (not element.enabled or not self.cur) or element.ready or not UnitPowerMax(unit) then
+	local max = UnitPowerMax(unit)
+	if (not element.enabled or not self.cur) or element.ready or not max then
 		return
 	end
 
 	element.cur = self.cur
 	element:SetValue(element.cur)
-	element:SetMinMaxValues(0, UnitPowerMax(unit))
+	element:SetMinMaxValues(0, max)
 	element.ready = true
 end
 
