@@ -733,15 +733,15 @@ function B:RegisterUpdateDelayed()
 		if bagFrame.registerUpdate then
 			B:UpdateAllSlots(bagFrame)
 
-			bagFrame.registerUpdate = nil
-			shouldUpdateFade = true -- we should refresh the bag search after sorting
-
 			bagFrame:RegisterEvent("BAG_UPDATE")
 			bagFrame:RegisterEvent("BAG_UPDATE_COOLDOWN")
 
 			for _, event in pairs(bagFrame.events) do
 				bagFrame:RegisterEvent(event)
 			end
+
+			bagFrame.registerUpdate = nil
+			shouldUpdateFade = true -- we should refresh the bag search after sorting
 		end
 	end
 
