@@ -6,7 +6,7 @@ local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = _G.C_UIWidgetManag
 local strmatch = _G.strmatch
 
 E.MaxNazjatarBodyguardRank = 30
-function E:GetBodyguardXP(widgetID)
+function E:GetNazjatarBodyguardXP(widgetID)
 	local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
 	if not widget then
 		return

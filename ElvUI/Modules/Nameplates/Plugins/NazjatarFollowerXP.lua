@@ -66,7 +66,7 @@ local function Update(self)
 		return
 	end
 
-	local rank, cur, next, total, isMax = E:GetBodyguardXP(widgetID)
+	local rank, cur, next, total, isMax = E:GetNazjatarBodyguardXP(widgetID)
 	if not rank then
 		return
 	end

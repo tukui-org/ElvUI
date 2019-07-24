@@ -190,7 +190,7 @@ local function OnEnter(self, _, noUpdate)
 		DT.tooltip:AddLine(L["Nazjatar Follower XP"])
 		for i = 2, 4 do
 			local npcName, widgetID = unpack(widgetGroup[i])
-			local rank, cur, next, _, isMax =E:GetBodyguardXP(widgetID)
+			local rank, cur, next, _, isMax =E:GetNazjatarBodyguardXP(widgetID)
 			if npcName and rank then
 				if isMax then
 					DT.tooltip:AddDoubleLine(npcName, L["Max Rank"], 1, 1, 1)
