@@ -127,7 +127,7 @@ function B:LoadBagBar()
 	_G.MainMenuBarBackpackButton:HookScript('OnLeave', OnLeave)
 
 	tinsert(ElvUIBags.buttons, _G.MainMenuBarBackpackButton)
-	self:SkinBag(_G.MainMenuBarBackpackButton)
+	B:SkinBag(_G.MainMenuBarBackpackButton)
 
 	for i=0, NUM_BAG_FRAMES-1 do
 		local b = _G["CharacterBag"..i.."Slot"]
@@ -136,7 +136,7 @@ function B:LoadBagBar()
 		b:HookScript('OnEnter', OnEnter)
 		b:HookScript('OnLeave', OnLeave)
 
-		self:SkinBag(b)
+		B:SkinBag(b)
 		tinsert(ElvUIBags.buttons, b)
 	end
 
@@ -172,6 +172,6 @@ function B:LoadBagBar()
 	ElvUIBags:Hide()
 	ElvUIBags:Show()
 
-	self:SizeAndPositionBagBar()
+	B:SizeAndPositionBagBar()
 	E:CreateMover(ElvUIBags, 'BagsMover', L["Bags"], nil, nil, nil, nil, nil, 'bags,general')
 end
