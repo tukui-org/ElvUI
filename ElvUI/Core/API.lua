@@ -124,7 +124,7 @@ do
 end
 
 do
-	local MaxNazjatarBodyguardRank = 30
+	E.MaxNazjatarBodyguardRank = 30
 	function E:GetNazjatarBodyguardXP(widgetID)
 		local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
 		if not widget then return end
@@ -135,7 +135,7 @@ do
 		local cur = widget.barValue - widget.barMin
 		local toNext = widget.barMax - widget.barMin
 		local total = widget.barValue
-		local isMax = rank == MaxNazjatarBodyguardRank
+		local isMax = rank == E.MaxNazjatarBodyguardRank
 
 		return rank, cur, toNext, total, isMax
 	end
