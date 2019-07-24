@@ -3,8 +3,17 @@
 **New Additions:**  
 
 **Bug Fixes:**  
+Fixed a few issues with Cutaway health and power on nameplates and unitframes.  
+Tooltip: Fixed an issue which would show the wrong faction for player when battling as a mercenary.  
+Bag Bar: Fixed Right Click on a bag erroring out when Bags module was disabled.  
+Bag Bar: Fixed scaling and backdrop weirdness.  
+Nameplate: Fixed ClassPower SetPoint error.  
 
 **Misc. Changes:**  
+Updated various parts of Bag, Bag Sort, and Bag Bar code.  
+Blizzard Bags Skin: Show and skinned the bag icons.  
+Blizzard Bags Skin: Skinned the Auto Sort button.  
+Bag Bar: Lowered the min button spacing to -1.  
 
 ___
 ### Version 11.19 [ July 22nd 2019 ]
