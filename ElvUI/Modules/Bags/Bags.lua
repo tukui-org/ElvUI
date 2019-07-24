@@ -772,7 +772,7 @@ function B:AssignBagFlagMenu()
 						SetBagSlotFlag(holder.id, i, value)
 					end
 
-					if (value) then
+					if value then
 						holder.tempflag = i
 						holder.ElvUIFilterIcon.Icon:SetTexture(BAG_FILTER_ICONS[i])
 						holder.ElvUIFilterIcon.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -812,11 +812,11 @@ function B:AssignBagFlagMenu()
 
 	info.text = BAG_FILTER_IGNORE
 	info.func = function(_, _, _, value)
-		if (holder.id == -1) then
+		if holder.id == -1 then
 			SetBankAutosortDisabled(not value)
-		elseif (holder.id == 0) then
+		elseif holder.id == 0 then
 			SetBackpackAutosortDisabled(not value)
-		elseif (holder.id > NUM_BAG_SLOTS) then
+		elseif holder.id > NUM_BAG_SLOTS then
 			SetBankBagSlotFlag(holder.id - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
 		else
 			SetBagSlotFlag(holder.id, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
@@ -841,7 +841,7 @@ function B:GetBagAssignedInfo(holder)
 	local inventoryID = ContainerIDToInventoryID(holder.id)
 	if IsInventoryItemProfessionBag("player", inventoryID) then return end
 
-	--clear tempflag from AssignBagFlagMenu
+	-- clear tempflag from AssignBagFlagMenu
 	if holder.tempflag then holder.tempflag = nil end
 
 	local active, color
