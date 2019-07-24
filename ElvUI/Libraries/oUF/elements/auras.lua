@@ -80,7 +80,7 @@ end
 local function onEnter(self)
 	if(not self:IsVisible()) then return end
 
-	GameTooltip:SetOwner(self, self:GetParent().__owner.tooltipAnchor)
+	GameTooltip:SetOwner(self, self:GetParent().tooltipAnchor)
 	self:UpdateTooltip()
 end
 
@@ -490,6 +490,9 @@ local function Enable(self)
 			buffs.createdIcons = buffs.createdIcons or 0
 			buffs.anchoredIcons = 0
 
+			-- Avoid parenting GameTooltip to frames with anchoring restrictions,
+			-- otherwise it'll inherit said restrictions which will cause issues
+			-- with its further positioning, clamping, etc
 			if(not pcall(self.GetCenter, self)) then
 				buffs.tooltipAnchor = 'ANCHOR_CURSOR'
 			else
@@ -507,6 +510,9 @@ local function Enable(self)
 			debuffs.createdIcons = debuffs.createdIcons or 0
 			debuffs.anchoredIcons = 0
 
+			-- Avoid parenting GameTooltip to frames with anchoring restrictions,
+			-- otherwise it'll inherit said restrictions which will cause issues
+			-- with its further positioning, clamping, etc
 			if(not pcall(self.GetCenter, self)) then
 				debuffs.tooltipAnchor = 'ANCHOR_CURSOR'
 			else
@@ -524,6 +530,9 @@ local function Enable(self)
 			auras.createdIcons = auras.createdIcons or 0
 			auras.anchoredIcons = 0
 
+			-- Avoid parenting GameTooltip to frames with anchoring restrictions,
+			-- otherwise it'll inherit said restrictions which will cause issues
+			-- with its further positioning, clamping, etc
 			if(not pcall(self.GetCenter, self)) then
 				auras.tooltipAnchor = 'ANCHOR_CURSOR'
 			else
