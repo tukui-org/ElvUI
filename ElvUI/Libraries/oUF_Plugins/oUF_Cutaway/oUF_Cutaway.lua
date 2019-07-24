@@ -37,13 +37,13 @@ local function fadeClosure(element)
 	E:UIFrameFadeOut(element, element.fadeOutTime, element.__parentElement:GetAlpha(), 0)
 end
 
-local function PreUpdate(self, element, unit)
+local function Shared_PreUpdate(self, element, unit)
 	element.unit = unit
 	element.cur = self.cur
 	element.ready = true
 end
 
-local function PostUpdate(self, element, cur, max)
+local function UpdateSize(self, element, cur, max)
 	local parentMeasurement = self:GetOrientation() == "VERTICAL" and self:GetHeight() or self:GetWidth()
 	local perc1Measurement = (1 / max) * parentMeasurement
 	local change = element.cur - cur
@@ -62,7 +62,7 @@ local function Health_PreUpdate(self, unit)
 		return
 	end
 
-	PreUpdate(self, element, unit)
+	Shared_PreUpdate(self, element, unit)
 end
 
 local function Health_PostUpdate(self, unit, curHealth, maxHealth)
@@ -70,7 +70,7 @@ local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	if (not element.ready or not element.cur or not curHealth or not maxHealth) or element.unit ~= unit then
 		return
 	end
-	PostUpdate(self, element, curHealth, maxHealth)
+	UpdateSize(self, element, curHealth, maxHealth)
 	if element.playing then
 		return
 	end
@@ -102,7 +102,7 @@ local function Power_PreUpdate(self, unit)
 		return
 	end
 
-	PreUpdate(self, element, unit)
+	Shared_PreUpdate(self, element, unit)
 end
 
 local function Power_PostUpdate(self, unit, curPower, maxPower)
@@ -110,7 +110,7 @@ local function Power_PostUpdate(self, unit, curPower, maxPower)
 	if (not element.ready or not element.cur or not curPower or not maxPower) or element.unit ~= unit then
 		return
 	end
-	PostUpdate(self, element, curPower, maxPower)
+	UpdateSize(self, element, curPower, maxPower)
 	if element.playing then
 		return
 	end
