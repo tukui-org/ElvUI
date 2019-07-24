@@ -383,8 +383,6 @@ function B:UpdateItemUpgradeIcon(slot)
 		return
 	end
 
-	slot.timeSinceUpgradeCheck = 0;
-
 	local itemIsUpgrade = _G.IsContainerItemAnUpgrade(slot:GetParent():GetID(), slot:GetID());
 	if itemIsUpgrade == nil then -- nil means not all the data was available to determine if this is an upgrade.
 		slot.UpgradeIcon:SetShown(false);
@@ -397,8 +395,7 @@ end
 
 local ITEM_UPGRADE_CHECK_TIME = 0.5
 function B:UpgradeCheck_OnUpdate(elapsed)
-	self.timeSinceUpgradeCheck = self.timeSinceUpgradeCheck + elapsed;
-
+	self.timeSinceUpgradeCheck = (self.timeSinceUpgradeCheck or 0) + elapsed;
 	if self.timeSinceUpgradeCheck >= ITEM_UPGRADE_CHECK_TIME then
 		B:UpdateItemUpgradeIcon(self)
 	end
