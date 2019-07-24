@@ -96,6 +96,7 @@ local function Update(self)
 
 	if (element.Rank) then
 		element.Rank:SetText(rank)
+		element.Rank:Show()
 	end
 
 	if element.ProgressText then
