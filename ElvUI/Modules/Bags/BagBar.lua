@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local B = E:GetModule('Bags');
+local B = E:GetModule('Bags')
 
 --Lua functions
 local _G = _G
@@ -49,7 +49,7 @@ function B:SizeAndPositionBagBar()
 		visibility = visibility:gsub('[\n\r]','')
 	end
 
-	RegisterStateDriver(ElvUIBags, "visibility", visibility);
+	RegisterStateDriver(ElvUIBags, "visibility", visibility)
 
 	if E.db.bags.bagBar.mouseover then
 		ElvUIBags:SetAlpha(0)

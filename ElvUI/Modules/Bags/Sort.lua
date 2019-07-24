@@ -67,22 +67,22 @@ local coreGroups = {
 	all = allBags,
 }
 
-local bagCache = {};
-local bagIDs = {};
-local bagQualities = {};
-local bagPetIDs = {};
-local bagStacks = {};
-local bagMaxStacks = {};
-local bagGroups = {};
-local initialOrder = {};
-local bagSorted, bagLocked = {}, {};
+local bagCache = {}
+local bagIDs = {}
+local bagQualities = {}
+local bagPetIDs = {}
+local bagStacks = {}
+local bagMaxStacks = {}
+local bagGroups = {}
+local initialOrder = {}
+local bagSorted, bagLocked = {}, {}
 local bagRole
-local moves = {};
-local targetItems = {};
-local sourceUsed = {};
-local targetSlots = {};
-local specialtyBags = {};
-local emptySlots = {};
+local moves = {}
+local targetItems = {}
+local sourceUsed = {}
+local targetSlots = {}
+local specialtyBags = {}
+local emptySlots = {}
 
 local moveRetries = 0
 local lastItemID, lockStop, lastDestination, lastMove
@@ -191,8 +191,8 @@ local function DefaultSort(a, b)
 	if (not aID) or (not bID) then return aID end
 
 	if bagPetIDs[a] and bagPetIDs[b] then
-		local aName, _, aType = C_PetJournalGetPetInfoBySpeciesID(aID);
-		local bName, _, bType = C_PetJournalGetPetInfoBySpeciesID(bID);
+		local aName, _, aType = C_PetJournalGetPetInfoBySpeciesID(aID)
+		local bName, _, bType = C_PetJournalGetPetInfoBySpeciesID(bID)
 
 		if aType and bType and aType ~= bType then
 			return aType > bType
@@ -486,7 +486,7 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 	if itemFamily then
 		return (bagFamily == 0) or band(itemFamily, bagFamily) > 0
 	else
-		return false;
+		return false
 	end
 end
 
@@ -570,7 +570,7 @@ function B.Sort(bags, sorter, invertDirection)
 
 	for i, bag, slot in B:IterateBags(bags, nil, 'both') do
 		local bagSlot = B:Encode_BagSlot(bag, slot)
-		local link = B:GetItemLink(bag, slot);
+		local link = B:GetItemLink(bag, slot)
 
 		if link then
 			if blackList[GetItemInfo(link)] then
@@ -668,7 +668,7 @@ function B.Fill(sourceBags, targetBags, reverse, canMove)
 		if #emptySlots == 0 then break end
 		local bagSlot = B:Encode_BagSlot(bag, slot)
 		local targetBag = B:Decode_BagSlot(emptySlots[1])
-		local link = B:GetItemLink(bag, slot);
+		local link = B:GetItemLink(bag, slot)
 
 		if link and blackList[GetItemInfo(link)] then
 			blackListedSlots[bagSlot] = true
@@ -919,7 +919,7 @@ function B:CommandDecorator(func, groupsDefaults)
 	return function(groups)
 		if B.SortUpdateTimer:IsShown() then
 			B:StopStacking(L["Already Running.. Bailing Out!"], true)
-			return;
+			return
 		end
 
 		wipe(bagGroups)
