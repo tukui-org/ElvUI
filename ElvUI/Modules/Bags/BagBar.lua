@@ -63,45 +63,53 @@ function B:SizeAndPositionBagBar()
 		ElvUIBags.backdrop:Hide()
 	end
 
+	local bdpSpacing = (showBackdrop and backdropSpacing + E.Border) or 0
 	for i=1, #ElvUIBags.buttons do
 		local button = ElvUIBags.buttons[i]
 		local prevButton = ElvUIBags.buttons[i-1]
-		button:Size(bagBarSize)
+		button:SetSize(bagBarSize, bagBarSize)
 		button:ClearAllPoints()
+
 		if growthDirection == 'HORIZONTAL' and sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('LEFT', ElvUIBags, 'LEFT', (showBackdrop and (backdropSpacing + E.Border) or 0), 0)
+				button:Point('LEFT', ElvUIBags, 'LEFT', bdpSpacing, 0)
 			elseif prevButton then
 				button:Point('LEFT', prevButton, 'RIGHT', buttonSpacing, 0)
 			end
 		elseif growthDirection == 'VERTICAL' and sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('TOP', ElvUIBags, 'TOP', 0, -(showBackdrop and (backdropSpacing + E.Border) or 0))
+				button:Point('TOP', ElvUIBags, 'TOP', 0, -bdpSpacing)
 			elseif prevButton then
 				button:Point('TOP', prevButton, 'BOTTOM', 0, -buttonSpacing)
 			end
 		elseif growthDirection == 'HORIZONTAL' and sortDirection == 'DESCENDING' then
 			if i == 1 then
-				button:Point('RIGHT', ElvUIBags, 'RIGHT', -(showBackdrop and (backdropSpacing + E.Border) or 0), 0)
+				button:Point('RIGHT', ElvUIBags, 'RIGHT', -bdpSpacing, 0)
 			elseif prevButton then
 				button:Point('RIGHT', prevButton, 'LEFT', -buttonSpacing, 0)
 			end
 		else
 			if i == 1 then
-				button:Point('BOTTOM', ElvUIBags, 'BOTTOM', 0, (showBackdrop and (backdropSpacing + E.Border) or 0))
+				button:Point('BOTTOM', ElvUIBags, 'BOTTOM', 0, bdpSpacing)
 			elseif prevButton then
 				button:Point('BOTTOM', prevButton, 'TOP', 0, buttonSpacing)
 			end
 		end
-		if i ~= 1 then button.IconBorder:Size(bagBarSize) end
+		if i ~= 1 then
+			button.IconBorder:SetSize(bagBarSize, bagBarSize)
+		end
 	end
 
+	local btnSize = bagBarSize * (NUM_BAG_FRAMES + 1)
+	local btnSpace = buttonSpacing * NUM_BAG_FRAMES
+	local bdpDoubled = bdpSpacing * 2
+
 	if growthDirection == 'HORIZONTAL' then
-		ElvUIBags:Width(bagBarSize*(NUM_BAG_FRAMES+1) + buttonSpacing*(NUM_BAG_FRAMES) + ((showBackdrop and (E.Border + backdropSpacing) or E.Spacing)*2))
-		ElvUIBags:Height(bagBarSize + ((showBackdrop and (E.Border + backdropSpacing) or E.Spacing)*2))
+		ElvUIBags:SetWidth(btnSize + btnSpace + bdpDoubled)
+		ElvUIBags:SetHeight(bagBarSize + bdpDoubled)
 	else
-		ElvUIBags:Height(bagBarSize*(NUM_BAG_FRAMES+1) + buttonSpacing*(NUM_BAG_FRAMES) + ((showBackdrop and (E.Border + backdropSpacing) or E.Spacing)*2))
-		ElvUIBags:Width(bagBarSize + ((showBackdrop and (E.Border + backdropSpacing) or E.Spacing)*2))
+		ElvUIBags:SetHeight(btnSize + btnSpace + bdpDoubled)
+		ElvUIBags:SetWidth(bagBarSize + bdpDoubled)
 	end
 end
 
