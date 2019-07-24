@@ -24,8 +24,15 @@ local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitStat = UnitStat
+local IsRatedBattleground = IsRatedBattleground
+local IsWargame = IsWargame
+local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
+local UnitIsMercenary = UnitIsMercenary
+local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
+local FACTION_HORDE = FACTION_HORDE
+local FACTION_ALLIANCE = FACTION_ALLIANCE
 
 function E:IsFoolsDay()
 	return strfind(date(), '04/01/') and not E.global.aprilFools
@@ -440,6 +447,27 @@ function E:PLAYER_REGEN_ENABLED()
 
 		self.CVarUpdate = nil
 	end
+end
+
+function E:GetUnitBattlefieldFaction(unit)
+	local englishFaction, localizedFaction = UnitFactionGroup(unit)
+
+	-- this might be a rated BG or wargame and if so the player's faction might be altered
+	-- should also apply if `player` is a mercenary.
+	if unit == 'player' then
+		if IsRatedBattleground() or IsWargame() then
+			englishFaction = PLAYER_FACTION_GROUP[GetBattlefieldArenaFaction()]
+			localizedFaction = (englishFaction == 'Alliance' and FACTION_ALLIANCE) or FACTION_HORDE
+		elseif UnitIsMercenary(unit) then
+			if englishFaction == 'Alliance' then
+				englishFaction, localizedFaction = 'Horde', FACTION_HORDE
+			else
+				englishFaction, localizedFaction = 'Alliance', FACTION_ALLIANCE
+			end
+		end
+	end
+
+	return englishFaction, localizedFaction
 end
 
 function E:NEUTRAL_FACTION_SELECT_RESULT()
