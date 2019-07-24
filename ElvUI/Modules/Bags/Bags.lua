@@ -841,9 +841,8 @@ function B:GetBagAssignedInfo(holder)
 	local inventoryID = ContainerIDToInventoryID(holder.id)
 	if IsInventoryItemProfessionBag("player", inventoryID) then return end
 
-	if holder.tempflag then
-		holder.tempflag = nil --clear tempflag from AssignBagFlagMenu
-	end
+	--clear tempflag from AssignBagFlagMenu
+	if holder.tempflag then holder.tempflag = nil end
 
 	local active, color
 	for i = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
@@ -2425,11 +2424,11 @@ function B:UpdateQuestColors(table, indice, r, g, b)
 end
 
 function B:Initialize()
-	self:LoadBagBar()
+	B:LoadBagBar()
 
 	--Creating vendor grays frame
-	self:CreateSellFrame()
-	self:RegisterEvent("MERCHANT_CLOSED")
+	B:CreateSellFrame()
+	B:RegisterEvent("MERCHANT_CLOSED")
 
 	--Bag Mover (We want it created even if Bags module is disabled, so we can use it for default bags too)
 	local BagFrameHolder = CreateFrame("Frame", nil, E.UIParent)
@@ -2437,21 +2436,26 @@ function B:Initialize()
 	BagFrameHolder:Height(22)
 	BagFrameHolder:SetFrameLevel(BagFrameHolder:GetFrameLevel() + 400)
 
+	--Bag Assignment Dropdown Menu (also used by BagBar)
+	ElvUIAssignBagDropdown = CreateFrame("Frame", "ElvUIAssignBagDropdown", E.UIParent, "UIDropDownMenuTemplate")
+	ElvUIAssignBagDropdown:SetID(1)
+	ElvUIAssignBagDropdown:SetClampedToScreen(true)
+	ElvUIAssignBagDropdown:Hide()
+	_G.UIDropDownMenu_Initialize(ElvUIAssignBagDropdown, B.AssignBagFlagMenu, "MENU")
+
 	if not E.private.bags.enable then
-		--Set a different default anchor
+		-- Set a different default anchor
 		BagFrameHolder:Point("BOTTOMRIGHT", _G.RightChatPanel, "BOTTOMRIGHT", -(E.Border*2), 22 + E.Border*4 - E.Spacing*2)
 		E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
-
-		self:SecureHook('UpdateContainerFrameAnchors')
-
+		B:SecureHook('UpdateContainerFrameAnchors')
 		return
 	end
 
-	self.Initialized = true
-	self.db = E.db.bags
-	self.BagFrames = {}
-	self.REAGENTBANK_SIZE = 98 -- numRow (7) * numColumn (7) * numSubColumn (2) = size = 98
-	self.ProfessionColors = {
+	B.Initialized = true
+	B.db = E.db.bags
+	B.BagFrames = {}
+	B.REAGENTBANK_SIZE = 98 -- numRow (7) * numColumn (7) * numSubColumn (2) = size = 98
+	B.ProfessionColors = {
 		[0x0008]   = { B.db.colors.profession.leatherworking.r, B.db.colors.profession.leatherworking.g, B.db.colors.profession.leatherworking.b },
 		[0x0010]   = { B.db.colors.profession.inscription.r, B.db.colors.profession.inscription.g, B.db.colors.profession.inscription.b },
 		[0x0020]   = { B.db.colors.profession.herbs.r, B.db.colors.profession.herbs.g, B.db.colors.profession.herbs.b },
@@ -2463,14 +2467,14 @@ function B:Initialize()
 		[0x010000] = { B.db.colors.profession.cooking.r, B.db.colors.profession.cooking.g, B.db.colors.profession.cooking.b },
 	}
 
-	self.AssignmentColors = {
+	B.AssignmentColors = {
 		[0] = { .99, .23, .21 },   -- fallback
 		[2] = { B.db.colors.assignment.equipment.r , B.db.colors.assignment.equipment.g, B.db.colors.assignment.equipment.b },
 		[3] = { B.db.colors.assignment.consumables.r , B.db.colors.assignment.consumables.g, B.db.colors.assignment.consumables.b },
 		[4] = { B.db.colors.assignment.tradegoods.r , B.db.colors.assignment.tradegoods.g, B.db.colors.assignment.tradegoods.b },
 	}
 
-	self.QuestColors = {
+	B.QuestColors = {
 		["questStarter"] = {B.db.colors.items.questStarter.r, B.db.colors.items.questStarter.g, B.db.colors.items.questStarter.b},
 		["questItem"] = {B.db.colors.items.questItem.r, B.db.colors.items.questItem.g, B.db.colors.items.questItem.b},
 	}
@@ -2487,13 +2491,6 @@ function B:Initialize()
 	BankFrameHolder:SetFrameLevel(BankFrameHolder:GetFrameLevel() + 400)
 	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank Mover (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 
-	--Bag Assignment Dropdown Menu
-	ElvUIAssignBagDropdown = CreateFrame("Frame", "ElvUIAssignBagDropdown", E.UIParent, "UIDropDownMenuTemplate")
-	ElvUIAssignBagDropdown:SetID(1)
-	ElvUIAssignBagDropdown:SetClampedToScreen(true)
-	ElvUIAssignBagDropdown:Hide()
-	_G.UIDropDownMenu_Initialize(ElvUIAssignBagDropdown, self.AssignBagFlagMenu, "MENU")
-
 	--Set some variables on movers
 	ElvUIBagMover.textGrowUp = L["Bag Mover (Grow Up)"]
 	ElvUIBagMover.textGrowDown = L["Bag Mover (Grow Down)"]
@@ -2507,25 +2504,25 @@ function B:Initialize()
 	B:SetupItemGlow(B.BagFrame)
 
 	--Hook onto Blizzard Functions
-	self:SecureHook('OpenAllBags', 'OpenBags')
-	self:SecureHook('CloseAllBags', 'CloseBags')
-	self:SecureHook('ToggleBag', 'ToggleBags')
-	self:SecureHook('ToggleAllBags', 'ToggleBackpack')
-	self:SecureHook('ToggleBackpack')
-	self:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
+	B:SecureHook('OpenAllBags', 'OpenBags')
+	B:SecureHook('CloseAllBags', 'CloseBags')
+	B:SecureHook('ToggleBag', 'ToggleBags')
+	B:SecureHook('ToggleAllBags', 'ToggleBackpack')
+	B:SecureHook('ToggleBackpack')
+	B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	B:Layout()
 
-	self:DisableBlizzard()
-	self:RegisterEvent("PLAYER_ENTERING_WORLD")
-	self:RegisterEvent("PLAYER_MONEY", "UpdateGoldText")
-	self:RegisterEvent("PLAYER_TRADE_MONEY", "UpdateGoldText")
-	self:RegisterEvent("TRADE_MONEY_CHANGED", "UpdateGoldText")
-	self:RegisterEvent("BANKFRAME_OPENED", "OpenBank")
-	self:RegisterEvent("BANKFRAME_CLOSED", "CloseBank")
-	self:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
-	self:RegisterEvent("GUILDBANKFRAME_OPENED")
-	self:RegisterEvent("SCRAPPING_MACHINE_SHOW")
-	self:RegisterEvent("SCRAPPING_MACHINE_CLOSE")
+	B:DisableBlizzard()
+	B:RegisterEvent("PLAYER_ENTERING_WORLD")
+	B:RegisterEvent("PLAYER_MONEY", "UpdateGoldText")
+	B:RegisterEvent("PLAYER_TRADE_MONEY", "UpdateGoldText")
+	B:RegisterEvent("TRADE_MONEY_CHANGED", "UpdateGoldText")
+	B:RegisterEvent("BANKFRAME_OPENED", "OpenBank")
+	B:RegisterEvent("BANKFRAME_CLOSED", "CloseBank")
+	B:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
+	B:RegisterEvent("GUILDBANKFRAME_OPENED")
+	B:RegisterEvent("SCRAPPING_MACHINE_SHOW")
+	B:RegisterEvent("SCRAPPING_MACHINE_CLOSE")
 
 	_G.BankFrame:SetScale(0.0001)
 	_G.BankFrame:SetAlpha(0)

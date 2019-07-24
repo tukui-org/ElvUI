@@ -155,8 +155,10 @@ function B:LoadBagBar()
 			B:CreateFilterIcon(bagButton)
 			bagButton:SetScript("OnClick", function(holder, button)
 				if button == "RightButton" and holder.id then
-					ElvUIAssignBagDropdown.holder = holder
-					_G.ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
+					if ElvUIAssignBagDropdown then
+						ElvUIAssignBagDropdown.holder = holder
+						_G.ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
+					end
 				else
 					_G.MainMenuBarBackpackButton_OnClick(holder)
 				end
@@ -165,8 +167,10 @@ function B:LoadBagBar()
 			B:CreateFilterIcon(bagButton)
 			bagButton:SetScript("OnClick", function(holder, button)
 				if button == "RightButton" and holder.id then
-					ElvUIAssignBagDropdown.holder = holder
-					_G.ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
+					if ElvUIAssignBagDropdown then
+						ElvUIAssignBagDropdown.holder = holder
+						_G.ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, "cursor")
+					end
 				else
 					_G.BagSlotButton_OnClick(holder)
 				end
