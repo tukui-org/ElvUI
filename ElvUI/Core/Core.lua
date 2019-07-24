@@ -1246,11 +1246,6 @@ function E:InitializeModules()
 	end
 end
 
-function E:RefreshModulesDB()
-	twipe(UnitFrames.db)
-	UnitFrames.db = self.db.unitframe
-end
-
 function E:DBConversions()
 	--Fix issue where UIScale was incorrectly stored as string
 	E.global.general.UIScale = tonumber(E.global.general.UIScale)
@@ -1468,7 +1463,7 @@ function E:Initialize()
 
 	self:UpdateMedia()
 	self:Tutorials()
-	self:RefreshModulesDB()
+
 	Minimap:UpdateSettings()
 
 	if self:HelloKittyFixCheck() then
