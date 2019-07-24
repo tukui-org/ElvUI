@@ -37,9 +37,9 @@ end
 function B:SizeAndPositionBagBar()
 	if not ElvUIBags then return; end
 
-	local buttonSpacing = E.db.bags.bagBar.spacing
-	local backdropSpacing = E.db.bags.bagBar.backdropSpacing
-	local bagBarSize = E.db.bags.bagBar.size
+	local buttonSpacing = E:Scale(E.db.bags.bagBar.spacing)
+	local backdropSpacing = E:Scale(E.db.bags.bagBar.backdropSpacing)
+	local bagBarSize = E:Scale(E.db.bags.bagBar.size)
 	local showBackdrop = E.db.bags.bagBar.showBackdrop
 	local growthDirection = E.db.bags.bagBar.growthDirection
 	local sortDirection = E.db.bags.bagBar.sortDirection
@@ -74,27 +74,27 @@ function B:SizeAndPositionBagBar()
 
 		if growthDirection == 'HORIZONTAL' and sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('LEFT', ElvUIBags, 'LEFT', bdpSpacing, 0)
+				button:SetPoint('LEFT', ElvUIBags, 'LEFT', bdpSpacing, 0)
 			elseif prevButton then
-				button:Point('LEFT', prevButton, 'RIGHT', btnSpacing, 0)
+				button:SetPoint('LEFT', prevButton, 'RIGHT', btnSpacing, 0)
 			end
 		elseif growthDirection == 'VERTICAL' and sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('TOP', ElvUIBags, 'TOP', 0, -bdpSpacing)
+				button:SetPoint('TOP', ElvUIBags, 'TOP', 0, -bdpSpacing)
 			elseif prevButton then
-				button:Point('TOP', prevButton, 'BOTTOM', 0, -btnSpacing)
+				button:SetPoint('TOP', prevButton, 'BOTTOM', 0, -btnSpacing)
 			end
 		elseif growthDirection == 'HORIZONTAL' and sortDirection == 'DESCENDING' then
 			if i == 1 then
-				button:Point('RIGHT', ElvUIBags, 'RIGHT', -bdpSpacing, 0)
+				button:SetPoint('RIGHT', ElvUIBags, 'RIGHT', -bdpSpacing, 0)
 			elseif prevButton then
-				button:Point('RIGHT', prevButton, 'LEFT', -btnSpacing, 0)
+				button:SetPoint('RIGHT', prevButton, 'LEFT', -btnSpacing, 0)
 			end
 		else
 			if i == 1 then
-				button:Point('BOTTOM', ElvUIBags, 'BOTTOM', 0, bdpSpacing)
+				button:SetPoint('BOTTOM', ElvUIBags, 'BOTTOM', 0, bdpSpacing)
 			elseif prevButton then
-				button:Point('BOTTOM', prevButton, 'TOP', 0, btnSpacing)
+				button:SetPoint('BOTTOM', prevButton, 'TOP', 0, btnSpacing)
 			end
 		end
 		if i ~= 1 then
