@@ -396,11 +396,11 @@ function B:UpdateItemUpgradeIcon(slot)
 end
 
 local ITEM_UPGRADE_CHECK_TIME = 0.5
-function B:UpgradeCheck_OnUpdate(slot, elapsed)
-	slot.timeSinceUpgradeCheck = slot.timeSinceUpgradeCheck + elapsed;
+function B:UpgradeCheck_OnUpdate(elapsed)
+	self.timeSinceUpgradeCheck = self.timeSinceUpgradeCheck + elapsed;
 
-	if slot.timeSinceUpgradeCheck >= ITEM_UPGRADE_CHECK_TIME then
-		B:UpdateItemUpgradeIcon(slot)
+	if self.timeSinceUpgradeCheck >= ITEM_UPGRADE_CHECK_TIME then
+		B:UpdateItemUpgradeIcon(self)
 	end
 end
 
