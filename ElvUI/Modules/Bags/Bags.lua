@@ -166,15 +166,15 @@ function B:IsSearching()
 end
 
 function B:UpdateSearch()
-	if self.Instructions then self.Instructions:SetShown(self:GetText() == "") end
+	local search = self:GetText()
+	if self.Instructions then self.Instructions:SetShown(search == "") end
 
-	local MIN_REPEAT_CHARACTERS = 3;
-	local searchString = self:GetText();
-	local prevSearchString = SEARCH_STRING;
-	if #searchString > MIN_REPEAT_CHARACTERS then
+	local MIN_REPEAT_CHARACTERS = 3
+	local prevSearch = SEARCH_STRING
+	if #search > MIN_REPEAT_CHARACTERS then
 		local repeatChar = true
 		for i=1, MIN_REPEAT_CHARACTERS, 1 do
-			if sub(searchString,(0-i), (0-i)) ~= sub(searchString,(-1-i),(-1-i)) then
+			if sub(search,(0-i), (0-i)) ~= sub(search,(-1-i),(-1-i)) then
 				repeatChar = false
 				break
 			end
@@ -187,13 +187,13 @@ function B:UpdateSearch()
 	end
 
 	--Keep active search term when switching between bank and reagent bank
-	if searchString == SEARCH and prevSearchString ~= "" then
-		searchString = prevSearchString
-	elseif searchString == SEARCH then
-		searchString = ''
+	if search == SEARCH and prevSearch ~= "" then
+		search = prevSearch
+	elseif search == SEARCH then
+		search = ''
 	end
 
-	SEARCH_STRING = searchString
+	SEARCH_STRING = search
 
 	B:RefreshSearch()
 	B:SetGuildBankSearch(SEARCH_STRING);
