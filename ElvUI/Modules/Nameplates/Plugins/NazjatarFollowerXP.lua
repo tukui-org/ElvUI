@@ -66,36 +66,26 @@ local function Update(self)
 		return
 	end
 
-	local rank, cur, next, total, isMax = E:GetNazjatarBodyguardXP(widgetID)
-	if not rank then
-		return
-	end
+	local rank, cur, Next, total, isMax = E:GetNazjatarBodyguardXP(widgetID)
+	if not rank then return end
 
-	if isMax then
-		element:SetMinMaxValues(0, 1)
-	else
-		element:SetMinMaxValues(0, next)
-	end
+	element:SetMinMaxValues(0, (isMax and 1) or Next)
 	element:SetValue(isMax and 1 or cur)
 
-	if (element.Rank) then
+	if element.Rank then
 		element.Rank:SetText(rank)
 		element.Rank:Show()
 	end
 
 	if element.ProgressText then
-		if isMax then
-			element.ProgressText:SetText(L["Max Rank"])
-		else
-			element.ProgressText:SetText(("%d / %d"):format(cur, next))
-		end
+		element.ProgressText:SetText((isMax and L["Max Rank"]) or ("%d / %d"):format(cur, Next))
 		element.ProgressText:Show()
 	end
 
 	element:Show()
 
-	if (element.PostUpdate) then
-		element:PostUpdate(rank, cur, next, total)
+	if element.PostUpdate then
+		element:PostUpdate(rank, cur, Next, total)
 	end
 end
 

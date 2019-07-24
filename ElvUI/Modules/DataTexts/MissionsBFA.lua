@@ -26,7 +26,6 @@ local C_Garrison_GetTalentTreeInfoForID = C_Garrison.GetTalentTreeInfoForID
 local C_Garrison_HasGarrison = C_Garrison.HasGarrison
 local C_Garrison_RequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
 local C_IslandsQueue_GetIslandsWeeklyQuestID = C_IslandsQueue.GetIslandsWeeklyQuestID
-local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 local LE_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH
 local LE_FOLLOWER_TYPE_GARRISON_8_0 = LE_FOLLOWER_TYPE_GARRISON_8_0
 local LE_GARRISON_TYPE_8_0 = LE_GARRISON_TYPE_8_0
@@ -59,7 +58,6 @@ local BODYGUARD_LEVEL_XP_FORMAT = L["Rank"] .. " %d (%d/%d)"
 local NAZJATAR_MAP_ID = 1355
 
 local lastPanel
-
 local function sortFunction(a, b)
 	return a.missionEndTime < b.missionEndTime
 end
@@ -117,17 +115,12 @@ local function OnEnter(self, _, noUpdate)
 					hasFollowers = true
 				end
 
-				if timeleftString then
-					timeleftString = timeleftString .. " "
-				else
-					timeleftString = ""
-				end
+				timeleftString = (timeleftString and timeleftString .. " ") or ""
+
 				DT.tooltip:AddDoubleLine(
 					name,
 					timeleftString .. format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal),
-					1,
-					1,
-					1
+					1, 1, 1
 				)
 			end
 		end
@@ -190,13 +183,9 @@ local function OnEnter(self, _, noUpdate)
 		DT.tooltip:AddLine(L["Nazjatar Follower XP"])
 		for i = 2, 4 do
 			local npcName, widgetID = unpack(widgetGroup[i])
-			local rank, cur, next, _, isMax = E:GetNazjatarBodyguardXP(widgetID)
+			local rank, cur, Next, _, isMax = E:GetNazjatarBodyguardXP(widgetID)
 			if npcName and rank then
-				if isMax then
-					DT.tooltip:AddDoubleLine(npcName, L["Max Rank"], 1, 1, 1)
-				else
-					DT.tooltip:AddDoubleLine(npcName, BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, next), 1, 1, 1)
-				end
+				DT.tooltip:AddDoubleLine(npcName, (isMax and L["Max Rank"]) or BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, Next), 1, 1, 1)
 			end
 		end
 		hasNazjatarBodyguardXP = true
