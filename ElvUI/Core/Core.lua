@@ -33,7 +33,7 @@ local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local assert, type, xpcall, next, print = assert, type, xpcall, next, print
 local gsub, strjoin, twipe, tinsert, tremove = gsub, strjoin, wipe, tinsert, tremove
-local format, find, strrep, len, sub = format, strfind, strrep, strlen, strsub
+local format, find, strrep, strlen, sub = format, strfind, strrep, strlen, strsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
@@ -727,7 +727,7 @@ end
 do	--Split string by multi-character delimiter (the strsplit / string.split function provided by WoW doesn't allow multi-character delimiter)
 	local splitTable = {}
 	function E:SplitString(str, delim)
-		assert(type (delim) == 'string' and len(delim) > 0, 'bad delimiter')
+		assert(type (delim) == 'string' and strlen(delim) > 0, 'bad delimiter')
 
 		local start = 1
 		twipe(splitTable)  -- results table
@@ -738,7 +738,7 @@ do	--Split string by multi-character delimiter (the strsplit / string.split func
 			if not pos then break end
 
 			tinsert(splitTable, sub(str, start, pos - 1))
-			start = pos + len(delim)
+			start = pos + strlen(delim)
 		end -- while
 
 		-- insert final one (after last delimiter)
