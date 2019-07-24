@@ -186,6 +186,7 @@ function NP:Construct_RaisedELement(nameplate)
 end
 
 function NP:StyleTargetPlate(nameplate)
+	nameplate:ClearAllPoints()
 	nameplate:Point("CENTER")
 	nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	nameplate:SetScale(E.global.general.UIScale)
@@ -237,6 +238,7 @@ function NP:ScalePlate(nameplate, scale, targetPlate)
 end
 
 function NP:StylePlate(nameplate)
+	nameplate:ClearAllPoints()
 	nameplate:Point("CENTER")
 	nameplate:SetScale(E.global.general.UIScale)
 
@@ -387,11 +389,11 @@ function NP:DisablePlate(nameplate, nameOnly)
 		NP:Update_Highlight(nameplate)
 		nameplate.Name:Show()
 		nameplate.Name:ClearAllPoints()
-		nameplate.Name:SetPoint("CENTER", nameplate, "CENTER", 0, 0)
+		nameplate.Name:Point("CENTER", nameplate, "CENTER", 0, 0)
 		if NP.db.units[nameplate.frameType].showTitle then
 			nameplate.Title:Show()
 			nameplate.Title:ClearAllPoints()
-			nameplate.Title:SetPoint("TOP", nameplate.Name, "BOTTOM", 0, -2)
+			nameplate.Title:Point("TOP", nameplate.Name, "BOTTOM", 0, -2)
 		end
 	elseif nameplate:IsElementEnabled("Highlight") then
 		nameplate:DisableElement("Hightlight")
@@ -408,35 +410,17 @@ function NP:SetupTarget(nameplate, removed)
 	if TCP.ClassPower then
 		TCP.ClassPower:SetParent(moveToPlate)
 		TCP.ClassPower:ClearAllPoints()
-		TCP.ClassPower:SetPoint(
-			"CENTER",
-			moveToPlate,
-			"CENTER",
-			NP.db.units.TARGET.classpower.xOffset,
-			NP.db.units.TARGET.classpower.yOffset
-		)
+		TCP.ClassPower:Point("CENTER", moveToPlate, "CENTER", NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
 	end
 	if TCP.Runes then
 		TCP.Runes:SetParent(moveToPlate)
 		TCP.Runes:ClearAllPoints()
-		TCP.Runes:SetPoint(
-			"CENTER",
-			moveToPlate,
-			"CENTER",
-			NP.db.units.TARGET.classpower.xOffset,
-			NP.db.units.TARGET.classpower.yOffset
-		)
+		TCP.Runes:Point("CENTER", moveToPlate, "CENTER", NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
 	end
 	if TCP.Stagger then
 		TCP.Stagger:SetParent(moveToPlate)
 		TCP.Stagger:ClearAllPoints()
-		TCP.Stagger:SetPoint(
-			"CENTER",
-			moveToPlate,
-			"CENTER",
-			NP.db.units.TARGET.classpower.xOffset,
-			NP.db.units.TARGET.classpower.yOffset
-		)
+		TCP.Stagger:Point("CENTER", moveToPlate, "CENTER", NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
 	end
 end
 
@@ -694,17 +678,10 @@ end
 function NP:Initialize()
 	NP.db = E.db.nameplates
 
-	if E.private.nameplates.enable ~= true then
-		return
-	end
+	if E.private.nameplates.enable ~= true then return end
 	NP.Initialized = true
 
-	oUF:RegisterStyle(
-		"ElvNP",
-		function(frame, unit)
-			NP:Style(frame, unit)
-		end
-	)
+	oUF:RegisterStyle("ElvNP", function(frame, unit) NP:Style(frame, unit) end)
 	oUF:SetActiveStyle("ElvNP")
 
 	NP.Plates = {}
@@ -748,10 +725,13 @@ function NP:Initialize()
 	)
 
 	oUF:Spawn("player", "ElvNP_Player", "")
+
+	_G.ElvNP_Player:ClearAllPoints()
 	_G.ElvNP_Player:Point("TOP", _G.UIParent, "CENTER", 0, -150)
 	_G.ElvNP_Player:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Player:SetScale(E.mult)
 	_G.ElvNP_Player.frameType = "PLAYER"
+
 	E:CreateMover(
 		_G.ElvNP_Player,
 		"ElvNP_PlayerMover",
@@ -772,50 +752,40 @@ function NP:Initialize()
 	StaticSecure:RegisterForClicks("LeftButtonDown", "RightButtonDown")
 	StaticSecure:SetScript("OnEnter", _G.UnitFrame_OnEnter)
 	StaticSecure:SetScript("OnLeave", _G.UnitFrame_OnLeave)
+	StaticSecure:ClearAllPoints()
 	StaticSecure:Point("BOTTOMRIGHT", _G.ElvNP_PlayerMover)
 	StaticSecure:Point("TOPLEFT", _G.ElvNP_PlayerMover)
 	StaticSecure.unit = "player" -- Needed for OnEnter, OnLeave
 	StaticSecure:Hide()
 
 	oUF:Spawn("player", "ElvNP_Test")
+
+	_G.ElvNP_Test:ClearAllPoints()
 	_G.ElvNP_Test:Point("BOTTOM", _G.UIParent, "BOTTOM", 0, 250)
 	_G.ElvNP_Test:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test:SetMovable(true)
 	_G.ElvNP_Test:RegisterForDrag("LeftButton", "RightButton")
-	_G.ElvNP_Test:SetScript(
-		"OnDragStart",
-		function()
-			_G.ElvNP_Test:StartMoving()
-		end
-	)
-	_G.ElvNP_Test:SetScript(
-		"OnDragStop",
-		function()
-			_G.ElvNP_Test:StopMovingOrSizing()
-		end
-	)
+	_G.ElvNP_Test:SetScript("OnDragStart", function() _G.ElvNP_Test:StartMoving() end)
+	_G.ElvNP_Test:SetScript("OnDragStop", function() _G.ElvNP_Test:StopMovingOrSizing() end)
 	_G.ElvNP_Test.frameType = "PLAYER"
 	_G.ElvNP_Test:Disable()
 	NP:DisablePlate(_G.ElvNP_Test)
 
 	oUF:Spawn("player", "ElvNP_TargetClassPower")
+
 	_G.ElvNP_TargetClassPower:SetScale(1)
 	_G.ElvNP_TargetClassPower:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_TargetClassPower.frameType = "TARGET"
 	_G.ElvNP_TargetClassPower:SetAttribute("toggleForVehicle", true)
+	_G.ElvNP_TargetClassPower:ClearAllPoints()
 	_G.ElvNP_TargetClassPower:Point("TOP", E.UIParent, "BOTTOM", 0, -500)
 
 	NP.PlayerNamePlateAnchor = CreateFrame("Frame", "ElvUIPlayerNamePlateAnchor", E.UIParent)
 	NP.PlayerNamePlateAnchor:EnableMouse(false)
 	NP.PlayerNamePlateAnchor:Hide()
 
-	oUF:SpawnNamePlates(
-		"ElvNP_",
-		function(nameplate, event, unit)
-			NP:NamePlateCallBack(nameplate, event, unit)
-		end
-	)
+	oUF:SpawnNamePlates("ElvNP_", function(nameplate, event, unit) NP:NamePlateCallBack(nameplate, event, unit) end)
 
 	NP:RegisterEvent("PLAYER_REGEN_ENABLED")
 	NP:RegisterEvent("PLAYER_REGEN_DISABLED")
