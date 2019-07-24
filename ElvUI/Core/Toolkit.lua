@@ -298,6 +298,8 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 end
 
 local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
+	if frame.backdrop then return end
+
 	local parent = (frame.IsObjectType and frame:IsObjectType('Texture') and frame:GetParent()) or frame
 	local backdrop = CreateFrame('Frame', nil, parent)
 	frame.backdrop = backdrop
@@ -321,6 +323,7 @@ end
 
 local function CreateShadow(frame, size)
 	if frame.shadow then return end
+
 	backdropr, backdropg, backdropb, borderr, borderg, borderb = 0, 0, 0, 0, 0, 0
 
 	local shadow = CreateFrame('Frame', nil, frame)
@@ -481,12 +484,12 @@ do
 	local CloseButtonOnEnter = function(btn) if btn.Texture then btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor)) end end
 	local CloseButtonOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
 	CreateCloseButton = function(frame, size, offset, texture, backdrop)
+		if frame.CloseButton then return end
+
 		local CloseButton = CreateFrame('Button', nil, frame)
 		CloseButton:Size(size or 16)
 		CloseButton:Point('TOPRIGHT', offset or -6, offset or -6)
-		if backdrop then
-			CloseButton:CreateBackdrop(nil, true)
-		end
+		if backdrop then CloseButton:CreateBackdrop(nil, true) end
 
 		CloseButton.Texture = CloseButton:CreateTexture(nil, 'OVERLAY')
 		CloseButton.Texture:SetAllPoints()
