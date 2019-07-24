@@ -137,6 +137,7 @@ local function SkinBags()
 	end
 end
 
+local bagIconCache = {}
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bags ~= true or E.private.bags.enable then return end
 
@@ -160,10 +161,16 @@ local function LoadSkin()
 		local title = _G[frameName.."Name"]
 		if title and title.GetText then
 			local name = title:GetText()
-			if name == BACKPACK_TOOLTIP then
-				BagIcon(frame, _G.MainMenuBarBackpackButtonIconTexture:GetTexture())
+			if bagIconCache[name] then
+				BagIcon(frame, bagIconCache[name])
 			else
-				BagIcon(frame, select(10, GetItemInfo(name)))
+				if name == BACKPACK_TOOLTIP then
+					bagIconCache[name] = _G.MainMenuBarBackpackButtonIconTexture:GetTexture()
+				else
+					bagIconCache[name] = select(10, GetItemInfo(name))
+				end
+
+				BagIcon(frame, bagIconCache[name])
 			end
 		end
 	end)
