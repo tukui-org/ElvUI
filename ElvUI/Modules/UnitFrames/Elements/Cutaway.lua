@@ -1,5 +1,5 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule("UnitFrames")
 
 function UF:Construct_Cutaway(frame)
 	local cutaway = CreateFrame("Frame", nil, frame)
@@ -7,14 +7,15 @@ function UF:Construct_Cutaway(frame)
 	local cutawayHealth = CreateFrame("StatusBar", nil, frame.Health)
 	cutawayHealth:SetStatusBarTexture(E.media.blankTex)
 	cutawayHealth:SetFrameLevel(10)
-	cutawayHealth:SetAllPoints(frame.Health)
-
+	cutawayHealth:SetPoint("TOPLEFT", frame.Health:GetStatusBarTexture(), "TOPRIGHT")
+	cutawayHealth:SetPoint("BOTTOMLEFT", frame.Health:GetStatusBarTexture(), "BOTTOMRIGHT")
 	local cutawayPower
 	if frame.Power then
 		cutawayPower = CreateFrame("StatusBar", nil, frame.Power)
 		cutawayPower:SetStatusBarTexture(E.media.blankTex)
 		cutawayPower:SetFrameLevel(frame.Power:GetFrameLevel())
-		cutawayPower:SetAllPoints()
+		cutawayPower:SetPoint("TOPLEFT", frame.Power:GetStatusBarTexture(), "TOPRIGHT")
+		cutawayPower:SetPoint("BOTTOMLEFT", frame.Power:GetStatusBarTexture(), "BOTTOMRIGHT")
 	end
 
 	cutaway.Health = cutawayHealth
@@ -24,7 +25,9 @@ function UF:Construct_Cutaway(frame)
 end
 
 function UF:Configure_Cutaway(frame)
-	if not frame.VARIABLES_SET then return end
+	if not frame.VARIABLES_SET then
+		return
+	end
 	local db = frame.db
 
 	local health = frame.Cutaway.Health
@@ -37,6 +40,15 @@ function UF:Configure_Cutaway(frame)
 			health:SetReverseFill(false)
 		end
 
+		local firstPoint = {"TOPLEFT", "TOPRIGHT"}
+		local secondPoint = {"BOTTOMLEFT", "BOTTOMRIGHT"}
+		if db.health.orientation and db.health.orientation == "VERTICAL" then
+			firstPoint = {"BOTTOMLEFT", "TOPLEFT"}
+			secondPoint = {"BOTTOMRIGHT", "TOPRIGHT"}
+		end
+		health:ClearAllPoints()
+		health:SetPoint(firstPoint[1], frame.Health:GetStatusBarTexture(), firstPoint[2])
+		health:SetPoint(secondPoint[1], frame.Health:GetStatusBarTexture(), secondPoint[2])
 		--Party/Raid Frames allow to change statusbar orientation
 		if db.health.orientation then
 			health:SetOrientation(db.health.orientation)

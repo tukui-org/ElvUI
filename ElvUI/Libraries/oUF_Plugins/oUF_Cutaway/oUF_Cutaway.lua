@@ -37,6 +37,24 @@ local function fadeClosure(element)
 	E:UIFrameFadeOut(element, element.fadeOutTime, element.__parentElement:GetAlpha(), 0)
 end
 
+local function PreUpdate(self, element, unit)
+	element.unit = unit
+	element.cur = self.cur
+	element.ready = true
+end
+
+local function PostUpdate(self, element, cur, max)
+	local parentMeasurement = self:GetOrientation() == "VERTICAL" and self:GetHeight() or self:GetWidth()
+	local perc1Measurement = (1 / max) * parentMeasurement
+	local change = element.cur - cur
+	local myMeasurement = change * perc1Measurement
+	if (self:GetOrientation() == "VERTICAL") then
+		element:SetHeight(myMeasurement)
+	else
+		element:SetWidth(myMeasurement)
+	end
+end
+
 local function Health_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Health
 	local max = UnitHealthMax(unit)
@@ -44,21 +62,21 @@ local function Health_PreUpdate(self, unit)
 		return
 	end
 
-	element.cur = self.cur
-	element.unit = unit
-	element:SetValue(element.cur)
-	element:SetMinMaxValues(0, max)
-	element.ready = true
+	PreUpdate(self, element, unit)
 end
 
 local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	local element = self.__owner.Cutaway.Health
-	if (not element.ready or not element.cur or not curHealth or not maxHealth) or element.playing or element.unit ~= unit then
+	if (not element.ready or not element.cur or not curHealth or not maxHealth) or element.unit ~= unit then
+		return
+	end
+	PostUpdate(self, element, curHealth, maxHealth)
+	if element.playing then
 		return
 	end
 
 	if (element.cur - curHealth) > (maxHealth * 0.01) then
-		element:SetAlpha(1)
+		element:SetAlpha(self:GetAlpha())
 
 		if not E then
 			E = ElvUI[1]
@@ -84,21 +102,20 @@ local function Power_PreUpdate(self, unit)
 		return
 	end
 
-	element.cur = self.cur
-	element.unit = unit
-	element:SetValue(element.cur)
-	element:SetMinMaxValues(0, max)
-	element.ready = true
+	PreUpdate(self, element, unit)
 end
 
 local function Power_PostUpdate(self, unit, curPower, maxPower)
 	local element = self.__owner.Cutaway.Power
-	if (not element.ready or not element.cur or not curPower or not maxPower) or element.playing or element.unit ~= unit then
+	if (not element.ready or not element.cur or not curPower or not maxPower) or element.unit ~= unit then
 		return
 	end
-
+	PostUpdate(self, element, curPower, maxPower)
+	if element.playing then
+		return
+	end
 	if (element.cur - curPower) > (maxPower * 0.1) then
-		element:SetAlpha(1)
+		element:SetAlpha(self:GetAlpha())
 
 		if not E then
 			E = ElvUI[1]
@@ -134,7 +151,7 @@ local function Enable(self)
 			element.Health.lengthBeforeFade = element.Health.lengthBeforeFade or 0.3
 			element.Health.fadeOutTime = element.Health.fadeOutTime or 0.6
 			element.Health:SetMinMaxValues(0, 1)
-			element.Health:SetValue(0)
+			element.Health:SetValue(1)
 			element.Health.__parentElement = self.Health
 			element.Health:Show()
 
@@ -167,7 +184,7 @@ local function Enable(self)
 			element.Power.lengthBeforeFade = element.Power.lengthBeforeFade or 0.3
 			element.Power.fadeOutTime = element.Power.fadeOutTime or 0.6
 			element.Power:SetMinMaxValues(0, 1)
-			element.Power:SetValue(0)
+			element.Power:SetValue(1)
 			element.Power.__parentElement = self.Power
 			element.Power:Show()
 

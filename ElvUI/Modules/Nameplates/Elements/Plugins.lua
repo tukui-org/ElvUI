@@ -278,8 +278,9 @@ function NP:Construct_Cutaway(nameplate)
 		Cutaway.Health:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
 		NP.StatusBars[Cutaway.Health] = true
 	end
-	Cutaway.Health:SetFrameLevel(4)
-	Cutaway.Health:SetAllPoints()
+	Cutaway.Health:SetFrameLevel(5)
+	Cutaway.Health:SetPoint("TOPLEFT", nameplate.Health:GetStatusBarTexture(), "TOPRIGHT")
+	Cutaway.Health:SetPoint("BOTTOMLEFT", nameplate.Health:GetStatusBarTexture(), "BOTTOMRIGHT")
 
 	Cutaway.Power = CreateFrame("StatusBar", nameplate:GetDebugName() .. "CutawayPower", nameplate.Power)
 	if NP.db.cutaway.power.forceBlankTexture then
@@ -288,8 +289,9 @@ function NP:Construct_Cutaway(nameplate)
 		Cutaway.Power:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
 		NP.StatusBars[Cutaway.Power] = true
 	end
-	Cutaway.Power:SetFrameLevel(4)
-	Cutaway.Power:SetAllPoints()
+	Cutaway.Power:SetFrameLevel(5)
+	Cutaway.Power:SetPoint("TOPLEFT", nameplate.Power:GetStatusBarTexture(), "TOPRIGHT")
+	Cutaway.Power:SetPoint("BOTTOMLEFT", nameplate.Power:GetStatusBarTexture(), "BOTTOMRIGHT")
 
 	return Cutaway
 end
