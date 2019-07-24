@@ -236,22 +236,31 @@ local function LoadSkin()
 		end
 	end)
 
+	_G.BagHelpBox:Kill()
+
 	local BagItemSearchBox = _G.BagItemSearchBox
 	S:HandleEditBox(BagItemSearchBox)
 	BagItemSearchBox:Height(BagItemSearchBox:GetHeight() - 5)
 
 	local BankItemSearchBox = _G.BankItemSearchBox
-	_G.BagHelpBox:Kill()
 	BankItemSearchBox:StripTextures()
 	BankItemSearchBox:CreateBackdrop("Overlay")
 	BankItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
 	BankItemSearchBox.backdrop:Point("BOTTOMRIGHT", 4, 1)
 
-	local bags = CreateFrame("Frame")
-	bags:RegisterEvent("BAG_UPDATE")
-	bags:RegisterEvent("ITEM_LOCK_CHANGED")
-	bags:RegisterEvent("BAG_CLOSED")
-	bags:SetScript("OnEvent", SkinBags)
+	local AutoSort = _G.BagItemAutoSortButton
+	AutoSort:StripTextures()
+	AutoSort:SetTemplate()
+	AutoSort.Icon = AutoSort:CreateTexture()
+	AutoSort.Icon:SetTexture("Interface\\ICONS\\INV_Pet_Broom")
+	AutoSort.Icon:SetTexCoord(unpack(E.TexCoords))
+	AutoSort.Icon:SetInside()
+
+	local Bags = CreateFrame("Frame")
+	Bags:RegisterEvent("BAG_UPDATE")
+	Bags:RegisterEvent("ITEM_LOCK_CHANGED")
+	Bags:RegisterEvent("BAG_CLOSED")
+	Bags:SetScript("OnEvent", SkinBags)
 	SkinBags()
 end
 
