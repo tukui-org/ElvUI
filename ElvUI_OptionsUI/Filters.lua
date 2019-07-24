@@ -13,8 +13,6 @@ local format = string.format
 local GetSpellInfo = GetSpellInfo
 
 -- GLOBALS: MAX_PLAYER_LEVEL
--- GLOBALS: selectedFolder
---  what is selectedFolder?
 
 local selectedSpell;
 local selectedFilter;
@@ -1343,7 +1341,7 @@ local function UpdateFilterGroup()
 					name = L["Enable"],
 					type = "toggle",
 					get = function()
-						if selectedFolder or not (spellID or selectedSpell) then
+						if not (spellID or selectedSpell) then
 							return false
 						else
 							return E.global.unitframe.aurafilters[selectedFilter].spells[(spellID or selectedSpell)].enable
@@ -1364,7 +1362,7 @@ local function UpdateFilterGroup()
 							desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
 							min = 0, max = 99, step = 1,
 							get = function()
-								if selectedFolder or not selectedSpell then
+								if not selectedSpell then
 									return 0
 								else
 									return E.global.unitframe.aurafilters[selectedFilter].spells[(spellID or selectedSpell)].priority
@@ -1379,7 +1377,7 @@ local function UpdateFilterGroup()
 							desc = L["The debuff needs to reach this amount of stacks before it is shown. Set to 0 to always show the debuff."],
 							min = 0, max = 99, step = 1,
 							get = function()
-								if selectedFolder or not selectedSpell then
+								if not selectedSpell then
 									return 0
 								else
 									return E.global.unitframe.aurafilters[selectedFilter].spells[(spellID or selectedSpell)].stackThreshold
