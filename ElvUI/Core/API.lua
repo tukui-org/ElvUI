@@ -133,11 +133,11 @@ do
 		if not rank then return end
 
 		local cur = widget.barValue - widget.barMin
-		local Next = widget.barMax - widget.barMin
+		local toNext = widget.barMax - widget.barMin
 		local total = widget.barValue
 		local isMax = rank == MaxNazjatarBodyguardRank
 
-		return rank, cur, Next, total, isMax
+		return rank, cur, toNext, total, isMax
 	end
 end
 

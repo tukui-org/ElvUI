@@ -183,9 +183,9 @@ local function OnEnter(self, _, noUpdate)
 		DT.tooltip:AddLine(L["Nazjatar Follower XP"])
 		for i = 2, 4 do
 			local npcName, widgetID = unpack(widgetGroup[i])
-			local rank, cur, Next, _, isMax = E:GetNazjatarBodyguardXP(widgetID)
+			local rank, cur, toNext, _, isMax = E:GetNazjatarBodyguardXP(widgetID)
 			if npcName and rank then
-				DT.tooltip:AddDoubleLine(npcName, (isMax and L["Max Rank"]) or BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, Next), 1, 1, 1)
+				DT.tooltip:AddDoubleLine(npcName, (isMax and L["Max Rank"]) or BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, toNext), 1, 1, 1)
 			end
 		end
 		hasNazjatarBodyguardXP = true
