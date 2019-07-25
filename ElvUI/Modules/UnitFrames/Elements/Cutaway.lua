@@ -33,17 +33,6 @@ function UF:Configure_Cutaway(frame)
 	local health = frame.Cutaway.Health
 	local power = frame.Cutaway.Power
 
-	local eitherEnabled = db.cutaway.health.enabled or db.cutaway.power.enabled
-	if eitherEnabled then
-		if not frame:IsElementEnabled("Cutaway") then
-			frame:EnableElement("Cutaway")
-		end
-	else
-		if frame:IsElementEnabled("Cutaway") then
-			frame:DisableElement("Cutaway")
-		end
-	end
-
 	if db.health then
 		if db.health.reverseFill then
 			health:SetReverseFill(true)
@@ -83,5 +72,19 @@ function UF:Configure_Cutaway(frame)
 		power.lengthBeforeFade = db.cutaway.power.lengthBeforeFade
 		power.fadeOutTime = db.cutaway.power.fadeOutTime
 		frame.Power:PostUpdateColor()
+	end
+
+	local eitherEnabled = db.cutaway.health.enabled
+	if (db.cutaway.power) then
+		eitherEnabled = eitherEnabled or db.cutaway.power.enabled
+	end
+	if eitherEnabled then
+		if not frame:IsElementEnabled("Cutaway") then
+			frame:EnableElement("Cutaway")
+		end
+	else
+		if frame:IsElementEnabled("Cutaway") then
+			frame:DisableElement("Cutaway")
+		end
 	end
 end
