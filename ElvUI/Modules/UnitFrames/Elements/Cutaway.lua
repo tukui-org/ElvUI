@@ -43,43 +43,48 @@ function UF:Configure_Cutaway(frame)
 		end
 
 		local health = frame.Cutaway.Health
-		health.enabled = healthEnabled
-		if healthEnabled then
-			health:SetReverseFill((healthDB.reverseFill and true) or false)
+		if health then
+			health.enabled = healthEnabled
 
-			local vert = healthDB.orientation and healthDB.orientation == "VERTICAL"
-			local firstPoint, secondPoint = healthPoints[(vert and 3) or 1], healthPoints[(vert and 4) or 2]
-			local sbTexture = frame.Health:GetStatusBarTexture()
+			if healthEnabled then
+				health:SetReverseFill((healthDB.reverseFill and true) or false)
 
-			health:ClearAllPoints()
-			health:SetPoint(firstPoint[1], sbTexture, firstPoint[2])
-			health:SetPoint(secondPoint[1], sbTexture, secondPoint[2])
+				local vert = healthDB.orientation and healthDB.orientation == "VERTICAL"
+				local firstPoint, secondPoint = healthPoints[(vert and 3) or 1], healthPoints[(vert and 4) or 2]
+				local barTexture = frame.Health:GetStatusBarTexture()
 
-			--Party/Raid Frames allow to change statusbar orientation
-			if healthDB.orientation then
-				health:SetOrientation(healthDB.orientation)
+				health:ClearAllPoints()
+				health:SetPoint(firstPoint[1], barTexture, firstPoint[2])
+				health:SetPoint(secondPoint[1], barTexture, secondPoint[2])
+
+				--Party/Raid Frames allow to change statusbar orientation
+				if healthDB.orientation then
+					health:SetOrientation(healthDB.orientation)
+				end
+
+				health.lengthBeforeFade = healthDB.lengthBeforeFade
+				health.fadeOutTime = healthDB.fadeOutTime
+				frame.Health:PostUpdateColor(frame.unit)
+			else
+				health:Hide()
 			end
-
-			health.lengthBeforeFade = healthDB.lengthBeforeFade
-			health.fadeOutTime = healthDB.fadeOutTime
-			frame.Health:PostUpdateColor(frame.unit)
-		else
-			health:Hide()
 		end
 
 		local power = frame.Cutaway.Power
-		power.enabled = powerEnabled
-		if powerEnabled then
-			if power and frame.USE_POWERBAR then
+		if power then
+			local powerUsable = powerEnabled and frame.USE_POWERBAR
+			power.enabled = powerUsable
+
+			if powerUsable then
 				power:SetReverseFill((powerDB.reverseFill and true) or false)
 				power:SetFrameLevel(frame.Power:GetFrameLevel())
 
 				power.lengthBeforeFade = powerDB.lengthBeforeFade
 				power.fadeOutTime = powerDB.fadeOutTime
 				frame.Power:PostUpdateColor()
+			else
+				power:Hide()
 			end
-		else
-			power:Hide()
 		end
 	elseif frame:IsElementEnabled("Cutaway") then
 		frame:DisableElement("Cutaway")
