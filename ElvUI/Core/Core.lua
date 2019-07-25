@@ -1428,6 +1428,13 @@ function E:DBConversions()
 	end
 end
 
+function E:RefreshModulesDB()
+	-- this function is specifically used to reference the new database
+	-- onto the unitframe module, its useful dont delete! D:
+	twipe(UnitFrames.db) --old ref, dont need so clear it
+	UnitFrames.db = self.db.unitframe --new ref
+end
+
 function E:Initialize()
 	twipe(self.db)
 	twipe(self.global)
@@ -1451,6 +1458,7 @@ function E:Initialize()
 	self:LoadAPI()
 	self:LoadCommands()
 	self:InitializeModules()
+	self:RefreshModulesDB()
 	self:LoadMovers()
 	self:UpdateMedia()
 	self:UpdateCooldownSettings('all')
