@@ -74,7 +74,7 @@ end
 
 local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	local element = self.__owner.Cutaway.Health
-	if (not element.ready or not element.cur or not curHealth or not maxHealth) or element.unit ~= unit then
+	if (not element.enabled or not element.cur) or (not element.ready or not curHealth or not maxHealth) or element.unit ~= unit then
 		return
 	end
 	UpdateSize(self, element, curHealth, maxHealth)
@@ -114,7 +114,7 @@ end
 
 local function Power_PostUpdate(self, unit, curPower, maxPower)
 	local element = self.__owner.Cutaway.Power
-	if (not element.ready or not element.cur or not curPower or not maxPower) or element.unit ~= unit then
+	if (not element.enabled or not element.cur) or (not element.ready or not curPower or not maxPower) or element.unit ~= unit then
 		return
 	end
 	UpdateSize(self, element, curPower, maxPower)
@@ -229,9 +229,11 @@ local function Disable(self)
 		self.Cutaway:Hide()
 
 		if self.Cutaway.Health then
+			self.Cutaway.Health.enabled = false
 			self.Cutaway.Health:Hide()
 		end
 		if self.Cutaway.Power then
+			self.Cutaway.Power.enabled = false
 			self.Cutaway.Power:Hide()
 		end
 	end
