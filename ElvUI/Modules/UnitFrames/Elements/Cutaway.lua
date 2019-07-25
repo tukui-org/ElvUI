@@ -33,6 +33,17 @@ function UF:Configure_Cutaway(frame)
 	local health = frame.Cutaway.Health
 	local power = frame.Cutaway.Power
 
+	local eitherEnabled = db.cutaway.health.enabled or db.cutaway.power.enabled
+	if eitherEnabled then
+		if not frame:IsElementEnabled("Cutaway") then
+			frame:EnableElement("Cutaway")
+		end
+	else
+		if frame:IsElementEnabled("Cutaway") then
+			frame:DisableElement("Cutaway")
+		end
+	end
+
 	if db.health then
 		if db.health.reverseFill then
 			health:SetReverseFill(true)
