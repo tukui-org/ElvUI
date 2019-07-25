@@ -492,9 +492,9 @@ function E:LoadAPI()
 		local opt = E.db.general.cropIcon
 		for i, v in ipairs(E.TexCoords) do
 			if i % 2 == 0 then
-				E.TexCoords[i] = v + (0.04 * opt)
-			else
 				E.TexCoords[i] = v - (0.04 * opt)
+			else
+				E.TexCoords[i] = v + (0.04 * opt)
 			end
 		end
 	end
