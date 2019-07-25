@@ -42,8 +42,9 @@ function UF:Configure_Cutaway(frame)
 			frame:EnableElement("Cutaway")
 		end
 
-		if healthDB then
-			local health = frame.Cutaway.Health
+		local health = frame.Cutaway.Health
+		health.enabled = healthEnabled
+		if healthEnabled then
 			health:SetReverseFill((healthDB.reverseFill and true) or false)
 
 			local vert = healthDB.orientation and healthDB.orientation == "VERTICAL"
@@ -59,23 +60,26 @@ function UF:Configure_Cutaway(frame)
 				health:SetOrientation(healthDB.orientation)
 			end
 
-			health.enabled = healthEnabled
 			health.lengthBeforeFade = healthDB.lengthBeforeFade
 			health.fadeOutTime = healthDB.fadeOutTime
 			frame.Health:PostUpdateColor(frame.unit)
+		else
+			health:Hide()
 		end
 
-		if powerDB then
-			local power = frame.Cutaway.Power
+		local power = frame.Cutaway.Power
+		power.enabled = powerEnabled
+		if powerEnabled then
 			if power and frame.USE_POWERBAR then
 				power:SetReverseFill((powerDB.reverseFill and true) or false)
 				power:SetFrameLevel(frame.Power:GetFrameLevel())
 
-				power.enabled = powerEnabled
 				power.lengthBeforeFade = powerDB.lengthBeforeFade
 				power.fadeOutTime = powerDB.fadeOutTime
 				frame.Power:PostUpdateColor()
 			end
+		else
+			power:Hide()
 		end
 	elseif frame:IsElementEnabled("Cutaway") then
 		frame:DisableElement("Cutaway")
