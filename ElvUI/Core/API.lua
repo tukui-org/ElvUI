@@ -490,11 +490,12 @@ function E:LoadAPI()
 
 	do -- setup cropIcon texCoords
 		local opt = E.db.general.cropIcon
+		local modifier = 0.04 * opt
 		for i, v in ipairs(E.TexCoords) do
 			if i % 2 == 0 then
-				E.TexCoords[i] = v - (0.04 * opt)
+				E.TexCoords[i] = v - modifier
 			else
-				E.TexCoords[i] = v + (0.04 * opt)
+				E.TexCoords[i] = v + modifier
 			end
 		end
 	end
