@@ -488,6 +488,17 @@ function E:LoadAPI()
 	self:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
 	self:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
+	do -- setup cropIcon texCoords
+		local opt = E.db.general.cropIcon
+		if opt == 0 then
+			E.TexCoords = {0, 1, 0, 1}
+		elseif opt == 1 then
+			E.TexCoords = {0.04, 0.96, 0.04, 0.96}
+		elseif opt == 2 then
+			E.TexCoords = {0.08, 0.92, 0.08, 0.92}
+		end
+	end
+
 	if not strfind(date(), '04/01/') then
 		E.global.aprilFools = nil
 	end

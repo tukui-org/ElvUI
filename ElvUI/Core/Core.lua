@@ -85,7 +85,7 @@ E.snapBars = {}
 E.RegisteredModules = {}
 E.RegisteredInitialModules = {}
 E.valueColorUpdateFuncs = {}
-E.TexCoords = {.08, .92, .08, .92}
+E.TexCoords = {0, 1, 0, 1}
 E.FrameLocks = {}
 E.VehicleLocks = {}
 E.CreditsList = {}
@@ -1346,6 +1346,12 @@ function E:DBConversions()
 		E.db.chat.panelColorConverted = true
 	end
 
+	--Convert cropIcon to tristate
+	local cropIcon = E.db.general.cropIcon
+	if type(cropIcon) == 'boolean' then
+		E.db.general.cropIcon = (cropIcon and 2) or 0
+	end
+
 	--Vendor Greys option is now in bags table
 	if E.db.general.vendorGrays ~= nil then
 		E.db.bags.vendorGrays.enable = E.db.general.vendorGrays
@@ -1437,21 +1443,21 @@ function E:Initialize()
 	self.private = self.charSettings.profile
 	self.db = self.data.profile
 	self.global = self.data.global
+
 	self:CheckIncompatible()
 	self:DBConversions()
 	self:UIScale()
-
-	if not E.db.general.cropIcon then
-		E.TexCoords = {0, 1, 0, 1}
-	end
-
 	self:BuildPrefixValues()
+	self:LoadAPI()
 	self:LoadCommands()
 	self:InitializeModules()
 	self:LoadMovers()
-	self:LoadAPI()
+	self:UpdateMedia()
 	self:UpdateCooldownSettings('all')
+	self:Tutorials()
 	self.initialized = true
+
+	Minimap:UpdateSettings()
 
 	if E.db.general.smoothingAmount and (E.db.general.smoothingAmount ~= 0.33) then
 		E:SetSmoothingAmount(E.db.general.smoothingAmount)
@@ -1460,11 +1466,6 @@ function E:Initialize()
 	if self.private.install_complete == nil then
 		self:Install()
 	end
-
-	self:UpdateMedia()
-	self:Tutorials()
-
-	Minimap:UpdateSettings()
 
 	if self:HelloKittyFixCheck() then
 		self:HelloKittyFix()
