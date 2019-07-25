@@ -45,9 +45,9 @@ end
 
 local function UpdateSize(self, element, cur, max)
 	local pm = self:GetOrientation() == "VERTICAL" and self:GetHeight() or self:GetWidth()
-	local _1um = (1 / max) * pm
+	local oum = (1 / max) * pm
 	local c = element.cur - cur
-	local mm = c * _1um
+	local mm = c * oum
 	if (self:GetOrientation() == "VERTICAL") then
 		element:SetHeight(mm)
 	else
