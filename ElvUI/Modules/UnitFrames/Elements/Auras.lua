@@ -65,7 +65,6 @@ function UF:Construct_AuraIcon(button)
 	button.cd:SetInside(button, offset, offset)
 
 	button.icon:SetInside(button, offset, offset)
-	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
 
 	button.count:ClearAllPoints()
@@ -91,6 +90,9 @@ end
 function UF:UpdateAuraSettings(auras, button)
 	if button.db then
 		button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
+	end
+	if button.icon then
+		button.icon:SetTexCoord(unpack(E.TexCoords))
 	end
 
 	button:Size((auras and auras.size) or 30)
