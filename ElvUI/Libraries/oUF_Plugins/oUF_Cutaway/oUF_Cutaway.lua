@@ -42,7 +42,7 @@ local function Shared_PreUpdate(self, element, unit)
 	element.unit = unit
 	local oldGUID = element.guid
 	element.guid = UnitGUID(unit)
-	if (oldGUID and oldGUID ~= UnitGUID(unit)) then
+	if (not oldGUID or oldGUID ~= UnitGUID(unit)) then
 		return
 	end
 	element.cur = self.cur
