@@ -44,14 +44,14 @@ local function Shared_PreUpdate(self, element, unit)
 end
 
 local function UpdateSize(self, element, cur, max)
-	local parentMeasurement = self:GetOrientation() == "VERTICAL" and self:GetHeight() or self:GetWidth()
-	local perc1Measurement = (1 / max) * parentMeasurement
-	local change = element.cur - cur
-	local myMeasurement = change * perc1Measurement
+	local pm = self:GetOrientation() == "VERTICAL" and self:GetHeight() or self:GetWidth()
+	local _1um = (1 / max) * pm
+	local c = element.cur - cur
+	local mm = c * _1um
 	if (self:GetOrientation() == "VERTICAL") then
-		element:SetHeight(myMeasurement)
+		element:SetHeight(mm)
 	else
-		element:SetWidth(myMeasurement)
+		element:SetWidth(mm)
 	end
 end
 
