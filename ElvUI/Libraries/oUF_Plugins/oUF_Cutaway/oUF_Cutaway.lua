@@ -49,10 +49,11 @@ local function Shared_PreUpdate(self, element, unit)
 	element.ready = true
 end
 
-local function UpdateSize(self, element, cur, max)
+local function UpdateSize(self, element, curV, maxV)
 	local pm = self:GetOrientation() == "VERTICAL" and self:GetHeight() or self:GetWidth()
-	local oum = (1 / max) * pm
-	local c = element.cur - cur
+	local oum = (1 / maxV) * pm
+	local c = element.cur - curV
+	if c < (maxV * 0.01) then return end
 	local mm = c * oum
 	if (self:GetOrientation() == "VERTICAL") then
 		element:SetHeight(mm)
