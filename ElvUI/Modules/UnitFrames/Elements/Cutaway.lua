@@ -30,6 +30,10 @@ function UF:Configure_Cutaway(frame)
 	end
 	local db = frame.db
 
+	if not db.cutaway then
+		return
+	end
+
 	local health = frame.Cutaway.Health
 	local power = frame.Cutaway.Power
 
