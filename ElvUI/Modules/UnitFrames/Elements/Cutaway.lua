@@ -65,15 +65,17 @@ function UF:Configure_Cutaway(frame)
 			frame.Health:PostUpdateColor(frame.unit)
 		end
 
-		local power = frame.Cutaway.Power
-		if power and frame.USE_POWERBAR then
-			power:SetReverseFill((powerDB.reverseFill and true) or false)
-			power:SetFrameLevel(frame.Power:GetFrameLevel())
+		if powerDB then
+			local power = frame.Cutaway.Power
+			if power and frame.USE_POWERBAR then
+				power:SetReverseFill((powerDB.reverseFill and true) or false)
+				power:SetFrameLevel(frame.Power:GetFrameLevel())
 
-			power.enabled = powerEnabled
-			power.lengthBeforeFade = powerDB.lengthBeforeFade
-			power.fadeOutTime = powerDB.fadeOutTime
-			frame.Power:PostUpdateColor()
+				power.enabled = powerEnabled
+				power.lengthBeforeFade = powerDB.lengthBeforeFade
+				power.fadeOutTime = powerDB.fadeOutTime
+				frame.Power:PostUpdateColor()
+			end
 		end
 	elseif frame:IsElementEnabled("Cutaway") then
 		frame:DisableElement("Cutaway")
