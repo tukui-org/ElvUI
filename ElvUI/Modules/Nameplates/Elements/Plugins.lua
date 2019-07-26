@@ -271,16 +271,18 @@ end
 function NP:Construct_Cutaway(nameplate)
 	local Cutaway = CreateFrame("Frame", nameplate:GetDebugName() .. "Cutaway", nameplate)
 
-	Cutaway.Health = CreateFrame("StatusBar", nameplate:GetDebugName() .. "CutawayHealth", nameplate.Health)
+	Cutaway.Health = CreateFrame("StatusBar", nameplate:GetDebugName() .. "CutawayHealth", nameplate.Health.ClipFrame)
 	if NP.db.cutaway.health.forceBlankTexture then
 		Cutaway.Health:SetStatusBarTexture(E.media.blankTex)
 	else
 		Cutaway.Health:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
 		NP.StatusBars[Cutaway.Health] = true
 	end
+
+	local healthTexture = nameplate.Health:GetStatusBarTexture()
 	Cutaway.Health:SetFrameLevel(5)
-	Cutaway.Health:SetPoint("TOPLEFT", nameplate.Health:GetStatusBarTexture(), "TOPRIGHT")
-	Cutaway.Health:SetPoint("BOTTOMLEFT", nameplate.Health:GetStatusBarTexture(), "BOTTOMRIGHT")
+	Cutaway.Health:SetPoint("TOPLEFT", healthTexture, "TOPRIGHT")
+	Cutaway.Health:SetPoint("BOTTOMLEFT", healthTexture, "BOTTOMRIGHT")
 
 	Cutaway.Power = CreateFrame("StatusBar", nameplate:GetDebugName() .. "CutawayPower", nameplate.Power)
 	if NP.db.cutaway.power.forceBlankTexture then
@@ -289,9 +291,11 @@ function NP:Construct_Cutaway(nameplate)
 		Cutaway.Power:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
 		NP.StatusBars[Cutaway.Power] = true
 	end
+
+	local powerTexture = nameplate.Power:GetStatusBarTexture()
 	Cutaway.Power:SetFrameLevel(5)
-	Cutaway.Power:SetPoint("TOPLEFT", nameplate.Power:GetStatusBarTexture(), "TOPRIGHT")
-	Cutaway.Power:SetPoint("BOTTOMLEFT", nameplate.Power:GetStatusBarTexture(), "BOTTOMRIGHT")
+	Cutaway.Power:SetPoint("TOPLEFT", powerTexture, "TOPRIGHT")
+	Cutaway.Power:SetPoint("BOTTOMLEFT", powerTexture, "BOTTOMRIGHT")
 
 	return Cutaway
 end
