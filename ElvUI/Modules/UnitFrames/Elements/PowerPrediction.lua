@@ -104,9 +104,7 @@ function UF:Configure_PowerPrediction(frame)
 				altBar:Size(0, height)
 			end
 		end
-	else
-		if frame:IsElementEnabled('PowerPrediction') then
-			frame:DisableElement('PowerPrediction')
-		end
+	elseif frame:IsElementEnabled('PowerPrediction') then
+		frame:DisableElement('PowerPrediction')
 	end
 end
