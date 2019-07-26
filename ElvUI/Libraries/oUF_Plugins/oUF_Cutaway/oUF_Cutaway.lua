@@ -55,10 +55,6 @@ local function UpdateSize(self, element, curV, maxV)
 	local c = element.cur - curV
 	if c < (maxV * 0.01) then return end
 	local mm = c * oum
-	local pvm = self:GetValue() * oum
-	if (mm + pvm > pm) then
-		mm = math.floor(pm - pvm) - 1
-	end
 	if (self:GetOrientation() == "VERTICAL") then
 		element:SetHeight(mm)
 	else
