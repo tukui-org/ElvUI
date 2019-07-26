@@ -5,43 +5,48 @@ local UF = E:GetModule('UnitFrames');
 local CreateFrame = CreateFrame
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 
+function UF.HealthClipFrame_HealComm(frame)
+	if frame.HealthPrediction then
+		UF:SetVisibility_HealComm(frame.HealthPrediction, true, true)
+	end
+end
+
+function UF:SetVisibility_HealComm(obj, show, unclip)
+	obj.myBar:SetAlpha(show and 1 or 0)
+	obj.otherBar:SetAlpha(show and 1 or 0)
+	obj.absorbBar:SetAlpha(show and 1 or 0)
+	obj.healAbsorbBar:SetAlpha(show and 1 or 0)
+	obj.overAbsorb_:SetAlpha(show and 1 or 0)
+	obj.overHealAbsorb_:SetAlpha(show and 1 or 0)
+
+	if unclip then
+		obj.myBar:SetParent(obj.health)
+		obj.otherBar:SetParent(obj.health)
+	end
+end
+
 function UF:Construct_HealComm(frame)
 	local health = frame.Health
 	local parent = health.ClipFrame
 
 	local myBar = CreateFrame('StatusBar', nil, parent)
-	myBar:SetFrameLevel(11)
-	myBar.parent = parent
-	UF.statusbars[myBar] = true
-	myBar:Hide()
-
 	local otherBar = CreateFrame('StatusBar', nil, parent)
-	otherBar:SetFrameLevel(11)
-	otherBar.parent = parent
-	UF.statusbars[otherBar] = true
-	otherBar:Hide()
-
 	local absorbBar = CreateFrame('StatusBar', nil, parent)
-	absorbBar:SetFrameLevel(11)
-	absorbBar.parent = parent
-	UF.statusbars[absorbBar] = true
-	absorbBar:Hide()
-
 	local healAbsorbBar = CreateFrame('StatusBar', nil, parent)
-	healAbsorbBar:SetFrameLevel(11)
-	healAbsorbBar.parent = parent
-	UF.statusbars[healAbsorbBar] = true
-	healAbsorbBar:Hide()
-
 	local overAbsorb = parent:CreateTexture(nil, "ARTWORK")
-	overAbsorb.parent = parent
-	UF.statusbars[overAbsorb] = true
-	overAbsorb:Hide()
-
 	local overHealAbsorb = parent:CreateTexture(nil, "ARTWORK")
-	overHealAbsorb.parent = parent
+
+	myBar:SetFrameLevel(11)
+	otherBar:SetFrameLevel(11)
+	absorbBar:SetFrameLevel(11)
+	healAbsorbBar:SetFrameLevel(11)
+
+	UF.statusbars[myBar] = true
+	UF.statusbars[otherBar] = true
+	UF.statusbars[absorbBar] = true
+	UF.statusbars[healAbsorbBar] = true
+	UF.statusbars[overAbsorb] = true
 	UF.statusbars[overHealAbsorb] = true
-	overHealAbsorb:Hide()
 
 	local texture = (not health.isTransparent and health:GetStatusBarTexture()) or E.media.blankTex
 	UF:Update_StatusBar(myBar, texture)
@@ -51,7 +56,7 @@ function UF:Construct_HealComm(frame)
 	UF:Update_StatusBar(overAbsorb, texture)
 	UF:Update_StatusBar(overHealAbsorb, texture)
 
-	return {
+	local healPrediction = {
 		myBar = myBar,
 		otherBar = otherBar,
 		absorbBar = absorbBar,
@@ -60,8 +65,14 @@ function UF:Construct_HealComm(frame)
 		overHealAbsorb_ = overHealAbsorb,
 		PostUpdate = UF.UpdateHealComm,
 		maxOverflow = 1,
-		parent = frame,
+		health = health,
+		parent = parent,
+		frame = frame
 	}
+
+	UF:SetVisibility_HealComm(healPrediction)
+
+	return healPrediction
 end
 
 function UF:Configure_HealComm(frame)
@@ -93,13 +104,11 @@ function UF:Configure_HealComm(frame)
 			if frame.db.healPrediction.showOverAbsorbs and not showAbsorbAmount then
 				healPrediction.overAbsorb = healPrediction.overAbsorb_
 				healPrediction.overHealAbsorb = healPrediction.overHealAbsorb_
-			else
-				if healPrediction.overAbsorb then
-					healPrediction.overAbsorb:Hide()
-					healPrediction.overAbsorb = nil
-					healPrediction.overHealAbsorb:Hide()
-					healPrediction.overHealAbsorb = nil
-				end
+			elseif healPrediction.overAbsorb then
+				healPrediction.overAbsorb:Hide()
+				healPrediction.overAbsorb = nil
+				healPrediction.overHealAbsorb:Hide()
+				healPrediction.overHealAbsorb = nil
 			end
 
 			if orientation == "HORIZONTAL" then
@@ -228,8 +237,7 @@ function UF:Configure_HealComm(frame)
 end
 
 function UF:UpdateHealComm(unit, _, _, _, _, hasOverAbsorb)
-	local parent = self.parent
-	local pred = parent and parent.db and parent.db.healPrediction
+	local pred = self.frame and self.frame.db and self.frame.db.healPrediction
 	if pred and (pred.showOverAbsorbs and pred.showAbsorbAmount) and hasOverAbsorb then
 		self.absorbBar:SetValue(UnitGetTotalAbsorbs(unit))
 	end

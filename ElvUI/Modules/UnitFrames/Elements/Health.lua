@@ -15,15 +15,10 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-function UF.HealthClipOnUpdate(clipFrame)
-	local pred = clipFrame.__owner.HealthPrediction
-	if pred then
-		local health = clipFrame.__parent
-		pred.myBar:SetParent(health)
-		pred.otherBar:SetParent(health)
-	end
+function UF.HealthClipFrame_OnUpdate(clipFrame)
+	UF.HealthClipFrame_HealComm(clipFrame.__frame)
 
-	clipFrame:SetScript("OnUpdate", nil)
+	clipFrame:SetScript('OnUpdate', nil)
 end
 
 function UF:Construct_HealthBar(frame, bg, text, textPos)
@@ -57,13 +52,12 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	health.colorDisconnected = true
 	health:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 
-	local clipping = CreateFrame('Frame', nil, health)
-	clipping:SetScript("OnUpdate", UF.HealthClipOnUpdate)
-	clipping:SetClipsChildren(true)
-	clipping:SetAllPoints()
-	clipping.__owner = frame
-	clipping.__parent = health
-	health.ClipFrame = clipping
+	local clipFrame = CreateFrame('Frame', nil, health)
+	clipFrame:SetScript('OnUpdate', UF.HealthClipFrame_OnUpdate)
+	clipFrame:SetClipsChildren(true)
+	clipFrame:SetAllPoints()
+	clipFrame.__frame = frame
+	health.ClipFrame = clipFrame
 
 	return health
 end
