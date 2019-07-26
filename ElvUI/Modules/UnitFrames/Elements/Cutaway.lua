@@ -49,9 +49,10 @@ function UF:Configure_Cutaway(frame)
 			health.enabled = healthEnabled
 
 			if healthEnabled then
-				health:SetReverseFill((healthDB.reverseFill and true) or false)
+				local unitHealthDB = frame.db.health
+				health:SetReverseFill((unitHealthDB.reverseFill and true) or false)
 
-				local vert = healthDB.orientation and healthDB.orientation == "VERTICAL"
+				local vert = unitHealthDB.orientation and unitHealthDB.orientation == "VERTICAL"
 				local firstPoint, secondPoint = healthPoints[(vert and 3) or 1], healthPoints[(vert and 4) or 2]
 				local barTexture = frame.Health:GetStatusBarTexture()
 
@@ -60,8 +61,8 @@ function UF:Configure_Cutaway(frame)
 				health:SetPoint(secondPoint[1], barTexture, secondPoint[2])
 
 				--Party/Raid Frames allow to change statusbar orientation
-				if healthDB.orientation then
-					health:SetOrientation(healthDB.orientation)
+				if unitHealthDB.orientation then
+					health:SetOrientation(unitHealthDB.orientation)
 				end
 
 				health.lengthBeforeFade = healthDB.lengthBeforeFade
@@ -78,7 +79,8 @@ function UF:Configure_Cutaway(frame)
 			power.enabled = powerUsable
 
 			if powerUsable then
-				power:SetReverseFill((powerDB.reverseFill and true) or false)
+				local unitPowerDB = frame.db.power
+				power:SetReverseFill((unitPowerDB.reverseFill and true) or false)
 				power:SetFrameLevel(frame.Power:GetFrameLevel())
 
 				power.lengthBeforeFade = powerDB.lengthBeforeFade
