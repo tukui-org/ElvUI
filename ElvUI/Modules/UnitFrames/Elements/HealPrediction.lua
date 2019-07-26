@@ -78,10 +78,6 @@ function UF:Configure_HealComm(frame)
 			frame:EnableElement('HealthPrediction')
 		end
 
-		-- this now unclips, allowing personal and other heals to overflow
-		myBar:SetParent(frame.Health)
-		otherBar:SetParent(frame.Health)
-
 		if frame.db.health then
 			local health = frame.Health
 			local parent = health.ClipFrame
