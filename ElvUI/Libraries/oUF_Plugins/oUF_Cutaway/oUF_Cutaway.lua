@@ -53,6 +53,9 @@ local function UpdateSize(self, element, curV, maxV)
 	local pm = self:GetOrientation() == "VERTICAL" and self:GetHeight() or self:GetWidth()
 	local oum = (1 / maxV) * pm
 	local c = element.cur - curV
+	if (c + curV > maxV) then
+		c = maxV - curV
+	end
 	if c < (maxV * 0.01) then return end
 	local mm = c * oum
 	if (self:GetOrientation() == "VERTICAL") then
