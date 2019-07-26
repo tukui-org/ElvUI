@@ -7,7 +7,7 @@ function UF:Construct_Cutaway(frame)
 	local cutaway = CreateFrame("Frame", nil, frame)
 
 	local healthTexture = frame.Health:GetStatusBarTexture()
-	local cutawayHealth = CreateFrame("StatusBar", nil, frame.Health)
+	local cutawayHealth = CreateFrame("StatusBar", nil, frame.Health.ClipFrame)
 	cutawayHealth:SetStatusBarTexture(E.media.blankTex)
 	cutawayHealth:SetFrameLevel(10)
 	cutawayHealth:SetPoint("TOPLEFT", healthTexture, "TOPRIGHT")
