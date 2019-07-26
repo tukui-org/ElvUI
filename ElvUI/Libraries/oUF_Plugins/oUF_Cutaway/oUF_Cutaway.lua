@@ -229,11 +229,9 @@ local function Disable(self)
 		self.Cutaway:Hide()
 
 		if self.Cutaway.Health then
-			self.Cutaway.Health.enabled = false
 			self.Cutaway.Health:Hide()
 		end
 		if self.Cutaway.Power then
-			self.Cutaway.Power.enabled = false
 			self.Cutaway.Power:Hide()
 		end
 	end
