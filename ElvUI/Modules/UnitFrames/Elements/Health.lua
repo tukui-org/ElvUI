@@ -46,7 +46,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	health.colorDisconnected = true
 	health:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 
-	local clipping = CreateFrame('StatusBar', nil, health)
+	local clipping = CreateFrame('Frame', nil, health)
 	clipping:SetClipsChildren(true)
 	clipping:SetAllPoints()
 	health.ClipFrame = clipping
