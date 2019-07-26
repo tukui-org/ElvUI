@@ -2235,7 +2235,7 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 				type = "execute",
 				name = L["COLORS"],
 				buttonElvUI = true,
-				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
+				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "healPrediction") end,
 				disabled = function() return not E.UnitFrames.Initialized end,
 			},
 		},
