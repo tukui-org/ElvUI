@@ -54,7 +54,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 
 	local clipFrame = CreateFrame('Frame', nil, health)
 	clipFrame:SetScript('OnUpdate', UF.HealthClipFrame_OnUpdate)
-	-- clipFrame:SetClipsChildren(true)
+	clipFrame:SetClipsChildren(true)
 	clipFrame:SetAllPoints()
 	clipFrame.__frame = frame
 	health.ClipFrame = clipFrame
