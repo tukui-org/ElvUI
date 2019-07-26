@@ -6,22 +6,36 @@ local CreateFrame = CreateFrame
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 
 function UF.HealthClipFrame_HealComm(frame)
-	if frame.HealthPrediction then
-		UF:SetVisibility_HealComm(frame.HealthPrediction, true, true)
+	local pred = frame.HealthPrediction
+	if pred then
+		UF:SetAlpha_HealComm(pred, true)
+		UF:SetVisibility_HealComm(pred)
 	end
 end
 
-function UF:SetVisibility_HealComm(obj, show, unclip)
+function UF:SetAlpha_HealComm(obj, show)
 	obj.myBar:SetAlpha(show and 1 or 0)
 	obj.otherBar:SetAlpha(show and 1 or 0)
 	obj.absorbBar:SetAlpha(show and 1 or 0)
 	obj.healAbsorbBar:SetAlpha(show and 1 or 0)
 	obj.overAbsorb_:SetAlpha(show and 1 or 0)
 	obj.overHealAbsorb_:SetAlpha(show and 1 or 0)
+end
 
-	if unclip then
+function UF:SetVisibility_HealComm(obj)
+	-- the first update is from `HealthClipFrame_HealComm`
+	-- we set this variable to allow `Configure_HealComm` to
+	-- update the elements overflow lock later on by option
+	if not obj.allowClippingUpdate then
+		obj.allowClippingUpdate = true
+	end
+
+	if obj.maxOverflow > 1 then
 		obj.myBar:SetParent(obj.health)
 		obj.otherBar:SetParent(obj.health)
+	else
+		obj.myBar:SetParent(obj.parent)
+		obj.otherBar:SetParent(obj.parent)
 	end
 end
 
@@ -70,7 +84,7 @@ function UF:Construct_HealComm(frame)
 		frame = frame
 	}
 
-	UF:SetVisibility_HealComm(healPrediction)
+	UF:SetAlpha_HealComm(healPrediction)
 
 	return healPrediction
 end
@@ -84,6 +98,10 @@ function UF:Configure_HealComm(frame)
 		local healAbsorbBar = healPrediction.healAbsorbBar
 		local c = self.db.colors.healPrediction
 		healPrediction.maxOverflow = 1 + (c.maxOverflow or 0)
+
+		if healPrediction.allowClippingUpdate then
+			UF:SetVisibility_HealComm(healPrediction)
+		end
 
 		if not frame:IsElementEnabled('HealthPrediction') then
 			frame:EnableElement('HealthPrediction')
