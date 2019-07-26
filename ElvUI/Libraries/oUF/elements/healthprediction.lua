@@ -88,7 +88,6 @@ local function Update(self, event, unit)
 	if(self.unit ~= unit) then return end
 
 	local element = self.HealthPrediction
-	if element.dontUpdate then return end -- ElvUI
 
 	--[[ Callback: HealthPrediction:PreUpdate(unit)
 	Called before the element has been updated.
