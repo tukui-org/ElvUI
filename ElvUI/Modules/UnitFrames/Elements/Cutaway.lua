@@ -34,6 +34,9 @@ local healthPoints = {
 	[4] = {"BOTTOMRIGHT", "TOPRIGHT"}
 }
 
+local DEFAULT_INDEX = 1
+local VERT_INDEX = 3
+
 function UF:Configure_Cutaway(frame)
 	local db = frame.db and frame.db.cutaway
 	local healthDB, powerDB = db and db.health, db and db.power
@@ -51,7 +54,8 @@ function UF:Configure_Cutaway(frame)
 			health:SetReverseFill((unitHealthDB.reverseFill and true) or false)
 
 			local vert = unitHealthDB.orientation and unitHealthDB.orientation == "VERTICAL"
-			local firstPoint, secondPoint = healthPoints[(vert and 3) or 1], healthPoints[(vert and 4) or 2]
+			local pointIndex = vert and VERT_INDEX or DEFAULT_INDEX
+			local firstPoint, secondPoint = healthPoints[pointIndex], healthPoints[pointIndex+1]
 			local barTexture = frame.Health:GetStatusBarTexture()
 
 			health:ClearAllPoints()
