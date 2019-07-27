@@ -25,7 +25,6 @@ local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 local TALENTS = TALENTS
 local PVP_TALENTS = PVP_TALENTS
-local UnitLevel = UnitLevel
 
 local lastPanel, active
 local displayString = '';
@@ -123,7 +122,7 @@ local function OnEnter(self)
 		end
 	end
 
-	if UnitLevel('player') >= _G.SHOW_PVP_TALENT_LEVEL then
+	if E.mylevel >= _G.SHOW_PVP_TALENT_LEVEL then
 		local pvpTalents = C_SpecializationInfo_GetAllSelectedPvpTalentIDs()
 
 		if #pvpTalents > 0 then

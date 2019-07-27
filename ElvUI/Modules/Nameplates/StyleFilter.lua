@@ -609,7 +609,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Level
 	if trigger.level then
-		local myLevel = UnitLevel('player')
+		local myLevel = E.mylevel
 		local level = (frame.unit == 'player' and myLevel) or UnitLevel(frame.unit)
 		local curLevel = (trigger.curlevel and trigger.curlevel ~= 0 and (trigger.curlevel == level))
 		local minLevel = (trigger.minlevel and trigger.minlevel ~= 0 and (trigger.minlevel <= level))

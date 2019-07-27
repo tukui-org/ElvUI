@@ -61,6 +61,7 @@ local C_Timer_After = C_Timer.After
 E.noop = function() end
 E.title = format('|cfffe7b2c%s |r', 'ElvUI')
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
+E.mylevel = UnitLevel('player')
 E.myLocalizedClass, E.myclass, E.myClassID = UnitClass('player')
 E.myLocalizedRace, E.myrace = UnitRace('player')
 E.myname = UnitName('player')

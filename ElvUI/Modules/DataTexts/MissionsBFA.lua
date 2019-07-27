@@ -16,7 +16,6 @@ local HideUIPanel = HideUIPanel
 local IsQuestFlaggedCompleted = IsQuestFlaggedCompleted
 local SecondsToTime = SecondsToTime
 local ShowGarrisonLandingPage = ShowGarrisonLandingPage
-local UnitLevel = UnitLevel
 local C_Garrison_GetCompleteTalent = C_Garrison.GetCompleteTalent
 local C_Garrison_GetFollowerShipments = C_Garrison.GetFollowerShipments
 local C_Garrison_GetInProgressMissions = C_Garrison.GetInProgressMissions
@@ -155,7 +154,7 @@ local function OnEnter(self, _, noUpdate)
 
 	-- Island Expeditions
 	local hasIsland = false
-	if (UnitLevel("player") >= GetMaxLevelForExpansionLevel(LE_EXPANSION_BATTLE_FOR_AZEROTH)) then
+	if (E.mylevel >= GetMaxLevelForExpansionLevel(LE_EXPANSION_BATTLE_FOR_AZEROTH)) then
 		local questID = C_IslandsQueue_GetIslandsWeeklyQuestID()
 		if questID then
 			local _, _, finished, numFulfilled, numRequired = GetQuestObjectiveInfo(questID, 1, false)
