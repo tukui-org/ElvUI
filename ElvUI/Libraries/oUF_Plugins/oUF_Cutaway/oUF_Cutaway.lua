@@ -159,16 +159,23 @@ local function Power_PostUpdateColor(self, _, _, _, _)
 end
 
 local defaults = {
-	enabled = false,
-	lengthBeforeFade = 0.3,
-	fadeOutTime = 0.6
+	health = {
+		enabled = false,
+		lengthBeforeFade = 0.3,
+		fadeOutTime = 0.6
+	},
+	power = {
+		enabled = false,
+		lengthBeforeFade = 0.3,
+		fadeOutTime = 0.6
+	}
 }
 
 local function UpdateConfigurationValues(self, db)
 	local hs, ps = false, false
 	if (self.Health) then
 		local health = self.Health
-		local hdb = db.health or defaults
+		local hdb = db.health
 		hs = hdb.enabled
 		if (hs) then
 			health.enabled = hs
@@ -181,7 +188,7 @@ local function UpdateConfigurationValues(self, db)
 	end
 	if (self.Power) then
 		local power = self.Power
-		local pdb = db.power or defaults
+		local pdb = db.power
 		ps = pdb.enabled
 		if (ps) then
 			power.enabled = ps
@@ -207,7 +214,7 @@ local function Enable(self)
 		end
 
 		if (not element.defaultsSet) then
-			UpdateConfigurationValues(self, element)
+			UpdateConfigurationValues(element, defaults)
 			element.defaultsSet = true
 		end
 
