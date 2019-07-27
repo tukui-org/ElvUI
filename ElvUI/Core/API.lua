@@ -471,10 +471,7 @@ function E:GetUnitBattlefieldFaction(unit)
 end
 
 function E:NEUTRAL_FACTION_SELECT_RESULT()
-	local newFaction, newLocalizedFaction = UnitFactionGroup('player')
-	if E.myfaction ~= newFaction then
-		E.myfaction, E.myLocalizedFaction = newFaction, newLocalizedFaction
-	end
+	E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 end
 
 function E:PLAYER_LEVEL_UP(_, level)
