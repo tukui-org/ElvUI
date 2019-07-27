@@ -310,13 +310,7 @@ function NP:Update_Cutaway(nameplate)
 		if not nameplate:IsElementEnabled("Cutaway") then
 			nameplate:EnableElement("Cutaway")
 		end
-		nameplate.Cutaway.Health.enabled = NP.db.cutaway.health.enabled
-		nameplate.Cutaway.Health.lengthBeforeFade = NP.db.cutaway.health.lengthBeforeFade
-		nameplate.Cutaway.Health.fadeOutTime = NP.db.cutaway.health.fadeOutTime
-
-		nameplate.Cutaway.Power.enabled = NP.db.cutaway.power.enabled
-		nameplate.Cutaway.Power.lengthBeforeFade = NP.db.cutaway.power.lengthBeforeFade
-		nameplate.Cutaway.Power.fadeOutTime = NP.db.cutaway.power.fadeOutTime
+		nameplate.Cutaway:UpdateConfigurationValues(NP.db.cutaway)
 	end
 end
 

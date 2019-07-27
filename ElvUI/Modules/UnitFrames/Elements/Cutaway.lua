@@ -44,51 +44,36 @@ function UF:Configure_Cutaway(frame)
 			frame:EnableElement("Cutaway")
 		end
 
+		frame.Cutaway:UpdateConfigurationValues(db)
 		local health = frame.Cutaway.Health
-		if health then
-			health.enabled = healthEnabled
+		if health and healthEnabled then
+			local unitHealthDB = frame.db.health
+			health:SetReverseFill((unitHealthDB.reverseFill and true) or false)
 
-			if healthEnabled then
-				local unitHealthDB = frame.db.health
-				health:SetReverseFill((unitHealthDB.reverseFill and true) or false)
+			local vert = unitHealthDB.orientation and unitHealthDB.orientation == "VERTICAL"
+			local firstPoint, secondPoint = healthPoints[(vert and 3) or 1], healthPoints[(vert and 4) or 2]
+			local barTexture = frame.Health:GetStatusBarTexture()
 
-				local vert = unitHealthDB.orientation and unitHealthDB.orientation == "VERTICAL"
-				local firstPoint, secondPoint = healthPoints[(vert and 3) or 1], healthPoints[(vert and 4) or 2]
-				local barTexture = frame.Health:GetStatusBarTexture()
+			health:ClearAllPoints()
+			health:SetPoint(firstPoint[1], barTexture, firstPoint[2])
+			health:SetPoint(secondPoint[1], barTexture, secondPoint[2])
 
-				health:ClearAllPoints()
-				health:SetPoint(firstPoint[1], barTexture, firstPoint[2])
-				health:SetPoint(secondPoint[1], barTexture, secondPoint[2])
-
-				--Party/Raid Frames allow to change statusbar orientation
-				if unitHealthDB.orientation then
-					health:SetOrientation(unitHealthDB.orientation)
-				end
-
-				health.lengthBeforeFade = healthDB.lengthBeforeFade
-				health.fadeOutTime = healthDB.fadeOutTime
-				frame.Health:PostUpdateColor(frame.unit)
-			else
-				health:Hide()
+			--Party/Raid Frames allow to change statusbar orientation
+			if unitHealthDB.orientation then
+				health:SetOrientation(unitHealthDB.orientation)
 			end
+
+			frame.Health:PostUpdateColor(frame.unit)
 		end
 
 		local power = frame.Cutaway.Power
-		if power then
-			local powerUsable = powerEnabled and frame.USE_POWERBAR
-			power.enabled = powerUsable
+		local powerUsable = powerEnabled and frame.USE_POWERBAR
+		if power and powerUsable then
+			local unitPowerDB = frame.db.power
+			power:SetReverseFill((unitPowerDB.reverseFill and true) or false)
+			power:SetFrameLevel(frame.Power:GetFrameLevel())
 
-			if powerUsable then
-				local unitPowerDB = frame.db.power
-				power:SetReverseFill((unitPowerDB.reverseFill and true) or false)
-				power:SetFrameLevel(frame.Power:GetFrameLevel())
-
-				power.lengthBeforeFade = powerDB.lengthBeforeFade
-				power.fadeOutTime = powerDB.fadeOutTime
-				frame.Power:PostUpdateColor()
-			else
-				power:Hide()
-			end
+			frame.Power:PostUpdateColor()
 		end
 	elseif frame:IsElementEnabled("Cutaway") then
 		frame:DisableElement("Cutaway")
