@@ -77,7 +77,9 @@ function NP:Construct_Health(nameplate)
 
 	local clipFrame = CreateFrame('Frame', nil, Health)
 	clipFrame:SetClipsChildren(true)
-	clipFrame:SetAllPoints()
+	clipFrame:SetPoint("BOTTOMLEFT")
+	clipFrame:SetPoint("TOPLEFT")
+	clipFrame:SetPoint("RIGHT", -1, 0)
 	Health.ClipFrame = clipFrame
 
 	--[[Health.bg = Health:CreateTexture(nil, "BACKGROUND")
