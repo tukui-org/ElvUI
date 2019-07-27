@@ -55,9 +55,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	local clipFrame = CreateFrame('Frame', nil, health)
 	clipFrame:SetScript('OnUpdate', UF.HealthClipFrame_OnUpdate)
 	clipFrame:SetClipsChildren(true)
-	clipFrame:SetPoint("BOTTOMLEFT")
-	clipFrame:SetPoint("TOPLEFT")
-	clipFrame:SetPoint("RIGHT", -1, 0)
+	clipFrame:SetAllPoints()
 	clipFrame.__frame = frame
 	health.ClipFrame = clipFrame
 
@@ -204,17 +202,6 @@ function UF:Configure_HealthBar(frame)
 		--Party/Raid Frames allow to change statusbar orientation
 		if db.health.orientation then
 			health:SetOrientation(db.health.orientation)
-			if (db.health.orientation == "VERTICAL") then
-				health.ClipFrame:ClearAllPoints()
-				health.ClipFrame:SetPoint("BOTTOMLEFT")
-				health.ClipFrame:SetPoint("BOTTOMRIGHT")
-				health.ClipFrame:SetPoint("TOP", 0, -1)
-			else
-				health.ClipFrame:ClearAllPoints()
-				health.ClipFrame:SetPoint("BOTTOMLEFT")
-				health.ClipFrame:SetPoint("TOPLEFT")
-				health.ClipFrame:SetPoint("RIGHT", -1, 0)
-			end
 		end
 
 		--Party/Raid Frames can toggle frequent updates
