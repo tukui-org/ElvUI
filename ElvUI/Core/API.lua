@@ -477,7 +477,12 @@ function E:NEUTRAL_FACTION_SELECT_RESULT()
 	end
 end
 
+function E:PLAYER_LEVEL_UP(_, level)
+	E.mylevel = level
+end
+
 function E:LoadAPI()
+	self:RegisterEvent("PLAYER_LEVEL_UP")
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED')
 	self:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
