@@ -158,27 +158,35 @@ local function Power_PostUpdateColor(self, _, _, _, _)
 	self.__owner.Cutaway.Power:SetStatusBarColor(r * 1.5, g * 1.5, b * 1.5, a)
 end
 
+local defaults = {
+	enabled = false,
+	lengthBeforeFade = 0.3,
+	fadeOutTime = 0.6
+}
+
 local function UpdateConfigurationValues(self, db)
 	local hs, ps = false, false
-	if (self.Health and db.health) then
+	if (self.Health) then
 		local health = self.Health
-		hs = db.health.enabled
+		local hdb = db.health or defaults
+		hs = hdb.enabled
 		if (hs) then
 			health.enabled = hs
-			health.lengthBeforeFade = db.health.lengthBeforeFade
-			health.fadeOutTime = db.health.fadeOutTime
+			health.lengthBeforeFade = hdb.lengthBeforeFade
+			health.fadeOutTime = hdb.fadeOutTime
 			health:Show()
 		else
 			health:Hide()
 		end
 	end
-	if (self.Power and db.power) then
+	if (self.Power) then
 		local power = self.Power
-		ps = db.power.enabled
+		local pdb = db.power or defaults
+		ps = pdb.enabled
 		if (ps) then
 			power.enabled = ps
-			power.lengthBeforeFade = db.power.lengthBeforeFade
-			power.fadeOutTime = db.power.fadeOutTime
+			power.lengthBeforeFade = pdb.lengthBeforeFade
+			power.fadeOutTime = pdb.fadeOutTime
 			power:Show()
 		else
 			power:Hide()
@@ -198,11 +206,14 @@ local function Enable(self)
 			element.Power:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 
+		if (not element.defaultsSet) then
+			UpdateConfigurationValues(self, element)
+			element.defaultsSet = true
+		end
+
 		if element.Health and self.Health then
 			self.Health.__owner = self
 
-			element.Health.lengthBeforeFade = element.Health.lengthBeforeFade or 0.3
-			element.Health.fadeOutTime = element.Health.fadeOutTime or 0.6
 			element.Health:SetMinMaxValues(0, 1)
 			element.Health:SetValue(1)
 			element.Health.__parentElement = self.Health
@@ -233,8 +244,6 @@ local function Enable(self)
 		if element.Power and self.Power then
 			self.Power.__owner = self
 
-			element.Power.lengthBeforeFade = element.Power.lengthBeforeFade or 0.3
-			element.Power.fadeOutTime = element.Power.fadeOutTime or 0.6
 			element.Power:SetMinMaxValues(0, 1)
 			element.Power:SetValue(1)
 			element.Power.__parentElement = self.Power
