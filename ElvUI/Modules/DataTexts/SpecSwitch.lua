@@ -79,7 +79,7 @@ local function OnEvent(self)
 end
 
 local function AddTexture(texture)
-	texture = texture and '|T'..texture..':12:16:0:0:50:50:4:46:4:46|t' or ''
+	texture = texture and '|T'..texture..':16:16:0:0:50:50:4:46:4:46|t' or ''
 	return texture
 end
 
