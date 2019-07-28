@@ -2709,7 +2709,7 @@ function CH:Initialize()
 
 		self.ChatHeadFrame[i].StatusBar.anim = _G.CreateAnimationGroup(self.ChatHeadFrame[i].StatusBar)
 		self.ChatHeadFrame[i].StatusBar.anim.progress = self.ChatHeadFrame[i].StatusBar.anim:CreateAnimation("Progress")
-		self.ChatHeadFrame[i].StatusBar.anim.progress:SetSmoothing("Out")
+		self.ChatHeadFrame[i].StatusBar.anim.progress:SetEasing("Out")
 		self.ChatHeadFrame[i].StatusBar.anim.progress:SetDuration(.3)
 
 		self.ChatHeadFrame[i]:Hide()

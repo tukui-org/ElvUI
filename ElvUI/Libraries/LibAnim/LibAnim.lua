@@ -62,14 +62,13 @@ local ElvToolkit = {
 		end
 	end,
 
-	-- we dont need these because of our api calls
-	-- we just need an uncached version to use our injected
-	-- api on the elements
-	SetBackdropColor = function(self, ...)
-		self:SetBackdropColor(...)
+	-- we dont need these because of our api calls,
+	-- we just need an uncached version to use our injected api on the elements.
+	SetBackdropColor = function(parent, ...)
+		parent:SetBackdropColor(...)
 	end,
-	SetBackdropBorderColor = function(self, ...)
-		self:SetBackdropBorderColor(...)
+	SetBackdropBorderColor = function(parent, ...)
+		parent:SetBackdropBorderColor(...)
 	end
 }
 

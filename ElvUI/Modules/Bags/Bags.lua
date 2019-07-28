@@ -2102,7 +2102,7 @@ function B:SetupItemGlow(frame)
 	frame.NewItemGlow.Fade = frame.NewItemGlow:CreateAnimation("fade")
 	frame.NewItemGlow.Fade:SetDuration(0.7)
 	frame.NewItemGlow.Fade:SetChange(0)
-	frame.NewItemGlow.Fade:SetSmoothing('in')
+	frame.NewItemGlow.Fade:SetEasing('in')
 	frame.NewItemGlow.Fade:SetScript("OnFinished", B.ItemGlowOnFinished)
 end
 
@@ -2364,7 +2364,7 @@ function B:CreateSellFrame()
 
 	B.SellFrame.statusbar.anim = _G.CreateAnimationGroup(B.SellFrame.statusbar)
 	B.SellFrame.statusbar.anim.progress = B.SellFrame.statusbar.anim:CreateAnimation("Progress")
-	B.SellFrame.statusbar.anim.progress:SetSmoothing("Out")
+	B.SellFrame.statusbar.anim.progress:SetEasing("Out")
 	B.SellFrame.statusbar.anim.progress:SetDuration(.3)
 
 	B.SellFrame.statusbar.ValueText = B.SellFrame.statusbar:CreateFontString(nil, "OVERLAY")
