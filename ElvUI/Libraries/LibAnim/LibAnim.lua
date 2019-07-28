@@ -1,5 +1,5 @@
 -- LibAnim by Hydra (modified by Simpy for ElvUI)
-local Version = 2.901
+local Version = 2.901 -- based on 2.03
 
 -- Note, deprecated items will be removed next version.
 -- Please update your usage accordingly. (ctrl + f - "Deprecated")
