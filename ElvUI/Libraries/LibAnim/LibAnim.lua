@@ -45,6 +45,25 @@ local GetColor = function(p, r1, g1, b1, r2, g2, b2)
 	return r1 + (r2 - r1) * p, g1 + (g2 - g1) * p, b1 + (b2 - b1) * p
 end
 
+local ElvToolkit = {
+	GetBackdropColor = function(parent)
+		local E = ElvUI and ElvUI[1]
+		if E then
+			return E:GetBackdropColor(parent)
+		else
+			return parent:GetBackdropColor()
+		end
+	end,
+	GetBackdropBorderColor = function(parent)
+		local E = ElvUI and ElvUI[1]
+		if E then
+			return E:GetBackdropBorderColor(parent)
+		else
+			return parent:GetBackdropBorderColor()
+		end
+	end
+}
+
 local Set = {
 	backdrop = Updater.SetBackdropColor,
 	border = Updater.SetBackdropBorderColor,
@@ -55,8 +74,8 @@ local Set = {
 }
 
 local Get = {
-	backdrop = Updater.GetBackdropColor,
-	border = Updater.GetBackdropBorderColor,
+	backdrop = ElvToolkit.GetBackdropColor,
+	border = ElvToolkit.GetBackdropBorderColor,
 	statusbar = Updater.GetStatusBarColor,
 	text = FontString.GetTextColor,
 	texture = Texture.GetVertexColor,
@@ -487,6 +506,27 @@ local AnimMethods = {
 			return self.Parent
 		end,
 
+		AddChild = function(self, child, mainChild)
+			if not self.children then self.children = {} end
+			if not self.mainChild then
+				self.mainChild = mainChild or child
+			elseif mainChild then
+				self.mainChild = mainChild
+			end
+			tinsert(self.children, child)
+		end,
+
+		RemoveChild = function(self, child)
+			if not self.children then return end
+			local checkIndex = type(child) == 'number'
+			for index, tchild in ipairs(self.children) do
+				if (checkIndex and index == child) or tchild == child then
+					tremove(self.children, index)
+					break
+				end
+			end
+		end,
+
 		SetScript = function(self, handler, func)
 			handler = lower(handler)
 
@@ -616,7 +656,7 @@ local AnimMethods = {
 		SetColorType = function(self, region)
 			region = lower(region)
 
-			self.ColorType = Set[region] and region or "border"
+			self.ColorType = (Set[region] and region) or "border"
 		end,
 
 		GetColorType = function(self)
@@ -955,7 +995,7 @@ Initialize.fade = function(self)
 	end
 
 	self.Timer = 0
-	self.StartAlpha = self.Parent:GetAlpha() or 1
+	self.StartAlpha = (self.mainChild or self.Parent):GetAlpha() or 1
 	self.EndAlpha = self.EndAlphaSetting or 0
 	self.Change = self.EndAlpha - self.StartAlpha
 
@@ -968,10 +1008,26 @@ Update.fade = function(self, elapsed, i)
 	if self.Timer >= self.Duration then
 		tremove(Updater, i)
 		self.Parent:SetAlpha(self.EndAlpha)
+
+		if self.children then
+			for _, child in pairs(self.children) do
+				child:SetAlpha(self.EndAlpha)
+			end
+		else
+			self.Parent:SetAlpha(self.EndAlpha)
+		end
+
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
-	else
+	elseif self.children then
+		self.AlphaOffset = Easing[self.Easing](self.Timer, self.StartAlpha, self.Change, self.Duration)
+		for _, child in pairs(self.children) do
+			if child:IsShown() then
+				child:SetAlpha(self.AlphaOffset)
+			end
+		end
+	elseif self.Parent:IsShown() then
 		self.AlphaOffset = Easing[self.Easing](self.Timer, self.StartAlpha, self.Change, self.Duration)
 		self.Parent:SetAlpha(self.AlphaOffset)
 	end
@@ -1039,7 +1095,7 @@ end
 Initialize.color = function(self)
 	self.Timer = 0
 	self.ColorType = self.ColorType or "backdrop"
-	self.StartR, self.StartG, self.StartB = Get[self.ColorType](self.Parent)
+	self.StartR, self.StartG, self.StartB = Get[self.ColorType](self.mainChild or self.Parent)
 	self.EndR = self.EndRSetting or 1
 	self.EndG = self.EndGSetting or 1
 	self.EndB = self.EndBSetting or 1
@@ -1052,10 +1108,21 @@ Update.color = function(self, elapsed, i)
 
 	if self.Timer >= self.Duration then
 		tremove(Updater, i)
-		Set[self.ColorType](self.Parent, self.EndR, self.EndG, self.EndB)
+		if self.children then
+			for _, child in pairs(self.children) do
+				Set[self.ColorType](child, self.EndR, self.EndG, self.EndB)
+			end
+		else
+			Set[self.ColorType](self.Parent, self.EndR, self.EndG, self.EndB)
+		end
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	elseif self.children then
+		self.ColorOffset = Easing[self.Easing](self.Timer, 0, self.Duration, self.Duration)
+		for _, child in pairs(self.children) do
+			Set[self.ColorType](child, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
+		end
 	else
 		self.ColorOffset = Easing[self.Easing](self.Timer, 0, self.Duration, self.Duration)
 		Set[self.ColorType](self.Parent, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
