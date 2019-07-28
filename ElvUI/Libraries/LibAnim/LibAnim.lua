@@ -1,24 +1,23 @@
--- LibAnim by Hydra
-local Version = 2.03
+-- LibAnim by Hydra (modified by Simpy for ElvUI)
+local Version = 2.901
 
--- Note, deprecated items will be removed next version. Please update your usage accordingly. (ctrl + f - "Deprecated")
+-- Note, deprecated items will be removed next version.
+-- Please update your usage accordingly. (ctrl + f - "Deprecated")
 
-if _LibAnim and _LibAnim >= Version then return end
+if _G._LibAnim and _G._LibAnim >= Version then
+	return
+end
 
-local pi = math.pi
-local cos = math.cos
-local sin = math.sin
-local sqrt = math.sqrt
-local floor = math.floor
-local tinsert = table.insert
-local tremove = table.remove
-local lower = string.lower
-local pairs = pairs
+-- GLOBALS: ElvUI
+
 local Updater = CreateFrame("StatusBar")
 local Texture = Updater:CreateTexture()
 local FontString = Updater:CreateFontString()
 local Initialize, Update, Easing = {}, {}, {}
 local Callbacks = {onplay = {}, onpause = {}, onresume = {}, onstop = {}, onreset = {}, onfinished = {}}
+local pi, cos, sin, sqrt, floor = math.pi, math.cos, math.sin, math.sqrt, math.floor
+local type, pairs, ipairs, tonumber = type, pairs, ipairs, tonumber
+local tinsert, tremove, strlower = tinsert, tremove, strlower
 
 -- Update all current animations
 local AnimationOnUpdate = function(self, elapsed)
@@ -459,7 +458,7 @@ local AnimMethods = {
 		end,
 
 		SetEasing = function(self, easing)
-			easing = lower(easing)
+			easing = strlower(easing)
 
 			self.Easing = Easing[easing] and easing or "linear"
 		end,
@@ -469,7 +468,7 @@ local AnimMethods = {
 		end,
 
 		SetSmoothing = function(self, easing) -- Deprecated, change "SetSmoothing" to "SetEasing"
-			easing = lower(easing)
+			easing = strlower(easing)
 
 			self.Easing = Easing[easing] and easing or "linear"
 		end,
@@ -528,7 +527,7 @@ local AnimMethods = {
 		end,
 
 		SetScript = function(self, handler, func)
-			handler = lower(handler)
+			handler = strlower(handler)
 
 			if Callbacks[handler] then
 				Callbacks[handler][self] = func
@@ -536,7 +535,7 @@ local AnimMethods = {
 		end,
 
 		GetScript = function(self, handler)
-			handler = lower(handler)
+			handler = strlower(handler)
 
 			if Callbacks[handler] and Callbacks[handler][self] then
 				return Callbacks[handler][self]
@@ -544,7 +543,7 @@ local AnimMethods = {
 		end,
 
 		Callback = function(self, handler)
-			handler = lower(handler)
+			handler = strlower(handler)
 
 			if Callbacks[handler][self] then
 				Callbacks[handler][self](self)
@@ -654,7 +653,7 @@ local AnimMethods = {
 		end,
 
 		SetColorType = function(self, region)
-			region = lower(region)
+			region = strlower(region)
 
 			self.ColorType = (Set[region] and region) or "border"
 		end,
@@ -813,7 +812,7 @@ local GroupMethods = {
 	end,
 
 	SetScript = function(self, handler, func)
-		handler = lower(handler)
+		handler = strlower(handler)
 
 		if Callbacks[handler] then
 			Callbacks[handler][self] = func
@@ -821,7 +820,7 @@ local GroupMethods = {
 	end,
 
 	GetScript = function(self, handler)
-		handler = lower(handler)
+		handler = strlower(handler)
 
 		if Callbacks[handler] and Callbacks[handler][self] then
 			return Callbacks[handler][self]
@@ -829,7 +828,7 @@ local GroupMethods = {
 	end,
 
 	Callback = function(self, handler)
-		handler = lower(handler)
+		handler = strlower(handler)
 
 		if Callbacks[handler][self] then
 			Callbacks[handler][self](self)
@@ -878,7 +877,7 @@ local GroupMethods = {
 	end,
 
 	CreateAnimation = function(self, style)
-		style = lower(style)
+		style = strlower(style)
 
 		if not Initialize[style] then
 			return
@@ -917,7 +916,7 @@ local GroupMethods = {
 	end,
 }
 
-CreateAnimationGroup = function(parent)
+_G.CreateAnimationGroup = function(parent)
 	local Group = {Animations = {}}
 
 	-- Add methods to the group
@@ -1204,17 +1203,15 @@ Update.number = function(self, elapsed, i)
 end
 
 -- Global exposure
-_G["_LibAnim"] = Version
-
-LibAnimStartUpdating = StartUpdating
-LibAnimUpdater = Updater
-
-function LibAnimAddType(name, init, update)
+_G._LibAnim = Version
+_G.LibAnimStartUpdating = StartUpdating
+_G.LibAnimUpdater = Updater
+_G.LibAnimAddType = function(name, init, update)
 	if type(init) ~= "function" or type(update) ~= "function" then
 		return
 	end
 
-	name = lower(name)
+	name = strlower(name)
 
 	if Initialize[name] then
 		return
