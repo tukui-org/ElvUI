@@ -1,28 +1,33 @@
 -- LibAnim by Hydra
-local Version = 2.02
+local Version = 2.03
+
+-- Note, deprecated items will be removed next version. Please update your usage accordingly. (ctrl + f - "Deprecated")
 
 if (_LibAnim and _LibAnim >= Version) then
 	return
 end
 
-local cos = cos
-local sin = sin
+local pi = math.pi
+local cos = math.cos
+local sin = math.sin
+local sqrt = math.sqrt
+local floor = math.floor
+local tinsert = table.insert
+local tremove = table.remove
+local lower = string.lower
 local pairs = pairs
-local floor = floor
-local tinsert = tinsert
-local tremove = tremove
-local strlower = strlower
 local Updater = CreateFrame("StatusBar")
 local Texture = Updater:CreateTexture()
-local Text = Updater:CreateFontString()
-local AnimTypes = {}
-local UpdateFuncs = {}
+local FontString = Updater:CreateFontString()
+local Initialize = {}
+local Update = {}
+local Easing = {}
 local Callbacks = {["onplay"] = {}, ["onpause"] = {}, ["onresume"] = {}, ["onstop"] = {}, ["onreset"] = {}, ["onfinished"] = {}}
 
 -- Update all current animations
 local AnimationOnUpdate = function(self, elapsed)
 	for i = 1, #self do
-		if self[i] then -- Double check the the index still exists, due to pauses/stops removing them on the fly
+		if self[i] then -- Double check that the index still exists, due to pauses/stops removing them on the fly
 			self[i]:Update(elapsed, i)
 		end
 	end
@@ -44,117 +49,340 @@ local GetColor = function(p, r1, g1, b1, r2, g2, b2)
 	return r1 + (r2 - r1) * p, g1 + (g2 - g1) * p, b1 + (b2 - b1) * p
 end
 
-local ElvToolkit = {
-	GetBackdropColor = function(parent)
-		local E = ElvUI and ElvUI[1]
-		if E then
-			return E:GetBackdropColor(parent)
-		else
-			return Updater:GetBackdropColor()
-		end
-	end,
-	GetBackdropBorderColor = function(parent)
-		local E = ElvUI and ElvUI[1]
-		if E then
-			return E:GetBackdropBorderColor(parent)
-		else
-			return Updater:GetBackdropBorderColor()
-		end
-	end
-}
-
 local Set = {
-	["backdrop"] = function(self, ...) self:SetBackdropColor(...) end,
-	["border"] = function(self, ...) self:SetBackdropBorderColor(...) end,
+	["backdrop"] = Updater.SetBackdropColor,
+	["border"] = Updater.SetBackdropBorderColor,
 	["statusbar"] = Updater.SetStatusBarColor,
-	["text"] = Text.SetTextColor,
+	["text"] = FontString.SetTextColor,
 	["texture"] = Texture.SetTexture,
 	["vertex"] = Texture.SetVertexColor,
 }
 
 local Get = {
-	["backdrop"] = ElvToolkit.GetBackdropColor,
-	["border"] = ElvToolkit.GetBackdropBorderColor,
+	["backdrop"] = Updater.GetBackdropColor,
+	["border"] = Updater.GetBackdropBorderColor,
 	["statusbar"] = Updater.GetStatusBarColor,
-	["text"] = Text.GetTextColor,
+	["text"] = FontString.GetTextColor,
 	["texture"] = Texture.GetVertexColor,
 	["vertex"] = Texture.GetVertexColor,
 }
 
-local Smoothing = {
-	["none"] = function(t, b, c, d)
-		return c * t / d + b
-	end,
+-- Linear
+local Linear = function(t, b, c, d)
+	return c * t / d + b
+end
 
-	["in"] = function(t, b, c, d)
-		t = t / d
+-- Quadratic
+local InQuadratic = function(t, b, c, d)
+	t = t / d
 
-		return c * t * t + b
-	end,
+	return c * (t ^ 2) + b
+end
 
-	["out"] = function(t, b, c, d)
-		t = t / d
+local OutQuadratic = function(t, b, c, d)
+	t = t / d
 
-		return -c * t * (t - 2) + b
-	end,
+	return -c * t * (t - 2) + b
+end
 
-	["inout"] = function(t, b, c, d)
-		t = t / (d / 2)
+local InOutQuadratic = function(t, b, c, d)
+	t = t / d * 2
 
-		if (t < 1) then
-			return c / 2 * t * t + b
-		end
-
-		t = t - 1
-		return -c / 2 * (t * (t - 2) - 1) + b
-	end,
-
-	["bounce"] = function(t, b, c, d)
-		t = t / d
-
-		if (t < (1 / 2.75)) then
-			return c * (7.5625 * t * t) + b
-		elseif (t < (2 / 2.75)) then
-			t = t - (1.5 / 2.75)
-
-			return c * (7.5625 * t * t + 0.75) + b
-		elseif (t < (2.5 / 2.75)) then
-			t = t - (2.25 / 2.75)
-
-			return c * (7.5625 * t * t + 0.9375) + b
-		else
-			t = t - (2.625 / 2.75)
-
-			return c * (7.5625 * (t) * t + 0.984375) + b
-		end
-	end,
-	["elastic"] = function(t, b, c, d)
-		local s, p, a = 1.70158, d * .3, c;
-		if t == 0 then
-			return b
-		end
-		t = t / d
-
-		if t == 1 then
-			return b + c
-		end
-
-		if a < math.abs(c) then
-			a = c
-			s = p / 4
-		else
-			s = p / (2 * math.pi) * math.asin(c / a)
-		end
-
-		return a * math.pow(2, -10 * t) * math.sin((t * d - s) * (2 * math.pi) / p) + c + b
+	if (t < 1) then
+		return c / 2 * (t ^ 2) + b
+	else
+		return -c / 2 * ((t - 1) * (t - 3) - 1) + b
 	end
-}
+end
+
+-- Cubic
+local InCubic = function(t, b, c, d)
+	t = t / d
+
+	return c * (t ^ 3) + b
+end
+
+local OutCubic = function(t, b, c, d)
+	t = t / d - 1
+
+	return c * (t ^ 3 + 1) + b
+end
+
+local InOutCubic = function(t, b, c, d)
+	t = t / d * 2
+
+	if (t < 1) then
+		return c / 2 * (t ^ 3) + b
+	else
+		t = t - 2
+
+		return c / 2 * (t ^ 3 + 2) + b
+	end
+end
+
+-- Quartic
+local InQuartic = function(t, b, c, d)
+	t = t / d
+
+	return c * (t ^ 4) + b
+end
+
+local OutQuartic = function(t, b, c, d)
+	t = t / d - 1
+
+	return -c * (t ^ 4 - 1) + b
+end
+
+local InOutQuartic = function(t, b, c, d)
+	t = t / d * 2
+
+	if (t < 1) then
+		return c / 2 * t ^ 4 + b
+	else
+		t = t - 2
+
+		return -c / 2 * (t ^ 4 - 2) + b
+	end
+end
+
+-- Quintic
+local InQuintic = function(t, b, c, d)
+	t = t / d
+
+	return c * (t ^ 5) + b
+end
+
+local OutQuintic = function(t, b, c, d)
+	t = t / d - 1
+
+	return c * (t ^ 5 + 1) + b
+end
+
+local InOutQuintic = function(t, b, c, d)
+	t = t / d * 2
+
+	if (t < 1) then
+		return c / 2 * t ^ 5 + b
+	else
+		t = t - 2
+
+		return c / 2 * (t ^ 5 + 2) + b
+	end
+end
+
+-- Sinusoidal
+local InSinusoidal = function(t, b, c, d)
+	return -c * cos(t / d * (pi / 2)) + c + b
+end
+
+local OutSinusoidal = function(t, b, c, d)
+	return c * sin(t / d * (pi / 2)) + b
+end
+
+local InOutSinusoidal = function(t, b, c, d)
+	return -c / 2 * (cos(pi * t / d) - 1) + b
+end
+
+-- Exponential
+local InExponential = function(t, b, c, d)
+	if (t == 0) then
+		return b
+	else
+		return c * (2 ^ (10 * (t / d - 1))) + b - c * 0.001
+	end
+end
+
+local OutExponential = function(t, b, c, d)
+	if (t == d) then
+		return b + c
+	else
+		return c * 1.001 * (-(2 ^ (-10 * t / d)) + 1) + b
+	end
+end
+
+local InOutExponential = function(t, b, c, d)
+	if (t == 0) then
+		return b
+	end
+
+	if (t == d) then
+		return b + c
+	end
+
+	t = t / d * 2
+
+	if (t < 1) then
+		return c / 2 * (2 ^ (10 * (t - 1))) + b - c * 0.0005
+	else
+		t = t - 1
+
+		return c / 2 * 1.0005 * (-(2 ^ (-10 * t)) + 2) + b
+	end
+end
+
+-- Circular
+local InCircular = function(t, b, c, d)
+	t = t / d
+
+	return (-c * (sqrt(1 - t * t) - 1) + b)
+end
+
+local OutCircular = function(t, b, c, d)
+	t = t / d - 1
+
+	return (c * sqrt(1 - t * t) + b)
+end
+
+local InOutCircular = function(t, b, c, d)
+	t = t / d * 2
+
+	if (t < 1) then
+		return -c / 2 * (sqrt(1 - t * t) - 1) + b
+	else
+		t = t - 2
+
+		return c / 2 * (sqrt(1 - t * t) + 1) + b
+	end
+end
+
+-- Bounce
+local OutBounce = function(t, b, c, d)
+	t = t / d
+
+	if (t < (1 / 2.75)) then
+		return c * (7.5625 * t * t) + b
+	elseif (t < (2 / 2.75)) then
+		t = t - (1.5 / 2.75)
+
+		return c * (7.5625 * t * t + 0.75) + b
+	elseif (t < (2.5 / 2.75)) then
+		t = t - (2.25 / 2.75)
+
+		return c * (7.5625 * t * t + 0.9375) + b
+	else
+		t = t - (2.625 / 2.75)
+
+		return c * (7.5625 * t * t + 0.984375) + b
+	end
+end
+
+local InBounce = function(t, b, c, d)
+	return c - OutBounce(d - t, 0, c, d) + b
+end
+
+local InOutBounce = function(t, b, c, d)
+	if (t < d / 2) then
+		return InBounce(t * 2, 0, c, d) * 0.5 + b
+	else
+		return OutBounce(t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b
+	end
+end
+
+-- Elastic
+local InElastic = function(t, b, c, d)
+	if (t == 0) then
+		return b
+	end
+
+	t = t / d
+
+	if (t == 1) then
+		return b + c
+	end
+
+	local a = c
+	local p = d * 0.3
+	local s = p / 4
+
+	t = t - 1
+
+	return -(a * 2 ^ (10 * t) * sin((t * d - s) * (2 * pi) / p)) + b
+end
+
+local OutElastic = function(t, b, c, d)
+	if (t == 0) then
+		return b
+	end
+
+	t = t / d
+
+	if (t == 1) then
+		return b + c
+	end
+
+	local a = c
+	local p = d * 0.3
+	local s = p / 4
+
+	return a * 2 ^ (-10 * t) * sin((t * d - s) * (2 * pi) / p) + c + b
+end
+
+local InOutElastic = function(t, b, c, d)
+	if (t == 0) then
+		return b
+	end
+
+	t = t / d * 2
+
+	if (t == 2) then
+		return b + c
+	end
+
+	local a = c
+	local p = d * (0.3 * 1.5)
+	local s = p / 4
+
+	if (t < 1) then
+		t = t - 1
+
+		return -0.5 * (a * 2 ^ (10 * t) * sin((t * d - s) * (2 * pi) / p)) + b
+	else
+		t = t - 1
+
+		return a * 2 ^ (-10 * t) * sin((t * d - s) * (2 * pi) / p ) * 0.5 + c + b
+	end
+end
+
+Easing["linear"] = Linear
+Easing["in-quadratic"] = InQuadratic
+Easing["out-quadratic"] = OutQuadratic
+Easing["inout-quadratic"] = InOutQuadratic
+Easing["in-cubic"] = InCubic
+Easing["out-cubic"] = OutCubic
+Easing["inout-cubic"] = InOutCubic
+Easing["in-quartic"] = InQuartic
+Easing["out-quartic"] = OutQuartic
+Easing["inout-quartic"] = InOutQuartic
+Easing["in-quintic"] = InQuintic
+Easing["out-quintic"] = OutQuintic
+Easing["inout-quintic"] = InOutQuintic
+Easing["in-sinusoidal"] = InSinusoidal
+Easing["out-sinusoidal"] = OutSinusoidal
+Easing["inout-sinusoidal"] = InOutSinusoidal
+Easing["in-exponential"] = InExponential
+Easing["out-exponential"] = OutExponential
+Easing["inout-exponential"] = InOutExponential
+Easing["in-circular"] = InCircular
+Easing["out-circular"] = OutCircular
+Easing["inout-circular"] = InOutCircular
+Easing["in-bounce"] = InBounce
+Easing["out-bounce"] = OutBounce
+Easing["inout-bounce"] = InOutBounce
+Easing["in-elastic"] = InElastic
+Easing["out-elastic"] = OutElastic
+Easing["inout-elastic"] = InOutElastic
+
+-- Some fallbacks / lazy options
+Easing["in"] = Easing["in-quadratic"]
+Easing["out"] = Easing["out-quadratic"]
+Easing["inout"] = Easing["inout-quadratic"]
+Easing["bounce"] = Easing["out-bounce"] -- Deprecated, don't use bounce without an explicit motion anymore
 
 local AnimMethods = {
 	All = {
 		Play = function(self)
 			if (not self.Paused) then
-				AnimTypes[self.Type](self)
+				Initialize[self.Type](self)
 				self:Callback("OnPlay")
 			else
 				StartUpdating(self)
@@ -201,6 +429,7 @@ local AnimMethods = {
 			self.Playing = false
 			self.Paused = false
 			self.Stopped = true
+			self.Timer = 0
 
 			if reset then
 				self:Reset()
@@ -214,14 +443,24 @@ local AnimMethods = {
 			return self.Stopped
 		end,
 
-		SetSmoothing = function(self, smoothType)
-			smoothType = strlower(smoothType)
+		SetEasing = function(self, easing)
+			easing = lower(easing)
 
-			self.Smoothing = Smoothing[smoothType] and smoothType or "none"
+			self.Easing = Easing[easing] and easing or "linear"
 		end,
 
-		GetSmoothing = function(self)
-			return self.Smoothing
+		GetEasing = function(self)
+			return self.Easing
+		end,
+
+		SetSmoothing = function(self, easing) -- Deprecated, change "SetSmoothing" to "SetEasing"
+			easing = lower(easing)
+
+			self.Easing = Easing[easing] and easing or "linear"
+		end,
+
+		GetSmoothing = function(self) -- Deprecated, change "GetSmoothing" to "GetEasing"
+			return self.Easing
 		end,
 
 		SetDuration = function(self, duration)
@@ -253,17 +492,15 @@ local AnimMethods = {
 		end,
 
 		SetScript = function(self, handler, func)
-			handler = strlower(handler)
+			handler = lower(handler)
 
-			if (not Callbacks[handler]) then
-				return
+			if Callbacks[handler] then
+				Callbacks[handler][self] = func
 			end
-
-			Callbacks[handler][self] = func
 		end,
 
 		GetScript = function(self, handler)
-			handler = strlower(handler)
+			handler = lower(handler)
 
 			if (Callbacks[handler] and Callbacks[handler][self]) then
 				return Callbacks[handler][self]
@@ -271,7 +508,7 @@ local AnimMethods = {
 		end,
 
 		Callback = function(self, handler)
-			handler = strlower(handler)
+			handler = lower(handler)
 
 			if Callbacks[handler][self] then
 				Callbacks[handler][self](self)
@@ -281,8 +518,8 @@ local AnimMethods = {
 
 	move = {
 		SetOffset = function(self, x, y)
-			self.XSetting  = x or 0
-			self.YSetting  = y or 0
+			self.XSetting = x or 0
+			self.YSetting = y or 0
 		end,
 
 		GetOffset = function(self)
@@ -302,8 +539,13 @@ local AnimMethods = {
 		end,
 
 		Reset = function(self)
+			self.Timer = 0
 			self.Parent:ClearAllPoints()
 			self.Parent:SetPoint(self.A1, self.P, self.A2, self.StartX, self.StartY)
+
+			if self.IsRounded then
+				self.ModTimer = 0
+			end
 		end,
 	},
 
@@ -321,6 +563,7 @@ local AnimMethods = {
 		end,
 
 		Reset = function(self)
+			self.Timer = 0
 			self.Parent:SetAlpha(self.StartAlpha)
 		end,
 	},
@@ -339,6 +582,7 @@ local AnimMethods = {
 		end,
 
 		Reset = function(self)
+			self.Timer = 0
 			self.Parent:SetHeight(self.StartHeight)
 		end,
 	},
@@ -357,6 +601,7 @@ local AnimMethods = {
 		end,
 
 		Reset = function(self)
+			self.Timer = 0
 			self.Parent:SetWidth(self.StartWidth)
 		end,
 	},
@@ -372,10 +617,10 @@ local AnimMethods = {
 			return self.EndRSetting, self.EndGSetting, self.EndBSetting
 		end,
 
-		SetColorType = function(self, type)
-			type = strlower(type)
+		SetColorType = function(self, region)
+			region = lower(region)
 
-			self.ColorType = Set[type] and type or "border"
+			self.ColorType = Set[region] and region or "border"
 		end,
 
 		GetColorType = function(self)
@@ -387,6 +632,7 @@ local AnimMethods = {
 		end,
 
 		Reset = function(self)
+			self.Timer = 0
 			Set[self.ColorType](self.Parent, self.StartR, self.StartG, self.StartB)
 		end,
 	},
@@ -405,6 +651,7 @@ local AnimMethods = {
 		end,
 
 		Reset = function(self)
+			self.Timer = 0
 			self.Parent:SetValue(self.StartValue)
 		end,
 	},
@@ -416,6 +663,14 @@ local AnimMethods = {
 
 		GetChange = function(self)
 			return self.EndNumberSetting
+		end,
+
+		SetStart = function(self, value)
+			self.StartNumber = value
+		end,
+
+		GetStart = function(self, value)
+			return self.StartNumber
 		end,
 
 		SetPrefix = function(self, text)
@@ -439,14 +694,24 @@ local AnimMethods = {
 		end,
 
 		Reset = function(self)
-			self.Parent:SetText(self.StartNumer)
+			self.Timer = 0
+			self.Parent:SetText(self.StartNumber)
+		end,
+	},
+
+	sleep = {
+		GetProgress = function(self)
+			return self.Timer
+		end,
+
+		Reset = function(self)
+			self.Timer = 0
 		end,
 	},
 }
 
 local GroupMethods = {
 	Play = function(self)
-		-- Play!
 		for i = 1, #self.Animations do
 			if (self.Animations[i].Order == self.Order) then
 				self.Animations[i]:Play()
@@ -456,6 +721,8 @@ local GroupMethods = {
 		self.Playing = true
 		self.Paused = false
 		self.Stopped = false
+
+		self:Callback("OnPlay")
 	end,
 
 	IsPlaying = function(self)
@@ -463,7 +730,6 @@ local GroupMethods = {
 	end,
 
 	Pause = function(self)
-		-- Only pause current order
 		for i = 1, #self.Animations do
 			if (self.Animations[i].Order == self.Order) then
 				self.Animations[i]:Pause()
@@ -473,6 +739,8 @@ local GroupMethods = {
 		self.Playing = false
 		self.Paused = true
 		self.Stopped = false
+
+		self:Callback("OnPause")
 	end,
 
 	IsPaused = function(self)
@@ -487,6 +755,9 @@ local GroupMethods = {
 		self.Playing = false
 		self.Paused = false
 		self.Stopped = true
+		self.Order = 1
+
+		self:Callback("OnStop")
 	end,
 
 	IsStopped = function(self)
@@ -503,6 +774,30 @@ local GroupMethods = {
 
 	GetParent = function(self)
 		return self.Parent
+	end,
+
+	SetScript = function(self, handler, func)
+		handler = lower(handler)
+
+		if Callbacks[handler] then
+			Callbacks[handler][self] = func
+		end
+	end,
+
+	GetScript = function(self, handler)
+		handler = lower(handler)
+
+		if (Callbacks[handler] and Callbacks[handler][self]) then
+			return Callbacks[handler][self]
+		end
+	end,
+
+	Callback = function(self, handler)
+		handler = lower(handler)
+
+		if Callbacks[handler][self] then
+			Callbacks[handler][self](self)
+		end
 	end,
 
 	CheckOrder = function(self)
@@ -528,6 +823,8 @@ local GroupMethods = {
 			if (self.Order > self.MaxOrder) then
 				self.Order = 1
 
+				self:Callback("OnFinished")
+
 				if (self.Stopped or not self.Looping) then
 					self.Playing = false
 
@@ -544,10 +841,10 @@ local GroupMethods = {
 		end
 	end,
 
-	CreateAnimation = function(self, type)
-		type = strlower(type)
+	CreateAnimation = function(self, style)
+		style = lower(style)
 
-		if (not AnimTypes[type]) then
+		if (not Initialize[style]) then
 			return
 		end
 
@@ -559,8 +856,8 @@ local GroupMethods = {
 		end
 
 		-- Animation specific methods
-		if AnimMethods[type] then
-			for key, func in pairs(AnimMethods[type]) do
+		if AnimMethods[style] then
+			for key, func in pairs(AnimMethods[style]) do
 				Animation[key] = func
 			end
 		end
@@ -570,13 +867,13 @@ local GroupMethods = {
 		Animation.Playing = false
 		Animation.Stopped = false
 		Animation.Looping = false
-		Animation.Type = type
+		Animation.Type = style
 		Animation.Group = self
 		Animation.Parent = self.Parent
 		Animation.Order = 1
 		Animation.Duration = 0.3
-		Animation.Smoothing = "none"
-		Animation.Update = UpdateFuncs[type]
+		Animation.Easing = "linear"
+		Animation.Update = Update[style]
 
 		tinsert(self.Animations, Animation)
 
@@ -603,31 +900,8 @@ CreateAnimationGroup = function(parent)
 end
 
 -- Movement
-UpdateFuncs["move"] = function(self, elapsed, i)
-	self.Timer = self.Timer + elapsed
-
-	if self.IsRounded then
-		self.ModTimer = Smoothing[self.Smoothing](self.Timer, 0, self.Duration, self.Duration)
-		self.XOffset = self.StartX - (-1) * (self.XChange * (1 - cos(90 * self.ModTimer / self.Duration)))
-		self.YOffset = self.StartY + self.YChange * sin(90 * self.ModTimer / self.Duration)
-	else
-		self.XOffset = Smoothing[self.Smoothing](self.Timer, self.StartX, self.XChange, self.Duration)
-		self.YOffset = Smoothing[self.Smoothing](self.Timer, self.StartY, self.YChange, self.Duration)
-	end
-
-	self.Parent:SetPoint(self.A1, self.P, self.A2, (self.EndX ~= 0 and self.XOffset or self.StartX), (self.EndY ~= 0 and self.YOffset or self.StartY))
-
-	if (self.Timer >= self.Duration) then
-		tremove(Updater, i)
-		self.Parent:SetPoint(self.A1, self.P, self.A2, self.EndX, self.EndY)
-		self.Playing = false
-		self:Callback("OnFinished")
-		self.Group:CheckOrder()
-	end
-end
-
-AnimTypes["move"] = function(self)
-	if self:IsPlaying() then
+Initialize["move"] = function(self)
+	if self.Playing then
 		return
 	end
 
@@ -655,23 +929,32 @@ AnimTypes["move"] = function(self)
 	StartUpdating(self)
 end
 
--- Fade
-UpdateFuncs["fade"] = function(self, elapsed, i)
+Update["move"] = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
-	self.AlphaOffset = Smoothing[self.Smoothing](self.Timer, self.StartAlpha, self.Change, self.Duration)
-	self.Parent:SetAlpha(self.AlphaOffset)
 
 	if (self.Timer >= self.Duration) then
 		tremove(Updater, i)
-		self.Parent:SetAlpha(self.EndAlpha)
+		self.Parent:SetPoint(self.A1, self.P, self.A2, self.EndX, self.EndY)
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	else
+		if self.IsRounded then
+			self.ModTimer = Easing[self.Easing](self.Timer, 0, self.Duration, self.Duration)
+			self.XOffset = self.StartX - (-1) * (self.XChange * (1 - cos(90 * self.ModTimer / self.Duration)))
+			self.YOffset = self.StartY + self.YChange * sin(90 * self.ModTimer / self.Duration)
+		else
+			self.XOffset = Easing[self.Easing](self.Timer, self.StartX, self.XChange, self.Duration)
+			self.YOffset = Easing[self.Easing](self.Timer, self.StartY, self.YChange, self.Duration)
+		end
+
+		self.Parent:SetPoint(self.A1, self.P, self.A2, (self.EndX ~= 0 and self.XOffset or self.StartX), (self.EndY ~= 0 and self.YOffset or self.StartY))
 	end
 end
 
-AnimTypes["fade"] = function(self)
-	if self:IsPlaying() then
+-- Fade
+Initialize["fade"] = function(self)
+	if self.Playing then
 		return
 	end
 
@@ -683,23 +966,24 @@ AnimTypes["fade"] = function(self)
 	StartUpdating(self)
 end
 
--- Height
-UpdateFuncs["height"] = function(self, elapsed, i)
+Update["fade"] = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
-	self.HeightOffset = Smoothing[self.Smoothing](self.Timer, self.StartHeight, self.HeightChange, self.Duration)
-	self.Parent:SetHeight(self.HeightOffset)
 
 	if (self.Timer >= self.Duration) then
 		tremove(Updater, i)
-		self.Parent:SetHeight(self.EndHeight)
+		self.Parent:SetAlpha(self.EndAlpha)
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	else
+		self.AlphaOffset = Easing[self.Easing](self.Timer, self.StartAlpha, self.Change, self.Duration)
+		self.Parent:SetAlpha(self.AlphaOffset)
 	end
 end
 
-AnimTypes["height"] = function(self)
-	if self:IsPlaying() then
+-- Height
+Initialize["height"] = function(self)
+	if self.Playing then
 		return
 	end
 
@@ -711,23 +995,24 @@ AnimTypes["height"] = function(self)
 	StartUpdating(self)
 end
 
--- Width
-UpdateFuncs["width"] = function(self, elapsed, i)
+Update["height"] = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
-	self.WidthOffset = Smoothing[self.Smoothing](self.Timer, self.StartWidth, self.WidthChange, self.Duration)
-	self.Parent:SetWidth(self.WidthOffset)
 
 	if (self.Timer >= self.Duration) then
 		tremove(Updater, i)
-		self.Parent:SetWidth(self.EndWidth)
+		self.Parent:SetHeight(self.EndHeight)
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	else
+		self.HeightOffset = Easing[self.Easing](self.Timer, self.StartHeight, self.HeightChange, self.Duration)
+		self.Parent:SetHeight(self.HeightOffset)
 	end
 end
 
-AnimTypes["width"] = function(self)
-	if self:IsPlaying() then
+-- Width
+Initialize["width"] = function(self)
+	if self.Playing then
 		return
 	end
 
@@ -739,22 +1024,23 @@ AnimTypes["width"] = function(self)
 	StartUpdating(self)
 end
 
--- Color
-UpdateFuncs["color"] = function(self, elapsed, i)
+Update["width"] = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
-	self.ColorOffset = Smoothing[self.Smoothing](self.Timer, 0, self.Duration, self.Duration)
-	Set[self.ColorType](self.Parent, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
 
 	if (self.Timer >= self.Duration) then
 		tremove(Updater, i)
-		Set[self.ColorType](self.Parent, self.EndR, self.EndG, self.EndB)
+		self.Parent:SetWidth(self.EndWidth)
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	else
+		self.WidthOffset = Easing[self.Easing](self.Timer, self.StartWidth, self.WidthChange, self.Duration)
+		self.Parent:SetWidth(self.WidthOffset)
 	end
 end
 
-AnimTypes["color"] = function(self)
+-- Color
+Initialize["color"] = function(self)
 	self.Timer = 0
 	self.ColorType = self.ColorType or "backdrop"
 	self.StartR, self.StartG, self.StartB = Get[self.ColorType](self.Parent)
@@ -765,22 +1051,23 @@ AnimTypes["color"] = function(self)
 	StartUpdating(self)
 end
 
--- Progress
-UpdateFuncs["progress"] = function(self, elapsed, i)
+Update["color"] = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
-	self.ValueOffset = Smoothing[self.Smoothing](self.Timer, self.StartValue, self.ProgressChange, self.Duration)
-	self.Parent:SetValue(self.ValueOffset)
 
 	if (self.Timer >= self.Duration) then
 		tremove(Updater, i)
-		self.Parent:SetValue(self.EndValue)
+		Set[self.ColorType](self.Parent, self.EndR, self.EndG, self.EndB)
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	else
+		self.ColorOffset = Easing[self.Easing](self.Timer, 0, self.Duration, self.Duration)
+		Set[self.ColorType](self.Parent, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
 	end
 end
 
-AnimTypes["progress"] = function(self)
+-- Progress
+Initialize["progress"] = function(self)
 	self.Timer = 0
 	self.StartValue = self.Parent:GetValue() or 0
 	self.EndValue = self.EndValueSetting or 0
@@ -789,42 +1076,47 @@ AnimTypes["progress"] = function(self)
 	StartUpdating(self)
 end
 
--- Sleep
-UpdateFuncs["sleep"] = function(self, elapsed, i)
+Update["progress"] = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
 
 	if (self.Timer >= self.Duration) then
 		tremove(Updater, i)
+		self.Parent:SetValue(self.EndValue)
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
+	else
+		self.ValueOffset = Easing[self.Easing](self.Timer, self.StartValue, self.ProgressChange, self.Duration)
+		self.Parent:SetValue(self.ValueOffset)
 	end
 end
 
-AnimTypes["sleep"] = function(self)
+-- Sleep
+Initialize["sleep"] = function(self)
 	self.Timer = 0
 
 	StartUpdating(self)
 end
 
--- Number
-UpdateFuncs["number"] = function(self, elapsed, i)
+Update["sleep"] = function(self, elapsed, i)
 	self.Timer = self.Timer + elapsed
-	self.NumberOffset = Smoothing[self.Smoothing](self.Timer, self.StartNumber, self.NumberChange, self.Duration)
-	self.Parent:SetText(self.Prefix..floor(self.NumberOffset)..self.Postfix)
 
 	if (self.Timer >= self.Duration) then
 		tremove(Updater, i)
-		self.Parent:SetText(self.Prefix..floor(self.EndNumber)..self.Postfix)
 		self.Playing = false
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
 	end
 end
 
-AnimTypes["number"] = function(self)
+-- Number
+Initialize["number"] = function(self)
 	self.Timer = 0
-	self.StartNumber = tonumber(self.Parent:GetText()) or 0
+
+	if (not self.StartNumber) then
+		self.StartNumber = tonumber(self.Parent:GetText()) or 0
+	end
+
 	self.EndNumber = self.EndNumberSetting or 0
 	self.NumberChange = self.EndNumberSetting - self.StartNumber
 	self.Prefix = self.Prefix or ""
@@ -833,4 +1125,71 @@ AnimTypes["number"] = function(self)
 	StartUpdating(self)
 end
 
+Update["number"] = function(self, elapsed, i)
+	self.Timer = self.Timer + elapsed
+
+	if (self.Timer >= self.Duration) then
+		tremove(Updater, i)
+		self.Parent:SetText(self.Prefix..floor(self.EndNumber)..self.Postfix)
+		self.Playing = false
+		self:Callback("OnFinished")
+		self.Group:CheckOrder()
+	else
+		self.NumberOffset = Easing[self.Easing](self.Timer, self.StartNumber, self.NumberChange, self.Duration)
+		self.Parent:SetText(self.Prefix..floor(self.NumberOffset)..self.Postfix)
+	end
+end
+
+-- Global exposure
 _G["_LibAnim"] = Version
+
+LibAnimStartUpdating = StartUpdating
+LibAnimUpdater = Updater
+
+function LibAnimAddType(name, init, update)
+	if (type(init) ~= "function" or type(update) ~= "function") then
+		return
+	end
+
+	name = lower(name)
+
+	if Initialize[name] then
+		return
+	end
+
+	Initialize[name] = init
+	Update[name] = update
+end
+
+--[[
+	Want to create your own animations for this system? Follow the example below
+	If you make a custom animation I would love to see it!
+
+	Example:
+
+	local MyInitialize = function(self)
+		self.Timer = 0
+
+		-- do any initialization right before the animation plays
+
+		LibAnimStartUpdating(self)
+	end
+
+	local MyUpdate = function(self, elapsed, i)
+		self.Timer = self.Timer + elapsed
+
+		if (self.Timer >= self.Duration) then
+			table.remove(LibAnimUpdater, i)
+
+			-- Set finished attributes here
+
+			self.Playing = false
+			self:Callback("OnFinished")
+			self.Group:CheckOrder()
+		else
+			-- Do any updating necessary here
+		end
+	end
+
+	LibAnimAddType("MyAnim", MyInitialize, MyUpdate)
+--]]
