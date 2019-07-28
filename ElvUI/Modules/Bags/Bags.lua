@@ -75,7 +75,6 @@ local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Timer_After = C_Timer.After
-local CreateAnimationGroup = CreateAnimationGroup
 local hooksecurefunc = hooksecurefunc
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
@@ -2098,7 +2097,7 @@ function B:HideItemGlow(bag)
 end
 
 function B:SetupItemGlow(frame)
-	frame.NewItemGlow = CreateAnimationGroup(frame)
+	frame.NewItemGlow = _G.CreateAnimationGroup(frame)
 	frame.NewItemGlow:SetLooping(true)
 	frame.NewItemGlow.Fade = frame.NewItemGlow:CreateAnimation("fade")
 	frame.NewItemGlow.Fade:SetDuration(0.7)
@@ -2363,7 +2362,7 @@ function B:CreateSellFrame()
 	B.SellFrame.statusbar:SetStatusBarColor(1, 0, 0)
 	B.SellFrame.statusbar:CreateBackdrop("Transparent")
 
-	B.SellFrame.statusbar.anim = CreateAnimationGroup(B.SellFrame.statusbar)
+	B.SellFrame.statusbar.anim = _G.CreateAnimationGroup(B.SellFrame.statusbar)
 	B.SellFrame.statusbar.anim.progress = B.SellFrame.statusbar.anim:CreateAnimation("Progress")
 	B.SellFrame.statusbar.anim.progress:SetSmoothing("Out")
 	B.SellFrame.statusbar.anim.progress:SetDuration(.3)
