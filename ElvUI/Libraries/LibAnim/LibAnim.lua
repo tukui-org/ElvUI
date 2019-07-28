@@ -60,12 +60,22 @@ local ElvToolkit = {
 		else
 			return parent:GetBackdropBorderColor()
 		end
+	end,
+
+	-- we dont need these because of our api calls
+	-- we just need an uncached version to use our injected
+	-- api on the elements
+	SetBackdropColor = function(self, ...)
+		self:SetBackdropColor(...)
+	end,
+	SetBackdropBorderColor = function(self, ...)
+		self:SetBackdropBorderColor(...)
 	end
 }
 
 local Set = {
-	backdrop = Updater.SetBackdropColor,
-	border = Updater.SetBackdropBorderColor,
+	backdrop = ElvToolkit.SetBackdropColor,
+	border = ElvToolkit.SetBackdropBorderColor,
 	statusbar = Updater.SetStatusBarColor,
 	text = FontString.SetTextColor,
 	texture = Texture.SetTexture,
@@ -1006,7 +1016,6 @@ Update.fade = function(self, elapsed, i)
 
 	if self.Timer >= self.Duration then
 		tremove(Updater, i)
-		self.Parent:SetAlpha(self.EndAlpha)
 
 		if self.children then
 			for _, child in pairs(self.children) do
