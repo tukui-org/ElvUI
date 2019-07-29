@@ -308,7 +308,7 @@ end
 function CH:InsertEmotions(msg)
 	for word in gmatch(msg, "%s-%S+%s*") do
 		word = strtrim(word)
-		local pattern = gsub(word, '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1')
+		local pattern = E:EscapeString(word)
 		local emoji = CH.Smileys[pattern]
 		if emoji and strmatch(msg, '[%s%p]-'..pattern..'[%s%p]*') then
 			local base64 = E.Libs.Base64:Encode(word) -- btw keep `|h|cFFffffff|r|h` as it is
@@ -1822,7 +1822,7 @@ function CH:CheckKeyword(message, author)
 	end
 
 	for hyperLink, tempLink in pairs(protectLinks) do
-		message = gsub(message, gsub(hyperLink, '([%(%)%.%%%+%-%*%?%[%^%$])', '%%%1'), tempLink)
+		message = gsub(message, E:EscapeString(hyperLink), tempLink)
 	end
 
 	local rebuiltString
@@ -1868,7 +1868,7 @@ function CH:CheckKeyword(message, author)
 	end
 
 	for hyperLink, tempLink in pairs(protectLinks) do
-		rebuiltString = gsub(rebuiltString, gsub(tempLink, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), hyperLink)
+		rebuiltString = gsub(rebuiltString, E:EscapeString(tempLink), hyperLink)
 		protectLinks[hyperLink] = nil
 	end
 

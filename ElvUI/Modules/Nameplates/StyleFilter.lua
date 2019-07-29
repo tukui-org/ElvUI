@@ -390,7 +390,7 @@ function mod:StyleFilterNameChanged()
 
 	local nameText = self:GetText()
 	if nameText and nameText ~= "" then
-		local unitName = self.__owner.unitName and gsub(self.__owner.unitName,'([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')
+		local unitName = self.__owner.unitName and E:EscapeString(self.__owner.unitName)
 		if unitName then self:SetText(gsub(nameText,'|c[fF][fF]%x%x%x%x%x%x%s-('..unitName..')','%1')) end
 	end
 end

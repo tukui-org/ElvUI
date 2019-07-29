@@ -1,4 +1,4 @@
-local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 27
+local MAJOR, MINOR = 'LibElvUIPlugin-1.0', 28
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -254,7 +254,7 @@ function lib:SendPluginVersionCheck(message)
 		for _ = 1, ceil(msgLength/maxChar) do
 			splitMessage = strmatch(strsub(message, 1, maxChar), '.+;')
 			if splitMessage then -- incase the string is over 250 but doesnt contain `;`
-				message = gsub(message, '^'..gsub(splitMessage, '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'), '')
+				message = gsub(message, '^'..E:EscapeString(splitMessage), '')
 				E:Delay(delay, C_ChatInfo_SendAddonMessage, lib.prefix, splitMessage, ChatType)
 				delay = delay + 1
 			end
