@@ -16,7 +16,7 @@ local UnitPowerMax = UnitPowerMax
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitGUID = UnitGUID
 
-local E -- placeholder
+local E  -- placeholder
 
 local function checkElvUI()
 	if not E then
@@ -290,8 +290,16 @@ local function Enable(self)
 end
 
 local function Disable(self)
+	local function disableElement(element)
+		if element then
+			element.enabled = false
+		end
+	end
+
 	if self and self.Cutaway then
 		self.Cutaway:Hide()
+		disableElement(self.Cutaway.Health)
+		disableElement(self.Cutaway.Power)
 	end
 end
 
