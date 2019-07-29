@@ -119,36 +119,6 @@ do
 	end
 end
 
-function AddOn:ScanTooltipTextures(clean, grabTextures)
-	local essenceTextureID, textures, essences = 2975691
-	for i = 1, 10 do
-		local tex = _G["ElvUI_ScanTooltipTexture"..i]
-		local texture = tex and tex:GetTexture()
-		if texture then
-			if grabTextures then
-				if not textures then textures = {} end
-				if texture == essenceTextureID then
-					if not essences then essences = {} end
-
-					local selected = (textures[i-1] ~= essenceTextureID and textures[i-1]) or nil
-					essences[i] = {selected, tex:GetAtlas(), texture}
-
-					if selected then
-						textures[i-1] = nil
-					end
-				else
-					textures[i] = texture
-				end
-			end
-			if clean then
-				tex:SetTexture()
-			end
-		end
-	end
-
-	return textures, essences
-end
-
 function AddOn:OnInitialize()
 	if not ElvCharacterDB then
 		ElvCharacterDB = {}
@@ -244,7 +214,7 @@ function AddOn:PLAYER_REGEN_ENABLED()
 end
 
 function AddOn:PLAYER_REGEN_DISABLED()
-	local err = false
+	local err
 
 	if IsAddOnLoaded("ElvUI_OptionsUI") then
 		local ACD = self.Libs.AceConfigDialog
@@ -257,14 +227,15 @@ function AddOn:PLAYER_REGEN_DISABLED()
 
 	if self.CreatedMovers then
 		for name in pairs(self.CreatedMovers) do
-			if _G[name] and _G[name]:IsShown() then
+			local mover = _G[name]
+			if mover and mover:IsShown() then
+				mover:Hide()
 				err = true
-				_G[name]:Hide()
 			end
 		end
 	end
 
-	if err == true then
+	if err then
 		self:Print(ERR_NOT_IN_COMBAT)
 	end
 end

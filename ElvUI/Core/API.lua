@@ -34,10 +34,6 @@ local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.
 local FACTION_HORDE = FACTION_HORDE
 local FACTION_ALLIANCE = FACTION_ALLIANCE
 
-function E:IsFoolsDay()
-	return strfind(date(), '04/01/') and not E.global.aprilFools
-end
-
 do -- other non-english locales require this
 	E.UnlocalizedClasses = {}
 	for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do E.UnlocalizedClasses[v] = k end
@@ -46,6 +42,40 @@ do -- other non-english locales require this
 	function E:UnlocalizedClassName(className)
 		return (className and className ~= "") and E.UnlocalizedClasses[className]
 	end
+end
+
+function E:IsFoolsDay()
+	return strfind(date(), '04/01/') and not E.global.aprilFools
+end
+
+function E:ScanTooltipTextures(clean, grabTextures)
+	local essenceTextureID, textures, essences = 2975691
+	for i = 1, 10 do
+		local tex = _G["ElvUI_ScanTooltipTexture"..i]
+		local texture = tex and tex:GetTexture()
+		if texture then
+			if grabTextures then
+				if not textures then textures = {} end
+				if texture == essenceTextureID then
+					if not essences then essences = {} end
+
+					local selected = (textures[i-1] ~= essenceTextureID and textures[i-1]) or nil
+					essences[i] = {selected, tex:GetAtlas(), texture}
+
+					if selected then
+						textures[i-1] = nil
+					end
+				else
+					textures[i] = texture
+				end
+			end
+			if clean then
+				tex:SetTexture()
+			end
+		end
+	end
+
+	return textures, essences
 end
 
 function E:GetPlayerRole()
