@@ -70,7 +70,7 @@ local PRE = 0
 local POST = 1
 
 local function Shared_UpdateCheckReturn(self, element, updateType, ...)
-	if not element:IsShown() then
+	if not element:IsVisible() then
 		return true
 	end
 	if (updateType == PRE) then
