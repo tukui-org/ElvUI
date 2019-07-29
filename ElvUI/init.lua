@@ -151,15 +151,15 @@ end
 
 function AddOn:OnInitialize()
 	if not ElvCharacterDB then
-		ElvCharacterDB = {};
+		ElvCharacterDB = {}
 	end
 
 	ElvCharacterData = nil; --Depreciated
 	ElvPrivateData = nil; --Depreciated
 	ElvData = nil; --Depreciated
 
-	self.db = tcopy(self.DF.profile, true);
-	self.global = tcopy(self.DF.global, true);
+	self.db = tcopy(self.DF.profile, true)
+	self.global = tcopy(self.DF.global, true)
 
 	local ElvDB = ElvDB
 	if ElvDB then
@@ -177,7 +177,7 @@ function AddOn:OnInitialize()
 		end
 	end
 
-	self.private = tcopy(self.privateVars.profile, true);
+	self.private = tcopy(self.privateVars.profile, true)
 
 	local ElvPrivateDB = ElvPrivateDB
 	if ElvPrivateDB then
@@ -240,32 +240,32 @@ end)
 
 function AddOn:PLAYER_REGEN_ENABLED()
 	self:ToggleOptionsUI()
-	self:UnregisterEvent('PLAYER_REGEN_ENABLED');
+	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
 function AddOn:PLAYER_REGEN_DISABLED()
-	local err = false;
+	local err = false
 
 	if IsAddOnLoaded("ElvUI_OptionsUI") then
 		local ACD = self.Libs.AceConfigDialog
 		if ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName] then
-			self:RegisterEvent('PLAYER_REGEN_ENABLED');
-			ACD:Close(AddOnName);
-			err = true;
+			self:RegisterEvent('PLAYER_REGEN_ENABLED')
+			ACD:Close(AddOnName)
+			err = true
 		end
 	end
 
 	if self.CreatedMovers then
 		for name in pairs(self.CreatedMovers) do
 			if _G[name] and _G[name]:IsShown() then
-				err = true;
-				_G[name]:Hide();
+				err = true
+				_G[name]:Hide()
 			end
 		end
 	end
 
 	if err == true then
-		self:Print(ERR_NOT_IN_COMBAT);
+		self:Print(ERR_NOT_IN_COMBAT)
 	end
 end
 
@@ -278,10 +278,10 @@ function AddOn:ResetProfile()
 	end
 
 	if profileKey and ElvPrivateDB.profiles and ElvPrivateDB.profiles[profileKey] then
-		ElvPrivateDB.profiles[profileKey] = nil;
+		ElvPrivateDB.profiles[profileKey] = nil
 	end
 
-	ElvCharacterDB = nil;
+	ElvCharacterDB = nil
 	ReloadUI()
 end
 
@@ -321,7 +321,7 @@ function AddOn:ToggleOptionsUI(msg)
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
-		return;
+		return
 	end
 
 	if not IsAddOnLoaded("ElvUI_OptionsUI") then
