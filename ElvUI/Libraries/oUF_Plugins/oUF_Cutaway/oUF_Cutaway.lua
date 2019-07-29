@@ -289,13 +289,13 @@ local function Enable(self)
 	end
 end
 
-local function Disable(self)
-	local function disableElement(element)
-		if element then
-			element.enabled = false
-		end
+local function disableElement(element)
+	if element then
+		element.enabled = false
 	end
+end
 
+local function Disable(self)
 	if self and self.Cutaway then
 		self.Cutaway:Hide()
 		disableElement(self.Cutaway.Health)
