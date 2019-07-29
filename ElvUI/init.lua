@@ -51,13 +51,6 @@ Engine[5] = AddOn.DF.global
 _G[AddOnName] = Engine
 
 do
-	local arg1,arg2 = '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'
-	function AddOn:EscapeString(str)
-		return gsub(str,arg1,arg2)
-	end
-end
-
-do
 	AddOn.Libs = {}
 	AddOn.LibsMinor = {}
 	function AddOn:AddLib(name, major, minor)
@@ -118,6 +111,13 @@ AddOn.Tooltip = AddOn:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent
 AddOn.TotemBar = AddOn:NewModule('Totems','AceEvent-3.0')
 AddOn.UnitFrames = AddOn:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
 AddOn.WorldMap = AddOn:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+
+do
+	local arg2,arg3 = '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'
+	function AddOn:EscapeString(str)
+		return gsub(str,arg2,arg3)
+	end
+end
 
 function AddOn:ScanTooltipTextures(clean, grabTextures)
 	local essenceTextureID, textures, essences = 2975691
