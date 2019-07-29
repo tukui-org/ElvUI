@@ -110,8 +110,7 @@ local function OnEnter(self)
 	end
 
 	DT.tooltip:AddLine(' ')
-	local texture = select(3, GetCurrencyInfo(104))
-	DT.tooltip:AddLine(AddTexture(texture)..' '..TALENTS, .6, .8, 1)
+	DT.tooltip:AddLine(TALENTS, 0.69, 0.31, 0.31)
 
 	for i = 1, _G.MAX_TALENT_TIERS do
 		for j = 1, 3 do
@@ -126,9 +125,8 @@ local function OnEnter(self)
 		local pvpTalents = C_SpecializationInfo_GetAllSelectedPvpTalentIDs()
 
 		if #pvpTalents > 0 then
-			local texture = select(3, GetCurrencyInfo(1586))
 			DT.tooltip:AddLine(' ')
-			DT.tooltip:AddLine(AddTexture(texture)..' '..PVP_TALENTS, .6, .8, 1)
+			DT.tooltip:AddLine(PVP_TALENTS, 0.69, 0.31, 0.31)
 			for _, talentID in next, pvpTalents do
 				local _, name, icon, _, _, _, unlocked = GetPvpTalentInfoByID(talentID)
 				if name and unlocked then
