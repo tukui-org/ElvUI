@@ -368,10 +368,19 @@ E.Options.args.general = {
 						cropIcon = {
 							order = 10,
 							type = 'toggle',
+							tristate = true,
 							name = L["Crop Icons"],
 							desc = L["This is for Customized Icons in your Interface/Icons folder."],
-							get = function(info) return E.db.general[info[#info]] end,
-							set = function(info, value) E.db.general[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+							get = function(info)
+								local value = E.db.general[info[#info]]
+								if value == 2 then return true
+								elseif value == 1 then return nil
+								else return false end
+							end,
+							set = function(info, value)
+								E.db.general[info[#info]] = (value and 2) or (value == nil and 1) or 0
+								E:StaticPopup_Show("PRIVATE_RL")
+							end,
 						},
 					},
 				},

@@ -3,13 +3,18 @@ local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local _G = _G
-local format, strjoin = format, strjoin
+local format, next, select, strjoin = format, next, select, strjoin
+local twipe = table.wipe
 --WoW API / Variables
+local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
+local GetCurrencyInfo = GetCurrencyInfo
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
+local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationInfoByID = GetSpecializationInfoByID
+local GetTalentInfo = GetTalentInfo
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
 local SetLootSpecialization = SetLootSpecialization
@@ -18,6 +23,8 @@ local ShowUIPanel = ShowUIPanel
 local LOOT = LOOT
 local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
+local TALENTS = TALENTS
+local PVP_TALENTS = PVP_TALENTS
 
 local lastPanel, active
 local displayString = '';
@@ -71,13 +78,18 @@ local function OnEvent(self)
 	self.text:SetFormattedText('%s: %s %s: %s', L["Spec"], spec, text, loot)
 end
 
+local function AddTexture(texture)
+	texture = texture and '|T'..texture..':16:16:0:0:50:50:4:46:4:46|t' or ''
+	return texture
+end
+
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
 	for i = 1, GetNumSpecializations() do
-		local _, name = GetSpecializationInfo(i);
+		local _, name, _, icon = GetSpecializationInfo(i)
 		if name then
-			DT.tooltip:AddLine(strjoin(" ", format(displayString, name), (i == active and activeString or inactiveString)),1,1,1)
+			DT.tooltip:AddLine(strjoin(" ", format(displayString, name), AddTexture(icon), (i == active and activeString or inactiveString)), 1, 1, 1)
 		end
 	end
 
@@ -87,14 +99,43 @@ local function OnEnter(self)
 	if specialization == 0 then
 		local specIndex = GetSpecialization()
 		if specIndex then
-			local _, name = GetSpecializationInfo(specIndex);
+			local _, name = GetSpecializationInfo(specIndex)
 			DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, format(LOOT_SPECIALIZATION_DEFAULT, name)))
 		end
 	else
-		local specID, name = GetSpecializationInfoByID(specialization);
+		local specID, name = GetSpecializationInfoByID(specialization)
 		if specID then
 			DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, name))
 		end
+	end
+
+	DT.tooltip:AddLine(' ')
+	DT.tooltip:AddLine(TALENTS, 0.69, 0.31, 0.31)
+
+	for i = 1, _G.MAX_TALENT_TIERS do
+		for j = 1, 3 do
+			local _, name, icon, selected = GetTalentInfo(i, j, 1)
+			if selected then
+				DT.tooltip:AddLine(AddTexture(icon)..' '..name)
+			end
+		end
+	end
+
+	if E.mylevel >= _G.SHOW_PVP_TALENT_LEVEL then
+		local pvpTalents = C_SpecializationInfo_GetAllSelectedPvpTalentIDs()
+
+		if #pvpTalents > 0 then
+			DT.tooltip:AddLine(' ')
+			DT.tooltip:AddLine(PVP_TALENTS, 0.69, 0.31, 0.31)
+			for _, talentID in next, pvpTalents do
+				local _, name, icon, _, _, _, unlocked = GetPvpTalentInfoByID(talentID)
+				if name and unlocked then
+					DT.tooltip:AddLine(AddTexture(icon)..' '..name)
+				end
+			end
+		end
+
+		twipe(pvpTalents)
 	end
 
 	DT.tooltip:AddLine(' ')

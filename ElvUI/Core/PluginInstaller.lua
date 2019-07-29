@@ -62,7 +62,6 @@ local format = string.format
 local CreateFrame = CreateFrame
 local PlaySound = PlaySound
 local UIFrameFadeOut = UIFrameFadeOut
-local CreateAnimationGroup = CreateAnimationGroup
 local CONTINUE, PREVIOUS, UNKNOWN = CONTINUE, PREVIOUS, UNKNOWN
 -- GLOBALS: PluginInstallFrame
 
@@ -237,9 +236,9 @@ function PI:CreateFrame()
 	f.Status:Point("TOPLEFT", f.Prev, "TOPRIGHT", 6, -2)
 	f.Status:Point("BOTTOMRIGHT", f.Next, "BOTTOMLEFT", -6, 2)
 	-- Setup StatusBar Animation
-	f.Status.anim = CreateAnimationGroup(f.Status)
+	f.Status.anim = _G.CreateAnimationGroup(f.Status)
 	f.Status.anim.progress = f.Status.anim:CreateAnimation("Progress")
-	f.Status.anim.progress:SetSmoothing("Out")
+	f.Status.anim.progress:SetEasing("Out")
 	f.Status.anim.progress:SetDuration(.3)
 
 	f.Status.text = f.Status:CreateFontString(nil, 'OVERLAY')

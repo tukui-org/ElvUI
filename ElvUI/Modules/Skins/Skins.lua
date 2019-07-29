@@ -1307,7 +1307,8 @@ function S:Initialize()
 	S:SkinAce3()
 
 	for addonName, object in pairs(self.addonsToLoad) do
-		if IsAddOnLoaded(addonName) then
+		local isLoaded, isFinished = IsAddOnLoaded(addonName)
+		if isLoaded and isFinished then
 			S:CallLoadedAddon(addonName, object)
 		end
 	end

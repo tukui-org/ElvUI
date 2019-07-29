@@ -36,7 +36,7 @@ local function IsWearingShield()
 end
 
 local function OnEvent(self)
-	targetlv, playerlv = UnitLevel("target"), UnitLevel("player")
+	targetlv, playerlv = UnitLevel("target"), E.mylevel
 
 	basemisschance = E.myrace == "NightElf" and 7 or 5
 	if targetlv == -1 then

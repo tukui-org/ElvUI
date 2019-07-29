@@ -166,14 +166,14 @@ local function DisablePixelSnap(frame)
 	end
 end
 
-local function GetTemplate(t, isUnitFrameElement)
+local function GetTemplate(template, isUnitFrameElement)
 	backdropa = 1
 
-	if t == 'ClassColor' then
+	if template == 'ClassColor' then
 		local color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass]
 		borderr, borderg, borderb = color.r, color.g, color.b
 		backdropr, backdropg, backdropb = unpack(E.media.backdropcolor)
-	elseif t == 'Transparent' then
+	elseif template == 'Transparent' then
 		borderr, borderg, borderb = unpack(isUnitFrameElement and E.media.unitframeBorderColor or E.media.bordercolor)
 		backdropr, backdropg, backdropb, backdropa = unpack(E.media.backdropfadecolor)
 	else
@@ -238,98 +238,102 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
 end
 
-local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
-	GetTemplate(t, isUnitFrameElement)
+local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
+	GetTemplate(template, isUnitFrameElement)
 
-	f.template = t or 'Default'
-	if glossTex then f.glossTex = glossTex end
-	if ignoreUpdates then f.ignoreUpdates = ignoreUpdates end
-	if forcePixelMode then f.forcePixelMode = forcePixelMode end
-	if isUnitFrameElement then f.isUnitFrameElement = isUnitFrameElement end
+	frame.template = template or 'Default'
+	if glossTex then frame.glossTex = glossTex end
+	if ignoreUpdates then frame.ignoreUpdates = ignoreUpdates end
+	if forcePixelMode then frame.forcePixelMode = forcePixelMode end
+	if isUnitFrameElement then frame.isUnitFrameElement = isUnitFrameElement end
 
-	f:SetBackdrop(nil)
-	E:BuildPixelBorders(f)
+	frame:SetBackdrop(nil)
+	E:BuildPixelBorders(frame)
 
-	if t == 'NoBackdrop' then
-		E:SetBackdrop(f)
+	if template == 'NoBackdrop' then
+		E:SetBackdrop(frame)
 	else
-		E:SetBackdrop(f, true, glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex, (not E.twoPixelsPlease and E.mult) or E.mult*2)
+		E:SetBackdrop(frame, true, glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex, (not E.twoPixelsPlease and E.mult) or E.mult*2)
 
-		if not f.ignoreBackdropColors then
-			if t == 'Transparent' then
-				E:SetBackdropColor(f, backdropr, backdropg, backdropb, backdropa)
+		if not frame.ignoreBackdropColors then
+			if template == 'Transparent' then
+				E:SetBackdropColor(frame, backdropr, backdropg, backdropb, backdropa)
 			else
-				E:SetBackdropColor(f, backdropr, backdropg, backdropb, 1)
+				E:SetBackdropColor(frame, backdropr, backdropg, backdropb, 1)
 			end
 		end
 
-		if not E.PixelMode and not f.forcePixelMode then
-			if not f.iborder then
-				local border = CreateFrame('Frame', nil, f)
+		if not E.PixelMode and not frame.forcePixelMode then
+			if not frame.iborder then
+				local border = CreateFrame('Frame', nil, frame)
 				E:BuildPixelBorders(border, true)
 				E:SetBackdrop(border, true, nil, E.mult, -E.mult, -E.mult, -E.mult, -E.mult)
 				E:SetBackdropBorderColor(border, 0, 0, 0, 1)
 				border:SetAllPoints()
-				f.iborder = border
+				frame.iborder = border
 			end
 
-			if not f.oborder then
-				local border = CreateFrame('Frame', nil, f)
+			if not frame.oborder then
+				local border = CreateFrame('Frame', nil, frame)
 				E:BuildPixelBorders(border, true)
 				E:SetBackdrop(border, true, nil, E.mult, E.mult, E.mult, E.mult, E.mult)
 				E:SetBackdropBorderColor(border, 0, 0, 0, 1)
 				border:SetAllPoints()
-				f.oborder = border
+				frame.oborder = border
 			end
 		end
 	end
 
-	if not f.ignoreBorderColors then
-		E:SetBackdropBorderColor(f, borderr, borderg, borderb)
+	if not frame.ignoreBorderColors then
+		E:SetBackdropBorderColor(frame, borderr, borderg, borderb)
 	end
 
-	if not f.ignoreUpdates then
-		if f.isUnitFrameElement then
-			E.unitFrameElements[f] = true
+	if not frame.ignoreUpdates then
+		if frame.isUnitFrameElement then
+			E.unitFrameElements[frame] = true
 		else
-			E.frames[f] = true
+			E.frames[frame] = true
 		end
 	end
 end
 
-local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
-	local parent = (f.IsObjectType and f:IsObjectType('Texture') and f:GetParent()) or f
-	local b = CreateFrame('Frame', nil, parent)
-	f.backdrop = b
+local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
+	if frame.backdrop then return end
 
-	if f.forcePixelMode or forcePixelMode then
-		b:SetOutside(f, E.mult, E.mult)
+	local parent = (frame.IsObjectType and frame:IsObjectType('Texture') and frame:GetParent()) or frame
+	local backdrop = CreateFrame('Frame', nil, parent)
+	frame.backdrop = backdrop
+
+	if frame.forcePixelMode or forcePixelMode then
+		backdrop:SetOutside(frame, E.mult, E.mult)
 	else
-		b:SetOutside(f)
+		backdrop:SetOutside(frame)
 	end
-	b:SetTemplate(t, tex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
+
+	backdrop:SetTemplate(template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 
 	local frameLevel = parent.GetFrameLevel and parent:GetFrameLevel()
 	local frameLevelMinusOne = frameLevel and (frameLevel - 1)
 	if frameLevelMinusOne and (frameLevelMinusOne >= 0) then
-		b:SetFrameLevel(frameLevelMinusOne)
+		backdrop:SetFrameLevel(frameLevelMinusOne)
 	else
-		b:SetFrameLevel(0)
+		backdrop:SetFrameLevel(0)
 	end
 end
 
-local function CreateShadow(f, size)
-	if f.shadow then return end
+local function CreateShadow(frame, size)
+	if frame.shadow then return end
+
 	backdropr, backdropg, backdropb, borderr, borderg, borderb = 0, 0, 0, 0, 0, 0
 
-	local shadow = CreateFrame('Frame', nil, f)
+	local shadow = CreateFrame('Frame', nil, frame)
 	shadow:SetFrameLevel(1)
-	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:SetOutside(f, size or 3, size or 3)
+	shadow:SetFrameStrata(frame:GetFrameStrata())
+	shadow:SetOutside(frame, size or 3, size or 3)
 	shadow:SetBackdrop({edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(size or 3)})
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
-	f.shadow = shadow
+	frame.shadow = shadow
 end
 
 local function Kill(object)
@@ -480,12 +484,12 @@ do
 	local CloseButtonOnEnter = function(btn) if btn.Texture then btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor)) end end
 	local CloseButtonOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
 	CreateCloseButton = function(frame, size, offset, texture, backdrop)
+		if frame.CloseButton then return end
+
 		local CloseButton = CreateFrame('Button', nil, frame)
 		CloseButton:Size(size or 16)
 		CloseButton:Point('TOPRIGHT', offset or -6, offset or -6)
-		if backdrop then
-			CloseButton:CreateBackdrop(nil, true)
-		end
+		if backdrop then CloseButton:CreateBackdrop(nil, true) end
 
 		CloseButton.Texture = CloseButton:CreateTexture(nil, 'OVERLAY')
 		CloseButton.Texture:SetAllPoints()

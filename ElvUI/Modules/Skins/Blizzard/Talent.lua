@@ -6,7 +6,6 @@ local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
-local CreateAnimationGroup = CreateAnimationGroup
 local CreateFrame = CreateFrame
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecialization = GetSpecialization
@@ -138,7 +137,7 @@ local function LoadSkin()
 			row.TopLine:Point("TOP", 0, 4)
 			row.BottomLine:Point("BOTTOM", 0, -4)
 
-			row.transition = CreateAnimationGroup(row)
+			row.transition = _G.CreateAnimationGroup(row)
 			row.transition:SetLooping(true)
 
 			row.transition.color = row.transition:CreateAnimation("Color")

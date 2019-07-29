@@ -6,7 +6,6 @@ local format = string.format
 local join = string.join
 --WoW API / Variables
 local UnitArmor = UnitArmor
-local UnitLevel = UnitLevel
 local PaperDollFrame_GetArmorReduction = PaperDollFrame_GetArmorReduction
 
 local lastPanel
@@ -28,7 +27,7 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(L["Mitigation By Level: "])
 	DT.tooltip:AddLine(' ')
 
-	local playerlvl = UnitLevel('player') + 3
+	local playerlvl = E.mylevel + 3
 	for i = 1, 4 do
 		local armorReduction = PaperDollFrame_GetArmorReduction(effectiveArmor, playerlvl);
 		DT.tooltip:AddDoubleLine(playerlvl,format(chanceString, armorReduction),1,1,1)

@@ -13,10 +13,11 @@ local GetContainerItemQuestInfo = GetContainerItemQuestInfo
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventorySlotInfo = GetInventorySlotInfo
 local hooksecurefunc = hooksecurefunc
+local BACKPACK_TOOLTIP = BACKPACK_TOOLTIP
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
-local TEXTURE_ITEM_QUEST_BORDER = TEXTURE_ITEM_QUEST_BORDER
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local QUESTS_LABEL = QUESTS_LABEL
+local TEXTURE_ITEM_QUEST_BORDER = TEXTURE_ITEM_QUEST_BORDER
 
 local function UpdateBorderColors(button)
 	button:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -37,6 +38,7 @@ local function SkinButton(button)
 				region:SetTexture()
 			end
 		end
+
 		button:SetTemplate(nil, true)
 		button:StyleButton()
 		button.IconBorder:SetAlpha(0)
@@ -67,6 +69,7 @@ local function SkinBagButtons(container, button)
 	local texture, _, _, _, _, _, itemLink = GetContainerItemInfo(container:GetID(), button:GetID())
 	local isQuestItem, questId = GetContainerItemQuestInfo(container:GetID(), button:GetID())
 	_G[button:GetName().."IconTexture"]:SetTexture(texture)
+
 	button.type = nil
 	button.quality = nil
 	button.ilink = itemLink
@@ -81,6 +84,28 @@ local function SkinBagButtons(container, button)
 	UpdateBorderColors(button)
 end
 
+local function BagIcon(container, texture)
+	if not container.PortraitButton then return end
+	if not container.BagIcon then
+		container.BagIcon = container.PortraitButton:CreateTexture()
+		container.BagIcon:SetTexCoord(unpack(E.TexCoords))
+		container.BagIcon:SetInside()
+	end
+
+	container.BagIcon:SetTexture(texture)
+end
+
+local function SkinContainer(container)
+	if container and container.size then
+		for b=1, container.size, 1 do
+			local button = _G[container:GetName().."Item"..b]
+			if button then
+				SkinBagButtons(container, button)
+			end
+		end
+	end
+end
+
 local function SkinBags()
 	for i=1, NUM_CONTAINER_FRAMES, 1 do
 		local container = _G["ContainerFrame"..i]
@@ -90,36 +115,29 @@ local function SkinBags()
 			container:CreateBackdrop("Transparent")
 			container.backdrop:SetInside()
 			S:HandleCloseButton(_G[container:GetName().."CloseButton"])
-
-			container:HookScript("OnShow", function(self)
-				if self and self.size then
-					for b=1, self.size, 1 do
-						local button = _G[self:GetName().."Item"..b]
-						SkinBagButtons(self, button)
-					end
-				end
-			end)
+			S:HandleButton(container.PortraitButton)
+			container.PortraitButton:Size(35)
+			container.PortraitButton.Highlight:SetAlpha(0)
+			container:HookScript("OnShow", SkinContainer)
 
 			if i == 1 then
 				_G.BackpackTokenFrame:StripTextures(true)
+
 				for j=1, MAX_WATCHED_TOKENS do
-					_G["BackpackTokenFrameToken"..j].icon:SetTexCoord(unpack(E.TexCoords))
-					_G["BackpackTokenFrameToken"..j]:CreateBackdrop()
-					_G["BackpackTokenFrameToken"..j].backdrop:SetOutside(_G["BackpackTokenFrameToken"..j].icon)
-					_G["BackpackTokenFrameToken"..j].icon:Point("LEFT", _G["BackpackTokenFrameToken"..j].count, "RIGHT", 2, 0)
+					local token = _G["BackpackTokenFrameToken"..j]
+					token:CreateBackdrop()
+					token.backdrop:SetOutside(token.icon)
+					token.icon:Point("LEFT", token.count, "RIGHT", 2, 0)
+					token.icon:SetTexCoord(unpack(E.TexCoords))
 				end
 			end
 		end
 
-		if container and container.size then
-			for b=1, container.size, 1 do
-				local button = _G[container:GetName().."Item"..b]
-				SkinBagButtons(container, button)
-			end
-		end
+		SkinContainer(container)
 	end
 end
 
+local bagIconCache = {}
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bags ~= true or E.private.bags.enable then return end
 
@@ -132,10 +150,27 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc('ContainerFrame_Update', function(frame)
+		local frameName = frame:GetName()
 		for i=1, frame.size, 1 do
-			local questTexture = _G[frame:GetName().."Item"..i.."IconQuestTexture"];
+			local questTexture = _G[frameName.."Item"..i.."IconQuestTexture"];
 			if questTexture:IsShown() and questTexture:GetTexture() == TEXTURE_ITEM_QUEST_BORDER then
 				questTexture:Hide()
+			end
+		end
+
+		local title = _G[frameName.."Name"]
+		if title and title.GetText then
+			local name = title:GetText()
+			if bagIconCache[name] then
+				BagIcon(frame, bagIconCache[name])
+			else
+				if name == BACKPACK_TOOLTIP then
+					bagIconCache[name] = _G.MainMenuBarBackpackButtonIconTexture:GetTexture()
+				else
+					bagIconCache[name] = select(10, GetItemInfo(name))
+				end
+
+				BagIcon(frame, bagIconCache[name])
 			end
 		end
 	end)
@@ -199,35 +234,33 @@ local function LoadSkin()
 
 			UpdateBorderColors(button)
 		end
-
-		--[[if highlight and not highlight.skinned then
-			highlight:SetColorTexture(unpack(E.media.rgbvaluecolor), 0.3)
-			hooksecurefunc(highlight, "SetTexture", function(self, r, g, b, a)
-				if a ~= 0.3 then
-					highlight:SetColorTexture(unpack(E.media.rgbvaluecolor), 0.3)
-				end
-			end)
-			highlight:SetInside()
-			highlight.skinned = true
-		end]]
 	end)
+
+	_G.BagHelpBox:Kill()
 
 	local BagItemSearchBox = _G.BagItemSearchBox
 	S:HandleEditBox(BagItemSearchBox)
 	BagItemSearchBox:Height(BagItemSearchBox:GetHeight() - 5)
 
 	local BankItemSearchBox = _G.BankItemSearchBox
-	_G.BagHelpBox:Kill()
 	BankItemSearchBox:StripTextures()
 	BankItemSearchBox:CreateBackdrop("Overlay")
 	BankItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
 	BankItemSearchBox.backdrop:Point("BOTTOMRIGHT", 4, 1)
 
-	local bags = CreateFrame("Frame")
-	bags:RegisterEvent("BAG_UPDATE")
-	bags:RegisterEvent("ITEM_LOCK_CHANGED")
-	bags:RegisterEvent("BAG_CLOSED")
-	bags:SetScript("OnEvent", SkinBags)
+	local AutoSort = _G.BagItemAutoSortButton
+	AutoSort:StripTextures()
+	AutoSort:SetTemplate()
+	AutoSort.Icon = AutoSort:CreateTexture()
+	AutoSort.Icon:SetTexture("Interface\\ICONS\\INV_Pet_Broom")
+	AutoSort.Icon:SetTexCoord(unpack(E.TexCoords))
+	AutoSort.Icon:SetInside()
+
+	local Bags = CreateFrame("Frame")
+	Bags:RegisterEvent("BAG_UPDATE")
+	Bags:RegisterEvent("ITEM_LOCK_CHANGED")
+	Bags:RegisterEvent("BAG_CLOSED")
+	Bags:SetScript("OnEvent", SkinBags)
 	SkinBags()
 end
 

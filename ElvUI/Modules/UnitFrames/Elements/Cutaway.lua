@@ -1,64 +1,85 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule("UnitFrames")
+
+local CreateFrame = CreateFrame
 
 function UF:Construct_Cutaway(frame)
 	local cutaway = CreateFrame("Frame", nil, frame)
 
-	local cutawayHealth = CreateFrame("StatusBar", nil, frame.Health)
+	local healthTexture = frame.Health:GetStatusBarTexture()
+	local cutawayHealth = CreateFrame("StatusBar", nil, frame.Health.ClipFrame)
 	cutawayHealth:SetStatusBarTexture(E.media.blankTex)
 	cutawayHealth:SetFrameLevel(10)
-	cutawayHealth:SetAllPoints(frame.Health)
+	cutawayHealth:SetPoint("TOPLEFT", healthTexture, "TOPRIGHT")
+	cutawayHealth:SetPoint("BOTTOMLEFT", healthTexture, "BOTTOMRIGHT")
+	cutaway.Health = cutawayHealth
 
-	local cutawayPower
 	if frame.Power then
-		cutawayPower = CreateFrame("StatusBar", nil, frame.Power)
+		local powerTexture = frame.Power:GetStatusBarTexture()
+		local cutawayPower = CreateFrame("StatusBar", nil, frame.Power)
 		cutawayPower:SetStatusBarTexture(E.media.blankTex)
 		cutawayPower:SetFrameLevel(frame.Power:GetFrameLevel())
-		cutawayPower:SetAllPoints()
+		cutawayPower:SetPoint("TOPLEFT", powerTexture, "TOPRIGHT")
+		cutawayPower:SetPoint("BOTTOMLEFT", powerTexture, "BOTTOMRIGHT")
+		cutaway.Power = cutawayPower
 	end
-
-	cutaway.Health = cutawayHealth
-	cutaway.Power = cutawayPower
 
 	return cutaway
 end
 
+local healthPoints = {
+	[1] = {"TOPLEFT", "TOPRIGHT"},
+	[2] = {"BOTTOMLEFT", "BOTTOMRIGHT"},
+	[3] = {"BOTTOMLEFT", "TOPLEFT"},
+	[4] = {"BOTTOMRIGHT", "TOPRIGHT"}
+}
+
+local DEFAULT_INDEX = 1
+local VERT_INDEX = 3
+
 function UF:Configure_Cutaway(frame)
-	if not frame.VARIABLES_SET then return end
-	local db = frame.db
-
-	local health = frame.Cutaway.Health
-	local power = frame.Cutaway.Power
-
-	if db.health then
-		if db.health.reverseFill then
-			health:SetReverseFill(true)
-		else
-			health:SetReverseFill(false)
+	local db = frame.db and frame.db.cutaway
+	local healthDB, powerDB = db and db.health, db and db.power
+	local healthEnabled = healthDB and healthDB.enabled
+	local powerEnabled = powerDB and powerDB.enabled
+	if healthEnabled or powerEnabled then
+		if not frame:IsElementEnabled("Cutaway") then
+			frame:EnableElement("Cutaway")
 		end
 
-		--Party/Raid Frames allow to change statusbar orientation
-		if db.health.orientation then
-			health:SetOrientation(db.health.orientation)
+		frame.Cutaway:UpdateConfigurationValues(db)
+		local health = frame.Cutaway.Health
+		if health and healthEnabled then
+			local unitHealthDB = frame.db.health
+			health:SetReverseFill((unitHealthDB.reverseFill and true) or false)
+
+			local vert = unitHealthDB.orientation and unitHealthDB.orientation == "VERTICAL"
+			local pointIndex = vert and VERT_INDEX or DEFAULT_INDEX
+			local firstPoint, secondPoint = healthPoints[pointIndex], healthPoints[pointIndex+1]
+			local barTexture = frame.Health:GetStatusBarTexture()
+
+			health:ClearAllPoints()
+			health:SetPoint(firstPoint[1], barTexture, firstPoint[2])
+			health:SetPoint(secondPoint[1], barTexture, secondPoint[2])
+
+			--Party/Raid Frames allow to change statusbar orientation
+			if unitHealthDB.orientation then
+				health:SetOrientation(unitHealthDB.orientation)
+			end
+
+			frame.Health:PostUpdateColor(frame.unit)
 		end
 
-		health.enabled = db.cutaway.health.enabled
-		health.lengthBeforeFade = db.cutaway.health.lengthBeforeFade
-		health.fadeOutTime = db.cutaway.health.fadeOutTime
-		frame.Health:PostUpdateColor(frame.unit)
-	end
+		local power = frame.Cutaway.Power
+		local powerUsable = powerEnabled and frame.USE_POWERBAR
+		if power and powerUsable then
+			local unitPowerDB = frame.db.power
+			power:SetReverseFill((unitPowerDB.reverseFill and true) or false)
+			power:SetFrameLevel(frame.Power:GetFrameLevel())
 
-	if power and frame.USE_POWERBAR then
-		if db.power.reverseFill then
-			power:SetReverseFill(true)
-		else
-			power:SetReverseFill(false)
+			frame.Power:PostUpdateColor()
 		end
-
-		power:SetFrameLevel(frame.Power:GetFrameLevel())
-		power.enabled = db.cutaway.power.enabled
-		power.lengthBeforeFade = db.cutaway.power.lengthBeforeFade
-		power.fadeOutTime = db.cutaway.power.fadeOutTime
-		frame.Power:PostUpdateColor()
+	elseif frame:IsElementEnabled("Cutaway") then
+		frame:DisableElement("Cutaway")
 	end
 end

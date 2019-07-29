@@ -40,7 +40,6 @@ local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitCreatureType = UnitCreatureType
 local UnitExists = UnitExists
-local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
 local UnitHasVehicleUI = UnitHasVehicleUI
@@ -258,10 +257,8 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		if levelLine then
 			local diffColor = GetCreatureDifficultyColor(level)
 			local race, englishRace = UnitRace(unit)
-			local _, factionGroup = UnitFactionGroup(unit)
-			if(factionGroup and englishRace == "Pandaren") then
-				race = factionGroup.." "..race
-			end
+			local _, localizedFaction = E:GetUnitBattlefieldFaction(unit)
+			if localizedFaction and englishRace == "Pandaren" then race = localizedFaction.." "..race end
 			levelLine:SetFormattedText("|cff%02x%02x%02x%s|r %s |c%s%s|r", diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or "??", race or '', color.colorStr, localeClass)
 		end
 

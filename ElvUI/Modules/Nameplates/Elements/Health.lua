@@ -75,6 +75,11 @@ function NP:Construct_Health(nameplate)
 	Health:CreateBackdrop('Transparent')
 	Health:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
 
+	local clipFrame = CreateFrame('Frame', nil, Health)
+	clipFrame:SetClipsChildren(true)
+	clipFrame:SetAllPoints()
+	Health.ClipFrame = clipFrame
+
 	--[[Health.bg = Health:CreateTexture(nil, "BACKGROUND")
 	Health.bg:SetAllPoints()
 	Health.bg:SetTexture(E.media.blankTex)
@@ -141,7 +146,7 @@ function NP:Construct_HealthPrediction(nameplate)
 	local HealthPrediction = CreateFrame('Frame', nameplate:GetDebugName()..'HealthPrediction', nameplate)
 
 	for _, Bar in pairs({ 'myBar', 'otherBar', 'absorbBar', 'healAbsorbBar' }) do
-		HealthPrediction[Bar] = CreateFrame('StatusBar', nil, nameplate.Health)
+		HealthPrediction[Bar] = CreateFrame('StatusBar', nil, nameplate.Health.ClipFrame)
 		HealthPrediction[Bar]:SetFrameStrata(nameplate:GetFrameStrata())
 		HealthPrediction[Bar]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		HealthPrediction[Bar]:Point('TOP')
@@ -151,21 +156,23 @@ function NP:Construct_HealthPrediction(nameplate)
 		NP.StatusBars[HealthPrediction[Bar]] = true
 	end
 
-	HealthPrediction.myBar:Point('LEFT', nameplate.Health:GetStatusBarTexture(), 'RIGHT')
-	HealthPrediction.myBar:SetFrameLevel(nameplate.Health:GetFrameLevel() + 2)
+	local healthTexture = nameplate.Health:GetStatusBarTexture()
+	local healthFrameLevel = nameplate.Health:GetFrameLevel()
+	HealthPrediction.myBar:Point('LEFT', healthTexture, 'RIGHT')
+	HealthPrediction.myBar:SetFrameLevel(healthFrameLevel + 2)
 	HealthPrediction.myBar:SetStatusBarColor(NP.db.colors.healPrediction.personal.r, NP.db.colors.healPrediction.personal.g, NP.db.colors.healPrediction.personal.b)
 	HealthPrediction.myBar:SetMinMaxValues(0, 1)
 
 	HealthPrediction.otherBar:Point('LEFT', HealthPrediction.myBar:GetStatusBarTexture(), 'RIGHT')
-	HealthPrediction.otherBar:SetFrameLevel(nameplate.Health:GetFrameLevel() + 1)
+	HealthPrediction.otherBar:SetFrameLevel(healthFrameLevel + 1)
 	HealthPrediction.otherBar:SetStatusBarColor(NP.db.colors.healPrediction.others.r, NP.db.colors.healPrediction.others.g, NP.db.colors.healPrediction.others.b)
 
 	HealthPrediction.absorbBar:Point('LEFT', HealthPrediction.otherBar:GetStatusBarTexture(), 'RIGHT')
-	HealthPrediction.absorbBar:SetFrameLevel(nameplate.Health:GetFrameLevel())
+	HealthPrediction.absorbBar:SetFrameLevel(healthFrameLevel)
 	HealthPrediction.absorbBar:SetStatusBarColor(NP.db.colors.healPrediction.absorbs.r, NP.db.colors.healPrediction.absorbs.g, NP.db.colors.healPrediction.absorbs.b)
 
-	HealthPrediction.healAbsorbBar:Point('RIGHT', nameplate.Health:GetStatusBarTexture())
-	HealthPrediction.healAbsorbBar:SetFrameLevel(nameplate.Health:GetFrameLevel() + 3)
+	HealthPrediction.healAbsorbBar:Point('RIGHT', healthTexture)
+	HealthPrediction.healAbsorbBar:SetFrameLevel(healthFrameLevel + 3)
 	HealthPrediction.healAbsorbBar:SetStatusBarColor(NP.db.colors.healPrediction.healAbsorbs.r, NP.db.colors.healPrediction.healAbsorbs.g, NP.db.colors.healPrediction.healAbsorbs.b)
 	HealthPrediction.healAbsorbBar:SetReverseFill(true)
 

@@ -28,10 +28,8 @@ function E:UIScale(init)
 	local scale = E.global.general.UIScale
 	if init then --E.OnInitialize
 		--Set variables for pixel scaling
-		local bestScale = E:PixelBestSize()
-		local pixelScale = 768 / E.screenheight
-
-		E.mult = (bestScale / scale) - ((bestScale - pixelScale) / scale)
+		local pixel, ratio = 1, 768 / E.screenheight
+		E.mult = (pixel / scale) - ((pixel - ratio) / scale)
 		E.Spacing = (E.PixelMode and 0) or E.mult
 		E.Border = ((not E.twoPixelsPlease) and E.PixelMode and E.mult) or E.mult*2
 	else --E.Initialize
@@ -73,7 +71,7 @@ function E:PixelBestSize()
 end
 
 function E:PixelClip(num)
-    return tonumber(format('%.5f', num))
+	return tonumber(format('%.5f', num))
 end
 
 function E:PixelScaleChanged(event, skip)

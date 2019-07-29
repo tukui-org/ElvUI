@@ -15,6 +15,12 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
+function UF.HealthClipFrame_OnUpdate(clipFrame)
+	UF.HealthClipFrame_HealComm(clipFrame.__frame)
+
+	clipFrame:SetScript('OnUpdate', nil)
+end
+
 function UF:Construct_HealthBar(frame, bg, text, textPos)
 	local health = CreateFrame('StatusBar', nil, frame)
 	UF.statusbars[health] = true
@@ -45,6 +51,13 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	health.colorTapping = true
 	health.colorDisconnected = true
 	health:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+
+	local clipFrame = CreateFrame('Frame', nil, health)
+	clipFrame:SetScript('OnUpdate', UF.HealthClipFrame_OnUpdate)
+	clipFrame:SetClipsChildren(true)
+	clipFrame:SetAllPoints()
+	clipFrame.__frame = frame
+	health.ClipFrame = clipFrame
 
 	return health
 end

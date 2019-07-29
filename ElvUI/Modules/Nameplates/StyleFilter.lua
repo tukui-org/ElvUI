@@ -448,10 +448,11 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 	if TextureChanged then
 		frame.StyleChanged = true
 		frame.TextureChanged = true
-		frame.Highlight.texture:SetTexture(LSM:Fetch('statusbar', actions.texture.texture))
-		frame.Health:SetStatusBarTexture(LSM:Fetch('statusbar', actions.texture.texture))
+		local tex = LSM:Fetch('statusbar', actions.texture.texture)
+		frame.Highlight.texture:SetTexture(tex)
+		frame.Health:SetStatusBarTexture(tex)
 		if FlashingHealth then
-			frame.FlashTexture:SetTexture(LSM:Fetch('statusbar', actions.texture.texture))
+			frame.FlashTexture:SetTexture(tex)
 		end
 	end
 	if ScaleChanged then
@@ -530,11 +531,12 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if BorderChanged then
 		frame.BorderChanged = nil
+		local r, g, b = unpack(E.media.bordercolor)
 		mod:StyleFilterBorderLock(frame.Health.backdrop)
-		frame.Health.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		frame.Health.backdrop:SetBackdropBorderColor(r, g, b)
 		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
 			mod:StyleFilterBorderLock(frame.Power.backdrop)
-			frame.Power.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			frame.Power.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end
 	if FlashingHealth then
@@ -544,8 +546,9 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if TextureChanged then
 		frame.TextureChanged = nil
-		frame.Highlight.texture:SetTexture(LSM:Fetch('statusbar', mod.db.statusbar))
-		frame.Health:SetStatusBarTexture(LSM:Fetch('statusbar', mod.db.statusbar))
+		local tex = LSM:Fetch('statusbar', mod.db.statusbar)
+		frame.Highlight.texture:SetTexture(tex)
+		frame.Health:SetStatusBarTexture(tex)
 	end
 	if ScaleChanged then
 		frame.ScaleChanged = nil
@@ -609,7 +612,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Level
 	if trigger.level then
-		local myLevel = UnitLevel('player')
+		local myLevel = E.mylevel
 		local level = (frame.unit == 'player' and myLevel) or UnitLevel(frame.unit)
 		local curLevel = (trigger.curlevel and trigger.curlevel ~= 0 and (trigger.curlevel == level))
 		local minLevel = (trigger.minlevel and trigger.minlevel ~= 0 and (trigger.minlevel <= level))

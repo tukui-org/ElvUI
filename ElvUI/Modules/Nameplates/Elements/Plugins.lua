@@ -271,15 +271,18 @@ end
 function NP:Construct_Cutaway(nameplate)
 	local Cutaway = CreateFrame("Frame", nameplate:GetDebugName() .. "Cutaway", nameplate)
 
-	Cutaway.Health = CreateFrame("StatusBar", nameplate:GetDebugName() .. "CutawayHealth", nameplate.Health)
+	Cutaway.Health = CreateFrame("StatusBar", nameplate:GetDebugName() .. "CutawayHealth", nameplate.Health.ClipFrame)
 	if NP.db.cutaway.health.forceBlankTexture then
 		Cutaway.Health:SetStatusBarTexture(E.media.blankTex)
 	else
 		Cutaway.Health:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
 		NP.StatusBars[Cutaway.Health] = true
 	end
-	Cutaway.Health:SetFrameLevel(4)
-	Cutaway.Health:SetAllPoints()
+
+	local healthTexture = nameplate.Health:GetStatusBarTexture()
+	Cutaway.Health:SetFrameLevel(5)
+	Cutaway.Health:SetPoint("TOPLEFT", healthTexture, "TOPRIGHT")
+	Cutaway.Health:SetPoint("BOTTOMLEFT", healthTexture, "BOTTOMRIGHT")
 
 	Cutaway.Power = CreateFrame("StatusBar", nameplate:GetDebugName() .. "CutawayPower", nameplate.Power)
 	if NP.db.cutaway.power.forceBlankTexture then
@@ -288,8 +291,11 @@ function NP:Construct_Cutaway(nameplate)
 		Cutaway.Power:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
 		NP.StatusBars[Cutaway.Power] = true
 	end
-	Cutaway.Power:SetFrameLevel(4)
-	Cutaway.Power:SetAllPoints()
+
+	local powerTexture = nameplate.Power:GetStatusBarTexture()
+	Cutaway.Power:SetFrameLevel(5)
+	Cutaway.Power:SetPoint("TOPLEFT", powerTexture, "TOPRIGHT")
+	Cutaway.Power:SetPoint("BOTTOMLEFT", powerTexture, "BOTTOMRIGHT")
 
 	return Cutaway
 end
@@ -304,13 +310,7 @@ function NP:Update_Cutaway(nameplate)
 		if not nameplate:IsElementEnabled("Cutaway") then
 			nameplate:EnableElement("Cutaway")
 		end
-		nameplate.Cutaway.Health.enabled = NP.db.cutaway.health.enabled
-		nameplate.Cutaway.Health.lengthBeforeFade = NP.db.cutaway.health.lengthBeforeFade
-		nameplate.Cutaway.Health.fadeOutTime = NP.db.cutaway.health.fadeOutTime
-
-		nameplate.Cutaway.Power.enabled = NP.db.cutaway.power.enabled
-		nameplate.Cutaway.Power.lengthBeforeFade = NP.db.cutaway.power.lengthBeforeFade
-		nameplate.Cutaway.Power.fadeOutTime = NP.db.cutaway.power.fadeOutTime
+		nameplate.Cutaway:UpdateConfigurationValues(NP.db.cutaway)
 	end
 end
 

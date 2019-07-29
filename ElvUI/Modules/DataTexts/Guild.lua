@@ -184,7 +184,6 @@ local function whisperClick(self, playerName)
 end
 
 local function Click(self, btn)
-	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 	if btn == "RightButton" and IsInGuild() then
 		DT.tooltip:Hide()
 
@@ -212,6 +211,8 @@ local function Click(self, btn)
 		end
 
 		_G.EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+	elseif InCombatLockdown() then
+		_G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT)
 	else
 		ToggleGuildFrame()
 	end

@@ -197,7 +197,7 @@ local function UpdateFactionSkins()
 
 	local ReputationDetailFrame = _G.ReputationDetailFrame
 	ReputationDetailFrame:StripTextures()
-	ReputationDetailFrame:SetTemplate("Transparent")
+	ReputationDetailFrame:CreateBackdrop("Transparent")
 	ReputationDetailFrame:Point("TOPLEFT", _G.ReputationFrame, "TOPRIGHT", 4, -28)
 end
 
@@ -207,7 +207,7 @@ local function UpdateCurrencySkins()
 	if TokenFramePopup then
 		if not TokenFramePopup.template then
 			TokenFramePopup:StripTextures()
-			TokenFramePopup:SetTemplate("Transparent")
+			TokenFramePopup:CreateBackdrop("Transparent")
 		end
 
 		TokenFramePopup:Point("TOPLEFT", _G.TokenFrame, "TOPRIGHT", 4, -28)

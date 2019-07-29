@@ -29,21 +29,6 @@ local NeededQuestIDs = {
 	["Alliance"] = 56156
 }
 
-local MAX_RANK = 30
-
-local function GetBodyguardXP(widgetID)
-	local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
-	if not widget then
-		return
-	end
-
-	local rank = strmatch(widget.overrideBarText, "%d+")
-	local cur = widget.barValue - widget.barMin
-	local next = widget.barMax - widget.barMin
-	local total = widget.barValue
-	return rank, cur, next, total
-end
-
 local function Update(self)
 	local element = self.NazjatarFollowerXP
 	if not element then
@@ -81,36 +66,26 @@ local function Update(self)
 		return
 	end
 
-	local rank, cur, next, total = GetBodyguardXP(widgetID)
-	if not rank then
-		return
-	end
+	local rank, cur, toNext, total, isMax = E:GetNazjatarBodyguardXP(widgetID)
+	if not rank then return end
 
-	local nrank = tonumber(rank)
-	if nrank == MAX_RANK then
-		element:SetMinMaxValues(0, 1)
-	else
-		element:SetMinMaxValues(0, next)
-	end
-	element:SetValue(nrank == MAX_RANK and 1 or cur)
+	element:SetMinMaxValues(0, (isMax and 1) or toNext)
+	element:SetValue(isMax and 1 or cur)
 
-	if (element.Rank) then
+	if element.Rank then
 		element.Rank:SetText(rank)
+		element.Rank:Show()
 	end
 
 	if element.ProgressText then
-		if nrank == MAX_RANK then
-			element.ProgressText:SetText(L["Max Rank"])
-		else
-			element.ProgressText:SetText(("%d / %d"):format(cur, next))
-		end
+		element.ProgressText:SetText((isMax and L["Max Rank"]) or ("%d / %d"):format(cur, toNext))
 		element.ProgressText:Show()
 	end
 
 	element:Show()
 
-	if (element.PostUpdate) then
-		element:PostUpdate(rank, cur, next, total)
+	if element.PostUpdate then
+		element:PostUpdate(rank, cur, toNext, total)
 	end
 end
 

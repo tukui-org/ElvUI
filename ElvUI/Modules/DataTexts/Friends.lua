@@ -321,7 +321,6 @@ local function OnEvent(self, event, message)
 end
 
 local function Click(self, btn)
-	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 	DT.tooltip:Hide()
 
 	if btn == "RightButton" then
@@ -393,6 +392,8 @@ local function Click(self, btn)
 		end
 
 		_G.EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+	elseif InCombatLockdown() then
+		_G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT)
 	else
 		ToggleFriendsFrame()
 	end

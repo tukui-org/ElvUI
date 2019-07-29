@@ -812,7 +812,7 @@ function E:Install()
 		-- Setup StatusBar Animation
 		f.Status.anim = _G.CreateAnimationGroup(f.Status)
 		f.Status.anim.progress = f.Status.anim:CreateAnimation("Progress")
-		f.Status.anim.progress:SetSmoothing("Out")
+		f.Status.anim.progress:SetEasing("Out")
 		f.Status.anim.progress:SetDuration(.3)
 
 		f.Status.text = f.Status:CreateFontString(nil, 'OVERLAY')

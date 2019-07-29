@@ -535,7 +535,7 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 			r, g, b = c.r, c.g, c.b
 		end
 	else
-		local DiffColor = UnitLevel(unit) - UnitLevel('player')
+		local DiffColor = UnitLevel(unit) - E.mylevel
 		if (DiffColor >= 5) then
 			r, g, b = 0.69, 0.31, 0.31
 		elseif (DiffColor >= 3) then
@@ -574,7 +574,7 @@ ElvUF.Tags.Methods['smartlevel'] = function(unit)
 	local level = UnitLevel(unit)
 	if ( UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) ) then
 		return UnitBattlePetLevel(unit);
-	elseif level == UnitLevel('player') then
+	elseif level == E.mylevel then
 		return nil
 	elseif(level > 0) then
 		return level

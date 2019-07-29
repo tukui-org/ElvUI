@@ -10,7 +10,6 @@ local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
 local UnitHonorMax = UnitHonorMax
 local UnitIsPVP = UnitIsPVP
-local UnitLevel = UnitLevel
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local TogglePVPUI = TogglePVPUI
@@ -28,7 +27,7 @@ function mod:UpdateHonor(event, unit)
 		showHonor = false
 	elseif (self.db.honor.hideOutsidePvP and not UnitIsPVP("player")) then
 		showHonor = false
-	elseif (self.db.honor.hideBelowMaxLevel and UnitLevel("player") < MAX_PLAYER_LEVEL) then
+	elseif (self.db.honor.hideBelowMaxLevel and E.mylevel < MAX_PLAYER_LEVEL) then
 		showHonor = false
 	end
 
