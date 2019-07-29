@@ -178,8 +178,8 @@ local function UpdateConfigurationValues(self, db)
 		local health = self.Health
 		local hdb = db.health
 		hs = hdb.enabled
+		health.enabled = hs
 		if (hs) then
-			health.enabled = hs
 			health.lengthBeforeFade = hdb.lengthBeforeFade
 			health.fadeOutTime = hdb.fadeOutTime
 			health:Show()
@@ -191,8 +191,8 @@ local function UpdateConfigurationValues(self, db)
 		local power = self.Power
 		local pdb = db.power
 		ps = pdb.enabled
+		power.enabled = ps
 		if (ps) then
-			power.enabled = ps
 			power.lengthBeforeFade = pdb.lengthBeforeFade
 			power.fadeOutTime = pdb.fadeOutTime
 			power:Show()
