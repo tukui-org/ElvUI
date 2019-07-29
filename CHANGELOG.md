@@ -1,4 +1,4 @@
-### Version 11.20 [  ]  
+### Version 11.20 [ July 29th 2019 ]  
 
 **New Additions:**  
 
