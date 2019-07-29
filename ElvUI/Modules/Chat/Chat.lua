@@ -1092,6 +1092,18 @@ function CH:ShortChannel()
 	return format("|Hchannel:%s|h[%s]|h", self, DEFAULT_STRINGS[strupper(self)] or gsub(self, "channel:", ""))
 end
 
+function CH:HandleShortChannels(msg)
+	msg = gsub(msg, "|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
+	msg = gsub(msg, 'CHANNEL:', '')
+	msg = gsub(msg, "^(.-|h) "..L["whispers"], "%1")
+	msg = gsub(msg, "^(.-|h) "..L["says"], "%1")
+	msg = gsub(msg, "^(.-|h) "..L["yells"], "%1")
+	msg = gsub(msg, "<".._G.AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
+	msg = gsub(msg, "<".._G.DND..">", "[|cffE7E716"..L["DND"].."|r] ")
+	msg = gsub(msg, "^%[".._G.RAID_WARNING.."%]", '['..L["RW"]..']')
+	return msg
+end
+
 function CH:GetBNFirstToonClassColor(id)
 	if not id then return end
 	local total = BNGetNumFriends();
@@ -1608,22 +1620,16 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 
 			-- Add Channel
-			if (channelLength > 0) then
+			if channelLength > 0 then
 				body = "|Hchannel:channel:"..arg8.."|h["..ChatFrame_ResolvePrefixedChannelName(arg4).."]|h "..body;
+			end
+
+			if CH.db.shortChannels and (chatType ~= "EMOTE" and chatType ~= "TEXT_EMOTE") then
+				body = CH:HandleShortChannels(body)
 			end
 
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget);
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13);
-			if CH.db.shortChannels and chatType ~= "EMOTE" and chatType ~= "TEXT_EMOTE" then
-				body = gsub(body, "|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
-				body = gsub(body, 'CHANNEL:', '')
-				body = gsub(body, "^(.-|h) "..L["whispers"], "%1")
-				body = gsub(body, "^(.-|h) "..L["says"], "%1")
-				body = gsub(body, "^(.-|h) "..L["yells"], "%1")
-				body = gsub(body, "<".._G.AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
-				body = gsub(body, "<".._G.DND..">", "[|cffE7E716"..L["DND"].."|r] ")
-				body = gsub(body, "^%[".._G.RAID_WARNING.."%]", '['..L["RW"]..']')
-			end
 			frame:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime);
 		end
 
