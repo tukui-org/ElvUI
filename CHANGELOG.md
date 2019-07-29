@@ -17,6 +17,7 @@ Bag Bar: Lowered the min button spacing to -1.
 Make sure we only attempt to skin addons with RegisterSkin, which are finished loading.  
 Rewrote the Cutaway bars to provide a cleaner implementation that works better
 with various nameplate and unitframe settings.  
+Tweaked a bit our Spec/Loot DataText.  
 
 ___
 ### Version 11.19 [ July 22nd 2019 ]
