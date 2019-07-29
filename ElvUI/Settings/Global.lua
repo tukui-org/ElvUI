@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 --Global Settings
 G.general = {
 	UIScale = 0.64,
-	version = 11.19,
+	version = 11.20,
 	locale = "auto",
 	eyefinity = false,
 	ignoreScalePopup = false,
