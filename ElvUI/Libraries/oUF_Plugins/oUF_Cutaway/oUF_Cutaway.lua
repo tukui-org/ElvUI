@@ -41,7 +41,6 @@ local function fadeClosure(element)
 		}
 	end
 
-	checkElvUI()
 	E:UIFrameFadeOut(element, element.fadeOutTime, element.__parentElement:GetAlpha(), 0)
 end
 
@@ -110,7 +109,6 @@ local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	if (element.cur - curHealth) > (maxHealth * 0.01) then
 		element:SetAlpha(self:GetAlpha())
 
-		checkElvUI()
 		E:Delay(element.lengthBeforeFade, fadeClosure, element)
 
 		element.playing = true
@@ -147,7 +145,6 @@ local function Power_PostUpdate(self, unit, curPower, maxPower)
 	if (element.cur - curPower) > (maxPower * 0.1) then
 		element:SetAlpha(self:GetAlpha())
 
-		checkElvUI()
 		E:Delay(element.lengthBeforeFade, fadeClosure, element)
 
 		element.playing = true
@@ -209,6 +206,8 @@ end
 local function Enable(self)
 	local element = self and self.Cutaway
 	if (element) then
+		checkElvUI()
+
 		if (element.Health and element.Health:IsObjectType("StatusBar") and not element.Health:GetStatusBarTexture()) then
 			element.Health:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
