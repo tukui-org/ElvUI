@@ -59,7 +59,7 @@ function E:ScanTooltipTextures(clean, grabTextures)
 				if texture == essenceTextureID then
 					if not essences then essences = {} end
 
-					local selected = (textures[i-1] ~= essenceTextureID and textures[i-1]) or nil
+					local selected = (textures[i-1] and textures[i-1] ~= essenceTextureID) or nil
 					essences[i] = {selected, tex:GetAtlas(), texture}
 
 					if selected then
