@@ -40,9 +40,9 @@ end
 
 local function Shared_PreUpdate(self, element, unit)
 	element.unit = unit
-	local oldGUID = element.guid
-	element.guid = UnitGUID(unit)
-	if (not oldGUID or oldGUID ~= UnitGUID(unit)) then
+	local oldGUID, newGUID = element.guid, UnitGUID(unit)
+	element.guid = newGUID
+	if (not oldGUID or oldGUID ~= newGUID) then
 		return
 	end
 	element.cur = self.cur
@@ -50,11 +50,12 @@ local function Shared_PreUpdate(self, element, unit)
 end
 
 local function UpdateSize(self, element, curV, maxV)
-	local pm = self:GetOrientation() == "VERTICAL" and self:GetHeight() or self:GetWidth()
+	local isVertical = self:GetOrientation() == "VERTICAL"
+	local pm = (isVertical and self:GetHeight()) or self:GetWidth()
 	local oum = (1 / maxV) * pm
 	local c = max(element.cur - curV, 0)
 	local mm = c * oum
-	if (self:GetOrientation() == "VERTICAL") then
+	if isVertical then
 		element:SetHeight(mm)
 	else
 		element:SetWidth(mm)
