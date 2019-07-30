@@ -18,11 +18,12 @@ local UnitPowerMax = UnitPowerMax
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitGUID = UnitGUID
 
-local E  -- placeholder
+local E -- placeholder
 
 local function checkElvUI()
 	if not E then
 		E = _G.ElvUI[1]
+		assert(E, "oUF_Cutaway was not able to locate ElvUI and it is required.")
 	end
 end
 
