@@ -4,8 +4,8 @@
 local E, L, V, P, G = unpack(select(2, ...))
 
 local _G = _G
-local twipe = twipe
-local format, select, type, pairs, date = format, select, type, pairs, date
+local wipe, date = wipe, date
+local format, select, type, ipairs, pairs = format, select, type, ipairs, pairs
 local strmatch, strfind, tonumber, tostring = strmatch, strfind, tonumber, tostring
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
@@ -242,7 +242,7 @@ do
 			E:Print('CPU Usage: No CPU Usage differences found.')
 		end
 
-		twipe(CPU_USAGE)
+		wipe(CPU_USAGE)
 	end
 
 	function E:GetTopCPUFunc(msg)
@@ -258,7 +258,7 @@ do
 		delay = (delay == 'nil' and nil) or tonumber(delay) or 5
 		minCalls = (minCalls == 'nil' and nil) or tonumber(minCalls) or 15
 
-		twipe(CPU_USAGE)
+		wipe(CPU_USAGE)
 		if module == 'all' then
 			for moduName, modu in pairs(self.modules) do
 				for funcName, func in pairs(modu) do
