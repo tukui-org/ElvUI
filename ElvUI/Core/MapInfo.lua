@@ -39,21 +39,17 @@ function E:MapAndInstanceInfo_Update()
 
 	E:MapInfo_CoordsUpdate()
 
-	wipe(E.InstanceInfo)
-	local name, instanceType, difficultyID, difficultyName, maxPlayers, --[[dynamicDifficulty: not used]] _, isDynamic, instanceID,instanceGroupSize, lfgDungeonID = GetInstanceInfo()
-	if name then
-		E.InstanceInfo = {
-			name = name,
-			instanceType = instanceType,
-			difficultyID = difficultyID,
-			difficultyName = difficultyName,
-			maxPlayers = maxPlayers,
-			isDynamic = isDynamic,
-			instanceID = instanceID,
-			instanceGroupSize = instanceGroupSize,
-			lfgDungeonID = lfgDungeonID
-		}
-	end
+	local name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceID,instanceGroupSize, lfgDungeonID = GetInstanceInfo()
+	E.InstanceInfo.name = name
+	E.InstanceInfo.instanceType = instanceType
+	E.InstanceInfo.difficultyID = difficultyID
+	E.InstanceInfo.difficultyName = difficultyName
+	E.InstanceInfo.maxPlayers = maxPlayers
+	E.InstanceInfo.dynamicDifficulty = dynamicDifficulty
+	E.InstanceInfo.isDynamic = isDynamic
+	E.InstanceInfo.instanceID = instanceID
+	E.InstanceInfo.instanceGroupSize = instanceGroupSize
+	E.InstanceInfo.lfgDungeonID = lfgDungeonID
 end
 
 local coordsWatcher = CreateFrame("Frame")
