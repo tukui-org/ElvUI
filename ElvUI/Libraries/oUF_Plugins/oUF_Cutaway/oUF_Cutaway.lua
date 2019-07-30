@@ -18,7 +18,14 @@ local UnitPowerMax = UnitPowerMax
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitGUID = UnitGUID
 
-local E -- placeholder
+local E  -- placeholder
+
+local function checkElvUI()
+	if not E then
+		E = _G.ElvUI[1]
+	end
+end
+
 local function closureFunc(self)
 	self.ready = nil
 	self.playing = nil
@@ -34,7 +41,7 @@ local function fadeClosure(element)
 		}
 	end
 
-	if not E then E = _G.ElvUI[1] end
+	checkElvUI()
 	E:UIFrameFadeOut(element, element.fadeOutTime, element.__parentElement:GetAlpha(), 0)
 end
 
@@ -103,7 +110,7 @@ local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	if (element.cur - curHealth) > (maxHealth * 0.01) then
 		element:SetAlpha(self:GetAlpha())
 
-		if not E then E = _G.ElvUI[1] end
+		checkElvUI()
 		E:Delay(element.lengthBeforeFade, fadeClosure, element)
 
 		element.playing = true
@@ -140,7 +147,7 @@ local function Power_PostUpdate(self, unit, curPower, maxPower)
 	if (element.cur - curPower) > (maxPower * 0.1) then
 		element:SetAlpha(self:GetAlpha())
 
-		if not E then E = _G.ElvUI[1] end
+		checkElvUI()
 		E:Delay(element.lengthBeforeFade, fadeClosure, element)
 
 		element.playing = true
