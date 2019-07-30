@@ -10,6 +10,8 @@ assert(oUF, "oUF_Cutaway was unable to locate oUF install.")
 ]]
 -- GLOBALS: ElvUI
 
+local _G = _G
+local max = math.max
 local hooksecurefunc = hooksecurefunc
 local UnitHealthMax = UnitHealthMax
 local UnitPowerMax = UnitPowerMax
@@ -50,7 +52,7 @@ end
 local function UpdateSize(self, element, curV, maxV)
 	local pm = self:GetOrientation() == "VERTICAL" and self:GetHeight() or self:GetWidth()
 	local oum = (1 / maxV) * pm
-	local c = math.max(element.cur - curV, 0)
+	local c = max(element.cur - curV, 0)
 	local mm = c * oum
 	if (self:GetOrientation() == "VERTICAL") then
 		element:SetHeight(mm)

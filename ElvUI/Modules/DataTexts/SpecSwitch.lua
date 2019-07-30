@@ -3,11 +3,9 @@ local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local _G = _G
-local format, next, select, strjoin = format, next, select, strjoin
-local twipe = table.wipe
+local format, next, wipe, strjoin = format, next, wipe, strjoin
 --WoW API / Variables
 local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
-local GetCurrencyInfo = GetCurrencyInfo
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
@@ -135,7 +133,7 @@ local function OnEnter(self)
 			end
 		end
 
-		twipe(pvpTalents)
+		wipe(pvpTalents)
 	end
 
 	DT.tooltip:AddLine(' ')
