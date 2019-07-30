@@ -420,7 +420,7 @@ if (_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
 				if not (issecurevariable(b, "value") or b:IsShown()) then
 					b.value = nil
 					repeat
-						j, b["fx" .. j] = j+1
+						j, b["fx" .. j] = j+1, nil
 					until issecurevariable(b, "value")
 				end
 			end
@@ -429,7 +429,7 @@ if (_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
 end
 
 --CommunitiesUI taint workaround
---credit https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
+--credit: https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
 if (_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
 	_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
@@ -441,7 +441,7 @@ if (_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
 			_G.UIDROPDOWNMENU_OPEN_MENU = nil
 			local t, f, prefix, i = _G, issecurevariable, " \0", 1
 			repeat
-				i, t[prefix .. i] = i + 1
+				i, t[prefix .. i] = i + 1, nil
 			until f("UIDROPDOWNMENU_OPEN_MENU")
 		end
 	end)
