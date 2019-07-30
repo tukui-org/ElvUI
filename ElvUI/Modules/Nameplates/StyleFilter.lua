@@ -6,7 +6,6 @@ local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget,
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local gsub, tinsert, tremove, sort, wipe = gsub, tinsert, tremove, sort, wipe
 
-local GetInstanceInfo = GetInstanceInfo
 local GetLocale = GetLocale
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetSpecializationInfo = GetSpecializationInfo
@@ -774,7 +773,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Instance Type
 	if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
-		local _, Type, Difficulty = GetInstanceInfo()
+		local Type, Difficulty = E.InstanceInfo.instanceType, E.InstanceInfo.instanceDifficulty
 		if trigger.instanceType[Type] then
 			passed = true
 

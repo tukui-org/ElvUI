@@ -10,7 +10,6 @@ local hooksecurefunc = hooksecurefunc
 local GetScreenWidth = GetScreenWidth
 local GetScreenHeight = GetScreenHeight
 local RegisterStateDriver = RegisterStateDriver
-local GetInstanceInfo = GetInstanceInfo
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
@@ -90,8 +89,7 @@ function B:MoveObjectiveFrame()
 	]])
 
 	ObjectiveTrackerFrame.AutoHider:SetScript("OnHide", function()
-		local _, _, difficulty = GetInstanceInfo();
-		if difficulty ~= 8 then
+		if E.InstanceInfo.difficulty and E.InstanceInfo.difficulty ~= 8 then
 			_G.ObjectiveTracker_Collapse()
 		end
 	end)

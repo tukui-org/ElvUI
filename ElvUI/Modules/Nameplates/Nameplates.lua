@@ -15,7 +15,6 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
 local GetCVarDefault = GetCVarDefault
-local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
@@ -473,7 +472,7 @@ function NP:GROUP_LEFT()
 end
 
 function NP:PLAYER_ENTERING_WORLD()
-	NP.InstanceType = select(2, GetInstanceInfo())
+	NP.InstanceType = E.InstanceInfo.instanceType
 
 	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 		NP:UpdatePlate(_G.ElvNP_Player)

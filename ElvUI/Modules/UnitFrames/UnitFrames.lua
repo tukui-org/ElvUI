@@ -15,7 +15,6 @@ local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 local CompactRaidFrameManager_UpdateShown = CompactRaidFrameManager_UpdateShown
 local SetCVar = SetCVar
 local CreateFrame = CreateFrame
-local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
@@ -871,7 +870,8 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	if(raidFilter and numGroups and (self[group] and not self[group].blockVisibilityChanges)) then
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
-			local _, _, _, _, maxPlayers, _, _, instanceMapID = GetInstanceInfo()
+			local maxPlayers = E.InstanceInfo.maxPlayers
+			local instanceMapID = E.InstanceInfo.instanceID
 
 			if UF.instanceMapIDs[instanceMapID] then
 				maxPlayers = UF.instanceMapIDs[instanceMapID]
