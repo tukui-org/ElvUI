@@ -1618,6 +1618,7 @@ L["SOUL_SHARDS"] = "|4Éclat:Éclats; d'âme";
 L["SPEED"] = "Vitesse";
 L["SPELLBOOK"] = "Grimoire";
 L["TALENT"] = "Talent";
+L["TALENTS"] = "Talents";
 L["TANK"] = "Tank";
 L["TARGET"] = "Cibler";
 L["TIMEMANAGER_TITLE"] = "Horloge";

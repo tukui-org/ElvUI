@@ -1611,6 +1611,7 @@ L["SOUL_SHARDS"] = "Soul |4Shard:Shards;";
 L["SPEED"] = "Speed";
 L["SPELLBOOK"] = "Spellbook";
 L["TALENT"] = "Talent";
+L["TALENTS"] = "Talents";
 L["TANK"] = "Tank";
 L["TARGET"] = "Target";
 L["TIMEMANAGER_TITLE"] = "Clock";

@@ -1617,6 +1617,7 @@ L["SOUL_SHARDS"] = "|4осколок:осколка:осколков души;";
 L["SPEED"] = "Скорость";
 L["SPELLBOOK"] = "Способности";
 L["TALENT"] = "Талант";
+L["TALENTS"] = "Таланты";
 L["TANK"] = "Танк";
 L["TARGET"] = "Цель";
 L["TIMEMANAGER_TITLE"] = "Часы";

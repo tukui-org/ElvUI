@@ -1617,6 +1617,7 @@ L["SOUL_SHARDS"] = "|4Fragmento:Fragmentos; de alma";
 L["SPEED"] = "Velocidad";
 L["SPELLBOOK"] = "Hechizos";
 L["TALENT"] = "Talento";
+L["TALENTS"] = "Talentos";
 L["TANK"] = "Tanque";
 L["TARGET"] = "Objetivo";
 L["TIMEMANAGER_TITLE"] = "Reloj";

@@ -1670,6 +1670,7 @@ L["SOUL_SHARDS"] = "영혼의 조각";
 L["SPEED"] = "속도";
 L["SPELLBOOK"] = "마법책";
 L["TALENT"] = "특성";
+L["TALENTS"] = "특성";
 L["TANK"] = "방어 전담";
 L["TARGET"] = "대상";
 L["TIMEMANAGER_TITLE"] = "시계";

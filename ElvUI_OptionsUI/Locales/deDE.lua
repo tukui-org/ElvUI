@@ -1622,6 +1622,7 @@ L["SOUL_SHARDS"] = "Seelensplitter";
 L["SPEED"] = "Geschwindigkeit";
 L["SPELLBOOK"] = "Zauberbuch";
 L["TALENT"] = "Talente";
+L["TALENTS"] = "Talente";
 L["TANK"] = "Schutz";
 L["TARGET"] = "Ziel";
 L["TIMEMANAGER_TITLE"] = "Uhr";

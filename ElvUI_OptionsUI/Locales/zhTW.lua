@@ -1619,6 +1619,7 @@ L["SOUL_SHARDS"] = "靈魂裂片";
 L["SPEED"] = "速度";
 L["SPELLBOOK"] = "法術書";
 L["TALENT"] = "天賦";
+L["TALENTS"] = "天賦";
 L["TANK"] = "坦克";
 L["TARGET"] = "選取目標";
 L["TIMEMANAGER_TITLE"] = "時鐘";
