@@ -21,7 +21,7 @@ local function Update(self, elapsed)
 end
 
 local function OnEvent(self)
-	E:MapInfo_Update()
+	E:MapAndInstanceInfo_Update()
 
 	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false

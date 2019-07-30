@@ -69,7 +69,7 @@ end
 
 local inRestrictedArea = false
 function M:UpdateRestrictedArea()
-	E:MapInfo_Update()
+	E:MapAndInstanceInfo_Update()
 
 	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false

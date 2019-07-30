@@ -15,9 +15,12 @@ local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 local GetInstanceInfo = GetInstanceInfo
 local MapUtil = MapUtil
+local wipe = wipe
 
 E.MapInfo = {}
-function E:MapInfo_Update()
+E.InstanceInfo = {}
+
+function E:MapAndInstanceInfo_Update()
 	local mapID = C_Map_GetBestMapForUnit("player")
 
 	local mapInfo = mapID and C_Map_GetMapInfo(mapID)
@@ -34,9 +37,23 @@ function E:MapInfo_Update()
 	E.MapInfo.continentMapID = (continent and continent.mapID) or nil
 	E.MapInfo.continentName = (continent and continent.name) or nil
 
-	E.MapInfo.instanceID = select(8, GetInstanceInfo())
-
 	E:MapInfo_CoordsUpdate()
+
+	wipe(E.InstanceInfo)
+	local name, instanceType, difficultyID, difficultyName, maxPlayers, --[[dynamicDifficulty: not used]] _, isDynamic, instanceID,instanceGroupSize, lfgDungeonID = GetInstanceInfo()
+	if name then
+		E.InstanceInfo = {
+			name = name,
+			instanceType = instanceType,
+			difficultyID = difficultyID,
+			difficultyName = difficultyName,
+			maxPlayers = maxPlayers,
+			isDynamic = isDynamic,
+			instanceID = instanceID,
+			instanceGroupSize = instanceGroupSize,
+			lfgDungeonID = lfgDungeonID
+		}
+	end
 end
 
 local coordsWatcher = CreateFrame("Frame")
@@ -161,6 +178,6 @@ E:RegisterEvent("PLAYER_STARTED_MOVING", "MapInfo_CoordsStart")
 E:RegisterEvent("PLAYER_STOPPED_MOVING", "MapInfo_CoordsStop")
 E:RegisterEvent("PLAYER_CONTROL_LOST", "MapInfo_CoordsStart")
 E:RegisterEvent("PLAYER_CONTROL_GAINED", "MapInfo_CoordsStop")
-E:RegisterEvent("ZONE_CHANGED_NEW_AREA", "MapInfo_Update")
-E:RegisterEvent("ZONE_CHANGED_INDOORS", "MapInfo_Update")
-E:RegisterEvent("ZONE_CHANGED", "MapInfo_Update")
+E:RegisterEvent("ZONE_CHANGED_NEW_AREA", "MapAndInstanceInfo_Update")
+E:RegisterEvent("ZONE_CHANGED_INDOORS", "MapAndInstanceInfo_Update")
+E:RegisterEvent("ZONE_CHANGED", "MapAndInstanceInfo_Update")
