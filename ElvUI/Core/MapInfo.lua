@@ -56,7 +56,6 @@ function E:MapInfo_Update()
 	E.MapInfo.continentName = (continent and continent.name) or nil
 
 	E:MapInfo_CoordsUpdate()
-	E:InstanceInfo_Update()
 end
 
 local coordsWatcher = CreateFrame("Frame")

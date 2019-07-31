@@ -448,6 +448,7 @@ function E:RequestBGInfo()
 end
 
 function E:PLAYER_ENTERING_WORLD()
+	self:InstanceInfo_Update()
 	self:CheckRole()
 
 	if not self.MediaUpdated then
