@@ -15,7 +15,6 @@ local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 local GetInstanceInfo = GetInstanceInfo
 local MapUtil = MapUtil
-local wipe = wipe
 
 E.MapInfo = {}
 E.InstanceInfo = {}

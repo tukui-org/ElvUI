@@ -12,6 +12,7 @@ assert(oUF, "oUF_Cutaway was unable to locate oUF install.")
 
 local _G = _G
 local max = math.max
+local assert = assert
 local hooksecurefunc = hooksecurefunc
 local UnitHealthMax = UnitHealthMax
 local UnitPowerMax = UnitPowerMax
