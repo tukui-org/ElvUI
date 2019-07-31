@@ -19,8 +19,20 @@ local setmetatable = setmetatable
 local MapUtil = MapUtil
 
 do
-	local function ri(t) getmetatable(t).__index = nil E:InstanceInfo_Update() end
-	local function rm(t) getmetatable(t).__index = nil E:MapInfo_Update() end
+	local function rehook(mt, hk) mt.__index = hk end
+	local ri, rm
+	ri = function(t)
+		local mt = getmetatable(t)
+		mt.__index = nil
+		E:InstanceInfo_Update()
+		E:Delay(1, rehook, mt, ri)
+	end
+	rm = function(t)
+		local mt = getmetatable(t)
+		mt.__index = nil
+		E:MapInfo_Update()
+		E:Delay(1, rehook, mt, rm)
+	end
 
 	E.InstanceInfo = setmetatable({}, {__index = ri})
 	E.MapInfo = setmetatable({}, {__index = rm})
