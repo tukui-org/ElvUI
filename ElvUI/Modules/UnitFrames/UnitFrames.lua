@@ -18,7 +18,6 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
-local IsInInstance = IsInInstance
 local RegisterStateDriver = RegisterStateDriver
 local UnitFrame_OnEnter = UnitFrame_OnEnter
 local UnitFrame_OnLeave = UnitFrame_OnLeave
@@ -325,7 +324,7 @@ function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 	if isConflict or attachTo == 'FRAME' then
 		return frame
 	elseif attachTo == 'TRINKET' then
-		if select(2, IsInInstance()) == "arena" then
+		if E.InstanceInfo.instanceType == "arena" then
 			return frame.Trinket
 		else
 			return frame.PVPSpecIcon
@@ -868,8 +867,8 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	local raidFilter = UF.db.smartRaidFilter
 	local numGroups = db.numGroups
 	if(raidFilter and numGroups and (self[group] and not self[group].blockVisibilityChanges)) then
-		local inInstance, instanceType = IsInInstance()
-		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
+		local instanceType = E.InstanceInfo.instanceType
+		if instanceType == 'raid' or instanceType == 'pvp' then
 			local maxPlayers = E.InstanceInfo.maxPlayers
 			local instanceMapID = E.InstanceInfo.instanceID
 
@@ -1044,19 +1043,18 @@ function UF:LoadUnits()
 end
 
 function UF:RegisterRaidDebuffIndicator()
-	local _, instanceType = IsInInstance();
 	local ORD = ns.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
 	if ORD then
 		ORD:ResetDebuffData()
 
-		local instance = E.global.unitframe.raidDebuffIndicator.instanceFilter
-		local other = E.global.unitframe.raidDebuffIndicator.otherFilter
-		local instanceSpells = ((E.global.unitframe.aurafilters[instance] and E.global.unitframe.aurafilters[instance].spells) or E.global.unitframe.aurafilters.RaidDebuffs.spells)
-		local otherSpells = ((E.global.unitframe.aurafilters[other] and E.global.unitframe.aurafilters[other].spells) or E.global.unitframe.aurafilters.CCDebuffs.spells)
-
+		local instanceType = E.InstanceInfo.instanceType
 		if instanceType == "party" or instanceType == "raid" then
+			local instance = E.global.unitframe.raidDebuffIndicator.instanceFilter
+			local instanceSpells = ((E.global.unitframe.aurafilters[instance] and E.global.unitframe.aurafilters[instance].spells) or E.global.unitframe.aurafilters.RaidDebuffs.spells)
 			ORD:RegisterDebuffs(instanceSpells)
 		else
+			local other = E.global.unitframe.raidDebuffIndicator.otherFilter
+			local otherSpells = ((E.global.unitframe.aurafilters[other] and E.global.unitframe.aurafilters[other].spells) or E.global.unitframe.aurafilters.CCDebuffs.spells)
 			ORD:RegisterDebuffs(otherSpells)
 		end
 	end
@@ -1253,15 +1251,14 @@ function UF:ADDON_LOADED(_, addon)
 	self:UnregisterEvent("ADDON_LOADED");
 end
 
-local hasEnteredWorld = false
-function UF:PLAYER_ENTERING_WORLD()
-	if not hasEnteredWorld then
-		--We only want to run Update_AllFrames once when we first log in or /reload
-		UF:Update_AllFrames()
-		hasEnteredWorld = true
-	else
-		local _, instanceType = IsInInstance()
-		if instanceType ~= "none" then
+do
+	local hasEnteredWorld = false
+	function UF:PLAYER_ENTERING_WORLD()
+		if not hasEnteredWorld then
+			--We only want to run Update_AllFrames once when we first log in or /reload
+			UF:Update_AllFrames()
+			hasEnteredWorld = true
+		elseif E.InstanceInfo.instanceType ~= "none" then
 			--We need to update headers when we zone into an instance
 			UF:UpdateAllHeaders()
 		end

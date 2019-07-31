@@ -21,8 +21,7 @@ local IsAddOnLoaded = IsAddOnLoaded
 local IsArenaSkirmish = IsArenaSkirmish
 local IsGuildMember = IsGuildMember
 local C_FriendList_IsFriend = C_FriendList.IsFriend
-local IsInGroup, IsInRaid = IsInGroup, IsInRaid
-local IsPartyLFG, IsInInstance = IsPartyLFG, IsInInstance
+local IsInGroup, IsInRaid, IsPartyLFG = IsInGroup, IsInRaid, IsPartyLFG
 local IsShiftKeyDown = IsShiftKeyDown
 local LeaveParty = LeaveParty
 local RaidNotice_AddMessage = RaidNotice_AddMessage
@@ -61,8 +60,7 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	if not (event == "SPELL_INTERRUPT" and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet'))) then return end -- No announce-able interrupt from player or pet, exit.
 
 	--Skirmish/non-rated arenas need to use INSTANCE_CHAT but IsPartyLFG() returns "false"
-	local _, instanceType = IsInInstance()
-	if instanceType and instanceType == "arena" then
+	if E.InstanceInfo.instanceType == "arena" then
 		local skirmish = IsArenaSkirmish()
 		local _, isRegistered = IsActiveBattlefieldArena()
 		if skirmish or not isRegistered then
@@ -170,7 +168,7 @@ end
 
 function M:PVPMessageEnhancement(_, msg)
 	if not E.db.general.enhancedPvpMessages then return end
-	local _, instanceType = IsInInstance()
+	local instanceType = E.InstanceInfo.instanceType
 	if instanceType == 'pvp' or instanceType == 'arena' then
 		RaidNotice_AddMessage(_G.RaidBossEmoteFrame, msg, _G.ChatTypeInfo.RAID_BOSS_EMOTE);
 	end

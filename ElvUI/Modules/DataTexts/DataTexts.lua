@@ -12,7 +12,6 @@ local strlen = strlen
 local CreateFrame = CreateFrame
 local C_Timer_After = C_Timer.After
 local InCombatLockdown = InCombatLockdown
-local IsInInstance = IsInInstance
 
 function DT:Initialize()
 	--if E.db.datatexts.enable ~= true then return end
@@ -250,8 +249,7 @@ function DT:LoadDataTexts()
 	end
 
 	local fontTemplate = LSM:Fetch("font", self.db.font)
-	local inInstance, instanceType = IsInInstance()
-	local isInPVP = inInstance and (instanceType == "pvp")
+	local isInPVP = E.InstanceInfo.instanceType == "pvp"
 	local pointIndex, isBGPanel, enableBGPanel
 	for panelName, panel in pairs(DT.RegisteredPanels) do
 		isBGPanel = isInPVP and (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel')

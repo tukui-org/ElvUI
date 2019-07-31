@@ -6,7 +6,6 @@ local floor = floor
 local format, strjoin = format, strjoin
 --WoW API / Variables
 local GetTime = GetTime
-local IsInInstance = IsInInstance
 
 local displayNumberString = ''
 local lastPanel;
@@ -31,7 +30,7 @@ local function DelayOnUpdate(self, elapsed)
 end
 
 local function OnEvent(self, event, _, timeSeconds)
-	local _, instanceType = IsInInstance()
+	local instanceType = E.InstanceInfo.instanceType
 	if(event == "START_TIMER" and instanceType == "arena") then
 		startTime = timeSeconds
 		timer = 0

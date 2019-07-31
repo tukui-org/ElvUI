@@ -10,7 +10,6 @@ local select, unpack, pairs, wipe = select, unpack, pairs, wipe
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
-local IsInInstance = IsInInstance
 local RemoveExtraSpaces = RemoveExtraSpaces
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 
@@ -230,8 +229,7 @@ local function ChatBubble_OnUpdate(self, elapsed)
 end
 
 function M:ToggleChatBubbleScript()
-	local _, instanceType = IsInInstance()
-	if instanceType == "none" and E.private.general.chatBubbles ~= "disabled" then
+	if E.InstanceInfo.instanceType == "none" and E.private.general.chatBubbles ~= "disabled" then
 		M.BubbleFrame:SetScript('OnEvent', ChatBubble_OnEvent)
 		M.BubbleFrame:SetScript('OnUpdate', ChatBubble_OnUpdate)
 	else
@@ -244,8 +242,7 @@ function M:ToggleChatBubbleScript()
 end
 
 function M:LoadChatBubbles()
-	self.BubbleFrame = CreateFrame('Frame')
-
+	self.BubbleFrame = CreateFrame("Frame")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_SAY")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_YELL")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_MONSTER_SAY")

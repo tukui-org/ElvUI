@@ -8,7 +8,6 @@ local ceil, floor = math.ceil, math.floor
 local match = string.match
 --WoW API / Variables
 local UnitName = UnitName
-local IsInInstance = IsInInstance
 local GetLocale = GetLocale
 local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogIndexByID = GetQuestLogIndexByID
@@ -107,8 +106,7 @@ local function QUEST_REMOVED(self, event, questID)
 end
 
 local function GetQuests(unitID)
-	local inInstance = IsInInstance()
-	if inInstance then return end
+	if E.InstanceInfo.instanceType ~= "none" then return end
 
 	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	E.ScanTooltip:SetUnit(unitID)

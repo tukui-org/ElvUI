@@ -64,7 +64,7 @@ local GMError = GMError
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
-local IsInInstance, IsInRaid, IsInGroup = IsInInstance, IsInRaid, IsInGroup
+local IsInRaid, IsInGroup = IsInRaid, IsInGroup
 local IsMouseButtonDown = IsMouseButtonDown
 local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
@@ -292,16 +292,9 @@ local function ChatFrame_OnMouseScroll(frame, delta)
 end
 
 function CH:GetGroupDistribution()
-	local inInstance, kind = IsInInstance()
-	if inInstance and (kind == "pvp") then
-		return "/bg "
-	end
-	if IsInRaid() then
-		return "/ra "
-	end
-	if IsInGroup() then
-		return "/p "
-	end
+	if E.InstanceInfo.instanceType == "pvp" then return "/bg " end
+	if IsInRaid() then return "/ra " end
+	if IsInGroup() then return "/p " end
 	return "/s "
 end
 

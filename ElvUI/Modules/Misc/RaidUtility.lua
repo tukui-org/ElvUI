@@ -16,7 +16,6 @@ local GetTexCoordsForRole = GetTexCoordsForRole
 local InCombatLockdown = InCombatLockdown
 local InitiateRolePoll = InitiateRolePoll
 local IsInGroup = IsInGroup
-local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
 local SecureHandler_OnClick = SecureHandler_OnClick
 local ToggleFriendsFrame = ToggleFriendsFrame
@@ -28,8 +27,8 @@ local PANEL_HEIGHT = 100
 
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()
-	local inInstance, instanceType = IsInInstance()
-	if ((IsInGroup() and not IsInRaid()) or UnitIsGroupLeader('player') or UnitIsGroupAssistant("player")) and not (inInstance and (instanceType == "pvp" or instanceType == "arena")) then
+	local instanceType = E.InstanceInfo.instanceType
+	if ((IsInGroup() and not IsInRaid()) or UnitIsGroupLeader('player') or UnitIsGroupAssistant("player")) and not (instanceType == "pvp" or instanceType == "arena") then
 		return true
 	else
 		return false

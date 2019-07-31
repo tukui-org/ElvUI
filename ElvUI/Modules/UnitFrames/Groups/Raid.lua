@@ -9,7 +9,6 @@ local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
-local IsInInstance = IsInInstance
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
 -- GLOBALS: ElvUF_Raid
@@ -73,8 +72,8 @@ function UF:RaidSmartVisibility(event)
 
 	if not InCombatLockdown() then
 		self.isInstanceForced = nil
-		local inInstance, instanceType = IsInInstance()
-		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
+		local instanceType = E.InstanceInfo.instanceType
+		if instanceType == 'raid' or instanceType == 'pvp' then
 			local maxPlayers = E.InstanceInfo.maxPlayers
 			local instanceMapID = E.InstanceInfo.instanceID
 

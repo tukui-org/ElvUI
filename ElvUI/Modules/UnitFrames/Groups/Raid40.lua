@@ -9,7 +9,6 @@ local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
-local IsInInstance = IsInInstance
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
 -- GLOBALS: ElvUF_Raid40
@@ -68,13 +67,15 @@ function UF:Raid40SmartVisibility(event)
 		self.blockVisibilityChanges = false
 		return
 	end
-	local inInstance, instanceType = IsInInstance()
 
-	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+	if event == "PLAYER_REGEN_ENABLED" then
+		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+	end
 
 	if not InCombatLockdown() then
 		self.isInstanceForced = nil
-		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
+		local instanceType = E.InstanceInfo.instanceType
+		if instanceType == 'raid' or instanceType == 'pvp' then
 			local maxPlayers = E.InstanceInfo.maxPlayers
 			local instanceMapID = E.InstanceInfo.instanceID
 
@@ -85,19 +86,21 @@ function UF:Raid40SmartVisibility(event)
 			UnregisterStateDriver(self, "visibility")
 
 			if(maxPlayers == 40) then
-				self:Show()
-				self.isInstanceForced = true
 				self.blockVisibilityChanges = false
+				self.isInstanceForced = true
+				self:Show()
+
 				if(ElvUF_Raid40.numGroups ~= E:Round(maxPlayers/5) and event) then
 					UF:CreateAndUpdateHeaderGroup('raid40')
 				end
 			else
-				self:Hide()
 				self.blockVisibilityChanges = true
+				self:Hide()
 			end
 		elseif self.db.visibility then
 			RegisterStateDriver(self, "visibility", self.db.visibility)
 			self.blockVisibilityChanges = false
+
 			if(ElvUF_Raid40.numGroups ~= self.db.numGroups) then
 				UF:CreateAndUpdateHeaderGroup('raid40')
 			end

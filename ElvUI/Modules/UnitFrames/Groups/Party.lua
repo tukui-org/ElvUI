@@ -9,7 +9,6 @@ local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
-local IsInInstance = IsInInstance
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
 
@@ -105,14 +104,17 @@ function UF:PartySmartVisibility(event)
 		self.blockVisibilityChanges = false
 		return
 	end
-	local inInstance, instanceType = IsInInstance()
-	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+
+	if event == "PLAYER_REGEN_ENABLED" then
+		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+	end
 
 	if not InCombatLockdown() then
-		if inInstance and (instanceType == "raid" or instanceType == "pvp") then
+		local instanceType = E.InstanceInfo.instanceType
+		if instanceType == "raid" or instanceType == "pvp" then
 			UnregisterStateDriver(self, "visibility")
-			self:Hide()
 			self.blockVisibilityChanges = true
+			self:Hide()
 		elseif self.db.visibility then
 			RegisterStateDriver(self, "visibility", self.db.visibility)
 			self.blockVisibilityChanges = false

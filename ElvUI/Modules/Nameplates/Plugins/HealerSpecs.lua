@@ -13,7 +13,6 @@ local GetBattlefieldScore = GetBattlefieldScore
 local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetSpecializationInfoByID = GetSpecializationInfoByID
-local IsInInstance = IsInInstance
 local UNKNOWN = UNKNOWN
 
 local healerSpecIDs = {
@@ -39,8 +38,8 @@ local function WipeTable()
 end
 
 local function Event()
-	local inInstance, instanceType = IsInInstance()
-	if inInstance and (instanceType == 'pvp' or instanceType == 'arena') then
+	local instanceType = E.InstanceInfo.instanceType
+	if instanceType == 'pvp' or instanceType == 'arena' then
 		local numOpps = GetNumArenaOpponentSpecs()
 
 		if (numOpps == 0) then
@@ -82,13 +81,12 @@ end
 local function Update(self)
 	local element = self.HealerSpecs
 
-	local inInstance, instanceType = IsInInstance()
-
 	if (element.PreUpdate) then
 		element:PreUpdate()
 	end
 
-	if inInstance and (instanceType == 'pvp' or instanceType == 'arena') then
+	local instanceType = E.InstanceInfo.instanceType
+	if instanceType == 'pvp' or instanceType == 'arena' then
 		local name, realm = UnitName(self.unit)
 		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')
 		if realm then name = name.."-"..realm end

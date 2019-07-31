@@ -16,7 +16,6 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationRole = GetSpecializationRole
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
-local IsInInstance = IsInInstance
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitAttackPower = UnitAttackPower
@@ -457,8 +456,7 @@ function E:PLAYER_ENTERING_WORLD()
 		self.MediaUpdated = true
 	end
 
-	local _, instanceType = IsInInstance()
-	if instanceType == 'pvp' then
+	if E.InstanceInfo.instanceType == 'pvp' then
 		self.BGTimer = self:ScheduleRepeatingTimer('RequestBGInfo', 5)
 		self:RequestBGInfo()
 	elseif self.BGTimer then
