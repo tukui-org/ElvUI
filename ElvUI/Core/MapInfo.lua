@@ -14,6 +14,8 @@ local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 local GetInstanceInfo = GetInstanceInfo
+local getmetatable = getmetatable
+local setmetatable = setmetatable
 local MapUtil = MapUtil
 
 do
