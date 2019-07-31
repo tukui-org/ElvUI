@@ -21,8 +21,6 @@ local function Update(self, elapsed)
 end
 
 local function OnEvent(self)
-	E:MapAndInstanceInfo_Update()
-
 	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false
 		self.text:SetFormattedText(displayString, E.MapInfo.xText or 0, E.MapInfo.yText or 0)

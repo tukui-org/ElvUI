@@ -16,10 +16,29 @@ local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 local GetInstanceInfo = GetInstanceInfo
 local MapUtil = MapUtil
 
-E.MapInfo = {}
-E.InstanceInfo = {}
+do
+	local function ri(t) E:InstanceInfo_Update() getmetatable(t).__index = nil end
+	local function rm(t) E:MapInfo_Update() getmetatable(t).__index = nil end
 
-function E:MapAndInstanceInfo_Update()
+	E.InstanceInfo = setmetatable({}, {__index = ri})
+	E.MapInfo = setmetatable({}, {__index = rm})
+end
+
+function E:InstanceInfo_Update()
+	local name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceID,instanceGroupSize, lfgDungeonID = GetInstanceInfo()
+	E.InstanceInfo.name = name
+	E.InstanceInfo.instanceType = instanceType
+	E.InstanceInfo.difficultyID = difficultyID
+	E.InstanceInfo.difficultyName = difficultyName
+	E.InstanceInfo.maxPlayers = maxPlayers
+	E.InstanceInfo.dynamicDifficulty = dynamicDifficulty
+	E.InstanceInfo.isDynamic = isDynamic
+	E.InstanceInfo.instanceID = instanceID
+	E.InstanceInfo.instanceGroupSize = instanceGroupSize
+	E.InstanceInfo.lfgDungeonID = lfgDungeonID
+end
+
+function E:MapInfo_Update()
 	local mapID = C_Map_GetBestMapForUnit("player")
 
 	local mapInfo = mapID and C_Map_GetMapInfo(mapID)
@@ -37,18 +56,7 @@ function E:MapAndInstanceInfo_Update()
 	E.MapInfo.continentName = (continent and continent.name) or nil
 
 	E:MapInfo_CoordsUpdate()
-
-	local name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceID,instanceGroupSize, lfgDungeonID = GetInstanceInfo()
-	E.InstanceInfo.name = name
-	E.InstanceInfo.instanceType = instanceType
-	E.InstanceInfo.difficultyID = difficultyID
-	E.InstanceInfo.difficultyName = difficultyName
-	E.InstanceInfo.maxPlayers = maxPlayers
-	E.InstanceInfo.dynamicDifficulty = dynamicDifficulty
-	E.InstanceInfo.isDynamic = isDynamic
-	E.InstanceInfo.instanceID = instanceID
-	E.InstanceInfo.instanceGroupSize = instanceGroupSize
-	E.InstanceInfo.lfgDungeonID = lfgDungeonID
+	E:InstanceInfo_Update()
 end
 
 local coordsWatcher = CreateFrame("Frame")
@@ -173,6 +181,6 @@ E:RegisterEvent("PLAYER_STARTED_MOVING", "MapInfo_CoordsStart")
 E:RegisterEvent("PLAYER_STOPPED_MOVING", "MapInfo_CoordsStop")
 E:RegisterEvent("PLAYER_CONTROL_LOST", "MapInfo_CoordsStart")
 E:RegisterEvent("PLAYER_CONTROL_GAINED", "MapInfo_CoordsStop")
-E:RegisterEvent("ZONE_CHANGED_NEW_AREA", "MapAndInstanceInfo_Update")
-E:RegisterEvent("ZONE_CHANGED_INDOORS", "MapAndInstanceInfo_Update")
-E:RegisterEvent("ZONE_CHANGED", "MapAndInstanceInfo_Update")
+E:RegisterEvent("ZONE_CHANGED_NEW_AREA", "MapInfo_Update")
+E:RegisterEvent("ZONE_CHANGED_INDOORS", "MapInfo_Update")
+E:RegisterEvent("ZONE_CHANGED", "MapInfo_Update")
