@@ -11,7 +11,7 @@ local strlen = strlen
 --WoW API / Variables
 local C_Timer_After = C_Timer.After
 local CreateFrame = CreateFrame
-local GetInstanceInfo = GetInstanceInfo
+local IsInInstance = IsInInstance
 local InCombatLockdown = InCombatLockdown
 
 function DT:Initialize()
@@ -250,8 +250,8 @@ function DT:LoadDataTexts()
 	end
 
 	local fontTemplate = LSM:Fetch("font", self.db.font)
-	local _, instanceType = GetInstanceInfo()
-	local isInPVP = instanceType == "pvp"
+	local inInstance, instanceType = IsInInstance()
+	local isInPVP = inInstance and instanceType == "pvp"
 	local pointIndex, isBGPanel, enableBGPanel
 	for panelName, panel in pairs(DT.RegisteredPanels) do
 		isBGPanel = isInPVP and (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel')

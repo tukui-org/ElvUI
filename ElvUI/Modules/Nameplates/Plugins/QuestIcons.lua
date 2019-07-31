@@ -7,7 +7,7 @@ local pairs, tonumber = pairs, tonumber
 local ceil, floor = math.ceil, math.floor
 local match = string.match
 --WoW API / Variables
-local GetInstanceInfo = GetInstanceInfo
+local IsInInstance = IsInInstance
 local GetLocale = GetLocale
 local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
@@ -107,8 +107,7 @@ local function QUEST_REMOVED(self, event, questID)
 end
 
 local function GetQuests(unitID)
-	local _, instanceType = GetInstanceInfo()
-	if instanceType ~= "none" then return end
+	if IsInInstance() then return end
 
 	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	E.ScanTooltip:SetUnit(unitID)
