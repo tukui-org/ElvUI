@@ -14,29 +14,10 @@ local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 local GetInstanceInfo = GetInstanceInfo
-local getmetatable = getmetatable
-local setmetatable = setmetatable
 local MapUtil = MapUtil
 
-do
-	local function rehook(mt, hk) mt.__index = hk end
-	local ri, rm
-	ri = function(t)
-		local mt = getmetatable(t)
-		mt.__index = nil
-		E:InstanceInfo_Update()
-		E:Delay(1, rehook, mt, ri)
-	end
-	rm = function(t)
-		local mt = getmetatable(t)
-		mt.__index = nil
-		E:MapInfo_Update()
-		E:Delay(1, rehook, mt, rm)
-	end
-
-	E.InstanceInfo = setmetatable({}, {__index = ri})
-	E.MapInfo = setmetatable({}, {__index = rm})
-end
+E.MapInfo = {}
+E.InstanceInfo = {}
 
 function E:InstanceInfo_Update()
 	local name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceID,instanceGroupSize, lfgDungeonID = GetInstanceInfo()
