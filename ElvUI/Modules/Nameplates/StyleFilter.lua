@@ -6,6 +6,7 @@ local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget,
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local gsub, tinsert, tremove, sort, wipe = gsub, tinsert, tremove, sort, wipe
 
+local GetInstanceInfo = GetInstanceInfo
 local GetLocale = GetLocale
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetSpecializationInfo = GetSpecializationInfo
@@ -17,6 +18,7 @@ local GetTime = GetTime
 local IsResting = IsResting
 local PowerBarColor = PowerBarColor
 local UnitAffectingCombat = UnitAffectingCombat
+local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -30,7 +32,6 @@ local UnitLevel = UnitLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitThreatSituation = UnitThreatSituation
-local UnitCanAttack = UnitCanAttack
 
 local hooksecurefunc = hooksecurefunc
 local C_Timer_NewTimer = C_Timer.NewTimer
@@ -773,7 +774,8 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Instance Type
 	if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
-		local Type, Difficulty = E.InstanceInfo.instanceType, E.InstanceInfo.instanceDifficulty
+		local _, instanceType, difficultyID = GetInstanceInfo()
+		local Type, Difficulty = instanceType, difficultyID
 		if trigger.instanceType[Type] then
 			passed = true
 

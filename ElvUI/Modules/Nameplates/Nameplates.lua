@@ -11,12 +11,13 @@ local strsplit = strsplit
 local type = type
 local wipe = wipe
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
 local GetCVarDefault = GetCVarDefault
+local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
+local hooksecurefunc = hooksecurefunc
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local SetCVar = SetCVar
 local UnitClass = UnitClass
@@ -472,7 +473,8 @@ function NP:GROUP_LEFT()
 end
 
 function NP:PLAYER_ENTERING_WORLD()
-	NP.InstanceType = E.InstanceInfo.instanceType
+	local _, instanceType = GetInstanceInfo()
+	NP.InstanceType = instanceType
 
 	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
 		NP:UpdatePlate(_G.ElvNP_Player)

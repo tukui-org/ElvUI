@@ -8,6 +8,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local GetInstanceInfo = GetInstanceInfo
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
@@ -50,7 +51,8 @@ function UF:RaidPetsSmartVisibility(event)
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 
 	if not InCombatLockdown() then
-		if E.InstanceInfo.instanceType == "raid" then
+		local _, instanceType = GetInstanceInfo()
+		if instanceType == "raid" then
 			UnregisterStateDriver(self, "visibility")
 			self:Show()
 		elseif self.db.visibility then

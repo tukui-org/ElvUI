@@ -13,25 +13,9 @@ local CreateVector2D = CreateVector2D
 local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
-local GetInstanceInfo = GetInstanceInfo
 local MapUtil = MapUtil
 
 E.MapInfo = {}
-E.InstanceInfo = {}
-
-function E:InstanceInfo_Update()
-	local name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceID,instanceGroupSize, lfgDungeonID = GetInstanceInfo()
-	E.InstanceInfo.name = name
-	E.InstanceInfo.instanceType = instanceType
-	E.InstanceInfo.difficultyID = difficultyID
-	E.InstanceInfo.difficultyName = difficultyName
-	E.InstanceInfo.maxPlayers = maxPlayers
-	E.InstanceInfo.dynamicDifficulty = dynamicDifficulty
-	E.InstanceInfo.isDynamic = isDynamic
-	E.InstanceInfo.instanceID = instanceID
-	E.InstanceInfo.instanceGroupSize = instanceGroupSize
-	E.InstanceInfo.lfgDungeonID = lfgDungeonID
-end
 
 function E:MapInfo_Update()
 	local mapID = C_Map_GetBestMapForUnit("player")

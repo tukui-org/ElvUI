@@ -9,6 +9,7 @@ local select, unpack, pairs, wipe = select, unpack, pairs, wipe
 --WoW API / Variables
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
+local GetInstanceInfo = GetInstanceInfo
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local RemoveExtraSpaces = RemoveExtraSpaces
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
@@ -229,7 +230,8 @@ local function ChatBubble_OnUpdate(self, elapsed)
 end
 
 function M:ToggleChatBubbleScript()
-	if E.InstanceInfo.instanceType == "none" and E.private.general.chatBubbles ~= "disabled" then
+	local _, instanceType = GetInstanceInfo()
+	if instanceType == "none" and E.private.general.chatBubbles ~= "disabled" then
 		M.BubbleFrame:SetScript('OnEvent', ChatBubble_OnEvent)
 		M.BubbleFrame:SetScript('OnUpdate', ChatBubble_OnUpdate)
 	else

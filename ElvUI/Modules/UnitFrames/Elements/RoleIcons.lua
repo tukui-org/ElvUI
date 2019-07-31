@@ -4,8 +4,9 @@ local UF = E:GetModule('UnitFrames');
 --Lua functions
 local random = math.random
 --WoW API / Variables
-local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldScore = GetBattlefieldScore
+local GetInstanceInfo = GetInstanceInfo
+local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetUnitName = GetUnitName
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitIsConnected = UnitIsConnected
@@ -59,7 +60,8 @@ function UF:UpdateRoleIcon(event)
 	end
 
 	local role
-	if E.InstanceInfo.instanceType == "pvp" then
+	local _, instanceType = GetInstanceInfo()
+	if instanceType == "pvp" then
 		local name = GetUnitName(self.unit, true)
 		local index = GetBattleFieldIndexFromUnitName(name)
 		if index then

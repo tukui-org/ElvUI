@@ -7,12 +7,13 @@ local gsub = gsub
 local format = format
 local wipe = wipe
 -- WoW API / Variables
-local UnitName = UnitName
-local GetNumBattlefieldScores = GetNumBattlefieldScores
-local GetBattlefieldScore = GetBattlefieldScore
-local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
 local GetArenaOpponentSpec = GetArenaOpponentSpec
+local GetBattlefieldScore = GetBattlefieldScore
+local GetInstanceInfo = GetInstanceInfo
+local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
+local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetSpecializationInfoByID = GetSpecializationInfoByID
+local UnitName = UnitName
 local UNKNOWN = UNKNOWN
 
 local healerSpecIDs = {
@@ -38,7 +39,7 @@ local function WipeTable()
 end
 
 local function Event()
-	local instanceType = E.InstanceInfo.instanceType
+	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'pvp' or instanceType == 'arena' then
 		local numOpps = GetNumArenaOpponentSpecs()
 
@@ -85,7 +86,7 @@ local function Update(self)
 		element:PreUpdate()
 	end
 
-	local instanceType = E.InstanceInfo.instanceType
+	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'pvp' or instanceType == 'arena' then
 		local name, realm = UnitName(self.unit)
 		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')

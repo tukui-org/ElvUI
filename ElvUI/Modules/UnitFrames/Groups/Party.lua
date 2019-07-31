@@ -8,6 +8,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local GetInstanceInfo = GetInstanceInfo
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
@@ -110,7 +111,7 @@ function UF:PartySmartVisibility(event)
 	end
 
 	if not InCombatLockdown() then
-		local instanceType = E.InstanceInfo.instanceType
+		local _, instanceType = GetInstanceInfo()
 		if instanceType == "raid" or instanceType == "pvp" then
 			UnregisterStateDriver(self, "visibility")
 			self.blockVisibilityChanges = true

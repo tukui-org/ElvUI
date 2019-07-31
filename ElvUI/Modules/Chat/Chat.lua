@@ -52,6 +52,7 @@ local GetChannelName = GetChannelName
 local GetCursorPosition = GetCursorPosition
 local GetCVar, GetCVarBool = GetCVar, GetCVarBool
 local GetGuildRosterMOTD = GetGuildRosterMOTD
+local GetInstanceInfo = GetInstanceInfo
 local GetItemInfoFromHyperlink = GetItemInfoFromHyperlink
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
@@ -292,7 +293,8 @@ local function ChatFrame_OnMouseScroll(frame, delta)
 end
 
 function CH:GetGroupDistribution()
-	if E.InstanceInfo.instanceType == "pvp" then return "/bg " end
+	local _, instanceType = GetInstanceInfo()
+	if instanceType == "pvp" then return "/bg " end
 	if IsInRaid() then return "/ra " end
 	if IsInGroup() then return "/p " end
 	return "/s "

@@ -8,6 +8,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local GetInstanceInfo = GetInstanceInfo
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
@@ -72,13 +73,10 @@ function UF:RaidSmartVisibility(event)
 
 	if not InCombatLockdown() then
 		self.isInstanceForced = nil
-		local instanceType = E.InstanceInfo.instanceType
+		local _, instanceType, _, _, maxPlayers, _, _, instanceID = GetInstanceInfo()
 		if instanceType == 'raid' or instanceType == 'pvp' then
-			local maxPlayers = E.InstanceInfo.maxPlayers
-			local instanceMapID = E.InstanceInfo.instanceID
-
-			if UF.instanceMapIDs[instanceMapID] then
-				maxPlayers = UF.instanceMapIDs[instanceMapID]
+			if UF.instanceMapIDs[instanceID] then
+				maxPlayers = UF.instanceMapIDs[instanceID]
 			end
 
 			UnregisterStateDriver(self, "visibility")

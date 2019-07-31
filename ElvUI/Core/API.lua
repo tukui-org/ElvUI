@@ -9,25 +9,26 @@ local format, select, type, ipairs, pairs = format, select, type, ipairs, pairs
 local strmatch, strfind, tonumber, tostring = strmatch, strfind, tonumber, tostring
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
+local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetCVar, SetCVar = GetCVar, SetCVar
 local GetCVarBool = GetCVarBool
 local GetFunctionCPUUsage = GetFunctionCPUUsage
+local GetInstanceInfo = GetInstanceInfo
 local GetSpecialization = GetSpecialization
 local GetSpecializationRole = GetSpecializationRole
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
+local IsRatedBattleground = IsRatedBattleground
+local IsWargame = IsWargame
+local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitAttackPower = UnitAttackPower
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
-local UnitStat = UnitStat
-local IsRatedBattleground = IsRatedBattleground
-local IsWargame = IsWargame
-local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local UnitIsMercenary = UnitIsMercenary
-local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
+local UnitStat = UnitStat
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 local FACTION_HORDE = FACTION_HORDE
@@ -449,7 +450,6 @@ end
 
 function E:PLAYER_ENTERING_WORLD()
 	self:MapInfo_Update()
-	self:InstanceInfo_Update()
 	self:CheckRole()
 
 	if not self.MediaUpdated then
@@ -457,7 +457,8 @@ function E:PLAYER_ENTERING_WORLD()
 		self.MediaUpdated = true
 	end
 
-	if E.InstanceInfo.instanceType == 'pvp' then
+	local _, instanceType = GetInstanceInfo()
+	if instanceType == 'pvp' then
 		self.BGTimer = self:ScheduleRepeatingTimer('RequestBGInfo', 5)
 		self:RequestBGInfo()
 	elseif self.BGTimer then

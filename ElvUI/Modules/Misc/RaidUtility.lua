@@ -10,6 +10,7 @@ local strfind = strfind
 local CreateFrame = CreateFrame
 local DoReadyCheck = DoReadyCheck
 local GameTooltip_Hide = GameTooltip_Hide
+local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetTexCoordsForRole = GetTexCoordsForRole
@@ -27,7 +28,7 @@ local PANEL_HEIGHT = 100
 
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()
-	local instanceType = E.InstanceInfo.instanceType
+	local _, instanceType = GetInstanceInfo()
 	if ((IsInGroup() and not IsInRaid()) or UnitIsGroupLeader('player') or UnitIsGroupAssistant("player")) and not (instanceType == "pvp" or instanceType == "arena") then
 		return true
 	else
