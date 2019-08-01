@@ -75,6 +75,24 @@ local oUF = ns.oUF
 
 local _, playerClass = UnitClass('player')
 
+-- ElvUI block
+local unpack = unpack
+local CopyTable = CopyTable
+local UnitIsUnit = UnitIsUnit
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitThreatSituation = UnitThreatSituation
+local UnitIsPlayer = UnitIsPlayer
+local UnitClass = UnitClass
+local UnitSelectionType = UnitSelectionType
+local UnitReaction = UnitReaction
+local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local UnitIsConnected = UnitIsConnected
+local UnitHasVehicleUI = UnitHasVehicleUI
+local UnitPowerType = UnitPowerType
+-- end block
+
 -- sourced from FrameXML/AlternatePowerBar.lua
 local ADDITIONAL_POWER_BAR_NAME = ADDITIONAL_POWER_BAR_NAME or 'MANA'
 local ADDITIONAL_POWER_BAR_INDEX = ADDITIONAL_POWER_BAR_INDEX or 0

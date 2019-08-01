@@ -35,6 +35,14 @@ the unit.
 local _, ns = ...
 local oUF = ns.oUF
 
+-- ElvUI block
+local UnitIsUnit = UnitIsUnit
+local UnitGUID = UnitGUID
+local UnitIsConnected = UnitIsConnected
+local UnitIsVisible = UnitIsVisible
+local SetPortraitTexture = SetPortraitTexture
+-- end block
+
 local function Update(self, event, unit)
 	if(not unit or not UnitIsUnit(self.unit, unit)) then return end
 

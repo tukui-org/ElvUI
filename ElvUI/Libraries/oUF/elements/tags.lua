@@ -71,6 +71,16 @@ local Private = oUF.Private
 
 local unitExists = Private.unitExists
 
+-- ElvUI block
+local _G = _G
+local CreateFrame = CreateFrame
+local setfenv, getfenv = setfenv, getfenv
+local rawget, rawset, select = rawget, rawset, select
+local format, tinsert, tremove = format, tinsert, tremove
+local next, type, pcall, unpack = next, type, pcall, unpack
+local error, assert, loadstring = error, assert, loadstring
+-- end block
+
 local _PATTERN = '%[..-%]+'
 
 local _ENV = {
@@ -83,13 +93,13 @@ local _ENV = {
 			end
 		end
 
-		-- ElvUI
+		-- ElvUI block
 		if not r or type(r) == 'string' then --wtf?
 			return '|cffFFFFFF'
 		end
 		-- end block
 
-		return string.format('|cff%02x%02x%02x', r * 255, g * 255, b * 255)
+		return format('|cff%02x%02x%02x', r * 255, g * 255, b * 255)
 	end,
 }
 _ENV.ColorGradient = function(...)
@@ -609,18 +619,8 @@ local function Update(self)
 end
 
 -- ElvUI block
-local onEnter = function(self)
-	for fs in next, self.__mousetags do
-		fs:SetAlpha(1)
-	end
-end
-
-local onLeave = function(self)
-	for fs in next, self.__mousetags do
-		fs:SetAlpha(0)
-	end
-end
-
+local onEnter = function(self) for fs in next, self.__mousetags do fs:SetAlpha(1) end end
+local onLeave = function(self) for fs in next, self.__mousetags do fs:SetAlpha(0) end end
 local onUpdateDelay = {}
 local escapeSequences = {
 	["||c"] = "|c",
@@ -693,8 +693,10 @@ local function getTagFunc(tagstr)
 			end
 
 			if(tagFunc) then
-				table.insert(args, tagFunc)
+				tinsert(args, tagFunc)
 			else
+				-- return error(string.format('Attempted to use invalid tag %s.', bracket), 3)
+
 				-- ElvUI changed
 				numTags = -1
 				func = function(self)
@@ -788,7 +790,7 @@ local function registerEvent(fontstr, event)
 	if(not events[event]) then events[event] = {} end
 
 	eventFrame:RegisterEvent(event)
-	table.insert(events[event], fontstr)
+	tinsert(events[event], fontstr)
 end
 
 local function registerEvents(fontstr, tagstr)
@@ -811,7 +813,7 @@ local function unregisterEvents(fontstr)
 					eventFrame:UnregisterEvent(event)
 				end
 
-				table.remove(data, i)
+				tremove(data, i)
 			end
 		end
 	end
@@ -834,7 +836,7 @@ local function Tag(self, fs, tagstr, ...)
 		self.__tags = {}
 		self.__mousetags = {} -- ElvUI
 
-		table.insert(self.__elements, Update)
+		tinsert(self.__elements, Update)
 	elseif(self.__tags[fs]) then
 		-- We don't need to remove it from the __tags table as Untag handles
 		-- that for us.
@@ -891,7 +893,7 @@ local function Tag(self, fs, tagstr, ...)
 		end
 
 		if(not eventlessUnits[timer]) then eventlessUnits[timer] = {} end
-		table.insert(eventlessUnits[timer], fs)
+		tinsert(eventlessUnits[timer], fs)
 
 		createOnUpdate(timer)
 	else
@@ -925,7 +927,7 @@ local function Untag(self, fs)
 	for _, timers in next, eventlessUnits do
 		for i, fontstr in next, timers do
 			if(fs == fontstr) then
-				table.remove(timers, i)
+				tremove(timers, i)
 			end
 		end
 	end

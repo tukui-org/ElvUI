@@ -34,6 +34,15 @@ if(select(2, UnitClass('player')) ~= 'MONK') then return end
 local _, ns = ...
 local oUF = ns.oUF
 
+-- ElvUI block
+local GetSpecialization = GetSpecialization
+local UnitHasVehiclePlayerFrameUI = UnitHasVehiclePlayerFrameUI
+local UnitHealthMax = UnitHealthMax
+local UnitIsUnit = UnitIsUnit
+local UnitStagger = UnitStagger
+-- GLOBALS: MonkStaggerBar
+-- end block
+
 -- sourced from FrameXML/Constants.lua
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER or 1
 

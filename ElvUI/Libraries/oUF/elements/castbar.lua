@@ -92,12 +92,19 @@ local oUF = ns.oUF
 local DEFAULT_ICON = [[Interface\ICONS\INV_Misc_QuestionMark]]
 
 -- ElvUI block
+local select = select
+local FAILED = FAILED
+local INTERRUPTED = INTERRUPTED
 local GetNetStats = GetNetStats
-local GetTime = GetTime
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
-local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
+local UnitIsUnit = UnitIsUnit
+local GetTime = GetTime
 
+-- GLOBALS: PetCastingBarFrame, PetCastingBarFrame_OnLoad
+-- GLOBALS: CastingBarFrame, CastingBarFrame_OnLoad, CastingBarFrame_SetUnit
+
+local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 local UNIT_SPELLCAST_SENT = function (self, event, unit, target, castID, spellID)
 	local castbar = self.Castbar
 	castbar.curTarget = (target and target ~= "") and target or nil
