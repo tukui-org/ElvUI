@@ -73,6 +73,16 @@ local oUF = ns.oUF
 local VISIBLE = 1
 local HIDDEN = 0
 
+-- ElvUI changed block
+local CREATED = 2
+local tinsert = tinsert
+local CreateFrame = CreateFrame
+local GetSpellInfo = GetSpellInfo
+local UnitAura = UnitAura
+local UnitIsUnit = UnitIsUnit
+local floor, min = math.floor, math.min
+-- end block
+
 local function UpdateTooltip(self)
 	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
 end
@@ -148,6 +158,16 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
 		timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 
+	-- ElvUI block
+	if element.forceShow or element.forceCreate then
+		spellID = 47540
+		name, _, texture = GetSpellInfo(spellID)
+		if element.forceShow then
+			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, isBossDebuff = 5, "Magic", 0, 60, "player", nil, nil, nil
+		end
+	end
+	-- end Block
+
 	if(name) then
 		local position = visible + offset + 1
 		local button = element[position]
@@ -185,9 +205,16 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 
 		* show - indicates whether the aura button should be shown (boolean)
 		--]]
-		local show = (element.CustomFilter or customFilter) (element, unit, button, name, texture,
-			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
-			canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,timeMod, effect1, effect2, effect3)
+
+		-- ElvUI changed block
+		local show = true
+		if element.forceCreate then show = false end
+		if not element.forceShow and not element.forceCreate then
+			show = (element.CustomFilter or customFilter) (element, unit, button, name, texture,
+				count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
+				canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,timeMod, effect1, effect2, effect3)
+		end
+		-- end block
 
 		if(show) then
 			-- We might want to consider delaying the creation of an actual cooldown
@@ -249,6 +276,19 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			end
 
 			return VISIBLE
+		-- ElvUI changed block
+		elseif element.forceCreate then
+			local size = element.size or 16
+			button:SetSize(size, size)
+
+			button:Hide()
+
+			if (element.PostUpdateIcon) then
+				element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
+			end
+
+			return CREATED
+		-- end block
 		else
 			return HIDDEN
 		end
@@ -281,6 +321,9 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	local index = 1
 	local visible = 0
 	local hidden = 0
+	-- ElvUI changed block
+	local created = 0
+	-- end block
 	while(visible < limit) do
 		local result = updateIcon(element, unit, index, offset, filter, isDebuff, visible)
 		if(not result) then
@@ -289,10 +332,19 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 			visible = visible + 1
 		elseif(result == HIDDEN) then
 			hidden = hidden + 1
+		-- ElvUI changed block
+		elseif result == CREATED then
+			visible = visible + 1
+			created = created + 1
+		-- end block
 		end
 
 		index = index + 1
 	end
+
+	-- ElvUI changed block
+	visible = visible - created
+	-- end block
 
 	if(not dontHide) then
 		for i = visible + offset + 1, #element do
