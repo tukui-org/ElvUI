@@ -17,9 +17,9 @@ local GetCVarDefault = GetCVarDefault
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
-local hooksecurefunc = hooksecurefunc
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local SetCVar = SetCVar
+local ShowBossFrameWhenUninteractable = ShowBossFrameWhenUninteractable
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitCreatureType = UnitCreatureType
@@ -34,12 +34,44 @@ local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
+local UnitSelectionType = UnitSelectionType
+local UnitThreatSituation = UnitThreatSituation
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
 local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
+local hooksecurefunc = hooksecurefunc
+
+local selectionTypes = {
+	[ 0] = 0,
+	[ 1] = 1,
+	[ 2] = 2,
+	[ 3] = 3,
+	[ 4] = 4,
+	[ 5] = 5,
+	[ 6] = 6,
+	[ 7] = 7,
+	[ 8] = 8,
+	[ 9] = 9,
+--	[10] = 10, -- unavailable to players
+--	[11] = 11, -- unavailable to players
+--	[12] = 12, -- inconsistent due to bugs and its reliance on cvars
+	[13] = 13,
+}
+
+function NP:UnitExists(unit)
+	return unit and UnitExists(unit) or ShowBossFrameWhenUninteractable(unit)
+end
+
+function NP:UnitSelectionType(unit, considerHostile)
+	if considerHostile and UnitThreatSituation('player', unit) then
+		return 0
+	else
+		return selectionTypes[UnitSelectionType(unit, true)]
+	end
+end
 
 local function CopySettings(from, to)
 	for setting, value in pairs(from) do
