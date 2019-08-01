@@ -269,7 +269,7 @@ function NP:Update_Fader(nameplate)
 end
 
 function NP:Construct_Cutaway(nameplate)
-	local Cutaway = CreateFrame("Frame", nameplate:GetDebugName() .. "Cutaway", nameplate)
+	local Cutaway = {}
 
 	Cutaway.Health = CreateFrame("StatusBar", nameplate:GetDebugName() .. "CutawayHealth", nameplate.Health.ClipFrame)
 	if NP.db.cutaway.health.forceBlankTexture then
