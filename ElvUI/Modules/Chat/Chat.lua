@@ -543,6 +543,10 @@ function CH:StyleChat(frame)
 		end
 	end)
 
+	-- Skin the OverflowButtons
+	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
+	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
+
 	_G.QuickJoinToastButton:Hide()
 
 	CreatedFrames = id
@@ -2388,7 +2392,6 @@ function CH:HandleChatVoiceIcons()
 
 		_G.GeneralDockManagerOverflowButton:ClearAllPoints()
 		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[3], 'LEFT', 0, 2)
-		_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
 
 		channelButtons[3]:HookScript("OnShow", CH.RepositionChatVoiceIcons)
 		channelButtons[3]:HookScript("OnHide", CH.RepositionChatVoiceIcons) -- dont think this is needed but meh
@@ -2404,9 +2407,6 @@ function CH:HandleChatVoiceIcons()
 				end
 			end
 		end)
-
-		-- We skin it later in Style chat, to keep the backdrops on the button if the option are disabled
-		Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
 
 		CH:RepositionChatVoiceIcons()
 	else
