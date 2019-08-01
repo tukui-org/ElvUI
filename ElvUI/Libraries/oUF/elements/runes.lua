@@ -201,6 +201,12 @@ local function Enable(self, unit)
 		self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
 		self:RegisterEvent('RUNE_POWER_UPDATE', Path, true)
 
+		-- ElvUI block
+		if element.IsObjectType and element:IsObjectType("Frame") then
+			element:Show()
+		end
+		-- end ElvUI blockh
+
 		return true
 	end
 end
@@ -211,6 +217,12 @@ local function Disable(self)
 		for i = 1, #element do
 			element[i]:Hide()
 		end
+
+		-- ElvUI block
+		if element.IsObjectType and element:IsObjectType("Frame") then
+			element:Hide()
+		end
+		-- end ElvUI block
 
 		self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
 		self:UnregisterEvent('RUNE_POWER_UPDATE', Path)
