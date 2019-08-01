@@ -14,7 +14,6 @@
 	<Include file="LibSharedMedia-3.0\lib.xml"/>
 	<Script file="LibSimpleSticky\LibSimpleSticky.lua"/>
 	<Include file='oUF\oUF.xml'/>
-	<Include file='oUF_Custom\oUF_Custom.xml'/>
 	<Include file='oUF_Plugins\oUF_Plugins.xml'/>
 	<Include file="LibActionButton-1.0\LibActionButton-1.0.xml"/>
 	<Script file="LibDataBroker\LibDataBroker-1.1.lua"/>
