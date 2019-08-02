@@ -4031,12 +4031,12 @@ local function GetUnitSettings(unit, name)
 								end,
 								values = function()
 									local str = E.db.nameplates.units[unit].buffs.filters.priority
-									if str == "" then return nil end
+									if str == "" then return {} end
 									return {strsplit(",", str)}
 								end,
 								get = function(_, value)
 									local str = E.db.nameplates.units[unit].buffs.filters.priority
-									if str == "" then return nil end
+									if str == "" then return end
 									local tbl = {strsplit(",", str)}
 									return tbl[value]
 								end,
@@ -4382,12 +4382,12 @@ local function GetUnitSettings(unit, name)
 								end,
 								values = function()
 									local str = E.db.nameplates.units[unit].debuffs.filters.priority
-									if str == "" then return nil end
+									if str == "" then return {} end
 									return {strsplit(",", str)}
 								end,
 								get = function(info, value)
 									local str = E.db.nameplates.units[unit].debuffs.filters.priority
-									if str == "" then return nil end
+									if str == "" then return end
 									local tbl = {strsplit(",", str)}
 									return tbl[value]
 								end,
