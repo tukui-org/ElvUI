@@ -798,10 +798,10 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		-- Location
 		if activeID or trigger.location.mapIDEnabled or trigger.location.zoneNamesEnabled or trigger.location.subZoneNamesEnabled then
 			if activeID and next(trigger.location.instanceIDs) then
-				if trigger.location.instanceIDs[tostring(instanceID)] or trigger.location.instanceIDs[instanceName] then passed = true else return end
+				if trigger.location.instanceIDs[instanceID and tostring(instanceID)] or trigger.location.instanceIDs[instanceName] then passed = true else return end
 			end
 			if trigger.location.mapIDEnabled and next(trigger.location.mapIDs) then
-				if trigger.location.mapIDs[tostring(E.MapInfo.mapID)] or trigger.location.mapIDs[E.MapInfo.name] then passed = true else return end
+				if trigger.location.mapIDs[E.MapInfo.mapID and tostring(E.MapInfo.mapID)] or trigger.location.mapIDs[E.MapInfo.name] then passed = true else return end
 			end
 			if trigger.location.zoneNamesEnabled and next(trigger.location.zoneNames) then
 				if trigger.location.zoneNames[E.MapInfo.realZoneText] then passed = true else return end
@@ -850,7 +850,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if c.spells and next(c.spells) then
 			for _, value in pairs(c.spells) do
 				if value then -- only run if at least one is selected
-					local castingSpell = c.spells[tostring(b.spellID)] or c.spells[b.spellName]
+					local castingSpell = c.spells[b.spellID and tostring(b.spellID)] or c.spells[b.spellName]
 					if (c.notSpell and not castingSpell) or (castingSpell and not c.notSpell) then passed = true else return end
 					break -- we can execute this once on the first enabled option then kill the loop
 				end
