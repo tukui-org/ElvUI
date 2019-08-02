@@ -1092,7 +1092,7 @@ function mod:StyleFilterConfigure()
 					mod.StyleFilterTriggerEvents.UNIT_FLAGS = true
 				end
 
-				if t.raidTarget then
+				if t.raidTarget and (t.raidTarget.star or t.raidTarget.circle or t.raidTarget.diamond or t.raidTarget.triangle or t.raidTarget.moon or t.raidTarget.square or t.raidTarget.cross or t.raidTarget.skull) then
 					mod.StyleFilterTriggerEvents.RAID_TARGET_UPDATE = 1
 				end
 
