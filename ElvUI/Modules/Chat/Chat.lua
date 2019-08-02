@@ -2383,12 +2383,15 @@ function CH:HandleChatVoiceIcons()
 			end
 		end
 
+		_G.GeneralDockManagerOverflowButton:ClearAllPoints()
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[3], 'LEFT', 0, 2)
+
 		hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y, stopLoop)
 			if anchor == _G.GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
-				frame:ClearAllPoints()
+				--frame:ClearAllPoints()
 				frame:Point(point, anchor, attachTo, -3, -6)
 			elseif (not stopLoop and not _G.GeneralDockManagerOverflowButton:IsShown()) and (point == "BOTTOMRIGHT" and anchor ~= channelButtons[3] and anchor ~= channelButtons[1]) then
-				frame:ClearAllPoints()
+				--frame:ClearAllPoints()
 				if channelButtons[3]:IsShown() then
 					frame:Point(point, anchor, attachTo, -30, -5, true)
 				else
