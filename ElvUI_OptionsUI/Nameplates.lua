@@ -2531,7 +2531,7 @@ local function UpdateFilterGroup()
 										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[mapID] then return end
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[mapID] = true
 										NP:ConfigureAll()
-										E:Print(format(L["Added %s: %s"], L["Map ID"], mapID))
+										E:Print(format(L["Added Map ID: %s"], mapID))
 									end
 								},
 								instanceID = {
@@ -2547,7 +2547,7 @@ local function UpdateFilterGroup()
 										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs[instanceID] then return end
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs[instanceID] = true
 										NP:ConfigureAll()
-										E:Print(format(L["Added %s: %s"], L["Instance ID"], instanceName.." ("..instanceID..")"))
+										E:Print(format(L["Added Instance ID: %s"], instanceName.." ("..instanceID..")"))
 									end
 								},
 								spacer1 = {
@@ -2567,7 +2567,7 @@ local function UpdateFilterGroup()
 										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames[zone] then return end
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames[zone] = true
 										NP:ConfigureAll()
-										E:Print(format(L["Added %s: %s"], L["Zone Name"], zone))
+										E:Print(format(L["Added Zone Name: %s"], zone))
 									end
 								},
 								subZoneName = {
@@ -2582,7 +2582,7 @@ local function UpdateFilterGroup()
 										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames[subZone] then return end
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames[subZone] = true
 										NP:ConfigureAll()
-										E:Print(format(L["Added %s: %s"], L["Subzone Name"], subZone))
+										E:Print(format(L["Added Subzone Name: %s"], subZone))
 									end
 								},
 							}
