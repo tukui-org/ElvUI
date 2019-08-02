@@ -381,9 +381,7 @@ local function UpdateInstanceDifficulty()
 		E.Options.args.nameplate.args.filters.args.triggers.args.instanceType.args.types.args.dungeonDifficulty = {
 			type = "group",
 			name = L["DUNGEON_DIFFICULTY"],
-			desc = L[
-				"Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."
-			],
+			desc = L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."],
 			guiInline = true,
 			order = 10,
 			get = function(info)
@@ -415,7 +413,7 @@ local function UpdateInstanceDifficulty()
 					name = GetDifficultyInfo(8),
 					order = 4
 				},
-				["timewalking"] = {
+				timewalking = {
 					type = "toggle",
 					name = GetDifficultyInfo(24),
 					order = 5
@@ -430,9 +428,7 @@ local function UpdateInstanceDifficulty()
 		E.Options.args.nameplate.args.filters.args.triggers.args.instanceType.args.types.args.raidDifficulty = {
 			type = "group",
 			name = L["Raid Difficulty"],
-			desc = L[
-				"Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."
-			],
+			desc = L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."],
 			guiInline = true,
 			order = 11,
 			get = function(info)
@@ -497,10 +493,9 @@ local function UpdateInstanceDifficulty()
 end
 
 local function UpdateStyleLists()
-	if
-		E.global.nameplate.filters[selectedNameplateFilter] and E.global.nameplate.filters[selectedNameplateFilter].triggers and
-			E.global.nameplate.filters[selectedNameplateFilter].triggers.names
-	 then
+	if E.global.nameplate.filters[selectedNameplateFilter]
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers.names then
 		E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names = {
 			order = 50,
 			type = "group",
@@ -528,11 +523,9 @@ local function UpdateStyleLists()
 		end
 	end
 
-	if
-		E.global.nameplate.filters[selectedNameplateFilter] and
-			E.global.nameplate.filters[selectedNameplateFilter].triggers.casting and
-			E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells
-	 then
+	if E.global.nameplate.filters[selectedNameplateFilter]
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers.casting
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells then
 		E.Options.args.nameplate.args.filters.args.triggers.args.casting.args.spells = {
 			order = 50,
 			type = "group",
@@ -576,11 +569,9 @@ local function UpdateStyleLists()
 		end
 	end
 
-	if
-		E.global.nameplate.filters[selectedNameplateFilter] and
-			E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns and
-			E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names
-	 then
+	if E.global.nameplate.filters[selectedNameplateFilter]
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names then
 		E.Options.args.nameplate.args.filters.args.triggers.args.cooldowns.args.names = {
 			order = 50,
 			type = "group",
@@ -629,11 +620,9 @@ local function UpdateStyleLists()
 		end
 	end
 
-	if
-		E.global.nameplate.filters[selectedNameplateFilter] and
-			E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and
-			E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names
-	 then
+	if E.global.nameplate.filters[selectedNameplateFilter]
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names then
 		E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names = {
 			order = 50,
 			type = "group",
@@ -678,11 +667,9 @@ local function UpdateStyleLists()
 		end
 	end
 
-	if
-		E.global.nameplate.filters[selectedNameplateFilter] and
-			E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and
-			E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names
-	 then
+	if E.global.nameplate.filters[selectedNameplateFilter]
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names then
 		E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names = {
 			order = 50,
 			type = "group",
@@ -836,9 +823,8 @@ local function UpdateFilterGroup()
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
-									return
-								end
+								if match(value, "^[%s%p]-$") then return end
+
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.names[value] = true
 								UpdateFilterGroup()
 								NP:ConfigureAll()
@@ -853,9 +839,8 @@ local function UpdateFilterGroup()
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
-									return
-								end
+								if match(value, "^[%s%p]-$") then return end
+
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.names[value] = nil
 								UpdateFilterGroup()
 								NP:ConfigureAll()
@@ -1022,9 +1007,7 @@ local function UpdateFilterGroup()
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
-									return
-								end
+								if match(value, "^[%s%p]-$") then return end
 
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells[value] = true
 								UpdateFilterGroup()
@@ -1040,9 +1023,8 @@ local function UpdateFilterGroup()
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
-									return
-								end
+								if match(value, "^[%s%p]-$") then return end
+
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells[value] = nil
 								UpdateFilterGroup()
 								NP:ConfigureAll()
@@ -1056,17 +1038,13 @@ local function UpdateFilterGroup()
 						description2 = {
 							order = 13,
 							type = "description",
-							name = L[
-								"If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."
-							]
+							name = L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."]
 						},
 						notSpell = {
 							type = "toggle",
 							order = -2,
 							name = L["Not Spell"],
-							desc = L[
-								"If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."
-							]
+							desc = L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."]
 						}
 					}
 				},
@@ -1418,9 +1396,7 @@ local function UpdateFilterGroup()
 							order = 4,
 							type = "range",
 							name = L["Under Health Threshold"],
-							desc = L[
-								"If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."
-							],
+							desc = L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."],
 							min = 0,
 							max = 1,
 							step = 0.01,
@@ -1436,9 +1412,7 @@ local function UpdateFilterGroup()
 							order = 5,
 							type = "range",
 							name = L["Over Health Threshold"],
-							desc = L[
-								"If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."
-							],
+							desc = L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."],
 							min = 0,
 							max = 1,
 							step = 0.01,
@@ -1492,9 +1466,7 @@ local function UpdateFilterGroup()
 							order = 4,
 							type = "range",
 							name = L["Under Power Threshold"],
-							desc = L[
-								"If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."
-							],
+							desc = L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."],
 							min = 0,
 							max = 1,
 							step = 0.01,
@@ -1510,9 +1482,7 @@ local function UpdateFilterGroup()
 							order = 5,
 							type = "range",
 							name = L["Over Power Threshold"],
-							desc = L[
-								"If this threshold is used then the power of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."
-							],
+							desc = L["If this threshold is used then the power of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."],
 							min = 0,
 							max = 1,
 							step = 0.01,
@@ -1672,9 +1642,7 @@ local function UpdateFilterGroup()
 							order = 4,
 							type = "range",
 							name = L["Minimum Level"],
-							desc = L[
-								"If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."
-							],
+							desc = L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."],
 							min = -1,
 							max = _G.MAX_PLAYER_LEVEL + 3,
 							step = 1,
@@ -1690,9 +1658,7 @@ local function UpdateFilterGroup()
 							order = 5,
 							type = "range",
 							name = L["Maximum Level"],
-							desc = L[
-								"If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."
-							],
+							desc = L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."],
 							min = -1,
 							max = _G.MAX_PLAYER_LEVEL + 3,
 							step = 1,
@@ -1735,9 +1701,7 @@ local function UpdateFilterGroup()
 						mustHaveAll = {
 							order = 1,
 							name = L["Require All"],
-							desc = L[
-								"If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."
-							],
+							desc = L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."],
 							type = "toggle",
 							disabled = function()
 								return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -1766,9 +1730,7 @@ local function UpdateFilterGroup()
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
-									return
-								end
+								if match(value, "^[%s%p]-$") then return end
 
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[value] = "ONCD"
 								UpdateFilterGroup()
@@ -1784,9 +1746,8 @@ local function UpdateFilterGroup()
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
-									return
-								end
+								if match(value, "^[%s%p]-$") then return end
+
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[value] = nil
 								UpdateFilterGroup()
 								NP:ConfigureAll()
@@ -1815,9 +1776,7 @@ local function UpdateFilterGroup()
 						mustHaveAll = {
 							order = 1,
 							name = L["Require All"],
-							desc = L[
-								"If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."
-							],
+							desc = L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."],
 							type = "toggle"
 						},
 						missing = {
@@ -1857,9 +1816,7 @@ local function UpdateFilterGroup()
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
-									return
-								end
+								if match(value, "^[%s%p]-$") then return end
 
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = true
 								UpdateFilterGroup()
@@ -1875,9 +1832,8 @@ local function UpdateFilterGroup()
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
-									return
-								end
+								if match(value, "^[%s%p]-$") then return end
+
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = nil
 								UpdateFilterGroup()
 								NP:ConfigureAll()
@@ -1906,9 +1862,7 @@ local function UpdateFilterGroup()
 						mustHaveAll = {
 							order = 1,
 							name = L["Require All"],
-							desc = L[
-								"If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."
-							],
+							desc = L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."],
 							type = "toggle"
 						},
 						missing = {
@@ -1953,9 +1907,7 @@ local function UpdateFilterGroup()
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
-									return
-								end
+								if match(value, "^[%s%p]-$") then return end
 
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = true
 								UpdateFilterGroup()
@@ -1971,9 +1923,8 @@ local function UpdateFilterGroup()
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then
-									return
-								end
+								if match(value, "^[%s%p]-$") then return end
+
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = nil
 								UpdateFilterGroup()
 								NP:ConfigureAll()
@@ -2166,9 +2117,7 @@ local function UpdateFilterGroup()
 						},
 						reputation = {
 							name = L["REPUTATION"],
-							desc = L[
-								"If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."
-							],
+							desc = L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."],
 							order = 1,
 							type = "toggle",
 							disabled = function()
@@ -2413,11 +2362,11 @@ local function UpdateFilterGroup()
 									type = "input",
 									order = 2,
 									name = L["Add Map ID"],
-									get = function(info) return "" end,
+									get = function(info) return end,
 									set = function(info, value)
-										local mapID = tonumber(value)
-										if not mapID or E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[value] then return end
+										if match(value, "^[%s%p]-$") then return end
 
+										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[value] then return end
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[value] = true
 										NP:ConfigureAll()
 									end,
@@ -2433,12 +2382,11 @@ local function UpdateFilterGroup()
 										NP:ConfigureAll()
 									end,
 									values = function()
-										local vals = {}
 										local mapIDs = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs
 										if not mapIDs then return end
-										for value in pairs(mapIDs) do
-											vals[value] = value
-										end
+
+										local vals = {}
+										for value in pairs(mapIDs) do vals[value] = value end
 										return vals
 									end,
 									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDEnabled end
@@ -2453,11 +2401,11 @@ local function UpdateFilterGroup()
 									type = "input",
 									order = 5,
 									name = L["Add Instance ID"],
-									get = function(info) return "" end,
+									get = function(info) return end,
 									set = function(info, value)
-										local instanceID = tonumber(value)
-										if not instanceID then return end
+										if match(value, "^[%s%p]-$") then return end
 
+										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs[value] then return end
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs[value] = true
 										NP:ConfigureAll()
 									end,
@@ -2473,12 +2421,11 @@ local function UpdateFilterGroup()
 										NP:ConfigureAll()
 									end,
 									values = function()
-										local vals = {}
 										local instanceIDs = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs
 										if not instanceIDs then return end
-										for value in pairs(instanceIDs) do
-											vals[value] = value
-										end
+
+										local vals = {}
+										for value in pairs(instanceIDs) do vals[value] = value end
 										return vals
 									end,
 									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDEnabled end
@@ -2493,8 +2440,11 @@ local function UpdateFilterGroup()
 									type = "input",
 									order = 8,
 									name = L["Add Zone Name"],
-									get = function(info) return "" end,
+									get = function(info) return end,
 									set = function(info, value)
+										if match(value, "^[%s%p]-$") then return end
+
+										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames[value] then return end
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames[value] = true
 										NP:ConfigureAll()
 									end,
@@ -2510,12 +2460,11 @@ local function UpdateFilterGroup()
 										NP:ConfigureAll()
 									end,
 									values = function()
-										local vals = {}
 										local zoneNames = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames
 										if not zoneNames then return end
-										for value in pairs(zoneNames) do
-											vals[value] = value
-										end
+
+										local vals = {}
+										for value in pairs(zoneNames) do vals[value] = value end
 										return vals
 									end,
 									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNamesEnabled end
@@ -2530,7 +2479,7 @@ local function UpdateFilterGroup()
 									type = "input",
 									order = 11,
 									name = L["Add Subzone Name"],
-									get = function(info) return "" end,
+									get = function(info) return end,
 									set = function(info, value)
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames[value] = true
 										NP:ConfigureAll()
@@ -2547,12 +2496,11 @@ local function UpdateFilterGroup()
 										NP:ConfigureAll()
 									end,
 									values = function()
-										local vals = {}
 										local zoneNames = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames
 										if not zoneNames then return end
-										for value in pairs(zoneNames) do
-											vals[value] = value
-										end
+
+										local vals = {}
+										for value in pairs(zoneNames) do vals[value] = value end
 										return vals
 									end,
 									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNamesEnabled end
@@ -3453,9 +3401,7 @@ local function GetUnitSettings(unit, name)
 						order = 2,
 						type = "toggle",
 						name = L["Display Interrupt Source"],
-						desc = L[
-							"Display the unit name who interrupted a spell on the castbar. You should increase the 'Time to Hold' to show properly."
-						]
+						desc = L["Display the unit name who interrupted a spell on the castbar. You should increase the 'Time to Hold' to show properly."]
 					},
 					sourceInterruptClassColor = {
 						order = 3,
@@ -3925,15 +3871,12 @@ local function GetUnitSettings(unit, name)
 								type = "select",
 								sortByValue = true,
 								name = L["Add Special Filter"],
-								desc = L[
-									"These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."
-								],
+								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
-									local filters = {}
 									local list = E.global.unitframe.specialFilters
-									if not list then
-										return
-									end
+									if not list then return end
+
+									local filters = {}
 									for filter in pairs(list) do
 										filters[filter] = L[filter]
 									end
@@ -3948,15 +3891,12 @@ local function GetUnitSettings(unit, name)
 								order = 6,
 								type = "select",
 								name = L["Add Regular Filter"],
-								desc = L[
-									"These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."
-								],
+								desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
 								values = function()
-									local filters = {}
 									local list = E.global.unitframe.aurafilters
-									if not list then
-										return
-									end
+									if not list then return end
+
+									local filters = {}
 									for filter in pairs(list) do
 										filters[filter] = filter
 									end
@@ -4033,9 +3973,7 @@ local function GetUnitSettings(unit, name)
 								type = "description",
 								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."] ..
 									"\n" ..
-										L[
-											"Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."
-										]
+										L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."]
 							}
 						}
 					}
@@ -4288,15 +4226,12 @@ local function GetUnitSettings(unit, name)
 								type = "select",
 								sortByValue = true,
 								name = L["Add Special Filter"],
-								desc = L[
-									"These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."
-								],
+								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
-									local filters = {}
 									local list = E.global.unitframe.specialFilters
-									if not list then
-										return
-									end
+									if not list then return end
+
+									local filters = {}
 									for filter in pairs(list) do
 										filters[filter] = L[filter]
 									end
@@ -4311,15 +4246,12 @@ local function GetUnitSettings(unit, name)
 								order = 6,
 								type = "select",
 								name = L["Add Regular Filter"],
-								desc = L[
-									"These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."
-								],
+								desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
 								values = function()
-									local filters = {}
 									local list = E.global.unitframe.aurafilters
-									if not list then
-										return
-									end
+									if not list then return end
+
+									local filters = {}
 									for filter in pairs(list) do
 										filters[filter] = filter
 									end
@@ -4396,9 +4328,7 @@ local function GetUnitSettings(unit, name)
 								type = "description",
 								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."] ..
 									"\n" ..
-										L[
-											"Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."
-										]
+										L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."]
 							}
 						}
 					}
@@ -5691,9 +5621,7 @@ E.Options.args.nameplate = {
 						lowHealthThreshold = {
 							order = 10,
 							name = L["Low Health Threshold"],
-							desc = L[
-								"Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."
-							],
+							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
 							type = "range",
 							isPercent = true,
 							min = 0,
@@ -6684,13 +6612,13 @@ E.Options.args.nameplate = {
 						return ""
 					end,
 					set = function(info, value)
-						if match(value, "^[%s%p]-$") then
-							return
-						end
+						if match(value, "^[%s%p]-$") then return end
+
 						if E.global.nameplate.filters[value] then
 							E:Print(L["Filter already exists!"])
 							return
 						end
+
 						local filter = {}
 						NP:StyleFilterCopyDefaults(filter)
 						E.global.nameplate.filters[value] = filter
@@ -6711,12 +6639,11 @@ E.Options.args.nameplate = {
 						UpdateFilterGroup()
 					end,
 					values = function()
-						local filters, priority, name = {}
 						local list = E.global.nameplate.filters
+						if not list then return end
+
 						local profile = E.db.nameplates.filters
-						if not list then
-							return
-						end
+						local filters, priority, name = {}
 						for filter, content in pairs(list) do
 							priority = (content.triggers and content.triggers.priority) or "?"
 							name =
@@ -6737,10 +6664,8 @@ E.Options.args.nameplate = {
 					buttonElvUI = true,
 					func = function()
 						for profile in pairs(E.data.profiles) do
-							if
-								E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters and
-									E.data.profiles[profile].nameplates.filters[selectedNameplateFilter]
-							 then
+							if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters
+							and E.data.profiles[profile].nameplates.filters[selectedNameplateFilter] then
 								E.data.profiles[profile].nameplates.filters[selectedNameplateFilter] = nil
 							end
 						end
@@ -6935,35 +6860,35 @@ for i = 1, 6 do
 end
 
 --[=[
-E.Options.args.tagGroup = {
-	order = 925,
-	type = "group",
-	name = L["Available Tags"],
-	args = {}
-}
-
-for Tag in next, E.oUF.Tags.Methods do
-	E.Options.args.tagGroup.args[Tag] = {
-		type = 'description',
-		fontSize = 'medium',
-		name = Tag,
+	E.Options.args.tagGroup = {
+		order = 925,
+		type = "group",
+		name = L["Available Tags"],
+		args = {}
 	}
-end
 
-E.Options.args.EventTrace = {
-	order = -50,
-	type = "group",
-	name = L["Event Trace"],
-	args = {}
-}
+	for Tag in next, E.oUF.Tags.Methods do
+		E.Options.args.tagGroup.args[Tag] = {
+			type = 'description',
+			fontSize = 'medium',
+			name = Tag,
+		}
+	end
 
-local Frame = CreateFrame('Frame')
-Frame:RegisterAllEvents()
-Frame:SetScript('OnEvent', function(self, event, ...)
-	E.Options.args.EventTrace.args[event] = {
-		type = 'description',
-		fontSize = 'medium',
-		name = event,
+	E.Options.args.EventTrace = {
+		order = -50,
+		type = "group",
+		name = L["Event Trace"],
+		args = {}
 	}
-end)
+
+	local Frame = CreateFrame('Frame')
+	Frame:RegisterAllEvents()
+	Frame:SetScript('OnEvent', function(self, event, ...)
+		E.Options.args.EventTrace.args[event] = {
+			type = 'description',
+			fontSize = 'medium',
+			name = event,
+		}
+	end)
 ]=]

@@ -771,9 +771,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
+	local instanceIDTrigger = trigger.location.instanceIDEnabled
+	local instanceTrigger = trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp
+	local instanceName, instanceType, difficultyID, instanceID
+
 	-- Instance Type
-	if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
-		local _, instanceType, difficultyID = GetInstanceInfo()
+	if instanceTrigger or instanceIDTrigger then
+		instanceName, instanceType, difficultyID, _, _, _, _, instanceID = GetInstanceInfo()
+	end
+
+	if instanceTrigger then
 		if trigger.instanceType[instanceType] then
 			passed = true
 
@@ -788,57 +795,18 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Location
-	if trigger.location.instanceIDEnabled or trigger.location.mapIDEnabled or trigger.location.zoneNamesEnabled or trigger.location.subZoneNamesEnabled then
-		if trigger.location.instanceIDEnabled then
-			passed = false
-			local D = trigger.location.instanceIDs
-			local instanceID = GetInstanceInfo()
-			for value in pairs(D) do
-				if value and instanceID == value then
-					passed = true
-					break
-				end
-			end
-			if not passed then return end
+	if instanceIDTrigger or trigger.location.mapIDEnabled or trigger.location.zoneNamesEnabled or trigger.location.subZoneNamesEnabled then
+		if instanceIDTrigger then
+			if trigger.location.instanceIDs[tostring(instanceID)] or trigger.location.instanceIDs[instanceName] then passed = true else return end
 		end
-
 		if trigger.location.mapIDEnabled then
-			passed = false
-			local D = trigger.location.mapIDs
-			local mapID = E.MapInfo.mapID
-			for value in pairs(D) do
-				if value and mapID == value then
-					passed = true
-					break
-				end
-			end
-			if not passed then return end
+			if trigger.location.mapIDs[tostring(E.MapInfo.mapID)] or trigger.location.mapIDs[E.MapInfo.name] then passed = true else return end
 		end
-
 		if trigger.location.zoneNamesEnabled then
-			passed = false
-			local D = trigger.location.zoneNames
-			local zoneName = E.MapInfo.zoneText
-			for value in pairs(D) do
-				if value and zoneName == value then
-					passed = true
-					break
-				end
-			end
-			if not passed then return end
+			if trigger.location.zoneNames[E.MapInfo.zoneText] then passed = true else return end
 		end
-
 		if trigger.location.subZoneNamesEnabled then
-			passed = false
-			local D = trigger.location.subZoneNames
-			local subZoneName = E.MapInfo.subZoneText
-			for value in pairs(D) do
-				if value and subZoneName == value then
-					passed = true
-					break
-				end
-			end
-			if not passed then return end
+			if trigger.location.subZoneNames[E.MapInfo.subZoneText] then passed = true else return end
 		end
 	end
 
