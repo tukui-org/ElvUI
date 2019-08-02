@@ -450,6 +450,7 @@ local function Enable(self, unit)
 
 		-- ElvUI block
 		self:RegisterEvent('UNIT_SPELLCAST_SENT', UNIT_SPELLCAST_SENT, true)
+		element:Hide()
 		-- end block
 
 		element.holdTime = 0
@@ -479,8 +480,6 @@ local function Enable(self, unit)
 		if(safeZone and safeZone:IsObjectType('Texture') and not safeZone:GetTexture()) then
 			safeZone:SetColorTexture(1, 0, 0)
 		end
-
-		element:Hide() -- ElvUI
 
 		return true
 	end
