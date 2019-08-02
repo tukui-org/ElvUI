@@ -1143,13 +1143,13 @@ local function UpdateFilterGroup()
 								isPet = {
 									type = "toggle",
 									name = L["Unit is Pet"],
-									desc = L["If enabled then the filter will only activate when the unit is a player's pet."],
+									desc = L["If enabled then the filter will only activate when the unit is the active player's pet."],
 									order = 12
 								},
 								isNotPet= {
 									type = "toggle",
 									name =L["Unit is Not Pet"],
-									desc = L["If enabled then the filter will only activate when the unit is not a player's pet."],
+									desc = L["If enabled then the filter will only activate when the unit is not the active player's pet."],
 									order = 13
 								},
 								isPlayerControlled = {

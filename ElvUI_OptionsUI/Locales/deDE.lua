@@ -611,8 +611,8 @@ L["If enabled then the filter will only activate if the unit is casting not inte
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit nicht am Zaubern oder Kanalisieren vom ausgwähltem Zauber ist."
 L["If enabled then the filter will only activate when the unit can be attacked by the active player."] = "Wenn eingeschlatet, wird der Filter nur aktiviert wenn die Einheit vom Spieler angegriffen werden kann."
 L["If enabled then the filter will only activate when the unit can not be attacked by the active player."] = "Wenn eingeschlatet, wird der Filter nur aktiviert wenn die Einheit nicht vom Spieler angegriffen werden kann."
-L["If enabled then the filter will only activate when the unit is a player's pet."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit ein Spieler Begleiter ist."
-L["If enabled then the filter will only activate when the unit is not a player's pet."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit kein Spieler Begleiter ist."
+L["If enabled then the filter will only activate when the unit is the active player's pet."] = true
+L["If enabled then the filter will only activate when the unit is not the active player's pet."] = true
 L["If enabled then the filter will only activate when the unit is controlled by the player."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit vom Spieler kontrolliert wird."
 L["If enabled then the filter will only activate when the unit is not controlled by the player."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit nicht vom Spieler kontrolliert wird."
 L["If enabled then the filter will only activate when the unit is owned by the player."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit vom Spieler besitzt wird."
