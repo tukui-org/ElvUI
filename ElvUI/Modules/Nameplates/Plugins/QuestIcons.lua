@@ -7,12 +7,12 @@ local pairs, tonumber = pairs, tonumber
 local ceil, floor = math.ceil, math.floor
 local match = string.match
 --WoW API / Variables
-local UnitName = UnitName
 local IsInInstance = IsInInstance
 local GetLocale = GetLocale
-local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
+local GetQuestLogTitle = GetQuestLogTitle
+local UnitName = UnitName
 local C_TaskQuest_GetQuestProgressBarInfo = C_TaskQuest.GetQuestProgressBarInfo
 
 local ActiveQuests = {
@@ -107,8 +107,7 @@ local function QUEST_REMOVED(self, event, questID)
 end
 
 local function GetQuests(unitID)
-	local inInstance = IsInInstance()
-	if inInstance then return end
+	if IsInInstance() then return end
 
 	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	E.ScanTooltip:SetUnit(unitID)

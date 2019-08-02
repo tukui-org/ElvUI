@@ -91,12 +91,37 @@ local oUF = ns.oUF
 
 local DEFAULT_ICON = [[Interface\ICONS\INV_Misc_QuestionMark]]
 
+-- ElvUI block
+local select = select
+local FAILED = FAILED
+local INTERRUPTED = INTERRUPTED
+local GetNetStats = GetNetStats
+local UnitCastingInfo = UnitCastingInfo
+local UnitChannelInfo = UnitChannelInfo
+local UnitIsUnit = UnitIsUnit
+local GetTime = GetTime
+
+-- GLOBALS: PetCastingBarFrame, PetCastingBarFrame_OnLoad
+-- GLOBALS: CastingBarFrame, CastingBarFrame_OnLoad, CastingBarFrame_SetUnit
+
+local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
+local UNIT_SPELLCAST_SENT = function (self, event, unit, target, castID, spellID)
+	local castbar = self.Castbar
+	castbar.curTarget = (target and target ~= "") and target or nil
+
+	if castbar.isTradeSkill then
+		castbar.tradeSkillCastId = castID
+	end
+end
+-- end block
+
 local function resetAttributes(self)
 	self.castID = nil
 	self.casting = nil
 	self.channeling = nil
 	self.notInterruptible = nil
 	self.spellID = nil
+	self.spellName = nil -- ElvUI
 end
 
 local function CastStart(self, event, unit)
@@ -130,12 +155,25 @@ local function CastStart(self, event, unit)
 	element.holdTime = 0
 	element.castID = castID
 	element.spellID = spellID
+	element.spellName = name -- ElvUI
 
 	if(element.casting) then
 		element.duration = GetTime() - startTime
 	else
 		element.duration = endTime - GetTime()
 	end
+
+	-- ElvUI block
+	if(mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player")) then
+		element.duration = element.duration + (element.max * tradeskillCurrent);
+		element.max = element.max * tradeskillTotal;
+		element.holdTime = 1
+
+		if(unit == "player") then
+			tradeskillCurrent = tradeskillCurrent + 1;
+		end
+	end
+	-- end block
 
 	element:SetMinMaxValues(0, element.max)
 	element:SetValue(element.duration)
@@ -242,6 +280,14 @@ local function CastStop(self, event, unit, castID, spellID)
 		return
 	end
 
+	-- ElvUI block
+	if mergeTradeskill and UnitIsUnit(unit, "player") then
+		if tradeskillCurrent == tradeskillTotal then
+			mergeTradeskill = false
+		end
+	end
+	-- end block
+
 	resetAttributes(element)
 
 	--[[ Callback: Castbar:PostCastStop(unit, spellID)
@@ -271,6 +317,13 @@ local function CastFail(self, event, unit, castID, spellID)
 	if(element.Spark) then element.Spark:Hide() end
 
 	element.holdTime = element.timeToHold or 0
+
+	-- ElvUI block
+	if mergeTradeskill and UnitIsUnit(unit, "player") then
+		mergeTradeskill = false
+		element.tradeSkillCastId = nil
+	end
+	-- end block
 
 	resetAttributes(element)
 	element:SetValue(element.max)
@@ -391,6 +444,11 @@ local function Enable(self, unit)
 		self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 		self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 
+		-- ElvUI block
+		self:RegisterEvent('UNIT_SPELLCAST_SENT', UNIT_SPELLCAST_SENT, true)
+		element:Hide()
+		-- end block
+
 		element.holdTime = 0
 
 		element:SetScript('OnUpdate', element.OnUpdate or onUpdate)
@@ -447,5 +505,13 @@ local function Disable(self)
 		end
 	end
 end
+
+-- ElvUI block
+hooksecurefunc(C_TradeSkillUI, "CraftRecipe", function(_, num)
+	tradeskillCurrent = 0
+	tradeskillTotal = num or 1
+	mergeTradeskill = true
+end)
+-- end block
 
 oUF:AddElement('Castbar', Update, Enable, Disable)

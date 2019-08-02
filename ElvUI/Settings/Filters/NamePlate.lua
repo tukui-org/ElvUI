@@ -193,6 +193,12 @@ E.StyleFilterDefaults = {
 			arena = false,
 			pvp = false
 		},
+		location = {
+			mapIDEnabled = false,
+			mapIDs = {},
+			instanceIDEnabled = false,
+			instanceIDs = {},
+		},
 		keyMod = {
 			enable = false,
 			Modifier = false,

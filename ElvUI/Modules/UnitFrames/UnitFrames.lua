@@ -13,14 +13,13 @@ local strfind, gsub, format = strfind, gsub, format
 local CompactRaidFrameManager_GetSetting = CompactRaidFrameManager_GetSetting
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 local CompactRaidFrameManager_UpdateShown = CompactRaidFrameManager_UpdateShown
-local SetCVar = SetCVar
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
-local IsInInstance = IsInInstance
 local RegisterStateDriver = RegisterStateDriver
+local SetCVar = SetCVar
 local UnitFrame_OnEnter = UnitFrame_OnEnter
 local UnitFrame_OnLeave = UnitFrame_OnLeave
 local UnregisterAttributeDriver = UnregisterAttributeDriver
@@ -326,7 +325,8 @@ function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 	if isConflict or attachTo == 'FRAME' then
 		return frame
 	elseif attachTo == 'TRINKET' then
-		if select(2, IsInInstance()) == "arena" then
+		local _, instanceType = GetInstanceInfo()
+		if instanceType == "arena" then
 			return frame.Trinket
 		else
 			return frame.PVPSpecIcon
@@ -869,12 +869,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	local raidFilter = UF.db.smartRaidFilter
 	local numGroups = db.numGroups
 	if(raidFilter and numGroups and (self[group] and not self[group].blockVisibilityChanges)) then
-		local inInstance, instanceType = IsInInstance()
-		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
-			local _, _, _, _, maxPlayers, _, _, instanceMapID = GetInstanceInfo()
-
-			if UF.instanceMapIDs[instanceMapID] then
-				maxPlayers = UF.instanceMapIDs[instanceMapID]
+		local _, instanceType, _, _, maxPlayers, _, _, instanceID = GetInstanceInfo()
+		if instanceType == 'raid' or instanceType == 'pvp' then
+			if UF.instanceMapIDs[instanceID] then
+				maxPlayers = UF.instanceMapIDs[instanceID]
 			end
 
 			if maxPlayers > 0 then
@@ -1044,19 +1042,18 @@ function UF:LoadUnits()
 end
 
 function UF:RegisterRaidDebuffIndicator()
-	local _, instanceType = IsInInstance();
 	local ORD = ns.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
 	if ORD then
 		ORD:ResetDebuffData()
 
-		local instance = E.global.unitframe.raidDebuffIndicator.instanceFilter
-		local other = E.global.unitframe.raidDebuffIndicator.otherFilter
-		local instanceSpells = ((E.global.unitframe.aurafilters[instance] and E.global.unitframe.aurafilters[instance].spells) or E.global.unitframe.aurafilters.RaidDebuffs.spells)
-		local otherSpells = ((E.global.unitframe.aurafilters[other] and E.global.unitframe.aurafilters[other].spells) or E.global.unitframe.aurafilters.CCDebuffs.spells)
-
+		local _, instanceType = GetInstanceInfo()
 		if instanceType == "party" or instanceType == "raid" then
+			local instance = E.global.unitframe.raidDebuffIndicator.instanceFilter
+			local instanceSpells = ((E.global.unitframe.aurafilters[instance] and E.global.unitframe.aurafilters[instance].spells) or E.global.unitframe.aurafilters.RaidDebuffs.spells)
 			ORD:RegisterDebuffs(instanceSpells)
 		else
+			local other = E.global.unitframe.raidDebuffIndicator.otherFilter
+			local otherSpells = ((E.global.unitframe.aurafilters[other] and E.global.unitframe.aurafilters[other].spells) or E.global.unitframe.aurafilters.CCDebuffs.spells)
 			ORD:RegisterDebuffs(otherSpells)
 		end
 	end
@@ -1253,15 +1250,15 @@ function UF:ADDON_LOADED(_, addon)
 	self:UnregisterEvent("ADDON_LOADED");
 end
 
-local hasEnteredWorld = false
-function UF:PLAYER_ENTERING_WORLD()
-	if not hasEnteredWorld then
-		--We only want to run Update_AllFrames once when we first log in or /reload
-		UF:Update_AllFrames()
-		hasEnteredWorld = true
-	else
-		local _, instanceType = IsInInstance()
-		if instanceType ~= "none" then
+do
+	local hasEnteredWorld = false
+	function UF:PLAYER_ENTERING_WORLD()
+		local _, instanceType = GetInstanceInfo()
+		if not hasEnteredWorld then
+			--We only want to run Update_AllFrames once when we first log in or /reload
+			UF:Update_AllFrames()
+			hasEnteredWorld = true
+		elseif instanceType ~= "none" then
 			--We need to update headers when we zone into an instance
 			UF:UpdateAllHeaders()
 		end

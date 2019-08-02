@@ -34,6 +34,15 @@ if(select(2, UnitClass('player')) ~= 'MONK') then return end
 local _, ns = ...
 local oUF = ns.oUF
 
+-- ElvUI block
+local GetSpecialization = GetSpecialization
+local UnitHasVehiclePlayerFrameUI = UnitHasVehiclePlayerFrameUI
+local UnitHealthMax = UnitHealthMax
+local UnitIsUnit = UnitIsUnit
+local UnitStagger = UnitStagger
+-- GLOBALS: MonkStaggerBar
+-- end block
+
 -- sourced from FrameXML/Constants.lua
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER or 1
 
@@ -140,21 +149,32 @@ local function Path(self, ...)
 	(self.Stagger.UpdateColor or UpdateColor) (self, ...)
 end
 
+-- ElvUI changed
 local function Visibility(self, event, unit)
-	if(SPEC_MONK_BREWMASTER ~= GetSpecialization() or UnitHasVehiclePlayerFrameUI('player')) then
-		if(self.Stagger:IsShown()) then
-			self.Stagger:Hide()
-			self:UnregisterEvent('UNIT_AURA', Path)
-		end
-	else
-		if(not self.Stagger:IsShown()) then
-			self.Stagger:Show()
-			self:RegisterEvent('UNIT_AURA', Path)
-		end
+	local element = self.Stagger
+	local isShown = element:IsShown()
+	local useClassbar = (SPEC_MONK_BREWMASTER ~= GetSpecialization()) or UnitHasVehiclePlayerFrameUI('player')
+	local stateChanged = false
 
+	if useClassbar and isShown then
+		element:Hide()
+		self:UnregisterEvent('UNIT_AURA', Path)
+		stateChanged = true
+	elseif not useClassbar and not isShown then
+		element:Show()
+		self:RegisterEvent('UNIT_AURA', Path)
+		stateChanged = true
+	end
+
+	if element.PostUpdateVisibility then
+		element.PostUpdateVisibility(self, event, unit, not useClassbar, stateChanged)
+	end
+
+	if not useClassbar then
 		Path(self, event, unit)
 	end
 end
+-- end block
 
 local function VisibilityPath(self, ...)
 	--[[ Override: Stagger.OverrideVisibility(self, event, unit)

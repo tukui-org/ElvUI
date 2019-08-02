@@ -6,11 +6,11 @@ local _G = _G
 local min = math.min
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
-local GetScreenWidth = GetScreenWidth
-local GetScreenHeight = GetScreenHeight
-local RegisterStateDriver = RegisterStateDriver
 local GetInstanceInfo = GetInstanceInfo
+local GetScreenHeight = GetScreenHeight
+local GetScreenWidth = GetScreenWidth
+local hooksecurefunc = hooksecurefunc
+local RegisterStateDriver = RegisterStateDriver
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
@@ -90,8 +90,8 @@ function B:MoveObjectiveFrame()
 	]])
 
 	ObjectiveTrackerFrame.AutoHider:SetScript("OnHide", function()
-		local _, _, difficulty = GetInstanceInfo();
-		if difficulty ~= 8 then
+		local _, _, difficultyID = GetInstanceInfo()
+		if difficultyID and difficultyID ~= 8 then
 			_G.ObjectiveTracker_Collapse()
 		end
 	end)

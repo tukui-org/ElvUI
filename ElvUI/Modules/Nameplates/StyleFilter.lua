@@ -18,6 +18,7 @@ local GetTime = GetTime
 local IsResting = IsResting
 local PowerBarColor = PowerBarColor
 local UnitAffectingCombat = UnitAffectingCombat
+local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -31,12 +32,10 @@ local UnitLevel = UnitLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitThreatSituation = UnitThreatSituation
-local UnitCanAttack = UnitCanAttack
 
 local hooksecurefunc = hooksecurefunc
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
-local unitExists = E.oUF.Private.unitExists
 
 local FallbackColor = {r=1, b=1, g=1}
 
@@ -577,9 +576,9 @@ end
 function mod:StyleFilterThreatUpdate(frame, unit)
 	mod.ThreatIndicator_PreUpdate(frame.ThreatIndicator, frame.unit)
 
-	if unitExists(unit) then
+	if mod:UnitExists(unit) then
 		local feedbackUnit = frame.ThreatIndicator.feedbackUnit
-		if feedbackUnit and (feedbackUnit ~= unit) and unitExists(feedbackUnit) then
+		if feedbackUnit and (feedbackUnit ~= unit) and mod:UnitExists(feedbackUnit) then
 			frame.ThreatStatus = UnitThreatSituation(feedbackUnit, unit)
 		else
 			frame.ThreatStatus = UnitThreatSituation(unit)
@@ -774,18 +773,47 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Instance Type
 	if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
-		local _, Type, Difficulty = GetInstanceInfo()
-		if trigger.instanceType[Type] then
+		local _, instanceType, difficultyID = GetInstanceInfo()
+		if trigger.instanceType[instanceType] then
 			passed = true
 
 			-- Instance Difficulty
-			if Type == 'raid' or Type == 'party' then
-				local D = trigger.instanceDifficulty[(Type == 'party' and 'dungeon') or Type]
+			if instanceType == 'raid' or instanceType == 'party' then
+				local D = trigger.instanceDifficulty[(instanceType == 'party' and 'dungeon') or instanceType]
 				for _, value in pairs(D) do
-					if value and not D[mod.TriggerConditions.difficulties[Difficulty]] then return end
+					if value and not D[mod.TriggerConditions.difficulties[difficultyID]] then return end
 				end
 			end
 		else return end
+	end
+
+	-- Location
+	if trigger.location.instanceIDEnabled or trigger.location.mapIDEnabled then
+		if trigger.location.instanceIDEnabled then
+			passed = false
+			local D = trigger.location.instanceIDs
+			local instanceID = GetInstanceInfo()
+			for value in pairs(D) do
+				if value and instanceID == value then
+					passed = true
+					break
+				end
+			end
+			if not passed then return end
+		end
+
+		if trigger.location.mapIDEnabled then
+			passed = false
+			local D = trigger.location.mapIDs
+			local mapID = E.MapInfo.mapID
+			for value in pairs(D) do
+				if value and mapID == value then
+					passed = true
+					break
+				end
+			end
+			if not passed then return end
+		end
 	end
 
 	-- Talents

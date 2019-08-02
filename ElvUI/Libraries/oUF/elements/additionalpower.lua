@@ -75,6 +75,24 @@ local oUF = ns.oUF
 
 local _, playerClass = UnitClass('player')
 
+-- ElvUI block
+local unpack = unpack
+local CopyTable = CopyTable
+local UnitIsUnit = UnitIsUnit
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitThreatSituation = UnitThreatSituation
+local UnitIsPlayer = UnitIsPlayer
+local UnitClass = UnitClass
+local UnitSelectionType = UnitSelectionType
+local UnitReaction = UnitReaction
+local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local UnitIsConnected = UnitIsConnected
+local UnitHasVehicleUI = UnitHasVehicleUI
+local UnitPowerType = UnitPowerType
+-- end block
+
 -- sourced from FrameXML/AlternatePowerBar.lua
 local ADDITIONAL_POWER_BAR_NAME = ADDITIONAL_POWER_BAR_NAME or 'MANA'
 local ADDITIONAL_POWER_BAR_INDEX = ADDITIONAL_POWER_BAR_INDEX or 0
@@ -176,7 +194,7 @@ local function Update(self, event, unit, powertype)
 	* max  - the maximum value of the player's additional power (number)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, cur, max)
+		return element:PostUpdate(unit, cur, max, event) -- ElvUI adds event
 	end
 end
 
@@ -223,6 +241,14 @@ local function ElementEnable(self)
 
 	element:Show()
 
+	-- ElvUI block
+	if element.PostUpdateVisibility then
+		element:PostUpdateVisibility(true, not element.isEnabled)
+	end
+
+	element.isEnabled = true
+	-- end block
+
 	Path(self, 'ElementEnable', 'player', ADDITIONAL_POWER_BAR_NAME)
 end
 
@@ -236,6 +262,15 @@ local function ElementDisable(self)
 	self:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 
 	self.AdditionalPower:Hide()
+
+	-- ElvUI block
+	local element = self.AdditionalPower
+	if element.PostUpdateVisibility then
+		element:PostUpdateVisibility(false, element.isEnabled)
+	end
+
+	element.isEnabled = nil
+	-- end block
 
 	Path(self, 'ElementDisable', 'player', ADDITIONAL_POWER_BAR_NAME)
 end

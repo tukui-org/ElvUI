@@ -13,10 +13,10 @@ local CreateVector2D = CreateVector2D
 local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
-local GetInstanceInfo = GetInstanceInfo
 local MapUtil = MapUtil
 
 E.MapInfo = {}
+
 function E:MapInfo_Update()
 	local mapID = C_Map_GetBestMapForUnit("player")
 
@@ -33,8 +33,6 @@ function E:MapInfo_Update()
 	E.MapInfo.continentMapType = (continent and continent.mapType) or nil
 	E.MapInfo.continentMapID = (continent and continent.mapID) or nil
 	E.MapInfo.continentName = (continent and continent.name) or nil
-
-	E.MapInfo.instanceID = select(8, GetInstanceInfo())
 
 	E:MapInfo_CoordsUpdate()
 end

@@ -39,7 +39,7 @@
 	<Script file="elements\threatindicator.lua"/>
 	<Script file="elements\totems.lua"/>
 
-	<!--Script file="finalize.lua"/-->
+	<Script file="finalize.lua"/>
 
 	<!--
 		Sub-object as a child of the parent unit frame:

@@ -8,10 +8,12 @@ local format = format
 --WoW API / Variables
 local AcceptGroup = AcceptGroup
 local BNGetGameAccountInfoByGUID = BNGetGameAccountInfoByGUID
+local C_FriendList_IsFriend = C_FriendList.IsFriend
 local CanGuildBankRepair = CanGuildBankRepair
 local CanMerchantRepair = CanMerchantRepair
 local GetCVarBool, SetCVar = GetCVarBool, SetCVar
 local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
+local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRepairAllCost = GetRepairAllCost
@@ -20,9 +22,9 @@ local IsActiveBattlefieldArena = IsActiveBattlefieldArena
 local IsAddOnLoaded = IsAddOnLoaded
 local IsArenaSkirmish = IsArenaSkirmish
 local IsGuildMember = IsGuildMember
-local C_FriendList_IsFriend = C_FriendList.IsFriend
-local IsInGroup, IsInRaid = IsInGroup, IsInRaid
-local IsPartyLFG, IsInInstance = IsPartyLFG, IsInInstance
+local IsInGroup = IsInGroup
+local IsInRaid = IsInRaid
+local IsPartyLFG = IsPartyLFG
 local IsShiftKeyDown = IsShiftKeyDown
 local LeaveParty = LeaveParty
 local RaidNotice_AddMessage = RaidNotice_AddMessage
@@ -61,8 +63,8 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	if not (event == "SPELL_INTERRUPT" and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet'))) then return end -- No announce-able interrupt from player or pet, exit.
 
 	--Skirmish/non-rated arenas need to use INSTANCE_CHAT but IsPartyLFG() returns "false"
-	local _, instanceType = IsInInstance()
-	if instanceType and instanceType == "arena" then
+	local _, instanceType = GetInstanceInfo()
+	if instanceType == "arena" then
 		local skirmish = IsArenaSkirmish()
 		local _, isRegistered = IsActiveBattlefieldArena()
 		if skirmish or not isRegistered then
@@ -170,7 +172,7 @@ end
 
 function M:PVPMessageEnhancement(_, msg)
 	if not E.db.general.enhancedPvpMessages then return end
-	local _, instanceType = IsInInstance()
+	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'pvp' or instanceType == 'arena' then
 		RaidNotice_AddMessage(_G.RaidBossEmoteFrame, msg, _G.ChatTypeInfo.RAID_BOSS_EMOTE);
 	end

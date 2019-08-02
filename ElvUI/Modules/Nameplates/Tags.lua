@@ -8,10 +8,10 @@ local strmatch = strmatch
 
 local GetCVarBool = GetCVarBool
 local GetGuildInfo = GetGuildInfo
+local GetInstanceInfo = GetInstanceInfo
 local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetQuestLogTitle = GetQuestLogTitle
-local IsInInstance = IsInInstance
 local UnitClass = UnitClass
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
@@ -46,7 +46,8 @@ end
 
 oUF.Tags.Events['arena:number'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['arena:number'] = function(unit)
-	if select(2, IsInInstance()) == 'arena' then
+	local _, instanceType = GetInstanceInfo()
+	if instanceType == 'arena' then
 		for i = 1, 5 do
 			if UnitIsUnit(unit, "arena"..i) then
 				return i

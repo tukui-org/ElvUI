@@ -52,6 +52,7 @@ local GetChannelName = GetChannelName
 local GetCursorPosition = GetCursorPosition
 local GetCVar, GetCVarBool = GetCVar, GetCVarBool
 local GetGuildRosterMOTD = GetGuildRosterMOTD
+local GetInstanceInfo = GetInstanceInfo
 local GetItemInfoFromHyperlink = GetItemInfoFromHyperlink
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
@@ -64,7 +65,7 @@ local GMError = GMError
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
-local IsInInstance, IsInRaid, IsInGroup = IsInInstance, IsInRaid, IsInGroup
+local IsInRaid, IsInGroup = IsInRaid, IsInGroup
 local IsMouseButtonDown = IsMouseButtonDown
 local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
@@ -292,16 +293,10 @@ local function ChatFrame_OnMouseScroll(frame, delta)
 end
 
 function CH:GetGroupDistribution()
-	local inInstance, kind = IsInInstance()
-	if inInstance and (kind == "pvp") then
-		return "/bg "
-	end
-	if IsInRaid() then
-		return "/ra "
-	end
-	if IsInGroup() then
-		return "/p "
-	end
+	local _, instanceType = GetInstanceInfo()
+	if instanceType == "pvp" then return "/bg " end
+	if IsInRaid() then return "/ra " end
+	if IsInGroup() then return "/p " end
 	return "/s "
 end
 
@@ -549,6 +544,8 @@ function CH:StyleChat(frame)
 	end)
 
 	_G.QuickJoinToastButton:Hide()
+	_G.GeneralDockManagerOverflowButtonList:SetTemplate("Transparent")
+	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
 
 	CreatedFrames = id
 	frame.styled = true
@@ -2357,14 +2354,9 @@ local channelButtons = {
 }
 
 function CH:RepositionChatVoiceIcons()
-	_G.GeneralDockManagerScrollFrame:SetPoint("BOTTOMRIGHT") -- call our hook
+	_G.GeneralDockManagerScrollFrame:SetPoint('BOTTOMRIGHT') -- call our hook
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-
-	if channelButtons[3]:IsShown() then
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[3], 'LEFT', -4, 2)
-	else
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[1], 'LEFT', -4, 2)
-	end
+	_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 2)
 end
 
 function CH:UpdateVoiceChatIcons()
@@ -2391,17 +2383,12 @@ function CH:HandleChatVoiceIcons()
 			end
 		end
 
-		_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[3], 'LEFT', 0, 2)
-		_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
-
-		channelButtons[3]:HookScript("OnShow", CH.RepositionChatVoiceIcons)
-		channelButtons[3]:HookScript("OnHide", CH.RepositionChatVoiceIcons) -- dont think this is needed but meh
-
 		hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y, stopLoop)
 			if anchor == _G.GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
+				frame:ClearAllPoints()
 				frame:Point(point, anchor, attachTo, -3, -6)
-			elseif point == "BOTTOMRIGHT" and anchor ~= channelButtons[3] and anchor ~= channelButtons[1] and not _G.GeneralDockManagerOverflowButton:IsShown() and not stopLoop then
+			elseif (not stopLoop and not _G.GeneralDockManagerOverflowButton:IsShown()) and (point == "BOTTOMRIGHT" and anchor ~= channelButtons[3] and anchor ~= channelButtons[1]) then
+				frame:ClearAllPoints()
 				if channelButtons[3]:IsShown() then
 					frame:Point(point, anchor, attachTo, -30, -5, true)
 				else
@@ -2410,10 +2397,9 @@ function CH:HandleChatVoiceIcons()
 			end
 		end)
 
-		-- We skin it later in Style chat, to keep the backdrops on the button if the option are disabled
-		Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
-
 		CH:RepositionChatVoiceIcons()
+		channelButtons[3]:HookScript("OnShow", CH.RepositionChatVoiceIcons)
+		channelButtons[3]:HookScript("OnHide", CH.RepositionChatVoiceIcons)
 	else
 		CH:CreateChatVoicePanel()
 	end

@@ -12,6 +12,7 @@ assert(oUF, "oUF_Cutaway was unable to locate oUF install.")
 
 local _G = _G
 local max = math.max
+local assert = assert
 local hooksecurefunc = hooksecurefunc
 local UnitHealthMax = UnitHealthMax
 local UnitPowerMax = UnitPowerMax
@@ -286,8 +287,6 @@ local function Enable(self)
 			element.UpdateConfigurationValues = UpdateConfigurationValues
 		end
 
-		element:Show()
-
 		return true
 	end
 end
@@ -295,12 +294,12 @@ end
 local function disableElement(element)
 	if element then
 		element.enabled = false
+		element:Hide()
 	end
 end
 
 local function Disable(self)
 	if self and self.Cutaway then
-		self.Cutaway:Hide()
 		disableElement(self.Cutaway.Health)
 		disableElement(self.Cutaway.Power)
 	end
