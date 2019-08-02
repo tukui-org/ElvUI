@@ -788,7 +788,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Location
-	if trigger.location.instanceIDEnabled or trigger.location.mapIDEnabled then
+	if trigger.location.instanceIDEnabled or trigger.location.mapIDEnabled or trigger.location.zoneNamesEnabled or trigger.location.subZoneNamesEnabled then
 		if trigger.location.instanceIDEnabled then
 			passed = false
 			local D = trigger.location.instanceIDs
@@ -808,6 +808,32 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 			local mapID = E.MapInfo.mapID
 			for value in pairs(D) do
 				if value and mapID == value then
+					passed = true
+					break
+				end
+			end
+			if not passed then return end
+		end
+
+		if trigger.location.zoneNamesEnabled then
+			passed = false
+			local D = trigger.location.zoneNames
+			local zoneName = E.MapInfo.zoneText
+			for value in pairs(D) do
+				if value and zoneName == value then
+					passed = true
+					break
+				end
+			end
+			if not passed then return end
+		end
+
+		if trigger.location.subZoneNamesEnabled then
+			passed = false
+			local D = trigger.location.subZoneNames
+			local subZoneName = E.MapInfo.subZoneText
+			for value in pairs(D) do
+				if value and subZoneName == value then
 					passed = true
 					break
 				end

@@ -198,6 +198,10 @@ E.StyleFilterDefaults = {
 			mapIDs = {},
 			instanceIDEnabled = false,
 			instanceIDs = {},
+			zoneNamesEnabled = false,
+			zoneNames = {},
+			subZoneNamesEnabled = false,
+			subZoneNames = {},
 		},
 		keyMod = {
 			enable = false,

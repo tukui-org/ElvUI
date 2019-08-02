@@ -1,7 +1,7 @@
 ### Version 11.21 [  ]
 
 **New Additions:**  
-Style Filters: Added a new subsection "Location" that takes a set of map IDs or instance IDs.  If enabled the filter will only trigger when you are inside one of the specified maps or instances.  
+Style Filters: Added a new subsection "Location" that takes a set of map IDs, instance IDs, zone names (like "Boralus Harbor") or subzone names (like "Sanctum of the Sages").  If enabled the filter will only trigger when you are inside one of the specified maps or instances.  
 
 **Bug Fixes:**  
 

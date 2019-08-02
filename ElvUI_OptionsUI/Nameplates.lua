@@ -2482,6 +2482,80 @@ local function UpdateFilterGroup()
 										return vals
 									end,
 									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDEnabled end
+								},
+								zoneNamesEnabled = {
+									type = "toggle",
+									order = 7,
+									name = L["Use Zone Names"],
+									desc = L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name"],
+								},
+								zoneNames = {
+									type = "input",
+									order = 8,
+									name = L["Add Zone Name"],
+									get = function(info) return "" end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames[value] = true
+										NP:ConfigureAll()
+									end,
+									disabled = function () return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNamesEnabled end
+								},
+								removeZoneName = {
+									type = "select",
+									order = 9,
+									name = L["Remove Zone Name"],
+									get = function(info) return end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames[value] = nil
+										NP:ConfigureAll()
+									end,
+									values = function()
+										local vals = {}
+										local zoneNames = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames
+										if not zoneNames then return end
+										for value in pairs(zoneNames) do
+											vals[value] = value
+										end
+										return vals
+									end,
+									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNamesEnabled end
+								},
+								subZoneNamesEnabled = {
+									type = "toggle",
+									order = 10,
+									name = L["Use Subzone Names"],
+									desc = L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name"],
+								},
+								subZoneNames = {
+									type = "input",
+									order = 11,
+									name = L["Add Subzone Name"],
+									get = function(info) return "" end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames[value] = true
+										NP:ConfigureAll()
+									end,
+									disabled = function () return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNamesEnabled end
+								},
+								removeSubZoneName = {
+									type = "select",
+									order = 12,
+									name = L["Remove Subzone Name"],
+									get = function(info) return end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames[value] = nil
+										NP:ConfigureAll()
+									end,
+									values = function()
+										local vals = {}
+										local zoneNames = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames
+										if not zoneNames then return end
+										for value in pairs(zoneNames) do
+											vals[value] = value
+										end
+										return vals
+									end,
+									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNamesEnabled end
 								}
 							}
 						}
