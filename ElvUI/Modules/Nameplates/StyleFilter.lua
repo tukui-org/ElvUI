@@ -1142,13 +1142,6 @@ function mod:StyleFilterConfigure()
 							break
 				end end end
 
-				if t.names and next(t.names) then
-					for _, value in pairs(t.names) do
-						if value then
-							mod.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = 1
-							break
-				end end end
-
 				if t.cooldowns and t.cooldowns.names and next(t.cooldowns.names) then
 					for _, value in pairs(t.cooldowns.names) do
 						if value == 'ONCD' or value == 'OFFCD' then
