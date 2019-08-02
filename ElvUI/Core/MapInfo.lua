@@ -10,6 +10,7 @@ local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
 local GetUnitSpeed = GetUnitSpeed
 local CreateVector2D = CreateVector2D
+local GetRealZoneText = GetRealZoneText
 local GetMinimapZoneText = GetMinimapZoneText
 local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
@@ -29,6 +30,7 @@ function E:MapInfo_Update()
 	E.MapInfo.mapID = mapID or nil
 	E.MapInfo.zoneText = (mapID and E:GetZoneText(mapID)) or nil
 	E.MapInfo.subZoneText = GetMinimapZoneText() or nil
+	E.MapInfo.realZoneText = GetRealZoneText() or nil
 
 	local continent = mapID and MapUtil.GetMapParentInfo(mapID, Enum.UIMapType.Continent, true)
 	E.MapInfo.continentParentMapID = (continent and continent.parentMapID) or nil

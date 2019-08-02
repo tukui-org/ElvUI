@@ -4,7 +4,7 @@ local NP = E:GetModule("NamePlates")
 local ACD = E.Libs.AceConfigDialog
 
 local _G = _G
-local tconcat = table.concat
+local tconcat, tostring = table.concat, tostring
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
 local next, ipairs, tremove, tinsert, sort, tonumber, format = next, ipairs, tremove, tinsert, sort, tonumber, format
 
@@ -17,6 +17,7 @@ local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
+local GetInstanceInfo = GetInstanceInfo
 local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool
 local SetCVar = SetCVar
@@ -2505,6 +2506,81 @@ local function UpdateFilterGroup()
 									end,
 									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNamesEnabled end
 								}
+							}
+						},
+						btns = {
+							type = "group",
+							guiInline = true,
+							name = L["Add Current"],
+							order = 2,
+							args = {
+								mapID = {
+									order = 3,
+									type = "execute",
+									name = L["Map ID"],
+									buttonElvUI = true,
+									func = function()
+										local mapID = E.MapInfo.mapID
+										if not mapID then return end
+										mapID = tostring(mapID)
+
+										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[mapID] then return end
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[mapID] = true
+										NP:ConfigureAll()
+										E:Print(format(L["Added %s: %s"], L["Map ID"], mapID))
+									end
+								},
+								instanceID = {
+									order = 4,
+									type = "execute",
+									name = L["Instance ID"],
+									buttonElvUI = true,
+									func = function()
+										local instanceName, _, _, _, _, _, _, instanceID = GetInstanceInfo()
+										if not instanceID then return end
+										instanceID = tostring(instanceID)
+
+										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs[instanceID] then return end
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs[instanceID] = true
+										NP:ConfigureAll()
+										E:Print(format(L["Added %s: %s"], L["Instance ID"], instanceName.." ("..instanceID..")"))
+									end
+								},
+								spacer1 = {
+									order = 5,
+									type = "description",
+									name = " "
+								},
+								zoneName = {
+									order = 6,
+									type = "execute",
+									name = L["Zone Name"],
+									buttonElvUI = true,
+									func = function()
+										local zone = E.MapInfo.realZoneText
+										if not zone then return end
+
+										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames[zone] then return end
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames[zone] = true
+										NP:ConfigureAll()
+										E:Print(format(L["Added %s: %s"], L["Zone Name"], zone))
+									end
+								},
+								subZoneName = {
+									order = 7,
+									type = "execute",
+									name = L["Subzone Name"],
+									buttonElvUI = true,
+									func = function()
+										local subZone = E.MapInfo.subZoneText
+										if not subZone then return end
+
+										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames[subZone] then return end
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames[subZone] = true
+										NP:ConfigureAll()
+										E:Print(format(L["Added %s: %s"], L["Subzone Name"], subZone))
+									end
+								},
 							}
 						}
 					}

@@ -796,16 +796,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Location
 	if instanceIDTrigger or trigger.location.mapIDEnabled or trigger.location.zoneNamesEnabled or trigger.location.subZoneNamesEnabled then
-		if instanceIDTrigger then
+		if instanceIDTrigger and next(trigger.location.instanceIDs) then
 			if trigger.location.instanceIDs[tostring(instanceID)] or trigger.location.instanceIDs[instanceName] then passed = true else return end
 		end
-		if trigger.location.mapIDEnabled then
+		if trigger.location.mapIDEnabled and next(trigger.location.mapIDs) then
 			if trigger.location.mapIDs[tostring(E.MapInfo.mapID)] or trigger.location.mapIDs[E.MapInfo.name] then passed = true else return end
 		end
-		if trigger.location.zoneNamesEnabled then
-			if trigger.location.zoneNames[E.MapInfo.zoneText] then passed = true else return end
+		if trigger.location.zoneNamesEnabled and next(trigger.location.zoneNames) then
+			if trigger.location.zoneNames[E.MapInfo.realZoneText] then passed = true else return end
 		end
-		if trigger.location.subZoneNamesEnabled then
+		if trigger.location.subZoneNamesEnabled and next(trigger.location.subZoneNames) then
 			if trigger.location.subZoneNames[E.MapInfo.subZoneText] then passed = true else return end
 		end
 	end
