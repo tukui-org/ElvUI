@@ -2380,8 +2380,115 @@ local function UpdateFilterGroup()
 						}
 					}
 				},
-				raidTarget = {
+				location = {
 					order = 26,
+					type = "group",
+					name = L["Location"],
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.location[info[#info]]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.location[info[#info]] = value
+						NP:ConfigureAll()
+					end,
+					disabled = function()
+						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
+							E.db.nameplates.filters[selectedNameplateFilter].triggers and
+							E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
+					end,
+					args = {
+						types = {
+							name = "",
+							type = "group",
+							guiInline = true,
+							order = 2,
+							args = {
+								mapIDEnabled = {
+									type = "toggle",
+									order = 1,
+									name = L["Use Map ID"],
+									desc = L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID"],
+								},
+								mapIDs = {
+									type = "input",
+									order = 2,
+									name = L["Add Map ID"],
+									get = function(info) return "" end,
+									set = function(info, value)
+										local mapID = tonumber(value)
+										if not mapID or E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[value] then return end
+
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[value] = true
+										NP:ConfigureAll()
+									end,
+									disabled = function () return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDEnabled end
+								},
+								removeMapID = {
+									type = "select",
+									order = 3,
+									name = L["Remove Map ID"],
+									get = function(info) return end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[value] = nil
+										NP:ConfigureAll()
+									end,
+									values = function()
+										local vals = {}
+										local mapIDs = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs
+										if not mapIDs then return end
+										for value in pairs(mapIDs) do
+											vals[value] = value
+										end
+										return vals
+									end,
+									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDEnabled end
+								},
+								instanceIDEnabled = {
+									type = "toggle",
+									order = 4,
+									name = L["Use Instance ID"],
+									desc = L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID"],
+								},
+								instaceIDs = {
+									type = "input",
+									order = 5,
+									name = L["Add Instance ID"],
+									get = function(info) return "" end,
+									set = function(info, value)
+										local instanceID = tonumber(value)
+										if not instanceID then return end
+
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs[value] = true
+										NP:ConfigureAll()
+									end,
+									disabled = function () return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDEnabled end
+								},
+								removeInstanceID = {
+									type = "select",
+									order = 6,
+									name = L["Remove Instance ID"],
+									get = function(info) return end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs[value] = nil
+										NP:ConfigureAll()
+									end,
+									values = function()
+										local vals = {}
+										local instanceIDs = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs
+										if not instanceIDs then return end
+										for value in pairs(instanceIDs) do
+											vals[value] = value
+										end
+										return vals
+									end,
+									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDEnabled end
+								}
+							}
+						}
+					}
+				},
+				raidTarget = {
+					order = 27,
 					type = "group",
 					name = L["BINDING_HEADER_RAID_TARGET"],
 					get = function(info)

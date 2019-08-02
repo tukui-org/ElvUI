@@ -787,6 +787,35 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		else return end
 	end
 
+	-- Location
+	if trigger.location.instanceIDEnabled or trigger.location.mapIDEnabled then
+		if trigger.location.instanceIDEnabled then
+			passed = false
+			local D = trigger.location.instanceIDs
+			local instanceID = GetInstanceInfo()
+			for value in pairs(D) do
+				if value and instanceID == value then
+					passed = true
+					break
+				end
+			end
+			if not passed then return end
+		end
+
+		if trigger.location.mapIDEnabled then
+			passed = false
+			local D = trigger.location.mapIDs
+			local mapID = E.MapInfo.mapID
+			for value in pairs(D) do
+				if value and mapID == value then
+					passed = true
+					break
+				end
+			end
+			if not passed then return end
+		end
+	end
+
 	-- Talents
 	if trigger.talent.enabled then
 		local pvpTalent = trigger.talent.type == 'pvp'
