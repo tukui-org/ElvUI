@@ -773,7 +773,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	local instanceIDTrigger = trigger.location.instanceIDEnabled
 	local instanceTrigger = trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp
-	local instanceName, instanceType, difficultyID, instanceID
+	local instanceName, instanceType, difficultyID, instanceID, _
 
 	-- Instance Type
 	if instanceTrigger or instanceIDTrigger then
