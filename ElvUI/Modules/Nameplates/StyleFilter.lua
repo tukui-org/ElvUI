@@ -1024,6 +1024,9 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_THREAT_LIST_UPDATE',
 	'UNIT_THREAT_SITUATION_UPDATE',
 	'VEHICLE_UPDATE',
+	'ZONE_CHANGED_NEW_AREA',
+	'ZONE_CHANGED_INDOORS',
+	'ZONE_CHANGED'
 }
 
 function mod:StyleFilterWatchEvents()
@@ -1120,6 +1123,24 @@ function mod:StyleFilterConfigure()
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
 					mod.StyleFilterTriggerEvents.UNIT_FLAGS = true
 				end
+
+				if t.location then
+					if (t.location.mapIDEnabled and next(t.location.mapIDs))
+					or (t.location.instanceIDEnabled and next(t.location.instanceIDs))
+					or (t.location.zoneNamesEnabled and next(t.location.zoneNames))
+					or (t.location.subZoneNamesEnabled and next(t.location.subZoneNames)) then
+						mod.StyleFilterTriggerEvents.ZONE_CHANGED_NEW_AREA = 1
+						mod.StyleFilterTriggerEvents.ZONE_CHANGED_INDOORS = 1
+						mod.StyleFilterTriggerEvents.ZONE_CHANGED = 1
+					end
+				end
+
+				if t.names and next(t.names) then
+					for _, value in pairs(t.names) do
+						if value then
+							mod.StyleFilterTriggerEvents.UNIT_NAME_UPDATE = 1
+							break
+				end end end
 
 				if t.names and next(t.names) then
 					for _, value in pairs(t.names) do
@@ -1271,6 +1292,9 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_LIST_UPDATE')
 	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_SITUATION_UPDATE')
 	mod:StyleFilterRegister(nameplate,'VEHICLE_UPDATE', true)
+	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_NEW_AREA', true)
+	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_INDOORS', true)
+	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED', true)
 
 	mod:StyleFilterEventWatch(nameplate)
 end
