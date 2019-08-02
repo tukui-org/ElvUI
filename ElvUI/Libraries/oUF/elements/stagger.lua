@@ -155,27 +155,27 @@ end
 
 -- ElvUI changed
 local function Visibility(self, event, unit)
-	local isShown = self.Stagger:IsShown()
+	local element = self.Stagger
+	local isShown = element:IsShown()
+	local useClassbar = (SPEC_MONK_BREWMASTER ~= GetSpecialization()) or UnitHasVehiclePlayerFrameUI('player')
 	local stateChanged = false
-	local notBM = SPEC_MONK_BREWMASTER ~= GetSpecialization() or UnitHasVehiclePlayerFrameUI('player')
-	if(notBM) then
-		if(isShown) then
-			self.Stagger:Hide()
-			self:UnregisterEvent('UNIT_AURA', Path)
-			stateChanged = true
-		end
-	else
-		if(not isShown) then
-			self.Stagger:Show()
-			self:RegisterEvent('UNIT_AURA', Path)
-			stateChanged = true
-		end
 
-		Path(self, event, unit)
+	if useClassbar and isShown then
+		element:Hide()
+		self:UnregisterEvent('UNIT_AURA', Path)
+		stateChanged = true
+	elseif not useClassbar and not isShown then
+		element:Show()
+		self:RegisterEvent('UNIT_AURA', Path)
+		stateChanged = true
 	end
 
-	if(self.Stagger.PostUpdateVisibility) then
-		self.Stagger.PostUpdateVisibility(self, event, unit, not notBM, stateChanged)
+	if element.PostUpdateVisibility then
+		element.PostUpdateVisibility(self, event, unit, not useClassbar, stateChanged)
+	end
+
+	if not useClassbar then
+		Path(self, event, unit)
 	end
 end
 -- end block
