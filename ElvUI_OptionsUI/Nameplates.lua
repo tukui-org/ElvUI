@@ -1143,25 +1143,25 @@ local function UpdateFilterGroup()
 								isPet = {
 									type = "toggle",
 									name = L["Unit is Pet"],
-									desc = L["If enabled then the filter will only activate when the unit is the player's pet."],
+									desc = L["If enabled then the filter will only activate when the unit is a player's pet."],
 									order = 12
 								},
 								isNotPet= {
 									type = "toggle",
 									name =L["Unit is Not Pet"],
-									desc = L["If enabled then the filter will only activate when the unit is not the player's pet."],
+									desc = L["If enabled then the filter will only activate when the unit is not a player's pet."],
 									order = 13
 								},
 								isPlayerControlled = {
 									type = "toggle",
 									name = L["Unit is Player Controlled"],
-									desc = L["If enabled then the filter will only activate when the unit is controlled by a player."],
+									desc = L["If enabled then the filter will only activate when the unit is controlled by the player."],
 									order = 14
 								},
 								isNotPlayerControlled = {
 									type = "toggle",
 									name = L["Unit is Not Player Controlled"],
-									desc = L["If enabled then the filter will only activate when the unit is not controlled by a player."],
+									desc = L["If enabled then the filter will only activate when the unit is not controlled by the player."],
 									order = 15
 								},
 								isOwnedByPlayer = {
@@ -1203,13 +1203,13 @@ local function UpdateFilterGroup()
 								playerCanAttack = {
 									type = "toggle",
 									name = L["Player Can Attack"],
-									desc = L["If enabled then the filter will only activate when the unit can be atacked by the active player."],
+									desc = L["If enabled then the filter will only activate when the unit can be attacked by the active player."],
 									order = 22
 								},
 								playerCanNotAttack = {
 									type = "toggle",
 									name = L["Player Can Not Attack"],
-									desc = L["If enabled then the filter will only activate when the unit can not be atacked by the active player."],
+									desc = L["If enabled then the filter will only activate when the unit can not be attacked by the active player."],
 									order = 23
 								},
 							}
