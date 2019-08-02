@@ -8,18 +8,20 @@ local tconcat, tostring = table.concat, tostring
 local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
 local next, ipairs, tremove, tinsert, sort, tonumber, format = next, ipairs, tremove, tinsert, sort, tonumber, format
 
-local GetClassInfo = GetClassInfo
-local GetDifficultyInfo = GetDifficultyInfo
-local GetNumClasses = GetNumClasses
-local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
+local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
-local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
-local GetPvpTalentInfoByID = GetPvpTalentInfoByID
-local GetSpellInfo = GetSpellInfo
-local GetTalentInfo = GetTalentInfo
-local GetInstanceInfo = GetInstanceInfo
+local GetClassInfo = GetClassInfo
 local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool
+local GetDifficultyInfo = GetDifficultyInfo
+local GetInstanceInfo = GetInstanceInfo
+local GetNumClasses = GetNumClasses
+local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
+local GetPvpTalentInfoByID = GetPvpTalentInfoByID
+local GetRealZoneText = GetRealZoneText
+local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
+local GetSpellInfo = GetSpellInfo
+local GetTalentInfo = GetTalentInfo
 local SetCVar = SetCVar
 
 local raidTargetIcon = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%s:0|t %s"
@@ -2388,7 +2390,13 @@ local function UpdateFilterGroup()
 										local ids = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs
 										if not (ids and next(ids)) then return vals end
 
-										for value in pairs(ids) do vals[value] = value end
+										for value in pairs(ids) do
+											local info = tonumber(value) and C_Map_GetMapInfo(value)
+											if info and info.name then
+												info = "|cFF999999("..value..")|r "..info.name
+											end
+											vals[value] = info or value
+										end
 										return vals
 									end,
 									disabled = function()
@@ -2431,7 +2439,13 @@ local function UpdateFilterGroup()
 										local ids = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs
 										if not (ids and next(ids)) then return vals end
 
-										for value in pairs(ids) do vals[value] = value end
+										for value in pairs(ids) do
+											local name = tonumber(value) and GetRealZoneText(value)
+											if name then
+												name = "|cFF999999("..value..")|r "..name
+											end
+											vals[value] = name or value
+										end
 										return vals
 									end,
 									disabled = function()
@@ -2543,7 +2557,7 @@ local function UpdateFilterGroup()
 										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[mapID] then return end
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[mapID] = true
 										NP:ConfigureAll()
-										E:Print(format(L["Added Map ID: %s"], mapID))
+										E:Print(format(L["Added Map ID: %s"], E.MapInfo.name.." ("..mapID..")"))
 									end
 								},
 								instanceID = {
