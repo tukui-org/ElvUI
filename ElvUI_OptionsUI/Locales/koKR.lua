@@ -665,6 +665,7 @@ L["Inset"] = "내부에 분리"
 L["Inside Information Panel"] = "내부 정보 패널"
 L["Install"] = "설치"
 L["Instance Difficulty"] = "인스 난이도"
+L["Instance ID"] = true
 L["Instance Type"] = "인스턴스 종류"
 L["Interactive NPCs"] = true
 L["Interruptable"] = "차단이 가능한 기술"
@@ -1138,6 +1139,7 @@ L["Sticky Chat"] = "채널 고정"
 L["Strata and Level"] = true
 L["Style Filter"] = "스타일 필터"
 L["Style"] = "디자인"
+L["Subzone Name"] = true
 L["Summon Icon"] = true
 L["Swap to Alt Power"] = true
 L["Tab Font Outline"] = "채팅탭 글꼴 외곽선"
@@ -1383,6 +1385,7 @@ L["You need to hold this modifier down in order to blacklist an aura by right-cl
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = true
 L["Your Auras First"] = "자기 주문 우선"
 L["Zone Ability"] = "특수능력 버튼"
+L["Zone Name"] = true
 
 ----------------------------------
 L['blockCastByPlayers'] = "[차단] Cast By Players"

@@ -666,6 +666,7 @@ L["Inset"] = "Margem"
 L["Inside Information Panel"] = true
 L["Install"] = "Instalação"
 L["Instance Difficulty"] = true
+L["Instance ID"] = true
 L["Instance Type"] = true
 L["Interactive NPCs"] = true
 L["Interruptable"] = "Interrompível"
@@ -1139,6 +1140,7 @@ L["Sticky Chat"] = "Lembrar Canal"
 L["Strata and Level"] = true
 L["Style Filter"] = true
 L["Style"] = "Estilo"
+L["Subzone Name"] = true
 L["Summon Icon"] = true
 L["Swap to Alt Power"] = true
 L["Tab Font Outline"] = "Contorno da fonte da Guia"
@@ -1385,6 +1387,7 @@ L["You need to hold this modifier down in order to blacklist an aura by right-cl
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = true
 L["Your Auras First"] = "Suas auras primeiro"
 L["Zone Ability"] = true
+L["Zone Name"] = true
 
 ----------------------------------
 L['blockCastByPlayers'] = "[Block] Cast By Players"

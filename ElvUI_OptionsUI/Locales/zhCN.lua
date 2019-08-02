@@ -667,6 +667,7 @@ L["Inset"] = "插入"
 L["Inside Information Panel"] = "插入信息面板"
 L["Install"] = "安装"
 L["Instance Difficulty"] = "副本难度"
+L["Instance ID"] = true
 L["Instance Type"] = "副本类型"
 L["Interactive NPCs"] = "可交互的NPC"
 L["Interruptable"] = "可打断颜色"
@@ -1139,6 +1140,7 @@ L["Sticky Chat"] = "记忆聊天频道"
 L["Strata and Level"] = "框架层级和层次"
 L["Style Filter"] = "样式过滤器"
 L["Style"] = "风格"
+L["Subzone Name"] = true
 L["Summon Icon"] = "召唤图标"
 L["Swap to Alt Power"] = "切换到副能量"
 L["Tab Font Outline"] = "标题栏字体描边"
@@ -1384,6 +1386,7 @@ L["You need to hold this modifier down in order to blacklist an aura by right-cl
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = true
 L["Your Auras First"] = "自身光环优先"
 L["Zone Ability"] = "区域可见性"
+L["Zone Name"] = true
 
 ----------------------------------
 L['blockCastByPlayers'] = "[屏蔽]玩家施放的"

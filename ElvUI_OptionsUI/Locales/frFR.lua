@@ -666,6 +666,7 @@ L["Inset"] = "Insérer"
 L["Inside Information Panel"] = "A l'intérieur du panneau d'information"
 L["Install"] = "Installer"
 L["Instance Difficulty"] = "Difficulté de l'instance"
+L["Instance ID"] = true
 L["Instance Type"] = "Type d'instance"
 L["Interactive NPCs"] = true
 L["Interruptable"] = "Interruptible"
@@ -1138,6 +1139,7 @@ L["Sticky Chat"] = "Fenêtre de chat adhésive"
 L["Strata and Level"] = "Couche et niveau"
 L["Style Filter"] = true
 L["Style"] = "Style"
+L["Subzone Name"] = true
 L["Summon Icon"] = true
 L["Swap to Alt Power"] = true
 L["Tab Font Outline"] = "Contour de la police extérieure des onglets"
@@ -1383,6 +1385,7 @@ L["You need to hold this modifier down in order to blacklist an aura by right-cl
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = true
 L["Your Auras First"] = "Vos Auras en premier"
 L["Zone Ability"] = "Zone d'abilité"
+L["Zone Name"] = true
 
 ----------------------------------
 L['blockCastByPlayers'] = "[Block] Cast By Players"

@@ -665,6 +665,7 @@ L["Inset"] = "Внутри"
 L["Inside Information Panel"] = "На инфо панели"
 L["Install"] = "Установка"
 L["Instance Difficulty"] = "Сложность подземелья"
+L["Instance ID"] = true
 L["Instance Type"] = "Тип подземелья"
 L["Interactive NPCs"] = "НИП с взаимодействием"
 L["Interruptable"] = "Прерываемые"
@@ -1138,6 +1139,7 @@ L["Sticky Chat"] = "Клейкий чат"
 L["Strata and Level"] = "Слой и уровень"
 L["Style Filter"] = "Фильтры стиля"
 L["Style"] = "Стиль"
+L["Subzone Name"] = true
 L["Summon Icon"] = "Иконка призыва"
 L["Swap to Alt Power"] = "Заменить на альт. ресурс"
 L["Tab Font Outline"] = "Граница шрифта вкладок"
@@ -1383,6 +1385,7 @@ L["You need to hold this modifier down in order to blacklist an aura by right-cl
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = "У вас все еще стоит ElvUI_Config. Кое-кто переименовал его в ElvUI_OptionsUI, удалите папку со старым именем."
 L["Your Auras First"] = "Сначала свои"
 L["Zone Ability"] = "Способность местности"
+L["Zone Name"] = true
 
 ----------------------------------
 L['blockCastByPlayers'] = "[Блокировать] Принадлежат игрокам"

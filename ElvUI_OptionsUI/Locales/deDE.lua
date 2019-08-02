@@ -667,6 +667,7 @@ L["Inset"] = "Einsatz"
 L["Inside Information Panel"] = "Im Information Panel"
 L["Install"] = "Installation"
 L["Instance Difficulty"] = "Instanz Schwierigkeitsgrad"
+L["Instance ID"] = "Instanz ID"
 L["Instance Type"] = "Instanz Typ"
 L["Interactive NPCs"] = "Interaktive NSCs"
 L["Interruptable"] = "Unterbrechbar"
@@ -1141,6 +1142,7 @@ L["Sticky Chat"] = "Kanal merken"
 L["Strata and Level"] = "Schicht und Ebene"
 L["Style Filter"] = "Stil Filter"
 L["Style"] = "Stil"
+L["Subzone Name"] = "Unterzonen Name"
 L["Summon Icon"] = "Beschwörungssymbol"
 L["Swap to Alt Power"] = "Wechsle auf Alternative Energie"
 L["Tab Font Outline"] = "Tab Schriftkontur"
@@ -1387,6 +1389,7 @@ L["You need to hold this modifier down in order to blacklist an aura by right-cl
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = true
 L["Your Auras First"] = "Deine Auren zuerst"
 L["Zone Ability"] = "Zonen Fähigkeit"
+L["Zone Name"] = "Zonen Name"
 
 ----------------------------------
 L['blockCastByPlayers'] = "[Blocke] Gezaubert von Spieler"
