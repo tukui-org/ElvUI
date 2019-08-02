@@ -63,11 +63,7 @@ local function UpdateColor(self, event, unit)
 	local element = self.Stagger
 
 	local colors = self.colors.power[BREWMASTER_POWER_BAR_NAME]
-
-	-- ElvUI changed block
-	local cur, max = element.cur or 0, element.max or 1
-	local perc = max > 0 and (cur / max) or 0 -- ElvUI changed
-	-- ElvUI end
+	local perc = (element.cur or 0) / (element.max or 1)
 
 	local t
 	if(perc >= STAGGER_RED_TRANSITION) then
