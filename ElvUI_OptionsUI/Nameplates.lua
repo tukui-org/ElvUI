@@ -2385,13 +2385,16 @@ local function UpdateFilterGroup()
 									end,
 									values = function()
 										local vals = {}
-										local mapIDs = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs
-										if not (mapIDs and next(mapIDs)) then return vals end
+										local ids = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs
+										if not (ids and next(ids)) then return vals end
 
-										for value in pairs(mapIDs) do vals[value] = value end
+										for value in pairs(ids) do vals[value] = value end
 										return vals
 									end,
-									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDEnabled end
+									disabled = function()
+										local ids = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs
+										return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDEnabled and ids and next(ids))
+									end
 								},
 								instanceIDEnabled = {
 									type = "toggle",
@@ -2425,13 +2428,16 @@ local function UpdateFilterGroup()
 									end,
 									values = function()
 										local vals = {}
-										local instanceIDs = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs
-										if not (instanceIDs and next(instanceIDs)) then return vals end
+										local ids = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs
+										if not (ids and next(ids)) then return vals end
 
-										for value in pairs(instanceIDs) do vals[value] = value end
+										for value in pairs(ids) do vals[value] = value end
 										return vals
 									end,
-									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDEnabled end
+									disabled = function()
+										local ids = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs
+										return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDEnabled and ids and next(ids))
+									end
 								},
 								zoneNamesEnabled = {
 									type = "toggle",
@@ -2465,13 +2471,16 @@ local function UpdateFilterGroup()
 									end,
 									values = function()
 										local vals = {}
-										local zoneNames = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames
-										if not (zoneNames and next(zoneNames)) then return vals end
+										local zone = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames
+										if not (zone and next(zone)) then return vals end
 
-										for value in pairs(zoneNames) do vals[value] = value end
+										for value in pairs(zone) do vals[value] = value end
 										return vals
 									end,
-									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNamesEnabled end
+									disabled = function()
+										local zone = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames
+										return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNamesEnabled and zone and next(zone))
+									end
 								},
 								subZoneNamesEnabled = {
 									type = "toggle",
@@ -2502,13 +2511,16 @@ local function UpdateFilterGroup()
 									end,
 									values = function()
 										local vals = {}
-										local zoneNames = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames
-										if not (zoneNames and next(zoneNames)) then return vals end
+										local zone = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames
+										if not (zone and next(zone)) then return vals end
 
-										for value in pairs(zoneNames) do vals[value] = value end
+										for value in pairs(zone) do vals[value] = value end
 										return vals
 									end,
-									disabled = function() return not E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNamesEnabled end
+									disabled = function()
+										local zone = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames
+										return not (E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNamesEnabled and zone and next(zone))
+									end
 								}
 							}
 						},
