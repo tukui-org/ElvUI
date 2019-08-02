@@ -1,12 +1,16 @@
 ### Version 11.21 [  ]
 
 **New Additions:**  
-Style Filters: Added a new subsection "Location" that takes a set of map IDs, instance IDs, zone names (like "Boralus Harbor") or subzone names (like "Sanctum of the Sages").  If enabled the filter will only trigger when you are inside one of the specified maps or instances.  
+Style Filters: Added a new trigger "Location" that triggers on which Map, Instance, Zone (like "Boralus Harbor") or Subzone (like "Sanctum of the Sages") you are currently in.  If enabled the filter will only trigger when you are inside one of the specified maps or instances.  
 
 **Bug Fixes:**  
-
+Fixed issue which caused the rune backdrop on nameplates to not hide when in nameonly mode.  
+Fixed General Dock Manager skin not applying correctly.  
+Fixed the Raid Debuff Indicator icon not being cropped properly.  
+Fixed the Color Picker skin, it was showing the blizzard border.  
 
 **Misc. Changes:**  
+Added EP Boss one debuffs to Raid Debuffs.  
 
 
 ___
