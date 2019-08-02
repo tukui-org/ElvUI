@@ -771,42 +771,44 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	local instanceIDTrigger = trigger.location.instanceIDEnabled
-	local instanceTrigger = trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp
-	local instanceName, instanceType, difficultyID, instanceID, _
+	do
+		local activeID = trigger.location.instanceIDEnabled
+		local activeType = trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp
+		local instanceName, instanceType, difficultyID, instanceID, _
 
-	-- Instance Type
-	if instanceTrigger or instanceIDTrigger then
-		instanceName, instanceType, difficultyID, _, _, _, _, instanceID = GetInstanceInfo()
-	end
+		-- Instance Type
+		if activeType or activeID then
+			instanceName, instanceType, difficultyID, _, _, _, _, instanceID = GetInstanceInfo()
+		end
 
-	if instanceTrigger then
-		if trigger.instanceType[instanceType] then
-			passed = true
+		if activeType then
+			if trigger.instanceType[instanceType] then
+				passed = true
 
-			-- Instance Difficulty
-			if instanceType == 'raid' or instanceType == 'party' then
-				local D = trigger.instanceDifficulty[(instanceType == 'party' and 'dungeon') or instanceType]
-				for _, value in pairs(D) do
-					if value and not D[mod.TriggerConditions.difficulties[difficultyID]] then return end
+				-- Instance Difficulty
+				if instanceType == 'raid' or instanceType == 'party' then
+					local D = trigger.instanceDifficulty[(instanceType == 'party' and 'dungeon') or instanceType]
+					for _, value in pairs(D) do
+						if value and not D[mod.TriggerConditions.difficulties[difficultyID]] then return end
+					end
 				end
-			end
-		else return end
-	end
+			else return end
+		end
 
-	-- Location
-	if instanceIDTrigger or trigger.location.mapIDEnabled or trigger.location.zoneNamesEnabled or trigger.location.subZoneNamesEnabled then
-		if instanceIDTrigger and next(trigger.location.instanceIDs) then
-			if trigger.location.instanceIDs[tostring(instanceID)] or trigger.location.instanceIDs[instanceName] then passed = true else return end
-		end
-		if trigger.location.mapIDEnabled and next(trigger.location.mapIDs) then
-			if trigger.location.mapIDs[tostring(E.MapInfo.mapID)] or trigger.location.mapIDs[E.MapInfo.name] then passed = true else return end
-		end
-		if trigger.location.zoneNamesEnabled and next(trigger.location.zoneNames) then
-			if trigger.location.zoneNames[E.MapInfo.realZoneText] then passed = true else return end
-		end
-		if trigger.location.subZoneNamesEnabled and next(trigger.location.subZoneNames) then
-			if trigger.location.subZoneNames[E.MapInfo.subZoneText] then passed = true else return end
+		-- Location
+		if activeID or trigger.location.mapIDEnabled or trigger.location.zoneNamesEnabled or trigger.location.subZoneNamesEnabled then
+			if activeID and next(trigger.location.instanceIDs) then
+				if trigger.location.instanceIDs[tostring(instanceID)] or trigger.location.instanceIDs[instanceName] then passed = true else return end
+			end
+			if trigger.location.mapIDEnabled and next(trigger.location.mapIDs) then
+				if trigger.location.mapIDs[tostring(E.MapInfo.mapID)] or trigger.location.mapIDs[E.MapInfo.name] then passed = true else return end
+			end
+			if trigger.location.zoneNamesEnabled and next(trigger.location.zoneNames) then
+				if trigger.location.zoneNames[E.MapInfo.realZoneText] then passed = true else return end
+			end
+			if trigger.location.subZoneNamesEnabled and next(trigger.location.subZoneNames) then
+				if trigger.location.subZoneNames[E.MapInfo.subZoneText] then passed = true else return end
+			end
 		end
 	end
 
