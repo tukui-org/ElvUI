@@ -2384,10 +2384,10 @@ local function UpdateFilterGroup()
 										NP:ConfigureAll()
 									end,
 									values = function()
-										local mapIDs = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs
-										if not mapIDs then return end
-
 										local vals = {}
+										local mapIDs = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs
+										if not (mapIDs and next(mapIDs)) then return vals end
+
 										for value in pairs(mapIDs) do vals[value] = value end
 										return vals
 									end,
@@ -2424,10 +2424,10 @@ local function UpdateFilterGroup()
 										NP:ConfigureAll()
 									end,
 									values = function()
-										local instanceIDs = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs
-										if not instanceIDs then return end
-
 										local vals = {}
+										local instanceIDs = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs
+										if not (instanceIDs and next(instanceIDs)) then return vals end
+
 										for value in pairs(instanceIDs) do vals[value] = value end
 										return vals
 									end,
@@ -2464,10 +2464,10 @@ local function UpdateFilterGroup()
 										NP:ConfigureAll()
 									end,
 									values = function()
-										local zoneNames = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames
-										if not zoneNames then return end
-
 										local vals = {}
+										local zoneNames = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames
+										if not (zoneNames and next(zoneNames)) then return vals end
+
 										for value in pairs(zoneNames) do vals[value] = value end
 										return vals
 									end,
@@ -2501,10 +2501,10 @@ local function UpdateFilterGroup()
 										NP:ConfigureAll()
 									end,
 									values = function()
-										local zoneNames = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames
-										if not zoneNames then return end
-
 										local vals = {}
+										local zoneNames = E.global.nameplate.filters[selectedNameplateFilter].triggers.location.subZoneNames
+										if not (zoneNames and next(zoneNames)) then return vals end
+
 										for value in pairs(zoneNames) do vals[value] = value end
 										return vals
 									end,
@@ -3953,10 +3953,10 @@ local function GetUnitSettings(unit, name)
 								name = L["Add Special Filter"],
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
-									local list = E.global.unitframe.specialFilters
-									if not list then return end
-
 									local filters = {}
+									local list = E.global.unitframe.specialFilters
+									if not (list and next(list)) then return filters end
+
 									for filter in pairs(list) do
 										filters[filter] = L[filter]
 									end
@@ -3973,10 +3973,10 @@ local function GetUnitSettings(unit, name)
 								name = L["Add Regular Filter"],
 								desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
 								values = function()
-									local list = E.global.unitframe.aurafilters
-									if not list then return end
-
 									local filters = {}
+									local list = E.global.unitframe.aurafilters
+									if not (list and next(list)) then return filters end
+
 									for filter in pairs(list) do
 										filters[filter] = filter
 									end
@@ -4031,16 +4031,12 @@ local function GetUnitSettings(unit, name)
 								end,
 								values = function()
 									local str = E.db.nameplates.units[unit].buffs.filters.priority
-									if str == "" then
-										return nil
-									end
+									if str == "" then return nil end
 									return {strsplit(",", str)}
 								end,
 								get = function(_, value)
 									local str = E.db.nameplates.units[unit].buffs.filters.priority
-									if str == "" then
-										return nil
-									end
+									if str == "" then return nil end
 									local tbl = {strsplit(",", str)}
 									return tbl[value]
 								end,
@@ -4308,10 +4304,10 @@ local function GetUnitSettings(unit, name)
 								name = L["Add Special Filter"],
 								desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
 								values = function()
-									local list = E.global.unitframe.specialFilters
-									if not list then return end
-
 									local filters = {}
+									local list = E.global.unitframe.specialFilters
+									if not (list and next(list)) then return filters end
+
 									for filter in pairs(list) do
 										filters[filter] = L[filter]
 									end
@@ -4328,10 +4324,10 @@ local function GetUnitSettings(unit, name)
 								name = L["Add Regular Filter"],
 								desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
 								values = function()
-									local list = E.global.unitframe.aurafilters
-									if not list then return end
-
 									local filters = {}
+									local list = E.global.unitframe.aurafilters
+									if not (list and next(list)) then return filters end
+
 									for filter in pairs(list) do
 										filters[filter] = filter
 									end
@@ -4386,16 +4382,12 @@ local function GetUnitSettings(unit, name)
 								end,
 								values = function()
 									local str = E.db.nameplates.units[unit].debuffs.filters.priority
-									if str == "" then
-										return nil
-									end
+									if str == "" then return nil end
 									return {strsplit(",", str)}
 								end,
 								get = function(info, value)
 									local str = E.db.nameplates.units[unit].debuffs.filters.priority
-									if str == "" then
-										return nil
-									end
+									if str == "" then return nil end
 									local tbl = {strsplit(",", str)}
 									return tbl[value]
 								end,
@@ -6719,11 +6711,11 @@ E.Options.args.nameplate = {
 						UpdateFilterGroup()
 					end,
 					values = function()
+						local filters = {}
 						local list = E.global.nameplate.filters
-						if not list then return end
+						if not (list and next(list)) then return filters end
 
-						local profile = E.db.nameplates.filters
-						local filters, priority, name = {}
+						local profile, priority, name = E.db.nameplates.filters
 						for filter, content in pairs(list) do
 							priority = (content.triggers and content.triggers.priority) or "?"
 							name =
