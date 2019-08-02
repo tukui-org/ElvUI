@@ -2449,7 +2449,7 @@ local function UpdateFilterGroup()
 									name = L["Use Instance ID"],
 									desc = L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID"],
 								},
-								instaceIDs = {
+								instanceIDs = {
 									type = "input",
 									order = 5,
 									name = L["Add Instance ID"],
