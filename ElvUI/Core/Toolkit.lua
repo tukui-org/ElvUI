@@ -389,7 +389,7 @@ local function StripType(which, object, kill, alpha)
 			local FrameName = object.GetName and object:GetName()
 			for _, Blizzard in pairs(StripTexturesBlizzFrames) do
 				local BlizzFrame = object[Blizzard] or (FrameName and _G[FrameName..Blizzard])
-				if BlizzFrame then
+				if BlizzFrame and BlizzFrame.StripTextures then
 					BlizzFrame:StripTextures(kill, alpha)
 				end
 			end
