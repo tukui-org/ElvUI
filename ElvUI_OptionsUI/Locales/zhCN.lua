@@ -624,10 +624,10 @@ L["If enabled then the filter will only activate when the unit is targeting you.
 L["If enabled then the filter will only activate when you are focusing the unit."] = "启用后过滤器仅在单位为焦点的时候激活."
 L["If enabled then the filter will only activate when you are in a Vehicle."] = "启用后过滤器仅在你在载具中的时候激活."
 L["If enabled then the filter will only activate when you are in combat."] = "启用后过滤器仅在你在战斗中的时候激活."
-L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID"] = true
-L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID"] = true
-L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name"] = true
-L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name"] = true
+L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID."] = true
+L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = true
+L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name."] = true
+L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
 
 L["If enabled then the filter will only activate when you are not focusing the unit."] = "启用后过滤器仅在单位不为焦点的时候激活."
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = "启用后过滤器仅在你不在载具中的时候激活."
@@ -1316,8 +1316,8 @@ L["Use Dead Backdrop"] = "死亡背景"
 L["Use Default"] = "使用默认值"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "使用拖拽的方式调整过滤器优先级, 或者右键移除一个过滤器"
 L["Use Health Texture on Background"] = "对背景使用生命条材质"
-L["Use Instance ID"] = true
-L["Use Map ID"] = true
+L["Use Instance ID or Name"] = true
+L["Use Map ID or Name"] = true
 L["Use Subzone Names"] = true
 L["Use Zone Names"] = true
 L["Use Portrait"] = "使用头像"

@@ -622,10 +622,10 @@ L["If enabled then the filter will only activate when the unit is targeting you.
 L["If enabled then the filter will only activate when you are focusing the unit."] = "Если включено, фильтр будет активирован только когда юнит является запомненой целью."
 L["If enabled then the filter will only activate when you are in a Vehicle."] =  "Если включено, то фильтр будет активирован, когда вы в транспорте."
 L["If enabled then the filter will only activate when you are in combat."] = "Если включено, фильтр будет активирован только когда вы в бою."
-L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID"] = true
-L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID"] = true
-L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name"] = true
-L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name"] = true
+L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID."] = true
+L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = true
+L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name."] = true
+L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
 
 L["If enabled then the filter will only activate when you are not focusing the unit."] =  "Если включено, фильтр будет активирован только когда юнит не является запомненой целью."
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = "Если включено, то фильтр будет активирован, когда вы не в транспорте."
@@ -1315,8 +1315,8 @@ L["Use Dead Backdrop"] = "Фон мертвого"
 L["Use Default"] = "Использовать умолчания"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "Используйте перетаскивание для смены приоритета или ПКМ для удаления фильтра."
 L["Use Health Texture on Background"] = "Использовать текстуру здоровья на фоне"
-L["Use Instance ID"] = true
-L["Use Map ID"] = true
+L["Use Instance ID or Name"] = true
+L["Use Map ID or Name"] = true
 L["Use Subzone Names"] = true
 L["Use Zone Names"] = true
 L["Use Portrait"] = "Отображать портрет"

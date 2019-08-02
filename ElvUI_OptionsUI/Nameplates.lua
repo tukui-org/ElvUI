@@ -2356,8 +2356,9 @@ local function UpdateFilterGroup()
 								mapIDEnabled = {
 									type = "toggle",
 									order = 1,
-									name = L["Use Map ID"],
-									desc = L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID"],
+									name = L["Use Map ID or Name"],
+									desc = L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."],
+									customWidth = 200,
 								},
 								mapIDs = {
 									type = "input",
@@ -2395,8 +2396,9 @@ local function UpdateFilterGroup()
 								instanceIDEnabled = {
 									type = "toggle",
 									order = 4,
-									name = L["Use Instance ID"],
-									desc = L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID"],
+									name = L["Use Instance ID or Name"],
+									desc = L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID."],
+									customWidth = 200,
 								},
 								instanceIDs = {
 									type = "input",
@@ -2435,7 +2437,8 @@ local function UpdateFilterGroup()
 									type = "toggle",
 									order = 7,
 									name = L["Use Zone Names"],
-									desc = L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name"],
+									desc = L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."],
+									customWidth = 200,
 								},
 								zoneNames = {
 									type = "input",
@@ -2474,7 +2477,8 @@ local function UpdateFilterGroup()
 									type = "toggle",
 									order = 10,
 									name = L["Use Subzone Names"],
-									desc = L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name"],
+									desc = L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name."],
+									customWidth = 200,
 								},
 								subZoneNames = {
 									type = "input",

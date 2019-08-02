@@ -622,10 +622,10 @@ L["If enabled then the filter will only activate when the unit is targeting you.
 L["If enabled then the filter will only activate when you are focusing the unit."] = true
 L["If enabled then the filter will only activate when you are in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are in combat."] = "활성화하면 자신이 전투 중일때만 필터가 작동합니다."
-L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID"] = true
-L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID"] = true
-L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name"] = true
-L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name"] = true
+L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID."] = true
+L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = true
+L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name."] = true
+L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
 
 L["If enabled then the filter will only activate when you are not focusing the unit."] = true
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
@@ -1315,8 +1315,8 @@ L["Use Dead Backdrop"] = "죽음 배경 사용"
 L["Use Default"] = "기존 설정대로"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "끌어다 놓기로 재정렬하거나 우클릭으로 필터에서 제거합니다."
 L["Use Health Texture on Background"] = true
-L["Use Instance ID"] = true
-L["Use Map ID"] = true
+L["Use Instance ID or Name"] = true
+L["Use Map ID or Name"] = true
 L["Use Subzone Names"] = true
 L["Use Zone Names"] = true
 L["Use Portrait"] = "초상화 사용"
