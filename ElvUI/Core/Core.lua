@@ -1099,13 +1099,14 @@ function E:UpdateAll(doUpdates)
 end
 
 do
-	local EventRegister = {}
-	local EventFrame = CreateFrame('Frame')
-	EventFrame:SetScript('OnEvent', function(_, event, ...)
-		if EventRegister[event] then
-			for object, funcs in pairs(EventRegister[event]) do
+	E.ObjectEventTable, E.ObjectEventFrame = {}, CreateFrame('Frame')
+	local eventFrame, eventTable = E.ObjectEventFrame, E.ObjectEventTable
+
+	eventFrame:SetScript('OnEvent', function(_, event, ...)
+		local objs = eventTable[event]
+		if objs then
+			for object, funcs in pairs(objs) do
 				for _, func in ipairs(funcs) do
-					--Call the functions that are registered with this object, and pass the object and other arguments back
 					func(object, event, ...)
 				end
 			end
@@ -1113,12 +1114,13 @@ do
 	end)
 
 	function E:IsEventRegisteredForObject(event, object)
-		if not event or not object then
+		if not (event and object) then
 			E:Print('Error. Usage: IsEventRegisteredForObject(event, object)')
 			return
 		end
 
-		local funcs = EventRegister[event] and EventRegister[event][object]
+		local objs = eventTable[event]
+		local funcs = objs and objs[object]
 		return funcs ~= nil, funcs
 	end
 
@@ -1132,20 +1134,27 @@ do
 	-- @param object The object you want to register the event for.
 	-- @param func The function you want executed for this object.
 	function E:RegisterEventForObject(event, object, func)
-		if not event or not object or not func then
+		if not (event and object and func) then
 			E:Print('Error. Usage: RegisterEventForObject(event, object, func)')
 			return
 		end
 
-		if not EventRegister[event] then --Check if event has already been registered
-			EventRegister[event] = {}
-			EventFrame:RegisterEvent(event)
+		local objs = eventTable[event]
+		if not objs then
+			objs = {}
+			eventTable[event] = objs
+			eventFrame:RegisterEvent(event)
 		end
 
-		if not EventRegister[event][object] then --Check if this object has already been registered
-			EventRegister[event][object] = {func}
+		local funcs = objs[object]
+		if not funcs then
+			objs[object] = {func}
 		else
-			tinsert(EventRegister[event][object], func) --Add func that should be called for this object on this event
+			for _, fnc in ipairs(funcs) do
+				if func == fnc then return end
+			end
+
+			tinsert(funcs, func)
 		end
 	end
 
@@ -1155,29 +1164,28 @@ do
 	-- @param object The object you want to unregister a func from.
 	-- @param func The function you want unregistered for the object.
 	function E:UnregisterEventForObject(event, object, func)
-		if not event or not object or not func then
+		if not (event and object and func) then
 			E:Print('Error. Usage: UnregisterEventForObject(event, object, func)')
 			return
 		end
 
-		--Find the specified function for the specified object and remove it from the register
-		if EventRegister[event] and EventRegister[event][object] then
-			for index, funcs in ipairs(EventRegister[event][object]) do
-				if func == funcs then
-					tremove(EventRegister[event][object], index)
+		local objs = eventTable[event]
+		local funcs = objs and objs[object]
+		if funcs then
+			for index, fnc in ipairs(funcs) do
+				if func == fnc then
+					tremove(funcs, index)
 					break
 				end
 			end
 
-			--If this object no longer has any functions registered then remove it from the register
-			if #EventRegister[event][object] == 0 then
-				EventRegister[event][object] = nil
+			if #funcs == 0 then
+				objs[object] = nil
 			end
 
-			--If this event no longer has any objects registered then unregister it and remove it from the register
-			if not next(EventRegister[event]) then
-				EventFrame:UnregisterEvent(event)
-				EventRegister[event] = nil
+			if not next(funcs) then
+				eventFrame:UnregisterEvent(event)
+				eventTable[event] = nil
 			end
 		end
 	end
