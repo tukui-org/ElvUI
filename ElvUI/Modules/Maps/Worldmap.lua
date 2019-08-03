@@ -147,6 +147,7 @@ function M:Initialize()
 
 		M:PositionCoords()
 
+		E:RegisterEventForObject("LOADING_SCREEN_DISABLED", E.MapInfo, M.UpdateRestrictedArea)
 		E:RegisterEventForObject("ZONE_CHANGED_NEW_AREA", E.MapInfo, M.UpdateRestrictedArea)
 		E:RegisterEventForObject("ZONE_CHANGED_INDOORS", E.MapInfo, M.UpdateRestrictedArea)
 		E:RegisterEventForObject("ZONE_CHANGED", E.MapInfo, M.UpdateRestrictedArea)
