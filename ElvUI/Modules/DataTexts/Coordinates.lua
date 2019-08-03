@@ -20,15 +20,13 @@ local function Update(self, elapsed)
 	end
 end
 
-local function OnEvent()
-	local panelText = DT.RegisteredDataTexts.Coords.panel.text
-
+local function OnEvent(panel)
 	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false
-		panelText:SetFormattedText(displayString, E.MapInfo.xText or 0, E.MapInfo.yText or 0)
+		panel.text:SetFormattedText(displayString, E.MapInfo.xText or 0, E.MapInfo.yText or 0)
 	else
 		inRestrictedArea = true
-		panelText:SetText('')
+		panel.text:SetText('')
 	end
 end
 
