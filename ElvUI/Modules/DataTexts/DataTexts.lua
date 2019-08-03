@@ -336,7 +336,6 @@ function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onE
 		data.objectEvent = objectEvent
 		data.objectEventFunc = data.objectEvent and function(_, ...)
 			if data.eventFunc then
-				print(1, ...)
 				data.eventFunc(data.panel, ...)
 			end
 		end
