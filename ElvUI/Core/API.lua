@@ -449,7 +449,6 @@ function E:RequestBGInfo()
 end
 
 function E:PLAYER_ENTERING_WORLD()
-	self:MapInfo_Update()
 	self:CheckRole()
 
 	if not self.MediaUpdated then

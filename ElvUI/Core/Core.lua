@@ -1103,14 +1103,24 @@ do
 	local EventFrame = CreateFrame('Frame')
 	EventFrame:SetScript('OnEvent', function(_, event, ...)
 		if EventRegister[event] then
-			for object, functions in pairs(EventRegister[event]) do
-				for _, func in ipairs(functions) do
+			for object, funcs in pairs(EventRegister[event]) do
+				for _, func in ipairs(funcs) do
 					--Call the functions that are registered with this object, and pass the object and other arguments back
 					func(object, event, ...)
 				end
 			end
 		end
 	end)
+
+	function E:IsEventRegisteredForObject(event, object)
+		if not event or not object then
+			E:Print('Error. Usage: IsEventRegisteredForObject(event, object)')
+			return
+		end
+
+		local funcs = EventRegister[event] and EventRegister[event][object]
+		return funcs ~= nil, funcs
+	end
 
 	--- Registers specified event and adds specified func to be called for the specified object.
 	-- Unless all parameters are supplied it will not register.
@@ -1130,12 +1140,12 @@ do
 		if not EventRegister[event] then --Check if event has already been registered
 			EventRegister[event] = {}
 			EventFrame:RegisterEvent(event)
+		end
+
+		if not EventRegister[event][object] then --Check if this object has already been registered
+			EventRegister[event][object] = {func}
 		else
-			if not EventRegister[event][object] then --Check if this object has already been registered
-				EventRegister[event][object] = {func}
-			else
-				tinsert(EventRegister[event][object], func) --Add func that should be called for this object on this event
-			end
+			tinsert(EventRegister[event][object], func) --Add func that should be called for this object on this event
 		end
 	end
 
@@ -1152,8 +1162,8 @@ do
 
 		--Find the specified function for the specified object and remove it from the register
 		if EventRegister[event] and EventRegister[event][object] then
-			for index, registeredFunc in ipairs(EventRegister[event][object]) do
-				if func == registeredFunc then
+			for index, funcs in ipairs(EventRegister[event][object]) do
+				if func == funcs then
 					tremove(EventRegister[event][object], index)
 					break
 				end

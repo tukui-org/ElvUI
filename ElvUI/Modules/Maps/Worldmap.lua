@@ -69,8 +69,6 @@ end
 
 local inRestrictedArea = false
 function M:UpdateRestrictedArea()
-	E:MapInfo_Update()
-
 	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false
 	else
@@ -149,9 +147,9 @@ function M:Initialize()
 
 		M:PositionCoords()
 
-		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "UpdateRestrictedArea")
-		self:RegisterEvent("ZONE_CHANGED_INDOORS", "UpdateRestrictedArea")
-		self:RegisterEvent("ZONE_CHANGED", "UpdateRestrictedArea")
+		E:RegisterEventForObject("ZONE_CHANGED_NEW_AREA", E.MapInfo, M.UpdateRestrictedArea)
+		E:RegisterEventForObject("ZONE_CHANGED_INDOORS", E.MapInfo, M.UpdateRestrictedArea)
+		E:RegisterEventForObject("ZONE_CHANGED", E.MapInfo, M.UpdateRestrictedArea)
 	end
 
 	if E.global.general.smallerWorldMap then

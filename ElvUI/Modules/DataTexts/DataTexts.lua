@@ -195,25 +195,34 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
 end
 
 function DT:AssignPanelToDataText(panel, data)
+	data.panel = panel
 	panel.name = ""
+
 	if data.name then
 		panel.name = data.name
 	end
 
 	if data.events then
 		for _, event in pairs(data.events) do
-			-- use new filtered event registration for appropriate events
-			if event == "UNIT_AURA" or event == "UNIT_RESISTANCES"  or event == "UNIT_STATS" or event == "UNIT_ATTACK_POWER"
+			if data.objectEvent and data.eventFunc then
+				E:RegisterEventForObject(event, data.objectEvent, data.eventFunc)
+			elseif not data.objectEvent then
+				-- use new filtered event registration for appropriate events
+				if event == "UNIT_AURA" or event == "UNIT_RESISTANCES"  or event == "UNIT_STATS" or event == "UNIT_ATTACK_POWER"
 				or event == "UNIT_RANGED_ATTACK_POWER" or event == "UNIT_TARGET" or event == "UNIT_SPELL_HASTE" then
-				panel:RegisterUnitEvent(event, 'player')
-			else
-				panel:RegisterEvent(event)
+					panel:RegisterUnitEvent(event, 'player')
+				else
+					panel:RegisterEvent(event)
+				end
 			end
 		end
 	end
 
 	if data.eventFunc then
-		panel:SetScript('OnEvent', data.eventFunc)
+		if not not data.objectEvent then
+			panel:SetScript('OnEvent', data.eventFunc)
+		end
+
 		data.eventFunc(panel, 'ELVUI_FORCE_RUN')
 	end
 
@@ -318,8 +327,9 @@ end
 	onEnterFunc - function to fire OnEnter
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 	localizedName - localized name of the datetext
+	objectEvent - register events on an object, using E.RegisterEventForObject instead of panel.RegisterEvent
 ]]
-function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName)
+function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent)
 	if name then
 		DT.RegisteredDataTexts[name] = {}
 	else
@@ -333,6 +343,7 @@ function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onE
 	else
 		DT.RegisteredDataTexts[name].events = events
 		DT.RegisteredDataTexts[name].eventFunc = eventFunc
+		DT.RegisteredDataTexts[name].objectEvent = objectEvent
 	end
 
 	if updateFunc and type(updateFunc) == 'function' then
