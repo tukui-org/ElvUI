@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 
 local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
-local gsub, tinsert, tremove, sort, wipe = gsub, tinsert, tremove, sort, wipe
+local gsub, tContains, tinsert, tremove, sort, wipe = gsub, tContains, tinsert, tremove, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
 local GetLocale = GetLocale
@@ -998,36 +998,20 @@ end
 mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
 mod.StyleFilterTriggerEvents = {} -- events required by the filter that we need to watch for
 mod.StyleFilterPlateEvents = { -- events watched inside of ouf, which is called on the nameplate itself
-	['NAME_PLATE_UNIT_ADDED'] = 1 -- rest is populated from `StyleFilterDefaultEvents` as needed
+	['NAME_PLATE_UNIT_ADDED'] = 1 -- rest is populated from StyleFilterDefaultEvents as needed
 }
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
-	'MODIFIER_STATE_CHANGED',
-	'PLAYER_FOCUS_CHANGED',
-	'PLAYER_TARGET_CHANGED',
-	'PLAYER_UPDATE_RESTING',
-	'RAID_TARGET_UPDATE',
-	'SPELL_UPDATE_COOLDOWN',
+	-- this is a list of events already on the nameplate
 	'UNIT_AURA',
 	'UNIT_DISPLAYPOWER',
-	'UNIT_ENTERED_VEHICLE',
-	'UNIT_EXITED_VEHICLE',
 	'UNIT_FACTION',
-	'UNIT_FLAGS',
 	'UNIT_HEALTH',
 	'UNIT_HEALTH_FREQUENT',
 	'UNIT_MAXHEALTH',
 	'UNIT_NAME_UPDATE',
 	'UNIT_PET',
 	'UNIT_POWER_FREQUENT',
-	'UNIT_POWER_UPDATE',
-	'UNIT_TARGET',
-	'UNIT_THREAT_LIST_UPDATE',
-	'UNIT_THREAT_SITUATION_UPDATE',
-	'VEHICLE_UPDATE',
-	'LOADING_SCREEN_DISABLED',
-	'ZONE_CHANGED_NEW_AREA',
-	'ZONE_CHANGED_INDOORS',
-	'ZONE_CHANGED'
+	'UNIT_POWER_UPDATE'
 }
 
 function mod:StyleFilterWatchEvents()
@@ -1273,14 +1257,21 @@ do -- oUF style filter inject watch functions without actually registering any e
 			if not E:HasFunctionForObject(event, objectEvent, nameplate.objectEventFunc) then
 				E:RegisterEventForObject(event, objectEvent, nameplate.objectEventFunc)
 			end
-		elseif not nameplate:IsEventRegistered(event) then
-			nameplate:RegisterEvent(event, func or E.noop, unitless)
+		else
+			if not tContains(mod.StyleFilterDefaultEvents, event) then
+				tinsert(mod.StyleFilterDefaultEvents, event)
+			end
+			if not nameplate:IsEventRegistered(event) then
+				nameplate:RegisterEvent(event, func or E.noop, unitless)
+			end
 		end
 	end
 end
 
 -- events we actually register on plates when they aren't added
 function mod:StyleFilterEvents(nameplate)
+	-- these events get added onto StyleFilterDefaultEvents to be watched,
+	-- the ones added from here should not by registered already
 	mod:StyleFilterRegister(nameplate,'MODIFIER_STATE_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_FOCUS_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_TARGET_CHANGED', true)
@@ -1294,11 +1285,15 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_LIST_UPDATE')
 	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_SITUATION_UPDATE')
 	mod:StyleFilterRegister(nameplate,'VEHICLE_UPDATE', true)
+
+	-- object event pathing (these update after MapInfo updates),
+	-- these event are not added onto the nameplate itself
 	mod:StyleFilterRegister(nameplate,'LOADING_SCREEN_DISABLED', nil, nil, E.MapInfo)
 	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_NEW_AREA', nil, nil, E.MapInfo)
 	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_INDOORS', nil, nil, E.MapInfo)
 	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED', nil, nil, E.MapInfo)
 
+	-- fire up the ouf injection watcher
 	mod:StyleFilterEventWatch(nameplate)
 end
 

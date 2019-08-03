@@ -31,9 +31,9 @@ local LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local assert, type, xpcall, next, print = assert, type, xpcall, next, print
-local gsub, strjoin, twipe, tinsert, tremove = gsub, strjoin, wipe, tinsert, tremove
+local gsub, strjoin, twipe, tinsert, tremove, tContains = gsub, strjoin, wipe, tinsert, tremove, tContains
 local format, find, strrep, strlen, sub = format, strfind, strrep, strlen, strsub
+local assert, type, xpcall, next, print = assert, type, xpcall, next, print
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
@@ -1121,13 +1121,7 @@ do
 
 		local objs = eventTable[event]
 		local funcs = objs and objs[object]
-		if funcs then
-			for _, fnc in ipairs(funcs) do
-				if func == fnc then
-					return true
-				end
-			end
-		end
+		return funcs and tContains(funcs, func)
 	end
 
 	function E:IsEventRegisteredForObject(event, object)
@@ -1166,11 +1160,7 @@ do
 		local funcs = objs[object]
 		if not funcs then
 			objs[object] = {func}
-		else
-			for _, fnc in ipairs(funcs) do
-				if func == fnc then return end
-			end
-
+		elseif not tContains(funcs, func) then
 			tinsert(funcs, func)
 		end
 	end
