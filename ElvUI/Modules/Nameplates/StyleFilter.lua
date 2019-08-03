@@ -1201,9 +1201,9 @@ end
 
 do -- oUF style filter inject watch functions without actually registering any events
 	local update = function(frame, event, ...)
-		if mod.StyleFilterEventFunctions[event] then
-			mod.StyleFilterEventFunctions[event](frame, event, ...)
-		end
+		local eventFunc = mod.StyleFilterEventFunctions[event]
+		if eventFunc then eventFunc(frame, event, ...) end
+
 		mod:StyleFilterUpdate(frame, event)
 	end
 
