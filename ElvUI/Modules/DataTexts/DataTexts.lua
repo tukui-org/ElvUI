@@ -201,7 +201,7 @@ function DT:AssignPanelToDataText(panel, data)
 				if not E:HasFunctionForObject(event, data.objectEvent, data.objectEventFunc) then
 					E:RegisterEventForObject(event, data.objectEvent, data.objectEventFunc)
 				end
-			elseif not data.objectEvent then
+			elseif data.eventFunc then
 				-- use new filtered event registration for appropriate events
 				if event == "UNIT_AURA" or event == "UNIT_RESISTANCES"  or event == "UNIT_STATS" or event == "UNIT_ATTACK_POWER"
 				or event == "UNIT_RANGED_ATTACK_POWER" or event == "UNIT_TARGET" or event == "UNIT_SPELL_HASTE" then
