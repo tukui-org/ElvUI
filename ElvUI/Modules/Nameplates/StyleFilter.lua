@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 
 local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
-local gsub, tContains, tinsert, tremove, sort, wipe = gsub, tContains, tinsert, tremove, sort, wipe
+local gsub, tinsert, tremove, sort, wipe = gsub, tinsert, tremove, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
 local GetLocale = GetLocale
@@ -1011,7 +1011,21 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_NAME_UPDATE',
 	'UNIT_PET',
 	'UNIT_POWER_FREQUENT',
-	'UNIT_POWER_UPDATE'
+	'UNIT_POWER_UPDATE',
+	-- list of events added during StyleFilterEvents
+	'MODIFIER_STATE_CHANGED',
+	'PLAYER_FOCUS_CHANGED',
+	'PLAYER_TARGET_CHANGED',
+	'PLAYER_UPDATE_RESTING',
+	'RAID_TARGET_UPDATE',
+	'SPELL_UPDATE_COOLDOWN',
+	'UNIT_ENTERED_VEHICLE',
+	'UNIT_EXITED_VEHICLE',
+	'UNIT_FLAGS',
+	'UNIT_TARGET',
+	'UNIT_THREAT_LIST_UPDATE',
+	'UNIT_THREAT_SITUATION_UPDATE',
+	'VEHICLE_UPDATE'
 }
 
 function mod:StyleFilterWatchEvents()
@@ -1257,13 +1271,8 @@ do -- oUF style filter inject watch functions without actually registering any e
 			if not E:HasFunctionForObject(event, objectEvent, nameplate.objectEventFunc) then
 				E:RegisterEventForObject(event, objectEvent, nameplate.objectEventFunc)
 			end
-		else
-			if not tContains(mod.StyleFilterDefaultEvents, event) then
-				tinsert(mod.StyleFilterDefaultEvents, event)
-			end
-			if not nameplate:IsEventRegistered(event) then
-				nameplate:RegisterEvent(event, func or E.noop, unitless)
-			end
+		elseif not nameplate:IsEventRegistered(event) then
+			nameplate:RegisterEvent(event, func or E.noop, unitless)
 		end
 	end
 end
