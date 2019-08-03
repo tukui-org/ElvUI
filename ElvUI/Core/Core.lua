@@ -1113,6 +1113,23 @@ do
 		end
 	end)
 
+	function E:HasFunctionForObject(event, object, func)
+		if not (event and object and func) then
+			E:Print('Error. Usage: HasFunctionForObject(event, object, func)')
+			return
+		end
+
+		local objs = eventTable[event]
+		local funcs = objs and objs[object]
+		if funcs then
+			for _, fnc in ipairs(funcs) do
+				if func == fnc then
+					return true
+				end
+			end
+		end
+	end
+
 	function E:IsEventRegisteredForObject(event, object)
 		if not (event and object) then
 			E:Print('Error. Usage: IsEventRegisteredForObject(event, object)')

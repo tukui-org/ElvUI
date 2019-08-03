@@ -1024,6 +1024,7 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_THREAT_LIST_UPDATE',
 	'UNIT_THREAT_SITUATION_UPDATE',
 	'VEHICLE_UPDATE',
+	'LOADING_SCREEN_DISABLED',
 	'ZONE_CHANGED_NEW_AREA',
 	'ZONE_CHANGED_INDOORS',
 	'ZONE_CHANGED'
@@ -1129,6 +1130,7 @@ function mod:StyleFilterConfigure()
 					or (t.location.instanceIDEnabled and next(t.location.instanceIDs))
 					or (t.location.zoneNamesEnabled and next(t.location.zoneNames))
 					or (t.location.subZoneNamesEnabled and next(t.location.subZoneNames)) then
+						mod.StyleFilterTriggerEvents.LOADING_SCREEN_DISABLED = 1
 						mod.StyleFilterTriggerEvents.ZONE_CHANGED_NEW_AREA = 1
 						mod.StyleFilterTriggerEvents.ZONE_CHANGED_INDOORS = 1
 						mod.StyleFilterTriggerEvents.ZONE_CHANGED = 1
@@ -1262,11 +1264,18 @@ do -- oUF style filter inject watch functions without actually registering any e
 			elseif holdsEvent then
 				oUF_fake_register(frame, event, true)
 	end end end
-end
 
-function mod:StyleFilterRegister(nameplate, event, unitless, func)
-	if not nameplate:IsEventRegistered(event) then
-		nameplate:RegisterEvent(event, func or E.noop, unitless)
+	function mod:StyleFilterRegister(nameplate, event, unitless, func, objectEvent)
+		if objectEvent then
+			if not nameplate.objectEventFunc then
+				nameplate.objectEventFunc = function(_, evnt, ...) update(nameplate, evnt, ...) end
+			end
+			if not E:HasFunctionForObject(event, objectEvent, nameplate.objectEventFunc) then
+				E:RegisterEventForObject(event, objectEvent, nameplate.objectEventFunc)
+			end
+		elseif not nameplate:IsEventRegistered(event) then
+			nameplate:RegisterEvent(event, func or E.noop, unitless)
+		end
 	end
 end
 
@@ -1285,9 +1294,10 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_LIST_UPDATE')
 	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_SITUATION_UPDATE')
 	mod:StyleFilterRegister(nameplate,'VEHICLE_UPDATE', true)
-	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_NEW_AREA', true)
-	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_INDOORS', true)
-	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED', true)
+	mod:StyleFilterRegister(nameplate,'LOADING_SCREEN_DISABLED', nil, nil, E.MapInfo)
+	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_NEW_AREA', nil, nil, E.MapInfo)
+	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_INDOORS', nil, nil, E.MapInfo)
+	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED', nil, nil, E.MapInfo)
 
 	mod:StyleFilterEventWatch(nameplate)
 end
