@@ -132,7 +132,6 @@ end
 
 function B:Tooltip_Show()
 	local GameTooltip = _G.GameTooltip
-	GameTooltip:ClearAllPoints()
 	GameTooltip:SetOwner(self)
 	GameTooltip:ClearLines()
 	GameTooltip:AddLine(self.ttText)
@@ -1471,7 +1470,6 @@ end
 
 function B:Token_OnEnter()
 	local GameTooltip = _G.GameTooltip
-	GameTooltip:ClearAllPoints()
 	GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 	GameTooltip:SetBackpackToken(self:GetID())
 end
@@ -1619,7 +1617,6 @@ function B:ContructContainerFrame(name, isBank)
 	f:SetScript("OnLeave", GameTooltip_Hide)
 	f:SetScript("OnEnter", function(frame)
 		local GameTooltip = _G.GameTooltip
-		GameTooltip:ClearAllPoints()
 		GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT", 0, 4)
 		GameTooltip:ClearLines()
 		GameTooltip:AddDoubleLine(L["Hold Shift + Drag:"], L["Temporary Move"], 1, 1, 1)
@@ -2043,7 +2040,6 @@ end
 function B:OpenBags()
 	B.BagFrame:Show()
 
-	_G.GameTooltip:ClearAllPoints()
 	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
 
@@ -2054,7 +2050,6 @@ function B:CloseBags()
 		B.BankFrame:Hide()
 	end
 
-	_G.GameTooltip:ClearAllPoints()
 	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
 
