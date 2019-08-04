@@ -132,6 +132,7 @@ end
 
 function B:Tooltip_Show()
 	local GameTooltip = _G.GameTooltip
+	GameTooltip:ClearAllPoints()
 	GameTooltip:SetOwner(self)
 	GameTooltip:ClearLines()
 	GameTooltip:AddLine(self.ttText)
@@ -1469,8 +1470,10 @@ function B:UpdateTokens()
 end
 
 function B:Token_OnEnter()
-	_G.GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-	_G.GameTooltip:SetBackpackToken(self:GetID())
+	local GameTooltip = _G.GameTooltip
+	GameTooltip:ClearAllPoints()
+	GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+	GameTooltip:SetBackpackToken(self:GetID())
 end
 
 function B:Token_OnClick()
@@ -1613,9 +1616,10 @@ function B:ContructContainerFrame(name, isBank)
 	f:SetScript("OnDragStart", function(frame) if IsShiftKeyDown() then frame:StartMoving() end end)
 	f:SetScript("OnDragStop", function(frame) frame:StopMovingOrSizing() end)
 	f:SetScript("OnClick", function(frame) if IsControlKeyDown() then B.PostBagMove(frame.mover) end end)
-	f:SetScript("OnLeave", function() _G.GameTooltip:Hide() end)
+	f:SetScript("OnLeave", GameTooltip_Hide)
 	f:SetScript("OnEnter", function(frame)
 		local GameTooltip = _G.GameTooltip
+		GameTooltip:ClearAllPoints()
 		GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT", 0, 4)
 		GameTooltip:ClearLines()
 		GameTooltip:AddDoubleLine(L["Hold Shift + Drag:"], L["Temporary Move"], 1, 1, 1)
@@ -1969,7 +1973,7 @@ function B:ContructContainerFrame(name, isBank)
 			f.currencyButton[i].text:FontTemplate()
 
 			f.currencyButton[i]:SetScript('OnEnter', B.Token_OnEnter)
-			f.currencyButton[i]:SetScript('OnLeave', function() _G.GameTooltip:Hide() end)
+			f.currencyButton[i]:SetScript('OnLeave', GameTooltip_Hide)
 			f.currencyButton[i]:SetScript('OnClick', B.Token_OnClick)
 			f.currencyButton[i]:Hide()
 		end
@@ -2039,6 +2043,7 @@ end
 function B:OpenBags()
 	B.BagFrame:Show()
 
+	_G.GameTooltip:ClearAllPoints()
 	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
 
@@ -2049,6 +2054,7 @@ function B:CloseBags()
 		B.BankFrame:Hide()
 	end
 
+	_G.GameTooltip:ClearAllPoints()
 	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
 
