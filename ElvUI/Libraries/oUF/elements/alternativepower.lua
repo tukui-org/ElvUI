@@ -39,7 +39,7 @@ local function updateTooltip(self)
 end
 
 local function onEnter(self)
-	if not (self:IsVisible() or GameTooltip:IsForbidden()) then return end
+	if (not self:IsVisible()) or GameTooltip:IsForbidden() then return end
 
 	GameTooltip:ClearAllPoints()
 	GameTooltip_SetDefaultAnchor(GameTooltip, self)
