@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 17 -- the real minor version is 74
+local MINOR_VERSION = 18 -- the real minor version is 74
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -1365,6 +1365,7 @@ end
 function UpdateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
 	if (GetCVar("UberTooltips") == "1") then
+		GameTooltip:ClearAllPoints();
 		GameTooltip_SetDefaultAnchor(GameTooltip, self);
 	else
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
