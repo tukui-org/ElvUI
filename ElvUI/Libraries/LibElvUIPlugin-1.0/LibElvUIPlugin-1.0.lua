@@ -1,34 +1,29 @@
 local MAJOR, MINOR = "LibElvUIPlugin-1.0", 29
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
-if not lib then
-	return
-end
+if not lib then return end
 
---Lua functions
-local pairs, tonumber, strmatch, strsub = pairs, tonumber, strmatch, strsub
-local format, gmatch, strlen, gsub, ceil = format, gmatch, strlen, gsub, ceil
---WoW API / Variables
+local pairs, tonumber, strmatch, strsub, tinsert = pairs, tonumber, strmatch, strsub, tinsert
+local format, wipe, type, gmatch, strlen, gsub, ceil = format, wipe, type, gmatch, strlen, gsub, ceil
+
+local hooksecurefunc = hooksecurefunc
+local GetAddOnMetadata = GetAddOnMetadata
 local GetNumGroupMembers = GetNumGroupMembers
 local GetLocale, IsInGuild = GetLocale, IsInGuild
 local CreateFrame, IsAddOnLoaded = CreateFrame, IsAddOnLoaded
-local GetAddOnMetadata = GetAddOnMetadata
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
-local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
-local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
+local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
+local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 -- GLOBALS: ElvUI
 
-lib.plugins = {}
-lib.index = 0
-lib.groupSize = 0
 lib.prefix = "ElvUIPluginVC"
+lib.index, lib.groupSize = 0, 0
+lib.plugins = {}
 ------------------------------
-local MSG_OUTDATED =
-	"Your version of %s %s is out of date (latest is version %s). You can download the latest version from http://www.tukui.org"
+local MSG_OUTDATED = "Your version of %s %s is out of date (latest is version %s). You can download the latest version from http://www.tukui.org"
 local HDR_CONFIG = "Plugins"
-local HDR_INFORMATION =
-	"LibElvUIPlugin-1.0.%d - Plugins Loaded  (Green means you have current version, Red means out of date)"
+local HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - Plugins Loaded  (Green means you have current version, Red means out of date)"
 local INFO_BY = "by"
 local INFO_VERSION = "Version:"
 local INFO_NEW = "Newest:"
@@ -36,21 +31,17 @@ local LIBRARY = "Library"
 
 local locale = GetLocale()
 if locale == "deDE" then
-	MSG_OUTDATED =
-		"Deine Version von %s %s ist veraltet (akutelle Version ist %s). Du kannst die aktuelle Version von http://www.tukui.org herunterrladen."
+	MSG_OUTDATED = "Deine Version von %s %s ist veraltet (akutelle Version ist %s). Du kannst die aktuelle Version von http://www.tukui.org herunterrladen."
 	HDR_CONFIG = "Plugins"
-	HDR_INFORMATION =
-		"LibElvUIPlugin-1.0.%d - Plugins geladen (Grün bedeutet du hast die aktuelle Version, Rot bedeutet es ist veraltet)"
+	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - Plugins geladen (Grün bedeutet du hast die aktuelle Version, Rot bedeutet es ist veraltet)"
 	INFO_BY = "von"
 	INFO_VERSION = "Version:"
 	INFO_NEW = "Neuste:"
 	LIBRARY = "Bibliothek"
 elseif locale == "ruRU" then
-	MSG_OUTDATED =
-		"Ваша версия %s %s устарела (последняя версия %s). Вы можете скачать последнюю версию на http://www.tukui.org"
+	MSG_OUTDATED = "Ваша версия %s %s устарела (последняя версия %s). Вы можете скачать последнюю версию на http://www.tukui.org"
 	HDR_CONFIG = "Плагины"
-	HDR_INFORMATION =
-		"LibElvUIPlugin-1.0.%d - загруженные плагины (зеленый означает, что у вас последняя версия, красный - устаревшая)"
+	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - загруженные плагины (зеленый означает, что у вас последняя версия, красный - устаревшая)"
 	INFO_BY = "от"
 	INFO_VERSION = "Версия:"
 	INFO_NEW = "Последняя:"
@@ -74,23 +65,25 @@ elseif locale == "zhTW" then
 end
 
 ------------------------------
---
 -- Plugin table format:
---   { name (string) - The name of the plugin,
---     version (string) - The version of the plugin,
---     optionCallback (string) - The callback to call when ElvUI_OptionsUI is loaded
+--   {
+--     name (string)		- Name of the plugin,
+--     version (string)		- Version of the plugin,
+--     isLib (boolean)		- Plugin is a library,
+--     callback (function)	- Callback to call when ElvUI_OptionsUI is loaded
 --   }
 --
---
--- RegisterPlugin(name,callback)
+-- RegisterPlugin(name, callback, isLib)
 --   Registers a module with the given name and option callback, pulls version info from metadata
---
+--     name		- Name of Plugin
+--     verion	- Version number
 ------------------------------
+
 function lib:RegisterPlugin(name, callback, isLib)
 	local plugin = {
 		name = name,
 		callback = callback,
-		version = name == MAJOR and MINOR or GetAddOnMetadata(name, "Version")
+		version = (name == MAJOR and MINOR) or GetAddOnMetadata(name, "Version")
 	}
 
 	if isLib then
@@ -112,7 +105,6 @@ function lib:RegisterPlugin(name, callback, isLib)
 	if not loaded then
 		lib.CFFrame:RegisterEvent("ADDON_LOADED")
 	elseif loaded then
-		-- Need to update plugins list
 		if name ~= MAJOR then
 			ElvUI[1].Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
 		end
@@ -144,11 +136,14 @@ end
 function lib:OptionsUILoaded(_, addon)
 	if addon == "ElvUI_OptionsUI" then
 		lib:GetPluginOptions()
+
 		for _, plugin in pairs(lib.plugins) do
 			if plugin.callback then
 				plugin.callback()
 			end
 		end
+
+		lib.CFFrame:UnregisterEvent("ADDON_LOADED")
 	end
 end
 
@@ -222,20 +217,15 @@ end
 
 function lib:GeneratePluginList()
 	local E, list = ElvUI[1], ""
-	local author, Pname, color
 	for _, plugin in pairs(lib.plugins) do
 		if plugin.name ~= MAJOR then
-			author = GetAddOnMetadata(plugin.name, "Author")
-			Pname = GetAddOnMetadata(plugin.name, "Title") or plugin.name
-			color = plugin.old and E:RGBToHex(1, 0, 0) or E:RGBToHex(0, 1, 0)
+			local author = GetAddOnMetadata(plugin.name, "Author")
+			local Pname = GetAddOnMetadata(plugin.name, "Title") or plugin.name
+			local  color = plugin.old and E:RGBToHex(1, 0, 0) or E:RGBToHex(0, 1, 0)
 			list = list .. Pname
-			if author then
-				list = list .. " " .. INFO_BY .. " " .. author
-			end
+			if author then list = list .. " " .. INFO_BY .. " " .. author end
 			list = list .. color .. (plugin.isLib and " " .. LIBRARY or " - " .. INFO_VERSION .. " " .. plugin.version)
-			if plugin.old then
-				list = list .. " (" .. INFO_NEW .. plugin.newversion .. ")"
-			end
+			if plugin.old then list = list .. " (" .. INFO_NEW .. plugin.newversion .. ")" end
 			list = list .. "|r\n"
 		end
 	end
@@ -254,11 +244,9 @@ function lib:SendPluginVersionCheck(message)
 
 	local ChatType
 	if IsInRaid() then
-		ChatType =
-			(not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID"
+		ChatType = (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID"
 	elseif IsInGroup() then
-		ChatType =
-			(not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY"
+		ChatType = (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY"
 	elseif IsInGuild() then
 		ChatType = "GUILD"
 	end
@@ -287,21 +275,34 @@ function lib:SendPluginVersionCheck(message)
 	end
 end
 
+function lib:Initialized()
+	if not lib.inits then return end
+
+	for i=1, #lib.inits, 2 do
+		lib.inits[i](lib.inits[i+1])
+	end
+
+	wipe(lib.inits)
+end
+
+function lib:HookInitialize(tbl, func)
+	if not (tbl and func) then return end
+
+	if type(func) == "string" then
+		func = tbl[func]
+	end
+
+	if not lib.inits then
+		lib.inits = {}
+		hooksecurefunc(ElvUI[1], "Initialize", lib.Initialized)
+	end
+
+	tinsert(lib.inits, func)
+	tinsert(lib.inits, tbl)
+end
+
 lib.VCFrame = CreateFrame("Frame")
 lib.VCFrame:SetScript("OnEvent", lib.VersionCheck)
 
 lib.CFFrame = CreateFrame("Frame")
 lib.CFFrame:SetScript("OnEvent", lib.OptionsUILoaded)
-
-local function CreateInitializeClosure(tbl, func)
-	return function()
-		func(tbl)
-	end
-end
-
-function lib:HookInitialize(tbl, func)
-	if type(func) == "string" then
-		func = tbl[func]
-	end
-	hooksecurefunc(ElvUI[1], "Initialize", CreateInitializeClosure(tbl, func))
-end
