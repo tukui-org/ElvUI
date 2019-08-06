@@ -303,5 +303,5 @@ function lib:HookInitialize(tbl, func)
 	if type(func) == "string" then
 		func = tbl[func]
 	end
-	hooksecurefunc(E, "Initialize", CreateInitializeClosure(tbl, func))
+	hooksecurefunc(ElvUI[1], "Initialize", CreateInitializeClosure(tbl, func))
 end
