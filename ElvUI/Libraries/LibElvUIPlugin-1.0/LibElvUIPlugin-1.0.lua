@@ -18,16 +18,16 @@ Plugin Table Format:  (for reference only).
 
 LibElvUIPlugin API:
 	RegisterPlugin(name, callback, isLib, libVersion)
-		-- Registers a module with the given name and option callback:
-			name		- name of plugin
-			verion		- version number
-			isLib		- plugin is a library
-			libVersion	- plugin library version (optional, defaults to 1)
+	-- Registers a module with the given name and option callback:
+		name		- name of plugin
+		verion		- version number
+		isLib		- plugin is a library
+		libVersion	- plugin library version (optional, defaults to 1)
 
 	HookInitialize(table, function)
-		-- Posthook ElvUI Initialize function:
-			table		- addon table
-			function	- function to call after Initialize (may be a string, that exists on the addons table: table['string'])
+	-- Posthook ElvUI Initialize function:
+		table		- addon table
+		function	- function to call after Initialize (may be a string, that exists on the addons table: table['string'])
 ----------------------------]]--
 
 local pairs, tonumber, strmatch, strsub, tinsert = pairs, tonumber, strmatch, strsub, tinsert
@@ -209,8 +209,8 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 					local Pver, ver = tonumber(plugin.version), tonumber(version)
 					if (ver and Pver) and (ver > Pver) then
 						plugin.old, plugin.newversion = true, ver
-						local Pname = GetAddOnMetadata(plugin.name, "Title")
-						E:Print(format(MSG_OUTDATED, Pname, plugin.version, plugin.newversion))
+						local title = GetAddOnMetadata(plugin.name, "Title") or plugin.name
+						E:Print(format(MSG_OUTDATED, title, plugin.version, plugin.newversion))
 						ElvUI[1].pluginRecievedOutOfDateMessage = true
 					end
 				end
@@ -234,9 +234,9 @@ function lib:GeneratePluginList()
 	for _, plugin in pairs(lib.plugins) do
 		if plugin.name ~= MAJOR then
 			local author = GetAddOnMetadata(plugin.name, "Author")
-			local Pname = GetAddOnMetadata(plugin.name, "Title") or plugin.name
-			local  color = (plugin.old and E:RGBToHex(1, 0, 0)) or E:RGBToHex(0, 1, 0)
-			list = list .. Pname
+			local title = GetAddOnMetadata(plugin.name, "Title") or plugin.name
+			local color = (plugin.old and E:RGBToHex(1, 0, 0)) or E:RGBToHex(0, 1, 0)
+			list = list .. title
 			if author then list = list .. " " .. INFO_BY .. " " .. author end
 			list = list .. color .. (plugin.isLib and " " .. LIBRARY or " - " .. INFO_VERSION .. " " .. plugin.version)
 			if plugin.old then list = list .. " (" .. INFO_NEW .. plugin.newversion .. ")" end
