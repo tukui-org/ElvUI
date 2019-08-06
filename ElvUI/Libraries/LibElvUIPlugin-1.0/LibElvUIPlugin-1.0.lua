@@ -1,5 +1,5 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 30
-local lib = LibStub:NewLibrary(MAJOR, MINOR)
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 31
+local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
 
@@ -49,6 +49,8 @@ lib.plugins = {}
 lib.groupSize = 0
 lib.index = 0
 
+local E -- placeholder
+
 local MSG_OUTDATED = "Your version of %s %s is out of date (latest is version %s). You can download the latest version from http://www.tukui.org"
 local HDR_CONFIG = "Plugins"
 local HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - Plugins Loaded  (Green means you have current version, Red means out of date)"
@@ -92,6 +94,16 @@ elseif locale == "zhTW" then
 	LIBRARY = "庫"
 end
 
+local checkElvUI
+
+checkElvUI = function()
+	if not E then
+		E = ElvUI[1]
+	end
+	assert(E, "ElvUI not found.")
+	checkElvUI = E.noop
+end
+
 function lib:RegisterPlugin(name, callback, isLib, libVersion)
 	local plugin = {
 		name = name,
@@ -120,7 +132,8 @@ function lib:RegisterPlugin(name, callback, isLib, libVersion)
 		lib.CFFrame:RegisterEvent("ADDON_LOADED")
 	elseif loaded then
 		if name ~= MAJOR then
-			ElvUI[1].Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
+			checkElvUI()
+			E.Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
 		end
 
 		if callback then
@@ -136,14 +149,13 @@ local function SendVersionCheckMessage()
 end
 
 function lib:DelayedSendVersionCheck(delay)
-	local E = ElvUI[1]
-
+	checkElvUI()
 	if not E.SendPluginVersionCheck then
-		ElvUI[1].SendPluginVersionCheck = SendVersionCheckMessage
+		E.SendPluginVersionCheck = SendVersionCheckMessage
 	end
 
 	if not lib.SendMessageWaiting then
-		lib.SendMessageWaiting = E:Delay(delay or 10, ElvUI[1].SendPluginVersionCheck)
+		lib.SendMessageWaiting = E:Delay(delay or 10, E.SendPluginVersionCheck)
 	end
 end
 
@@ -172,7 +184,8 @@ function lib:GenerateVersionCheckMessage()
 end
 
 function lib:GetPluginOptions()
-	ElvUI[1].Options.args.plugins = {
+	checkElvUI()
+	E.Options.args.plugins = {
 		order = -10,
 		type = "group",
 		name = HDR_CONFIG,
@@ -193,7 +206,7 @@ function lib:GetPluginOptions()
 end
 
 function lib:VersionCheck(event, prefix, message, _, sender)
-	local E = ElvUI[1]
+	checkElvUI()
 	if (event == "CHAT_MSG_ADDON" and prefix == lib.prefix) and (sender and message and not strmatch(message, "^%s-$")) then
 		if not lib.myName then
 			lib.myName = E.myname .. "-" .. gsub(E.myrealm, "[%s%-]", "")
@@ -230,7 +243,8 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 end
 
 function lib:GeneratePluginList()
-	local E, list = ElvUI[1], ""
+	checkElvUI()
+	local list = ""
 	for _, plugin in pairs(lib.plugins) do
 		if plugin.name ~= MAJOR then
 			local author = GetAddOnMetadata(plugin.name, "Author")
@@ -272,7 +286,8 @@ function lib:SendPluginVersionCheck(message)
 
 	local delay, maxChar, msgLength = 0, 250, strlen(message)
 	if msgLength > maxChar then
-		local E, splitMessage = ElvUI[1]
+		checkElvUI()
+		local splitMessage
 		for _ = 1, ceil(msgLength / maxChar) do
 			splitMessage = strmatch(strsub(message, 1, maxChar), ".+;")
 			if splitMessage then -- incase the string is over 250 but doesnt contain `;`
@@ -289,11 +304,11 @@ function lib:SendPluginVersionCheck(message)
 	end
 end
 
-function lib:Initialized()
+function lib.Initialized()
 	if not lib.inits then return end
 
-	for i=1, #lib.inits, 2 do
-		lib.inits[i](lib.inits[i+1])
+	for _, initTbl in ipairs(lib.inits) do
+		initTbl[2](initTbl[1])
 	end
 
 	wipe(lib.inits)
@@ -306,13 +321,13 @@ function lib:HookInitialize(tbl, func)
 		func = tbl[func]
 	end
 
-	if not lib.inits then
-		lib.inits = {}
-		hooksecurefunc(ElvUI[1], "Initialize", lib.Initialized)
+	if not self.inits then
+		self.inits = {}
+		checkElvUI()
+		hooksecurefunc(E, "Initialize", self.Initialized)
 	end
 
-	tinsert(lib.inits, func)
-	tinsert(lib.inits, tbl)
+	tinsert(lib.inits, { tbl, func })
 end
 
 lib.VCFrame = CreateFrame("Frame")
