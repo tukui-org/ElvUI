@@ -362,7 +362,7 @@ local function LoadSkin()
 	SideDressUpFrame:StripTextures()
 	SideDressUpFrame.BGTopLeft:Hide()
 	SideDressUpFrame.BGBottomLeft:Hide()
-	S:HandleButton(_G.SideDressUpModelResetButton)
+	--S:HandleButton(_G.SideDressUpModelResetButton)
 	SideDressUpFrame:SetTemplate("Transparent")
 
 	-- StackSplit
