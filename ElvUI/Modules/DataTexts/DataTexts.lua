@@ -9,7 +9,6 @@ local _G = _G
 local pairs, type, error = pairs, type, error
 local strlen = strlen
 --WoW API / Variables
-local C_Timer_After = C_Timer.After
 local CreateFrame = CreateFrame
 local IsInInstance = IsInInstance
 local InCombatLockdown = InCombatLockdown
@@ -51,7 +50,7 @@ function DT:PLAYER_ENTERING_WORLD()
 end
 
 local function LoadDataTextsDelayed()
-	C_Timer_After(0.5, function() DT:LoadDataTexts() end)
+	E:Delay(0.5, DT.LoadDataTexts, DT)
 end
 
 local LDBHex = '|cffFFFFFF'

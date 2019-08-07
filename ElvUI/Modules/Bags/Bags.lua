@@ -74,7 +74,6 @@ local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
-local C_Timer_After = C_Timer.After
 local hooksecurefunc = hooksecurefunc
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
@@ -2176,7 +2175,7 @@ function B:PLAYER_ENTERING_WORLD()
 	B:UpdateGoldText()
 
 	-- Update bag types for bagslot coloring
-	C_Timer_After(2, B.PlayerEnteringWorld)
+	E:Delay(2, B.PlayerEnteringWorld)
 end
 
 function B:UpdateContainerFrameAnchors()

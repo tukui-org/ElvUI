@@ -54,7 +54,6 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
-local C_Timer_After = C_Timer.After
 -- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs
 
 --Constants
@@ -1029,17 +1028,14 @@ do
 				nextDelay = 0.05
 			end
 
-			C_Timer_After(nextDelay or staggerDelay, E[nextUpdate])
+			E:Delay(nextDelay or staggerDelay, E[nextUpdate])
 		end
 	end
 	E:RegisterCallback("StaggeredUpdate", CallStaggeredUpdate)
 
 	function E:StaggeredUpdateAll(event, installSetup)
 		if not self.initialized then
-			C_Timer_After(1, function()
-				E:StaggeredUpdateAll(event, installSetup)
-			end)
-
+			E:Delay(1, E.StaggeredUpdateAll, E, event, installSetup)
 			return
 		end
 
