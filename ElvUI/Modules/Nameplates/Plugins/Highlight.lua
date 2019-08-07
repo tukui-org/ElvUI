@@ -1,9 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
--- Cache global variables
--- Lua functions
--- WoW API / Variables
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 
@@ -15,31 +12,39 @@ local function MouseOnUnit(frame)
 	return false
 end
 
-local function Update(self, event)
+local function OnUpdate(self, elapsed)
+	if self.elapsed and self.elapsed > 0.1 then
+		if not MouseOnUnit(self) then
+			self:Hide()
+			self:ForceUpdate()
+		end
+
+		self.elapsed = 0
+	else
+		self.elapsed = (self.elapsed or 0) + elapsed
+	end
+end
+
+local function Update(self)
 	local element = self.Highlight
 
-	if (element.PreUpdate) then
+	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
-	if MouseOnUnit(self) or UnitIsUnit("mouseover", self.unit) then
+	if MouseOnUnit(self) then
 		element:Show()
-
-		if element.DelayedForceUpdate and not element.hasDelay then
-			E:Delay(0.1, element.DelayedForceUpdate)
-			element.hasDelay = true
-		end
 	else
 		element:Hide()
 	end
 
-	if (element.PostUpdate) then
+	if element.PostUpdate then
 		return element:PostUpdate(element:IsShown())
 	end
 end
 
 local function Path(self, ...)
-	return (self.Highlight.Override or Update) (self, ...)
+	return (self.Highlight.Override or Update)(self, ...)
 end
 
 local function ForceUpdate(element)
@@ -48,21 +53,12 @@ end
 
 local function Enable(self)
 	local element = self.Highlight
-	if (element) then
+	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+		element:SetScript('OnUpdate', OnUpdate)
 
-		if not element.DelayedForceUpdate then
-			element.DelayedForceUpdate = function()
-				if element.ForceUpdate then
-					element:ForceUpdate()
-				end
-
-				element.hasDelay = nil
-			end
-		end
-
-		self:RegisterEvent("UPDATE_MOUSEOVER_UNIT", Path, true)
+		self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', Path, true)
 
 		return true
 	end
@@ -70,10 +66,11 @@ end
 
 local function Disable(self)
 	local element = self.Highlight
-	if (element) then
+	if element then
 		element:Hide()
+		element:SetScript('OnUpdate', nil)
 
-		self:UnregisterEvent("UPDATE_MOUSEOVER_UNIT", Path)
+		self:UnregisterEvent('UPDATE_MOUSEOVER_UNIT', Path)
 	end
 end
 
