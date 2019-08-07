@@ -491,8 +491,8 @@ local function LoadSkin()
 	hooksecurefunc("TokenFrame_Update", UpdateCurrencySkins)
 	hooksecurefunc(_G.TokenFrameContainer, "update", UpdateCurrencySkins)
 
-	-- Tutorials
-	S:HandleCloseButton(_G.PaperDollItemsFrame.HelpTipBox.CloseButton)
+	-- Tutorials have a look for the new name on PTR 8.2.5
+	-- S:HandleCloseButton(_G.PaperDollItemsFrame.HelpTipBox.CloseButton)
 end
 
 S:AddCallback("Character", LoadSkin)
