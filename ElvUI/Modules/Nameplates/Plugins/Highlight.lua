@@ -24,7 +24,7 @@ local function Update(self, event)
 
 	if MouseOnUnit(self) or UnitIsUnit("mouseover", self.unit) then
 		element:Show()
-		E:Delay(0.1, element.ForceUpdate, element)
+		E:Delay(0.1, function() element:ForceUpdate() end)
 	else
 		element:Hide()
 	end
