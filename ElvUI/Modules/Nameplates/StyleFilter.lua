@@ -282,20 +282,30 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 	E.CreatureTypes = c
 end
 
+function mod:StyleFilterWaitCallback(frame, button, varTimerName)
+	if frame and frame:IsShown() then
+		mod:StyleFilterUpdate(frame, 'FAKE_AuraWaitTimer')
+	end
+	if button and button[varTimerName] then
+		--button[varTimerName]:Cancel()
+		button[varTimerName] = nil
+	end
+end
+
+function mod:StyleFilterWaitCreate(delay, frame, button, varTimerName)
+	return C_Timer_NewTimer(delay, function() mod:StyleFilterWaitCallback(frame, button, varTimerName) end)
+end
+
 function mod:StyleFilterAuraWait(frame, button, varTimerName, timeLeft, mTimeLeft)
 	if button and not button[varTimerName] then
 		local updateIn = timeLeft-mTimeLeft
-		if updateIn > 0 then
-			-- also add a tenth of a second to updateIn to prevent the timer from firing on the same second
-			button[varTimerName] = C_Timer_NewTimer(updateIn+0.1, function()
-				if frame and frame:IsShown() then
-					mod:StyleFilterUpdate(frame, 'FAKE_AuraWaitTimer')
-				end
-				if button and button[varTimerName] then
-					button[varTimerName] = nil
-				end
-			end)
-end end end
+		if updateIn > 0 then -- also add a tenth of a second to updateIn to prevent the timer from firing on the same second
+			E:Delay(updateIn+0.1, mod.StyleFilterWaitCallback, mod, frame, button, varTimerName)
+			button[varTimerName] = true
+			--mod:StyleFilterWaitCreate(updateIn+0.1, frame, button, varTimerName)
+		end
+	end
+end
 
 function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
 	local total, count = 0, 0
