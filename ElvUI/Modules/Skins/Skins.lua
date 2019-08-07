@@ -417,6 +417,7 @@ function S:HandleMaxMinFrame(frame)
 end
 
 function S:HandleEditBox(frame)
+	assert(frame, "doesnt exist!")
 	if frame.backdrop then return end
 
 	local EditBoxName = frame.GetName and frame:GetName()
