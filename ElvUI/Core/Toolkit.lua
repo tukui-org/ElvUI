@@ -415,13 +415,16 @@ local function StripTexts(object, kill, alpha)
 end
 
 local function FontTemplate(fs, font, fontSize, fontStyle)
-	fs.font = font
-	fs.fontSize = fontSize
-	fs.fontStyle = fontStyle
+	fs.font, fs.fontSize, fs.fontStyle = font, fontSize, fontStyle
 
 	font = font or LSM:Fetch('font', E.db.general.font)
-	fontSize = fontSize or E.db.general.fontSize
 	fontStyle = fontStyle or E.db.general.fontStyle
+
+	if fontSize and fontSize > 0 then
+		fontSize = fontSize
+	else
+		fontSize = E.db.general.fontSize
+	end
 
 	if fontStyle == 'OUTLINE' and E.db.general.font == 'Homespun' and (fontSize > 10 and not fs.fontSize) then
 		fontSize, fontStyle = 10, 'MONOCHROMEOUTLINE'
