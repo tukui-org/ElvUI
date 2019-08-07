@@ -345,7 +345,7 @@ local function LoadSkin()
 
 	-- Find new Name for 8.2.5
 	--S:HandleCloseButton(_G.PlayerTalentFrameTalents.PvpTalentFrame.TrinketSlot.HelpBox.CloseButton)
-	S:HandleCloseButton(_G.PlayerTalentFrameTalents.PvpTalentFrame.WarmodeTutorialBox.CloseButton)
+	--S:HandleCloseButton(_G.PlayerTalentFrameTalents.PvpTalentFrame.WarmodeTutorialBox.CloseButton)
 end
 
 S:AddCallbackForAddon("Blizzard_TalentUI", "Talent", LoadSkin)
