@@ -300,7 +300,7 @@ end
 function mod:StyleFilterAuraWait(frame, button, timer, timeLeft, mTimeLeft)
 	if button and not button[timer] then
 		local updateIn = timeLeft-mTimeLeft
-		if updateIn > 0 then --also add a tenth of a second to updateIn to prevent the timer from firing on the same second
+		if updateIn > 0 then -- also add a tenth of a second to updateIn to prevent the timer from firing on the same second
 			button[timer] = mod:StyleFilterTickerCreate(updateIn+0.1, frame, button, timer)
 		end
 	end
@@ -309,8 +309,8 @@ end
 function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
 	local total, count = 0, 0
 	for name, value in pairs(names) do
-		if value then --only if they are turned on
-			total = total + 1 --keep track of the names
+		if value then -- only if they are turned on
+			total = total + 1 -- keep track of the names
 
 			if auras.createdIcons and auras.createdIcons > 0 then
 				for i = 1, auras.createdIcons do
@@ -323,21 +323,21 @@ function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, min
 								local timeLeft = (hasMinTime or hasMaxTime) and button.expiration and (button.expiration - GetTime())
 								local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
 								local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
-								if timeLeft then --if we use a min/max time setting; we must create a delay timer
+								if timeLeft then -- if we use a min/max time setting; we must create a delay timer
 									if hasMinTime then mod:StyleFilterAuraWait(frame, button, 'hasMinTimer', timeLeft, minTimeLeft) end
 									if hasMaxTime then mod:StyleFilterAuraWait(frame, button, 'hasMaxTimer', timeLeft, maxTimeLeft) end
 								end
 								if minTimeAllow and maxTimeAllow then
-									count = count + 1 --keep track of how many matches we have
+									count = count + 1 -- keep track of how many matches we have
 								end
 							end
-						else --allow new timers
+						else -- allow new timers
 							if button.hasMinTimer then button.hasMinTimer:Cancel() button.hasMinTimer = nil end
 							if button.hasMaxTimer then button.hasMaxTimer:Cancel() button.hasMaxTimer = nil end
 	end end end end end end
 
 	if total == 0 then
-		return nil --If no auras are checked just pass nil, we dont need to run the filter here.
+		return nil -- If no auras are checked just pass nil, we dont need to run the filter here.
 	else
 		return ((mustHaveAll and not missing) and total == count)	-- [x] Check for all [ ] Missing: total needs to match count
 		or ((not mustHaveAll and not missing) and count > 0)		-- [ ] Check for all [ ] Missing: count needs to be greater than zero
@@ -351,19 +351,19 @@ function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 	local _, gcd = GetSpellCooldown(61304)
 
 	for name, value in pairs(names) do
-		if GetSpellInfo(name) then --check spell name valid, GetSpellCharges/GetSpellCooldown will return nil if not known by your class
-			if value == 'ONCD' or value == 'OFFCD' then --only if they are turned on
-				total = total + 1 --keep track of the names
+		if GetSpellInfo(name) then -- check spell name valid, GetSpellCharges/GetSpellCooldown will return nil if not known by your class
+			if value == 'ONCD' or value == 'OFFCD' then -- only if they are turned on
+				total = total + 1 -- keep track of the names
 
 				local charges = GetSpellCharges(name)
 				local _, duration = GetSpellCooldown(name)
 
-				if (charges and charges == 0 and value == 'ONCD') --charges exist and the current number of charges is 0 means that it is completely on cooldown.
-				or (charges and charges > 0 and value == 'OFFCD') --charges exist and the current number of charges is greater than 0 means it is not on cooldown.
-				or (charges == nil and (duration > gcd and value == 'ONCD')) --no charges exist and the duration of the cooldown is greater than the GCD spells current cooldown then it is on cooldown.
-				or (charges == nil and (duration <= gcd and value == 'OFFCD')) then --no charges exist and the duration of the cooldown is at or below the current GCD cooldown spell then it is not on cooldown.
+				if (charges and charges == 0 and value == 'ONCD') -- charges exist and the current number of charges is 0 means that it is completely on cooldown.
+				or (charges and charges > 0 and value == 'OFFCD') -- charges exist and the current number of charges is greater than 0 means it is not on cooldown.
+				or (charges == nil and (duration > gcd and value == 'ONCD')) -- no charges exist and the duration of the cooldown is greater than the GCD spells current cooldown then it is on cooldown.
+				or (charges == nil and (duration <= gcd and value == 'OFFCD')) then -- no charges exist and the duration of the cooldown is at or below the current GCD cooldown spell then it is not on cooldown.
 					count = count + 1
-					--print(((charges and charges == 0 and value == 'ONCD') and name..' (charge) passes because it is on cd') or ((charges and charges > 0 and value == 'OFFCD') and name..' (charge) passes because it is offcd') or ((charges == nil and (duration > gcd and value == 'ONCD')) and name..'passes because it is on cd.') or ((charges == nil and (duration <= gcd and value == 'OFFCD')) and name..' passes because it is off cd.'))
+					-- print(((charges and charges == 0 and value == 'ONCD') and name..' (charge) passes because it is on cd') or ((charges and charges > 0 and value == 'OFFCD') and name..' (charge) passes because it is offcd') or ((charges == nil and (duration > gcd and value == 'ONCD')) and name..'passes because it is on cd.') or ((charges == nil and (duration <= gcd and value == 'OFFCD')) and name..' passes because it is off cd.'))
 	end end end end
 
 	if total == 0 then
@@ -410,7 +410,7 @@ function mod:StyleFilterNameChanged()
 end
 
 function mod:StyleFilterBorderLock(backdrop, switch)
-	backdrop.ignoreBorderColors = switch --but keep the backdrop updated
+	backdrop.ignoreBorderColors = switch -- but keep the backdrop updated
 end
 
 function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
@@ -420,7 +420,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		mod:DisablePlate(frame) -- disable the plate elements
 		frame:ClearAllPoints() -- lets still move the frame out cause its clickable otherwise
 		frame:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
-		return --We hide it. Lets not do other things (no point)
+		return -- We hide it. Lets not do other things (no point)
 	end
 	if HealthColorChanged then
 		frame.StyleChanged = true
@@ -964,7 +964,7 @@ end
 
 function mod:StyleFilterSort(place)
 	if self[2] and place[2] then
-		return self[2] > place[2] --Sort by priority: 1=first, 2=second, 3=third, etc
+		return self[2] > place[2] -- Sort by priority: 1=first, 2=second, 3=third, etc
 	end
 end
 
@@ -1200,7 +1200,7 @@ function mod:StyleFilterUpdate(frame, event)
 		elseif GetTime() > (frame.StyleFilterWaitTime + 0.1) then
 			frame.StyleFilterWaitTime = nil
 		else
-			return --block calls faster than 0.1 second
+			return -- block calls faster than 0.1 second
 		end
 	end
 
