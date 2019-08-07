@@ -25,8 +25,8 @@ local function Update(self, event)
 	if MouseOnUnit(self) or UnitIsUnit("mouseover", self.unit) then
 		element:Show()
 
-		if not element.hasDelay then
-			E:Delay(0.1, element.ForceUpdate, element, true)
+		if element.DelayedForceUpdate and not element.hasDelay then
+			E:Delay(0.1, element.DelayedForceUpdate)
 			element.hasDelay = true
 		end
 	else
@@ -42,11 +42,7 @@ local function Path(self, ...)
 	return (self.Highlight.Override or Update) (self, ...)
 end
 
-local function ForceUpdate(element, unsetDelay)
-	if unsetDelay then
-		element.hasDelay = nil
-	end
-
+local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
@@ -55,6 +51,16 @@ local function Enable(self)
 	if (element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+
+		if not element.DelayedForceUpdate then
+			element.DelayedForceUpdate = function()
+				if element.ForceUpdate then
+					element:ForceUpdate()
+				end
+
+				element.hasDelay = nil
+			end
+		end
 
 		self:RegisterEvent("UPDATE_MOUSEOVER_UNIT", Path, true)
 
