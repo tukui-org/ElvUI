@@ -49,8 +49,6 @@ lib.plugins = {}
 lib.groupSize = 0
 lib.index = 0
 
-local E -- placeholder
-
 local MSG_OUTDATED = "Your version of %s %s is out of date (latest is version %s). You can download the latest version from http://www.tukui.org"
 local HDR_CONFIG = "Plugins"
 local HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - Plugins Loaded  (Green means you have current version, Red means out of date)"
@@ -94,17 +92,17 @@ elseif locale == "zhTW" then
 	LIBRARY = "庫"
 end
 
-local checkElvUI
-
-checkElvUI = function()
+local E
+local checkElvUI = function()
 	if not E then
 		E = ElvUI[1]
+		assert(E, "ElvUI not found.")
 	end
-	assert(E, "ElvUI not found.")
-	checkElvUI = E.noop
 end
 
 function lib:RegisterPlugin(name, callback, isLib, libVersion)
+	checkElvUI()
+
 	local plugin = {
 		name = name,
 		callback = callback
@@ -132,7 +130,6 @@ function lib:RegisterPlugin(name, callback, isLib, libVersion)
 		lib.CFFrame:RegisterEvent("ADDON_LOADED")
 	elseif loaded then
 		if name ~= MAJOR then
-			checkElvUI()
 			E.Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
 		end
 
@@ -149,7 +146,6 @@ local function SendVersionCheckMessage()
 end
 
 function lib:DelayedSendVersionCheck(delay)
-	checkElvUI()
 	if not E.SendPluginVersionCheck then
 		E.SendPluginVersionCheck = SendVersionCheckMessage
 	end
@@ -184,7 +180,6 @@ function lib:GenerateVersionCheckMessage()
 end
 
 function lib:GetPluginOptions()
-	checkElvUI()
 	E.Options.args.plugins = {
 		order = -10,
 		type = "group",
@@ -206,7 +201,6 @@ function lib:GetPluginOptions()
 end
 
 function lib:VersionCheck(event, prefix, message, _, sender)
-	checkElvUI()
 	if (event == "CHAT_MSG_ADDON" and prefix == lib.prefix) and (sender and message and not strmatch(message, "^%s-$")) then
 		if not lib.myName then
 			lib.myName = E.myname .. "-" .. gsub(E.myrealm, "[%s%-]", "")
@@ -243,7 +237,6 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 end
 
 function lib:GeneratePluginList()
-	checkElvUI()
 	local list = ""
 	for _, plugin in pairs(lib.plugins) do
 		if plugin.name ~= MAJOR then
@@ -286,7 +279,6 @@ function lib:SendPluginVersionCheck(message)
 
 	local delay, maxChar, msgLength = 0, 250, strlen(message)
 	if msgLength > maxChar then
-		checkElvUI()
 		local splitMessage
 		for _ = 1, ceil(msgLength / maxChar) do
 			splitMessage = strmatch(strsub(message, 1, maxChar), ".+;")
