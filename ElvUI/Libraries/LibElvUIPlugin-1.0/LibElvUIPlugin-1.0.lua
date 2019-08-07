@@ -94,7 +94,7 @@ elseif locale == "zhTW" then
 end
 
 local E
-local checkElvUI = function()
+local function checkElvUI()
 	if not E then
 		E = ElvUI[1]
 		assert(E, "ElvUI not found.")
