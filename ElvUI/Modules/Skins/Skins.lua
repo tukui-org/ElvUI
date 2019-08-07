@@ -237,8 +237,8 @@ function S:SkinTalentListButtons(frame)
 end
 
 function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSetTemplate)
-	if button.isSkinned then return end
 	assert(button, "doesn't exist!")
+	if button.isSkinned then return end
 
 	local buttonName = button.GetName and button:GetName()
 
@@ -684,6 +684,7 @@ local handleCloseButtonOnEnter = function(btn) if btn.Texture then btn.Texture:S
 local handleCloseButtonOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
 
 function S:HandleCloseButton(f, point)
+	assert(f, "doenst exist!")
 	f:StripTextures()
 
 	if not f.Texture then
