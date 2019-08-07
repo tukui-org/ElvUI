@@ -204,7 +204,7 @@ end
 do	-- this will handle `8.1.5.0015` into `8.150015` etc
 	local verStrip = function(a, b) return a..gsub(b,'%.', '') end
 	function lib:StripVersion(version)
-		local ver = gsub(version, '(%d%.)([%d%.]+)', verStrip)
+		local ver = gsub(version, '(%d-%.)([%d%.]+)', verStrip)
 		return tonumber(ver)
 	end
 end
