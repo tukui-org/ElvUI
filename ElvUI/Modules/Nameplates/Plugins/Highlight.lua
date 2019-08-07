@@ -15,12 +15,9 @@ end
 
 local function OnUpdate(self, elapsed)
 	if self.elapsed and self.elapsed > 0.1 then
-		local element = self:GetParent()
-		if element and not MouseOnUnit(element) then
+		if not MouseOnUnit(self) then
 			self:Hide()
-			element:ForceUpdate()
-		elseif not element then
-			self:Hide()
+			self:ForceUpdate()
 		end
 
 		self.elapsed = 0
@@ -38,7 +35,6 @@ local function Update(self)
 
 	if MouseOnUnit(self) then
 		element:Show()
-		element.watcher:Show()
 	else
 		element:Hide()
 	end
@@ -61,12 +57,7 @@ local function Enable(self)
 	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
-
-		if not element.watcher then
-			element.watcher = CreateFrame('Frame', nil, element)
-			element.watcher:SetScript('OnUpdate', OnUpdate)
-			element.watcher:Hide()
-		end
+		element:SetScript('OnUpdate', OnUpdate)
 
 		self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', Path, true)
 
@@ -78,6 +69,7 @@ local function Disable(self)
 	local element = self.Highlight
 	if element then
 		element:Hide()
+		element:SetScript('OnUpdate', nil)
 
 		self:UnregisterEvent('UPDATE_MOUSEOVER_UNIT', Path)
 	end
