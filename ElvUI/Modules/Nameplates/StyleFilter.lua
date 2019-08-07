@@ -283,7 +283,7 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 end
 
 function mod:StyleFilterTickerCallback(frame, button, timer)
-	if (frame and frame:IsShown()) and (button and button:IsShown()) then
+	if frame and frame:IsShown() then
 		mod:StyleFilterUpdate(frame, 'FAKE_AuraWaitTimer')
 	end
 
