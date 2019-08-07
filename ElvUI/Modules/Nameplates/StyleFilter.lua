@@ -282,22 +282,26 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 	E.CreatureTypes = c
 end
 
-function mod:StyleFilterAuraWaitCallback(frame, button, varTimerName)
+function mod:StyleFilterTickerCallback(frame, button, timer)
 	if (frame and frame:IsShown()) and (button and button:IsShown()) then
 		mod:StyleFilterUpdate(frame, 'FAKE_AuraWaitTimer')
 	end
 
-	if button and button[varTimerName] then
-		button[varTimerName] = nil
+	if button and button[timer] then
+		button[timer]:Cancel()
+		button[timer] = nil
 	end
 end
 
-function mod:StyleFilterAuraWait(frame, button, varTimerName, timeLeft, mTimeLeft)
-	if button and not button[varTimerName] then
+function mod:StyleFilterTickerCreate(delay, frame, button, timer)
+	return C_Timer_NewTimer(delay, function() mod:StyleFilterTickerCallback(frame, button, timer) end)
+end
+
+function mod:StyleFilterAuraWait(frame, button, timer, timeLeft, mTimeLeft)
+	if button and not button[timer] then
 		local updateIn = timeLeft-mTimeLeft
 		if updateIn > 0 then --also add a tenth of a second to updateIn to prevent the timer from firing on the same second
-			E:Delay(updateIn+0.1, mod.StyleFilterAuraWaitCallback, mod, frame, button, varTimerName)
-			button[varTimerName] = true
+			button[timer] = mod:StyleFilterTickerCreate(updateIn+0.1, frame, button, timer)
 		end
 	end
 end
@@ -328,8 +332,8 @@ function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, min
 								end
 							end
 						else --allow new timers
-							if button.hasMinTimer then button.hasMinTimer = nil end
-							if button.hasMaxTimer then button.hasMaxTimer = nil end
+							if button.hasMinTimer then button.hasMinTimer:Cancel() button.hasMinTimer = nil end
+							if button.hasMaxTimer then button.hasMaxTimer:Cancel() button.hasMaxTimer = nil end
 	end end end end end end
 
 	if total == 0 then
