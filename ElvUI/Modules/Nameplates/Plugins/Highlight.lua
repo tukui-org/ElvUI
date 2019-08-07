@@ -3,7 +3,6 @@ local oUF = E.oUF
 
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
-local CreateFrame = CreateFrame
 
 local function MouseOnUnit(frame)
 	if frame and frame:IsVisible() and UnitExists('mouseover') then
