@@ -289,6 +289,7 @@ local function GrabScrollBarElement(frame, element)
 end
 
 function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
+	assert(frame, "doesnt exist!")
 	if frame.backdrop then return end
 	local parent = frame:GetParent()
 
