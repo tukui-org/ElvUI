@@ -343,7 +343,8 @@ local function LoadSkin()
 	S:HandleButton(_G.PlayerTalentFrameTalents.PvpTalentButton)
 	S:HandleScrollBar(_G.PlayerTalentFrameTalents.PvpTalentFrame.TalentList.ScrollFrame.ScrollBar)
 
-	S:HandleCloseButton(_G.PlayerTalentFrameTalents.PvpTalentFrame.TrinketSlot.HelpBox.CloseButton)
+	-- Find new Name for 8.2.5
+	--S:HandleCloseButton(_G.PlayerTalentFrameTalents.PvpTalentFrame.TrinketSlot.HelpBox.CloseButton)
 	S:HandleCloseButton(_G.PlayerTalentFrameTalents.PvpTalentFrame.WarmodeTutorialBox.CloseButton)
 end
 
