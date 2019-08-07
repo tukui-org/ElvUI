@@ -331,7 +331,7 @@ function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, min
 									count = count + 1 -- keep track of how many matches we have
 								end
 							end
-						else -- allow new timers
+						else -- cancel stale timers
 							if button.hasMinTimer then button.hasMinTimer:Cancel() button.hasMinTimer = nil end
 							if button.hasMaxTimer then button.hasMaxTimer:Cancel() button.hasMaxTimer = nil end
 	end end end end end end
