@@ -752,6 +752,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[261438] = Defaults(), -- Wasting Strike
 		[268202] = Defaults(), -- Death Lens
 		[278456] = Defaults(), -- Infest
+		[264153] = Defaults(), -- Spit
 
 		-- Atal'Dazar
 		[252781] = Defaults(), -- Unstable Hex

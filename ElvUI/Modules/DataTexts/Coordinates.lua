@@ -20,15 +20,13 @@ local function Update(self, elapsed)
 	end
 end
 
-local function OnEvent(self)
-	E:MapInfo_Update()
-
+local function OnEvent(panel)
 	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false
-		self.text:SetFormattedText(displayString, E.MapInfo.xText or 0, E.MapInfo.yText or 0)
+		panel.text:SetFormattedText(displayString, E.MapInfo.xText or 0, E.MapInfo.yText or 0)
 	else
 		inRestrictedArea = true
-		self.text:SetText('')
+		panel.text:SetText('')
 	end
 end
 
@@ -42,4 +40,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Coords', {"ZONE_CHANGED","ZONE_CHANGED_INDOORS","ZONE_CHANGED_NEW_AREA"}, OnEvent, Update, Click, nil, nil, L["Coords"])
+DT:RegisterDatatext('Coords', {"LOADING_SCREEN_DISABLED","ZONE_CHANGED","ZONE_CHANGED_INDOORS","ZONE_CHANGED_NEW_AREA"}, OnEvent, Update, Click, nil, nil, L["Coords"], E.MapInfo)

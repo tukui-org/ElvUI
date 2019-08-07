@@ -282,47 +282,62 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 	E.CreatureTypes = c
 end
 
-function mod:StyleFilterAuraWait(frame, button, varTimerName, timeLeft, mTimeLeft)
-	if button and not button[varTimerName] then
+function mod:StyleFilterTickerCallback(frame, button, timer)
+	if frame and frame:IsShown() then
+		mod:StyleFilterUpdate(frame, 'FAKE_AuraWaitTimer')
+	end
+
+	if button and button[timer] then
+		button[timer]:Cancel()
+		button[timer] = nil
+	end
+end
+
+function mod:StyleFilterTickerCreate(delay, frame, button, timer)
+	return C_Timer_NewTimer(delay, function() mod:StyleFilterTickerCallback(frame, button, timer) end)
+end
+
+function mod:StyleFilterAuraWait(frame, button, timer, timeLeft, mTimeLeft)
+	if button and not button[timer] then
 		local updateIn = timeLeft-mTimeLeft
-		if updateIn > 0 then
-			-- also add a tenth of a second to updateIn to prevent the timer from firing on the same second
-			button[varTimerName] = C_Timer_NewTimer(updateIn+0.1, function()
-				if frame and frame:IsShown() then
-					mod:StyleFilterUpdate(frame, 'FAKE_AuraWaitTimer')
-				end
-				if button and button[varTimerName] then
-					button[varTimerName] = nil
-				end
-			end)
-end end end
+		if updateIn > 0 then -- also add a tenth of a second to updateIn to prevent the timer from firing on the same second
+			button[timer] = mod:StyleFilterTickerCreate(updateIn+0.1, frame, button, timer)
+		end
+	end
+end
 
 function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
 	local total, count = 0, 0
 	for name, value in pairs(names) do
-		if value then --only if they are turned on
-			total = total + 1 --keep track of the names
+		if value then -- only if they are turned on
+			total = total + 1 -- keep track of the names
 
 			if auras.createdIcons and auras.createdIcons > 0 then
 				for i = 1, auras.createdIcons do
 					local button = auras[i]
-					if button and button:IsShown() then
-						if (button.name and button.name == name) or (button.spellID and button.spellID == tonumber(name)) then
-							local hasMinTime = minTimeLeft and minTimeLeft ~= 0
-							local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
-							local timeLeft = (hasMinTime or hasMaxTime) and button.expiration and (button.expiration - GetTime())
-							local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
-							local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
-							if timeLeft then -- if we use a min/max time setting; we must create a delay timer
-								if hasMinTime then mod:StyleFilterAuraWait(frame, button, 'hasMinTimer', timeLeft, minTimeLeft) end
-								if hasMaxTime then mod:StyleFilterAuraWait(frame, button, 'hasMaxTimer', timeLeft, maxTimeLeft) end
+					if button then
+						if button:IsShown() then
+							if (button.name and button.name == name) or (button.spellID and button.spellID == tonumber(name)) then
+								local hasMinTime = minTimeLeft and minTimeLeft ~= 0
+								local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
+								local timeLeft = (hasMinTime or hasMaxTime) and button.expiration and (button.expiration - GetTime())
+								local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
+								local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
+								if timeLeft then -- if we use a min/max time setting; we must create a delay timer
+									if hasMinTime then mod:StyleFilterAuraWait(frame, button, 'hasMinTimer', timeLeft, minTimeLeft) end
+									if hasMaxTime then mod:StyleFilterAuraWait(frame, button, 'hasMaxTimer', timeLeft, maxTimeLeft) end
+								end
+								if minTimeAllow and maxTimeAllow then
+									count = count + 1 -- keep track of how many matches we have
+								end
 							end
-							if minTimeAllow and maxTimeAllow then
-								count = count + 1 --keep track of how many matches we have
-	end end end end end end end
+						else -- cancel stale timers
+							if button.hasMinTimer then button.hasMinTimer:Cancel() button.hasMinTimer = nil end
+							if button.hasMaxTimer then button.hasMaxTimer:Cancel() button.hasMaxTimer = nil end
+	end end end end end end
 
 	if total == 0 then
-		return nil --If no auras are checked just pass nil, we dont need to run the filter here.
+		return nil -- If no auras are checked just pass nil, we dont need to run the filter here.
 	else
 		return ((mustHaveAll and not missing) and total == count)	-- [x] Check for all [ ] Missing: total needs to match count
 		or ((not mustHaveAll and not missing) and count > 0)		-- [ ] Check for all [ ] Missing: count needs to be greater than zero
@@ -336,19 +351,19 @@ function mod:StyleFilterCooldownCheck(names, mustHaveAll)
 	local _, gcd = GetSpellCooldown(61304)
 
 	for name, value in pairs(names) do
-		if GetSpellInfo(name) then --check spell name valid, GetSpellCharges/GetSpellCooldown will return nil if not known by your class
-			if value == 'ONCD' or value == 'OFFCD' then --only if they are turned on
-				total = total + 1 --keep track of the names
+		if GetSpellInfo(name) then -- check spell name valid, GetSpellCharges/GetSpellCooldown will return nil if not known by your class
+			if value == 'ONCD' or value == 'OFFCD' then -- only if they are turned on
+				total = total + 1 -- keep track of the names
 
 				local charges = GetSpellCharges(name)
 				local _, duration = GetSpellCooldown(name)
 
-				if (charges and charges == 0 and value == 'ONCD') --charges exist and the current number of charges is 0 means that it is completely on cooldown.
-				or (charges and charges > 0 and value == 'OFFCD') --charges exist and the current number of charges is greater than 0 means it is not on cooldown.
-				or (charges == nil and (duration > gcd and value == 'ONCD')) --no charges exist and the duration of the cooldown is greater than the GCD spells current cooldown then it is on cooldown.
-				or (charges == nil and (duration <= gcd and value == 'OFFCD')) then --no charges exist and the duration of the cooldown is at or below the current GCD cooldown spell then it is not on cooldown.
+				if (charges and charges == 0 and value == 'ONCD') -- charges exist and the current number of charges is 0 means that it is completely on cooldown.
+				or (charges and charges > 0 and value == 'OFFCD') -- charges exist and the current number of charges is greater than 0 means it is not on cooldown.
+				or (charges == nil and (duration > gcd and value == 'ONCD')) -- no charges exist and the duration of the cooldown is greater than the GCD spells current cooldown then it is on cooldown.
+				or (charges == nil and (duration <= gcd and value == 'OFFCD')) then -- no charges exist and the duration of the cooldown is at or below the current GCD cooldown spell then it is not on cooldown.
 					count = count + 1
-					--print(((charges and charges == 0 and value == 'ONCD') and name..' (charge) passes because it is on cd') or ((charges and charges > 0 and value == 'OFFCD') and name..' (charge) passes because it is offcd') or ((charges == nil and (duration > gcd and value == 'ONCD')) and name..'passes because it is on cd.') or ((charges == nil and (duration <= gcd and value == 'OFFCD')) and name..' passes because it is off cd.'))
+					-- print(((charges and charges == 0 and value == 'ONCD') and name..' (charge) passes because it is on cd') or ((charges and charges > 0 and value == 'OFFCD') and name..' (charge) passes because it is offcd') or ((charges == nil and (duration > gcd and value == 'ONCD')) and name..'passes because it is on cd.') or ((charges == nil and (duration <= gcd and value == 'OFFCD')) and name..' passes because it is off cd.'))
 	end end end end
 
 	if total == 0 then
@@ -395,7 +410,7 @@ function mod:StyleFilterNameChanged()
 end
 
 function mod:StyleFilterBorderLock(backdrop, switch)
-	backdrop.ignoreBorderColors = switch --but keep the backdrop updated
+	backdrop.ignoreBorderColors = switch -- but keep the backdrop updated
 end
 
 function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
@@ -405,7 +420,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColo
 		mod:DisablePlate(frame) -- disable the plate elements
 		frame:ClearAllPoints() -- lets still move the frame out cause its clickable otherwise
 		frame:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
-		return --We hide it. Lets not do other things (no point)
+		return -- We hide it. Lets not do other things (no point)
 	end
 	if HealthColorChanged then
 		frame.StyleChanged = true
@@ -771,48 +786,44 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	-- Instance Type
-	if trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp then
-		local _, instanceType, difficultyID = GetInstanceInfo()
-		if trigger.instanceType[instanceType] then
-			passed = true
+	do
+		local activeID = trigger.location.instanceIDEnabled
+		local activeType = trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp
+		local instanceName, instanceType, difficultyID, instanceID, _
 
-			-- Instance Difficulty
-			if instanceType == 'raid' or instanceType == 'party' then
-				local D = trigger.instanceDifficulty[(instanceType == 'party' and 'dungeon') or instanceType]
-				for _, value in pairs(D) do
-					if value and not D[mod.TriggerConditions.difficulties[difficultyID]] then return end
-				end
-			end
-		else return end
-	end
-
-	-- Location
-	if trigger.location.instanceIDEnabled or trigger.location.mapIDEnabled then
-		if trigger.location.instanceIDEnabled then
-			passed = false
-			local D = trigger.location.instanceIDs
-			local instanceID = GetInstanceInfo()
-			for value in pairs(D) do
-				if value and instanceID == value then
-					passed = true
-					break
-				end
-			end
-			if not passed then return end
+		-- Instance Type
+		if activeType or activeID then
+			instanceName, instanceType, difficultyID, _, _, _, _, instanceID = GetInstanceInfo()
 		end
 
-		if trigger.location.mapIDEnabled then
-			passed = false
-			local D = trigger.location.mapIDs
-			local mapID = E.MapInfo.mapID
-			for value in pairs(D) do
-				if value and mapID == value then
-					passed = true
-					break
+		if activeType then
+			if trigger.instanceType[instanceType] then
+				passed = true
+
+				-- Instance Difficulty
+				if instanceType == 'raid' or instanceType == 'party' then
+					local D = trigger.instanceDifficulty[(instanceType == 'party' and 'dungeon') or instanceType]
+					for _, value in pairs(D) do
+						if value and not D[mod.TriggerConditions.difficulties[difficultyID]] then return end
+					end
 				end
+			else return end
+		end
+
+		-- Location
+		if activeID or trigger.location.mapIDEnabled or trigger.location.zoneNamesEnabled or trigger.location.subZoneNamesEnabled then
+			if activeID and next(trigger.location.instanceIDs) then
+				if (instanceID and trigger.location.instanceIDs[tostring(instanceID)]) or trigger.location.instanceIDs[instanceName] then passed = true else return end
 			end
-			if not passed then return end
+			if trigger.location.mapIDEnabled and next(trigger.location.mapIDs) then
+				if (E.MapInfo.mapID and trigger.location.mapIDs[tostring(E.MapInfo.mapID)]) or trigger.location.mapIDs[E.MapInfo.name] then passed = true else return end
+			end
+			if trigger.location.zoneNamesEnabled and next(trigger.location.zoneNames) then
+				if trigger.location.zoneNames[E.MapInfo.realZoneText] then passed = true else return end
+			end
+			if trigger.location.subZoneNamesEnabled and next(trigger.location.subZoneNames) then
+				if trigger.location.subZoneNames[E.MapInfo.subZoneText] then passed = true else return end
+			end
 		end
 	end
 
@@ -854,7 +865,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if c.spells and next(c.spells) then
 			for _, value in pairs(c.spells) do
 				if value then -- only run if at least one is selected
-					local castingSpell = c.spells[tostring(b.spellID)] or c.spells[b.spellName]
+					local castingSpell = (b.spellID and c.spells[tostring(b.spellID)]) or c.spells[b.spellName]
 					if (c.notSpell and not castingSpell) or (castingSpell and not c.notSpell) then passed = true else return end
 					break -- we can execute this once on the first enabled option then kill the loop
 				end
@@ -953,7 +964,7 @@ end
 
 function mod:StyleFilterSort(place)
 	if self[2] and place[2] then
-		return self[2] > place[2] --Sort by priority: 1=first, 2=second, 3=third, etc
+		return self[2] > place[2] -- Sort by priority: 1=first, 2=second, 3=third, etc
 	end
 end
 
@@ -1002,21 +1013,13 @@ end
 mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
 mod.StyleFilterTriggerEvents = {} -- events required by the filter that we need to watch for
 mod.StyleFilterPlateEvents = { -- events watched inside of ouf, which is called on the nameplate itself
-	['NAME_PLATE_UNIT_ADDED'] = 1 -- rest is populated from `StyleFilterDefaultEvents` as needed
+	['NAME_PLATE_UNIT_ADDED'] = 1 -- rest is populated from StyleFilterDefaultEvents as needed
 }
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
-	'MODIFIER_STATE_CHANGED',
-	'PLAYER_FOCUS_CHANGED',
-	'PLAYER_TARGET_CHANGED',
-	'PLAYER_UPDATE_RESTING',
-	'RAID_TARGET_UPDATE',
-	'SPELL_UPDATE_COOLDOWN',
+	-- this is a list of events already on the nameplate
 	'UNIT_AURA',
 	'UNIT_DISPLAYPOWER',
-	'UNIT_ENTERED_VEHICLE',
-	'UNIT_EXITED_VEHICLE',
 	'UNIT_FACTION',
-	'UNIT_FLAGS',
 	'UNIT_HEALTH',
 	'UNIT_HEALTH_FREQUENT',
 	'UNIT_MAXHEALTH',
@@ -1024,10 +1027,20 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_PET',
 	'UNIT_POWER_FREQUENT',
 	'UNIT_POWER_UPDATE',
+	-- list of events added during StyleFilterEvents
+	'MODIFIER_STATE_CHANGED',
+	'PLAYER_FOCUS_CHANGED',
+	'PLAYER_TARGET_CHANGED',
+	'PLAYER_UPDATE_RESTING',
+	'RAID_TARGET_UPDATE',
+	'SPELL_UPDATE_COOLDOWN',
+	'UNIT_ENTERED_VEHICLE',
+	'UNIT_EXITED_VEHICLE',
+	'UNIT_FLAGS',
 	'UNIT_TARGET',
 	'UNIT_THREAT_LIST_UPDATE',
 	'UNIT_THREAT_SITUATION_UPDATE',
-	'VEHICLE_UPDATE',
+	'VEHICLE_UPDATE'
 }
 
 function mod:StyleFilterWatchEvents()
@@ -1093,7 +1106,7 @@ function mod:StyleFilterConfigure()
 					mod.StyleFilterTriggerEvents.UNIT_FLAGS = true
 				end
 
-				if t.raidTarget then
+				if t.raidTarget and (t.raidTarget.star or t.raidTarget.circle or t.raidTarget.diamond or t.raidTarget.triangle or t.raidTarget.moon or t.raidTarget.square or t.raidTarget.cross or t.raidTarget.skull) then
 					mod.StyleFilterTriggerEvents.RAID_TARGET_UPDATE = 1
 				end
 
@@ -1123,6 +1136,18 @@ function mod:StyleFilterConfigure()
 				if t.inCombat or t.outOfCombat or t.inCombatUnit or t.outOfCombatUnit then
 					mod.StyleFilterTriggerEvents.UNIT_THREAT_LIST_UPDATE = true
 					mod.StyleFilterTriggerEvents.UNIT_FLAGS = true
+				end
+
+				if t.location then
+					if (t.location.mapIDEnabled and next(t.location.mapIDs))
+					or (t.location.instanceIDEnabled and next(t.location.instanceIDs))
+					or (t.location.zoneNamesEnabled and next(t.location.zoneNames))
+					or (t.location.subZoneNamesEnabled and next(t.location.subZoneNames)) then
+						mod.StyleFilterTriggerEvents.LOADING_SCREEN_DISABLED = 1
+						mod.StyleFilterTriggerEvents.ZONE_CHANGED_NEW_AREA = 1
+						mod.StyleFilterTriggerEvents.ZONE_CHANGED_INDOORS = 1
+						mod.StyleFilterTriggerEvents.ZONE_CHANGED = 1
+					end
 				end
 
 				if t.names and next(t.names) then
@@ -1175,7 +1200,7 @@ function mod:StyleFilterUpdate(frame, event)
 		elseif GetTime() > (frame.StyleFilterWaitTime + 0.1) then
 			frame.StyleFilterWaitTime = nil
 		else
-			return --block calls faster than 0.1 second
+			return -- block calls faster than 0.1 second
 		end
 	end
 
@@ -1191,9 +1216,9 @@ end
 
 do -- oUF style filter inject watch functions without actually registering any events
 	local update = function(frame, event, ...)
-		if mod.StyleFilterEventFunctions[event] then
-			mod.StyleFilterEventFunctions[event](frame, event, ...)
-		end
+		local eventFunc = mod.StyleFilterEventFunctions[event]
+		if eventFunc then eventFunc(frame, event, ...) end
+
 		mod:StyleFilterUpdate(frame, event)
 	end
 
@@ -1252,16 +1277,25 @@ do -- oUF style filter inject watch functions without actually registering any e
 			elseif holdsEvent then
 				oUF_fake_register(frame, event, true)
 	end end end
-end
 
-function mod:StyleFilterRegister(nameplate, event, unitless, func)
-	if not nameplate:IsEventRegistered(event) then
-		nameplate:RegisterEvent(event, func or E.noop, unitless)
+	function mod:StyleFilterRegister(nameplate, event, unitless, func, objectEvent)
+		if objectEvent then
+			if not nameplate.objectEventFunc then
+				nameplate.objectEventFunc = function(_, evnt, ...) update(nameplate, evnt, ...) end
+			end
+			if not E:HasFunctionForObject(event, objectEvent, nameplate.objectEventFunc) then
+				E:RegisterEventForObject(event, objectEvent, nameplate.objectEventFunc)
+			end
+		elseif not nameplate:IsEventRegistered(event) then
+			nameplate:RegisterEvent(event, func or E.noop, unitless)
+		end
 	end
 end
 
 -- events we actually register on plates when they aren't added
 function mod:StyleFilterEvents(nameplate)
+	-- these events get added onto StyleFilterDefaultEvents to be watched,
+	-- the ones added from here should not by registered already
 	mod:StyleFilterRegister(nameplate,'MODIFIER_STATE_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_FOCUS_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_TARGET_CHANGED', true)
@@ -1276,6 +1310,14 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_SITUATION_UPDATE')
 	mod:StyleFilterRegister(nameplate,'VEHICLE_UPDATE', true)
 
+	-- object event pathing (these update after MapInfo updates),
+	-- these event are not added onto the nameplate itself
+	mod:StyleFilterRegister(nameplate,'LOADING_SCREEN_DISABLED', nil, nil, E.MapInfo)
+	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_NEW_AREA', nil, nil, E.MapInfo)
+	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_INDOORS', nil, nil, E.MapInfo)
+	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED', nil, nil, E.MapInfo)
+
+	-- fire up the ouf injection watcher
 	mod:StyleFilterEventWatch(nameplate)
 end
 

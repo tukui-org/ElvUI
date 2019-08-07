@@ -6,7 +6,6 @@ local oUF = E.oUF
 -- WoW API / Variables
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
-local C_Timer_After = C_Timer.After
 
 local function MouseOnUnit(frame)
 	if frame and frame:IsVisible() and UnitExists('mouseover') then
@@ -25,7 +24,11 @@ local function Update(self, event)
 
 	if MouseOnUnit(self) or UnitIsUnit("mouseover", self.unit) then
 		element:Show()
-		C_Timer_After(.1, function() element:ForceUpdate() end)
+
+		if element.DelayedForceUpdate and not element.hasDelay then
+			E:Delay(0.1, element.DelayedForceUpdate)
+			element.hasDelay = true
+		end
 	else
 		element:Hide()
 	end
@@ -48,6 +51,16 @@ local function Enable(self)
 	if (element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+
+		if not element.DelayedForceUpdate then
+			element.DelayedForceUpdate = function()
+				if element.ForceUpdate then
+					element:ForceUpdate()
+				end
+
+				element.hasDelay = nil
+			end
+		end
 
 		self:RegisterEvent("UPDATE_MOUSEOVER_UNIT", Path, true)
 

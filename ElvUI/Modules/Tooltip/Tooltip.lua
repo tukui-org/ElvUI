@@ -89,18 +89,12 @@ local classification = {
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if tt:IsForbidden() then return end
 	if E.private.tooltip.enable ~= true then return end
-	if not self.db.visibility then return; end
+	if not self.db.visibility then return end
+	if tt:GetAnchorType() ~= "ANCHOR_NONE" then return end
 
-	if(tt:GetAnchorType() ~= "ANCHOR_NONE") then return end
 	if InCombatLockdown() and self.db.visibility.combat then
 		local modifier = self.db.visibility.combatOverride
-		if (not(
-				(modifier == 'SHIFT' and IsShiftKeyDown())
-				or
-				(modifier == 'CTRL' and IsControlKeyDown())
-				or
-				(modifier == 'ALT' and IsAltKeyDown())
-		)) then
+		if not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown())) then
 			tt:Hide()
 			return
 		end
