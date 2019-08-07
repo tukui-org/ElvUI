@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 31
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 30
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -30,8 +30,9 @@ LibElvUIPlugin API:
 		function	- function to call after Initialize (may be a string, that exists on the addons table: table['string'])
 ----------------------------]]--
 
-local pairs, tonumber, strmatch, strsub, tinsert = pairs, tonumber, strmatch, strsub, tinsert
-local format, wipe, type, gmatch, strlen, gsub, ceil = format, wipe, type, gmatch, strlen, gsub, ceil
+local assert, pairs, ipairs, strlen = assert, pairs, ipairs, strlen
+local tonumber, strmatch, strsub, tinsert = tonumber, strmatch, strsub, tinsert
+local format, wipe, type, gmatch, gsub, ceil = format, wipe, type, gmatch, gsub, ceil
 
 local hooksecurefunc = hooksecurefunc
 local GetAddOnMetadata = GetAddOnMetadata
@@ -200,6 +201,14 @@ function lib:GetPluginOptions()
 	}
 end
 
+do	-- this will handle `8.1.5.0015` into `8.150015` etc
+	local verStrip = function(a, b) return a..gsub(b,'%.', '') end
+	function lib:StripVersion(version)
+		local ver = gsub(version, '(%d%.)([%d%.]+)', verStrip)
+		return tonumber(ver)
+	end
+end
+
 function lib:VersionCheck(event, prefix, message, _, sender)
 	if (event == "CHAT_MSG_ADDON" and prefix == lib.prefix) and (sender and message and not strmatch(message, "^%s-$")) then
 		if not lib.myName then
@@ -213,9 +222,9 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 			for name, version in gmatch(message, "([^=]+)=([%d%p]+);") do
 				local plugin = name and lib.plugins[name]
 				if version and plugin and plugin.version and (plugin.version ~= "BETA") then
-					local Pver, ver = tonumber(plugin.version), tonumber(version)
+					local Pver, ver = lib:StripVersion(plugin.version), lib:StripVersion(version)
 					if (ver and Pver) and (ver > Pver) then
-						plugin.old, plugin.newversion = true, ver
+						plugin.old, plugin.newversion = true, version
 						local title = GetAddOnMetadata(plugin.name, "Title") or plugin.name
 						E:Print(format(MSG_OUTDATED, title, plugin.version, plugin.newversion))
 						E.pluginRecievedOutOfDateMessage = true
