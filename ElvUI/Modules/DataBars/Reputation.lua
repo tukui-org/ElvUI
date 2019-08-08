@@ -43,7 +43,7 @@ function mod:UpdateReputation(event)
 		end
 	end
 
-	local numFactions = GetNumFactions();
+	local numFactions = GetNumFactions()
 
 	if not name or (event == "PLAYER_REGEN_DISABLED" and self.db.reputation.hideInCombat) then
 		bar:Hide()
@@ -65,8 +65,8 @@ function mod:UpdateReputation(event)
 		bar.statusBar:SetValue(value)
 
 		for i=1, numFactions do
-			local factionName, _, standingID,_,_,_,_,_,_,_,_,_,_, factionID = GetFactionInfo(i);
-			local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID);
+			local factionName, _, standingID,_,_,_,_,_,_,_,_,_,_, factionID = GetFactionInfo(i)
+			local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID)
 			if factionName == name then
 				if friendID ~= nil then
 					isFriend = true

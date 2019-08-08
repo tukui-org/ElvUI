@@ -3,8 +3,7 @@ local M = E:GetModule('Misc')
 
 --Lua functions
 local _G = _G
-local pairs, unpack, ipairs, next, tonumber = pairs, unpack, ipairs, next, tonumber
-local tinsert = tinsert
+local pairs, unpack, ipairs, next, tonumber, tinsert = pairs, unpack, ipairs, next, tonumber, tinsert
 --WoW API / Variables
 local ChatEdit_InsertLink = ChatEdit_InsertLink
 local CreateFrame = CreateFrame

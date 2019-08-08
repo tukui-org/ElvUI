@@ -36,8 +36,8 @@ function mod:UpdateHonor(event, unit)
 	else
 		bar:Show()
 
-		local current = UnitHonor("player");
-		local max = UnitHonorMax("player");
+		local current = UnitHonor("player")
+		local max = UnitHonorMax("player")
 
 		--Guard against division by zero, which appears to be an issue when zoning in/out of dungeons
 		if max == 0 then max = 1 end
@@ -83,9 +83,9 @@ function mod:HonorBar_OnEnter()
 	GameTooltip:ClearLines()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
-	local current = UnitHonor("player");
-	local max = UnitHonorMax("player");
-	local level = UnitHonorLevel("player");
+	local current = UnitHonor("player")
+	local max = UnitHonorMax("player")
+	local level = UnitHonorLevel("player")
 
 	GameTooltip:AddLine(HONOR)
 

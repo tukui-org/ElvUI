@@ -6,7 +6,6 @@ local _G = _G
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
--- Bounty Board
 local function WorldMapBountyBoard(Frame)
 	Frame.BountyName:FontTemplate()
 

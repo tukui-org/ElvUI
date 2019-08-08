@@ -3,8 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local _G = _G
-local format = format
-local sort = sort
+local format, sort = format, sort
 --WoW API / Variables
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMouseFocus = GetMouseFocus
@@ -21,8 +20,8 @@ local LE_FOLLOWER_TYPE_SHIPYARD_6_2 = LE_FOLLOWER_TYPE_SHIPYARD_6_2
 local LE_GARRISON_TYPE_6_0 = LE_GARRISON_TYPE_6_0
 local InCombatLockdown = InCombatLockdown
 
-local GARRISON_CURRENCY = 824
 local OIL_CURRENCY = 1101
+local GARRISON_CURRENCY = 824
 local GARRISON_ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(GARRISON_CURRENCY)))
 local OIL_ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, GetCurrencyInfo(OIL_CURRENCY)))
 
@@ -35,19 +34,19 @@ local function OnEnter(self, _, noUpdate)
 
 	if(not noUpdate) then
 		DT.tooltip:Hide()
-		C_GarrisonRequestLandingPageShipmentInfo();
+		C_GarrisonRequestLandingPageShipmentInfo()
 		return
 	end
 
 	--Buildings
-	local buildings = C_GarrisonGetBuildings(LE_GARRISON_TYPE_6_0);
+	local buildings = C_GarrisonGetBuildings(LE_GARRISON_TYPE_6_0)
 	local numBuildings = #buildings
 	local hasBuilding = false
 	if(numBuildings > 0) then
 		for i = 1, #buildings do
-			local buildingID = buildings[i].buildingID;
+			local buildingID = buildings[i].buildingID
 			if ( buildingID ) then
-				local name, _, _, shipmentsReady, shipmentsTotal = C_GarrisonGetLandingPageShipmentInfo(buildingID);
+				local name, _, _, shipmentsReady, shipmentsTotal = C_GarrisonGetLandingPageShipmentInfo(buildingID)
 				if ( name and shipmentsReady and shipmentsTotal ) then
 					if(hasBuilding == false) then
 						DT.tooltip:AddLine(L["Building(s) Report:"])
@@ -61,7 +60,7 @@ local function OnEnter(self, _, noUpdate)
 	end
 
 	--Missions
-	local inProgressMissions = {};
+	local inProgressMissions = {}
 	C_GarrisonGetInProgressMissions(inProgressMissions, LE_FOLLOWER_TYPE_GARRISON_6_0)
 	local numMissions = #inProgressMissions
 	if(numMissions > 0) then
@@ -88,7 +87,7 @@ local function OnEnter(self, _, noUpdate)
 	end
 
 	--Naval Missions
-	local inProgressShipMissions = {};
+	local inProgressShipMissions = {}
 	C_GarrisonGetInProgressMissions(inProgressShipMissions, LE_FOLLOWER_TYPE_SHIPYARD_6_2)
 	local numShipMissions = #inProgressShipMissions
 	if(numShipMissions > 0) then
@@ -121,23 +120,23 @@ local function OnEnter(self, _, noUpdate)
 	end
 end
 
-local garrisonType = LE_GARRISON_TYPE_6_0;
+local garrisonType = LE_GARRISON_TYPE_6_0
 
 local function OnClick()
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 	if not (C_Garrison_HasGarrison(garrisonType)) then
-		return;
+		return
 	end
 
 	local GarrisonLandingPage = _G.GarrisonLandingPage
-	local isShown = GarrisonLandingPage and GarrisonLandingPage:IsShown();
+	local isShown = GarrisonLandingPage and GarrisonLandingPage:IsShown()
 	if (not isShown) then
-		ShowGarrisonLandingPage(garrisonType);
+		ShowGarrisonLandingPage(garrisonType)
 	elseif (GarrisonLandingPage) then
-		local currentGarrType = GarrisonLandingPage.garrTypeID;
-		HideUIPanel(GarrisonLandingPage);
+		local currentGarrType = GarrisonLandingPage.garrTypeID
+		HideUIPanel(GarrisonLandingPage)
 		if (currentGarrType ~= garrisonType) then
-			ShowGarrisonLandingPage(garrisonType);
+			ShowGarrisonLandingPage(garrisonType)
 		end
 	end
 end

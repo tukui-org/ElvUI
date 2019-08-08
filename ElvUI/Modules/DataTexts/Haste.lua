@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
-local join = string.join
-local format = string.format
+local format, strjoin = format, strjoin
 --WoW API / Variables
 local _G = _G
 local GetHaste = GetHaste
@@ -20,12 +19,11 @@ local STAT_HASTE_TOOLTIP = STAT_HASTE_TOOLTIP
 local STAT_HASTE_BASE_TOOLTIP = STAT_HASTE_BASE_TOOLTIP
 local RED_FONT_COLOR_CODE = RED_FONT_COLOR_CODE
 
-local displayNumberString = ''
-local lastPanel;
+local displayString, lastPanel = ''
 
 local function OnEvent(self)
 	local haste = GetHaste()
-	self.text:SetFormattedText(displayNumberString, STAT_HASTE, haste)
+	self.text:SetFormattedText(displayString, STAT_HASTE, haste)
 
 	lastPanel = self
 end
@@ -33,15 +31,15 @@ end
 local OnEnter = function(self)
 	DT:SetupTooltip(self)
 
-	local rating = CR_HASTE_MELEE;
+	local rating = CR_HASTE_MELEE
 	local classTooltip = _G["STAT_HASTE_"..E.myclass.."_TOOLTIP"]
 	local haste = GetHaste()
 
-	local hasteFormatString;
+	local hasteFormatString
 	if (haste < 0 and not GetPVPGearStatRules()) then
-		hasteFormatString = RED_FONT_COLOR_CODE.."%s"..FONT_COLOR_CODE_CLOSE;
+		hasteFormatString = RED_FONT_COLOR_CODE.."%s"..FONT_COLOR_CODE_CLOSE
 	else
-		hasteFormatString = "%s";
+		hasteFormatString = "%s"
 	end
 
 	if (not classTooltip) then
@@ -55,7 +53,7 @@ local OnEnter = function(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayNumberString = join("", "%s: ", hex, "%.2f%%|r")
+	displayString = strjoin("", "%s: ", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local AB = E:GetModule('ActionBars');
+local AB = E:GetModule('ActionBars')
 
 --Lua functions
 local _G = _G
@@ -91,11 +91,11 @@ function AB:HandleMicroButton(button)
 end
 
 function AB:MainMenuMicroButton_SetNormal()
-	_G.MainMenuBarPerformanceBar:Point("TOPLEFT", _G.MainMenuMicroButton, "TOPLEFT", 9, -36);
+	_G.MainMenuBarPerformanceBar:Point("TOPLEFT", _G.MainMenuMicroButton, "TOPLEFT", 9, -36)
 end
 
 function AB:MainMenuMicroButton_SetPushed()
-	_G.MainMenuBarPerformanceBar:Point("TOPLEFT", _G.MainMenuMicroButton, "TOPLEFT", 8, -37);
+	_G.MainMenuBarPerformanceBar:Point("TOPLEFT", _G.MainMenuMicroButton, "TOPLEFT", 8, -37)
 end
 
 function AB:UpdateMicroButtonsParent()
@@ -124,7 +124,7 @@ function AB:UpdateMicroBarVisibility()
 		visibility = visibility:gsub('[\n\r]','')
 	end
 
-	RegisterStateDriver(ElvUI_MicroBar.visibility, "visibility", (self.db.microbar.enabled and visibility) or "hide");
+	RegisterStateDriver(ElvUI_MicroBar.visibility, "visibility", (self.db.microbar.enabled and visibility) or "hide")
 end
 
 function AB:UpdateMicroPositionDimensions()
@@ -137,19 +137,19 @@ function AB:UpdateMicroPositionDimensions()
 
 	for i=1, #_G.MICRO_BUTTONS-1 do
 		local button = _G[__buttonIndex[i]] or _G[_G.MICRO_BUTTONS[i]]
-		local lastColumnButton = i-self.db.microbar.buttonsPerRow;
+		local lastColumnButton = i-self.db.microbar.buttonsPerRow
 		lastColumnButton = _G[__buttonIndex[lastColumnButton]] or _G[_G.MICRO_BUTTONS[lastColumnButton]]
 
-		button:Size(self.db.microbar.buttonSize, self.db.microbar.buttonSize * 1.4);
-		button:ClearAllPoints();
+		button:Size(self.db.microbar.buttonSize, self.db.microbar.buttonSize * 1.4)
+		button:ClearAllPoints()
 
 		if prevButton == ElvUI_MicroBar then
 			button:Point('TOPLEFT', prevButton, 'TOPLEFT', offset, -offset)
 		elseif (i - 1) % self.db.microbar.buttonsPerRow == 0 then
-			button:Point('TOP', lastColumnButton, 'BOTTOM', 0, -spacing);
+			button:Point('TOP', lastColumnButton, 'BOTTOM', 0, -spacing)
 			numRows = numRows + 1
 		else
-			button:Point('LEFT', prevButton, 'RIGHT', spacing, 0);
+			button:Point('LEFT', prevButton, 'RIGHT', spacing, 0)
 		end
 
 		prevButton = button
@@ -229,5 +229,5 @@ function AB:SetupMicroBar()
 	_G.CharacterMicroButtonAlert:SetAlpha(0)
 	_G.CharacterMicroButtonAlert:SetScale(0.00001)
 
-	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,microbar');
+	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,microbar')
 end

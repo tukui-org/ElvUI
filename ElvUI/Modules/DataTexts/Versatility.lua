@@ -16,32 +16,31 @@ local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
 local STAT_VERSATILITY = STAT_VERSATILITY
 local VERSATILITY_TOOLTIP_FORMAT = VERSATILITY_TOOLTIP_FORMAT
 
-local displayModifierString = ''
-local lastPanel;
+local displayString, lastPanel = ''
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	local versatility = GetCombatRating(CR_VERSATILITY_DAMAGE_DONE);
-	local versatilityDamageBonus = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE);
-	local versatilityDamageTakenReduction = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_TAKEN) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_TAKEN);
+	local versatility = GetCombatRating(CR_VERSATILITY_DAMAGE_DONE)
+	local versatilityDamageBonus = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
+	local versatilityDamageTakenReduction = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_TAKEN) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_TAKEN)
 
 	local text = HIGHLIGHT_FONT_COLOR_CODE..format(VERSATILITY_TOOLTIP_FORMAT, STAT_VERSATILITY, versatilityDamageBonus, versatilityDamageTakenReduction)..FONT_COLOR_CODE_CLOSE
 	local tooltip = format(CR_VERSATILITY_TOOLTIP, versatilityDamageBonus, versatilityDamageTakenReduction, BreakUpLargeNumbers(versatility), versatilityDamageBonus, versatilityDamageTakenReduction)
 
-	DT.tooltip:AddDoubleLine(text, nil, 1, 1, 1);
-	DT.tooltip:AddLine(tooltip, nil, nil, nil, true);
+	DT.tooltip:AddDoubleLine(text, nil, 1, 1, 1)
+	DT.tooltip:AddLine(tooltip, nil, nil, nil, true)
 	DT.tooltip:Show()
 end
 
 local function OnEvent(self)
-	local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE);
-	self.text:SetFormattedText(displayModifierString, STAT_VERSATILITY, versatility)
+	local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
+	self.text:SetFormattedText(displayString, STAT_VERSATILITY, versatility)
 	lastPanel = self
 end
 
 local function ValueColorUpdate(hex)
-	displayModifierString = strjoin("", "%s: ", hex, "%.2f%%|r")
+	displayString = strjoin("", "%s: ", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

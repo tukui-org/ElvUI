@@ -1,6 +1,6 @@
---[[
-	* Collection of functions that can be used in multiple places
-]]
+------------------------------------------------------------------------
+-- Collection of functions that can be used in multiple places
+------------------------------------------------------------------------
 local E, L, V, P, G = unpack(select(2, ...))
 
 local _G = _G

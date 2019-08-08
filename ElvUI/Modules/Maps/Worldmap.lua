@@ -3,7 +3,7 @@ local M = E:GetModule('WorldMap')
 
 --Lua functions
 local _G = _G
-local find = string.find
+local strfind = strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local SetCVar = SetCVar
@@ -108,8 +108,8 @@ function M:PositionCoords()
 	local yOffset = db.yOffset
 
 	local x, y = 5, 5
-	if find(position, "RIGHT") then	x = -5 end
-	if find(position, "TOP") then y = -5 end
+	if strfind(position, "RIGHT") then	x = -5 end
+	if strfind(position, "TOP") then y = -5 end
 
 	CoordsHolder.playerCoords:ClearAllPoints()
 	CoordsHolder.playerCoords:Point(position, _G.WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)

@@ -56,15 +56,15 @@ SlashCmdList.FRAMELIST = function(msg)
 	local isPreviouslyShown = _G.FrameStackTooltip:IsShown()
 	if not isPreviouslyShown then
 		if msg == tostring(true) then
-			_G.FrameStackTooltip_Toggle(true);
+			_G.FrameStackTooltip_Toggle(true)
 		else
-			_G.FrameStackTooltip_Toggle();
+			_G.FrameStackTooltip_Toggle()
 		end
 	end
 
 	print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	for i = 2, _G.FrameStackTooltip:NumLines() do
-		local text = _G["FrameStackTooltipTextLeft"..i]:GetText();
+		local text = _G["FrameStackTooltipTextLeft"..i]:GetText()
 		if(text and text ~= "") then
 			print(text)
 		end
@@ -77,7 +77,7 @@ SlashCmdList.FRAMELIST = function(msg)
 
 	ElvUI[1]:GetModule("Chat"):CopyChat(_G.ChatFrame1)
 	if not isPreviouslyShown then
-		_G.FrameStackTooltip_Toggle();
+		_G.FrameStackTooltip_Toggle()
 	end
 end
 

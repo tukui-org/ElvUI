@@ -46,8 +46,7 @@ local standingString = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b).."%s:|r |cFFFFFF
 local moreMembersOnlineString = strjoin("", "+ %d ", _G.FRIENDS_LIST_ONLINE, "...")
 local noteString = strjoin("", "|cff999999   ", _G.LABEL_NOTE, ":|r %s")
 local officerNoteString = strjoin("", "|cff999999   ", _G.GUILD_RANK1_DESC, ":|r %s")
-local guildTable, guildMotD = {}, ""
-local lastPanel
+local guildTable, guildMotD, lastPanel = {}, ""
 
 local function sortByRank(a, b)
 	if a and b then
@@ -121,7 +120,7 @@ local eventHandlers = {
 	-- Guild Roster updated, so rebuild the guild table
 	["GUILD_ROSTER_UPDATE"] = function(self)
 		if(resendRequest) then
-			resendRequest = false;
+			resendRequest = false
 			return C_GuildInfo_GuildRoster()
 		else
 			BuildGuildTable()

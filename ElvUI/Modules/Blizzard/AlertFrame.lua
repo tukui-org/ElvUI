@@ -3,7 +3,6 @@ local B = E:GetModule('Blizzard')
 local Misc = E:GetModule('Misc')
 
 local _G = _G
---Lua functions
 local pairs = pairs
 local ipairs = ipairs
 local CreateFrame = CreateFrame
@@ -15,8 +14,8 @@ function E:PostAlertMove()
 	local AlertFrameMover = _G.AlertFrameMover
 	local AlertFrameHolder = _G.AlertFrameHolder
 
-	local _, y = AlertFrameMover:GetCenter();
-	local screenHeight = E.UIParent:GetTop();
+	local _, y = AlertFrameMover:GetCenter()
+	local screenHeight = E.UIParent:GetTop()
 	if y > (screenHeight / 2) then
 		POSITION = 'TOP'
 		ANCHOR_POINT = 'BOTTOM'
@@ -83,52 +82,52 @@ end
 function B:AdjustAnchors(relativeAlert)
 	if self.alertFrame:IsShown() then
 		self.alertFrame:ClearAllPoints()
-		self.alertFrame:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET);
-		return self.alertFrame;
+		self.alertFrame:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
+		return self.alertFrame
 	end
-	return relativeAlert;
+	return relativeAlert
 end
 
 function B:AdjustAnchorsNonAlert(relativeAlert)
 	if self.anchorFrame:IsShown() then
 		self.anchorFrame:ClearAllPoints()
-		self.anchorFrame:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET);
-		return self.anchorFrame;
+		self.anchorFrame:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
+		return self.anchorFrame
 	end
-	return relativeAlert;
+	return relativeAlert
 end
 
 function B:AdjustQueuedAnchors(relativeAlert)
 	for alertFrame in self.alertFramePool:EnumerateActive() do
 		alertFrame:ClearAllPoints()
-		alertFrame:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET);
-		relativeAlert = alertFrame;
+		alertFrame:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
+		relativeAlert = alertFrame
 	end
-	return relativeAlert;
+	return relativeAlert
 end
 
 function B:GroupLootContainer_Update()
-	local lastIdx = nil;
+	local lastIdx = nil
 
 	for i=1, self.maxIndex do
-		local frame = self.rollFrames[i];
+		local frame = self.rollFrames[i]
 		local prevFrame = self.rollFrames[i-1]
 		if ( frame ) then
-			frame:ClearAllPoints();
+			frame:ClearAllPoints()
 			if prevFrame and not (prevFrame == frame) then
-				frame:Point(POSITION, prevFrame, ANCHOR_POINT, 0, YOFFSET);
+				frame:Point(POSITION, prevFrame, ANCHOR_POINT, 0, YOFFSET)
 			else
-				frame:Point(POSITION, self, POSITION, 0, self.reservedSize * (i-1 + 0.5));
+				frame:Point(POSITION, self, POSITION, 0, self.reservedSize * (i-1 + 0.5))
 			end
-			lastIdx = i;
+			lastIdx = i
 		end
 	end
 
 	if ( lastIdx ) then
-		self:Height(self.reservedSize * lastIdx);
-		self:Show();
+		self:Height(self.reservedSize * lastIdx)
+		self:Show()
 	else
-		self:Hide();
+		self:Hide()
 	end
 end
 

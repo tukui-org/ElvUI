@@ -78,8 +78,8 @@ function E:DropDown(list, frame, xOffset, yOffset)
 	frame:Height((#list * BUTTON_HEIGHT) + PADDING * 2)
 	frame:Width(BUTTON_WIDTH + PADDING * 2)
 
-	local UIScale = _G.UIParent:GetScale();
-	local x, y = GetCursorPosition();
+	local UIScale = _G.UIParent:GetScale()
+	local x, y = GetCursorPosition()
 	x = x/UIScale
 	y = y/UIScale
 	frame:ClearAllPoints()

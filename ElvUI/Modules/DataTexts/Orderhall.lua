@@ -3,9 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local _G = _G
-local select, ipairs = select, ipairs
-local format = string.format
-local sort = sort
+local select, ipairs, format, sort = select, ipairs, format, sort
 --WoW API / Variables
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMouseFocus = GetMouseFocus
@@ -39,9 +37,9 @@ end
 local function OnEnter(self, _, noUpdate)
 	DT:SetupTooltip(self)
 
-	if(not noUpdate) then
+	if not noUpdate then
 		DT.tooltip:Hide()
-		C_Garrison_RequestLandingPageShipmentInfo();
+		C_Garrison_RequestLandingPageShipmentInfo()
 		return
 	end
 
@@ -114,20 +112,20 @@ local function OnEnter(self, _, noUpdate)
 	end
 
 	-- Talents
-	local talentTreeIDs = C_Garrison_GetTalentTreeIDsByClassID(LE_GARRISON_TYPE_7_0, E.myClassID);
+	local talentTreeIDs = C_Garrison_GetTalentTreeIDsByClassID(LE_GARRISON_TYPE_7_0, E.myClassID)
 	local hasTalent = false
 	if (talentTreeIDs) then
 		-- this is a talent that has completed, but has not been seen in the talent UI yet.
-		local completeTalentID = C_Garrison_GetCompleteTalent(LE_GARRISON_TYPE_7_0);
+		local completeTalentID = C_Garrison_GetCompleteTalent(LE_GARRISON_TYPE_7_0)
 		for _, treeID in ipairs(talentTreeIDs) do
-			local _, _, tree = C_Garrison_GetTalentTreeInfoForID(treeID);
+			local _, _, tree = C_Garrison_GetTalentTreeInfoForID(treeID)
 			for _, talent in ipairs(tree) do
-				local showTalent = false;
+				local showTalent = false
 				if (talent.isBeingResearched) then
-					showTalent = true;
+					showTalent = true
 				end
 				if (talent.id == completeTalentID) then
-					showTalent = true;
+					showTalent = true
 				end
 				if (showTalent) then
 					if not firstLine then
@@ -135,7 +133,7 @@ local function OnEnter(self, _, noUpdate)
 					end
 					firstLine = false
 					DT.tooltip:AddLine(GARRISON_TALENT_ORDER_ADVANCEMENT); -- "Order Advancement"
-					DT.tooltip:AddDoubleLine(talent.name, format(GARRISON_LANDING_SHIPMENT_COUNT, talent.isBeingResearched and 0 or 1, 1), 1, 1, 1);
+					DT.tooltip:AddDoubleLine(talent.name, format(GARRISON_LANDING_SHIPMENT_COUNT, talent.isBeingResearched and 0 or 1, 1), 1, 1, 1)
 					hasTalent = true
 				end
 			end
@@ -153,18 +151,18 @@ local function OnClick()
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 
 	if not (C_Garrison_HasGarrison(LE_GARRISON_TYPE_7_0)) then
-		return;
+		return
 	end
 
 	local GarrisonLandingPage = _G.GarrisonLandingPage
-	local isShown = GarrisonLandingPage and GarrisonLandingPage:IsShown();
+	local isShown = GarrisonLandingPage and GarrisonLandingPage:IsShown()
 	if (not isShown) then
-		ShowGarrisonLandingPage(LE_GARRISON_TYPE_7_0);
+		ShowGarrisonLandingPage(LE_GARRISON_TYPE_7_0)
 	elseif (GarrisonLandingPage) then
-		local currentGarrType = GarrisonLandingPage.garrTypeID;
-		HideUIPanel(GarrisonLandingPage);
+		local currentGarrType = GarrisonLandingPage.garrTypeID
+		HideUIPanel(GarrisonLandingPage)
 		if (currentGarrType ~= LE_GARRISON_TYPE_7_0) then
-			ShowGarrisonLandingPage(LE_GARRISON_TYPE_7_0);
+			ShowGarrisonLandingPage(LE_GARRISON_TYPE_7_0)
 		end
 	end
 end

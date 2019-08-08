@@ -4,7 +4,7 @@ local CH = E:GetModule('Chat')
 
 --Lua functions
 local _G = _G
-local format = string.format
+local format = format
 local select, unpack, pairs, wipe = select, unpack, pairs, wipe
 --WoW API / Variables
 local Ambiguate = Ambiguate

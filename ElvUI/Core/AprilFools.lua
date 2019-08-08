@@ -1,10 +1,8 @@
---[[
-	Collection of previous april fools pranks
-
-	Harlem Shake: 		Try it out with the command /harlemshake
-	Hello Kitty: 		Try it out with the command /hellokitty (pay attention to the popups, read what it says)
-]]
-
+------------------------------------------------------------------------
+-- Collection of previous april fools pranks
+-- Harlem Shake: 	Try it out with the command /harlemshake
+-- Hello Kitty: 	Try it out with the command /hellokitty (pay attention to the popups, read what it says)
+------------------------------------------------------------------------
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames')
 local AB = E:GetModule('ActionBars')
@@ -42,7 +40,7 @@ do
 			E:CancelTimer(E.massiveShakeTimer)
 		end
 
-		E.global.aprilFools = true;
+		E.global.aprilFools = true
 		E:StaticPopup_Hide("HARLEM_SHAKE")
 		twipe(self.massiveShakeObjects)
 		DoEmote("Dance")
@@ -109,7 +107,7 @@ do
 	end
 
 	function E:HarlemShakeToggle()
-		self:StaticPopup_Show("HARLEM_SHAKE");
+		self:StaticPopup_Show("HARLEM_SHAKE")
 	end
 end
 

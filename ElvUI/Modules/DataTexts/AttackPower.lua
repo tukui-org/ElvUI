@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local min, max = math.min, math.max
-local format, strjoin = string.format, strjoin
+local format, strjoin = format, strjoin
 --WoW API / Variables
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local ComputePetBonus = ComputePetBonus
@@ -23,20 +23,18 @@ local PET_BONUS_TOOLTIP_SPELLDAMAGE = PET_BONUS_TOOLTIP_SPELLDAMAGE
 local RANGED_ATTACK_POWER = RANGED_ATTACK_POWER
 local RANGED_ATTACK_POWER_TOOLTIP = RANGED_ATTACK_POWER_TOOLTIP
 
-local pwr
-local displayNumberString = ''
-local lastPanel;
+local displayString, power, lastPanel = ''
 
 local function OnEvent(self)
 	if E.myclass == "HUNTER" then
 		local Rbase, RposBuff, RnegBuff = UnitRangedAttackPower("player")
-		pwr = Rbase + RposBuff + RnegBuff
+		power = Rbase + RposBuff + RnegBuff
 	else
 		local base, posBuff, negBuff = UnitAttackPower("player")
-		pwr = base + posBuff + negBuff
+		power = base + posBuff + negBuff
 	end
 
-	self.text:SetFormattedText(displayNumberString, L["AP"], pwr)
+	self.text:SetFormattedText(displayString, L["AP"], power)
 	lastPanel = self
 end
 
@@ -45,55 +43,55 @@ local function OnEnter(self)
 
 	if E.myclass == "HUNTER" then
 		local OverrideAPBySpellPower = GetOverrideAPBySpellPower()
-		if (OverrideAPBySpellPower ~= nil) then
-			local holySchool = 2;
+		if OverrideAPBySpellPower ~= nil then
+			local holySchool = 2
 			-- Start at 2 to skip physical damage
-			local spellPower = GetSpellBonusDamage(holySchool);
+			local spellPower = GetSpellBonusDamage(holySchool)
 			for i=(holySchool+1), MAX_SPELL_SCHOOLS do
-				spellPower = min(spellPower, GetSpellBonusDamage(i));
+				spellPower = min(spellPower, GetSpellBonusDamage(i))
 			end
-			spellPower = min(spellPower, GetSpellBonusHealing()) * OverrideAPBySpellPower;
+			spellPower = min(spellPower, GetSpellBonusHealing()) * OverrideAPBySpellPower
 
-			DT.tooltip:AddDoubleLine(RANGED_ATTACK_POWER, BreakUpLargeNumbers(spellPower), 1, 1, 1);
+			DT.tooltip:AddDoubleLine(RANGED_ATTACK_POWER, BreakUpLargeNumbers(spellPower), 1, 1, 1)
 		else
-			DT.tooltip:AddDoubleLine(RANGED_ATTACK_POWER, BreakUpLargeNumbers(pwr), 1, 1, 1);
+			DT.tooltip:AddDoubleLine(RANGED_ATTACK_POWER, BreakUpLargeNumbers(power), 1, 1, 1)
 		end
 
-		local line = format(RANGED_ATTACK_POWER_TOOLTIP, BreakUpLargeNumbers(max(pwr, 0)/ATTACK_POWER_MAGIC_NUMBER))
+		local line = format(RANGED_ATTACK_POWER_TOOLTIP, BreakUpLargeNumbers(max(power, 0)/ATTACK_POWER_MAGIC_NUMBER))
 
-		local petAPBonus = ComputePetBonus( "PET_BONUS_RAP_TO_AP", pwr );
-		if( petAPBonus > 0 ) then
-			line = line .. "\n" .. format(PET_BONUS_TOOLTIP_RANGED_ATTACK_POWER, BreakUpLargeNumbers(petAPBonus));
+		local petAPBonus = ComputePetBonus("PET_BONUS_RAP_TO_AP", power)
+		if petAPBonus > 0 then
+			line = line .. "\n" .. format(PET_BONUS_TOOLTIP_RANGED_ATTACK_POWER, BreakUpLargeNumbers(petAPBonus))
 		end
 
-		local petSpellDmgBonus = ComputePetBonus( "PET_BONUS_RAP_TO_SPELLDMG", pwr );
-		if( petSpellDmgBonus > 0 ) then
-			line = line .. "\n" .. format(PET_BONUS_TOOLTIP_SPELLDAMAGE, BreakUpLargeNumbers(petSpellDmgBonus));
+		local petSpellDmgBonus = ComputePetBonus("PET_BONUS_RAP_TO_SPELLDMG", power)
+		if petSpellDmgBonus > 0 then
+			line = line .. "\n" .. format(PET_BONUS_TOOLTIP_SPELLDAMAGE, BreakUpLargeNumbers(petSpellDmgBonus))
 		end
 
-		DT.tooltip:AddLine(line, nil, nil, nil, true);
+		DT.tooltip:AddLine(line, nil, nil, nil, true)
 	else
 		local SpellPowerByAttackPower = GetOverrideSpellPowerByAP()
 		local OverrideAPBySpellPower = GetOverrideAPBySpellPower()
-		local damageBonus = BreakUpLargeNumbers(max(pwr, 0)/ATTACK_POWER_MAGIC_NUMBER);
-		if (OverrideAPBySpellPower ~= nil) then
-			local holySchool = 2;
+		local damageBonus = BreakUpLargeNumbers(max(power, 0)/ATTACK_POWER_MAGIC_NUMBER)
+		if OverrideAPBySpellPower ~= nil then
+			local holySchool = 2
 			-- Start at 2 to skip physical damage
-			local spellPower = GetSpellBonusDamage(holySchool);
+			local spellPower = GetSpellBonusDamage(holySchool)
 			for i=(holySchool+1), MAX_SPELL_SCHOOLS do
-				spellPower = min(spellPower, GetSpellBonusDamage(i));
+				spellPower = min(spellPower, GetSpellBonusDamage(i))
 			end
-			spellPower = min(spellPower, GetSpellBonusHealing()) * OverrideAPBySpellPower;
-			DT.tooltip:AddDoubleLine(MELEE_ATTACK_POWER, spellPower, 1, 1, 1);
-			damageBonus = BreakUpLargeNumbers(spellPower / ATTACK_POWER_MAGIC_NUMBER);
+			spellPower = min(spellPower, GetSpellBonusHealing()) * OverrideAPBySpellPower
+			DT.tooltip:AddDoubleLine(MELEE_ATTACK_POWER, spellPower, 1, 1, 1)
+			damageBonus = BreakUpLargeNumbers(spellPower / ATTACK_POWER_MAGIC_NUMBER)
 		else
-			DT.tooltip:AddDoubleLine(MELEE_ATTACK_POWER, BreakUpLargeNumbers(pwr), 1, 1, 1);
+			DT.tooltip:AddDoubleLine(MELEE_ATTACK_POWER, BreakUpLargeNumbers(power), 1, 1, 1)
 		end
 
-		if (SpellPowerByAttackPower ~= nil) then
-			DT.tooltip:AddLine(format(MELEE_ATTACK_POWER_SPELL_POWER_TOOLTIP, damageBonus, BreakUpLargeNumbers(pwr * GetOverrideSpellPowerByAP() + 0.5)), nil, nil, nil, true);
+		if SpellPowerByAttackPower ~= nil then
+			DT.tooltip:AddLine(format(MELEE_ATTACK_POWER_SPELL_POWER_TOOLTIP, damageBonus, BreakUpLargeNumbers(power * GetOverrideSpellPowerByAP() + 0.5)), nil, nil, nil, true)
 		else
-			DT.tooltip:AddLine(format(MELEE_ATTACK_POWER_TOOLTIP, damageBonus), nil, nil, nil, true);
+			DT.tooltip:AddLine(format(MELEE_ATTACK_POWER_TOOLTIP, damageBonus), nil, nil, nil, true)
 		end
 	end
 
@@ -101,7 +99,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayNumberString = strjoin("", "%s: ", hex, "%d|r")
+	displayString = strjoin("", "%s: ", hex, "%d|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

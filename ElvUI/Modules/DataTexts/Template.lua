@@ -1,7 +1,8 @@
+----------------------------------------------------------------------------------
+-- This file is a blank datatext example template, this file will not be loaded.
+----------------------------------------------------------------------------------
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
-
---[[This file is a blank datatext example template, this file will not be loaded.]]
 
 local function Update(self, t)
 
@@ -33,4 +34,5 @@ end
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 	localizedName - localized name of the datetext
 ]]
+
 DT:RegisterDatatext('DTName', {'PLAYER_ENTERING_WORLD'}, OnEvent, Update, Click, OnEnter)

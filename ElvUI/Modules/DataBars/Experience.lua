@@ -148,7 +148,7 @@ function mod:UpdateExperienceDimensions()
 end
 
 function mod:EnableDisable_ExperienceBar()
-	local maxLevel = MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()];
+	local maxLevel = MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()]
 	if (E.mylevel ~= maxLevel or not self.db.experience.hideAtMaxLevel) and self.db.experience.enable then
 		self:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExperience')
 		self:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExperience')

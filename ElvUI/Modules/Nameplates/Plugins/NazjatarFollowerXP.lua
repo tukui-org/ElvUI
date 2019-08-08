@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
-local strmatch, tonumber = strmatch, tonumber
+local tonumber = tonumber
 local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
 local IsQuestFlaggedCompleted = IsQuestFlaggedCompleted
-local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 
 local NPCIDToWidgetIDMap = {
 	[154304] = 1940, -- Farseer Ori
