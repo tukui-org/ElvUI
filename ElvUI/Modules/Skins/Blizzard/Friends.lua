@@ -48,6 +48,19 @@ local function SkinSocialHeaderTab(tab)
 	tab.backdrop:Point("BOTTOMRIGHT", -6, 0)
 end
 
+local function BattleNetFrame_OnEnter(button)
+	if not button.backdrop then return end
+	local bnetColor = _G.FRIENDS_BNET_NAME_COLOR
+
+	button.backdrop:SetBackdropBorderColor(bnetColor.r, bnetColor.g, bnetColor.b)
+end
+
+local function BattleNetFrame_OnLeave(button)
+	if not button.backdrop then return end
+
+	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.friends ~= true then return end
 
@@ -117,16 +130,29 @@ local function LoadSkin()
 	S:HandleDropDownBox(_G.FriendsFrameStatusDropDown, 70)
 
 	_G.FriendsFrameStatusDropDown:ClearAllPoints()
-	_G.FriendsFrameStatusDropDown:Point("TOPLEFT", FriendsFrame, "TOPLEFT", -6, -28)
+	_G.FriendsFrameStatusDropDown:SetPoint("TOPLEFT", FriendsFrame, "TOPLEFT", 5, -24)
 
 	local FriendsFrameBattlenetFrame = _G.FriendsFrameBattlenetFrame
 	FriendsFrameBattlenetFrame:StripTextures()
-	FriendsFrameBattlenetFrame:GetRegions():Hide()
+	FriendsFrameBattlenetFrame:CreateBackdrop("Transparent")
+	FriendsFrameBattlenetFrame.backdrop:SetAllPoints()
 
-	FriendsFrameBattlenetFrame.UnavailableInfoFrame:Point("TOPLEFT", FriendsFrame, "TOPRIGHT", 1, -18)
+	local bnetColor = _G.FRIENDS_BNET_BACKGROUND_COLOR
+	local button = CreateFrame("Button", nil, FriendsFrameBattlenetFrame)
+	button:SetPoint("TOPLEFT", FriendsFrameBattlenetFrame, "TOPLEFT")
+	button:SetPoint("BOTTOMRIGHT", FriendsFrameBattlenetFrame, "BOTTOMRIGHT")
+	button:SetSize(FriendsFrameBattlenetFrame:GetSize())
+	button:CreateBackdrop()
+	button.backdrop:SetBackdropColor(bnetColor.r, bnetColor.g, bnetColor.b, bnetColor.a)
+	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 
-	-- Needs some Love. 8.2.5
-	--S:HandleButton(FriendsFrameBattlenetFrame.BroadcastButton)
+	button:SetScript("OnClick", function() FriendsFrameBattlenetFrame.BroadcastFrame:ToggleFrame() end)
+	button:SetScript("OnEnter", BattleNetFrame_OnEnter)
+	button:SetScript("OnLeave", BattleNetFrame_OnLeave)
+
+	FriendsFrameBattlenetFrame.BroadcastButton:Kill() -- We use the BattlenetFrame to enter a Status Message
+
+	FriendsFrameBattlenetFrame.UnavailableInfoFrame:SetPoint("TOPLEFT", FriendsFrame, "TOPRIGHT", 1, -18)
 
 	FriendsFrameBattlenetFrame.BroadcastFrame:StripTextures()
 	FriendsFrameBattlenetFrame.BroadcastFrame:CreateBackdrop("Transparent")
