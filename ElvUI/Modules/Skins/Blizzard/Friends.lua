@@ -202,18 +202,15 @@ local function LoadSkin()
 
 	-- GameIcons
 	for i = 1, _G.FRIENDS_TO_DISPLAY do
-		local button = _G["FriendsFrameFriendsScrollFrameButton"..i]
-		local icon = _G["FriendsFrameFriendsScrollFrameButton"..i.."GameIcon"]
+		local button = _G["FriendsListFrameScrollFrameButton"..i]
+		local icon = _G["FriendsListFrameScrollFrameButton"..i.."GameIcon"]
 
-		-- 8.2.5 look for a better solution, just make sure for now, the icon exists
-		if icon then
-			icon:Size(22, 22)
-			icon:SetTexCoord(.15, .85, .15, .85)
+		icon:Size(22, 22)
+		icon:SetTexCoord(.15, .85, .15, .85)
 
-			icon:ClearAllPoints()
-			icon:Point("RIGHT", button, "RIGHT", -24, 0)
-			icon.SetPoint = E.noop
-		end
+		icon:ClearAllPoints()
+		icon:Point("RIGHT", button, "RIGHT", -24, 0)
+		icon.SetPoint = E.noop
 	end
 
 	--Tutorial - 8.2.5 must fine the new name
