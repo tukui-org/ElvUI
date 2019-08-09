@@ -64,7 +64,6 @@ local function LoadSkin()
 		if clubInfo then
 			self:Size(166, 67)
 
-			--select(13, self:GetRegions()):Hide() -- Hide the mouseover texture
 			self.Background:Hide()
 			self:SetFrameLevel(self:GetFrameLevel()+5)
 
@@ -100,7 +99,6 @@ local function LoadSkin()
 	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetAddCommunity", function(self)
 		self:Size(166, 67)
 
-		--select(13, self:GetRegions()):Hide() -- Hide the mouseover texture (needs some love)
 		self.Background:Hide()
 		self:SetFrameLevel(self:GetFrameLevel()+5)
 		S:HandleIcon(self.Icon)
