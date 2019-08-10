@@ -748,17 +748,7 @@ function NP:Initialize()
 	_G.ElvNP_Player:SetScale(E.mult)
 	_G.ElvNP_Player.frameType = "PLAYER"
 
-	E:CreateMover(
-		_G.ElvNP_Player,
-		"ElvNP_PlayerMover",
-		L["Player NamePlate"],
-		nil,
-		nil,
-		nil,
-		"ALL,SOLO",
-		nil,
-		"nameplate,playerGroup"
-	)
+	E:CreateMover(_G.ElvNP_Player, "ElvNP_PlayerMover", L["Player NamePlate"], nil, nil, nil, "ALL,SOLO", nil, "nameplate,playerGroup")
 
 	local StaticSecure = CreateFrame("Button", "ElvNP_StaticSecure", _G.UIParent, "SecureUnitButtonTemplate")
 	StaticSecure:SetAttribute("unit", "player")
