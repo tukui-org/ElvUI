@@ -3,8 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local _G = _G
-local select, pairs = select, pairs
-local format = string.format
+local format, select, pairs = format, select, pairs
 --WoW API / Variables
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMoney = GetMoney

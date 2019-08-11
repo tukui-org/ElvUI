@@ -4,8 +4,8 @@ local oUF = E.oUF
 --Lua functions
 local _G = _G
 local pairs, tonumber = pairs, tonumber
-local ceil, floor = math.ceil, math.floor
-local match = string.match
+local ceil, floor = math.ceil, floor
+local strmatch = strmatch
 --WoW API / Variables
 local IsInInstance = IsInInstance
 local GetLocale = GetLocale
@@ -122,17 +122,17 @@ local function GetQuests(unitID)
 			questID = ActiveQuests[text]
 		end
 
-		local playerName, progressText = match(text, '^ ([^ ]-) ?%- (.+)$') -- nil or '' if 1 is missing but 2 is there
+		local playerName, progressText = strmatch(text, '^ ([^ ]-) ?%- (.+)$') -- nil or '' if 1 is missing but 2 is there
 		if (not playerName or playerName == '' or playerName == UnitName('player')) and progressText then
 			local index = #QuestList + 1
 			QuestList[index] = {}
 			progressText = progressText:lower()
 
-			local x, y = match(progressText, '(%d+)/(%d+)')
+			local x, y = strmatch(progressText, '(%d+)/(%d+)')
 			if x and y then
 				QuestList[index].objectiveCount = floor(y - x)
 			else
-				local progress = tonumber(match(progressText, '([%d%.]+)%%')) -- contains % in the progressText
+				local progress = tonumber(strmatch(progressText, '([%d%.]+)%%')) -- contains % in the progressText
 				if progress and progress <= 100 then
 					QuestList[index].objectiveCount = ceil(100 - progress)
 				end

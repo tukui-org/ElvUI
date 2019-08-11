@@ -4,8 +4,7 @@ local RU = E:GetModule('RaidUtility')
 --Lua functions
 local _G = _G
 local unpack, ipairs, pairs, next = unpack, ipairs, pairs, next
-local tinsert, wipe, sort = tinsert, wipe, sort
-local strfind = strfind
+local strfind, tinsert, wipe, sort = strfind, tinsert, wipe, sort
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local DoReadyCheck = DoReadyCheck

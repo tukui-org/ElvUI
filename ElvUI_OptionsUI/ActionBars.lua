@@ -172,6 +172,29 @@ local function BuildABConfig()
 				isPercent = true,
 				set = function(info, value) E.db.actionbar[info[#info]] = value; AB.fadeParent:SetAlpha(1-value) end,
 			},
+			equippedItem = {
+				order = 17,
+				type = "toggle",
+				name = L["Equipped Item"],
+				get = function(info) return E.db.actionbar[info[#info]] end,
+				set = function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end
+			},
+			equippedItemColor = {
+				order = 18,
+				type = "color",
+				name = L["Equipped Item Color"],
+				get = function(info)
+					local t = E.db.actionbar[info[#info]]
+					local d = P.actionbar[info[#info]]
+					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+				end,
+				set = function(info, r, g, b)
+					local t = E.db.actionbar[info[#info]]
+					t.r, t.g, t.b = r, g, b
+					AB:UpdateButtonSettings()
+				end,
+				disabled = function() return not E.db.actionbar.equippedItem end
+			},
 			colorGroup = {
 				order = 20,
 				type = "group",

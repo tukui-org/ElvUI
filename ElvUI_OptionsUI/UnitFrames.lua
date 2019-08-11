@@ -1226,10 +1226,14 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				name = L["Attach Text To"],
 				values = attachToValues,
 			},
-			bgUseBarTexture = {
-				type = "toggle",
+			colorOverride = {
 				order = 6,
-				name = L["Use Health Texture on Background"],
+				name = L["Class Color Override"],
+				desc = L["Override the default class color setting."],
+				type = 'select',
+				values = colorOverrideValues,
+				get = function(info) return E.db.unitframe.units[groupName][info[#info]] end,
+				set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 			},
 			configureButton = {
 				order = 7,
@@ -1239,7 +1243,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "healthGroup") end,
 			},
 			text_format = {
-				order = 10,
+				order = 9,
 				name = L["Text Format"],
 				type = 'input',
 				width = 'full',
@@ -3901,18 +3905,6 @@ E.Options.args.unitframe.args.player = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				colorOverride = {
-					order = 10,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
-				},
-				spacer = {
-					order = 11,
-					type = "description",
-					name = "",
-				},
 				disableMouseoverGlow = {
 					order = 12,
 					type = "toggle",
@@ -4523,13 +4515,6 @@ E.Options.args.unitframe.args.target = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				colorOverride = {
-					order = 11,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
-				},
 				disableMouseoverGlow = {
 					order = 12,
 					type = "toggle",
@@ -4757,18 +4742,6 @@ E.Options.args.unitframe.args.targettarget = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				colorOverride = {
-					order = 10,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
-				},
-				spacer = {
-					order = 11,
-					type = "description",
-					name = "",
-				},
 				disableMouseoverGlow = {
 					order = 12,
 					type = "toggle",
@@ -4891,18 +4864,6 @@ E.Options.args.unitframe.args.targettargettarget = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				colorOverride = {
-					order = 10,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
-				},
-				spacer = {
-					order = 11,
-					type = "description",
-					name = "",
-				},
 				disableMouseoverGlow = {
 					order = 12,
 					type = "toggle",
@@ -5024,13 +4985,6 @@ E.Options.args.unitframe.args.focus = {
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
-				},
-				colorOverride = {
-					order = 10,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
 				},
 				disableMouseoverGlow = {
 					order = 11,
@@ -5157,18 +5111,6 @@ E.Options.args.unitframe.args.focustarget = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				colorOverride = {
-					order = 10,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
-				},
-				spacer = {
-					order = 11,
-					type = "description",
-					name = "",
-				},
 				disableMouseoverGlow = {
 					order = 12,
 					type = "toggle",
@@ -5290,13 +5232,6 @@ E.Options.args.unitframe.args.pet = {
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
-				},
-				colorOverride = {
-					order = 10,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
 				},
 				disableMouseoverGlow = {
 					order = 11,
@@ -5454,18 +5389,6 @@ E.Options.args.unitframe.args.pettarget = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				colorOverride = {
-					order = 10,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
-				},
-				spacer = {
-					order = 11,
-					type = "description",
-					name = "",
-				},
 				disableMouseoverGlow = {
 					order = 12,
 					type = "toggle",
@@ -5607,13 +5530,6 @@ E.Options.args.unitframe.args.boss = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				colorOverride = {
-					order = 15,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
-				},
 				disableMouseoverGlow = {
 					order = 16,
 					type = "toggle",
@@ -5743,13 +5659,6 @@ E.Options.args.unitframe.args.arena = {
 					name = L["Spacing"],
 					min = 0, max = 400, step = 1,
 				},
-				colorOverride = {
-					order = 14,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
-				},
 				smartAuraPosition = {
 					order = 15,
 					type = "select",
@@ -5768,11 +5677,6 @@ E.Options.args.unitframe.args.arena = {
 						--["MIDDLE"] = L["Middle"], --no way to handle this with trinket
 						["RIGHT"] = L["Right"],
 					},
-				},
-				spacer = {
-					order = 17,
-					type = "description",
-					name = "",
 				},
 				disableMouseoverGlow = {
 					order = 18,
@@ -5913,13 +5817,6 @@ E.Options.args.unitframe.args.party = {
 					order = 6,
 					name = L["Threat Display Mode"],
 					values = threatValues,
-				},
-				colorOverride = {
-					order = 7,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
 				},
 				orientation = {
 					order = 8,
@@ -6565,13 +6462,6 @@ E.Options.args.unitframe.args.raid = {
 					name = L["Threat Display Mode"],
 					values = threatValues,
 				},
-				colorOverride = {
-					order = 7,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
-				},
 				orientation = {
 					order = 8,
 					type = "select",
@@ -7038,13 +6928,6 @@ E.Options.args.unitframe.args.raid40 = {
 					name = L["Threat Display Mode"],
 					values = threatValues,
 				},
-				colorOverride = {
-					order = 7,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
-				},
 				orientation = {
 					order = 8,
 					type = "select",
@@ -7503,13 +7386,6 @@ E.Options.args.unitframe.args.raidpet = {
 					name = L["Threat Display Mode"],
 					values = threatValues,
 				},
-				colorOverride = {
-					order = 6,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
-				},
 				orientation = {
 					order = 7,
 					type = "select",
@@ -7800,13 +7676,6 @@ E.Options.args.unitframe.args.tank = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				colorOverride = {
-					order = 8,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
-				},
 				disableMouseoverGlow = {
 					order = 9,
 					type = "toggle",
@@ -7870,13 +7739,6 @@ E.Options.args.unitframe.args.tank = {
 					name = L["yOffset"],
 					desc = L["An Y offset (in pixels) to be used when anchoring new frames."],
 					min = -500, max = 500, step = 1,
-				},
-				colorOverride = {
-					order = 8,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
 				},
 				name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'tank'),
 			},
@@ -8007,13 +7869,6 @@ E.Options.args.unitframe.args.assist = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				colorOverride = {
-					order = 8,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
-				},
 				disableMouseoverGlow = {
 					order = 9,
 					type = "toggle",
@@ -8077,13 +7932,6 @@ E.Options.args.unitframe.args.assist = {
 					name = L["yOffset"],
 					desc = L["An Y offset (in pixels) to be used when anchoring new frames."],
 					min = -500, max = 500, step = 1,
-				},
-				colorOverride = {
-					order = 8,
-					name = L["Class Color Override"],
-					desc = L["Override the default class color setting."],
-					type = 'select',
-					values = colorOverrideValues,
 				},
 				name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'assist'),
 			},

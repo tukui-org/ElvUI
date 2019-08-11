@@ -15,29 +15,28 @@ local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
 local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
 local STAT_LIFESTEAL = STAT_LIFESTEAL
 
-local displayModifierString = ''
-local lastPanel;
+local displayString, lastPanel = ''
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	local text, tooltip;
+	local text, tooltip
 	text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_LIFESTEAL).." "..format("%.2F%%", GetLifesteal())..FONT_COLOR_CODE_CLOSE
 	tooltip = format(CR_LIFESTEAL_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(CR_LIFESTEAL)), GetCombatRatingBonus(CR_LIFESTEAL))
 
-	DT.tooltip:AddDoubleLine(text, nil, 1, 1, 1);
-	DT.tooltip:AddLine(tooltip, nil, nil, nil, true);
+	DT.tooltip:AddDoubleLine(text, nil, 1, 1, 1)
+	DT.tooltip:AddLine(tooltip, nil, nil, nil, true)
 	DT.tooltip:Show()
 end
 
 local function OnEvent(self)
 	local lifesteal = GetLifesteal()
-	self.text:SetFormattedText(displayModifierString, STAT_LIFESTEAL, lifesteal)
+	self.text:SetFormattedText(displayString, STAT_LIFESTEAL, lifesteal)
 	lastPanel = self
 end
 
 local function ValueColorUpdate(hex)
-	displayModifierString = strjoin("", "%s: ", hex, "%.2f%%|r")
+	displayString = strjoin("", "%s: ", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

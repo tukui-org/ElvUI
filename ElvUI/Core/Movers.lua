@@ -17,7 +17,7 @@ E.CreatedMovers = {}
 E.DisabledMovers = {}
 
 local function SizeChanged(frame)
-	if InCombatLockdown() then return; end
+	if InCombatLockdown() then return end
 
 	if frame.dirtyWidth and frame.dirtyHeight then
 		frame.mover:Size(frame.dirtyWidth, frame.dirtyHeight)

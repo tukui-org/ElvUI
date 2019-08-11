@@ -33,7 +33,7 @@ local statusColors = {
 	"|cffD80909"
 }
 
-local enteredFrame = false;
+local enteredFrame = false
 local bandwidthString = "%.2f Mbps"
 local percentageString = "%.2f%%"
 local homeLatencyString = "%d ms"
@@ -105,14 +105,14 @@ end
 
 local function Click()
 	if IsModifierKeyDown() then
-		collectgarbage("collect");
-		ResetCPUUsage();
+		collectgarbage("collect")
+		ResetCPUUsage()
 	end
 end
 
 local ipTypes = {"IPv4", "IPv6"}
 local function OnEnter(self)
-	enteredFrame = true;
+	enteredFrame = true
 	local cpuProfiling = GetCVar("scriptProfile") == "1"
 	DT:SetupTooltip(self)
 
@@ -124,7 +124,7 @@ local function OnEnter(self)
 	DT.tooltip:AddDoubleLine(L["World Latency:"], format(homeLatencyString, worldPing), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 
 	if GetCVarBool("useIPv6") then
-		local ipTypeHome, ipTypeWorld = GetNetIpTypes();
+		local ipTypeHome, ipTypeWorld = GetNetIpTypes()
 		DT.tooltip:AddDoubleLine(L["Home Protocol:"], ipTypes[ipTypeHome or 0] or UNKNOWN, 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 		DT.tooltip:AddDoubleLine(L["World Protocol:"], ipTypes[ipTypeWorld or 0] or UNKNOWN, 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	end
@@ -170,7 +170,7 @@ local function OnEnter(self)
 end
 
 local function OnLeave()
-	enteredFrame = false;
+	enteredFrame = false
 	DT.tooltip:Hide()
 end
 

@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local AB = E:GetModule('ActionBars');
+local AB = E:GetModule('ActionBars')
 
 --Lua functions
 local _G = _G
@@ -73,7 +73,7 @@ function AB:SetupExtraButton()
 	for i=1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
 		if button then
-			button.noResize = true;
+			button.noResize = true
 			button.pushed = true
 			button.checked = true
 
@@ -109,11 +109,11 @@ function AB:SetupExtraButton()
 	end
 
 	if HasExtraActionBar() then
-		ExtraActionBarFrame:Show();
+		ExtraActionBarFrame:Show()
 	end
 
-	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraActionButton');
-	E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS');
+	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraActionButton')
+	E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS')
 
 	AB:Extra_SetAlpha()
 	AB:Extra_SetScale()

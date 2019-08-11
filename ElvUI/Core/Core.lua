@@ -665,7 +665,8 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		return str
 	end
 
-	local function recurse(tbl, ret, profileText, sameLine)
+	local sameLine
+	local function recurse(tbl, ret, profileText)
 		local lineStructure = buildLineStructure(profileText)
 		for k, v in pairs(tbl) do
 			if not sameLine then
@@ -684,7 +685,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 				tinsert(lineStructureTable, k)
 				sameLine = true
 				ret = ret..']'
-				ret = recurse(v, ret, profileText, sameLine)
+				ret = recurse(v, ret, profileText)
 			else
 				sameLine = false
 				ret = ret..'] = '
@@ -717,7 +718,8 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		twipe(lineStructureTable)
 		local ret = ""
 		if inTable and profileType then
-			ret = recurse(inTable, ret, profileText, false)
+			sameLine = false
+			ret = recurse(inTable, ret, profileText)
 		end
 
 		return ret

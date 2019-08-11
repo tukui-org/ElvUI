@@ -33,7 +33,7 @@ function UF:FrameGlow_ElementHook(frame, glow, which)
 		end
 
 		if which == 'mouseoverGlow' then
-			UF:FrameGlow_PositionHighlight(frame)
+			UF:FrameGlow_PositionGlow(frame)
 			UF:FrameGlow_CheckMouseover(frame)
 		else
 			UF:FrameGlow_PositionGlow(frame, glow, glow.powerGlow)
@@ -161,10 +161,10 @@ function UF:FrameGlow_CreateGlow(frame, mouse)
 	end
 
 	-- Eventing Frame
-	if not frame.Highlight then
-		frame.Highlight = CreateFrame('Frame', nil, frame)
-		frame.Highlight:Hide()
-		frame.Highlight:HookScript('OnEvent', function(_, event)
+	if not frame.FrameGlow then
+		frame.FrameGlow = CreateFrame('Frame', nil, frame)
+		frame.FrameGlow:Hide()
+		frame.FrameGlow:SetScript('OnEvent', function(_, event)
 			if event == 'UPDATE_MOUSEOVER_UNIT' then
 				UF:FrameGlow_CheckMouseover(frame)
 			elseif event == 'PLAYER_TARGET_CHANGED' then
@@ -233,10 +233,10 @@ function UF:FrameGlow_ConfigureGlow(frame, unit, dbTexture)
 	end
 
 	local shouldHide
-	if frame.Highlight and frame.Highlight.texture then
+	if frame.FrameGlow and frame.FrameGlow.texture then
 		if E.db.unitframe.colors.frameGlow.mouseoverGlow.enable and not (frame.db and frame.db.disableMouseoverGlow) then
-			frame.Highlight.texture:SetTexture(dbTexture)
-			UF:FrameGlow_SetGlowColor(frame.Highlight.texture, unit, 'mouseoverGlow')
+			frame.FrameGlow.texture:SetTexture(dbTexture)
+			UF:FrameGlow_SetGlowColor(frame.FrameGlow.texture, unit, 'mouseoverGlow')
 		else
 			shouldHide = 'texture'
 		end
@@ -254,10 +254,10 @@ function UF:FrameGlow_ConfigureGlow(frame, unit, dbTexture)
 	end
 
 	if shouldHide then
-		if shouldHide == 'both' and frame.Highlight:IsShown() then
-			frame.Highlight:Hide()
+		if shouldHide == 'both' and frame.FrameGlow:IsShown() then
+			frame.FrameGlow:Hide()
 		elseif shouldHide == 'texture' then
-			frame.Highlight.texture:Hide()
+			frame.FrameGlow.texture:Hide()
 		end
 	end
 
@@ -301,8 +301,8 @@ function UF:FrameGlow_CheckMouseover(frame)
 	end
 
 	if shouldShow then
-		if frame.Highlight and not frame.Highlight:IsShown() then
-			frame.Highlight:Show()
+		if frame.FrameGlow and not frame.FrameGlow:IsShown() then
+			frame.FrameGlow:Show()
 		end
 		if (shouldShow == 'both' or shouldShow == 'frame') then
 			if frame.MouseGlow.powerGlow then
@@ -314,36 +314,36 @@ function UF:FrameGlow_CheckMouseover(frame)
 			end
 			frame.MouseGlow:Show()
 
-			if (shouldShow == 'frame') and frame.Highlight.texture and frame.Highlight.texture:IsShown() then
-				frame.Highlight.texture:Hide()
+			if (shouldShow == 'frame') and frame.FrameGlow.texture and frame.FrameGlow.texture:IsShown() then
+				frame.FrameGlow.texture:Hide()
 			end
 		end
-		if (shouldShow == 'both' or shouldShow == 'texture') and frame.Highlight.texture and not frame.Highlight.texture:IsShown() then
-			frame.Highlight.texture:Show()
+		if (shouldShow == 'both' or shouldShow == 'texture') and frame.FrameGlow.texture and not frame.FrameGlow.texture:IsShown() then
+			frame.FrameGlow.texture:Show()
 		end
-	elseif frame.Highlight and frame.Highlight:IsShown() then
-		frame.Highlight:Hide()
+	elseif frame.FrameGlow and frame.FrameGlow:IsShown() then
+		frame.FrameGlow:Hide()
 	end
 end
 
-function UF:FrameGlow_PositionHighlight(frame)
-	if frame.Highlight and frame.Highlight.texture then
-		frame.Highlight.texture:ClearAllPoints()
-		frame.Highlight.texture:Point('TOPLEFT', frame.Health, 'TOPLEFT')
-		frame.Highlight.texture:Point('BOTTOMRIGHT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+function UF:FrameGlow_PositionGlow(frame)
+	if frame.FrameGlow and frame.FrameGlow.texture then
+		frame.FrameGlow.texture:ClearAllPoints()
+		frame.FrameGlow.texture:Point('TOPLEFT', frame.Health, 'TOPLEFT')
+		frame.FrameGlow.texture:Point('BOTTOMRIGHT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 	end
 end
 
-function UF:Configure_HighlightGlow(frame)
-	if frame.Highlight and frame.Highlight.texture then
+function UF:Configure_FrameGlow(frame)
+	if frame.FrameGlow and frame.FrameGlow.texture then
 		local dbTexture = UF.LSM:Fetch('statusbar', E.db.unitframe.colors.frameGlow.mouseoverGlow.texture)
-		frame.Highlight.texture:SetTexture(dbTexture)
+		frame.FrameGlow.texture:SetTexture(dbTexture)
 	end
 end
 
-function UF:Construct_HighlightGlow(frame, glow)
-	if frame.Health and frame.Highlight then
-		frame.Highlight:HookScript('OnHide', function(watcher)
+function UF:Construct_FrameGlow(frame, glow)
+	if frame.Health and frame.FrameGlow then
+		frame.FrameGlow:SetScript('OnHide', function(watcher)
 			UF:FrameGlow_HideGlow(glow)
 
 			if watcher.texture and watcher.texture:IsShown() then
@@ -351,7 +351,7 @@ function UF:Construct_HighlightGlow(frame, glow)
 			end
 		end)
 
-		frame.Highlight:SetScript('OnUpdate', function(watcher, elapsed)
+		frame.FrameGlow:SetScript('OnUpdate', function(watcher, elapsed)
 			if watcher.elapsed and watcher.elapsed > 0.1 then
 				if not UF:FrameGlow_MouseOnUnit(frame) then
 					watcher:Hide()
@@ -362,18 +362,18 @@ function UF:Construct_HighlightGlow(frame, glow)
 			end
 		end)
 
-		frame.Highlight.texture = frame.Health:CreateTexture('$parentHighlight', 'ARTWORK', nil, 1)
-		frame.Highlight.texture:Hide()
+		frame.FrameGlow.texture = frame.Health:CreateTexture('$parentFrameGlow', 'ARTWORK', nil, 1)
+		frame.FrameGlow.texture:Hide()
 
-		UF:FrameGlow_ElementHook(frame, frame.Highlight.texture, 'mouseoverGlow')
+		UF:FrameGlow_ElementHook(frame, frame.FrameGlow.texture, 'mouseoverGlow')
 	end
 end
 
 function UF:Construct_MouseGlow(frame)
 	local mainGlow = UF:FrameGlow_CreateGlow(frame, true)
 	UF:FrameGlow_ElementHook(frame, mainGlow, 'mainGlow')
-	UF:Construct_HighlightGlow(frame, mainGlow)
-	frame.Highlight:RegisterEvent('UPDATE_MOUSEOVER_UNIT')
+	UF:Construct_FrameGlow(frame, mainGlow)
+	frame.FrameGlow:RegisterEvent('UPDATE_MOUSEOVER_UNIT')
 
 	return mainGlow
 end
@@ -381,7 +381,7 @@ end
 function UF:Construct_TargetGlow(frame)
 	local targetGlow = UF:FrameGlow_CreateGlow(frame)
 	UF:FrameGlow_ElementHook(frame, targetGlow, 'targetGlow')
-	frame.Highlight:RegisterEvent('PLAYER_TARGET_CHANGED')
+	frame.FrameGlow:RegisterEvent('PLAYER_TARGET_CHANGED')
 
 	return targetGlow
 end

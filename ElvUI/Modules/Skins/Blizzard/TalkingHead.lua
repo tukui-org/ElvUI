@@ -6,7 +6,8 @@ local _G = _G
 --WoW API / Variables
 
 --Just some test code
---[[local talkingHeadTextureKitRegionFormatStrings = {
+--[[
+local talkingHeadTextureKitRegionFormatStrings = {
 	["TextBackground"] = "%s-TextBackground",
 	["Portrait"] = "%s-PortraitFrame",
 }

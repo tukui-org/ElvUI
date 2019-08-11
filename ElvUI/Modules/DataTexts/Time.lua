@@ -33,18 +33,16 @@ local WINTERGRASP_IN_PROGRESS = WINTERGRASP_IN_PROGRESS
 
 local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS.."(s)"
 local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
-local europeDisplayFormat = '';
-local ukDisplayFormat = '';
+local ukDisplayFormat, europeDisplayFormat = '', ''
 local europeDisplayFormat_nocolor = strjoin("", "%02d", ":|r%02d")
 local ukDisplayFormat_nocolor = strjoin("", "", "%d", ":|r%02d", " %s|r")
 local lockoutInfoFormat = "%s%s %s |cffaaaaaa(%s, %s/%s)"
 local lockoutInfoFormatNoEnc = "%s%s %s |cffaaaaaa(%s)"
 local formatBattleGroundInfo = "%s: "
 local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=.8,g=.8,b=.8 }
-local curHr, curMin, curAmPm
-local enteredFrame = false;
+local enteredFrame, curHr, curMin, curAmPm = false
 
-local Update, lastPanel; -- UpValue
+local Update, lastPanel
 
 local function ValueColorUpdate(hex)
 	europeDisplayFormat = strjoin("", "%02d", hex, ":|r%02d")
@@ -83,12 +81,12 @@ end
 
 local function Click()
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
-	_G.GameTimeFrame:Click();
+	_G.GameTimeFrame:Click()
 end
 
 local function OnLeave()
-	DT.tooltip:Hide();
-	enteredFrame = false;
+	DT.tooltip:Hide()
+	enteredFrame = false
 end
 
 -- use these to convert "The Eye" into "Tempest Keep"
@@ -97,7 +95,7 @@ local TempestKeep = select(2, GetAchievementInfo(1088)):match('%((.-)%)$')
 
 local instanceIconByName = {}
 local function GetInstanceImages(index, raid)
-	local instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid);
+	local instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
 	while instanceID do
 		if name == DUNGEON_FLOOR_TEMPESTKEEP1 then
 			instanceIconByName[TempestKeep] = buttonImage
@@ -105,7 +103,7 @@ local function GetInstanceImages(index, raid)
 			instanceIconByName[name] = buttonImage
 		end
 		index = index + 1
-		instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid);
+		instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
 	end
 end
 
@@ -125,7 +123,7 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 
 	if(not enteredFrame) then
-		enteredFrame = true;
+		enteredFrame = true
 		RequestRaidInfo()
 	end
 
@@ -136,14 +134,14 @@ local function OnEnter(self)
 
 			-- Loop through the expansions to collect the textures
 			for i=1, numTiers do
-				EJ_SelectTier(i);
+				EJ_SelectTier(i)
 				GetInstanceImages(1, false); -- Populate for dungeon icons
 				GetInstanceImages(1, true); -- Populate for raid icons
 			end
 
 			-- Set it back to the previous tier
 			if currentTier then
-				EJ_SelectTier(currentTier);
+				EJ_SelectTier(currentTier)
 			end
 
 			collectedInstanceImages = true
@@ -173,7 +171,7 @@ local function OnEnter(self)
 	local lockedInstances = {raids = {}, dungeons = {}}
 
 	for i = 1, GetNumSavedInstances() do
-		local name, _, _, difficulty, locked, extended, _, isRaid = GetSavedInstanceInfo(i);
+		local name, _, _, difficulty, locked, extended, _, isRaid = GetSavedInstanceInfo(i)
 		if (locked or extended) and name then
 			local isLFR, isHeroicOrMythicDungeon = (difficulty == 7 or difficulty == 17), (difficulty == 2 or difficulty == 23)
 			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)

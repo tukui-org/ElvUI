@@ -4,7 +4,6 @@ local MC = E:GetModule('ModuleCopy')
 --Lua functions
 local pairs, next, type = pairs, next, type
 local format, error = format, error
---WoW API / Variables
 -- GLOBALS: ElvDB
 
 --This table to reserve settings names in E.global.profileCopy. Used in export/imports functions
@@ -168,25 +167,24 @@ function MC:CopyTable(CopyFrom, CopyTo, CopyDefault, module)
 end
 
 --[[
-* Valid copy templates should be as follows
-G.profileCopy[YourOptionGroupName] = {
-	[SubGroupName1] = true,
-	[SubGroupName2] = true,
-	...
-}
-* For example
-G.profileCopy.auras = {
-	["general"] = true,
-	["buffs"] = true,
-	["debuffs"] = true,
-	["cooldown"] = true,
-}
-* "general" key can refer to a similar named subtable or all non-table variables inside your group
-* If you leave the table as G.profileCopy[YourOptionGroupName] = {}, this will result in no valid copy template error.
-* If set to G.profileCopy[YourOptionGroupName] = true, then this will copy everything without selecting
-any particular subcategory from your settings table.
-* Plugins can use "pluginSection" argument to determain their own table if they keep settings apart from core ElvUI settings.
-Examples S&L uses "sle" table, MerathilisUI uses "mui" table, BenikUI uses "benikui" and core table
+	* Valid copy templates should be as follows:
+		G.profileCopy[YourOptionGroupName] = {
+			[SubGroupName1] = true,
+			[SubGroupName2] = true,
+			...
+		}
+	* For example:
+		G.profileCopy.auras = {
+			["general"] = true,
+			["buffs"] = true,
+			["debuffs"] = true,
+			["cooldown"] = true,
+		}
+	* "general" key can refer to a similar named subtable or all non-table variables inside your group
+	* If you leave the table as G.profileCopy[YourOptionGroupName] = {}, this will result in no valid copy template error.
+	* If set to G.profileCopy[YourOptionGroupName] = true, then this will copy everything without selecting any particular subcategory from your settings table.
+	* Plugins can use "pluginSection" argument to determain their own table if they keep settings apart from core ElvUI settings.
+	-- Examples S&L uses "sle" table, MerathilisUI uses "mui" table, BenikUI uses "benikui" and core table
 ]]
 
 function MC:TablesExist(CopyFrom, CopyTo, CopyDefault)

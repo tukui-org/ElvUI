@@ -50,7 +50,7 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function Click(self, button)
+local function Click(_, button)
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 	if button == "LeftButton" or (button == "RightButton" and not IsShiftKeyDown()) then
 		E:ToggleOptionsUI()

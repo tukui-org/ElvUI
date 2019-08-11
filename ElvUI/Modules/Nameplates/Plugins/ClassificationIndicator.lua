@@ -1,9 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
--- Cache global variables
--- Lua functions
--- WoW API / Variables
 local function Update(self)
 	local element = self.ClassificationIndicator
 

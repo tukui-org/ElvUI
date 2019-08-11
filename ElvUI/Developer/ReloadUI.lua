@@ -1,4 +1,3 @@
---Lua functions
 --WoW API / Variables
 local SlashCmdList = SlashCmdList
 -- GLOBALS: SLASH_RELOADUI1, SLASH_RELOADUI2

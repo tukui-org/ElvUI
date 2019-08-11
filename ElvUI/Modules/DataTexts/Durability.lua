@@ -3,8 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local _G = _G
-local pairs = pairs
-local format, strjoin = format, strjoin
+local format, strjoin, pairs = format, strjoin, pairs
 --WoW API / Variables
 local GetInventoryItemDurability = GetInventoryItemDurability
 local GetInventorySlotInfo = GetInventorySlotInfo
@@ -12,10 +11,9 @@ local ToggleCharacter = ToggleCharacter
 local DURABILITY = DURABILITY
 local InCombatLockdown = InCombatLockdown
 
-local displayString = ""
+local displayString, lastPanel = ""
 local tooltipString = "%d%%"
 local totalDurability = 0
-local lastPanel
 local invDurability = {}
 local slots = {
 	["SecondaryHandSlot"] = L["Offhand"],

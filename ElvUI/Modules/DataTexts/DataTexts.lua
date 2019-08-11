@@ -6,8 +6,7 @@ local LSM = E.Libs.LSM
 
 --Lua functions
 local _G = _G
-local pairs, type, error = pairs, type, error
-local strlen = strlen
+local pairs, type, error, strlen = pairs, type, error, strlen
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsInInstance = IsInInstance
@@ -306,7 +305,7 @@ function DT:LoadDataTexts()
 	end
 
 	if DT.ForceHideBGStats then
-		DT.ForceHideBGStats = nil;
+		DT.ForceHideBGStats = nil
 	end
 end
 

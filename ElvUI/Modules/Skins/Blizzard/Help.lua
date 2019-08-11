@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local select, unpack = select, unpack
---WoW API / Variables
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.help ~= true then return end

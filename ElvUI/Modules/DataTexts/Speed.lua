@@ -15,29 +15,28 @@ local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
 local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
 local STAT_SPEED = STAT_SPEED
 
-local displayModifierString = ''
-local lastPanel;
+local displayString, lastPanel = ''
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	local text, tooltip;
+	local text, tooltip
 	text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_SPEED).." "..format("%.2F%%", GetSpeed())..FONT_COLOR_CODE_CLOSE
 	tooltip = format(CR_SPEED_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(CR_SPEED)), GetCombatRatingBonus(CR_SPEED))
 
-	DT.tooltip:AddDoubleLine(text, nil, 1, 1, 1);
-	DT.tooltip:AddLine(tooltip, nil, nil, nil, true);
+	DT.tooltip:AddDoubleLine(text, nil, 1, 1, 1)
+	DT.tooltip:AddLine(tooltip, nil, nil, nil, true)
 	DT.tooltip:Show()
 end
 
 local function OnEvent(self)
-	local speed = GetSpeed();
-	self.text:SetFormattedText(displayModifierString, STAT_SPEED, speed)
+	local speed = GetSpeed()
+	self.text:SetFormattedText(displayString, STAT_SPEED, speed)
 	lastPanel = self
 end
 
 local function ValueColorUpdate(hex)
-	displayModifierString = strjoin("", "%s: ", hex, "%.2f%%|r")
+	displayString = strjoin("", "%s: ", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

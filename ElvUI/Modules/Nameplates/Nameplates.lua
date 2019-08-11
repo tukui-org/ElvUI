@@ -4,12 +4,7 @@ local oUF = E.oUF
 
 --Lua functions
 local _G = _G
-local format = format
-local pairs = pairs
-local select = select
-local strsplit = strsplit
-local type = type
-local wipe = wipe
+local format, pairs, select, strsplit, type, wipe = format, pairs, select, strsplit, type, wipe
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
@@ -753,17 +748,7 @@ function NP:Initialize()
 	_G.ElvNP_Player:SetScale(E.mult)
 	_G.ElvNP_Player.frameType = "PLAYER"
 
-	E:CreateMover(
-		_G.ElvNP_Player,
-		"ElvNP_PlayerMover",
-		L["Player NamePlate"],
-		nil,
-		nil,
-		nil,
-		"ALL,SOLO",
-		nil,
-		"nameplate,playerGroup"
-	)
+	E:CreateMover(_G.ElvNP_Player, "ElvNP_PlayerMover", L["Player NamePlate"], nil, nil, nil, "ALL,SOLO", nil, "nameplate,playerGroup")
 
 	local StaticSecure = CreateFrame("Button", "ElvNP_StaticSecure", _G.UIParent, "SecureUnitButtonTemplate")
 	StaticSecure:SetAttribute("unit", "player")

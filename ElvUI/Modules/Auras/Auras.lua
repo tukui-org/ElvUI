@@ -1,13 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local A = E:GetModule('Auras');
+local A = E:GetModule('Auras')
 local LSM = E.Libs.LSM
 
 --Lua functions
 local _G = _G
-local floor = floor
-local format = format
+local floor, format, tinsert = floor, format, tinsert
 local select, unpack = select, unpack
-local tinsert = tinsert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetInventoryItemQuality = GetInventoryItemQuality

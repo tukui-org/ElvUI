@@ -6,7 +6,6 @@ local _G = _G
 local select = select
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
--- GLOBALS:
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.GMChat ~= true then return end

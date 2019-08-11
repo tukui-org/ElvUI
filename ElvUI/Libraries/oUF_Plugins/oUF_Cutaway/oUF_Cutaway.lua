@@ -121,8 +121,8 @@ local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 end
 
 local function Health_PostUpdateColor(self, _, _, _, _)
-	local r, g, b, a = self:GetStatusBarColor()
-	self.__owner.Cutaway.Health:SetStatusBarColor(r * 1.5, g * 1.5, b * 1.5, a)
+	local r, g, b = self:GetStatusBarColor()
+	self.__owner.Cutaway.Health:SetVertexColor(r * 1.5, g * 1.5, b * 1.5)
 end
 
 local function Power_PreUpdate(self, unit)
@@ -135,7 +135,7 @@ local function Power_PreUpdate(self, unit)
 	Shared_PreUpdate(self, element, unit)
 end
 
-local function Power_PostUpdate(self, unit, curPower, maxPower)
+local function Power_PostUpdate(self, unit, curPower, _, maxPower)
 	local element = self.__owner.Cutaway.Power
 	if Shared_UpdateCheckReturn(self, element, POST, curPower, maxPower, unit) then
 		return
@@ -144,7 +144,8 @@ local function Power_PostUpdate(self, unit, curPower, maxPower)
 	if element.playing then
 		return
 	end
-	if (element.cur - curPower) > (maxPower * 0.1) then
+
+	if (element.cur - curPower) > (maxPower * 0.01) then
 		element:SetAlpha(self:GetAlpha())
 
 		E:Delay(element.lengthBeforeFade, fadeClosure, element)
@@ -157,8 +158,8 @@ local function Power_PostUpdate(self, unit, curPower, maxPower)
 end
 
 local function Power_PostUpdateColor(self, _, _, _, _)
-	local r, g, b, a = self:GetStatusBarColor()
-	self.__owner.Cutaway.Power:SetStatusBarColor(r * 1.5, g * 1.5, b * 1.5, a)
+	local r, g, b = self:GetStatusBarColor()
+	self.__owner.Cutaway.Power:SetVertexColor(r * 1.5, g * 1.5, b * 1.5)
 end
 
 local defaults = {
@@ -210,12 +211,12 @@ local function Enable(self)
 	if (element) then
 		checkElvUI()
 
-		if (element.Health and element.Health:IsObjectType("StatusBar") and not element.Health:GetStatusBarTexture()) then
-			element.Health:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+		if (element.Health and element.Health:IsObjectType("Texture") and not element.Health:GetTexture()) then
+			element.Health:SetTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 
-		if (element.Power and element.Power:IsObjectType("StatusBar") and not element.Power:GetStatusBarTexture()) then
-			element.Power:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+		if (element.Power and element.Power:IsObjectType("Texture") and not element.Power:GetTexture()) then
+			element.Power:SetTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 
 		if (not element.defaultsSet) then
@@ -225,10 +226,8 @@ local function Enable(self)
 
 		if element.Health and self.Health then
 			self.Health.__owner = self
-
-			element.Health:SetMinMaxValues(0, 1)
-			element.Health:SetValue(1)
 			element.Health.__parentElement = self.Health
+			element.Health:SetAlpha(0)
 
 			if not element.Health.hasCutawayHook then
 				if self.Health.PreUpdate then
@@ -255,10 +254,8 @@ local function Enable(self)
 
 		if element.Power and self.Power then
 			self.Power.__owner = self
-
-			element.Power:SetMinMaxValues(0, 1)
-			element.Power:SetValue(1)
 			element.Power.__parentElement = self.Power
+			element.Power:SetAlpha(0)
 
 			if not element.Power.hasCutawayHook then
 				if self.Power.PreUpdate then
