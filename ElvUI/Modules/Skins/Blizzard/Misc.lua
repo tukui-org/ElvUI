@@ -55,6 +55,8 @@ local function LoadSkin()
 		"LFDReadyCheckPopup",
 		"DropDownList1Backdrop",
 		"DropDownList1MenuBackdrop",
+		"DropDownList2Backdrop",
+		"DropDownList2MenuBackdrop",
 		"ElvUI_StaticPopup1",
 	}
 
