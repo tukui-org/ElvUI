@@ -28,6 +28,10 @@ function UF:Construct_Cutaway(frame)
 end
 
 local healthPoints = {
+	[-4] = {"TOPLEFT", "BOTTOMLEFT"},
+	[-3] = {"TOPRIGHT", "BOTTOMRIGHT"},
+	[-2] = {"TOPRIGHT", "TOPLEFT"},
+	[-1] = {"BOTTOMRIGHT", "BOTTOMLEFT"},
 	[1] = {"TOPLEFT", "TOPRIGHT"},
 	[2] = {"BOTTOMLEFT", "BOTTOMRIGHT"},
 	[3] = {"BOTTOMLEFT", "TOPLEFT"},
@@ -51,11 +55,13 @@ function UF:Configure_Cutaway(frame)
 		local health = frame.Cutaway.Health
 		if health and healthEnabled then
 			local unitHealthDB = frame.db.health
-			health:SetReverseFill((unitHealthDB.reverseFill and true) or false)
+			local reverseFill = unitHealthDB.reverseFill
 
 			local vert = unitHealthDB.orientation and unitHealthDB.orientation == "VERTICAL"
-			local pointIndex = vert and VERT_INDEX or DEFAULT_INDEX
-			local firstPoint, secondPoint = healthPoints[pointIndex], healthPoints[pointIndex+1]
+			local index = vert and VERT_INDEX or DEFAULT_INDEX
+			local point1 = (reverseFill and -index) or index
+			local point2 = point1+(reverseFill and -1 or 1)
+			local firstPoint, secondPoint = healthPoints[point1], healthPoints[point2]
 			local barTexture = frame.Health:GetStatusBarTexture()
 
 			health:ClearAllPoints()
