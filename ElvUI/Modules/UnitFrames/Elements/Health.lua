@@ -214,8 +214,8 @@ function UF:Configure_HealthBar(frame)
 	--Prediction Texture; keep under ToggleTransparentStatusBar
 	UF:UpdatePredictionStatusBar(frame.HealthPrediction, frame.Health, "Health")
 
-	--Highlight Texture
-	UF:Configure_HighlightGlow(frame)
+	--Frame Glow
+	UF:Configure_FrameGlow(frame)
 
 	if frame:IsElementEnabled("Health") then
 	    frame.Health:ForceUpdate()
