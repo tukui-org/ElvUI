@@ -53,7 +53,6 @@ local function LoadSkin()
 		"ReadyCheckFrame",
 		"QueueStatusFrame",
 		"LFDReadyCheckPopup",
-		"ElvUI_StaticPopup1",
 	}
 
 	for i = 1, #skins do

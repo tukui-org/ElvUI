@@ -1220,6 +1220,7 @@ function E:Contruct_StaticPopups()
 		_G['ElvUI_StaticPopup'..index..'CheckButton']:SetScript("OnClick", E.StaticPopup_CheckButtonOnClick)
 
 		--Skin
+		E.StaticPopupFrames[index].Border:StripTextures()
 		E.StaticPopupFrames[index]:SetTemplate('Transparent')
 
 		for i = 1, 3 do
