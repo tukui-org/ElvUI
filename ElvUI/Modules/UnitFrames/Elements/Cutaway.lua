@@ -6,23 +6,21 @@ local CreateFrame = CreateFrame
 function UF:Construct_Cutaway(frame)
 	local cutaway = {}
 
-	local healthTexture = frame.Health:GetStatusBarTexture()
-	local cutawayHealth = CreateFrame("StatusBar", nil, frame.Health.ClipFrame)
-	cutawayHealth:SetStatusBarTexture(E.media.blankTex)
-	cutawayHealth:SetFrameLevel(10)
-	cutawayHealth:SetPoint("TOPLEFT", healthTexture, "TOPRIGHT")
-	cutawayHealth:SetPoint("BOTTOMLEFT", healthTexture, "BOTTOMRIGHT")
-	cutaway.Health = cutawayHealth
-
 	if frame.Power then
 		local powerTexture = frame.Power:GetStatusBarTexture()
-		local cutawayPower = CreateFrame("StatusBar", nil, frame.Power.ClipFrame)
-		cutawayPower:SetStatusBarTexture(E.media.blankTex)
-		cutawayPower:SetFrameLevel(frame.Power:GetFrameLevel())
+		local cutawayPower = frame.Power.ClipFrame:CreateTexture()
 		cutawayPower:SetPoint("TOPLEFT", powerTexture, "TOPRIGHT")
 		cutawayPower:SetPoint("BOTTOMLEFT", powerTexture, "BOTTOMRIGHT")
+		cutawayPower:SetTexture(E.media.blankTex)
 		cutaway.Power = cutawayPower
 	end
+
+	local healthTexture = frame.Health:GetStatusBarTexture()
+	local cutawayHealth = frame.Health.ClipFrame:CreateTexture()
+	cutawayHealth:SetPoint("TOPLEFT", healthTexture, "TOPRIGHT")
+	cutawayHealth:SetPoint("BOTTOMLEFT", healthTexture, "BOTTOMRIGHT")
+	cutawayHealth:SetTexture(E.media.blankTex)
+	cutaway.Health = cutawayHealth
 
 	return cutaway
 end
@@ -78,9 +76,6 @@ function UF:Configure_Cutaway(frame)
 			power:ClearAllPoints()
 			power:SetPoint(point1[1], barTexture, point1[2])
 			power:SetPoint(point2[1], barTexture, point2[2])
-
-			power:SetFrameLevel(frame.Power:GetFrameLevel())
-			power:SetFrameStrata(frame.Power:GetFrameStrata())
 
 			frame.Power:PostUpdateColor()
 		end
