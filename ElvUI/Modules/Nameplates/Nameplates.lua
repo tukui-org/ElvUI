@@ -195,7 +195,7 @@ function NP:Construct_RaisedELement(nameplate)
 	RaisedElement:SetFrameStrata(nameplate:GetFrameStrata())
 	RaisedElement:SetFrameLevel(10)
 	RaisedElement:SetAllPoints()
-	RaisedElement:EnableMouse()
+	RaisedElement:EnableMouse(false)
 
 	return RaisedElement
 end
@@ -788,7 +788,7 @@ function NP:Initialize()
 	_G.ElvNP_TargetClassPower:Point("TOP", E.UIParent, "BOTTOM", 0, -500)
 
 	NP.PlayerNamePlateAnchor = CreateFrame("Frame", "ElvUIPlayerNamePlateAnchor", E.UIParent)
-	NP.PlayerNamePlateAnchor:EnableMouse()
+	NP.PlayerNamePlateAnchor:EnableMouse(false)
 	NP.PlayerNamePlateAnchor:Hide()
 
 	oUF:SpawnNamePlates("ElvNP_", function(nameplate, event, unit) NP:NamePlateCallBack(nameplate, event, unit) end)

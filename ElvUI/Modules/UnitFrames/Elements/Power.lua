@@ -59,7 +59,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	local clipFrame = CreateFrame('Frame', nil, power)
 	clipFrame:SetClipsChildren(true)
 	clipFrame:SetAllPoints()
-	clipFrame:EnableMouse()
+	clipFrame:EnableMouse(false)
 	clipFrame.__frame = frame
 	power.ClipFrame = clipFrame
 

@@ -56,7 +56,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	clipFrame:SetScript('OnUpdate', UF.HealthClipFrame_OnUpdate)
 	clipFrame:SetClipsChildren(true)
 	clipFrame:SetAllPoints()
-	clipFrame:EnableMouse()
+	clipFrame:EnableMouse(false)
 	clipFrame.__frame = frame
 	health.ClipFrame = clipFrame
 

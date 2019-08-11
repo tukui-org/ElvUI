@@ -175,7 +175,7 @@ end
 function NP:Construct_Highlight(nameplate)
 	local Highlight = CreateFrame("Frame", nameplate:GetDebugName() .. "Highlight", nameplate)
 	Highlight:Hide()
-	Highlight:EnableMouse()
+	Highlight:EnableMouse(false)
 	Highlight:SetFrameLevel(9)
 
 	Highlight.texture = Highlight:CreateTexture(nil, "ARTWORK")
