@@ -118,6 +118,11 @@ function NP:Construct_Power(nameplate)
 	Power:CreateBackdrop('Transparent')
 	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
 
+	local clipFrame = CreateFrame('Frame', nil, Power)
+	clipFrame:SetClipsChildren(true)
+	clipFrame:SetAllPoints()
+	Power.ClipFrame = clipFrame
+
 	NP.StatusBars[Power] = true
 
 	Power.frequentUpdates = true --Azil, keep this for now. It seems it may prevent event bugs

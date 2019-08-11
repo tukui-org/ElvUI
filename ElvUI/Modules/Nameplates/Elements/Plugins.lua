@@ -283,7 +283,7 @@ function NP:Construct_Cutaway(nameplate)
 	Cutaway.Health:SetPoint("TOPLEFT", healthTexture, "TOPRIGHT")
 	Cutaway.Health:SetPoint("BOTTOMLEFT", healthTexture, "BOTTOMRIGHT")
 
-	Cutaway.Power = nameplate.Power:CreateTexture(nameplate:GetDebugName() .. "CutawayPower")
+	Cutaway.Power = nameplate.Power.ClipFrame:CreateTexture(nameplate:GetDebugName() .. "CutawayPower")
 	if NP.db.cutaway.power.forceBlankTexture then
 		Cutaway.Power:SetTexture(E.media.blankTex)
 	else
