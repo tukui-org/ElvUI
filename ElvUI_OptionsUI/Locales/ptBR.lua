@@ -1469,11 +1469,13 @@ Formatos de Vida / Poder:
 'deficit' - Exibir o valor em falta, nao será exibido nada se não houver nada em falta
 
 Formato de Nomes:
+'name:veryshort' - Name restricted to 5 characters
 'name:short' - Nome restringido a 10 caracteres
 'name:medium' - Nome restringido a 15 caracteres
 'name:long' - Nome restringido a 20 caracteres
+'name:short:translit' - Name restricted to 10 characters with transliteration
 
-Para desactivar deixe o espaço em branco, se precisar de mais informações visite o site http://www.tukui.org]=]
+Para desactivar deixe o espaço em branco, se precisar de mais informações visite o site https://www.tukui.org/forum/viewtopic.php?t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
 Example: '[combat] 2;']=] ] = [=[Isto funciona como uma macro, você pode executar várias situações para que a barra de ação pagine de forma diferente.
