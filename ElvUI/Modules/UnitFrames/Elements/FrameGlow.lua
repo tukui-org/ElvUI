@@ -164,7 +164,7 @@ function UF:FrameGlow_CreateGlow(frame, mouse)
 	if not frame.FrameGlow then
 		frame.FrameGlow = CreateFrame('Frame', nil, frame)
 		frame.FrameGlow:Hide()
-		frame.FrameGlow:HookScript('OnEvent', function(_, event)
+		frame.FrameGlow:SetScript('OnEvent', function(_, event)
 			if event == 'UPDATE_MOUSEOVER_UNIT' then
 				UF:FrameGlow_CheckMouseover(frame)
 			elseif event == 'PLAYER_TARGET_CHANGED' then
@@ -343,7 +343,7 @@ end
 
 function UF:Construct_FrameGlow(frame, glow)
 	if frame.Health and frame.FrameGlow then
-		frame.FrameGlow:HookScript('OnHide', function(watcher)
+		frame.FrameGlow:SetScript('OnHide', function(watcher)
 			UF:FrameGlow_HideGlow(glow)
 
 			if watcher.texture and watcher.texture:IsShown() then
