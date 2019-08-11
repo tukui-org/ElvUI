@@ -483,7 +483,7 @@ function M:Initialize()
 
 	E:CreateMover(_G.MMHolder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag, nil, nil, 'maps,minimap')
 
-	_G.MinimapCluster:EnableMouse(false)
+	_G.MinimapCluster:EnableMouse()
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)
 	Minimap:SetScript("OnMouseDown", M.Minimap_OnMouseDown)

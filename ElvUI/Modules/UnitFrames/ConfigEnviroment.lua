@@ -116,7 +116,7 @@ function UF:ForceShow(frame)
 	UnregisterUnitWatch(frame)
 	RegisterUnitWatch(frame, true)
 
-	frame:EnableMouse(false)
+	frame:EnableMouse()
 
 	frame:Show()
 	if frame:IsVisible() and frame.Update then

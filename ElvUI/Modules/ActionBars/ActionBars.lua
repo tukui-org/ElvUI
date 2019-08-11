@@ -373,7 +373,7 @@ local function Vehicle_OnClick(self)
 	if ( UnitOnTaxi("player") ) then
 		TaxiRequestEarlyLanding()
 		self:GetNormalTexture():SetVertexColor(1, 0, 0)
-		self:EnableMouse(false)
+		self:EnableMouse()
 	else
 		VehicleExit()
 	end
@@ -772,14 +772,14 @@ function AB:DisableBlizzard()
 	_G.ActionBarController:UnregisterAllEvents()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 
-	_G.MainMenuBar:EnableMouse(false)
+	_G.MainMenuBar:EnableMouse()
 	_G.MainMenuBar:SetAlpha(0)
 	_G.MainMenuBar:SetScale(0.00001)
 	_G.MainMenuBar:SetFrameStrata('BACKGROUND')
 	_G.MainMenuBar:SetFrameLevel(0)
 
 	_G.MicroButtonAndBagsBar:SetScale(0.00001)
-	_G.MicroButtonAndBagsBar:EnableMouse(false)
+	_G.MicroButtonAndBagsBar:EnableMouse()
 	_G.MicroButtonAndBagsBar:SetFrameStrata('BACKGROUND')
 	_G.MicroButtonAndBagsBar:SetFrameLevel(0)
 
@@ -787,7 +787,7 @@ function AB:DisableBlizzard()
 	_G.MainMenuBarArtFrame:Hide()
 	_G.MainMenuBarArtFrame:SetParent(UIHider)
 
-	_G.StatusTrackingBarManager:EnableMouse(false)
+	_G.StatusTrackingBarManager:EnableMouse()
 	_G.StatusTrackingBarManager:UnregisterAllEvents()
 	_G.StatusTrackingBarManager:Hide()
 
@@ -814,7 +814,7 @@ function AB:DisableBlizzard()
 	--Enable/disable functionality to automatically put spells on the actionbar.
 	self:IconIntroTracker_Toggle()
 
-	_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:EnableMouse(false)
+	_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:EnableMouse()
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
 	_G.InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
 	_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)

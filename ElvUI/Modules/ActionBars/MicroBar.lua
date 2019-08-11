@@ -195,7 +195,7 @@ end
 function AB:SetupMicroBar()
 	local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
-	microBar:EnableMouse(false)
+	microBar:EnableMouse()
 
 	microBar.visibility = CreateFrame('Frame', nil, E.UIParent, 'SecureHandlerStateTemplate')
 	microBar.visibility:SetScript("OnShow", function() microBar:Show() end)
@@ -221,11 +221,11 @@ function AB:SetupMicroBar()
 	_G.MainMenuBarPerformanceBar:SetAlpha(0)
 	_G.MainMenuBarPerformanceBar:SetScale(0.00001)
 
-	_G.CollectionsMicroButtonAlert:EnableMouse(false)
+	_G.CollectionsMicroButtonAlert:EnableMouse()
 	_G.CollectionsMicroButtonAlert:SetAlpha(0)
 	_G.CollectionsMicroButtonAlert:SetScale(0.00001)
 
-	_G.CharacterMicroButtonAlert:EnableMouse(false)
+	_G.CharacterMicroButtonAlert:EnableMouse()
 	_G.CharacterMicroButtonAlert:SetAlpha(0)
 	_G.CharacterMicroButtonAlert:SetScale(0.00001)
 
