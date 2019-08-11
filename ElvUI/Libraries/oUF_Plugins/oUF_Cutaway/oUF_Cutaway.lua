@@ -135,7 +135,7 @@ local function Power_PreUpdate(self, unit)
 	Shared_PreUpdate(self, element, unit)
 end
 
-local function Power_PostUpdate(self, unit, curPower, maxPower)
+local function Power_PostUpdate(self, unit, curPower, _, maxPower)
 	local element = self.__owner.Cutaway.Power
 	if Shared_UpdateCheckReturn(self, element, POST, curPower, maxPower, unit) then
 		return
@@ -144,7 +144,8 @@ local function Power_PostUpdate(self, unit, curPower, maxPower)
 	if element.playing then
 		return
 	end
-	if (element.cur - curPower) > (maxPower * 0.1) then
+
+	if (element.cur - curPower) > (maxPower * 0.01) then
 		element:SetAlpha(self:GetAlpha())
 
 		E:Delay(element.lengthBeforeFade, fadeClosure, element)
@@ -225,9 +226,6 @@ local function Enable(self)
 
 		if element.Health and self.Health then
 			self.Health.__owner = self
-
-			element.Health:SetMinMaxValues(0, 1)
-			element.Health:SetValue(1)
 			element.Health.__parentElement = self.Health
 
 			if not element.Health.hasCutawayHook then
@@ -255,9 +253,6 @@ local function Enable(self)
 
 		if element.Power and self.Power then
 			self.Power.__owner = self
-
-			element.Power:SetMinMaxValues(0, 1)
-			element.Power:SetValue(1)
 			element.Power.__parentElement = self.Power
 
 			if not element.Power.hasCutawayHook then

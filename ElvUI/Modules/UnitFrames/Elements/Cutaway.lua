@@ -16,7 +16,7 @@ function UF:Construct_Cutaway(frame)
 
 	if frame.Power then
 		local powerTexture = frame.Power:GetStatusBarTexture()
-		local cutawayPower = CreateFrame("StatusBar", nil, frame.Power)
+		local cutawayPower = CreateFrame("StatusBar", nil, frame.Power.ClipFrame)
 		cutawayPower:SetStatusBarTexture(E.media.blankTex)
 		cutawayPower:SetFrameLevel(frame.Power:GetFrameLevel())
 		cutawayPower:SetPoint("TOPLEFT", powerTexture, "TOPRIGHT")
@@ -27,7 +27,7 @@ function UF:Construct_Cutaway(frame)
 	return cutaway
 end
 
-local healthPoints = {
+local cutawayPoints = {
 	[-4] = {"TOPLEFT", "BOTTOMLEFT"},
 	[-3] = {"TOPRIGHT", "BOTTOMRIGHT"},
 	[-2] = {"TOPRIGHT", "TOPLEFT"},
@@ -38,8 +38,13 @@ local healthPoints = {
 	[4] = {"BOTTOMRIGHT", "TOPRIGHT"}
 }
 
-local DEFAULT_INDEX = 1
-local VERT_INDEX = 3
+local DEFAULT_INDEX, VERT_INDEX = 1, 3
+function UF:GetPoints_Cutaway(db)
+	local index = (db.orientation == "VERTICAL" and VERT_INDEX) or DEFAULT_INDEX
+	local p1 = (db.reverseFill and -index) or index
+	local p2 = p1 + (db.reverseFill and -1 or 1)
+	return cutawayPoints[p1], cutawayPoints[p2]
+end
 
 function UF:Configure_Cutaway(frame)
 	local db = frame.db and frame.db.cutaway
@@ -54,24 +59,12 @@ function UF:Configure_Cutaway(frame)
 		frame.Cutaway:UpdateConfigurationValues(db)
 		local health = frame.Cutaway.Health
 		if health and healthEnabled then
-			local unitHealthDB = frame.db.health
-			local reverseFill = unitHealthDB.reverseFill
-
-			local vert = unitHealthDB.orientation and unitHealthDB.orientation == "VERTICAL"
-			local index = vert and VERT_INDEX or DEFAULT_INDEX
-			local point1 = (reverseFill and -index) or index
-			local point2 = point1+(reverseFill and -1 or 1)
-			local firstPoint, secondPoint = healthPoints[point1], healthPoints[point2]
+			local point1, point2 = UF:GetPoints_Cutaway(frame.db.health)
 			local barTexture = frame.Health:GetStatusBarTexture()
 
 			health:ClearAllPoints()
-			health:SetPoint(firstPoint[1], barTexture, firstPoint[2])
-			health:SetPoint(secondPoint[1], barTexture, secondPoint[2])
-
-			--Party/Raid Frames allow to change statusbar orientation
-			if unitHealthDB.orientation then
-				health:SetOrientation(unitHealthDB.orientation)
-			end
+			health:SetPoint(point1[1], barTexture, point1[2])
+			health:SetPoint(point2[1], barTexture, point2[2])
 
 			frame.Health:PostUpdateColor(frame.unit)
 		end
@@ -79,9 +72,15 @@ function UF:Configure_Cutaway(frame)
 		local power = frame.Cutaway.Power
 		local powerUsable = powerEnabled and frame.USE_POWERBAR
 		if power and powerUsable then
-			local unitPowerDB = frame.db.power
-			power:SetReverseFill((unitPowerDB.reverseFill and true) or false)
+			local point1, point2 = UF:GetPoints_Cutaway(frame.db.power)
+			local barTexture = frame.Power:GetStatusBarTexture()
+
+			power:ClearAllPoints()
+			power:SetPoint(point1[1], barTexture, point1[2])
+			power:SetPoint(point2[1], barTexture, point2[2])
+
 			power:SetFrameLevel(frame.Power:GetFrameLevel())
+			power:SetFrameStrata(frame.Power:GetFrameStrata())
 
 			frame.Power:PostUpdateColor()
 		end
