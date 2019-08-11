@@ -177,7 +177,7 @@ local function BuildABConfig()
 				type = "toggle",
 				name = L["Equipped Item"],
 				get = function(info) return E.db.actionbar[info[#info]] end,
-				set = function(info, value) E.db.actionbar[info[#info]] = value AB:UpdateButtonSettings() end
+				set = function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end
 			},
 			equippedItemColor = {
 				order = 18,
