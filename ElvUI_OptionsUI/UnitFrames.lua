@@ -1226,10 +1226,14 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				name = L["Attach Text To"],
 				values = attachToValues,
 			},
-			bgUseBarTexture = {
-				type = "toggle",
+			colorOverride = {
 				order = 6,
-				name = L["Use Health Texture on Background"],
+				name = L["Class Color Override"],
+				desc = L["Override the default class color setting."],
+				type = 'select',
+				values = colorOverrideValues,
+				get = function(info) return E.db.unitframe.units[groupName][info[#info]] end,
+				set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 			},
 			configureButton = {
 				order = 7,
@@ -1238,17 +1242,13 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				type = 'execute',
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "healthGroup") end,
 			},
-			colorOverride = {
+			bgUseBarTexture = {
+				type = "toggle",
 				order = 8,
-				name = L["Class Color Override"],
-				desc = L["Override the default class color setting."],
-				type = 'select',
-				values = colorOverrideValues,
-				get = function(info) return E.db.unitframe.units[groupName][info[#info]] end,
-				set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+				name = L["Use Health Texture on Background"],
 			},
 			text_format = {
-				order = 10,
+				order = 9,
 				name = L["Text Format"],
 				type = 'input',
 				width = 'full',
@@ -3910,11 +3910,6 @@ E.Options.args.unitframe.args.player = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				spacer = {
-					order = 11,
-					type = "description",
-					name = "",
-				},
 				disableMouseoverGlow = {
 					order = 12,
 					type = "toggle",
@@ -4752,11 +4747,6 @@ E.Options.args.unitframe.args.targettarget = {
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
-				spacer = {
-					order = 11,
-					type = "description",
-					name = "",
-				},
 				disableMouseoverGlow = {
 					order = 12,
 					type = "toggle",
@@ -4878,11 +4868,6 @@ E.Options.args.unitframe.args.targettargettarget = {
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
-				},
-				spacer = {
-					order = 11,
-					type = "description",
-					name = "",
 				},
 				disableMouseoverGlow = {
 					order = 12,
@@ -5130,11 +5115,6 @@ E.Options.args.unitframe.args.focustarget = {
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
-				},
-				spacer = {
-					order = 11,
-					type = "description",
-					name = "",
 				},
 				disableMouseoverGlow = {
 					order = 12,
@@ -5413,11 +5393,6 @@ E.Options.args.unitframe.args.pettarget = {
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
-				},
-				spacer = {
-					order = 11,
-					type = "description",
-					name = "",
 				},
 				disableMouseoverGlow = {
 					order = 12,
@@ -5707,11 +5682,6 @@ E.Options.args.unitframe.args.arena = {
 						--["MIDDLE"] = L["Middle"], --no way to handle this with trinket
 						["RIGHT"] = L["Right"],
 					},
-				},
-				spacer = {
-					order = 17,
-					type = "description",
-					name = "",
 				},
 				disableMouseoverGlow = {
 					order = 18,
