@@ -57,10 +57,7 @@ function NP:Update_QuestIcons(nameplate)
 end
 
 function NP:Construct_ClassificationIndicator(nameplate)
-	local ClassificationIndicator =
-		nameplate:CreateTexture(nameplate:GetDebugName() .. "ClassificationIndicator", "OVERLAY")
-
-	return ClassificationIndicator
+	return nameplate:CreateTexture(nameplate:GetDebugName() .. "ClassificationIndicator", "OVERLAY")
 end
 
 function NP:Update_ClassificationIndicator(nameplate)

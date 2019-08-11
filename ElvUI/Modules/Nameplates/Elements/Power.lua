@@ -121,6 +121,7 @@ function NP:Construct_Power(nameplate)
 	local clipFrame = CreateFrame('Frame', nil, Power)
 	clipFrame:SetClipsChildren(true)
 	clipFrame:SetAllPoints()
+	clipFrame:EnableMouse()
 	Power.ClipFrame = clipFrame
 
 	NP.StatusBars[Power] = true
