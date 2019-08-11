@@ -1471,11 +1471,13 @@ Leben / Kraft Formate:
 'deficit' - Zeigt das Defizit. Es wird nichts angezeigt, wenn kein Defizit vorhanden ist
 
 Namensformate:
+'name:veryshort' - Name restricted to 5 characters
 'name:short' - Name auf 10 Zeichen beschränkt
 'name:medium' - Name auf 15 Zeichen beschränkt
 'name:long' - Name auf 20 Zeichen beschränkt
+'name:short:translit' - Name restricted to 10 characters with transliteration
 
-Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche http://www.tukui.org]=]
+Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche https://www.tukui.org/forum/viewtopic.php?t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu wechseln.

@@ -1472,11 +1472,13 @@ Health / Power Formats:
 'deficit' - display the deficit value, will display nothing if there is no deficit
 
 Name Formats:
+'name:veryshort' - Name restricted to 5 characters
 'name:short' - Name restricted to 10 characters
 'name:medium' - Name restricted to 15 characters
 'name:long' - Name restricted to 20 characters
+'name:short:translit' - Name restricted to 10 characters with transliteration
 
-To disable leave the field blank, if you need more information visit http://www.tukui.org]=]
+To disable leave the field blank, if you need more information visit https://www.tukui.org/forum/viewtopic.php?t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = true

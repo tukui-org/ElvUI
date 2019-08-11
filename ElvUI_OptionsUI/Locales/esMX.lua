@@ -1467,11 +1467,13 @@ Formatos de Salud / Poder:
 'deficit' - muestra el valor de déficit, no muestra nada si no hay déficit
 
 Formatos de Nombre:
+'name:veryshort' - Name restricted to 5 characters
 'name:short' - Nombre restringido a 10 caracteres
 'name:medium' - Nombre restringido a 15 caracteres
 'name:long' - Nombre restringido a 20 caracteres
+'name:short:translit' - Name restricted to 10 characters with transliteration
 
-Para desactivarlo dejar el campo en blanco, si necesitas más información visita http://www.tukui.org]=]
+Para desactivarlo dejar el campo en blanco, si necesitas más información visita https://www.tukui.org/forum/viewtopic.php?t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Esto funciona como una macro. Puedes ejecutar diferentes situaciones para paginar la barra de acción de forma diferente.
