@@ -43,15 +43,15 @@ local function ColorizeStatPane(frame)
 	frame.leftGrad:Width(80)
 	frame.leftGrad:Height(frame:GetHeight())
 	frame.leftGrad:Point("LEFT", frame, "CENTER")
-	frame.leftGrad:SetTexture(E.media.blankTex)
-	frame.leftGrad:SetGradientAlpha("Horizontal", r, g, b, 0.35, r, g, b, 0)
+	frame.leftGrad:SetTexture(E.Media.Textures.White8x8)
+	frame.leftGrad:SetGradientAlpha("Horizontal", r, g, b, 0.25, r, g, b, 0)
 
 	frame.rightGrad = frame:CreateTexture(nil, "BORDER")
 	frame.rightGrad:Width(80)
 	frame.rightGrad:Height(frame:GetHeight())
 	frame.rightGrad:Point("RIGHT", frame, "CENTER")
 	frame.rightGrad:SetTexture(E.Media.Textures.White8x8)
-	frame.rightGrad:SetGradientAlpha("Horizontal", r, g, b, 0, r, g, b, 0.35)
+	frame.rightGrad:SetGradientAlpha("Horizontal", r, g, b, 0, r, g, b, 0.25)
 end
 
 local function StatsPane(which)
