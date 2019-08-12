@@ -110,13 +110,17 @@ function S:HandlePortraitFrame(frame, setBackdrop)
 end
 
 function S:SetModifiedBackdrop()
-	if self.backdrop then self = self.backdrop end
-	self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+	if self:IsEnabled() then
+		if self.backdrop then self = self.backdrop end
+		self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+	end
 end
 
 function S:SetOriginalBackdrop()
-	if self.backdrop then self = self.backdrop end
-	self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	if self:IsEnabled() then
+		if self.backdrop then self = self.backdrop end
+		self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
 end
 
 -- function to handle the recap button script
