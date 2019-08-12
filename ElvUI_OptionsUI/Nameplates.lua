@@ -3057,10 +3057,7 @@ local function GetUnitSettings(unit, name)
 			enable = {
 				order = -10,
 				name = L["Enable"],
-				type = "toggle",
-				func = function(info)
-					NP:ConfigureAll()
-				end
+				type = "toggle"
 			},
 			showTestFrame = {
 				order = -9,
