@@ -10,11 +10,8 @@ local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
 local function IslandTooltipStyle(self)
-	if not self.IsSkinned then
-		self:SetBackdrop(nil)
-		self:SetTemplate("Transparent")
-		self.IsSkinned = true
-	end
+	self:SetBackdrop(nil)
+	self:SetTemplate("Transparent", nil, true)
 end
 
 local function LoadSkin()
@@ -84,12 +81,13 @@ local function LoadSkin()
 	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
 
 	-- Used for Island Skin
-	TT:RegisterEvent("ADDON_LOADED", function(_, addon)
+	TT:RegisterEvent("ADDON_LOADED", function(event, addon)
 		if addon == "Blizzard_IslandsQueueUI" then
-			local IslandTooltip = _G.IslandsQueueFrameTooltip
-			IslandTooltip:GetParent():GetParent():HookScript("OnShow", IslandTooltipStyle)
-			IslandTooltip:GetParent().IconBorder:SetAlpha(0)
-			IslandTooltip:GetParent().Icon:SetTexCoord(unpack(E.TexCoords))
+			local tt = _G.IslandsQueueFrameTooltip:GetParent()
+			tt:GetParent():HookScript("OnShow", IslandTooltipStyle)
+			tt.IconBorder:SetAlpha(0)
+			tt.Icon:SetTexCoord(unpack(E.TexCoords))
+			TT:UnregisterEvent(event)
 		end
 	end)
 end
