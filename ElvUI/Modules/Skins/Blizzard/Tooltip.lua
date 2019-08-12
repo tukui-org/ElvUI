@@ -17,12 +17,6 @@ local function IslandTooltipStyle(self)
 	end
 end
 
-local function TooltipBackdropStyle(self, style)
-	if not self.IsEmbedded then
-		self:SetTemplate("Transparent")
-	end
-end
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tooltip ~= true then return end
 
@@ -30,9 +24,6 @@ local function LoadSkin()
 
 	-- Skin Blizzard Tooltips
 	local GameTooltip = _G.GameTooltip
-	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
-	StoryTooltip:SetFrameLevel(4)
-
 	GameTooltip.ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
 	GameTooltip.ItemTooltip.IconBorder:SetAlpha(0)
 	GameTooltip.ItemTooltip:CreateBackdrop("Default")
@@ -46,6 +37,9 @@ local function LoadSkin()
 	hooksecurefunc(GameTooltip.ItemTooltip.IconBorder, 'Hide', function(self)
 		self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end)
+
+	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
+	StoryTooltip:SetFrameLevel(4)
 
 	local WarCampaignTooltip = _G.QuestScrollFrame.WarCampaignTooltip
 	local tooltips = {
@@ -69,9 +63,6 @@ local function LoadSkin()
 		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')
 	end
 
-	-- Use this function to style the GameTooltip, it also deal with other tooltip borders like AzeriteEssence Tooltip.
-	hooksecurefunc("GameTooltip_SetBackdropStyle", TooltipBackdropStyle)
-
 	-- EmbeddedItemTooltip
 	local reward = _G.EmbeddedItemTooltip.ItemTooltip
 	local icon = reward.Icon
@@ -82,16 +73,18 @@ local function LoadSkin()
 
 	-- Skin GameTooltip Status Bar
 	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(_G.GameTooltipStatusBar)
 	_G.GameTooltipStatusBar:CreateBackdrop('Transparent')
 	_G.GameTooltipStatusBar:ClearAllPoints()
 	_G.GameTooltipStatusBar:Point("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
 	_G.GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
+	E:RegisterStatusBar(_G.GameTooltipStatusBar)
 
 	TT:SecureHook('GameTooltip_ShowStatusBar') -- Skin Status Bars
 	TT:SecureHook('GameTooltip_ShowProgressBar') -- Skin Progress Bars
 	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color Progress Bars
 	TT:SecureHook('GameTooltip_UpdateStyle', 'SetStyle')
+	TT:SecureHook('GameTooltip_SetBackdropStyle', 'SetStyle') -- it also deal with other tooltip borders like AzeriteEssence Tooltip
+	TT:SetStyle(GameTooltip) -- handle the already styled one
 
 	-- [Backdrop coloring] There has to be a more elegant way of doing this.
 	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
