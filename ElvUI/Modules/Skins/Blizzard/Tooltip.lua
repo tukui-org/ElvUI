@@ -38,30 +38,9 @@ local function LoadSkin()
 		self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end)
 
+	-- StoryTooltip
 	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
 	StoryTooltip:SetFrameLevel(4)
-
-	local WarCampaignTooltip = _G.QuestScrollFrame.WarCampaignTooltip
-	local tooltips = {
-		_G.ItemRefTooltip,
-		_G.ItemRefShoppingTooltip1,
-		_G.ItemRefShoppingTooltip2,
-		_G.ItemRefShoppingTooltip3,
-		_G.AutoCompleteBox,
-		_G.FriendsTooltip,
-		_G.ShoppingTooltip1,
-		_G.ShoppingTooltip2,
-		_G.ShoppingTooltip3,
-		_G.ReputationParagonTooltip,
-		_G.EmbeddedItemTooltip,
-		-- already have locals
-		StoryTooltip,
-		WarCampaignTooltip,
-	}
-
-	for _, tt in pairs(tooltips) do
-		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')
-	end
 
 	-- EmbeddedItemTooltip
 	local reward = _G.EmbeddedItemTooltip.ItemTooltip
@@ -79,12 +58,13 @@ local function LoadSkin()
 	_G.GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
 	E:RegisterStatusBar(_G.GameTooltipStatusBar)
 
+	-- Tooltip Styling
 	TT:SecureHook('GameTooltip_ShowStatusBar') -- Skin Status Bars
 	TT:SecureHook('GameTooltip_ShowProgressBar') -- Skin Progress Bars
 	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color Progress Bars
 	TT:SecureHook('GameTooltip_UpdateStyle', 'SetStyle')
-	TT:SecureHook('GameTooltip_SetBackdropStyle', 'SetStyle') -- it also deal with other tooltip borders like AzeriteEssence Tooltip
-	TT:SetStyle(GameTooltip) -- handle the already styled one
+	TT:SecureHook('GameTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
+	TT:SetStyle(GameTooltip) -- Handle the not yet styled GameTooltip
 
 	-- [Backdrop coloring] There has to be a more elegant way of doing this.
 	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
