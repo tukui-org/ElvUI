@@ -64,7 +64,22 @@ local function LoadSkin()
 	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color Progress Bars
 	TT:SecureHook('GameTooltip_UpdateStyle', 'SetStyle')
 	TT:SecureHook('GameTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
-	TT:SetStyle(GameTooltip) -- Handle the not yet styled GameTooltip
+
+	-- Style Tooltips which are created before load
+	local styleTT = {
+		_G.ItemRefTooltip,
+		_G.FriendsTooltip,
+		_G.WarCampaignTooltip,
+		_G.EmbeddedItemTooltip,
+		_G.ReputationParagonTooltip,
+		-- already have locals
+		StoryTooltip,
+		GameTooltip,
+	}
+
+	for _, tt in pairs(styleTT) do
+		TT:SetStyle(tt)
+	end
 
 	-- [Backdrop coloring] There has to be a more elegant way of doing this.
 	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
