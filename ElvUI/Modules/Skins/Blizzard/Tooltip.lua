@@ -17,6 +17,12 @@ local function IslandTooltipStyle(self)
 	end
 end
 
+local function TooltipBackdropStyle(self, style)
+	if not self.IsEmbedded then
+		self:SetTemplate("Transparent")
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tooltip ~= true then return end
 
@@ -55,7 +61,6 @@ local function LoadSkin()
 		_G.ReputationParagonTooltip,
 		_G.EmbeddedItemTooltip,
 		-- already have locals
-		GameTooltip,
 		StoryTooltip,
 		WarCampaignTooltip,
 	}
@@ -63,6 +68,9 @@ local function LoadSkin()
 	for _, tt in pairs(tooltips) do
 		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')
 	end
+
+	-- Use this function to style the GameTooltip, it also deal with other tooltip borders like AzeriteEssence Tooltip.
+	hooksecurefunc("GameTooltip_SetBackdropStyle", TooltipBackdropStyle)
 
 	-- EmbeddedItemTooltip
 	local reward = _G.EmbeddedItemTooltip.ItemTooltip
