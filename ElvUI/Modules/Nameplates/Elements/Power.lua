@@ -117,7 +117,6 @@ function NP:Construct_Power(nameplate)
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent')
 	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
-	Power:EnableMouse(true)
 
 	local clipFrame = CreateFrame('Frame', nil, Power)
 	clipFrame:SetClipsChildren(true)
