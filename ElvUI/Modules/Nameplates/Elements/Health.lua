@@ -73,6 +73,7 @@ function NP:Construct_Health(nameplate)
 	Health:SetFrameLevel(5)
 	Health:CreateBackdrop('Transparent')
 	Health:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+	Health:EnableMouse(true)
 
 	local clipFrame = CreateFrame('Frame', nil, Health)
 	clipFrame:SetClipsChildren(true)
