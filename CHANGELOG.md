@@ -12,6 +12,7 @@ Fixed the Color Picker skin, it was showing the blizzard border.
 **Misc. Changes:**  
 Moved the Class Color Override setting for unitframes to the health tab.  
 Added EP Boss one debuffs to Raid Debuffs.  
+Changed a bit the style of the Communities Frame Buttons.  
 
 ___
 ### Version 11.20 [ July 29th 2019 ]
