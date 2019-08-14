@@ -137,6 +137,8 @@ function NP:Update_Health(nameplate)
 
 	nameplate:Tag(nameplate.Health.Text, db.health.text.format)
 
+	nameplate.Health.Text.frequentUpdates = .1
+
 	nameplate.Health.width = db.health.width
 	nameplate.Health.height = db.health.height
 	nameplate.Health:Height(db.health.height)
