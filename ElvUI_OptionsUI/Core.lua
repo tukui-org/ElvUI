@@ -31,17 +31,14 @@ local UnitIsPlayer = UnitIsPlayer
 local GameTooltip_Hide = GameTooltip_Hide
 local GameFontHighlightSmall = _G.GameFontHighlightSmall
 
---Function we can call on profile or scale change to update GUI
+--Function we can call on profile change to update GUI
 function E:RefreshGUI()
-	if E.RefreshCustomTextsConfigs then
-		E:RefreshCustomTextsConfigs()
-	end
-
+	E:RefreshCustomTextsConfigs()
 	E.Libs.AceConfigRegistry:NotifyChange("ElvUI")
 end
 
 E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
-E:RefreshGUI()
+E.Libs.AceConfigRegistry:NotifyChange("ElvUI")
 
 E.Options.args = {
 	ElvUI_Header = {
@@ -57,17 +54,7 @@ E.Options.args = {
 		desc = L["Reset the size and position of this frame."],
 		customWidth = 175,
 		func = function()
-			if E.GUIFrame then
-				local status = E.GUIFrame.obj and E.GUIFrame.obj.status
-				if status then
-					E:ResetConfigSettings()
-
-					status.top, status.left = E:GetConfigPosition()
-					status.width, status.height = E:GetConfigDefaultSize()
-
-					E.GUIFrame.obj:ApplyStatus()
-				end
-			end
+			E:UpdateConfigSize(true)
 		end
 	},
 	ToggleTutorial = {

@@ -270,6 +270,36 @@ function AddOn:GetConfigSize()
 	return AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height
 end
 
+function AddOn:UpdateConfigSize(reset)
+	local frame = self.GUIFrame
+	if not frame then return end
+
+	local maxWidth, maxHeight = self.UIParent:GetSize()
+	frame:SetMinResize(600, 500)
+	frame:SetMaxResize(maxWidth-50, maxHeight-50)
+
+	self.Libs.AceConfigDialog:SetDefaultSize(AddOnName, self:GetConfigDefaultSize())
+
+	local status = frame.obj and frame.obj.status
+	if status then
+		if reset then
+			self:ResetConfigSettings()
+
+			status.top, status.left = self:GetConfigPosition()
+			status.width, status.height = self:GetConfigDefaultSize()
+
+			frame.obj:ApplyStatus()
+		else
+			local top, left = self:GetConfigPosition()
+			if top and left then
+				status.top, status.left = top, left
+
+				frame.obj:ApplyStatus()
+			end
+		end
+	end
+end
+
 function AddOn:GetConfigDefaultSize()
 	local width, height = AddOn:GetConfigSize()
 	local maxWidth, maxHeight = AddOn.UIParent:GetSize()
@@ -339,13 +369,13 @@ function AddOn:ToggleOptionsUI(msg)
 					if i == 1 then
 						main = pages[i] and ACD and ACD.Status and ACD.Status.ElvUI
 						mainSel = main and main.status and main.status.groups and main.status.groups.selected
-						mainSelStr = mainSel and ('^'..AddOn:EscapeString(mainSel)..'\001')
+						mainSelStr = mainSel and ('^'..self:EscapeString(mainSel)..'\001')
 						mainNode = main and main.children and main.children[pages[i]]
 						pageNodes[index+1], pageNodes[index+2] = main, mainNode
 					else
 						sub = pages[i] and pageNodes[i] and ((i == pageCount and pageNodes[i]) or pageNodes[i].children[pages[i]])
 						subSel = sub and sub.status and sub.status.groups and sub.status.groups.selected
-						subNode = (mainSelStr and msgStr:match(mainSelStr..AddOn:EscapeString(pages[i])..'$') and (subSel and subSel == pages[i])) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
+						subNode = (mainSelStr and msgStr:match(mainSelStr..self:EscapeString(pages[i])..'$') and (subSel and subSel == pages[i])) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
 						pageNodes[index+1], pageNodes[index+2] = sub, subNode
 					end
 					index = index + 2
@@ -377,22 +407,7 @@ function AddOn:ToggleOptionsUI(msg)
 				self.GUIFrame = frame
 				_G.ElvUIGUIFrame = self.GUIFrame
 
-				local maxWidth, maxHeight = self.UIParent:GetSize()
-				frame:SetMinResize(600, 500)
-				frame:SetMaxResize(maxWidth-50, maxHeight-50)
-
-				ACD:SetDefaultSize(AddOnName, AddOn:GetConfigDefaultSize())
-
-				local status = frame.obj and frame.obj.status
-				if status then
-					local top, left = self:GetConfigPosition()
-					if top and left then
-						status.top, status.left = top, left
-
-						ConfigOpen:ApplyStatus()
-					end
-				end
-
+				self:UpdateConfigSize()
 				hooksecurefunc(frame, "StopMovingOrSizing", AddOn.ConfigStopMovingOrSizing)
 			end
 		end
