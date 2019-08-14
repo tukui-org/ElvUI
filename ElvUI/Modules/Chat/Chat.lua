@@ -244,12 +244,15 @@ do --this can save some main file locals
 		["Puttietat-Cenarius"]	= itsSimpy, -- Druid
 		["Simpy-Cenarius"]		= itsSimpy, -- Warlock
 		["Twigly-Cenarius"]		= itsSimpy, -- Monk
+		["Imsobeefy-Cenarius"]	= itsSimpy, -- [Horde] Shaman
+		["Imsocheesy-Cenarius"]	= itsSimpy, -- [Horde] Priest
 		["Imsojelly-Cenarius"]	= itsSimpy, -- [Horde] DK
 		["Imsojuicy-Cenarius"]	= itsSimpy, -- [Horde] Druid
 		["Imsopeachy-Cenarius"]	= itsSimpy, -- [Horde] DH
 		["Imsosalty-Cenarius"]	= itsSimpy, -- [Horde] Paladin
 		["Imsospicy-Cenarius"]	= itsSimpy, -- [Horde] Mage
 		["Bunne-CenarionCircle"]		= itsSimpy, -- Warrior
+		["Loppie-CenarionCircle"]		= itsSimpy, -- Hunter
 		["Loppybunny-CenarionCircle"]	= itsSimpy, -- Mage
 		["Rubee-CenarionCircle"]		= itsSimpy, -- DH
 		["Wennie-CenarionCircle"]		= itsSimpy, -- Priest
