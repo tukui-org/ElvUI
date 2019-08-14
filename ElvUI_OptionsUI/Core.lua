@@ -38,7 +38,7 @@ function E:RefreshGUI()
 end
 
 E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
-E.Libs.AceConfigRegistry:NotifyChange("ElvUI")
+E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigDefaultSize())
 
 E.Options.args = {
 	ElvUI_Header = {
