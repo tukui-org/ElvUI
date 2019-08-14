@@ -8,22 +8,6 @@ function NP:Construct_TagText(nameplate)
 	return Text
 end
 
-function NP:Update_HealthText(nameplate)
-	local db = NP.db.units[nameplate.frameType]
-	if not db.health then return end
-
-	nameplate:Tag(nameplate.Health.Text, db.health.text.format)
-
-	if db.health.text.enable then
-		nameplate.Health.Text:ClearAllPoints()
-		nameplate.Health.Text:Point(E.InversePoints[db.health.text.position], db.health.text.parent == 'Nameplate' and nameplate or nameplate[db.health.text.parent], db.health.text.position, db.health.text.xOffset, db.health.text.yOffset)
-		nameplate.Health.Text:FontTemplate(E.LSM:Fetch('font', db.health.text.font), db.health.text.fontSize, db.health.text.fontOutline)
-		nameplate.Health.Text:Show()
-	else
-		nameplate.Health.Text:Hide()
-	end
-end
-
 function NP:Update_Name(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 	if not db.name then return end
@@ -73,7 +57,6 @@ function NP:Update_Title(nameplate)
 end
 
 function NP:Update_Tags(nameplate)
-	NP:Update_HealthText(nameplate)
 	NP:Update_Name(nameplate)
 	NP:Update_Level(nameplate)
 	NP:Update_Title(nameplate)

@@ -126,6 +126,17 @@ function NP:Update_Health(nameplate)
 		end
 	end
 
+	if db.health.text.enable then
+		nameplate.Health.Text:ClearAllPoints()
+		nameplate.Health.Text:Point(E.InversePoints[db.health.text.position], db.health.text.parent == 'Nameplate' and nameplate or nameplate[db.health.text.parent], db.health.text.position, db.health.text.xOffset, db.health.text.yOffset)
+		nameplate.Health.Text:FontTemplate(E.LSM:Fetch('font', db.health.text.font), db.health.text.fontSize, db.health.text.fontOutline)
+		nameplate.Health.Text:Show()
+	else
+		nameplate.Health.Text:Hide()
+	end
+
+	nameplate:Tag(nameplate.Health.Text, db.health.text.format)
+
 	nameplate.Health.width = db.health.width
 	nameplate.Health.height = db.health.height
 	nameplate.Health:Height(db.health.height)
