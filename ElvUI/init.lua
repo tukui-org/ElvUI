@@ -381,6 +381,8 @@ function AddOn:ToggleOptionsUI(msg)
 				frame:SetMinResize(600, 500)
 				frame:SetMaxResize(maxWidth-50, maxHeight-50)
 
+				ACD:SetDefaultSize(AddOnName, AddOn:GetConfigDefaultSize())
+
 				local status = frame.obj and frame.obj.status
 				if status then
 					local top, left = self:GetConfigPosition()

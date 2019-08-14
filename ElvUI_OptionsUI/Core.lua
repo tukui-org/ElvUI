@@ -37,7 +37,6 @@ function E:RefreshGUI()
 		E:RefreshCustomTextsConfigs()
 	end
 
-	E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigDefaultSize())
 	E.Libs.AceConfigRegistry:NotifyChange("ElvUI")
 end
 
