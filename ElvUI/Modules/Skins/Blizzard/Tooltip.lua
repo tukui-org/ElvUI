@@ -10,11 +10,8 @@ local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
 local function IslandTooltipStyle(self)
-	if not self.IsSkinned then
-		self:SetBackdrop(nil)
-		self:SetTemplate("Transparent")
-		self.IsSkinned = true
-	end
+	self:SetBackdrop(nil)
+	self:SetTemplate("Transparent", nil, true)
 end
 
 local function LoadSkin()
@@ -24,9 +21,6 @@ local function LoadSkin()
 
 	-- Skin Blizzard Tooltips
 	local GameTooltip = _G.GameTooltip
-	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
-	StoryTooltip:SetFrameLevel(4)
-
 	GameTooltip.ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
 	GameTooltip.ItemTooltip.IconBorder:SetAlpha(0)
 	GameTooltip.ItemTooltip:CreateBackdrop("Default")
@@ -41,28 +35,9 @@ local function LoadSkin()
 		self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end)
 
-	local WarCampaignTooltip = _G.QuestScrollFrame.WarCampaignTooltip
-	local tooltips = {
-		_G.ItemRefTooltip,
-		_G.ItemRefShoppingTooltip1,
-		_G.ItemRefShoppingTooltip2,
-		_G.ItemRefShoppingTooltip3,
-		_G.AutoCompleteBox,
-		_G.FriendsTooltip,
-		_G.ShoppingTooltip1,
-		_G.ShoppingTooltip2,
-		_G.ShoppingTooltip3,
-		_G.ReputationParagonTooltip,
-		_G.EmbeddedItemTooltip,
-		-- already have locals
-		GameTooltip,
-		StoryTooltip,
-		WarCampaignTooltip,
-	}
-
-	for _, tt in pairs(tooltips) do
-		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')
-	end
+	-- StoryTooltip
+	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
+	StoryTooltip:SetFrameLevel(4)
 
 	-- EmbeddedItemTooltip
 	local reward = _G.EmbeddedItemTooltip.ItemTooltip
@@ -74,27 +49,45 @@ local function LoadSkin()
 
 	-- Skin GameTooltip Status Bar
 	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(_G.GameTooltipStatusBar)
 	_G.GameTooltipStatusBar:CreateBackdrop('Transparent')
 	_G.GameTooltipStatusBar:ClearAllPoints()
 	_G.GameTooltipStatusBar:Point("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
 	_G.GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
+	E:RegisterStatusBar(_G.GameTooltipStatusBar)
 
+	-- Tooltip Styling
 	TT:SecureHook('GameTooltip_ShowStatusBar') -- Skin Status Bars
 	TT:SecureHook('GameTooltip_ShowProgressBar') -- Skin Progress Bars
 	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color Progress Bars
-	TT:SecureHook('GameTooltip_UpdateStyle', 'SetStyle')
+	TT:SecureHook('GameTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
+
+	-- Style Tooltips which are created before load
+	local styleTT = {
+		_G.ItemRefTooltip,
+		_G.FriendsTooltip,
+		_G.WarCampaignTooltip,
+		_G.EmbeddedItemTooltip,
+		_G.ReputationParagonTooltip,
+		-- already have locals
+		StoryTooltip,
+		GameTooltip,
+	}
+
+	for _, tt in pairs(styleTT) do
+		TT:SetStyle(tt)
+	end
 
 	-- [Backdrop coloring] There has to be a more elegant way of doing this.
 	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
 
 	-- Used for Island Skin
-	TT:RegisterEvent("ADDON_LOADED", function(_, addon)
+	TT:RegisterEvent("ADDON_LOADED", function(event, addon)
 		if addon == "Blizzard_IslandsQueueUI" then
-			local IslandTooltip = _G.IslandsQueueFrameTooltip
-			IslandTooltip:GetParent():GetParent():HookScript("OnShow", IslandTooltipStyle)
-			IslandTooltip:GetParent().IconBorder:SetAlpha(0)
-			IslandTooltip:GetParent().Icon:SetTexCoord(unpack(E.TexCoords))
+			local tt = _G.IslandsQueueFrameTooltip:GetParent()
+			tt:GetParent():HookScript("OnShow", IslandTooltipStyle)
+			tt.IconBorder:SetAlpha(0)
+			tt.Icon:SetTexCoord(unpack(E.TexCoords))
+			TT:UnregisterEvent(event)
 		end
 	end)
 end

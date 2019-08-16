@@ -193,6 +193,9 @@ do --this can save some main file locals
 	local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
 	local itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a] end
 
+	local d = { DEATHKNIGHT = ElvRed, DEMONHUNTER = ElvPurple, DRUID = ElvOrange, HUNTER = ElvGreen, Mage = ElvBlue, MONK = ElvGreen, PALADIN = ElvPink, PRIEST = ElvPink, ROGUE = ElvYellow, SHAMAN = ElvBlue, WARLOCK = ElvPurple, WARRIOR = ElvOrange }
+	local itsNihilist = function(class) return d[class] end
+
 	specialChatIcons = {
 		-- Elv
 		["Illidelv-Area52"]		= ElvBlue,
@@ -218,8 +221,25 @@ do --this can save some main file locals
 		["Affinitii-Illidan"]	= Bathrobe,
 		["Affinity-Illidan"]	= Bathrobe,
 		["Uplift-Illidan"]		= Bathrobe,
-		-- Whiro
-		["Zistraeti-WyrmrestAccord"]	= ElvPurple, -- Warlock
+		--NihilisticPandemonium
+		["Perrinna-WyrmrestAccord"]	= itsNihilist("WARLOCK"),
+		["Sagome-WyrmrestAccord"]	= itsNihilist("MONK"),
+		["Onaguda-WyrmrestAccord"]	= itsNihilist("DRUID"),
+		["Haelini-WyrmrestAccord"]	= itsNihilist("PRIEST"),
+		["Nenalia-WyrmrestAccord"]	= itsNihilist("MAGE"),
+		["Alailais-WyrmestAccord"]	= itsNihilist("DEMONHUNTER"),
+		["Muiride-WyrmestAccord"]	= itsNihilist("DEATHKNIGHT"),
+		["Monelia-WyrmrestAccord"]	= itsNihilist("PALADIN"),
+		["Huanyue-WyrmrestAccord"]	= itsNihilist("SHAMAN"),
+		["Galiseda-WyrmestAccord"]	= itsNihilist("ROGUE"),
+		["Naldydi-WyrmrestAccord"]	= itsNihilist("HUNTER"),
+		["Caylasena-WyrmestAccord"]	= itsNihilist("WARRIOR"),
+		["Elaedarel-WyrmrestAccord"]	= itsNihilist("WARLOCK"),
+		["Alydrer-WyrmrestAccord"]	= itsNihilist("WARLOCK"),
+		["Issia-WyrmrestAccord"]	= itsNihilist("PRIEST"),
+		["Leitara-WyrmrestAccord"]	= itsNihilist("WARRIOR"),
+		["Cherlyth-WyrmrestAccord"]	= itsNihilist("DRUID"),
+		["Tokashami-WyrmrestAccord"]	= itsNihilist("SHAMAN"),
 		-- Merathilis
 		["Asragoth-Shattrath"]		= ElvPurple,	-- [Alliance] Warlock
 		["Brítt-Shattrath"] 		= ElvBlue,		-- [Alliance] Warrior
@@ -244,12 +264,15 @@ do --this can save some main file locals
 		["Puttietat-Cenarius"]	= itsSimpy, -- Druid
 		["Simpy-Cenarius"]		= itsSimpy, -- Warlock
 		["Twigly-Cenarius"]		= itsSimpy, -- Monk
+		["Imsobeefy-Cenarius"]	= itsSimpy, -- [Horde] Shaman
+		["Imsocheesy-Cenarius"]	= itsSimpy, -- [Horde] Priest
 		["Imsojelly-Cenarius"]	= itsSimpy, -- [Horde] DK
 		["Imsojuicy-Cenarius"]	= itsSimpy, -- [Horde] Druid
 		["Imsopeachy-Cenarius"]	= itsSimpy, -- [Horde] DH
 		["Imsosalty-Cenarius"]	= itsSimpy, -- [Horde] Paladin
 		["Imsospicy-Cenarius"]	= itsSimpy, -- [Horde] Mage
 		["Bunne-CenarionCircle"]		= itsSimpy, -- Warrior
+		["Loppie-CenarionCircle"]		= itsSimpy, -- Hunter
 		["Loppybunny-CenarionCircle"]	= itsSimpy, -- Mage
 		["Rubee-CenarionCircle"]		= itsSimpy, -- DH
 		["Wennie-CenarionCircle"]		= itsSimpy, -- Priest
