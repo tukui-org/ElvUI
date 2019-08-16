@@ -193,7 +193,7 @@ do --this can save some main file locals
 	local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
 	local itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a] end
 
-	local d = { DEATHKNIGHT = ElvRed, DEMONHUNTER = ElvPurple, DRUID = ElvOrange, HUNTER = ElvGreen, Mage = ElvBlue, MONK = ElvGreen, PALADIN = ElvPink, PRIEST = ElvPink, ROGUE = ElvYellow, SHAMAN = ElvBlue, WARLOCk = ElvPurple, WARRIOR = ElvOrange }
+	local d = { DEATHKNIGHT = ElvRed, DEMONHUNTER = ElvPurple, DRUID = ElvOrange, HUNTER = ElvGreen, Mage = ElvBlue, MONK = ElvGreen, PALADIN = ElvPink, PRIEST = ElvPink, ROGUE = ElvYellow, SHAMAN = ElvBlue, WARLOCK = ElvPurple, WARRIOR = ElvOrange }
 	local itsNihilist = function(class) return d[class] end
 	specialChatIcons = {
 		-- Elv
