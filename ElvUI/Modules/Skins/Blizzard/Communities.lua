@@ -61,7 +61,8 @@ local function LoadSkin()
 	CommunitiesFrameCommunitiesList.BottomFiligree:Hide()
 	_G.CommunitiesFrameCommunitiesListListScrollFrame:StripTextures()
 
-	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo, isInvitation, isTicket)
+	-- Needs probably an update for 8.2.5
+	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo, isInvitation, isTicket, isInviteFromFinder)
 		if clubInfo then
 			self.Background:Hide()
 			self.CircleMask:Hide()
@@ -176,35 +177,49 @@ local function LoadSkin()
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
 
-	-- GuildFinder Frame/ ClubFrame?!
-	CommunitiesFrame.GuildFinderFrame:StripTextures()
-	S:HandleButton(CommunitiesFrame.GuildFinderFrame.PendingClubs)
+	-- GuildFinder Frame
+	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
+	ClubFinderGuildFinderFrame:StripTextures()
 
-	CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
-	CommunitiesFrame.GuildFinderFrame.OptionsList.Search:ClearAllPoints()
-	CommunitiesFrame.GuildFinderFrame.OptionsList.Search:SetPoint("TOP", CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 0, -3)
-	S:HandleEditBox(CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox)
-	S:HandleButton(CommunitiesFrame.GuildFinderFrame.OptionsList.Search)
+	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubFocusDropdown)
+	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown)
 
-	HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.TankRoleFrame, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-	HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.HealerRoleFrame, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-	HandleRoleChecks(CommunitiesFrame.GuildFinderFrame.OptionsList.DpsRoleFrame, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+	ClubFinderGuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
+	ClubFinderGuildFinderFrame.OptionsList.Search:SetSize(118, 20)
+	ClubFinderGuildFinderFrame.OptionsList.Search:ClearAllPoints()
+	ClubFinderGuildFinderFrame.OptionsList.Search:Point("TOP", ClubFinderGuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 1, -3)
+	S:HandleEditBox(ClubFinderGuildFinderFrame.OptionsList.SearchBox)
+	S:HandleButton(ClubFinderGuildFinderFrame.OptionsList.Search)
 
-	-- CommunityAndGuildFinderFrame
-	CommunitiesFrame.CommunityAndGuildFinderFrame:StripTextures()
-	S:HandleButton(CommunitiesFrame.CommunityAndGuildFinderFrame.PendingClubs)
+	HandleRoleChecks(ClubFinderGuildFinderFrame.OptionsList.TankRoleFrame, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+	HandleRoleChecks(ClubFinderGuildFinderFrame.OptionsList.HealerRoleFrame, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	HandleRoleChecks(ClubFinderGuildFinderFrame.OptionsList.DpsRoleFrame, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
 
-	S:HandleButton(CommunitiesFrame.CommunityAndGuildFinderFrame.OptionsList.Search)
-	CommunitiesFrame.CommunityAndGuildFinderFrame.OptionsList.Search:ClearAllPoints()
-	CommunitiesFrame.CommunityAndGuildFinderFrame.OptionsList.Search:SetPoint("TOP", CommunitiesFrame.CommunityAndGuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 0, -3)
-	CommunitiesFrame.CommunityAndGuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
-	S:HandleEditBox(CommunitiesFrame.CommunityAndGuildFinderFrame.OptionsList.SearchBox)
+	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderSearchTab)
+	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderPendingTab)
 
-	S:HandleDropDownBox(CommunitiesFrame.CommunityAndGuildFinderFrame.OptionsList.TypeDropdown)
+	-- ClubFinderCommunityAndGuildFinderFrame
+	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
+	ClubFinderCommunityAndGuildFinderFrame:StripTextures()
 
-	HandleRoleChecks(CommunitiesFrame.CommunityAndGuildFinderFrame.OptionsList.TankRoleFrame, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-	HandleRoleChecks(CommunitiesFrame.CommunityAndGuildFinderFrame.OptionsList.HealerRoleFrame, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-	HandleRoleChecks(CommunitiesFrame.CommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.ClubFocusDropdown)
+	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SortByDropdown)
+
+	S:HandleButton(ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search)
+	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:ClearAllPoints()
+	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:Point("TOP", ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 1, -3)
+	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:SetSize(118, 20)
+	ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
+	S:HandleEditBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox)
+
+	HandleRoleChecks(ClubFinderCommunityAndGuildFinderFrame.OptionsList.TankRoleFrame, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+	HandleRoleChecks(ClubFinderCommunityAndGuildFinderFrame.OptionsList.HealerRoleFrame, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	HandleRoleChecks(ClubFinderCommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+
+	S:HandleScrollBar(ClubFinderCommunityAndGuildFinderFrame.CommunityCards.ListScrollFrame.scrollBar)
+
+	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderSearchTab)
+	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderPendingTab)
 
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
