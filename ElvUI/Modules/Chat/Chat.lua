@@ -195,6 +195,7 @@ do --this can save some main file locals
 
 	local d = { DEATHKNIGHT = ElvRed, DEMONHUNTER = ElvPurple, DRUID = ElvOrange, HUNTER = ElvGreen, Mage = ElvBlue, MONK = ElvGreen, PALADIN = ElvPink, PRIEST = ElvPink, ROGUE = ElvYellow, SHAMAN = ElvBlue, WARLOCK = ElvPurple, WARRIOR = ElvOrange }
 	local itsNihilist = function(class) return d[class] end
+
 	specialChatIcons = {
 		-- Elv
 		["Illidelv-Area52"]		= ElvBlue,
