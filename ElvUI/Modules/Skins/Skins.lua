@@ -448,31 +448,27 @@ end
 function S:HandleDropDownBox(frame, width)
 	if frame.backdrop then return end
 
-	local FrameName = frame.GetName and frame:GetName()
-	local button = frame.Button or FrameName and _G[FrameName..'Button']
-
 	frame:StripTextures()
 	frame:CreateBackdrop()
 	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
-	frame.backdrop:Point("TOPLEFT", frame.Left, 20, -21)
-	frame.backdrop:Point("BOTTOMRIGHT", frame.Right, -19, 23)
+	frame.backdrop:SetPoint("TOPLEFT", frame.Left, 20, -21)
+	frame.backdrop:SetPoint("BOTTOMRIGHT", frame.Right, -19, 23)
 
 	if width then
 		frame:Width(width)
 	end
 
+	local button = frame.Button
 	if button then
 		button:ClearAllPoints()
 		button:SetPoint("TOPRIGHT", frame.Right, -19, -21)
-		button:Size(16, 16)
-		button.NormalTexture:SetTexture("")
-		button.PushedTexture:SetTexture("")
-		button.HighlightTexture:SetTexture("")
+		button:SetSize(16, 16)
 		S:HandleNextPrevButton(button)
 	end
 
-	if frame.Icon then
-		frame.Icon:Point('LEFT', 23, 0)
+	local icon = frame.Icon
+	if icon then
+		icon:SetPoint("LEFT", 23, 0)
 	end
 end
 
