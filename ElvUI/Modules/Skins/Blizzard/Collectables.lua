@@ -6,6 +6,7 @@ local _G = _G
 local select = select
 local ipairs, pairs, unpack = ipairs, pairs, unpack
 --WoW API / Variables
+local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local PlayerHasToy = PlayerHasToy
 local hooksecurefunc = hooksecurefunc
@@ -332,7 +333,6 @@ local function LoadSkin()
 	ToyBox.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, nil, nil, true)
-	S:HandleCloseButton(ToyBox.favoriteHelpBox.CloseButton)
 
 	local progressBar = ToyBox.progressBar
 	progressBar.border:Hide()
@@ -378,7 +378,6 @@ local function LoadSkin()
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
 	S:HandleDropDownBox(_G.HeirloomsJournalClassDropDown)
-	S:HandleCloseButton(HeirloomsJournal.UpgradeLevelHelpBox.CloseButton)
 
 	progressBar = HeirloomsJournal.progressBar -- swap local variable
 	progressBar.border:Hide()
@@ -454,10 +453,13 @@ local function LoadSkin()
 		if Frame.Models then
 			for _, Model in pairs(Frame.Models) do
 				Model:SetFrameLevel(Model:GetFrameLevel() + 1)
-				Model:CreateBackdrop()
-				Model.backdrop:SetOutside(Model, 2, 2)
-				Model.Border:Kill()
+				Model.Border:SetAlpha(0)
 				Model.TransmogStateTexture:SetAlpha(0)
+
+				local bg = CreateFrame("Frame", nil, Model)
+				bg:SetAllPoints()
+				bg:CreateBackdrop()
+				bg.backdrop:SetOutside(Model, 2, 2)
 
 				hooksecurefunc(Model.Border, 'SetAtlas', function(_, texture)
 					local r, g, b
@@ -468,7 +470,7 @@ local function LoadSkin()
 					else
 						r, g, b = unpack(E.media.bordercolor)
 					end
-					Model.backdrop:SetBackdropBorderColor(r, g, b)
+					bg.backdrop:SetBackdropBorderColor(r, g, b)
 				end)
 			end
 		end
@@ -500,8 +502,6 @@ local function LoadSkin()
 	WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.LongName:FontTemplate(nil, 16)
 	S:HandleButton(WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton)
 	S:HandleScrollBar(WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.scrollBar)
-	S:HandleCloseButton(WardrobeCollectionFrame.SetsTabHelpBox.CloseButton)
-	S:HandleCloseButton(WardrobeCollectionFrame.ItemsCollectionFrame.HelpBox.CloseButton)
 
 	--Skin set buttons
 	for i = 1, #WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons do
@@ -556,14 +556,6 @@ local function LoadSkin()
 	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate("Transparent")
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton)
-
-	-- Taken from AddOnSkins
-	for i = 1, 2 do
-		for j = 1, 4 do
-			WardrobeCollectionFrame.SetsTransmogFrame["ModelR"..i.."C"..j]:StripTextures()
-			WardrobeCollectionFrame.SetsTransmogFrame["ModelR"..i.."C"..j]:CreateBackdrop()
-		end
-	end
 
 	-- Outfit Edit Frame
 	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
