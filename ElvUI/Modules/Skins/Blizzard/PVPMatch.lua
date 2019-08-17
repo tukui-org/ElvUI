@@ -31,6 +31,8 @@ local function LoadSkin()
 		S:HandleTab(tab)
 	end
 
+	PVPMatchScoreboard.Content.TabContainer.MatchmakingText:FontTemplate()
+
 	-- Macro to show the PVPMatchResults: /run PVPMatchResults:Show()
 	local PVPMatchResults = _G.PVPMatchResults
 	PVPMatchResults:StripTextures()
@@ -54,6 +56,8 @@ local function LoadSkin()
 	for _, tab in pairs(tabz) do
 		S:HandleTab(tab)
 	end
+
+	PVPMatchResults.content.tabContainer.matchmakingText:FontTemplate()
 end
 
 S:AddCallbackForAddon("Blizzard_PVPMatch", "PVPMatch", LoadSkin)
