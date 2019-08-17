@@ -1152,7 +1152,7 @@ do
 		if not objs then
 			objs = {}
 			eventTable[event] = objs
-			eventFrame:RegisterEvent(event)
+			xpcall(eventFrame.RegisterEvent, eventFrame, event)
 		end
 
 		local funcs = objs[object]
