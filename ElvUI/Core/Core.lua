@@ -33,7 +33,7 @@ local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local gsub, strjoin, twipe, tinsert, tremove, tContains = gsub, strjoin, wipe, tinsert, tremove, tContains
 local format, find, strrep, strlen, sub = format, strfind, strrep, strlen, strsub
-local assert, type, xpcall, next, print = assert, type, xpcall, next, print
+local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
@@ -1152,7 +1152,7 @@ do
 		if not objs then
 			objs = {}
 			eventTable[event] = objs
-			xpcall(eventFrame.RegisterEvent, eventFrame, event)
+			pcall(eventFrame.RegisterEvent, eventFrame, event)
 		end
 
 		local funcs = objs[object]

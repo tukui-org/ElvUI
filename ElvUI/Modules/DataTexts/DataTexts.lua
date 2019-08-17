@@ -7,6 +7,7 @@ local LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local pairs, type, error, strlen = pairs, type, error, strlen
+local pcall = pcall
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsInInstance = IsInInstance
@@ -203,9 +204,9 @@ function DT:AssignPanelToDataText(panel, data)
 				-- use new filtered event registration for appropriate events
 				if event == "UNIT_AURA" or event == "UNIT_RESISTANCES"  or event == "UNIT_STATS" or event == "UNIT_ATTACK_POWER"
 				or event == "UNIT_RANGED_ATTACK_POWER" or event == "UNIT_TARGET" or event == "UNIT_SPELL_HASTE" then
-					xpcall(panel.RegisterUnitEvent, panel, event, 'player')
+					pcall(panel.RegisterUnitEvent, panel, event, 'player')
 				else
-					xpcall(panel.RegisterEvent, panel, event)
+					pcall(panel.RegisterEvent, panel, event)
 				end
 			end
 		end
