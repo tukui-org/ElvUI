@@ -5,7 +5,7 @@ local ACD = E.Libs.AceConfigDialog
 
 local _G = _G
 local tconcat, tostring = table.concat, tostring
-local pairs, type, strsplit, match, gsub = pairs, type, strsplit, string.match, string.gsub
+local pairs, type, strsplit, strmatch, gsub = pairs, type, strsplit, strmatch, gsub
 local next, ipairs, tremove, tinsert, sort, tonumber, format = next, ipairs, tremove, tinsert, sort, tonumber, format
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
@@ -37,7 +37,7 @@ local positionValues = {
 local carryFilterFrom, carryFilterTo
 local function filterMatch(s, v)
 	local m1, m2, m3, m4 = "^" .. v .. "$", "^" .. v .. ",", "," .. v .. "$", "," .. v .. ","
-	return (match(s, m1) and m1) or (match(s, m2) and m2) or (match(s, m3) and m3) or (match(s, m4) and v .. ",")
+	return (strmatch(s, m1) and m1) or (strmatch(s, m2) and m2) or (strmatch(s, m3) and m3) or (strmatch(s, m4) and v .. ",")
 end
 
 local function filterPriority(auraType, unit, value, remove, movehere, friendState)
@@ -68,7 +68,7 @@ local function filterPriority(auraType, unit, value, remove, movehere, friendSta
 		tinsert(tbl, sv, movehere)
 		E.db.nameplates.units[unit][auraType].filters.priority = tconcat(tbl, ",")
 	elseif found and friendState then
-		local realValue = match(value, "^Friendly:([^,]*)") or match(value, "^Enemy:([^,]*)") or value
+		local realValue = strmatch(value, "^Friendly:([^,]*)") or strmatch(value, "^Enemy:([^,]*)") or value
 		local friend = filterMatch(filter, E:EscapeString("Friendly:" .. realValue))
 		local enemy = filterMatch(filter, E:EscapeString("Enemy:" .. realValue))
 		local default = filterMatch(filter, E:EscapeString(realValue))
@@ -77,7 +77,7 @@ local function filterPriority(auraType, unit, value, remove, movehere, friendSta
 			(friend and (not enemy) and format("%s%s", "Enemy:", realValue)) or --[x] friend [ ] enemy: > enemy
 			((not enemy and not friend) and format("%s%s", "Friendly:", realValue)) or --[ ] friend [ ] enemy: > friendly
 			(enemy and (not friend) and default and format("%s%s", "Friendly:", realValue)) or --[ ] friend [x] enemy: (default exists) > friendly
-			(enemy and (not friend) and match(value, "^Enemy:") and realValue) or --[ ] friend [x] enemy: (no default) > realvalue
+			(enemy and (not friend) and strmatch(value, "^Enemy:") and realValue) or --[ ] friend [x] enemy: (no default) > realvalue
 			(friend and enemy and realValue) --[x] friend [x] enemy: > default
 
 		if state then
@@ -634,18 +634,17 @@ local function UpdateStyleLists()
 			args = {}
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) then
-			local spell, spellName, notDisabled
 			for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) do
-				spell = name
+				local spell, stacks = strmatch(name, NP.StyleFilterStackPattern)
 				if tonumber(spell) then
-					spellName = GetSpellInfo(spell)
-					notDisabled =
+					local spellName = GetSpellInfo(spell)
+					local notDisabled =
 						(E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
 						E.db.nameplates.filters[selectedNameplateFilter].triggers and
 						E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					if spellName then
 						if notDisabled then
-							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
+							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r|cFF999999%s|r", spellName, spell, (stacks and stacks ~= "" and " x"..stacks) or "")
 						else
 							spell = format("%s (%d)", spellName, spell)
 						end
@@ -681,18 +680,17 @@ local function UpdateStyleLists()
 			args = {}
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) then
-			local spell, spellName, notDisabled
 			for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) do
-				spell = name
+				local spell, stacks = strmatch(name, NP.StyleFilterStackPattern)
 				if tonumber(spell) then
-					spellName = GetSpellInfo(spell)
-					notDisabled =
+					local spellName = GetSpellInfo(spell)
+					local notDisabled =
 						(E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
 						E.db.nameplates.filters[selectedNameplateFilter].triggers and
 						E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					if spellName then
 						if notDisabled then
-							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r", spellName, spell)
+							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r|cFF999999%s|r", spellName, spell, (stacks and stacks ~= "" and " x"..stacks) or "")
 						else
 							spell = format("%s (%d)", spellName, spell)
 						end
@@ -719,6 +717,7 @@ local function UpdateStyleLists()
 end
 
 local function UpdateFilterGroup()
+	local stackBuff, stackDebuff
 	if not selectedNameplateFilter or not E.global.nameplate.filters[selectedNameplateFilter] then
 		E.Options.args.nameplate.args.filters.args.header = nil
 		E.Options.args.nameplate.args.filters.args.actions = nil
@@ -826,7 +825,7 @@ local function UpdateFilterGroup()
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then return end
+								if strmatch(value, "^[%s%p]-$") then return end
 
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.names[value] = true
 								UpdateFilterGroup()
@@ -842,7 +841,7 @@ local function UpdateFilterGroup()
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then return end
+								if strmatch(value, "^[%s%p]-$") then return end
 
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.names[value] = nil
 								UpdateFilterGroup()
@@ -954,63 +953,67 @@ local function UpdateFilterGroup()
 							name = "",
 							type = "group",
 							guiInline = true,
-							order = 2,
+							order = 1,
 							args = {
-								isCasting = {
-									type = "toggle",
-									order = 1,
-									name = L["Is Casting Anything"],
-									desc = L["If enabled then the filter will activate if the unit is casting anything."]
-								},
-								notCasting = {
-									type = "toggle",
-									order = 2,
-									name = L["Not Casting Anything"],
-									desc = L["If enabled then the filter will activate if the unit is not casting anything."]
-								},
-								isChanneling = {
-									type = "toggle",
-									order = 3,
-									customWidth = 200,
-									name = L["Is Channeling Anything"],
-									desc = L["If enabled then the filter will activate if the unit is channeling anything."]
-								},
-								notChanneling = {
-									type = "toggle",
-									order = 4,
-									customWidth = 200,
-									name = L["Not Channeling Anything"],
-									desc = L["If enabled then the filter will activate if the unit is not channeling anything."]
-								},
-								spacer1 = {
-									order = 5,
-									type = "description",
-									name = " ",
-									width = "full"
-								},
 								interruptible = {
 									type = "toggle",
-									order = 6,
+									order = 1,
 									name = L["Interruptible"],
 									desc = L["If enabled then the filter will only activate if the unit is casting interruptible spells."]
 								},
 								notInterruptible = {
 									type = "toggle",
-									order = 7,
+									order = 2,
 									name = L["Non-Interruptable"],
 									desc = L["If enabled then the filter will only activate if the unit is casting not interruptible spells."]
-								}
+								},
+								spacer1 = {
+									order = 3,
+									type = "description",
+									name = " ",
+									width = "full"
+								},
+								isCasting = {
+									type = "toggle",
+									order = 4,
+									name = L["Is Casting Anything"],
+									desc = L["If enabled then the filter will activate if the unit is casting anything."]
+								},
+								notCasting = {
+									type = "toggle",
+									order = 5,
+									name = L["Not Casting Anything"],
+									desc = L["If enabled then the filter will activate if the unit is not casting anything."]
+								},
+								spacer2 = {
+									order = 6,
+									type = "description",
+									name = " ",
+									width = "full"
+								},
+								isChanneling = {
+									type = "toggle",
+									order = 7,
+									name = L["Is Channeling Anything"],
+									desc = L["If enabled then the filter will activate if the unit is channeling anything."]
+								},
+								notChanneling = {
+									type = "toggle",
+									order = 8,
+									name = L["Not Channeling Anything"],
+									desc = L["If enabled then the filter will activate if the unit is not channeling anything."]
+								},
 							}
 						},
 						addSpell = {
-							order = 9,
+							order = 2,
 							name = L["Add Spell ID or Name"],
 							type = "input",
 							get = function(info)
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then return end
+								if strmatch(value, "^[%s%p]-$") then return end
 
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells[value] = true
 								UpdateFilterGroup()
@@ -1018,7 +1021,7 @@ local function UpdateFilterGroup()
 							end
 						},
 						removeSpell = {
-							order = 10,
+							order = 3,
 							name = L["Remove Spell ID or Name"],
 							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 							type = "input",
@@ -1026,28 +1029,28 @@ local function UpdateFilterGroup()
 								return ""
 							end,
 							set = function(info, value)
-								if match(value, "^[%s%p]-$") then return end
+								if strmatch(value, "^[%s%p]-$") then return end
 
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells[value] = nil
 								UpdateFilterGroup()
 								NP:ConfigureAll()
 							end
 						},
+						notSpell = {
+							type = "toggle",
+							order = 4,
+							name = L["Not Spell"],
+							desc = L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."]
+						},
 						description1 = {
-							order = 12,
+							order = 10,
 							type = "description",
 							name = L["You do not need to use 'Is Casting Anything' or 'Is Channeling Anything' for these spells to trigger."]
 						},
 						description2 = {
-							order = 13,
+							order = 11,
 							type = "description",
 							name = L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."]
-						},
-						notSpell = {
-							type = "toggle",
-							order = -2,
-							name = L["Not Spell"],
-							desc = L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."]
 						}
 					}
 				},
@@ -1701,8 +1704,39 @@ local function UpdateFilterGroup()
 							E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					end,
 					args = {
-						mustHaveAll = {
+						addCooldown = {
 							order = 1,
+							name = L["Add Spell ID or Name"],
+							type = "input",
+							get = function(info)
+								return ""
+							end,
+							set = function(info, value)
+								if strmatch(value, "^[%s%p]-$") then return end
+
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[value] = "ONCD"
+								UpdateFilterGroup()
+								NP:ConfigureAll()
+							end
+						},
+						removeCooldown = {
+							order = 2,
+							name = L["Remove Spell ID or Name"],
+							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
+							type = "input",
+							get = function(info)
+								return ""
+							end,
+							set = function(info, value)
+								if strmatch(value, "^[%s%p]-$") then return end
+
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[value] = nil
+								UpdateFilterGroup()
+								NP:ConfigureAll()
+							end
+						},
+						mustHaveAll = {
+							order = 3,
 							name = L["Require All"],
 							desc = L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."],
 							type = "toggle",
@@ -1717,42 +1751,6 @@ local function UpdateFilterGroup()
 							end,
 							set = function(info, value)
 								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.mustHaveAll = value
-								NP:ConfigureAll()
-							end
-						},
-						spacer1 = {
-							order = 5,
-							type = "description",
-							name = " "
-						},
-						addCooldown = {
-							order = 6,
-							name = L["Add Spell ID or Name"],
-							type = "input",
-							get = function(info)
-								return ""
-							end,
-							set = function(info, value)
-								if match(value, "^[%s%p]-$") then return end
-
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[value] = "ONCD"
-								UpdateFilterGroup()
-								NP:ConfigureAll()
-							end
-						},
-						removeCooldown = {
-							order = 7,
-							name = L["Remove Spell ID or Name"],
-							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
-							type = "input",
-							get = function(info)
-								return ""
-							end,
-							set = function(info, value)
-								if match(value, "^[%s%p]-$") then return end
-
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names[value] = nil
-								UpdateFilterGroup()
 								NP:ConfigureAll()
 							end
 						}
@@ -1776,20 +1774,8 @@ local function UpdateFilterGroup()
 							E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					end,
 					args = {
-						mustHaveAll = {
-							order = 1,
-							name = L["Require All"],
-							desc = L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."],
-							type = "toggle"
-						},
-						missing = {
-							order = 2,
-							name = L["Missing"],
-							desc = L["If enabled then it checks if auras are missing instead of being present on the unit."],
-							type = "toggle"
-						},
 						minTimeLeft = {
-							order = 3,
+							order = 1,
 							type = "range",
 							name = L["Minimum Time Left"],
 							desc = L["Apply this filter if a buff has remaining time greater than this. Set to zero to disable."],
@@ -1798,7 +1784,7 @@ local function UpdateFilterGroup()
 							step = 1
 						},
 						maxTimeLeft = {
-							order = 4,
+							order = 2,
 							type = "range",
 							name = L["Maximum Time Left"],
 							desc = L["Apply this filter if a buff has remaining time less than this. Set to zero to disable."],
@@ -1806,41 +1792,81 @@ local function UpdateFilterGroup()
 							max = 10800,
 							step = 1
 						},
-						spacer1 = {
+						mustHaveAll = {
+							order = 3,
+							customWidth = 100,
+							name = L["Require All"],
+							desc = L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."],
+							type = "toggle"
+						},
+						missing = {
+							order = 4,
+							customWidth = 100,
+							name = L["Missing"],
+							desc = L["If enabled then it checks if auras are missing instead of being present on the unit."],
+							type = "toggle"
+						},
+						changeList = {
+							type = "group",
+							guiInline = true,
+							name = L["Add / Remove"],
 							order = 5,
-							type = "description",
-							name = " "
-						},
-						addBuff = {
-							order = 6,
-							name = L["Add Spell ID or Name"],
-							type = "input",
-							get = function(info)
-								return ""
-							end,
-							set = function(info, value)
-								if match(value, "^[%s%p]-$") then return end
+							args = {
+								addBuff = {
+									order = 1,
+									name = L["Add Spell ID or Name"],
+									type = "input",
+									get = function(info)
+										return ""
+									end,
+									set = function(info, value)
+										if strmatch(value, "^[%s%p]-$") then return end
+										if stackBuff then value = value .. '\n' .. stackBuff end
 
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = true
-								UpdateFilterGroup()
-								NP:ConfigureAll()
-							end
-						},
-						removeBuff = {
-							order = 7,
-							name = L["Remove Spell ID or Name"],
-							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
-							type = "input",
-							get = function(info)
-								return ""
-							end,
-							set = function(info, value)
-								if match(value, "^[%s%p]-$") then return end
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = true
+										UpdateFilterGroup()
+										NP:ConfigureAll()
+									end
+								},
+								removeBuff = {
+									order = 2,
+									name = L["Remove Spell ID or Name"],
+									desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
+									type = "input",
+									get = function(info)
+										return ""
+									end,
+									set = function(info, value)
+										if strmatch(value, "^[%s%p]-$") then return end
 
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value] = nil
-								UpdateFilterGroup()
-								NP:ConfigureAll()
-							end
+										if stackBuff then
+											E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[value .. '\n' .. stackBuff] = nil
+										else
+											for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) do
+												local spell = strmatch(name, NP.StyleFilterStackPattern)
+												if spell == value then
+													E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names[name] = nil
+												end
+											end
+										end
+
+										UpdateFilterGroup()
+										NP:ConfigureAll()
+									end
+								},
+								stackThreshold = {
+									order = 3,
+									type = "range",
+									name = L["Stack Threshold"],
+									desc = L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."],
+									min = 1,
+									max = 250,
+									softMax = 100,
+									step = 1,
+									get = function(info) return stackBuff or 1 end,
+									set = function(info, value) stackBuff = (value > 1 and value) or nil end
+								},
+							}
 						}
 					}
 				},
@@ -1862,14 +1888,34 @@ local function UpdateFilterGroup()
 							E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					end,
 					args = {
-						mustHaveAll = {
+						minTimeLeft = {
 							order = 1,
+							type = "range",
+							name = L["Minimum Time Left"],
+							desc = L["Apply this filter if a debuff has remaining time greater than this. Set to zero to disable."],
+							min = 0,
+							max = 10800,
+							step = 1
+						},
+						maxTimeLeft = {
+							order = 2,
+							type = "range",
+							name = L["Maximum Time Left"],
+							desc = L["Apply this filter if a debuff has remaining time less than this. Set to zero to disable."],
+							min = 0,
+							max = 10800,
+							step = 1
+						},
+						mustHaveAll = {
+							order = 3,
+							customWidth = 100,
 							name = L["Require All"],
 							desc = L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."],
 							type = "toggle"
 						},
 						missing = {
-							order = 2,
+							order = 4,
+							customWidth = 100,
 							name = L["Missing"],
 							desc = L["If enabled then it checks if auras are missing instead of being present on the unit."],
 							type = "toggle",
@@ -1879,59 +1925,66 @@ local function UpdateFilterGroup()
 									E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 							end
 						},
-						minTimeLeft = {
-							order = 3,
-							type = "range",
-							name = L["Minimum Time Left"],
-							desc = L["Apply this filter if a debuff has remaining time greater than this. Set to zero to disable."],
-							min = 0,
-							max = 10800,
-							step = 1
-						},
-						maxTimeLeft = {
-							order = 4,
-							type = "range",
-							name = L["Maximum Time Left"],
-							desc = L["Apply this filter if a debuff has remaining time less than this. Set to zero to disable."],
-							min = 0,
-							max = 10800,
-							step = 1
-						},
-						spacer1 = {
+						changeList = {
+							type = "group",
+							guiInline = true,
+							name = L["Add / Remove"],
 							order = 5,
-							type = "description",
-							name = " "
-						},
-						addDebuff = {
-							order = 6,
-							name = L["Add Spell ID or Name"],
-							type = "input",
-							get = function(info)
-								return ""
-							end,
-							set = function(info, value)
-								if match(value, "^[%s%p]-$") then return end
+							args = {
+								addDebuff = {
+									order = 6,
+									name = L["Add Spell ID or Name"],
+									type = "input",
+									get = function(info)
+										return ""
+									end,
+									set = function(info, value)
+										if strmatch(value, "^[%s%p]-$") then return end
+										if stackDebuff then value = value .. '\n' .. stackDebuff end
 
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = true
-								UpdateFilterGroup()
-								NP:ConfigureAll()
-							end
-						},
-						removeDebuff = {
-							order = 7,
-							name = L["Remove Spell ID or Name"],
-							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
-							type = "input",
-							get = function(info)
-								return ""
-							end,
-							set = function(info, value)
-								if match(value, "^[%s%p]-$") then return end
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = true
+										UpdateFilterGroup()
+										NP:ConfigureAll()
+									end
+								},
+								removeDebuff = {
+									order = 7,
+									name = L["Remove Spell ID or Name"],
+									desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
+									type = "input",
+									get = function(info)
+										return ""
+									end,
+									set = function(info, value)
+										if strmatch(value, "^[%s%p]-$") then return end
 
-								E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value] = nil
-								UpdateFilterGroup()
-								NP:ConfigureAll()
-							end
+										if stackDebuff then
+											E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[value .. '\n' .. stackDebuff] = nil
+										else
+											for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) do
+												local spell = strmatch(name, NP.StyleFilterStackPattern)
+												if spell == value then
+													E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names[name] = nil
+												end
+											end
+										end
+
+										UpdateFilterGroup()
+										NP:ConfigureAll()
+									end
+								},
+								stackThreshold = {
+									order = 8,
+									type = "range",
+									name = L["Stack Threshold"],
+									min = 1,
+									max = 250,
+									softMax = 100,
+									step = 1,
+									get = function(info) return stackDebuff or 1 end,
+									set = function(info, value) stackDebuff = (value > 1 and value) or nil end
+								},
+							}
 						}
 					}
 				},
@@ -2368,7 +2421,7 @@ local function UpdateFilterGroup()
 									name = L["Add Map ID"],
 									get = function(info) return end,
 									set = function(info, value)
-										if match(value, "^[%s%p]-$") then return end
+										if strmatch(value, "^[%s%p]-$") then return end
 
 										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[value] then return end
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.mapIDs[value] = true
@@ -2417,7 +2470,7 @@ local function UpdateFilterGroup()
 									name = L["Add Instance ID"],
 									get = function(info) return end,
 									set = function(info, value)
-										if match(value, "^[%s%p]-$") then return end
+										if strmatch(value, "^[%s%p]-$") then return end
 
 										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs[value] then return end
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.instanceIDs[value] = true
@@ -2466,7 +2519,7 @@ local function UpdateFilterGroup()
 									name = L["Add Zone Name"],
 									get = function(info) return end,
 									set = function(info, value)
-										if match(value, "^[%s%p]-$") then return end
+										if strmatch(value, "^[%s%p]-$") then return end
 
 										if E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames[value] then return end
 										E.global.nameplate.filters[selectedNameplateFilter].triggers.location.zoneNames[value] = true
@@ -4043,7 +4096,7 @@ local function GetUnitSettings(unit, name)
 									filterPriority("buffs", unit, carryFilterFrom, true)
 								end,
 								stateSwitchGetText = function(_, TEXT)
-									local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
+									local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
 									local text = friend or enemy or TEXT
 									local SF, localized = E.global.unitframe.specialFilters[text], L[text]
 									local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
@@ -4394,7 +4447,7 @@ local function GetUnitSettings(unit, name)
 									filterPriority("debuffs", unit, carryFilterFrom, true)
 								end,
 								stateSwitchGetText = function(_, TEXT)
-									local friend, enemy = match(TEXT, "^Friendly:([^,]*)"), match(TEXT, "^Enemy:([^,]*)")
+									local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
 									local text = friend or enemy or TEXT
 									local SF, localized = E.global.unitframe.specialFilters[text], L[text]
 									local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
@@ -6710,7 +6763,7 @@ E.Options.args.nameplate = {
 						return ""
 					end,
 					set = function(info, value)
-						if match(value, "^[%s%p]-$") then return end
+						if strmatch(value, "^[%s%p]-$") then return end
 
 						if E.global.nameplate.filters[value] then
 							E:Print(L["Filter already exists!"])
