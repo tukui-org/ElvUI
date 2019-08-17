@@ -2,17 +2,27 @@
 
 **New Additions:**  
 Style Filters: Added a new trigger "Location" that triggers on which Map, Instance, Zone (like "Boralus Harbor") or Subzone (like "Sanctum of the Sages") you are currently in.  If enabled the filter will only trigger when you are inside one of the specified maps or instances.  
+Style Filters: Ability to trigger an aura with at least X number of stacks.  
+Added an option to color the border of equipped items on ActionBars. (!170)  
 
 **Bug Fixes:**  
+Fixed (hopefully) the issue which caused the unitframe and nameplate tags to sometimes be incorrect.  
 Fixed issue which caused the rune backdrop on nameplates to not hide when in nameonly mode.  
-Fixed General Dock Manager skin not applying correctly.  
-Fixed the Raid Debuff Indicator icon not being cropped properly.  
-Fixed the Color Picker skin, it was showing the blizzard border.  
+Fixed issue which caused the Raid Debuff Indicator icon not being cropped properly.  
+Fixed issue which caused the options to open with the incorrect size.  
+Fixed issue on paladins that faded the unitframe by range because the judgement spell.  
+Fixed the issue that sometimes caused unitframe absorb bars to appear for a second during initial login along the screen (they are now clipped like Cutaway).  
+Fixed a bug which broke exporting profiles in plugin format.  
+Fixed a bug in the Plugin library which prevented some plugins from versions being checked correctly.  
 
 **Misc. Changes:**  
+Tweaked and updated some of the Cutaway lib again (it now uses clipped textures, so it wont overflow).  
+Fixed General Dock Manager skin not applying correctly.  
+Fixed a couple skin issues which would show blizzard borders on some frames.  
 Moved the Class Color Override setting for unitframes to the health tab.  
-Added EP Boss one debuffs to Raid Debuffs.  
 Changed a bit the style of the Communities Frame Buttons.  
+Added EP Boss one debuffs to Raid Debuffs.  
+Updated our LibAnim by Hydra. <3  
 
 ___
 ### Version 11.20 [ July 29th 2019 ]
