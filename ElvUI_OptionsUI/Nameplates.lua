@@ -644,7 +644,7 @@ local function UpdateStyleLists()
 						E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					if spellName then
 						if notDisabled then
-							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r|cFF999999%s|r", spellName, spell, (stacks and stacks ~= "" and " x"..stacks) or "")
+							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r|cFF999999%s|r", spellName, spell, (stacks ~= "" and " x"..stacks) or "")
 						else
 							spell = format("%s (%d)", spellName, spell)
 						end
@@ -690,7 +690,7 @@ local function UpdateStyleLists()
 						E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					if spellName then
 						if notDisabled then
-							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r|cFF999999%s|r", spellName, spell, (stacks and stacks ~= "" and " x"..stacks) or "")
+							spell = format("|cFFffff00%s|r |cFFffffff(%d)|r|cFF999999%s|r", spellName, spell, (stacks ~= "" and " x"..stacks) or "")
 						else
 							spell = format("%s (%d)", spellName, spell)
 						end
