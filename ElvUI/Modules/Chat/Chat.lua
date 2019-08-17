@@ -177,7 +177,8 @@ local rolePaths = {
 local specialChatIcons
 do --this can save some main file locals
 	local x, y = ':16:16',':13:25'
-	--local ElvMelon		= E:TextureString(E.Media.ChatLogos.ElvMelon,y)
+
+	--local ElvMelon	= E:TextureString(E.Media.ChatLogos.ElvMelon,y)
 	--local ElvRainbow	= E:TextureString(E.Media.ChatLogos.ElvRainbow,y)
 	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed,y)
 	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
@@ -193,14 +194,38 @@ do --this can save some main file locals
 	local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
 	local itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a] end
 
-	local d = { DEATHKNIGHT = ElvRed, DEMONHUNTER = ElvPurple, DRUID = ElvOrange, HUNTER = ElvGreen, Mage = ElvBlue, MONK = ElvGreen, PALADIN = ElvPink, PRIEST = ElvPink, ROGUE = ElvYellow, SHAMAN = ElvBlue, WARLOCK = ElvPurple, WARRIOR = ElvOrange }
-	local itsNihilist = function(class) return d[class] end
+	local classNihilist = {
+		DEATHKNIGHT	= ElvRed,
+		DEMONHUNTER	= ElvPurple,
+		DRUID		= ElvOrange,
+		HUNTER		= ElvGreen,
+		MAGE		= ElvBlue,
+		MONK		= ElvGreen,
+		PALADIN		= ElvPink,
+		PRIEST		= ElvPink,
+		ROGUE		= ElvYellow,
+		SHAMAN		= ElvBlue,
+		WARLOCK		= ElvPurple,
+		WARRIOR		= ElvOrange
+	}
+
+	local itsNihilist = function(class)
+		return classNihilist[class]
+	end
 
 	specialChatIcons = {
 		-- Elv
 		["Illidelv-Area52"]		= ElvBlue,
 		["Elvz-Kil'jaeden"]		= ElvBlue,
 		["Elv-Spirestone"]		= ElvBlue,
+		-- Blazeflack
+		["Blazii-Silvermoon"]	= ElvBlue, -- Priest
+		["Chazii-Silvermoon"]	= ElvBlue, -- Shaman
+		-- Affinity
+		["Affinichi-Illidan"]	= Bathrobe,
+		["Affinitii-Illidan"]	= Bathrobe,
+		["Affinity-Illidan"]	= Bathrobe,
+		["Uplift-Illidan"]		= Bathrobe,
 		-- Tirain (NOTE: lol)
 		["Tierone-Spirestone"]	= "Dr. ",
 		["Tirain-Spirestone"]	= MrHankey,
@@ -216,66 +241,58 @@ do --this can save some main file locals
 		["Misillidan-Spirestone"]	= Rainbow,
 		["Mispel-Spirestone"]		= Rainbow,
 		["Misdecay-Spirestone"]		= Rainbow,
-		-- Affinity
-		["Affinichi-Illidan"]	= Bathrobe,
-		["Affinitii-Illidan"]	= Bathrobe,
-		["Affinity-Illidan"]	= Bathrobe,
-		["Uplift-Illidan"]		= Bathrobe,
 		--NihilisticPandemonium
-		["Perrinna-WyrmrestAccord"]	= itsNihilist("WARLOCK"),
-		["Sagome-WyrmrestAccord"]	= itsNihilist("MONK"),
-		["Onaguda-WyrmrestAccord"]	= itsNihilist("DRUID"),
-		["Haelini-WyrmrestAccord"]	= itsNihilist("PRIEST"),
-		["Nenalia-WyrmrestAccord"]	= itsNihilist("MAGE"),
-		["Alailais-WyrmestAccord"]	= itsNihilist("DEMONHUNTER"),
-		["Muiride-WyrmestAccord"]	= itsNihilist("DEATHKNIGHT"),
-		["Monelia-WyrmrestAccord"]	= itsNihilist("PALADIN"),
-		["Huanyue-WyrmrestAccord"]	= itsNihilist("SHAMAN"),
-		["Galiseda-WyrmestAccord"]	= itsNihilist("ROGUE"),
-		["Naldydi-WyrmrestAccord"]	= itsNihilist("HUNTER"),
-		["Caylasena-WyrmestAccord"]	= itsNihilist("WARRIOR"),
+		["Perrinna-WyrmrestAccord"]		= itsNihilist("WARLOCK"),
+		["Sagome-WyrmrestAccord"]		= itsNihilist("MONK"),
+		["Onaguda-WyrmrestAccord"]		= itsNihilist("DRUID"),
+		["Haelini-WyrmrestAccord"]		= itsNihilist("PRIEST"),
+		["Nenalia-WyrmrestAccord"]		= itsNihilist("MAGE"),
+		["Alailais-WyrmestAccord"]		= itsNihilist("DEMONHUNTER"),
+		["Muiride-WyrmestAccord"]		= itsNihilist("DEATHKNIGHT"),
+		["Monelia-WyrmrestAccord"]		= itsNihilist("PALADIN"),
+		["Huanyue-WyrmrestAccord"]		= itsNihilist("SHAMAN"),
+		["Galiseda-WyrmestAccord"]		= itsNihilist("ROGUE"),
+		["Naldydi-WyrmrestAccord"]		= itsNihilist("HUNTER"),
+		["Caylasena-WyrmestAccord"]		= itsNihilist("WARRIOR"),
 		["Elaedarel-WyrmrestAccord"]	= itsNihilist("WARLOCK"),
-		["Alydrer-WyrmrestAccord"]	= itsNihilist("WARLOCK"),
-		["Issia-WyrmrestAccord"]	= itsNihilist("PRIEST"),
-		["Leitara-WyrmrestAccord"]	= itsNihilist("WARRIOR"),
-		["Cherlyth-WyrmrestAccord"]	= itsNihilist("DRUID"),
+		["Alydrer-WyrmrestAccord"]		= itsNihilist("WARLOCK"),
+		["Issia-WyrmrestAccord"]		= itsNihilist("PRIEST"),
+		["Leitara-WyrmrestAccord"]		= itsNihilist("WARRIOR"),
+		["Cherlyth-WyrmrestAccord"]		= itsNihilist("DRUID"),
 		["Tokashami-WyrmrestAccord"]	= itsNihilist("SHAMAN"),
 		-- Merathilis
-		["Asragoth-Shattrath"]		= ElvPurple,	-- [Alliance] Warlock
-		["Brítt-Shattrath"] 		= ElvBlue,		-- [Alliance] Warrior
-		["Damará-Shattrath"]		= ElvRed,		-- [Alliance] Paladin
-		["Jazira-Shattrath"]		= ElvBlue,		-- [Alliance] Priest
-		["Jústice-Shattrath"]		= ElvYellow,	-- [Alliance] Rogue
-		["Maithilis-Shattrath"]		= ElvGreen,		-- [Alliance] Monk
-		["Mattdemôn-Shattrath"]		= itsSimpy,		-- [Alliance] DH    --[[ note: not really Simpy; IMPOSTER lol ]]
-		["Melisendra-Shattrath"]	= ElvBlue,		-- [Alliance] Mage
-		["Merathilis-Shattrath"]	= ElvOrange,	-- [Alliance] Druid
-		["Merathilîs-Shattrath"]	= ElvBlue,		-- [Alliance] Shaman
-		-- Blazeflack
-		["Blazii-Silvermoon"]	= ElvBlue, -- Priest
-		["Chazii-Silvermoon"]	= ElvBlue, -- Shaman
+		["Asragoth-Shattrath"]			= ElvPurple,	-- [Alliance] Warlock
+		["Brítt-Shattrath"] 			= ElvBlue,		-- [Alliance] Warrior
+		["Damará-Shattrath"]			= ElvRed,		-- [Alliance] Paladin
+		["Jazira-Shattrath"]			= ElvBlue,		-- [Alliance] Priest
+		["Jústice-Shattrath"]			= ElvYellow,	-- [Alliance] Rogue
+		["Maithilis-Shattrath"]			= ElvGreen,		-- [Alliance] Monk
+		["Mattdemôn-Shattrath"]			= itsSimpy,		-- [Alliance] DH	(NOTE: not really Simpy; IMPOSTER lol)
+		["Melisendra-Shattrath"]		= ElvBlue,		-- [Alliance] Mage
+		["Merathilis-Shattrath"]		= ElvOrange,	-- [Alliance] Druid
+		["Merathilîs-Shattrath"]		= ElvBlue,		-- [Alliance] Shaman
 		-- Simpy
-		["Arieva-Cenarius"]		= itsSimpy, -- Hunter
-		["Buddercup-Cenarius"]	= itsSimpy, -- Rogue
-		["Cutepally-Cenarius"]	= itsSimpy, -- Paladin
-		["Ezek-Cenarius"]		= itsSimpy, -- DK
-		["Glice-Cenarius"]		= itsSimpy, -- Warrior
-		["Kalline-Cenarius"]	= itsSimpy, -- Shaman
-		["Puttietat-Cenarius"]	= itsSimpy, -- Druid
-		["Simpy-Cenarius"]		= itsSimpy, -- Warlock
-		["Twigly-Cenarius"]		= itsSimpy, -- Monk
-		["Imsobeefy-Cenarius"]	= itsSimpy, -- [Horde] Shaman
-		["Imsocheesy-Cenarius"]	= itsSimpy, -- [Horde] Priest
-		["Imsojelly-Cenarius"]	= itsSimpy, -- [Horde] DK
-		["Imsojuicy-Cenarius"]	= itsSimpy, -- [Horde] Druid
-		["Imsopeachy-Cenarius"]	= itsSimpy, -- [Horde] DH
-		["Imsosalty-Cenarius"]	= itsSimpy, -- [Horde] Paladin
-		["Imsospicy-Cenarius"]	= itsSimpy, -- [Horde] Mage
-		["Bunne-CenarionCircle"]		= itsSimpy, -- Warrior
-		["Loppie-CenarionCircle"]		= itsSimpy, -- Hunter
-		["Loppybunny-CenarionCircle"]	= itsSimpy, -- Mage
-		["Rubee-CenarionCircle"]		= itsSimpy, -- DH
-		["Wennie-CenarionCircle"]		= itsSimpy, -- Priest
+		["Arieva-Cenarius"]				= itsSimpy, -- Hunter
+		["Buddercup-Cenarius"]			= itsSimpy, -- Rogue
+		["Cutepally-Cenarius"]			= itsSimpy, -- Paladin
+		["Ezek-Cenarius"]				= itsSimpy, -- DK
+		["Glice-Cenarius"]				= itsSimpy, -- Warrior
+		["Kalline-Cenarius"]			= itsSimpy, -- Shaman
+		["Puttietat-Cenarius"]			= itsSimpy, -- Druid
+		["Simpy-Cenarius"]				= itsSimpy, -- Warlock
+		["Twigly-Cenarius"]				= itsSimpy, -- Monk
+		["Imsobeefy-Cenarius"]			= itsSimpy, -- [Horde] Shaman
+		["Imsocheesy-Cenarius"]			= itsSimpy, -- [Horde] Priest
+		["Imsojelly-Cenarius"]			= itsSimpy, -- [Horde] DK
+		["Imsojuicy-Cenarius"]			= itsSimpy, -- [Horde] Druid
+		["Imsopeachy-Cenarius"]			= itsSimpy, -- [Horde] DH
+		["Imsosalty-Cenarius"]			= itsSimpy, -- [Horde] Paladin
+		["Imsospicy-Cenarius"]			= itsSimpy, -- [Horde] Mage
+		["Bunne-CenarionCircle"]		= itsSimpy, -- [RP] Warrior
+		["Loppie-CenarionCircle"]		= itsSimpy, -- [RP] Hunter
+		["Loppybunny-CenarionCircle"]	= itsSimpy, -- [RP] Mage
+		["Rubee-CenarionCircle"]		= itsSimpy, -- [RP] DH
+		["Wennie-CenarionCircle"]		= itsSimpy, -- [RP] Priest
 	}
 end
 

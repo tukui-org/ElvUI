@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 30
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 31
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -44,6 +44,7 @@ local C_ChatInfo_RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePre
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
+local UNKNOWN = UNKNOWN
 
 lib.prefix = "ElvUIPluginVC"
 lib.plugins = {}
@@ -113,7 +114,7 @@ function lib:RegisterPlugin(name, callback, isLib, libVersion)
 		plugin.isLib = true
 		plugin.version = libVersion or 1
 	else
-		plugin.version = (name == MAJOR and MINOR) or GetAddOnMetadata(name, "Version")
+		plugin.version = (name == MAJOR and MINOR) or GetAddOnMetadata(name, "Version") or UNKNOWN
 	end
 
 	lib.plugins[name] = plugin
@@ -220,8 +221,8 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 
 		if not E.pluginRecievedOutOfDateMessage then
 			for name, version in gmatch(message, "([^=]+)=([%d%p]+);") do
-				local plugin = name and lib.plugins[name]
-				if version and plugin and plugin.version and (plugin.version ~= "BETA") then
+				local plugin = (version and name) and lib.plugins[name]
+				if plugin and plugin.version then
 					local Pver, ver = lib:StripVersion(plugin.version), lib:StripVersion(version)
 					if (ver and Pver) and (ver > Pver) then
 						plugin.old, plugin.newversion = true, version

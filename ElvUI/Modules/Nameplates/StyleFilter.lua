@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 
 local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
-local gsub, tinsert, tremove, sort, wipe = gsub, tinsert, tremove, sort, wipe
+local strmatch, gsub, tinsert, tremove, sort, wipe = strmatch, gsub, tinsert, tremove, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
 local GetLocale = GetLocale
@@ -39,6 +39,7 @@ local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTal
 
 local FallbackColor = {r=1, b=1, g=1}
 
+mod.StyleFilterStackPattern = '(%d+)\n?(%d*)'
 mod.TriggerConditions = {
 	reactions = {'hated', 'hostile', 'unfriendly', 'neutral', 'friendly', 'honored', 'revered', 'exalted'},
 	raidTargets = {'star', 'circle', 'diamond', 'triangle', 'moon', 'square', 'cross', 'skull'},
@@ -317,7 +318,9 @@ function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, min
 					local button = auras[i]
 					if button then
 						if button:IsShown() then
-							if (button.name and button.name == name) or (button.spellID and button.spellID == tonumber(name)) then
+							local spell, stacks, failed = strmatch(name, mod.StyleFilterStackPattern)
+							if stacks ~= "" then failed = not (button.stackCount and button.stackCount >= tonumber(stacks)) end
+							if not failed and ((button.name and button.name == spell) or (button.spellID and button.spellID == tonumber(spell))) then
 								local hasMinTime = minTimeLeft and minTimeLeft ~= 0
 								local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
 								local timeLeft = (hasMinTime or hasMaxTime) and button.expiration and (button.expiration - GetTime())

@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 77
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 78
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -596,8 +596,19 @@ do
 			end
 		end)
 
-		local border = CreateFrame("Frame", nil, frame, "DialogBorderDarkTemplate")
-		border:SetAllPoints(frame)
+		if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+			frame:SetBackdrop({
+				bgFile = [[Interface\DialogFrame\UI-DialogBox-Background-Dark]],
+				edgeFile = [[Interface\DialogFrame\UI-DialogBox-Border]],
+				tile = true,
+				tileSize = 32,
+				edgeSize = 32,
+				insets = { left = 11, right = 11, top = 11, bottom = 11 },
+			})
+		else
+			local border = CreateFrame("Frame", nil, frame, "DialogBorderDarkTemplate")
+			border:SetAllPoints(frame)
+		end
 
 		local text = frame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 		text:SetSize(290, 0)

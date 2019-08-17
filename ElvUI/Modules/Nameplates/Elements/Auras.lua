@@ -23,9 +23,8 @@ function NP:Auras_PostUpdateIcon(unit, button, index, position, duration, expira
 	NP:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
 end
 
-function NP:Auras_CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-	button.name, button.spellID, button.expiration = name, spellID, expiration
-	return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+function NP:Auras_CustomFilter(unit, button, name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer)
+	return NP:AuraFilter(unit, button, name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer)
 end
 
 function NP:Buffs_PostCreateIcon(button)
@@ -36,9 +35,8 @@ function NP:Buffs_PostUpdateIcon(unit, button)
 	NP:PostUpdateAura(unit, button)
 end
 
-function NP:Buffs_CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-	button.name, button.spellID, button.expiration = name, spellID, expiration
-	return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+function NP:Buffs_CustomFilter(unit, button, name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer)
+	return NP:AuraFilter(unit, button, name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer)
 end
 
 function NP:Debuffs_PostCreateIcon(button)
@@ -49,9 +47,8 @@ function NP:Debuffs_PostUpdateIcon(unit, button, index, position, duration, expi
 	NP:PostUpdateAura(unit, button, index, position, duration, expiration, debuffType, isStealable)
 end
 
-function NP:Debuffs_CustomFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-	button.name, button.spellID, button.expiration = name, spellID, expiration
-	return NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+function NP:Debuffs_CustomFilter(unit, button, name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer)
+	return NP:AuraFilter(unit, button, name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer)
 end
 
 function NP:Construct_Auras(nameplate)
@@ -347,7 +344,7 @@ function NP:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBos
 	end
 end
 
-function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+function NP:AuraFilter(unit, button, name, _, count, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
 	local parent = button:GetParent()
@@ -365,6 +362,7 @@ function NP:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	button.dtype = debuffType
 	button.duration = duration
 	button.expiration = expiration
+	button.stackCount = count
 	button.name = name
 	button.spellID = spellID
 	button.owner = caster
