@@ -113,7 +113,7 @@ function lib:RegisterPlugin(name, callback, isLib, libVersion)
 		plugin.isLib = true
 		plugin.version = libVersion or 1
 	else
-		plugin.version = (name == MAJOR and MINOR) or GetAddOnMetadata(name, "Version")
+		plugin.version = (name == MAJOR and MINOR) or (GetAddOnMetadata(name, "Version") or UNKNOWN)
 	end
 
 	lib.plugins[name] = plugin
