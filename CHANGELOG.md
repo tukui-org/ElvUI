@@ -1,4 +1,4 @@
-### Version 11.21 [  ]
+### Version 11.21 [ August 17th 2019 ]
 
 **New Additions:**  
 Style Filters: Added a new trigger "Location" that triggers on which Map, Instance, Zone (like "Boralus Harbor") or Subzone (like "Sanctum of the Sages") you are currently in.  If enabled the filter will only trigger when you are inside one of the specified maps or instances.  
