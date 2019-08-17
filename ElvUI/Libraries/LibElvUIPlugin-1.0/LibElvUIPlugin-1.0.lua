@@ -44,6 +44,7 @@ local C_ChatInfo_RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePre
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
+local UNKNOWN = UNKNOWN
 
 lib.prefix = "ElvUIPluginVC"
 lib.plugins = {}
@@ -113,7 +114,7 @@ function lib:RegisterPlugin(name, callback, isLib, libVersion)
 		plugin.isLib = true
 		plugin.version = libVersion or 1
 	else
-		plugin.version = (name == MAJOR and MINOR) or (GetAddOnMetadata(name, "Version") or UNKNOWN)
+		plugin.version = (name == MAJOR and MINOR) or GetAddOnMetadata(name, "Version") or UNKNOWN
 	end
 
 	lib.plugins[name] = plugin
