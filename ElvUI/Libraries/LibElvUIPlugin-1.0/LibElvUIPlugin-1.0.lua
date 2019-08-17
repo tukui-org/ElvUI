@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 30
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 31
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -220,8 +220,8 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 
 		if not E.pluginRecievedOutOfDateMessage then
 			for name, version in gmatch(message, "([^=]+)=([%d%p]+);") do
-				local plugin = name and lib.plugins[name]
-				if version and plugin and plugin.version and (plugin.version ~= "BETA") then
+				local plugin = (version and name) and lib.plugins[name]
+				if plugin and plugin.version then
 					local Pver, ver = lib:StripVersion(plugin.version), lib:StripVersion(version)
 					if (ver and Pver) and (ver > Pver) then
 						plugin.old, plugin.newversion = true, version
