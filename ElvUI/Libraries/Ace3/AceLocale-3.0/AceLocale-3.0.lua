@@ -72,6 +72,22 @@ local writedefaultproxy = setmetatable({}, {
 	__index = assertfalse
 })
 
+local function CopyTable(currentTable, defaultTable)
+	if type(currentTable) ~= 'table' then currentTable = {} end
+
+	if type(defaultTable) == 'table' then
+		for option, value in pairs(defaultTable) do
+			if type(value) == 'table' then
+				value = CopyTable(currentTable[option], value)
+			end
+
+			currentTable[option] = value
+		end
+	end
+
+	return currentTable
+end
+
 --- Register a new locale (or extend an existing one) for the specified application.
 -- :NewLocale will return a table you can fill your locale into, or nil if the locale isn't needed for the players
 -- game locale.
@@ -110,6 +126,7 @@ function AceLocale:NewLocale(application, locale, isDefault, silent)
 	if (not app[locale]) or (app[locale] and type(app[locale]) ~= 'table') then
 		--	app[locale] = setmetatable({}, silent and readmetasilent or readmeta) -- To find missing keys
 		app[locale] = setmetatable({}, readmetasilent)
+		CopyTable(app[locale], app['enUS'])
 	end
 
 	registering = app[locale] -- remember globally for writeproxy and writedefaultproxy
