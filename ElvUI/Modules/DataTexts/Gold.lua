@@ -19,10 +19,9 @@ local C_Timer_NewTicker = C_Timer.NewTicker
 -- GLOBALS: ElvDB
 
 local Ticker
-local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local CURRENCY = CURRENCY
-local Profit	= 0
-local Spent		= 0
+local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
+local Profit, Spent = 0, 0
 local resetCountersFormatter = strjoin("", "|cffaaaaaa", L["Reset Counters: Hold Shift + Left Click"], "|r")
 local resetInfoFormatter = strjoin("", "|cffaaaaaa", L["Reset Data: Hold Shift + Right Click"], "|r")
 
@@ -34,15 +33,15 @@ local function OnEvent(self)
 		Ticker = C_Timer_NewTicker(60, C_WowTokenPublic.UpdateMarketPrice)
 	end
 
-	local NewMoney = GetMoney();
-	ElvDB = ElvDB or { };
-	ElvDB.gold = ElvDB.gold or {};
-	ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {};
-	ElvDB.gold[E.myrealm][E.myname] = ElvDB.gold[E.myrealm][E.myname] or NewMoney;
+	local NewMoney = GetMoney()
+	ElvDB = ElvDB or { }
+	ElvDB.gold = ElvDB.gold or {}
+	ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {}
+	ElvDB.gold[E.myrealm][E.myname] = ElvDB.gold[E.myrealm][E.myname] or NewMoney
 
-	ElvDB.class = ElvDB.class or {};
-	ElvDB.class[E.myrealm] = ElvDB.class[E.myrealm] or {};
-	ElvDB.class[E.myrealm][E.myname] = E.myclass;
+	ElvDB.class = ElvDB.class or {}
+	ElvDB.class[E.myrealm] = ElvDB.class[E.myrealm] or {}
+	ElvDB.class[E.myrealm][E.myname] = E.myclass
 
 	local OldMoney = ElvDB.gold[E.myrealm][E.myname] or NewMoney
 
@@ -61,13 +60,13 @@ end
 local function Click(self, btn)
 	if btn == "RightButton" then
 		if IsShiftKeyDown() then
-			ElvDB.gold = nil;
+			ElvDB.gold = nil
 			OnEvent(self)
-			DT.tooltip:Hide();
+			DT.tooltip:Hide()
 		elseif IsControlKeyDown() then
 			Profit = 0
 			Spent = 0
-			DT.tooltip:Hide();
+			DT.tooltip:Hide()
 		end
 	else
 		_G.ToggleAllBags()

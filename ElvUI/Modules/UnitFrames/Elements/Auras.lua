@@ -376,7 +376,7 @@ function UF:PostUpdateAura(unit, button)
 	end
 end
 
-function UF:AuraFilter(unit, button, name, _, _, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
 	local parent = self:GetParent()
@@ -392,6 +392,7 @@ function UF:AuraFilter(unit, button, name, _, _, debuffType, duration, expiratio
 	button.dtype = debuffType
 	button.duration = duration
 	button.expiration = expiration
+	button.stackCount = count
 	button.name = name
 	button.spellID = spellID
 	button.owner = caster

@@ -36,7 +36,7 @@ local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
 local InCombatLockdown = InCombatLockdown
 
-local Widget_IDs = {
+local Widget_IDs, lastPanel = {
 	["Alliance"] = {
 		56156, -- A Tempered Blade
 		{L["Farseer Ori"], 1940},
@@ -56,7 +56,6 @@ local WARRESOURCES_ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", select(3, G
 local BODYGUARD_LEVEL_XP_FORMAT = L["Rank"] .. " %d (%d/%d)"
 local NAZJATAR_MAP_ID = 1355
 
-local lastPanel
 local function sortFunction(a, b)
 	return a.missionEndTime < b.missionEndTime
 end
@@ -241,13 +240,4 @@ local function ValueColorUpdate()
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext(
-	"BfA Missions",
-	{"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS"},
-	OnEvent,
-	nil,
-	OnClick,
-	OnEnter,
-	nil,
-	L["BfA Missions"]
-)
+DT:RegisterDatatext("BfA Missions", {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS"}, OnEvent, nil, OnClick, OnEnter, nil, L["BfA Missions"])

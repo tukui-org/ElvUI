@@ -193,6 +193,16 @@ E.StyleFilterDefaults = {
 			arena = false,
 			pvp = false
 		},
+		location = {
+			mapIDEnabled = false,
+			mapIDs = {},
+			instanceIDEnabled = false,
+			instanceIDs = {},
+			zoneNamesEnabled = false,
+			zoneNames = {},
+			subZoneNamesEnabled = false,
+			subZoneNames = {},
+		},
 		keyMod = {
 			enable = false,
 			Modifier = false,

@@ -4,13 +4,13 @@ local CH = E:GetModule('Chat')
 
 --Lua functions
 local _G = _G
-local format = string.format
+local format = format
 local select, unpack, pairs, wipe = select, unpack, pairs, wipe
 --WoW API / Variables
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
+local GetInstanceInfo = GetInstanceInfo
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
-local IsInInstance = IsInInstance
 local RemoveExtraSpaces = RemoveExtraSpaces
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 
@@ -230,7 +230,7 @@ local function ChatBubble_OnUpdate(self, elapsed)
 end
 
 function M:ToggleChatBubbleScript()
-	local _, instanceType = IsInInstance()
+	local _, instanceType = GetInstanceInfo()
 	if instanceType == "none" and E.private.general.chatBubbles ~= "disabled" then
 		M.BubbleFrame:SetScript('OnEvent', ChatBubble_OnEvent)
 		M.BubbleFrame:SetScript('OnUpdate', ChatBubble_OnUpdate)
@@ -244,8 +244,7 @@ function M:ToggleChatBubbleScript()
 end
 
 function M:LoadChatBubbles()
-	self.BubbleFrame = CreateFrame('Frame')
-
+	self.BubbleFrame = CreateFrame("Frame")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_SAY")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_YELL")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_MONSTER_SAY")

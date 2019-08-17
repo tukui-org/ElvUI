@@ -54,17 +54,7 @@ E.Options.args = {
 		desc = L["Reset the size and position of this frame."],
 		customWidth = 175,
 		func = function()
-			if E.GUIFrame then
-				local status = E.GUIFrame.obj and E.GUIFrame.obj.status
-				if status then
-					E:ResetConfigSettings()
-
-					status.top, status.left = E:GetConfigPosition()
-					status.width, status.height = E:GetConfigDefaultSize()
-
-					E.GUIFrame.obj:ApplyStatus()
-				end
-			end
+			E:UpdateConfigSize(true)
 		end
 	},
 	ToggleTutorial = {

@@ -4,7 +4,7 @@ local CH = E:GetModule('Chat')
 
 --Lua functions
 local next, pairs, select, type = next, pairs, select, type
-local format, strjoin, wipe = string.format, strjoin, wipe
+local format, strjoin, wipe = format, strjoin, wipe
 --WoW API / Variables
 local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
@@ -15,7 +15,7 @@ local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 local UNKNOWN, QUICK_JOIN = UNKNOWN, QUICK_JOIN
 
-local displayModifierString, lastPanel = ''
+local displayString, lastPanel = ''
 local quickJoinGroups, quickJoin = nil, {}
 
 local function OnEnter(self)
@@ -23,10 +23,10 @@ local function OnEnter(self)
 
 	if not next(quickJoin) then return end
 
-	DT.tooltip:AddLine(QUICK_JOIN, nil, nil, nil, true);
-	DT.tooltip:AddLine(" ");
+	DT.tooltip:AddLine(QUICK_JOIN, nil, nil, nil, true)
+	DT.tooltip:AddLine(" ")
 	for name, activity in pairs(quickJoin) do
-		DT.tooltip:AddDoubleLine(name, activity, nil, nil, nil, 1, 1, 1);
+		DT.tooltip:AddDoubleLine(name, activity, nil, nil, nil, 1, 1, 1)
 	end
 
 	DT.tooltip:Show()
@@ -100,13 +100,13 @@ local function OnEvent(self)
 		end
 	end
 
-	self.text:SetFormattedText(displayModifierString, QUICK_JOIN, #quickJoinGroups)
+	self.text:SetFormattedText(displayString, QUICK_JOIN, #quickJoinGroups)
 
 	lastPanel = self
 end
 
 local function ValueColorUpdate(hex)
-	displayModifierString = strjoin("", "%s: ", hex, "%s|r")
+	displayString = strjoin("", "%s: ", hex, "%s|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

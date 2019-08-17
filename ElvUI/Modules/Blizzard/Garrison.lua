@@ -43,6 +43,7 @@ function B:GarrisonDropDown()
 			btn.closeSoundID = closeOK and closeID
 		end
 	end)
+
 	_G.GarrisonLandingPageMinimapButton:HookScript("OnClick", function(btn, b)
 		if b == "LeftButton" then
 			if _G.GarrisonLandingPage.garrTypeID ~= C_Garrison_GetLandingPageGarrisonType() then
@@ -78,6 +79,7 @@ function B:GarrisonDropDown()
 			end
 		end
 	end)
+
 	_G.GarrisonLandingPageMinimapButton:HookScript("PostClick", function(btn)
 		btn.closeSoundID, btn.openSoundID = nil, nil
 	end)

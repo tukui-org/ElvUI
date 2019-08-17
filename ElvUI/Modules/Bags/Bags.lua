@@ -74,7 +74,6 @@ local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
-local C_Timer_After = C_Timer.After
 local hooksecurefunc = hooksecurefunc
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
@@ -1469,8 +1468,9 @@ function B:UpdateTokens()
 end
 
 function B:Token_OnEnter()
-	_G.GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-	_G.GameTooltip:SetBackpackToken(self:GetID())
+	local GameTooltip = _G.GameTooltip
+	GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+	GameTooltip:SetBackpackToken(self:GetID())
 end
 
 function B:Token_OnClick()
@@ -1613,7 +1613,7 @@ function B:ContructContainerFrame(name, isBank)
 	f:SetScript("OnDragStart", function(frame) if IsShiftKeyDown() then frame:StartMoving() end end)
 	f:SetScript("OnDragStop", function(frame) frame:StopMovingOrSizing() end)
 	f:SetScript("OnClick", function(frame) if IsControlKeyDown() then B.PostBagMove(frame.mover) end end)
-	f:SetScript("OnLeave", function() _G.GameTooltip:Hide() end)
+	f:SetScript("OnLeave", GameTooltip_Hide)
 	f:SetScript("OnEnter", function(frame)
 		local GameTooltip = _G.GameTooltip
 		GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT", 0, 4)
@@ -1969,7 +1969,7 @@ function B:ContructContainerFrame(name, isBank)
 			f.currencyButton[i].text:FontTemplate()
 
 			f.currencyButton[i]:SetScript('OnEnter', B.Token_OnEnter)
-			f.currencyButton[i]:SetScript('OnLeave', function() _G.GameTooltip:Hide() end)
+			f.currencyButton[i]:SetScript('OnLeave', GameTooltip_Hide)
 			f.currencyButton[i]:SetScript('OnClick', B.Token_OnClick)
 			f.currencyButton[i]:Hide()
 		end
@@ -2175,7 +2175,7 @@ function B:PLAYER_ENTERING_WORLD()
 	B:UpdateGoldText()
 
 	-- Update bag types for bagslot coloring
-	C_Timer_After(2, B.PlayerEnteringWorld)
+	E:Delay(2, B.PlayerEnteringWorld)
 end
 
 function B:UpdateContainerFrameAnchors()

@@ -1,6 +1,12 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 
+L["Add / Remove"] = true
+L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = true
+L["Added Map ID: %s"] = true
+L["Added Instance ID: %s"] = true
+L["Added Zone Name: %s"] = true
+L["Added Subzone Name: %s"] = true
 L["# Displayed Auras"] = "Кол-во аур"
 L["%s and then %s"] = "%s, а затем %s"
 L["24-Hour Time"] = "24х часовой формат"
@@ -18,7 +24,12 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "Добавить заклинание в фильтр"
 L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."] = "Добавить предмет или синтаксис поиска в список игнорируемых. Предметы, соответствующие синтаксису, буду игнорироваться."
 L["Add Currency ID"] = "Добавить ID валюты"
+L["Add Current"] = true
 L["Add Item or Search Syntax"] = "Добавить предмет или синтаксис поиска"
+L["Add Instance ID"] = true
+L["Add Map ID"] = true
+L["Add Subzone Name"] = true
+L["Add Zone Name"] = true
 L["Add Name or NPC ID"] = "Добавить имя или ID НИПа"
 L["Add Regular Filter"] = "Добавить обычный фильтр"
 L["Add Special Filter"] = "Добавить специальный фильтр"
@@ -599,8 +610,8 @@ L["If enabled then the filter will only activate if the unit is casting not inte
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = "Если включено, то фильтр будет активирован, когда юнит не произносит или поддерживает одно из выбранных заклинаний."
 L["If enabled then the filter will only activate when the unit can be attacked by the active player."] = true
 L["If enabled then the filter will only activate when the unit can not be attacked by the active player."] = true
-L["If enabled then the filter will only activate when the unit is a player's pet."] =  "Если включено, то фильтр будет активирован, когда юнит является питомцем игрока."
-L["If enabled then the filter will only activate when the unit is not a player's pet."] = "Если включено, то фильтр будет активирован, когда юнит не является питомцем игрока."
+L["If enabled then the filter will only activate when the unit is the active player's pet."] = true
+L["If enabled then the filter will only activate when the unit is not the active player's pet."] = true
 L["If enabled then the filter will only activate when the unit is controlled by the player."] = "Если включено, то фильтр будет активирован, когда юнит под контролем игрока."
 L["If enabled then the filter will only activate when the unit is not controlled by the player."] = "Если включено, то фильтр будет активирован, когда юнит не под контролем игрока."
 L["If enabled then the filter will only activate when the unit is owned by the player."] = "Если включено, то фильтр будет активирован, когда игрок владеет юнитом."
@@ -618,6 +629,11 @@ L["If enabled then the filter will only activate when the unit is targeting you.
 L["If enabled then the filter will only activate when you are focusing the unit."] = "Если включено, фильтр будет активирован только когда юнит является запомненой целью."
 L["If enabled then the filter will only activate when you are in a Vehicle."] =  "Если включено, то фильтр будет активирован, когда вы в транспорте."
 L["If enabled then the filter will only activate when you are in combat."] = "Если включено, фильтр будет активирован только когда вы в бою."
+L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID."] = true
+L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = true
+L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name."] = true
+L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
+
 L["If enabled then the filter will only activate when you are not focusing the unit."] =  "Если включено, фильтр будет активирован только когда юнит не является запомненой целью."
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = "Если включено, то фильтр будет активирован, когда вы не в транспорте."
 L["If enabled then the filter will only activate when you are not targeting the unit."] = "Если включено, фильтр будет активирован только когда юнит не является вашей целью."
@@ -655,6 +671,7 @@ L["Inset"] = "Внутри"
 L["Inside Information Panel"] = "На инфо панели"
 L["Install"] = "Установка"
 L["Instance Difficulty"] = "Сложность подземелья"
+L["Instance ID"] = true
 L["Instance Type"] = "Тип подземелья"
 L["Interactive NPCs"] = "НИП с взаимодействием"
 L["Interruptable"] = "Прерываемые"
@@ -726,6 +743,7 @@ L["Make textures transparent."] = "Сделать текстуры прозра�
 L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = "Заставляет индикатор подсвечиваться желтым при установленном проценте здоровья. При достижении половины этого значения свечение станет красным."
 L["Make the world map smaller."] = "Сделать карту мира меньше. Она больше не будет занимать весь экран в увеличенном варианте."
 L["Map Opacity When Moving"] = "Прозрачность карты в движении"
+L["Map ID"] = true
 L["Maps"] = "Карты"
 L["Masque Support"] = "Поддержка Masque"
 L["Match Frame Width"] = "По ширине рамки"
@@ -800,6 +818,7 @@ L["Non-Target Alpha"] = "Прозрачность не цели"
 L["Not Casting Anything"] = "Не произносит заклинаний"
 L["Not Channeling Anything"] = "Не поддерживает заклинаний"
 L["Not Focused"] = "Не фокус"
+L["Not Spell"] = true
 L["Not Targeted"] = "Не взят в цель"
 L["Not Targeting Player"] = "Не целится в игрока"
 L["Not Usable"] = "Нельзя использовать"
@@ -945,6 +964,10 @@ L["Reactions"] = "Отношение"
 L["Ready Check Icon"] = "Иконка готовности"
 L["Remaining / Max"] = "Оставшееся / Максимальное"
 L["Remaining"] = "Оставшееся"
+L["Remove Instance ID"] = true
+L["Remove Map ID"] = true
+L["Remove Subzone Name"] = true
+L["Remove Zone Name"] = true
 L["Remove a Name or NPC ID from the list."] = "Удалить имя или ID НИПа из списка."
 L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = "Удалить заклинание из фильтра. Используйте ID, если в фильтре имя удаляемого заклинания содержит ID."
 L["Remove a spell from the filter."] = "Удалить заклинание из фильтра."
@@ -1122,6 +1145,7 @@ L["Sticky Chat"] = "Клейкий чат"
 L["Strata and Level"] = "Слой и уровень"
 L["Style Filter"] = "Фильтры стиля"
 L["Style"] = "Стиль"
+L["Subzone Name"] = true
 L["Summon Icon"] = "Иконка призыва"
 L["Swap to Alt Power"] = "Заменить на альт. ресурс"
 L["Tab Font Outline"] = "Граница шрифта вкладок"
@@ -1302,6 +1326,10 @@ L["Use Dead Backdrop"] = "Фон мертвого"
 L["Use Default"] = "Использовать умолчания"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "Используйте перетаскивание для смены приоритета или ПКМ для удаления фильтра."
 L["Use Health Texture on Background"] = "Использовать текстуру здоровья на фоне"
+L["Use Instance ID or Name"] = true
+L["Use Map ID or Name"] = true
+L["Use Subzone Names"] = true
+L["Use Zone Names"] = true
 L["Use Portrait"] = "Отображать портрет"
 L["Use Position Override"] = "Использовать точку фиксации"
 L["Use Real ID BattleTag"] = "Использовать BattleTag"
@@ -1363,6 +1391,7 @@ L["You need to hold this modifier down in order to blacklist an aura by right-cl
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = "У вас все еще стоит ElvUI_Config. Кое-кто переименовал его в ElvUI_OptionsUI, удалите папку со старым именем."
 L["Your Auras First"] = "Сначала свои"
 L["Zone Ability"] = "Способность местности"
+L["Zone Name"] = true
 
 ----------------------------------
 L['blockCastByPlayers'] = "[Блокировать] Принадлежат игрокам"
@@ -1440,11 +1469,13 @@ L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида те�
 "deficit" - отображает значение недостающего до максимума здоровья/ресурса. Не будет отображать ничего, если текущее значение равно максимальному.
 
 Форматы имени:
+"name:veryshort" - Name restricted to 5 characters
 "name:short" - Имя с ограничением длины в 10 символов
 "name:medium" - Имя с ограничением длины в 15 символов
 "name:long" - Имя с ограничением длины в 20 символов
+"name:short:translit" - Name restricted to 10 characters with transliteration
 
-Для отключения оставьте поле пустым, для дополнительной информации посетите http://www.tukui.org]=]
+Для отключения оставьте поле пустым, для дополнительной информации посетите https://www.tukui.org/forum/viewtopic.php?t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Работает как макрос. Вы можете задать различные условия для отображения разных панелей.
@@ -1617,6 +1648,7 @@ L["SOUL_SHARDS"] = "|4осколок:осколка:осколков души;";
 L["SPEED"] = "Скорость";
 L["SPELLBOOK"] = "Способности";
 L["TALENT"] = "Талант";
+L["TALENTS"] = "Таланты";
 L["TANK"] = "Танк";
 L["TARGET"] = "Цель";
 L["TIMEMANAGER_TITLE"] = "Часы";

@@ -4,9 +4,6 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local pairs = pairs
---WoW API / Variables
-
--- Find new One
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgscore ~= true then return end
@@ -34,6 +31,8 @@ local function LoadSkin()
 		S:HandleTab(tab)
 	end
 
+	PVPMatchScoreboard.Content.TabContainer.MatchmakingText:FontTemplate()
+
 	-- Macro to show the PVPMatchResults: /run PVPMatchResults:Show()
 	local PVPMatchResults = _G.PVPMatchResults
 	PVPMatchResults:StripTextures()
@@ -48,15 +47,17 @@ local function LoadSkin()
 	S:HandleButton(PVPMatchResults.buttonContainer.leaveButton)
 	S:HandleButton(PVPMatchResults.buttonContainer.requeueButton)
 
-	local tabs = {
+	local tabz = {
 		PVPMatchResults.content.tabContainer.tabGroup.tab1,
 		PVPMatchResults.content.tabContainer.tabGroup.tab2,
 		PVPMatchResults.content.tabContainer.tabGroup.tab3,
 	}
 
-	for _, tab in pairs(tabs) do
+	for _, tab in pairs(tabz) do
 		S:HandleTab(tab)
 	end
+
+	PVPMatchResults.content.tabContainer.matchmakingText:FontTemplate()
 end
 
 S:AddCallbackForAddon("Blizzard_PVPMatch", "PVPMatch", LoadSkin)

@@ -57,10 +57,7 @@ function NP:Update_QuestIcons(nameplate)
 end
 
 function NP:Construct_ClassificationIndicator(nameplate)
-	local ClassificationIndicator =
-		nameplate:CreateTexture(nameplate:GetDebugName() .. "ClassificationIndicator", "OVERLAY")
-
-	return ClassificationIndicator
+	return nameplate:CreateTexture(nameplate:GetDebugName() .. "ClassificationIndicator", "OVERLAY")
 end
 
 function NP:Update_ClassificationIndicator(nameplate)
@@ -269,31 +266,29 @@ function NP:Update_Fader(nameplate)
 end
 
 function NP:Construct_Cutaway(nameplate)
-	local Cutaway = CreateFrame("Frame", nameplate:GetDebugName() .. "Cutaway", nameplate)
+	local Cutaway = {}
 
-	Cutaway.Health = CreateFrame("StatusBar", nameplate:GetDebugName() .. "CutawayHealth", nameplate.Health.ClipFrame)
+	Cutaway.Health = nameplate.Health.ClipFrame:CreateTexture(nameplate:GetDebugName() .. "CutawayHealth")
 	if NP.db.cutaway.health.forceBlankTexture then
-		Cutaway.Health:SetStatusBarTexture(E.media.blankTex)
+		Cutaway.Health:SetTexture(E.media.blankTex)
 	else
-		Cutaway.Health:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
+		Cutaway.Health:SetTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
 		NP.StatusBars[Cutaway.Health] = true
 	end
 
 	local healthTexture = nameplate.Health:GetStatusBarTexture()
-	Cutaway.Health:SetFrameLevel(5)
 	Cutaway.Health:SetPoint("TOPLEFT", healthTexture, "TOPRIGHT")
 	Cutaway.Health:SetPoint("BOTTOMLEFT", healthTexture, "BOTTOMRIGHT")
 
-	Cutaway.Power = CreateFrame("StatusBar", nameplate:GetDebugName() .. "CutawayPower", nameplate.Power)
+	Cutaway.Power = nameplate.Power.ClipFrame:CreateTexture(nameplate:GetDebugName() .. "CutawayPower")
 	if NP.db.cutaway.power.forceBlankTexture then
-		Cutaway.Power:SetStatusBarTexture(E.media.blankTex)
+		Cutaway.Power:SetTexture(E.media.blankTex)
 	else
-		Cutaway.Power:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
+		Cutaway.Power:SetTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
 		NP.StatusBars[Cutaway.Power] = true
 	end
 
 	local powerTexture = nameplate.Power:GetStatusBarTexture()
-	Cutaway.Power:SetFrameLevel(5)
 	Cutaway.Power:SetPoint("TOPLEFT", powerTexture, "TOPRIGHT")
 	Cutaway.Power:SetPoint("BOTTOMLEFT", powerTexture, "BOTTOMRIGHT")
 

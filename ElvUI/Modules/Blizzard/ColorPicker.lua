@@ -1,11 +1,11 @@
---[[
-	Credit to Jaslm, most of this code is his from the addon ColorPickerPlus
-]]
-
+------------------------------------------------------------------------------
+-- Credit to Jaslm, most of this code is his from the addon ColorPickerPlus.
+------------------------------------------------------------------------------
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 local S = E:GetModule('Skins')
 
+--Lua functions
 local _G = _G
 local strlen, strjoin, gsub = strlen, strjoin, gsub
 local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
@@ -153,6 +153,7 @@ function B:EnhanceColorPicker()
 	--Skin the default frame, move default buttons into place
 	_G.ColorPickerFrame:SetClampedToScreen(true)
 	_G.ColorPickerFrame:SetTemplate("Transparent")
+	_G.ColorPickerFrame.Border:Hide()
 	_G.ColorPickerFrameHeader:SetTexture()
 	_G.ColorPickerFrameHeader:ClearAllPoints()
 	_G.ColorPickerFrameHeader:Point("TOP", _G.ColorPickerFrame, 0, 0)
@@ -245,7 +246,7 @@ function B:EnhanceColorPicker()
 	b:Point("TOP", "ColorPPCopy", "BOTTOMRIGHT", 0, -7)
 
 	b:SetScript('OnClick', function()
-		local color = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass]);
+		local color = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass])
 		_G.ColorPickerFrame:SetColorRGB(color.r, color.g, color.b)
 		_G.ColorSwatch:SetColorTexture(color.r, color.g, color.b)
 		if _G.ColorPickerFrame.hasOpacity then

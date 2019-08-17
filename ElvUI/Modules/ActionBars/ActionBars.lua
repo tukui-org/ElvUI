@@ -101,17 +101,17 @@ AB.customExitButton = {
 }
 
 function AB:PositionAndSizeBar(barName)
-	local buttonSpacing = E:Scale(self.db[barName].buttonspacing);
+	local buttonSpacing = E:Scale(self.db[barName].buttonspacing)
 	local backdropSpacing = E:Scale((self.db[barName].backdropSpacing or self.db[barName].buttonspacing))
-	local buttonsPerRow = self.db[barName].buttonsPerRow;
-	local numButtons = self.db[barName].buttons;
-	local size = E:Scale(self.db[barName].buttonsize);
-	local point = self.db[barName].point;
-	local numColumns = ceil(numButtons / buttonsPerRow);
-	local widthMult = self.db[barName].widthMult;
-	local heightMult = self.db[barName].heightMult;
-	local visibility = self.db[barName].visibility;
-	local bar = self.handledBars[barName];
+	local buttonsPerRow = self.db[barName].buttonsPerRow
+	local numButtons = self.db[barName].buttons
+	local size = E:Scale(self.db[barName].buttonsize)
+	local point = self.db[barName].point
+	local numColumns = ceil(numButtons / buttonsPerRow)
+	local widthMult = self.db[barName].widthMult
+	local heightMult = self.db[barName].heightMult
+	local visibility = self.db[barName].visibility
+	local bar = self.handledBars[barName]
 
 	bar.db = self.db[barName]
 	bar.db.position = nil; --Depreciated
@@ -121,17 +121,17 @@ function AB:PositionAndSizeBar(barName)
 	end
 
 	if numButtons < buttonsPerRow then
-		buttonsPerRow = numButtons;
+		buttonsPerRow = numButtons
 	end
 
 	if numColumns < 1 then
-		numColumns = 1;
+		numColumns = 1
 	end
 
 	if bar.db.backdrop == true then
-		bar.backdrop:Show();
+		bar.backdrop:Show()
 	else
-		bar.backdrop:Hide();
+		bar.backdrop:Hide()
 		--Set size multipliers to 1 when backdrop is disabled
 		widthMult = 1
 		heightMult = 1
@@ -141,28 +141,28 @@ function AB:PositionAndSizeBar(barName)
 	--Size of all buttons + Spacing between all buttons + Spacing between additional rows of buttons + Spacing between backdrop and buttons + Spacing on end borders with non-thin borders
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult - 1)) + (sideSpacing*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult - 1)) + (sideSpacing*2)
-	bar:Width(barWidth);
-	bar:Height(barHeight);
+	bar:Width(barWidth)
+	bar:Height(barHeight)
 
 	bar.mouseover = bar.db.mouseover
 
-	local horizontalGrowth, verticalGrowth;
+	local horizontalGrowth, verticalGrowth
 	if point == "TOPLEFT" or point == "TOPRIGHT" then
-		verticalGrowth = "DOWN";
+		verticalGrowth = "DOWN"
 	else
-		verticalGrowth = "UP";
+		verticalGrowth = "UP"
 	end
 
 	if point == "BOTTOMLEFT" or point == "TOPLEFT" then
-		horizontalGrowth = "RIGHT";
+		horizontalGrowth = "RIGHT"
 	else
-		horizontalGrowth = "LEFT";
+		horizontalGrowth = "LEFT"
 	end
 
 	if bar.db.mouseover then
-		bar:SetAlpha(0);
+		bar:SetAlpha(0)
 	else
-		bar:SetAlpha(bar.db.alpha);
+		bar:SetAlpha(bar.db.alpha)
 	end
 
 	if bar.db.inheritGlobalFade then
@@ -171,48 +171,48 @@ function AB:PositionAndSizeBar(barName)
 		bar:SetParent(E.UIParent)
 	end
 
-	local button, lastButton, lastColumnButton;
+	local button, lastButton, lastColumnButton
 	for i=1, NUM_ACTIONBAR_BUTTONS do
-		button = bar.buttons[i];
-		lastButton = bar.buttons[i-1];
-		lastColumnButton = bar.buttons[i-buttonsPerRow];
-		button:SetParent(bar);
-		button:ClearAllPoints();
-		button:SetAttribute("showgrid", 1);
-		button:Size(size);
+		button = bar.buttons[i]
+		lastButton = bar.buttons[i-1]
+		lastColumnButton = bar.buttons[i-buttonsPerRow]
+		button:SetParent(bar)
+		button:ClearAllPoints()
+		button:SetAttribute("showgrid", 1)
+		button:Size(size)
 
 		if i == 1 then
-			local x, y;
+			local x, y
 			if point == "BOTTOMLEFT" then
-				x, y = sideSpacing, sideSpacing;
+				x, y = sideSpacing, sideSpacing
 			elseif point == "TOPRIGHT" then
-				x, y = -sideSpacing, -sideSpacing;
+				x, y = -sideSpacing, -sideSpacing
 			elseif point == "TOPLEFT" then
-				x, y = sideSpacing, -sideSpacing;
+				x, y = sideSpacing, -sideSpacing
 			else
-				x, y = -sideSpacing, sideSpacing;
+				x, y = -sideSpacing, sideSpacing
 			end
 
-			button:Point(point, bar, point, x, y);
+			button:Point(point, bar, point, x, y)
 		elseif (i - 1) % buttonsPerRow == 0 then
-			local y = -buttonSpacing;
-			local buttonPoint, anchorPoint = "TOP", "BOTTOM";
+			local y = -buttonSpacing
+			local buttonPoint, anchorPoint = "TOP", "BOTTOM"
 			if verticalGrowth == 'UP' then
-				y = buttonSpacing;
-				buttonPoint = "BOTTOM";
-				anchorPoint = "TOP";
+				y = buttonSpacing
+				buttonPoint = "BOTTOM"
+				anchorPoint = "TOP"
 			end
-			button:Point(buttonPoint, lastColumnButton, anchorPoint, 0, y);
+			button:Point(buttonPoint, lastColumnButton, anchorPoint, 0, y)
 		else
-			local x = buttonSpacing;
-			local buttonPoint, anchorPoint = "LEFT", "RIGHT";
+			local x = buttonSpacing
+			local buttonPoint, anchorPoint = "LEFT", "RIGHT"
 			if horizontalGrowth == 'LEFT' then
-				x = -buttonSpacing;
-				buttonPoint = "RIGHT";
-				anchorPoint = "LEFT";
+				x = -buttonSpacing
+				buttonPoint = "RIGHT"
+				anchorPoint = "LEFT"
 			end
 
-			button:Point(buttonPoint, lastButton, anchorPoint, x, 0);
+			button:Point(buttonPoint, lastButton, anchorPoint, x, 0)
 		end
 
 		if i > numButtons then
@@ -221,12 +221,12 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
-		self:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil);
+		self:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil)
 	end
 
 	if bar.db.enabled or not bar.initialized then
 		if not bar.db.mouseover then
-			bar:SetAlpha(bar.db.alpha);
+			bar:SetAlpha(bar.db.alpha)
 		end
 
 		local page = self:GetPage(barName, self.barDefaults[barName].page, self.barDefaults[barName].conditions)
@@ -241,11 +241,11 @@ function AB:PositionAndSizeBar(barName)
 
 		bar:Show()
 		RegisterStateDriver(bar, "visibility", visibility); -- this is ghetto
-		RegisterStateDriver(bar, "page", page);
+		RegisterStateDriver(bar, "page", page)
 		bar:SetAttribute("page", page)
 
 		if not bar.initialized then
-			bar.initialized = true;
+			bar.initialized = true
 			AB:PositionAndSizeBar(barName)
 			return
 		end
@@ -253,7 +253,7 @@ function AB:PositionAndSizeBar(barName)
 	else
 		E:DisableMover(bar.mover:GetName())
 		bar:Hide()
-		UnregisterStateDriver(bar, "visibility");
+		UnregisterStateDriver(bar, "visibility")
 	end
 
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
@@ -264,13 +264,13 @@ function AB:PositionAndSizeBar(barName)
 end
 
 function AB:CreateBar(id)
-	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate');
+	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
 	bar:SetFrameRef("MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
 
 	local point, anchor, attachTo, x, y = strsplit(',', self.barDefaults['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
-	bar:CreateBackdrop();
+	bar:CreateBackdrop()
 	bar:SetFrameStrata("LOW")
 
 	--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
@@ -279,8 +279,8 @@ function AB:CreateBar(id)
 
 	bar.buttons = {}
 	bar.bindButtons = self.barDefaults['bar'..id].bindButtons
-	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
-	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
+	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
+	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
 	for i=1, 12 do
 		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName().."Button%d", i), bar, nil)
@@ -297,8 +297,8 @@ function AB:CreateBar(id)
 			bar.buttons[i]:AddToMasque(MasqueGroup)
 		end
 
-		self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter');
-		self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave');
+		self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter')
+		self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
 	end
 	self:UpdateButtonConfig(bar, bar.bindButtons)
 
@@ -326,11 +326,11 @@ function AB:CreateBar(id)
 				self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)
 			end
 		end
-	]]);
+	]])
 
-	self.handledBars['bar'..id] = bar;
+	self.handledBars['bar'..id] = bar
 	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS',nil,'actionbar,bar'..id)
-	self:PositionAndSizeBar('bar'..id);
+	self:PositionAndSizeBar('bar'..id)
 	return bar
 end
 
@@ -371,11 +371,11 @@ vehicle_CallOnEvent = Vehicle_OnEvent
 
 local function Vehicle_OnClick(self)
 	if ( UnitOnTaxi("player") ) then
-		TaxiRequestEarlyLanding();
+		TaxiRequestEarlyLanding()
 		self:GetNormalTexture():SetVertexColor(1, 0, 0)
 		self:EnableMouse(false)
 	else
-		VehicleExit();
+		VehicleExit()
 	end
 end
 
@@ -404,12 +404,12 @@ function AB:CreateVehicleLeave()
 	vehicle:SetScript("OnClick", Vehicle_OnClick)
 	vehicle:SetScript("OnEnter", MainMenuBarVehicleLeaveButton_OnEnter)
 	vehicle:SetScript("OnLeave", GameTooltip_Hide)
-	vehicle:RegisterEvent("PLAYER_ENTERING_WORLD");
-	vehicle:RegisterEvent("UPDATE_BONUS_ACTIONBAR");
-	vehicle:RegisterEvent("UPDATE_MULTI_CAST_ACTIONBAR");
-	vehicle:RegisterEvent("UNIT_ENTERED_VEHICLE");
-	vehicle:RegisterEvent("UNIT_EXITED_VEHICLE");
-	vehicle:RegisterEvent("VEHICLE_UPDATE");
+	vehicle:RegisterEvent("PLAYER_ENTERING_WORLD")
+	vehicle:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
+	vehicle:RegisterEvent("UPDATE_MULTI_CAST_ACTIONBAR")
+	vehicle:RegisterEvent("UNIT_ENTERED_VEHICLE")
+	vehicle:RegisterEvent("UNIT_EXITED_VEHICLE")
+	vehicle:RegisterEvent("VEHICLE_UPDATE")
 	vehicle:SetScript("OnEvent", Vehicle_OnEvent)
 
 	self:UpdateVehicleLeave()
@@ -419,8 +419,8 @@ end
 
 function AB:ReassignBindings(event)
 	if event == "UPDATE_BINDINGS" then
-		self:UpdatePetBindings();
-		self:UpdateStanceBindings();
+		self:UpdatePetBindings()
+		self:UpdateStanceBindings()
 	end
 
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED")
@@ -556,15 +556,15 @@ function AB:GetPage(bar, defaultPage, condition)
 end
 
 function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
-	local name = button:GetName();
-	local macroText = _G[name.."Name"];
-	local icon = _G[name.."Icon"];
-	local shine = _G[name.."Shine"];
-	local count = _G[name.."Count"];
-	local flash	 = _G[name.."Flash"];
-	local hotkey = _G[name.."HotKey"];
-	local border  = _G[name.."Border"];
-	local normal  = _G[name.."NormalTexture"];
+	local name = button:GetName()
+	local macroText = _G[name.."Name"]
+	local icon = _G[name.."Icon"]
+	local shine = _G[name.."Shine"]
+	local count = _G[name.."Count"]
+	local flash	 = _G[name.."Flash"]
+	local hotkey = _G[name.."HotKey"]
+	local border  = _G[name.."Border"]
+	local normal  = _G[name.."NormalTexture"]
 	local normal2 = button:GetNormalTexture()
 
 	local color = self.db.fontColor
@@ -582,15 +582,15 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	if border and not button.useMasque then border:Kill() end
 
 	if count then
-		count:ClearAllPoints();
-		count:Point(countPosition, countXOffset, countYOffset);
+		count:ClearAllPoints()
+		count:Point(countPosition, countXOffset, countYOffset)
 		count:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 		count:SetTextColor(color.r, color.g, color.b)
 	end
 
 	if macroText then
-		macroText:ClearAllPoints();
-		macroText:Point("BOTTOM", 0, 1);
+		macroText:ClearAllPoints()
+		macroText:Point("BOTTOM", 0, 1)
 		macroText:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 		macroText:SetTextColor(color.r, color.g, color.b)
 	end
@@ -905,8 +905,8 @@ function AB:UpdateButtonConfig(bar, buttonName)
 end
 
 function AB:FixKeybindText(button)
-	local hotkey = _G[button:GetName()..'HotKey'];
-	local text = hotkey:GetText();
+	local hotkey = _G[button:GetName()..'HotKey']
+	local text = hotkey:GetText()
 
 	local hotkeyPosition = E.db.actionbar.hotkeyTextPosition or 'TOPRIGHT'
 	local hotkeyXOffset = E.db.actionbar.hotkeyTextXOffset or 0
@@ -920,31 +920,31 @@ function AB:FixKeybindText(button)
 	end
 
 	if text then
-		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"]);
-		text = gsub(text, 'ALT%-', L["KEY_ALT"]);
-		text = gsub(text, 'CTRL%-', L["KEY_CTRL"]);
-		text = gsub(text, 'BUTTON', L["KEY_MOUSEBUTTON"]);
-		text = gsub(text, 'MOUSEWHEELUP', L["KEY_MOUSEWHEELUP"]);
-		text = gsub(text, 'MOUSEWHEELDOWN', L["KEY_MOUSEWHEELDOWN"]);
-		text = gsub(text, 'NUMPAD', L["KEY_NUMPAD"]);
-		text = gsub(text, 'PAGEUP', L["KEY_PAGEUP"]);
-		text = gsub(text, 'PAGEDOWN', L["KEY_PAGEDOWN"]);
-		text = gsub(text, 'SPACE', L["KEY_SPACE"]);
-		text = gsub(text, 'INSERT', L["KEY_INSERT"]);
-		text = gsub(text, 'HOME', L["KEY_HOME"]);
-		text = gsub(text, 'DELETE', L["KEY_DELETE"]);
-		text = gsub(text, 'NMULTIPLY', "*");
-		text = gsub(text, 'NMINUS', "N-");
-		text = gsub(text, 'NPLUS', "N+");
-		text = gsub(text, 'NEQUALS', "N=");
+		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"])
+		text = gsub(text, 'ALT%-', L["KEY_ALT"])
+		text = gsub(text, 'CTRL%-', L["KEY_CTRL"])
+		text = gsub(text, 'BUTTON', L["KEY_MOUSEBUTTON"])
+		text = gsub(text, 'MOUSEWHEELUP', L["KEY_MOUSEWHEELUP"])
+		text = gsub(text, 'MOUSEWHEELDOWN', L["KEY_MOUSEWHEELDOWN"])
+		text = gsub(text, 'NUMPAD', L["KEY_NUMPAD"])
+		text = gsub(text, 'PAGEUP', L["KEY_PAGEUP"])
+		text = gsub(text, 'PAGEDOWN', L["KEY_PAGEDOWN"])
+		text = gsub(text, 'SPACE', L["KEY_SPACE"])
+		text = gsub(text, 'INSERT', L["KEY_INSERT"])
+		text = gsub(text, 'HOME', L["KEY_HOME"])
+		text = gsub(text, 'DELETE', L["KEY_DELETE"])
+		text = gsub(text, 'NMULTIPLY', "*")
+		text = gsub(text, 'NMINUS', "N-")
+		text = gsub(text, 'NPLUS', "N+")
+		text = gsub(text, 'NEQUALS', "N=")
 
-		hotkey:SetText(text);
+		hotkey:SetText(text)
 		hotkey:SetJustifyH(justify)
 	end
 
 	if not button.useMasque then
 		hotkey:ClearAllPoints()
-		hotkey:Point(hotkeyPosition, hotkeyXOffset, hotkeyYOffset);
+		hotkey:Point(hotkeyPosition, hotkeyXOffset, hotkeyYOffset)
 	end
 end
 
@@ -1117,6 +1117,11 @@ function AB:LAB_ButtonUpdate(button)
 	button.Count:SetTextColor(color.r, color.g, color.b)
 	if button.config and (button.config.outOfRangeColoring ~= "hotkey") then
 		button.HotKey:SetTextColor(color.r, color.g, color.b)
+	end
+
+	if button.backdrop and AB.db.equippedItem then
+		color = (button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
+		button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 	end
 end
 

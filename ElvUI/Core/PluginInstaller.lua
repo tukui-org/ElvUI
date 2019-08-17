@@ -1,53 +1,57 @@
---Plugins pass their info using the table like:
---[[
+--[[--------------------------------------------------------------------
+	* Plugins pass their info using the table like:
 	addon = {
 		Title = "Your Own Title",
 		Name = "AddOnName",
 		tutorialImage = "TexturePath",
 		Pages = {
-			[1] = function1,
-			[2] = function2,
-			[3] = function3,
+			function1,
+			function2,
+			function3,
 		},
 		StepTitles = {
-			[1] = "Title 1",
-			[2] = "Title 2",
-			[3] = "Title 3",
+			"Title 1",
+			"Title 2",
+			"Title 3",
 		},
-		StepTitlesColor = {r,g,b},
-		StepTitlesColorSelected = {r,g,b},
+		StepTitlesColor = {r, g, b},
+		StepTitlesColorSelected = {r, g, b},
 		StepTitleWidth = 140,
 		StepTitleButtonWidth = 130,
-		StepTitleTextJustification = "CENTER",
+		StepTitleTextJustification = "CENTER"
 	}
+
 	E:GetModule("PluginInstaller"):Queue(addon)
 
-	Title is wat displayed on top of the window. By default it's ""ElvUI Plugin Installation""
-	Name is how your installation will be showin in "pending list", Default is "Unknown"
-	tutorialImage is a path to your own texture to use in frame. if not specified, then it will use ElvUI's one
-	Pages is a table to set up pages of your install where numbers are representing actual pages' order and function is what previously was used to set layout. For example
-		function function1()
-			PluginInstallFrame.SubTitle:SetText("Title Text")
-			PluginInstallFrame.Desc1:SetText("Desc 1 Tet")
-			PluginInstallFrame.Desc2:SetText("Desc 2 Tet")
-			PluginInstallFrame.Desc3:SetText("Desc 3 Tet")
+	* Title is wat displayed on top of the window. By default it's ""ElvUI Plugin Installation""
+	* Name is how your installation will be showin in "pending list", Default is "Unknown"
+	* tutorialImage is a path to your own texture to use in frame. if not specified, then it will use ElvUI's one
+	* Pages is a table to set up pages of your install where numbers are representing actual pages' order and function is what previously was used to set layout. For example
 
-			PluginInstallFrame.Option1:Show()
-			PluginInstallFrame.Option1:SetScript('OnClick', function() <Do Some Stuff> end)
-			PluginInstallFrame.Option1:SetText("Text 1")
+	function function1()
+		PluginInstallFrame.SubTitle:SetText("Title Text")
+		PluginInstallFrame.Desc1:SetText("Desc 1 Tet")
+		PluginInstallFrame.Desc2:SetText("Desc 2 Tet")
+		PluginInstallFrame.Desc3:SetText("Desc 3 Tet")
 
-			PluginInstallFrame.Option2:Show()
-			PluginInstallFrame.Option2:SetScript('OnClick', function() <Do Some Other Stuff> end)
-			PluginInstallFrame.Option2:SetText("Text 2")
-		end
-	StepTitles - a table to specify "titles" for your install steps. If specified and number of lines here = number of pages then you'll get an additional frame to the right of main frame
-	with a list of steps (current one being highlighted), clicking on those will open respective step. BenikUI style of doing stuff.
-	StepTitlesColor - a table with color values to color "titles" when they are not active
-	StepTitlesColorSelected - a table with color values to color "titles" when they are active
-	StepTitleWidth - Width of the steps frame on the right side
-	StepTitleButtonWidth - Width of each step button in the steps frame
-	StepTitleTextJustification - The justification of the text on each step button ("LEFT", "RIGHT", "CENTER"). Default: "CENTER"
-]]
+		PluginInstallFrame.Option1:Show()
+		PluginInstallFrame.Option1:SetScript('OnClick', function() <Do Some Stuff> end)
+		PluginInstallFrame.Option1:SetText("Text 1")
+
+		PluginInstallFrame.Option2:Show()
+		PluginInstallFrame.Option2:SetScript('OnClick', function() <Do Some Other Stuff> end)
+		PluginInstallFrame.Option2:SetText("Text 2")
+	end
+
+	StepTitles					- a table to specify "titles" for your install steps.
+		* If specified and number of lines here = number of pages then you'll get an additional frame to the right of main frame
+		* with a list of steps (current one being highlighted), clicking on those will open respective step. BenikUI style of doing stuff.
+	StepTitlesColor				- a table with color values to color "titles" when they are not active
+	StepTitlesColorSelected		- a table with color values to color "titles" when they are active
+	StepTitleWidth				- Width of the steps frame on the right side
+	StepTitleButtonWidth		- Width of each step button in the steps frame
+	StepTitleTextJustification	- The justification of the text on each step button ("LEFT", "RIGHT", "CENTER"). Default: "CENTER"
+--------------------------------------------------------------------]]--
 
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local PI = E:GetModule('PluginInstaller')
@@ -279,9 +283,9 @@ function PI:CreateFrame()
 		f.Option1:Width(100)
 		f.Option2:Width(100)
 
-		f.Option1:ClearAllPoints();
-		f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0);
-		f.Option2:ClearAllPoints();
+		f.Option1:ClearAllPoints()
+		f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0)
+		f.Option2:ClearAllPoints()
 		f.Option2:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45)
 	end)
 	f.Option4:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point("BOTTOM", 0, 45); f.Option2:SetWidth(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
@@ -325,7 +329,7 @@ function PI:CreateFrame()
 	f.pending.tex:SetTexture([[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]])
 	f.pending:CreateBackdrop("Transparent")
 	f.pending:SetScript("OnEnter", function(self)
-		_G.GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", E.PixelMode and -7 or -9);
+		_G.GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", E.PixelMode and -7 or -9)
 		_G.GameTooltip:AddLine(L["List of installations in queue:"], 1, 1, 1)
 		_G.GameTooltip:AddLine(" ")
 		for i = 1, #PI.Installs do

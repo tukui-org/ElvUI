@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 --Global Settings
 G.general = {
 	UIScale = 0.64,
-	version = 11.20,
+	version = 11.21,
 	locale = "auto",
 	eyefinity = false,
 	ignoreScalePopup = false,
@@ -82,7 +82,9 @@ G.unitframe = {
 			enemySpells = {
 				[62124] = true, -- Hand of Reckoning (30 yards)
 				[183218] = true, -- Hand of Hindrance (30 yards)
-				[20271] = true -- Judgement (30 yards) (does not work for retribution below lvl 78)
+				[20271] = true, -- Judgement (30 yards) Retribution, (does not work for retribution below lvl 78)
+				[275779] = true, -- Judgement (30 yards) Tank
+				[275773] = true -- Judgement (30 yards) Heal
 			},
 			longEnemySpells = {
 				[20473] = true -- Holy Shock (40 yards)

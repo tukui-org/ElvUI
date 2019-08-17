@@ -3,7 +3,7 @@ local M = E:GetModule('WorldMap')
 
 --Lua functions
 local _G = _G
-local find = string.find
+local strfind = strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local SetCVar = SetCVar
@@ -69,8 +69,6 @@ end
 
 local inRestrictedArea = false
 function M:UpdateRestrictedArea()
-	E:MapInfo_Update()
-
 	if E.MapInfo.x and E.MapInfo.y then
 		inRestrictedArea = false
 	else
@@ -110,8 +108,8 @@ function M:PositionCoords()
 	local yOffset = db.yOffset
 
 	local x, y = 5, 5
-	if find(position, "RIGHT") then	x = -5 end
-	if find(position, "TOP") then y = -5 end
+	if strfind(position, "RIGHT") then	x = -5 end
+	if strfind(position, "TOP") then y = -5 end
 
 	CoordsHolder.playerCoords:ClearAllPoints()
 	CoordsHolder.playerCoords:Point(position, _G.WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)
@@ -149,9 +147,10 @@ function M:Initialize()
 
 		M:PositionCoords()
 
-		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "UpdateRestrictedArea")
-		self:RegisterEvent("ZONE_CHANGED_INDOORS", "UpdateRestrictedArea")
-		self:RegisterEvent("ZONE_CHANGED", "UpdateRestrictedArea")
+		E:RegisterEventForObject("LOADING_SCREEN_DISABLED", E.MapInfo, M.UpdateRestrictedArea)
+		E:RegisterEventForObject("ZONE_CHANGED_NEW_AREA", E.MapInfo, M.UpdateRestrictedArea)
+		E:RegisterEventForObject("ZONE_CHANGED_INDOORS", E.MapInfo, M.UpdateRestrictedArea)
+		E:RegisterEventForObject("ZONE_CHANGED", E.MapInfo, M.UpdateRestrictedArea)
 	end
 
 	if E.global.general.smallerWorldMap then

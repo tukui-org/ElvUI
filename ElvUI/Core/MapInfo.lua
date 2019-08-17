@@ -10,12 +10,15 @@ local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
 local GetUnitSpeed = GetUnitSpeed
 local CreateVector2D = CreateVector2D
+local GetRealZoneText = GetRealZoneText
+local GetMinimapZoneText = GetMinimapZoneText
 local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 local MapUtil = MapUtil
 
 E.MapInfo = {}
+
 function E:MapInfo_Update()
 	local mapID = C_Map_GetBestMapForUnit("player")
 
@@ -26,6 +29,8 @@ function E:MapInfo_Update()
 
 	E.MapInfo.mapID = mapID or nil
 	E.MapInfo.zoneText = (mapID and E:GetZoneText(mapID)) or nil
+	E.MapInfo.subZoneText = GetMinimapZoneText() or nil
+	E.MapInfo.realZoneText = GetRealZoneText() or nil
 
 	local continent = mapID and MapUtil.GetMapParentInfo(mapID, Enum.UIMapType.Continent, true)
 	E.MapInfo.continentParentMapID = (continent and continent.parentMapID) or nil
@@ -158,6 +163,7 @@ E:RegisterEvent("PLAYER_STARTED_MOVING", "MapInfo_CoordsStart")
 E:RegisterEvent("PLAYER_STOPPED_MOVING", "MapInfo_CoordsStop")
 E:RegisterEvent("PLAYER_CONTROL_LOST", "MapInfo_CoordsStart")
 E:RegisterEvent("PLAYER_CONTROL_GAINED", "MapInfo_CoordsStop")
-E:RegisterEvent("ZONE_CHANGED_NEW_AREA", "MapInfo_Update")
-E:RegisterEvent("ZONE_CHANGED_INDOORS", "MapInfo_Update")
-E:RegisterEvent("ZONE_CHANGED", "MapInfo_Update")
+E:RegisterEventForObject("LOADING_SCREEN_DISABLED", E.MapInfo, E.MapInfo_Update)
+E:RegisterEventForObject("ZONE_CHANGED_NEW_AREA", E.MapInfo, E.MapInfo_Update)
+E:RegisterEventForObject("ZONE_CHANGED_INDOORS", E.MapInfo, E.MapInfo_Update)
+E:RegisterEventForObject("ZONE_CHANGED", E.MapInfo, E.MapInfo_Update)

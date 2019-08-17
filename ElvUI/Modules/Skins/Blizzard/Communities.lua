@@ -8,6 +8,7 @@ local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
 local C_GuildInfo_GetGuildNewsInfo = C_GuildInfo.GetGuildNewsInfo
 local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
+local FRIENDS_WOW_BACKGROUND_COLOR = FRIENDS_WOW_BACKGROUND_COLOR
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetGuildRewardInfo = GetGuildRewardInfo
@@ -46,61 +47,73 @@ local function LoadSkin()
 	CommunitiesFrameCommunitiesList.BottomFiligree:Hide()
 	_G.CommunitiesFrameCommunitiesListListScrollFrame:StripTextures()
 
-	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo, isInvitation, isTicket)
 		if clubInfo then
-			self:Size(166, 67)
-
-			--select(13, self:GetRegions()):Hide() -- Hide the mouseover texture
 			self.Background:Hide()
-			self:SetFrameLevel(self:GetFrameLevel()+5)
+			self.CircleMask:Hide()
 
+			self.Icon:ClearAllPoints()
+			self.Icon:SetPoint("TOPLEFT", 8, -17)
 			S:HandleIcon(self.Icon)
-			self.Icon:RemoveMaskTexture(self.CircleMask)
-			self.Icon:SetDrawLayer("OVERLAY", 1)
-			self.Icon:SetTexCoord(unpack(E.TexCoords))
 			self.IconRing:Hide()
+
+			if not self.IconBorder then
+				self.IconBorder = self:CreateTexture(nil, "BORDER")
+				self.IconBorder:SetOutside(self.Icon)
+				self.IconBorder:Hide()
+			end
+
+			self.GuildTabardBackground:SetPoint("TOPLEFT", 6, -17)
+			self.GuildTabardEmblem:SetPoint("TOPLEFT", 11, -17)
+			self.GuildTabardBorder:SetPoint("TOPLEFT", 6, -17)
 
 			if not self.bg then
 				self.bg = CreateFrame("Frame", nil, self)
-				self.bg:CreateBackdrop("Overlay")
-				self.bg:SetFrameLevel(self:GetFrameLevel() -2)
-				self.bg:Point("TOPLEFT", 4, -3)
-				self.bg:Point("BOTTOMRIGHT", -1, 3)
+				self.bg:CreateBackdrop("Transparent")
+				self.bg:SetPoint("TOPLEFT", 7, -16)
+				self.bg:SetPoint("BOTTOMRIGHT", -10, 12)
 			end
 
 			local isGuild = clubInfo.clubType == Enum.ClubType.Guild
 			if isGuild then
-				self.Selection:SetInside(self.bg)
+				self.Selection:SetAllPoints(self.bg)
 				self.Selection:SetColorTexture(0, 1, 0, 0.2)
 			else
-				self.Selection:SetInside(self.bg)
+				self.Selection:SetAllPoints(self.bg)
 				self.Selection:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b, 0.2)
+			end
+
+			if not isInvitation and not isGuild and not isTicket then
+				if clubInfo.clubType == _G.Enum.ClubType.BattleNet then
+					self.IconBorder:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b)
+				else
+					self.IconBorder:SetColorTexture(FRIENDS_WOW_BACKGROUND_COLOR.r, FRIENDS_WOW_BACKGROUND_COLOR.g, FRIENDS_WOW_BACKGROUND_COLOR.b)
+				end
+				self.IconBorder:Show()
+			else
+				self.IconBorder:Hide()
 			end
 
 			local highlight = self:GetHighlightTexture()
 			highlight:SetColorTexture(1, 1, 1, 0.3)
-			highlight:SetInside(self.bg)
+			highlight:SetAllPoints(self.bg)
 		end
 	end)
 
+	-- Add Community Button
 	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetAddCommunity", function(self)
-		self:Size(166, 67)
-
-		--select(13, self:GetRegions()):Hide() -- Hide the mouseover texture (needs some love)
 		self.Background:Hide()
-		self:SetFrameLevel(self:GetFrameLevel()+5)
-		S:HandleIcon(self.Icon)
 		self.CircleMask:Hide()
-		self.Icon:SetDrawLayer("OVERLAY", 1)
-		self.Icon:SetTexCoord(unpack(E.TexCoords))
+
+		S:HandleIcon(self.Icon)
+		self.Icon:Point("TOPLEFT", 8, -20)
 		self.IconRing:Hide()
 
 		if not self.bg then
 			self.bg = CreateFrame("Frame", nil, self)
-			self.bg:CreateBackdrop("Overlay")
-			self.bg:SetFrameLevel(self:GetFrameLevel() -2)
-			self.bg:Point("TOPLEFT", 4, -3)
-			self.bg:Point("BOTTOMRIGHT", -1, 3)
+			self.bg:CreateBackdrop("Transparent")
+			self.bg:SetPoint("TOPLEFT", 7, -16)
+			self.bg:SetPoint("BOTTOMRIGHT", -10, 12)
 		end
 
 		local highlight = self:GetHighlightTexture()

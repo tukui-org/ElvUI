@@ -12,8 +12,7 @@ local GetBattlefieldScore = GetBattlefieldScore
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldStatData = GetBattlefieldStatData
 
-local lastPanel
-local displayString = ''
+local displayString, lastPanel = ''
 local dataLayout = {
 	['LeftChatDataPanel'] = {
 		['left'] = 10,

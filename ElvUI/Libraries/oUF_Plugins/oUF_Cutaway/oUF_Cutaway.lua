@@ -10,17 +10,21 @@ assert(oUF, "oUF_Cutaway was unable to locate oUF install.")
 ]]
 -- GLOBALS: ElvUI
 
+local _G = _G
+local max = math.max
+local assert = assert
 local hooksecurefunc = hooksecurefunc
 local UnitHealthMax = UnitHealthMax
 local UnitPowerMax = UnitPowerMax
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitGUID = UnitGUID
 
-local E  -- placeholder
+local E -- placeholder
 
 local function checkElvUI()
 	if not E then
 		E = _G.ElvUI[1]
+		assert(E, "oUF_Cutaway was not able to locate ElvUI and it is required.")
 	end
 end
 
@@ -39,15 +43,14 @@ local function fadeClosure(element)
 		}
 	end
 
-	checkElvUI()
 	E:UIFrameFadeOut(element, element.fadeOutTime, element.__parentElement:GetAlpha(), 0)
 end
 
 local function Shared_PreUpdate(self, element, unit)
 	element.unit = unit
-	local oldGUID = element.guid
-	element.guid = UnitGUID(unit)
-	if (not oldGUID or oldGUID ~= UnitGUID(unit)) then
+	local oldGUID, newGUID = element.guid, UnitGUID(unit)
+	element.guid = newGUID
+	if (not oldGUID or oldGUID ~= newGUID) then
 		return
 	end
 	element.cur = self.cur
@@ -55,11 +58,12 @@ local function Shared_PreUpdate(self, element, unit)
 end
 
 local function UpdateSize(self, element, curV, maxV)
-	local pm = self:GetOrientation() == "VERTICAL" and self:GetHeight() or self:GetWidth()
+	local isVertical = self:GetOrientation() == "VERTICAL"
+	local pm = (isVertical and self:GetHeight()) or self:GetWidth()
 	local oum = (1 / maxV) * pm
-	local c = math.max(element.cur - curV, 0)
+	local c = max(element.cur - curV, 0)
 	local mm = c * oum
-	if (self:GetOrientation() == "VERTICAL") then
+	if isVertical then
 		element:SetHeight(mm)
 	else
 		element:SetWidth(mm)
@@ -107,7 +111,6 @@ local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	if (element.cur - curHealth) > (maxHealth * 0.01) then
 		element:SetAlpha(self:GetAlpha())
 
-		checkElvUI()
 		E:Delay(element.lengthBeforeFade, fadeClosure, element)
 
 		element.playing = true
@@ -118,8 +121,8 @@ local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 end
 
 local function Health_PostUpdateColor(self, _, _, _, _)
-	local r, g, b, a = self:GetStatusBarColor()
-	self.__owner.Cutaway.Health:SetStatusBarColor(r * 1.5, g * 1.5, b * 1.5, a)
+	local r, g, b = self:GetStatusBarColor()
+	self.__owner.Cutaway.Health:SetVertexColor(r * 1.5, g * 1.5, b * 1.5)
 end
 
 local function Power_PreUpdate(self, unit)
@@ -132,7 +135,7 @@ local function Power_PreUpdate(self, unit)
 	Shared_PreUpdate(self, element, unit)
 end
 
-local function Power_PostUpdate(self, unit, curPower, maxPower)
+local function Power_PostUpdate(self, unit, curPower, _, maxPower)
 	local element = self.__owner.Cutaway.Power
 	if Shared_UpdateCheckReturn(self, element, POST, curPower, maxPower, unit) then
 		return
@@ -141,10 +144,10 @@ local function Power_PostUpdate(self, unit, curPower, maxPower)
 	if element.playing then
 		return
 	end
-	if (element.cur - curPower) > (maxPower * 0.1) then
+
+	if (element.cur - curPower) > (maxPower * 0.01) then
 		element:SetAlpha(self:GetAlpha())
 
-		checkElvUI()
 		E:Delay(element.lengthBeforeFade, fadeClosure, element)
 
 		element.playing = true
@@ -155,8 +158,8 @@ local function Power_PostUpdate(self, unit, curPower, maxPower)
 end
 
 local function Power_PostUpdateColor(self, _, _, _, _)
-	local r, g, b, a = self:GetStatusBarColor()
-	self.__owner.Cutaway.Power:SetStatusBarColor(r * 1.5, g * 1.5, b * 1.5, a)
+	local r, g, b = self:GetStatusBarColor()
+	self.__owner.Cutaway.Power:SetVertexColor(r * 1.5, g * 1.5, b * 1.5)
 end
 
 local defaults = {
@@ -206,12 +209,14 @@ end
 local function Enable(self)
 	local element = self and self.Cutaway
 	if (element) then
-		if (element.Health and element.Health:IsObjectType("StatusBar") and not element.Health:GetStatusBarTexture()) then
-			element.Health:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+		checkElvUI()
+
+		if (element.Health and element.Health:IsObjectType("Texture") and not element.Health:GetTexture()) then
+			element.Health:SetTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 
-		if (element.Power and element.Power:IsObjectType("StatusBar") and not element.Power:GetStatusBarTexture()) then
-			element.Power:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+		if (element.Power and element.Power:IsObjectType("Texture") and not element.Power:GetTexture()) then
+			element.Power:SetTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 
 		if (not element.defaultsSet) then
@@ -221,10 +226,8 @@ local function Enable(self)
 
 		if element.Health and self.Health then
 			self.Health.__owner = self
-
-			element.Health:SetMinMaxValues(0, 1)
-			element.Health:SetValue(1)
 			element.Health.__parentElement = self.Health
+			element.Health:SetAlpha(0)
 
 			if not element.Health.hasCutawayHook then
 				if self.Health.PreUpdate then
@@ -251,10 +254,8 @@ local function Enable(self)
 
 		if element.Power and self.Power then
 			self.Power.__owner = self
-
-			element.Power:SetMinMaxValues(0, 1)
-			element.Power:SetValue(1)
 			element.Power.__parentElement = self.Power
+			element.Power:SetAlpha(0)
 
 			if not element.Power.hasCutawayHook then
 				if self.Power.PreUpdate then
@@ -283,21 +284,19 @@ local function Enable(self)
 			element.UpdateConfigurationValues = UpdateConfigurationValues
 		end
 
-		element:Show()
-
 		return true
 	end
 end
 
-local function Disable(self)
-	local function disableElement(element)
-		if element then
-			element.enabled = false
-		end
+local function disableElement(element)
+	if element then
+		element.enabled = false
+		element:Hide()
 	end
+end
 
+local function Disable(self)
 	if self and self.Cutaway then
-		self.Cutaway:Hide()
 		disableElement(self.Cutaway.Health)
 		disableElement(self.Cutaway.Power)
 	end

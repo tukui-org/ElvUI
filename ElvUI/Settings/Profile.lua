@@ -4850,6 +4850,9 @@ P.actionbar = {
 	countTextXOffset = 0,
 	countTextYOffset = 2,
 
+	equippedItem = false,
+	equippedItemColor = { r = 0.4, g = 1.0, b = 0.4 },
+
 	useRangeColorText = false,
 	noRangeColor = { r = 0.8, g = 0.1, b = 0.1 },
 	noPowerColor = { r = 0.5, g = 0.5, b = 1 },

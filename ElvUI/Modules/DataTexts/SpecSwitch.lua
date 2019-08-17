@@ -3,11 +3,9 @@ local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local _G = _G
-local format, next, select, strjoin = format, next, select, strjoin
-local twipe = table.wipe
+local format, next, wipe, strjoin = format, next, wipe, strjoin
 --WoW API / Variables
 local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
-local GetCurrencyInfo = GetCurrencyInfo
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
@@ -26,8 +24,7 @@ local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 local TALENTS = TALENTS
 local PVP_TALENTS = PVP_TALENTS
 
-local lastPanel, active
-local displayString = '';
+local displayString, lastPanel, active = ''
 local activeString = strjoin("", "|cff00FF00" , _G.ACTIVE_PETS, "|r")
 local inactiveString = strjoin("", "|cffFF0000", _G.FACTION_INACTIVE, "|r")
 local menuFrame = CreateFrame("Frame", "LootSpecializationDatatextClickMenu", E.UIParent, "UIDropDownMenuTemplate")
@@ -50,7 +47,7 @@ local specList = {
 local function OnEvent(self)
 	lastPanel = self
 
-	local specIndex = GetSpecialization();
+	local specIndex = GetSpecialization()
 	if not specIndex then
 		self.text:SetText('N/A')
 		return
@@ -69,7 +66,7 @@ local function OnEvent(self)
 	if specialization == 0 then
 		loot, text = spec, '|cFF54FF00'..text..'|r'
 	else
-		local _, _, _, texture = GetSpecializationInfoByID(specialization);
+		local _, _, _, texture = GetSpecializationInfoByID(specialization)
 		if texture then
 			loot = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', texture)
 		end
@@ -135,7 +132,7 @@ local function OnEnter(self)
 			end
 		end
 
-		twipe(pvpTalents)
+		wipe(pvpTalents)
 	end
 
 	DT.tooltip:AddLine(' ')
@@ -147,7 +144,7 @@ local function OnEnter(self)
 end
 
 local function OnClick(self, button)
-	local specIndex = GetSpecialization();
+	local specIndex = GetSpecialization()
 	if not specIndex then return end
 
 	if button == "LeftButton" then
@@ -163,7 +160,7 @@ local function OnClick(self, button)
 			end
 		else
 			for index = 1, 4 do
-				local id, name, _, texture = GetSpecializationInfo(index);
+				local id, name, _, texture = GetSpecializationInfo(index)
 				if ( id ) then
 					specList[index + 1].text = format('|T%s:14:14:0:0:64:64:4:60:4:60|t  %s', texture, name)
 					specList[index + 1].func = function() SetSpecialization(index) end
@@ -175,11 +172,11 @@ local function OnClick(self, button)
 		end
 	else
 		DT.tooltip:Hide()
-		local _, specName = GetSpecializationInfo(specIndex);
-		menuList[2].text = format(LOOT_SPECIALIZATION_DEFAULT, specName);
+		local _, specName = GetSpecializationInfo(specIndex)
+		menuList[2].text = format(LOOT_SPECIALIZATION_DEFAULT, specName)
 
 		for index = 1, 4 do
-			local id, name = GetSpecializationInfo(index);
+			local id, name = GetSpecializationInfo(index)
 			if ( id ) then
 				menuList[index + 2].text = name
 				menuList[index + 2].func = function() SetLootSpecialization(id) end

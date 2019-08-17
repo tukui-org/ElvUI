@@ -53,9 +53,6 @@ local function LoadSkin()
 		"ReadyCheckFrame",
 		"QueueStatusFrame",
 		"LFDReadyCheckPopup",
-		"DropDownList1Backdrop",
-		"DropDownList1MenuBackdrop",
-		"ElvUI_StaticPopup1",
 	}
 
 	for i = 1, #skins do
@@ -290,13 +287,20 @@ local function LoadSkin()
 		local listFrameName = listFrame:GetName();
 		local expandArrow = _G[listFrameName.."Button"..index.."ExpandArrow"];
 		if expandArrow then
+			local normTex = expandArrow:GetNormalTexture()
 			expandArrow:SetNormalTexture(E.Media.Textures.ArrowUp)
+			normTex:SetVertexColor(unpack(E.media.rgbvaluecolor))
+			normTex:SetRotation(S.ArrowRotation.right)
 			expandArrow:Size(12, 12)
-			expandArrow:GetNormalTexture():SetVertexColor(unpack(E.media.rgbvaluecolor))
-			expandArrow:GetNormalTexture():SetRotation(S.ArrowRotation.right)
 		end
 
-		 _G[listFrameName.."MenuBackdrop"]:SetTemplate("Transparent")
+		local Backdrop = _G[listFrameName.."Backdrop"]
+		if not Backdrop.template then Backdrop:StripTextures() end
+		Backdrop:SetTemplate("Transparent")
+
+		local menuBackdrop = _G[listFrameName.."MenuBackdrop"]
+		if not menuBackdrop.template then menuBackdrop:StripTextures() end
+		menuBackdrop:SetTemplate("Transparent")
 	end)
 
 	hooksecurefunc("UIDropDownMenu_SetIconImage", function(icon, texture)

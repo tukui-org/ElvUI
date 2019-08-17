@@ -4,19 +4,18 @@ local RU = E:GetModule('RaidUtility')
 --Lua functions
 local _G = _G
 local unpack, ipairs, pairs, next = unpack, ipairs, pairs, next
-local tinsert, wipe, sort = tinsert, wipe, sort
-local strfind = strfind
+local strfind, tinsert, wipe, sort = strfind, tinsert, wipe, sort
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local DoReadyCheck = DoReadyCheck
 local GameTooltip_Hide = GameTooltip_Hide
+local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetTexCoordsForRole = GetTexCoordsForRole
 local InCombatLockdown = InCombatLockdown
 local InitiateRolePoll = InitiateRolePoll
 local IsInGroup = IsInGroup
-local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
 local SecureHandler_OnClick = SecureHandler_OnClick
 local ToggleFriendsFrame = ToggleFriendsFrame
@@ -28,8 +27,8 @@ local PANEL_HEIGHT = 100
 
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()
-	local inInstance, instanceType = IsInInstance()
-	if ((IsInGroup() and not IsInRaid()) or UnitIsGroupLeader('player') or UnitIsGroupAssistant("player")) and not (inInstance and (instanceType == "pvp" or instanceType == "arena")) then
+	local _, instanceType = GetInstanceInfo()
+	if ((IsInGroup() and not IsInRaid()) or UnitIsGroupLeader('player') or UnitIsGroupAssistant("player")) and not (instanceType == "pvp" or instanceType == "arena") then
 		return true
 	else
 		return false

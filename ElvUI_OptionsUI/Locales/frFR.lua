@@ -1,6 +1,12 @@
 -- French localization file for frFR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "frFR")
 
+L["Add / Remove"] = true
+L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = true
+L["Added Map ID: %s"] = true
+L["Added Instance ID: %s"] = true
+L["Added Zone Name: %s"] = true
+L["Added Subzone Name: %s"] = true
 L["# Displayed Auras"] = "Auras affichées"
 L["%s and then %s"] = "%s et alors %s"
 L["24-Hour Time"] = "Mode 24 Heures"
@@ -18,7 +24,12 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "Ajouter un sort au filtre."
 L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."] = true
 L["Add Currency ID"] = "Ajouter l'ID de la monnaie"
+L["Add Current"] = true
 L["Add Item or Search Syntax"] = "Ajouter un élément ou une syntaxe pour la recherche"
+L["Add Instance ID"] = true
+L["Add Map ID"] = true
+L["Add Subzone Name"] = true
+L["Add Zone Name"] = true
 L["Add Name or NPC ID"] = "Ajouter le nom ou l'ID d'un PNJ"
 L["Add Regular Filter"] = "Ajouter un filtre"
 L["Add Special Filter"] = "Ajouter un filtre spécial"
@@ -600,8 +611,8 @@ L["If enabled then the filter will only activate if the unit is casting not inte
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = true
 L["If enabled then the filter will only activate when the unit can be attacked by the active player."] = true
 L["If enabled then the filter will only activate when the unit can not be attacked by the active player."] = true
-L["If enabled then the filter will only activate when the unit is a player's pet."] = true
-L["If enabled then the filter will only activate when the unit is not a player's pet."] = true
+L["If enabled then the filter will only activate when the unit is the active player's pet."] = true
+L["If enabled then the filter will only activate when the unit is not the active player's pet."] = true
 L["If enabled then the filter will only activate when the unit is controlled by the player."] = true
 L["If enabled then the filter will only activate when the unit is not controlled by the player."] = true
 L["If enabled then the filter will only activate when the unit is owned by the player."] = true
@@ -619,6 +630,11 @@ L["If enabled then the filter will only activate when the unit is targeting you.
 L["If enabled then the filter will only activate when you are focusing the unit."] = true
 L["If enabled then the filter will only activate when you are in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are in combat."] = true
+L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID."] = true
+L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = true
+L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name."] = true
+L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
+
 L["If enabled then the filter will only activate when you are not focusing the unit."] = true
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = true
@@ -656,6 +672,7 @@ L["Inset"] = "Insérer"
 L["Inside Information Panel"] = "A l'intérieur du panneau d'information"
 L["Install"] = "Installer"
 L["Instance Difficulty"] = "Difficulté de l'instance"
+L["Instance ID"] = true
 L["Instance Type"] = "Type d'instance"
 L["Interactive NPCs"] = true
 L["Interruptable"] = "Interruptible"
@@ -727,6 +744,7 @@ L["Make textures transparent."] = "Mettre les textures transparentes."
 L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = true
 L["Make the world map smaller."] = "Rendre la carte du monde plus petite"
 L["Map Opacity When Moving"] = "Opacité de la carte en mouvement"
+L["Map ID"] = true
 L["Maps"] = "Cartes"
 L["Masque Support"] = "Support de Maque"
 L["Match Frame Width"] = "Accorder à la largeur du cadre"
@@ -801,6 +819,7 @@ L["Non-Target Alpha"] = true
 L["Not Casting Anything"] = true
 L["Not Channeling Anything"] = true
 L["Not Focused"] = true
+L["Not Spell"] = true
 L["Not Targeted"] = "Non ciblé"
 L["Not Targeting Player"] = true
 L["Not Usable"] = "Non utilisable"
@@ -945,6 +964,10 @@ L["Reactions"] = "Réactions"
 L["Ready Check Icon"] = "Icône d'appel"
 L["Remaining / Max"] = true
 L["Remaining"] = "Restant"
+L["Remove Instance ID"] = true
+L["Remove Map ID"] = true
+L["Remove Subzone Name"] = true
+L["Remove Zone Name"] = true
 L["Remove a Name or NPC ID from the list."] = true
 L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = "Supprimer un sort depuis le filtre. Utilisez l'ID du sort si vous voyez cet ID dans le nom du sort."
 L["Remove a spell from the filter."] = "Supprimer un sort depuis le filtre."
@@ -1122,6 +1145,7 @@ L["Sticky Chat"] = "Fenêtre de chat adhésive"
 L["Strata and Level"] = "Couche et niveau"
 L["Style Filter"] = true
 L["Style"] = "Style"
+L["Subzone Name"] = true
 L["Summon Icon"] = true
 L["Swap to Alt Power"] = true
 L["Tab Font Outline"] = "Contour de la police extérieure des onglets"
@@ -1302,6 +1326,10 @@ L["Use Dead Backdrop"] = "Utiliser le fond pour les joueurs morts"
 L["Use Default"] = "Par défaut"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = true
 L["Use Health Texture on Background"] = true
+L["Use Instance ID or Name"] = true
+L["Use Map ID or Name"] = true
+L["Use Subzone Names"] = true
+L["Use Zone Names"] = true
 L["Use Portrait"] = true
 L["Use Position Override"] = true
 L["Use Real ID BattleTag"] = true
@@ -1363,6 +1391,7 @@ L["You need to hold this modifier down in order to blacklist an aura by right-cl
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = true
 L["Your Auras First"] = "Vos Auras en premier"
 L["Zone Ability"] = "Zone d'abilité"
+L["Zone Name"] = true
 
 ----------------------------------
 L['blockCastByPlayers'] = "[Block] Cast By Players"
@@ -1440,11 +1469,13 @@ Formats de la Vie / des Ressources:
 'deficit' - Affiche la valeur du déficit, n'affichera rien si il n'y a pas de déficit
 
 Format des Noms:
+'name:veryshort' - Name restricted to 5 characters
 'name:short' - Nom limité à 10 caractères
 'name:medium' - Nom limité à 15 caractères
 'name:long' - Nom limité à 20 caractères
+'name:short:translit' - Name restricted to 10 characters with transliteration
 
-Pour désactiver, laisser le champs vide. Pour plus d'information, merci de visiter http://www.tukui.org]=]
+Pour désactiver, laisser le champs vide. Pour plus d'information, merci de visiter https://www.tukui.org/forum/viewtopic.php?t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Ceci fonctionne comme une macro, vous pouvez exécuter différentes situations pour avoir une pagination de la barre d'actions différente.
@@ -1618,6 +1649,7 @@ L["SOUL_SHARDS"] = "|4Éclat:Éclats; d'âme";
 L["SPEED"] = "Vitesse";
 L["SPELLBOOK"] = "Grimoire";
 L["TALENT"] = "Talent";
+L["TALENTS"] = "Talents";
 L["TANK"] = "Tank";
 L["TARGET"] = "Cibler";
 L["TIMEMANAGER_TITLE"] = "Horloge";

@@ -26,7 +26,6 @@ local ToggleFriendsFrame = ToggleFriendsFrame
 local ToggleGuildFrame = ToggleGuildFrame
 local ToggleHelpFrame = ToggleHelpFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
-local C_Timer_After = C_Timer.After
 -- GLOBALS: GetMinimapShape
 
 --Create the new minimap tracking dropdown frame and initialize it
@@ -200,7 +199,7 @@ end
 local function SetupZoomReset()
 	if E.db.general.minimap.resetZoom.enable and not isResetting then
 		isResetting = true
-		C_Timer_After(E.db.general.minimap.resetZoom.time, ResetZoom)
+		E:Delay(E.db.general.minimap.resetZoom.time, ResetZoom)
 	end
 end
 hooksecurefunc(_G.Minimap, "SetZoom", SetupZoomReset)

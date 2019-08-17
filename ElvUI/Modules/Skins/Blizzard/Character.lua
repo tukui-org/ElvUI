@@ -43,15 +43,15 @@ local function ColorizeStatPane(frame)
 	frame.leftGrad:Width(80)
 	frame.leftGrad:Height(frame:GetHeight())
 	frame.leftGrad:Point("LEFT", frame, "CENTER")
-	frame.leftGrad:SetTexture(E.media.blankTex)
-	frame.leftGrad:SetGradientAlpha("Horizontal", r, g, b, 0.35, r, g, b, 0)
+	frame.leftGrad:SetTexture(E.Media.Textures.White8x8)
+	frame.leftGrad:SetGradientAlpha("Horizontal", r, g, b, 0.25, r, g, b, 0)
 
 	frame.rightGrad = frame:CreateTexture(nil, "BORDER")
 	frame.rightGrad:Width(80)
 	frame.rightGrad:Height(frame:GetHeight())
 	frame.rightGrad:Point("RIGHT", frame, "CENTER")
 	frame.rightGrad:SetTexture(E.Media.Textures.White8x8)
-	frame.rightGrad:SetGradientAlpha("Horizontal", r, g, b, 0, r, g, b, 0.35)
+	frame.rightGrad:SetGradientAlpha("Horizontal", r, g, b, 0, r, g, b, 0.25)
 end
 
 local function StatsPane(which)
@@ -197,20 +197,23 @@ local function UpdateFactionSkins()
 
 	local ReputationDetailFrame = _G.ReputationDetailFrame
 	ReputationDetailFrame:StripTextures()
-	ReputationDetailFrame:CreateBackdrop("Transparent")
+	ReputationDetailFrame:ClearAllPoints()
 	ReputationDetailFrame:Point("TOPLEFT", _G.ReputationFrame, "TOPRIGHT", 4, -28)
+	if not ReputationDetailFrame.backdrop then
+		ReputationDetailFrame:CreateBackdrop("Transparent")
+	end
 end
 
 local function UpdateCurrencySkins()
 	local TokenFramePopup = _G.TokenFramePopup
 
 	if TokenFramePopup then
-		if not TokenFramePopup.template then
-			TokenFramePopup:StripTextures()
+		TokenFramePopup:StripTextures()
+		TokenFramePopup:ClearAllPoints()
+		TokenFramePopup:Point("TOPLEFT", _G.TokenFrame, "TOPRIGHT", 4, -28)
+		if not TokenFramePopup.backdrop then
 			TokenFramePopup:CreateBackdrop("Transparent")
 		end
-
-		TokenFramePopup:Point("TOPLEFT", _G.TokenFrame, "TOPRIGHT", 4, -28)
 	end
 
 	local TokenFrameContainer = _G.TokenFrameContainer

@@ -15,7 +15,6 @@ local UnitClass = UnitClass
 local UnitReaction = UnitReaction
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
-local unitSelectionType = oUF.Private.unitSelectionType
 
 function NP:Power_UpdateColor(event, unit)
 	if self.unit ~= unit then return end
@@ -25,6 +24,7 @@ function NP:Power_UpdateColor(event, unit)
 	element.token = ptoken
 
 	if self.PowerColorChanged then return end
+	local Selection = element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
 
 	local r, g, b, t, atlas
 	if(element.colorDead and element.dead) then
@@ -61,8 +61,8 @@ function NP:Power_UpdateColor(event, unit)
 		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
 		local _, class = UnitClass(unit)
 		t = self.colors.class[class]
-	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
-		t = NP.db.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
+	elseif Selection then
+		t = NP.db.colors.selection[Selection]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
 		local reaction = UnitReaction(unit, 'player')
 		if reaction <= 3 then reaction = 'bad' elseif reaction == 4 then reaction = 'neutral' else reaction = 'good' end
@@ -117,6 +117,12 @@ function NP:Construct_Power(nameplate)
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent')
 	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+
+	local clipFrame = CreateFrame('Frame', nil, Power)
+	clipFrame:SetClipsChildren(true)
+	clipFrame:SetAllPoints()
+	clipFrame:EnableMouse(false)
+	Power.ClipFrame = clipFrame
 
 	NP.StatusBars[Power] = true
 

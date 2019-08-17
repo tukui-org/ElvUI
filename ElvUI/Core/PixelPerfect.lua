@@ -1,10 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Lua functions
-local _G = _G
 local min, max, abs, floor = min, max, abs, floor
 local format, tonumber = format, tonumber
 --WoW API / Variables
+local UIParent = UIParent
 
 function E:IsEyefinity(width, height)
 	if E.global.general.eyefinity and width >= 3840 then
@@ -33,7 +33,6 @@ function E:UIScale(init)
 		E.Spacing = (E.PixelMode and 0) or E.mult
 		E.Border = ((not E.twoPixelsPlease) and E.PixelMode and E.mult) or E.mult*2
 	else --E.Initialize
-		local UIParent = _G.UIParent
 		UIParent:SetScale(scale)
 
 		--Check if we are using `E.eyefinity`
@@ -78,10 +77,7 @@ function E:PixelScaleChanged(event, skip)
 	E:UIScale(true) -- repopulate variables
 	E:UIScale() -- setup the scale
 
-	if E.RefreshGUI then
-		E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigSize())
-		E:RefreshGUI()
-	end
+	E:UpdateConfigSize(true) -- reposition config
 
 	if skip or E.global.general.ignoreScalePopup then return end
 

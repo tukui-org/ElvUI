@@ -1,6 +1,12 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
+L["Add / Remove"] = true
+L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = true
+L["Added Map ID: %s"] = true
+L["Added Instance ID: %s"] = true
+L["Added Zone Name: %s"] = true
+L["Added Subzone Name: %s"] = true
 L["# Displayed Auras"] = "# angezeigte Auren"
 L["%s and then %s"] = "%s und dann %s"
 L["24-Hour Time"] = "24-Stunden-Format"
@@ -18,7 +24,12 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "Zauber zum Filter hinzufügen"
 L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."] = "Füge ein Gegenstand oder ein Suchoperator zu der Ignorierliste hinzu. Gegenstände die auf den Suchoperator zutreffen werden ignoriert."
 L["Add Currency ID"] = "Währungs-ID hinzufügen"
+L["Add Current"] = "Aktuelle hinzufügen"
 L["Add Item or Search Syntax"] = "Füge Gegenstand oder Suchoperator hinzu"
+L["Add Instance ID"] = "Instanz ID hinzufügen"
+L["Add Map ID"] = "Map ID hinzufügen"
+L["Add Subzone Name"] = "Unterzonen Namen hinzufügen"
+L["Add Zone Name"] = "Zonen Namen hinzufügen"
 L["Add Name or NPC ID"] = "Füge Name oder NPC ID hinzu"
 L["Add Regular Filter"] = "Füge regulären Filter hinzu"
 L["Add Special Filter"] = "Füge speziellem Filter hinzu"
@@ -602,8 +613,8 @@ L["If enabled then the filter will only activate if the unit is casting not inte
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit nicht am Zaubern oder Kanalisieren vom ausgwähltem Zauber ist."
 L["If enabled then the filter will only activate when the unit can be attacked by the active player."] = "Wenn eingeschlatet, wird der Filter nur aktiviert wenn die Einheit vom Spieler angegriffen werden kann."
 L["If enabled then the filter will only activate when the unit can not be attacked by the active player."] = "Wenn eingeschlatet, wird der Filter nur aktiviert wenn die Einheit nicht vom Spieler angegriffen werden kann."
-L["If enabled then the filter will only activate when the unit is a player's pet."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit ein Spieler Begleiter ist."
-L["If enabled then the filter will only activate when the unit is not a player's pet."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit kein Spieler Begleiter ist."
+L["If enabled then the filter will only activate when the unit is the active player's pet."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit ein Spieler Begleiter ist."
+L["If enabled then the filter will only activate when the unit is not the active player's pet."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit kein Spieler Begleiter ist."
 L["If enabled then the filter will only activate when the unit is controlled by the player."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit vom Spieler kontrolliert wird."
 L["If enabled then the filter will only activate when the unit is not controlled by the player."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit nicht vom Spieler kontrolliert wird."
 L["If enabled then the filter will only activate when the unit is owned by the player."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn die Einheit vom Spieler besitzt wird."
@@ -621,6 +632,10 @@ L["If enabled then the filter will only activate when the unit is targeting you.
 L["If enabled then the filter will only activate when you are focusing the unit."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du die Einheit fokussierst."
 L["If enabled then the filter will only activate when you are in a Vehicle."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du in einem Fahrzeug bist."
 L["If enabled then the filter will only activate when you are in combat."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du im Kampf bist."
+L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn du in eine der Instanzspezifischen Instanz ID bist."
+L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn du in einer Mapspezifischen Map ID bist."
+L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn du in einer der spezifizierten Unterzonen bist."
+L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = "Wenn eingeschaltet, wird der Filter nur aktiviert wenn du in einer der spezifizierten Zonen bist."
 L["If enabled then the filter will only activate when you are not focusing the unit."] = "Wenn eigeschaltet, wird der Filter nur aktiviert, wenn du die Einheit nicht fokussierst."
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du nicht in einem Fahrzeug bist."
 L["If enabled then the filter will only activate when you are not targeting the unit."] = "Wenn eingeschaltet, wird der Filter nur aktiviert, wenn du die Einheit nicht im Ziel hast."
@@ -658,6 +673,7 @@ L["Inset"] = "Einsatz"
 L["Inside Information Panel"] = "Im Information Panel"
 L["Install"] = "Installation"
 L["Instance Difficulty"] = "Instanz Schwierigkeitsgrad"
+L["Instance ID"] = "Instanz ID"
 L["Instance Type"] = "Instanz Typ"
 L["Interactive NPCs"] = "Interaktive NSCs"
 L["Interruptable"] = "Unterbrechbar"
@@ -728,6 +744,7 @@ L["Main Tanks / Main Assist"] = "Haupt Tank / Haupt Assistent"
 L["Make textures transparent."] = "Mache Texturen transparent."
 L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = "Färbe das Einheitenfensterleuchten gelb, wenn es unter diesen Prozentwert des Lebens sinkt. Es wird Rot angezeigt, wenn es die Hälfte des Wertes erreicht."
 L["Make the world map smaller."] = "Macht die Weltkarte kleiner."
+L["Map ID"] = "Map ID"
 L["Map Opacity When Moving"] = "Deckkraft der Karte während der Bewegung"
 L["Maps"] = "Karten"
 L["Masque Support"] = "Masque Unterstützung"
@@ -803,6 +820,7 @@ L["Non-Target Alpha"] = "Nicht-Anvisiert Alpha"
 L["Not Casting Anything"] = "Zaubert nicht irgendetwas"
 L["Not Channeling Anything"] = "Kanalisiert nicht irgendetwas"
 L["Not Focused"] = "Nicht Fokus"
+L["Not Spell"] = "Kein Zauber"
 L["Not Targeted"] = "Nicht anvisiert"
 L["Not Targeting Player"] = "Hat Spieler nicht als Ziel"
 L["Not Usable"] = "Nicht nutzbar"
@@ -948,6 +966,10 @@ L["Reactions"] = "Reaktionen"
 L["Ready Check Icon"] = "Bereitschaftssymbol"
 L["Remaining / Max"] = "Verbleibend / Max"
 L["Remaining"] = "Verbleibend"
+L["Remove Instance ID"] = "Entferne Instanz ID"
+L["Remove Map ID"] = "Entferne Map ID"
+L["Remove Subzone Name"] = "Entferne Unterzonen Namen"
+L["Remove Zone Name"] = "Entferne Zonen Namen"
 L["Remove a Name or NPC ID from the list."] = "Entferne einen Namen oder NPC ID von der Liste."
 L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = "Entferne Zauber vom Filter. Benutze die Zauber ID, wenn du die ID siehst als Teil vom Zaubernamen im Filter."
 L["Remove a spell from the filter."] = "Entfernt einen Zauber aus dem Filter."
@@ -1126,6 +1148,7 @@ L["Sticky Chat"] = "Kanal merken"
 L["Strata and Level"] = "Schicht und Ebene"
 L["Style Filter"] = "Stil Filter"
 L["Style"] = "Stil"
+L["Subzone Name"] = "Unterzonen Name"
 L["Summon Icon"] = "Beschwörungssymbol"
 L["Swap to Alt Power"] = "Wechsle auf Alternative Energie"
 L["Tab Font Outline"] = "Tab Schriftkontur"
@@ -1307,6 +1330,10 @@ L["Use Dead Backdrop"] = "Benutze Hintergrundfarbe vom Tod"
 L["Use Default"] = "Benutze Standard"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "Benutze Drag und Drop um die Filter Priorität zu arrangieren oder rechts klick um einen Filter zu entfernen."
 L["Use Health Texture on Background"] = "Benutze Gesundheitstextur auf dem Hintergrund"
+L["Use Instance ID or Name"] = "Benutze Instanz ID oder Name"
+L["Use Map ID or Name"] = "Benutze Map ID oder Name"
+L["Use Subzone Names"] = "Benutze Unterzonen Namen"
+L["Use Zone Names"] = "Benutze Zonennamen"
 L["Use Portrait"] = "Benutze Portrait"
 L["Use Position Override"] = "Benutze Überschreibung der Position"
 L["Use Real ID BattleTag"] = "Benutze Real ID BattleTag"
@@ -1368,6 +1395,7 @@ L["You need to hold this modifier down in order to blacklist an aura by right-cl
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = true
 L["Your Auras First"] = "Deine Auren zuerst"
 L["Zone Ability"] = "Zonen Fähigkeit"
+L["Zone Name"] = "Zonen Name"
 
 ----------------------------------
 L['blockCastByPlayers'] = "[Blocke] Gezaubert von Spieler"
@@ -1445,11 +1473,13 @@ Leben / Kraft Formate:
 'deficit' - Zeigt das Defizit. Es wird nichts angezeigt, wenn kein Defizit vorhanden ist
 
 Namensformate:
+'name:veryshort' - Name restricted to 5 characters
 'name:short' - Name auf 10 Zeichen beschränkt
 'name:medium' - Name auf 15 Zeichen beschränkt
 'name:long' - Name auf 20 Zeichen beschränkt
+'name:short:translit' - Name restricted to 10 characters with transliteration
 
-Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche http://www.tukui.org]=]
+Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche https://www.tukui.org/forum/viewtopic.php?t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu wechseln.
@@ -1622,6 +1652,7 @@ L["SOUL_SHARDS"] = "Seelensplitter";
 L["SPEED"] = "Geschwindigkeit";
 L["SPELLBOOK"] = "Zauberbuch";
 L["TALENT"] = "Talente";
+L["TALENTS"] = "Talente";
 L["TANK"] = "Schutz";
 L["TARGET"] = "Ziel";
 L["TIMEMANAGER_TITLE"] = "Uhr";

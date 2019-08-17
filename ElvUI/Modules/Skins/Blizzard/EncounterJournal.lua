@@ -6,13 +6,12 @@ local _G = _G
 local unpack = unpack
 local select = select
 local pairs = pairs
+local rad = math.rad
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
-
-local rad = math.rad
 
 local function HandleButton(btn, ...)
 	S:HandleButton(btn, ...)

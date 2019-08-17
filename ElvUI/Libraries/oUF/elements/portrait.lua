@@ -35,6 +35,14 @@ the unit.
 local _, ns = ...
 local oUF = ns.oUF
 
+-- ElvUI block
+local UnitIsUnit = UnitIsUnit
+local UnitGUID = UnitGUID
+local UnitIsConnected = UnitIsConnected
+local UnitIsVisible = UnitIsVisible
+local SetPortraitTexture = SetPortraitTexture
+-- end block
+
 local function Update(self, event, unit)
 	if(not unit or not UnitIsUnit(self.unit, unit)) then return end
 
@@ -48,6 +56,7 @@ local function Update(self, event, unit)
 	--]]
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
+	local modelUpdated = false -- ElvUI
 	local guid = UnitGUID(unit)
 	local isAvailable = UnitIsConnected(unit) and UnitIsVisible(unit)
 	if(event ~= 'OnUpdate' or element.guid ~= guid or element.state ~= isAvailable) then
@@ -58,12 +67,14 @@ local function Update(self, event, unit)
 				element:SetPosition(0, 0, 0.25)
 				element:ClearModel()
 				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
+				modelUpdated = true -- ElvUI
 			else
 				element:SetCamDistanceScale(1)
 				element:SetPortraitZoom(1)
 				element:SetPosition(0, 0, 0)
 				element:ClearModel()
 				element:SetUnit(unit)
+				modelUpdated = true -- ElvUI
 			end
 		else
 			SetPortraitTexture(element, unit)
@@ -80,7 +91,7 @@ local function Update(self, event, unit)
 	* unit - the unit for which the update has been triggered (string)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit)
+		return element:PostUpdate(unit, event, modelUpdated) -- changed by ElvUI
 	end
 end
 

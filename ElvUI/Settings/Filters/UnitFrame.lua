@@ -752,6 +752,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[261438] = Defaults(), -- Wasting Strike
 		[268202] = Defaults(), -- Death Lens
 		[278456] = Defaults(), -- Infest
+		[264153] = Defaults(), -- Spit
 
 		-- Atal'Dazar
 		[252781] = Defaults(), -- Unstable Hex
@@ -1045,9 +1046,13 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[294847] = Defaults(), -- Unstable Mixture
 		[295850] = Defaults(), -- Delirious
 		[295421] = Defaults(), -- Overflowing Venom
+		[295348] = Defaults(), -- Overflowing Chill
 		[295807] = Defaults(), -- Frozen
 		[300883] = Defaults(), -- Inversion Sickness
 		[295705] = Defaults(), -- Toxic Bolt
+		[295704] = Defaults(), -- Frost Bolt
+		[294711] = Defaults(), -- Frost Mark
+		[294715] = Defaults(), -- Toxic Brand
 
 		--The Queen’s Court
 		[301830] = Defaults(), -- Pashmar's Touch

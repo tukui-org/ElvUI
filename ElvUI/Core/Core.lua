@@ -31,9 +31,9 @@ local LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local assert, type, xpcall, next, print = assert, type, xpcall, next, print
-local gsub, strjoin, twipe, tinsert, tremove = gsub, strjoin, wipe, tinsert, tremove
+local gsub, strjoin, twipe, tinsert, tremove, tContains = gsub, strjoin, wipe, tinsert, tremove, tContains
 local format, find, strrep, strlen, sub = format, strfind, strrep, strlen, strsub
+local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
@@ -54,7 +54,6 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
-local C_Timer_After = C_Timer.After
 -- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs
 
 --Constants
@@ -666,7 +665,8 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		return str
 	end
 
-	local function recurse(tbl, ret, profileText, sameLine)
+	local sameLine
+	local function recurse(tbl, ret, profileText)
 		local lineStructure = buildLineStructure(profileText)
 		for k, v in pairs(tbl) do
 			if not sameLine then
@@ -685,7 +685,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 				tinsert(lineStructureTable, k)
 				sameLine = true
 				ret = ret..']'
-				ret = recurse(v, ret, profileText, sameLine)
+				ret = recurse(v, ret, profileText)
 			else
 				sameLine = false
 				ret = ret..'] = '
@@ -718,7 +718,8 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		twipe(lineStructureTable)
 		local ret = ""
 		if inTable and profileType then
-			ret = recurse(inTable, ret, profileText, false)
+			sameLine = false
+			ret = recurse(inTable, ret, profileText)
 		end
 
 		return ret
@@ -1029,17 +1030,14 @@ do
 				nextDelay = 0.05
 			end
 
-			C_Timer_After(nextDelay or staggerDelay, E[nextUpdate])
+			E:Delay(nextDelay or staggerDelay, E[nextUpdate])
 		end
 	end
 	E:RegisterCallback("StaggeredUpdate", CallStaggeredUpdate)
 
 	function E:StaggeredUpdateAll(event, installSetup)
 		if not self.initialized then
-			C_Timer_After(1, function()
-				E:StaggeredUpdateAll(event, installSetup)
-			end)
-
+			E:Delay(1, E.StaggeredUpdateAll, E, event, installSetup)
 			return
 		end
 
@@ -1099,18 +1097,41 @@ function E:UpdateAll(doUpdates)
 end
 
 do
-	local EventRegister = {}
-	local EventFrame = CreateFrame('Frame')
-	EventFrame:SetScript('OnEvent', function(_, event, ...)
-		if EventRegister[event] then
-			for object, functions in pairs(EventRegister[event]) do
-				for _, func in ipairs(functions) do
-					--Call the functions that are registered with this object, and pass the object and other arguments back
+	E.ObjectEventTable, E.ObjectEventFrame = {}, CreateFrame('Frame')
+	local eventFrame, eventTable = E.ObjectEventFrame, E.ObjectEventTable
+
+	eventFrame:SetScript('OnEvent', function(_, event, ...)
+		local objs = eventTable[event]
+		if objs then
+			for object, funcs in pairs(objs) do
+				for _, func in ipairs(funcs) do
 					func(object, event, ...)
 				end
 			end
 		end
 	end)
+
+	function E:HasFunctionForObject(event, object, func)
+		if not (event and object and func) then
+			E:Print('Error. Usage: HasFunctionForObject(event, object, func)')
+			return
+		end
+
+		local objs = eventTable[event]
+		local funcs = objs and objs[object]
+		return funcs and tContains(funcs, func)
+	end
+
+	function E:IsEventRegisteredForObject(event, object)
+		if not (event and object) then
+			E:Print('Error. Usage: IsEventRegisteredForObject(event, object)')
+			return
+		end
+
+		local objs = eventTable[event]
+		local funcs = objs and objs[object]
+		return funcs ~= nil, funcs
+	end
 
 	--- Registers specified event and adds specified func to be called for the specified object.
 	-- Unless all parameters are supplied it will not register.
@@ -1122,20 +1143,23 @@ do
 	-- @param object The object you want to register the event for.
 	-- @param func The function you want executed for this object.
 	function E:RegisterEventForObject(event, object, func)
-		if not event or not object or not func then
+		if not (event and object and func) then
 			E:Print('Error. Usage: RegisterEventForObject(event, object, func)')
 			return
 		end
 
-		if not EventRegister[event] then --Check if event has already been registered
-			EventRegister[event] = {}
-			EventFrame:RegisterEvent(event)
-		else
-			if not EventRegister[event][object] then --Check if this object has already been registered
-				EventRegister[event][object] = {func}
-			else
-				tinsert(EventRegister[event][object], func) --Add func that should be called for this object on this event
-			end
+		local objs = eventTable[event]
+		if not objs then
+			objs = {}
+			eventTable[event] = objs
+			pcall(eventFrame.RegisterEvent, eventFrame, event)
+		end
+
+		local funcs = objs[object]
+		if not funcs then
+			objs[object] = {func}
+		elseif not tContains(funcs, func) then
+			tinsert(funcs, func)
 		end
 	end
 
@@ -1145,29 +1169,28 @@ do
 	-- @param object The object you want to unregister a func from.
 	-- @param func The function you want unregistered for the object.
 	function E:UnregisterEventForObject(event, object, func)
-		if not event or not object or not func then
+		if not (event and object and func) then
 			E:Print('Error. Usage: UnregisterEventForObject(event, object, func)')
 			return
 		end
 
-		--Find the specified function for the specified object and remove it from the register
-		if EventRegister[event] and EventRegister[event][object] then
-			for index, registeredFunc in ipairs(EventRegister[event][object]) do
-				if func == registeredFunc then
-					tremove(EventRegister[event][object], index)
+		local objs = eventTable[event]
+		local funcs = objs and objs[object]
+		if funcs then
+			for index, fnc in ipairs(funcs) do
+				if func == fnc then
+					tremove(funcs, index)
 					break
 				end
 			end
 
-			--If this object no longer has any functions registered then remove it from the register
-			if #EventRegister[event][object] == 0 then
-				EventRegister[event][object] = nil
+			if #funcs == 0 then
+				objs[object] = nil
 			end
 
-			--If this event no longer has any objects registered then unregister it and remove it from the register
-			if not next(EventRegister[event]) then
-				EventFrame:UnregisterEvent(event)
-				EventRegister[event] = nil
+			if not next(funcs) then
+				eventFrame:UnregisterEvent(event)
+				eventTable[event] = nil
 			end
 		end
 	end

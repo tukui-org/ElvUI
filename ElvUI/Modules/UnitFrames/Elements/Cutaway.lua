@@ -4,38 +4,46 @@ local UF = E:GetModule("UnitFrames")
 local CreateFrame = CreateFrame
 
 function UF:Construct_Cutaway(frame)
-	local cutaway = CreateFrame("Frame", nil, frame)
-
-	local healthTexture = frame.Health:GetStatusBarTexture()
-	local cutawayHealth = CreateFrame("StatusBar", nil, frame.Health.ClipFrame)
-	cutawayHealth:SetStatusBarTexture(E.media.blankTex)
-	cutawayHealth:SetFrameLevel(10)
-	cutawayHealth:SetPoint("TOPLEFT", healthTexture, "TOPRIGHT")
-	cutawayHealth:SetPoint("BOTTOMLEFT", healthTexture, "BOTTOMRIGHT")
-	cutaway.Health = cutawayHealth
+	local cutaway = {}
+	local frameName = frame:GetDebugName()
 
 	if frame.Power then
 		local powerTexture = frame.Power:GetStatusBarTexture()
-		local cutawayPower = CreateFrame("StatusBar", nil, frame.Power)
-		cutawayPower:SetStatusBarTexture(E.media.blankTex)
-		cutawayPower:SetFrameLevel(frame.Power:GetFrameLevel())
+		local cutawayPower = frame.Power.ClipFrame:CreateTexture(frameName .. "CutawayPower")
 		cutawayPower:SetPoint("TOPLEFT", powerTexture, "TOPRIGHT")
 		cutawayPower:SetPoint("BOTTOMLEFT", powerTexture, "BOTTOMRIGHT")
+		cutawayPower:SetTexture(E.media.blankTex)
 		cutaway.Power = cutawayPower
 	end
+
+	local healthTexture = frame.Health:GetStatusBarTexture()
+	local cutawayHealth = frame.Health.ClipFrame:CreateTexture(frameName .. "CutawayHealth")
+	cutawayHealth:SetPoint("TOPLEFT", healthTexture, "TOPRIGHT")
+	cutawayHealth:SetPoint("BOTTOMLEFT", healthTexture, "BOTTOMRIGHT")
+	cutawayHealth:SetTexture(E.media.blankTex)
+	cutaway.Health = cutawayHealth
 
 	return cutaway
 end
 
-local healthPoints = {
+local cutawayPoints = {
+	[-4] = {"TOPLEFT", "BOTTOMLEFT"},
+	[-3] = {"TOPRIGHT", "BOTTOMRIGHT"},
+	[-2] = {"TOPRIGHT", "TOPLEFT"},
+	[-1] = {"BOTTOMRIGHT", "BOTTOMLEFT"},
 	[1] = {"TOPLEFT", "TOPRIGHT"},
 	[2] = {"BOTTOMLEFT", "BOTTOMRIGHT"},
 	[3] = {"BOTTOMLEFT", "TOPLEFT"},
 	[4] = {"BOTTOMRIGHT", "TOPRIGHT"}
 }
 
-local DEFAULT_INDEX = 1
-local VERT_INDEX = 3
+local DEFAULT_INDEX, VERT_INDEX = 1, 3
+function UF:GetPoints_Cutaway(db)
+	local index = (db.orientation == "VERTICAL" and VERT_INDEX) or DEFAULT_INDEX
+	local p1 = (db.reverseFill and -index) or index
+	local p2 = p1 + (db.reverseFill and -1 or 1)
+	return cutawayPoints[p1], cutawayPoints[p2]
+end
 
 function UF:Configure_Cutaway(frame)
 	local db = frame.db and frame.db.cutaway
@@ -50,22 +58,12 @@ function UF:Configure_Cutaway(frame)
 		frame.Cutaway:UpdateConfigurationValues(db)
 		local health = frame.Cutaway.Health
 		if health and healthEnabled then
-			local unitHealthDB = frame.db.health
-			health:SetReverseFill((unitHealthDB.reverseFill and true) or false)
-
-			local vert = unitHealthDB.orientation and unitHealthDB.orientation == "VERTICAL"
-			local pointIndex = vert and VERT_INDEX or DEFAULT_INDEX
-			local firstPoint, secondPoint = healthPoints[pointIndex], healthPoints[pointIndex+1]
+			local point1, point2 = UF:GetPoints_Cutaway(frame.db.health)
 			local barTexture = frame.Health:GetStatusBarTexture()
 
 			health:ClearAllPoints()
-			health:SetPoint(firstPoint[1], barTexture, firstPoint[2])
-			health:SetPoint(secondPoint[1], barTexture, secondPoint[2])
-
-			--Party/Raid Frames allow to change statusbar orientation
-			if unitHealthDB.orientation then
-				health:SetOrientation(unitHealthDB.orientation)
-			end
+			health:SetPoint(point1[1], barTexture, point1[2])
+			health:SetPoint(point2[1], barTexture, point2[2])
 
 			frame.Health:PostUpdateColor(frame.unit)
 		end
@@ -73,9 +71,12 @@ function UF:Configure_Cutaway(frame)
 		local power = frame.Cutaway.Power
 		local powerUsable = powerEnabled and frame.USE_POWERBAR
 		if power and powerUsable then
-			local unitPowerDB = frame.db.power
-			power:SetReverseFill((unitPowerDB.reverseFill and true) or false)
-			power:SetFrameLevel(frame.Power:GetFrameLevel())
+			local point1, point2 = UF:GetPoints_Cutaway(frame.db.power)
+			local barTexture = frame.Power:GetStatusBarTexture()
+
+			power:ClearAllPoints()
+			power:SetPoint(point1[1], barTexture, point1[2])
+			power:SetPoint(point2[1], barTexture, point2[2])
 
 			frame.Power:PostUpdateColor()
 		end

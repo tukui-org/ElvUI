@@ -6,7 +6,6 @@ local _G = _G
 local select = select
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
---WoW API / Variables
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.artifact ~= true then return end

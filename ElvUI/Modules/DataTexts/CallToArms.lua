@@ -19,8 +19,7 @@ local TANK_ICON = E:TextureString(E.Media.Textures.Tank, ":14:14")
 local HEALER_ICON = E:TextureString(E.Media.Textures.Healer, ":14:14")
 local DPS_ICON = E:TextureString(E.Media.Textures.DPS, ":14:14")
 local NOBONUSREWARDS = BATTLEGROUND_HOLIDAY..": N/A"
-local lastPanel
-local enteredFrame = false
+local enteredFrame, lastPanel = false
 
 local function MakeIconString(tank, healer, damage)
 	local str = ""
@@ -74,7 +73,7 @@ local function OnEvent(self)
 end
 
 local function OnClick()
-	PVEFrame_ToggleFrame("GroupFinderFrame", _G.LFDParentFrame);
+	PVEFrame_ToggleFrame("GroupFinderFrame", _G.LFDParentFrame)
 end
 
 local function ValueColorUpdate(hex)
@@ -123,7 +122,7 @@ local function OnEnter(self)
 
 	addTooltipHeader = true
 	for i = 1, GetNumRFDungeons() do
-		local id, name = GetRFDungeonInfo(i);
+		local id, name = GetRFDungeonInfo(i)
 		local tankReward = false
 		local healerReward = false
 		local dpsReward = false
@@ -170,8 +169,8 @@ local function Update(self, elapsed)
 end
 
 local function OnLeave()
-	DT.tooltip:Hide();
-	enteredFrame = false;
+	DT.tooltip:Hide()
+	enteredFrame = false
 end
 
 DT:RegisterDatatext('Call to Arms', {"PLAYER_ENTERING_WORLD", "LFG_UPDATE_RANDOM_INFO"}, OnEvent, Update, OnClick, OnEnter, OnLeave, BATTLEGROUND_HOLIDAY)

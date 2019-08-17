@@ -31,7 +31,6 @@ local SplitContainerItem = SplitContainerItem
 local SplitGuildBankItem = SplitGuildBankItem
 
 local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal.GetPetInfoBySpeciesID
-local C_Timer_After = C_Timer.After
 local LE_ITEM_CLASS_ARMOR = LE_ITEM_CLASS_ARMOR
 local LE_ITEM_CLASS_WEAPON = LE_ITEM_CLASS_WEAPON
 
@@ -760,7 +759,7 @@ function B:StopStacking(message, noUpdate)
 	if not noUpdate then
 		--Add a delayed update call, as BAG_UPDATE fires slightly delayed
 		-- and we don't want the last few unneeded updates to be catched
-		C_Timer_After(0.6, B.RegisterUpdateDelayed)
+		E:Delay(0.6, B.RegisterUpdateDelayed)
 	end
 
 	if message then

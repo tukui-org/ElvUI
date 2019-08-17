@@ -1,16 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 
-local _G = _G
 --Lua functions
+local _G = _G
 local min = math.min
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
-local GetScreenWidth = GetScreenWidth
-local GetScreenHeight = GetScreenHeight
-local RegisterStateDriver = RegisterStateDriver
 local GetInstanceInfo = GetInstanceInfo
+local GetScreenHeight = GetScreenHeight
+local GetScreenWidth = GetScreenWidth
+local hooksecurefunc = hooksecurefunc
+local RegisterStateDriver = RegisterStateDriver
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
@@ -28,10 +28,10 @@ local function IsFramePositionedLeft(frame)
 	local positionedLeft = false
 
 	if x and x < (screenWidth / 2) then
-		positionedLeft = true;
+		positionedLeft = true
 	end
 
-	return positionedLeft;
+	return positionedLeft
 end
 
 function B:SetObjectiveFrameAutoHide()
@@ -70,17 +70,17 @@ function B:MoveObjectiveFrame()
 
 
 	local function RewardsFrame_SetPosition(block)
-		local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame;
-		rewardsFrame:ClearAllPoints();
+		local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame
+		rewardsFrame:ClearAllPoints()
 		if E.db.general.bonusObjectivePosition == "RIGHT" or (E.db.general.bonusObjectivePosition == "AUTO" and IsFramePositionedLeft(ObjectiveTrackerFrame)) then
-			rewardsFrame:Point("TOPLEFT", block, "TOPRIGHT", -10, -4);
+			rewardsFrame:Point("TOPLEFT", block, "TOPRIGHT", -10, -4)
 		else
-			rewardsFrame:Point("TOPRIGHT", block, "TOPLEFT", 10, -4);
+			rewardsFrame:Point("TOPRIGHT", block, "TOPLEFT", 10, -4)
 		end
 	end
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)
 
-	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, _G.ObjectiveTrackerFrame, 'SecureHandlerStateTemplate');
+	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, _G.ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
 	ObjectiveTrackerFrame.AutoHider:SetAttribute("_onstate-objectiveHider", [[
 		if newstate == 1 then
 			self:Hide()
@@ -90,8 +90,8 @@ function B:MoveObjectiveFrame()
 	]])
 
 	ObjectiveTrackerFrame.AutoHider:SetScript("OnHide", function()
-		local _, _, difficulty = GetInstanceInfo();
-		if difficulty ~= 8 then
+		local _, _, difficultyID = GetInstanceInfo()
+		if difficultyID and difficultyID ~= 8 then
 			_G.ObjectiveTracker_Collapse()
 		end
 	end)

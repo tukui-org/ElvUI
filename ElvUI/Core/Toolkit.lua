@@ -298,11 +298,9 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 end
 
 local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
-	if frame.backdrop then return end
-
 	local parent = (frame.IsObjectType and frame:IsObjectType('Texture') and frame:GetParent()) or frame
-	local backdrop = CreateFrame('Frame', nil, parent)
-	frame.backdrop = backdrop
+	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent)
+	if not frame.backdrop then frame.backdrop = backdrop end
 
 	if frame.forcePixelMode or forcePixelMode then
 		backdrop:SetOutside(frame, E.mult, E.mult)
@@ -391,7 +389,7 @@ local function StripType(which, object, kill, alpha)
 			local FrameName = object.GetName and object:GetName()
 			for _, Blizzard in pairs(StripTexturesBlizzFrames) do
 				local BlizzFrame = object[Blizzard] or (FrameName and _G[FrameName..Blizzard])
-				if BlizzFrame then
+				if BlizzFrame and BlizzFrame.StripTextures then
 					BlizzFrame:StripTextures(kill, alpha)
 				end
 			end
@@ -417,13 +415,16 @@ local function StripTexts(object, kill, alpha)
 end
 
 local function FontTemplate(fs, font, fontSize, fontStyle)
-	fs.font = font
-	fs.fontSize = fontSize
-	fs.fontStyle = fontStyle
+	fs.font, fs.fontSize, fs.fontStyle = font, fontSize, fontStyle
 
 	font = font or LSM:Fetch('font', E.db.general.font)
-	fontSize = fontSize or E.db.general.fontSize
 	fontStyle = fontStyle or E.db.general.fontStyle
+
+	if fontSize and fontSize > 0 then
+		fontSize = fontSize
+	else
+		fontSize = E.db.general.fontSize
+	end
 
 	if fontStyle == 'OUTLINE' and E.db.general.font == 'Homespun' and (fontSize > 10 and not fs.fontSize) then
 		fontSize, fontStyle = 10, 'MONOCHROMEOUTLINE'

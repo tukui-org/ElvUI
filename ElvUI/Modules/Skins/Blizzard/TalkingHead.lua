@@ -6,7 +6,8 @@ local _G = _G
 --WoW API / Variables
 
 --Just some test code
---[[local talkingHeadTextureKitRegionFormatStrings = {
+--[[
+local talkingHeadTextureKitRegionFormatStrings = {
 	["TextBackground"] = "%s-TextBackground",
 	["Portrait"] = "%s-PortraitFrame",
 }
@@ -87,12 +88,8 @@ function TestTalkingHead()
 			if ( name ~= frame.NameFrame.Name:GetText() ) then
 				-- Fade out the old name and fade in the new name
 				frame.NameFrame.Fadeout:Play();
-				C_Timer.After(0.25, function()
-					frame.NameFrame.Name:SetText(name);
-				end);
-				C_Timer.After(0.5, function()
-					frame.NameFrame.Fadein:Play();
-				end);
+				E:Delay(0.25, frame.NameFrame.Name.SetText, frame.NameFrame.Name, name);
+				E:Delay(0.5, frame.NameFrame.Fadein.Play, frame.NameFrame.Fadein);
 
 				frame.MainFrame.TalkingHeadsInAnim:Play();
 			end
@@ -100,15 +97,10 @@ function TestTalkingHead()
 			if ( textFormatted ~= frame.TextFrame.Text:GetText() ) then
 				-- Fade out the old text and fade in the new text
 				frame.TextFrame.Fadeout:Play();
-				C_Timer.After(0.25, function()
-					frame.TextFrame.Text:SetText(textFormatted);
-				end);
-				C_Timer.After(0.5, function()
-					frame.TextFrame.Fadein:Play();
-				end);
+				E:Delay(0.25, frame.TextFrame.Text.SetText, frame.TextFrame.Text, textFormatted);
+				E:Delay(0.5, frame.TextFrame.Fadein.Play, frame.TextFrame.Fadein);
 			end
 		end
-
 
 		local success, voHandle = PlaySound(vo, "Talking Head", true, true);
 		if ( success ) then

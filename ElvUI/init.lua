@@ -1,17 +1,14 @@
 --[[
-~AddOn Engine~
+	~AddOn Engine~
+	To load the AddOn engine add this to the top of your file:
+		local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
-To load the AddOn engine add this to the top of your file:
-
-	local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-
-To load the AddOn engine inside another addon add this to the top of your file:
-
-	local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+	To load the AddOn engine inside another addon add this to the top of your file:
+		local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
 --Lua functions
-local _G, min, format, pairs, strsplit, unpack, wipe, type, tcopy = _G, min, format, pairs, strsplit, unpack, wipe, type, table.copy
+local _G, min, format, pairs, gsub, strsplit, unpack, wipe, type, tcopy = _G, min, format, pairs, gsub, strsplit, unpack, wipe, type, table.copy
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local issecurevariable = issecurevariable
@@ -112,47 +109,24 @@ AddOn.TotemBar = AddOn:NewModule('Totems','AceEvent-3.0')
 AddOn.UnitFrames = AddOn:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
 AddOn.WorldMap = AddOn:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 
-function AddOn:ScanTooltipTextures(clean, grabTextures)
-	local essenceTextureID, textures, essences = 2975691
-	for i = 1, 10 do
-		local tex = _G["ElvUI_ScanTooltipTexture"..i]
-		local texture = tex and tex:GetTexture()
-		if texture then
-			if grabTextures then
-				if not textures then textures = {} end
-				if texture == essenceTextureID then
-					if not essences then essences = {} end
-
-					local selected = (textures[i-1] ~= essenceTextureID and textures[i-1]) or nil
-					essences[i] = {selected, tex:GetAtlas(), texture}
-
-					if selected then
-						textures[i-1] = nil
-					end
-				else
-					textures[i] = texture
-				end
-			end
-			if clean then
-				tex:SetTexture()
-			end
-		end
+do
+	local arg2,arg3 = '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'
+	function AddOn:EscapeString(str)
+		return gsub(str,arg2,arg3)
 	end
-
-	return textures, essences
 end
 
 function AddOn:OnInitialize()
 	if not ElvCharacterDB then
-		ElvCharacterDB = {};
+		ElvCharacterDB = {}
 	end
 
 	ElvCharacterData = nil; --Depreciated
 	ElvPrivateData = nil; --Depreciated
 	ElvData = nil; --Depreciated
 
-	self.db = tcopy(self.DF.profile, true);
-	self.global = tcopy(self.DF.global, true);
+	self.db = tcopy(self.DF.profile, true)
+	self.global = tcopy(self.DF.global, true)
 
 	local ElvDB = ElvDB
 	if ElvDB then
@@ -170,7 +144,7 @@ function AddOn:OnInitialize()
 		end
 	end
 
-	self.private = tcopy(self.privateVars.profile, true);
+	self.private = tcopy(self.privateVars.profile, true)
 
 	local ElvPrivateDB = ElvPrivateDB
 	if ElvPrivateDB then
@@ -233,32 +207,33 @@ end)
 
 function AddOn:PLAYER_REGEN_ENABLED()
 	self:ToggleOptionsUI()
-	self:UnregisterEvent('PLAYER_REGEN_ENABLED');
+	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
 function AddOn:PLAYER_REGEN_DISABLED()
-	local err = false;
+	local err
 
 	if IsAddOnLoaded("ElvUI_OptionsUI") then
 		local ACD = self.Libs.AceConfigDialog
 		if ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName] then
-			self:RegisterEvent('PLAYER_REGEN_ENABLED');
-			ACD:Close(AddOnName);
-			err = true;
+			self:RegisterEvent('PLAYER_REGEN_ENABLED')
+			ACD:Close(AddOnName)
+			err = true
 		end
 	end
 
 	if self.CreatedMovers then
 		for name in pairs(self.CreatedMovers) do
-			if _G[name] and _G[name]:IsShown() then
-				err = true;
-				_G[name]:Hide();
+			local mover = _G[name]
+			if mover and mover:IsShown() then
+				mover:Hide()
+				err = true
 			end
 		end
 	end
 
-	if err == true then
-		self:Print(ERR_NOT_IN_COMBAT);
+	if err then
+		self:Print(ERR_NOT_IN_COMBAT)
 	end
 end
 
@@ -271,10 +246,10 @@ function AddOn:ResetProfile()
 	end
 
 	if profileKey and ElvPrivateDB.profiles and ElvPrivateDB.profiles[profileKey] then
-		ElvPrivateDB.profiles[profileKey] = nil;
+		ElvPrivateDB.profiles[profileKey] = nil
 	end
 
-	ElvCharacterDB = nil;
+	ElvCharacterDB = nil
 	ReloadUI()
 end
 
@@ -293,6 +268,36 @@ end
 
 function AddOn:GetConfigSize()
 	return AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height
+end
+
+function AddOn:UpdateConfigSize(reset)
+	local frame = self.GUIFrame
+	if not frame then return end
+
+	local maxWidth, maxHeight = self.UIParent:GetSize()
+	frame:SetMinResize(600, 500)
+	frame:SetMaxResize(maxWidth-50, maxHeight-50)
+
+	self.Libs.AceConfigDialog:SetDefaultSize(AddOnName, self:GetConfigDefaultSize())
+
+	local status = frame.obj and frame.obj.status
+	if status then
+		if reset then
+			self:ResetConfigSettings()
+
+			status.top, status.left = self:GetConfigPosition()
+			status.width, status.height = self:GetConfigDefaultSize()
+
+			frame.obj:ApplyStatus()
+		else
+			local top, left = self:GetConfigPosition()
+			if top and left then
+				status.top, status.left = top, left
+
+				frame.obj:ApplyStatus()
+			end
+		end
+	end
 end
 
 function AddOn:GetConfigDefaultSize()
@@ -314,7 +319,7 @@ function AddOn:ToggleOptionsUI(msg)
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
-		return;
+		return
 	end
 
 	if not IsAddOnLoaded("ElvUI_OptionsUI") then
@@ -348,7 +353,7 @@ function AddOn:ToggleOptionsUI(msg)
 	local pages, msgStr
 	if msg and msg ~= "" then
 		pages = {strsplit(',', msg)}
-		msgStr = msg:gsub(',','\001')
+		msgStr = gsub(msg, ',','\001')
 	end
 
 	local mode = 'Close'
@@ -364,13 +369,13 @@ function AddOn:ToggleOptionsUI(msg)
 					if i == 1 then
 						main = pages[i] and ACD and ACD.Status and ACD.Status.ElvUI
 						mainSel = main and main.status and main.status.groups and main.status.groups.selected
-						mainSelStr = mainSel and ('^'..mainSel:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')..'\001')
+						mainSelStr = mainSel and ('^'..self:EscapeString(mainSel)..'\001')
 						mainNode = main and main.children and main.children[pages[i]]
 						pageNodes[index+1], pageNodes[index+2] = main, mainNode
 					else
 						sub = pages[i] and pageNodes[i] and ((i == pageCount and pageNodes[i]) or pageNodes[i].children[pages[i]])
 						subSel = sub and sub.status and sub.status.groups and sub.status.groups.selected
-						subNode = (mainSelStr and msgStr:match(mainSelStr..pages[i]:gsub('([%(%)%.%%%+%-%*%?%[%^%$])','%%%1')..'$') and (subSel and subSel == pages[i])) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
+						subNode = (mainSelStr and msgStr:match(mainSelStr..self:EscapeString(pages[i])..'$') and (subSel and subSel == pages[i])) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
 						pageNodes[index+1], pageNodes[index+2] = sub, subNode
 					end
 					index = index + 2
@@ -402,20 +407,7 @@ function AddOn:ToggleOptionsUI(msg)
 				self.GUIFrame = frame
 				_G.ElvUIGUIFrame = self.GUIFrame
 
-				local maxWidth, maxHeight = self.UIParent:GetSize()
-				frame:SetMinResize(600, 500)
-				frame:SetMaxResize(maxWidth-50, maxHeight-50)
-
-				local status = frame.obj and frame.obj.status
-				if status then
-					local top, left = self:GetConfigPosition()
-					if top and left then
-						status.top, status.left = top, left
-
-						ConfigOpen:ApplyStatus()
-					end
-				end
-
+				self:UpdateConfigSize()
 				hooksecurefunc(frame, "StopMovingOrSizing", AddOn.ConfigStopMovingOrSizing)
 			end
 		end
@@ -442,7 +434,7 @@ if (_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
 				if not (issecurevariable(b, "value") or b:IsShown()) then
 					b.value = nil
 					repeat
-						j, b["fx" .. j] = j+1
+						j, b["fx" .. j] = j+1, nil
 					until issecurevariable(b, "value")
 				end
 			end
@@ -451,7 +443,7 @@ if (_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
 end
 
 --CommunitiesUI taint workaround
---credit https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
+--credit: https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
 if (_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
 	_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
@@ -463,7 +455,7 @@ if (_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
 			_G.UIDROPDOWNMENU_OPEN_MENU = nil
 			local t, f, prefix, i = _G, issecurevariable, " \0", 1
 			repeat
-				i, t[prefix .. i] = i + 1
+				i, t[prefix .. i] = i + 1, nil
 			until f("UIDROPDOWNMENU_OPEN_MENU")
 		end
 	end)

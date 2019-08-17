@@ -69,7 +69,7 @@ function B:PositionTalkingHead()
 		f:RegisterEvent("PLAYER_ENTERING_WORLD")
 		f:SetScript("OnEvent", function(frame, event)
 			frame:UnregisterEvent(event)
-			_G.TalkingHead_LoadUI();
+			_G.TalkingHead_LoadUI()
 			InitializeTalkingHead()
 			B:ScaleTalkingHeadFrame()
 		end)

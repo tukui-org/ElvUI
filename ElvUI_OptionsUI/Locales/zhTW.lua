@@ -1,6 +1,12 @@
 -- Traditional Chinese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
 
+L["Add / Remove"] = true
+L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = true
+L["Added Map ID: %s"] = true
+L["Added Instance ID: %s"] = true
+L["Added Zone Name: %s"] = true
+L["Added Subzone Name: %s"] = true
 L["# Displayed Auras"] = "顯示光環的數量"
 L["%s and then %s"] = "%s 與 %s"
 L["24-Hour Time"] = "24小時制"
@@ -18,7 +24,12 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "添加一個技能到過濾器"
 L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."] = "增加一個物品或是搜尋語法到忽略清單. 符合搜尋語法的物品將會被忽略"
 L["Add Currency ID"] = "添加貨幣 ID"
+L["Add Current"] = true
 L["Add Item or Search Syntax"] = "增加物品或是搜尋語法"
+L["Add Instance ID"] = true
+L["Add Map ID"] = true
+L["Add Subzone Name"] = true
+L["Add Zone Name"] = true
 L["Add Name or NPC ID"] = "添加姓名或 NPC ID"
 L["Add Regular Filter"] = "添加常規過濾器"
 L["Add Special Filter"] = "添加特殊過濾器"
@@ -601,8 +612,8 @@ L["If enabled then the filter will only activate if the unit is casting not inte
 L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."] = true
 L["If enabled then the filter will only activate when the unit can be attacked by the active player."] = true
 L["If enabled then the filter will only activate when the unit can not be attacked by the active player."] = true
-L["If enabled then the filter will only activate when the unit is a player's pet."] = true
-L["If enabled then the filter will only activate when the unit is not a player's pet."] = true
+L["If enabled then the filter will only activate when the unit is the active player's pet."] = true
+L["If enabled then the filter will only activate when the unit is not the active player's pet."] = true
 L["If enabled then the filter will only activate when the unit is controlled by the player."] = true
 L["If enabled then the filter will only activate when the unit is not controlled by the player."] = true
 L["If enabled then the filter will only activate when the unit is owned by the player."] = true
@@ -620,6 +631,11 @@ L["If enabled then the filter will only activate when the unit is targeting you.
 L["If enabled then the filter will only activate when you are focusing the unit."] = "如果選中則過濾器只會在你設其為專注目標時啟動"
 L["If enabled then the filter will only activate when you are in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are in combat."] = "如果選中則過濾器只會在戰鬥中啟動"
+L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID."] = true
+L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = true
+L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name."] = true
+L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
+
 L["If enabled then the filter will only activate when you are not focusing the unit."] = "如果選中則過濾器只會在你沒有設其為專注目標時啟動"
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = "如果選中則過濾器只會在你沒有選中單位的時候啟動"
@@ -657,6 +673,7 @@ L["Inset"] = "插入"
 L["Inside Information Panel"] = "插入信息面板"
 L["Install"] = "安裝"
 L["Instance Difficulty"] = "副本難度"
+L["Instance ID"] = true
 L["Instance Type"] = "副本類型"
 L["Interactive NPCs"] = "可互動的 NPC"
 L["Interruptable"] = "可斷法的施法顏色"
@@ -728,6 +745,7 @@ L["Make textures transparent."] = "材質透明"
 L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = "姓名板在此設定值下會變黃色, 在設定值一半以下會變紅色"
 L["Make the world map smaller."] = "讓世界地圖更小."
 L["Map Opacity When Moving"] = "移動時地圖透明度"
+L["Map ID"] = true
 L["Maps"] = "地圖"
 L["Masque Support"] = "Masque 支援"
 L["Match Frame Width"] = "匹配視窗寬度"
@@ -802,6 +820,7 @@ L["Non-Target Alpha"] = "非目標透明度"
 L["Not Casting Anything"] = "不在施法中"
 L["Not Channeling Anything"] = "不在引導中"
 L["Not Focused"] = "非專注目標"
+L["Not Spell"] = true
 L["Not Targeted"] = "非目標"
 L["Not Targeting Player"] = "目標不是玩家"
 L["Not Usable"] = "無法使用"
@@ -947,6 +966,10 @@ L["Reactions"] = "陣營聲望"
 L["Ready Check Icon"] = "準備確認圖標"
 L["Remaining / Max"] = "剩餘時間 / 最大時間"
 L["Remaining"] = "剩餘數值"
+L["Remove Instance ID"] = true
+L["Remove Map ID"] = true
+L["Remove Subzone Name"] = true
+L["Remove Zone Name"] = true
 L["Remove a Name or NPC ID from the list."] = "從列表中移除姓名或NPC ID"
 L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = "從過濾器中移除一個技能. 當你看見有ID在過濾器中的技能名字時使用技能ID"
 L["Remove a spell from the filter."] = "從過濾器中移除一個技能."
@@ -1124,6 +1147,7 @@ L["Sticky Chat"] = "記憶對話頻道"
 L["Strata and Level"] = "框架層級和層次"
 L["Style Filter"] = "樣式過濾器"
 L["Style"] = "風格"
+L["Subzone Name"] = true
 L["Summon Icon"] = "召喚圖標"
 L["Swap to Alt Power"] = true
 L["Tab Font Outline"] = "分頁字體描邊"
@@ -1304,6 +1328,10 @@ L["Use Dead Backdrop"] = "死亡背景"
 L["Use Default"] = "自定義默認值"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "使用拖拽的方式調整過濾器優先順序, 或者右鍵移除一個過濾器"
 L["Use Health Texture on Background"] = "在背景使用生命條材質"
+L["Use Instance ID or Name"] = true
+L["Use Map ID or Name"] = true
+L["Use Subzone Names"] = true
+L["Use Zone Names"] = true
 L["Use Portrait"] = "使用頭像"
 L["Use Position Override"] = "使用位置覆蓋"
 L["Use Real ID BattleTag"] = "使用 Real ID BattleTag"
@@ -1365,6 +1393,7 @@ L["You need to hold this modifier down in order to blacklist an aura by right-cl
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = true
 L["Your Auras First"] = "自身光環優先"
 L["Zone Ability"] = "要塞技能"
+L["Zone Name"] = true
 
 ----------------------------------
 L['blockCastByPlayers'] = "[屏蔽] 玩家施放的"
@@ -1442,11 +1471,13 @@ L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
 'deficit' - 顯示損失數值, 若未損失生命/能量值, 將不予顯示
 
 名稱格式：
+'name:veryshort' - Name restricted to 5 characters
 'name:short' - 名稱上限為 10 個字元
 'name:medium' - 名稱上限為 15 個字元
 'name:long' - 名稱上限為 20 個字元
+'name:short:translit' - Name restricted to 10 characters with transliteration
 
-若要停用此功能, 此欄位請留空。如需更多資訊, 請至 http://www.tukui.org]=]
+若要停用此功能, 此欄位請留空。如需更多資訊, 請至 https://www.tukui.org/forum/viewtopic.php?t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[此功能與巨集概念類似, 可根據不同情況切換至不同的快捷列設定。
@@ -1619,6 +1650,7 @@ L["SOUL_SHARDS"] = "靈魂裂片";
 L["SPEED"] = "速度";
 L["SPELLBOOK"] = "法術書";
 L["TALENT"] = "天賦";
+L["TALENTS"] = "天賦";
 L["TANK"] = "坦克";
 L["TARGET"] = "選取目標";
 L["TIMEMANAGER_TITLE"] = "時鐘";

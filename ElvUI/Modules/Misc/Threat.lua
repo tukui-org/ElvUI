@@ -4,8 +4,7 @@ local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local _G = _G
-local pairs, select = pairs, select
-local wipe = wipe
+local pairs, select, wipe = pairs, select, wipe
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetThreatStatusColor = GetThreatStatusColor

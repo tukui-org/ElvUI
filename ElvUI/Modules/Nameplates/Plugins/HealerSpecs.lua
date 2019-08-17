@@ -1,19 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
--- Cache global variables
 -- Lua functions
 local gsub = gsub
 local format = format
 local wipe = wipe
 -- WoW API / Variables
-local UnitName = UnitName
-local GetNumBattlefieldScores = GetNumBattlefieldScores
-local GetBattlefieldScore = GetBattlefieldScore
-local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
 local GetArenaOpponentSpec = GetArenaOpponentSpec
+local GetBattlefieldScore = GetBattlefieldScore
+local GetInstanceInfo = GetInstanceInfo
+local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
+local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetSpecializationInfoByID = GetSpecializationInfoByID
-local IsInInstance = IsInInstance
+local UnitName = UnitName
 local UNKNOWN = UNKNOWN
 
 local healerSpecIDs = {
@@ -39,8 +38,8 @@ local function WipeTable()
 end
 
 local function Event()
-	local inInstance, instanceType = IsInInstance()
-	if inInstance and (instanceType == 'pvp' or instanceType == 'arena') then
+	local _, instanceType = GetInstanceInfo()
+	if instanceType == 'pvp' or instanceType == 'arena' then
 		local numOpps = GetNumArenaOpponentSpecs()
 
 		if (numOpps == 0) then
@@ -82,13 +81,12 @@ end
 local function Update(self)
 	local element = self.HealerSpecs
 
-	local inInstance, instanceType = IsInInstance()
-
 	if (element.PreUpdate) then
 		element:PreUpdate()
 	end
 
-	if inInstance and (instanceType == 'pvp' or instanceType == 'arena') then
+	local _, instanceType = GetInstanceInfo()
+	if instanceType == 'pvp' or instanceType == 'arena' then
 		local name, realm = UnitName(self.unit)
 		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')
 		if realm then name = name.."-"..realm end
