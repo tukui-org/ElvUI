@@ -81,7 +81,9 @@ local function CopyTable(currentTable, defaultTable)
 				value = CopyTable(currentTable[option], value)
 			end
 
-			currentTable[option] = value
+			if currentTable[option] ~= defaultTable[option] and currentTable[option] == option then
+				currentTable[option] = value == true and option or value
+			end
 		end
 	end
 
@@ -126,13 +128,13 @@ function AceLocale:NewLocale(application, locale, isDefault, silent)
 	if (not app[locale]) or (app[locale] and type(app[locale]) ~= 'table') then
 		--	app[locale] = setmetatable({}, silent and readmetasilent or readmeta) -- To find missing keys
 		app[locale] = setmetatable({}, readmetasilent)
-		CopyTable(app[locale], app['enUS'])
 	end
 
 	registering = app[locale] -- remember globally for writeproxy and writedefaultproxy
 	-- end block
 
 	if isDefault then
+		app.defaultLocale = locale
 		return writedefaultproxy
 	end
 
@@ -153,6 +155,10 @@ function AceLocale:GetLocale(application, locale, silent)
 
 	if not silent and not AceLocale.apps[application] then
 		error("Usage: GetLocale(application[,locale[, silent]]): 'application' - No locales registered for '"..tostring(application).."'", 2)
+	end
+
+	if locale ~= AceLocale.apps[application].defaultLocale then
+		CopyTable(AceLocale.apps[application][locale], AceLocale.apps[application][AceLocale.apps[application].defaultLocale])
 	end
 
 	return AceLocale.apps[application][locale] or AceLocale.apps[application][gameLocale] -- Just in case the table doesn't exist it reverts to default
