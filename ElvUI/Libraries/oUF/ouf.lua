@@ -431,6 +431,10 @@ function oUF:SetActiveStyle(name)
 	style = name
 end
 
+function oUF:GetActiveStyle()
+	return style
+end
+
 do
 	local function iter(_, n)
 		-- don't expose the style functions.
