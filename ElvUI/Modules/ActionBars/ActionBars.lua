@@ -369,8 +369,8 @@ end
 vehicle_CallOnEvent = Vehicle_OnEvent
 
 local function Vehicle_OnClick(self)
-	if ( UnitOnTaxi("player") ) then
-		TaxiRequestEarlyLanding()
+	if UnitOnTaxi("player") then
+		_G.TaxiRequestEarlyLanding()
 		self:GetNormalTexture():SetVertexColor(1, 0, 0)
 		self:EnableMouse(false)
 	else

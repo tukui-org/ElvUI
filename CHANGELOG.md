@@ -1,3 +1,17 @@
+### Version 11.22 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+Fixed Style Filter error: attempt to compare nil with number (line 322).  
+Fixed bug where nameplate threat scale wasn't being reset on new units that no threat existed on.  
+Fixed (hopefully, take two) the issue which caused the unitframe and nameplate tags to sometimes be incorrect.  
+
+**Misc. Changes:**  
+
+
+___
 ### Version 11.21 [ August 17th 2019 ]
 
 **New Additions:**  
