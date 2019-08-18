@@ -1256,6 +1256,8 @@ do
 		local _, instanceType = GetInstanceInfo()
 		if not hasEnteredWorld then
 			--We only want to run Update_AllFrames once when we first log in or /reload
+			ElvUF:SetActiveStyle("ElvUF")
+			UF:LoadUnits()
 			UF:Update_AllFrames()
 			hasEnteredWorld = true
 		elseif instanceType ~= "none" then
@@ -1473,7 +1475,6 @@ function UF:Initialize()
 		self:Construct_UF(frame, unit)
 	end)
 
-	self:LoadUnits()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
