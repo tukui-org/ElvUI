@@ -22,7 +22,6 @@ function NP:ThreatIndicator_PreUpdate(unit)
 		self.isTank = E.myrole == 'TANK'
 	end
 
-	NP:ScalePlate(self.__owner, 1)
 	self.__owner.ThreatScale = nil
 	self.__owner.ThreatStatus = nil
 	self.__owner.ThreatOffTank = self.offTank
