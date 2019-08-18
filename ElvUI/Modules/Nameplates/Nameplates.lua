@@ -615,6 +615,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
+		nameplate:UpdateTags()
+
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == "NAME_PLATE_UNIT_REMOVED" then
 		NP:StyleFilterClear(nameplate) -- keep this at the top
