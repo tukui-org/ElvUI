@@ -450,7 +450,7 @@ P.nameplates = {
 		enable = true,
 		beingTankedByTank = true,
 		goodScale = 1,
-		badScale = 1.2,
+		badScale = 1,
 		useThreatColor = true,
 		indicator = false,
 	},
