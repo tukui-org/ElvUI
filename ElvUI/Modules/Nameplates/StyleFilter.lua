@@ -39,7 +39,7 @@ local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTal
 
 local FallbackColor = {r=1, b=1, g=1}
 
-mod.StyleFilterStackPattern = '(.-)\n?(%d*)$'
+mod.StyleFilterStackPattern = '([^\n]+)\n?(%d*)$'
 mod.TriggerConditions = {
 	reactions = {'hated', 'hostile', 'unfriendly', 'neutral', 'friendly', 'honored', 'revered', 'exalted'},
 	raidTargets = {'star', 'circle', 'diamond', 'triangle', 'moon', 'square', 'cross', 'skull'},
