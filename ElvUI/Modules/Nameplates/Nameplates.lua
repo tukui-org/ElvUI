@@ -577,14 +577,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
 			NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
 			NP.PlayerNamePlateAnchor:Show()
-		elseif
-			UnitIsPVPSanctuary(unit) or
-				(nameplate.isPlayer and UnitIsFriend("player", unit) and nameplate.reaction and nameplate.reaction >= 5)
-		 then
+		elseif UnitIsPVPSanctuary(unit) or (nameplate.isPlayer and UnitIsFriend("player", unit) and nameplate.reaction and nameplate.reaction >= 5) then
 			nameplate.frameType = "FRIENDLY_PLAYER"
-		elseif
-			not nameplate.isPlayer and (nameplate.reaction and nameplate.reaction >= 5) or UnitFactionGroup(unit) == "Neutral"
-		 then
+		elseif not nameplate.isPlayer and (nameplate.reaction and nameplate.reaction >= 5) or UnitFactionGroup(unit) == "Neutral" then
 			nameplate.frameType = "FRIENDLY_NPC"
 		elseif not nameplate.isPlayer and (nameplate.reaction and nameplate.reaction <= 4) then
 			nameplate.frameType = "ENEMY_NPC"
@@ -608,10 +603,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:SetupTarget(nameplate)
 		end
 
-		if
-			NP.db.fadeIn and
-				(nameplate ~= _G.ElvNP_Player or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition))
-		 then
+		if NP.db.fadeIn and (nameplate ~= _G.ElvNP_Player or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition)) then
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
