@@ -22,6 +22,7 @@ function NP:ThreatIndicator_PreUpdate(unit)
 		self.isTank = E.myrole == 'TANK'
 	end
 
+	NP:ScalePlate(self.__owner, 1)
 	self.__owner.ThreatScale = nil
 	self.__owner.ThreatStatus = nil
 	self.__owner.ThreatOffTank = self.offTank
@@ -29,7 +30,10 @@ function NP:ThreatIndicator_PreUpdate(unit)
 end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
-	if NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor and not UnitIsTapDenied(unit) and status then
+	if not status and not self.__owner.ScaleChanged then
+		self.__owner.ThreatScale = 1
+		NP:ScalePlate(self.__owner, self.__owner.ThreatScale)
+	elseif NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor and not UnitIsTapDenied(unit) and status then
 		self.__owner.Health.colorTapping = false
 		self.__owner.Health.colorDisconnected = false
 		self.__owner.Health.colorClass = false
