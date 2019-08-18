@@ -300,14 +300,8 @@ function NP:UpdatePlate(nameplate)
 	NP:Update_Tags(nameplate)
 	NP:Update_Highlight(nameplate)
 
-	if
-		(nameplate.VisibilityChanged or nameplate.NameOnlyChanged) or (not NP.db.units[nameplate.frameType].enable) or
-			NP.db.units[nameplate.frameType].nameOnly
-	 then
-		NP:DisablePlate(
-			nameplate,
-			nameplate.NameOnlyChanged or (NP.db.units[nameplate.frameType].nameOnly and not nameplate.VisibilityChanged)
-		)
+	if (nameplate.VisibilityChanged or nameplate.NameOnlyChanged) or (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
+		NP:DisablePlate(nameplate, nameplate.NameOnlyChanged or (NP.db.units[nameplate.frameType].nameOnly and not nameplate.VisibilityChanged))
 	else
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
@@ -346,45 +340,20 @@ function NP:UpdatePlate(nameplate)
 end
 
 function NP:DisablePlate(nameplate, nameOnly)
-	if nameplate:IsElementEnabled("Health") then
-		nameplate:DisableElement("Health")
-	end
-	if nameplate:IsElementEnabled("HealthPrediction") then
-		nameplate:DisableElement("HealthPrediction")
-	end
-	if nameplate:IsElementEnabled("Power") then
-		nameplate:DisableElement("Power")
-	end
-	if nameplate:IsElementEnabled("ClassificationIndicator") then
-		nameplate:DisableElement("ClassificationIndicator")
-	end
-	if nameplate:IsElementEnabled("Castbar") then
-		nameplate:DisableElement("Castbar")
-	end
-	if nameplate:IsElementEnabled("Portrait") then
-		nameplate:DisableElement("Portrait")
-	end
-	if nameplate:IsElementEnabled("QuestIcons") then
-		nameplate:DisableElement("QuestIcons")
-	end
-	if nameplate:IsElementEnabled("ThreatIndicator") then
-		nameplate:DisableElement("ThreatIndicator")
-	end
-	if nameplate:IsElementEnabled("ClassPower") then
-		nameplate:DisableElement("ClassPower")
-	end
-	if nameplate:IsElementEnabled("PvPIndicator") then
-		nameplate:DisableElement("PvPIndicator")
-	end
-	if nameplate:IsElementEnabled("PvPClassificationIndicator") then
-		nameplate:DisableElement("PvPClassificationIndicator")
-	end
-	if nameplate:IsElementEnabled("HealerSpecs") then
-		nameplate:DisableElement("HealerSpecs")
-	end
-	if nameplate:IsElementEnabled("Auras") then
-		nameplate:DisableElement("Auras")
-	end
+	if nameplate:IsElementEnabled("Health") then nameplate:DisableElement("Health") end
+	if nameplate:IsElementEnabled("HealthPrediction") then nameplate:DisableElement("HealthPrediction") end
+	if nameplate:IsElementEnabled("Power") then nameplate:DisableElement("Power") end
+	if nameplate:IsElementEnabled("ClassificationIndicator") then nameplate:DisableElement("ClassificationIndicator") end
+	if nameplate:IsElementEnabled("Castbar") then nameplate:DisableElement("Castbar") end
+	if nameplate:IsElementEnabled("Portrait") then nameplate:DisableElement("Portrait") end
+	if nameplate:IsElementEnabled("QuestIcons") then nameplate:DisableElement("QuestIcons") end
+	if nameplate:IsElementEnabled("ThreatIndicator") then nameplate:DisableElement("ThreatIndicator") end
+	if nameplate:IsElementEnabled("ClassPower") then nameplate:DisableElement("ClassPower") end
+	if nameplate:IsElementEnabled("PvPIndicator") then nameplate:DisableElement("PvPIndicator") end
+	if nameplate:IsElementEnabled("PvPClassificationIndicator") then nameplate:DisableElement("PvPClassificationIndicator") end
+	if nameplate:IsElementEnabled("HealerSpecs") then nameplate:DisableElement("HealerSpecs") end
+	if nameplate:IsElementEnabled("Auras") then nameplate:DisableElement("Auras") end
+
 	if E.myclass == "DEATHKNIGHT" and nameplate:IsElementEnabled("Runes") then
 		nameplate:DisableElement("Runes")
 	end
@@ -712,33 +681,25 @@ function NP:Initialize()
 		BlizzPlateManaBar:UnregisterAllEvents()
 	end
 
-	hooksecurefunc(
-		_G.NamePlateDriverFrame,
-		"UpdateNamePlateOptions",
-		function()
-			local Scale = E.global.general.UIScale
-			C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * Scale, NP.db.plateSize.personalHeight * Scale)
-			C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * Scale, NP.db.plateSize.enemyHeight * Scale)
-			C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * Scale, NP.db.plateSize.friendlyHeight * Scale)
-		end
-	)
+	hooksecurefunc(_G.NamePlateDriverFrame, "UpdateNamePlateOptions", function()
+		local Scale = E.global.general.UIScale
+		C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * Scale, NP.db.plateSize.personalHeight * Scale)
+		C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * Scale, NP.db.plateSize.enemyHeight * Scale)
+		C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * Scale, NP.db.plateSize.friendlyHeight * Scale)
+	end)
 
-	hooksecurefunc(
-		_G.NamePlateDriverFrame,
-		"SetupClassNameplateBars",
-		function(frame)
-			if not frame or frame:IsForbidden() then
-				return
-			end
-			if frame.classNamePlateMechanicFrame then
-				frame.classNamePlateMechanicFrame:Hide()
-			end
-			if frame.classNamePlatePowerBar then
-				frame.classNamePlatePowerBar:Hide()
-				frame.classNamePlatePowerBar:UnregisterAllEvents()
-			end
+	hooksecurefunc(_G.NamePlateDriverFrame, "SetupClassNameplateBars", function(frame)
+		if not frame or frame:IsForbidden() then
+			return
 		end
-	)
+		if frame.classNamePlateMechanicFrame then
+			frame.classNamePlateMechanicFrame:Hide()
+		end
+		if frame.classNamePlatePowerBar then
+			frame.classNamePlatePowerBar:Hide()
+			frame.classNamePlatePowerBar:UnregisterAllEvents()
+		end
+	end)
 
 	oUF:Spawn("player", "ElvNP_Player", "")
 
