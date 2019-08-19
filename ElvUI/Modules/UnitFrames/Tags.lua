@@ -7,10 +7,8 @@ local translitMark = "!"
 
 --Lua functions
 local _G = _G
-local wipe = wipe
-local floor = floor
-local unpack, pairs = unpack, pairs
 local gmatch, gsub, format = gmatch, gsub, format
+local unpack, pairs, wipe, floor = unpack, pairs, wipe, floor
 local strfind, strmatch, utf8lower, utf8sub = strfind, strmatch, string.utf8lower, string.utf8sub
 --WoW API / Variables
 local GetGuildInfo = GetGuildInfo
@@ -56,18 +54,20 @@ local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
 
 local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
-local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
-local PVP = PVP
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION
+local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
+local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
+local UNKNOWN = UNKNOWN
+local PVP = PVP
+
+local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 local SPELL_POWER_CHI = Enum.PowerType.Chi
 local SPELL_POWER_HOLY_POWER = Enum.PowerType.HolyPower
 local SPELL_POWER_MANA = Enum.PowerType.Mana
 local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
-local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
-local UNKNOWN = UNKNOWN
-local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
--- GLOBALS: Hex, PowerBarColor, _TAGS
+
+-- GLOBALS: Hex, _TAGS
 
 ------------------------------------------------------------------------
 --	Tags
@@ -444,7 +444,8 @@ ElvUF.Tags.Methods['power:max'] = function(unit)
 end
 
 ElvUF.Tags.Methods['manacolor'] = function()
-	local altR, altG, altB = PowerBarColor.MANA.r, PowerBarColor.MANA.g, PowerBarColor.MANA.b
+	local mana = _G.PowerBarColor.MANA
+	local altR, altG, altB = mana.r, mana.g, mana.b
 	local color = ElvUF.colors.power.MANA
 	if color then
 		return Hex(color[1], color[2], color[3])

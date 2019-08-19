@@ -16,7 +16,6 @@ local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
 local GetTime = GetTime
 local IsResting = IsResting
-local PowerBarColor = PowerBarColor
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
@@ -540,7 +539,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if PowerColorChanged then
 		frame.PowerColorChanged = nil
-		local color = E.db.unitframe.colors.power[frame.Power.token] or PowerBarColor[frame.Power.token] or FallbackColor
+		local color = E.db.unitframe.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
 		if color then
             frame.Power:SetStatusBarColor(color.r, color.g, color.b)
             frame.Cutaway.Power:SetVertexColor(color.r * 1.5, color.g * 1.5, color.b * 1.5, 1)
