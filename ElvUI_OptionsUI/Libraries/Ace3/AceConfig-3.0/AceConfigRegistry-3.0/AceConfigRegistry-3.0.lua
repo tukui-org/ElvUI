@@ -76,6 +76,7 @@ local basekeys={
 	descStyle=optstring,
 	order=optmethodnumber,
 	validate=optmethodfalse,
+	validatePopup=optbool,
 	confirm=optmethodbool,
 	confirmText=optstring,
 	disabled=optmethodbool,
