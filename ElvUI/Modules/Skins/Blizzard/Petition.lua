@@ -10,6 +10,7 @@ local function LoadSkin()
 	PetitionFrame:StripTextures(true)
 	PetitionFrame:SetTemplate("Transparent")
 	_G.PetitionFrameInset:Kill()
+
 	S:HandleButton(_G.PetitionFrameSignButton)
 	S:HandleButton(_G.PetitionFrameRequestButton)
 	S:HandleButton(_G.PetitionFrameRenameButton)
@@ -22,14 +23,14 @@ local function LoadSkin()
 	_G.PetitionFrameMasterName:SetTextColor(1, 1, 1)
 	_G.PetitionFrameMemberTitle:SetTextColor(1, 1, 0)
 
-	for i=1, 9 do
+	for i = 1, 9 do
 		_G["PetitionFrameMemberName"..i]:SetTextColor(1, 1, 1)
 	end
 
 	_G.PetitionFrameInstructions:SetTextColor(1, 1, 1)
 
 	_G.PetitionFrameRenameButton:Point("LEFT", _G.PetitionFrameRequestButton, "RIGHT", 3, 0)
-	_G.PetitionFrameRenameButton:Point("RIGHT", _G.etitionFrameCancelButton, "LEFT", -3, 0)
+	_G.PetitionFrameRenameButton:Point("RIGHT", _G.PetitionFrameCancelButton, "LEFT", -3, 0)
 end
 
 S:AddCallback("Petition", LoadSkin)
