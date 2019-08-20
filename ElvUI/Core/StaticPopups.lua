@@ -28,6 +28,8 @@ local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
 local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
 
+local DOWNLOAD_URL = 'https://www.tukui.org/download.php?ui=elvui'
+
 E.PopupDialogs = {}
 E.StaticPopup_DisplayedFrames = {}
 
@@ -60,7 +62,7 @@ E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 		self.editBox:SetAutoFocus(false)
 		self.editBox.width = self.editBox:GetWidth()
 		self.editBox:Width(220)
-		self.editBox:SetText('https://www.tukui.org/download.php?ui=elvui')
+		self.editBox:SetText(DOWNLOAD_URL)
 		self.editBox:HighlightText()
 		ChatEdit_FocusActiveWindow()
 	end,
@@ -80,9 +82,10 @@ E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 		self:GetParent():Hide()
 	end,
 	EditBoxOnTextChanged = function(self)
-		if(self:GetText() ~= 'https://www.tukui.org/download.php?ui=elvui') then
-			self:SetText('https://www.tukui.org/download.php?ui=elvui')
+		if self:GetText() ~= DOWNLOAD_URL then
+			self:SetText(DOWNLOAD_URL)
 		end
+
 		self:HighlightText()
 		self:ClearFocus()
 		ChatEdit_FocusActiveWindow()
