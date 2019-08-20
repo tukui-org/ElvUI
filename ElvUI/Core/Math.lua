@@ -54,7 +54,7 @@ function E:ShortValue(v,n)
 	for i=1, #E.ShortPrefixValues do
 		if abs_v >= E.ShortPrefixValues[i][1] then
 			if n then
-				local d = format("%%.%df", tonumber(n) and n or 0)
+				local d = format("%%.%df", tonumber(n) or 0)
 				return format(d..E.ShortPrefixValues[i][2], v / E.ShortPrefixValues[i][1])
 			else
 				return format(E.ShortPrefixValues[i][3], v / E.ShortPrefixValues[i][1])
