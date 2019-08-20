@@ -49,20 +49,20 @@ function E:BuildPrefixValues()
 end
 
 --Return short value of a number
-function E:ShortValue(v,n)
-	local abs_v = v<0 and -v or v
+function E:ShortValue(value, dec)
+	local abs_value = value<0 and -value or value
 	for i=1, #E.ShortPrefixValues do
-		if abs_v >= E.ShortPrefixValues[i][1] then
-			if n then
-				local d = format("%%.%df", tonumber(n) or 0)
-				return format(d..E.ShortPrefixValues[i][2], v / E.ShortPrefixValues[i][1])
+		if abs_value >= E.ShortPrefixValues[i][1] then
+			if dec then
+				local decimal = format("%%.%df", tonumber(dec) or 0)
+				return format(decimal..E.ShortPrefixValues[i][2], value / E.ShortPrefixValues[i][1])
 			else
-				return format(E.ShortPrefixValues[i][3], v / E.ShortPrefixValues[i][1])
+				return format(E.ShortPrefixValues[i][3], value / E.ShortPrefixValues[i][1])
 			end
 		end
 	end
 
-	return format("%.0f", v)
+	return format("%.0f", value)
 end
 
 function E:IsEvenNumber(num)
@@ -192,17 +192,17 @@ function E:GetFormattedText(style, min, max, dec)
 		return format(E.GetFormattedTextStyles.CURRENT, E:ShortValue(min, dec))
 	else
 		local useStyle = E.GetFormattedTextStyles[style]
+		if not useStyle then return end
+
 		if style == 'DEFICIT' then
 			local deficit = max - min
 			return (deficit > 0 and format(useStyle, E:ShortValue(deficit, dec))) or ''
 		elseif style == 'CURRENT_MAX' then
 			return format(useStyle, E:ShortValue(min, dec), E:ShortValue(max, dec))
-		else
-			if dec then
-				useStyle = gsub(useStyle, "%d", tonumber(dec) or 0)
-			end
-
+		elseif style == 'PERCENT' or style == 'CURRENT_PERCENT' or style == 'CURRENT_MAX_PERCENT' then
+			if dec then useStyle = gsub(useStyle, "%d", tonumber(dec) or 0) end
 			local perc = min / max * 100
+
 			if style == 'PERCENT' then
 				return format(useStyle, perc)
 			elseif style == 'CURRENT_PERCENT' then
