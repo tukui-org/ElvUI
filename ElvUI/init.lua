@@ -362,9 +362,9 @@ function AddOn:ToggleOptionsUI(msg)
 	local ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
 
 	local pages, msgStr
-	if msg and msg ~= "" then
+	if msg and msg ~= '' then
 		pages = {strsplit(',', msg)}
-		msgStr = gsub(msg, ',','\001')
+		msgStr = gsub(msg, ',', '\001')
 	end
 
 	local mode = 'Close'
