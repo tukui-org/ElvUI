@@ -39,7 +39,7 @@ function E:BuildPrefixValues()
 	E.ShortValueDec = format("%%.%df", E.db.general.decimalLength or 1)
 
 	for _, style in ipairs(E.ShortPrefixValues) do
-		style[2] = E.ShortValueDec..style[2]
+		style[2], style[3] = style[2], E.ShortValueDec..style[2]
 	end
 
 	local gftDec = tostring(E.db.general.decimalLength or 1)
@@ -49,11 +49,16 @@ function E:BuildPrefixValues()
 end
 
 --Return short value of a number
-function E:ShortValue(v)
+function E:ShortValue(v,n)
 	local abs_v = v<0 and -v or v
 	for i=1, #E.ShortPrefixValues do
 		if abs_v >= E.ShortPrefixValues[i][1] then
-			return format(E.ShortPrefixValues[i][2], v / E.ShortPrefixValues[i][1])
+			if n then
+				local d = format("%%.%df", tonumber(n) and n or 0)
+				return format(d..E.ShortPrefixValues[i][2], v / E.ShortPrefixValues[i][1])
+			else
+				return format(E.ShortPrefixValues[i][3], v / E.ShortPrefixValues[i][1])
+			end
 		end
 	end
 
