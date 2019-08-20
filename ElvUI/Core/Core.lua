@@ -344,7 +344,7 @@ end
 
 do	--Update font/texture paths when they are registered by the addon providing them
 	--This helps fix most of the issues with fonts or textures reverting to default because the addon providing them is loading after ElvUI.
-	--We use a wrapper to avoid errors in :UpdateMedia because "self" is passed to the function with a value other than ElvUI.
+	--We use a wrapper to avoid errors in :UpdateMedia because 'self' is passed to the function with a value other than ElvUI.
 	local function LSMCallback() E:UpdateMedia() end
 	LSM.RegisterCallback(E, 'LibSharedMedia_Registered', LSMCallback)
 end
@@ -712,7 +712,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		if not profileText then return end
 
 		twipe(lineStructureTable)
-		local ret = ""
+		local ret = ''
 		if inTable and profileType then
 			sameLine = false
 			ret = recurse(inTable, ret, profileText)
@@ -778,7 +778,7 @@ do
 					end
 				elseif msg and (msg > ver) then -- you're outdated D:
 					if not E.recievedOutOfDateMessage then
-						E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
+						E:Print(L['ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!'])
 
 						if msg and ((msg - ver) >= 0.05) and not inCombat then
 							E:StaticPopup_Show('ELVUI_UPDATE_AVAILABLE')
@@ -824,7 +824,7 @@ function E:UpdateStart(skipCallback, skipUpdateDB)
 	E:UpdateUnitFrames()
 
 	if not skipCallback then
-		E.callbacks:Fire("StaggeredUpdate")
+		E.callbacks:Fire('StaggeredUpdate')
 	end
 end
 
@@ -853,7 +853,7 @@ end
 
 function E:UpdateMoverPositions()
 	--The mover is positioned before it is resized, which causes issues for unitframes
-	--Allow movers to be "pushed" outside the screen, when they are resized they should be back in the screen area.
+	--Allow movers to be 'pushed' outside the screen, when they are resized they should be back in the screen area.
 	--We set movers to be clamped again at the bottom of this function.
 	E:SetMoversClampedToScreen(false)
 	E:SetMoversPositions()
@@ -875,7 +875,7 @@ function E:UpdateMediaItems(skipCallback)
 	E:UpdateStatusBars()
 
 	if not skipCallback then
-		E.callbacks:Fire("StaggeredUpdate")
+		E.callbacks:Fire('StaggeredUpdate')
 	end
 end
 
@@ -886,7 +886,7 @@ function E:UpdateLayout(skipCallback)
 	Layout:SetDataPanelStyle()
 
 	if not skipCallback then
-		E.callbacks:Fire("StaggeredUpdate")
+		E.callbacks:Fire('StaggeredUpdate')
 	end
 end
 
@@ -899,7 +899,7 @@ function E:UpdateActionBars(skipCallback)
 	ActionBars:UpdatePetCooldownSettings()
 
 	if not skipCallback then
-		E.callbacks:Fire("StaggeredUpdate")
+		E.callbacks:Fire('StaggeredUpdate')
 	end
 end
 
@@ -908,7 +908,7 @@ function E:UpdateNamePlates(skipCallback)
 	NamePlates:StyleFilterInitialize()
 
 	if not skipCallback then
-		E.callbacks:Fire("StaggeredUpdate")
+		E.callbacks:Fire('StaggeredUpdate')
 	end
 end
 
@@ -924,7 +924,7 @@ function E:UpdateBags(skipCallback)
 	Bags:UpdateItemLevelDisplay()
 
 	if not skipCallback then
-		E.callbacks:Fire("StaggeredUpdate")
+		E.callbacks:Fire('StaggeredUpdate')
 	end
 end
 
@@ -934,7 +934,7 @@ function E:UpdateChat(skipCallback)
 	Chat:UpdateAnchors()
 
 	if not skipCallback then
-		E.callbacks:Fire("StaggeredUpdate")
+		E.callbacks:Fire('StaggeredUpdate')
 	end
 end
 
@@ -946,7 +946,7 @@ function E:UpdateDataBars(skipCallback)
 	DataBars:UpdateDataBarDimensions()
 
 	if not skipCallback then
-		E.callbacks:Fire("StaggeredUpdate")
+		E.callbacks:Fire('StaggeredUpdate')
 	end
 end
 
@@ -954,7 +954,7 @@ function E:UpdateDataTexts(skipCallback)
 	DataTexts:LoadDataTexts()
 
 	if not skipCallback then
-		E.callbacks:Fire("StaggeredUpdate")
+		E.callbacks:Fire('StaggeredUpdate')
 	end
 end
 
@@ -962,7 +962,7 @@ function E:UpdateMinimap(skipCallback)
 	Minimap:UpdateSettings()
 
 	if not skipCallback then
-		E.callbacks:Fire("StaggeredUpdate")
+		E.callbacks:Fire('StaggeredUpdate')
 	end
 end
 
@@ -971,7 +971,7 @@ function E:UpdateAuras(skipCallback)
 	if ElvUIPlayerDebuffs then Auras:UpdateHeader(ElvUIPlayerDebuffs) end
 
 	if not skipCallback then
-		E.callbacks:Fire("StaggeredUpdate")
+		E.callbacks:Fire('StaggeredUpdate')
 	end
 end
 
@@ -986,7 +986,7 @@ function E:UpdateMisc(skipCallback)
 	Totems:ToggleEnable()
 
 	if not skipCallback then
-		E.callbacks:Fire("StaggeredUpdate")
+		E.callbacks:Fire('StaggeredUpdate')
 	end
 end
 
@@ -1029,7 +1029,7 @@ do
 			E:Delay(nextDelay or staggerDelay, E[nextUpdate])
 		end
 	end
-	E:RegisterCallback("StaggeredUpdate", CallStaggeredUpdate)
+	E:RegisterCallback('StaggeredUpdate', CallStaggeredUpdate)
 
 	function E:StaggeredUpdateAll(event, installSetup)
 		if not self.initialized then
@@ -1038,30 +1038,30 @@ do
 		end
 
 		self.installSetup = installSetup
-		if (installSetup or event and event == "OnProfileChanged" or event == "OnProfileCopied") and not self.staggerUpdateRunning then
-			tinsert(staggerTable, "UpdateLayout")
+		if (installSetup or event and event == 'OnProfileChanged' or event == 'OnProfileCopied') and not self.staggerUpdateRunning then
+			tinsert(staggerTable, 'UpdateLayout')
 			if E.private.actionbar.enable then
-				tinsert(staggerTable, "UpdateActionBars")
+				tinsert(staggerTable, 'UpdateActionBars')
 			end
 			if E.private.nameplates.enable then
-				tinsert(staggerTable, "UpdateNamePlates")
+				tinsert(staggerTable, 'UpdateNamePlates')
 			end
 			if E.private.bags.enable then
-				tinsert(staggerTable, "UpdateBags")
+				tinsert(staggerTable, 'UpdateBags')
 			end
 			if E.private.chat.enable then
-				tinsert(staggerTable, "UpdateChat")
+				tinsert(staggerTable, 'UpdateChat')
 			end
-			tinsert(staggerTable, "UpdateDataBars")
-			tinsert(staggerTable, "UpdateDataTexts")
+			tinsert(staggerTable, 'UpdateDataBars')
+			tinsert(staggerTable, 'UpdateDataTexts')
 			if E.private.general.minimap.enable then
-				tinsert(staggerTable, "UpdateMinimap")
+				tinsert(staggerTable, 'UpdateMinimap')
 			end
 			if ElvUIPlayerBuffs or ElvUIPlayerDebuffs then
-				tinsert(staggerTable, "UpdateAuras")
+				tinsert(staggerTable, 'UpdateAuras')
 			end
-			tinsert(staggerTable, "UpdateMisc")
-			tinsert(staggerTable, "UpdateEnd")
+			tinsert(staggerTable, 'UpdateMisc')
+			tinsert(staggerTable, 'UpdateEnd')
 
 			--Stagger updates
 			self.staggerUpdateRunning = true
@@ -1321,7 +1321,7 @@ function E:DBConversions()
 		end
 	end
 
-	--Convert old "Buffs and Debuffs" font size option to individual options
+	--Convert old 'Buffs and Debuffs' font size option to individual options
 	if E.db.auras.fontSize then
 		local fontSize = E.db.auras.fontSize
 		E.db.auras.buffs.countFontSize = fontSize
@@ -1497,7 +1497,7 @@ function E:Initialize()
 
 	if self.db.general.kittys then
 		self:CreateKittys()
-		self:Delay(5, self.Print, self, L["Type /hellokitty to revert to old settings."])
+		self:Delay(5, self.Print, self, L['Type /hellokitty to revert to old settings.'])
 	end
 
 	if GetCVarBool('scriptProfile') then
@@ -1505,7 +1505,7 @@ function E:Initialize()
 	end
 
 	if self.db.general.loginmessage then
-		local msg = format(L["LOGIN_MSG"], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)
+		local msg = format(L['LOGIN_MSG'], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)
 		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
 		print(msg)
 	end

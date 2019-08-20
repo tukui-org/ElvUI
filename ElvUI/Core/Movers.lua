@@ -59,14 +59,14 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	local width = parent.dirtyWidth or parent:GetWidth()
 	local height = parent.dirtyHeight or parent:GetHeight()
 
-	local f = CreateFrame("Button", name, E.UIParent)
+	local f = CreateFrame('Button', name, E.UIParent)
 	f:SetClampedToScreen(true)
-	f:RegisterForDrag("LeftButton", "RightButton")
+	f:RegisterForDrag('LeftButton', 'RightButton')
 	f:EnableMouseWheel(true)
 	f:SetMovable(true)
 	f:Width(width)
 	f:Height(height)
-	f:SetTemplate("Transparent", nil, nil, true)
+	f:SetTemplate('Transparent', nil, nil, true)
 	f:Hide()
 	f.parent = parent
 	f.name = name
@@ -79,18 +79,18 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
 	if overlay == true then
-		f:SetFrameStrata("DIALOG")
+		f:SetFrameStrata('DIALOG')
 	else
-		f:SetFrameStrata("BACKGROUND")
+		f:SetFrameStrata('BACKGROUND')
 	end
 
 	E.CreatedMovers[name].mover = f
 	E.snapBars[#E.snapBars+1] = f
 
-	local fs = f:CreateFontString(nil, "OVERLAY")
+	local fs = f:CreateFontString(nil, 'OVERLAY')
 	fs:FontTemplate()
-	fs:SetJustifyH("CENTER")
-	fs:Point("CENTER")
+	fs:SetJustifyH('CENTER')
+	fs:Point('CENTER')
 	fs:SetText(text or name)
 	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
 	f:SetFontString(fs)
@@ -106,10 +106,10 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		--Backward compatibility
 		local delim
 		local anchorString = E.db.movers[name]
-		if find(anchorString, "\031") then
-			delim = "\031"
-		elseif find(anchorString, ",") then
-			delim = ","
+		if find(anchorString, '\031') then
+			delim = '\031'
+		elseif find(anchorString, ',') then
+			delim = ','
 		end
 
 		local point1, anchor1, secondaryPoint1, x1, y1 = split(delim, anchorString)
@@ -146,10 +146,10 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		self:ClearAllPoints()
 		local overridePoint
 		if self.positionOverride then
-			if self.positionOverride == "BOTTOM" or self.positionOverride == "TOP" then
-				overridePoint = "BOTTOM"
+			if self.positionOverride == 'BOTTOM' or self.positionOverride == 'TOP' then
+				overridePoint = 'BOTTOM'
 			else
-				overridePoint = "BOTTOMLEFT"
+				overridePoint = 'BOTTOMLEFT'
 			end
 		end
 
@@ -184,13 +184,13 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	end
 
 	local function OnMouseDown(self, button)
-		if button == "LeftButton" and not isDragging then
+		if button == 'LeftButton' and not isDragging then
 			if ElvUIMoverNudgeWindow:IsShown() then
 				ElvUIMoverNudgeWindow:Hide()
 			else
 				ElvUIMoverNudgeWindow:Show()
 			end
-		elseif button == "RightButton" then
+		elseif button == 'RightButton' then
 			isDragging = false
 			if E.db.general.stickyFrames then
 				Sticky:StopMoving(self)
@@ -226,14 +226,14 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		end
 	end
 
-	f:SetScript("OnDragStart", OnDragStart)
+	f:SetScript('OnDragStart', OnDragStart)
 	f:SetScript('OnMouseUp', E.AssignFrameToNudge)
-	f:SetScript("OnDragStop", OnDragStop)
-	f:SetScript("OnEnter", OnEnter)
-	f:SetScript("OnMouseDown", OnMouseDown)
-	f:SetScript("OnLeave", OnLeave)
+	f:SetScript('OnDragStop', OnDragStop)
+	f:SetScript('OnEnter', OnEnter)
+	f:SetScript('OnMouseDown', OnMouseDown)
+	f:SetScript('OnLeave', OnLeave)
 	f:SetScript('OnShow', OnShow)
-	f:SetScript("OnMouseWheel", OnMouseWheel)
+	f:SetScript('OnMouseWheel', OnMouseWheel)
 
 	parent:SetScript('OnSizeChanged', SizeChanged)
 	parent.mover = f
@@ -242,8 +242,8 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	parent:Point(point, f, 0, 0)
 
 	if postdrag ~= nil and type(postdrag) == 'function' then
-		f:RegisterEvent("PLAYER_ENTERING_WORLD")
-		f:SetScript("OnEvent", function(self)
+		f:RegisterEvent('PLAYER_ENTERING_WORLD')
+		f:SetScript('OnEvent', function(self)
 			postdrag(f, E:GetScreenQuadrant(f))
 			self:UnregisterAllEvents()
 		end)
@@ -262,25 +262,25 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 	local point, nudgePoint, nudgeInversePoint
 
 	if y >= TOP then
-		point = "TOP"
-		nudgePoint = "TOP"
+		point = 'TOP'
+		nudgePoint = 'TOP'
 		nudgeInversePoint = 'BOTTOM'
 		y = -(screenHeight - mover:GetTop())
 	else
-		point = "BOTTOM"
-		nudgePoint = "BOTTOM"
+		point = 'BOTTOM'
+		nudgePoint = 'BOTTOM'
 		nudgeInversePoint = 'TOP'
 		y = mover:GetBottom()
 	end
 
 	if x >= RIGHT then
 		point = point..'RIGHT'
-		nudgePoint = "RIGHT"
+		nudgePoint = 'RIGHT'
 		nudgeInversePoint = 'LEFT'
 		x = mover:GetRight() - screenWidth
 	elseif x <= LEFT then
 		point = point..'LEFT'
-		nudgePoint = "LEFT"
+		nudgePoint = 'LEFT'
 		nudgeInversePoint = 'RIGHT'
 		x = mover:GetLeft()
 	else
@@ -288,22 +288,22 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 	end
 
 	if mover.positionOverride and (E.diffGetLeft and E.diffGetRight and E.diffGetTop and E.diffGetBottom) then
-		if mover.positionOverride == "TOPLEFT" then
+		if mover.positionOverride == 'TOPLEFT' then
 			x = mover:GetLeft() - E.diffGetLeft
 			y = mover:GetTop() - E.diffGetTop
-		elseif mover.positionOverride == "TOPRIGHT" then
+		elseif mover.positionOverride == 'TOPRIGHT' then
 			x = mover:GetRight() - E.diffGetRight
 			y = mover:GetTop() - E.diffGetTop
-		elseif mover.positionOverride == "BOTTOMLEFT" then
+		elseif mover.positionOverride == 'BOTTOMLEFT' then
 			x = mover:GetLeft() - E.diffGetLeft
 			y = mover:GetBottom() - E.diffGetBottom
-		elseif mover.positionOverride == "BOTTOMRIGHT" then
+		elseif mover.positionOverride == 'BOTTOMRIGHT' then
 			x = mover:GetRight() - E.diffGetRight
 			y = mover:GetBottom() - E.diffGetBottom
-		elseif mover.positionOverride == "BOTTOM" then
+		elseif mover.positionOverride == 'BOTTOM' then
 			x = mover:GetCenter() - screenCenter
 			y = mover:GetBottom() - E.diffGetBottom
-		elseif mover.positionOverride == "TOP" then
+		elseif mover.positionOverride == 'TOP' then
 			x = mover:GetCenter() - screenCenter
 			y = mover:GetTop() - E.diffGetTop
 		end
@@ -318,7 +318,7 @@ end
 
 function E:UpdatePositionOverride(name)
 	local frame = _G[name]
-	local OnDragStop = frame and frame.GetScript and frame:GetScript("OnDragStop")
+	local OnDragStop = frame and frame.GetScript and frame:GetScript('OnDragStop')
 	if OnDragStop then OnDragStop(frame) end
 end
 
@@ -398,7 +398,7 @@ end
 function E:DisableMover(name)
 	if(self.DisabledMovers[name]) then return end
 	if(not self.CreatedMovers[name]) then
-		error("mover doesn't exist")
+		error('mover doesn\'t exist')
 	end
 
 	self.DisabledMovers[name] = {}
@@ -416,7 +416,7 @@ end
 function E:EnableMover(name)
 	if(self.CreatedMovers[name]) then return end
 	if(not self.DisabledMovers[name]) then
-		error("mover doesn't exist")
+		error('mover doesn\'t exist')
 	end
 
 	self.CreatedMovers[name] = {}
@@ -446,7 +446,7 @@ function E:ResetMovers(arg)
 			f:Point(point, anchor, secondaryPoint, x, y)
 
 			for key, value in pairs(E.CreatedMovers[name]) do
-				if key == "postdrag" and type(value) == 'function' then
+				if key == 'postdrag' and type(value) == 'function' then
 					value(f, E:GetScreenQuadrant(f))
 				end
 			end
@@ -455,7 +455,7 @@ function E:ResetMovers(arg)
 	else
 		for name in pairs(E.CreatedMovers) do
 			for key, value in pairs(E.CreatedMovers[name]) do
-				if key == "text" then
+				if key == 'text' then
 					if arg == value then
 						local f = _G[name]
 						local point, anchor, secondaryPoint, x, y = split(',', E.CreatedMovers[name].point)
@@ -495,10 +495,10 @@ function E:SetMoversPositions()
 			--Backward compatibility
 			local delim
 			local anchorString = E.db.movers[name]
-			if find(anchorString, "\031") then
-				delim = "\031"
-			elseif find(anchorString, ",") then
-				delim = ","
+			if find(anchorString, '\031') then
+				delim = '\031'
+			elseif find(anchorString, ',') then
+				delim = ','
 			end
 			point, anchor, secondaryPoint, x, y = split(delim, anchorString)
 			f:ClearAllPoints()
