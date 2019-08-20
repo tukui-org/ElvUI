@@ -51,10 +51,11 @@ end
 --Return short value of a number
 function E:ShortValue(value, dec)
 	local abs_value = value<0 and -value or value
+	local decimal = dec and format("%%.%df", tonumber(dec) or 0)
+
 	for i=1, #E.ShortPrefixValues do
 		if abs_value >= E.ShortPrefixValues[i][1] then
-			if dec then
-				local decimal = format("%%.%df", tonumber(dec) or 0)
+			if decimal then
 				return format(decimal..E.ShortPrefixValues[i][2], value / E.ShortPrefixValues[i][1])
 			else
 				return format(E.ShortPrefixValues[i][3], value / E.ShortPrefixValues[i][1])
