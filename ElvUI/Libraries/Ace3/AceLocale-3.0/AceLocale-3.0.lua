@@ -2,14 +2,14 @@
 -- @class file
 -- @name AceLocale-3.0
 -- @release $Id$
-local MAJOR,MINOR = "AceLocale-3.0-ElvUI", 6
+local MAJOR,MINOR = "AceLocale-3.0-ElvUI", 7
 
 local AceLocale, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceLocale then return end -- no upgrade needed
 
 -- Lua APIs
-local assert, tostring, error = assert, tostring, error
+local assert, tostring, error, type, pairs = assert, tostring, error, type, pairs
 local getmetatable, setmetatable, rawset, rawget = getmetatable, setmetatable, rawset, rawget
 
 -- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
