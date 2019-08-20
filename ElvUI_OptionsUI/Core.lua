@@ -1,9 +1,9 @@
 local E = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule("Distributor")
 
-local _, Engine = ...
+local Engine = select(2, ...)
 Engine[1] = {}
-Engine[2] = E.Libs.ACL:GetLocale("ElvUI", E.global.general.locale or "enUS")
+Engine[2] = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
 local C, L = Engine[1], Engine[2]
 
 local _G, format, sort, tinsert = _G, format, sort, tinsert

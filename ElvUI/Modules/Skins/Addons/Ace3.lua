@@ -389,7 +389,7 @@ function S:HookAce3(lib, minor) -- lib: AceGUI
 	if not lib or (not minor or minor < minorGUI) then return end
 
 	if not S.Ace3_L then
-		S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
+		S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
 	end
 
 	if lib.RegisterAsWidget ~= S.Ace3_RegisterAsWidget then
