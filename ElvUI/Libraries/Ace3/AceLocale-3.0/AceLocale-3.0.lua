@@ -72,6 +72,7 @@ local writedefaultproxy = setmetatable({}, {
 	__index = assertfalse
 })
 
+-- ElvUI block
 local function CopyTable(currentTable, defaultTable)
 	if type(currentTable) ~= 'table' then currentTable = {} end
 
@@ -89,6 +90,7 @@ local function CopyTable(currentTable, defaultTable)
 
 	return currentTable
 end
+-- end block
 
 --- Register a new locale (or extend an existing one) for the specified application.
 -- :NewLocale will return a table you can fill your locale into, or nil if the locale isn't needed for the players
@@ -134,7 +136,7 @@ function AceLocale:NewLocale(application, locale, isDefault, silent)
 	-- end block
 
 	if isDefault then
-		app.defaultLocale = locale
+		app.defaultLocale = locale -- ElvUI
 		return writedefaultproxy
 	end
 
@@ -146,7 +148,7 @@ end
 -- @param application Unique name of addon / module
 -- @param silent If true, the locale is optional, silently return nil if it's not found (defaults to false, optional)
 -- @return The locale table for the current language.
---- Modified by ElvUI to add `locale` as second arg
+--- Modified by ElvUI to add `locale` as second arg and the CopyTable section
 function AceLocale:GetLocale(application, locale, silent)
 	if type(locale) == "boolean" then
 		silent = locale
