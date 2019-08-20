@@ -1,25 +1,6 @@
 local ElvUI = select(2, ...)
-
 ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', ElvUI[1]:GetLocale()) -- Locale doesn't exist yet, make it exist.
-
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-
-local ActionBars = E:GetModule('ActionBars')
-local AFK = E:GetModule('AFK')
-local Auras = E:GetModule('Auras')
-local Bags = E:GetModule('Bags')
-local Blizzard = E:GetModule('Blizzard')
-local Chat = E:GetModule('Chat')
-local DataBars = E:GetModule('DataBars')
-local DataTexts = E:GetModule('DataTexts')
-local Layout = E:GetModule('Layout')
-local Minimap = E:GetModule('Minimap')
-local NamePlates = E:GetModule('NamePlates')
-local Threat = E:GetModule('Threat')
-local Tooltip = E:GetModule('Tooltip')
-local Totems = E:GetModule('Totems')
-local UnitFrames = E:GetModule('UnitFrames')
-local LSM = E.Libs.LSM
 
 --Lua functions
 local _G = _G
@@ -48,6 +29,24 @@ local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 -- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs
+
+--Modules
+local ActionBars = E:GetModule('ActionBars')
+local AFK = E:GetModule('AFK')
+local Auras = E:GetModule('Auras')
+local Bags = E:GetModule('Bags')
+local Blizzard = E:GetModule('Blizzard')
+local Chat = E:GetModule('Chat')
+local DataBars = E:GetModule('DataBars')
+local DataTexts = E:GetModule('DataTexts')
+local Layout = E:GetModule('Layout')
+local Minimap = E:GetModule('Minimap')
+local NamePlates = E:GetModule('NamePlates')
+local Threat = E:GetModule('Threat')
+local Tooltip = E:GetModule('Tooltip')
+local Totems = E:GetModule('Totems')
+local UnitFrames = E:GetModule('UnitFrames')
+local LSM = E.Libs.LSM
 
 --Constants
 E.noop = function() end
