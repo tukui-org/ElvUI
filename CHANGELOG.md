@@ -6,7 +6,7 @@
 **Bug Fixes:**  
 Fixed Style Filter error: attempt to compare nil with number (line 322).  
 Fixed bug where nameplate threat scale wasn't being reset on new units that no threat existed on.  
-Fixed (hopefully, take two) the issue which caused the unitframe and nameplate tags to sometimes be incorrect.  
+Fixed (hopefully, take two) the issue which caused the nameplate tags to sometimes be incorrect.  
 Fixed a skin error on the Petition Frame which hides a button.  
 
 **Misc. Changes:**  
