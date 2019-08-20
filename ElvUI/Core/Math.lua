@@ -23,7 +23,7 @@ E.ShortPrefixStyles = {
 	["METRIC"] = {{1e12,"T"}, {1e9,"G"}, {1e6,"M"}, {1e3,"k"}}
 }
 
-local gftStyles = {
+E.GetFormattedTextStyles = {
 	['CURRENT'] = '%s',
 	['CURRENT_MAX'] = '%s - %s',
 	['CURRENT_PERCENT'] = '%s - %.1f%%',
@@ -42,9 +42,9 @@ function E:BuildPrefixValues()
 		style[3] = E.ShortValueDec..style[2]
 	end
 
-	local gftDec = tostring(E.db.general.decimalLength or 1)
-	for style, str in pairs(gftStyles) do
-		gftStyles[style] = gsub(str,"%d",gftDec)
+	local dec = tostring(E.db.general.decimalLength or 1)
+	for style, str in pairs(E.GetFormattedTextStyles) do
+		E.GetFormattedTextStyles[style] = gsub(str, "%d", dec)
 	end
 end
 
@@ -188,20 +188,29 @@ end
 function E:GetFormattedText(style, min, max, dec)
 	if max == 0 then max = 1 end
 
-	local gftUseStyle = gftStyles[style]
-	if style == 'DEFICIT' then
-		local gftDeficit = max - min
-		return (gftDeficit > 0 and format(gftUseStyle, E:ShortValue(gftDeficit, dec))) or ''
-	elseif style == 'PERCENT' then
-		return format(gftUseStyle, min / max * 100)
-	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
-		return format(gftStyles.CURRENT, E:ShortValue(min, dec))
-	elseif style == 'CURRENT_MAX' then
-		return format(gftUseStyle, E:ShortValue(min, dec), E:ShortValue(max, dec))
-	elseif style == 'CURRENT_PERCENT' then
-		return format(gftUseStyle, E:ShortValue(min, dec), min / max * 100)
-	elseif style == 'CURRENT_MAX_PERCENT' then
-		return format(gftUseStyle, E:ShortValue(min, dec), E:ShortValue(max, dec), min / max * 100)
+	if style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
+		return format(E.GetFormattedTextStyles.CURRENT, E:ShortValue(min, dec))
+	else
+		local useStyle = E.GetFormattedTextStyles[style]
+		if style == 'DEFICIT' then
+			local deficit = max - min
+			return (deficit > 0 and format(useStyle, E:ShortValue(deficit, dec))) or ''
+		elseif style == 'CURRENT_MAX' then
+			return format(useStyle, E:ShortValue(min, dec), E:ShortValue(max, dec))
+		else
+			if dec then
+				useStyle = gsub(useStyle, "%d", tonumber(dec) or 0)
+			end
+
+			local perc = min / max * 100
+			if style == 'PERCENT' then
+				return format(useStyle, perc)
+			elseif style == 'CURRENT_PERCENT' then
+				return format(useStyle, E:ShortValue(min, dec), perc)
+			elseif style == 'CURRENT_MAX_PERCENT' then
+				return format(useStyle, E:ShortValue(min, dec), E:ShortValue(max, dec), perc)
+			end
+		end
 	end
 end
 
