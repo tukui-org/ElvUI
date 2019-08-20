@@ -230,7 +230,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.movers = {}
 		end
 
-		--ActionBars
+	--ActionBars
 		E.db.actionbar.backdropSpacingConverted = true
 		E.db.actionbar.bar1.buttons = 8
 		E.db.actionbar.bar1.buttonsize = 50
@@ -250,26 +250,26 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		E.db.actionbar.bar5.enabled = false
 		E.db.actionbar.bar5.visibility = '[petbattle] hide; show'
 		E.db.actionbar.bar6.visibility = '[petbattle] hide; show'
-		--Auras
+	--Auras
 		E.db.auras.buffs.countFontSize = 10
 		E.db.auras.buffs.size = 40
 		E.db.auras.debuffs.countFontSize = 10
 		E.db.auras.debuffs.size = 40
-		--Bags
+	--Bags
 		E.db.bags.bagSize = 42
 		E.db.bags.bagWidth = 474
 		E.db.bags.bankSize = 42
 		E.db.bags.bankWidth = 474
 		E.db.bags.itemLevelCustomColorEnable = true
 		E.db.bags.scrapIcon = true
-		--Chat
+	--Chat
 		E.db.chat.fontSize = 10
 		E.db.chat.panelColorConverted = true
 		E.db.chat.separateSizes = false
 		E.db.chat.panelHeight = 236
 		E.db.chat.panelWidth = 472
 		E.db.chat.tapFontSize = 10
-		--DataBars
+	--DataBars
 		E.db.databars.azerite.height = 10
 		E.db.databars.azerite.orientation = 'HORIZONTAL'
 		E.db.databars.azerite.width = 222
@@ -284,9 +284,9 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		E.db.databars.reputation.height = 10
 		E.db.databars.reputation.orientation = 'HORIZONTAL'
 		E.db.databars.reputation.width = 222
-		--DataTexts
+	--DataTexts
 		E.db.datatexts.panels.LeftChatDataPanel.right = 'Quick Join'
-		--General
+	--General
 		E.db.general.bonusObjectivePosition = 'AUTO'
 		E.db.general.minimap.size = 220
 		E.db.general.objectiveFrameHeight = 400
@@ -294,7 +294,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		E.db.general.totems.growthDirection = 'HORIZONTAL'
 		E.db.general.totems.size = 50
 		E.db.general.totems.spacing = 8
-		--Movers
+	--Movers
 		E.db.movers.AlertFrameMover = 'TOP,ElvUIParent,TOP,-1,-18'
 		E.db.movers.AltPowerBarMover = 'TOP,ElvUIParent,TOP,-1,-36'
 		E.db.movers.AzeriteBarMover = 'TOPRIGHT,ElvUIParent,TOPRIGHT,-3,-245'
@@ -331,119 +331,119 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		E.db.movers.VehicleSeatMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-4'
 		E.db.movers.VOICECHAT = 'TOPLEFT,ElvUIParent,TOPLEFT,368,-210'
 		E.db.movers.ZoneAbility = 'BOTTOM,ElvUIParent,BOTTOM,-1,293'
-		--Tooltip
+	--Tooltip
 		E.db.tooltip.fontSize = 10
 		E.db.tooltip.healthBar.fontOutline = 'MONOCHROMEOUTLINE'
 		E.db.tooltip.healthBar.height = 12
-		--UnitFrames
+	--UnitFrames
 		E.db.unitframe.smoothbars = true
 		E.db.unitframe.thinBorders = true
-			--Player
-		E.db.unitframe.units.player.aurabar.height = 26
-		E.db.unitframe.units.player.buffs.perrow = 7
-		E.db.unitframe.units.player.castbar.height = 40
-		E.db.unitframe.units.player.castbar.insideInfoPanel = false
-		E.db.unitframe.units.player.castbar.width = 405
-		E.db.unitframe.units.player.classbar.height = 14
-		E.db.unitframe.units.player.debuffs.perrow = 7
-		E.db.unitframe.units.player.disableMouseoverGlow = true
-		E.db.unitframe.units.player.healPrediction.showOverAbsorbs = false
-		E.db.unitframe.units.player.health.attachTextTo = 'InfoPanel'
-		E.db.unitframe.units.player.height = 82
-		E.db.unitframe.units.player.infoPanel.enable = true
-		E.db.unitframe.units.player.power.attachTextTo = 'InfoPanel'
-		E.db.unitframe.units.player.power.height = 22
-			--Target
-		E.db.unitframe.units.target.aurabar.height = 26
-		E.db.unitframe.units.target.buffs.anchorPoint = 'TOPLEFT'
-		E.db.unitframe.units.target.buffs.perrow = 7
-		E.db.unitframe.units.target.castbar.height = 40
-		E.db.unitframe.units.target.castbar.insideInfoPanel = false
-		E.db.unitframe.units.target.castbar.width = 405
-		E.db.unitframe.units.target.debuffs.anchorPoint = 'TOPLEFT'
-		E.db.unitframe.units.target.debuffs.attachTo = 'FRAME'
-		E.db.unitframe.units.target.debuffs.enable = false
-		E.db.unitframe.units.target.debuffs.maxDuration = 0
-		E.db.unitframe.units.target.debuffs.perrow = 7
-		E.db.unitframe.units.target.disableMouseoverGlow = true
-		E.db.unitframe.units.target.healPrediction.showOverAbsorbs = false
-		E.db.unitframe.units.target.health.attachTextTo = 'InfoPanel'
-		E.db.unitframe.units.target.height = 82
-		E.db.unitframe.units.target.infoPanel.enable = true
-		E.db.unitframe.units.target.name.attachTextTo = 'InfoPanel'
-		E.db.unitframe.units.target.name.text_format = '[namecolor][name]'
-		E.db.unitframe.units.target.orientation = 'LEFT'
-		E.db.unitframe.units.target.power.attachTextTo = 'InfoPanel'
-		E.db.unitframe.units.target.power.height = 22
-			--TargetTarget
-		E.db.unitframe.units.targettarget.debuffs.anchorPoint = 'TOPRIGHT'
-		E.db.unitframe.units.targettarget.debuffs.enable = false
-		E.db.unitframe.units.targettarget.disableMouseoverGlow = true
-		E.db.unitframe.units.targettarget.power.enable = false
-		E.db.unitframe.units.targettarget.raidicon.attachTo = 'LEFT'
-		E.db.unitframe.units.targettarget.raidicon.enable = false
-		E.db.unitframe.units.targettarget.raidicon.xOffset = 2
-		E.db.unitframe.units.targettarget.raidicon.yOffset = 0
-		E.db.unitframe.units.targettarget.threatStyle = 'GLOW'
-		E.db.unitframe.units.targettarget.width = 270
-			--Focus
-		E.db.unitframe.units.focus.castbar.width = 270
-		E.db.unitframe.units.focus.width = 270
-			--Pet
-		E.db.unitframe.units.pet.castbar.iconSize = 32
-		E.db.unitframe.units.pet.castbar.width = 270
-		E.db.unitframe.units.pet.debuffs.anchorPoint = 'TOPRIGHT'
-		E.db.unitframe.units.pet.debuffs.enable = true
-		E.db.unitframe.units.pet.disableTargetGlow = false
-		E.db.unitframe.units.pet.infoPanel.height = 14
-		E.db.unitframe.units.pet.portrait.camDistanceScale = 2
-		E.db.unitframe.units.pet.width = 270
-			--Boss
-		E.db.unitframe.units.boss.buffs.maxDuration = 300
-		E.db.unitframe.units.boss.buffs.sizeOverride = 27
-		E.db.unitframe.units.boss.buffs.yOffset = 16
-		E.db.unitframe.units.boss.castbar.width = 246
-		E.db.unitframe.units.boss.debuffs.maxDuration = 300
-		E.db.unitframe.units.boss.debuffs.numrows = 1
-		E.db.unitframe.units.boss.debuffs.sizeOverride = 27
-		E.db.unitframe.units.boss.debuffs.yOffset = -16
-		E.db.unitframe.units.boss.height = 60
-		E.db.unitframe.units.boss.infoPanel.height = 17
-		E.db.unitframe.units.boss.portrait.camDistanceScale = 2
-		E.db.unitframe.units.boss.portrait.width = 45
-		E.db.unitframe.units.boss.width = 246
-			--Party
-		E.db.unitframe.units.party.height = 74
-		E.db.unitframe.units.party.power.height = 13
-		E.db.unitframe.units.party.rdebuffs.font = 'PT Sans Narrow'
-		E.db.unitframe.units.party.width = 231
-			--Raid
-		E.db.unitframe.units.raid.growthDirection = 'RIGHT_UP'
-		E.db.unitframe.units.raid.health.frequentUpdates = true
-		E.db.unitframe.units.raid.infoPanel.enable = true
-		E.db.unitframe.units.raid.name.attachTextTo = 'InfoPanel'
-		E.db.unitframe.units.raid.name.position = 'BOTTOMLEFT'
-		E.db.unitframe.units.raid.name.xOffset = 2
-		E.db.unitframe.units.raid.numGroups = 8
-		E.db.unitframe.units.raid.rdebuffs.font = 'PT Sans Narrow'
-		E.db.unitframe.units.raid.rdebuffs.size = 30
-		E.db.unitframe.units.raid.rdebuffs.xOffset = 30
-		E.db.unitframe.units.raid.rdebuffs.yOffset = 25
-		E.db.unitframe.units.raid.resurrectIcon.attachTo = 'BOTTOMRIGHT'
-		E.db.unitframe.units.raid.roleIcon.attachTo = 'InfoPanel'
-		E.db.unitframe.units.raid.roleIcon.position = 'BOTTOMRIGHT'
-		E.db.unitframe.units.raid.roleIcon.size = 12
-		E.db.unitframe.units.raid.roleIcon.xOffset = 0
-		E.db.unitframe.units.raid.visibility = '[@raid6,noexists] hide;show'
-		E.db.unitframe.units.raid.width = 92
-			--Raid40
-		E.db.unitframe.units.raid40.enable = false
-		E.db.unitframe.units.raid40.rdebuffs.font = 'PT Sans Narrow'
+		--Player
+			E.db.unitframe.units.player.aurabar.height = 26
+			E.db.unitframe.units.player.buffs.perrow = 7
+			E.db.unitframe.units.player.castbar.height = 40
+			E.db.unitframe.units.player.castbar.insideInfoPanel = false
+			E.db.unitframe.units.player.castbar.width = 405
+			E.db.unitframe.units.player.classbar.height = 14
+			E.db.unitframe.units.player.debuffs.perrow = 7
+			E.db.unitframe.units.player.disableMouseoverGlow = true
+			E.db.unitframe.units.player.healPrediction.showOverAbsorbs = false
+			E.db.unitframe.units.player.health.attachTextTo = 'InfoPanel'
+			E.db.unitframe.units.player.height = 82
+			E.db.unitframe.units.player.infoPanel.enable = true
+			E.db.unitframe.units.player.power.attachTextTo = 'InfoPanel'
+			E.db.unitframe.units.player.power.height = 22
+		--Target
+			E.db.unitframe.units.target.aurabar.height = 26
+			E.db.unitframe.units.target.buffs.anchorPoint = 'TOPLEFT'
+			E.db.unitframe.units.target.buffs.perrow = 7
+			E.db.unitframe.units.target.castbar.height = 40
+			E.db.unitframe.units.target.castbar.insideInfoPanel = false
+			E.db.unitframe.units.target.castbar.width = 405
+			E.db.unitframe.units.target.debuffs.anchorPoint = 'TOPLEFT'
+			E.db.unitframe.units.target.debuffs.attachTo = 'FRAME'
+			E.db.unitframe.units.target.debuffs.enable = false
+			E.db.unitframe.units.target.debuffs.maxDuration = 0
+			E.db.unitframe.units.target.debuffs.perrow = 7
+			E.db.unitframe.units.target.disableMouseoverGlow = true
+			E.db.unitframe.units.target.healPrediction.showOverAbsorbs = false
+			E.db.unitframe.units.target.health.attachTextTo = 'InfoPanel'
+			E.db.unitframe.units.target.height = 82
+			E.db.unitframe.units.target.infoPanel.enable = true
+			E.db.unitframe.units.target.name.attachTextTo = 'InfoPanel'
+			E.db.unitframe.units.target.name.text_format = '[namecolor][name]'
+			E.db.unitframe.units.target.orientation = 'LEFT'
+			E.db.unitframe.units.target.power.attachTextTo = 'InfoPanel'
+			E.db.unitframe.units.target.power.height = 22
+		--TargetTarget
+			E.db.unitframe.units.targettarget.debuffs.anchorPoint = 'TOPRIGHT'
+			E.db.unitframe.units.targettarget.debuffs.enable = false
+			E.db.unitframe.units.targettarget.disableMouseoverGlow = true
+			E.db.unitframe.units.targettarget.power.enable = false
+			E.db.unitframe.units.targettarget.raidicon.attachTo = 'LEFT'
+			E.db.unitframe.units.targettarget.raidicon.enable = false
+			E.db.unitframe.units.targettarget.raidicon.xOffset = 2
+			E.db.unitframe.units.targettarget.raidicon.yOffset = 0
+			E.db.unitframe.units.targettarget.threatStyle = 'GLOW'
+			E.db.unitframe.units.targettarget.width = 270
+		--Focus
+			E.db.unitframe.units.focus.castbar.width = 270
+			E.db.unitframe.units.focus.width = 270
+		--Pet
+			E.db.unitframe.units.pet.castbar.iconSize = 32
+			E.db.unitframe.units.pet.castbar.width = 270
+			E.db.unitframe.units.pet.debuffs.anchorPoint = 'TOPRIGHT'
+			E.db.unitframe.units.pet.debuffs.enable = true
+			E.db.unitframe.units.pet.disableTargetGlow = false
+			E.db.unitframe.units.pet.infoPanel.height = 14
+			E.db.unitframe.units.pet.portrait.camDistanceScale = 2
+			E.db.unitframe.units.pet.width = 270
+		--Boss
+			E.db.unitframe.units.boss.buffs.maxDuration = 300
+			E.db.unitframe.units.boss.buffs.sizeOverride = 27
+			E.db.unitframe.units.boss.buffs.yOffset = 16
+			E.db.unitframe.units.boss.castbar.width = 246
+			E.db.unitframe.units.boss.debuffs.maxDuration = 300
+			E.db.unitframe.units.boss.debuffs.numrows = 1
+			E.db.unitframe.units.boss.debuffs.sizeOverride = 27
+			E.db.unitframe.units.boss.debuffs.yOffset = -16
+			E.db.unitframe.units.boss.height = 60
+			E.db.unitframe.units.boss.infoPanel.height = 17
+			E.db.unitframe.units.boss.portrait.camDistanceScale = 2
+			E.db.unitframe.units.boss.portrait.width = 45
+			E.db.unitframe.units.boss.width = 246
+		--Party
+			E.db.unitframe.units.party.height = 74
+			E.db.unitframe.units.party.power.height = 13
+			E.db.unitframe.units.party.rdebuffs.font = 'PT Sans Narrow'
+			E.db.unitframe.units.party.width = 231
+		--Raid
+			E.db.unitframe.units.raid.growthDirection = 'RIGHT_UP'
+			E.db.unitframe.units.raid.health.frequentUpdates = true
+			E.db.unitframe.units.raid.infoPanel.enable = true
+			E.db.unitframe.units.raid.name.attachTextTo = 'InfoPanel'
+			E.db.unitframe.units.raid.name.position = 'BOTTOMLEFT'
+			E.db.unitframe.units.raid.name.xOffset = 2
+			E.db.unitframe.units.raid.numGroups = 8
+			E.db.unitframe.units.raid.rdebuffs.font = 'PT Sans Narrow'
+			E.db.unitframe.units.raid.rdebuffs.size = 30
+			E.db.unitframe.units.raid.rdebuffs.xOffset = 30
+			E.db.unitframe.units.raid.rdebuffs.yOffset = 25
+			E.db.unitframe.units.raid.resurrectIcon.attachTo = 'BOTTOMRIGHT'
+			E.db.unitframe.units.raid.roleIcon.attachTo = 'InfoPanel'
+			E.db.unitframe.units.raid.roleIcon.position = 'BOTTOMRIGHT'
+			E.db.unitframe.units.raid.roleIcon.size = 12
+			E.db.unitframe.units.raid.roleIcon.xOffset = 0
+			E.db.unitframe.units.raid.visibility = '[@raid6,noexists] hide;show'
+			E.db.unitframe.units.raid.width = 92
+		--Raid40
+			E.db.unitframe.units.raid40.enable = false
+			E.db.unitframe.units.raid40.rdebuffs.font = 'PT Sans Narrow'
 
 		--[[
-		--	Layout Tweaks will be handled below.
-		--	These are changes that deviate from the shared base layout
-		--]]
+			Layout Tweaks will be handled below,
+			These are changes that deviate from the shared base layout.
+		]]
 
 		if layout == 'dpsCaster' then
 			E.db.movers.ElvUF_PlayerCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,243'
