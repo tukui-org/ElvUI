@@ -185,23 +185,23 @@ function E:GetXYOffset(position, override)
 	end
 end
 
-function E:GetFormattedText(style, min, max)
+function E:GetFormattedText(style, min, max, dec)
 	if max == 0 then max = 1 end
 
 	local gftUseStyle = gftStyles[style]
 	if style == 'DEFICIT' then
 		local gftDeficit = max - min
-		return ((gftDeficit > 0) and format(gftUseStyle, E:ShortValue(gftDeficit))) or ''
+		return ((gftDeficit > 0) and format(gftUseStyle, E:ShortValue(gftDeficit, dec))) or ''
 	elseif style == 'PERCENT' then
 		return format(gftUseStyle, min / max * 100)
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
-		return format(gftStyles.CURRENT, E:ShortValue(min))
+		return format(gftStyles.CURRENT, E:ShortValue(min, dec))
 	elseif style == 'CURRENT_MAX' then
-		return format(gftUseStyle, E:ShortValue(min), E:ShortValue(max))
+		return format(gftUseStyle, E:ShortValue(min, dec), E:ShortValue(max, dec))
 	elseif style == 'CURRENT_PERCENT' then
-		return format(gftUseStyle, E:ShortValue(min), min / max * 100)
+		return format(gftUseStyle, E:ShortValue(min, dec), min / max * 100)
 	elseif style == 'CURRENT_MAX_PERCENT' then
-		return format(gftUseStyle, E:ShortValue(min), E:ShortValue(max), min / max * 100)
+		return format(gftUseStyle, E:ShortValue(min, dec), E:ShortValue(max, dec), min / max * 100)
 	end
 end
 
