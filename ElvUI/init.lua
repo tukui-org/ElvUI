@@ -10,16 +10,17 @@
 --Lua functions
 local _G, min, format, pairs, gsub, strsplit, unpack, wipe, type, tcopy = _G, min, format, pairs, gsub, strsplit, unpack, wipe, type, table.copy
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
-local issecurevariable = issecurevariable
 local CreateFrame = CreateFrame
+local GetAddOnEnableState = GetAddOnEnableState
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMetadata = GetAddOnMetadata
+local GetLocale = GetLocale
 local GetTime = GetTime
 local HideUIPanel = HideUIPanel
-local GetAddOnEnableState = GetAddOnEnableState
+local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
+local issecurevariable = issecurevariable
 local LoadAddOn = LoadAddOn
 local ReloadUI = ReloadUI
 
@@ -46,6 +47,16 @@ Engine[3] = AddOn.privateVars.profile
 Engine[4] = AddOn.DF.profile
 Engine[5] = AddOn.DF.global
 _G[AddOnName] = Engine
+
+do
+	local locale = GetLocale()
+	local convert = {enGB = 'enUS', esES = 'esMX', itIT = 'enUS'}
+	local gameLocale = convert[locale] or locale or 'enUS'
+
+	function AddOn:GetLocale()
+		return gameLocale
+	end
+end
 
 do
 	AddOn.Libs = {}

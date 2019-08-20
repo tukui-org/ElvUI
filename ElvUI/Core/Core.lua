@@ -1,13 +1,6 @@
 local ElvUI = select(2, ...)
 
-local gameLocale
-do -- Locale doesn't exist yet, make it exist.
-	local convert = {enGB = 'enUS', esES = 'esMX', itIT = 'enUS'}
-	local lang = GetLocale()
-
-	gameLocale = convert[lang] or lang or 'enUS'
-	ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', gameLocale)
-end
+ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', ElvUI[1]:GetLocale()) -- Locale doesn't exist yet, make it exist.
 
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
@@ -1281,10 +1274,6 @@ function E:DBConversions()
 	--Not sure how this one happens, but prevent it in any case
 	if E.global.general.UIScale <= 0 then
 		E.global.general.UIScale = G.general.UIScale
-	end
-
-	if gameLocale and E.global.general.locale == 'auto' then
-		E.global.general.locale = gameLocale
 	end
 
 	--Combat & Resting Icon options update
