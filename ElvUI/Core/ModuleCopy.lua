@@ -30,7 +30,7 @@ function MC:CreateModuleConfigGroup(Name, section, pluginSection)
 			general = {
 				order = 1,
 				type = 'toggle',
-				name = L['General'],
+				name = L["General"],
 			},
 			PreButtonSpacer = {
 				order = 200,
@@ -40,9 +40,9 @@ function MC:CreateModuleConfigGroup(Name, section, pluginSection)
 			import = {
 				order = 201,
 				type = 'execute',
-				name = L['Import Now'],
+				name = L["Import Now"],
 				func = function()
-					E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L['You are going to copy settings for |cffD3CF00"%s"|r from |cff4beb2c"%s"|r profile to your current |cff4beb2c"%s"|r profile. Are you sure?'], Name, E.global.profileCopy.selected, ElvDB.profileKeys[E.myname..' - '..E.myrealm])
+					E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s]\"|r profile. Are you sure?"], Name, E.global.profileCopy.selected, ElvDB.profileKeys[E.myname..' - '..E.myrealm])
 					E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
 						MC:ImportFromProfile(section, pluginSection)
 					end
@@ -52,9 +52,9 @@ function MC:CreateModuleConfigGroup(Name, section, pluginSection)
 			export = {
 				order = 202,
 				type = 'execute',
-				name = L['Export Now'],
+				name = L["Export Now"],
 				func = function()
-					E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L['You are going to copy settings for |cffD3CF00"%s"|r from your current |cff4beb2c"%s"|r profile to |cff4beb2c"%s"|r profile. Are you sure?'], Name, ElvDB.profileKeys[E.myname..' - '..E.myrealm], E.global.profileCopy.selected)
+					E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"], Name, ElvDB.profileKeys[E.myname..' - '..E.myrealm], E.global.profileCopy.selected)
 					E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
 						MC:ExportToProfile(section, pluginSection)
 					end
@@ -80,7 +80,7 @@ function MC:CreateMoversConfigGroup()
 		header = {
 			order = 0,
 			type = 'header',
-			name = L['On screen positions for different elements.'],
+			name = L["On screen positions for different elements."],
 		},
 		PreButtonSpacer = {
 			order = 200,
@@ -90,9 +90,9 @@ function MC:CreateMoversConfigGroup()
 		import = {
 			order = 201,
 			type = 'execute',
-			name = L['Import Now'],
+			name = L["Import Now"],
 			func = function()
-				E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L['You are going to copy settings for |cffD3CF00"%s"|r from |cff4beb2c"%s"|r profile to your current |cff4beb2c"%s"|r profile. Are you sure?'], L['Movers'], E.global.profileCopy.selected, ElvDB.profileKeys[E.myname..' - '..E.myrealm])
+				E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"], L["Movers"], E.global.profileCopy.selected, ElvDB.profileKeys[E.myname..' - '..E.myrealm])
 				E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
 					MC:CopyMovers('import')
 				end
@@ -102,9 +102,9 @@ function MC:CreateMoversConfigGroup()
 		export = {
 			order = 202,
 			type = 'execute',
-			name = L['Export Now'],
+			name = L["Export Now"],
 			func = function()
-				E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L['You are going to copy settings for |cffD3CF00"%s"|r from your current |cff4beb2c"%s"|r profile to |cff4beb2c"%s"|r profile. Are you sure?'], L['Movers'], ElvDB.profileKeys[E.myname..' - '..E.myrealm], E.global.profileCopy.selected)
+				E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"], L["Movers"], ElvDB.profileKeys[E.myname..' - '..E.myrealm], E.global.profileCopy.selected)
 				E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
 					MC:CopyMovers('export')
 				end

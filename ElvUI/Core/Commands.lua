@@ -55,7 +55,7 @@ function E:BGStats()
 	DT.ForceHideBGStats = nil
 	DT:LoadDataTexts()
 
-	E:Print(L['Battleground datatexts will now show again if you are inside a battleground.'])
+	E:Print(L["Battleground datatexts will now show again if you are inside a battleground."])
 end
 
 local function OnCallback(command)

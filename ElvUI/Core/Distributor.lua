@@ -77,7 +77,7 @@ function D:Distribute(target, otherServer, isGlobal)
 		elseif IsInGroup() and UnitInParty('target') then
 			self:SendCommMessage(REQUEST_PREFIX, message, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY')
 		else
-			E:Print(L['Must be in group with the player if he isn\'t on the same server as you.'])
+			E:Print(L["Must be in group with the player if he isn\'t on the same server as you."])
 			return
 		end
 	else
@@ -113,9 +113,9 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			return
 		end
 
-		local textString = format(L['%s is attempting to share the profile %s with you. Would you like to accept the request?'], sender, profile)
+		local textString = format(L["%s is attempting to share the profile %s with you. Would you like to accept the request?"], sender, profile)
 		if profile == 'global' then
-			textString = format(L['%s is attempting to share his filters with you. Would you like to accept the request?'], sender)
+			textString = format(L["%s is attempting to share his filters with you. Would you like to accept the request?"], sender)
 		end
 
 		E.PopupDialogs.DISTRIBUTOR_RESPONSE = {
@@ -123,7 +123,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			OnAccept = function()
 				self.statusBar:SetMinMaxValues(0, length)
 				self.statusBar:SetValue(0)
-				self.statusBar.text:SetFormattedText(L['Data From: %s'], sender)
+				self.statusBar.text:SetFormattedText(L["Data From: %s"], sender)
 				E:StaticPopupSpecial_Show(self.statusBar)
 				self:SendCommMessage(REPLY_PREFIX, profile..':YES', dist, sender)
 			end,
@@ -166,15 +166,15 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		local success, data = self:Deserialize(msg)
 
 		if success then
-			local textString = format(L['Profile download complete from %s, would you like to load the profile %s now?'], sender, profileKey)
+			local textString = format(L["Profile download complete from %s, would you like to load the profile %s now?"], sender, profileKey)
 
 			if profileKey == 'global' then
-				textString = format(L['Filter download complete from %s, would you like to apply changes now?'], sender)
+				textString = format(L["Filter download complete from %s, would you like to apply changes now?"], sender)
 			else
 				if not ElvDB.profiles[profileKey] then
 					ElvDB.profiles[profileKey] = data
 				else
-					textString = format(L['Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile.'], sender, profileKey)
+					textString = format(L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."], sender, profileKey)
 					E.PopupDialogs.DISTRIBUTOR_CONFIRM = {
 						text = textString,
 						button1 = ACCEPT,
@@ -509,28 +509,28 @@ function D:ImportProfile(dataString)
 end
 
 E.PopupDialogs.DISTRIBUTOR_SUCCESS = {
-	text = L['Your profile was successfully recieved by the player.'],
+	text = L["Your profile was successfully recieved by the player."],
 	whileDead = 1,
 	hideOnEscape = 1,
 	button1 = _G.OKAY,
 }
 
 E.PopupDialogs.DISTRIBUTOR_WAITING = {
-	text = L['Profile request sent. Waiting for response from player.'],
+	text = L["Profile request sent. Waiting for response from player."],
 	whileDead = 1,
 	hideOnEscape = 1,
 	timeout = 35,
 }
 
 E.PopupDialogs.DISTRIBUTOR_REQUEST_DENIED = {
-	text = L['Request was denied by user.'],
+	text = L["Request was denied by user."],
 	whileDead = 1,
 	hideOnEscape = 1,
 	button1 = _G.OKAY,
 }
 
 E.PopupDialogs.DISTRIBUTOR_FAILED = {
-	text = L['Lord! It\'s a miracle! The download up and vanished like a fart in the wind! Try Again!'],
+	text = L["Lord! It\'s a miracle! The download up and vanished like a fart in the wind! Try Again!"],
 	whileDead = 1,
 	hideOnEscape = 1,
 	button1 = _G.OKAY,
@@ -540,7 +540,7 @@ E.PopupDialogs.DISTRIBUTOR_RESPONSE = {}
 E.PopupDialogs.DISTRIBUTOR_CONFIRM = {}
 
 E.PopupDialogs.IMPORT_PROFILE_EXISTS = {
-	text = L['The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile.'],
+	text = L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	hasEditBox = 1,
@@ -567,7 +567,7 @@ E.PopupDialogs.IMPORT_PROFILE_EXISTS = {
 }
 
 E.PopupDialogs.IMPORT_RL = {
-	text = L['You have imported settings which may require a UI reload to take effect. Reload now?'],
+	text = L["You have imported settings which may require a UI reload to take effect. Reload now?"],
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = _G.ReloadUI,

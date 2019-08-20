@@ -127,7 +127,7 @@ local function SetupChat(noDisplayMsg)
 	end
 
 	if _G.InstallStepComplete and not noDisplayMsg then
-		_G.InstallStepComplete.message = L['Chat Set']
+		_G.InstallStepComplete.message = L["Chat Set"]
 		_G.InstallStepComplete:Show()
 	end
 end
@@ -154,7 +154,7 @@ local function SetupCVars(noDisplayMsg)
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
 
 	if _G.InstallStepComplete and not noDisplayMsg then
-		_G.InstallStepComplete.message = L['CVars Set']
+		_G.InstallStepComplete.message = L["CVars Set"]
 		_G.InstallStepComplete:Show()
 	end
 end
@@ -211,7 +211,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 	E:UpdateStart(true, true)
 
 	if _G.InstallStepComplete and not noDisplayMsg then
-		_G.InstallStepComplete.message = L['Theme Set']
+		_G.InstallStepComplete.message = L["Theme Set"]
 		_G.InstallStepComplete:Show()
 	end
 end
@@ -465,7 +465,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 	E:StaggeredUpdateAll(nil, true)
 
 	if _G.InstallStepComplete and not noDisplayMsg then
-		_G.InstallStepComplete.message = L['Layout Set']
+		_G.InstallStepComplete.message = L["Layout Set"]
 		_G.InstallStepComplete:Show()
 	end
 end
@@ -520,7 +520,7 @@ local function SetupAuras(style, noDisplayMsg)
 	end
 
 	if _G.InstallStepComplete and not noDisplayMsg then
-		_G.InstallStepComplete.message = L['Auras Set']
+		_G.InstallStepComplete.message = L["Auras Set"]
 		_G.InstallStepComplete:Show()
 	end
 end
@@ -587,46 +587,46 @@ local function SetPage(PageNum)
 
 	local f = ElvUIInstallFrame
 	if PageNum == 1 then
-		f.SubTitle:SetFormattedText(L['Welcome to ElvUI version %s!'], E.version)
-		f.Desc1:SetText(L['This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage.'])
-		f.Desc2:SetText(L['The in-game configuration menu can be accessed by typing the /ec command or by clicking the \'C\' button on the minimap. Press the button below if you wish to skip the installation process.'])
-		f.Desc3:SetText(L['Please press the continue button to go onto the next step.'])
+		f.SubTitle:SetFormattedText(L["Welcome to ElvUI version %s!"], E.version)
+		f.Desc1:SetText(L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."])
+		f.Desc2:SetText(L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the \'C\' button on the minimap. Press the button below if you wish to skip the installation process."])
+		f.Desc3:SetText(L["Please press the continue button to go onto the next step."])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', InstallComplete)
-		InstallOption1Button:SetText(L['Skip Process'])
+		InstallOption1Button:SetText(L["Skip Process"])
 	elseif PageNum == 2 then
-		f.SubTitle:SetText(L['CVars'])
-		f.Desc1:SetText(L['This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly.'])
-		f.Desc2:SetText(L['Please click the button below to setup your CVars.'])
-		f.Desc3:SetText(L['Importance: |cff07D400High|r'])
+		f.SubTitle:SetText(L["CVars"])
+		f.Desc1:SetText(L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."])
+		f.Desc2:SetText(L["Please click the button below to setup your CVars."])
+		f.Desc3:SetText(L["Importance: |cff07D400High|r"])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', SetupCVars)
-		InstallOption1Button:SetText(L['Setup CVars'])
+		InstallOption1Button:SetText(L["Setup CVars"])
 	elseif PageNum == 3 then
-		f.SubTitle:SetText(L['Chat'])
-		f.Desc1:SetText(L['This part of the installation process sets up your chat windows names, positions and colors.'])
-		f.Desc2:SetText(L['The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows.'])
-		f.Desc3:SetText(L['Importance: |cffD3CF00Medium|r'])
+		f.SubTitle:SetText(L["Chat"])
+		f.Desc1:SetText(L["This part of the installation process sets up your chat windows names, positions and colors."])
+		f.Desc2:SetText(L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."])
+		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', SetupChat)
-		InstallOption1Button:SetText(L['Setup Chat'])
+		InstallOption1Button:SetText(L["Setup Chat"])
 	elseif PageNum == 4 then
-		f.SubTitle:SetText(L['Theme Setup'])
-		f.Desc1:SetText(L['Choose a theme layout you wish to use for your initial setup.'])
-		f.Desc2:SetText(L['You can always change fonts and colors of any element of ElvUI from the in-game configuration.'])
-		f.Desc3:SetText(L['Importance: |cffFF0000Low|r'])
+		f.SubTitle:SetText(L["Theme Setup"])
+		f.Desc1:SetText(L["Choose a theme layout you wish to use for your initial setup."])
+		f.Desc2:SetText(L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."])
+		f.Desc3:SetText(L["Importance: |cffFF0000Low|r"])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E:SetupTheme('classic') end)
-		InstallOption1Button:SetText(L['Classic'])
+		InstallOption1Button:SetText(L["Classic"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E:SetupTheme('default') end)
-		InstallOption2Button:SetText(L['Dark'])
+		InstallOption2Button:SetText(L["Dark"])
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('class') end)
 		InstallOption3Button:SetText(CLASS)
 	elseif PageNum == 5 then
 		f.SubTitle:SetText(_G.UISCALE)
-		f.Desc1:SetFormattedText(L['Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically.'])
+		f.Desc1:SetFormattedText(L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."])
 		InstallSlider:Show()
 		InstallSlider:SetValueStep(0.01)
 		InstallSlider:SetObeyStepOnDrag(true)
@@ -654,49 +654,49 @@ local function SetPage(PageNum)
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 		end)
 
-		InstallOption1Button:SetText(L['Auto Scale'])
+		InstallOption1Button:SetText(L["Auto Scale"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function()
 			E:PixelScaleChanged(nil, true)
 		end)
 
-		InstallOption2Button:SetText(L['Preview'])
-		f.Desc3:SetText(L['Importance: |cff07D400High|r'])
+		InstallOption2Button:SetText(L["Preview"])
+		f.Desc3:SetText(L["Importance: |cff07D400High|r"])
 	elseif PageNum == 6 then
-		f.SubTitle:SetText(L['Layout'])
-		f.Desc1:SetText(L['You can now choose what layout you wish to use based on your combat role.'])
-		f.Desc2:SetText(L['This will change the layout of your unitframes and actionbars.'])
-		f.Desc3:SetText(L['Importance: |cffD3CF00Medium|r'])
+		f.SubTitle:SetText(L["Layout"])
+		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
+		f.Desc2:SetText(L["This will change the layout of your unitframes and actionbars."])
+		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('tank') end)
-		InstallOption1Button:SetText(L['Tank / Physical DPS'])
+		InstallOption1Button:SetText(L["Tank / Physical DPS"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('healer') end)
-		InstallOption2Button:SetText(L['Healer'])
+		InstallOption2Button:SetText(L["Healer"])
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
-		InstallOption3Button:SetText(L['Caster DPS'])
+		InstallOption3Button:SetText(L["Caster DPS"])
 	elseif PageNum == 7 then
-		f.SubTitle:SetText(L['Auras'])
-		f.Desc1:SetText(L['Select the type of aura system you want to use with ElvUI\'s unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons.'])
-		f.Desc2:SetText(L['If you have an icon or aurabar that you don\'t want to display simply hold down shift and right click the icon for it to disapear.'])
-		f.Desc3:SetText(L['Importance: |cffD3CF00Medium|r'])
+		f.SubTitle:SetText(L["Auras"])
+		f.Desc1:SetText(L["Select the type of aura system you want to use with ElvUI\'s unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."])
+		f.Desc2:SetText(L["If you have an icon or aurabar that you don\'t want to display simply hold down shift and right click the icon for it to disapear."])
+		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() SetupAuras(true) end)
-		InstallOption1Button:SetText(L['Aura Bars & Icons'])
+		InstallOption1Button:SetText(L["Aura Bars & Icons"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() SetupAuras() end)
-		InstallOption2Button:SetText(L['Icons Only'])
+		InstallOption2Button:SetText(L["Icons Only"])
 	elseif PageNum == 8 then
-		f.SubTitle:SetText(L['Installation Complete'])
-		f.Desc1:SetText(L['You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org.'])
-		f.Desc2:SetText(L['Please click the button below so you can setup variables and ReloadUI.'])
+		f.SubTitle:SetText(L["Installation Complete"])
+		f.Desc1:SetText(L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."])
+		f.Desc2:SetText(L["Please click the button below so you can setup variables and ReloadUI."])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.gg/xFWcfgE') end)
-		InstallOption1Button:SetText(L['Discord'])
+		InstallOption1Button:SetText(L["Discord"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', InstallComplete)
-		InstallOption2Button:SetText(L['Finished'])
+		InstallOption2Button:SetText(L["Finished"])
 		ElvUIInstallFrame:Size(550, 350)
 	end
 end
@@ -781,7 +781,7 @@ function E:Install()
 		f.Title = f:CreateFontString(nil, 'OVERLAY')
 		f.Title:FontTemplate(nil, 17, nil)
 		f.Title:Point('TOP', 0, -5)
-		f.Title:SetText(L['ElvUI Installation'])
+		f.Title:SetText(L["ElvUI Installation"])
 
 		f.Next = CreateFrame('Button', 'InstallNextButton', f, 'UIPanelButtonTemplate')
 		f.Next:Size(110, 25)

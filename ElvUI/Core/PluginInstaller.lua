@@ -330,10 +330,10 @@ function PI:CreateFrame()
 	f.pending:CreateBackdrop('Transparent')
 	f.pending:SetScript('OnEnter', function(self)
 		_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', E.PixelMode and -7 or -9)
-		_G.GameTooltip:AddLine(L['List of installations in queue:'], 1, 1, 1)
+		_G.GameTooltip:AddLine(L["List of installations in queue:"], 1, 1, 1)
 		_G.GameTooltip:AddLine(' ')
 		for i = 1, #PI.Installs do
-			_G.GameTooltip:AddDoubleLine(format('%d. %s', i, (PI.Installs[i].Name or UNKNOWN)), i == 1 and format('|cff00FF00%s|r', L['In Progress']) or format('|cffFF0000%s|r', L['Pending']))
+			_G.GameTooltip:AddDoubleLine(format('%d. %s', i, (PI.Installs[i].Name or UNKNOWN)), i == 1 and format('|cff00FF00%s|r', L["In Progress"]) or format('|cffFF0000%s|r', L["Pending"]))
 		end
 		_G.GameTooltip:Show()
 	end)
@@ -353,7 +353,7 @@ function PI:CreateFrame()
 	f.side.text = f.side:CreateFontString(nil, 'OVERLAY')
 	f.side.text:SetPoint('TOP', f.side, 'TOP', 0, -4)
 	f.side.text:FontTemplate(E.media.normFont, 18, 'OUTLINE')
-	f.side.text:SetText(L['Steps'])
+	f.side.text:SetText(L["Steps"])
 	f.side.Lines = {} --Table to keep shown lines
 	f.side:Hide()
 	for i = 1, 18 do
@@ -415,7 +415,7 @@ function PI:RunInstall()
 		f.CurrentPage = 0
 		f.MaxPage = #(db.Pages)
 
-		f.Title:SetText(db.Title or L['ElvUI Plugin Installation'])
+		f.Title:SetText(db.Title or L["ElvUI Plugin Installation"])
 		f.Status:SetMinMaxValues(0, f.MaxPage)
 		f.Status.text:SetText(f.CurrentPage..' / '..f.MaxPage)
 		f.tutorialImage:SetTexture(db.tutorialImage or E.Media.Textures.Logo)

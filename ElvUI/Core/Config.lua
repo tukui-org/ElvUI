@@ -273,10 +273,10 @@ function E:CreateMoverPopup()
 	desc:SetJustifyH('LEFT')
 	desc:Point('TOPLEFT', 18, -20)
 	desc:Point('BOTTOMRIGHT', -18, 48)
-	desc:SetText(L['DESC_MOVERCONFIG'])
+	desc:SetText(L["DESC_MOVERCONFIG"])
 
 	local snapping = CreateFrame('CheckButton', f:GetName()..'CheckButton', f, 'OptionsCheckButtonTemplate')
-	_G[snapping:GetName() .. 'Text']:SetText(L['Sticky Frames'])
+	_G[snapping:GetName() .. 'Text']:SetText(L["Sticky Frames"])
 
 	snapping:SetScript('OnShow', function(cb)
 		cb:SetChecked(E.db.general.stickyFrames)
@@ -287,7 +287,7 @@ function E:CreateMoverPopup()
 	end)
 
 	local lock = CreateFrame('Button', f:GetName()..'CloseButton', f, 'OptionsButtonTemplate')
-	_G[lock:GetName() .. 'Text']:SetText(L['Lock'])
+	_G[lock:GetName() .. 'Text']:SetText(L["Lock"])
 
 	lock:SetScript('OnClick', function()
 		E:ToggleMoveMode(true)
@@ -333,7 +333,7 @@ function E:CreateMoverPopup()
 
 	align.text = align:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	align.text:Point('RIGHT', align, 'LEFT', -4, 0)
-	align.text:SetText(L['Grid Size:'])
+	align.text:SetText(L["Grid Size:"])
 
 	--position buttons
 	snapping:Point('BOTTOMLEFT', 14, 10)
@@ -358,7 +358,7 @@ function E:CreateMoverPopup()
 	S:HandleDropDownBox(configMode, 165)
 	configMode.text = configMode:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	configMode.text:Point('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
-	configMode.text:SetText(L['Config Mode:'])
+	configMode.text:SetText(L["Config Mode:"])
 
 	_G.UIDropDownMenu_Initialize(configMode, ConfigMode_Initialize)
 
@@ -408,7 +408,7 @@ function E:CreateMoverPopup()
 	title = header:CreateFontString('OVERLAY')
 	title:FontTemplate()
 	title:Point('CENTER', header, 'CENTER')
-	title:SetText(L['Nudge'])
+	title:SetText(L["Nudge"])
 
 	local xOffset = CreateFrame('EditBox', nudgeFrame:GetName()..'XEditBox', nudgeFrame, 'InputBoxTemplate')
 	xOffset:Width(50)

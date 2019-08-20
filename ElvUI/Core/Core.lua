@@ -778,7 +778,7 @@ do
 					end
 				elseif msg and (msg > ver) then -- you're outdated D:
 					if not E.recievedOutOfDateMessage then
-						E:Print(L['ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!'])
+						E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
 
 						if msg and ((msg - ver) >= 0.05) and not inCombat then
 							E:StaticPopup_Show('ELVUI_UPDATE_AVAILABLE')
@@ -1497,7 +1497,7 @@ function E:Initialize()
 
 	if self.db.general.kittys then
 		self:CreateKittys()
-		self:Delay(5, self.Print, self, L['Type /hellokitty to revert to old settings.'])
+		self:Delay(5, self.Print, self, L["Type /hellokitty to revert to old settings."])
 	end
 
 	if GetCVarBool('scriptProfile') then
@@ -1505,7 +1505,7 @@ function E:Initialize()
 	end
 
 	if self.db.general.loginmessage then
-		local msg = format(L['LOGIN_MSG'], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)
+		local msg = format(L["LOGIN_MSG"], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)
 		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
 		print(msg)
 	end
