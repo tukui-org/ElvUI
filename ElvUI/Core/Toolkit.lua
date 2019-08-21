@@ -110,11 +110,11 @@ function E:BuildPixelBorders(frame, noSecureHook)
 		local borders = {}
 
 		for _, v in pairs(E.PixelBorders) do
-			borders[v] = frame:CreateTexture('$parentPixelBorder'..v, 'BORDER', nil, 1)
+			borders[v] = frame:CreateTexture('$parentPixelBorder'..v, 'BORDER')
 			borders[v]:SetTexture(E.media.blankTex)
 		end
 
-		borders.CENTER = frame:CreateTexture('$parentPixelBorderCENTER', 'BACKGROUND', nil, -8)
+		borders.CENTER = frame:CreateTexture('$parentPixelBorderCENTER', 'BACKGROUND')
 
 		borders.TOPLEFT:Point('BOTTOMRIGHT', borders.CENTER, 'TOPLEFT', 1, -1)
 		borders.TOPRIGHT:Point('BOTTOMLEFT', borders.CENTER, 'TOPRIGHT', -1, -1)
