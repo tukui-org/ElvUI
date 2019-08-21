@@ -451,24 +451,26 @@ function S:HandleDropDownBox(frame, width)
 	frame:StripTextures()
 	frame:CreateBackdrop()
 	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
-	frame.backdrop:SetPoint("TOPLEFT", frame.Left, 20, -21)
-	frame.backdrop:SetPoint("BOTTOMRIGHT", frame.Right, -19, 23)
+	frame.backdrop:Point("TOPLEFT", frame.Left, 20, -21)
+	frame.backdrop:Point("BOTTOMRIGHT", frame.Right, -19, 23)
 
 	if width then
 		frame:Width(width)
 	end
 
-	local button = frame.Button
+	local FrameName = frame.GetName and frame:GetName()
+	-- We need to check first for frame.Button otherwise it will fail on some elements
+	local button = frame.Button or FrameName and _G[FrameName..'Button']
 	if button then
 		button:ClearAllPoints()
-		button:SetPoint("TOPRIGHT", frame.Right, -19, -21)
+		button:Point("TOPRIGHT", -16, -5)
 		button:SetSize(16, 16)
 		S:HandleNextPrevButton(button)
 	end
 
 	local icon = frame.Icon
 	if icon then
-		icon:SetPoint("LEFT", 23, 0)
+		icon:Point("LEFT", 23, 0)
 	end
 end
 
