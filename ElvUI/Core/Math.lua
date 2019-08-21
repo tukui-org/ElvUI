@@ -16,14 +16,14 @@ local C_Timer_After = C_Timer.After
 
 E.ShortPrefixValues = {}
 E.ShortPrefixStyles = {
-	["CHINESE"] = {{1e8,"Y"}, {1e4,"W"}},
-	["ENGLISH"] = {{1e12,"T"}, {1e9,"B"}, {1e6,"M"}, {1e3,"K"}},
-	["GERMAN"] = {{1e12,"Bio"}, {1e9,"Mrd"}, {1e6,"Mio"}, {1e3,"Tsd"}},
-	["KOREAN"] = {{1e8,"억"}, {1e4,"만"}, {1e3,"천"}},
-	["METRIC"] = {{1e12,"T"}, {1e9,"G"}, {1e6,"M"}, {1e3,"k"}}
+	['CHINESE'] = {{1e8,'Y'}, {1e4,'W'}},
+	['ENGLISH'] = {{1e12,'T'}, {1e9,'B'}, {1e6,'M'}, {1e3,'K'}},
+	['GERMAN'] = {{1e12,'Bio'}, {1e9,'Mrd'}, {1e6,'Mio'}, {1e3,'Tsd'}},
+	['KOREAN'] = {{1e8,'억'}, {1e4,'만'}, {1e3,'천'}},
+	['METRIC'] = {{1e12,'T'}, {1e9,'G'}, {1e6,'M'}, {1e3,'k'}}
 }
 
-local gftStyles = {
+E.GetFormattedTextStyles = {
 	['CURRENT'] = '%s',
 	['CURRENT_MAX'] = '%s - %s',
 	['CURRENT_PERCENT'] = '%s - %.1f%%',
@@ -36,28 +36,34 @@ function E:BuildPrefixValues()
 	if next(E.ShortPrefixValues) then wipe(E.ShortPrefixValues) end
 
 	E.ShortPrefixValues = E:CopyTable(E.ShortPrefixValues, E.ShortPrefixStyles[E.db.general.numberPrefixStyle])
-	E.ShortValueDec = format("%%.%df", E.db.general.decimalLength or 1)
+	E.ShortValueDec = format('%%.%df', E.db.general.decimalLength or 1)
 
 	for _, style in ipairs(E.ShortPrefixValues) do
-		style[2] = E.ShortValueDec..style[2]
+		style[3] = E.ShortValueDec..style[2]
 	end
 
-	local gftDec = tostring(E.db.general.decimalLength or 1)
-	for style, str in pairs(gftStyles) do
-		gftStyles[style] = gsub(str,"%d",gftDec)
+	local dec = tostring(E.db.general.decimalLength or 1)
+	for style, str in pairs(E.GetFormattedTextStyles) do
+		E.GetFormattedTextStyles[style] = gsub(str, '%d', dec)
 	end
 end
 
 --Return short value of a number
-function E:ShortValue(v)
-	local abs_v = v<0 and -v or v
+function E:ShortValue(value, dec)
+	local abs_value = value<0 and -value or value
+	local decimal = dec and format('%%.%df', tonumber(dec) or 0)
+
 	for i=1, #E.ShortPrefixValues do
-		if abs_v >= E.ShortPrefixValues[i][1] then
-			return format(E.ShortPrefixValues[i][2], v / E.ShortPrefixValues[i][1])
+		if abs_value >= E.ShortPrefixValues[i][1] then
+			if decimal then
+				return format(decimal..E.ShortPrefixValues[i][2], value / E.ShortPrefixValues[i][1])
+			else
+				return format(E.ShortPrefixValues[i][3], value / E.ShortPrefixValues[i][1])
+			end
 		end
 	end
 
-	return format("%.0f", v)
+	return format('%.0f', value)
 end
 
 function E:IsEvenNumber(num)
@@ -98,7 +104,7 @@ function E:RGBToHex(r, g, b)
 	r = r <= 1 and r >= 0 and r or 1
 	g = g <= 1 and g >= 0 and g or 1
 	b = b <= 1 and b >= 0 and b or 1
-	return format("|cff%02x%02x%02x", r*255, g*255, b*255)
+	return format('|cff%02x%02x%02x', r*255, g*255, b*255)
 end
 
 --Hex to RGB
@@ -128,28 +134,28 @@ function E:GetScreenQuadrant(frame)
 	local screenHeight = GetScreenHeight()
 
 	if not (x and y) then
-		return "UNKNOWN", frame:GetName()
+		return 'UNKNOWN', frame:GetName()
 	end
 
 	local point
 	if (x > (screenWidth / 3) and x < (screenWidth / 3)*2) and y > (screenHeight / 3)*2 then
-		point = "TOP"
+		point = 'TOP'
 	elseif x < (screenWidth / 3) and y > (screenHeight / 3)*2 then
-		point = "TOPLEFT"
+		point = 'TOPLEFT'
 	elseif x > (screenWidth / 3)*2 and y > (screenHeight / 3)*2 then
-		point = "TOPRIGHT"
+		point = 'TOPRIGHT'
 	elseif (x > (screenWidth / 3) and x < (screenWidth / 3)*2) and y < (screenHeight / 3) then
-		point = "BOTTOM"
+		point = 'BOTTOM'
 	elseif x < (screenWidth / 3) and y < (screenHeight / 3) then
-		point = "BOTTOMLEFT"
+		point = 'BOTTOMLEFT'
 	elseif x > (screenWidth / 3)*2 and y < (screenHeight / 3) then
-		point = "BOTTOMRIGHT"
+		point = 'BOTTOMRIGHT'
 	elseif x < (screenWidth / 3) and (y > (screenHeight / 3) and y < (screenHeight / 3)*2) then
-		point = "LEFT"
+		point = 'LEFT'
 	elseif x > (screenWidth / 3)*2 and y < (screenHeight / 3)*2 and y > (screenHeight / 3) then
-		point = "RIGHT"
+		point = 'RIGHT'
 	else
-		point = "CENTER"
+		point = 'CENTER'
 	end
 
 	return point
@@ -175,28 +181,37 @@ function E:GetXYOffset(position, override)
 		return -x, 0
 	elseif position == 'RIGHT' then
 		return x, 0
-	elseif position == "CENTER" then
+	elseif position == 'CENTER' then
 		return 0, 0
 	end
 end
 
-function E:GetFormattedText(style, min, max)
+function E:GetFormattedText(style, min, max, dec)
 	if max == 0 then max = 1 end
 
-	local gftUseStyle = gftStyles[style]
-	if style == 'DEFICIT' then
-		local gftDeficit = max - min
-		return ((gftDeficit > 0) and format(gftUseStyle, E:ShortValue(gftDeficit))) or ''
-	elseif style == 'PERCENT' then
-		return format(gftUseStyle, min / max * 100)
-	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
-		return format(gftStyles.CURRENT, E:ShortValue(min))
-	elseif style == 'CURRENT_MAX' then
-		return format(gftUseStyle, E:ShortValue(min), E:ShortValue(max))
-	elseif style == 'CURRENT_PERCENT' then
-		return format(gftUseStyle, E:ShortValue(min), min / max * 100)
-	elseif style == 'CURRENT_MAX_PERCENT' then
-		return format(gftUseStyle, E:ShortValue(min), E:ShortValue(max), min / max * 100)
+	if style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
+		return format(E.GetFormattedTextStyles.CURRENT, E:ShortValue(min, dec))
+	else
+		local useStyle = E.GetFormattedTextStyles[style]
+		if not useStyle then return end
+
+		if style == 'DEFICIT' then
+			local deficit = max - min
+			return (deficit > 0 and format(useStyle, E:ShortValue(deficit, dec))) or ''
+		elseif style == 'CURRENT_MAX' then
+			return format(useStyle, E:ShortValue(min, dec), E:ShortValue(max, dec))
+		elseif style == 'PERCENT' or style == 'CURRENT_PERCENT' or style == 'CURRENT_MAX_PERCENT' then
+			if dec then useStyle = gsub(useStyle, '%d', tonumber(dec) or 0) end
+			local perc = min / max * 100
+
+			if style == 'PERCENT' then
+				return format(useStyle, perc)
+			elseif style == 'CURRENT_PERCENT' then
+				return format(useStyle, E:ShortValue(min, dec), perc)
+			elseif style == 'CURRENT_MAX_PERCENT' then
+				return format(useStyle, E:ShortValue(min, dec), E:ShortValue(max, dec), perc)
+			end
+		end
 	end
 end
 
@@ -232,8 +247,8 @@ function E:ShortenString(str, numChars, dots)
 end
 
 function E:AbbreviateString(str, allUpper)
-	local newString = ""
-	for word in gmatch(str, "[^%s]+") do
+	local newString = ''
+	for word in gmatch(str, '[^%s]+') do
 		word = utf8sub(word, 1, 1) --get only first letter of each word
 		if allUpper then word = strupper(word) end
 		newString = newString..word
@@ -260,12 +275,12 @@ function E:WaitFunc(elapse)
 end
 
 E.WaitTable = {}
-E.WaitFrame = CreateFrame("Frame", "ElvUI_WaitFrame", _G.UIParent)
-E.WaitFrame:SetScript("OnUpdate", E.WaitFunc)
+E.WaitFrame = CreateFrame('Frame', 'ElvUI_WaitFrame', _G.UIParent)
+E.WaitFrame:SetScript('OnUpdate', E.WaitFunc)
 
 --Add time before calling a function
 function E:Delay(delay, func, ...)
-	if type(delay) ~= "number" or type(func) ~= "function" then
+	if type(delay) ~= 'number' or type(func) ~= 'function' then
 		return false
 	end
 
@@ -283,7 +298,7 @@ function E:Delay(delay, func, ...)
 end
 
 function E:StringTitle(str)
-	return gsub(str, "(.)", strupper, 1)
+	return gsub(str, '(.)', strupper, 1)
 end
 
 E.TimeThreshold = 3
@@ -361,10 +376,10 @@ function E:GetDistance(unit1, unit2)
 end
 
 --Money text formatting, code taken from Scrooge by thelibrarian ( http://www.wowace.com/addons/scrooge/ )
-local COLOR_COPPER, COLOR_SILVER, COLOR_GOLD = "|cffeda55f", "|cffc7c7cf", "|cffffd700"
-local ICON_COPPER = "|TInterface\\MoneyFrame\\UI-CopperIcon:12:12|t"
-local ICON_SILVER = "|TInterface\\MoneyFrame\\UI-SilverIcon:12:12|t"
-local ICON_GOLD = "|TInterface\\MoneyFrame\\UI-GoldIcon:12:12|t"
+local COLOR_COPPER, COLOR_SILVER, COLOR_GOLD = '|cffeda55f', '|cffc7c7cf', '|cffffd700'
+local ICON_COPPER = '|TInterface\\MoneyFrame\\UI-CopperIcon:12:12|t'
+local ICON_SILVER = '|TInterface\\MoneyFrame\\UI-SilverIcon:12:12|t'
+local ICON_GOLD = '|TInterface\\MoneyFrame\\UI-GoldIcon:12:12|t'
 function E:FormatMoney(amount, style, textonly)
 	local coppername = textonly and L["copperabbrev"] or ICON_COPPER
 	local silvername = textonly and L["silverabbrev"] or ICON_SILVER
@@ -375,64 +390,64 @@ function E:FormatMoney(amount, style, textonly)
 	local silver = floor(mod(value / 100, 100))
 	local copper = floor(mod(value, 100))
 
-	if not style or style == "SMART" then
-		local str = ""
-		if gold > 0 then str = format("%d%s%s", gold, goldname, (silver > 0 or copper > 0) and " " or "") end
-		if silver > 0 then str = format("%s%d%s%s", str, silver, silvername, copper > 0 and " " or "") end
-		if copper > 0 or value == 0 then str = format("%s%d%s", str, copper, coppername) end
+	if not style or style == 'SMART' then
+		local str = ''
+		if gold > 0 then str = format('%d%s%s', gold, goldname, (silver > 0 or copper > 0) and ' ' or '') end
+		if silver > 0 then str = format('%s%d%s%s', str, silver, silvername, copper > 0 and ' ' or '') end
+		if copper > 0 or value == 0 then str = format('%s%d%s', str, copper, coppername) end
 		return str
 	end
 
-	if style == "FULL" then
+	if style == 'FULL' then
 		if gold > 0 then
-			return format("%d%s %d%s %d%s", gold, goldname, silver, silvername, copper, coppername)
+			return format('%d%s %d%s %d%s', gold, goldname, silver, silvername, copper, coppername)
 		elseif silver > 0 then
-			return format("%d%s %d%s", silver, silvername, copper, coppername)
+			return format('%d%s %d%s', silver, silvername, copper, coppername)
 		else
-			return format("%d%s", copper, coppername)
+			return format('%d%s', copper, coppername)
 		end
-	elseif style == "SHORT" then
+	elseif style == 'SHORT' then
 		if gold > 0 then
-			return format("%.1f%s", amount / 10000, goldname)
+			return format('%.1f%s', amount / 10000, goldname)
 		elseif silver > 0 then
-			return format("%.1f%s", amount / 100, silvername)
+			return format('%.1f%s', amount / 100, silvername)
 		else
-			return format("%d%s", amount, coppername)
+			return format('%d%s', amount, coppername)
 		end
-	elseif style == "SHORTINT" then
+	elseif style == 'SHORTINT' then
 		if gold > 0 then
-			return format("%d%s", gold, goldname)
+			return format('%d%s', gold, goldname)
 		elseif silver > 0 then
-			return format("%d%s", silver, silvername)
+			return format('%d%s', silver, silvername)
 		else
-			return format("%d%s", copper, coppername)
+			return format('%d%s', copper, coppername)
 		end
-	elseif style == "CONDENSED" then
+	elseif style == 'CONDENSED' then
 		if gold > 0 then
-			return format("%s%d|r.%s%02d|r.%s%02d|r", COLOR_GOLD, gold, COLOR_SILVER, silver, COLOR_COPPER, copper)
+			return format('%s%d|r.%s%02d|r.%s%02d|r', COLOR_GOLD, gold, COLOR_SILVER, silver, COLOR_COPPER, copper)
 		elseif silver > 0 then
-			return format("%s%d|r.%s%02d|r", COLOR_SILVER, silver, COLOR_COPPER, copper)
+			return format('%s%d|r.%s%02d|r', COLOR_SILVER, silver, COLOR_COPPER, copper)
 		else
-			return format("%s%d|r", COLOR_COPPER, copper)
+			return format('%s%d|r', COLOR_COPPER, copper)
 		end
-	elseif style == "BLIZZARD" then
+	elseif style == 'BLIZZARD' then
 		if gold > 0 then
-			return format("%s%s %d%s %d%s", BreakUpLargeNumbers(gold), goldname, silver, silvername, copper, coppername)
+			return format('%s%s %d%s %d%s', BreakUpLargeNumbers(gold), goldname, silver, silvername, copper, coppername)
 		elseif silver > 0 then
-			return format("%d%s %d%s", silver, silvername, copper, coppername)
+			return format('%d%s %d%s', silver, silvername, copper, coppername)
 		else
-			return format("%d%s", copper, coppername)
+			return format('%d%s', copper, coppername)
 		end
-	elseif style == "BLIZZARD2" then
+	elseif style == 'BLIZZARD2' then
 		if gold > 0 then
-			return format("%s%s %02d%s %02d%s", BreakUpLargeNumbers(gold), goldname, silver, silvername, copper, coppername)
+			return format('%s%s %02d%s %02d%s', BreakUpLargeNumbers(gold), goldname, silver, silvername, copper, coppername)
 		elseif silver > 0 then
-			return format("%d%s %02d%s", silver, silvername, copper, coppername)
+			return format('%d%s %02d%s', silver, silvername, copper, coppername)
 		else
-			return format("%d%s", copper, coppername)
+			return format('%d%s', copper, coppername)
 		end
 	end
 
 	-- Shouldn't be here; punt
-	return self:FormatMoney(amount, "SMART")
+	return self:FormatMoney(amount, 'SMART')
 end

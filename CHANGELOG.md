@@ -1,4 +1,19 @@
-### Version 11.21 [  ]
+### Version 11.22 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+Fixed Style Filter error: attempt to compare nil with number (line 322).  
+Fixed bug where nameplate threat scale wasn't being reset on new units that no threat existed on.  
+Fixed (hopefully, take two) the issue which caused the nameplate tags to sometimes be incorrect.  
+Fixed a skin error on the Petition Frame which hides a button.  
+
+**Misc. Changes:**  
+
+
+___
+### Version 11.21 [ August 17th 2019 ]
 
 **New Additions:**  
 Style Filters: Added a new trigger "Location" that triggers on which Map, Instance, Zone (like "Boralus Harbor") or Subzone (like "Sanctum of the Sages") you are currently in.  If enabled the filter will only trigger when you are inside one of the specified maps or instances.  

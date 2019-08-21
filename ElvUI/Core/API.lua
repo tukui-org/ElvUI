@@ -40,7 +40,7 @@ do -- other non-english locales require this
 	for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do E.UnlocalizedClasses[v] = k end
 
 	function E:UnlocalizedClassName(className)
-		return (className and className ~= "") and E.UnlocalizedClasses[className]
+		return (className and className ~= '') and E.UnlocalizedClasses[className]
 	end
 end
 
@@ -51,7 +51,7 @@ end
 function E:ScanTooltipTextures(clean, grabTextures)
 	local essenceTextureID, textures, essences = 2975691
 	for i = 1, 10 do
-		local tex = _G["ElvUI_ScanTooltipTexture"..i]
+		local tex = _G['ElvUI_ScanTooltipTexture'..i]
 		local texture = tex and tex:GetTexture()
 		if texture then
 			if grabTextures then
@@ -166,7 +166,7 @@ do
 		local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
 		if not widget then return end
 
-		local rank = tonumber(strmatch(widget.overrideBarText, "%d+"))
+		local rank = tonumber(strmatch(widget.overrideBarText, '%d+'))
 		if not rank then return end
 
 		local cur = widget.barValue - widget.barMin

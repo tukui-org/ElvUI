@@ -48,7 +48,7 @@ end
 
 function E:GetGearSlotInfo(unit, slot, deepScan)
 	E:ScanTooltipTextures(true)
-	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+	E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
 	E.ScanTooltip:SetInventoryItem(unit, slot)
 	E.ScanTooltip:Show()
 
@@ -56,7 +56,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	if deepScan then
 		gems, essences = E:ScanTooltipTextures(nil, true)
 		for x = 1, E.ScanTooltip:NumLines() do
-			local line = _G["ElvUI_ScanTooltipTextLeft"..x]
+			local line = _G['ElvUI_ScanTooltipTextLeft'..x]
 			if line then
 				local lineText = line:GetText()
 				if x == 1 and lineText == RETRIEVING_ITEM_INFO then
@@ -74,7 +74,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 
 		local colorblind = GetCVarBool('colorblindmode') and 4 or 3
 		for x = 2, colorblind do
-			local line = _G["ElvUI_ScanTooltipTextLeft"..x]
+			local line = _G['ElvUI_ScanTooltipTextLeft'..x]
 			if line then
 				local lineText = line:GetText()
 				local itemLevel = lineText and (strmatch(lineText, MATCH_ITEM_LEVEL_ALT) or strmatch(lineText, MATCH_ITEM_LEVEL))
@@ -155,7 +155,7 @@ end
 
 local iLevelDB = {}
 function E:GetUnitItemLevel(unit)
-	if UnitIsUnit("player", unit) then
+	if UnitIsUnit('player', unit) then
 		return E:GetPlayerItemLevel()
 	end
 

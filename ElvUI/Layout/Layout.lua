@@ -150,8 +150,8 @@ end
 
 function LO:SetChatTabStyle()
 	if E.db.chat.panelTabTransparency then
-		_G.LeftChatTab:SetTemplate("Transparent")
-		_G.RightChatTab:SetTemplate("Transparent")
+		_G.LeftChatTab:SetTemplate('Transparent')
+		_G.RightChatTab:SetTemplate('Transparent')
 	else
 		_G.LeftChatTab:SetTemplate(nil, true)
 		_G.RightChatTab:SetTemplate(nil, true)
@@ -166,17 +166,17 @@ function LO:SetDataPanelStyle()
 	local LeftChatToggleButton = _G.LeftChatToggleButton
 	local RightChatToggleButton = _G.RightChatToggleButton
 	if not E.db.datatexts.panelBackdrop then
-		LeftChatDataPanel:SetTemplate("NoBackdrop")
-		LeftChatToggleButton:SetTemplate("NoBackdrop")
-		RightChatDataPanel:SetTemplate("NoBackdrop")
-		RightChatToggleButton:SetTemplate("NoBackdrop")
+		LeftChatDataPanel:SetTemplate('NoBackdrop')
+		LeftChatToggleButton:SetTemplate('NoBackdrop')
+		RightChatDataPanel:SetTemplate('NoBackdrop')
+		RightChatToggleButton:SetTemplate('NoBackdrop')
 	elseif E.db.datatexts.panelTransparency then
-		LeftChatDataPanel:SetTemplate("Transparent")
-		LeftChatToggleButton:SetTemplate("Transparent")
-		LeftMiniPanel:SetTemplate("Transparent")
-		RightChatDataPanel:SetTemplate("Transparent")
-		RightChatToggleButton:SetTemplate("Transparent")
-		RightMiniPanel:SetTemplate("Transparent")
+		LeftChatDataPanel:SetTemplate('Transparent')
+		LeftChatToggleButton:SetTemplate('Transparent')
+		LeftMiniPanel:SetTemplate('Transparent')
+		RightChatDataPanel:SetTemplate('Transparent')
+		RightChatToggleButton:SetTemplate('Transparent')
+		RightMiniPanel:SetTemplate('Transparent')
 	else
 		LeftChatDataPanel:SetTemplate(nil, true)
 		LeftChatToggleButton:SetTemplate(nil, true)
@@ -327,7 +327,7 @@ function LO:CreateChatPanels()
 	lchat:CreateBackdrop('Transparent')
 	lchat.backdrop.ignoreBackdropColors = true
 	lchat.backdrop:SetAllPoints()
-	E:CreateMover(lchat, "LeftChatMover", L["Left Chat"], nil, nil, nil, nil, nil, 'chat,general')
+	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, nil, nil, nil, 'chat,general')
 	local LeftChatPanel = _G.LeftChatPanel
 
 	--Background Texture
@@ -363,11 +363,11 @@ function LO:CreateChatPanels()
 	lchattb:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING, SPACING)
 	lchattb:Point('BOTTOMRIGHT', lchat, 'BOTTOMLEFT', SPACING+SIDE_BUTTON_WIDTH, SPACING)
 	lchattb:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
-	lchattb:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+	lchattb:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
 	lchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	lchattb:SetScript('OnLeave', ChatButton_OnLeave)
 	lchattb:SetScript('OnClick', function(lcb, btn)
-		if btn == "LeftButton" then
+		if btn == 'LeftButton' then
 			ChatButton_OnClick(lcb)
 		end
 	end)
@@ -387,7 +387,7 @@ function LO:CreateChatPanels()
 	rchat:CreateBackdrop('Transparent')
 	rchat.backdrop.ignoreBackdropColors = true
 	rchat.backdrop:SetAllPoints()
-	E:CreateMover(rchat, "RightChatMover", L["Right Chat"], nil, nil, nil, nil, nil, 'chat,general')
+	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, nil, nil, nil, 'chat,general')
 	local RightChatPanel = _G.RightChatPanel
 
 	--Background Texture
@@ -426,7 +426,7 @@ function LO:CreateChatPanels()
 	rchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	rchattb:SetScript('OnLeave', ChatButton_OnLeave)
 	rchattb:SetScript('OnClick', function(rcb, btn)
-		if btn == "LeftButton" then
+		if btn == 'LeftButton' then
 			ChatButton_OnClick(rcb)
 		end
 	end)
@@ -474,43 +474,43 @@ function LO:CreateMinimapPanels()
 		_G.RightMiniPanel:Hide()
 	end
 
-	local f = CreateFrame("Frame", 'BottomMiniPanel', Minimap)
-	f:SetPoint("BOTTOM", Minimap, "BOTTOM")
+	local f = CreateFrame('Frame', 'BottomMiniPanel', Minimap)
+	f:SetPoint('BOTTOM', Minimap, 'BOTTOM')
 	f:Width(120)
 	f:Height(20)
 	f:SetFrameLevel(Minimap:GetFrameLevel() + 5)
 	DT:RegisterPanel(f, 1, 'ANCHOR_BOTTOM', 0, -10)
 
-	f = CreateFrame("Frame", 'TopMiniPanel', Minimap)
-	f:SetPoint("TOP", Minimap, "TOP")
+	f = CreateFrame('Frame', 'TopMiniPanel', Minimap)
+	f:SetPoint('TOP', Minimap, 'TOP')
 	f:Width(120)
 	f:Height(20)
 	f:SetFrameLevel(Minimap:GetFrameLevel() + 5)
 	DT:RegisterPanel(f, 1, 'ANCHOR_BOTTOM', 0, -10)
 
-	f = CreateFrame("Frame", 'TopLeftMiniPanel', Minimap)
-	f:SetPoint("TOPLEFT", Minimap, "TOPLEFT")
+	f = CreateFrame('Frame', 'TopLeftMiniPanel', Minimap)
+	f:SetPoint('TOPLEFT', Minimap, 'TOPLEFT')
 	f:Width(75)
 	f:Height(20)
 	f:SetFrameLevel(Minimap:GetFrameLevel() + 5)
 	DT:RegisterPanel(f, 1, 'ANCHOR_BOTTOMLEFT', 0, -10)
 
-	f = CreateFrame("Frame", 'TopRightMiniPanel', Minimap)
-	f:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT")
+	f = CreateFrame('Frame', 'TopRightMiniPanel', Minimap)
+	f:SetPoint('TOPRIGHT', Minimap, 'TOPRIGHT')
 	f:Width(75)
 	f:Height(20)
 	f:SetFrameLevel(Minimap:GetFrameLevel() + 5)
 	DT:RegisterPanel(f, 1, 'ANCHOR_BOTTOMRIGHT', 0, -10)
 
-	f = CreateFrame("Frame", 'BottomLeftMiniPanel', Minimap)
-	f:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT")
+	f = CreateFrame('Frame', 'BottomLeftMiniPanel', Minimap)
+	f:SetPoint('BOTTOMLEFT', Minimap, 'BOTTOMLEFT')
 	f:Width(75)
 	f:Height(20)
 	f:SetFrameLevel(Minimap:GetFrameLevel() + 5)
 	DT:RegisterPanel(f, 1, 'ANCHOR_BOTTOMLEFT', 0, -10)
 
-	f = CreateFrame("Frame", 'BottomRightMiniPanel', Minimap)
-	f:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT")
+	f = CreateFrame('Frame', 'BottomRightMiniPanel', Minimap)
+	f:SetPoint('BOTTOMRIGHT', Minimap, 'BOTTOMRIGHT')
 	f:Width(75)
 	f:Height(20)
 	f:SetFrameLevel(Minimap:GetFrameLevel() + 5)
