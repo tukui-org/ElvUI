@@ -72,6 +72,16 @@ function S:Ace3_RegisterAsWidget(widget)
 		checkbg:SetTexture()
 		highlight:SetTexture()
 
+		hooksecurefunc(widget, "SetDisabled", function(w, value)
+			local isSwitch = S:Ace3_CheckBoxIsEnableSwitch(w)
+
+			if value then
+				if isSwitch then
+					w:SetLabel(S.Ace3_L.RED_ENABLE)
+				end
+			end
+		end)
+
 		hooksecurefunc(widget, "SetValue", function(w, checked)
 			if S:Ace3_CheckBoxIsEnableSwitch(w) then
 				w:SetLabel(checked and S.Ace3_L.GREEN_ENABLE or S.Ace3_L.RED_ENABLE)
@@ -83,16 +93,18 @@ function S:Ace3_RegisterAsWidget(widget)
 			check:SetTexture(E.Media.Textures.Melli)
 
 			hooksecurefunc(check, "SetDesaturated", function(chk, value)
+				local isSwitch = S:Ace3_CheckBoxIsEnableSwitch(widget)
 				if value == true then
-					chk:SetVertexColor(.6, .6, .6, .8)
-				else
-					local isSwitch, enabled, disabled = S:Ace3_CheckBoxIsEnableSwitch(widget)
-					if isSwitch and enabled then
-						chk:SetVertexColor(0.2, 1.0, 0.2, 1.0)
-					elseif isSwitch and disabled then
+					if isSwitch then
 						chk:SetVertexColor(1.0, 0.2, 0.2, 1.0)
 					else
-						chk:SetVertexColor(1, .82, 0, 0.8)
+						chk:SetVertexColor(0.6, 0.6, 0.6, 0.8)
+					end
+				else
+					if isSwitch then
+						chk:SetVertexColor(0.2, 1.0, 0.2, 1.0)
+					else
+						chk:SetVertexColor(1, 0.82, 0, 0.8)
 					end
 				end
 			end)
