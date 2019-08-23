@@ -117,7 +117,7 @@ local function LoadSkin()
 	_G.QuestRewardScrollFrame:CreateBackdrop()
 	_G.QuestRewardScrollFrame:Height(_G.QuestRewardScrollFrame:GetHeight() - 2)
 
-	hooksecurefunc("QuestInfo_Display", function(template, parentFrame, acceptButton, material, mapView)
+	hooksecurefunc("QuestInfo_Display", function()
 		for i = 1, #_G.QuestInfoRewardsFrame.RewardButtons do
 			local questItem = _G.QuestInfoRewardsFrame.RewardButtons[i]
 			if not questItem:IsShown() then break end
@@ -166,7 +166,7 @@ local function LoadSkin()
 			end
 
 			for i = 1, numObjectives do
-				local _, type, finished = GetQuestLogLeaderBoard(i)
+				local _, _, finished = GetQuestLogLeaderBoard(i)
 				if (type ~= "spell" and type ~= "log" and numVisibleObjectives < _G.MAX_OBJECTIVES) then
 					numVisibleObjectives = numVisibleObjectives + 1
 					local objective = _G['QuestInfoObjective'..numVisibleObjectives]
