@@ -5,11 +5,15 @@ local S = E:GetModule('Skins')
 local _G = _G
 local gsub, type, pairs, ipairs, select, unpack, strfind = gsub, type, pairs, ipairs, select, unpack, strfind
 --WoW API / Variables
+local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText
 local GetMoney = GetMoney
 local CreateFrame = CreateFrame
+local GetQuestID = GetQuestID
+local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
+local GetQuestLogSelection = GetQuestLogSelection
 local hooksecurefunc = hooksecurefunc
 
 local PlusButtonIDs = {
@@ -59,6 +63,15 @@ local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inse
 	scrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
 end
 
+	-- Quest objective text color
+local function Quest_GetQuestID()
+	if _G.QuestInfoFrame.questLog then
+		return select(8, GetQuestLogTitle(GetQuestLogSelection()))
+	else
+		return GetQuestID()
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.quest ~= true then return end
 
@@ -104,7 +117,7 @@ local function LoadSkin()
 	_G.QuestRewardScrollFrame:CreateBackdrop()
 	_G.QuestRewardScrollFrame:Height(_G.QuestRewardScrollFrame:GetHeight() - 2)
 
-	hooksecurefunc("QuestInfo_Display", function()
+	hooksecurefunc("QuestInfo_Display", function(template, parentFrame, acceptButton, material, mapView)
 		for i = 1, #_G.QuestInfoRewardsFrame.RewardButtons do
 			local questItem = _G.QuestInfoRewardsFrame.RewardButtons[i]
 			if not questItem:IsShown() then break end
@@ -140,18 +153,28 @@ local function LoadSkin()
 
 			_G.QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(1, 1, 1)
 			_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(1, 1, 1)
+
+			local questID = Quest_GetQuestID()
 			local numObjectives = GetNumQuestLeaderBoards()
 			local numVisibleObjectives = 0
+
+			local waypointText = C_QuestLog_GetNextWaypointText(questID)
+			if waypointText then
+				numVisibleObjectives = numVisibleObjectives + 1
+				local objective = _G['QuestInfoObjective'..numVisibleObjectives]
+				objective:SetTextColor(1, 1, 1)
+			end
+
 			for i = 1, numObjectives do
-				local _, type, finished = GetQuestLogLeaderBoard(i)
-				if type ~= 'spell' then
+				local text, type, finished = GetQuestLogLeaderBoard(i)
+				if (type ~= "spell" and type ~= "log" and numVisibleObjectives < _G.MAX_OBJECTIVES) then
 					numVisibleObjectives = numVisibleObjectives + 1
 					local objective = _G['QuestInfoObjective'..numVisibleObjectives]
 					if objective then
 						if finished then
 							objective:SetTextColor(1, .8, .1)
 						else
-							objective:SetTextColor(.63, .09, .09)
+							objective:SetTextColor(1, 1, 1)
 						end
 					end
 				end
