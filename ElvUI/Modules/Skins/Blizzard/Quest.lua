@@ -63,7 +63,7 @@ local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inse
 	scrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
 end
 
-	-- Quest objective text color
+-- Quest objective text color
 local function Quest_GetQuestID()
 	if _G.QuestInfoFrame.questLog then
 		return select(8, GetQuestLogTitle(GetQuestLogSelection()))
@@ -162,11 +162,11 @@ local function LoadSkin()
 			if waypointText then
 				numVisibleObjectives = numVisibleObjectives + 1
 				local objective = _G['QuestInfoObjective'..numVisibleObjectives]
-				objective:SetTextColor(1, 1, 1)
+				objective:SetTextColor(1, .8, .1)
 			end
 
 			for i = 1, numObjectives do
-				local text, type, finished = GetQuestLogLeaderBoard(i)
+				local _, type, finished = GetQuestLogLeaderBoard(i)
 				if (type ~= "spell" and type ~= "log" and numVisibleObjectives < _G.MAX_OBJECTIVES) then
 					numVisibleObjectives = numVisibleObjectives + 1
 					local objective = _G['QuestInfoObjective'..numVisibleObjectives]
@@ -174,7 +174,7 @@ local function LoadSkin()
 						if finished then
 							objective:SetTextColor(1, .8, .1)
 						else
-							objective:SetTextColor(1, 1, 1)
+							objective:SetTextColor(.63, .09, .09)
 						end
 					end
 				end
