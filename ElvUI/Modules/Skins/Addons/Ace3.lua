@@ -3,6 +3,8 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local select = select
+local format = format
+local strmatch = strmatch
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
@@ -33,13 +35,9 @@ function S:Ace3_SkinDropdownPullout()
 	end
 end
 
-function S:Ace3_CheckBoxIsEnableSwitch(widget)
+function S:Ace3_IsEnableCheckbox(widget)
 	local text = widget.text and widget.text:GetText()
-	if text then
-		local enabled, disabled = text == S.Ace3_L.GREEN_ENABLE, text == S.Ace3_L.RED_ENABLE
-		local isSwitch = (text == S.Ace3_L.Enable) or enabled or disabled
-		return isSwitch, enabled, disabled
-	end
+	if text then return strmatch(text, S.Ace3_EnableMatch) end
 end
 
 function S:Ace3_RegisterAsWidget(widget)
@@ -72,9 +70,10 @@ function S:Ace3_RegisterAsWidget(widget)
 		checkbg:SetTexture()
 		highlight:SetTexture()
 
-		hooksecurefunc(widget, "SetValue", function(w, checked)
-			if S:Ace3_CheckBoxIsEnableSwitch(w) then
-				w:SetLabel(checked and S.Ace3_L.GREEN_ENABLE or S.Ace3_L.RED_ENABLE)
+		hooksecurefunc(widget, "SetDisabled", function(w, disabled)
+			if S:Ace3_IsEnableCheckbox(w) then
+				local tristateOrDisabled = disabled or (w.tristate and w.checked == nil)
+				w:SetLabel((tristateOrDisabled and S.Ace3_L.Enable) or (w.checked and S.Ace3_EnableOn) or S.Ace3_EnableOff)
 			end
 		end)
 
@@ -85,15 +84,14 @@ function S:Ace3_RegisterAsWidget(widget)
 			hooksecurefunc(check, "SetDesaturated", function(chk, value)
 				if value == true then
 					chk:SetVertexColor(.6, .6, .6, .8)
-				else
-					local isSwitch, enabled, disabled = S:Ace3_CheckBoxIsEnableSwitch(widget)
-					if isSwitch and enabled then
+				elseif S:Ace3_IsEnableCheckbox(widget) then
+					if widget.checked then
 						chk:SetVertexColor(0.2, 1.0, 0.2, 1.0)
-					elseif isSwitch and disabled then
-						chk:SetVertexColor(1.0, 0.2, 0.2, 1.0)
 					else
-						chk:SetVertexColor(1, .82, 0, 0.8)
+						chk:SetVertexColor(1.0, 0.2, 0.2, 1.0)
 					end
+				else
+					chk:SetVertexColor(1, .82, 0, 0.8)
 				end
 			end)
 
@@ -390,6 +388,11 @@ function S:HookAce3(lib, minor) -- lib: AceGUI
 
 	if not S.Ace3_L then
 		S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
+
+		-- Special Enable Coloring
+		if not S.Ace3_EnableMatch then S.Ace3_EnableMatch = '^|?c?F?F?%x?%x?%x?%x?%x?%x?' .. E:EscapeString(S.Ace3_L.Enable) .. '|?r?$' end
+		if not S.Ace3_EnableOff then S.Ace3_EnableOff = format('|cFFff3333%s|r', S.Ace3_L.Enable) end
+		if not S.Ace3_EnableOn then S.Ace3_EnableOn = format('|cFF33ff33%s|r', S.Ace3_L.Enable) end
 	end
 
 	if lib.RegisterAsWidget ~= S.Ace3_RegisterAsWidget then

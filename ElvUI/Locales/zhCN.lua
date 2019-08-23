@@ -369,8 +369,6 @@ L["Poen Gillbrack"] = true
 L["Vim Brineheart"] = true
 
 ----------------------------------
-L["RED_ENABLE"] = "|cFFff3333启用|r"
-L["GREEN_ENABLE"] = "|cFF33ff33启用|r"
 L["DESC_MOVERCONFIG"] = [=[解除框架移动锁定. 现在可以移动它们, 移好后请点击「锁定」.
 
 选项：

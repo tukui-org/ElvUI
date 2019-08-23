@@ -368,8 +368,6 @@ L["Poen Gillbrack"] = true
 L["Vim Brineheart"] = true
 
 ----------------------------------
-L["RED_ENABLE"] = "|cFFff3333Ativar|r"
-L["GREEN_ENABLE"] = "|cFF33ff33Ativar|r"
 L["DESC_MOVERCONFIG"] = [=[Movedores destravados. Mova-os agora e clique Travar quando acabar.
 Options:
   LeftClick - Toggle Nudge Frame.

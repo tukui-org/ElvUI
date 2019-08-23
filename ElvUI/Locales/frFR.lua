@@ -369,8 +369,6 @@ L["Poen Gillbrack"] = true
 L["Vim Brineheart"] = true
 
 ----------------------------------
-L["RED_ENABLE"] = "|cFFff3333Activer|r"
-L["GREEN_ENABLE"] = "|cFF33ff33Activer|r"
 L["DESC_MOVERCONFIG"] = [=[Cadres déverrouillés. Déplacez-les et cliquez sur Verrouiller une fois terminé.
 
 Options:

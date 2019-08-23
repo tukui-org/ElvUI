@@ -369,8 +369,6 @@ L["Poen Gillbrack"] = true
 L["Vim Brineheart"] = true
 
 ----------------------------------
-L["RED_ENABLE"] = "|cFFff3333Habilitar|r"
-L["GREEN_ENABLE"] = "|cFF33ff33Habilitar|r"
 L["DESC_MOVERCONFIG"] = [=[Fijadores desbloqueados. Muévelos ahora y haz click en Bloquear cuando termines.
 Options:
   LeftClick - Toggle Nudge Frame.
