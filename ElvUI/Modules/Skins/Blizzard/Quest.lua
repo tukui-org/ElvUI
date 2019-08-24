@@ -13,6 +13,8 @@ local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
+local GetNumQuestLogRewardSpells = GetNumQuestLogRewardSpells
+local GetNumRewardSpells = GetNumRewardSpells
 local GetQuestLogSelection = GetQuestLogSelection
 local hooksecurefunc = hooksecurefunc
 
@@ -135,6 +137,47 @@ local function LoadSkin()
 
 			questItem.Name:SetTextColor(1, 1, 1)
 		end
+
+		local rewardsFrame = _G.QuestInfoFrame.rewardsFrame
+		local isQuestLog = _G.QuestInfoFrame.questLog ~= nil
+
+		local numSpellRewards = isQuestLog and GetNumQuestLogRewardSpells() or GetNumRewardSpells()
+		if numSpellRewards > 0 then
+			for followerReward in rewardsFrame.followerRewardPool:EnumerateActive() do
+				if not followerReward.isSkinned then
+					followerReward:CreateBackdrop()
+					followerReward.backdrop:SetAllPoints(followerReward.BG)
+					followerReward.backdrop:SetPoint("TOPLEFT", 40, -5)
+					followerReward.backdrop:SetPoint("BOTTOMRIGHT", 2, 5)
+					followerReward.BG:Hide()
+
+					followerReward.PortraitFrame:ClearAllPoints()
+					followerReward.PortraitFrame:SetPoint("RIGHT", followerReward.backdrop, "LEFT", -2, 0)
+
+					followerReward.PortraitFrame.PortraitRing:Hide()
+					followerReward.PortraitFrame.PortraitRingQuality:SetTexture()
+					followerReward.PortraitFrame.LevelBorder:SetAlpha(0)
+					followerReward.PortraitFrame.Portrait:SetTexCoord(0.2, 0.85, 0.2, 0.85)
+
+					local level = followerReward.PortraitFrame.Level
+					level:ClearAllPoints()
+					level:SetPoint("BOTTOM", followerReward.PortraitFrame, 0, 3)
+
+					local squareBG = CreateFrame("Frame", nil, followerReward.PortraitFrame)
+					squareBG:SetFrameLevel(followerReward.PortraitFrame:GetFrameLevel()-1)
+					squareBG:SetPoint("TOPLEFT", 2, -2)
+					squareBG:SetPoint("BOTTOMRIGHT", -2, 2)
+					squareBG:SetTemplate()
+					followerReward.PortraitFrame.squareBG = squareBG
+
+					followerReward.isSkinned = true
+				end
+
+				local r, g, b = followerReward.PortraitFrame.PortraitRingQuality:GetVertexColor()
+				followerReward.PortraitFrame.squareBG:SetBackdropBorderColor(r, g, b)
+			end
+		end
+
 		if E.private.skins.parchmentRemover.enable then
 			_G.QuestInfoTitleHeader:SetTextColor(1, .8, .1)
 			_G.QuestInfoDescriptionHeader:SetTextColor(1, .8, .1)
