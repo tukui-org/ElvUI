@@ -178,6 +178,10 @@ local function GetQuests(unitID)
 end
 
 local function Update(self, event, unit)
+	if (event ~= "UNIT_NAME_UPDATE") then
+		unit = self.unit
+	end
+
 	if (unit ~= self.unit) then return end
 
 	local element = self.QuestIcons
