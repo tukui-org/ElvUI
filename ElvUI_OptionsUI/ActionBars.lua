@@ -144,7 +144,7 @@ local function BuildABConfig()
 					AB:ToggleCooldownOptions()
 				end,
 			},
-			spacer = {
+			spacer2 = {
 				order = 14,
 				type = "description",
 				name = " ",
@@ -724,7 +724,7 @@ local function BuildABConfig()
 			set = function(info, value) E.db.actionbar['bar'..i][info[#info]] = value; AB:PositionAndSizeBar('bar'..i) end,
 			args = {
 				enabled = {
-					order = 1,
+					order = 0,
 					type = 'toggle',
 					name = L["Enable"],
 					set = function(info, value)
@@ -733,7 +733,7 @@ local function BuildABConfig()
 					end,
 				},
 				restorePosition = {
-					order = 2,
+					order = 1,
 					type = 'execute',
 					name = L["Restore Bar"],
 					desc = L["Restore the actionbars default settings"],
@@ -885,6 +885,21 @@ local function BuildABConfig()
 				},
 			},
 		}
+
+		if i == 1 then
+			group['bar'..i].args.pagingReset = {
+				type = 'execute',
+				name = L["Reset Action Paging"],
+				order = 2,
+				confirm = true,
+				confirmText = L["You are about to reset paging. Are you sure?"],
+				func = function()
+					E.db.actionbar.bar1.paging[E.myclass] = P.actionbar.bar1.paging[E.myclass]
+
+					AB:UpdateButtonSettings()
+				end,
+			}
+		end
 
 		if i == 6 then
 			group['bar'..i].args.enabled.set = function(info, value)
