@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local _, ns = ...
-local ElvUF = ns.oUF
-assert(ElvUF, "ElvUI was unable to locate oUF.")
+local oUF = E.oUF
+
 local Translit = E.Libs.Translit
 local translitMark = "!"
 
@@ -87,8 +86,8 @@ local function UnitName(unit)
 	end
 end
 
-ElvUF.Tags.Events['altpower:percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:percent'] = function(u)
+oUF.Tags.Events['altpower:percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
+oUF.Tags.Methods['altpower:percent'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
 		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
@@ -99,8 +98,8 @@ ElvUF.Tags.Methods['altpower:percent'] = function(u)
 	end
 end
 
-ElvUF.Tags.Events['altpower:current'] = "UNIT_POWER_UPDATE"
-ElvUF.Tags.Methods['altpower:current'] = function(u)
+oUF.Tags.Events['altpower:current'] = "UNIT_POWER_UPDATE"
+oUF.Tags.Methods['altpower:current'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
 		return cur
@@ -109,8 +108,8 @@ ElvUF.Tags.Methods['altpower:current'] = function(u)
 	end
 end
 
-ElvUF.Tags.Events['altpower:current-percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:current-percent'] = function(u)
+oUF.Tags.Events['altpower:current-percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
+oUF.Tags.Methods['altpower:current-percent'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
 		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
@@ -121,8 +120,8 @@ ElvUF.Tags.Methods['altpower:current-percent'] = function(u)
 	end
 end
 
-ElvUF.Tags.Events['altpower:deficit'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:deficit'] = function(u)
+oUF.Tags.Events['altpower:deficit'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
+oUF.Tags.Methods['altpower:deficit'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
 		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
@@ -133,8 +132,8 @@ ElvUF.Tags.Methods['altpower:deficit'] = function(u)
 	end
 end
 
-ElvUF.Tags.Events['altpower:current-max'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:current-max'] = function(u)
+oUF.Tags.Events['altpower:current-max'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
+oUF.Tags.Methods['altpower:current-max'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
 		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
@@ -145,8 +144,8 @@ ElvUF.Tags.Methods['altpower:current-max'] = function(u)
 	end
 end
 
-ElvUF.Tags.Events['altpower:current-max-percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:current-max-percent'] = function(u)
+oUF.Tags.Events['altpower:current-max-percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
+oUF.Tags.Methods['altpower:current-max-percent'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
 		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
@@ -157,8 +156,8 @@ ElvUF.Tags.Methods['altpower:current-max-percent'] = function(u)
 	end
 end
 
-ElvUF.Tags.Events['altpowercolor'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpowercolor'] = function(u)
+oUF.Tags.Events['altpowercolor'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
+oUF.Tags.Methods['altpowercolor'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
 		local _, r, g, b = UnitAlternatePowerTextureInfo(u, 2)
@@ -173,8 +172,8 @@ ElvUF.Tags.Methods['altpowercolor'] = function(u)
 	end
 end
 
-ElvUF.Tags.Events['afk'] = 'PLAYER_FLAGS_CHANGED'
-ElvUF.Tags.Methods['afk'] = function(unit)
+oUF.Tags.Events['afk'] = 'PLAYER_FLAGS_CHANGED'
+oUF.Tags.Methods['afk'] = function(unit)
 	local isAFK = UnitIsAFK(unit)
 	if isAFK then
 		return format('|cffFFFFFF[|r|cffFF0000%s|r|cFFFFFFFF]|r', DEFAULT_AFK_MESSAGE)
@@ -183,8 +182,8 @@ ElvUF.Tags.Methods['afk'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['healthcolor'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
-ElvUF.Tags.Methods['healthcolor'] = function(unit)
+oUF.Tags.Events['healthcolor'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+oUF.Tags.Methods['healthcolor'] = function(unit)
 	if UnitIsDeadOrGhost(unit) or not UnitIsConnected(unit) then
 		return Hex(0.84, 0.75, 0.65)
 	else
@@ -193,8 +192,8 @@ ElvUF.Tags.Methods['healthcolor'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
-ElvUF.Tags.Methods['health:current'] = function(unit)
+oUF.Tags.Events['health:current'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+oUF.Tags.Methods['health:current'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 	if (status) then
 		return status
@@ -203,8 +202,8 @@ ElvUF.Tags.Methods['health:current'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:deficit'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
-ElvUF.Tags.Methods['health:deficit'] = function(unit)
+oUF.Tags.Events['health:deficit'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+oUF.Tags.Methods['health:deficit'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
 	if (status) then
@@ -214,8 +213,8 @@ ElvUF.Tags.Methods['health:deficit'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
-ElvUF.Tags.Methods['health:current-percent'] = function(unit)
+oUF.Tags.Events['health:current-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+oUF.Tags.Methods['health:current-percent'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
 	if (status) then
@@ -225,8 +224,8 @@ ElvUF.Tags.Methods['health:current-percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current-max'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
-ElvUF.Tags.Methods['health:current-max'] = function(unit)
+oUF.Tags.Events['health:current-max'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+oUF.Tags.Methods['health:current-max'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
 	if (status) then
@@ -236,8 +235,8 @@ ElvUF.Tags.Methods['health:current-max'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current-max-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
-ElvUF.Tags.Methods['health:current-max-percent'] = function(unit)
+oUF.Tags.Events['health:current-max-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+oUF.Tags.Methods['health:current-max-percent'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
 	if (status) then
@@ -247,15 +246,15 @@ ElvUF.Tags.Methods['health:current-max-percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:max'] = 'UNIT_MAXHEALTH'
-ElvUF.Tags.Methods['health:max'] = function(unit)
+oUF.Tags.Events['health:max'] = 'UNIT_MAXHEALTH'
+oUF.Tags.Methods['health:max'] = function(unit)
 	local max = UnitHealthMax(unit)
 
 	return E:GetFormattedText('CURRENT', max, max)
 end
 
-ElvUF.Tags.Events['health:percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
-ElvUF.Tags.Methods['health:percent'] = function(unit)
+oUF.Tags.Events['health:percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+oUF.Tags.Methods['health:percent'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
 	if (status) then
@@ -265,8 +264,8 @@ ElvUF.Tags.Methods['health:percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:percent-with-absorbs'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
-ElvUF.Tags.Methods['health:percent-with-absorbs'] = function(unit)
+oUF.Tags.Events['health:percent-with-absorbs'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+oUF.Tags.Methods['health:percent-with-absorbs'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
 	if (status) then
@@ -282,38 +281,38 @@ ElvUF.Tags.Methods['health:percent-with-absorbs'] = function(unit)
 	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
 end
 
-ElvUF.Tags.Events['health:current-nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
-ElvUF.Tags.Methods['health:current-nostatus'] = function(unit)
+oUF.Tags.Events['health:current-nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+oUF.Tags.Methods['health:current-nostatus'] = function(unit)
 	return E:GetFormattedText('CURRENT', UnitHealth(unit), UnitHealthMax(unit))
 end
 
-ElvUF.Tags.Events['health:deficit-nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
-ElvUF.Tags.Methods['health:deficit-nostatus'] = function(unit)
+oUF.Tags.Events['health:deficit-nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+oUF.Tags.Methods['health:deficit-nostatus'] = function(unit)
 	return E:GetFormattedText('DEFICIT', UnitHealth(unit), UnitHealthMax(unit))
 end
 
-ElvUF.Tags.Events['health:current-percent-nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
-ElvUF.Tags.Methods['health:current-percent-nostatus'] = function(unit)
+oUF.Tags.Events['health:current-percent-nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+oUF.Tags.Methods['health:current-percent-nostatus'] = function(unit)
 	return E:GetFormattedText('CURRENT_PERCENT', UnitHealth(unit), UnitHealthMax(unit))
 end
 
-ElvUF.Tags.Events['health:current-max-nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
-ElvUF.Tags.Methods['health:current-max-nostatus'] = function(unit)
+oUF.Tags.Events['health:current-max-nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+oUF.Tags.Methods['health:current-max-nostatus'] = function(unit)
 	return E:GetFormattedText('CURRENT_MAX', UnitHealth(unit), UnitHealthMax(unit))
 end
 
-ElvUF.Tags.Events['health:current-max-percent-nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
-ElvUF.Tags.Methods['health:current-max-percent-nostatus'] = function(unit)
+oUF.Tags.Events['health:current-max-percent-nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+oUF.Tags.Methods['health:current-max-percent-nostatus'] = function(unit)
 	return E:GetFormattedText('CURRENT_MAX_PERCENT', UnitHealth(unit), UnitHealthMax(unit))
 end
 
-ElvUF.Tags.Events['health:percent-nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
-ElvUF.Tags.Methods['health:percent-nostatus'] = function(unit)
+oUF.Tags.Events['health:percent-nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+oUF.Tags.Methods['health:percent-nostatus'] = function(unit)
 	return E:GetFormattedText('PERCENT', UnitHealth(unit), UnitHealthMax(unit))
 end
 
-ElvUF.Tags.Events['health:deficit-percent:name'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['health:deficit-percent:name'] = function(unit)
+oUF.Tags.Events['health:deficit-percent:name'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
+oUF.Tags.Methods['health:deficit-percent:name'] = function(unit)
 	local currentHealth = UnitHealth(unit)
 	local deficit = UnitHealthMax(unit) - currentHealth
 
@@ -324,8 +323,8 @@ ElvUF.Tags.Methods['health:deficit-percent:name'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:deficit-percent:name-long'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['health:deficit-percent:name-long'] = function(unit)
+oUF.Tags.Events['health:deficit-percent:name-long'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
+oUF.Tags.Methods['health:deficit-percent:name-long'] = function(unit)
 	local currentHealth = UnitHealth(unit)
 	local deficit = UnitHealthMax(unit) - currentHealth
 
@@ -336,8 +335,8 @@ ElvUF.Tags.Methods['health:deficit-percent:name-long'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:deficit-percent:name-medium'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['health:deficit-percent:name-medium'] = function(unit)
+oUF.Tags.Events['health:deficit-percent:name-medium'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
+oUF.Tags.Methods['health:deficit-percent:name-medium'] = function(unit)
 	local currentHealth = UnitHealth(unit)
 	local deficit = UnitHealthMax(unit) - currentHealth
 
@@ -348,8 +347,8 @@ ElvUF.Tags.Methods['health:deficit-percent:name-medium'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:deficit-percent:name-short'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['health:deficit-percent:name-short'] = function(unit)
+oUF.Tags.Events['health:deficit-percent:name-short'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
+oUF.Tags.Methods['health:deficit-percent:name-short'] = function(unit)
 	local currentHealth = UnitHealth(unit)
 	local deficit = UnitHealthMax(unit) - currentHealth
 
@@ -360,8 +359,8 @@ ElvUF.Tags.Methods['health:deficit-percent:name-short'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:deficit-percent:name-veryshort'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['health:deficit-percent:name-veryshort'] = function(unit)
+oUF.Tags.Events['health:deficit-percent:name-veryshort'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
+oUF.Tags.Methods['health:deficit-percent:name-veryshort'] = function(unit)
 	local currentHealth = UnitHealth(unit)
 	local deficit = UnitHealthMax(unit) - currentHealth
 
@@ -372,8 +371,8 @@ ElvUF.Tags.Methods['health:deficit-percent:name-veryshort'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['power:current'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-ElvUF.Tags.Methods['power:current'] = function(unit)
+oUF.Tags.Events['power:current'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+oUF.Tags.Methods['power:current'] = function(unit)
 	local pType = UnitPowerType(unit)
 	local min = UnitPower(unit, pType)
 
@@ -384,16 +383,16 @@ ElvUF.Tags.Methods['power:current'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['power:current-max'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-ElvUF.Tags.Methods['power:current-max'] = function(unit)
+oUF.Tags.Events['power:current-max'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+oUF.Tags.Methods['power:current-max'] = function(unit)
 	local pType = UnitPowerType(unit)
 	local min = UnitPower(unit, pType)
 
 	return min == 0 and ' ' or	E:GetFormattedText('CURRENT_MAX', min, UnitPowerMax(unit, pType))
 end
 
-ElvUF.Tags.Events['power:current-percent'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-ElvUF.Tags.Methods['power:current-percent'] = function(unit)
+oUF.Tags.Events['power:current-percent'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+oUF.Tags.Methods['power:current-percent'] = function(unit)
 	local pType = UnitPowerType(unit)
 	local min = UnitPower(unit, pType)
 
@@ -404,8 +403,8 @@ ElvUF.Tags.Methods['power:current-percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['power:current-max-percent'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-ElvUF.Tags.Methods['power:current-max-percent'] = function(unit)
+oUF.Tags.Events['power:current-max-percent'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+oUF.Tags.Methods['power:current-max-percent'] = function(unit)
 	local pType = UnitPowerType(unit)
 	local min = UnitPower(unit, pType)
 
@@ -416,8 +415,8 @@ ElvUF.Tags.Methods['power:current-max-percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['power:percent'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-ElvUF.Tags.Methods['power:percent'] = function(unit)
+oUF.Tags.Events['power:percent'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+oUF.Tags.Methods['power:percent'] = function(unit)
 	local pType = UnitPowerType(unit)
 	local min = UnitPower(unit, pType)
 
@@ -428,25 +427,25 @@ ElvUF.Tags.Methods['power:percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['power:deficit'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-ElvUF.Tags.Methods['power:deficit'] = function(unit)
+oUF.Tags.Events['power:deficit'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+oUF.Tags.Methods['power:deficit'] = function(unit)
 	local pType = UnitPowerType(unit)
 
 	return E:GetFormattedText('DEFICIT', UnitPower(unit, pType), UnitPowerMax(unit, pType))
 end
 
-ElvUF.Tags.Events['power:max'] = 'UNIT_DISPLAYPOWER UNIT_MAXPOWER'
-ElvUF.Tags.Methods['power:max'] = function(unit)
+oUF.Tags.Events['power:max'] = 'UNIT_DISPLAYPOWER UNIT_MAXPOWER'
+oUF.Tags.Methods['power:max'] = function(unit)
 	local pType = UnitPowerType(unit)
 	local max = UnitPowerMax(unit, pType)
 
 	return E:GetFormattedText('CURRENT', max, max)
 end
 
-ElvUF.Tags.Methods['manacolor'] = function()
+oUF.Tags.Methods['manacolor'] = function()
 	local mana = _G.PowerBarColor.MANA
 	local altR, altG, altB = mana.r, mana.g, mana.b
-	local color = ElvUF.colors.power.MANA
+	local color = oUF.colors.power.MANA
 	if color then
 		return Hex(color[1], color[2], color[3])
 	else
@@ -454,8 +453,8 @@ ElvUF.Tags.Methods['manacolor'] = function()
 	end
 end
 
-ElvUF.Tags.Events['mana:current'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-ElvUF.Tags.Methods['mana:current'] = function(unit)
+oUF.Tags.Events['mana:current'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+oUF.Tags.Methods['mana:current'] = function(unit)
 	local min = UnitPower(unit, SPELL_POWER_MANA)
 
 	if min == 0 then
@@ -465,8 +464,8 @@ ElvUF.Tags.Methods['mana:current'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['mana:current-max'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-ElvUF.Tags.Methods['mana:current-max'] = function(unit)
+oUF.Tags.Events['mana:current-max'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+oUF.Tags.Methods['mana:current-max'] = function(unit)
 	local min = UnitPower(unit, SPELL_POWER_MANA)
 
 	if min == 0 then
@@ -476,8 +475,8 @@ ElvUF.Tags.Methods['mana:current-max'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['mana:current-percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-ElvUF.Tags.Methods['mana:current-percent'] = function(unit)
+oUF.Tags.Events['mana:current-percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+oUF.Tags.Methods['mana:current-percent'] = function(unit)
 	local min = UnitPower(unit, SPELL_POWER_MANA)
 
 	if min == 0 then
@@ -487,8 +486,8 @@ ElvUF.Tags.Methods['mana:current-percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['mana:current-max-percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-ElvUF.Tags.Methods['mana:current-max-percent'] = function(unit)
+oUF.Tags.Events['mana:current-max-percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+oUF.Tags.Methods['mana:current-max-percent'] = function(unit)
 	local min = UnitPower(unit, SPELL_POWER_MANA)
 
 	if min == 0 then
@@ -498,8 +497,8 @@ ElvUF.Tags.Methods['mana:current-max-percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['mana:percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-ElvUF.Tags.Methods['mana:percent'] = function(unit)
+oUF.Tags.Events['mana:percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+oUF.Tags.Methods['mana:percent'] = function(unit)
 	local min = UnitPower(unit, SPELL_POWER_MANA)
 
 	if min == 0 then
@@ -509,20 +508,20 @@ ElvUF.Tags.Methods['mana:percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['mana:deficit'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-ElvUF.Tags.Methods['mana:deficit'] = function(unit)
+oUF.Tags.Events['mana:deficit'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+oUF.Tags.Methods['mana:deficit'] = function(unit)
 	return E:GetFormattedText('DEFICIT', UnitPower(unit), UnitPowerMax(unit, SPELL_POWER_MANA))
 end
 
-ElvUF.Tags.Events['mana:max'] = 'UNIT_MAXPOWER'
-ElvUF.Tags.Methods['mana:max'] = function(unit)
+oUF.Tags.Events['mana:max'] = 'UNIT_MAXPOWER'
+oUF.Tags.Methods['mana:max'] = function(unit)
 	local max = UnitPowerMax(unit, SPELL_POWER_MANA)
 
 	return E:GetFormattedText('CURRENT', max, max)
 end
 
-ElvUF.Tags.Events['difficultycolor'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
-ElvUF.Tags.Methods['difficultycolor'] = function(unit)
+oUF.Tags.Events['difficultycolor'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
+oUF.Tags.Methods['difficultycolor'] = function(unit)
 	local r, g, b
 	if ( UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) ) then
 		local level = UnitBattlePetLevel(unit)
@@ -553,25 +552,25 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	return Hex(r, g, b)
 end
 
-ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
-ElvUF.Tags.Methods['namecolor'] = function(unit)
+oUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
+oUF.Tags.Methods['namecolor'] = function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
 	local unitPlayer = UnitIsPlayer(unit)
 	if (unitPlayer) then
 		local _, unitClass = UnitClass(unit)
-		local class = ElvUF.colors.class[unitClass]
+		local class = oUF.colors.class[unitClass]
 		if not class then return "" end
 		return Hex(class[1], class[2], class[3])
 	elseif (unitReaction) then
-		local reaction = ElvUF.colors.reaction[unitReaction]
+		local reaction = oUF.colors.reaction[unitReaction]
 		return Hex(reaction[1], reaction[2], reaction[3])
 	else
 		return '|cFFC2C2C2'
 	end
 end
 
-ElvUF.Tags.Events['smartlevel'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
-ElvUF.Tags.Methods['smartlevel'] = function(unit)
+oUF.Tags.Events['smartlevel'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
+oUF.Tags.Methods['smartlevel'] = function(unit)
 	local level = UnitLevel(unit)
 	if ( UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) ) then
 		return UnitBattlePetLevel(unit);
@@ -584,26 +583,26 @@ ElvUF.Tags.Methods['smartlevel'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['name:veryshort'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['name:veryshort'] = function(unit)
+oUF.Tags.Events['name:veryshort'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['name:veryshort'] = function(unit)
 	local name = UnitName(unit)
 	return name ~= nil and E:ShortenString(name, 5) or nil
 end
 
-ElvUF.Tags.Events['name:short'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['name:short'] = function(unit)
+oUF.Tags.Events['name:short'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['name:short'] = function(unit)
 	local name = UnitName(unit)
 	return name ~= nil and E:ShortenString(name, 10) or nil
 end
 
-ElvUF.Tags.Events['name:medium'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['name:medium'] = function(unit)
+oUF.Tags.Events['name:medium'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['name:medium'] = function(unit)
 	local name = UnitName(unit)
 	return name ~= nil and E:ShortenString(name, 15) or nil
 end
 
-ElvUF.Tags.Events['name:long'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['name:long'] = function(unit)
+oUF.Tags.Events['name:long'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['name:long'] = function(unit)
 	local name = UnitName(unit)
 	return name ~= nil and E:ShortenString(name, 20) or nil
 end
@@ -622,8 +621,8 @@ local function abbrev(name)
 	return name
 end
 
-ElvUF.Tags.Events['name:abbrev'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['name:abbrev'] = function(unit)
+oUF.Tags.Events['name:abbrev'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['name:abbrev'] = function(unit)
 	local name = UnitName(unit)
 
 	if name and strfind(name, '%s') then
@@ -633,8 +632,8 @@ ElvUF.Tags.Methods['name:abbrev'] = function(unit)
 	return name ~= nil and E:ShortenString(name, 20) or '' --The value 20 controls how many characters are allowed in the name before it gets truncated. Change it to fit your needs.
 end
 
-ElvUF.Tags.Events['name:veryshort:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH'
-ElvUF.Tags.Methods['name:veryshort:status'] = function(unit)
+oUF.Tags.Events['name:veryshort:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH_FREQUENT'
+oUF.Tags.Methods['name:veryshort:status'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 	local name = UnitName(unit)
 	if (status) then
@@ -644,8 +643,8 @@ ElvUF.Tags.Methods['name:veryshort:status'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['name:short:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH'
-ElvUF.Tags.Methods['name:short:status'] = function(unit)
+oUF.Tags.Events['name:short:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH_FREQUENT'
+oUF.Tags.Methods['name:short:status'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 	local name = UnitName(unit)
 	if (status) then
@@ -655,8 +654,8 @@ ElvUF.Tags.Methods['name:short:status'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['name:medium:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH'
-ElvUF.Tags.Methods['name:medium:status'] = function(unit)
+oUF.Tags.Events['name:medium:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH_FREQUENT'
+oUF.Tags.Methods['name:medium:status'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 	local name = UnitName(unit)
 	if (status) then
@@ -666,8 +665,8 @@ ElvUF.Tags.Methods['name:medium:status'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['name:long:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH'
-ElvUF.Tags.Methods['name:long:status'] = function(unit)
+oUF.Tags.Events['name:long:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH_FREQUENT'
+oUF.Tags.Methods['name:long:status'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 	local name = UnitName(unit)
 	if (status) then
@@ -677,32 +676,32 @@ ElvUF.Tags.Methods['name:long:status'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['name:veryshort:translit'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['name:veryshort:translit'] = function(unit)
+oUF.Tags.Events['name:veryshort:translit'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['name:veryshort:translit'] = function(unit)
 	local name = Translit:Transliterate(UnitName(unit), translitMark)
 	return name ~= nil and E:ShortenString(name, 5) or nil
 end
 
-ElvUF.Tags.Events['name:short:translit'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['name:short:translit'] = function(unit)
+oUF.Tags.Events['name:short:translit'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['name:short:translit'] = function(unit)
 	local name = Translit:Transliterate(UnitName(unit), translitMark)
 	return name ~= nil and E:ShortenString(name, 10) or nil
 end
 
-ElvUF.Tags.Events['name:medium:translit'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['name:medium:translit'] = function(unit)
+oUF.Tags.Events['name:medium:translit'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['name:medium:translit'] = function(unit)
 	local name = Translit:Transliterate(UnitName(unit), translitMark)
 	return name ~= nil and E:ShortenString(name, 15) or nil
 end
 
-ElvUF.Tags.Events['name:long:translit'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['name:long:translit'] = function(unit)
+oUF.Tags.Events['name:long:translit'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['name:long:translit'] = function(unit)
 	local name = Translit:Transliterate(UnitName(unit), translitMark)
 	return name ~= nil and E:ShortenString(name, 20) or nil
 end
 
-ElvUF.Tags.Events['realm'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['realm'] = function(unit)
+oUF.Tags.Events['realm'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['realm'] = function(unit)
 	local _, realm = UnitName(unit)
 
 	if realm and realm ~= "" then
@@ -712,8 +711,8 @@ ElvUF.Tags.Methods['realm'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['realm:dash'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['realm:dash'] = function(unit)
+oUF.Tags.Events['realm:dash'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['realm:dash'] = function(unit)
 	local _, realm = UnitName(unit)
 
 	if realm and (realm ~= "" and realm ~= E.myrealm) then
@@ -725,8 +724,8 @@ ElvUF.Tags.Methods['realm:dash'] = function(unit)
 	return realm
 end
 
-ElvUF.Tags.Events['realm:translit'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['realm:translit'] = function(unit)
+oUF.Tags.Events['realm:translit'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['realm:translit'] = function(unit)
 	local _, realm = Translit:Transliterate(UnitName(unit), translitMark)
 
 	if realm and realm ~= "" then
@@ -736,8 +735,8 @@ ElvUF.Tags.Methods['realm:translit'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['realm:dash:translit'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['realm:dash:translit'] = function(unit)
+oUF.Tags.Events['realm:dash:translit'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['realm:dash:translit'] = function(unit)
 	local _, realm = Translit:Transliterate(UnitName(unit), translitMark)
 
 	if realm and (realm ~= "" and realm ~= E.myrealm) then
@@ -750,8 +749,8 @@ ElvUF.Tags.Methods['realm:dash:translit'] = function(unit)
 end
 
 
-ElvUF.Tags.Events['threat:percent'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
-ElvUF.Tags.Methods['threat:percent'] = function(unit)
+oUF.Tags.Events['threat:percent'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
+oUF.Tags.Methods['threat:percent'] = function(unit)
 	local _, _, percent = UnitDetailedThreatSituation('player', unit)
 	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
 		return format('%.0f%%', percent)
@@ -760,8 +759,8 @@ ElvUF.Tags.Methods['threat:percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['threat:current'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
-ElvUF.Tags.Methods['threat:current'] = function(unit)
+oUF.Tags.Events['threat:current'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
+oUF.Tags.Methods['threat:current'] = function(unit)
 	local _, _, percent, _, threatvalue = UnitDetailedThreatSituation('player', unit)
 	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
 		return E:ShortValue(threatvalue)
@@ -770,8 +769,8 @@ ElvUF.Tags.Methods['threat:current'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['threatcolor'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
-ElvUF.Tags.Methods['threatcolor'] = function(unit)
+oUF.Tags.Events['threatcolor'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
+oUF.Tags.Methods['threatcolor'] = function(unit)
 	local _, status = UnitDetailedThreatSituation('player', unit)
 	if (status) and (IsInGroup() or UnitExists('pet')) then
 		return Hex(GetThreatStatusColor(status))
@@ -781,8 +780,8 @@ ElvUF.Tags.Methods['threatcolor'] = function(unit)
 end
 
 local unitStatus = {}
-ElvUF.Tags.OnUpdateThrottle['statustimer'] = 1
-ElvUF.Tags.Methods['statustimer'] = function(unit)
+oUF.Tags.OnUpdateThrottle['statustimer'] = 1
+oUF.Tags.Methods['statustimer'] = function(unit)
 	if not UnitIsPlayer(unit) then return; end
 	local guid = UnitGUID(unit)
 	if (UnitIsAFK(unit)) then
@@ -816,8 +815,8 @@ ElvUF.Tags.Methods['statustimer'] = function(unit)
 	end
 end
 
-ElvUF.Tags.OnUpdateThrottle['pvptimer'] = 1
-ElvUF.Tags.Methods['pvptimer'] = function(unit)
+oUF.Tags.OnUpdateThrottle['pvptimer'] = 1
+oUF.Tags.Methods['pvptimer'] = function(unit)
 	if (UnitIsPVPFreeForAll(unit) or UnitIsPVP(unit)) then
 		local timer = GetPVPTimer()
 
@@ -843,7 +842,7 @@ local Harmony = {
 	[6] = {.17, .63, .33, 1},
 }
 
-local StaggerColors = ElvUF.colors.power.STAGGER
+local StaggerColors = oUF.colors.power.STAGGER
 -- percentages at which the bar should change color
 local STAGGER_YELLOW_TRANSITION = STAGGER_YELLOW_TRANSITION
 local STAGGER_RED_TRANSITION = STAGGER_RED_TRANSITION
@@ -886,14 +885,14 @@ local function GetClassPower(class)
 	return min, max, r, g, b
 end
 
-ElvUF.Tags.Events['classpowercolor'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
-ElvUF.Tags.Methods['classpowercolor'] = function()
+oUF.Tags.Events['classpowercolor'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+oUF.Tags.Methods['classpowercolor'] = function()
 	local _, _, r, g, b = GetClassPower(E.myclass)
 	return Hex(r, g, b)
 end
 
-ElvUF.Tags.Events['classpower:current'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
-ElvUF.Tags.Methods['classpower:current'] = function()
+oUF.Tags.Events['classpower:current'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+oUF.Tags.Methods['classpower:current'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
 		return nil
@@ -902,8 +901,8 @@ ElvUF.Tags.Methods['classpower:current'] = function()
 	end
 end
 
-ElvUF.Tags.Events['classpower:deficit'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
-ElvUF.Tags.Methods['classpower:deficit'] = function()
+oUF.Tags.Events['classpower:deficit'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+oUF.Tags.Methods['classpower:deficit'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
 		return nil
@@ -912,8 +911,8 @@ ElvUF.Tags.Methods['classpower:deficit'] = function()
 	end
 end
 
-ElvUF.Tags.Events['classpower:current-percent'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
-ElvUF.Tags.Methods['classpower:current-percent'] = function()
+oUF.Tags.Events['classpower:current-percent'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+oUF.Tags.Methods['classpower:current-percent'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
 		return nil
@@ -922,8 +921,8 @@ ElvUF.Tags.Methods['classpower:current-percent'] = function()
 	end
 end
 
-ElvUF.Tags.Events['classpower:current-max'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
-ElvUF.Tags.Methods['classpower:current-max'] = function()
+oUF.Tags.Events['classpower:current-max'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+oUF.Tags.Methods['classpower:current-max'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
 		return nil
@@ -932,8 +931,8 @@ ElvUF.Tags.Methods['classpower:current-max'] = function()
 	end
 end
 
-ElvUF.Tags.Events['classpower:current-max-percent'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
-ElvUF.Tags.Methods['classpower:current-max-percent'] = function()
+oUF.Tags.Events['classpower:current-max-percent'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+oUF.Tags.Methods['classpower:current-max-percent'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
 		return nil
@@ -942,8 +941,8 @@ ElvUF.Tags.Methods['classpower:current-max-percent'] = function()
 	end
 end
 
-ElvUF.Tags.Events['classpower:percent'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
-ElvUF.Tags.Methods['classpower:percent'] = function()
+oUF.Tags.Events['classpower:percent'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+oUF.Tags.Methods['classpower:percent'] = function()
 	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
 		return nil
@@ -954,16 +953,16 @@ end
 
 if E.myclass == 'MONK' then
 	local events = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA'
-	ElvUF.Tags.Events['classpower:current'] = events
-	ElvUF.Tags.Events['classpower:deficit'] = events
-	ElvUF.Tags.Events['classpower:current-percent'] = events
-	ElvUF.Tags.Events['classpower:current-max'] = events
-	ElvUF.Tags.Events['classpower:current-max-percent'] = events
-	ElvUF.Tags.Events['classpower:percent'] = events
+	oUF.Tags.Events['classpower:current'] = events
+	oUF.Tags.Events['classpower:deficit'] = events
+	oUF.Tags.Events['classpower:current-percent'] = events
+	oUF.Tags.Events['classpower:current-max'] = events
+	oUF.Tags.Events['classpower:current-max-percent'] = events
+	oUF.Tags.Events['classpower:percent'] = events
 end
 
-ElvUF.Tags.Events['absorbs'] = 'UNIT_ABSORB_AMOUNT_CHANGED'
-ElvUF.Tags.Methods['absorbs'] = function(unit)
+oUF.Tags.Events['absorbs'] = 'UNIT_ABSORB_AMOUNT_CHANGED'
+oUF.Tags.Methods['absorbs'] = function(unit)
 	local absorb = UnitGetTotalAbsorbs(unit) or 0
 	if absorb == 0 then
 		return nil
@@ -972,8 +971,8 @@ ElvUF.Tags.Methods['absorbs'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['incomingheals:personal'] = 'UNIT_HEAL_PREDICTION'
-ElvUF.Tags.Methods['incomingheals:personal'] = function(unit)
+oUF.Tags.Events['incomingheals:personal'] = 'UNIT_HEAL_PREDICTION'
+oUF.Tags.Methods['incomingheals:personal'] = function(unit)
 	local heal = UnitGetIncomingHeals(unit, 'player') or 0
 	if heal == 0 then
 		return nil
@@ -982,8 +981,8 @@ ElvUF.Tags.Methods['incomingheals:personal'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['incomingheals:others'] = 'UNIT_HEAL_PREDICTION'
-ElvUF.Tags.Methods['incomingheals:others'] = function(unit)
+oUF.Tags.Events['incomingheals:others'] = 'UNIT_HEAL_PREDICTION'
+oUF.Tags.Methods['incomingheals:others'] = function(unit)
 	local personal = UnitGetIncomingHeals(unit, 'player') or 0
 	local heal = UnitGetIncomingHeals(unit) or 0
 	local others = heal - personal
@@ -994,8 +993,8 @@ ElvUF.Tags.Methods['incomingheals:others'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['incomingheals'] = 'UNIT_HEAL_PREDICTION'
-ElvUF.Tags.Methods['incomingheals'] = function(unit)
+oUF.Tags.Events['incomingheals'] = 'UNIT_HEAL_PREDICTION'
+oUF.Tags.Methods['incomingheals'] = function(unit)
 	local heal = UnitGetIncomingHeals(unit) or 0
 	if heal == 0 then
 		return nil
@@ -1032,8 +1031,8 @@ f:SetScript("OnEvent", function()
 	end
 end)
 
-ElvUF.Tags.OnUpdateThrottle['nearbyplayers:8'] = 0.25
-ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
+oUF.Tags.OnUpdateThrottle['nearbyplayers:8'] = 0.25
+oUF.Tags.Methods['nearbyplayers:8'] = function(unit)
 	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
 		for groupUnit in pairs(GroupUnits) do
@@ -1049,8 +1048,8 @@ ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
 	return unitsInRange
 end
 
-ElvUF.Tags.OnUpdateThrottle['nearbyplayers:10'] = 0.25
-ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
+oUF.Tags.OnUpdateThrottle['nearbyplayers:10'] = 0.25
+oUF.Tags.Methods['nearbyplayers:10'] = function(unit)
 	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
 		for groupUnit in pairs(GroupUnits) do
@@ -1066,8 +1065,8 @@ ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
 	return unitsInRange
 end
 
-ElvUF.Tags.OnUpdateThrottle['nearbyplayers:30'] = 0.25
-ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
+oUF.Tags.OnUpdateThrottle['nearbyplayers:30'] = 0.25
+oUF.Tags.Methods['nearbyplayers:30'] = function(unit)
 	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
 		for groupUnit in pairs(GroupUnits) do
@@ -1083,8 +1082,8 @@ ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
 	return unitsInRange
 end
 
-ElvUF.Tags.OnUpdateThrottle['distance'] = 0.1
-ElvUF.Tags.Methods['distance'] = function(unit)
+oUF.Tags.OnUpdateThrottle['distance'] = 0.1
+oUF.Tags.Methods['distance'] = function(unit)
 	local d
 	if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
 		d = E:GetDistance('player', unit)
@@ -1099,16 +1098,16 @@ end
 
 local baseSpeed = BASE_MOVEMENT_SPEED
 local speedText = SPEED
-ElvUF.Tags.OnUpdateThrottle['speed:percent'] = 0.1
-ElvUF.Tags.Methods['speed:percent'] = function(unit)
+oUF.Tags.OnUpdateThrottle['speed:percent'] = 0.1
+oUF.Tags.Methods['speed:percent'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
 	local currentSpeedInPercent = (currentSpeedInYards / baseSpeed) * 100
 
 	return format("%s: %d%%", speedText, currentSpeedInPercent)
 end
 
-ElvUF.Tags.OnUpdateThrottle['speed:percent-moving'] = 0.1
-ElvUF.Tags.Methods['speed:percent-moving'] = function(unit)
+oUF.Tags.OnUpdateThrottle['speed:percent-moving'] = 0.1
+oUF.Tags.Methods['speed:percent-moving'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
 	local currentSpeedInPercent = currentSpeedInYards > 0 and ((currentSpeedInYards / baseSpeed) * 100)
 
@@ -1119,16 +1118,16 @@ ElvUF.Tags.Methods['speed:percent-moving'] = function(unit)
 	return currentSpeedInPercent or nil
 end
 
-ElvUF.Tags.OnUpdateThrottle['speed:percent-raw'] = 0.1
-ElvUF.Tags.Methods['speed:percent-raw'] = function(unit)
+oUF.Tags.OnUpdateThrottle['speed:percent-raw'] = 0.1
+oUF.Tags.Methods['speed:percent-raw'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
 	local currentSpeedInPercent = (currentSpeedInYards / baseSpeed) * 100
 
 	return format("%d%%", currentSpeedInPercent)
 end
 
-ElvUF.Tags.OnUpdateThrottle['speed:percent-moving-raw'] = 0.1
-ElvUF.Tags.Methods['speed:percent-moving-raw'] = function(unit)
+oUF.Tags.OnUpdateThrottle['speed:percent-moving-raw'] = 0.1
+oUF.Tags.Methods['speed:percent-moving-raw'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
 	local currentSpeedInPercent = currentSpeedInYards > 0 and ((currentSpeedInYards / baseSpeed) * 100)
 
@@ -1139,35 +1138,35 @@ ElvUF.Tags.Methods['speed:percent-moving-raw'] = function(unit)
 	return currentSpeedInPercent or nil
 end
 
-ElvUF.Tags.OnUpdateThrottle['speed:yardspersec'] = 0.1
-ElvUF.Tags.Methods['speed:yardspersec'] = function(unit)
+oUF.Tags.OnUpdateThrottle['speed:yardspersec'] = 0.1
+oUF.Tags.Methods['speed:yardspersec'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
 
 	return format("%s: %.1f", speedText, currentSpeedInYards)
 end
 
-ElvUF.Tags.OnUpdateThrottle['speed:yardspersec-moving'] = 0.1
-ElvUF.Tags.Methods['speed:yardspersec-moving'] = function(unit)
+oUF.Tags.OnUpdateThrottle['speed:yardspersec-moving'] = 0.1
+oUF.Tags.Methods['speed:yardspersec-moving'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
 
 	return currentSpeedInYards > 0 and format("%s: %.1f", speedText, currentSpeedInYards) or nil
 end
 
-ElvUF.Tags.OnUpdateThrottle['speed:yardspersec-raw'] = 0.1
-ElvUF.Tags.Methods['speed:yardspersec-raw'] = function(unit)
+oUF.Tags.OnUpdateThrottle['speed:yardspersec-raw'] = 0.1
+oUF.Tags.Methods['speed:yardspersec-raw'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
 	return format("%.1f", currentSpeedInYards)
 end
 
-ElvUF.Tags.OnUpdateThrottle['speed:yardspersec-moving-raw'] = 0.1
-ElvUF.Tags.Methods['speed:yardspersec-moving-raw'] = function(unit)
+oUF.Tags.OnUpdateThrottle['speed:yardspersec-moving-raw'] = 0.1
+oUF.Tags.Methods['speed:yardspersec-moving-raw'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
 
 	return currentSpeedInYards > 0 and format("%.1f", currentSpeedInYards) or nil
 end
 
-ElvUF.Tags.Events['classificationcolor'] = 'UNIT_CLASSIFICATION_CHANGED'
-ElvUF.Tags.Methods['classificationcolor'] = function(unit)
+oUF.Tags.Events['classificationcolor'] = 'UNIT_CLASSIFICATION_CHANGED'
+oUF.Tags.Methods['classificationcolor'] = function(unit)
 	local c = UnitClassification(unit)
 	if(c == 'rare' or c == 'elite') then
 		return Hex(1, 0.5, 0.25) --Orange
@@ -1176,92 +1175,222 @@ ElvUF.Tags.Methods['classificationcolor'] = function(unit)
 	end
 end
 
-ElvUF.Tags.SharedEvents.PLAYER_GUILD_UPDATE = true
+oUF.Tags.SharedEvents.PLAYER_GUILD_UPDATE = true
 
-ElvUF.Tags.Events['guild'] = 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE'
-ElvUF.Tags.Methods['guild'] = function(unit)
+oUF.Tags.Events['guild'] = 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE'
+oUF.Tags.Methods['guild'] = function(unit)
 	if (UnitIsPlayer(unit)) then
 		return GetGuildInfo(unit) or nil
 	end
 end
 
-ElvUF.Tags.Events['guild:brackets'] = 'PLAYER_GUILD_UPDATE'
-ElvUF.Tags.Methods['guild:brackets'] = function(unit)
+oUF.Tags.Events['guild:brackets'] = 'PLAYER_GUILD_UPDATE'
+oUF.Tags.Methods['guild:brackets'] = function(unit)
 	local guildName = GetGuildInfo(unit)
 
 	return guildName and format("<%s>", guildName) or nil
 end
 
-ElvUF.Tags.Events['guild:translit'] = 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE'
-ElvUF.Tags.Methods['guild:translit'] = function(unit)
+oUF.Tags.Events['guild:translit'] = 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE'
+oUF.Tags.Methods['guild:translit'] = function(unit)
 	if (UnitIsPlayer(unit)) then
 		return Translit:Transliterate(GetGuildInfo(unit), translitMark) or nil
 	end
 end
 
-ElvUF.Tags.Events['guild:brackets:translit'] = 'PLAYER_GUILD_UPDATE'
-ElvUF.Tags.Methods['guild:brackets:translit'] = function(unit)
+oUF.Tags.Events['guild:brackets:translit'] = 'PLAYER_GUILD_UPDATE'
+oUF.Tags.Methods['guild:brackets:translit'] = function(unit)
 	local guildName = Translit:Transliterate(GetGuildInfo(unit), translitMark)
 
 	return guildName and format("<%s>", guildName) or nil
 end
 
-ElvUF.Tags.Events['target:veryshort'] = 'UNIT_TARGET'
-ElvUF.Tags.Methods['target:veryshort'] = function(unit)
+oUF.Tags.Events['target:veryshort'] = 'UNIT_TARGET'
+oUF.Tags.Methods['target:veryshort'] = function(unit)
 	local targetName = UnitName(unit.."target")
 	return targetName ~= nil and E:ShortenString(targetName, 5) or nil
 end
 
-ElvUF.Tags.Events['target:short'] = 'UNIT_TARGET'
-ElvUF.Tags.Methods['target:short'] = function(unit)
+oUF.Tags.Events['target:short'] = 'UNIT_TARGET'
+oUF.Tags.Methods['target:short'] = function(unit)
 	local targetName = UnitName(unit.."target")
 	return targetName ~= nil and E:ShortenString(targetName, 10) or nil
 end
 
-ElvUF.Tags.Events['target:medium'] = 'UNIT_TARGET'
-ElvUF.Tags.Methods['target:medium'] = function(unit)
+oUF.Tags.Events['target:medium'] = 'UNIT_TARGET'
+oUF.Tags.Methods['target:medium'] = function(unit)
 	local targetName = UnitName(unit.."target")
 	return targetName ~= nil and E:ShortenString(targetName, 15) or nil
 end
 
-ElvUF.Tags.Events['target:long'] = 'UNIT_TARGET'
-ElvUF.Tags.Methods['target:long'] = function(unit)
+oUF.Tags.Events['target:long'] = 'UNIT_TARGET'
+oUF.Tags.Methods['target:long'] = function(unit)
 	local targetName = UnitName(unit.."target")
 	return targetName ~= nil and E:ShortenString(targetName, 20) or nil
 end
 
-ElvUF.Tags.Events['target'] = 'UNIT_TARGET'
-ElvUF.Tags.Methods['target'] = function(unit)
+oUF.Tags.Events['target'] = 'UNIT_TARGET'
+oUF.Tags.Methods['target'] = function(unit)
 	local targetName = UnitName(unit.."target")
 	return targetName or nil
 end
 
-ElvUF.Tags.Events['target:veryshort:translit'] = 'UNIT_TARGET'
-ElvUF.Tags.Methods['target:veryshort:translit'] = function(unit)
+oUF.Tags.Events['target:veryshort:translit'] = 'UNIT_TARGET'
+oUF.Tags.Methods['target:veryshort:translit'] = function(unit)
 	local targetName = Translit:Transliterate(UnitName(unit.."target"), translitMark)
 	return targetName ~= nil and E:ShortenString(targetName, 5) or nil
 end
 
-ElvUF.Tags.Events['target:short:translit'] = 'UNIT_TARGET'
-ElvUF.Tags.Methods['target:short:translit'] = function(unit)
+oUF.Tags.Events['target:short:translit'] = 'UNIT_TARGET'
+oUF.Tags.Methods['target:short:translit'] = function(unit)
 	local targetName = Translit:Transliterate(UnitName(unit.."target"), translitMark)
 	return targetName ~= nil and E:ShortenString(targetName, 10) or nil
 end
 
-ElvUF.Tags.Events['target:medium:translit'] = 'UNIT_TARGET'
-ElvUF.Tags.Methods['target:medium:translit'] = function(unit)
+oUF.Tags.Events['target:medium:translit'] = 'UNIT_TARGET'
+oUF.Tags.Methods['target:medium:translit'] = function(unit)
 	local targetName = Translit:Transliterate(UnitName(unit.."target"), translitMark)
 	return targetName ~= nil and E:ShortenString(targetName, 15) or nil
 end
 
-ElvUF.Tags.Events['target:long:translit'] = 'UNIT_TARGET'
-ElvUF.Tags.Methods['target:long:translit'] = function(unit)
+oUF.Tags.Events['target:long:translit'] = 'UNIT_TARGET'
+oUF.Tags.Methods['target:long:translit'] = function(unit)
 	local targetName = Translit:Transliterate(UnitName(unit.."target"), translitMark)
 	return targetName ~= nil and E:ShortenString(targetName, 20) or nil
 end
 
-ElvUF.Tags.Events['target:translit'] = 'UNIT_TARGET'
-ElvUF.Tags.Methods['target:translit'] = function(unit)
+oUF.Tags.Events['target:translit'] = 'UNIT_TARGET'
+oUF.Tags.Methods['target:translit'] = function(unit)
 	local targetName = Translit:Transliterate(UnitName(unit.."target"), translitMark)
 	return targetName or nil
+end
+
+oUF.Tags.Events['npctitle'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['npctitle'] = function(unit)
+	if (UnitIsPlayer(unit)) then
+		return
+	end
+
+	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+	E.ScanTooltip:SetUnit(unit)
+	E.ScanTooltip:Show()
+
+	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
+
+	if (Title and not Title:find('^'..LEVEL)) then
+		return Title
+	end
+end
+
+oUF.Tags.Events['guild:rank'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['guild:rank'] = function(unit)
+	if (UnitIsPlayer(unit)) then
+		return select(2, GetGuildInfo(unit)) or ''
+	end
+end
+
+oUF.Tags.Events['arena:number'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['arena:number'] = function(unit)
+	local _, instanceType = GetInstanceInfo()
+	if instanceType == 'arena' then
+		for i = 1, 5 do
+			if UnitIsUnit(unit, "arena"..i) then
+				return i
+			end
+		end
+	end
+end
+
+oUF.Tags.Events['class'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['class'] = function(unit)
+	return UnitClass(unit)
+end
+
+oUF.Tags.Events['name:title'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['name:title'] = function(unit)
+	if (UnitIsPlayer(unit)) then
+		return UnitPVPName(unit)
+	end
+end
+
+oUF.Tags.SharedEvents.QUEST_LOG_UPDATE = true
+
+oUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'
+oUF.Tags.Methods['quest:title'] = function(unit)
+	if UnitIsPlayer(unit) then
+		return
+	end
+
+	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+	E.ScanTooltip:SetUnit(unit)
+	E.ScanTooltip:Show()
+
+	local QuestName
+
+	if E.ScanTooltip:NumLines() >= 3 then
+		for i = 3, E.ScanTooltip:NumLines() do
+			local QuestLine = _G['ElvUI_ScanTooltipTextLeft' .. i]
+			local QuestLineText = QuestLine and QuestLine:GetText()
+
+			local PlayerName, ProgressText = strmatch(QuestLineText, '^ ([^ ]-) ?%- (.+)$')
+
+			if not ( PlayerName and PlayerName ~= '' and PlayerName ~= UnitName('player') ) then
+				if ProgressText then
+					QuestName = _G['ElvUI_ScanTooltipTextLeft' .. i - 1]:GetText()
+				end
+			end
+		end
+		for i = 1, GetNumQuestLogEntries() do
+			local title, level, _, isHeader = GetQuestLogTitle(i)
+			if not isHeader and title == QuestName then
+				local colors = GetQuestDifficultyColor(level)
+				return Hex(colors.r, colors.g, colors.b)..QuestName..'|r'
+			end
+		end
+	end
+end
+
+oUF.Tags.Events['quest:info'] = 'QUEST_LOG_UPDATE'
+oUF.Tags.Methods['quest:info'] = function(unit)
+	if UnitIsPlayer(unit) then
+		return
+	end
+
+	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+	E.ScanTooltip:SetUnit(unit)
+	E.ScanTooltip:Show()
+
+	local ObjectiveCount = 0
+	local QuestName
+
+	if E.ScanTooltip:NumLines() >= 3 then
+		for i = 3, E.ScanTooltip:NumLines() do
+			local QuestLine = _G['ElvUI_ScanTooltipTextLeft' .. i]
+			local QuestLineText = QuestLine and QuestLine:GetText()
+
+			local PlayerName, ProgressText = strmatch(QuestLineText, '^ ([^ ]-) ?%- (.+)$')
+			if (not PlayerName or PlayerName == '' or PlayerName == UnitName('player')) and ProgressText then
+				local x, y
+				if not QuestName and ProgressText then
+					QuestName = _G['ElvUI_ScanTooltipTextLeft' .. i - 1]:GetText()
+				end
+				if ProgressText then
+					x, y = strmatch(ProgressText, '(%d+)/(%d+)')
+					if x and y then
+						local NumLeft = y - x
+						if NumLeft > ObjectiveCount then -- track highest number of objectives
+							ObjectiveCount = NumLeft
+							if ProgressText then
+								return ProgressText
+							end
+						end
+					else
+						if ProgressText then
+							return QuestName .. ': ' .. ProgressText
+						end
+					end
+				end
+			end
+		end
+	end
 end
