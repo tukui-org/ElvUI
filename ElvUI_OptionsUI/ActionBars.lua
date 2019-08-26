@@ -885,33 +885,26 @@ local function BuildABConfig()
 				},
 			},
 		}
-
-		if i == 1 then
-			group['bar'..i].args.pagingReset = {
-				type = 'execute',
-				name = L["Reset Action Paging"],
-				order = 2,
-				confirm = true,
-				confirmText = L["You are about to reset paging. Are you sure?"],
-				func = function()
-					E.db.actionbar.bar1.paging[E.myclass] = P.actionbar.bar1.paging[E.myclass]
-
-					AB:UpdateButtonSettings()
-				end,
-			}
-		end
-
-		if i == 6 then
-			group['bar'..i].args.enabled.set = function(info, value)
-				E.db.actionbar['bar'..i].enabled = value;
-				AB:PositionAndSizeBar("bar6")
-
-				--Update Bar 1 paging when Bar 6 is enabled/disabled
-				AB:UpdateBar1Paging()
-				AB:PositionAndSizeBar("bar1")
-			end
-		end
 	end
+
+	group.bar1.args.pagingReset = {
+		type = 'execute',
+		name = L["Reset Action Paging"],
+		order = 2,
+		confirm = true,
+		confirmText = L["You are about to reset paging. Are you sure?"],
+		func = function() E.db.actionbar.bar1.paging[E.myclass] = P.actionbar.bar1.paging[E.myclass] AB:UpdateButtonSettings() end,
+	}
+
+	group.bar6.args.enabled.set = function(info, value)
+		E.db.actionbar.bar6.enabled = value;
+		AB:PositionAndSizeBar("bar6")
+
+		--Update Bar 1 paging when Bar 6 is enabled/disabled
+		AB:UpdateBar1Paging()
+		AB:PositionAndSizeBar("bar1")
+	end
+
 	group.extraActionButton = {
 		type = "group",
 		name = L["Boss Button"],
