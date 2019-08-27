@@ -94,7 +94,7 @@ do -- Auto Repair Functions
 
 		if POSS and COST > 0 then
 			--This check evaluates to true even if the guild bank has 0 gold, so we add an override
-			if TYPE == 'GUILD' and (playerOverride or (not CanGuildBankRepair() or COST > GetGuildBankWithdrawMoney())) then
+			if IsInGuild() and TYPE == 'GUILD' and (playerOverride or (not CanGuildBankRepair() or COST > GetGuildBankWithdrawMoney())) then
 				TYPE = 'PLAYER'
 			end
 
