@@ -6,14 +6,19 @@ local translitMark = "!"
 
 --Lua functions
 local _G = _G
-local gmatch, gsub, format = gmatch, gsub, format
 local unpack, pairs, wipe, floor = unpack, pairs, wipe, floor
+local gmatch, gsub, format, select = gmatch, gsub, format, select
 local strfind, strmatch, utf8lower, utf8sub = strfind, strmatch, string.utf8lower, string.utf8sub
 --WoW API / Variables
+local GetCVarBool = GetCVarBool
 local GetGuildInfo = GetGuildInfo
+local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
+local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetPVPTimer = GetPVPTimer
+local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetQuestGreenRange = GetQuestGreenRange
+local GetQuestLogTitle = GetQuestLogTitle
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetSpecialization = GetSpecialization
 local GetThreatStatusColor = GetThreatStatusColor
@@ -49,6 +54,7 @@ local UnitLevel = UnitLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
+local UnitPVPName = UnitPVPName
 local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
 
@@ -58,6 +64,7 @@ local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
 local UNKNOWN = UNKNOWN
+local LEVEL = LEVEL
 local PVP = PVP
 
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
@@ -66,7 +73,7 @@ local SPELL_POWER_HOLY_POWER = Enum.PowerType.HolyPower
 local SPELL_POWER_MANA = Enum.PowerType.Mana
 local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 
--- GLOBALS: Hex, _TAGS
+-- GLOBALS: Hex, _TAGS, ElvUF
 
 ------------------------------------------------------------------------
 --	Tags
