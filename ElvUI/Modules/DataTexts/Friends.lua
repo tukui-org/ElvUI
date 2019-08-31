@@ -18,7 +18,6 @@ local BNRequestInviteFriend = BNRequestInviteFriend
 local BNSetCustomMessage = BNSetCustomMessage
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetQuestDifficultyColor = GetQuestDifficultyColor
-local GetRealmName = GetRealmName
 local InviteToGroup = InviteToGroup
 local IsChatAFK = IsChatAFK
 local IsChatDND = IsChatDND
@@ -504,7 +503,7 @@ local function OnEnter(self)
 								TooltipAddXLine(true, header, format(levelNameString.."%s%s",levelc.r*255,levelc.g*255,levelc.b*255,info[17],classc.r*255,classc.g*255,classc.b*255,info[4],groupedTable[grouped],status),info[2],238,238,238,238,238,238)
 								if IsShiftKeyDown() then
 									if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[16]) then zonec = activezone else zonec = inactivezone end
-									if GetRealmName() == info[12] then realmc = activezone else realmc = inactivezone end
+									if E.myrealm == info[12] then realmc = activezone else realmc = inactivezone end
 									TooltipAddXLine(true, header, info[16], info[12], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
 								end
 							else
