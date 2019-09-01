@@ -143,6 +143,12 @@ local function LoadSkin()
 
 		local numSpellRewards = isQuestLog and GetNumQuestLogRewardSpells() or GetNumRewardSpells()
 		if numSpellRewards > 0 then
+			if E.private.skins.parchmentRemover.enable then
+				for spellHeader in rewardsFrame.spellHeaderPool:EnumerateActive() do
+					spellHeader:SetVertexColor(1, 1, 1)
+				end
+			end
+
 			for followerReward in rewardsFrame.followerRewardPool:EnumerateActive() do
 				if not followerReward.isSkinned then
 					followerReward:CreateBackdrop()
