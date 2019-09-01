@@ -73,22 +73,20 @@ local writedefaultproxy = setmetatable({}, {
 })
 
 -- ElvUI block
-local function CopyTable(currentTable, defaultTable)
-	if type(currentTable) ~= 'table' then currentTable = {} end
-
-	if type(defaultTable) == 'table' then
-		for option, value in pairs(defaultTable) do
-			if type(value) == 'table' then
-				value = CopyTable(currentTable[option], value)
-			end
-
-			if currentTable[option] ~= defaultTable[option] and currentTable[option] == option then
-				currentTable[option] = value == true and option or value
-			end
-		end
+local function BackfillTable(currentTable, defaultTable)
+	if type(currentTable) ~= 'table' and type(defaultTable) ~= 'table' then
+		return
 	end
 
-	return currentTable
+	for option, value in pairs(defaultTable) do
+		if type(value) == 'table' then
+			value = BackfillTable(currentTable[option], value)
+		end
+
+		if currentTable[option] ~= defaultTable[option] and currentTable[option] == option then
+			currentTable[option] = value == true and option or value
+		end
+	end
 end
 -- end block
 
@@ -160,7 +158,7 @@ function AceLocale:GetLocale(application, locale, silent)
 	end
 
 	if locale ~= AceLocale.apps[application].defaultLocale then
-		CopyTable(AceLocale.apps[application][locale], AceLocale.apps[application][AceLocale.apps[application].defaultLocale])
+		BackfillTable(AceLocale.apps[application][locale], AceLocale.apps[application][AceLocale.apps[application].defaultLocale])
 	end
 
 	return AceLocale.apps[application][locale] or AceLocale.apps[application][gameLocale] -- Just in case the table doesn't exist it reverts to default

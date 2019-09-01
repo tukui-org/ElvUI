@@ -37,6 +37,7 @@ local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitInRaid = UnitInRaid
 local UnitName = UnitName
+local IsInGuild = IsInGuild
 
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
@@ -94,7 +95,7 @@ do -- Auto Repair Functions
 
 		if POSS and COST > 0 then
 			--This check evaluates to true even if the guild bank has 0 gold, so we add an override
-			if TYPE == 'GUILD' and (playerOverride or (not CanGuildBankRepair() or COST > GetGuildBankWithdrawMoney())) then
+			if IsInGuild() and TYPE == 'GUILD' and (playerOverride or (not CanGuildBankRepair() or COST > GetGuildBankWithdrawMoney())) then
 				TYPE = 'PLAYER'
 			end
 

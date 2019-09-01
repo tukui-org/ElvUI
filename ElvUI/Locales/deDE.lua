@@ -371,8 +371,6 @@ L["Poen Gillbrack"] = "Poen Kiembrack"
 L["Vim Brineheart"] = "Vim Salzherz"
 
 ----------------------------------
-L["RED_ENABLE"] = "|cFFff3333Eingeschaltet|r"
-L["GREEN_ENABLE"] = "|cFF33ff33Eingeschaltet|r"
 L["DESC_MOVERCONFIG"] = [=[Ankerpunkte entriegelt. Bewege die Ankerpunkte und klicke 'sperren', wenn du fertig bist.
 
 Options:

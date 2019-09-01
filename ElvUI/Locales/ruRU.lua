@@ -369,8 +369,6 @@ L["Poen Gillbrack"] = "Поэн Солежабрик"
 L["Vim Brineheart"] = "Вим Соленодух"
 
 ----------------------------------
-L["RED_ENABLE"] = "|cFFff3333Включить|r"
-L["GREEN_ENABLE"] = "|cFF33ff33Включить|r"
 L["DESC_MOVERCONFIG"] = [=[Блокировка отключена. Передвиньте фреймы и нажмите "Закрепить", когда закончите.
 Options:
   LeftClick - Toggle Nudge Frame.

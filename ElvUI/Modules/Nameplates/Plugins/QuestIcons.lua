@@ -4,14 +4,14 @@ local oUF = E.oUF
 --Lua functions
 local _G = _G
 local pairs, tonumber = pairs, tonumber
-local ceil, floor = math.ceil, floor
+local ceil, floor = ceil, floor
 local strmatch = strmatch
 --WoW API / Variables
-local IsInInstance = IsInInstance
 local GetLocale = GetLocale
 local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local GetQuestLogTitle = GetQuestLogTitle
+local IsInInstance = IsInInstance
 local UnitName = UnitName
 local C_TaskQuest_GetQuestProgressBarInfo = C_TaskQuest.GetQuestProgressBarInfo
 
@@ -40,6 +40,7 @@ local QuestTypesLocalized = {
 		["zerstört"] = "KILL",
 		["befragt"] = "CHAT",
 		["sprecht"] = "CHAT",
+		["genährt"] = "KILL",
 
 	},
 	["esMX"] = {
@@ -177,6 +178,10 @@ local function GetQuests(unitID)
 end
 
 local function Update(self, event, unit)
+	if (event ~= "UNIT_NAME_UPDATE") then
+		unit = self.unit
+	end
+
 	if (unit ~= self.unit) then return end
 
 	local element = self.QuestIcons

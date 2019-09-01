@@ -369,8 +369,6 @@ L["Poen Gillbrack"] = true
 L["Vim Brineheart"] = true
 
 ----------------------------------
-L["RED_ENABLE"] = "|cFFff3333Enable|r"
-L["GREEN_ENABLE"] = "|cFF33ff33Enable|r"
 L["DESC_MOVERCONFIG"] = [=[Movers unlocked. Move them now and click Lock when you are done.
 
 Options:

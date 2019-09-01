@@ -50,7 +50,7 @@ function UF:Configure_Portrait(frame, dontHide)
 				portrait:SetFrameLevel(frame.Health:GetFrameLevel())
 			end
 
-			portrait:SetAlpha(0.35)
+			portrait:SetAlpha(db.portrait.overlayAlpha)
 			if not dontHide then
 				portrait:Show()
 			end
@@ -122,8 +122,8 @@ function UF:PortraitUpdate(unit, event, shouldUpdate)
 
 	local portrait = db.portrait
 	if portrait.enable and self:GetParent().USE_PORTRAIT_OVERLAY then
-		self:SetAlpha(0);
-		self:SetAlpha(0.35);
+		self:SetAlpha(0); -- there was a reason for this. i dont remember
+		self:SetAlpha(db.portrait.overlayAlpha);
 	else
 		self:SetAlpha(1)
 	end

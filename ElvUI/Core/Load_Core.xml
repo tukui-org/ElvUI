@@ -22,4 +22,5 @@
 	<Script file='Cooldowns.lua'/>
 	<Script file='MapInfo.lua'/>
 	<Script file='ModuleCopy.lua'/>
+	<Script file="Tags.lua"/>
 </Ui>
