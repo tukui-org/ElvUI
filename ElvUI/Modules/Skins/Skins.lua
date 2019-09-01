@@ -463,7 +463,7 @@ function S:HandleDropDownBox(frame, width)
 	local button = frame.Button or FrameName and _G[FrameName..'Button']
 	if button then
 		button:ClearAllPoints()
-		button:Point("TOPRIGHT", -16, -5)
+		button:Point("RIGHT", frame.backdrop)
 		button:SetSize(16, 16)
 		S:HandleNextPrevButton(button)
 	end
