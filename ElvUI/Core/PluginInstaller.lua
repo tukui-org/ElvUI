@@ -424,6 +424,7 @@ function PI:RunInstall()
 		else
 			f.tutorialImage:Size(256, 128)
 		end
+		f.tutorialImage:ClearAllPoints()
 		if db.tutorialImagePoint then
 			f.tutorialImage:Point('BOTTOM', 0 + db.tutorialImagePoint[1], 70 + db.tutorialImagePoint[2])
 		else
