@@ -1162,6 +1162,11 @@ function S:SkinIconTextAndCurrenciesWidget(widgetFrame)
 end
 
 function S:SkinTextWithStateWidget(widgetFrame)
+	local text = widgetFrame.Text
+
+	if text then
+		text:SetTextColor(1, 1, 1)
+	end
 end
 
 function S:SkinHorizontalCurrenciesWidget(widgetFrame)
