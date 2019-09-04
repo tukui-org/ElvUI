@@ -12,6 +12,7 @@ local function LoadSkin()
 	if not C_AzeriteEssence_CanOpenUI() then return end
 
 	local AzeriteEssenceUI = _G.AzeriteEssenceUI
+	S:HandlePortraitFrame(AzeriteEssenceUI, true)
 
 	-- Reposition the Level Badge
 	AzeriteEssenceUI.PowerLevelBadgeFrame:ClearAllPoints()
@@ -22,17 +23,19 @@ local function LoadSkin()
 	AzeriteEssenceUI.OrbBackground:SetAllPoints(AzeriteEssenceUI.ItemModelScene)
 	AzeriteEssenceUI.OrbRing:SetSize(483, 480)
 
-	S:HandlePortraitFrame(AzeriteEssenceUI, true)
 	S:HandleScrollBar(AzeriteEssenceUI.EssenceList.ScrollBar)
 
 	-- Essence List on the right
 	for _, button in pairs(AzeriteEssenceUI.EssenceList.buttons) do
 		button:DisableDrawLayer('ARTWORK')
-		S:HandleIcon(button.Icon)
 		button:StyleButton()
+
+		S:HandleIcon(button.Icon)
+		button.Icon:SetPoint("LEFT", button, "LEFT", 6, 0)
+
 		button:CreateBackdrop()
-		button.backdrop:SetAllPoints()
-		--button.PendingGlow:SetTexture() --needs some love
+		button.backdrop:SetPoint("TOPLEFT", 2, -3)
+		button.backdrop:SetPoint("BOTTOMRIGHT", -2, 3)
 	end
 
 	-- Header on the Essence List
