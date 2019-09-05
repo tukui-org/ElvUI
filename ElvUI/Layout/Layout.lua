@@ -159,32 +159,16 @@ function LO:SetChatTabStyle()
 end
 
 function LO:SetDataPanelStyle()
-	local LeftMiniPanel = _G.LeftMiniPanel
-	local RightMiniPanel = _G.RightMiniPanel
-	local LeftChatDataPanel = _G.LeftChatDataPanel
-	local RightChatDataPanel = _G.RightChatDataPanel
-	local LeftChatToggleButton = _G.LeftChatToggleButton
-	local RightChatToggleButton = _G.RightChatToggleButton
-	if not E.db.datatexts.panelBackdrop then
-		LeftChatDataPanel:SetTemplate('NoBackdrop')
-		LeftChatToggleButton:SetTemplate('NoBackdrop')
-		RightChatDataPanel:SetTemplate('NoBackdrop')
-		RightChatToggleButton:SetTemplate('NoBackdrop')
-	elseif E.db.datatexts.panelTransparency then
-		LeftChatDataPanel:SetTemplate('Transparent')
-		LeftChatToggleButton:SetTemplate('Transparent')
-		LeftMiniPanel:SetTemplate('Transparent')
-		RightChatDataPanel:SetTemplate('Transparent')
-		RightChatToggleButton:SetTemplate('Transparent')
-		RightMiniPanel:SetTemplate('Transparent')
-	else
-		LeftChatDataPanel:SetTemplate(nil, true)
-		LeftChatToggleButton:SetTemplate(nil, true)
-		LeftMiniPanel:SetTemplate(nil, true)
-		RightChatDataPanel:SetTemplate(nil, true)
-		RightChatToggleButton:SetTemplate(nil, true)
-		RightMiniPanel:SetTemplate(nil, true)
-	end
+	local transparent = E.db.datatexts.panelTransparency and "Transparent" or nil
+	local template = E.db.datatexts.panelBackdrop and transparent or "NoBackdrop"
+
+	_G.LeftChatDataPanel:SetTemplate(template, true)
+	_G.LeftChatToggleButton:SetTemplate(template, true)
+	_G.RightChatDataPanel:SetTemplate(template, true)
+	_G.RightChatToggleButton:SetTemplate(template, true)
+
+	_G.LeftMiniPanel:SetTemplate(transparent, true)
+	_G.RightMiniPanel:SetTemplate(transparent, true)
 end
 
 function LO:RepositionChatDataPanels()
