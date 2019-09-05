@@ -130,8 +130,9 @@ local channelButtons = {
 
 function LO:ToggleChatTabPanels(rightOverride, leftOverride)
 	if E.private.chat.enable and not E.db.chat.hideVoiceButtons then
+		local parent = (E.db.chat.panelTabBackdrop and _G.LeftChatTab) or _G.LeftChatPanel
 		for _, button in pairs(channelButtons) do
-			button.Icon:SetParent((E.db.chat.panelTabBackdrop and _G.LeftChatTab) or _G.LeftChatPanel)
+			button.Icon:SetParent(parent)
 		end
 	end
 
@@ -149,26 +150,27 @@ function LO:ToggleChatTabPanels(rightOverride, leftOverride)
 end
 
 function LO:SetChatTabStyle()
-	if E.db.chat.panelTabTransparency then
-		_G.LeftChatTab:SetTemplate('Transparent')
-		_G.RightChatTab:SetTemplate('Transparent')
-	else
-		_G.LeftChatTab:SetTemplate(nil, true)
-		_G.RightChatTab:SetTemplate(nil, true)
-	end
+	local tabStyle = (E.db.chat.panelTabTransparency and "Transparent") or nil
+	local glossTex = (not tabStyle and true) or nil
+
+	_G.LeftChatTab:SetTemplate(tabStyle, glossTex)
+	_G.RightChatTab:SetTemplate(tabStyle, glossTex)
 end
 
 function LO:SetDataPanelStyle()
 	local miniStyle = E.db.datatexts.panelTransparency and "Transparent" or nil
 	local panelStyle = (not E.db.datatexts.panelBackdrop) and "NoBackdrop" or miniStyle
 
-	_G.LeftChatDataPanel:SetTemplate(panelStyle, true)
-	_G.LeftChatToggleButton:SetTemplate(panelStyle, true)
-	_G.RightChatDataPanel:SetTemplate(panelStyle, true)
-	_G.RightChatToggleButton:SetTemplate(panelStyle, true)
+	local miniGlossTex = (not miniStyle and true) or nil
+	local panelGlossTex = (not panelStyle and true) or nil
 
-	_G.LeftMiniPanel:SetTemplate(miniStyle, true)
-	_G.RightMiniPanel:SetTemplate(miniStyle, true)
+	_G.LeftChatDataPanel:SetTemplate(panelStyle, panelGlossTex)
+	_G.LeftChatToggleButton:SetTemplate(panelStyle, panelGlossTex)
+	_G.RightChatDataPanel:SetTemplate(panelStyle, panelGlossTex)
+	_G.RightChatToggleButton:SetTemplate(panelStyle, panelGlossTex)
+
+	_G.LeftMiniPanel:SetTemplate(miniStyle, miniGlossTex)
+	_G.RightMiniPanel:SetTemplate(miniStyle, miniGlossTex)
 end
 
 function LO:RepositionChatDataPanels()
