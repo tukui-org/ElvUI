@@ -78,7 +78,7 @@ E.Options.args.bags = {
 					order = 4,
 					type = 'toggle',
 					name = L["Transparent Buttons"],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
+					set = function(info, value) E.db.bags[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
 				},
 				junkIcon = {
 					order = 5,
