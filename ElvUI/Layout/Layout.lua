@@ -159,8 +159,9 @@ function LO:SetChatTabStyle()
 end
 
 function LO:SetDataPanelStyle()
+	local noBackdrop = (not E.db.datatexts.panelBackdrop) and "NoBackdrop"
 	local transparent = E.db.datatexts.panelTransparency and "Transparent" or nil
-	local template = E.db.datatexts.panelBackdrop and transparent or "NoBackdrop"
+	local template = noBackdrop or transparent
 
 	_G.LeftChatDataPanel:SetTemplate(template, true)
 	_G.LeftChatToggleButton:SetTemplate(template, true)
