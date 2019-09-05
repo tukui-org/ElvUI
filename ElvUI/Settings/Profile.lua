@@ -232,6 +232,7 @@ P.bags = {
 	strata = 'HIGH',
 	qualityColors = true,
 	showBindType = false,
+	transparent = false,
 	colors = {
 		profession = {
 			leatherworking = { r = .88, g = .73, b = .29 },
@@ -4875,6 +4876,7 @@ P.actionbar = {
 
 	keyDown = true,
 	movementModifier = 'SHIFT',
+	transparent = false,
 	cooldown = {
 		threshold = 4,
 		override = false,

@@ -1010,7 +1010,7 @@ function B:Layout(isBank)
 					end
 				end
 
-				f.ContainerHolder[i]:SetTemplate(nil, true)
+				f.ContainerHolder[i]:SetTemplate(E.db.bags.transparent and 'Transparent', true)
 				f.ContainerHolder[i]:StyleButton()
 				f.ContainerHolder[i].IconBorder:SetAlpha(0)
 				f.ContainerHolder[i]:SetNormalTexture("")
@@ -1078,7 +1078,7 @@ function B:Layout(isBank)
 				if not f.Bags[bagID][slotID] then
 					f.Bags[bagID][slotID] = CreateFrame('ItemButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate')
 					f.Bags[bagID][slotID]:StyleButton()
-					f.Bags[bagID][slotID]:SetTemplate(nil, true)
+					f.Bags[bagID][slotID]:SetTemplate(E.db.bags.transparent and 'Transparent', true)
 					f.Bags[bagID][slotID]:SetNormalTexture(nil)
 
 					if _G[f.Bags[bagID][slotID]:GetName()..'NewItemTexture'] then
