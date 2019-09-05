@@ -159,17 +159,16 @@ function LO:SetChatTabStyle()
 end
 
 function LO:SetDataPanelStyle()
-	local noBackdrop = (not E.db.datatexts.panelBackdrop) and "NoBackdrop"
-	local transparent = E.db.datatexts.panelTransparency and "Transparent" or nil
-	local template = noBackdrop or transparent
+	local miniStyle = E.db.datatexts.panelTransparency and "Transparent" or nil
+	local panelStyle = (not E.db.datatexts.panelBackdrop) and "NoBackdrop" or miniStyle
 
-	_G.LeftChatDataPanel:SetTemplate(template, true)
-	_G.LeftChatToggleButton:SetTemplate(template, true)
-	_G.RightChatDataPanel:SetTemplate(template, true)
-	_G.RightChatToggleButton:SetTemplate(template, true)
+	_G.LeftChatDataPanel:SetTemplate(panelStyle, true)
+	_G.LeftChatToggleButton:SetTemplate(panelStyle, true)
+	_G.RightChatDataPanel:SetTemplate(panelStyle, true)
+	_G.RightChatToggleButton:SetTemplate(panelStyle, true)
 
-	_G.LeftMiniPanel:SetTemplate(transparent, true)
-	_G.RightMiniPanel:SetTemplate(transparent, true)
+	_G.LeftMiniPanel:SetTemplate(miniStyle, true)
+	_G.RightMiniPanel:SetTemplate(miniStyle, true)
 end
 
 function LO:RepositionChatDataPanels()
