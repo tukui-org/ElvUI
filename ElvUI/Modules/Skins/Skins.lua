@@ -1219,7 +1219,7 @@ S.WidgetSkinningFuncs = {
 	[W.DoubleStateIconRow] = "SkinDoubleStateIconRow",
 	[W.TextureAndTextRow] = "SkinTextureAndTextRowWidget",
 	[W.ZoneControl] = "SkinZoneControl",
-	--[W.CaptureZone] = "SkinCaptureZone", -- 8.2.5
+	[W.CaptureZone] = "SkinCaptureZone",
 }
 
 function S:SkinWidgetContainer(widgetContainer)
