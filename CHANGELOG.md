@@ -1,4 +1,4 @@
-### Version 11.22 [  ]
+### Version 11.22 [ September 6th 2019 ]
 
 **New Additions:**  
 
@@ -8,7 +8,7 @@ Fixed Style Filter error: attempt to compare nil with number (line 322).
 Fixed bug where nameplate threat scale wasn't being reset on new units that no threat existed on.  
 Fixed (hopefully, take two) the issue which caused the nameplate tags to sometimes be incorrect.  
 Fixed a skin error on the Petition Frame which hides a button.  
-Fixed black Objective Text, if Parchement Remover is enabled. (#1444)  
+Fixed black Objective Text, if Parchment Remover is enabled. (#1444)  
 Fixed Friends Datatext to show those playing Classic WoW.  
 
 **Misc. Changes:**  
