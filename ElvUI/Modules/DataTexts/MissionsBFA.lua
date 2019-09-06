@@ -4,7 +4,7 @@ local DT = E:GetModule("DataTexts")
 --Lua functions
 local _G = _G
 local format, sort, ipairs = format, sort, ipairs
-local select, unpack, strmatch = select, unpack, strmatch
+local select, unpack = select, unpack
 --WoW API / Variables
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel

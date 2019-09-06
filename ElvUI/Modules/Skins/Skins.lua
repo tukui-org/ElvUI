@@ -1106,7 +1106,8 @@ function S:SkinCaptureBarWidget(widgetFrame)
 end
 
 function S:SkinStatusBarWidget(widgetFrame)
-	local bar = widgetFrame.Bar;
+	local bar = widgetFrame.Bar
+
 	if bar and not bar.IsSkinned then
 		-- Hide StatusBar textures
 		if bar.BorderLeft then bar.BorderLeft:Hide() end
@@ -1143,6 +1144,11 @@ function S:SkinIconTextAndCurrenciesWidget(widgetFrame)
 end
 
 function S:SkinTextWithStateWidget(widgetFrame)
+	local text = widgetFrame.Text
+
+	if text then
+		text:SetTextColor(1, 1, 1)
+	end
 end
 
 function S:SkinHorizontalCurrenciesWidget(widgetFrame)
@@ -1163,6 +1169,10 @@ function S:SkinSpellDisplay(widgetFrame)
 
 	if spell.Border then
 		spell.Border:Hide()
+	end
+
+	if spell.Text then
+		spell.Text:SetTextColor(1, 1, 1)
 	end
 
 	if spell.Icon then
@@ -1187,6 +1197,9 @@ end
 function S:SkinZoneControl(widgetFrame)
 end
 
+function S:SkinCaptureZone(widgetFrame)
+end
+
 local W = Enum.UIWidgetVisualizationType;
 S.WidgetSkinningFuncs = {
 	[W.IconAndText] = "SkinIconAndTextWidget",
@@ -1206,6 +1219,7 @@ S.WidgetSkinningFuncs = {
 	[W.DoubleStateIconRow] = "SkinDoubleStateIconRow",
 	[W.TextureAndTextRow] = "SkinTextureAndTextRowWidget",
 	[W.ZoneControl] = "SkinZoneControl",
+	--[W.CaptureZone] = "SkinCaptureZone", -- 8.2.5
 }
 
 function S:SkinWidgetContainer(widgetContainer)

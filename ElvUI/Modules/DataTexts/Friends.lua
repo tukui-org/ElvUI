@@ -400,7 +400,7 @@ local function Click(self, btn)
 	elseif InCombatLockdown() then
 		_G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT)
 	else
-		ToggleFriendsFrame()
+		ToggleFriendsFrame(1)
 	end
 end
 

@@ -138,17 +138,19 @@ local function BuildABConfig()
 				order = 13,
 				type = "toggle",
 				name = L["Desaturate Cooldowns"],
-				customWidth = 180,
 				set = function(info, value)
 					E.db.actionbar.desaturateOnCooldown = value;
 					AB:ToggleCooldownOptions()
 				end,
 			},
-			spacer2 = {
+			transparent = {
 				order = 14,
-				type = "description",
-				name = " ",
-				width = 'full',
+				type = "toggle",
+				name = L["Transparent"],
+				set = function(info, value)
+					E.db.actionbar.transparent = value
+					E:StaticPopup_Show("PRIVATE_RL")
+				end,
 			},
 			movementModifier = {
 				order = 15,

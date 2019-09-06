@@ -512,6 +512,7 @@ local vars = setmetatable({}, {
 
 _ENV._VARS = vars
 
+-- ElvUI sets UNIT_HEALTH to UNIT_HEALTH_FREQUENT in tagEvents
 local tagEvents = {
 	['affix']               = 'UNIT_CLASSIFICATION_CHANGED',
 	['arcanecharges']       = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE',

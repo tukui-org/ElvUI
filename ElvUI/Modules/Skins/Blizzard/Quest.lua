@@ -196,6 +196,7 @@ local function LoadSkin()
 			_G.QuestInfoQuestType:SetTextColor(1, 1, 1)
 			_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(1, 1, 1)
 			_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(1, 1, 1)
+
 			if _G.QuestInfoRewardsFrame.SpellLearnText then
 				_G.QuestInfoRewardsFrame.SpellLearnText:SetTextColor(1, 1, 1)
 			end
@@ -289,6 +290,7 @@ local function LoadSkin()
 	if E.private.skins.parchmentRemover.enable then
 		hooksecurefunc('QuestFrameProgressItems_Update', function()
 			_G.QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
+			_G.QuestProgressRequiredMoneyText:SetTextColor(1, 1, 1)
 		end)
 
 		hooksecurefunc("QuestFrame_SetTitleTextColor", function(fontString)

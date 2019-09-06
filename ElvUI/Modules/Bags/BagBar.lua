@@ -121,7 +121,7 @@ function B:LoadBagBar()
 	local ElvUIBags = CreateFrame("Frame", "ElvUIBags", E.UIParent)
 	ElvUIBags:Point('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
 	ElvUIBags.buttons = {}
-	ElvUIBags:CreateBackdrop()
+	ElvUIBags:CreateBackdrop(E.db.bags.transparent and 'Transparent')
 	ElvUIBags.backdrop:SetAllPoints()
 	ElvUIBags:EnableMouse(true)
 	ElvUIBags:SetScript("OnEnter", OnEnter)

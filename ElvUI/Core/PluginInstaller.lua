@@ -4,6 +4,8 @@
 		Title = 'Your Own Title',
 		Name = 'AddOnName',
 		tutorialImage = 'TexturePath',
+		tutorialImageSize = {x,y},
+		tutorialImagetutorialImagePoint = {xOffset,yOffset},
 		Pages = {
 			function1,
 			function2,
@@ -342,8 +344,6 @@ function PI:CreateFrame()
 	end)
 
 	f.tutorialImage = f:CreateTexture('PluginInstallTutorialImage', 'OVERLAY')
-	f.tutorialImage:Size(256, 128)
-	f.tutorialImage:Point('BOTTOM', 0, 70)
 
 	f.side = CreateFrame('Frame', 'PluginInstallTitleFrame', f)
 	f.side:SetTemplate('Transparent')
@@ -419,6 +419,17 @@ function PI:RunInstall()
 		f.Status:SetMinMaxValues(0, f.MaxPage)
 		f.Status.text:SetText(f.CurrentPage..' / '..f.MaxPage)
 		f.tutorialImage:SetTexture(db.tutorialImage or E.Media.Textures.Logo)
+		if db.tutorialImageSize then
+			f.tutorialImage:Size(db.tutorialImageSize[1], db.tutorialImageSize[2])
+		else
+			f.tutorialImage:Size(256, 128)
+		end
+		f.tutorialImage:ClearAllPoints()
+		if db.tutorialImagePoint then
+			f.tutorialImage:Point('BOTTOM', 0 + db.tutorialImagePoint[1], 70 + db.tutorialImagePoint[2])
+		else
+			f.tutorialImage:Point('BOTTOM', 0, 70)
+		end
 
 		f.Pages = db.Pages
 
