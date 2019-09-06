@@ -492,7 +492,7 @@ local function LoadSkin()
 	hooksecurefunc(SetsCollectionFrame, "SetItemFrameQuality", function(_, itemFrame)
 		local icon = itemFrame.Icon
 		if not icon.backdrop then
-			icon:CreateBackdrop("")
+			icon:CreateBackdrop()
 			icon:SetTexCoord(unpack(E.TexCoords))
 			itemFrame.IconBorder:Hide()
 		end
