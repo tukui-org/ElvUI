@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 78
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 79
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -792,7 +792,7 @@ local function ActivateControl(widget, event, ...)
 		end
 
 		-- show validate message
-		if rootframe.SetStatusText then
+		if not group.validatePopup and rootframe.SetStatusText then
 			rootframe:SetStatusText(validated)
 		else
 			validationErrorPopup(validated)

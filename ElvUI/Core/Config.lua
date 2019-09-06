@@ -68,9 +68,9 @@ function E:ToggleMoveMode(override, configType)
 
 		ElvUIMoverPopupWindow:Show()
 
-		if IsAddOnLoaded("ElvUI_OptionsUI") then
+		if IsAddOnLoaded('ElvUI_OptionsUI') then
 			if E.Libs.AceConfigDialog then
-				E.Libs.AceConfigDialog:Close("ElvUI")
+				E.Libs.AceConfigDialog:Close('ElvUI')
 			end
 
 			if not _G.GameTooltip:IsForbidden() then
@@ -134,7 +134,7 @@ function E:Grid_Create()
 	local hStep = hStepheight / E.db.gridSize
 
 	grid.boxSize = E.db.gridSize
-	grid:SetPoint("CENTER", E.UIParent)
+	grid:SetPoint('CENTER', E.UIParent)
 	grid:SetSize(width, height)
 	grid:Show()
 
@@ -148,7 +148,7 @@ function E:Grid_Create()
 			tx:SetDrawLayer('BACKGROUND', 0)
 		end
 		tx:ClearAllPoints()
-		tx:Point("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0)
+		tx:Point('TOPLEFT', grid, 'TOPLEFT', i*wStep - (size/2), 0)
 		tx:Point('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + (size/2), 0)
 	end
 
@@ -157,7 +157,7 @@ function E:Grid_Create()
 		tx:SetColorTexture(1, 0, 0)
 		tx:SetDrawLayer('BACKGROUND', 1)
 		tx:ClearAllPoints()
-		tx:Point("TOPLEFT", grid, "TOPLEFT", 0, -(height/2) + (size/2))
+		tx:Point('TOPLEFT', grid, 'TOPLEFT', 0, -(height/2) + (size/2))
 		tx:Point('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2 + size/2))
 	end
 
@@ -166,14 +166,14 @@ function E:Grid_Create()
 		tx:SetColorTexture(0, 0, 0)
 		tx:SetDrawLayer('BACKGROUND', 0)
 		tx:ClearAllPoints()
-		tx:Point("TOPLEFT", grid, "TOPLEFT", 0, -(height/2+i*hStep) + (size/2))
+		tx:Point('TOPLEFT', grid, 'TOPLEFT', 0, -(height/2+i*hStep) + (size/2))
 		tx:Point('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2+i*hStep + size/2))
 
 		tx = E:Grid_GetRegion()
 		tx:SetColorTexture(0, 0, 0)
 		tx:SetDrawLayer('BACKGROUND', 0)
 		tx:ClearAllPoints()
-		tx:Point("TOPLEFT", grid, "TOPLEFT", 0, -(height/2-i*hStep) + (size/2))
+		tx:Point('TOPLEFT', grid, 'TOPLEFT', 0, -(height/2-i*hStep) + (size/2))
 		tx:Point('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2-i*hStep + size/2))
 	end
 end
@@ -202,7 +202,7 @@ function E:NudgeMover(nudgeX, nudgeY)
 	local x, y, point = E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 
 	mover:ClearAllPoints()
-	mover:Point(mover.positionOverride or point, E.UIParent, mover.positionOverride and "BOTTOMLEFT" or point, x, y)
+	mover:Point(mover.positionOverride or point, E.UIParent, mover.positionOverride and 'BOTTOMLEFT' or point, x, y)
 	E:SaveMoverPosition(mover.name)
 
 	--Update coordinates in Nudge Window
@@ -231,8 +231,8 @@ function E:AssignFrameToNudge()
 end
 
 function E:CreateMoverPopup()
-	local f = CreateFrame("Frame", "ElvUIMoverPopupWindow", _G.UIParent)
-	f:SetFrameStrata("DIALOG")
+	local f = CreateFrame('Frame', 'ElvUIMoverPopupWindow', _G.UIParent)
+	f:SetFrameStrata('DIALOG')
 	f:SetToplevel(true)
 	f:EnableMouse(true)
 	f:SetMovable(true)
@@ -241,7 +241,7 @@ function E:CreateMoverPopup()
 	f:Width(370)
 	f:Height(190)
 	f:SetTemplate('Transparent')
-	f:Point("BOTTOM", _G.UIParent, 'CENTER', 0, 100)
+	f:Point('BOTTOM', _G.UIParent, 'CENTER', 0, 100)
 	f:SetScript('OnHide', function()
 		if ElvUIMoverPopupWindowDropDown then
 			_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, 'ALL')
@@ -254,7 +254,7 @@ function E:CreateMoverPopup()
 	local header = CreateFrame('Button', nil, f)
 	header:SetTemplate(nil, true)
 	header:Width(100); header:Height(25)
-	header:Point("CENTER", f, 'TOP')
+	header:Point('CENTER', f, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
 	header:EnableMouse(true)
 	header:RegisterForClicks('AnyUp', 'AnyDown')
@@ -262,37 +262,37 @@ function E:CreateMoverPopup()
 	header:SetScript('OnMouseUp', function() f:StopMovingOrSizing() end)
 	header:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 
-	local title = header:CreateFontString("OVERLAY")
+	local title = header:CreateFontString('OVERLAY')
 	title:FontTemplate()
-	title:Point("CENTER", header, "CENTER")
+	title:Point('CENTER', header, 'CENTER')
 	title:SetText('ElvUI')
 
-	local desc = f:CreateFontString("ARTWORK")
-	desc:SetFontObject("GameFontHighlight")
-	desc:SetJustifyV("TOP")
-	desc:SetJustifyH("LEFT")
-	desc:Point("TOPLEFT", 18, -20)
-	desc:Point("BOTTOMRIGHT", -18, 48)
+	local desc = f:CreateFontString('ARTWORK')
+	desc:SetFontObject('GameFontHighlight')
+	desc:SetJustifyV('TOP')
+	desc:SetJustifyH('LEFT')
+	desc:Point('TOPLEFT', 18, -20)
+	desc:Point('BOTTOMRIGHT', -18, 48)
 	desc:SetText(L["DESC_MOVERCONFIG"])
 
-	local snapping = CreateFrame("CheckButton", f:GetName()..'CheckButton', f, "OptionsCheckButtonTemplate")
-	_G[snapping:GetName() .. "Text"]:SetText(L["Sticky Frames"])
+	local snapping = CreateFrame('CheckButton', f:GetName()..'CheckButton', f, 'OptionsCheckButtonTemplate')
+	_G[snapping:GetName() .. 'Text']:SetText(L["Sticky Frames"])
 
-	snapping:SetScript("OnShow", function(cb)
+	snapping:SetScript('OnShow', function(cb)
 		cb:SetChecked(E.db.general.stickyFrames)
 	end)
 
-	snapping:SetScript("OnClick", function(cb)
+	snapping:SetScript('OnClick', function(cb)
 		E.db.general.stickyFrames = cb:GetChecked()
 	end)
 
-	local lock = CreateFrame("Button", f:GetName()..'CloseButton', f, "OptionsButtonTemplate")
-	_G[lock:GetName() .. "Text"]:SetText(L["Lock"])
+	local lock = CreateFrame('Button', f:GetName()..'CloseButton', f, 'OptionsButtonTemplate')
+	_G[lock:GetName() .. 'Text']:SetText(L["Lock"])
 
-	lock:SetScript("OnClick", function()
+	lock:SetScript('OnClick', function()
 		E:ToggleMoveMode(true)
 
-		if IsAddOnLoaded("ElvUI_OptionsUI") and E.Libs.AceConfigDialog then
+		if IsAddOnLoaded('ElvUI_OptionsUI') and E.Libs.AceConfigDialog then
 			E.Libs.AceConfigDialog:Open('ElvUI')
 		end
 
@@ -304,11 +304,11 @@ function E:CreateMoverPopup()
 	align:Width(24)
 	align:Height(17)
 	align:SetAutoFocus(false)
-	align:SetScript("OnEscapePressed", function(eb)
+	align:SetScript('OnEscapePressed', function(eb)
 		eb:SetText(E.db.gridSize)
 		EditBox_ClearFocus(eb)
 	end)
-	align:SetScript("OnEnterPressed", function(eb)
+	align:SetScript('OnEnterPressed', function(eb)
 		local text = eb:GetText()
 		if tonumber(text) then
 			if tonumber(text) <= 256 and tonumber(text) >= 4 then
@@ -322,10 +322,10 @@ function E:CreateMoverPopup()
 		E:Grid_Show()
 		EditBox_ClearFocus(eb)
 	end)
-	align:SetScript("OnEditFocusLost", function(eb)
+	align:SetScript('OnEditFocusLost', function(eb)
 		eb:SetText(E.db.gridSize)
 	end)
-	align:SetScript("OnEditFocusGained", align.HighlightText)
+	align:SetScript('OnEditFocusGained', align.HighlightText)
 	align:SetScript('OnShow', function(eb)
 		EditBox_ClearFocus(eb)
 		eb:SetText(E.db.gridSize)
@@ -336,8 +336,8 @@ function E:CreateMoverPopup()
 	align.text:SetText(L["Grid Size:"])
 
 	--position buttons
-	snapping:Point("BOTTOMLEFT", 14, 10)
-	lock:Point("BOTTOMRIGHT", -14, 14)
+	snapping:Point('BOTTOMLEFT', 14, 10)
+	lock:Point('BOTTOMRIGHT', -14, 14)
 	align:Point('TOPRIGHT', lock, 'TOPLEFT', -4, -2)
 
 	S:HandleCheckBox(snapping)
@@ -363,7 +363,7 @@ function E:CreateMoverPopup()
 	_G.UIDropDownMenu_Initialize(configMode, ConfigMode_Initialize)
 
 	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent)
-	nudgeFrame:SetFrameStrata("DIALOG")
+	nudgeFrame:SetFrameStrata('DIALOG')
 	nudgeFrame:Width(200)
 	nudgeFrame:Height(110)
 	nudgeFrame:SetTemplate('Transparent')
@@ -374,7 +374,7 @@ function E:CreateMoverPopup()
 	nudgeFrame:EnableMouse(true)
 	nudgeFrame:SetClampedToScreen(true)
 	nudgeFrame:SetPropagateKeyboardInput(true)
-	nudgeFrame:SetScript("OnKeyDown", function(_, btn)
+	nudgeFrame:SetScript('OnKeyDown', function(_, btn)
 		local Mod = IsAltKeyDown() or IsControlKeyDown()
 		if btn == 'NUMPAD4' then
 			E:NudgeMover(-1 * (Mod and 10 or 1))
@@ -389,25 +389,25 @@ function E:CreateMoverPopup()
 
 	ElvUIMoverPopupWindow:HookScript('OnHide', function() ElvUIMoverNudgeWindow:Hide() end)
 
-	desc = nudgeFrame:CreateFontString("ARTWORK")
-	desc:SetFontObject("GameFontHighlight")
-	desc:SetJustifyV("TOP")
-	desc:SetJustifyH("LEFT")
-	desc:Point("TOPLEFT", 18, -15)
-	desc:Point("BOTTOMRIGHT", -18, 28)
+	desc = nudgeFrame:CreateFontString('ARTWORK')
+	desc:SetFontObject('GameFontHighlight')
+	desc:SetJustifyV('TOP')
+	desc:SetJustifyH('LEFT')
+	desc:Point('TOPLEFT', 18, -15)
+	desc:Point('BOTTOMRIGHT', -18, 28)
 	desc:SetJustifyH('CENTER')
 	nudgeFrame.title = desc
 
 	header = CreateFrame('Button', nil, nudgeFrame)
 	header:SetTemplate(nil, true)
 	header:Width(100); header:Height(25)
-	header:Point("CENTER", nudgeFrame, 'TOP')
+	header:Point('CENTER', nudgeFrame, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
 	header:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 
-	title = header:CreateFontString("OVERLAY")
+	title = header:CreateFontString('OVERLAY')
 	title:FontTemplate()
-	title:Point("CENTER", header, "CENTER")
+	title:Point('CENTER', header, 'CENTER')
 	title:SetText(L["Nudge"])
 
 	local xOffset = CreateFrame('EditBox', nudgeFrame:GetName()..'XEditBox', nudgeFrame, 'InputBoxTemplate')
@@ -415,11 +415,11 @@ function E:CreateMoverPopup()
 	xOffset:Height(17)
 	xOffset:SetAutoFocus(false)
 	xOffset.currentValue = 0
-	xOffset:SetScript("OnEscapePressed", function(eb)
+	xOffset:SetScript('OnEscapePressed', function(eb)
 		eb:SetText(E:Round(xOffset.currentValue))
 		EditBox_ClearFocus(eb)
 	end)
-	xOffset:SetScript("OnEnterPressed", function(eb)
+	xOffset:SetScript('OnEnterPressed', function(eb)
 		local num = eb:GetText()
 		if tonumber(num) then
 			local diff = num - xOffset.currentValue
@@ -429,10 +429,10 @@ function E:CreateMoverPopup()
 		eb:SetText(E:Round(xOffset.currentValue))
 		EditBox_ClearFocus(eb)
 	end)
-	xOffset:SetScript("OnEditFocusLost", function(eb)
+	xOffset:SetScript('OnEditFocusLost', function(eb)
 		eb:SetText(E:Round(xOffset.currentValue))
 	end)
-	xOffset:SetScript("OnEditFocusGained", xOffset.HighlightText)
+	xOffset:SetScript('OnEditFocusGained', xOffset.HighlightText)
 	xOffset:SetScript('OnShow', function(eb)
 		EditBox_ClearFocus(eb)
 		eb:SetText(E:Round(xOffset.currentValue))
@@ -450,11 +450,11 @@ function E:CreateMoverPopup()
 	yOffset:Height(17)
 	yOffset:SetAutoFocus(false)
 	yOffset.currentValue = 0
-	yOffset:SetScript("OnEscapePressed", function(eb)
+	yOffset:SetScript('OnEscapePressed', function(eb)
 		eb:SetText(E:Round(yOffset.currentValue))
 		EditBox_ClearFocus(eb)
 	end)
-	yOffset:SetScript("OnEnterPressed", function(eb)
+	yOffset:SetScript('OnEnterPressed', function(eb)
 		local num = eb:GetText()
 		if tonumber(num) then
 			local diff = num - yOffset.currentValue
@@ -464,10 +464,10 @@ function E:CreateMoverPopup()
 		eb:SetText(E:Round(yOffset.currentValue))
 		EditBox_ClearFocus(eb)
 	end)
-	yOffset:SetScript("OnEditFocusLost", function(eb)
+	yOffset:SetScript('OnEditFocusLost', function(eb)
 		eb:SetText(E:Round(yOffset.currentValue))
 	end)
-	yOffset:SetScript("OnEditFocusGained", yOffset.HighlightText)
+	yOffset:SetScript('OnEditFocusGained', yOffset.HighlightText)
 	yOffset:SetScript('OnShow', function(eb)
 		EditBox_ClearFocus(eb)
 		eb:SetText(E:Round(yOffset.currentValue))
@@ -480,11 +480,11 @@ function E:CreateMoverPopup()
 	nudgeFrame.yOffset = yOffset
 	S:HandleEditBox(yOffset)
 
-	local resetButton = CreateFrame("Button", nudgeFrame:GetName()..'ResetButton', nudgeFrame, "UIPanelButtonTemplate")
+	local resetButton = CreateFrame('Button', nudgeFrame:GetName()..'ResetButton', nudgeFrame, 'UIPanelButtonTemplate')
 	resetButton:SetText(RESET)
-	resetButton:Point("TOP", nudgeFrame, "CENTER", 0, 2)
+	resetButton:Point('TOP', nudgeFrame, 'CENTER', 0, 2)
 	resetButton:Size(100, 25)
-	resetButton:SetScript("OnClick", function()
+	resetButton:SetScript('OnClick', function()
 		if ElvUIMoverNudgeWindow.child.textString then
 			E:ResetMovers(ElvUIMoverNudgeWindow.child.textString)
 		end

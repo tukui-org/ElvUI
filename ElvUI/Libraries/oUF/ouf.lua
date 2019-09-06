@@ -431,6 +431,15 @@ function oUF:SetActiveStyle(name)
 	style = name
 end
 
+--[[ oUF:GetActiveStyle()
+Used to get the active style.
+
+* self - the global oUF object
+--]]
+function oUF:GetActiveStyle()
+	return style
+end
+
 do
 	local function iter(_, n)
 		-- don't expose the style functions.

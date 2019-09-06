@@ -633,7 +633,6 @@ L["If enabled, the style filter will only activate when you are in one of the in
 L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = true
 L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name."] = true
 L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
-
 L["If enabled then the filter will only activate when you are not focusing the unit."] = true
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = "활성화하면 자신이 유닛을 대상으로 잡고 있지 않을 때만 필터가 작동합니다."
@@ -858,6 +857,7 @@ L["Over Power Threshold"] = true
 L["Overlap Horizontal"] = true
 L["Overlap Vertical"] = true
 L["Overlay"] = "덮어씌우기"
+L["Overlay Alpha"] = true
 L["Overnuking"] = true
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "현재 입던해있는 던전의 상태에 맞춰 표시할 파티수를 자동으로 제한합니다.|n|n예로 10인 인스안에 있으면 1,2파티만 표시됩니다."
 L["Override the default class color setting."] = "이 유닛프레임의 체력바에만 직업색을 적용하도록 따로 설정하는 것이 가능합니다."
@@ -1044,6 +1044,7 @@ L["Separate Panel Sizes"] = "좌우패널 크기 따로설정"
 L["Seperate"] = "시전자 구분 정렬"
 L["Set Settings to Default"] = "설정을 기본값으로 지정"
 L["Set the alpha level of nameplates that are not the target nameplate. Works only in combat."] = true
+L["Set the alpha level of portrait when frame is overlayed."] = true
 L["Set the filter type. Blacklist will hide any auras in the list and show all others. Whitelist will show any auras in the filter and hide all others."] = "필터 종류를 지정합니다. 블랙리스트는 목록에 있는 오라는 싸그리 숨기고 나머지는 전부 표시합니다. 화이트리스트는 목록에 있는 오라는 모조리 표시하고 나머지는 전부 숨깁니다."
 L["Set the font outline."] = "글꼴의 외곽선을 결정합니다."
 L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"] = "ElvUI에서 쓰이는 모든 글꼴 크기를 결정합니다.|n|n개인적으로 글꼴 크기를 지정할 수 있는 곳은 적용되지 않습니다."
@@ -1394,20 +1395,20 @@ L["Zone Ability"] = "특수능력 버튼"
 L["Zone Name"] = true
 
 ----------------------------------
-L['blockCastByPlayers'] = "[차단] Cast By Players"
-L['blockDispellable'] = "[차단] Dispellable"
-L['blockNoDuration'] = "[차단] No Duration"
-L['blockNonPersonal'] = "[차단] Non Personal"
-L['blockNotDispellable'] = "[차단] Not Dispellable"
-L['Boss'] = "우두머리"
-L['CastByNPC'] = "Cast By NPC"
-L['CastByPlayers'] = "Cast By Players"
-L['CastByUnit'] = "Cast By Unit"
-L['Dispellable'] = "해제 가능"
-L['nonPersonal'] = "Non Personal"
-L['notCastByUnit'] = "Not Cast By Unit"
-L['notDispellable'] = "해제 불가능"
-L['Personal'] = true
+L["blockCastByPlayers"] = "[차단] Cast By Players"
+L["blockDispellable"] = "[차단] Dispellable"
+L["blockNoDuration"] = "[차단] No Duration"
+L["blockNonPersonal"] = "[차단] Non Personal"
+L["blockNotDispellable"] = "[차단] Not Dispellable"
+L["Boss"] = "우두머리"
+L["CastByNPC"] = "Cast By NPC"
+L["CastByPlayers"] = "Cast By Players"
+L["CastByUnit"] = "Cast By Unit"
+L["Dispellable"] = "해제 가능"
+L["nonPersonal"] = "Non Personal"
+L["notCastByUnit"] = "Not Cast By Unit"
+L["notDispellable"] = "해제 불가능"
+L["Personal"] = true
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "행동단축바의 설정을 변경합니다."

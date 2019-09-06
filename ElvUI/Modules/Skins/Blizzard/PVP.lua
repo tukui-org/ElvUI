@@ -3,9 +3,13 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local pairs, unpack = pairs, unpack
+local ipairs, pairs, unpack = ipairs, pairs, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
+local GetCurrencyInfo = GetCurrencyInfo
+local GetItemInfo = GetItemInfo
+local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
 
 local function HandleRoleChecks(button, ...)
@@ -149,6 +153,33 @@ local function LoadSkin()
 	end
 
 	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
+
+	-- Item Borders for HonorFrame & ConquestFrame
+	hooksecurefunc('PVPUIFrame_ConfigureRewardFrame', function(rewardFrame, honor, experience, itemRewards, currencyRewards)
+		local rewardTexture, rewardQuaility = nil, 1
+
+		if currencyRewards then
+			for _, reward in ipairs(currencyRewards) do
+				local name, _, texture, _, _, _, _, quality = GetCurrencyInfo(reward.id)
+				if quality == _G.LE_ITEM_QUALITY_ARTIFACT then
+					_, rewardTexture, _, rewardQuaility = CurrencyContainerUtil_GetCurrencyContainerInfo(reward.id, reward.quantity, name, texture, quality)
+				end
+			end
+		end
+
+		local _
+		if not rewardTexture and itemRewards then
+			local reward = itemRewards[1]
+			if reward then
+				_, _, rewardQuaility, _, _, _, _, _, _, rewardTexture = GetItemInfo(reward.id)
+			end
+		end
+
+		if rewardTexture then
+			rewardFrame.Icon:SetTexture(rewardTexture)
+			rewardFrame.Icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(rewardQuaility))
+		end
+	end)
 
 	if E.private.skins.blizzard.tooltip then
 		_G.ConquestTooltip:SetTemplate("Transparent")

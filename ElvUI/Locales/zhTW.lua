@@ -369,8 +369,6 @@ L["Poen Gillbrack"] = true
 L["Vim Brineheart"] = true
 
 ----------------------------------
-L["RED_ENABLE"] = "|cFFff3333啟用|r"
-L["GREEN_ENABLE"] = "|cFF33ff33啟用|r"
 L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, 移好後請點擊「鎖定」.
 選項:
   左鍵 - 開啟微調窗口.

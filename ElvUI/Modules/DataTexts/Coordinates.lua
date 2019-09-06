@@ -36,7 +36,7 @@ local function Click()
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", hex, "%.2f|r", " , ", hex, "%.2f|r")
+	displayString = strjoin("", hex, "%.2f|r", " | ", hex, "%.2f|r")
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 

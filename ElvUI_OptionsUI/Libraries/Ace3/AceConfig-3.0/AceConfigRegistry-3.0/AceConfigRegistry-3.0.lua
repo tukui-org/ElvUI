@@ -11,7 +11,7 @@
 -- @release $Id$
 local CallbackHandler = LibStub("CallbackHandler-1.0")
 
-local MAJOR, MINOR = "AceConfigRegistry-3.0-ElvUI", 20
+local MAJOR, MINOR = "AceConfigRegistry-3.0-ElvUI", 21
 local AceConfigRegistry = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigRegistry then return end
@@ -76,6 +76,7 @@ local basekeys={
 	descStyle=optstring,
 	order=optmethodnumber,
 	validate=optmethodfalse,
+	validatePopup=optbool,
 	confirm=optmethodbool,
 	confirmText=optstring,
 	disabled=optmethodbool,

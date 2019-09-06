@@ -138,17 +138,19 @@ local function BuildABConfig()
 				order = 13,
 				type = "toggle",
 				name = L["Desaturate Cooldowns"],
-				customWidth = 180,
 				set = function(info, value)
 					E.db.actionbar.desaturateOnCooldown = value;
 					AB:ToggleCooldownOptions()
 				end,
 			},
-			spacer = {
+			transparent = {
 				order = 14,
-				type = "description",
-				name = " ",
-				width = 'full',
+				type = "toggle",
+				name = L["Transparent"],
+				set = function(info, value)
+					E.db.actionbar.transparent = value
+					E:StaticPopup_Show("PRIVATE_RL")
+				end,
 			},
 			movementModifier = {
 				order = 15,
@@ -724,7 +726,7 @@ local function BuildABConfig()
 			set = function(info, value) E.db.actionbar['bar'..i][info[#info]] = value; AB:PositionAndSizeBar('bar'..i) end,
 			args = {
 				enabled = {
-					order = 1,
+					order = 0,
 					type = 'toggle',
 					name = L["Enable"],
 					set = function(info, value)
@@ -733,7 +735,7 @@ local function BuildABConfig()
 					end,
 				},
 				restorePosition = {
-					order = 2,
+					order = 1,
 					type = 'execute',
 					name = L["Restore Bar"],
 					desc = L["Restore the actionbars default settings"],
@@ -885,18 +887,26 @@ local function BuildABConfig()
 				},
 			},
 		}
-
-		if i == 6 then
-			group['bar'..i].args.enabled.set = function(info, value)
-				E.db.actionbar['bar'..i].enabled = value;
-				AB:PositionAndSizeBar("bar6")
-
-				--Update Bar 1 paging when Bar 6 is enabled/disabled
-				AB:UpdateBar1Paging()
-				AB:PositionAndSizeBar("bar1")
-			end
-		end
 	end
+
+	group.bar1.args.pagingReset = {
+		type = 'execute',
+		name = L["Reset Action Paging"],
+		order = 2,
+		confirm = true,
+		confirmText = L["You are about to reset paging. Are you sure?"],
+		func = function() E.db.actionbar.bar1.paging[E.myclass] = P.actionbar.bar1.paging[E.myclass] AB:UpdateButtonSettings() end,
+	}
+
+	group.bar6.args.enabled.set = function(info, value)
+		E.db.actionbar.bar6.enabled = value;
+		AB:PositionAndSizeBar("bar6")
+
+		--Update Bar 1 paging when Bar 6 is enabled/disabled
+		AB:UpdateBar1Paging()
+		AB:PositionAndSizeBar("bar1")
+	end
+
 	group.extraActionButton = {
 		type = "group",
 		name = L["Boss Button"],

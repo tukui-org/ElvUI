@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
+local _G = _G
 local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local strmatch, gsub, tinsert, tremove, sort, wipe = strmatch, gsub, tinsert, tremove, sort, wipe
@@ -16,7 +17,6 @@ local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
 local GetTime = GetTime
 local IsResting = IsResting
-local PowerBarColor = PowerBarColor
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
@@ -39,7 +39,7 @@ local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTal
 
 local FallbackColor = {r=1, b=1, g=1}
 
-mod.StyleFilterStackPattern = '(%d+)\n?(%d*)'
+mod.StyleFilterStackPattern = '([^\n]+)\n?(%d*)$'
 mod.TriggerConditions = {
 	reactions = {'hated', 'hostile', 'unfriendly', 'neutral', 'friendly', 'honored', 'revered', 'exalted'},
 	raidTargets = {'star', 'circle', 'diamond', 'triangle', 'moon', 'square', 'cross', 'skull'},
@@ -540,7 +540,7 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 	end
 	if PowerColorChanged then
 		frame.PowerColorChanged = nil
-		local color = E.db.unitframe.colors.power[frame.Power.token] or PowerBarColor[frame.Power.token] or FallbackColor
+		local color = E.db.unitframe.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
 		if color then
             frame.Power:SetStatusBarColor(color.r, color.g, color.b)
             frame.Cutaway.Power:SetVertexColor(color.r * 1.5, color.g * 1.5, color.b * 1.5, 1)

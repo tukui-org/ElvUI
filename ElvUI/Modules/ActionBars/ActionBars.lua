@@ -26,7 +26,6 @@ local SetClampedTextureRotation = SetClampedTextureRotation
 local SetCVar = SetCVar
 local SetModifiedClick = SetModifiedClick
 local SetOverrideBindingClick = SetOverrideBindingClick
-local TaxiRequestEarlyLanding = TaxiRequestEarlyLanding
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
@@ -270,7 +269,7 @@ function AB:CreateBar(id)
 	local point, anchor, attachTo, x, y = strsplit(',', self.barDefaults['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
-	bar:CreateBackdrop()
+	bar:CreateBackdrop(self.db.transparent and 'Transparent')
 	bar:SetFrameStrata("LOW")
 
 	--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
@@ -370,8 +369,8 @@ end
 vehicle_CallOnEvent = Vehicle_OnEvent
 
 local function Vehicle_OnClick(self)
-	if ( UnitOnTaxi("player") ) then
-		TaxiRequestEarlyLanding()
+	if UnitOnTaxi("player") then
+		_G.TaxiRequestEarlyLanding()
 		self:GetNormalTexture():SetVertexColor(1, 0, 0)
 		self:EnableMouse(false)
 	else
@@ -596,7 +595,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if not button.noBackdrop and not button.backdrop and not button.useMasque then
-		button:CreateBackdrop(nil, true)
+		button:CreateBackdrop(self.db.transparent and 'Transparent', true)
 		button.backdrop:SetAllPoints()
 	end
 

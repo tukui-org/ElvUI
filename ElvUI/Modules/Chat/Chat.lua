@@ -1726,14 +1726,9 @@ function CH:SetupChat()
 		local _, fontSize = FCF_GetChatWindowInfo(id)
 		self:StyleChat(frame)
 		FCFTab_UpdateAlpha(frame)
+
 		frame:FontTemplate(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
-		if self.db.fontOutline ~= 'NONE' then
-			frame:SetShadowColor(0, 0, 0, 0.2)
-		else
-			frame:SetShadowColor(0, 0, 0, 1)
-		end
 		frame:SetTimeVisible(100)
-		frame:SetShadowOffset(E.mult, -E.mult)
 		frame:SetFading(self.db.fade)
 
 		if not frame.scriptsSet then
@@ -1933,19 +1928,10 @@ function CH:ChatEdit_OnEnterPressed(editBox)
 end
 
 function CH:SetChatFont(dropDown, chatFrame, fontSize)
-	if ( not chatFrame ) then
-		chatFrame = FCF_GetCurrentChatFrame()
-	end
-	if ( not fontSize ) then
-		fontSize = dropDown.value
-	end
+	if not chatFrame then chatFrame = FCF_GetCurrentChatFrame() end
+	if not fontSize then fontSize = dropDown.value end
+
 	chatFrame:FontTemplate(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
-	if self.db.fontOutline ~= 'NONE' then
-		chatFrame:SetShadowColor(0, 0, 0, 0.2)
-	else
-		chatFrame:SetShadowColor(0, 0, 0, 1)
-	end
-	chatFrame:SetShadowOffset(E.mult, -E.mult)
 end
 
 function CH:ChatEdit_AddHistory(_, line) -- editBox, line

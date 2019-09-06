@@ -4,7 +4,7 @@ P.gridSize = 64
 
 --Core
 P.general = {
-	messageRedirect = DEFAULT_CHAT_FRAME:GetName(),
+	messageRedirect = _G.DEFAULT_CHAT_FRAME:GetName(),
 	smoothingAmount = 0.33,
 	taintLog = false,
 	stickyFrames = true,
@@ -232,6 +232,7 @@ P.bags = {
 	strata = 'HIGH',
 	qualityColors = true,
 	showBindType = false,
+	transparent = false,
 	colors = {
 		profession = {
 			leatherworking = { r = .88, g = .73, b = .29 },
@@ -450,7 +451,7 @@ P.nameplates = {
 		enable = true,
 		beingTankedByTank = true,
 		goodScale = 1,
-		badScale = 1.2,
+		badScale = 1,
 		useThreatColor = true,
 		indicator = false,
 	},
@@ -1754,7 +1755,7 @@ P.datatexts = {
 	},
 	---Time
 	localtime = true,
-	time24 = GetCurrentRegion() ~= 1, -- Non US region will default to the 24-hour clock
+	time24 = _G.GetCurrentRegion() ~= 1, -- Non US region will default to the 24-hour clock
 	---Friends
 	friends = {
 		--status
@@ -2133,6 +2134,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			buffs = {
 				enable = false,
@@ -2361,6 +2363,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			buffs = {
 				enable = true,
@@ -2529,6 +2532,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			buffs = {
 				enable = false,
@@ -2658,6 +2662,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			buffs = {
 				enable = false,
@@ -2795,6 +2800,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			buffs = {
 				enable = false,
@@ -2962,6 +2968,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			buffs = {
 				enable = false,
@@ -3096,6 +3103,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			buffs = {
 				enable = false,
@@ -3260,6 +3268,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			buffs = {
 				enable = false,
@@ -3373,6 +3382,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			infoPanel = {
 				enable = false,
@@ -3548,6 +3558,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			buffs = {
 				enable = true,
@@ -3729,6 +3740,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			buffs = {
 				enable = false,
@@ -4004,6 +4016,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			buffs = {
 				enable = false,
@@ -4227,6 +4240,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			buffs = {
 				enable = false,
@@ -4434,6 +4448,7 @@ P.unitframe = {
 				style = '3D',
 				xOffset = 0,
 				yOffset = 0,
+				overlayAlpha = 0.35,
 			},
 			buffs = {
 				enable = false,
@@ -4861,6 +4876,7 @@ P.actionbar = {
 
 	keyDown = true,
 	movementModifier = 'SHIFT',
+	transparent = false,
 	cooldown = {
 		threshold = 4,
 		override = false,
@@ -5028,7 +5044,7 @@ P.actionbar = {
 	barPet = {
 		enabled = true,
 		mouseover = false,
-		buttons = NUM_PET_ACTION_SLOTS,
+		buttons = _G.NUM_PET_ACTION_SLOTS,
 		buttonsPerRow = 1,
 		point = 'TOPRIGHT',
 		backdrop = true,
@@ -5045,8 +5061,8 @@ P.actionbar = {
 		enabled = true,
 		style = 'darkenInactive',
 		mouseover = false,
-		buttonsPerRow = NUM_STANCE_SLOTS,
-		buttons = NUM_STANCE_SLOTS,
+		buttonsPerRow = _G.NUM_STANCE_SLOTS,
+		buttons = _G.NUM_STANCE_SLOTS,
 		point = 'TOPLEFT',
 		backdrop = false,
 		heightMult = 1,

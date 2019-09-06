@@ -10,16 +10,17 @@
 --Lua functions
 local _G, min, format, pairs, gsub, strsplit, unpack, wipe, type, tcopy = _G, min, format, pairs, gsub, strsplit, unpack, wipe, type, table.copy
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
-local issecurevariable = issecurevariable
 local CreateFrame = CreateFrame
+local GetAddOnEnableState = GetAddOnEnableState
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMetadata = GetAddOnMetadata
+local GetLocale = GetLocale
 local GetTime = GetTime
 local HideUIPanel = HideUIPanel
-local GetAddOnEnableState = GetAddOnEnableState
+local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
+local issecurevariable = issecurevariable
 local LoadAddOn = LoadAddOn
 local ReloadUI = ReloadUI
 
@@ -29,7 +30,7 @@ local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuFrame = GameMenuFrame
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
-_G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title")
+_G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., 'Title')
 
 local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
@@ -38,7 +39,7 @@ local AddOnName, Engine = ...
 local AddOn = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0')
 AddOn.callbacks = AddOn.callbacks or CallbackHandler:New(AddOn)
 AddOn.DF = {profile = {}, global = {}}; AddOn.privateVars = {profile = {}} -- Defaults
-AddOn.Options = {type = "group", name = AddOnName, args = {}}
+AddOn.Options = {type = 'group', name = AddOnName, args = {}}
 
 Engine[1] = AddOn
 Engine[2] = {}
@@ -46,6 +47,16 @@ Engine[3] = AddOn.privateVars.profile
 Engine[4] = AddOn.DF.profile
 Engine[5] = AddOn.DF.global
 _G[AddOnName] = Engine
+
+do
+	local locale = GetLocale()
+	local convert = {enGB = 'enUS', esES = 'esMX', itIT = 'enUS'}
+	local gameLocale = convert[locale] or locale or 'enUS'
+
+	function AddOn:GetLocale()
+		return gameLocale
+	end
+end
 
 do
 	AddOn.Libs = {}
@@ -159,7 +170,7 @@ function AddOn:OnInitialize()
 	end
 
 	self.twoPixelsPlease = false
-	self.ScanTooltip = CreateFrame("GameTooltip", "ElvUI_ScanTooltip", _G.UIParent, "GameTooltipTemplate")
+	self.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
 	self.PixelMode = self.twoPixelsPlease or self.private.general.pixelPerfect -- keep this over `UIScale`
 	self:UIScale(true)
 	self:UpdateMedia()
@@ -167,21 +178,21 @@ function AddOn:OnInitialize()
 	self:Contruct_StaticPopups()
 	self:InitializeInitialModules()
 
-	if GetAddOnEnableState(self.myname, "Tukui") == 2 then
-		self:StaticPopup_Show("TUKUI_ELVUI_INCOMPATIBLE")
+	if GetAddOnEnableState(self.myname, 'Tukui') == 2 then
+		self:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
 
-	local GameMenuButton = CreateFrame("Button", nil, GameMenuFrame, "GameMenuButtonTemplate")
-	GameMenuButton:SetText(format("|cfffe7b2c%s|r", AddOnName))
-	GameMenuButton:SetScript("OnClick", function()
+	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
+	GameMenuButton:SetText(format('|cfffe7b2c%s|r', AddOnName))
+	GameMenuButton:SetScript('OnClick', function()
 		AddOn:ToggleOptionsUI()
 		HideUIPanel(GameMenuFrame)
 	end)
 	GameMenuFrame[AddOnName] = GameMenuButton
 
-	if not IsAddOnLoaded("ConsolePortUI_Menu") then -- #390
+	if not IsAddOnLoaded('ConsolePortUI_Menu') then -- #390
 		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
-		GameMenuButton:Point("TOPLEFT", GameMenuButtonAddons, "BOTTOMLEFT", 0, -1)
+		GameMenuButton:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
 		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', self.PositionGameMenuButton)
 	end
 
@@ -193,15 +204,15 @@ function AddOn:PositionGameMenuButton()
 	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
 	if relTo ~= GameMenuFrame[AddOnName] then
 		GameMenuFrame[AddOnName]:ClearAllPoints()
-		GameMenuFrame[AddOnName]:Point("TOPLEFT", relTo, "BOTTOMLEFT", 0, -1)
+		GameMenuFrame[AddOnName]:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
 		GameMenuButtonLogout:ClearAllPoints()
-		GameMenuButtonLogout:Point("TOPLEFT", GameMenuFrame[AddOnName], "BOTTOMLEFT", 0, offY)
+		GameMenuButtonLogout:Point('TOPLEFT', GameMenuFrame[AddOnName], 'BOTTOMLEFT', 0, offY)
 	end
 end
 
-local LoadUI=CreateFrame("Frame")
-LoadUI:RegisterEvent("PLAYER_LOGIN")
-LoadUI:SetScript("OnEvent", function()
+local LoadUI=CreateFrame('Frame')
+LoadUI:RegisterEvent('PLAYER_LOGIN')
+LoadUI:SetScript('OnEvent', function()
 	AddOn:Initialize()
 end)
 
@@ -213,7 +224,7 @@ end
 function AddOn:PLAYER_REGEN_DISABLED()
 	local err
 
-	if IsAddOnLoaded("ElvUI_OptionsUI") then
+	if IsAddOnLoaded('ElvUI_OptionsUI') then
 		local ACD = self.Libs.AceConfigDialog
 		if ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName] then
 			self:RegisterEvent('PLAYER_REGEN_ENABLED')
@@ -254,7 +265,7 @@ function AddOn:ResetProfile()
 end
 
 function AddOn:OnProfileReset()
-	self:StaticPopup_Show("RESET_PROFILE_PROMPT")
+	self:StaticPopup_Show('RESET_PROFILE_PROMPT')
 end
 
 function AddOn:ResetConfigSettings()
@@ -322,27 +333,27 @@ function AddOn:ToggleOptionsUI(msg)
 		return
 	end
 
-	if not IsAddOnLoaded("ElvUI_OptionsUI") then
+	if not IsAddOnLoaded('ElvUI_OptionsUI') then
 		local noConfig
-		local _, _, _, _, reason = GetAddOnInfo("ElvUI_OptionsUI")
-		if reason ~= "MISSING" and reason ~= "DISABLED" then
+		local _, _, _, _, reason = GetAddOnInfo('ElvUI_OptionsUI')
+		if reason ~= 'MISSING' and reason ~= 'DISABLED' then
 			self.GUIFrame = false
-			LoadAddOn("ElvUI_OptionsUI")
+			LoadAddOn('ElvUI_OptionsUI')
 
-			--For some reason, GetAddOnInfo reason is "DEMAND_LOADED" even if the addon is disabled.
+			--For some reason, GetAddOnInfo reason is 'DEMAND_LOADED' even if the addon is disabled.
 			--Workaround: Try to load addon and check if it is loaded right after.
-			if not IsAddOnLoaded("ElvUI_OptionsUI") then noConfig = true end
+			if not IsAddOnLoaded('ElvUI_OptionsUI') then noConfig = true end
 
 			-- version check elvui options if it's actually enabled
-			if (not noConfig) and GetAddOnMetadata("ElvUI_OptionsUI", "Version") ~= "1.06" then
-				self:StaticPopup_Show("CLIENT_UPDATE_REQUEST")
+			if (not noConfig) and GetAddOnMetadata('ElvUI_OptionsUI', 'Version') ~= '1.06' then
+				self:StaticPopup_Show('CLIENT_UPDATE_REQUEST')
 			end
 		else
 			noConfig = true
 		end
 
 		if noConfig then
-			self:Print("|cffff0000Error -- Addon 'ElvUI_OptionsUI' not found or is disabled.|r")
+			self:Print('|cffff0000Error -- Addon "ElvUI_OptionsUI" not found or is disabled.|r')
 			return
 		end
 	end
@@ -351,9 +362,9 @@ function AddOn:ToggleOptionsUI(msg)
 	local ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
 
 	local pages, msgStr
-	if msg and msg ~= "" then
+	if msg and msg ~= '' then
 		pages = {strsplit(',', msg)}
-		msgStr = gsub(msg, ',','\001')
+		msgStr = gsub(msg, ',', '\001')
 	end
 
 	local mode = 'Close'
@@ -408,7 +419,7 @@ function AddOn:ToggleOptionsUI(msg)
 				_G.ElvUIGUIFrame = self.GUIFrame
 
 				self:UpdateConfigSize()
-				hooksecurefunc(frame, "StopMovingOrSizing", AddOn.ConfigStopMovingOrSizing)
+				hooksecurefunc(frame, 'StopMovingOrSizing', AddOn.ConfigStopMovingOrSizing)
 			end
 		end
 
@@ -424,18 +435,18 @@ end
 --credit: https://www.townlong-yak.com/bugs/afKy4k-HonorFrameLoadTaint
 if (_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
 	_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION = 2
-	hooksecurefunc("UIDropDownMenu_InitializeHelper", function()
+	hooksecurefunc('UIDropDownMenu_InitializeHelper', function()
 		if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION ~= 2 then
 			return
 		end
 		for i=1, _G.UIDROPDOWNMENU_MAXLEVELS do
 			for j=1, _G.UIDROPDOWNMENU_MAXBUTTONS do
-				local b = _G["DropDownList" .. i .. "Button" .. j]
-				if not (issecurevariable(b, "value") or b:IsShown()) then
+				local b = _G['DropDownList' .. i .. 'Button' .. j]
+				if not (issecurevariable(b, 'value') or b:IsShown()) then
 					b.value = nil
 					repeat
 						j, b["fx" .. j] = j+1, nil
-					until issecurevariable(b, "value")
+					until issecurevariable(b, 'value')
 				end
 			end
 		end
@@ -446,17 +457,17 @@ end
 --credit: https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
 if (_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
 	_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
-	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
+	hooksecurefunc('UIDropDownMenu_InitializeHelper', function(frame)
 		if _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION ~= 1 then
 			return
 		end
 		if _G.UIDROPDOWNMENU_OPEN_MENU and _G.UIDROPDOWNMENU_OPEN_MENU ~= frame
-		   and not issecurevariable(_G.UIDROPDOWNMENU_OPEN_MENU, "displayMode") then
+		   and not issecurevariable(_G.UIDROPDOWNMENU_OPEN_MENU, 'displayMode') then
 			_G.UIDROPDOWNMENU_OPEN_MENU = nil
-			local t, f, prefix, i = _G, issecurevariable, " \0", 1
+			local t, f, prefix, i = _G, issecurevariable, ' \0', 1
 			repeat
 				i, t[prefix .. i] = i + 1, nil
-			until f("UIDROPDOWNMENU_OPEN_MENU")
+			until f('UIDROPDOWNMENU_OPEN_MENU')
 		end
 	end)
 end
@@ -481,9 +492,9 @@ if (_G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION or 0) < 1 then
 			f:Hide()
 		end
 	end
-	hooksecurefunc("Communities_LoadUI", CleanDropdowns)
-	hooksecurefunc("SetCVar", function(n)
-		if n == "lastSelectedClubId" then
+	hooksecurefunc('Communities_LoadUI', CleanDropdowns)
+	hooksecurefunc('SetCVar', function(n)
+		if n == 'lastSelectedClubId' then
 			CleanDropdowns()
 		end
 	end)

@@ -169,7 +169,7 @@ E.Options.args.maps = {
 							type = "range",
 							name = L["Size"],
 							desc = L["Adjust the size of the minimap."],
-							min = 120, max = 250, step = 1,
+							min = 120, max = 400, step = 1,
 							get = function(info) return E.db.general.minimap[info[#info]] end,
 							set = function(info, value) E.db.general.minimap[info[#info]] = value; MM:UpdateSettings() end,
 							disabled = function() return not E.private.general.minimap.enable end,

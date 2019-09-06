@@ -512,6 +512,7 @@ local vars = setmetatable({}, {
 
 _ENV._VARS = vars
 
+-- ElvUI sets UNIT_HEALTH to UNIT_HEALTH_FREQUENT in tagEvents
 local tagEvents = {
 	['affix']               = 'UNIT_CLASSIFICATION_CHANGED',
 	['arcanecharges']       = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE',
@@ -519,11 +520,11 @@ local tagEvents = {
 	['chi']                 = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE',
 	['classification']      = 'UNIT_CLASSIFICATION_CHANGED',
 	['cpoints']             = 'UNIT_POWER_FREQUENT PLAYER_TARGET_CHANGED',
-	['curhp']               = 'UNIT_HEALTH UNIT_MAXHEALTH',
+	['curhp']               = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH',
 	['curmana']             = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
 	['curpp']               = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
-	['dead']                = 'UNIT_HEALTH',
-	['deficit:name']        = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE',
+	['dead']                = 'UNIT_HEALTH_FREQUENT',
+	['deficit:name']        = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE',
 	['difficulty']          = 'UNIT_FACTION',
 	['faction']             = 'NEUTRAL_FACTION_SELECT_RESULT',
 	['group']               = 'GROUP_ROSTER_UPDATE',
@@ -534,11 +535,11 @@ local tagEvents = {
 	['maxhp']               = 'UNIT_MAXHEALTH',
 	['maxmana']             = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
 	['maxpp']               = 'UNIT_MAXPOWER',
-	['missinghp']           = 'UNIT_HEALTH UNIT_MAXHEALTH',
+	['missinghp']           = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH',
 	['missingpp']           = 'UNIT_MAXPOWER UNIT_POWER_UPDATE',
 	['name']                = 'UNIT_NAME_UPDATE',
-	['offline']             = 'UNIT_HEALTH UNIT_CONNECTION',
-	['perhp']               = 'UNIT_HEALTH UNIT_MAXHEALTH',
+	['offline']             = 'UNIT_HEALTH_FREQUENT UNIT_CONNECTION',
+	['perhp']               = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH',
 	['perpp']               = 'UNIT_MAXPOWER UNIT_POWER_UPDATE',
 	['plus']                = 'UNIT_CLASSIFICATION_CHANGED',
 	['powercolor']          = 'UNIT_DISPLAYPOWER',
@@ -549,7 +550,7 @@ local tagEvents = {
 	['shortclassification'] = 'UNIT_CLASSIFICATION_CHANGED',
 	['smartlevel']          = 'UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED',
 	['soulshards']          = 'UNIT_POWER_UPDATE',
-	['status']              = 'UNIT_HEALTH PLAYER_UPDATE_RESTING UNIT_CONNECTION',
+	['status']              = 'UNIT_HEALTH_FREQUENT PLAYER_UPDATE_RESTING UNIT_CONNECTION',
 	['threat']              = 'UNIT_THREAT_SITUATION_UPDATE',
 	['threatcolor']         = 'UNIT_THREAT_SITUATION_UPDATE',
 }
@@ -635,9 +636,8 @@ local funcPool = {}
 local tmp = {}
 
 local function getTagName(tag)
-	local tagStart = (tag:match('>+()') or 2)
-	local tagEnd = tag:match('.*()<+')
-	tagEnd = (tagEnd and tagEnd - 1) or -2
+	local tagStart = tag:match('>+()') or 2
+	local tagEnd = (tag:match('.-()<') or -1) - 1
 
 	return tag:sub(tagStart, tagEnd), tagStart, tagEnd
 end
@@ -949,7 +949,7 @@ oUF.Tags = {
 
 		funcPool['[' .. tag .. ']'] = nil
 
-		tag = '%[' .. tag .. '%]'
+		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 		for tagstr, func in next, tagPool do
 			if(tagstr:match(tag)) then
 				tagPool[tagstr] = nil
@@ -969,7 +969,7 @@ oUF.Tags = {
 	RefreshEvents = function(self, tag)
 		if(not tag) then return end
 
-		tag = '%[' .. tag .. '%]'
+		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 		for tagstr in next, tagPool do
 			if(tagstr:match(tag)) then
 				for fs, ts in next, taggedFS do

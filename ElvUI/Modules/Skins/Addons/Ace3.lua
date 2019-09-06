@@ -3,6 +3,8 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local select = select
+local format = format
+local strmatch = strmatch
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
@@ -33,12 +35,44 @@ function S:Ace3_SkinDropdownPullout()
 	end
 end
 
-function S:Ace3_CheckBoxIsEnableSwitch(widget)
+function S:Ace3_CheckBoxIsEnable(widget)
 	local text = widget.text and widget.text:GetText()
-	if text then
-		local enabled, disabled = text == S.Ace3_L.GREEN_ENABLE, text == S.Ace3_L.RED_ENABLE
-		local isSwitch = (text == S.Ace3_L.Enable) or enabled or disabled
-		return isSwitch, enabled, disabled
+	if text then return strmatch(text, S.Ace3_EnableMatch) end
+end
+
+function S:Ace3_CheckBoxSetDesaturated(value)
+	local widget = self:GetParent().obj
+	if value == true then
+		self:SetVertexColor(.6, .6, .6, .8)
+	elseif S:Ace3_CheckBoxIsEnable(widget) then
+		if widget.checked then
+			self:SetVertexColor(0.2, 1.0, 0.2, 1.0)
+		else
+			self:SetVertexColor(1.0, 0.2, 0.2, 1.0)
+		end
+	else
+		self:SetVertexColor(1, .82, 0, 0.8)
+	end
+end
+
+function S:Ace3_CheckBoxSetDisabled(disabled)
+	if S:Ace3_CheckBoxIsEnable(self) then
+		local tristateOrDisabled = disabled or (self.tristate and self.checked == nil)
+		self:SetLabel((tristateOrDisabled and S.Ace3_L.Enable) or (self.checked and S.Ace3_EnableOn) or S.Ace3_EnableOff)
+	end
+end
+
+function S:Ace3_EditBoxSetTextInsets(l, r, t, b)
+	if l == 0 then self:SetTextInsets(3, r, t, b) end
+end
+
+function S:Ace3_EditBoxSetPoint(a, b, c, d, e)
+	if d == 7 then self:Point(a, b, c, 0, e) end
+end
+
+function S:Ace3_CreateTabSetPoint(a, b, c, d, e, f)
+	if f ~= 'ignore' and a == 'TOPLEFT' then
+		self:SetPoint(a, b, c, d, e+2, 'ignore')
 	end
 end
 
@@ -72,33 +106,15 @@ function S:Ace3_RegisterAsWidget(widget)
 		checkbg:SetTexture()
 		highlight:SetTexture()
 
-		hooksecurefunc(widget, "SetValue", function(w, checked)
-			if S:Ace3_CheckBoxIsEnableSwitch(w) then
-				w:SetLabel(checked and S.Ace3_L.GREEN_ENABLE or S.Ace3_L.RED_ENABLE)
-			end
-		end)
+		hooksecurefunc(widget, 'SetDisabled', S.Ace3_CheckBoxSetDisabled)
 
 		if E.private.skins.checkBoxSkin then
+			hooksecurefunc(check, 'SetDesaturated', S.Ace3_CheckBoxSetDesaturated)
+
 			checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
-			check:SetTexture(E.Media.Textures.Melli)
-
-			hooksecurefunc(check, "SetDesaturated", function(chk, value)
-				if value == true then
-					chk:SetVertexColor(.6, .6, .6, .8)
-				else
-					local isSwitch, enabled, disabled = S:Ace3_CheckBoxIsEnableSwitch(widget)
-					if isSwitch and enabled then
-						chk:SetVertexColor(0.2, 1.0, 0.2, 1.0)
-					elseif isSwitch and disabled then
-						chk:SetVertexColor(1.0, 0.2, 0.2, 1.0)
-					else
-						chk:SetVertexColor(1, .82, 0, 0.8)
-					end
-				end
-			end)
-
-			check.SetTexture = E.noop
 			check:SetInside(widget.checkbg.backdrop)
+			check:SetTexture(E.Media.Textures.Melli)
+			check.SetTexture = E.noop
 		else
 			check:SetOutside(widget.checkbg.backdrop, 3, 3)
 		end
@@ -119,7 +135,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		end
 
 		frame.backdrop:Point('TOPLEFT', 15, -2)
-		frame.backdrop:Point("BOTTOMRIGHT", -21, 0)
+		frame.backdrop:Point('BOTTOMRIGHT', -21, 0)
 		frame.backdrop:SetClipsChildren(true)
 
 		widget.label:ClearAllPoints()
@@ -185,19 +201,9 @@ function S:Ace3_RegisterAsWidget(widget)
 		S:HandleEditBox(frame)
 		S:HandleButton(button)
 
-		hooksecurefunc(frame, "SetTextInsets", function(fr, l, r, t, b)
-			if l == 0 then
-				fr:SetTextInsets(3, r, t, b)
-			end
-		end)
-
 		button:Point('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
-
-		hooksecurefunc(frame, 'SetPoint', function(fr, a, b, c, d, e)
-			if d == 7 then
-				fr:Point(a, b, c, 0, e)
-			end
-		end)
+		hooksecurefunc(frame, 'SetTextInsets', S.Ace3_EditBoxSetTextInsets)
+		hooksecurefunc(frame, 'SetPoint', S.Ace3_EditBoxSetPoint)
 
 		frame.backdrop:Point('TOPLEFT', 0, -2)
 		frame.backdrop:Point('BOTTOMRIGHT', -1, 0)
@@ -339,11 +345,7 @@ function S:Ace3_RegisterAsContainer(widget)
 				tab.backdrop:Point('TOPLEFT', 10, -3)
 				tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
 
-				hooksecurefunc(tab, 'SetPoint', function(fr, a, b, c, d, e, f)
-					if f ~= 'ignore' and a == 'TOPLEFT' then
-						fr:SetPoint(a, b, c, d, e+2, 'ignore')
-					end
-				end)
+				hooksecurefunc(tab, 'SetPoint', S.Ace3_CreateTabSetPoint)
 
 				return tab
 			end
@@ -389,7 +391,12 @@ function S:HookAce3(lib, minor) -- lib: AceGUI
 	if not lib or (not minor or minor < minorGUI) then return end
 
 	if not S.Ace3_L then
-		S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
+		S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
+
+		-- Special Enable Coloring
+		if not S.Ace3_EnableMatch then S.Ace3_EnableMatch = '^|?c?[Ff]?[Ff]?%x?%x?%x?%x?%x?%x?' .. E:EscapeString(S.Ace3_L.Enable) .. '|?r?$' end
+		if not S.Ace3_EnableOff then S.Ace3_EnableOff = format('|cffff3333%s|r', S.Ace3_L.Enable) end
+		if not S.Ace3_EnableOn then S.Ace3_EnableOn = format('|cff33ff33%s|r', S.Ace3_L.Enable) end
 	end
 
 	if lib.RegisterAsWidget ~= S.Ace3_RegisterAsWidget then

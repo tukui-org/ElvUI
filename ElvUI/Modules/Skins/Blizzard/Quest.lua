@@ -5,11 +5,17 @@ local S = E:GetModule('Skins')
 local _G = _G
 local gsub, type, pairs, ipairs, select, unpack, strfind = gsub, type, pairs, ipairs, select, unpack, strfind
 --WoW API / Variables
+local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText
 local GetMoney = GetMoney
 local CreateFrame = CreateFrame
+local GetQuestID = GetQuestID
+local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
+local GetNumQuestLogRewardSpells = GetNumQuestLogRewardSpells
+local GetNumRewardSpells = GetNumRewardSpells
+local GetQuestLogSelection = GetQuestLogSelection
 local hooksecurefunc = hooksecurefunc
 
 local PlusButtonIDs = {
@@ -57,6 +63,15 @@ local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inse
 	end
 	scrollFrame.spellTex:Size(widthOverride or 506, heightOverride or 615)
 	scrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
+end
+
+-- Quest objective text color
+local function Quest_GetQuestID()
+	if _G.QuestInfoFrame.questLog then
+		return select(8, GetQuestLogTitle(GetQuestLogSelection()))
+	else
+		return GetQuestID()
+	end
 end
 
 local function LoadSkin()
@@ -122,6 +137,53 @@ local function LoadSkin()
 
 			questItem.Name:SetTextColor(1, 1, 1)
 		end
+
+		local rewardsFrame = _G.QuestInfoFrame.rewardsFrame
+		local isQuestLog = _G.QuestInfoFrame.questLog ~= nil
+
+		local numSpellRewards = isQuestLog and GetNumQuestLogRewardSpells() or GetNumRewardSpells()
+		if numSpellRewards > 0 then
+			if E.private.skins.parchmentRemover.enable then
+				for spellHeader in rewardsFrame.spellHeaderPool:EnumerateActive() do
+					spellHeader:SetVertexColor(1, 1, 1)
+				end
+			end
+
+			for followerReward in rewardsFrame.followerRewardPool:EnumerateActive() do
+				if not followerReward.isSkinned then
+					followerReward:CreateBackdrop()
+					followerReward.backdrop:SetAllPoints(followerReward.BG)
+					followerReward.backdrop:SetPoint("TOPLEFT", 40, -5)
+					followerReward.backdrop:SetPoint("BOTTOMRIGHT", 2, 5)
+					followerReward.BG:Hide()
+
+					followerReward.PortraitFrame:ClearAllPoints()
+					followerReward.PortraitFrame:SetPoint("RIGHT", followerReward.backdrop, "LEFT", -2, 0)
+
+					followerReward.PortraitFrame.PortraitRing:Hide()
+					followerReward.PortraitFrame.PortraitRingQuality:SetTexture()
+					followerReward.PortraitFrame.LevelBorder:SetAlpha(0)
+					followerReward.PortraitFrame.Portrait:SetTexCoord(0.2, 0.85, 0.2, 0.85)
+
+					local level = followerReward.PortraitFrame.Level
+					level:ClearAllPoints()
+					level:SetPoint("BOTTOM", followerReward.PortraitFrame, 0, 3)
+
+					local squareBG = CreateFrame("Frame", nil, followerReward.PortraitFrame)
+					squareBG:SetFrameLevel(followerReward.PortraitFrame:GetFrameLevel()-1)
+					squareBG:SetPoint("TOPLEFT", 2, -2)
+					squareBG:SetPoint("BOTTOMRIGHT", -2, 2)
+					squareBG:SetTemplate()
+					followerReward.PortraitFrame.squareBG = squareBG
+
+					followerReward.isSkinned = true
+				end
+
+				local r, g, b = followerReward.PortraitFrame.PortraitRingQuality:GetVertexColor()
+				followerReward.PortraitFrame.squareBG:SetBackdropBorderColor(r, g, b)
+			end
+		end
+
 		if E.private.skins.parchmentRemover.enable then
 			_G.QuestInfoTitleHeader:SetTextColor(1, .8, .1)
 			_G.QuestInfoDescriptionHeader:SetTextColor(1, .8, .1)
@@ -134,17 +196,28 @@ local function LoadSkin()
 			_G.QuestInfoQuestType:SetTextColor(1, 1, 1)
 			_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(1, 1, 1)
 			_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(1, 1, 1)
+
 			if _G.QuestInfoRewardsFrame.SpellLearnText then
 				_G.QuestInfoRewardsFrame.SpellLearnText:SetTextColor(1, 1, 1)
 			end
 
 			_G.QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(1, 1, 1)
 			_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(1, 1, 1)
+
+			local questID = Quest_GetQuestID()
 			local numObjectives = GetNumQuestLeaderBoards()
 			local numVisibleObjectives = 0
+
+			local waypointText = C_QuestLog_GetNextWaypointText(questID)
+			if waypointText then
+				numVisibleObjectives = numVisibleObjectives + 1
+				local objective = _G['QuestInfoObjective'..numVisibleObjectives]
+				objective:SetTextColor(1, .8, .1)
+			end
+
 			for i = 1, numObjectives do
-				local _, type, finished = GetQuestLogLeaderBoard(i)
-				if type ~= 'spell' then
+				local _, _, finished = GetQuestLogLeaderBoard(i)
+				if (type ~= "spell" and type ~= "log" and numVisibleObjectives < _G.MAX_OBJECTIVES) then
 					numVisibleObjectives = numVisibleObjectives + 1
 					local objective = _G['QuestInfoObjective'..numVisibleObjectives]
 					if objective then
@@ -217,6 +290,7 @@ local function LoadSkin()
 	if E.private.skins.parchmentRemover.enable then
 		hooksecurefunc('QuestFrameProgressItems_Update', function()
 			_G.QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
+			_G.QuestProgressRequiredMoneyText:SetTextColor(1, 1, 1)
 		end)
 
 		hooksecurefunc("QuestFrame_SetTitleTextColor", function(fontString)

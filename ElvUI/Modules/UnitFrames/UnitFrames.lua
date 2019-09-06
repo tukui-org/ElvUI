@@ -1473,7 +1473,10 @@ function UF:Initialize()
 		self:Construct_UF(frame, unit)
 	end)
 
-	self:LoadUnits()
+	ElvUF:SetActiveStyle("ElvUF")
+
+	UF:LoadUnits()
+
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)

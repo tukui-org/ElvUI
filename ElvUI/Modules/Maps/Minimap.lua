@@ -3,6 +3,7 @@ local M = E:GetModule('Minimap')
 
 --Lua functions
 local _G = _G
+local pairs = pairs
 local tinsert = tinsert
 local utf8sub = string.utf8sub
 --WoW API / Variables
@@ -451,15 +452,21 @@ function M:Initialize()
 		Minimap.location:Hide()
 	end
 
-	_G.MinimapBorder:Hide()
-	_G.MinimapBorderTop:Hide()
-	_G.MinimapZoomIn:Hide()
-	_G.MinimapZoomOut:Hide()
-	-- MiniMapVoiceChatFrame:Hide()
-	_G.MinimapNorthTag:Kill()
-	_G.MinimapZoneTextButton:Hide()
-	_G.MiniMapTracking:Hide()
-	_G.MiniMapMailBorder:Hide()
+	local frames = {
+		_G.MinimapBorder,
+		_G.MinimapBorderTop,
+		_G.MinimapZoomIn,
+		_G.MinimapZoomOut,
+		_G.MinimapNorthTag,
+		_G.MinimapZoneTextButton,
+		_G.MiniMapTracking,
+		_G.MiniMapMailBorder
+	}
+
+	for _, frame in pairs(frames) do
+		frame:Kill()
+	end
+
 	_G.MiniMapMailIcon:SetTexture(E.Media.Textures.Mail)
 
 	--Hide the BlopRing on Minimap
