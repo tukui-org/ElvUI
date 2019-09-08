@@ -10,7 +10,6 @@ local GetItemInfo = GetItemInfo
 local PlayerHasToy = PlayerHasToy
 local hooksecurefunc = hooksecurefunc
 local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GetItemQualityColor = GetItemQualityColor
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
