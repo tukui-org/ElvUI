@@ -30,6 +30,8 @@ function E:SetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft, insetRigh
 
 	if not giveBorder then
 		E:TogglePixelBorders(frame)
+	elseif not frame.pixelBorders.CENTER:IsShown() then
+		E:TogglePixelBorders(frame, true)
 	end
 
 	frame.pixelBorders.CENTER:SetTexture(bgFile)
