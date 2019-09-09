@@ -343,6 +343,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[211048] = Defaults(), -- Chaos Blades
 		[162264] = Defaults(), -- Metamorphosis
 		[205629] = Defaults(), -- Demonic Trample
+		[206649] = Defaults(), -- Eye of Leotheras
 	-- Druid
 		[102342] = Defaults(), -- Ironbark
 		[61336]  = Defaults(), -- Survival Instincts

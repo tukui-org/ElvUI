@@ -28,8 +28,11 @@ E.PixelBorders = {'TOPLEFT', 'TOPRIGHT', 'BOTTOMLEFT', 'BOTTOMRIGHT', 'TOP', 'BO
 function E:SetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft, insetRight, insetTop, insetBottom)
 	if not frame.pixelBorders then return end
 
-	if not giveBorder then
+	local shownBorders = frame.pixelBorders.TOP:IsShown()
+	if shownBorders and not giveBorder then
 		E:TogglePixelBorders(frame)
+	elseif not shownBorders then
+		E:TogglePixelBorders(frame, true)
 	end
 
 	frame.pixelBorders.CENTER:SetTexture(bgFile)
