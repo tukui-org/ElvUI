@@ -296,12 +296,10 @@ local function Update(self, event, unit)
 	UpdateDebuff(self, _name, _icon, _count, _dtype, _duration, _endTime, _spellId, _stackThreshold)
 
 	--Reset the DispellPriority
-	DispellPriority = {
-		['Magic']	= 4,
-		['Curse']	= 3,
-		['Disease']	= 2,
-		['Poison']	= 1,
-	}
+	DispellPriority['Magic'] = 4
+	DispellPriority['Curse'] = 3
+	DispellPriority['Disease'] = 2
+	DispellPriority['Poison'] = 1
 end
 
 
