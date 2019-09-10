@@ -133,12 +133,12 @@ function UF:PortraitUpdate(unit, event, shouldUpdate)
 		local camDistanceScale = portrait.camDistanceScale or 1
 		local xOffset, yOffset = (portrait.xOffset or 0), (portrait.yOffset or 0)
 
-		if self:GetFacing() ~= (rotation / 60) then
-			self:SetFacing(rotation / 60)
+		if self:GetFacing() ~= (rotation / 57.29573671972358) then
+			self:SetFacing(rotation / 57.29573671972358) -- because 1 degree is equal 0,0174533 radian. Credit: Hndrxuprt
 		end
 
 		self:SetCamDistanceScale(camDistanceScale)
-		self:SetPosition(0, xOffset, yOffset)
+		self:SetPosition(xOffset, xOffset, yOffset)
 
 		--Refresh model to fix incorrect display issues
 		self:ClearModel()
