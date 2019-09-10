@@ -1572,7 +1572,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 				type = 'range',
 				name = L["Width"],
 				min = 15, max = 150, step = 1,
-				disabled = function() return E.db.unitframe.units[groupName].portrait.overlay or (E.db.unitframe.units[groupName].portrait.style ~= '2D') end,
+				disabled = function() return E.db.unitframe.units[groupName].portrait.overlay end,
 			},
 			rotation = {
 				order = 7,
