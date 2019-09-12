@@ -1,7 +1,7 @@
 ### Version 11.23 [  ]
 
 **New Additions:**  
-
+Added an option to enable a more visible Auto Attack animation on the ActionBars. Disabled by default.  
 
 **Bug Fixes:**  
 
