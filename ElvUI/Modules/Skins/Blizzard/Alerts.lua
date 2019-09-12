@@ -613,7 +613,7 @@ local function SkinMoneyWonAlert(frame)
 	end
 end
 
-local function SkinStorePurchaseAlert(frame)
+local function SkinEntitlementDeliveredAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
@@ -629,6 +629,40 @@ local function SkinStorePurchaseAlert(frame)
 
 	-- Background
 	frame.Background:Kill()
+	frame.glow:Kill()
+	frame.shine:Kill()
+
+	-- Icon
+	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	frame.Icon:ClearAllPoints()
+	frame.Icon:Point("LEFT", frame.backdrop, 9, 0)
+
+	-- Icon border
+	if not frame.Icon.b then
+		frame.Icon.b = CreateFrame("Frame", nil, frame)
+		frame.Icon.b:SetTemplate()
+		frame.Icon.b:Point("TOPLEFT", frame.Icon, "TOPLEFT", -2, 2)
+		frame.Icon.b:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, -2)
+		frame.Icon:SetParent(frame.Icon.b)
+	end
+end
+
+local function SkinRafRewardDeliveredAlert(frame)
+	frame:SetAlpha(1)
+
+	if not frame.hooked then
+		hooksecurefunc(frame, "SetAlpha", forceAlpha)
+		frame.hooked = true
+	end
+
+	if not frame.backdrop then
+		frame:CreateBackdrop("Transparent")
+		frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 10, -6)
+		frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -14, 6)
+	end
+
+	-- Background
+	frame.StandardBackground:Kill()
 	frame.glow:Kill()
 	frame.shine:Kill()
 
@@ -763,7 +797,8 @@ local function LoadSkin()
 	hooksecurefunc(_G.LootAlertSystem, "setUpFunction", SkinLootWonAlert)
 	hooksecurefunc(_G.LootUpgradeAlertSystem, "setUpFunction", SkinLootUpgradeAlert)
 	hooksecurefunc(_G.MoneyWonAlertSystem, "setUpFunction", SkinMoneyWonAlert)
-	hooksecurefunc(_G.StorePurchaseAlertSystem, "setUpFunction", SkinStorePurchaseAlert)
+	hooksecurefunc(_G.EntitlementDeliveredAlertSystem, "setUpFunction", SkinEntitlementDeliveredAlert) -- 8.2.5 New
+	hooksecurefunc(_G.RafRewardDeliveredAlertSystem, "setUpFunction", SkinRafRewardDeliveredAlert) -- 8.2.5 New
 	-- Professions
 	hooksecurefunc(_G.DigsiteCompleteAlertSystem, "setUpFunction", SkinDigsiteCompleteAlert)
 	hooksecurefunc(_G.NewRecipeLearnedAlertSystem, "setUpFunction", SkinNewRecipeLearnedAlert)
