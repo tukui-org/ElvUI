@@ -135,7 +135,7 @@ local function FixSidebarTabCoords()
 			if IsAddOnLoaded("DejaCharacterStats") then
 				tab.Hider:SetTexture()
 			else
-				tab.Hider:SetColorTexture(0.0, 0.0, 0.0, 0.8)
+				tab.Hider:SetColorTexture(0, 0, 0, 0.8)
 			end
 			tab.Hider:SetAllPoints(tab.backdrop)
 			tab.TabBg:Kill()
