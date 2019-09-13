@@ -2,12 +2,19 @@
 
 **New Additions:**  
 Added an option to enable a more visible Auto Attack animation on the ActionBars. Disabled by default.  
+Added options for ActionBars Button / Bag Slot transparency.  
+Added an overlay alpha option for UnitFrames overlayed portraits.  
 
 **Bug Fixes:**  
-
+Fixed a bug where nameplate threat scale wasn't being reset on new units that no threat existed on.  
+Fixed a Style Filter error: Attempt to compare nil with number.  
+Fixed an error in Petition Skin.  
+Fixed black Quest Text if Parchment Reomver is enabled. (#1444)  
 
 **Misc. Changes:**  
-
+Updated Friends DataText to see the difference between retail and classic.  
+Various Skin updates.  
+Added "Eye of Leotheras" (PvP Talent) to the PlayerBuffs Filter.  
 
 ___
 ### Version 11.22 [ September 6th 2019 ]
@@ -24,7 +31,6 @@ Fixed black Objective Text, if Parchment Remover is enabled. (#1444)
 Fixed Friends Datatext to show those playing Classic WoW.  
 
 **Misc. Changes:**  
-
 
 ___
 ### Version 11.21 [ August 17th 2019 ]
