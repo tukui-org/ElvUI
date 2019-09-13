@@ -598,19 +598,16 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		button.backdrop:SetAllPoints()
 	end
 
-	if self.db.flashAnimation then
-		if flash then
+	if flash then
+		if self.db.flashAnimation then
 			flash:SetColorTexture(1.0, 0.2, 0.2, 0.45)
 			flash:ClearAllPoints()
 			flash:SetOutside(icon, 2, 2)
 			flash:SetDrawLayer("BACKGROUND", -1)
-		end
-	else
-		if flash then
+		else
 			flash:SetTexture()
 		end
 	end
-
 
 	if icon then
 		icon:SetTexCoord(unpack(E.TexCoords))
