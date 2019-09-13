@@ -181,6 +181,15 @@ local function LoadSkin()
 	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
 	ClubFinderGuildFinderFrame:StripTextures()
 
+	--[[ Fill me
+	for _, button in pairs(ClubFinderGuildFinderFrame.GuildCards.ListScrollFrame.buttons) do
+		if not button.isSkinned then
+
+			button.isSkinned = true
+		end
+	end
+	]]
+
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubFocusDropdown)
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown)
 
@@ -202,6 +211,17 @@ local function LoadSkin()
 	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
 	ClubFinderCommunityAndGuildFinderFrame:StripTextures()
 
+	for _, button in pairs(ClubFinderCommunityAndGuildFinderFrame.CommunityCards.ListScrollFrame.buttons) do
+		if not button.isSkinned then
+			button.CircleMask:Hide()
+			button.LogoBorder:Hide()
+			S:HandleIcon(button.CommunityLogo)
+			S:HandleButton(button)
+
+			button.isSkinned = true
+		end
+	end
+
 	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.ClubFocusDropdown)
 	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SortByDropdown)
 
@@ -220,6 +240,23 @@ local function LoadSkin()
 
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderPendingTab)
+
+	local RequestToJoinFrame = ClubFinderCommunityAndGuildFinderFrame.RequestToJoinFrame
+	RequestToJoinFrame:StripTextures()
+	RequestToJoinFrame:CreateBackdrop("Transparent")
+
+	RequestToJoinFrame.MessageFrame:StripTextures(true)
+	RequestToJoinFrame.MessageFrame.MessageScroll:StripTextures(true)
+
+	-- Needs much love
+	S:HandleEditBox(RequestToJoinFrame.MessageFrame.MessageScroll.EditBox)
+	RequestToJoinFrame.MessageFrame.MessageScroll.EditBox:Size(500, 500)
+
+	-- TO DO: FIND THE CHECKBOX NAMES
+
+	S:HandleScrollBar(_G.ClubFinderCommunityAndGuildFinderFrameScrollBar)
+	S:HandleButton(RequestToJoinFrame.Apply)
+	S:HandleButton(RequestToJoinFrame.Cancel)
 
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
