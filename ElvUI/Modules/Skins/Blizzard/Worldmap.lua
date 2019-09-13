@@ -26,6 +26,8 @@ local function LoadSkin()
 
 	WorldMapFrame.ScrollContainer:CreateBackdrop()
 	WorldMapFrame:CreateBackdrop("Transparent")
+	WorldMapFrame.backdrop:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", -8, 0)
+	WorldMapFrame.backdrop:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", 0, -9)
 
 	S:HandleButton(WorldMapFrame.NavBar.homeButton)
 	WorldMapFrame.NavBar.homeButton.xoffset = 1
@@ -46,6 +48,7 @@ local function LoadSkin()
 
 	local QuestScrollFrame = _G.QuestScrollFrame
 	QuestScrollFrame.DetailFrame:StripTextures()
+	QuestScrollFrame.DetailFrame.BottomDetail:Hide()
 	QuestScrollFrame.Contents.Separator.Divider:Hide()
 
 	local QuestScrollFrameScrollBar = _G.QuestScrollFrameScrollBar
