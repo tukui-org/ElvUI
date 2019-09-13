@@ -385,10 +385,8 @@ local function LoadSkin()
 	_G.QuestModelScene:StripTextures()
 	_G.QuestModelScene:CreateBackdrop("Transparent")
 	_G.QuestModelScene:Point("TOPLEFT", _G.QuestLogDetailFrame, "TOPRIGHT", 4, -34)
-	-- Need to find a quest with this frame
-	--_G.QuestModelTextFrame:StripTextures()
-	--_G.QuestModelTextFrame:CreateBackdrop()
-	--_G.QuestModelTextFrame.backdrop:Point("TOPLEFT", _G.QuestModel.backdrop, "BOTTOMLEFT", 0, -2)
+	_G.QuestNPCModelNameTooltipFrame:StripTextures()
+	_G.QuestNPCModelNameTooltipFrame:CreateBackdrop("Transparent")
 
 	local QuestLogPopupDetailFrame = _G.QuestLogPopupDetailFrame
 	S:HandlePortraitFrame(QuestLogPopupDetailFrame)
