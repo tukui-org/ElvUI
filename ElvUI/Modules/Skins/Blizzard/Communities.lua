@@ -219,6 +219,7 @@ local function LoadSkin()
 		for button in self.SpecsPool:EnumerateActive() do
 			if button.CheckBox then
 				S:HandleCheckBox(button.CheckBox)
+				button.CheckBox:SetSize(26, 26)
 			end
 		end
 	end)
@@ -229,8 +230,6 @@ local function LoadSkin()
 	-- Needs much love
 	S:HandleEditBox(RequestToJoin.MessageFrame.MessageScroll.EditBox)
 	RequestToJoin.MessageFrame.MessageScroll.EditBox:Size(500, 500)
-
-	-- TO DO: FIND THE CHECKBOX NAMES
 
 	S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
 	S:HandleButton(RequestToJoin.Apply)
@@ -270,22 +269,29 @@ local function LoadSkin()
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderPendingTab)
 
-	local RequestToJoinFrame = ClubFinderCommunityAndGuildFinderFrame.RequestToJoinFrame
-	RequestToJoinFrame:StripTextures()
-	RequestToJoinFrame:CreateBackdrop("Transparent")
+	local RequestToJoin = ClubFinderCommunityAndGuildFinderFrame.RequestToJoinFrame
+	RequestToJoin:StripTextures()
+	RequestToJoin:CreateBackdrop("Transparent")
 
-	RequestToJoinFrame.MessageFrame:StripTextures(true)
-	RequestToJoinFrame.MessageFrame.MessageScroll:StripTextures(true)
+	hooksecurefunc(RequestToJoin, 'Initialize', function(self)
+		for button in self.SpecsPool:EnumerateActive() do
+			if button.CheckBox then
+				S:HandleCheckBox(button.CheckBox)
+				button.CheckBox:SetSize(26, 26)
+			end
+		end
+	end)
+
+	RequestToJoin.MessageFrame:StripTextures(true)
+	RequestToJoin.MessageFrame.MessageScroll:StripTextures(true)
 
 	-- Needs much love
-	S:HandleEditBox(RequestToJoinFrame.MessageFrame.MessageScroll.EditBox)
-	RequestToJoinFrame.MessageFrame.MessageScroll.EditBox:Size(500, 500)
-
-	-- TO DO: FIND THE CHECKBOX NAMES
+	S:HandleEditBox(RequestToJoin.MessageFrame.MessageScroll.EditBox)
+	RequestToJoin.MessageFrame.MessageScroll.EditBox:Size(500, 500)
 
 	S:HandleScrollBar(_G.ClubFinderCommunityAndGuildFinderFrameScrollBar)
-	S:HandleButton(RequestToJoinFrame.Apply)
-	S:HandleButton(RequestToJoinFrame.Cancel)
+	S:HandleButton(RequestToJoin.Apply)
+	S:HandleButton(RequestToJoin.Cancel)
 
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
