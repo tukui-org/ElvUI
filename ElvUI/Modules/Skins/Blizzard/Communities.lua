@@ -211,29 +211,30 @@ local function LoadSkin()
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderPendingTab)
 
-	local RequestToJoin = ClubFinderGuildFinderFrame.RequestToJoinFrame
-	RequestToJoin:StripTextures()
-	RequestToJoin:CreateBackdrop("Transparent")
+	for _, t in ipairs({ClubFinderGuildFinderFrame.RequestToJoinFrame, ClubFinderCommunityAndGuildFinderFrame.RequestToJoinFrame}) do
+		t:StripTextures()
+		t:CreateBackdrop("Transparent")
 
-	hooksecurefunc(RequestToJoin, 'Initialize', function(self)
-		for button in self.SpecsPool:EnumerateActive() do
-			if button.CheckBox then
-				S:HandleCheckBox(button.CheckBox)
-				button.CheckBox:SetSize(26, 26)
+		hooksecurefunc(t, 'Initialize', function(self)
+			for button in self.SpecsPool:EnumerateActive() do
+				if button.CheckBox then
+					S:HandleCheckBox(button.CheckBox)
+					button.CheckBox:SetSize(26, 26)
+				end
 			end
-		end
-	end)
+		end)
 
-	RequestToJoin.MessageFrame:StripTextures(true)
-	RequestToJoin.MessageFrame.MessageScroll:StripTextures(true)
+		t.MessageFrame:StripTextures(true)
+		t.MessageFrame.MessageScroll:StripTextures(true)
 
-	-- Needs much love
-	S:HandleEditBox(RequestToJoin.MessageFrame.MessageScroll.EditBox)
-	RequestToJoin.MessageFrame.MessageScroll.EditBox:Size(500, 500)
+		-- Needs much love
+		S:HandleEditBox(t.MessageFrame.MessageScroll.EditBox)
+		t.MessageFrame.MessageScroll.EditBox:Size(500, 500)
 
-	S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
-	S:HandleButton(RequestToJoin.Apply)
-	S:HandleButton(RequestToJoin.Cancel)
+		S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
+		S:HandleButton(t.Apply)
+		S:HandleButton(t.Cancel)
+	end
 
 	-- ClubFinderCommunityAndGuildFinderFrame
 	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
@@ -268,30 +269,6 @@ local function LoadSkin()
 
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderPendingTab)
-
-	local RequestToJoin = ClubFinderCommunityAndGuildFinderFrame.RequestToJoinFrame
-	RequestToJoin:StripTextures()
-	RequestToJoin:CreateBackdrop("Transparent")
-
-	hooksecurefunc(RequestToJoin, 'Initialize', function(self)
-		for button in self.SpecsPool:EnumerateActive() do
-			if button.CheckBox then
-				S:HandleCheckBox(button.CheckBox)
-				button.CheckBox:SetSize(26, 26)
-			end
-		end
-	end)
-
-	RequestToJoin.MessageFrame:StripTextures(true)
-	RequestToJoin.MessageFrame.MessageScroll:StripTextures(true)
-
-	-- Needs much love
-	S:HandleEditBox(RequestToJoin.MessageFrame.MessageScroll.EditBox)
-	RequestToJoin.MessageFrame.MessageScroll.EditBox:Size(500, 500)
-
-	S:HandleScrollBar(_G.ClubFinderCommunityAndGuildFinderFrameScrollBar)
-	S:HandleButton(RequestToJoin.Apply)
-	S:HandleButton(RequestToJoin.Cancel)
 
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
