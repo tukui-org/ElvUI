@@ -62,7 +62,7 @@ local function LoadSkin()
 	_G.CommunitiesFrameCommunitiesListListScrollFrame:StripTextures()
 
 	-- Needs probably an update for 8.2.5
-	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo, isInvitation, isTicket, isInviteFromFinder)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo, isInvitation, isTicket)
 		if clubInfo then
 			self.Background:Hide()
 			self.CircleMask:Hide()
@@ -211,22 +211,30 @@ local function LoadSkin()
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderPendingTab)
 
-	local RequestToJoinFrame = ClubFinderGuildFinderFrame.RequestToJoinFrame
-	RequestToJoinFrame:StripTextures()
-	RequestToJoinFrame:CreateBackdrop("Transparent")
+	local RequestToJoin = ClubFinderGuildFinderFrame.RequestToJoinFrame
+	RequestToJoin:StripTextures()
+	RequestToJoin:CreateBackdrop("Transparent")
 
-	RequestToJoinFrame.MessageFrame:StripTextures(true)
-	RequestToJoinFrame.MessageFrame.MessageScroll:StripTextures(true)
+	hooksecurefunc(RequestToJoin, 'Initialize', function(self)
+		for button in self.SpecsPool:EnumerateActive() do
+			if button.CheckBox then
+				S:HandleCheckBox(button.CheckBox)
+			end
+		end
+	end)
+
+	RequestToJoin.MessageFrame:StripTextures(true)
+	RequestToJoin.MessageFrame.MessageScroll:StripTextures(true)
 
 	-- Needs much love
-	S:HandleEditBox(RequestToJoinFrame.MessageFrame.MessageScroll.EditBox)
-	RequestToJoinFrame.MessageFrame.MessageScroll.EditBox:Size(500, 500)
+	S:HandleEditBox(RequestToJoin.MessageFrame.MessageScroll.EditBox)
+	RequestToJoin.MessageFrame.MessageScroll.EditBox:Size(500, 500)
 
 	-- TO DO: FIND THE CHECKBOX NAMES
 
 	S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
-	S:HandleButton(RequestToJoinFrame.Apply)
-	S:HandleButton(RequestToJoinFrame.Cancel)
+	S:HandleButton(RequestToJoin.Apply)
+	S:HandleButton(RequestToJoin.Cancel)
 
 	-- ClubFinderCommunityAndGuildFinderFrame
 	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
