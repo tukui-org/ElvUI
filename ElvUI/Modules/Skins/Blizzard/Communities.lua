@@ -181,17 +181,10 @@ local function LoadSkin()
 	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
 	ClubFinderGuildFinderFrame:StripTextures()
 
-	-- Blizzard_Communities\ClubFinder.xml only returns 3 Cards
-	local cards = {
-		ClubFinderGuildFinderFrame.GuildCards.FirstCard,
-		ClubFinderGuildFinderFrame.GuildCards.SecondCard,
-		ClubFinderGuildFinderFrame.GuildCards.ThirdCard
-	}
-
 	S:HandleNextPrevButton(ClubFinderGuildFinderFrame.GuildCards.PreviousPage)
 	S:HandleNextPrevButton(ClubFinderGuildFinderFrame.GuildCards.NextPage)
 
-	for _, card in pairs(cards) do
+	for _, card in pairs(ClubFinderGuildFinderFrame.GuildCards.Cards) do
 		if not card.isSkinned then
 			card.CardBackground:Hide()
 			card:CreateBackdrop()
