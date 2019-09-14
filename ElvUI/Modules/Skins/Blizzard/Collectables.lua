@@ -467,6 +467,12 @@ local function LoadSkin()
 	end
 
 	--Sets
+	local SetsCollectionFrame = WardrobeCollectionFrame.SetsCollectionFrame
+	SetsCollectionFrame.RightInset:StripTextures()
+	SetsCollectionFrame:SetTemplate("Transparent")
+	SetsCollectionFrame.LeftInset:StripTextures()
+	--S:HandleCloseButton(WardrobeCollectionFrame.SetsTabHelpBox.CloseButton)
+	--S:HandleCloseButton(WardrobeCollectionFrame.ItemsCollectionFrame.HelpBox.CloseButton)
 
 	local ScrollFrame = SetsCollectionFrame.ScrollFrame
 	S:HandleScrollBar(ScrollFrame.scrollBar)
@@ -539,14 +545,6 @@ local function LoadSkin()
 	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate("Transparent")
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton)
-
-	-- Taken from AddOnSkins
-	for i = 1, 2 do
-		for j = 1, 4 do
-			WardrobeCollectionFrame.SetsTransmogFrame["ModelR"..i.."C"..j]:StripTextures()
-			WardrobeCollectionFrame.SetsTransmogFrame["ModelR"..i.."C"..j]:CreateBackdrop()
-		end
-	end
 
 	-- Outfit Edit Frame
 	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
