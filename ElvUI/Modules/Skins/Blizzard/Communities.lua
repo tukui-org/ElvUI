@@ -181,11 +181,11 @@ local function LoadSkin()
 	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
 	ClubFinderGuildFinderFrame:StripTextures()
 
+	-- Blizzard_Communities\ClubFinder.xml only returns 3 Cards
 	local cards = {
 		ClubFinderGuildFinderFrame.GuildCards.FirstCard,
 		ClubFinderGuildFinderFrame.GuildCards.SecondCard,
 		ClubFinderGuildFinderFrame.GuildCards.ThirdCard
-		-- probably more
 	}
 
 	S:HandleNextPrevButton(ClubFinderGuildFinderFrame.GuildCards.PreviousPage)
