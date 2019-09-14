@@ -181,14 +181,25 @@ local function LoadSkin()
 	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
 	ClubFinderGuildFinderFrame:StripTextures()
 
-	--[[ Fill me
-	for _, button in pairs(ClubFinderGuildFinderFrame.GuildCards.ListScrollFrame.buttons) do
-		if not button.isSkinned then
+	local cards = {
+		ClubFinderGuildFinderFrame.GuildCards.FirstCard,
+		ClubFinderGuildFinderFrame.GuildCards.SecondCard,
+		ClubFinderGuildFinderFrame.GuildCards.ThirdCard
+		-- probably more
+	}
 
-			button.isSkinned = true
+	S:HandleNextPrevButton(ClubFinderGuildFinderFrame.GuildCards.PreviousPage)
+	S:HandleNextPrevButton(ClubFinderGuildFinderFrame.GuildCards.NextPage)
+
+	for _, card in pairs(cards) do
+		if not card.isSkinned then
+			card.CardBackground:Hide()
+			card:CreateBackdrop()
+			card.GuildBannerEmblemLogo:SetDrawLayer("OVERLAY")
+			S:HandleButton(card.RequestJoin)
+			card.isSkinned = true
 		end
 	end
-	]]
 
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubFocusDropdown)
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown)
@@ -206,6 +217,23 @@ local function LoadSkin()
 
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderPendingTab)
+
+	local RequestToJoinFrame = ClubFinderGuildFinderFrame.RequestToJoinFrame
+	RequestToJoinFrame:StripTextures()
+	RequestToJoinFrame:CreateBackdrop("Transparent")
+
+	RequestToJoinFrame.MessageFrame:StripTextures(true)
+	RequestToJoinFrame.MessageFrame.MessageScroll:StripTextures(true)
+
+	-- Needs much love
+	S:HandleEditBox(RequestToJoinFrame.MessageFrame.MessageScroll.EditBox)
+	RequestToJoinFrame.MessageFrame.MessageScroll.EditBox:Size(500, 500)
+
+	-- TO DO: FIND THE CHECKBOX NAMES
+
+	S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
+	S:HandleButton(RequestToJoinFrame.Apply)
+	S:HandleButton(RequestToJoinFrame.Cancel)
 
 	-- ClubFinderCommunityAndGuildFinderFrame
 	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
