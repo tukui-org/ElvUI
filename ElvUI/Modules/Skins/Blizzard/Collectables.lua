@@ -50,6 +50,8 @@ local function LoadSkin()
 	MountJournal.MountCount:StripTextures()
 
 	S:HandleIcon(MountJournal.MountDisplay.InfoButton.Icon)
+	S:HandleCheckBox(MountJournal.MountDisplay.ModelScene.TogglePlayer)
+	MountJournal.MountDisplay.ModelScene.TogglePlayer:SetSize(22, 22)
 
 	S:HandleButton(_G.MountJournalMountButton, true)
 	S:HandleEditBox(_G.MountJournalSearchBox)
