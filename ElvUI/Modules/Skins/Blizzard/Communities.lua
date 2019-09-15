@@ -166,7 +166,7 @@ local function LoadSkin()
 		S:HandleCheckBox(self.HideNotificationsButton)
 	end)
 
-	-- [[ CHAT TAB ]]
+	-- Chat Tab
 	CommunitiesFrame.MemberList:StripTextures()
 	CommunitiesFrame.MemberList.InsetFrame:Hide()
 	CommunitiesFrame.MemberList.WatermarkFrame:Hide()
@@ -177,14 +177,15 @@ local function LoadSkin()
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
 
-	-- GuildFinder Frame
+	-- [[ GUILDFINDER FRAME ]]--
 	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
 	ClubFinderGuildFinderFrame:StripTextures()
 
 	S:HandleNextPrevButton(ClubFinderGuildFinderFrame.GuildCards.PreviousPage)
 	S:HandleNextPrevButton(ClubFinderGuildFinderFrame.GuildCards.NextPage)
 
-	for _, card in pairs(ClubFinderGuildFinderFrame.GuildCards.Cards) do
+	-->> Monitor this
+	for _, card in pairs(ClubFinderGuildFinderFrame.GuildCards.Cards, ClubFinderGuildFinderFrame.PendingGuildCards.Cards) do
 		if not card.isSkinned then
 			card.CardBackground:Hide()
 			card:CreateBackdrop()
@@ -211,36 +212,12 @@ local function LoadSkin()
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderPendingTab)
 
-	for _, t in ipairs({ClubFinderGuildFinderFrame.RequestToJoinFrame, ClubFinderCommunityAndGuildFinderFrame.RequestToJoinFrame}) do
-		t:StripTextures()
-		t:CreateBackdrop("Transparent")
-
-		hooksecurefunc(t, 'Initialize', function(self)
-			for button in self.SpecsPool:EnumerateActive() do
-				if button.CheckBox then
-					S:HandleCheckBox(button.CheckBox)
-					button.CheckBox:SetSize(26, 26)
-				end
-			end
-		end)
-
-		t.MessageFrame:StripTextures(true)
-		t.MessageFrame.MessageScroll:StripTextures(true)
-
-		-- Needs much love
-		S:HandleEditBox(t.MessageFrame.MessageScroll.EditBox)
-		t.MessageFrame.MessageScroll.EditBox:Size(500, 500)
-
-		S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
-		S:HandleButton(t.Apply)
-		S:HandleButton(t.Cancel)
-	end
-
-	-- ClubFinderCommunityAndGuildFinderFrame
+	-- [[ClubFinderCommunityAndGuildFinderFrame ]]--
 	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
 	ClubFinderCommunityAndGuildFinderFrame:StripTextures()
 
-	for _, button in pairs(ClubFinderCommunityAndGuildFinderFrame.CommunityCards.ListScrollFrame.buttons) do
+	-->> Monitor this
+	for _, button in pairs(ClubFinderCommunityAndGuildFinderFrame.CommunityCards.ListScrollFrame.buttons, ClubFinderCommunityAndGuildFinderFrame.PendingCommunityCards.ListScrollFrame.buttons) do
 		if not button.isSkinned then
 			button.CircleMask:Hide()
 			button.LogoBorder:Hide()
@@ -266,9 +243,35 @@ local function LoadSkin()
 	HandleRoleChecks(ClubFinderCommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
 
 	S:HandleScrollBar(ClubFinderCommunityAndGuildFinderFrame.CommunityCards.ListScrollFrame.scrollBar)
+	S:HandleScrollBar(ClubFinderCommunityAndGuildFinderFrame.PendingCommunityCards.ListScrollFrame.scrollBar)
 
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderPendingTab)
+
+	for _, t in ipairs({ClubFinderGuildFinderFrame.RequestToJoinFrame, ClubFinderCommunityAndGuildFinderFrame.RequestToJoinFrame}) do
+		t:StripTextures()
+		t:CreateBackdrop("Transparent")
+
+		hooksecurefunc(t, 'Initialize', function(self)
+			for button in self.SpecsPool:EnumerateActive() do
+				if button.CheckBox then
+					S:HandleCheckBox(button.CheckBox)
+					button.CheckBox:SetSize(26, 26)
+				end
+			end
+		end)
+
+		t.MessageFrame:StripTextures(true)
+		t.MessageFrame.MessageScroll:StripTextures(true)
+
+		-- Needs much love
+		S:HandleEditBox(t.MessageFrame.MessageScroll.EditBox)
+		t.MessageFrame.MessageScroll.EditBox:Size(500, 500)
+
+		S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
+		S:HandleButton(t.Apply)
+		S:HandleButton(t.Cancel)
+	end
 
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
