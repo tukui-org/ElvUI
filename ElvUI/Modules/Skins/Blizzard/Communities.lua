@@ -389,6 +389,12 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
+	local BossModel = _G.CommunitiesFrameGuildDetailsFrameNews.BossModel
+	BossModel:StripTextures()
+	BossModel.TextFrame:StripTextures()
+	BossModel:SetTemplate("Transparent")
+	BossModel.TextFrame:SetTemplate("Transparent")
+
 	-- Filters Frame
 	local FiltersFrame = _G.CommunitiesGuildNewsFiltersFrame
 	FiltersFrame:CreateBackdrop("Transparent")
