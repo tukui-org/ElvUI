@@ -10,6 +10,7 @@ Fixed a bug where nameplate threat scale wasn't being reset on new units that no
 Fixed a Style Filter error: Attempt to compare nil with number.  
 Fixed an error in Petition Skin.  
 Fixed black Quest Text if Parchment Reomver is enabled. (#1444)  
+Fixed Penance spellID for castbar ticks.  
 
 **Misc. Changes:**  
 Updated Friends DataText to see the difference between retail and classic.  
