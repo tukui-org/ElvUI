@@ -1479,7 +1479,7 @@ Formatos de Nombre:
 'name:long' - Nombre restringido a 20 caracteres
 'name:short:translit' - Name restricted to 10 characters with transliteration
 
-Para desactivarlo dejar el campo en blanco, si necesitas más información visita https://www.tukui.org/forum/viewtopic.php?t=6]=]
+Para desactivarlo dejar el campo en blanco, si necesitas más información visita https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Esto funciona como una macro. Puedes ejecutar diferentes situaciones para paginar la barra de acción de forma diferente.

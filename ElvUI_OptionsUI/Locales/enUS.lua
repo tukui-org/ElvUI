@@ -1484,7 +1484,7 @@ Name Formats:
 'name:long' - Name restricted to 20 characters
 'name:short:translit' - Name restricted to 10 characters with transliteration
 
-To disable leave the field blank, if you need more information visit https://www.tukui.org/forum/viewtopic.php?t=6]=]
+To disable leave the field blank, if you need more information visit https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = true
