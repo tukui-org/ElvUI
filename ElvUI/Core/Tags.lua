@@ -1182,6 +1182,20 @@ ElvUF.Tags.Methods['classificationcolor'] = function(unit)
 	end
 end
 
+ElvUF.Tags.Events['classification:icon'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['classification:icon'] = function(unit)
+	if UnitIsPlayer(unit) then
+		return
+	end
+
+	local classification = UnitClassification(unit)
+	if classification == "elite" or classification == "worldboss" then
+		return CreateAtlasMarkup("nameplates-icon-elite-gold", 32, 32)
+	elseif classification == "rareelite" or classification == 'rare' then
+		return CreateAtlasMarkup("nameplates-icon-elite-silver", 32, 32)
+	end
+end
+
 ElvUF.Tags.SharedEvents.PLAYER_GUILD_UPDATE = true
 
 ElvUF.Tags.Events['guild'] = 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE'
