@@ -439,26 +439,20 @@ end
 
 function LO:CreateMinimapPanels()
 	local Minimap = _G.Minimap
-	local lminipanel = CreateFrame('Frame', 'LeftMiniPanel', Minimap)
 
+	local lminipanel = CreateFrame('Frame', 'LeftMiniPanel', Minimap)
 	lminipanel:Point('TOPLEFT', Minimap, 'BOTTOMLEFT', -E.Border, -E.Spacing*3)
 	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', 0, -(E.Spacing*3 + PANEL_HEIGHT))
 	lminipanel:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	lminipanel:Hide()
 	DT:RegisterPanel(lminipanel, 1, 'ANCHOR_BOTTOMLEFT', lminipanel:GetWidth() * 2, -4)
 
 	local rminipanel = CreateFrame('Frame', 'RightMiniPanel', Minimap)
 	rminipanel:Point('TOPRIGHT', Minimap, 'BOTTOMRIGHT', E.Border, -(E.Spacing*3))
 	rminipanel:Point('BOTTOMLEFT', lminipanel, 'BOTTOMRIGHT', -E.Border + (E.Spacing*3), 0)
 	rminipanel:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	rminipanel:Hide()
 	DT:RegisterPanel(rminipanel, 1, 'ANCHOR_BOTTOM', 0, -4)
-
-	if E.db.datatexts.minimapPanels then
-		_G.LeftMiniPanel:Show()
-		_G.RightMiniPanel:Show()
-	else
-		_G.LeftMiniPanel:Hide()
-		_G.RightMiniPanel:Hide()
-	end
 
 	local f = CreateFrame('Frame', 'BottomMiniPanel', Minimap)
 	f:SetPoint('BOTTOM', Minimap, 'BOTTOM')
