@@ -176,6 +176,7 @@ function AddOn:OnInitialize()
 	self:UpdateMedia()
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:Contruct_StaticPopups()
+	AddOn.Layout:Initialize()
 	self:InitializeInitialModules()
 
 	if GetAddOnEnableState(self.myname, 'Tukui') == 2 then
@@ -336,6 +337,12 @@ function AddOn:ToggleOptionsUI(msg)
 	if not IsAddOnLoaded('ElvUI_OptionsUI') then
 		local noConfig
 		local _, _, _, _, reason = GetAddOnInfo('ElvUI_OptionsUI')
+
+		if reason == 'DISABLED' then
+			EnableAddOn('ElvUI_OptionsUI')
+			_, _, _, _, reason = GetAddOnInfo('ElvUI_OptionsUI')
+		end
+
 		if reason ~= 'MISSING' and reason ~= 'DISABLED' then
 			self.GUIFrame = false
 			LoadAddOn('ElvUI_OptionsUI')
