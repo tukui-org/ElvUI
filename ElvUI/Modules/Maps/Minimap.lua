@@ -229,48 +229,62 @@ function M:UpdateSettings()
 	local MMHolder = _G.MMHolder
 	local Minimap = _G.Minimap
 
-	if E.db.datatexts.minimapPanels then
-		LeftMiniPanel:Show()
-		RightMiniPanel:Show()
-	else
-		LeftMiniPanel:Hide()
-		RightMiniPanel:Hide()
+	if LeftMiniPanel and RightMiniPanel then
+		if E.db.datatexts.minimapPanels then
+			LeftMiniPanel:Show()
+			RightMiniPanel:Show()
+		else
+			LeftMiniPanel:Hide()
+			RightMiniPanel:Hide()
+		end
 	end
 
-	if E.db.datatexts.minimapBottom then
-		BottomMiniPanel:Show()
-	else
-		BottomMiniPanel:Hide()
+	if BottomMiniPanel then
+		if E.db.datatexts.minimapBottom then
+			BottomMiniPanel:Show()
+		else
+			BottomMiniPanel:Hide()
+		end
 	end
 
-	if E.db.datatexts.minimapBottomLeft then
-		BottomLeftMiniPanel:Show()
-	else
-		BottomLeftMiniPanel:Hide()
+	if BottomLeftMiniPanel then
+		if E.db.datatexts.minimapBottomLeft then
+			BottomLeftMiniPanel:Show()
+		else
+			BottomLeftMiniPanel:Hide()
+		end
 	end
 
-	if E.db.datatexts.minimapBottomRight then
-		BottomRightMiniPanel:Show()
-	else
-		BottomRightMiniPanel:Hide()
+	if BottomRightMiniPanel then
+		if E.db.datatexts.minimapBottomRight then
+			BottomRightMiniPanel:Show()
+		else
+			BottomRightMiniPanel:Hide()
+		end
 	end
 
-	if E.db.datatexts.minimapTop then
-		TopMiniPanel:Show()
-	else
-		TopMiniPanel:Hide()
+	if TopMiniPanel then
+		if E.db.datatexts.minimapTop then
+			TopMiniPanel:Show()
+		else
+			TopMiniPanel:Hide()
+		end
 	end
 
-	if E.db.datatexts.minimapTopLeft then
-		TopLeftMiniPanel:Show()
-	else
-		TopLeftMiniPanel:Hide()
+	if TopLeftMiniPanel then
+		if E.db.datatexts.minimapTopLeft then
+			TopLeftMiniPanel:Show()
+		else
+			TopLeftMiniPanel:Hide()
+		end
 	end
 
-	if E.db.datatexts.minimapTopRight then
-		TopRightMiniPanel:Show()
-	else
-		TopRightMiniPanel:Hide()
+	if TopRightMiniPanel then
+		if E.db.datatexts.minimapTopRight then
+			TopRightMiniPanel:Show()
+		else
+			TopRightMiniPanel:Hide()
+		end
 	end
 
 	MMHolder:Width((Minimap:GetWidth() + E.Border + E.Spacing*3))
