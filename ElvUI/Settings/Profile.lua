@@ -975,7 +975,7 @@ P.nameplates = {
 			},
 			name = {
 				enable = true,
-				format = '[namecolor][name:abbrev]',
+				format = '[namecolor][name:abbrev:long]',
 				position = 'TOPLEFT',
 				parent = 'Nameplate',
 				xOffset = 0,
