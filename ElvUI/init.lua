@@ -176,7 +176,6 @@ function AddOn:OnInitialize()
 	self:UpdateMedia()
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:Contruct_StaticPopups()
-	AddOn.Layout:Initialize()
 	self:InitializeInitialModules()
 
 	if GetAddOnEnableState(self.myname, 'Tukui') == 2 then
