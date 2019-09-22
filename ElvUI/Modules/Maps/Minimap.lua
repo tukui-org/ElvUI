@@ -209,6 +209,7 @@ hooksecurefunc(_G.Minimap, "SetZoom", SetupZoomReset)
 function M:UpdateSettings()
 	if InCombatLockdown() then
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
+		return
 	end
 
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or _G.Minimap:GetWidth() + 10
@@ -483,4 +484,4 @@ function M:Initialize()
 	self:UpdateSettings()
 end
 
-E:RegisterInitialModule(M:GetName())
+E:RegisterModule(M:GetName())
