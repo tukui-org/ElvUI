@@ -1,4 +1,16 @@
-### Version 11.23 for 8.2.5 [  ]
+### Version 11.24 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 11.23 [ September 24th 2019 ]
 
 **New Additions:**  
 Added an option to enable a more visible Auto Attack animation on the ActionBars. Disabled by default.  
@@ -15,7 +27,7 @@ Fixed Penance spellID for castbar ticks.
 **Misc. Changes:**  
 Updated Friends DataText to see the difference between retail and classic.  
 Various Skin updates related for 8.2.5.  
-Changed the Battle.net status frame. Just click on your Battle.tag to add/edit the status message. 
+Changed the Battle.net status frame. Just click on your Battle.tag to add/edit the status message.  
 Added "Eye of Leotheras" (PvP Talent) to the PlayerBuffs Filter.  
 
 ___
