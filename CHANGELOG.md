@@ -14,7 +14,8 @@ Fixed Penance spellID for castbar ticks.
 
 **Misc. Changes:**  
 Updated Friends DataText to see the difference between retail and classic.  
-Various Skin updates.  
+Various Skin updates related for 8.2.5.  
+Changed the Battle.net status frame. Just click on your Battle.tag to add/edit the status message. 
 Added "Eye of Leotheras" (PvP Talent) to the PlayerBuffs Filter.  
 
 ___
