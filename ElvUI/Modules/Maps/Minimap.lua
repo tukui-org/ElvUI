@@ -197,6 +197,7 @@ local function ResetZoom()
 	_G.MinimapZoomOut:Disable();
 	isResetting = false
 end
+
 local function SetupZoomReset()
 	if E.db.general.minimap.resetZoom.enable and not isResetting then
 		isResetting = true
@@ -208,106 +209,86 @@ hooksecurefunc(_G.Minimap, "SetZoom", SetupZoomReset)
 function M:UpdateSettings()
 	if InCombatLockdown() then
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
+		return
 	end
+
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or _G.Minimap:GetWidth() + 10
 	E.MinimapWidth, E.MinimapHeight = E.MinimapSize, E.MinimapSize
 
-	if E.private.general.minimap.enable then
-		_G.Minimap:Size(E.MinimapSize, E.MinimapSize)
-	end
+	_G.Minimap:Size(E.MinimapSize, E.MinimapSize)
 
 	local LeftMiniPanel = _G.LeftMiniPanel
 	local RightMiniPanel = _G.RightMiniPanel
-	if LeftMiniPanel and RightMiniPanel then
-		if E.db.datatexts.minimapPanels and E.private.general.minimap.enable then
-			LeftMiniPanel:Show()
-			RightMiniPanel:Show()
-		else
-			LeftMiniPanel:Hide()
-			RightMiniPanel:Hide()
-		end
-	end
-
 	local BottomMiniPanel = _G.BottomMiniPanel
-	if BottomMiniPanel then
-		if E.db.datatexts.minimapBottom and E.private.general.minimap.enable then
-			BottomMiniPanel:Show()
-		else
-			BottomMiniPanel:Hide()
-		end
-	end
-
 	local BottomLeftMiniPanel = _G.BottomLeftMiniPanel
-	if BottomLeftMiniPanel then
-		if E.db.datatexts.minimapBottomLeft and E.private.general.minimap.enable then
-			BottomLeftMiniPanel:Show()
-		else
-			BottomLeftMiniPanel:Hide()
-		end
-	end
-
 	local BottomRightMiniPanel = _G.BottomRightMiniPanel
-	if BottomRightMiniPanel then
-		if E.db.datatexts.minimapBottomRight and E.private.general.minimap.enable then
-			BottomRightMiniPanel:Show()
-		else
-			BottomRightMiniPanel:Hide()
-		end
-	end
-
 	local TopMiniPanel = _G.TopMiniPanel
-	if TopMiniPanel then
-		if E.db.datatexts.minimapTop and E.private.general.minimap.enable then
-			TopMiniPanel:Show()
-		else
-			TopMiniPanel:Hide()
-		end
-	end
-
 	local TopLeftMiniPanel = _G.TopLeftMiniPanel
-	if TopLeftMiniPanel then
-		if E.db.datatexts.minimapTopLeft and E.private.general.minimap.enable then
-			TopLeftMiniPanel:Show()
-		else
-			TopLeftMiniPanel:Hide()
-		end
-	end
-
 	local TopRightMiniPanel = _G.TopRightMiniPanel
-	if TopRightMiniPanel then
-		if E.db.datatexts.minimapTopRight and E.private.general.minimap.enable then
-			TopRightMiniPanel:Show()
-		else
-			TopRightMiniPanel:Hide()
-		end
-	end
-
 	local MMHolder = _G.MMHolder
 	local Minimap = _G.Minimap
-	if MMHolder then
-		MMHolder:Width((Minimap:GetWidth() + E.Border + E.Spacing*3))
 
-		if E.db.datatexts.minimapPanels then
-			MMHolder:Height(Minimap:GetHeight() + (LeftMiniPanel and (LeftMiniPanel:GetHeight() + E.Border) or 24) + E.Spacing*3)
-		else
-			MMHolder:Height(Minimap:GetHeight() + E.Border + E.Spacing*3)
-		end
+	if E.db.datatexts.minimapPanels then
+		LeftMiniPanel:Show()
+		RightMiniPanel:Show()
+	else
+		LeftMiniPanel:Hide()
+		RightMiniPanel:Hide()
 	end
 
-	if Minimap.location then
-		Minimap.location:Width(E.MinimapSize)
-
-		if E.db.general.minimap.locationText ~= 'SHOW' or not E.private.general.minimap.enable then
-			Minimap.location:Hide()
-		else
-			Minimap.location:Show()
-		end
+	if E.db.datatexts.minimapBottom then
+		BottomMiniPanel:Show()
+	else
+		BottomMiniPanel:Hide()
 	end
 
-	local MinimapMover = _G.MinimapMover
-	if MinimapMover then
-		MinimapMover:Size(MMHolder:GetSize())
+	if E.db.datatexts.minimapBottomLeft then
+		BottomLeftMiniPanel:Show()
+	else
+		BottomLeftMiniPanel:Hide()
 	end
+
+	if E.db.datatexts.minimapBottomRight then
+		BottomRightMiniPanel:Show()
+	else
+		BottomRightMiniPanel:Hide()
+	end
+
+	if E.db.datatexts.minimapTop then
+		TopMiniPanel:Show()
+	else
+		TopMiniPanel:Hide()
+	end
+
+	if E.db.datatexts.minimapTopLeft then
+		TopLeftMiniPanel:Show()
+	else
+		TopLeftMiniPanel:Hide()
+	end
+
+	if E.db.datatexts.minimapTopRight then
+		TopRightMiniPanel:Show()
+	else
+		TopRightMiniPanel:Hide()
+	end
+
+	MMHolder:Width((Minimap:GetWidth() + E.Border + E.Spacing*3))
+
+	if E.db.datatexts.minimapPanels then
+		MMHolder:Height(Minimap:GetHeight() + (LeftMiniPanel and (LeftMiniPanel:GetHeight() + E.Border) or 24) + E.Spacing*3)
+	else
+		MMHolder:Height(Minimap:GetHeight() + E.Border + E.Spacing*3)
+	end
+
+	Minimap.location:Width(E.MinimapSize)
+
+	if E.db.general.minimap.locationText ~= 'SHOW' or not E.private.general.minimap.enable then
+		Minimap.location:Hide()
+	else
+		Minimap.location:Show()
+	end
+
+	_G.MinimapMover:Size(MMHolder:GetSize())
 
 	--Stop here if ElvUI Minimap is disabled.
 	if not E.private.general.minimap.enable then
@@ -402,7 +383,6 @@ end
 
 function M:Initialize()
 	menuFrame:SetTemplate("Transparent", true)
-	self:UpdateSettings()
 
 	if not E.private.general.minimap.enable then
 		_G.Minimap:SetMaskTexture(186178) -- textures/minimapmask.blp
@@ -500,7 +480,8 @@ function M:Initialize()
 	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_ZoneText")
 	self:RegisterEvent('ADDON_LOADED')
+
 	self:UpdateSettings()
 end
 
-E:RegisterInitialModule(M:GetName())
+E:RegisterModule(M:GetName())

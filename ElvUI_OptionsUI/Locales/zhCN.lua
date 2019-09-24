@@ -1488,7 +1488,7 @@ L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 'name:long' - 姓名显示限制于20字节内
 'name:short:translit' - Name restricted to 10 characters with transliteration
 
-空白则为禁用. 如需技术支持请至https://www.tukui.org/forum/viewtopic.php?t=6]=]
+空白则为禁用. 如需技术支持请至https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
 
