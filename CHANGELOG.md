@@ -1,4 +1,4 @@
-### Version 11.23 [  ]
+### Version 11.23 for 8.2.5 [  ]
 
 **New Additions:**  
 Added an option to enable a more visible Auto Attack animation on the ActionBars. Disabled by default.  
