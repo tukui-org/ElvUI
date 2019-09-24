@@ -463,7 +463,7 @@ E.Options.args.skins = {
 				},
 				AzeriteEssence = {
 					type = "toggle",
-					name = L["Azerite Essence"], -- Maybe Temp Name
+					name = L["Azerite Essence"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 			},
