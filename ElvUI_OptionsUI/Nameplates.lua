@@ -4099,7 +4099,7 @@ local function GetUnitSettings(unit, name)
 									local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
 									local text = friend or enemy or TEXT
 									local SF, localized = E.global.unitframe.specialFilters[text], L[text]
-									local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
+									local blockText = SF and localized and strmatch(text, "^block") and gsub(localized, "^%[.-]%s?", "")
 									local filterText = (blockText and format("|cFF999999%s|r %s", _G.BLOCK, blockText)) or localized or text
 									return (friend and format("|cFF33FF33%s|r %s", _G.FRIEND, filterText)) or
 										(enemy and format("|cFFFF3333%s|r %s", _G.ENEMY, filterText)) or
@@ -4450,7 +4450,7 @@ local function GetUnitSettings(unit, name)
 									local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
 									local text = friend or enemy or TEXT
 									local SF, localized = E.global.unitframe.specialFilters[text], L[text]
-									local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
+									local blockText = SF and localized and strmatch(text, "^block") and gsub(localized, "^%[.-]%s?", "")
 									local filterText = (blockText and format("|cFF999999%s|r %s", _G.BLOCK, blockText)) or localized or text
 									return (friend and format("|cFF33FF33%s|r %s", _G.FRIEND, filterText)) or
 										(enemy and format("|cFFFF3333%s|r %s", _G.ENEMY, filterText)) or

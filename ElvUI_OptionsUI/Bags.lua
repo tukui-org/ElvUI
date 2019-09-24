@@ -3,8 +3,8 @@ local C, L = unpack(select(2, ...))
 local B = E:GetModule('Bags')
 
 local _G = _G
-local gsub = string.gsub
-local match = string.match
+local gsub = gsub
+local strmatch = strmatch
 local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
 local GameTooltip = _G.GameTooltip
 
@@ -780,7 +780,7 @@ E.Options.args.bags = {
 								if value == "" or gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
 
 								--Store by itemID if possible
-								local itemID = match(value, "item:(%d+)")
+								local itemID = strmatch(value, "item:(%d+)")
 								E.db.bags.ignoredItems[(itemID or value)] = value
 							end,
 						},
@@ -800,7 +800,7 @@ E.Options.args.bags = {
 								if value == "" or gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
 
 								--Store by itemID if possible
-								local itemID = match(value, "item:(%d+)")
+								local itemID = strmatch(value, "item:(%d+)")
 								E.global.bags.ignoredItems[(itemID or value)] = value
 
 								--Remove from profile list if we just added the same item to global list

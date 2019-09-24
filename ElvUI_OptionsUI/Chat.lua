@@ -5,8 +5,8 @@ local Bags = E:GetModule('Bags')
 local Layout = E:GetModule('Layout')
 
 local _G = _G
-local gsub = string.gsub
-local strlower = string.lower
+local gsub = gsub
+local strlower = strlower
 local GameTooltip = _G.GameTooltip
 
 E.Options.args.chat = {

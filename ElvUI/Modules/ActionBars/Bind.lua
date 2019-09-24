@@ -5,8 +5,8 @@ local Skins = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local select, tonumber, pairs = select, tonumber, pairs
-local floor = math.floor
-local format = string.format
+local floor = floor
+local format = format
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
