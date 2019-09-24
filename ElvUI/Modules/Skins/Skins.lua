@@ -241,8 +241,8 @@ function S:SkinTalentListButtons(frame)
 end
 
 function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSetTemplate)
-	if button.isSkinned then return end
 	assert(button, "doesn't exist!")
+	if button.isSkinned then return end
 
 	local buttonName = button.GetName and button:GetName()
 
@@ -293,6 +293,7 @@ local function GrabScrollBarElement(frame, element)
 end
 
 function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
+	assert(frame, "doesnt exist!")
 	if frame.backdrop then return end
 	local parent = frame:GetParent()
 
@@ -420,6 +421,7 @@ function S:HandleMaxMinFrame(frame)
 end
 
 function S:HandleEditBox(frame)
+	assert(frame, "doesnt exist!")
 	if frame.backdrop then return end
 
 	local EditBoxName = frame.GetName and frame:GetName()
@@ -443,54 +445,32 @@ function S:HandleEditBox(frame)
 	end
 end
 
-function S:HandleDropDownBox(frame, width, override)
+function S:HandleDropDownBox(frame, width)
 	if frame.backdrop then return end
-
-	local FrameName = frame.GetName and frame:GetName()
-
-	local button = FrameName and _G[FrameName..'Button'] or frame.Button
-	local text = FrameName and _G[FrameName..'Text'] or frame.Text
 
 	frame:StripTextures()
 	frame:CreateBackdrop()
 	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
-	frame.backdrop:Point("TOPLEFT", 12, -6)
-	frame.backdrop:Point("BOTTOMRIGHT", -12, 6)
+	frame.backdrop:Point("TOPLEFT", frame.Left, 20, -21)
+	frame.backdrop:Point("BOTTOMRIGHT", frame.Right, -19, 23)
 
 	if width then
 		frame:Width(width)
 	end
 
-	if text then
-		local justifyH = text:GetJustifyH()
-		local right = justifyH == 'RIGHT'
-		local left = justifyH == 'LEFT'
-
-		local a, _, c, d, e = text:GetPoint()
-		text:ClearAllPoints()
-
-		if right then
-			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (right and -3) or 0, 0)
-		elseif left and override then -- for now only on the Communities.StreamDropdown in minimized mode >.>
-			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and 1) or -1, 0)
-		elseif left then
-			text:Point('RIGHT', button or frame.backdrop, 'LEFT', (left and -20) or -1, 0)
-		else
-			text:Point(a, frame.backdrop, c, (left and 10) or d, e-3)
-		end
-
-		text:Width(frame:GetWidth() / 1.4)
-	end
-
+	local FrameName = frame.GetName and frame:GetName()
+	-- We need to check first for frame.Button otherwise it will fail on some elements
+	local button = frame.Button or FrameName and _G[FrameName..'Button']
 	if button then
-		S:HandleNextPrevButton(button)
 		button:ClearAllPoints()
-		button:Point("TOPRIGHT", -14, -8)
-		button:Size(16, 16)
+		button:Point("RIGHT", frame.backdrop)
+		button:SetSize(16, 16)
+		S:HandleNextPrevButton(button)
 	end
 
-	if frame.Icon then
-		frame.Icon:Point('LEFT', 23, 0)
+	local icon = frame.Icon
+	if icon then
+		icon:Point("LEFT", 23, 0)
 	end
 end
 
@@ -687,6 +667,7 @@ local handleCloseButtonOnEnter = function(btn) if btn.Texture then btn.Texture:S
 local handleCloseButtonOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
 
 function S:HandleCloseButton(f, point)
+	assert(f, "doenst exist!")
 	f:StripTextures()
 
 	if not f.Texture then
@@ -1238,7 +1219,7 @@ S.WidgetSkinningFuncs = {
 	[W.DoubleStateIconRow] = "SkinDoubleStateIconRow",
 	[W.TextureAndTextRow] = "SkinTextureAndTextRowWidget",
 	[W.ZoneControl] = "SkinZoneControl",
-	--[W.CaptureZone] = "SkinCaptureZone", -- 8.2.5
+	[W.CaptureZone] = "SkinCaptureZone",
 }
 
 function S:SkinWidgetContainer(widgetContainer)
