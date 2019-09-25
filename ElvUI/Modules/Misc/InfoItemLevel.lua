@@ -120,7 +120,7 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	end
 end
 
-function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors)
+function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors, which)
 	iLevelDB[i] = iLvl
 
 	inspectItem.enchantText:SetText(enchant)
@@ -195,7 +195,7 @@ function M:TryGearAgain(frame, which, i, deepScan, iLevelDB, inspectItem)
 		local iLvl, enchant, gems, essences, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, deepScan)
 		if iLvl == 'tooSoon' then return end
 
-		M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors)
+		M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors, which)
 	end)
 end
 
@@ -217,7 +217,7 @@ function M:UpdatePageInfo(frame, which, guid, event)
 				if not waitForItems then waitForItems = true end
 				M:TryGearAgain(frame, which, i, true, iLevelDB, inspectItem)
 			else
-				M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors)
+				M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors, which)
 			end
 		end
 	end

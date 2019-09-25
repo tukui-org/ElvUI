@@ -2,7 +2,7 @@ local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local C, L = unpack(select(2, ...))
 local A = E:GetModule('Auras')
 
-local format = string.format
+local format = format
 
 -- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs
 

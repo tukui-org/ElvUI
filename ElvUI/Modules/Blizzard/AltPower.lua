@@ -3,8 +3,8 @@ local B = E:GetModule('Blizzard')
 
 --Lua functions
 local _G = _G
-local floor = math.floor
-local format = string.format
+local floor = floor
+local format = format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc

@@ -6,47 +6,20 @@ local _G = _G
 local select = select
 local ipairs, pairs, unpack = ipairs, pairs, unpack
 --WoW API / Variables
+local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local PlayerHasToy = PlayerHasToy
 local hooksecurefunc = hooksecurefunc
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 local GetItemQualityColor = GetItemQualityColor
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
+local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
 
 local function TextColorModified(self, r, g, b)
 	if r == 0.33 and g == 0.27 and b == 0.2 then
 		self:SetTextColor(0.6, 0.6, 0.6)
 	elseif r == 1 and g == 0.82 and b == 0 then
 		self:SetTextColor(1, 1, 1)
-	end
-end
-
-local function SetItemQuality(_, itemFrame)
-	if itemFrame.backdrop then
-		local _, _, quality = GetItemInfo(itemFrame.itemID);
-		local alpha = 1
-
-		if not itemFrame.collected then
-			alpha = 0.4
-		end
-
-		if not quality or quality < 2 then --Not collected or item is white or grey
-			itemFrame.backdrop:SetBackdropBorderColor(0, 0, 0)
-		else
-			itemFrame.backdrop:SetBackdropBorderColor(ITEM_QUALITY_COLORS[quality].r, ITEM_QUALITY_COLORS[quality].g, ITEM_QUALITY_COLORS[quality].b, alpha)
-		end
-	end
-end
-
-local function SkinSetItemButtons(self)
-	for itemFrame in self.DetailsFrame.itemFramesPool:EnumerateActive() do
-		if not itemFrame.isSkinned then
-			S:HandleIcon(itemFrame.Icon, itemFrame)
-			itemFrame.isSkinned = true
-		end
-
-		itemFrame.IconBorder:SetAlpha(0)
-		SetItemQuality(self, itemFrame)
 	end
 end
 
@@ -77,6 +50,8 @@ local function LoadSkin()
 	MountJournal.MountCount:StripTextures()
 
 	S:HandleIcon(MountJournal.MountDisplay.InfoButton.Icon)
+	S:HandleCheckBox(MountJournal.MountDisplay.ModelScene.TogglePlayer)
+	MountJournal.MountDisplay.ModelScene.TogglePlayer:SetSize(22, 22)
 
 	S:HandleButton(_G.MountJournalMountButton, true)
 	S:HandleEditBox(_G.MountJournalSearchBox)
@@ -332,7 +307,6 @@ local function LoadSkin()
 	ToyBox.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, nil, nil, true)
-	S:HandleCloseButton(ToyBox.favoriteHelpBox.CloseButton)
 
 	local progressBar = ToyBox.progressBar
 	progressBar.border:Hide()
@@ -378,7 +352,6 @@ local function LoadSkin()
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
 	S:HandleDropDownBox(_G.HeirloomsJournalClassDropDown)
-	S:HandleCloseButton(HeirloomsJournal.UpgradeLevelHelpBox.CloseButton)
 
 	progressBar = HeirloomsJournal.progressBar -- swap local variable
 	progressBar.border:Hide()
@@ -454,10 +427,13 @@ local function LoadSkin()
 		if Frame.Models then
 			for _, Model in pairs(Frame.Models) do
 				Model:SetFrameLevel(Model:GetFrameLevel() + 1)
-				Model:CreateBackdrop()
-				Model.backdrop:SetOutside(Model, 2, 2)
-				Model.Border:Kill()
+				Model.Border:SetAlpha(0)
 				Model.TransmogStateTexture:SetAlpha(0)
+
+				local bg = CreateFrame("Frame", nil, Model)
+				bg:SetAllPoints()
+				bg:CreateBackdrop()
+				bg.backdrop:SetOutside(Model, 2, 2)
 
 				hooksecurefunc(Model.Border, 'SetAtlas', function(_, texture)
 					local r, g, b
@@ -468,7 +444,7 @@ local function LoadSkin()
 					else
 						r, g, b = unpack(E.media.bordercolor)
 					end
-					Model.backdrop:SetBackdropBorderColor(r, g, b)
+					bg.backdrop:SetBackdropBorderColor(r, g, b)
 				end)
 			end
 		end
@@ -493,30 +469,45 @@ local function LoadSkin()
 	end
 
 	--Sets
-	WardrobeCollectionFrame.SetsCollectionFrame.RightInset:StripTextures()
-	WardrobeCollectionFrame.SetsCollectionFrame:SetTemplate("Transparent")
-	WardrobeCollectionFrame.SetsCollectionFrame.LeftInset:StripTextures()
-	WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.Name:FontTemplate(nil, 16)
-	WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.LongName:FontTemplate(nil, 16)
-	S:HandleButton(WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton)
-	S:HandleScrollBar(WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.scrollBar)
-	S:HandleCloseButton(WardrobeCollectionFrame.SetsTabHelpBox.CloseButton)
-	S:HandleCloseButton(WardrobeCollectionFrame.ItemsCollectionFrame.HelpBox.CloseButton)
+	local SetsCollectionFrame = WardrobeCollectionFrame.SetsCollectionFrame
+	SetsCollectionFrame.RightInset:StripTextures()
+	SetsCollectionFrame:SetTemplate("Transparent")
+	SetsCollectionFrame.LeftInset:StripTextures()
+	--S:HandleCloseButton(WardrobeCollectionFrame.SetsTabHelpBox.CloseButton)
+	--S:HandleCloseButton(WardrobeCollectionFrame.ItemsCollectionFrame.HelpBox.CloseButton)
 
-	--Skin set buttons
-	for i = 1, #WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons do
-		local b = WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons[i];
-		S:HandleItemButton(b)
-		b.Favorite:SetAtlas("PetJournal-FavoritesIcon", true)
-		b.Favorite:Point("TOPLEFT", b.Icon, "TOPLEFT", -8, 8)
-		b.SelectedTexture:SetColorTexture(1, 1, 1, 0.1)
+	local ScrollFrame = SetsCollectionFrame.ScrollFrame
+	S:HandleScrollBar(ScrollFrame.scrollBar)
+	for i = 1, #ScrollFrame.buttons do
+		local bu = ScrollFrame.buttons[i]
+		S:HandleItemButton(bu)
+		bu.Favorite:SetAtlas("PetJournal-FavoritesIcon", true)
+		bu.Favorite:Point("TOPLEFT", bu.Icon, "TOPLEFT", -8, 8)
+		bu.SelectedTexture:SetColorTexture(1, 1, 1, 0.1)
 	end
 
-	--Set quality color on set item buttons
-	hooksecurefunc(WardrobeCollectionFrame.SetsCollectionFrame, "SetItemFrameQuality", SetItemQuality)
+	-- DetailsFrame
+	local DetailsFrame = SetsCollectionFrame.DetailsFrame
+	DetailsFrame.Name:FontTemplate(nil, 16)
+	DetailsFrame.LongName:FontTemplate(nil, 16)
+	S:HandleButton(DetailsFrame.VariantSetsButton)
 
-	--Skin set item buttons
-	hooksecurefunc(WardrobeCollectionFrame.SetsCollectionFrame, "DisplaySet", SkinSetItemButtons)
+	hooksecurefunc(SetsCollectionFrame, "SetItemFrameQuality", function(_, itemFrame)
+		local icon = itemFrame.Icon
+		if not icon.backdrop then
+			icon:CreateBackdrop()
+			icon:SetTexCoord(unpack(E.TexCoords))
+			itemFrame.IconBorder:Hide()
+		end
+
+		if itemFrame.collected then
+			local quality = C_TransmogCollection_GetSourceInfo(itemFrame.sourceID).quality
+			local color = BAG_ITEM_QUALITY_COLORS[quality or 1]
+			icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+		else
+			icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
+	end)
 
 	-- Transmogrify NPC
 	local WardrobeFrame = _G.WardrobeFrame
@@ -556,14 +547,6 @@ local function LoadSkin()
 	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate("Transparent")
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton)
-
-	-- Taken from AddOnSkins
-	for i = 1, 2 do
-		for j = 1, 4 do
-			WardrobeCollectionFrame.SetsTransmogFrame["ModelR"..i.."C"..j]:StripTextures()
-			WardrobeCollectionFrame.SetsTransmogFrame["ModelR"..i.."C"..j]:CreateBackdrop()
-		end
-	end
 
 	-- Outfit Edit Frame
 	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame

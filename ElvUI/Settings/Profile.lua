@@ -975,7 +975,7 @@ P.nameplates = {
 			},
 			name = {
 				enable = true,
-				format = '[namecolor][name:abbrev]',
+				format = '[namecolor][name:abbrev:long]',
 				position = 'TOPLEFT',
 				parent = 'Nameplate',
 				xOffset = 0,
@@ -4873,6 +4873,8 @@ P.actionbar = {
 	noPowerColor = { r = 0.5, g = 0.5, b = 1 },
 	usableColor = { r = 1, g = 1, b = 1 },
 	notUsableColor = { r = 0.4, g = 0.4, b = 0.4 },
+
+	flashAnimation = false,
 
 	keyDown = true,
 	movementModifier = 'SHIFT',

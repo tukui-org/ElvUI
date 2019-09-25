@@ -273,14 +273,22 @@ local function LoadSkin(event)
 	_G.AchievementFrameGuildEmblemLeft:Kill()
 
 	S:HandleCloseButton(_G.AchievementFrameCloseButton, AchievementFrame.backdrop)
-	S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
+
 	S:HandleEditBox(AchievementFrame.searchBox)
 	AchievementFrame.searchBox.backdrop:Point("TOPLEFT", AchievementFrame.searchBox, "TOPLEFT", -5, -5)
 	AchievementFrame.searchBox.backdrop:Point("BOTTOMRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 0, 5)
 	AchievementFrame.searchBox:ClearAllPoints()
 	AchievementFrame.searchBox:Point("BOTTOMRIGHT", _G.AchievementFrameAchievementsContainer, "TOPRIGHT", -2, 0)
-	_G.AchievementFrameFilterDropDown:ClearAllPoints()
-	_G.AchievementFrameFilterDropDown:Point("RIGHT", AchievementFrame.searchBox.backdrop, "LEFT", 2, -3)
+
+	hooksecurefunc("AchievementFrameCategories_SelectButton", function(button)
+		local id = button.element.id
+
+		if id ~= "summary" then
+			_G.AchievementFrameFilterDropDown:ClearAllPoints()
+			_G.AchievementFrameFilterDropDown:Point("RIGHT", AchievementFrame.searchBox.backdrop, "LEFT", 2, -3)
+			S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
+		end
+	end)
 
 	-- ScrollBars
 	S:HandleScrollBar(_G.AchievementFrameCategoriesContainerScrollBar, 5)

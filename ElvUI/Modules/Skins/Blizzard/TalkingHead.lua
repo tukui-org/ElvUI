@@ -50,7 +50,7 @@ function TestTalkingHead()
 	isNewTalkingHead = true
 	textureKitID = 0
 
-	local textFormatted = string.format(text);
+	local textFormatted = format(text);
 	if ( displayInfo and displayInfo ~= 0 ) then
 		local textureKit;
 		if ( textureKitID ~= 0 ) then

@@ -182,6 +182,7 @@ L["BottomRightMiniPanel"] = "小地图右下内侧"
 L["BoU"] = "使用后绑定"
 L["Buff Indicator"] = "增益指示器"
 L["Buffs"] = "增益光环"
+L["Button Flash"] = true
 L["Button Size (Bag)"] = "背包格子尺寸"
 L["Button Size (Bank)"] = "银行格子尺寸"
 L["Button Size"] = "按钮大小"
@@ -1314,6 +1315,7 @@ L["Unlock various elements of the UI to be repositioned."] = "解锁界面上的
 L["Up"] = "上"
 L["URL Links"] = "网址链接"
 L["Usable"] = "可用"
+L["Use a more visible flash animation for Auto Attacks."] = true
 L["Use Alt Key"] = "聊天历史Alt键"
 L["Use Atlas Textures if there is one available."] = true
 L["Use Atlas Textures"] = true
@@ -1486,7 +1488,7 @@ L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 'name:long' - 姓名显示限制于20字节内
 'name:short:translit' - Name restricted to 10 characters with transliteration
 
-空白则为禁用. 如需技术支持请至https://www.tukui.org/forum/viewtopic.php?t=6]=]
+空白则为禁用. 如需技术支持请至https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
 

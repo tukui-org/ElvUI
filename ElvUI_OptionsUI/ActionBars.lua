@@ -152,8 +152,18 @@ local function BuildABConfig()
 					E:StaticPopup_Show("PRIVATE_RL")
 				end,
 			},
-			movementModifier = {
+			flashAnimation = {
 				order = 15,
+				type = "toggle",
+				name = L["Button Flash"],
+				desc = L["Use a more visible flash animation for Auto Attacks."],
+				set = function(info, value)
+					E.db.actionbar.flashAnimation = value
+					E:StaticPopup_Show("PRIVATE_RL")
+				end,
+			},
+			movementModifier = {
+				order = 16,
 				type = 'select',
 				name = L["PICKUP_ACTION_KEY_TEXT"],
 				desc = L["The button you must hold down in order to drag an ability to another action button."],
@@ -166,7 +176,7 @@ local function BuildABConfig()
 				},
 			},
 			globalFadeAlpha = {
-				order = 16,
+				order = 17,
 				type = 'range',
 				name = L["Global Fade Transparency"],
 				desc = L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."],
@@ -175,14 +185,14 @@ local function BuildABConfig()
 				set = function(info, value) E.db.actionbar[info[#info]] = value; AB.fadeParent:SetAlpha(1-value) end,
 			},
 			equippedItem = {
-				order = 17,
+				order = 18,
 				type = "toggle",
 				name = L["Equipped Item"],
 				get = function(info) return E.db.actionbar[info[#info]] end,
 				set = function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end
 			},
 			equippedItemColor = {
-				order = 18,
+				order = 19,
 				type = "color",
 				name = L["Equipped Item Color"],
 				get = function(info)

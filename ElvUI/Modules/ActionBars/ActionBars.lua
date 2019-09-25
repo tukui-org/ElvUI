@@ -171,7 +171,7 @@ function AB:PositionAndSizeBar(barName)
 	end
 
 	local button, lastButton, lastColumnButton
-	for i=1, NUM_ACTIONBAR_BUTTONS do
+	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		button = bar.buttons[i]
 		lastButton = bar.buttons[i-1]
 		lastColumnButton = bar.buttons[i-buttonsPerRow]
@@ -281,7 +281,7 @@ function AB:CreateBar(id)
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
-	for i=1, 12 do
+	for i = 1, 12 do
 		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName().."Button%d", i), bar, nil)
 		bar.buttons[i]:SetState(0, "action", i)
 		for k = 1, 14 do
@@ -575,7 +575,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	button.useMasque = useMasque
 	button.ignoreNormal = ignoreNormal
 
-	if flash then flash:SetTexture() end
 	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0) end
 	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0) end
 	if border and not button.useMasque then border:Kill() end
@@ -597,6 +596,17 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	if not button.noBackdrop and not button.backdrop and not button.useMasque then
 		button:CreateBackdrop(self.db.transparent and 'Transparent', true)
 		button.backdrop:SetAllPoints()
+	end
+
+	if flash then
+		if self.db.flashAnimation then
+			flash:SetColorTexture(1.0, 0.2, 0.2, 0.45)
+			flash:ClearAllPoints()
+			flash:SetOutside(icon, 2, 2)
+			flash:SetDrawLayer("BACKGROUND", -1)
+		else
+			flash:SetTexture()
+		end
 	end
 
 	if icon then

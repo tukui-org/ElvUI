@@ -84,7 +84,7 @@ local function LoadSkin()
 		bu.SelectedTexture:SetInside()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
-		reward:StripTextures()
+		reward.Border:Hide()
 		S:HandleIcon(reward.Icon, true)
 
 		reward.EnlistmentBonus:StripTextures()
@@ -148,7 +148,7 @@ local function LoadSkin()
 		bu.SelectedTexture:SetInside()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
-		reward:StripTextures()
+		reward.Border:Hide()
 		S:HandleIcon(reward.Icon, true)
 	end
 

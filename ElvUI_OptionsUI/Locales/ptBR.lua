@@ -182,6 +182,7 @@ L["BottomRightMiniPanel"] = "Minimap BottomRight (Inside)"
 L["BoU"] = true
 L["Buff Indicator"] = "Indicador de Bônus"
 L["Buffs"] = "Bônus"
+L["Button Flash"] = true
 L["Button Size (Bag)"] = "Tamanho do Botão (Bolsas)"
 L["Button Size (Bank)"] = "Tamanho do Botão (Banco)"
 L["Button Size"] = "Tamanho do botão"
@@ -1314,6 +1315,7 @@ L["Unlock various elements of the UI to be repositioned."] = "Destravar vários 
 L["Up"] = "Acima"
 L["URL Links"] = "Links URL"
 L["Usable"] = true
+L["Use a more visible flash animation for Auto Attacks."] = true
 L["Use Alt Key"] = true
 L["Use Atlas Textures if there is one available."] = true
 L["Use Atlas Textures"] = true
@@ -1479,7 +1481,7 @@ Formato de Nomes:
 'name:long' - Nome restringido a 20 caracteres
 'name:short:translit' - Name restricted to 10 characters with transliteration
 
-Para desactivar deixe o espaço em branco, se precisar de mais informações visite o site https://www.tukui.org/forum/viewtopic.php?t=6]=]
+Para desactivar deixe o espaço em branco, se precisar de mais informações visite o site https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
 Example: '[combat] 2;']=] ] = [=[Isto funciona como uma macro, você pode executar várias situações para que a barra de ação pagine de forma diferente.

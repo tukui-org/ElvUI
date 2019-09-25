@@ -2,9 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
 --Lua functions
 local unpack = unpack
-local strlower = string.lower
---WoW API / Variables
-local IsPlayerSpell = IsPlayerSpell
 
 local function Defaults(priorityOverride)
 	return {
@@ -343,6 +340,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[211048] = Defaults(), -- Chaos Blades
 		[162264] = Defaults(), -- Metamorphosis
 		[205629] = Defaults(), -- Demonic Trample
+		[206649] = Defaults(), -- Eye of Leotheras
 	-- Druid
 		[102342] = Defaults(), -- Ironbark
 		[61336]  = Defaults(), -- Survival Instincts
@@ -1235,6 +1233,7 @@ G.unitframe.ChannelTicks = {
 	[64843]  = 4, -- Divine Hymn
 	[15407]  = 4, -- Mind Flay
 	[48045] = 5, -- Mind Sear
+	[47757] = 5, -- Penance (it seems, that this spell have on own ID for channeling. Its not the actual spell itself)
 	-- Mage
 	[5143]   = 5,  -- Arcane Missiles
 	[12051]  = 3,  -- Evocation
@@ -1242,16 +1241,6 @@ G.unitframe.ChannelTicks = {
 	--Druid
 	[740]    = 4, -- Tranquility
 }
-
-local f = CreateFrame("Frame")
-f:RegisterEvent("PLAYER_ENTERING_WORLD")
-f:RegisterEvent("PLAYER_TALENT_UPDATE")
-f:SetScript("OnEvent", function()
-	if strlower(E.myclass) ~= "priest" then return end
-
-	local penanceTicks = IsPlayerSpell(193134) and 4 or 3
-	E.global.unitframe.ChannelTicks[47540] = penanceTicks --Penance
-end)
 
 G.unitframe.ChannelTicksSize = {
 	-- Warlock

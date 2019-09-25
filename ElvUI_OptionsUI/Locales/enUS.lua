@@ -184,6 +184,7 @@ L["BottomRightMiniPanel"] = "Minimap BottomRight (Inside)"
 L["BoU"] = true
 L["Buff Indicator"] = true
 L["Buffs"] = true
+L["Button Flash"] = true
 L["Button Size (Bag)"] = true
 L["Button Size (Bank)"] = true
 L["Button Size"] = true
@@ -1317,6 +1318,7 @@ L["Unlock various elements of the UI to be repositioned."] = true
 L["Up"] = true
 L["URL Links"] = true
 L["Usable"] = true
+L["Use a more visible flash animation for Auto Attacks."] = true
 L["Use Alt Key"] = true
 L["Use Atlas Textures if there is one available."] = true
 L["Use Atlas Textures"] = true
@@ -1482,7 +1484,7 @@ Name Formats:
 'name:long' - Name restricted to 20 characters
 'name:short:translit' - Name restricted to 10 characters with transliteration
 
-To disable leave the field blank, if you need more information visit https://www.tukui.org/forum/viewtopic.php?t=6]=]
+To disable leave the field blank, if you need more information visit https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = true

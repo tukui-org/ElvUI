@@ -182,6 +182,7 @@ L["BottomRightMiniPanel"] = "Миникарта снизу справа (вну�
 L["BoU"] = "ПпИ"
 L["Buff Indicator"] = "Индикатор баффов"
 L["Buffs"] = "Баффы"
+L["Button Flash"] = true
 L["Button Size (Bag)"] = "Размер слотов сумок"
 L["Button Size (Bank)"] = "Размер слотов банка"
 L["Button Size"] = "Размер кнопок"
@@ -1313,6 +1314,7 @@ L["Unlock various elements of the UI to be repositioned."] = "Разблокир
 L["Up"] = "Вверх"
 L["URL Links"] = "Интернет-ссылки"
 L["Usable"] = "Можно использовать"
+L["Use a more visible flash animation for Auto Attacks."] = true
 L["Use Alt Key"] = "Использовать Alt"
 L["Use Atlas Textures if there is one available."] = "Использовать текстуры атласа, если таковые доступны."
 L["Use Atlas Textures"] = "Использовать текстуры атласа"
@@ -1476,7 +1478,7 @@ L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида те�
 "name:long" - Имя с ограничением длины в 20 символов
 "name:short:translit" - Name restricted to 10 characters with transliteration
 
-Для отключения оставьте поле пустым, для дополнительной информации посетите https://www.tukui.org/forum/viewtopic.php?t=6]=]
+Для отключения оставьте поле пустым, для дополнительной информации посетите https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Работает как макрос. Вы можете задать различные условия для отображения разных панелей.

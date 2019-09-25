@@ -183,6 +183,7 @@ L["BottomRightMiniPanel"] = "Minimap Untenrechts (Innen)"
 L["BoU"] = true --No need to translate
 L["Buff Indicator"] = "Buff Indikator"
 L["Buffs"] = "Stärkungszauber"
+L["Button Flash"] = "Tasten Blinken"
 L["Button Size (Bag)"] = "Tasten Größe (Tasche)"
 L["Button Size (Bank)"] = "Tasten Größe (Bank)"
 L["Button Size"] = "Größe der Tasten"
@@ -1317,6 +1318,7 @@ L["Unlock various elements of the UI to be repositioned."] = "Schalte verschiede
 L["Up"] = "Hinauf"
 L["URL Links"] = "URL Links"
 L["Usable"] = "Nutzbar"
+L["Use a more visible flash animation for Auto Attacks."] = "Benutzt eine mehr sichtbare blinkende animation für Auto Attacken."
 L["Use Alt Key"] = "Benutze Alt-Taste"
 L["Use Atlas Textures if there is one available."] = "Benutze Atlas Textur wenn eine verfügbar ist."
 L["Use Atlas Textures"] = "Benutze Atlas Textur"
@@ -1481,7 +1483,7 @@ Namensformate:
 'name:long' - Name auf 20 Zeichen beschränkt
 'name:short:translit' - Name restricted to 10 characters with transliteration
 
-Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche https://www.tukui.org/forum/viewtopic.php?t=6]=]
+Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu wechseln.

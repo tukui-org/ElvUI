@@ -221,7 +221,7 @@ function RU:Initialize()
 		local point = self:GetPoint()
 		local raidUtilPoint, closeButtonPoint, yOffset
 
-		if string.find(point, "BOTTOM") then
+		if strfind(point, "BOTTOM") then
 			raidUtilPoint = "BOTTOM"
 			closeButtonPoint = "TOP"
 			yOffset = 1

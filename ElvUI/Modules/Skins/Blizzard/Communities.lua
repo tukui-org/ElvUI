@@ -29,6 +29,20 @@ local function UpdateNames(self)
 	end
 end
 
+local function HandleRoleChecks(button, ...)
+	button:StripTextures()
+	button:DisableDrawLayer("ARTWORK")
+	button:DisableDrawLayer("OVERLAY")
+
+	button.bg = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
+	button.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	button.bg:SetTexCoord(...)
+	button.bg:Point("CENTER")
+	button.bg:Size(40)
+	button.bg:SetAlpha(0.6)
+	S:HandleCheckBox(button.CheckBox)
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Communities ~= true then return end
 
@@ -47,6 +61,7 @@ local function LoadSkin()
 	CommunitiesFrameCommunitiesList.BottomFiligree:Hide()
 	_G.CommunitiesFrameCommunitiesListListScrollFrame:StripTextures()
 
+	-- Needs probably an update for 8.2.5
 	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo, isInvitation, isTicket)
 		if clubInfo then
 			self.Background:Hide()
@@ -134,7 +149,7 @@ local function LoadSkin()
 
 	S:HandleButton(CommunitiesFrame.InviteButton)
 	CommunitiesFrame.AddToChatButton:ClearAllPoints()
-	CommunitiesFrame.AddToChatButton:Point("BOTTOM", CommunitiesFrame.ChatEditBox, "BOTTOMRIGHT", -5, -30) -- needs probably adjustment
+	CommunitiesFrame.AddToChatButton:Point("BOTTOM", CommunitiesFrame.ChatEditBox, "BOTTOMRIGHT", -5, -30)
 	S:HandleButton(CommunitiesFrame.AddToChatButton)
 
 	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
@@ -142,7 +157,7 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
 
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
-	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu, nil, true) -- use an override here to adjust the damn text position >.>
+	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
 
 	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, "SetFilter", function(self)
 		self.ShowNotificationsButton:SetSize(20, 20)
@@ -151,7 +166,7 @@ local function LoadSkin()
 		S:HandleCheckBox(self.HideNotificationsButton)
 	end)
 
-	-- [[ CHAT TAB ]]
+	-- Chat Tab
 	CommunitiesFrame.MemberList:StripTextures()
 	CommunitiesFrame.MemberList.InsetFrame:Hide()
 	CommunitiesFrame.MemberList.WatermarkFrame:Hide()
@@ -162,18 +177,101 @@ local function LoadSkin()
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
 
-	-- GuildFinder Frame
-	CommunitiesFrame.GuildFinderFrame:StripTextures()
-	S:HandleButton(CommunitiesFrame.GuildFinderFrame.FindAGuildButton)
-	--S:HandleDropDownBox(CommunitiesFrame.GuildFinderFrame.OptionsList.ClubFocusDropdown)
-	--S:HandleDropDownBox(CommunitiesFrame.GuildFinderFrame.OptionsList.ClubSizeDropdown)
+	-- [[ GUILDFINDER FRAME ]]--
+	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
+	ClubFinderGuildFinderFrame:StripTextures()
 
-	--S:HandleEditBox(CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox)
-	--CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
-	--CommunitiesFrame.GuildFinderFrame.OptionsList.Search:ClearAllPoints()
-	--CommunitiesFrame.GuildFinderFrame.OptionsList.Search:SetPoint("TOP", CommunitiesFrame.GuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 0, -3)
-	--S:HandleButton(CommunitiesFrame.GuildFinderFrame.OptionsList.Search)
-	--S:HandleButton(CommunitiesFrame.GuildFinderFrame.PendingClubs)
+	S:HandleNextPrevButton(ClubFinderGuildFinderFrame.GuildCards.PreviousPage)
+	S:HandleNextPrevButton(ClubFinderGuildFinderFrame.GuildCards.NextPage)
+
+	-->> Monitor this
+	for _, card in pairs(ClubFinderGuildFinderFrame.GuildCards.Cards, ClubFinderGuildFinderFrame.PendingGuildCards.Cards) do
+		if not card.isSkinned then
+			card.CardBackground:Hide()
+			card:CreateBackdrop()
+			card.GuildBannerEmblemLogo:SetDrawLayer("OVERLAY")
+			S:HandleButton(card.RequestJoin)
+			card.isSkinned = true
+		end
+	end
+
+	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubFocusDropdown)
+	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown)
+
+	ClubFinderGuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
+	ClubFinderGuildFinderFrame.OptionsList.Search:SetSize(118, 20)
+	ClubFinderGuildFinderFrame.OptionsList.Search:ClearAllPoints()
+	ClubFinderGuildFinderFrame.OptionsList.Search:Point("TOP", ClubFinderGuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 1, -3)
+	S:HandleEditBox(ClubFinderGuildFinderFrame.OptionsList.SearchBox)
+	S:HandleButton(ClubFinderGuildFinderFrame.OptionsList.Search)
+
+	HandleRoleChecks(ClubFinderGuildFinderFrame.OptionsList.TankRoleFrame, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+	HandleRoleChecks(ClubFinderGuildFinderFrame.OptionsList.HealerRoleFrame, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	HandleRoleChecks(ClubFinderGuildFinderFrame.OptionsList.DpsRoleFrame, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+
+	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderSearchTab)
+	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderPendingTab)
+
+	-- [[ClubFinderCommunityAndGuildFinderFrame ]]--
+	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
+	ClubFinderCommunityAndGuildFinderFrame:StripTextures()
+
+	-->> Monitor this
+	for _, button in pairs(ClubFinderCommunityAndGuildFinderFrame.CommunityCards.ListScrollFrame.buttons, ClubFinderCommunityAndGuildFinderFrame.PendingCommunityCards.ListScrollFrame.buttons) do
+		if not button.isSkinned then
+			button.CircleMask:Hide()
+			button.LogoBorder:Hide()
+			S:HandleIcon(button.CommunityLogo)
+			S:HandleButton(button)
+
+			button.isSkinned = true
+		end
+	end
+
+	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.ClubFocusDropdown)
+	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SortByDropdown)
+
+	S:HandleButton(ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search)
+	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:ClearAllPoints()
+	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:Point("TOP", ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 1, -3)
+	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:SetSize(118, 20)
+	ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
+	S:HandleEditBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox)
+
+	HandleRoleChecks(ClubFinderCommunityAndGuildFinderFrame.OptionsList.TankRoleFrame, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+	HandleRoleChecks(ClubFinderCommunityAndGuildFinderFrame.OptionsList.HealerRoleFrame, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	HandleRoleChecks(ClubFinderCommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+
+	S:HandleScrollBar(ClubFinderCommunityAndGuildFinderFrame.CommunityCards.ListScrollFrame.scrollBar)
+	S:HandleScrollBar(ClubFinderCommunityAndGuildFinderFrame.PendingCommunityCards.ListScrollFrame.scrollBar)
+
+	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderSearchTab)
+	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderPendingTab)
+
+	for _, t in ipairs({ClubFinderGuildFinderFrame.RequestToJoinFrame, ClubFinderCommunityAndGuildFinderFrame.RequestToJoinFrame}) do
+		t:StripTextures()
+		t:CreateBackdrop("Transparent")
+
+		hooksecurefunc(t, 'Initialize', function(self)
+			for button in self.SpecsPool:EnumerateActive() do
+				if button.CheckBox then
+					S:HandleCheckBox(button.CheckBox)
+					button.CheckBox:SetSize(26, 26)
+				end
+			end
+		end)
+
+		t.MessageFrame:StripTextures(true)
+		t.MessageFrame.MessageScroll:StripTextures(true)
+
+		-- Needs much love
+		S:HandleEditBox(t.MessageFrame.MessageScroll.EditBox)
+		t.MessageFrame.MessageScroll.EditBox:Size(500, 500)
+
+		S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
+		S:HandleButton(t.Apply)
+		S:HandleButton(t.Cancel)
+	end
 
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
@@ -184,6 +282,7 @@ local function LoadSkin()
 	S:HandleCloseButton(CommunitiesFrame.GuildMemberDetailFrame.CloseButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.RemoveButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.GroupInviteButton)
+
 	local DropDown = CommunitiesFrame.GuildMemberDetailFrame.RankDropdown
 	S:HandleDropDownBox(DropDown, 160)
 	DropDown.backdrop:Point("TOPLEFT", 0, -6)
@@ -388,6 +487,12 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoScrollBar)
 	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
+
+	local BossModel = _G.CommunitiesFrameGuildDetailsFrameNews.BossModel
+	BossModel:StripTextures()
+	BossModel.TextFrame:StripTextures()
+	BossModel:SetTemplate("Transparent")
+	BossModel.TextFrame:SetTemplate("Transparent")
 
 	-- Filters Frame
 	local FiltersFrame = _G.CommunitiesGuildNewsFiltersFrame
