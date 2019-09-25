@@ -5,10 +5,13 @@
 
 **Bug Fixes:**  
 Fixed an error 'BackpackTokenFrameTokenIcon:SetPoint()', if our Bags are disabled.  
+Fixed some skin errors.  
 
 **Misc. Changes:**  
 Updated Quest skin.  
 Updated Communities skin.  
+Added back the tag: 'name:abbrev'  
+Removed our clipping for UI Scale. Blizzard seems to fix Pixel Perfect with 8.2.5  
 
 ___
 ### Version 11.23 [ September 24th 2019 ]
