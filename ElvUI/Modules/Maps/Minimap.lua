@@ -381,6 +381,15 @@ local function MinimapPostDrag()
 	_G.MinimapBackdrop:SetAllPoints(_G.Minimap)
 end
 
+function M:GetMinimapShape()
+	--Support for other mods
+	if E.private.general.minimap.enable then
+		function GetMinimapShape()
+			return 'SQUARE'
+		end
+	end
+end
+
 function M:Initialize()
 	menuFrame:SetTemplate("Transparent", true)
 
@@ -390,11 +399,6 @@ function M:Initialize()
 	end
 
 	self.Initialized = true
-
-	--Support for other mods
-	function GetMinimapShape()
-		return 'SQUARE'
-	end
 
 	local Minimap = _G.Minimap
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
