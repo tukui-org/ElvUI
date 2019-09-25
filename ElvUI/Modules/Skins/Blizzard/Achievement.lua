@@ -285,8 +285,15 @@ local function LoadSkin(event)
 
 		if id ~= "summary" then
 			_G.AchievementFrameFilterDropDown:ClearAllPoints()
-			_G.AchievementFrameFilterDropDown:Point("RIGHT", AchievementFrame.searchBox.backdrop, "LEFT", 2, -3)
+			_G.AchievementFrameFilterDropDown:SetPoint("RIGHT", AchievementFrame.searchBox.backdrop, "LEFT", 2, -3)
 			S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
+			_G.AchievementFrameFilterDropDownButton:SetSize(12, 12)
+
+			-- Fucking text
+			if _G.AchievementFrameFilterDropDownText then
+				_G.AchievementFrameFilterDropDownText:ClearAllPoints()
+				_G.AchievementFrameFilterDropDownText:SetPoint("RIGHT", _G.AchievementFrameFilterDropDown.backdrop, "LEFT", 25, 0)
+			end
 		end
 	end)
 
