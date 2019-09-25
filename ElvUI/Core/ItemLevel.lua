@@ -87,7 +87,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	end
 
 	E.ScanTooltip:Hide()
-	return iLvl, enchantText, deepScan and gems, deepScan and essences, enchantColors, itemLevelColors,  deepScan and fullEnchantText
+	return iLvl, enchantText, deepScan and gems, deepScan and essences, enchantColors, itemLevelColors, fullEnchantText
 end
 
 --Credit ls & Acidweb
