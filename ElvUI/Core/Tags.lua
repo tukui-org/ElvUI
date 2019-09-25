@@ -8,7 +8,7 @@ local translitMark = "!"
 local _G = _G
 local unpack, pairs, wipe, floor = unpack, pairs, wipe, floor
 local gmatch, gsub, format, select = gmatch, gsub, format, select
-local strfind, strmatch, utf8lower, utf8sub = strfind, strmatch, string.utf8lower, string.utf8sub
+local strfind, strmatch, strlower, utf8lower, utf8sub = strfind, strmatch, strlower, string.utf8lower, string.utf8sub
 --WoW API / Variables
 local GetCVarBool = GetCVarBool
 local GetGuildInfo = GetGuildInfo
@@ -57,6 +57,7 @@ local UnitPowerType = UnitPowerType
 local UnitPVPName = UnitPVPName
 local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
+local CreateAtlasMarkup = CreateAtlasMarkup
 
 local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
@@ -264,6 +265,17 @@ ElvUF.Tags.Methods['healthcolor'] = function(unit)
 		local r, g, b = ElvUF:ColorGradient(UnitHealth(unit), UnitHealthMax(unit), 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
 		return Hex(r, g, b)
 	end
+end
+
+ElvUF.Tags.Events['name:abbrev'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['name:abbrev'] = function(unit)
+	local name = UnitName(unit)
+
+	if name and strfind(name, '%s') then
+		name = abbrev(name)
+	end
+
+	return name ~= nil and name or ''
 end
 
 for textFormat in pairs(E.GetFormattedTextStyles) do
@@ -681,7 +693,6 @@ end
 
 local GroupUnits = {}
 local f = CreateFrame("Frame")
-
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:SetScript("OnEvent", function()
 	local groupType, groupSize
