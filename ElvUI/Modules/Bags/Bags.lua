@@ -396,6 +396,7 @@ function B:UpgradeCheck_OnUpdate(elapsed)
 	self.timeSinceUpgradeCheck = (self.timeSinceUpgradeCheck or 0) + elapsed
 	if self.timeSinceUpgradeCheck >= ITEM_UPGRADE_CHECK_TIME then
 		B:UpdateItemUpgradeIcon(self)
+		self.timeSinceUpgradeCheck = 0
 	end
 end
 
