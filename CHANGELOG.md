@@ -21,7 +21,7 @@ Added an overlay alpha option for UnitFrames overlayed portraits.
 Fixed a bug where nameplate threat scale wasn't being reset on new units that no threat existed on.  
 Fixed a Style Filter error: Attempt to compare nil with number.  
 Fixed an error in Petition Skin.  
-Fixed black Quest Text if Parchment Reomver is enabled. (#1444)  
+Fixed black Quest Text if Parchment Remover is enabled. (#1444)  
 Fixed Penance spellID for castbar ticks.  
 
 **Misc. Changes:**  
