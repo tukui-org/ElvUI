@@ -69,10 +69,6 @@ function E:PixelBestSize()
 	return max(0.4, min(1.15, 768 / E.screenheight))
 end
 
-function E:PixelClip(num)
-	return tonumber(format('%.5f', num))
-end
-
 function E:PixelScaleChanged(event, skip)
 	E:UIScale(true) -- repopulate variables
 	E:UIScale() -- setup the scale
