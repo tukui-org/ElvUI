@@ -25,7 +25,7 @@
 -- @class file
 -- @name AceGUI-3.0
 -- @release $Id$
-local ACEGUI_MAJOR, ACEGUI_MINOR = "AceGUI-3.0", 39
+local ACEGUI_MAJOR, ACEGUI_MINOR = "AceGUI-3.0", 40
 local AceGUI, oldminor = LibStub:NewLibrary(ACEGUI_MAJOR, ACEGUI_MINOR)
 
 if not AceGUI then return end -- No upgrade needed
@@ -176,6 +176,8 @@ end
 -- If this widget is a Container-Widget, all of its Child-Widgets will be releases as well.
 -- @param widget The widget to release
 function AceGUI:Release(widget)
+	if widget.isQueuedForRelease then return end
+	widget.isQueuedForRelease = true
 	safecall(widget.PauseLayout, widget)
 	widget.frame:Hide()
 	widget:Fire("OnRelease")
@@ -206,6 +208,7 @@ function AceGUI:Release(widget)
 		widget.content.width = nil
 		widget.content.height = nil
 	end
+	widget.isQueuedForRelease = nil
 	delWidget(widget, widget.type)
 end
 
