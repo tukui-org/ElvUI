@@ -473,8 +473,6 @@ local function LoadSkin()
 	SetsCollectionFrame.RightInset:StripTextures()
 	SetsCollectionFrame:SetTemplate("Transparent")
 	SetsCollectionFrame.LeftInset:StripTextures()
-	--S:HandleCloseButton(WardrobeCollectionFrame.SetsTabHelpBox.CloseButton)
-	--S:HandleCloseButton(WardrobeCollectionFrame.ItemsCollectionFrame.HelpBox.CloseButton)
 
 	local ScrollFrame = SetsCollectionFrame.ScrollFrame
 	S:HandleScrollBar(ScrollFrame.scrollBar)

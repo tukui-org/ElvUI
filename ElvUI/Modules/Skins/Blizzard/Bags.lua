@@ -235,8 +235,6 @@ local function LoadSkin()
 		end
 	end)
 
-	_G.BagHelpBox:Kill()
-
 	local BagItemSearchBox = _G.BagItemSearchBox
 	S:HandleEditBox(BagItemSearchBox)
 	BagItemSearchBox:Height(BagItemSearchBox:GetHeight() - 5)

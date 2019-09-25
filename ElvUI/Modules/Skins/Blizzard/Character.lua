@@ -459,9 +459,6 @@ local function LoadSkin()
 	--Buttons used to toggle between equipment manager, titles, and character stats
 	hooksecurefunc("PaperDollFrame_UpdateSidebarTabs", FixSidebarTabCoords)
 
-	--Reputation
-	S:HandleCloseButton(CharacterFrame.ReputationTabHelpBox.CloseButton)
-
 	hooksecurefunc("ExpandFactionHeader", UpdateFactionSkins)
 	hooksecurefunc("CollapseFactionHeader", UpdateFactionSkins)
 	hooksecurefunc("ReputationFrame_Update", UpdateFactionSkins)

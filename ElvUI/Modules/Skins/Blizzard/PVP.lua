@@ -206,7 +206,6 @@ local function LoadSkin()
 
 	--Tutorials
 	S:HandleCloseButton(_G.PremadeGroupsPvPTutorialAlert.CloseButton)
-	S:HandleCloseButton(HonorFrame.BonusFrame.BrawlHelpBox.CloseButton)
 
 	-- New Season Frame
 	local NewSeasonPopup = _G.PVPQueueFrame.NewSeasonPopup
