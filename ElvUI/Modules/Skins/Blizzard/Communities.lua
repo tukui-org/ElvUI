@@ -148,8 +148,6 @@ local function LoadSkin()
 	CommunitiesFrame.MaximizeMinimizeFrame:Point("RIGHT", CommunitiesFrame.CloseButton, "LEFT", 12, 0)
 
 	S:HandleButton(CommunitiesFrame.InviteButton)
-	CommunitiesFrame.AddToChatButton:ClearAllPoints()
-	CommunitiesFrame.AddToChatButton:Point("BOTTOM", CommunitiesFrame.ChatEditBox, "BOTTOMRIGHT", -5, -30)
 	S:HandleButton(CommunitiesFrame.AddToChatButton)
 
 	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
