@@ -4,10 +4,11 @@
 
 
 **Bug Fixes:**  
-
+Fixed an error 'BackpackTokenFrameTokenIcon:SetPoint()', if our Bags are disabled.  
 
 **Misc. Changes:**  
-
+Updated Quest skin.  
+Updated Communities skin.  
 
 ___
 ### Version 11.23 [ September 24th 2019 ]
