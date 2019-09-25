@@ -99,8 +99,8 @@ end
 
 local function QUEST_REMOVED(self, event, questID)
 	if not questID then return end
-	for questName, __questID in pairs(ActiveQuests) do
-		if __questID == questID then
+	for questName, id in pairs(ActiveQuests) do
+		if id == questID then
 			ActiveQuests[questName] = nil
 			break
 		end
@@ -123,7 +123,7 @@ local function GetQuests(unitID)
 			questID = ActiveQuests[text]
 		end
 
-		local playerName, progressText = strmatch(text, '^ ([^ ]-) ?%- (.+)$') -- nil or '' if 1 is missing but 2 is there
+		local playerName, progressText = strmatch(text, '^([^ ]-) ?%-? ?(.+)$') -- nil or '' if 1 is missing but 2 is there
 		if (not playerName or playerName == '' or playerName == UnitName('player')) and progressText then
 			local index = #QuestList + 1
 			QuestList[index] = {}
