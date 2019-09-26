@@ -364,7 +364,7 @@ function NP:DisablePlate(nameplate, nameOnly)
 	NP:Update_Tags(nameplate)
 
 	nameplate.Health.Text:Hide()
-	nameplate.Power.Text:Hide()
+	--nameplate.Power.Text:Hide()
 	nameplate.Name:Hide()
 	nameplate.Level:Hide()
 	nameplate.Title:Hide()
