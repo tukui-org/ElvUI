@@ -82,6 +82,7 @@ function M:ClearPageInfo(frame, which)
 
 			for y=1, 10 do
 				inspectItem['textureSlot'..y]:SetTexture()
+				inspectItem['textureSlotBackdrop'..y]:Hide()
 			end
 		end
 	end
