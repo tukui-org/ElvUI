@@ -261,27 +261,27 @@ function NP:StylePlate(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
 	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
-	nameplate.Power = NP:Construct_Power(nameplate)
-	nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
+	--nameplate.Power = NP:Construct_Power(nameplate)
+	--nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.Name = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.Level = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.Title = NP:Construct_TagText(nameplate.RaisedElement)
 	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate.RaisedElement)
 	nameplate.Castbar = NP:Construct_Castbar(nameplate)
-	nameplate.Portrait = NP:Construct_Portrait(nameplate.RaisedElement)
-	nameplate.QuestIcons = NP:Construct_QuestIcons(nameplate.RaisedElement)
+	--nameplate.Portrait = NP:Construct_Portrait(nameplate.RaisedElement)
+	--nameplate.QuestIcons = NP:Construct_QuestIcons(nameplate.RaisedElement)
 	nameplate.RaidTargetIndicator = NP:Construct_RaidTargetIndicator(nameplate.RaisedElement)
 	nameplate.TargetIndicator = NP:Construct_TargetIndicator(nameplate)
 	nameplate.ThreatIndicator = NP:Construct_ThreatIndicator(nameplate.RaisedElement)
-	nameplate.Highlight = NP:Construct_Highlight(nameplate)
-	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
-	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate.RaisedElement) -- Horde / Alliance / HonorInfo
-	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
-	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate.RaisedElement)
-	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
-	nameplate.NazjatarFollowerXP = NP:Construct_NazjatarFollowerXP(nameplate)
-	nameplate.NazjatarFollowerXP.Rank = NP:Construct_TagText(nameplate.RaisedElement)
-	nameplate.NazjatarFollowerXP.ProgressText = NP:Construct_TagText(nameplate.RaisedElement)
+	--nameplate.Highlight = NP:Construct_Highlight(nameplate)
+	--nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
+	--nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate.RaisedElement) -- Horde / Alliance / HonorInfo
+	--nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
+	--nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate.RaisedElement)
+	--nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
+	--nameplate.NazjatarFollowerXP = NP:Construct_NazjatarFollowerXP(nameplate)
+	--nameplate.NazjatarFollowerXP.Rank = NP:Construct_TagText(nameplate.RaisedElement)
+	--nameplate.NazjatarFollowerXP.ProgressText = NP:Construct_TagText(nameplate.RaisedElement)
 
 	NP:Construct_Auras(nameplate)
 
@@ -305,27 +305,27 @@ function NP:UpdatePlate(nameplate)
 	else
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
-		NP:Update_Power(nameplate)
+		--NP:Update_Power(nameplate)
 		NP:Update_Castbar(nameplate)
-		NP:Update_ClassPower(nameplate)
+		--NP:Update_ClassPower(nameplate)
 		NP:Update_Auras(nameplate, true)
 		NP:Update_ClassificationIndicator(nameplate)
-		NP:Update_QuestIcons(nameplate)
-		NP:Update_Portrait(nameplate)
-		NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
-		NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
+		--NP:Update_QuestIcons(nameplate)
+		--NP:Update_Portrait(nameplate)
+		--NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
+		--NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
 		NP:Update_TargetIndicator(nameplate)
 		NP:Update_ThreatIndicator(nameplate)
 		NP:Update_RaidTargetIndicator(nameplate)
-		NP:Update_HealerSpecs(nameplate)
-		NP:Update_Cutaway(nameplate)
-		NP:Update_NazjatarFollowerXP(nameplate)
+		--NP:Update_HealerSpecs(nameplate)
+		--NP:Update_Cutaway(nameplate)
+		--NP:Update_NazjatarFollowerXP(nameplate)
 
-		if E.myclass == "DEATHKNIGHT" then
-			NP:Update_Runes(nameplate)
-		elseif E.myclass == "MONK" then
-			NP:Update_Stagger(nameplate)
-		end
+		--if E.myclass == "DEATHKNIGHT" then
+		--	NP:Update_Runes(nameplate)
+		--elseif E.myclass == "MONK" then
+		--	NP:Update_Stagger(nameplate)
+		--end
 
 		if nameplate == _G.ElvNP_Player then
 			NP:Update_Fader(nameplate)
