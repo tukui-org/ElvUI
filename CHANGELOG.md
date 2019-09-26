@@ -6,12 +6,12 @@
 **Bug Fixes:**  
 Fixed an error 'BackpackTokenFrameTokenIcon:SetPoint()', if our Bags are disabled.  
 Fixed some skin errors.  
+Fixed not showing Quest Icons on NamePlates. For your Info: It will only work, if the Tooltip have a progress line  
 
 **Misc. Changes:**  
-Updated Quest skin.  
-Updated Communities skin.  
 Added back the tag: 'name:abbrev'  
-Removed our clipping for UI Scale. Blizzard seems to fix Pixel Perfect with 8.2.5  
+Removed our clipping for UI Scale. Blizzard seems to fix Pixel Perfect with 8.2.5  BUT:  
+There is still a pixel missing for ActionBar Cooldown swipe. FeelsBadMan
 
 ___
 ### Version 11.23 [ September 24th 2019 ]
