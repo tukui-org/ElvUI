@@ -12,6 +12,7 @@ function B:ScaleTalkingHeadFrame()
 	--Sanitize
 	if scale < 0.5 then	scale = 0.5
 	elseif scale > 2 then scale = 2	end
+	scale = scale * E.mult
 
 	local TalkingHeadFrame = _G.TalkingHeadFrame
 	--:SetScale no longer triggers OnSizeChanged in Legion, and as such the mover will not update its size
