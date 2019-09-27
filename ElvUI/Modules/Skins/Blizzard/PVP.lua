@@ -88,7 +88,6 @@ local function LoadSkin()
 		reward.CircleMask:Hide()
 		S:HandleIcon(reward.Icon, true)
 
-
 		reward.EnlistmentBonus:StripTextures()
 		reward.EnlistmentBonus:SetTemplate()
 		reward.EnlistmentBonus:Size(20, 20)
