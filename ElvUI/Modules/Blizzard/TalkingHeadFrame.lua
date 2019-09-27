@@ -10,7 +10,7 @@ function B:ScaleTalkingHeadFrame()
 	local scale = E.db.general.talkingHeadFrameScale or 1
 
 	--Sanitize
-	if scale < 0.5 then	scale = 0.5
+	if scale < 0.5 then scale = 0.5
 	elseif scale > 2 then scale = 2	end
 	scale = scale * E.mult
 
