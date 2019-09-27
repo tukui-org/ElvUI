@@ -4,6 +4,7 @@ local LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local unpack, type, select, getmetatable, assert, pairs, pcall = unpack, type, select, getmetatable, assert, pairs, pcall
+local tonumber = tonumber
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
