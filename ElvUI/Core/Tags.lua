@@ -298,15 +298,27 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	ElvUF.Tags.Events[format('power:%s', tagTextFormat)] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 	ElvUF.Tags.Methods[format('power:%s', tagTextFormat)] = function(unit)
 		local pType = UnitPowerType(unit)
-		return E:GetFormattedText(textFormat, UnitPower(unit, pType), UnitPowerMax(unit, pType))
+		local min = UnitPower(unit, pType)
+
+		if min == 0 and tagTextFormat ~= 'deficit' then
+			return ''
+		else
+			return E:GetFormattedText(textFormat, UnitPower(unit, pType), UnitPowerMax(unit, pType))
+		end
 	end
 
 	ElvUF.Tags.Events[format('mana:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 	ElvUF.Tags.Methods[format('mana:%s', tagTextFormat)] = function(unit)
-		return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA))
+		local min = UnitPower(unit, SPELL_POWER_MANA)
+
+		if min == 0 and tagTextFormat ~= 'deficit' then
+			return ''
+		else
+			return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA))
+		end
 	end
 
-	ElvUF.Tags.Events[format('classpower:%s', textFormat)] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+	ElvUF.Tags.Events[format('classpower:%s', textFormat)] = E.myclass == 'MONK' and 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA' or 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 	ElvUF.Tags.Methods[format('classpower:%s', textFormat)] = function()
 		local min, max = GetClassPower(E.myclass)
 		if min == 0 then
@@ -637,16 +649,6 @@ ElvUF.Tags.Events['classpowercolor'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 ElvUF.Tags.Methods['classpowercolor'] = function()
 	local _, _, r, g, b = GetClassPower(E.myclass)
 	return Hex(r, g, b)
-end
-
-if E.myclass == 'MONK' then
-	local events = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA'
-	ElvUF.Tags.Events['classpower:current'] = events
-	ElvUF.Tags.Events['classpower:deficit'] = events
-	ElvUF.Tags.Events['classpower:current-percent'] = events
-	ElvUF.Tags.Events['classpower:current-max'] = events
-	ElvUF.Tags.Events['classpower:current-max-percent'] = events
-	ElvUF.Tags.Events['classpower:percent'] = events
 end
 
 ElvUF.Tags.Events['absorbs'] = 'UNIT_ABSORB_AMOUNT_CHANGED'
