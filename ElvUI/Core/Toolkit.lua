@@ -418,6 +418,10 @@ local function StripTexts(object, kill, alpha)
 end
 
 local function FontTemplate(fs, font, fontSize, fontStyle)
+	if type(fontSize) == 'string' then
+		fontSize = tonumber(fontSize)
+	end
+
 	fs.font, fs.fontSize, fs.fontStyle = font, fontSize, fontStyle
 
 	font = font or LSM:Fetch('font', E.db.general.font)
