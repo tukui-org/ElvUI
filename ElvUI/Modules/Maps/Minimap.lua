@@ -387,6 +387,8 @@ function M:GetMinimapShape()
 		function GetMinimapShape()
 			return 'SQUARE'
 		end
+
+		_G.Minimap:Size(E.db.general.minimap.size, E.db.general.minimap.size)
 	end
 end
 
