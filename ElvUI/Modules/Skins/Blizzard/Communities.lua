@@ -45,6 +45,36 @@ local function HandleRoleChecks(button, ...)
 	S:HandleCheckBox(button.CheckBox)
 end
 
+local function HandleCommunitiesButtons(self, color)
+	self.Background:Hide()
+	self.CircleMask:Hide()
+	self:SetFrameLevel(self:GetFrameLevel() + 5)
+
+	S:HandleIcon(self.Icon)
+	self.Icon:Point("TOPLEFT", 8, -20)
+	self.IconRing:Hide()
+
+	if not self.bg then
+		self.bg = CreateFrame("Frame", nil, self)
+		self.bg:CreateBackdrop("Transparent")
+		self.bg:SetPoint("TOPLEFT", 7, -16)
+		self.bg:SetPoint("BOTTOMRIGHT", -10, 12)
+	end
+
+	if color then
+		self.Selection:SetInside(self.bg, 0, 0)
+		if color == 1 then
+			self.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
+		else
+			self.Selection:SetColorTexture(BATTLENET_FONT_COLOR.r, BATTLENET_FONT_COLOR.g, BATTLENET_FONT_COLOR.b, 0.2)
+		end
+	end
+
+	local highlight = self:GetHighlightTexture()
+	highlight:SetColorTexture(1, 1, 1, 0.3)
+	highlight:SetInside(self.bg)
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Communities ~= true then return end
 
@@ -115,37 +145,6 @@ local function LoadSkin()
 			highlight:SetAllPoints(self.bg)
 		end
 	end)
-
-
-	local function HandleCommunitiesButtons(self, color)
-		self.Background:Hide()
-		self.CircleMask:Hide()
-		self:SetFrameLevel(self:GetFrameLevel() + 5)
-
-		S:HandleIcon(self.Icon)
-		self.Icon:Point("TOPLEFT", 8, -20)
-		self.IconRing:Hide()
-
-		if not self.bg then
-			self.bg = CreateFrame("Frame", nil, self)
-			self.bg:CreateBackdrop("Transparent")
-			self.bg:SetPoint("TOPLEFT", 7, -16)
-			self.bg:SetPoint("BOTTOMRIGHT", -10, 12)
-		end
-
-		if color then
-			self.Selection:SetInside(self.bg, 0, 0)
-			if color == 1 then
-				self.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
-			else
-				self.Selection:SetColorTexture(BATTLENET_FONT_COLOR.r, BATTLENET_FONT_COLOR.g, BATTLENET_FONT_COLOR.b, 0.2)
-			end
-		end
-
-		local highlight = self:GetHighlightTexture()
-		highlight:SetColorTexture(1, 1, 1, 0.3)
-		highlight:SetInside(self.bg)
-	end
 
 	-- Add Community Button
 	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetAddCommunity", function(self) HandleCommunitiesButtons(self, 1) end)
