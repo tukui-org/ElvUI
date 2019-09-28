@@ -79,7 +79,7 @@ local function LoadSkin()
 			end
 
 			self.GuildTabardBackground:SetPoint("TOPLEFT", 6, -17)
-			self.GuildTabardEmblem:SetPoint("TOPLEFT", 11, -17)
+			self.GuildTabardEmblem:SetPoint("TOPLEFT", 13, -17)
 			self.GuildTabardBorder:SetPoint("TOPLEFT", 6, -17)
 
 			if not self.bg then
@@ -148,7 +148,7 @@ local function LoadSkin()
 	CommunitiesFrame.MaximizeMinimizeFrame:Point("RIGHT", CommunitiesFrame.CloseButton, "LEFT", 12, 0)
 
 	S:HandleButton(CommunitiesFrame.InviteButton)
-	S:HandleButton(CommunitiesFrame.AddToChatButton)
+	S:HandleNextPrevButton(CommunitiesFrame.AddToChatButton)
 
 	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
 	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
