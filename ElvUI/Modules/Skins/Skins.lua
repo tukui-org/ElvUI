@@ -460,7 +460,7 @@ function S:HandleDropDownBox(frame, width)
 
 	local FrameName = frame.GetName and frame:GetName()
 	-- We need to check first for frame.Button otherwise it will fail on some elements
-	local button = frame.Button or FrameName and _G[FrameName..'Button']
+	local button = frame.Button or FrameName and _G[FrameName..'Button'] or _G[FrameName..'_Button']
 	if button then
 		button:ClearAllPoints()
 		button:Point("RIGHT", frame.backdrop)
