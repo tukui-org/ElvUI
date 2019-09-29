@@ -865,10 +865,26 @@ E.Options.args.general = {
 						},
 					},
 				},
+				DurabilityGroup = {
+					order = 12,
+					type = "group",
+					name = L["Durability"],
+					guiInline = true,
+					get = function(info) return E.db.general.durabilityScale end,
+					set = function(info, value) E.db.general.durabilityScale = value; E:StaticPopup_Show("PRIVATE_RL") end,
+					args = {
+						scale = {
+							order = 1,
+							type = "range",
+							name = L["Scale"],
+							min = 0.5, max = 8, step = 0.5,
+						}
+					}
+				},
 			},
 		},
 		misc = {
-			order = 12,
+			order = 20,
 			type = "group",
 			name = L["Miscellaneous"],
 			get = function(info) return E.db.general[info[#info]] end,
