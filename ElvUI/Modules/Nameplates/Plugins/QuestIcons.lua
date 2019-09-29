@@ -12,7 +12,7 @@ local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local GetQuestLogTitle = GetQuestLogTitle
 local IsInInstance = IsInInstance
-local UnitName = UnitName
+local UnitIsPlayer = UnitIsPlayer
 local C_TaskQuest_GetQuestProgressBarInfo = C_TaskQuest.GetQuestProgressBarInfo
 
 local ActiveQuests = {
@@ -114,26 +114,25 @@ local function GetQuests(unitID)
 	E.ScanTooltip:SetUnit(unitID)
 	E.ScanTooltip:Show()
 
-	local QuestList, questID = {}
+	local QuestList, questID, notMyQuest = {}
 	for i = 3, E.ScanTooltip:NumLines() do
 		local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
 		local text = str and str:GetText()
-		if not text then return end
-		if not questID then
-			questID = ActiveQuests[text]
-		end
+		if not text or text == '' then return end
+		if not questID then questID = ActiveQuests[text] end
 
-		local playerName, progressText = strmatch(text, '^([^ ]-) ?%-? ?(.+)$') -- nil or '' if 1 is missing but 2 is there
-		if (not playerName or playerName == '' or playerName == UnitName('player')) and progressText then
+		if UnitIsPlayer(text) then
+			notMyQuest = text ~= E.myname
+		elseif text and not notMyQuest then
 			local index = #QuestList + 1
 			QuestList[index] = {}
-			progressText = progressText:lower()
+			text = text:lower()
 
-			local x, y = strmatch(progressText, '(%d+)/(%d+)')
+			local x, y = strmatch(text, '(%d+)/(%d+)')
 			if x and y then
 				QuestList[index].objectiveCount = floor(y - x)
 			else
-				local progress = tonumber(strmatch(progressText, '([%d%.]+)%%')) -- contains % in the progressText
+				local progress = tonumber(strmatch(text, '([%d%.]+)%%')) -- contains % in the text
 				if progress and progress <= 100 then
 					QuestList[index].objectiveCount = ceil(100 - progress)
 				end
@@ -161,7 +160,7 @@ local function GetQuests(unitID)
 				QuestList[index].questType = "LOOT"
 
 				for questString in pairs(QuestTypes) do
-					if progressText:find(questString) then
+					if text:find(questString) then
 						QuestList[index].questType = QuestTypes[questString]
 						break
 					end
