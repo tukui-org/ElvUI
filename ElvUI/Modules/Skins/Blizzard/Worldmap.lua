@@ -116,6 +116,24 @@ local function LoadSkin()
 	S:HandleButton(_G.QuestSessionManager.CheckStartDialog.ButtonContainer.Confirm)
 	S:HandleButton(_G.QuestSessionManager.CheckStartDialog.ButtonContainer.Decline)
 
+	_G.QuestSessionManager.StartDialog:StripTextures()
+	_G.QuestSessionManager.StartDialog:CreateBackdrop("Transparent")
+	S:HandleButton(_G.QuestSessionManager.StartDialog.ButtonContainer.Confirm)
+	S:HandleButton(_G.QuestSessionManager.StartDialog.ButtonContainer.Decline)
+
+	_G.QuestSessionManager.CheckLeavePartyDialog:StripTextures()
+	_G.QuestSessionManager.CheckLeavePartyDialog:CreateBackdrop("Transparent")
+	S:HandleButton(_G.QuestSessionManager.CheckLeavePartyDialog.ButtonContainer.Confirm)
+	S:HandleButton(_G.QuestSessionManager.CheckLeavePartyDialog.ButtonContainer.Decline)
+
+	local minimizeButton = _G.QuestSessionManager.StartDialog.MinimizeButton
+	minimizeButton:StripTextures()
+	minimizeButton:Size(16, 16)
+
+	minimizeButton.tex = minimizeButton:CreateTexture(nil, "OVERLAY")
+	minimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
+	minimizeButton.tex:SetInside()
+	minimizeButton:SetHighlightTexture("Interface\\Buttons\\UI-PlusButton-Hilight", "ADD")
 end
 
 S:AddCallback("SkinWorldMap", LoadSkin)
