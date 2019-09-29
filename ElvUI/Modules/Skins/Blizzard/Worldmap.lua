@@ -105,6 +105,17 @@ local function LoadSkin()
 	WorldMapBountyBoard(WorldMapFrame.overlayFrames[3]) -- BountyBoard
 	--WorldMapActionButtonTemplate(WorldMapFrame.overlayFrames[4]) -- ActionButtons
 	--WorldMapZoneTimerTemplate(WorldMapFrame.overlayFrames[5]) -- Timer?
+
+	-- 8.2.5 Party Sync
+	QuestMapFrame.QuestSessionManagement:StripTextures()
+	-- TODO: Deal with the Button
+	--S:HandleButton(QuestMapFrame.QuestSessionManagement.ExecuteSessionCommand, nil, nil, nil, true)
+
+	_G.QuestSessionManager.CheckStartDialog:StripTextures()
+	_G.QuestSessionManager.CheckStartDialog:CreateBackdrop("Transparent")
+	S:HandleButton(_G.QuestSessionManager.CheckStartDialog.ButtonContainer.Confirm)
+	S:HandleButton(_G.QuestSessionManager.CheckStartDialog.ButtonContainer.Decline)
+
 end
 
 S:AddCallback("SkinWorldMap", LoadSkin)
