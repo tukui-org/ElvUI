@@ -209,6 +209,9 @@ local function LoadSkin()
 		_G.LFGListApplicationDialog.TankButton,
 		_G.LFGListApplicationDialog.HealerButton,
 		_G.LFGListApplicationDialog.DamagerButton,
+		_G.RolePollPopupRoleButtonTank,
+		_G.RolePollPopupRoleButtonHealer,
+		_G.RolePollPopupRoleButtonDPS,
 	}
 
 	for _, roleButton in pairs(RoleButtons1) do
@@ -230,6 +233,10 @@ local function LoadSkin()
 			end
 		end
 	end
+
+	hooksecurefunc("SetCheckButtonIsRadio", function(button)
+		S:HandleCheckBox(button)
+	end)
 
 	--Fix issue with role buttons overlapping each other (Blizzard bug)
 	local repositionCheckButtons = {
