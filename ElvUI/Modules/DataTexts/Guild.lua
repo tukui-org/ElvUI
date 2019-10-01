@@ -260,7 +260,12 @@ local function OnEnter(self, _, noUpdate)
 
 		local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or _G.RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
 
-		if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end
+		local toonShortName, toonRealm = string.split("-", info[1])
+		if E.myrealm == toonRealm then
+			if (UnitInParty(toonShortName) or UnitInRaid(toonShortName)) then grouped = 1 else grouped = 2 end
+		else
+			if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end
+		end
 
 		if IsShiftKeyDown() then
 			DT.tooltip:AddDoubleLine(format(nameRankString, info[1], info[2]), info[4], classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
