@@ -80,6 +80,18 @@ local mobilestatus = {
 	[2] = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-BusyMobile:14:14:0:0:16:16:0:16:0:16|t",
 }
 
+local function inGroup(name)
+	local shortName, realmName = strsplit("-", name)
+	if E.myrealm == realmName then name = shortName end
+	if UnitInParty(name) then
+		return true
+	elseif UnitInRaid(name) then
+		return true
+	end
+
+	return false
+end
+
 local function BuildGuildTable()
 	wipe(guildTable)
 
@@ -260,12 +272,7 @@ local function OnEnter(self, _, noUpdate)
 
 		local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or _G.RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
 
-		local toonShortName, toonRealm = string.split("-", info[1])
-		if E.myrealm == toonRealm then
-			if (UnitInParty(toonShortName) or UnitInRaid(toonShortName)) then grouped = 1 else grouped = 2 end
-		else
-			if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end
-		end
+		if inGroup(info[1]) then grouped = 1 else grouped = 2 end
 
 		if IsShiftKeyDown() then
 			DT.tooltip:AddDoubleLine(format(nameRankString, info[1], info[2]), info[4], classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
