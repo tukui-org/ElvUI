@@ -1177,7 +1177,7 @@ function CH:GetBNFriendColor(name, id, useBTag)
 	end
 
 	if not Class then
-		_, _, _, _, _, _, _, Class = BNGetGameAccountInfo(bnetIDGameAccount)
+		Class = CH:GetBNFirstToonClassColor(id)
 	end
 
 	Class = E:UnlocalizedClassName(Class)
