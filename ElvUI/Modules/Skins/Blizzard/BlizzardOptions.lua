@@ -338,6 +338,10 @@ local function LoadSkin()
 	-- Toggle Test Audio Button - Wow 8.0
 	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)
 
+	local VUMeter = _G.AudioOptionsVoicePanelTestInputDevice.VUMeter
+	VUMeter:SetBackdrop(nil)
+	VUMeter.Status:CreateBackdrop()
+
 	-- PushToTalk KeybindButton - Wow 8.0
 	hooksecurefunc("AudioOptionsVoicePanel_InitializeCommunicationModeUI", S.AudioOptionsVoicePanel_InitializeCommunicationModeUI)
 
