@@ -341,6 +341,8 @@ local function LoadSkin()
 	local VUMeter = _G.AudioOptionsVoicePanelTestInputDevice.VUMeter
 	VUMeter:SetBackdrop(nil)
 	VUMeter.Status:CreateBackdrop()
+	VUMeter.Status:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(VUMeter.Status)
 
 	-- PushToTalk KeybindButton - Wow 8.0
 	hooksecurefunc("AudioOptionsVoicePanel_InitializeCommunicationModeUI", S.AudioOptionsVoicePanel_InitializeCommunicationModeUI)
