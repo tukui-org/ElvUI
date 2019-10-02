@@ -40,7 +40,6 @@ S.Blizzard.Regions = {
 	'Cover',
 	'Border',
 	'Background',
-	-- EditBox
 	'TopTex',
 	'TopLeftTex',
 	'TopRightTex',
@@ -451,6 +450,7 @@ function S:HandleDropDownBox(frame, width, pos)
 	local frameName = frame.GetName and frame:GetName()
 	local button = frame.Button or frameName and (_G[frameName.."Button"] or _G[frameName.."_Button"])
 	local text = frameName and _G[frameName.."Text"] or frame.Text
+	local icon = frame.Icon
 
 	if not width then
 		width = 155
@@ -464,11 +464,6 @@ function S:HandleDropDownBox(frame, width, pos)
 	frame.backdrop:SetPoint("TOPLEFT", 20, -2)
 	frame.backdrop:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 
-	if text then
-		text:ClearAllPoints()
-		text:SetPoint("RIGHT", button, "LEFT", -2, 0)
-	end
-
 	button:ClearAllPoints()
 	if pos then
 		button:SetPoint("TOPRIGHT", frame.Right, -20, -21)
@@ -477,6 +472,15 @@ function S:HandleDropDownBox(frame, width, pos)
 	end
 	button.SetPoint = E.noop
 	S:HandleNextPrevButton(button)
+
+	if text then
+		text:ClearAllPoints()
+		text:SetPoint("RIGHT", button, "LEFT", -2, 0)
+	end
+
+	if icon then
+		icon:SetPoint("LEFT", 23, 0)
+	end
 end
 
 function S:HandleStatusBar(frame, color)
