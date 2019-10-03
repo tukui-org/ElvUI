@@ -200,6 +200,8 @@ local function Click(self, btn)
 		for _, info in ipairs(guildTable) do
 			if info[7] and info[1] ~= E.myname then
 				local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or _G.RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
+				if not classc then classc = levelc end
+
 				local grouped = inGroup(info[1])
 				if grouped == "" and not (info[11] and info[4] == REMOTE_CHAT) then
 					menuCountInvites = menuCountInvites + 1
@@ -248,7 +250,7 @@ local function OnEnter(self, _, noUpdate)
 		DT.tooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(barValue), E:ShortValue(barMax), ceil((barValue / barMax) * 100)))
 	end
 
-	local zonec, grouped
+	local zonec
 
 	DT.tooltip:AddLine(' ')
 	for i, info in ipairs(guildTable) do
@@ -261,6 +263,7 @@ local function OnEnter(self, _, noUpdate)
 		if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
 
 		local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or _G.RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
+		if not classc then classc = levelc end
 
 		if IsShiftKeyDown() then
 			DT.tooltip:AddDoubleLine(format(nameRankString, info[1], info[2]), info[4], classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)

@@ -381,7 +381,7 @@ local function Click(self, btn)
 					end
 					if not shouldSkip then
 						local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.class]) or _G.RAID_CLASS_COLORS[info.class], GetQuestDifficultyColor(info.level)
-						classc = classc or GetQuestDifficultyColor(info.level)
+						if not classc then classc = levelc end
 
 						menuCountWhispers = menuCountWhispers + 1
 						menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.name), arg1 = info.name, notCheckable=true, func = whisperClick}
@@ -423,7 +423,7 @@ local function Click(self, btn)
 
 					if info.client == wowString and E.myfaction == info.faction and inGroup(info.characterName) == "" then
 						local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.className]) or _G.RAID_CLASS_COLORS[info.className], GetQuestDifficultyColor(info.level)
-						classc = classc or GetQuestDifficultyColor(info.level)
+						if not classc then classc = levelc end
 
 						if info.wowProjectID == retailID then
 							menuCountInvites = menuCountInvites + 1
@@ -489,8 +489,7 @@ local function OnEnter(self)
 				if not shouldSkip then
 					if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zone) then zonec = activezone else zonec = inactivezone end
 					classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.class]) or _G.RAID_CLASS_COLORS[info.class], GetQuestDifficultyColor(info.level)
-
-					classc = classc or GetQuestDifficultyColor(info.level)
+					if not classc then classc = levelc end
 
 					TooltipAddXLine(true, worldOfWarcraftString, format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,info.name,inGroup(info.name),info.status),info.zone,classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
 				end
