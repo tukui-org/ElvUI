@@ -8,6 +8,7 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 local GetActionCooldown = GetActionCooldown
 local HasExtraActionBar = HasExtraActionBar
+local hooksecurefunc = hooksecurefunc
 
 local ExtraActionBarHolder, ZoneAbilityHolder
 
@@ -80,7 +81,13 @@ function AB:SetupExtraButton()
 			self:StyleButton(button, true)
 			button:SetTemplate()
 			button.icon:SetDrawLayer('ARTWORK')
-			button.style:Hide() -- Hide the Artwork
+
+			if E.private.skins.cleanBossButton and button.style then -- Hide the Artwork
+				button.style:SetTexture()
+				hooksecurefunc(button.style, 'SetTexture', function(btn, tex)
+					if tex ~= nil then btn:SetTexture() end
+				end)
+			end
 
 			local tex = button:CreateTexture(nil, 'OVERLAY')
 			tex:SetColorTexture(0.9, 0.8, 0.1, 0.3)
@@ -103,7 +110,13 @@ function AB:SetupExtraButton()
 		button.Icon:SetDrawLayer('ARTWORK')
 		button.Icon:SetTexCoord(unpack(E.TexCoords))
 		button.Icon:SetInside()
-		button.Style:Hide() -- Hide the Artwork
+
+		if E.private.skins.cleanBossButton and button.Style then -- Hide the Artwork
+			button.Style:SetTexture()
+			hooksecurefunc(button.Style, 'SetTexture', function(btn, tex)
+				if tex ~= nil then btn:SetTexture() end
+			end)
+		end
 
 		if button.Cooldown then
 			button.Cooldown.CooldownOverride = 'actionbar'
