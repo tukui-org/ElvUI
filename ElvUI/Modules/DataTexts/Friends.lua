@@ -421,8 +421,7 @@ local function Click(self, btn)
 						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
 					end
 
-					local grouped = inGroup(info.characterName)
-					if info.client == wowString and E.myfaction == info.faction and grouped == "" then
+					if info.client == wowString and E.myfaction == info.faction and inGroup(info.characterName) == "" then
 						local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.className]) or _G.RAID_CLASS_COLORS[info.className], GetQuestDifficultyColor(info.level)
 						classc = classc or GetQuestDifficultyColor(info.level)
 
