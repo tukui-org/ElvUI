@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local _G = _G
 local ipairs, select, sort, unpack, wipe, ceil = ipairs, select, sort, unpack, wipe, ceil
-local format, strfind, strjoin, strsplit = format, strfind, strjoin, strsplit
+local format, gsub, strfind, strjoin, strsplit = format, gsub, strfind, strjoin, strsplit
 --WoW API / Variables
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildFactionInfo = GetGuildFactionInfo
@@ -49,6 +49,9 @@ local guildTable, guildMotD, lastPanel = {}, ""
 
 local function sortByRank(a, b)
 	if a and b then
+		if a[10] == b[10] then
+			return a[1] < b[1]
+		end
 		return a[10] < b[10]
 	end
 end
@@ -79,9 +82,8 @@ local mobilestatus = {
 	[2] = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-BusyMobile:14:14:0:0:16:16:0:16:0:16|t",
 }
 
+local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 local function inGroup(name)
-	local shortName, realmName = strsplit("-", name)
-	if E.myrealm == realmName then name = shortName end
 	return (UnitInParty(name) or UnitInRaid(name)) and "|cffaaaaaa*|r" or ""
 end
 
@@ -97,7 +99,7 @@ local function BuildGuildTable()
 		zone = (isMobile and not connected) and REMOTE_CHAT or zone
 
 		if connected or isMobile then
-			guildTable[#guildTable + 1] = { name, rank, level, zone, note, officernote, connected, statusInfo, class, rankIndex, isMobile, guid }
+			guildTable[#guildTable + 1] = { gsub(name,'%-'..PLAYER_REALM,''), rank, level, zone, note, officernote, connected, statusInfo, class, rankIndex, isMobile, guid }
 		end
 	end
 end
@@ -198,18 +200,18 @@ local function Click(self, btn)
 		menuList[3].menuList = {}
 
 		for _, info in ipairs(guildTable) do
-			if info[7] and info[1] ~= E.myname then
+			if (info[7] or info[11]) and info[1] ~= E.myname then
 				local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or _G.RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
-				if not classc then classc = levelc end
-
-				local grouped = inGroup(info[1])
-				if grouped == "" and not (info[11] and info[4] == REMOTE_CHAT) then
+				local name = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1])
+				if inGroup(info[1]) ~= "" then
+					name = name.."|cffaaaaaa*|r"
+				elseif not (info[11] and info[4] == REMOTE_CHAT) then
 					menuCountInvites = menuCountInvites + 1
-					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], ""), arg1 = info[1], arg2 = info[12], notCheckable=true, func = inviteClick}
+					menuList[2].menuList[menuCountInvites] = {text = name, arg1 = info[1], arg2 = info[12], notCheckable=true, func = inviteClick}
 				end
 
 				menuCountWhispers = menuCountWhispers + 1
-				menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], grouped), arg1 = info[1], notCheckable=true, func = whisperClick}
+				menuList[3].menuList[menuCountWhispers] = {text = name, arg1 = info[1], notCheckable=true, func = whisperClick}
 			end
 		end
 

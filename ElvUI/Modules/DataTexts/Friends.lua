@@ -158,9 +158,11 @@ local clientIndex = {
 	["BSAp"] = 11,
 }
 
-local function inGroup(name)
-	local shortName, realmName = strsplit("-", name)
-	if E.myrealm == realmName then name = shortName end
+local function inGroup(name, realmName)
+	if realmName and realmName ~= "" and realmName ~= E.myrealm then
+		name = name.."-"..realmName
+	end
+
 	return (UnitInParty(name) or UnitInRaid(name)) and "|cffaaaaaa*|r" or ""
 end
 
@@ -421,7 +423,7 @@ local function Click(self, btn)
 						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
 					end
 
-					if info.client == wowString and E.myfaction == info.faction and inGroup(info.characterName) == "" then
+					if (info.client and info.client == wowString) and E.myfaction == info.faction and inGroup(info.characterName, info.realmName) == "" then
 						local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.className]) or _G.RAID_CLASS_COLORS[info.className], GetQuestDifficultyColor(info.level)
 						if not classc then classc = levelc end
 
@@ -522,7 +524,7 @@ local function OnEnter(self)
 
 						if not shouldSkip then
 							local header = format("%s (%s)", battleNetString, (info.wowProjectID == classicID and info.gameText) or clientTags[client] or client)
-							if info.client == wowString then
+							if info.client and info.client == wowString then
 								classc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.className]) or _G.RAID_CLASS_COLORS[info.className]
 								if info.level and info.level ~= '' then
 									levelc = GetQuestDifficultyColor(info.level)
@@ -536,7 +538,7 @@ local function OnEnter(self)
 									classc = _G.RAID_CLASS_COLORS.PRIEST
 								end
 
-								TooltipAddXLine(true, header, format(levelNameString.."%s%s",levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName,inGroup(info.characterName),status),info.accountName,238,238,238,238,238,238)
+								TooltipAddXLine(true, header, format(levelNameString.."%s%s",levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName,inGroup(info.characterName, info.realmName),status),info.accountName,238,238,238,238,238,238)
 								if IsShiftKeyDown() then
 									if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zoneName) then zonec = activezone else zonec = inactivezone end
 									if E.myrealm == info.realmName then realmc = activezone else realmc = inactivezone end
