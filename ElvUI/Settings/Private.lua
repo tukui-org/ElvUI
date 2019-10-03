@@ -55,7 +55,7 @@ V.skins = {
 		enable = true,
 	},
 	checkBoxSkin = true,
-	cleanBossButton = true,
+	cleanBossButton = false,
 	parchmentRemover = {
 		enable = false,
 	},
