@@ -92,7 +92,7 @@ local function BuildGuildTable()
 
 	local totalMembers = GetNumGuildMembers()
 	for i = 1, totalMembers do
-		local name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile, _, _, guid = GetGuildRosterInfo(i)
+		local name, rank, rankIndex, level, _, zone, note, officerNote, connected, memberstatus, className, _, _, isMobile, _, _, guid = GetGuildRosterInfo(i)
 		if not name then return end
 
 		local statusInfo = isMobile and mobilestatus[memberstatus] or onlinestatus[memberstatus]
@@ -106,10 +106,10 @@ local function BuildGuildTable()
 				level = level,				--3
 				zone = zone,				--4
 				note = note,				--5
-				officerNote = officernote,	--6
+				officerNote = officerNote,	--6
 				online = connected,			--7
 				status = statusInfo,		--8
-				class = class,				--9
+				class = className,			--9
 				rankIndex = rankIndex,		--10
 				isMobile = isMobile,		--11
 				guid = guid					--12
