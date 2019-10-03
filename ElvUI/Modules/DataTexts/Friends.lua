@@ -5,7 +5,7 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local type, ipairs, pairs, select = type, ipairs, pairs, select
 local sort, next, wipe, tremove, tinsert = sort, next, wipe, tremove, tinsert
-local format, gsub, strfind, strjoin, strsplit = format, gsub, strfind, strjoin, strsplit
+local format, gsub, strfind, strjoin = format, gsub, strfind, strjoin
 --WoW API / Variables
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local BNGetInfo = BNGetInfo
@@ -423,7 +423,7 @@ local function Click(self, btn)
 						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
 					end
 
-					if (info.client and info.client == wowString) and E.myfaction == info.faction and inGroup(info.characterName, info.realmName) == "" then
+					if (info.client and info.client == wowString) and (E.myfaction == info.faction) and inGroup(info.characterName, info.realmName) == "" then
 						local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.className]) or _G.RAID_CLASS_COLORS[info.className], GetQuestDifficultyColor(info.level)
 						if not classc then classc = levelc end
 
@@ -476,7 +476,7 @@ local function OnEnter(self)
 	end
 
 	local totalfriends = numberOfFriends + totalBNet
-	local zonec, classc, levelc, realmc
+	local priestc, zonec, classc, levelc, realmc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS.PRIEST) or _G.RAID_CLASS_COLORS.PRIEST
 
 	DT.tooltip:AddDoubleLine(L["Friends List"], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 	if (onlineFriends > 0) and not E.db.datatexts.friends.hideWoW then
@@ -529,14 +529,11 @@ local function OnEnter(self)
 								if info.level and info.level ~= '' then
 									levelc = GetQuestDifficultyColor(info.level)
 								else
-									levelc = _G.RAID_CLASS_COLORS.PRIEST
-									classc = _G.RAID_CLASS_COLORS.PRIEST
+									classc, levelc = priestc, priestc
 								end
 
 								--Sometimes the friend list is fubar with level 0 unknown friends
-								if not classc then
-									classc = _G.RAID_CLASS_COLORS.PRIEST
-								end
+								if not classc then classc = priestc end
 
 								TooltipAddXLine(true, header, format(levelNameString.."%s%s",levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName,inGroup(info.characterName, info.realmName),status),info.accountName,238,238,238,238,238,238)
 								if IsShiftKeyDown() then

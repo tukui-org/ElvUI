@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local _G = _G
 local ipairs, select, sort, unpack, wipe, ceil = ipairs, select, sort, unpack, wipe, ceil
-local format, gsub, strfind, strjoin, strsplit = format, gsub, strfind, strjoin, strsplit
+local format, gsub, strfind, strjoin, strsplit, strmatch = format, gsub, strfind, strjoin, strsplit, strmatch
 --WoW API / Variables
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildFactionInfo = GetGuildFactionInfo
@@ -286,7 +286,7 @@ local function OnEnter(self, _, noUpdate)
 			if info.note ~= "" then DT.tooltip:AddLine(format(noteString, info.note), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
 			if info.officerNote ~= "" then DT.tooltip:AddLine(format(officerNoteString, info.officerNote), ttoff.r, ttoff.g, ttoff.b, 1) end
 		else
-			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info.level, strsplit("-", info.name), inGroup(info.name), info.status), info.zone, classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
+			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info.level, strmatch(info.name,"([^%-]+).*"), inGroup(info.name), info.status), info.zone, classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
 		end
 	end
 
