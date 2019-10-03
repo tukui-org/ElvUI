@@ -1142,10 +1142,9 @@ end
 
 function CH:GetBNFirstToonClassColor(id)
 	if not id then return end
-	local total = BNGetNumFriends()
-	for i = 1, total do
+	for i = 1, BNGetNumFriends() do
 		local accountInfo = C_BattleNet_GetFriendAccountInfo(i)
-		if accountInfo and accountInfo.isOnline and accountInfo.bnetAccountID == id then
+		if (accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline) and accountInfo.bnetAccountID == id then
 			local numGameAccounts = C_BattleNet_GetFriendNumGameAccounts(i)
 			if numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
