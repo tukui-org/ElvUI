@@ -49,16 +49,16 @@ local guildTable, guildMotD, lastPanel = {}, ""
 
 local function sortByRank(a, b)
 	if a and b then
-		if a[10] == b[10] then
-			return a[1] < b[1]
+		if a.rankIndex == b.rankIndex then
+			return a.name < b.name
 		end
-		return a[10] < b[10]
+		return a.rankIndex < b.rankIndex
 	end
 end
 
 local function sortByName(a, b)
 	if a and b then
-		return a[1] < b[1]
+		return a.name < b.name
 	end
 end
 
@@ -99,7 +99,21 @@ local function BuildGuildTable()
 		zone = (isMobile and not connected) and REMOTE_CHAT or zone
 
 		if connected or isMobile then
-			guildTable[#guildTable + 1] = { gsub(name,'%-'..PLAYER_REALM,''), rank, level, zone, note, officernote, connected, statusInfo, class, rankIndex, isMobile, guid }
+			local newName = gsub(name,'%-'..PLAYER_REALM,'')
+			guildTable[#guildTable + 1] = {
+				name = newName,				--1
+				rank = rank,				--2
+				level = level,				--3
+				zone = zone,				--4
+				note = note,				--5
+				officerNote = officernote,	--6
+				online = connected,			--7
+				status = statusInfo,		--8
+				class = class,				--9
+				rankIndex = rankIndex,		--10
+				isMobile = isMobile,		--11
+				guid = guid					--12
+			}
 		end
 	end
 end
@@ -200,18 +214,18 @@ local function Click(self, btn)
 		menuList[3].menuList = {}
 
 		for _, info in ipairs(guildTable) do
-			if (info[7] or info[11]) and info[1] ~= E.myname then
-				local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or _G.RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
-				local name = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1])
-				if inGroup(info[1]) ~= "" then
+			if (info.online or info.isMobile) and info.name ~= E.myname then
+				local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.class]) or _G.RAID_CLASS_COLORS[info.class], GetQuestDifficultyColor(info.level)
+				local name = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info.level, classc.r*255,classc.g*255,classc.b*255, info.name)
+				if inGroup(info.name) ~= "" then
 					name = name.."|cffaaaaaa*|r"
-				elseif not (info[11] and info[4] == REMOTE_CHAT) then
+				elseif not (info.isMobile and info.zone == REMOTE_CHAT) then
 					menuCountInvites = menuCountInvites + 1
-					menuList[2].menuList[menuCountInvites] = {text = name, arg1 = info[1], arg2 = info[12], notCheckable=true, func = inviteClick}
+					menuList[2].menuList[menuCountInvites] = {text = name, arg1 = info.name, arg2 = info.guid, notCheckable=true, func = inviteClick}
 				end
 
 				menuCountWhispers = menuCountWhispers + 1
-				menuList[3].menuList[menuCountWhispers] = {text = name, arg1 = info[1], notCheckable=true, func = whisperClick}
+				menuList[3].menuList[menuCountWhispers] = {text = name, arg1 = info.name, notCheckable=true, func = whisperClick}
 			end
 		end
 
@@ -262,17 +276,17 @@ local function OnEnter(self, _, noUpdate)
 			break
 		end
 
-		if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
+		if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zone) then zonec = activezone else zonec = inactivezone end
 
-		local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or _G.RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
+		local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.class]) or _G.RAID_CLASS_COLORS[info.class], GetQuestDifficultyColor(info.level)
 		if not classc then classc = levelc end
 
 		if IsShiftKeyDown() then
-			DT.tooltip:AddDoubleLine(format(nameRankString, info[1], info[2]), info[4], classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
-			if info[5] ~= "" then DT.tooltip:AddLine(format(noteString, info[5]), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
-			if info[6] ~= "" then DT.tooltip:AddLine(format(officerNoteString, info[6]), ttoff.r, ttoff.g, ttoff.b, 1) end
+			DT.tooltip:AddDoubleLine(format(nameRankString, info.name, info.rank), info.zone, classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
+			if info.note ~= "" then DT.tooltip:AddLine(format(noteString, info.note), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
+			if info.officerNote ~= "" then DT.tooltip:AddLine(format(officerNoteString, info.officerNote), ttoff.r, ttoff.g, ttoff.b, 1) end
 		else
-			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], strsplit("-", info[1]), inGroup(info[1]), info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
+			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info.level, strsplit("-", info.name), inGroup(info.name), info.status), info.zone, classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
 		end
 	end
 
