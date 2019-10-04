@@ -514,9 +514,9 @@ local function LoadSkin()
 	local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
 	WardrobeOutfitFrame:StripTextures()
 	WardrobeOutfitFrame:SetTemplate("Transparent")
-	S:HandleDropDownBox(_G.WardrobeOutfitDropDown)
 	S:HandleButton(_G.WardrobeOutfitDropDown.SaveButton)
-	_G.WardrobeOutfitDropDown:SetSize(221, 34)
+	S:HandleDropDownBox(_G.WardrobeOutfitDropDown, 221)
+	_G.WardrobeOutfitDropDown:SetHeight(34)
 	_G.WardrobeOutfitDropDown.SaveButton:SetPoint("TOPLEFT", _G.WardrobeOutfitDropDown, "TOPRIGHT", -2, -2)
 
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
