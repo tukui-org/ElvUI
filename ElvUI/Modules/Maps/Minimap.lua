@@ -481,13 +481,12 @@ function M:Initialize()
 	Minimap:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)
 	Minimap:SetScript("OnMouseDown", M.Minimap_OnMouseDown)
 	Minimap:SetScript("OnMouseUp", E.noop)
+	self:RegisterEvent("PLAYER_LOGIN", "UpdateSettings")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_ZoneText")
 	self:RegisterEvent('ADDON_LOADED')
-
-	self:UpdateSettings()
 end
 
-E:RegisterModule(M:GetName())
+E:RegisterInitialModule(M:GetName())
