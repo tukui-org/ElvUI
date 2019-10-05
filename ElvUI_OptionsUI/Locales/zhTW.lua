@@ -1097,6 +1097,7 @@ L["Show Over Absorbs"] = "顯示滿血吸收盾"
 L["Show PvP Badge Indicator if available"] = true
 L["Show Quality Color"] = "顯示品質圖標"
 L["Show Scrap Icon"] = "顯示分解圖標"
+L["Show Special Bags Color"] = true
 L["Show the castbar icon desaturated if a spell is not interruptible."] = true
 L["Show Title"] = "顯示稱號"
 L["Show Upgrade Icon"] = "顯示升級圖標"

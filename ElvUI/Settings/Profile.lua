@@ -232,6 +232,7 @@ P.bags = {
 	useBlizzardCleanup = false,
 	strata = 'HIGH',
 	qualityColors = true,
+	specialtyColors = true,
 	showBindType = false,
 	transparent = false,
 	colors = {

@@ -1095,6 +1095,7 @@ L["Show Over Absorbs"] = "Показывать \"лишнее\" поглощен
 L["Show PvP Badge Indicator if available"] = "Показывать значек ранга PvP, если доступен"
 L["Show Quality Color"] = "Показывать цвет качества"
 L["Show Scrap Icon"] = "Иконка утилизации"
+L["Show Special Bags Color"] = true
 L["Show the castbar icon desaturated if a spell is not interruptible."] = "Показывать иконку полосы заклинания обесцвеченой, если заклинание нельзя прервать."
 L["Show Title"] = "Звание"
 L["Show Upgrade Icon"] = "Иконка апгрейда"
