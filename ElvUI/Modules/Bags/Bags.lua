@@ -1066,6 +1066,7 @@ function B:Layout(isBank)
 			end
 
 			f.Bags[bagID].numSlots = numSlots
+			f.Bags[bagID].assigned = assignedBag
 			f.Bags[bagID].type = select(2, GetContainerNumFreeSlots(bagID))
 
 			--Hide unused slots
