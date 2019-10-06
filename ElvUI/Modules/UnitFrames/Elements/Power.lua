@@ -214,6 +214,8 @@ function UF:Configure_Power(frame)
 		if db.power.strataAndLevel and db.power.strataAndLevel.useCustomLevel then
 			power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
 			power.backdrop:SetFrameLevel(power:GetFrameLevel() - 1)
+		else
+			power:SetFrameLevel(5)
 		end
 
 		if frame.POWERBAR_DETACHED and db.power.parent == "UIPARENT" then
