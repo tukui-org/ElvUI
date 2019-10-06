@@ -273,7 +273,6 @@ function NP:Construct_Cutaway(nameplate)
 		Cutaway.Health:SetTexture(E.media.blankTex)
 	else
 		Cutaway.Health:SetTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
-		NP.StatusBars[Cutaway.Health] = true
 	end
 
 	local healthTexture = nameplate.Health:GetStatusBarTexture()
@@ -285,7 +284,6 @@ function NP:Construct_Cutaway(nameplate)
 		Cutaway.Power:SetTexture(E.media.blankTex)
 	else
 		Cutaway.Power:SetTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
-		NP.StatusBars[Cutaway.Power] = true
 	end
 
 	local powerTexture = nameplate.Power:GetStatusBarTexture()
