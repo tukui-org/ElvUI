@@ -179,7 +179,7 @@ local function BuildFriendTable(total)
 		if info and info.connected then
 			local className = E:UnlocalizedClassName(info.className) or ""
 			local status = (info.afk and statusTable.AFK) or (info.dnd and statusTable.DND) or ""
-			friendTable[i] = {
+			friendTable[#friendTable + 1] = {
 				name = info.name,			--1
 				level = info.level,			--2
 				class = className,			--3
