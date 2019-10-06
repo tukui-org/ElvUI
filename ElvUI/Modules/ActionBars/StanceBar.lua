@@ -272,6 +272,7 @@ function AB:PositionAndSizeBarShapeShift()
 
 	if useMasque then MasqueGroup:ReSkin() end
 
+	numButtons = GetNumShapeshiftForms()
 	if self.db.stanceBar.enabled then
 		local visibility = self.db.stanceBar.visibility
 		if visibility and visibility:match('[\n\r]') then
