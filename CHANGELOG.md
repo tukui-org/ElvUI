@@ -8,7 +8,8 @@ Fixed an error 'BackpackTokenFrameTokenIcon:SetPoint()', if our Bags are disable
 Fixed some skin errors.  
 Fixed not showing Quest Icons on NamePlates. For your Info: It will only work, if the Tooltip have a progress line  
 Fixed indicator in guild datatext that was not showing when a guild member is in your group  
-Fixed bag count color options  
+Fixed bag count color options
+Fixed Friends Datatext not showing Character Friends
 
 **Misc. Changes:**  
 Added back the tag: 'name:abbrev'  
