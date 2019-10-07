@@ -2274,7 +2274,7 @@ local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 					forceBlankTexture = {
 						type = "toggle",
 						order = 2,
-						name = L["Use Blank Texture"]
+						name = L["Blank Texture"]
 					},
 					lengthBeforeFade = {
 						type = "range",
@@ -2321,7 +2321,7 @@ local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 				forceBlankTexture = {
 					type = "toggle",
 					order = 2,
-					name = L["Use Blank Texture"]
+					name = L["Blank Texture"]
 				},
 				lengthBeforeFade = {
 					type = "range",

@@ -6155,7 +6155,7 @@ E.Options.args.nameplate = {
 										forceBlankTexture = {
 											type = "toggle",
 											order = 2,
-											name = L["Use Blank Texture"]
+											name = L["Blank Texture"]
 										},
 										lengthBeforeFade = {
 											type = "range",
@@ -6204,7 +6204,7 @@ E.Options.args.nameplate = {
 										forceBlankTexture = {
 											type = "toggle",
 											order = 2,
-											name = L["Use Blank Texture"]
+											name = L["Blank Texture"]
 										},
 										lengthBeforeFade = {
 											type = "range",

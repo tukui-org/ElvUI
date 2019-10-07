@@ -1,6 +1,7 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 
+L["Blank Texture"] = true
 L["Add / Remove"] = "Добавить/Удалить"
 L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = "Позволяет добавить счетчик стаков к ауре, когда вы добавляете ее в список. Позволяет выполнение действия, когда накопится нужное кол-во стаков."
 L["Added Map ID: %s"] = "Добавлен ID карты: %s"
