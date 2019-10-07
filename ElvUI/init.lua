@@ -177,6 +177,7 @@ function AddOn:OnInitialize()
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:Contruct_StaticPopups()
 	self:InitializeInitialModules()
+	self.Minimap:SetMinimapShape()
 
 	if GetAddOnEnableState(self.myname, 'Tukui') == 2 then
 		self:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')

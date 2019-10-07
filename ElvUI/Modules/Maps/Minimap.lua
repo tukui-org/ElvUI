@@ -395,9 +395,7 @@ end
 function M:Initialize()
 	menuFrame:SetTemplate("Transparent", true)
 
-	if E.private.general.minimap.enable then
-		self:SetMinimapShape()
-	else
+	if not E.private.general.minimap.enable then
 		_G.Minimap:SetMaskTexture(186178) -- textures/minimapmask.blp
 		return
 	end
@@ -485,8 +483,8 @@ function M:Initialize()
 	Minimap:SetScript("OnMouseUp", E.noop)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Update_ZoneText")
-	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")
 	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_ZoneText")
+	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")
 	self:RegisterEvent('ADDON_LOADED')
 
 	self:UpdateSettings()
