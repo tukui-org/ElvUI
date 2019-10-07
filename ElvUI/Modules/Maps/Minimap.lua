@@ -27,7 +27,6 @@ local ToggleFriendsFrame = ToggleFriendsFrame
 local ToggleGuildFrame = ToggleGuildFrame
 local ToggleHelpFrame = ToggleHelpFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
--- GLOBALS: GetMinimapShape
 
 --Create the new minimap tracking dropdown frame and initialize it
 local ElvUIMiniMapTrackingDropDown = CreateFrame("Frame", "ElvUIMiniMapTrackingDropDown", _G.UIParent, "UIDropDownMenuTemplate")
@@ -381,15 +380,14 @@ local function MinimapPostDrag()
 	_G.MinimapBackdrop:SetAllPoints(_G.Minimap)
 end
 
-function M:SetMinimapShape()
-	--Support for other mods
-	if E.private.general.minimap.enable then
-		function GetMinimapShape()
-			return 'SQUARE'
-		end
+local function GetMinimapShape()
+	return 'SQUARE'
+end
 
-		_G.Minimap:Size(E.db.general.minimap.size, E.db.general.minimap.size)
-	end
+function M:SetGetMinimapShape()
+	--This is just to support for other mods
+	_G.GetMinimapShape = GetMinimapShape
+	_G.Minimap:Size(E.db.general.minimap.size, E.db.general.minimap.size)
 end
 
 function M:Initialize()
