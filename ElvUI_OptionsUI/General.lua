@@ -945,3 +945,18 @@ E.Options.args.general = {
 		},
 	},
 }
+
+E.Options.args.tagGroup = {
+	order = 925,
+	type = "group",
+	name = L["Available Tags"],
+	args = {}
+}
+
+for Tag in next, E.oUF.Tags.Events do
+	E.Options.args.tagGroup.args[Tag] = {
+		type = 'description',
+		fontSize = 'medium',
+		name = Tag,
+	}
+end

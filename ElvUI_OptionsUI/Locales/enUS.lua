@@ -114,6 +114,7 @@ L["Automatically hide the objetive frame during boss or arena fights."] = true
 L["Automatically repair using the following method when visiting a merchant."] = true
 L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = true
 L["Automatically vendor gray items when visiting a vendor."] = true
+L["Available Tags"] = true
 L["AzeriteUI"] = true
 L["Backdrop color of transparent frames"] = true
 L["Backdrop Color"] = true
