@@ -6152,9 +6152,14 @@ E.Options.args.nameplate = {
 											order = 1,
 											name = L["Enable"]
 										},
+										forceBlankTexture = {
+											type = "toggle",
+											order = 2,
+											name = L["Use Blank Texture"]
+										},
 										lengthBeforeFade = {
 											type = "range",
-											order = 2,
+											order = 3,
 											name = L["Fade Out Delay"],
 											desc = L["How much time before the cutaway health starts to fade."],
 											min = 0.1,
@@ -6166,7 +6171,7 @@ E.Options.args.nameplate = {
 										},
 										fadeOutTime = {
 											type = "range",
-											order = 3,
+											order = 4,
 											name = L["Fade Out"],
 											desc = L["How long the cutaway health will take to fade out."],
 											min = 0.1,
@@ -6196,9 +6201,14 @@ E.Options.args.nameplate = {
 											order = 1,
 											name = L["Enable"]
 										},
+										forceBlankTexture = {
+											type = "toggle",
+											order = 2,
+											name = L["Use Blank Texture"]
+										},
 										lengthBeforeFade = {
 											type = "range",
-											order = 2,
+											order = 3,
 											name = L["Fade Out Delay"],
 											desc = L["How much time before the cutaway power starts to fade."],
 											min = 0.1,
@@ -6210,7 +6220,7 @@ E.Options.args.nameplate = {
 										},
 										fadeOutTime = {
 											type = "range",
-											order = 3,
+											order = 4,
 											name = L["Fade Out"],
 											desc = L["How long the cutaway power will take to fade out."],
 											min = 0.1,
