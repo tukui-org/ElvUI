@@ -146,6 +146,7 @@ end
 function M:Minimap_OnMouseDown(btn)
 	_G.HideDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown)
 	menuFrame:Hide()
+
 	local position = self:GetPoint()
 	if btn == "MiddleButton" or (btn == "RightButton" and IsShiftKeyDown()) then
 		if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
@@ -391,14 +392,10 @@ function M:SetGetMinimapShape()
 end
 
 function M:Initialize()
-	menuFrame:SetTemplate("Transparent", true)
-
-	if not E.private.general.minimap.enable then
-		_G.Minimap:SetMaskTexture(186178) -- textures/minimapmask.blp
-		return
-	end
-
+	if not E.private.general.minimap.enable then return end
 	self.Initialized = true
+
+	menuFrame:SetTemplate("Transparent", true)
 
 	local Minimap = _G.Minimap
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
@@ -406,13 +403,12 @@ function M:Initialize()
 	mmholder:Width((Minimap:GetWidth() + 29))
 	mmholder:Height(Minimap:GetHeight() + 53)
 
-	Minimap:ClearAllPoints()
-	Minimap:Point("TOPRIGHT", mmholder, "TOPRIGHT", -E.Border, -E.Border)
-	Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 	Minimap:SetQuestBlobRingAlpha(0)
 	Minimap:SetArchBlobRingAlpha(0)
 	Minimap:CreateBackdrop()
 	Minimap:SetFrameLevel(Minimap:GetFrameLevel() + 2)
+	Minimap:ClearAllPoints()
+	Minimap:Point("TOPRIGHT", mmholder, "TOPRIGHT", -E.Border, -E.Border)
 	Minimap:HookScript('OnEnter', function(mm)
 		if E.db.general.minimap.locationText ~= 'MOUSEOVER' or not E.private.general.minimap.enable then return; end
 		mm.location:Show()
