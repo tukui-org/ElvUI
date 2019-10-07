@@ -123,7 +123,7 @@ local function GetQuests(unitID)
 		if UnitIsPlayer(text) then
 			notMyQuest = text ~= E.myname
 		elseif text and not notMyQuest then
-			local objCount, questType, isPerc
+			local objCount, QuestType, IsPerc
 			local x, y = strmatch(text, '(%d+)/(%d+)')
 			if x and y then
 				objCount = floor(y - x)
@@ -134,42 +134,44 @@ local function GetQuests(unitID)
 				end
 			end
 
-			local logIndex, itemTexture, _
+			local logIndex, itemTex, _
 			local QuestID = ActiveQuests[text]
 			if QuestID then
 				logIndex = GetQuestLogIndexByID(QuestID)
-				_, itemTexture = GetQuestLogSpecialItemInfo(logIndex)
+				_, itemTex = GetQuestLogSpecialItemInfo(logIndex)
 
-				isPerc = false
+				IsPerc = false
 				local progress = C_TaskQuest_GetQuestProgressBarInfo(QuestID)
 				if progress then
 					objCount = floor(progress)
-					isPerc = true
+					IsPerc = true
 				end
 			end
 
-			if itemTexture then
-				questType = "QUEST_ITEM"
+			if itemTex then
+				QuestType = "QUEST_ITEM"
 			elseif objCount then
-				questType = "LOOT"
+				QuestType = "LOOT"
 
 				local lowerText = text:lower()
 				for questString in pairs(QuestTypes) do
 					if strfind(lowerText, questString) then
-						questType = QuestTypes[questString]
+						QuestType = QuestTypes[questString]
 						break
 					end
 				end
 			end
 
-			if questType then
+			if QuestType then
 				if not QuestList then QuestList = {} end
 				QuestList[#QuestList + 1] = {
+					isPerc = IsPerc,
+					itemTexture = itemTex,
 					objectiveCount = objCount,
+					questType = QuestType,
+					-- below keys are currently unused
 					questLogIndex = logIndex,
-					questType = questType,
-					questID = QuestID,
-					isPerc = isPerc
+					questID = QuestID
 				}
 			end
 		end
@@ -205,16 +207,17 @@ local function Update(self, event, unit)
 		local objectiveCount = QuestList[i].objectiveCount
 		local itemTexture = QuestList[i].itemTexture
 		local questType = QuestList[i].questType
+		local isPerc = QuestList[i].isPerc
 
-		if objectiveCount and (objectiveCount > 0 or QuestList[i].isPerc) then
-			element.Text:SetText((QuestList[i].isPerc and objectiveCount.."%") or objectiveCount)
+		if objectiveCount and (objectiveCount > 0 or isPerc) then
+			element.Text:SetText((isPerc and objectiveCount.."%") or objectiveCount)
 
 			element.Skull:Hide()
 			element.Loot:Hide()
 			element.Item:Hide()
 			element.Chat:Hide()
 
-			if questType == "KILL" or QuestList[i].isPerc == true then
+			if questType == "KILL" or isPerc then
 				element.Skull:Show()
 			elseif questType == "LOOT" then
 				element.Loot:Show()
