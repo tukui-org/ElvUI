@@ -115,14 +115,15 @@ function E:CheckRole()
 		self.callbacks:Fire('RoleChanged')
 	end
 
-	if self.myrole and self.DispelClasses[self.myclass] ~= nil then
-		self.DispelClasses[self.myclass].Magic = (self.myrole == 'HEALER')
+	local dispel = self.DispelClasses[self.myclass]
+	if self.myrole and (self.myclass ~= 'PRIEST' and dispel ~= nil) then
+		dispel.Magic = (self.myrole == 'HEALER')
 	end
 end
 
 function E:IsDispellableByMe(debuffType)
-	if not self.DispelClasses[self.myclass] then return end
-	if self.DispelClasses[self.myclass][debuffType] then return true end
+	local dispel = self.DispelClasses[self.myclass]
+	return dispel and dispel[debuffType]
 end
 
 do

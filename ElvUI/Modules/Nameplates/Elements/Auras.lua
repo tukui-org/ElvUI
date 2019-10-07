@@ -237,7 +237,7 @@ function NP:PostUpdateAura(unit, button)
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
 			button.icon:SetDesaturated((unit and not strfind(unit, 'arena%d')) and true or false)
 		else
-			if E.myclass ~= 'WARLOCK' and E.BadPurgeSpells[button.spellID] then
+			if E.BadDispels[button.spellID] and E:IsDispellableByMe(button.dtype) then
 				button:SetBackdropBorderColor(0.05, 0.85, 0.94)
 			else
 				local color = (button.dtype and DebuffTypeColor[button.dtype]) or DebuffTypeColor.none

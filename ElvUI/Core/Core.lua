@@ -151,7 +151,7 @@ E.DispelClasses = {
 	MAGE = { Curse = true }
 }
 
-E.BadPurgeSpells = {
+E.BadDispels = {
 	[34914] = 'Vampiric Touch', --horrifies
 	[233490] = 'Unstable Affliction' --silences
 }
