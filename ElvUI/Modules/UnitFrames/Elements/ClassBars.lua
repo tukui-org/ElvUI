@@ -201,7 +201,7 @@ function UF:Configure_ClassBar(frame, cur)
 		end
 
 		if not db.classbar.strataAndLevel.useCustomLevel then
-			bars:SetFrameLevel(frame:GetFrameLevel() + 5)
+			bars:SetFrameLevel(frame.Health:GetFrameLevel() + 5) --Health uses 10
 		else
 			bars:SetFrameLevel(db.classbar.strataAndLevel.frameLevel)
 		end
@@ -214,7 +214,7 @@ function UF:Configure_ClassBar(frame, cur)
 		end
 
 		bars:SetFrameStrata("LOW")
-		bars:SetFrameLevel(frame:GetFrameLevel() + 5)
+		bars:SetFrameLevel(frame.Health:GetFrameLevel() + 5) --Health uses 10
 
 		if bars.Holder and bars.Holder.mover then
 			bars.Holder.mover:SetScale(0.0001)
