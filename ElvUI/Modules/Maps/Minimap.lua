@@ -381,7 +381,7 @@ local function MinimapPostDrag()
 	_G.MinimapBackdrop:SetAllPoints(_G.Minimap)
 end
 
-function M:GetMinimapShape()
+function M:SetMinimapShape()
 	--Support for other mods
 	if E.private.general.minimap.enable then
 		function GetMinimapShape()
@@ -395,7 +395,9 @@ end
 function M:Initialize()
 	menuFrame:SetTemplate("Transparent", true)
 
-	if not E.private.general.minimap.enable then
+	if E.private.general.minimap.enable then
+		self:SetMinimapShape()
+	else
 		_G.Minimap:SetMaskTexture(186178) -- textures/minimapmask.blp
 		return
 	end
