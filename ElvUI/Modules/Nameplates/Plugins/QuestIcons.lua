@@ -124,6 +124,8 @@ local function GetQuests(unitID)
 			notMyQuest = text ~= E.myname
 		elseif text and not notMyQuest then
 			local objCount, QuestType, IsPerc, logIndex, itemTex, _
+
+			-- active quest
 			local QuestID = ActiveQuests[text]
 			if QuestID then
 				logIndex = GetQuestLogIndexByID(QuestID)
@@ -136,6 +138,7 @@ local function GetQuests(unitID)
 				end
 			end
 
+			-- text check, only if active quest doesnt find the objective
 			if not objCount then
 				local x, y = strmatch(text, '(%d+)/(%d+)')
 				if x and y then
