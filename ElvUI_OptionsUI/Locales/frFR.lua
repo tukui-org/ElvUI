@@ -1,18 +1,17 @@
 -- French localization file for frFR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "frFR")
 
-L["Blank Texture"] = true
+L["# Displayed Auras"] = "Auras affichées"
+L["%s and then %s"] = "%s et alors %s"
+L["24-Hour Time"] = "Mode 24 Heures"
+L["2D"] = "2D"
+L["3D"] = "3D"
 L["Add / Remove"] = true
 L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = true
 L["Added Map ID: %s"] = true
 L["Added Instance ID: %s"] = true
 L["Added Zone Name: %s"] = true
 L["Added Subzone Name: %s"] = true
-L["# Displayed Auras"] = "Auras affichées"
-L["%s and then %s"] = "%s et alors %s"
-L["24-Hour Time"] = "Mode 24 Heures"
-L["2D"] = "2D"
-L["3D"] = "3D"
 L["Above Chat"] = "En-dessus du Chat"
 L["Above"] = "Au-dessus"
 L["Absorbs"] = "Absorbtions"
@@ -155,6 +154,7 @@ L["BG Map"] = "Carte Champs de bataille"
 L["BG Score"] = "Scores Champs de bataille"
 L["Blacklist Modifier"] = true
 L["Blacklist"] = "Liste noire"
+L["Blank Texture"] = true
 L["Blizzard Style"] = "Style Blizzard"
 L["Blizzard"] = true
 L["BlizzUI Improvements"] = true

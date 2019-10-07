@@ -1,18 +1,17 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 
-L["Blank Texture"] = true
+L["# Displayed Auras"] = "Кол-во аур"
+L["%s and then %s"] = "%s, а затем %s"
+L["24-Hour Time"] = "24х часовой формат"
+L["2D"] = "2D"
+L["3D"] = "3D"
 L["Add / Remove"] = "Добавить/Удалить"
 L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = "Позволяет добавить счетчик стаков к ауре, когда вы добавляете ее в список. Позволяет выполнение действия, когда накопится нужное кол-во стаков."
 L["Added Map ID: %s"] = "Добавлен ID карты: %s"
 L["Added Instance ID: %s"] = "Добавлен ID инстанса: %s"
 L["Added Zone Name: %s"] = "Добавлено название зоны: %s"
 L["Added Subzone Name: %s"] = "Добавлено название субзоны: %s"
-L["# Displayed Auras"] = "Кол-во аур"
-L["%s and then %s"] = "%s, а затем %s"
-L["24-Hour Time"] = "24х часовой формат"
-L["2D"] = "2D"
-L["3D"] = "3D"
 L["Above Chat"] = "Над чатом"
 L["Above"] = "Сверху"
 L["Absorbs"] = "Поглощения"
@@ -155,6 +154,7 @@ L["BG Map"] = "Карта ПБ"
 L["BG Score"] = "Таблица ПБ"
 L["Blacklist Modifier"] = "Модификатор черного писка"
 L["Blacklist"] = "Черный список"
+L["Blank Texture"] = true
 L["Blizzard Style"] = "Стиль Blizzard"
 L["Blizzard"] = true --Doesn't need translating
 L["BlizzUI Improvements"] = "Улучшения Blizzard UI"

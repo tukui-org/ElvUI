@@ -1,18 +1,17 @@
 -- Traditional Chinese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
 
-L["Blank Texture"] = true
+L["# Displayed Auras"] = "顯示光環的數量"
+L["%s and then %s"] = "%s 與 %s"
+L["24-Hour Time"] = "24小時制"
+L["2D"] = "2D"
+L["3D"] = "3D"
 L["Add / Remove"] = true
 L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = true
 L["Added Map ID: %s"] = true
 L["Added Instance ID: %s"] = true
 L["Added Zone Name: %s"] = true
 L["Added Subzone Name: %s"] = true
-L["# Displayed Auras"] = "顯示光環的數量"
-L["%s and then %s"] = "%s 與 %s"
-L["24-Hour Time"] = "24小時制"
-L["2D"] = "2D"
-L["3D"] = "3D"
 L["Above Chat"] = "對話框上方"
 L["Above"] = "向上"
 L["Absorbs"] = "吸收"
@@ -156,6 +155,7 @@ L["BG Map"] = "戰場地圖"
 L["BG Score"] = "戰場積分"
 L["Blacklist Modifier"] = "黑名單功能鍵"
 L["Blacklist"] = "黑名單"
+L["Blank Texture"] = true
 L["Blizzard Style"] = "暴雪風格"
 L["Blizzard"] = "暴雪原生"
 L["BlizzUI Improvements"] = "暴雪介面增強"

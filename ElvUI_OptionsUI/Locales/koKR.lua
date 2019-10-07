@@ -1,18 +1,17 @@
 -- Korean localization file for koKR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "koKR")
 
-L["Blank Texture"] = true
+L["# Displayed Auras"] = "표시되는 효과 갯수"
+L["%s and then %s"] = "%s 이후 %s"
+L["24-Hour Time"] = "24시제로 표시"
+L["2D"] = "이미지"
+L["3D"] = "3d 모델"
 L["Add / Remove"] = true
 L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = true
 L["Added Map ID: %s"] = true
 L["Added Instance ID: %s"] = true
 L["Added Zone Name: %s"] = true
 L["Added Subzone Name: %s"] = true
-L["# Displayed Auras"] = "표시되는 효과 갯수"
-L["%s and then %s"] = "%s 이후 %s"
-L["24-Hour Time"] = "24시제로 표시"
-L["2D"] = "이미지"
-L["3D"] = "3d 모델"
 L["Above Chat"] = "채팅창 위에 배치"
 L["Above"] = "프레임 위로"
 L["Absorbs"] = "보호막"
@@ -155,6 +154,7 @@ L["BG Map"] = "전장 맵"
 L["BG Score"] = "전장 점수판"
 L["Blacklist Modifier"] = true
 L["Blacklist"] = "블랙리스트"
+L["Blank Texture"] = true
 L["Blizzard Style"] = "블리자드 기본"
 L["Blizzard"] = true
 L["BlizzUI Improvements"] = true

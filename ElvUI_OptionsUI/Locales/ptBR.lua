@@ -1,18 +1,17 @@
 -- Portuguese localization file for ptBR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ptBR")
 
-L["Blank Texture"] = true
+L["# Displayed Auras"] = true
+L["%s and then %s"] = "%s e depois %s"
+L["24-Hour Time"] = "24 horas"
+L["2D"] = "2D"
+L["3D"] = "3D"
 L["Add / Remove"] = true
 L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = true
 L["Added Map ID: %s"] = true
 L["Added Instance ID: %s"] = true
 L["Added Zone Name: %s"] = true
 L["Added Subzone Name: %s"] = true
-L["# Displayed Auras"] = true
-L["%s and then %s"] = "%s e depois %s"
-L["24-Hour Time"] = "24 horas"
-L["2D"] = "2D"
-L["3D"] = "3D"
 L["Above Chat"] = "Acima do Bate-papo"
 L["Above"] = "Acima"
 L["Absorbs"] = "Absorções"
@@ -155,6 +154,7 @@ L["BG Map"] = "Mapa do CB"
 L["BG Score"] = "Placar do CB"
 L["Blacklist Modifier"] = true
 L["Blacklist"] = "Lista negra"
+L["Blank Texture"] = true
 L["Blizzard Style"] = true
 L["Blizzard"] = true
 L["BlizzUI Improvements"] = true

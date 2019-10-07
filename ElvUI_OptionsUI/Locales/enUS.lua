@@ -1,18 +1,17 @@
 -- English localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
 
-L["Blank Texture"] = true
+L["# Displayed Auras"] = true
+L["%s and then %s"] = true
+L["24-Hour Time"] = true
+L["2D"] = true
+L["3D"] = true
 L["Add / Remove"] = true
 L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = true
 L["Added Map ID: %s"] = true
 L["Added Instance ID: %s"] = true
 L["Added Zone Name: %s"] = true
 L["Added Subzone Name: %s"] = true
-L["# Displayed Auras"] = true
-L["%s and then %s"] = true
-L["24-Hour Time"] = true
-L["2D"] = true
-L["3D"] = true
 L["Above Chat"] = true
 L["Above"] = true
 L["Absorbs"] = true
@@ -157,6 +156,7 @@ L["BG Map"] = true
 L["BG Score"] = true
 L["Blacklist Modifier"] = true
 L["Blacklist"] = true
+L["Blank Texture"] = true
 L["Blizzard Style"] = true
 L["Blizzard"] = true
 L["BlizzUI Improvements"] = true

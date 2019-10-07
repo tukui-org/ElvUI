@@ -1,18 +1,17 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
-L["Blank Texture"] = true
+L["# Displayed Auras"] = true
+L["%s and then %s"] = "%s y entonces %s"
+L["24-Hour Time"] = "Tiempo de 24 horas"
+L["2D"] = "2D"
+L["3D"] = "3D"
 L["Add / Remove"] = true
 L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = true
 L["Added Map ID: %s"] = true
 L["Added Instance ID: %s"] = true
 L["Added Zone Name: %s"] = true
 L["Added Subzone Name: %s"] = true
-L["# Displayed Auras"] = true
-L["%s and then %s"] = "%s y entonces %s"
-L["24-Hour Time"] = "Tiempo de 24 horas"
-L["2D"] = "2D"
-L["3D"] = "3D"
 L["Above Chat"] = "Arriba del Chat"
 L["Above"] = "Encima"
 L["Absorbs"] = "Absorciones"
@@ -155,6 +154,7 @@ L["BG Map"] = "Mapa de CB"
 L["BG Score"] = "Puntuación de CB"
 L["Blacklist Modifier"] = true
 L["Blacklist"] = "Lista Negra"
+L["Blank Texture"] = true
 L["Blizzard Style"] = true
 L["Blizzard"] = true
 L["BlizzUI Improvements"] = true

@@ -1,18 +1,17 @@
 -- Simplified Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 
-L["Blank Texture"] = true
+L["# Displayed Auras"] = "显示光环的数量"
+L["%s and then %s"] = "%s 于 %s"
+L["24-Hour Time"] = "24小时制"
+L["2D"] = "2D"
+L["3D"] = "3D"
 L["Add / Remove"] = "添加/移除"
 L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = true
 L["Added Map ID: %s"] = "添加地图ID: %s"
 L["Added Instance ID: %s"] = "添加副本ID: %s"
 L["Added Zone Name: %s"] = "添加区域名字: %s"
 L["Added Subzone Name: %s"] = "添加子区域名字: %s"
-L["# Displayed Auras"] = "显示光环的数量"
-L["%s and then %s"] = "%s 于 %s"
-L["24-Hour Time"] = "24小时制"
-L["2D"] = "2D"
-L["3D"] = "3D"
 L["Above Chat"] = "聊天框上方"
 L["Above"] = "向上"
 L["Absorbs"] = "吸收"
@@ -155,6 +154,7 @@ L["BG Map"] = "战场地图"
 L["BG Score"] = "战场记分"
 L["Blacklist Modifier"] = "黑名单功能键"
 L["Blacklist"] = "黑名单"
+L["Blank Texture"] = true
 L["Blizzard Style"] = "暴雪样式"
 L["Blizzard"] = "暴雪原生"
 L["BlizzUI Improvements"] = "暴雪界面优化"

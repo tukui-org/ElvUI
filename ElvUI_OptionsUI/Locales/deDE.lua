@@ -1,18 +1,17 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
-L["Blank Texture"] = true
-L["Add / Remove"] = true
-L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = true
-L["Added Map ID: %s"] = true
-L["Added Instance ID: %s"] = true
-L["Added Zone Name: %s"] = true
-L["Added Subzone Name: %s"] = true
 L["# Displayed Auras"] = "# angezeigte Auren"
 L["%s and then %s"] = "%s und dann %s"
 L["24-Hour Time"] = "24-Stunden-Format"
 L["2D"] = "2D"
 L["3D"] = "3D"
+L["Add / Remove"] = "Hinzufügen/Entfernen"
+L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = "Erlaubt dir den Stappelzähler an eine Aura zu knüpfen wenn du sie zur Liste hinzufügst, dass erlaubt dem Auslöser zu agieren wenn eine Aura X Stappel erreicht."
+L["Added Map ID: %s"] = "Map ID: %s hinzugefügt"
+L["Added Instance ID: %s"] = "Instanz ID: %s hinzugefügt"
+L["Added Zone Name: %s"] = "Zonen Name: %s hinzugefügt"
+L["Added Subzone Name: %s"] = "Unterzonen Namen: %s hinzugefügt"
 L["Above Chat"] = "Über dem Chat"
 L["Above"] = "Oben"
 L["Absorbs"] = "Absorbierungen"
@@ -156,6 +155,7 @@ L["BG Map"] = "Schlachtfeldkarte"
 L["BG Score"] = "Schlachtfeldpunkte"
 L["Blacklist Modifier"] = "Schwarze Liste Modifikator"
 L["Blacklist"] = "Schwarze Liste"
+L["Blank Texture"] = "Blanke Texture"
 L["Blizzard Style"] = "Blizzard Stil"
 L["Blizzard"] = true --No need to translate
 L["BlizzUI Improvements"] = "Blizzard Verbesserungen"
@@ -1398,7 +1398,7 @@ L["You do not need to use Is Casting Anything or Is Channeling Anything for thes
 L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."] = "Du kannst keinen Filter entfernen, der nicht von dir selbst hinzugefügt wurde. Setzte den Zauber einfach auf deaktiviert."
 L["You must be targeting a player."] = "Du musst einen Spieler anvisiert haben."
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = "Du musst den Modifikator gedrückt halten um mit rechtsklick auf ein Symbol es zur Schwarzen Liste hinzuzufügen. Setzte auf Kein um die Funktion zu deaktivieren."
-L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = true
+L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = "Du hast immer noch ElvUI_Config installiert.  ElvUI_Config wurde zu ElvUI_OptionsUI umbenannt, bitte entferne es."
 L["Your Auras First"] = "Deine Auren zuerst"
 L["Zone Ability"] = "Zonen Fähigkeit"
 L["Zone Name"] = "Zonen Name"
