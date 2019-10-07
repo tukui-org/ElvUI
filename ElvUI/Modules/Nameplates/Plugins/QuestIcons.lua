@@ -4,8 +4,8 @@ local oUF = E.oUF
 --Lua functions
 local _G = _G
 local pairs, tonumber = pairs, tonumber
+local strmatch, strfind = strmatch, strfind
 local ceil, floor = ceil, floor
-local strmatch = strmatch
 --WoW API / Variables
 local GetLocale = GetLocale
 local GetQuestLogIndexByID = GetQuestLogIndexByID
@@ -14,6 +14,7 @@ local GetQuestLogTitle = GetQuestLogTitle
 local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local C_TaskQuest_GetQuestProgressBarInfo = C_TaskQuest.GetQuestProgressBarInfo
+local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
 
 local ActiveQuests = {
 	-- [questName] = questID ?
@@ -90,7 +91,6 @@ local QuestTypes = QuestTypesLocalized[UsedLocale] or QuestTypesLocalized.enUS
 local function QUEST_ACCEPTED(self, event, questLogIndex, questID)
 	if questLogIndex and questLogIndex > 0 then
 		local questName = GetQuestLogTitle(questLogIndex)
-
 		if questName and (questID and questID > 0) then
 			ActiveQuests[questName] = questID
 		end
@@ -114,61 +114,64 @@ local function GetQuests(unitID)
 	E.ScanTooltip:SetUnit(unitID)
 	E.ScanTooltip:Show()
 
-	local QuestList, questID, notMyQuest = {}
+	local QuestList, notMyQuest
 	for i = 3, E.ScanTooltip:NumLines() do
 		local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
 		local text = str and str:GetText()
 		if not text or text == '' then return end
-		if not questID then questID = ActiveQuests[text] end
 
 		if UnitIsPlayer(text) then
 			notMyQuest = text ~= E.myname
 		elseif text and not notMyQuest then
-			local index = #QuestList + 1
-			QuestList[index] = {}
-			text = text:lower()
-
+			local objCount, questType, isPerc
 			local x, y = strmatch(text, '(%d+)/(%d+)')
 			if x and y then
-				QuestList[index].objectiveCount = floor(y - x)
-			else
+				objCount = floor(y - x)
+			elseif not strmatch(text, ThreatTooltip) then
 				local progress = tonumber(strmatch(text, '([%d%.]+)%%')) -- contains % in the text
 				if progress and progress <= 100 then
-					QuestList[index].objectiveCount = ceil(100 - progress)
+					objCount = ceil(100 - progress)
 				end
 			end
 
-			local QuestLogIndex, itemTexture, _
-			if questID then
-				QuestLogIndex = GetQuestLogIndexByID(questID)
-				_, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
+			local logIndex, itemTexture, _
+			local QuestID = ActiveQuests[text]
+			if QuestID then
+				logIndex = GetQuestLogIndexByID(QuestID)
+				_, itemTexture = GetQuestLogSpecialItemInfo(logIndex)
 
-				QuestList[index].isPerc = false
-				local progress = C_TaskQuest_GetQuestProgressBarInfo(questID)
+				isPerc = false
+				local progress = C_TaskQuest_GetQuestProgressBarInfo(QuestID)
 				if progress then
-					QuestList[index].objectiveCount = floor(progress)
-					QuestList[index].isPerc = true
+					objCount = floor(progress)
+					isPerc = true
 				end
-
-				QuestList[index].itemTexture = itemTexture
-				QuestList[index].questID = questID
 			end
 
 			if itemTexture then
-				QuestList[index].questType = "QUEST_ITEM"
-			else
-				QuestList[index].questType = "LOOT"
+				questType = "QUEST_ITEM"
+			elseif objCount then
+				questType = "LOOT"
 
+				local lowerText = text:lower()
 				for questString in pairs(QuestTypes) do
-					if text:find(questString) then
-						QuestList[index].questType = QuestTypes[questString]
+					if strfind(lowerText, questString) then
+						questType = QuestTypes[questString]
 						break
 					end
 				end
 			end
 
-			questID = nil
-			QuestList[index].questLogIndex = QuestLogIndex
+			if questType then
+				if not QuestList then QuestList = {} end
+				QuestList[#QuestList + 1] = {
+					objectiveCount = objCount,
+					questLogIndex = logIndex,
+					questType = questType,
+					questID = QuestID,
+					isPerc = isPerc
+				}
+			end
 		end
 	end
 
@@ -198,11 +201,10 @@ local function Update(self, event, unit)
 
 	if not QuestList then return end
 
-	local objectiveCount, questType, itemTexture
 	for i = 1, #QuestList do
-		objectiveCount = QuestList[i].objectiveCount
-		questType = QuestList[i].questType
-		itemTexture = QuestList[i].itemTexture
+		local objectiveCount = QuestList[i].objectiveCount
+		local itemTexture = QuestList[i].itemTexture
+		local questType = QuestList[i].questType
 
 		if objectiveCount and (objectiveCount > 0 or QuestList[i].isPerc) then
 			element.Text:SetText((QuestList[i].isPerc and objectiveCount.."%") or objectiveCount)
