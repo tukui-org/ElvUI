@@ -195,7 +195,7 @@ function UF:Configure_Power(frame)
 			power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER, -frame.SPACING*3)
 			power:Height(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
 
-			power:SetFrameLevel(frame.Health:GetFrameLevel() - 5) --Health uses 10
+			power:SetFrameLevel(frame.Health:GetFrameLevel() + 5) --Health uses 10
 		end
 
 		--Hide mover until we detach again
@@ -214,8 +214,6 @@ function UF:Configure_Power(frame)
 		if db.power.strataAndLevel and db.power.strataAndLevel.useCustomLevel then
 			power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
 			power.backdrop:SetFrameLevel(power:GetFrameLevel() - 1)
-		else
-			power:SetFrameLevel(frame.Health:GetFrameLevel() + 5)
 		end
 
 		if frame.POWERBAR_DETACHED and db.power.parent == "UIPARENT" then
