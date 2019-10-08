@@ -128,9 +128,9 @@ local function CreateAuraBar(oUF, anchor)
 		statusBar.spelltime:SetFont(auraBarParent.spellTimeFont or [[Fonts\FRIZQT__.TTF]], auraBarParent.spellTimeSize or 10)
 	end
 	statusBar.spelltime:SetTextColor(1 ,1, 1)
-	statusBar.spelltime:SetJustifyH'RIGHT'
-	statusBar.spelltime:SetJustifyV'CENTER'
-	statusBar.spelltime:SetPoint'RIGHT'
+	statusBar.spelltime:SetJustifyH('RIGHT')
+	statusBar.spelltime:SetJustifyV('MIDDLE')
+	statusBar.spelltime:SetPoint('RIGHT')
 
 	statusBar.spellname = statusBar:CreateFontString(nil, 'ARTWORK')
 	if auraBarParent.spellNameObject then
@@ -139,9 +139,9 @@ local function CreateAuraBar(oUF, anchor)
 		statusBar.spellname:SetFont(auraBarParent.spellNameFont or [[Fonts\FRIZQT__.TTF]], auraBarParent.spellNameSize or 10)
 	end
 	statusBar.spellname:SetTextColor(1, 1, 1)
-	statusBar.spellname:SetJustifyH'LEFT'
-	statusBar.spellname:SetJustifyV'CENTER'
-	statusBar.spellname:SetPoint'LEFT'
+	statusBar.spellname:SetJustifyH('LEFT')
+	statusBar.spellname:SetJustifyV('MIDDLE')
+	statusBar.spellname:SetPoint('LEFT')
 	statusBar.spellname:SetPoint('RIGHT', statusBar.spelltime, 'LEFT')
 
 	if auraBarParent.PostCreateBar then

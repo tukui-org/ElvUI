@@ -82,6 +82,7 @@ function M:ClearPageInfo(frame, which)
 
 			for y=1, 10 do
 				inspectItem['textureSlot'..y]:SetTexture()
+				inspectItem['textureSlotBackdrop'..y]:Hide()
 			end
 		end
 	end
@@ -120,7 +121,7 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	end
 end
 
-function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors, which)
+function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors, which, fullEnchantText)
 	iLevelDB[i] = iLvl
 
 	inspectItem.enchantText:SetText(enchant)
@@ -192,10 +193,10 @@ function M:TryGearAgain(frame, which, i, deepScan, iLevelDB, inspectItem)
 		if which == 'Inspect' and (not frame or not frame.unit) then return end
 
 		local unit = (which == 'Character' and 'player') or frame.unit
-		local iLvl, enchant, gems, essences, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, deepScan)
+		local iLvl, enchant, gems, essences, enchantColors, itemLevelColors, fullEnchantText = E:GetGearSlotInfo(unit, i, deepScan)
 		if iLvl == 'tooSoon' then return end
 
-		M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors, which)
+		M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors, which, fullEnchantText)
 	end)
 end
 
@@ -212,12 +213,12 @@ function M:UpdatePageInfo(frame, which, guid, event)
 			inspectItem.iLvlText:SetText('')
 
 			local unit = (which == 'Character' and 'player') or frame.unit
-			local iLvl, enchant, gems, essences, enchantColors, itemLevelColors = E:GetGearSlotInfo(unit, i, true)
+			local iLvl, enchant, gems, essences, enchantColors, itemLevelColors, fullEnchantText = E:GetGearSlotInfo(unit, i, true)
 			if iLvl == 'tooSoon' then
 				if not waitForItems then waitForItems = true end
 				M:TryGearAgain(frame, which, i, true, iLevelDB, inspectItem)
 			else
-				M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors, which)
+				M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors, which, fullEnchantText)
 			end
 		end
 	end

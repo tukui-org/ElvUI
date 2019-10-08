@@ -40,7 +40,6 @@ S.Blizzard.Regions = {
 	'Cover',
 	'Border',
 	'Background',
-	-- EditBox
 	'TopTex',
 	'TopLeftTex',
 	'TopRightTex',
@@ -445,32 +444,42 @@ function S:HandleEditBox(frame)
 	end
 end
 
-function S:HandleDropDownBox(frame, width)
-	if frame.backdrop then return end
+function S:HandleDropDownBox(frame, width, pos)
+	assert(frame, "doesnt exist!")
+
+	local frameName = frame.GetName and frame:GetName()
+	local button = frame.Button or frameName and (_G[frameName.."Button"] or _G[frameName.."_Button"])
+	local text = frameName and _G[frameName.."Text"] or frame.Text
+	local icon = frame.Icon
+
+	if not width then
+		width = 155
+	end
 
 	frame:StripTextures()
+	frame:SetWidth(width)
+
 	frame:CreateBackdrop()
-	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
-	frame.backdrop:Point("TOPLEFT", frame.Left, 20, -21)
-	frame.backdrop:Point("BOTTOMRIGHT", frame.Right, -19, 23)
+	frame:SetFrameLevel(frame:GetFrameLevel() + 2)
+	frame.backdrop:SetPoint("TOPLEFT", 20, -2)
+	frame.backdrop:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 
-	if width then
-		frame:Width(width)
+	button:ClearAllPoints()
+	if pos then
+		button:SetPoint("TOPRIGHT", frame.Right, -20, -21)
+	else
+		button:SetPoint("RIGHT", frame, "RIGHT", -10, 3)
+	end
+	button.SetPoint = E.noop
+	S:HandleNextPrevButton(button)
+
+	if text then
+		text:ClearAllPoints()
+		text:SetPoint("RIGHT", button, "LEFT", -2, 0)
 	end
 
-	local FrameName = frame.GetName and frame:GetName()
-	-- We need to check first for frame.Button otherwise it will fail on some elements
-	local button = frame.Button or FrameName and _G[FrameName..'Button']
-	if button then
-		button:ClearAllPoints()
-		button:Point("RIGHT", frame.backdrop)
-		button:SetSize(16, 16)
-		S:HandleNextPrevButton(button)
-	end
-
-	local icon = frame.Icon
 	if icon then
-		icon:Point("LEFT", 23, 0)
+		icon:SetPoint("LEFT", 23, 0)
 	end
 end
 

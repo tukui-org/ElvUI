@@ -85,6 +85,7 @@ local function LoadSkin()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		reward.Border:Hide()
+		reward.CircleMask:Hide()
 		S:HandleIcon(reward.Icon, true)
 
 		reward.EnlistmentBonus:StripTextures()
@@ -206,7 +207,6 @@ local function LoadSkin()
 
 	--Tutorials
 	S:HandleCloseButton(_G.PremadeGroupsPvPTutorialAlert.CloseButton)
-	S:HandleCloseButton(HonorFrame.BonusFrame.BrawlHelpBox.CloseButton)
 
 	-- New Season Frame
 	local NewSeasonPopup = _G.PVPQueueFrame.NewSeasonPopup

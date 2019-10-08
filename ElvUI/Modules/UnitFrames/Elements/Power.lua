@@ -169,7 +169,7 @@ function UF:Configure_Power(frame)
 				power:Point("TOPLEFT", frame.Health, "TOPLEFT", -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 			end
-			power:SetFrameLevel(frame.Health:GetFrameLevel() -5) --Health uses 10
+			power:SetFrameLevel(frame.Health:GetFrameLevel() - 5) --Health uses 10
 		elseif frame.USE_INSET_POWERBAR then
 			power:Height(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
 			power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", frame.BORDER + (frame.BORDER*2), frame.BORDER + (frame.BORDER*2))
@@ -195,7 +195,7 @@ function UF:Configure_Power(frame)
 			power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER, -frame.SPACING*3)
 			power:Height(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
 
-			power:SetFrameLevel(frame.Health:GetFrameLevel() - 5)
+			power:SetFrameLevel(frame.Health:GetFrameLevel() + 5) --Health uses 10
 		end
 
 		--Hide mover until we detach again

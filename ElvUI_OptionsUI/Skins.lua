@@ -46,6 +46,13 @@ E.Options.args.skins = {
 					get = function(info) return E.private.skins.parchmentRemover.enable end,
 					set = function(info, value) E.private.skins.parchmentRemover.enable = value; E:StaticPopup_Show("PRIVATE_RL") end,
 				},
+				cleanBossButton = {
+					order = 5,
+					type = 'toggle',
+					name = L["Clean Boss Button"],
+					get = function(info) return E.private.skins.cleanBossButton end,
+					set = function(info, value) E.private.skins.cleanBossButton = value; E:StaticPopup_Show("PRIVATE_RL") end,
+				}
 			},
 		},
 		talkingHead = {

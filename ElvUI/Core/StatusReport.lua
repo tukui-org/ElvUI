@@ -208,7 +208,7 @@ function E:CreateStatusFrame()
 	--Content lines
 	StatusFrame.Section1.Content.Line1.Text:SetFormattedText('Version of ElvUI: |cff4beb2c%s|r', E.version)
 	StatusFrame.Section1.Content.Line2.Text:SetFormattedText('Other AddOns Enabled: |cff4beb2c%s|r', AreOtherAddOnsEnabled())
-	StatusFrame.Section1.Content.Line3.Text:SetFormattedText('Recommended Scale: |cff4beb2c%s|r', E:PixelClip(E:PixelBestSize()))
+	StatusFrame.Section1.Content.Line3.Text:SetFormattedText('Recommended Scale: |cff4beb2c%s|r', E:PixelBestSize())
 	StatusFrame.Section1.Content.Line4.Text:SetFormattedText('UI Scale Is: |cff4beb2c%s|r', E.global.general.UIScale)
 	StatusFrame.Section2.Content.Line1.Text:SetFormattedText('Version of WoW: |cff4beb2c%s (build %s)|r', E.wowpatch, E.wowbuild)
 	StatusFrame.Section2.Content.Line2.Text:SetFormattedText('Client Language: |cff4beb2c%s|r', GetLocale())

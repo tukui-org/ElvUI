@@ -172,16 +172,6 @@ function AB:PositionAndSizeBarShapeShift()
 	bar:Width(barWidth)
 	bar:Height(barHeight)
 
-	if self.db.stanceBar.enabled then
-		bar:SetScale(1)
-		bar:SetAlpha(bar.db.alpha)
-		E:EnableMover(bar.mover:GetName())
-	else
-		bar:SetScale(0.0001)
-		bar:SetAlpha(0)
-		E:DisableMover(bar.mover:GetName())
-	end
-
 	local horizontalGrowth, verticalGrowth
 	if point == "TOPLEFT" or point == "TOPRIGHT" then
 		verticalGrowth = "DOWN"
@@ -256,10 +246,8 @@ function AB:PositionAndSizeBarShapeShift()
 		end
 
 		if i > numButtons then
-			button:SetScale(0.0001)
 			button:SetAlpha(0)
 		else
-			button:SetScale(1)
 			button:SetAlpha(bar.db.alpha)
 		end
 
@@ -283,6 +271,20 @@ function AB:PositionAndSizeBarShapeShift()
 	end
 
 	if useMasque then MasqueGroup:ReSkin() end
+
+	numButtons = GetNumShapeshiftForms()
+	if self.db.stanceBar.enabled then
+		local visibility = self.db.stanceBar.visibility
+		if visibility and visibility:match('[\n\r]') then
+			visibility = visibility:gsub('[\n\r]','')
+		end
+
+		RegisterStateDriver(bar, "visibility", (numButtons == 0 and "hide") or visibility)
+		E:EnableMover(bar.mover:GetName())
+	else
+		RegisterStateDriver(bar, "visibility", "hide")
+		E:DisableMover(bar.mover:GetName())
+	end
 end
 
 function AB:AdjustMaxStanceButtons(event)

@@ -301,7 +301,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.filters.args.jumpToFilter = {
 		order = 18,
 		name = L["Filters Page"],
-		desc = L["Shortcut to 'Filters' section of the config."],
+		desc = L["Shortcut to Filters section of the config."],
 		type = "execute",
 		func = function() ACD:SelectGroup("ElvUI", "filters") end,
 	}
@@ -328,7 +328,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.filters.args.priority = {
 		order = 20,
 		name = L["Add Regular Filter"],
-		desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
+		desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."],
 		type = 'select',
 		values = function()
 			local filters = {}
@@ -626,7 +626,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 	config.args.filters.args.jumpToFilter = {
 		order = 18,
 		name = L["Filters Page"],
-		desc = L["Shortcut to 'Filters' section of the config."],
+		desc = L["Shortcut to Filters section of the config."],
 		type = "execute",
 		func = function() ACD:SelectGroup("ElvUI", "filters") end,
 	}
@@ -653,7 +653,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 	config.args.filters.args.priority = {
 		order = 20,
 		name = L["Add Regular Filter"],
-		desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
+		desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."],
 		type = 'select',
 		values = function()
 			local filters = {}
@@ -2271,9 +2271,14 @@ local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 						order = 1,
 						name = L["Enable"]
 					},
+					forceBlankTexture = {
+						type = "toggle",
+						order = 2,
+						name = L["Blank Texture"]
+					},
 					lengthBeforeFade = {
 						type = "range",
-						order = 2,
+						order = 3,
 						name = L["Fade Out Delay"],
 						desc = L["How much time before the cutaway health starts to fade."],
 						min = 0.1,
@@ -2285,7 +2290,7 @@ local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 					},
 					fadeOutTime = {
 						type = "range",
-						order = 3,
+						order = 4,
 						name = L["Fade Out"],
 						desc = L["How long the cutaway health will take to fade out."],
 						min = 0.1,
@@ -2313,9 +2318,14 @@ local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 					order = 1,
 					name = L["Enable"]
 				},
+				forceBlankTexture = {
+					type = "toggle",
+					order = 2,
+					name = L["Blank Texture"]
+				},
 				lengthBeforeFade = {
 					type = "range",
-					order = 2,
+					order = 3,
 					name = L["Fade Out Delay"],
 					desc = L["How much time before the cutaway power starts to fade."],
 					min = 0.1,
@@ -2327,7 +2337,7 @@ local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 				},
 				fadeOutTime = {
 					type = "range",
-					order = 3,
+					order = 4,
 					name = L["Fade Out"],
 					desc = L["How long the cutaway power will take to fade out."],
 					min = 0.1,
@@ -2606,7 +2616,7 @@ E.Options.args.unitframe = {
 						targetOnMouseDown = {
 							order = 5,
 							name = L["Target On Mouse-Down"],
-							desc = L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."],
+							desc = L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon Clique you may have to adjust your Clique settings when changing this."],
 							type = "toggle",
 						},
 						auraBlacklistModifier = {
@@ -6045,7 +6055,7 @@ E.Options.args.unitframe.args.party = {
 				profileSpecific = {
 					type = 'toggle',
 					name = L["Profile Specific"],
-					desc = L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."],
+					desc = L["Use the profile specific filter Buff Indicator (Profile) instead of the global filter Buff Indicator."],
 					order = 5,
 				},
 				configureButton = {
@@ -6699,7 +6709,7 @@ E.Options.args.unitframe.args.raid = {
 				profileSpecific = {
 					type = 'toggle',
 					name = L["Profile Specific"],
-					desc = L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."],
+					desc = L["Use the profile specific filter Buff Indicator (Profile) instead of the global filter Buff Indicator."],
 					order = 5,
 				},
 				configureButton = {
@@ -7165,7 +7175,7 @@ E.Options.args.unitframe.args.raid40 = {
 				profileSpecific = {
 					type = 'toggle',
 					name = L["Profile Specific"],
-					desc = L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."],
+					desc = L["Use the profile specific filter Buff Indicator (Profile) instead of the global filter Buff Indicator."],
 					order = 5,
 				},
 				configureButton = {
@@ -7790,7 +7800,7 @@ E.Options.args.unitframe.args.tank = {
 				profileSpecific = {
 					type = 'toggle',
 					name = L["Profile Specific"],
-					desc = L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."],
+					desc = L["Use the profile specific filter Buff Indicator (Profile) instead of the global filter Buff Indicator."],
 					order = 5,
 				},
 				configureButton = {
@@ -7983,7 +7993,7 @@ E.Options.args.unitframe.args.assist = {
 				profileSpecific = {
 					type = 'toggle',
 					name = L["Profile Specific"],
-					desc = L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."],
+					desc = L["Use the profile specific filter Buff Indicator (Profile) instead of the global filter Buff Indicator."],
 					order = 5,
 				},
 				configureButton = {

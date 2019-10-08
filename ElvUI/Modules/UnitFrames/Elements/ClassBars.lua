@@ -201,7 +201,7 @@ function UF:Configure_ClassBar(frame, cur)
 		end
 
 		if not db.classbar.strataAndLevel.useCustomLevel then
-			bars:SetFrameLevel(frame:GetFrameLevel() + 5)
+			bars:SetFrameLevel(frame.Health:GetFrameLevel() + 10) --Health uses 10, Power uses (Health + 5) when attached
 		else
 			bars:SetFrameLevel(db.classbar.strataAndLevel.frameLevel)
 		end
@@ -213,7 +213,8 @@ function UF:Configure_ClassBar(frame, cur)
 			bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING*3)
 		end
 
-		bars:SetFrameLevel(frame:GetFrameLevel() + 5)
+		bars:SetFrameStrata("LOW")
+		bars:SetFrameLevel(frame.Health:GetFrameLevel() + 10) --Health uses 10, Power uses (Health + 5) when attached
 
 		if bars.Holder and bars.Holder.mover then
 			bars.Holder.mover:SetScale(0.0001)

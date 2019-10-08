@@ -4,19 +4,20 @@ local oUF = E.oUF
 --Lua functions
 local _G = _G
 local pairs, tonumber = pairs, tonumber
+local strmatch, strfind = strmatch, strfind
 local ceil, floor = ceil, floor
-local strmatch = strmatch
 --WoW API / Variables
 local GetLocale = GetLocale
 local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local GetQuestLogTitle = GetQuestLogTitle
 local IsInInstance = IsInInstance
-local UnitName = UnitName
+local UnitIsPlayer = UnitIsPlayer
 local C_TaskQuest_GetQuestProgressBarInfo = C_TaskQuest.GetQuestProgressBarInfo
+local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
 
 local ActiveQuests = {
-	-- [questName] = questID ?
+	--[questName] = questID
 }
 
 local UsedLocale = GetLocale()
@@ -90,7 +91,6 @@ local QuestTypes = QuestTypesLocalized[UsedLocale] or QuestTypesLocalized.enUS
 local function QUEST_ACCEPTED(self, event, questLogIndex, questID)
 	if questLogIndex and questLogIndex > 0 then
 		local questName = GetQuestLogTitle(questLogIndex)
-
 		if questName and (questID and questID > 0) then
 			ActiveQuests[questName] = questID
 		end
@@ -99,8 +99,8 @@ end
 
 local function QUEST_REMOVED(self, event, questID)
 	if not questID then return end
-	for questName, __questID in pairs(ActiveQuests) do
-		if __questID == questID then
+	for questName, id in pairs(ActiveQuests) do
+		if id == questID then
 			ActiveQuests[questName] = nil
 			break
 		end
@@ -114,62 +114,69 @@ local function GetQuests(unitID)
 	E.ScanTooltip:SetUnit(unitID)
 	E.ScanTooltip:Show()
 
-	local QuestList, questID = {}
+	local QuestList, notMyQuest
 	for i = 3, E.ScanTooltip:NumLines() do
 		local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
 		local text = str and str:GetText()
-		if not text then return end
-		if not questID then
-			questID = ActiveQuests[text]
-		end
+		if not text or text == '' then return end
 
-		local playerName, progressText = strmatch(text, '^ ([^ ]-) ?%- (.+)$') -- nil or '' if 1 is missing but 2 is there
-		if (not playerName or playerName == '' or playerName == UnitName('player')) and progressText then
-			local index = #QuestList + 1
-			QuestList[index] = {}
-			progressText = progressText:lower()
+		if UnitIsPlayer(text) then
+			notMyQuest = text ~= E.myname
+		elseif text and not notMyQuest then
+			local objCount, QuestType, IsPerc, logIndex, itemTex, _
 
-			local x, y = strmatch(progressText, '(%d+)/(%d+)')
-			if x and y then
-				QuestList[index].objectiveCount = floor(y - x)
-			else
-				local progress = tonumber(strmatch(progressText, '([%d%.]+)%%')) -- contains % in the progressText
-				if progress and progress <= 100 then
-					QuestList[index].objectiveCount = ceil(100 - progress)
-				end
-			end
+			-- active quest
+			local QuestID = ActiveQuests[text]
+			if QuestID then
+				logIndex = GetQuestLogIndexByID(QuestID)
+				_, itemTex = GetQuestLogSpecialItemInfo(logIndex)
 
-			local QuestLogIndex, itemTexture, _
-			if questID then
-				QuestLogIndex = GetQuestLogIndexByID(questID)
-				_, itemTexture = GetQuestLogSpecialItemInfo(QuestLogIndex)
-
-				QuestList[index].isPerc = false
-				local progress = C_TaskQuest_GetQuestProgressBarInfo(questID)
+				local progress = C_TaskQuest_GetQuestProgressBarInfo(QuestID)
 				if progress then
-					QuestList[index].objectiveCount = floor(progress)
-					QuestList[index].isPerc = true
+					objCount = floor(progress)
+					IsPerc = true
 				end
-
-				QuestList[index].itemTexture = itemTexture
-				QuestList[index].questID = questID
 			end
 
-			if itemTexture then
-				QuestList[index].questType = "QUEST_ITEM"
-			else
-				QuestList[index].questType = "LOOT"
+			-- text check, only if active quest doesnt find the objective
+			if not objCount then
+				local x, y = strmatch(text, '(%d+)/(%d+)')
+				if x and y then
+					objCount = floor(y - x)
+				elseif not strmatch(text, ThreatTooltip) then
+					local progress = tonumber(strmatch(text, '([%d%.]+)%%')) -- contains % in the text
+					if progress and progress <= 100 then
+						objCount = ceil(100 - progress)
+					end
+				end
+			end
 
+			if itemTex then
+				QuestType = "QUEST_ITEM"
+			elseif objCount then
+				QuestType = "LOOT"
+
+				local lowerText = text:lower()
 				for questString in pairs(QuestTypes) do
-					if progressText:find(questString) then
-						QuestList[index].questType = QuestTypes[questString]
+					if strfind(lowerText, questString) then
+						QuestType = QuestTypes[questString]
 						break
 					end
 				end
 			end
 
-			questID = nil
-			QuestList[index].questLogIndex = QuestLogIndex
+			if QuestType then
+				if not QuestList then QuestList = {} end
+				QuestList[#QuestList + 1] = {
+					isPerc = IsPerc,
+					itemTexture = itemTex,
+					objectiveCount = objCount,
+					questType = QuestType,
+					-- below keys are currently unused
+					questLogIndex = logIndex,
+					questID = QuestID
+				}
+			end
 		end
 	end
 
@@ -190,30 +197,30 @@ local function Update(self, event, unit)
 		element:PreUpdate()
 	end
 
-	local QuestList = GetQuests(unit)
-
 	element:Hide()
 	for i = 1, #element do
 		element[i]:Hide()
 	end
 
+	local QuestList = GetQuests(unit)
 	if not QuestList then return end
 
-	local objectiveCount, questType, itemTexture
 	for i = 1, #QuestList do
-		objectiveCount = QuestList[i].objectiveCount
-		questType = QuestList[i].questType
-		itemTexture = QuestList[i].itemTexture
+		local quest = QuestList[i]
+		local objectiveCount = quest.objectiveCount
+		local itemTexture = quest.itemTexture
+		local questType = quest.questType
+		local isPerc = quest.isPerc
 
-		if objectiveCount and (objectiveCount > 0 or QuestList[i].isPerc) then
-			element.Text:SetText((QuestList[i].isPerc and objectiveCount.."%") or objectiveCount)
+		if objectiveCount and (objectiveCount > 0 or isPerc) then
+			element.Text:SetText((isPerc and objectiveCount.."%") or objectiveCount)
 
 			element.Skull:Hide()
 			element.Loot:Hide()
 			element.Item:Hide()
 			element.Chat:Hide()
 
-			if questType == "KILL" or QuestList[i].isPerc == true then
+			if questType == "KILL" or isPerc then
 				element.Skull:Show()
 			elseif questType == "LOOT" then
 				element.Loot:Show()

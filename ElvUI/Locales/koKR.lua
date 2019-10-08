@@ -72,6 +72,7 @@ L["Choose a theme layout you wish to use for your initial setup."] = "UI의 전�
 L["Class Totems"] = "직업 토템"
 L["Classbar"] = "직업바"
 L["Classic"] = "클래식"
+L["Clean Boss Button"] = true
 L["Combat"] = "전투"
 L["Combat/Arena Time"] = "전투/투기장 시간"
 L["Config Mode:"] = "표시할 프레임 계열:"

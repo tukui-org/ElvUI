@@ -253,12 +253,14 @@ local function LoadSkin(event)
 
 	local AchievementFrame = _G.AchievementFrame
 	AchievementFrame:CreateBackdrop("Transparent")
-	AchievementFrame.backdrop:Point("TOPLEFT", 0, 6)
-	AchievementFrame.backdrop:Point("BOTTOMRIGHT")
+	AchievementFrame.backdrop:SetPoint("TOPLEFT", 0, 7)
+	AchievementFrame.backdrop:SetPoint("BOTTOMRIGHT")
+
 	_G.AchievementFrameHeaderTitle:ClearAllPoints()
-	_G.AchievementFrameHeaderTitle:Point("TOPLEFT", AchievementFrame.backdrop, "TOPLEFT", -30, -8)
+	_G.AchievementFrameHeaderTitle:SetPoint("TOPLEFT", AchievementFrame.backdrop, "TOPLEFT", -45, -8)
+
 	_G.AchievementFrameHeaderPoints:ClearAllPoints()
-	_G.AchievementFrameHeaderPoints:Point("LEFT", _G.AchievementFrameHeaderTitle, "RIGHT", 2, 0)
+	_G.AchievementFrameHeaderPoints:SetPoint("LEFT", _G.AchievementFrameHeaderTitle, "RIGHT", 2, 0)
 
 	--Backdrops
 	_G.AchievementFrameCategoriesContainer:CreateBackdrop("Transparent")
@@ -274,28 +276,29 @@ local function LoadSkin(event)
 
 	S:HandleCloseButton(_G.AchievementFrameCloseButton, AchievementFrame.backdrop)
 
+	S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
+	_G.AchievementFrameFilterDropDown:ClearAllPoints()
+	_G.AchievementFrameFilterDropDown:SetPoint("TOPLEFT", _G.AchievementFrameAchievements, "TOPLEFT", -18, 24)
+
 	S:HandleEditBox(AchievementFrame.searchBox)
-	AchievementFrame.searchBox.backdrop:Point("TOPLEFT", AchievementFrame.searchBox, "TOPLEFT", -5, -5)
-	AchievementFrame.searchBox.backdrop:Point("BOTTOMRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 0, 5)
+	AchievementFrame.searchBox.backdrop:SetPoint("TOPLEFT", AchievementFrame.searchBox, "TOPLEFT", -3, -3)
+	AchievementFrame.searchBox.backdrop:SetPoint("BOTTOMRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 0, 3)
 	AchievementFrame.searchBox:ClearAllPoints()
-	AchievementFrame.searchBox:Point("BOTTOMRIGHT", _G.AchievementFrameAchievementsContainer, "TOPRIGHT", -2, 0)
+	AchievementFrame.searchBox:SetPoint("TOPRIGHT", AchievementFrame, "TOPRIGHT", -50, 2)
 
-	hooksecurefunc("AchievementFrameCategories_SelectButton", function(button)
-		local id = button.element.id
+	local scrollBars = {
+		_G.AchievementFrameCategoriesContainerScrollBar,
+		_G.AchievementFrameAchievementsContainerScrollBar,
+		_G.AchievementFrameStatsContainerScrollBar,
+		_G.AchievementFrameComparisonContainerScrollBar,
+		_G.AchievementFrameComparisonStatsContainerScrollBar,
+	}
 
-		if id ~= "summary" then
-			_G.AchievementFrameFilterDropDown:ClearAllPoints()
-			_G.AchievementFrameFilterDropDown:Point("RIGHT", AchievementFrame.searchBox.backdrop, "LEFT", 2, -3)
-			S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
+	for _, scrollbar in pairs(scrollBars) do
+		if scrollbar then
+			S:HandleScrollBar(scrollbar, 5)
 		end
-	end)
-
-	-- ScrollBars
-	S:HandleScrollBar(_G.AchievementFrameCategoriesContainerScrollBar, 5)
-	S:HandleScrollBar(_G.AchievementFrameAchievementsContainerScrollBar, 5)
-	S:HandleScrollBar(_G.AchievementFrameStatsContainerScrollBar, 5)
-	S:HandleScrollBar(_G.AchievementFrameComparisonContainerScrollBar, 5)
-	S:HandleScrollBar(_G.AchievementFrameComparisonStatsContainerScrollBar, 5)
+	end
 
 	-- Search
 	AchievementFrame.searchResults:StripTextures()

@@ -40,9 +40,6 @@ local function LoadSkin()
 	ButtonFrame.MoneyFrame:ClearAllPoints()
 	ButtonFrame.MoneyFrame:Point("BOTTOMRIGHT", ButtonFrame.MoneyFrameEdge, 7, 5)
 
-	-- Hide the damn Tutorial Tooltip
-	local HelpBox = AzeriteRespecFrame.HelpBox
-	HelpBox:SetAlpha(0)
 
 	S:HandleButton(ButtonFrame.AzeriteRespecButton, true)
 	S:HandleCloseButton(AzeriteRespecFrame.CloseButton)

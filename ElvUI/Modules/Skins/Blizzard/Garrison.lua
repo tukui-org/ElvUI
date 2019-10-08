@@ -305,7 +305,6 @@ local function LoadSkin()
 	MissionPage.StartMissionButton.Flash.Show = E.noop
 	MissionPage.StartMissionButton.FlashAnim:Stop()
 	MissionPage.StartMissionButton.FlashAnim.Play = E.noop
-	S:HandleButton(_G.GarrisonMissionFrameHelpBoxButton)
 
 	-- ShipYard: Follower List
 	FollowerList = GarrisonShipyardFrame.FollowerList

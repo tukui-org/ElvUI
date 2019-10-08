@@ -56,14 +56,14 @@ function RU:CreateUtilButton(name, parent, template, width, height, point, relat
 	b:SetTemplate("Transparent")
 
 	if text then
-		local t = b:CreateFontString(nil,"OVERLAY",b)
+		local t = b:CreateFontString(nil, "OVERLAY", b)
 		t:FontTemplate()
 		t:Point("CENTER", b, 'CENTER', 0, -1)
 		t:SetJustifyH("CENTER")
 		t:SetText(text)
 		b:SetFontString(t)
 	elseif texture then
-		local t = b:CreateTexture(nil,"OVERLAY",nil)
+		local t = b:CreateTexture(nil, "OVERLAY", nil)
 		t:SetTexture(texture)
 		t:Point("TOPLEFT", b, "TOPLEFT", E.mult, -E.mult)
 		t:Point("BOTTOMRIGHT", b, "BOTTOMRIGHT", -E.mult, E.mult)

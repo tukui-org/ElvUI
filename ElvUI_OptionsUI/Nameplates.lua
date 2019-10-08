@@ -1045,12 +1045,12 @@ local function UpdateFilterGroup()
 						description1 = {
 							order = 10,
 							type = "description",
-							name = L["You do not need to use 'Is Casting Anything' or 'Is Channeling Anything' for these spells to trigger."]
+							name = L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."]
 						},
 						description2 = {
 							order = 11,
 							type = "description",
-							name = L["If this list is empty, and if 'Interruptible' is checked, then the filter will activate on any type of cast that can be interrupted."]
+							name = L["If this list is empty, and if Interruptible is checked, then the filter will activate on any type of cast that can be interrupted."]
 						}
 					}
 				},
@@ -3560,7 +3560,7 @@ local function GetUnitSettings(unit, name)
 						order = 2,
 						type = "toggle",
 						name = L["Display Interrupt Source"],
-						desc = L["Display the unit name who interrupted a spell on the castbar. You should increase the 'Time to Hold' to show properly."]
+						desc = L["Display the unit name who interrupted a spell on the castbar. You should increase the Time to Hold to show properly."]
 					},
 					sourceInterruptClassColor = {
 						order = 3,
@@ -4050,7 +4050,7 @@ local function GetUnitSettings(unit, name)
 								order = 6,
 								type = "select",
 								name = L["Add Regular Filter"],
-								desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
+								desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."],
 								values = function()
 									local filters = {}
 									local list = E.global.unitframe.aurafilters
@@ -4401,7 +4401,7 @@ local function GetUnitSettings(unit, name)
 								order = 6,
 								type = "select",
 								name = L["Add Regular Filter"],
-								desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
+								desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."],
 								values = function()
 									local filters = {}
 									local list = E.global.unitframe.aurafilters
@@ -6152,9 +6152,14 @@ E.Options.args.nameplate = {
 											order = 1,
 											name = L["Enable"]
 										},
+										forceBlankTexture = {
+											type = "toggle",
+											order = 2,
+											name = L["Blank Texture"]
+										},
 										lengthBeforeFade = {
 											type = "range",
-											order = 2,
+											order = 3,
 											name = L["Fade Out Delay"],
 											desc = L["How much time before the cutaway health starts to fade."],
 											min = 0.1,
@@ -6166,7 +6171,7 @@ E.Options.args.nameplate = {
 										},
 										fadeOutTime = {
 											type = "range",
-											order = 3,
+											order = 4,
 											name = L["Fade Out"],
 											desc = L["How long the cutaway health will take to fade out."],
 											min = 0.1,
@@ -6196,9 +6201,14 @@ E.Options.args.nameplate = {
 											order = 1,
 											name = L["Enable"]
 										},
+										forceBlankTexture = {
+											type = "toggle",
+											order = 2,
+											name = L["Blank Texture"]
+										},
 										lengthBeforeFade = {
 											type = "range",
-											order = 2,
+											order = 3,
 											name = L["Fade Out Delay"],
 											desc = L["How much time before the cutaway power starts to fade."],
 											min = 0.1,
@@ -6210,7 +6220,7 @@ E.Options.args.nameplate = {
 										},
 										fadeOutTime = {
 											type = "range",
-											order = 3,
+											order = 4,
 											name = L["Fade Out"],
 											desc = L["How long the cutaway power will take to fade out."],
 											min = 0.1,

@@ -29,12 +29,13 @@ local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 	[2] = 19, -- wands, use INVTYPE_RANGEDRIGHT, but are 1H
 }, {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
 
-function E:InspectGearSlot(line, lineText, enchantText, enchantColors, iLvl, itemLevelColors)
+function E:InspectGearSlot(line, lineText, enchantText, enchantColors, iLvl, itemLevelColors, fullEnchantText)
 	local lr, lg, lb = line:GetTextColor()
 	local tr, tg, tb = ElvUI_ScanTooltipTextLeft1:GetTextColor()
 	local itemLevel = lineText and (strmatch(lineText, MATCH_ITEM_LEVEL_ALT) or strmatch(lineText, MATCH_ITEM_LEVEL))
 	local enchant = strmatch(lineText, MATCH_ENCHANT)
 	if enchant then
+		fullEnchantText = fullEnchantText or enchant
 		enchantText = utf8sub(enchant, 1, 18)
 		enchantColors = {lr, lg, lb}
 	end
@@ -43,7 +44,7 @@ function E:InspectGearSlot(line, lineText, enchantText, enchantColors, iLvl, ite
 		itemLevelColors = {tr, tg, tb}
 	end
 
-	return iLvl, itemLevelColors, enchantText, enchantColors
+	return iLvl, itemLevelColors, enchantText, enchantColors, fullEnchantText
 end
 
 function E:GetGearSlotInfo(unit, slot, deepScan)
@@ -52,7 +53,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	E.ScanTooltip:SetInventoryItem(unit, slot)
 	E.ScanTooltip:Show()
 
-	local iLvl, enchantText, enchantColors, itemLevelColors, gems, essences
+	local iLvl, enchantText, enchantColors, itemLevelColors, gems, essences, fullEnchantText
 	if deepScan then
 		gems, essences = E:ScanTooltipTextures(nil, true)
 		for x = 1, E.ScanTooltip:NumLines() do
@@ -62,7 +63,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 				if x == 1 and lineText == RETRIEVING_ITEM_INFO then
 					return 'tooSoon'
 				else
-					iLvl, itemLevelColors, enchantText, enchantColors = E:InspectGearSlot(line, lineText, enchantText, enchantColors, iLvl, itemLevelColors)
+					iLvl, itemLevelColors, enchantText, enchantColors, fullEnchantText = E:InspectGearSlot(line, lineText, enchantText, enchantColors, iLvl, itemLevelColors, fullEnchantText)
 				end
 			end
 		end
@@ -86,7 +87,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	end
 
 	E.ScanTooltip:Hide()
-	return iLvl, enchantText, deepScan and gems, deepScan and essences, enchantColors, itemLevelColors
+	return iLvl, enchantText, deepScan and gems, deepScan and essences, enchantColors, itemLevelColors, fullEnchantText
 end
 
 --Credit ls & Acidweb
