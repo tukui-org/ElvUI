@@ -34,6 +34,9 @@ local function LoadSkin()
 	S:HandleCloseButton(Frame.SearchBar.FilterButton.ClearFiltersButton)
 	S:HandleButton(Frame.SearchBar.SearchButton)
 
+	Frame.MoneyFrameBorder:StripTextures(true)
+	MerchantMoneyInset:StripTextures(true) -- TO DO: DEAL WITH THIS!!
+
 	--[[ Categorie List ]]--
 	local Categories = Frame.CategoriesList
 	Categories.ScrollFrame:StripTextures()
@@ -41,6 +44,17 @@ local function LoadSkin()
 	Categories.NineSlice:Hide()
 
 	S:HandleScrollBar(_G.AuctionHouseFrameScrollBar)
+
+	for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
+		local button = Categories.FilterButtons[i]
+
+		button:StripTextures(true)
+		button:StyleButton()
+
+		button:CreateBackdrop("Transparent")
+
+		button.SelectedTexture:SetAlpha(0)
+	end
 end
 
 S:AddCallbackForAddon("Blizzard_AuctionHouseUI", "AuctionHouse", LoadSkin)
