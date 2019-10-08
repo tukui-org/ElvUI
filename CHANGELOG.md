@@ -1,19 +1,40 @@
-### Version 11.24 [  ]
+### Version 11.25 [  ]
 
 **New Additions:**  
 
 
 **Bug Fixes:**  
-Fixed an error 'BackpackTokenFrameTokenIcon:SetPoint()', if our Bags are disabled.  
-Fixed some skin errors.  
-Fixed not showing Quest Icons on NamePlates. For your Info: It will only work, if the Tooltip have a progress line  
-Fixed indicator in guild datatext that was not showing when a guild member is in your group  
-Fixed bag count color options
+
 
 **Misc. Changes:**  
-Added back the tag: 'name:abbrev'  
-Removed our clipping for UI Scale. Blizzard seems to fix Pixel Perfect with 8.2.5  BUT:  
-There is still a pixel missing for ActionBar Cooldown swipe. FeelsBadMan
+
+
+___
+### Version 11.24 [ October 8th 2019 ]
+
+**New Additions:**  
+Available Tags is now available in the Options.  
+Added an option to Clean Boss Button in skin settings, which removes the texture.  
+Added an option which you allow to scale the DurabilityFrame.  
+Added an option to let Cutaway textures follow the statusbar texture.  
+
+**Bug Fixes:**  
+Fixed MiniMap icons from being in the center on load! (#1528)  
+Fixed AuraBar to support the duration slider when the filter list is empty.  
+Fixed Cutaway feature error on nameplates. (#1491)  
+Fixed an error from BackpackTokenFrameTokenIcon when our Bags are disabled.  
+Fixed not showing Quest Icons on NamePlates. For your Info: It will only work, if the Tooltip have a progress line.  
+Fixed ClassBar frame strata from being applied even if detach from frame is disabled. (#1414)  
+Fixed issue which caused the gem backdrops on the iLvl stay shown when disabled.  
+Raised the detached ClassBar to be over health by default.  
+Corrected visibility for Stance bar.  
+Fixed bag count color options.  
+Fixed some skin errors.  
+
+**Misc. Changes:**  
+Added back the tag: 'name:abbrev'.  
+Removed our clipping for UI Scale.  
+Updated the Chat module & Guild and Friends DataText to use the new API blizzard switched too, with a few minor bug fixes.  
 
 ___
 ### Version 11.23 [ September 24th 2019 ]
@@ -21,7 +42,7 @@ ___
 **New Additions:**  
 Added an option to enable a more visible Auto Attack animation on the ActionBars. Disabled by default.  
 Added options for ActionBars Button / Bag Slot transparency.  
-Added an overlay alpha option for UnitFrames overlayed portraits.  
+Added an overlay alpha option for UnitFrames portraits.  
 
 **Bug Fixes:**  
 Fixed a bug where nameplate threat scale wasn't being reset on new units that no threat existed on.  
