@@ -13,7 +13,6 @@ local GetQuestObjectiveInfo = GetQuestObjectiveInfo
 local GOAL_COMPLETED = GOAL_COMPLETED
 local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 local HideUIPanel = HideUIPanel
-local IsQuestFlaggedCompleted = IsQuestFlaggedCompleted
 local SecondsToTime = SecondsToTime
 local ShowGarrisonLandingPage = ShowGarrisonLandingPage
 local C_Garrison_GetCompleteTalent = C_Garrison.GetCompleteTalent
@@ -35,6 +34,7 @@ local FOLLOWERLIST_LABEL_TROOPS = FOLLOWERLIST_LABEL_TROOPS
 local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
 local InCombatLockdown = InCombatLockdown
+local C_QuestLog_IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 
 local Widget_IDs, lastPanel = {
 	["Alliance"] = {
@@ -159,7 +159,7 @@ local function OnEnter(self, _, noUpdate)
 			local _, _, finished, numFulfilled, numRequired = GetQuestObjectiveInfo(questID, 1, false)
 			local text, r1, g1, b1
 
-			if finished or IsQuestFlaggedCompleted(questID) then
+			if finished or C_QuestLog_IsQuestFlaggedCompleted(questID) then
 				text = GOAL_COMPLETED
 				r1, g1, b1 = GREEN_FONT_COLOR:GetRGB()
 			else
@@ -176,7 +176,7 @@ local function OnEnter(self, _, noUpdate)
 
 	local hasNazjatarBodyguardXP = false
 	local widgetGroup = Widget_IDs[E.myfaction]
-	if (E.MapInfo.mapID == NAZJATAR_MAP_ID and widgetGroup and IsQuestFlaggedCompleted(widgetGroup[1])) then
+	if (E.MapInfo.mapID == NAZJATAR_MAP_ID and widgetGroup and C_QuestLog_IsQuestFlaggedCompleted(widgetGroup[1])) then
 		DT.tooltip:AddLine(" ")
 		DT.tooltip:AddLine(L["Nazjatar Follower XP"])
 		for i = 2, 4 do

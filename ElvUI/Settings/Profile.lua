@@ -29,6 +29,7 @@ P.general = {
 		itemLevelFontSize = 12,
 		itemLevelFontOutline = 'OUTLINE',
 	},
+	durabilityScale = 1,
 	afk = true,
 	numberPrefixStyle = 'ENGLISH',
 	decimalLength = 1,
@@ -231,6 +232,7 @@ P.bags = {
 	useBlizzardCleanup = false,
 	strata = 'HIGH',
 	qualityColors = true,
+	specialtyColors = true,
 	showBindType = false,
 	transparent = false,
 	colors = {

@@ -7,8 +7,7 @@ local ElvUF = ns.oUF
 local _G = _G
 local setmetatable, getfenv, setfenv = setmetatable, getfenv, setfenv
 local type, unpack, select, pairs = type, unpack, select, pairs
-local min, random = math.min, math.random
-local format = string.format
+local min, random, format = min, random, format
 --WoW API / Variables
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax

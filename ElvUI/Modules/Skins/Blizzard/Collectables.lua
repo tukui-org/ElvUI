@@ -473,8 +473,6 @@ local function LoadSkin()
 	SetsCollectionFrame.RightInset:StripTextures()
 	SetsCollectionFrame:SetTemplate("Transparent")
 	SetsCollectionFrame.LeftInset:StripTextures()
-	--S:HandleCloseButton(WardrobeCollectionFrame.SetsTabHelpBox.CloseButton)
-	--S:HandleCloseButton(WardrobeCollectionFrame.ItemsCollectionFrame.HelpBox.CloseButton)
 
 	local ScrollFrame = SetsCollectionFrame.ScrollFrame
 	S:HandleScrollBar(ScrollFrame.scrollBar)
@@ -516,13 +514,10 @@ local function LoadSkin()
 	local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
 	WardrobeOutfitFrame:StripTextures()
 	WardrobeOutfitFrame:SetTemplate("Transparent")
-	S:HandleDropDownBox(_G.WardrobeOutfitDropDown)
-	_G.WardrobeOutfitDropDown:Size(200, 32)
-	_G.WardrobeOutfitDropDownText:ClearAllPoints()
-	_G.WardrobeOutfitDropDownText:Point("CENTER", _G.WardrobeOutfitDropDown, 10, 2)
 	S:HandleButton(_G.WardrobeOutfitDropDown.SaveButton)
-	_G.WardrobeOutfitDropDown.SaveButton:ClearAllPoints()
-	_G.WardrobeOutfitDropDown.SaveButton:Point("LEFT", _G.WardrobeOutfitDropDown, "RIGHT", 1, 4)
+	S:HandleDropDownBox(_G.WardrobeOutfitDropDown, 221)
+	_G.WardrobeOutfitDropDown:SetHeight(34)
+	_G.WardrobeOutfitDropDown.SaveButton:SetPoint("TOPLEFT", _G.WardrobeOutfitDropDown, "TOPRIGHT", -2, -2)
 
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()

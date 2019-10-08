@@ -429,7 +429,7 @@ end
 
 function NP:Update_StatusBars()
 	for StatusBar in pairs(NP.StatusBars) do
-		StatusBar:SetStatusBarTexture(E.LSM:Fetch("statusbar", NP.db.statusbar))
+		StatusBar:SetStatusBarTexture(E.LSM:Fetch("statusbar", NP.db.statusbar) or E.media.normTex)
 	end
 end
 

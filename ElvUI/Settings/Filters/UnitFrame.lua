@@ -2,9 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Engine
 
 --Lua functions
 local unpack = unpack
-local strlower = string.lower
---WoW API / Variables
-local IsPlayerSpell = IsPlayerSpell
 
 local function Defaults(priorityOverride)
 	return {

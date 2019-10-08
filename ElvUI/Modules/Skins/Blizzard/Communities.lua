@@ -7,8 +7,10 @@ local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 --WoW API / Variables
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
 local C_GuildInfo_GetGuildNewsInfo = C_GuildInfo.GetGuildNewsInfo
+local BATTLENET_FONT_COLOR = BATTLENET_FONT_COLOR
 local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
 local FRIENDS_WOW_BACKGROUND_COLOR = FRIENDS_WOW_BACKGROUND_COLOR
+local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetGuildRewardInfo = GetGuildRewardInfo
@@ -43,6 +45,36 @@ local function HandleRoleChecks(button, ...)
 	S:HandleCheckBox(button.CheckBox)
 end
 
+local function HandleCommunitiesButtons(self, color)
+	self.Background:Hide()
+	self.CircleMask:Hide()
+	self:SetFrameLevel(self:GetFrameLevel() + 5)
+
+	S:HandleIcon(self.Icon)
+	self.Icon:Point("TOPLEFT", 8, -20)
+	self.IconRing:Hide()
+
+	if not self.bg then
+		self.bg = CreateFrame("Frame", nil, self)
+		self.bg:CreateBackdrop("Transparent")
+		self.bg:SetPoint("TOPLEFT", 7, -16)
+		self.bg:SetPoint("BOTTOMRIGHT", -10, 12)
+	end
+
+	if color then
+		self.Selection:SetInside(self.bg, 0, 0)
+		if color == 1 then
+			self.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
+		else
+			self.Selection:SetColorTexture(BATTLENET_FONT_COLOR.r, BATTLENET_FONT_COLOR.g, BATTLENET_FONT_COLOR.b, 0.2)
+		end
+	end
+
+	local highlight = self:GetHighlightTexture()
+	highlight:SetColorTexture(1, 1, 1, 0.3)
+	highlight:SetInside(self.bg)
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Communities ~= true then return end
 
@@ -61,7 +93,6 @@ local function LoadSkin()
 	CommunitiesFrameCommunitiesList.BottomFiligree:Hide()
 	_G.CommunitiesFrameCommunitiesListListScrollFrame:StripTextures()
 
-	-- Needs probably an update for 8.2.5
 	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetClubInfo", function(self, clubInfo, isInvitation, isTicket)
 		if clubInfo then
 			self.Background:Hide()
@@ -79,7 +110,7 @@ local function LoadSkin()
 			end
 
 			self.GuildTabardBackground:SetPoint("TOPLEFT", 6, -17)
-			self.GuildTabardEmblem:SetPoint("TOPLEFT", 11, -17)
+			self.GuildTabardEmblem:SetPoint("TOPLEFT", 13, -17)
 			self.GuildTabardBorder:SetPoint("TOPLEFT", 6, -17)
 
 			if not self.bg then
@@ -116,25 +147,8 @@ local function LoadSkin()
 	end)
 
 	-- Add Community Button
-	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetAddCommunity", function(self)
-		self.Background:Hide()
-		self.CircleMask:Hide()
-
-		S:HandleIcon(self.Icon)
-		self.Icon:Point("TOPLEFT", 8, -20)
-		self.IconRing:Hide()
-
-		if not self.bg then
-			self.bg = CreateFrame("Frame", nil, self)
-			self.bg:CreateBackdrop("Transparent")
-			self.bg:SetPoint("TOPLEFT", 7, -16)
-			self.bg:SetPoint("BOTTOMRIGHT", -10, 12)
-		end
-
-		local highlight = self:GetHighlightTexture()
-		highlight:SetColorTexture(1, 1, 1, 0.3)
-		highlight:SetInside(self.bg)
-	end)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetAddCommunity", function(self) HandleCommunitiesButtons(self, 1) end)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetFindCommunity", function(self) HandleCommunitiesButtons(self, 2) end)
 
 	S:HandleItemButton(CommunitiesFrame.ChatTab)
 	CommunitiesFrame.ChatTab:Point('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
@@ -148,9 +162,7 @@ local function LoadSkin()
 	CommunitiesFrame.MaximizeMinimizeFrame:Point("RIGHT", CommunitiesFrame.CloseButton, "LEFT", 12, 0)
 
 	S:HandleButton(CommunitiesFrame.InviteButton)
-	CommunitiesFrame.AddToChatButton:ClearAllPoints()
-	CommunitiesFrame.AddToChatButton:Point("BOTTOM", CommunitiesFrame.ChatEditBox, "BOTTOMRIGHT", -5, -30)
-	S:HandleButton(CommunitiesFrame.AddToChatButton)
+	S:HandleNextPrevButton(CommunitiesFrame.AddToChatButton)
 
 	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
 	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
@@ -303,6 +315,7 @@ local function LoadSkin()
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildControlButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
+	CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton:SetSize(129, 19)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
 	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
 

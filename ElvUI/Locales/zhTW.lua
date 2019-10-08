@@ -72,6 +72,7 @@ L["Choose a theme layout you wish to use for your initial setup."] = "為你的�
 L["Class Totems"] = "職業圖騰"
 L["Classbar"] = "職業特有條"
 L["Classic"] = "經典"
+L["Clean Boss Button"] = true
 L["Combat"] = "戰鬥"
 L["Combat/Arena Time"] = "戰鬥時間"
 L["Config Mode:"] = "設定模式:"

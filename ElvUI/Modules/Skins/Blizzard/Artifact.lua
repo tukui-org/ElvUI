@@ -28,10 +28,6 @@ local function LoadSkin()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:ClearAllPoints()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:Point("TOPLEFT", ArtifactFrame)
 
-	--Tutorial
-	S:HandleCloseButton(ArtifactFrame.KnowledgeLevelHelpBox.CloseButton)
-	S:HandleCloseButton(ArtifactFrame.AppearanceTabHelpBox.CloseButton)
-
 	ArtifactFrame.AppearancesTab:HookScript("OnShow", function(self)
 		for i=1, self:GetNumChildren() do
 			local child = select(i, self:GetChildren())

@@ -45,7 +45,6 @@ local function LoadSkin()
 	_G.VoidStoragePurchaseFrame:SetTemplate()
 
 	S:HandleButton(_G.VoidStoragePurchaseButton)
-	S:HandleButton(_G.VoidStorageHelpBoxButton)
 	S:HandleButton(_G.VoidStorageTransferButton)
 
 	S:HandleCloseButton(_G.VoidStorageBorderFrame.CloseButton)

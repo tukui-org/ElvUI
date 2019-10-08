@@ -632,11 +632,11 @@ local function SetPage(PageNum)
 		InstallSlider:SetObeyStepOnDrag(true)
 		InstallSlider:SetMinMaxValues(0.4, 1.15)
 
-		local value = E:PixelClip(E.global.general.UIScale)
+		local value = E.global.general.UIScale
 		InstallSlider:SetValue(value)
 		InstallSlider.Cur:SetText(value)
 		InstallSlider:SetScript('OnValueChanged', function(self)
-			E.global.general.UIScale =  E:PixelClip(self:GetValue())
+			E.global.general.UIScale =  self:GetValue()
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 		end)
 
@@ -644,7 +644,7 @@ local function SetPage(PageNum)
 		InstallSlider.Max:SetText(1.15)
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function()
-			local scale = E:PixelClip(E:PixelBestSize())
+			local scale = E:PixelBestSize()
 
 			-- this is to just keep the slider in place, the values need updated again afterwards
 			InstallSlider:SetValue(scale)

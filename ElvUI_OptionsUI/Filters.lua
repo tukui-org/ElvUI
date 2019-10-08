@@ -7,9 +7,9 @@ local next = next
 local pairs = pairs
 local tonumber = tonumber
 local tostring = tostring
-local gsub = string.gsub
-local match = string.match
-local format = string.format
+local gsub = gsub
+local strmatch = strmatch
+local format = format
 local GetSpellInfo = GetSpellInfo
 
 -- GLOBALS: MAX_PLAYER_LEVEL
@@ -18,7 +18,7 @@ local quickSearchText, selectedSpell, selectedFilter = ""
 
 local function filterMatch(s,v)
 	local m1, m2, m3, m4 = "^"..v.."$", "^"..v..",", ","..v.."$", ","..v..","
-	return (match(s, m1) and m1) or (match(s, m2) and m2) or (match(s, m3) and m3) or (match(s, m4) and v..",")
+	return (strmatch(s, m1) and m1) or (strmatch(s, m2) and m2) or (strmatch(s, m3) and m3) or (strmatch(s, m4) and v..",")
 end
 
 local function removePriority(value)
@@ -86,7 +86,7 @@ local function UpdateFilterGroup()
 					buttonElvUI = true,
 					type = 'execute',
 					func = function()
-						local value = selectedSpell:match(" %((%d+)%)$") or selectedSpell
+						local value = strmatch(selectedSpell, " %((%d+)%)$") or selectedSpell
 						if tonumber(value) then value = tonumber(value) end
 						E.global.unitframe.DebuffHighlightColors[value] = nil;
 						selectedSpell = nil;
@@ -167,7 +167,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
-		local spellID = selectedSpell and match(selectedSpell, "(%d+)")
+		local spellID = selectedSpell and strmatch(selectedSpell, "(%d+)")
 		if spellID then spellID = tonumber(spellID) end
 
 		if not selectedSpell or E.global.unitframe.DebuffHighlightColors[(spellID or selectedSpell)] == nil then
@@ -257,7 +257,7 @@ local function UpdateFilterGroup()
 					type = 'execute',
 					buttonElvUI = true,
 					func = function()
-						local value = selectedSpell:match(" %((%d+)%)$") or selectedSpell
+						local value = strmatch(selectedSpell, " %((%d+)%)$") or selectedSpell
 						if tonumber(value) then value = tonumber(value) end
 						if G.unitframe.AuraBarColors[value] then
 							E.global.unitframe.AuraBarColors[value] = false;
@@ -348,7 +348,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
-		local spellID = selectedSpell and match(selectedSpell, "(%d+)")
+		local spellID = selectedSpell and strmatch(selectedSpell, "(%d+)")
 		if spellID then spellID = tonumber(spellID) end
 
 		if not selectedSpell or E.global.unitframe.AuraBarColors[(spellID or selectedSpell)] == nil then
@@ -1204,7 +1204,7 @@ local function UpdateFilterGroup()
 					type = 'execute',
 					buttonElvUI = true,
 					func = function()
-						local value = selectedSpell:match(" %((%d+)%)$") or selectedSpell
+						local value = strmatch(selectedSpell, " %((%d+)%)$") or selectedSpell
 						if tonumber(value) then value = tonumber(value) end
 						if G.unitframe.aurafilters[selectedFilter] then
 							if G.unitframe.aurafilters[selectedFilter].spells[value] then
@@ -1316,7 +1316,7 @@ local function UpdateFilterGroup()
 			}
 		end
 
-		local spellID = selectedSpell and match(selectedSpell, "(%d+)")
+		local spellID = selectedSpell and strmatch(selectedSpell, "(%d+)")
 		if spellID then spellID = tonumber(spellID) end
 
 		if not selectedSpell or not E.global.unitframe.aurafilters[selectedFilter].spells[(spellID or selectedSpell)] then
@@ -1400,14 +1400,14 @@ E.Options.args.filters = {
 			type = 'input',
 			get = function(info) return "" end,
 			set = function(info, value)
-				if match(value, "^[%s%p]-$") then
+				if strmatch(value, "^[%s%p]-$") then
 					return
 				end
-				if match(value, ",") then
+				if strmatch(value, ",") then
 					E:Print(L["Filters are not allowed to have commas in their name. Stripping commas from filter name."])
 					value = gsub(value, ",", "")
 				end
-				if match(value, "^Friendly:") or match(value, "^Enemy:") then
+				if strmatch(value, "^Friendly:") or strmatch(value, "^Enemy:") then
 					return --dont allow people to create Friendly: or Enemy: filters
 				end
 				if G.unitframe.specialFilters[value] or E.global.unitframe.aurafilters[value] then

@@ -63,7 +63,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, unpack = pairs, unpack
 local tinsert, tremove = tinsert, tremove
-local format = string.format
+local format = format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local PlaySound = PlaySound

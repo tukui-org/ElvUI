@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local _G = _G
 local ipairs, select, sort, unpack, wipe, ceil = ipairs, select, sort, unpack, wipe, ceil
-local format, strfind, strjoin, strsplit = format, strfind, strjoin, strsplit
+local format, gsub, strfind, strjoin, strsplit, strmatch = format, gsub, strfind, strjoin, strsplit, strmatch
 --WoW API / Variables
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildFactionInfo = GetGuildFactionInfo
@@ -33,13 +33,12 @@ local REMOTE_CHAT = REMOTE_CHAT
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
-local groupedTable = { "|cffaaaaaa*|r", "" }
 local displayString = ""
 local noGuildString = ""
 local guildInfoString = "%s"
 local guildInfoString2 = GUILD..": %d/%d"
 local guildMotDString = "%s |cffaaaaaa- |cffffffff%s"
-local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r %s"
+local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local levelNameStatusString = "|cff%02x%02x%02x%d|r %s%s %s"
 local nameRankString = "%s |cff999999-|cffffffff %s"
 local standingString = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b).."%s:|r |cFFFFFFFF%s/%s (%s%%)"
@@ -50,13 +49,16 @@ local guildTable, guildMotD, lastPanel = {}, ""
 
 local function sortByRank(a, b)
 	if a and b then
-		return a[10] < b[10]
+		if a.rankIndex == b.rankIndex then
+			return a.name < b.name
+		end
+		return a.rankIndex < b.rankIndex
 	end
 end
 
 local function sortByName(a, b)
 	if a and b then
-		return a[1] < b[1]
+		return a.name < b.name
 	end
 end
 
@@ -80,19 +82,38 @@ local mobilestatus = {
 	[2] = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-BusyMobile:14:14:0:0:16:16:0:16:0:16|t",
 }
 
+local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
+local function inGroup(name)
+	return (UnitInParty(name) or UnitInRaid(name)) and "|cffaaaaaa*|r" or ""
+end
+
 local function BuildGuildTable()
 	wipe(guildTable)
 
 	local totalMembers = GetNumGuildMembers()
 	for i = 1, totalMembers do
-		local name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile, _, _, guid = GetGuildRosterInfo(i)
+		local name, rank, rankIndex, level, _, zone, note, officerNote, connected, memberstatus, className, _, _, isMobile, _, _, guid = GetGuildRosterInfo(i)
 		if not name then return end
 
 		local statusInfo = isMobile and mobilestatus[memberstatus] or onlinestatus[memberstatus]
 		zone = (isMobile and not connected) and REMOTE_CHAT or zone
 
 		if connected or isMobile then
-			guildTable[#guildTable + 1] = { name, rank, level, zone, note, officernote, connected, statusInfo, class, rankIndex, isMobile, guid }
+			local newName = gsub(name,'%-'..PLAYER_REALM,'')
+			guildTable[#guildTable + 1] = {
+				name = newName,				--1
+				rank = rank,				--2
+				level = level,				--3
+				zone = zone,				--4
+				note = note,				--5
+				officerNote = officerNote,	--6
+				online = connected,			--7
+				status = statusInfo,		--8
+				class = className,			--9
+				rankIndex = rankIndex,		--10
+				isMobile = isMobile,		--11
+				guid = guid					--12
+			}
 		end
 	end
 end
@@ -186,7 +207,6 @@ local function Click(self, btn)
 	if btn == "RightButton" and IsInGuild() then
 		DT.tooltip:Hide()
 
-		local grouped
 		local menuCountWhispers = 0
 		local menuCountInvites = 0
 
@@ -194,18 +214,18 @@ local function Click(self, btn)
 		menuList[3].menuList = {}
 
 		for _, info in ipairs(guildTable) do
-			if info[7] and info[1] ~= E.myname then
-				local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or _G.RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
-				if UnitInParty(info[1]) or UnitInRaid(info[1]) then
-					grouped = "|cffaaaaaa*|r"
-				elseif not (info[11] and info[4] == REMOTE_CHAT) then
+			if (info.online or info.isMobile) and info.name ~= E.myname then
+				local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.class]) or _G.RAID_CLASS_COLORS[info.class], GetQuestDifficultyColor(info.level)
+				local name = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info.level, classc.r*255,classc.g*255,classc.b*255, info.name)
+				if inGroup(info.name) ~= "" then
+					name = name.." |cffaaaaaa*|r"
+				elseif not (info.isMobile and info.zone == REMOTE_CHAT) then
 					menuCountInvites = menuCountInvites + 1
-					grouped = ""
-					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], ""), arg1 = info[1], arg2 = info[12], notCheckable=true, func = inviteClick}
+					menuList[2].menuList[menuCountInvites] = {text = name, arg1 = info.name, arg2 = info.guid, notCheckable=true, func = inviteClick}
 				end
+
 				menuCountWhispers = menuCountWhispers + 1
-				if not grouped then grouped = "" end
-				menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], grouped), arg1 = info[1], notCheckable=true, func = whisperClick}
+				menuList[3].menuList[menuCountWhispers] = {text = name, arg1 = info.name, notCheckable=true, func = whisperClick}
 			end
 		end
 
@@ -246,7 +266,7 @@ local function OnEnter(self, _, noUpdate)
 		DT.tooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(barValue), E:ShortValue(barMax), ceil((barValue / barMax) * 100)))
 	end
 
-	local zonec, grouped
+	local zonec
 
 	DT.tooltip:AddLine(' ')
 	for i, info in ipairs(guildTable) do
@@ -256,18 +276,17 @@ local function OnEnter(self, _, noUpdate)
 			break
 		end
 
-		if E.MapInfo.zoneText and (E.MapInfo.zoneText == info[4]) then zonec = activezone else zonec = inactivezone end
+		if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zone) then zonec = activezone else zonec = inactivezone end
 
-		local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info[9]]) or _G.RAID_CLASS_COLORS[info[9]], GetQuestDifficultyColor(info[3])
-
-		if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end
+		local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.class]) or _G.RAID_CLASS_COLORS[info.class], GetQuestDifficultyColor(info.level)
+		if not classc then classc = levelc end
 
 		if IsShiftKeyDown() then
-			DT.tooltip:AddDoubleLine(format(nameRankString, info[1], info[2]), info[4], classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
-			if info[5] ~= "" then DT.tooltip:AddLine(format(noteString, info[5]), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
-			if info[6] ~= "" then DT.tooltip:AddLine(format(officerNoteString, info[6]), ttoff.r, ttoff.g, ttoff.b, 1) end
+			DT.tooltip:AddDoubleLine(format(nameRankString, info.name, info.rank), info.zone, classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
+			if info.note ~= "" then DT.tooltip:AddLine(format(noteString, info.note), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
+			if info.officerNote ~= "" then DT.tooltip:AddLine(format(officerNoteString, info.officerNote), ttoff.r, ttoff.g, ttoff.b, 1) end
 		else
-			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], strsplit("-", info[1]), groupedTable[grouped], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
+			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info.level, strmatch(info.name,"([^%-]+).*"), inGroup(info.name), info.status), info.zone, classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
 		end
 	end
 

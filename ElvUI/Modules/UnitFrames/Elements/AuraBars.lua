@@ -242,20 +242,23 @@ function UF:AuraBarFilter(unit, name, _, _, debuffType, duration, _, unitCaster,
 	local db = self.db.aurabar
 
 	if not name then return nil end
-	local filterCheck, isUnit, isFriend, isPlayer, canDispell, allowDuration, noDuration
+
+	local isUnit, isFriend, isPlayer, canDispell
+
+	local noDuration = (not duration or duration == 0)
+	local allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
+	local filterCheck
 
 	if db.priority ~= '' then
-		noDuration = (not duration or duration == 0)
 		isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
 		isPlayer = (unitCaster == 'player' or unitCaster == 'vehicle')
 		isUnit = unit and unitCaster and UnitIsUnit(unit, unitCaster)
 
 		local auraType = (isFriend and db.friendlyAuraType) or (not isFriend and db.enemyAuraType)
 		canDispell = (auraType == 'HELPFUL' and isStealable) or (auraType == 'HARMFUL' and debuffType and E:IsDispellableByMe(debuffType))
-		allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
 		filterCheck = UF:CheckFilter(name, unitCaster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(',', db.priority))
 	else
-		filterCheck = true -- Allow all auras to be shown when the filter list is empty
+		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty
 	end
 
 	return filterCheck

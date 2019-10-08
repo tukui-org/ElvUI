@@ -18,7 +18,6 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationRole = GetSpecializationRole
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
-local IsRatedBattleground = IsRatedBattleground
 local IsWargame = IsWargame
 local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
@@ -30,6 +29,7 @@ local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitIsMercenary = UnitIsMercenary
 local UnitStat = UnitStat
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
+local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 local FACTION_HORDE = FACTION_HORDE
 local FACTION_ALLIANCE = FACTION_ALLIANCE
@@ -115,14 +115,15 @@ function E:CheckRole()
 		self.callbacks:Fire('RoleChanged')
 	end
 
-	if self.myrole and self.DispelClasses[self.myclass] ~= nil then
-		self.DispelClasses[self.myclass].Magic = (self.myrole == 'HEALER')
+	local dispel = self.DispelClasses[self.myclass]
+	if self.myrole and (self.myclass ~= 'PRIEST' and dispel ~= nil) then
+		dispel.Magic = (self.myrole == 'HEALER')
 	end
 end
 
 function E:IsDispellableByMe(debuffType)
-	if not self.DispelClasses[self.myclass] then return end
-	if self.DispelClasses[self.myclass][debuffType] then return true end
+	local dispel = self.DispelClasses[self.myclass]
+	return dispel and dispel[debuffType]
 end
 
 do
@@ -484,7 +485,7 @@ function E:GetUnitBattlefieldFaction(unit)
 	-- this might be a rated BG or wargame and if so the player's faction might be altered
 	-- should also apply if `player` is a mercenary.
 	if unit == 'player' then
-		if IsRatedBattleground() or IsWargame() then
+		if C_PvP_IsRatedBattleground() or IsWargame() then
 			englishFaction = PLAYER_FACTION_GROUP[GetBattlefieldArenaFaction()]
 			localizedFaction = (englishFaction == 'Alliance' and FACTION_ALLIANCE) or FACTION_HORDE
 		elseif UnitIsMercenary(unit) then

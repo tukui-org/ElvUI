@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local floor = floor
-local format = string.format
+local format = format
 --WoW API / Variables
 local C_AzeriteItem_FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo

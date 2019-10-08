@@ -72,6 +72,7 @@ L["Choose a theme layout you wish to use for your initial setup."] = "Wähle ein
 L["Class Totems"] = "Klassen Totems"
 L["Classbar"] = "Klassenleiste"
 L["Classic"] = "Klassisch"
+L["Clean Boss Button"] = "Geskinnte Boss Taste"
 L["Combat"] = "Kampf"
 L["Combat/Arena Time"] = "Kampf/Arena Zeit"
 L["Config Mode:"] = "Konfigurationsmodus:"

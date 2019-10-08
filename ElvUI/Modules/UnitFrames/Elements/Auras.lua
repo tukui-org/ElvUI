@@ -355,10 +355,10 @@ function UF:PostUpdateAura(unit, button)
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
 			button.icon:SetDesaturated((unit and not strfind(unit, 'arena%d')) and true or false)
 		else
-			local color = (button.dtype and _G.DebuffTypeColor[button.dtype]) or _G.DebuffTypeColor.none
-			if button.name and (button.name == "Unstable Affliction" or button.name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
+			if E.BadDispels[button.spellID] and E:IsDispellableByMe(button.dtype) then
 				button:SetBackdropBorderColor(0.05, 0.85, 0.94)
 			else
+				local color = (button.dtype and _G.DebuffTypeColor[button.dtype]) or _G.DebuffTypeColor.none
 				button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
 			end
 			button.icon:SetDesaturated(false)

@@ -3,7 +3,7 @@ local oUF = E.oUF
 
 local tonumber = tonumber
 local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
-local IsQuestFlaggedCompleted = IsQuestFlaggedCompleted
+local C_QuestLog_IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 
 local NPCIDToWidgetIDMap = {
 	[154304] = 1940, -- Farseer Ori
@@ -35,7 +35,7 @@ local function Update(self)
 	end
 
 	local npcID, questID = tonumber(self.npcID), NeededQuestIDs[E.myfaction]
-	local hasQuestCompleted = questID and IsQuestFlaggedCompleted(questID)
+	local hasQuestCompleted = questID and C_QuestLog_IsQuestFlaggedCompleted(questID)
 	local isProperNPC = npcID and (NPCIDToWidgetIDMap[npcID] and self.unit and UnitIsOwnerOrControllerOfUnit("player", self.unit)) or CampfireNPCIDToWidgetIDMap[npcID]
 	if (not hasQuestCompleted or not isProperNPC) then
 		element:Hide()

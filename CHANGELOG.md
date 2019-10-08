@@ -1,4 +1,22 @@
-### Version 11.23 for 8.2.5 [  ]
+### Version 11.24 [  ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+Fixed an error 'BackpackTokenFrameTokenIcon:SetPoint()', if our Bags are disabled.  
+Fixed some skin errors.  
+Fixed not showing Quest Icons on NamePlates. For your Info: It will only work, if the Tooltip have a progress line  
+Fixed indicator in guild datatext that was not showing when a guild member is in your group  
+Fixed bag count color options
+
+**Misc. Changes:**  
+Added back the tag: 'name:abbrev'  
+Removed our clipping for UI Scale. Blizzard seems to fix Pixel Perfect with 8.2.5  BUT:  
+There is still a pixel missing for ActionBar Cooldown swipe. FeelsBadMan
+
+___
+### Version 11.23 [ September 24th 2019 ]
 
 **New Additions:**  
 Added an option to enable a more visible Auto Attack animation on the ActionBars. Disabled by default.  
@@ -9,12 +27,13 @@ Added an overlay alpha option for UnitFrames overlayed portraits.
 Fixed a bug where nameplate threat scale wasn't being reset on new units that no threat existed on.  
 Fixed a Style Filter error: Attempt to compare nil with number.  
 Fixed an error in Petition Skin.  
-Fixed black Quest Text if Parchment Reomver is enabled. (#1444)  
+Fixed black Quest Text if Parchment Remover is enabled. (#1444)  
 Fixed Penance spellID for castbar ticks.  
 
 **Misc. Changes:**  
 Updated Friends DataText to see the difference between retail and classic.  
-Various Skin updates.  
+Various Skin updates related for 8.2.5.  
+Changed the Battle.net status frame. Just click on your Battle.tag to add/edit the status message.  
 Added "Eye of Leotheras" (PvP Talent) to the PlayerBuffs Filter.  
 
 ___
