@@ -11,7 +11,6 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.auctionhouse ~= true then return end
 
 	--[[ Main Frame ]]--
-
 	local Frame = _G.AuctionHouseFrame
 	S:HandlePortraitFrame(Frame)
 
@@ -35,7 +34,7 @@ local function LoadSkin()
 	S:HandleButton(Frame.SearchBar.SearchButton)
 
 	Frame.MoneyFrameBorder:StripTextures(true)
-	MerchantMoneyInset:StripTextures(true) -- TO DO: DEAL WITH THIS!!
+	_G.MerchantMoneyInset:StripTextures(true) -- TO DO: DEAL WITH THIS!!
 
 	--[[ Categorie List ]]--
 	local Categories = Frame.CategoriesList
@@ -51,10 +50,27 @@ local function LoadSkin()
 		button:StripTextures(true)
 		button:StyleButton()
 
-		button:CreateBackdrop("Transparent")
-
 		button.SelectedTexture:SetAlpha(0)
 	end
+
+	--[[ Browse Frame ]]--
+	local Browse = Frame.BrowseResultsFrame.ItemList
+	Browse:StripTextures()
+
+	S:HandleScrollBar(Browse.ScrollFrame.scrollBar)
+
+	--[[ WoW Token Category ]]--
+	local TokenFrame = Frame.WoWTokenResults
+	TokenFrame:StripTextures()
+	S:HandleButton(TokenFrame.Buyout)
+	S:HandleScrollBar(TokenFrame.DummyScrollBar) --Monitor this
+
+	local Token = TokenFrame.Token
+	S:HandleIcon(Token.Icon, true)
+	Token.Icon.backdrop:SetBackdropBorderColor(Token.IconBorder:GetVertexColor())
+	Token.IconBorder:SetTexture()
+	Token.ItemBorder:SetTexture()
+	Token.ItemBorder:CreateBackdrop("Transparent")
 end
 
 S:AddCallbackForAddon("Blizzard_AuctionHouseUI", "AuctionHouse", LoadSkin)
