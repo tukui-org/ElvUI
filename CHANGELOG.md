@@ -42,7 +42,7 @@ ___
 **New Additions:**  
 Added an option to enable a more visible Auto Attack animation on the ActionBars. Disabled by default.  
 Added options for ActionBars Button / Bag Slot transparency.  
-Added an overlay alpha option for UnitFrames overlayed portraits.  
+Added an overlay alpha option for UnitFrames portraits.  
 
 **Bug Fixes:**  
 Fixed a bug where nameplate threat scale wasn't being reset on new units that no threat existed on.  
