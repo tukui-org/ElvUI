@@ -272,25 +272,6 @@ local function SetColorThreat(element, state)
 	end
 end
 
---[[ Health:SetFrequentUpdates(state)
-Used to toggle frequent updates.
-
-* self  - the Health element
-* state - the desired state (boolean)
---]]
-local function SetFrequentUpdates(element, state)
-	if(element.frequentUpdates ~= state) then
-		element.frequentUpdates = state
-		if(element.frequentUpdates) then
-			element.__owner:UnregisterEvent('UNIT_HEALTH', Path)
-			element.__owner:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
-		else
-			element.__owner:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
-			element.__owner:RegisterEvent('UNIT_HEALTH', Path)
-		end
-	end
-end
-
 local function Enable(self, unit)
 	local element = self.Health
 	if(element) then
@@ -300,7 +281,6 @@ local function Enable(self, unit)
 		element.SetColorSelection = SetColorSelection
 		element.SetColorTapping = SetColorTapping
 		element.SetColorThreat = SetColorThreat
-		element.SetFrequentUpdates = SetFrequentUpdates
 
 		if(element.colorDisconnected) then
 			self:RegisterEvent('UNIT_CONNECTION', ColorPath)
@@ -318,12 +298,8 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 		end
 
-		if(element.frequentUpdates) then
-			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
-		else
-			self:RegisterEvent('UNIT_HEALTH', Path)
-		end
-
+		self:RegisterEvent('UNIT_HEALTH', Path) -- Needed for Pet Battles
+		self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
 
 		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
