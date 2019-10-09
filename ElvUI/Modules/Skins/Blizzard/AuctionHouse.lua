@@ -183,6 +183,18 @@ local function LoadSkin()
 	local AuctionsFrame = _G.AuctionHouseFrameAuctionsFrame
 	AuctionsFrame:StripTextures()
 
+	local CommoditiesList = AuctionsFrame.CommoditiesList
+	CommoditiesList:StripTextures()
+	CommoditiesList:CreateBackdrop("Transparent")
+	S:HandleButton(CommoditiesList.RefreshFrame.RefreshButton)
+	S:HandleScrollBar(CommoditiesList.ScrollFrame.scrollBar)
+
+	local ItemList = AuctionsFrame.ItemList
+	ItemList:StripTextures()
+	ItemList:CreateBackdrop("Transparent")
+	S:HandleButton(ItemList.RefreshFrame.RefreshButton)
+	S:HandleScrollBar(ItemList.ScrollFrame.scrollBar)
+
 	local Tabs = {
 		_G.AuctionHouseFrameAuctionsFrameAuctionsTab,
 		_G.AuctionHouseFrameAuctionsFrameBidsTab,
@@ -193,6 +205,17 @@ local function LoadSkin()
 			S:HandleTab(tab)
 		end
 	end
+
+	local ItemDisplay = AuctionsFrame.ItemDisplay
+	ItemDisplay:StripTextures()
+	ItemDisplay:CreateBackdrop("Transparent")
+
+	local ItemButton = ItemDisplay.ItemButton
+	S:HandleIcon(ItemButton.Icon, true)
+	-- FIX ME
+	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
+	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+	ItemButton.IconBorder:SetAlpha(0)
 
 	local SummaryList = AuctionsFrame.SummaryList
 	SummaryList:StripTextures()
