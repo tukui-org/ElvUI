@@ -473,6 +473,11 @@ E.Options.args.skins = {
 					name = L["Azerite Essence"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				Tutorials = {
+					type = "toggle",
+					name = L["Tutorials"],
+					desc = L["TOGGLESKIN_DESC"],
+				}
 			},
 		},
 	},

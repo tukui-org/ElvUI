@@ -1292,6 +1292,7 @@ L["Transparent"] = "透明"
 L["Triggers"] = "触发器"
 L["Trivial"] = "低等级(灰色)"
 L["Turtle Color"] = "减伤类的颜色"
+L["Tutorials"] = true
 L["Under Health Threshold"] = "低于血量阈值"
 L["Under Power Threshold"] = "低于能量阈值"
 L["Unfriendly"] = "非友好"

@@ -1290,6 +1290,7 @@ L["Transparent"] = "반투명화"
 L["Triggers"] = "활성 조건"
 L["Trivial"] = true
 L["Turtle Color"] = "생존기 색상"
+L["Tutorials"] = true
 L["Under Health Threshold"] = true
 L["Under Power Threshold"] = true
 L["Unfriendly"] = true
