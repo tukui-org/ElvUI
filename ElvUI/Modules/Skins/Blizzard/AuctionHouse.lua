@@ -7,6 +7,15 @@ local pairs, unpack = pairs, unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
+--[[
+TO DO:
+
+* Fix Icon borders
+* Fix Headers
+* Skin Multisell .ProgressBar
+* Skin ItemLists
+]]
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.auctionhouse ~= true then return end
 
