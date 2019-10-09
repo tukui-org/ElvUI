@@ -1,13 +1,15 @@
 ### Version 11.25 [  ]
 
 **New Additions:**  
-
+Added Detached Power Bar Auto Hide when empty option (needs better locales).  
+Added TutorialFrame skin.  
 
 **Bug Fixes:**  
-
+Fixed Pet Battle Nameplates, they weren't properly updating Health Bars.  
+Fixed issue which would carry over Quest Icons on Nameplates to one without a quest.  
 
 **Misc. Changes:**  
-
+Removed the Frequent Updates option, it is now on by default.  
 
 ___
 ### Version 11.24 [ October 8th 2019 ]
