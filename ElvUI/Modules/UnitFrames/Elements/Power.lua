@@ -255,10 +255,22 @@ function UF:PostUpdatePowerColor()
 	end
 end
 
-function UF:PostUpdatePower(unit, _, _, max)
+function UF:PostUpdatePower(unit, cur, _, max)
 	local parent = self.origParent or self:GetParent()
 	if parent.isForced then
 		self:SetValue(random(1, max))
+	end
+
+	if unit == 'player' then
+		if parent.db.power.autoHide and parent.POWERBAR_DETACHED then
+			if (cur == 0) then
+				self:Hide()
+			else
+				self:Show()
+			end
+		elseif not self:IsShown() then
+			self:Show()
+		end
 	end
 
 	if parent.db and parent.db.power and parent.db.power.hideonnpc then

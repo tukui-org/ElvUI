@@ -2056,6 +2056,7 @@ P.unitframe = {
 			},
 			power = {
 				enable = true,
+				autoHide = false,
 				powerPrediction = false,
 				reverseFill = false,
 				text_format = '[powercolor][power:current]',
