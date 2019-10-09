@@ -140,6 +140,7 @@ V.skins = {
 		IslandsPartyPose = true,
 		GMChat = true,
 		AzeriteEssence = true,
+		Tutorials = true,
 	},
 }
 

@@ -1291,6 +1291,7 @@ L["Transparent"] = "Прозрачный"
 L["Triggers"] = "Триггеры"
 L["Trivial"] = "Обычный"
 L["Turtle Color"] = "Цвет Turtle Buffs"
+L["Tutorials"] = true
 L["Under Health Threshold"] = "Менее значения здоровья"
 L["Under Power Threshold"] = "Менее значения ресурса"
 L["Unfriendly"] = "Неприязнь"

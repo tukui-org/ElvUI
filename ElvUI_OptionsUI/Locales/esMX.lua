@@ -1291,6 +1291,7 @@ L["Transparent"] = "Transparente"
 L["Triggers"] = true
 L["Trivial"] = true
 L["Turtle Color"] = "Color de Tortuga"
+L["Tutorials"] = true
 L["Under Health Threshold"] = true
 L["Under Power Threshold"] = true
 L["Unfriendly"] = true
