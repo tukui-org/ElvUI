@@ -200,6 +200,7 @@ local function Update(self, event, unit)
 	element.Loot:Hide()
 	element.Item:Hide()
 	element.Chat:Hide()
+	element.Text:SetText('')
 
 	local QuestList = GetQuests(unit)
 	if QuestList then
@@ -216,7 +217,9 @@ local function Update(self, event, unit)
 		local isPerc = quest.isPerc
 
 		if objectiveCount and (objectiveCount > 0 or isPerc) then
-			element.Text:SetText((isPerc and objectiveCount.."%") or objectiveCount)
+			if questType ~= "CHAT" then
+				element.Text:SetText((isPerc and objectiveCount.."%") or objectiveCount)
+			end
 
 			if questType == "KILL" or isPerc then
 				element.Skull:Show()
@@ -224,7 +227,6 @@ local function Update(self, event, unit)
 				element.Loot:Show()
 			elseif questType == "CHAT" then
 				element.Chat:Show()
-				element.Text:SetText('')
 			elseif questType == "QUEST_ITEM" then
 				element.Item:Show()
 				element.Item:SetTexture(quest.itemTexture)
