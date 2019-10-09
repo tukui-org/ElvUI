@@ -419,7 +419,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.unitframe.units.party.width = 231
 		--Raid
 			E.db.unitframe.units.raid.growthDirection = 'RIGHT_UP'
-			E.db.unitframe.units.raid.health.frequentUpdates = true
 			E.db.unitframe.units.raid.infoPanel.enable = true
 			E.db.unitframe.units.raid.name.attachTextTo = 'InfoPanel'
 			E.db.unitframe.units.raid.name.position = 'BOTTOMLEFT'
@@ -456,9 +455,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.movers.ShiftAB = 'TOPLEFT,ElvUIParent,BOTTOMLEFT,4,273'
 			E.db.movers.VOICECHAT = 'TOPLEFT,ElvUIParent,TOPLEFT,250,-82'
 			E.db.unitframe.units.party.enable = false
-			E.db.unitframe.units.party.health.frequentUpdates = true
 			E.db.unitframe.units.raid.visibility = '[nogroup] hide;show'
-			E.db.unitframe.units.raid40.health.frequentUpdates = true
 		end
 	end
 

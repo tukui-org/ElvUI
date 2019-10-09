@@ -270,16 +270,17 @@ function AB:PositionAndSizeBarShapeShift()
 		end
 	end
 
-	if useMasque then MasqueGroup:ReSkin() end
+	if useMasque then
+		MasqueGroup:ReSkin()
+	end
 
-	numButtons = GetNumShapeshiftForms()
 	if self.db.stanceBar.enabled then
 		local visibility = self.db.stanceBar.visibility
 		if visibility and visibility:match('[\n\r]') then
 			visibility = visibility:gsub('[\n\r]','')
 		end
 
-		RegisterStateDriver(bar, "visibility", (numButtons == 0 and "hide") or visibility)
+		RegisterStateDriver(bar, "visibility", (GetNumShapeshiftForms() == 0 and "hide") or visibility)
 		E:EnableMover(bar.mover:GetName())
 	else
 		RegisterStateDriver(bar, "visibility", "hide")
@@ -292,11 +293,6 @@ function AB:AdjustMaxStanceButtons(event)
 		AB.NeedsAdjustMaxStanceButtons = event or true
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return
-	end
-
-	local visibility = self.db.stanceBar.visibility
-	if visibility and visibility:match('[\n\r]') then
-		visibility = visibility:gsub('[\n\r]','')
 	end
 
 	for i=1, #bar.buttons do
@@ -327,8 +323,6 @@ function AB:AdjustMaxStanceButtons(event)
 	if event == 'UPDATE_SHAPESHIFT_FORMS' then
 		self:StyleShapeShift()
 	end
-
-	RegisterStateDriver(bar, "visibility", (numButtons == 0 and "hide") or visibility)
 end
 
 function AB:UpdateStanceBindings()

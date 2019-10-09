@@ -1253,16 +1253,9 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 	}
 
 	if isGroupFrame then
-		config.args.frequentUpdates = {
-			type = 'toggle',
-			order = 8,
-			name = L["Frequent Updates"],
-			desc = L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."],
-		}
-
 		config.args.orientation = {
 			type = 'select',
-			order = 9,
+			order = 8,
 			name = L["Statusbar Fill Orientation"],
 			desc = L["Direction the health bar moves when gaining/losing health."],
 			values = {
@@ -1746,6 +1739,11 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				order = 11,
 				name = L["Attach Text To"],
 				values = attachToValues,
+			},
+			autoHide = {
+				order = 12,
+				type = 'toggle',
+				name = L["Auto-Hide"],
 			},
 		},
 	}
