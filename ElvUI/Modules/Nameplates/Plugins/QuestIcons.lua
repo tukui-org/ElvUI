@@ -251,15 +251,13 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		if element.Loot and element.Loot:IsObjectType('Texture') and not element.Loot:GetAtlas() then
+		if element.Loot:IsObjectType('Texture') and not element.Loot:GetAtlas() then
 			element.Loot:SetAtlas('Banker')
 		end
-
-		if element.Skull and element.Skull:IsObjectType('Texture') and not element.Skull:GetTexture() then
+		if element.Skull:IsObjectType('Texture') and not element.Skull:GetTexture() then
 			element.Skull:SetTexture(E.Media.Textures.SkullIcon)
 		end
-
-		if element.Chat and element.Chat:IsObjectType('StatusBar') and not element.Chat:GetTexture() then
+		if element.Chat:IsObjectType('StatusBar') and not element.Chat:GetTexture() then
 			element.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
 		end
 
@@ -277,6 +275,11 @@ local function Disable(self)
 	local element = self.QuestIcons
 	if element then
 		element:Hide()
+
+		element.Skull:Hide()
+		element.Loot:Hide()
+		element.Item:Hide()
+		element.Chat:Hide()
 
 		self:UnregisterEvent('QUEST_ACCEPTED', QUEST_ACCEPTED)
 		self:UnregisterEvent('QUEST_REMOVED', QUEST_REMOVED)
