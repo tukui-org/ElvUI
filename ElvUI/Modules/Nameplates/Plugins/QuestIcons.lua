@@ -196,13 +196,12 @@ local function Update(self, event, unit)
 		element:PreUpdate()
 	end
 
-	element.Skull:Hide()
-	element.Loot:Hide()
-	element.Item:Hide()
-	element.Chat:Hide()
-
 	local QuestList = GetQuests(unit)
 	if QuestList then
+		element.Skull:Hide()
+		element.Loot:Hide()
+		element.Item:Hide()
+		element.Chat:Hide()
 		element:Show()
 	else
 		element:Hide()
