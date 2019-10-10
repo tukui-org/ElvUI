@@ -10,7 +10,10 @@ local SetCVar = SetCVar
 local SetUIPanelAttribute = SetUIPanelAttribute
 local MOUSE_LABEL = MOUSE_LABEL:gsub("|T.-|t","")
 local PLAYER = PLAYER
--- GLOBALS: WORLD_MAP_MIN_ALPHA, CoordsHolder
+local GetCVarBool = GetCVarBool
+local hooksecurefunc = hooksecurefunc
+local PlayerMovementFrameFader = PlayerMovementFrameFader
+-- GLOBALS: CoordsHolder
 
 local INVERTED_POINTS = {
 	["TOPLEFT"] = "BOTTOMLEFT",
@@ -117,6 +120,17 @@ function M:PositionCoords()
 	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
 end
 
+function M:MapShouldFade()
+	return GetCVarBool('mapFade') and not _G.WorldMapFrame:IsMouseOver()
+end
+
+function M:UpdateMapFade(minAlpha, maxAlpha, durationSec, fadePredicate) -- self is frame
+	if self:IsShown() and (self == _G.WorldMapFrame and fadePredicate ~= M.MapShouldFade) then
+		PlayerMovementFrameFader.RemoveFrame(self)
+		PlayerMovementFrameFader.AddDeferredFrame(self, E.global.general.mapAlphaWhenMoving, 1.0, E.global.general.fadeMapDuration, M.MapShouldFade)
+	end
+end
+
 function M:Initialize()
 	self.Initialized = true
 
@@ -177,11 +191,10 @@ function M:Initialize()
 	end
 
 	--Set alpha used when moving
-	WORLD_MAP_MIN_ALPHA = E.global.general.mapAlphaWhenMoving
-	SetCVar("mapAnimMinAlpha", E.global.general.mapAlphaWhenMoving)
+	hooksecurefunc(PlayerMovementFrameFader, "AddDeferredFrame", M.UpdateMapFade)
 
 	--Enable/Disable map fading when moving
-	SetCVar("mapFade", (E.global.general.fadeMapWhenMoving == true and 1 or 0))
+	SetCVar("mapFade", E.global.general.fadeMapWhenMoving and 1 or 0)
 end
 
 E:RegisterInitialModule(M:GetName())

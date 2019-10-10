@@ -11,6 +11,7 @@ G.general = {
 	smallerWorldMapScale = 0.9,
 	fadeMapWhenMoving = true,
 	mapAlphaWhenMoving = 0.35,
+	fadeMapDuration = 0.25,
 	WorldMapCoordinates = {
 		enable = true,
 		position = "BOTTOMLEFT",
