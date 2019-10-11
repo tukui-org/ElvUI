@@ -33,7 +33,7 @@ function UF:FrameGlow_ElementHook(frame, glow, which)
 		end
 
 		if which == 'mouseoverGlow' then
-			UF:FrameGlow_PositionGlow(frame)
+			UF:FrameGlow_PositionTexture(frame)
 			UF:FrameGlow_CheckMouseover(frame)
 		else
 			UF:FrameGlow_PositionGlow(frame, glow, glow.powerGlow)
@@ -326,7 +326,7 @@ function UF:FrameGlow_CheckMouseover(frame)
 	end
 end
 
-function UF:FrameGlow_PositionGlow(frame)
+function UF:FrameGlow_PositionTexture(frame)
 	if frame.FrameGlow and frame.FrameGlow.texture then
 		frame.FrameGlow.texture:ClearAllPoints()
 		frame.FrameGlow.texture:Point('TOPLEFT', frame.Health, 'TOPLEFT')
