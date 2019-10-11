@@ -91,11 +91,11 @@ local function LoadSkin()
 	local ItemButton = ItemDisplay.ItemButton
 	S:HandleIcon(ItemButton.Icon, true)
 	-- FIX ME
-	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon:SetBackdropBorderColor(r, g, b) end)
-	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
-	ItemButton.CircleMask:SetAlpha(0)
+	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
+	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+	ItemButton.CircleMask:Hide()
 	ItemButton.IconBorder:SetAlpha(0)
-	ItemButton.IconOverlay:SetAlpha(0)
+	ItemButton.IconOverlay:Hide()
 
 	--[[ ItemBuyOut Frame]]
 	local ItemBuyFrame = Frame.ItemBuyFrame
@@ -109,11 +109,11 @@ local function LoadSkin()
 	local ItemButton = ItemDisplay.ItemButton
 	S:HandleIcon(ItemButton.Icon, true)
 	-- FIX ME
-	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon:SetBackdropBorderColor(r, g, b) end)
-	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
-	ItemButton.CircleMask:SetAlpha(0)
+	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
+	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+	ItemButton.CircleMask:Hide()
 	ItemButton.IconBorder:SetAlpha(0)
-	ItemButton.IconOverlay:SetAlpha(0)
+	ItemButton.IconOverlay:Hide()
 
 	local ItemList = ItemBuyFrame.ItemList
 	ItemList:StripTextures()
@@ -180,7 +180,7 @@ local function LoadSkin()
 	hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
 	hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 	ItemButton.IconBorder:SetAlpha(0)
-	ItemButton.IconMask:SetAlpha(0)
+	ItemButton.IconMask:Hide()
 
 	local ItemList = Frame.CommoditiesSellList
 	ItemList:StripTextures()
