@@ -122,7 +122,8 @@ function M:PositionCoords()
 end
 
 function M:MapShouldFade()
-	return GetCVarBool('mapFade') and not _G.WorldMapFrame:IsMouseOver()
+	-- normally we would check GetCVarBool('mapFade') here instead of the setting
+	return E.global.general.fadeMapWhenMoving and not _G.WorldMapFrame:IsMouseOver()
 end
 
 function M:MapFadeOnUpdate()
@@ -177,7 +178,9 @@ function M:UpdateMapFade(minAlpha, maxAlpha, durationSec, fadePredicate) -- self
 		PlayerMovementFrameFader.RemoveFrame(self)
 
 		-- replacement function
-		M:EnableMapFading(self, E.global.general.mapAlphaWhenMoving, 1, E.global.general.fadeMapDuration, M.MapShouldFade)
+		if E.global.general.fadeMapWhenMoving then
+			M:EnableMapFading(self, E.global.general.mapAlphaWhenMoving, 1, E.global.general.fadeMapDuration, M.MapShouldFade)
+		end
 
 		-- we can't use the blizzard function because `durationSec` was never finished being implimented?
 		-- PlayerMovementFrameFader.AddDeferredFrame(self, E.global.general.mapAlphaWhenMoving, 1, E.global.general.fadeMapDuration, M.MapShouldFade)
@@ -246,8 +249,10 @@ function M:Initialize()
 	--Set alpha used when moving
 	hooksecurefunc(PlayerMovementFrameFader, "AddDeferredFrame", M.UpdateMapFade)
 
-	--Enable/Disable map fading when moving
-	SetCVar("mapFade", E.global.general.fadeMapWhenMoving and 1 or 0)
+	-- Enable/Disable map fading when moving
+	-- currently we dont need to touch this cvar because we have our own control for this currently
+	-- see the comment in `M:UpdateMapFade` about `durationSec` for more information
+	-- SetCVar("mapFade", E.global.general.fadeMapWhenMoving and 1 or 0)
 end
 
 E:RegisterInitialModule(M:GetName())
