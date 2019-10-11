@@ -185,40 +185,41 @@ local function GetQuests(unitID)
 end
 
 local function Update(self, event, unit)
-	if (event ~= "UNIT_NAME_UPDATE") then
+	if event ~= "UNIT_NAME_UPDATE" then
 		unit = self.unit
 	end
 
-	if (unit ~= self.unit) then return end
+	if unit ~= self.unit then return end
 
 	local element = self.QuestIcons
-
-	if (element.PreUpdate) then
+	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
-	element:Hide()
-	for i = 1, #element do
-		element[i]:Hide()
-	end
+	element.Skull:Hide()
+	element.Loot:Hide()
+	element.Item:Hide()
+	element.Chat:Hide()
+	element.Text:SetText('')
 
 	local QuestList = GetQuests(unit)
-	if not QuestList then return end
+	if QuestList then
+		element:Show()
+	else
+		element:Hide()
+		return
+	end
 
 	for i = 1, #QuestList do
 		local quest = QuestList[i]
 		local objectiveCount = quest.objectiveCount
-		local itemTexture = quest.itemTexture
 		local questType = quest.questType
 		local isPerc = quest.isPerc
 
 		if objectiveCount and (objectiveCount > 0 or isPerc) then
-			element.Text:SetText((isPerc and objectiveCount.."%") or objectiveCount)
-
-			element.Skull:Hide()
-			element.Loot:Hide()
-			element.Item:Hide()
-			element.Chat:Hide()
+			if questType ~= "CHAT" then
+				element.Text:SetText((isPerc and objectiveCount.."%") or objectiveCount)
+			end
 
 			if questType == "KILL" or isPerc then
 				element.Skull:Show()
@@ -226,19 +227,14 @@ local function Update(self, event, unit)
 				element.Loot:Show()
 			elseif questType == "CHAT" then
 				element.Chat:Show()
-				element.Text:SetText('')
 			elseif questType == "QUEST_ITEM" then
 				element.Item:Show()
-				element.Item:SetTexture(itemTexture)
+				element.Item:SetTexture(quest.itemTexture)
 			end
-
-			element:Show()
-		else
-			element:Hide()
 		end
 	end
 
-	if (element.PostUpdate) then
+	if element.PostUpdate then
 		return element:PostUpdate()
 	end
 end
@@ -253,26 +249,18 @@ end
 
 local function Enable(self)
 	local element = self.QuestIcons
-	if (element) then
+	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		if (element.Loot) then
-			if(element.Loot:IsObjectType('Texture') and not element.Loot:GetAtlas()) then
-				element.Loot:SetAtlas('Banker')
-			end
+		if element.Loot:IsObjectType('Texture') and not element.Loot:GetAtlas() then
+			element.Loot:SetAtlas('Banker')
 		end
-
-		if (element.Skull) then
-			if (element.Skull:IsObjectType('Texture') and not element.Skull:GetTexture()) then
-				element.Skull:SetTexture(E.Media.Textures.SkullIcon)
-			end
+		if element.Skull:IsObjectType('Texture') and not element.Skull:GetTexture() then
+			element.Skull:SetTexture(E.Media.Textures.SkullIcon)
 		end
-
-		if(element.Chat) then
-			if(element.Chat:IsObjectType('StatusBar') and not element.Chat:GetTexture()) then
-				element.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
-			end
+		if element.Chat:IsObjectType('StatusBar') and not element.Chat:GetTexture() then
+			element.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
 		end
 
 		self:RegisterEvent('QUEST_ACCEPTED', QUEST_ACCEPTED, true)
@@ -287,12 +275,19 @@ end
 
 local function Disable(self)
 	local element = self.QuestIcons
-	if (element) then
+	if element then
 		element:Hide()
+
+		element.Skull:Hide()
+		element.Loot:Hide()
+		element.Item:Hide()
+		element.Chat:Hide()
 
 		self:UnregisterEvent('QUEST_ACCEPTED', QUEST_ACCEPTED)
 		self:UnregisterEvent('QUEST_REMOVED', QUEST_REMOVED)
 		self:UnregisterEvent('QUEST_LOG_UPDATE', Path)
+		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)
+		self:UnregisterEvent('PLAYER_ENTERING_WORLD', Path)
 	end
 end
 

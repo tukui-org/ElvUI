@@ -10,7 +10,11 @@ local SetCVar = SetCVar
 local SetUIPanelAttribute = SetUIPanelAttribute
 local MOUSE_LABEL = MOUSE_LABEL:gsub("|T.-|t","")
 local PLAYER = PLAYER
--- GLOBALS: WORLD_MAP_MIN_ALPHA, CoordsHolder
+local GetCVarBool = GetCVarBool
+local hooksecurefunc = hooksecurefunc
+local IsPlayerMoving = IsPlayerMoving
+local PlayerMovementFrameFader = PlayerMovementFrameFader
+-- GLOBALS: CoordsHolder
 
 local INVERTED_POINTS = {
 	["TOPLEFT"] = "BOTTOMLEFT",
@@ -117,6 +121,78 @@ function M:PositionCoords()
 	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
 end
 
+function M:MapShouldFade()
+	-- normally we would check GetCVarBool('mapFade') here instead of the setting
+	return E.global.general.fadeMapWhenMoving and not _G.WorldMapFrame:IsMouseOver()
+end
+
+function M:MapFadeOnUpdate(elapsed)
+	self.elapsed = (self.elapsed or 0) + elapsed
+	if self.elapsed > 0.1 then
+		self.elapsed = 0
+
+		local object = self.FadeObject
+		local settings = object and object.FadeSettings
+		if not settings then return end
+
+		local fadeOut = IsPlayerMoving() and (not settings.fadePredicate or settings.fadePredicate())
+		local endAlpha = (fadeOut and (settings.minAlpha or 0.5)) or settings.maxAlpha or 1
+		local startAlpha = _G.WorldMapFrame:GetAlpha()
+
+		object.timeToFade = settings.durationSec or 0.5
+		object.startAlpha = startAlpha
+		object.endAlpha = endAlpha
+		object.diffAlpha = endAlpha - startAlpha
+
+		if object.fadeTimer then
+			object.fadeTimer = nil
+		end
+
+		E:UIFrameFade(_G.WorldMapFrame, object)
+	end
+end
+
+local fadeFrame
+function M:StopMapFromFading()
+	if fadeFrame then
+		fadeFrame:Hide()
+	end
+end
+
+function M:EnableMapFading(frame)
+	if not fadeFrame then
+		fadeFrame = CreateFrame("FRAME")
+		fadeFrame:SetScript("OnUpdate", M.MapFadeOnUpdate)
+		frame:HookScript("OnHide", M.StopMapFromFading)
+	end
+
+	if not fadeFrame.FadeObject then fadeFrame.FadeObject = {} end
+	if not fadeFrame.FadeObject.FadeSettings then fadeFrame.FadeObject.FadeSettings = {} end
+
+	local settings = fadeFrame.FadeObject.FadeSettings
+	settings.fadePredicate = M.MapShouldFade
+	settings.durationSec = E.global.general.fadeMapDuration
+	settings.minAlpha = E.global.general.mapAlphaWhenMoving
+	settings.maxAlpha = 1
+
+	fadeFrame:Show()
+end
+
+function M:UpdateMapFade(minAlpha, maxAlpha, durationSec, fadePredicate) -- self is frame
+	if self:IsShown() and (self == _G.WorldMapFrame and fadePredicate ~= M.MapShouldFade) then
+		-- blizzard spams code in OnUpdate and doesnt finish their functions, so we shut their fader down :L
+		PlayerMovementFrameFader.RemoveFrame(self)
+
+		-- replacement function which is complete :3
+		if E.global.general.fadeMapWhenMoving then
+			M:EnableMapFading(self)
+		end
+
+		-- we can't use the blizzard function because `durationSec` was never finished being implimented?
+		-- PlayerMovementFrameFader.AddDeferredFrame(self, E.global.general.mapAlphaWhenMoving, 1, E.global.general.fadeMapDuration, M.MapShouldFade)
+	end
+end
+
 function M:Initialize()
 	self.Initialized = true
 
@@ -176,12 +252,13 @@ function M:Initialize()
 		end)
 	end
 
-	--Set alpha used when moving
-	WORLD_MAP_MIN_ALPHA = E.global.general.mapAlphaWhenMoving
-	SetCVar("mapAnimMinAlpha", E.global.general.mapAlphaWhenMoving)
+	-- This lets us control the maps fading function
+	hooksecurefunc(PlayerMovementFrameFader, "AddDeferredFrame", M.UpdateMapFade)
 
-	--Enable/Disable map fading when moving
-	SetCVar("mapFade", (E.global.general.fadeMapWhenMoving == true and 1 or 0))
+	-- Enable/Disable map fading when moving
+	-- currently we dont need to touch this cvar because we have our own control for this currently
+	-- see the comment in `M:UpdateMapFade` about `durationSec` for more information
+	-- SetCVar("mapFade", E.global.general.fadeMapWhenMoving and 1 or 0)
 end
 
 E:RegisterInitialModule(M:GetName())

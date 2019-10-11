@@ -461,6 +461,7 @@ L["Export Now"] = "現在導出"
 L["Export Profile"] = "導出配置文件"
 L["Exported"] = "已導出"
 L["Fade Chat"] = "對話內容漸隱"
+L["Fade Duration"] = true
 L["Fade Out Delay"] = "淡出延遲"
 L["Fade Out"] = "漸隱"
 L["Fade Tabs No Backdrop"] = "隱藏拖出的聊天框"

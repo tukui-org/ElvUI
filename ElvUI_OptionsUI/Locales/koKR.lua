@@ -460,6 +460,7 @@ L["Export Now"] = "지금 내보내기"
 L["Export Profile"] = "프로필 내보내기"
 L["Exported"] = "내보낸 것"
 L["Fade Chat"] = "오래된 메시지 숨기기"
+L["Fade Duration"] = true
 L["Fade Out Delay"] = true
 L["Fade Out"] = true
 L["Fade the chat text when there is no activity."] = "시간이 오래 지난 이전의 메시지를 채팅창에서 보이지 않게 합니다. 삭제하는 것은 아니니 마우스 휠링으로 안보이게 한 이전의 메시지를 다시 확인할 수 있습니다."

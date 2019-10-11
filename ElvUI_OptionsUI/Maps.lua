@@ -58,7 +58,7 @@ E.Options.args.maps = {
 							get = function(info) return E.global.general.fadeMapWhenMoving end,
 							set = function(info, value)
 								E.global.general.fadeMapWhenMoving = value;
-								SetCVar("mapFade", (value == true and 1 or 0))
+								SetCVar("mapFade", value and 1 or 0)
 							end,
 						},
 						mapAlphaWhenMoving = {
@@ -70,8 +70,20 @@ E.Options.args.maps = {
 							get = function(info) return E.global.general.mapAlphaWhenMoving end,
 							set = function(info, value)
 								E.global.general.mapAlphaWhenMoving = value;
-								WORLD_MAP_MIN_ALPHA = value;
-								SetCVar("mapAnimMinAlpha", value)
+								-- we use E.noop to force the update of the minValue here
+								E.WorldMap.UpdateMapFade(_G.WorldMapFrame, E.global.general.mapAlphaWhenMoving, 1.0, E.global.general.fadeMapDuration, E.noop);
+							end,
+						},
+						fadeMapDuration = {
+							order = 6,
+							type = "range",
+							name = L["Fade Duration"],
+							min = 0, max = 1, step = 0.01,
+							get = function(info) return E.global.general.fadeMapDuration end,
+							set = function(info, value)
+								E.global.general.fadeMapDuration = value;
+								-- we use E.noop to force the update of the minValue here
+								E.WorldMap.UpdateMapFade(_G.WorldMapFrame, E.global.general.mapAlphaWhenMoving, 1.0, E.global.general.fadeMapDuration, E.noop);
 							end,
 						},
 					},
