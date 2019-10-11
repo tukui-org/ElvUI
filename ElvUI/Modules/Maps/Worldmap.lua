@@ -159,11 +159,11 @@ function M:StopMapFromFading()
 	end
 end
 
-function M:EnableMapFading(self, minAlpha, maxAlpha, durationSec, fadePredicate)
+function M:EnableMapFading(frame)
 	if not fadeFrame then
 		fadeFrame = CreateFrame("FRAME")
 		fadeFrame:SetScript("OnUpdate", M.MapFadeOnUpdate)
-		self:HookScript("OnHide", M.StopMapFromFading)
+		frame:HookScript("OnHide", M.StopMapFromFading)
 	end
 
 	if not fadeFrame.FadeObject then fadeFrame.FadeObject = {} end
@@ -180,11 +180,12 @@ end
 
 function M:UpdateMapFade(minAlpha, maxAlpha, durationSec, fadePredicate) -- self is frame
 	if self:IsShown() and (self == _G.WorldMapFrame and fadePredicate ~= M.MapShouldFade) then
+		-- blizzard spams code in OnUpdate and doesnt finish their functions, so we shut their fader down :L
 		PlayerMovementFrameFader.RemoveFrame(self)
 
-		-- replacement function
+		-- replacement function which is complete :3
 		if E.global.general.fadeMapWhenMoving then
-			M:EnableMapFading(self, E.global.general.mapAlphaWhenMoving, 1, E.global.general.fadeMapDuration, M.MapShouldFade)
+			M:EnableMapFading(self)
 		end
 
 		-- we can't use the blizzard function because `durationSec` was never finished being implimented?
@@ -251,7 +252,7 @@ function M:Initialize()
 		end)
 	end
 
-	--Set alpha used when moving
+	-- This lets us control the maps fading function
 	hooksecurefunc(PlayerMovementFrameFader, "AddDeferredFrame", M.UpdateMapFade)
 
 	-- Enable/Disable map fading when moving
