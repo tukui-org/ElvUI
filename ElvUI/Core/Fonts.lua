@@ -69,8 +69,13 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Game16Font,							NORMAL, 16)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Game18Font,							NORMAL, 18)									-- MissionUI Bonus Chance
 		SetFont(_G.Game24Font, 							NORMAL, 24)									-- Garrison Mission level (in detail frame)
-		SetFont(_G.Game30Font,							NORMAL, 28)									-- Mission Level
+		SetFont(_G.Game42Font,							NORMAL, 42)									-- Mission Level
 		SetFont(_G.Game46Font,							NORMAL, 46)									-- Added in 7.3.5 used for ?
+		SetFont(_G.Game48Font,							NORMAL, 48)
+		SetFont(_G.Game48FontShadow,					NORMAL, 48, nil, SHADOWCOLOR, BIGOFFSET)
+		SetFont(_G.Game60Font,							NORMAL, 60)
+		SetFont(_G.Game72Font,							NORMAL, 72)
+		SetFont(_G.Game120Font,							NORMAL, 120)
 		SetFont(_G.GameFont_Gigantic,					NORMAL, 32, nil, SHADOWCOLOR, BIGOFFSET)	-- Used at the install steps
 		SetFont(_G.GameFontHighlightMedium,				NORMAL, 15)									-- Fix QuestLog Title mouseover
 		SetFont(_G.GameFontHighlightSmall2,				NORMAL, self.db.general.fontSize)			-- Skill or Recipe description on TradeSkill frame
@@ -126,5 +131,13 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Tooltip_Med,							NORMAL, self.db.general.fontSize)
 		SetFont(_G.Tooltip_Small,						NORMAL, self.db.general.fontSize)
 		SetFont(_G.ZoneTextString,						NORMAL, 32, MONOCHROME..'OUTLINE')
+		SetFont(_G.Game10Font_o1,						NORMAL, 10, 'OUTLINE')
+		SetFont(_G.SystemFont_Shadow_Huge4,				NORMAL, 27, nil, nil, nil, nil, nil, 1, -1)
+		SetFont(_G.SystemFont_Shadow_Outline_Huge4,		NORMAL, 27, 'OUTLINE', nil, nil, nil, nil, 1, -1)
+		SetFont(_G.Number12Font_o1,						NUMBER, 12, 'OUTLINE')
+		SetFont(_G.Number11Font,						NUMBER, 11)
+		SetFont(_G.Number13Font,						NUMBER, 13)
+		SetFont(_G.Number18Font,						NUMBER, 18)
+		SetFont(_G.FriendsFont_11,						NORMAL, 11)
 	end
 end
