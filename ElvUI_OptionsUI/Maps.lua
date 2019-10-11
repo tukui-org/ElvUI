@@ -78,7 +78,7 @@ E.Options.args.maps = {
 							order = 6,
 							type = "range",
 							name = L["Fade Duration"],
-							min = 0, max = 2, step = 0.01,
+							min = 0, max = 1, step = 0.01,
 							get = function(info) return E.global.general.fadeMapDuration end,
 							set = function(info, value)
 								E.global.general.fadeMapDuration = value;
