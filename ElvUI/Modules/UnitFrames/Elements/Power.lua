@@ -213,8 +213,9 @@ function UF:Configure_Power(frame)
 		end
 		if db.power.strataAndLevel and db.power.strataAndLevel.useCustomLevel then
 			power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
-			power.backdrop:SetFrameLevel(power:GetFrameLevel() - 1)
 		end
+
+		power.backdrop:SetFrameLevel(power:GetFrameLevel() - 1)
 
 		if frame.POWERBAR_DETACHED and db.power.parent == "UIPARENT" then
 			E.FrameLocks[power] = true
