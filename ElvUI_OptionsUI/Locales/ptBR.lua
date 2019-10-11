@@ -460,6 +460,7 @@ L["Export Now"] = true
 L["Export Profile"] = true
 L["Exported"] = true
 L["Fade Chat"] = "Desvanecer o bate-papo"
+L["Fade Duration"] = true
 L["Fade Out Delay"] = true
 L["Fade Out"] = true
 L["Fade Tabs No Backdrop"] = true

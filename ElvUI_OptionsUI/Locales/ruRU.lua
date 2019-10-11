@@ -459,6 +459,7 @@ L["Export Now"] = "Экспортировать"
 L["Export Profile"] = "Экспорт профиля"
 L["Exported"] = "Экспортировано"
 L["Fade Chat"] = "Затухание чата"
+L["Fade Duration"] = true
 L["Fade Out Delay"] = "Задержка изчезновения"
 L["Fade Out"] = "Исчезновение"
 L["Fade Tabs No Backdrop"] = "Затухание без фона"

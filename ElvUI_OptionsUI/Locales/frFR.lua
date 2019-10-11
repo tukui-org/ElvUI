@@ -460,6 +460,7 @@ L["Export Now"] = "Exporter maintenant"
 L["Export Profile"] = "Exporter le profil"
 L["Exported"] = "Exporté"
 L["Fade Chat"] = "Estomper la discussion"
+L["Fade Duration"] = true
 L["Fade Out Delay"] = true
 L["Fade Out"] = true
 L["Fade Tabs No Backdrop"] = "Estomper les onglets sans arrière-plan"
