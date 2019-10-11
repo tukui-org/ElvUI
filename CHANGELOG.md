@@ -6,7 +6,9 @@ Added TutorialFrame skin.
 
 **Bug Fixes:**  
 Fixed Pet Battle Nameplates, they weren't properly updating Health Bars.  
-Fixed issue which would carry over Quest Icons on Nameplates to one without a quest.  
+Fixed an issue which would carry over Quest Icons on Nameplates to one without a quest.  
+Fixed the Map Fading while moving option and added a fade duration setting.  
+Fixed the issue which was caused by trying to use chat editbox history to queue a slash command to be sent that was secure (such as /target).  
 
 **Misc. Changes:**  
 Removed the Frequent Updates option, it is now on by default.  
