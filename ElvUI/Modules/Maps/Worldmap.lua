@@ -126,25 +126,30 @@ function M:MapShouldFade()
 	return E.global.general.fadeMapWhenMoving and not _G.WorldMapFrame:IsMouseOver()
 end
 
-function M:MapFadeOnUpdate()
-	local object = self.FadeObject
-	local settings = object and object.FadeSettings
-	if not settings then return end
+function M:MapFadeOnUpdate(elapsed)
+	self.elapsed = (self.elapsed or 0) + elapsed
+	if self.elapsed > 0.1 then
+		self.elapsed = 0
 
-	local fadeOut = IsPlayerMoving() and (not settings.fadePredicate or settings.fadePredicate())
-	local endAlpha = (fadeOut and (settings.minAlpha or 0.5)) or settings.maxAlpha or 1
-	local startAlpha = _G.WorldMapFrame:GetAlpha()
+		local object = self.FadeObject
+		local settings = object and object.FadeSettings
+		if not settings then return end
 
-	object.timeToFade = settings.durationSec or 0.5
-	object.startAlpha = startAlpha
-	object.endAlpha = endAlpha
-	object.diffAlpha = endAlpha - startAlpha
+		local fadeOut = IsPlayerMoving() and (not settings.fadePredicate or settings.fadePredicate())
+		local endAlpha = (fadeOut and (settings.minAlpha or 0.5)) or settings.maxAlpha or 1
+		local startAlpha = _G.WorldMapFrame:GetAlpha()
 
-	if object.fadeTimer then
-		object.fadeTimer = nil
+		object.timeToFade = settings.durationSec or 0.5
+		object.startAlpha = startAlpha
+		object.endAlpha = endAlpha
+		object.diffAlpha = endAlpha - startAlpha
+
+		if object.fadeTimer then
+			object.fadeTimer = nil
+		end
+
+		E:UIFrameFade(_G.WorldMapFrame, object)
 	end
-
-	E:UIFrameFade(_G.WorldMapFrame, object)
 end
 
 local fadeFrame
