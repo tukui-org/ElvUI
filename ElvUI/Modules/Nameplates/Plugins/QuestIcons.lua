@@ -217,7 +217,6 @@ local function Update(self, event, unit)
 		local isPerc = quest.isPerc
 
 		if objectiveCount and (objectiveCount > 0 or isPerc) then
-			shownCount = (shownCount and shownCount + 1) or 0
 			local icon
 
 			if questType == "KILL" or isPerc then
@@ -231,17 +230,21 @@ local function Update(self, event, unit)
 				element.Item:SetTexture(quest.itemTexture)
 			end
 
-			local size = icon.size or 25
-			local setPosition = icon.position or "TOPLEFT"
-			local newPosition = E.InversePoints[setPosition]
-			local offset = 2 + (shownCount * size)
+			if not icon:IsShown() then
+				shownCount = (shownCount and shownCount + 1) or 0
 
-			icon:Show()
-			icon:ClearAllPoints()
-			icon:Point(newPosition, element, newPosition, (strmatch(setPosition, "LEFT") and -offset) or offset, 0)
+				local size = icon.size or 25
+				local setPosition = icon.position or "TOPLEFT"
+				local newPosition = E.InversePoints[setPosition]
+				local offset = 2 + (shownCount * size)
 
-			if questType ~= "CHAT" then
-				icon.Text:SetText((isPerc and objectiveCount.."%") or objectiveCount)
+				icon:Show()
+				icon:ClearAllPoints()
+				icon:Point(newPosition, element, newPosition, (strmatch(setPosition, "LEFT") and -offset) or offset, 0)
+
+				if questType ~= "CHAT" then
+					icon.Text:SetText((isPerc and objectiveCount.."%") or objectiveCount)
+				end
 			end
 		end
 	end
