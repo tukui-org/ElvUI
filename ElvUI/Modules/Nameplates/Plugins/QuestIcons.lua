@@ -16,6 +16,7 @@ local UnitIsPlayer = UnitIsPlayer
 local C_TaskQuest_GetQuestProgressBarInfo = C_TaskQuest.GetQuestProgressBarInfo
 local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
 
+local questIconTypes = {"Item", "Loot", "Skull", "Chat"}
 local ActiveQuests = {
 	--[questName] = questID
 }
@@ -184,22 +185,29 @@ local function GetQuests(unitID)
 	return QuestList
 end
 
+local function hideIcons(element)
+	for _, object in pairs(questIconTypes) do
+		local icon = element[object]
+		icon.Text:SetText('')
+		icon:Hide()
+	end
+end
+
 local function Update(self, event, unit)
+	local element = self.QuestIcons
+	if not element then return end
+
 	if event ~= "UNIT_NAME_UPDATE" then
 		unit = self.unit
 	end
 
 	if unit ~= self.unit then return end
 
-	local element = self.QuestIcons
 	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
-	element.Skull:Hide()
-	element.Loot:Hide()
-	element.Item:Hide()
-	element.Chat:Hide()
+	hideIcons(element)
 
 	local QuestList = GetQuests(unit)
 	if QuestList then
@@ -295,11 +303,7 @@ local function Disable(self)
 	local element = self.QuestIcons
 	if element then
 		element:Hide()
-
-		element.Skull:Hide()
-		element.Loot:Hide()
-		element.Item:Hide()
-		element.Chat:Hide()
+		hideIcons(element)
 
 		self:UnregisterEvent('QUEST_ACCEPTED', QUEST_ACCEPTED)
 		self:UnregisterEvent('QUEST_REMOVED', QUEST_REMOVED)

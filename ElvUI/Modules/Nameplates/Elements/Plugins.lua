@@ -16,6 +16,7 @@ function NP:Construct_QuestIcons(nameplate)
 	for _, object in pairs(questIconTypes) do
 		local icon = QuestIcons:CreateTexture(nil, "BORDER", nil, 1)
 		icon.Text = QuestIcons:CreateFontString(nil, "OVERLAY")
+		icon.Text:FontTemplate()
 		icon:Hide()
 
 		QuestIcons[object] = icon
