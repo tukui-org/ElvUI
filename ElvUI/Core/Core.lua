@@ -16,7 +16,7 @@ local GetNumGroupMembers = GetNumGroupMembers
 local GetSpecialization = GetSpecialization
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
-local IsAddOnLoaded = IsAddOnLoaded
+local GetAddOnEnableState = GetAddOnEnableState
 local IsInGroup = IsInGroup
 local IsInGuild = IsInGuild
 local IsInRaid = IsInRaid
@@ -498,13 +498,18 @@ function E:IncompatibleAddOn(addon, module)
 	E:StaticPopup_Show('INCOMPATIBLE_ADDON', addon, module)
 end
 
+function E:IsAddOnEnabled(addon)
+	return GetAddOnEnableState(E.myname, addon) == 2
+end
+
 function E:CheckIncompatible()
 	if E.global.ignoreIncompatible then return end
-	if IsAddOnLoaded('Prat-3.0') and E.private.chat.enable then E:IncompatibleAddOn('Prat-3.0', 'Chat') end
-	if IsAddOnLoaded('Chatter') and E.private.chat.enable then E:IncompatibleAddOn('Chatter', 'Chat') end
-	if IsAddOnLoaded('TidyPlates') and E.private.nameplates.enable then E:IncompatibleAddOn('TidyPlates', 'NamePlates') end
-	if IsAddOnLoaded('Aloft') and E.private.nameplates.enable then E:IncompatibleAddOn('Aloft', 'NamePlates') end
-	if IsAddOnLoaded('Healers-Have-To-Die') and E.private.nameplates.enable then E:IncompatibleAddOn('Healers-Have-To-Die', 'NamePlates') end
+	if E:IsAddOnLoaded('Prat-3.0') and E.private.chat.enable then E:IncompatibleAddOn('Prat-3.0', 'Chat') end
+	if E:IsAddOnLoaded('Chatter') and E.private.chat.enable then E:IncompatibleAddOn('Chatter', 'Chat') end
+	if E:IsAddOnLoaded('TidyPlates') and E.private.nameplates.enable then E:IncompatibleAddOn('TidyPlates', 'NamePlates') end
+	if E:IsAddOnLoaded('Aloft') and E.private.nameplates.enable then E:IncompatibleAddOn('Aloft', 'NamePlates') end
+	if E:IsAddOnLoaded('Healers-Have-To-Die') and E.private.nameplates.enable then E:IncompatibleAddOn('Healers-Have-To-Die', 'NamePlates') end
+	if E:IsAddOnEnabled('Bartender4') and E.private.actionbar.enable then E:IncompatibleAddOn('Bartender4', 'ActionBar') end
 end
 
 function E:CopyTable(currentTable, defaultTable)
