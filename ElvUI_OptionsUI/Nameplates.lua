@@ -5144,16 +5144,54 @@ local function GetUnitSettings(unit, name)
 					order = 1,
 					name = L["Enable"]
 				},
+				font = {
+					type = "select",
+					dialogControl = "LSM30_Font",
+					order = 2,
+					name = L["Font"],
+					values = _G.AceGUIWidgetLSMlists.font
+				},
+				fontSize = {
+					order = 3,
+					name = L["FONT_SIZE"],
+					type = "range",
+					min = 4,
+					max = 40,
+					step = 1
+				},
+				fontOutline = {
+					order = 4,
+					name = L["Font Outline"],
+					desc = L["Set the font outline."],
+					type = "select",
+					values = C.Values.FontFlags
+				},
 				size = {
 					type = "range",
-					order = 2,
+					order = 5,
 					name = L["Size"],
 					min = 10,
 					max = 50,
 					step = 1
 				},
+				xOffset = {
+					order = 6,
+					name = L["X-Offset"],
+					type = "range",
+					min = -100,
+					max = 100,
+					step = 1
+				},
+				yOffset = {
+					order = 7,
+					name = L["Y-Offset"],
+					type = "range",
+					min = -100,
+					max = 100,
+					step = 1
+				},
 				position = {
-					order = 3,
+					order = 8,
 					type = "select",
 					name = L["Icon Position"],
 					values = {
@@ -5166,21 +5204,21 @@ local function GetUnitSettings(unit, name)
 						["RIGHT"] = "RIGHT"
 					}
 				},
-				xOffset = {
-					order = 4,
-					name = L["X-Offset"],
-					type = "range",
-					min = -100,
-					max = 100,
-					step = 1
-				},
-				yOffset = {
-					order = 5,
-					name = L["Y-Offset"],
-					type = "range",
-					min = -100,
-					max = 100,
-					step = 1
+				textPosition = {
+					order = 9,
+					type = "select",
+					name = L["Text Position"],
+					values = {
+						["TOP"] = "TOP",
+						["LEFT"] = "LEFT",
+						["BOTTOM"] = "BOTTOM",
+						["CENTER"] = "CENTER",
+						["TOPLEFT"] = "TOPLEFT",
+						["BOTTOMLEFT"] = "BOTTOMLEFT",
+						["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+						["RIGHT"] = "RIGHT",
+						["TOPRIGHT"] = "TOPRIGHT"
+					}
 				}
 			}
 		}

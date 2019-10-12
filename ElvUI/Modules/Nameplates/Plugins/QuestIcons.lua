@@ -200,7 +200,6 @@ local function Update(self, event, unit)
 	element.Loot:Hide()
 	element.Item:Hide()
 	element.Chat:Hide()
-	element.Text:SetText('')
 
 	local QuestList = GetQuests(unit)
 	if QuestList then
@@ -210,6 +209,7 @@ local function Update(self, event, unit)
 		return
 	end
 
+	local shownCount
 	for i = 1, #QuestList do
 		local quest = QuestList[i]
 		local objectiveCount = quest.objectiveCount
@@ -217,19 +217,31 @@ local function Update(self, event, unit)
 		local isPerc = quest.isPerc
 
 		if objectiveCount and (objectiveCount > 0 or isPerc) then
-			if questType ~= "CHAT" then
-				element.Text:SetText((isPerc and objectiveCount.."%") or objectiveCount)
-			end
+			shownCount = (shownCount and shownCount + 1) or 0
+			local icon
 
 			if questType == "KILL" or isPerc then
-				element.Skull:Show()
+				icon = element.Skull
 			elseif questType == "LOOT" then
-				element.Loot:Show()
+				icon = element.Loot
 			elseif questType == "CHAT" then
-				element.Chat:Show()
+				icon = element.Chat
 			elseif questType == "QUEST_ITEM" then
-				element.Item:Show()
+				icon = element.Item
 				element.Item:SetTexture(quest.itemTexture)
+			end
+
+			local size = icon.size or 25
+			local setPosition = icon.position or "TOPLEFT"
+			local newPosition = E.InversePoints[setPosition]
+			local offset = 2 + (shownCount * size)
+
+			icon:Show()
+			icon:ClearAllPoints()
+			icon:Point(newPosition, element, newPosition, (strmatch(setPosition, "LEFT") and -offset) or offset, 0)
+
+			if questType ~= "CHAT" then
+				icon.Text:SetText((isPerc and objectiveCount.."%") or objectiveCount)
 			end
 		end
 	end

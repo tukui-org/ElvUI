@@ -1369,9 +1369,13 @@ P.nameplates = {
 			questIcon = {
 				enable = true,
 				position = 'RIGHT',
-				size = 16,
+				textPosition = 'BOTTOMRIGHT',
+				size = 20,
 				xOffset = 0,
 				yOffset = 0,
+				font = 'PT Sans Narrow',
+				fontOutline = 'OUTLINE',
+				fontSize = 12
 			},
 			nazjatarFollowerXP = {
 				enable = true,
@@ -1593,9 +1597,13 @@ P.nameplates = {
 			questIcon = {
 				enable = true,
 				position = 'RIGHT',
-				size = 16,
+				textPosition = 'BOTTOMRIGHT',
+				size = 20,
 				xOffset = 0,
 				yOffset = 0,
+				font = 'PT Sans Narrow',
+				fontOutline = 'OUTLINE',
+				fontSize = 14
 			},
 		},
 	},
