@@ -188,8 +188,11 @@ end
 local function hideIcons(element)
 	for _, object in pairs(questIconTypes) do
 		local icon = element[object]
-		icon.Text:SetText('')
 		icon:Hide()
+
+		if icon.Text then
+			icon.Text:SetText('')
+		end
 	end
 end
 
@@ -249,7 +252,7 @@ local function Update(self, event, unit)
 				icon:ClearAllPoints()
 				icon:Point(newPosition, element, newPosition, (strmatch(setPosition, "LEFT") and -offset) or offset, 0)
 
-				if questType ~= "CHAT" then
+				if questType ~= "CHAT" and icon.Text then
 					icon.Text:SetText((isPerc and objectiveCount.."%") or objectiveCount)
 				end
 
