@@ -7,10 +7,11 @@ local HIDDEN = 0
 local function updateText(self, elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 	if self.elapsed >= 0.1 then
-		self.timeLeft = self.expiration - GetTime()
+		local timeNow = GetTime()
+		self.timeLeft = self.expiration - timeNow
 		if self.timeLeft > 0 then
-			if ((self.timeLeft <= self.textThreshold) or self.textThreshold == -1) then
-				self.cd:SetCooldown(GetTime(), self.timeLeft)
+			if (self.timeLeft <= self.textThreshold) or self.textThreshold == -1 then
+				self.cd:SetCooldown(timeNow, self.timeLeft)
 				self.cd:Show()
 				self:SetScript("OnUpdate", nil)
 				self.elapsed = 0
