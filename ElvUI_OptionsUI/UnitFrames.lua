@@ -5287,6 +5287,15 @@ E.Options.args.unitframe.args.pet = {
 					order = 3,
 					min = 4, max = 50, step = 1,
 				},
+				style = {
+					name = L["Style"],
+					order = 4,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
+				},
 			},
 		},
 		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'pet'),
@@ -6038,6 +6047,15 @@ E.Options.args.unitframe.args.party = {
 					order = 3,
 					min = 4, max = 50, step = 1,
 				},
+				style = {
+					name = L["Style"],
+					order = 4,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
+				},
 				profileSpecific = {
 					type = 'toggle',
 					name = L["Profile Specific"],
@@ -6686,6 +6704,15 @@ E.Options.args.unitframe.args.raid = {
 					order = 3,
 					min = 4, max = 50, step = 1,
 				},
+				style = {
+					name = L["Style"],
+					order = 4,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
+				},
 				profileSpecific = {
 					type = 'toggle',
 					name = L["Profile Specific"],
@@ -7146,6 +7173,15 @@ E.Options.args.unitframe.args.raid40 = {
 					order = 3,
 					min = 4, max = 50, step = 1,
 				},
+				style = {
+					name = L["Style"],
+					order = 4,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
+				},
 				profileSpecific = {
 					type = 'toggle',
 					name = L["Profile Specific"],
@@ -7588,6 +7624,15 @@ E.Options.args.unitframe.args.raidpet = {
 					order = 3,
 					min = 4, max = 50, step = 1,
 				},
+				style = {
+					name = L["Style"],
+					order = 4,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
+				},
 				configureButton = {
 					type = 'execute',
 					name = L["Configure Auras"],
@@ -7758,6 +7803,15 @@ E.Options.args.unitframe.args.tank = {
 					desc = L["Size of the indicator icon."],
 					order = 3,
 					min = 4, max = 50, step = 1,
+				},
+				style = {
+					name = L["Style"],
+					order = 4,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -7945,6 +7999,15 @@ E.Options.args.unitframe.args.assist = {
 					desc = L["Size of the indicator icon."],
 					order = 3,
 					min = 4, max = 50, step = 1,
+				},
+				style = {
+					name = L["Style"],
+					order = 4,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
 				},
 				profileSpecific = {
 					type = 'toggle',

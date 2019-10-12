@@ -1128,25 +1128,20 @@ E.ReverseTimer = {
 }
 
 -- BuffWatch: List of personal spells to show on unitframes as icon
-local function ClassBuff(id, point, color, anyUnit, onlyShowMissing, style, displayText, decimalThreshold, textColor, textThreshold, xOffset, yOffset, sizeOverride)
-	local r, g, b = unpack(color)
+local function ClassBuff(id, point, color, anyUnit, onlyShowMissing, displayText, textThreshold, xOffset, yOffset, sizeOverride)
 
-	local r2, g2, b2 = 1, 1, 1
-	if textColor then
-		r2, g2, b2 = unpack(textColor)
-	end
+	local r, g, b = 1, 1, 1
+	if color then r, g, b = unpack(color) end
 
 	return {
 		enabled = true,
 		id = id,
-		point = point,
+		point = point or 'TOPLEFT',
 		color = {r = r, g = g, b = b},
-		anyUnit = anyUnit,
-		onlyShowMissing = onlyShowMissing,
-		style = style or 'coloredIcon',
+		anyUnit = anyUnit or false,
+		onlyShowMissing = onlyShowMissing or false,
+		styleOverride = 'Default',
 		displayText = displayText or false,
-		decimalThreshold = decimalThreshold or 5,
-		textColor = {r = r2, g = g2, b = b2},
 		textThreshold = textThreshold or -1,
 		xOffset = xOffset or 0,
 		yOffset = yOffset or 0,

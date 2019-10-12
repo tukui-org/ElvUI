@@ -63,7 +63,7 @@ local function customFilter(element, _, button, name, _, _, _, _, _, _, _, _, sp
 		return
 	end
 
-	return (element.watched[spellID] or element.watched[name]) and true or false
+	return element.watched[spellID] and element.watched[spellID].enabled or false
 end
 
 local function updateIcon(element, unit, index, offset, filter, isDebuff, visible)

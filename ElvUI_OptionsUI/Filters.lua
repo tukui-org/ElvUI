@@ -566,14 +566,14 @@ local function UpdateFilterGroup()
 							name = L["yOffset"],
 							min = -75, max = 75, step = 1,
 						},
-						style = {
+						styleOverride = {
 							name = L["Style"],
 							order = 5,
 							type = 'select',
 							values = {
+								['Default'] = L['Default'],
 								['coloredIcon'] = L["Colored Icon"],
 								['texturedIcon'] = L["Textured Icon"],
-								['NONE'] = L["NONE"],
 							},
 						},
 						color = {
@@ -798,14 +798,14 @@ local function UpdateFilterGroup()
 						name = L["yOffset"],
 						min = -75, max = 75, step = 1,
 					},
-					style = {
+					styleOverride = {
 						name = L["Style"],
 						order = 5,
 						type = 'select',
 						values = {
+							['Default'] = L['Default'],
 							['coloredIcon'] = L["Colored Icon"],
 							['texturedIcon'] = L["Textured Icon"],
-							['NONE'] = L["NONE"],
 						},
 					},
 					color = {
@@ -1028,14 +1028,14 @@ local function UpdateFilterGroup()
 						name = L["yOffset"],
 						min = -75, max = 75, step = 1,
 					},
-					style = {
+					styleOverride = {
 						name = L["Style"],
 						order = 5,
 						type = 'select',
 						values = {
+							['Default'] = L['Default'],
 							['coloredIcon'] = L["Colored Icon"],
 							['texturedIcon'] = L["Textured Icon"],
-							['NONE'] = L["NONE"],
 						},
 					},
 					color = {
