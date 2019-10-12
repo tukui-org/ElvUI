@@ -26,6 +26,8 @@ function UF:Configure_AuraWatch(frame, isPet)
 		else
 			frame.AuraWatch:SetNewTable(db.profileSpecific and E.db.unitframe.filters.buffwatch or E.global.unitframe.buffwatch[E.myclass])
 		end
+
+		frame.AuraWatch.size = db.size
 	end
 end
 
