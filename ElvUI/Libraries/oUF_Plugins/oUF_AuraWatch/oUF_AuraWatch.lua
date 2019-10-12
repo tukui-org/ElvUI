@@ -1,3 +1,6 @@
+-- Original work by Astromech
+-- Rewritten based on Auras by Azilroka
+
 local _, ns = ...
 local oUF = ns.oUF
 
