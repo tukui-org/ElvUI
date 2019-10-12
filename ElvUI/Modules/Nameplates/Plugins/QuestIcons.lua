@@ -227,7 +227,6 @@ local function Update(self, event, unit)
 				icon = element.Chat
 			elseif questType == "QUEST_ITEM" then
 				icon = element.Item
-				element.Item:SetTexture(quest.itemTexture)
 			end
 
 			if not icon:IsShown() then
@@ -244,6 +243,10 @@ local function Update(self, event, unit)
 
 				if questType ~= "CHAT" then
 					icon.Text:SetText((isPerc and objectiveCount.."%") or objectiveCount)
+				end
+
+				if questType == "QUEST_ITEM" then
+					element.Item:SetTexture(quest.itemTexture)
 				end
 			end
 		end
