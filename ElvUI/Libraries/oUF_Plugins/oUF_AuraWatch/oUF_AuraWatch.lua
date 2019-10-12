@@ -168,7 +168,6 @@ local function onlyShowMissingIcon(element, unit, _, offset, filtered)
 			local button = element[position]
 			if(not button) then
 				button = (element.CreateIcon or createAuraIcon) (element, position)
-
 				table.insert(element, button)
 				element.createdIcons = element.createdIcons + 1
 			end
