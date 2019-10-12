@@ -23,6 +23,7 @@ end
 
 local function createAuraIcon(element, index)
 	local button = CreateFrame('Button', element:GetDebugName() .. 'Button' .. index, element)
+	button:Hide()
 
 	local cd = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
 	cd:SetAllPoints()
@@ -205,24 +206,22 @@ local function onlyShowMissingIcon(element, unit, _, offset)
 end
 
 local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontHide)
-	if(not offset) then offset = 0 end
-	local index = 1
-	local visible = 0
-	local hidden = 0
-	while(visible < limit) do
+	if (not offset) then offset = 0 end
+	local index, visible, hidden = 1, 0, 0
+	while (visible < limit) do
 		local result = updateIcon(element, unit, index, offset, filter, isDebuff, visible)
-		if(not result) then
+		if (not result) then
 			break
-		elseif(result == VISIBLE) then
+		elseif (result == VISIBLE) then
 			visible = visible + 1
-		elseif(result == HIDDEN) then
+		elseif (result == HIDDEN) then
 			hidden = hidden + 1
 		end
 
 		index = index + 1
 	end
 
-	if(not dontHide) then
+	if (not dontHide) then
 		for i = visible + offset + 1, #element do
 			element[i]:Hide()
 		end
