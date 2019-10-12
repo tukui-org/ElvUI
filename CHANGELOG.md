@@ -1,6 +1,7 @@
 ### Version 11.25 [  ]
 
 **New Additions:**  
+Nameplate Quest Icons now have the ability to show for multiple quests and have a few new options.  
 Added Detached Power Bar Auto Hide when empty option (needs better locales).  
 Added TutorialFrame skin.  
 
@@ -9,8 +10,10 @@ Fixed Pet Battle Nameplates, they weren't properly updating Health Bars.
 Fixed an issue which would carry over Quest Icons on Nameplates to one without a quest.  
 Fixed the Map Fading while moving option and added a fade duration setting.  
 Fixed the issue which was caused by trying to use chat editbox history to queue a slash command to be sent that was secure (such as /target).  
+Fixed the incompatiblity check for other addons.  
 
 **Misc. Changes:**  
+Thanks to Azilroka the Buff Indicator is now recoded!  
 Removed the Frequent Updates option, it is now on by default.  
 
 ___
