@@ -54,16 +54,16 @@ local function createAuraIcon(element, index)
 	return button
 end
 
-local function customFilter(element, _, button, name, _, _, _, _, _, _, _, _, spellID)
-	if button.onlyShowMissing then
+local function customFilter(element, _, button, name, _, _, debuffType, _, _, caster, isStealable, _, spellID)
+	local setting = element.watched[spellID]
+	if not setting then
 		return false
 	end
 
-	if (not button.anyUnit and not button.isPlayer) then
-		return
-	end
+	button.onlyShowMissing = setting.onlyShowMissing
+	button.anyUnit = setting.anyUnit
 
-	return element.watched[spellID] and element.watched[spellID].enabled or false
+	return setting.enabled and (not setting.onlyShowMissing or setting.anyUnit or button.isPlayer)
 end
 
 local function updateIcon(element, unit, index, offset, filter, isDebuff, visible)
@@ -158,53 +158,47 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 	end
 end
 
-local function onlyShowMissingIcon(element, unit, _, offset, filtered)
-	local visible = 0
-	local index = 1
-	local show = true
-	for spellID, setting in pairs(element.watched) do
+local missingBuffs = {}
+local function onlyShowMissingIcon(element, unit, _, offset)
+	wipe(missingBuffs)
+
+	for i = offset + 1, #element do
+		element[i]:Hide()
+	end
+
+	for SpellID, setting in pairs(element.watched) do
 		if setting.onlyShowMissing then
-			local position = visible + offset + 1
-			local button = element[position]
-			if(not button) then
-				button = (element.CreateIcon or createAuraIcon) (element, position)
-				table.insert(element, button)
-				element.createdIcons = element.createdIcons + 1
-			end
-
-			for i = 1, (offset + filtered) do
-				local icon = element[i]
-				if icon and spellID == icon.spellID and (icon.anyUnit or icon.isPlayer) then
-					show = false
-					break
-				end
-			end
-
-			if show then
-				if(button.icon) then button.icon:SetTexture(GetSpellTexture(spellID)) end
-
-				if(button.overlay) then
-					button.overlay:Hide()
-				end
-
-				local size = setting.sizeOverride > 0 and setting.sizeOverride or element.size or 16
-				button:SetSize(size, size)
-
-				button.spellID = spellID
-
-				button:SetID(index)
-				button:Show()
-				button:ClearAllPoints()
-				button:SetPoint(setting.point, setting.xOffset, setting.yOffset)
-
-				if(element.PostUpdateIcon) then
-					element:PostUpdateIcon(unit, button, index, position)
-				end
-
-				index = index + 1
-				visible = visible + 1
-			end
+			missingBuffs[SpellID] = setting
 		end
+	end
+
+	local visible = 0
+	for SpellID, setting in pairs(missingBuffs) do
+		local position = visible + offset + 1
+		local button = element[position]
+		if(not button) then
+			button = (element.CreateIcon or createAuraIcon) (element, position)
+			table.insert(element, button)
+			element.createdIcons = element.createdIcons + 1
+		end
+
+		if(button.cd) then button.cd:Hide() end
+		if(button.icon) then button.icon:SetTexture(GetSpellTexture(SpellID)) end
+		if(button.overlay) then button.overlay:Hide() end
+
+		local size = setting.sizeOverride > 0 and setting.sizeOverride or element.size
+		button:SetSize(size, size)
+		button.spellID = SpellID
+
+		button:Show()
+		button:ClearAllPoints()
+		button:SetPoint(setting.point, setting.xOffset, setting.yOffset)
+
+		if(element.PostUpdateIcon) then
+			element:PostUpdateIcon(unit, button, nil, position)
+		end
+
+		visible = visible + 1
 	end
 
 	return visible
@@ -249,46 +243,13 @@ local function UpdateAuras(self, event, unit)
 		local max = element.numTotal or numBuffs + numDebuffs
 
 		local visibleBuffs, filteredBuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HELPFUL', math.min(numBuffs, max), nil, 0, true)
-		visibleBuffs = visibleBuffs + onlyShowMissingIcon(element, unit, nil, visibleBuffs, filteredBuffs)
-
-		local hasGap
-		if(visibleBuffs ~= 0) then
-			hasGap = true
-			visibleBuffs = visibleBuffs + 1
-
-			local button = element[visibleBuffs]
-			if(not button) then
-				button = (element.CreateIcon or createAuraIcon) (element, visibleBuffs)
-				table.insert(element, button)
-				element.createdIcons = element.createdIcons + 1
-			end
-
-			if(button.cd) then button.cd:Hide() end
-			if(button.icon) then button.icon:SetTexture() end
-			if(button.overlay) then button.overlay:Hide() end
-			if(button.stealable) then button.stealable:Hide() end
-			if(button.count) then button.count:SetText() end
-
-			button:Show()
-
-			if(element.PostUpdateGapIcon) then
-				element:PostUpdateGapIcon(unit, button, visibleBuffs)
-			end
-		end
-
-		local visibleDebuffs = filterIcons(element, unit, element.debuffFilter or element.filter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
-		element.visibleDebuffs = visibleDebuffs
-
-		if(hasGap and visibleDebuffs == 0) then
-			element[visibleBuffs]:Hide()
-			visibleBuffs = visibleBuffs - 1
-		end
-
-		element.visibleBuffs = visibleBuffs
-		element.visibleAuras = element.visibleBuffs + element.visibleDebuffs
+		onlyShowMissingIcon(element, unit, nil, visibleBuffs, filteredBuffs)
 
 		if(element.PostUpdate) then element:PostUpdate(unit) end
 	end
+	-- Leave Here
+	-- local visibleDebuffs = filterIcons(element, unit, element.debuffFilter or element.filter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
+	-- element.visibleDebuffs = visibleDebuffs
 end
 
 local function Update(self, event, unit)
