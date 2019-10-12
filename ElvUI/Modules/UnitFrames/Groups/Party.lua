@@ -249,7 +249,7 @@ function UF:Update_PartyFrames(frame, db)
 
 		UF:Configure_RaidRoleIcons(frame)
 
-		UF:UpdateAuraWatch(frame)
+		UF:Configure_AuraWatch(frame)
 
 		UF:Configure_ReadyCheckIcon(frame)
 

@@ -595,31 +595,6 @@ local function UpdateFilterGroup()
 							type = 'toggle',
 							order = 7,
 						},
-						textColor = {
-							name = L["Text Color"],
-							type = 'color',
-							order = 8,
-							get = function(info)
-								local t = E.global.unitframe.buffwatch.PET[selectedSpell][info[#info]]
-								if t then
-									return t.r, t.g, t.b, t.a
-								else
-									return 1, 1, 1, 1
-								end
-							end,
-							set = function(info, r, g, b)
-								local t = E.global.unitframe.buffwatch.PET[selectedSpell][info[#info]]
-								t.r, t.g, t.b = r, g, b
-								UF:CreateAndUpdateUF('pet')
-							end,
-						},
-						decimalThreshold = {
-							name = L["Decimal Threshold"],
-							desc = L["Threshold before text goes into decimal form. Set to -1 to disable decimals."],
-							type = 'range',
-							order = 9,
-							min = -1, max = 10, step = 1,
-						},
 						textThreshold = {
 							name = L["Text Threshold"],
 							desc = L["At what point should the text be displayed. Set to -1 to disable."],
@@ -671,10 +646,10 @@ local function UpdateFilterGroup()
 							selectedSpell = nil;
 							UpdateFilterGroup();
 
-							UF:UpdateAuraWatchFromHeader('raid')
-							UF:UpdateAuraWatchFromHeader('raid40')
-							UF:UpdateAuraWatchFromHeader('party')
-							UF:UpdateAuraWatchFromHeader('raidpet', true)
+							UF:CreateAndUpdateHeaderGroup('raid')
+							UF:CreateAndUpdateHeaderGroup('raid40')
+							UF:CreateAndUpdateHeaderGroup('party')
+							UF:CreateAndUpdateHeaderGroup('raidpet')
 						end
 					end,
 				},
@@ -694,10 +669,10 @@ local function UpdateFilterGroup()
 
 						selectedSpell = nil;
 						UpdateFilterGroup();
-						UF:UpdateAuraWatchFromHeader('raid')
-						UF:UpdateAuraWatchFromHeader('raid40')
-						UF:UpdateAuraWatchFromHeader('party')
-						UF:UpdateAuraWatchFromHeader('raidpet', true)
+						UF:CreateAndUpdateHeaderGroup('raid')
+						UF:CreateAndUpdateHeaderGroup('raid40')
+						UF:CreateAndUpdateHeaderGroup('party')
+						UF:CreateAndUpdateHeaderGroup('raidpet')
 					end,
 					disabled = function() return not selectedSpell end,
 				},
@@ -778,10 +753,10 @@ local function UpdateFilterGroup()
 				set = function(info, value)
 					E.global.unitframe.buffwatch[E.myclass][selectedSpell][info[#info]] = value;
 
-					UF:UpdateAuraWatchFromHeader('raid')
-					UF:UpdateAuraWatchFromHeader('raid40')
-					UF:UpdateAuraWatchFromHeader('party')
-					UF:UpdateAuraWatchFromHeader('raidpet', true)
+					UF:CreateAndUpdateHeaderGroup('raid')
+					UF:CreateAndUpdateHeaderGroup('raid40')
+					UF:CreateAndUpdateHeaderGroup('party')
+					UF:CreateAndUpdateHeaderGroup('raidpet')
 				end,
 				order = -10,
 				args = {
@@ -844,45 +819,16 @@ local function UpdateFilterGroup()
 						set = function(info, r, g, b)
 							local t = E.global.unitframe.buffwatch[E.myclass][selectedSpell][info[#info]]
 							t.r, t.g, t.b = r, g, b
-							UF:UpdateAuraWatchFromHeader('raid')
-							UF:UpdateAuraWatchFromHeader('raid40')
-							UF:UpdateAuraWatchFromHeader('party')
-							UF:UpdateAuraWatchFromHeader('raidpet', true)
+							UF:CreateAndUpdateHeaderGroup('raid')
+							UF:CreateAndUpdateHeaderGroup('raid40')
+							UF:CreateAndUpdateHeaderGroup('party')
+							UF:CreateAndUpdateHeaderGroup('raidpet')
 						end,
 					},
 					displayText = {
 						name = L["Display Text"],
 						type = 'toggle',
 						order = 7,
-					},
-					textColor = {
-						name = L["Text Color"],
-						type = 'color',
-						order = 8,
-						get = function(info)
-							local t = E.global.unitframe.buffwatch[E.myclass][selectedSpell][info[#info]]
-							if t then
-								return t.r, t.g, t.b, t.a
-							else
-								return 1, 1, 1, 1
-							end
-						end,
-						set = function(info, r, g, b)
-							E.global.unitframe.buffwatch[E.myclass][selectedSpell].textColor = E.global.unitframe.buffwatch[E.myclass][selectedSpell].textColor or {}
-							local t = E.global.unitframe.buffwatch[E.myclass][selectedSpell].textColor
-							t.r, t.g, t.b = r, g, b
-							UF:UpdateAuraWatchFromHeader('raid')
-							UF:UpdateAuraWatchFromHeader('raid40')
-							UF:UpdateAuraWatchFromHeader('party')
-							UF:UpdateAuraWatchFromHeader('raidpet', true)
-						end,
-					},
-					decimalThreshold = {
-						name = L["Decimal Threshold"],
-						desc = L["Threshold before text goes into decimal form. Set to -1 to disable decimals."],
-						type = 'range',
-						order = 9,
-						min = -1, max = 10, step = 1,
 					},
 					textThreshold = {
 						name = L["Text Threshold"],
@@ -928,9 +874,9 @@ local function UpdateFilterGroup()
 							selectedSpell = nil;
 							UpdateFilterGroup();
 
-							UF:UpdateAuraWatchFromHeader('raid')
-							UF:UpdateAuraWatchFromHeader('raid40')
-							UF:UpdateAuraWatchFromHeader('party')
+							UF:CreateAndUpdateHeaderGroup('raid')
+							UF:CreateAndUpdateHeaderGroup('raid40')
+							UF:CreateAndUpdateHeaderGroup('party')
 						end
 					end,
 				},
@@ -950,9 +896,9 @@ local function UpdateFilterGroup()
 
 						selectedSpell = nil;
 						UpdateFilterGroup();
-						UF:UpdateAuraWatchFromHeader('raid')
-						UF:UpdateAuraWatchFromHeader('raid40')
-						UF:UpdateAuraWatchFromHeader('party')
+						UF:CreateAndUpdateHeaderGroup('raid')
+						UF:CreateAndUpdateHeaderGroup('raid40')
+						UF:CreateAndUpdateHeaderGroup('party')
 					end,
 					disabled = function() return not selectedSpell end,
 				},
@@ -1038,9 +984,9 @@ local function UpdateFilterGroup()
 				set = function(info, value)
 					E.db.unitframe.filters.buffwatch[selectedSpell][info[#info]] = value;
 
-					UF:UpdateAuraWatchFromHeader('raid')
-					UF:UpdateAuraWatchFromHeader('raid40')
-					UF:UpdateAuraWatchFromHeader('party')
+					UF:CreateAndUpdateHeaderGroup('raid')
+					UF:CreateAndUpdateHeaderGroup('raid40')
+					UF:CreateAndUpdateHeaderGroup('party')
 				end,
 				order = -10,
 				args = {
@@ -1105,44 +1051,15 @@ local function UpdateFilterGroup()
 						set = function(info, r, g, b)
 							local t = E.db.unitframe.filters.buffwatch[selectedSpell][info[#info]]
 							t.r, t.g, t.b = r, g, b
-							UF:UpdateAuraWatchFromHeader('raid')
-							UF:UpdateAuraWatchFromHeader('raid40')
-							UF:UpdateAuraWatchFromHeader('party')
+							UF:CreateAndUpdateHeaderGroup('raid')
+							UF:CreateAndUpdateHeaderGroup('raid40')
+							UF:CreateAndUpdateHeaderGroup('party')
 						end,
 					},
 					displayText = {
 						name = L["Display Text"],
 						type = 'toggle',
 						order = 7,
-					},
-					textColor = {
-						name = L["Text Color"],
-						type = 'color',
-						order = 8,
-						get = function(info)
-							if E.db.unitframe.filters.buffwatch[selectedSpell] then
-								local t = E.db.unitframe.filters.buffwatch[selectedSpell][info[#info]]
-								if t then
-									return t.r, t.g, t.b, t.a
-								else
-									return 1, 1, 1, 1
-								end
-							end
-						end,
-						set = function(info, r, g, b)
-							local t = E.db.unitframe.filters.buffwatch[selectedSpell][info[#info]]
-							t.r, t.g, t.b = r, g, b
-							UF:UpdateAuraWatchFromHeader('raid')
-							UF:UpdateAuraWatchFromHeader('raid40')
-							UF:UpdateAuraWatchFromHeader('party')
-						end,
-					},
-					decimalThreshold = {
-						name = L["Decimal Threshold"],
-						desc = L["Threshold before text goes into decimal form. Set to -1 to disable decimals."],
-						type = 'range',
-						order = 9,
-						min = -1, max = 10, step = 1,
 					},
 					textThreshold = {
 						name = L["Text Threshold"],
