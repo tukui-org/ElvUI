@@ -118,7 +118,7 @@ function UF:Update_PetFrame(frame, db)
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
 
-	UF:Configure_AuraWatch(frame)
+	UF:Configure_AuraWatch(frame, true)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end

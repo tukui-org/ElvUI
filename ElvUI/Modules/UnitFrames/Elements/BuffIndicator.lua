@@ -18,10 +18,10 @@ function UF:Construct_AuraWatch(frame)
 	return auras
 end
 
-function UF:Configure_AuraWatch(frame)
+function UF:Configure_AuraWatch(frame, isPet)
 	local db = frame.db.buffIndicator
 	if frame:IsElementEnabled('AuraWatch') then
-		if frame.unit == 'pet' then
+		if frame.unit == 'pet' or isPet then
 			frame.AuraWatch:SetNewTable(E.global.unitframe.buffwatch.PET)
 		else
 			frame.AuraWatch:SetNewTable(db.profileSpecific and E.db.unitframe.filters.buffwatch or E.global.unitframe.buffwatch[E.myclass])
