@@ -35,6 +35,9 @@ local function LoadSkin()
 		end
 	end
 
+	_G.AuctionHouseFrameBuyTab:ClearAllPoints()
+	_G.AuctionHouseFrameBuyTab:SetPoint("BOTTOMLEFT", Frame, "BOTTOMLEFT", 0, -32)
+
 	S:HandleButton(Frame.SearchBar.FavoritesSearchButton)
 	Frame.SearchBar.FavoritesSearchButton:SetSize(22, 22)
 	S:HandleEditBox(Frame.SearchBar.SearchBox)
