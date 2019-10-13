@@ -57,9 +57,7 @@ end
 
 local function customFilter(element, _, button, name, _, _, debuffType, _, _, caster, isStealable, _, spellID)
 	local setting = element.watched[spellID]
-	if not setting then
-		return false
-	end
+	if not setting then return false end
 
 	button.onlyShowMissing = setting.onlyShowMissing
 	button.anyUnit = setting.anyUnit
@@ -244,7 +242,6 @@ local function UpdateAuras(self, event, unit)
 	end
 	-- Leave Here
 	-- local visibleDebuffs = filterIcons(element, unit, element.debuffFilter or element.filter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
-	-- element.visibleDebuffs = visibleDebuffs
 end
 
 local function Update(self, event, unit)
@@ -272,7 +269,6 @@ local function Enable(self)
 		element.size = element.size or 16
 		element.createdIcons = element.createdIcons or 0
 		element.anchoredIcons = 0
-		element.showDebuffType = false -- Can replace RaidDebuffs?
 
 		self:RegisterEvent('UNIT_AURA', UpdateAuras)
 		element:Show()
