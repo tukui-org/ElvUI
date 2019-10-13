@@ -6860,6 +6860,8 @@ E.Options.args.nameplate = {
 					name = L["Delete Filter"],
 					desc = L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."],
 					type = "execute",
+					confirm = true,
+					confirmText = L["Delete Filter"],
 					buttonElvUI = true,
 					func = function()
 						for profile in pairs(E.data.profiles) do
