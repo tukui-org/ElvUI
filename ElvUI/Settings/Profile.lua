@@ -1369,9 +1369,13 @@ P.nameplates = {
 			questIcon = {
 				enable = true,
 				position = 'RIGHT',
-				size = 16,
+				textPosition = 'BOTTOMRIGHT',
+				size = 20,
 				xOffset = 0,
 				yOffset = 0,
+				font = 'PT Sans Narrow',
+				fontOutline = 'OUTLINE',
+				fontSize = 12
 			},
 			nazjatarFollowerXP = {
 				enable = true,
@@ -1593,9 +1597,13 @@ P.nameplates = {
 			questIcon = {
 				enable = true,
 				position = 'RIGHT',
-				size = 16,
+				textPosition = 'BOTTOMRIGHT',
+				size = 20,
 				xOffset = 0,
 				yOffset = 0,
+				font = 'PT Sans Narrow',
+				fontOutline = 'OUTLINE',
+				fontSize = 14
 			},
 		},
 	},
@@ -3165,7 +3173,7 @@ P.unitframe = {
 			buffIndicator = {
 				enable = true,
 				size = 8,
-				fontSize = 10,
+				style = 'texturedIcon',
 			},
 			castbar = {
 				enable = true,
@@ -3786,7 +3794,7 @@ P.unitframe = {
 			buffIndicator = {
 				enable = true,
 				size = 8,
-				fontSize = 10,
+				style = 'texturedIcon',
 				profileSpecific = false,
 			},
 			rdebuffs = {
@@ -4060,7 +4068,7 @@ P.unitframe = {
 			buffIndicator = {
 				enable = true,
 				size = 8,
-				fontSize = 10,
+				style = 'texturedIcon',
 				profileSpecific = false,
 			},
 			rdebuffs = {
@@ -4322,7 +4330,7 @@ P.unitframe = {
 			buffIndicator = {
 				enable = true,
 				size = 8,
-				fontSize = 10,
+				style = 'texturedIcon',
 				profileSpecific = false,
 			},
 			raidicon = {
@@ -4490,7 +4498,7 @@ P.unitframe = {
 			buffIndicator = {
 				enable = true,
 				size = 8,
-				fontSize = 10,
+				style = 'texturedIcon',
 			},
 			rdebuffs = {
 				enable = true,
@@ -4608,7 +4616,7 @@ P.unitframe = {
 			buffIndicator = {
 				enable = true,
 				size = 8,
-				fontSize = 10,
+				style = 'texturedIcon',
 				profileSpecific = false,
 			},
 			rdebuffs = {
@@ -4751,7 +4759,7 @@ P.unitframe = {
 			buffIndicator = {
 				enable = true,
 				size = 8,
-				fontSize = 10,
+				style = 'texturedIcon',
 				profileSpecific = false,
 			},
 			rdebuffs = {

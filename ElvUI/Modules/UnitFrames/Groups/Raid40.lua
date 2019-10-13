@@ -226,7 +226,7 @@ function UF:Update_Raid40Frames(frame, db)
 	UF:Configure_Fader(frame)
 
 	--Buff Indicators
-	UF:UpdateAuraWatch(frame)
+	UF:Configure_AuraWatch(frame)
 
 	--ReadyCheck
 	UF:Configure_ReadyCheckIcon(frame)

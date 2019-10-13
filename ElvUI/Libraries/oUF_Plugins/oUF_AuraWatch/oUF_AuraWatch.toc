@@ -1,9 +1,0 @@
-## Interface: 30300
-## Title: oUF AuraWatch
-## Author: Astromech
-## Version: 1.3.28-6
-## Notes: Adds aura timers to oUF
-## OptionalDeps: oUF
-## X-oUF: oUF
-
-oUF_AuraWatch.lua

@@ -5287,11 +5287,14 @@ E.Options.args.unitframe.args.pet = {
 					order = 3,
 					min = 4, max = 50, step = 1,
 				},
-				fontSize = {
-					type = 'range',
-					name = L["FONT_SIZE"],
+				style = {
+					name = L["Style"],
 					order = 4,
-					min = 7, max = 212, step = 1,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
 				},
 			},
 		},
@@ -6044,11 +6047,14 @@ E.Options.args.unitframe.args.party = {
 					order = 3,
 					min = 4, max = 50, step = 1,
 				},
-				fontSize = {
-					type = 'range',
-					name = L["FONT_SIZE"],
+				style = {
+					name = L["Style"],
 					order = 4,
-					min = 7, max = 212, step = 1,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -6698,11 +6704,14 @@ E.Options.args.unitframe.args.raid = {
 					order = 3,
 					min = 4, max = 50, step = 1,
 				},
-				fontSize = {
-					type = 'range',
-					name = L["FONT_SIZE"],
+				style = {
+					name = L["Style"],
 					order = 4,
-					min = 7, max = 212, step = 1,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -7164,11 +7173,14 @@ E.Options.args.unitframe.args.raid40 = {
 					order = 3,
 					min = 4, max = 50, step = 1,
 				},
-				fontSize = {
-					type = 'range',
-					name = L["FONT_SIZE"],
+				style = {
+					name = L["Style"],
 					order = 4,
-					min = 7, max = 212, step = 1,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -7612,11 +7624,14 @@ E.Options.args.unitframe.args.raidpet = {
 					order = 3,
 					min = 4, max = 50, step = 1,
 				},
-				fontSize = {
-					type = 'range',
-					name = L["FONT_SIZE"],
+				style = {
+					name = L["Style"],
 					order = 4,
-					min = 7, max = 212, step = 1,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
 				},
 				configureButton = {
 					type = 'execute',
@@ -7789,11 +7804,14 @@ E.Options.args.unitframe.args.tank = {
 					order = 3,
 					min = 4, max = 50, step = 1,
 				},
-				fontSize = {
-					type = 'range',
-					name = L["FONT_SIZE"],
+				style = {
+					name = L["Style"],
 					order = 4,
-					min = 7, max = 212, step = 1,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -7982,11 +8000,14 @@ E.Options.args.unitframe.args.assist = {
 					order = 3,
 					min = 4, max = 50, step = 1,
 				},
-				fontSize = {
-					type = 'range',
-					name = L["FONT_SIZE"],
+				style = {
+					name = L["Style"],
 					order = 4,
-					min = 7, max = 212, step = 1,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
 				},
 				profileSpecific = {
 					type = 'toggle',

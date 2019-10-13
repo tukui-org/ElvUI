@@ -3,7 +3,6 @@ local Skins = E:GetModule('Skins')
 
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local GetAddOnEnableState = GetAddOnEnableState
 local GetAddOnInfo = GetAddOnInfo
 local GetCurrentResolution = GetCurrentResolution
 local GetCVar = GetCVar
@@ -14,15 +13,11 @@ local GetScreenResolutions = GetScreenResolutions
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 
-local function IsAddOnEnabled(addon)
-	return GetAddOnEnableState(E.myname, addon) == 2
-end
-
 local function AreOtherAddOnsEnabled()
 	local name
 	for i = 1, GetNumAddOns() do
 		name = GetAddOnInfo(i)
-		if ((name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI') and IsAddOnEnabled(name)) then --Loaded or load on demand
+		if ((name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI') and E:IsAddOnEnabled(name)) then --Loaded or load on demand
 			return 'Yes'
 		end
 	end
