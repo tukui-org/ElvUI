@@ -98,8 +98,8 @@ local InstanceNameByID = {
 
 local locale = GetLocale()
 if locale == 'deDE' then -- O.O
-	InstanceNameByID[1023] = strmatch(GetSpellInfo(288242), ': ?(.+)$') -- "Die Belagerung von Boralus" -> "Belagerung von Boralus"
-	InstanceNameByID[1041] = select(2, GetAchievementInfo(12848)) -- "Die Königsruh" -> "Königsruh"
+	InstanceNameByID[1023] = "Belagerung von Boralus"	-- "Die Belagerung von Boralus"
+	InstanceNameByID[1041] = "Königsruh"				-- "Die Königsruh"
 end
 
 local instanceIconByName = {}
