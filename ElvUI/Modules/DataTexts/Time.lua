@@ -7,6 +7,7 @@ local next, unpack = next, unpack
 local format, strjoin = format, strjoin
 local sort, tinsert = sort, tinsert
 local date, utf8sub = date, string.utf8sub
+local strmatch = strmatch
 
 --WoW API / Variables
 local EJ_GetCurrentTier = EJ_GetCurrentTier
@@ -24,6 +25,7 @@ local GetSavedWorldBossInfo = GetSavedWorldBossInfo
 local GetWorldPVPAreaInfo = GetWorldPVPAreaInfo
 local RequestRaidInfo = RequestRaidInfo
 local SecondsToTime = SecondsToTime
+local GetSpellInfo = GetSpellInfo
 local InCombatLockdown = InCombatLockdown
 local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
 local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
@@ -92,6 +94,9 @@ end
 -- use these to convert "The Eye" into "Tempest Keep"
 local DUNGEON_FLOOR_TEMPESTKEEP1 = _G.DUNGEON_FLOOR_TEMPESTKEEP1
 local TempestKeep = select(2, GetAchievementInfo(1088)):match('%((.-)%)$')
+-- use this to convert "Die Belagerung von Boralus" into "Belagerung von Boralus"
+local BoralusShort = strmatch(GetSpellInfo(288242), ': ?(.+)$')
+local BoralusLong = GetSpellInfo(279174)
 
 local instanceIconByName = {}
 local function GetInstanceImages(index, raid)
@@ -99,6 +104,8 @@ local function GetInstanceImages(index, raid)
 	while instanceID do
 		if name == DUNGEON_FLOOR_TEMPESTKEEP1 then
 			instanceIconByName[TempestKeep] = buttonImage
+		elseif name == BoralusLong then
+			instanceIconByName[BoralusShort] = buttonImage
 		else
 			instanceIconByName[name] = buttonImage
 		end
