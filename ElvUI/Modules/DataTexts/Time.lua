@@ -95,7 +95,9 @@ local journalNameToInstanceName = {
 	-- convert "The Eye" to "Tempest Keep"
 	[_G.DUNGEON_FLOOR_TEMPESTKEEP1] = strmatch(select(2, GetAchievementInfo(1088)), '%((.-)%)$'),
 	-- convert "Die Belagerung von Boralus" to "Belagerung von Boralus" // german :3
-	[GetSpellInfo(279174)] = strmatch(GetSpellInfo(288242), ': ?(.+)$')
+	[GetSpellInfo(279174)] = strmatch(GetSpellInfo(288242), ': ?(.+)$'),
+	-- convert "Die Königsruh" to "Königsruh" // german O.O
+	[select(2, GetAchievementInfo(12763)):match(': ?(.+)%)$')] = select(2, GetAchievementInfo(12848))
 }
 
 local instanceIconByName = {}
