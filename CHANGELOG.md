@@ -15,6 +15,8 @@ Fixed the incompatiblity check for other addons.
 **Misc. Changes:**  
 Thanks to Azilroka the Buff Indicator is now recoded!  
 Removed the Frequent Updates option, it is now on by default.  
+Blacklisted Lethargy debuff (fight or flight).  
+Fixed 'Belagerung von Boralus' icon in Time Datatext for German clients.  
 
 ___
 ### Version 11.24 [ October 8th 2019 ]
