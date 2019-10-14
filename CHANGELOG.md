@@ -15,6 +15,8 @@ Fixed the incompatiblity check for other addons.
 **Misc. Changes:**  
 Thanks to Azilroka the Buff Indicator is now recoded!  
 Removed the Frequent Updates option, it is now on by default.  
+Blacklisted Lethargy debuff (fight or flight).  
+For the german audience: Behebt einige Fehler im Zeit-Infotext, dass die Instanz Symbole nicht richtig angezeigt wurden.  
 
 ___
 ### Version 11.24 [ October 8th 2019 ]

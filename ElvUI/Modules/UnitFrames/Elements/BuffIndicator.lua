@@ -20,7 +20,11 @@ end
 
 function UF:Configure_AuraWatch(frame, isPet)
 	local db = frame.db.buffIndicator
-	if frame:IsElementEnabled('AuraWatch') then
+	if db and db.enable then
+		if not frame:IsElementEnabled('AuraWatch') then
+			frame:EnableElement('AuraWatch')
+		end
+
 		if frame.unit == 'pet' or isPet then
 			frame.AuraWatch:SetNewTable(E.global.unitframe.buffwatch.PET)
 		else
@@ -28,6 +32,8 @@ function UF:Configure_AuraWatch(frame, isPet)
 		end
 
 		frame.AuraWatch.size = db.size
+	elseif frame:IsElementEnabled('AuraWatch') then
+		frame:DisableElement('AuraWatch')
 	end
 end
 

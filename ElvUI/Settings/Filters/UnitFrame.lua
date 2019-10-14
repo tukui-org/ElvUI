@@ -627,6 +627,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[15007]  = Defaults(), -- Ress Sickness
 		[113942] = Defaults(), -- Demonic: Gateway
 		[89140]  = Defaults(), -- Demonic Rebirth: Cooldown
+		[287825] = Defaults(), -- Lethargy debuff (fight or flight)
 	},
 }
 

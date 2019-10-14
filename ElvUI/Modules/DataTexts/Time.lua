@@ -7,6 +7,7 @@ local next, unpack = next, unpack
 local format, strjoin = format, strjoin
 local sort, tinsert = sort, tinsert
 local date, utf8sub = date, string.utf8sub
+local strmatch = strmatch
 
 --WoW API / Variables
 local EJ_GetCurrentTier = EJ_GetCurrentTier
@@ -24,6 +25,7 @@ local GetSavedWorldBossInfo = GetSavedWorldBossInfo
 local GetWorldPVPAreaInfo = GetWorldPVPAreaInfo
 local RequestRaidInfo = RequestRaidInfo
 local SecondsToTime = SecondsToTime
+local GetSpellInfo = GetSpellInfo
 local InCombatLockdown = InCombatLockdown
 local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
 local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
@@ -89,19 +91,20 @@ local function OnLeave()
 	enteredFrame = false
 end
 
--- use these to convert "The Eye" into "Tempest Keep"
-local DUNGEON_FLOOR_TEMPESTKEEP1 = _G.DUNGEON_FLOOR_TEMPESTKEEP1
-local TempestKeep = select(2, GetAchievementInfo(1088)):match('%((.-)%)$')
+local journalNameToInstanceName = {
+	-- convert "The Eye" to "Tempest Keep"
+	[_G.DUNGEON_FLOOR_TEMPESTKEEP1] = strmatch(select(2, GetAchievementInfo(1088)), '%((.-)%)$'),
+	-- convert "Die Belagerung von Boralus" to "Belagerung von Boralus" // german :3
+	[GetSpellInfo(279174)] = strmatch(GetSpellInfo(288242), ': ?(.+)$'),
+	-- convert "Die Königsruh" to "Königsruh" // german O.O
+	[select(2, GetAchievementInfo(12763)):match(': ?(.+)%)$')] = select(2, GetAchievementInfo(12848))
+}
 
 local instanceIconByName = {}
 local function GetInstanceImages(index, raid)
 	local instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
 	while instanceID do
-		if name == DUNGEON_FLOOR_TEMPESTKEEP1 then
-			instanceIconByName[TempestKeep] = buttonImage
-		else
-			instanceIconByName[name] = buttonImage
-		end
+		instanceIconByName[journalNameToInstanceName[name] or name] = buttonImage
 		index = index + 1
 		instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
 	end
