@@ -91,24 +91,18 @@ local function OnLeave()
 	enteredFrame = false
 end
 
--- use these to convert "The Eye" into "Tempest Keep"
-local DUNGEON_FLOOR_TEMPESTKEEP1 = _G.DUNGEON_FLOOR_TEMPESTKEEP1
-local TempestKeep = select(2, GetAchievementInfo(1088)):match('%((.-)%)$')
--- use this to convert "Die Belagerung von Boralus" into "Belagerung von Boralus"
-local BoralusShort = strmatch(GetSpellInfo(288242), ': ?(.+)$')
-local BoralusLong = GetSpellInfo(279174)
+local journalNameToInstanceName = {
+	-- convert "The Eye" to "Tempest Keep"
+	[_G.DUNGEON_FLOOR_TEMPESTKEEP1] = strmatch(select(2, GetAchievementInfo(1088)), '%((.-)%)$'),
+	-- convert "Die Belagerung von Boralus" to "Belagerung von Boralus" // german :3
+	[GetSpellInfo(279174)] = strmatch(GetSpellInfo(288242), ': ?(.+)$')
+}
 
 local instanceIconByName = {}
 local function GetInstanceImages(index, raid)
 	local instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
 	while instanceID do
-		if name == DUNGEON_FLOOR_TEMPESTKEEP1 then
-			instanceIconByName[TempestKeep] = buttonImage
-		elseif name == BoralusLong then
-			instanceIconByName[BoralusShort] = buttonImage
-		else
-			instanceIconByName[name] = buttonImage
-		end
+		instanceIconByName[journalNameToInstanceName[name] or name] = buttonImage
 		index = index + 1
 		instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
 	end
