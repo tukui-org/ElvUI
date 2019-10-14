@@ -27,6 +27,7 @@ local RequestRaidInfo = RequestRaidInfo
 local SecondsToTime = SecondsToTime
 local GetSpellInfo = GetSpellInfo
 local InCombatLockdown = InCombatLockdown
+local C_Map_GetAreaInfo = C_Map.GetAreaInfo
 local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
 local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
 local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
@@ -91,26 +92,26 @@ local function OnLeave()
 	enteredFrame = false
 end
 
-local journalNameToInstanceName = {
-	-- convert "The Eye" to "Tempest Keep"
-	[_G.DUNGEON_FLOOR_TEMPESTKEEP1] = strmatch(select(2, GetAchievementInfo(1088)), '%((.-)%)$'),
-	-- convert "Die Belagerung von Boralus" to "Belagerung von Boralus" // german :3
-	[GetSpellInfo(279174)] = strmatch(GetSpellInfo(288242), ': ?(.+)$'),
-	-- convert "Die Königsruh" to "Königsruh" // german O.O
-	[select(2, GetAchievementInfo(12763)):match(': ?(.+)%)$')] = select(2, GetAchievementInfo(12848))
+local InstanceNameByID = {
+	[749] = C_Map_GetAreaInfo(3845) -- "The Eye" -> "Tempest Keep"
 }
+
+local locale = GetLocale()
+if locale == 'deDE' then -- O.O
+	InstanceNameByID[1023] = strmatch(GetSpellInfo(288242), ': ?(.+)$') -- "Die Belagerung von Boralus" -> "Belagerung von Boralus"
+	InstanceNameByID[1041] = select(2, GetAchievementInfo(12848)) -- "Die Königsruh" -> "Königsruh"
+end
 
 local instanceIconByName = {}
 local function GetInstanceImages(index, raid)
 	local instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
 	while instanceID do
-		instanceIconByName[journalNameToInstanceName[name] or name] = buttonImage
+		instanceIconByName[InstanceNameByID[instanceID] or name] = buttonImage
 		index = index + 1
 		instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
 	end
 end
 
-local locale = GetLocale()
 local krcntw = locale == "koKR" or locale == "zhCN" or locale == "zhTW"
 local difficultyTag = { -- Raid Finder, Normal, Heroic, Mythic
 	(krcntw and _G.PLAYER_DIFFICULTY3) or utf8sub(_G.PLAYER_DIFFICULTY3, 1, 1), -- R
