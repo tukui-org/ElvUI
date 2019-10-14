@@ -100,11 +100,15 @@ if locale == 'deDE' then -- O.O
 end
 
 local instanceIconByName = {}
-local collectIDs, collectedIDs = false, {} -- for testing; mouse over the dt to show the tinspect table
+local collectIDs, collectedIDs = false -- for testing; mouse over the dt to show the tinspect table
 local function GetInstanceImages(index, raid)
 	local instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
 	while instanceID do
 		if collectIDs then
+			if not collectedIDs then
+				collectedIDs = {}
+			end
+
 			collectedIDs[instanceID] = name
 		end
 
