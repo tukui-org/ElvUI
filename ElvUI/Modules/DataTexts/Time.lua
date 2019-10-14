@@ -7,14 +7,12 @@ local next, unpack = next, unpack
 local format, strjoin = format, strjoin
 local sort, tinsert = sort, tinsert
 local date, utf8sub = date, string.utf8sub
-local strmatch = strmatch
 
 --WoW API / Variables
 local EJ_GetCurrentTier = EJ_GetCurrentTier
 local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
 local EJ_GetNumTiers = EJ_GetNumTiers
 local EJ_SelectTier = EJ_SelectTier
-local GetAchievementInfo = GetAchievementInfo
 local GetDifficultyInfo = GetDifficultyInfo
 local GetGameTime = GetGameTime
 local GetNumSavedInstances = GetNumSavedInstances
@@ -25,7 +23,6 @@ local GetSavedWorldBossInfo = GetSavedWorldBossInfo
 local GetWorldPVPAreaInfo = GetWorldPVPAreaInfo
 local RequestRaidInfo = RequestRaidInfo
 local SecondsToTime = SecondsToTime
-local GetSpellInfo = GetSpellInfo
 local InCombatLockdown = InCombatLockdown
 local C_Map_GetAreaInfo = C_Map.GetAreaInfo
 local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
