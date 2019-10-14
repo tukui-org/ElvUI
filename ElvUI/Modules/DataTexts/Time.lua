@@ -90,6 +90,8 @@ local function OnLeave()
 end
 
 local InstanceNameByID = {
+	-- NOTE: for some reason the instanceID from EJ_GetInstanceByIndex doesn't match,
+	-- the instanceID from GetInstanceInfo, so use the collectIDs to find the ID to add.
 	[749] = C_Map_GetAreaInfo(3845) -- "The Eye" -> "Tempest Keep"
 }
 
