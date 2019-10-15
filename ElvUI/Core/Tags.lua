@@ -161,76 +161,6 @@ local function GetClassPower(class)
 	return min, max, r, g, b
 end
 
-ElvUF.Tags.Events['altpower:percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:percent'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
-	if cur > 0 then
-		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
-
-		return E:GetFormattedText('PERCENT', cur, max)
-	else
-		return nil
-	end
-end
-
-ElvUF.Tags.Events['altpower:current'] = "UNIT_POWER_UPDATE"
-ElvUF.Tags.Methods['altpower:current'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
-	if cur > 0 then
-		return cur
-	else
-		return nil
-	end
-end
-
-ElvUF.Tags.Events['altpower:current-percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:current-percent'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
-	if cur > 0 then
-		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
-
-		return E:GetFormattedText('CURRENT_PERCENT', cur, max)
-	else
-		return nil
-	end
-end
-
-ElvUF.Tags.Events['altpower:deficit'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:deficit'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
-	if cur > 0 then
-		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
-
-		return E:GetFormattedText('DEFICIT', cur, max)
-	else
-		return nil
-	end
-end
-
-ElvUF.Tags.Events['altpower:current-max'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:current-max'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
-	if cur > 0 then
-		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
-
-		return E:GetFormattedText('CURRENT_MAX', cur, max)
-	else
-		return nil
-	end
-end
-
-ElvUF.Tags.Events['altpower:current-max-percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:current-max-percent'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
-	if cur > 0 then
-		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
-
-		E:GetFormattedText('CURRENT_MAX_PERCENT', cur, max)
-	else
-		return nil
-	end
-end
-
 ElvUF.Tags.Events['altpowercolor'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
 ElvUF.Tags.Methods['altpowercolor'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
@@ -318,13 +248,25 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end
 
-	ElvUF.Tags.Events[format('classpower:%s', textFormat)] = E.myclass == 'MONK' and 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA' or 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
-	ElvUF.Tags.Methods[format('classpower:%s', textFormat)] = function()
+	ElvUF.Tags.Events[format('classpower:%s', tagTextFormat)] = E.myclass == 'MONK' and 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA' or 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+	ElvUF.Tags.Methods[format('classpower:%s', tagTextFormat)] = function()
 		local min, max = GetClassPower(E.myclass)
 		if min == 0 then
 			return nil
 		else
 			return E:GetFormattedText(textFormat, min, max)
+		end
+	end
+
+	ElvUF.Tags.Events[format('altpower:%s', tagTextFormat)] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
+	ElvUF.Tags.Methods[format('altpower:%s', tagTextFormat)] = function(u)
+		local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
+		if cur > 0 then
+			local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
+
+			return E:GetFormattedText(textFormat, cur, max)
+		else
+			return nil
 		end
 	end
 end
