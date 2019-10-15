@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
-local UF = E:GetModule('UnitFrames');
+local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local _G = _G
