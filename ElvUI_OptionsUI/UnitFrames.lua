@@ -218,17 +218,27 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				name = L["Max Bars"],
 				min = 1, max = 40, step = 1,
 			},
-			sort = {
-				type = 'select',
+			sortMethod = {
 				order = 9,
-				name = L["Sort Method"],
+				name = L["Sort By"],
+				desc = L["Method to sort by."],
+				type = 'select',
 				values = {
 					['TIME_REMAINING'] = L["Time Remaining"],
-					['TIME_REMAINING_REVERSE'] = L["Time Remaining Reverse"],
-					['TIME_DURATION'] = L["Duration"],
-					['TIME_DURATION_REVERSE'] = L["Duration Reverse"],
+					['DURATION'] = L["Duration"],
 					['NAME'] = L["NAME"],
-					['NONE'] = L["NONE"],
+					['INDEX'] = L["Index"],
+					["PLAYER"] = L["PLAYER"],
+				},
+			},
+			sortDirection = {
+				order = 10,
+				name = L["Sort Direction"],
+				desc = L["Ascending or Descending order."],
+				type = 'select',
+				values = {
+					['ASCENDING'] = L["Ascending"],
+					['DESCENDING'] = L["Descending"],
 				},
 			},
 			friendlyAuraType = {
@@ -250,13 +260,6 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 					['HARMFUL'] = L["Debuffs"],
 					['HELPFUL'] = L["Buffs"],
 				},
-			},
-			uniformThreshold = {
-				order = 18,
-				type = "range",
-				name = L["Uniform Threshold"],
-				desc = L["Seconds remaining on the aura duration before the bar starts moving. Set to 0 to disable."],
-				min = 0, max = 3600, step = 1,
 			},
 			yOffset = {
 				order = 19,

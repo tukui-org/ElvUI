@@ -5,6 +5,7 @@ local LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local unpack, strfind, format, strsplit, sort, ceil = unpack, strfind, format, strsplit, sort, ceil
+local huge = math.huge
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
@@ -260,8 +261,8 @@ local function SortAurasByTime(a, b)
 	if (a and b and a:GetParent().db) then
 		if a:IsShown() and b:IsShown() then
 			local sortDirection = a:GetParent().db.sortDirection
-			local aTime = a.expiration or -1
-			local bTime = b.expiration or -1
+			local aTime = a.noTime and huge or a.expiration or -1
+			local bTime = b.noTime and huge or b.expiration or -1
 			if (aTime and bTime) then
 				if(sortDirection == "DESCENDING") then
 					return aTime < bTime
@@ -298,8 +299,8 @@ local function SortAurasByDuration(a, b)
 	if (a and b and a:GetParent().db) then
 		if a:IsShown() and b:IsShown() then
 			local sortDirection = a:GetParent().db.sortDirection
-			local aTime = a.duration or -1
-			local bTime = b.duration or -1
+			local aTime = a.noTime and huge or a.duration or -1
+			local bTime = b.noTime and huge or b.duration or -1
 			if (aTime and bTime) then
 				if(sortDirection == "DESCENDING") then
 					return aTime < bTime
