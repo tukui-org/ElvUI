@@ -185,58 +185,6 @@ function UF.SortAuraBarName(a, b)
 	return a.name > b.name
 end
 
-function UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, ...)
-	for i=1, select('#', ...) do
-		local filterName = select(i, ...)
-		local friendCheck = (isFriend and strmatch(filterName, "^Friendly:([^,]*)")) or (not isFriend and strmatch(filterName, "^Enemy:([^,]*)")) or nil
-		if friendCheck ~= false then
-			if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
-				filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
-			end
-			local filter = E.global.unitframe.aurafilters[filterName]
-			if filter then
-				local filterType = filter.type
-				local spellList = filter.spells
-				local spell = spellList and (spellList[spellID] or spellList[name])
-
-				if filterType and (filterType == 'Whitelist') and (spell and spell.enable) and allowDuration then
-					return true, spell.priority -- this is the only difference from auarbars code
-				elseif filterType and (filterType == 'Blacklist') and (spell and spell.enable) then
-					return false
-				end
-			elseif filterName == 'Personal' and isPlayer and allowDuration then
-				return true
-			elseif filterName == 'nonPersonal' and (not isPlayer) and allowDuration then
-				return true
-			elseif filterName == 'Boss' and isBossDebuff and allowDuration then
-				return true
-			elseif filterName == 'CastByUnit' and (caster and isUnit) and allowDuration then
-				return true
-			elseif filterName == 'notCastByUnit' and (caster and not isUnit) and allowDuration then
-				return true
-			elseif filterName == 'Dispellable' and canDispell and allowDuration then
-				return true
-			elseif filterName == 'notDispellable' and (not canDispell) and allowDuration then
-				return true
-			elseif filterName == 'CastByNPC' and (not casterIsPlayer) and allowDuration then
-				return true
-			elseif filterName == 'CastByPlayers' and casterIsPlayer and allowDuration then
-				return true
-			elseif filterName == 'blockCastByPlayers' and casterIsPlayer then
-				return false
-			elseif filterName == 'blockNoDuration' and noDuration then
-				return false
-			elseif filterName == 'blockNonPersonal' and (not isPlayer) then
-				return false
-			elseif filterName == 'blockDispellable' and canDispell then
-				return false
-			elseif filterName == 'blockNotDispellable' and (not canDispell) then
-				return false
-			end
-		end
-	end
-end
-
 function UF:AuraBarFilter(unit, name, _, _, debuffType, duration, _, unitCaster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	if not self.db then return; end
 	local db = self.db.aurabar

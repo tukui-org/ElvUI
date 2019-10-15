@@ -7,14 +7,12 @@ local next, unpack = next, unpack
 local format, strjoin = format, strjoin
 local sort, tinsert = sort, tinsert
 local date, utf8sub = date, string.utf8sub
-local strmatch = strmatch
 
 --WoW API / Variables
 local EJ_GetCurrentTier = EJ_GetCurrentTier
 local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
 local EJ_GetNumTiers = EJ_GetNumTiers
 local EJ_SelectTier = EJ_SelectTier
-local GetAchievementInfo = GetAchievementInfo
 local GetDifficultyInfo = GetDifficultyInfo
 local GetGameTime = GetGameTime
 local GetNumSavedInstances = GetNumSavedInstances
@@ -25,8 +23,8 @@ local GetSavedWorldBossInfo = GetSavedWorldBossInfo
 local GetWorldPVPAreaInfo = GetWorldPVPAreaInfo
 local RequestRaidInfo = RequestRaidInfo
 local SecondsToTime = SecondsToTime
-local GetSpellInfo = GetSpellInfo
 local InCombatLockdown = InCombatLockdown
+local C_Map_GetAreaInfo = C_Map.GetAreaInfo
 local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
 local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
 local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
@@ -91,26 +89,37 @@ local function OnLeave()
 	enteredFrame = false
 end
 
-local journalNameToInstanceName = {
-	-- convert "The Eye" to "Tempest Keep"
-	[_G.DUNGEON_FLOOR_TEMPESTKEEP1] = strmatch(select(2, GetAchievementInfo(1088)), '%((.-)%)$'),
-	-- convert "Die Belagerung von Boralus" to "Belagerung von Boralus" // german :3
-	[GetSpellInfo(279174)] = strmatch(GetSpellInfo(288242), ': ?(.+)$'),
-	-- convert "Die Königsruh" to "Königsruh" // german O.O
-	[select(2, GetAchievementInfo(12763)):match(': ?(.+)%)$')] = select(2, GetAchievementInfo(12848))
+local InstanceNameByID = {
+	-- NOTE: for some reason the instanceID from EJ_GetInstanceByIndex doesn't match,
+	-- the instanceID from GetInstanceInfo, so use the collectIDs to find the ID to add.
+	[749] = C_Map_GetAreaInfo(3845) -- "The Eye" -> "Tempest Keep"
 }
 
+local locale = GetLocale()
+if locale == 'deDE' then -- O.O
+	InstanceNameByID[1023] = "Belagerung von Boralus"	-- "Die Belagerung von Boralus"
+	InstanceNameByID[1041] = "Königsruh"				-- "Die Königsruh"
+end
+
 local instanceIconByName = {}
+local collectIDs, collectedIDs = false -- for testing; mouse over the dt to show the tinspect table
 local function GetInstanceImages(index, raid)
 	local instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
 	while instanceID do
-		instanceIconByName[journalNameToInstanceName[name] or name] = buttonImage
+		if collectIDs then
+			if not collectedIDs then
+				collectedIDs = {}
+			end
+
+			collectedIDs[instanceID] = name
+		end
+
+		instanceIconByName[InstanceNameByID[instanceID] or name] = buttonImage
 		index = index + 1
 		instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
 	end
 end
 
-local locale = GetLocale()
 local krcntw = locale == "koKR" or locale == "zhCN" or locale == "zhTW"
 local difficultyTag = { -- Raid Finder, Normal, Heroic, Mythic
 	(krcntw and _G.PLAYER_DIFFICULTY3) or utf8sub(_G.PLAYER_DIFFICULTY3, 1, 1), -- R
@@ -140,6 +149,10 @@ local function OnEnter(self)
 				EJ_SelectTier(i)
 				GetInstanceImages(1, false); -- Populate for dungeon icons
 				GetInstanceImages(1, true); -- Populate for raid icons
+			end
+
+			if collectIDs then
+				E:Dump(collectedIDs, true)
 			end
 
 			-- Set it back to the previous tier
