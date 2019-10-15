@@ -438,7 +438,7 @@ function AddOn:ToggleOptionsUI(msg)
 	_G.GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
 end
 
-do --taint workarounds by townlong-yak.com
+do --taint workarounds by townlong-yak.com (rearranged by Simpy)
 	--HonorFrameLoadTaint	- https://www.townlong-yak.com/bugs/afKy4k-HonorFrameLoadTaint
 	if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0 < 2 then _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION = 2 end
 	--CommunitiesUI			- https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
