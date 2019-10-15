@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local UF = E:GetModule('UnitFrames')
+local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
 --Lua functions
@@ -432,7 +433,7 @@ function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expir
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
 	local parent = self:GetParent()
-	local db = parent.db and parent.db[self.type]
+	local db = (parent.db and parent.db[self.type]) or (parent.__owner and NP.db and NP.db.units and NP.db.units[parent.__owner.frameType] and NP.db.units[parent.__owner.frameType][parent.type])
 	if not db then return true end
 
 	local isPlayer = (caster == 'player' or caster == 'vehicle')
