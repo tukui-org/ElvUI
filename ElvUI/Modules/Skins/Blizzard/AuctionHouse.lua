@@ -16,6 +16,20 @@ TO DO:
 * Skin ItemLists
 ]]
 
+-- This is cluster fuck to skin the dropdown editboxes
+local function SkinEditBoxes(Frame)
+	S:HandleEditBox(Frame.MinLevel)
+	S:HandleEditBox(Frame.MaxLevel)
+end
+
+local function SkinFilterButton(Button)
+	SkinEditBoxes(Button.LevelRangeFrame)
+end
+
+local function AuctionHouseSearchBarTemplate(Frame)
+	SkinFilterButton(Frame.FilterButton)
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.auctionhouse ~= true then return end
 
@@ -44,6 +58,9 @@ local function LoadSkin()
 	S:HandleButton(Frame.SearchBar.FilterButton)
 	S:HandleCloseButton(Frame.SearchBar.FilterButton.ClearFiltersButton)
 	S:HandleButton(Frame.SearchBar.SearchButton)
+
+	-- Apply cluster fuck
+	AuctionHouseSearchBarTemplate(Frame.SearchBar)
 
 	Frame.MoneyFrameBorder:StripTextures(true)
 
