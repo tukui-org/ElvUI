@@ -166,16 +166,3 @@ function NP:UpdateAuraSettings(button)
 
 	button.needsUpdateCooldownPosition = true
 end
-
-function NP:UpdateAuraCooldownPosition(button)
-	button.cd.timer.text:ClearAllPoints()
-	local point = (button.db and button.db.durationPosition) or 'CENTER'
-	if point == 'CENTER' then
-		button.cd.timer.text:Point(point, 1, 0)
-	else
-		local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
-		button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
-	end
-
-	button.needsUpdateCooldownPosition = nil
-end
