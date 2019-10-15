@@ -24,10 +24,18 @@ end
 
 local function SkinFilterButton(Button)
 	SkinEditBoxes(Button.LevelRangeFrame)
+
+	S:HandleCloseButton(Button.ClearFiltersButton)
+	S:HandleButton(Button)
 end
 
-local function AuctionHouseSearchBarTemplate(Frame)
+local function HandleSearchBarFrame(Frame)
 	SkinFilterButton(Frame.FilterButton)
+
+	S:HandleButton(Frame.SearchButton)
+	S:HandleEditBox(Frame.SearchBox)
+	S:HandleButton(Frame.FavoritesSearchButton)
+	Frame.FavoritesSearchButton:SetSize(22, 22)
 end
 
 local function LoadSkin()
@@ -52,15 +60,8 @@ local function LoadSkin()
 	_G.AuctionHouseFrameBuyTab:ClearAllPoints()
 	_G.AuctionHouseFrameBuyTab:SetPoint("BOTTOMLEFT", Frame, "BOTTOMLEFT", 0, -32)
 
-	S:HandleButton(Frame.SearchBar.FavoritesSearchButton)
-	Frame.SearchBar.FavoritesSearchButton:SetSize(22, 22)
-	S:HandleEditBox(Frame.SearchBar.SearchBox)
-	S:HandleButton(Frame.SearchBar.FilterButton)
-	S:HandleCloseButton(Frame.SearchBar.FilterButton.ClearFiltersButton)
-	S:HandleButton(Frame.SearchBar.SearchButton)
-
 	-- Apply cluster fuck
-	AuctionHouseSearchBarTemplate(Frame.SearchBar)
+	HandleSearchBarFrame(Frame.SearchBar)
 
 	Frame.MoneyFrameBorder:StripTextures(true)
 
