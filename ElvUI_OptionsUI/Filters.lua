@@ -434,7 +434,7 @@ local function UpdateFilterGroup()
 						elseif not GetSpellInfo(value) then
 							E:Print(L["Not valid spell id"])
 						else
-							selectedTable[tonumber(value)] = {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false, ['style'] = 'coloredIcon', ["xOffset"] = 0, ["yOffset"] = 0}
+							selectedTable[tonumber(value)] = UF:AuraWatch_AddSpell(tonumber(value), "TOPRIGHT")
 							selectedSpell = nil;
 							UpdateFilterGroup();
 
