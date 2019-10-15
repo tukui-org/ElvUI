@@ -467,12 +467,12 @@ do --taint workarounds by townlong-yak.com (rearranged by Simpy)
 						local b, _ = _G['DropDownList' .. i .. 'Button' .. j]
 						if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION == 2 and not (issecurevariable(b, 'value') or b:IsShown()) then
 							b.value = nil
-							repeat j, b["fx" .. j] = j+1, nil
+							repeat j, b['fx' .. j] = j+1, nil
 							until issecurevariable(b, 'value')
 						end
 						if _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
-							_ = issecurevariable(b, "checked")      or drop(b, "checked")
-							_ = issecurevariable(b, "notCheckable") or drop(b, "notCheckable")
+							_ = issecurevariable(b, 'checked')      or drop(b, 'checked')
+							_ = issecurevariable(b, 'notCheckable') or drop(b, 'notCheckable')
 						end
 					end
 				end
@@ -481,9 +481,9 @@ do --taint workarounds by townlong-yak.com (rearranged by Simpy)
 			if _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION == 1 then
 				if _G.UIDROPDOWNMENU_OPEN_MENU and _G.UIDROPDOWNMENU_OPEN_MENU ~= frame and not issecurevariable(_G.UIDROPDOWNMENU_OPEN_MENU, 'displayMode') then
 					_G.UIDROPDOWNMENU_OPEN_MENU = nil
-					local t, f, prefix, i = _G, issecurevariable, ' \0', 1
-					repeat i, t[prefix .. i] = i + 1, nil
-					until f('UIDROPDOWNMENU_OPEN_MENU')
+					local prefix, i = ' \0', 1
+					repeat i, _G[prefix .. i] = i + 1, nil
+					until issecurevariable(_G.UIDROPDOWNMENU_OPEN_MENU)
 				end
 			end
 		end)
