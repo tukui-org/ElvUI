@@ -232,7 +232,7 @@ local function UpdateAuras(self, event, unit)
 		local isFriend = UnitIsFriend('player', unit)
 		local filter = element.filter or (isFriend and 'HELPFUL' or 'HARMFUL')
 
-		local visible, hidden = filterBars(element, unit, filter, element.maxBars, nil, 0)
+		local visible, hidden = filterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
 
 		local fromRange, toRange
 
