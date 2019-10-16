@@ -144,6 +144,8 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 			statusBar.countText:SetText(count > 1 and count)
 			statusBar.nameText:SetText(name)
 			statusBar.spark:Hide()
+			statusBar:SetValue(1)
+			statusBar.timeText:SetText('')
 
 			statusBar.duration = duration
 			statusBar.expiration = expiration

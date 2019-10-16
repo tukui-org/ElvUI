@@ -16,7 +16,7 @@ local IsControlKeyDown = IsControlKeyDown
 local function OnClick(self)
 	local mod = E.db.unitframe.auraBlacklistModifier
 	if mod == "NONE" or not ((mod == "SHIFT" and IsShiftKeyDown()) or (mod == "ALT" and IsAltKeyDown()) or (mod == "CTRL" and IsControlKeyDown())) then return end
-	local auraName = self:GetParent().aura.name
+	local auraName = self.name
 
 	if auraName then
 		E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
@@ -27,6 +27,7 @@ end
 
 function UF:Construct_AuraBars(statusBar)
 	statusBar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
+	statusBar:SetScript('OnMouseDown', OnClick)
 
 	UF.statusbars[statusBar] = true
 	UF:Update_StatusBar(statusBar)
