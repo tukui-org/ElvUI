@@ -3,25 +3,20 @@ local UF = E:GetModule('UnitFrames');
 
 --Lua functions
 local _G = _G
-local strmatch = strmatch
-local strsplit = strsplit
 local tostring = tostring
 local format = format
-local select = select
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
-local UnitIsFriend = UnitIsFriend
-local UnitIsUnit = UnitIsUnit
-local UnitCanAttack = UnitCanAttack
+
 -- GLOBALS: ElvUF_Player
 
 local function OnClick(self)
 	local mod = E.db.unitframe.auraBlacklistModifier
 	if mod == "NONE" or not ((mod == "SHIFT" and IsShiftKeyDown()) or (mod == "ALT" and IsAltKeyDown()) or (mod == "CTRL" and IsControlKeyDown())) then return end
-	local auraName = self:GetParent().aura.name
+	local auraName = self.name
 
 	if auraName then
 		E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
@@ -30,45 +25,49 @@ local function OnClick(self)
 	end
 end
 
-function UF:Construct_AuraBars()
-	local bar = self.statusBar
+function UF:Construct_AuraBars(statusBar)
+	statusBar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
+	statusBar:SetScript('OnMouseDown', OnClick)
 
-	self:SetTemplate(nil, nil, nil, UF.thinBorders, true)
-	local inset = UF.thinBorders and E.mult or nil
-	bar:SetInside(self, inset, inset)
-	UF.statusbars[bar] = true
-	UF:Update_StatusBar(bar)
+	UF.statusbars[statusBar] = true
+	UF:Update_StatusBar(statusBar)
 
-	UF:Configure_FontString(bar.spelltime)
-	UF:Configure_FontString(bar.spellname)
-	UF:Update_FontString(bar.spelltime)
-	UF:Update_FontString(bar.spellname)
+	UF:Configure_FontString(statusBar.timeText)
+	UF:Configure_FontString(statusBar.nameText)
+	UF:Configure_FontString(statusBar.countText)
 
-	bar.spellname:ClearAllPoints()
-	bar.spellname:Point('LEFT', bar, 'LEFT', 2, 0)
-	bar.spellname:Point('RIGHT', bar.spelltime, 'LEFT', -4, 0)
-	bar.spellname:SetWordWrap(false)
+	UF:Update_FontString(statusBar.countText)
+	UF:Update_FontString(statusBar.timeText)
+	UF:Update_FontString(statusBar.nameText)
 
-	bar.iconHolder:SetTemplate(nil, nil, nil, UF.thinBorders, true)
-	bar.icon:SetInside(bar.iconHolder, inset, inset)
-	bar.icon:SetDrawLayer('OVERLAY')
+	statusBar.iconFrame:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
+	statusBar:SetPoint("LEFT")
+	statusBar:SetPoint("RIGHT")
 
-	bar.bg = bar:CreateTexture(nil, 'BORDER')
-	bar.bg:Show()
+	statusBar.bg = statusBar:CreateTexture(nil, 'BORDER')
+	statusBar.bg:Show()
 
-	bar.iconHolder:RegisterForClicks('RightButtonUp')
-	bar.iconHolder:SetScript('OnClick', OnClick)
+	statusBar.iconFrame:RegisterForClicks('RightButtonUp')
+	statusBar.iconFrame:SetScript('OnClick', OnClick)
+	statusBar.icon:SetInside(statusBar.iconFrame.backdrop)
+
+	local frame = statusBar:GetParent()
+	statusBar.db = frame.db and frame.db.aurabar
 end
 
 function UF:Construct_AuraBarHeader(frame)
 	local auraBar = CreateFrame('Frame', nil, frame)
 	auraBar:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
+	auraBar:SetHeight(1)
+	auraBar.PreSetPosition = UF.SortAuras
 	auraBar.PostCreateBar = UF.Construct_AuraBars
-	auraBar.gap = (-frame.BORDER + frame.SPACING*3)
-	auraBar.spacing = (-frame.BORDER + frame.SPACING*3)
-	auraBar.spark = true
-	auraBar.filter = UF.AuraBarFilter
-	auraBar.PostUpdate = UF.ColorizeAuraBars
+	auraBar.PostUpdateBar = UF.PostUpdateBar_AuraBars
+	auraBar.CustomFilter = UF.AuraFilter
+
+	auraBar.gap = (frame.BORDER + frame.SPACING*3)
+	auraBar.spacing = (frame.BORDER + frame.SPACING*3)
+	auraBar.sparkEnabled = true
+	auraBar.type = 'aurabar'
 
 	return auraBar
 end
@@ -76,15 +75,14 @@ end
 function UF:Configure_AuraBars(frame)
 	if not frame.VARIABLES_SET then return end
 	local auraBars = frame.AuraBars
+	auraBars.db = frame.db
 	local db = frame.db
+
 	if db.aurabar.enable then
 		if not frame:IsElementEnabled('AuraBars') then
 			frame:EnableElement('AuraBars')
 		end
 		auraBars:Show()
-		auraBars.friendlyAuraType = db.aurabar.friendlyAuraType
-		auraBars.enemyAuraType = db.aurabar.enemyAuraType
-		auraBars.scaleTime = db.aurabar.uniformThreshold
 
 		local buffColor = self.db.colors.auraBarBuff
 		local debuffColor = self.db.colors.auraBarDebuff
@@ -125,11 +123,14 @@ function UF:Configure_AuraBars(frame)
 		local offsetLeft = xOffset + ((db.aurabar.attachTo == "FRAME" and ((anchorTo == "TOP" and frame.ORIENTATION ~= "LEFT") or (anchorTo == "BOTTOM" and frame.ORIENTATION == "LEFT"))) and frame.POWERBAR_OFFSET or 0)
 		local offsetRight = -xOffset - ((db.aurabar.attachTo == "FRAME" and ((anchorTo == "TOP" and frame.ORIENTATION ~= "RIGHT") or (anchorTo == "BOTTOM" and frame.ORIENTATION == "RIGHT"))) and frame.POWERBAR_OFFSET or 0)
 
-		auraBars.auraBarHeight = db.aurabar.height
+		auraBars.height = db.aurabar.height
+
 		auraBars:ClearAllPoints()
 		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', offsetLeft, yOffset)
 		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', offsetRight, yOffset)
-		auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
+
+		auraBars.buffColor = { buffColor.r, buffColor.g, buffColor.b }
+
 		if UF.db.colors.auraBarByType then
 			auraBars.debuffColor = nil;
 			auraBars.defaultDebuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
@@ -137,26 +138,9 @@ function UF:Configure_AuraBars(frame)
 			auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
 			auraBars.defaultDebuffColor = nil;
 		end
-		auraBars.down = db.aurabar.anchorPoint == 'BELOW'
 
-		if db.aurabar.sort == 'TIME_REMAINING' then
-			auraBars.sort = true --default function
-		elseif db.aurabar.sort == 'TIME_REMAINING_REVERSE' then
-			auraBars.sort = self.SortAuraBarReverse
-		elseif db.aurabar.sort == 'TIME_DURATION' then
-			auraBars.sort = self.SortAuraBarDuration
-		elseif db.aurabar.sort == 'TIME_DURATION_REVERSE' then
-			auraBars.sort = self.SortAuraBarDurationReverse
-		elseif db.aurabar.sort == 'NAME' then
-			auraBars.sort = self.SortAuraBarName
-		else
-			auraBars.sort = nil
-		end
-
-		auraBars.maxBars = db.aurabar.maxBars
-		auraBars.forceShow = frame.forceShowAuras
 		auraBars.spacing = ((-frame.BORDER + frame.SPACING*3) + db.aurabar.spacing)
-		auraBars:SetAnchors()
+		auraBars.width = frame.UNIT_WIDTH - auraBars.height
 	else
 		if frame:IsElementEnabled('AuraBars') then
 			frame:DisableElement('AuraBars')
@@ -165,91 +149,40 @@ function UF:Configure_AuraBars(frame)
 	end
 end
 
-local huge = math.huge
-function UF.SortAuraBarReverse(a, b)
-	local compa, compb = a.noTime and huge or a.expirationTime, b.noTime and huge or b.expirationTime
-	return compa < compb
-end
-
-function UF.SortAuraBarDuration(a, b)
-	local compa, compb = a.noTime and huge or a.duration, b.noTime and huge or b.duration
-	return compa > compb
-end
-
-function UF.SortAuraBarDurationReverse(a, b)
-	local compa, compb = a.noTime and huge or a.duration, b.noTime and huge or b.duration
-	return compa < compb
-end
-
-function UF.SortAuraBarName(a, b)
-	return a.name > b.name
-end
-
-function UF:AuraBarFilter(unit, name, _, _, debuffType, duration, _, unitCaster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
-	if not self.db then return; end
-	local db = self.db.aurabar
-
-	if not name then return nil end
-
-	local isUnit, isFriend, isPlayer, canDispell
-
-	local noDuration = (not duration or duration == 0)
-	local allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
-	local filterCheck
-
-	if db.priority ~= '' then
-		isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
-		isPlayer = (unitCaster == 'player' or unitCaster == 'vehicle')
-		isUnit = unit and unitCaster and UnitIsUnit(unit, unitCaster)
-
-		local auraType = (isFriend and db.friendlyAuraType) or (not isFriend and db.enemyAuraType)
-		canDispell = (auraType == 'HELPFUL' and isStealable) or (auraType == 'HARMFUL' and debuffType and E:IsDispellableByMe(debuffType))
-		filterCheck = UF:CheckFilter(name, unitCaster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(',', db.priority))
-	else
-		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty
-	end
-
-	return filterCheck
-end
-
 local GOTAK_ID = 86659
 local GOTAK = GetSpellInfo(GOTAK_ID)
-function UF:ColorizeAuraBars()
-	local bars = self.bars
-	for index = 1, #bars do
-		local frame = bars[index]
-		if not frame:IsVisible() then break end
+function UF:PostUpdateBar_AuraBars(unit, statusBar, index, position, duration, expiration, debuffType, isStealable)
+	local spellID = statusBar.spellID
+	local spellName = statusBar.spell
 
-		local sb = frame.statusBar
-		local spellName = sb.aura.name
-		local spellID = sb.aura.spellID
-		local colors = E.global.unitframe.AuraBarColors[spellID] or E.global.unitframe.AuraBarColors[tostring(spellID)] or E.global.unitframe.AuraBarColors[spellName]
+	statusBar.icon:SetTexCoord(unpack(E.TexCoords))
 
-		sb.custom_backdrop = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop
-		if E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName]) and not colors and (spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)) then
-			colors = E.db.unitframe.colors.auraBarTurtleColor
-		end
+	local colors = E.global.unitframe.AuraBarColors[spellID] or E.global.unitframe.AuraBarColors[tostring(spellID)] or E.global.unitframe.AuraBarColors[spellName]
 
-		if sb.bg then
-			if (UF.db.colors.transparentAurabars and not sb.isTransparent) or (sb.isTransparent and (not UF.db.colors.transparentAurabars or sb.invertColors ~= UF.db.colors.invertAurabars)) then
-				UF:ToggleTransparentStatusBar(UF.db.colors.transparentAurabars, sb, sb.bg, nil, UF.db.colors.invertAurabars)
-			else
-				local sbTexture = sb:GetStatusBarTexture()
-				if not sb.bg:GetTexture() then UF:Update_StatusBar(sb.bg, sbTexture:GetTexture()) end
+	statusBar.custom_backdrop = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop
+	if E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName]) and not colors and (spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)) then
+		colors = E.db.unitframe.colors.auraBarTurtleColor
+	end
 
-				UF:SetStatusBarBackdropPoints(sb, sbTexture, sb.bg)
-			end
-		end
-
-		if colors then
-			sb:SetStatusBarColor(colors.r, colors.g, colors.b)
-
-			if not sb.hookedColor then
-				UF.UpdateBackdropTextureColor(sb, colors.r, colors.g, colors.b)
-			end
+	if statusBar.bg then
+		if (UF.db.colors.transparentAurabars and not statusBar.isTransparent) or (statusBar.isTransparent and (not UF.db.colors.transparentAurabars or statusBar.invertColors ~= UF.db.colors.invertAurabars)) then
+			UF:ToggleTransparentStatusBar(UF.db.colors.transparentAurabars, statusBar, statusBar.bg, nil, UF.db.colors.invertAurabars)
 		else
-			local r, g, b = sb:GetStatusBarColor()
-			UF.UpdateBackdropTextureColor(sb, r, g, b)
+			local sbTexture = statusBar:GetStatusBarTexture()
+			if not statusBar.bg:GetTexture() then UF:Update_StatusBar(statusBar.bg, sbTexture:GetTexture()) end
+
+			UF:SetStatusBarBackdropPoints(statusBar, sbTexture, statusBar.bg)
 		end
+	end
+
+	if colors then
+		statusBar:SetStatusBarColor(colors.r, colors.g, colors.b)
+
+		if not statusBar.hookedColor then
+			UF.UpdateBackdropTextureColor(statusBar, colors.r, colors.g, colors.b)
+		end
+	else
+		local r, g, b = statusBar:GetStatusBarColor()
+		UF.UpdateBackdropTextureColor(statusBar, r, g, b)
 	end
 end

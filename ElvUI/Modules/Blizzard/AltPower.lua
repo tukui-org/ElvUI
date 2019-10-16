@@ -125,7 +125,7 @@ function B:SkinAltPowerBar()
 	if E.db.general.altPowerBar.enable ~= true then return end
 
 	local powerbar = CreateFrame("StatusBar", "ElvUI_AltPowerBar", E.UIParent)
-	powerbar:CreateBackdrop("Transparent")
+	powerbar:CreateBackdrop(nil, true)
 	powerbar:SetMinMaxValues(0, 200)
 	powerbar:Point("CENTER", AltPowerBarHolder)
 	powerbar:Hide()
