@@ -615,11 +615,10 @@ local function LoadSkin()
 
 	-- Communities Settings
 	local Settings = _G.CommunitiesSettingsDialog
-	Settings:StripTextures()
+	Settings.BG:Hide()
 	Settings:CreateBackdrop("Transparent")
 	Settings.backdrop:SetAllPoints()
-
-	Settings.IconPreview:SetTexCoord(unpack(E.TexCoords))
+	S:HandleIcon(Settings.IconPreview)
 	Settings.IconPreviewRing:Hide()
 
 	S:HandleEditBox(Settings.NameEdit)
