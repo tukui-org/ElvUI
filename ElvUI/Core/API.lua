@@ -7,7 +7,7 @@ local _G = _G
 local wipe, date = wipe, date
 local format, select, type, ipairs, pairs = format, select, type, ipairs, pairs
 local strmatch, strfind, tonumber, tostring = strmatch, strfind, tonumber, tostring
-local CreateFrame = CreateFrame
+local strlen, CreateFrame = strlen, CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetCVar, SetCVar = GetCVar, SetCVar
@@ -33,6 +33,27 @@ local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 local FACTION_HORDE = FACTION_HORDE
 local FACTION_ALLIANCE = FACTION_ALLIANCE
+local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
+
+function E:ClassColor(class, usePriestColor, fallback)
+	if not class then return end
+
+	local color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]
+	if type(color) ~= 'table' then return end
+
+	if not color.colorStr then
+		color.colorStr = E:RGBToHex(color.r, color.g, color.b, 'ff')
+	end
+	if strlen(color.colorStr) == 6 then
+		color.colorStr = 'ff'..color.colorStr
+	end
+
+	if (usePriestColor and class == 'PRIEST') and tonumber(color.colorStr, 16) > tonumber(E.PriestColors.colorStr, 16) then
+		return E.PriestColors
+	else
+		return color or (fallback and PRIEST_COLOR)
+	end
+end
 
 do -- other non-english locales require this
 	E.UnlocalizedClasses = {}

@@ -150,7 +150,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 					if db.castbar.sourceInterruptClassColor then
 						local _, sourceClass = GetPlayerInfoByGUID(sourceGUID)
 						if sourceClass then
-							local classColor = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[sourceClass]) or _G.RAID_CLASS_COLORS[sourceClass];
+							local classColor = E:ClassColor(sourceClass)
 							sourceClass = classColor and classColor.colorStr
 						end
 

@@ -126,7 +126,7 @@ local function UpdateClassSpec(classTag, enabled)
 			args = {}
 		}
 	end
-	local coloredName = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classTag]) or _G.RAID_CLASS_COLORS[classTag]
+	local coloredName = E:ClassColor(classTag)
 	coloredName = (coloredName and coloredName.colorStr) or "ff666666"
 	for i = 1, GetNumSpecializationsForClassID(classTable[classTag].classID) do
 		local specID, name = GetSpecializationInfoForClassID(classTable[classTag].classID, i)
@@ -179,7 +179,7 @@ local function UpdateClassSection()
 		local coloredName
 		for _, classTag in ipairs(classIndexTable) do
 			classOrder = classOrder + 1
-			coloredName = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classTag]) or _G.RAID_CLASS_COLORS[classTag]
+			coloredName = E:ClassColor(classTag)
 			coloredName = (coloredName and coloredName.colorStr) or "ff666666"
 			local classTrigger = E.global.nameplate.filters[selectedNameplateFilter].triggers.class
 			if classTrigger then

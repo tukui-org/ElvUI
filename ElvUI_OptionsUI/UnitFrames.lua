@@ -3338,7 +3338,7 @@ E.Options.args.unitframe = {
 									end,
 									set = function(info, r, g, b)
 										if E:CheckClassColor(r, g, b) then
-											local classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass])
+											local classColor = E:ClassColor(E.myclass, true)
 											r, g, b = classColor.r, classColor.g, classColor.b
 										end
 

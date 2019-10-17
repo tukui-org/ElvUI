@@ -194,7 +194,7 @@ function UF:FrameGlow_SetGlowColor(glow, unit, which)
 		if isPlayer then
 			local _, class = UnitClass(unit)
 			if class then
-				local color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]
+				local color = E:ClassColor(class)
 				if color then
 					r, g, b = color.r, color.g, color.b
 				end
