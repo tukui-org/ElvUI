@@ -161,8 +161,9 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 
 			gemStep = gemStep + 1
 		elseif essence and next(essence) then
-			if essence[5] then
-				local r, g, b = E:HexToRGB(essence[5])
+			local hexColor = essence[4]
+			if hexColor then
+				local r, g, b = E:HexToRGB(hexColor)
 				backdrop:SetBackdropBorderColor(r/255, g/255, b/255)
 			else
 				backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))

@@ -95,9 +95,10 @@ do
 					local selected = (tt.gems[i-1] ~= essenceTextureID and tt.gems[i-1]) or nil
 					if not tt.essences[step] then tt.essences[step] = {} end
 
-					tt.essences[step][1] = selected
-					tt.essences[step][2] = tex:GetAtlas()
-					tt.essences[step][3] = texture
+					tt.essences[step][1] = selected			--essence texture if selected or nil
+					tt.essences[step][2] = tex:GetAtlas()	--atlas place 'tooltip-heartofazerothessence-major' or 'tooltip-heartofazerothessence-minor'
+					tt.essences[step][3] = texture			--border texture placed by the atlas
+					--`CollectEssenceInfo` will add 4 (hex color) and 5 (essence name)
 
 					step = step + 1
 
