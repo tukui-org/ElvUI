@@ -36,7 +36,7 @@ local whileOpenEvents = {
 
 function M:CreateInspectTexture(slot, x, y)
 	local texture = slot:CreateTexture()
-	texture:Point("BOTTOM", slot, x, y)
+	texture:Point("BOTTOM", x, y)
 	texture:SetTexCoord(unpack(E.TexCoords))
 	texture:Size(14)
 
@@ -157,19 +157,15 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which)
 
 			gemStep = gemStep + 1
 		elseif essence and next(essence) then
-			local r, g, b = 0.4, 0.4, 0.4 -- 'tooltip-heartofazerothessence-minor'
-
-			if essence[2] == 'tooltip-heartofazerothessence-major' then
-				r, g, b = 0.8, 0.7, 0
-			end
-
 			if essence[5] then
-				r, g, b = E:HexToRGB(essence[5])
+				local r, g, b = E:HexToRGB(essence[5])
+				backdrop:SetBackdropBorderColor(r/255, g/255, b/255)
+			else
+				backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 
 			local selected = essence[1]
 			texture:SetTexture(selected)
-			backdrop:SetBackdropBorderColor(r/255, g/255, b/255)
 			backdrop:Show()
 
 			if selected then
