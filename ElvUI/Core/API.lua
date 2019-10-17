@@ -69,7 +69,7 @@ end
 
 do
 	local essenceTextureID = 2975691
-	function E:ScanTooltipTextures(clean, grabTextures)
+	function E:ScanTooltipTextures()
 		local tt = E.ScanTooltip
 
 		if not tt.gems then
@@ -88,28 +88,21 @@ do
 
 		for i = 1, 10 do
 			local tex = _G['ElvUI_ScanTooltipTexture'..i]
-			local texture = tex and tex:GetTexture()
+			local texture = tex and tex:IsShown() and tex:GetTexture()
 			if texture then
-				if grabTextures then
-					if texture == essenceTextureID then
-						local selected = (tt.gems[i-1] ~= essenceTextureID and tt.gems[i-1]) or nil
-						if not tt.essences[i] then
-							tt.essences[i] = {}
-						end
+				if texture == essenceTextureID then
+					local selected = (tt.gems[i-1] ~= essenceTextureID and tt.gems[i-1]) or nil
+					if not tt.essences[i] then tt.essences[i] = {} end
 
-						tt.essences[i][1] = selected
-						tt.essences[i][2] = tex:GetAtlas()
-						tt.essences[i][3] = texture
+					tt.essences[i][1] = selected
+					tt.essences[i][2] = tex:GetAtlas()
+					tt.essences[i][3] = texture
 
-						if selected then
-							tt.gems[i-1] = nil
-						end
-					else
-						tt.gems[i] = texture
+					if selected then
+						tt.gems[i-1] = nil
 					end
-				end
-				if clean then
-					tex:SetTexture()
+				else
+					tt.gems[i] = texture
 				end
 			end
 		end
