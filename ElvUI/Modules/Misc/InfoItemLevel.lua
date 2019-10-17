@@ -148,11 +148,10 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, esse
 
 			gemStep = gemStep + 1
 		elseif essence and next(essence) then
-			local r, g, b
+			local r, g, b = 0.4, 0.4, 0.4 -- 'tooltip-heartofazerothessence-minor'
+
 			if essence[2] == 'tooltip-heartofazerothessence-major' then
 				r, g, b = 0.8, 0.7, 0
-			else -- 'tooltip-heartofazerothessence-minor'
-				r, g, b = 0.4, 0.4, 0.4
 			end
 
 			local selected = essence[1]
