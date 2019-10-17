@@ -67,6 +67,7 @@ local C_MountJournal_GetMountInfoExtraByID = C_MountJournal.GetMountInfoExtraByI
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
+local UNKNOWN = UNKNOWN
 
 -- GLOBALS: ElvUI_KeyBinder, ElvUI_ContainerFrame
 
@@ -228,7 +229,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 			name = name..DND_LABEL
 		end
 
-		_G.GameTooltipTextLeft1:SetFormattedText("|c%s%s|r", color.colorStr, name)
+		_G.GameTooltipTextLeft1:SetFormattedText("|c%s%s|r", color.colorStr, name or UNKNOWN)
 
 		local lineOffset = 2
 		if guildName then
