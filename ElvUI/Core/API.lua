@@ -33,12 +33,11 @@ local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 local FACTION_HORDE = FACTION_HORDE
 local FACTION_ALLIANCE = FACTION_ALLIANCE
-local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
-function E:ClassColor(class, usePriestColor, fallback)
+function E:ClassColor(class, usePriestColor)
 	if not class then return end
 
-	local color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class]
+	local color = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class]) or _G.RAID_CLASS_COLORS[class]
 	if type(color) ~= 'table' then return end
 
 	if not color.colorStr then
@@ -51,7 +50,7 @@ function E:ClassColor(class, usePriestColor, fallback)
 	if (usePriestColor and class == 'PRIEST') and tonumber(color.colorStr, 16) > tonumber(E.PriestColors.colorStr, 16) then
 		return E.PriestColors
 	else
-		return color or (fallback and PRIEST_COLOR)
+		return color
 	end
 end
 
