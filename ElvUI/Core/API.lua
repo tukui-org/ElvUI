@@ -86,17 +86,20 @@ do
 			end
 		end
 
+		local step = 1
 		for i = 1, 10 do
 			local tex = _G['ElvUI_ScanTooltipTexture'..i]
 			local texture = tex and tex:IsShown() and tex:GetTexture()
 			if texture then
 				if texture == essenceTextureID then
 					local selected = (tt.gems[i-1] ~= essenceTextureID and tt.gems[i-1]) or nil
-					if not tt.essences[i] then tt.essences[i] = {} end
+					if not tt.essences[step] then tt.essences[step] = {} end
 
-					tt.essences[i][1] = selected
-					tt.essences[i][2] = tex:GetAtlas()
-					tt.essences[i][3] = texture
+					tt.essences[step][1] = selected
+					tt.essences[step][2] = tex:GetAtlas()
+					tt.essences[step][3] = texture
+
+					step = step + 1
 
 					if selected then
 						tt.gems[i-1] = nil
