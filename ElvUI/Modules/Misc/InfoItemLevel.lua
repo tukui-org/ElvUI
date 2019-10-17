@@ -62,6 +62,7 @@ end
 
 function M:UpdateCharacterInfo(event)
 	if not E.db.general.itemLevel.displayCharacterInfo then return end
+	if event == "UPDATE_INVENTORY_DURABILITY" and not _G.CharacterFrame:IsShown() then return end
 
 	M:UpdatePageInfo(_G.CharacterFrame, 'Character', nil, event)
 end
@@ -95,6 +96,7 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 
 	if E.db.general.itemLevel.displayCharacterInfo then
 		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
+		M:RegisterEvent('UPDATE_INVENTORY_DURABILITY', 'UpdateCharacterInfo')
 		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterItemLevel')
 		_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
 
@@ -134,24 +136,24 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, esse
 		inspectItem.iLvlText:SetTextColor(unpack(itemLevelColors))
 	end
 
-	local gemStep, essenceStep = 1, 2
 	for x = 1, 10 do
 		local texture = inspectItem["textureSlot"..x]
 		local backdrop = inspectItem["textureSlotBackdrop"..x]
 
-		local gem = gems and gems[gemStep]
-		local essence = not gem and (essences and essences[essenceStep])
-		if gem then
+		if gems and next(gems) then
+			local index, gem = next(gems)
 			texture:SetTexture(gem)
 			backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			backdrop:Show()
+			gems[index] = nil
+		elseif essences and next(essences) then
+			local index, essence = next(essences)
 
-			gemStep = gemStep + 1
-		elseif essence and next(essence) then
-			local r, g, b = 0.4, 0.4, 0.4 -- 'tooltip-heartofazerothessence-minor'
-
+			local r, g, b
 			if essence[2] == 'tooltip-heartofazerothessence-major' then
 				r, g, b = 0.8, 0.7, 0
+			else -- 'tooltip-heartofazerothessence-minor'
+				r, g, b = 0.4, 0.4, 0.4
 			end
 
 			local selected = essence[1]
@@ -165,7 +167,7 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, esse
 				backdrop:SetBackdropColor(unpack(E.media.backdropcolor))
 			end
 
-			essenceStep = essenceStep + 2
+			essences[index] = nil
 		else
 			texture:SetTexture()
 			backdrop:Hide()
