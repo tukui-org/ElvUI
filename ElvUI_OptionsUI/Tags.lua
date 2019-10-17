@@ -30,8 +30,9 @@ E.TagInfo = {
 	['happiness:color'] = { category = 'Colors', description = "Colors the following tags based upon pet happiness (e.g. 'Happy = green')" },
 	['difficultycolor'] = { category = 'Colors', description = "Colors the difficulty, red for impossible, orange for hard, green for easy" },
 	['altpowercolor'] = { category = 'Colors', description = "Changes text to the current alternative power color (Blizzard defined)" },
-	['classpowercolor '] = { category = 'Colors', description = "Changes the color of the special power based upon its type" },
 	['healthcolor'] = { category = 'Colors', description = "Changes color of health, depending on the unit's current health" },
+	['threatcolor'] = { category = 'Colors', description = "" },
+	['classpowercolor'] = { category = 'Colors', description = "Changes the color of the special power based upon its type" },
 	--Classification
 	['classification'] = { category = 'Classification', description = "Show the Unit Classification (e.g. 'ELITE' and 'RARE')" },
 	['shortclassification'] = { category = 'Classification', description = "Show the Unit Classification in short form (e.g. '+' for ELITE and 'R' for RARE)" },
@@ -67,11 +68,7 @@ E.TagInfo = {
 	['health:max:shortvalue'] = { category = 'Health', description = '' },
 	['health:percent'] = { category = 'Health', description = '' },
 	['health:percent-nostatus'] = { category = 'Health', description = '' },
-	--Hunter
-	--['happiness:icon'] = { category = 'Hunter', description = "Displays the Pet Happiness like the default Blizzard icon" },
-	--['happiness:discord'] = { category = 'Hunter', description = "Displays the Pet Happiness like a Discord Emoji" },
-	--['happiness:full'] = { category = 'Hunter', description = "Displays the Pet Happiness as a word (e.g. 'Happy')" },
-	--['loyalty'] = { category = 'Hunter', description = "Display the Pet Loyalty Level" },
+	['health:percent-with-absorbs'] = { category = 'Health', description = '' },
 	--Level
 	['smartlevel'] = { category = 'Level', description = "Displays the level and adds a '+' for ELITE / a 'BOSS' for Worldboss" },
 	['level'] = { category = 'Level', description = "Display the level" },
@@ -111,6 +108,7 @@ E.TagInfo = {
 	['name:long:status'] = { category = 'Names', description = "Replaces the Unit Name with 'DEAD' or 'OFFLINE' (limited to 20 letters)" },
 	['name:title'] = { category = 'Names', description = '' },
 	--Power
+	['altpower:current'] = { category = 'Power', description = "Returns altpower text on a unit in current format" },
 	['altpower:current-max'] = { category = 'Power', description = "Returns altpower text on a unit in current-max format" },
 	['altpower:current-max-percent'] = { category = 'Power', description = "Returns altpower text on a unit in current-max-percent format" },
 	['altpower:current-percent'] = { category = 'Power', description = "Returns altpower text on a unit in current-max format" },
@@ -119,6 +117,7 @@ E.TagInfo = {
 	['arcanecharges'] = { category = 'Power', description = '' },
 	['classpower:current'] = { category = 'Power', description = "Shows the current amount of the special power a unit has" },
 	['classpower:current-max'] = { category = 'Power', description = "Shows the current special power and max special power, separated by a dash" },
+	['classpower:current-max-percent'] = { category = 'Power', description = "Shows the current special power and max special power, separated by a dash" },
 	['classpower:current-percent'] = { category = 'Power', description = "Shows the current amount of special power and current special power as a percent, separated by a dash" },
 	['classpower:deficit'] = { category = 'Power', description = "Shows the special power as a deficit (Total Class Power - Current Class Power = -Deficit)" },
 	['classpower:percent'] = { category = 'Power', description = "Shows the current amount of special power as a percent" },
@@ -159,6 +158,10 @@ E.TagInfo = {
 	['target:medium:translit'] = { category = 'Target', description = "Displays the current target of the Unit with transliteration for cyrillic letters (limited to 15 letters)" },
 	['target:long:translit'] = { category = 'Target', description = "Displays the current target of the Unit with transliteration for cyrillic letters (limited to 20 letters)" },
 	--Work in Progress from here
+	['souldshards'] = { category = 'Miscellanous', description = '' },
+	['threat'] = { category = 'Miscellanous', description = '' },
+	['absorbs'] = { category = 'Miscellanous', description = '' },
+	['afk'] = { category = 'Miscellanous', description = '' },
 	['affix'] = { category = 'Miscellanous', description = '' },
 	['class'] = { category = 'Miscellanous', description = '' } ,
 	['classificationcolor'] = { category = 'Miscellanous', description = '' },
@@ -190,12 +193,24 @@ E.TagInfo = {
 	['quest:title'] = { category = 'Miscellanous', description = '' },
 	['rare'] = { category = 'Miscellanous', description = '' },
 	['resting'] = { category = 'Miscellanous', description = '' },
+	['chi'] = { category = 'Miscellanous', description = "" },
+	['runes'] = { category = 'Miscellanous', description = "" },
+	['arenaspec'] = { category = 'Miscellanous', description = "" },
+	['arena:number'] = { category = 'Miscellanous', description = "" },
+	['threat:percent'] = { category = 'Miscellanous', description = "" },
+	['threat:current'] = { category = 'Miscellanous', description = "" },
+	['soulshards'] = { category = 'Miscellanous', description = "" },
+	['holypower'] = { category = 'Miscellanous', description = "" },
+	['incomingheals'] = { category = 'Miscellanous', description = "" },
+	['incomingheals:personal'] = { category = 'Miscellanous', description = "" },
+	['incomingheals:others'] = { category = 'Miscellanous', description = "" },
+
 }
 
 for Tag in next, E.oUF.Tags.Events do
 	if not E.TagInfo[Tag] then
 		E.TagInfo[Tag] = { category = 'Miscellanous', description = "" }
-		--E:Print("['"..Tag.."'] = { category = 'Miscellanous', description = '' }")
+		E:Print("['"..Tag.."'] = { category = 'Miscellanous', description = '' }")
 	end
 
 	if not E.Options.args.tagGroup.args.general.args[E.TagInfo[Tag].category] then
