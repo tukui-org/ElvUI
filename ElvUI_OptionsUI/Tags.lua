@@ -17,7 +17,19 @@ E.Options.args.tagGroup = {
 			name = "",
 			guiInline = true,
 			childGroups = 'tab',
-			args = {},
+			args = {
+				Colors = {
+					type = "group",
+					name = E.InfoColor..'Colors',
+					args = {
+						customTagColorInfo = {
+							type = "description",
+							fontSize = "medium",
+							name = '||cffXXXXXX [tags] or text here ||r - Custom color your Text: replace the XXXXXX with a Hex color code',
+						}
+					}
+				},
+			},
 		},
 	}
 }
