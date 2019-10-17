@@ -149,6 +149,10 @@ function UF:Configure_AuraBars(frame)
 			wipe(auraBars.defaultDebuffColor)
 		end
 
+		-- Azil, do we need this still maybe?
+		-- auraBars.maxBars = db.aurabar.maxBars
+		-- auraBars.forceShow = frame.forceShowAuras
+
 		auraBars.spacing = ((-frame.BORDER + frame.SPACING*3) + db.aurabar.spacing)
 		auraBars.width = frame.UNIT_WIDTH - auraBars.height
 	elseif frame:IsElementEnabled('AuraBars') then
