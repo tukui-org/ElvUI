@@ -203,6 +203,7 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 end
 
 local function SetPosition(element, from, to)
+	local width = element.height
 	local height = (element.height + element.spacing) or 1
 	local anchor = element.initialAnchor
 	local growth = element.growth == 'DOWN' and -1 or 1
@@ -212,7 +213,7 @@ local function SetPosition(element, from, to)
 		if(not button) then break end
 
 		button:ClearAllPoints()
-		button:SetPoint(anchor, element, anchor, (height + element.gap), (i > 1 and ((i - 1) * (height + growth)) or 0))
+		button:SetPoint(anchor, element, anchor, (width + element.gap), (i > 1 and ((i - 1) * (height + growth)) or 0))
 	end
 end
 
