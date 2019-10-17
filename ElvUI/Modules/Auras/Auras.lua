@@ -62,6 +62,11 @@ local IS_HORIZONTAL_GROWTH = {
 }
 
 function A:UpdateTime(elapsed)
+	if self.nextUpdate > 0 then
+		self.nextUpdate = self.nextUpdate - elapsed
+		return
+	end
+
 	if not E:Cooldown_IsEnabled(self) then
 		if self.offset then
 			self.offset = nil
@@ -80,11 +85,6 @@ function A:UpdateTime(elapsed)
 			end
 		else
 			self.timeLeft = self.timeLeft - elapsed
-		end
-
-		if self.nextUpdate > 0 then
-			self.nextUpdate = self.nextUpdate - elapsed
-			return
 		end
 
 		local timeColors, timeThreshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
