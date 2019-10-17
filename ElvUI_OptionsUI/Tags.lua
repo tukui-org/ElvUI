@@ -210,7 +210,7 @@ E.TagInfo = {
 for Tag in next, E.oUF.Tags.Events do
 	if not E.TagInfo[Tag] then
 		E.TagInfo[Tag] = { category = 'Miscellanous', description = "" }
-		E:Print("['"..Tag.."'] = { category = 'Miscellanous', description = '' }")
+		--E:Print("['"..Tag.."'] = { category = 'Miscellanous', description = '' }")
 	end
 
 	if not E.Options.args.tagGroup.args.general.args[E.TagInfo[Tag].category] then
