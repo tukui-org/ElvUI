@@ -82,11 +82,11 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 		local _, class = GetPlayerInfoByGUID(guid)
 		if class then
 			local c = E:ClassColor(class)
-			if c then color = c.colorStr end
+			if c then color = c end
 		end
 	end
 
-	chatBubble.Name:SetFormattedText("|c%s%s|r", color, name)
+	chatBubble.Name:SetFormattedText("|c%s%s|r", color.colorStr, name)
 end
 
 function M:SkinBubble(frame)
