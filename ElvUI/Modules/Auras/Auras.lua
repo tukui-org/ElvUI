@@ -199,7 +199,8 @@ function A:CreateIcon(button)
 end
 
 function A:UpdateAura(button, index)
-	local name, texture, count, dtype, duration, expirationTime = UnitAura('player', index, button.filter)
+	local unit = button:GetParent():GetAttribute('unit')
+	local name, texture, count, dtype, duration, expirationTime = UnitAura(unit, index, button.filter)
 
 	if name then
 		if (duration > 0) and expirationTime then
