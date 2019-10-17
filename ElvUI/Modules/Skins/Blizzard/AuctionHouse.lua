@@ -270,6 +270,8 @@ local function LoadSkin()
 	S:HandleButton(AuctionsFrame.BidFrame.BidButton)
 	S:HandleButton(AuctionsFrame.BuyoutFrame.BuyoutButton)
 
+	--[[ ProgressBars ]]--
+
 	--[[ WoW Token Category ]]--
 	local TokenFrame = Frame.WoWTokenResults
 	TokenFrame:StripTextures()
