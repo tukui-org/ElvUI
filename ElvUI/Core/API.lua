@@ -42,8 +42,7 @@ function E:ClassColor(class, usePriestColor)
 
 	if not color.colorStr then
 		color.colorStr = E:RGBToHex(color.r, color.g, color.b, 'ff')
-	end
-	if strlen(color.colorStr) == 6 then
+	elseif strlen(color.colorStr) == 6 then
 		color.colorStr = 'ff'..color.colorStr
 	end
 
