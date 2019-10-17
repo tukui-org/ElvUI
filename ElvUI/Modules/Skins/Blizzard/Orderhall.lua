@@ -36,7 +36,7 @@ end
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.orderhall ~= true then return end
 
-	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass])
+	local classColor = E:ClassColor(E.myclass, true)
 
 	-- CommandBar
 	local OrderHallCommandBar = _G.OrderHallCommandBar

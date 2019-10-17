@@ -52,7 +52,7 @@ local function SetTip(frame)
 	if frame:IsEnabled() == 0 then GameTooltip:AddLine("|cffff3333"..L["Can't Roll"]) end
 	for name, tbl in pairs(frame.parent.rolls) do
 		if rolltypes[tbl[1]] == rolltypes[frame.rolltype] then
-			local classColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[tbl[2]] or _G.RAID_CLASS_COLORS[tbl[2]]
+			local classColor = E:ClassColor(tbl[2])
 			GameTooltip:AddLine(name, classColor.r, classColor.g, classColor.b)
 		end
 	end

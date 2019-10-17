@@ -157,6 +157,7 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 			local r, g, b = .2, .6, 1
 			if element.buffColor then r, g, b = unpack(element.buffColor) end
 			if filter == 'HARMFUL' then
+				if not debuffType or debuffType == '' then debuffType = 'none' end
 				r, g, b = DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b
 				if element.debuffColor then r, g, b = unpack(element.debuffColor) end
 				if debuffType == 'none' and element.defaultDebuffColor then r, g, b = unpack(element.defaultDebuffColor) end
@@ -231,7 +232,7 @@ local function UpdateAuras(self, event, unit)
 		local isFriend = UnitIsFriend('player', unit)
 		local filter = element.filter or (isFriend and 'HELPFUL' or 'HARMFUL')
 
-		local visible, hidden = filterBars(element, unit, filter, element.maxBars, nil, 0)
+		local visible, hidden = filterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
 
 		local fromRange, toRange
 

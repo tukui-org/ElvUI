@@ -13,6 +13,7 @@ local GetInstanceInfo = GetInstanceInfo
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local RemoveExtraSpaces = RemoveExtraSpaces
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
+local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 --Message caches
 local messageToGUID = {}
@@ -52,8 +53,10 @@ function M:UpdateBubbleBorder()
 				wordMatch = classMatch and lowerCaseWord
 
 				if(wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch]) then
-					classColorTable = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classMatch] or _G.RAID_CLASS_COLORS[classMatch];
-					word = word:gsub(tempWord:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+					classColorTable = E:ClassColor(classMatch)
+					if classColorTable then
+						word = word:gsub(tempWord:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+					end
 				end
 
 				if not isFirstWord then
@@ -74,17 +77,16 @@ end
 function M:AddChatBubbleName(chatBubble, guid, name)
 	if not name then return end
 
-	local defaultColor, color = "ffffffff"
+	local color = PRIEST_COLOR
 	if guid ~= nil and guid ~= "" then
 		local _, class = GetPlayerInfoByGUID(guid)
 		if class then
-			color = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] and _G.CUSTOM_CLASS_COLORS[class].colorStr) or (_G.RAID_CLASS_COLORS[class] and _G.RAID_CLASS_COLORS[class].colorStr)
+			local c = E:ClassColor(class)
+			if c then color = c end
 		end
-	else
-		color = defaultColor
 	end
 
-	chatBubble.Name:SetFormattedText("|c%s%s|r", color, name)
+	chatBubble.Name:SetFormattedText("|c%s%s|r", color.colorStr, name)
 end
 
 function M:SkinBubble(frame)

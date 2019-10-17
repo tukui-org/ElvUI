@@ -16,6 +16,8 @@ local IsLoggedIn = IsLoggedIn
 local IsShiftKeyDown = IsShiftKeyDown
 local C_WowTokenPublic = C_WowTokenPublic
 local C_Timer_NewTicker = C_Timer.NewTicker
+local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
+
 -- GLOBALS: ElvDB
 
 local Ticker
@@ -96,7 +98,7 @@ local function OnEnter(self)
 	for k,_ in pairs(ElvDB.gold[E.myrealm]) do
 		if ElvDB.gold[E.myrealm][k] then
 			local class = ElvDB.class[E.myrealm][k] or "PRIEST"
-			local color = class and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class] or _G.RAID_CLASS_COLORS[class])
+			local color = E:ClassColor(class) or PRIEST_COLOR
 			tinsert(myGold,
 				{
 					name = k,

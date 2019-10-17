@@ -134,24 +134,24 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, esse
 		inspectItem.iLvlText:SetTextColor(unpack(itemLevelColors))
 	end
 
+	local gemStep, essenceStep = 1, 2
 	for x = 1, 10 do
 		local texture = inspectItem["textureSlot"..x]
 		local backdrop = inspectItem["textureSlotBackdrop"..x]
 
-		if gems and next(gems) then
-			local index, gem = next(gems)
+		local gem = gems and gems[gemStep]
+		local essence = not gem and (essences and essences[essenceStep])
+		if gem then
 			texture:SetTexture(gem)
 			backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			backdrop:Show()
-			gems[index] = nil
-		elseif essences and next(essences) then
-			local index, essence = next(essences)
 
-			local r, g, b
+			gemStep = gemStep + 1
+		elseif essence and next(essence) then
+			local r, g, b = 0.4, 0.4, 0.4 -- 'tooltip-heartofazerothessence-minor'
+
 			if essence[2] == 'tooltip-heartofazerothessence-major' then
 				r, g, b = 0.8, 0.7, 0
-			else -- 'tooltip-heartofazerothessence-minor'
-				r, g, b = 0.4, 0.4, 0.4
 			end
 
 			local selected = essence[1]
@@ -165,7 +165,7 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, esse
 				backdrop:SetBackdropColor(unpack(E.media.backdropcolor))
 			end
 
-			essences[index] = nil
+			essenceStep = essenceStep + 2
 		else
 			texture:SetTexture()
 			backdrop:Hide()
