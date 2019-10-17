@@ -203,7 +203,7 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 end
 
 local function SetPosition(element, from, to)
-	local width = element.height
+	local width = element.height or 1
 	local height = (element.height + element.spacing) or 1
 	local anchor = element.initialAnchor
 	local growth = element.growth == 'DOWN' and -1 or 1
