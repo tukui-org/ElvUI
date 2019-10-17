@@ -103,6 +103,7 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
 		M:RegisterEvent('UPDATE_INVENTORY_DURABILITY', 'UpdateCharacterInfo')
 		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterItemLevel')
+
 		_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
 
 		if not _G.CharacterFrame.CharacterInfoHooked then
@@ -118,7 +119,9 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
 		M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
 		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
+
 		_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
+
 		M:ClearPageInfo(_G.CharacterFrame, 'Character')
 	end
 
@@ -130,7 +133,7 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	end
 end
 
-function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which)
+function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `which` is used in hooks by plugins
 	iLevelDB[i] = slotInfo.iLvl
 
 	inspectItem.enchantText:SetText(slotInfo.enchantText)
@@ -209,37 +212,41 @@ function M:TryGearAgain(frame, which, i, deepScan, iLevelDB, inspectItem)
 	end)
 end
 
-function M:UpdatePageInfo(frame, which, guid, event)
-	if not (which and frame and frame.ItemLevelText) then return end
-	if which == 'Inspect' and (not frame or not frame.unit or (guid and frame:IsShown() and UnitGUID(frame.unit) ~= guid)) then return end
-
+do
 	local iLevelDB = {}
-	local waitForItems
-	for i = 1, 17 do
-		if i ~= 4 then
-			local inspectItem = _G[which..InspectItems[i]]
-			inspectItem.enchantText:SetText('')
-			inspectItem.iLvlText:SetText('')
+	function M:UpdatePageInfo(frame, which, guid, event)
+		if not (which and frame and frame.ItemLevelText) then return end
+		if which == 'Inspect' and (not frame or not frame.unit or (guid and frame:IsShown() and UnitGUID(frame.unit) ~= guid)) then return end
 
-			local unit = (which == 'Character' and 'player') or frame.unit
-			local slotInfo = E:GetGearSlotInfo(unit, i, true)
-			if slotInfo == 'tooSoon' then
-				if not waitForItems then waitForItems = true end
-				M:TryGearAgain(frame, which, i, true, iLevelDB, inspectItem)
-			else
-				M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which)
+		wipe(iLevelDB)
+
+		local waitForItems
+		for i = 1, 17 do
+			if i ~= 4 then
+				local inspectItem = _G[which..InspectItems[i]]
+				inspectItem.enchantText:SetText('')
+				inspectItem.iLvlText:SetText('')
+
+				local unit = (which == 'Character' and 'player') or frame.unit
+				local slotInfo = E:GetGearSlotInfo(unit, i, true)
+				if slotInfo == 'tooSoon' then
+					if not waitForItems then waitForItems = true end
+					M:TryGearAgain(frame, which, i, true, iLevelDB, inspectItem)
+				else
+					M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which)
+				end
 			end
 		end
-	end
 
-	if event and event == 'PLAYER_EQUIPMENT_CHANGED' then
-		return
-	end
+		if event and event == 'PLAYER_EQUIPMENT_CHANGED' then
+			return
+		end
 
-	if waitForItems then
-		E:Delay(0.10, M.UpdateAverageString, M, frame, which, iLevelDB)
-	else
-		M:UpdateAverageString(frame, which, iLevelDB)
+		if waitForItems then
+			E:Delay(0.10, M.UpdateAverageString, M, frame, which, iLevelDB)
+		else
+			M:UpdateAverageString(frame, which, iLevelDB)
+		end
 	end
 end
 

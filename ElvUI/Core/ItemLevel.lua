@@ -62,7 +62,7 @@ function E:CollectEssenceInfo(index, lineText, slotInfo)
 			local line = _G['ElvUI_ScanTooltipTextLeft'..index - i]
 			local text = line and line:GetText()
 
-			if (not strmatch(text, '^[ +]')) and essence and next(essence) then
+			if text and (not strmatch(text, '^[ +]')) and essence and next(essence) then
 				local r, g, b = line:GetTextColor()
 
 				essence[5] = E:RGBToHex(r, g, b, '')
@@ -191,29 +191,31 @@ function E:GetPlayerItemLevel()
 	return format('%0.2f', E:Round((select(2, GetAverageItemLevel())), 2))
 end
 
-local iLevelDB = {}
-function E:GetUnitItemLevel(unit)
-	if UnitIsUnit('player', unit) then
-		return E:GetPlayerItemLevel()
-	end
+do
+	local iLevelDB, tryAgain = {}, {}
+	function E:GetUnitItemLevel(unit)
+		if UnitIsUnit('player', unit) then
+			return E:GetPlayerItemLevel()
+		end
 
-	wipe(iLevelDB)
-	local tryAgain
-	for i = 1, 17 do
-		if i ~= 4 then
-			local slotInfo = E:GetGearSlotInfo(unit, i)
-			if slotInfo == 'tooSoon' then
-				if not tryAgain then tryAgain = {} end
-				tinsert(tryAgain, i)
-			else
-				iLevelDB[i] = slotInfo.iLvl
+		if next(iLevelDB) then wipe(iLevelDB) end
+		if next(tryAgain) then wipe(tryAgain) end
+
+		for i = 1, 17 do
+			if i ~= 4 then
+				local slotInfo = E:GetGearSlotInfo(unit, i)
+				if slotInfo == 'tooSoon' then
+					tinsert(tryAgain, i)
+				else
+					iLevelDB[i] = slotInfo.iLvl
+				end
 			end
 		end
-	end
 
-	if tryAgain then
-		return 'tooSoon', unit, tryAgain, iLevelDB
-	end
+		if next(tryAgain) then
+			return 'tooSoon', unit, tryAgain, iLevelDB
+		end
 
-	return E:CalculateAverageItemLevel(iLevelDB, unit)
+		return E:CalculateAverageItemLevel(iLevelDB, unit)
+	end
 end

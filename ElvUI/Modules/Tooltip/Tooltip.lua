@@ -348,11 +348,11 @@ function TT:INSPECT_READY(event, unitGUID)
 			E:Delay(0.05, function()
 				local canUpdate = true
 				for _, x in ipairs(retryTable) do
-					local iLvl = E:GetGearSlotInfo(retryUnit, x)
-					if iLvl == 'tooSoon' then
+					local slotInfo = E:GetGearSlotInfo(retryUnit, x)
+					if slotInfo == 'tooSoon' then
 						canUpdate = false
 					else
-						iLevelDB[x] = iLvl
+						iLevelDB[x] = slotInfo.iLvl
 					end
 				end
 
