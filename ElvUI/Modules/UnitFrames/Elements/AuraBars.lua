@@ -63,8 +63,8 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.PostUpdateBar = UF.PostUpdateBar_AuraBars
 	auraBar.CustomFilter = UF.AuraFilter
 
-	auraBar.gap = frame.BORDER + frame.SPACING*3
-	auraBar.spacing = frame.BORDER + frame.SPACING*3
+	auraBar.gap = (-frame.BORDER + frame.SPACING*3)
+	auraBar.spacing = (-frame.BORDER + frame.SPACING*3)
 	auraBar.sparkEnabled = true
 	auraBar.type = 'aurabar'
 
