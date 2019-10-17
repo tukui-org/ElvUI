@@ -157,6 +157,7 @@ function UF:Configure_AuraBars(frame)
 		-- Azil, do we need this still maybe?
 		-- auraBars.forceShow = frame.forceShowAuras
 
+		auraBars.maxBars = db.aurabar.maxBars
 		auraBars.spacing = ((-frame.BORDER + frame.SPACING*3) + db.aurabar.spacing)
 		auraBars.width = frame.UNIT_WIDTH - auraBars.height
 	elseif frame:IsElementEnabled('AuraBars') then
