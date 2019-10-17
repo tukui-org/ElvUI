@@ -68,24 +68,42 @@ function E:IsFoolsDay()
 end
 
 function E:ScanTooltipTextures(clean, grabTextures)
-	local essenceTextureID, textures, essences = 2975691
+	local tt, essenceTextureID = E.ScanTooltip, 2975691
+
+	if not tt.gems then
+		tt.gems = {}
+	else
+		wipe(tt.gems)
+	end
+
+	if not tt.essences then
+		tt.essences = {}
+	else
+		for _, essences in pairs(tt.essences) do
+			wipe(essences)
+		end
+	end
+
 	for i = 1, 10 do
 		local tex = _G['ElvUI_ScanTooltipTexture'..i]
 		local texture = tex and tex:GetTexture()
 		if texture then
 			if grabTextures then
-				if not textures then textures = {} end
 				if texture == essenceTextureID then
-					if not essences then essences = {} end
+					local selected = (tt.gems[i-1] ~= essenceTextureID and tt.gems[i-1]) or nil
+					if not tt.essences[i] then
+						tt.essences[i] = {}
+					end
 
-					local selected = (textures[i-1] ~= essenceTextureID and textures[i-1]) or nil
-					essences[i] = {selected, tex:GetAtlas(), texture}
+					tt.essences[i][1] = selected
+					tt.essences[i][2] = tex:GetAtlas()
+					tt.essences[i][3] = texture
 
 					if selected then
-						textures[i-1] = nil
+						tt.gems[i-1] = nil
 					end
 				else
-					textures[i] = texture
+					tt.gems[i] = texture
 				end
 			end
 			if clean then
@@ -94,7 +112,7 @@ function E:ScanTooltipTextures(clean, grabTextures)
 		end
 	end
 
-	return textures, essences
+	return tt.gems, tt.essences
 end
 
 function E:GetPlayerRole()
