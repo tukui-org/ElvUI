@@ -98,7 +98,7 @@ do
 					tt.essences[step][1] = selected			--essence texture if selected or nil
 					tt.essences[step][2] = tex:GetAtlas()	--atlas place 'tooltip-heartofazerothessence-major' or 'tooltip-heartofazerothessence-minor'
 					tt.essences[step][3] = texture			--border texture placed by the atlas
-					--`CollectEssenceInfo` will add 4 (hex color) and 5 (essence name)
+					--`CollectEssenceInfo` will add 4 (hex quality color) and 5 (essence name)
 
 					step = step + 1
 
