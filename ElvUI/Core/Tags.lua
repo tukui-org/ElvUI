@@ -1175,3 +1175,7 @@ E.TagInfo = {
 	['incomingheals:personal'] = { category = 'Miscellanous', description = "" },
 	['incomingheals:others'] = { category = 'Miscellanous', description = "" },
 }
+
+function E:AddTagInfo(tagName, category, description)
+	E.TagInfo[tagName] = {category = category or 'Miscellanous', description = description or '' }
+end
