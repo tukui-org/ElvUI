@@ -4,6 +4,8 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local pairs, unpack = pairs, unpack
+local GetItemInfo = GetItemInfo
+local GetItemQualityColor = GetItemQualityColor
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
@@ -116,7 +118,6 @@ local function LoadSkin()
 	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 	ItemButton.CircleMask:Hide()
 	ItemButton.IconBorder:SetAlpha(0)
-	ItemButton.IconOverlay:Hide()
 
 	--[[ ItemBuyOut Frame]]
 	local ItemBuyFrame = Frame.ItemBuyFrame
@@ -275,12 +276,19 @@ local function LoadSkin()
 	S:HandleButton(TokenFrame.Buyout)
 	S:HandleScrollBar(TokenFrame.DummyScrollBar) --MONITOR THIS
 
-	local Token = TokenFrame.Token
-	S:HandleIcon(Token.Icon, true)
-	Token.Icon.backdrop:SetBackdropBorderColor(Token.IconBorder:GetVertexColor())
-	Token.IconBorder:SetAlpha(0)
-	Token.ItemBorder:SetAlpha(0)
-	Token.ItemBorder:CreateBackdrop("Transparent")
+	local Token = TokenFrame.TokenDisplay
+	Token:StripTextures()
+	Token:CreateBackdrop("Transparent")
+
+	local ItemButton = Token.ItemButton
+	S:HandleIcon(ItemButton.Icon, true)
+	local _, _, itemRarity = GetItemInfo(_G.WOW_TOKEN_ITEM_ID)
+	local r, g, b
+	if itemRarity then
+		r, g, b = GetItemQualityColor(itemRarity)
+	end
+	ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+	ItemButton.IconBorder:SetAlpha(0)
 
 	--WoW Token Tutorial Frame
 	local WowTokenGameTimeTutorial = Frame.WoWTokenResults.GameTimeTutorial
