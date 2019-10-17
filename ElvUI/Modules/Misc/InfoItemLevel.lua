@@ -111,6 +111,7 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	else
 		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
 		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
+		M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
 		_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
 		M:ClearPageInfo(_G.CharacterFrame, 'Character')
 	end
