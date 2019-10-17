@@ -102,6 +102,10 @@ local function createAuraBar(element, index)
 
 	local nameText = statusBar:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
 	nameText:SetPoint('LEFT', statusBar, 'LEFT', 2, 0)
+	nameText:SetJustifyH('LEFT')
+	nameText:SetJustifyV('MIDDLE')
+	nameText:SetWidth(140)
+	nameText:SetWordWrap(false)
 
 	local countText = statusBar:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
 	countText:SetPoint('LEFT', nameText, 'RIGHT', 2, 0)
