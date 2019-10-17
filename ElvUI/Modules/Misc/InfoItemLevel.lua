@@ -3,6 +3,7 @@ local M = E:GetModule('Misc')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local wipe = wipe
 local next = next
 local pairs = pairs
 local unpack = unpack
