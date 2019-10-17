@@ -150,7 +150,6 @@ function UF:Configure_AuraBars(frame)
 		end
 
 		-- Azil, do we need this still maybe?
-		-- auraBars.maxBars = db.aurabar.maxBars
 		-- auraBars.forceShow = frame.forceShowAuras
 
 		auraBars.spacing = ((-frame.BORDER + frame.SPACING*3) + db.aurabar.spacing)
