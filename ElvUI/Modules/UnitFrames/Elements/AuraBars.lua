@@ -2,9 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 --Lua functions
-local _G = _G
 local tostring = tostring
 local format = format
+local unpack = unpack
+local wipe = wipe
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
@@ -69,6 +70,10 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.sparkEnabled = true
 	auraBar.type = 'aurabar'
 
+	auraBar.buffColor = {}
+	auraBar.debuffColor = {}
+	auraBar.defaultDebuffColor = {}
+
 	return auraBar
 end
 
@@ -129,14 +134,20 @@ function UF:Configure_AuraBars(frame)
 		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', offsetLeft, yOffset)
 		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', offsetRight, yOffset)
 
-		auraBars.buffColor = { buffColor.r, buffColor.g, buffColor.b }
+		auraBars.buffColor[1] = buffColor.r
+		auraBars.buffColor[2] = buffColor.g
+		auraBars.buffColor[3] = buffColor.b
 
 		if UF.db.colors.auraBarByType then
-			auraBars.debuffColor = nil;
-			auraBars.defaultDebuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+			wipe(auraBars.debuffColor)
+			auraBars.defaultDebuffColor[1] = debuffColor.r
+			auraBars.defaultDebuffColor[2] = debuffColor.g
+			auraBars.defaultDebuffColor[3] = debuffColor.b
 		else
-			auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
-			auraBars.defaultDebuffColor = nil;
+			auraBars.debuffColor[1] = debuffColor.r
+			auraBars.debuffColor[2] = debuffColor.g
+			auraBars.debuffColor[3] = debuffColor.b
+			wipe(auraBars.defaultDebuffColor)
 		end
 
 		auraBars.spacing = ((-frame.BORDER + frame.SPACING*3) + db.aurabar.spacing)
