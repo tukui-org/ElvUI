@@ -25,3 +25,4 @@ Nameplates.lua
 Profiles.lua
 Maps.lua
 ModuleControl.lua
+Tags.lua
