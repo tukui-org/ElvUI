@@ -62,22 +62,6 @@ local IS_HORIZONTAL_GROWTH = {
 }
 
 function A:UpdateTime(elapsed)
-	if self.offset then
-		local expiration = select(self.offset, GetWeaponEnchantInfo())
-		if expiration then
-			self.timeLeft = expiration / 1e3
-		else
-			self.timeLeft = 0
-		end
-	else
-		self.timeLeft = self.timeLeft - elapsed
-	end
-
-	if self.nextUpdate > 0 then
-		self.nextUpdate = self.nextUpdate - elapsed
-		return
-	end
-
 	if not E:Cooldown_IsEnabled(self) then
 		if self.offset then
 			self.offset = nil
@@ -87,6 +71,22 @@ function A:UpdateTime(elapsed)
 		self.time:SetText('')
 		self:SetScript("OnUpdate", nil)
 	else
+		if self.offset then
+			local expiration = select(self.offset, GetWeaponEnchantInfo())
+			if expiration then
+				self.timeLeft = expiration / 1e3
+			else
+				self.timeLeft = 0
+			end
+		else
+			self.timeLeft = self.timeLeft - elapsed
+		end
+
+		if self.nextUpdate > 0 then
+			self.nextUpdate = self.nextUpdate - elapsed
+			return
+		end
+
 		local timeColors, timeThreshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
 		if not timeThreshold then timeThreshold = E.TimeThreshold end
 
@@ -112,21 +112,22 @@ function A:CreateIcon(button)
 
 	local db = self.db.debuffs
 	button.auraType = 'debuffs' -- used to update cooldown text
+	button.filter = auraType
 	if auraType == 'HELPFUL' then
 		db = self.db.buffs
 		button.auraType = 'buffs'
 	end
 
 	-- button:SetFrameLevel(4)
-	button.texture = button:CreateTexture(nil, "BORDER")
+	button.texture = button:CreateTexture(nil, "ARTWORK")
 	button.texture:SetInside()
 	button.texture:SetTexCoord(unpack(E.TexCoords))
 
-	button.count = button:CreateFontString(nil, "ARTWORK")
+	button.count = button:CreateFontString(nil, "OVERLAY")
 	button.count:Point("BOTTOMRIGHT", -1 + self.db.countXOffset, 1 + self.db.countYOffset)
 	button.count:FontTemplate(font, db.countFontSize, self.db.fontOutline)
 
-	button.time = button:CreateFontString(nil, "ARTWORK")
+	button.time = button:CreateFontString(nil, "OVERLAY")
 	button.time:Point("TOP", button, 'BOTTOM', 1 + self.db.timeXOffset, 0 + self.db.timeYOffset)
 
 	button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
@@ -198,9 +199,7 @@ function A:CreateIcon(button)
 end
 
 function A:UpdateAura(button, index)
-	local filter = button:GetParent():GetAttribute('filter')
-	local unit = button:GetParent():GetAttribute('unit')
-	local name, texture, count, dtype, duration, expirationTime = UnitAura(unit, index, filter)
+	local name, texture, count, dtype, duration, expirationTime = UnitAura('player', index, button.filter)
 
 	if name then
 		if (duration > 0) and expirationTime then
@@ -226,7 +225,7 @@ function A:UpdateAura(button, index)
 			button.count:SetText('')
 		end
 
-		if filter == "HARMFUL" then
+		if button.filter == "HARMFUL" then
 			local color = _G.DebuffTypeColor[dtype or ""]
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
 		else
@@ -239,22 +238,23 @@ function A:UpdateAura(button, index)
 end
 
 function A:UpdateTempEnchant(button, index)
-	local quality = GetInventoryItemQuality("player", index)
-	button.texture:SetTexture(GetInventoryItemTexture("player", index))
-
-	-- time left
 	local offset = 2
 	local weapon = button:GetName():sub(-1)
 	if weapon:match("2") then
 		offset = 6
 	end
 
-	if quality then
-		button:SetBackdropBorderColor(GetItemQualityColor(quality))
-	end
-
 	local expirationTime = select(offset, GetWeaponEnchantInfo())
 	if expirationTime then
+		button.texture:SetTexture(GetInventoryItemTexture("player", index))
+
+		local quality = GetInventoryItemQuality("player", index)
+		if quality and quality > 1 then
+			button:SetBackdropBorderColor(GetItemQualityColor(quality))
+		else
+			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
+
 		button.offset = offset
 		button:SetScript("OnUpdate", A.UpdateTime)
 		button.nextUpdate = -1
