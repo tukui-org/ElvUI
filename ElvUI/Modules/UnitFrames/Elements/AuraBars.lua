@@ -129,7 +129,7 @@ function UF:Configure_AuraBars(frame)
 		if not auraBars.Holder then
 			local holder = CreateFrame('Frame', nil, auraBars)
 			holder:Point("BOTTOM", frame, "TOP", 0, 0)
-			holder:Size(frame.UNIT_WIDTH, 20)
+			holder:Size(db.aurabar.detachedWidth, 20)
 
 			if frame.unitframeType == "player" then
 				E:CreateMover(holder, 'ElvUF_PlayerAuraMover',  "Player Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,player,aurabar')
@@ -144,7 +144,7 @@ function UF:Configure_AuraBars(frame)
 			auraBars.Holder = holder
 		end
 
-		auraBars.Holder:Size(frame.UNIT_WIDTH, 20)
+		auraBars.Holder:Size(db.aurabar.detachedWidth, 20)
 
 		if db.aurabar.attachTo ~= "DETACHED" then
 			E:DisableMover(auraBars.Holder.mover:GetName())
@@ -159,6 +159,7 @@ function UF:Configure_AuraBars(frame)
 		elseif db.aurabar.attachTo == "DETACHED" then
 			attachTo = auraBars.Holder
 			E:EnableMover(auraBars.Holder.mover:GetName())
+			auraBars.width = db.aurabar.detachedWidth - db.aurabar.height
 		end
 
 		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
