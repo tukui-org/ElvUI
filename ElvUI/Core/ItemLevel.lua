@@ -1,12 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Lua functions
 local _G = _G
 local tinsert, strfind, strmatch = tinsert, strfind, strmatch
 local select, tonumber, format = select, tonumber, format
 local next, max, wipe = next, max, wipe
 local utf8sub = string.utf8sub
---WoW API / Variables
+
 local UnitIsUnit = UnitIsUnit
 local GetCVarBool = GetCVarBool
 local GetItemInfo = GetItemInfo
@@ -33,8 +32,8 @@ local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 function E:InspectGearSlot(line, lineText, slotInfo)
 	local enchant = strmatch(lineText, MATCH_ENCHANT)
 	if enchant then
-		slotInfo.fullEnchantText = enchant
-		slotInfo.enchantText = utf8sub(enchant, 1, 18)
+		slotInfo.enchantText = enchant
+		slotInfo.enchantTextShort = utf8sub(enchant, 1, 18)
 
 		local lr, lg, lb = line:GetTextColor()
 		slotInfo.enchantColors[1] = lr

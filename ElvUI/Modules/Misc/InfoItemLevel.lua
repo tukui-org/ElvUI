@@ -137,10 +137,10 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	end
 end
 
-function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `which` is used in hooks by plugins
+function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `which` is used by plugins
 	iLevelDB[i] = slotInfo.iLvl
 
-	inspectItem.enchantText:SetText(slotInfo.enchantText)
+	inspectItem.enchantText:SetText(slotInfo.enchantTextShort)
 	if slotInfo.enchantColors then
 		inspectItem.enchantText:SetTextColor(unpack(slotInfo.enchantColors))
 	end
