@@ -105,12 +105,60 @@ function UF:Configure_AuraBars(frame)
 			debuffColor = E:ClassColor(E.myclass, true)
 		end
 
+		auraBars.height = db.aurabar.height
+		auraBars.buffColor[1] = buffColor.r
+		auraBars.buffColor[2] = buffColor.g
+		auraBars.buffColor[3] = buffColor.b
+
+		if UF.db.colors.auraBarByType then
+			wipe(auraBars.debuffColor)
+			auraBars.defaultDebuffColor[1] = debuffColor.r
+			auraBars.defaultDebuffColor[2] = debuffColor.g
+			auraBars.defaultDebuffColor[3] = debuffColor.b
+		else
+			auraBars.debuffColor[1] = debuffColor.r
+			auraBars.debuffColor[2] = debuffColor.g
+			auraBars.debuffColor[3] = debuffColor.b
+			wipe(auraBars.defaultDebuffColor)
+		end
+
+		auraBars.maxBars = db.aurabar.maxBars
+		auraBars.spacing = ((-frame.BORDER + frame.SPACING*3) + db.aurabar.spacing)
+		auraBars.width = frame.UNIT_WIDTH - auraBars.height
+
+		if not auraBars.Holder then
+			local holder = CreateFrame('Frame', nil, auraBars)
+			holder:Point("BOTTOM", frame, "TOP", 0, 0)
+			holder:Size(frame.UNIT_WIDTH, 20)
+
+			if frame.unitframeType == "player" then
+				E:CreateMover(holder, 'ElvUF_PlayerAuraMover',  "Player Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,player,aurabar')
+			elseif frame.unitframeType == "target" then
+				E:CreateMover(holder, 'ElvUF_TargetAuraMover',  "Target Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,target,aurabar')
+			elseif frame.unitframeType == "pet" then
+				E:CreateMover(holder, 'ElvUF_PetAuraMover',  "Pet Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,pet,aurabar')
+			elseif frame.unitframeType == "focus" then
+				E:CreateMover(holder, 'ElvUF_FocusAuraMover',  "Focus Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,focus,aurabar')
+			end
+
+			auraBars.Holder = holder
+		end
+
+		auraBars.Holder:Size(frame.UNIT_WIDTH, 20)
+
+		if db.aurabar.attachTo ~= "DETACHED" then
+			E:DisableMover(auraBars.Holder.mover:GetName())
+		end
+
 		if db.aurabar.attachTo == 'BUFFS' then
 			attachTo = frame.Buffs
 		elseif db.aurabar.attachTo == 'DEBUFFS' then
 			attachTo = frame.Debuffs
 		elseif db.aurabar.attachTo == "PLAYER_AURABARS" and _G.ElvUF_Player then
 			attachTo = _G.ElvUF_Player.AuraBars
+		elseif db.aurabar.attachTo == "DETACHED" then
+			attachTo = auraBars.Holder
+			E:EnableMover(auraBars.Holder.mover:GetName())
 		end
 
 		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
@@ -132,34 +180,9 @@ function UF:Configure_AuraBars(frame)
 		local offsetLeft = xOffset + ((db.aurabar.attachTo == "FRAME" and ((anchorTo == "TOP" and frame.ORIENTATION ~= "LEFT") or (anchorTo == "BOTTOM" and frame.ORIENTATION == "LEFT"))) and frame.POWERBAR_OFFSET or 0)
 		local offsetRight = -xOffset - ((db.aurabar.attachTo == "FRAME" and ((anchorTo == "TOP" and frame.ORIENTATION ~= "RIGHT") or (anchorTo == "BOTTOM" and frame.ORIENTATION == "RIGHT"))) and frame.POWERBAR_OFFSET or 0)
 
-		auraBars.height = db.aurabar.height
-
 		auraBars:ClearAllPoints()
 		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', offsetLeft, yOffset)
 		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', offsetRight, yOffset)
-
-		auraBars.buffColor[1] = buffColor.r
-		auraBars.buffColor[2] = buffColor.g
-		auraBars.buffColor[3] = buffColor.b
-
-		if UF.db.colors.auraBarByType then
-			wipe(auraBars.debuffColor)
-			auraBars.defaultDebuffColor[1] = debuffColor.r
-			auraBars.defaultDebuffColor[2] = debuffColor.g
-			auraBars.defaultDebuffColor[3] = debuffColor.b
-		else
-			auraBars.debuffColor[1] = debuffColor.r
-			auraBars.debuffColor[2] = debuffColor.g
-			auraBars.debuffColor[3] = debuffColor.b
-			wipe(auraBars.defaultDebuffColor)
-		end
-
-		-- Azil, do we need this still maybe?
-		-- auraBars.forceShow = frame.forceShowAuras
-
-		auraBars.maxBars = db.aurabar.maxBars
-		auraBars.spacing = ((-frame.BORDER + frame.SPACING*3) + db.aurabar.spacing)
-		auraBars.width = frame.UNIT_WIDTH - auraBars.height
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')
 		auraBars:Hide()

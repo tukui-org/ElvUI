@@ -204,6 +204,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 					['FRAME'] = L["Frame"],
 					['DEBUFFS'] = L["Debuffs"],
 					['BUFFS'] = L["Buffs"],
+					['DETACHED'] = L["Detach From Frame"],
 				},
 			},
 			height = {
