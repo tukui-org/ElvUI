@@ -179,14 +179,14 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 			if not essenceType then
 				essenceType = inspectItem:CreateTexture()
 				essenceType:SetTexture(2907423)
-				essenceType:SetRotation(rad(-90))
+				essenceType:SetRotation(rad(90))
+				essenceType:SetParent(backdrop)
 				inspectItem["textureSlotEssenceType"..x] = essenceType
 			end
 
-			essenceType:ClearAllPoints()
-			essenceType:Point("BOTTOM", texture, "TOP", -1, -2)
+			essenceType:Point("BOTTOM", texture, "TOP", 0, -9)
 			essenceType:SetAtlas(gsub(essence[2], '^tooltip%-(heartofazeroth)essence', '%1-list-selected'))
-			essenceType:Size(18, 20)
+			essenceType:Size(13, 17)
 			essenceType:Show()
 
 			local selected = essence[1]
