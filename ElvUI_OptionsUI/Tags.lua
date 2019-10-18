@@ -1,6 +1,8 @@
 local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 
+local format = format
+
 E.Options.args.tagGroup = {
 	order = 925,
 	type = "group",
@@ -62,7 +64,8 @@ for Tag in next, E.oUF.Tags.Events do
 	E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag] = {
 		type = "input",
 		name = E.TagInfo[Tag].description,
+		order = E.TagInfo[Tag].order or nil,
 		width = 'full',
-		get = function() return '['..Tag..']' end,
+		get = function() return format('[%s]', Tag) end,
 	}
 end
