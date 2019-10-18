@@ -5,6 +5,7 @@ E.Options.args.tagGroup = {
 	order = 925,
 	type = "group",
 	name = L["Available Tags"],
+	childGroups = 'tab',
 	args = {
 		link = {
 			order = 1,
@@ -18,27 +19,23 @@ E.Options.args.tagGroup = {
 			type = "header",
 			name = L["Available Tags"],
 		},
-		general = {
-			order = 3,
+		Colors = {
 			type = "group",
-			name = "",
-			guiInline = true,
-			childGroups = 'tab',
+			name = E.InfoColor..'Colors',
 			args = {
-				Colors = {
-					type = "group",
+				header = {
+					order = 0,
+					type = "header",
 					name = E.InfoColor..'Colors',
-					args = {
-						customTagColorInfo = {
-							type = "description",
-							fontSize = "medium",
-							name = '||cffXXXXXX [tags] or text here ||r - Custom color your Text: replace the XXXXXX with a Hex color code',
-						}
-					}
 				},
-			},
+				customTagColorInfo = {
+					type = "description",
+					fontSize = "medium",
+					name = '||cffXXXXXX [tags] or text here ||r - Custom color your Text: replace the XXXXXX with a Hex color code',
+				}
+			}
 		},
-	}
+	},
 }
 
 
@@ -48,18 +45,24 @@ for Tag in next, E.oUF.Tags.Events do
 		--E:Print("['"..Tag.."'] = { category = 'Miscellanous', description = '' }")
 	end
 
-	if not E.Options.args.tagGroup.args.general.args[E.TagInfo[Tag].category] then
-		E.Options.args.tagGroup.args.general.args[E.TagInfo[Tag].category] = {
-			order = 925,
+	if not E.Options.args.tagGroup.args[E.TagInfo[Tag].category] then
+		E.Options.args.tagGroup.args[E.TagInfo[Tag].category] = {
 			type = "group",
 			name = E.InfoColor..E.TagInfo[Tag].category,
-			args = {}
+			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = E.InfoColor..E.TagInfo[Tag].category,
+				}
+			}
 		}
 	end
 
-	E.Options.args.tagGroup.args.general.args[E.TagInfo[Tag].category].args[Tag] = {
-		type = "description",
-		fontSize = "medium",
-		name = format('[%s] - %s', Tag, E.TagInfo[Tag].description),
+	E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag] = {
+		type = "input",
+		name = E.TagInfo[Tag].description,
+		width = 'full',
+		get = function() return '['..Tag..']' end,
 	}
 end
