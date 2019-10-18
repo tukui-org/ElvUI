@@ -193,13 +193,12 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[207811] = Defaults(), -- Nether Bond (DH)
 		[207810] = Defaults(), -- Nether Bond (Target)
 		[187827] = Defaults(), -- Metamorphosis
-		[227225] = Defaults(), -- Soul Barrier
+		[263648] = Defaults(), -- Soul Barrier
 		[209426] = Defaults(), -- Darkness
 		[196555] = Defaults(), -- Netherwalk
 		[212800] = Defaults(), -- Blur
 		[188499] = Defaults(), -- Blade Dance
 		[203819] = Defaults(), -- Demon Spikes
-		[218256] = Defaults(), -- Empower Wards
 	-- Druid
 		[102342] = Defaults(), -- Ironbark
 		[61336]  = Defaults(), -- Survival Instincts
