@@ -3,6 +3,8 @@ local M = E:GetModule('Misc')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local rad = rad
+local gsub = gsub
 local wipe = wipe
 local next = next
 local pairs = pairs
@@ -67,7 +69,8 @@ function M:UpdateInspectInfo(_, arg1)
 end
 
 function M:UpdateCharacterInfo(event)
-	if (not E.db.general.itemLevel.displayCharacterInfo) or (whileOpenEvents[event] and not _G.CharacterFrame:IsShown()) then return end
+	if (not E.db.general.itemLevel.displayCharacterInfo)
+	or (whileOpenEvents[event] and not _G.CharacterFrame:IsShown()) then return end
 
 	M:UpdatePageInfo(_G.CharacterFrame, 'Character', nil, event)
 end
@@ -89,6 +92,8 @@ function M:ClearPageInfo(frame, which)
 			for y=1, 10 do
 				inspectItem['textureSlot'..y]:SetTexture()
 				inspectItem['textureSlotBackdrop'..y]:Hide()
+				local essenceType = inspectItem['textureSlotEssenceType'..y]
+				if essenceType then essenceType:Hide() end
 			end
 		end
 	end
@@ -151,6 +156,8 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 	for x = 1, 10 do
 		local texture = inspectItem["textureSlot"..x]
 		local backdrop = inspectItem["textureSlotBackdrop"..x]
+		local essenceType = inspectItem["textureSlotEssenceType"..x]
+		if essenceType then essenceType:Hide() end
 
 		local gem = slotInfo.gems and slotInfo.gems[gemStep]
 		local essence = not gem and (slotInfo.essences and slotInfo.essences[essenceStep])
@@ -168,6 +175,19 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 			else
 				backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
+
+			if not essenceType then
+				essenceType = inspectItem:CreateTexture()
+				essenceType:SetTexture(2907423)
+				essenceType:SetRotation(rad(-90))
+				inspectItem["textureSlotEssenceType"..x] = essenceType
+			end
+
+			essenceType:ClearAllPoints()
+			essenceType:Point("BOTTOM", texture, "TOP", -1, -2)
+			essenceType:SetAtlas(gsub(essence[2], '^tooltip%-(heartofazeroth)essence', '%1-list-selected'))
+			essenceType:Size(18, 20)
+			essenceType:Show()
 
 			local selected = essence[1]
 			texture:SetTexture(selected)
