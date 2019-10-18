@@ -31,9 +31,11 @@ E.Options.args.tagGroup = {
 					name = E.InfoColor..'Colors',
 				},
 				customTagColorInfo = {
-					type = "description",
-					fontSize = "medium",
-					name = '||cffXXXXXX [tags] or text here ||r - Custom color your Text: replace the XXXXXX with a Hex color code',
+					order = 1,
+					type = "input",
+					width = 'full',
+					name = 'Custom color your Text: replace the XXXXXX with a Hex color code',
+					get = function() return '||cffXXXXXX [tags] or text here ||r' end
 				}
 			}
 		},
