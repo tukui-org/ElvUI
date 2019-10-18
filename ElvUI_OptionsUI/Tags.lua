@@ -6,13 +6,20 @@ E.Options.args.tagGroup = {
 	type = "group",
 	name = L["Available Tags"],
 	args = {
-		header = {
+		link = {
 			order = 1,
+			type = "input",
+			width = "full",
+			name = L["Guide:"],
+			get = function() return "https://www.tukui.org/forum/viewtopic.php?f=9&t=6" end,
+		},
+		header = {
+			order = 2,
 			type = "header",
 			name = L["Available Tags"],
 		},
 		general = {
-			order = 2,
+			order = 3,
 			type = "group",
 			name = "",
 			guiInline = true,

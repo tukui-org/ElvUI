@@ -534,6 +534,7 @@ L["Growth Direction"] = "增长方向"
 L["Growth X-Direction"] = "X方向生长"
 L["Growth Y-Direction"] = "Y方向生长"
 L["Guardians"] = "护卫"
+L["Guide:"] = true
 L["Guild Control Frame"] = "公会控制"
 L["Guild Ranks"] = "公会等级"
 L["Guild Registrar"] = "公会注册"

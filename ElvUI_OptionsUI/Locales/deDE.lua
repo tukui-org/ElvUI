@@ -536,6 +536,7 @@ L["Growth Direction"] = "Wachstumsrichtung"
 L["Growth X-Direction"] = "Wachstum X-Richtung"
 L["Growth Y-Direction"] = "Wachstum Y-Richtung"
 L["Guardians"] = "Wächter"
+L["Guide:"] = true
 L["Guild Control Frame"] = "Gildenkontrollfenster"
 L["Guild Ranks"] = "Gildenränge"
 L["Guild Registrar"] = "Gildenregister"

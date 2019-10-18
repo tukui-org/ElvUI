@@ -533,6 +533,7 @@ L["Growth Direction"] = "Dirección de Crecimiento"
 L["Growth X-Direction"] = true
 L["Growth Y-Direction"] = true
 L["Guardians"] = true
+L["Guide:"] = true
 L["Guild Control Frame"] = "Control de Hermandad"
 L["Guild Ranks"] = "Rangos de Hermandad"
 L["Guild Registrar"] = "Registrar Hermandad"

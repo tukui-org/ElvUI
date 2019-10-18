@@ -535,6 +535,7 @@ L["Growth Direction"] = "增長方向"
 L["Growth X-Direction"] = "正常X軸偏移"
 L["Growth Y-Direction"] = "正常Y軸偏移"
 L["Guardians"] = true
+L["Guide:"] = true
 L["Guild Control Frame"] = "公會控制"
 L["Guild Ranks"] = "公會會階"
 L["Guild Registrar"] = "公會註冊"

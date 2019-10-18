@@ -535,6 +535,7 @@ L["Growth Direction"] = true
 L["Growth X-Direction"] = true
 L["Growth Y-Direction"] = true
 L["Guardians"] = true
+L["Guide:"] = true
 L["Guild Control Frame"] = true
 L["Guild Ranks"] = true
 L["Guild Registrar"] = true

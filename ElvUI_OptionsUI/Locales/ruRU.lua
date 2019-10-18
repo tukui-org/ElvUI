@@ -533,6 +533,7 @@ L["Growth Direction"] = "Направление роста"
 L["Growth X-Direction"] = "Рост по Х"
 L["Growth Y-Direction"] = "Рост по Y"
 L["Guardians"] = "Стражи"
+L["Guide:"] = true
 L["Guild Control Frame"] = "Управление гильдией"
 L["Guild Ranks"] = "Ранги гильдии"
 L["Guild Registrar"] = "Регистратор гильдий"

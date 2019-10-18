@@ -533,6 +533,7 @@ L["Growth Direction"] = "나열 방향"
 L["Growth X-Direction"] = true
 L["Growth Y-Direction"] = true
 L["Guardians"] = true
+L["Guide:"] = true
 L["Guild Control Frame"] = "길드 관리 창"
 L["Guild Ranks"] = "길드 내 등급 표시"
 L["Guild Registrar"] = "길드 등록"
