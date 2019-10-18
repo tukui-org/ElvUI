@@ -221,6 +221,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[198111] = Defaults(), -- Temporal Shield
 		[198065] = Defaults(), -- Prismatic Cloak
 		[11426]  = Defaults(), -- Ice Barrier
+		[235313] = Defaults(), -- Blazing Barrier
 	--Monk
 		[122783] = Defaults(), -- Diffuse Magic
 		[122278] = Defaults(), -- Dampen Harm
