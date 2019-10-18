@@ -163,31 +163,31 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 		set = function(info, value) E.db.unitframe.units[groupName].aurabar[info[#info]] = value; updateFunc(UF, groupName) end,
 		args = {
 			header = {
-				order = 1,
+				order = 0,
 				type = "header",
 				name = L["Aura Bars"],
 			},
 			enable = {
 				type = 'toggle',
-				order = 2,
+				order = 1,
 				name = L["Enable"],
 			},
 			configureButton1 = {
-				order = 3,
+				order = 2,
 				name = L["Coloring"],
 				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
 				type = 'execute',
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "auraBars") end,
 			},
 			configureButton2 = {
-				order = 4,
+				order = 3,
 				name = L["Coloring (Specific)"],
 				type = 'execute',
 				func = function() E:SetToFilterConfig('AuraBar Colors') end,
 			},
 			anchorPoint = {
 				type = 'select',
-				order = 5,
+				order = 4,
 				name = L["Anchor Point"],
 				desc = L["What point to anchor to the frame you set to attach to."],
 				values = {
@@ -197,20 +197,27 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 			},
 			attachTo = {
 				type = 'select',
-				order = 6,
+				order = 5,
 				name = L["Attach To"],
 				desc = L["The object you want to attach to."],
 				values = {
 					['FRAME'] = L["Frame"],
 					['DEBUFFS'] = L["Debuffs"],
 					['BUFFS'] = L["Buffs"],
+					['DETACHED'] = L["Detach From Frame"],
 				},
 			},
 			height = {
 				type = 'range',
-				order = 7,
+				order = 6,
 				name = L["Height"],
 				min = 6, max = 40, step = 1,
+			},
+			detachedWidth = {
+				type = 'range',
+				order = 7,
+				name = L["Detached Width"],
+				min = 50, max = 500, step = 1,
 			},
 			maxBars = {
 				type = 'range',

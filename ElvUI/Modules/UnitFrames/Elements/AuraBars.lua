@@ -1,17 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Lua functions
 local _G = _G
 local tostring = tostring
 local format = format
---WoW API / Variables
+local unpack = unpack
+local wipe = wipe
+
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
-
--- GLOBALS: ElvUF_Player
 
 local function OnClick(self)
 	local mod = E.db.unitframe.auraBlacklistModifier
@@ -28,6 +27,8 @@ end
 function UF:Construct_AuraBars(statusBar)
 	statusBar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 	statusBar:SetScript('OnMouseDown', OnClick)
+	statusBar:SetPoint("LEFT")
+	statusBar:SetPoint("RIGHT")
 
 	UF.statusbars[statusBar] = true
 	UF:Update_StatusBar(statusBar)
@@ -40,16 +41,19 @@ function UF:Construct_AuraBars(statusBar)
 	UF:Update_FontString(statusBar.timeText)
 	UF:Update_FontString(statusBar.nameText)
 
-	statusBar.iconFrame:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
-	statusBar:SetPoint("LEFT")
-	statusBar:SetPoint("RIGHT")
-
 	statusBar.bg = statusBar:CreateTexture(nil, 'BORDER')
 	statusBar.bg:Show()
 
+	statusBar.iconFrame:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 	statusBar.iconFrame:RegisterForClicks('RightButtonUp')
 	statusBar.iconFrame:SetScript('OnClick', OnClick)
+
 	statusBar.icon:SetInside(statusBar.iconFrame.backdrop)
+
+	statusBar.nameText:SetJustifyH('LEFT')
+	statusBar.nameText:SetJustifyV('MIDDLE')
+	statusBar.nameText:SetWidth(140)
+	statusBar.nameText:SetWordWrap(false)
 
 	local frame = statusBar:GetParent()
 	statusBar.db = frame.db and frame.db.aurabar
@@ -57,17 +61,21 @@ end
 
 function UF:Construct_AuraBarHeader(frame)
 	local auraBar = CreateFrame('Frame', nil, frame)
-	auraBar:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
+	auraBar:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10)
 	auraBar:SetHeight(1)
 	auraBar.PreSetPosition = UF.SortAuras
 	auraBar.PostCreateBar = UF.Construct_AuraBars
 	auraBar.PostUpdateBar = UF.PostUpdateBar_AuraBars
 	auraBar.CustomFilter = UF.AuraFilter
 
-	auraBar.gap = (frame.BORDER + frame.SPACING*3)
-	auraBar.spacing = (frame.BORDER + frame.SPACING*3)
+	auraBar.gap = (-frame.BORDER + frame.SPACING*3)
+	auraBar.spacing = (-frame.BORDER + frame.SPACING*3)
 	auraBar.sparkEnabled = true
 	auraBar.type = 'aurabar'
+
+	auraBar.buffColor = {}
+	auraBar.debuffColor = {}
+	auraBar.defaultDebuffColor = {}
 
 	return auraBar
 end
@@ -75,33 +83,83 @@ end
 function UF:Configure_AuraBars(frame)
 	if not frame.VARIABLES_SET then return end
 	local auraBars = frame.AuraBars
-	auraBars.db = frame.db
 	local db = frame.db
+	auraBars.db = db
 
 	if db.aurabar.enable then
 		if not frame:IsElementEnabled('AuraBars') then
 			frame:EnableElement('AuraBars')
 		end
+
 		auraBars:Show()
 
-		local buffColor = self.db.colors.auraBarBuff
-		local debuffColor = self.db.colors.auraBarDebuff
+		local buffColor = UF.db.colors.auraBarBuff
+		local debuffColor = UF.db.colors.auraBarDebuff
 		local attachTo = frame
 
-		if(E:CheckClassColor(buffColor.r, buffColor.g, buffColor.b)) then
+		if E:CheckClassColor(buffColor.r, buffColor.g, buffColor.b) then
 			buffColor = E:ClassColor(E.myclass, true)
 		end
 
-		if(E:CheckClassColor(debuffColor.r, debuffColor.g, debuffColor.b)) then
+		if E:CheckClassColor(debuffColor.r, debuffColor.g, debuffColor.b) then
 			debuffColor = E:ClassColor(E.myclass, true)
+		end
+
+		auraBars.height = db.aurabar.height
+		auraBars.buffColor[1] = buffColor.r
+		auraBars.buffColor[2] = buffColor.g
+		auraBars.buffColor[3] = buffColor.b
+
+		if UF.db.colors.auraBarByType then
+			wipe(auraBars.debuffColor)
+			auraBars.defaultDebuffColor[1] = debuffColor.r
+			auraBars.defaultDebuffColor[2] = debuffColor.g
+			auraBars.defaultDebuffColor[3] = debuffColor.b
+		else
+			auraBars.debuffColor[1] = debuffColor.r
+			auraBars.debuffColor[2] = debuffColor.g
+			auraBars.debuffColor[3] = debuffColor.b
+			wipe(auraBars.defaultDebuffColor)
+		end
+
+		auraBars.maxBars = db.aurabar.maxBars
+		auraBars.spacing = ((-frame.BORDER + frame.SPACING*3) + db.aurabar.spacing)
+		auraBars.width = frame.UNIT_WIDTH - auraBars.height
+
+		if not auraBars.Holder then
+			local holder = CreateFrame('Frame', nil, auraBars)
+			holder:Point("BOTTOM", frame, "TOP", 0, 0)
+			holder:Size(db.aurabar.detachedWidth, 20)
+
+			if frame.unitframeType == "player" then
+				E:CreateMover(holder, 'ElvUF_PlayerAuraMover',  "Player Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,player,aurabar')
+			elseif frame.unitframeType == "target" then
+				E:CreateMover(holder, 'ElvUF_TargetAuraMover',  "Target Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,target,aurabar')
+			elseif frame.unitframeType == "pet" then
+				E:CreateMover(holder, 'ElvUF_PetAuraMover',  "Pet Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,pet,aurabar')
+			elseif frame.unitframeType == "focus" then
+				E:CreateMover(holder, 'ElvUF_FocusAuraMover',  "Focus Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,focus,aurabar')
+			end
+
+			auraBars.Holder = holder
+		end
+
+		auraBars.Holder:Size(db.aurabar.detachedWidth, 20)
+
+		if db.aurabar.attachTo ~= "DETACHED" then
+			E:DisableMover(auraBars.Holder.mover:GetName())
 		end
 
 		if db.aurabar.attachTo == 'BUFFS' then
 			attachTo = frame.Buffs
 		elseif db.aurabar.attachTo == 'DEBUFFS' then
 			attachTo = frame.Debuffs
-		elseif db.aurabar.attachTo == "PLAYER_AURABARS" and ElvUF_Player then
-			attachTo = ElvUF_Player.AuraBars
+		elseif db.aurabar.attachTo == "PLAYER_AURABARS" and _G.ElvUF_Player then
+			attachTo = _G.ElvUF_Player.AuraBars
+		elseif db.aurabar.attachTo == "DETACHED" then
+			attachTo = auraBars.Holder
+			E:EnableMover(auraBars.Holder.mover:GetName())
+			auraBars.width = db.aurabar.detachedWidth - db.aurabar.height
 		end
 
 		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
@@ -123,29 +181,12 @@ function UF:Configure_AuraBars(frame)
 		local offsetLeft = xOffset + ((db.aurabar.attachTo == "FRAME" and ((anchorTo == "TOP" and frame.ORIENTATION ~= "LEFT") or (anchorTo == "BOTTOM" and frame.ORIENTATION == "LEFT"))) and frame.POWERBAR_OFFSET or 0)
 		local offsetRight = -xOffset - ((db.aurabar.attachTo == "FRAME" and ((anchorTo == "TOP" and frame.ORIENTATION ~= "RIGHT") or (anchorTo == "BOTTOM" and frame.ORIENTATION == "RIGHT"))) and frame.POWERBAR_OFFSET or 0)
 
-		auraBars.height = db.aurabar.height
-
 		auraBars:ClearAllPoints()
 		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', offsetLeft, yOffset)
 		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', offsetRight, yOffset)
-
-		auraBars.buffColor = { buffColor.r, buffColor.g, buffColor.b }
-
-		if UF.db.colors.auraBarByType then
-			auraBars.debuffColor = nil;
-			auraBars.defaultDebuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
-		else
-			auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
-			auraBars.defaultDebuffColor = nil;
-		end
-
-		auraBars.spacing = ((-frame.BORDER + frame.SPACING*3) + db.aurabar.spacing)
-		auraBars.width = frame.UNIT_WIDTH - auraBars.height
-	else
-		if frame:IsElementEnabled('AuraBars') then
-			frame:DisableElement('AuraBars')
-			auraBars:Hide()
-		end
+	elseif frame:IsElementEnabled('AuraBars') then
+		frame:DisableElement('AuraBars')
+		auraBars:Hide()
 	end
 end
 

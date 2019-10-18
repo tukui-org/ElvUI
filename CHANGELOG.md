@@ -11,11 +11,14 @@ Fixed an issue which would carry over Quest Icons on Nameplates to one without a
 Fixed the Map Fading while moving option and added a fade duration setting.  
 Fixed the issue which was caused by trying to use chat editbox history to queue a slash command to be sent that was secure (such as /target).  
 Fixed the incompatiblity check for other addons.  
+Fixed issue which caused the Datatexts on the minimap to be shown when the minimap was actually disabled.  
+Fixed issue which didn't update the enchant info when Character Info was enabled and you changed enchants while the character page was open, also Essences.  
 
 **Misc. Changes:**  
-Thanks to Azilroka the Buff Indicator is now recoded!  
+Thanks to Azilroka the Buff Indicator and Aura Bars are now recoded!  
 Removed the Frequent Updates option, it is now on by default.  
 Blacklisted Lethargy debuff (fight or flight).  
+Essences from the Character and Inspect Info will now display the Essence quality color instead of type color.  
 For the german audience: Behebt einige Fehler im Zeit-Infotext, dass die Instanz Symbole nicht richtig angezeigt wurden.  
 
 ___

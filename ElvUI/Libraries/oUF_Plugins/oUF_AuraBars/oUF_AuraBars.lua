@@ -4,7 +4,18 @@ local oUF = ns.oUF
 local VISIBLE = 1
 local HIDDEN = 0
 
+local _G = _G
+local next = next
+local pcall = pcall
+local floor = floor
+local unpack = unpack
+local tinsert = tinsert
 local infinity = math.huge
+
+local GetTime = GetTime
+local UnitAura = UnitAura
+local CreateFrame = CreateFrame
+local UnitIsFriend = UnitIsFriend
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60
 local function FormatTime(s)
@@ -23,23 +34,23 @@ end
 
 local function UpdateTooltip(self)
 	local parent = self:GetParent()
-	GameTooltip:SetUnitAura(parent.__owner.unit, self:GetID(), self.filter)
+	_G.GameTooltip:SetUnitAura(parent.__owner.unit, self:GetID(), self.filter)
 end
 
 local function UpdateIconTooltip(self)
 	local parent = self:GetParent()
-	GameTooltip:SetUnitAura(parent:GetParent().__owner.unit, parent:GetID(), parent.filter)
+	_G.GameTooltip:SetUnitAura(parent:GetParent().__owner.unit, parent:GetID(), parent.filter)
 end
 
 local function onEnter(self)
 	if(not self:IsVisible()) then return end
 
-	GameTooltip:SetOwner(self, self:GetParent().tooltipAnchor)
+	_G.GameTooltip:SetOwner(self, self:GetParent().tooltipAnchor)
 	self:UpdateTooltip()
 end
 
 local function onLeave()
-	GameTooltip:Hide()
+	_G.GameTooltip:Hide()
 end
 
 local function onUpdate(self, elapsed)
@@ -126,7 +137,7 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 		local statusBar = element[position]
 		if(not statusBar) then
 			statusBar = (element.CreateBar or createAuraBar) (element, position)
-			table.insert(element, statusBar)
+			tinsert(element, statusBar)
 			element.createdBars = element.createdBars + 1
 		end
 
@@ -155,12 +166,22 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 			statusBar.noTime = (duration == 0 and expiration == 0)
 
 			local r, g, b = .2, .6, 1
-			if element.buffColor then r, g, b = unpack(element.buffColor) end
+
 			if filter == 'HARMFUL' then
 				if not debuffType or debuffType == '' then debuffType = 'none' end
-				r, g, b = DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b
-				if element.debuffColor then r, g, b = unpack(element.debuffColor) end
-				if debuffType == 'none' and element.defaultDebuffColor then r, g, b = unpack(element.defaultDebuffColor) end
+
+				if debuffType == 'none' and element.defaultDebuffColor and next(element.defaultDebuffColor) then
+					r, g, b = unpack(element.defaultDebuffColor)
+				elseif element.debuffColor and next(element.debuffColor) then
+					r, g, b = unpack(element.debuffColor)
+				else
+					local debuffTypeColor = _G.DebuffTypeColor[debuffType]
+					if debuffTypeColor then
+						r, g, b = debuffTypeColor.r, debuffTypeColor.g, debuffTypeColor.b
+					end
+				end
+			elseif element.buffColor and next(element.buffColor) then
+				r, g, b = unpack(element.buffColor)
 			end
 
 			statusBar:SetStatusBarColor(r, g, b)
@@ -182,6 +203,7 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 end
 
 local function SetPosition(element, from, to)
+	local width = element.height or 1
 	local height = (element.height + element.spacing) or 1
 	local anchor = element.initialAnchor
 	local growth = element.growth == 'DOWN' and -1 or 1
@@ -191,7 +213,7 @@ local function SetPosition(element, from, to)
 		if(not button) then break end
 
 		button:ClearAllPoints()
-		button:SetPoint(anchor, element, anchor, (height + element.gap), (i > 1 and ((i - 1) * (height + growth)) or 0))
+		button:SetPoint(anchor, element, anchor, (width + element.gap), (i > 1 and ((i - 1) * (height + growth)) or 0))
 	end
 end
 
@@ -233,6 +255,7 @@ local function UpdateAuras(self, event, unit)
 		local filter = element.filter or (isFriend and 'HELPFUL' or 'HARMFUL')
 
 		local visible, hidden = filterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
+		-- visible and hidden is unused azil?
 
 		local fromRange, toRange
 

@@ -86,17 +86,21 @@ do
 			end
 		end
 
+		local step = 1
 		for i = 1, 10 do
 			local tex = _G['ElvUI_ScanTooltipTexture'..i]
 			local texture = tex and tex:IsShown() and tex:GetTexture()
 			if texture then
 				if texture == essenceTextureID then
 					local selected = (tt.gems[i-1] ~= essenceTextureID and tt.gems[i-1]) or nil
-					if not tt.essences[i] then tt.essences[i] = {} end
+					if not tt.essences[step] then tt.essences[step] = {} end
 
-					tt.essences[i][1] = selected
-					tt.essences[i][2] = tex:GetAtlas()
-					tt.essences[i][3] = texture
+					tt.essences[step][1] = selected			--essence texture if selected or nil
+					tt.essences[step][2] = tex:GetAtlas()	--atlas place 'tooltip-heartofazerothessence-major' or 'tooltip-heartofazerothessence-minor'
+					tt.essences[step][3] = texture			--border texture placed by the atlas
+					--`CollectEssenceInfo` will add 4 (hex quality color) and 5 (essence name)
+
+					step = step + 1
 
 					if selected then
 						tt.gems[i-1] = nil
