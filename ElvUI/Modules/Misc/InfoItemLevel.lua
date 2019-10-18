@@ -141,12 +141,12 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 	iLevelDB[i] = slotInfo.iLvl
 
 	inspectItem.enchantText:SetText(slotInfo.enchantTextShort)
-	if slotInfo.enchantColors then
+	if slotInfo.enchantColors and next(slotInfo.enchantColors) then
 		inspectItem.enchantText:SetTextColor(unpack(slotInfo.enchantColors))
 	end
 
 	inspectItem.iLvlText:SetText(slotInfo.iLvl)
-	if slotInfo.itemLevelColors then
+	if slotInfo.itemLevelColors and next(slotInfo.itemLevelColors) then
 		inspectItem.iLvlText:SetTextColor(unpack(slotInfo.itemLevelColors))
 	end
 

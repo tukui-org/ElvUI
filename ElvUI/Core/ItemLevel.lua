@@ -80,15 +80,16 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	tt:Show()
 
 	if not tt.slotInfo then tt.slotInfo = {} else wipe(tt.slotInfo) end
-	if not tt.enchantColors then tt.enchantColors = {} else wipe(tt.enchantColors) end
-	if not tt.itemLevelColors then tt.itemLevelColors = {} else wipe(tt.itemLevelColors) end
-
 	local slotInfo = tt.slotInfo
-	slotInfo.enchantColors = tt.enchantColors
-	slotInfo.itemLevelColors = tt.itemLevelColors
 
 	if deepScan then
 		slotInfo.gems, slotInfo.essences = E:ScanTooltipTextures()
+
+		if not tt.enchantColors then tt.enchantColors = {} else wipe(tt.enchantColors) end
+		if not tt.itemLevelColors then tt.itemLevelColors = {} else wipe(tt.itemLevelColors) end
+		slotInfo.enchantColors = tt.enchantColors
+		slotInfo.itemLevelColors = tt.itemLevelColors
+
 		for x = 1, tt:NumLines() do
 			local line = _G['ElvUI_ScanTooltipTextLeft'..x]
 			if line then
