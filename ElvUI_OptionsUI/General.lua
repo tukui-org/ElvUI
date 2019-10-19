@@ -941,6 +941,12 @@ E.Options.args.general = {
 					type = 'toggle',
 					disabled = function() return not E.private.general.lootRoll end
 				},
+				questRewardMostValueIcon = {
+					order = 5,
+					type = "toggle",
+					name = L["Mark Quest Reward"],
+					desc = L["Marks the most valuable quest reward with a gold coin."],
+				},
 			},
 		},
 	},
