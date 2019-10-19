@@ -32,21 +32,11 @@ local function FormatTime(s)
 	end
 end
 
-local function UpdateTooltip(self)
-	local parent = self:GetParent()
-	_G.GameTooltip:SetUnitAura(parent.__owner.unit, self:GetID(), self.filter)
-end
-
-local function UpdateIconTooltip(self)
-	local parent = self:GetParent()
-	_G.GameTooltip:SetUnitAura(parent:GetParent().__owner.unit, parent:GetID(), parent.filter)
-end
-
 local function onEnter(self)
 	if(not self:IsVisible()) then return end
 
 	_G.GameTooltip:SetOwner(self, self:GetParent().tooltipAnchor)
-	self:UpdateTooltip()
+	_G.GameTooltip:SetUnitAura(self.unit, self:GetID(), self.filter)
 end
 
 local function onLeave()
@@ -75,30 +65,20 @@ local function createAuraBar(element, index)
 	local statusBar = CreateFrame('StatusBar', element:GetDebugName() .. 'StatusBar' .. index, element)
 	statusBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 	statusBar:SetMinMaxValues(0, 1)
-	statusBar.UpdateTooltip = UpdateTooltip
 	statusBar.tooltipAnchor = element.tooltipAnchor
 	statusBar:SetScript('OnEnter', onEnter)
 	statusBar:SetScript('OnLeave', onLeave)
 	statusBar:EnableMouse(false)
 
 	local spark = statusBar:CreateTexture(nil, "OVERLAY", nil);
-	spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]]);
+	spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 	spark:SetWidth(12)
-	spark:SetBlendMode("ADD");
+	spark:SetBlendMode("ADD")
 	spark:SetPoint('CENTER', statusBar:GetStatusBarTexture(), 'RIGHT')
 
-	local iconFrame = CreateFrame('Button', nil, statusBar)
-	iconFrame:SetPoint('RIGHT', statusBar, 'LEFT', -(element.gap or 2), 0)
-	iconFrame:SetSize(element.height, element.height)
-	iconFrame.UpdateTooltip = UpdateIconTooltip
-	iconFrame:SetScript('OnEnter', onEnter)
-	iconFrame:SetScript('OnLeave', onLeave)
-	iconFrame:EnableMouse(true)
-
-	local icon = iconFrame:CreateTexture(nil, 'ARTWORK')
-	icon:SetTexture([[Interface\Buttons\WHITE8X8]])
-	icon:SetPoint('TOPLEFT', iconFrame, -1, 1)
-	icon:SetPoint('BOTTOMRIGHT', iconFrame, 1, -1)
+	local icon = statusBar:CreateTexture(nil, 'ARTWORK')
+	icon:SetPoint('RIGHT', statusBar, 'LEFT', -(element.gap or 2), 0)
+	icon:SetSize(element.height, element.height)
 
 	local nameText = statusBar:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
 	nameText:SetPoint('LEFT', statusBar, 'LEFT', 2, 0)
@@ -110,7 +90,6 @@ local function createAuraBar(element, index)
 	timeText:SetPoint('RIGHT', statusBar, 'RIGHT', -2, 0)
 
 	statusBar.icon = icon
-	statusBar.iconFrame = iconFrame
 	statusBar.countText = countText
 	statusBar.nameText = nameText
 	statusBar.timeText = timeText
@@ -144,7 +123,8 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 		statusBar.caster = caster
 		statusBar.filter = filter
 		statusBar.isDebuff = isDebuff
-		statusBar.isPlayer = caster == 'player' or caster == 'vehicle'
+		statusBar.isPlayer = (caster == 'player' or caster == 'vehicle')
+		statusBar.unit = unit
 
 		local show = (element.CustomFilter or customFilter) (element, unit, statusBar, name, texture,
 			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
@@ -186,7 +166,7 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 
 			statusBar:SetStatusBarColor(r, g, b)
 			statusBar:SetSize(element.width, element.height)
-			statusBar.iconFrame:SetSize(element.height, element.height)
+			statusBar.icon:SetSize(element.height, element.height)
 			statusBar:SetScript('OnUpdate', onUpdate)
 			statusBar:SetID(index)
 			statusBar:Show()

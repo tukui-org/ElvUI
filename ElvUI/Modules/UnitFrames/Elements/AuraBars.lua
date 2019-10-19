@@ -30,6 +30,7 @@ function UF:Construct_AuraBars(statusBar)
 	statusBar:SetPoint("LEFT")
 	statusBar:SetPoint("RIGHT")
 
+	statusBar.icon:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 	UF.statusbars[statusBar] = true
 	UF:Update_StatusBar(statusBar)
 
@@ -41,19 +42,13 @@ function UF:Construct_AuraBars(statusBar)
 	UF:Update_FontString(statusBar.timeText)
 	UF:Update_FontString(statusBar.nameText)
 
-	statusBar.bg = statusBar:CreateTexture(nil, 'BORDER')
-	statusBar.bg:Show()
-
-	statusBar.iconFrame:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
-	statusBar.iconFrame:RegisterForClicks('RightButtonUp')
-	statusBar.iconFrame:SetScript('OnClick', OnClick)
-
-	statusBar.icon:SetInside(statusBar.iconFrame.backdrop)
-
 	statusBar.nameText:SetJustifyH('LEFT')
 	statusBar.nameText:SetJustifyV('MIDDLE')
 	statusBar.nameText:SetWidth(140)
 	statusBar.nameText:SetWordWrap(false)
+
+	statusBar.bg = statusBar:CreateTexture(nil, 'BORDER')
+	statusBar.bg:Show()
 
 	local frame = statusBar:GetParent()
 	statusBar.db = frame.db and frame.db.aurabar
