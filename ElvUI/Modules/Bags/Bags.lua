@@ -35,7 +35,7 @@ local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
 local GetCurrencyLink = GetCurrencyLink
 local GetCurrentGuildBankTab = GetCurrentGuildBankTab
-local GetCVarBool = GetCVarBool
+local GetDetailedItemLevelInfo = GetDetailedItemLevelInfo
 local GetGuildBankItemLink = GetGuildBankItemLink
 local GetGuildBankTabInfo = GetGuildBankTabInfo
 local GetItemInfo = GetItemInfo
@@ -597,8 +597,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
 		slot.ignoreBorderColors = nil
 	end
-
-	E.ScanTooltip:Hide()
 
 	if E.db.bags.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
