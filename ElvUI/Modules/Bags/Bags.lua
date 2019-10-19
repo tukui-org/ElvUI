@@ -540,12 +540,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 			local canShowItemLevel = showItemLevel and B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
 			local iLvl, bindType = GetDetailedItemLevelInfo(itemLink), select(14, GetItemInfo(itemLink))
 
-			if bindType == 2 or bindType == 3 then
+			if showBindType and bindType == 2 or bindType == 3 then
 				slot.bindType:SetText(bindType == 2 and L["BoE"] or L["BoU"])
 				slot.bindType:SetVertexColor(r, g, b)
 			end
 
-			if iLvl and iLvl >= B.db.itemLevelThreshold and canShowItemLevel then
+			if canShowItemLevel and iLvl and iLvl >= B.db.itemLevelThreshold then
 				slot.itemLevel:SetText(iLvl)
 				if B.db.itemLevelCustomColorEnable then
 					slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
