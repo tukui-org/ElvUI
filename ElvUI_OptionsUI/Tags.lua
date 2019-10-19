@@ -23,7 +23,7 @@ E.Options.args.tagGroup = {
 		},
 		Colors = {
 			type = "group",
-			name = E.InfoColor..'Colors',
+			name = 'Colors',
 			args = {
 				header = {
 					order = 0,
@@ -52,7 +52,7 @@ for Tag in next, E.oUF.Tags.Events do
 	if not E.Options.args.tagGroup.args[E.TagInfo[Tag].category] then
 		E.Options.args.tagGroup.args[E.TagInfo[Tag].category] = {
 			type = "group",
-			name = E.InfoColor..E.TagInfo[Tag].category,
+			name = E.TagInfo[Tag].category,
 			args = {
 				header = {
 					order = 0,
