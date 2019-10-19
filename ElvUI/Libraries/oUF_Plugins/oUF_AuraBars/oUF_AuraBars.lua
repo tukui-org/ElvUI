@@ -252,7 +252,7 @@ local function UpdateAuras(self, event, unit)
 		if(element.PreUpdate) then element:PreUpdate(unit) end
 
 		local isFriend = UnitIsFriend('player', unit)
-		local filter = element.filter or (isFriend and 'HELPFUL' or 'HARMFUL')
+		local filter = (isFriend and (element.friendlyAuraType or 'HELPFUL') or (element.enemyAuraType or 'HARMFUL'))
 
 		local visible, hidden = filterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
 		-- visible and hidden is unused azil?

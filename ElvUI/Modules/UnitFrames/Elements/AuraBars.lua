@@ -91,6 +91,9 @@ function UF:Configure_AuraBars(frame)
 			frame:EnableElement('AuraBars')
 		end
 
+		auraBars.friendlyAuraType = db.aurabar.friendlyAuraType
+		auraBars.enemyAuraType = db.aurabar.enemyAuraType
+
 		auraBars:Show()
 
 		local buffColor = UF.db.colors.auraBarBuff
