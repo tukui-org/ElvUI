@@ -142,6 +142,18 @@ function A:CreateIcon(button)
 	E:RegisterStatusBar(button.statusBar)
 	button.statusBar:CreateBackdrop()
 
+	local pos, spacing = self.db.barPosition, self.db.barSpacing
+	local isOnTop = pos == 'TOP' and true or false
+	local isOnBottom = pos == 'BOTTOM' and true or false
+	local isOnLeft = pos == 'LEFT' and true or false
+	local isOnRight = pos == 'RIGHT' and true or false
+
+	button.statusBar:Width((isOnTop or isOnBottom) and db.size or (self.db.barWidth + (E.PixelMode and 0 or 2)))
+	button.statusBar:Height((isOnLeft or isOnRight) and db.size or (self.db.barHeight + (E.PixelMode and 0 or 2)))
+	button.statusBar:Point(E.InversePoints[pos], button, pos, (isOnTop or isOnBottom) and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), (isOnLeft or isOnRight) and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
+	if isOnLeft or isOnRight then button.statusBar:SetOrientation('VERTICAL') end
+	if not self.db.barShow then button.statusBar:Hide() end
+
 	E:SetUpAnimGroup(button)
 
 	-- fetch cooldown settings
