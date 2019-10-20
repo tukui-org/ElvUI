@@ -4,6 +4,8 @@
 Nameplate Quest Icons now have the ability to show for multiple quests and have a few new options.  
 Added Detached Power Bar Auto Hide when empty option (needs better locales).  
 Added TutorialFrame skin.  
+Added Visual Aura Timer from Blazeflack to ElvUI.  
+Added an option to mark the most valuable quest reward with a gold coin.  
 
 **Bug Fixes:**  
 Fixed Pet Battle Nameplates, they weren't properly updating Health Bars.  
