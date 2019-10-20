@@ -65,7 +65,7 @@ function UF:AuraBars_SetPosition(from, to)
 		if(not button) then break end
 
 		button:ClearAllPoints()
-		button:SetPoint(anchor, self, anchor, -(E.Border), (i > 1 and (((i - 1) * (height + spacing + growth)) + (E.Border * 3)) or E.Border*2))
+		button:SetPoint(anchor, self, anchor, -(E.Border), (i > 1 and (((i - 1) * (height + spacing + growth))) + (E.Border * 2) or E.Border*2))
 	end
 end
 
@@ -110,7 +110,7 @@ function UF:Configure_AuraBars(frame)
 
 		auraBars.maxBars = db.aurabar.maxBars
 		auraBars.spacing = ((-frame.BORDER + frame.SPACING*3) + db.aurabar.spacing)
-		auraBars.width = frame.UNIT_WIDTH - auraBars.height - (frame.BORDER * 3)
+		auraBars.width = frame.UNIT_WIDTH - auraBars.height
 
 		if not auraBars.Holder then
 			local holder = CreateFrame('Frame', nil, auraBars)
