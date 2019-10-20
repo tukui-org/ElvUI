@@ -109,7 +109,7 @@ function UF:Configure_AuraBars(frame)
 
 		auraBars.maxBars = db.aurabar.maxBars
 		auraBars.spacing = ((-frame.BORDER + frame.SPACING*3) + db.aurabar.spacing)
-		auraBars.width = frame.UNIT_WIDTH - auraBars.height
+		auraBars.width = frame.UNIT_WIDTH - auraBars.height - (frame.BORDER * 3)
 
 		if not auraBars.Holder then
 			local holder = CreateFrame('Frame', nil, auraBars)
