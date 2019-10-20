@@ -251,7 +251,7 @@ E.Options.args.auras = {
 							order = 6,
 							type = 'range',
 							name = L["Spacing"],
-							min = 1, max = 10, step = 1,
+							min = -10, max = 10, step = 1,
 						},
 						barPosition = {
 							order = 7,
