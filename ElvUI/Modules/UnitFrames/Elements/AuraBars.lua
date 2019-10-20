@@ -36,16 +36,13 @@ function UF:Construct_AuraBars(statusBar)
 
 	UF:Configure_FontString(statusBar.timeText)
 	UF:Configure_FontString(statusBar.nameText)
-	UF:Configure_FontString(statusBar.countText)
 
-	UF:Update_FontString(statusBar.countText)
 	UF:Update_FontString(statusBar.timeText)
 	UF:Update_FontString(statusBar.nameText)
 
 	statusBar.nameText:SetJustifyH('LEFT')
 	statusBar.nameText:SetJustifyV('MIDDLE')
-	statusBar.nameText:SetWidth(140)
-	statusBar.nameText:SetWordWrap(false)
+	statusBar.nameText:SetPoint("RIGHT", statusBar.timeText, "LEFT", -4, 0)
 
 	statusBar.bg = statusBar:CreateTexture(nil, 'BORDER')
 	statusBar.bg:Show()
