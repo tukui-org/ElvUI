@@ -55,14 +55,14 @@ function UF:AuraBars_SetPosition(from, to)
 	local height = self.height
 	local spacing = self.spacing
 	local anchor = self.initialAnchor
-	local growth = self.growth == 'DOWN' and -1 or 1
+	local growth = self.growth == 'BELOW' and -1 or 1
 
 	for i = from, to do
 		local button = self[i]
 		if(not button) then break end
 
 		button:ClearAllPoints()
-		button:SetPoint(anchor, self, anchor, -(E.Border), (i > 1 and (((i - 1) * (height + spacing + growth))) + (E.Border * 2) or E.Border*2))
+		button:SetPoint(anchor, self, anchor, -(E.Border), growth * (i > 1 and (((i - 1) * (height + spacing)) + (E.Border * 2)) or E.Border*2))
 	end
 end
 
@@ -114,7 +114,7 @@ function UF:Configure_AuraBars(frame)
 		local attachTo = frame
 
 		auraBars.height = db.aurabar.height
-
+		auraBars.growth = db.aurabar.anchorPoint
 		auraBars.maxBars = db.aurabar.maxBars
 		auraBars.spacing = ((-frame.BORDER + frame.SPACING*3) + db.aurabar.spacing)
 		auraBars.width = frame.UNIT_WIDTH - auraBars.height
@@ -189,6 +189,7 @@ function UF:PostUpdateBar_AuraBars(unit, statusBar, index, position, duration, e
 	local spellID = statusBar.spellID
 	local spellName = statusBar.spell
 
+	statusBar.db = self.db
 	statusBar.icon:SetTexCoord(unpack(E.TexCoords))
 
 	local colors = E.global.unitframe.AuraBarColors[spellID] or E.global.unitframe.AuraBarColors[tostring(spellID)] or E.global.unitframe.AuraBarColors[spellName]
