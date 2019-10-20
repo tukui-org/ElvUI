@@ -150,6 +150,7 @@ local function LoadSkin()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		reward.Border:Hide()
+		reward.CircleMask:Hide()
 		S:HandleIcon(reward.Icon, true)
 	end
 

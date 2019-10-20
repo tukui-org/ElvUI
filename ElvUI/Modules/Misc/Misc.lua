@@ -256,6 +256,56 @@ function M:ADDON_LOADED(_, addon)
 	end
 end
 
+do
+	local _
+	local bestValue, totalValue, bestItem, itemSellPrice
+	local questLink, amount, numQuests
+
+	function M:QUEST_COMPLETE()
+		if not E.db.general.questRewardMostValueIcon then return end
+
+		bestValue = 0
+		numQuests = GetNumQuestChoices()
+
+		if numQuests < 2 then
+			return
+		end
+
+		if not self.QuestRewardGoldIconFrame then
+			local frame = CreateFrame("Frame", nil, QuestInfoRewardsFrameQuestInfoItem1)
+			frame:SetFrameStrata("HIGH")
+			frame:Size(20)
+			frame.Icon = frame:CreateTexture(nil, "OVERLAY")
+			frame.Icon:SetAllPoints(frame)
+			frame.Icon:SetTexture("Interface\\MONEYFRAME\\UI-GoldIcon")
+			self.QuestRewardGoldIconFrame = frame
+		end
+
+		self.QuestRewardGoldIconFrame:Hide()
+
+		for i=1, numQuests do
+			questLink = GetQuestItemLink('choice', i)
+			_,_, amount = GetQuestItemInfo('choice', i)
+			itemSellPrice = questLink and select(11, GetItemInfo(questLink))
+
+			totalValue = (itemSellPrice and itemSellPrice * amount) or 0
+			if totalValue > bestValue then
+				bestValue = totalValue
+				bestItem = i
+			end
+		end
+
+		if bestItem then
+			local btn = _G['QuestInfoRewardsFrameQuestInfoItem'..bestItem]
+			if btn.type == 'choice' then
+				self.QuestRewardGoldIconFrame:ClearAllPoints()
+				self.QuestRewardGoldIconFrame:Point("TOPRIGHT", btn, "TOPRIGHT", -2, -2)
+				self.QuestRewardGoldIconFrame:Show()
+			end
+		end
+	end
+end
+
 function M:Initialize()
 	self.Initialized = true
 	self:LoadRaidMarker()
@@ -274,6 +324,7 @@ function M:Initialize()
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent("QUEST_COMPLETE")
 
 	--local blizzTracker = IsAddOnLoaded("Blizzard_ObjectiveTracker")
 	local inspectUI = IsAddOnLoaded("Blizzard_InspectUI")
