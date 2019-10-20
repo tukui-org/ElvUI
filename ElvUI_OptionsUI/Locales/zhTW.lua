@@ -242,6 +242,7 @@ L["Clickable Width / Width"] = "可點擊寬度 / 寬度"
 L["Coding:"] = "編碼:"
 L["Color all buffs that reduce the unit's incoming damage."] = "減少目標受到的傷害的所有 Buff 的顏色."
 L["Color aurabar debuffs by type."] = "按類型顯示光環條顔色."
+L["Color by Value"] = true
 L["Color castbars by the class of player units."] = "按職業顯示施法條顏色"
 L["Color castbars by the reaction type of non-player units."] = "按非玩家單位的聲望顯示施法條顏色"
 L["Color Gradient"] = "顏色漸變"
@@ -423,6 +424,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Donations:"] = "捐款: "
 L["Down"] = "下"
 L["Dungeon & Raid Filter"] = "地城及團隊過濾器"
+L["Duration Enable"] = true
 L["Duration Font Size"] = "持續時間文字大小"
 L["Duration Reverse"] = "持續時間反轉"
 L["Duration Text"] = "持續時間文字"

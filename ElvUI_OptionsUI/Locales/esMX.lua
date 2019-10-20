@@ -241,6 +241,7 @@ L["Clickable Width / Width"] = true
 L["Coding:"] = "Codificación:"
 L["Color all buffs that reduce the unit's incoming damage."] = "Colorea todos los beneficios que reduzcan el daño recibido por la unidad."
 L["Color aurabar debuffs by type."] = "Color de los perjuicios de la barra de aura por tipo"
+L["Color by Value"] = true
 L["Color castbars by the class of player units."] = true
 L["Color castbars by the reaction type of non-player units."] = true
 L["Color Gradient"] = true
@@ -422,6 +423,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Donations:"] = "Donativos:"
 L["Down"] = "Abajo"
 L["Dungeon & Raid Filter"] = true
+L["Duration Enable"] = true
 L["Duration Font Size"] = true
 L["Duration Reverse"] = "Revertir Duración"
 L["Duration Text"] = true

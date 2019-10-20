@@ -213,12 +213,12 @@ E.Options.args.auras = {
 						barShow = {
 							order = 1,
 							type = 'toggle',
-							name = L['Enable'],
+							name = L["Enable"],
 						},
 						barColor = {
 							type = 'color',
 							order = 2,
-							name = L['Color'],
+							name = L.COLOR,
 							hasAlpha = false,
 							disabled = function() return (E.db.auras.barColorGradient or not E.db.auras.barShow) end,
 							get = function(info)
@@ -233,7 +233,7 @@ E.Options.args.auras = {
 						barColorGradient = {
 							order = 3,
 							type = 'toggle',
-							name = L['Color by Value']
+							name = L["Color by Value"]
 						},
 						barWidth = {
 							order = 4,
@@ -256,12 +256,12 @@ E.Options.args.auras = {
 						barPosition = {
 							order = 7,
 							type = 'select',
-							name = L['Position'],
+							name = L["Position"],
 							values = {
-								['TOP'] = L['TOP'],
-								['BOTTOM'] = L['BOTTOM'],
-								['LEFT'] = L['LEFT'],
-								['RIGHT'] = L['RIGHT'],
+								['TOP'] = L["Top"],
+								['BOTTOM'] = L["Bottom"],
+								['LEFT'] = L["Left"],
+								['RIGHT'] = L["Right"],
 							},
 						},
 					},

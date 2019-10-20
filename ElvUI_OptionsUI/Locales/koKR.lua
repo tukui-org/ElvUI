@@ -241,6 +241,7 @@ L["Clickable Width / Width"] = true
 L["Coding:"] = "|cff2eb7e4< 개발자 >|r"
 L["Color all buffs that reduce the unit's incoming damage."] = "유닛이 입는 데미지를 줄이는 모든 생존류 기술에 이 색상을 적용합니다."
 L["Color aurabar debuffs by type."] = "약화효과 종류에 따라서 클래스타이머의 색상을 따로 입힙니다.|n|n예로 독계열 약화효과는 초록색 바로 표시되게 됩니다."
+L["Color by Value"] = true
 L["Color castbars by the class of player units."] = "시전바를 플레이어 직업색상으로 칠합니다."
 L["Color castbars by the reaction type of non-player units."] = "플레이어가 아닌 유닛의 관계 형태에 따른 시전바 색상으로 변경합니다."
 L["Color Gradient"] = true
@@ -422,6 +423,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Donations:"] = "|cff2eb7e4< 기부자 >|r"
 L["Down"] = "아래로"
 L["Dungeon & Raid Filter"] = "던전 & 레이드 필터"
+L["Duration Enable"] = true
 L["Duration Font Size"] = "지속시간 글씨 크기"
 L["Duration Reverse"] = "총 지속시간이 짧은 순"
 L["Duration Text"] = "지속시간 글자"

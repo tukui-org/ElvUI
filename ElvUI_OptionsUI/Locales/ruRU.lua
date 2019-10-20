@@ -241,6 +241,7 @@ L["Clickable Width / Width"] = "Кликабельная ширина / шири
 L["Coding:"] = "Написание кода:"
 L["Color all buffs that reduce the unit's incoming damage."] = "Окрашивать все баффы, уменьшающие входящий урон по цели."
 L["Color aurabar debuffs by type."] = "Окрашивать полосы аур-дебаффов по типу"
+L["Color by Value"] = true
 L["Color castbars by the class of player units."] = "Окрашивать полосу заклинаний по цвету класса игроков."
 L["Color castbars by the reaction type of non-player units."] = "Окрашивать полосу заклинаний по цвету реакции НИП."
 L["Color Gradient"] = "Градиент"
@@ -421,6 +422,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Donations:"] = "Финансовая поддержка:"
 L["Down"] = "Вниз"
 L["Dungeon & Raid Filter"] = "Фильтр подземелий и рейдов"
+L["Duration Enable"] = true
 L["Duration Font Size"] = "Размер шрифта длительности"
 L["Duration Reverse"] = "Длительность, обратное"
 L["Duration Text"] = "Текст длительности"
