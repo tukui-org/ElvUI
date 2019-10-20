@@ -82,6 +82,7 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.gap = (-frame.BORDER + frame.SPACING*3)
 	auraBar.spacing = (-frame.BORDER + frame.SPACING*3)
 	auraBar.sparkEnabled = true
+	auraBar.initialAnchor = 'BOTTOMRIGHT'
 	auraBar.type = 'aurabar'
 
 	return auraBar
