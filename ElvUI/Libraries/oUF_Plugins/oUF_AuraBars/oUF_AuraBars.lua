@@ -146,22 +146,9 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 			statusBar.noTime = (duration == 0 and expiration == 0)
 
 			local r, g, b = .2, .6, 1
-
 			if filter == 'HARMFUL' then
 				if not debuffType or debuffType == '' then debuffType = 'none' end
-
-				if debuffType == 'none' and element.defaultDebuffColor and next(element.defaultDebuffColor) then
-					r, g, b = unpack(element.defaultDebuffColor)
-				elseif element.debuffColor and next(element.debuffColor) then
-					r, g, b = unpack(element.debuffColor)
-				else
-					local debuffTypeColor = _G.DebuffTypeColor[debuffType]
-					if debuffTypeColor then
-						r, g, b = debuffTypeColor.r, debuffTypeColor.g, debuffTypeColor.b
-					end
-				end
-			elseif element.buffColor and next(element.buffColor) then
-				r, g, b = unpack(element.buffColor)
+				r, g, b = DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b
 			end
 
 			statusBar:SetStatusBarColor(r, g, b)
