@@ -92,7 +92,7 @@ function UF:Configure_AuraBars(frame)
 	if not frame.VARIABLES_SET then return end
 	local auraBars = frame.AuraBars
 	local db = frame.db
-	auraBars.db = db
+	auraBars.db = db.aurabar
 
 	if db.aurabar.enable then
 		if not frame:IsElementEnabled('AuraBars') then
