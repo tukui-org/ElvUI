@@ -211,9 +211,15 @@ E.Options.args.auras = {
 					set = function(info, value) E.db.auras[info[#info]] = value; A:UpdateHeader(ElvUIPlayerBuffs); A:UpdateHeader(ElvUIPlayerDebuffs) end,
 					args = {
 						barShow = {
-							order = 1,
+							order = 0,
 							type = 'toggle',
 							name = L["Enable"],
+						},
+						barTexture = {
+							order = 1,
+							type = "select", dialogControl = 'LSM30_Statusbar',
+							name = L["StatusBar Texture"],
+							values = _G.AceGUIWidgetLSMlists.statusbar,
 						},
 						barColor = {
 							type = 'color',

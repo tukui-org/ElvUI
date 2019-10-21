@@ -1497,6 +1497,7 @@ P.auras = {
 	fadeThreshold = 6,
 	showDuration = true,
 	barShow = false,
+	barTexture = 'ElvUI Norm',
 	barPosition = 'BOTTOM',
 	barWidth = 2,
 	barHeight = 2,
