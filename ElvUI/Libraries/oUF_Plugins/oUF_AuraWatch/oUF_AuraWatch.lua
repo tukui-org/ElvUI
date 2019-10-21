@@ -138,7 +138,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			if(button.icon) then button.icon:SetTexture(texture) end
 			if(button.count) then button.count:SetText(count > 1 and count) end
 
-			local size = setting.sizeOverride > 0 and setting.sizeOverride or element.size or 16
+			local size = setting.sizeOverride and setting.sizeOverride > 0 and setting.sizeOverride or element.size or 16
 			button:SetSize(size, size)
 
 			button:SetID(index)
@@ -181,7 +181,7 @@ local function onlyShowMissingIcon(element, unit, offset)
 		if(button.icon) then button.icon:SetTexture(GetSpellTexture(SpellID)) end
 		if(button.overlay) then button.overlay:Hide() end
 
-		local size = setting.sizeOverride > 0 and setting.sizeOverride or element.size
+		local size = setting.sizeOverride and setting.sizeOverride > 0 and setting.sizeOverride or element.size
 		button:SetSize(size, size)
 		button.spellID = SpellID
 
