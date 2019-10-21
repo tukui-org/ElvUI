@@ -218,7 +218,7 @@ E.Options.args.auras = {
 						barTexture = {
 							order = 1,
 							type = "select", dialogControl = 'LSM30_Statusbar',
-							name = L["StatusBar Texture"],
+							name = L["Texture"],
 							values = _G.AceGUIWidgetLSMlists.statusbar,
 						},
 						barColor = {
