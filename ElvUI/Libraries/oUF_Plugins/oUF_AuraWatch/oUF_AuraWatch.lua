@@ -27,6 +27,7 @@ local function createAuraIcon(element, index)
 
 	local cd = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
 	cd:SetAllPoints()
+	cd:SetReverse(true)
 	cd:SetDrawBling(false)
 	cd:SetDrawEdge(false)
 
@@ -80,8 +81,6 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			element.createdIcons = element.createdIcons + 1
 		end
 
-		local setting = element.watched[spellID]
-
 		button.caster = caster
 		button.filter = filter
 		button.isDebuff = isDebuff
@@ -89,14 +88,12 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		button.isPlayer = caster == 'player'
 		button.spellID = spellID
 
-		button.onlyShowMissing = setting and setting.onlyShowMissing or false
-		button.anyUnit = setting and setting.anyUnit or false
-
 		local show = (element.CustomFilter or customFilter) (element, unit, button, name, texture,
 			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
 			canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
 
 		if(show) then
+			local setting = element.watched[spellID]
 			if(button.cd) then
 				button.cd:Hide()
 
