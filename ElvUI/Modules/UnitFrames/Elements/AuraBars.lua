@@ -62,7 +62,11 @@ function UF:AuraBars_SetPosition(from, to)
 		if(not button) then break end
 
 		button:ClearAllPoints()
-		button:SetPoint(anchor, self, anchor, -(E.Border), growth * (i > 1 and (((i - 1) * (height + spacing)) + (E.Border * 2)) or E.Border*2))
+		if i == 1 then
+			button:SetPoint(anchor, self, anchor, -E.Border, 0)
+		else
+			button:SetPoint(anchor, self, anchor, -(E.Border), growth * ((i - 1) * (height + spacing)))
+		end
 	end
 end
 
@@ -76,8 +80,6 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.CustomFilter = UF.AuraFilter
 	auraBar.SetPosition = UF.AuraBars_SetPosition
 
-	auraBar.gap = (-frame.BORDER + frame.SPACING*3)
-	auraBar.spacing = (-frame.BORDER + frame.SPACING*3)
 	auraBar.sparkEnabled = true
 	auraBar.initialAnchor = 'BOTTOMRIGHT'
 	auraBar.type = 'aurabar'
@@ -116,8 +118,8 @@ function UF:Configure_AuraBars(frame)
 		auraBars.height = db.aurabar.height
 		auraBars.growth = db.aurabar.anchorPoint
 		auraBars.maxBars = db.aurabar.maxBars
-		auraBars.spacing = ((-frame.BORDER + frame.SPACING*3) + db.aurabar.spacing)
-		auraBars.width = frame.UNIT_WIDTH - auraBars.height
+		auraBars.spacing = db.aurabar.spacing
+		auraBars.width = frame.UNIT_WIDTH - auraBars.height - (frame.BORDER * 4)
 
 		if not auraBars.Holder then
 			local holder = CreateFrame('Frame', nil, auraBars)
@@ -162,7 +164,7 @@ function UF:Configure_AuraBars(frame)
 
 		local yOffset
 		local spacing = (((db.aurabar.attachTo == "FRAME" and 3) or (db.aurabar.attachTo == "PLAYER_AURABARS" and 4) or 2) * frame.SPACING)
-		local border = (((db.aurabar.attachTo == "FRAME" or db.aurabar.attachTo == "PLAYER_AURABARS") and 2 or 1) * frame.BORDER)
+		local border = (((db.aurabar.attachTo == "FRAME" or db.aurabar.attachTo == "PLAYER_AURABARS") and 0 or 1) * frame.BORDER)
 
 		if db.aurabar.anchorPoint == 'BELOW' then
 			yOffset = -spacing + border - (not db.aurabar.yOffset and 0 or db.aurabar.yOffset)

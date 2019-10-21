@@ -272,7 +272,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				order = 19,
 				type = 'range',
 				name = L["yOffset"],
-				min = -1000, max = 1000, step = 1,
+				min = 0, max = 100, step = 1,
 			},
 			spacing = {
 				order = 20,
