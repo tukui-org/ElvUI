@@ -53,6 +53,8 @@ function UF:BuffIndicator_PostUpdateIcon(unit, button)
 	local settings = self.watched[button.spellID]
 	if settings then -- This should never fail.
 		local style = settings.styleOverride ~= 'Default' and settings.styleOverride or self.__owner.db and self.__owner.db.buffIndicator.style
+
+		button.icon.border:SetVertexColor(0, 0, 0)
 		if style == 'coloredIcon' then
 			button.icon:SetTexture(E.media.blankTex)
 			button.icon:SetVertexColor(settings.color.r, settings.color.g, settings.color.b);
@@ -63,8 +65,6 @@ function UF:BuffIndicator_PostUpdateIcon(unit, button)
 
 		if style ~= 'coloredIcon' and button.filter == "HARMFUL" then
 			button.icon.border:SetVertexColor(1, 0, 0)
-		else
-			button.icon.border:SetVertexColor(0, 0, 0)
 		end
 	end
 end
