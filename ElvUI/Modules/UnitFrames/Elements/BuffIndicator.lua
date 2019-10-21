@@ -58,8 +58,13 @@ function UF:BuffIndicator_PostUpdateIcon(unit, button)
 			button.icon:SetVertexColor(settings.color.r, settings.color.g, settings.color.b);
 		else
 			button.icon:SetVertexColor(1, 1, 1);
+			button.icon:SetTexCoord(unpack(E.TexCoords))
 		end
 
-		button.icon:SetTexCoord(unpack(E.TexCoords))
+		if style ~= 'coloredIcon' and button.filter == "HARMFUL" then
+			button.icon.border:SetVertexColor(1, 0, 0)
+		else
+			button.icon.border:SetVertexColor(0, 0, 0)
+		end
 	end
 end
