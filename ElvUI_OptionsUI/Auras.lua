@@ -211,19 +211,26 @@ E.Options.args.auras = {
 					set = function(info, value) E.db.auras[info[#info]] = value; A:UpdateHeader(ElvUIPlayerBuffs); A:UpdateHeader(ElvUIPlayerDebuffs) end,
 					args = {
 						barShow = {
-							order = 1,
+							order = 0,
 							type = 'toggle',
 							name = L["Enable"],
+						},
+						barTexture = {
+							order = 1,
+							type = "select", dialogControl = 'LSM30_Statusbar',
+							name = L["StatusBar Texture"],
+							values = _G.AceGUIWidgetLSMlists.statusbar,
 						},
 						barColor = {
 							type = 'color',
 							order = 2,
 							name = L.COLOR,
 							hasAlpha = false,
-							disabled = function() return (E.db.auras.barColorGradient or not E.db.auras.barShow) end,
+							disabled = function() return not E.db.auras.barShow or (E.db.auras.barColorGradient or not E.db.auras.barShow) end,
 							get = function(info)
 								local t = E.db.auras.barColor
-								return t.r, t.g, t.b, t.a
+								local d = P.auras.barColor
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 							end,
 							set = function(info, r, g, b)
 								local t = E.db.auras.barColor
@@ -233,30 +240,35 @@ E.Options.args.auras = {
 						barColorGradient = {
 							order = 3,
 							type = 'toggle',
-							name = L["Color by Value"]
+							name = L["Color by Value"],
+							disabled = function() return not E.db.auras.barShow end,
 						},
 						barWidth = {
 							order = 4,
 							type = 'range',
 							name = L["Width"],
 							min = 1, max = 10, step = 1,
+							disabled = function() return not E.db.auras.barShow end,
 						},
 						barHeight = {
 							order = 5,
 							type = 'range',
 							name = L["Height"],
 							min = 1, max = 10, step = 1,
+							disabled = function() return not E.db.auras.barShow end,
 						},
 						barSpacing = {
 							order = 6,
 							type = 'range',
 							name = L["Spacing"],
-							min = 1, max = 10, step = 1,
+							min = -10, max = 10, step = 1,
+							disabled = function() return not E.db.auras.barShow end,
 						},
 						barPosition = {
 							order = 7,
 							type = 'select',
 							name = L["Position"],
+							disabled = function() return not E.db.auras.barShow end,
 							values = {
 								['TOP'] = L["Top"],
 								['BOTTOM'] = L["Bottom"],

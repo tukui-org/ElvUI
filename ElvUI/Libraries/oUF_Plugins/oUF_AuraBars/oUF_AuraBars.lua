@@ -47,6 +47,8 @@ local function onUpdate(self, elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 	if self.elapsed >= 0.01 then
 		if self.noTime then
+			self:SetValue(1)
+			self.timeText:SetText()
 			self:SetScript("OnUpdate", nil)
 		else
 			local timeNow = GetTime()
@@ -83,14 +85,10 @@ local function createAuraBar(element, index)
 	local nameText = statusBar:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
 	nameText:SetPoint('LEFT', statusBar, 'LEFT', 2, 0)
 
-	local countText = statusBar:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
-	countText:SetPoint('LEFT', nameText, 'RIGHT', 2, 0)
-
 	local timeText = statusBar:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
 	timeText:SetPoint('RIGHT', statusBar, 'RIGHT', -2, 0)
 
 	statusBar.icon = icon
-	statusBar.countText = countText
 	statusBar.nameText = nameText
 	statusBar.timeText = timeText
 	statusBar.spark = spark
@@ -132,8 +130,11 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 
 		if(show) then
 			statusBar.icon:SetTexture(texture)
-			statusBar.countText:SetText(count > 1 and count)
-			statusBar.nameText:SetText(name)
+			if count > 1 then
+				statusBar.nameText:SetFormattedText('[%d] %s', count, name)
+			else
+				statusBar.nameText:SetText(name)
+			end
 			statusBar.spark:Hide()
 			statusBar:SetValue(1)
 			statusBar.timeText:SetText('')
@@ -146,22 +147,9 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 			statusBar.noTime = (duration == 0 and expiration == 0)
 
 			local r, g, b = .2, .6, 1
-
 			if filter == 'HARMFUL' then
 				if not debuffType or debuffType == '' then debuffType = 'none' end
-
-				if debuffType == 'none' and element.defaultDebuffColor and next(element.defaultDebuffColor) then
-					r, g, b = unpack(element.defaultDebuffColor)
-				elseif element.debuffColor and next(element.debuffColor) then
-					r, g, b = unpack(element.debuffColor)
-				else
-					local debuffTypeColor = _G.DebuffTypeColor[debuffType]
-					if debuffTypeColor then
-						r, g, b = debuffTypeColor.r, debuffTypeColor.g, debuffTypeColor.b
-					end
-				end
-			elseif element.buffColor and next(element.buffColor) then
-				r, g, b = unpack(element.buffColor)
+				r, g, b = DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b
 			end
 
 			statusBar:SetStatusBarColor(r, g, b)
@@ -183,8 +171,8 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 end
 
 local function SetPosition(element, from, to)
-	local width = element.height or 1
-	local height = (element.height + element.spacing) or 1
+	local height = element.height
+	local spacing = element.spacing or 1
 	local anchor = element.initialAnchor
 	local growth = element.growth == 'DOWN' and -1 or 1
 
@@ -193,7 +181,7 @@ local function SetPosition(element, from, to)
 		if(not button) then break end
 
 		button:ClearAllPoints()
-		button:SetPoint(anchor, element, anchor, (width + element.gap), (i > 1 and ((i - 1) * (height + growth)) or 0))
+		button:SetPoint(anchor, element, anchor, (height + element.gap), growth * (i > 1 and ((i - 1) * (height)) or 0))
 	end
 end
 
