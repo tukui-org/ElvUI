@@ -248,8 +248,6 @@ local function UpdateAuras(self, event, unit)
 
 		if(element.PostUpdate) then element:PostUpdate(unit) end
 	end
-	-- Leave Here
-	-- local visibleDebuffs = filterIcons(element, unit, element.debuffFilter or element.filter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
 end
 
 local function Update(self, event, unit)
