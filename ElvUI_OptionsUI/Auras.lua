@@ -223,7 +223,8 @@ E.Options.args.auras = {
 							disabled = function() return (E.db.auras.barColorGradient or not E.db.auras.barShow) end,
 							get = function(info)
 								local t = E.db.auras.barColor
-								return t.r, t.g, t.b, t.a
+								local d = P.auras.barColor
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 							end,
 							set = function(info, r, g, b)
 								local t = E.db.auras.barColor
