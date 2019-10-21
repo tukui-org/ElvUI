@@ -158,7 +158,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 end
 
 local missingBuffs = {}
-local function onlyShowMissingIcon(element, unit, _, offset)
+local function onlyShowMissingIcon(element, unit, offset)
 	wipe(missingBuffs)
 
 	for SpellID, setting in pairs(element.watched) do
@@ -235,8 +235,16 @@ local function UpdateAuras(self, event, unit)
 		local numDebuffs = element.numDebuffs or 40
 		local max = element.numTotal or numBuffs + numDebuffs
 
-		local visibleBuffs, filteredBuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HELPFUL', math.min(numBuffs, max), nil, 0)
-		onlyShowMissingIcon(element, unit, nil, visibleBuffs, filteredBuffs)
+		local visibleBuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HELPFUL', math.min(numBuffs, max), nil, 0, true)
+
+		local visibleDebuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
+
+		element.visibleDebuffs = visibleDebuffs
+		element.visibleBuffs = visibleBuffs
+
+		element.visibleAuras = visibleBuffs + visibleDebuffs
+
+		onlyShowMissingIcon(element, unit, element.visibleAuras)
 
 		if(element.PostUpdate) then element:PostUpdate(unit) end
 	end
