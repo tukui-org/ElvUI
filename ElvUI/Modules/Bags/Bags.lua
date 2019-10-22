@@ -1006,7 +1006,7 @@ function B:Layout(isBank)
 				f.ContainerHolder[i].iconTexture:SetInside()
 				f.ContainerHolder[i].iconTexture:SetTexCoord(unpack(E.TexCoords))
 				if bagID == 0 then --backpack
-					f.ContainerHolder[i].iconTexture:SetTexture("Interface\\Buttons\\Button-Backpack-Up")
+					f.ContainerHolder[i].iconTexture:SetTexture("Interface\\ICONS\\INV_Misc_Bag_08")
 				end
 			end
 
