@@ -278,6 +278,7 @@ do
 			frame.Icon = frame:CreateTexture(nil, "OVERLAY")
 			frame.Icon:SetAllPoints(frame)
 			frame.Icon:SetTexture("Interface\\MONEYFRAME\\UI-GoldIcon")
+			frame:Hide()
 			self.QuestRewardGoldIconFrame = frame
 		end
 
