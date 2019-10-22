@@ -232,9 +232,9 @@ local function UpdateAuras(self, event, unit)
 		local numDebuffs = element.numDebuffs or 40
 		local max = element.numTotal or numBuffs + numDebuffs
 
-		local visibleBuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HELPFUL', math.min(numBuffs, max), nil, 0, true)
+		local visibleBuffs = filterIcons(element, unit, element.buffFilter or 'HELPFUL', math.min(numBuffs, max), nil, 0, true)
 
-		local visibleDebuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
+		local visibleDebuffs = filterIcons(element, unit, element.debuffFilter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
 
 		element.visibleDebuffs = visibleDebuffs
 		element.visibleBuffs = visibleBuffs
