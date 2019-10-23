@@ -151,7 +151,6 @@ function A:CreateIcon(button)
 	button.statusBar:Height((isOnLeft or isOnRight) and iconSize or (self.db.barHeight + (E.PixelMode and 0 or 2)))
 	button.statusBar:Point(E.InversePoints[pos], button, pos, (isOnTop or isOnBottom) and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), (isOnLeft or isOnRight) and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
 	if isOnLeft or isOnRight then button.statusBar:SetOrientation('VERTICAL') end
-	if not self.db.barShow then button.statusBar:Hide() end
 
 	E:SetUpAnimGroup(button)
 
@@ -222,7 +221,10 @@ function A:UpdateAura(button, index)
 	local name, texture, count, dtype, duration, expirationTime = UnitAura(unit, index, button.filter)
 
 	if name then
+		button.statusBar:Show()
+
 		if (duration > 0) and expirationTime then
+			if not self.db.barShow then button.statusBar:Hide() end
 			button.nextUpdate = 0
 
 			local timeLeft = expirationTime - GetTime()
@@ -235,6 +237,8 @@ function A:UpdateAura(button, index)
 
 			button.statusBar:SetMinMaxValues(0, duration)
 		else
+			if not self.db.barNoDuration then button.statusBar:Hide() end
+
 			button.timeLeft = nil
 			button.time:SetText('')
 
@@ -442,12 +446,6 @@ function A:UpdateHeader(header)
 			child.statusBar:SetOrientation('VERTICAL')
 		else
 			child.statusBar:SetOrientation('HORIZONTAL')
-		end
-
-		if self.db.barShow then
-			child.statusBar:Show()
-		else
-			child.statusBar:Hide()
 		end
 
 		index = index + 1

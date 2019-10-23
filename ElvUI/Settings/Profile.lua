@@ -1514,6 +1514,7 @@ P.auras = {
 	barSpacing = 2,
 	barColor = { r = 0, g = .8, b = 0 },
 	barColorGradient = false,
+	barNoDuration = true,
 	buffs = {
 		growthDirection = 'LEFT_DOWN',
 		wrapAfter = 12,
