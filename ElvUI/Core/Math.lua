@@ -319,6 +319,8 @@ E.TimeFormats = { -- short and long aura time formats
 	[2] = { '%d', 'm' }, -- minutes
 	[3] = { '%d', 's' }, -- seconds
 	[4] = { '%.1f', 's' },  -- seconds below decimal threshold
+	[5] = { '%d', ':|r%02d'}, --mmss
+	[6] = { '%d', ':|r%02d'}, --hhmm
 }
 
 E.TimeIndicatorColors = {
@@ -327,6 +329,8 @@ E.TimeIndicatorColors = {
 	[2] = '|cff00b3ff',
 	[3] = '|cff00b3ff',
 	[4] = '|cff00b3ff',
+	[5] = '|cff00b3ff',
+	[6] = '|cff00b3ff',
 }
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for calculating aura time text

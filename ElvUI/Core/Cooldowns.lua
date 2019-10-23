@@ -35,9 +35,9 @@ function E:Cooldown_OnUpdate(elapsed)
 				local hhmmThreshold = (self.timerOptions and self.timerOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
 				local mmssThreshold = (self.timerOptions and self.timerOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
 
-				local value1, formatid, nextUpdate, value2 = E:GetTimeInfo(remain, timeThreshold, hhmmThreshold, mmssThreshold) --?? Simpy
+				local value1, formatID, nextUpdate, value2 = E:GetTimeInfo(remain, timeThreshold, hhmmThreshold, mmssThreshold) --?? Simpy
 				self.nextUpdate = nextUpdate
-				self.text:SetFormattedText(("%s%s|r%s%s|r"):format(timeColors[formatid], E.TimeFormats[formatid][1], indicatorColors[formatid], E.TimeFormats[formatid][2]), value1)
+				self.time:SetFormattedText(("%s%s|r%s%s|r"):format(timeColors[formatID], E.TimeFormats[formatID][1], indicatorColors[formatID], E.TimeFormats[formatID][2]), value1, value2)
 			end
 		else
 			E:Cooldown_StopTimer(self)

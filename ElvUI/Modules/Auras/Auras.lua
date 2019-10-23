@@ -95,7 +95,9 @@ function A:UpdateTime(elapsed)
 
 		local value1, formatID, nextUpdate, value2 = E:GetTimeInfo(self.timeLeft, timeThreshold, hhmmThreshold, mmssThreshold)
 		self.nextUpdate = nextUpdate
-		self.time:SetFormattedText(("%s%s|r%s%s|r"):format(timeColors[formatID], E.TimeFormats[formatID][1], indicatorColors[formatID], E.TimeFormats[formatID][2]), value1)
+
+		self.time:SetFormattedText(("%s%s|r%s%s|r"):format(timeColors[formatID], E.TimeFormats[formatID][1], indicatorColors[formatID], E.TimeFormats[formatID][2]), value1, value2)
+
 		self.statusBar:SetValue(self.timeLeft)
 
 		if self.timeLeft > E.db.auras.fadeThreshold then
