@@ -239,8 +239,44 @@ local function LoadSkin()
 		icon.SetPoint = E.noop
 	end
 
-	--Tutorial - 8.2.5 must fine the new name
-	--S:HandleCloseButton(_G.FriendsTabHeader.FriendsFrameQuickJoinHelpTip.CloseButton)
+	-- RecruitAFriend 8.2.5
+	local RAF = _G.RecruitAFriendFrame
+	S:HandleButton(RAF.SplashFrame.OKButton)
+	S:HandleButton(RAF.RecruitmentButton)
+
+	local Reward = RAF.RewardClaiming
+	Reward:StripTextures()
+	Reward:CreateBackdrop("Transparent")
+	S:HandleIcon(Reward.NextRewardButton.Icon)
+	Reward.NextRewardButton.CircleMask:Hide()
+	Reward.NextRewardButton.IconBorder:SetAlpha(0)
+	S:HandleButton(Reward.ClaimOrViewRewardButton)
+
+	local RecruitList = RAF.RecruitList
+	RecruitList.Header:StripTextures()
+	RecruitList.ScrollFrameInset:StripTextures()
+	RecruitList.ScrollFrameInset:CreateBackdrop("Transparent")
+	S:HandleScrollBar(RecruitList.ScrollFrame.Slider)
+
+	-- Recruitment
+	local Recruitment = _G.RecruitAFriendRecruitmentFrame
+	Recruitment:StripTextures()
+	Recruitment:CreateBackdrop("Transparent")
+	S:HandleEditBox(Recruitment.EditBox)
+	S:HandleButton(Recruitment.GenerateOrCopyLinkButton)
+	S:HandleCloseButton(Recruitment.CloseButton)
+
+	-- Rewards
+	local Reward = _G.RecruitAFriendRewardsFrame
+	Reward:StripTextures()
+	Reward:CreateBackdrop("Transparent")
+	S:HandleCloseButton(Reward.CloseButton)
+
+	--AZIL?
+	--[[
+	for _, Button in pairs(_G.RecruitAFriendRewardsFrame) do
+
+	end]]
 end
 
 S:AddCallback("Friends", LoadSkin)
