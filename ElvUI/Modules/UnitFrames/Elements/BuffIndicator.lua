@@ -44,7 +44,7 @@ function UF:BuffIndicator_PostCreateIcon(button)
 	button.overlay:Hide()
 
 	button.icon.border = button:CreateTexture(nil, "BACKGROUND");
-	button.icon.border:SetOutside(button.icon)
+	button.icon.border:SetOutside(button.icon, 1, 1)
 	button.icon.border:SetTexture(E.media.blankTex)
 	button.icon.border:SetVertexColor(0, 0, 0)
 end
@@ -53,13 +53,18 @@ function UF:BuffIndicator_PostUpdateIcon(unit, button)
 	local settings = self.watched[button.spellID]
 	if settings then -- This should never fail.
 		local style = settings.styleOverride ~= 'Default' and settings.styleOverride or self.__owner.db and self.__owner.db.buffIndicator.style
+
+		button.icon.border:SetVertexColor(0, 0, 0)
 		if style == 'coloredIcon' then
 			button.icon:SetTexture(E.media.blankTex)
 			button.icon:SetVertexColor(settings.color.r, settings.color.g, settings.color.b);
 		else
 			button.icon:SetVertexColor(1, 1, 1);
+			button.icon:SetTexCoord(unpack(E.TexCoords))
 		end
 
-		button.icon:SetTexCoord(unpack(E.TexCoords))
+		if style ~= 'coloredIcon' and button.filter == "HARMFUL" then
+			button.icon.border:SetVertexColor(1, 0, 0)
+		end
 	end
 end

@@ -87,7 +87,7 @@ function A:UpdateTime(elapsed)
 			self.timeLeft = self.timeLeft - elapsed
 		end
 
-		local timeColors, timeThreshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
+		local timeColors, indicatorColors, timeThreshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, E.TimeIndicatorColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
 		if not timeThreshold then timeThreshold = E.TimeThreshold end
 
 		local hhmmThreshold = (self.timerOptions and self.timerOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
@@ -95,7 +95,7 @@ function A:UpdateTime(elapsed)
 
 		local value1, formatID, nextUpdate, value2 = E:GetTimeInfo(self.timeLeft, timeThreshold, hhmmThreshold, mmssThreshold)
 		self.nextUpdate = nextUpdate
-		self.time:SetFormattedText(format("%s%s|r", timeColors[formatID], E.TimeFormats[formatID][1]), value1, value2)
+		self.time:SetFormattedText(("%s%s|r%s%s|r"):format(timeColors[formatID], E.TimeFormats[formatID][1], indicatorColors[formatID], E.TimeFormats[formatID][2]), value1)
 		self.statusBar:SetValue(self.timeLeft)
 
 		if self.timeLeft > E.db.auras.fadeThreshold then

@@ -302,6 +302,7 @@ function E:StringTitle(str)
 end
 
 E.TimeThreshold = 3
+
 E.TimeColors = { -- aura time colors for days, hours, minutes, seconds, fadetimer
 	[0] = '|cffeeeeee',
 	[1] = '|cffeeeeee',
@@ -311,14 +312,21 @@ E.TimeColors = { -- aura time colors for days, hours, minutes, seconds, fadetime
 	[5] = '|cff909090', --mmss
 	[6] = '|cff707070', --hhmm
 }
+
 E.TimeFormats = { -- short and long aura time formats
-	[0] = {'%dd', '%dd'},
-	[1] = {'%dh', '%dh'},
-	[2] = {'%dm', '%dm'},
-	[3] = {'%ds', '%d'},
-	[4] = {'%.1fs', '%.1f'},
-	[5] = {'%d:%02d', '%d:%02d'}, --mmss
-	[6] = {'%d:%02d', '%d:%02d'}, --hhmm
+	[0] = { '%d', 'd' }, -- days
+	[1] = { '%d', 'h' }, -- hours
+	[2] = { '%d', 'm' }, -- minutes
+	[3] = { '%d', 's' }, -- seconds
+	[4] = { '%.1f', 's' },  -- seconds below decimal threshold
+}
+
+E.TimeIndicatorColors = {
+	[0] = '|cff00b3ff',
+	[1] = '|cff00b3ff',
+	[2] = '|cff00b3ff',
+	[3] = '|cff00b3ff',
+	[4] = '|cff00b3ff',
 }
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for calculating aura time text

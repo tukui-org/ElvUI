@@ -272,7 +272,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				order = 19,
 				type = 'range',
 				name = L["yOffset"],
-				min = -1000, max = 1000, step = 1,
+				min = 0, max = 100, step = 1,
 			},
 			spacing = {
 				order = 20,
@@ -5957,10 +5957,20 @@ E.Options.args.unitframe.args.party = {
 					set = function(info, value) E.db.unitframe.units.party[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('party', nil, nil, true) end,
 					args = {
 						showPlayer = {
-							order = 1,
+							order = 0,
 							type = 'toggle',
 							name = L["Display Player"],
 							desc = L["When true, the header includes the player when not in a raid."],
+						},
+						defaults = {
+							order = 1,
+							type = 'execute',
+							name = L["Restore Defaults"],
+							confirm = true,
+							func = function()
+								E.db.unitframe.units.party.visibility = P.db.unitframe.units.party.visibility
+								UF:CreateAndUpdateHeaderGroup('party', nil, nil, true)
+							end,
 						},
 						visibility = {
 							order = 2,
@@ -6604,10 +6614,20 @@ E.Options.args.unitframe.args.raid = {
 					set = function(info, value) E.db.unitframe.units.raid[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raid', nil, nil, true) end,
 					args = {
 						showPlayer = {
-							order = 1,
+							order = 0,
 							type = 'toggle',
 							name = L["Display Player"],
 							desc = L["When true, the header includes the player when not in a raid."],
+						},
+						defaults = {
+							order = 1,
+							type = 'execute',
+							name = L["Restore Defaults"],
+							confirm = true,
+							func = function()
+								E.db.unitframe.units.raid.visibility = P.db.unitframe.units.raid.visibility
+								UF:CreateAndUpdateHeaderGroup('raid', nil, nil, true)
+							end,
 						},
 						visibility = {
 							order = 2,
@@ -7073,10 +7093,20 @@ E.Options.args.unitframe.args.raid40 = {
 					set = function(info, value) E.db.unitframe.units.raid40[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raid40', nil, nil, true) end,
 					args = {
 						showPlayer = {
-							order = 1,
+							order = 0,
 							type = 'toggle',
 							name = L["Display Player"],
 							desc = L["When true, the header includes the player when not in a raid."],
+						},
+						defaults = {
+							order = 1,
+							type = 'execute',
+							name = L["Restore Defaults"],
+							confirm = true,
+							func = function()
+								E.db.unitframe.units.raid40.visibility = P.db.unitframe.units.raid40.visibility
+								UF:CreateAndUpdateHeaderGroup('raid', nil, nil, true)
+							end,
 						},
 						visibility = {
 							order = 2,
@@ -7533,6 +7563,16 @@ E.Options.args.unitframe.args.raidpet = {
 					guiInline = true,
 					set = function(info, value) E.db.unitframe.units.raidpet[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raidpet', nil, nil, true) end,
 					args = {
+						defaults = {
+							order = 1,
+							type = 'execute',
+							name = L["Restore Defaults"],
+							confirm = true,
+							func = function()
+								E.db.unitframe.units.raidpet.visibility = P.db.unitframe.units.raidpet.visibility
+								UF:CreateAndUpdateHeaderGroup('raidpet', nil, nil, true)
+							end,
+						},
 						visibility = {
 							order = 2,
 							type = 'input',

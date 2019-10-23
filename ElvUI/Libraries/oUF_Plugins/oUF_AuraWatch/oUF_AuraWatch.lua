@@ -27,6 +27,7 @@ local function createAuraIcon(element, index)
 
 	local cd = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
 	cd:SetAllPoints()
+	cd:SetReverse(true)
 	cd:SetDrawBling(false)
 	cd:SetDrawEdge(false)
 
@@ -80,8 +81,6 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			element.createdIcons = element.createdIcons + 1
 		end
 
-		local setting = element.watched[spellID]
-
 		button.caster = caster
 		button.filter = filter
 		button.isDebuff = isDebuff
@@ -89,14 +88,12 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		button.isPlayer = caster == 'player'
 		button.spellID = spellID
 
-		button.onlyShowMissing = setting and setting.onlyShowMissing or false
-		button.anyUnit = setting and setting.anyUnit or false
-
 		local show = (element.CustomFilter or customFilter) (element, unit, button, name, texture,
 			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
 			canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
 
 		if(show) then
+			local setting = element.watched[spellID]
 			if(button.cd) then
 				button.cd:Hide()
 
@@ -138,7 +135,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			if(button.icon) then button.icon:SetTexture(texture) end
 			if(button.count) then button.count:SetText(count > 1 and count) end
 
-			local size = setting.sizeOverride > 0 and setting.sizeOverride or element.size or 16
+			local size = setting.sizeOverride and setting.sizeOverride > 0 and setting.sizeOverride or element.size or 16
 			button:SetSize(size, size)
 
 			button:SetID(index)
@@ -158,7 +155,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 end
 
 local missingBuffs = {}
-local function onlyShowMissingIcon(element, unit, _, offset)
+local function onlyShowMissingIcon(element, unit, offset)
 	wipe(missingBuffs)
 
 	for SpellID, setting in pairs(element.watched) do
@@ -181,7 +178,7 @@ local function onlyShowMissingIcon(element, unit, _, offset)
 		if(button.icon) then button.icon:SetTexture(GetSpellTexture(SpellID)) end
 		if(button.overlay) then button.overlay:Hide() end
 
-		local size = setting.sizeOverride > 0 and setting.sizeOverride or element.size
+		local size = setting.sizeOverride and setting.sizeOverride > 0 and setting.sizeOverride or element.size
 		button:SetSize(size, size)
 		button.spellID = SpellID
 
@@ -235,13 +232,19 @@ local function UpdateAuras(self, event, unit)
 		local numDebuffs = element.numDebuffs or 40
 		local max = element.numTotal or numBuffs + numDebuffs
 
-		local visibleBuffs, filteredBuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HELPFUL', math.min(numBuffs, max), nil, 0)
-		onlyShowMissingIcon(element, unit, nil, visibleBuffs, filteredBuffs)
+		local visibleBuffs = filterIcons(element, unit, element.buffFilter or 'HELPFUL', math.min(numBuffs, max), nil, 0, true)
+
+		local visibleDebuffs = filterIcons(element, unit, element.debuffFilter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
+
+		element.visibleDebuffs = visibleDebuffs
+		element.visibleBuffs = visibleBuffs
+
+		element.visibleAuras = visibleBuffs + visibleDebuffs
+
+		onlyShowMissingIcon(element, unit, element.visibleAuras)
 
 		if(element.PostUpdate) then element:PostUpdate(unit) end
 	end
-	-- Leave Here
-	-- local visibleDebuffs = filterIcons(element, unit, element.debuffFilter or element.filter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
 end
 
 local function Update(self, event, unit)
