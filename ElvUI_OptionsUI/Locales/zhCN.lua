@@ -1263,8 +1263,10 @@ L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to
 L["Threshold before text goes into decimal form. Set to -1 to disable decimals."] = "文字变为小数时的阈值.设为-1以禁用小数"
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "冷却时间低于此秒数后将变为红色数字, 并以小数显示, 设为-1来使其不会变为红色"
 L["Threshold before the icon will fade out and back in. Set to -1 to disable."] = "图标闪烁时的阈值, 设为-1以禁用."
+L["Threshold Colors"] = true
 L["Ticks"] = "周期伤害"
 L["Tiers"] = "天赋层"
+L["Time Indicator Colors"] = true
 L["Time Remaining Reverse"] = "剩余时间反转"
 L["Time Remaining"] = "剩余时间"
 L["Time To Hold"] = "停留时间"

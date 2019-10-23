@@ -115,7 +115,7 @@ local function group(order, db, label)
 					spacer1 = {
 						order = 3,
 						type = "header",
-						name = "Threshold Colors"
+						name = L["Threshold Colors"]
 					},
 					spacer2 = {
 						order = 4,
@@ -172,7 +172,7 @@ local function group(order, db, label)
 					spacer3 = {
 						order = 12,
 						type = "header",
-						name = "Time Indicator Colors"
+						name = L["Time Indicator Colors"]
 					},
 					expireIndicator = {
 						type = 'color',

@@ -1262,8 +1262,10 @@ L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to
 L["Threshold before text goes into decimal form. Set to -1 to disable decimals."] = "Seuil avant que le texte ne s'affiche sous forme décimale. Mettre à -1 pour désactiver l'affichage en décimal."
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "Seuil avant que le texte devienne rouge sous forme de décimal. Mettre -1 pour qu'il ne devienne jamais rouge."
 L["Threshold before the icon will fade out and back in. Set to -1 to disable."] = true
+L["Threshold Colors"] = true
 L["Ticks"] = "Ticks"
 L["Tiers"] = true
+L["Time Indicator Colors"] = true
 L["Time Remaining Reverse"] =  "Temps restant inversé"
 L["Time Remaining"] = "Temps restant"
 L["Time To Hold"] = true
