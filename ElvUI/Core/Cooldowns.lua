@@ -37,7 +37,7 @@ function E:Cooldown_OnUpdate(elapsed)
 
 				local value1, formatID, nextUpdate, value2 = E:GetTimeInfo(remain, timeThreshold, hhmmThreshold, mmssThreshold) --?? Simpy
 				self.nextUpdate = nextUpdate
-				self.time:SetFormattedText(("%s%s|r%s%s|r"):format(timeColors[formatID], E.TimeFormats[formatID][1], indicatorColors[formatID], E.TimeFormats[formatID][2]), value1, value2)
+				self.text:SetFormattedText(("%s%s|r%s%s|r"):format(timeColors[formatID], E.TimeFormats[formatID][1], indicatorColors[formatID], E.TimeFormats[formatID][2]), value1, value2)
 			end
 		else
 			E:Cooldown_StopTimer(self)
