@@ -1261,8 +1261,10 @@ L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to
 L["Threshold before text goes into decimal form. Set to -1 to disable decimals."] = "소숫점으로 표시하게 될 기준점을 결정합니다. -1로 지정 시 작동하지 않습니다."
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "이 값 이하로 시간이 내려가면 시간이 소숫점 단위 초읽기 형태로 표시됩니다.|n|n-1로 설정하면 이 기능을 사용하지 않습니다."
 L["Threshold before the icon will fade out and back in. Set to -1 to disable."] = true
+L["Threshold Colors"] = true
 L["Ticks"] = "주문 틱 표시"
 L["Tiers"] = true
+L["Time Indicator Colors"] = true
 L["Time Remaining Reverse"] = "남은시간이 짧은 순으로"
 L["Time Remaining"] = "남은시간이 긴 순으로"
 L["Time To Hold"] = "유지하는 시간"

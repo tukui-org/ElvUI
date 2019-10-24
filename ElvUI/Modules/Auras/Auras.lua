@@ -95,7 +95,9 @@ function A:UpdateTime(elapsed)
 
 		local value1, formatID, nextUpdate, value2 = E:GetTimeInfo(self.timeLeft, timeThreshold, hhmmThreshold, mmssThreshold)
 		self.nextUpdate = nextUpdate
-		self.time:SetFormattedText(("%s%s|r%s%s|r"):format(timeColors[formatID], E.TimeFormats[formatID][1], indicatorColors[formatID], E.TimeFormats[formatID][2]), value1)
+
+		self.time:SetFormattedText(("%s%s|r%s%s|r"):format(timeColors[formatID], E.TimeFormats[formatID][1], indicatorColors[formatID], E.TimeFormats[formatID][2]), value1, value2)
+
 		self.statusBar:SetValue(self.timeLeft)
 
 		if self.timeLeft > E.db.auras.fadeThreshold then
@@ -151,7 +153,6 @@ function A:CreateIcon(button)
 	button.statusBar:Height((isOnLeft or isOnRight) and iconSize or (self.db.barHeight + (E.PixelMode and 0 or 2)))
 	button.statusBar:Point(E.InversePoints[pos], button, pos, (isOnTop or isOnBottom) and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), (isOnLeft or isOnRight) and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
 	if isOnLeft or isOnRight then button.statusBar:SetOrientation('VERTICAL') end
-	if not self.db.barShow then button.statusBar:Hide() end
 
 	E:SetUpAnimGroup(button)
 
@@ -222,7 +223,10 @@ function A:UpdateAura(button, index)
 	local name, texture, count, dtype, duration, expirationTime = UnitAura(unit, index, button.filter)
 
 	if name then
+		button.statusBar:Show()
+
 		if (duration > 0) and expirationTime then
+			if not self.db.barShow then button.statusBar:Hide() end
 			button.nextUpdate = 0
 
 			local timeLeft = expirationTime - GetTime()
@@ -235,6 +239,8 @@ function A:UpdateAura(button, index)
 
 			button.statusBar:SetMinMaxValues(0, duration)
 		else
+			if not (self.db.barShow and self.db.barNoDuration) then button.statusBar:Hide() end
+
 			button.timeLeft = nil
 			button.time:SetText('')
 
@@ -442,12 +448,6 @@ function A:UpdateHeader(header)
 			child.statusBar:SetOrientation('VERTICAL')
 		else
 			child.statusBar:SetOrientation('HORIZONTAL')
-		end
-
-		if self.db.barShow then
-			child.statusBar:Show()
-		else
-			child.statusBar:Hide()
 		end
 
 		index = index + 1

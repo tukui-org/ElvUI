@@ -1262,8 +1262,10 @@ L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to
 L["Threshold before text goes into decimal form. Set to -1 to disable decimals."] = "Граница, после которых текст будет показывать десятые доли. Установите на -1 для отключения."
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "Время, после которого текст станет красным и начнет отображать доли секунды. Установите -1, чтобы не отображать текст в такой форме."
 L["Threshold before the icon will fade out and back in. Set to -1 to disable."] = "Значение, при котором иконка начнем мерцать. Установите на -1 для отключения."
+L["Threshold Colors"] = true
 L["Ticks"] = "Тики"
 L["Tiers"] = "Ряды"
+L["Time Indicator Colors"] = true
 L["Time Remaining Reverse"] = "Оставшееся время, обратное"
 L["Time Remaining"] = "Оставшееся время"
 L["Time To Hold"] = "Время задержки"
