@@ -272,11 +272,19 @@ local function LoadSkin()
 	Reward:CreateBackdrop("Transparent")
 	S:HandleCloseButton(Reward.CloseButton)
 
-	--AZIL?
-	--[[
-	for _, Button in pairs(_G.RecruitAFriendRewardsFrame) do
+	-- Azil??
+	Reward:HookScript("OnShow", function(self)
+		for i = 1, self:GetNumChildren() do
+			local child = select(i, self:GetChildren())
+			local button = child and child.Button
+			if button and not button.IsSkinned then
+				button:StyleButton()
+				button.IconBorder:SetAlpha(0)
 
-	end]]
+				button.IsSkinned = true
+			end
+		end
+	end)
 end
 
 S:AddCallback("Friends", LoadSkin)
