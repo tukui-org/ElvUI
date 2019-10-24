@@ -5022,12 +5022,13 @@ local function GetUnitSettings(unit, name)
 			type = "toggle",
 			name = L["Use Class Color"]
 		}
+		--[[
 		group.args.castGroup.args.displayTarget = {
 			order = 4, -- stays at 4
 			type = "toggle",
 			name = L["Display Target"],
 			desc = L["Display the target of your current cast. Useful for mouseover casts."]
-		}
+		}]]
 	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
 		group.args.general.args.visibilityShortcut = {
 			order = 100,
