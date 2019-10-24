@@ -239,7 +239,7 @@ function A:UpdateAura(button, index)
 
 			button.statusBar:SetMinMaxValues(0, duration)
 		else
-			if not self.db.barNoDuration then button.statusBar:Hide() end
+			if not (self.db.barShow and self.db.barNoDuration) then button.statusBar:Hide() end
 
 			button.timeLeft = nil
 			button.time:SetText('')
