@@ -1345,6 +1345,7 @@ L["Use Default"] = "使用默认值"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "使用拖拽的方式调整过滤器优先级, 或者右键移除一个过滤器"
 L["Use Health Texture on Background"] = "对背景使用生命条材质"
 L["Use Instance ID or Name"] = "使用副本ID或名字"
+L["Use Indicator Color"] = true
 L["Use Map ID or Name"] = "使用地图ID或名字"
 L["Use Subzone Names"] = "使用子区域名字"
 L["Use Zone Names"] = "使用区域名字"
