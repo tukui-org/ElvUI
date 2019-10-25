@@ -272,19 +272,16 @@ local function LoadSkin()
 	Reward:CreateBackdrop("Transparent")
 	S:HandleCloseButton(Reward.CloseButton)
 
-	-- Azil??
-	Reward:HookScript("OnShow", function(self)
-		for i = 1, self:GetNumChildren() do
-			local child = select(i, self:GetChildren())
-			local button = child and child.Button
-			if button and not button.IsSkinned then
-				button:StyleButton()
-				button.IconBorder:SetAlpha(0)
-
-				button.IsSkinned = true
-			end
+	local function RAFRewards(self, rewards)
+		for reward in Reward.rewardPool:EnumerateActive() do
+			reward.Button.IconBorder:SetAlpha(0)
+			reward.Button.IconOverlay:SetAlpha(0)
 		end
-	end)
+	end
+
+	hooksecurefunc(Reward, 'UpdateRewards', RAFRewards)
+
+	RAFRewards() -- Because it's loaded already.. The securehook is for when it updates in game. Thanks for playing.
 end
 
 S:AddCallback("Friends", LoadSkin)
