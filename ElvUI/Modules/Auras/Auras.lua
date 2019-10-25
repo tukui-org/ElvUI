@@ -281,8 +281,10 @@ function A:UpdateAura(button, index)
 		if button.filter == "HARMFUL" then
 			local color = _G.DebuffTypeColor[dtype or "none"]
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
+			button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		else
 			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			button.statusBar.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 
 		button.texture:SetTexture(texture)
