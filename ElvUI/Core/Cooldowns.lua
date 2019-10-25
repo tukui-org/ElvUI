@@ -42,7 +42,7 @@ function E:Cooldown_OnUpdate(elapsed)
 				if useIndicatorColor then
 					self.text:SetFormattedText(gsub(E.TimeFormats[formatID][1], E.TimeFormats[formatID][3], indicatorColors[formatID]..E.TimeFormats[formatID][3]..FONT_COLOR_CODE_CLOSE), value1, value2)
 				else
-					self.text:SetFormattedText(E.TimeFormats[formatID][1], value1, value2)
+					self.text:SetFormattedText(E.TimeFormats[formatID][2], value1, value2)
 				end
 
 				self.text:SetTextColor(timeColors[formatID].r, timeColors[formatID].g, timeColors[formatID].b)
