@@ -1344,6 +1344,7 @@ L["Use Default"] = "Использовать умолчания"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "Используйте перетаскивание для смены приоритета или ПКМ для удаления фильтра."
 L["Use Health Texture on Background"] = "Использовать текстуру здоровья на фоне"
 L["Use Instance ID or Name"] = "Использовать название или ID инстанса"
+L["Use Indicator Color"] = true
 L["Use Map ID or Name"] = "Использовать название или ID карты"
 L["Use Zone Names"] = "Использовать названия зон"
 L["Use Portrait"] = "Отображать портрет"

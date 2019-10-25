@@ -61,6 +61,15 @@ local function BattleNetFrame_OnLeave(button)
 	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
+local function RAFRewards(self, rewards)
+	local Reward = _G.RecruitAFriendRewardsFrame
+
+	for reward in Reward.rewardPool:EnumerateActive() do
+		S:HandleIcon(reward.Button.Icon)
+		reward.Button.IconBorder:SetAlpha(0)
+	end
+end
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.friends ~= true then return end
 
@@ -192,7 +201,7 @@ local function LoadSkin()
 		S:HandleTab(_G["FriendsFrameTab"..i])
 	end
 
-	for i=1, 3 do
+	for i = 1, 3 do
 		SkinSocialHeaderTab(_G["FriendsTabHeaderTab"..i])
 	end
 
@@ -241,8 +250,25 @@ local function LoadSkin()
 
 	-- RecruitAFriend 8.2.5
 	local RAF = _G.RecruitAFriendFrame
-	S:HandleButton(RAF.SplashFrame.OKButton)
 	S:HandleButton(RAF.RecruitmentButton)
+
+	-- /run RecruitAFriendFrame:ShowSplashScreen()
+	local SplashFrame = RAF.SplashFrame
+	S:HandleButton(SplashFrame.OKButton)
+
+	if E.private.skins.parchmentRemover.enable then
+		SplashFrame.Background:SetColorTexture(unpack(E.media.bordercolor))
+
+		SplashFrame.PictureFrame:Hide()
+		SplashFrame.Bracket_TopLeft:Hide()
+		SplashFrame.Bracket_TopRight:Hide()
+		SplashFrame.Bracket_BottomRight:Hide()
+		SplashFrame.Bracket_BottomLeft:Hide()
+		SplashFrame.PictureFrame_Bracket_TopLeft:Hide()
+		SplashFrame.PictureFrame_Bracket_TopRight:Hide()
+		SplashFrame.PictureFrame_Bracket_BottomRight:Hide()
+		SplashFrame.PictureFrame_Bracket_BottomLeft:Hide()
+	end
 
 	local Reward = RAF.RewardClaiming
 	Reward:StripTextures()
@@ -272,19 +298,8 @@ local function LoadSkin()
 	Reward:CreateBackdrop("Transparent")
 	S:HandleCloseButton(Reward.CloseButton)
 
-	-- Azil??
-	Reward:HookScript("OnShow", function(self)
-		for i = 1, self:GetNumChildren() do
-			local child = select(i, self:GetChildren())
-			local button = child and child.Button
-			if button and not button.IsSkinned then
-				button:StyleButton()
-				button.IconBorder:SetAlpha(0)
-
-				button.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(Reward, 'UpdateRewards', RAFRewards)
+	RAFRewards() -- Because it's loaded already. The securehook is for when it updates in game. Thanks for playing.
 end
 
 S:AddCallback("Friends", LoadSkin)
