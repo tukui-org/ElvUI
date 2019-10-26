@@ -22,6 +22,8 @@ Removed the Frequent Updates option, it is now on by default.
 Blacklisted Lethargy debuff (fight or flight).  
 Essences from the Character and Inspect Info will now display the Essence quality color instead of type color.  
 For the german audience: Behebt einige Fehler im Zeit-Infotext, dass die Instanz Symbole nicht richtig angezeigt wurden.  
+Updated option layout for Available Tags. Thanks to Luckyone for helping us with this.  
+Skin the new RecruitAFriend Frame.  
 
 ___
 ### Version 11.24 [ October 8th 2019 ]
