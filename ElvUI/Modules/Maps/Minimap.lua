@@ -111,10 +111,8 @@ local menuList = {
 	end}
 }
 
---if(C_StorePublic.IsEnabled()) then
-	tinsert(menuList, {text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end})
---end
-tinsert(menuList, 	{text = _G.HELP_BUTTON, func = ToggleHelpFrame})
+tinsert(menuList, {text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end})
+tinsert(menuList, {text = _G.HELP_BUTTON, func = ToggleHelpFrame})
 
 function M:GetLocTextColor()
 	local pvpType = GetZonePVPInfo()
