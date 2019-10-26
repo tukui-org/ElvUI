@@ -78,6 +78,13 @@ local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 -- GLOBALS: Hex, _TAGS, ElvUF
 
 ------------------------------------------------------------------------
+--	Tag Extra Events
+------------------------------------------------------------------------
+
+ElvUF.Tags.SharedEvents.PLAYER_TALENT_UPDATE = true
+ElvUF.Tags.SharedEvents.QUEST_LOG_UPDATE = true
+
+------------------------------------------------------------------------
 --	Tags
 ------------------------------------------------------------------------
 
@@ -904,8 +911,7 @@ ElvUF.Tags.Methods['class'] = function(unit)
 	return UnitClass(unit)
 end
 
--- Azil, i'm unsure about the event.
-ElvUF.Tags.Events['specialization'] = 'UNIT_NAME_UPDATE ACTIVE_TALENT_GROUP_CHANGED'
+ElvUF.Tags.Events['specialization'] = 'PLAYER_TALENT_UPDATE'
 ElvUF.Tags.Methods['specialization'] = function(unit)
 	if (UnitIsPlayer(unit)) then
 		local currentSpec = GetSpecialization()
@@ -922,8 +928,6 @@ ElvUF.Tags.Methods['name:title'] = function(unit)
 		return UnitPVPName(unit)
 	end
 end
-
-ElvUF.Tags.SharedEvents.QUEST_LOG_UPDATE = true
 
 ElvUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'
 ElvUF.Tags.Methods['quest:title'] = function(unit)
