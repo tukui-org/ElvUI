@@ -21,6 +21,7 @@ local GetQuestGreenRange = GetQuestGreenRange
 local GetQuestLogTitle = GetQuestLogTitle
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetSpecialization = GetSpecialization
+local GetSpecializationInfo = GetSpecializationInfo
 local GetThreatStatusColor = GetThreatStatusColor
 local GetTime = GetTime
 local GetUnitSpeed = GetUnitSpeed
@@ -903,6 +904,18 @@ ElvUF.Tags.Methods['class'] = function(unit)
 	return UnitClass(unit)
 end
 
+-- Azil, i'm unsure about the event.
+ElvUF.Tags.Events['specialization'] = 'UNIT_NAME_UPDATE ACTIVE_TALENT_GROUP_CHANGED'
+ElvUF.Tags.Methods['specialization'] = function(unit)
+	if (UnitIsPlayer(unit)) then
+		local currentSpec = GetSpecialization()
+		if currentSpec then
+			local _, currentSpecName = GetSpecializationInfo(currentSpec)
+			return currentSpecName
+		end
+	end
+end
+
 ElvUF.Tags.Events['name:title'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['name:title'] = function(unit)
 	if (UnitIsPlayer(unit)) then
@@ -1173,6 +1186,7 @@ E.TagInfo = {
 	['affix'] = { category = 'Miscellanous', description = "Shows low level critter mobs" },
 	['smartclass'] = { category = 'Miscellanous', description = "Shows the class of a unit, if that unit is a player, or will show what type of creature, if the unit is a NPC" },
 	['class'] = { category = 'Miscellanous', description = "Shows the class of the unit, if that unit is a player" },
+	['specialization'] = { category = 'Miscellanous', description = "Shows your 'OWN' specialization as text" },
 	['difficulty'] = { category = 'Miscellanous', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 	['faction'] = { category = 'Miscellanous', description = "Shows 'Aliance' or 'Horde'" },
 	['plus'] = { category = 'Miscellanous', description = "Displays the character '+' if the unit is an elite or rare-elite" },
