@@ -6,6 +6,7 @@ Added Detached Power Bar Auto Hide when empty option (needs better locales).
 Added TutorialFrame skin.  
 Added Visual Aura Timer from Blazeflack to ElvUI.  
 Added an option to mark the most valuable quest reward with a gold coin.  
+Added new Tag: [specialization], which shows YOUR current spec as text.  
 
 **Bug Fixes:**  
 Fixed Pet Battle Nameplates, they weren't properly updating Health Bars.  
