@@ -132,6 +132,7 @@ local statusTable = {
 	DND = " |cffFFFFFF[|r|cffFF3333"..L["DND"].."|r|cffFFFFFF]|r"
 }
 
+-- Makro for get the client: /run for i,v in pairs(_G) do if type(i)=="string" and i:match("BNET_CLIENT_") then print(i,"=",v) end end
 local clientSorted = {}
 local clientTags = {
 	[BNET_CLIENT_WOW] = "WoW",
