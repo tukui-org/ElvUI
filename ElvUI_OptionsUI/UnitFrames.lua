@@ -156,7 +156,6 @@ end
 -----------------------------------------------------------------------
 local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	local config = {
-		order = 1100,
 		type = 'group',
 		name = L["Aura Bars"],
 		get = function(info) return E.db.unitframe.units[groupName].aurabar[info[#info]] end,
@@ -422,7 +421,6 @@ end
 
 local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupName, numUnits)
 	local config = {
-		order = auraType == 'buffs' and 600 or 700,
 		type = 'group',
 		name = auraType == 'buffs' and L["Buffs"] or L["Debuffs"],
 		get = function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end,
@@ -737,7 +735,6 @@ end
 
 local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
 	local config = {
-		order = 550,
 		type = 'group',
 		name = L["Fader"],
 		get = function(info) return E.db.unitframe.units[groupName].fader[info[#info]] end,
@@ -857,7 +854,6 @@ end
 
 local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits)
 	local config = {
-		order = 800,
 		type = 'group',
 		name = L["Castbar"],
 		get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
@@ -1148,7 +1144,6 @@ end
 
 local function GetOptionsTable_InformationPanel(updateFunc, groupName, numUnits)
 	local config = {
-		order = 4000,
 		type = 'group',
 		name = L["Information Panel"],
 		get = function(info) return E.db.unitframe.units[groupName].infoPanel[info[#info]] end,
@@ -1183,7 +1178,6 @@ end
 
 local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUnits)
 	local config = {
-		order = 100,
 		type = 'group',
 		name = L["Health"],
 		get = function(info) return E.db.unitframe.units[groupName].health[info[#info]] end,
@@ -1409,7 +1403,6 @@ end
 
 local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 	local config = {
-		order = 5100,
 		type = "group",
 		name = L["Custom Texts"],
 		args = {
@@ -1465,7 +1458,6 @@ end
 
 local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 	local config = {
-		order = 400,
 		type = 'group',
 		name = L["Name"],
 		get = function(info) return E.db.unitframe.units[groupName].name[info[#info]] end,
@@ -1517,7 +1509,6 @@ end
 
 local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 	local config = {
-		order = 400,
 		type = 'group',
 		name = L["Portrait"],
 		get = function(info) return E.db.unitframe.units[groupName].portrait[info[#info]] end,
@@ -1613,7 +1604,6 @@ end
 
 local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, numUnits, hasStrataLevel)
 	local config = {
-		order = 200,
 		type = 'group',
 		name = L["Power"],
 		get = function(info) return E.db.unitframe.units[groupName].power[info[#info]] end,
@@ -1825,7 +1815,6 @@ end
 
 local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 	local config = {
-		order = 5000,
 		type = 'group',
 		name = L["Raid Icon"],
 		get = function(info) return E.db.unitframe.units[groupName].raidicon[info[#info]] end,
@@ -1879,7 +1868,6 @@ end
 
 local function GetOptionsTable_ResurrectIcon(updateFunc, groupName, numUnits)
 	local config = {
-		order = 5001,
 		type = 'group',
 		name = L["Resurrect Icon"],
 		get = function(info) return E.db.unitframe.units[groupName].resurrectIcon[info[#info]] end,
@@ -1933,7 +1921,6 @@ end
 
 local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
 	local config = {
-		order = 5002,
 		type = 'group',
 		name = L["Summon Icon"],
 		get = function(info) return E.db.unitframe.units[groupName].summonIcon[info[#info]] end,
@@ -1987,7 +1974,6 @@ end
 
 local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 	local config = {
-		order = 800,
 		type = 'group',
 		name = L["RaidDebuff Indicator"],
 		get = function(info) return E.db.unitframe.units[groupName].rdebuffs[info[#info]] end,
@@ -2152,7 +2138,6 @@ end
 
 local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
 	local config = {
-		order = 900,
 		type = "group",
 		name = L["Ready Check Icon"],
 		get = function(info) return E.db.unitframe.units[groupName].readycheckIcon[info[#info]] end,
@@ -2206,7 +2191,6 @@ end
 
 local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 	local config = {
-		order = 101,
 		type = "group",
 		name = L["Heal Prediction"],
 		desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
@@ -2250,7 +2234,6 @@ end
 
 local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
 	local config = {
-		order = 703,
 		type = 'group',
 		name = L["RL Icon"],
 		get = function(info) return E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] end,
@@ -2283,7 +2266,6 @@ end
 
 local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 	local config = {
-		order = 600,
 		type = 'group',
 		name = L["Buff Indicator"],
 		get = function(info) return E.db.unitframe.units[groupName].buffIndicator[info[#info]] end,
@@ -2343,9 +2325,114 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 	return config
 end
 
+local function GetOptionsTable_PhaseIndicator(updateFunc, groupName, numGroup)
+	local config = {
+		type = 'group',
+		name = L["Phase Indicator"],
+		get = function(info) return E.db.unitframe.units[groupName].phaseIndicator[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].phaseIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
+		args = {
+			header = {
+				order = 1,
+				type = "header",
+				name = L["Phase Indicator"],
+			},
+			enable = {
+				order = 2,
+				type = "toggle",
+				name = L["Enable"],
+			},
+			scale = {
+				order = 3,
+				type = "range",
+				name = L["Scale"],
+				isPercent = true,
+				min = 0.5, max = 1.5, step = 0.01,
+			},
+			spacer = {
+				order = 4,
+				type = "description",
+				name = " ",
+			},
+			anchorPoint = {
+				order = 5,
+				type = "select",
+				name = L["Anchor Point"],
+				values = positionValues,
+			},
+			xOffset = {
+				order = 6,
+				type = "range",
+				name = L["X-Offset"],
+				min = -100, max = 100, step = 1,
+			},
+			yOffset = {
+				order = 7,
+				type = "range",
+				name = L["Y-Offset"],
+				min = -100, max = 100, step = 1,
+			},
+		},
+	}
+
+	return config
+end
+
+local function GetOptionsTable_PVPIcon(updateFunc, groupName, numGroup)
+	local config = {
+		type = 'group',
+		name = L["PvP & Prestige Icon"],
+		get = function(info) return E.db.unitframe.units[groupName].pvpIcon[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].pvpIcon[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
+		args = {
+			header = {
+				order = 1,
+				type = "header",
+				name = L["PvP & Prestige Icon"],
+			},
+			enable = {
+				order = 2,
+				type = "toggle",
+				name = L["Enable"],
+			},
+			scale = {
+				order = 3,
+				type = "range",
+				name = L["Scale"],
+				isPercent = true,
+				min = 0.1, max = 2, step = 0.01,
+			},
+			spacer = {
+				order = 4,
+				type = "description",
+				name = " ",
+			},
+			anchorPoint = {
+				order = 5,
+				type = "select",
+				name = L["Anchor Point"],
+				values = positionValues,
+			},
+			xOffset = {
+				order = 6,
+				type = "range",
+				name = L["X-Offset"],
+				min = -100, max = 100, step = 1,
+			},
+			yOffset = {
+				order = 7,
+				type = "range",
+				name = L["Y-Offset"],
+				min = -100, max = 100, step = 1,
+			},
+		},
+	}
+
+	return config
+end
+
 local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 	local config = {
-		order = 1021,
 		type = "group",
 		childGroups = "tabs",
 		name = L["Cutaway Bars"],
@@ -2466,7 +2553,7 @@ E.Options.args.unitframe = {
 			set = function(info, value) E.private.unitframe.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		generalOptionsGroup = {
-			order = 31,
+			order = 2,
 			type = "group",
 			name = L["General Options"],
 			childGroups = "tab",
@@ -3705,7 +3792,7 @@ E.Options.args.unitframe = {
 E.Options.args.unitframe.args.player = {
 	name = L["Player"],
 	type = 'group',
-	order = 300,
+	order = 3,
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.player[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.player[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
@@ -3821,24 +3908,7 @@ E.Options.args.unitframe.args.player = {
 				},
 			},
 		},
-		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'player'),
-		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player'),
-		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player'),
-		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'player'),
-		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'player', nil, true),
-		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'player'),
-		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'player'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'player'),
-		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'player'),
-		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'player'),
-		castbar = GetOptionsTable_Castbar(true, UF.CreateAndUpdateUF, 'player'),
-		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'player'),
-		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'player'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'player'),
-		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateUF, 'player'),
-		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateUF, 'player'),
 		classbar = {
-			order = 1000,
 			type = 'group',
 			name = L["Classbar"],
 			get = function(info) return E.db.unitframe.units.player.classbar[info[#info]] end,
@@ -4001,7 +4071,6 @@ E.Options.args.unitframe.args.player = {
 			},
 		},
 		RestIcon = {
-			order = 430,
 			type = 'group',
 			name = L["Rest Icon"],
 			get = function(info) return E.db.unitframe.units.player.RestIcon[info[#info]] end,
@@ -4100,7 +4169,6 @@ E.Options.args.unitframe.args.player = {
 			},
 		},
 		CombatIcon = {
-			order = 440,
 			type = 'group',
 			name = L["Combat Icon"],
 			get = function(info) return E.db.unitframe.units.player.CombatIcon[info[#info]] end,
@@ -4203,57 +4271,7 @@ E.Options.args.unitframe.args.player = {
 				},
 			},
 		},
-		pvpIcon = {
-			order = 450,
-			type = 'group',
-			name = L["PvP & Prestige Icon"],
-			get = function(info) return E.db.unitframe.units.player.pvpIcon[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units.player.pvpIcon[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
-			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["PvP & Prestige Icon"],
-				},
-				enable = {
-					order = 2,
-					type = "toggle",
-					name = L["Enable"],
-				},
-				scale = {
-					order = 3,
-					type = "range",
-					name = L["Scale"],
-					isPercent = true,
-					min = 0.1, max = 2, step = 0.01,
-				},
-				spacer = {
-					order = 4,
-					type = "description",
-					name = " ",
-				},
-				anchorPoint = {
-					order = 5,
-					type = "select",
-					name = L["Anchor Point"],
-					values = positionValues,
-				},
-				xOffset = {
-					order = 6,
-					type = "range",
-					name = L["X-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-				yOffset = {
-					order = 7,
-					type = "range",
-					name = L["Y-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-			},
-		},
 		pvpText = {
-			order = 460,
 			type = 'group',
 			name = L["PvP Text"],
 			get = function(info) return E.db.unitframe.units.player.pvp[info[#info]] end,
@@ -4279,6 +4297,23 @@ E.Options.args.unitframe.args.player = {
 				},
 			},
 		},
+		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'player'),
+		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'player'),
+		castbar = GetOptionsTable_Castbar(true, UF.CreateAndUpdateUF, 'player'),
+		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'player'),
+		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'player'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'player'),
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'player'),
+		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'player'),
+		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'player'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'player'),
+		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'player', nil, true),
+		pvpIcon = GetOptionsTable_PVPIcon(UF.CreateAndUpdateUF, 'player'),
+		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'player'),
+		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateUF, 'player'),
+		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateUF, 'player'),
 	},
 }
 
@@ -4286,7 +4321,7 @@ E.Options.args.unitframe.args.player = {
 E.Options.args.unitframe.args.target = {
 	name = L["TARGET"],
 	type = 'group',
-	order = 400,
+	order = 4,
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.target[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.target[info[#info]] = value; UF:CreateAndUpdateUF('target') end,
@@ -4405,120 +4440,24 @@ E.Options.args.unitframe.args.target = {
 				},
 			},
 		},
-		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'target'),
+		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'target'),
+		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'target'),
+		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'target'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'target'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'target'),
+		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'target'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'target'),
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'target'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'target'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'target'),
-		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'target', nil, true),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'target'),
+		phaseIndicator = GetOptionsTable_PhaseIndicator(UF.CreateAndUpdateUF, 'target'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'target'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'target'),
-		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'target'),
-		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'target'),
-		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'target'),
-		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'target'),
+		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'target', nil, true),
+		pvpIcon = GetOptionsTable_PVPIcon(UF.CreateAndUpdateUF, 'target'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'target'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'target'),
-		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateUF, 'target'),
 		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateUF, 'target'),
-		pvpIcon = {
-			order = 449,
-			type = 'group',
-			name = L["PvP & Prestige Icon"],
-			get = function(info) return E.db.unitframe.units.target.pvpIcon[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units.target.pvpIcon[info[#info]] = value; UF:CreateAndUpdateUF('target') end,
-			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["PvP & Prestige Icon"],
-				},
-				enable = {
-					order = 2,
-					type = "toggle",
-					name = L["Enable"],
-				},
-				scale = {
-					order = 3,
-					type = "range",
-					name = L["Scale"],
-					isPercent = true,
-					min = 0.1, max = 2, step = 0.01,
-				},
-				spacer = {
-					order = 4,
-					type = "description",
-					name = " ",
-				},
-				anchorPoint = {
-					order = 5,
-					type = "select",
-					name = L["Anchor Point"],
-					values = positionValues,
-				},
-				xOffset = {
-					order = 6,
-					type = "range",
-					name = L["X-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-				yOffset = {
-					order = 7,
-					type = "range",
-					name = L["Y-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-			},
-		},
-		phaseIndicator = {
-			order = 450,
-			type = 'group',
-			name = L["Phase Indicator"],
-			get = function(info) return E.db.unitframe.units.target.phaseIndicator[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units.target.phaseIndicator[info[#info]] = value; UF:CreateAndUpdateUF('target') end,
-			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Phase Indicator"],
-				},
-				enable = {
-					order = 2,
-					type = "toggle",
-					name = L["Enable"],
-				},
-				scale = {
-					order = 3,
-					type = "range",
-					name = L["Scale"],
-					isPercent = true,
-					min = 0.5, max = 1.5, step = 0.01,
-				},
-				spacer = {
-					order = 4,
-					type = "description",
-					name = " ",
-				},
-				anchorPoint = {
-					order = 5,
-					type = "select",
-					name = L["Anchor Point"],
-					values = positionValues,
-				},
-				xOffset = {
-					order = 6,
-					type = "range",
-					name = L["X-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-				yOffset = {
-					order = 7,
-					type = "range",
-					name = L["Y-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-			},
-		},
+		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateUF, 'target'),
 	},
 }
 
@@ -4526,7 +4465,7 @@ E.Options.args.unitframe.args.target = {
 E.Options.args.unitframe.args.targettarget = {
 	name = L["TargetTarget"],
 	type = 'group',
-	order = 500,
+	order = 5,
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.targettarget[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.targettarget[info[#info]] = value; UF:CreateAndUpdateUF('targettarget') end,
@@ -4634,17 +4573,17 @@ E.Options.args.unitframe.args.targettarget = {
 				},
 			},
 		},
+		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'targettarget'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettarget'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'targettarget'),
+		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'targettarget'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'targettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettarget'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'targettarget'),
-		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'targettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettarget'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'targettarget'),
-		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'targettarget'),
-		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'targettarget'),
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'targettarget'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettarget'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'targettarget'),
 	},
 }
 
@@ -4652,7 +4591,7 @@ E.Options.args.unitframe.args.targettarget = {
 E.Options.args.unitframe.args.targettargettarget = {
 	name = L["TargetTargetTarget"],
 	type = 'group',
-	order = 500,
+	order = 6,
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.targettargettarget[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.targettargettarget[info[#info]] = value; UF:CreateAndUpdateUF('targettargettarget') end,
@@ -4756,17 +4695,17 @@ E.Options.args.unitframe.args.targettargettarget = {
 				},
 			},
 		},
+		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'targettargettarget'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettargettarget'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'targettargettarget'),
+		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'targettargettarget'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'targettargettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettargettarget'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'targettargettarget'),
-		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'targettargettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettargettarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettargettarget'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'targettargettarget'),
-		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'targettargettarget'),
-		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'targettargettarget'),
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'targettargettarget'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettargettarget'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'targettargettarget'),
 	},
 }
 
@@ -4774,7 +4713,7 @@ E.Options.args.unitframe.args.targettargettarget = {
 E.Options.args.unitframe.args.focus = {
 	name = L["Focus"],
 	type = 'group',
-	order = 600,
+	order = 7,
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.focus[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.focus[info[#info]] = value; UF:CreateAndUpdateUF('focus') end,
@@ -4878,20 +4817,20 @@ E.Options.args.unitframe.args.focus = {
 				},
 			},
 		},
+		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'pet'),
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateUF, 'pet'),
-		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'pet'),
+		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'pet'),
+		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'pet'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pet'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'pet'),
+		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'pet'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'pet'),
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'pet'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pet'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'pet'),
-		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pet'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pet'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'pet'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'pet'),
-		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'pet'),
-		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'pet'),
-		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'pet'),
-		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'pet'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'pet'),
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pet'),
 	},
 }
 
@@ -4899,7 +4838,7 @@ E.Options.args.unitframe.args.focus = {
 E.Options.args.unitframe.args.pettarget = {
 	name = L["PetTarget"],
 	type = 'group',
-	order = 900,
+	order = 8,
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.pettarget[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.pettarget[info[#info]] = value; UF:CreateAndUpdateUF('pettarget') end,
@@ -5003,16 +4942,16 @@ E.Options.args.unitframe.args.pettarget = {
 				},
 			},
 		},
+		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'pettarget'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pettarget'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'pettarget'),
+		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'pettarget'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'pettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pettarget'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'pettarget'),
-		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pettarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'pettarget'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'pettarget'),
-		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'pettarget'),
-		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'pettarget'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'pettarget')
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pettarget'),
 	},
 }
 
@@ -5357,7 +5296,7 @@ E.Options.args.unitframe.args.arena = {
 E.Options.args.unitframe.args.party = {
 	name = L["PARTY"],
 	type = 'group',
-	order = 1100,
+	order = 9,
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.party[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.party[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('party') end,
@@ -5393,20 +5332,19 @@ E.Options.args.unitframe.args.party = {
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'party', true); end,
 		},
-		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'party'),
 		generalGroup = {
-			order = 6,
+			order = 5,
 			type = 'group',
 			name = L["General"],
 			args = {
 				header = {
-					order = 1,
+					order = 0,
 					type = "header",
 					name = L["General"],
 				},
 				hideonnpc = {
 					type = 'toggle',
-					order = 3,
+					order = 1,
 					name = L["Text Toggle On NPC"],
 					desc = L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."],
 					get = function(info) return E.db.unitframe.units.party.power.hideonnpc end,
@@ -5419,26 +5357,26 @@ E.Options.args.unitframe.args.party = {
 					values = threatValues,
 				},
 				orientation = {
-					order = 8,
+					order = 3,
 					type = "select",
 					name = L["Frame Orientation"],
 					desc = L["Set the orientation of the UnitFrame."],
 					values = orientationValues,
 				},
 				disableMouseoverGlow = {
-					order = 9,
+					order = 4,
 					type = "toggle",
 					name = L["Block Mouseover Glow"],
 					desc = L["Forces Mouseover Glow to be disabled for these frames"],
 				},
 				disableTargetGlow = {
-					order = 10,
+					order = 5,
 					type = "toggle",
 					name = L["Block Target Glow"],
 					desc = L["Forces Target Glow to be disabled for these frames"],
 				},
 				positionsGroup = {
-					order = 100,
+					order = 6,
 					name = L["Size and Positions"],
 					type = 'group',
 					guiInline = true,
@@ -5472,7 +5410,7 @@ E.Options.args.unitframe.args.party = {
 							values = growthDirectionValues,
 						},
 						numGroups = {
-							order = 7,
+							order = 5,
 							type = 'range',
 							name = L["Number of Groups"],
 							min = 1, max = 8, step = 1,
@@ -5486,7 +5424,7 @@ E.Options.args.unitframe.args.party = {
 								end,
 						},
 						groupsPerRowCol = {
-							order = 8,
+							order = 6,
 							type = 'range',
 							name = L["Groups Per Row/Column"],
 							min = 1, max = 8, step = 1,
@@ -5500,19 +5438,19 @@ E.Options.args.unitframe.args.party = {
 							end,
 						},
 						horizontalSpacing = {
-							order = 9,
+							order = 7,
 							type = 'range',
 							name = L["Horizontal Spacing"],
 							min = -1, max = 50, step = 1,
 						},
 						verticalSpacing = {
-							order = 10,
+							order = 8,
 							type = 'range',
 							name = L["Vertical Spacing"],
 							min = -1, max = 50, step = 1,
 						},
 						groupSpacing = {
-							order = 11,
+							order = 9,
 							type = "range",
 							name = L["Group Spacing"],
 							desc = L["Additional spacing between each individual group."],
@@ -5521,7 +5459,7 @@ E.Options.args.unitframe.args.party = {
 					},
 				},
 				visibilityGroup = {
-					order = 200,
+					order = 7,
 					name = L["Visibility"],
 					type = 'group',
 					guiInline = true,
@@ -5553,7 +5491,7 @@ E.Options.args.unitframe.args.party = {
 					},
 				},
 				sortingGroup = {
-					order = 300,
+					order = 8,
 					type = 'group',
 					guiInline = true,
 					name = L["Grouping & Sorting"],
@@ -5614,20 +5552,7 @@ E.Options.args.unitframe.args.party = {
 				},
 			},
 		},
-		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'party'),
-		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'party'),
-		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'party'),
-		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'party'),
-		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'party'),
-		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party'),
-		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'party'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'party'),
-		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
-		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
-		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'party'),
-		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateHeaderGroup, 'party'),
 		petsGroup = {
-			order = 850,
 			type = 'group',
 			name = L["Party Pets"],
 			get = function(info) return E.db.unitframe.units.party.petsGroup[info[#info]] end,
@@ -5716,7 +5641,6 @@ E.Options.args.unitframe.args.party = {
 			},
 		},
 		targetsGroup = {
-			order = 900,
 			type = 'group',
 			name = L["Party Targets"],
 			get = function(info) return E.db.unitframe.units.party.targetsGroup[info[#info]] end,
@@ -5804,60 +5728,25 @@ E.Options.args.unitframe.args.party = {
 				},
 			},
 		},
+		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'party'),
+		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
+		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'party'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'party'),
+		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'party'),
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'party'),
+		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'party'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'party'),
+		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party'),
+		phaseIndicator = GetOptionsTable_PhaseIndicator(UF.CreateAndUpdateHeaderGroup, 'party'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'party'),
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'party'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
+		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateHeaderGroup, 'party'),
+		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'party'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'party'),
-		phaseIndicator = {
-			order = 5005,
-			type = 'group',
-			name = L["Phase Indicator"],
-			get = function(info) return E.db.unitframe.units.party.phaseIndicator[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units.party.phaseIndicator[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('party') end,
-			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Phase Indicator"],
-				},
-				enable = {
-					order = 2,
-					type = "toggle",
-					name = L["Enable"],
-				},
-				scale = {
-					order = 3,
-					type = "range",
-					name = L["Scale"],
-					isPercent = true,
-					min = 0.5, max = 1.5, step = 0.01,
-				},
-				spacer = {
-					order = 4,
-					type = "description",
-					name = " ",
-				},
-				anchorPoint = {
-					order = 5,
-					type = "select",
-					name = L["Anchor Point"],
-					values = positionValues,
-				},
-				xOffset = {
-					order = 6,
-					type = "range",
-					name = L["X-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-				yOffset = {
-					order = 7,
-					type = "range",
-					name = L["Y-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-			},
-		},
 	},
 }
 
@@ -5865,7 +5754,7 @@ E.Options.args.unitframe.args.party = {
 E.Options.args.unitframe.args.raid = {
 	name = L["Raid"],
 	type = 'group',
-	order = 1100,
+	order = 10,
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.raid[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.raid[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
@@ -5901,9 +5790,8 @@ E.Options.args.unitframe.args.raid = {
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'raid', true); end,
 		},
-		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		generalGroup = {
-			order = 6,
+			order = 5,
 			type = 'group',
 			name = L["General"],
 			args = {
@@ -6123,72 +6011,25 @@ E.Options.args.unitframe.args.raid = {
 				},
 			},
 		},
-		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid'),
-		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raid'),
-		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'raid'),
-		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid'),
-		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid'),
-		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'raid'),
-		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'),
-		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'),
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'raid'),
-		phaseIndicator = {
-			order = 5006,
-			type = 'group',
-			name = L["Phase Indicator"],
-			get = function(info) return E.db.unitframe.units.raid.phaseIndicator[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units.raid.phaseIndicator[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
-			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Phase Indicator"],
-				},
-				enable = {
-					order = 2,
-					type = "toggle",
-					name = L["Enable"],
-				},
-				scale = {
-					order = 3,
-					type = "range",
-					name = L["Scale"],
-					isPercent = true,
-					min = 0.5, max = 1.5, step = 0.01,
-				},
-				spacer = {
-					order = 4,
-					type = "description",
-					name = " ",
-				},
-				anchorPoint = {
-					order = 5,
-					type = "select",
-					name = L["Anchor Point"],
-					values = positionValues,
-				},
-				xOffset = {
-					order = 6,
-					type = "range",
-					name = L["X-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-				yOffset = {
-					order = 7,
-					type = "range",
-					name = L["Y-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-			},
-		},
-		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'),
+		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		phaseIndicator = GetOptionsTable_PhaseIndicator(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raid'),
-		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateHeaderGroup, 'raid'),
 	},
 }
 
@@ -6196,7 +6037,7 @@ E.Options.args.unitframe.args.raid = {
 E.Options.args.unitframe.args.raid40 = {
 	name = L["Raid-40"],
 	type = 'group',
-	order = 1100,
+	order = 11,
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.raid40[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.raid40[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raid40') end,
@@ -6232,7 +6073,6 @@ E.Options.args.unitframe.args.raid40 = {
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'raid40', true); end,
 		},
-		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		generalGroup = {
 			order = 6,
 			type = 'group',
@@ -6454,78 +6294,31 @@ E.Options.args.unitframe.args.raid40 = {
 				},
 			},
 		},
-		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		phaseIndicator = {
-			order = 5007,
-			type = 'group',
-			name = L["Phase Indicator"],
-			get = function(info) return E.db.unitframe.units.raid40.phaseIndicator[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units.raid40.phaseIndicator[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raid40') end,
-			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Phase Indicator"],
-				},
-				enable = {
-					order = 2,
-					type = "toggle",
-					name = L["Enable"],
-				},
-				scale = {
-					order = 3,
-					type = "range",
-					name = L["Scale"],
-					isPercent = true,
-					min = 0.5, max = 1.5, step = 0.01,
-				},
-				spacer = {
-					order = 4,
-					type = "description",
-					name = " ",
-				},
-				anchorPoint = {
-					order = 5,
-					type = "select",
-					name = L["Anchor Point"],
-					values = positionValues,
-				},
-				xOffset = {
-					order = 6,
-					type = "range",
-					name = L["X-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-				yOffset = {
-					order = 7,
-					type = "range",
-					name = L["Y-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-			},
-		},
-		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		phaseIndicator = GetOptionsTable_PhaseIndicator(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 	},
 }
 
 --Raid Pet Frames
 E.Options.args.unitframe.args.raidpet = {
-	order = 1200,
+	order = 12,
 	type = 'group',
 	name = L["Raid Pet"],
 	childGroups = "tab",
@@ -6563,7 +6356,6 @@ E.Options.args.unitframe.args.raidpet = {
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'raidpet', true); end,
 		},
-		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		generalGroup = {
 			order = 6,
 			type = 'group',
@@ -6766,17 +6558,18 @@ E.Options.args.unitframe.args.raidpet = {
 				},
 			},
 		},
-		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),
+		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
+		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),
+		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
+		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
+		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
-		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),
-		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),
-		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
-		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
+		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 	},
 }
 
@@ -6784,7 +6577,7 @@ E.Options.args.unitframe.args.raidpet = {
 E.Options.args.unitframe.args.tank = {
 	name = L["TANK"],
 	type = 'group',
-	order = 1300,
+	order = 13,
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.tank[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.tank[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('tank') end,
@@ -6910,13 +6703,13 @@ E.Options.args.unitframe.args.tank = {
 				name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'tank'),
 			},
 		},
-		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'tank'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'tank'),
-		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'tank'),
-		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'tank'),
-		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'tank'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'tank'),
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'tank'),
+		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'tank'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'tank'),
+		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'tank'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'tank'),
+		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'tank'),
+		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'tank'),
 	},
 }
 E.Options.args.unitframe.args.tank.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
@@ -6928,7 +6721,7 @@ E.Options.args.unitframe.args.tank.args.targetsGroup.args.name.set = function(in
 E.Options.args.unitframe.args.assist = {
 	name = L["Assist"],
 	type = 'group',
-	order = 1300,
+	order = 14,
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.assist[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.assist[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('assist') end,
@@ -7054,13 +6847,13 @@ E.Options.args.unitframe.args.assist = {
 				name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'assist'),
 			},
 		},
-		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'assist'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'assist'),
-		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'assist'),
-		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'assist'),
-		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'assist'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'assist'),
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'assist'),
+		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'assist'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'assist'),
+		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'assist'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'assist'),
+		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'assist'),
+		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'assist'),
 	},
 }
 E.Options.args.unitframe.args.assist.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
