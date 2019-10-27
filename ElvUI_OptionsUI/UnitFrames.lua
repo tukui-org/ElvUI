@@ -900,17 +900,11 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				name = L["Spark"],
 				desc = L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."],
 			},
-			insideInfoPanel = {
-				order = 9,
-				name = L["Inside Information Panel"],
-				desc = L["Display the castbar inside the information panel, the icon will be displayed outside the main unitframe."],
-				type = "toggle",
-				disabled = function() return not E.db.unitframe.units[groupName].infoPanel or not E.db.unitframe.units[groupName].infoPanel.enable end,
-			},
 			latency = {
 				order = 10,
 				name = L["Latency"],
 				type = 'toggle',
+				hidden = function() return groupName ~= 'player' end,
 			}, -- Keep format on 15, there will be other checkboxes only for Player.
 			format = {
 				order = 11,
@@ -929,6 +923,94 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
 				type = "range",
 				min = 0, max = 10, step = .1,
+			},
+			overlayOnFrame = {
+				order = 3,
+				type = 'select',
+				name = L['Overlay Panel'],
+				desc = L['Choose which panel to overlay the castbar on.'],
+				values = {
+					["Health"] = L["Health"],
+					["Power"] = L["Power"],
+					["InfoPanel"] = L["Information Panel"],
+					["None"] = L["None"],
+				},
+			},
+			textGroup = {
+				order = 16,
+				type = "group",
+				name = L['Text Options'],
+				guiInline = true,
+				get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
+				set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+				args = {
+					hidetext = {
+						order = 1,
+						type = 'toggle',
+						name = L['Hide Text'],
+						desc = L['Hide Castbar text. Useful if your power height is very low or if you use power offset.'],
+					},
+					textColor = {
+						order = 2,
+						type = "color",
+						name = L["COLOR"],
+						hasAlpha = true,
+						get = function(info)
+							local c = E.db.unitframe.units[groupName].castbar.textColor
+							local d = P.unitframe.units[groupName].castbar.textColor
+							return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a
+						end,
+						set = function(info, r, g, b, a)
+							local c = E.db.unitframe.units[groupName].castbar.textColor
+							c.r, c.g, c.b, c.a = r, g, b, a
+							updateFunc(UF, groupName, numUnits)
+						end,
+					},
+					textSettings = {
+						order = 2,
+						type = "group",
+						name = L['Text Options'],
+						guiInline = true,
+						get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
+						set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+						args = {
+							xOffsetText = {
+								order = 1,
+								type = 'range',
+								name = L['X-Offset'],
+								min = -100, max = 100, step = 1,
+							},
+							yOffsetText = {
+								order = 2,
+								type = 'range',
+								name = L['Y-Offset'],
+								min = -50, max = 50, step = 1,
+							},
+						},
+					},
+					timeSettings = {
+						order = 3,
+						type = "group",
+						name = L['Time Options'],
+						guiInline = true,
+						get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
+						set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+						args = {
+							xOffsetTime = {
+								order = 1,
+								type = 'range',
+								name = L['X-Offset'],
+								min = -100, max = 100, step = 1,
+							},
+							yOffsetTime = {
+								order = 2,
+								type = 'range',
+								name = L['Y-Offset'],
+								min = -50, max = 50, step = 1,
+							},
+						},
+					},
+				},
 			},
 			iconSettings = {
 				order = 17,
