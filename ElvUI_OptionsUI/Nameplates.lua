@@ -3809,6 +3809,7 @@ local function GetUnitSettings(unit, name)
 						type = 'toggle',
 						order = 2,
 						name = L["Desaturate Icon"],
+						desc = L["Set auras that are not from you to desaturad."],
 					},
 					numAuras = {
 						order = 3,
@@ -4165,6 +4166,7 @@ local function GetUnitSettings(unit, name)
 						type = 'toggle',
 						order = 2,
 						name = L["Desaturate Icon"],
+						desc = L["Set auras that are not from you to desaturad."],
 					},
 					numAuras = {
 						order = 3,
