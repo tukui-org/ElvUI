@@ -33,7 +33,7 @@ function UF:Configure_Portrait(frame, dontHide)
 		frame.Portrait:ClearAllPoints()
 		frame.Portrait.backdrop:Hide()
 	end
-	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
+	frame.Portrait = db.portrait.style == '3D' and frame.Portrait3D or frame.Portrait2D
 
 	local portrait = frame.Portrait
 	if frame.USE_PORTRAIT then
@@ -44,10 +44,10 @@ function UF:Configure_Portrait(frame, dontHide)
 		portrait:ClearAllPoints()
 		portrait.backdrop:ClearAllPoints()
 		if frame.USE_PORTRAIT_OVERLAY then
-			if db.portrait.style == '2D' then
-				portrait:SetParent(frame.Health)
-			else
+			if db.portrait.style == '3D' then
 				portrait:SetFrameLevel(frame.Health:GetFrameLevel())
+			else
+				portrait:SetParent(frame.Health)
 			end
 
 			portrait:SetAlpha(db.portrait.overlayAlpha)
@@ -81,10 +81,10 @@ function UF:Configure_Portrait(frame, dontHide)
 			end
 			portrait.backdrop:Show()
 
-			if db.portrait.style == '2D' then
-				portrait:SetParent(frame)
-			else
+			if db.portrait.style == '3D' then
 				portrait:SetFrameLevel(frame.Health:GetFrameLevel())
+			else
+				portrait:SetParent(frame)
 			end
 
 			if frame.ORIENTATION == "LEFT" then
@@ -134,6 +134,12 @@ function UF:PortraitUpdate(unit, event, shouldUpdate)
 		self:SetPosition((facing > 0 and -db.xOffset) or db.xOffset, db.xOffset, db.yOffset)
 		self:SetCamDistanceScale(db.camDistanceScale)
 		self:SetFacing(facing - rotation)
+	end
+
+	if portrait.style == 'Class' then
+		self:SetTexture('Interface/WorldStateFrame/Icons-Classes')
+		self:SetTexCoord(unpack(CLASS_ICON_TCOORDS[select(2, UnitClass(unit))]))
+		self:SetAllPoints(self.backdrop)
 	end
 end
 

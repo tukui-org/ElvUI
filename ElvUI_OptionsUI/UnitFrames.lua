@@ -1898,6 +1898,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 				values = {
 					['2D'] = L["2D"],
 					['3D'] = L["3D"],
+					['Class'] = L["Class"],
 				},
 			},
 			width = {
