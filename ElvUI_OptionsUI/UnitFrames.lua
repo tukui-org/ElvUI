@@ -913,7 +913,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				type = 'toggle',
 			}, -- Keep format on 15, there will be other checkboxes only for Player.
 			format = {
-				order = 15,
+				order = 11,
 				type = 'select',
 				name = L["Format"],
 				values = {
@@ -924,7 +924,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				},
 			},
 			timeToHold = {
-				order = 16,
+				order = 12,
 				name = L["Time To Hold"],
 				desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
 				type = "range",
@@ -991,7 +991,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				},
 			},
 			strataAndLevel = {
-				order = 14,
+				order = 18,
 				type = "group",
 				name = L["Strata and Level"],
 				get = function(info) return E.db.unitframe.units[groupName].castbar.strataAndLevel[info[#info]] end,
@@ -1040,7 +1040,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 
 	if hasTicks then
 		config.args.displayTarget = {
-			order = 11, -- Always control the order
+			order = 13, -- Always control the order
 			type = 'toggle',
 			name = L["Display Target"],
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
