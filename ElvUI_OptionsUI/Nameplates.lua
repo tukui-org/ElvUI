@@ -3805,8 +3805,13 @@ local function GetUnitSettings(unit, name)
 						name = L["Enable"],
 						type = "toggle"
 					},
-					numAuras = {
+					desaturate = {
+						type = 'toggle',
 						order = 2,
+						name = L["Desaturate Icon"],
+					},
+					numAuras = {
+						order = 3,
 						name = L["# Displayed Auras"],
 						--desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
@@ -3815,7 +3820,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					size = {
-						order = 3,
+						order = 4,
 						name = L["Icon Size"],
 						type = "range",
 						min = 6,
@@ -4156,8 +4161,13 @@ local function GetUnitSettings(unit, name)
 						name = L["Enable"],
 						type = "toggle"
 					},
-					numAuras = {
+					desaturate = {
+						type = 'toggle',
 						order = 2,
+						name = L["Desaturate Icon"],
+					},
+					numAuras = {
+						order = 3,
 						name = L["# Displayed Auras"],
 						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
@@ -4166,7 +4176,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					size = {
-						order = 3,
+						order = 4,
 						name = L["Icon Size"],
 						type = "range",
 						min = 6,

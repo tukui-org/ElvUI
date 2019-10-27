@@ -654,6 +654,7 @@ P.nameplates = {
 			},
 			buffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -681,6 +682,7 @@ P.nameplates = {
 			},
 			debuffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -855,6 +857,7 @@ P.nameplates = {
 			},
 			buffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -882,6 +885,7 @@ P.nameplates = {
 			},
 			debuffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -1044,6 +1048,7 @@ P.nameplates = {
 			buffs = {
 				enable = true,
 				numAuras = 5,
+				desaturate = true,
 				size = 27,
 				width = 18,
 				height = 18,
@@ -1071,6 +1076,7 @@ P.nameplates = {
 			debuffs = {
 				enable = true,
 				numAuras = 5,
+				desaturate = true,
 				size = 27,
 				width = 18,
 				height = 18,
@@ -1206,6 +1212,7 @@ P.nameplates = {
 			},
 			buffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -1233,6 +1240,7 @@ P.nameplates = {
 			},
 			debuffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -1418,6 +1426,7 @@ P.nameplates = {
 			},
 			buffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -1444,6 +1453,7 @@ P.nameplates = {
 			},
 			debuffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
