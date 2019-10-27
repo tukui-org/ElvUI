@@ -1195,11 +1195,8 @@ L["Testing:"] = "测试:"
 L["Text Color"] = "文字颜色"
 L["Text Font Size"] = "字体大小"
 L["Text Format"] = "文字格式"
-L["Text Position"] = "文字位置"
 L["Text Threshold"] = "文本阈值"
 L["Text Toggle On NPC"] = "NPC文字显示开关"
-L["Text xOffset"] = "文字X轴偏移"
-L["Text yOffset"] = "文字Y轴偏移"
 L["Text"] = "文本"
 L["Texture"] = "材质"
 L["Textured Icon"] = "图标"
@@ -1398,10 +1395,8 @@ L["Will show Buffs in the Debuff position when there are no Debuffs active, or v
 L["Word Wrap"] = "自动换行"
 L["World Map Coordinates"] = "世界地图坐标"
 L["Wrap After"] = "每行行数"
-L["X-Offset"] = "X偏移"
-L["xOffset"] = "X轴偏移"
-L["Y-Offset"] = "Y偏移"
-L["yOffset"] = "Y轴偏移"
+L["X-Offset"] = "X轴偏移"
+L["Y-Offset"] = "Y轴偏移"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "|cffD3CF00\"%s\"|r 设置将从你当前配置文件 |cff4beb2c\"%s\"|r 导出到 |cff4beb2c\"%s\"|r 配置文件中. 你确定吗?"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "|cffD3CF00\"%s\"|r 设置将从 |cff4beb2c\"%s\"|r 配置文件导入到你当前配置文件 |cff4beb2c\"%s\"|r 中. 你确定吗?"
 L["You cannot copy settings from the same unit."] = "你不能从相同的单位复制设定"
@@ -1481,30 +1476,6 @@ L[ [=[This works like a macro, you can run different situations to get the actio
 L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
  Example: '[combat] show;hide']=] ] = [=[和宏写法类似, 能根据不同姿态切换动作条显示或隐藏.
  例如: '[combat] show;hide']=]
-
-L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
-
-例如:
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-生命条 / 能量条 格式:
-'current' - 当前值
-'percent' - 百分比
-'current-max' - 当前值 - 最大值. 当当前值等于最大值时只显示最大值
-'current-percent' - 当前值 - 百分比. 当百分比为100%时只显示当前值
-'current-max-percent' - 当前值 - 最大值 - 百分比. 当当前值不等于最大值时显示
-'deficit' - 失去值. 没有失去值时不显示
-
-姓名格式:
-'name:veryshort' - Name restricted to 5 characters
-'name:short' - 姓名显示限制于10字节内
-'name:medium' -姓名显示限制于15字节内
-'name:long' - 姓名显示限制于20字节内
-'name:short:translit' - Name restricted to 10 characters with transliteration
-
-空白则为禁用. 如需技术支持请至https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
 

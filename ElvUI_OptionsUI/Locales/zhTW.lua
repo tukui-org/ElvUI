@@ -1196,11 +1196,8 @@ L["Testing:"] = "測試："
 L["Text Color"] = "文字顔色"
 L["Text Font Size"] = "字體大小"
 L["Text Format"] = "文字格式"
-L["Text Position"] = "文字位置"
 L["Text Threshold"] = "文本閾值"
 L["Text Toggle On NPC"] = "NPC 文字顯示開關"
-L["Text xOffset"] = "文字X軸偏移"
-L["Text yOffset"] = "文字Y軸偏移"
 L["Text"] = "文本"
 L["Texture"] = "材質"
 L["Textured Icon"] = "圖示紋理"
@@ -1400,9 +1397,7 @@ L["Word Wrap"] = "自動換行"
 L["World Map Coordinates"] = "世界地圖坐標"
 L["Wrap After"] = "每行光環數"
 L["X-Offset"] = "X軸偏移"
-L["xOffset"] = "X軸偏移"
 L["Y-Offset"] = "Y軸偏移"
-L["yOffset"] = "Y軸偏移"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "你將進行 |cffD3CF00\"%s\"|r 的設定拷貝, 從當前配置文件 |cff4beb2c\"%s\"|r 到配置文件 |cff4beb2c\"%s\"|r. 你確定麼?"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "你將進行 |cffD3CF00\"%s\"|r 的設定拷貝, 從配置文件 |cff4beb2c\"%s\"|r 到你當前配置文件 |cff4beb2c\"%s\"|r. 你確定麼?"
 L["You cannot copy settings from the same unit."] = "你不能從相同的單位複制設定"
@@ -1474,30 +1469,6 @@ L["SEARCH_SYNTAX_DESC"] = [=[因為新增加的 LibItemSearch, 你現在可以�
     • keystone : 傳奇地城鑰石.
     • followers : 追隨者物品
     • champions : 部隊裝備.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
-
-範例：
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-生命/能量值格式：
-'current' - 目前數值
-'percent' - 百分比
-'current-max' - 目前數值 - 最大值, 當兩者相同時, 僅會顯示最大值
-'current-percent' - 目前數值 - 百分比
-'current-max-percent' - 目前數值 - 最大值 - 百分比, 當目前數值等同於最大值時, 僅會顯示最大值
-'deficit' - 顯示損失數值, 若未損失生命/能量值, 將不予顯示
-
-名稱格式：
-'name:veryshort' - Name restricted to 5 characters
-'name:short' - 名稱上限為 10 個字元
-'name:medium' - 名稱上限為 15 個字元
-'name:long' - 名稱上限為 20 個字元
-'name:short:translit' - Name restricted to 10 characters with transliteration
-
-若要停用此功能, 此欄位請留空。如需更多資訊, 請至 https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[此功能與巨集概念類似, 可根據不同情況切換至不同的快捷列設定。

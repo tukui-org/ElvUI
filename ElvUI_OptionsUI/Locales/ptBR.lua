@@ -1195,11 +1195,8 @@ L["Testing:"] = "Testar:"
 L["Text Color"] = "Cor do Texto"
 L["Text Font Size"] = true
 L["Text Format"] = "Formato de texto"
-L["Text Position"] = "Posição do Texto"
 L["Text Threshold"] = "Limiar do Texto"
 L["Text Toggle On NPC"] = "Texto ligado no PNJ"
-L["Text xOffset"] = "Distãncia X do Texto"
-L["Text yOffset"] = "Distância Y do Texto"
 L["Text"] = "Texto"
 L["Texture"] = true
 L["Textured Icon"] = "Ícone Texturizado"
@@ -1399,10 +1396,8 @@ L["Word Wrap"] = true
 L["World Map Coordinates"] = true
 L["WoW Token:"] = true
 L["Wrap After"] = "Enrolar depois"
-L["X-Offset"] = true
-L["xOffset"] = "Distância X"
-L["Y-Offset"] = true
-L["yOffset"] = "Distância Y"
+L["X-Offset"] = "Distância X"
+L["Y-Offset"] = "Distância Y"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You cannot copy settings from the same unit."] = "Você não pode copiar as configurações da mesma unidade."
@@ -1474,30 +1469,6 @@ The following search keywords can also be used:
     • keystone : Mythic Keystone.
     • followers : Follower items.
     • champions : Champion equipment.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[Fornece uma sting para mudar o formato do texto.
-
-Examples:
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-Formatos de Vida / Poder:
-'current' - Quantidade Actual
-'percent' - Quantidade de Percentagem
-'current-max' - Quantidade actual seguida pela quantidade máxima, será exibida apenas a máxima se a actual for igual à máxima
-'current-percent' - Quantidade actual seguida pela quantidade em percentagem, será exibida apenas a máxima se a actual for igual à máxima
-'current-max-percent' - Quantidade actual, quantidade máxima seguida por quantidade em percentagem, será exibida apenas a máxima se a actual for igual à máxima
-'deficit' - Exibir o valor em falta, nao será exibido nada se não houver nada em falta
-
-Formato de Nomes:
-'name:veryshort' - Name restricted to 5 characters
-'name:short' - Nome restringido a 10 caracteres
-'name:medium' - Nome restringido a 15 caracteres
-'name:long' - Nome restringido a 20 caracteres
-'name:short:translit' - Name restricted to 10 characters with transliteration
-
-Para desactivar deixe o espaço em branco, se precisar de mais informações visite o site https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
 Example: '[combat] 2;']=] ] = [=[Isto funciona como uma macro, você pode executar várias situações para que a barra de ação pagine de forma diferente.

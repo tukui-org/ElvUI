@@ -1194,11 +1194,8 @@ L["Testing:"] = "Testeurs :"
 L["Text Color"] = "Couleur du texte"
 L["Text Font Size"] = "Police d'écriture du texte"
 L["Text Format"] = "Format du texte"
-L["Text Position"] = "Position du texte"
 L["Text Threshold"] = "Seuil du texte"
 L["Text Toggle On NPC"] = "Afficher le texte des PNJ"
-L["Text xOffset"] =  "Décalage de l'axe X du texte"
-L["Text yOffset"] = "Décalage de l'axe Y du texte"
 L["Text"] = "Texte"
 L["Texture"] = true
 L["Textured Icon"] = "Texture de l'icône"
@@ -1397,10 +1394,8 @@ L["Will show Buffs in the Debuff position when there are no Debuffs active, or v
 L["Word Wrap"] = "Césure des mots"
 L["World Map Coordinates"] = "Coordonnées de la carte du Monde"
 L["Wrap After"] = "Retour à la ligne après"
-L["X-Offset"] = "Décalage X"
-L["xOffset"] = "Décalage de l'axe X"
-L["Y-Offset"] = "Décalage Y"
-L["yOffset"] = "Décalage de l'axe Y"
+L["X-Offset"] = "Décalage de l'axe X"
+L["Y-Offset"] = "Décalage de l'axe Y"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You cannot copy settings from the same unit."] = "Vous ne pouvez pas copier les réglages du même cadre."
@@ -1472,30 +1467,6 @@ The following search keywords can also be used:
     • keystone : Mythic Keystone.
     • followers : Follower items.
     • champions : Champion equipment.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[Entrer une séquence pour changer le format du texte.
-
-Exemples:
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-Formats de la Vie / des Ressources:
-'current' - Quantité actuelle
-'percent' - Quantité en pourcentage
-'current-max' - Quantité actuelle maximale, n'affichera seulement la quantité maximale si la quantité actuelle est égale au maximum.
-'current-percent' - Quantité actuelle suivie par quantité en pourcentage, n'affichera seulement la quantité maximale si la quantité actuelle est égale au maximum
-'current-max-percent' -  Quantité actuelle, quantité maximale, suivie par quantité en pourcentage, n'affichera seulement la quantité maximale si la quantité actuelle est égale au maximum
-'deficit' - Affiche la valeur du déficit, n'affichera rien si il n'y a pas de déficit
-
-Format des Noms:
-'name:veryshort' - Name restricted to 5 characters
-'name:short' - Nom limité à 10 caractères
-'name:medium' - Nom limité à 15 caractères
-'name:long' - Nom limité à 20 caractères
-'name:short:translit' - Name restricted to 10 characters with transliteration
-
-Pour désactiver, laisser le champs vide. Pour plus d'information, merci de visiter https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Ceci fonctionne comme une macro, vous pouvez exécuter différentes situations pour avoir une pagination de la barre d'actions différente.

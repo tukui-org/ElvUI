@@ -1197,11 +1197,8 @@ L["Testing:"] = "Tester:"
 L["Text Color"] = "Text Farbe"
 L["Text Font Size"] = "Text Schriftgröße"
 L["Text Format"] = "Textformat"
-L["Text Position"] = "Text Position"
 L["Text Threshold"] = "Text Schwelle"
 L["Text Toggle On NPC"] = "Textumschalter auf NPCs"
-L["Text xOffset"] = "Text X-Versatz"
-L["Text yOffset"] = "Text Y-Versatz"
 L["Text"] = "Text"
 L["Texture"] = "Textur"
 L["Textured Icon"] = "Texturiertes Symbol"
@@ -1402,9 +1399,7 @@ L["Word Wrap"] = "Zeilenumbruch"
 L["World Map Coordinates"] = "Weltkarten Koordinaten"
 L["Wrap After"] = "Neue Reihe/Spalte beginnen"
 L["X-Offset"] = "X-Versatz"
-L["xOffset"] = "X-Versatz"
 L["Y-Offset"] = "Y-Versatz"
-L["yOffset"] = "Y-Versatz"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Du möchtest Einstellungen für |cffD3CF00\"%s\"|r von deinem derzeitigen |cff4beb2c\"%s\"|r Profil zu |cff4beb2c\"%s\"|r Profil kopieren. Bist du sicher?"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Du möchtest Einstellungen für |cffD3CF00\"%s\"|r Profil zu deinem aktuellem |cff4beb2c\"%s\"|r Profil kopieren. Bist du sicher?"
 L["You cannot copy settings from the same unit."] = "Du kannst keine Einstellungen von der gleichen Einheit kopieren."
@@ -1476,30 +1471,6 @@ Die folgenden Suchbegriffe können auch benutzt werden:
     • keystone : Mythic Keystone.
     • followers : Anhänger Gegenstände.
     • champions : Champion equipment.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[Wähle eine Zeichenfolge um das Textformat zu ändern.
-
-Beispiele:
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-Leben / Kraft Formate:
-'current' - Aktueller Wert
-'percent' - Prozentualer Wert
-'current-max' - Aktueller Wert gefolgt von dem maximalen Wert. Es wird nur der Maximale Wert anzeigt, wenn der aktuelle Wert auch das Maximum ist
-'current-percent' - Aktueller Wert gefolgt von dem prozentualen Wert. Es wird nur der maximale Wert angezeigt, wenn der aktuelle Wert auch das Maximum ist
-'current-max-percent' - Aktueller Wert, Maximaler Wert, gefolgt von dem prozentualen Wert. Es wird nur der maximale Wert angezeigt, wenn der aktuelle Wert auch das Maximum ist
-'deficit' - Zeigt das Defizit. Es wird nichts angezeigt, wenn kein Defizit vorhanden ist
-
-Namensformate:
-'name:veryshort' - Name restricted to 5 characters
-'name:short' - Name auf 10 Zeichen beschränkt
-'name:medium' - Name auf 15 Zeichen beschränkt
-'name:long' - Name auf 20 Zeichen beschränkt
-'name:short:translit' - Name restricted to 10 characters with transliteration
-
-Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu wechseln.

@@ -1193,11 +1193,8 @@ L["Testing:"] = "|cff2eb7e4< 테스터 >|r"
 L["Text Color"] = "글자 색"
 L["Text Font Size"] = "내용 글씨 크기"
 L["Text Format"] = "글자 형식"
-L["Text Position"] = "위치 기준"
 L["Text Threshold"] = "글자 표시 임계점"
 L["Text Toggle On NPC"] = "NPC면 자원에 이름표시"
-L["Text xOffset"] = "글자 x 좌표"
-L["Text yOffset"] = "글자 y 좌표"
 L["Text"] = "글자 표시"
 L["Texture"] = "텍스쳐"
 L["Textured Icon"] = "스킬이미지 아이콘"
@@ -1396,10 +1393,8 @@ L["Will show Buffs in the Debuff position when there are no Debuffs active, or v
 L["Word Wrap"] = true
 L["World Map Coordinates"] = "세계 지도 좌표"
 L["Wrap After"] = "한 줄에 표시할 오라 수"
-L["X-Offset"] = "가로 조정"
-L["xOffset"] = "X 좌표"
-L["Y-Offset"] = "세로 조정"
-L["yOffset"] = "Y 좌표"
+L["X-Offset"] = "X 좌표"
+L["Y-Offset"] = "Y 좌표"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You cannot copy settings from the same unit."] = "같은 유닛은 복사할 수 없습니다."
@@ -1501,38 +1496,6 @@ L["SEARCH_SYNTAX_DESC"] = [=[
      - keystone : Mythic Keystone.
      - followers : Follower items.
      - champions : Champion equipment.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[글자가 표시되는 형식을 변경할 수 있습니다.
-
-
-|cff2eb7e4< 예시 >|r
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-
-[healthcolor][health:current-max]
-
-[powercolor][power:current]
-
-
-|cff2eb7e4< health(생명력) / power(자원) 형식 >|r
-|cffceff00current|r : 현재 수치
-
-|cffceff00percent|r : 현재 양을 %로 표시
-
-|cffceff00current-max|r : [현재 수치]-[최대값]
-
-|cffceff00current-percent|r : [현재 수치]-[%]
-
-|cffceff00current-max-percent|r : [현재 수치]-[최대값]-[%]
-
-|cffceff00deficit|r : 손실치만 표시하며 현재 수치가 최대치이면 표시하지 않음
-
-
-|cff2eb7e4< name(이름) 형식 >|r
-|cffceff00name:short|r : 최대 10글자
-|cffceff00name:medium|r : 최대 15글자
-|cffceff00name:long|r : 최대 20글자
-
-표시하고 싶지 않으면 빈칸으로 두면 되며, 자세한 정보는 |cff2eb7e4www.tukui.org|r 에서 확인하세요.]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[이곳에 작성한 조건(예를 들어 전투여부)에 따라 이 행동단축바의 페이지를 자동으로 전환시킬 수 있습니다.

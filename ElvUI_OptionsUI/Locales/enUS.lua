@@ -1197,11 +1197,8 @@ L["Testing:"] = true
 L["Text Color"] = true
 L["Text Font Size"] = true
 L["Text Format"] = true
-L["Text Position"] = true
 L["Text Threshold"] = true
 L["Text Toggle On NPC"] = true
-L["Text xOffset"] = true
-L["Text yOffset"] = true
 L["Text"] = true
 L["Texture"] = true
 L["Textured Icon"] = true
@@ -1402,9 +1399,8 @@ L["World Map Coordinates"] = true
 L["WoW Token:"] = true
 L["Wrap After"] = true
 L["X-Offset"] = true
-L["xOffset"] = true
 L["Y-Offset"] = true
-L["yOffset"] = true
+L["Y-Offset"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You cannot copy settings from the same unit."] = true
@@ -1476,30 +1472,6 @@ The following search keywords can also be used:
     • keystone : Mythic Keystone.
     • followers : Follower items.
     • champions : Champion equipment.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[Provide a string to change the text format.
-
-Examples:
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-Health / Power Formats:
-'current' - current amount
-'percent' - percentage amount
-'current-max' - current amount followed by maximum amount, will display only max if current is equal to max
-'current-percent' - current amount followed by percentage amount, will display only max if current is equal to max
-'current-max-percent' - current amount, max amount, followed by percentage amount, will display only max if current is equal to max
-'deficit' - display the deficit value, will display nothing if there is no deficit
-
-Name Formats:
-'name:veryshort' - Name restricted to 5 characters
-'name:short' - Name restricted to 10 characters
-'name:medium' - Name restricted to 15 characters
-'name:long' - Name restricted to 20 characters
-'name:short:translit' - Name restricted to 10 characters with transliteration
-
-To disable leave the field blank, if you need more information visit https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = true

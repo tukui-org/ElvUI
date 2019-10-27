@@ -1194,11 +1194,8 @@ L["Testing:"] = "Тестирование:"
 L["Text Color"] = "Цвет текста"
 L["Text Font Size"] = "Размер шрифта текста"
 L["Text Format"] = "Формат текста"
-L["Text Position"] = "Позиция текста"
 L["Text Threshold"] = "Значение текста"
 L["Text Toggle On NPC"] = "Переключение текста для НИП"
-L["Text xOffset"] = "Отступ текста по Х"
-L["Text yOffset"] = "Отступ текста по Y"
 L["Text"] = "Текст"
 L["Texture"] = "Текстура"
 L["Textured Icon"] = "Иконка с текстурой"
@@ -1397,9 +1394,7 @@ L["Word Wrap"] = "Перенос слов"
 L["World Map Coordinates"] = "Координаты карты мира"
 L["Wrap After"] = "Размер ряда"
 L["X-Offset"] = "Отступ по X"
-L["xOffset"] = "Отступ по Х"
 L["Y-Offset"] = "Отступ по Y"
-L["yOffset"] = "Отступ по Y"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Вы собираетесь скопировать настройки для модуля |cffD3CF00\"%s\"|r из вашего текущего профиля |cff4beb2c\"%s\"|r в профиль |cff4beb2c\"%s\"|r. Вы уверены?"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Вы собираетесь скопировать настройки для модуля |cffD3CF00\"%s\"|r из вашего профиля |cff4beb2c\"%s\"|r в текущий профиль |cff4beb2c\"%s\"|r. Вы уверены?"
 L["You cannot copy settings from the same unit."] = "Вы не можете копировать установки из того же юнита."
@@ -1471,30 +1466,6 @@ L["SEARCH_SYNTAX_DESC"] = [=[С добавлением библиотеки LibI
     • keystone : Mythic Keystone.
     • followers : Предметы последователей.
     • champions : Champion equipment.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида текста.
-
-Примеры:
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-Форматы здоровья/резурсов:
-"current" - текущее значение
-"percent" - значение в процентах
-"current-max" - текущее значение, за которым идет максимальное значение. Будет отображать только максимальное значение, если текущее равно ему.
-"current-percent" - текущее значение, за которым идет значение в процентах.Будет отображать только максимальное значение, если текущее равно ему.
-"current-max-percent" - текущее значение, максимальное значение, за которым идет значение в процентах, Будет отображать только максимальное значение, если текущее равно ему.
-"deficit" - отображает значение недостающего до максимума здоровья/ресурса. Не будет отображать ничего, если текущее значение равно максимальному.
-
-Форматы имени:
-"name:veryshort" - Name restricted to 5 characters
-"name:short" - Имя с ограничением длины в 10 символов
-"name:medium" - Имя с ограничением длины в 15 символов
-"name:long" - Имя с ограничением длины в 20 символов
-"name:short:translit" - Name restricted to 10 characters with transliteration
-
-Для отключения оставьте поле пустым, для дополнительной информации посетите https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Работает как макрос. Вы можете задать различные условия для отображения разных панелей.
