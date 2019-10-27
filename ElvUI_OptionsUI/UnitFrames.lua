@@ -808,14 +808,32 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				type = "header",
 				name = L["Castbar"],
 			},
-			matchsize = {
+			enable = {
 				order = 2,
+				type = 'toggle',
+				name = L["Enable"],
+			},
+			width = {
+				order = 3,
+				name = L["Width"],
+				type = 'range',
+				softMax = 600,
+				min = 50, max = GetScreenWidth(), step = 1,
+			},
+			height = {
+				order = 4,
+				name = L["Height"],
+				type = 'range',
+				min = 10, max = 85, step = 1,
+			},
+			matchsize = {
+				order = 5,
 				type = 'execute',
 				name = L["Match Frame Width"],
 				func = function() E.db.unitframe.units[groupName].castbar.width = E.db.unitframe.units[groupName].width; updateFunc(UF, groupName, numUnits) end,
 			},
 			forceshow = {
-				order = 3,
+				order = 6,
 				name = L["SHOW"]..' / '..L["HIDE"],
 				func = function()
 					local frameName = E:StringTitle(groupName)
@@ -870,37 +888,32 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				type = 'execute',
 			},
 			configureButton = {
-				order = 4,
+				order = 7,
 				name = L["Coloring"],
 				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
 				type = 'execute',
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "castBars") end,
 			},
-			enable = {
+			spark = {
+				order = 8,
 				type = 'toggle',
-				order = 5,
-				name = L["Enable"],
+				name = L["Spark"],
+				desc = L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."],
 			},
-			width = {
-				order = 6,
-				name = L["Width"],
-				type = 'range',
-				softMax = 600,
-				min = 50, max = GetScreenWidth(), step = 1,
-			},
-			height = {
-				order = 7,
-				name = L["Height"],
-				type = 'range',
-				min = 10, max = 85, step = 1,
+			insideInfoPanel = {
+				order = 9,
+				name = L["Inside Information Panel"],
+				desc = L["Display the castbar inside the information panel, the icon will be displayed outside the main unitframe."],
+				type = "toggle",
+				disabled = function() return not E.db.unitframe.units[groupName].infoPanel or not E.db.unitframe.units[groupName].infoPanel.enable end,
 			},
 			latency = {
-				order = 8,
+				order = 10,
 				name = L["Latency"],
 				type = 'toggle',
-			},
+			}, -- Keep format on 15, there will be other checkboxes only for Player.
 			format = {
-				order = 9,
+				order = 15,
 				type = 'select',
 				name = L["Format"],
 				values = {
@@ -910,21 +923,15 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 					['REMAININGMAX'] = L["Remaining / Max"],
 				},
 			},
-			spark = {
-				order = 10,
-				type = 'toggle',
-				name = L["Spark"],
-				desc = L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."],
-			},
-			insideInfoPanel = {
-				order = 11,
-				name = L["Inside Information Panel"],
-				desc = L["Display the castbar inside the information panel, the icon will be displayed outside the main unitframe."],
-				type = "toggle",
-				disabled = function() return not E.db.unitframe.units[groupName].infoPanel or not E.db.unitframe.units[groupName].infoPanel.enable end,
+			timeToHold = {
+				order = 16,
+				name = L["Time To Hold"],
+				desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
+				type = "range",
+				min = 0, max = 10, step = .1,
 			},
 			iconSettings = {
-				order = 13,
+				order = 17,
 				type = "group",
 				name = L["Icon"],
 				guiInline = true,
@@ -983,15 +990,8 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 					},
 				},
 			},
-			timeToHold = {
-				order = 8,
-				name = L["Time To Hold"],
-				desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
-				type = "range",
-				min = 0, max = 10, step = .1,
-			},
 			strataAndLevel = {
-				order = 9,
+				order = 14,
 				type = "group",
 				name = L["Strata and Level"],
 				get = function(info) return E.db.unitframe.units[groupName].castbar.strataAndLevel[info[#info]] end,
@@ -1040,13 +1040,13 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 
 	if hasTicks then
 		config.args.displayTarget = {
-			order = 11,
+			order = 11, -- Always control the order
 			type = 'toggle',
 			name = L["Display Target"],
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
 		}
 		config.args.ticks = {
-			order = 12,
+			order = 20,
 			type = "group",
 			guiInline = true,
 			name = L["Ticks"],
