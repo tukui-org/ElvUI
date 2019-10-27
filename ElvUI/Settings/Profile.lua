@@ -2196,6 +2196,14 @@ P.unitframe = {
 					forceBlankTexture = true,
 				},
 			},
+			resurrectIcon = {
+				enable = true,
+				size = 30,
+				attachTo = 'CENTER',
+				attachToObject = 'Frame',
+				xOffset = 0,
+				yOffset = 0,
+			},
 		},
 		target = {
 			enable = true,
@@ -2357,6 +2365,18 @@ P.unitframe = {
 					useCustomLevel = false,
 					frameLevel = 1,
 				},
+			},
+			resurrectIcon = {
+				enable = true,
+				size = 30,
+				attachTo = 'CENTER',
+				attachToObject = 'Frame',
+				xOffset = 0,
+				yOffset = 0,
+			},
+			raidRoleIcons = {
+				enable = true,
+				position = 'TOPLEFT',
 			},
 			aurabar = {
 				enable = true,

@@ -55,6 +55,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
 	frame.RaidRoleFramesAnchor = self:Construct_RaidRoleFrames(frame)
 	frame.RestingIndicator = self:Construct_RestingIndicator(frame)
+	frame.ResurrectIndicator = UF:Construct_ResurrectionIcon(frame)
 	frame.CombatIndicator = self:Construct_CombatIndicator(frame)
 	frame.PvPText = self:Construct_PvPIndicator(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
@@ -156,6 +157,9 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_Auras(frame, 'Buffs')
 	UF:Configure_Auras(frame, 'Debuffs')
+
+	-- Resurrect
+	UF:Configure_ResurrectionIcon(frame)
 
 	--Castbar
 	frame:DisableElement('Castbar')
