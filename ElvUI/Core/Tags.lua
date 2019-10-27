@@ -1202,6 +1202,7 @@ E.TagInfo = {
 	['specialization'] = { category = 'Miscellanous', description = "Shows your 'OWN' specialization as text" },
 	['difficulty'] = { category = 'Miscellanous', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 	['faction'] = { category = 'Miscellanous', description = "Shows 'Aliance' or 'Horde'" },
+	['faction:icon'] = { category = 'Miscellanous', description = "Displays 'Alliance' or 'Horde' Texture" },
 	['plus'] = { category = 'Miscellanous', description = "Displays the character '+' if the unit is an elite or rare-elite" },
 	['arenaspec'] = { category = 'Miscellanous', description = "Shows the area spec of an unit" },
 	['arena:number'] = { category = 'Miscellanous', description = "Shows the arena number 1-5" },
