@@ -733,121 +733,63 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 	return config
 end
 
-local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
+local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 	local config = {
 		type = 'group',
-		name = L["Fader"],
-		get = function(info) return E.db.unitframe.units[groupName].fader[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].fader[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+		name = L["Buff Indicator"],
+		get = function(info) return E.db.unitframe.units[groupName].buffIndicator[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].buffIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
 		args = {
 			header = {
 				order = 1,
 				type = "header",
-				name = L["Fader"],
+				name = L["Buff Indicator"],
 			},
 			enable = {
 				type = 'toggle',
-				order = 2,
 				name = L["Enable"],
+				order = 2,
 			},
-			range = {
-				type = 'toggle',
+			size = {
+				type = 'range',
+				name = L["Size"],
+				desc = L["Size of the indicator icon."],
 				order = 3,
-				name = L["Range"],
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable end,
-				hidden = function() return groupName == 'player' end,
+				min = 4, max = 50, step = 1,
 			},
-			hover = {
-				type = 'toggle',
+			style = {
+				name = L["Style"],
 				order = 4,
-				name = L["Hover"],
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+				type = 'select',
+				values = {
+					['coloredIcon'] = L["Colored Icon"],
+					['texturedIcon'] = L["Textured Icon"],
+				},
 			},
-			combat = {
-				type = 'toggle',
-				order = 5,
-				name = L["Combat"],
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
-			},
-			unittarget = {
-				type = 'toggle',
+			configureButton = {
 				order = 6,
-				name = L["Unit Target"],
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
-				hidden = function() return groupName == 'player' end,
-			},
-			playertarget = {
-				type = 'toggle',
-				order = 7,
-				name = (groupName == 'player' and L["Target"]) or L["Player Target"],
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
-			},
-			focus = {
-				type = 'toggle',
-				order = 8,
-				name = L["Focus"],
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
-			},
-			health = {
-				type = 'toggle',
-				order = 9,
-				name = L["Health"],
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
-			},
-			power = {
-				type = 'toggle',
-				order = 10,
-				name = L["Power"],
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
-			},
-			vehicle = {
-				type = 'toggle',
-				order = 11,
-				name = L["Vehicle"],
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
-			},
-			casting = {
-				type = 'toggle',
-				order = 12,
-				name = L["Casting"],
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
-			},
-			spacer = {
-				order = 13,
-				type = 'description',
-				name = ' ',
-				width = 'full',
-			},
-			delay = {
-				order = 14,
-				name = L["Fade Out Delay"],
-				type = 'range',
-				min = 0, max = 3, step = 0.01,
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
-			},
-			smooth = {
-				order = 15,
-				name = L["Smooth"],
-				type = 'range',
-				min = 0, max = 1, step = 0.01,
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable end,
-			},
-			minAlpha = {
-				order = 16,
-				name = L["Min Alpha"],
-				type = 'range',
-				min = 0, max = 1, step = 0.01,
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable end,
-			},
-			maxAlpha = {
-				order = 17,
-				name = L["Max Alpha"],
-				type = 'range',
-				min = 0, max = 1, step = 0.01,
-				disabled = function() return not E.db.unitframe.units[groupName].fader.enable end,
+				type = 'execute',
+				name = L["Configure Auras"],
+				func = function() E:SetToFilterConfig('Buff Indicator') end,
 			},
 		},
 	}
+
+	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
+		config.args.profileSpecific = {
+			type = 'toggle',
+			name = L["Profile Specific"],
+			desc = L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."],
+			order = 5,
+		}
+		config.args.configureButton.func = function()
+			if E.db.unitframe.units[groupName].buffIndicator.profileSpecific then
+				E:SetToFilterConfig('Buff Indicator (Profile)')
+			else
+				E:SetToFilterConfig('Buff Indicator')
+			end
+		end
+	end
 
 	return config
 end
@@ -1142,119 +1084,92 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 	return config
 end
 
-local function GetOptionsTable_InformationPanel(updateFunc, groupName, numUnits)
+local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 	local config = {
-		type = 'group',
-		name = L["Information Panel"],
-		get = function(info) return E.db.unitframe.units[groupName].infoPanel[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].infoPanel[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+		type = "group",
+		childGroups = "tab",
+		name = L["Cutaway Bars"],
 		args = {
-			header = {
+			health = {
 				order = 1,
-				type = "header",
-				name = L["Information Panel"],
-			},
-			enable = {
-				type = 'toggle',
-				order = 2,
-				name = L["Enable"],
-			},
-			transparent = {
-				type = "toggle",
-				order = 3,
-				name = L["Transparent"],
-			},
-			height = {
-				type = 'range',
-				order = 4,
-				name = L["Height"],
-				min = 4, max = 30, step = 1,
-			},
+				type = "group",
+				guiInline = true,
+				name = L["Health"],
+				get = function(info) return E.db.unitframe.units[groupName].cutaway.health[info[#info]] end,
+				set = function(info, value) E.db.unitframe.units[groupName].cutaway.health[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
+				args = {
+					enabled = {
+						type = "toggle",
+						order = 1,
+						name = L["Enable"]
+					},
+					lengthBeforeFade = {
+						type = "range",
+						order = 2,
+						name = L["Fade Out Delay"],
+						desc = L["How much time before the cutaway health starts to fade."],
+						min = 0.1,
+						max = 1,
+						step = 0.1,
+						disabled = function()
+							return not E.db.unitframe.units[groupName].cutaway.health.enabled
+						end
+					},
+					fadeOutTime = {
+						type = "range",
+						order = 3,
+						name = L["Fade Out"],
+						desc = L["How long the cutaway health will take to fade out."],
+						min = 0.1,
+						max = 1,
+						step = 0.1,
+						disabled = function()
+							return not E.db.unitframe.units[groupName].cutaway.health.enabled
+						end
+					}
+				}
+			}
 		}
 	}
-
-	return config
-end
-
-local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUnits)
-	local config = {
-		type = 'group',
-		name = L["Health"],
-		get = function(info) return E.db.unitframe.units[groupName].health[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].health[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-		args = {
-			header = {
-				order = 0,
-				type = "header",
-				name = L["Health"],
-			},
-			position = {
-				type = 'select',
-				order = 1,
-				name = L["Text Position"],
-				values = positionValues,
-			},
-			xOffset = {
-				order = 2,
-				type = 'range',
-				name = L["Text xOffset"],
-				desc = L["Offset position for text."],
-				min = -300, max = 300, step = 1,
-			},
-			yOffset = {
-				order = 3,
-				type = 'range',
-				name = L["Text yOffset"],
-				desc = L["Offset position for text."],
-				min = -300, max = 300, step = 1,
-			},
-			reverseFill = {
-				type = "toggle",
-				order = 4,
-				name = L["Reverse Fill"],
-			},
-			attachTextTo = {
-				type = 'select',
-				order = 5,
-				name = L["Attach Text To"],
-				values = attachToValues,
-			},
-			colorOverride = {
-				order = 6,
-				name = L["Class Color Override"],
-				desc = L["Override the default class color setting."],
-				type = 'select',
-				values = colorOverrideValues,
-				get = function(info) return E.db.unitframe.units[groupName][info[#info]] end,
-				set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-			},
-			configureButton = {
-				order = 7,
-				name = L["Coloring"],
-				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
-				type = 'execute',
-				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "healthGroup") end,
-			},
-			text_format = {
-				order = 9,
-				name = L["Text Format"],
-				type = 'input',
-				width = 'full',
-				desc = L["TEXT_FORMAT_DESC"],
-			},
-		},
-	}
-
-	if isGroupFrame then
-		config.args.orientation = {
-			type = 'select',
-			order = 8,
-			name = L["Statusbar Fill Orientation"],
-			desc = L["Direction the health bar moves when gaining/losing health."],
-			values = {
-				['HORIZONTAL'] = L["Horizontal"],
-				['VERTICAL'] = L["Vertical"],
-			},
+	if E.db.unitframe.units[groupName].cutaway.power then
+		config.args.power = {
+			order = 2,
+			type = "group",
+			name = L["Power"],
+			guiInline = true,
+			get = function(info) return E.db.unitframe.units[groupName].cutaway.power[info[#info]] end,
+			set = function(info, value) E.db.unitframe.units[groupName].cutaway.power[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
+			args = {
+				enabled = {
+					type = "toggle",
+					order = 1,
+					name = L["Enable"]
+				},
+				lengthBeforeFade = {
+					type = "range",
+					order = 2,
+					name = L["Fade Out Delay"],
+					desc = L["How much time before the cutaway power starts to fade."],
+					min = 0.1,
+					max = 1,
+					step = 0.1,
+					disabled = function()
+						return not E.db.unitframe.units[groupName].cutaway.power.enabled
+					end
+				},
+				fadeOutTime = {
+					type = "range",
+					order = 3,
+					name = L["Fade Out"],
+					desc = L["How long the cutaway power will take to fade out."],
+					min = 0.1,
+					max = 1,
+					step = 0.1,
+					disabled = function()
+						return not E.db.unitframe.units[groupName].cutaway.power.enabled
+					end
+				}
+			}
 		}
 	end
 
@@ -1456,6 +1371,294 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 	return config
 end
 
+local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
+	local config = {
+		type = 'group',
+		name = L["Fader"],
+		get = function(info) return E.db.unitframe.units[groupName].fader[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].fader[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+		args = {
+			header = {
+				order = 1,
+				type = "header",
+				name = L["Fader"],
+			},
+			enable = {
+				type = 'toggle',
+				order = 2,
+				name = L["Enable"],
+			},
+			range = {
+				type = 'toggle',
+				order = 3,
+				name = L["Range"],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable end,
+				hidden = function() return groupName == 'player' end,
+			},
+			hover = {
+				type = 'toggle',
+				order = 4,
+				name = L["Hover"],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			combat = {
+				type = 'toggle',
+				order = 5,
+				name = L["Combat"],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			unittarget = {
+				type = 'toggle',
+				order = 6,
+				name = L["Unit Target"],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+				hidden = function() return groupName == 'player' end,
+			},
+			playertarget = {
+				type = 'toggle',
+				order = 7,
+				name = (groupName == 'player' and L["Target"]) or L["Player Target"],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			focus = {
+				type = 'toggle',
+				order = 8,
+				name = L["Focus"],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			health = {
+				type = 'toggle',
+				order = 9,
+				name = L["Health"],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			power = {
+				type = 'toggle',
+				order = 10,
+				name = L["Power"],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			vehicle = {
+				type = 'toggle',
+				order = 11,
+				name = L["Vehicle"],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			casting = {
+				type = 'toggle',
+				order = 12,
+				name = L["Casting"],
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			spacer = {
+				order = 13,
+				type = 'description',
+				name = ' ',
+				width = 'full',
+			},
+			delay = {
+				order = 14,
+				name = L["Fade Out Delay"],
+				type = 'range',
+				min = 0, max = 3, step = 0.01,
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
+			},
+			smooth = {
+				order = 15,
+				name = L["Smooth"],
+				type = 'range',
+				min = 0, max = 1, step = 0.01,
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable end,
+			},
+			minAlpha = {
+				order = 16,
+				name = L["Min Alpha"],
+				type = 'range',
+				min = 0, max = 1, step = 0.01,
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable end,
+			},
+			maxAlpha = {
+				order = 17,
+				name = L["Max Alpha"],
+				type = 'range',
+				min = 0, max = 1, step = 0.01,
+				disabled = function() return not E.db.unitframe.units[groupName].fader.enable end,
+			},
+		},
+	}
+
+	return config
+end
+
+local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUnits)
+	local config = {
+		type = 'group',
+		name = L["Health"],
+		get = function(info) return E.db.unitframe.units[groupName].health[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].health[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+		args = {
+			header = {
+				order = 0,
+				type = "header",
+				name = L["Health"],
+			},
+			position = {
+				type = 'select',
+				order = 1,
+				name = L["Text Position"],
+				values = positionValues,
+			},
+			xOffset = {
+				order = 2,
+				type = 'range',
+				name = L["Text xOffset"],
+				desc = L["Offset position for text."],
+				min = -300, max = 300, step = 1,
+			},
+			yOffset = {
+				order = 3,
+				type = 'range',
+				name = L["Text yOffset"],
+				desc = L["Offset position for text."],
+				min = -300, max = 300, step = 1,
+			},
+			reverseFill = {
+				type = "toggle",
+				order = 4,
+				name = L["Reverse Fill"],
+			},
+			attachTextTo = {
+				type = 'select',
+				order = 5,
+				name = L["Attach Text To"],
+				values = attachToValues,
+			},
+			bgUseBarTexture = {
+				type = "toggle",
+				order = 6,
+				name = L["Use Health Texture on Background"],
+			},
+			colorOverride = {
+				order = 7,
+				name = L["Class Color Override"],
+				desc = L["Override the default class color setting."],
+				type = 'select',
+				values = colorOverrideValues,
+				get = function(info) return E.db.unitframe.units[groupName][info[#info]] end,
+				set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+			},
+			configureButton = {
+				order = 8,
+				name = L["Coloring"],
+				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
+				type = 'execute',
+				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "healthGroup") end,
+			},
+			text_format = {
+				order = 10,
+				name = L["Text Format"],
+				type = 'input',
+				width = 'full',
+				desc = L["TEXT_FORMAT_DESC"],
+			},
+		},
+	}
+
+	if isGroupFrame then
+		config.args.orientation = {
+			type = 'select',
+			order = 9,
+			name = L["Statusbar Fill Orientation"],
+			desc = L["Direction the health bar moves when gaining/losing health."],
+			values = {
+				['HORIZONTAL'] = L["Horizontal"],
+				['VERTICAL'] = L["Vertical"],
+			},
+		}
+	end
+
+	return config
+end
+
+local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
+	local config = {
+		type = "group",
+		name = L["Heal Prediction"],
+		desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
+		get = function(info) return E.db.unitframe.units[groupName].healPrediction[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].healPrediction[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
+		args = {
+			header = {
+				order = 0,
+				type = "header",
+				name = L["Heal Prediction"],
+			},
+			enable = {
+				order = 1,
+				type = "toggle",
+				name = L["Enable"],
+			},
+			healType = {
+				order = 2,
+				type = "select",
+				name = L["Type"],
+				values = {
+					ALL_HEALS = 'All Heals',
+					CHANNEL_HEALS = 'Channel Heals',
+					DIRECT_HEALS = 'Direct Heals',
+					HOT_HEALS = 'HoTs',
+					OVERTIME_HEALS = 'HoTs & Channel',
+					CASTED_HEALS = 'Direct & Channel Heals',
+				},
+			},
+			colors = {
+				order = 4,
+				type = "execute",
+				name = L["COLORS"],
+				buttonElvUI = true,
+				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
+				disabled = function() return not E.UnitFrames.Initialized end,
+			},
+		},
+	}
+
+	return config
+end
+
+local function GetOptionsTable_InformationPanel(updateFunc, groupName, numUnits)
+	local config = {
+		type = 'group',
+		name = L["Information Panel"],
+		get = function(info) return E.db.unitframe.units[groupName].infoPanel[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].infoPanel[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+		args = {
+			header = {
+				order = 1,
+				type = "header",
+				name = L["Information Panel"],
+			},
+			enable = {
+				type = 'toggle',
+				order = 2,
+				name = L["Enable"],
+			},
+			transparent = {
+				type = "toggle",
+				order = 3,
+				name = L["Transparent"],
+			},
+			height = {
+				type = 'range',
+				order = 4,
+				name = L["Height"],
+				min = 4, max = 30, step = 1,
+			},
+		}
+	}
+
+	return config
+end
+
 local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 	local config = {
 		type = 'group',
@@ -1500,6 +1703,59 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 				type = 'input',
 				width = 'full',
 				desc = L["TEXT_FORMAT_DESC"],
+			},
+		},
+	}
+
+	return config
+end
+
+local function GetOptionsTable_PhaseIndicator(updateFunc, groupName, numGroup)
+	local config = {
+		type = 'group',
+		name = L["Phase Indicator"],
+		get = function(info) return E.db.unitframe.units[groupName].phaseIndicator[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].phaseIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
+		args = {
+			header = {
+				order = 1,
+				type = "header",
+				name = L["Phase Indicator"],
+			},
+			enable = {
+				order = 2,
+				type = "toggle",
+				name = L["Enable"],
+			},
+			scale = {
+				order = 3,
+				type = "range",
+				name = L["Scale"],
+				isPercent = true,
+				min = 0.5, max = 1.5, step = 0.01,
+			},
+			spacer = {
+				order = 4,
+				type = "description",
+				name = " ",
+			},
+			anchorPoint = {
+				order = 5,
+				type = "select",
+				name = L["Anchor Point"],
+				values = positionValues,
+			},
+			xOffset = {
+				order = 6,
+				type = "range",
+				name = L["X-Offset"],
+				min = -100, max = 100, step = 1,
+			},
+			yOffset = {
+				order = 7,
+				type = "range",
+				name = L["Y-Offset"],
+				min = -100, max = 100, step = 1,
 			},
 		},
 	}
@@ -1813,158 +2069,52 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	return config
 end
 
-local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
+local function GetOptionsTable_PVPIcon(updateFunc, groupName, numGroup)
 	local config = {
 		type = 'group',
-		name = L["Raid Icon"],
-		get = function(info) return E.db.unitframe.units[groupName].raidicon[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].raidicon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+		name = L["PvP & Prestige Icon"],
+		get = function(info) return E.db.unitframe.units[groupName].pvpIcon[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].pvpIcon[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
 		args = {
 			header = {
 				order = 1,
 				type = "header",
-				name = L["Raid Icon"],
+				name = L["PvP & Prestige Icon"],
 			},
 			enable = {
-				type = 'toggle',
 				order = 2,
+				type = "toggle",
 				name = L["Enable"],
 			},
-			attachTo = {
-				type = 'select',
+			scale = {
 				order = 3,
-				name = L["Position"],
-				values = positionValues,
+				type = "range",
+				name = L["Scale"],
+				isPercent = true,
+				min = 0.1, max = 2, step = 0.01,
 			},
-			attachToObject = {
-				type = 'select',
+			spacer = {
 				order = 4,
-				name = L["Attach To"],
-				values = attachToValues,
+				type = "description",
+				name = " ",
 			},
-			size = {
-				type = 'range',
-				name = L["Size"],
-				order = 4,
-				min = 8, max = 60, step = 1,
-			},
-			xOffset = {
+			anchorPoint = {
 				order = 5,
-				type = 'range',
-				name = L["xOffset"],
-				min = -300, max = 300, step = 1,
-			},
-			yOffset = {
-				order = 6,
-				type = 'range',
-				name = L["yOffset"],
-				min = -300, max = 300, step = 1,
-			},
-		},
-	}
-
-	return config
-end
-
-local function GetOptionsTable_ResurrectIcon(updateFunc, groupName, numUnits)
-	local config = {
-		type = 'group',
-		name = L["Resurrect Icon"],
-		get = function(info) return E.db.unitframe.units[groupName].resurrectIcon[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].resurrectIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Resurrect Icon"],
-			},
-			enable = {
-				type = 'toggle',
-				order = 2,
-				name = L["Enable"],
-			},
-			attachTo = {
-				type = 'select',
-				order = 3,
-				name = L["Position"],
+				type = "select",
+				name = L["Anchor Point"],
 				values = positionValues,
-			},
-			attachToObject = {
-				type = 'select',
-				order = 4,
-				name = L["Attach To"],
-				values = attachToValues,
-			},
-			size = {
-				order = 5,
-				type = 'range',
-				name = L["Size"],
-				min = 8, max = 60, step = 1,
 			},
 			xOffset = {
 				order = 6,
-				type = 'range',
-				name = L["xOffset"],
-				min = -300, max = 300, step = 1,
+				type = "range",
+				name = L["X-Offset"],
+				min = -100, max = 100, step = 1,
 			},
 			yOffset = {
 				order = 7,
-				type = 'range',
-				name = L["yOffset"],
-				min = -300, max = 300, step = 1,
-			},
-		},
-	}
-
-	return config
-end
-
-local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
-	local config = {
-		type = 'group',
-		name = L["Summon Icon"],
-		get = function(info) return E.db.unitframe.units[groupName].summonIcon[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].summonIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Summon Icon"],
-			},
-			enable = {
-				type = 'toggle',
-				order = 2,
-				name = L["Enable"],
-			},
-			attachTo = {
-				type = 'select',
-				order = 3,
-				name = L["Position"],
-				values = positionValues,
-			},
-			attachToObject = {
-				type = 'select',
-				order = 4,
-				name = L["Attach To"],
-				values = attachToValues,
-			},
-			size = {
-				order = 5,
-				type = 'range',
-				name = L["Size"],
-				min = 8, max = 60, step = 1,
-			},
-			xOffset = {
-				order = 6,
-				type = 'range',
-				name = L["xOffset"],
-				min = -300, max = 300, step = 1,
-			},
-			yOffset = {
-				order = 7,
-				type = 'range',
-				name = L["yOffset"],
-				min = -300, max = 300, step = 1,
+				type = "range",
+				name = L["Y-Offset"],
+				min = -100, max = 100, step = 1,
 			},
 		},
 	}
@@ -2136,6 +2286,91 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 	return config
 end
 
+local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
+	local config = {
+		type = 'group',
+		name = L["Raid Icon"],
+		get = function(info) return E.db.unitframe.units[groupName].raidicon[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].raidicon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+		args = {
+			header = {
+				order = 1,
+				type = "header",
+				name = L["Raid Icon"],
+			},
+			enable = {
+				type = 'toggle',
+				order = 2,
+				name = L["Enable"],
+			},
+			attachTo = {
+				type = 'select',
+				order = 3,
+				name = L["Position"],
+				values = positionValues,
+			},
+			attachToObject = {
+				type = 'select',
+				order = 4,
+				name = L["Attach To"],
+				values = attachToValues,
+			},
+			size = {
+				type = 'range',
+				name = L["Size"],
+				order = 4,
+				min = 8, max = 60, step = 1,
+			},
+			xOffset = {
+				order = 5,
+				type = 'range',
+				name = L["xOffset"],
+				min = -300, max = 300, step = 1,
+			},
+			yOffset = {
+				order = 6,
+				type = 'range',
+				name = L["yOffset"],
+				min = -300, max = 300, step = 1,
+			},
+		},
+	}
+
+	return config
+end
+
+local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
+	local config = {
+		type = 'group',
+		name = L["RL Icon"],
+		get = function(info) return E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
+		args = {
+			header = {
+				order = 1,
+				type = "header",
+				name = L["RL Icon"],
+			},
+			enable = {
+				type = 'toggle',
+				name = L["Enable"],
+				order = 2,
+			},
+			position = {
+				type = 'select',
+				order = 3,
+				name = L["Position"],
+				values = {
+					['TOPLEFT'] = 'TOPLEFT',
+					['TOPRIGHT'] = 'TOPRIGHT',
+				},
+			},
+		},
+	}
+
+	return config
+end
+
 local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
 	local config = {
 		type = "group",
@@ -2189,74 +2424,52 @@ local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
 	return config
 end
 
-local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
-	local config = {
-		type = "group",
-		name = L["Heal Prediction"],
-		desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
-		get = function(info) return E.db.unitframe.units[groupName].healPrediction[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].healPrediction[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
-		args = {
-			header = {
-				order = 0,
-				type = "header",
-				name = L["Heal Prediction"],
-			},
-			enable = {
-				order = 1,
-				type = "toggle",
-				name = L["Enable"],
-			},
-			showOverAbsorbs = {
-				order = 2,
-				type = "toggle",
-				name = L["Show Over Absorbs"],
-			},
-			showAbsorbAmount = {
-				order = 3,
-				type = "toggle",
-				name = L["Show Absorb Amount"],
-				disabled = function() return not E.db.unitframe.units[groupName].healPrediction.showOverAbsorbs end,
-			},
-			colors = {
-				order = 4,
-				type = "execute",
-				name = L["COLORS"],
-				buttonElvUI = true,
-				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "healPrediction") end,
-				disabled = function() return not E.UnitFrames.Initialized end,
-			},
-		},
-	}
-
-	return config
-end
-
-local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
+local function GetOptionsTable_ResurrectIcon(updateFunc, groupName, numUnits)
 	local config = {
 		type = 'group',
-		name = L["RL Icon"],
-		get = function(info) return E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
+		name = L["Resurrect Icon"],
+		get = function(info) return E.db.unitframe.units[groupName].resurrectIcon[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].resurrectIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
 			header = {
 				order = 1,
 				type = "header",
-				name = L["RL Icon"],
+				name = L["Resurrect Icon"],
 			},
 			enable = {
 				type = 'toggle',
-				name = L["Enable"],
 				order = 2,
+				name = L["Enable"],
 			},
-			position = {
+			attachTo = {
 				type = 'select',
 				order = 3,
 				name = L["Position"],
-				values = {
-					['TOPLEFT'] = 'TOPLEFT',
-					['TOPRIGHT'] = 'TOPRIGHT',
-				},
+				values = positionValues,
+			},
+			attachToObject = {
+				type = 'select',
+				order = 4,
+				name = L["Attach To"],
+				values = attachToValues,
+			},
+			size = {
+				order = 5,
+				type = 'range',
+				name = L["Size"],
+				min = 8, max = 60, step = 1,
+			},
+			xOffset = {
+				order = 6,
+				type = 'range',
+				name = L["xOffset"],
+				min = -300, max = 300, step = 1,
+			},
+			yOffset = {
+				order = 7,
+				type = 'range',
+				name = L["yOffset"],
+				min = -300, max = 300, step = 1,
 			},
 		},
 	}
@@ -2264,271 +2477,55 @@ local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
 	return config
 end
 
-local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
+local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
 	local config = {
 		type = 'group',
-		name = L["Buff Indicator"],
-		get = function(info) return E.db.unitframe.units[groupName].buffIndicator[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].buffIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
+		name = L["Summon Icon"],
+		get = function(info) return E.db.unitframe.units[groupName].summonIcon[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].summonIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
 			header = {
 				order = 1,
 				type = "header",
-				name = L["Buff Indicator"],
+				name = L["Summon Icon"],
 			},
 			enable = {
 				type = 'toggle',
-				name = L["Enable"],
 				order = 2,
+				name = L["Enable"],
+			},
+			attachTo = {
+				type = 'select',
+				order = 3,
+				name = L["Position"],
+				values = positionValues,
+			},
+			attachToObject = {
+				type = 'select',
+				order = 4,
+				name = L["Attach To"],
+				values = attachToValues,
 			},
 			size = {
+				order = 5,
 				type = 'range',
 				name = L["Size"],
-				desc = L["Size of the indicator icon."],
-				order = 3,
-				min = 4, max = 50, step = 1,
-			},
-			style = {
-				name = L["Style"],
-				order = 4,
-				type = 'select',
-				values = {
-					['coloredIcon'] = L["Colored Icon"],
-					['texturedIcon'] = L["Textured Icon"],
-				},
-			},
-			configureButton = {
-				order = 6,
-				type = 'execute',
-				name = L["Configure Auras"],
-				func = function() E:SetToFilterConfig('Buff Indicator') end,
-			},
-		},
-	}
-
-	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
-		config.args.profileSpecific = {
-			type = 'toggle',
-			name = L["Profile Specific"],
-			desc = L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."],
-			order = 5,
-		}
-		config.args.configureButton.func = function()
-			if E.db.unitframe.units[groupName].buffIndicator.profileSpecific then
-				E:SetToFilterConfig('Buff Indicator (Profile)')
-			else
-				E:SetToFilterConfig('Buff Indicator')
-			end
-		end
-	end
-
-	return config
-end
-
-local function GetOptionsTable_PhaseIndicator(updateFunc, groupName, numGroup)
-	local config = {
-		type = 'group',
-		name = L["Phase Indicator"],
-		get = function(info) return E.db.unitframe.units[groupName].phaseIndicator[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].phaseIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
-		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Phase Indicator"],
-			},
-			enable = {
-				order = 2,
-				type = "toggle",
-				name = L["Enable"],
-			},
-			scale = {
-				order = 3,
-				type = "range",
-				name = L["Scale"],
-				isPercent = true,
-				min = 0.5, max = 1.5, step = 0.01,
-			},
-			spacer = {
-				order = 4,
-				type = "description",
-				name = " ",
-			},
-			anchorPoint = {
-				order = 5,
-				type = "select",
-				name = L["Anchor Point"],
-				values = positionValues,
+				min = 8, max = 60, step = 1,
 			},
 			xOffset = {
 				order = 6,
-				type = "range",
-				name = L["X-Offset"],
-				min = -100, max = 100, step = 1,
+				type = 'range',
+				name = L["xOffset"],
+				min = -300, max = 300, step = 1,
 			},
 			yOffset = {
 				order = 7,
-				type = "range",
-				name = L["Y-Offset"],
-				min = -100, max = 100, step = 1,
+				type = 'range',
+				name = L["yOffset"],
+				min = -300, max = 300, step = 1,
 			},
 		},
 	}
-
-	return config
-end
-
-local function GetOptionsTable_PVPIcon(updateFunc, groupName, numGroup)
-	local config = {
-		type = 'group',
-		name = L["PvP & Prestige Icon"],
-		get = function(info) return E.db.unitframe.units[groupName].pvpIcon[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].pvpIcon[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
-		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["PvP & Prestige Icon"],
-			},
-			enable = {
-				order = 2,
-				type = "toggle",
-				name = L["Enable"],
-			},
-			scale = {
-				order = 3,
-				type = "range",
-				name = L["Scale"],
-				isPercent = true,
-				min = 0.1, max = 2, step = 0.01,
-			},
-			spacer = {
-				order = 4,
-				type = "description",
-				name = " ",
-			},
-			anchorPoint = {
-				order = 5,
-				type = "select",
-				name = L["Anchor Point"],
-				values = positionValues,
-			},
-			xOffset = {
-				order = 6,
-				type = "range",
-				name = L["X-Offset"],
-				min = -100, max = 100, step = 1,
-			},
-			yOffset = {
-				order = 7,
-				type = "range",
-				name = L["Y-Offset"],
-				min = -100, max = 100, step = 1,
-			},
-		},
-	}
-
-	return config
-end
-
-local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
-	local config = {
-		type = "group",
-		childGroups = "tabs",
-		name = L["Cutaway Bars"],
-		args = {
-			health = {
-				order = 1,
-				type = "group",
-				guiInline = true,
-				name = L["Health"],
-				get = function(info) return E.db.unitframe.units[groupName].cutaway.health[info[#info]] end,
-				set = function(info, value) E.db.unitframe.units[groupName].cutaway.health[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
-				args = {
-					enabled = {
-						type = "toggle",
-						order = 1,
-						name = L["Enable"]
-					},
-					forceBlankTexture = {
-						type = "toggle",
-						order = 2,
-						name = L["Blank Texture"]
-					},
-					lengthBeforeFade = {
-						type = "range",
-						order = 3,
-						name = L["Fade Out Delay"],
-						desc = L["How much time before the cutaway health starts to fade."],
-						min = 0.1,
-						max = 1,
-						step = 0.1,
-						disabled = function()
-							return not E.db.unitframe.units[groupName].cutaway.health.enabled
-						end
-					},
-					fadeOutTime = {
-						type = "range",
-						order = 4,
-						name = L["Fade Out"],
-						desc = L["How long the cutaway health will take to fade out."],
-						min = 0.1,
-						max = 1,
-						step = 0.1,
-						disabled = function()
-							return not E.db.unitframe.units[groupName].cutaway.health.enabled
-						end
-					}
-				}
-			}
-		}
-	}
-	if E.db.unitframe.units[groupName].cutaway.power then
-		config.args.power = {
-			order = 2,
-			type = "group",
-			name = L["Power"],
-			guiInline = true,
-			get = function(info) return E.db.unitframe.units[groupName].cutaway.power[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units[groupName].cutaway.power[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
-			args = {
-				enabled = {
-					type = "toggle",
-					order = 1,
-					name = L["Enable"]
-				},
-				forceBlankTexture = {
-					type = "toggle",
-					order = 2,
-					name = L["Blank Texture"]
-				},
-				lengthBeforeFade = {
-					type = "range",
-					order = 3,
-					name = L["Fade Out Delay"],
-					desc = L["How much time before the cutaway power starts to fade."],
-					min = 0.1,
-					max = 1,
-					step = 0.1,
-					disabled = function()
-						return not E.db.unitframe.units[groupName].cutaway.power.enabled
-					end
-				},
-				fadeOutTime = {
-					type = "range",
-					order = 4,
-					name = L["Fade Out"],
-					desc = L["How long the cutaway power will take to fade out."],
-					min = 0.1,
-					max = 1,
-					step = 0.1,
-					disabled = function()
-						return not E.db.unitframe.units[groupName].cutaway.power.enabled
-					end
-				}
-			}
-		}
-	end
 
 	return config
 end
