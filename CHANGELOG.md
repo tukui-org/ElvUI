@@ -4,9 +4,12 @@
 Nameplate Quest Icons now have the ability to show for multiple quests and have a few new options.  
 Added Detached Power Bar Auto Hide when empty option (needs better locales).  
 Added TutorialFrame skin.  
-Added Visual Aura Timer from Blazeflack to ElvUI.  
+Added Visual Aura Timer from Blazeflack. You find it under: ElvUI - Buffs&Debuffs - Statusbar.  
+Added ExtraActionBars from Blazeflack. Which means, you have now 10 Actionbars.  
 Added an option to mark the most valuable quest reward with a gold coin.  
 Added new Tag: [specialization], which shows YOUR current spec as text.  
+Added new Tag: [faction:icon] shows a texture from your faction.  
+Added an option for Nameplate Buffs/Debuffs to toggle auras from other players to desatured. Enabled by default.  
 
 **Bug Fixes:**  
 Fixed Pet Battle Nameplates, they weren't properly updating Health Bars.  
