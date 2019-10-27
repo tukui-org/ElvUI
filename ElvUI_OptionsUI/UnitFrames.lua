@@ -285,7 +285,130 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				guiInline = true,
 				type = 'group',
 				order = 500,
-				args = {},
+				args = {
+					minDuration = {
+						order = 1,
+						type = 'range',
+						name = L["Minimum Duration"],
+						desc = L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."],
+						min = 0, max = 10800, step = 1,
+					},
+					maxDuration = {
+						order = 2,
+						type = 'range',
+						name = L["Maximum Duration"],
+						desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
+						min = 0, max = 10800, step = 1,
+					},
+					jumpToFilter = {
+						order = 3,
+						name = L["Filters Page"],
+						desc = L["Shortcut to 'Filters' section of the config."],
+						type = "execute",
+						func = function() ACD:SelectGroup("ElvUI", "filters") end,
+					},
+					specialPriority = {
+						order = 4,
+						sortByValue = true,
+						type = 'select',
+						name = L["Add Special Filter"],
+						desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
+						values = function()
+							local filters = {}
+							local list = E.global.unitframe.specialFilters
+							if not list then return end
+							for filter in pairs(list) do
+								filters[filter] = L[filter]
+							end
+							return filters
+						end,
+						set = function(info, value)
+							filterPriority('aurabar', groupName, value)
+							updateFunc(UF, groupName)
+						end
+					},
+					priority = {
+						order = 5,
+						name = L["Add Regular Filter"],
+						desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
+						type = 'select',
+						values = function()
+							local filters = {}
+							local list = E.global.unitframe.aurafilters
+							if not list then return end
+							for filter in pairs(list) do
+								filters[filter] = filter
+							end
+							return filters
+						end,
+						set = function(info, value)
+							filterPriority('aurabar', groupName, value)
+							updateFunc(UF, groupName)
+						end
+					},
+					resetPriority = {
+						order = 6,
+						name = L["Reset Priority"],
+						desc = L["Reset filter priority to the default state."],
+						type = "execute",
+						func = function()
+							E.db.unitframe.units[groupName].aurabar.priority = P.unitframe.units[groupName].aurabar.priority
+							updateFunc(UF, groupName)
+						end,
+					},
+					filterPriority = {
+						order = 7,
+						dragdrop = true,
+						type = "multiselect",
+						name = L["Filter Priority"],
+						dragOnLeave = E.noop, --keep this here
+						dragOnEnter = function(info)
+							carryFilterTo = info.obj.value
+						end,
+						dragOnMouseDown = function(info)
+							carryFilterFrom, carryFilterTo = info.obj.value, nil
+						end,
+						dragOnMouseUp = function(info)
+							filterPriority('aurabar', groupName, carryFilterTo, nil, carryFilterFrom) --add it in the new spot
+							carryFilterFrom, carryFilterTo = nil, nil
+						end,
+						dragOnClick = function(info)
+							filterPriority('aurabar', groupName, carryFilterFrom, true)
+						end,
+						stateSwitchGetText = function(_, TEXT)
+							local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
+							local text = friend or enemy or TEXT
+							local SF, localized = E.global.unitframe.specialFilters[text], L[text]
+							local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
+							local filterText = (blockText and format("|cFF999999%s|r %s", _G.BLOCK, blockText)) or localized or text
+							return (friend and format("|cFF33FF33%s|r %s", _G.FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", _G.ENEMY, filterText)) or filterText
+						end,
+						stateSwitchOnClick = function(info)
+							filterPriority('aurabar', groupName, carryFilterFrom, nil, nil, true)
+						end,
+						values = function()
+							local str = E.db.unitframe.units[groupName].aurabar.priority
+							if str == "" then return nil end
+							return {strsplit(",",str)}
+						end,
+						get = function(info, value)
+							local str = E.db.unitframe.units[groupName].aurabar.priority
+							if str == "" then return nil end
+							local tbl = {strsplit(",",str)}
+							return tbl[value]
+						end,
+						set = function(info)
+							E.db.unitframe.units[groupName].aurabar[info[#info]] = nil -- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
+							updateFunc(UF, groupName)
+						end
+					},
+					spacer1 = {
+						order = 8,
+						type = "description",
+						fontSize = 'medium',
+						name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."],
+					}
+				},
 			},
 		},
 	}
@@ -293,128 +416,6 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	if groupName == "target" then
 		config.args.attachTo.values.PLAYER_AURABARS = L["Player Frame Aura Bars"]
 	end
-
-	config.args.filters.args.minDuration = {
-		order = 16,
-		type = 'range',
-		name = L["Minimum Duration"],
-		desc = L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."],
-		min = 0, max = 10800, step = 1,
-	}
-	config.args.filters.args.maxDuration = {
-		order = 17,
-		type = 'range',
-		name = L["Maximum Duration"],
-		desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
-		min = 0, max = 10800, step = 1,
-	}
-	config.args.filters.args.jumpToFilter = {
-		order = 18,
-		name = L["Filters Page"],
-		desc = L["Shortcut to Filters section of the config."],
-		type = "execute",
-		func = function() ACD:SelectGroup("ElvUI", "filters") end,
-	}
-	config.args.filters.args.specialPriority = {
-		order = 19,
-		sortByValue = true,
-		type = 'select',
-		name = L["Add Special Filter"],
-		desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
-		values = function()
-			local filters = {}
-			local list = E.global.unitframe.specialFilters
-			if not list then return end
-			for filter in pairs(list) do
-				filters[filter] = L[filter]
-			end
-			return filters
-		end,
-		set = function(info, value)
-			filterPriority('aurabar', groupName, value)
-			updateFunc(UF, groupName)
-		end
-	}
-	config.args.filters.args.priority = {
-		order = 20,
-		name = L["Add Regular Filter"],
-		desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."],
-		type = 'select',
-		values = function()
-			local filters = {}
-			local list = E.global.unitframe.aurafilters
-			if not list then return end
-			for filter in pairs(list) do
-				filters[filter] = filter
-			end
-			return filters
-		end,
-		set = function(info, value)
-			filterPriority('aurabar', groupName, value)
-			updateFunc(UF, groupName)
-		end
-	}
-	config.args.filters.args.resetPriority = {
-		order = 21,
-		name = L["Reset Priority"],
-		desc = L["Reset filter priority to the default state."],
-		type = "execute",
-		func = function()
-			E.db.unitframe.units[groupName].aurabar.priority = P.unitframe.units[groupName].aurabar.priority
-			updateFunc(UF, groupName)
-		end,
-	}
-	config.args.filters.args.filterPriority = {
-		order = 22,
-		dragdrop = true,
-		type = "multiselect",
-		name = L["Filter Priority"],
-		dragOnLeave = E.noop, --keep this here
-		dragOnEnter = function(info)
-			carryFilterTo = info.obj.value
-		end,
-		dragOnMouseDown = function(info)
-			carryFilterFrom, carryFilterTo = info.obj.value, nil
-		end,
-		dragOnMouseUp = function(info)
-			filterPriority('aurabar', groupName, carryFilterTo, nil, carryFilterFrom) --add it in the new spot
-			carryFilterFrom, carryFilterTo = nil, nil
-		end,
-		dragOnClick = function(info)
-			filterPriority('aurabar', groupName, carryFilterFrom, true)
-		end,
-		stateSwitchGetText = function(_, TEXT)
-			local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
-			local text = friend or enemy or TEXT
-			local SF, localized = E.global.unitframe.specialFilters[text], L[text]
-			local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
-			local filterText = (blockText and format("|cFF999999%s|r %s", _G.BLOCK, blockText)) or localized or text
-			return (friend and format("|cFF33FF33%s|r %s", _G.FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", _G.ENEMY, filterText)) or filterText
-		end,
-		stateSwitchOnClick = function(info)
-			filterPriority('aurabar', groupName, carryFilterFrom, nil, nil, true)
-		end,
-		values = function()
-			local str = E.db.unitframe.units[groupName].aurabar.priority
-			if str == "" then return nil end
-			return {strsplit(",",str)}
-		end,
-		get = function(info, value)
-			local str = E.db.unitframe.units[groupName].aurabar.priority
-			if str == "" then return nil end
-			local tbl = {strsplit(",",str)}
-			return tbl[value]
-		end,
-		set = function(info)
-			E.db.unitframe.units[groupName].aurabar[info[#info]] = nil -- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
-			updateFunc(UF, groupName)
-		end
-	}
-	config.args.filters.args.spacer1 = {
-		order = 23,
-		type = "description",
-		name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."],
-	}
 
 	return config
 end
@@ -434,7 +435,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 			},
 			enable = {
 				type = 'toggle',
-				order = 2,
+				order = 1,
 				name = L["Enable"],
 			},
 			perrow = {
@@ -468,21 +469,37 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				name = L["yOffset"],
 				min = -1000, max = 1000, step = 1,
 			},
-			anchorPoint = {
+			attachTo = {
 				type = 'select',
 				order = 8,
+				name = L["Attach To"],
+				desc = L["What to attach the buff anchor frame to."],
+				values = {
+					['FRAME'] = L["Frame"],
+					['DEBUFFS'] = L["Debuffs"],
+					["HEALTH"] = L["Health"],
+					["POWER"] = L["Power"],
+				},
+				disabled = function()
+					local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition
+					return (smartAuraPosition and (smartAuraPosition == "BUFFS_ON_DEBUFFS" or smartAuraPosition == "FLUID_BUFFS_ON_DEBUFFS"))
+				end,
+			},
+			anchorPoint = {
+				type = 'select',
+				order = 9,
 				name = L["Anchor Point"],
 				desc = L["What point to anchor to the frame you set to attach to."],
 				values = positionValues,
 			},
 			clickThrough = {
-				order = 9,
+				order = 10,
 				name = L["Click Through"],
 				desc = L["Ignore mouse events."],
 				type = 'toggle',
 			},
 			sortMethod = {
-				order = 10,
+				order = 11,
 				name = L["Sort By"],
 				desc = L["Method to sort by."],
 				type = 'select',
@@ -495,7 +512,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				},
 			},
 			sortDirection = {
-				order = 11,
+				order = 12,
 				name = L["Sort Direction"],
 				desc = L["Ascending or Descending order."],
 				type = 'select',
@@ -506,7 +523,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 			},
 			stacks = {
 				type = "group",
-				order = 12,
+				order = 13,
 				name = L["Stack Counter"],
 				guiInline = true,
 				get = function(info, value) return E.db.unitframe.units[groupName][auraType][info[#info]] end,
@@ -535,7 +552,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 			},
 			duration = {
 				type = "group",
-				order = 13,
+				order = 14,
 				name = L["Duration"],
 				guiInline = true,
 				get = function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end,
@@ -569,177 +586,151 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				guiInline = true,
 				type = 'group',
 				order = 500,
-				args = {},
+				args = {
+					minDuration = {
+						order = 1,
+						type = 'range',
+						name = L["Minimum Duration"],
+						desc = L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."],
+						min = 0, max = 10800, step = 1,
+					},
+					maxDuration = {
+						order = 2,
+						type = 'range',
+						name = L["Maximum Duration"],
+						desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
+						min = 0, max = 10800, step = 1,
+					},
+					jumpToFilter = {
+						order = 3,
+						name = L["Filters Page"],
+						desc = L["Shortcut to 'Filters' section of the config."],
+						type = "execute",
+						func = function() ACD:SelectGroup("ElvUI", "filters") end,
+					},
+					specialPriority = {
+						order = 4,
+						sortByValue = true,
+						type = 'select',
+						name = L["Add Special Filter"],
+						desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
+						values = function()
+							local filters = {}
+							local list = E.global.unitframe.specialFilters
+							if not list then return end
+							for filter in pairs(list) do
+								filters[filter] = L[filter]
+							end
+							return filters
+						end,
+						set = function(info, value)
+							filterPriority(auraType, groupName, value)
+							updateFunc(UF, groupName, numUnits)
+						end
+					},
+					priority = {
+						order = 5,
+						name = L["Add Regular Filter"],
+						desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
+						type = 'select',
+						values = function()
+							local filters = {}
+							local list = E.global.unitframe.aurafilters
+							if not list then return end
+							for filter in pairs(list) do
+								filters[filter] = filter
+							end
+							return filters
+						end,
+						set = function(info, value)
+							filterPriority(auraType, groupName, value)
+							updateFunc(UF, groupName, numUnits)
+						end
+					},
+					resetPriority = {
+						order = 6,
+						name = L["Reset Priority"],
+						desc = L["Reset filter priority to the default state."],
+						type = "execute",
+						func = function()
+							E.db.unitframe.units[groupName][auraType].priority = P.unitframe.units[groupName][auraType].priority
+							updateFunc(UF, groupName, numUnits)
+						end,
+					},
+					filterPriority = {
+						order = 7,
+						dragdrop = true,
+						type = "multiselect",
+						name = L["Filter Priority"],
+						dragOnLeave = E.noop, --keep this here
+						dragOnEnter = function(info)
+							carryFilterTo = info.obj.value
+						end,
+						dragOnMouseDown = function(info)
+							carryFilterFrom, carryFilterTo = info.obj.value, nil
+						end,
+						dragOnMouseUp = function(info)
+							filterPriority(auraType, groupName, carryFilterTo, nil, carryFilterFrom) --add it in the new spot
+							carryFilterFrom, carryFilterTo = nil, nil
+						end,
+						dragOnClick = function(info)
+							filterPriority(auraType, groupName, carryFilterFrom, true)
+						end,
+						stateSwitchGetText = function(_, TEXT)
+							local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
+							local text = friend or enemy or TEXT
+							local SF, localized = E.global.unitframe.specialFilters[text], L[text]
+							local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
+							local filterText = (blockText and format("|cFF999999%s|r %s", _G.BLOCK, blockText)) or localized or text
+							return (friend and format("|cFF33FF33%s|r %s", _G.FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", _G.ENEMY, filterText)) or filterText
+						end,
+						stateSwitchOnClick = function(info)
+							filterPriority(auraType, groupName, carryFilterFrom, nil, nil, true)
+						end,
+						values = function()
+							local str = E.db.unitframe.units[groupName][auraType].priority
+							if str == "" then return nil end
+							return {strsplit(",",str)}
+						end,
+						get = function(info, value)
+							local str = E.db.unitframe.units[groupName][auraType].priority
+							if str == "" then return nil end
+							local tbl = {strsplit(",",str)}
+							return tbl[value]
+						end,
+						set = function(info)
+							E.db.unitframe.units[groupName][auraType][info[#info]] = nil -- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
+							updateFunc(UF, groupName, numUnits)
+						end
+					},
+					spacer1 = {
+						order = 8,
+						type = "description",
+						fontSize = 'medium',
+						name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."],
+					}
+				},
 			},
 		},
 	}
 
-	if auraType == "buffs" then
-		config.args.attachTo = {
-			type = 'select',
-			order = 7,
-			name = L["Attach To"],
-			desc = L["What to attach the buff anchor frame to."],
-			values = {
-				['FRAME'] = L["Frame"],
-				['DEBUFFS'] = L["Debuffs"],
-				["HEALTH"] = L["Health"],
-				["POWER"] = L["Power"],
-			},
-			disabled = function()
-				local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition
-				return (smartAuraPosition and (smartAuraPosition == "BUFFS_ON_DEBUFFS" or smartAuraPosition == "FLUID_BUFFS_ON_DEBUFFS"))
-			end,
+	if auraType == "debuffs" then
+		config.args.attachTo.values = {
+			['FRAME'] = L["Frame"],
+			['BUFFS'] = L["Buffs"],
+			["HEALTH"] = L["Health"],
+			["POWER"] = L["Power"],
 		}
-	else
-		config.args.attachTo = {
-			type = 'select',
-			order = 7,
-			name = L["Attach To"],
-			desc = L["What to attach the debuff anchor frame to."],
-			values = {
-				['FRAME'] = L["Frame"],
-				['BUFFS'] = L["Buffs"],
-				["HEALTH"] = L["Health"],
-				["POWER"] = L["Power"],
-			},
-			disabled = function()
-				local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition
-				return (smartAuraPosition and (smartAuraPosition == "DEBUFFS_ON_BUFFS" or smartAuraPosition == "FLUID_DEBUFFS_ON_BUFFS"))
-			end,
+		config.args.attachTo.disabled = function()
+			local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition
+			return (smartAuraPosition and (smartAuraPosition == "DEBUFFS_ON_BUFFS" or smartAuraPosition == "FLUID_DEBUFFS_ON_BUFFS"))
+		end
+		config.args.desaturate = {
+			type = 'toggle',
+			order = 2,
+			name = L["Desaturate Icon"],
 		}
 	end
-
-	if isGroupFrame then
-		config.args.countFontSize = {
-			order = 10,
-			name = L["Count Font Size"],
-			type = "range",
-			min = 6, max = 212, step = 1,
-		}
-	end
-
-	config.args.filters.args.minDuration = {
-		order = 16,
-		type = 'range',
-		name = L["Minimum Duration"],
-		desc = L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."],
-		min = 0, max = 10800, step = 1,
-	}
-	config.args.filters.args.maxDuration = {
-		order = 17,
-		type = 'range',
-		name = L["Maximum Duration"],
-		desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
-		min = 0, max = 10800, step = 1,
-	}
-	config.args.filters.args.jumpToFilter = {
-		order = 18,
-		name = L["Filters Page"],
-		desc = L["Shortcut to Filters section of the config."],
-		type = "execute",
-		func = function() ACD:SelectGroup("ElvUI", "filters") end,
-	}
-	config.args.filters.args.specialPriority = {
-		order = 19,
-		sortByValue = true,
-		type = 'select',
-		name = L["Add Special Filter"],
-		desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
-		values = function()
-			local filters = {}
-			local list = E.global.unitframe.specialFilters
-			if not list then return end
-			for filter in pairs(list) do
-				filters[filter] = L[filter]
-			end
-			return filters
-		end,
-		set = function(info, value)
-			filterPriority(auraType, groupName, value)
-			updateFunc(UF, groupName, numUnits)
-		end
-	}
-	config.args.filters.args.priority = {
-		order = 20,
-		name = L["Add Regular Filter"],
-		desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."],
-		type = 'select',
-		values = function()
-			local filters = {}
-			local list = E.global.unitframe.aurafilters
-			if not list then return end
-			for filter in pairs(list) do
-				filters[filter] = filter
-			end
-			return filters
-		end,
-		set = function(info, value)
-			filterPriority(auraType, groupName, value)
-			updateFunc(UF, groupName, numUnits)
-		end
-	}
-	config.args.filters.args.resetPriority = {
-		order = 21,
-		name = L["Reset Priority"],
-		desc = L["Reset filter priority to the default state."],
-		type = "execute",
-		func = function()
-			E.db.unitframe.units[groupName][auraType].priority = P.unitframe.units[groupName][auraType].priority
-			updateFunc(UF, groupName, numUnits)
-		end,
-	}
-	config.args.filters.args.filterPriority = {
-		order = 22,
-		dragdrop = true,
-		type = "multiselect",
-		name = L["Filter Priority"],
-		dragOnLeave = E.noop, --keep this here
-		dragOnEnter = function(info)
-			carryFilterTo = info.obj.value
-		end,
-		dragOnMouseDown = function(info)
-			carryFilterFrom, carryFilterTo = info.obj.value, nil
-		end,
-		dragOnMouseUp = function(info)
-			filterPriority(auraType, groupName, carryFilterTo, nil, carryFilterFrom) --add it in the new spot
-			carryFilterFrom, carryFilterTo = nil, nil
-		end,
-		dragOnClick = function(info)
-			filterPriority(auraType, groupName, carryFilterFrom, true)
-		end,
-		stateSwitchGetText = function(_, TEXT)
-			local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
-			local text = friend or enemy or TEXT
-			local SF, localized = E.global.unitframe.specialFilters[text], L[text]
-			local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
-			local filterText = (blockText and format("|cFF999999%s|r %s", _G.BLOCK, blockText)) or localized or text
-			return (friend and format("|cFF33FF33%s|r %s", _G.FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", _G.ENEMY, filterText)) or filterText
-		end,
-		stateSwitchOnClick = function(info)
-			filterPriority(auraType, groupName, carryFilterFrom, nil, nil, true)
-		end,
-		values = function()
-			local str = E.db.unitframe.units[groupName][auraType].priority
-			if str == "" then return nil end
-			return {strsplit(",",str)}
-		end,
-		get = function(info, value)
-			local str = E.db.unitframe.units[groupName][auraType].priority
-			if str == "" then return nil end
-			local tbl = {strsplit(",",str)}
-			return tbl[value]
-		end,
-		set = function(info)
-			E.db.unitframe.units[groupName][auraType][info[#info]] = nil -- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
-			updateFunc(UF, groupName, numUnits)
-		end
-	}
-	config.args.filters.args.spacer1 = {
-		order = 23,
-		type = "description",
-		name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."],
-	}
 
 	return config
 end
