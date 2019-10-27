@@ -180,14 +180,6 @@ function M:PLAYER_REGEN_ENABLED()
 	self:UpdateSettings()
 end
 
-local function PositionTicketButtons()
-	local pos = E.db.general.minimap.icons.ticket.position or "TOPRIGHT"
-	_G.HelpOpenTicketButton:ClearAllPoints()
-	_G.HelpOpenTicketButton:Point(pos, _G.Minimap, pos, E.db.general.minimap.icons.ticket.xOffset or 0, E.db.general.minimap.icons.ticket.yOffset or 0)
-	_G.HelpOpenWebTicketButton:ClearAllPoints()
-	_G.HelpOpenWebTicketButton:Point(pos, _G.Minimap, pos, E.db.general.minimap.icons.ticket.xOffset or 0, E.db.general.minimap.icons.ticket.yOffset or 0)
-end
-
 local isResetting
 local function ResetZoom()
 	_G.Minimap:SetZoom(0)
@@ -367,10 +359,15 @@ function M:UpdateSettings()
 
 	if _G.HelpOpenTicketButton and _G.HelpOpenWebTicketButton then
 		local scale = E.db.general.minimap.icons.ticket.scale or 1
+		local pos = E.db.general.minimap.icons.ticket.position or "TOPRIGHT"
+
 		_G.HelpOpenTicketButton:SetScale(scale)
 		_G.HelpOpenWebTicketButton:SetScale(scale)
 
-		PositionTicketButtons()
+		_G.HelpOpenTicketButton:ClearAllPoints()
+		_G.HelpOpenWebTicketButton:ClearAllPoints()
+		_G.HelpOpenTicketButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.ticket.xOffset or 0, E.db.general.minimap.icons.ticket.yOffset or 0)
+		_G.HelpOpenWebTicketButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.ticket.xOffset or 0, E.db.general.minimap.icons.ticket.yOffset or 0)
 	end
 end
 
