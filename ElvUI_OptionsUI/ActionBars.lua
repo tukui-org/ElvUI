@@ -732,7 +732,7 @@ E.Options.args.actionbar = {
 	},
 }
 
-for i = 1, 6 do
+for i = 1, 10 do
 	local name = L["Bar "]..i
 	E.Options.args.actionbar.args['bar'..i] = {
 		order = 3 + i,

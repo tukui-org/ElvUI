@@ -49,41 +49,65 @@ AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
 AB.barDefaults = {
-	["bar1"] = {
-		['page'] = 1,
-		['bindButtons'] = "ACTIONBUTTON",
-		['conditions'] = format("[overridebar] %d; [vehicleui] %d; [possessbar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex()),
-		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,4",
+	bar1 = {
+		page = 1,
+		bindButtons = "ACTIONBUTTON",
+		conditions = format("[overridebar] %d; [vehicleui] %d; [possessbar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex()),
+		position = "BOTTOM,ElvUIParent,BOTTOM,0,4",
 	},
-	["bar2"] = {
-		['page'] = 5,
-		['bindButtons'] = "MULTIACTIONBAR2BUTTON",
-		['conditions'] = "",
-		['position'] = "BOTTOM,ElvUI_Bar1,TOP,0,2",
+	bar2 = {
+		page = 5,
+		bindButtons = "MULTIACTIONBAR2BUTTON",
+		conditions = "",
+		position = "BOTTOM,ElvUI_Bar1,TOP,0,2",
 	},
-	["bar3"] = {
-		['page'] = 6,
-		['bindButtons'] = "MULTIACTIONBAR1BUTTON",
-		['conditions'] = "",
-		['position'] = "LEFT,ElvUI_Bar1,RIGHT,4,0",
+	bar3 = {
+		page = 6,
+		bindButtons = "MULTIACTIONBAR1BUTTON",
+		conditions = "",
+		position = "LEFT,ElvUI_Bar1,RIGHT,4,0",
 	},
-	["bar4"] = {
-		['page'] = 4,
-		['bindButtons'] = "MULTIACTIONBAR4BUTTON",
-		['conditions'] = "",
-		['position'] = "RIGHT,ElvUIParent,RIGHT,-4,0",
+	bar4 = {
+		page = 4,
+		bindButtons = "MULTIACTIONBAR4BUTTON",
+		conditions = "",
+		position = "RIGHT,ElvUIParent,RIGHT,-4,0",
 	},
-	["bar5"] = {
-		['page'] = 3,
-		['bindButtons'] = "MULTIACTIONBAR3BUTTON",
-		['conditions'] = "",
-		['position'] = "RIGHT,ElvUI_Bar1,LEFT,-4,0",
+	bar5 = {
+		page = 3,
+		bindButtons = "MULTIACTIONBAR3BUTTON",
+		conditions = "",
+		position = "RIGHT,ElvUI_Bar1,LEFT,-4,0",
 	},
-	["bar6"] = {
-		['page'] = 2,
-		['bindButtons'] = "ELVUIBAR6BUTTON",
-		['conditions'] = "",
-		['position'] = "BOTTOM,ElvUI_Bar2,TOP,0,2",
+	bar6 = {
+		page = 2,
+		bindButtons = "ELVUIBAR6BUTTON",
+		conditions = "",
+		position = "BOTTOM,ElvUI_Bar2,TOP,0,2",
+	},
+	bar7 = {
+		page = 7,
+		bindButtons = 'EXTRABAR7BUTTON',
+		conditions = '',
+		position = 'BOTTOM,ElvUI_Bar1,TOP,0,82',
+	},
+	bar8 = {
+		page = 8,
+		bindButtons = 'EXTRABAR8BUTTON',
+		conditions = '',
+		position = 'BOTTOM,ElvUI_Bar1,TOP,0,122',
+	},
+	bar9 = {
+		page = 9,
+		bindButtons = 'EXTRABAR9BUTTON',
+		conditions = '',
+		position = 'BOTTOM,ElvUI_Bar1,TOP,0,162',
+	},
+	bar10 = {
+		page = 10,
+		bindButtons = 'EXTRABAR10BUTTON',
+		conditions = '',
+		position = 'BOTTOM,ElvUI_Bar1,TOP,0,202',
 	},
 }
 
@@ -1174,7 +1198,7 @@ function AB:Initialize()
 	self:SetupMicroBar()
 	self:UpdateBar1Paging()
 
-	for i=1, 6 do
+	for i = 1, 10 do
 		self:CreateBar(i)
 	end
 
