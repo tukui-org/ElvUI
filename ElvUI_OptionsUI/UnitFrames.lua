@@ -927,8 +927,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 			overlayOnFrame = {
 				order = 3,
 				type = 'select',
-				name = L['Overlay Panel'],
-				desc = L['Choose which panel to overlay the castbar on.'],
+				name = L["Attach To"],
 				values = {
 					["Health"] = L["Health"],
 					["Power"] = L["Power"],
@@ -939,7 +938,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 			textGroup = {
 				order = 16,
 				type = "group",
-				name = L['Text Options'],
+				name = L["Text"],
 				guiInline = true,
 				get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
 				set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
@@ -947,8 +946,8 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 					hidetext = {
 						order = 1,
 						type = 'toggle',
-						name = L['Hide Text'],
-						desc = L['Hide Castbar text. Useful if your power height is very low or if you use power offset.'],
+						name = L["Hide Text"],
+						desc = L["Hide Castbar text. Useful if your power height is very low or if you use power offset."],
 					},
 					textColor = {
 						order = 2,
@@ -969,7 +968,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 					textSettings = {
 						order = 2,
 						type = "group",
-						name = L['Text Options'],
+						name = L["Text Options"],
 						guiInline = true,
 						get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
 						set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
@@ -977,13 +976,13 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 							xOffsetText = {
 								order = 1,
 								type = 'range',
-								name = L['X-Offset'],
+								name = L["X-Offset"],
 								min = -100, max = 100, step = 1,
 							},
 							yOffsetText = {
 								order = 2,
 								type = 'range',
-								name = L['Y-Offset'],
+								name = L["Y-Offset"],
 								min = -50, max = 50, step = 1,
 							},
 						},
@@ -991,7 +990,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 					timeSettings = {
 						order = 3,
 						type = "group",
-						name = L['Time Options'],
+						name = L["Time Options"],
 						guiInline = true,
 						get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
 						set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
@@ -999,13 +998,13 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 							xOffsetTime = {
 								order = 1,
 								type = 'range',
-								name = L['X-Offset'],
+								name = L["X-Offset"],
 								min = -100, max = 100, step = 1,
 							},
 							yOffsetTime = {
 								order = 2,
 								type = 'range',
-								name = L['Y-Offset'],
+								name = L["Y-Offset"],
 								min = -50, max = 50, step = 1,
 							},
 						},
