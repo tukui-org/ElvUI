@@ -164,6 +164,14 @@ function UF:Configure_Castbar(frame)
 		castbar.Spark = nil
 	end
 
+	if db.castbar.hidetext then
+		castbar.Text:SetAlpha(0)
+		castbar.Time:SetAlpha(0)
+	else
+		castbar.Text:SetAlpha(1)
+		castbar.Time:SetAlpha(1)
+	end
+
 	castbar:ClearAllPoints()
 
 	if db.castbar.overlayOnFrame ~= 'None' then
