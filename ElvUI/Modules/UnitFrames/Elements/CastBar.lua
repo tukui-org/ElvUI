@@ -177,11 +177,13 @@ function UF:Configure_Castbar(frame)
 	if db.castbar.overlayOnFrame ~= 'None' then
 		local anchor = frame[db.castbar.overlayOnFrame]
 
-		castbar.Icon.bg:Size(anchor:GetHeight() - frame.SPACING*2)
-
 		if (not db.castbar.iconAttached) then
 			castbar:SetInside(anchor, 0, 0)
 		else
+			if castbar.Icon then
+				castbar.Icon.bg:Size(anchor:GetHeight() - frame.SPACING*2)
+			end
+
 			local iconWidth = db.castbar.icon and (castbar.Icon.bg:GetWidth() - frame.BORDER) or 0
 			if(frame.ORIENTATION == "RIGHT") then
 				castbar:Point("TOPLEFT", anchor, "TOPLEFT")
