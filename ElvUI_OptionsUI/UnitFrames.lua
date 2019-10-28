@@ -4926,11 +4926,292 @@ E.Options.args.unitframe.args.focus = {
 	},
 }
 
+--Focus Target
+E.Options.args.unitframe.args.focustarget = {
+	name = L["FocusTarget"],
+	type = 'group',
+	order = 8,
+	childGroups = "tab",
+	get = function(info) return E.db.unitframe.units.focustarget[info[#info]] end,
+	set = function(info, value) E.db.unitframe.units.focustarget[info[#info]] = value; UF:CreateAndUpdateUF('focustarget') end,
+	disabled = function() return not E.UnitFrames.Initialized end,
+	args = {
+		enable = {
+			type = 'toggle',
+			order = 1,
+			name = L["Enable"],
+		},
+		showAuras = {
+			order = 2,
+			type = 'execute',
+			name = L["Show Auras"],
+			func = function()
+				local frame = ElvUF_FocusTarget
+				if frame.forceShowAuras then
+					frame.forceShowAuras = nil;
+				else
+					frame.forceShowAuras = true;
+				end
+
+				UF:CreateAndUpdateUF('focustarget')
+			end,
+		},
+		resetSettings = {
+			type = 'execute',
+			order = 3,
+			name = L["Restore Defaults"],
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["FocusTarget Frame"], nil, {unit='focustarget', mover='FocusTarget Frame'}) end,
+		},
+		copyFrom = {
+			type = 'select',
+			order = 4,
+			name = L["Copy From"],
+			desc = L["Select a unit to copy settings from."],
+			values = UF.units,
+			set = function(info, value) UF:MergeUnitSettings(value, 'focustarget'); end,
+		},
+		generalGroup = {
+			order = 5,
+			type = "group",
+			name = L["General"],
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["General"],
+				},
+				width = {
+					order = 3,
+					name = L["Width"],
+					type = 'range',
+					min = 50, max = 1000, step = 1,
+				},
+				height = {
+					order = 4,
+					name = L["Height"],
+					type = 'range',
+					min = 10, max = 500, step = 1,
+				},
+				hideonnpc = {
+					type = 'toggle',
+					order = 6,
+					name = L["Text Toggle On NPC"],
+					desc = L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."],
+					get = function(info) return E.db.unitframe.units.focustarget.power.hideonnpc end,
+					set = function(info, value) E.db.unitframe.units.focustarget.power.hideonnpc = value; UF:CreateAndUpdateUF('focustarget') end,
+				},
+				threatStyle = {
+					type = 'select',
+					order = 7,
+					name = L["Threat Display Mode"],
+					values = threatValues,
+				},
+				smartAuraPosition = {
+					order = 8,
+					type = "select",
+					name = L["Smart Aura Position"],
+					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
+					values = smartAuraPositionValues,
+				},
+				orientation = {
+					order = 9,
+					type = "select",
+					name = L["Frame Orientation"],
+					desc = L["Set the orientation of the UnitFrame."],
+					values = orientationValues,
+				},
+				disableMouseoverGlow = {
+					order = 12,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 13,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
+				},
+			},
+		},
+		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focustarget'),
+		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focustarget'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'focustarget'),
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'focustarget'),
+		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focustarget'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focustarget'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'focustarget'),
+		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'focustarget'),
+		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'focustarget'),
+		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'focustarget'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'focustarget'),
+	},
+}
+
+--Pet
+E.Options.args.unitframe.args.pet = {
+	name = L["PET"],
+	type = 'group',
+	order = 9,
+	childGroups = "tab",
+	get = function(info) return E.db.unitframe.units.pet[info[#info]] end,
+	set = function(info, value) E.db.unitframe.units.pet[info[#info]] = value; UF:CreateAndUpdateUF('pet') end,
+	disabled = function() return not E.UnitFrames.Initialized end,
+	args = {
+		enable = {
+			type = 'toggle',
+			order = 1,
+			name = L["Enable"],
+		},
+		showAuras = {
+			order = 2,
+			type = 'execute',
+			name = L["Show Auras"],
+			func = function()
+				local frame = ElvUF_Pet
+				if frame.forceShowAuras then
+					frame.forceShowAuras = nil;
+				else
+					frame.forceShowAuras = true;
+				end
+
+				UF:CreateAndUpdateUF('pet')
+			end,
+		},
+		resetSettings = {
+			type = 'execute',
+			order = 3,
+			name = L["Restore Defaults"],
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Pet Frame"], nil, {unit='pet', mover='Pet Frame'}) end,
+		},
+		copyFrom = {
+			type = 'select',
+			order = 4,
+			name = L["Copy From"],
+			desc = L["Select a unit to copy settings from."],
+			values = UF.units,
+			set = function(info, value) UF:MergeUnitSettings(value, 'pet'); end,
+		},
+		generalGroup = {
+			order = 5,
+			type = "group",
+			name = L["General"],
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["General"],
+				},
+				width = {
+					order = 3,
+					name = L["Width"],
+					type = 'range',
+					min = 50, max = 1000, step = 1,
+				},
+				height = {
+					order = 4,
+					name = L["Height"],
+					type = 'range',
+					min = 10, max = 500, step = 1,
+				},
+				hideonnpc = {
+					type = 'toggle',
+					order = 6,
+					name = L["Text Toggle On NPC"],
+					desc = L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."],
+					get = function(info) return E.db.unitframe.units.pet.power.hideonnpc end,
+					set = function(info, value) E.db.unitframe.units.pet.power.hideonnpc = value; UF:CreateAndUpdateUF('pet') end,
+				},
+				threatStyle = {
+					type = 'select',
+					order = 7,
+					name = L["Threat Display Mode"],
+					values = threatValues,
+				},
+				smartAuraPosition = {
+					order = 8,
+					type = "select",
+					name = L["Smart Aura Position"],
+					desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
+					values = smartAuraPositionValues,
+				},
+				orientation = {
+					order = 9,
+					type = "select",
+					name = L["Frame Orientation"],
+					desc = L["Set the orientation of the UnitFrame."],
+					values = orientationValues,
+				},
+				disableMouseoverGlow = {
+					order = 11,
+					type = "toggle",
+					name = L["Block Mouseover Glow"],
+					desc = L["Forces Mouseover Glow to be disabled for these frames"],
+				},
+				disableTargetGlow = {
+					order = 12,
+					type = "toggle",
+					name = L["Block Target Glow"],
+					desc = L["Forces Target Glow to be disabled for these frames"],
+				},
+			},
+		},
+		buffIndicator = {
+			order = 600,
+			type = 'group',
+			name = L["Buff Indicator"],
+			get = function(info) return E.db.unitframe.units.pet.buffIndicator[info[#info]] end,
+			set = function(info, value) E.db.unitframe.units.pet.buffIndicator[info[#info]] = value; UF:CreateAndUpdateUF('pet') end,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Buff Indicator"],
+				},
+				enable = {
+					type = 'toggle',
+					name = L["Enable"],
+					order = 2,
+				},
+				size = {
+					type = 'range',
+					name = L["Size"],
+					desc = L["Size of the indicator icon."],
+					order = 3,
+					min = 4, max = 50, step = 1,
+				},
+				style = {
+					name = L["Style"],
+					order = 4,
+					type = 'select',
+					values = {
+						['coloredIcon'] = L["Colored Icon"],
+						['texturedIcon'] = L["Textured Icon"],
+					},
+				},
+			},
+		},
+		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'pet'),
+		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pet'),
+		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pet'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'pet'),
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pet'),
+		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pet'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'pet'),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'pet'),
+		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'pet'),
+		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'pet'),
+		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'pet'),
+		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'pet'),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'pet'),
+	},
+}
+
 --Pet Target
 E.Options.args.unitframe.args.pettarget = {
 	name = L["PetTarget"],
 	type = 'group',
-	order = 8,
+	order = 10,
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.pettarget[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.pettarget[info[#info]] = value; UF:CreateAndUpdateUF('pettarget') end,
