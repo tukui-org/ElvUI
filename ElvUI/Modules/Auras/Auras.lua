@@ -100,7 +100,7 @@ function A:UpdateTime(elapsed)
 		if useIndicatorColor then
 			self.time:SetFormattedText(gsub(E.TimeFormats[formatID][1], E.TimeFormats[formatID][3], indicatorColors[formatID]..E.TimeFormats[formatID][3]..FONT_COLOR_CODE_CLOSE), value1, value2)
 		else
-			self.time:SetFormattedText(E.TimeFormats[formatID][1], value1, value2)
+			self.time:SetFormattedText(E.TimeFormats[formatID][2], value1, value2)
 		end
 
 		self.time:SetTextColor(timeColors[formatID].r, timeColors[formatID].g, timeColors[formatID].b)
