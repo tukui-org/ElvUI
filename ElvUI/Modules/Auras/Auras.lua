@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local floor, format, tinsert = floor, format, tinsert
-local select, unpack = select, unpack
+local gsub, select, unpack = gsub, select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetInventoryItemQuality = GetInventoryItemQuality
@@ -16,6 +16,7 @@ local GetWeaponEnchantInfo = GetWeaponEnchantInfo
 local RegisterAttributeDriver = RegisterAttributeDriver
 local RegisterStateDriver = RegisterStateDriver
 local UnitAura = UnitAura
+local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
 
 local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group("ElvUI", "Buffs")
