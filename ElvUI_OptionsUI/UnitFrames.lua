@@ -768,6 +768,12 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 					['texturedIcon'] = L["Textured Icon"],
 				},
 			},
+			clickThrough = {
+				order = 5,
+				name = L["Click Through"],
+				desc = L["Ignore mouse events."],
+				type = 'toggle',
+			},
 			configureButton = {
 				order = 6,
 				type = 'execute',

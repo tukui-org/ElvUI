@@ -11,7 +11,7 @@ function UF:Construct_AuraWatch(frame)
 	auras:SetInside(frame.Health)
 	auras.presentAlpha = 1
 	auras.missingAlpha = 0
-	auras.strictMatching = true;
+	auras.strictMatching = true
 	auras.PostCreateIcon = UF.BuffIndicator_PostCreateIcon
 	auras.PostUpdateIcon = UF.BuffIndicator_PostUpdateIcon
 
@@ -31,6 +31,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 			frame.AuraWatch:SetNewTable(db.profileSpecific and E.db.unitframe.filters.buffwatch or E.global.unitframe.buffwatch[E.myclass])
 		end
 
+		frame.disableMouse = db.clickThrough
 		frame.AuraWatch.size = db.size
 	elseif frame:IsElementEnabled('AuraWatch') then
 		frame:DisableElement('AuraWatch')
