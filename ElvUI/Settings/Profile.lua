@@ -5026,7 +5026,9 @@ P.actionbar.bar3.buttons = 6
 P.actionbar.bar3.buttonsPerRow = 6
 
 P.actionbar.bar4.enabled = true
+P.actionbar.bar4.buttonsPerRow = 1
 P.actionbar.bar4.point = 'TOPRIGHT'
+P.actionbar.bar4.backdrop = true
 
 P.actionbar.bar5.enabled = true
 P.actionbar.bar5.buttons = 6
