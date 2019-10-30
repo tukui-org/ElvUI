@@ -142,7 +142,6 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			button:Show()
 			button:ClearAllPoints()
 			button:SetPoint(setting.point, setting.xOffset, setting.yOffset)
-			button:EnableMouse(not element.disableMouse)
 
 			if(element.PostUpdateIcon) then
 				element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)

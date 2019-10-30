@@ -3140,7 +3140,6 @@ P.unitframe = {
 				enable = true,
 				size = 8,
 				style = 'texturedIcon',
-				clickThrough = false,
 			},
 			castbar = {
 				enable = true,
@@ -3784,7 +3783,6 @@ P.unitframe = {
 				size = 8,
 				style = 'texturedIcon',
 				profileSpecific = false,
-				clickThrough = false,
 			},
 			rdebuffs = {
 				enable = false,
@@ -4066,7 +4064,6 @@ P.unitframe = {
 				size = 8,
 				style = 'texturedIcon',
 				profileSpecific = false,
-				clickThrough = false,
 			},
 			rdebuffs = {
 				enable = true,
@@ -4329,7 +4326,6 @@ P.unitframe = {
 				size = 8,
 				style = 'texturedIcon',
 				profileSpecific = false,
-				clickThrough = false,
 			},
 			raidicon = {
 				enable = true,
@@ -4497,7 +4493,6 @@ P.unitframe = {
 				enable = true,
 				size = 8,
 				style = 'texturedIcon',
-				clickThrough = false,
 			},
 			rdebuffs = {
 				enable = true,
@@ -4617,7 +4612,6 @@ P.unitframe = {
 				size = 8,
 				style = 'texturedIcon',
 				profileSpecific = false,
-				clickThrough = false,
 			},
 			rdebuffs = {
 				enable = true,
@@ -4761,7 +4755,6 @@ P.unitframe = {
 				size = 8,
 				style = 'texturedIcon',
 				profileSpecific = false,
-				clickThrough = false,
 			},
 			rdebuffs = {
 				enable = true,
