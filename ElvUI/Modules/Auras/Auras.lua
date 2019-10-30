@@ -390,7 +390,7 @@ function A:UpdateHeader(header)
 		auraType = 'buffs'
 		db = self.db.buffs
 		header:SetAttribute("consolidateTo", 0)
-		header:SetAttribute('weaponTemplate', format("ElvUIAuraTemplate%d".db.size))
+		header:SetAttribute('weaponTemplate', format("ElvUIAuraTemplate%d",db.size))
 	end
 
 	header:SetAttribute("separateOwn", db.seperateOwn)
