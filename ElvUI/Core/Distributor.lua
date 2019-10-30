@@ -530,7 +530,7 @@ E.PopupDialogs.DISTRIBUTOR_REQUEST_DENIED = {
 }
 
 E.PopupDialogs.DISTRIBUTOR_FAILED = {
-	text = L["Lord! It\'s a miracle! The download up and vanished like a fart in the wind! Try Again!"],
+	text = L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"],
 	whileDead = 1,
 	hideOnEscape = 1,
 	button1 = _G.OKAY,

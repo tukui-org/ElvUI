@@ -5633,7 +5633,7 @@ E.Options.args.nameplate = {
 						otherAtBase = {
 							order = 9,
 							type = "toggle",
-							name = L["Nameplate at Base"],
+							name = L["Nameplate At Base"],
 							desc = L["Position other Nameplates at the base, rather than overhead."],
 							get = function()
 								return GetCVarBool("nameplateOtherAtBase")
