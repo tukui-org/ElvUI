@@ -390,7 +390,7 @@ function A:UpdateHeader(header)
 		auraType = 'buffs'
 		db = self.db.buffs
 		header:SetAttribute("consolidateTo", 0)
-		header:SetAttribute('weaponTemplate', ("ElvUIAuraTemplate%d"):format(db.size))
+		header:SetAttribute('weaponTemplate', format("ElvUIAuraTemplate%d".db.size))
 	end
 
 	header:SetAttribute("separateOwn", db.seperateOwn)
@@ -417,7 +417,7 @@ function A:UpdateHeader(header)
 		header:SetAttribute("wrapYOffset", 0)
 	end
 
-	header:SetAttribute("template", ("ElvUIAuraTemplate%d"):format(db.size))
+	header:SetAttribute("template", format("ElvUIAuraTemplate%d",db.size))
 
 	local pos, spacing, iconSize = self.db.barPosition, self.db.barSpacing, db.size - (E.Border * 2)
 	local isOnTop = pos == 'TOP' and true or false

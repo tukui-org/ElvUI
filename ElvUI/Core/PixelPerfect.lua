@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 --Lua functions
 local min, max, abs, floor = min, max, abs, floor
-local format, tonumber = format, tonumber
 --WoW API / Variables
 local UIParent = UIParent
 

@@ -10,7 +10,6 @@ local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, 
 local tinsert, tremove, twipe, tmaxn = tinsert, tremove, wipe, table.maxn
 local floor, ceil, abs = floor, ceil, abs
 local format, sub = format, strsub
-local tonumber = tonumber
 --WoW API / Variables
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
@@ -102,8 +101,6 @@ local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local SEARCH = SEARCH
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame, ElvUIReagentBankFrameItem1
-
-local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
 
 local ElvUIAssignBagDropdown
 local SEARCH_STRING = ""
@@ -470,7 +467,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local assignedID = bagID
 	local assignedBag = frame.Bags[assignedID] and frame.Bags[assignedID].assigned
 
-	local texture, count, locked, rarity, readable, _, itemLink, _, noValue, itemID = GetContainerItemInfo(bagID, slotID)
+	local texture, count, locked, rarity, readable, _, itemLink, _, noValue = GetContainerItemInfo(bagID, slotID)
 	slot.name, slot.rarity, slot.locked = nil, rarity, locked
 
 	local clink = GetContainerItemLink(bagID, slotID)

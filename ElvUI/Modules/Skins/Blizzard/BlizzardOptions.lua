@@ -80,8 +80,6 @@ local function LoadSkin()
 	end)
 
 	--Chat Config
-	local ChatConfigFrame = _G.ChatConfigFrame
-
 	hooksecurefunc(_G.ChatConfigFrameChatTabManager, "UpdateWidth", function(self)
 		for tab in self.tabPool:EnumerateActive() do
 			if not tab.IsSkinned then
