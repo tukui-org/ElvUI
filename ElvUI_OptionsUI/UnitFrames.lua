@@ -1433,7 +1433,7 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 					end
 
 					E.db.unitframe.units[groupName].customTexts[textName] = {
-						['text_format'] = '',
+						['text_format'] = strmatch(textName, '^%[') and textName or '',
 						['size'] = E.db.unitframe.fontSize,
 						['font'] = E.db.unitframe.font,
 						['xOffset'] = 0,
