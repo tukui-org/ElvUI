@@ -1210,5 +1210,9 @@ E.TagInfo = {
 
 function E:AddTagInfo(tagName, category, description, order)
 	if order then order = tonumber(order) + 10 end
-	E.TagInfo[tagName] = {category = category or 'Miscellanous', description = description or '', order = order or nil }
+
+	E.TagInfo[tagName] = E.TagInfo[tagName] or {}
+	E.TagInfo[tagName].category = category or 'Miscellanous'
+	E.TagInfo[tagName].description = description or ''
+	E.TagInfo[tagName].order = order or nil
 end
