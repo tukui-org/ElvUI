@@ -64,7 +64,7 @@ local function customFilter(element, _, button, name, _, _, debuffType, _, _, ca
 	button.onlyShowMissing = setting.onlyShowMissing
 	button.anyUnit = setting.anyUnit
 
-	return setting.enabled and (not setting.onlyShowMissing or setting.anyUnit or button.isPlayer)
+	return setting.enabled and (not setting.onlyShowMissing or (setting.anyUnit or button.isPlayer))
 end
 
 local function updateIcon(element, unit, index, offset, filter, isDebuff, visible)
