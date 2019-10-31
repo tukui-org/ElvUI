@@ -1958,6 +1958,8 @@ P.unitframe = {
 			lowmana = 30,
 			healPrediction = {
 				enable = true,
+				healType = 'ALL_HEALS',
+				-- is this still needed?
 				showOverAbsorbs = true,
 				showAbsorbAmount = false,
 			},
@@ -2230,6 +2232,8 @@ P.unitframe = {
 			colorOverride = 'USE_DEFAULT',
 			healPrediction = {
 				enable = true,
+				healType = 'ALL_HEALS',
+				-- is this still needed?
 				showOverAbsorbs = true,
 				showAbsorbAmount = false,
 			},
@@ -2711,6 +2715,8 @@ P.unitframe = {
 			height = 36,
 			healPrediction = {
 				enable = true,
+				healType = 'ALL_HEALS',
+				-- is this still needed?
 				showOverAbsorbs = true,
 				showAbsorbAmount = false,
 			},
@@ -3025,6 +3031,8 @@ P.unitframe = {
 			height = 36,
 			healPrediction = {
 				enable = true,
+				healType = 'ALL_HEALS',
+				-- is this still needed?
 				showOverAbsorbs = true,
 				showAbsorbAmount = false,
 			},
@@ -3491,6 +3499,8 @@ P.unitframe = {
 			pvpSpecIcon = true,
 			healPrediction = {
 				enable = true,
+				healType = 'ALL_HEALS',
+				-- is this still needed?
 				showOverAbsorbs = true,
 				showAbsorbAmount = false,
 			},
@@ -3668,6 +3678,8 @@ P.unitframe = {
 			showPlayer = true,
 			healPrediction = {
 				enable = false,
+				healType = 'ALL_HEALS',
+				-- is this still needed?
 				showOverAbsorbs = true,
 				showAbsorbAmount = false,
 			},
@@ -3958,6 +3970,8 @@ P.unitframe = {
 			showPlayer = true,
 			healPrediction = {
 				enable = false,
+				healType = 'ALL_HEALS',
+				-- is this still needed?
 				showOverAbsorbs = true,
 				showAbsorbAmount = false,
 			},
@@ -4181,6 +4195,8 @@ P.unitframe = {
 			showPlayer = true,
 			healPrediction = {
 				enable = false,
+				healType = 'ALL_HEALS',
+				-- is this still needed?
 				showOverAbsorbs = true,
 				showAbsorbAmount = false,
 			},
@@ -4406,6 +4422,8 @@ P.unitframe = {
 			startFromCenter = false,
 			healPrediction = {
 				enable = true,
+				healType = 'ALL_HEALS',
+				-- is this still needed?
 				showOverAbsorbs = true,
 				showAbsorbAmount = false,
 			},
