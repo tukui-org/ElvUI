@@ -314,14 +314,14 @@ E.TimeColors = { -- aura time colors for days, hours, minutes, seconds, fadetime
 	[6] = '|cff707070', --hhmm
 }
 
-E.TimeFormats = { -- short and long aura time formats
-	[0] = {'%dd', '%dd', 'd'},
-	[1] = {'%dh', '%dh', 'h'},
-	[2] = {'%dm', '%dm', 'm'},
-	[3] = {'%ds', '%d', 's'},
-	[4] = {'%.1fs', '%.1f', 's'},
-	[5] = {'%d:%02d', '%d:%02d', ':'}, --mmss
-	[6] = {'%d:%02d', '%d:%02d', ':'}, --hhmm
+E.TimeFormats = { -- short/long/indicator color
+	[0] = {'%dd', '%dd', '%d%sd|r'},
+	[1] = {'%dh', '%dh', '%d%sh|r'},
+	[2] = {'%dm', '%dm', '%d%sm|r'},
+	[3] = {'%ds', '%d', '%d%ss|r'},
+	[4] = {'%.1fs', '%.1f', '%.1f%ss|r'},
+	[5] = {'%d:%02d', '%d:%02d', '%d%s:|r%02d'}, --mmss
+	[6] = {'%d:%02d', '%d:%02d', '%d%s:|r%02d'}, --hhmm
 }
 
 E.TimeIndicatorColors = {

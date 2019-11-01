@@ -177,8 +177,8 @@ function UF:Configure_AuraBars(frame)
 		local offsetRight = -xOffset - ((db.aurabar.attachTo == "FRAME" and ((anchorTo == "TOP" and frame.ORIENTATION ~= "RIGHT") or (anchorTo == "BOTTOM" and frame.ORIENTATION == "RIGHT"))) and frame.POWERBAR_OFFSET or 0)
 
 		auraBars:ClearAllPoints()
-		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', offsetLeft, yOffset)
-		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', offsetRight, yOffset)
+		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', offsetLeft, db.aurabar.attachTo == "DETACHED" and 0 or yOffset)
+		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', offsetRight, db.aurabar.attachTo == "DETACHED" and 0 or yOffset)
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')
 		auraBars:Hide()

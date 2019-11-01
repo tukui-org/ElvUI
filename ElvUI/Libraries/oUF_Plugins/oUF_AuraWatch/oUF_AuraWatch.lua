@@ -23,6 +23,7 @@ end
 
 local function createAuraIcon(element, index)
 	local button = CreateFrame('Button', element:GetDebugName() .. 'Button' .. index, element)
+	button:EnableMouse(false)
 	button:Hide()
 
 	local cd = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
@@ -56,14 +57,24 @@ local function createAuraIcon(element, index)
 	return button
 end
 
-local function customFilter(element, _, button, name, _, _, debuffType, _, _, caster, isStealable, _, spellID)
+local function customFilter(element, _, button, name, _, _, debuffType, _, _, caster, isStealable, _, spellID, canApply, isBossDebuff, casterIsPlayer)
 	local setting = element.watched[spellID]
 	if not setting then return false end
 
 	button.onlyShowMissing = setting.onlyShowMissing
 	button.anyUnit = setting.anyUnit
 
-	return setting.enabled and (not setting.onlyShowMissing or setting.anyUnit or button.isPlayer)
+	if setting.enabled then
+		if setting.onlyShowMissing and setting.anyUnit and casterIsPlayer then
+			return true
+		elseif not setting.onlyShowMissing and setting.anyUnit and casterIsPlayer then
+			return true
+		elseif not setting.onlyShowMissing and not setting.anyUnit and caster == 'player' then
+			return true
+		end
+	end
+
+	return false
 end
 
 local function updateIcon(element, unit, index, offset, filter, isDebuff, visible)

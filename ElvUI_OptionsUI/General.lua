@@ -903,6 +903,7 @@ E.Options.args.general = {
 					values = {
 						['NONE'] = L["NONE"],
 						['SAY'] = L["SAY"],
+						['YELL'] = L["YELL"],
 						['PARTY'] = L["Party Only"],
 						['RAID'] = L["Party / Raid"],
 						['RAID_ONLY'] = L["Raid Only"],

@@ -355,6 +355,7 @@ L["Defines the sort order of the selected sort method."] = "Legt die Sortierreih
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "Entferne einen erstellten Filter. Es können nur benutzerdefinierte Filter entfernt werden."
 L["Delete Filter"] = "Filter löschen"
 L["Desaturate Cooldowns"] = "Auf Cooldown entsättigt"
+L["Desaturate Icon"] = "Entsättigtes Symbol"
 L["Desaturate Junk Items"] = "Verblasste Müll Symbole"
 L["Desaturate Voice Icons"] = "Verblasste Sprach Symbole"
 L["Desaturated Icon"] = "Entsättigtes Symbol"
@@ -564,6 +565,7 @@ L["HH:MM Threshold"] = "HH:MM Schwellenwert"
 L["Hide At Max Level"] = "Auf max. Level vestecken"
 L["Hide Below Max Level"] = "Verstecke unter Max Level"
 L["Hide Both"] = "Verstecke Beide"
+L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = "Versteckt den Zauberleisten Text. Nützlich wenn deine Kraft Höhe sehr niedrig ist oder wenn du den Kraft Versatz benutzt."
 L["Hide Cooldown Bling"] = "Versteckt das Abklingzeitsleuchten"
 L["Hide Delay"] = "Versteckungsverzögerung"
 L["Hide Error Text"] = "Fehlertext verstecken"
@@ -573,6 +575,7 @@ L["Hide In Vehicle"] = "Im Fahrzeug verstecken"
 L["Hide Outside PvP"] = "Verstecke ausserhalb von PvP"
 L["Hide specific sections in the datatext tooltip."] = "Verstecke spezifische Abschnitte im Infotext Tooltip."
 L["Hide Spell Name"] = "Verstecke Zaubername"
+L["Hide Text"] = "Verstecke Text"
 L["Hide Time"] = "Verstecke Zeit"
 L["Hide tooltip while in combat."] = "Verstecke den Tooltip während des Kampfes."
 L["Hide Voice Buttons"] = "Verstecke Sprachtasten"
@@ -1055,6 +1058,7 @@ L["Sends your current profile to your target."] = "Sende dein momentanes Profil 
 L["Sends your filter settings to your target."] = "Sende deine Filter Einstellungen an dein Ziel."
 L["Separate Panel Sizes"] = "Getrennte Chatfenster Größenoptionen"
 L["Seperate"] = "Seperat"
+L["Set auras that are not from you to desaturad."] = "Färt Auren die nicht von dir sind entsättigt."
 L["Set Settings to Default"] = "Setzte die Einstellungen auf Standard"
 L["Set the alpha level of nameplates that are not the target nameplate. Works only in combat."] = "Setzt den Alpha Kanal von Namensplaketten die nicht ausgewählt sind. Funktioniert nur im Kampf."
 L["Set the alpha level of portrait when frame is overlayed."] = "Setzt dass Alpha Level wenn die Portraits überblendet sind."
@@ -1195,11 +1199,9 @@ L["Testing:"] = "Tester:"
 L["Text Color"] = "Text Farbe"
 L["Text Font Size"] = "Text Schriftgröße"
 L["Text Format"] = "Textformat"
-L["Text Position"] = "Text Position"
+L["Text Options"] = "Text Optionen"
 L["Text Threshold"] = "Text Schwelle"
 L["Text Toggle On NPC"] = "Textumschalter auf NPCs"
-L["Text xOffset"] = "Text X-Versatz"
-L["Text yOffset"] = "Text Y-Versatz"
 L["Text"] = "Text"
 L["Texture"] = "Textur"
 L["Textured Icon"] = "Texturiertes Symbol"
@@ -1270,6 +1272,7 @@ L["Threshold Colors"] = "Schwellenwert Farben"
 L["Ticks"] = "Ticks"
 L["Tiers"] = true --No need to translate
 L["Time Indicator Colors"] = "Zeit Indikator Farben"
+L["Time Options"] = "Zeit Optionen"
 L["Time Remaining Reverse"] = "Zeit verbleibend umkehren"
 L["Time Remaining"] = "Zeit verbleibend"
 L["Time To Hold"] = "Anzeigezeit"
@@ -1400,9 +1403,7 @@ L["Word Wrap"] = "Zeilenumbruch"
 L["World Map Coordinates"] = "Weltkarten Koordinaten"
 L["Wrap After"] = "Neue Reihe/Spalte beginnen"
 L["X-Offset"] = "X-Versatz"
-L["xOffset"] = "X-Versatz"
 L["Y-Offset"] = "Y-Versatz"
-L["yOffset"] = "Y-Versatz"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Du möchtest Einstellungen für |cffD3CF00\"%s\"|r von deinem derzeitigen |cff4beb2c\"%s\"|r Profil zu |cff4beb2c\"%s\"|r Profil kopieren. Bist du sicher?"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Du möchtest Einstellungen für |cffD3CF00\"%s\"|r Profil zu deinem aktuellem |cff4beb2c\"%s\"|r Profil kopieren. Bist du sicher?"
 L["You cannot copy settings from the same unit."] = "Du kannst keine Einstellungen von der gleichen Einheit kopieren."
@@ -1474,30 +1475,6 @@ Die folgenden Suchbegriffe können auch benutzt werden:
     • keystone : Mythic Keystone.
     • followers : Anhänger Gegenstände.
     • champions : Champion equipment.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[Wähle eine Zeichenfolge um das Textformat zu ändern.
-
-Beispiele:
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-Leben / Kraft Formate:
-'current' - Aktueller Wert
-'percent' - Prozentualer Wert
-'current-max' - Aktueller Wert gefolgt von dem maximalen Wert. Es wird nur der Maximale Wert anzeigt, wenn der aktuelle Wert auch das Maximum ist
-'current-percent' - Aktueller Wert gefolgt von dem prozentualen Wert. Es wird nur der maximale Wert angezeigt, wenn der aktuelle Wert auch das Maximum ist
-'current-max-percent' - Aktueller Wert, Maximaler Wert, gefolgt von dem prozentualen Wert. Es wird nur der maximale Wert angezeigt, wenn der aktuelle Wert auch das Maximum ist
-'deficit' - Zeigt das Defizit. Es wird nichts angezeigt, wenn kein Defizit vorhanden ist
-
-Namensformate:
-'name:veryshort' - Name restricted to 5 characters
-'name:short' - Name auf 10 Zeichen beschränkt
-'name:medium' - Name auf 15 Zeichen beschränkt
-'name:long' - Name auf 20 Zeichen beschränkt
-'name:short:translit' - Name restricted to 10 characters with transliteration
-
-Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu wechseln.
@@ -1689,3 +1666,4 @@ L["UNIT_NAMEPLATES_TYPE_2"] = "Namensschilder stapeln";
 L["VOID_STORAGE"] = "Leerenlager";
 L["WORLD_MAP"] = "Weltkarte";
 L["XPBAR_LABEL"] = "EP-Balken";
+L["YELL"] = "Schreien";

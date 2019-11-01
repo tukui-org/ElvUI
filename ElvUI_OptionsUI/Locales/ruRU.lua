@@ -354,6 +354,7 @@ L["Defines the sort order of the selected sort method."] = "Определяет
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "Удалить созданный фильтр. Вы не можете удалять фильтры по умолчанию, только созданные вручную."
 L["Delete Filter"] = "Удалить фильтр"
 L["Desaturate Cooldowns"] = "Обесцветить при кулдауне"
+L["Desaturate Icon"] = true
 L["Desaturate Junk Items"] = "Обесцветить хлам"
 L["Desaturate Voice Icons"] = "Обесцветить иконки голосового чата"
 L["Desaturated Icon"] = "Бесцветная иконка"
@@ -561,6 +562,7 @@ L["HH:MM Threshold"] = "Граница ЧЧ:ММ"
 L["Hide At Max Level"] = "Прятать на максимальном уровне"
 L["Hide Below Max Level"] = "Скрывать до максимального уровня"
 L["Hide Both"] = "Скрыть оба"
+L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true
 L["Hide Cooldown Bling"] = "Скрыть вспышку восстановления"
 L["Hide Delay"] = "Задержка скрытия"
 L["Hide Error Text"] = "Прятать сообщения об ошибках"
@@ -570,6 +572,7 @@ L["Hide In Vehicle"] = "Прятать в транспорте"
 L["Hide Outside PvP"] = "Скрывать вне PvP"
 L["Hide specific sections in the datatext tooltip."] = "Скрывать определенные части подсказки инфо-текста."
 L["Hide Spell Name"] = "Скрыть название заклинания"
+L["Hide Text"] = true
 L["Hide Time"] = "Скрыть время"
 L["Hide tooltip while in combat."] = "Скрывать подсказку в бою"
 L["Hide Voice Buttons"] = "Скрыть голосовой чат"
@@ -1053,6 +1056,7 @@ L["Sends your current profile to your target."] = "Отправить текущ
 L["Sends your filter settings to your target."] = "Отправить Ваши фильтры цели."
 L["Separate Panel Sizes"] = "Разные размеры панелей"
 L["Seperate"] = "Разделение"
+L["Set auras that are not from you to desaturad."] = true
 L["Set Settings to Default"] = "Сбросить настройки на умолчания"
 L["Set the alpha level of nameplates that are not the target nameplate. Works only in combat."] = "Устанавливает прозрачность индикаторов, которяе не принадлежать текущей цели. Работает только в бою."
 L["Set the alpha level of portrait when frame is overlayed."] = "Установить уровень прозрачности портрета, когда включен режим наложения"
@@ -1192,11 +1196,9 @@ L["Testing:"] = "Тестирование:"
 L["Text Color"] = "Цвет текста"
 L["Text Font Size"] = "Размер шрифта текста"
 L["Text Format"] = "Формат текста"
-L["Text Position"] = "Позиция текста"
+L["Text Options"] = true
 L["Text Threshold"] = "Значение текста"
 L["Text Toggle On NPC"] = "Переключение текста для НИП"
-L["Text xOffset"] = "Отступ текста по Х"
-L["Text yOffset"] = "Отступ текста по Y"
 L["Text"] = "Текст"
 L["Texture"] = "Текстура"
 L["Textured Icon"] = "Иконка с текстурой"
@@ -1266,6 +1268,7 @@ L["Threshold Colors"] = true
 L["Ticks"] = "Тики"
 L["Tiers"] = "Ряды"
 L["Time Indicator Colors"] = true
+L["Time Options"] = true
 L["Time Remaining Reverse"] = "Оставшееся время, обратное"
 L["Time Remaining"] = "Оставшееся время"
 L["Time To Hold"] = "Время задержки"
@@ -1395,9 +1398,7 @@ L["Word Wrap"] = "Перенос слов"
 L["World Map Coordinates"] = "Координаты карты мира"
 L["Wrap After"] = "Размер ряда"
 L["X-Offset"] = "Отступ по X"
-L["xOffset"] = "Отступ по Х"
 L["Y-Offset"] = "Отступ по Y"
-L["yOffset"] = "Отступ по Y"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Вы собираетесь скопировать настройки для модуля |cffD3CF00\"%s\"|r из вашего текущего профиля |cff4beb2c\"%s\"|r в профиль |cff4beb2c\"%s\"|r. Вы уверены?"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Вы собираетесь скопировать настройки для модуля |cffD3CF00\"%s\"|r из вашего профиля |cff4beb2c\"%s\"|r в текущий профиль |cff4beb2c\"%s\"|r. Вы уверены?"
 L["You cannot copy settings from the same unit."] = "Вы не можете копировать установки из того же юнита."
@@ -1469,30 +1470,6 @@ L["SEARCH_SYNTAX_DESC"] = [=[С добавлением библиотеки LibI
     • keystone : Mythic Keystone.
     • followers : Предметы последователей.
     • champions : Champion equipment.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида текста.
-
-Примеры:
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-Форматы здоровья/резурсов:
-"current" - текущее значение
-"percent" - значение в процентах
-"current-max" - текущее значение, за которым идет максимальное значение. Будет отображать только максимальное значение, если текущее равно ему.
-"current-percent" - текущее значение, за которым идет значение в процентах.Будет отображать только максимальное значение, если текущее равно ему.
-"current-max-percent" - текущее значение, максимальное значение, за которым идет значение в процентах, Будет отображать только максимальное значение, если текущее равно ему.
-"deficit" - отображает значение недостающего до максимума здоровья/ресурса. Не будет отображать ничего, если текущее значение равно максимальному.
-
-Форматы имени:
-"name:veryshort" - Name restricted to 5 characters
-"name:short" - Имя с ограничением длины в 10 символов
-"name:medium" - Имя с ограничением длины в 15 символов
-"name:long" - Имя с ограничением длины в 20 символов
-"name:short:translit" - Name restricted to 10 characters with transliteration
-
-Для отключения оставьте поле пустым, для дополнительной информации посетите https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Работает как макрос. Вы можете задать различные условия для отображения разных панелей.
@@ -1684,3 +1661,4 @@ L["UNIT_NAMEPLATES_TYPE_2"] = "Друг над другом";
 L["VOID_STORAGE"] = "Хранилище Бездны";
 L["WORLD_MAP"] = "Карта";
 L["XPBAR_LABEL"] = "Индикатор опыта";
+L["YELL"] = "Крик";

@@ -55,6 +55,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
 	frame.RaidRoleFramesAnchor = self:Construct_RaidRoleFrames(frame)
 	frame.RestingIndicator = self:Construct_RestingIndicator(frame)
+	frame.ResurrectIndicator = UF:Construct_ResurrectionIcon(frame)
 	frame.CombatIndicator = self:Construct_CombatIndicator(frame)
 	frame.PvPText = self:Construct_PvPIndicator(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
@@ -85,7 +86,7 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.POWERBAR_DETACHED = db.power.detachFromFrame
 		frame.USE_INSET_POWERBAR = not frame.POWERBAR_DETACHED and db.power.width == 'inset' and frame.USE_POWERBAR
 		frame.USE_MINI_POWERBAR = (not frame.POWERBAR_DETACHED and db.power.width == 'spaced' and frame.USE_POWERBAR)
-		frame.USE_POWERBAR_OFFSET = db.power.offset ~= 0 and frame.USE_POWERBAR and not frame.POWERBAR_DETACHED
+		frame.USE_POWERBAR_OFFSET = db.power.width == 'offset' and db.power.offset ~= 0 and frame.USE_POWERBAR and not frame.POWERBAR_DETACHED
 		frame.POWERBAR_OFFSET = frame.USE_POWERBAR_OFFSET and db.power.offset or 0
 
 		frame.POWERBAR_HEIGHT = not frame.USE_POWERBAR and 0 or db.power.height
@@ -156,6 +157,9 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_Auras(frame, 'Buffs')
 	UF:Configure_Auras(frame, 'Debuffs')
+
+	-- Resurrect
+	UF:Configure_ResurrectionIcon(frame)
 
 	--Castbar
 	frame:DisableElement('Castbar')

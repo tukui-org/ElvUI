@@ -21,6 +21,7 @@ local GetQuestGreenRange = GetQuestGreenRange
 local GetQuestLogTitle = GetQuestLogTitle
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetSpecialization = GetSpecialization
+local GetSpecializationInfo = GetSpecializationInfo
 local GetThreatStatusColor = GetThreatStatusColor
 local GetTime = GetTime
 local GetUnitSpeed = GetUnitSpeed
@@ -75,6 +76,13 @@ local SPELL_POWER_MANA = Enum.PowerType.Mana
 local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 
 -- GLOBALS: Hex, _TAGS, ElvUF
+
+------------------------------------------------------------------------
+--	Tag Extra Events
+------------------------------------------------------------------------
+
+ElvUF.Tags.SharedEvents.PLAYER_TALENT_UPDATE = true
+ElvUF.Tags.SharedEvents.QUEST_LOG_UPDATE = true
 
 ------------------------------------------------------------------------
 --	Tags
@@ -184,6 +192,15 @@ ElvUF.Tags.Methods['afk'] = function(unit)
 		return format('|cffFFFFFF[|r|cffFF0000%s|r|cFFFFFFFF]|r', DEFAULT_AFK_MESSAGE)
 	else
 		return nil
+	end
+end
+
+ElvUF.Tags.Events['faction:icon'] = 'UNIT_FACTION'
+ElvUF.Tags.Methods['faction:icon'] = function(unit)
+	local factionGroup = UnitFactionGroup(unit)
+
+	if (factionGroup ~= 'Neutral') then
+		return CreateTextureMarkup("Interface\\FriendsFrame\\PlusManz-"..factionGroup, 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
 	end
 end
 
@@ -903,14 +920,23 @@ ElvUF.Tags.Methods['class'] = function(unit)
 	return UnitClass(unit)
 end
 
+ElvUF.Tags.Events['specialization'] = 'PLAYER_TALENT_UPDATE'
+ElvUF.Tags.Methods['specialization'] = function(unit)
+	if (UnitIsPlayer(unit)) then
+		local currentSpec = GetSpecialization()
+		if currentSpec then
+			local _, currentSpecName = GetSpecializationInfo(currentSpec)
+			return currentSpecName
+		end
+	end
+end
+
 ElvUF.Tags.Events['name:title'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['name:title'] = function(unit)
 	if (UnitIsPlayer(unit)) then
 		return UnitPVPName(unit)
 	end
 end
-
-ElvUF.Tags.SharedEvents.QUEST_LOG_UPDATE = true
 
 ElvUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'
 ElvUF.Tags.Methods['quest:title'] = function(unit)
@@ -1173,8 +1199,10 @@ E.TagInfo = {
 	['affix'] = { category = 'Miscellanous', description = "Shows low level critter mobs" },
 	['smartclass'] = { category = 'Miscellanous', description = "Shows the class of a unit, if that unit is a player, or will show what type of creature, if the unit is a NPC" },
 	['class'] = { category = 'Miscellanous', description = "Shows the class of the unit, if that unit is a player" },
+	['specialization'] = { category = 'Miscellanous', description = "Shows your 'OWN' specialization as text" },
 	['difficulty'] = { category = 'Miscellanous', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 	['faction'] = { category = 'Miscellanous', description = "Shows 'Aliance' or 'Horde'" },
+	['faction:icon'] = { category = 'Miscellanous', description = "Displays 'Alliance' or 'Horde' Texture" },
 	['plus'] = { category = 'Miscellanous', description = "Displays the character '+' if the unit is an elite or rare-elite" },
 	['arenaspec'] = { category = 'Miscellanous', description = "Shows the area spec of an unit" },
 	['arena:number'] = { category = 'Miscellanous', description = "Shows the arena number 1-5" },
@@ -1182,5 +1210,9 @@ E.TagInfo = {
 
 function E:AddTagInfo(tagName, category, description, order)
 	if order then order = tonumber(order) + 10 end
-	E.TagInfo[tagName] = {category = category or 'Miscellanous', description = description or '', order = order or nil }
+
+	E.TagInfo[tagName] = E.TagInfo[tagName] or {}
+	E.TagInfo[tagName].category = category or 'Miscellanous'
+	E.TagInfo[tagName].description = description or ''
+	E.TagInfo[tagName].order = order or nil
 end

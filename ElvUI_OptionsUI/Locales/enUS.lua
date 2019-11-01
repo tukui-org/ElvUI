@@ -355,6 +355,7 @@ L["Defines the sort order of the selected sort method."] = true
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = true
 L["Delete Filter"] = true
 L["Desaturate Cooldowns"] = true
+L["Desaturate Icon"] = true
 L["Desaturate Junk Items"] = true
 L["Desaturate Voice Icons"] = true
 L["Desaturated Icon"] = true
@@ -564,6 +565,7 @@ L["HH:MM"] = true
 L["Hide At Max Level"] = true
 L["Hide Below Max Level"] = true
 L["Hide Both"] = true
+L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true
 L["Hide Cooldown Bling"] = true
 L["Hide Delay"] = true
 L["Hide Error Text"] = true
@@ -573,6 +575,7 @@ L["Hide In Vehicle"] = true
 L["Hide Outside PvP"] = true
 L["Hide specific sections in the datatext tooltip."] = true
 L["Hide Spell Name"] = true
+L["Hide Text"] = true
 L["Hide Time"] = true
 L["Hide tooltip while in combat."] = true
 L["Hide Voice Buttons"] = true
@@ -1056,6 +1059,7 @@ L["Sends your current profile to your target."] = true
 L["Sends your filter settings to your target."] = true
 L["Separate Panel Sizes"] = true
 L["Seperate"] = true
+L["Set auras that are not from you to desaturad."] = true
 L["Set Settings to Default"] = true
 L["Set the alpha level of nameplates that are not the target nameplate. Works only in combat."] = true
 L["Set the alpha level of portrait when frame is overlayed."] = true
@@ -1195,11 +1199,9 @@ L["Testing:"] = true
 L["Text Color"] = true
 L["Text Font Size"] = true
 L["Text Format"] = true
-L["Text Position"] = true
+L["Text Options"] = true
 L["Text Threshold"] = true
 L["Text Toggle On NPC"] = true
-L["Text xOffset"] = true
-L["Text yOffset"] = true
 L["Text"] = true
 L["Texture"] = true
 L["Textured Icon"] = true
@@ -1269,6 +1271,7 @@ L["Threshold Colors"] = true
 L["Ticks"] = true
 L["Tiers"] = true
 L["Time Indicator Colors"] = true
+L["Time Options"] = true
 L["Time Remaining Reverse"] = true
 L["Time Remaining"] = true
 L["Time To Hold"] = true
@@ -1400,9 +1403,8 @@ L["World Map Coordinates"] = true
 L["WoW Token:"] = true
 L["Wrap After"] = true
 L["X-Offset"] = true
-L["xOffset"] = true
 L["Y-Offset"] = true
-L["yOffset"] = true
+L["Y-Offset"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You cannot copy settings from the same unit."] = true
@@ -1474,30 +1476,6 @@ The following search keywords can also be used:
     • keystone : Mythic Keystone.
     • followers : Follower items.
     • champions : Champion equipment.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[Provide a string to change the text format.
-
-Examples:
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-Health / Power Formats:
-'current' - current amount
-'percent' - percentage amount
-'current-max' - current amount followed by maximum amount, will display only max if current is equal to max
-'current-percent' - current amount followed by percentage amount, will display only max if current is equal to max
-'current-max-percent' - current amount, max amount, followed by percentage amount, will display only max if current is equal to max
-'deficit' - display the deficit value, will display nothing if there is no deficit
-
-Name Formats:
-'name:veryshort' - Name restricted to 5 characters
-'name:short' - Name restricted to 10 characters
-'name:medium' - Name restricted to 15 characters
-'name:long' - Name restricted to 20 characters
-'name:short:translit' - Name restricted to 10 characters with transliteration
-
-To disable leave the field blank, if you need more information visit https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = true
@@ -1678,3 +1656,4 @@ L["UNIT_NAMEPLATES_TYPE_2"] = "Stacking Nameplates";
 L["VOID_STORAGE"] = "Void Storage";
 L["WORLD_MAP"] = "Map";
 L["XPBAR_LABEL"] = "XP Bar";
+L["YELL"] = "Yell";

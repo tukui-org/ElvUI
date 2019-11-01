@@ -355,6 +355,7 @@ L["Defines the sort order of the selected sort method."] = "定義所選排序�
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "刪除一個創造的過濾器, 你不能刪除內建的過濾器, 只能刪除你自已添加的."
 L["Delete Filter"] = "刪除過濾器"
 L["Desaturate Cooldowns"] = "冷卻時去色"
+L["Desaturate Icon"] = true
 L["Desaturate Junk Items"] = "垃圾物品去色"
 L["Desaturate Voice Icons"] = "低飽和度的語音圖標"
 L["Desaturated Icon"] = "低飽和度圖標"
@@ -563,6 +564,7 @@ L["HH:MM Threshold"] = "HH:MM（時:分） 閾值"
 L["Hide At Max Level"] = "在最高等級時隱藏"
 L["Hide Below Max Level"] = "滿等前隱藏"
 L["Hide Both"] = "全部隱藏"
+L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true
 L["Hide Cooldown Bling"] = "隱藏冷卻閃光"
 L["Hide Delay"] = "隱藏延遲"
 L["Hide Error Text"] = "隱藏錯誤文字"
@@ -572,6 +574,7 @@ L["Hide In Vehicle"] = "騎乘時隱藏"
 L["Hide Outside PvP"] = "PvP外隱藏"
 L["Hide specific sections in the datatext tooltip."] = "在資訊文字提示上隱藏特定區塊"
 L["Hide Spell Name"] = "隱藏法術名字"
+L["Hide Text"] = true
 L["Hide Time"] = "隱藏時間"
 L["Hide tooltip while in combat."] = "戰鬥時不顯示提示."
 L["Hide Voice Buttons"] = "隱藏語音按鈕"
@@ -1055,6 +1058,7 @@ L["Sends your current profile to your target."] = "發送你的配置文件到�
 L["Sends your filter settings to your target."] = "發送你的過濾器配置到當前目標."
 L["Separate Panel Sizes"] = "分離框架大小"
 L["Seperate"] = "光環分離"
+L["Set auras that are not from you to desaturad."] = true
 L["Set Settings to Default"] = "恢復默認設置"
 L["Set the alpha level of nameplates that are not the target nameplate. Works only in combat."] = true
 L["Set the alpha level of portrait when frame is overlayed."] = true
@@ -1194,11 +1198,9 @@ L["Testing:"] = "測試："
 L["Text Color"] = "文字顔色"
 L["Text Font Size"] = "字體大小"
 L["Text Format"] = "文字格式"
-L["Text Position"] = "文字位置"
+L["Text Options"] = true
 L["Text Threshold"] = "文本閾值"
 L["Text Toggle On NPC"] = "NPC 文字顯示開關"
-L["Text xOffset"] = "文字X軸偏移"
-L["Text yOffset"] = "文字Y軸偏移"
 L["Text"] = "文本"
 L["Texture"] = "材質"
 L["Textured Icon"] = "圖示紋理"
@@ -1268,6 +1270,7 @@ L["Threshold Colors"] = true
 L["Ticks"] = "週期傷害"
 L["Tiers"] = true
 L["Time Indicator Colors"] = true
+L["Time Options"] = true
 L["Time Remaining Reverse"] = "剩餘時間反轉"
 L["Time Remaining"] = "剩餘時間"
 L["Time To Hold"] = "停留時間"
@@ -1398,9 +1401,7 @@ L["Word Wrap"] = "自動換行"
 L["World Map Coordinates"] = "世界地圖坐標"
 L["Wrap After"] = "每行光環數"
 L["X-Offset"] = "X軸偏移"
-L["xOffset"] = "X軸偏移"
 L["Y-Offset"] = "Y軸偏移"
-L["yOffset"] = "Y軸偏移"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "你將進行 |cffD3CF00\"%s\"|r 的設定拷貝, 從當前配置文件 |cff4beb2c\"%s\"|r 到配置文件 |cff4beb2c\"%s\"|r. 你確定麼?"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "你將進行 |cffD3CF00\"%s\"|r 的設定拷貝, 從配置文件 |cff4beb2c\"%s\"|r 到你當前配置文件 |cff4beb2c\"%s\"|r. 你確定麼?"
 L["You cannot copy settings from the same unit."] = "你不能從相同的單位複制設定"
@@ -1472,30 +1473,6 @@ L["SEARCH_SYNTAX_DESC"] = [=[因為新增加的 LibItemSearch, 你現在可以�
     • keystone : 傳奇地城鑰石.
     • followers : 追隨者物品
     • champions : 部隊裝備.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
-
-範例：
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-生命/能量值格式：
-'current' - 目前數值
-'percent' - 百分比
-'current-max' - 目前數值 - 最大值, 當兩者相同時, 僅會顯示最大值
-'current-percent' - 目前數值 - 百分比
-'current-max-percent' - 目前數值 - 最大值 - 百分比, 當目前數值等同於最大值時, 僅會顯示最大值
-'deficit' - 顯示損失數值, 若未損失生命/能量值, 將不予顯示
-
-名稱格式：
-'name:veryshort' - Name restricted to 5 characters
-'name:short' - 名稱上限為 10 個字元
-'name:medium' - 名稱上限為 15 個字元
-'name:long' - 名稱上限為 20 個字元
-'name:short:translit' - Name restricted to 10 characters with transliteration
-
-若要停用此功能, 此欄位請留空。如需更多資訊, 請至 https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[此功能與巨集概念類似, 可根據不同情況切換至不同的快捷列設定。
@@ -1686,3 +1663,4 @@ L["UNIT_NAME_PLAYER_TITLE"] = "頭銜";
 L["VOID_STORAGE"] = "虛空倉庫";
 L["WORLD_MAP"] = "地圖";
 L["XPBAR_LABEL"] = "經驗條";
+L["YELL"] = "大喊";

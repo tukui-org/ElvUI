@@ -581,13 +581,13 @@ local function UpdateFilterGroup()
 					xOffset = {
 						order = 3,
 						type = 'range',
-						name = L["xOffset"],
+						name = L["X-Offset"],
 						min = -75, max = 75, step = 1,
 					},
 					yOffset = {
 						order = 4,
 						type = 'range',
-						name = L["yOffset"],
+						name = L["Y-Offset"],
 						min = -75, max = 75, step = 1,
 					},
 					styleOverride = {
@@ -595,7 +595,7 @@ local function UpdateFilterGroup()
 						order = 5,
 						type = 'select',
 						values = {
-							['Default'] = L['Default'],
+							['Default'] = L["Default"],
 							['coloredIcon'] = L["Colored Icon"],
 							['texturedIcon'] = L["Textured Icon"],
 						},

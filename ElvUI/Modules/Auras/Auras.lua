@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local floor, format, tinsert = floor, format, tinsert
-local select, unpack = select, unpack
+local gsub, select, unpack = gsub, select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetInventoryItemQuality = GetInventoryItemQuality
@@ -16,6 +16,7 @@ local GetWeaponEnchantInfo = GetWeaponEnchantInfo
 local RegisterAttributeDriver = RegisterAttributeDriver
 local RegisterStateDriver = RegisterStateDriver
 local UnitAura = UnitAura
+local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
 
 local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group("ElvUI", "Buffs")
@@ -98,7 +99,7 @@ function A:UpdateTime(elapsed)
 		self.nextUpdate = nextUpdate
 
 		if useIndicatorColor then
-			self.time:SetFormattedText(gsub(E.TimeFormats[formatID][1], E.TimeFormats[formatID][3], indicatorColors[formatID]..E.TimeFormats[formatID][3]..FONT_COLOR_CODE_CLOSE), value1, value2)
+			self.time:SetFormattedText(E.TimeFormats[formatID][3], value1, indicatorColors[formatID], value2)
 		else
 			self.time:SetFormattedText(E.TimeFormats[formatID][1], value1, value2)
 		end
@@ -389,7 +390,7 @@ function A:UpdateHeader(header)
 		auraType = 'buffs'
 		db = self.db.buffs
 		header:SetAttribute("consolidateTo", 0)
-		header:SetAttribute('weaponTemplate', ("ElvUIAuraTemplate%d"):format(db.size))
+		header:SetAttribute('weaponTemplate', format("ElvUIAuraTemplate%d",db.size))
 	end
 
 	header:SetAttribute("separateOwn", db.seperateOwn)
@@ -416,7 +417,7 @@ function A:UpdateHeader(header)
 		header:SetAttribute("wrapYOffset", 0)
 	end
 
-	header:SetAttribute("template", ("ElvUIAuraTemplate%d"):format(db.size))
+	header:SetAttribute("template", format("ElvUIAuraTemplate%d",db.size))
 
 	local pos, spacing, iconSize = self.db.barPosition, self.db.barSpacing, db.size - (E.Border * 2)
 	local isOnTop = pos == 'TOP' and true or false

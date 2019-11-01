@@ -7,10 +7,7 @@ local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local BNFeaturesEnabled = BNFeaturesEnabled
 local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
-local RaiseFrameLevel = RaiseFrameLevel
-local BNConnected = BNConnected
 
 --Tab Regions
 local tabs = {

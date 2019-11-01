@@ -297,6 +297,8 @@ P.bags = {
 		minutesIndicator = { r = 1, g = 1, b = 1 },
 		hoursIndicator = { r = 1, g = 1, b = 1 },
 		daysIndicator = { r = 1, g = 1, b = 1 },
+		hhmmColorIndicator = { r = 1, g = 1, b = 1 },
+		mmssColorIndicator = { r = 1, g = 1, b = 1 },
 
 		checkSeconds = false,
 		hhmmColor = { r = 1, g = 1, b = 1 },
@@ -431,6 +433,8 @@ P.nameplates = {
 		minutesIndicator = { r = 1, g = 1, b = 1 },
 		hoursIndicator = { r = 1, g = 1, b = 1 },
 		daysIndicator = { r = 1, g = 1, b = 1 },
+		hhmmColorIndicator = { r = 1, g = 1, b = 1 },
+		mmssColorIndicator = { r = 1, g = 1, b = 1 },
 
 		checkSeconds = false,
 		hhmmColor = { r = 1, g = 1, b = 1 },
@@ -654,6 +658,7 @@ P.nameplates = {
 			},
 			buffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -681,6 +686,7 @@ P.nameplates = {
 			},
 			debuffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -855,6 +861,7 @@ P.nameplates = {
 			},
 			buffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -882,6 +889,7 @@ P.nameplates = {
 			},
 			debuffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -1044,6 +1052,7 @@ P.nameplates = {
 			buffs = {
 				enable = true,
 				numAuras = 5,
+				desaturate = true,
 				size = 27,
 				width = 18,
 				height = 18,
@@ -1071,6 +1080,7 @@ P.nameplates = {
 			debuffs = {
 				enable = true,
 				numAuras = 5,
+				desaturate = true,
 				size = 27,
 				width = 18,
 				height = 18,
@@ -1206,6 +1216,7 @@ P.nameplates = {
 			},
 			buffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -1233,6 +1244,7 @@ P.nameplates = {
 			},
 			debuffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -1418,6 +1430,7 @@ P.nameplates = {
 			},
 			buffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -1444,6 +1457,7 @@ P.nameplates = {
 			},
 			debuffs = {
 				enable = true,
+				desaturate = true,
 				numAuras = 5,
 				size = 27,
 				width = 18,
@@ -1559,6 +1573,8 @@ P.auras = {
 		minutesIndicator = { r = 1, g = 1, b = 1 },
 		hoursIndicator = { r = 1, g = 1, b = 1 },
 		daysIndicator = { r = 1, g = 1, b = 1 },
+		hhmmColorIndicator = { r = 1, g = 1, b = 1 },
+		mmssColorIndicator = { r = 1, g = 1, b = 1 },
 
 		checkSeconds = false,
 		hhmmColor = { r = 1, g = 1, b = 1 },
@@ -1778,6 +1794,8 @@ P.unitframe = {
 		minutesIndicator = { r = 1, g = 1, b = 1 },
 		hoursIndicator = { r = 1, g = 1, b = 1 },
 		daysIndicator = { r = 1, g = 1, b = 1 },
+		hhmmColorIndicator = { r = 1, g = 1, b = 1 },
+		mmssColorIndicator = { r = 1, g = 1, b = 1 },
 
 		checkSeconds = false,
 		hhmmColor = { r = 1, g = 1, b = 1 },
@@ -2115,6 +2133,13 @@ P.unitframe = {
 				iconYOffset = 0,
 				tickWidth = 1,
 				tickColor = {r = 0, g = 0, b = 0, a = 0.8},
+				hidetext = false,
+				textColor = {r = 0.84, g = 0.75, b = 0.65, a = 1},
+				xOffsetText = 4,
+				yOffsetText = 0,
+				xOffsetTime = -4,
+				yOffsetTime = 0,
+				overlayOnFrame = 'None',
 				timeToHold = 0,
 				strataAndLevel = {
 					useCustomStrata = false,
@@ -2185,6 +2210,14 @@ P.unitframe = {
 					lengthBeforeFade = 0.3,
 					forceBlankTexture = true,
 				},
+			},
+			resurrectIcon = {
+				enable = true,
+				size = 30,
+				attachTo = 'CENTER',
+				attachToObject = 'Frame',
+				xOffset = 0,
+				yOffset = 0,
 			},
 		},
 		target = {
@@ -2341,12 +2374,31 @@ P.unitframe = {
 				iconXOffset = -10,
 				iconYOffset = 0,
 				timeToHold = 0,
+				hidetext = false,
+				textColor = {r = 0.84, g = 0.75, b = 0.65, a = 1},
+				xOffsetText = 4,
+				yOffsetText = 0,
+				xOffsetTime = -4,
+				yOffsetTime = 0,
+				overlayOnFrame = 'None',
 				strataAndLevel = {
 					useCustomStrata = false,
 					frameStrata = 'LOW',
 					useCustomLevel = false,
 					frameLevel = 1,
 				},
+			},
+			resurrectIcon = {
+				enable = true,
+				size = 30,
+				attachTo = 'CENTER',
+				attachToObject = 'Frame',
+				xOffset = 0,
+				yOffset = 0,
+			},
+			raidRoleIcons = {
+				enable = true,
+				position = 'TOPLEFT',
 			},
 			aurabar = {
 				enable = true,
@@ -2779,6 +2831,13 @@ P.unitframe = {
 				iconXOffset = -10,
 				iconYOffset = 0,
 				timeToHold = 0,
+				hidetext = false,
+				textColor = {r = 0.84, g = 0.75, b = 0.65, a = 1},
+				xOffsetText = 4,
+				yOffsetText = 0,
+				xOffsetTime = -4,
+				yOffsetTime = 0,
+				overlayOnFrame = 'None',
 				strataAndLevel = {
 					useCustomStrata = false,
 					frameStrata = 'LOW',
@@ -3105,6 +3164,13 @@ P.unitframe = {
 				iconXOffset = -10,
 				iconYOffset = 0,
 				timeToHold = 0,
+				hidetext = false,
+				textColor = {r = 0.84, g = 0.75, b = 0.65, a = 1},
+				xOffsetText = 4,
+				yOffsetText = 0,
+				xOffsetTime = -4,
+				yOffsetTime = 0,
+				overlayOnFrame = 'None',
 				strataAndLevel = {
 					useCustomStrata = false,
 					frameStrata = 'LOW',
@@ -3377,6 +3443,13 @@ P.unitframe = {
 				iconXOffset = -10,
 				iconYOffset = 0,
 				timeToHold = 0,
+				hidetext = false,
+				textColor = {r = 0.84, g = 0.75, b = 0.65, a = 1},
+				xOffsetText = 4,
+				yOffsetText = 0,
+				xOffsetTime = -4,
+				yOffsetTime = 0,
+				overlayOnFrame = 'None',
 				strataAndLevel = {
 					useCustomStrata = false,
 					frameStrata = 'LOW',
@@ -3541,6 +3614,13 @@ P.unitframe = {
 				iconXOffset = -10,
 				iconYOffset = 0,
 				timeToHold = 0,
+				hidetext = false,
+				textColor = {r = 0.84, g = 0.75, b = 0.65, a = 1},
+				xOffsetText = 4,
+				yOffsetText = 0,
+				xOffsetTime = -4,
+				yOffsetTime = 0,
+				overlayOnFrame = 'None',
 				strataAndLevel = {
 					useCustomStrata = false,
 					frameStrata = 'LOW',
@@ -3750,6 +3830,13 @@ P.unitframe = {
 				iconXOffset = -10,
 				iconYOffset = 0,
 				timeToHold = 0,
+				hidetext = false,
+				textColor = {r = 0.84, g = 0.75, b = 0.65, a = 1},
+				xOffsetText = 4,
+				yOffsetText = 0,
+				xOffsetTime = -4,
+				yOffsetTime = 0,
+				overlayOnFrame = 'None',
 				strataAndLevel = {
 					useCustomStrata = false,
 					frameStrata = 'LOW',
@@ -4760,6 +4847,8 @@ P.cooldown = {
 	minutesIndicator = { r = 1, g = 1, b = 1 },
 	hoursIndicator = { r = 1, g = 1, b = 1 },
 	daysIndicator = { r = 1, g = 1, b = 1 },
+	hhmmColorIndicator = { r = 1, g = 1, b = 1 },
+	mmssColorIndicator = { r = 1, g = 1, b = 1 },
 
 	checkSeconds = false,
 	hhmmColor = { r = 0.43, g = 0.43, b = 0.43 },
@@ -4823,6 +4912,8 @@ P.actionbar = {
 		minutesIndicator = { r = 1, g = 1, b = 1 },
 		hoursIndicator = { r = 1, g = 1, b = 1 },
 		daysIndicator = { r = 1, g = 1, b = 1 },
+		hhmmColorIndicator = { r = 1, g = 1, b = 1 },
+		mmssColorIndicator = { r = 1, g = 1, b = 1 },
 
 		checkSeconds = false,
 		hhmmColor = { r = 1, g = 1, b = 1 },
@@ -4857,126 +4948,6 @@ P.actionbar = {
 	desaturateOnCooldown = false,
 	chargeCooldown = false,
 
-	bar1 = {
-		enabled = true,
-		buttons = 12,
-		mouseover = false,
-		buttonsPerRow = 12,
-		point = 'BOTTOMLEFT',
-		backdrop = false,
-		heightMult = 1,
-		widthMult = 1,
-		buttonsize = 32,
-		buttonspacing = 2,
-		backdropSpacing = 2,
-		alpha = 1,
-		inheritGlobalFade = false,
-		showGrid = true,
-		flyoutDirection = 'AUTOMATIC',
-		paging = {
-			DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;',
-			PRIEST = '[bonusbar:1] 7;',
-			ROGUE = '[stance:1] 7;  [stance:2] 7; [stance:3] 7;', -- set to '[stance:1] 7; [stance:3] 10;' if you want a shadow dance bar
-			MONK = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;',
-			WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8;'
-		},
-		visibility = '[petbattle] hide; show',
-	},
-	bar2 = {
-		enabled = false,
-		mouseover = false,
-		buttons = 12,
-		buttonsPerRow = 12,
-		point = 'BOTTOMLEFT',
-		backdrop = false,
-		heightMult = 1,
-		widthMult = 1,
-		buttonsize = 32,
-		buttonspacing = 2,
-		backdropSpacing = 2,
-		alpha = 1,
-		inheritGlobalFade = false,
-		showGrid = true,
-		flyoutDirection = 'AUTOMATIC',
-		paging = {},
-		visibility = '[vehicleui] hide; [overridebar] hide; [petbattle] hide; show',
-	},
-	bar3 = {
-		enabled = true,
-		mouseover = false,
-		buttons = 6,
-		buttonsPerRow = 6,
-		point = 'BOTTOMLEFT',
-		backdrop = false,
-		heightMult = 1,
-		widthMult = 1,
-		buttonsize = 32,
-		buttonspacing = 2,
-		backdropSpacing = 2,
-		alpha = 1,
-		inheritGlobalFade = false,
-		showGrid = true,
-		flyoutDirection = 'AUTOMATIC',
-		paging = {},
-		visibility = '[vehicleui] hide; [overridebar] hide; [petbattle] hide; show',
-	},
-	bar4 = {
-		enabled = true,
-		mouseover = false,
-		buttons = 12,
-		buttonsPerRow = 1,
-		point = 'TOPRIGHT',
-		backdrop = true,
-		heightMult = 1,
-		widthMult = 1,
-		buttonsize = 32,
-		buttonspacing = 2,
-		backdropSpacing = 2,
-		alpha = 1,
-		inheritGlobalFade = false,
-		showGrid = true,
-		flyoutDirection = 'AUTOMATIC',
-		paging = {},
-		visibility = '[vehicleui] hide; [overridebar] hide; [petbattle] hide; show',
-	},
-	bar5 = {
-		enabled = true,
-		mouseover = false,
-		buttons = 6,
-		buttonsPerRow = 6,
-		point = 'BOTTOMLEFT',
-		backdrop = false,
-		heightMult = 1,
-		widthMult = 1,
-		buttonsize = 32,
-		buttonspacing = 2,
-		backdropSpacing = 2,
-		alpha = 1,
-		inheritGlobalFade = false,
-		showGrid = true,
-		flyoutDirection = 'AUTOMATIC',
-		paging = {},
-		visibility = '[vehicleui] hide; [overridebar] hide; [petbattle] hide; show',
-	},
-	bar6 = {
-		enabled = false,
-		mouseover = false,
-		buttons = 12,
-		buttonsPerRow = 12,
-		point = 'BOTTOMLEFT',
-		backdrop = false,
-		heightMult = 1,
-		widthMult = 1,
-		buttonsize = 32,
-		buttonspacing = 2,
-		backdropSpacing = 2,
-		alpha = 1,
-		inheritGlobalFade = false,
-		showGrid = true,
-		flyoutDirection = 'AUTOMATIC',
-		paging = {},
-		visibility = '[vehicleui] hide; [overridebar] hide; [petbattle] hide; show',
-	},
 	barPet = {
 		enabled = true,
 		mouseover = false,
@@ -5017,3 +4988,48 @@ P.actionbar = {
 		inheritGlobalFade = false,
 	},
 };
+
+for i = 1, 10 do
+	P.actionbar['bar'..i] = {
+		enabled = false,
+		mouseover = false,
+		buttons = 12,
+		buttonsPerRow = 12,
+		point = 'BOTTOMLEFT',
+		backdrop = false,
+		heightMult = 1,
+		widthMult = 1,
+		buttonsize = 32,
+		buttonspacing = 2,
+		backdropSpacing = 2,
+		alpha = 1,
+		inheritGlobalFade = false,
+		showGrid = true,
+		flyoutDirection = 'AUTOMATIC',
+		paging = {},
+		visibility = '[vehicleui] hide; [overridebar] hide; [petbattle] hide; show',
+	}
+end
+
+P.actionbar.bar1.enabled = true
+P.actionbar.bar1.visibility = '[petbattle] hide; show'
+P.actionbar.bar1.paging = {
+	DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;',
+	PRIEST = '[bonusbar:1] 7;',
+	ROGUE = '[stance:1] 7;  [stance:2] 7; [stance:3] 7;', -- set to '[stance:1] 7; [stance:3] 10;' if you want a shadow dance bar
+	MONK = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;',
+	WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8;'
+}
+
+P.actionbar.bar3.enabled = true
+P.actionbar.bar3.buttons = 6
+P.actionbar.bar3.buttonsPerRow = 6
+
+P.actionbar.bar4.enabled = true
+P.actionbar.bar4.buttonsPerRow = 1
+P.actionbar.bar4.point = 'TOPRIGHT'
+P.actionbar.bar4.backdrop = true
+
+P.actionbar.bar5.enabled = true
+P.actionbar.bar5.buttons = 6
+P.actionbar.bar5.buttonsPerRow = 6

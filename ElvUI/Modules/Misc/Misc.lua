@@ -87,8 +87,10 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 		SendChatMessage(msg, inPartyLFG and "INSTANCE_CHAT" or (inRaid and "RAID" or "PARTY"))
 	elseif interruptAnnounce == "RAID_ONLY" and inRaid then
 		SendChatMessage(msg, inPartyLFG and "INSTANCE_CHAT" or "RAID")
-	elseif interruptAnnounce == "SAY" then
+	elseif interruptAnnounce == "SAY" and instanceType ~= 'none' then
 		SendChatMessage(msg, "SAY")
+	elseif interruptAnnounce == "YELL" and instanceType ~= 'none' then
+		SendChatMessage(msg, "YELL")
 	elseif interruptAnnounce == "EMOTE" then
 		SendChatMessage(msg, "EMOTE")
 	end

@@ -354,6 +354,7 @@ L["Defines the sort order of the selected sort method."] = "Define a ordem de or
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "Excluir um filtro criado, você não pode excluir filtros pré-existentes, apenas aqueles personalizados."
 L["Delete Filter"] = "Apagar Filtro"
 L["Desaturate Cooldowns"] = true
+L["Desaturate Icon"] = true
 L["Desaturate Junk Items"] = true
 L["Desaturate Voice Icons"] = true
 L["Desaturated Icon"] = true
@@ -562,6 +563,7 @@ L["HH:MM Threshold"] = true
 L["Hide At Max Level"] = true
 L["Hide Below Max Level"] = true
 L["Hide Both"] = "Esconder Ambos"
+L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true
 L["Hide Cooldown Bling"] = true
 L["Hide Delay"] = true
 L["Hide Error Text"] = "Esconder Texto de Erro"
@@ -571,6 +573,7 @@ L["Hide In Vehicle"] = true
 L["Hide Outside PvP"] = true
 L["Hide specific sections in the datatext tooltip."] = true
 L["Hide Spell Name"] = true
+L["Hide Text"] = true
 L["Hide Time"] = true
 L["Hide tooltip while in combat."] = "Esconder tooltip em combate"
 L["Hide Voice Buttons"] = true
@@ -1054,6 +1057,7 @@ L["Sends your current profile to your target."] = "Envia seu perfil atual para s
 L["Sends your filter settings to your target."] = "Envia as configurações de filtro para seu alvo."
 L["Separate Panel Sizes"] = true
 L["Seperate"] = "Separar"
+L["Set auras that are not from you to desaturad."] = true
 L["Set Settings to Default"] = true
 L["Set the alpha level of nameplates that are not the target nameplate. Works only in combat."] = true
 L["Set the alpha level of portrait when frame is overlayed."] = true
@@ -1193,11 +1197,9 @@ L["Testing:"] = "Testar:"
 L["Text Color"] = "Cor do Texto"
 L["Text Font Size"] = true
 L["Text Format"] = "Formato de texto"
-L["Text Position"] = "Posição do Texto"
+L["Text Options"] = true
 L["Text Threshold"] = "Limiar do Texto"
 L["Text Toggle On NPC"] = "Texto ligado no PNJ"
-L["Text xOffset"] = "Distãncia X do Texto"
-L["Text yOffset"] = "Distância Y do Texto"
 L["Text"] = "Texto"
 L["Texture"] = true
 L["Textured Icon"] = "Ícone Texturizado"
@@ -1267,6 +1269,7 @@ L["Threshold Colors"] = true
 L["Ticks"] = "Ticks"
 L["Tiers"] = true
 L["Time Indicator Colors"] = true
+L["Time Options"] = true
 L["Time Remaining Reverse"] = "Tempo Remanescente Reverso"
 L["Time Remaining"] = "Tempo Remanescente"
 L["Time To Hold"] = true
@@ -1397,10 +1400,8 @@ L["Word Wrap"] = true
 L["World Map Coordinates"] = true
 L["WoW Token:"] = true
 L["Wrap After"] = "Enrolar depois"
-L["X-Offset"] = true
-L["xOffset"] = "Distância X"
-L["Y-Offset"] = true
-L["yOffset"] = "Distância Y"
+L["X-Offset"] = "Distância X"
+L["Y-Offset"] = "Distância Y"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You cannot copy settings from the same unit."] = "Você não pode copiar as configurações da mesma unidade."
@@ -1472,30 +1473,6 @@ The following search keywords can also be used:
     • keystone : Mythic Keystone.
     • followers : Follower items.
     • champions : Champion equipment.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[Fornece uma sting para mudar o formato do texto.
-
-Examples:
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-Formatos de Vida / Poder:
-'current' - Quantidade Actual
-'percent' - Quantidade de Percentagem
-'current-max' - Quantidade actual seguida pela quantidade máxima, será exibida apenas a máxima se a actual for igual à máxima
-'current-percent' - Quantidade actual seguida pela quantidade em percentagem, será exibida apenas a máxima se a actual for igual à máxima
-'current-max-percent' - Quantidade actual, quantidade máxima seguida por quantidade em percentagem, será exibida apenas a máxima se a actual for igual à máxima
-'deficit' - Exibir o valor em falta, nao será exibido nada se não houver nada em falta
-
-Formato de Nomes:
-'name:veryshort' - Name restricted to 5 characters
-'name:short' - Nome restringido a 10 caracteres
-'name:medium' - Nome restringido a 15 caracteres
-'name:long' - Nome restringido a 20 caracteres
-'name:short:translit' - Name restricted to 10 characters with transliteration
-
-Para desactivar deixe o espaço em branco, se precisar de mais informações visite o site https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
 Example: '[combat] 2;']=] ] = [=[Isto funciona como uma macro, você pode executar várias situações para que a barra de ação pagine de forma diferente.
@@ -1687,3 +1664,4 @@ L["UNIT_NAMEPLATES_TYPE_2"] = "Placas de identificação empilhadas";
 L["VOID_STORAGE"] = "Cofre Etéreo";
 L["WORLD_MAP"] = "Mapa";
 L["XPBAR_LABEL"] = "Barra de EXP";
+L["YELL"] = "Gritar";
