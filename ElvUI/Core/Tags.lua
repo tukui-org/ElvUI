@@ -291,7 +291,7 @@ end
 for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 20}) do
 	ElvUF.Tags.Events[format('health:deficit-percent:name-%s', textFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
 	ElvUF.Tags.Methods[format('health:deficit-percent:name-%s', textFormat)] = function(unit)
-		local cur, max = E:UnitHealthValues(unit)
+		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
 		local deficit = max - cur
 
 		if (deficit > 0 and cur > 0) then
