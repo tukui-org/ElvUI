@@ -660,7 +660,7 @@ function B:UpdateCooldowns(frame)
 		for slotID = 1, GetContainerNumSlots(bagID) do
 			if GetContainerItemInfo(bagID, slotID) then
 				local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-				CooldownFrame_Set(frame.Bags[bagID][slotID].cooldown, start, duration, enable, _, _)
+				CooldownFrame_Set(frame.Bags[bagID][slotID].cooldown, start, duration, enable)
 			end
 		end
 	end
