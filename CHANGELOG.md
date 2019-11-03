@@ -28,6 +28,7 @@ Essences from the Character and Inspect Info will now display the Essence qualit
 For the german audience: Behebt einige Fehler im Zeit-Infotext, dass die Instanz Symbole nicht richtig angezeigt wurden.  
 Updated option layout for Available Tags. Thanks to Luckyone for helping us with this.  
 Skin the new RecruitAFriend Frame.  
+Changes the options to uses more tabs. Information: With the next release from ElvUI we will rename it to TabUI.
 
 ___
 ### Version 11.24 [ October 8th 2019 ]
