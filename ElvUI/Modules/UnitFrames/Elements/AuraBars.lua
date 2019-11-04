@@ -43,6 +43,7 @@ function UF:Construct_AuraBars(statusBar)
 	statusBar.nameText:SetJustifyH('LEFT')
 	statusBar.nameText:SetJustifyV('MIDDLE')
 	statusBar.nameText:SetPoint("RIGHT", statusBar.timeText, "LEFT", -4, 0)
+	statusBar.nameText:SetWordWrap(false)
 
 	statusBar.bg = statusBar:CreateTexture(nil, 'BORDER')
 	statusBar.bg:Show()
