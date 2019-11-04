@@ -2177,16 +2177,10 @@ function B:GUILDBANKFRAME_OPENED(event)
 	B:UnregisterEvent(event)
 end
 
-function B:PlayerEnteringWorld()
-	B:UpdateBagTypes()
-	B:Layout()
-end
-
 function B:PLAYER_ENTERING_WORLD()
 	B:UpdateGoldText()
-
-	-- Update bag types for bagslot coloring
-	E:Delay(2, B.PlayerEnteringWorld)
+	B:UpdateBagTypes()
+	B:Layout()
 end
 
 function B:UpdateContainerFrameAnchors()
