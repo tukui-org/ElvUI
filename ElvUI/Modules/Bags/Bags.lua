@@ -569,6 +569,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 				if (BoE or BoU) then break end
 			end
 
+			E.ScanTooltip:Hide()
+
 			if BoE or BoU then
 				slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
 				slot.bindType:SetVertexColor(r, g, b)
