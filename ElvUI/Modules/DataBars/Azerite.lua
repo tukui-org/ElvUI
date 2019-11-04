@@ -29,10 +29,18 @@ function mod:UpdateAzerite(event, unit)
 
 	local bar = self.azeriteBar
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
+	local hideAzerite = C_AzeriteItem_IsAzeriteItemAtMaxLevel and self.db.azerite.hideAtMaxLevel
 
-	if not azeriteItemLocation or (event == "PLAYER_REGEN_DISABLED" and self.db.azerite.hideInCombat) or C_AzeriteItem_IsAzeriteItemAtMaxLevel() then
+	local text = ''
+	local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
+	local xpToNextLevel = totalLevelXP - xp
+	local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
+
+	if not azeriteItemLocation or (event == "PLAYER_REGEN_DISABLED" and self.db.azerite.hideInCombat) or hideAzerite then
+		E:DisableMover(bar.mover:GetName())
 		bar:Hide()
-	elseif azeriteItemLocation and (not self.db.azerite.hideInCombat or not InCombatLockdown()) then
+	elseif not hideAzerite or azeriteItemLocation and (not self.db.azerite.hideInCombat or not InCombatLockdown()) then
+		E:EnableMover(bar.mover:GetName())
 		bar:Show()
 
 		if self.db.azerite.hideInVehicle then
@@ -40,11 +48,6 @@ function mod:UpdateAzerite(event, unit)
 		else
 			E:UnregisterObjectForVehicleLock(bar)
 		end
-
-		local text = ''
-		local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
-		local xpToNextLevel = totalLevelXP - xp
-		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
 
 		bar.statusBar:SetMinMaxValues(0, totalLevelXP)
 		bar.statusBar:SetValue(xp)
@@ -87,11 +90,6 @@ function mod:AzeriteBar_OnEnter()
 	self.itemDataLoadedCancelFunc = azeriteItem:ContinueWithCancelOnItemLoad(function()
 		local azeriteItemName = azeriteItem:GetItemName()
 
-		--[[ From Blizz Code
-		GameTooltip:SetText(AZERITE_POWER_TOOLTIP_TITLE:format(currentLevel, xpToNextLevel), HIGHLIGHT_FONT_COLOR:GetRGB())
-		GameTooltip:AddLine(AZERITE_POWER_TOOLTIP_BODY:format(azeriteItemName))
-		]]
-
 		_G.GameTooltip:AddDoubleLine(ARTIFACT_POWER, azeriteItemName.." ("..currentLevel..")", nil,  nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
 		_G.GameTooltip:AddLine(' ')
 
@@ -126,7 +124,6 @@ end
 
 function mod:EnableDisable_AzeriteBar()
 	if self.db.azerite.enable then
-		--Possible Events
 		self:RegisterEvent("AZERITE_ITEM_EXPERIENCE_CHANGED", 'UpdateAzerite')
 		self:RegisterEvent('UNIT_INVENTORY_CHANGED', 'UpdateAzerite')
 
