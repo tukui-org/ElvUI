@@ -524,7 +524,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot:SetBackdropBorderColor(r, g, b)
 		slot.ignoreBorderColors = true
 	elseif clink then
-		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink)
+		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(clink)
 		slot.name = name
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
@@ -548,10 +548,29 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if showBindType then
-			local bindType = select(14, GetItemInfo(itemLink))
-			if bindType == 2 or bindType == 3 then
-				slot.bindType:SetText(bindType == 2 and L["BoE"] or L["BoU"])
+		if showBindType and (bindType == 2 or bindType == 3) then
+			local BoE, BoU
+
+			E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+			if slot.GetInventorySlot then -- this fixes bank bagid -1
+				E.ScanTooltip:SetInventoryItem("player", slot:GetInventorySlot())
+			else
+				E.ScanTooltip:SetBagItem(bagID, slotID)
+			end
+			E.ScanTooltip:Show()
+
+			local colorblind = GetCVarBool('colorblindmode')
+			local bindTypeLines = colorblind and 4 or 3
+			for i = 2, bindTypeLines do
+				local line = _G["ElvUI_ScanTooltipTextLeft"..i]:GetText()
+				if not line or line == "" then break end
+				if line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND then break end
+				BoE, BoU = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE
+				if (BoE or BoU) then break end
+			end
+
+			if BoE or BoU then
+				slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
 				slot.bindType:SetVertexColor(r, g, b)
 			end
 		end
@@ -1348,7 +1367,9 @@ function B:UpdateAll()
 end
 
 function B:OnEvent(event, ...)
-	if event == 'BAG_UPDATE' then
+	if event == 'ITEM_LOCK_CHANGED' then
+		B:UpdateSlot(self, ...)
+	elseif event == 'BAG_UPDATE' then
 		for _, bagID in ipairs(self.BagIDs) do
 			local numSlots = GetContainerNumSlots(bagID)
 			if (not self.Bags[bagID] and numSlots ~= 0) or (self.Bags[bagID] and numSlots ~= self.Bags[bagID].numSlots) then
@@ -1555,7 +1576,7 @@ function B:ContructContainerFrame(name, isBank)
 
 	f:RegisterEvent("BAG_UPDATE") -- Has to be on both frames
 	f:RegisterEvent("BAG_UPDATE_COOLDOWN") -- Has to be on both frames
-	f.events = isBank and { "PLAYERREAGENTBANKSLOTS_CHANGED", "BANK_BAG_SLOT_FLAGS_UPDATED", "PLAYERBANKSLOTS_CHANGED" } or { "BAG_SLOT_FLAGS_UPDATED", "QUEST_ACCEPTED", "QUEST_REMOVED" }
+	f.events = isBank and { "PLAYERREAGENTBANKSLOTS_CHANGED", "BANK_BAG_SLOT_FLAGS_UPDATED", "PLAYERBANKSLOTS_CHANGED" } or { "ITEM_LOCK_CHANGED", "BAG_SLOT_FLAGS_UPDATED", "QUEST_ACCEPTED", "QUEST_REMOVED" }
 
 	for _, event in pairs(f.events) do
 		f:RegisterEvent(event)
