@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local pairs, unpack = pairs, unpack
+local pairs, select, unpack = pairs, select, unpack
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 --WoW API / Variables
@@ -11,14 +11,12 @@ local hooksecurefunc = hooksecurefunc
 
 --[[
 TO DO:
-
 * Fix Icon borders
-* Fix Headers
 * Skin Multisell .ProgressBar
-* Skin ItemLists
 ]]
 
--- This is cluster fuck to skin the dropdown editboxes
+-- Credits: siweia (AuroraClassic)
+
 local function SkinEditBoxes(Frame)
 	S:HandleEditBox(Frame.MinLevel)
 	S:HandleEditBox(Frame.MaxLevel)
@@ -38,6 +36,120 @@ local function HandleSearchBarFrame(Frame)
 	S:HandleEditBox(Frame.SearchBox)
 	S:HandleButton(Frame.FavoritesSearchButton)
 	Frame.FavoritesSearchButton:SetSize(22, 22)
+end
+
+local function HandleListIcon(frame)
+	if not frame.tableBuilder then return end
+
+	for i = 1, 22 do
+		local row = frame.tableBuilder.rows[i]
+		if row then
+			for j = 1, 4 do
+				local cell = row.cells and row.cells[j]
+				if cell and cell.Icon and not cell.IsSkinned then
+					S:HandleIcon(cell.Icon)
+					if cell.IconBorder then
+						cell.IconBorder:SetAlpha(0)
+					end
+
+					cell.IsSkinned = true
+				end
+			end
+		end
+	end
+end
+
+local function HandleSummaryIcons(frame)
+	for i = 1, 23 do
+		local child = select(i, frame.ScrollFrame.scrollChild:GetChildren())
+		if child and child.Icon and not child.IsSkinned then
+			S:HandleIcon(child.Icon)
+
+			child.IsSkinned = true
+		end
+	end
+end
+
+local function HandleHeaders(frame)
+	local maxHeaders = frame.HeaderContainer:GetNumChildren()
+	for i = 1, maxHeaders do
+		local header = select(i, frame.HeaderContainer:GetChildren())
+		if header and not header.IsSkinned then
+			header:DisableDrawLayer("BACKGROUND")
+			if not header.backdrop then
+				header:CreateBackdrop("Transparent")
+			end
+
+			header.IsSkinned = true
+		end
+
+		if header.backdrop then
+			header.backdrop:SetPoint("BOTTOMRIGHT", i < maxHeaders and -5 or 0, -2)
+		end
+	end
+
+	HandleListIcon(frame)
+end
+
+local function HandleAuctionButtons(button)
+	S:HandleButton(button)
+	button:SetSize(22,22)
+end
+
+local function HandleSellFrame(frame)
+	frame:StripTextures()
+
+	local ItemDisplay = frame.ItemDisplay
+	ItemDisplay:StripTextures()
+	ItemDisplay:CreateBackdrop("Transparent")
+
+	local ItemButton = ItemDisplay.ItemButton
+	if ItemButton.IconMask then ItemButton.IconMask:Hide() end
+	if ItemButton.IconBorder then ItemButton.IconBorder:SetAlpha(0) end
+
+	ItemButton.EmptyBackground:Hide()
+	ItemButton:SetPushedTexture("")
+	ItemButton.Highlight:SetColorTexture(1, 1, 1, .25)
+	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
+
+	S:HandleIcon(ItemButton.Icon, true)
+	hooksecurefunc(ItemButton.IconBorder, "SetVertexColor", function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
+	hooksecurefunc(ItemButton.IconBorder, "Hide", function() ItemButton.Icon.backdrop:SetBackdropBorderColor(0, 0, 0) end)
+
+	S:HandleEditBox(frame.QuantityInput.InputBox)
+	S:HandleButton(frame.QuantityInput.MaxButton)
+	S:HandleEditBox(frame.PriceInput.MoneyInputFrame.GoldBox)
+	S:HandleEditBox(frame.PriceInput.MoneyInputFrame.SilverBox)
+
+	if frame.SecondaryPriceInput then
+		S:HandleEditBox(frame.SecondaryPriceInput.MoneyInputFrame.GoldBox)
+		S:HandleEditBox(frame.SecondaryPriceInput.MoneyInputFrame.SilverBox)
+	end
+
+	S:HandleDropDownBox(frame.DurationDropDown.DropDown)
+	S:HandleButton(frame.PostButton)
+
+	if frame.BuyoutModeCheckButton then
+		S:HandleCheckBox(frame.BuyoutModeCheckButton)
+		frame.BuyoutModeCheckButton:SetSize(20, 20)
+	end
+end
+
+local function HandleSellList(frame, hasHeader)
+	frame:StripTextures()
+
+	if frame.RefreshFrame then
+		HandleAuctionButtons(frame.RefreshFrame.RefreshButton)
+	end
+
+	S:HandleScrollBar(frame.ScrollFrame.scrollBar)
+
+	if hasHeader then
+		frame.ScrollFrame:CreateBackdrop("Transparent")
+		hooksecurefunc(frame, "RefreshScrollFrame", HandleHeaders)
+	else
+		hooksecurefunc(frame, "RefreshScrollFrame", HandleSummaryIcons)
+	end
 end
 
 local function LoadSkin()
@@ -62,10 +174,11 @@ local function LoadSkin()
 	_G.AuctionHouseFrameBuyTab:ClearAllPoints()
 	_G.AuctionHouseFrameBuyTab:SetPoint("BOTTOMLEFT", Frame, "BOTTOMLEFT", 0, -32)
 
-	-- Apply cluster fuck
+	-- SearchBar Frame
 	HandleSearchBarFrame(Frame.SearchBar)
 
-	Frame.MoneyFrameBorder:StripTextures(true)
+	Frame.MoneyFrameBorder:StripTextures()
+	Frame.MoneyFrameInset:StripTextures()
 
 	--[[ Categorie List ]]--
 	local Categories = Frame.CategoriesList
@@ -89,6 +202,7 @@ local function LoadSkin()
 
 	local ItemList = Browse.ItemList
 	ItemList:StripTextures()
+	hooksecurefunc(ItemList, "RefreshScrollFrame", HandleHeaders)
 
 	S:HandleScrollBar(ItemList.ScrollFrame.scrollBar)
 
@@ -142,6 +256,7 @@ local function LoadSkin()
 	ItemList:CreateBackdrop("Transparent")
 	S:HandleScrollBar(ItemList.ScrollFrame.scrollBar)
 	S:HandleButton(ItemList.RefreshFrame.RefreshButton)
+	hooksecurefunc(ItemList, "RefreshScrollFrame", HandleHeaders)
 
 	local EditBoxes = {
 		_G.AuctionHouseFrameGold,
@@ -157,74 +272,41 @@ local function LoadSkin()
 
 	--[[ Item Sell Frame | TAB 2 ]]--
 	local SellFrame = Frame.ItemSellFrame
-	SellFrame:StripTextures()
-	SellFrame.ItemDisplay:StripTextures()
-	SellFrame.ItemDisplay:CreateBackdrop("Transparent")
-	S:HandleEditBox(SellFrame.QuantityInput.InputBox)
-	S:HandleButton(SellFrame.QuantityInput.MaxButton)
-	S:HandleEditBox(SellFrame.SecondaryPriceInput.MoneyInputFrame.GoldBox)
-	S:HandleEditBox(SellFrame.SecondaryPriceInput.MoneyInputFrame.SilverBox)
-	S:HandleEditBox(SellFrame.PriceInput.MoneyInputFrame.GoldBox)
-	S:HandleEditBox(SellFrame.PriceInput.MoneyInputFrame.SilverBox)
-	S:HandleDropDownBox(SellFrame.DurationDropDown.DropDown)
-	S:HandleButton(SellFrame.PostButton)
-	S:HandleCheckBox(SellFrame.BuyoutModeCheckButton)
-	SellFrame.BuyoutModeCheckButton:SetSize(20, 20)
-
-	local ItemButton = SellFrame.ItemDisplay.ItemButton
-	ItemButton.EmptyBackground:Hide()
-	S:HandleIcon(ItemButton.Icon, true)
-	hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
-	hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
-	ItemButton.IconBorder:SetAlpha(0)
-	ItemButton.IconMask:SetAlpha(0)
+	HandleSellFrame(SellFrame)
 
 	local ItemList = Frame.ItemSellList
-	ItemList:StripTextures()
-	ItemList:CreateBackdrop("Transparent")
-	S:HandleScrollBar(ItemList.ScrollFrame.scrollBar)
-	S:HandleButton(ItemList.RefreshFrame.RefreshButton)
+	HandleSellList(ItemList, true)
 
 	local CommoditiesSellFrame = Frame.CommoditiesSellFrame
-	CommoditiesSellFrame:StripTextures()
-	CommoditiesSellFrame.ItemDisplay:StripTextures()
-	CommoditiesSellFrame.ItemDisplay:CreateBackdrop("Transparent")
-	S:HandleEditBox(CommoditiesSellFrame.QuantityInput.InputBox)
-	S:HandleButton(CommoditiesSellFrame.QuantityInput.MaxButton)
-	S:HandleEditBox(CommoditiesSellFrame.PriceInput.MoneyInputFrame.GoldBox)
-	S:HandleEditBox(CommoditiesSellFrame.PriceInput.MoneyInputFrame.SilverBox)
-	S:HandleDropDownBox(CommoditiesSellFrame.DurationDropDown.DropDown)
-	S:HandleButton(CommoditiesSellFrame.PostButton)
-
-	local ItemButton = CommoditiesSellFrame.ItemDisplay.ItemButton
-	ItemButton.EmptyBackground:Hide()
-	S:HandleIcon(ItemButton.Icon, true)
-	hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
-	hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
-	ItemButton.IconBorder:SetAlpha(0)
-	ItemButton.IconMask:Hide()
+	HandleSellFrame(CommoditiesSellFrame)
 
 	local ItemList = Frame.CommoditiesSellList
-	ItemList:StripTextures()
-	ItemList:CreateBackdrop("Transparent")
-	S:HandleScrollBar(ItemList.ScrollFrame.scrollBar)
-	S:HandleButton(ItemList.RefreshFrame.RefreshButton)
+	HandleSellList(ItemList, true)
 
 	--[[ Auctions Frame | TAB 3 ]]--
 	local AuctionsFrame = _G.AuctionHouseFrameAuctionsFrame
 	AuctionsFrame:StripTextures()
 
+	local ItemDisplay = AuctionsFrame.ItemDisplay
+	ItemDisplay:StripTextures()
+	ItemDisplay:CreateBackdrop("Transparent")
+
+	local ItemButton = ItemDisplay.ItemButton
+	S:HandleIcon(ItemButton.Icon, true)
+
+	-- FIX ME
+	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
+	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+	ItemButton.IconBorder:SetAlpha(0)
+	ItemButton.CircleMask:Hide()
+
 	local CommoditiesList = AuctionsFrame.CommoditiesList
-	CommoditiesList:StripTextures()
-	CommoditiesList:CreateBackdrop("Transparent")
+	HandleSellList(CommoditiesList, true)
 	S:HandleButton(CommoditiesList.RefreshFrame.RefreshButton)
-	S:HandleScrollBar(CommoditiesList.ScrollFrame.scrollBar)
 
 	local ItemList = AuctionsFrame.ItemList
-	ItemList:StripTextures()
-	ItemList:CreateBackdrop("Transparent")
+	HandleSellList(ItemList, true)
 	S:HandleButton(ItemList.RefreshFrame.RefreshButton)
-	S:HandleScrollBar(ItemList.ScrollFrame.scrollBar)
 
 	local Tabs = {
 		_G.AuctionHouseFrameAuctionsFrameAuctionsTab,
@@ -237,33 +319,16 @@ local function LoadSkin()
 		end
 	end
 
-	local ItemDisplay = AuctionsFrame.ItemDisplay
-	ItemDisplay:StripTextures()
-	ItemDisplay:CreateBackdrop("Transparent")
-
-	local ItemButton = ItemDisplay.ItemButton
-	S:HandleIcon(ItemButton.Icon, true)
-	-- FIX ME
-	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
-	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
-	ItemButton.IconBorder:SetAlpha(0)
-
 	local SummaryList = AuctionsFrame.SummaryList
-	SummaryList:StripTextures()
-	SummaryList:CreateBackdrop("Transparent")
+	HandleSellList(SummaryList)
 	S:HandleButton(AuctionsFrame.CancelAuctionButton)
-	S:HandleScrollBar(SummaryList.ScrollFrame.scrollBar)
 
 	local AllAuctionsList = AuctionsFrame.AllAuctionsList
-	AllAuctionsList:StripTextures()
-	AllAuctionsList:CreateBackdrop("Transparent")
-	S:HandleScrollBar(AllAuctionsList.ScrollFrame.scrollBar)
+	HandleSellList(AllAuctionsList, true)
 	S:HandleButton(AllAuctionsList.RefreshFrame.RefreshButton)
 
 	local BidsList = AuctionsFrame.BidsList
-	BidsList:StripTextures()
-	BidsList:CreateBackdrop("Transparent")
-	S:HandleScrollBar(BidsList.ScrollFrame.scrollBar)
+	HandleSellList(BidsList, true)
 	S:HandleButton(BidsList.RefreshFrame.RefreshButton)
 	S:HandleEditBox(_G.AuctionHouseFrameAuctionsFrameGold)
 	S:HandleEditBox(_G.AuctionHouseFrameAuctionsFrameSilver)
