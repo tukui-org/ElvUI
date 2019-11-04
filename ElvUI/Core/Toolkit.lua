@@ -369,6 +369,7 @@ local StripTexturesBlizzFrames = {
 	'ArtOverlayFrame',
 	'Portrait',
 	'portrait',
+	'ScrollFrameBorder',
 }
 
 local STRIP_TEX = 'Texture'
