@@ -29,17 +29,17 @@ function mod:UpdateAzerite(event, unit)
 
 	local bar = self.azeriteBar
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
-	local hideAzerite = C_AzeriteItem_IsAzeriteItemAtMaxLevel and self.db.azerite.hideAtMaxLevel
+	local hideAzerite =  not azeriteItemLocation or (C_AzeriteItem_IsAzeriteItemAtMaxLevel and self.db.azerite.hideAtMaxLevel)
 
-	local text = ''
-	local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
-	local xpToNextLevel = totalLevelXP - xp
-	local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
-
-	if not azeriteItemLocation or (event == "PLAYER_REGEN_DISABLED" and self.db.azerite.hideInCombat) or hideAzerite then
+	if hideAzerite or (event == "PLAYER_REGEN_DISABLED" and self.db.azerite.hideInCombat) then
 		E:DisableMover(bar.mover:GetName())
 		bar:Hide()
-	elseif not hideAzerite or azeriteItemLocation and (not self.db.azerite.hideInCombat or not InCombatLockdown()) then
+	elseif not hideAzerite and (not self.db.azerite.hideInCombat or not InCombatLockdown()) then
+		local text = ''
+		local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
+		local xpToNextLevel = totalLevelXP - xp
+		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
+
 		E:EnableMover(bar.mover:GetName())
 		bar:Show()
 
