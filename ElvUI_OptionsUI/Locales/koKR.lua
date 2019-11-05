@@ -560,6 +560,7 @@ L["Herbalism"] = true
 L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = "여기에 가방 정리에서 제외할 아이템 또는 검색어를 추가할 수 있습니다. 제거할 때는 목록에서 아이템 이름을 클릭만 하시면 됩니다."
 L["HH:MM Threshold"] = true
 L["Hide At Max Level"] = "만렙시 숨김"
+L["Hide At Max Power"] = true
 L["Hide Below Max Level"] = true
 L["Hide Both"] = "둘 다 숨기기"
 L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true

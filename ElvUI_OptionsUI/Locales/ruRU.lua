@@ -560,6 +560,7 @@ L["Herbalism"] = "Травы"
 L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = "Здесь вы можете добавить предметы или запросы поиска, которые вы хотите исключить из сортировки. Для удаления предмета просто кликните на его имени в списке."
 L["HH:MM Threshold"] = "Граница ЧЧ:ММ"
 L["Hide At Max Level"] = "Прятать на максимальном уровне"
+L["Hide At Max Power"] = true
 L["Hide Below Max Level"] = "Скрывать до максимального уровня"
 L["Hide Both"] = "Скрыть оба"
 L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true

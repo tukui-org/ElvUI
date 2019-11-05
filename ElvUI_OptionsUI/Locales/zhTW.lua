@@ -562,6 +562,7 @@ L["Herbalism"] = "草藥學"
 L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = "在此你可以新增物品或是搜尋語法來排除排序某些物品. 要移除物品請點選列表中的物品名稱"
 L["HH:MM Threshold"] = "HH:MM（時:分） 閾值"
 L["Hide At Max Level"] = "在最高等級時隱藏"
+L["Hide At Max Power"] = true
 L["Hide Below Max Level"] = "滿等前隱藏"
 L["Hide Both"] = "全部隱藏"
 L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true

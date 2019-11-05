@@ -365,7 +365,7 @@ E.Options.args.databars = {
 				hideAtMaxLevel = {
 					order = 3,
 					type = "toggle",
-					name = L["Hide At Max Level"],
+					name = L["Hide At Max Power"],
 					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateAzerite() end,
 				},
 				hideInVehicle = {

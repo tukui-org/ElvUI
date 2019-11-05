@@ -563,6 +563,7 @@ L["Here you can add items or search terms that you want to be excluded from sort
 L["HH:MM Threshold"] = true
 L["HH:MM"] = true
 L["Hide At Max Level"] = true
+L["Hide At Max Power"] = true
 L["Hide Below Max Level"] = true
 L["Hide Both"] = true
 L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true

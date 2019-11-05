@@ -562,6 +562,7 @@ L["Herbalism"] = "草药"
 L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = "你可以在这里添加你想在排序中排除的物品或者匹配语法.在列表中点击他们的名字来移除一个物品"
 L["HH:MM Threshold"] = "时:分 阈值"
 L["Hide At Max Level"] = "在最高等级时隐藏"
+L["Hide At Max Power"] = true
 L["Hide Below Max Level"] = "非满级时隐藏"
 L["Hide Both"] = "全部隐藏"
 L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true

@@ -31,11 +31,6 @@ function mod:UpdateAzerite(event, unit)
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
 	local hideAzerite = C_AzeriteItem_IsAzeriteItemAtMaxLevel() and self.db.azerite.hideAtMaxLevel
 
-	local text = ''
-	local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
-	local xpToNextLevel = totalLevelXP - xp
-	local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
-
 	if not azeriteItemLocation or hideAzerite or (event == "PLAYER_REGEN_DISABLED" and self.db.azerite.hideInCombat) then
 		E:DisableMover(bar.mover:GetName())
 		bar:Hide()
@@ -48,6 +43,11 @@ function mod:UpdateAzerite(event, unit)
 		else
 			E:UnregisterObjectForVehicleLock(bar)
 		end
+
+		local text = ''
+		local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
+		local xpToNextLevel = totalLevelXP - xp
+		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
 
 		bar.statusBar:SetMinMaxValues(0, totalLevelXP)
 		bar.statusBar:SetValue(xp)
