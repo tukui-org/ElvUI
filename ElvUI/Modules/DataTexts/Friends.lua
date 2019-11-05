@@ -319,9 +319,9 @@ local function BuildBNTable(total)
 
 	for i = 1, total do
 		local accountInfo = C_BattleNet_GetFriendAccountInfo(i)
-		if accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline then
+		if accountInfo and accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline then
 			local numGameAccounts = C_BattleNet_GetFriendNumGameAccounts(i)
-			if numGameAccounts > 0 then
+			if numGameAccounts and numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
 					local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
 					bnIndex = PopulateBNTable(bnIndex, accountInfo.bnetAccountID, accountInfo.accountName, accountInfo.battleTag, gameAccountInfo.characterName, gameAccountInfo.gameAccountID, gameAccountInfo.clientProgram, gameAccountInfo.isOnline, accountInfo.isAFK or gameAccountInfo.isGameAFK, accountInfo.isDND or gameAccountInfo.isGameBusy, accountInfo.note, accountInfo.gameAccountInfo.wowProjectID, gameAccountInfo.realmName, gameAccountInfo.factionName, gameAccountInfo.raceName, gameAccountInfo.className, gameAccountInfo.areaName, gameAccountInfo.characterLevel, gameAccountInfo.playerGuid, gameAccountInfo.richPresence, gameAccountInfo.hasFocus)

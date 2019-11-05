@@ -193,6 +193,7 @@ P.databars = {
 		mouseover = false,
 		orientation = 'VERTICAL',
 		reverseFill = false,
+		hideAtMaxLevel = true,
 		hideInVehicle = false,
 		hideInCombat = false,
 	},
