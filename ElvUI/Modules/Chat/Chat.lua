@@ -1144,14 +1144,13 @@ function CH:GetBNFirstToonClassColor(id)
 	if not id then return end
 	for i = 1, BNGetNumFriends() do
 		local accountInfo = C_BattleNet_GetFriendAccountInfo(i)
-		if (accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline) and accountInfo.bnetAccountID == id then
+		if accountInfo and (accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline) and accountInfo.bnetAccountID == id then
 			local numGameAccounts = C_BattleNet_GetFriendNumGameAccounts(i)
-			if numGameAccounts > 0 then
+			if numGameAccounts and numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
 					local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
-					local className = gameAccountInfo.className
-					if (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) and className and className ~= '' then
-						return className --return the first toon's class
+					if gameAccountInfo and (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) and gameAccountInfo.className and gameAccountInfo.className ~= '' then
+						return gameAccountInfo.className --return the first toon's class
 					end
 				end
 			end
@@ -1501,6 +1500,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				message = format(globalstring, arg2)
 			elseif ( arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE" ) then
 				local accountInfo = C_BattleNet_GetAccountInfoByID(arg13)
+				if not accountInfo then return end
 				local client = accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.clientProgram
 				if (client and client ~= "") then
 					local characterName = BNet_GetValidatedCharacterName(accountInfo.gameAccountInfo.characterName, accountInfo.battleTag, client) or ""
@@ -2155,17 +2155,19 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 
 	for i = 1, BNGetNumFriends() do
 		local accountInfo = C_BattleNet_GetFriendAccountInfo(i)
-		if accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline then
+		if accountInfo and accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline then
 			local numGameAccounts = C_BattleNet_GetFriendNumGameAccounts(i)
-			for y = 1, numGameAccounts do
-				local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
-				if (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) and (accountInfo.accountName == playerName) then
-					playerName = gameAccountInfo.characterName
-					if gameAccountInfo.realmName and gameAccountInfo.realmName ~= E.myrealm then
-						playerName = format('%s-%s', playerName, gsub(gameAccountInfo.realmName,'[%s%-]',''))
-					end
-					if leaderName == playerName then
-						return true
+			if numGameAccounts then
+				for y = 1, numGameAccounts do
+					local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
+					if gameAccountInfo and (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) and (accountInfo.accountName == playerName) then
+						playerName = gameAccountInfo.characterName
+						if gameAccountInfo.realmName and gameAccountInfo.realmName ~= E.myrealm then
+							playerName = format('%s-%s', playerName, gsub(gameAccountInfo.realmName,'[%s%-]',''))
+						end
+						if leaderName == playerName then
+							return true
+						end
 					end
 				end
 			end
