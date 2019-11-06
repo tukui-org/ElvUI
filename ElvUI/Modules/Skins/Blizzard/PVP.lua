@@ -77,7 +77,7 @@ local function LoadSkin()
 	BonusFrame.ShadowOverlay:Hide()
 	BonusFrame.WorldBattlesTexture:Hide()
 
-	for _, bonusButton in pairs({"RandomBGButton", "Arena1Button", "RandomEpicBGButton", "BrawlButton"}) do
+	for _, bonusButton in pairs({"RandomBGButton", "Arena1Button", "RandomEpicBGButton", "BrawlButton", "SpecialEventButton"}) do
 		local bu = BonusFrame[bonusButton]
 		local reward = bu.Reward
 		S:HandleButton(bu)
