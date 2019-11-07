@@ -2509,14 +2509,14 @@ end
 local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
 	local config = {
 		type = 'group',
-		name = L["RL Icon"],
+		name = L["Leader Indicator"],
 		get = function(info) return E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
 		args = {
 			header = {
 				order = 1,
 				type = "header",
-				name = L["RL Icon"],
+				name = L["Leader Indicator"],
 			},
 			enable = {
 				type = 'toggle',
