@@ -1108,11 +1108,37 @@ function S:WorldMapMixin_AddOverlayFrame(frame, templateName)
 	S[templateName](frame.overlayFrames[#frame.overlayFrames])
 end
 
+-- UIWidgets
 function S:SkinIconAndTextWidget(widgetFrame)
 end
 
+-- For now see the function below
 function S:SkinCaptureBarWidget(widgetFrame)
 end
+
+-- Credits ShestakUI
+hooksecurefunc(UIWidgetTemplateCaptureBarMixin, "Setup", function(widgetInfo)
+	widgetInfo.LeftLine:SetAlpha(0)
+	widgetInfo.RightLine:SetAlpha(0)
+	widgetInfo.BarBackground:SetAlpha(0)
+	widgetInfo.Glow1:SetAlpha(0)
+	widgetInfo.Glow2:SetAlpha(0)
+	widgetInfo.Glow3:SetAlpha(0)
+
+	widgetInfo.LeftBar:SetTexture(E.media.normTex)
+	widgetInfo.NeutralBar:SetTexture(E.media.normTex)
+	widgetInfo.RightBar:SetTexture(E.media.normTex)
+
+	widgetInfo.LeftBar:SetVertexColor(0.2, 0.6, 1)
+	widgetInfo.NeutralBar:SetVertexColor(0.8, 0.8, 0.8)
+	widgetInfo.RightBar:SetVertexColor(0.9, 0.2, 0.2)
+
+	if not widgetInfo.backdrop then
+		widgetInfo:CreateBackdrop()
+		widgetInfo.backdrop:SetPoint("TOPLEFT", widgetInfo.LeftBar, -2, 2)
+		widgetInfo.backdrop:SetPoint("BOTTOMRIGHT", widgetInfo.RightBar, 2, -2)
+	end
+end)
 
 function S:SkinStatusBarWidget(widgetFrame)
 	local bar = widgetFrame.Bar
@@ -1137,8 +1163,35 @@ function S:SkinStatusBarWidget(widgetFrame)
 	end
 end
 
+-- For now see the function below
 function S:SkinDoubleStatusBarWidget(widgetFrame)
 end
+
+-- Credits ShestakUI
+local frame = CreateFrame("Frame")
+frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+frame:RegisterEvent("UPDATE_ALL_UI_WIDGETS")
+frame:SetScript("OnEvent", function()
+	for _, widgetFrame in pairs(_G.UIWidgetTopCenterContainerFrame.widgetFrames) do
+		if widgetFrame.widgetType == _G.Enum.UIWidgetVisualizationType.DoubleStatusBar then
+			for _, bar in pairs({widgetFrame.LeftBar, widgetFrame.RightBar}) do
+				if not bar.IsSkinned then
+					bar.BG:SetAlpha(0)
+					bar.BorderLeft:SetAlpha(0)
+					bar.BorderRight:SetAlpha(0)
+					bar.BorderCenter:SetAlpha(0)
+					bar.Spark:SetAlpha(0)
+					bar.SparkGlow:SetAlpha(0)
+					bar.BorderGlow:SetAlpha(0)
+
+					bar:CreateBackdrop("Transparent")
+
+					bar.IsSkinned = true
+				end
+			end
+		end
+	end
+end)
 
 function S:SkinIconTextAndBackgroundWidget(widgetFrame)
 end
