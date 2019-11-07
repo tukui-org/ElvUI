@@ -26,12 +26,12 @@ function mod:UpdateExperience(event)
 	if not mod.db.experience.enable then return end
 
 	local bar = self.expBar
-	local hideXP = ((E.mylevel == MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()] and self.db.experience.hideAtMaxLevel) or IsXPUserDisabled())
 
-	if hideXP or (event == "PLAYER_REGEN_DISABLED" and self.db.experience.hideInCombat) then
+	if (self.db.experience.hideAtMaxLevel and E.mylevel == MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()]) or IsXPUserDisabled() or
+		(self.db.experience.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
 		E:DisableMover(self.expBar.mover:GetName())
 		bar:Hide()
-	elseif not hideXP and (not self.db.experience.hideInCombat or not InCombatLockdown()) then
+	else
 		E:EnableMover(self.expBar.mover:GetName())
 		bar:Show()
 
@@ -43,8 +43,9 @@ function mod:UpdateExperience(event)
 
 		local cur, max = self:GetXP('player')
 		if max <= 0 then max = 1 end
+
 		bar.statusBar:SetMinMaxValues(0, max)
-		bar.statusBar:SetValue(cur - 1 >= 0 and cur - 1 or 0)
+		-- bar.statusBar:SetValue(cur - 1 >= 0 and cur - 1 or 0) -- this is set twice here for some reason
 		bar.statusBar:SetValue(cur)
 
 		local rested = GetXPExhaustion()

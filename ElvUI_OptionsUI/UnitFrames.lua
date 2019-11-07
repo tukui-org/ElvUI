@@ -2433,6 +2433,79 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 	return config
 end
 
+local function GetOptionsTable_RoleIcons(updateFunc, groupName, numGroup)
+	local config = {
+		type = 'group',
+		name = L["Role Icon"],
+		get = function(info) return E.db.unitframe.units[groupName].roleIcon[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].roleIcon[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
+		args = {
+			header = {
+				order = 1,
+				type = "header",
+				name = L["Role Icon"],
+			},
+			enable = {
+				type = 'toggle',
+				name = L["Enable"],
+				order = 2,
+			},
+			position = {
+				type = 'select',
+				order = 3,
+				name = L["Position"],
+				values = positionValues,
+			},
+			attachTo = {
+				type = 'select',
+				order = 4,
+				name = L["Attach To"],
+				values = attachToValues,
+			},
+			xOffset = {
+				order = 5,
+				type = 'range',
+				name = L["xOffset"],
+				min = -300, max = 300, step = 1,
+			},
+			yOffset = {
+				order = 6,
+				type = 'range',
+				name = L["yOffset"],
+				min = -300, max = 300, step = 1,
+			},
+			size = {
+				type = 'range',
+				order = 7,
+				name = L["Size"],
+				min = 4, max = 100, step = 1,
+			},
+			tank = {
+				order = 8,
+				type = "toggle",
+				name = L["Show For Tanks"],
+			},
+			healer = {
+				order = 9,
+				type = "toggle",
+				name = L["Show For Healers"],
+			},
+			damager = {
+				order = 10,
+				type = "toggle",
+				name = L["Show For DPS"],
+			},
+			combatHide = {
+				order = 11,
+				type = "toggle",
+				name = L["Hide In Combat"],
+			},
+		},
+	}
+
+	return config
+end
+
 local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
 	local config = {
 		type = 'group',
@@ -6081,6 +6154,7 @@ E.Options.args.unitframe.args.party = {
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'party'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateHeaderGroup, 'party'),
+		roleIcon = GetOptionsTable_RoleIcons(UF.CreateAndUpdateHeaderGroup, 'party'),
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'party'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
@@ -6364,6 +6438,7 @@ E.Options.args.unitframe.args.raid = {
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		roleIcon = GetOptionsTable_RoleIcons(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
@@ -6647,6 +6722,7 @@ E.Options.args.unitframe.args.raid40 = {
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		roleIcon = GetOptionsTable_RoleIcons(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),

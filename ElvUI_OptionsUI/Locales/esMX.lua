@@ -560,6 +560,7 @@ L["Herbalism"] = true
 L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = true
 L["HH:MM Threshold"] = true
 L["Hide At Max Level"] = true
+L["Hide At Max Power"] = true
 L["Hide Below Max Level"] = true
 L["Hide Both"] = "Ocultar Ambos"
 L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true

@@ -54,7 +54,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.ChatBubbleFont,						BUBBLE, self.private.general.chatBubbleFontSize, self.private.general.chatBubbleFontOutline)
 		SetFont(_G.CombatTextFont,						COMBAT, 200, 'OUTLINE')						-- number here just increase the font quality.
 		SetFont(_G.CoreAbilityFont,						NORMAL, 26)									-- Core abilities(title)
-		SetFont(_G.DestinyFontHuge,						NORMAL, 20, nil, SHADOWCOLOR, BIGOFFSET)	-- Garrison Mission Report
+		SetFont(_G.DestinyFontHuge,						NORMAL, 32, nil, SHADOWCOLOR, BIGOFFSET)	-- Garrison Mission Report
 		SetFont(_G.DestinyFontMed,						NORMAL, 14)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Fancy12Font,							NORMAL, 12)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Fancy14Font,							NORMAL, 14)									-- Added in 7.3.5 used for ?

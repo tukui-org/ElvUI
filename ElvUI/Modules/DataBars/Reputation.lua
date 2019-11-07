@@ -22,32 +22,11 @@ function mod:UpdateReputation(event)
 	if not mod.db.reputation.enable then return end
 
 	local bar = self.repBar
-	local ID, isFriend, friendText, standingLabel
-	local isCapped
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
 
-	if factionID and C_Reputation_IsFactionParagon(factionID) then
-		local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
-		if currentValue and threshold then
-			min, max = 0, threshold
-			value = currentValue % threshold
-			if hasRewardPending then
-				value = value + threshold
-			end
-		end
-	else
-		if reaction == _G.MAX_REPUTATION_REACTION then
-			-- max rank, make it look like a full bar
-			min, max, value = 0, 1, 1
-			isCapped = true
-		end
-	end
-
-	local numFactions = GetNumFactions()
-
-	if not name or (event == "PLAYER_REGEN_DISABLED" and self.db.reputation.hideInCombat) then
+	if not name or (self.db.reputation.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
 		bar:Hide()
-	elseif name and (not self.db.reputation.hideInCombat or not InCombatLockdown()) then
+	else
 		bar:Show()
 
 		if self.db.reputation.hideInVehicle then
@@ -55,14 +34,35 @@ function mod:UpdateReputation(event)
 		else
 			E:UnregisterObjectForVehicleLock(bar)
 		end
+		
+		local ID, isFriend, friendText, standingLabel
+		local isCapped
 
-		local text = ''
-		local textFormat = self.db.reputation.textFormat
-		local color = _G.FACTION_BAR_COLORS[reaction] or backupColor
-		bar.statusBar:SetStatusBarColor(color.r, color.g, color.b)
+		if factionID and C_Reputation_IsFactionParagon(factionID) then
+			local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
+			if currentValue and threshold then
+				min, max = 0, threshold
+				value = currentValue % threshold
+				if hasRewardPending then
+					value = value + threshold
+				end
+			end
+		else
+			if reaction == _G.MAX_REPUTATION_REACTION then
+				-- max rank, make it look like a full bar
+				min, max, value = 0, 1, 1
+				isCapped = true
+			end
+		end
 
 		bar.statusBar:SetMinMaxValues(min, max)
 		bar.statusBar:SetValue(value)
+		local color = _G.FACTION_BAR_COLORS[reaction] or backupColor
+		bar.statusBar:SetStatusBarColor(color.r, color.g, color.b)
+
+		local numFactions = GetNumFactions()
+		local text = ''
+		local textFormat = self.db.reputation.textFormat
 
 		for i=1, numFactions do
 			local factionName, _, standingID,_,_,_,_,_,_,_,_,_,_, factionID = GetFactionInfo(i)
