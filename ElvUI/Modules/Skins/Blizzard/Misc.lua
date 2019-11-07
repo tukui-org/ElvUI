@@ -133,9 +133,9 @@ local function LoadSkin()
 
 		_G.GameMenuFrame:StripTextures()
 		_G.GameMenuFrame:SetTemplate("Transparent")
-		_G.GameMenuFrameHeader:SetTexture()
-		_G.GameMenuFrameHeader:ClearAllPoints()
-		_G.GameMenuFrameHeader:Point("TOP", _G.GameMenuFrame, 0, 7)
+		_G.GameMenuFrame.Header:StripTextures()
+		_G.GameMenuFrame.Header:ClearAllPoints()
+		_G.GameMenuFrame.Header:SetPoint("TOP", _G.GameMenuFrame, 0, 7)
 	end
 
 	if IsAddOnLoaded("OptionHouse") then
