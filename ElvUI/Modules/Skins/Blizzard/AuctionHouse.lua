@@ -46,13 +46,13 @@ local function HandleListIcon(frame)
 		if row then
 			for j = 1, 4 do
 				local cell = row.cells and row.cells[j]
-				if cell and cell.Icon and not cell.IsSkinned then
-					S:HandleIcon(cell.Icon)
-					if cell.IconBorder then
-						cell.IconBorder:SetAlpha(0)
-					end
+				if cell and cell.Icon then
+					if not cell.IsSkinned then
+						S:HandleIcon(cell.Icon)
+						if cell.IconBorder then cell.IconBorder:SetAlpha(0) end
 
-					cell.IsSkinned = true
+						cell.IsSkinned = true
+					end
 				end
 			end
 		end
@@ -62,12 +62,34 @@ end
 local function HandleSummaryIcons(frame)
 	for i = 1, 23 do
 		local child = select(i, frame.ScrollFrame.scrollChild:GetChildren())
-		if child and child.Icon and not child.IsSkinned then
-			S:HandleIcon(child.Icon)
 
-			child.IsSkinned = true
+		if child and child.Icon then
+			if not child.IsSkinned then
+				S:HandleIcon(child.Icon)
+
+				child.IsSkinned = true
+			end
 		end
 	end
+end
+
+local function SkinItemDisplay(frame)
+	local ItemDisplay = frame.ItemDisplay
+	ItemDisplay:StripTextures()
+	ItemDisplay:CreateBackdrop("Transparent")
+	ItemDisplay.backdrop:SetPoint("TOPLEFT", 3, -3)
+	ItemDisplay.backdrop:SetPoint("BOTTOMRIGHT", -3, 0)
+
+	local ItemButton = ItemDisplay.ItemButton
+	ItemButton.CircleMask:Hide()
+	--ItemButton.IconBorder:SetAlpha(0)
+	S:HandleIcon(ItemButton.Icon, true)
+
+	-- FIX ME
+	-- For now i skin the ItemButton.IconBorder
+	S:HandleIcon(ItemButton.IconBorder)
+	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
+	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 end
 
 local function HandleHeaders(frame)
@@ -219,37 +241,16 @@ local function LoadSkin()
 
 	local BuyDisplay = Frame.CommoditiesBuyFrame.BuyDisplay
 	S:HandleEditBox(BuyDisplay.QuantityInput.InputBox)
-	S:HandleButton(_G.BuyButton)
+	S:HandleButton(BuyDisplay.BuyButton)
 
-	local ItemDisplay = BuyDisplay.ItemDisplay
-	ItemDisplay:StripTextures()
-	ItemDisplay:CreateBackdrop("Transparent")
-
-	local ItemButton = ItemDisplay.ItemButton
-	S:HandleIcon(ItemButton.Icon, true)
-	-- FIX ME
-	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
-	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
-	ItemButton.CircleMask:Hide()
-	ItemButton.IconBorder:SetAlpha(0)
+	SkinItemDisplay(BuyDisplay)
 
 	--[[ ItemBuyOut Frame]]
 	local ItemBuyFrame = Frame.ItemBuyFrame
 	S:HandleButton(ItemBuyFrame.BackButton)
 	S:HandleButton(ItemBuyFrame.BuyoutFrame.BuyoutButton)
 
-	local ItemDisplay = ItemBuyFrame.ItemDisplay
-	ItemDisplay:StripTextures()
-	ItemDisplay:CreateBackdrop("Transparent")
-
-	local ItemButton = ItemDisplay.ItemButton
-	S:HandleIcon(ItemButton.Icon, true)
-	-- FIX ME
-	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
-	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
-	ItemButton.CircleMask:Hide()
-	ItemButton.IconBorder:SetAlpha(0)
-	ItemButton.IconOverlay:Hide()
+	SkinItemDisplay(ItemBuyFrame)
 
 	local ItemList = ItemBuyFrame.ItemList
 	ItemList:StripTextures()
@@ -287,18 +288,7 @@ local function LoadSkin()
 	local AuctionsFrame = _G.AuctionHouseFrameAuctionsFrame
 	AuctionsFrame:StripTextures()
 
-	local ItemDisplay = AuctionsFrame.ItemDisplay
-	ItemDisplay:StripTextures()
-	ItemDisplay:CreateBackdrop("Transparent")
-
-	local ItemButton = ItemDisplay.ItemButton
-	S:HandleIcon(ItemButton.Icon, true)
-
-	-- FIX ME
-	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
-	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
-	ItemButton.IconBorder:SetAlpha(0)
-	ItemButton.CircleMask:Hide()
+	SkinItemDisplay(AuctionsFrame)
 
 	local CommoditiesList = AuctionsFrame.CommoditiesList
 	HandleSellList(CommoditiesList, true)
