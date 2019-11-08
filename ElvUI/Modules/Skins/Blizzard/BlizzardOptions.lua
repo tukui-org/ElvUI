@@ -80,6 +80,11 @@ local function LoadSkin()
 	end)
 
 	--Chat Config
+	local ChatConfigFrame = _G.ChatConfigFrame
+	ChatConfigFrame.Header = ChatConfigFrame.Header
+	ChatConfigFrame.Header:StripTextures()
+	ChatConfigFrame.Header:SetPoint("TOP", ChatConfigFrame, 0, 0)
+
 	hooksecurefunc(_G.ChatConfigFrameChatTabManager, "UpdateWidth", function(self)
 		for tab in self.tabPool:EnumerateActive() do
 			if not tab.IsSkinned then
@@ -278,6 +283,17 @@ local function LoadSkin()
 		Frame:SetTemplate('Transparent')
 	end
 
+	local InterfaceOptionsFrame = _G.InterfaceOptionsFrame
+	InterfaceOptionsFrame.Header = InterfaceOptionsFrame.Header
+	InterfaceOptionsFrame.Header:StripTextures()
+	InterfaceOptionsFrame.Header:ClearAllPoints()
+	InterfaceOptionsFrame.Header:SetPoint("TOP", InterfaceOptionsFrame, 0, 0)
+
+	local VideoOptionsFrame = _G.VideoOptionsFrame
+	VideoOptionsFrame.Header:StripTextures()
+	VideoOptionsFrame.Header:ClearAllPoints()
+	VideoOptionsFrame.Header:SetPoint("TOP", VideoOptionsFrame, 0, 0)
+
 	for _, Frame in pairs(OptionsFrameBackdrops) do
 		Frame:StripTextures()
 		Frame:CreateBackdrop('Transparent')
@@ -332,6 +348,12 @@ local function LoadSkin()
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogDeleteButton)
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogCancelButton)
 	end
+
+	local AudioOptionsFrame = _G.AudioOptionsFrame
+	AudioOptionsFrame.Header = AudioOptionsFrame.Header
+	AudioOptionsFrame.Header:SetAlpha(0)
+	AudioOptionsFrame.Header:ClearAllPoints()
+	AudioOptionsFrame.Header:SetPoint("TOP", AudioOptionsFrame, 0, 0)
 
 	-- Toggle Test Audio Button - Wow 8.0
 	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)
