@@ -329,6 +329,7 @@ local function LoadSkin()
 	--Create New Raid Profle
 	local newProfileDialog = _G.CompactUnitFrameProfilesNewProfileDialog
 	if newProfileDialog then
+		newProfileDialog:StripTextures()
 		newProfileDialog:SetTemplate('Transparent')
 
 		S:HandleDropDownBox(_G.CompactUnitFrameProfilesNewProfileDialogBaseProfileSelector)
@@ -344,7 +345,9 @@ local function LoadSkin()
 	--Delete Raid Profile
 	local deleteProfileDialog = _G.CompactUnitFrameProfilesDeleteProfileDialog
 	if deleteProfileDialog then
+		deleteProfileDialog:StripTextures()
 		deleteProfileDialog:SetTemplate('Transparent')
+
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogDeleteButton)
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogCancelButton)
 	end
