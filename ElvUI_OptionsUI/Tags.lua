@@ -4,7 +4,7 @@ local C, L = unpack(select(2, ...))
 local format = format
 
 E.Options.args.tagGroup = {
-	order = 925,
+	order = 3,
 	type = "group",
 	name = L["Available Tags"],
 	childGroups = 'tab',

@@ -869,7 +869,7 @@ end
 E.Options.args.filters = {
 	type = 'group',
 	name = L["FILTERS"],
-	order = -10, --Always Last Hehehe
+	order = 3, --Always Last Hehehe
 	args = {
 		createFilter = {
 			order = 1,

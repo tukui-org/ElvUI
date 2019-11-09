@@ -109,7 +109,21 @@ E.Options.args = {
 		set = function(info, value)
 			E.db.general.loginmessage = value
 		end
-	}
+	},
+	Info_Separate = {
+		order = 3,
+		type = "group",
+		name = "<<< "..L["Info/Controls"].." >>>",
+		disabled = true,
+		args = {},
+	},
+	Plugin_Separate = {
+		order = 6,
+		type = "group",
+		name = "<<< "..L["Plugins"].." >>>",
+		disabled = true,
+		args = {},
+	},
 }
 
 local DONATOR_STRING = ""
@@ -214,7 +228,7 @@ end
 E.Options.args.credits = {
 	type = "group",
 	name = L["Credits"],
-	order = -5,
+	order = 5,
 	args = {
 		text = {
 			order = 1,
@@ -476,7 +490,7 @@ end
 --Create Profiles Table
 E.Options.args.profiles = E.Libs.AceDBOptions:GetOptionsTable(E.data)
 E.Libs.AceConfig:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles)
-E.Options.args.profiles.order = -10
+E.Options.args.profiles.order = 4
 
 E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles, E.data)
 

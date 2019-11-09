@@ -6,6 +6,7 @@ E.Options.args.skins = {
 	type = "group",
 	name = L["Skins"],
 	childGroups = "tree",
+	order = 2,
 	args = {
 		intro = {
 			order = 0,
