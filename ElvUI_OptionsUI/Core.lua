@@ -181,8 +181,9 @@ local DEVELOPERS = {
 	"Blazeflack",
 	"NihilisticPandemonium",
 	"|cffff7d0aMerathilis|r",
-	"|cFF8866ccSimpy|r",
-	"|cFF0070DEAzilroka|r"
+	"|cffe01462S|cff14e0d6i|cff0fa325m|cffc3d40fp|cffde270by|r",
+	"|cff0070DEAzilroka|r",
+	"|cff9482c9Darth Predator|r",
 }
 
 local TESTERS = {
@@ -195,7 +196,6 @@ local TESTERS = {
 	"Phima",
 	"Veiled",
 	"Repooc",
-	"Darth Predator",
 	"Alex",
 	"Nidra",
 	"Kurhyus",
