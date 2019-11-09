@@ -1177,9 +1177,9 @@ E.TagInfo = {
 	['status:icon'] = { category = 'Status', description = "Displays AFK/DND as an orange(afk) / red(dnd) icon" },
 	['status:text'] = { category = 'Status', description = "Displays <AFK> and <DND>" },
 	['statustimer'] = { category = 'Status', description = "Displays a timer for how long a unit has had the status (e.g 'DEAD - 0:34')" },
-	['afk'] = { category = 'Status', description = "Displays <AFK> if the Unit is afk" },
+	['afk'] = { category = 'Status', description = "Displays <AFK> if the unit is afk" },
 	['dead'] = { category = 'Status', description = "Displays <DEAD> if the unit is dead" },
-	['resting'] = { category = 'Status', description = "Displays zzz if the unit is dead" },
+	['resting'] = { category = 'Status', description = "Displays 'zzz' if the unit is resting" },
 	['pvp'] = { category = 'Status', description = "Displays 'PvP' if the unit is pvp flagged" },
 	['offline'] = { category = 'Status', description = "Displays 'OFFLINE' if the unit is disconnected" },
 	--Target
