@@ -833,9 +833,9 @@ ElvUF.Tags.Methods['classification:icon'] = function(unit)
 
 	local classification = UnitClassification(unit)
 	if classification == "elite" or classification == "worldboss" then
-		return CreateAtlasMarkup("nameplates-icon-elite-gold", 32, 32)
+		return CreateAtlasMarkup("nameplates-icon-elite-gold", 16, 16)
 	elseif classification == "rareelite" or classification == 'rare' then
-		return CreateAtlasMarkup("nameplates-icon-elite-silver", 32, 32)
+		return CreateAtlasMarkup("nameplates-icon-elite-silver", 16, 16)
 	end
 end
 
