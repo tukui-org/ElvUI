@@ -214,7 +214,7 @@ end
 E.Options.args.credits = {
 	type = "group",
 	name = L["Credits"],
-	order = -1,
+	order = -5,
 	args = {
 		text = {
 			order = 1,
