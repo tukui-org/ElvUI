@@ -1,4 +1,13 @@
-### Version 11.25 [  ]
+### Version 11.26 [ ]
+
+**New Additions:**  
+
+**Bug Fixes:**  
+
+**Misc. Changes:**  
+
+___
+### Version 11.25 [ November 10th 2019 ]
 
 **New Additions:**  
 Nameplate Quest Icons now have the ability to show for multiple quests and have a few new options.  
