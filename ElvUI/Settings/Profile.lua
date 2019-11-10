@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local CopyTable = CopyTable -- Our function doesn't exist yet.
 
 P.gridSize = 64
 
@@ -136,53 +137,10 @@ P.general = {
 	kittys = false
 };
 
-P.databars = {
-	experience = {
-		enable = true,
-		width = 10,
-		height = 180,
-		textFormat = 'NONE',
-		textSize = 11,
-		font = 'PT Sans Narrow',
-		fontOutline = 'NONE',
-		mouseover = false,
-		orientation = 'VERTICAL',
-		reverseFill = false,
-		hideAtMaxLevel = true,
-		hideInVehicle = false,
-		hideInCombat = false,
-	},
-	reputation = {
-		enable = false,
-		width = 10,
-		height = 180,
-		textFormat = 'NONE',
-		textSize = 11,
-		font = 'PT Sans Narrow',
-		fontOutline = 'NONE',
-		mouseover = false,
-		orientation = 'VERTICAL',
-		reverseFill = false,
-		hideInVehicle = false,
-		hideInCombat = false,
-	},
-	honor = {
-		enable = true,
-		width = 10,
-		height = 180,
-		textFormat = 'NONE',
-		textSize = 11,
-		font = 'PT Sans Narrow',
-		fontOutline = 'NONE',
-		mouseover = false,
-		orientation = 'VERTICAL',
-		reverseFill = false,
-		hideInVehicle = false,
-		hideInCombat = false,
-		hideOutsidePvP = false,
-		hideBelowMaxLevel = false,
-	},
-	azerite = {
+P.databars = {}
+
+for _, databar in pairs({ 'experience', 'reputation', 'honor', 'azerite'}) do
+	P.databars[databar] = {
 		enable = true,
 		width = 10,
 		height = 180,
@@ -193,11 +151,25 @@ P.databars = {
 		mouseover = false,
 		orientation = 'VERTICAL',
 		reverseFill = false,
-		hideAtMaxLevel = true,
-		hideInVehicle = false,
-		hideInCombat = false,
-	},
-}
+	}
+end
+
+P.databars.experience.hideAtMaxLevel = true
+P.databars.experience.hideInVehicle = false
+P.databars.experience.hideInCombat = false
+
+P.databars.reputation.enable = false
+P.databars.reputation.hideInVehicle = false
+P.databars.reputation.hideInCombat = false
+
+P.databars.honor.hideInVehicle = false
+P.databars.honor.hideInCombat = false
+P.databars.honor.hideOutsidePvP = false
+P.databars.honor.hideBelowMaxLevel = false
+
+P.databars.azerite.hideAtMaxLevel = true
+P.databars.azerite.hideInVehicle = false
+P.databars.azerite.hideInCombat = false
 
 --Bags
 P.bags = {
@@ -281,38 +253,6 @@ P.bags = {
 		bag9 = false,
 		bag10 = false,
 		bag11 = false,
-	},
-	cooldown = {
-		threshold = 4,
-		override = false,
-		reverse = false,
-		hideBlizzard = false,
-		useIndicatorColor = false,
-		expiringColor = { r = 1, g = 0, b = 0 },
-		secondsColor = { r = 1, g = 1, b = 1 },
-		minutesColor = { r = 1, g = 1, b = 1 },
-		hoursColor = { r = 1, g = 1, b = 1 },
-		daysColor = { r = 1, g = 1, b = 1 },
-		expireIndicator = { r = 1, g = 1, b = 1 },
-		secondsIndicator = { r = 1, g = 1, b = 1 },
-		minutesIndicator = { r = 1, g = 1, b = 1 },
-		hoursIndicator = { r = 1, g = 1, b = 1 },
-		daysIndicator = { r = 1, g = 1, b = 1 },
-		hhmmColorIndicator = { r = 1, g = 1, b = 1 },
-		mmssColorIndicator = { r = 1, g = 1, b = 1 },
-
-		checkSeconds = false,
-		hhmmColor = { r = 1, g = 1, b = 1 },
-		mmssColor = { r = 1, g = 1, b = 1 },
-		hhmmThreshold = -1,
-		mmssThreshold = -1,
-
-		fonts = {
-			enable = false,
-			font = 'PT Sans Narrow',
-			fontOutline = 'OUTLINE',
-			fontSize = 18,
-		},
 	},
 	bagBar = {
 		growthDirection = 'VERTICAL',
@@ -416,38 +356,6 @@ P.nameplates = {
 				[6] = {r = 12/255, g = 145/255, b = 58/255}
 			},
 			WARLOCK = {r = 148/255, g = 130/255, b = 201/255}
-		},
-	},
-	cooldown = {
-		threshold = 4,
-		override = true,
-		reverse = false,
-		hideBlizzard = false,
-		useIndicatorColor = false,
-		expiringColor = { r = 1, g = 0, b = 0 },
-		secondsColor = { r = 1, g = 1, b = 1 },
-		minutesColor = { r = 1, g = 1, b = 1 },
-		hoursColor = { r = 1, g = 1, b = 1 },
-		daysColor = { r = 1, g = 1, b = 1 },
-		expireIndicator = { r = 1, g = 1, b = 1 },
-		secondsIndicator = { r = 1, g = 1, b = 1 },
-		minutesIndicator = { r = 1, g = 1, b = 1 },
-		hoursIndicator = { r = 1, g = 1, b = 1 },
-		daysIndicator = { r = 1, g = 1, b = 1 },
-		hhmmColorIndicator = { r = 1, g = 1, b = 1 },
-		mmssColorIndicator = { r = 1, g = 1, b = 1 },
-
-		checkSeconds = false,
-		hhmmColor = { r = 1, g = 1, b = 1 },
-		mmssColor = { r = 1, g = 1, b = 1 },
-		hhmmThreshold = -1,
-		mmssThreshold = -1,
-
-		fonts = {
-			enable = false,
-			font = 'PT Sans Narrow',
-			fontOutline = 'OUTLINE',
-			fontSize = 18,
 		},
 	},
 	filters = {
@@ -1558,38 +1466,6 @@ P.auras = {
 		countFontsize = 10,
 		durationFontSize = 10,
 	},
-	cooldown = {
-		threshold = 4,
-		override = true,
-		reverse = false,
-		hideBlizzard = false,
-		useIndicatorColor = false,
-		expiringColor = { r = 1, g = 0, b = 0 },
-		secondsColor = { r = 1, g = 1, b = 1 },
-		minutesColor = { r = 1, g = 1, b = 1 },
-		hoursColor = { r = 1, g = 1, b = 1 },
-		daysColor = { r = 1, g = 1, b = 1 },
-		expireIndicator = { r = 1, g = 1, b = 1 },
-		secondsIndicator = { r = 1, g = 1, b = 1 },
-		minutesIndicator = { r = 1, g = 1, b = 1 },
-		hoursIndicator = { r = 1, g = 1, b = 1 },
-		daysIndicator = { r = 1, g = 1, b = 1 },
-		hhmmColorIndicator = { r = 1, g = 1, b = 1 },
-		mmssColorIndicator = { r = 1, g = 1, b = 1 },
-
-		checkSeconds = false,
-		hhmmColor = { r = 1, g = 1, b = 1 },
-		mmssColor = { r = 1, g = 1, b = 1 },
-		hhmmThreshold = -1,
-		mmssThreshold = -1,
-
-		fonts = {
-			enable = false,
-			font = 'PT Sans Narrow',
-			fontOutline = 'OUTLINE',
-			fontSize = 18,
-		},
-	},
 }
 
 --Chat
@@ -1779,38 +1655,6 @@ P.unitframe = {
 	targetOnMouseDown = false,
 	auraBlacklistModifier = 'SHIFT',
 	thinBorders = false,
-	cooldown = {
-		threshold = 4,
-		override = true,
-		reverse = false,
-		hideBlizzard = false,
-		expiringColor = { r = 1, g = 0, b = 0 },
-		secondsColor = { r = 1, g = 1, b = 1 },
-		minutesColor = { r = 1, g = 1, b = 1 },
-		hoursColor = { r = 1, g = 1, b = 1 },
-		daysColor = { r = 1, g = 1, b = 1 },
-		useIndicatorColor = false,
-		expireIndicator = { r = 1, g = 1, b = 1 },
-		secondsIndicator = { r = 1, g = 1, b = 1 },
-		minutesIndicator = { r = 1, g = 1, b = 1 },
-		hoursIndicator = { r = 1, g = 1, b = 1 },
-		daysIndicator = { r = 1, g = 1, b = 1 },
-		hhmmColorIndicator = { r = 1, g = 1, b = 1 },
-		mmssColorIndicator = { r = 1, g = 1, b = 1 },
-
-		checkSeconds = false,
-		hhmmColor = { r = 1, g = 1, b = 1 },
-		mmssColor = { r = 1, g = 1, b = 1 },
-		hhmmThreshold = -1,
-		mmssThreshold = -1,
-
-		fonts = {
-			enable = false,
-			font = 'PT Sans Narrow',
-			fontOutline = 'OUTLINE',
-			fontSize = 18,
-		},
-	},
 	colors = {
 		borderColor = {r = 0, g = 0, b = 0},
 		healthclass = false,
@@ -4897,38 +4741,6 @@ P.actionbar = {
 	keyDown = true,
 	movementModifier = 'SHIFT',
 	transparent = false,
-	cooldown = {
-		threshold = 4,
-		override = false,
-		reverse = false,
-		hideBlizzard = false,
-		useIndicatorColor = false,
-		expiringColor = { r = 1, g = 0, b = 0 },
-		secondsColor = { r = 1, g = 1, b = 1 },
-		minutesColor = { r = 1, g = 1, b = 1 },
-		hoursColor = { r = 1, g = 1, b = 1 },
-		daysColor = { r = 1, g = 1, b = 1 },
-		expireIndicator = { r = 1, g = 1, b = 1 },
-		secondsIndicator = { r = 1, g = 1, b = 1 },
-		minutesIndicator = { r = 1, g = 1, b = 1 },
-		hoursIndicator = { r = 1, g = 1, b = 1 },
-		daysIndicator = { r = 1, g = 1, b = 1 },
-		hhmmColorIndicator = { r = 1, g = 1, b = 1 },
-		mmssColorIndicator = { r = 1, g = 1, b = 1 },
-
-		checkSeconds = false,
-		hhmmColor = { r = 1, g = 1, b = 1 },
-		mmssColor = { r = 1, g = 1, b = 1 },
-		hhmmThreshold = -1,
-		mmssThreshold = -1,
-
-		fonts = {
-			enable = false,
-			font = 'PT Sans Narrow',
-			fontOutline = 'OUTLINE',
-			fontSize = 18,
-		},
-	},
 
 	microbar = {
 		enabled = false,
@@ -5034,3 +4846,27 @@ P.actionbar.bar4.backdrop = true
 P.actionbar.bar5.enabled = true
 P.actionbar.bar5.buttons = 6
 P.actionbar.bar5.buttonsPerRow = 6
+
+P.actionbar.cooldown = CopyTable(P.cooldown)
+P.auras.cooldown = CopyTable(P.cooldown)
+P.bags.cooldown = CopyTable(P.cooldown)
+P.nameplates.cooldown = CopyTable(P.cooldown)
+P.unitframe.cooldown = CopyTable(P.cooldown)
+
+P.actionbar.cooldown.enable = nil
+P.auras.cooldown.enable = nil
+P.bags.cooldown.enable = nil
+P.nameplates.cooldown.enable = nil
+P.unitframe.cooldown.enable = nil
+
+P.actionbar.cooldown.override = false
+P.auras.cooldown.override = true
+P.bags.cooldown.override = false
+P.nameplates.cooldown.override = true
+P.unitframe.cooldown.override = true
+
+P.actionbar.cooldown.reverse = false
+P.auras.cooldown.reverse = false
+P.bags.cooldown.reverse = false
+P.nameplates.cooldown.reverse = false
+P.unitframe.cooldown.reverse = false
