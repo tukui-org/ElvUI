@@ -83,10 +83,11 @@ local function SkinItemDisplay(frame)
 	local ItemButton = ItemDisplay.ItemButton
 	ItemButton.CircleMask:Hide()
 	--ItemButton.IconBorder:SetAlpha(0)
-	S:HandleIcon(ItemButton.Icon, true)
 
 	-- FIX ME
 	-- For now i skin the ItemButton.IconBorder
+	ItemButton.Icon:SetTexCoord(.08, .92, .08, .92)
+	ItemButton.Icon:SetSize(44, 44)
 	ItemButton.IconBorder:SetTexCoord(.08, .92, .08, .92)
 	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
 	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
