@@ -29,6 +29,7 @@ For the german audience: Behebt einige Fehler im Zeit-Infotext, dass die Instanz
 Updated option layout for Available Tags. Thanks to Luckyone for helping us with this.  
 Skin the new RecruitAFriend Frame.  
 Changes the options to uses more tabs.  
+For Plugin Authors: We added a seperator in our Options: <<< Plugins >>> Which means, you should add your options below it. Just change your main option number to: 6  
 
 ___
 ### Version 11.24 [ October 8th 2019 ]
