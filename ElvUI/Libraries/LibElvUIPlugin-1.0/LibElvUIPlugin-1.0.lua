@@ -94,10 +94,11 @@ elseif locale == "zhTW" then
 	LIBRARY = "庫"
 end
 
-local E
+local E, L
 local function checkElvUI()
 	if not E then
 		E = ElvUI[1]
+		L = ElvUI[2]
 		assert(E, "ElvUI not found.")
 	end
 end
@@ -183,9 +184,9 @@ end
 
 function lib:GetPluginOptions()
 	E.Options.args.plugins = {
-		order = -10,
+		order = 3,
 		type = "group",
-		name = HDR_CONFIG,
+		name = L["Plugins"],
 		guiInline = false,
 		args = {
 			pluginheader = {

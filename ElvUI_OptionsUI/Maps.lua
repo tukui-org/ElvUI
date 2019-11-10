@@ -11,6 +11,7 @@ local SetCVar = SetCVar
 E.Options.args.maps = {
 	type = "group",
 	name = L["Maps"],
+	order = 2,
 	childGroups = "tab",
 	args = {
 		worldMap = {

@@ -5484,6 +5484,7 @@ E.Options.args.nameplate = {
 	type = "group",
 	name = L["NamePlates"],
 	childGroups = "tab",
+	order = 2,
 	get = function(info) return E.db.nameplates[info[#info]] end,
 	set = function(info, value) E.db.nameplates[info[#info]] = value; NP:ConfigureAll() end,
 	args = {

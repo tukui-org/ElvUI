@@ -5,8 +5,8 @@ local _G = _G
 local pairs, unpack = pairs, unpack
 local CreateFrame = CreateFrame
 
-local questIconTypes = {"Item", "Loot", "Skull", "Chat"}
-local targetIndicators = {"Spark", "TopIndicator", "LeftIndicator", "RightIndicator"}
+local questIconTypes = { "Item", "Loot", "Skull", "Chat" }
+local targetIndicators = { "Spark", "TopIndicator", "LeftIndicator", "RightIndicator" }
 
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame("Frame", nameplate:GetDebugName() .. "QuestIcons", nameplate)
@@ -87,11 +87,6 @@ function NP:Construct_TargetIndicator(nameplate)
 
 		TargetIndicator[object] = indicator
 	end
-
-	TargetIndicator.Spark:SetTexture(E.Media.Textures.Spark)
-	TargetIndicator.TopIndicator:SetTexture(E.Media.Textures.NameplateTargetIndicator)
-	TargetIndicator.LeftIndicator:SetTexture(E.Media.Textures.NameplateTargetIndicatorLeft)
-	TargetIndicator.RightIndicator:SetTexture(E.Media.Textures.NameplateTargetIndicatorRight)
 
 	return TargetIndicator
 end

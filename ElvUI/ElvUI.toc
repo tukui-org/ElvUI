@@ -1,6 +1,6 @@
 ## Interface: 80205
 ## Author: Elv
-## Version: 11.24
+## Version: 11.25
 ## Title: |cfffe7b2cElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB

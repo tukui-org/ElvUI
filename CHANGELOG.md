@@ -1,4 +1,13 @@
-### Version 11.25 [  ]
+### Version 11.26 [ ]
+
+**New Additions:**  
+
+**Bug Fixes:**  
+
+**Misc. Changes:**  
+
+___
+### Version 11.25 [ November 10th 2019 ]
 
 **New Additions:**  
 Nameplate Quest Icons now have the ability to show for multiple quests and have a few new options.  
@@ -29,6 +38,7 @@ For the german audience: Behebt einige Fehler im Zeit-Infotext, dass die Instanz
 Updated option layout for Available Tags. Thanks to Luckyone for helping us with this.  
 Skin the new RecruitAFriend Frame.  
 Changes the options to uses more tabs.  
+For Plugin Authors: We added a seperator in our Options: <<< Plugins >>> Which means, you should add your options below it. Just change your main option number to: 6  
 
 ___
 ### Version 11.24 [ October 8th 2019 ]

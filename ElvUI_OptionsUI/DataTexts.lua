@@ -204,6 +204,7 @@ E.Options.args.datatexts = {
 	type = "group",
 	name = L["DataTexts"],
 	childGroups = "tab",
+	order = 2,
 	get = function(info) return E.db.datatexts[info[#info]] end,
 	set = function(info, value) E.db.datatexts[info[#info]] = value; DT:LoadDataTexts() end,
 	args = {
