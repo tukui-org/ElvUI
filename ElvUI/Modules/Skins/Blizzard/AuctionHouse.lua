@@ -87,7 +87,7 @@ local function SkinItemDisplay(frame)
 
 	-- FIX ME
 	-- For now i skin the ItemButton.IconBorder
-	S:HandleIcon(ItemButton.IconBorder)
+	ItemButton.IconBorder:SetTexCoord(.08, .92, .08, .92)
 	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
 	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 end
