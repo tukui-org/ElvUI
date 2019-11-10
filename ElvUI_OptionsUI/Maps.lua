@@ -11,6 +11,7 @@ local SetCVar = SetCVar
 E.Options.args.maps = {
 	type = "group",
 	name = L["Maps"],
+	order = 2,
 	childGroups = "tab",
 	args = {
 		worldMap = {
@@ -58,7 +59,7 @@ E.Options.args.maps = {
 							get = function(info) return E.global.general.fadeMapWhenMoving end,
 							set = function(info, value)
 								E.global.general.fadeMapWhenMoving = value;
-								SetCVar("mapFade", (value == true and 1 or 0))
+								SetCVar("mapFade", value and 1 or 0)
 							end,
 						},
 						mapAlphaWhenMoving = {
@@ -70,8 +71,20 @@ E.Options.args.maps = {
 							get = function(info) return E.global.general.mapAlphaWhenMoving end,
 							set = function(info, value)
 								E.global.general.mapAlphaWhenMoving = value;
-								WORLD_MAP_MIN_ALPHA = value;
-								SetCVar("mapAnimMinAlpha", value)
+								-- we use E.noop to force the update of the minValue here
+								E.WorldMap.UpdateMapFade(_G.WorldMapFrame, E.global.general.mapAlphaWhenMoving, 1.0, E.global.general.fadeMapDuration, E.noop);
+							end,
+						},
+						fadeMapDuration = {
+							order = 6,
+							type = "range",
+							name = L["Fade Duration"],
+							min = 0, max = 1, step = 0.01,
+							get = function(info) return E.global.general.fadeMapDuration end,
+							set = function(info, value)
+								E.global.general.fadeMapDuration = value;
+								-- we use E.noop to force the update of the minValue here
+								E.WorldMap.UpdateMapFade(_G.WorldMapFrame, E.global.general.mapAlphaWhenMoving, 1.0, E.global.general.fadeMapDuration, E.noop);
 							end,
 						},
 					},
@@ -169,7 +182,7 @@ E.Options.args.maps = {
 							type = "range",
 							name = L["Size"],
 							desc = L["Adjust the size of the minimap."],
-							min = 120, max = 400, step = 1,
+							min = 120, max = 500, step = 1,
 							get = function(info) return E.db.general.minimap[info[#info]] end,
 							set = function(info, value) E.db.general.minimap[info[#info]] = value; MM:UpdateSettings() end,
 							disabled = function() return not E.private.general.minimap.enable end,
@@ -298,14 +311,14 @@ E.Options.args.maps = {
 								xOffset = {
 									order = 5,
 									type = "range",
-									name = L["xOffset"],
+									name = L["X-Offset"],
 									min = -50, max = 50, step = 1,
 									disabled = function() return (E.private.general.minimap.hideClassHallReport or not E.private.general.minimap.enable) end,
 								},
 								yOffset = {
 									order = 6,
 									type = "range",
-									name = L["yOffset"],
+									name = L["Y-Offset"],
 									min = -50, max = 50, step = 1,
 									disabled = function() return (E.private.general.minimap.hideClassHallReport or not E.private.general.minimap.enable) end,
 								},
@@ -358,14 +371,14 @@ E.Options.args.maps = {
 								xOffset = {
 									order = 5,
 									type = "range",
-									name = L["xOffset"],
+									name = L["X-Offset"],
 									min = -50, max = 50, step = 1,
 									disabled = function() return (E.private.general.minimap.hideCalendar or not E.private.general.minimap.enable) end,
 								},
 								yOffset = {
 									order = 6,
 									type = "range",
-									name = L["yOffset"],
+									name = L["Y-Offset"],
 									min = -50, max = 50, step = 1,
 									disabled = function() return (E.private.general.minimap.hideCalendar or not E.private.general.minimap.enable) end,
 								},
@@ -405,14 +418,14 @@ E.Options.args.maps = {
 								xOffset = {
 									order = 3,
 									type = "range",
-									name = L["xOffset"],
+									name = L["X-Offset"],
 									min = -50, max = 50, step = 1,
 									disabled = function() return not E.private.general.minimap.enable end,
 								},
 								yOffset = {
 									order = 4,
 									type = "range",
-									name = L["yOffset"],
+									name = L["Y-Offset"],
 									min = -50, max = 50, step = 1,
 									disabled = function() return not E.private.general.minimap.enable end,
 								},
@@ -646,14 +659,14 @@ E.Options.args.maps = {
 								xOffset = {
 									order = 3,
 									type = "range",
-									name = L["xOffset"],
+									name = L["X-Offset"],
 									min = -50, max = 50, step = 1,
 									disabled = function() return not E.private.general.minimap.enable end,
 								},
 								yOffset = {
 									order = 4,
 									type = "range",
-									name = L["yOffset"],
+									name = L["Y-Offset"],
 									min = -50, max = 50, step = 1,
 									disabled = function() return not E.private.general.minimap.enable end,
 								},

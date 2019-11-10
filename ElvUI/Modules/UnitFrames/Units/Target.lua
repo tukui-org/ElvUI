@@ -12,9 +12,8 @@ local IsAddOnLoaded = IsAddOnLoaded
 
 function UF:Construct_TargetFrame(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
-	frame.Health.frequentUpdates = true;
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
-	frame.Power.frequentUpdates = true;
+	frame.Power.frequentUpdates = true
 	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
 	frame.Name = self:Construct_NameText(frame)
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
@@ -33,9 +32,12 @@ function UF:Construct_TargetFrame(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.PhaseIndicator = self:Construct_PhaseIcon(frame)
+	frame.ResurrectIndicator = UF:Construct_ResurrectionIcon(frame)
+	frame.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(frame)
 	frame.PvPIndicator = self:Construct_PvPIcon(frame)
 	frame.Fader = self:Construct_Fader()
 	frame.Cutaway = self:Construct_Cutaway(frame)
+
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 413, 68)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,target,generalGroup')
@@ -111,6 +113,11 @@ function UF:Update_TargetFrame(frame, db)
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_Auras(frame, 'Buffs')
 	UF:Configure_Auras(frame, 'Debuffs')
+
+	-- Resurrect
+	UF:Configure_ResurrectionIcon(frame)
+
+	UF:Configure_RaidRoleIcons(frame)
 
 	--Castbar
 	UF:Configure_Castbar(frame)

@@ -89,7 +89,7 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 local _, ns = ...
 local oUF = ns.oUF
 
-local DEFAULT_ICON = [[Interface\ICONS\INV_Misc_QuestionMark]]
+local FALLBACK_ICON = 136243 -- Interface\ICONS\Trade_Engineering
 
 -- ElvUI block
 local select = select
@@ -178,7 +178,7 @@ local function CastStart(self, event, unit)
 	element:SetMinMaxValues(0, element.max)
 	element:SetValue(element.duration)
 
-	if(element.Icon) then element.Icon:SetTexture(texture or DEFAULT_ICON) end
+	if(element.Icon) then element.Icon:SetTexture(texture or FALLBACK_ICON) end
 	if(element.Shield) then element.Shield:SetShown(notInterruptible) end
 	if(element.Spark) then element.Spark:Show() end
 	if(element.Text) then element.Text:SetText(name) end
@@ -446,7 +446,6 @@ local function Enable(self, unit)
 
 		-- ElvUI block
 		self:RegisterEvent('UNIT_SPELLCAST_SENT', UNIT_SPELLCAST_SENT, true)
-		element:Hide()
 		-- end block
 
 		element.holdTime = 0
@@ -476,6 +475,8 @@ local function Enable(self, unit)
 		if(safeZone and safeZone:IsObjectType('Texture') and not safeZone:GetTexture()) then
 			safeZone:SetColorTexture(1, 0, 0)
 		end
+
+		element:Hide()
 
 		return true
 	end

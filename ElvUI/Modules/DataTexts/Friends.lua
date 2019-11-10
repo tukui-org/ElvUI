@@ -33,6 +33,7 @@ local InCombatLockdown = InCombatLockdown
 local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
 local C_BattleNet_GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
 local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
+local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 -- create a popup
 E.PopupDialogs.SET_BN_BROADCAST = {
@@ -131,6 +132,7 @@ local statusTable = {
 	DND = " |cffFFFFFF[|r|cffFF3333"..L["DND"].."|r|cffFFFFFF]|r"
 }
 
+-- Makro for get the client: /run for i,v in pairs(_G) do if type(i)=="string" and i:match("BNET_CLIENT_") then print(i,"=",v) end end
 local clientSorted = {}
 local clientTags = {
 	[BNET_CLIENT_WOW] = "WoW",
@@ -317,9 +319,9 @@ local function BuildBNTable(total)
 
 	for i = 1, total do
 		local accountInfo = C_BattleNet_GetFriendAccountInfo(i)
-		if accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline then
+		if accountInfo and accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline then
 			local numGameAccounts = C_BattleNet_GetFriendNumGameAccounts(i)
-			if numGameAccounts > 0 then
+			if numGameAccounts and numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
 					local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
 					bnIndex = PopulateBNTable(bnIndex, accountInfo.bnetAccountID, accountInfo.accountName, accountInfo.battleTag, gameAccountInfo.characterName, gameAccountInfo.gameAccountID, gameAccountInfo.clientProgram, gameAccountInfo.isOnline, accountInfo.isAFK or gameAccountInfo.isGameAFK, accountInfo.isDND or gameAccountInfo.isGameBusy, accountInfo.note, accountInfo.gameAccountInfo.wowProjectID, gameAccountInfo.realmName, gameAccountInfo.factionName, gameAccountInfo.raceName, gameAccountInfo.className, gameAccountInfo.areaName, gameAccountInfo.characterLevel, gameAccountInfo.playerGuid, gameAccountInfo.richPresence, gameAccountInfo.hasFocus)
@@ -382,7 +384,7 @@ local function Click(self, btn)
 						shouldSkip = true
 					end
 					if not shouldSkip then
-						local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.class]) or _G.RAID_CLASS_COLORS[info.class], GetQuestDifficultyColor(info.level)
+						local classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
 						if not classc then classc = levelc end
 
 						menuCountWhispers = menuCountWhispers + 1
@@ -424,7 +426,7 @@ local function Click(self, btn)
 					end
 
 					if (info.client and info.client == wowString) and (E.myfaction == info.faction) and inGroup(info.characterName, info.realmName) == "" then
-						local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.className]) or _G.RAID_CLASS_COLORS[info.className], GetQuestDifficultyColor(info.level)
+						local classc, levelc = E:ClassColor(info.className), GetQuestDifficultyColor(info.level)
 						if not classc then classc = levelc end
 
 						if info.wowProjectID == retailID then
@@ -476,7 +478,7 @@ local function OnEnter(self)
 	end
 
 	local totalfriends = numberOfFriends + totalBNet
-	local priestc, zonec, classc, levelc, realmc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS.PRIEST) or _G.RAID_CLASS_COLORS.PRIEST
+	local zonec, classc, levelc, realmc
 
 	DT.tooltip:AddDoubleLine(L["Friends List"], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 	if (onlineFriends > 0) and not E.db.datatexts.friends.hideWoW then
@@ -490,7 +492,7 @@ local function OnEnter(self)
 				end
 				if not shouldSkip then
 					if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zone) then zonec = activezone else zonec = inactivezone end
-					classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.class]) or _G.RAID_CLASS_COLORS[info.class], GetQuestDifficultyColor(info.level)
+					classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
 					if not classc then classc = levelc end
 
 					TooltipAddXLine(true, worldOfWarcraftString, format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,info.name,inGroup(info.name),info.status),info.zone,classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
@@ -525,15 +527,15 @@ local function OnEnter(self)
 						if not shouldSkip then
 							local header = format("%s (%s)", battleNetString, (info.wowProjectID == classicID and info.gameText) or clientTags[client] or client)
 							if info.client and info.client == wowString then
-								classc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.className]) or _G.RAID_CLASS_COLORS[info.className]
+								classc = E:ClassColor(info.className)
 								if info.level and info.level ~= '' then
 									levelc = GetQuestDifficultyColor(info.level)
 								else
-									classc, levelc = priestc, priestc
+									classc, levelc = PRIEST_COLOR, PRIEST_COLOR
 								end
 
 								--Sometimes the friend list is fubar with level 0 unknown friends
-								if not classc then classc = priestc end
+								if not classc then classc = PRIEST_COLOR end
 
 								TooltipAddXLine(true, header, format(levelNameString.."%s%s",levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName,inGroup(info.characterName, info.realmName),status),info.accountName,238,238,238,238,238,238)
 								if IsShiftKeyDown() then

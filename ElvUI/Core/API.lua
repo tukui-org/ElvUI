@@ -7,7 +7,7 @@ local _G = _G
 local wipe, date = wipe, date
 local format, select, type, ipairs, pairs = format, select, type, ipairs, pairs
 local strmatch, strfind, tonumber, tostring = strmatch, strfind, tonumber, tostring
-local CreateFrame = CreateFrame
+local strlen, CreateFrame = strlen, CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetCVar, SetCVar = GetCVar, SetCVar
@@ -34,6 +34,25 @@ local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.
 local FACTION_HORDE = FACTION_HORDE
 local FACTION_ALLIANCE = FACTION_ALLIANCE
 
+function E:ClassColor(class, usePriestColor)
+	if not class then return end
+
+	local color = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class]) or _G.RAID_CLASS_COLORS[class]
+	if type(color) ~= 'table' then return end
+
+	if not color.colorStr then
+		color.colorStr = E:RGBToHex(color.r, color.g, color.b, 'ff')
+	elseif strlen(color.colorStr) == 6 then
+		color.colorStr = 'ff'..color.colorStr
+	end
+
+	if (usePriestColor and class == 'PRIEST') and tonumber(color.colorStr, 16) > tonumber(E.PriestColors.colorStr, 16) then
+		return E.PriestColors
+	else
+		return color
+	end
+end
+
 do -- other non-english locales require this
 	E.UnlocalizedClasses = {}
 	for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do E.UnlocalizedClasses[v] = k end
@@ -48,34 +67,52 @@ function E:IsFoolsDay()
 	return strfind(date(), '04/01/') and not E.global.aprilFools
 end
 
-function E:ScanTooltipTextures(clean, grabTextures)
-	local essenceTextureID, textures, essences = 2975691
-	for i = 1, 10 do
-		local tex = _G['ElvUI_ScanTooltipTexture'..i]
-		local texture = tex and tex:GetTexture()
-		if texture then
-			if grabTextures then
-				if not textures then textures = {} end
-				if texture == essenceTextureID then
-					if not essences then essences = {} end
+do
+	local essenceTextureID = 2975691
+	function E:ScanTooltipTextures()
+		local tt = E.ScanTooltip
 
-					local selected = (textures[i-1] ~= essenceTextureID and textures[i-1]) or nil
-					essences[i] = {selected, tex:GetAtlas(), texture}
+		if not tt.gems then
+			tt.gems = {}
+		else
+			wipe(tt.gems)
+		end
 
-					if selected then
-						textures[i-1] = nil
-					end
-				else
-					textures[i] = texture
-				end
-			end
-			if clean then
-				tex:SetTexture()
+		if not tt.essences then
+			tt.essences = {}
+		else
+			for _, essences in pairs(tt.essences) do
+				wipe(essences)
 			end
 		end
-	end
 
-	return textures, essences
+		local step = 1
+		for i = 1, 10 do
+			local tex = _G['ElvUI_ScanTooltipTexture'..i]
+			local texture = tex and tex:IsShown() and tex:GetTexture()
+			if texture then
+				if texture == essenceTextureID then
+					local selected = (tt.gems[i-1] ~= essenceTextureID and tt.gems[i-1]) or nil
+					if not tt.essences[step] then tt.essences[step] = {} end
+
+					tt.essences[step][1] = selected			--essence texture if selected or nil
+					tt.essences[step][2] = tex:GetAtlas()	--atlas place 'tooltip-heartofazerothessence-major' or 'tooltip-heartofazerothessence-minor'
+					tt.essences[step][3] = texture			--border texture placed by the atlas
+					--`CollectEssenceInfo` will add 4 (hex quality color) and 5 (essence name)
+
+					step = step + 1
+
+					if selected then
+						tt.gems[i-1] = nil
+					end
+				else
+					tt.gems[i] = texture
+				end
+			end
+		end
+
+		return tt.gems, tt.essences
+	end
 end
 
 function E:GetPlayerRole()

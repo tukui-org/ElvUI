@@ -241,6 +241,7 @@ L["Clickable Width / Width"] = "可点击宽度 / 姓名板宽度"
 L["Coding:"] = "编码:"
 L["Color all buffs that reduce the unit's incoming damage."] = "减少目标受到伤害的所有增益的颜色"
 L["Color aurabar debuffs by type."] = "按类型显示光环条颜色"
+L["Color by Value"] = true
 L["Color castbars by the class of player units."] = "按职业显示施法条颜色"
 L["Color castbars by the reaction type of non-player units."] = "按非玩家单位的声望显示施法条颜色"
 L["Color Gradient"] = "颜色渐变"
@@ -353,6 +354,7 @@ L["Defines the sort order of the selected sort method."] = "定义排序方式�
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "删除一个创建的过滤器, 你不能删除内建的过滤器, 只能删除你自已创建的"
 L["Delete Filter"] = "删除过滤器"
 L["Desaturate Cooldowns"] = "冷却中褪色"
+L["Desaturate Icon"] = true
 L["Desaturate Junk Items"] = "垃圾物品褪色"
 L["Desaturate Voice Icons"] = "褪色语音按钮"
 L["Desaturated Icon"] = "图标褪色"
@@ -422,6 +424,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Donations:"] = "捐款:"
 L["Down"] = "下"
 L["Dungeon & Raid Filter"] = "地下城与团队副本过滤器"
+L["Duration Enable"] = true
 L["Duration Font Size"] = "持续时间字体大小"
 L["Duration Reverse"] = "持续时间反转"
 L["Duration Text"] = "持续时间文字"
@@ -460,6 +463,7 @@ L["Export Now"] = "现在导出"
 L["Export Profile"] = "导出配置文件"
 L["Exported"] = "已导出"
 L["Fade Chat"] = "聊天内容渐隐"
+L["Fade Duration"] = true
 L["Fade Out Delay"] = "渐隐延迟"
 L["Fade Out"] = "淡出时长"
 L["Fade Tabs No Backdrop"] = "隐藏拖出的聊天框"
@@ -533,6 +537,7 @@ L["Growth Direction"] = "增长方向"
 L["Growth X-Direction"] = "X方向生长"
 L["Growth Y-Direction"] = "Y方向生长"
 L["Guardians"] = "护卫"
+L["Guide:"] = true
 L["Guild Control Frame"] = "公会控制"
 L["Guild Ranks"] = "公会等级"
 L["Guild Registrar"] = "公会注册"
@@ -557,8 +562,10 @@ L["Herbalism"] = "草药"
 L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = "你可以在这里添加你想在排序中排除的物品或者匹配语法.在列表中点击他们的名字来移除一个物品"
 L["HH:MM Threshold"] = "时:分 阈值"
 L["Hide At Max Level"] = "在最高等级时隐藏"
+L["Hide At Max Power"] = true
 L["Hide Below Max Level"] = "非满级时隐藏"
 L["Hide Both"] = "全部隐藏"
+L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true
 L["Hide Cooldown Bling"] = "隐藏冷却闪光"
 L["Hide Delay"] = "隐藏延迟"
 L["Hide Error Text"] = "隐藏错误文字"
@@ -568,6 +575,7 @@ L["Hide In Vehicle"] = "骑乘时隐藏"
 L["Hide Outside PvP"] = "PvP外隐藏"
 L["Hide specific sections in the datatext tooltip."] = "隐藏信息文字鼠标提示中的特定模块"
 L["Hide Spell Name"] = "隐藏法术名字"
+L["Hide Text"] = true
 L["Hide Time"] = "隐藏时间"
 L["Hide tooltip while in combat."] = "战斗时不显示提示"
 L["Hide Voice Buttons"] = "隐藏语音按钮"
@@ -708,6 +716,7 @@ L["Keybind Text"] = "键位文字"
 L["Keyword Alert"] = "关键字警报"
 L["Keywords"] = "关键字"
 L["Latency"] = "延迟"
+L["Leader Indicator"] = true
 L["Leatherworking"] = "制皮"
 L["Left Alt"] = "左Alt键"
 L["Left Control"] = "左Ctrl键"
@@ -751,6 +760,8 @@ L["Make the world map smaller."] = "让世界地图更小"
 L["Map Opacity When Moving"] = "移动时地图透明度"
 L["Map ID"] = "地图ID"
 L["Maps"] = "地图"
+L["Mark Quest Reward"] = true
+L["Marks the most valuable quest reward with a gold coin."] = true
 L["Masque Support"] = "Masque支持"
 L["Match Frame Width"] = "匹配框体宽度"
 L["Match if Name or NPC ID is NOT in the list."] = "当名字或NPC ID不符合列表时匹配"
@@ -1022,7 +1033,6 @@ L["Right"] = "右"
 L["RightChatDataPanel"] = "右聊天框"
 L["RightClick Self-Cast"] = "右键自我施法"
 L["RightMiniPanel"] = "小地图右方"
-L["RL Icon"] = "团队领袖图标"
 L["Role Icon"] = "角色职责图标"
 L["Run the installation process."] = "执行安装程序"
 L["Scale"] = "缩放"
@@ -1048,6 +1058,7 @@ L["Sends your current profile to your target."] = "发送你的配置文件到�
 L["Sends your filter settings to your target."] = "发送你的过滤器配置到当前目标"
 L["Separate Panel Sizes"] = "分离框体大小"
 L["Seperate"] = "光环分离"
+L["Set auras that are not from you to desaturad."] = true
 L["Set Settings to Default"] = "恢复默认设置"
 L["Set the alpha level of nameplates that are not the target nameplate. Works only in combat."] = "设置战斗中非目标姓名版的透明程度"
 L["Set the alpha level of portrait when frame is overlayed."] = true
@@ -1187,11 +1198,9 @@ L["Testing:"] = "测试:"
 L["Text Color"] = "文字颜色"
 L["Text Font Size"] = "字体大小"
 L["Text Format"] = "文字格式"
-L["Text Position"] = "文字位置"
+L["Text Options"] = true
 L["Text Threshold"] = "文本阈值"
 L["Text Toggle On NPC"] = "NPC文字显示开关"
-L["Text xOffset"] = "文字X轴偏移"
-L["Text yOffset"] = "文字Y轴偏移"
 L["Text"] = "文本"
 L["Texture"] = "材质"
 L["Textured Icon"] = "图标"
@@ -1257,8 +1266,11 @@ L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to
 L["Threshold before text goes into decimal form. Set to -1 to disable decimals."] = "文字变为小数时的阈值.设为-1以禁用小数"
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "冷却时间低于此秒数后将变为红色数字, 并以小数显示, 设为-1来使其不会变为红色"
 L["Threshold before the icon will fade out and back in. Set to -1 to disable."] = "图标闪烁时的阈值, 设为-1以禁用."
+L["Threshold Colors"] = true
 L["Ticks"] = "周期伤害"
 L["Tiers"] = "天赋层"
+L["Time Indicator Colors"] = true
+L["Time Options"] = true
 L["Time Remaining Reverse"] = "剩余时间反转"
 L["Time Remaining"] = "剩余时间"
 L["Time To Hold"] = "停留时间"
@@ -1292,6 +1304,7 @@ L["Transparent"] = "透明"
 L["Triggers"] = "触发器"
 L["Trivial"] = "低等级(灰色)"
 L["Turtle Color"] = "减伤类的颜色"
+L["Tutorials"] = true
 L["Under Health Threshold"] = "低于血量阈值"
 L["Under Power Threshold"] = "低于能量阈值"
 L["Unfriendly"] = "非友好"
@@ -1336,6 +1349,7 @@ L["Use Default"] = "使用默认值"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "使用拖拽的方式调整过滤器优先级, 或者右键移除一个过滤器"
 L["Use Health Texture on Background"] = "对背景使用生命条材质"
 L["Use Instance ID or Name"] = "使用副本ID或名字"
+L["Use Indicator Color"] = true
 L["Use Map ID or Name"] = "使用地图ID或名字"
 L["Use Subzone Names"] = "使用子区域名字"
 L["Use Zone Names"] = "使用区域名字"
@@ -1386,10 +1400,8 @@ L["Will show Buffs in the Debuff position when there are no Debuffs active, or v
 L["Word Wrap"] = "自动换行"
 L["World Map Coordinates"] = "世界地图坐标"
 L["Wrap After"] = "每行行数"
-L["X-Offset"] = "X偏移"
-L["xOffset"] = "X轴偏移"
-L["Y-Offset"] = "Y偏移"
-L["yOffset"] = "Y轴偏移"
+L["X-Offset"] = "X轴偏移"
+L["Y-Offset"] = "Y轴偏移"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "|cffD3CF00\"%s\"|r 设置将从你当前配置文件 |cff4beb2c\"%s\"|r 导出到 |cff4beb2c\"%s\"|r 配置文件中. 你确定吗?"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "|cffD3CF00\"%s\"|r 设置将从 |cff4beb2c\"%s\"|r 配置文件导入到你当前配置文件 |cff4beb2c\"%s\"|r 中. 你确定吗?"
 L["You cannot copy settings from the same unit."] = "你不能从相同的单位复制设定"
@@ -1469,30 +1481,6 @@ L[ [=[This works like a macro, you can run different situations to get the actio
 L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
  Example: '[combat] show;hide']=] ] = [=[和宏写法类似, 能根据不同姿态切换动作条显示或隐藏.
  例如: '[combat] show;hide']=]
-
-L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
-
-例如:
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-生命条 / 能量条 格式:
-'current' - 当前值
-'percent' - 百分比
-'current-max' - 当前值 - 最大值. 当当前值等于最大值时只显示最大值
-'current-percent' - 当前值 - 百分比. 当百分比为100%时只显示当前值
-'current-max-percent' - 当前值 - 最大值 - 百分比. 当当前值不等于最大值时显示
-'deficit' - 失去值. 没有失去值时不显示
-
-姓名格式:
-'name:veryshort' - Name restricted to 5 characters
-'name:short' - 姓名显示限制于10字节内
-'name:medium' -姓名显示限制于15字节内
-'name:long' - 姓名显示限制于20字节内
-'name:short:translit' - Name restricted to 10 characters with transliteration
-
-空白则为禁用. 如需技术支持请至https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
 
@@ -1676,3 +1664,4 @@ L["UNIT_NAMEPLATES_TYPE_2"] = "堆叠姓名板";
 L["VOID_STORAGE"] = "虚空仓库";
 L["WORLD_MAP"] = "地图";
 L["XPBAR_LABEL"] = "经验槽";
+L["YELL"] = "大喊";

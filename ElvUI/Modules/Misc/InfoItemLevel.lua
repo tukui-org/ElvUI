@@ -3,6 +3,9 @@ local M = E:GetModule('Misc')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local rad = rad
+local gsub = gsub
+local wipe = wipe
 local next = next
 local pairs = pairs
 local unpack = unpack
@@ -29,9 +32,14 @@ local InspectItems = {
 	"SecondaryHandSlot",
 }
 
+local whileOpenEvents = {
+	['UPDATE_INVENTORY_DURABILITY'] = true,
+	['AZERITE_ESSENCE_UPDATE'] = true
+}
+
 function M:CreateInspectTexture(slot, x, y)
 	local texture = slot:CreateTexture()
-	texture:Point("BOTTOM", slot, x, y)
+	texture:Point("BOTTOM", x, y)
 	texture:SetTexCoord(unpack(E.TexCoords))
 	texture:Size(14)
 
@@ -61,7 +69,8 @@ function M:UpdateInspectInfo(_, arg1)
 end
 
 function M:UpdateCharacterInfo(event)
-	if not E.db.general.itemLevel.displayCharacterInfo then return end
+	if (not E.db.general.itemLevel.displayCharacterInfo)
+	or (whileOpenEvents[event] and not _G.CharacterFrame:IsShown()) then return end
 
 	M:UpdatePageInfo(_G.CharacterFrame, 'Character', nil, event)
 end
@@ -94,8 +103,11 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	end
 
 	if E.db.general.itemLevel.displayCharacterInfo then
+		M:RegisterEvent('AZERITE_ESSENCE_UPDATE', 'UpdateCharacterInfo')
 		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
+		M:RegisterEvent('UPDATE_INVENTORY_DURABILITY', 'UpdateCharacterInfo')
 		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterItemLevel')
+
 		_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
 
 		if not _G.CharacterFrame.CharacterInfoHooked then
@@ -107,9 +119,13 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 			M:UpdateCharacterInfo()
 		end
 	else
+		M:UnregisterEvent('AZERITE_ESSENCE_UPDATE')
 		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
+		M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
 		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
+
 		_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
+
 		M:ClearPageInfo(_G.CharacterFrame, 'Character')
 	end
 
@@ -121,42 +137,58 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	end
 end
 
-function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors, which, fullEnchantText)
-	iLevelDB[i] = iLvl
+function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `which` is used by plugins
+	iLevelDB[i] = slotInfo.iLvl
 
-	inspectItem.enchantText:SetText(enchant)
-	if enchantColors then
-		inspectItem.enchantText:SetTextColor(unpack(enchantColors))
+	inspectItem.enchantText:SetText(slotInfo.enchantTextShort)
+	if slotInfo.enchantColors and next(slotInfo.enchantColors) then
+		inspectItem.enchantText:SetTextColor(unpack(slotInfo.enchantColors))
 	end
 
-	inspectItem.iLvlText:SetText(iLvl)
-	if itemLevelColors then
-		inspectItem.iLvlText:SetTextColor(unpack(itemLevelColors))
+	inspectItem.iLvlText:SetText(slotInfo.iLvl)
+	if slotInfo.itemLevelColors and next(slotInfo.itemLevelColors) then
+		inspectItem.iLvlText:SetTextColor(unpack(slotInfo.itemLevelColors))
 	end
 
+	local gemStep, essenceStep = 1, 1
 	for x = 1, 10 do
 		local texture = inspectItem["textureSlot"..x]
 		local backdrop = inspectItem["textureSlotBackdrop"..x]
+		local essenceType = inspectItem["textureSlotEssenceType"..x]
+		if essenceType then essenceType:Hide() end
 
-		if gems and next(gems) then
-			local index, gem = next(gems)
+		local gem = slotInfo.gems and slotInfo.gems[gemStep]
+		local essence = not gem and (slotInfo.essences and slotInfo.essences[essenceStep])
+		if gem then
 			texture:SetTexture(gem)
 			backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			backdrop:Show()
-			gems[index] = nil
-		elseif essences and next(essences) then
-			local index, essence = next(essences)
 
-			local r, g, b
-			if essence[2] == 'tooltip-heartofazerothessence-major' then
-				r, g, b = 0.8, 0.7, 0
-			else -- 'tooltip-heartofazerothessence-minor'
-				r, g, b = 0.4, 0.4, 0.4
+			gemStep = gemStep + 1
+		elseif essence and next(essence) then
+			local hexColor = essence[4]
+			if hexColor then
+				local r, g, b = E:HexToRGB(hexColor)
+				backdrop:SetBackdropBorderColor(r/255, g/255, b/255)
+			else
+				backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
+
+			if not essenceType then
+				essenceType = inspectItem:CreateTexture()
+				essenceType:SetTexture(2907423)
+				essenceType:SetRotation(rad(90))
+				essenceType:SetParent(backdrop)
+				inspectItem["textureSlotEssenceType"..x] = essenceType
+			end
+
+			essenceType:Point("BOTTOM", texture, "TOP", 0, -9)
+			essenceType:SetAtlas(gsub(essence[2], '^tooltip%-(heartofazeroth)essence', '%1-list-selected'))
+			essenceType:Size(13, 17)
+			essenceType:Show()
 
 			local selected = essence[1]
 			texture:SetTexture(selected)
-			backdrop:SetBackdropBorderColor(r, g, b)
 			backdrop:Show()
 
 			if selected then
@@ -165,7 +197,7 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, esse
 				backdrop:SetBackdropColor(unpack(E.media.backdropcolor))
 			end
 
-			essences[index] = nil
+			essenceStep = essenceStep + 1
 		else
 			texture:SetTexture()
 			backdrop:Hide()
@@ -193,44 +225,48 @@ function M:TryGearAgain(frame, which, i, deepScan, iLevelDB, inspectItem)
 		if which == 'Inspect' and (not frame or not frame.unit) then return end
 
 		local unit = (which == 'Character' and 'player') or frame.unit
-		local iLvl, enchant, gems, essences, enchantColors, itemLevelColors, fullEnchantText = E:GetGearSlotInfo(unit, i, deepScan)
-		if iLvl == 'tooSoon' then return end
+		local slotInfo = E:GetGearSlotInfo(unit, i, deepScan)
+		if slotInfo == 'tooSoon' then return end
 
-		M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors, which, fullEnchantText)
+		M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which)
 	end)
 end
 
-function M:UpdatePageInfo(frame, which, guid, event)
-	if not (which and frame and frame.ItemLevelText) then return end
-	if which == 'Inspect' and (not frame or not frame.unit or (guid and frame:IsShown() and UnitGUID(frame.unit) ~= guid)) then return end
-
+do
 	local iLevelDB = {}
-	local waitForItems
-	for i = 1, 17 do
-		if i ~= 4 then
-			local inspectItem = _G[which..InspectItems[i]]
-			inspectItem.enchantText:SetText('')
-			inspectItem.iLvlText:SetText('')
+	function M:UpdatePageInfo(frame, which, guid, event)
+		if not (which and frame and frame.ItemLevelText) then return end
+		if which == 'Inspect' and (not frame or not frame.unit or (guid and frame:IsShown() and UnitGUID(frame.unit) ~= guid)) then return end
 
-			local unit = (which == 'Character' and 'player') or frame.unit
-			local iLvl, enchant, gems, essences, enchantColors, itemLevelColors, fullEnchantText = E:GetGearSlotInfo(unit, i, true)
-			if iLvl == 'tooSoon' then
-				if not waitForItems then waitForItems = true end
-				M:TryGearAgain(frame, which, i, true, iLevelDB, inspectItem)
-			else
-				M:UpdatePageStrings(i, iLevelDB, inspectItem, iLvl, enchant, gems, essences, enchantColors, itemLevelColors, which, fullEnchantText)
+		wipe(iLevelDB)
+
+		local waitForItems
+		for i = 1, 17 do
+			if i ~= 4 then
+				local inspectItem = _G[which..InspectItems[i]]
+				inspectItem.enchantText:SetText('')
+				inspectItem.iLvlText:SetText('')
+
+				local unit = (which == 'Character' and 'player') or frame.unit
+				local slotInfo = E:GetGearSlotInfo(unit, i, true)
+				if slotInfo == 'tooSoon' then
+					if not waitForItems then waitForItems = true end
+					M:TryGearAgain(frame, which, i, true, iLevelDB, inspectItem)
+				else
+					M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which)
+				end
 			end
 		end
-	end
 
-	if event and event == 'PLAYER_EQUIPMENT_CHANGED' then
-		return
-	end
+		if event and event == 'PLAYER_EQUIPMENT_CHANGED' then
+			return
+		end
 
-	if waitForItems then
-		E:Delay(0.10, M.UpdateAverageString, M, frame, which, iLevelDB)
-	else
-		M:UpdateAverageString(frame, which, iLevelDB)
+		if waitForItems then
+			E:Delay(0.10, M.UpdateAverageString, M, frame, which, iLevelDB)
+		else
+			M:UpdateAverageString(frame, which, iLevelDB)
+		end
 	end
 end
 

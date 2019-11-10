@@ -1,10 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 --Lua functions
 local _G = _G
 local unpack, strfind, format, strsplit, sort, ceil = unpack, strfind, format, strsplit, sort, ceil
+local huge = math.huge
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
@@ -260,8 +261,8 @@ local function SortAurasByTime(a, b)
 	if (a and b and a:GetParent().db) then
 		if a:IsShown() and b:IsShown() then
 			local sortDirection = a:GetParent().db.sortDirection
-			local aTime = a.expiration or -1
-			local bTime = b.expiration or -1
+			local aTime = a.noTime and huge or a.expiration or -1
+			local bTime = b.noTime and huge or b.expiration or -1
 			if (aTime and bTime) then
 				if(sortDirection == "DESCENDING") then
 					return aTime < bTime
@@ -298,8 +299,8 @@ local function SortAurasByDuration(a, b)
 	if (a and b and a:GetParent().db) then
 		if a:IsShown() and b:IsShown() then
 			local sortDirection = a:GetParent().db.sortDirection
-			local aTime = a.duration or -1
-			local bTime = b.duration or -1
+			local aTime = a.noTime and huge or a.duration or -1
+			local bTime = b.noTime and huge or b.duration or -1
 			if (aTime and bTime) then
 				if(sortDirection == "DESCENDING") then
 					return aTime < bTime
@@ -376,12 +377,63 @@ function UF:PostUpdateAura(unit, button)
 	end
 end
 
+function UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, ...)
+	for i=1, select('#', ...) do
+		local filterName = select(i, ...)
+		local friendCheck = (isFriend and strmatch(filterName, "^Friendly:([^,]*)")) or (not isFriend and strmatch(filterName, "^Enemy:([^,]*)")) or nil
+		if friendCheck ~= false then
+			if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
+				filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
+			end
+			local filter = E.global.unitframe.aurafilters[filterName]
+			if filter then
+				local filterType = filter.type
+				local spellList = filter.spells
+				local spell = spellList and (spellList[spellID] or spellList[name])
+
+				if filterType and (filterType == 'Whitelist') and (spell and spell.enable) and allowDuration then
+					return true, spell.priority -- this is the only difference from auarbars code
+				elseif filterType and (filterType == 'Blacklist') and (spell and spell.enable) then
+					return false
+				end
+			elseif filterName == 'Personal' and isPlayer and allowDuration then
+				return true
+			elseif filterName == 'nonPersonal' and (not isPlayer) and allowDuration then
+				return true
+			elseif filterName == 'Boss' and isBossDebuff and allowDuration then
+				return true
+			elseif filterName == 'CastByUnit' and (caster and isUnit) and allowDuration then
+				return true
+			elseif filterName == 'notCastByUnit' and (caster and not isUnit) and allowDuration then
+				return true
+			elseif filterName == 'Dispellable' and canDispell and allowDuration then
+				return true
+			elseif filterName == 'notDispellable' and (not canDispell) and allowDuration then
+				return true
+			elseif filterName == 'CastByNPC' and (not casterIsPlayer) and allowDuration then
+				return true
+			elseif filterName == 'CastByPlayers' and casterIsPlayer and allowDuration then
+				return true
+			elseif filterName == 'blockCastByPlayers' and casterIsPlayer then
+				return false
+			elseif filterName == 'blockNoDuration' and noDuration then
+				return false
+			elseif filterName == 'blockNonPersonal' and (not isPlayer) then
+				return false
+			elseif filterName == 'blockDispellable' and canDispell then
+				return false
+			elseif filterName == 'blockNotDispellable' and (not canDispell) then
+				return false
+			end
+		end
+	end
+end
+
 function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
-	local parent = self:GetParent()
-	local db = parent.db and parent.db[self.type]
-	if not db then return true end
+	local db = button.db or self.db
+	if not db then return true elseif db.filters then db = db.filters end
 
 	local isPlayer = (caster == 'player' or caster == 'vehicle')
 	local isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)

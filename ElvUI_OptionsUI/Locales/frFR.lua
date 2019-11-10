@@ -241,6 +241,7 @@ L["Clickable Width / Width"] = "Largeur cliquable / Largeur"
 L["Coding:"] = "Codage :"
 L["Color all buffs that reduce the unit's incoming damage."] = "Colorer toutes les améliorations réduisant les dégâts entrants de l'unité."
 L["Color aurabar debuffs by type."] = "Colore les affaiblissement de la barre d'auras par catégorie."
+L["Color by Value"] = true
 L["Color castbars by the class of player units."] = true
 L["Color castbars by the reaction type of non-player units."] = true
 L["Color Gradient"] = true
@@ -353,6 +354,7 @@ L["Defines the sort order of the selected sort method."] = "Définit l'ordre de 
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "Supprimer un filtre créé. Vous ne pouvez pas supprimer un filtre préexistant mais seulement ceux que vous avez personnalisé."
 L["Delete Filter"] = "Supprimer un filtre"
 L["Desaturate Cooldowns"] = true
+L["Desaturate Icon"] = true
 L["Desaturate Junk Items"] = true
 L["Desaturate Voice Icons"] = true
 L["Desaturated Icon"] = true
@@ -422,6 +424,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Donations:"] = "Donateurs :"
 L["Down"] = "En bas"
 L["Dungeon & Raid Filter"] = "Filtres de donjons et de raid"
+L["Duration Enable"] = true
 L["Duration Font Size"] = true
 L["Duration Reverse"] = "Durée inversée"
 L["Duration Text"] = "Texte de durée"
@@ -460,6 +463,7 @@ L["Export Now"] = "Exporter maintenant"
 L["Export Profile"] = "Exporter le profil"
 L["Exported"] = "Exporté"
 L["Fade Chat"] = "Estomper la discussion"
+L["Fade Duration"] = true
 L["Fade Out Delay"] = true
 L["Fade Out"] = true
 L["Fade Tabs No Backdrop"] = "Estomper les onglets sans arrière-plan"
@@ -533,6 +537,7 @@ L["Growth Direction"] = "Direction de la croissance"
 L["Growth X-Direction"] = true
 L["Growth Y-Direction"] = true
 L["Guardians"] = true
+L["Guide:"] = true
 L["Guild Control Frame"] = "Gestion de Guilde"
 L["Guild Ranks"] = "Rangs de la guilde"
 L["Guild Registrar"] = "Bannière de Guilde"
@@ -556,8 +561,10 @@ L["Herbalism"] = true
 L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = true
 L["HH:MM Threshold"] = true
 L["Hide At Max Level"] = "Cacher au niveau maximum"
+L["Hide At Max Power"] = true
 L["Hide Below Max Level"] = true
 L["Hide Both"] = "Masquer les deux"
+L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true
 L["Hide Cooldown Bling"] = "Masquer l'effet du temps de recharge"
 L["Hide Delay"] = true
 L["Hide Error Text"] = "Cacher les textes d'erreurs"
@@ -567,6 +574,7 @@ L["Hide In Vehicle"] = "Cacher en véhicule"
 L["Hide Outside PvP"] = "Cacher en dehors du PVP"
 L["Hide specific sections in the datatext tooltip."] = true
 L["Hide Spell Name"] = true
+L["Hide Text"] = true
 L["Hide Time"] = true
 L["Hide tooltip while in combat."] = "Masquer toutes les infobulles quand vous êtes en combat."
 L["Hide Voice Buttons"] = true
@@ -638,7 +646,6 @@ L["If enabled, the style filter will only activate when you are in one of the in
 L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = true
 L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name."] = true
 L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
-
 L["If enabled then the filter will only activate when you are not focusing the unit."] = true
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = true
@@ -707,6 +714,7 @@ L["Keybind Text"] = "Texte des raccourcis"
 L["Keyword Alert"] = "Alerte mots-clés"
 L["Keywords"] = "Mots-clés"
 L["Latency"] = "Latence"
+L["Leader Indicator"] = true
 L["Leatherworking"] = true
 L["Left Alt"] = true
 L["Left Control"] = true
@@ -750,6 +758,8 @@ L["Make the world map smaller."] = "Rendre la carte du monde plus petite"
 L["Map Opacity When Moving"] = "Opacité de la carte en mouvement"
 L["Map ID"] = true
 L["Maps"] = "Cartes"
+L["Mark Quest Reward"] = true
+L["Marks the most valuable quest reward with a gold coin."] = true
 L["Masque Support"] = "Support de Maque"
 L["Match Frame Width"] = "Accorder à la largeur du cadre"
 L["Match if Name or NPC ID is NOT in the list."] = true
@@ -1021,7 +1031,6 @@ L["Right"] = "Droite"
 L["RightChatDataPanel"] = "Fenêtre de discussion à droite"
 L["RightClick Self-Cast"] = true
 L["RightMiniPanel"] = "Minicarte à droite"
-L["RL Icon"] = true
 L["Role Icon"] = "Icône de rôle"
 L["Run the installation process."] = "Démarrer le processus d'installation."
 L["Scale"] = "Echelle"
@@ -1047,6 +1056,7 @@ L["Sends your current profile to your target."] = "Envoi votre profil actuel à 
 L["Sends your filter settings to your target."] = "Envoi vos paramètres de filtre à votre cible."
 L["Separate Panel Sizes"] = "Séparer la taille des fenêtres de discussion."
 L["Seperate"] = "Séparer"
+L["Set auras that are not from you to desaturad."] = true
 L["Set Settings to Default"] = true
 L["Set the alpha level of nameplates that are not the target nameplate. Works only in combat."] = true
 L["Set the alpha level of portrait when frame is overlayed."] = true
@@ -1186,11 +1196,9 @@ L["Testing:"] = "Testeurs :"
 L["Text Color"] = "Couleur du texte"
 L["Text Font Size"] = "Police d'écriture du texte"
 L["Text Format"] = "Format du texte"
-L["Text Position"] = "Position du texte"
+L["Text Options"] = true
 L["Text Threshold"] = "Seuil du texte"
 L["Text Toggle On NPC"] = "Afficher le texte des PNJ"
-L["Text xOffset"] =  "Décalage de l'axe X du texte"
-L["Text yOffset"] = "Décalage de l'axe Y du texte"
 L["Text"] = "Texte"
 L["Texture"] = true
 L["Textured Icon"] = "Texture de l'icône"
@@ -1256,8 +1264,11 @@ L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to
 L["Threshold before text goes into decimal form. Set to -1 to disable decimals."] = "Seuil avant que le texte ne s'affiche sous forme décimale. Mettre à -1 pour désactiver l'affichage en décimal."
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "Seuil avant que le texte devienne rouge sous forme de décimal. Mettre -1 pour qu'il ne devienne jamais rouge."
 L["Threshold before the icon will fade out and back in. Set to -1 to disable."] = true
+L["Threshold Colors"] = true
 L["Ticks"] = "Ticks"
 L["Tiers"] = true
+L["Time Indicator Colors"] = true
+L["Time Options"] = true
 L["Time Remaining Reverse"] =  "Temps restant inversé"
 L["Time Remaining"] = "Temps restant"
 L["Time To Hold"] = true
@@ -1291,6 +1302,7 @@ L["Transparent"] = "Transparent"
 L["Triggers"] = true
 L["Trivial"] = true
 L["Turtle Color"] = "Couleur Turtle"
+L["Tutorials"] = true
 L["Under Health Threshold"] = true
 L["Under Power Threshold"] = true
 L["Unfriendly"] = true
@@ -1334,6 +1346,7 @@ L["Use Dead Backdrop"] = "Utiliser le fond pour les joueurs morts"
 L["Use Default"] = "Par défaut"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = true
 L["Use Health Texture on Background"] = true
+L["Use Indicator Color"] = true
 L["Use Instance ID or Name"] = true
 L["Use Map ID or Name"] = true
 L["Use Subzone Names"] = true
@@ -1385,10 +1398,8 @@ L["Will show Buffs in the Debuff position when there are no Debuffs active, or v
 L["Word Wrap"] = "Césure des mots"
 L["World Map Coordinates"] = "Coordonnées de la carte du Monde"
 L["Wrap After"] = "Retour à la ligne après"
-L["X-Offset"] = "Décalage X"
-L["xOffset"] = "Décalage de l'axe X"
-L["Y-Offset"] = "Décalage Y"
-L["yOffset"] = "Décalage de l'axe Y"
+L["X-Offset"] = "Décalage de l'axe X"
+L["Y-Offset"] = "Décalage de l'axe Y"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You cannot copy settings from the same unit."] = "Vous ne pouvez pas copier les réglages du même cadre."
@@ -1460,30 +1471,6 @@ The following search keywords can also be used:
     • keystone : Mythic Keystone.
     • followers : Follower items.
     • champions : Champion equipment.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[Entrer une séquence pour changer le format du texte.
-
-Exemples:
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-Formats de la Vie / des Ressources:
-'current' - Quantité actuelle
-'percent' - Quantité en pourcentage
-'current-max' - Quantité actuelle maximale, n'affichera seulement la quantité maximale si la quantité actuelle est égale au maximum.
-'current-percent' - Quantité actuelle suivie par quantité en pourcentage, n'affichera seulement la quantité maximale si la quantité actuelle est égale au maximum
-'current-max-percent' -  Quantité actuelle, quantité maximale, suivie par quantité en pourcentage, n'affichera seulement la quantité maximale si la quantité actuelle est égale au maximum
-'deficit' - Affiche la valeur du déficit, n'affichera rien si il n'y a pas de déficit
-
-Format des Noms:
-'name:veryshort' - Name restricted to 5 characters
-'name:short' - Nom limité à 10 caractères
-'name:medium' - Nom limité à 15 caractères
-'name:long' - Nom limité à 20 caractères
-'name:short:translit' - Name restricted to 10 characters with transliteration
-
-Pour désactiver, laisser le champs vide. Pour plus d'information, merci de visiter https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Ceci fonctionne comme une macro, vous pouvez exécuter différentes situations pour avoir une pagination de la barre d'actions différente.
@@ -1676,3 +1663,4 @@ L["UNIT_NAMEPLATES_TYPES"] = "Affichage des barres d’info";
 L["VOID_STORAGE"] = "Chambre du Vide";
 L["WORLD_MAP"] = "Carte";
 L["XPBAR_LABEL"] = "Barre d'expérience";
+L["YELL"] = "Crier";

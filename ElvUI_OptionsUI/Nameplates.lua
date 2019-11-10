@@ -28,10 +28,10 @@ local raidTargetIcon = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%s:0|t
 local selectedNameplateFilter
 
 local positionValues = {
-	TOPLEFT = "TOPLEFT",
-	TOPRIGHT = "TOPRIGHT",
-	BOTTOMLEFT = "BOTTOMLEFT",
-	BOTTOMRIGHT = "BOTTOMRIGHT"
+	TOPLEFT = 'TOPLEFT',
+	TOPRIGHT = 'TOPRIGHT',
+	BOTTOMLEFT = 'BOTTOMLEFT',
+	BOTTOMRIGHT = 'BOTTOMRIGHT',
 }
 
 local carryFilterFrom, carryFilterTo
@@ -126,7 +126,7 @@ local function UpdateClassSpec(classTag, enabled)
 			args = {}
 		}
 	end
-	local coloredName = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classTag]) or _G.RAID_CLASS_COLORS[classTag]
+	local coloredName = E:ClassColor(classTag)
 	coloredName = (coloredName and coloredName.colorStr) or "ff666666"
 	for i = 1, GetNumSpecializationsForClassID(classTable[classTag].classID) do
 		local specID, name = GetSpecializationInfoForClassID(classTable[classTag].classID, i)
@@ -179,7 +179,7 @@ local function UpdateClassSection()
 		local coloredName
 		for _, classTag in ipairs(classIndexTable) do
 			classOrder = classOrder + 1
-			coloredName = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classTag]) or _G.RAID_CLASS_COLORS[classTag]
+			coloredName = E:ClassColor(classTag)
 			coloredName = (coloredName and coloredName.colorStr) or "ff666666"
 			local classTrigger = E.global.nameplate.filters[selectedNameplateFilter].triggers.class
 			if classTrigger then
@@ -3254,8 +3254,7 @@ local function GetUnitSettings(unit, name)
 							format = {
 								order = 2,
 								name = L["Text Format"],
-								desc = L["TEXT_FORMAT_DESC"],
-								type = "input"
+								type = "input",
 							},
 							position = {
 								order = 3,
@@ -3453,8 +3452,7 @@ local function GetUnitSettings(unit, name)
 							format = {
 								order = 2,
 								name = L["Text Format"],
-								desc = L["TEXT_FORMAT_DESC"],
-								type = "input"
+								type = "input",
 							},
 							position = {
 								order = 3,
@@ -3659,7 +3657,7 @@ local function GetUnitSettings(unit, name)
 							},
 							textPosition = {
 								order = 3,
-								name = L["Text Position"],
+								name = L["Position"],
 								type = "select",
 								values = {
 									["ONBAR"] = L["Cast Bar"],
@@ -3805,8 +3803,14 @@ local function GetUnitSettings(unit, name)
 						name = L["Enable"],
 						type = "toggle"
 					},
-					numAuras = {
+					desaturate = {
+						type = 'toggle',
 						order = 2,
+						name = L["Desaturate Icon"],
+						desc = L["Set auras that are not from you to desaturad."],
+					},
+					numAuras = {
+						order = 3,
 						name = L["# Displayed Auras"],
 						--desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
@@ -3815,7 +3819,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					size = {
-						order = 3,
+						order = 4,
 						name = L["Icon Size"],
 						type = "range",
 						min = 6,
@@ -4156,8 +4160,14 @@ local function GetUnitSettings(unit, name)
 						name = L["Enable"],
 						type = "toggle"
 					},
-					numAuras = {
+					desaturate = {
+						type = 'toggle',
 						order = 2,
+						name = L["Desaturate Icon"],
+						desc = L["Set auras that are not from you to desaturad."],
+					},
+					numAuras = {
+						order = 3,
 						name = L["# Displayed Auras"],
 						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
@@ -4166,7 +4176,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					size = {
-						order = 3,
+						order = 4,
 						name = L["Icon Size"],
 						type = "range",
 						min = 6,
@@ -4681,8 +4691,7 @@ local function GetUnitSettings(unit, name)
 					format = {
 						order = 2,
 						name = L["Text Format"],
-						desc = L["TEXT_FORMAT_DESC"],
-						type = "input"
+						type = "input",
 					},
 					position = {
 						order = 3,
@@ -5022,12 +5031,13 @@ local function GetUnitSettings(unit, name)
 			type = "toggle",
 			name = L["Use Class Color"]
 		}
+		--[[
 		group.args.castGroup.args.displayTarget = {
 			order = 4, -- stays at 4
 			type = "toggle",
 			name = L["Display Target"],
 			desc = L["Display the target of your current cast. Useful for mouseover casts."]
-		}
+		}]]
 	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
 		group.args.general.args.visibilityShortcut = {
 			order = 100,
@@ -5144,16 +5154,54 @@ local function GetUnitSettings(unit, name)
 					order = 1,
 					name = L["Enable"]
 				},
+				font = {
+					type = "select",
+					dialogControl = "LSM30_Font",
+					order = 2,
+					name = L["Font"],
+					values = _G.AceGUIWidgetLSMlists.font
+				},
+				fontSize = {
+					order = 3,
+					name = L["FONT_SIZE"],
+					type = "range",
+					min = 4,
+					max = 40,
+					step = 1
+				},
+				fontOutline = {
+					order = 4,
+					name = L["Font Outline"],
+					desc = L["Set the font outline."],
+					type = "select",
+					values = C.Values.FontFlags
+				},
 				size = {
 					type = "range",
-					order = 2,
+					order = 5,
 					name = L["Size"],
 					min = 10,
 					max = 50,
 					step = 1
 				},
+				xOffset = {
+					order = 6,
+					name = L["X-Offset"],
+					type = "range",
+					min = -100,
+					max = 100,
+					step = 1
+				},
+				yOffset = {
+					order = 7,
+					name = L["Y-Offset"],
+					type = "range",
+					min = -100,
+					max = 100,
+					step = 1
+				},
 				position = {
-					order = 3,
+					order = 8,
 					type = "select",
 					name = L["Icon Position"],
 					values = {
@@ -5166,21 +5214,21 @@ local function GetUnitSettings(unit, name)
 						["RIGHT"] = "RIGHT"
 					}
 				},
-				xOffset = {
-					order = 4,
-					name = L["X-Offset"],
-					type = "range",
-					min = -100,
-					max = 100,
-					step = 1
-				},
-				yOffset = {
-					order = 5,
-					name = L["Y-Offset"],
-					type = "range",
-					min = -100,
-					max = 100,
-					step = 1
+				textPosition = {
+					order = 9,
+					type = "select",
+					name = L["Text Position"],
+					values = {
+						["TOP"] = "TOP",
+						["LEFT"] = "LEFT",
+						["BOTTOM"] = "BOTTOM",
+						["CENTER"] = "CENTER",
+						["TOPLEFT"] = "TOPLEFT",
+						["BOTTOMLEFT"] = "BOTTOMLEFT",
+						["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+						["RIGHT"] = "RIGHT",
+						["TOPRIGHT"] = "TOPRIGHT"
+					}
 				}
 			}
 		}
@@ -5348,8 +5396,7 @@ local function GetUnitSettings(unit, name)
 				format = {
 					order = 2,
 					name = L["Text Format"],
-					desc = L["TEXT_FORMAT_DESC"],
-					type = "input"
+					type = "input",
 				},
 				position = {
 					order = 3,
@@ -5436,15 +5483,16 @@ end
 E.Options.args.nameplate = {
 	type = "group",
 	name = L["NamePlates"],
-	childGroups = "tree",
-	get = function(info)
-		return E.db.nameplates[info[#info]]
-	end,
-	set = function(info, value)
-		E.db.nameplates[info[#info]] = value
-		NP:ConfigureAll()
-	end,
+	childGroups = "tab",
+	order = 2,
+	get = function(info) return E.db.nameplates[info[#info]] end,
+	set = function(info, value) E.db.nameplates[info[#info]] = value; NP:ConfigureAll() end,
 	args = {
+		intro = {
+			order = 0,
+			type = "description",
+			name = L["NAMEPLATE_DESC"],
+		},
 		enable = {
 			order = 1,
 			type = "toggle",
@@ -5455,180 +5503,6 @@ E.Options.args.nameplate = {
 			set = function(info, value)
 				E.private.nameplates[info[#info]] = value
 				E:StaticPopup_Show("PRIVATE_RL")
-			end
-		},
-		intro = {
-			order = 2,
-			type = "description",
-			name = L["NAMEPLATE_DESC"]
-		},
-		header = {
-			order = 3,
-			type = "header",
-			name = L["Shortcuts"]
-		},
-		spacer1 = {
-			order = 4,
-			type = "description",
-			name = " "
-		},
-		generalShortcut = {
-			order = 5,
-			type = "execute",
-			name = L["General"],
-			buttonElvUI = true,
-			func = function()
-				ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general")
-			end,
-			disabled = function()
-				return not E.NamePlates.Initialized
-			end
-		},
-		cooldownShortcut = {
-			order = 6,
-			type = "execute",
-			name = L["Cooldowns"],
-			buttonElvUI = true,
-			func = function()
-				ACD:SelectGroup("ElvUI", "cooldown", "nameplates")
-			end,
-			disabled = function()
-				return not E.NamePlates.Initialized
-			end
-		},
-		colorsShortcut = {
-			order = 7,
-			type = "execute",
-			name = L["COLORS"],
-			buttonElvUI = true,
-			func = function()
-				ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "colorsGroup")
-			end,
-			disabled = function()
-				return not E.NamePlates.Initialized
-			end
-		},
-		spacer2 = {
-			order = 8,
-			type = "description",
-			name = " "
-		},
-		threatShortcut = {
-			order = 9,
-			type = "execute",
-			name = L["Threat"],
-			buttonElvUI = true,
-			func = function()
-				ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "threatGroup")
-			end,
-			disabled = function()
-				return not E.NamePlates.Initialized
-			end
-		},
-		cutawayShortcut = {
-			order = 10,
-			type = "execute",
-			name = L["Cutaway Bars"],
-			buttonElvUI = true,
-			func = function()
-				ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "cutaway")
-			end,
-			disabled = function()
-				return not E.NamePlates.Initialized
-			end
-		},
-		filtersShortcut = {
-			order = 11,
-			type = "execute",
-			name = L["Style Filter"],
-			buttonElvUI = true,
-			func = function()
-				ACD:SelectGroup("ElvUI", "nameplate", "filters")
-			end,
-			disabled = function()
-				return not E.NamePlates.Initialized
-			end
-		},
-		spacer3 = {
-			order = 12,
-			type = "description",
-			name = " "
-		},
-		playerShortcut = {
-			order = 13,
-			type = "execute",
-			name = L["Player"],
-			buttonElvUI = true,
-			func = function()
-				ACD:SelectGroup("ElvUI", "nameplate", "playerGroup")
-			end,
-			disabled = function()
-				return not E.NamePlates.Initialized
-			end
-		},
-		friendlyPlayerShortcut = {
-			order = 14,
-			type = "execute",
-			name = L["FRIENDLY_PLAYER"],
-			buttonElvUI = true,
-			func = function()
-				ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup")
-			end,
-			disabled = function()
-				return not E.NamePlates.Initialized
-			end
-		},
-		friendlyNPCShortcut = {
-			order = 15,
-			type = "execute",
-			name = L["FRIENDLY_NPC"],
-			buttonElvUI = true,
-			func = function()
-				ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup")
-			end,
-			disabled = function()
-				return not E.NamePlates.Initialized
-			end
-		},
-		spacer4 = {
-			order = 16,
-			type = "description",
-			name = " "
-		},
-		enemyPlayerShortcut = {
-			order = 17,
-			type = "execute",
-			name = L["ENEMY_PLAYER"],
-			buttonElvUI = true,
-			func = function()
-				ACD:SelectGroup("ElvUI", "nameplate", "enemyPlayerGroup")
-			end,
-			disabled = function()
-				return not E.NamePlates.Initialized
-			end
-		},
-		enemyNPCShortcut = {
-			order = 18,
-			type = "execute",
-			name = L["ENEMY_NPC"],
-			buttonElvUI = true,
-			func = function()
-				ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup")
-			end,
-			disabled = function()
-				return not E.NamePlates.Initialized
-			end
-		},
-		targetShortcut = {
-			order = 19,
-			type = "execute",
-			name = L["TARGET"],
-			buttonElvUI = true,
-			func = function()
-				ACD:SelectGroup("ElvUI", "nameplate", "targetGroup")
-			end,
-			disabled = function()
-				return not E.NamePlates.Initialized
 			end
 		},
 		generalGroup = {
@@ -5760,7 +5634,7 @@ E.Options.args.nameplate = {
 						otherAtBase = {
 							order = 9,
 							type = "toggle",
-							name = L["Nameplate at Base"],
+							name = L["Nameplate At Base"],
 							desc = L["Position other Nameplates at the base, rather than overhead."],
 							get = function()
 								return GetCVarBool("nameplateOtherAtBase")
@@ -5815,7 +5689,7 @@ E.Options.args.nameplate = {
 						plateVisibility = {
 							order = 50,
 							type = "group",
-							childGroups = "tabs",
+							childGroups = "tab",
 							name = L["Visibility"],
 							args = {
 								showAll = {
@@ -5986,7 +5860,7 @@ E.Options.args.nameplate = {
 						clickThrough = {
 							order = 51,
 							type = "group",
-							childGroups = "tabs",
+							childGroups = "tab",
 							name = L["Click Through"],
 							get = function(info)
 								return E.db.nameplates.clickThrough[info[#info]]
@@ -6024,7 +5898,7 @@ E.Options.args.nameplate = {
 						clickableRange = {
 							order = 52,
 							type = "group",
-							childGroups = "tabs",
+							childGroups = "tab",
 							name = L["Clickable Size"],
 							args = {
 								personal = {
@@ -6130,8 +6004,8 @@ E.Options.args.nameplate = {
 						},
 						cutaway = {
 							order = 53,
-							type = "group",
-							childGroups = "tabs",
+							type = 'group',
+							childGroups = "tab",
 							name = L["Cutaway Bars"],
 							args = {
 								health = {
@@ -6822,6 +6696,8 @@ E.Options.args.nameplate = {
 					name = L["Delete Filter"],
 					desc = L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."],
 					type = "execute",
+					confirm = true,
+					confirmText = L["Delete Filter"],
 					buttonElvUI = true,
 					func = function()
 						for profile in pairs(E.data.profiles) do

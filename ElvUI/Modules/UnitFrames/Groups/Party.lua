@@ -41,9 +41,7 @@ function UF:Construct_PartyFrames()
 	else
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
-		self.Power.frequentUpdates = false;
 		self.PowerPrediction = UF:Construct_PowerPrediction(self)
-
 		self.Portrait3D = UF:Construct_Portrait(self, 'model')
 		self.Portrait2D = UF:Construct_Portrait(self, 'texture')
 		self.InfoPanel = UF:Construct_InfoPanel(self)
@@ -251,7 +249,7 @@ function UF:Update_PartyFrames(frame, db)
 
 		UF:Configure_RaidRoleIcons(frame)
 
-		UF:UpdateAuraWatch(frame)
+		UF:Configure_AuraWatch(frame)
 
 		UF:Configure_ReadyCheckIcon(frame)
 

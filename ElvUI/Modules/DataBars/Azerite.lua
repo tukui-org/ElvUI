@@ -30,9 +30,12 @@ function mod:UpdateAzerite(event, unit)
 	local bar = self.azeriteBar
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
 
-	if not azeriteItemLocation or (event == "PLAYER_REGEN_DISABLED" and self.db.azerite.hideInCombat) or C_AzeriteItem_IsAzeriteItemAtMaxLevel() then
+	if not azeriteItemLocation or (self.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or
+		(self.db.azerite.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
+		E:DisableMover(bar.mover:GetName())
 		bar:Hide()
-	elseif azeriteItemLocation and (not self.db.azerite.hideInCombat or not InCombatLockdown()) then
+	else
+		E:EnableMover(bar.mover:GetName())
 		bar:Show()
 
 		if self.db.azerite.hideInVehicle then
@@ -41,29 +44,29 @@ function mod:UpdateAzerite(event, unit)
 			E:UnregisterObjectForVehicleLock(bar)
 		end
 
-		local text = ''
-		local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
-		local xpToNextLevel = totalLevelXP - xp
+		local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
 		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
 
-		bar.statusBar:SetMinMaxValues(0, totalLevelXP)
-		bar.statusBar:SetValue(xp)
+		bar.statusBar:SetMinMaxValues(0, max)
+		bar.statusBar:SetValue(cur)
 
+		local text = ''
 		local textFormat = self.db.azerite.textFormat
+
 		if textFormat == 'PERCENT' then
-			text = format('%s%% [%s]', floor(xp / totalLevelXP * 100), currentLevel)
+			text = format('%s%% [%s]', floor(cur / max * 100), currentLevel)
 		elseif textFormat == 'CURMAX' then
-			text = format('%s - %s [%s]', E:ShortValue(xp), E:ShortValue(totalLevelXP), currentLevel)
+			text = format('%s - %s [%s]', E:ShortValue(cur), E:ShortValue(max), currentLevel)
 		elseif textFormat == 'CURPERC' then
-			text = format('%s - %s%% [%s]', E:ShortValue(xp), floor(xp /totalLevelXP * 100), currentLevel)
+			text = format('%s - %s%% [%s]', E:ShortValue(cur), floor(cur / max * 100), currentLevel)
 		elseif textFormat == 'CUR' then
-			text = format('%s [%s]', E:ShortValue(xp), currentLevel)
+			text = format('%s [%s]', E:ShortValue(cur), currentLevel)
 		elseif textFormat == 'REM' then
-			text = format('%s [%s]', E:ShortValue(xpToNextLevel), currentLevel)
+			text = format('%s [%s]', E:ShortValue(max - cur), currentLevel)
 		elseif textFormat == 'CURREM' then
-			text = format('%s - %s [%s]', E:ShortValue(xp), E:ShortValue(xpToNextLevel), currentLevel)
+			text = format('%s - %s [%s]', E:ShortValue(cur), E:ShortValue(max - cur), currentLevel)
 		elseif textFormat == 'CURPERCREM' then
-			text = format('%s - %s%% (%s) [%s]', E:ShortValue(xp), floor(xp / totalLevelXP * 100), E:ShortValue(xpToNextLevel), currentLevel)
+			text = format('%s - %s%% (%s) [%s]', E:ShortValue(cur), floor(cur / max * 100), E:ShortValue(max - cur), currentLevel)
 		end
 
 		bar.text:SetText(text)
@@ -80,23 +83,17 @@ function mod:AzeriteBar_OnEnter()
 
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
 	local azeriteItem = Item:CreateFromItemLocation(azeriteItemLocation)
-	local xp, totalLevelXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
+	local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
 	local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
-	local xpToNextLevel = totalLevelXP - xp
 
 	self.itemDataLoadedCancelFunc = azeriteItem:ContinueWithCancelOnItemLoad(function()
 		local azeriteItemName = azeriteItem:GetItemName()
 
-		--[[ From Blizz Code
-		GameTooltip:SetText(AZERITE_POWER_TOOLTIP_TITLE:format(currentLevel, xpToNextLevel), HIGHLIGHT_FONT_COLOR:GetRGB())
-		GameTooltip:AddLine(AZERITE_POWER_TOOLTIP_BODY:format(azeriteItemName))
-		]]
-
 		_G.GameTooltip:AddDoubleLine(ARTIFACT_POWER, azeriteItemName.." ("..currentLevel..")", nil,  nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
 		_G.GameTooltip:AddLine(' ')
 
-		_G.GameTooltip:AddDoubleLine(L["AP:"], format(' %d / %d (%d%%)', xp, totalLevelXP, xp / totalLevelXP  * 100), 1, 1, 1)
-		_G.GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', xpToNextLevel, xpToNextLevel / totalLevelXP * 100, 10 * xpToNextLevel / totalLevelXP), 1, 1, 1)
+		_G.GameTooltip:AddDoubleLine(L["AP:"], format(' %d / %d (%d%%)', cur, max, cur / max  * 100), 1, 1, 1)
+		_G.GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', max - cur, (max - cur) / max * 100, 10 * (max - cur) / max), 1, 1, 1)
 
 		_G.GameTooltip:Show()
 	end)
@@ -126,7 +123,6 @@ end
 
 function mod:EnableDisable_AzeriteBar()
 	if self.db.azerite.enable then
-		--Possible Events
 		self:RegisterEvent("AZERITE_ITEM_EXPERIENCE_CHANGED", 'UpdateAzerite')
 		self:RegisterEvent('UNIT_INVENTORY_CHANGED', 'UpdateAzerite')
 

@@ -50,7 +50,7 @@ function THREAT:GetColor(unit)
 	local unitReaction = UnitReaction(unit, 'player')
 	local _, unitClass = UnitClass(unit)
 	if (UnitIsPlayer(unit)) then
-		local class = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[unitClass] or _G.RAID_CLASS_COLORS[unitClass]
+		local class = E:ClassColor(unitClass)
 		if not class then return 194, 194, 194 end
 		return class.r*255, class.g*255, class.b*255
 	elseif (unitReaction) then
@@ -148,7 +148,7 @@ function THREAT:Initialize()
 	self.bar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(self.bar)
 	self.bar:SetMinMaxValues(0, 100)
-	self.bar:CreateBackdrop()
+	self.bar:CreateBackdrop(nil, true)
 
 	self.bar.text = self.bar:CreateFontString(nil, 'OVERLAY')
 	self.bar.text:FontTemplate(nil, self.db.textSize, self.db.textOutline)

@@ -6,6 +6,7 @@ E.Options.args.skins = {
 	type = "group",
 	name = L["Skins"],
 	childGroups = "tree",
+	order = 2,
 	args = {
 		intro = {
 			order = 0,
@@ -473,6 +474,11 @@ E.Options.args.skins = {
 					name = L["Azerite Essence"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				Tutorials = {
+					type = "toggle",
+					name = L["Tutorials"],
+					desc = L["TOGGLESKIN_DESC"],
+				}
 			},
 		},
 	},

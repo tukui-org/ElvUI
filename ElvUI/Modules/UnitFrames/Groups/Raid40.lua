@@ -23,15 +23,10 @@ function UF:Construct_Raid40Frames()
 	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 100)
 
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
-
 	self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
-	self.Power.frequentUpdates = false;
-
 	self.PowerPrediction = UF:Construct_PowerPrediction(self)
-
 	self.Portrait3D = UF:Construct_Portrait(self, 'model')
 	self.Portrait2D = UF:Construct_Portrait(self, 'texture')
-
 	self.Name = UF:Construct_NameText(self)
 	self.Buffs = UF:Construct_Buffs(self)
 	self.Debuffs = UF:Construct_Debuffs(self)
@@ -231,7 +226,7 @@ function UF:Update_Raid40Frames(frame, db)
 	UF:Configure_Fader(frame)
 
 	--Buff Indicators
-	UF:UpdateAuraWatch(frame)
+	UF:Configure_AuraWatch(frame)
 
 	--ReadyCheck
 	UF:Configure_ReadyCheckIcon(frame)

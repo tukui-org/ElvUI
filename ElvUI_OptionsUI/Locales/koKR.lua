@@ -241,6 +241,7 @@ L["Clickable Width / Width"] = true
 L["Coding:"] = "|cff2eb7e4< 개발자 >|r"
 L["Color all buffs that reduce the unit's incoming damage."] = "유닛이 입는 데미지를 줄이는 모든 생존류 기술에 이 색상을 적용합니다."
 L["Color aurabar debuffs by type."] = "약화효과 종류에 따라서 클래스타이머의 색상을 따로 입힙니다.|n|n예로 독계열 약화효과는 초록색 바로 표시되게 됩니다."
+L["Color by Value"] = true
 L["Color castbars by the class of player units."] = "시전바를 플레이어 직업색상으로 칠합니다."
 L["Color castbars by the reaction type of non-player units."] = "플레이어가 아닌 유닛의 관계 형태에 따른 시전바 색상으로 변경합니다."
 L["Color Gradient"] = true
@@ -353,6 +354,7 @@ L["Defines the sort order of the selected sort method."] = "선택한 정렬 기
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "생성된 필터를 제거합니다. 단, 추가로 생성한 필터만 제거가 가능합니다."
 L["Delete Filter"] = "필터 삭제"
 L["Desaturate Cooldowns"] = "재사용 대기중일 때 흑백처리"
+L["Desaturate Icon"] = true
 L["Desaturate Junk Items"] = true
 L["Desaturate Voice Icons"] = true
 L["Desaturated Icon"] = true
@@ -422,6 +424,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Donations:"] = "|cff2eb7e4< 기부자 >|r"
 L["Down"] = "아래로"
 L["Dungeon & Raid Filter"] = "던전 & 레이드 필터"
+L["Duration Enable"] = true
 L["Duration Font Size"] = "지속시간 글씨 크기"
 L["Duration Reverse"] = "총 지속시간이 짧은 순"
 L["Duration Text"] = "지속시간 글자"
@@ -460,6 +463,7 @@ L["Export Now"] = "지금 내보내기"
 L["Export Profile"] = "프로필 내보내기"
 L["Exported"] = "내보낸 것"
 L["Fade Chat"] = "오래된 메시지 숨기기"
+L["Fade Duration"] = true
 L["Fade Out Delay"] = true
 L["Fade Out"] = true
 L["Fade the chat text when there is no activity."] = "시간이 오래 지난 이전의 메시지를 채팅창에서 보이지 않게 합니다. 삭제하는 것은 아니니 마우스 휠링으로 안보이게 한 이전의 메시지를 다시 확인할 수 있습니다."
@@ -532,6 +536,7 @@ L["Growth Direction"] = "나열 방향"
 L["Growth X-Direction"] = true
 L["Growth Y-Direction"] = true
 L["Guardians"] = true
+L["Guide:"] = true
 L["Guild Control Frame"] = "길드 관리 창"
 L["Guild Ranks"] = "길드 내 등급 표시"
 L["Guild Registrar"] = "길드 등록"
@@ -555,8 +560,10 @@ L["Herbalism"] = true
 L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = "여기에 가방 정리에서 제외할 아이템 또는 검색어를 추가할 수 있습니다. 제거할 때는 목록에서 아이템 이름을 클릭만 하시면 됩니다."
 L["HH:MM Threshold"] = true
 L["Hide At Max Level"] = "만렙시 숨김"
+L["Hide At Max Power"] = true
 L["Hide Below Max Level"] = true
 L["Hide Both"] = "둘 다 숨기기"
+L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true
 L["Hide Cooldown Bling"] = "재사용 깜빡임 끄기"
 L["Hide Delay"] = "숨김 지연"
 L["Hide Error Text"] = "전투중 에러 숨기기"
@@ -566,6 +573,7 @@ L["Hide In Vehicle"] = "탈것사용중 숨김"
 L["Hide Outside PvP"] = "PVP가 아닐때 숨김"
 L["Hide specific sections in the datatext tooltip."] = true
 L["Hide Spell Name"] = "주문 이름 숨김"
+L["Hide Text"] = true
 L["Hide Time"] = "시간 숨김"
 L["Hide tooltip while in combat."] = "전투 중에는 툴팁을 표시하지 않게 합니다."
 L["Hide Voice Buttons"] = true
@@ -705,6 +713,7 @@ L["Keybind Text"] = "단축키 표시"
 L["Keyword Alert"] = "키워드 발견 시 소리로 알림"
 L["Keywords"] = "강조할 키워드"
 L["Latency"] = "지연 시간 표시"
+L["Leader Indicator"] = true
 L["Leatherworking"] = true
 L["Left Alt"] = true
 L["Left Control"] = true
@@ -748,6 +757,8 @@ L["Make the world map smaller."] = "월드맵을 작게 표시합니다."
 L["Map Opacity When Moving"] = "이동시 지도 불투명도"
 L["Map ID"] = true
 L["Maps"] = "지도"
+L["Mark Quest Reward"] = true
+L["Marks the most valuable quest reward with a gold coin."] = true
 L["Masque Support"] = "Masque 지원"
 L["Match Frame Width"] = "프레임 너비와 맞춤"
 L["Match if Name or NPC ID is NOT in the list."] = true
@@ -1020,7 +1031,6 @@ L["Right"] = "오른쪽"
 L["RightChatDataPanel"] = "우측 패널 정보문자 탭"
 L["RightClick Self-Cast"] = "우클릭으로 자기에게 시전"
 L["RightMiniPanel"] = "미니맵 오른쪽 정보문자"
-L["RL Icon"] = true
 L["Role Icon"] = "역할 아이콘"
 L["Run the installation process."] = "ElvUI의 설치 프로세스를 실행합니다."
 L["Scale"] = "크기"
@@ -1046,6 +1056,7 @@ L["Sends your current profile to your target."] = "대상에게 지금 활성화
 L["Sends your filter settings to your target."] = "대셍에게 지금 사용하고 있는 필터 설정을 전송합니다."
 L["Separate Panel Sizes"] = "좌우패널 크기 따로설정"
 L["Seperate"] = "시전자 구분 정렬"
+L["Set auras that are not from you to desaturad."] = true
 L["Set Settings to Default"] = "설정을 기본값으로 지정"
 L["Set the alpha level of nameplates that are not the target nameplate. Works only in combat."] = true
 L["Set the alpha level of portrait when frame is overlayed."] = true
@@ -1185,11 +1196,9 @@ L["Testing:"] = "|cff2eb7e4< 테스터 >|r"
 L["Text Color"] = "글자 색"
 L["Text Font Size"] = "내용 글씨 크기"
 L["Text Format"] = "글자 형식"
-L["Text Position"] = "위치 기준"
+L["Text Options"] = true
 L["Text Threshold"] = "글자 표시 임계점"
 L["Text Toggle On NPC"] = "NPC면 자원에 이름표시"
-L["Text xOffset"] = "글자 x 좌표"
-L["Text yOffset"] = "글자 y 좌표"
 L["Text"] = "글자 표시"
 L["Texture"] = "텍스쳐"
 L["Textured Icon"] = "스킬이미지 아이콘"
@@ -1255,8 +1264,11 @@ L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to
 L["Threshold before text goes into decimal form. Set to -1 to disable decimals."] = "소숫점으로 표시하게 될 기준점을 결정합니다. -1로 지정 시 작동하지 않습니다."
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "이 값 이하로 시간이 내려가면 시간이 소숫점 단위 초읽기 형태로 표시됩니다.|n|n-1로 설정하면 이 기능을 사용하지 않습니다."
 L["Threshold before the icon will fade out and back in. Set to -1 to disable."] = true
+L["Threshold Colors"] = true
 L["Ticks"] = "주문 틱 표시"
 L["Tiers"] = true
+L["Time Indicator Colors"] = true
+L["Time Options"] = true
 L["Time Remaining Reverse"] = "남은시간이 짧은 순으로"
 L["Time Remaining"] = "남은시간이 긴 순으로"
 L["Time To Hold"] = "유지하는 시간"
@@ -1290,6 +1302,7 @@ L["Transparent"] = "반투명화"
 L["Triggers"] = "활성 조건"
 L["Trivial"] = true
 L["Turtle Color"] = "생존기 색상"
+L["Tutorials"] = true
 L["Under Health Threshold"] = true
 L["Under Power Threshold"] = true
 L["Unfriendly"] = true
@@ -1333,6 +1346,7 @@ L["Use Dead Backdrop"] = "죽음 배경 사용"
 L["Use Default"] = "기존 설정대로"
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = "끌어다 놓기로 재정렬하거나 우클릭으로 필터에서 제거합니다."
 L["Use Health Texture on Background"] = true
+L["Use Indicator Color"] = true
 L["Use Instance ID or Name"] = true
 L["Use Map ID or Name"] = true
 L["Use Subzone Names"] = true
@@ -1384,10 +1398,8 @@ L["Will show Buffs in the Debuff position when there are no Debuffs active, or v
 L["Word Wrap"] = true
 L["World Map Coordinates"] = "세계 지도 좌표"
 L["Wrap After"] = "한 줄에 표시할 오라 수"
-L["X-Offset"] = "가로 조정"
-L["xOffset"] = "X 좌표"
-L["Y-Offset"] = "세로 조정"
-L["yOffset"] = "Y 좌표"
+L["X-Offset"] = "X 좌표"
+L["Y-Offset"] = "Y 좌표"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You cannot copy settings from the same unit."] = "같은 유닛은 복사할 수 없습니다."
@@ -1489,38 +1501,6 @@ L["SEARCH_SYNTAX_DESC"] = [=[
      - keystone : Mythic Keystone.
      - followers : Follower items.
      - champions : Champion equipment.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[글자가 표시되는 형식을 변경할 수 있습니다.
-
-
-|cff2eb7e4< 예시 >|r
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-
-[healthcolor][health:current-max]
-
-[powercolor][power:current]
-
-
-|cff2eb7e4< health(생명력) / power(자원) 형식 >|r
-|cffceff00current|r : 현재 수치
-
-|cffceff00percent|r : 현재 양을 %로 표시
-
-|cffceff00current-max|r : [현재 수치]-[최대값]
-
-|cffceff00current-percent|r : [현재 수치]-[%]
-
-|cffceff00current-max-percent|r : [현재 수치]-[최대값]-[%]
-
-|cffceff00deficit|r : 손실치만 표시하며 현재 수치가 최대치이면 표시하지 않음
-
-
-|cff2eb7e4< name(이름) 형식 >|r
-|cffceff00name:short|r : 최대 10글자
-|cffceff00name:medium|r : 최대 15글자
-|cffceff00name:long|r : 최대 20글자
-
-표시하고 싶지 않으면 빈칸으로 두면 되며, 자세한 정보는 |cff2eb7e4www.tukui.org|r 에서 확인하세요.]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[이곳에 작성한 조건(예를 들어 전투여부)에 따라 이 행동단축바의 페이지를 자동으로 전환시킬 수 있습니다.
@@ -1725,3 +1705,4 @@ L["UNIT_NAMEPLATES_TYPE_2"] = "이름표 상하 정렬";
 L["VOID_STORAGE"] = "공허 보관소";
 L["WORLD_MAP"] = "지도";
 L["XPBAR_LABEL"] = "경험치바";
+L["YELL"] = "외침";

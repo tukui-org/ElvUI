@@ -7,10 +7,7 @@ local pairs, select, unpack = pairs, select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local BNFeaturesEnabled = BNFeaturesEnabled
 local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
-local RaiseFrameLevel = RaiseFrameLevel
-local BNConnected = BNConnected
 
 --Tab Regions
 local tabs = {
@@ -59,6 +56,15 @@ local function BattleNetFrame_OnLeave(button)
 	if not button.backdrop then return end
 
 	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+end
+
+local function RAFRewards(self, rewards)
+	local Reward = _G.RecruitAFriendRewardsFrame
+
+	for reward in Reward.rewardPool:EnumerateActive() do
+		S:HandleIcon(reward.Button.Icon)
+		reward.Button.IconBorder:SetAlpha(0)
+	end
 end
 
 local function LoadSkin()
@@ -192,7 +198,7 @@ local function LoadSkin()
 		S:HandleTab(_G["FriendsFrameTab"..i])
 	end
 
-	for i=1, 3 do
+	for i = 1, 3 do
 		SkinSocialHeaderTab(_G["FriendsTabHeaderTab"..i])
 	end
 
@@ -239,8 +245,58 @@ local function LoadSkin()
 		icon.SetPoint = E.noop
 	end
 
-	--Tutorial - 8.2.5 must fine the new name
-	--S:HandleCloseButton(_G.FriendsTabHeader.FriendsFrameQuickJoinHelpTip.CloseButton)
+	-- RecruitAFriend 8.2.5
+	local RAF = _G.RecruitAFriendFrame
+	S:HandleButton(RAF.RecruitmentButton)
+
+	-- /run RecruitAFriendFrame:ShowSplashScreen()
+	local SplashFrame = RAF.SplashFrame
+	S:HandleButton(SplashFrame.OKButton)
+
+	if E.private.skins.parchmentRemover.enable then
+		SplashFrame.Background:SetColorTexture(unpack(E.media.bordercolor))
+
+		SplashFrame.PictureFrame:Hide()
+		SplashFrame.Bracket_TopLeft:Hide()
+		SplashFrame.Bracket_TopRight:Hide()
+		SplashFrame.Bracket_BottomRight:Hide()
+		SplashFrame.Bracket_BottomLeft:Hide()
+		SplashFrame.PictureFrame_Bracket_TopLeft:Hide()
+		SplashFrame.PictureFrame_Bracket_TopRight:Hide()
+		SplashFrame.PictureFrame_Bracket_BottomRight:Hide()
+		SplashFrame.PictureFrame_Bracket_BottomLeft:Hide()
+	end
+
+	local Reward = RAF.RewardClaiming
+	Reward:StripTextures()
+	Reward:CreateBackdrop("Transparent")
+	S:HandleIcon(Reward.NextRewardButton.Icon)
+	Reward.NextRewardButton.CircleMask:Hide()
+	Reward.NextRewardButton.IconBorder:SetAlpha(0)
+	S:HandleButton(Reward.ClaimOrViewRewardButton)
+
+	local RecruitList = RAF.RecruitList
+	RecruitList.Header:StripTextures()
+	RecruitList.ScrollFrameInset:StripTextures()
+	RecruitList.ScrollFrameInset:CreateBackdrop("Transparent")
+	S:HandleScrollBar(RecruitList.ScrollFrame.Slider)
+
+	-- Recruitment
+	local Recruitment = _G.RecruitAFriendRecruitmentFrame
+	Recruitment:StripTextures()
+	Recruitment:CreateBackdrop("Transparent")
+	S:HandleEditBox(Recruitment.EditBox)
+	S:HandleButton(Recruitment.GenerateOrCopyLinkButton)
+	S:HandleCloseButton(Recruitment.CloseButton)
+
+	-- Rewards
+	local Reward = _G.RecruitAFriendRewardsFrame
+	Reward:StripTextures()
+	Reward:CreateBackdrop("Transparent")
+	S:HandleCloseButton(Reward.CloseButton)
+
+	hooksecurefunc(Reward, 'UpdateRewards', RAFRewards)
+	RAFRewards() -- Because it's loaded already. The securehook is for when it updates in game. Thanks for playing.
 end
 
 S:AddCallback("Friends", LoadSkin)

@@ -903,6 +903,7 @@ E.Options.args.general = {
 					values = {
 						['NONE'] = L["NONE"],
 						['SAY'] = L["SAY"],
+						['YELL'] = L["YELL"],
 						['PARTY'] = L["Party Only"],
 						['RAID'] = L["Party / Raid"],
 						['RAID_ONLY'] = L["Raid Only"],
@@ -941,33 +942,13 @@ E.Options.args.general = {
 					type = 'toggle',
 					disabled = function() return not E.private.general.lootRoll end
 				},
+				questRewardMostValueIcon = {
+					order = 5,
+					type = "toggle",
+					name = L["Mark Quest Reward"],
+					desc = L["Marks the most valuable quest reward with a gold coin."],
+				},
 			},
 		},
 	},
 }
-
-E.Options.args.tagGroup = {
-	order = 925,
-	type = "group",
-	name = L["Available Tags"],
-	args = {
-		header = {
-			order = 1,
-			type = "header",
-			name = L["Available Tags"],
-		},
-		spacer = {
-			order = 2,
-			type = "description",
-			name = "",
-		},
-	}
-}
-
-for Tag in next, E.oUF.Tags.Events do
-	E.Options.args.tagGroup.args[Tag] = {
-		type = "description",
-		fontSize = "medium",
-		name = Tag,
-	}
-end

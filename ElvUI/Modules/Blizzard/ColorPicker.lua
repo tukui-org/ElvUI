@@ -246,7 +246,7 @@ function B:EnhanceColorPicker()
 	b:Point("TOP", "ColorPPCopy", "BOTTOMRIGHT", 0, -7)
 
 	b:SetScript('OnClick', function()
-		local color = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass])
+		local color = E:ClassColor(E.myclass, true)
 		_G.ColorPickerFrame:SetColorRGB(color.r, color.g, color.b)
 		_G.ColorSwatch:SetColorTexture(color.r, color.g, color.b)
 		if _G.ColorPickerFrame.hasOpacity then

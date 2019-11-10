@@ -114,8 +114,8 @@ local function group(order, db, label)
 					},
 					spacer1 = {
 						order = 3,
-						type = "description",
-						name = " "
+						type = "header",
+						name = L["Threshold Colors"]
 					},
 					spacer2 = {
 						order = 4,
@@ -166,6 +166,71 @@ local function group(order, db, label)
 					hhmmColor = {
 						type = 'color',
 						order = 11,
+						name = L["HH:MM"],
+						disabled = function() return not (profile(db)).override end,
+					},
+					spacer3 = {
+						order = 12,
+						type = "header",
+						name = L["Time Indicator Colors"]
+					},
+					useIndicatorColor = {
+						type = "toggle",
+						order = 13,
+						name = L["Use Indicator Color"],
+						get = function(info) return (profile(db))[info[#info]] end,
+						set = function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end,
+						disabled = function() return not (profile(db)).override end,
+					},
+					spacer4 = {
+						order = 14,
+						type = "description",
+						name = ''
+					},
+					expireIndicator = {
+						type = 'color',
+						order = 15,
+						name = L["Expiring"],
+						desc = L["Color when the text is about to expire"],
+						disabled = function() return not (profile(db)).override end,
+					},
+					secondsIndicator = {
+						type = 'color',
+						order = 16,
+						name = L["Seconds"],
+						desc = L["Color when the text is in the seconds format."],
+						disabled = function() return not (profile(db)).override end,
+					},
+					minutesIndicator = {
+						type = 'color',
+						order = 17,
+						name = L["Minutes"],
+						desc = L["Color when the text is in the minutes format."],
+						disabled = function() return not (profile(db)).override end,
+					},
+					hoursIndicator = {
+						type = 'color',
+						order = 18,
+						name = L["Hours"],
+						desc = L["Color when the text is in the hours format."],
+						disabled = function() return not (profile(db)).override end,
+					},
+					daysIndicator = {
+						type = 'color',
+						order = 19,
+						name = L["Days"],
+						desc = L["Color when the text is in the days format."],
+						disabled = function() return not (profile(db)).override end,
+					},
+					hhmmColorIndicator = {
+						type = 'color',
+						order = 20,
+						name = L["MM:SS"],
+						disabled = function() return not (profile(db)).override end,
+					},
+					mmssColorIndicator = {
+						type = 'color',
+						order = 21,
 						name = L["HH:MM"],
 						disabled = function() return not (profile(db)).override end,
 					},
@@ -249,6 +314,7 @@ E.Options.args.cooldown = {
 	type = 'group',
 	name = L["Cooldown Text"],
 	childGroups = "tab",
+	order = 2,
 	get = function(info) return E.db.cooldown[info[#info]] end,
 	set = function(info, value) E.db.cooldown[info[#info]] = value; E:UpdateCooldownSettings('global'); end,
 	args = {

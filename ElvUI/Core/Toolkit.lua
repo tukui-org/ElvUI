@@ -174,7 +174,7 @@ local function GetTemplate(template, isUnitFrameElement)
 	backdropa = 1
 
 	if template == 'ClassColor' then
-		local color = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass]
+		local color = E:ClassColor(E.myclass)
 		borderr, borderg, borderb = color.r, color.g, color.b
 		backdropr, backdropg, backdropb = unpack(E.media.backdropcolor)
 	elseif template == 'Transparent' then
@@ -369,6 +369,7 @@ local StripTexturesBlizzFrames = {
 	'ArtOverlayFrame',
 	'Portrait',
 	'portrait',
+	'ScrollFrameBorder',
 }
 
 local STRIP_TEX = 'Texture'

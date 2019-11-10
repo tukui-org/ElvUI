@@ -242,6 +242,7 @@ L["Clickable Width / Width"] = true
 L["Coding:"] = true
 L["Color all buffs that reduce the unit's incoming damage."] = true
 L["Color aurabar debuffs by type."] = true
+L["Color by Value"] = true
 L["Color castbars by the class of player units."] = true
 L["Color castbars by the reaction type of non-player units."] = true
 L["Color Gradient"] = true
@@ -354,6 +355,7 @@ L["Defines the sort order of the selected sort method."] = true
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = true
 L["Delete Filter"] = true
 L["Desaturate Cooldowns"] = true
+L["Desaturate Icon"] = true
 L["Desaturate Junk Items"] = true
 L["Desaturate Voice Icons"] = true
 L["Desaturated Icon"] = true
@@ -423,6 +425,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Donations:"] = true
 L["Down"] = true
 L["Dungeon & Raid Filter"] = true
+L["Duration Enable"] = true
 L["Duration Font Size"] = true
 L["Duration Reverse"] = true
 L["Duration Text"] = true
@@ -461,6 +464,7 @@ L["Export Now"] = true
 L["Export Profile"] = true
 L["Exported"] = true
 L["Fade Chat"] = true
+L["Fade Duration"] = true
 L["Fade Out Delay"] = true
 L["Fade Out"] = true
 L["Fade Tabs No Backdrop"] = true
@@ -534,6 +538,7 @@ L["Growth Direction"] = true
 L["Growth X-Direction"] = true
 L["Growth Y-Direction"] = true
 L["Guardians"] = true
+L["Guide:"] = true
 L["Guild Control Frame"] = true
 L["Guild Ranks"] = true
 L["Guild Registrar"] = true
@@ -558,8 +563,10 @@ L["Here you can add items or search terms that you want to be excluded from sort
 L["HH:MM Threshold"] = true
 L["HH:MM"] = true
 L["Hide At Max Level"] = true
+L["Hide At Max Power"] = true
 L["Hide Below Max Level"] = true
 L["Hide Both"] = true
+L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true
 L["Hide Cooldown Bling"] = true
 L["Hide Delay"] = true
 L["Hide Error Text"] = true
@@ -569,6 +576,7 @@ L["Hide In Vehicle"] = true
 L["Hide Outside PvP"] = true
 L["Hide specific sections in the datatext tooltip."] = true
 L["Hide Spell Name"] = true
+L["Hide Text"] = true
 L["Hide Time"] = true
 L["Hide tooltip while in combat."] = true
 L["Hide Voice Buttons"] = true
@@ -709,6 +717,7 @@ L["Keybind Text"] = true
 L["Keyword Alert"] = true
 L["Keywords"] = true
 L["Latency"] = true
+L["Leader Indicator"] = true
 L["Leatherworking"] = true
 L["Left Alt"] = true
 L["Left Control"] = true
@@ -752,6 +761,8 @@ L["Make the world map smaller."] = true
 L["Map ID"] = true
 L["Map Opacity When Moving"] = true
 L["Maps"] = true
+L["Mark Quest Reward"] = true
+L["Marks the most valuable quest reward with a gold coin."] = true
 L["Masque Support"] = true
 L["Match Frame Width"] = true
 L["Match if Name or NPC ID is NOT in the list."] = true
@@ -1024,7 +1035,6 @@ L["Right"] = true
 L["RightChatDataPanel"] = "Right Chat"
 L["RightClick Self-Cast"] = true
 L["RightMiniPanel"] = "Minimap Right"
-L["RL Icon"] = true
 L["Role Icon"] = true
 L["Run the installation process."] = true
 L["Scale"] = true
@@ -1050,6 +1060,7 @@ L["Sends your current profile to your target."] = true
 L["Sends your filter settings to your target."] = true
 L["Separate Panel Sizes"] = true
 L["Seperate"] = true
+L["Set auras that are not from you to desaturad."] = true
 L["Set Settings to Default"] = true
 L["Set the alpha level of nameplates that are not the target nameplate. Works only in combat."] = true
 L["Set the alpha level of portrait when frame is overlayed."] = true
@@ -1189,11 +1200,9 @@ L["Testing:"] = true
 L["Text Color"] = true
 L["Text Font Size"] = true
 L["Text Format"] = true
-L["Text Position"] = true
+L["Text Options"] = true
 L["Text Threshold"] = true
 L["Text Toggle On NPC"] = true
-L["Text xOffset"] = true
-L["Text yOffset"] = true
 L["Text"] = true
 L["Texture"] = true
 L["Textured Icon"] = true
@@ -1259,8 +1268,11 @@ L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to
 L["Threshold before text goes into decimal form. Set to -1 to disable decimals."] = true
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = true
 L["Threshold before the icon will fade out and back in. Set to -1 to disable."] = true
+L["Threshold Colors"] = true
 L["Ticks"] = true
 L["Tiers"] = true
+L["Time Indicator Colors"] = true
+L["Time Options"] = true
 L["Time Remaining Reverse"] = true
 L["Time Remaining"] = true
 L["Time To Hold"] = true
@@ -1294,6 +1306,7 @@ L["Transparent"] = true
 L["Triggers"] = true
 L["Trivial"] = true
 L["Turtle Color"] = true
+L["Tutorials"] = true
 L["Under Health Threshold"] = true
 L["Under Power Threshold"] = true
 L["Unfriendly"] = true
@@ -1337,6 +1350,7 @@ L["Use Dead Backdrop"] = true
 L["Use Default"] = true
 L["Use drag and drop to rearrange filter priority or right click to remove a filter."] = true
 L["Use Health Texture on Background"] = true
+L["Use Indicator Color"] = true
 L["Use Instance ID or Name"] = true
 L["Use Map ID or Name"] = true
 L["Use Subzone Names"] = true
@@ -1390,9 +1404,8 @@ L["World Map Coordinates"] = true
 L["WoW Token:"] = true
 L["Wrap After"] = true
 L["X-Offset"] = true
-L["xOffset"] = true
 L["Y-Offset"] = true
-L["yOffset"] = true
+L["Y-Offset"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You cannot copy settings from the same unit."] = true
@@ -1464,30 +1477,6 @@ The following search keywords can also be used:
     • keystone : Mythic Keystone.
     • followers : Follower items.
     • champions : Champion equipment.]=]
-
-L["TEXT_FORMAT_DESC"] = [=[Provide a string to change the text format.
-
-Examples:
-[namecolor][name] [difficultycolor][smartlevel] [shortclassification]
-[healthcolor][health:current-max]
-[powercolor][power:current]
-
-Health / Power Formats:
-'current' - current amount
-'percent' - percentage amount
-'current-max' - current amount followed by maximum amount, will display only max if current is equal to max
-'current-percent' - current amount followed by percentage amount, will display only max if current is equal to max
-'current-max-percent' - current amount, max amount, followed by percentage amount, will display only max if current is equal to max
-'deficit' - display the deficit value, will display nothing if there is no deficit
-
-Name Formats:
-'name:veryshort' - Name restricted to 5 characters
-'name:short' - Name restricted to 10 characters
-'name:medium' - Name restricted to 15 characters
-'name:long' - Name restricted to 20 characters
-'name:short:translit' - Name restricted to 10 characters with transliteration
-
-To disable leave the field blank, if you need more information visit https://www.tukui.org/forum/viewtopic.php?f=9&t=6]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = true
@@ -1668,3 +1657,4 @@ L["UNIT_NAMEPLATES_TYPE_2"] = "Stacking Nameplates";
 L["VOID_STORAGE"] = "Void Storage";
 L["WORLD_MAP"] = "Map";
 L["XPBAR_LABEL"] = "XP Bar";
+L["YELL"] = "Yell";

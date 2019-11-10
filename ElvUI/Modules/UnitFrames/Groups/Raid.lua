@@ -23,15 +23,10 @@ function UF:Construct_RaidFrames()
 	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 100)
 
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
-
 	self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
-	self.Power.frequentUpdates = false;
-
 	self.PowerPrediction = UF:Construct_PowerPrediction(self)
-
 	self.Portrait3D = UF:Construct_Portrait(self, 'model')
 	self.Portrait2D = UF:Construct_Portrait(self, 'texture')
-
 	self.Name = UF:Construct_NameText(self)
 	self.Buffs = UF:Construct_Buffs(self)
 	self.Debuffs = UF:Construct_Debuffs(self)
@@ -45,7 +40,6 @@ function UF:Construct_RaidFrames()
 	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.PhaseIndicator = UF:Construct_PhaseIcon(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
-
 	self.ThreatIndicator = UF:Construct_Threat(self)
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 	self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
@@ -227,7 +221,7 @@ function UF:Update_RaidFrames(frame, db)
 	UF:Configure_Fader(frame)
 
 	--Buff Indicators
-	UF:UpdateAuraWatch(frame)
+	UF:Configure_AuraWatch(frame)
 
 	--ReadyCheck
 	UF:Configure_ReadyCheckIcon(frame)

@@ -12,7 +12,6 @@ local tinsert = tinsert
 
 function UF:Construct_PetFrame(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
-	frame.Health.frequentUpdates = true;
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
 	frame.Name = self:Construct_NameText(frame)
@@ -119,7 +118,8 @@ function UF:Update_PetFrame(frame, db)
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
 
-	UF:UpdateAuraWatch(frame)
+	UF:Configure_AuraWatch(frame, true)
+
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 

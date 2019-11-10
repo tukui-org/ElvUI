@@ -6,6 +6,7 @@ E.Options.args.databars = {
 	type = "group",
 	name = L["DataBars"],
 	childGroups = "tab",
+	order = 2,
 	get = function(info) return E.db.databars[info[#info]] end,
 	set = function(info, value) E.db.databars[info[#info]] = value; end,
 	args = {
@@ -362,25 +363,31 @@ E.Options.args.databars = {
 					type = "toggle",
 					name = L["Mouseover"],
 				},
-				hideInVehicle = {
+				hideAtMaxLevel = {
 					order = 3,
+					type = "toggle",
+					name = L["Hide At Max Power"],
+					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateAzerite() end,
+				},
+				hideInVehicle = {
+					order = 4,
 					type = "toggle",
 					name = L["Hide In Vehicle"],
 					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateAzerite() end,
 				},
 				hideInCombat = {
-					order = 4,
+					order = 5,
 					type = "toggle",
 					name = L["Hide In Combat"],
 					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateAzerite() end,
 				},
 				reverseFill = {
-					order = 5,
+					order = 6,
 					type = "toggle",
 					name = L["Reverse Fill Direction"],
 				},
 				orientation = {
-					order = 6,
+					order = 7,
 					type = "select",
 					name = L["Statusbar Fill Orientation"],
 					desc = L["Direction the bar moves on gains/losses"],
@@ -390,37 +397,37 @@ E.Options.args.databars = {
 					}
 				},
 				width = {
-					order = 7,
+					order = 8,
 					type = "range",
 					name = L["Width"],
 					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
 				},
 				height = {
-					order = 8,
+					order = 9,
 					type = "range",
 					name = L["Height"],
 					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
 				},
 				font = {
-					order = 9,
+					order = 10,
 					type = "select", dialogControl = "LSM30_Font",
 					name = L["Font"],
 					values = AceGUIWidgetLSMlists.font,
 				},
 				textSize = {
-					order = 10,
+					order = 11,
 					name = L["FONT_SIZE"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
 				fontOutline = {
-					order = 11,
+					order = 12,
 					type = "select",
 					name = L["Font Outline"],
 					values = C.Values.FontFlags,
 				},
 				textFormat = {
-					order = 12,
+					order = 13,
 					type = 'select',
 					name = L["Text Format"],
 					width = "double",

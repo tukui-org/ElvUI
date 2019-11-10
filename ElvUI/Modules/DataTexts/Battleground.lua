@@ -51,7 +51,7 @@ end
 function DT:BattlegroundStats()
 	DT:SetupTooltip(self)
 
-	local classColor = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass]) or _G.RAID_CLASS_COLORS[E.myclass]
+	local classColor = E:ClassColor(E.myclass)
 	local pvpStatIDs = C_PvP_GetMatchPVPStatIDs()
 	if pvpStatIDs then
 		for index = 1, GetNumBattlefieldScores() do

@@ -213,8 +213,9 @@ function UF:Configure_Power(frame)
 		end
 		if db.power.strataAndLevel and db.power.strataAndLevel.useCustomLevel then
 			power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
-			power.backdrop:SetFrameLevel(power:GetFrameLevel() - 1)
 		end
+
+		power.backdrop:SetFrameLevel(power:GetFrameLevel() - 1)
 
 		if frame.POWERBAR_DETACHED and db.power.parent == "UIPARENT" then
 			E.FrameLocks[power] = true
@@ -255,13 +256,25 @@ function UF:PostUpdatePowerColor()
 	end
 end
 
-function UF:PostUpdatePower(unit, _, _, max)
+function UF:PostUpdatePower(unit, cur, _, max)
 	local parent = self.origParent or self:GetParent()
 	if parent.isForced then
 		self:SetValue(random(1, max))
 	end
 
-	if parent.db and parent.db.power and parent.db.power.hideonnpc then
-		UF:PostNamePosition(parent, unit)
+	if parent.db and parent.db.power then
+		if unit == 'player' and parent.db.power.autoHide and parent.POWERBAR_DETACHED then
+			if (cur == 0) then
+				self:Hide()
+			else
+				self:Show()
+			end
+		elseif not self:IsShown() then
+			self:Show()
+		end
+
+		if parent.db.power.hideonnpc then
+			UF:PostNamePosition(parent, unit)
+		end
 	end
 end

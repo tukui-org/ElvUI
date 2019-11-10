@@ -248,7 +248,7 @@ end
 function AFK:Initialize()
 	self.Initialized = true
 
-	local classColor = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass]
+	local classColor = E:ClassColor(E.myclass)
 
 	self.AFKMode = CreateFrame("Frame", "ElvUIAFKFrame")
 	self.AFKMode:SetFrameLevel(1)

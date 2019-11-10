@@ -215,7 +215,9 @@ local function Click(self, btn)
 
 		for _, info in ipairs(guildTable) do
 			if (info.online or info.isMobile) and info.name ~= E.myname then
-				local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.class]) or _G.RAID_CLASS_COLORS[info.class], GetQuestDifficultyColor(info.level)
+				local classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
+				if not classc then classc = levelc end
+
 				local name = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info.level, classc.r*255,classc.g*255,classc.b*255, info.name)
 				if inGroup(info.name) ~= "" then
 					name = name.." |cffaaaaaa*|r"
@@ -278,7 +280,7 @@ local function OnEnter(self, _, noUpdate)
 
 		if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zone) then zonec = activezone else zonec = inactivezone end
 
-		local classc, levelc = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[info.class]) or _G.RAID_CLASS_COLORS[info.class], GetQuestDifficultyColor(info.level)
+		local classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
 		if not classc then classc = levelc end
 
 		if IsShiftKeyDown() then

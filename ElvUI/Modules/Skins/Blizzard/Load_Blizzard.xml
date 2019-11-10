@@ -75,6 +75,7 @@
 	<Script file='Trade.lua'/>
 	<Script file='Tradeskill.lua'/>
 	<Script file='Trainer.lua'/>
+	<Script file='TutorialFrame.lua'/>
 	<Script file='VoidStorage.lua'/>
 	<Script file='Warboard.lua'/>
 	<Script file='WarfrontPartyPose.lua'/>

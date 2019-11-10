@@ -180,7 +180,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.castColor = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.castClassColor = false
 	elseif theme == 'class' then
-		classColor = E.myclass == 'PRIEST' and E.PriestColors or (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[E.myclass] or _G.RAID_CLASS_COLORS[E.myclass])
+		classColor = E:ClassColor(E.myclass, true)
 
 		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
@@ -419,7 +419,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.unitframe.units.party.width = 231
 		--Raid
 			E.db.unitframe.units.raid.growthDirection = 'RIGHT_UP'
-			E.db.unitframe.units.raid.health.frequentUpdates = true
 			E.db.unitframe.units.raid.infoPanel.enable = true
 			E.db.unitframe.units.raid.name.attachTextTo = 'InfoPanel'
 			E.db.unitframe.units.raid.name.position = 'BOTTOMLEFT'
@@ -456,9 +455,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.movers.ShiftAB = 'TOPLEFT,ElvUIParent,BOTTOMLEFT,4,273'
 			E.db.movers.VOICECHAT = 'TOPLEFT,ElvUIParent,TOPLEFT,250,-82'
 			E.db.unitframe.units.party.enable = false
-			E.db.unitframe.units.party.health.frequentUpdates = true
 			E.db.unitframe.units.raid.visibility = '[nogroup] hide;show'
-			E.db.unitframe.units.raid40.health.frequentUpdates = true
 		end
 	end
 
@@ -589,7 +586,7 @@ local function SetPage(PageNum)
 	if PageNum == 1 then
 		f.SubTitle:SetFormattedText(L["Welcome to ElvUI version %s!"], E.version)
 		f.Desc1:SetText(L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."])
-		f.Desc2:SetText(L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the \'C\' button on the minimap. Press the button below if you wish to skip the installation process."])
+		f.Desc2:SetText(L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."])
 		f.Desc3:SetText(L["Please press the continue button to go onto the next step."])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', InstallComplete)
@@ -678,8 +675,8 @@ local function SetPage(PageNum)
 		InstallOption3Button:SetText(L["Caster DPS"])
 	elseif PageNum == 7 then
 		f.SubTitle:SetText(L["Auras"])
-		f.Desc1:SetText(L["Select the type of aura system you want to use with ElvUI\'s unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."])
-		f.Desc2:SetText(L["If you have an icon or aurabar that you don\'t want to display simply hold down shift and right click the icon for it to disapear."])
+		f.Desc1:SetText(L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."])
+		f.Desc2:SetText(L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() SetupAuras(true) end)

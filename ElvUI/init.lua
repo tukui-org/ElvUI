@@ -438,71 +438,79 @@ function AddOn:ToggleOptionsUI(msg)
 	_G.GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
 end
 
---HonorFrameLoadTaint workaround
---credit: https://www.townlong-yak.com/bugs/afKy4k-HonorFrameLoadTaint
-if (_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
-	_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION = 2
-	hooksecurefunc('UIDropDownMenu_InitializeHelper', function()
-		if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION ~= 2 then
-			return
+do --taint workarounds by townlong-yak.com (rearranged by Simpy)
+	--HonorFrameLoadTaint	- https://www.townlong-yak.com/bugs/afKy4k-HonorFrameLoadTaint
+	if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0 < 2 then _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION = 2 end
+	--CommunitiesUI			- https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
+	if _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0 < 1 then _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1 end
+	--CommunitiesUI #2		- https://www.townlong-yak.com/bugs/YhgQma-SetValueRefreshTaint
+	if _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION or 0 < 1 then _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION = 1 end
+	--RefreshOverread		- https://www.townlong-yak.com/bugs/Mx7CWN-RefreshOverread
+	if _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION or 0 < 1 then _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION = 1 end
+
+	if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION == 2 or _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION == 1 or _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
+		local function drop(t, k)
+			local c = 42
+			t[k] = nil
+			while not issecurevariable(t, k) do
+				if t[c] == nil then
+					t[c] = nil
+				end
+				c = c + 1
+			end
 		end
-		for i=1, _G.UIDROPDOWNMENU_MAXLEVELS do
-			for j=1, _G.UIDROPDOWNMENU_MAXBUTTONS do
-				local b = _G['DropDownList' .. i .. 'Button' .. j]
-				if not (issecurevariable(b, 'value') or b:IsShown()) then
-					b.value = nil
-					repeat
-						j, b["fx" .. j] = j+1, nil
-					until issecurevariable(b, 'value')
+
+		hooksecurefunc('UIDropDownMenu_InitializeHelper', function(frame)
+			if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION == 2 or _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
+				for i=1, _G.UIDROPDOWNMENU_MAXLEVELS do
+					for j=1, _G.UIDROPDOWNMENU_MAXBUTTONS do
+						local b, _ = _G['DropDownList' .. i .. 'Button' .. j]
+						if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION == 2 and not (issecurevariable(b, 'value') or b:IsShown()) then
+							b.value = nil
+							repeat j, b['fx' .. j] = j+1, nil
+							until issecurevariable(b, 'value')
+						end
+						if _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
+							_ = issecurevariable(b, 'checked')      or drop(b, 'checked')
+							_ = issecurevariable(b, 'notCheckable') or drop(b, 'notCheckable')
+						end
+					end
+				end
+			end
+
+			if _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION == 1 then
+				if _G.UIDROPDOWNMENU_OPEN_MENU and _G.UIDROPDOWNMENU_OPEN_MENU ~= frame and not issecurevariable(_G.UIDROPDOWNMENU_OPEN_MENU, 'displayMode') then
+					_G.UIDROPDOWNMENU_OPEN_MENU = nil
+					local prefix, i = ' \0', 1
+					repeat i, _G[prefix .. i] = i + 1, nil
+					until issecurevariable(_G.UIDROPDOWNMENU_OPEN_MENU)
+				end
+			end
+		end)
+	end
+
+	if _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION == 1 then
+		local function CleanDropdowns()
+			if _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION == 1 then
+				local f, f2 = _G.FriendsFrame, _G.FriendsTabHeader
+				local s = f:IsShown()
+				f:Hide()
+				f:Show()
+				if not f2:IsShown() then
+					f2:Show()
+					f2:Hide()
+				end
+				if not s then
+					f:Hide()
 				end
 			end
 		end
-	end)
-end
 
---CommunitiesUI taint workaround
---credit: https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
-if (_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
-	_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
-	hooksecurefunc('UIDropDownMenu_InitializeHelper', function(frame)
-		if _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION ~= 1 then
-			return
-		end
-		if _G.UIDROPDOWNMENU_OPEN_MENU and _G.UIDROPDOWNMENU_OPEN_MENU ~= frame
-		   and not issecurevariable(_G.UIDROPDOWNMENU_OPEN_MENU, 'displayMode') then
-			_G.UIDROPDOWNMENU_OPEN_MENU = nil
-			local t, f, prefix, i = _G, issecurevariable, ' \0', 1
-			repeat
-				i, t[prefix .. i] = i + 1, nil
-			until f('UIDROPDOWNMENU_OPEN_MENU')
-		end
-	end)
-end
-
---CommunitiesUI taint workaround #2
---credit: https://www.townlong-yak.com/bugs/YhgQma-SetValueRefreshTaint
-if (_G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION or 0) < 1 then
-	_G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION = 1
-	local function CleanDropdowns()
-		if _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION ~= 1 then
-			return
-		end
-		local f, f2 = _G.FriendsFrame, _G.FriendsTabHeader
-		local s = f:IsShown()
-		f:Hide()
-		f:Show()
-		if not f2:IsShown() then
-			f2:Show()
-			f2:Hide()
-		end
-		if not s then
-			f:Hide()
-		end
+		hooksecurefunc('Communities_LoadUI', CleanDropdowns)
+		hooksecurefunc('SetCVar', function(n)
+			if n == 'lastSelectedClubId' then
+				CleanDropdowns()
+			end
+		end)
 	end
-	hooksecurefunc('Communities_LoadUI', CleanDropdowns)
-	hooksecurefunc('SetCVar', function(n)
-		if n == 'lastSelectedClubId' then
-			CleanDropdowns()
-		end
-	end)
 end

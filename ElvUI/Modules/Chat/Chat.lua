@@ -1144,14 +1144,13 @@ function CH:GetBNFirstToonClassColor(id)
 	if not id then return end
 	for i = 1, BNGetNumFriends() do
 		local accountInfo = C_BattleNet_GetFriendAccountInfo(i)
-		if (accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline) and accountInfo.bnetAccountID == id then
+		if accountInfo and (accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline) and accountInfo.bnetAccountID == id then
 			local numGameAccounts = C_BattleNet_GetFriendNumGameAccounts(i)
-			if numGameAccounts > 0 then
+			if numGameAccounts and numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
 					local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
-					local className = gameAccountInfo.className
-					if (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) and className and className ~= '' then
-						return className --return the first toon's class
+					if gameAccountInfo and (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) and gameAccountInfo.className and gameAccountInfo.className ~= '' then
+						return gameAccountInfo.className --return the first toon's class
 					end
 				end
 			end
@@ -1183,7 +1182,7 @@ function CH:GetBNFriendColor(name, id, useBTag)
 		Class = gameAccountInfo and gameAccountInfo.className and E:UnlocalizedClassName(gameAccountInfo.className)
 	end
 
-	local Color = Class and (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[Class] or _G.RAID_CLASS_COLORS[Class])
+	local Color = E:ClassColor(Class)
 	return (Color and format('|c%s%s|r', Color.colorStr, TAG or name)) or TAG or name, isBattleTagFriend and BATTLE_TAG
 end
 
@@ -1223,7 +1222,7 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 		local _, englishClass = GetPlayerInfoByGUID(arg12)
 
 		if ( englishClass ) then
-			local classColorTable = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[englishClass] or _G.RAID_CLASS_COLORS[englishClass]
+			local classColorTable = E:ClassColor(englishClass)
 			if ( not classColorTable ) then
 				return arg2
 			end
@@ -1252,7 +1251,7 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 				for i=1, GetNumGroupMembers() do
 					local name, _, subgroup, _, _, classFileName = GetRaidRosterInfo(i)
 					if ( name and subgroup == groupIndex ) then
-						local classColorTable = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classFileName] or _G.RAID_CLASS_COLORS[classFileName]
+						local classColorTable = E:ClassColor(classFileName)
 						if ( classColorTable ) then
 							name = format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name)
 						end
@@ -1501,6 +1500,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				message = format(globalstring, arg2)
 			elseif ( arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE" ) then
 				local accountInfo = C_BattleNet_GetAccountInfoByID(arg13)
+				if not accountInfo then return end
 				local client = accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.clientProgram
 				if (client and client ~= "") then
 					local characterName = BNet_GetValidatedCharacterName(accountInfo.gameAccountInfo.characterName, accountInfo.battleTag, client) or ""
@@ -1885,9 +1885,11 @@ function CH:CheckKeyword(message, author)
 				local classMatch = CH.ClassNames[lowerCaseWord]
 				local wordMatch = classMatch and lowerCaseWord
 
-				if(wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch]) then
-					local classColorTable = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classMatch] or _G.RAID_CLASS_COLORS[classMatch]
-					word = gsub(word, gsub(tempWord, "%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+				if wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch] then
+					local classColorTable = E:ClassColor(classMatch)
+					if classColorTable then
+						word = gsub(word, gsub(tempWord, "%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+					end
 				end
 			end
 		end
@@ -1935,11 +1937,33 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	chatFrame:FontTemplate(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
 end
 
+CH.SecureSlashCMD = {
+	'^/rl',
+	'^/tar',
+	'^/target',
+	'^/startattack',
+	'^/stopattack',
+	'^/assist',
+	'^/cast',
+	'^/use',
+	'^/castsequence',
+	'^/cancelaura',
+	'^/cancelform',
+	'^/equip',
+	'^/exit',
+	'^/camp',
+	'^/logout'
+}
+
 function CH:ChatEdit_AddHistory(_, line) -- editBox, line
 	line = line and strtrim(line)
 
 	if line and strlen(line) > 0 then
-		if strfind(line, '/rl') then return end
+		for _, command in next, CH.SecureSlashCMD do
+			if strmatch(line, command) then
+				return
+			end
+		end
 
 		for index, text in pairs(ElvCharacterDB.ChatEditHistory) do
 			if text == line then
@@ -2131,17 +2155,19 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 
 	for i = 1, BNGetNumFriends() do
 		local accountInfo = C_BattleNet_GetFriendAccountInfo(i)
-		if accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline then
+		if accountInfo and accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline then
 			local numGameAccounts = C_BattleNet_GetFriendNumGameAccounts(i)
-			for y = 1, numGameAccounts do
-				local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
-				if (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) and (accountInfo.accountName == playerName) then
-					playerName = gameAccountInfo.characterName
-					if gameAccountInfo.realmName and gameAccountInfo.realmName ~= E.myrealm then
-						playerName = format('%s-%s', playerName, gsub(gameAccountInfo.realmName,'[%s%-]',''))
-					end
-					if leaderName == playerName then
-						return true
+			if numGameAccounts then
+				for y = 1, numGameAccounts do
+					local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
+					if gameAccountInfo and (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) and (accountInfo.accountName == playerName) then
+						playerName = gameAccountInfo.characterName
+						if gameAccountInfo.realmName and gameAccountInfo.realmName ~= E.myrealm then
+							playerName = format('%s-%s', playerName, gsub(gameAccountInfo.realmName,'[%s%-]',''))
+						end
+						if leaderName == playerName then
+							return true
+						end
 					end
 				end
 			end

@@ -14,11 +14,11 @@ local function GetAuraOptions(headerName)
 			name = headerName,
 		},
 		size = {
+			order = 1,
 			type = 'range',
 			name = L["Size"],
 			desc = L["Set the size of the individual auras."],
 			min = 16, max = 60, step = 2,
-			order = 1,
 		},
 		durationFontSize = {
 			order = 2,
@@ -33,8 +33,8 @@ local function GetAuraOptions(headerName)
 			min = 4, max = 212, step = 1,
 		},
 		growthDirection = {
-			type = 'select',
 			order = 4,
+			type = 'select',
 			name = L["Growth Direction"],
 			desc = L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."],
 			values = {
@@ -49,15 +49,15 @@ local function GetAuraOptions(headerName)
 			},
 		},
 		wrapAfter = {
-			type = 'range',
 			order = 5,
+			type = 'range',
 			name = L["Wrap After"],
 			desc = L["Begin a new row or column after this many auras."],
 			min = 1, max = 32, step = 1,
 		},
 		maxWraps = {
-			name = L["Max Wraps"],
 			order = 6,
+			name = L["Max Wraps"],
 			desc = L["Limit the number of rows or columns."],
 			type = 'range',
 			min = 1, max = 32, step = 1,
@@ -115,6 +115,7 @@ E.Options.args.auras = {
 	type = 'group',
 	name = L["BUFFOPTIONS_LABEL"],
 	childGroups = "tab",
+	order = 2,
 	get = function(info) return E.db.auras[info[#info]] end,
 	set = function(info, value) E.db.auras[info[#info]] = value; A:UpdateHeader(ElvUIPlayerBuffs); A:UpdateHeader(ElvUIPlayerDebuffs) end,
 	args = {
@@ -154,17 +155,22 @@ E.Options.args.auras = {
 					name = L["General"],
 				},
 				fadeThreshold = {
+					order = 1,
 					type = 'range',
 					name = L["Fade Threshold"],
 					desc = L["Threshold before the icon will fade out and back in. Set to -1 to disable."],
 					min = -1, max = 30, step = 1,
-					order = 1,
 				},
 				font = {
-					type = "select", dialogControl = 'LSM30_Font',
 					order = 2,
+					type = "select", dialogControl = 'LSM30_Font',
 					name = L["Font"],
 					values = AceGUIWidgetLSMlists.font,
+				},
+				showDuration = {
+					order = 3,
+					type = 'toggle',
+					name = L["Duration Enable"],
 				},
 				fontOutline = {
 					order = 4,
@@ -197,8 +203,89 @@ E.Options.args.auras = {
 					type = 'range',
 					min = -60, max = 60, step = 1,
 				},
-				masque = {
+				statusBar = {
 					order = 9,
+					type = 'group',
+					name = L["Statusbar"],
+					guiInline = true,
+					get = function(info) return E.db.auras[info[#info]] end,
+					set = function(info, value) E.db.auras[info[#info]] = value; A:UpdateHeader(ElvUIPlayerBuffs); A:UpdateHeader(ElvUIPlayerDebuffs) end,
+					args = {
+						barShow = {
+							order = 0,
+							type = 'toggle',
+							name = L["Enable"],
+						},
+						barNoDuration = {
+							order = 0,
+							type = 'toggle',
+							name = L["No Duration"],
+						},
+						barTexture = {
+							order = 3,
+							type = "select", dialogControl = 'LSM30_Statusbar',
+							name = L["Texture"],
+							values = _G.AceGUIWidgetLSMlists.statusbar,
+						},
+						barColor = {
+							type = 'color',
+							order = 4,
+							name = L.COLOR,
+							hasAlpha = false,
+							disabled = function() return not E.db.auras.barShow or (E.db.auras.barColorGradient or not E.db.auras.barShow) end,
+							get = function(info)
+								local t = E.db.auras.barColor
+								local d = P.auras.barColor
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b)
+								local t = E.db.auras.barColor
+								t.r, t.g, t.b = r, g, b
+							end,
+						},
+						barColorGradient = {
+							order = 5,
+							type = 'toggle',
+							name = L["Color by Value"],
+							disabled = function() return not E.db.auras.barShow end,
+						},
+						barWidth = {
+							order = 6,
+							type = 'range',
+							name = L["Width"],
+							min = 1, max = 10, step = 1,
+							disabled = function() return not E.db.auras.barShow end,
+						},
+						barHeight = {
+							order = 7,
+							type = 'range',
+							name = L["Height"],
+							min = 1, max = 10, step = 1,
+							disabled = function() return not E.db.auras.barShow end,
+						},
+						barSpacing = {
+							order = 8,
+							type = 'range',
+							name = L["Spacing"],
+							min = -10, max = 10, step = 1,
+							disabled = function() return not E.db.auras.barShow end,
+						},
+						barPosition = {
+							order = 9,
+							type = 'select',
+							name = L["Position"],
+							disabled = function() return not E.db.auras.barShow end,
+							values = {
+								['TOP'] = L["Top"],
+								['BOTTOM'] = L["Bottom"],
+								['LEFT'] = L["Left"],
+								['RIGHT'] = L["Right"],
+							},
+						},
+					},
+				},
+				masque = {
+					order = 20,
 					type = "group",
 					guiInline = true,
 					name = L["Masque Support"],

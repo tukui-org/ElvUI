@@ -130,6 +130,13 @@ function UF:Configure_Castbar(frame)
 		castbar.LatencyTexture:Hide()
 	end
 
+	local textColor = db.castbar.textColor
+	castbar.Text:SetTextColor(textColor.r, textColor.g, textColor.b)
+	castbar.Time:SetTextColor(textColor.r, textColor.g, textColor.b)
+
+	castbar.Text:Point("LEFT", castbar, "LEFT", db.castbar.xOffsetText, db.castbar.yOffsetText)
+	castbar.Time:Point("RIGHT", castbar, "RIGHT", db.castbar.xOffsetTime, db.castbar.yOffsetTime)
+
 	--Icon
 	if db.castbar.icon then
 		castbar.Icon = castbar.ButtonIcon
@@ -138,12 +145,7 @@ function UF:Configure_Castbar(frame)
 		if (not db.castbar.iconAttached) then
 			castbar.Icon.bg:Size(db.castbar.iconSize)
 		else
-			if (db.castbar.insideInfoPanel and frame.USE_INFO_PANEL) then
-				castbar.Icon.bg:Size(db.infoPanel.height - frame.SPACING*2)
-			else
-				castbar.Icon.bg:Size(db.castbar.height-frame.SPACING*2)
-			end
-
+			castbar.Icon.bg:Size(db.castbar.height-frame.SPACING*2)
 			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (frame.BORDER + frame.SPACING*5))
 		end
 
@@ -162,23 +164,38 @@ function UF:Configure_Castbar(frame)
 		castbar.Spark = nil
 	end
 
+	if db.castbar.hidetext then
+		castbar.Text:SetAlpha(0)
+		castbar.Time:SetAlpha(0)
+	else
+		castbar.Text:SetAlpha(1)
+		castbar.Time:SetAlpha(1)
+	end
+
 	castbar:ClearAllPoints()
-	if (db.castbar.insideInfoPanel and frame.USE_INFO_PANEL) then
+
+	if db.castbar.overlayOnFrame ~= 'None' then
+		local anchor = frame[db.castbar.overlayOnFrame]
+
 		if (not db.castbar.iconAttached) then
-			castbar:SetInside(frame.InfoPanel, 0, 0)
+			castbar:SetInside(anchor, 0, 0)
 		else
+			if castbar.Icon then
+				castbar.Icon.bg:Size(anchor:GetHeight() - frame.SPACING*2)
+			end
+
 			local iconWidth = db.castbar.icon and (castbar.Icon.bg:GetWidth() - frame.BORDER) or 0
 			if(frame.ORIENTATION == "RIGHT") then
-				castbar:Point("TOPLEFT", frame.InfoPanel, "TOPLEFT")
-				castbar:Point("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT", -iconWidth - frame.SPACING*3, 0)
+				castbar:Point("TOPLEFT", anchor, "TOPLEFT")
+				castbar:Point("BOTTOMRIGHT", anchor, "BOTTOMRIGHT", -iconWidth - frame.SPACING*3, 0)
 			else
-				castbar:Point("TOPLEFT", frame.InfoPanel, "TOPLEFT",  iconWidth + frame.SPACING*3, 0)
-				castbar:Point("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT")
+				castbar:Point("TOPLEFT", anchor, "TOPLEFT",  iconWidth + frame.SPACING*3, 0)
+				castbar:Point("BOTTOMRIGHT", anchor, "BOTTOMRIGHT")
 			end
 		end
 
 		if db.castbar.spark then
-			castbar.Spark:Height(db.infoPanel and db.infoPanel.height * 2) -- Grab the height from the infopanel.
+			castbar.Spark:Height(anchor:GetHeight() * 2)
 		end
 
 		if(castbar.Holder.mover) then

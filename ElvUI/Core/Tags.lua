@@ -21,6 +21,7 @@ local GetQuestGreenRange = GetQuestGreenRange
 local GetQuestLogTitle = GetQuestLogTitle
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetSpecialization = GetSpecialization
+local GetSpecializationInfo = GetSpecializationInfo
 local GetThreatStatusColor = GetThreatStatusColor
 local GetTime = GetTime
 local GetUnitSpeed = GetUnitSpeed
@@ -75,6 +76,13 @@ local SPELL_POWER_MANA = Enum.PowerType.Mana
 local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 
 -- GLOBALS: Hex, _TAGS, ElvUF
+
+------------------------------------------------------------------------
+--	Tag Extra Events
+------------------------------------------------------------------------
+
+ElvUF.Tags.SharedEvents.PLAYER_TALENT_UPDATE = true
+ElvUF.Tags.SharedEvents.QUEST_LOG_UPDATE = true
 
 ------------------------------------------------------------------------
 --	Tags
@@ -161,76 +169,6 @@ local function GetClassPower(class)
 	return min, max, r, g, b
 end
 
-ElvUF.Tags.Events['altpower:percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:percent'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
-	if cur > 0 then
-		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
-
-		return E:GetFormattedText('PERCENT', cur, max)
-	else
-		return nil
-	end
-end
-
-ElvUF.Tags.Events['altpower:current'] = "UNIT_POWER_UPDATE"
-ElvUF.Tags.Methods['altpower:current'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
-	if cur > 0 then
-		return cur
-	else
-		return nil
-	end
-end
-
-ElvUF.Tags.Events['altpower:current-percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:current-percent'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
-	if cur > 0 then
-		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
-
-		return E:GetFormattedText('CURRENT_PERCENT', cur, max)
-	else
-		return nil
-	end
-end
-
-ElvUF.Tags.Events['altpower:deficit'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:deficit'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
-	if cur > 0 then
-		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
-
-		return E:GetFormattedText('DEFICIT', cur, max)
-	else
-		return nil
-	end
-end
-
-ElvUF.Tags.Events['altpower:current-max'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:current-max'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
-	if cur > 0 then
-		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
-
-		return E:GetFormattedText('CURRENT_MAX', cur, max)
-	else
-		return nil
-	end
-end
-
-ElvUF.Tags.Events['altpower:current-max-percent'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
-ElvUF.Tags.Methods['altpower:current-max-percent'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
-	if cur > 0 then
-		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
-
-		E:GetFormattedText('CURRENT_MAX_PERCENT', cur, max)
-	else
-		return nil
-	end
-end
-
 ElvUF.Tags.Events['altpowercolor'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
 ElvUF.Tags.Methods['altpowercolor'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
@@ -252,6 +190,17 @@ ElvUF.Tags.Methods['afk'] = function(unit)
 	local isAFK = UnitIsAFK(unit)
 	if isAFK then
 		return format('|cffFFFFFF[|r|cffFF0000%s|r|cFFFFFFFF]|r', DEFAULT_AFK_MESSAGE)
+	else
+		return nil
+	end
+end
+
+ElvUF.Tags.Events['faction:icon'] = 'UNIT_FACTION'
+ElvUF.Tags.Methods['faction:icon'] = function(unit)
+	local factionGroup = UnitFactionGroup(unit)
+
+	if (factionGroup == 'Horde' or factionGroup == 'Alliance') then
+		return CreateTextureMarkup("Interface\\FriendsFrame\\PlusManz-"..factionGroup, 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
 	else
 		return nil
 	end
@@ -318,8 +267,8 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end
 
-	ElvUF.Tags.Events[format('classpower:%s', textFormat)] = E.myclass == 'MONK' and 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA' or 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
-	ElvUF.Tags.Methods[format('classpower:%s', textFormat)] = function()
+	ElvUF.Tags.Events[format('classpower:%s', tagTextFormat)] = E.myclass == 'MONK' and 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA' or 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+	ElvUF.Tags.Methods[format('classpower:%s', tagTextFormat)] = function()
 		local min, max = GetClassPower(E.myclass)
 		if min == 0 then
 			return nil
@@ -327,12 +276,24 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			return E:GetFormattedText(textFormat, min, max)
 		end
 	end
+
+	ElvUF.Tags.Events[format('altpower:%s', tagTextFormat)] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
+	ElvUF.Tags.Methods[format('altpower:%s', tagTextFormat)] = function(u)
+		local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
+		if cur > 0 then
+			local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
+
+			return E:GetFormattedText(textFormat, cur, max)
+		else
+			return nil
+		end
+	end
 end
 
 for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 20}) do
 	ElvUF.Tags.Events[format('health:deficit-percent:name-%s', textFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
 	ElvUF.Tags.Methods[format('health:deficit-percent:name-%s', textFormat)] = function(unit)
-		local cur, max = E:UnitHealthValues(unit)
+		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
 		local deficit = max - cur
 
 		if (deficit > 0 and cur > 0) then
@@ -872,9 +833,9 @@ ElvUF.Tags.Methods['classification:icon'] = function(unit)
 
 	local classification = UnitClassification(unit)
 	if classification == "elite" or classification == "worldboss" then
-		return CreateAtlasMarkup("nameplates-icon-elite-gold", 32, 32)
+		return CreateAtlasMarkup("nameplates-icon-elite-gold", 16, 16)
 	elseif classification == "rareelite" or classification == 'rare' then
-		return CreateAtlasMarkup("nameplates-icon-elite-silver", 32, 32)
+		return CreateAtlasMarkup("nameplates-icon-elite-silver", 16, 16)
 	end
 end
 
@@ -961,14 +922,23 @@ ElvUF.Tags.Methods['class'] = function(unit)
 	return UnitClass(unit)
 end
 
+ElvUF.Tags.Events['specialization'] = 'PLAYER_TALENT_UPDATE'
+ElvUF.Tags.Methods['specialization'] = function(unit)
+	if (UnitIsPlayer(unit)) then
+		local currentSpec = GetSpecialization()
+		if currentSpec then
+			local _, currentSpecName = GetSpecializationInfo(currentSpec)
+			return currentSpecName
+		end
+	end
+end
+
 ElvUF.Tags.Events['name:title'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['name:title'] = function(unit)
 	if (UnitIsPlayer(unit)) then
 		return UnitPVPName(unit)
 	end
 end
-
-ElvUF.Tags.SharedEvents.QUEST_LOG_UPDATE = true
 
 ElvUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'
 ElvUF.Tags.Methods['quest:title'] = function(unit)
@@ -1048,4 +1018,203 @@ ElvUF.Tags.Methods['quest:info'] = function(unit)
 			end
 		end
 	end
+end
+
+E.TagInfo = {
+	--Colors
+	['namecolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction" },
+	['reactioncolor'] = { category = 'Colors', description = "Colors names by NPC reaction (Bad/Neutral/Good)" },
+	['powercolor'] = { category = 'Colors', description = "Colors the power text based upon its type" },
+	['difficultycolor'] = { category = 'Colors', description = "Colors the following tags by difficulty, red for impossible, orange for hard, green for easy" },
+	['altpowercolor'] = { category = 'Colors', description = "Changes the text color to the current alternative power color (Blizzard defined)" },
+	['healthcolor'] = { category = 'Colors', description = "Changes color of health text, depending on the unit's current health" },
+	['threatcolor'] = { category = 'Colors', description = "Changes color of health, depending on the unit's threat situation" },
+	['classpowercolor'] = { category = 'Colors', description = "Changes the color of the special power based upon its type" },
+	['classificationcolor'] = { category = 'Colors', description = "Changes color of health, depending on the unit's classification" },
+	--Classification
+	['classification'] = { category = 'Classification', description = "Displays the unit's classification (e.g. 'ELITE' and 'RARE')" },
+	['shortclassification'] = { category = 'Classification', description = "Displays the unit's classification in short form (e.g. '+' for ELITE and 'R' for RARE)" },
+	['classification:icon'] = { category = 'Classification', description = "Displays the unit's classification in icon form (golden icon for 'ELITE' silver icon for 'RARE')" },
+	['rare'] = { category = 'Classification', description = "Displays 'Rare' when the unit is a rare or rareelite" },
+	--Guild
+	['guild'] = { category = 'Guild', description = "Displays the guild name" },
+	['guild:brackets'] = { category = 'Guild', description = "Displays the guild name with < > brackets (e.g. <GUILD>)" },
+	['guild:brackets:translit'] = { category = 'Guild', description = "Displays the guild name with < > and transliteration (e.g. <GUILD>)" },
+	['guild:rank'] = { category = 'Guild', description = "Displays the guild rank" },
+	['guild:translit'] = { category = 'Guild', description = "Displays the guild name with transliteration for cyrillic letters" },
+	--Health
+	['absorbs'] = { category = 'Health', description = 'Displays the amount of absorbs' },
+	['curhp'] = { category = 'Health', description = "Displays the current HP without decimals" },
+	['perhp'] = { category = 'Health', description = "Displays percentage HP without decimals" },
+	['maxhp'] = { category = 'Health', description = "Displays max HP without decimals" },
+	['deficit:name'] = { category = 'Health', description = "Displays the health as a deficit and the name at full health" },
+	['health:current'] = { category = 'Health', description = "Displays the current health of the unit" },
+	['health:current-max'] = { category = 'Health', description = "Displays the current and maximum health of the unit, separated by a dash" },
+	['health:current-max-nostatus'] = { category = 'Health', description = "Displays the current and maximum health of the unit, separated by a dash, without status" },
+	['health:current-max-nostatus:shortvalue'] = { category = 'Health', description = "Shortvalue of the unit's current and max health, without status" },
+	['health:current-max-percent'] = { category = 'Health', description = "Displays the current and max hp of the unit, separated by a dash (% when not full hp)" },
+	['health:current-max-percent-nostatus'] = { category = 'Health', description = "Displays the current and max hp of the unit, separated by a dash (% when not full hp), without status" },
+	['health:current-max-percent-nostatus:shortvalue'] = { category = 'Health', description = "Shortvalue of current and max hp (% when not full hp, without status)" },
+	['health:current-max-percent:shortvalue'] = { category = 'Health', description = "Shortvalue of current and max hp (% when not full hp)" },
+	['health:current-max:shortvalue'] = { category = 'Health', description = "Shortvalue of the unit's current and max hp, separated by a dash" },
+	['health:current-nostatus'] = { category = 'Health', description = "Displays the current health of the unit, without status" },
+	['health:current-nostatus:shortvalue'] = { category = 'Health', description = "Shortvalue of the unit's current health without status" },
+	['health:current-percent'] = { category = 'Health', description = "Displays the current hp of the unit (% when not full hp)" },
+	['health:current-percent-nostatus'] = { category = 'Health', description = "Displays the current hp of the unit (% when not full hp), without status" },
+	['health:current-percent-nostatus:shortvalue'] = { category = 'Health', description = "Shortvalue of the unit's current hp (% when not full hp), without status" },
+	['health:current-percent:shortvalue'] = { category = 'Health', description = "Shortvalue of the unit's current hp (% when not full hp)" },
+	['health:current:shortvalue'] = { category = 'Health', description = "Shortvalue of the unit's current health (e.g. 81k instead of 81200)" },
+	['health:deficit'] = { category = 'Health', description = "Displays the health of the unit as a deficit (Total Health - Current Health = -Deficit)" },
+	['health:deficit-nostatus'] = { category = 'Health', description = "Displays the health of the unit as a deficit, without status" },
+	['health:deficit-nostatus:shortvalue'] = { category = 'Health', description = "Shortvalue of the health deficit, without status" },
+	['health:deficit-percent:name'] = { category = 'Health', description = "Displays the health deficit as a percentage and the full name of the unit" },
+	['health:deficit-percent:name-long'] = { category = 'Health', description = "Displays the health deficit as a percentage and the name of the unit (limited to 20 letters)" },
+	['health:deficit-percent:name-medium'] = { category = 'Health', description = "Displays the health deficit as a percentage and the name of the unit (limited to 15 letters)" },
+	['health:deficit-percent:name-short'] = { category = 'Health', description = "Displays the health deficit as a percentage and the name of the unit (limited to 10 letters)" },
+	['health:deficit-percent:name-veryshort'] = { category = 'Health', description = "Displays the health deficit as a percentage and the name of the unit (limited to 5 letters)" },
+	['health:deficit:shortvalue'] = { category = 'Health', description = "Shortvalue of the health deficit (e.g. -41k instead of -41300)" },
+	['health:max'] = { category = 'Health', description = "Displays the maximum health of the unit" },
+	['health:max:shortvalue'] = { category = 'Health', description = "Shortvalue of the unit's maximum health" },
+	['health:percent'] = { category = 'Health', description = "Displays the current health of the unit as a percentage" },
+	['health:percent-nostatus'] = { category = 'Health', description = "Displays the unit's current health as a percentage, without status" },
+	['health:percent-with-absorbs'] = { category = 'Health', description = "Displays the unit's current health as a percentage with absorb values" },
+	['missinghp'] = { category = 'Health', description = "Displays the missing health of the unit in whole numbers, when not at full health" },
+	['incomingheals'] = { category = 'Health', description = "Displays all incoming heals" },
+	['incomingheals:personal'] = { category = 'Health', description = "Displays only personal incoming heals" },
+	['incomingheals:others'] = { category = 'Health', description = "Displays only incoming heals from other units" },
+	--Level
+	['smartlevel'] = { category = 'Level', description = "Only display the unit's level if it is not the same as yours" },
+	['level'] = { category = 'Level', description = "Displays the level of the unit" },
+	--Mana
+	['mana:current'] = { category = 'Mana', description = "Displays the unit's current amount of mana (e.g. 97200)" },
+	['mana:current:shortvalue'] = { category = 'Mana', description = "Shortvalue of the unit's current amount of mana (e.g. 4k instead of 4000)" },
+	['mana:current-percent'] = { category = 'Mana', description = "Displays the current amount of mana as a whole number and a percentage, separated by a dash" },
+	['mana:current-percent:shortvalue'] = { category = 'Mana', description = "Shortvalue of the current mana and mana as a percentage, separated by a dash" },
+	['mana:current-max'] = { category = 'Mana', description = "Displays the current mana and max mana, separated by a dash" },
+	['mana:current-max:shortvalue'] = { category = 'Mana', description = "Shortvalue of the current mana and max mana, separated by a dash" },
+	['mana:current-max-percent'] = { category = 'Mana', description = "Displays the current mana and max mana, separated by a dash (% when not full power)" },
+	['mana:current-max-percent:shortvalue'] = { category = 'Mana', description = "Shortvalue of the current mana and max mana, separated by a dash (% when not full power)" },
+	['mana:percent'] = { category = 'Mana', description = "Displays the mana of the unit as a percentage value" },
+	['mana:max'] = { category = 'Mana', description = "Displays the unit's maximum mana" },
+	['mana:max:shortvalue'] = { category = 'Mana', description = "Shortvalue of the unit's maximum mana" },
+	['mana:deficit'] = { category = 'Mana', description = "Displays the mana deficit (Total Mana - Current Mana = -Deficit)" },
+	['mana:deficit:shortvalue'] = { category = 'Mana', description = "Shortvalue of the mana deficit (Total Mana - Current Mana = -Deficit)" },
+	['curmana'] = { category = 'Mana', description = "Displays the current mana without decimals" },
+	['maxmana'] = { category = 'Mana', description = "Displays the max amount of mana the unit can have" },
+	--Names
+	['name'] = { category = 'Names', description = "Displays the full name of the unit without any letter limitation" },
+	['name:veryshort'] = { category = 'Names', description = "Displays the name of the unit (limited to 5 letters)" },
+	['name:short'] = { category = 'Names', description = "Displays the name of the unit (limited to 10 letters)" },
+	['name:medium'] = { category = 'Names', description = "Displays the name of the unit (limited to 15 letters)" },
+	['name:long'] = { category = 'Names', description = "Displays the name of the unit (limited to 20 letters)" },
+	['name:veryshort:translit'] = { category = 'Names', description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 5 letters)" },
+	['name:short:translit'] = { category = 'Names', description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 10 letters)" },
+	['name:medium:translit'] = { category = 'Names', description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 15 letters)" },
+	['name:long:translit'] = { category = 'Names', description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 20 letters)" },
+	['name:abbrev'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (e.g. 'Shadowfury Witch Doctor' becomes 'S. W. Doctor')" },
+	['name:abbrev:veryshort'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (limited to 5 letters)" },
+	['name:abbrev:short'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (limited to 10 letters)" },
+	['name:abbrev:medium'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (limited to 15 letters)" },
+	['name:abbrev:long'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (limited to 20 letters)" },
+	['name:veryshort:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 5 letters)" },
+	['name:short:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 10 letters)" },
+	['name:medium:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 15 letters)" },
+	['name:long:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 20 letters)" },
+	['name:title'] = { category = 'Names', description = "Displays player name and title" },
+	['npctitle'] = { category = 'Names', description = "Displays the NPC title (e.g. <General Goods Vendor>)" },
+	--Party and Raid
+	['group'] = { category = 'Party and Raid', description = "Displays the group number the unit is in ('1' - '8')" },
+	['leader'] = { category = 'Party and Raid', description = "Displays 'L' if the unit is the group/raid leader" },
+	['leaderlong'] = { category = 'Party and Raid', description = "Displays 'Leader' if the unit is the group/raid leader" },
+	--Power
+	['power:current'] = { category = 'Power', description = "Displays the unit's current amount of power" },
+	['power:current:shortvalue'] = { category = 'Power', description = "Shortvalue of the unit's current amount of power (e.g. 4k instead of 4000)" },
+	['power:current-percent'] = { category = 'Power', description = "Displays the current power and power as a percentage, separated by a dash" },
+	['power:current-percent:shortvalue'] = { category = 'Power', description = "Shortvalue of the current power and power as a percentage, separated by a dash" },
+	['power:current-max'] = { category = 'Power', description = "Displays the current power and max power, separated by a dash" },
+	['power:current-max:shortvalue'] = { category = 'Power', description = "Shortvalue of the current power and max power, separated by a dash" },
+	['power:current-max-percent'] = { category = 'Power', description = "Displays the current power and max power, separated by a dash (% when not full power)" },
+	['power:current-max-percent:shortvalue'] = { category = 'Power', description = "Shortvalue of the current power and max power, separated by a dash (% when not full power)" },
+	['power:percent'] = { category = 'Power', description = "Displays the unit's power as a percentage" },
+	['power:max'] = { category = 'Power', description = "Displays the unit's maximum power" },
+	['power:max:shortvalue'] = { category = 'Power', description = "Shortvalue of the unit's maximum power" },
+	['power:deficit'] = { category = 'Power', description = "Displays the power as a deficit (Total Power - Current Power = -Deficit)" },
+	['power:deficit:shortvalue'] = { category = 'Power', description = "Shortvalue of the power as a deficit (Total Power - Current Power = -Deficit)" },
+	['curpp'] = { category = 'Power', description = "Displays the unit's current power without decimals" },
+	['perpp'] = { category = 'Power', description = "Displays the unit's percentage power without decimals " },
+	['maxpp'] = { category = 'Power', description = "Displays the max amount of power of the unit in whole numbers without decimals" },
+	['missingpp'] = { category = 'Power', description = "Displays the missing power of the unit in whole numbers when not at full power" },
+	--Classpower
+	['arcanecharges'] = { category = 'Classpower', description = "Displays the arcane charges (Mage)" },
+	['chi'] = { category = 'Classpower', description = "Displays the chi points (Monk)" },
+	['runes'] = { category = 'Classpower', description = "Displays the runes (Death Knight)" },
+	['soulshards'] = { category = 'Classpower', description = "Displays the soulshards (Warlock)" },
+	['holypower'] = { category = 'Classpower', description = "Displays the holy power (Paladin)" },
+	['cpoints'] = { category = 'Classpower', description = "Displays amount of combo points the player has (only for player, shows nothing on 0)" },
+	['classpower:current'] = { category = 'Classpower', description = "Displays the unit's current amount of special power" },
+	['classpower:current-max'] = { category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash" },
+	['classpower:current-max-percent'] = { category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash (% when not full power)" },
+	['classpower:current-percent'] = { category = 'Classpower', description = "Displays the unit's current and percentage amount of special power, separated by a dash" },
+	['classpower:deficit'] = { category = 'Classpower', description = "Displays the unit's special power as a deficit (Total Special Power - Current Special Power = -Deficit)" },
+	['classpower:percent'] = { category = 'Classpower', description = "Displays the unit's current amount of special power as a percentage" },
+	--Altpower
+	['altpower:current'] = { category = 'Altpower', description = "Displays altpower text on a unit in current format" },
+	['altpower:current-max'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max format" },
+	['altpower:current-max-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max-percent format" },
+	['altpower:current-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max format" },
+	['altpower:deficit'] = { category = 'Altpower', description = "Displays altpower text on a unit in deficit format" },
+	['altpower:percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in percent format" },
+	--Quest
+	['quest:info'] = { category = 'Quest', description = "Displays the quest objectives" },
+	['quest:title'] = { category = 'Quest', description = "Displays the quest title" },
+	--Realm
+	['realm'] = { category = 'Realm', description = "Displays the server name" },
+	['realm:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters" },
+	['realm:dash'] = { category = 'Realm', description = "Displays the server name with a dash in front (e.g. -Realm)" },
+	['realm:dash:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters and a dash in front" },
+	--Status
+	['status'] = { category = 'Status', description = "Displays zzz, dead, ghost, offline" },
+	['status:icon'] = { category = 'Status', description = "Displays AFK/DND as an orange(afk) / red(dnd) icon" },
+	['status:text'] = { category = 'Status', description = "Displays <AFK> and <DND>" },
+	['statustimer'] = { category = 'Status', description = "Displays a timer for how long a unit has had the status (e.g 'DEAD - 0:34')" },
+	['afk'] = { category = 'Status', description = "Displays <AFK> if the unit is afk" },
+	['dead'] = { category = 'Status', description = "Displays <DEAD> if the unit is dead" },
+	['resting'] = { category = 'Status', description = "Displays 'zzz' if the unit is resting" },
+	['pvp'] = { category = 'Status', description = "Displays 'PvP' if the unit is pvp flagged" },
+	['offline'] = { category = 'Status', description = "Displays 'OFFLINE' if the unit is disconnected" },
+	--Target
+	['target'] = { category = 'Target', description = "Displays the current target of the unit" },
+	['target:veryshort'] = { category = 'Target', description = "Displays the current target of the unit (limited to 5 letters)" },
+	['target:short'] = { category = 'Target', description = "Displays the current target of the unit (limited to 10 letters)" },
+	['target:medium'] = { category = 'Target', description = "Displays the current target of the unit (limited to 15 letters)" },
+	['target:long'] = { category = 'Target', description = "Displays the current target of the unit (limited to 20 letters)" },
+	['target:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters" },
+	['target:veryshort:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 5 letters)" },
+	['target:short:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 10 letters)" },
+	['target:medium:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 15 letters)" },
+	['target:long:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 20 letters)" },
+	--Threat
+	['threat'] = { category = 'Threat', description = "Displays the current threat" },
+	['threat:percent'] = { category = 'Threat', description = "Displays the current threat as a percent" },
+	['threat:current'] = { category = 'Threat', description = "Displays the current threat as a value" },
+	--Miscellanous
+	['affix'] = { category = 'Miscellanous', description = "Displays low level critter mobs" },
+	['smartclass'] = { category = 'Miscellanous', description = "Displays the player's class or creature's type" },
+	['class'] = { category = 'Miscellanous', description = "Displays the class of the unit, if that unit is a player" },
+	['specialization'] = { category = 'Miscellanous', description = "Displays your current specialization as text" },
+	['difficulty'] = { category = 'Miscellanous', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
+	['faction'] = { category = 'Miscellanous', description = "Displays 'Aliance' or 'Horde'" },
+	['faction:icon'] = { category = 'Miscellanous', description = "Displays 'Alliance' or 'Horde' Texture" },
+	['plus'] = { category = 'Miscellanous', description = "Displays the character '+' if the unit is an elite or rare-elite" },
+	['arenaspec'] = { category = 'Miscellanous', description = "Displays the area spec of an unit" },
+	['arena:number'] = { category = 'Miscellanous', description = "Displays the arena number 1-5" },
+}
+
+function E:AddTagInfo(tagName, category, description, order)
+	if order then order = tonumber(order) + 10 end
+
+	E.TagInfo[tagName] = E.TagInfo[tagName] or {}
+	E.TagInfo[tagName].category = category or 'Miscellanous'
+	E.TagInfo[tagName].description = description or ''
+	E.TagInfo[tagName].order = order or nil
 end

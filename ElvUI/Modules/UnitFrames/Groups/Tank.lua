@@ -166,7 +166,7 @@ function UF:Update_TankFrames(frame, db)
 		UF:Configure_DebuffHighlight(frame)
 
 		--Buff Indicator
-		UF:UpdateAuraWatch(frame)
+		UF:Configure_AuraWatch(frame)
 	end
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
