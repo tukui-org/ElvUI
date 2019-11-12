@@ -661,6 +661,7 @@ P.nameplates = {
 			health = CopyTable(NP_Health),
 			level = CopyTable(NP_Level),
 			name = CopyTable(NP_Name),
+			portrait = CopyTable(NP_Portrait),
 			power = CopyTable(NP_Power),
 			pvpclassificationindicator = CopyTable(NP_PvPClassificationIndicator),
 			pvpindicator = CopyTable(NP_PvPIcon),
