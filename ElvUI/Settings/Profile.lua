@@ -301,7 +301,7 @@ local NP_Health = {
 	height = 10,
 	useClassColor = true,
 	text = {
-		enable = false,
+		enable = true,
 		format = '[health:percent]',
 		position = 'CENTER',
 		parent = 'Nameplate',
@@ -314,7 +314,7 @@ local NP_Health = {
 }
 
 local NP_Power = {
-	enable = true,
+	enable = false,
 	classColor = false,
 	hideWhenEmpty = false,
 	costPrediction = true,
@@ -365,7 +365,7 @@ local NP_Portrait = {
 }
 
 local NP_Name = {
-	enable = false,
+	enable = true,
 	format = '[namecolor][name]',
 	position = 'TOPLEFT',
 	parent = 'Nameplate',
@@ -377,7 +377,7 @@ local NP_Name = {
 }
 
 local NP_Level = {
-	enable = false,
+	enable = true,
 	format = '[difficultycolor][level]',
 	position = 'TOPRIGHT',
 	parent = 'Nameplate',
@@ -415,7 +415,7 @@ local NP_Castbar = {
 	iconOffsetY = 0,
 	showIcon = true,
 	xOffset = 0,
-	yOffset = -19,
+	yOffset = -10,
 	font = 'PT Sans Narrow',
 	fontOutline = 'OUTLINE',
 	fontSize = 11,
@@ -741,6 +741,10 @@ P.nameplates.units.PLAYER.debuffs.growthX = 'LEFT'
 P.nameplates.units.PLAYER.debuffs.growthY = 'UP'
 P.nameplates.units.PLAYER.debuffs.yOffset = 35
 P.nameplates.units.PLAYER.debuffs.priority = 'Blacklist,blockNoDuration,Personal,Boss,CCDebuffs,RaidDebuffs,Dispellable'
+P.nameplates.units.PLAYER.name.enable = false
+P.nameplates.units.PLAYER.level.enable = false
+P.nameplates.units.PLAYER.power.enable = true
+P.nameplates.units.PLAYER.castbar.yOffset = -20
 
 P.nameplates.units.FRIENDLY_PLAYER.buffs.filters.priority = 'Blacklist,blockNoDuration,Personal,TurtleBuffs'
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.anchorPoint = 'TOPRIGHT'
@@ -1784,6 +1788,7 @@ P.unitframe.units.targettarget.name.text_format = '[namecolor][name:medium]'
 P.unitframe.units.targettarget.power.text_format = '[powercolor][power:current]'
 
 P.unitframe.units.targettargettarget = CopyTable(P.unitframe.units.targettarget)
+P.unitframe.units.targettargettarget.enable = false
 P.unitframe.units.targettargettarget.buffs.priority = 'Blacklist,Personal,nonPersonal'
 P.unitframe.units.targettargettarget.debuffs.attachTo = 'FRAME'
 P.unitframe.units.targettargettarget.debuffs.priority = 'Blacklist,Personal,nonPersonal'
@@ -1899,6 +1904,7 @@ P.unitframe.units.party.power.position = 'RIGHT'
 P.unitframe.units.party.power.text_format = '[powercolor][power:current]'
 P.unitframe.units.party.power.xOffset = -2
 P.unitframe.units.party.targetsGroup.name.text_format = '[namecolor][name:medium] [difficultycolor][smartlevel]'
+P.unitframe.units.party.targetsGroup.enable = false
 
 P.unitframe.units.raid = CopyTable(P.unitframe.units.party)
 P.unitframe.units.raid.buffs.numrows = 1
@@ -1912,8 +1918,10 @@ P.unitframe.units.raid.health.position = 'BOTTOM'
 P.unitframe.units.raid.health.text_format = '[healthcolor][health:deficit]'
 P.unitframe.units.raid.health.yOffset = 2
 P.unitframe.units.raid.height = 44
+P.unitframe.units.raid.horizontalSpacing = 3
 P.unitframe.units.raid.infoPanel.height = 12
 P.unitframe.units.raid.name.text_format = '[namecolor][name:short]'
+P.unitframe.units.raid.numGroups = 5
 P.unitframe.units.raid.orientation = 'MIDDLE'
 P.unitframe.units.raid.petsGroup = nil
 P.unitframe.units.raid.power.position = 'BOTTOMRIGHT'
