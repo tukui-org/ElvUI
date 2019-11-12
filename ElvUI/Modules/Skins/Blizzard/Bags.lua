@@ -163,6 +163,7 @@ local function LoadSkin()
 			if bagIconCache[name] then
 				BagIcon(frame, bagIconCache[name])
 			else
+				if not name then return end
 				if name == BACKPACK_TOOLTIP then
 					bagIconCache[name] = _G.MainMenuBarBackpackButtonIconTexture:GetTexture()
 				else
