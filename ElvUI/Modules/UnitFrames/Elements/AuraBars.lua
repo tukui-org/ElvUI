@@ -208,6 +208,12 @@ function UF:PostUpdateBar_AuraBars(unit, statusBar, index, position, duration, e
 			colors = UF.db.colors.auraBarDebuff
 		else
 			colors = UF.db.colors.auraBarBuff
+			if E:CheckClassColor(colors.r, colors.g, colors.b) then
+				local classColor = E:ClassColor(E.myclass, true)
+				colors.r = classColor.r
+				colors.g = classColor.g
+				colors.b = classColor.b
+			end
 		end
 	end
 
