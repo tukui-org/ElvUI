@@ -1951,6 +1951,7 @@ P.unitframe.units.raid.power.yOffset = 2
 P.unitframe.units.raid.targetsGroup = nil
 P.unitframe.units.raid.visibility = '[@raid6,noexists][@raid26,exists] hide;show'
 P.unitframe.units.raid.width = 80
+P.unitframe.units.raid.roleIcon.enable = true
 
 P.unitframe.units.raid40 = CopyTable(P.unitframe.units.raid)
 P.unitframe.units.raid40.debuffs.anchorPoint = 'RIGHT'
@@ -1959,6 +1960,7 @@ P.unitframe.units.raid40.numGroups = 8
 P.unitframe.units.raid40.visibility = '[@raid26,noexists] hide;show'
 P.unitframe.units.raid40.rdebuffs.enable = false
 P.unitframe.units.raid40.power.enable = false
+P.unitframe.units.raid40.roleIcon.enable = false
 
 P.unitframe.units.raidpet = CopyTable(P.unitframe.units.raid)
 P.unitframe.units.raidpet.enable = false
