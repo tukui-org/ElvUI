@@ -167,6 +167,8 @@ function lib:CreateButton(id, name, header, config)
 	local button = setmetatable(CreateFrame("CheckButton", name, header, "SecureActionButtonTemplate, ActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
 	button:RegisterForClicks("AnyUp")
+	button.cooldown:SetFrameStrata(button:GetFrameStrata())
+	button.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
 
 	-- Frame Scripts
 	button:SetScript("OnEnter", Generic.OnEnter)
@@ -1272,7 +1274,8 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeMo
 		end
 		cooldown:SetParent(parent)
 		cooldown:SetAllPoints(parent)
-		cooldown:SetFrameStrata("TOOLTIP")
+		cooldown:SetFrameStrata(parent:GetFrameStrata())
+		cooldown:SetFrameLevel(parent:GetFrameLevel() + 1)
 		cooldown:Show()
 		parent.chargeCooldown = cooldown
 		cooldown.parent = parent
