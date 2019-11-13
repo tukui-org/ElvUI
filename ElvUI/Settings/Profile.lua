@@ -1830,6 +1830,12 @@ P.unitframe.units.focustarget.height = 26
 P.unitframe.units.focustarget.infoPanel.height = 12
 P.unitframe.units.focustarget.threatStyle = 'NONE'
 
+P.unitframe.units.pet.aurabar.enable = false
+P.unitframe.units.pet.aurabar.attachTo = 'FRAME'
+P.unitframe.units.pet.aurabar.maxDuration = 120
+P.unitframe.units.pet.aurabar.detachedWidth = 130
+P.unitframe.units.pet.aurabar.yOffset = 2
+P.unitframe.units.pet.aurabar.spacing = 2
 P.unitframe.units.pet.buffs.anchorPoint = 'BOTTOMLEFT'
 P.unitframe.units.pet.buffs.maxDuration = 300
 P.unitframe.units.pet.buffs.numrows = 1
