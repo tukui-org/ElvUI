@@ -1247,7 +1247,7 @@ local UF_RaidDebuffs = {
 }
 
 local UF_RoleIcon = {
-	enable = false,
+	enable = true,
 	position = 'BOTTOMRIGHT',
 	attachTo = 'Health',
 	xOffset = -1,
@@ -1951,7 +1951,6 @@ P.unitframe.units.raid.power.yOffset = 2
 P.unitframe.units.raid.targetsGroup = nil
 P.unitframe.units.raid.visibility = '[@raid6,noexists][@raid26,exists] hide;show'
 P.unitframe.units.raid.width = 80
-P.unitframe.units.raid.roleIcon.enable = true
 
 P.unitframe.units.raid40 = CopyTable(P.unitframe.units.raid)
 P.unitframe.units.raid40.debuffs.anchorPoint = 'RIGHT'
