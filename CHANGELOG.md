@@ -3,6 +3,8 @@
 **New Additions:**  
 
 **Bug Fixes:**  
+Added back some options that was eaten by a angry goblin.  
+
 
 **Misc. Changes:**  
 
