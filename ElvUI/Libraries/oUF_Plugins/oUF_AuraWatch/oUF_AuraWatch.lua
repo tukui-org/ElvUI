@@ -35,13 +35,6 @@ local function createAuraIcon(element, index)
 	local icon = button:CreateTexture(nil, 'ARTWORK')
 	icon:SetAllPoints()
 
-	local countFrame = CreateFrame('Frame', nil, button)
-	countFrame:SetAllPoints(button)
-	countFrame:SetFrameLevel(cd:GetFrameLevel() + 1)
-
-	local count = countFrame:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
-	count:SetPoint('BOTTOMRIGHT', countFrame, 'BOTTOMRIGHT', -1, 0)
-
 	local overlay = button:CreateTexture(nil, 'OVERLAY')
 	overlay:SetTexture([[Interface\Buttons\UI-Debuff-Overlays]])
 	overlay:SetAllPoints()
@@ -49,7 +42,6 @@ local function createAuraIcon(element, index)
 	button.overlay = overlay
 
 	button.icon = icon
-	button.count = count
 	button.cd = cd
 
 	if(element.PostCreateIcon) then element:PostCreateIcon(button) end
@@ -146,7 +138,6 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			end
 
 			if(button.icon) then button.icon:SetTexture(texture) end
-			if(button.count) then button.count:SetText(count > 1 and count) end
 
 			local size = setting.sizeOverride and setting.sizeOverride > 0 and setting.sizeOverride or element.size or 16
 			button:SetSize(size, size)
