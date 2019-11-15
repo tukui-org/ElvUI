@@ -12,11 +12,14 @@ local function updateText(self, elapsed)
 	if self.elapsed >= 0.1 then
 		local timeNow = GetTime()
 		self.timeLeft = ((self.expiration or 0) - timeNow)
+		if self.cd.timer.text then
+			self.cd.timer.text:SetAlpha(0)
+		end
 		if self.timeLeft > 0 and self.timeLeft <= (self.textThreshold or 0) then
-			self.cd:SetCooldown(timeNow, self.timeLeft)
-			self.cd:Show()
+			if self.cd.timer.text then
+				self.cd.timer.text:SetAlpha(1)
+			end
 			self:SetScript("OnUpdate", nil)
-			self.elapsed = 0
 		end
 	end
 end
@@ -100,21 +103,21 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		if(show) then
 			local setting = element.watched[spellID]
 			if(button.cd) then
-				button.cd:Hide()
-
 				button.cd.hideText = not setting.displayText
 
-				if setting.displayText and setting.textThreshold ~= -1 and (duration and duration > setting.textThreshold) then
-					button.textThreshold = setting.textThreshold
-					button.duration = duration
-					button.expiration = expiration
-					button.first = true
-					button:SetScript('OnUpdate', updateText)
-				else
-					if(duration and duration > 0) then
-						button.cd:SetCooldown(expiration - duration, duration)
-						button.cd:Show()
+				if(duration and duration > 0) then
+					button.cd:SetCooldown(expiration - duration, duration)
+
+					if setting.displayText and setting.textThreshold ~= -1 then
+						button.textThreshold = setting.textThreshold
+						button.duration = duration
+						button.expiration = expiration
+						button:SetScript('OnUpdate', updateText)
 					end
+
+					button.cd:Show()
+				else
+					button.cd:Hide()
 				end
 			end
 
