@@ -402,24 +402,28 @@ E.Options.args.general = {
 					order = 2,
 					type = "toggle",
 					name = L["Enable"],
-					set = function(info, value) E.db.general.totems[info[#info]] = value; Totems:ToggleEnable() end,
+					get = function() return E.private.general.totemBar end,
+					set = function(_, value) E.private.general.totemBar = value; E:StaticPopup_Show("PRIVATE_RL") end,
 				},
 				size = {
 					order = 3,
 					type = 'range',
 					name = L["Button Size"],
 					min = 24, max = 60, step = 1,
+					disabled = function() return not E.private.general.totemBar end,
 				},
 				spacing = {
 					order = 4,
 					type = 'range',
 					name = L["Button Spacing"],
 					min = 1, max = 10, step = 1,
+					disabled = function() return not E.private.general.totemBar end,
 				},
 				sortDirection = {
 					order = 5,
 					type = 'select',
 					name = L["Sort Direction"],
+					disabled = function() return not E.private.general.totemBar end,
 					values = {
 						['ASCENDING'] = L["Ascending"],
 						['DESCENDING'] = L["Descending"],
@@ -429,6 +433,7 @@ E.Options.args.general = {
 					order = 6,
 					type = 'select',
 					name = L["Bar Direction"],
+					disabled = function() return not E.private.general.totemBar end,
 					values = {
 						['VERTICAL'] = L["Vertical"],
 						['HORIZONTAL'] = L["Horizontal"],

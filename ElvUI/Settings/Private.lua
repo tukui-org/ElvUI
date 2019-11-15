@@ -17,6 +17,7 @@ V.general = {
 	chatBubbleName = false,
 	pixelPerfect = true,
 	replaceBlizzFonts = true,
+	totemBar = true,
 	minimap = {
 		enable = true,
 		hideClassHallReport = false,
