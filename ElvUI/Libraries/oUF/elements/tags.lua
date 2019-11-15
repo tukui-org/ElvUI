@@ -692,18 +692,16 @@ local function getTagFunc(tagstr)
 				end
 			end
 
+			-- ElvUI changed
 			if(tagFunc) then
 				tinsert(args, tagFunc)
 			else
-				-- return error(string.format('Attempted to use invalid tag %s.', bracket), 3)
-
-				-- ElvUI changed
 				numTags = -1
 				func = function(self)
 					return self:SetText(bracket)
 				end
-				-- end block
 			end
+			-- end block
 		end
 
 		if(numTags == 1) then
@@ -951,7 +949,7 @@ oUF.Tags = {
 
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 		for tagstr, func in next, tagPool do
-			if(tagstr:match(tag)) then
+			if(tagstr:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]"):match(tag)) then
 				tagPool[tagstr] = nil
 
 				for fs in next, taggedFS do
@@ -971,7 +969,7 @@ oUF.Tags = {
 
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 		for tagstr in next, tagPool do
-			if(tagstr:match(tag)) then
+			if(tagstr:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]"):match(tag)) then
 				for fs, ts in next, taggedFS do
 					if(ts == tagstr) then
 						unregisterEvents(fs)
