@@ -104,7 +104,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 
 				button.cd.hideText = not setting.displayText
 
-				if setting.displayText and setting.textThreshold ~= -1 then
+				if setting.displayText and setting.textThreshold ~= -1 and (duration and duration < setting.textThreshold) then
 					button.textThreshold = setting.textThreshold
 					button.duration = duration
 					button.expiration = expiration
