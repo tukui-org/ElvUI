@@ -181,6 +181,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 			configureButton2 = {
 				order = 3,
 				name = L["Coloring (Specific)"],
+				desc = L["This opens the AuraBar Colors filter. These settings affect specific spells."],
 				type = 'execute',
 				func = function() E:SetToFilterConfig('AuraBar Colors') end,
 			},
