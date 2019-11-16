@@ -643,6 +643,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if button.SpellHighlightTexture then
+		button.SpellHighlightTexture:SetColorTexture(1, 1, 0, 0.45)
 		button.SpellHighlightTexture:SetAllPoints()
 	end
 

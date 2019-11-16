@@ -1469,10 +1469,8 @@ end
 hooksecurefunc("SharedActionButton_RefreshSpellHighlight", function(self)
 	if ( self.SpellHighlightTexture and self.SpellHighlightAnim ) then
 		for button in next, ButtonRegistry do
-			if button._state_type == "action" and GetOnBarHighlightMark(button._state_action) then
-				UpdateSpellHighlight(button, true)
-			else
-				UpdateSpellHighlight(button, false)
+			if button._state_type == "action" then
+				UpdateSpellHighlight(button, GetOnBarHighlightMark(button._state_action))
 			end
 		end
 	end
