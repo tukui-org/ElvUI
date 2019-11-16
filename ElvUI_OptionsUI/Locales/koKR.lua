@@ -290,6 +290,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "표시될 오라의 수를 조절하며, 이는 크기에도 영향을 미칩니다."
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "이름표와 유닛프레임 등에 구성요소로 표시되는 수치들이 소숫점 몇 자리까지 나타낼지 조정합니다."
 L["Controls the speed at which smoothed bars will be updated."] = true
+L["Controls the text displayed. Available Tags are listed under Info/Controls"] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = true
 L["Controls which nameplates will be displayed."] = "표시할 이름표를 조절합니다."
 L["Cooldown Text"] = "재사용 대기시간 설정"
@@ -1241,6 +1242,7 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = "시전바에 부착하지 않을 때의 아이콘 크기를 결정합니다."
 L["This feature will allow you to transfer settings to other characters."] = "전송 기능을 통해 대상에게 자신의 설정을 넘겨줄 수 있습니다."
 L["This is for Customized Icons in your Interface/Icons folder."] = true
+L["This opens the AuraBar Colors filter. These settings affect specific spells."] = true
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "유닛프레임 색상 설정을 엽니다. 이 설정은 모든 유닛프레임에 영향을 미칩니다."
 L["This option allows the overlay to span the whole health, including the background."] = true
 L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."] = true

@@ -290,6 +290,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = true
 L["Controls the speed at which smoothed bars will be updated."] = true
+L["Controls the text displayed. Available Tags are listed under Info/Controls"] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = true
 L["Controls which nameplates will be displayed."] = true
 L["Cooldown Text"] = "Texto de Reutilización"
@@ -1242,6 +1243,7 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = true
 L["This feature will allow you to transfer settings to other characters."] = "Esta característica te permitirá transferir ciertos ajustes a otros personajes."
 L["This is for Customized Icons in your Interface/Icons folder."] = true
+L["This opens the AuraBar Colors filter. These settings affect specific spells."] = true
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = true
 L["This option allows the overlay to span the whole health, including the background."] = true
 L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."] = true
