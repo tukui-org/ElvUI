@@ -105,7 +105,6 @@ function A:UpdateTime(elapsed)
 		end
 
 		self.time:SetTextColor(timeColors[formatID].r, timeColors[formatID].g, timeColors[formatID].b)
-
 		self.statusBar:SetValue(self.timeLeft)
 
 		if self.timeLeft > E.db.auras.fadeThreshold then
@@ -231,10 +230,7 @@ function A:UpdateAura(button, index)
 	local name, texture, count, dtype, duration, expirationTime = UnitAura(unit, index, button.filter)
 
 	if name then
-		button.statusBar:Show()
-
 		if (duration > 0) and expirationTime then
-			if not self.db.barShow then button.statusBar:Hide() end
 			button.nextUpdate = 0
 
 			local timeLeft = expirationTime - GetTime()
@@ -247,8 +243,6 @@ function A:UpdateAura(button, index)
 
 			button.statusBar:SetMinMaxValues(0, duration)
 		else
-			if not (self.db.barShow and self.db.barNoDuration) then button.statusBar:Hide() end
-
 			button.timeLeft = nil
 			button.time:SetText('')
 
@@ -277,6 +271,12 @@ function A:UpdateAura(button, index)
 			button.time:Show()
 		else
 			button.time:Hide()
+		end
+
+		if (self.db.barShow and (duration > 0)) or (self.db.barShow and self.db.barNoDuration and duration == 0) then
+			button.statusBar:Show()
+		else
+			button.statusBar:Hide()
 		end
 
 		if button.filter == "HARMFUL" then
@@ -313,9 +313,18 @@ function A:UpdateTempEnchant(button, index)
 
 		button.offset = offset
 		button.nextUpdate = 0
-		button.timeLeft = expirationTime - GetTime()
+		button.timeLeft = expirationTime / 1e3
 
-		button.statusBar:SetMinMaxValues(0, button.timeLeft)
+		local duration
+		if button.timeLeft <= 3600.5 and button.timeLeft > 1800.5 then
+			duration = 3600
+		elseif button.timeLeft <= 1800.5 and button.timeLeft > 600.5 then
+			duration = 1800
+		else
+			duration = 600
+		end
+
+		button.statusBar:SetMinMaxValues(0, duration)
 		button:SetScript("OnUpdate", A.UpdateTime)
 	else
 		button.offset = nil
@@ -326,6 +335,12 @@ function A:UpdateTempEnchant(button, index)
 		button.statusBar:SetValue(1)
 
 		button:SetScript("OnUpdate", nil)
+	end
+
+	if (self.db.barShow and expirationTime) or (self.db.barShow and self.db.barNoDuration and not expirationTime) then
+		button.statusBar:Show()
+	else
+		button.statusBar:Hide()
 	end
 
 	local r, g, b
