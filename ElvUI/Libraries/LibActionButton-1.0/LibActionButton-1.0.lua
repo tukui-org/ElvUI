@@ -1456,6 +1456,28 @@ hooksecurefunc("ClearNewActionHighlight", function(action, preventIdenticalActio
 	ClearNewActionHighlight(action, preventIdenticalActionsFromClearing, nil)
 end)
 
+local function UpdateSpellHighlight(self, shown)
+	if ( shown ) then
+		self.SpellHighlightTexture:Show();
+		self.SpellHighlightAnim:Play();
+	else
+		self.SpellHighlightTexture:Hide();
+		self.SpellHighlightAnim:Stop();
+	end
+end
+
+hooksecurefunc("SharedActionButton_RefreshSpellHighlight", function(self)
+	if ( self.SpellHighlightTexture and self.SpellHighlightAnim ) then
+		for button in next, ButtonRegistry do
+			if button._state_type == "action" and GetOnBarHighlightMark(button._state_action) then
+				UpdateSpellHighlight(button, true)
+			else
+				UpdateSpellHighlight(button, false)
+			end
+		end
+	end
+end)
+
 function UpdateNewAction(self)
 	-- special handling for "New Action" markers
 	if self.NewActionTexture then
