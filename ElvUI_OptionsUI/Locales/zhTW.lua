@@ -291,6 +291,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "控制顯示多少光環, 這也會影響光環大小"
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "控制在血條和單位框架等元件的小數位數"
 L["Controls the speed at which smoothed bars will be updated."] = "控制平滑條更新的速度."
+L["Controls the text displayed. Available Tags are listed under Info/Controls"] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = "控制選擇目標操作的接受點擊寬度和大小."
 L["Controls which nameplates will be displayed."] = "控制何種姓名板被顯示"
 L["Cooldown Text"] = "冷卻文字"
@@ -1244,6 +1245,7 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = "指定未吸附在施法條內時圖示的尺寸"
 L["This feature will allow you to transfer settings to other characters."] = "此功能將使你設置轉移給其他角色."
 L["This is for Customized Icons in your Interface/Icons folder."] = "取決於你是否在 Interface/Icons 資料夾中放置了自定義圖標"
+L["This opens the AuraBar Colors filter. These settings affect specific spells."] = true
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "這將開啟單位框架顏色設置.這些設置會影響所有單位框架"
 L["This option allows the overlay to span the whole health, including the background."] = "這將允許覆蓋層在包括背景的整個生命條之上."
 L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."] = "這個選項控制著暴雪設定中的姓名板顯示部分."

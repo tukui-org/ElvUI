@@ -291,6 +291,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "Legt fest wieviele Auren angezeigt werden. Dieses beeinflusst auch die Größe der Auren."
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "Kontrolliert die Anzahl der Dezimalstellen in den Werten auf den Namensplaketten und Einheitenfenstern."
 L["Controls the speed at which smoothed bars will be updated."] = "Kontrolliert die Geschwindigkeit wie die Sanften Leistenübergange updaten."
+L["Controls the text displayed. Available Tags are listed under Info/Controls"] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = "Ändert die Breite und legt die Größe des Bereichs auf dem Bildschirm fest, welche die klicks durch die feindlichen Einheiten erlaubt."
 L["Controls which nameplates will be displayed."] = "Legt fest welche Namensplaketten angezeigt werden."
 L["Cooldown Text"] = "Abklingzeittext"
@@ -1245,6 +1246,7 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = "Dieses zwingt die Größe des Symbols wenn es nicht an der Zauberleiste angehängt ist."
 L["This feature will allow you to transfer settings to other characters."] = "Dieses Feature erlaubt es dir Einstellungen an andere Charaktere zu schicken."
 L["This is for Customized Icons in your Interface/Icons folder."] = "Dieses ist für Benutzerdefinierte Symbole in deinem Interface/Icon Ordner."
+L["This opens the AuraBar Colors filter. These settings affect specific spells."] = true
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "Dieses öffnet die Farbeinstellung für die Einheitenfenster. Diese Einstellungen wirken sich auf alle Einheitenfenster aus."
 L["This option allows the overlay to span the whole health, including the background."] = "Diese Option erlaubt erlaubt dass volle überblenden der Gesundheit, inklusive des Hintergrund."
 L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."] = "Diese Option steuert die Blizzard Einstellung, ob die Namensplaketten angezeigt werden sollen oder nicht."
