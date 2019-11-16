@@ -30,7 +30,6 @@ local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
 local GameTooltip_Hide = GameTooltip_Hide
 local GameFontHighlightSmall = _G.GameFontHighlightSmall
-local CreateTextureMarkup = CreateTextureMarkup
 
 --Function we can call on profile change to update GUI
 function E:RefreshGUI()
@@ -40,8 +39,6 @@ end
 
 E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
 E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigDefaultSize())
-
-local TooltipLine = CreateTextureMarkup('Interface/Tooltips/UI-Tooltip-Border', 128, 16, 24, 4, .81, .94, .5, 1)
 
 E.Options.args = {
 	ElvUI_Header = {
@@ -114,16 +111,16 @@ E.Options.args = {
 		end
 	},
 	Info_Separate = {
-		order = 2,
+		order = 3,
 		type = "group",
-		name = TooltipLine..' '..L["Info/Controls"],
+		name = "<<< "..L["Info/Controls"].." >>>",
 		disabled = true,
 		args = {},
 	},
 	Plugin_Separate = {
-		order = 5,
+		order = 6,
 		type = "group",
-		name = TooltipLine..' '..L["Plugins"],
+		name = "<<< "..L["Plugins"].." >>>",
 		disabled = true,
 		args = {},
 	},
