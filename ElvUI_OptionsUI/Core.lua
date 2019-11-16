@@ -40,6 +40,8 @@ end
 E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
 E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigDefaultSize())
 
+local TooltipLine = CreateTextureMarkup('Interface/Tooltips/UI-Tooltip-Border', 128, 16, 36, 4, .81, .94, .5, 1)
+
 E.Options.args = {
 	ElvUI_Header = {
 		order = 1,
@@ -111,16 +113,16 @@ E.Options.args = {
 		end
 	},
 	Info_Separate = {
-		order = 3,
+		order = 2,
 		type = "group",
-		name = "<<< "..L["Info/Controls"].." >>>",
+		name = TooltipLine..' '..L["Info/Controls"]..' '..TooltipLine,
 		disabled = true,
 		args = {},
 	},
 	Plugin_Separate = {
-		order = 6,
+		order = 5,
 		type = "group",
-		name = "<<< "..L["Plugins"].." >>>",
+		name = TooltipLine..' '..L["Plugins"]..' '..TooltipLine,
 		disabled = true,
 		args = {},
 	},

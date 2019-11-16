@@ -905,7 +905,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				name = L["Latency"],
 				type = 'toggle',
 				hidden = function() return groupName ~= 'player' end,
-			}, -- Keep format on 15, there will be other checkboxes only for Player.
+			},
 			format = {
 				order = 11,
 				type = 'select',
