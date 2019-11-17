@@ -1470,6 +1470,7 @@ function UF:Initialize()
 	end)
 
 	self:RegisterEvent('PLAYER_LOGIN')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 	--[[if E.private.unitframe.disabledBlizzardFrames.arena and E.private.unitframe.disabledBlizzardFrames.focus and E.private.unitframe.disabledBlizzardFrames.party then
