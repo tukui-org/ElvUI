@@ -1249,15 +1249,16 @@ do
 	local hasEnteredWorld = false
 	function UF:PLAYER_ENTERING_WORLD()
 		local _, instanceType = GetInstanceInfo()
-		if not hasEnteredWorld then
-			--We only want to run Update_AllFrames once when we first log in or /reload
-			UF:Update_AllFrames()
-			hasEnteredWorld = true
-		elseif instanceType ~= "none" then
+		if instanceType ~= "none" then
 			--We need to update headers when we zone into an instance
 			UF:UpdateAllHeaders()
 		end
 	end
+end
+
+function UF:PLAYER_LOGIN()
+	ElvUF:SetActiveStyle("ElvUF")
+	UF:LoadUnits()
 end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
@@ -1468,11 +1469,7 @@ function UF:Initialize()
 		self:Construct_UF(frame, unit)
 	end)
 
-	ElvUF:SetActiveStyle("ElvUF")
-
-	UF:LoadUnits()
-
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent('PLAYER_LOGIN')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 	--[[if E.private.unitframe.disabledBlizzardFrames.arena and E.private.unitframe.disabledBlizzardFrames.focus and E.private.unitframe.disabledBlizzardFrames.party then
