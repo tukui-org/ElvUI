@@ -110,6 +110,13 @@ E.Options.args.actionbar = {
 						AB:UpdatePetCooldownSettings()
 					end,
 				},
+				addNewSpells = {
+					order = 9,
+					type = "toggle",
+					name = L["Auto Add New Spells"],
+					desc = L["Allow newly learned spells to be automatically placed on an empty actionbar slot."],
+					set = function(info, value) E.db.actionbar.addNewSpells = value; AB:IconIntroTracker_Toggle() end,
+				},
 				rightClickSelfCast = {
 					order = 10,
 					type = "toggle",

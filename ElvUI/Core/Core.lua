@@ -994,7 +994,6 @@ function E:UpdateMisc(skipCallback)
 	Threat:UpdatePosition()
 
 	Totems:PositionAndSize()
-	Totems:ToggleEnable()
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')

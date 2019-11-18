@@ -642,6 +642,11 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		shine:SetAllPoints()
 	end
 
+	if button.SpellHighlightTexture then
+		button.SpellHighlightTexture:SetColorTexture(1, 1, 0, 0.45)
+		button.SpellHighlightTexture:SetAllPoints()
+	end
+
 	if self.db.hotkeytext or self.db.useRangeColorText then
 		hotkey:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 		if button.config and (button.config.outOfRangeColoring ~= "hotkey") then

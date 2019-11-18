@@ -181,6 +181,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 			configureButton2 = {
 				order = 3,
 				name = L["Coloring (Specific)"],
+				desc = L["This opens the AuraBar Colors filter. These settings affect specific spells."],
 				type = 'execute',
 				func = function() E:SetToFilterConfig('AuraBar Colors') end,
 			},
@@ -905,11 +906,12 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				name = L["Latency"],
 				type = 'toggle',
 				hidden = function() return groupName ~= 'player' end,
-			}, -- Keep format on 15, there will be other checkboxes only for Player.
+			},
 			format = {
 				order = 11,
 				type = 'select',
 				name = L["Format"],
+				desc = L["Cast Time Format"],
 				values = {
 					['CURRENTMAX'] = L["Current / Max"],
 					['CURRENT'] = L["Current"],
@@ -928,6 +930,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				order = 3,
 				type = 'select',
 				name = L["Attach To"],
+				desc = L["The object you want to attach to."],
 				values = {
 					["Health"] = L["Health"],
 					["Power"] = L["Power"],
@@ -1042,6 +1045,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 						order = 4,
 						type = "select",
 						name = L["Attach To"],
+						desc = L["The object you want to attach to."],
 						disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
 						values = {
 							["Frame"] = L["Frame"],
@@ -1384,11 +1388,13 @@ local function CreateCustomTextGroup(unit, objectName)
 				type = 'select',
 				order = 10,
 				name = L["Attach Text To"],
+				desc = L["The object you want to attach to."],
 				values = attachToValues,
 			},
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
+				desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
 				type = 'input',
 				width = 'full',
 			},
@@ -1593,6 +1599,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				type = 'select',
 				order = 5,
 				name = L["Attach Text To"],
+				desc = L["The object you want to attach to."],
 				values = attachToValues,
 			},
 			bgUseBarTexture = {
@@ -1644,6 +1651,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 					text_format = {
 						order = 4,
 						name = L["Text Format"],
+						desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
 						type = 'input',
 						width = 'full',
 					},
@@ -1781,11 +1789,13 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 				type = 'select',
 				order = 5,
 				name = L["Attach Text To"],
+				desc = L["The object you want to attach to."],
 				values = attachToValues,
 			},
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
+				desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
 				type = 'input',
 				width = 'full',
 			},
@@ -2044,6 +2054,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				type = 'select',
 				order = 11,
 				name = L["Attach Text To"],
+				desc = L["The object you want to attach to."],
 				values = attachToValues,
 			},
 			autoHide = {
@@ -2079,6 +2090,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 					text_format = {
 						order = 4,
 						name = L["Text Format"],
+						desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
 						type = 'input',
 						width = 'full',
 					},
@@ -2407,6 +2419,7 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 				type = 'select',
 				order = 4,
 				name = L["Attach To"],
+				desc = L["The object you want to attach to."],
 				values = attachToValues,
 			},
 			size = {
@@ -2460,6 +2473,7 @@ local function GetOptionsTable_RoleIcons(updateFunc, groupName, numGroup)
 				type = 'select',
 				order = 4,
 				name = L["Attach To"],
+				desc = L["The object you want to attach to."],
 				values = attachToValues,
 			},
 			xOffset = {
@@ -2565,6 +2579,7 @@ local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
 				order = 4,
 				type = "select",
 				name = L["Attach To"],
+				desc = L["The object you want to attach to."],
 				values = attachToValues,
 			},
 			position = {
@@ -2618,6 +2633,7 @@ local function GetOptionsTable_ResurrectIcon(updateFunc, groupName, numUnits)
 				type = 'select',
 				order = 4,
 				name = L["Attach To"],
+				desc = L["The object you want to attach to."],
 				values = attachToValues,
 			},
 			size = {
@@ -2671,6 +2687,7 @@ local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
 				type = 'select',
 				order = 4,
 				name = L["Attach To"],
+				desc = L["The object you want to attach to."],
 				values = attachToValues,
 			},
 			size = {
@@ -4459,6 +4476,7 @@ E.Options.args.unitframe.args.player = {
 				text_format = {
 					order = 100,
 					name = L["Text Format"],
+					desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
 					type = 'input',
 					width = 'full',
 				},
@@ -6046,6 +6064,7 @@ E.Options.args.unitframe.args.party = {
 						text_format = {
 							order = 100,
 							name = L["Text Format"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
 							type = 'input',
 							width = 'full',
 						},
@@ -6133,6 +6152,7 @@ E.Options.args.unitframe.args.party = {
 						text_format = {
 							order = 100,
 							name = L["Text Format"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
 							type = 'input',
 							width = 'full',
 						},
@@ -6142,6 +6162,7 @@ E.Options.args.unitframe.args.party = {
 		},
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'party'),
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
+		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateHeaderGroup, 'party', 5),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'party'),
 		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'party'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),

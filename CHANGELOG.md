@@ -3,6 +3,9 @@
 **New Additions:**  
 
 **Bug Fixes:**  
+Added back some options that was eaten by a angry goblin.  
+Fixed Actionbar spell highlight, if you mouseover your spells in the Spellbook.  
+
 
 **Misc. Changes:**  
 

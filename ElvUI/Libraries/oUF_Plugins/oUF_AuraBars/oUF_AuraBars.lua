@@ -54,10 +54,6 @@ local function onUpdate(self, elapsed)
 			local timeNow = GetTime()
 			self:SetValue((self.expiration - timeNow) / self.duration)
 			self.timeText:SetText(FormatTime(self.expiration - timeNow))
-
-			if self.sparkEnabled then
-				self.spark:Show()
-			end
 		end
 		self.elapsed = 0
 	end
@@ -135,16 +131,18 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 			else
 				statusBar.nameText:SetText(name)
 			end
-			statusBar.spark:Hide()
-			statusBar:SetValue(1)
-			statusBar.timeText:SetText('')
 
 			statusBar.duration = duration
 			statusBar.expiration = expiration
-			statusBar.sparkEnabled = element.sparkEnabled
 			statusBar.spellID = spellID
 			statusBar.spell = name
 			statusBar.noTime = (duration == 0 and expiration == 0)
+
+			if not statusBar.noTime and element.sparkEnabled then
+				statusBar.spark:Show()
+			else
+				statusBar.spark:Hide()
+			end
 
 			local r, g, b = .2, .6, 1
 			if filter == 'HARMFUL' then

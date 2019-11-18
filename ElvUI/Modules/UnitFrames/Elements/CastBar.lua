@@ -122,7 +122,7 @@ function UF:Configure_Castbar(frame)
 	castbar.timeToHold = db.castbar.timeToHold
 
 	--Latency
-	if db.castbar.latency then
+	if frame.unit == 'player' and db.castbar.latency then
 		castbar.SafeZone = castbar.LatencyTexture
 		castbar.LatencyTexture:Show()
 	else
