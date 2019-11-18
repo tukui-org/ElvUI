@@ -1173,6 +1173,16 @@ E.TagInfo = {
 	['realm:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters" },
 	['realm:dash'] = { category = 'Realm', description = "Displays the server name with a dash in front (e.g. -Realm)" },
 	['realm:dash:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters and a dash in front" },
+		--Speed
+	['speed:percent'] = { category = 'Speed', description = "" },
+	['speed:percent-raw'] = { category = 'Speed', description = "" },
+	['speed:yardspersec'] = { category = 'Speed', description = "" },
+	['speed:percent'] = { category = 'Speed', description = "" },
+	['speed:percent-moving'] = { category = 'Speed', description = "" },
+	['speed:yardspersec-moving'] = { category = 'Speed', description = "" },
+	['speed:percent-moving-raw'] = { category = 'Speed', description = "" },
+	['speed:yardspersec-moving-raw'] = { category = 'Speed', description = "" },
+	['speed:yardspersec-raw'] = { category = 'Speed', description = "" },
 	--Status
 	['status'] = { category = 'Status', description = "Displays zzz, dead, ghost, offline" },
 	['status:icon'] = { category = 'Status', description = "Displays AFK/DND as an orange(afk) / red(dnd) icon" },
