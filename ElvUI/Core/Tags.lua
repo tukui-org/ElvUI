@@ -1173,7 +1173,7 @@ E.TagInfo = {
 	['realm:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters" },
 	['realm:dash'] = { category = 'Realm', description = "Displays the server name with a dash in front (e.g. -Realm)" },
 	['realm:dash:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters and a dash in front" },
-		--Speed
+	--Speed
 	['speed:percent'] = { category = 'Speed', description = "" },
 	['speed:percent-raw'] = { category = 'Speed', description = "" },
 	['speed:yardspersec'] = { category = 'Speed', description = "" },
