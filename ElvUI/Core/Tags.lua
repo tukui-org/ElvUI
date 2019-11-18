@@ -1032,6 +1032,7 @@ E.TagInfo = {
 	['classpowercolor'] = { category = 'Colors', description = "Changes the color of the special power based upon its type" },
 	['classificationcolor'] = { category = 'Colors', description = "Changes color of health, depending on the unit's classification" },
 	['manacolor'] = { category = 'Colors', description = "Changes the text color to a light-blue mana color" },
+	['difficulty'] = { category = 'Colors', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 	--Classification
 	['classification'] = { category = 'Classification', description = "Displays the unit's classification (e.g. 'ELITE' and 'RARE')" },
 	['shortclassification'] = { category = 'Classification', description = "Displays the unit's classification in short form (e.g. '+' for ELITE and 'R' for RARE)" },
@@ -1213,7 +1214,6 @@ E.TagInfo = {
 	['smartclass'] = { category = 'Miscellanous', description = "Displays the player's class or creature's type" },
 	['class'] = { category = 'Miscellanous', description = "Displays the class of the unit, if that unit is a player" },
 	['specialization'] = { category = 'Miscellanous', description = "Displays your current specialization as text" },
-	['difficulty'] = { category = 'Miscellanous', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 	['faction'] = { category = 'Miscellanous', description = "Displays 'Aliance' or 'Horde'" },
 	['faction:icon'] = { category = 'Miscellanous', description = "Displays 'Alliance' or 'Horde' Texture" },
 	['plus'] = { category = 'Miscellanous', description = "Displays the character '+' if the unit is an elite or rare-elite" },
