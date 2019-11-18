@@ -1031,6 +1031,7 @@ E.TagInfo = {
 	['threatcolor'] = { category = 'Colors', description = "Changes color of health, depending on the unit's threat situation" },
 	['classpowercolor'] = { category = 'Colors', description = "Changes the color of the special power based upon its type" },
 	['classificationcolor'] = { category = 'Colors', description = "Changes color of health, depending on the unit's classification" },
+	['manacolor'] = { category = 'Colors', description = "Changes the text color to a light-blue mana color" },
 	--Classification
 	['classification'] = { category = 'Classification', description = "Displays the unit's classification (e.g. 'ELITE' and 'RARE')" },
 	['shortclassification'] = { category = 'Classification', description = "Displays the unit's classification in short form (e.g. '+' for ELITE and 'R' for RARE)" },
@@ -1208,6 +1209,13 @@ E.TagInfo = {
 	['plus'] = { category = 'Miscellanous', description = "Displays the character '+' if the unit is an elite or rare-elite" },
 	['arenaspec'] = { category = 'Miscellanous', description = "Displays the area spec of an unit" },
 	['arena:number'] = { category = 'Miscellanous', description = "Displays the arena number 1-5" },
+	--Shadow and Light
+	['sl:pvptimer'] = { category = 'Shadow & Light', description = "Shadow & Light Custom Tag" },
+	['range:sl'] = { category = 'Shadow & Light', description = "Shadow & Light Custom Tag" },
+	['absorbs:sl-short'] = { category = 'Shadow & Light', description = "Shadow & Light Custom Tag" },
+	['absorbs:sl-full'] = { category = 'Shadow & Light', description = "Shadow & Light Custom Tag" },
+	['sl:pvplevel'] = { category = 'Shadow & Light', description = "Shadow & Light Custom Tag" },
+	['health:current:sl-rehok'] = { category = 'Shadow & Light', description = "Shadow & Light Custom Tag" },
 }
 
 function E:AddTagInfo(tagName, category, description, order)
