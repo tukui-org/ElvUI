@@ -1226,13 +1226,6 @@ E.TagInfo = {
 	['nearbyplayers:10'] = { category = 'Range', description = "Displays all players within 10 yards" },
 	['nearbyplayers:30'] = { category = 'Range', description = "Displays all players within 30 yards" },
 	['distance'] = { category = 'Range', description = "Displays the distance" },
-	--Shadow and Light
-	['sl:pvptimer'] = { category = 'Shadow & Light', description = "Shadow & Light Custom Tag" },
-	['range:sl'] = { category = 'Shadow & Light', description = "Shadow & Light Custom Tag" },
-	['absorbs:sl-short'] = { category = 'Shadow & Light', description = "Shadow & Light Custom Tag" },
-	['absorbs:sl-full'] = { category = 'Shadow & Light', description = "Shadow & Light Custom Tag" },
-	['sl:pvplevel'] = { category = 'Shadow & Light', description = "Shadow & Light Custom Tag" },
-	['health:current:sl-rehok'] = { category = 'Shadow & Light', description = "Shadow & Light Custom Tag" },
 }
 
 function E:AddTagInfo(tagName, category, description, order)
