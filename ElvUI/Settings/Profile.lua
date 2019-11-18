@@ -1019,7 +1019,8 @@ local UF_Auras = {
 	yOffset = 0,
 	minDuration = 0,
 	maxDuration = 300,
-	priority = ''
+	priority = '',
+	sizeOverride = 0
 }
 
 local UF_AuraBars = {
