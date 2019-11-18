@@ -440,13 +440,13 @@ end
 
 do --taint workarounds by townlong-yak.com (rearranged by Simpy)
 	--HonorFrameLoadTaint	- https://www.townlong-yak.com/bugs/afKy4k-HonorFrameLoadTaint
-	if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0 < 2 then _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION = 2 end
+	if (_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION = 2 end
 	--CommunitiesUI			- https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
-	if _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0 < 1 then _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1 end
+	if (_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1 end
 	--CommunitiesUI #2		- https://www.townlong-yak.com/bugs/YhgQma-SetValueRefreshTaint
-	if _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION or 0 < 1 then _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION = 1 end
+	if (_G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION or 0) < 1 then _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION = 1 end
 	--RefreshOverread		- https://www.townlong-yak.com/bugs/Mx7CWN-RefreshOverread
-	if _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION or 0 < 1 then _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION = 1 end
+	if (_G.UIDD_REFRESH_OVERREAD_PATCH_VERSION or 0) < 1 then _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION = 1 end
 
 	if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION == 2 or _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION == 1 or _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
 		local function drop(t, k)
