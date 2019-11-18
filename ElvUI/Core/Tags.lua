@@ -1219,6 +1219,8 @@ E.TagInfo = {
 	['plus'] = { category = 'Miscellanous', description = "Displays the character '+' if the unit is an elite or rare-elite" },
 	['arenaspec'] = { category = 'Miscellanous', description = "Displays the area spec of an unit" },
 	['arena:number'] = { category = 'Miscellanous', description = "Displays the arena number 1-5" },
+	['pvptimer'] = { category = 'Miscellanous', description = "Displays remaining time on pvp-flagged status" },
+	['race'] = { category = 'Miscellanous', description = "Displays the race" },
 	--Range
 	['nearbyplayers:8'] = { category = 'Range', description = "Displays all players within 8 yards" },
 	['nearbyplayers:10'] = { category = 'Range', description = "Displays all players within 10 yards" },
