@@ -1246,8 +1246,8 @@ function UF:ADDON_LOADED(_, addon)
 end
 
 do
-	local hasEnteredWorld = false
 	function UF:PLAYER_ENTERING_WORLD()
+		UF:Update_AllFrames()
 		local _, instanceType = GetInstanceInfo()
 		if instanceType ~= "none" then
 			--We need to update headers when we zone into an instance
