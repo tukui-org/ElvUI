@@ -1343,6 +1343,7 @@ L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = "�
 L["Use class color for the names of players when they are mentioned."] = "Окрашивать имена игроков цветом их класса."
 L["Use Class Color"] = "Использовать цвет класса"
 L["Use coin icons instead of colored text."] = "Использовать иконки монет вместо окрашенного текста."
+L["Use Custom Backdrop"] = true
 L["Use Custom Level"] = "Свой уровень"
 L["Use Custom Strata"] = "Свой слой"
 L["Use Dead Backdrop"] = "Фон мертвого"

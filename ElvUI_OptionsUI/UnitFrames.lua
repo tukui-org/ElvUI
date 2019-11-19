@@ -7339,7 +7339,7 @@ E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.class
 		customclasspowerbackdrop = {
 			order = 4,
 			type = 'toggle',
-			name = L["Custom Backdrop"],
+			name = L["Use Custom Backdrop"],
 			desc = L["Use the custom backdrop color instead of a multiple of the main color."],
 			get = function(info) return E.db.unitframe.colors[info[#info]] end,
 			set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
@@ -7348,7 +7348,6 @@ E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.class
 			order = 5,
 			type = 'color',
 			name = L["Custom Backdrop"],
-			desc = L["Use the custom backdrop color instead of a multiple of the main color."],
 			disabled = function() return not E.db.unitframe.colors.customclasspowerbackdrop end,
 			get = function(info)
 				local t = E.db.unitframe.colors[info[#info]]
