@@ -1913,6 +1913,8 @@ P.unitframe.units.arena.infoPanel.height = 17
 P.unitframe.units.arena.name.text_format = '[namecolor][name:medium]'
 P.unitframe.units.arena.power.text_format = '[powercolor][power:current]'
 
+P.unitframe.units.party.health.position = 'LEFT'
+P.unitframe.units.party.health.xOffset = 2
 P.unitframe.units.party.buffs.anchorPoint = 'LEFT'
 P.unitframe.units.party.buffs.maxDuration = 300
 P.unitframe.units.party.buffs.priority = 'Blacklist,TurtleBuffs'
