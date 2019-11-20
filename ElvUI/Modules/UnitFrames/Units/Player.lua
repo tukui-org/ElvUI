@@ -6,8 +6,8 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 --Lua functions
 local _G = _G
+local max = max
 local tinsert = tinsert
-local max = math.max
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local CastingBarFrame_OnLoad = CastingBarFrame_OnLoad

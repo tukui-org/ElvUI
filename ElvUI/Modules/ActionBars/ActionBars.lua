@@ -4,7 +4,7 @@ local AB = E:GetModule('ActionBars')
 --Lua functions
 local _G = _G
 local pairs, select = pairs, select
-local ceil, unpack = math.ceil, unpack
+local ceil, unpack = ceil, unpack
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 --WoW API / Variables
 local CanExitVehicle = CanExitVehicle

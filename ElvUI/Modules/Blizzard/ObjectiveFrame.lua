@@ -3,7 +3,7 @@ local B = E:GetModule('Blizzard')
 
 --Lua functions
 local _G = _G
-local min = math.min
+local min = min
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo

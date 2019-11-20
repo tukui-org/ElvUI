@@ -3,8 +3,8 @@ local AB = E:GetModule('ActionBars')
 
 --Lua functions
 local _G = _G
+local ceil = ceil
 local unpack = unpack
-local ceil = math.ceil
 --WoW API / Variables
 local RegisterStateDriver = RegisterStateDriver
 local GetBindingKey = GetBindingKey
