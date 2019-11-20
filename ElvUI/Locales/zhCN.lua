@@ -159,6 +159,7 @@ L["INCOMPATIBLE_ADDON"] = "插件 %s 不相容于 ElvUI 的 %s 模组, 请停用
 L["Info/Controls"] = "信息/控制"
 L["Installation Complete"] = "安装完成"
 L["Invalid Target"] = "无效的目标"
+L["Interrupted %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"] = "已打断 %s 的 \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"
 L["is looking for members"] = "正在寻找队友"
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "看起来你使用的一个插件使得Blizzard_CompactRaidFrames停用了。这会产生错误与问题。这个插件现在会被重新启用"
 L["Item level: %.2f"] = "物品等级：%.2f"

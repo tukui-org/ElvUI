@@ -159,6 +159,7 @@ L["INCOMPATIBLE_ADDON"] = "L'addon %s n'est pas compatible avec le module %s d'E
 L["Info/Controls"] = true
 L["Installation Complete"] = "Installation terminée"
 L["Invalid Target"] = "Cible incorrecte"
+L["Interrupted %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"] = true
 L["is looking for members"] = true
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "Il semble que l'un de vos addon ait désactivé L'addon Blizzard_CompactRaidFrames. Ceci peut causer des erreur et d'autre problèmes. L'addon vas être réactivé."
 L["Item level: %.2f"] = true
