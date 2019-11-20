@@ -109,9 +109,9 @@ end
 
 --Hex to RGB
 function E:HexToRGB(hex)
-    hex = gsub(hex, '^|c[fF][fF]', '')
-	local rhex, ghex, bhex = string.sub(hex, 1, 2), string.sub(hex, 3, 4), string.sub(hex, 5, 6)
-	return tonumber(rhex, 16), tonumber(ghex, 16), tonumber(bhex, 16)
+    hex = gsub(hex, '^|c', '')
+	local ahex, rhex, ghex, bhex = strsub(hex, 1, 2), strsub(hex, 3, 4), strsub(hex, 5, 6), strsub(hex, 7, 8)
+	return tonumber(rhex, 16), tonumber(ghex, 16), tonumber(bhex, 16), tonumber(ahex, 16)
 end
 
 --From http://wow.gamepedia.com/UI_coordinates
