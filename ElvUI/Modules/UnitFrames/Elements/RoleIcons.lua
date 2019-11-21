@@ -2,12 +2,12 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 --Lua functions
-local random = math.random
+local random = random
 --WoW API / Variables
-local GetBattlefieldScore = GetBattlefieldScore
-local GetInstanceInfo = GetInstanceInfo
-local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetUnitName = GetUnitName
+local GetInstanceInfo = GetInstanceInfo
+local GetBattlefieldScore = GetBattlefieldScore
+local GetNumBattlefieldScores = GetNumBattlefieldScores
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitIsConnected = UnitIsConnected
 

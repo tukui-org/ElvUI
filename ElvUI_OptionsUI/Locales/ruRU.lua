@@ -290,7 +290,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "Контролирует кол-во отображаемых эффектов. Также влияет на размер иконок."
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "Задает количество десятичных долей, используемых на индикаторах здоровья и рамках юнитов."
 L["Controls the speed at which smoothed bars will be updated."] = "Задает скорость обновления плавных полос."
-L["Controls the text displayed. Available Tags are listed under Info/Controls"] = true
+L["Controls the text displayed. Available Tags are listed under Info/Controls"] = "Задает отображаемый текст. Доступные тэги можно увидеть в разделе \"Инфо/Контроль\"."
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = "Контролирует ширину и размер области, на которую можно будет кликнуть для выбора юнита."
 L["Controls which nameplates will be displayed."] = "Определяет, какие индикаторы быдут отображаться."
 L["Cooldown Text"] = "Текст восстановления"
@@ -1243,7 +1243,7 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = "Определяет размер иконки, когда она не привязана к инфо панели."
 L["This feature will allow you to transfer settings to other characters."] = "Эта функция позволит Вам передавать свои настройки другим персонажам."
 L["This is for Customized Icons in your Interface/Icons folder."] = "Используется для кастомных иконок в папке Interface/Icons"
-L["This opens the AuraBar Colors filter. These settings affect specific spells."] = true
+L["This opens the AuraBar Colors filter. These settings affect specific spells."] = "Открывает фильтр цветов полос аур. Эти настройки специфичны для конкретного заклинания."
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "Открывает опции окрашивания рамок юнитов. Эти настройки влияют на все рамки."
 L["This option allows the overlay to span the whole health, including the background."] = "Позволяет портрету растягиваться на все здоровье, включая фон."
 L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."] = "Эта опция контролирует настройку Blizzard для отображения/скрытия индикаторов."
@@ -1343,6 +1343,7 @@ L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = "�
 L["Use class color for the names of players when they are mentioned."] = "Окрашивать имена игроков цветом их класса."
 L["Use Class Color"] = "Использовать цвет класса"
 L["Use coin icons instead of colored text."] = "Использовать иконки монет вместо окрашенного текста."
+L["Use Custom Backdrop"] = true
 L["Use Custom Level"] = "Свой уровень"
 L["Use Custom Strata"] = "Свой слой"
 L["Use Dead Backdrop"] = "Фон мертвого"

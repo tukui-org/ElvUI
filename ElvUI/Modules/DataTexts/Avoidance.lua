@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
-local format, strjoin, abs = format, strjoin, math.abs
+local format, strjoin, abs = format, strjoin, abs
 --WoW API / Variables
 local GetBlockChance = GetBlockChance
 local GetBonusBarOffset = GetBonusBarOffset

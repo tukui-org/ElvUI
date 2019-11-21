@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
-local min, max = math.min, math.max
+local min, max = min, max
 local format, strjoin = format, strjoin
 --WoW API / Variables
 local BreakUpLargeNumbers = BreakUpLargeNumbers

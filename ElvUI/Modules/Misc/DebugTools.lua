@@ -9,19 +9,23 @@ local InCombatLockdown = InCombatLockdown
 local GetCVarBool = GetCVarBool
 local StaticPopup_Hide = StaticPopup_Hide
 
+local function UnHighlightText(self)
+	self:HighlightText(0, 0)
+end
+
+local function ScriptErrors_UnHighlightText()
+	_G.ScriptErrorsFrame.ScrollFrame.Text:HighlightText(0, 0)
+end
+
 function D:ModifyErrorFrame()
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	ScriptErrorsFrame.ScrollFrame.Text.cursorOffset = 0
 	ScriptErrorsFrame.ScrollFrame.Text.cursorHeight = 0
 	ScriptErrorsFrame.ScrollFrame.Text:SetScript("OnEditFocusGained", nil)
 
-	local function ScriptErrors_UnHighlightText()
-		ScriptErrorsFrame.ScrollFrame.Text:HighlightText(0, 0)
-	end
 	hooksecurefunc(ScriptErrorsFrame, 'Update', ScriptErrors_UnHighlightText)
 
 	-- Unhighlight text when focus is hit
-	local function UnHighlightText(self) self:HighlightText(0, 0) end
 	ScriptErrorsFrame.ScrollFrame.Text:HookScript("OnEscapePressed", UnHighlightText)
 
 	ScriptErrorsFrame:Size(500, 300)

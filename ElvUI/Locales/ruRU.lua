@@ -159,6 +159,7 @@ L["INCOMPATIBLE_ADDON"] = "Аддон %s не совместим с модуле
 L["Info/Controls"] = "Инфо/Контроль"
 L["Installation Complete"] = "Установка завершена"
 L["Invalid Target"] = "Неверная цель"
+L["Interrupted %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"] = true
 L["is looking for members"] = "ищет игроков"
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "Похоже, что один из ваших аддонов отключил Blizzard_CompactRaidFrames. Это может вызвать ошибки и другие проблемы, мы рекомендуем включить. Включить аддоны Blizzard сейчас?"
 L["Item level: %.2f"] = "Уровень предмета: %.2f"

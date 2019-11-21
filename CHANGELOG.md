@@ -6,8 +6,8 @@
 Added back some options that was eaten by a angry goblin.  
 Fixed Actionbar spell highlight, if you mouseover your spells in the Spellbook.  
 
-
 **Misc. Changes:**  
+Updated the Chat Spam Interval to resolve some issues with it.  
 
 ___
 ### Version 11.25 [ November 10th 2019 ]

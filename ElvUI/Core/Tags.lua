@@ -6,10 +6,13 @@ local translitMark = "!"
 
 --Lua functions
 local _G = _G
+local tonumber = tonumber
 local unpack, pairs, wipe, floor = unpack, pairs, wipe, floor
 local gmatch, gsub, format, select = gmatch, gsub, format, select
 local strfind, strmatch, strlower, utf8lower, utf8sub = strfind, strmatch, strlower, string.utf8lower, string.utf8sub
 --WoW API / Variables
+local CreateTextureMarkup = CreateTextureMarkup
+local UnitFactionGroup = UnitFactionGroup
 local GetCVarBool = GetCVarBool
 local GetGuildInfo = GetGuildInfo
 local GetInstanceInfo = GetInstanceInfo

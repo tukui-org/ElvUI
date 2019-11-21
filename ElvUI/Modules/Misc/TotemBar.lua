@@ -11,11 +11,9 @@ local CooldownFrame_Set = CooldownFrame_Set
 local MAX_TOTEMS = MAX_TOTEMS
 
 function TOTEMS:Update()
-	local _, button, startTime, duration, icon
-
 	for i=1, MAX_TOTEMS do
-		button = _G["TotemFrameTotem"..i];
-		_, _, startTime, duration, icon = GetTotemInfo(button.slot);
+		local button = _G["TotemFrameTotem"..i];
+		local _, _, startTime, duration, icon = GetTotemInfo(button.slot);
 
 		if button:IsShown() then
 			self.bar[i]:Show()

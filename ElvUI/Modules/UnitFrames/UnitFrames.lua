@@ -1245,17 +1245,6 @@ function UF:ADDON_LOADED(_, addon)
 	self:UnregisterEvent("ADDON_LOADED");
 end
 
-do
-	local hasEnteredWorld = false
-	function UF:PLAYER_ENTERING_WORLD()
-		local _, instanceType = GetInstanceInfo()
-		if instanceType ~= "none" then
-			--We need to update headers when we zone into an instance
-			UF:UpdateAllHeaders()
-		end
-	end
-end
-
 function UF:PLAYER_LOGIN()
 	ElvUF:SetActiveStyle("ElvUF")
 	UF:LoadUnits()
@@ -1470,7 +1459,7 @@ function UF:Initialize()
 	end)
 
 	self:RegisterEvent('PLAYER_LOGIN')
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_AllFrames')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 	--[[if E.private.unitframe.disabledBlizzardFrames.arena and E.private.unitframe.disabledBlizzardFrames.focus and E.private.unitframe.disabledBlizzardFrames.party then

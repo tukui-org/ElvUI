@@ -108,9 +108,9 @@ local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInf
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
 -- GLOBALS: ElvCharacterDB
 
-local msgList, msgCount, msgTime = {}, {}, {}
 local CreatedFrames = 0
 local lfgRoles = {}
+local throttle = {}
 
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 local PLAYER_NAME = E.myname.."-"..PLAYER_REALM
@@ -1119,9 +1119,7 @@ function CH:DisableHyperlink()
 end
 
 function CH:DisableChatThrottle()
-	wipe(msgList)
-	wipe(msgCount)
-	wipe(msgTime)
+	wipe(throttle)
 end
 
 function CH:ShortChannel()
@@ -1763,72 +1761,56 @@ function CH:SetupChat()
 end
 
 local function PrepareMessage(author, message)
-	return strupper(author)..message
+	if author and author ~= '' and message and message ~= '' then
+		return strupper(author) .. message
+	end
 end
 
-function CH:ChatThrottleHandler(_, arg1, arg2) -- event, arg1, arg2
-	if arg2 ~= "" then
-		local message = PrepareMessage(arg2, arg1)
-		if msgList[message] == nil then
-			msgList[message] = true
-			msgCount[message] = 1
-			msgTime[message] = time()
-		else
-			msgCount[message] = msgCount[message] + 1
+function CH:ChatThrottleHandler(arg1, arg2, when)
+	local msg = PrepareMessage(arg1, arg2)
+	if msg then
+		for message, object in pairs(throttle) do
+			if difftime(when, object.time) >= CH.db.throttleInterval then
+				throttle[message] = nil
+			end
 		end
+
+		if not throttle[msg] then
+			throttle[msg] = {time = time(), count = 1}
+		else
+			throttle[msg].count = throttle[msg].count + 1
+		end
+	end
+end
+
+function CH:ChatThrottleBlockFlag(author, message, when)
+	local msg = (author ~= PLAYER_NAME) and (CH.db.throttleInterval ~= 0) and PrepareMessage(author, message)
+	local object = msg and throttle[msg]
+
+	return object and object.time and object.count and object.count > 1 and (difftime(when, object.time) <= CH.db.throttleInterval), object
+end
+
+function CH:ChatThrottleIntervalHandler(event, message, author, ...)
+	local blockFlag, blockObject = CH:ChatThrottleBlockFlag(author, message, time())
+
+	if blockFlag then
+		return true
+	else
+		if blockObject then blockObject.time = time() end
+		return CH.FindURL(self, event, message, author, ...)
 	end
 end
 
 function CH:CHAT_MSG_CHANNEL(event, message, author, ...)
-	local blockFlag = false
-	local msg = PrepareMessage(author, message)
-
-	-- ignore player messages
-	if author == PLAYER_NAME then return CH.FindURL(self, event, message, author, ...) end
-	if msgList[msg] and CH.db.throttleInterval ~= 0 then
-		if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
-			blockFlag = true
-		end
-	end
-
-	if blockFlag then
-		return true
-	else
-		if CH.db.throttleInterval ~= 0 then
-			msgTime[msg] = time()
-		end
-
-		return CH.FindURL(self, event, message, author, ...)
-	end
+	return CH:ChatThrottleIntervalHandler(event, message, author, ...)
 end
 
 function CH:CHAT_MSG_YELL(event, message, author, ...)
-	local blockFlag = false
-	local msg = PrepareMessage(author, message)
-
-	if msg == nil then return CH.FindURL(self, event, message, author, ...) end
-
-	-- ignore player messages
-	if author == PLAYER_NAME then return CH.FindURL(self, event, message, author, ...) end
-	if msgList[msg] and msgCount[msg] > 1 and CH.db.throttleInterval ~= 0 then
-		if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
-			blockFlag = true
-		end
-	end
-
-	if blockFlag then
-		return true
-	else
-		if CH.db.throttleInterval ~= 0 then
-			msgTime[msg] = time()
-		end
-
-		return CH.FindURL(self, event, message, author, ...)
-	end
+	return CH:ChatThrottleIntervalHandler(event, message, author, ...)
 end
 
 function CH:CHAT_MSG_SAY(event, message, author, ...)
-	return CH.FindURL(self, event, message, author, ...)
+	return CH:ChatThrottleIntervalHandler(event, message, author, ...)
 end
 
 function CH:ThrottleSound()
@@ -2072,20 +2054,19 @@ function CH:DelayGuildMOTD()
 end
 
 function CH:SaveChatHistory(event, ...)
-	if not self.db.chatHistory then return end
-	local data = ElvCharacterDB.ChatHistoryLog
-
-	if self.db.throttleInterval ~= 0 and (event == 'CHAT_MSG_SAY' or event == 'CHAT_MSG_YELL' or event == 'CHAT_MSG_CHANNEL') then
-		self:ChatThrottleHandler(event, ...)
-
+	if CH.db.throttleInterval ~= 0 and (event == 'CHAT_MSG_SAY' or event == 'CHAT_MSG_YELL' or event == 'CHAT_MSG_CHANNEL') then
 		local message, author = ...
-		local msg = PrepareMessage(author, message)
-		if author ~= PLAYER_NAME and msgList[msg] then
-			if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
-				return
-			end
+		local when = time()
+
+		CH:ChatThrottleHandler(author, message, when)
+
+		if CH:ChatThrottleBlockFlag(author, message, when) then
+			return
 		end
 	end
+
+	if not CH.db.chatHistory then return end
+	local data = ElvCharacterDB.ChatHistoryLog
 
 	local tempHistory = {}
 	for i = 1, select('#', ...) do

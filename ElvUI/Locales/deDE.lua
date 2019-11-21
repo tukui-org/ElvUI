@@ -159,6 +159,7 @@ L["INCOMPATIBLE_ADDON"] = "Das Addon %s ist nicht mit dem ElvUI %s Modul kompati
 L["Info/Controls"] = "Info/Kontrolle"
 L["Installation Complete"] = "Installation komplett"
 L["Invalid Target"] = "Ungültiges Ziel"
+L["Interrupted %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"] = "Unterbrochen %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"
 L["is looking for members"] = "sucht nach Mitgliedern"
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = "Es sieht so aus, als würde eines deiner Addons die Blizzard_CompactRaidFrames deaktivieren. Dass kann zu Fehlern oder anderen Problemen führen. Das Addon wird wieder aktiviert."
 L["Item level: %.2f"] = "Gegenstandsstufe: %.2f"

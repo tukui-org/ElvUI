@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 --Lua functions
 local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
-local select, tonumber, type, unpack = select, tonumber, type, unpack
-local atan2, modf, ceil, floor, abs, sqrt, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, mod
+local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
+local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, abs, sqrt, mod
 local format, strsub, strupper, gsub, gmatch, utf8sub = format, strsub, strupper, gsub, gmatch, string.utf8sub
 local tostring, pairs = tostring, pairs
 --WoW API / Variables
@@ -100,18 +100,20 @@ function E:Truncate(v, decimals)
 end
 
 --RGB to Hex
-function E:RGBToHex(r, g, b, header)
+function E:RGBToHex(r, g, b, header, ending)
 	r = r <= 1 and r >= 0 and r or 1
 	g = g <= 1 and g >= 0 and g or 1
 	b = b <= 1 and b >= 0 and b or 1
-	return format('%s%02x%02x%02x', header or '|cff', r*255, g*255, b*255)
+	return format('%s%02x%02x%02x%s', header or '|cff', r*255, g*255, b*255, ending or '')
 end
 
 --Hex to RGB
 function E:HexToRGB(hex)
-    hex = gsub(hex, '^|c[fF][fF]', '')
-	local rhex, ghex, bhex = string.sub(hex, 1, 2), string.sub(hex, 3, 4), string.sub(hex, 5, 6)
-	return tonumber(rhex, 16), tonumber(ghex, 16), tonumber(bhex, 16)
+	local a, r, g, b = strmatch(hex, '^|?c?(%x%x)(%x%x)(%x%x)(%x?%x?)|?r?$')
+	if not a then return 0, 0, 0, 0 end
+	if b == '' then r, g, b, a = a, r, g, 'ff' end
+
+	return tonumber(r, 16), tonumber(g, 16), tonumber(b, 16), tonumber(a, 16)
 end
 
 --From http://wow.gamepedia.com/UI_coordinates

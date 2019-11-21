@@ -63,7 +63,7 @@ function E:CollectEssenceInfo(index, lineText, slotInfo)
 			if text and (not strmatch(text, '^[ +]')) and essence and next(essence) then
 				local r, g, b = line:GetTextColor()
 
-				essence[4] = E:RGBToHex(r, g, b, '')
+				essence[4] = E:RGBToHex(r, g, b)
 				essence[5] = text
 
 				step = step + 1

@@ -1342,6 +1342,7 @@ L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = tr
 L["Use class color for the names of players when they are mentioned."] = "사용자의 이름이 언급될 경우 직업 색상으로 표시합니다."
 L["Use Class Color"] = "직업 색상 사용"
 L["Use coin icons instead of colored text."] = "골드 이미지를 글자가 아닌 아이콘으로 표시합니다."
+L["Use Custom Backdrop"] = true
 L["Use Custom Level"] = true
 L["Use Custom Strata"] = true
 L["Use Dead Backdrop"] = "죽음 배경 사용"
