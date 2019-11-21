@@ -5,7 +5,7 @@ local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipair
 local select, tonumber, type, unpack, strlen = select, tonumber, type, unpack, strlen
 local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, abs, sqrt, mod
 local format, strsub, strupper, gsub, gmatch, utf8sub = format, strsub, strupper, gsub, gmatch, string.utf8sub
-local tostring, pairs = tostring, pairs
+local tostring, pairs, strmatch = tostring, pairs, strmatch
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
@@ -100,22 +100,26 @@ function E:Truncate(v, decimals)
 end
 
 --RGB to Hex
-function E:RGBToHex(r, g, b, header)
+function E:RGBToHex(r, g, b, header, ending)
 	r = r <= 1 and r >= 0 and r or 1
 	g = g <= 1 and g >= 0 and g or 1
 	b = b <= 1 and b >= 0 and b or 1
-	return format('%s%02x%02x%02x', header or '|cff', r*255, g*255, b*255)
+	return format('%s%02x%02x%02x%s', header or '|cff', r*255, g*255, b*255, ending or '')
 end
 
 --Hex to RGB
 function E:HexToRGB(hex)
-    local s = gsub(hex, '^|c', '')
-    local len, r, g, b, a = strlen(s)
+    local s = strmatch(hex, '^|?c?(%x-)|?r?$')
+    if not s then return 0, 0, 0, 0 end
 
+    local r, g, b, a
+    local len = strlen(s)
     if len == 8 then
 		a, r, g, b = strsub(s, 1, 2), strsub(s, 3, 4), strsub(s, 5, 6), strsub(s, 7, 8)
 	elseif len == 6 then
 		r, g, b = strsub(s, 1, 2), strsub(s, 3, 4), strsub(s, 5, 6)
+	else
+		r, g, b, a = 0, 0, 0, 0
 	end
 
 	return r and tonumber(r, 16), g and tonumber(g, 16), b and tonumber(b, 16), a and tonumber(a, 16)
