@@ -1769,6 +1769,12 @@ end
 function CH:ChatThrottleHandler(arg1, arg2)
 	local msg = PrepareMessage(arg1, arg2)
 	if msg then
+		for message, object in pairs(throttle) do
+			if difftime(time(), object.time) >= CH.db.throttleInterval then
+				throttle[message] = nil
+			end
+		end
+
 		if not throttle[msg] then
 			throttle[msg] = {time = time(), count = 1}
 		else
