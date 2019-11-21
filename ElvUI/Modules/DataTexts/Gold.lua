@@ -1,4 +1,4 @@
-local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
 --Lua functions
@@ -18,7 +18,6 @@ local IsShiftKeyDown = IsShiftKeyDown
 local C_WowTokenPublic = C_WowTokenPublic
 local C_Timer_NewTicker = C_Timer.NewTicker
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
-
 -- GLOBALS: ElvDB
 
 local Ticker
@@ -68,7 +67,7 @@ end
 local function Click(self, btn)
 	if btn == "RightButton" then
 		if IsShiftKeyDown() then
-			ElvDB.gold = nil
+			wipe(ElvDB.gold)
 			OnEvent(self)
 			DT.tooltip:Hide()
 		elseif IsControlKeyDown() then
