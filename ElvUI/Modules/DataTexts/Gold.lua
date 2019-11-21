@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Lua functions
 local _G = _G
+local type = type
 local wipe = wipe
 local pairs = pairs
 local ipairs = ipairs
@@ -35,18 +36,25 @@ local function OnEvent(self)
 		Ticker = C_Timer_NewTicker(60, C_WowTokenPublic.UpdateMarketPrice)
 	end
 
-	local NewMoney = GetMoney()
-	ElvDB = ElvDB or { }
-	ElvDB.gold = ElvDB.gold or {}
-	ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {}
-	ElvDB.gold[E.myrealm][E.myname] = ElvDB.gold[E.myrealm][E.myname] or NewMoney
-
 	ElvDB.class = ElvDB.class or {}
 	ElvDB.class[E.myrealm] = ElvDB.class[E.myrealm] or {}
 	ElvDB.class[E.myrealm][E.myname] = E.myclass
 
-	local OldMoney = ElvDB.gold[E.myrealm][E.myname] or NewMoney
+	ElvDB = ElvDB or {}
+	ElvDB.gold = ElvDB.gold or {}
+	ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {}
 
+	--prevent an error possibly from really old profiles
+	local oldMoney = ElvDB.gold[E.myrealm][E.myname]
+	if oldMoney and type(oldMoney) ~= 'number' then
+		ElvDB.gold[E.myrealm][E.myname] = nil
+		oldMoney = nil
+	end
+
+	local NewMoney = GetMoney()
+	ElvDB.gold[E.myrealm][E.myname] = NewMoney
+
+	local OldMoney = oldMoney or NewMoney
 	local Change = NewMoney-OldMoney -- Positive if we gain money
 	if OldMoney>NewMoney then		-- Lost Money
 		Spent = Spent - Change
@@ -55,8 +63,6 @@ local function OnEvent(self)
 	end
 
 	self.text:SetText(E:FormatMoney(NewMoney, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins))
-
-	ElvDB.gold[E.myrealm][E.myname] = NewMoney
 end
 
 local function Click(self, btn)
