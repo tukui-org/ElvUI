@@ -439,16 +439,18 @@ function AddOn:ToggleOptionsUI(msg)
 end
 
 do --taint workarounds by townlong-yak.com (rearranged by Simpy)
-	--HonorFrameLoadTaint	- https://www.townlong-yak.com/bugs/afKy4k-HonorFrameLoadTaint
-	if (_G.UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION = 2 end
 	--CommunitiesUI			- https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
 	if (_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1 end
 	--CommunitiesUI #2		- https://www.townlong-yak.com/bugs/YhgQma-SetValueRefreshTaint
 	if (_G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION or 0) < 1 then _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION = 1 end
-	--RefreshOverread		- https://www.townlong-yak.com/bugs/Mx7CWN-RefreshOverread
-	if (_G.UIDD_REFRESH_OVERREAD_PATCH_VERSION or 0) < 1 then _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION = 1 end
 
-	if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION == 2 or _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION == 1 or _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
+	--	*NOTE* Simpy: these two were updated to fix an issue which was caused on the dropdowns with submenus
+	--HonorFrameLoadTaint	- https://www.townlong-yak.com/bugs/afKy4k-HonorFrameLoadTaint
+	if (_G.ELVUI_UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 1 then _G.ELVUI_UIDROPDOWNMENU_VALUE_PATCH_VERSION = 1 end
+	--RefreshOverread		- https://www.townlong-yak.com/bugs/Mx7CWN-RefreshOverread
+	if (_G.ELVUI_UIDD_REFRESH_OVERREAD_PATCH_VERSION or 0) < 1 then _G.ELVUI_UIDD_REFRESH_OVERREAD_PATCH_VERSION = 1 end
+
+	if _G.ELVUI_UIDROPDOWNMENU_VALUE_PATCH_VERSION == 1 or _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION == 1 or _G.ELVUI_UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
 		local function drop(t, k)
 			local c = 42
 			t[k] = nil
@@ -461,18 +463,21 @@ do --taint workarounds by townlong-yak.com (rearranged by Simpy)
 		end
 
 		hooksecurefunc('UIDropDownMenu_InitializeHelper', function(frame)
-			if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION == 2 or _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
+			if _G.ELVUI_UIDROPDOWNMENU_VALUE_PATCH_VERSION == 1 or _G.ELVUI_UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
 				for i=1, _G.UIDROPDOWNMENU_MAXLEVELS do
-					for j=1, _G.UIDROPDOWNMENU_MAXBUTTONS do
-						local b, _ = _G['DropDownList' .. i .. 'Button' .. j]
-						if _G.UIDROPDOWNMENU_VALUE_PATCH_VERSION == 2 and not (issecurevariable(b, 'value') or b:IsShown()) then
-							b.value = nil
-							repeat j, b['fx' .. j] = j+1, nil
-							until issecurevariable(b, 'value')
-						end
-						if _G.UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
-							_ = issecurevariable(b, 'checked')      or drop(b, 'checked')
-							_ = issecurevariable(b, 'notCheckable') or drop(b, 'notCheckable')
+					local d = _G['DropDownList' .. i]
+					if d and d.numButtons then
+						for j = d.numButtons+1, _G.UIDROPDOWNMENU_MAXBUTTONS do
+							local b, _ = _G['DropDownList' .. i .. 'Button' .. j]
+							if _G.ELVUI_UIDROPDOWNMENU_VALUE_PATCH_VERSION == 1 and not (issecurevariable(b, 'value') or b:IsShown()) then
+								b.value = nil
+								repeat j, b['fx' .. j] = j+1, nil
+								until issecurevariable(b, 'value')
+							end
+							if _G.ELVUI_UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
+								_ = issecurevariable(b, 'checked')      or drop(b, 'checked')
+								_ = issecurevariable(b, 'notCheckable') or drop(b, 'notCheckable')
+							end
 						end
 					end
 				end
