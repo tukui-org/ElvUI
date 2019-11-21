@@ -109,8 +109,8 @@ end
 
 --Hex to RGB
 function E:HexToRGB(hex)
-    local a, r, g, b = strmatch(hex, '^|?c?(%x%x)(%x%x)(%x%x)(%x?%x?)|?r?$')
-    if not a then return 0, 0, 0, 0 end
+	local a, r, g, b = strmatch(hex, '^|?c?(%x%x)(%x%x)(%x%x)(%x?%x?)|?r?$')
+	if not a then return 0, 0, 0, 0 end
 	if b == '' then r, g, b, a = a, r, g, 'ff' end
 
 	return tonumber(r, 16), tonumber(g, 16), tonumber(b, 16), tonumber(a, 16)
