@@ -1,5 +1,6 @@
 ------------------------------------------------------------------------------
 -- Credit to Jaslm, most of this code is his from the addon ColorPickerPlus.
+-- Modified and optimized by Simpy.
 ------------------------------------------------------------------------------
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
@@ -117,6 +118,10 @@ local function onColorSelect(frame, r, g, b)
 
 	_G.ColorSwatch:SetColorTexture(r, g, b)
 	UpdateColorTexts(r, g, b)
+
+	if r == 0 and g == 0 and b == 0 then
+		return
+	end
 
 	if not frame:IsVisible() then
 		delayCall()
