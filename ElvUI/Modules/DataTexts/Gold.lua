@@ -15,7 +15,8 @@ local GetMoney = GetMoney
 local IsControlKeyDown = IsControlKeyDown
 local IsLoggedIn = IsLoggedIn
 local IsShiftKeyDown = IsShiftKeyDown
-local C_WowTokenPublic = C_WowTokenPublic
+local C_WowTokenPublic_UpdateMarketPrice = C_WowTokenPublic.UpdateMarketPrice
+local C_WowTokenPublic_GetCurrentMarketPrice = C_WowTokenPublic.GetCurrentMarketPrice
 local C_Timer_NewTicker = C_Timer.NewTicker
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 -- GLOBALS: ElvDB
@@ -31,8 +32,8 @@ local function OnEvent(self)
 	if not IsLoggedIn() then return end
 
 	if not Ticker then
-		C_WowTokenPublic.UpdateMarketPrice()
-		Ticker = C_Timer_NewTicker(60, C_WowTokenPublic.UpdateMarketPrice)
+		C_WowTokenPublic_UpdateMarketPrice()
+		Ticker = C_Timer_NewTicker(60, C_WowTokenPublic_UpdateMarketPrice)
 	end
 
 	ElvDB.class = ElvDB.class or {}
@@ -124,7 +125,7 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(L["Server: "])
 	DT.tooltip:AddDoubleLine(L["Total: "], E:FormatMoney(totalGold, style, textOnly), 1, 1, 1, 1, 1, 1)
 	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic.GetCurrentMarketPrice() or 0, style, textOnly), 1, 1, 1, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 1, 1, 1, 1, 1, 1)
 
 	for i = 1, MAX_WATCHED_TOKENS do
 		local name, count = GetBackpackCurrencyInfo(i)
