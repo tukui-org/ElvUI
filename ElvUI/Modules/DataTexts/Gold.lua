@@ -25,8 +25,8 @@ local Ticker
 local CURRENCY = CURRENCY
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local Profit, Spent = 0, 0
-local resetCountersFormatter = strjoin("", "|cffaaaaaa", L["Reset Counters: Hold Shift + Left Click"], "|r")
-local resetInfoFormatter = strjoin("", "|cffaaaaaa", L["Reset Data: Hold Shift + Right Click"], "|r")
+local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Counters: Hold Shift + Left Click"], '|r')
+local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Data: Hold Shift + Right Click"], '|r')
 
 local function OnEvent(self)
 	if not IsLoggedIn() then return end
@@ -62,11 +62,11 @@ local function OnEvent(self)
 		Profit = Profit + Change
 	end
 
-	self.text:SetText(E:FormatMoney(NewMoney, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins))
+	self.text:SetText(E:FormatMoney(NewMoney, E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins))
 end
 
 local function Click(self, btn)
-	if btn == "RightButton" then
+	if btn == 'RightButton' then
 		if IsShiftKeyDown() then
 			wipe(ElvDB.gold)
 			OnEvent(self)
@@ -85,7 +85,7 @@ local myGold = {}
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 	local textOnly = not E.db.datatexts.goldCoins and true or false
-	local style = E.db.datatexts.goldFormat or "BLIZZARD"
+	local style = E.db.datatexts.goldFormat or 'BLIZZARD'
 
 	DT.tooltip:AddLine(L["Session:"])
 	DT.tooltip:AddDoubleLine(L["Earned:"], E:FormatMoney(Profit, style, textOnly), 1, 1, 1, 1, 1, 1)
@@ -103,13 +103,13 @@ local function OnEnter(self)
 	wipe(myGold)
 	for k,_ in pairs(ElvDB.gold[E.myrealm]) do
 		if ElvDB.gold[E.myrealm][k] then
-			local class = ElvDB.class[E.myrealm][k] or "PRIEST"
+			local class = ElvDB.class[E.myrealm][k] or 'PRIEST'
 			local color = E:ClassColor(class) or PRIEST_COLOR
 			tinsert(myGold,
 				{
 					name = k,
 					amount = ElvDB.gold[E.myrealm][k],
-					amountText = E:FormatMoney(ElvDB.gold[E.myrealm][k], E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins),
+					amountText = E:FormatMoney(ElvDB.gold[E.myrealm][k], E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins),
 					r = color.r, g = color.g, b = color.b,
 				}
 			)
@@ -118,7 +118,7 @@ local function OnEnter(self)
 	end
 
 	for _, g in ipairs(myGold) do
-		DT.tooltip:AddDoubleLine(g.name == E.myname and g.name.." |TInterface\\COMMON\\Indicator-Green:14|t" or g.name, g.amountText, g.r, g.g, g.b, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(g.name == E.myname and g.name..' |TInterface\\COMMON\\Indicator-Green:14|t' or g.name, g.amountText, g.r, g.g, g.b, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')
