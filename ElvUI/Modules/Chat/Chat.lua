@@ -1766,11 +1766,11 @@ local function PrepareMessage(author, message)
 	end
 end
 
-function CH:ChatThrottleHandler(arg1, arg2)
+function CH:ChatThrottleHandler(arg1, arg2, when)
 	local msg = PrepareMessage(arg1, arg2)
 	if msg then
 		for message, object in pairs(throttle) do
-			if difftime(time(), object.time) >= CH.db.throttleInterval then
+			if difftime(when, object.time) >= CH.db.throttleInterval then
 				throttle[message] = nil
 			end
 		end
@@ -1783,15 +1783,15 @@ function CH:ChatThrottleHandler(arg1, arg2)
 	end
 end
 
-function CH:ChatThrottleBlockFlag(author, message)
+function CH:ChatThrottleBlockFlag(author, message, when)
 	local msg = (author ~= PLAYER_NAME) and (CH.db.throttleInterval ~= 0) and PrepareMessage(author, message)
 	local object = msg and throttle[msg]
 
-	return object and object.time and object.count and object.count > 1 and (difftime(time(), object.time) <= CH.db.throttleInterval), object
+	return object and object.time and object.count and object.count > 1 and (difftime(when, object.time) <= CH.db.throttleInterval), object
 end
 
 function CH:ChatThrottleIntervalHandler(event, message, author, ...)
-	local blockFlag, blockObject = CH:ChatThrottleBlockFlag(author, message)
+	local blockFlag, blockObject = CH:ChatThrottleBlockFlag(author, message, time())
 
 	if blockFlag then
 		return true
@@ -2056,10 +2056,11 @@ end
 function CH:SaveChatHistory(event, ...)
 	if CH.db.throttleInterval ~= 0 and (event == 'CHAT_MSG_SAY' or event == 'CHAT_MSG_YELL' or event == 'CHAT_MSG_CHANNEL') then
 		local message, author = ...
+		local when = time()
 
-		CH:ChatThrottleHandler(author, message)
+		CH:ChatThrottleHandler(author, message, when)
 
-		if CH:ChatThrottleBlockFlag(author, message) then
+		if CH:ChatThrottleBlockFlag(author, message, when) then
 			return
 		end
 	end
