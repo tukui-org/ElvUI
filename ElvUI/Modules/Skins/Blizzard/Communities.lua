@@ -548,6 +548,21 @@ local function LoadSkin()
 	RecruitmentFrame:CreateBackdrop("Transparent")
 	_G.CommunitiesGuildRecruitmentFrameInset:StripTextures(false)
 
+	-- Recruitment Dialog
+	local RecruitmentDialog = _G.CommunitiesFrame.RecruitmentDialog
+	RecruitmentDialog:StripTextures()
+	RecruitmentDialog:CreateBackdrop("Transparent")
+	S:HandleCheckBox(RecruitmentDialog.ShouldListClub.Button)
+	S:HandleDropDownBox(RecruitmentDialog.ClubFocusDropdown, 220)
+	S:HandleDropDownBox(RecruitmentDialog.LookingForDropdown, 220)
+	RecruitmentDialog.RecruitmentMessageFrame:StripTextures()
+	S:HandleEditBox(RecruitmentDialog.RecruitmentMessageFrame.RecruitmentMessageInput)
+	S:HandleCheckBox(RecruitmentDialog.MaxLevelOnly.Button)
+	S:HandleCheckBox(RecruitmentDialog.MinIlvlOnly.Button)
+	S:HandleEditBox(RecruitmentDialog.MinIlvlOnly.EditBox)
+	S:HandleButton(RecruitmentDialog.Accept)
+	S:HandleButton(RecruitmentDialog.Cancel)
+
 	-- CheckBoxes
 	local CommunitiesGuildRecruitmentFrameRecruitment = _G.CommunitiesGuildRecruitmentFrameRecruitment
 	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.InterestFrame.QuestButton)
