@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 --Lua functions
 local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
-local select, tonumber, type, unpack = select, tonumber, type, unpack
+local select, tonumber, type, unpack, strlen = select, tonumber, type, unpack, strlen
 local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, abs, sqrt, mod
 local format, strsub, strupper, gsub, gmatch, utf8sub = format, strsub, strupper, gsub, gmatch, string.utf8sub
 local tostring, pairs = tostring, pairs
@@ -109,9 +109,16 @@ end
 
 --Hex to RGB
 function E:HexToRGB(hex)
-    hex = gsub(hex, '^|c', '')
-	local ahex, rhex, ghex, bhex = strsub(hex, 1, 2), strsub(hex, 3, 4), strsub(hex, 5, 6), strsub(hex, 7, 8)
-	return tonumber(rhex, 16), tonumber(ghex, 16), tonumber(bhex, 16), tonumber(ahex, 16)
+    local s = gsub(hex, '^|c', '')
+    local len, r, g, b, a = strlen(s)
+
+    if len == 8 then
+		a, r, g, b = strsub(s, 1, 2), strsub(s, 3, 4), strsub(s, 5, 6), strsub(s, 7, 8)
+	elseif len == 6 then
+		r, g, b = strsub(s, 1, 2), strsub(s, 3, 4), strsub(s, 5, 6)
+	end
+
+	return r and tonumber(r, 16), g and tonumber(g, 16), b and tonumber(b, 16), a and tonumber(a, 16)
 end
 
 --From http://wow.gamepedia.com/UI_coordinates
