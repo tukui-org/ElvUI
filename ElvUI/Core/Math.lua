@@ -113,7 +113,7 @@ function E:HexToRGB(hex)
     if not a then return 0, 0, 0, 0 end
 	if b == '' then r, g, b, a = a, r, g, 'ff' end
 
-	return r and tonumber(r, 16), g and tonumber(g, 16), b and tonumber(b, 16), a and tonumber(a, 16)
+	return tonumber(r, 16), tonumber(g, 16), tonumber(b, 16), tonumber(a, 16)
 end
 
 --From http://wow.gamepedia.com/UI_coordinates
