@@ -2,10 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 --Lua functions
 local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
-local select, tonumber, type, unpack, strlen = select, tonumber, type, unpack, strlen
+local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
 local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, abs, sqrt, mod
 local format, strsub, strupper, gsub, gmatch, utf8sub = format, strsub, strupper, gsub, gmatch, string.utf8sub
-local tostring, pairs, strmatch = tostring, pairs, strmatch
+local tostring, pairs = tostring, pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
@@ -109,18 +109,9 @@ end
 
 --Hex to RGB
 function E:HexToRGB(hex)
-    local s = strmatch(hex, '^|?c?(%x-)|?r?$')
-    if not s then return 0, 0, 0, 0 end
-
-    local r, g, b, a
-    local len = strlen(s)
-    if len == 8 then
-		a, r, g, b = strsub(s, 1, 2), strsub(s, 3, 4), strsub(s, 5, 6), strsub(s, 7, 8)
-	elseif len == 6 then
-		r, g, b = strsub(s, 1, 2), strsub(s, 3, 4), strsub(s, 5, 6)
-	else
-		r, g, b, a = 0, 0, 0, 0
-	end
+    local a, r, g, b = strmatch(hex, '^|?c?(%x%x)(%x%x)(%x%x)(%x?%x?)|?r?$')
+    if not a then return 0, 0, 0, 0 end
+	if b == '' then r, g, b, a = a, r, g, 'ff' end
 
 	return r and tonumber(r, 16), g and tonumber(g, 16), b and tonumber(b, 16), a and tonumber(a, 16)
 end
