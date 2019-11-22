@@ -1993,6 +1993,12 @@ P.unitframe.units.tank.debuffs.anchorPoint = 'TOPRIGHT'
 P.unitframe.units.tank.debuffs.numrows = 1
 P.unitframe.units.tank.debuffs.perrow = 6
 P.unitframe.units.tank.debuffs.yOffset = 1
+P.unitframe.units.tank.name.position = 'CENTER'
+P.unitframe.units.tank.name.text_format = '[namecolor][name:medium]'
+P.unitframe.units.tank.name.xOffset = 0
+P.unitframe.units.tank.targetsGroup.name.position = 'CENTER'
+P.unitframe.units.tank.targetsGroup.name.text_format = '[namecolor][name:medium]'
+P.unitframe.units.tank.targetsGroup.name.xOffset = 0
 P.unitframe.units.tank.targetsGroup.enable = true
 
 P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
