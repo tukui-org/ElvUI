@@ -12,7 +12,7 @@ local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
 
-local function OnClick(self)
+function UF:AuraBars_OnClick()
 	local mod = E.db.unitframe.auraBlacklistModifier
 	if mod == "NONE" or not ((mod == "SHIFT" and IsShiftKeyDown()) or (mod == "ALT" and IsAltKeyDown()) or (mod == "CTRL" and IsControlKeyDown())) then return end
 	local auraName = self.name
@@ -26,7 +26,7 @@ end
 
 function UF:Construct_AuraBars(statusBar)
 	statusBar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
-	statusBar:SetScript('OnMouseDown', OnClick)
+	statusBar:SetScript('OnMouseDown', UF.AuraBars_OnClick)
 	statusBar:SetPoint("LEFT")
 	statusBar:SetPoint("RIGHT")
 
