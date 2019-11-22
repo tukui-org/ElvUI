@@ -51,7 +51,8 @@ local function HandleCommunitiesButtons(self, color)
 	self:SetFrameLevel(self:GetFrameLevel() + 5)
 
 	S:HandleIcon(self.Icon)
-	self.Icon:Point("TOPLEFT", 8, -20)
+	self.Icon:ClearAllPoints()
+	self.Icon:SetPoint("TOPLEFT", 15, -18)
 	self.IconRing:Hide()
 
 	if not self.bg then
@@ -61,11 +62,17 @@ local function HandleCommunitiesButtons(self, color)
 		self.bg:SetPoint("BOTTOMRIGHT", -10, 12)
 	end
 
+	if self.IconBorder then
+		self.IconBorder:Hide()
+	end
+
 	if color then
 		self.Selection:SetInside(self.bg, 0, 0)
 		if color == 1 then
+			self.Selection:SetAtlas(nil)
 			self.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
 		else
+			self.Selection:SetAtlas(nil)
 			self.Selection:SetColorTexture(BATTLENET_FONT_COLOR.r, BATTLENET_FONT_COLOR.g, BATTLENET_FONT_COLOR.b, 0.2)
 		end
 	end
@@ -122,9 +129,13 @@ local function LoadSkin()
 
 			local isGuild = clubInfo.clubType == Enum.ClubType.Guild
 			if isGuild then
+				self.Background:SetAtlas(nil)
+				self.Selection:SetAtlas(nil)
 				self.Selection:SetAllPoints(self.bg)
 				self.Selection:SetColorTexture(0, 1, 0, 0.2)
 			else
+				self.Background:SetAtlas(nil)
+				self.Selection:SetAtlas(nil)
 				self.Selection:SetAllPoints(self.bg)
 				self.Selection:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b, 0.2)
 			end
@@ -149,6 +160,7 @@ local function LoadSkin()
 	-- Add Community Button
 	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetAddCommunity", function(self) HandleCommunitiesButtons(self, 1) end)
 	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetFindCommunity", function(self) HandleCommunitiesButtons(self, 2) end)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetGuildFinder", function(self) HandleCommunitiesButtons(self, 1) end)
 
 	S:HandleItemButton(CommunitiesFrame.ChatTab)
 	CommunitiesFrame.ChatTab:Point('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
