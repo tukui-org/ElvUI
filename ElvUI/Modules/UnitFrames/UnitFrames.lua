@@ -264,7 +264,7 @@ function UF:Construct_UF(frame, unit)
 		if stringTitle:find('target') then
 			stringTitle = gsub(stringTitle, 'target', 'Target')
 		end
-		self["Construct_"..stringTitle.."Frame"](self, frame, unit)
+		UF["Construct_"..stringTitle.."Frame"](self, frame, unit)
 	else
 		UF["Construct_"..E:StringTitle(self.groupunits[unit]).."Frames"](self, frame, unit)
 	end
