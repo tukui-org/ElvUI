@@ -1209,7 +1209,7 @@ function B:Layout(isBank)
 			end
 		else
 			--Hide unused slots
-			for y = 1, _G.MAX_CONTAINER_ITEMS do
+			for y = 1, MAX_CONTAINER_ITEMS do
 				if f.Bags[bagID] and f.Bags[bagID][y] then
 					f.Bags[bagID][y]:Hide()
 				end
