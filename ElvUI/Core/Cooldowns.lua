@@ -14,7 +14,13 @@ local FONT_SIZE = 20 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
 local MIN_DURATION = 1.5 --the minimum duration to show cooldown text for
 
-function E:Cooldown_TooSmall(cd)
+function E:Cooldown_TextThreshold(cd, now)
+	if cd.parent and cd.parent.textThreshold then
+		return (cd.endTime - now) >= cd.parent.textThreshold
+	end
+end
+
+function E:Cooldown_BelowScale(cd)
 	if cd.parent then
 		if cd.parent.hideText then return true end
 		if cd.parent.skipScale then return end
@@ -36,9 +42,12 @@ function E:Cooldown_OnUpdate(elapsed)
 		if self.endCooldown and now >= self.endCooldown then
 			E:Cooldown_StopTimer(self)
 		else
-			if E:Cooldown_TooSmall(self) then
+			if E:Cooldown_BelowScale(self) then
 				self.text:SetText('')
 				self.nextUpdate = 500
+			elseif E:Cooldown_TextThreshold(self, now) then
+				self.text:SetText('')
+				self.nextUpdate = 1
 			else
 				local value, id, nextUpdate, remainder = E:GetTimeInfo(self.endTime - now, self.threshold, self.hhmmThreshold, self.mmssThreshold)
 				self.nextUpdate = nextUpdate
@@ -73,7 +82,7 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 	if fontScale and (fontScale == cd.fontScale) and (force ~= true) then return end
 	cd.fontScale = fontScale
 
-	if E:Cooldown_TooSmall(cd) then
+	if E:Cooldown_BelowScale(cd) then
 		cd:Hide()
 	else
 		if cd.text then
