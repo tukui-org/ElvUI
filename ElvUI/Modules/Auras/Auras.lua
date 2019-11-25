@@ -120,9 +120,6 @@ function A:CreateIcon(button)
 
 	E:SetUpAnimGroup(button)
 
-	-- fetch cooldown settings
-	A:CooldownText_Update(button)
-
 	-- support cooldown override
 	if not button.isRegisteredCooldown then
 		button.CooldownOverride = 'auras'
@@ -311,11 +308,9 @@ function A:UpdateTempEnchant(button, index)
 	button.statusBar:SetStatusBarColor(r, g, b)
 end
 
-function A:CooldownText_Update(button)
-	if not button then return end
-
+function A:Cooldown_Options(button)
 	-- cooldown override settings
-	E:Cooldown_Options(button, self.db.cooldown)
+	E:Cooldown_Options(button, self.db.cooldown, button)
 
 	button.customUpdate = A.UpdateTime
 	button.forceEnabled = true
@@ -323,6 +318,9 @@ function A:CooldownText_Update(button)
 end
 
 function A:OnAttributeChanged(attribute, value)
+	-- fetch cooldown settings
+	A:Cooldown_Options(self)
+
 	if attribute == "index" then
 		A:UpdateAura(self, value)
 	elseif attribute == "target-slot" then
@@ -392,8 +390,6 @@ function A:UpdateHeader(header)
 			child.count:ClearAllPoints()
 			child.count:Point("BOTTOMRIGHT", -1 + self.db.countXOffset, 0 + self.db.countYOffset)
 			child.count:FontTemplate(font, db.countFontSize, self.db.fontOutline)
-
-			A:CooldownText_Update(child)
 		end
 
 		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons

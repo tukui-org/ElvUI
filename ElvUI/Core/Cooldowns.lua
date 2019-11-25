@@ -15,7 +15,7 @@ local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, an
 local MIN_DURATION = 1.5 --the minimum duration to show cooldown text for
 
 function E:Cooldown_TextThreshold(cd, now)
-	if cd.parent and cd.parent.textThreshold then
+	if cd.parent and cd.parent.textThreshold and cd.endTime then
 		return (cd.endTime - now) >= cd.parent.textThreshold
 	end
 end
@@ -48,7 +48,7 @@ function E:Cooldown_OnUpdate(elapsed)
 			elseif E:Cooldown_TextThreshold(self, now) then
 				self.text:SetText('')
 				self.nextUpdate = 1
-			else
+			elseif self.endTime then
 				local value, id, nextUpdate, remainder = E:GetTimeInfo(self.endTime - now, self.threshold, self.hhmmThreshold, self.mmssThreshold)
 				self.nextUpdate = nextUpdate
 
@@ -138,7 +138,6 @@ function E:Cooldown_Options(timer, db, parent)
 		hhmm, mmss = db.hhmmThreshold, db.mmssThreshold
 	end
 
-	-- Options used in Cooldown_OnUpdate
 	timer.timeColors = colors or E.TimeColors
 	timer.threshold = threshold or E.db.cooldown.threshold or E.TimeThreshold
 	timer.textColors = icolors or (E.db.cooldown.useIndicatorColor and E.TimeIndicatorColors)
@@ -187,15 +186,13 @@ function E:CreateCooldownTimer(parent)
 	end
 
 	-- cooldown override settings
-	if parent.CooldownOverride then
-		local db = E.db[parent.CooldownOverride]
-		if db and db.cooldown then
-			E:Cooldown_Options(timer, db.cooldown, parent)
+	local db = (parent.CooldownOverride and E.db[parent.CooldownOverride]) or E.db
+	if db and db.cooldown then
+		E:Cooldown_Options(timer, db.cooldown, parent)
 
-			-- prevent LibActionBar from showing blizzard CD when the CD timer is created
-			if AB and (parent.CooldownOverride == 'actionbar') then
-				AB:ToggleCountDownNumbers(nil, nil, parent)
-			end
+		-- prevent LibActionBar from showing blizzard CD when the CD timer is created
+		if parent.CooldownOverride == 'actionbar' then
+			AB:ToggleCountDownNumbers(nil, nil, parent)
 		end
 	end
 
@@ -313,7 +310,7 @@ function E:UpdateCooldownOverride(module)
 				E:Cooldown_ForceUpdate(cd)
 				E:ToggleBlizzardCooldownText(parent, cd)
 
-				if (not blizzText) and AB and AB.handledBars and (parent.CooldownOverride == 'actionbar') then
+				if (not blizzText) and AB.handledBars and (parent.CooldownOverride == 'actionbar') then
 					blizzText = true
 				end
 			elseif parent.CooldownOverride == 'auras' and not (timer and cd) then
@@ -359,6 +356,6 @@ function E:UpdateCooldownSettings(module)
 		E:UpdateCooldownSettings('nameplates')
 		E:UpdateCooldownSettings('actionbar')
 		E:UpdateCooldownSettings('unitframe')
-		E:UpdateCooldownSettings('auras') -- has special OnUpdate
+		E:UpdateCooldownSettings('auras')
 	end
 end
