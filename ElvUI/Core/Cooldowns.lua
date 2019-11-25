@@ -15,8 +15,10 @@ local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, an
 local MIN_DURATION = 1.5 --the minimum duration to show cooldown text for
 
 function E:Cooldown_TooSmall(cd)
-	if cd.parent.hideText then return true end
-	if cd.parent.skipScale then return end
+	if cd.parent then
+		if cd.parent.hideText then return true end
+		if cd.parent.skipScale then return end
+	end
 
 	return cd.fontScale and (cd.fontScale < MIN_SCALE)
 end
@@ -31,30 +33,30 @@ function E:Cooldown_OnUpdate(elapsed)
 		E:Cooldown_StopTimer(self)
 	else
 		local now = GetTime()
-		if now >= self.endCooldown then
+		if self.endCooldown and now >= self.endCooldown then
 			E:Cooldown_StopTimer(self)
 		else
 			if E:Cooldown_TooSmall(self) then
 				self.text:SetText('')
 				self.nextUpdate = 500
 			else
-				local timeColors, indicatorColors, threshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.indicatorColors) or E.TimeIndicatorColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
-				if not threshold then threshold = E.TimeThreshold end
-
-				local hhmm = (self.timerOptions and self.timerOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
-				local mmss = (self.timerOptions and self.timerOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
-				local useColor = (self.timerOptions and self.timerOptions.useIndicatorColor) or E.db.cooldown.useIndicatorColor
-
-				local value, id, nextUpdate, remainder = E:GetTimeInfo(self.endTime - now, threshold, hhmm, mmss)
+				local value, id, nextUpdate, remainder = E:GetTimeInfo(self.endTime - now, self.threshold, self.hhmm, self.mmss)
 				self.nextUpdate = nextUpdate
 
-				if useColor then
-					self.text:SetFormattedText(E.TimeFormats[id][3], value, indicatorColors[id], remainder)
+				if self.useColor then
+					self.text:SetFormattedText(E.TimeFormats[id][3], value, self.indicatorColors[id], remainder)
 				else
 					self.text:SetFormattedText(E.TimeFormats[id][2], value, remainder)
 				end
 
-				self.text:SetTextColor(timeColors[id].r, timeColors[id].g, timeColors[id].b)
+				local colors = self.timeColors[id]
+				if colors then
+					self.text:SetTextColor(colors.r, colors.g, colors.b)
+				end
+
+				if self.customUpdate then
+					self.customUpdate(self, value, id, nextUpdate, remainder)
+				end
 			end
 		end
 	end
@@ -69,17 +71,16 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 	if E:Cooldown_TooSmall(cd) then
 		cd:Hide()
 	else
-		local text = cd.text or cd.time
-		if text then
+		if cd.text then
 			if cd.fontScale < MIN_SCALE then
 				fontScale = MIN_SCALE
 			end
 
 			local useCustomFont = (cd.timerOptions and cd.timerOptions.fontOptions and cd.timerOptions.fontOptions.enable) and E.Libs.LSM:Fetch('font', cd.timerOptions.fontOptions.font)
 			if useCustomFont then
-				text:FontTemplate(useCustomFont, (fontScale * cd.timerOptions.fontOptions.fontSize), cd.timerOptions.fontOptions.fontOutline)
+				cd.text:FontTemplate(useCustomFont, (fontScale * cd.timerOptions.fontOptions.fontSize), cd.timerOptions.fontOptions.fontOutline)
 			elseif fontScale then
-				text:FontTemplate(nil, (fontScale * FONT_SIZE), 'OUTLINE')
+				cd.text:FontTemplate(nil, (fontScale * FONT_SIZE), 'OUTLINE')
 			end
 		end
 
@@ -111,6 +112,45 @@ function E:Cooldown_StopTimer(cd)
 	cd:Hide()
 end
 
+function E:Cooldown_CreateOptions(timer, db, parent)
+	if not timer.timerOptions then
+		timer.timerOptions = {}
+	end
+
+	timer.timerOptions.reverseToggle = db.cooldown.reverse
+	timer.timerOptions.hideBlizzard = db.cooldown.hideBlizzard
+	timer.timerOptions.useIndicatorColor = db.cooldown.useIndicatorColor
+
+	if parent and db.cooldown.override and E.TimeColors[parent.CooldownOverride] and E.TimeIndicatorColors[parent.CooldownOverride] then
+		timer.timerOptions.timeColors, timer.timerOptions.indicatorColors, timer.timerOptions.timeThreshold = E.TimeColors[parent.CooldownOverride], E.TimeIndicatorColors[parent.CooldownOverride], db.cooldown.threshold
+	else
+		timer.timerOptions.timeColors, timer.timerOptions.timeThreshold = nil, nil
+	end
+
+	if db.cooldown.checkSeconds then
+		timer.timerOptions.hhmmThreshold, timer.timerOptions.mmssThreshold = db.cooldown.hhmmThreshold, db.cooldown.mmssThreshold
+	else
+		timer.timerOptions.hhmmThreshold, timer.timerOptions.mmssThreshold = nil, nil
+	end
+
+	if (db.cooldown ~= self.db.cooldown) and db.cooldown.fonts and db.cooldown.fonts.enable then
+		timer.timerOptions.fontOptions = db.cooldown.fonts
+	elseif self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
+		timer.timerOptions.fontOptions = self.db.cooldown.fonts
+	else
+		timer.timerOptions.fontOptions = nil
+	end
+end
+
+function E:Cooldown_UpdateOptions(timer)
+	timer.hhmm = (self.timerOptions and self.timerOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
+	timer.mmss = (self.timerOptions and self.timerOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+	timer.indicatorColors = (self.timerOptions and self.timerOptions.indicatorColors) or E.TimeIndicatorColors
+	timer.useColor = (self.timerOptions and self.timerOptions.useIndicatorColor) or E.db.cooldown.useIndicatorColor
+	timer.timeColors = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors
+	timer.threshold = (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold or E.TimeThreshold
+end
+
 function E:CreateCooldownTimer(parent)
 	local timer = CreateFrame('Frame', nil, parent)
 	timer:Hide()
@@ -132,33 +172,7 @@ function E:CreateCooldownTimer(parent)
 	if parent.CooldownOverride then
 		local db = E.db[parent.CooldownOverride]
 		if db and db.cooldown then
-			if not timer.timerOptions then
-				timer.timerOptions = {}
-			end
-
-			timer.timerOptions.reverseToggle = db.cooldown.reverse
-			timer.timerOptions.hideBlizzard = db.cooldown.hideBlizzard
-			timer.timerOptions.useIndicatorColor = db.cooldown.useIndicatorColor
-
-			if db.cooldown.override and E.TimeColors[parent.CooldownOverride] and E.TimeIndicatorColors[parent.CooldownOverride] then
-				timer.timerOptions.timeColors, timer.timerOptions.indicatorColors, timer.timerOptions.timeThreshold = E.TimeColors[parent.CooldownOverride], E.TimeIndicatorColors[parent.CooldownOverride], db.cooldown.threshold
-			else
-				timer.timerOptions.timeColors, timer.timerOptions.timeThreshold = nil, nil
-			end
-
-			if db.cooldown.checkSeconds then
-				timer.timerOptions.hhmmThreshold, timer.timerOptions.mmssThreshold = db.cooldown.hhmmThreshold, db.cooldown.mmssThreshold
-			else
-				timer.timerOptions.hhmmThreshold, timer.timerOptions.mmssThreshold = nil, nil
-			end
-
-			if (db.cooldown ~= self.db.cooldown) and db.cooldown.fonts and db.cooldown.fonts.enable then
-				timer.timerOptions.fontOptions = db.cooldown.fonts
-			elseif self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
-				timer.timerOptions.fontOptions = self.db.cooldown.fonts
-			else
-				timer.timerOptions.fontOptions = nil
-			end
+			timer.timerOptions = E:Cooldown_CreateOptions(timer, db, parent)
 
 			-- prevent LibActionBar from showing blizzard CD when the CD timer is created
 			if AB and (parent.CooldownOverride == 'actionbar') then
@@ -166,8 +180,8 @@ function E:CreateCooldownTimer(parent)
 			end
 		end
 	end
-	----------
 
+	E:Cooldown_UpdateOptions(timer)
 	E:ToggleBlizzardCooldownText(parent, timer)
 
 	-- keep an eye on the size so we can rescale the font if needed
@@ -247,67 +261,40 @@ function E:UpdateCooldownOverride(module)
 	local cooldowns = (module and E.RegisteredCooldowns[module])
 	if (not cooldowns) or not next(cooldowns) then return end
 
-	local CD, db, customFont, customFontSize, timer, text, blizzTextAB
-	for _, cd in ipairs(cooldowns) do
-		db = (cd.CooldownOverride and E.db[cd.CooldownOverride]) or self.db
+	local customFont, customFontSize, blizzText
+	for _, parent in ipairs(cooldowns) do
+		local db = (parent.CooldownOverride and E.db[parent.CooldownOverride]) or self.db
 		db = db and db.cooldown
 
 		if db then
-			timer = cd.isHooked and cd.isRegisteredCooldown and cd.timer
-			CD = timer or cd
+			local timer = parent.isHooked and parent.isRegisteredCooldown and parent.timer
+			local cd = timer or parent
 
 			-- cooldown override settings
-			if not CD.timerOptions then
-				CD.timerOptions = {}
-			end
-
-			CD.timerOptions.reverseToggle = db.reverse
-			CD.timerOptions.hideBlizzard = db.hideBlizzard
-
-			if cd.CooldownOverride and db.override and E.TimeColors[cd.CooldownOverride] and E.TimeIndicatorColors[cd.CooldownOverride] then
-				CD.timerOptions.timeColors, CD.timerOptions.indicatorColors, CD.timerOptions.timeThreshold = E.TimeColors[cd.CooldownOverride], E.TimeIndicatorColors[cd.CooldownOverride], db.threshold
-			else
-				CD.timerOptions.timeColors, CD.timerOptions.timeThreshold = nil, nil
-			end
-
-			if db.checkSeconds then
-				CD.timerOptions.hhmmThreshold, CD.timerOptions.mmssThreshold = db.hhmmThreshold, db.mmssThreshold
-			else
-				CD.timerOptions.hhmmThreshold, CD.timerOptions.mmssThreshold = nil, nil
-			end
-
-			if (db ~= self.db.cooldown) and db.fonts and db.fonts.enable then
-				CD.timerOptions.fontOptions = db.fonts
-			elseif self.db.cooldown.fonts and self.db.cooldown.fonts.enable then
-				CD.timerOptions.fontOptions = self.db.cooldown.fonts
-			else
-				CD.timerOptions.fontOptions = nil
-			end
-			----------
+			cd.timerOptions = E:Cooldown_CreateOptions(cd, db, parent)
 
 			-- update font
-			if timer and CD then
-				self:Cooldown_OnSizeChanged(CD, cd:GetWidth(), true)
+			if timer and cd then
+				self:Cooldown_OnSizeChanged(cd, parent:GetWidth(), true)
 			else
-				text = CD.text or CD.time
-				if text then
-					if CD.timerOptions.fontOptions and CD.timerOptions.fontOptions.enable then
+				if cd.text then
+					if cd.timerOptions.fontOptions and cd.timerOptions.fontOptions.enable then
 						if not customFont then
-							customFont = E.Libs.LSM:Fetch('font', CD.timerOptions.fontOptions.font)
+							customFont = E.Libs.LSM:Fetch('font', cd.timerOptions.fontOptions.font)
 						end
 						if customFont then
-							text:FontTemplate(customFont, CD.timerOptions.fontOptions.fontSize, CD.timerOptions.fontOptions.fontOutline)
+							cd.text:FontTemplate(customFont, cd.timerOptions.fontOptions.fontSize, cd.timerOptions.fontOptions.fontOutline)
 						end
-					elseif cd.CooldownOverride then
+					elseif parent.CooldownOverride then
 						if not customFont then
-							customFont = E.Libs.LSM:Fetch('font', E.db[cd.CooldownOverride].font)
+							customFont = E.Libs.LSM:Fetch('font', E.db[parent.CooldownOverride].font)
 						end
 
-						-- cd.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
-						if customFont and cd.auraType and (cd.CooldownOverride == 'auras') then
-							customFontSize = E.db[cd.CooldownOverride][cd.auraType] and E.db[cd.CooldownOverride][cd.auraType].durationFontSize
+						-- parent.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
+						if customFont and parent.auraType and (parent.CooldownOverride == 'auras') then
+							customFontSize = E.db[parent.CooldownOverride][parent.auraType] and E.db[parent.CooldownOverride][parent.auraType].durationFontSize
 							if customFontSize then
-								text:FontTemplate(customFont, customFontSize, E.db[cd.CooldownOverride].fontOutline)
+								cd.text:FontTemplate(customFont, customFontSize, E.db[parent.CooldownOverride].fontOutline)
 							end
 						end
 					end
@@ -315,19 +302,20 @@ function E:UpdateCooldownOverride(module)
 			end
 
 			-- force update cooldown
-			if timer and CD then
-				E:Cooldown_ForceUpdate(CD)
-				E:ToggleBlizzardCooldownText(cd, CD)
-				if (not blizzTextAB) and AB and AB.handledBars and (cd.CooldownOverride == 'actionbar') then
-					blizzTextAB = true
+			if timer and cd then
+				E:Cooldown_ForceUpdate(cd)
+				E:ToggleBlizzardCooldownText(parent, cd)
+
+				if (not blizzText) and AB and AB.handledBars and (parent.CooldownOverride == 'actionbar') then
+					blizzText = true
 				end
-			elseif cd.CooldownOverride == 'auras' and not (timer and CD) then
-				cd.nextUpdate = -1
+			elseif parent.CooldownOverride == 'auras' and not (timer and cd) then
+				parent.nextUpdate = -1
 			end
 		end
 	end
 
-	if blizzTextAB then
+	if blizzText then
 		for _, bar in pairs(AB.handledBars) do
 			if bar then
 				AB:ToggleCountDownNumbers(bar)
