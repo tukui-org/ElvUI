@@ -68,24 +68,23 @@ function A:UpdateTime(elapsed)
 	end
 
 	if E:Cooldown_IsEnabled(self) then
-		local timeColors, indicatorColors, timeThreshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.indicatorColors) or E.TimeIndicatorColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
-		if not timeThreshold then timeThreshold = E.TimeThreshold end
+		local timeColors, indicatorColors, threshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.indicatorColors) or E.TimeIndicatorColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
+		if not threshold then threshold = E.TimeThreshold end
 
-		local hhmmThreshold = (self.timerOptions and self.timerOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
-		local mmssThreshold = (self.timerOptions and self.timerOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
-		local useIndicatorColor = (self.timerOptions and self.timerOptions.useIndicatorColor) or E.db.cooldown.useIndicatorColor
+		local hhmm = (self.timerOptions and self.timerOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
+		local mmss = (self.timerOptions and self.timerOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+		local color = (self.timerOptions and self.timerOptions.useIndicatorColor) or E.db.cooldown.useIndicatorColor
+		local value, id, nextUpdate, remainder = E:GetTimeInfo(self.timeLeft, threshold, hhmm, mmss)
 
-		local value1, formatID, nextUpdate, value2 = E:GetTimeInfo(self.timeLeft, timeThreshold, hhmmThreshold, mmssThreshold)
-		self.nextUpdate = nextUpdate
-
-		if useIndicatorColor then
-			self.time:SetFormattedText(E.TimeFormats[formatID][3], value1, indicatorColors[formatID], value2)
+		if color then
+			self.time:SetFormattedText(E.TimeFormats[id][3], value, indicatorColors[id], remainder)
 		else
-			self.time:SetFormattedText(E.TimeFormats[formatID][1], value1, value2)
+			self.time:SetFormattedText(E.TimeFormats[id][1], value, remainder)
 		end
 
-		self.time:SetTextColor(timeColors[formatID].r, timeColors[formatID].g, timeColors[formatID].b)
+		self.time:SetTextColor(timeColors[id].r, timeColors[id].g, timeColors[id].b)
 		self.statusBar:SetValue(self.timeLeft)
+		self.nextUpdate = nextUpdate
 
 		if self.timeLeft > E.db.auras.fadeThreshold then
 			E:StopFlash(self)

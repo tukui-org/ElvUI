@@ -14,6 +14,13 @@ local FONT_SIZE = 20 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
 local MIN_DURATION = 1.5 --the minimum duration to show cooldown text for
 
+function E:Cooldown_TooSmall(cd)
+	if cd.parent.hideText then return true end
+	if cd.parent.skipScale then return end
+
+	return cd.fontScale and (cd.fontScale < MIN_SCALE)
+end
+
 function E:Cooldown_OnUpdate(elapsed)
 	if self.nextUpdate > 0 then
 		self.nextUpdate = self.nextUpdate - elapsed
@@ -23,32 +30,32 @@ function E:Cooldown_OnUpdate(elapsed)
 	if not E:Cooldown_IsEnabled(self) then
 		E:Cooldown_StopTimer(self)
 	else
-		local remain = self.duration - (GetTime() - self.start)
-		if remain > 0.05 then
-			if self.parent.hideText or (self.fontScale and (self.fontScale < MIN_SCALE)) then
+		local now = GetTime()
+		if now >= self.endCooldown then
+			E:Cooldown_StopTimer(self)
+		else
+			if E:Cooldown_TooSmall(self) then
 				self.text:SetText('')
 				self.nextUpdate = 500
 			else
-				local timeColors, indicatorColors, timeThreshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.indicatorColors) or E.TimeIndicatorColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
-				if not timeThreshold then timeThreshold = E.TimeThreshold end
+				local timeColors, indicatorColors, threshold = (self.timerOptions and self.timerOptions.timeColors) or E.TimeColors, (self.timerOptions and self.timerOptions.indicatorColors) or E.TimeIndicatorColors, (self.timerOptions and self.timerOptions.timeThreshold) or E.db.cooldown.threshold
+				if not threshold then threshold = E.TimeThreshold end
 
-				local hhmmThreshold = (self.timerOptions and self.timerOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
-				local mmssThreshold = (self.timerOptions and self.timerOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
-				local useIndicatorColor = (self.timerOptions and self.timerOptions.useIndicatorColor) or E.db.cooldown.useIndicatorColor
+				local hhmm = (self.timerOptions and self.timerOptions.hhmmThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
+				local mmss = (self.timerOptions and self.timerOptions.mmssThreshold) or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+				local useColor = (self.timerOptions and self.timerOptions.useIndicatorColor) or E.db.cooldown.useIndicatorColor
 
-				local value1, formatID, nextUpdate, value2 = E:GetTimeInfo(remain, timeThreshold, hhmmThreshold, mmssThreshold) --?? Simpy
+				local value, id, nextUpdate, remainder = E:GetTimeInfo(self.endTime - now, threshold, hhmm, mmss)
 				self.nextUpdate = nextUpdate
 
-				if useIndicatorColor then
-					self.text:SetFormattedText(E.TimeFormats[formatID][3], value1, indicatorColors[formatID], value2)
+				if useColor then
+					self.text:SetFormattedText(E.TimeFormats[id][3], value, indicatorColors[id], remainder)
 				else
-					self.text:SetFormattedText(E.TimeFormats[formatID][2], value1, value2)
+					self.text:SetFormattedText(E.TimeFormats[id][2], value, remainder)
 				end
 
-				self.text:SetTextColor(timeColors[formatID].r, timeColors[formatID].g, timeColors[formatID].b)
+				self.text:SetTextColor(timeColors[id].r, timeColors[id].g, timeColors[id].b)
 			end
-		else
-			E:Cooldown_StopTimer(self)
 		end
 	end
 end
@@ -59,11 +66,15 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 	if fontScale and (fontScale == cd.fontScale) and (force ~= true) then return end
 	cd.fontScale = fontScale
 
-	if fontScale and (fontScale < MIN_SCALE) then
+	if E:Cooldown_TooSmall(cd) then
 		cd:Hide()
 	else
 		local text = cd.text or cd.time
 		if text then
+			if cd.fontScale < MIN_SCALE then
+				fontScale = MIN_SCALE
+			end
+
 			local useCustomFont = (cd.timerOptions and cd.timerOptions.fontOptions and cd.timerOptions.fontOptions.enable) and E.Libs.LSM:Fetch('font', cd.timerOptions.fontOptions.font)
 			if useCustomFont then
 				text:FontTemplate(useCustomFont, (fontScale * cd.timerOptions.fontOptions.fontSize), cd.timerOptions.fontOptions.fontOutline)
@@ -92,10 +103,7 @@ end
 
 function E:Cooldown_ForceUpdate(cd)
 	cd.nextUpdate = -1
-
-	if cd.fontScale and (cd.fontScale >= MIN_SCALE) then
-		cd:Show()
-	end
+	cd:Show()
 end
 
 function E:Cooldown_StopTimer(cd)
@@ -180,12 +188,10 @@ function E:OnSetCooldown(start, duration)
 		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
 		timer.duration = duration
-		timer.enabled = true
+		timer.endTime = start + duration
+		timer.endCooldown = timer.endTime - 0.05
 		timer.nextUpdate = -1
-
-		if timer.fontScale and (timer.fontScale >= MIN_SCALE) then
-			timer:Show()
-		end
+		timer:Show()
 	elseif self.timer then
 		E:Cooldown_StopTimer(self.timer)
 	end
