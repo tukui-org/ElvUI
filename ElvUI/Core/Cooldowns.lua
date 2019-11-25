@@ -310,7 +310,7 @@ function E:UpdateCooldownOverride(module)
 				E:Cooldown_ForceUpdate(cd)
 				E:ToggleBlizzardCooldownText(parent, cd)
 
-				if (not blizzText) and AB.handledBars and (parent.CooldownOverride == 'actionbar') then
+				if (not blizzText) and parent.CooldownOverride == 'actionbar' then
 					blizzText = true
 				end
 			elseif parent.CooldownOverride == 'auras' and not (timer and cd) then
@@ -319,7 +319,7 @@ function E:UpdateCooldownOverride(module)
 		end
 	end
 
-	if blizzText then
+	if blizzText and AB.handledBars then
 		for _, bar in pairs(AB.handledBars) do
 			if bar then
 				AB:ToggleCountDownNumbers(bar)
