@@ -105,6 +105,7 @@ function A:CreateIcon(button)
 	button.statusBar:SetFrameStrata(button:GetFrameStrata())
 	button.statusBar:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", self.db.barTexture))
 	button.statusBar:CreateBackdrop()
+	E:SetSmoothing(button.statusBar)
 
 	local pos, spacing, iconSize = self.db.barPosition, self.db.barSpacing, db.size - (E.Border * 2)
 	local isOnTop = pos == 'TOP' and true or false
