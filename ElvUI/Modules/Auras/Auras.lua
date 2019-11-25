@@ -132,8 +132,8 @@ function A:CreateIcon(button)
 		tinsert(E.RegisteredCooldowns.auras, button)
 	end
 
-	if button.timerOptions and button.timerOptions.fontOptions and button.timerOptions.fontOptions.enable then
-		button.text:FontTemplate(LSM:Fetch("font", button.timerOptions.fontOptions.font), button.timerOptions.fontOptions.fontSize, button.timerOptions.fontOptions.fontOutline)
+	if button.customFont then
+		button.text:FontTemplate(button.customFont, button.customFontSize, button.customFontOutline)
 	else
 		button.text:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
 	end
@@ -315,7 +315,7 @@ function A:CooldownText_Update(button)
 	if not button then return end
 
 	-- cooldown override settings
-	E:Cooldown_TimerOptions(button, self.db.cooldown)
+	E:Cooldown_Options(button, self.db.cooldown)
 
 	button.customUpdate = A.UpdateTime
 	button.forceEnabled = true
