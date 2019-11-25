@@ -315,11 +315,11 @@ function A:CooldownText_Update(button)
 	if not button then return end
 
 	-- cooldown override settings
-	button.timerOptions = E:Cooldown_CreateOptions(button, self.db)
+	E:Cooldown_TimerOptions(button, self.db.cooldown)
+
 	button.customUpdate = A.UpdateTime
 	button.forceEnabled = true
-
-	E:Cooldown_UpdateOptions(button)
+	button.showSeconds = true
 end
 
 function A:OnAttributeChanged(attribute, value)
