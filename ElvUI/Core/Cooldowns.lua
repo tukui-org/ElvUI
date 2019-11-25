@@ -129,20 +129,25 @@ function E:Cooldown_Options(timer, db, parent)
 		hhmm, mmss = db.hhmmThreshold, db.mmssThreshold
 	end
 
-	if (db ~= E.db.cooldown) and db.fonts and db.fonts.enable then
-		fonts = db.fonts -- custom fonts override default fonts
-	elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
-		fonts = E.db.cooldown.fonts -- default global font override
-	end
-
 	-- Options used in Cooldown_OnUpdate
 	timer.timeColors = colors or E.TimeColors
 	timer.threshold = threshold or E.db.cooldown.threshold or E.TimeThreshold
 	timer.textColors = icolors or (E.db.cooldown.useIndicatorColor and E.TimeIndicatorColors)
 	timer.hhmmThreshold = hhmm or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
 	timer.mmssThreshold = mmss or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
-	timer.reverseToggle = (E.db.cooldown.enable and not db.reverse) or (not E.db.cooldown.enable and db.reverse) or nil
 	timer.hideBlizzard = db.hideBlizzard or E.db.cooldown.hideBlizzard
+
+	if db.reverse ~= nil then
+		timer.reverseToggle = (E.db.cooldown.enable and not db.reverse) or (db.reverse and not E.db.cooldown.enable)
+	else
+		timer.reverseToggle = nil
+	end
+
+	if (db ~= E.db.cooldown) and db.fonts and db.fonts.enable then
+		fonts = db.fonts -- custom fonts override default fonts
+	elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
+		fonts = E.db.cooldown.fonts -- default global font override
+	end
 
 	if fonts and fonts.enable then
 		timer.customFont = E.Libs.LSM:Fetch('font', fonts.font)
