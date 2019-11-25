@@ -128,10 +128,10 @@ function E:Cooldown_Options(timer, db, parent)
 		hhmm, mmss = db.hhmmThreshold, db.mmssThreshold
 	end
 
-	if (db ~= self.db.cooldown) and db.fonts and db.fonts.enable then
-		fonts = db.fonts
-	elseif self.db.fonts and self.db.fonts.enable then
-		fonts = self.db.fonts
+	if (db ~= E.db.cooldown) and db.fonts and db.fonts.enable then
+		fonts = db.fonts -- custom fonts override default fonts
+	elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
+		fonts = E.db.cooldown.fonts -- default global font override
 	end
 
 	-- Options used in Cooldown_OnUpdate
@@ -241,7 +241,7 @@ function E:ToggleBlizzardCooldownText(cd, timer, request)
 end
 
 function E:GetCooldownColors(db)
-	if not db then db = self.db.cooldown end -- just incase someone calls this without a first arg use the global
+	if not db then db = E.db.cooldown end -- just incase someone calls this without a first arg use the global
 	local c13 = E:RGBToHex(db.hhmmColorIndicator.r, db.hhmmColorIndicator.g, db.hhmmColorIndicator.b) -- color for timers that are soon to expire
 	local c12 = E:RGBToHex(db.mmssColorIndicator.r, db.mmssColorIndicator.g, db.mmssColorIndicator.b) -- color for timers that are soon to expire
 	local c11 = E:RGBToHex(db.expireIndicator.r, db.expireIndicator.g, db.expireIndicator.b) -- color for timers that are soon to expire
@@ -265,7 +265,7 @@ function E:UpdateCooldownOverride(module)
 
 	local blizzText
 	for _, parent in ipairs(cooldowns) do
-		local db = (parent.CooldownOverride and E.db[parent.CooldownOverride]) or self.db
+		local db = (parent.CooldownOverride and E.db[parent.CooldownOverride]) or E.db
 		if db and db.cooldown then
 			local timer = parent.isHooked and parent.isRegisteredCooldown and parent.timer
 			local cd = timer or parent
@@ -317,15 +317,15 @@ function E:UpdateCooldownOverride(module)
 end
 
 function E:UpdateCooldownSettings(module)
-	local db, timeColors, textColors = self.db.cooldown, E.TimeColors, E.TimeIndicatorColors
+	local db, timeColors, textColors = E.db.cooldown, E.TimeColors, E.TimeIndicatorColors
 
 	-- update the module timecolors if the config called it but ignore 'global' and 'all':
 	-- global is the main call from config, all is the core file calls
-	local isModule = module and (module ~= 'global' and module ~= 'all') and self.db[module] and self.db[module].cooldown
+	local isModule = module and (module ~= 'global' and module ~= 'all') and E.db[module] and E.db[module].cooldown
 	if isModule then
 		if not E.TimeColors[module] then E.TimeColors[module] = {} end
 		if not E.TimeIndicatorColors[module] then E.TimeIndicatorColors[module] = {} end
-		db, timeColors, textColors = self.db[module].cooldown, E.TimeColors[module], E.TimeIndicatorColors[module]
+		db, timeColors, textColors = E.db[module].cooldown, E.TimeColors[module], E.TimeIndicatorColors[module]
 	end
 
 	timeColors[0], timeColors[1], timeColors[2], timeColors[3], timeColors[4], timeColors[5], timeColors[6], textColors[0], textColors[1], textColors[2], textColors[3], textColors[4], textColors[5], textColors[6] = E:GetCooldownColors(db)
