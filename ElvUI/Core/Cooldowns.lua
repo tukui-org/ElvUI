@@ -77,6 +77,7 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 		cd:Hide()
 	else
 		if cd.text then
+			-- this is needed because of `skipScale`
 			if cd.fontScale < MIN_SCALE then
 				fontScale = MIN_SCALE
 			end
@@ -99,7 +100,7 @@ function E:Cooldown_IsEnabled(cd)
 		return true
 	elseif cd.forceDisabled then
 		return false
-	elseif cd.reverseToggle then
+	elseif cd.reverseToggle ~= nil then
 		return cd.reverseToggle
 	else
 		return E.db.cooldown.enable
@@ -140,8 +141,8 @@ function E:Cooldown_Options(timer, db, parent)
 	timer.textColors = icolors or (E.db.cooldown.useIndicatorColor and E.TimeIndicatorColors)
 	timer.hhmmThreshold = hhmm or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
 	timer.mmssThreshold = mmss or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
-	timer.hideBlizzard = db.hideBlizzard or (E.db and E.db.cooldown and E.db.cooldown.hideBlizzard)
 	timer.reverseToggle = (E.db.cooldown.enable and not db.reverse) or (not E.db.cooldown.enable and db.reverse) or nil
+	timer.hideBlizzard = db.hideBlizzard or E.db.cooldown.hideBlizzard
 
 	if fonts and fonts.enable then
 		timer.customFont = E.Libs.LSM:Fetch('font', fonts.font)
@@ -231,7 +232,7 @@ end
 function E:ToggleBlizzardCooldownText(cd, timer, request)
 	-- we should hide the blizzard cooldown text when ours are enabled
 	if timer and cd and cd.SetHideCountdownNumbers then
-		local forceHide = cd.hideText or cd.hideBlizzard
+		local forceHide = cd.hideText or timer.hideBlizzard
 		if request then
 			return forceHide or E:Cooldown_IsEnabled(timer)
 		else
