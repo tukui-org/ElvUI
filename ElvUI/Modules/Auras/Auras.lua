@@ -308,8 +308,7 @@ function A:UpdateTempEnchant(button, index)
 	button.statusBar:SetStatusBarColor(r, g, b)
 end
 
-function A:Cooldown_Options(button)
-	-- cooldown override settings
+function A:Update_CooldownOptions(button)
 	E:Cooldown_Options(button, self.db.cooldown, button)
 
 	button.customUpdate = A.UpdateTime
@@ -318,8 +317,7 @@ function A:Cooldown_Options(button)
 end
 
 function A:OnAttributeChanged(attribute, value)
-	-- fetch cooldown settings
-	A:Cooldown_Options(self)
+	A:Update_CooldownOptions(self)
 
 	if attribute == "index" then
 		A:UpdateAura(self, value)
