@@ -15,11 +15,9 @@ local BNRequestInviteFriend = BNRequestInviteFriend
 local BNSetCustomMessage = BNSetCustomMessage
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetQuestDifficultyColor = GetQuestDifficultyColor
-local InviteToGroup = InviteToGroup
 local IsChatAFK = IsChatAFK
 local IsChatDND = IsChatDND
 local IsShiftKeyDown = IsShiftKeyDown
-local RequestInviteFromUnit = RequestInviteFromUnit
 local SendChatMessage = SendChatMessage
 local SetItemRef = SetItemRef
 local ToggleFriendsFrame = ToggleFriendsFrame
@@ -33,6 +31,8 @@ local InCombatLockdown = InCombatLockdown
 local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
 local C_BattleNet_GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
 local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
+local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
+local C_PartyInfo_InviteUnit = C_PartyInfo.InviteUnit
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 -- create a popup
@@ -82,13 +82,13 @@ local function inviteClick(self, name, guid)
 			if isBNet then
 				BNInviteFriend(name)
 			else
-				InviteToGroup(name)
+				C_PartyInfo_InviteUnit(name)
 			end
 		elseif inviteType == "REQUEST_INVITE" then
 			if isBNet then
 				BNRequestInviteFriend(name)
 			else
-				RequestInviteFromUnit(name)
+				C_PartyInfo_RequestInviteFromUnit(name)
 			end
 		end
 	else
@@ -97,7 +97,7 @@ local function inviteClick(self, name, guid)
 		if isBNet then
 			BNInviteFriend(name)
 		else
-			InviteToGroup(name)
+			C_PartyInfo_InviteUnit(name)
 		end
 	end
 end

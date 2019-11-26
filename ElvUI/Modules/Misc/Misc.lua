@@ -31,7 +31,6 @@ local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
 local IsPartyLFG = IsPartyLFG
 local IsShiftKeyDown = IsShiftKeyDown
-local LeaveParty = LeaveParty
 local RaidNotice_AddMessage = RaidNotice_AddMessage
 local RepairAllItems = RepairAllItems
 local SendChatMessage = SendChatMessage
@@ -44,6 +43,7 @@ local UnitInRaid = UnitInRaid
 local UnitName = UnitName
 local IsInGuild = IsInGuild
 
+local C_PartyInfo_LeaveParty = C_PartyInfo.LeaveParty
 local C_BattleNet_GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
@@ -176,7 +176,8 @@ function M:DisbandRaidGroup()
 			end
 		end
 	end
-	LeaveParty()
+
+	C_PartyInfo_LeaveParty()
 end
 
 function M:PVPMessageEnhancement(_, msg)
