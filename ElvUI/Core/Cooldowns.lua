@@ -84,7 +84,7 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 	cd.fontScale = scale
 
 	-- this is needed because of skipScale variable, we wont allow a font size under the minscale
-	if cd.fontScale < MIN_SCALE then
+	if cd.fontScale and (cd.fontScale < MIN_SCALE) then
 		scale = MIN_SCALE
 	end
 
