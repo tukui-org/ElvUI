@@ -77,30 +77,29 @@ function E:Cooldown_OnUpdate(elapsed)
 end
 
 function E:Cooldown_OnSizeChanged(cd, width, force)
-	local fontScale = width and (floor(width + .5) / ICON_SIZE)
+	local scale = width and (floor(width + 0.5) / ICON_SIZE)
 
-	if fontScale and (fontScale == cd.fontScale) and (force ~= true) then return end
-	cd.fontScale = fontScale
+	-- dont bother updating when the fontScale is the same, unless we are passing the force arg
+	if scale and (scale == cd.fontScale) and (force ~= true) then return end
+	cd.fontScale = scale
+
+	-- this is needed because of skipScale variable, we wont allow a font size under the minscale
+	if cd.fontScale < MIN_SCALE then
+		scale = MIN_SCALE
+	end
+
+	if cd.customFont then -- override font
+		cd.text:FontTemplate(cd.customFont, (scale * cd.customFontSize), cd.customFontOutline)
+	elseif scale then -- default, no override
+		cd.text:FontTemplate(nil, (scale * FONT_SIZE), 'OUTLINE')
+	else -- this should never happen but just incase
+		cd.text:FontTemplate()
+	end
 
 	if E:Cooldown_BelowScale(cd) then
 		cd:Hide()
-	else
-		if cd.text then
-			-- this is needed because of `skipScale`
-			if cd.fontScale < MIN_SCALE then
-				fontScale = MIN_SCALE
-			end
-
-			if cd.customFont then
-				cd.text:FontTemplate(cd.customFont, (fontScale * cd.customFontSize), cd.customFontOutline)
-			elseif fontScale then
-				cd.text:FontTemplate(nil, (fontScale * FONT_SIZE), 'OUTLINE')
-			end
-		end
-
-		if cd.enabled and (force ~= true) then
-			self:Cooldown_ForceUpdate(cd)
-		end
+	elseif cd.enabled then
+		self:Cooldown_ForceUpdate(cd)
 	end
 end
 
@@ -285,36 +284,32 @@ function E:UpdateCooldownOverride(module)
 			-- cooldown override settings
 			E:Cooldown_Options(cd, db.cooldown, parent)
 
-			-- update font
+			-- update font on cooldowns
 			if timer and cd then
 				self:Cooldown_OnSizeChanged(cd, parent:GetWidth(), true)
-			else
-				if cd.text then
-					if cd.customFont then
-						cd.text:FontTemplate(cd.customFont, cd.customFontSize, cd.customFontOutline)
-					elseif parent.CooldownOverride == 'auras' then
-						-- parent.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
-						local font = E.Libs.LSM:Fetch('font', db.font)
-						if font and parent.auraType then
-							local fontSize = db[parent.auraType] and db[parent.auraType].durationFontSize
-							if fontSize then
-								cd.text:FontTemplate(font , fontSize, db.fontOutline)
-							end
-						end
-					end
-				end
-			end
 
-			-- force update cooldown
-			if timer and cd then
-				E:Cooldown_ForceUpdate(cd)
 				E:ToggleBlizzardCooldownText(parent, cd)
-
 				if (not blizzText) and parent.CooldownOverride == 'actionbar' then
 					blizzText = true
 				end
-			elseif parent.CooldownOverride == 'auras' and not (timer and cd) then
-				parent.nextUpdate = -1
+			else
+				if cd.customFont then
+					cd.text:FontTemplate(cd.customFont, cd.customFontSize, cd.customFontOutline)
+				elseif parent.CooldownOverride == 'auras' then
+					-- parent.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
+					local font = E.Libs.LSM:Fetch('font', db.font)
+					if font and parent.auraType then
+						local fontSize = db[parent.auraType] and db[parent.auraType].durationFontSize
+						if fontSize then
+							cd.text:FontTemplate(font , fontSize, db.fontOutline)
+						end
+					end
+				end
+
+				-- force update top aura cooldowns
+				if parent.CooldownOverride == 'auras' then
+					parent.nextUpdate = -1
+				end
 			end
 		end
 	end
