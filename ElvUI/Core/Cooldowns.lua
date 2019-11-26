@@ -292,7 +292,7 @@ function E:UpdateCooldownOverride(module)
 				if (not blizzText) and parent.CooldownOverride == 'actionbar' then
 					blizzText = true
 				end
-			else
+			elseif cd.text then
 				if cd.customFont then
 					cd.text:FontTemplate(cd.customFont, cd.customFontSize, cd.customFontOutline)
 				elseif parent.CooldownOverride == 'auras' then
