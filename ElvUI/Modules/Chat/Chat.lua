@@ -173,7 +173,7 @@ local rolePaths = {
 	DAMAGER = E:TextureString(E.Media.Textures.DPS, ":15:15")
 }
 
-local specialChatIcons
+local specialChatIcons, itsSimpy, SimpysText
 do --this can save some main file locals
 	local x, y = ':16:16',':13:25'
 
@@ -191,7 +191,19 @@ do --this can save some main file locals
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 
 	local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
-	local itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a] end
+	itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a] end
+
+	local simpyLinks = {}
+	local simpyGradient = function(t) return E:TextGradient(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
+	local simpyProtect = function(t, k) local w = E:EscapeString(k) tinsert(simpyLinks, w) return gsub(t, w, '\10') end
+	SimpysText = function(t)
+		for k in gmatch(t, '|%x+|H.-|h.-|h|r') do t = simpyProtect(t, k) end
+		for k in gmatch(t, '|H.-|h.-|h') do t = simpyProtect(t, k) end
+		for k in gmatch(t, '|T.-|t') do t = simpyProtect(t, k) end
+		t = simpyGradient(t) --Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
+		if next(simpyLinks) then for n in gmatch(t, '\10') do t = gsub(t, n, simpyLinks[1], 1) tremove(simpyLinks, 1) end end
+		return t
+	end
 
 	local classNihilist = {
 		DEATHKNIGHT	= ElvRed,
@@ -266,7 +278,7 @@ do --this can save some main file locals
 		["Jazira-Shattrath"]			= ElvBlue,		-- [Alliance] Priest
 		["Jústice-Shattrath"]			= ElvYellow,	-- [Alliance] Rogue
 		["Maithilis-Shattrath"]			= ElvGreen,		-- [Alliance] Monk
-		["Mattdemôn-Shattrath"]			= itsSimpy,		-- [Alliance] DH	(NOTE: not really Simpy; IMPOSTER lol)
+		["Mattdemôn-Shattrath"]			= ElvPurple,	-- [Alliance] DH
 		["Melisendra-Shattrath"]		= ElvBlue,		-- [Alliance] Mage
 		["Merathilis-Shattrath"]		= ElvOrange,	-- [Alliance] Druid
 		["Merathilîs-Shattrath"]		= ElvBlue,		-- [Alliance] Shaman
@@ -1599,7 +1611,13 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			-- Player Flags
 			local pflag, chatIcon, pluginChatIcon = "", specialChatIcons[playerName], CH:GetPluginIcon(playerName)
-			if type(chatIcon) == 'function' then chatIcon = chatIcon() end
+			if type(chatIcon) == 'function' then
+				if chatIcon == itsSimpy then
+					message = SimpysText(message)
+				end
+
+				chatIcon = chatIcon()
+			end
 
 			if arg6 ~= "" then -- Blizzard Flags
 				if arg6 == "GM" or arg6 == "DEV" then -- Blizzard Icon, this was sent by a GM or Dev.

@@ -5,7 +5,7 @@ local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipair
 local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
 local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, abs, sqrt, mod
 local format, strsub, strupper, gsub, gmatch, utf8sub = format, strsub, strupper, gsub, gmatch, string.utf8sub
-local tostring, pairs = tostring, pairs
+local tostring, strlen, pairs = tostring, strlen, pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
@@ -83,6 +83,41 @@ function E:ColorGradient(perc, ...)
 	local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
 
 	return r1+(r2-r1)*relperc, g1+(g2-g1)*relperc, b1+(b2-b1)*relperc
+end
+
+-- Text Gradient by Simpy
+function E:TextGradient(text, ...)
+	local msg, len, idx = '', strlen(text), 1
+	for x in gmatch(text, '.') do
+		if strmatch(x, '%s') then
+			msg = msg .. x
+			idx = idx + 1
+		else
+			local num = select('#', ...) / 3
+			local segment, relperc = modf((idx/len)*(num-1))
+			local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
+
+			if not r2 then
+				msg = msg .. E:RGBToHex(r1, g1, b1) .. x
+			else
+				msg = msg .. E:RGBToHex(r1+(r2-r1)*relperc, g1+(g2-g1)*relperc, b1+(b2-b1)*relperc) .. x
+				idx = idx + 1
+			end
+		end
+	end
+
+	return msg
+end
+
+-- quick convert function: ('ff0000', '00ff00', '0000ff', ...) to get (1,0,0, 0,1,0, 0,0,1, ...)
+function E:HexsToRGBs(...)
+	local rgb = {}
+	for i = 1, select('#', ...) do
+		local x, r, g, b = #rgb, E:HexToRGB(select(i, ...))
+		rgb[x+1], rgb[x+2], rgb[x+3] = r/255, g/255, b/255
+	end
+
+	return unpack(rgb)
 end
 
 --Return rounded number
