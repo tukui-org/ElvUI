@@ -1799,7 +1799,7 @@ P.unitframe.units.targettarget.debuffs.perrow = 5
 P.unitframe.units.targettarget.debuffs.priority = 'Blacklist,Personal,Boss,RaidDebuffs,CCDebuffs,Dispellable,Whitelist'
 P.unitframe.units.targettarget.infoPanel.height = 14
 P.unitframe.units.targettarget.name.text_format = '[namecolor][name:medium]'
-P.unitframe.units.targettarget.power.text_format = '[powercolor][power:current]'
+P.unitframe.units.targettarget.power.text_format = ''
 
 P.unitframe.units.targettargettarget = CopyTable(P.unitframe.units.targettarget)
 P.unitframe.units.targettargettarget.enable = false
