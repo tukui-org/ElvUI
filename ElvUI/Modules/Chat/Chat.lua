@@ -200,6 +200,7 @@ do --this can save some main file locals
 		for k in gmatch(t, '|%x+|H.-|h.-|h|r') do t = simpyProtect(t, k) end
 		for k in gmatch(t, '|H.-|h.-|h') do t = simpyProtect(t, k) end
 		for k in gmatch(t, '|T.-|t') do t = simpyProtect(t, k) end
+		for k in gmatch(t, '|c.-|r') do t = simpyProtect(t, k) end
 		t = simpyGradient(t) --Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
 		if next(simpyLinks) then for n in gmatch(t, '\10') do t = gsub(t, n, simpyLinks[1], 1) tremove(simpyLinks, 1) end end
 		return t
