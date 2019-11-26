@@ -285,7 +285,7 @@ function E:UpdateCooldownOverride(module)
 			E:Cooldown_Options(cd, db.cooldown, parent)
 
 			-- update font on cooldowns
-			if timer and cd then
+			if timer and cd then -- has a parent, these are timers from RegisterCooldown
 				self:Cooldown_OnSizeChanged(cd, parent:GetWidth(), true)
 
 				E:ToggleBlizzardCooldownText(parent, cd)
