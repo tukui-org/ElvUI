@@ -87,14 +87,14 @@ end
 
 -- Text Gradient by Simpy
 function E:TextGradient(text, ...)
-	local msg, len, idx = '', strlen(text), 1
+	local msg, len, idx = '', strlen(text), 0
 	for x in gmatch(text, '.') do
 		if strmatch(x, '%s') then
 			msg = msg .. x
 			idx = idx + 1
 		else
 			local num = select('#', ...) / 3
-			local segment, relperc = modf((idx/len)*(num-1))
+			local segment, relperc = modf((idx/len)*num)
 			local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
 
 			if not r2 then

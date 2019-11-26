@@ -181,7 +181,7 @@ local DEVELOPERS = {
 	"Blazeflack",
 	"NihilisticPandemonium",
 	"|cffff7d0aMerathilis|r",
-	"|cff4fdac2S|cff50dcb3i|cff51dea4m|cff52e094p|cff53e285y|cff61e177, |cff91de5bb|cffa9dc4du|cffc1da3ft |cffd7cd39m|cffd9c340y |cffdcaf4cn|cffdda652a|cffdf9f58m|cffe29a5fe |cffe8906cn|cffeb8a73e|cffed857ce|cffef818cd|cfff17d9cs |cfff575bct|cfff770cco |cffe166d3b|cffd561d6e |cffbe57dcl|cffaf5edco|cff9c77dan|cff888fd8g|cff75a7d5e|cff62c0d3r|cff4fd8d1.",
+	"|cff4fd8d1S|cff50dabfi|cff51ddaem|cff52df9dp|cff53e18cy|cff5ae27b, |cff91de5bb|cffaddb4bu|cffc8d93bt |cffd8c73dm|cffdabc44y |cffdda652n|cffe09e59a|cffe39861m|cffe69268e |cffed8777n|cffef828ae|cfff17d9ce|cfff378aed|cfff573c0s |cffe668d2t|cffd962d5o |cffbe57dcb|cffac62dce |cff8099d7l|cff6ab5d4o|cff54d1d1n|cff4fd8d1g|cff4fd8d1e|cff4fd8d1r|cff4fd8d1.",
 	"|cff0070DEAzilroka|r",
 	"|cff9482c9Darth Predator|r",
 }
