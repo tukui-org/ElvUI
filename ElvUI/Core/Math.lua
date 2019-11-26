@@ -109,9 +109,9 @@ function E:TextGradient(text, ...)
 	return msg
 end
 
--- quick convert function: ('ff0000', '00ff00', '0000ff', ...) to get (1,0,0, 0,1,0, 0,0,1, ...)
-function E:HexsToRGBs(...)
-	local rgb = {}
+-- quick convert function: (nil or table to populate, 'ff0000', '00ff00', '0000ff', ...) to get (1,0,0, 0,1,0, 0,0,1, ...)
+function E:HexsToRGBs(rgb, ...)
+	if not rgb then rgb = {} end
 	for i = 1, select('#', ...) do
 		local x, r, g, b = #rgb, E:HexToRGB(select(i, ...))
 		rgb[x+1], rgb[x+2], rgb[x+3] = r/255, g/255, b/255
