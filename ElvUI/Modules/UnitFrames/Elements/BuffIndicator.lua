@@ -39,6 +39,8 @@ end
 
 function UF:BuffIndicator_PostCreateIcon(button)
 	button.cd.CooldownOverride = 'unitframe'
+	button.cd.skipScale = true
+
 	E:RegisterCooldown(button.cd)
 
 	button.overlay:Hide()

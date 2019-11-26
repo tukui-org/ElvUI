@@ -1245,11 +1245,6 @@ function UF:ADDON_LOADED(_, addon)
 	self:UnregisterEvent("ADDON_LOADED");
 end
 
-function UF:PLAYER_LOGIN()
-	ElvUF:SetActiveStyle("ElvUF")
-	UF:LoadUnits()
-end
-
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
 	unitFrame:UnregisterAllEvents() --Arena Taint Fix
 end
@@ -1457,8 +1452,9 @@ function UF:Initialize()
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		self:Construct_UF(frame, unit)
 	end)
+	ElvUF:SetActiveStyle("ElvUF")
+	UF:LoadUnits()
 
-	self:RegisterEvent('PLAYER_LOGIN')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_AllFrames')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)

@@ -13,19 +13,6 @@ local UnitAura = UnitAura
 local UnitIsUnit = UnitIsUnit
 local GetSpellTexture = GetSpellTexture
 
-local function updateText(self, elapsed)
-	self.elapsed = (self.elapsed or 0) + elapsed
-	if self.elapsed >= 0.1 then
-		local timeNow = GetTime()
-		self.timeLeft = ((self.expiration or 0) - timeNow)
-		if self.cd.timer and self.cd.timer.text then self.cd.timer.text:SetAlpha(0) end
-		if self.timeLeft > 0 and self.timeLeft <= (self.textThreshold or 0) then
-			if self.cd.timer and self.cd.timer.text then self.cd.timer.text:SetAlpha(1) end
-			self:SetScript("OnUpdate", nil)
-		end
-	end
-end
-
 local function createAuraIcon(element, index)
 	local button = CreateFrame('Button', element:GetDebugName() .. 'Button' .. index, element)
 	button:EnableMouse(false)
@@ -114,18 +101,11 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			local setting = element.watched[spellID]
 			if(button.cd) then
 				button.cd.hideText = not setting.displayText
+				button.cd.textThreshold = setting.textThreshold
 
 				if(duration and duration > 0) then
 					button.cd:SetCooldown(expiration - duration, duration)
 					button.cd:Show()
-
-					if setting.displayText and setting.textThreshold ~= -1 then
-						button.textThreshold = setting.textThreshold
-						button.duration = duration
-						button.expiration = expiration
-						if button.cd.timer and button.cd.timer.text then button.cd.timer.text:SetAlpha(0) end
-						button:SetScript('OnUpdate', updateText)
-					end
 				else
 					button.cd:Hide()
 				end
