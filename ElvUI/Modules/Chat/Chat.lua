@@ -6,7 +6,7 @@ local LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local gsub, strfind, gmatch, format = gsub, strfind, gmatch, format
-local ipairs, wipe, time, difftime = ipairs, wipe, time, difftime
+local ipairs, sort, wipe, time, difftime = ipairs, sort, wipe, time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 local tinsert, tremove, tconcat = tinsert, tremove, table.concat
@@ -190,20 +190,21 @@ do --this can save some main file locals
 	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 
-	local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
-	itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a] end
+	do	-- simpy chaos:
+		--- new icon color every message, in order then reversed back, repeatedly
+		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
+		itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a] end
 
-	local simpyLinks = {}
-	local simpyGradient = function(t) return E:TextGradient(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
-	local simpyProtect = function(t, k) local w = E:EscapeString(k) tinsert(simpyLinks, w) return gsub(t, w, '\10') end
-	SimpysText = function(t)
-		for k in gmatch(t, '|%x+|H.-|h.-|h|r') do t = simpyProtect(t, k) end
-		for k in gmatch(t, '|H.-|h.-|h') do t = simpyProtect(t, k) end
-		for k in gmatch(t, '|T.-|t') do t = simpyProtect(t, k) end
-		for k in gmatch(t, '|c.-|r') do t = simpyProtect(t, k) end
-		t = simpyGradient(t) --Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
-		if next(simpyLinks) then for n in gmatch(t, '\10') do t = gsub(t, n, simpyLinks[1], 1) tremove(simpyLinks, 1) end end
-		return t
+		--- gradient text, ignoring hyperlinks and keywords
+		local e, f, g = {'|%x+|H.-|h.-|h|r', '|H.-|h.-|h', '|T.-|t', '|c.-|r'}, {}, {}
+		local gradient = function(t) return E:TextGradient(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
+		local protect = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\10') end
+		SimpysText = function(t) local u = t
+			for _, w in ipairs(e) do for k in gmatch(t, w) do t = protect(t, u, k) end end
+			t = gradient(t) --Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
+			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\10') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end
+			return t
+		end
 	end
 
 	local classNihilist = {
