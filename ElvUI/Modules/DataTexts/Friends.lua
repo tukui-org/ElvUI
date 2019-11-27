@@ -143,9 +143,11 @@ local clientTags = {
 	[BNET_CLIENT_SC] = "SC",
 	[BNET_CLIENT_SC2] = "SC2",
 	[BNET_CLIENT_DESTINY2] = "Dst2",
-	[BNET_CLIENT_COD] = "VIPR",
+	[BNET_CLIENT_COD] = "BO4",
+	["ODIN"] = "MW",
 	["BSAp"] = L["Mobile"],
 }
+
 local clientIndex = {
 	[BNET_CLIENT_WOW] = 1,
 	[BNET_CLIENT_D3] = 2,
