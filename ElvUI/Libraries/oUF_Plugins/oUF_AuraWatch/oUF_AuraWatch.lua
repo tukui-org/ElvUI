@@ -101,7 +101,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			local setting = element.watched[spellID]
 			if(button.cd) then
 				button.cd.hideText = not setting.displayText
-				button.cd.textThreshold = setting.textThreshold
+				button.cd.textThreshold = setting.textThreshold ~= -1 and setting.textThreshold
 
 				if(duration and duration > 0) then
 					button.cd:SetCooldown(expiration - duration, duration)
