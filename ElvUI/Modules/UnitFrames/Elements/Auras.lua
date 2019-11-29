@@ -142,6 +142,7 @@ function UF:Configure_Auras(frame, auraType)
 
 	local rows = auras.db.numrows
 	auras.forceShow = frame.forceShowAuras
+	auras.spacing = auras.db.spacing
 	auras.num = auras.db.perrow * rows
 	auras.size = auras.db.sizeOverride ~= 0 and auras.db.sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
 	auras.disableMouse = auras.db.clickThrough
