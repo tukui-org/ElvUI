@@ -561,13 +561,6 @@ function CH:StyleChat(frame)
 		editbox:AddHistoryLine(text)
 	end
 
-	if id ~= 2 and not frame.OldAddMessage then
-		--Don't add timestamps to combat log, they don't work.
-		--This usually taints, but LibChatAnims should make sure it doesn't.
-		frame.OldAddMessage = frame.AddMessage
-		frame.AddMessage = CH.AddMessage
-	end
-
 	--copy chat button
 	frame.button = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
 	frame.button:EnableMouse(true)
@@ -627,7 +620,7 @@ function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHis
 		msg = format('|Hcpl:%s|h%s|h %s', self:GetID(), E:TextureString(E.Media.Textures.ArrowRight, ":14"), msg)
 	end
 
-	(self.OldAddMessage or self.AddMessage)(self, msg, infoR, infoG, infoB, infoID, accessID, typeID)
+	self.OldAddMessage(self, msg, infoR, infoG, infoB, infoID, accessID, typeID)
 end
 
 function CH:UpdateSettings()
@@ -1751,13 +1744,19 @@ function CH:SetupChat()
 		frame:SetTimeVisible(100)
 		frame:SetFading(self.db.fade)
 
-		if not frame.scriptsSet then
-			frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
+		if id ~= 2 and not frame.OldAddMessage then
+			--Don't add timestamps to combat log, they don't work.
+			--This usually taints, but LibChatAnims should make sure it doesn't.
+			frame.OldAddMessage = frame.AddMessage
+			frame.AddMessage = CH.AddMessage
+		end
 
+		if not frame.scriptsSet then
 			if id ~= 2 then
 				frame:SetScript("OnEvent", FloatingChatFrameOnEvent)
 			end
 
+			frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
 			hooksecurefunc(frame, "SetScript", function(f, script, func)
 				if script == "OnMouseWheel" and func ~= ChatFrame_OnMouseScroll then
 					f:SetScript(script, ChatFrame_OnMouseScroll)
