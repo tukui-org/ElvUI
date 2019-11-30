@@ -561,7 +561,8 @@ function CH:StyleChat(frame)
 		editbox:AddHistoryLine(text)
 	end
 
-	if id ~= 2 then --Don't add timestamps to combat log, they don't work.
+	if id ~= 2 and not frame.OldAddMessage then
+		--Don't add timestamps to combat log, they don't work.
 		--This usually taints, but LibChatAnims should make sure it doesn't.
 		frame.OldAddMessage = frame.AddMessage
 		frame.AddMessage = CH.AddMessage
@@ -626,7 +627,7 @@ function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHis
 		msg = format('|Hcpl:%s|h%s|h %s', self:GetID(), E:TextureString(E.Media.Textures.ArrowRight, ":14"), msg)
 	end
 
-	self.OldAddMessage(self, msg, infoR, infoG, infoB, infoID, accessID, typeID)
+	(self.OldAddMessage or self.AddMessage)(self, msg, infoR, infoG, infoB, infoID, accessID, typeID)
 end
 
 function CH:UpdateSettings()
