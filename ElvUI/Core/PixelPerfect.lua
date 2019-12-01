@@ -4,6 +4,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local min, max, abs, floor = min, max, abs, floor
 --WoW API / Variables
 local UIParent = UIParent
+local GetPhysicalScreenSize = GetPhysicalScreenSize
 
 function E:IsEyefinity(width, height)
 	if E.global.general.eyefinity and width >= 3840 then
