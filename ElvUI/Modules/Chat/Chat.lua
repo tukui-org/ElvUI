@@ -491,6 +491,7 @@ function CH:StyleChat(frame)
 				ChatEdit_ParseText(editBox, 0)
 			end
 		end
+
 		editbox.characterCount:SetText((255 - strlen(text)))
 	end
 
@@ -1155,8 +1156,9 @@ function CH:GetBNFirstToonClassColor(id)
 			if numGameAccounts and numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
 					local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
-					if gameAccountInfo and (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) and gameAccountInfo.className and gameAccountInfo.className ~= '' then
-						return gameAccountInfo.className --return the first toon's class
+					local className = gameAccountInfo and gameAccountInfo.className
+					if (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) and className and className ~= '' then
+						return className --return the first toon's class
 					end
 				end
 			end
@@ -1712,8 +1714,8 @@ function CH:ChatFrame_ConfigEventHandler(...)
 	return ChatFrame_ConfigEventHandler(...)
 end
 
-function CH:ChatFrame_SystemEventHandler(...)
-	return ChatFrame_SystemEventHandler(...)
+function CH:ChatFrame_SystemEventHandler(frame, event, message, ...)
+	return ChatFrame_SystemEventHandler(frame, event, message, ...)
 end
 
 function CH:ChatFrame_OnEvent(...)
@@ -2021,7 +2023,7 @@ function CH:UpdateFading()
 end
 
 function CH:DisplayChatHistory()
-	local data, d = ElvCharacterDB.ChatHistoryLog
+	local data = ElvCharacterDB.ChatHistoryLog
 	if not (data and next(data)) then return end
 
 	if not GetPlayerInfoByGUID(E.myguid) then
@@ -2032,7 +2034,7 @@ function CH:DisplayChatHistory()
 	CH.SoundTimer = true
 	for _, chat in pairs(_G.CHAT_FRAMES) do
 		for i=1, #data do
-			d = data[i]
+			local d = data[i]
 			if type(d) == 'table' then
 				for _, messageType in pairs(_G[chat].messageTypeList) do
 					if gsub(strsub(d[50],10),'_INFORM','') == messageType then
@@ -2087,6 +2089,7 @@ function CH:SaveChatHistory(event, ...)
 
 	if not CH.db.chatHistory then return end
 	local data = ElvCharacterDB.ChatHistoryLog
+	if not data then return end
 
 	local tempHistory = {}
 	for i = 1, select('#', ...) do
