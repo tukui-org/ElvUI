@@ -670,7 +670,6 @@ L["If you have an icon or aurabar that you don't want to display simply hold dow
 L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."] = "如果你安裝了任何支援此功能的插件, 你可以在右邊的下拉選單中找到它"
 L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."] = "如果你將快捷列解鎖後嘗試移動技能, 技能可能會馬上施放因為你使用按下施法而非釋放施法"
 L["Ignore mouse events."] = "忽略滑鼠事件."
-L["Ignore UI Scale Popup"] = "忽略介面縮放彈窗"
 L["Ignored Items and Search Syntax (Global)"] = "忽略的物品與搜尋語法 (全局)"
 L["Ignored Items and Search Syntax (Profile)"] = "忽略的物品與搜尋語法 (個人)"
 L["Import Now"] = "現在導入"
@@ -1258,7 +1257,6 @@ L["This setting will be updated upon changing stances."] = "此設定將在切�
 L["This texture will get used on objects like chat windows and dropdown menus."] = "主要用於對話視窗及下拉選單等物件的材質."
 L["This will override the global cooldown settings."] = "這將覆蓋全局的冷卻設定."
 L["This will pin the voice buttons to the chat's tab panel. Unchecking it will create a voice button panel with a mover."] = true
-L["This will prevent the UI Scale Popup from being shown when changing the game window size."] = "在修改遊戲窗口大小時的介面縮放彈窗將不會彈出"
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true
 L["Threat Display Mode"] = "仇恨顯示模式"
 L["Threat Health"] = true
