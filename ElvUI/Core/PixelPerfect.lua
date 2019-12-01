@@ -69,6 +69,10 @@ function E:PixelBestSize()
 end
 
 function E:PixelScaleChanged(event, skip)
+	if event == 'UI_SCALE_CHANGED' then
+		E.screenwidth, E.screenheight = GetPhysicalScreenSize()
+	end
+
 	local lastScale = E.mult
 
 	E:UIScale(true) -- repopulate variables
