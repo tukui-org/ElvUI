@@ -1157,7 +1157,7 @@ function CH:GetBNFirstToonClassColor(id)
 				for y = 1, numGameAccounts do
 					local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
 					local className = gameAccountInfo and gameAccountInfo.className
-					if (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) and className and className ~= '' then
+					if (className and className ~= '') and (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) then
 						return className --return the first toon's class
 					end
 				end
