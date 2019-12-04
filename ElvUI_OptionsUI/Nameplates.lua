@@ -2553,7 +2553,7 @@ local function UpdateFilterGroup()
 									type = "toggle",
 									order = 10,
 									name = L["Use Subzone Names"],
-									desc = L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name."],
+									desc = L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Subzone Name."],
 									customWidth = 200,
 								},
 								subZoneNames = {
