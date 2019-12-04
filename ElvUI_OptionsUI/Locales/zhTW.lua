@@ -646,7 +646,7 @@ L["If enabled then the filter will only activate when you are in a Vehicle."] = 
 L["If enabled then the filter will only activate when you are in combat."] = "如果選中則過濾器只會在戰鬥中啟動"
 L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID."] = true
 L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = true
-L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name."] = true
+L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Subzone Name."] = true
 L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
 
 L["If enabled then the filter will only activate when you are not focusing the unit."] = "如果選中則過濾器只會在你沒有設其為專注目標時啟動"
