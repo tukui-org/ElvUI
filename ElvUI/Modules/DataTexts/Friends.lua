@@ -15,11 +15,9 @@ local BNRequestInviteFriend = BNRequestInviteFriend
 local BNSetCustomMessage = BNSetCustomMessage
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetQuestDifficultyColor = GetQuestDifficultyColor
-local InviteToGroup = InviteToGroup
 local IsChatAFK = IsChatAFK
 local IsChatDND = IsChatDND
 local IsShiftKeyDown = IsShiftKeyDown
-local RequestInviteFromUnit = RequestInviteFromUnit
 local SendChatMessage = SendChatMessage
 local SetItemRef = SetItemRef
 local ToggleFriendsFrame = ToggleFriendsFrame
@@ -33,6 +31,8 @@ local InCombatLockdown = InCombatLockdown
 local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
 local C_BattleNet_GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
 local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
+local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
+local C_PartyInfo_InviteUnit = C_PartyInfo.InviteUnit
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 -- create a popup
@@ -82,13 +82,13 @@ local function inviteClick(self, name, guid)
 			if isBNet then
 				BNInviteFriend(name)
 			else
-				InviteToGroup(name)
+				C_PartyInfo_InviteUnit(name)
 			end
 		elseif inviteType == "REQUEST_INVITE" then
 			if isBNet then
 				BNRequestInviteFriend(name)
 			else
-				RequestInviteFromUnit(name)
+				C_PartyInfo_RequestInviteFromUnit(name)
 			end
 		end
 	else
@@ -97,7 +97,7 @@ local function inviteClick(self, name, guid)
 		if isBNet then
 			BNInviteFriend(name)
 		else
-			InviteToGroup(name)
+			C_PartyInfo_InviteUnit(name)
 		end
 	end
 end
@@ -114,7 +114,7 @@ end
 
 local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
-local worldOfWarcraftString = _G.WORLD_OF_WARCRAFT
+local characterFriend = _G.CHARACTER_FRIEND
 local battleNetString = _G.BATTLENET_OPTIONS_LABEL
 local totalOnlineString = strjoin("", _G.FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead = {r=0.4, g=0.78, b=1}
@@ -143,9 +143,11 @@ local clientTags = {
 	[BNET_CLIENT_SC] = "SC",
 	[BNET_CLIENT_SC2] = "SC2",
 	[BNET_CLIENT_DESTINY2] = "Dst2",
-	[BNET_CLIENT_COD] = "VIPR",
+	[BNET_CLIENT_COD] = "BO4",
+	["ODIN"] = "MW",
 	["BSAp"] = L["Mobile"],
 }
+
 local clientIndex = {
 	[BNET_CLIENT_WOW] = 1,
 	[BNET_CLIENT_D3] = 2,
@@ -495,7 +497,7 @@ local function OnEnter(self)
 					classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
 					if not classc then classc = levelc end
 
-					TooltipAddXLine(true, worldOfWarcraftString, format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,info.name,inGroup(info.name),info.status),info.zone,classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
+					TooltipAddXLine(true, characterFriend, format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,info.name,inGroup(info.name),info.status),info.zone,classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
 				end
 			end
 		end

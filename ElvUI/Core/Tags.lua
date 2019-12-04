@@ -230,6 +230,17 @@ ElvUF.Tags.Methods['name:abbrev'] = function(unit)
 	return name ~= nil and name or ''
 end
 
+ElvUF.Tags.Events['health:deficit-percent:nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+ElvUF.Tags.Methods['health:deficit-percent:nostatus'] = function(unit)
+	local min, max = E:UnitHealthValues(unit)
+	local deficit = (min / max) - 1
+	if deficit == 0 then
+		return ''
+	else
+		return E:GetFormattedText('PERCENT', deficit, -1)
+	end
+end
+
 for textFormat in pairs(E.GetFormattedTextStyles) do
 	local tagTextFormat = strlower(gsub(textFormat, '_', '-'))
 	ElvUF.Tags.Events[format('health:%s', tagTextFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
@@ -300,7 +311,7 @@ for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 
 		local deficit = max - cur
 
 		if (deficit > 0 and cur > 0) then
-			return _TAGS["health:percent-nostatus"](unit)
+			return _TAGS["health:deficit-percent:nostatus"](unit)
 		else
 			return _TAGS[format("name:%s", textFormat)](unit)
 		end

@@ -667,7 +667,6 @@ L["If you have an icon or aurabar that you don't want to display simply hold dow
 L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."] = true
 L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."] = true
 L["Ignore mouse events."] = "아이콘이 마우스에 전혀 반응하지 않도록 합니다. 클릭 입력도 아이콘을 통과하게 됩니다."
-L["Ignore UI Scale Popup"] = true
 L["Ignored Items and Search Syntax (Global)"] = "제외된 아이템 또는 검색구문 (전역)"
 L["Ignored Items and Search Syntax (Profile)"] = "제외된 아이템 또는 검색구문 (프로필)"
 L["Import Now"] = "지금 가져오기"
@@ -1255,7 +1254,6 @@ L["This setting will be updated upon changing stances."] = "이 설정은 태세
 L["This texture will get used on objects like chat windows and dropdown menus."] = "채팅창이나 메뉴 같은 프레임에 입혀지는 텍스쳐입니다."
 L["This will override the global cooldown settings."] = true
 L["This will pin the voice buttons to the chat's tab panel. Unchecking it will create a voice button panel with a mover."] = true
-L["This will prevent the UI Scale Popup from being shown when changing the game window size."] = true
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true
 L["Threat Display Mode"] = "어그로획득 표시방법"
 L["Threat Health"] = true

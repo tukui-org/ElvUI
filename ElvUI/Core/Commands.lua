@@ -222,19 +222,22 @@ function E:EnableBlizzardAddOns()
 	end
 end
 
+function E:ToggleDevConsole()
+	_G.DeveloperConsole:Toggle()
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand('in', 'DelayScriptCall')
 	self:RegisterChatCommand('ec', 'ToggleOptionsUI')
 	self:RegisterChatCommand('elvui', 'ToggleOptionsUI')
 	self:RegisterChatCommand('cpuimpact', 'GetCPUImpact')
-
 	self:RegisterChatCommand('cpuusage', 'GetTopCPUFunc')
-	-- args: module, showall, delay, minCalls
-	-- Example1: /cpuusage all
-	-- Example2: /cpuusage Bags true
-	-- Example3: /cpuusage UnitFrames nil 50 25
-	-- Note: showall, delay, and minCalls will default if not set
-	-- arg1 can be 'all' this will scan all registered modules!
+	-- cpuusage args: module, showall, delay, minCalls
+	--- Example1: /cpuusage all
+	--- Example2: /cpuusage Bags true
+	--- Example3: /cpuusage UnitFrames nil 50 25
+	---- Note: showall, delay, and minCalls will default if not set
+	---- arg1 can be 'all' this will scan all registered modules!
 
 	self:RegisterChatCommand('bgstats', 'BGStats')
 	self:RegisterChatCommand('hellokitty', 'HelloKittyToggle')
@@ -247,6 +250,7 @@ function E:LoadCommands()
 	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	self:RegisterChatCommand('enableblizzard', 'EnableBlizzardAddOns')
 	self:RegisterChatCommand('estatus', 'ShowStatusReport')
+	self:RegisterChatCommand('devcon', 'ToggleDevConsole')
 	-- self:RegisterChatCommand('aprilfools', '') --Don't need this until next april fools
 
 	if E.private.actionbar.enable then

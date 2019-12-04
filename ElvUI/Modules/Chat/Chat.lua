@@ -6,7 +6,7 @@ local LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local gsub, strfind, gmatch, format = gsub, strfind, gmatch, format
-local ipairs, wipe, time, difftime = ipairs, wipe, time, difftime
+local ipairs, sort, wipe, time, difftime = ipairs, sort, wipe, time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 local tinsert, tremove, tconcat = tinsert, tremove, table.concat
@@ -173,7 +173,7 @@ local rolePaths = {
 	DAMAGER = E:TextureString(E.Media.Textures.DPS, ":15:15")
 }
 
-local specialChatIcons
+local specialChatIcons, itsSimpy, SimpysText
 do --this can save some main file locals
 	local x, y = ':16:16',':13:25'
 
@@ -190,8 +190,22 @@ do --this can save some main file locals
 	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 
-	local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
-	local itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a] end
+	do	-- simpy chaos:
+		--- new icon color every message, in order then reversed back, repeatedly
+		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
+		itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a] end
+
+		--- gradient text, ignoring hyperlinks and keywords
+		local e, f, g = {'|%x+|H.-|h.-|h|r', '|H.-|h.-|h', '|T.-|t', '|c.-|r'}, {}, {}
+		local gradient = function(t) return E:TextGradient(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
+		local protect = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\10') end
+		SimpysText = function(t) local u = t
+			for _, w in ipairs(e) do for k in gmatch(t, w) do t = protect(t, u, k) end end
+			t = gradient(t) --Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
+			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\10') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end
+			return t
+		end
+	end
 
 	local classNihilist = {
 		DEATHKNIGHT	= ElvRed,
@@ -266,7 +280,7 @@ do --this can save some main file locals
 		["Jazira-Shattrath"]			= ElvBlue,		-- [Alliance] Priest
 		["Jústice-Shattrath"]			= ElvYellow,	-- [Alliance] Rogue
 		["Maithilis-Shattrath"]			= ElvGreen,		-- [Alliance] Monk
-		["Mattdemôn-Shattrath"]			= itsSimpy,		-- [Alliance] DH	(NOTE: not really Simpy; IMPOSTER lol)
+		["Mattdemôn-Shattrath"]			= ElvPurple,	-- [Alliance] DH
 		["Melisendra-Shattrath"]		= ElvBlue,		-- [Alliance] Mage
 		["Merathilis-Shattrath"]		= ElvOrange,	-- [Alliance] Druid
 		["Merathilîs-Shattrath"]		= ElvBlue,		-- [Alliance] Shaman
@@ -477,6 +491,7 @@ function CH:StyleChat(frame)
 				ChatEdit_ParseText(editBox, 0)
 			end
 		end
+
 		editbox.characterCount:SetText((255 - strlen(text)))
 	end
 
@@ -545,12 +560,6 @@ function CH:StyleChat(frame)
 
 	for _, text in pairs(ElvCharacterDB.ChatEditHistory) do
 		editbox:AddHistoryLine(text)
-	end
-
-	if id ~= 2 then --Don't add timestamps to combat log, they don't work.
-		--This usually taints, but LibChatAnims should make sure it doesn't.
-		frame.OldAddMessage = frame.AddMessage
-		frame.AddMessage = CH.AddMessage
 	end
 
 	--copy chat button
@@ -1147,8 +1156,9 @@ function CH:GetBNFirstToonClassColor(id)
 			if numGameAccounts and numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
 					local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
-					if gameAccountInfo and (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) and gameAccountInfo.className and gameAccountInfo.className ~= '' then
-						return gameAccountInfo.className --return the first toon's class
+					local className = gameAccountInfo and gameAccountInfo.className
+					if (className and className ~= '') and (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) then
+						return className --return the first toon's class
 					end
 				end
 			end
@@ -1599,7 +1609,13 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			-- Player Flags
 			local pflag, chatIcon, pluginChatIcon = "", specialChatIcons[playerName], CH:GetPluginIcon(playerName)
-			if type(chatIcon) == 'function' then chatIcon = chatIcon() end
+			if type(chatIcon) == 'function' then
+				if chatIcon == itsSimpy then
+					message = SimpysText(message)
+				end
+
+				chatIcon = chatIcon()
+			end
 
 			if arg6 ~= "" then -- Blizzard Flags
 				if arg6 == "GM" or arg6 == "DEV" then -- Blizzard Icon, this was sent by a GM or Dev.
@@ -1698,8 +1714,8 @@ function CH:ChatFrame_ConfigEventHandler(...)
 	return ChatFrame_ConfigEventHandler(...)
 end
 
-function CH:ChatFrame_SystemEventHandler(...)
-	return ChatFrame_SystemEventHandler(...)
+function CH:ChatFrame_SystemEventHandler(frame, event, message, ...)
+	return ChatFrame_SystemEventHandler(frame, event, message, ...)
 end
 
 function CH:ChatFrame_OnEvent(...)
@@ -1730,13 +1746,19 @@ function CH:SetupChat()
 		frame:SetTimeVisible(100)
 		frame:SetFading(self.db.fade)
 
-		if not frame.scriptsSet then
-			frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
+		if id ~= 2 and not frame.OldAddMessage then
+			--Don't add timestamps to combat log, they don't work.
+			--This usually taints, but LibChatAnims should make sure it doesn't.
+			frame.OldAddMessage = frame.AddMessage
+			frame.AddMessage = CH.AddMessage
+		end
 
+		if not frame.scriptsSet then
 			if id ~= 2 then
 				frame:SetScript("OnEvent", FloatingChatFrameOnEvent)
 			end
 
+			frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
 			hooksecurefunc(frame, "SetScript", function(f, script, func)
 				if script == "OnMouseWheel" and func ~= ChatFrame_OnMouseScroll then
 					f:SetScript(script, ChatFrame_OnMouseScroll)
@@ -2001,7 +2023,7 @@ function CH:UpdateFading()
 end
 
 function CH:DisplayChatHistory()
-	local data, d = ElvCharacterDB.ChatHistoryLog
+	local data = ElvCharacterDB.ChatHistoryLog
 	if not (data and next(data)) then return end
 
 	if not GetPlayerInfoByGUID(E.myguid) then
@@ -2012,7 +2034,7 @@ function CH:DisplayChatHistory()
 	CH.SoundTimer = true
 	for _, chat in pairs(_G.CHAT_FRAMES) do
 		for i=1, #data do
-			d = data[i]
+			local d = data[i]
 			if type(d) == 'table' then
 				for _, messageType in pairs(_G[chat].messageTypeList) do
 					if gsub(strsub(d[50],10),'_INFORM','') == messageType then
@@ -2067,6 +2089,7 @@ function CH:SaveChatHistory(event, ...)
 
 	if not CH.db.chatHistory then return end
 	local data = ElvCharacterDB.ChatHistoryLog
+	if not data then return end
 
 	local tempHistory = {}
 	for i = 1, select('#', ...) do

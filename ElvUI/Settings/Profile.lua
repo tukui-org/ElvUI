@@ -273,12 +273,12 @@ local NP_Auras = {
 	size = 27,
 	width = 18,
 	height = 18,
-	anchorPoint = 'TOPRIGHT',
-	growthX = 'LEFT',
+	anchorPoint = 'TOPLEFT',
+	growthX = 'RIGHT',
 	growthY = 'UP',
 	onlyShowPlayer = false,
 	spacing = 1,
-	yOffset = 35,
+	yOffset = 5,
 	xOffset = 0,
 	font = 'PT Sans Narrow',
 	fontOutline = 'OUTLINE',
@@ -1020,7 +1020,8 @@ local UF_Auras = {
 	minDuration = 0,
 	maxDuration = 300,
 	priority = '',
-	sizeOverride = 0
+	sizeOverride = 0,
+	spacing = 1,
 }
 
 local UF_AuraBars = {

@@ -254,7 +254,6 @@ local blacklistedKeys = {
 			locale = true,
 			version = true,
 			eyefinity = true,
-			ignoreScalePopup = true,
 			disableTutorialButtons = true,
 			showMissingTalentAlert = true,
 		},
