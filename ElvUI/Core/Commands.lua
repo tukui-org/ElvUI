@@ -7,20 +7,24 @@ local _G = _G
 local tonumber, type, pairs, select = tonumber, type, pairs, select
 local lower, split, format = strlower, strsplit, format
 --WoW API / Variables
-local EnableAddOn, DisableAllAddOns = EnableAddOn, DisableAllAddOns
-local SetCVar = SetCVar
-local ReloadUI = ReloadUI
-local GuildControlGetNumRanks = GuildControlGetNumRanks
-local GuildControlGetRankName = GuildControlGetRankName
-local GetNumGuildMembers, GetGuildRosterInfo = GetNumGuildMembers, GetGuildRosterInfo
-local GetGuildRosterLastOnline = GetGuildRosterLastOnline
-local GuildUninvite = GuildUninvite
-local SendChatMessage = SendChatMessage
+local hooksecurefunc = hooksecurefunc
 local debugprofilestop = debugprofilestop
-local UpdateAddOnCPUUsage, GetAddOnCPUUsage = UpdateAddOnCPUUsage, GetAddOnCPUUsage
-local ResetCPUUsage = ResetCPUUsage
+local DisableAllAddOns = DisableAllAddOns
+local EnableAddOn = EnableAddOn
+local GetAddOnCPUUsage = GetAddOnCPUUsage
 local GetAddOnInfo = GetAddOnInfo
 local GetCVarBool = GetCVarBool
+local GetGuildRosterInfo = GetGuildRosterInfo
+local GetGuildRosterLastOnline = GetGuildRosterLastOnline
+local GetNumGuildMembers = GetNumGuildMembers
+local GuildControlGetNumRanks = GuildControlGetNumRanks
+local GuildControlGetRankName = GuildControlGetRankName
+local GuildUninvite = GuildUninvite
+local ReloadUI = ReloadUI
+local ResetCPUUsage = ResetCPUUsage
+local SendChatMessage = SendChatMessage
+local SetCVar = SetCVar
+local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 -- GLOBALS: ElvUIGrid
 
 function E:Grid(msg)
@@ -222,8 +226,26 @@ function E:EnableBlizzardAddOns()
 	end
 end
 
-function E:ToggleDevConsole()
-	_G.DeveloperConsole:Toggle()
+do -- Blizzard Commands
+	local SlashCmdList = _G.SlashCmdList
+
+	-- DeveloperConsole (without starting with `-console`)
+	if not SlashCmdList.DEVCON then
+		local DevConsole = _G.DeveloperConsole
+		if DevConsole then
+			_G.SLASH_DEVCON1 = '/devcon'
+			SlashCmdList.DEVCON = function()
+				DevConsole:Toggle()
+			end
+		end
+	end
+
+	-- ReloadUI: /rl, /reloadui, /reload  NOTE: /reload is from SLASH_RELOAD
+	if not SlashCmdList.RELOADUI then
+		_G.SLASH_RELOADUI1 = '/rl'
+		_G.SLASH_RELOADUI2 = '/reloadui'
+		SlashCmdList.RELOADUI = _G.ReloadUI
+	end
 end
 
 function E:LoadCommands()
@@ -250,7 +272,6 @@ function E:LoadCommands()
 	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	self:RegisterChatCommand('enableblizzard', 'EnableBlizzardAddOns')
 	self:RegisterChatCommand('estatus', 'ShowStatusReport')
-	self:RegisterChatCommand('devcon', 'ToggleDevConsole')
 	-- self:RegisterChatCommand('aprilfools', '') --Don't need this until next april fools
 
 	if E.private.actionbar.enable then
