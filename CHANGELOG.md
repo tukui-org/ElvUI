@@ -1,8 +1,17 @@
-### Version 11.26 [ ]
+### Version 11.27 [  ]
+
+**New Additions:**  
+
+**Bug Fixes:**  
+
+**Misc. Changes:**  
+
+___
+### Version 11.26 [ December 5th 2019 ]
 
 **New Additions:**  
 Added spacing option for unitframe auras.  
-Added back some options that was eaten by a angry goblin.  
+Added back some options that was eaten by an angry goblin.  
 
 **Bug Fixes:**  
 Fixed Actionbar spell highlight, if you mouseover your spells in the Spellbook.  
