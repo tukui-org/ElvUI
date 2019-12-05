@@ -46,7 +46,7 @@ DT.PointLocation = {
 
 local hasEnteredWorld = false
 function DT:DelayedLoad(event)
-	if event == 'PLAYER_ENTERING_WORLD' and not hasEnteredWorld then
+	if event == 'PLAYER_ENTERING_WORLD' then
 		hasEnteredWorld = true
 	end
 
@@ -54,7 +54,6 @@ function DT:DelayedLoad(event)
 end
 
 function DT:PLAYER_ENTERING_WORLD()
-	self:UnregisterEvent('PLAYER_ENTERING_WORLD')
 	E:Delay(0.5, DT.DelayedLoad, DT, 'PLAYER_ENTERING_WORLD')
 end
 
