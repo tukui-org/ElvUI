@@ -45,16 +45,9 @@ DT.PointLocation = {
 }
 
 local hasEnteredWorld = false
-function DT:DelayedLoad(event)
-	if event == 'PLAYER_ENTERING_WORLD' then
-		hasEnteredWorld = true
-	end
-
-	self:LoadDataTexts()
-end
-
 function DT:PLAYER_ENTERING_WORLD()
-	E:Delay(0.5, DT.DelayedLoad, DT, 'PLAYER_ENTERING_WORLD')
+	E:Delay(0.5, DT.LoadDataTexts, DT)
+	hasEnteredWorld = true
 end
 
 local LDBHex = '|cffFFFFFF'
@@ -110,7 +103,7 @@ function DT:SetupObjectLDB(name, obj) --self will now be the event
 	-- Force an update for objects that are created after we log in.
 	if hasEnteredWorld then
 		-- Has to be delayed in order to properly pick up initial text
-		E:Delay(0.5, DT.DelayedLoad, DT)
+		E:Delay(0.5, DT.LoadDataTexts, DT)
 	end
 end
 
