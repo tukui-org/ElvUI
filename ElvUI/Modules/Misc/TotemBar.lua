@@ -11,11 +11,9 @@ local CooldownFrame_Set = CooldownFrame_Set
 local MAX_TOTEMS = MAX_TOTEMS
 
 function TOTEMS:Update()
-	local _, button, startTime, duration, icon
-
 	for i=1, MAX_TOTEMS do
-		button = _G["TotemFrameTotem"..i];
-		_, _, startTime, duration, icon = GetTotemInfo(button.slot);
+		local button = _G["TotemFrameTotem"..i];
+		local _, _, startTime, duration, icon = GetTotemInfo(button.slot);
 
 		if button:IsShown() then
 			self.bar[i]:Show()
@@ -31,22 +29,9 @@ function TOTEMS:Update()
 	end
 end
 
-function TOTEMS:ToggleEnable()
-	if self.db.enable then
-		self.bar:Show()
-		self:RegisterEvent('PLAYER_TOTEM_UPDATE', 'Update')
-		self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update')
-		self:Update()
-		E:EnableMover('TotemBarMover')
-	else
-		self.bar:Hide()
-		self:UnregisterEvent('PLAYER_TOTEM_UPDATE')
-		self:UnregisterEvent('PLAYER_ENTERING_WORLD')
-		E:DisableMover('TotemBarMover')
-	end
-end
-
 function TOTEMS:PositionAndSize()
+	if not E.private.general.totemBar then return end
+
 	for i=1, MAX_TOTEMS do
 		local button = self.bar[i]
 		local prevButton = self.bar[i-1]
@@ -86,11 +71,15 @@ function TOTEMS:PositionAndSize()
 		self.bar:Height(self.db.size*(MAX_TOTEMS) + self.db.spacing*(MAX_TOTEMS) + self.db.spacing)
 		self.bar:Width(self.db.size + self.db.spacing*2)
 	end
+
 	self:Update()
 end
 
 function TOTEMS:Initialize()
 	self.Initialized = true
+
+	if not E.private.general.totemBar then return end
+
 	self.db = E.db.general.totems
 
 	local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
@@ -120,8 +109,10 @@ function TOTEMS:Initialize()
 
 	self:PositionAndSize()
 
+	self:RegisterEvent('PLAYER_TOTEM_UPDATE', 'Update')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update')
+
 	E:CreateMover(bar, 'TotemBarMover', L["Class Totems"], nil, nil, nil, nil, nil, 'general,totems');
-	self:ToggleEnable()
 end
 
 E:RegisterModule(TOTEMS:GetName())

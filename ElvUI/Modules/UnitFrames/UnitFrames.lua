@@ -264,7 +264,7 @@ function UF:Construct_UF(frame, unit)
 		if stringTitle:find('target') then
 			stringTitle = gsub(stringTitle, 'target', 'Target')
 		end
-		self["Construct_"..stringTitle.."Frame"](self, frame, unit)
+		UF["Construct_"..stringTitle.."Frame"](self, frame, unit)
 	else
 		UF["Construct_"..E:StringTitle(self.groupunits[unit]).."Frames"](self, frame, unit)
 	end
@@ -1245,21 +1245,6 @@ function UF:ADDON_LOADED(_, addon)
 	self:UnregisterEvent("ADDON_LOADED");
 end
 
-do
-	local hasEnteredWorld = false
-	function UF:PLAYER_ENTERING_WORLD()
-		local _, instanceType = GetInstanceInfo()
-		if not hasEnteredWorld then
-			--We only want to run Update_AllFrames once when we first log in or /reload
-			UF:Update_AllFrames()
-			hasEnteredWorld = true
-		elseif instanceType ~= "none" then
-			--We need to update headers when we zone into an instance
-			UF:UpdateAllHeaders()
-		end
-	end
-end
-
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
 	unitFrame:UnregisterAllEvents() --Arena Taint Fix
 end
@@ -1467,12 +1452,10 @@ function UF:Initialize()
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		self:Construct_UF(frame, unit)
 	end)
-
 	ElvUF:SetActiveStyle("ElvUF")
-
 	UF:LoadUnits()
 
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_AllFrames')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 	--[[if E.private.unitframe.disabledBlizzardFrames.arena and E.private.unitframe.disabledBlizzardFrames.focus and E.private.unitframe.disabledBlizzardFrames.party then

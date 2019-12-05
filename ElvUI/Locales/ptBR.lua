@@ -159,6 +159,7 @@ L["INCOMPATIBLE_ADDON"] = "The addon %s is not compatible with ElvUI's %s module
 L["Info/Controls"] = true
 L["Installation Complete"] = "Instalação Completa"
 L["Invalid Target"] = "Alvo inválido"
+L["Interrupted %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"] = true
 L["is looking for members"] = true
 L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."] = true
 L["Item level: %.2f"] = true

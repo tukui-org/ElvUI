@@ -15,16 +15,17 @@ local GetMouseFocus = GetMouseFocus
 local GetNumGuildMembers = GetNumGuildMembers
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local C_GuildInfo_GuildRoster = C_GuildInfo.GuildRoster
-local InviteToGroup = InviteToGroup
 local IsInGuild = IsInGuild
 local IsShiftKeyDown = IsShiftKeyDown
 local LoadAddOn = LoadAddOn
-local RequestInviteFromUnit = RequestInviteFromUnit
 local SetItemRef = SetItemRef
 local ToggleGuildFrame = ToggleGuildFrame
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local InCombatLockdown = InCombatLockdown
+
+local C_PartyInfo_InviteUnit = C_PartyInfo.InviteUnit
+local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
 
 local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
 local GUILD = GUILD
@@ -187,14 +188,14 @@ local function inviteClick(self, name, guid)
 	if guid then
 		local inviteType = GetDisplayedInviteType(guid)
 		if inviteType == "INVITE" or inviteType == "SUGGEST_INVITE" then
-			InviteToGroup(name)
+			C_PartyInfo_InviteUnit(name)
 		elseif inviteType == "REQUEST_INVITE" then
-			RequestInviteFromUnit(name)
+			C_PartyInfo_RequestInviteFromUnit(name)
 		end
 	else
 		-- if for some reason guid isnt here fallback and just try to invite them
 		-- this is unlikely but having a fallback doesnt hurt
-		InviteToGroup(name)
+		C_PartyInfo_InviteUnit(name)
 	end
 end
 

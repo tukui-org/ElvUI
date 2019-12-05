@@ -31,7 +31,6 @@ local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
 local IsPartyLFG = IsPartyLFG
 local IsShiftKeyDown = IsShiftKeyDown
-local LeaveParty = LeaveParty
 local RaidNotice_AddMessage = RaidNotice_AddMessage
 local RepairAllItems = RepairAllItems
 local SendChatMessage = SendChatMessage
@@ -44,6 +43,7 @@ local UnitInRaid = UnitInRaid
 local UnitName = UnitName
 local IsInGuild = IsInGuild
 
+local C_PartyInfo_LeaveParty = C_PartyInfo.LeaveParty
 local C_BattleNet_GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
@@ -51,7 +51,7 @@ local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 local UIErrorsFrame = UIErrorsFrame
 
-local INTERRUPT_MSG = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"
+local INTERRUPT_MSG = L["Interrupted %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"]
 
 function M:ErrorFrameToggle(event)
 	if not E.db.general.hideErrorFrame then return end
@@ -176,7 +176,8 @@ function M:DisbandRaidGroup()
 			end
 		end
 	end
-	LeaveParty()
+
+	C_PartyInfo_LeaveParty()
 end
 
 function M:PVPMessageEnhancement(_, msg)
@@ -251,27 +252,22 @@ end]]
 function M:ADDON_LOADED(_, addon)
 	if addon == "Blizzard_InspectUI" then
 		M:SetupInspectPageInfo()
-
-		--[[if IsAddOnLoaded("Blizzard_ObjectiveTracker") then
-			self:UnregisterEvent("ADDON_LOADED")
-		end]]
 	--[[elseif addon == "Blizzard_ObjectiveTracker" then
-		M:SetupChallengeTimer()
-
-		if IsAddOnLoaded("Blizzard_InspectUI") then
-			self:UnregisterEvent("ADDON_LOADED")
-		end	]]
+		M:SetupChallengeTimer()]]
 	end
 end
 
 function M:QUEST_COMPLETE()
 	if not E.db.general.questRewardMostValueIcon then return end
 
+	local firstItem = _G.QuestInfoRewardsFrameQuestInfoItem1
+	if not firstItem then return end
+
 	local bestValue, bestItem = 0
 	local numQuests = GetNumQuestChoices()
 
 	if not self.QuestRewardGoldIconFrame then
-		local frame = CreateFrame("Frame", nil, _G.QuestInfoRewardsFrameQuestInfoItem1)
+		local frame = CreateFrame("Frame", nil, firstItem)
 		frame:SetFrameStrata("HIGH")
 		frame:Size(20)
 		frame.Icon = frame:CreateTexture(nil, "OVERLAY")
@@ -300,7 +296,7 @@ function M:QUEST_COMPLETE()
 
 	if bestItem then
 		local btn = _G['QuestInfoRewardsFrameQuestInfoItem'..bestItem]
-		if btn.type == 'choice' then
+		if btn and btn.type == 'choice' then
 			self.QuestRewardGoldIconFrame:ClearAllPoints()
 			self.QuestRewardGoldIconFrame:Point("TOPRIGHT", btn, "TOPRIGHT", -2, -2)
 			self.QuestRewardGoldIconFrame:Show()
@@ -318,7 +314,6 @@ function M:Initialize()
 	self:RegisterEvent('MERCHANT_SHOW')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')
-	if E.db.general.interruptAnnounce ~= "NONE" then self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED") end
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_HORDE', 'PVPMessageEnhancement')
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_ALLIANCE', 'PVPMessageEnhancement')
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
@@ -326,26 +321,23 @@ function M:Initialize()
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent("QUEST_COMPLETE")
+	self:RegisterEvent('QUEST_COMPLETE')
 
-	--local blizzTracker = IsAddOnLoaded("Blizzard_ObjectiveTracker")
-	local inspectUI = IsAddOnLoaded("Blizzard_InspectUI")
+	if E.db.general.interruptAnnounce ~= 'NONE' then
+		self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+	end
 
-	if inspectUI then
+	if IsAddOnLoaded('Blizzard_InspectUI') then
 		M:SetupInspectPageInfo()
+	else
+		self:RegisterEvent('ADDON_LOADED')
 	end
 
-	--[[if blizzTracker then
+	--[[if IsAddOnLoaded('Blizzard_ObjectiveTracker') then
 		M:SetupChallengeTimer()
-	end
-
-	if not blizzTracker or not inspectUI then
-		self:RegisterEvent("ADDON_LOADED")
+	else
+		self:RegisterEvent('ADDON_LOADED')
 	end]]
-
-	if not inspectUI then
-		self:RegisterEvent("ADDON_LOADED")
-	end
 end
 
 E:RegisterModule(M:GetName())

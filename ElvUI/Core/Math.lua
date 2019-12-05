@@ -2,10 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 --Lua functions
 local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
-local select, tonumber, type, unpack = select, tonumber, type, unpack
-local atan2, modf, ceil, floor, abs, sqrt, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, mod
+local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
+local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, abs, sqrt, mod
 local format, strsub, strupper, gsub, gmatch, utf8sub = format, strsub, strupper, gsub, gmatch, string.utf8sub
-local tostring, pairs = tostring, pairs
+local tostring, strlen, pairs = tostring, strlen, pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
@@ -85,6 +85,41 @@ function E:ColorGradient(perc, ...)
 	return r1+(r2-r1)*relperc, g1+(g2-g1)*relperc, b1+(b2-b1)*relperc
 end
 
+-- Text Gradient by Simpy
+function E:TextGradient(text, ...)
+	local msg, len, idx = '', strlen(text), 0
+	for x in gmatch(text, '.') do
+		if strmatch(x, '%s') then
+			msg = msg .. x
+			idx = idx + 1
+		else
+			local num = select('#', ...) / 3
+			local segment, relperc = modf((idx/len)*num)
+			local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
+
+			if not r2 then
+				msg = msg .. E:RGBToHex(r1, g1, b1) .. x
+			else
+				msg = msg .. E:RGBToHex(r1+(r2-r1)*relperc, g1+(g2-g1)*relperc, b1+(b2-b1)*relperc) .. x
+				idx = idx + 1
+			end
+		end
+	end
+
+	return msg
+end
+
+-- quick convert function: (nil or table to populate, 'ff0000', '00ff00', '0000ff', ...) to get (1,0,0, 0,1,0, 0,0,1, ...)
+function E:HexsToRGBs(rgb, ...)
+	if not rgb then rgb = {} end
+	for i = 1, select('#', ...) do
+		local x, r, g, b = #rgb, E:HexToRGB(select(i, ...))
+		rgb[x+1], rgb[x+2], rgb[x+3] = r/255, g/255, b/255
+	end
+
+	return unpack(rgb)
+end
+
 --Return rounded number
 function E:Round(num, idp)
 	if(idp and idp > 0) then
@@ -100,18 +135,20 @@ function E:Truncate(v, decimals)
 end
 
 --RGB to Hex
-function E:RGBToHex(r, g, b, header)
+function E:RGBToHex(r, g, b, header, ending)
 	r = r <= 1 and r >= 0 and r or 1
 	g = g <= 1 and g >= 0 and g or 1
 	b = b <= 1 and b >= 0 and b or 1
-	return format('%s%02x%02x%02x', header or '|cff', r*255, g*255, b*255)
+	return format('%s%02x%02x%02x%s', header or '|cff', r*255, g*255, b*255, ending or '')
 end
 
 --Hex to RGB
 function E:HexToRGB(hex)
-    hex = gsub(hex, '^|c[fF][fF]', '')
-	local rhex, ghex, bhex = string.sub(hex, 1, 2), string.sub(hex, 3, 4), string.sub(hex, 5, 6)
-	return tonumber(rhex, 16), tonumber(ghex, 16), tonumber(bhex, 16)
+	local a, r, g, b = strmatch(hex, '^|?c?(%x%x)(%x%x)(%x%x)(%x?%x?)|?r?$')
+	if not a then return 0, 0, 0, 0 end
+	if b == '' then r, g, b, a = a, r, g, 'ff' end
+
+	return tonumber(r, 16), tonumber(g, 16), tonumber(b, 16), tonumber(a, 16)
 end
 
 --From http://wow.gamepedia.com/UI_coordinates
@@ -304,25 +341,30 @@ end
 
 E.TimeThreshold = 3
 
-E.TimeColors = { -- aura time colors for days, hours, minutes, seconds, fadetimer
-	[0] = '|cffeeeeee',
-	[1] = '|cffeeeeee',
-	[2] = '|cffeeeeee',
-	[3] = '|cffeeeeee',
-	[4] = '|cfffe0000',
+E.TimeColors = { --aura time colors
+	[0] = '|cffeeeeee', --days
+	[1] = '|cffeeeeee', --hours
+	[2] = '|cffeeeeee', --minutes
+	[3] = '|cffeeeeee', --seconds
+	[4] = '|cfffe0000', --expire (fade timer)
 	[5] = '|cff909090', --mmss
 	[6] = '|cff707070', --hhmm
 }
 
-E.TimeFormats = { -- short/long/indicator color
-	[0] = {'%dd', '%dd', '%d%sd|r'},
-	[1] = {'%dh', '%dh', '%d%sh|r'},
-	[2] = {'%dm', '%dm', '%d%sm|r'},
-	[3] = {'%ds', '%d', '%d%ss|r'},
-	[4] = {'%.1fs', '%.1f', '%.1f%ss|r'},
-	[5] = {'%d:%02d', '%d:%02d', '%d%s:|r%02d'}, --mmss
-	[6] = {'%d:%02d', '%d:%02d', '%d%s:|r%02d'}, --hhmm
+E.TimeFormats = { -- short / indicator color
+	[0] = {'%dd', '%d%sd|r'},
+	[1] = {'%dh', '%d%sh|r'},
+	[2] = {'%dm', '%d%sm|r'},
+	[3] = {'%ds', '%d%ss|r'},
+	[4] = {'%.1fs', '%.1f%ss|r'},
+	[5] = {'%d:%02d', '%d%s:|r%02d'}, --mmss
+	[6] = {'%d:%02d', '%d%s:|r%02d'}, --hhmm
 }
+
+for _, x in pairs(E.TimeFormats) do
+	x[3] = gsub(x[1], 's$', '') -- 1 without seconds
+	x[4] = gsub(x[2], '%%ss', '%%s') -- 2 without seconds
+end
 
 E.TimeIndicatorColors = {
 	[0] = '|cff00b3ff',

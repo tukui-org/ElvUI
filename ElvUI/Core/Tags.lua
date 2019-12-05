@@ -6,10 +6,13 @@ local translitMark = "!"
 
 --Lua functions
 local _G = _G
+local tonumber = tonumber
 local unpack, pairs, wipe, floor = unpack, pairs, wipe, floor
 local gmatch, gsub, format, select = gmatch, gsub, format, select
 local strfind, strmatch, strlower, utf8lower, utf8sub = strfind, strmatch, strlower, string.utf8lower, string.utf8sub
 --WoW API / Variables
+local CreateTextureMarkup = CreateTextureMarkup
+local UnitFactionGroup = UnitFactionGroup
 local GetCVarBool = GetCVarBool
 local GetGuildInfo = GetGuildInfo
 local GetInstanceInfo = GetInstanceInfo
@@ -227,6 +230,17 @@ ElvUF.Tags.Methods['name:abbrev'] = function(unit)
 	return name ~= nil and name or ''
 end
 
+ElvUF.Tags.Events['health:deficit-percent:nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+ElvUF.Tags.Methods['health:deficit-percent:nostatus'] = function(unit)
+	local min, max = E:UnitHealthValues(unit)
+	local deficit = (min / max) - 1
+	if deficit == 0 then
+		return ''
+	else
+		return E:GetFormattedText('PERCENT', deficit, -1)
+	end
+end
+
 for textFormat in pairs(E.GetFormattedTextStyles) do
 	local tagTextFormat = strlower(gsub(textFormat, '_', '-'))
 	ElvUF.Tags.Events[format('health:%s', tagTextFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
@@ -297,7 +311,7 @@ for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 
 		local deficit = max - cur
 
 		if (deficit > 0 and cur > 0) then
-			return _TAGS["health:percent-nostatus"](unit)
+			return _TAGS["health:deficit-percent:nostatus"](unit)
 		else
 			return _TAGS[format("name:%s", textFormat)](unit)
 		end
@@ -1031,6 +1045,8 @@ E.TagInfo = {
 	['threatcolor'] = { category = 'Colors', description = "Changes color of health, depending on the unit's threat situation" },
 	['classpowercolor'] = { category = 'Colors', description = "Changes the color of the special power based upon its type" },
 	['classificationcolor'] = { category = 'Colors', description = "Changes color of health, depending on the unit's classification" },
+	['manacolor'] = { category = 'Colors', description = "Changes the text color to a light-blue mana color" },
+	['difficulty'] = { category = 'Colors', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 	--Classification
 	['classification'] = { category = 'Classification', description = "Displays the unit's classification (e.g. 'ELITE' and 'RARE')" },
 	['shortclassification'] = { category = 'Classification', description = "Displays the unit's classification in short form (e.g. '+' for ELITE and 'R' for RARE)" },
@@ -1172,6 +1188,16 @@ E.TagInfo = {
 	['realm:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters" },
 	['realm:dash'] = { category = 'Realm', description = "Displays the server name with a dash in front (e.g. -Realm)" },
 	['realm:dash:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters and a dash in front" },
+	--Speed
+	['speed:percent'] = { category = 'Speed', description = "" },
+	['speed:percent-raw'] = { category = 'Speed', description = "" },
+	['speed:yardspersec'] = { category = 'Speed', description = "" },
+	['speed:percent'] = { category = 'Speed', description = "" },
+	['speed:percent-moving'] = { category = 'Speed', description = "" },
+	['speed:yardspersec-moving'] = { category = 'Speed', description = "" },
+	['speed:percent-moving-raw'] = { category = 'Speed', description = "" },
+	['speed:yardspersec-moving-raw'] = { category = 'Speed', description = "" },
+	['speed:yardspersec-raw'] = { category = 'Speed', description = "" },
 	--Status
 	['status'] = { category = 'Status', description = "Displays zzz, dead, ghost, offline" },
 	['status:icon'] = { category = 'Status', description = "Displays AFK/DND as an orange(afk) / red(dnd) icon" },
@@ -1202,12 +1228,18 @@ E.TagInfo = {
 	['smartclass'] = { category = 'Miscellanous', description = "Displays the player's class or creature's type" },
 	['class'] = { category = 'Miscellanous', description = "Displays the class of the unit, if that unit is a player" },
 	['specialization'] = { category = 'Miscellanous', description = "Displays your current specialization as text" },
-	['difficulty'] = { category = 'Miscellanous', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 	['faction'] = { category = 'Miscellanous', description = "Displays 'Aliance' or 'Horde'" },
 	['faction:icon'] = { category = 'Miscellanous', description = "Displays 'Alliance' or 'Horde' Texture" },
 	['plus'] = { category = 'Miscellanous', description = "Displays the character '+' if the unit is an elite or rare-elite" },
 	['arenaspec'] = { category = 'Miscellanous', description = "Displays the area spec of an unit" },
 	['arena:number'] = { category = 'Miscellanous', description = "Displays the arena number 1-5" },
+	['pvptimer'] = { category = 'Miscellanous', description = "Displays remaining time on pvp-flagged status" },
+	['race'] = { category = 'Miscellanous', description = "Displays the race" },
+	--Range
+	['nearbyplayers:8'] = { category = 'Range', description = "Displays all players within 8 yards" },
+	['nearbyplayers:10'] = { category = 'Range', description = "Displays all players within 10 yards" },
+	['nearbyplayers:30'] = { category = 'Range', description = "Displays all players within 30 yards" },
+	['distance'] = { category = 'Range', description = "Displays the distance" },
 }
 
 function E:AddTagInfo(tagName, category, description, order)

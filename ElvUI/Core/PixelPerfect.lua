@@ -4,6 +4,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local min, max, abs, floor = min, max, abs, floor
 --WoW API / Variables
 local UIParent = UIParent
+local GetPhysicalScreenSize = GetPhysicalScreenSize
 
 function E:IsEyefinity(width, height)
 	if E.global.general.eyefinity and width >= 3840 then
@@ -69,16 +70,21 @@ function E:PixelBestSize()
 end
 
 function E:PixelScaleChanged(event, skip)
+	if event == 'UI_SCALE_CHANGED' then
+		E.screenwidth, E.screenheight = GetPhysicalScreenSize()
+	end
+
+	local lastScale = E.mult
+
 	E:UIScale(true) -- repopulate variables
 	E:UIScale() -- setup the scale
 
 	E:UpdateConfigSize(true) -- reposition config
 
-	if skip or E.global.general.ignoreScalePopup then return end
-
+	if skip then return end
 	if event == 'UISCALE_CHANGE' then
 		E:Delay(0.5, E.StaticPopup_Show, E, event)
-	else
+	elseif lastScale ~= E.mult then
 		E:StaticPopup_Show('UISCALE_CHANGE')
 	end
 end

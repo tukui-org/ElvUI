@@ -11,6 +11,7 @@ local C_PvP_GetMatchPVPStatColumn = C_PvP.GetMatchPVPStatColumn
 local GetBattlefieldScore = GetBattlefieldScore
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldStatData = GetBattlefieldStatData
+local BATTLEGROUND = BATTLEGROUND
 
 local displayString, lastPanel = ''
 local dataLayout = {
@@ -42,7 +43,10 @@ function DT:UPDATE_BATTLEFIELD_SCORE()
 		local name = GetBattlefieldScore(i)
 		if name == E.myname then
 			local val = select(pointIndex, GetBattlefieldScore(i))
-			self.text:SetFormattedText(displayString, dataStrings[pointIndex], E:ShortValue(val))
+			if val then
+				self.text:SetFormattedText(displayString, dataStrings[pointIndex], E:ShortValue(val))
+			end
+
 			break
 		end
 	end
@@ -51,18 +55,26 @@ end
 function DT:BattlegroundStats()
 	DT:SetupTooltip(self)
 
+	local firstLine
 	local classColor = E:ClassColor(E.myclass)
 	local pvpStatIDs = C_PvP_GetMatchPVPStatIDs()
 	if pvpStatIDs then
 		for index = 1, GetNumBattlefieldScores() do
 			local name = GetBattlefieldScore(index)
 			if name and name == E.myname then
-				DT.tooltip:AddDoubleLine(L["Stats For:"], name, 1,1,1, classColor.r, classColor.g, classColor.b)
-				DT.tooltip:AddLine(" ")
+				DT.tooltip:AddDoubleLine(BATTLEGROUND, E.MapInfo.name, 1,1,1, classColor.r, classColor.g, classColor.b)
 
 				-- Add extra statistics to watch based on what BG you are in.
 				for x = 1, #pvpStatIDs do
-					DT.tooltip:AddDoubleLine(C_PvP_GetMatchPVPStatColumn(pvpStatIDs[x]), GetBattlefieldStatData(index, x), 1,1,1)
+					local stat = C_PvP_GetMatchPVPStatColumn(pvpStatIDs[x])
+					if stat and stat.name then
+						if not firstLine then
+							DT.tooltip:AddLine(" ")
+							firstLine = true
+						end
+
+						DT.tooltip:AddDoubleLine(stat.name, GetBattlefieldStatData(index, x), 1,1,1)
+					end
 				end
 
 				break

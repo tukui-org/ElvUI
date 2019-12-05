@@ -66,6 +66,7 @@ E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar('gx
 E.screenwidth, E.screenheight = GetPhysicalScreenSize()
 E.isMacClient = IsMacClient()
 E.NewSign = '|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:14:14|t' -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
+E.TexturePath = 'Interface\\AddOns\\ElvUI\\Media\\Textures\\' -- for plugins?
 E.InfoColor = '|cfffe7b2c'
 
 -- oUF Defines
@@ -994,7 +995,6 @@ function E:UpdateMisc(skipCallback)
 	Threat:UpdatePosition()
 
 	Totems:PositionAndSize()
-	Totems:ToggleEnable()
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')

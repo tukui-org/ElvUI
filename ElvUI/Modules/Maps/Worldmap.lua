@@ -6,11 +6,9 @@ local _G = _G
 local strfind = strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local SetCVar = SetCVar
 local SetUIPanelAttribute = SetUIPanelAttribute
 local MOUSE_LABEL = MOUSE_LABEL:gsub("|T.-|t","")
 local PLAYER = PLAYER
-local GetCVarBool = GetCVarBool
 local hooksecurefunc = hooksecurefunc
 local IsPlayerMoving = IsPlayerMoving
 local PlayerMovementFrameFader = PlayerMovementFrameFader

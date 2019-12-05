@@ -6,7 +6,7 @@ local _G = _G
 local unpack = unpack
 local select = select
 local pairs = pairs
-local rad = math.rad
+local rad = rad
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo

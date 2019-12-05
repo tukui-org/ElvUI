@@ -3,7 +3,7 @@ local UF = E:GetModule('UnitFrames');
 
 --Lua functions
 local unpack, tonumber = unpack, tonumber
-local abs, min = abs, math.min
+local abs, min = abs, min
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitSpellHaste = UnitSpellHaste
@@ -122,7 +122,7 @@ function UF:Configure_Castbar(frame)
 	castbar.timeToHold = db.castbar.timeToHold
 
 	--Latency
-	if db.castbar.latency then
+	if frame.unit == 'player' and db.castbar.latency then
 		castbar.SafeZone = castbar.LatencyTexture
 		castbar.LatencyTexture:Show()
 	else

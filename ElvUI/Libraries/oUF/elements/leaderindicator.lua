@@ -39,6 +39,10 @@ local function Update(self, event)
 	end
 
 	local isLeader = UnitLeadsAnyGroup(unit)
+	if IsInInstance() then
+		isLeader = UnitIsGroupLeader(unit)
+	end
+
 	if(isLeader) then
 		element:Show()
 	else

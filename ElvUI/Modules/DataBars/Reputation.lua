@@ -34,7 +34,7 @@ function mod:UpdateReputation(event)
 		else
 			E:UnregisterObjectForVehicleLock(bar)
 		end
-		
+
 		local ID, isFriend, friendText, standingLabel
 		local isCapped
 
@@ -65,8 +65,8 @@ function mod:UpdateReputation(event)
 		local textFormat = self.db.reputation.textFormat
 
 		for i=1, numFactions do
-			local factionName, _, standingID,_,_,_,_,_,_,_,_,_,_, factionID = GetFactionInfo(i)
-			local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID)
+			local factionName, _, standingID,_,_,_,_,_,_,_,_,_,_, FactionID = GetFactionInfo(i)
+			local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(FactionID)
 			if factionName == name then
 				if friendID ~= nil then
 					isFriend = true

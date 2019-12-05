@@ -70,16 +70,8 @@ E.Options.args.general = {
 						E:StaticPopup_Show("UISCALE_CHANGE")
 					end
 				},
-				ignoreScalePopup = {
-					order = 4,
-					type = 'toggle',
-					name = L["Ignore UI Scale Popup"],
-					desc = L["This will prevent the UI Scale Popup from being shown when changing the game window size."],
-					get = function(info) return E.global.general.ignoreScalePopup end,
-					set = function(info, value) E.global.general.ignoreScalePopup = value end
-				},
 				pixelPerfect = {
-					order = 5,
+					order = 4,
 					name = L["Thin Border Theme"],
 					desc = L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."],
 					type = 'toggle',
@@ -87,7 +79,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				eyefinity = {
-					order = 6,
+					order = 5,
 					name = L["Multi-Monitor Support"],
 					desc = L["Attempt to support eyefinity/nvidia surround."],
 					type = "toggle",
@@ -95,34 +87,34 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general.eyefinity = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				taintLog = {
-					order = 7,
+					order = 6,
 					type = "toggle",
 					name = L["Log Taints"],
 					desc = L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."],
 				},
 				bottomPanel = {
-					order = 8,
+					order = 7,
 					type = 'toggle',
 					name = L["Bottom Panel"],
 					desc = L["Display a panel across the bottom of the screen. This is for cosmetic only."],
 					set = function(info, value) E.db.general.bottomPanel = value; Layout:BottomPanelVisibility() end
 				},
 				topPanel = {
-					order = 9,
+					order = 8,
 					type = 'toggle',
 					name = L["Top Panel"],
 					desc = L["Display a panel across the top of the screen. This is for cosmetic only."],
 					set = function(info, value) E.db.general.topPanel = value; Layout:TopPanelVisibility() end
 				},
 				afk = {
-					order = 10,
+					order = 9,
 					type = 'toggle',
 					name = L["AFK Mode"],
 					desc = L["When you go AFK display the AFK screen."],
 					set = function(info, value) E.db.general.afk = value; AFK:Toggle() end
 				},
 				decimalLength = {
-					order = 11,
+					order = 10,
 					type = "range",
 					name = L["Decimal Length"],
 					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
@@ -134,7 +126,7 @@ E.Options.args.general = {
 					end,
 				},
 				numberPrefixStyle = {
-					order = 12,
+					order = 11,
 					type = "select",
 					name = L["Unit Prefix Style"],
 					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
@@ -152,7 +144,7 @@ E.Options.args.general = {
 					},
 				},
 				smoothingAmount = {
-					order = 13,
+					order = 12,
 					type = "range",
 					isPercent = true,
 					name = L["Smoothing Amount"],
@@ -164,7 +156,7 @@ E.Options.args.general = {
 					end,
 				},
 				locale = {
-					order = 14,
+					order = 13,
 					type = "select",
 					name = L["LANGUAGE"],
 					get = function(info) return E.global.general.locale end,
@@ -182,6 +174,7 @@ E.Options.args.general = {
 						["zhCN"] = "简体中文",
 						["zhTW"] = "正體中文",
 						["koKR"] = "한국어",
+						["itIT"] = "Italiano",
 					},
 				}
 			},
@@ -402,24 +395,28 @@ E.Options.args.general = {
 					order = 2,
 					type = "toggle",
 					name = L["Enable"],
-					set = function(info, value) E.db.general.totems[info[#info]] = value; Totems:ToggleEnable() end,
+					get = function() return E.private.general.totemBar end,
+					set = function(_, value) E.private.general.totemBar = value; E:StaticPopup_Show("PRIVATE_RL") end,
 				},
 				size = {
 					order = 3,
 					type = 'range',
 					name = L["Button Size"],
 					min = 24, max = 60, step = 1,
+					disabled = function() return not E.private.general.totemBar end,
 				},
 				spacing = {
 					order = 4,
 					type = 'range',
 					name = L["Button Spacing"],
 					min = 1, max = 10, step = 1,
+					disabled = function() return not E.private.general.totemBar end,
 				},
 				sortDirection = {
 					order = 5,
 					type = 'select',
 					name = L["Sort Direction"],
+					disabled = function() return not E.private.general.totemBar end,
 					values = {
 						['ASCENDING'] = L["Ascending"],
 						['DESCENDING'] = L["Descending"],
@@ -429,6 +426,7 @@ E.Options.args.general = {
 					order = 6,
 					type = 'select',
 					name = L["Bar Direction"],
+					disabled = function() return not E.private.general.totemBar end,
 					values = {
 						['VERTICAL'] = L["Vertical"],
 						['HORIZONTAL'] = L["Horizontal"],

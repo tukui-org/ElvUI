@@ -4,7 +4,7 @@ local AB = E:GetModule('ActionBars')
 --Lua functions
 local _G = _G
 local pairs, select = pairs, select
-local ceil, unpack = math.ceil, unpack
+local ceil, unpack = ceil, unpack
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 --WoW API / Variables
 local CanExitVehicle = CanExitVehicle
@@ -640,6 +640,11 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if shine then
 		shine:SetAllPoints()
+	end
+
+	if button.SpellHighlightTexture then
+		button.SpellHighlightTexture:SetColorTexture(1, 1, 0, 0.45)
+		button.SpellHighlightTexture:SetAllPoints()
 	end
 
 	if self.db.hotkeytext or self.db.useRangeColorText then

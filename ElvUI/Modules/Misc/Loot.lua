@@ -28,8 +28,8 @@ local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
 
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local LOOT = LOOT
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
 
 local coinTextureIDs = {

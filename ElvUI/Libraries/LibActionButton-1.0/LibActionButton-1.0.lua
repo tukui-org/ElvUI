@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 18 -- the real minor version is 74
+local MINOR_VERSION = 19 -- the real minor version is 74
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -167,6 +167,8 @@ function lib:CreateButton(id, name, header, config)
 	local button = setmetatable(CreateFrame("CheckButton", name, header, "SecureActionButtonTemplate, ActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
 	button:RegisterForClicks("AnyUp")
+	button.cooldown:SetFrameStrata(button:GetFrameStrata())
+	button.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
 
 	-- Frame Scripts
 	button:SetScript("OnEnter", Generic.OnEnter)
@@ -1272,7 +1274,8 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeMo
 		end
 		cooldown:SetParent(parent)
 		cooldown:SetAllPoints(parent)
-		cooldown:SetFrameStrata("TOOLTIP")
+		cooldown:SetFrameStrata(parent:GetFrameStrata())
+		cooldown:SetFrameLevel(parent:GetFrameLevel() + 1)
 		cooldown:Show()
 		parent.chargeCooldown = cooldown
 		cooldown.parent = parent
@@ -1451,6 +1454,26 @@ end)
 
 hooksecurefunc("ClearNewActionHighlight", function(action, preventIdenticalActionsFromClearing)
 	ClearNewActionHighlight(action, preventIdenticalActionsFromClearing, nil)
+end)
+
+local function UpdateSpellHighlight(self, shown)
+	if ( shown ) then
+		self.SpellHighlightTexture:Show();
+		self.SpellHighlightAnim:Play();
+	else
+		self.SpellHighlightTexture:Hide();
+		self.SpellHighlightAnim:Stop();
+	end
+end
+
+hooksecurefunc("SharedActionButton_RefreshSpellHighlight", function(self)
+	if ( self.SpellHighlightTexture and self.SpellHighlightAnim ) then
+		for button in next, ButtonRegistry do
+			if button._state_type == "action" then
+				UpdateSpellHighlight(button, GetOnBarHighlightMark(button._state_action))
+			end
+		end
+	end
 end)
 
 function UpdateNewAction(self)

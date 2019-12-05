@@ -1,18 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+--Lua functions
 local _G = _G
 local tostring = tostring
 local format = format
 local unpack = unpack
-local wipe = wipe
-
+--WoW API / Variables
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
 
-local function OnClick(self)
+function UF:AuraBars_OnClick()
 	local mod = E.db.unitframe.auraBlacklistModifier
 	if mod == "NONE" or not ((mod == "SHIFT" and IsShiftKeyDown()) or (mod == "ALT" and IsAltKeyDown()) or (mod == "CTRL" and IsControlKeyDown())) then return end
 	local auraName = self.name
@@ -26,7 +26,7 @@ end
 
 function UF:Construct_AuraBars(statusBar)
 	statusBar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
-	statusBar:SetScript('OnMouseDown', OnClick)
+	statusBar:SetScript('OnMouseDown', UF.AuraBars_OnClick)
 	statusBar:SetPoint("LEFT")
 	statusBar:SetPoint("RIGHT")
 
@@ -197,6 +197,10 @@ function UF:PostUpdateBar_AuraBars(unit, statusBar, index, position, duration, e
 
 	local colors = E.global.unitframe.AuraBarColors[spellID] or E.global.unitframe.AuraBarColors[tostring(spellID)] or E.global.unitframe.AuraBarColors[spellName]
 
+	if E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName]) and not colors and (spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)) then
+		colors = E.db.unitframe.colors.auraBarTurtleColor
+	end
+
 	if not colors then
 		if UF.db.colors.auraBarByType and statusBar.filter == 'HARMFUL' then
 			if (not debuffType or (debuffType == '' or debuffType == 'none')) then
@@ -208,13 +212,16 @@ function UF:PostUpdateBar_AuraBars(unit, statusBar, index, position, duration, e
 			colors = UF.db.colors.auraBarDebuff
 		else
 			colors = UF.db.colors.auraBarBuff
+			if E:CheckClassColor(colors.r, colors.g, colors.b) then
+				local classColor = E:ClassColor(E.myclass, true)
+				colors.r = classColor.r
+				colors.g = classColor.g
+				colors.b = classColor.b
+			end
 		end
 	end
 
 	statusBar.custom_backdrop = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop
-	if E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName]) and not colors and (spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)) then
-		colors = E.db.unitframe.colors.auraBarTurtleColor
-	end
 
 	if statusBar.bg then
 		if (UF.db.colors.transparentAurabars and not statusBar.isTransparent) or (statusBar.isTransparent and (not UF.db.colors.transparentAurabars or statusBar.invertColors ~= UF.db.colors.invertAurabars)) then

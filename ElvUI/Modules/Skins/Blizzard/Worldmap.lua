@@ -12,20 +12,6 @@ local function WorldMapBountyBoard(Frame)
 	S:HandleCloseButton(Frame.TutorialBox.CloseButton)
 end
 
-local function SkinPartySyncPopups(frame)
-	if not frame then return end
-
-	local frameName = frame or frame:GetName()
-
-	frameName:StripTextures()
-	frameName:CreateBackdrop("Transparent")
-
-	local Confirm = frameName.ButtonContainer.Confirm
-	local Decline = frameName.ButtonContainer.Decline
-	S:HandleButton(Confirm)
-	S:HandleButton(Decline)
-end
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.worldmap ~= true then return end
 
@@ -120,32 +106,52 @@ local function LoadSkin()
 	--WorldMapActionButtonTemplate(WorldMapFrame.overlayFrames[4]) -- ActionButtons
 	--WorldMapZoneTimerTemplate(WorldMapFrame.overlayFrames[5]) -- Timer?
 
-	-- 8.2.5 Party Sync
+	-- 8.2.5 Party Sync | Credits Aurora/Shestak
 	QuestMapFrame.QuestSessionManagement:StripTextures()
-	-- TODO: Deal with the Button
-	--S:HandleButton(QuestMapFrame.QuestSessionManagement.ExecuteSessionCommand, nil, nil, nil, true)
 
-	SkinPartySyncPopups(_G.QuestSessionManager.CheckStartDialog)
-	SkinPartySyncPopups(_G.QuestSessionManager.StartDialog)
+	local ExecuteSessionCommand = QuestMapFrame.QuestSessionManagement.ExecuteSessionCommand
+	ExecuteSessionCommand:SetTemplate()
+	ExecuteSessionCommand:StyleButton()
 
-	local minimizeButton = _G.QuestSessionManager.StartDialog.MinimizeButton
-	minimizeButton:StripTextures()
-	minimizeButton:Size(16, 16)
+	local icon = ExecuteSessionCommand:CreateTexture(nil, "ARTWORK")
+	icon:SetPoint("TOPLEFT", 0, 0)
+	icon:SetPoint("BOTTOMRIGHT", 0, 0)
+	ExecuteSessionCommand.normalIcon = icon
 
-	minimizeButton.tex = minimizeButton:CreateTexture(nil, "OVERLAY")
-	minimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
-	minimizeButton.tex:SetInside()
-	minimizeButton:SetHighlightTexture("Interface\\Buttons\\UI-PlusButton-Hilight", "ADD")
+	local sessionCommandToButtonAtlas = {
+		[_G.Enum.QuestSessionCommand.Start] = "QuestSharing-DialogIcon",
+		[_G.Enum.QuestSessionCommand.Stop] = "QuestSharing-Stop-DialogIcon"
+	}
 
-	SkinPartySyncPopups(_G.QuestSessionManager.CheckLeavePartyDialog)
-	SkinPartySyncPopups(_G.QuestSessionManager.CheckStopDialog)
-	SkinPartySyncPopups(_G.QuestSessionManager.CheckConvertToRaidDialog)
-	SkinPartySyncPopups(_G.QuestSessionManager.ConfirmJoinGroupRequestDialog)
-	SkinPartySyncPopups(_G.QuestSessionManager.ConfirmInviteToGroupDialog)
-	SkinPartySyncPopups(_G.QuestSessionManager.ConfirmInviteToGroupReceivedDialog)
-	SkinPartySyncPopups(_G.QuestSessionManager.ConfirmRequestToJoinGroupDialog)
-	SkinPartySyncPopups(_G.QuestSessionManager.ConfirmBNJoinGroupRequestDialog)
-	SkinPartySyncPopups(_G.QuestSessionManager.ConfirmInviteTravelPassConfirmationDialog)
+	hooksecurefunc(QuestMapFrame.QuestSessionManagement, "UpdateExecuteCommandAtlases", function(self, command)
+		self.ExecuteSessionCommand:SetNormalTexture("")
+		self.ExecuteSessionCommand:SetPushedTexture("")
+		self.ExecuteSessionCommand:SetDisabledTexture("")
+
+		local atlas = sessionCommandToButtonAtlas[command]
+		if atlas then
+			self.ExecuteSessionCommand.normalIcon:SetAtlas(atlas)
+		end
+	end)
+
+	hooksecurefunc(_G.QuestSessionManager, "NotifyDialogShow", function(_, dialog)
+		if not dialog.isSkinned then
+			dialog:StripTextures()
+			dialog:CreateBackdrop("Transparent")
+			S:HandleButton(dialog.ButtonContainer.Confirm)
+			S:HandleButton(dialog.ButtonContainer.Decline)
+			if dialog.MinimizeButton then
+				dialog.MinimizeButton:StripTextures()
+				dialog.MinimizeButton:Size(16, 16)
+
+				dialog.MinimizeButton.tex = dialog.MinimizeButton:CreateTexture(nil, "OVERLAY")
+				dialog.MinimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
+				dialog.MinimizeButton.tex:SetInside()
+				dialog.MinimizeButton:SetHighlightTexture("Interface\\Buttons\\UI-PlusButton-Hilight", "ADD")
+			end
+			dialog.isSkinned = true
+		end
+	end)
 end
 
 S:AddCallback("SkinWorldMap", LoadSkin)

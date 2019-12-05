@@ -17,8 +17,6 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 
 ## Options
 
-.frequentUpdates                  - Indicates whether to use UNIT_HEALTH_FREQUENT instead of UNIT_HEALTH to update the
-                                    bar (boolean)
 .smoothGradient                   - 9 color values to be used with the .colorSmooth option (table)
 .considerSelectionInCombatHostile - Indicates whether selection should be considered hostile while the unit is in
                                     combat with the player (boolean)
@@ -68,7 +66,6 @@ The following options are listed by priority. The first check that returns true 
     Background:SetTexture(1, 1, 1, .5)
 
     -- Options
-    Health.frequentUpdates = true
     Health.colorTapping = true
     Health.colorDisconnected = true
     Health.colorClass = true

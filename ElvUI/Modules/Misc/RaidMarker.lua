@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local M = E:GetModule('Misc')
 
 --Lua functions
-local sin, cos, rad = math.sin, math.cos, math.rad
+local sin, cos, rad = sin, cos, rad
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetNumGroupMembers = GetNumGroupMembers
@@ -18,7 +18,7 @@ local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 local UIErrorsFrame = UIErrorsFrame
 -- GLOBALS: RaidMark_HotkeyPressed
 
-local ButtonIsDown;
+local ButtonIsDown
 
 function M:RaidMarkCanMark()
 	if not self.RaidMarkFrame then return false; end

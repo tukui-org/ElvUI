@@ -1,9 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Lua functions
---WoW API / Variables
-
 function UF:Construct_ReadyCheckIcon(frame)
 	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY", nil, 7)
 	tex:Size(12)

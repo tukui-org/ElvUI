@@ -6,7 +6,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 --Lua functions
 local _G = _G
-local max = math.max
+local max = max
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown

@@ -7,20 +7,24 @@ local _G = _G
 local tonumber, type, pairs, select = tonumber, type, pairs, select
 local lower, split, format = strlower, strsplit, format
 --WoW API / Variables
-local EnableAddOn, DisableAllAddOns = EnableAddOn, DisableAllAddOns
-local SetCVar = SetCVar
-local ReloadUI = ReloadUI
-local GuildControlGetNumRanks = GuildControlGetNumRanks
-local GuildControlGetRankName = GuildControlGetRankName
-local GetNumGuildMembers, GetGuildRosterInfo = GetNumGuildMembers, GetGuildRosterInfo
-local GetGuildRosterLastOnline = GetGuildRosterLastOnline
-local GuildUninvite = GuildUninvite
-local SendChatMessage = SendChatMessage
+local hooksecurefunc = hooksecurefunc
 local debugprofilestop = debugprofilestop
-local UpdateAddOnCPUUsage, GetAddOnCPUUsage = UpdateAddOnCPUUsage, GetAddOnCPUUsage
-local ResetCPUUsage = ResetCPUUsage
+local DisableAllAddOns = DisableAllAddOns
+local EnableAddOn = EnableAddOn
+local GetAddOnCPUUsage = GetAddOnCPUUsage
 local GetAddOnInfo = GetAddOnInfo
 local GetCVarBool = GetCVarBool
+local GetGuildRosterInfo = GetGuildRosterInfo
+local GetGuildRosterLastOnline = GetGuildRosterLastOnline
+local GetNumGuildMembers = GetNumGuildMembers
+local GuildControlGetNumRanks = GuildControlGetNumRanks
+local GuildControlGetRankName = GuildControlGetRankName
+local GuildUninvite = GuildUninvite
+local ReloadUI = ReloadUI
+local ResetCPUUsage = ResetCPUUsage
+local SendChatMessage = SendChatMessage
+local SetCVar = SetCVar
+local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 -- GLOBALS: ElvUIGrid
 
 function E:Grid(msg)
@@ -222,19 +226,40 @@ function E:EnableBlizzardAddOns()
 	end
 end
 
+do -- Blizzard Commands
+	local SlashCmdList = _G.SlashCmdList
+
+	-- DeveloperConsole (without starting with `-console`)
+	if not SlashCmdList.DEVCON then
+		local DevConsole = _G.DeveloperConsole
+		if DevConsole then
+			_G.SLASH_DEVCON1 = '/devcon'
+			SlashCmdList.DEVCON = function()
+				DevConsole:Toggle()
+			end
+		end
+	end
+
+	-- ReloadUI: /rl, /reloadui, /reload  NOTE: /reload is from SLASH_RELOAD
+	if not SlashCmdList.RELOADUI then
+		_G.SLASH_RELOADUI1 = '/rl'
+		_G.SLASH_RELOADUI2 = '/reloadui'
+		SlashCmdList.RELOADUI = _G.ReloadUI
+	end
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand('in', 'DelayScriptCall')
 	self:RegisterChatCommand('ec', 'ToggleOptionsUI')
 	self:RegisterChatCommand('elvui', 'ToggleOptionsUI')
 	self:RegisterChatCommand('cpuimpact', 'GetCPUImpact')
-
 	self:RegisterChatCommand('cpuusage', 'GetTopCPUFunc')
-	-- args: module, showall, delay, minCalls
-	-- Example1: /cpuusage all
-	-- Example2: /cpuusage Bags true
-	-- Example3: /cpuusage UnitFrames nil 50 25
-	-- Note: showall, delay, and minCalls will default if not set
-	-- arg1 can be 'all' this will scan all registered modules!
+	-- cpuusage args: module, showall, delay, minCalls
+	--- Example1: /cpuusage all
+	--- Example2: /cpuusage Bags true
+	--- Example3: /cpuusage UnitFrames nil 50 25
+	---- Note: showall, delay, and minCalls will default if not set
+	---- arg1 can be 'all' this will scan all registered modules!
 
 	self:RegisterChatCommand('bgstats', 'BGStats')
 	self:RegisterChatCommand('hellokitty', 'HelloKittyToggle')

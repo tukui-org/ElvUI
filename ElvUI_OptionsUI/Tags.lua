@@ -42,32 +42,34 @@ E.Options.args.tagGroup = {
 	},
 }
 
+local getTag = function(info) return format('[%s]', info[#info]) end
 
-for Tag in next, E.oUF.Tags.Methods do
-	if not E.TagInfo[Tag] then
-		E.TagInfo[Tag] = { category = 'Miscellanous', description = "" }
-		--E:Print("['"..Tag.."'] = { category = 'Miscellanous', description = '' }")
-	end
+for _, Table in pairs({'Events', 'Methods'}) do
+	for Tag in next, E.oUF.Tags[Table] do
+		if not E.TagInfo[Tag] then
+			E:AddTagInfo(Tag, 'Miscellanous')
+			--E:Print("['"..Tag.."'] = { category = 'Miscellanous', description = '' }")
+		end
 
-	if not E.Options.args.tagGroup.args[E.TagInfo[Tag].category] then
-		E.Options.args.tagGroup.args[E.TagInfo[Tag].category] = {
-			type = "group",
-			name = E.TagInfo[Tag].category,
-			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = E.InfoColor..E.TagInfo[Tag].category,
+		if not E.Options.args.tagGroup.args[E.TagInfo[Tag].category] then
+			E.Options.args.tagGroup.args[E.TagInfo[Tag].category] = {
+				type = "group",
+				name = E.TagInfo[Tag].category,
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = E.InfoColor..E.TagInfo[Tag].category,
+					}
 				}
 			}
-		}
-	end
+		end
 
-	E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag] = {
-		type = "input",
-		name = E.TagInfo[Tag].description,
-		order = E.TagInfo[Tag].order or nil,
-		width = 'full',
-		get = function() return format('[%s]', Tag) end,
-	}
+		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag] = E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag] or {}
+		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].type = "input"
+		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].name = E.TagInfo[Tag].description
+		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].order = E.TagInfo[Tag].order or nil
+		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].width = 'full'
+		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].get = getTag
+	end
 end

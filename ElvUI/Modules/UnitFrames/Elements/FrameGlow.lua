@@ -1,8 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-local _G = _G
 --Lua functions
+local _G = _G
 local pairs = pairs
 local select = select
 local assert = assert

@@ -59,7 +59,6 @@ E.Options.args.maps = {
 							get = function(info) return E.global.general.fadeMapWhenMoving end,
 							set = function(info, value)
 								E.global.general.fadeMapWhenMoving = value;
-								SetCVar("mapFade", value and 1 or 0)
 							end,
 						},
 						mapAlphaWhenMoving = {

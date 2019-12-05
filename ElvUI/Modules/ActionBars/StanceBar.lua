@@ -3,8 +3,8 @@ local AB = E:GetModule('ActionBars')
 
 --Lua functions
 local _G = _G
+local ceil = ceil
 local unpack = unpack
-local ceil = math.ceil
 local format, strfind = format, strfind
 --WoW API / Variables
 local CooldownFrame_Set = CooldownFrame_Set
@@ -42,6 +42,7 @@ end
 function AB:StyleShapeShift()
 	local numForms = GetNumShapeshiftForms()
 	local stance = GetShapeshiftForm()
+	local darkenInactive = self.db.stanceBar.style == 'darkenInactive'
 
 	for i = 1, NUM_STANCE_SLOTS do
 		local buttonName = "ElvUI_StanceBarButton"..i
@@ -53,7 +54,7 @@ function AB:StyleShapeShift()
 		if i <= numForms then
 			local texture, isActive, isCastable, spellID, _ = GetShapeshiftFormInfo(i)
 
-			if self.db.stanceBar.style == 'darkenInactive' then
+			if darkenInactive then
 				_, _, texture = GetSpellInfo(spellID)
 			end
 
@@ -71,15 +72,15 @@ function AB:StyleShapeShift()
 						button:SetChecked(true)
 					else
 						button.checked:SetColorTexture(1, 1, 1, 0.5)
-						button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive')
+						button:SetChecked(not darkenInactive)
 					end
 				else
 					if numForms == 1 or stance == 0 then
 						button:SetChecked(false)
 					else
-						button:SetChecked(self.db.stanceBar.style == 'darkenInactive')
+						button:SetChecked(darkenInactive)
 						button.checked:SetAlpha(1)
-						if self.db.stanceBar.style == 'darkenInactive' then
+						if darkenInactive then
 							button.checked:SetColorTexture(0, 0, 0, 0.5)
 						else
 							button.checked:SetColorTexture(1, 1, 1, 0.5)
@@ -267,6 +268,14 @@ function AB:PositionAndSizeBarShapeShift()
 
 		if not button.FlyoutUpdateFunc then
 			self:StyleButton(button, nil, useMasque and true or nil, true)
+
+			if button.checked then
+				if self.db.stanceBar.style == 'darkenInactive' then
+					button.checked:SetBlendMode('BLEND')
+				else
+					button.checked:SetBlendMode('ADD')
+				end
+			end
 		end
 	end
 

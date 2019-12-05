@@ -1,6 +1,6 @@
--- English localization file for enUS and enGB.
+-- Italian localization file for enUS and enGB.
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local L = E.Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
+local L = E.Libs.ACL:NewLocale("ElvUI", "itIT")
 
 L[" |cff00ff00bound to |r"] = true
 L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = true

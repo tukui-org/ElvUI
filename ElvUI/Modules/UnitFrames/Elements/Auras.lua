@@ -4,8 +4,9 @@ local LSM = E.Libs.LSM
 
 --Lua functions
 local _G = _G
-local unpack, strfind, format, strsplit, sort, ceil = unpack, strfind, format, strsplit, sort, ceil
-local huge = math.huge
+local sort, ceil, huge = sort, ceil, math.huge
+local select, unpack, format = select, unpack, format
+local strfind, strsplit, strmatch = strfind, strsplit, strmatch
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
@@ -141,6 +142,7 @@ function UF:Configure_Auras(frame, auraType)
 
 	local rows = auras.db.numrows
 	auras.forceShow = frame.forceShowAuras
+	auras.spacing = auras.db.spacing
 	auras.num = auras.db.perrow * rows
 	auras.size = auras.db.sizeOverride ~= 0 and auras.db.sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
 	auras.disableMouse = auras.db.clickThrough

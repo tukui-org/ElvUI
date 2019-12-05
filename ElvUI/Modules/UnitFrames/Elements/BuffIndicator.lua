@@ -39,6 +39,8 @@ end
 
 function UF:BuffIndicator_PostCreateIcon(button)
 	button.cd.CooldownOverride = 'unitframe'
+	button.cd.skipScale = true
+
 	E:RegisterCooldown(button.cd)
 
 	button.overlay:Hide()
@@ -47,6 +49,9 @@ function UF:BuffIndicator_PostCreateIcon(button)
 	button.icon.border:SetOutside(button.icon, 1, 1)
 	button.icon.border:SetTexture(E.media.blankTex)
 	button.icon.border:SetVertexColor(0, 0, 0)
+
+	UF:Configure_FontString(button.count)
+	UF:Update_FontString(button.count)
 end
 
 function UF:BuffIndicator_PostUpdateIcon(unit, button)
