@@ -268,11 +268,14 @@ end
 function M:QUEST_COMPLETE()
 	if not E.db.general.questRewardMostValueIcon then return end
 
+	local firstItem = _G.QuestInfoRewardsFrameQuestInfoItem1
+	if not firstItem then return end
+
 	local bestValue, bestItem = 0
 	local numQuests = GetNumQuestChoices()
 
 	if not self.QuestRewardGoldIconFrame then
-		local frame = CreateFrame("Frame", nil, _G.QuestInfoRewardsFrameQuestInfoItem1)
+		local frame = CreateFrame("Frame", nil, firstItem)
 		frame:SetFrameStrata("HIGH")
 		frame:Size(20)
 		frame.Icon = frame:CreateTexture(nil, "OVERLAY")
@@ -301,7 +304,7 @@ function M:QUEST_COMPLETE()
 
 	if bestItem then
 		local btn = _G['QuestInfoRewardsFrameQuestInfoItem'..bestItem]
-		if btn.type == 'choice' then
+		if btn and btn.type == 'choice' then
 			self.QuestRewardGoldIconFrame:ClearAllPoints()
 			self.QuestRewardGoldIconFrame:Point("TOPRIGHT", btn, "TOPRIGHT", -2, -2)
 			self.QuestRewardGoldIconFrame:Show()
