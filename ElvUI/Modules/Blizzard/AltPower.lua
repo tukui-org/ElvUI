@@ -55,6 +55,10 @@ function B:SetAltPowerBarText(text, name, value, max, percent)
 	end
 end
 
+function B:PositionAltPower()
+	self:Point('CENTER', _G.AltPowerBarHolder, 'CENTER')
+end
+
 function B:PositionAltPowerBar()
 	local holder = CreateFrame('Frame', 'AltPowerBarHolder', E.UIParent)
 	holder:Point('TOP', E.UIParent, 'TOP', 0, -18)
@@ -68,8 +72,7 @@ function B:PositionAltPowerBar()
 	--The Blizzard function FramePositionDelegate:UIParentManageFramePositions()
 	--calls :ClearAllPoints on PlayerPowerBarAlt under certain conditions.
 	--Doing ".ClearAllPoints = E.noop" causes error when you enter combat.
-	local function Position(bar) bar:Point('CENTER', _G.AltPowerBarHolder, 'CENTER') end
-	hooksecurefunc(_G.PlayerPowerBarAlt, "ClearAllPoints", Position)
+	hooksecurefunc(_G.PlayerPowerBarAlt, "ClearAllPoints", B.PositionAltPower)
 
 	E:CreateMover(holder, 'AltPowerBarMover', L["Alternative Power"], nil, nil, nil, nil, nil, 'general,alternativePowerGroup')
 end
@@ -116,25 +119,17 @@ function B:UpdateAltPowerBar()
 	_G.PlayerPowerBarAlt:UnregisterAllEvents()
 	_G.PlayerPowerBarAlt:Hide()
 
-	local unit = 'player'
-	local barType, min, _, _, _, _, _, _, _, _, powerName, powerTooltip = UnitAlternatePowerInfo(unit)
-	if not barType then
-		unit = 'target'
-		barType, min, _, _, _, _, _, _, _, _, powerName, powerTooltip = UnitAlternatePowerInfo(unit)
-	end
-
-	self.powerName = powerName
-	self.powerTooltip = powerTooltip
-
+	local barType, min, _, _, _, _, _, _, _, _, powerName, powerTooltip = UnitAlternatePowerInfo('player')
 	if barType then
-		local power = UnitPower(unit, _G.ALTERNATE_POWER_INDEX)
-		local maxPower = UnitPowerMax(unit, _G.ALTERNATE_POWER_INDEX) or 0
+		local power = UnitPower('player', _G.ALTERNATE_POWER_INDEX)
+		local maxPower = UnitPowerMax('player', _G.ALTERNATE_POWER_INDEX) or 0
 		local perc = (maxPower > 0 and floor(power / maxPower * 100)) or 0
 
-		self.powerValue = power
 		self.powerMaxValue = maxPower
+		self.powerName = powerName
 		self.powerPercent = perc
-		self.unit = unit
+		self.powerTooltip = powerTooltip
+		self.powerValue = power
 
 		self:Show()
 		self:SetMinMaxValues(min, maxPower)
@@ -150,9 +145,14 @@ function B:UpdateAltPowerBar()
 			self:SetStatusBarColor(r, g, b)
 		end
 
-		B:SetAltPowerBarText(self.text, powerName or "", power, maxPower, perc)
+		B:SetAltPowerBarText(self.text, powerName or "", power or 0, maxPower, perc)
 	else
-		self.unit = nil
+		self.powerMaxValue = nil
+		self.powerName = nil
+		self.powerPercent = nil
+		self.powerTooltip = nil
+		self.powerValue = nil
+
 		self:Hide()
 	end
 end
