@@ -180,7 +180,6 @@ function B:SkinAltPowerBar()
 	powerbar:RegisterEvent("UNIT_POWER_UPDATE")
 	powerbar:RegisterEvent("UNIT_POWER_BAR_SHOW")
 	powerbar:RegisterEvent("UNIT_POWER_BAR_HIDE")
-	powerbar:RegisterEvent("PLAYER_TARGET_CHANGED")
 	powerbar:RegisterEvent("PLAYER_ENTERING_WORLD")
 	powerbar:SetScript("OnEvent", B.UpdateAltPowerBar)
 end
