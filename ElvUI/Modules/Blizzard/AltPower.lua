@@ -134,6 +134,7 @@ function B:UpdateAltPowerBar()
 		self.powerValue = power
 		self.powerMaxValue = maxPower
 		self.powerPercent = perc
+		self.unit = unit
 
 		self:Show()
 		self:SetMinMaxValues(min, maxPower)
@@ -151,6 +152,7 @@ function B:UpdateAltPowerBar()
 
 		B:SetAltPowerBarText(self.text, powerName or "", power, maxPower, perc)
 	else
+		self.unit = nil
 		self:Hide()
 	end
 end
