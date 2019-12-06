@@ -149,17 +149,19 @@ function B:SkinAltPowerBar()
 		_G.PlayerPowerBarAlt:UnregisterAllEvents()
 		_G.PlayerPowerBarAlt:Hide()
 
-		local barType, min, _, _, _, _, _, _, _, _, powerName, powerTooltip = UnitAlternatePowerInfo('player')
+		local unit = 'player'
+		local barType, min, _, _, _, _, _, _, _, _, powerName, powerTooltip = UnitAlternatePowerInfo(unit)
 		if not barType then
-			barType, min, _, _, _, _, _, _, _, _, powerName, powerTooltip = UnitAlternatePowerInfo('target')
+			unit = 'target'
+			barType, min, _, _, _, _, _, _, _, _, powerName, powerTooltip = UnitAlternatePowerInfo(unit)
 		end
 
 		bar.powerName = powerName
 		bar.powerTooltip = powerTooltip
 
 		if barType then
-			local power = UnitPower("player", _G.ALTERNATE_POWER_INDEX)
-			local maxPower = UnitPowerMax("player", _G.ALTERNATE_POWER_INDEX) or 0
+			local power = UnitPower(unit, _G.ALTERNATE_POWER_INDEX)
+			local maxPower = UnitPowerMax(unit, _G.ALTERNATE_POWER_INDEX) or 0
 			local perc = (maxPower > 0 and floor(power / maxPower * 100)) or 0
 
 			bar.powerValue = power
