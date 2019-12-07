@@ -1,10 +1,14 @@
-### Version 11.27 [  ]
+### Version 11.27 [ ETA: soon ]
 
 **New Additions:**  
 
+
 **Bug Fixes:**  
+Made sure the Alternative Power is only shown when it's supposed to be shown.  
+Fixed a rare error which occured once on some quest in Blasted Lands.  
 
 **Misc. Changes:**  
+
 
 ___
 ### Version 11.26 [ December 5th 2019 ]
