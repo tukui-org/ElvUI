@@ -70,6 +70,9 @@ local function SkinOverviewInfo(self, _, index)
 
 		HandleButton(header.button)
 
+		header.descriptionBG:SetAlpha(0)
+		header.descriptionBGBottom:SetAlpha(0)
+		header.description:SetTextColor(1, 1, 1)
 		header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
 		header.button.title.SetTextColor = E.noop
 		header.button.expandedIcon:SetTextColor(1, 1, 1)
