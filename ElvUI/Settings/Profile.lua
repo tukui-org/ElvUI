@@ -1809,6 +1809,7 @@ P.unitframe.units.targettargettarget.debuffs.attachTo = 'FRAME'
 P.unitframe.units.targettargettarget.debuffs.priority = 'Blacklist,Personal,nonPersonal'
 P.unitframe.units.targettargettarget.infoPanel.height = 12
 
+P.unitframe.units.focus.aurabar.enable = false
 P.unitframe.units.focus.aurabar.detachedWidth = 190
 P.unitframe.units.focus.aurabar.maxBars = 3
 P.unitframe.units.focus.aurabar.maxDuration = 120
