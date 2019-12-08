@@ -845,7 +845,7 @@ function CH:PositionChat(override)
 		local id = chat:GetID()
 		local tab = _G[format("ChatFrame%sTab", i)]
 		local isDocked = chat.isDocked
-		tab.isDocked = chat.isDocked
+		tab.isDocked = isDocked
 		tab.owner = chat
 
 		if id > NUM_CHAT_WINDOWS then
@@ -1773,7 +1773,6 @@ function CH:SetupChat()
 	end
 
 	_G.GeneralDockManager:SetParent(_G.LeftChatPanel)
-	-- self:ScheduleRepeatingTimer('PositionChat', 1)
 	self:PositionChat(true)
 
 	if not self.HookSecured then
