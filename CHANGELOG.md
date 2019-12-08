@@ -8,7 +8,7 @@ Made sure the Alternative Power is only shown when it's supposed to be shown.
 Fixed a rare error which occured once on some quest in Blasted Lands.  
 
 **Misc. Changes:**  
-
+Changed the max. duration to 0 in the aura priority list.  
 
 ___
 ### Version 11.26 [ December 5th 2019 ]
