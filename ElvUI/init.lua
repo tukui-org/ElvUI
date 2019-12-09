@@ -22,6 +22,7 @@ local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local issecurevariable = issecurevariable
 local LoadAddOn = LoadAddOn
+local DisableAddOn = DisableAddOn
 local ReloadUI = ReloadUI
 
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
@@ -125,6 +126,14 @@ do
 	function AddOn:EscapeString(str)
 		return gsub(str,arg2,arg3)
 	end
+end
+
+do
+	DisableAddOn("ElvUI_VisualAuraTimers")
+	DisableAddOn("ElvUI_ExtraActionBars")
+	DisableAddOn("ElvUI_CastBarOverlay")
+	DisableAddOn("ElvUI_EverySecondCounts")
+	DisableAddOn("ElvUI_AuraBarsMovers")
 end
 
 function AddOn:OnInitialize()
