@@ -1885,6 +1885,7 @@ P.unitframe.units.boss.debuffs.anchorPoint = 'LEFT'
 P.unitframe.units.boss.debuffs.numrows = 1
 P.unitframe.units.boss.debuffs.perrow = 3
 P.unitframe.units.boss.debuffs.priority = 'Blacklist,Boss,Personal,RaidDebuffs,CastByUnit,Whitelist'
+P.unitframe.units.boss.debuffs.sizeOverride = 22
 P.unitframe.units.boss.debuffs.yOffset = -3
 P.unitframe.units.boss.health.text_format = '[healthcolor][health:current]'
 P.unitframe.units.boss.health.position = 'LEFT'
