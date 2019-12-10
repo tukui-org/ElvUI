@@ -5023,6 +5023,7 @@ E.Options.args.unitframe.args.focus = {
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focus'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focus'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'focus'),
+		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'focus'),
 	},
 }
 
