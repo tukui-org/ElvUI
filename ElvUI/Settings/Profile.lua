@@ -2190,7 +2190,6 @@ P.actionbar.bar5.buttonsPerRow = 6
 P.actionbar.cooldown = CopyTable(P.cooldown)
 P.actionbar.expiringColor = { r = 1, g = 0, b = 0 }
 P.actionbar.secondsColor = { r = 1, g = 1, b = 1 }
-P.actionbar.minutesColor = { r = 1, g = 1, b = 1 }
 P.actionbar.hoursColor = { r = 1, g = 1, b = 1 }
 P.actionbar.daysColor = { r = 1, g = 1, b = 1 }
 
