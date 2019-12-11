@@ -742,6 +742,7 @@ P.nameplates.units.PLAYER.debuffs.growthY = 'UP'
 P.nameplates.units.PLAYER.debuffs.yOffset = 35
 P.nameplates.units.PLAYER.debuffs.priority = 'Blacklist,blockNoDuration,Personal,Boss,CCDebuffs,RaidDebuffs,Dispellable'
 P.nameplates.units.PLAYER.name.enable = false
+P.nameplates.units.PLAYER.name.format = '[name]'
 P.nameplates.units.PLAYER.level.enable = false
 P.nameplates.units.PLAYER.power.enable = true
 P.nameplates.units.PLAYER.castbar.yOffset = -20
@@ -779,6 +780,7 @@ P.nameplates.units.ENEMY_NPC.debuffs.yOffset = 35
 P.nameplates.units.ENEMY_NPC.debuffs.filters.priority = 'Blacklist,Personal,CCDebuffs'
 P.nameplates.units.ENEMY_NPC.level.format = '[difficultycolor][level][shortclassification]'
 P.nameplates.units.ENEMY_NPC.title.format = '[npctitle]'
+P.nameplates.units.ENEMY_NPC.name.format = '[name]'
 
 --Auras
 P.auras = {
