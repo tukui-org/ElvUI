@@ -2188,10 +2188,16 @@ P.actionbar.bar5.buttons = 6
 P.actionbar.bar5.buttonsPerRow = 6
 
 P.actionbar.cooldown = CopyTable(P.cooldown)
-P.auras.cooldown = CopyTable(P.cooldown)
-P.bags.cooldown = CopyTable(P.cooldown)
-P.nameplates.cooldown = CopyTable(P.cooldown)
-P.unitframe.cooldown = CopyTable(P.cooldown)
+P.actionbar.expiringColor = { r = 1, g = 0, b = 0 }
+P.actionbar.secondsColor = { r = 1, g = 1, b = 1 }
+P.actionbar.minutesColor = { r = 1, g = 1, b = 1 }
+P.actionbar.hoursColor = { r = 1, g = 1, b = 1 }
+P.actionbar.daysColor = { r = 1, g = 1, b = 1 }
+
+P.auras.cooldown = CopyTable(P.actionbar.cooldown)
+P.bags.cooldown = CopyTable(P.actionbar.cooldown)
+P.nameplates.cooldown = CopyTable(P.actionbar.cooldown)
+P.unitframe.cooldown = CopyTable(P.actionbar.cooldown)
 
 P.actionbar.cooldown.enable = nil
 P.auras.cooldown.enable = nil
