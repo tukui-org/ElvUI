@@ -146,8 +146,8 @@ for _, databar in pairs({ 'experience', 'reputation', 'honor', 'azerite'}) do
 		height = 180,
 		textFormat = 'NONE',
 		textSize = 11,
-		font = "PT Sans Narrow",
-		fontOutline = "NONE",
+		font = 'PT Sans Narrow',
+		fontOutline = 'NONE',
 		mouseover = false,
 		orientation = 'VERTICAL',
 		reverseFill = false,
@@ -408,7 +408,7 @@ local NP_Castbar = {
 	castTimeFormat = 'CURRENT',
 	channelTimeFormat = 'CURRENT',
 	timeToHold = 0,
-	textPosition = "BELOW",
+	textPosition = 'BELOW',
 	iconPosition = 'RIGHT',
 	iconSize = 30,
 	iconOffsetX = 0,
@@ -958,7 +958,7 @@ P.datatexts = {
 --Tooltip
 P.tooltip = {
 	cursorAnchor = false,
-	cursorAnchorType = "ANCHOR_CURSOR",
+	cursorAnchorType = 'ANCHOR_CURSOR',
 	cursorAnchorX = 0,
 	cursorAnchorY = 0,
 	alwaysShowRealm = false,
@@ -1441,7 +1441,7 @@ P.unitframe = {
 			Curse = {r = 0.6, g = 0, b = 1, a = 0.45},
 			Disease = {r = 0.6, g = 0.4, b = 0, a = 0.45},
 			Poison = {r = 0, g = 0.6, b = 0, a = 0.45},
-			blendMode = "ADD",
+			blendMode = 'ADD',
 		},
 	},
 	units = {
