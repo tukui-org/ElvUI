@@ -3563,7 +3563,7 @@ local function GetUnitSettings(unit, name)
 					sourceInterruptClassColor = {
 						order = 3,
 						type = "toggle",
-						name = L["Show Interrupt Source in Class Color"],
+						name = L["Class Color Source"],
 						disabled = function()
 							return not E.db.nameplates.units[unit].castbar.sourceInterrupt
 						end
