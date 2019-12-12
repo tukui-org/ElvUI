@@ -197,7 +197,7 @@ function A:SetAuraTime(button, expiration, duration)
 	button.timeLeft = E:Round(expiration - GetTime(), 3)
 
 	-- this keeps enchants from derping at when they expire
-	if oldEnd and button.timeLeft <= 0 then
+	if oldEnd and button.timeLeft <= 0.05 then
 		A:ClearAuraTime(button)
 		return
 	end
