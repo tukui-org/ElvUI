@@ -206,7 +206,6 @@ function A:SetAuraTime(button, expiration, duration)
 
 	if oldEnd ~= button.endTime then
 		button.nextUpdate = 0
-		button.endCooldown = expiration - 0.05
 		button.statusBar:SetMinMaxValues(0, duration)
 		button:SetScript('OnUpdate', E.Cooldown_OnUpdate)
 	end
