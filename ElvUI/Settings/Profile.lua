@@ -288,11 +288,9 @@ local NP_Auras = {
 	countFontSize = 9,
 	countPosition = 'BOTTOMRIGHT',
 	durationPosition = 'CENTER',
-	filters = {
-		minDuration = 0,
-		maxDuration = 0,
-		priority = ''
-	},
+	minDuration = 0,
+	maxDuration = 0,
+	priority = ''
 }
 
 local NP_Health = {

@@ -1362,6 +1362,22 @@ function E:DBConversions()
 		E.db.nameplates.units.TARGET.nonTargetTransparency = nil
 	end
 
+	do
+		for _, unit in pairs({ 'PLAYER', 'FRIENDLY_PLAYER', 'ENEMY_PLAYER', 'FRIENDLY_NPC', 'ENEMY_NPC'}) do
+			if E.db.nameplates.units[unit].buffs.filters ~= nil then
+				E.db.nameplates.units[unit].buffs.minDuration = E.db.nameplates.units[unit].buffs.filters.minDuration
+				E.db.nameplates.units[unit].buffs.maxDuration = E.db.nameplates.units[unit].buffs.filters.maxDuration
+				E.db.nameplates.units[unit].buffs.priority = E.db.nameplates.units[unit].buffs.filters.priority
+				E.db.nameplates.units[unit].buffs.filters = nil
+
+				E.db.nameplates.units[unit].debuffs.minDuration = E.db.nameplates.units[unit].debuffs.filters.minDuration
+				E.db.nameplates.units[unit].debuffs.maxDuration = E.db.nameplates.units[unit].debuffs.filters.maxDuration
+				E.db.nameplates.units[unit].debuffs.priority = E.db.nameplates.units[unit].debuffs.filters.priority
+				E.db.nameplates.units[unit].debuffs.filters = nil
+			end
+		end
+	end
+
 	if E.db.nameplates.units.TARGET.scale ~= nil then
 		E.global.nameplate.filters.ElvUI_Target.actions.scale = E.db.nameplates.units.TARGET.scale
 		E.db.nameplates.units.TARGET.scale = nil
