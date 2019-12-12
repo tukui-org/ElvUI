@@ -90,7 +90,7 @@ function A:MasqueData(texture, highlight)
 	return btnData
 end
 
-function A:UpdateTime(button)
+function A:UpdateStatusBar(button)
 	button.statusBar:SetValue(button.timeLeft)
 
 	local threshold = E.db.auras.fadeThreshold
@@ -201,7 +201,7 @@ function A:SetAuraTime(button, expiration, duration)
 		return
 	end
 
-	A:UpdateTime(button)
+	A:UpdateStatusBar(button)
 
 	local oldEnd = button.endTime
 	button.endTime = expiration
