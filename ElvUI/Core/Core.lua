@@ -1364,13 +1364,13 @@ function E:DBConversions()
 
 	do
 		for _, unit in pairs({ 'PLAYER', 'FRIENDLY_PLAYER', 'ENEMY_PLAYER', 'FRIENDLY_NPC', 'ENEMY_NPC'}) do
-			if E.db.nameplates.units[unit].buffs.filters ~= nil then
+			if E.db.nameplates.units[unit].buffs and E.db.nameplates.units[unit].buffs.filters ~= nil then
 				E.db.nameplates.units[unit].buffs.minDuration = E.db.nameplates.units[unit].buffs.filters.minDuration
 				E.db.nameplates.units[unit].buffs.maxDuration = E.db.nameplates.units[unit].buffs.filters.maxDuration
 				E.db.nameplates.units[unit].buffs.priority = E.db.nameplates.units[unit].buffs.filters.priority
 				E.db.nameplates.units[unit].buffs.filters = nil
 			end
-			if E.db.nameplates.units[unit].debuffs.filters ~= nil then
+			if E.db.nameplates.units[unit].debuffs and E.db.nameplates.units[unit].debuffs.filters ~= nil then
 				E.db.nameplates.units[unit].debuffs.minDuration = E.db.nameplates.units[unit].debuffs.filters.minDuration
 				E.db.nameplates.units[unit].debuffs.maxDuration = E.db.nameplates.units[unit].debuffs.filters.maxDuration
 				E.db.nameplates.units[unit].debuffs.priority = E.db.nameplates.units[unit].debuffs.filters.priority
