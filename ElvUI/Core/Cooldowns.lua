@@ -66,11 +66,6 @@ function E:Cooldown_OnUpdate(elapsed)
 				if color then
 					self.text:SetTextColor(color.r, color.g, color.b)
 				end
-
-				local customUpdate = self.customUpdate
-				if customUpdate then
-					customUpdate(self, value, id, nextUpdate, remainder)
-				end
 			end
 		end
 	end
