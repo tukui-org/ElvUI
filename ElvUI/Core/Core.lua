@@ -1369,7 +1369,8 @@ function E:DBConversions()
 				E.db.nameplates.units[unit].buffs.maxDuration = E.db.nameplates.units[unit].buffs.filters.maxDuration
 				E.db.nameplates.units[unit].buffs.priority = E.db.nameplates.units[unit].buffs.filters.priority
 				E.db.nameplates.units[unit].buffs.filters = nil
-
+			end
+			if E.db.nameplates.units[unit].debuffs.filters ~= nil then
 				E.db.nameplates.units[unit].debuffs.minDuration = E.db.nameplates.units[unit].debuffs.filters.minDuration
 				E.db.nameplates.units[unit].debuffs.maxDuration = E.db.nameplates.units[unit].debuffs.filters.maxDuration
 				E.db.nameplates.units[unit].debuffs.priority = E.db.nameplates.units[unit].debuffs.filters.priority
