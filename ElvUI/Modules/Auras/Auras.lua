@@ -90,16 +90,16 @@ function A:MasqueData(texture, highlight)
 	return btnData
 end
 
-function A:UpdateTime()
-	self.statusBar:SetValue(self.timeLeft)
+function A:UpdateTime(button)
+	button.statusBar:SetValue(button.timeLeft)
 
 	local threshold = E.db.auras.fadeThreshold
 	if threshold == -1 then
 		return
-	elseif self.timeLeft > threshold then
-		E:StopFlash(self)
+	elseif button.timeLeft > threshold then
+		E:StopFlash(button)
 	else
-		E:Flash(self, 1)
+		E:Flash(button, 1)
 	end
 end
 
@@ -197,9 +197,11 @@ function A:SetAuraTime(button, expiration, duration)
 
 	-- this keeps enchants from derping out when they expire
 	if button.timeLeft <= 0.05 then
-		A:ClearAuraTime(button)
+		A:ClearAuraTime(button, true)
 		return
 	end
+
+	A:UpdateTime(button)
 
 	local oldEnd = button.endTime
 	button.endTime = expiration
@@ -211,11 +213,14 @@ function A:SetAuraTime(button, expiration, duration)
 	end
 end
 
-function A:ClearAuraTime(button)
+function A:ClearAuraTime(button, expired)
+	if not expired then
+		button.statusBar:SetValue(1)
+		button.statusBar:SetMinMaxValues(0, 1)
+	end
+
 	button.endTime = nil
 	button.text:SetText('')
-	button.statusBar:SetValue(1)
-	button.statusBar:SetMinMaxValues(0, 1)
 	button:SetScript('OnUpdate', nil)
 end
 
@@ -317,7 +322,6 @@ end
 function A:Update_CooldownOptions(button)
 	E:Cooldown_Options(button, self.db.cooldown, button)
 
-	button.customUpdate = A.UpdateTime
 	button.forceEnabled = true
 	button.showSeconds = true
 end
