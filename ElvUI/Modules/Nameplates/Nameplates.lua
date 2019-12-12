@@ -374,6 +374,10 @@ function NP:DisablePlate(nameplate, nameOnly)
 		nameplate.Name:Show()
 		nameplate.Name:ClearAllPoints()
 		nameplate.Name:Point("CENTER", nameplate, "CENTER", 0, 0)
+
+		nameplate.RaidTargetIndicator:ClearAllPoints()
+		nameplate.RaidTargetIndicator:Point("BOTTOM", nameplate, "TOP", 0, 0)
+
 		if NP.db.units[nameplate.frameType].showTitle then
 			nameplate.Title:Show()
 			nameplate.Title:ClearAllPoints()
