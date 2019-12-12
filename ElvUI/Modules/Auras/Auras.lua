@@ -193,15 +193,15 @@ function A:CreateIcon(button)
 end
 
 function A:SetAuraTime(button, expiration, duration)
-	local oldEnd = button.endTime
 	button.timeLeft = E:Round(expiration - GetTime(), 3)
 
-	-- this keeps enchants from derping at when they expire
-	if oldEnd and button.timeLeft <= 0.05 then
+	-- this keeps enchants from derping out when they expire
+	if button.timeLeft <= 0.05 then
 		A:ClearAuraTime(button)
 		return
 	end
 
+	local oldEnd = button.endTime
 	button.endTime = expiration
 
 	if oldEnd ~= button.endTime then
