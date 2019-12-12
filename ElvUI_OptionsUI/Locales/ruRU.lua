@@ -644,7 +644,7 @@ L["If enabled then the filter will only activate when you are in a Vehicle."] = 
 L["If enabled then the filter will only activate when you are in combat."] = "Если включено, фильтр будет активирован только когда вы в бою."
 L["If enabled, the style filter will only activate when you are in one of the instances specified in Instance ID."] = "Если включено, фильтр будет активирован только когда вы в одном из инстансов, добавленых в список по ID."
 L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = "Если включено, фильтр будет активирован только когда вы на одной из карт, добавленых в список по ID."
-L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Suzbone Name."] = "Если включено, фильтр будет активирован только когда вы в одной из субзон, добавленых в список по имени."
+L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Subzone Name."] = "Если включено, фильтр будет активирован только когда вы в одной из субзон, добавленых в список по имени."
 L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = "Если включено, фильтр будет активирован только когда вы в одной из зон, добавленых в список по имени."
 
 L["If enabled then the filter will only activate when you are not focusing the unit."] =  "Если включено, фильтр будет активирован только когда юнит не является запомненой целью."
@@ -1102,7 +1102,7 @@ L["Show For Healers"] = "Показывать для лекарей"
 L["Show For Tanks"] = "Показывать для танков"
 L["Show Icon"] = "Отображать иконку"
 L["Show In Combat"] = "Показывать в бою"
-L["Show Interrupt Source in Class Color"] = "Отображать прервавшего цветом класса"
+L["Class Color Source"] = true
 L["Show Junk Icon"] = "Иконки мусора"
 L["Show New Item Glow"] = "Свечение новых предметов"
 L["Show Over Absorbs"] = "Показывать \"лишнее\" поглощение"

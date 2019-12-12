@@ -197,12 +197,12 @@ do --this can save some main file locals
 
 		--- gradient text, ignoring hyperlinks and keywords
 		local e, f, g = {'|%x+|H.-|h.-|h|r', '|H.-|h.-|h', '|T.-|t', '|c.-|r'}, {}, {}
-		local gradient = function(t) return E:TextGradient(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
-		local protect = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\10') end
+		local gradient = function(t) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'), 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82),'\27','%%%%'),'\26','||') end
+		local protect = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\24') end
 		SimpysText = function(t) local u = t
 			for _, w in ipairs(e) do for k in gmatch(t, w) do t = protect(t, u, k) end end
 			t = gradient(t) --Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
-			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\10') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end
+			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end
 			return t
 		end
 	end
@@ -845,7 +845,7 @@ function CH:PositionChat(override)
 		local id = chat:GetID()
 		local tab = _G[format("ChatFrame%sTab", i)]
 		local isDocked = chat.isDocked
-		tab.isDocked = chat.isDocked
+		tab.isDocked = isDocked
 		tab.owner = chat
 
 		if id > NUM_CHAT_WINDOWS then
@@ -1773,7 +1773,6 @@ function CH:SetupChat()
 	end
 
 	_G.GeneralDockManager:SetParent(_G.LeftChatPanel)
-	-- self:ScheduleRepeatingTimer('PositionChat', 1)
 	self:PositionChat(true)
 
 	if not self.HookSecured then

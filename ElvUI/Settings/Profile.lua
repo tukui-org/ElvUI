@@ -146,8 +146,8 @@ for _, databar in pairs({ 'experience', 'reputation', 'honor', 'azerite'}) do
 		height = 180,
 		textFormat = 'NONE',
 		textSize = 11,
-		font = "PT Sans Narrow",
-		fontOutline = "NONE",
+		font = 'PT Sans Narrow',
+		fontOutline = 'NONE',
 		mouseover = false,
 		orientation = 'VERTICAL',
 		reverseFill = false,
@@ -408,7 +408,7 @@ local NP_Castbar = {
 	castTimeFormat = 'CURRENT',
 	channelTimeFormat = 'CURRENT',
 	timeToHold = 0,
-	textPosition = "BELOW",
+	textPosition = 'BELOW',
 	iconPosition = 'RIGHT',
 	iconSize = 30,
 	iconOffsetX = 0,
@@ -742,6 +742,7 @@ P.nameplates.units.PLAYER.debuffs.growthY = 'UP'
 P.nameplates.units.PLAYER.debuffs.yOffset = 35
 P.nameplates.units.PLAYER.debuffs.priority = 'Blacklist,blockNoDuration,Personal,Boss,CCDebuffs,RaidDebuffs,Dispellable'
 P.nameplates.units.PLAYER.name.enable = false
+P.nameplates.units.PLAYER.name.format = '[name]'
 P.nameplates.units.PLAYER.level.enable = false
 P.nameplates.units.PLAYER.power.enable = true
 P.nameplates.units.PLAYER.castbar.yOffset = -20
@@ -779,6 +780,7 @@ P.nameplates.units.ENEMY_NPC.debuffs.yOffset = 35
 P.nameplates.units.ENEMY_NPC.debuffs.filters.priority = 'Blacklist,Personal,CCDebuffs'
 P.nameplates.units.ENEMY_NPC.level.format = '[difficultycolor][level][shortclassification]'
 P.nameplates.units.ENEMY_NPC.title.format = '[npctitle]'
+P.nameplates.units.ENEMY_NPC.name.format = '[name]'
 
 --Auras
 P.auras = {
@@ -956,7 +958,7 @@ P.datatexts = {
 --Tooltip
 P.tooltip = {
 	cursorAnchor = false,
-	cursorAnchorType = "ANCHOR_CURSOR",
+	cursorAnchorType = 'ANCHOR_CURSOR',
 	cursorAnchorX = 0,
 	cursorAnchorY = 0,
 	alwaysShowRealm = false,
@@ -1018,7 +1020,7 @@ local UF_Auras = {
 	xOffset = 0,
 	yOffset = 0,
 	minDuration = 0,
-	maxDuration = 300,
+	maxDuration = 0,
 	priority = '',
 	sizeOverride = 0,
 	spacing = 1,
@@ -1439,7 +1441,7 @@ P.unitframe = {
 			Curse = {r = 0.6, g = 0, b = 1, a = 0.45},
 			Disease = {r = 0.6, g = 0.4, b = 0, a = 0.45},
 			Poison = {r = 0, g = 0.6, b = 0, a = 0.45},
-			blendMode = "ADD",
+			blendMode = 'ADD',
 		},
 	},
 	units = {
@@ -1809,6 +1811,7 @@ P.unitframe.units.targettargettarget.debuffs.attachTo = 'FRAME'
 P.unitframe.units.targettargettarget.debuffs.priority = 'Blacklist,Personal,nonPersonal'
 P.unitframe.units.targettargettarget.infoPanel.height = 12
 
+P.unitframe.units.focus.aurabar.enable = false
 P.unitframe.units.focus.aurabar.detachedWidth = 190
 P.unitframe.units.focus.aurabar.maxBars = 3
 P.unitframe.units.focus.aurabar.maxDuration = 120
@@ -1884,6 +1887,7 @@ P.unitframe.units.boss.debuffs.anchorPoint = 'LEFT'
 P.unitframe.units.boss.debuffs.numrows = 1
 P.unitframe.units.boss.debuffs.perrow = 3
 P.unitframe.units.boss.debuffs.priority = 'Blacklist,Boss,Personal,RaidDebuffs,CastByUnit,Whitelist'
+P.unitframe.units.boss.debuffs.sizeOverride = 22
 P.unitframe.units.boss.debuffs.yOffset = -3
 P.unitframe.units.boss.health.text_format = '[healthcolor][health:current]'
 P.unitframe.units.boss.health.position = 'LEFT'
@@ -2184,10 +2188,15 @@ P.actionbar.bar5.buttons = 6
 P.actionbar.bar5.buttonsPerRow = 6
 
 P.actionbar.cooldown = CopyTable(P.cooldown)
-P.auras.cooldown = CopyTable(P.cooldown)
-P.bags.cooldown = CopyTable(P.cooldown)
-P.nameplates.cooldown = CopyTable(P.cooldown)
-P.unitframe.cooldown = CopyTable(P.cooldown)
+P.actionbar.expiringColor = { r = 1, g = 0, b = 0 }
+P.actionbar.secondsColor = { r = 1, g = 1, b = 1 }
+P.actionbar.hoursColor = { r = 1, g = 1, b = 1 }
+P.actionbar.daysColor = { r = 1, g = 1, b = 1 }
+
+P.auras.cooldown = CopyTable(P.actionbar.cooldown)
+P.bags.cooldown = CopyTable(P.actionbar.cooldown)
+P.nameplates.cooldown = CopyTable(P.actionbar.cooldown)
+P.unitframe.cooldown = CopyTable(P.actionbar.cooldown)
 
 P.actionbar.cooldown.enable = nil
 P.auras.cooldown.enable = nil

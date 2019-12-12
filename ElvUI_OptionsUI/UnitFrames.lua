@@ -474,9 +474,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				order = 8,
 				name = L["Spacing"],
 				type = "range",
-				min = 0,
-				max = 60,
-				step = 1
+				min = 0, max = 20, step = 1,
 			},
 			attachTo = {
 				type = 'select',
@@ -5025,6 +5023,7 @@ E.Options.args.unitframe.args.focus = {
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focus'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focus'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'focus'),
+		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'focus'),
 	},
 }
 

@@ -419,9 +419,11 @@ local function LoadSkin()
 		for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
 			if button.index then
 				local _, itemID = GetGuildRewardInfo(button.index)
-				local _, _, quality = GetItemInfo(itemID)
-				if quality and quality > 1 then
-					button.Icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+				if itemID then
+					local _, _, quality = GetItemInfo(itemID)
+					if quality and quality > 1 then
+						button.Icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+					end
 				end
 			end
 		end

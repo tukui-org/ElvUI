@@ -252,27 +252,22 @@ end]]
 function M:ADDON_LOADED(_, addon)
 	if addon == "Blizzard_InspectUI" then
 		M:SetupInspectPageInfo()
-
-		--[[if IsAddOnLoaded("Blizzard_ObjectiveTracker") then
-			self:UnregisterEvent("ADDON_LOADED")
-		end]]
 	--[[elseif addon == "Blizzard_ObjectiveTracker" then
-		M:SetupChallengeTimer()
-
-		if IsAddOnLoaded("Blizzard_InspectUI") then
-			self:UnregisterEvent("ADDON_LOADED")
-		end	]]
+		M:SetupChallengeTimer()]]
 	end
 end
 
 function M:QUEST_COMPLETE()
 	if not E.db.general.questRewardMostValueIcon then return end
 
+	local firstItem = _G.QuestInfoRewardsFrameQuestInfoItem1
+	if not firstItem then return end
+
 	local bestValue, bestItem = 0
 	local numQuests = GetNumQuestChoices()
 
 	if not self.QuestRewardGoldIconFrame then
-		local frame = CreateFrame("Frame", nil, _G.QuestInfoRewardsFrameQuestInfoItem1)
+		local frame = CreateFrame("Frame", nil, firstItem)
 		frame:SetFrameStrata("HIGH")
 		frame:Size(20)
 		frame.Icon = frame:CreateTexture(nil, "OVERLAY")
@@ -301,7 +296,7 @@ function M:QUEST_COMPLETE()
 
 	if bestItem then
 		local btn = _G['QuestInfoRewardsFrameQuestInfoItem'..bestItem]
-		if btn.type == 'choice' then
+		if btn and btn.type == 'choice' then
 			self.QuestRewardGoldIconFrame:ClearAllPoints()
 			self.QuestRewardGoldIconFrame:Point("TOPRIGHT", btn, "TOPRIGHT", -2, -2)
 			self.QuestRewardGoldIconFrame:Show()
@@ -319,7 +314,6 @@ function M:Initialize()
 	self:RegisterEvent('MERCHANT_SHOW')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')
-	if E.db.general.interruptAnnounce ~= "NONE" then self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED") end
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_HORDE', 'PVPMessageEnhancement')
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_ALLIANCE', 'PVPMessageEnhancement')
 	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
@@ -327,26 +321,23 @@ function M:Initialize()
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent("QUEST_COMPLETE")
+	self:RegisterEvent('QUEST_COMPLETE')
 
-	--local blizzTracker = IsAddOnLoaded("Blizzard_ObjectiveTracker")
-	local inspectUI = IsAddOnLoaded("Blizzard_InspectUI")
+	if E.db.general.interruptAnnounce ~= 'NONE' then
+		self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+	end
 
-	if inspectUI then
+	if IsAddOnLoaded('Blizzard_InspectUI') then
 		M:SetupInspectPageInfo()
+	else
+		self:RegisterEvent('ADDON_LOADED')
 	end
 
-	--[[if blizzTracker then
+	--[[if IsAddOnLoaded('Blizzard_ObjectiveTracker') then
 		M:SetupChallengeTimer()
-	end
-
-	if not blizzTracker or not inspectUI then
-		self:RegisterEvent("ADDON_LOADED")
+	else
+		self:RegisterEvent('ADDON_LOADED')
 	end]]
-
-	if not inspectUI then
-		self:RegisterEvent("ADDON_LOADED")
-	end
 end
 
 E:RegisterModule(M:GetName())

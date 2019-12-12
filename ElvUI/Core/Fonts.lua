@@ -52,7 +52,6 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.AchievementFont_Small,				NORMAL, self.db.general.fontSize)			-- Achiev dates
 		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 24)									-- Talent Title
 		SetFont(_G.ChatBubbleFont,						BUBBLE, self.private.general.chatBubbleFontSize, self.private.general.chatBubbleFontOutline)
-		SetFont(_G.CombatTextFont,						COMBAT, 200, 'OUTLINE')						-- number here just increase the font quality.
 		SetFont(_G.CoreAbilityFont,						NORMAL, 26)									-- Core abilities(title)
 		SetFont(_G.DestinyFontHuge,						NORMAL, 32, nil, SHADOWCOLOR, BIGOFFSET)	-- Garrison Mission Report
 		SetFont(_G.DestinyFontMed,						NORMAL, 14)									-- Added in 7.3.5 used for ?
@@ -69,13 +68,8 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Game16Font,							NORMAL, 16)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Game18Font,							NORMAL, 18)									-- MissionUI Bonus Chance
 		SetFont(_G.Game24Font, 							NORMAL, 24)									-- Garrison Mission level (in detail frame)
-		SetFont(_G.Game42Font,							NORMAL, 42)									-- Mission Level
+		SetFont(_G.Game30Font,							NORMAL, 28)									-- Mission Level
 		SetFont(_G.Game46Font,							NORMAL, 46)									-- Added in 7.3.5 used for ?
-		SetFont(_G.Game48Font,							NORMAL, 48)
-		SetFont(_G.Game48FontShadow,					NORMAL, 48, nil, SHADOWCOLOR, BIGOFFSET)
-		SetFont(_G.Game60Font,							NORMAL, 60)
-		SetFont(_G.Game72Font,							NORMAL, 72)
-		SetFont(_G.Game120Font,							NORMAL, 120)
 		SetFont(_G.GameFont_Gigantic,					NORMAL, 32, nil, SHADOWCOLOR, BIGOFFSET)	-- Used at the install steps
 		SetFont(_G.GameFontHighlightMedium,				NORMAL, 15)									-- Fix QuestLog Title mouseover
 		SetFont(_G.GameFontHighlightSmall2,				NORMAL, self.db.general.fontSize)			-- Skill or Recipe description on TradeSkill frame

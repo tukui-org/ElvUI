@@ -5,23 +5,27 @@ local AB = E:GetModule('ActionBars')
 --Lua functions
 local _G = _G
 local tonumber, type, pairs, select = tonumber, type, pairs, select
-local lower, split, format = strlower, strsplit, format
+local lower, split, format, wipe, next = strlower, strsplit, format, wipe, next
 --WoW API / Variables
-local EnableAddOn, DisableAllAddOns = EnableAddOn, DisableAllAddOns
-local SetCVar = SetCVar
-local ReloadUI = ReloadUI
+local debugprofilestop = debugprofilestop
+local EnableAddOn = EnableAddOn
+local GetAddOnCPUUsage = GetAddOnCPUUsage
+local GetAddOnInfo = GetAddOnInfo
+local GetNumAddOns = GetNumAddOns
+local GetCVarBool = GetCVarBool
+local DisableAddOn = DisableAddOn
+local GetGuildRosterInfo = GetGuildRosterInfo
+local GetGuildRosterLastOnline = GetGuildRosterLastOnline
+local GetNumGuildMembers = GetNumGuildMembers
 local GuildControlGetNumRanks = GuildControlGetNumRanks
 local GuildControlGetRankName = GuildControlGetRankName
-local GetNumGuildMembers, GetGuildRosterInfo = GetNumGuildMembers, GetGuildRosterInfo
-local GetGuildRosterLastOnline = GetGuildRosterLastOnline
 local GuildUninvite = GuildUninvite
-local SendChatMessage = SendChatMessage
-local debugprofilestop = debugprofilestop
-local UpdateAddOnCPUUsage, GetAddOnCPUUsage = UpdateAddOnCPUUsage, GetAddOnCPUUsage
+local ReloadUI = ReloadUI
 local ResetCPUUsage = ResetCPUUsage
-local GetAddOnInfo = GetAddOnInfo
-local GetCVarBool = GetCVarBool
--- GLOBALS: ElvUIGrid
+local SendChatMessage = SendChatMessage
+local SetCVar = SetCVar
+local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
+-- GLOBALS: ElvUIGrid, ElvDB
 
 function E:Grid(msg)
 	msg = msg and tonumber(msg)
@@ -36,14 +40,28 @@ function E:Grid(msg)
 end
 
 function E:LuaError(msg)
-	msg = lower(msg)
-	if msg == 'on' then
-		DisableAllAddOns()
-		EnableAddOn('ElvUI')
-		EnableAddOn('ElvUI_OptionsUI')
+	local switch = lower(msg)
+	if switch == 'on' then
+		for i=1, GetNumAddOns() do
+			local name = GetAddOnInfo(i)
+			if (name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI') and E:IsAddOnEnabled(name) then
+				DisableAddOn(name, E.myname)
+				ElvDB.LuaErrorDisabledAddOns[name] = i
+			end
+		end
+
 		SetCVar('scriptErrors', 1)
 		ReloadUI()
-	elseif msg == 'off' then
+	elseif switch == 'off' then
+		if next(ElvDB.LuaErrorDisabledAddOns) then
+			for name in pairs(ElvDB.LuaErrorDisabledAddOns) do
+				EnableAddOn(name, E.myname)
+			end
+
+			wipe(ElvDB.LuaErrorDisabledAddOns)
+			ReloadUI()
+		end
+
 		SetCVar('scriptErrors', 0)
 		E:Print('Lua errors off.')
 	else
@@ -222,8 +240,26 @@ function E:EnableBlizzardAddOns()
 	end
 end
 
-function E:ToggleDevConsole()
-	_G.DeveloperConsole:Toggle()
+do -- Blizzard Commands
+	local SlashCmdList = _G.SlashCmdList
+
+	-- DeveloperConsole (without starting with `-console`)
+	if not SlashCmdList.DEVCON then
+		local DevConsole = _G.DeveloperConsole
+		if DevConsole then
+			_G.SLASH_DEVCON1 = '/devcon'
+			SlashCmdList.DEVCON = function()
+				DevConsole:Toggle()
+			end
+		end
+	end
+
+	-- ReloadUI: /rl, /reloadui, /reload  NOTE: /reload is from SLASH_RELOAD
+	if not SlashCmdList.RELOADUI then
+		_G.SLASH_RELOADUI1 = '/rl'
+		_G.SLASH_RELOADUI2 = '/reloadui'
+		SlashCmdList.RELOADUI = _G.ReloadUI
+	end
 end
 
 function E:LoadCommands()
@@ -250,7 +286,6 @@ function E:LoadCommands()
 	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	self:RegisterChatCommand('enableblizzard', 'EnableBlizzardAddOns')
 	self:RegisterChatCommand('estatus', 'ShowStatusReport')
-	self:RegisterChatCommand('devcon', 'ToggleDevConsole')
 	-- self:RegisterChatCommand('aprilfools', '') --Don't need this until next april fools
 
 	if E.private.actionbar.enable then

@@ -1,13 +1,37 @@
-### Version 11.26 [ ]
+### Version 11.27 [ ETA: soon ]
 
 **New Additions:**  
 
+
 **Bug Fixes:**  
-Added back some options that was eaten by a angry goblin.  
-Fixed Actionbar spell highlight, if you mouseover your spells in the Spellbook.  
+Made sure the Alternative Power is only shown when it's supposed to be shown.  
+Fixed a rare error which occured once on some quest in Blasted Lands.  
 
 **Misc. Changes:**  
+Changed the max. duration to 0 in the aura priority list.  
+
+___
+### Version 11.26 [ December 5th 2019 ]
+
+**New Additions:**  
+Added spacing option for unitframe auras.  
+Added back some options that was eaten by an angry goblin.  
+
+**Bug Fixes:**  
+Fixed Actionbar spell highlight, if you mouseover your spells in the Spellbook.  
+Fixed Darken Inactive on Stance Bar.  
+Fixed BG Stats tooltip not showing the details.  
+Fixed the Color Wheel from derping at solid black.  
+Fixed a rare error from old profiles related to the Gold Datatext and "OldMoney".  
+Fixed issue which prevented Datatext text being displayed on first game load in.  
+
+**Misc. Changes:**  
+Smoothed the Top Aura Status Bars when they are active.  
+Smoothed all animations created by the animation code.  
+Recoded some of the Cooldown module code and made it support UnitFrame Buff Indicator better.  
+Tweaked the way the UI Scale popup shows to prevent it from happening in more cases, when it should not be shown.  
 Updated the Chat Spam Interval to resolve some issues with it.  
+Updated Friends and Guild Datatext.  
 
 ___
 ### Version 11.25 [ November 10th 2019 ]

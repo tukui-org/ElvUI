@@ -33,6 +33,7 @@ local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 local FACTION_HORDE = FACTION_HORDE
 local FACTION_ALLIANCE = FACTION_ALLIANCE
+-- GLOBALS: ElvDB
 
 function E:ClassColor(class, usePriestColor)
 	if not class then return end
@@ -486,8 +487,12 @@ function E:RequestBGInfo()
 	RequestBattlefieldScoreData()
 end
 
-function E:PLAYER_ENTERING_WORLD()
+function E:PLAYER_ENTERING_WORLD(_, initLogin)
 	self:CheckRole()
+
+	if initLogin or not ElvDB.LuaErrorDisabledAddOns then
+		ElvDB.LuaErrorDisabledAddOns = {}
+	end
 
 	if not self.MediaUpdated then
 		self:UpdateMedia()

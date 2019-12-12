@@ -16,6 +16,12 @@ local InCombatLockdown = InCombatLockdown
 function DT:Initialize()
 	--if E.db.datatexts.enable ~= true then return end
 	self.Initialized = true
+	self.db = E.db.datatexts
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+
+	self:RegisterLDB()
+	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
+
 	self.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
 	TT:HookScript(self.tooltip, 'OnShow', 'SetStyle')
 
@@ -26,13 +32,8 @@ function DT:Initialize()
 	_G.DatatextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
 	_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
 
-	self:RegisterLDB()
-	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
-
-	self:RegisterCustomCurrencyDT() --Register all the user created currency datatexts from the "CustomCurrency" DT.
-	self:LoadDataTexts()
-
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	-- Register all the user created currency datatexts from the "CustomCurrency" DT.
+	self:RegisterCustomCurrencyDT()
 end
 
 DT.RegisteredPanels = {}
@@ -45,12 +46,8 @@ DT.PointLocation = {
 
 local hasEnteredWorld = false
 function DT:PLAYER_ENTERING_WORLD()
-	hasEnteredWorld = true
-	self:LoadDataTexts()
-end
-
-local function LoadDataTextsDelayed()
 	E:Delay(0.5, DT.LoadDataTexts, DT)
+	hasEnteredWorld = true
 end
 
 local LDBHex = '|cffFFFFFF'
@@ -98,14 +95,15 @@ function DT:SetupObjectLDB(name, obj) --self will now be the event
 	DT:RegisterDatatext(name, {'PLAYER_ENTERING_WORLD'}, OnEvent, nil, OnClick, OnEnter, OnLeave)
 	E.valueColorUpdateFuncs[OnCallback] = true
 
-	--Update config if it has been loaded
+	-- Update config if it has been loaded
 	if DT.PanelLayoutOptions then
 		DT:PanelLayoutOptions()
 	end
 
-	--Force an update for objects that are created after we log in.
+	-- Force an update for objects that are created after we log in.
 	if hasEnteredWorld then
-		LoadDataTextsDelayed() --Has to be delayed in order to properly pick up initial text
+		-- Has to be delayed in order to properly pick up initial text
+		E:Delay(0.5, DT.LoadDataTexts, DT)
 	end
 end
 
@@ -246,7 +244,6 @@ function DT:AssignPanelToDataText(panel, data)
 end
 
 function DT:LoadDataTexts()
-	self.db = E.db.datatexts
 	for _, _ in LDB:DataObjectIterator() do
 		LDB:UnregisterAllCallbacks(self)
 	end

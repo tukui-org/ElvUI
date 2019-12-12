@@ -148,7 +148,7 @@ function UF:Configure_Auras(frame, auraType)
 	auras.disableMouse = auras.db.clickThrough
 
 	if auras.db.sizeOverride and auras.db.sizeOverride > 0 then
-		auras:Width(auras.db.perrow * auras.db.sizeOverride)
+		auras:Width(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
 	else
 		local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
 		if frame.USE_POWERBAR_OFFSET then
