@@ -9,6 +9,7 @@ Fixed a rare error which occured once on some quest in Blasted Lands.
 
 **Misc. Changes:**  
 Changed the max. duration to 0 in the aura priority list.  
+Changed the aura spacing options to use max. 20.  
 
 ___
 ### Version 11.26 [ December 5th 2019 ]
