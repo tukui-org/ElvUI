@@ -1316,7 +1316,7 @@ function E:DBConversions()
 			E.db.unitframe.OORAlpha = nil
 		end
 
-		for _, unit in pairs({'target','targettarget','targettargettarget','focus','focustarget','pet','pettarget','boss','arena','party','raid','raid40','raidpet','tank','assist'}) do
+		for _, unit in ipairs({'target','targettarget','targettargettarget','focus','focustarget','pet','pettarget','boss','arena','party','raid','raid40','raidpet','tank','assist'}) do
 			if E.db.unitframe.units[unit].rangeCheck ~= nil then
 				local enabled = E.db.unitframe.units[unit].rangeCheck
 				E.db.unitframe.units[unit].fader.enable = enabled
@@ -1362,7 +1362,7 @@ function E:DBConversions()
 	end
 
 	--Removed additional table in nameplate filters cause it was basically useless
-	for _, unit in pairs({'PLAYER','FRIENDLY_PLAYER','ENEMY_PLAYER','FRIENDLY_NPC','ENEMY_NPC'}) do
+	for _, unit in ipairs({'PLAYER','FRIENDLY_PLAYER','ENEMY_PLAYER','FRIENDLY_NPC','ENEMY_NPC'}) do
 		if E.db.nameplates.units[unit].buffs and E.db.nameplates.units[unit].buffs.filters ~= nil then
 			E.db.nameplates.units[unit].buffs.minDuration = E.db.nameplates.units[unit].buffs.filters.minDuration or P.nameplates.units[unit].buffs.minDuration
 			E.db.nameplates.units[unit].buffs.maxDuration = E.db.nameplates.units[unit].buffs.filters.maxDuration or P.nameplates.units[unit].buffs.maxDuration
@@ -1403,8 +1403,7 @@ function E:DBConversions()
 	end
 
 	--Heal Prediction is now a table instead of a bool
-	local healPredictionUnits = {'player','target','focus','pet','arena','party','raid','raid40','raidpet'}
-	for _, unit in pairs(healPredictionUnits) do
+	for _, unit in ipairs({'player','target','focus','pet','arena','party','raid','raid40','raidpet'}) do
 		if type(E.db.unitframe.units[unit].healPrediction) ~= 'table' then
 			local enabled = E.db.unitframe.units[unit].healPrediction
 			E.db.unitframe.units[unit].healPrediction = {}
