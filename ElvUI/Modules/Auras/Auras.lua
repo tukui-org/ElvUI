@@ -203,10 +203,10 @@ function A:SetAuraTime(button, expiration, duration)
 
 	local oldEnd = button.endTime
 	button.endTime = expiration
-	button.endCooldown = expiration - 0.05
 
 	if oldEnd ~= button.endTime then
 		button.nextUpdate = 0
+		button.endCooldown = expiration - 0.05
 		button.statusBar:SetMinMaxValues(0, duration)
 		button:SetScript('OnUpdate', E.Cooldown_OnUpdate)
 	end
@@ -398,7 +398,7 @@ function A:UpdateHeader(header)
 		end
 
 		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
-		if (index > (db.maxWraps * db.wrapAfter)) and child:IsShown() then
+		if index > (db.maxWraps * db.wrapAfter) and child:IsShown() then
 			child:Hide()
 		end
 
