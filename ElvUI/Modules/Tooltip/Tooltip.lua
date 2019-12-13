@@ -189,12 +189,9 @@ function TT:GetLevelLine(tt, offset)
 	if tt:IsForbidden() then return end
 	for i=offset, tt:NumLines() do
 		local tipLine = _G["GameTooltipTextLeft"..i]
-		local tipText = tipLine and tipLine.GetText and tipLine:GetText()
-		if tipText then
-			local text = strlower(tipText)
-			if text:find(LEVEL1) or text:find(LEVEL2) then
-				return tipLine
-			end
+		local tipText = tipLine and tipLine.GetText and tipLine:GetText() and strlower(tipLine:GetText())
+		if tipText and (strfind(tipText, LEVEL1) or strfind(tipText, LEVEL2)) then
+			return tipLine
 		end
 	end
 end
@@ -517,7 +514,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if unit and self.db.npcID and not isPlayerUnit then
 		if C_PetBattles_IsInBattle() then return end
 		local guid = UnitGUID(unit) or ""
-		local id = tonumber(guid:match("%-(%d-)%-%x-$"), 10)
+		local id = tonumber(strmatch(guid, "%-(%d-)%-%x-$"), 10)
 		if id then
 			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id))
 		end
@@ -584,7 +581,7 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		local bankCount = " "
 
 		if link ~= nil and self.db.spellID then
-			left = (("|cFFCA3C3C%s|r %s"):format(_G.ID, link)):match(":(%w+)")
+			left = strmatch(format("|cFFCA3C3C%s|r %s", _G.ID, link), ":(%w+)")
 		end
 
 		if self.db.itemCount == "BAGS_ONLY" then
@@ -715,7 +712,7 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 	local isFound
 	for i= 1, lines do
 		local line = _G[("GameTooltipTextLeft%d"):format(i)]
-		if line and line:GetText() and line:GetText():find(displayString) then
+		if line and line:GetText() and strfind(line:GetText(), displayString) then
 			isFound = true;
 			break
 		end
