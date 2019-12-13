@@ -1244,7 +1244,7 @@ function B:Layout(isBank)
 				f.reagentFrame.slots[i].isReagent = true
 
 				f.reagentFrame.slots[i]:StyleButton()
-				f.reagentFrame.slots[i]:SetTemplate(nil, true)
+				f.reagentFrame.slots[i]:SetTemplate(E.db.bags.transparent and 'Transparent', true)
 				f.reagentFrame.slots[i]:SetNormalTexture(nil)
 
 				f.reagentFrame.slots[i].Count:ClearAllPoints()
