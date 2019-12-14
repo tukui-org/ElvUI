@@ -165,25 +165,35 @@ function E:IsDispellableByMe(debuffType)
 end
 
 do
+	local originalEvent = CreateFrame('Frame')
 	local function SetOriginalHeight()
 		if InCombatLockdown() then
-			E:RegisterEvent('PLAYER_REGEN_ENABLED', SetOriginalHeight)
-			return
+			originalEvent:RegisterEvent('PLAYER_REGEN_ENABLED')
+			return true
 		end
 
-		E:UnregisterEvent('PLAYER_REGEN_ENABLED')
 		E.UIParent:SetHeight(E.UIParent.origHeight)
 	end
+	originalEvent:SetScript('OnEvent', function(self, event)
+		if not SetOriginalHeight() then
+			self:UnregisterEvent(event)
+		end
+	end)
 
+	local modifiedEvent = CreateFrame('Frame')
 	local function SetModifiedHeight()
 		if InCombatLockdown() then
-			E:RegisterEvent('PLAYER_REGEN_ENABLED', SetModifiedHeight)
-			return
+			modifiedEvent:RegisterEvent('PLAYER_REGEN_ENABLED')
+			return true
 		end
 
-		E:UnregisterEvent('PLAYER_REGEN_ENABLED')
 		E.UIParent:SetHeight(E.UIParent.origHeight - (_G.OrderHallCommandBar:GetHeight() + E.Border))
 	end
+	modifiedEvent:SetScript('OnEvent', function(self, event)
+		if not SetModifiedHeight() then
+			self:UnregisterEvent(event)
+		end
+	end)
 
 	--This function handles disabling of OrderHall Bar or resizing of ElvUIParent if needed
 	function E:HandleCommandBar()
@@ -551,16 +561,16 @@ function E:PLAYER_LEVEL_UP(_, level)
 end
 
 function E:LoadAPI()
-	self:RegisterEvent('PLAYER_LEVEL_UP')
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('PLAYER_REGEN_ENABLED')
-	self:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
-	self:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
-	self:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
-	self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
-	self:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
-	self:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
-	self:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
+	E:RegisterEvent('PLAYER_LEVEL_UP')
+	E:RegisterEvent('PLAYER_ENTERING_WORLD')
+	E:RegisterEvent('PLAYER_REGEN_ENABLED')
+	E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
+	E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
+	E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
+	E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
+	E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
+	E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
+	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
 	do -- setup cropIcon texCoords
 		local opt = E.db.general.cropIcon
