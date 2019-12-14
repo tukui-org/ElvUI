@@ -165,35 +165,31 @@ function E:IsDispellableByMe(debuffType)
 end
 
 do
-	local originalEvent = CreateFrame('Frame')
-	local function SetOriginalHeight()
+	local function SetOriginalHeight(f)
 		if InCombatLockdown() then
-			originalEvent:RegisterEvent('PLAYER_REGEN_ENABLED')
-			return true
+			E:RegisterEventForObject('PLAYER_REGEN_ENABLED', SetOriginalHeight, SetOriginalHeight)
+			return
 		end
 
 		E.UIParent:SetHeight(E.UIParent.origHeight)
-	end
-	originalEvent:SetScript('OnEvent', function(self, event)
-		if not SetOriginalHeight() then
-			self:UnregisterEvent(event)
-		end
-	end)
 
-	local modifiedEvent = CreateFrame('Frame')
-	local function SetModifiedHeight()
+		if f == SetOriginalHeight then
+			E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', SetOriginalHeight, SetOriginalHeight)
+		end
+	end
+
+	local function SetModifiedHeight(f)
 		if InCombatLockdown() then
-			modifiedEvent:RegisterEvent('PLAYER_REGEN_ENABLED')
-			return true
+			E:RegisterEventForObject('PLAYER_REGEN_ENABLED', SetModifiedHeight, SetModifiedHeight)
+			return
 		end
 
 		E.UIParent:SetHeight(E.UIParent.origHeight - (_G.OrderHallCommandBar:GetHeight() + E.Border))
-	end
-	modifiedEvent:SetScript('OnEvent', function(self, event)
-		if not SetModifiedHeight() then
-			self:UnregisterEvent(event)
+
+		if f == SetModifiedHeight then
+			E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', SetModifiedHeight, SetModifiedHeight)
 		end
-	end)
+	end
 
 	--This function handles disabling of OrderHall Bar or resizing of ElvUIParent if needed
 	function E:HandleCommandBar()
