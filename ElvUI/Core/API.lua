@@ -198,7 +198,7 @@ do
 			_G.OrderHallCommandBar:UnregisterAllEvents()
 			_G.OrderHallCommandBar:SetScript('OnShow', _G.OrderHallCommandBar.Hide)
 			_G.OrderHallCommandBar:Hide()
-			_G.UIParent:UnregisterEvent('UNIT_AURA')--Only used for OrderHall Bar
+			_G.UIParent:UnregisterEvent('UNIT_AURA') --Only used for OrderHall Bar
 		elseif E.global.general.commandBarSetting == 'ENABLED_RESIZEPARENT' then
 			_G.OrderHallCommandBar:HookScript('OnShow', SetModifiedHeight)
 			_G.OrderHallCommandBar:HookScript('OnHide', SetOriginalHeight)
