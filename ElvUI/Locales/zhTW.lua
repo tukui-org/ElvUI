@@ -237,7 +237,6 @@ L["Please click the button below so you can setup variables and ReloadUI."] = "�
 L["Please click the button below to setup your CVars."] = "請按下方按鈕設定參數."
 L["Please press the continue button to go onto the next step."] = "請按「繼續」按鈕, 執行下一個步驟."
 L["Plugins"] = true
-L["Preview Changes"] = "預覽修改"
 L["Preview"] = "預覽"
 L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."] = "設定文件從 %s 下載完成, 但是設定文件 %s 已存在. 請更改名稱, 否則它會覆蓋你的現有設定檔."
 L["Profile download complete from %s, would you like to load the profile %s now?"] = "設定檔從 %s 下載完成, 你是否要加載設定檔 %s?"
@@ -303,7 +302,6 @@ L["The focus unit can be set by typing /focus when you are targeting the unit yo
 L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = "若要進入內建設定選單, 請輸入/ec, 或者按一下小地圖旁的「C」按鈕.若要略過安裝程序, 請按下方按鈕."
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "你嘗試導入的設定檔已存在. 選擇一個新名稱或是允許覆蓋原有設定檔"
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = "法術'%s'已經被添加到單位框架的光環過濾器中."
-L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = "介面縮放比例已被更改, 如果您想預覽這個更改, 請按預覽按鈕. 同時建議您為了最好的顯示效果重載用戶介面."
 L["Theme Set"] = "主題設定"
 L["Theme Setup"] = "主題安裝"
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = "此安裝程序有助你瞭解ElvUI 部份功能, 並可協助你預先設定UI."

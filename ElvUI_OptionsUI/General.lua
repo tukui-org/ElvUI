@@ -9,6 +9,7 @@ local AFK = E:GetModule('AFK')
 
 local _G = _G
 local IsAddOnLoaded = IsAddOnLoaded
+local IsMouseButtonDown = IsMouseButtonDown
 local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
 
 local function GetChatWindowInfo()
@@ -55,7 +56,7 @@ E.Options.args.general = {
 					name = L["Auto Scale"],
 					func = function()
 						E.global.general.UIScale = E:PixelBestSize()
-						E:StaticPopup_Show("UISCALE_CHANGE")
+						E:PixelScaleChanged()
 					end,
 				},
 				UIScale = {
@@ -67,7 +68,9 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.UIScale end,
 					set = function(info, value)
 						E.global.general.UIScale = value
-						E:StaticPopup_Show("UISCALE_CHANGE")
+						if not IsMouseButtonDown() then
+							E:PixelScaleChanged()
+						end
 					end
 				},
 				pixelPerfect = {

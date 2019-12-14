@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Lua functions
-local min, max, abs, floor = min, max, abs, floor
+local min, max, abs, floor, format = min, max, abs, floor, format
 --WoW API / Variables
 local UIParent = UIParent
 local GetPhysicalScreenSize = GetPhysicalScreenSize
@@ -66,27 +66,19 @@ function E:UIScale(init)
 end
 
 function E:PixelBestSize()
-	return max(0.4, min(1.15, 768 / E.screenheight))
+	local scale = E:Round(768 / E.screenheight, 5)
+	return max(0.4, min(1.15, scale))
 end
 
-function E:PixelScaleChanged(event, skip)
+function E:PixelScaleChanged(event)
 	if event == 'UI_SCALE_CHANGED' then
 		E.screenwidth, E.screenheight = GetPhysicalScreenSize()
 	end
-
-	local lastScale = E.mult
 
 	E:UIScale(true) -- repopulate variables
 	E:UIScale() -- setup the scale
 
 	E:UpdateConfigSize(true) -- reposition config
-
-	if skip then return end
-	if event == 'UISCALE_CHANGE' then
-		E:Delay(0.5, E.StaticPopup_Show, E, event)
-	elseif lastScale ~= E.mult then
-		E:StaticPopup_Show('UISCALE_CHANGE')
-	end
 end
 
 function E:Scale(x)

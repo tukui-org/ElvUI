@@ -237,7 +237,6 @@ L["Please click the button below so you can setup variables and ReloadUI."] = tr
 L["Please click the button below to setup your CVars."] = true
 L["Please press the continue button to go onto the next step."] = true
 L["Plugins"] = true
-L["Preview Changes"] = true
 L["Preview"] = true
 L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."] = true
 L["Profile download complete from %s, would you like to load the profile %s now?"] = true
@@ -303,7 +302,6 @@ L["The focus unit can be set by typing /focus when you are targeting the unit yo
 L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = true
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = true
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = true
-L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = true
 L["Theme Set"] = true
 L["Theme Setup"] = true
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = true
