@@ -27,6 +27,7 @@ end
 
 function E:UIScale(init)
 	local scale = E.global.general.UIScale
+	-- `init` will be the `event` if its triggered after combat
 	if init == true then -- E.OnInitialize
 		--Set variables for pixel scaling
 		local pixel, ratio = 1, 768 / E.screenheight
