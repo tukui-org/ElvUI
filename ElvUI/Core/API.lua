@@ -357,7 +357,13 @@ function E:Dump(object, inspect)
 end
 
 function E:AddNonPetBattleFrames()
-	if InCombatLockdown() then return end
+	if InCombatLockdown() then
+		E:UnregisterEventForObject('PLAYER_REGEN_DISABLED', E.AddNonPetBattleFrames, E.AddNonPetBattleFrames)
+		return
+	elseif E:IsEventRegisteredForObject('PLAYER_REGEN_DISABLED', E.AddNonPetBattleFrames) then
+		E:UnregisterEventForObject('PLAYER_REGEN_DISABLED', E.AddNonPetBattleFrames, E.AddNonPetBattleFrames)
+	end
+
 	for object, data in pairs(E.FrameLocks) do
 		local parent, strata
 		if type(data) == 'table' then
@@ -372,18 +378,20 @@ function E:AddNonPetBattleFrames()
 			obj:SetFrameStrata(strata)
 		end
 	end
-
-	E:UnregisterEventForObject('PLAYER_REGEN_DISABLED', E.AddNonPetBattleFrames, E.AddNonPetBattleFrames)
 end
 
 function E:RemoveNonPetBattleFrames()
-	if InCombatLockdown() then return end
+	if InCombatLockdown() then
+		E:RegisterEventForObject('PLAYER_REGEN_DISABLED', E.RemoveNonPetBattleFrames, E.RemoveNonPetBattleFrames)
+		return
+	elseif E:IsEventRegisteredForObject('PLAYER_REGEN_DISABLED', E.RemoveNonPetBattleFrames) then
+		E:UnregisterEventForObject('PLAYER_REGEN_DISABLED', E.RemoveNonPetBattleFrames, E.RemoveNonPetBattleFrames)
+	end
+
 	for object in pairs(E.FrameLocks) do
 		local obj = _G[object] or object
 		obj:SetParent(E.HiddenFrame)
 	end
-
-	E:RegisterEventForObject('PLAYER_REGEN_DISABLED', E.AddNonPetBattleFrames, E.AddNonPetBattleFrames)
 end
 
 function E:RegisterPetBattleHideFrames(object, originalParent, originalStrata)
