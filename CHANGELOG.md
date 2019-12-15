@@ -17,7 +17,7 @@ Using "/luaerror off" will restore Addons disabled from "/luaerror on" in testin
 
 **Bug Fixes:**  
 Made sure the Alternative Power is only shown when it's supposed to be shown.  
-Fixed a rare error which occured once on some quest in Blasted Lands.  
+Fixed a rare error which occurred once on some quest in Blasted Lands.  
 Fixed the raid marker from not circling (they were stacked, oops).  
 Fixed a Communities skin error about GetItemInfo.  
 Fixed the level line on ToolTips in some languages.  
