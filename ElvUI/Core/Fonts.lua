@@ -94,6 +94,10 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.NumberFont_Shadow_Med,				NORMAL, self.db.general.fontSize)			-- Chat EditBox
 		SetFont(_G.NumberFont_Shadow_Small,				NORMAL, self.db.general.fontSize)
 		SetFont(_G.NumberFontNormalSmall,				NORMAL, 11, 'OUTLINE')						-- Calendar, EncounterJournal
+		SetFont(_G.Number11Font,						NORMAL, 11)
+		SetFont(_G.Number12Font,						NORMAL, 12)
+		SetFont(_G.Number15Font,						NORMAL, 15)
+		SetFont(_G.PriceFont,							NORMAL, 13)
 		SetFont(_G.PVPArenaTextString,					NORMAL, 22, MONOCHROME..'OUTLINE')
 		SetFont(_G.PVPInfoTextString,					NORMAL, 22, MONOCHROME..'OUTLINE')
 		SetFont(_G.QuestFont,							NORMAL, self.db.general.fontSize)

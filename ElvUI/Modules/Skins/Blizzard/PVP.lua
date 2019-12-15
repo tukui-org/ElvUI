@@ -222,10 +222,10 @@ local function LoadSkin()
 	NewSeasonPopup.SeasonDescription2:SetTextColor(1, 1, 1)
 	NewSeasonPopup.SeasonDescription2:SetShadowOffset(1, -1)
 
-	local RewardFrame = _G.SeasonRewardFrame
+	local RewardFrame = NewSeasonPopup.SeasonRewardFrame
 	RewardFrame.CircleMask:SetAlpha(0)
 	RewardFrame.Ring:SetAlpha(0)
-	RewardFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+	S:HandleIcon(RewardFrame.Icon)
 end
 
 S:AddCallbackForAddon('Blizzard_PVPUI', "PvPUI", LoadSkin)
