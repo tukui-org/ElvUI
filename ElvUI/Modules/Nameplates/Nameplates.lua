@@ -299,6 +299,7 @@ end
 function NP:UpdatePlate(nameplate)
 	NP:Update_Tags(nameplate)
 	NP:Update_Highlight(nameplate)
+	NP:Update_RaidTargetIndicator(nameplate)
 
 	if (nameplate.VisibilityChanged or nameplate.NameOnlyChanged) or (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
 		NP:DisablePlate(nameplate, nameplate.NameOnlyChanged or (NP.db.units[nameplate.frameType].nameOnly and not nameplate.VisibilityChanged))
@@ -316,7 +317,6 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
 		NP:Update_TargetIndicator(nameplate)
 		NP:Update_ThreatIndicator(nameplate)
-		NP:Update_RaidTargetIndicator(nameplate)
 		NP:Update_HealerSpecs(nameplate)
 		NP:Update_Cutaway(nameplate)
 		NP:Update_NazjatarFollowerXP(nameplate)
