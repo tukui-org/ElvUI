@@ -6,7 +6,7 @@ local Skins = E:GetModule('Skins')
 local _G = _G
 local unpack, select, ipairs = unpack, select, ipairs
 local wipe, tinsert, tconcat = wipe, tinsert, table.concat
-local floor, tonumber = floor, tonumber
+local floor, tonumber, strlower = floor, tonumber, strlower
 local strfind, format, strsub = strfind, format, strsub
 local strmatch, gmatch = strmatch, gmatch
 --WoW API / Variables
@@ -72,8 +72,8 @@ local UNKNOWN = UNKNOWN
 -- GLOBALS: ElvUI_KeyBinder, ElvUI_ContainerFrame
 
 -- Custom to find LEVEL string on tooltip
-local LEVEL1 = _G.TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?','')
-local LEVEL2 = _G.TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?','')
+local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''))
+local LEVEL2 = strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?',''))
 
 local GameTooltip, GameTooltipStatusBar = _G.GameTooltip, _G.GameTooltipStatusBar
 local targetList = {}
@@ -189,8 +189,8 @@ function TT:GetLevelLine(tt, offset)
 	if tt:IsForbidden() then return end
 	for i=offset, tt:NumLines() do
 		local tipLine = _G["GameTooltipTextLeft"..i]
-		local tipText = tipLine and tipLine.GetText and tipLine:GetText()
-		if tipText and (tipText:find(LEVEL1) or tipText:find(LEVEL2)) then
+		local tipText = tipLine and tipLine.GetText and tipLine:GetText() and strlower(tipLine:GetText())
+		if tipText and (strfind(tipText, LEVEL1) or strfind(tipText, LEVEL2)) then
 			return tipLine
 		end
 	end
@@ -514,7 +514,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if unit and self.db.npcID and not isPlayerUnit then
 		if C_PetBattles_IsInBattle() then return end
 		local guid = UnitGUID(unit) or ""
-		local id = tonumber(guid:match("%-(%d-)%-%x-$"), 10)
+		local id = tonumber(strmatch(guid, "%-(%d-)%-%x-$"), 10)
 		if id then
 			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id))
 		end
@@ -581,7 +581,7 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		local bankCount = " "
 
 		if link ~= nil and self.db.spellID then
-			left = (("|cFFCA3C3C%s|r %s"):format(_G.ID, link)):match(":(%w+)")
+			left = strmatch(format("|cFFCA3C3C%s|r %s", _G.ID, link), ":(%w+)")
 		end
 
 		if self.db.itemCount == "BAGS_ONLY" then
@@ -712,7 +712,7 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 	local isFound
 	for i= 1, lines do
 		local line = _G[("GameTooltipTextLeft%d"):format(i)]
-		if line and line:GetText() and line:GetText():find(displayString) then
+		if line and line:GetText() and strfind(line:GetText(), displayString) then
 			isFound = true;
 			break
 		end

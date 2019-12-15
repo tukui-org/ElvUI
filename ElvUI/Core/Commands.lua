@@ -5,15 +5,15 @@ local AB = E:GetModule('ActionBars')
 --Lua functions
 local _G = _G
 local tonumber, type, pairs, select = tonumber, type, pairs, select
-local lower, split, format = strlower, strsplit, format
+local lower, split, format, wipe, next = strlower, strsplit, format, wipe, next
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
 local debugprofilestop = debugprofilestop
-local DisableAllAddOns = DisableAllAddOns
 local EnableAddOn = EnableAddOn
 local GetAddOnCPUUsage = GetAddOnCPUUsage
 local GetAddOnInfo = GetAddOnInfo
+local GetNumAddOns = GetNumAddOns
 local GetCVarBool = GetCVarBool
+local DisableAddOn = DisableAddOn
 local GetGuildRosterInfo = GetGuildRosterInfo
 local GetGuildRosterLastOnline = GetGuildRosterLastOnline
 local GetNumGuildMembers = GetNumGuildMembers
@@ -25,7 +25,7 @@ local ResetCPUUsage = ResetCPUUsage
 local SendChatMessage = SendChatMessage
 local SetCVar = SetCVar
 local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
--- GLOBALS: ElvUIGrid
+-- GLOBALS: ElvUIGrid, ElvDB
 
 function E:Grid(msg)
 	msg = msg and tonumber(msg)
@@ -40,16 +40,32 @@ function E:Grid(msg)
 end
 
 function E:LuaError(msg)
-	msg = lower(msg)
-	if msg == 'on' then
-		DisableAllAddOns()
-		EnableAddOn('ElvUI')
-		EnableAddOn('ElvUI_OptionsUI')
+	local switch = lower(msg)
+	if switch == 'on' or switch == '1' then
+		for i=1, GetNumAddOns() do
+			local name = GetAddOnInfo(i)
+			if (name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI') and E:IsAddOnEnabled(name) then
+				DisableAddOn(name, E.myname)
+				ElvDB.LuaErrorDisabledAddOns[name] = i
+			end
+		end
+
 		SetCVar('scriptErrors', 1)
 		ReloadUI()
-	elseif msg == 'off' then
-		SetCVar('scriptErrors', 0)
-		E:Print('Lua errors off.')
+	elseif switch == 'off' or switch == '0' then
+		if switch == 'off' then
+			SetCVar('scriptErrors', 0)
+			E:Print('Lua errors off.')
+		end
+
+		if next(ElvDB.LuaErrorDisabledAddOns) then
+			for name in pairs(ElvDB.LuaErrorDisabledAddOns) do
+				EnableAddOn(name, E.myname)
+			end
+
+			wipe(ElvDB.LuaErrorDisabledAddOns)
+			ReloadUI()
+		end
 	else
 		E:Print('/luaerror on - /luaerror off')
 	end

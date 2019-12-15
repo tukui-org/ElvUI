@@ -22,6 +22,7 @@ local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local issecurevariable = issecurevariable
 local LoadAddOn = LoadAddOn
+local DisableAddOn = DisableAddOn
 local ReloadUI = ReloadUI
 
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
@@ -127,6 +128,14 @@ do
 	end
 end
 
+do
+	DisableAddOn("ElvUI_VisualAuraTimers")
+	DisableAddOn("ElvUI_ExtraActionBars")
+	DisableAddOn("ElvUI_CastBarOverlay")
+	DisableAddOn("ElvUI_EverySecondCounts")
+	DisableAddOn("ElvUI_AuraBarsMovers")
+end
+
 function AddOn:OnInitialize()
 	if not ElvCharacterDB then
 		ElvCharacterDB = {}
@@ -174,7 +183,6 @@ function AddOn:OnInitialize()
 	self.PixelMode = self.twoPixelsPlease or self.private.general.pixelPerfect -- keep this over `UIScale`
 	self:UIScale(true)
 	self:UpdateMedia()
-	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:Contruct_StaticPopups()
 	self:InitializeInitialModules()
 
@@ -222,38 +230,6 @@ LoadUI:RegisterEvent('PLAYER_LOGIN')
 LoadUI:SetScript('OnEvent', function()
 	AddOn:Initialize()
 end)
-
-function AddOn:PLAYER_REGEN_ENABLED()
-	self:ToggleOptionsUI()
-	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
-end
-
-function AddOn:PLAYER_REGEN_DISABLED()
-	local err
-
-	if IsAddOnLoaded('ElvUI_OptionsUI') then
-		local ACD = self.Libs.AceConfigDialog
-		if ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName] then
-			self:RegisterEvent('PLAYER_REGEN_ENABLED')
-			ACD:Close(AddOnName)
-			err = true
-		end
-	end
-
-	if self.CreatedMovers then
-		for name in pairs(self.CreatedMovers) do
-			local mover = _G[name]
-			if mover and mover:IsShown() then
-				mover:Hide()
-				err = true
-			end
-		end
-	end
-
-	if err then
-		self:Print(ERR_NOT_IN_COMBAT)
-	end
-end
 
 function AddOn:ResetProfile()
 	local profileKey
@@ -336,7 +312,7 @@ local pageNodes = {}
 function AddOn:ToggleOptionsUI(msg)
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
-		self:RegisterEvent('PLAYER_REGEN_ENABLED')
+		self.ShowOptionsUI = true
 		return
 	end
 

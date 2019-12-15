@@ -52,7 +52,6 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.AchievementFont_Small,				NORMAL, self.db.general.fontSize)			-- Achiev dates
 		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 24)									-- Talent Title
 		SetFont(_G.ChatBubbleFont,						BUBBLE, self.private.general.chatBubbleFontSize, self.private.general.chatBubbleFontOutline)
-		SetFont(_G.CombatTextFont,						COMBAT, 200, 'OUTLINE')						-- number here just increase the font quality.
 		SetFont(_G.CoreAbilityFont,						NORMAL, 26)									-- Core abilities(title)
 		SetFont(_G.DestinyFontHuge,						NORMAL, 32, nil, SHADOWCOLOR, BIGOFFSET)	-- Garrison Mission Report
 		SetFont(_G.DestinyFontMed,						NORMAL, 14)									-- Added in 7.3.5 used for ?
@@ -126,5 +125,8 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Tooltip_Med,							NORMAL, self.db.general.fontSize)
 		SetFont(_G.Tooltip_Small,						NORMAL, self.db.general.fontSize)
 		SetFont(_G.ZoneTextString,						NORMAL, 32, MONOCHROME..'OUTLINE')
+
+		-- No matter what we do here with the Combat Font, the player Combat Font will always looks like shit, so just dont touch it.
+		--SetFont(_G.CombatTextFont,						COMBAT, 200, 'OUTLINE')						-- number here just increase the font quality.
 	end
 end

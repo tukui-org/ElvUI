@@ -46,8 +46,7 @@ local function filterPriority(auraType, unit, value, remove, movehere, friendSta
 	end
 	local filter =
 		E.db.nameplates.units[unit] and E.db.nameplates.units[unit][auraType] and
-		E.db.nameplates.units[unit][auraType].filters and
-		E.db.nameplates.units[unit][auraType].filters.priority
+		E.db.nameplates.units[unit][auraType].priority
 	if not filter then
 		return
 	end
@@ -66,7 +65,7 @@ local function filterPriority(auraType, unit, value, remove, movehere, friendSta
 		end
 		tremove(tbl, sm)
 		tinsert(tbl, sv, movehere)
-		E.db.nameplates.units[unit][auraType].filters.priority = tconcat(tbl, ",")
+		E.db.nameplates.units[unit][auraType].priority = tconcat(tbl, ",")
 	elseif found and friendState then
 		local realValue = strmatch(value, "^Friendly:([^,]*)") or strmatch(value, "^Enemy:([^,]*)") or value
 		local friend = filterMatch(filter, E:EscapeString("Friendly:" .. realValue))
@@ -92,13 +91,13 @@ local function filterPriority(auraType, unit, value, remove, movehere, friendSta
 				end
 				tinsert(tbl, sv, state)
 				tremove(tbl, sv + 1)
-				E.db.nameplates.units[unit][auraType].filters.priority = tconcat(tbl, ",")
+				E.db.nameplates.units[unit][auraType].priority = tconcat(tbl, ",")
 			end
 		end
 	elseif found and remove then
-		E.db.nameplates.units[unit][auraType].filters.priority = gsub(filter, found, "")
+		E.db.nameplates.units[unit][auraType].priority = gsub(filter, found, "")
 	elseif not found and not remove then
-		E.db.nameplates.units[unit][auraType].filters.priority = (filter == "" and value) or (filter .. "," .. value)
+		E.db.nameplates.units[unit][auraType].priority = (filter == "" and value) or (filter .. "," .. value)
 	end
 end
 
@@ -3563,7 +3562,7 @@ local function GetUnitSettings(unit, name)
 					sourceInterruptClassColor = {
 						order = 3,
 						type = "toggle",
-						name = L["Show Interrupt Source in Class Color"],
+						name = L["Class Color Source"],
 						disabled = function()
 							return not E.db.nameplates.units[unit].castbar.sourceInterrupt
 						end
@@ -3990,10 +3989,10 @@ local function GetUnitSettings(unit, name)
 						type = "group",
 						guiInline = true,
 						get = function(info)
-							return E.db.nameplates.units[unit].buffs.filters[info[#info]]
+							return E.db.nameplates.units[unit].buffs[info[#info]]
 						end,
 						set = function(info, value)
-							E.db.nameplates.units[unit].buffs.filters[info[#info]] = value
+							E.db.nameplates.units[unit].buffs[info[#info]] = value
 							NP:ConfigureAll()
 						end,
 						args = {
@@ -4076,7 +4075,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["Reset filter priority to the default state."],
 								type = "execute",
 								func = function()
-									E.db.nameplates.units[unit].buffs.filters.priority = P.nameplates.units[unit].buffs.filters.priority
+									E.db.nameplates.units[unit].buffs.priority = P.nameplates.units[unit].buffs.priority
 									NP:ConfigureAll()
 								end
 							},
@@ -4113,12 +4112,12 @@ local function GetUnitSettings(unit, name)
 									filterPriority("buffs", unit, carryFilterFrom, nil, nil, true)
 								end,
 								values = function()
-									local str = E.db.nameplates.units[unit].buffs.filters.priority
+									local str = E.db.nameplates.units[unit].buffs.priority
 									if str == "" then return {} end
 									return {strsplit(",", str)}
 								end,
 								get = function(_, value)
-									local str = E.db.nameplates.units[unit].buffs.filters.priority
+									local str = E.db.nameplates.units[unit].buffs.priority
 									if str == "" then return end
 									local tbl = {strsplit(",", str)}
 									return tbl[value]
@@ -4346,10 +4345,10 @@ local function GetUnitSettings(unit, name)
 						order = 13,
 						type = "group",
 						get = function(info)
-							return E.db.nameplates.units[unit].debuffs.filters[info[#info]]
+							return E.db.nameplates.units[unit].debuffs[info[#info]]
 						end,
 						set = function(info, value)
-							E.db.nameplates.units[unit].debuffs.filters[info[#info]] = value
+							E.db.nameplates.units[unit].debuffs[info[#info]] = value
 							NP:ConfigureAll()
 						end,
 						guiInline = true,
@@ -4433,7 +4432,7 @@ local function GetUnitSettings(unit, name)
 								desc = L["Reset filter priority to the default state."],
 								type = "execute",
 								func = function()
-									E.db.nameplates.units[unit].debuffs.filters.priority = P.nameplates.units[unit].debuffs.filters.priority
+									E.db.nameplates.units[unit].debuffs.priority = P.nameplates.units[unit].debuffs.priority
 									NP:ConfigureAll()
 								end
 							},
@@ -4470,12 +4469,12 @@ local function GetUnitSettings(unit, name)
 									filterPriority("debuffs", unit, carryFilterFrom, nil, nil, true)
 								end,
 								values = function()
-									local str = E.db.nameplates.units[unit].debuffs.filters.priority
+									local str = E.db.nameplates.units[unit].debuffs.priority
 									if str == "" then return {} end
 									return {strsplit(",", str)}
 								end,
 								get = function(info, value)
-									local str = E.db.nameplates.units[unit].debuffs.filters.priority
+									local str = E.db.nameplates.units[unit].debuffs.priority
 									if str == "" then return end
 									local tbl = {strsplit(",", str)}
 									return tbl[value]

@@ -64,15 +64,15 @@ end
 local function SkinOverviewInfo(self, _, index)
 	local header = self.overviews[index]
 	if not header.isSkinned then
-
-		header.descriptionBG:SetAlpha(0)
-		header.descriptionBGBottom:SetAlpha(0)
 		for i = 4, 18 do
 			select(i, header.button:GetRegions()):SetTexture()
 		end
 
 		HandleButton(header.button)
 
+		header.descriptionBG:SetAlpha(0)
+		header.descriptionBGBottom:SetAlpha(0)
+		header.description:SetTextColor(1, 1, 1)
 		header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
 		header.button.title.SetTextColor = E.noop
 		header.button.expandedIcon:SetTextColor(1, 1, 1)
@@ -193,7 +193,6 @@ local function LoadSkin()
 	EJ.searchBox:Point("TOPLEFT", EJ.navBar, "TOPRIGHT", 4, 0)
 
 	local InstanceSelect = EJ.instanceSelect
-	_G.EncounterJournalEncounterFrameInfoInstanceTitle:Kill()
 
 	EJ.instanceSelect.bg:Kill()
 	S:HandleDropDownBox(InstanceSelect.tierDropDown)
@@ -257,7 +256,7 @@ local function LoadSkin()
 
 	--buttons
 	EncounterInfo.difficulty:ClearAllPoints()
-	EncounterInfo.difficulty:Point("BOTTOMRIGHT", _G.EncounterJournalEncounterFrameInfoBG, "TOPRIGHT", -1, 5)
+	EncounterInfo.difficulty:SetPoint("BOTTOMRIGHT", _G.EncounterJournalEncounterFrameInfoBG, "TOPRIGHT", -1, 5)
 	HandleButton(EncounterInfo.reset)
 	HandleButton(EncounterInfo.difficulty)
 	HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, true)
@@ -532,20 +531,10 @@ local function LoadSkin()
 		_G.EncounterJournalEncounterFrameInstanceFrameBG:SetRotation(rad(180))
 		_G.EncounterJournalEncounterFrameInstanceFrameBG:SetScale(0.7)
 		_G.EncounterJournalEncounterFrameInstanceFrameBG:CreateBackdrop()
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonShadow:SetAlpha(0)
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:ClearAllPoints()
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:Point("BOTTOMLEFT", _G.EncounterJournalEncounterFrameInstanceFrameBG.backdrop, "BOTTOMLEFT", 5, 5)
 		_G.EncounterJournalEncounterFrameInstanceFrame.titleBG:SetAlpha(0)
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:FontTemplate(nil, 25)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:SetAlpha(0)
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:StripTextures()
-		HandleButton(_G.EncounterJournalEncounterFrameInstanceFrameMapButton)
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:ClearAllPoints()
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:Point("CENTER")
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:SetText(_G.SHOW_MAP)
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:Height(25)
-		_G.EncounterJournalEncounterFrameInstanceFrameMapButton:Width(_G.EncounterJournalEncounterFrameInstanceFrameMapButtonText:GetStringWidth()*1.5)
 
 		parch:Kill()
 	end
