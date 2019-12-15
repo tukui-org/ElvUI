@@ -190,18 +190,6 @@ E.PopupDialogs.INCOMPATIBLE_ADDON = {
 	hideOnEscape = false,
 }
 
-E.PopupDialogs.UISCALE_CHANGE = {
-	text = L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."],
-	OnAccept = function() ReloadUI(); end,
-	OnCancel = E.noop,
-	button1 = ACCEPT,
-	button2 = CANCEL,
-	button3 = L["Preview Changes"],
-	OnAlt = function() E:PixelScaleChanged('UISCALE_CHANGE') end,
-	whileDead = 1,
-	hideOnEscape = false
-}
-
 E.PopupDialogs.CONFIG_RL = {
 	text = L["One or more of the changes you have made require a ReloadUI."],
 	button1 = ACCEPT,

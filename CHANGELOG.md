@@ -1,15 +1,34 @@
-### Version 11.27 [ ETA: soon ]
+### Version 11.28 [ ETA: Soon ]
 
 **New Additions:**  
 
 
 **Bug Fixes:**  
-Made sure the Alternative Power is only shown when it's supposed to be shown.  
-Fixed a rare error which occured once on some quest in Blasted Lands.  
+
 
 **Misc. Changes:**  
-Changed the max. duration to 0 in the aura priority list.  
-Changed the aura spacing options to use max. 20.  
+
+
+___
+### Version 11.27 [ December 14th 2019 ]
+
+**New Additions:**  
+Using "/luaerror off" will restore Addons disabled from "/luaerror on" in testing now (during that session only).  
+
+**Bug Fixes:**  
+Made sure the Alternative Power is only shown when it's supposed to be shown.  
+Fixed a rare error which occurred once on some quest in Blasted Lands.  
+Fixed the raid marker from not circling (they were stacked, oops).  
+Fixed a Communities skin error about GetItemInfo.  
+Fixed the level line on ToolTips in some languages.  
+Added back Focus Raid Icon options.  
+
+**Misc. Changes:**  
+Removed the UI Scale popup for real. Goodbye.  
+Changed the Focus Aura Bars to off by default.  
+Changed the Max Duration to 0 in the Aura Priority list.  
+Changed the Aura Spacing options to use max 20.  
+Addons which were integrated into the base addon are now disabled automatically on load (VisualAuraTimers, ExtraActionBars, CastBarOverlay, EverySecondCounts, and AuraBarsMovers).  
 
 ___
 ### Version 11.26 [ December 5th 2019 ]
@@ -91,7 +110,7 @@ Fixed bag count color options.
 Fixed some skin errors.  
 
 **Misc. Changes:**  
-Added back the tag: 'name:abbrev'.  
+Added back the tag: "name:abbrev".  
 Removed our clipping for UI Scale.  
 Updated the Chat module & Guild and Friends DataText to use the new API blizzard switched too, with a few minor bug fixes.  
 
@@ -191,7 +210,7 @@ Added Cutaway Health and Power (when appropriate) to all of the unitframes.  It 
 **Bug Fixes:**  
 Fixed Essences on Hearth of Azeroth showing incorrectly on the character page (similar to gems).  
 Fixed Item Level showing incorrectly on the character page when in a gear scaled instance.  
-Fixed issue which caused the 'Smaller World Map' to not be displayed correctly on initial login.  
+Fixed issue which caused the "Smaller World Map" to not be displayed correctly on initial login.  
 Fixed Minimap Ping & Blizzard Tracking Menu to show in combat (right and middle is still ignored in combat).  
 Fixed the displaying of incorrect auras on Nameplates when StyleFilter "Name Only" ended (returning to normal nameplate).  
 Fixed Battleground map position saving. (#831)  
@@ -283,7 +302,7 @@ ___
 
 **New Additions:**  
 Added option to change the vertical/horizontal overlap of the Nameplates.  
-Added option to change the Nameplate position: 'Nameplate at Base'.  
+Added option to change the Nameplate position: "Nameplate at Base".  
 [Style Filter] Added Triggers- Unit Is Tap Denied, Unit is Not Tap Denied. (!169)  
 Added new skin for AzeriteEssenceUI. Probably some "new" Skins are missing.  
 
@@ -308,19 +327,19 @@ ElvUI_Config has been renamed to ElvUI_OptionsUI.
 Added options to invert the CastBar, AuraBars, and Power colors on UnitFrames status bars when in transparent mode; as well as added custom backdrop options for these status bars.  
 Added custom backdrop for ClassBars on UnitFrames.  
 Added nameplate friendly npc option "always show" this is used to toggle npc nameplates using blizzards setting; so that they can go into blizzard name-only mode.  
-Added new Tags, which allows transliteration. E.g. 'name:medium:translit'. For more tags, visit our Custom Tag Guide on our forum.  
+Added new Tags, which allows transliteration. E.g. "name:medium:translit". For more tags, visit our Custom Tag Guide on our forum.  
 Added Glimmer of Light for Paladins to the BuffIndicator.  
 Added Gale Slash to RaidDebuffs.  
 
 **Bug Fixes:**  
 Fixed Style Filter Class Trigger. (#1310)  
-Fixed error: attempt to index field 'CompactUnitFrameProfilesNewProfileDialog'. (#1314)  
+Fixed error: attempt to index field "CompactUnitFrameProfilesNewProfileDialog". (#1314)  
 Fixed double player nameplate when changing specific settings in the config. (#1316)  
 Fixed player nameplate not fading in when hovered.  
 Fixed the portrait and health backdrop bleeding on UnitFrames health when they fade on range, specifically for BuG.  
-Fixed error: StyleFilter attempt to index locale 'auras' (a nil value).  
-Fixed error: StyleFilter attempt to index field 'cooldowns' (a nil value).  
-Fixed error: Nameplates attempt to access forbidden object from code tainted by an AddOn.  
+Fixed error: StyleFilter attempt to index locale "auras" (a nil value).  
+Fixed error: StyleFilter attempt to index field "cooldowns" (a nil value).  
+Fixed error: Nameplates attempt to access forbidden object from code tainted by an addon.  
 Fixed bind mode for extra action button.  
 Fixed skin for invite role check boxes.  
 Fixed Nameplates in stacking mode on initial login.  
@@ -357,10 +376,10 @@ Fixed Nameplate Alternative Power Swap.
 Fixed Fader from properly fading the Pet Frame out when combat ends.  
 Fixed "button.db" error in Nameplate Aura code.  
 Fixed a dropdown text position if the Communities Frame is minimized.  
-Fixed Nameplate Class Bar error "ClassPower.lua line 133: attempt to index field '?' (a userdata value)".  
+Fixed Nameplate Class Bar error: attempt to index field "?" (a userdata value).  
 Fixed Enchant Text on Item Level and Minimap Location Text not clipping properly on non english clients. (Thanks @Bunny67)  
 Fixed Name Fonts getting replaced even though Replace Blizzard Fonts is checked off. (#1269)  
-Fixed "Attempt to index local 'threat' (a nil value)". (#1277)  
+Fixed Attempt to index local "threat" (a nil value). (#1277)  
 Fixed error when you disable a Custom Text.  
 Fixed Nameplate Power Use Atlas Textures option.  
 Fixed Twitter icon not appearing for items in chat. (#1281)  
@@ -380,7 +399,7 @@ Nameplate Class Bar will also sync it's texture to the background.
 Attempted to fix PossessBarFrame, MainMenuBar, etc.. taint errors.  
 Cleaned up some of the code which handles Player Role in the UI, this fixed the Timewalking Threat being backwards.  
 Tweaked the Tooltips in the Config so it will display the hard limits (min, max, decimal step) and only display a tooltip when it has other information than just name.  
-Limited the Nameplate Low Health Threshold to '80%'.  
+Limited the Nameplate Low Health Threshold to 80%.  
 Fixed some Ace3 skin weirdness.  
 Cleaned up some of the Animation code. (Thanks @Grey)  
 Reworked how ElvUI unsnaps textures, textures will be unsnapped globally now.  
@@ -412,7 +431,7 @@ ___
 
 **Bug Fixes:**  
 Unsnapped the Totem Bar icon textures.  
-Fixed Actionbar Masque enabled error "attempt to index field 'pushed' (a nil value)".  
+Fixed Actionbar Masque enabled error: attempt to index field "pushed" (a nil value).  
 Fixed charge cooldown setting not applying correctly. (#1256)  
 
 **Misc. Changes:**  
@@ -437,7 +456,7 @@ ___
 ### Version 11.07 [ April 7th 2019 ]
 
 **New Additions:**  
-[Nameplate] Added ElvUIPlayerNamePlateAnchor for WeakAuras and other AddOns.  
+[Nameplate] Added ElvUIPlayerNamePlateAnchor for WeakAuras and other addons.  
 [Nameplate] Added an option to toggle the Nameplates from fading in when shown.  
 [Nameplate] Added Aura stack position option. (#1140)  
 [Nameplate / Unitframes] Added NamePlate and UnitFrame Color Selection colors from oUF. (Thanks oUF/LS-)!  
@@ -470,14 +489,14 @@ Added an option to ignore the UI Scale popup when resizing the game window (Gene
 [Actionbar] Fixed Stance Bar Keybinding Text not appearing correctly. (#541)  
 [Unitframe] Fixed health not updating correctly (again).  
 [Unitframe] Fixed Castbar hold time not working correctly.  
-[Chat / Datatext] Finally fixed the 'lhs' error with Quick Join.  
+[Chat / Datatext] Finally fixed the "lhs" error with Quick Join.  
 [Chat] Fixed an issue which was caused from our Chat file skinning the Combat Log bar when other addons hid it.  
 [Skin] Fixed an issue which caused the Ace3 skin to add an X on buttons from other addons using our skin. (#1217)  
 [Datatext] Made sure the LDB Datatext value color updates along with the General Media Value color correctly.  
 Fixed an issue which prevented border and backdrop color from being updated correctly in some cases.  
 Fixed spam errors when trying to change Talents when you have non selected yet.  
 Fixed an issue whiched caused incompatiblity with our config and ColorPickerPlus.  
-Fixed an error in init.lua: attempt to index local 'ACD'.  
+Fixed an error in init.lua: attempt to index local "ACD".  
 Fixed an issue with the Quest Skin which caused the Quest Icon beside the text to sometimes not be shown.  
 Fixed the DropDown Box text on the Communities Stream Dropdown.  
 Fixed a tiny visual glitch with the DropDown in the Communities frame.  
@@ -513,7 +532,7 @@ Updated Quest Greeting Frame skin.
 Optimized the Color Picker code for better preformance, also it will accept three digit hex values in the hex box but you must you press enter.  
 Skinned the New Toy Alert.  
 Skinned the Communities Notification Buttons.  
-Removed the 'Forcing MaxGroups to' message.  
+Removed the "Forcing MaxGroups to" message.  
 Added smoothing option to the Alternative Power bar.  
 Blizzard corrected the issue with CVars not saving correctly.  
 Adjusted all the Power and Classbar backdrop colors to be a little more vivid.  
@@ -555,7 +574,7 @@ ___
 **New Additions:**  
 
 **Bug Fixes:**  
-Attempted to fix a C-Stack error from 'Core/Toolkit'.  
+Attempted to fix a C-Stack error from "Core/Toolkit".  
 Fixed an issue which caused a hidden frame in the middle of the screen to hijack clicks.  
 
 **Misc. Changes:**  
@@ -775,13 +794,13 @@ Added a position option (Left or Right) for the Quest Icon on the Nameplates.
 Added option to change the position of the Keybind & Stack Text on the ActionBars. (#361)  
 Added option to show an icon on an item in the bags if it's scrappable.  
 Added option in our media section to remove the cropping from icons. Mostly used for Custom Texture Packs.  
-Added option in our media section to select the 'Font Outline'.  
+Added option in our media section to select the "Font Outline".  
 Added the WoW Token price in our Gold DataText.  
 
 **Bug Fixes:**  
-Fixed realm:dash tag error. (tags.lua:657: bad argument #2 to 'format')  
+Fixed realm:dash tag error. (tags.lua:657: bad argument #2 to "format")  
 Fixed QuestGreetingPanel & WorldMap skin not take account to Parchment Remover.  
-Fixed Masque issues with the AddOn ElvUI_ExtraActionBars. (#709)  
+Fixed Masque issues with the addon ElvUI_ExtraActionBars. (#709)  
 
 **Misc. Changes:**  
 Updated LibItemSearch to latest version.  
@@ -843,7 +862,7 @@ Reworked vendor greys code to resolve issues with the previous versions.
 Allow left & right mouse button when using Keybind. (#234)  
 Updated collection skin. Credits AddOnSkins.  
 Updated Ace3 skin (ElvUI config page)  
-Added ElvUIGVC chat channel for Version Checking (AddOn Communication) and Voice Chat (off by Default) on realm.  
+Added ElvUIGVC chat channel for Version Checking (Addon Communication) and Voice Chat (off by Default) on realm.  
 Time datatext will now use the 24 hour clock by default in non-US regions. (#839 - Credit: @Zucht).  
 
 ___
@@ -894,7 +913,7 @@ Fixed the default position for the UIWidgetTopCenter mover.
 Fixed issue with chat frames and data panels disappearing. (#686)  
 Fixed statusbars on the ToyBox & Heirloom tab in the collection skin.  
 Fixed issue which prevented debuff highlight from working for shadow priests and diseases.  
-Fixed channel ticks for Penance with talent 'Castigation'  
+Fixed channel ticks for Penance with talent "Castigation"  
 
 **Misc. Changes:**  
 Removed Legion debuffs  
@@ -977,13 +996,13 @@ ___
 
 **Bug Fixes:**  
 Fixed issue with backdrop on tooltips turning blue.  
-Fixed error when pressing 'Enter' to start typing in the chat. (#485)  
+Fixed error when pressing "Enter" to start typing in the chat. (#485)  
 
 **Misc. Changes:**  
 Added skins from Simpy for Artifact Appearance and Orderhall Talents.  
-Added support for Load On Demand addons' memory/cpu usage display in tooltips (credit: cqwrteur).  
+Added support for Load On Demand addons memory/cpu usage display in tooltips (credit: cqwrteur).  
 Fixed a texture issue in the Quest Log skin.  
-Updated skinning of the 'TodayFrame' in the calendar. It uses skinning from Azilroka.  
+Updated skinning of the "TodayFrame" in the calendar. It uses skinning from Azilroka.  
 
 ___
 ### Version 10.75 for patch 8.0 [ July 17th 2018 ]
@@ -1023,8 +1042,8 @@ ___
 **New Additions:**  
 Added "Group Spacing" option to party/raid frames. This allows you to separate each individual group.  
 Added option to move the Resurrect Icon on the party/raid/raid40 frames.  
-Added new UnitFrame Glow settings located under 'UnitFrame -> General -> Frame Glow'. Each type of UnitFrame (Player, Target, Etc) has new options to disable these settings individually.  
-Added an option 'Nameplates -> General -> Name Colored Glow' to use the Nameplate Name Color for the Name Glow instead of Glow Color.  
+Added new UnitFrame Glow settings located under "UnitFrame -> General -> Frame Glow". Each type of UnitFrame (Player, Target, Etc) has new options to disable these settings individually.  
+Added an option "Nameplates -> General -> Name Colored Glow" to use the Nameplate Name Color for the Name Glow instead of Glow Color.  
 Added options to override the Cooldown Text settings inside of Bags, NamePlates, UnitFrames, and Buffs and Debuffs.  
 
 **Bug Fixes:**  
@@ -1078,7 +1097,7 @@ Added Instance Icons on the Saved Instances tooltip. (Thanks Kkthnx for the idea
 
 **Bug Fixes:**  
 Fixed issue that would allow quest grey items to be vendored via Vendor Grey Items.  
-Fixed rare tooltip error (attempt to index local 'color').  
+Fixed rare tooltip error (attempt to index local "color").  
 Fixed error trying to copy settings between nameplate units. (#305)  
 Fixed various issues with the keybind feature (/kb). Trying to keybind an empty pet action button will now correctly show a tooltip. Trying to keybind a flyout menu will now correctly show a tooltip too.  
 Clicking on a player's name who whispered you or messaged into guild chat via Mobile app will now properly link their name with realm attached.  

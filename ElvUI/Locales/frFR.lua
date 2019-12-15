@@ -237,7 +237,6 @@ L["Please click the button below so you can setup variables and ReloadUI."] = "P
 L["Please click the button below to setup your CVars."] = "Pour configurer les CVars, cliquez sur le bouton ci-dessous."
 L["Please press the continue button to go onto the next step."] = "Pour passer à l'étape suivante, cliquez sur le bouton Continuer."
 L["Plugins"] = true
-L["Preview Changes"] = true
 L["Preview"] = true
 L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."] = "Téléchargement du profil de %s complet, mais le profil de % existe déjà. Changez le nom ou il écrasera le profil existant."
 L["Profile download complete from %s, would you like to load the profile %s now?"] = "Téléchargement du profil de %s complet, voulez-vous charger le profil %s maintenant ?"
@@ -303,7 +302,6 @@ L["The focus unit can be set by typing /focus when you are targeting the unit yo
 L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = "Le menu de configuration est accessible en tapant la commande /ec ou en cliquant sur le bouton 'C' sur la mini-carte. Cliquez sur le bouton ci-dessous si vous voulez passer le processus d'installation."
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "Le profil que vous essayez d'importer existe déjà. Choisissez un nouveau nom ou acceptez d'écraser le profil existant."
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = "Le sort '%s' a bien été ajouté à la liste noire des filtres des cadres d'unités."
-L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = true
 L["Theme Set"] = "Thème configuré"
 L["Theme Setup"] = "Configuration du thème"
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = "Ce programme d'installation vous aidera à découvrir quelques fonctionnalités qu'ElvUI offre et préparera également votre interface à son utilisation."

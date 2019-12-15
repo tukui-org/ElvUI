@@ -237,7 +237,6 @@ L["Please click the button below so you can setup variables and ReloadUI."] = "B
 L["Please click the button below to setup your CVars."] = "Klicke 'Installiere CVars' um die CVars einzurichten."
 L["Please press the continue button to go onto the next step."] = "Bitte drücke die Weiter-Taste um zum nächsten Schritt zu gelangen."
 L["Plugins"] = true -- No need to translate
-L["Preview Changes"] = "Änderungsvorschau"
 L["Preview"] = "Vorschau"
 L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."] = "Profil komplett heruntergeladen von %s, allerdings ist das Profil %s bereits vorhanden. Ändere den Namen oder das bereits existierende Profil wird überschrieben."
 L["Profile download complete from %s, would you like to load the profile %s now?"] = "Profil komplett heruntergeladen von %s, möchtest du das Profil %s nun laden?"
@@ -305,7 +304,6 @@ L["The focus unit can be set by typing /focus when you are targeting the unit yo
 L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = "Das ElvUI-Konfigurationsmenü kannst du entweder mit /ec oder durch das Anklicken der 'C' Taste an der Minimap aufrufen. Drücke 'Schritt überspringen' um zum nächsten Schritt zu gelangen."
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "Das Profil, dass du versuchst zu importieren existiert bereits. Wähle einen neuen Namen oder aktzeptiere dass das vorhandene Profile überschrieben wird."
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = "Der Zauber '%s' wurde zur schwarzen Liste der Einheitenfenster hinzugefügt."
-L["The UI Scale has been changed, if you would like to preview the change press the preview button. It is recommended that you reload your User Interface for the best appearance."] = "Die UI Skallierung hat sich verändert, wenn du die Änderungen anschauen möchtest drücke bitte den Vorschau Knopf. Es wird empfohlen dass du dein UI neulädst für die besten Ergebnise."
 L["Theme Set"] = "Thema gesetzt"
 L["Theme Setup"] = "Thema Setup"
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = "Dieser Installationsprozess wird dir helfen, die Funktionen von ElvUI für deine Benutzeroberfläche besser kennenzulernen."
