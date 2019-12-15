@@ -41,7 +41,7 @@ end
 
 function E:LuaError(msg)
 	local switch = lower(msg)
-	if switch == 'on' then
+	if switch == 'on' or switch == '1' then
 		for i=1, GetNumAddOns() do
 			local name = GetAddOnInfo(i)
 			if (name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI') and E:IsAddOnEnabled(name) then
@@ -52,7 +52,12 @@ function E:LuaError(msg)
 
 		SetCVar('scriptErrors', 1)
 		ReloadUI()
-	elseif switch == 'off' then
+	elseif switch == 'off' or switch == '0' then
+		if switch == 'off' then
+			SetCVar('scriptErrors', 0)
+			E:Print('Lua errors off.')
+		end
+
 		if next(ElvDB.LuaErrorDisabledAddOns) then
 			for name in pairs(ElvDB.LuaErrorDisabledAddOns) do
 				EnableAddOn(name, E.myname)
@@ -61,9 +66,6 @@ function E:LuaError(msg)
 			wipe(ElvDB.LuaErrorDisabledAddOns)
 			ReloadUI()
 		end
-
-		SetCVar('scriptErrors', 0)
-		E:Print('Lua errors off.')
 	else
 		E:Print('/luaerror on - /luaerror off')
 	end
