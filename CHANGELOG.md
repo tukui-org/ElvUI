@@ -1,4 +1,16 @@
-### Version 11.27 [ ETA: soon ]
+### Version 11.28 [ ETA: Soon ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 11.27 [ December 14th 2019 ]
 
 **New Additions:**  
 Using "/luaerror off" will restore Addons disabled from "/luaerror on" in testing now (during that session only).  
