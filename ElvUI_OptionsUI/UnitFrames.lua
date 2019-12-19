@@ -843,10 +843,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				order = 6,
 				name = L["SHOW"]..' / '..L["HIDE"],
 				func = function()
-					local frameName = E:StringTitle(groupName)
-					frameName = "ElvUF_"..frameName
-					frameName = frameName:gsub('t(arget)', 'T%1')
-
+					local frameName = gsub('ElvUF_'..E:StringTitle(groupName), 't(arget)', 'T%1')
 					if groupName == "party" then
 						local header = UF.headers[groupName]
 						for i = 1, header:GetNumChildren() do
@@ -1993,30 +1990,29 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 					['offset'] = L["Offset"],
 				},
 				set = function(info, value)
-					E.db.unitframe.units[groupName].power[info[#info]] = value;
+					E.db.unitframe.units[groupName].power[info[#info]] = value
 
-					local frameName = E:StringTitle(groupName)
-					frameName = "ElvUF_"..frameName
-					frameName = frameName:gsub('t(arget)', 'T%1')
-
+					local frameName = gsub('ElvUF_'..E:StringTitle(groupName), 't(arget)', 'T%1')
 					if numUnits then
 						for i=1, numUnits do
-							if _G[frameName..i] then
-								local min, max = _G[frameName..i].Power:GetMinMaxValues()
-								_G[frameName..i].Power:SetMinMaxValues(min, max+500)
-								_G[frameName..i].Power:SetValue(1)
-								_G[frameName..i].Power:SetValue(0)
+							local frame = _G[frameName..i]
+							if frame and frame.Power then
+								local min, max = frame.Power:GetMinMaxValues()
+								frame.Power:SetMinMaxValues(min, max+500)
+								frame.Power:SetValue(1)
+								frame.Power:SetValue(0)
 							end
 						end
 					else
-						if _G[frameName] and _G[frameName].Power then
-							local min, max = _G[frameName].Power:GetMinMaxValues()
-							_G[frameName].Power:SetMinMaxValues(min, max+500)
-							_G[frameName].Power:SetValue(1)
-							_G[frameName].Power:SetValue(0)
+						local frame = _G[frameName]
+						if frame and frame.Power then
+							local min, max = frame.Power:GetMinMaxValues()
+							frame.Power:SetMinMaxValues(min, max+500)
+							frame.Power:SetValue(1)
+							frame.Power:SetValue(0)
 						else
-							for i=1, _G[frameName]:GetNumChildren() do
-								local child = select(i, _G[frameName]:GetChildren())
+							for i=1, frame:GetNumChildren() do
+								local child = select(i, frame:GetChildren())
 								if child and child.Power then
 									local min, max = child.Power:GetMinMaxValues()
 									child.Power:SetMinMaxValues(min, max+500)
