@@ -1610,7 +1610,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			-- Player Flags
 			local pflag, chatIcon, pluginChatIcon = "", specialChatIcons[playerName], CH:GetPluginIcon(playerName)
 			if type(chatIcon) == 'function' then
-				if chatIcon == itsSimpy then
+				if chatIcon == itsSimpy and not CH:MessageIsProtected(message) then
 					message = SimpysText(message)
 				end
 
