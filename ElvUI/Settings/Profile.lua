@@ -2016,7 +2016,6 @@ P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
 
 --Cooldown
 P.cooldown = {
-	enable = true,
 	threshold = 3,
 	hideBlizzard = false,
 	useIndicatorColor = false,
@@ -2185,31 +2184,29 @@ P.actionbar.bar5.enabled = true
 P.actionbar.bar5.buttons = 6
 P.actionbar.bar5.buttonsPerRow = 6
 
+-- cooldown stuff
 P.actionbar.cooldown = CopyTable(P.cooldown)
-P.actionbar.expiringColor = { r = 1, g = 0, b = 0 }
-P.actionbar.secondsColor = { r = 1, g = 1, b = 1 }
-P.actionbar.hoursColor = { r = 1, g = 1, b = 1 }
-P.actionbar.daysColor = { r = 1, g = 1, b = 1 }
+P.actionbar.cooldown.expiringColor = { r = 1, g = 0, b = 0 }
+P.actionbar.cooldown.secondsColor = { r = 1, g = 1, b = 1 }
+P.actionbar.cooldown.hoursColor = { r = 1, g = 1, b = 1 }
+P.actionbar.cooldown.daysColor = { r = 1, g = 1, b = 1 }
 
 P.auras.cooldown = CopyTable(P.actionbar.cooldown)
 P.bags.cooldown = CopyTable(P.actionbar.cooldown)
 P.nameplates.cooldown = CopyTable(P.actionbar.cooldown)
 P.unitframe.cooldown = CopyTable(P.actionbar.cooldown)
 
-P.actionbar.cooldown.enable = nil
-P.auras.cooldown.enable = nil
-P.bags.cooldown.enable = nil
-P.nameplates.cooldown.enable = nil
-P.unitframe.cooldown.enable = nil
-
-P.actionbar.cooldown.override = false
-P.auras.cooldown.override = true
+-- color override
+P.auras.cooldown.override = false
 P.bags.cooldown.override = false
+P.actionbar.cooldown.override = true
 P.nameplates.cooldown.override = true
 P.unitframe.cooldown.override = true
 
+-- auras doesn't have a reverse option.
 P.actionbar.cooldown.reverse = false
-P.auras.cooldown.reverse = false
 P.bags.cooldown.reverse = false
 P.nameplates.cooldown.reverse = false
 P.unitframe.cooldown.reverse = false
+
+P.cooldown.enable = true
