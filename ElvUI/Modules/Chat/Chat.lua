@@ -68,7 +68,6 @@ local PlaySoundFile = PlaySoundFile
 local RemoveExtraSpaces = RemoveExtraSpaces
 local RemoveNewlines = RemoveNewlines
 local ScrollFrameTemplate_OnMouseWheel = ScrollFrameTemplate_OnMouseWheel
-local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
 local Social_GetShareAchievementLink = Social_GetShareAchievementLink
 local Social_GetShareItemLink = Social_GetShareItemLink
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
@@ -77,8 +76,8 @@ local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
-local UnitName = UnitName
 local UnitRealmRelationship = UnitRealmRelationship
+local UnitName = UnitName
 
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityChatLine
@@ -99,13 +98,13 @@ local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
 local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
-local SOUNDKIT = SOUNDKIT
-local UNKNOWN = UNKNOWN
+local SOUNDKIT_TELL_MESSAGE = SOUNDKIT.TELL_MESSAGE
 local Voice_GetVoiceChannelNotificationColor = Voice_GetVoiceChannelNotificationColor
 local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
 local C_BattleNet_GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
 local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
+local UNKNOWN = UNKNOWN
 -- GLOBALS: ElvCharacterDB
 
 local CreatedFrames = 0
@@ -1684,7 +1683,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			--BN_WHISPER FIXME
 			ChatEdit_SetLastTellTarget(arg2, chatType)
 			if ( frame.tellTimer and (GetTime() > frame.tellTimer) ) then
-				PlaySound(SOUNDKIT.TELL_MESSAGE)
+				PlaySound(SOUNDKIT_TELL_MESSAGE)
 			end
 			frame.tellTimer = GetTime() + _G.CHAT_TELL_ALERT_TIME
 			--FCF_FlashTab(frame)
