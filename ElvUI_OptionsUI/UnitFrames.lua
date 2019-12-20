@@ -2005,19 +2005,21 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 						end
 					else
 						local frame = _G[frameName]
-						if frame and frame.Power then
-							local min, max = frame.Power:GetMinMaxValues()
-							frame.Power:SetMinMaxValues(min, max+500)
-							frame.Power:SetValue(1)
-							frame.Power:SetValue(0)
-						else
-							for i=1, frame:GetNumChildren() do
-								local child = select(i, frame:GetChildren())
-								if child and child.Power then
-									local min, max = child.Power:GetMinMaxValues()
-									child.Power:SetMinMaxValues(min, max+500)
-									child.Power:SetValue(1)
-									child.Power:SetValue(0)
+						if frame then
+							if frame.Power then
+								local min, max = frame.Power:GetMinMaxValues()
+								frame.Power:SetMinMaxValues(min, max+500)
+								frame.Power:SetValue(1)
+								frame.Power:SetValue(0)
+							else
+								for i=1, frame:GetNumChildren() do
+									local child = select(i, frame:GetChildren())
+									if child and child.Power then
+										local min, max = child.Power:GetMinMaxValues()
+										child.Power:SetMinMaxValues(min, max+500)
+										child.Power:SetValue(1)
+										child.Power:SetValue(0)
+									end
 								end
 							end
 						end
