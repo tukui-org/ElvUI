@@ -128,16 +128,18 @@ local DEFAULT_STRINGS = {
 }
 
 local hyperlinkTypes = {
-	['item'] = true,
-	['spell'] = true,
-	['unit'] = true,
-	['quest'] = true,
-	['enchant'] = true,
 	['achievement'] = true,
-	['instancelock'] = true,
-	['talent'] = true,
+	['apower'] = true,
+	['currency'] = true,
+	['enchant'] = true,
 	['glyph'] = true,
-	["currency"] = true,
+	['instancelock'] = true,
+	['item'] = true,
+	['keystone'] = true,
+	['quest'] = true,
+	['spell'] = true,
+	['talent'] = true,
+	['unit'] = true
 }
 
 local tabTexs = {
@@ -1077,33 +1079,26 @@ function CH:OnHyperlinkEnter(frame, refString)
 	if InCombatLockdown() then return; end
 	local linkToken = strmatch(refString, "^([^:]+)")
 	if hyperlinkTypes[linkToken] then
-		ShowUIPanel(_G.GameTooltip)
 		_G.GameTooltip:SetOwner(frame, "ANCHOR_CURSOR")
 		_G.GameTooltip:SetHyperlink(refString)
-		hyperLinkEntered = frame
 		_G.GameTooltip:Show()
+		hyperLinkEntered = frame
 	end
 end
 
-function CH:OnHyperlinkLeave() -- frame, refString
-	-- local linkToken = refString:match("^([^:]+)")
-	-- if hyperlinkTypes[linkToken] then
-		-- HideUIPanel(GameTooltip)
-		-- hyperLinkEntered = nil
-	-- end
-
+function CH:OnHyperlinkLeave()
 	if hyperLinkEntered then
-		HideUIPanel(_G.GameTooltip)
 		hyperLinkEntered = nil
+		_G.GameTooltip:Hide()
 	end
 end
 
--- function CH:OnMessageScrollChanged(frame)
-	-- if hyperLinkEntered == frame then
-		-- HideUIPanel(GameTooltip)
-		-- hyperLinkEntered = false
-	-- end
--- end
+function CH:OnMouseWheel(frame)
+	if hyperLinkEntered == frame then
+		hyperLinkEntered = false
+		_G.GameTooltip:Hide()
+	end
+end
 
 function CH:EnableHyperlink()
 	for _, frameName in pairs(_G.CHAT_FRAMES) do
@@ -1111,7 +1106,7 @@ function CH:EnableHyperlink()
 		if (not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnHyperlinkEnter) then
 			self:HookScript(frame, 'OnHyperlinkEnter')
 			self:HookScript(frame, 'OnHyperlinkLeave')
-			-- self:HookScript(frame, 'OnMessageScrollChanged')
+			self:HookScript(frame, 'OnMouseWheel')
 		end
 	end
 end
@@ -1122,7 +1117,7 @@ function CH:DisableHyperlink()
 		if self.hooks and self.hooks[frame] and self.hooks[frame].OnHyperlinkEnter then
 			self:Unhook(frame, 'OnHyperlinkEnter')
 			self:Unhook(frame, 'OnHyperlinkLeave')
-			-- self:Unhook(frame, 'OnMessageScrollChanged')
+			self:Unhook(frame, 'OnMouseWheel')
 		end
 	end
 end
