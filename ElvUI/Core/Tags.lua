@@ -597,7 +597,7 @@ ElvUF.Tags.Methods['statustimer'] = function(unit)
 		local timer = GetTime() - unitStatus[guid][2]
 		local mins = floor(timer / 60)
 		local secs = floor(timer - (mins * 60))
-		return format("%s (%01.f:%02.f)", status, mins, secs)
+		return format("%s (%01.f:%02.f)", L[status], mins, secs)
 	else
 		return nil
 	end
