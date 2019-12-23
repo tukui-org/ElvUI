@@ -2797,6 +2797,12 @@ E.Options.args.unitframe = {
 								E:StaticPopup_Show("RESET_UF_AF") --reset unitframe aurafilters
 							end,
 						},
+						targetSound = {
+							order = 8,
+							type = "toggle",
+							name = L["Targeting Sound"],
+							desc = L["Enable a sound if you select a unit."],
+						},
 						barGroup = {
 							order = 20,
 							type = 'group',

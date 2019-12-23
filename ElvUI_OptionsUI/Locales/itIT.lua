@@ -435,6 +435,7 @@ L["Elite Icon"] = true
 L["ELVUI_CREDITS"] = "I would like to give out a special shout out to the following people for helping me maintain this addon with testing, coding, and people who also have helped me through donations. Please note for donations; I'm only posting the names of people who messaged me on the forums, if your name is missing and you wish to have your name added please message me."
 L["Emotion Icons"] = true
 L["Enable + Adjust Movers"] = true
+L["Enable a sound if you select a unit."] = true
 L["Enable Custom Color"] = true
 L["Enable the use of separate size options for the right chat panel."] = true
 L["Enable/Disable the all-in-one bag."] = true
@@ -649,7 +650,6 @@ L["If enabled, the style filter will only activate when you are in one of the in
 L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = true
 L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Subzone Name."] = true
 L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
-
 L["If enabled then the filter will only activate when you are not focusing the unit."] = true
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = true
@@ -1191,6 +1191,7 @@ L["Target On Mouse-Down"] = true
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon Clique you may have to adjust your Clique settings when changing this."] = true
 L["Target"] = true
 L["Target, Quest, Combat"] = true
+L["Targeting Sound"] = true
 L["Target/Low Health Indicator"] = true
 L["Targeted Glow"] = true
 L["Targeting"] = true

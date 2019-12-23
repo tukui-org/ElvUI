@@ -1303,6 +1303,7 @@ P.unitframe = {
 	targetOnMouseDown = false,
 	auraBlacklistModifier = 'SHIFT',
 	thinBorders = false,
+	targetSound = false,
 	colors = {
 		borderColor = {r = 0, g = 0, b = 0},
 		healthclass = false,
