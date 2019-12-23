@@ -1483,8 +1483,8 @@ function UF:Initialize()
 	UF:LoadUnits()
 
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_AllFrames')
-	self:RegisterEvent('PLAYER_TARGET_CHANGED', self.PLAYER_TARGET_CHANGED)
-	self:RegisterEvent('PLAYER_FOCUS_CHANGED', self.PLAYER_FOCUS_CHANGED)
+	self:RegisterEvent('PLAYER_TARGET_CHANGED')
+	self:RegisterEvent('PLAYER_FOCUS_CHANGED')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 	--[[if E.private.unitframe.disabledBlizzardFrames.arena and E.private.unitframe.disabledBlizzardFrames.focus and E.private.unitframe.disabledBlizzardFrames.party then
