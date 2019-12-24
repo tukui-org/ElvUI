@@ -163,35 +163,21 @@ function A:CreateIcon(button)
 		tinsert(E.RegisteredCooldowns.auras, button)
 	end
 
-	A:Update_CooldownOptions(button)
+	button.text:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
+
 	button:SetScript('OnAttributeChanged', A.OnAttributeChanged)
+	A:Update_CooldownOptions(button)
 
-	if button.customFont then
-		button.text:FontTemplate(button.customFont, button.customFontSize, button.customFontOutline)
+	if auraType == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
+		MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
+		if button.__MSQ_BaseFrame then button.__MSQ_BaseFrame:SetFrameLevel(2) end --Lower the framelevel to fix issue with buttons created during combat
+		MasqueGroupBuffs:ReSkin()
+	elseif auraType == 'HARMFUL' and MasqueGroupDebuffs and E.private.auras.masque.debuffs then
+		MasqueGroupDebuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
+		if button.__MSQ_BaseFrame then button.__MSQ_BaseFrame:SetFrameLevel(2) end --Lower the framelevel to fix issue with buttons created during combat
+		MasqueGroupDebuffs:ReSkin()
 	else
-		button.text:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
-	end
-
-	if auraType == 'HELPFUL' then
-		if MasqueGroupBuffs and E.private.auras.masque.buffs then
-			MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
-			if button.__MSQ_BaseFrame then
-				button.__MSQ_BaseFrame:SetFrameLevel(2) --Lower the framelevel to fix issue with buttons created during combat
-			end
-			MasqueGroupBuffs:ReSkin()
-		else
-			button:SetTemplate()
-		end
-	elseif auraType == 'HARMFUL' then
-		if MasqueGroupDebuffs and E.private.auras.masque.debuffs then
-			MasqueGroupDebuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
-			if button.__MSQ_BaseFrame then
-				button.__MSQ_BaseFrame:SetFrameLevel(2) --Lower the framelevel to fix issue with buttons created during combat
-			end
-			MasqueGroupDebuffs:ReSkin()
-		else
-			button:SetTemplate()
-		end
+		button:SetTemplate()
 	end
 end
 

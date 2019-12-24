@@ -145,20 +145,22 @@ function E:Cooldown_Options(timer, db, parent)
 		timer.reverseToggle = nil
 	end
 
-	if (db ~= E.db.cooldown) and db.fonts and db.fonts.enable then
-		fonts = db.fonts -- custom fonts override default fonts
-	elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
-		fonts = E.db.cooldown.fonts -- default global font override
-	end
+	if timer.CooldownOverride ~= 'auras' then
+		if (db ~= E.db.cooldown) and db.fonts and db.fonts.enable then
+			fonts = db.fonts -- custom fonts override default fonts
+		elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
+			fonts = E.db.cooldown.fonts -- default global font override
+		end
 
-	if fonts and fonts.enable then
-		timer.customFont = E.Libs.LSM:Fetch('font', fonts.font)
-		timer.customFontSize = fonts.fontSize
-		timer.customFontOutline = fonts.fontOutline
-	else
-		timer.customFont = nil
-		timer.customFontSize = nil
-		timer.customFontOutline = nil
+		if fonts and fonts.enable then
+			timer.customFont = E.Libs.LSM:Fetch('font', fonts.font)
+			timer.customFontSize = fonts.fontSize
+			timer.customFontOutline = fonts.fontOutline
+		else
+			timer.customFont = nil
+			timer.customFontSize = nil
+			timer.customFontOutline = nil
+		end
 	end
 end
 
