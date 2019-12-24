@@ -788,8 +788,6 @@ E.Options.args.general = {
 					type = 'toggle',
 					name = L["Resurrect Sound"],
 					desc = L["Enable to hear sound if you receive a resurrect."],
-					get = function(info) return E.db.general.resurrectSound end,
-					set = function(info, value) E.db.general.resurrectSound = value end,
 				},
 				vehicleSeatIndicatorSize = {
 					order = 10,
