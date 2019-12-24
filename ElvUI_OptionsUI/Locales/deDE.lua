@@ -426,6 +426,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Donations:"] = "Spenden:"
 L["Down"] = "Hinunter"
 L["Dungeon & Raid Filter"] = "Instanz & Schlachtzug Filter"
+L["Durability Scale"] = "Haltbarkeitsskalierung"
 L["Duration Enable"] = "Dauer aktiviert"
 L["Duration Font Size"] = "Dauer Schriftgröße"
 L["Duration Reverse"] = "Dauer umkehren"

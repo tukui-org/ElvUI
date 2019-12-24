@@ -425,6 +425,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Donations:"] = "|cff2eb7e4< 기부자 >|r"
 L["Down"] = "아래로"
 L["Dungeon & Raid Filter"] = "던전 & 레이드 필터"
+L["Durability Scale"] = true
 L["Duration Enable"] = true
 L["Duration Font Size"] = "지속시간 글씨 크기"
 L["Duration Reverse"] = "총 지속시간이 짧은 순"

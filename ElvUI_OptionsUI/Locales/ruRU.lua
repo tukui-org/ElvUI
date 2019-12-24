@@ -424,6 +424,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Donations:"] = "Финансовая поддержка:"
 L["Down"] = "Вниз"
 L["Dungeon & Raid Filter"] = "Фильтр подземелий и рейдов"
+L["Durability Scale"] = true
 L["Duration Enable"] = "Показывать время"
 L["Duration Font Size"] = "Размер шрифта длительности"
 L["Duration Reverse"] = "Длительность, обратное"

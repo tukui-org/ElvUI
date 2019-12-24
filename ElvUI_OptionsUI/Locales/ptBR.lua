@@ -425,6 +425,7 @@ L["Don't display auras that are shorter than this duration (in seconds). Set to 
 L["Donations:"] = "Doações:"
 L["Down"] = "Baixo"
 L["Dungeon & Raid Filter"] = true
+L["Durability Scale"] = true
 L["Duration Enable"] = true
 L["Duration Font Size"] = true
 L["Duration Reverse"] = "Duração Reversa"
