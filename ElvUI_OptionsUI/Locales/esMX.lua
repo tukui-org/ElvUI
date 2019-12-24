@@ -436,6 +436,7 @@ L["Enable + Adjust Movers"] = true
 L["Enable a sound if you select a unit."] = true
 L["Enable Custom Color"] = true
 L["Enable the use of separate size options for the right chat panel."] = true
+L["Enable to hear sound if you receive a resurrect."] = true
 L["Enable/Disable the all-in-one bag."] = "Habilitar/Deshabilitar la bolsa todo en uno."
 L["Enable/Disable the Bag-Bar."] = "Activa/Desactiva la barra de las bolsas."
 L["Enable/Disable the loot frame."] = "Activa/Desactiva el marco de botín."
@@ -647,7 +648,6 @@ L["If enabled, the style filter will only activate when you are in one of the in
 L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = true
 L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Subzone Name."] = true
 L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
-
 L["If enabled then the filter will only activate when you are not focusing the unit."] = true
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = true
 L["If enabled then the filter will only activate when you are not targeting the unit."] = true
@@ -1015,6 +1015,7 @@ L["Restore Bar"] = "Restaurar Barra"
 L["Restore Defaults"] = "Restaurar por Defecto"
 L["Restore the actionbars default settings"] = "Restaura las barras de acción a los ajustes predeterminados."
 L["Resurrect Icon"] = true
+L["Resurrect Sound"] = true
 L["Return filter to its default state."] = true
 L["Reverse Bag Slots"] = true
 L["Reverse Fill Direction"] = true

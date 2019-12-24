@@ -448,6 +448,7 @@ L["Enabling this allows raid-wide sorting however you will not be able to distin
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = true
 L["Enabling this will check your health amount."] = true
 L["Enabling this will check your power amount."] = true
+L["Enable to hear sound if you receive a resurrect."] = true
 L["Enchanting"] = true
 L["Enemy Aura Type"] = true
 L["Enemy Combat Toggle"] = true
@@ -1018,6 +1019,7 @@ L["Restore Bar"] = true
 L["Restore Defaults"] = true
 L["Restore the actionbars default settings"] = true
 L["Resurrect Icon"] = true
+L["Resurrect Sound"] = true
 L["Return filter to its default state."] = true
 L["Reverse Bag Slots"] = true
 L["Reverse Fill Direction"] = true
