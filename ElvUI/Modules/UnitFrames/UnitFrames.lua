@@ -28,11 +28,14 @@ local UnitFrame_OnEnter = UnitFrame_OnEnter
 local UnitFrame_OnLeave = UnitFrame_OnLeave
 local UnregisterAttributeDriver = UnregisterAttributeDriver
 local UnregisterStateDriver = UnregisterStateDriver
-local CompactRaidFrameContainer = CompactRaidFrameContainer
-local PlaySound = PlaySound
-local SOUNDKIT = SOUNDKIT
 
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+local SOUNDKIT_IG_CREATURE_AGGRO_SELECT = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
+local SOUNDKIT_IG_CHARACTER_NPC_SELECT = SOUNDKIT.IG_CHARACTER_NPC_SELECT
+local SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
+local SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
+local PlaySound = PlaySound
+
 -- GLOBALS: ElvUF_Parent, Arena_LoadUI
 
 local _, ns = ...
@@ -1111,7 +1114,8 @@ function UF:DisableBlizzard()
 			_G.CompactRaidFrameManager:HookScript('OnShow', HideRaid)
 			_G.CompactRaidFrameManager.hookedHide = true
 		end
-		CompactRaidFrameContainer:UnregisterAllEvents()
+
+		_G.CompactRaidFrameContainer:UnregisterAllEvents()
 
 		HideRaid()
 	end
@@ -1441,28 +1445,30 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	end
 end
 
-local function TargetSound(unit)
-	if not E.db.unitframe.targetSound then return end
-
+function UF:TargetSound(unit)
 	if UnitExists(unit) and not IsReplacingUnit() then
 		if UnitIsEnemy(unit, "player") then
-			PlaySound(SOUNDKIT.IG_CREATURE_AGGRO_SELECT)
+			PlaySound(SOUNDKIT_IG_CREATURE_AGGRO_SELECT)
 		elseif UnitIsFriend("player", unit) then
-			PlaySound(SOUNDKIT.IG_CHARACTER_NPC_SELECT)
+			PlaySound(SOUNDKIT_IG_CHARACTER_NPC_SELECT)
 		else
-			PlaySound(SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT)
+			PlaySound(SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT)
 		end
 	else
-		PlaySound(SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT)
+		PlaySound(SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT)
 	end
 end
 
 function UF:PLAYER_FOCUS_CHANGED()
-	TargetSound("focus")
+	if E.db.unitframe.targetSound then
+		UF:TargetSound("focus")
+	end
 end
 
 function UF:PLAYER_TARGET_CHANGED()
-	TargetSound("target")
+	if E.db.unitframe.targetSound then
+		UF:TargetSound("target")
+	end
 end
 
 function UF:Initialize()
