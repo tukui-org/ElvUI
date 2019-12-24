@@ -288,10 +288,7 @@ local function LoadSkin()
 		t.MessageFrame:StripTextures(true)
 		t.MessageFrame.MessageScroll:StripTextures(true)
 
-		-- Needs much love
-		S:HandleEditBox(t.MessageFrame.MessageScroll.EditBox)
-		t.MessageFrame.MessageScroll.EditBox:Size(500, 500)
-
+		S:HandleEditBox(t.MessageFrame.MessageScroll)
 		S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
 		S:HandleButton(t.Apply)
 		S:HandleButton(t.Cancel)
