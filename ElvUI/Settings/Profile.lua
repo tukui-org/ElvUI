@@ -2185,29 +2185,34 @@ P.actionbar.bar5.enabled = true
 P.actionbar.bar5.buttons = 6
 P.actionbar.bar5.buttonsPerRow = 6
 
--- cooldown stuff
-P.actionbar.cooldown = CopyTable(P.cooldown)
-P.actionbar.cooldown.expiringColor = { r = 1, g = 0, b = 0 }
-P.actionbar.cooldown.secondsColor = { r = 1, g = 1, b = 1 }
-P.actionbar.cooldown.hoursColor = { r = 1, g = 1, b = 1 }
-P.actionbar.cooldown.daysColor = { r = 1, g = 1, b = 1 }
+do -- cooldown stuff
+	P.actionbar.cooldown = CopyTable(P.cooldown)
+	P.actionbar.cooldown.expiringColor = { r = 1, g = 0, b = 0 }
+	P.actionbar.cooldown.secondsColor = { r = 1, g = 1, b = 1 }
+	P.actionbar.cooldown.hoursColor = { r = 1, g = 1, b = 1 }
+	P.actionbar.cooldown.daysColor = { r = 1, g = 1, b = 1 }
 
-P.auras.cooldown = CopyTable(P.actionbar.cooldown)
-P.bags.cooldown = CopyTable(P.actionbar.cooldown)
-P.nameplates.cooldown = CopyTable(P.actionbar.cooldown)
-P.unitframe.cooldown = CopyTable(P.actionbar.cooldown)
+	P.auras.cooldown = CopyTable(P.actionbar.cooldown)
+	P.bags.cooldown = CopyTable(P.actionbar.cooldown)
+	P.nameplates.cooldown = CopyTable(P.actionbar.cooldown)
+	P.unitframe.cooldown = CopyTable(P.actionbar.cooldown)
 
--- color override
-P.auras.cooldown.override = false
-P.bags.cooldown.override = false
-P.actionbar.cooldown.override = true
-P.nameplates.cooldown.override = true
-P.unitframe.cooldown.override = true
+	-- color override
+	P.auras.cooldown.override = false
+	P.bags.cooldown.override = false
+	P.actionbar.cooldown.override = true
+	P.nameplates.cooldown.override = true
+	P.unitframe.cooldown.override = true
 
--- auras doesn't have a reverse option.
-P.actionbar.cooldown.reverse = false
-P.bags.cooldown.reverse = false
-P.nameplates.cooldown.reverse = false
-P.unitframe.cooldown.reverse = false
+	-- auras doesn't have a reverse option
+	P.actionbar.cooldown.reverse = false
+	P.nameplates.cooldown.reverse = false
+	P.unitframe.cooldown.reverse = false
+	P.bags.cooldown.reverse = false
 
-P.cooldown.enable = true
+	-- auras don't have override font settings
+	P.auras.cooldown.fonts = nil
+
+	-- we gonna need this on by default :3
+	P.cooldown.enable = true
+end
