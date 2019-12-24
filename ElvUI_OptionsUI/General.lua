@@ -804,8 +804,24 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.disableTutorialButtons end,
 					set = function(info, value) E.global.general.disableTutorialButtons = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
-				itemLevelInfo = {
+				resurrectSound = {
 					order = 11,
+					type = 'toggle',
+					name = L["Resurrect Sound"],
+					desc = L["Enable to hear sound if you receive a resurrect."],
+					get = function(info) return E.db.general.resurrectSound end,
+					set = function(info, value) E.db.general.resurrectSound = value end,
+				},
+				durabilityScale = {
+					order = 12,
+					type = "range",
+					name = L["Durability Scale"],
+					min = 0.5, max = 8, step = 0.5,
+					get = function(info) return E.db.general.durabilityScale end,
+					set = function(info, value) E.db.general.durabilityScale = value; E:StaticPopup_Show("PRIVATE_RL") end,
+				},
+				itemLevelInfo = {
+					order = 13,
 					name = L["Item Level"],
 					type = 'group',
 					guiInline = true,
@@ -865,22 +881,6 @@ E.Options.args.general = {
 							},
 						},
 					},
-				},
-				DurabilityGroup = {
-					order = 12,
-					type = "group",
-					name = L["Durability"],
-					guiInline = true,
-					get = function(info) return E.db.general.durabilityScale end,
-					set = function(info, value) E.db.general.durabilityScale = value; E:StaticPopup_Show("PRIVATE_RL") end,
-					args = {
-						scale = {
-							order = 1,
-							type = "range",
-							name = L["Scale"],
-							min = 0.5, max = 8, step = 0.5,
-						}
-					}
 				},
 			},
 		},

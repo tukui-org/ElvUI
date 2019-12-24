@@ -24,6 +24,7 @@ P.general = {
 	talkingHeadFrameBackdrop = false,
 	vehicleSeatIndicatorSize = 128,
 	objectiveTracker = true,
+	resurrectSound = false,
 	questRewardMostValueIcon = true,
 	itemLevel = {
 		displayCharacterInfo = true,
