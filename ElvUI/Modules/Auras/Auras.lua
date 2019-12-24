@@ -156,18 +156,21 @@ function A:CreateIcon(button)
 	if not button.isRegisteredCooldown then
 		button.CooldownOverride = 'auras'
 		button.isRegisteredCooldown = true
+		button.forceEnabled = true
+		button.showSeconds = true
 
 		if not E.RegisteredCooldowns.auras then E.RegisteredCooldowns.auras = {} end
 		tinsert(E.RegisteredCooldowns.auras, button)
 	end
+
+	A:Update_CooldownOptions(button)
+	button:SetScript('OnAttributeChanged', A.OnAttributeChanged)
 
 	if button.customFont then
 		button.text:FontTemplate(button.customFont, button.customFontSize, button.customFontOutline)
 	else
 		button.text:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
 	end
-
-	button:SetScript('OnAttributeChanged', A.OnAttributeChanged)
 
 	if auraType == 'HELPFUL' then
 		if MasqueGroupBuffs and E.private.auras.masque.buffs then
@@ -321,9 +324,6 @@ end
 
 function A:Update_CooldownOptions(button)
 	E:Cooldown_Options(button, self.db.cooldown, button)
-
-	button.forceEnabled = true
-	button.showSeconds = true
 end
 
 function A:OnAttributeChanged(attribute, value)
