@@ -1335,7 +1335,7 @@ function S:Initialize()
 	S:RegisterEvent('PLAYER_ENTERING_WORLD')
 
 	do -- Credits ShestakUI
-		hooksecurefunc(UIWidgetTemplateCaptureBarMixin, "Setup", function(widgetInfo)
+		hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, "Setup", function(widgetInfo)
 			widgetInfo.LeftLine:SetAlpha(0)
 			widgetInfo.RightLine:SetAlpha(0)
 			widgetInfo.BarBackground:SetAlpha(0)
