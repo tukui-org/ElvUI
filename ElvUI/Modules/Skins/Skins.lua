@@ -1277,22 +1277,6 @@ function S:ADDON_LOADED(_, addonName)
 	end
 end
 
-function S:PLAYER_ENTERING_WORLD()
-	for addonName, object in pairs(self.addonsToLoad) do
-		local isLoaded, isFinished = IsAddOnLoaded(addonName)
-		if isLoaded and isFinished then
-			S:CallLoadedAddon(addonName, object)
-		end
-	end
-
-	for index, loadFunc in ipairs(self.nonAddonsToLoad) do
-		xpcall(loadFunc, errorhandler)
-		self.nonAddonsToLoad[index] = nil
-	end
-
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-end
-
 function S:RegisterSkin(addonName, loadFunc, forceLoad, bypass)
 	if bypass then
 		self.allowBypass[addonName] = true
@@ -1333,7 +1317,17 @@ function S:Initialize()
 	self.Initialized = true
 	self.db = E.private.skins
 
-	S:RegisterEvent('PLAYER_ENTERING_WORLD')
+	for index, loadFunc in ipairs(self.nonAddonsToLoad) do
+		xpcall(loadFunc, errorhandler)
+		self.nonAddonsToLoad[index] = nil
+	end
+
+	for addonName, object in pairs(self.addonsToLoad) do
+		local isLoaded, isFinished = IsAddOnLoaded(addonName)
+		if isLoaded and isFinished then
+			S:CallLoadedAddon(addonName, object)
+		end
+	end
 
 	do -- Credits ShestakUI
 		hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, "Setup", function(widgetInfo)
