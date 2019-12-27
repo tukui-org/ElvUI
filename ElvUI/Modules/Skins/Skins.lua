@@ -675,7 +675,7 @@ end
 local handleCloseButtonOnEnter = function(btn) if btn.Texture then btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor)) end end
 local handleCloseButtonOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
 
-function S:HandleCloseButton(f, point)
+function S:HandleCloseButton(f, point, x, y)
 	assert(f, "doenst exist!")
 	f:StripTextures()
 
@@ -690,7 +690,7 @@ function S:HandleCloseButton(f, point)
 	end
 
 	if point then
-		f:Point("TOPRIGHT", point, "TOPRIGHT", 2, 2)
+		f:Point("TOPRIGHT", point, "TOPRIGHT", x or 2, y or 2)
 	end
 end
 
@@ -1043,7 +1043,7 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	end
 end
 
-function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stipTexts)
+function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts)
 	if btn.isSkinned then return end
 
 	if not arrowDir then
@@ -1065,7 +1065,7 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stipTexts)
 		S:HandleButton(btn)
 	end
 
-	if stipTexts then
+	if stripTexts then
 		btn:StripTexts()
 	end
 
@@ -1142,7 +1142,6 @@ end)
 
 function S:SkinStatusBarWidget(widgetFrame)
 	local bar = widgetFrame.Bar
-
 	if bar and not bar.IsSkinned then
 		-- Hide StatusBar textures
 		if bar.BorderLeft then bar.BorderLeft:Hide() end
