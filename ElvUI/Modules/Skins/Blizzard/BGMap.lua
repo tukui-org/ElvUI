@@ -38,7 +38,7 @@ local function refreshAlpha()
 	oldAlpha = GetOpacity()
 end
 
-local function LoadSkin()
+function S:SkinBattlefieldMap()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgmap ~= true then return end
 
 	local BattlefieldMapFrame = _G.BattlefieldMapFrame
@@ -92,4 +92,4 @@ local function LoadSkin()
 	BattlefieldMapFrame.BorderFrame.CloseButton:HookScript('OnEnter', setRealAlpha)
 end
 
-S:AddCallbackForAddon("Blizzard_BattlefieldMap", "BattlefieldMap", LoadSkin)
+S:AddCallbackForAddon('Blizzard_BattlefieldMap', 'SkinBattlefieldMap')

@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local function LoadSkin()
+function S:SkinIslandPartyPose()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.IslandsPartyPose ~= true then return end
 
 	local IslandsPartyPoseFrame = _G.IslandsPartyPoseFrame
@@ -12,4 +12,4 @@ local function LoadSkin()
 	S:HandleButton(IslandsPartyPoseFrame.LeaveButton)
 end
 
-S:AddCallbackForAddon("Blizzard_IslandsPartyPoseUI", "IslandPartyPose", LoadSkin)
+S:AddCallbackForAddon('Blizzard_IslandsPartyPoseUI', 'SkinIslandPartyPose')

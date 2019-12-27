@@ -9,7 +9,7 @@ local format = format
 local HideUIPanel = HideUIPanel
 local ShowUIPanel = ShowUIPanel
 
-local function LoadSkin()
+function S:SkinMacro()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.macro ~= true then return end
 
 	local MacroFrame = _G.MacroFrame
@@ -102,10 +102,10 @@ local function LoadSkin()
 
 	S:HandleIconSelectionFrame(MacroPopupFrame, _G.NUM_MACRO_ICONS_SHOWN, "MacroPopupButton", "MacroPopup")
 
-	MacroPopupFrame:HookScript("OnShow", function(self)
-		self:ClearAllPoints()
-		self:Point("TOPLEFT", MacroFrame, "TOPRIGHT", 2, 0)
+	MacroPopupFrame:HookScript("OnShow", function(s)
+		s:ClearAllPoints()
+		s:Point("TOPLEFT", MacroFrame, "TOPRIGHT", 2, 0)
 	end)
 end
 
-S:AddCallbackForAddon("Blizzard_MacroUI", "Macro", LoadSkin)
+S:AddCallbackForAddon('Blizzard_MacroUI', 'SkinMacro')

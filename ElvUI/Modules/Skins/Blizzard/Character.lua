@@ -266,7 +266,7 @@ local function UpdateCurrencySkins()
 	end
 end
 
-local function LoadSkin()
+function S:SkinCharacter()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.character ~= true then return end
 
 	-- General
@@ -492,4 +492,4 @@ local function LoadSkin()
 	-- S:HandleCloseButton(_G.PaperDollItemsFrame.HelpTipBox.CloseButton)
 end
 
-S:AddCallback("Character", LoadSkin)
+S:AddCallback('SkinCharacter')

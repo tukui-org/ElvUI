@@ -10,7 +10,7 @@ local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
+function S:SkinCalendar()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.calendar ~= true then return end
 
 	local CalendarFrame = _G.CalendarFrame
@@ -260,4 +260,4 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.CalendarViewEventDescriptionScrollFrameScrollBar)
 end
 
-S:AddCallbackForAddon("Blizzard_Calendar", "Calendar", LoadSkin)
+S:AddCallbackForAddon('Blizzard_Calendar', 'SkinCalendar')

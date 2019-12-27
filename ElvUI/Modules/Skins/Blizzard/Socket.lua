@@ -8,7 +8,7 @@ local ipairs, unpack = ipairs, unpack
 local GetSocketTypes = GetSocketTypes
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
+function S:SkinItemSocket()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.socket ~= true then return end
 
 	local ItemSocketingFrame = _G.ItemSocketingFrame
@@ -48,4 +48,4 @@ local function LoadSkin()
 	S:HandleButton(_G.ItemSocketingSocketButton)
 end
 
-S:AddCallbackForAddon("Blizzard_ItemSocketingUI", "ItemSocket", LoadSkin)
+S:AddCallbackForAddon('Blizzard_ItemSocketingUI', 'SkinItemSocket')

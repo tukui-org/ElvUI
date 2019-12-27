@@ -109,7 +109,7 @@ function TestTalkingHead()
 	end
 end]]
 
-local function LoadSkin()
+function S:SkinTalkingHead()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talkinghead ~= true then return end
 
 	local TalkingHeadFrame = _G.TalkingHeadFrame
@@ -152,4 +152,4 @@ local function LoadSkin()
 	TalkingHeadFrame.TextFrame.Text:SetShadowOffset(2, -2)
 end
 
-S:AddCallbackForAddon("Blizzard_TalkingHeadUI", "TalkingHead", LoadSkin)
+S:AddCallbackForAddon('Blizzard_TalkingHeadUI', 'SkinTalkingHead')

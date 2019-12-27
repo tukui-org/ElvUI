@@ -8,7 +8,7 @@ local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
+function S:SkinScrappingMachine()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Scrapping ~= true then return end
 
 	local MachineFrame = _G.ScrappingMachineFrame
@@ -30,8 +30,8 @@ local function LoadSkin()
 	-- Temp mover
 	MachineFrame:SetMovable(true)
 	MachineFrame:RegisterForDrag("LeftButton")
-	MachineFrame:SetScript("OnDragStart", function(self) self:StartMoving() end)
-	MachineFrame:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
+	MachineFrame:SetScript("OnDragStart", function(s) s:StartMoving() end)
+	MachineFrame:SetScript("OnDragStop", function(s) s:StopMovingOrSizing() end)
 end
 
-S:AddCallbackForAddon('Blizzard_ScrappingMachineUI', "ScrappingMachine", LoadSkin)
+S:AddCallbackForAddon('Blizzard_ScrappingMachineUI', 'SkinScrappingMachine')

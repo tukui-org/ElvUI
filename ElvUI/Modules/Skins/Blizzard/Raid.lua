@@ -16,7 +16,7 @@ local StripAllTextures = {
 	"RaidGroup8",
 }
 
-local function LoadSkin()
+function S:SkinRaidUI()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.raid ~= true then return end
 
 	for _, object in pairs(StripAllTextures) do
@@ -40,4 +40,4 @@ local function LoadSkin()
 	end
 end
 
-S:AddCallbackForAddon("Blizzard_RaidUI", "RaidUI", LoadSkin)
+S:AddCallbackForAddon('Blizzard_RaidUI', 'SkinRaidUI')

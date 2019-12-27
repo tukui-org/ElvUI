@@ -31,7 +31,7 @@ local function SkinRecipeList(self, _, tradeSkillInfo)
 	end
 end
 
-local function LoadSkin()
+function S:SkinTradeSkill()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tradeskill ~= true then return end
 
 	-- MainFrame
@@ -140,4 +140,4 @@ local function LoadSkin()
 	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
 end
 
-S:AddCallbackForAddon("Blizzard_TradeSkillUI", "TradeSkill", LoadSkin)
+S:AddCallbackForAddon('Blizzard_TradeSkillUI', 'SkinTradeSkill')

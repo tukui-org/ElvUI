@@ -59,14 +59,12 @@ local function SkinLFGuild()
 	_G.GuildFinderRequestMembershipFrameInputFrame:SetTemplate()
 end
 
-local function LoadSkin()
-	if _G.LookingForGuildFrame then
-		--Frame already created
+function S:SkinLookingForGuild()
+	if _G.LookingForGuildFrame then --Frame already created
 		SkinLFGuild()
-	else
-		--Frame not created yet, wait until it is
-		hooksecurefunc("LookingForGuildFrame_CreateUIElements", SkinLFGuild)
+	else --Frame not created yet, wait until it is
+		hooksecurefunc('LookingForGuildFrame_CreateUIElements', SkinLFGuild)
 	end
 end
 
-S:AddCallbackForAddon("Blizzard_LookingForGuildUI", "LookingForGuild", LoadSkin)
+S:AddCallbackForAddon('Blizzard_LookingForGuildUI', 'SkinLookingForGuild')

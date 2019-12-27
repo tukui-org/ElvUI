@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local function LoadSkin()
+function S:SkinFlightMap()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.taxi ~= true then return end
 
 	local FlightMapFrame = _G.FlightMapFrame
@@ -13,4 +13,4 @@ local function LoadSkin()
 	S:HandleCloseButton(_G.FlightMapFrameCloseButton)
 end
 
-S:AddCallbackForAddon('Blizzard_FlightMap', "FlightMap", LoadSkin)
+S:AddCallbackForAddon('Blizzard_FlightMap', 'SkinFlightMap')

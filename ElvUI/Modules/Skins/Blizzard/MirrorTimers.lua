@@ -22,7 +22,7 @@ local function MirrorTimer_OnUpdate(frame, elapsed)
 	end
 end
 
-local function LoadSkin()
+function S:SkinMirrorTimers()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mirrorTimers ~= true then return end
 
 	--Mirror Timers (Underwater Breath etc.), credit to Azilroka
@@ -52,4 +52,4 @@ local function LoadSkin()
 	end
 end
 
-S:AddCallback("MirrorTimers", LoadSkin)
+S:AddCallback('SkinMirrorTimers')

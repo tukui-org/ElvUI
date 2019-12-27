@@ -1270,12 +1270,23 @@ function S:ADDON_LOADED(_, addonName)
 	end
 end
 
-function S:AddCallbackForAddon(addonName, _, loadFunc, forceLoad, bypass) -- arg2 `eventName` deprecated from RegisterSkin xpcall update
-	S:RegisterSkin(addonName, loadFunc, forceLoad, bypass)
+function S:AddCallbackForAddon(addonName, func, oldway, forceLoad, bypass)
+	local isFunc = func == 'function'
+	if isFunc or not oldway then
+		S:RegisterSkin(addonName, (isFunc and func) or S[func], forceLoad, bypass)
+	elseif oldway == 'function' then
+		S:RegisterSkin(addonName, oldway, forceLoad, bypass)
+	end
 end
 
-function S:AddCallback(_, loadFunc) -- arg1 `eventName` deprecated from RegisterSkin xpcall update
-	S:RegisterSkin('ElvUI', loadFunc)
+function S:AddCallback(func, oldway)
+	-- func can be a function OR a string method name (that exists on S)
+	local isFunc = func == 'function'
+	if isFunc or not oldway then
+		S:RegisterSkin('ElvUI', (isFunc and func) or S[func])
+	elseif oldway == 'function' then -- backwards compatiblity
+		S:RegisterSkin('ElvUI', oldway)
+	end
 end
 
 function S:SkinAce3()

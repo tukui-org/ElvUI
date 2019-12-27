@@ -74,7 +74,7 @@ local function Quest_GetQuestID()
 	end
 end
 
-local function LoadSkin()
+function S:SkinQuest()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.quest ~= true then return end
 
 	S:HandleScrollBar(_G.QuestProgressScrollFrameScrollBar)
@@ -105,15 +105,15 @@ local function LoadSkin()
 	QuestInfoItemHighlight:SetBackdropColor(0, 0, 0, 0)
 	QuestInfoItemHighlight:Size(142, 40)
 
-	hooksecurefunc("QuestInfoItem_OnClick", function(self)
+	hooksecurefunc("QuestInfoItem_OnClick", function(s)
 		QuestInfoItemHighlight:ClearAllPoints()
-		QuestInfoItemHighlight:SetOutside(self.Icon)
+		QuestInfoItemHighlight:SetOutside(s.Icon)
 
 		for _, Button in ipairs(_G.QuestInfoRewardsFrame.RewardButtons) do
 			Button.Name:SetTextColor(1, 1, 1)
 		end
 
-		self.Name:SetTextColor(1, .8, .1)
+		s.Name:SetTextColor(1, .8, .1)
 	end)
 
 	_G.QuestRewardScrollFrame:CreateBackdrop()
@@ -325,8 +325,8 @@ local function LoadSkin()
 				end
 			end
 			QuestInfoRewardsFrame.spellHeaderPool._acquire = QuestInfoRewardsFrame.spellHeaderPool.Acquire
-			QuestInfoRewardsFrame.spellHeaderPool.Acquire = function(self)
-				local frame = self:_acquire()
+			QuestInfoRewardsFrame.spellHeaderPool.Acquire = function(s)
+				local frame = s:_acquire()
 				if frame then
 					frame:SetTextColor(1, 1, 1)
 				end
@@ -337,8 +337,8 @@ local function LoadSkin()
 		StyleScrollFrame(_G.QuestDetailScrollFrame, 506, 615, true)
 		StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
 		StyleScrollFrame(_G.QuestGreetingScrollFrame, 506, 615, true)
-		_G.QuestRewardScrollFrame:HookScript('OnShow', function(self)
-			StyleScrollFrame(self, 506, 615, true)
+		_G.QuestRewardScrollFrame:HookScript('OnShow', function(s)
+			StyleScrollFrame(s, 506, 615, true)
 		end)
 	end
 
@@ -398,16 +398,16 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.QuestLogPopupDetailFrameScrollFrameScrollBar)
 	QuestLogPopupDetailFrame:SetTemplate("Transparent")
 
-	_G.QuestLogPopupDetailFrameScrollFrame:HookScript('OnShow', function(self)
+	_G.QuestLogPopupDetailFrameScrollFrame:HookScript('OnShow', function(s)
 		if not _G.QuestLogPopupDetailFrameScrollFrame.backdrop then
 			_G.QuestLogPopupDetailFrameScrollFrame:CreateBackdrop()
-			_G.QuestLogPopupDetailFrameScrollFrame:Height(self:GetHeight() - 2)
+			_G.QuestLogPopupDetailFrameScrollFrame:Height(s:GetHeight() - 2)
 			if not E.private.skins.parchmentRemover.enable then
 				StyleScrollFrame(_G.QuestLogPopupDetailFrameScrollFrame, 509, 630, false)
 			end
 		end
 		if not E.private.skins.parchmentRemover.enable then
-			_G.QuestLogPopupDetailFrameScrollFrame.spellTex:Height(self:GetHeight() + 217)
+			_G.QuestLogPopupDetailFrameScrollFrame.spellTex:Height(s:GetHeight() + 217)
 		end
 	end)
 
@@ -447,4 +447,4 @@ local function LoadSkin()
 	end)
 end
 
-S:AddCallback("Quest", LoadSkin)
+S:AddCallback('SkinQuest')

@@ -7,7 +7,7 @@ local pairs = pairs
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
+function S:SkinBinding()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.binding ~= true then return end
 
 	local buttons = {
@@ -61,4 +61,4 @@ local function LoadSkin()
 	KeyBindingFrame.unbindButton:Point("BOTTOMRIGHT", KeyBindingFrame, "BOTTOMRIGHT", -211, 16)
 end
 
-S:AddCallbackForAddon("Blizzard_BindingUI", "Binding", LoadSkin)
+S:AddCallbackForAddon('Blizzard_BindingUI', 'SkinBinding')

@@ -5,7 +5,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs = pairs
 
-local function LoadSkin()
+function S:SkinPVPMatch()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgscore ~= true then return end
 
 	-- Macro to show the PVPMatchScoreboard: /run PVPMatchScoreboard:Show()
@@ -60,4 +60,4 @@ local function LoadSkin()
 	PVPMatchResults.content.tabContainer.matchmakingText:FontTemplate()
 end
 
-S:AddCallbackForAddon("Blizzard_PVPMatch", "PVPMatch", LoadSkin)
+S:AddCallbackForAddon('Blizzard_PVPMatch', 'SkinPVPMatch')

@@ -5,7 +5,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select = select
 
-local function LoadSkin()
+function S:SkinGuildRegistrar()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guildregistrar ~= true then return end
 
 	local GuildRegistrarFrame = _G.GuildRegistrarFrame
@@ -37,4 +37,4 @@ local function LoadSkin()
 	_G.AvailableServicesText:SetTextColor(1, 1, 0)
 end
 
-S:AddCallback("GuildRegistrar", LoadSkin)
+S:AddCallback('SkinGuildRegistrar')

@@ -38,7 +38,7 @@ local function PetButtons(btn, p)
 	end
 end
 
-local function LoadSkin()
+function S:SkinStable()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.stable ~= true then return end
 
 	local PetStableFrame = _G.PetStableFrame
@@ -73,4 +73,4 @@ local function LoadSkin()
 	end
 end
 
-S:AddCallback("Stable", LoadSkin)
+S:AddCallback('SkinStable')

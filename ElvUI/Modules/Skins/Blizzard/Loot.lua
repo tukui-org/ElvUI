@@ -37,7 +37,7 @@ local function UpdateLoots()
 	end
 end
 
-local function LoadSkin()
+function S:SkinLoot()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.loot ~= true then return end
 
 	-- Loot history frame
@@ -266,4 +266,4 @@ local function LoadSkin()
 	S:HandleNextPrevButton(_G.LootFrameUpButton)
 end
 
-S:AddCallback("Loot", LoadSkin)
+S:AddCallback('SkinLoot')

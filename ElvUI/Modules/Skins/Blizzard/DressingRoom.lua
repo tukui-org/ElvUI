@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local function LoadSkin()
+function S:SkinDressingRoom()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.dressingroom ~= true then return end
 
 	local DressUpFrame = _G.DressUpFrame
@@ -38,4 +38,4 @@ local function LoadSkin()
 	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
 end
 
-S:AddCallback("DressingRoom", LoadSkin)
+S:AddCallback('SkinDressingRoom')

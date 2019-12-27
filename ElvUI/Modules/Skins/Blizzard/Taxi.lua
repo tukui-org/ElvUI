@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local function LoadSkin()
+function S:SkinTaxi()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.taxi ~= true then return end
 
 	local TaxiFrame = _G.TaxiFrame
@@ -14,4 +14,4 @@ local function LoadSkin()
 	S:HandleCloseButton(TaxiFrame.CloseButton)
 end
 
-S:AddCallback("Taxi", LoadSkin)
+S:AddCallback('SkinTaxi')

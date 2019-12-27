@@ -111,7 +111,7 @@ local function HandleAffixIcons(self)
 	end
 end
 
-local function LoadSkin()
+function S:SkinLFG()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
 
 
@@ -702,7 +702,7 @@ local function LoadSkin()
 	-- Tutorial
 	S:HandleCloseButton(_G.PremadeGroupsPvETutorialAlert.CloseButton)
 end
-S:AddCallback("LFG", LoadSkin)
+S:AddCallback('SkinLFG')
 
 local function LoadSecondarySkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end

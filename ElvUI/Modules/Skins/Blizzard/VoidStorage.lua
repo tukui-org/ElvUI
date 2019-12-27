@@ -7,7 +7,7 @@ local pairs, unpack = pairs, unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
+function S:SkinVoidStorage()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.voidstorage ~= true then return end
 
 	local StripAllTextures = {
@@ -70,4 +70,4 @@ local function LoadSkin()
 	end
 end
 
-S:AddCallbackForAddon("Blizzard_VoidStorageUI", "VoidStorage", LoadSkin)
+S:AddCallbackForAddon('Blizzard_VoidStorageUI', 'SkinVoidStorage')

@@ -7,7 +7,7 @@ local pairs = pairs
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
+function S:SkinTabard()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tabard ~= true then return end
 
 	local TabardFrame = _G.TabardFrame
@@ -54,17 +54,17 @@ local function LoadSkin()
 
 	_G.TabardCharacterModelRotateLeftButton:Point("BOTTOMLEFT", 4, 4)
 	_G.TabardCharacterModelRotateRightButton:Point("TOPLEFT", _G.TabardCharacterModelRotateLeftButton, "TOPRIGHT", 4, 0)
-	hooksecurefunc(_G.TabardCharacterModelRotateLeftButton, "SetPoint", function(self, point, _, _, xOffset, yOffset)
+	hooksecurefunc(_G.TabardCharacterModelRotateLeftButton, "SetPoint", function(s, point, _, _, xOffset, yOffset)
 		if point ~= "BOTTOMLEFT" or xOffset ~= 4 or yOffset ~= 4 then
-			self:SetPoint("BOTTOMLEFT", 4, 4)
+			s:SetPoint("BOTTOMLEFT", 4, 4)
 		end
 	end)
 
-	hooksecurefunc(_G.TabardCharacterModelRotateRightButton, "SetPoint", function(self, point, _, _, xOffset, yOffset)
+	hooksecurefunc(_G.TabardCharacterModelRotateRightButton, "SetPoint", function(s, point, _, _, xOffset, yOffset)
 		if point ~= "TOPLEFT" or xOffset ~= 4 or yOffset ~= 0 then
-			self:SetPoint("TOPLEFT", _G.TabardCharacterModelRotateLeftButton, "TOPRIGHT", 4, 0)
+			s:SetPoint("TOPLEFT", _G.TabardCharacterModelRotateLeftButton, "TOPRIGHT", 4, 0)
 		end
 	end)
 end
 
-S:AddCallback("Tabard", LoadSkin)
+S:AddCallback('SkinTabard')
