@@ -1257,13 +1257,16 @@ function S:CallLoadedAddon(addonName, object)
 	self.addonsToLoad[addonName] = nil
 end
 
-function S:ADDON_LOADED(_, addonName)
-	if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
+function S:SkinLibDropDown()
+	if E.private and (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then
 		if not S.L_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('L') end -- LibUIDropDownMenu
 		if not S.Lib_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('Lib') end -- NoTaint_UIDropDownMenu
 	end
+end
 
+function S:ADDON_LOADED(_, addonName)
 	S:SkinAce3()
+	S:SkinLibDropDown()
 
 	if not self.allowBypass[addonName] and not E.initialized then
 		return
@@ -1330,8 +1333,6 @@ function S:Initialize()
 	self.Initialized = true
 	self.db = E.private.skins
 
-	S:SkinAce3()
-	S:RegisterEvent('ADDON_LOADED')
 	S:RegisterEvent('PLAYER_ENTERING_WORLD')
 
 	do -- Credits ShestakUI
@@ -1396,5 +1397,8 @@ function S:Initialize()
 		end
 	end)
 end
+
+-- Keep this outside, it's used for skinning addons before ElvUI load
+S:RegisterEvent('ADDON_LOADED')
 
 E:RegisterModule(S:GetName())
