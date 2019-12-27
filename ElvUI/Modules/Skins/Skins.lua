@@ -1366,6 +1366,7 @@ function S:Initialize()
 	self.db = E.private.skins
 
 	S:SkinAce3()
+	S:RegisterEvent('ADDON_LOADED')
 
 	for addonName, object in pairs(self.addonsToLoad) do
 		local isLoaded, isFinished = IsAddOnLoaded(addonName)
@@ -1392,5 +1393,4 @@ function S:Initialize()
 	end)
 end
 
-S:RegisterEvent('ADDON_LOADED')
 E:RegisterModule(S:GetName())
