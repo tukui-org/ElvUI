@@ -1,10 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
---WoW API / Variables
-local SetCVar = SetCVar
 
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
 	obj:SetFont(font, size, style)
