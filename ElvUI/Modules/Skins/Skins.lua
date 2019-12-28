@@ -1285,7 +1285,7 @@ end
 -- this is used for loading skins that should be executed when the addon loads (including blizzard addons that load later).
 -- please add a given name, non-given-name is specific for elvui core addon.
 function S:AddCallbackForAddon(addonName, name, func, forceLoad, bypass, position) -- arg2: name is 'given name'; see example above.
-	local load = (name == 'function' and name) or S[name] or S[addonName]
+	local load = (name == 'function' and name) or (not func and (S[name] or S[addonName]))
 	S:RegisterSkin(addonName, load or func, forceLoad, bypass, position)
 end
 
@@ -1293,7 +1293,7 @@ end
 --- this is used for loading skins when our skin init function executes.
 --- please add a given name, non-given-name is specific for elvui core addon.
 function S:AddCallback(name, func, position) -- arg1: name is 'given name'
-	local load = (name == 'function' and name) or S[name]
+	local load = (name == 'function' and name) or (not func and S[name])
 	S:RegisterSkin('ElvUI', load or func, nil, nil, position)
 end
 
@@ -1311,7 +1311,7 @@ function S:RegisterSkin(addonName, loadFunc, forceLoad, bypass, position)
 		self.addonsToLoad[addonName] = nil
 	elseif addonName == 'ElvUI' then
 		if tContains(self.nonAddonsToLoad, loadFunc) then
-			error(format('RegisterSkin failed because of an attempted duplicate function onto %s', addonName), {addonName, loadFunc, forceLoad, bypass, position})
+			error(format('RegisterSkin failed because of an attempted duplicate function onto %s', addonName))
 		end
 
 		if position then
@@ -1327,7 +1327,7 @@ function S:RegisterSkin(addonName, loadFunc, forceLoad, bypass, position)
 		end
 
 		if tContains(addon, loadFunc) then
-			error(format('RegisterSkin failed because of an attempted duplicate function onto %s', addonName), {addonName, loadFunc, forceLoad, bypass, position})
+			error(format('RegisterSkin failed because of an attempted duplicate function onto %s', addonName))
 		end
 
 		if position then
