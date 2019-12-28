@@ -1310,7 +1310,11 @@ function S:RegisterSkin(addonName, loadFunc, forceLoad, bypass, position)
 		xpcall(loadFunc, errorhandler)
 		self.addonsToLoad[addonName] = nil
 	elseif addonName == 'ElvUI' then
-		tinsert(self.nonAddonsToLoad, position or #self.nonAddonsToLoad, loadFunc)
+		if position then
+			tinsert(self.nonAddonsToLoad, position, loadFunc)
+		else
+			tinsert(self.nonAddonsToLoad, loadFunc)
+		end
 	else
 		local addon = self.addonsToLoad[addonName]
 		if not addon then
@@ -1318,7 +1322,11 @@ function S:RegisterSkin(addonName, loadFunc, forceLoad, bypass, position)
 			addon = self.addonsToLoad[addonName]
 		end
 
-		tinsert(addon, position or #addon, loadFunc)
+		if position then
+			tinsert(addon, position, loadFunc)
+		else
+			tinsert(addon, loadFunc)
+		end
 	end
 end
 
