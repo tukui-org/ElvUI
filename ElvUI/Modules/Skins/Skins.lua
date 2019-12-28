@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local tinsert, xpcall, error, format, tremove, tContains = tinsert, xpcall, error, format, tremove, tContains
+local tinsert, xpcall, error, format, tContains = tinsert, xpcall, error, format, tContains
 local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -1352,7 +1352,7 @@ function S:Initialize()
 
 	for index, func in next, self.nonAddonsToLoad do
 		xpcall(func, errorhandler)
-		tremove(self.nonAddonsToLoad, index)
+		self.nonAddonsToLoad[index] = nil
 	end
 
 	for addonName, object in pairs(self.addonsToLoad) do
