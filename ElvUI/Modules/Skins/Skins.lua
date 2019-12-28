@@ -1265,28 +1265,30 @@ function S:ADDON_LOADED(_, addonName)
 		return
 	end
 
-	if self.addonsToLoad[addonName] then
-		S:CallLoadedAddon(addonName, self.addonsToLoad[addonName])
+	local object = self.addonsToLoad[addonName]
+	if object then
+		S:CallLoadedAddon(addonName, object)
 	end
 end
 
-function S:AddCallbackForAddon(addonName, func, oldway, forceLoad, bypass)
-	local isFunc = func == 'function'
-	if isFunc or not oldway then
-		S:RegisterSkin(addonName, (isFunc and func) or S[func], forceLoad, bypass)
-	elseif oldway == 'function' then
-		S:RegisterSkin(addonName, oldway, forceLoad, bypass)
-	end
+-- EXAMPLE:
+--- S:AddCallbackForAddon('Details', 'MyAddon_Details', MyAddon.SkinDetails)
+---- arg1: Addon name (same as the toc): MyAddon.toc (without extension)
+---- arg2: Given name (try to use something that won't be used by someone else)
+---- arg3: load function (preferably not-local)
+-- this is used for loading skins for user addons, not blizzard addons.
+-- please add a given name, non-given-name is specific for elvui core addon.
+function S:AddCallbackForAddon(addonName, name, func, forceLoad, bypass, position) -- arg2: name is 'given name'; see example above.
+	local load = (name == 'function' and name) or S[name]
+	S:RegisterSkin(addonName, load or func, forceLoad, bypass, position)
 end
 
-function S:AddCallback(func, oldway)
-	-- func can be a function OR a string method name (that exists on S)
-	local isFunc = func == 'function'
-	if isFunc or not oldway then
-		S:RegisterSkin('ElvUI', (isFunc and func) or S[func])
-	elseif oldway == 'function' then -- backwards compatiblity
-		S:RegisterSkin('ElvUI', oldway)
-	end
+-- nonAddonsToLoad:
+--- this is used for loading skins when our skin init function executes.
+--- please add a given name, non-given-name is specific for elvui core addon.
+function S:AddCallback(name, func, position) -- arg1: name is 'given name'
+	local load = (name == 'function' and name) or S[name]
+	S:RegisterSkin('ElvUI', load or func, nil, nil, position)
 end
 
 function S:SkinAce3()
@@ -1299,19 +1301,7 @@ local function errorhandler(err)
 	return _G.geterrorhandler()(err)
 end
 
-function S:CallLoadedAddon(addonName, object)
-	if type(object) == 'table' then
-		for _, loadFunc in ipairs(object) do
-			xpcall(loadFunc, errorhandler)
-		end
-	else
-		xpcall(object, errorhandler)
-	end
-
-	self.addonsToLoad[addonName] = nil
-end
-
-function S:RegisterSkin(addonName, loadFunc, forceLoad, bypass)
+function S:RegisterSkin(addonName, loadFunc, forceLoad, bypass, position)
 	if bypass then
 		self.allowBypass[addonName] = true
 	end
@@ -1320,17 +1310,24 @@ function S:RegisterSkin(addonName, loadFunc, forceLoad, bypass)
 		xpcall(loadFunc, errorhandler)
 		self.addonsToLoad[addonName] = nil
 	elseif addonName == 'ElvUI' then
-		tinsert(self.nonAddonsToLoad, loadFunc)
+		tinsert(self.nonAddonsToLoad, position or #self.nonAddonsToLoad, loadFunc)
 	else
 		local addon = self.addonsToLoad[addonName]
-		if type(addon) == 'function' then
-			self.addonsToLoad[addonName] = {addon, loadFunc}
-		elseif type(addon) == 'table' then
-			tinsert(self.addonsToLoad[addonName], loadFunc)
-		else
-			self.addonsToLoad[addonName] = loadFunc
+		if not addon then
+			self.addonsToLoad[addonName] = {}
+			addon = self.addonsToLoad[addonName]
 		end
+
+		tinsert(addon, position or #addon, loadFunc)
 	end
+end
+
+function S:CallLoadedAddon(addonName, object)
+	for _, loadFunc in ipairs(object) do
+		xpcall(loadFunc, errorhandler)
+	end
+
+	self.addonsToLoad[addonName] = nil
 end
 
 function S:Initialize()

@@ -702,9 +702,8 @@ function S:SkinLFG()
 	-- Tutorial
 	S:HandleCloseButton(_G.PremadeGroupsPvETutorialAlert.CloseButton)
 end
-S:AddCallback('SkinLFG')
 
-local function LoadSecondarySkin()
+function S:SkinChallenges()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
 
 	local ChallengesFrame = _G.ChallengesFrame
@@ -763,4 +762,5 @@ local function LoadSecondarySkin()
 	S:HandleIcon(affix.Portrait)
 end
 
-S:AddCallbackForAddon("Blizzard_ChallengesUI", "Challenges", LoadSecondarySkin)
+S:AddCallback('SkinLFG')
+S:AddCallbackForAddon('Blizzard_ChallengesUI', 'SkinChallenges')
