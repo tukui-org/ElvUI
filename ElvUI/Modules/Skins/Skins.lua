@@ -1282,7 +1282,7 @@ end
 ---- arg1: Addon name (same as the toc): MyAddon.toc (without extension)
 ---- arg2: Given name (try to use something that won't be used by someone else)
 ---- arg3: load function (preferably not-local)
--- this is used for loading skins for user addons, not blizzard addons.
+-- this is used for loading skins that should be executed when the addon loads (including blizzard addons that load later).
 -- please add a given name, non-given-name is specific for elvui core addon.
 function S:AddCallbackForAddon(addonName, name, func, forceLoad, bypass, position) -- arg2: name is 'given name'; see example above.
 	local load = (name == 'function' and name) or S[name]
