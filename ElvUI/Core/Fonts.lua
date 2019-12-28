@@ -31,16 +31,6 @@ function E:UpdateBlizzardFonts()
 		MONOCHROME = 'MONOCHROME'
 	end
 
-	if self.eyefinity then
-		SetCVar('floatingcombattextcombatlogperiodicspells',0)
-		SetCVar('floatingcombattextpetmeleedamage',0)
-		SetCVar('floatingcombattextcombatdamage',0)
-		SetCVar('floatingcombattextcombathealing',0)
-
-		-- set an invisible font for xp, honor kill, etc
-		COMBAT = E.Media.Fonts.Invisible
-	end
-
 	if E.private.general.replaceBlizzFonts then
 		--_G.NAMEPLATE_FONT		= NAMEFONT
 		_G.UNIT_NAME_FONT		= NAMEFONT
