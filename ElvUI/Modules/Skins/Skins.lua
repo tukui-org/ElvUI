@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local tinsert, xpcall, error, format, tContains = tinsert, xpcall, error, format, tContains
+local tinsert, xpcall, error, format, tremove, tContains = tinsert, xpcall, error, format, tremove, tContains
 local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -1301,23 +1301,23 @@ local function errorhandler(err)
 	return _G.geterrorhandler()(err)
 end
 
-function S:RegisterSkin(addonName, loadFunc, forceLoad, bypass, position)
+function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
 	if bypass then
 		self.allowBypass[addonName] = true
 	end
 
 	if forceLoad then
-		xpcall(loadFunc, errorhandler)
+		xpcall(func, errorhandler)
 		self.addonsToLoad[addonName] = nil
 	elseif addonName == 'ElvUI' then
-		if tContains(self.nonAddonsToLoad, loadFunc) then
+		if tContains(self.nonAddonsToLoad, func) then
 			error(format('RegisterSkin failed because of an attempted duplicate function onto %s', addonName))
 		end
 
 		if position then
-			tinsert(self.nonAddonsToLoad, position, loadFunc)
+			tinsert(self.nonAddonsToLoad, position, func)
 		else
-			tinsert(self.nonAddonsToLoad, loadFunc)
+			tinsert(self.nonAddonsToLoad, func)
 		end
 	else
 		local addon = self.addonsToLoad[addonName]
@@ -1326,21 +1326,21 @@ function S:RegisterSkin(addonName, loadFunc, forceLoad, bypass, position)
 			addon = self.addonsToLoad[addonName]
 		end
 
-		if tContains(addon, loadFunc) then
+		if tContains(addon, func) then
 			error(format('RegisterSkin failed because of an attempted duplicate function onto %s', addonName))
 		end
 
 		if position then
-			tinsert(addon, position, loadFunc)
+			tinsert(addon, position, func)
 		else
-			tinsert(addon, loadFunc)
+			tinsert(addon, func)
 		end
 	end
 end
 
 function S:CallLoadedAddon(addonName, object)
-	for _, loadFunc in ipairs(object) do
-		xpcall(loadFunc, errorhandler)
+	for _, func in next, object do
+		xpcall(func, errorhandler)
 	end
 
 	self.addonsToLoad[addonName] = nil
@@ -1350,9 +1350,9 @@ function S:Initialize()
 	self.Initialized = true
 	self.db = E.private.skins
 
-	for index, loadFunc in ipairs(self.nonAddonsToLoad) do
-		xpcall(loadFunc, errorhandler)
-		self.nonAddonsToLoad[index] = nil
+	for index, func in next, self.nonAddonsToLoad do
+		xpcall(func, errorhandler)
+		tremove(self.nonAddonsToLoad, index)
 	end
 
 	for addonName, object in pairs(self.addonsToLoad) do
