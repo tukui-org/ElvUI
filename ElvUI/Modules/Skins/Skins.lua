@@ -1257,6 +1257,12 @@ function S:SkinLibDropDown()
 	end
 end
 
+function S:SkinAce3()
+	S:HookAce3(_G.LibStub('AceGUI-3.0', true))
+	S:Ace3_SkinTooltip(_G.LibStub('AceConfigDialog-3.0', true))
+	S:Ace3_SkinTooltip(E.Libs.AceConfigDialog, E.LibsMinor.AceConfigDialog)
+end
+
 function S:ADDON_LOADED(_, addonName)
 	S:SkinAce3()
 	S:SkinLibDropDown()
@@ -1289,12 +1295,6 @@ end
 function S:AddCallback(name, func, position) -- arg1: name is 'given name'
 	local load = (name == 'function' and name) or S[name]
 	S:RegisterSkin('ElvUI', load or func, nil, nil, position)
-end
-
-function S:SkinAce3()
-	S:HookAce3(_G.LibStub('AceGUI-3.0', true))
-	S:Ace3_SkinTooltip(_G.LibStub('AceConfigDialog-3.0', true))
-	S:Ace3_SkinTooltip(E.Libs.AceConfigDialog, E.LibsMinor.AceConfigDialog)
 end
 
 local function errorhandler(err)
