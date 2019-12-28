@@ -52,7 +52,7 @@ local function SkinPetTooltip(tt)
 	tt:SetTemplate("Transparent")
 end
 
-function S:SkinPetBattle()
+function S:PetBattleFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.petbattleui) then return end
 
 	local f = _G.PetBattleFrame
@@ -408,4 +408,4 @@ function S:SkinPetBattle()
 	--StaticPopupSpecial_Show(PetBattleQueueReadyFrame);
 end
 
-S:AddCallback('SkinPetBattle')
+S:AddCallback('PetBattleFrame')

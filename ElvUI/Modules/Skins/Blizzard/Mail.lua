@@ -32,7 +32,7 @@ local function MailFrameSkin()
 	end
 end
 
-function S:SkinMail()
+function S:MailFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mail) then return end
 
 	local MailFrame = _G.MailFrame
@@ -167,4 +167,4 @@ function S:SkinMail()
 	_G.SendMailMailButton:Point("RIGHT", _G.SendMailCancelButton, "LEFT", -2, 0)
 end
 
-S:AddCallback('SkinMail')
+S:AddCallback('MailFrame')

@@ -7,7 +7,7 @@ local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-function S:SkinContribution()
+function S:Blizzard_Contribution()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Contribution) then return end
 
 	--Main Frame
@@ -61,4 +61,4 @@ function S:SkinContribution()
 	end)
 end
 
-S:AddCallbackForAddon('Blizzard_Contribution', 'SkinContribution')
+S:AddCallbackForAddon('Blizzard_Contribution')

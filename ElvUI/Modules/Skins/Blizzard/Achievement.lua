@@ -139,7 +139,7 @@ local function styleSearchPreview(preview, index)
 	preview:HookScript("OnLeave", resultOnLeave)
 end
 
-function S:SkinAchievement(event)
+function S:Blizzard_AchievementUI(event)
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
 
 	if event == "PLAYER_ENTERING_WORLD" then
@@ -183,9 +183,7 @@ function S:SkinAchievement(event)
 		end)
 	end
 
-	if (not IsAddOnLoaded("Blizzard_AchievementUI")) then
-		return;
-	end
+	if not IsAddOnLoaded("Blizzard_AchievementUI") then return end
 
 	_G.AchievementFrameCategories:SetBackdrop(nil)
 	_G.AchievementFrameSummary:SetBackdrop(nil)
@@ -534,7 +532,7 @@ local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)
-	S:SkinAchievement(event)
+	S:Blizzard_AchievementUI(event)
 end)
 
-S:AddCallbackForAddon('Blizzard_AchievementUI', 'SkinAchievement')
+S:AddCallbackForAddon('Blizzard_AchievementUI')

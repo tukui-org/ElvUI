@@ -8,7 +8,7 @@ local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-function S:SkinScrappingMachine()
+function S:Blizzard_ScrappingMachineUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Scrapping) then return end
 
 	local MachineFrame = _G.ScrappingMachineFrame
@@ -34,4 +34,4 @@ function S:SkinScrappingMachine()
 	MachineFrame:SetScript("OnDragStop", function(s) s:StopMovingOrSizing() end)
 end
 
-S:AddCallbackForAddon('Blizzard_ScrappingMachineUI', 'SkinScrappingMachine')
+S:AddCallbackForAddon('Blizzard_ScrappingMachineUI')

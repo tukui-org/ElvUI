@@ -16,7 +16,7 @@ local UnitSex = UnitSex
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
 
-function S:SkinTalent()
+function S:Blizzard_TalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
 	local PlayerTalentFrame = _G.PlayerTalentFrame
@@ -346,4 +346,4 @@ function S:SkinTalent()
 	S:HandleScrollBar(_G.PlayerTalentFrameTalents.PvpTalentFrame.TalentList.ScrollFrame.ScrollBar)
 end
 
-S:AddCallbackForAddon('Blizzard_TalentUI', 'SkinTalent')
+S:AddCallbackForAddon('Blizzard_TalentUI')

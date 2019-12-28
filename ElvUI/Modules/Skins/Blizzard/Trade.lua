@@ -8,7 +8,7 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-function S:SkinTrade()
+function S:TradeFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trade) then return end
 
 	local TradeFrame = _G.TradeFrame
@@ -109,4 +109,4 @@ function S:SkinTrade()
 	_G.TradeHighlightRecipientEnchant:SetFrameStrata("HIGH")
 end
 
-S:AddCallback('SkinTrade')
+S:AddCallback('TradeFrame')

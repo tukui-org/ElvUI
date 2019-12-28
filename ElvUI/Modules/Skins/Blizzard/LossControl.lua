@@ -7,7 +7,7 @@ local _G = _G
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-function S:SkinLossControl()
+function S:LossOfControlFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.losscontrol) then return end
 
 	--/run LossOfControlFrame.fadeTime = 2000; LossOfControlFrame_SetUpDisplay(LossOfControlFrame, true, 'CONFUSE', 2094, 'Disoriented', [[Interface\Icons\Spell_Shadow_MindSteal]], 72101.9765625, 7.9950003623962, 8, 0, 5, 2)
@@ -48,4 +48,4 @@ function S:SkinLossControl()
 	end)
 end
 
-S:AddCallback('SkinLossControl')
+S:AddCallback('LossOfControlFrame')

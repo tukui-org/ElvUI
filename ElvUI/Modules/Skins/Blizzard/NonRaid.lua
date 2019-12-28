@@ -5,7 +5,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs = pairs
 
-function S:SkinRaidInfo()
+function S:RaidInfoFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.nonraid) then return end
 
 	local StripAllTextures = {
@@ -47,4 +47,4 @@ function S:SkinRaidInfo()
 	S:HandleCheckBox(_G.RaidFrameAllAssistCheckButton)
 end
 
-S:AddCallback('SkinRaidInfo')
+S:AddCallback('RaidInfoFrame')

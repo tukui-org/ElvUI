@@ -16,7 +16,7 @@ local function SkinTab(tab)
 	tab.Right:SetAlpha(0)
 end
 
-function S:SkinBlackMarket()
+function S:Blizzard_BlackMarketUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bmah) then return end
 
 	local BlackMarketFrame = _G.BlackMarketFrame
@@ -86,4 +86,4 @@ function S:SkinBlackMarket()
 	end)
 end
 
-S:AddCallbackForAddon('Blizzard_BlackMarketUI', 'SkinBlackMarket')
+S:AddCallbackForAddon('Blizzard_BlackMarketUI')

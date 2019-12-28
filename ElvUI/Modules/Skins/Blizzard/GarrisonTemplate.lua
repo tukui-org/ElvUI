@@ -8,7 +8,7 @@ local hooksecurefunc = hooksecurefunc
 local C_Garrison_GetFollowerInfo = C_Garrison.GetFollowerInfo
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
-function S:SkinGarrisonTemplate()
+function S:Blizzard_GarrisonTemplates()
 	if E.private.skins.blizzard.enable ~= true or (E.private.skins.blizzard.orderhall ~= true or E.private.skins.blizzard.garrison ~= true) then return end
 
 	hooksecurefunc(_G.GarrisonFollowerTabMixin, "ShowFollower", function(s, followerID)
@@ -33,4 +33,4 @@ function S:SkinGarrisonTemplate()
 	end)
 end
 
-S:AddCallbackForAddon('Blizzard_GarrisonTemplates', 'SkinGarrisonTemplate')
+S:AddCallbackForAddon('Blizzard_GarrisonTemplates')

@@ -8,7 +8,7 @@ local select, unpack = select, unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-function S:SkinGuildBank()
+function S:Blizzard_GuildBankUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gbank) then return end
 
 	local GuildBankFrame = _G.GuildBankFrame
@@ -105,4 +105,4 @@ function S:SkinGuildBank()
 	S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, _G.NUM_GUILDBANK_ICONS_SHOWN, "GuildBankPopupButton", "GuildBankPopup")
 end
 
-S:AddCallbackForAddon('Blizzard_GuildBankUI', 'SkinGuildBank')
+S:AddCallbackForAddon('Blizzard_GuildBankUI')

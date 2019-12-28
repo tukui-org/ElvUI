@@ -26,7 +26,7 @@ local function HandleRoleChecks(button, ...)
 	S:HandleCheckBox(button.checkButton)
 end
 
-function S:SkinPVPUI()
+function S:Blizzard_PVPUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
 	_G.PVPUIFrame:StripTextures()
@@ -226,9 +226,7 @@ function S:SkinPVPUI()
 	RewardFrame.Icon:SetTexCoord(unpack(E.TexCoords))
 end
 
-S:AddCallbackForAddon('Blizzard_PVPUI', 'SkinPVPUI')
-
-function S:SkinPVP()
+function S:PVPReadyDialog()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
 	--PVP QUEUE FRAME
@@ -257,4 +255,5 @@ function S:SkinPVP()
 	end)
 end
 
-S:AddCallback('SkinPVP')
+S:AddCallback('PVPReadyDialog')
+S:AddCallbackForAddon('Blizzard_PVPUI')

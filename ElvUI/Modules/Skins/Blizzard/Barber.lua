@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:SkinBarbershop()
+function S:Blizzard_BarbershopUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.barber) then return end
 
 	_G.BarberShopFrameOkayButton:Point("RIGHT", _G.BarberShopFrameSelector4, "BOTTOM", 2, -50)
@@ -52,4 +52,4 @@ function S:SkinBarbershop()
 	_G.BarberShopAltFormFrame:CreateBackdrop("Transparent")
 end
 
-S:AddCallbackForAddon('Blizzard_BarbershopUI', 'SkinBarbershop')
+S:AddCallbackForAddon('Blizzard_BarbershopUI')

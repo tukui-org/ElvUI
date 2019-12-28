@@ -6,7 +6,7 @@ local _G = _G
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-function S:SkinChannels()
+function S:Blizzard_Channels()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Channels) then return end
 
 	local ChannelFrame = _G.ChannelFrame
@@ -46,4 +46,4 @@ function S:SkinChannels()
 	end)
 end
 
-S:AddCallbackForAddon('Blizzard_Channels', 'SkinChannels')
+S:AddCallbackForAddon('Blizzard_Channels')

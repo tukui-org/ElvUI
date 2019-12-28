@@ -37,7 +37,7 @@ local function UpdateLoots()
 	end
 end
 
-function S:SkinLoot()
+function S:LootFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.loot) then return end
 
 	-- Loot history frame
@@ -196,12 +196,12 @@ function S:SkinLoot()
 		S:HandleItemButton(button, true)
 
 		button.IconBorder:SetTexture()
-		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
-			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-			self:SetTexture()
+		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(s, r, g, b)
+			s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+			s:SetTexture()
 		end)
-		hooksecurefunc(button.IconBorder, 'Hide', function(self)
-			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		hooksecurefunc(button.IconBorder, 'Hide', function(s)
+			s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
 		local point, attachTo, point2, x, y = button:GetPoint()
@@ -213,9 +213,8 @@ function S:SkinLoot()
 		local numLootItems = LootFrame.numLootItems;
 		--Logic to determine how many items to show per page
 		local numLootToShow = _G.LOOTFRAME_NUMBUTTONS;
-		local self = LootFrame;
-		if self.AutoLootTable then
-			numLootItems = #self.AutoLootTable;
+		if LootFrame.AutoLootTable then
+			numLootItems = #LootFrame.AutoLootTable;
 		end
 		if numLootItems > _G.LOOTFRAME_NUMBUTTONS then
 			numLootToShow = numLootToShow - 1; -- make space for the page buttons
@@ -252,13 +251,13 @@ function S:SkinLoot()
 		end
 	end)
 
-	LootFrame:HookScript("OnShow", function(self)
-		if(IsFishingLoot()) then
-			self.Title:SetText(L["Fishy Loot"])
+	LootFrame:HookScript("OnShow", function(s)
+		if IsFishingLoot() then
+			s.Title:SetText(L["Fishy Loot"])
 		elseif(not UnitIsFriend("player", "target") and UnitIsDead"target") then
-			self.Title:SetText(UnitName("target"))
+			s.Title:SetText(UnitName("target"))
 		else
-			self.Title:SetText(LOOT)
+			s.Title:SetText(LOOT)
 		end
 	end)
 
@@ -266,4 +265,4 @@ function S:SkinLoot()
 	S:HandleNextPrevButton(_G.LootFrameUpButton)
 end
 
-S:AddCallback('SkinLoot')
+S:AddCallback('LootFrame')

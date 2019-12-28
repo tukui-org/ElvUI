@@ -65,7 +65,7 @@ local function RAFRewards()
 	end
 end
 
-function S:SkinFriends()
+function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
 	S:HandleScrollBar(_G.FriendsListFrameScrollFrame.scrollBar, 5)
@@ -299,4 +299,4 @@ function S:SkinFriends()
 	RAFRewards() -- Because it's loaded already. The securehook is for when it updates in game. Thanks for playing.
 end
 
-S:AddCallback('SkinFriends')
+S:AddCallback('FriendsFrame')

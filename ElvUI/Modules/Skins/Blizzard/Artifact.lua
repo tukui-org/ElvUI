@@ -7,7 +7,7 @@ local select = select
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-function S:SkinArtifact()
+function S:Blizzard_ArtifactUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.artifact) then return end
 
 	local ArtifactFrame = _G.ArtifactFrame
@@ -56,4 +56,4 @@ function S:SkinArtifact()
 	end)
 end
 
-S:AddCallbackForAddon('Blizzard_ArtifactUI', 'SkinArtifact')
+S:AddCallbackForAddon('Blizzard_ArtifactUI')

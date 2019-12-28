@@ -23,7 +23,7 @@ local function TextColorModified(self, r, g, b)
 	end
 end
 
-function S:SkinCollections()
+function S:Blizzard_Collections()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.collections) then return end
 
 	-- global
@@ -554,4 +554,4 @@ function S:SkinCollections()
 	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
 end
 
-S:AddCallbackForAddon('Blizzard_Collections', 'SkinCollections')
+S:AddCallbackForAddon('Blizzard_Collections')

@@ -74,7 +74,7 @@ local function Quest_GetQuestID()
 	end
 end
 
-function S:SkinQuest()
+function S:BlizzardQuestFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.quest) then return end
 
 	S:HandleScrollBar(_G.QuestProgressScrollFrameScrollBar)
@@ -233,7 +233,6 @@ function S:SkinQuest()
 	end)
 
 	local Rewards = { 'MoneyFrame', 'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame' }
-
 	for _, frame in pairs(Rewards) do
 		HandleReward(_G.MapQuestInfoRewardsFrame[frame])
 		HandleReward(_G.QuestInfoRewardsFrame[frame])
@@ -447,4 +446,4 @@ function S:SkinQuest()
 	end)
 end
 
-S:AddCallback('SkinQuest')
+S:AddCallback('BlizzardQuestFrames')

@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:SkinAzeriteRespec()
+function S:Blizzard_AzeriteRespecUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AzeriteRespec) then return end
 
 	local AzeriteRespecFrame = _G.AzeriteRespecFrame
@@ -45,4 +45,4 @@ function S:SkinAzeriteRespec()
 	S:HandleCloseButton(AzeriteRespecFrame.CloseButton)
 end
 
-S:AddCallbackForAddon('Blizzard_AzeriteRespecUI', 'SkinAzeriteRespec')
+S:AddCallbackForAddon('Blizzard_AzeriteRespecUI')

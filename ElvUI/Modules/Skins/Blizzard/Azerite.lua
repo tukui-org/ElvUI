@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:SkinAzerite()
+function S:Blizzard_AzeriteUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AzeriteUI) then return end
 
 	_G.AzeriteEmpoweredItemUI:StripTextures()
@@ -13,4 +13,4 @@ function S:SkinAzerite()
 	S:HandleCloseButton(_G.AzeriteEmpoweredItemUICloseButton)
 end
 
-S:AddCallbackForAddon('Blizzard_AzeriteUI', 'SkinAzerite')
+S:AddCallbackForAddon('Blizzard_AzeriteUI')

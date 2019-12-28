@@ -137,7 +137,7 @@ local function SkinBags()
 end
 
 local bagIconCache = {}
-function S:SkinBags()
+function S:ContainerFrame()
 	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
 
 	_G.BankSlotsFrame:StripTextures()
@@ -262,4 +262,4 @@ function S:SkinBags()
 	SkinBags()
 end
 
-S:AddCallback('SkinBags')
+S:AddCallback('ContainerFrame')

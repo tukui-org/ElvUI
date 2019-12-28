@@ -266,7 +266,7 @@ local function UpdateCurrencySkins()
 	end
 end
 
-function S:SkinCharacter()
+function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
 	-- General
@@ -492,4 +492,4 @@ function S:SkinCharacter()
 	-- S:HandleCloseButton(_G.PaperDollItemsFrame.HelpTipBox.CloseButton)
 end
 
-S:AddCallback('SkinCharacter')
+S:AddCallback('CharacterFrame')

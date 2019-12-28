@@ -9,7 +9,7 @@ local CreateFrame = CreateFrame
 local GetProfessionInfo = GetProfessionInfo
 local hooksecurefunc = hooksecurefunc
 
-function S:SkinSpellbook()
+function S:SpellBookFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
 
 	local SpellBookFrame = _G.SpellBookFrame
@@ -195,4 +195,4 @@ function S:SkinSpellbook()
 	end)
 end
 
-S:AddCallback('SkinSpellbook')
+S:AddCallback('SpellBookFrame')

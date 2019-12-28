@@ -7,7 +7,7 @@ local pairs = pairs
 --WoW API / Variables
 local C_AzeriteEssence_CanOpenUI = C_AzeriteEssence.CanOpenUI
 
-function S:SkinAzeriteEssence()
+function S:Blizzard_AzeriteEssenceUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AzeriteEssence) then return end
 	if not C_AzeriteEssence_CanOpenUI() then return end
 
@@ -48,4 +48,4 @@ function S:SkinAzeriteEssence()
 	end)
 end
 
-S:AddCallbackForAddon('Blizzard_AzeriteEssenceUI', 'SkinAzeriteEssence')
+S:AddCallbackForAddon('Blizzard_AzeriteEssenceUI')

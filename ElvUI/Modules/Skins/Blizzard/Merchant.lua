@@ -7,7 +7,7 @@ local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-function S:SkinMerchant()
+function S:MerchantFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.merchant) then return end
 
 	local MerchantFrame = _G.MerchantFrame
@@ -106,4 +106,4 @@ function S:SkinMerchant()
 	S:HandleNextPrevButton(_G.MerchantPrevPageButton, nil, nil, true, true)
 end
 
-S:AddCallback('SkinMerchant')
+S:AddCallback('MerchantFrame')

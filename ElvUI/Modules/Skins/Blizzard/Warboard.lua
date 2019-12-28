@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:SkinWarboard()
+function S:Blizzard_WarboardUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Warboard) then return end
 
 	local WarboardQuestChoiceFrame = _G.WarboardQuestChoiceFrame
@@ -42,4 +42,4 @@ function S:SkinWarboard()
 	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
 end
 
-S:AddCallbackForAddon('Blizzard_WarboardUI', 'SkinWarboard')
+S:AddCallbackForAddon('Blizzard_WarboardUI')

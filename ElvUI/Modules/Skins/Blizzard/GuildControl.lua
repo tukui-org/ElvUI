@@ -71,7 +71,7 @@ local function fixSkin(frame)
 	end
 end
 
-function S:SkinGuildControl()
+function S:Blizzard_GuildControlUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildcontrol) then return end
 
 	local GuildControlUI = _G.GuildControlUI
@@ -142,4 +142,4 @@ function S:SkinGuildControl()
 	_G.GuildControlUIRankBankFrameRankDropDownButton:Width(20)
 end
 
-S:AddCallbackForAddon('Blizzard_GuildControlUI', 'SkinGuildControl')
+S:AddCallbackForAddon('Blizzard_GuildControlUI')

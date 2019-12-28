@@ -31,7 +31,7 @@ local function SkinRecipeList(self, _, tradeSkillInfo)
 	end
 end
 
-function S:SkinTradeSkill()
+function S:Blizzard_TradeSkillUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
 
 	-- MainFrame
@@ -140,4 +140,4 @@ function S:SkinTradeSkill()
 	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
 end
 
-S:AddCallbackForAddon('Blizzard_TradeSkillUI', 'SkinTradeSkill')
+S:AddCallbackForAddon('Blizzard_TradeSkillUI')

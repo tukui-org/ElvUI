@@ -111,7 +111,7 @@ local function HandleAffixIcons(self)
 	end
 end
 
-function S:SkinLFG()
+function S:LookingForGroupFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 
@@ -703,7 +703,7 @@ function S:SkinLFG()
 	S:HandleCloseButton(_G.PremadeGroupsPvETutorialAlert.CloseButton)
 end
 
-function S:SkinChallenges()
+function S:Blizzard_ChallengesUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 	local ChallengesFrame = _G.ChallengesFrame
@@ -762,5 +762,5 @@ function S:SkinChallenges()
 	S:HandleIcon(affix.Portrait)
 end
 
-S:AddCallback('SkinLFG')
-S:AddCallbackForAddon('Blizzard_ChallengesUI', 'SkinChallenges')
+S:AddCallback('LookingForGroupFrames')
+S:AddCallbackForAddon('Blizzard_ChallengesUI')

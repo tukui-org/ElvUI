@@ -14,7 +14,7 @@ local function IslandTooltipStyle(self)
 	self:SetTemplate("Transparent", nil, true)
 end
 
-function S:SkinTooltip()
+function S:TooltipFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
 
 	S:HandleCloseButton(_G.ItemRefCloseButton)
@@ -92,4 +92,4 @@ function S:SkinTooltip()
 	end)
 end
 
-S:AddCallback('SkinTooltip')
+S:AddCallback('TooltipFrames')

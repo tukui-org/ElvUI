@@ -14,7 +14,7 @@ local function SetPauseTexture()
 	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Pause)
 end
 
-function S:SkinTimeManager()
+function S:Blizzard_TimeManager()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.timemanager) then return end
 
 	local TimeManagerFrame = _G.TimeManagerFrame
@@ -71,4 +71,4 @@ function S:SkinTimeManager()
 	hooksecurefunc("Stopwatch_Clear", SetPlayTexture)
 end
 
-S:AddCallbackForAddon('Blizzard_TimeManager', 'SkinTimeManager')
+S:AddCallbackForAddon('Blizzard_TimeManager')

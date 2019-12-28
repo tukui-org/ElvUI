@@ -33,7 +33,7 @@ local function colorBorder(child, backdrop, atlas)
 	end
 end
 
-function S:SkinOrderHall()
+function S:Blizzard_OrderHallUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.orderhall) then return end
 
 	local classColor = E:ClassColor(E.myclass, true)
@@ -149,4 +149,4 @@ function S:SkinOrderHall()
 	end)
 end
 
-S:AddCallbackForAddon('Blizzard_OrderHallUI', 'SkinOrderHall')
+S:AddCallbackForAddon('Blizzard_OrderHallUI')

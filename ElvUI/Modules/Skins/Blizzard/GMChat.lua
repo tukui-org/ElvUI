@@ -7,7 +7,7 @@ local select = select
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-function S:SkinGMChat()
+function S:Blizzard_GMChatUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.GMChat) then return end
 
 	local frame = _G.GMChatFrame
@@ -54,4 +54,4 @@ function S:SkinGMChat()
 	close:SetPoint("RIGHT", tab, -5, 0)
 end
 
-S:AddCallbackForAddon('Blizzard_GMChatUI', 'SkinGMChat')
+S:AddCallbackForAddon('Blizzard_GMChatUI')

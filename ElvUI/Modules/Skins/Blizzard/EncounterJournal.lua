@@ -173,7 +173,7 @@ local function HandleTopTabs(tab)
 	tab:SetHitRectInsets(0, 0, 0, 0)
 end
 
-function S:SkinEncounterJournal()
+function S:Blizzard_EncounterJournal()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.encounterjournal) then return end
 
 	local EJ = _G.EncounterJournal
@@ -541,4 +541,4 @@ function S:SkinEncounterJournal()
 	end
 end
 
-S:AddCallbackForAddon('Blizzard_EncounterJournal', 'SkinEncounterJournal')
+S:AddCallbackForAddon('Blizzard_EncounterJournal')

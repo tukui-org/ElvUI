@@ -18,7 +18,7 @@ local function SkinRewards()
 	end
 end
 
-function S:SkinAdventureMap()
+function S:Blizzard_AdventureMap()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AdventureMap) then return end
 
 	--Quest Choise
@@ -43,4 +43,4 @@ function S:SkinAdventureMap()
 	S:HandleButton(AdventureMapQuestChoiceDialog.DeclineButton)
 end
 
-S:AddCallbackForAddon('Blizzard_AdventureMap', 'SkinAdventureMap')
+S:AddCallbackForAddon('Blizzard_AdventureMap')

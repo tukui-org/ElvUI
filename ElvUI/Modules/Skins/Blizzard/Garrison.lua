@@ -9,7 +9,7 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 
-function S:SkinGarrison()
+function S:Blizzard_GarrisonUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.garrison) then return end
 
 	--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
@@ -492,7 +492,7 @@ local function SkinAbilityTooltip(frame)
 	frame:SetTemplate("Transparent")
 end
 
-function S:SkinGarrisonTooltips()
+function S:GarrisonTooltips()
 	if not (E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison and E.private.skins.blizzard.tooltip) then return end
 
 	SkinFollowerTooltip(_G.GarrisonFollowerTooltip)
@@ -576,5 +576,5 @@ function S:SkinGarrisonTooltips()
 	end)
 end
 
-S:AddCallbackForAddon('Blizzard_GarrisonUI', 'SkinGarrison')
-S:AddCallback('SkinGarrisonTooltips')
+S:AddCallbackForAddon('Blizzard_GarrisonUI')
+S:AddCallback('GarrisonTooltips')

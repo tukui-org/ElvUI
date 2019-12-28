@@ -5,7 +5,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 
-function S:SkinObliterum()
+function S:Blizzard_ObliterumUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Obliterum) then return end
 
 	local ObliterumForgeFrame = _G.ObliterumForgeFrame
@@ -15,4 +15,4 @@ function S:SkinObliterum()
 	S:HandleButton(ObliterumForgeFrame.ObliterateButton)
 end
 
-S:AddCallbackForAddon('Blizzard_ObliterumUI', 'SkinObliterum')
+S:AddCallbackForAddon('Blizzard_ObliterumUI')

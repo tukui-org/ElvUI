@@ -9,7 +9,7 @@ local CreateFrame = CreateFrame
 local C_GuildInfo_CanViewOfficerNote = C_GuildInfo.CanViewOfficerNote
 local hooksecurefunc = hooksecurefunc
 
-function S:SkinGuild()
+function S:Blizzard_GuildUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guild) then return end
 
 	local GuildFrame = _G.GuildFrame
@@ -253,7 +253,7 @@ function S:SkinGuild()
 	end
 end
 
-function S:SkinGuildInvite()
+function S:GuildInviteFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guild) then return end
 
 	local GuildInviteFrame = _G.GuildInviteFrame
@@ -267,8 +267,9 @@ function S:SkinGuildInvite()
 	GuildInviteFrame:HookScript("OnEvent", function()
 		GuildInviteFrame:Height(225)
 	end)
+
 	_G.GuildInviteFrameWarningText:Kill()
 end
 
-S:AddCallbackForAddon('Blizzard_GuildUI', 'SkinGuild')
-S:AddCallback('SkinGuildInvite')
+S:AddCallbackForAddon('Blizzard_GuildUI')
+S:AddCallback('GuildInviteFrame')

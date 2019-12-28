@@ -16,7 +16,7 @@ local StripAllTextures = {
 	"RaidGroup8",
 }
 
-function S:SkinRaidUI()
+function S:Blizzard_RaidUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
 
 	for _, object in pairs(StripAllTextures) do
@@ -40,4 +40,4 @@ function S:SkinRaidUI()
 	end
 end
 
-S:AddCallbackForAddon('Blizzard_RaidUI', 'SkinRaidUI')
+S:AddCallbackForAddon('Blizzard_RaidUI')

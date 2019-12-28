@@ -5,7 +5,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, unpack = pairs, unpack
 
-function S:SkinTrainer()
+function S:Blizzard_TrainerUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer) then return end
 
 	--Class Trainer Frame
@@ -80,4 +80,4 @@ function S:SkinTrainer()
 	E:RegisterStatusBar(ClassTrainerStatusBar)
 end
 
-S:AddCallbackForAddon('Blizzard_TrainerUI', 'SkinTrainer')
+S:AddCallbackForAddon('Blizzard_TrainerUI')

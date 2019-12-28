@@ -9,7 +9,7 @@ local format = format
 local HideUIPanel = HideUIPanel
 local ShowUIPanel = ShowUIPanel
 
-function S:SkinMacro()
+function S:Blizzard_MacroUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.macro) then return end
 
 	local MacroFrame = _G.MacroFrame
@@ -108,4 +108,4 @@ function S:SkinMacro()
 	end)
 end
 
-S:AddCallbackForAddon('Blizzard_MacroUI', 'SkinMacro')
+S:AddCallbackForAddon('Blizzard_MacroUI')

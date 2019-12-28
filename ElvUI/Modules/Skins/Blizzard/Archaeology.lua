@@ -6,7 +6,7 @@ local _G = _G
 local pairs, select = pairs, select
 --WoW API / Variables
 
-function S:SkinArchaeology()
+function S:Blizzard_ArchaeologyUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.archaeology) then return end
 
 	local ArchaeologyFrame = _G.ArchaeologyFrame
@@ -77,4 +77,4 @@ function S:SkinArchaeology()
 	E:CreateMover(_G.ArcheologyDigsiteProgressBar, "DigSiteProgressBarMover", L["Archeology Progress Bar"])
 end
 
-S:AddCallbackForAddon('Blizzard_ArchaeologyUI', 'SkinArchaeology')
+S:AddCallbackForAddon('Blizzard_ArchaeologyUI')
