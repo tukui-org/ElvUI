@@ -9,7 +9,7 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinScrappingMachine()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Scrapping ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Scrapping) then return end
 
 	local MachineFrame = _G.ScrappingMachineFrame
 	S:HandlePortraitFrame(MachineFrame, true)

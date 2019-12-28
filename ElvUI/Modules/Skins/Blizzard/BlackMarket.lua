@@ -17,7 +17,7 @@ local function SkinTab(tab)
 end
 
 function S:SkinBlackMarket()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bmah ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bmah) then return end
 
 	local BlackMarketFrame = _G.BlackMarketFrame
 	BlackMarketFrame:StripTextures()

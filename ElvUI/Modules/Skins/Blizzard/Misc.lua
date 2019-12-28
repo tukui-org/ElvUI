@@ -36,7 +36,7 @@ local function SkinNavBarButtons(self)
 end
 
 function S:SkinMisc()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
 	_G.QueueStatusFrame:StripTextures()
 

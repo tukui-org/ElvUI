@@ -66,7 +66,7 @@ local function RAFRewards()
 end
 
 function S:SkinFriends()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.friends ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
 	S:HandleScrollBar(_G.FriendsListFrameScrollFrame.scrollBar, 5)
 	S:HandleScrollBar(_G.WhoListScrollFrame.scrollBar, 5)

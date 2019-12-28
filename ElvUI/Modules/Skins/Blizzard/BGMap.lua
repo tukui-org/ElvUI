@@ -39,7 +39,7 @@ local function refreshAlpha()
 end
 
 function S:SkinBattlefieldMap()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgmap ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bgmap) then return end
 
 	local BattlefieldMapFrame = _G.BattlefieldMapFrame
 	local BattlefieldMapTab = _G.BattlefieldMapTab

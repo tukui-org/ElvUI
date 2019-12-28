@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 
 function S:SkinAzeriteRespec()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AzeriteRespec ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AzeriteRespec) then return end
 
 	local AzeriteRespecFrame = _G.AzeriteRespecFrame
 	AzeriteRespecFrame:SetClipsChildren(true)

@@ -8,7 +8,7 @@ local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinInspect()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.inspect ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
 	local InspectFrame = _G.InspectFrame
 	S:HandlePortraitFrame(InspectFrame, true)

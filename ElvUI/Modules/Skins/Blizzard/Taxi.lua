@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 
 function S:SkinTaxi()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.taxi ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.taxi) then return end
 
 	local TaxiFrame = _G.TaxiFrame
 	TaxiFrame:StripTextures()

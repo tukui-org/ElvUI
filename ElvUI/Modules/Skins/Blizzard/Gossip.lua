@@ -10,7 +10,7 @@ local strfind = strfind
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinGossip()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.gossip ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
 
 	_G.ItemTextFrame:StripTextures(true)
 	_G.ItemTextFrame:SetTemplate("Transparent")

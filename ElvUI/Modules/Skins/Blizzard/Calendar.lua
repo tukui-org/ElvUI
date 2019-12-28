@@ -11,7 +11,7 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinCalendar()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.calendar ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.calendar) then return end
 
 	local CalendarFrame = _G.CalendarFrame
 	CalendarFrame:DisableDrawLayer("BORDER")

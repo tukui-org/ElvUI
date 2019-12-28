@@ -72,7 +72,7 @@ local function fixSkin(frame)
 end
 
 function S:SkinGuildControl()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guildcontrol ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildcontrol) then return end
 
 	local GuildControlUI = _G.GuildControlUI
 	GuildControlUI:StripTextures()

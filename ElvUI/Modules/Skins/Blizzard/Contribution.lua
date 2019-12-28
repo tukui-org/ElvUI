@@ -8,7 +8,7 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinContribution()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Contribution ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Contribution) then return end
 
 	--Main Frame
 	local ContributionCollectionFrame = _G.ContributionCollectionFrame

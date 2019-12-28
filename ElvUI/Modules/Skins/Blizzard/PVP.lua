@@ -27,7 +27,7 @@ local function HandleRoleChecks(button, ...)
 end
 
 function S:SkinPVPUI()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.pvp ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
 	_G.PVPUIFrame:StripTextures()
 
@@ -229,7 +229,7 @@ end
 S:AddCallbackForAddon('Blizzard_PVPUI', 'SkinPVPUI')
 
 function S:SkinPVP()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.pvp ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
 	--PVP QUEUE FRAME
 	_G.PVPReadyDialog:StripTextures()

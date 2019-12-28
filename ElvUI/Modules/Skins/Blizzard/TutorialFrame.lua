@@ -6,7 +6,7 @@ local _G = _G
 --WoW API / Variables
 
 function S:SkinTutorial()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Tutorials ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Tutorials) then return end
 
 	-- Dont use :StripTextures() here
 	_G.TutorialFrame:CreateBackdrop("Transparent")

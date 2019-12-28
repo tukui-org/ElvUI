@@ -19,7 +19,7 @@ local function SkinRewards()
 end
 
 function S:SkinAdventureMap()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AdventureMap ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AdventureMap) then return end
 
 	--Quest Choise
 	local AdventureMapQuestChoiceDialog = _G.AdventureMapQuestChoiceDialog

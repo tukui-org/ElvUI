@@ -267,7 +267,7 @@ local function UpdateCurrencySkins()
 end
 
 function S:SkinCharacter()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.character ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
 	-- General
 	local CharacterFrame = _G.CharacterFrame

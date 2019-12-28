@@ -75,7 +75,7 @@ local function Quest_GetQuestID()
 end
 
 function S:SkinQuest()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.quest ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.quest) then return end
 
 	S:HandleScrollBar(_G.QuestProgressScrollFrameScrollBar)
 	S:HandleScrollBar(_G.QuestRewardScrollFrameScrollBar)

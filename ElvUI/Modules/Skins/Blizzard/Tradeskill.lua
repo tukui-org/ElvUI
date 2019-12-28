@@ -32,7 +32,7 @@ local function SkinRecipeList(self, _, tradeSkillInfo)
 end
 
 function S:SkinTradeSkill()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tradeskill ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
 
 	-- MainFrame
 	local TradeSkillFrame = _G.TradeSkillFrame

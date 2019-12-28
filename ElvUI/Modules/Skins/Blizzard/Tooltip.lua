@@ -15,7 +15,7 @@ local function IslandTooltipStyle(self)
 end
 
 function S:SkinTooltip()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tooltip ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
 
 	S:HandleCloseButton(_G.ItemRefCloseButton)
 

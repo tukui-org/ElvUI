@@ -140,7 +140,7 @@ local function SkinFindGroupButton(block)
 end
 
 function S:SkinObjectiveTracker()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.objectiveTracker ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.objectiveTracker) then return end
 
 	local ObjectiveTrackerFrame = _G.ObjectiveTrackerFrame
 	local minimizeButton = ObjectiveTrackerFrame.HeaderMenu.MinimizeButton

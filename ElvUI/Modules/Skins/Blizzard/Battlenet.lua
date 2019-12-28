@@ -6,7 +6,7 @@ local _G = _G
 local select = select
 
 function S:SkinBattlenet()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
 	local skins = {
 		_G.BNToastFrame,

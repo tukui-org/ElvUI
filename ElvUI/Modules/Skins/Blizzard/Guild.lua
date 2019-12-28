@@ -10,7 +10,7 @@ local C_GuildInfo_CanViewOfficerNote = C_GuildInfo.CanViewOfficerNote
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinGuild()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guild ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guild) then return end
 
 	local GuildFrame = _G.GuildFrame
 	S:HandlePortraitFrame(GuildFrame, true)
@@ -254,7 +254,7 @@ function S:SkinGuild()
 end
 
 function S:SkinGuildInvite()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guild ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guild) then return end
 
 	local GuildInviteFrame = _G.GuildInviteFrame
 	GuildInviteFrame:StripTextures()

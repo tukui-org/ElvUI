@@ -138,7 +138,7 @@ end
 
 local bagIconCache = {}
 function S:SkinBags()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bags ~= true or E.private.bags.enable then return end
+	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
 
 	_G.BankSlotsFrame:StripTextures()
 	S:HandleTab(_G.BankFrameTab1)

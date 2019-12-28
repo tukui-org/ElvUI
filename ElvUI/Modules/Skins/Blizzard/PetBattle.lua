@@ -53,7 +53,7 @@ local function SkinPetTooltip(tt)
 end
 
 function S:SkinPetBattle()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.petbattleui ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.petbattleui) then return end
 
 	local f = _G.PetBattleFrame
 	local bf = f.BottomFrame
@@ -181,7 +181,7 @@ function S:SkinPetBattle()
 
 	-- PETS UNITFRAMES AURA SKINS
 	hooksecurefunc("PetBattleAuraHolder_Update", function(s)
-		if not s.petOwner or not s.petIndex then return end
+		if not (s.petOwner and s.petIndex) then return end
 
 		local nextFrame = 1
 		for i=1, C_PetBattles_GetNumAuras(s.petOwner, s.petIndex) do

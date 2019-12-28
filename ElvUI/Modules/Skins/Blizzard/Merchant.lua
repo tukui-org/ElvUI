@@ -8,7 +8,7 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinMerchant()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.merchant ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.merchant) then return end
 
 	local MerchantFrame = _G.MerchantFrame
 	S:HandlePortraitFrame(MerchantFrame, true)

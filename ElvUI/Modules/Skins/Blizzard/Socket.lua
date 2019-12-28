@@ -9,7 +9,7 @@ local GetSocketTypes = GetSocketTypes
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinItemSocket()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.socket ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.socket) then return end
 
 	local ItemSocketingFrame = _G.ItemSocketingFrame
 	S:HandlePortraitFrame(ItemSocketingFrame, true)

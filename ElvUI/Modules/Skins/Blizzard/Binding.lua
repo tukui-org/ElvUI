@@ -8,7 +8,7 @@ local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinBinding()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.binding ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.binding) then return end
 
 	local buttons = {
 		"defaultsButton",

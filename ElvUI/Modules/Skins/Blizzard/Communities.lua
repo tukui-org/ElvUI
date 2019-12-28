@@ -83,7 +83,7 @@ local function HandleCommunitiesButtons(self, color)
 end
 
 function S:SkinCommunities()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Communities ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Communities) then return end
 
 	local CommunitiesFrame = _G.CommunitiesFrame
 	CommunitiesFrame:StripTextures()

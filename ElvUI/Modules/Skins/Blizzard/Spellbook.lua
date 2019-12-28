@@ -10,7 +10,7 @@ local GetProfessionInfo = GetProfessionInfo
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinSpellbook()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.spellbook ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
 
 	local SpellBookFrame = _G.SpellBookFrame
 	S:HandlePortraitFrame(SpellBookFrame, true)

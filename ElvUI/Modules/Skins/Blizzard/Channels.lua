@@ -7,7 +7,7 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinChannels()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Channels ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Channels) then return end
 
 	local ChannelFrame = _G.ChannelFrame
 	local CreateChannelPopup = _G.CreateChannelPopup

@@ -9,7 +9,7 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
 function S:SkinAuctionHouse()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.auctionhouse ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
 
 	local AuctionFrame = _G.AuctionFrame
 	AuctionFrame:StripTextures(true)

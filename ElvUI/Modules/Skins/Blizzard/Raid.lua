@@ -17,7 +17,7 @@ local StripAllTextures = {
 }
 
 function S:SkinRaidUI()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.raid ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
 
 	for _, object in pairs(StripAllTextures) do
 		local obj = _G[object]

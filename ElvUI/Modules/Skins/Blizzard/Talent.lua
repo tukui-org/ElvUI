@@ -17,7 +17,7 @@ local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTal
 local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
 
 function S:SkinTalent()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talent ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
 	local PlayerTalentFrame = _G.PlayerTalentFrame
 	S:HandlePortraitFrame(PlayerTalentFrame, true)

@@ -9,7 +9,7 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinTrade()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.trade ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trade) then return end
 
 	local TradeFrame = _G.TradeFrame
 	S:HandlePortraitFrame(TradeFrame, true)

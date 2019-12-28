@@ -112,7 +112,7 @@ local function HandleAffixIcons(self)
 end
 
 function S:SkinLFG()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 
 	local PVEFrame = _G.PVEFrame
@@ -704,7 +704,7 @@ function S:SkinLFG()
 end
 
 function S:SkinChallenges()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 	local ChallengesFrame = _G.ChallengesFrame
 	ChallengesFrame:DisableDrawLayer("BACKGROUND")

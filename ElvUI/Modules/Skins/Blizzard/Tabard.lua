@@ -8,7 +8,7 @@ local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinTabard()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tabard ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tabard) then return end
 
 	local TabardFrame = _G.TabardFrame
 	S:HandlePortraitFrame(TabardFrame, true)

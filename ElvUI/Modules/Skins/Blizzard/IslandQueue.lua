@@ -6,7 +6,7 @@ local _G = _G
 local unpack = unpack
 
 function S:SkinIslandQueue()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.IslandQueue ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.IslandQueue) then return end
 
 	local IslandsFrame = _G.IslandsQueueFrame
 	S:HandlePortraitFrame(IslandsFrame, true)

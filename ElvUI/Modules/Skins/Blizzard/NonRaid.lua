@@ -6,7 +6,7 @@ local _G = _G
 local pairs = pairs
 
 function S:SkinRaidInfo()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.nonraid ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.nonraid) then return end
 
 	local StripAllTextures = {
 		_G.RaidInfoFrame,

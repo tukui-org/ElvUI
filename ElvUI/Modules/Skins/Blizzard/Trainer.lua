@@ -6,7 +6,7 @@ local _G = _G
 local pairs, unpack = pairs, unpack
 
 function S:SkinTrainer()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.trainer ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer) then return end
 
 	--Class Trainer Frame
 	local StripAllTextures = {

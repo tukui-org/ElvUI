@@ -23,7 +23,7 @@ local function MirrorTimer_OnUpdate(frame, elapsed)
 end
 
 function S:SkinMirrorTimers()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mirrorTimers ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mirrorTimers) then return end
 
 	--Mirror Timers (Underwater Breath etc.), credit to Azilroka
 	for i = 1, _G.MIRRORTIMER_NUMTIMERS do

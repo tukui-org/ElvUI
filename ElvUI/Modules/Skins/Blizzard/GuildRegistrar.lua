@@ -6,7 +6,7 @@ local _G = _G
 local select = select
 
 function S:SkinGuildRegistrar()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guildregistrar ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildregistrar) then return end
 
 	local GuildRegistrarFrame = _G.GuildRegistrarFrame
 	S:HandlePortraitFrame(GuildRegistrarFrame, true)

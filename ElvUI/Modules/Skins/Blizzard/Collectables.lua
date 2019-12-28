@@ -24,7 +24,7 @@ local function TextColorModified(self, r, g, b)
 end
 
 function S:SkinCollections()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.collections ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.collections) then return end
 
 	-- global
 	local CollectionsJournal = _G.CollectionsJournal

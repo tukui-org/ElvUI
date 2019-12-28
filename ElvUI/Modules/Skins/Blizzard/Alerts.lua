@@ -767,7 +767,7 @@ local function SkinNewPetAlert(frame)
 end
 
 function S:SkinAlerts()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.alertframes ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.alertframes) then return end
 
 	--[[ HOOKS ]]--
 	-- Achievements

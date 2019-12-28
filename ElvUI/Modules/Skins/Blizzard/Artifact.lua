@@ -8,7 +8,7 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinArtifact()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.artifact ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.artifact) then return end
 
 	local ArtifactFrame = _G.ArtifactFrame
 	ArtifactFrame:StripTextures()

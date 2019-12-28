@@ -174,7 +174,7 @@ local function HandleTopTabs(tab)
 end
 
 function S:SkinEncounterJournal()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.encounterjournal) then return end
 
 	local EJ = _G.EncounterJournal
 	S:HandlePortraitFrame(EJ, true)

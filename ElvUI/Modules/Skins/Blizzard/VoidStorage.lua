@@ -8,7 +8,7 @@ local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinVoidStorage()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.voidstorage ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.voidstorage) then return end
 
 	local StripAllTextures = {
 		"VoidStorageBorderFrame",

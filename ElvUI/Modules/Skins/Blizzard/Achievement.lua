@@ -140,7 +140,7 @@ local function styleSearchPreview(preview, index)
 end
 
 function S:SkinAchievement(event)
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.achievement ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
 
 	if event == "PLAYER_ENTERING_WORLD" then
 		hooksecurefunc('HybridScrollFrame_CreateButtons', function(frame, template)

@@ -13,7 +13,7 @@ local function WorldMapBountyBoard(Frame)
 end
 
 function S:SkinWorldMap()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.worldmap ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.worldmap) then return end
 
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:StripTextures()

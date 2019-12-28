@@ -6,7 +6,7 @@ local _G = _G
 local pairs = pairs
 
 function S:SkinPVPMatch()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgscore ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bgscore) then return end
 
 	-- Macro to show the PVPMatchScoreboard: /run PVPMatchScoreboard:Show()
 	local PVPMatchScoreboard = _G.PVPMatchScoreboard

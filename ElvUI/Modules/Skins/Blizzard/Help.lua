@@ -6,7 +6,7 @@ local _G = _G
 local select, unpack = select, unpack
 
 function S:SkinHelp()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.help ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.help) then return end
 
 	local frames = {
 		_G.HelpFrameLeftInset,

@@ -33,7 +33,7 @@ local function MailFrameSkin()
 end
 
 function S:SkinMail()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mail ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mail) then return end
 
 	local MailFrame = _G.MailFrame
 	S:HandlePortraitFrame(MailFrame, true)

@@ -34,7 +34,7 @@ local function colorBorder(child, backdrop, atlas)
 end
 
 function S:SkinOrderHall()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.orderhall ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.orderhall) then return end
 
 	local classColor = E:ClassColor(E.myclass, true)
 

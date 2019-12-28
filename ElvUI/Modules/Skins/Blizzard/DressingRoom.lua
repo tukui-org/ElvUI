@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 
 function S:SkinDressingRoom()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.dressingroom ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.dressingroom) then return end
 
 	local DressUpFrame = _G.DressUpFrame
 	S:HandlePortraitFrame(DressUpFrame, true)

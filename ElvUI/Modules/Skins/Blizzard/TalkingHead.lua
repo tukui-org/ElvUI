@@ -110,7 +110,7 @@ function TestTalkingHead()
 end]]
 
 function S:SkinTalkingHead()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talkinghead ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talkinghead) then return end
 
 	local TalkingHeadFrame = _G.TalkingHeadFrame
 

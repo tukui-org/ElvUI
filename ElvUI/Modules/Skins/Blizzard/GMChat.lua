@@ -8,7 +8,7 @@ local select = select
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinGMChat()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.GMChat ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.GMChat) then return end
 
 	local frame = _G.GMChatFrame
 	frame:SetClampRectInsets(0, 0, 0, 0)

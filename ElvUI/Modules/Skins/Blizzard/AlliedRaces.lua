@@ -6,7 +6,7 @@ local _G = _G
 local select = select
 
 function S:SkinAlliedRaces()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AlliedRaces ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AlliedRaces) then return end
 
 	local AlliedRacesFrame = _G.AlliedRacesFrame
 

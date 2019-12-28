@@ -7,7 +7,7 @@ local pairs, select = pairs, select
 --WoW API / Variables
 
 function S:SkinArchaeology()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.archaeology ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.archaeology) then return end
 
 	local ArchaeologyFrame = _G.ArchaeologyFrame
 	S:HandlePortraitFrame(ArchaeologyFrame, true)

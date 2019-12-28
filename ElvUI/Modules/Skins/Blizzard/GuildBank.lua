@@ -9,7 +9,7 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 function S:SkinGuildBank()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.gbank ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gbank) then return end
 
 	local GuildBankFrame = _G.GuildBankFrame
 	GuildBankFrame:StripTextures()

@@ -10,7 +10,7 @@ local GetItemUpgradeItemInfo = GetItemUpgradeItemInfo
 local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 
 function S:SkinItemUpgrade()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.itemUpgrade ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.itemUpgrade) then return end
 
 	local ItemUpgradeFrame = _G.ItemUpgradeFrame
 	S:HandlePortraitFrame(ItemUpgradeFrame, true)

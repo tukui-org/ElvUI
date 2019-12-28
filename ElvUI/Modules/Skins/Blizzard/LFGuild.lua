@@ -8,7 +8,7 @@ local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
 local function SkinLFGuild()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfguild ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfguild) then return end
 
 	local LookingForGuildFrame = _G.LookingForGuildFrame
 	S:HandlePortraitFrame(LookingForGuildFrame, true)

@@ -10,7 +10,7 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 
 function S:SkinGarrison()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.garrison) then return end
 
 	--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
 	hooksecurefunc("GarrisonMissionButton_SetRewards", function(s)
@@ -493,7 +493,7 @@ local function SkinAbilityTooltip(frame)
 end
 
 function S:SkinGarrisonTooltips()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true or E.private.skins.blizzard.tooltip ~= true then return end
+	if not (E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison and E.private.skins.blizzard.tooltip) then return end
 
 	SkinFollowerTooltip(_G.GarrisonFollowerTooltip)
 	SkinFollowerTooltip(_G.FloatingGarrisonFollowerTooltip)

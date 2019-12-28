@@ -8,7 +8,7 @@ local select, unpack = select, unpack
 local CLOSE = CLOSE
 
 function S:SkinDeathRecap()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.deathRecap ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.deathRecap) then return end
 
 	local DeathRecapFrame = _G.DeathRecapFrame
 	DeathRecapFrame:StripTextures()
