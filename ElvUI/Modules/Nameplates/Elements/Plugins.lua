@@ -193,12 +193,7 @@ function NP:Update_HealerSpecs(nameplate)
 			nameplate:EnableElement("HealerSpecs")
 		end
 
-		if NP.db.units[nameplate.frameType].nameOnly then
-			nameplate.HealerSpecs:Point("RIGHT", nameplate.Name, "LEFT", -6, 0)	
-		else
-			nameplate.HealerSpecs:Point("RIGHT", nameplate.Health, "LEFT", -6, 0)
-		end
-		
+		nameplate.HealerSpecs:Point("RIGHT", nameplate.Health, "LEFT", -6, 0)
 	elseif nameplate:IsElementEnabled("HealerSpecs") then
 		nameplate:DisableElement("HealerSpecs")
 	end

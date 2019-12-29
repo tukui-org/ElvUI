@@ -301,7 +301,6 @@ function NP:UpdatePlate(nameplate)
 	NP:Update_Highlight(nameplate)
 	NP:Update_RaidTargetIndicator(nameplate)
 
-	NP:Update_HealerSpecs(nameplate)
 
 	if (nameplate.VisibilityChanged or nameplate.NameOnlyChanged) or (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
 		NP:DisablePlate(nameplate, nameplate.NameOnlyChanged or (NP.db.units[nameplate.frameType].nameOnly and not nameplate.VisibilityChanged))
@@ -337,6 +336,8 @@ function NP:UpdatePlate(nameplate)
 		end
 	end
 
+	NP:Update_HealerSpecs(nameplate)
+
 	NP:StyleFilterEvents(nameplate)
 end
 
@@ -352,7 +353,6 @@ function NP:DisablePlate(nameplate, nameOnly)
 	if nameplate:IsElementEnabled("ClassPower") then nameplate:DisableElement("ClassPower") end
 	if nameplate:IsElementEnabled("PvPIndicator") then nameplate:DisableElement("PvPIndicator") end
 	if nameplate:IsElementEnabled("PvPClassificationIndicator") then nameplate:DisableElement("PvPClassificationIndicator") end
-	if nameplate:IsElementEnabled("HealerSpecs") then nameplate:DisableElement("HealerSpecs") end
 	if nameplate:IsElementEnabled("Auras") then nameplate:DisableElement("Auras") end
 
 	if E.myclass == "DEATHKNIGHT" and nameplate:IsElementEnabled("Runes") then
@@ -379,13 +379,17 @@ function NP:DisablePlate(nameplate, nameOnly)
 		nameplate.RaidTargetIndicator:ClearAllPoints()
 		nameplate.RaidTargetIndicator:Point("BOTTOM", nameplate, "TOP", 0, 0)
 
+		nameplate.HealerSpecs:ClearAllPoints()
+		nameplate.HealerSpecs:Point("RIGHT", nameplate.Name, "LEFT", -6, 0)
+		
 		if NP.db.units[nameplate.frameType].showTitle then
 			nameplate.Title:Show()
 			nameplate.Title:ClearAllPoints()
 			nameplate.Title:Point("TOP", nameplate.Name, "BOTTOM", 0, -2)
 		end
-	elseif nameplate:IsElementEnabled("Highlight") then
-		nameplate:DisableElement("Hightlight")
+	else
+		if nameplate:IsElementEnabled("Highlight") then nameplate:DisableElement("Hightlight") end
+		if nameplate:IsElementEnabled("HealerSpecs") then nameplate:DisableElement("HealerSpecs") end
 	end
 end
 
