@@ -76,7 +76,7 @@ local function Event()
 							Tanks[name] = talentSpec
 						elseif Tanks[name] then
 							Tanks[name] = nil;
-						end						
+						end
 					end
 				end
 			end
@@ -127,7 +127,7 @@ local function Update(self)
 			element:Show()
 		elseif (Tanks[name] and element.ShowTanks) then
 			element:SetTexture(element.TankTexture)
-			element:Show()			
+			element:Show()
 		else
 			element:Hide()
 		end
@@ -152,9 +152,9 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		element.HealerTexture = element.HealerTexture or E.Media.Textures.Healer
-		element.TankTexture = element.TankTexture or E.Media.Textures.Tank
-		
+		if not element.HealerTexture then element.HealerTexture = E.Media.Textures.Healer end
+		if not element.TankTexture then element.TankTexture = E.Media.Textures.Tank end
+
 		self:RegisterEvent("UNIT_TARGET", Path)
 		self:RegisterEvent("PLAYER_TARGET_CHANGED", Path, true)
 		self:RegisterEvent("UNIT_NAME_UPDATE", Path)
