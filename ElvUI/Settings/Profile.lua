@@ -712,17 +712,7 @@ P.nameplates = {
 			pvpindicator = CopyTable(NP_PvPIcon),
 			questIcon = CopyTable(NP_QuestIcon),
 			raidTargetIndicator = CopyTable(NP_RaidTargetIndicator),
-			title = {
-				enable = false,
-				format = '[npctitle:brackets]',
-				position = 'TOPRIGHT',
-				parent = 'Nameplate',
-				xOffset = 0,
-				yOffset = -7,
-				font = 'PT Sans Narrow',
-				fontOutline = 'OUTLINE',
-				fontSize = 11,
-			},
+			title = CopyTable(NP_Title),
 		},
 		ENEMY_NPC = {
 			enable = true,
@@ -781,7 +771,6 @@ P.nameplates.units.FRIENDLY_NPC.debuffs.growthY = 'UP'
 P.nameplates.units.FRIENDLY_NPC.debuffs.yOffset = 35
 P.nameplates.units.FRIENDLY_NPC.debuffs.priority = 'Blacklist,Boss,CCDebuffs,RaidDebuffs,Dispellable'
 P.nameplates.units.FRIENDLY_NPC.level.format = '[difficultycolor][level][shortclassification]'
-P.nameplates.units.FRIENDLY_NPC.title.format = '[npctitle]'
 
 P.nameplates.units.ENEMY_NPC.buffs.priority = 'Blacklist,RaidBuffsElvUI,Dispellable,blockNoDuration,PlayerBuffs,TurtleBuffs,CastByUnit'
 P.nameplates.units.ENEMY_NPC.debuffs.anchorPoint = 'TOPRIGHT'
