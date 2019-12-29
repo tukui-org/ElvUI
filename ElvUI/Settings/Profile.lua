@@ -422,7 +422,7 @@ local NP_Castbar = {
 
 local NP_Title = {
 	enable = false,
-	format = '[guild]',
+	format = '[guild:brackets]',
 	position = 'TOPRIGHT',
 	parent = 'Nameplate',
 	xOffset = 0,
