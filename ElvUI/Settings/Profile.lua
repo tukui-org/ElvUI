@@ -690,7 +690,7 @@ P.nameplates = {
 		FRIENDLY_NPC = {
 			enable = true,
 			showTitle = true,
-			nameOnly = false,
+			nameOnly = true,
 			nazjatarFollowerXP = {
 				enable = true,
 				yOffset = -4,
@@ -712,7 +712,17 @@ P.nameplates = {
 			pvpindicator = CopyTable(NP_PvPIcon),
 			questIcon = CopyTable(NP_QuestIcon),
 			raidTargetIndicator = CopyTable(NP_RaidTargetIndicator),
-			title = CopyTable(NP_Title),
+			title = {
+				enable = false,
+				format = '[npctitle]',
+				position = 'TOPRIGHT',
+				parent = 'Nameplate',
+				xOffset = 0,
+				yOffset = -7,
+				font = 'PT Sans Narrow',
+				fontOutline = 'OUTLINE',
+				fontSize = 11,
+			},
 		},
 		ENEMY_NPC = {
 			enable = true,

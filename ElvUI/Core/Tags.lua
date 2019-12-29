@@ -912,6 +912,23 @@ ElvUF.Tags.Methods['npctitle'] = function(unit)
 	end
 end
 
+ElvUF.Tags.Events['npctitle:brackets'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['npctitle:brackets'] = function(unit)
+	if (UnitIsPlayer(unit)) then
+		return
+	end
+
+	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+	E.ScanTooltip:SetUnit(unit)
+	E.ScanTooltip:Show()
+
+	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
+
+	if (Title and not Title:find('^'..LEVEL)) then
+		return Title and format("<%s>", Title) or nil
+	end
+end
+
 ElvUF.Tags.Events['guild:rank'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['guild:rank'] = function(unit)
 	if (UnitIsPlayer(unit)) then
@@ -1137,7 +1154,8 @@ E.TagInfo = {
 	['name:medium:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 15 letters)" },
 	['name:long:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 20 letters)" },
 	['name:title'] = { category = 'Names', description = "Displays player name and title" },
-	['npctitle'] = { category = 'Names', description = "Displays the NPC title (e.g. <General Goods Vendor>)" },
+	['npctitle'] = { category = 'Names', description = "Displays the NPC title (e.g. General Goods Vendor)" },
+	['npctitle:brackets'] = { category = 'Names', description = "Displays the NPC title with brackets (e.g. <General Goods Vendor>)" },
 	--Party and Raid
 	['group'] = { category = 'Party and Raid', description = "Displays the group number the unit is in ('1' - '8')" },
 	['leader'] = { category = 'Party and Raid', description = "Displays 'L' if the unit is the group/raid leader" },
