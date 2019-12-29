@@ -277,7 +277,7 @@ function NP:StylePlate(nameplate)
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
 	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate.RaisedElement) -- Horde / Alliance / HonorInfo
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
-	nameplate.HealerSpecs = NP:Construct_HealerSpecs(nameplate.RaisedElement)
+	nameplate.PVPRole = NP:Construct_PVPRole(nameplate.RaisedElement)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
 	nameplate.NazjatarFollowerXP = NP:Construct_NazjatarFollowerXP(nameplate)
 	nameplate.NazjatarFollowerXP.Rank = NP:Construct_TagText(nameplate.RaisedElement)
@@ -300,7 +300,7 @@ function NP:UpdatePlate(nameplate)
 	NP:Update_Tags(nameplate)
 	NP:Update_Highlight(nameplate)
 	NP:Update_RaidTargetIndicator(nameplate)
-	NP:Update_HealerSpecs(nameplate)
+	NP:Update_PVPRole(nameplate)
 
 	if (nameplate.VisibilityChanged or nameplate.NameOnlyChanged) or (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
 		NP:DisablePlate(nameplate, nameplate.NameOnlyChanged or (NP.db.units[nameplate.frameType].nameOnly and not nameplate.VisibilityChanged))
@@ -377,8 +377,8 @@ function NP:DisablePlate(nameplate, nameOnly)
 		nameplate.RaidTargetIndicator:ClearAllPoints()
 		nameplate.RaidTargetIndicator:Point("BOTTOM", nameplate, "TOP", 0, 0)
 
-		nameplate.HealerSpecs:ClearAllPoints()
-		nameplate.HealerSpecs:Point("RIGHT", nameplate.Name, "LEFT", -6, 0)
+		nameplate.PVPRole:ClearAllPoints()
+		nameplate.PVPRole:Point("RIGHT", nameplate.Name, "LEFT", -6, 0)
 
 		if NP.db.units[nameplate.frameType].showTitle then
 			nameplate.Title:Show()
@@ -387,7 +387,7 @@ function NP:DisablePlate(nameplate, nameOnly)
 		end
 	else
 		if nameplate:IsElementEnabled("Highlight") then nameplate:DisableElement("Hightlight") end
-		if nameplate:IsElementEnabled("HealerSpecs") then nameplate:DisableElement("HealerSpecs") end
+		if nameplate:IsElementEnabled("PVPRole") then nameplate:DisableElement("PVPRole") end
 	end
 end
 
