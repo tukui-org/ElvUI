@@ -300,7 +300,7 @@ function NP:UpdatePlate(nameplate)
 	NP:Update_Tags(nameplate)
 	NP:Update_Highlight(nameplate)
 	NP:Update_RaidTargetIndicator(nameplate)
-
+	NP:Update_HealerSpecs(nameplate)
 
 	if (nameplate.VisibilityChanged or nameplate.NameOnlyChanged) or (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
 		NP:DisablePlate(nameplate, nameplate.NameOnlyChanged or (NP.db.units[nameplate.frameType].nameOnly and not nameplate.VisibilityChanged))
@@ -335,8 +335,6 @@ function NP:UpdatePlate(nameplate)
 			NP:SetupTarget(nameplate)
 		end
 	end
-
-	NP:Update_HealerSpecs(nameplate)
 
 	NP:StyleFilterEvents(nameplate)
 end
@@ -381,7 +379,7 @@ function NP:DisablePlate(nameplate, nameOnly)
 
 		nameplate.HealerSpecs:ClearAllPoints()
 		nameplate.HealerSpecs:Point("RIGHT", nameplate.Name, "LEFT", -6, 0)
-		
+
 		if NP.db.units[nameplate.frameType].showTitle then
 			nameplate.Title:Show()
 			nameplate.Title:ClearAllPoints()
