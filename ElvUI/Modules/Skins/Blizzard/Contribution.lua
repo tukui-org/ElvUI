@@ -7,8 +7,8 @@ local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Contribution ~= true then return end
+function S:Blizzard_Contribution()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Contribution) then return end
 
 	--Main Frame
 	local ContributionCollectionFrame = _G.ContributionCollectionFrame
@@ -28,15 +28,15 @@ local function LoadSkin()
 	end
 
 	local ContributionMixin = _G.ContributionMixin
-	hooksecurefunc(ContributionMixin, "SetupContributeButton", function(self)
+	hooksecurefunc(ContributionMixin, "SetupContributeButton", function(s)
 		-- Skin the Contribute Buttons
-		if (not self.isSkinned) then
-			S:HandleButton(self.ContributeButton)
-			self.isSkinned = true
+		if (not s.isSkinned) then
+			S:HandleButton(s.ContributeButton)
+			s.isSkinned = true
 		end
 
 		-- Skin the StatusBar
-		local statusBar = self.Status
+		local statusBar = s.Status
 		if statusBar and not statusBar.isSkinned then
 			statusBar:StripTextures()
 			E:RegisterStatusBar(statusBar)
@@ -46,8 +46,8 @@ local function LoadSkin()
 	end)
 
 	--Skin the reward icons
-	hooksecurefunc(ContributionMixin, "AddReward", function(self, _, rewardID)
-		local reward = self:FindOrAcquireReward(rewardID);
+	hooksecurefunc(ContributionMixin, "AddReward", function(s, _, rewardID)
+		local reward = s:FindOrAcquireReward(rewardID);
 		if (reward and not reward.isSkinned) then
 			reward:SetFrameLevel(5)
 			reward:CreateBackdrop()
@@ -61,4 +61,4 @@ local function LoadSkin()
 	end)
 end
 
-S:AddCallbackForAddon("Blizzard_Contribution", "Contribution", LoadSkin)
+S:AddCallbackForAddon('Blizzard_Contribution')

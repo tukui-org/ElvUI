@@ -5,8 +5,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.IslandQueue ~= true then return end
+function S:Blizzard_IslandsQueueUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.IslandQueue) then return end
 
 	local IslandsFrame = _G.IslandsQueueFrame
 	S:HandlePortraitFrame(IslandsFrame, true)
@@ -28,4 +28,4 @@ local function LoadSkin()
 	S:HandleCloseButton(TutorialFrame.CloseButton)
 end
 
-S:AddCallbackForAddon("Blizzard_IslandsQueueUI", "IslandQueue", LoadSkin)
+S:AddCallbackForAddon('Blizzard_IslandsQueueUI')

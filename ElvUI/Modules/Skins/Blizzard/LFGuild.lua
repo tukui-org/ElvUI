@@ -7,8 +7,8 @@ local pairs = pairs
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-local function SkinLFGuild()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfguild ~= true then return end
+function S:LookingForGuildFrame()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfguild) then return end
 
 	local LookingForGuildFrame = _G.LookingForGuildFrame
 	S:HandlePortraitFrame(LookingForGuildFrame, true)
@@ -59,14 +59,12 @@ local function SkinLFGuild()
 	_G.GuildFinderRequestMembershipFrameInputFrame:SetTemplate()
 end
 
-local function LoadSkin()
-	if _G.LookingForGuildFrame then
-		--Frame already created
-		SkinLFGuild()
-	else
-		--Frame not created yet, wait until it is
-		hooksecurefunc("LookingForGuildFrame_CreateUIElements", SkinLFGuild)
+function S:Blizzard_LookingForGuildUI()
+	if _G.LookingForGuildFrame then -- frame exists
+		S:LookingForGuildFrame()
+	else -- not yet, wait until it is exists
+		hooksecurefunc('LookingForGuildFrame_CreateUIElements', S.LookingForGuildFrame)
 	end
 end
 
-S:AddCallbackForAddon("Blizzard_LookingForGuildUI", "LookingForGuild", LoadSkin)
+S:AddCallbackForAddon('Blizzard_LookingForGuildUI')

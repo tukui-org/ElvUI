@@ -9,8 +9,8 @@ local hooksecurefunc = hooksecurefunc
 local GetItemUpgradeItemInfo = GetItemUpgradeItemInfo
 local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.itemUpgrade ~= true then return end
+function S:Blizzard_ItemUpgradeUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.itemUpgrade) then return end
 
 	local ItemUpgradeFrame = _G.ItemUpgradeFrame
 	S:HandlePortraitFrame(ItemUpgradeFrame, true)
@@ -50,4 +50,4 @@ local function LoadSkin()
 	ItemUpgradeFrame.ButtonFrame:DisableDrawLayer('BORDER')
 end
 
-S:AddCallbackForAddon("Blizzard_ItemUpgradeUI", "ItemUpgrade", LoadSkin)
+S:AddCallbackForAddon('Blizzard_ItemUpgradeUI')

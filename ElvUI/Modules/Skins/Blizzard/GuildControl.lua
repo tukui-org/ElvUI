@@ -71,8 +71,8 @@ local function fixSkin(frame)
 	end
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guildcontrol ~= true then return end
+function S:Blizzard_GuildControlUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildcontrol) then return end
 
 	local GuildControlUI = _G.GuildControlUI
 	GuildControlUI:StripTextures()
@@ -142,4 +142,4 @@ local function LoadSkin()
 	_G.GuildControlUIRankBankFrameRankDropDownButton:Width(20)
 end
 
-S:AddCallbackForAddon("Blizzard_GuildControlUI", "GuildControl", LoadSkin)
+S:AddCallbackForAddon('Blizzard_GuildControlUI')

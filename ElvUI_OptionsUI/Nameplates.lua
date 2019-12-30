@@ -5064,6 +5064,12 @@ local function GetUnitSettings(unit, name)
 			name = L["Healer Icon"],
 			desc = L["Display a healer icon over known healers inside battlegrounds or arenas."]
 		}
+		group.args.general.args.markTanks = {
+			type = "toggle",
+			order = 103,
+			name = L["Tank Icon"],
+			desc = L["Display a tank icon over known tanks inside battlegrounds or arenas."]
+		}		
 		group.args.healthGroup.args.useClassColor = {
 			order = 10,
 			type = "toggle",

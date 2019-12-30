@@ -24,7 +24,17 @@ local healerSpecIDs = {
 	270,	--Monk Mistweaver
 }
 
+local tankSpecIDs = {
+	66,		--Paladin Protection
+	581,	--Demon Hunter Vengeance
+	104,	--Druid Guardian
+	268,	--Monk Brewmaster
+	73,     --Warrior Protection
+	250,    --Death Knight Blood
+}
+
 local Healers, HealerSpecs = {}, {}
+local Tanks, TankSpecs = {}, {}
 
 for _, specID in pairs(healerSpecIDs) do
 	local _, name = GetSpecializationInfoByID(specID)
@@ -33,8 +43,16 @@ for _, specID in pairs(healerSpecIDs) do
 	end
 end
 
+for _, specID in pairs(tankSpecIDs) do
+	local _, name = GetSpecializationInfoByID(specID)
+	if name and not TankSpecs[name] then
+		TankSpecs[name] = true
+	end
+end
+
 local function WipeTable()
 	wipe(Healers)
+	wipe(Tanks)
 end
 
 local function Event()
@@ -48,10 +66,17 @@ local function Event()
 				name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 				if name then
 					name = gsub(name,'%-'..gsub(E.myrealm,'[%s%-]',''),'') --[[ name = match(name,"([^%-]+).*") ]]
-					if name and HealerSpecs[talentSpec] then
-						Healers[name] = talentSpec
-					elseif name and Healers[name] then
-						Healers[name] = nil;
+					if name then
+						if HealerSpecs[talentSpec] then
+							Healers[name] = talentSpec
+						elseif Healers[name] then
+							Healers[name] = nil;
+						end
+						if TankSpecs[talentSpec] then
+							Tanks[name] = talentSpec
+						elseif Tanks[name] then
+							Tanks[name] = nil;
+						end
 					end
 				end
 			end
@@ -69,8 +94,14 @@ local function Event()
 						_, talentSpec = GetSpecializationInfoByID(s)
 					end
 
-					if talentSpec and talentSpec ~= UNKNOWN and HealerSpecs[talentSpec] then
-						Healers[name] = talentSpec
+					if talentSpec and talentSpec ~= UNKNOWN then
+						if HealerSpecs[talentSpec] then
+							Healers[name] = talentSpec
+						end
+
+						if TankSpecs[talentSpec] then
+							Tanks[name] = talentSpec
+						end
 					end
 				end
 			end
@@ -79,7 +110,7 @@ local function Event()
 end
 
 local function Update(self)
-	local element = self.HealerSpecs
+	local element = self.PVPRole
 
 	if (element.PreUpdate) then
 		element:PreUpdate()
@@ -91,7 +122,11 @@ local function Update(self)
 		realm = (realm and realm ~= '') and gsub(realm,'[%s%-]','')
 		if realm then name = name.."-"..realm end
 
-		if Healers[name] then
+		if (Healers[name] and element.ShowHealers) then
+			element:SetTexture(element.HealerTexture)
+			element:Show()
+		elseif (Tanks[name] and element.ShowTanks) then
+			element:SetTexture(element.TankTexture)
 			element:Show()
 		else
 			element:Hide()
@@ -104,7 +139,7 @@ local function Update(self)
 end
 
 local function Path(self, ...)
-	return (self.HealerSpecs.Override or Update) (self, ...)
+	return (self.PVPRole.Override or Update) (self, ...)
 end
 
 local function ForceUpdate(element)
@@ -112,14 +147,13 @@ local function ForceUpdate(element)
 end
 
 local function Enable(self)
-	local element = self.HealerSpecs
+	local element = self.PVPRole
 	if (element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		if (element:IsObjectType('Texture') and not element:GetTexture()) then
-			element:SetTexture(E.Media.Textures.Healer)
-		end
+		if not element.HealerTexture then element.HealerTexture = E.Media.Textures.Healer end
+		if not element.TankTexture then element.TankTexture = E.Media.Textures.Tank end
 
 		self:RegisterEvent("UNIT_TARGET", Path)
 		self:RegisterEvent("PLAYER_TARGET_CHANGED", Path, true)
@@ -133,7 +167,7 @@ local function Enable(self)
 end
 
 local function Disable(self)
-	local element = self.HealerSpecs
+	local element = self.PVPRole
 	if (element) then
 		element:Hide()
 
@@ -146,4 +180,4 @@ local function Disable(self)
 	end
 end
 
-oUF:AddElement('HealerSpecs', Path, Enable, Disable)
+oUF:AddElement('PVPRole', Path, Enable, Disable)

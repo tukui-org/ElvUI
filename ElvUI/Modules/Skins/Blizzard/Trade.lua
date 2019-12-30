@@ -8,8 +8,8 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.trade ~= true then return end
+function S:TradeFrame()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trade) then return end
 
 	local TradeFrame = _G.TradeFrame
 	S:HandlePortraitFrame(TradeFrame, true)
@@ -70,20 +70,20 @@ local function LoadSkin()
 			recipient_button:SetFrameLevel(recipient_button:GetFrameLevel() - 1)
 
 			-- Player Icon Border
-			hooksecurefunc(player_button.IconBorder, 'SetVertexColor', function(self, r, g, b)
-				self:GetParent():SetBackdropBorderColor(r, g, b)
-				self:SetTexture()
+			hooksecurefunc(player_button.IconBorder, 'SetVertexColor', function(s, r, g, b)
+				s:GetParent():SetBackdropBorderColor(r, g, b)
+				s:SetTexture()
 			end)
-			hooksecurefunc(player_button.IconBorder, 'Hide', function(self)
-				self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+			hooksecurefunc(player_button.IconBorder, 'Hide', function(s)
+				s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 			-- Recipient Icon Border
-			hooksecurefunc(recipient_button.IconBorder, 'SetVertexColor', function(self, r, g, b)
-				self:GetParent():SetBackdropBorderColor(r, g, b)
-				self:SetTexture()
+			hooksecurefunc(recipient_button.IconBorder, 'SetVertexColor', function(s, r, g, b)
+				s:GetParent():SetBackdropBorderColor(r, g, b)
+				s:SetTexture()
 			end)
-			hooksecurefunc(recipient_button.IconBorder, 'Hide', function(self)
-				self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+			hooksecurefunc(recipient_button.IconBorder, 'Hide', function(s)
+				s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 		end
 	end
@@ -109,4 +109,4 @@ local function LoadSkin()
 	_G.TradeHighlightRecipientEnchant:SetFrameStrata("HIGH")
 end
 
-S:AddCallback("Trade", LoadSkin)
+S:AddCallback('TradeFrame')

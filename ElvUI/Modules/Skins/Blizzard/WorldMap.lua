@@ -12,8 +12,8 @@ local function WorldMapBountyBoard(Frame)
 	S:HandleCloseButton(Frame.TutorialBox.CloseButton)
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.worldmap ~= true then return end
+function S:WorldMapFrame()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.worldmap) then return end
 
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:StripTextures()
@@ -123,14 +123,14 @@ local function LoadSkin()
 		[_G.Enum.QuestSessionCommand.Stop] = "QuestSharing-Stop-DialogIcon"
 	}
 
-	hooksecurefunc(QuestMapFrame.QuestSessionManagement, "UpdateExecuteCommandAtlases", function(self, command)
-		self.ExecuteSessionCommand:SetNormalTexture("")
-		self.ExecuteSessionCommand:SetPushedTexture("")
-		self.ExecuteSessionCommand:SetDisabledTexture("")
+	hooksecurefunc(QuestMapFrame.QuestSessionManagement, "UpdateExecuteCommandAtlases", function(s, command)
+		s.ExecuteSessionCommand:SetNormalTexture("")
+		s.ExecuteSessionCommand:SetPushedTexture("")
+		s.ExecuteSessionCommand:SetDisabledTexture("")
 
 		local atlas = sessionCommandToButtonAtlas[command]
 		if atlas then
-			self.ExecuteSessionCommand.normalIcon:SetAtlas(atlas)
+			s.ExecuteSessionCommand.normalIcon:SetAtlas(atlas)
 		end
 	end)
 
@@ -154,4 +154,4 @@ local function LoadSkin()
 	end)
 end
 
-S:AddCallback("SkinWorldMap", LoadSkin)
+S:AddCallback('WorldMapFrame')

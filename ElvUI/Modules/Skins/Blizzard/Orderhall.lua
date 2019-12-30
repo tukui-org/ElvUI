@@ -33,8 +33,8 @@ local function colorBorder(child, backdrop, atlas)
 	end
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.orderhall ~= true then return end
+function S:Blizzard_OrderHallUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.orderhall) then return end
 
 	local classColor = E:ClassColor(E.myclass, true)
 
@@ -49,14 +49,14 @@ local function LoadSkin()
 	OrderHallCommandBar.WorldMapButton:Hide()
 
 	-- Talent Frame
-	_G.OrderHallTalentFrame:HookScript("OnShow", function(self)
-		if self.StyleFrame and self.StyleFrame.Background and self.StyleFrame.Background.GetTexture and self.StyleFrame.Background:GetTexture() then
-			self.StyleFrame:SetFrameLevel(1)
+	_G.OrderHallTalentFrame:HookScript("OnShow", function(s)
+		if s.StyleFrame and s.StyleFrame.Background and s.StyleFrame.Background.GetTexture and s.StyleFrame.Background:GetTexture() then
+			s.StyleFrame:SetFrameLevel(1)
 
-			for i = 1, self.StyleFrame:GetNumRegions() do
-				local region = select(i, self.StyleFrame:GetRegions())
+			for i = 1, s.StyleFrame:GetNumRegions() do
+				local region = select(i, s.StyleFrame:GetRegions())
 				if region and region:IsObjectType('Texture') then
-					if region == self.StyleFrame.Background then
+					if region == s.StyleFrame.Background then
 						region:SetAllPoints()
 						region:SetDrawLayer("ARTWORK", 1)
 						region:SetAlpha(0.8)
@@ -65,48 +65,48 @@ local function LoadSkin()
 					end
 				end
 			end
-		elseif self.Background then
-			self.Background:SetDrawLayer("ARTWORK")
-			self.Background:SetAlpha(0.8)
+		elseif s.Background then
+			s.Background:SetDrawLayer("ARTWORK")
+			s.Background:SetAlpha(0.8)
 		end
 
-		if self.NineSlice then self.NineSlice:Hide() end
-		if self.OverlayElements then self.OverlayElements:Hide() end
-		if self.CloseButton.Border then self.CloseButton.Border:Hide() end
-		if self.CurrencyBG then self.CurrencyBG:Hide() end
-		if self.PortraitFrame then self.PortraitFrame:Hide() end
-		if self.portrait then self.portrait:Hide() end
-		if self.skinned then return end
+		if s.NineSlice then s.NineSlice:Hide() end
+		if s.OverlayElements then s.OverlayElements:Hide() end
+		if s.CloseButton.Border then s.CloseButton.Border:Hide() end
+		if s.CurrencyBG then s.CurrencyBG:Hide() end
+		if s.PortraitFrame then s.PortraitFrame:Hide() end
+		if s.portrait then s.portrait:Hide() end
+		if s.skinned then return end
 
-		if self.Currency.Icon then self.Currency.Icon:SetTexCoord(unpack(E.TexCoords)) end
+		if s.Currency.Icon then s.Currency.Icon:SetTexCoord(unpack(E.TexCoords)) end
 
-		for i=1, self:GetNumRegions() do
-			local region = select(i, self:GetRegions())
+		for i=1, s:GetNumRegions() do
+			local region = select(i, s:GetRegions())
 			if region and region:IsObjectType('Texture') then
-				if not ((region == self.Background) or (self.Currency and self.Currency.Icon and region == self.Currency.Icon)) then
+				if not ((region == s.Background) or (s.Currency and s.Currency.Icon and region == s.Currency.Icon)) then
 					region:SetTexture()
 				end
 			end
 		end
 
-		self:SetTemplate("Transparent")
-		S:HandleCloseButton(self.CloseButton)
-		S:HandleButton(self.BackButton)
+		s:SetTemplate("Transparent")
+		S:HandleCloseButton(s.CloseButton)
+		S:HandleButton(s.BackButton)
 
-		if self.LeftInset then
-			self.LeftInset:StripTextures()
+		if s.LeftInset then
+			s.LeftInset:StripTextures()
 
-			if self.Background and not self.LeftInset.backdrop then
-				self.LeftInset:CreateBackdrop("Transparent")
-				self.LeftInset.backdrop:SetFrameLevel(self.LeftInset.backdrop:GetFrameLevel()+1)
+			if s.Background and not s.LeftInset.backdrop then
+				s.LeftInset:CreateBackdrop("Transparent")
+				s.LeftInset.backdrop:SetFrameLevel(s.LeftInset.backdrop:GetFrameLevel()+1)
 			end
 
-			self.LeftInset.backdrop:Point('TOPLEFT', self.Background, 'TOPLEFT', E.Border-1, -E.Border+1)
-			self.LeftInset.backdrop:Point('BOTTOMRIGHT', self.Background, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
+			s.LeftInset.backdrop:Point('TOPLEFT', s.Background, 'TOPLEFT', E.Border-1, -E.Border+1)
+			s.LeftInset.backdrop:Point('BOTTOMRIGHT', s.Background, 'BOTTOMRIGHT', -E.Border+1, E.Border-1)
 		end
 
-		for i = 1, self:GetNumChildren() do
-			local child = select(i, self:GetChildren())
+		for i = 1, s:GetNumChildren() do
+			local child = select(i, s:GetChildren())
 			if child and child.Icon and child.DoneGlow and not child.backdrop then
 				child:StyleButton()
 				child:CreateBackdrop()
@@ -132,9 +132,9 @@ local function LoadSkin()
 			end
 		end
 
-		self.choiceTexturePool:ReleaseAll()
+		s.choiceTexturePool:ReleaseAll()
 
-		hooksecurefunc(self, "RefreshAllData", function(frame)
+		hooksecurefunc(s, "RefreshAllData", function(frame)
 			frame.choiceTexturePool:ReleaseAll()
 
 			for i = 1, frame:GetNumChildren() do
@@ -145,8 +145,8 @@ local function LoadSkin()
 			end
 		end)
 
-		self.skinned = true
+		s.skinned = true
 	end)
 end
 
-S:AddCallbackForAddon('Blizzard_OrderHallUI', "OrderHall", LoadSkin)
+S:AddCallbackForAddon('Blizzard_OrderHallUI')

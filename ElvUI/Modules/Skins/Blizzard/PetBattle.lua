@@ -52,8 +52,8 @@ local function SkinPetTooltip(tt)
 	tt:SetTemplate("Transparent")
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.petbattleui ~= true then return end
+function S:PetBattleFrame()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.petbattleui) then return end
 
 	local f = _G.PetBattleFrame
 	local bf = f.BottomFrame
@@ -170,24 +170,24 @@ local function LoadSkin()
 	end)
 
 	-- PETS UNITFRAMES PET TYPE UPDATE
-	hooksecurefunc("PetBattleUnitFrame_UpdatePetType", function(self)
-		if self.PetType then
-			local petType = C_PetBattles_GetPetType(self.petOwner, self.petIndex)
-			if self.PetTypeFrame and petType then
-				self.PetTypeFrame.text:SetText(_G["BATTLE_PET_NAME_"..petType])
+	hooksecurefunc("PetBattleUnitFrame_UpdatePetType", function(s)
+		if s.PetType then
+			local petType = C_PetBattles_GetPetType(s.petOwner, s.petIndex)
+			if s.PetTypeFrame and petType then
+				s.PetTypeFrame.text:SetText(_G["BATTLE_PET_NAME_"..petType])
 			end
 		end
 	end)
 
 	-- PETS UNITFRAMES AURA SKINS
-	hooksecurefunc("PetBattleAuraHolder_Update", function(self)
-		if not self.petOwner or not self.petIndex then return end
+	hooksecurefunc("PetBattleAuraHolder_Update", function(s)
+		if not (s.petOwner and s.petIndex) then return end
 
 		local nextFrame = 1
-		for i=1, C_PetBattles_GetNumAuras(self.petOwner, self.petIndex) do
-			local _, _, turnsRemaining, isBuff = C_PetBattles_GetAuraInfo(self.petOwner, self.petIndex, i)
-			if (isBuff and self.displayBuffs) or (not isBuff and self.displayDebuffs) then
-				local frame = self.frames[nextFrame]
+		for i=1, C_PetBattles_GetNumAuras(s.petOwner, s.petIndex) do
+			local _, _, turnsRemaining, isBuff = C_PetBattles_GetAuraInfo(s.petOwner, s.petIndex, i)
+			if (isBuff and s.displayBuffs) or (not isBuff and s.displayDebuffs) then
+				local frame = s.frames[nextFrame]
 
 				-- always hide the border
 				frame.DebuffBorder:Hide()
@@ -218,25 +218,25 @@ local function LoadSkin()
 	end)
 
 	-- WEATHER
-	hooksecurefunc("PetBattleWeatherFrame_Update", function(self)
+	hooksecurefunc("PetBattleWeatherFrame_Update", function(s)
 		local weather = C_PetBattles_GetAuraInfo(_G.LE_BATTLE_PET_WEATHER, _G.PET_BATTLE_PAD_INDEX, 1)
 		if weather then
-			self.Icon:Hide()
-			self.BackgroundArt:ClearAllPoints()
-			self.BackgroundArt:Point("TOP", self, "TOP", 0, 14)
-			self.BackgroundArt:Size(200, 100)
-			self.Name:Hide()
-			self.DurationShadow:Hide()
-			self.Label:Hide()
-			self.Duration:ClearAllPoints()
-			self.Duration:Point("TOP", self, "TOP", 0, 10)
-			self:ClearAllPoints()
-			self:Point("TOP", E.UIParent, 0, -15)
+			s.Icon:Hide()
+			s.BackgroundArt:ClearAllPoints()
+			s.BackgroundArt:Point("TOP", s, "TOP", 0, 14)
+			s.BackgroundArt:Size(200, 100)
+			s.Name:Hide()
+			s.DurationShadow:Hide()
+			s.Label:Hide()
+			s.Duration:ClearAllPoints()
+			s.Duration:Point("TOP", s, "TOP", 0, 10)
+			s:ClearAllPoints()
+			s:Point("TOP", E.UIParent, 0, -15)
 		end
 	end)
 
-	hooksecurefunc("PetBattleUnitFrame_UpdateDisplay", function(self)
-		self.Icon:SetTexCoord(unpack(E.TexCoords))
+	hooksecurefunc("PetBattleUnitFrame_UpdateDisplay", function(s)
+		s.Icon:SetTexCoord(unpack(E.TexCoords))
 	end)
 
 	f.TopVersusText:ClearAllPoints()
@@ -346,7 +346,7 @@ local function LoadSkin()
 	bf.xpBar:CreateBackdrop()
 	bf.xpBar:ClearAllPoints()
 	bf.xpBar:Point("BOTTOM", bf.TurnTimer.SkipButton, "TOP", 0, E.PixelMode and 0 or 3)
-	bf.xpBar:SetScript("OnShow", function(self) self:StripTextures() self:SetStatusBarTexture(E.media.normTex) end)
+	bf.xpBar:SetScript("OnShow", function(s) s:StripTextures() s:SetStatusBarTexture(E.media.normTex) end)
 	E:RegisterStatusBar(bf.xpBar)
 	-- PETS SELECTION SKIN
 	for i = 1, 3 do
@@ -408,4 +408,4 @@ local function LoadSkin()
 	--StaticPopupSpecial_Show(PetBattleQueueReadyFrame);
 end
 
-S:AddCallback("PetBattle", LoadSkin)
+S:AddCallback('PetBattleFrame')

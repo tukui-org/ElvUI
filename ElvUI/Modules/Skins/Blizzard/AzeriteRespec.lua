@@ -3,8 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AzeriteRespec ~= true then return end
+function S:Blizzard_AzeriteRespecUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AzeriteRespec) then return end
 
 	local AzeriteRespecFrame = _G.AzeriteRespecFrame
 	AzeriteRespecFrame:SetClipsChildren(true)
@@ -45,4 +45,4 @@ local function LoadSkin()
 	S:HandleCloseButton(AzeriteRespecFrame.CloseButton)
 end
 
-S:AddCallbackForAddon("Blizzard_AzeriteRespecUI", "AzeriteRespec", LoadSkin)
+S:AddCallbackForAddon('Blizzard_AzeriteRespecUI')

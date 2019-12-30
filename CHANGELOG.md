@@ -1,7 +1,7 @@
 ### Version 11.28 [ ETA: Soon ]
 
 **New Additions:**  
-
+Added an option to play a sound if you select an unit. Disabled by default. Requested a lot.  
 
 **Bug Fixes:**  
 

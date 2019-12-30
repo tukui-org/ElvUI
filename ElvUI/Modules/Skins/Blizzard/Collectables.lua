@@ -23,8 +23,8 @@ local function TextColorModified(self, r, g, b)
 	end
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.collections ~= true then return end
+function S:Blizzard_Collections()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.collections) then return end
 
 	-- global
 	local CollectionsJournal = _G.CollectionsJournal
@@ -76,18 +76,18 @@ local function LoadSkin()
 		bu.icon:CreateBackdrop()
 		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
 
-		bu:HookScript("OnEnter", function(self)
-			self.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-			self.icon.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+		bu:HookScript("OnEnter", function(s)
+			s.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+			s.icon.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 		end)
 
-		bu:HookScript("OnLeave", function(self)
-			if self.selected then
-				self.backdrop:SetBackdropBorderColor(1, .8, .1)
-				self.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
+		bu:HookScript("OnLeave", function(s)
+			if s.selected then
+				s.backdrop:SetBackdropBorderColor(1, .8, .1)
+				s.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 			else
-				self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				self.icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				s.icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 
@@ -160,15 +160,15 @@ local function LoadSkin()
 		bu.icon:CreateBackdrop()
 		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
 
-		bu:HookScript("OnEnter", function(self)
-			self.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+		bu:HookScript("OnEnter", function(s)
+			s.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 		end)
 
-		bu:HookScript("OnLeave", function(self)
-			if self.selected then
-				self.backdrop:SetBackdropBorderColor(1, .8, .1)
+		bu:HookScript("OnLeave", function(s)
+			if s.selected then
+				s.backdrop:SetBackdropBorderColor(1, .8, .1)
 			else
-				self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 
@@ -330,16 +330,16 @@ local function LoadSkin()
 		E:RegisterCooldown(button.cooldown)
 	end
 
-	hooksecurefunc("ToySpellButton_UpdateButton", function(self)
-		if PlayerHasToy(self.itemID) then
-			local quality = select(3, GetItemInfo(self.itemID))
+	hooksecurefunc("ToySpellButton_UpdateButton", function(s)
+		if PlayerHasToy(s.itemID) then
+			local quality = select(3, GetItemInfo(s.itemID))
 			local r, g, b = 1, 1, 1
 			if quality then
 				r, g, b = GetItemQualityColor(quality)
 			end
-			self.backdrop:SetBackdropBorderColor(r, g, b)
+			s.backdrop:SetBackdropBorderColor(r, g, b)
 		else
-			self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end)
 
@@ -554,4 +554,4 @@ local function LoadSkin()
 	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
 end
 
-S:AddCallbackForAddon("Blizzard_Collections", "Collections", LoadSkin)
+S:AddCallbackForAddon('Blizzard_Collections')

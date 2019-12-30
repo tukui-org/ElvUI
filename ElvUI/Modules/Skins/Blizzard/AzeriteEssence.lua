@@ -7,8 +7,8 @@ local pairs = pairs
 --WoW API / Variables
 local C_AzeriteEssence_CanOpenUI = C_AzeriteEssence.CanOpenUI
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AzeriteEssence ~= true then return end
+function S:Blizzard_AzeriteEssenceUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AzeriteEssence) then return end
 	if not C_AzeriteEssence_CanOpenUI() then return end
 
 	local AzeriteEssenceUI = _G.AzeriteEssenceUI
@@ -39,13 +39,13 @@ local function LoadSkin()
 	end
 
 	-- Header on the Essence List
-	AzeriteEssenceUI:HookScript('OnShow', function(self)
-		self.EssenceList.HeaderButton:StripTextures()
-		if not self.EssenceList.HeaderButton.backdrop then
-			self.EssenceList.HeaderButton:CreateBackdrop('Transparent')
-			self.EssenceList.HeaderButton.backdrop:SetAllPoints()
+	AzeriteEssenceUI:HookScript('OnShow', function(s)
+		s.EssenceList.HeaderButton:StripTextures()
+		if not s.EssenceList.HeaderButton.backdrop then
+			s.EssenceList.HeaderButton:CreateBackdrop('Transparent')
+			s.EssenceList.HeaderButton.backdrop:SetAllPoints()
 		end
 	end)
 end
 
-S:AddCallbackForAddon("Blizzard_AzeriteEssenceUI", "AzeriteEssenceUI", LoadSkin)
+S:AddCallbackForAddon('Blizzard_AzeriteEssenceUI')

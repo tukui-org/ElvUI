@@ -5,11 +5,10 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select = select
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AlliedRaces ~= true then return end
+function S:Blizzard_AlliedRacesUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AlliedRaces) then return end
 
 	local AlliedRacesFrame = _G.AlliedRacesFrame
-
 	if E.private.skins.parchmentRemover.enable then
 		S:HandlePortraitFrame(AlliedRacesFrame, true)
 		select(2, AlliedRacesFrame.ModelFrame:GetRegions()):Hide()
@@ -44,8 +43,8 @@ local function LoadSkin()
 		S:HandleCloseButton(_G.AlliedRacesFrameCloseButton)
 	end
 
-	AlliedRacesFrame:HookScript("OnShow", function(self)
-		for button in self.abilityPool:EnumerateActive() do
+	AlliedRacesFrame:HookScript("OnShow", function(s)
+		for button in s.abilityPool:EnumerateActive() do
 			select(3, button:GetRegions()):Hide()
 			S:HandleIcon(button.Icon, true)
 			if E.private.skins.parchmentRemover.enable then
@@ -55,4 +54,4 @@ local function LoadSkin()
 	end)
 end
 
-S:AddCallbackForAddon("Blizzard_AlliedRacesUI", "AlliedRaces", LoadSkin)
+S:AddCallbackForAddon('Blizzard_AlliedRacesUI')

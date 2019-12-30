@@ -302,11 +302,14 @@ local function group(order, db, label)
 	end
 
 	if db == 'auras' then
-		-- even though the top auras can support hiding the text don't allow this to be a setting to prevent confusion
+		-- even though the top auras can support hiding the text, don't allow this to be a setting to prevent confusion
 		E.Options.args.cooldown.args[db].args.reverse = nil
 
 		-- this text is different so just hide this option for top auras
 		E.Options.args.cooldown.args[db].args.hideBlizzard = nil
+
+		-- this is basically creates a second way to change font, we only really need one
+		E.Options.args.cooldown.args[db].args.fontGroup = nil
 	end
 end
 

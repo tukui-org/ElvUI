@@ -765,8 +765,9 @@ local function SkinNewPetAlert(frame)
 		frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -8)
 	end
 end
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.alertframes ~= true then return end
+
+function S:AlertSystem()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.alertframes) then return end
 
 	--[[ HOOKS ]]--
 	-- Achievements
@@ -849,4 +850,4 @@ local function LoadSkin()
 	frame.backdrop:Point('BOTTOMRIGHT', lootItem.Icon.b, 'BOTTOMRIGHT', 180, -4)
 end
 
-S:AddCallback("Alerts", LoadSkin)
+S:AddCallback('AlertSystem')

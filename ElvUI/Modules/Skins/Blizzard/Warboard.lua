@@ -3,8 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Warboard ~= true then return end
+function S:Blizzard_WarboardUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Warboard) then return end
 
 	local WarboardQuestChoiceFrame = _G.WarboardQuestChoiceFrame
 	WarboardQuestChoiceFrame:StripTextures()
@@ -22,24 +22,24 @@ local function LoadSkin()
 		option.ArtworkBorder:SetAlpha(0)
 	end
 
-	local WarboardQuestChoiceDelayed = function(self)
-		if not self then return end
+	local WarboardQuestChoiceDelayed = function(s)
+		if not s then return end
 
 		local frame
 		for i = 1, 4 do
-			frame = self["Option"..i]
+			frame = s["Option"..i]
 			if frame and frame.WidgetContainer then
 				S:SkinWidgetContainer(frame.WidgetContainer)
 			end
 		end
 	end
 
-	WarboardQuestChoiceFrame:HookScript("OnShow", function(self)
-		if self.CloseButton.Border then self.CloseButton.Border:SetAlpha(0) end
-		E:Delay(0.5, WarboardQuestChoiceDelayed, self)
+	WarboardQuestChoiceFrame:HookScript("OnShow", function(s)
+		if s.CloseButton.Border then s.CloseButton.Border:SetAlpha(0) end
+		E:Delay(0.5, WarboardQuestChoiceDelayed, s)
 	end)
 
 	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
 end
 
-S:AddCallbackForAddon("Blizzard_WarboardUI", "Warboard", LoadSkin)
+S:AddCallbackForAddon('Blizzard_WarboardUI')

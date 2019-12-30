@@ -64,7 +64,7 @@
 	<Script file='Raid.lua'/>
 	<Script file='ScrappingMachine.lua'/>
 	<Script file='Socket.lua'/>
-	<Script file='Spellbook.lua'/>
+	<Script file='SpellBook.lua'/>
 	<Script file='Stable.lua'/>
 	<Script file='Tabard.lua'/>
 	<Script file='Talent.lua'/>
@@ -73,11 +73,11 @@
 	<Script file='Tooltip.lua'/>
 	<Script file='TimeManager.lua'/>
 	<Script file='Trade.lua'/>
-	<Script file='Tradeskill.lua'/>
+	<Script file='TradeSkill.lua'/>
 	<Script file='Trainer.lua'/>
 	<Script file='TutorialFrame.lua'/>
 	<Script file='VoidStorage.lua'/>
 	<Script file='Warboard.lua'/>
 	<Script file='WarfrontPartyPose.lua'/>
-	<Script file='Worldmap.lua'/>
+	<Script file='WorldMap.lua'/>
 </Ui>

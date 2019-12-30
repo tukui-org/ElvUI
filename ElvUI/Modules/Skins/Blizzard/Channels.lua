@@ -6,8 +6,8 @@ local _G = _G
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.Channels ~= true then return end
+function S:Blizzard_Channels()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Channels) then return end
 
 	local ChannelFrame = _G.ChannelFrame
 	local CreateChannelPopup = _G.CreateChannelPopup
@@ -40,11 +40,10 @@ local function LoadSkin()
 	S:HandleCloseButton(_G.VoiceChatPromptActivateChannel.CloseButton)
 
 	-- Hide the Channel Header Textures
-	hooksecurefunc(_G.ChannelButtonHeaderMixin, "Update", function(self)
-		self:SetTemplate("Transparent")
-
-		self.NormalTexture:SetTexture()
+	hooksecurefunc(_G.ChannelButtonHeaderMixin, "Update", function(s)
+		s:SetTemplate("Transparent")
+		s.NormalTexture:SetTexture()
 	end)
 end
 
-S:AddCallbackForAddon("Blizzard_Channels", "Channels", LoadSkin)
+S:AddCallbackForAddon('Blizzard_Channels')

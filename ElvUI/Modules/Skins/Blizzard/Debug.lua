@@ -82,25 +82,25 @@ local function SkinTableAttributeDisplay(frame)
 	S:HandleScrollBar(frame.LinesScrollFrame.ScrollBar)
 end
 
-local function LoadErrorFrameSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.debug ~= true then return end
+function S:ScriptErrorsFrame()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.debug) then return end
 
 	S:SecureHookScript(_G.ScriptErrorsFrame, 'OnShow', SkinOnShow)
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.debug ~= true then return end
+function S:Blizzard_DebugTools()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.debug) then return end
 
 	-- Tooltips
 	if E.private.skins.blizzard.tooltip then
-		_G.FrameStackTooltip:HookScript("OnShow", function(self)
-			if not self.template then
-				self:SetTemplate("Transparent")
+		_G.FrameStackTooltip:HookScript("OnShow", function(s)
+			if not s.template then
+				s:SetTemplate("Transparent")
 			end
 		end)
 
-		_G.EventTraceTooltip:HookScript("OnShow", function(self)
-			self:SetTemplate("Transparent", nil, true)
+		_G.EventTraceTooltip:HookScript("OnShow", function(s)
+			s:SetTemplate("Transparent", nil, true)
 		end)
 	end
 
@@ -113,20 +113,20 @@ local function LoadSkin()
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
-	hooksecurefunc(_G.TableInspectorMixin, "OnLoad", function(self)
-		if self and self.ScrollFrameArt and not self.skinned then
-			SkinTableAttributeDisplay(self)
-			self.skinned = true
+	hooksecurefunc(_G.TableInspectorMixin, "OnLoad", function(s)
+		if s and s.ScrollFrameArt and not s.skinned then
+			SkinTableAttributeDisplay(s)
+			s.skinned = true
 		end
 	end)
 end
 
 -- ScriptErrorsFrame Skin
-S:AddCallback("ScriptErrorsFrame", LoadErrorFrameSkin)
+S:AddCallback('ScriptErrorsFrame')
 
 -- EventTrace, FrameStack, TableInspect Skins
-if _G.IsAddOnLoaded("Blizzard_DebugTools") then
-	S:AddCallback("SkinDebugTools", LoadSkin)
+if _G.IsAddOnLoaded('Blizzard_DebugTools') then
+	S:AddCallback('Blizzard_DebugTools')
 else
-	S:AddCallbackForAddon("Blizzard_DebugTools", "SkinDebugTools", LoadSkin)
+	S:AddCallbackForAddon('Blizzard_DebugTools')
 end

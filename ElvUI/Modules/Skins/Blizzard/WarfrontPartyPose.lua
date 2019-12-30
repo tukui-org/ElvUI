@@ -5,8 +5,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.IslandsPartyPose ~= true then return end
+function S:Blizzard_WarfrontsPartyPoseUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.IslandsPartyPose) then return end
 
 	local WarfrontsPartyPoseFrame = _G.WarfrontsPartyPoseFrame
 	WarfrontsPartyPoseFrame:StripTextures()
@@ -28,4 +28,4 @@ local function LoadSkin()
 	rewardFrame.Icon:SetTexCoord(unpack(E.TexCoords))
 end
 
-S:AddCallbackForAddon("Blizzard_WarfrontsPartyPoseUI", "WarfrontPartyPose", LoadSkin)
+S:AddCallbackForAddon('Blizzard_WarfrontsPartyPoseUI')

@@ -14,8 +14,8 @@ local function IslandTooltipStyle(self)
 	self:SetTemplate("Transparent", nil, true)
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tooltip ~= true then return end
+function S:TooltipFrames()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
 
 	S:HandleCloseButton(_G.ItemRefCloseButton)
 
@@ -27,12 +27,12 @@ local function LoadSkin()
 	GameTooltip.ItemTooltip.backdrop:SetOutside(GameTooltip.ItemTooltip.Icon)
 	GameTooltip.ItemTooltip.Count:ClearAllPoints()
 	GameTooltip.ItemTooltip.Count:SetPoint('BOTTOMRIGHT', GameTooltip.ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
-	hooksecurefunc(GameTooltip.ItemTooltip.IconBorder, 'SetVertexColor', function(self, r, g, b)
-		self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-		self:SetTexture()
+	hooksecurefunc(GameTooltip.ItemTooltip.IconBorder, 'SetVertexColor', function(s, r, g, b)
+		s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+		s:SetTexture()
 	end)
-	hooksecurefunc(GameTooltip.ItemTooltip.IconBorder, 'Hide', function(self)
-		self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	hooksecurefunc(GameTooltip.ItemTooltip.IconBorder, 'Hide', function(s)
+		s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end)
 
 	-- StoryTooltip
@@ -92,4 +92,4 @@ local function LoadSkin()
 	end)
 end
 
-S:AddCallback('SkinTooltip', LoadSkin)
+S:AddCallback('TooltipFrames')

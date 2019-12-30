@@ -32,8 +32,8 @@ local function MailFrameSkin()
 	end
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mail ~= true then return end
+function S:MailFrame()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mail) then return end
 
 	local MailFrame = _G.MailFrame
 	S:HandlePortraitFrame(MailFrame, true)
@@ -52,12 +52,12 @@ local function LoadSkin()
 		t:SetInside()
 
 		local ib = _G["MailItem"..i.."ButtonIconBorder"]
-		hooksecurefunc(ib, 'SetVertexColor', function(self, r, g, b)
-			self:GetParent():SetBackdropBorderColor(r, g, b)
-			self:SetTexture()
+		hooksecurefunc(ib, 'SetVertexColor', function(s, r, g, b)
+			s:GetParent():SetBackdropBorderColor(r, g, b)
+			s:SetTexture()
 		end)
-		hooksecurefunc(ib, 'Hide', function(self)
-			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+		hooksecurefunc(ib, 'Hide', function(s)
+			s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 	end
 
@@ -147,12 +147,12 @@ local function LoadSkin()
 		btn:SetTemplate(nil, true)
 		btn:StyleButton()
 
-		hooksecurefunc(btn.IconBorder, 'SetVertexColor', function(self, r, g, b)
-			self:GetParent():SetBackdropBorderColor(r, g, b)
-			self:SetTexture()
+		hooksecurefunc(btn.IconBorder, 'SetVertexColor', function(s, r, g, b)
+			s:GetParent():SetBackdropBorderColor(r, g, b)
+			s:SetTexture()
 		end)
-		hooksecurefunc(btn.IconBorder, 'Hide', function(self)
-			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+		hooksecurefunc(btn.IconBorder, 'Hide', function(s)
+			s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
 		local t = _G["OpenMailAttachmentButton"..i.."IconTexture"]
@@ -167,4 +167,4 @@ local function LoadSkin()
 	_G.SendMailMailButton:Point("RIGHT", _G.SendMailCancelButton, "LEFT", -2, 0)
 end
 
-S:AddCallback("Mail", LoadSkin)
+S:AddCallback('MailFrame')
