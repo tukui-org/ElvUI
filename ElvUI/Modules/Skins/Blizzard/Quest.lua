@@ -232,7 +232,7 @@ function S:BlizzardQuestFrames()
 		end
 	end)
 
-	local Rewards = { 'MoneyFrame', 'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame' }
+	local Rewards = { 'MoneyFrame', 'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame', 'WarModeBonusFrame' }
 	for _, frame in pairs(Rewards) do
 		HandleReward(_G.MapQuestInfoRewardsFrame[frame])
 		HandleReward(_G.QuestInfoRewardsFrame[frame])
