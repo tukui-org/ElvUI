@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local tinsert, xpcall, error, format, tContains = tinsert, xpcall, error, format, tContains
+local tinsert, xpcall, next = tinsert, xpcall, next
 local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -1310,10 +1310,6 @@ function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
 		xpcall(func, errorhandler)
 		self.addonsToLoad[addonName] = nil
 	elseif addonName == 'ElvUI' then
-		if tContains(self.nonAddonsToLoad, func) then
-			error(format('RegisterSkin failed because of an attempted duplicate function onto %s', addonName))
-		end
-
 		if position then
 			tinsert(self.nonAddonsToLoad, position, func)
 		else
@@ -1324,10 +1320,6 @@ function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
 		if not addon then
 			self.addonsToLoad[addonName] = {}
 			addon = self.addonsToLoad[addonName]
-		end
-
-		if tContains(addon, func) then
-			error(format('RegisterSkin failed because of an attempted duplicate function onto %s', addonName))
 		end
 
 		if position then
