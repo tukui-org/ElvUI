@@ -453,6 +453,14 @@ function A:Initialize()
 	self.DebuffFrame:Point('BOTTOMRIGHT', _G.MMHolder, 'BOTTOMLEFT', -(6 + E.Border), E.Border + E.Spacing)
 	E:CreateMover(self.DebuffFrame, 'DebuffsMover', L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
 
+	local colors = self.db.barColor
+	if E:CheckClassColor(colors.r, colors.g, colors.b) then
+		local classColor = E:ClassColor(E.myclass, true)
+		colors.r = classColor.r
+		colors.g = classColor.g
+		colors.b = classColor.b
+	end
+
 	if Masque then
 		if MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end
 		if MasqueGroupDebuffs then A.DebuffsMasqueGroup = MasqueGroupDebuffs end
