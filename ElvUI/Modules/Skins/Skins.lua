@@ -1267,9 +1267,7 @@ function S:ADDON_LOADED(_, addonName)
 	if E.initialized then
 		S:SkinAce3()
 		S:SkinLibDropDown()
-	end
-
-	if not self.allowBypass[addonName] and not E.initialized then
+	elseif not self.allowBypass[addonName] then
 		return
 	end
 
