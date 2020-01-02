@@ -937,7 +937,7 @@ function B:Layout(isBank)
 	end
 
 	f.totalSlots = 0
-	local lastButton, lastRowButton, lastContainerButton, newBag
+	local lastButton, lastRowButton, newBag
 	local numContainerSlots = isBank and GetNumBankSlots() + 1 or 5
 
 	f.totalSlots = 0
@@ -951,23 +951,22 @@ function B:Layout(isBank)
 		end
 
 		do --Bag Containers
-			if (isBank and bagID ~= -1) then
-				BankFrameItemButton_Update(f.ContainerHolder[i])
-				BankFrameItemButton_UpdateLocked(f.ContainerHolder[i])
+			if isBank then
+				if (bagID ~= -1) then
+					BankFrameItemButton_Update(f.ContainerHolder[i])
+					BankFrameItemButton_UpdateLocked(f.ContainerHolder[i])
+				end
+
+				if (i - 1) > GetNumBankSlots() then
+					SetItemButtonTextureVertexColor(f.ContainerHolder[i], 1.0,0.1,0.1);
+					f.ContainerHolder[i].tooltipText = _G.BANK_BAG_PURCHASE;
+				else
+					f.ContainerHolder[i].tooltipText = ''
+				end
 			end
 
 			assignedBag = B:GetBagAssignedInfo(f.ContainerHolder[i])
-
 			f.ContainerHolder[i]:Size(buttonSize)
-			f.ContainerHolder[i]:ClearAllPoints()
-
-			if i == 1 then
-				f.ContainerHolder[i]:Point('BOTTOMLEFT', f.ContainerHolder, 'BOTTOMLEFT', buttonSpacing, buttonSpacing)
-			elseif (not isBank) or (isBank and numContainerSlots >= 1 and not (i > numContainerSlots)) then
-				f.ContainerHolder[i]:Point('LEFT', lastContainerButton, 'RIGHT', buttonSpacing, 0)
-			end
-
-			lastContainerButton = f.ContainerHolder[i]
 		end
 
 		--Bag Slots
@@ -1463,6 +1462,12 @@ function B:ConstructContainerFrame(name, isBank)
 			end
 		end
 
+		if i == 1 then
+			f.ContainerHolder[i]:Point('BOTTOMLEFT', f.ContainerHolder, 'BOTTOMLEFT', E.Border * 2, E.Border * 2)
+		else
+			f.ContainerHolder[i]:Point('LEFT', f.ContainerHolder[i - 1], 'RIGHT', E.Border * 2, 0)
+		end
+
 		f.Bags[bagID] = CreateFrame('Frame', f:GetName()..'Bag'..bagID, f.holderFrame)
 		f.Bags[bagID]:SetID(bagID)
 
@@ -1904,7 +1909,7 @@ function B:ConstructReagentSlot(f, slotID)
 end
 
 function B:ToggleBags(id)
-	if id and (GetContainerNumSlots(id) == 0) then return end --Closes a bag when inserting a new container..
+	if id and (GetContainerNumSlots(id) == 0) then return end
 
 	if B.BagFrame:IsShown() then
 		B:CloseBags()
