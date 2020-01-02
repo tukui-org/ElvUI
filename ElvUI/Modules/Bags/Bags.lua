@@ -1421,6 +1421,8 @@ function B:ConstructContainerFrame(name, isBank)
 		f.ContainerHolder[i].iconTexture:SetInside()
 		f.ContainerHolder[i].iconTexture:SetTexCoord(unpack(E.TexCoords))
 
+		f.ContainerHolder[i].IconBorder:SetAlpha(0)
+
 		B:CreateFilterIcon(f.ContainerHolder[i])
 
 		if isBank then
