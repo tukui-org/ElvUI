@@ -403,13 +403,13 @@ function S:Ace3_RegisterAsContainer(widget)
 end
 
 function S:Ace3_StyleTooltip()
-	if self and (not self.template and not self:IsForbidden()) and E.private.skins.ace3.enable then
+	if not self:IsForbidden() and E.private.skins.ace3.enable then
 		self:SetTemplate('Transparent', nil, true)
 	end
 end
 
 function S:Ace3_StylePopup()
-	if self and (not self.template and not self:IsForbidden()) and E.private.skins.ace3.enable then
+	if not self.template and not self:IsForbidden() and E.private.skins.ace3.enable then
 		self:SetTemplate('Transparent', nil, true)
 		self:GetChildren():StripTextures()
 		S:HandleButton(self.accept, true)
