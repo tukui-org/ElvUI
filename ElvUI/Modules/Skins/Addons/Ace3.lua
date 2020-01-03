@@ -73,7 +73,7 @@ function S:Ace3_EditBoxSetPoint(a, b, c, d, e)
 	if d == 7 then self:Point(a, b, c, 0, e) end
 end
 
-function S:Ace3_CreateTabSetPoint(a, b, c, d, e, f)
+function S:Ace3_TabSetPoint(a, b, c, d, e, f)
 	if f ~= 'ignore' and a == 'TOPLEFT' then
 		self:SetPoint(a, b, c, d, e+2, 'ignore')
 	end
@@ -86,7 +86,7 @@ function S:Ace3_SkinTab(tab)
 	tab.backdrop:Point('TOPLEFT', 10, -3)
 	tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
 
-	hooksecurefunc(tab, 'SetPoint', S.Ace3_CreateTabSetPoint)
+	hooksecurefunc(tab, 'SetPoint', S.Ace3_TabSetPoint)
 end
 
 function S:Ace3_RegisterAsWidget(widget)
@@ -270,6 +270,39 @@ function S:Ace3_RegisterAsWidget(widget)
 	end
 end
 
+function S:Ace3_CreateTab(id)
+	local tab = self.old_CreateTab(self, id)
+	S:Ace3_SkinTab(tab)
+
+	return tab
+end
+
+function S:Ace3_RefreshTree(scrollToSelection)
+	self.old_RefreshTree(self, scrollToSelection)
+	if not self.tree then return end
+	local status = self.status or self.localstatus
+	local groupstatus = status.groups
+	local lines = self.lines
+	local buttons = self.buttons
+	local offset = status.scrollvalue
+
+	for i = offset + 1, #lines do
+		local button = buttons[i - offset]
+		if button then
+			button.highlight:SetVertexColor(1.0, 0.9, 0.0, 0.8)
+			if groupstatus[lines[i].uniquevalue] then
+				button.toggle:SetNormalTexture(E.Media.Textures.Minus)
+				button.toggle:SetPushedTexture(E.Media.Textures.Minus)
+				button.toggle:SetHighlightTexture('')
+			else
+				button.toggle:SetNormalTexture(E.Media.Textures.Plus)
+				button.toggle:SetPushedTexture(E.Media.Textures.Plus)
+				button.toggle:SetHighlightTexture('')
+			end
+		end
+	end
+end
+
 function S:Ace3_RegisterAsContainer(widget)
 	local TYPE = widget.type
 	if TYPE == 'ScrollFrame' then
@@ -303,41 +336,16 @@ function S:Ace3_RegisterAsContainer(widget)
 			widget.treeframe:SetTemplate('Transparent')
 			frame:Point('TOPLEFT', widget.treeframe, 'TOPRIGHT', 1, 0)
 
-			local oldRefreshTree = widget.RefreshTree
-			widget.RefreshTree = function(wdg, scrollToSelection)
-				oldRefreshTree(wdg, scrollToSelection)
-				if not wdg.tree then return end
-				local status = wdg.status or wdg.localstatus
-				local groupstatus = status.groups
-				local lines = wdg.lines
-				local buttons = wdg.buttons
-				local offset = status.scrollvalue
-
-				for i = offset + 1, #lines do
-					local button = buttons[i - offset]
-					if button then
-						button.highlight:SetVertexColor(1.0, 0.9, 0.0, 0.8)
-						if groupstatus[lines[i].uniquevalue] then
-							button.toggle:SetNormalTexture(E.Media.Textures.Minus)
-							button.toggle:SetPushedTexture(E.Media.Textures.Minus)
-							button.toggle:SetHighlightTexture('')
-						else
-							button.toggle:SetNormalTexture(E.Media.Textures.Plus)
-							button.toggle:SetPushedTexture(E.Media.Textures.Plus)
-							button.toggle:SetHighlightTexture('')
-						end
-					end
-				end
+			if not widget.old_RefreshTree then
+				widget.old_RefreshTree = widget.RefreshTree
+				widget.RefreshTree = S.Ace3_RefreshTree
 			end
 		end
 
 		if TYPE == 'TabGroup' then
-			local oldCreateTab = widget.CreateTab
-			widget.CreateTab = function(wdg, id)
-				local tab = oldCreateTab(wdg, id)
-				S:Ace3_SkinTab(tab)
-
-				return tab
+			if not widget.old_CreateTab then
+				widget.old_CreateTab = widget.CreateTab
+				widget.CreateTab = S.Ace3_CreateTab
 			end
 
 			if widget.tabs then
