@@ -11,6 +11,7 @@ local tinsert = tinsert
 local strmatch = strmatch
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
+local getmetatable = getmetatable
 local setmetatable = setmetatable
 local rawset = rawset
 
@@ -92,6 +93,13 @@ function S:Ace3_SkinTab(tab)
 		hooksecurefunc(tab, 'SetPoint', S.Ace3_CreateTabSetPoint)
 		tab.Ace3_CreateTabSetPoint = true
 	end
+end
+
+function S:Ace3_SkinPopup(popup)
+	popup:SetTemplate('Transparent')
+	popup:GetChildren():StripTextures()
+	S:HandleButton(popup.accept, true)
+	S:HandleButton(popup.cancel, true)
 end
 
 function S:Ace3_RegisterAsWidget(widget)
@@ -403,7 +411,18 @@ end
 
 function S:Ace3_StyleTooltip()
 	if not self or self:IsForbidden() then return end
-	self:SetTemplate('Transparent', nil, true)
+	if E.private.skins.ace3.enable then
+		self:SetTemplate('Transparent', nil, true)
+	end
+end
+
+function S:Ace3_MetaTable(lib)
+	local t = getmetatable(lib)
+	if t then
+		t.__newindex = S.Ace3_MetaIndex
+	else
+		setmetatable(lib, {__newindex = S.Ace3_MetaIndex})
+	end
 end
 
 function S:Ace3_SkinTooltip(lib, minor) -- lib: AceConfigDialog or AceGUI
@@ -412,15 +431,49 @@ function S:Ace3_SkinTooltip(lib, minor) -- lib: AceConfigDialog or AceGUI
 	-- inside of its own function.
 	if not lib or (minor and minor < minorConfigDialog) then return end
 
-	if lib.tooltip and not S:IsHooked(lib.tooltip, 'OnShow') then
-		S:SecureHookScript(lib.tooltip, 'OnShow', S.Ace3_StyleTooltip)
+	if not lib.tooltip then
+		S:Ace3_MetaTable(lib)
+	else
+		if not S:IsHooked(lib.tooltip, 'OnShow') then
+			S:SecureHookScript(lib.tooltip, 'OnShow', S.Ace3_StyleTooltip)
+		end
+		if lib.popup and not lib.popup.template then -- StaticPopup
+			S:Ace3_SkinPopup(lib.popup)
+		end
 	end
+end
 
-	if lib.popup and not lib.popup.template then -- StaticPopup
-		lib.popup:SetTemplate('Transparent')
-		lib.popup:GetChildren():StripTextures()
-		S:HandleButton(lib.popup.accept, true)
-		S:HandleButton(lib.popup.cancel, true)
+function S:Ace3_MetaIndex(k, v)
+	if k == 'tooltip' then
+		rawset(self, k, v)
+		S:SecureHookScript(v, 'OnShow', S.Ace3_StyleTooltip)
+	elseif k == 'popup' then
+		rawset(self, k, v)
+		local t = getmetatable(v)
+		if t then
+			t.__newindex = function(q, w, e)
+				rawset(q, w, e)
+				if w == 'cancel' then
+					S:Ace3_SkinPopup(q)
+				end
+			end
+		end
+	elseif k == 'RegisterAsContainer' then
+		rawset(self, k, function(...)
+			if E.private.skins.ace3.enable then
+				S.Ace3_RegisterAsContainer(...)
+			end
+			return v(...)
+		end)
+	elseif k == 'RegisterAsWidget' then
+		rawset(self, k, function(...)
+			if E.private.skins.ace3.enable then
+				S.Ace3_RegisterAsWidget(...)
+			end
+			return v(...)
+		end)
+	else
+		rawset(self, k, v)
 	end
 end
 
@@ -439,7 +492,9 @@ function S:HookAce3(lib, minor, earlyLoad) -- lib: AceGUI
 
 	local earlyContainer, earlyWidget
 	local oldMinor = lastMinor
-	if lastMinor < minor then lastMinor = minor end
+	if lastMinor < minor then
+		lastMinor = minor
+	end
 	if earlyLoad then
 		earlyContainer = lib.RegisterAsContainer
 		earlyWidget = lib.RegisterAsWidget
@@ -450,27 +505,7 @@ function S:HookAce3(lib, minor, earlyLoad) -- lib: AceGUI
 	end
 
 	if not lib.RegisterAsWidget then
-		setmetatable(lib, {
-			__newindex = function(t,k,v)
-				if k == 'RegisterAsContainer' then
-					rawset(t, k, function(...)
-						if E.private.skins.ace3.enable then
-							S.Ace3_RegisterAsContainer(...)
-						end
-						return v(...)
-					end)
-				elseif k == 'RegisterAsWidget' then
-					rawset(t, k, function(...)
-						if E.private.skins.ace3.enable then
-							S.Ace3_RegisterAsWidget(...)
-						end
-						return v(...)
-					end)
-				else
-					rawset(t, k, v)
-				end
-			end
-		})
+		S:Ace3_MetaTable(lib)
 	end
 
 	if earlyContainer then lib.RegisterAsContainer = earlyContainer end
@@ -480,61 +515,66 @@ function S:HookAce3(lib, minor, earlyLoad) -- lib: AceGUI
 end
 
 do -- Early Skin Loading
-	local LibStub = _G.LibStub
-	local numEnding = '%-[%d%.]+$'
 	local Libraries = {
-		['AceGUI'] = '^'..E:EscapeString('AceGUI-3.0')..'$',
-		['AceConfigDialog'] = '^'..E:EscapeString('AceConfigDialog-3.0')..'$',
-		['AceConfigDialog-3.0-ElvUI'] = '^'..E:EscapeString('AceConfigDialog-3.0-ElvUI')..'$',
-		['LibUIDropDownMenu'] = '^'..E:EscapeString('LibUIDropDownMenu')..numEnding,
-		['LibUIDropDownMenuQuestie'] = '^'..E:EscapeString('LibUIDropDownMenuQuestie')..numEnding,
-		['NoTaint_UIDropDownMenu'] = '^'..E:EscapeString('NoTaint_UIDropDownMenu')..numEnding,
+		['AceGUI'] = true,
+		['AceConfigDialog'] = true,
+		['AceConfigDialog-3.0-ElvUI'] = true,
+		['LibUIDropDownMenu'] = true,
+		['LibUIDropDownMenuQuestie'] = true,
+		['NoTaint_UIDropDownMenu'] = true,
 	}
 
 	S.EarlyAceWidgets = {}
 	S.EarlyAceTooltips = {}
 	S.EarlyDropdowns = {}
 
+	local LibStub = _G.LibStub
+	local numEnding = '%-[%d%.]+$'
 	function S:LibStub_NewLib(major, minor)
 		local earlyLoad = major == 'ElvUI'
 		if earlyLoad then major = minor end
 
-		for n, x in next, Libraries do
-			if strmatch(major, x) then
-				if n == 'AceGUI' then
-					S:HookAce3(LibStub.libs[major], LibStub.minors[major], earlyLoad)
-				elseif n == 'AceConfigDialog' or n == 'AceConfigDialog-3.0-ElvUI' then
+		local n = gsub(major, numEnding, '')
+		if Libraries[n] then
+			if n == 'AceGUI' then
+				S:HookAce3(LibStub.libs[major], LibStub.minors[major], earlyLoad)
+			elseif n == 'AceConfigDialog' or n == 'AceConfigDialog-3.0-ElvUI' then
+				if earlyLoad then
 					tinsert(S.EarlyAceTooltips, major)
 				else
-					local dropDownLib = (n == 'NoTaint_UIDropDownMenu' and 'Lib') or (n == 'LibUIDropDownMenuQuestie' and 'LQuestie') or (n == 'LibUIDropDownMenu' and 'L')
-					if dropDownLib and not S[dropDownLib..'_UIDropDownMenuSkinned'] then
-						tinsert(S.EarlyDropdowns, dropDownLib)
+					S:Ace3_SkinTooltip(LibStub.libs[major], LibStub.minors[major])
+				end
+			else
+				local prefix = (n == 'NoTaint_UIDropDownMenu' and 'Lib') or (n == 'LibUIDropDownMenuQuestie' and 'LQuestie') or (n == 'LibUIDropDownMenu' and 'L')
+				if prefix and not S[prefix..'_UIDropDownMenuSkinned'] then
+					if earlyLoad then
+						tinsert(S.EarlyDropdowns, prefix)
+					else
+						S:SkinLibDropDownMenu(prefix)
 					end
 				end
 			end
 		end
 	end
 
-	local function findAceObject(children)
-		for _, y in ipairs(children) do
-			if y.children then
-				findAceObject(y.children)
-			end
-			if y.base and y.base.Release then
-				tinsert(S.EarlyAceWidgets, y)
-			end
+	local findWidget
+	local function earlyWidget(y)
+		if y.children then findWidget(y.children) end
+		if y.frame and (y.base and y.base.Release) then
+			tinsert(S.EarlyAceWidgets, y)
+		end
+	end
+
+	findWidget = function(x)
+		for _, y in ipairs(x) do
+			earlyWidget(y)
 		end
 	end
 
 	for n in next, LibStub.libs do
 		if n == 'AceGUI-3.0' then
-			for _, y in ipairs({_G.UIParent:GetChildren()}) do
-				if y and y.obj and y.obj.children then
-					findAceObject(y.obj.children)
-				end
-				if y and y.obj and y.obj.base and y.obj.base.Release then
-					tinsert(S.EarlyAceWidgets, y.obj)
-				end
+			for _, x in ipairs({_G.UIParent:GetChildren()}) do
+				if x and x.obj then earlyWidget(x.obj) end
 			end
 		end
 		if Libraries[gsub(n, numEnding, '')] then

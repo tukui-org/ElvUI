@@ -1339,18 +1339,20 @@ function S:Initialize()
 	end
 
 	-- Early Skin Handling (populated before ElvUI is loaded from the Ace3 file)
-	for _, n in next, S.EarlyAceWidgets do
-		if n.SetLayout then
-			S:Ace3_RegisterAsContainer(n)
-		else
-			S:Ace3_RegisterAsWidget(n)
+	if E.private.skins.ace3.enable then
+		for _, n in next, S.EarlyAceWidgets do
+			if n.SetLayout then
+				S:Ace3_RegisterAsContainer(n)
+			else
+				S:Ace3_RegisterAsWidget(n)
+			end
+		end
+		for _, n in next, S.EarlyAceTooltips do
+			S:Ace3_SkinTooltip(_G.LibStub(n, true))
 		end
 	end
 	for _, n in next, S.EarlyDropdowns do
 		S:SkinLibDropDownMenu(n)
-	end
-	for _, n in next, S.EarlyAceTooltips do
-		S:Ace3_SkinTooltip(_G.LibStub(n, true))
 	end
 
 	do -- Credits ShestakUI
