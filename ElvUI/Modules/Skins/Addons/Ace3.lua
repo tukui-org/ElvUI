@@ -95,13 +95,6 @@ function S:Ace3_SkinTab(tab)
 	end
 end
 
-function S:Ace3_SkinPopup(popup)
-	popup:SetTemplate('Transparent')
-	popup:GetChildren():StripTextures()
-	S:HandleButton(popup.accept, true)
-	S:HandleButton(popup.cancel, true)
-end
-
 function S:Ace3_RegisterAsWidget(widget)
 	local TYPE = widget.type
 	if TYPE == 'MultiLineEditBox' then
@@ -409,7 +402,17 @@ function S:Ace3_RegisterAsContainer(widget)
 	end
 end
 
-function S:Ace3_StyleTooltip()
+function S:Ace3_SkinPopup()
+	if not self or self:IsForbidden() then return end
+	if E.private.skins.ace3.enable and not self.template then
+		self:SetTemplate('Transparent')
+		self:GetChildren():StripTextures()
+		S:HandleButton(self.accept, true)
+		S:HandleButton(self.cancel, true)
+	end
+end
+
+function S:Ace3_SkinTooltip()
 	if not self or self:IsForbidden() then return end
 	if E.private.skins.ace3.enable then
 		self:SetTemplate('Transparent', nil, true)
@@ -435,10 +438,10 @@ function S:Ace3_SkinTooltip(lib, minor) -- lib: AceConfigDialog or AceGUI
 		S:Ace3_MetaTable(lib)
 	else
 		if not S:IsHooked(lib.tooltip, 'OnShow') then
-			S:SecureHookScript(lib.tooltip, 'OnShow', S.Ace3_StyleTooltip)
+			S:SecureHookScript(lib.tooltip, 'OnShow', S.Ace3_SkinTooltip)
 		end
-		if lib.popup and not lib.popup.template then -- StaticPopup
-			S:Ace3_SkinPopup(lib.popup)
+		if lib.popup and not S:IsHooked(lib.popup, 'OnShow') then -- StaticPopup
+			S:SecureHookScript(lib.popup, 'OnShow', S.Ace3_SkinPopup)
 		end
 	end
 end
@@ -446,18 +449,10 @@ end
 function S:Ace3_MetaIndex(k, v)
 	if k == 'tooltip' then
 		rawset(self, k, v)
-		S:SecureHookScript(v, 'OnShow', S.Ace3_StyleTooltip)
+		S:SecureHookScript(v, 'OnShow', S.Ace3_SkinTooltip)
 	elseif k == 'popup' then
 		rawset(self, k, v)
-		local t = getmetatable(v)
-		if t then
-			t.__newindex = function(q, w, e)
-				rawset(q, w, e)
-				if w == 'cancel' then
-					S:Ace3_SkinPopup(q)
-				end
-			end
-		end
+		S:SecureHookScript(v, 'OnShow', S.Ace3_SkinPopup)
 	elseif k == 'RegisterAsContainer' then
 		rawset(self, k, function(...)
 			if E.private.skins.ace3.enable then
