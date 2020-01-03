@@ -82,59 +82,43 @@ end
 function S:Ace3_SkinTab(tab)
 	tab:StripTextures()
 
-	if not tab.backdrop then
-		tab:CreateBackdrop()
-	end
-
+	tab:CreateBackdrop()
 	tab.backdrop:Point('TOPLEFT', 10, -3)
 	tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
 
-	if not tab.Ace3_CreateTabSetPoint then
-		hooksecurefunc(tab, 'SetPoint', S.Ace3_CreateTabSetPoint)
-		tab.Ace3_CreateTabSetPoint = true
-	end
+	hooksecurefunc(tab, 'SetPoint', S.Ace3_CreateTabSetPoint)
 end
 
 function S:Ace3_RegisterAsWidget(widget)
 	local TYPE = widget.type
 	if TYPE == 'MultiLineEditBox' then
 		local frame = widget.frame
-
-		if not widget.scrollBG.template then
-			widget.scrollBG:SetTemplate()
-		end
-
 		S:HandleButton(widget.button)
 		S:HandleScrollBar(widget.scrollBar)
-		widget.scrollBar:Point('RIGHT', frame, 'RIGHT', 0 -4)
+
+		widget.scrollBG:SetTemplate()
 		widget.scrollBG:Point('TOPRIGHT', widget.scrollBar, 'TOPLEFT', -2, 19)
 		widget.scrollBG:Point('BOTTOMLEFT', widget.button, 'TOPLEFT')
+
+		widget.scrollBar:Point('RIGHT', frame, 'RIGHT', 0 -4)
 		widget.scrollFrame:Point('BOTTOMRIGHT', widget.scrollBG, 'BOTTOMRIGHT', -4, 8)
 	elseif TYPE == 'CheckBox' then
 		local check = widget.check
 		local checkbg = widget.checkbg
 		local highlight = widget.highlight
 
-		if not checkbg.backdrop then
-			checkbg:CreateBackdrop()
-		end
-
+		checkbg:CreateBackdrop()
 		checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
 		checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
+
 		checkbg:SetTexture()
 		highlight:SetTexture()
 
-		if not widget.Ace3_CheckBoxSetDisabled then
-			hooksecurefunc(widget, 'SetDisabled', S.Ace3_CheckBoxSetDisabled)
-			widget.Ace3_CheckBoxSetDisabled = true
-		end
+		hooksecurefunc(widget, 'SetDisabled', S.Ace3_CheckBoxSetDisabled)
 
 		if E.private.skins.checkBoxSkin then
-			if not widget.Ace3_CheckBoxSetDesaturated then
-				S.Ace3_CheckBoxSetDesaturated(check, check:GetDesaturation())
-				hooksecurefunc(check, 'SetDesaturated', S.Ace3_CheckBoxSetDesaturated)
-				widget.Ace3_CheckBoxSetDesaturated = true
-			end
+			S.Ace3_CheckBoxSetDesaturated(check, check:GetDesaturation())
+			hooksecurefunc(check, 'SetDesaturated', S.Ace3_CheckBoxSetDesaturated)
 
 			checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
 			check:SetInside(widget.checkbg.backdrop)
@@ -155,10 +139,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		S:HandleNextPrevButton(button, nil, {1, .8, 0})
 
-		if not frame.backdrop then
-			frame:CreateBackdrop()
-		end
-
+		frame:CreateBackdrop()
 		frame.backdrop:Point('TOPLEFT', 15, -2)
 		frame.backdrop:Point('BOTTOMRIGHT', -21, 0)
 		frame.backdrop:SetClipsChildren(true)
@@ -184,12 +165,9 @@ function S:Ace3_RegisterAsWidget(widget)
 		local button = frame.dropButton
 		local text = frame.text
 		frame:StripTextures()
+		frame:CreateBackdrop()
 
 		S:HandleNextPrevButton(button, nil, {1, .8, 0})
-
-		if not frame.backdrop then
-			frame:CreateBackdrop()
-		end
 
 		frame.label:ClearAllPoints()
 		frame.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
@@ -228,14 +206,8 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		button:Point('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
 
-		if not frame.Ace3_EditBoxSetTextInsets then
-			hooksecurefunc(frame, 'SetTextInsets', S.Ace3_EditBoxSetTextInsets)
-			frame.Ace3_EditBoxSetTextInsets = true
-		end
-		if not frame.Ace3_EditBoxSetPoint then
-			hooksecurefunc(frame, 'SetPoint', S.Ace3_EditBoxSetPoint)
-			frame.Ace3_EditBoxSetPoint = true
-		end
+		hooksecurefunc(frame, 'SetTextInsets', S.Ace3_EditBoxSetTextInsets)
+		hooksecurefunc(frame, 'SetPoint', S.Ace3_EditBoxSetPoint)
 
 		frame.backdrop:Point('TOPLEFT', 0, -2)
 		frame.backdrop:Point('BOTTOMRIGHT', -1, 0)
@@ -274,10 +246,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		local frame = widget.frame
 		local colorSwatch = widget.colorSwatch
 
-		if not frame.backdrop then
-			frame:CreateBackdrop()
-		end
-
+		frame:CreateBackdrop()
 		frame.backdrop:Size(24, 16)
 		frame.backdrop:ClearAllPoints()
 		frame.backdrop:Point('LEFT', frame, 'LEFT', 4, 0)
@@ -334,30 +303,28 @@ function S:Ace3_RegisterAsContainer(widget)
 			widget.treeframe:SetTemplate('Transparent')
 			frame:Point('TOPLEFT', widget.treeframe, 'TOPRIGHT', 1, 0)
 
-			if not widget.oldRefreshTree then
-				widget.oldRefreshTree = widget.RefreshTree
-				widget.RefreshTree = function(wdg, scrollToSelection)
-					widget.oldRefreshTree(wdg, scrollToSelection)
-					if not wdg.tree then return end
-					local status = wdg.status or wdg.localstatus
-					local groupstatus = status.groups
-					local lines = wdg.lines
-					local buttons = wdg.buttons
-					local offset = status.scrollvalue
+			local oldRefreshTree = widget.RefreshTree
+			widget.RefreshTree = function(wdg, scrollToSelection)
+				oldRefreshTree(wdg, scrollToSelection)
+				if not wdg.tree then return end
+				local status = wdg.status or wdg.localstatus
+				local groupstatus = status.groups
+				local lines = wdg.lines
+				local buttons = wdg.buttons
+				local offset = status.scrollvalue
 
-					for i = offset + 1, #lines do
-						local button = buttons[i - offset]
-						if button then
-							button.highlight:SetVertexColor(1.0, 0.9, 0.0, 0.8)
-							if groupstatus[lines[i].uniquevalue] then
-								button.toggle:SetNormalTexture(E.Media.Textures.Minus)
-								button.toggle:SetPushedTexture(E.Media.Textures.Minus)
-								button.toggle:SetHighlightTexture('')
-							else
-								button.toggle:SetNormalTexture(E.Media.Textures.Plus)
-								button.toggle:SetPushedTexture(E.Media.Textures.Plus)
-								button.toggle:SetHighlightTexture('')
-							end
+				for i = offset + 1, #lines do
+					local button = buttons[i - offset]
+					if button then
+						button.highlight:SetVertexColor(1.0, 0.9, 0.0, 0.8)
+						if groupstatus[lines[i].uniquevalue] then
+							button.toggle:SetNormalTexture(E.Media.Textures.Minus)
+							button.toggle:SetPushedTexture(E.Media.Textures.Minus)
+							button.toggle:SetHighlightTexture('')
+						else
+							button.toggle:SetNormalTexture(E.Media.Textures.Plus)
+							button.toggle:SetPushedTexture(E.Media.Textures.Plus)
+							button.toggle:SetHighlightTexture('')
 						end
 					end
 				end
@@ -365,14 +332,12 @@ function S:Ace3_RegisterAsContainer(widget)
 		end
 
 		if TYPE == 'TabGroup' then
-			if not widget.oldCreateTab then
-				widget.oldCreateTab = widget.CreateTab
-				widget.CreateTab = function(wdg, id)
-					local tab = widget.oldCreateTab(wdg, id)
-					S:Ace3_SkinTab(tab)
+			local oldCreateTab = widget.CreateTab
+			widget.CreateTab = function(wdg, id)
+				local tab = oldCreateTab(wdg, id)
+				S:Ace3_SkinTab(tab)
 
-					return tab
-				end
+				return tab
 			end
 
 			if widget.tabs then
