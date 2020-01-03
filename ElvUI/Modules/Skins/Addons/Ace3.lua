@@ -475,7 +475,7 @@ function S:HookAce3(lib, minor, earlyLoad) -- lib: AceGUI
 	if not lib or (not minor or minor < minorGUI) then return end
 
 	if not S.Ace3_L and not earlyLoad then
-		S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', (E.global and E.global.general.locale) or 'enUS')
+		S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
 
 		-- Special Enable Coloring
 		if not S.Ace3_EnableMatch then S.Ace3_EnableMatch = '^|?c?[Ff]?[Ff]?%x?%x?%x?%x?%x?%x?' .. E:EscapeString(S.Ace3_L.Enable) .. '|?r?$' end
