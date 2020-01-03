@@ -2,22 +2,24 @@ local E, _, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 --Lua functions
+local next = next
+local gsub = gsub
+local ipairs = ipairs
 local select = select
 local format = format
+local tinsert = tinsert
 local strmatch = strmatch
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
-
--- functions that were overwritten, we need these to
--- finish the function call when our code executes!
-local oldRegisterAsWidget, oldRegisterAsContainer
+local setmetatable = setmetatable
+local rawset = rawset
 
 -- these do *not* need to match the current lib minor version
 -- these numbers are used to not attempt skinning way older
 -- versions of AceGUI and AceConfigDialog.
 local minorGUI, minorConfigDialog = 36, 76
 
-function S:Ace3_SkinDropdownPullout()
+function S:Ace3_SkinDropdown()
 	if self and self.obj then
 		if self.obj.pullout and self.obj.pullout.frame then
 			self.obj.pullout.frame:SetTemplate(nil, true)
@@ -36,8 +38,8 @@ function S:Ace3_SkinDropdownPullout()
 end
 
 function S:Ace3_CheckBoxIsEnable(widget)
-	local text = widget.text and widget.text:GetText()
-	if text then return strmatch(text, S.Ace3_EnableMatch) end
+	local text = widget and widget.text and widget.text:GetText()
+	if text and S.Ace3_EnableMatch then return strmatch(text, S.Ace3_EnableMatch) end
 end
 
 function S:Ace3_CheckBoxSetDesaturated(value)
@@ -76,11 +78,23 @@ function S:Ace3_CreateTabSetPoint(a, b, c, d, e, f)
 	end
 end
 
-function S:Ace3_RegisterAsWidget(widget)
-	if not E.private.skins.ace3.enable then
-		return oldRegisterAsWidget(self, widget)
+function S:Ace3_SkinTab(tab)
+	tab:StripTextures()
+
+	if not tab.backdrop then
+		tab:CreateBackdrop()
 	end
 
+	tab.backdrop:Point('TOPLEFT', 10, -3)
+	tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
+
+	if not tab.Ace3_CreateTabSetPoint then
+		hooksecurefunc(tab, 'SetPoint', S.Ace3_CreateTabSetPoint)
+		tab.Ace3_CreateTabSetPoint = true
+	end
+end
+
+function S:Ace3_RegisterAsWidget(widget)
 	local TYPE = widget.type
 	if TYPE == 'MultiLineEditBox' then
 		local frame = widget.frame
@@ -100,16 +114,26 @@ function S:Ace3_RegisterAsWidget(widget)
 		local checkbg = widget.checkbg
 		local highlight = widget.highlight
 
-		checkbg:CreateBackdrop()
+		if not checkbg.backdrop then
+			checkbg:CreateBackdrop()
+		end
+
 		checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
 		checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
 		checkbg:SetTexture()
 		highlight:SetTexture()
 
-		hooksecurefunc(widget, 'SetDisabled', S.Ace3_CheckBoxSetDisabled)
+		if not widget.Ace3_CheckBoxSetDisabled then
+			hooksecurefunc(widget, 'SetDisabled', S.Ace3_CheckBoxSetDisabled)
+			widget.Ace3_CheckBoxSetDisabled = true
+		end
 
 		if E.private.skins.checkBoxSkin then
-			hooksecurefunc(check, 'SetDesaturated', S.Ace3_CheckBoxSetDesaturated)
+			if not widget.Ace3_CheckBoxSetDesaturated then
+				S.Ace3_CheckBoxSetDesaturated(check, check:GetDesaturation())
+				hooksecurefunc(check, 'SetDesaturated', S.Ace3_CheckBoxSetDesaturated)
+				widget.Ace3_CheckBoxSetDesaturated = true
+			end
 
 			checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
 			check:SetInside(widget.checkbg.backdrop)
@@ -121,7 +145,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		checkbg.SetTexture = E.noop
 		highlight.SetTexture = E.noop
-	elseif TYPE == 'Dropdown' then
+	elseif TYPE == 'Dropdown' or TYPE == 'LQDropdown' then
 		local frame = widget.dropdown
 		local button = widget.button
 		local button_cover = widget.button_cover
@@ -152,8 +176,8 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		button:SetParent(frame.backdrop)
 		text:SetParent(frame.backdrop)
-		button:HookScript('OnClick', S.Ace3_SkinDropdownPullout)
-		button_cover:HookScript('OnClick', S.Ace3_SkinDropdownPullout)
+		button:HookScript('OnClick', S.Ace3_SkinDropdown)
+		button_cover:HookScript('OnClick', S.Ace3_SkinDropdown)
 	elseif TYPE == 'LSM30_Font' or TYPE == 'LSM30_Sound' or TYPE == 'LSM30_Border' or TYPE == 'LSM30_Background' or TYPE == 'LSM30_Statusbar' then
 		local frame = widget.frame
 		local button = frame.dropButton
@@ -194,7 +218,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		button:SetParent(frame.backdrop)
 		text:SetParent(frame.backdrop)
-		button:HookScript('OnClick', S.Ace3_SkinDropdownPullout)
+		button:HookScript('OnClick', S.Ace3_SkinDropdown)
 	elseif TYPE == 'EditBox' then
 		local frame = widget.editbox
 		local button = widget.button
@@ -202,8 +226,15 @@ function S:Ace3_RegisterAsWidget(widget)
 		S:HandleButton(button)
 
 		button:Point('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
-		hooksecurefunc(frame, 'SetTextInsets', S.Ace3_EditBoxSetTextInsets)
-		hooksecurefunc(frame, 'SetPoint', S.Ace3_EditBoxSetPoint)
+
+		if not frame.Ace3_EditBoxSetTextInsets then
+			hooksecurefunc(frame, 'SetTextInsets', S.Ace3_EditBoxSetTextInsets)
+			frame.Ace3_EditBoxSetTextInsets = true
+		end
+		if not frame.Ace3_EditBoxSetPoint then
+			hooksecurefunc(frame, 'SetPoint', S.Ace3_EditBoxSetPoint)
+			frame.Ace3_EditBoxSetPoint = true
+		end
 
 		frame.backdrop:Point('TOPLEFT', 0, -2)
 		frame.backdrop:Point('BOTTOMRIGHT', -1, 0)
@@ -267,15 +298,9 @@ function S:Ace3_RegisterAsWidget(widget)
 	elseif TYPE == 'Icon' then
 		widget.frame:StripTextures()
 	end
-
-	return oldRegisterAsWidget(self, widget)
 end
 
 function S:Ace3_RegisterAsContainer(widget)
-	if not E.private.skins.ace3.enable then
-		return oldRegisterAsContainer(self, widget)
-	end
-
 	local TYPE = widget.type
 	if TYPE == 'ScrollFrame' then
 		S:HandleScrollBar(widget.scrollbar)
@@ -308,28 +333,30 @@ function S:Ace3_RegisterAsContainer(widget)
 			widget.treeframe:SetTemplate('Transparent')
 			frame:Point('TOPLEFT', widget.treeframe, 'TOPRIGHT', 1, 0)
 
-			local oldRefreshTree = widget.RefreshTree
-			widget.RefreshTree = function(wdg, scrollToSelection)
-				oldRefreshTree(wdg, scrollToSelection)
-				if not wdg.tree then return end
-				local status = wdg.status or wdg.localstatus
-				local groupstatus = status.groups
-				local lines = wdg.lines
-				local buttons = wdg.buttons
-				local offset = status.scrollvalue
+			if not widget.oldRefreshTree then
+				widget.oldRefreshTree = widget.RefreshTree
+				widget.RefreshTree = function(wdg, scrollToSelection)
+					widget.oldRefreshTree(wdg, scrollToSelection)
+					if not wdg.tree then return end
+					local status = wdg.status or wdg.localstatus
+					local groupstatus = status.groups
+					local lines = wdg.lines
+					local buttons = wdg.buttons
+					local offset = status.scrollvalue
 
-				for i = offset + 1, #lines do
-					local button = buttons[i - offset]
-					if button then
-						button.highlight:SetVertexColor(1.0, 0.9, 0.0, 0.8)
-						if groupstatus[lines[i].uniquevalue] then
-							button.toggle:SetNormalTexture(E.Media.Textures.Minus)
-							button.toggle:SetPushedTexture(E.Media.Textures.Minus)
-							button.toggle:SetHighlightTexture('')
-						else
-							button.toggle:SetNormalTexture(E.Media.Textures.Plus)
-							button.toggle:SetPushedTexture(E.Media.Textures.Plus)
-							button.toggle:SetHighlightTexture('')
+					for i = offset + 1, #lines do
+						local button = buttons[i - offset]
+						if button then
+							button.highlight:SetVertexColor(1.0, 0.9, 0.0, 0.8)
+							if groupstatus[lines[i].uniquevalue] then
+								button.toggle:SetNormalTexture(E.Media.Textures.Minus)
+								button.toggle:SetPushedTexture(E.Media.Textures.Minus)
+								button.toggle:SetHighlightTexture('')
+							else
+								button.toggle:SetNormalTexture(E.Media.Textures.Plus)
+								button.toggle:SetPushedTexture(E.Media.Textures.Plus)
+								button.toggle:SetHighlightTexture('')
+							end
 						end
 					end
 				end
@@ -337,17 +364,20 @@ function S:Ace3_RegisterAsContainer(widget)
 		end
 
 		if TYPE == 'TabGroup' then
-			local oldCreateTab = widget.CreateTab
-			widget.CreateTab = function(wdg, id)
-				local tab = oldCreateTab(wdg, id)
-				tab:StripTextures()
-				tab:CreateBackdrop()
-				tab.backdrop:Point('TOPLEFT', 10, -3)
-				tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
+			if not widget.oldCreateTab then
+				widget.oldCreateTab = widget.CreateTab
+				widget.CreateTab = function(wdg, id)
+					local tab = widget.oldCreateTab(wdg, id)
+					S:Ace3_SkinTab(tab)
 
-				hooksecurefunc(tab, 'SetPoint', S.Ace3_CreateTabSetPoint)
+					return tab
+				end
+			end
 
-				return tab
+			if widget.tabs then
+				for _, n in next, widget.tabs do
+					S:Ace3_SkinTab(n)
+				end
 			end
 		end
 
@@ -369,8 +399,6 @@ function S:Ace3_RegisterAsContainer(widget)
 			end
 		end
 	end
-
-	return oldRegisterAsContainer(self, widget)
 end
 
 function S:Ace3_StyleTooltip()
@@ -396,11 +424,12 @@ function S:Ace3_SkinTooltip(lib, minor) -- lib: AceConfigDialog or AceGUI
 	end
 end
 
-function S:HookAce3(lib, minor) -- lib: AceGUI
+local lastMinor = 0
+function S:HookAce3(lib, minor, earlyLoad) -- lib: AceGUI
 	if not lib or (not minor or minor < minorGUI) then return end
 
-	if not S.Ace3_L then
-		S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
+	if not S.Ace3_L and not earlyLoad then
+		S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', (E.global and E.global.general.locale) or 'enUS')
 
 		-- Special Enable Coloring
 		if not S.Ace3_EnableMatch then S.Ace3_EnableMatch = '^|?c?[Ff]?[Ff]?%x?%x?%x?%x?%x?%x?' .. E:EscapeString(S.Ace3_L.Enable) .. '|?r?$' end
@@ -408,15 +437,110 @@ function S:HookAce3(lib, minor) -- lib: AceGUI
 		if not S.Ace3_EnableOn then S.Ace3_EnableOn = format('|cff33ff33%s|r', S.Ace3_L.Enable) end
 	end
 
-	if lib.RegisterAsWidget ~= S.Ace3_RegisterAsWidget then
-		oldRegisterAsWidget = lib.RegisterAsWidget
-		lib.RegisterAsWidget = S.Ace3_RegisterAsWidget
+	local earlyContainer, earlyWidget
+	local oldMinor = lastMinor
+	if lastMinor < minor then lastMinor = minor end
+	if earlyLoad then
+		earlyContainer = lib.RegisterAsContainer
+		earlyWidget = lib.RegisterAsWidget
+	end
+	if earlyLoad or oldMinor ~= minor then
+		lib.RegisterAsContainer = nil
+		lib.RegisterAsWidget = nil
 	end
 
-	if lib.RegisterAsContainer ~= S.Ace3_RegisterAsContainer then
-		oldRegisterAsContainer = lib.RegisterAsContainer
-		lib.RegisterAsContainer = S.Ace3_RegisterAsContainer
+	if not lib.RegisterAsWidget then
+		setmetatable(lib, {
+			__newindex = function(t,k,v)
+				if k == 'RegisterAsContainer' then
+					rawset(t, k, function(...)
+						if E.private.skins.ace3.enable then
+							S.Ace3_RegisterAsContainer(...)
+						end
+						return v(...)
+					end)
+				elseif k == 'RegisterAsWidget' then
+					rawset(t, k, function(...)
+						if E.private.skins.ace3.enable then
+							S.Ace3_RegisterAsWidget(...)
+						end
+						return v(...)
+					end)
+				else
+					rawset(t, k, v)
+				end
+			end
+		})
 	end
+
+	if earlyContainer then lib.RegisterAsContainer = earlyContainer end
+	if earlyWidget then lib.RegisterAsWidget = earlyWidget end
 
 	S:Ace3_SkinTooltip(lib)
+end
+
+do -- Early Skin Loading
+	local LibStub = _G.LibStub
+	local numEnding = '%-[%d%.]+$'
+	local Libraries = {
+		['AceGUI'] = '^'..E:EscapeString('AceGUI-3.0')..'$',
+		['AceConfigDialog'] = '^'..E:EscapeString('AceConfigDialog-3.0')..'$',
+		['AceConfigDialog-3.0-ElvUI'] = '^'..E:EscapeString('AceConfigDialog-3.0-ElvUI')..'$',
+		['LibUIDropDownMenu'] = '^'..E:EscapeString('LibUIDropDownMenu')..numEnding,
+		['LibUIDropDownMenuQuestie'] = '^'..E:EscapeString('LibUIDropDownMenuQuestie')..numEnding,
+		['NoTaint_UIDropDownMenu'] = '^'..E:EscapeString('NoTaint_UIDropDownMenu')..numEnding,
+	}
+
+	S.EarlyAceWidgets = {}
+	S.EarlyAceTooltips = {}
+	S.EarlyDropdowns = {}
+
+	function S:LibStub_NewLib(major, minor)
+		local earlyLoad = major == 'ElvUI'
+		if earlyLoad then major = minor end
+
+		for n, x in next, Libraries do
+			if strmatch(major, x) then
+				if n == 'AceGUI' then
+					S:HookAce3(LibStub.libs[major], LibStub.minors[major], earlyLoad)
+				elseif n == 'AceConfigDialog' or n == 'AceConfigDialog-3.0-ElvUI' then
+					tinsert(S.EarlyAceTooltips, major)
+				else
+					local dropDownLib = (n == 'NoTaint_UIDropDownMenu' and 'Lib') or (n == 'LibUIDropDownMenuQuestie' and 'LQuestie') or (n == 'LibUIDropDownMenu' and 'L')
+					if dropDownLib and not S[dropDownLib..'_UIDropDownMenuSkinned'] then
+						tinsert(S.EarlyDropdowns, dropDownLib)
+					end
+				end
+			end
+		end
+	end
+
+	local function findAceObject(children)
+		for _, y in ipairs(children) do
+			if y.children then
+				findAceObject(y.children)
+			end
+			if y.base and y.base.Release then
+				tinsert(S.EarlyAceWidgets, y)
+			end
+		end
+	end
+
+	for n in next, LibStub.libs do
+		if n == 'AceGUI-3.0' then
+			for _, y in ipairs({_G.UIParent:GetChildren()}) do
+				if y and y.obj and y.obj.children then
+					findAceObject(y.obj.children)
+				end
+				if y and y.obj and y.obj.base and y.obj.base.Release then
+					tinsert(S.EarlyAceWidgets, y.obj)
+				end
+			end
+		end
+		if Libraries[gsub(n, numEnding, '')] then
+			S:LibStub_NewLib('ElvUI', n)
+		end
+	end
+
+	hooksecurefunc(LibStub, 'NewLibrary', S.LibStub_NewLib)
 end
