@@ -282,7 +282,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		frame.backdrop:ClearAllPoints()
 		frame.backdrop:Point('LEFT', frame, 'LEFT', 4, 0)
 
-		colorSwatch:SetTexture(E.media.blankTex)
+		colorSwatch:SetTexture(E.Media.Textures.White8x8)
 		colorSwatch:ClearAllPoints()
 		colorSwatch:SetParent(frame.backdrop)
 		colorSwatch:SetInside(frame.backdrop)
