@@ -256,7 +256,7 @@ do --this can save some main file locals
 		["Mispel-Spirestone"]		= Rainbow,
 		["Misdecay-Spirestone"]		= Rainbow,
 		--NihilisticPandemonium
-		["Zistraeti-WyrmrestAccord"]	= itsTheFlyestNihilist("WARLOCK"),
+		["Zistraeti-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
 		["Sagome-WyrmrestAccord"]		= itsTheFlyestNihilist("MONK"),
 		["Onaguda-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
 		["Haelini-WyrmrestAccord"]		= itsTheFlyestNihilist("PRIEST"),
@@ -268,12 +268,12 @@ do --this can save some main file locals
 		["Galiseda-WyrmestAccord"]		= itsTheFlyestNihilist("ROGUE"),
 		["Naldydi-WyrmrestAccord"]		= itsTheFlyestNihilist("HUNTER"),
 		["Caylasena-WyrmestAccord"]		= itsTheFlyestNihilist("WARRIOR"),
-		["Elaedarel-WyrmrestAccord"]	= itsTheFlyestNihilist("WARLOCK"),
+		["Elaedarel-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
 		["Alydrer-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
 		["Issia-WyrmrestAccord"]		= itsTheFlyestNihilist("PRIEST"),
 		["Leitara-WyrmrestAccord"]		= itsTheFlyestNihilist("WARRIOR"),
 		["Cherlyth-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
-		["Tokashami-WyrmrestAccord"]	= itsTheFlyestNihilist("SHAMAN"),
+		["Tokashami-WyrmrestAccord"]		= itsTheFlyestNihilist("SHAMAN"),
 		-- Merathilis
 		["Asragoth-Shattrath"]			= ElvPurple,	-- [Alliance] Warlock
 		["Brítt-Shattrath"] 			= ElvBlue,		-- [Alliance] Warrior
