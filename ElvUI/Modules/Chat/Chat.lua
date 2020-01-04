@@ -256,7 +256,7 @@ do --this can save some main file locals
 		["Mispel-Spirestone"]		= Rainbow,
 		["Misdecay-Spirestone"]		= Rainbow,
 		--NihilisticPandemonium
-		["Perrinna-WyrmrestAccord"]		= itsNihilist("WARLOCK"),
+		["Zistraeti-WyrmrestAccord"]		= itsNihilist("WARLOCK"),
 		["Sagome-WyrmrestAccord"]		= itsNihilist("MONK"),
 		["Onaguda-WyrmrestAccord"]		= itsNihilist("DRUID"),
 		["Haelini-WyrmrestAccord"]		= itsNihilist("PRIEST"),
