@@ -11,8 +11,7 @@ local hooksecurefunc = hooksecurefunc
 
 --[[
 TO DO:
-* Fix Icon borders
-* Skin Multisell .ProgressBar
+	* Skin Multisell .ProgressBar
 ]]
 
 -- Credits: siweia (AuroraClassic)
@@ -82,15 +81,11 @@ local function SkinItemDisplay(frame)
 
 	local ItemButton = ItemDisplay.ItemButton
 	ItemButton.CircleMask:Hide()
-	--ItemButton.IconBorder:SetAlpha(0)
 
-	-- FIX ME
-	-- For now i skin the ItemButton.IconBorder
+	-- We skin the new IconBorder from the AH, it looks really cool tbh.
 	ItemButton.Icon:SetTexCoord(.08, .92, .08, .92)
 	ItemButton.Icon:SetSize(44, 44)
 	ItemButton.IconBorder:SetTexCoord(.08, .92, .08, .92)
-	--hooksecurefunc(ItemButton.IconBorder, 'SetVertexColor', function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
-	--hooksecurefunc(ItemButton.IconBorder, 'Hide', function() ItemButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 end
 
 local function HandleHeaders(frame)
