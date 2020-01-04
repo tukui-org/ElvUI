@@ -223,7 +223,7 @@ do --this can save some main file locals
 		WARRIOR		= ElvOrange
 	}
 
-	local itsNihilist = function(class)
+	local itsTheFlyestNihilist = function(class)
 		return classNihilist[class]
 	end
 
@@ -256,24 +256,24 @@ do --this can save some main file locals
 		["Mispel-Spirestone"]		= Rainbow,
 		["Misdecay-Spirestone"]		= Rainbow,
 		--NihilisticPandemonium
-		["Perrinna-WyrmrestAccord"]		= itsNihilist("WARLOCK"),
-		["Sagome-WyrmrestAccord"]		= itsNihilist("MONK"),
-		["Onaguda-WyrmrestAccord"]		= itsNihilist("DRUID"),
-		["Haelini-WyrmrestAccord"]		= itsNihilist("PRIEST"),
-		["Nenalia-WyrmrestAccord"]		= itsNihilist("MAGE"),
-		["Alailais-WyrmestAccord"]		= itsNihilist("DEMONHUNTER"),
-		["Muiride-WyrmestAccord"]		= itsNihilist("DEATHKNIGHT"),
-		["Monelia-WyrmrestAccord"]		= itsNihilist("PALADIN"),
-		["Huanyue-WyrmrestAccord"]		= itsNihilist("SHAMAN"),
-		["Galiseda-WyrmestAccord"]		= itsNihilist("ROGUE"),
-		["Naldydi-WyrmrestAccord"]		= itsNihilist("HUNTER"),
-		["Caylasena-WyrmestAccord"]		= itsNihilist("WARRIOR"),
-		["Elaedarel-WyrmrestAccord"]	= itsNihilist("WARLOCK"),
-		["Alydrer-WyrmrestAccord"]		= itsNihilist("WARLOCK"),
-		["Issia-WyrmrestAccord"]		= itsNihilist("PRIEST"),
-		["Leitara-WyrmrestAccord"]		= itsNihilist("WARRIOR"),
-		["Cherlyth-WyrmrestAccord"]		= itsNihilist("DRUID"),
-		["Tokashami-WyrmrestAccord"]	= itsNihilist("SHAMAN"),
+		["Zistraeti-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
+		["Sagome-WyrmrestAccord"]		= itsTheFlyestNihilist("MONK"),
+		["Onaguda-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
+		["Haelini-WyrmrestAccord"]		= itsTheFlyestNihilist("PRIEST"),
+		["Nenalia-WyrmrestAccord"]		= itsTheFlyestNihilist("MAGE"),
+		["Alailais-WyrmestAccord"]		= itsTheFlyestNihilist("DEMONHUNTER"),
+		["Muiride-WyrmestAccord"]		= itsTheFlyestNihilist("DEATHKNIGHT"),
+		["Monelia-WyrmrestAccord"]		= itsTheFlyestNihilist("PALADIN"),
+		["Huanyue-WyrmrestAccord"]		= itsTheFlyestNihilist("SHAMAN"),
+		["Galiseda-WyrmestAccord"]		= itsTheFlyestNihilist("ROGUE"),
+		["Naldydi-WyrmrestAccord"]		= itsTheFlyestNihilist("HUNTER"),
+		["Caylasena-WyrmestAccord"]		= itsTheFlyestNihilist("WARRIOR"),
+		["Elaedarel-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
+		["Alydrer-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
+		["Issia-WyrmrestAccord"]		= itsTheFlyestNihilist("PRIEST"),
+		["Leitara-WyrmrestAccord"]		= itsTheFlyestNihilist("WARRIOR"),
+		["Cherlyth-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
+		["Tokashami-WyrmrestAccord"]		= itsTheFlyestNihilist("SHAMAN"),
 		-- Merathilis
 		["Asragoth-Shattrath"]			= ElvPurple,	-- [Alliance] Warlock
 		["Brítt-Shattrath"] 			= ElvBlue,		-- [Alliance] Warrior

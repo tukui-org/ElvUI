@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local tinsert, xpcall, error, format, tContains = tinsert, xpcall, error, format, tContains
+local tinsert, xpcall, next = tinsert, xpcall, next
 local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -1285,23 +1285,7 @@ function S:SkinWidgetContainer(widgetContainer)
 	end
 end
 
-function S:SkinLibDropDown()
-	if E.private and (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then
-		if not S.L_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('L') end -- LibUIDropDownMenu
-		if not S.Lib_UIDropDownMenuSkinned then S:SkinLibDropDownMenu('Lib') end -- NoTaint_UIDropDownMenu
-	end
-end
-
-function S:SkinAce3()
-	S:HookAce3(_G.LibStub('AceGUI-3.0', true))
-	S:Ace3_SkinTooltip(_G.LibStub('AceConfigDialog-3.0', true))
-	S:Ace3_SkinTooltip(E.Libs.AceConfigDialog, E.LibsMinor.AceConfigDialog)
-end
-
 function S:ADDON_LOADED(_, addonName)
-	S:SkinAce3()
-	S:SkinLibDropDown()
-
 	if not self.allowBypass[addonName] and not E.initialized then
 		return
 	end
@@ -1345,10 +1329,6 @@ function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
 		xpcall(func, errorhandler)
 		self.addonsToLoad[addonName] = nil
 	elseif addonName == 'ElvUI' then
-		if tContains(self.nonAddonsToLoad, func) then
-			error(format('RegisterSkin failed because of an attempted duplicate function onto %s', addonName))
-		end
-
 		if position then
 			tinsert(self.nonAddonsToLoad, position, func)
 		else
@@ -1359,10 +1339,6 @@ function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
 		if not addon then
 			self.addonsToLoad[addonName] = {}
 			addon = self.addonsToLoad[addonName]
-		end
-
-		if tContains(addon, func) then
-			error(format('RegisterSkin failed because of an attempted duplicate function onto %s', addonName))
 		end
 
 		if position then
@@ -1395,6 +1371,23 @@ function S:Initialize()
 		if isLoaded and isFinished then
 			S:CallLoadedAddon(addonName, object)
 		end
+	end
+
+	-- Early Skin Handling (populated before ElvUI is loaded from the Ace3 file)
+	if E.private.skins.ace3.enable then
+		for _, n in next, S.EarlyAceWidgets do
+			if n.SetLayout then
+				S:Ace3_RegisterAsContainer(n)
+			else
+				S:Ace3_RegisterAsWidget(n)
+			end
+		end
+		for _, n in next, S.EarlyAceTooltips do
+			S:Ace3_SkinTooltip(_G.LibStub(n, true))
+		end
+	end
+	for _, n in next, S.EarlyDropdowns do
+		S:SkinLibDropDownMenu(n)
 	end
 
 	do -- Credits ShestakUI

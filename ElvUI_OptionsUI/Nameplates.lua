@@ -5069,7 +5069,7 @@ local function GetUnitSettings(unit, name)
 			order = 103,
 			name = L["Tank Icon"],
 			desc = L["Display a tank icon over known tanks inside battlegrounds or arenas."]
-		}		
+		}
 		group.args.healthGroup.args.useClassColor = {
 			order = 10,
 			type = "toggle",
@@ -5115,8 +5115,10 @@ local function GetUnitSettings(unit, name)
 						["TOPLEFT"] = "TOPLEFT",
 						["BOTTOMLEFT"] = "BOTTOMLEFT",
 						["TOPRIGHT"] = "TOPRIGHT",
-						["BOTTOMRIGHT"] = "BOTTOMRIGHT"
-					}
+						["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+						["LEFT"] = "LEFT",
+						["RIGHT"] = "RIGHT",
+					},
 				},
 				xOffset = {
 					order = 4,
