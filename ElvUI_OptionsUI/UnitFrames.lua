@@ -2549,8 +2549,6 @@ local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
 				values = {
 					['TOPLEFT'] = L["TOPLEFT"],
 					['TOPRIGHT'] = L["TOPRIGHT"],
-					['LEFT'] = L["LEFT"],
-					['RIGHT'] = L["RIGHT"],
 				},
 			},
 			xOffset = {
