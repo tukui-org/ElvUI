@@ -42,7 +42,7 @@ local function Enable(self)
 			element:SetTexture([[Interface\TARGETINGFRAME\Nameplates]])
 		end
 
-		self:UnregisterEvent("UNIT_CLASSIFICATION_CHANGED", Path)
+		self:RegisterEvent("UNIT_CLASSIFICATION_CHANGED", Path)
 
 		return true
 	end
