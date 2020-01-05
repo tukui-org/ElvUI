@@ -10,6 +10,7 @@ local floor, tonumber, strlower = floor, tonumber, strlower
 local strfind, format, strsub = strfind, format, strsub
 local strmatch, gmatch, gsub = strmatch, gmatch, gsub
 --WoW API / Variables
+local C_ToyBox_GetToyInfo = C_ToyBox.GetToyInfo
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney
@@ -730,6 +731,17 @@ function TT:SetItemRef(link)
 	end
 end
 
+function TT:SetToyByItemID(tt, id)
+	if tt:IsForbidden() then return end
+	if not id or not self.db.spellID then return end
+
+	-- It seems that sometimes the API fails? Or it takes some time to collect the Data? Bug? Or i'm too stupid right now? -- Merathilis
+	local itemID = C_ToyBox_GetToyInfo(id)
+	if itemID then
+		tt:AddDoubleLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
+	end
+end
+
 function TT:RepositionBNET(frame, _, anchor)
 	if anchor ~= _G.BNETMover then
 		frame:ClearAllPoints()
@@ -844,6 +856,7 @@ function TT:Initialize()
 	self:SecureHook(GameTooltip, 'SetUnitAura')
 	self:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
 	self:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
+	self:SecureHook(GameTooltip, 'SetToyByItemID')
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
 	self:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
