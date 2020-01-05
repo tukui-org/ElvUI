@@ -735,10 +735,10 @@ function TT:SetToyByItemID(tt, id)
 	if tt:IsForbidden() then return end
 	if not id or not self.db.spellID then return end
 
-	-- It seems that sometimes the API fails? Or it takes some time to collect the Data? Bug? Or i'm too stupid right now? -- Merathilis
-	local itemID = C_ToyBox_GetToyInfo(id)
-	if itemID then
-		tt:AddDoubleLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
+	local toyID = C_ToyBox_GetToyInfo(id)
+	if toyID then
+		tt:AddDoubleLine(format("|cFFCA3C3C%s|r %d", _G.ID, toyID))
+		tt:Show()
 	end
 end
 
