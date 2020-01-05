@@ -18,6 +18,7 @@ local InCombatLockdown = InCombatLockdown
 local IsReplacingUnit = IsReplacingUnit
 local IsAddOnLoaded = IsAddOnLoaded
 local RegisterStateDriver = RegisterStateDriver
+local SetCVar = SetCVar
 local UnitExists = UnitExists
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
