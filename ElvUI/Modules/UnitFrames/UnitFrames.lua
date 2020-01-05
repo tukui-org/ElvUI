@@ -10,9 +10,7 @@ local min = min
 local tinsert = tinsert
 local strfind, gsub, format = strfind, gsub, format
 --WoW API / Variables
-local CompactRaidFrameManager_GetSetting = CompactRaidFrameManager_GetSetting
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
-local CompactRaidFrameManager_UpdateShown = CompactRaidFrameManager_UpdateShown
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
@@ -20,7 +18,6 @@ local InCombatLockdown = InCombatLockdown
 local IsReplacingUnit = IsReplacingUnit
 local IsAddOnLoaded = IsAddOnLoaded
 local RegisterStateDriver = RegisterStateDriver
-local SetCVar = SetCVar
 local UnitExists = UnitExists
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
@@ -1100,7 +1097,7 @@ end
 
 function UF:DisableBlizzard()
 	if (not E.private.unitframe.disabledBlizzardFrames.raid) and (not E.private.unitframe.disabledBlizzardFrames.party) then return; end
-	if not CompactRaidFrameManager_UpdateShown then
+	if not CompactRaidFrameManager_SetSetting then
 		E:StaticPopup_Show("WARNING_BLIZZARD_ADDONS")
 	else
 		CompactRaidFrameManager_SetSetting("IsShown", "0")
