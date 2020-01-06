@@ -679,8 +679,7 @@ function TT:SetUnitAura(tt, unit, index, filter)
 
 	if id then
 		if self.MountIDs[id] then
-			local _, descriptionText, sourceText = C_MountJournal_GetMountInfoExtraByID(self.MountIDs[id])
-			--tt:AddLine(descriptionText)
+			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(self.MountIDs[id])
 			tt:AddLine(" ")
 			tt:AddLine(sourceText, 1, 1, 1)
 			tt:AddLine(" ")
@@ -707,26 +706,22 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 	if not id or not self.db.spellID then return end
 
 	local displayString = format("|cFFCA3C3C%s|r %d", _G.ID, id)
-	local lines = tt:NumLines()
-	local isFound
-	for i= 1, lines do
+
+	for i= 1, tt:NumLines() do
 		local line = _G[format("GameTooltipTextLeft%d", i)]
-		if line and line:GetText() and strfind(line:GetText(), displayString) then
-			isFound = true;
-			break
+		local text = line and line.GetText and line:GetText()
+		if text and strfind(text, displayString) then
+			return
 		end
 	end
 
-	if not isFound then
-		tt:AddLine(displayString)
-		tt:Show()
-	end
+	tt:AddLine(displayString)
+	tt:Show()
 end
 
 function TT:SetItemRef(link)
-	if strfind(link,"^spell:") and self.db.spellID then
-		local id = strsub(link,7)
-		_G.ItemRefTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
+	if link and strfind(link,"^spell:") and self.db.spellID then
+		_G.ItemRefTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, strsub(link,7)))
 		_G.ItemRefTooltip:Show()
 	end
 end
@@ -735,11 +730,8 @@ function TT:SetToyByItemID(tt, id)
 	if tt:IsForbidden() then return end
 	if not id or not self.db.spellID then return end
 
-	local toyID = C_ToyBox_GetToyInfo(id)
-	if toyID then
-		tt:AddDoubleLine(format("|cFFCA3C3C%s|r %d", _G.ID, toyID))
-		tt:Show()
-	end
+	tt:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
+	tt:Show()
 end
 
 function TT:RepositionBNET(frame, _, anchor)
@@ -853,16 +845,16 @@ function TT:Initialize()
 
 	self:SecureHook('SetItemRef')
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
+	self:SecureHook(GameTooltip, 'SetToyByItemID')
 	self:SecureHook(GameTooltip, 'SetUnitAura')
 	self:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
 	self:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
-	self:SecureHook(GameTooltip, 'SetToyByItemID')
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
 	self:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	self:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
-	self:RegisterEvent("MODIFIER_STATE_CHANGED")
+	self:RegisterEvent('MODIFIER_STATE_CHANGED')
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
