@@ -10,9 +10,7 @@ local min = min
 local tinsert = tinsert
 local strfind, gsub, format = strfind, gsub, format
 --WoW API / Variables
-local CompactRaidFrameManager_GetSetting = CompactRaidFrameManager_GetSetting
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
-local CompactRaidFrameManager_UpdateShown = CompactRaidFrameManager_UpdateShown
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
@@ -37,6 +35,9 @@ local SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT = SOUNDKIT.INTERFACE_SOUND_LOST_
 local PlaySound = PlaySound
 
 -- GLOBALS: ElvUF_Parent, Arena_LoadUI
+local hiddenParent = CreateFrame("Frame", nil, _G.UIParent)
+hiddenParent:SetAllPoints()
+hiddenParent:Hide()
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -1095,35 +1096,17 @@ function UF:UpdateAllHeaders(event)
 	end
 end
 
-local function HideRaid()
-	if InCombatLockdown() then return end
-	_G.CompactRaidFrameManager:Kill()
-	local compact_raid = CompactRaidFrameManager_GetSetting("IsShown")
-	if compact_raid and compact_raid ~= "0" then
-		CompactRaidFrameManager_SetSetting("IsShown", "0")
-	end
-end
-
 function UF:DisableBlizzard()
 	if (not E.private.unitframe.disabledBlizzardFrames.raid) and (not E.private.unitframe.disabledBlizzardFrames.party) then return; end
-	if not CompactRaidFrameManager_UpdateShown then
+	if not CompactRaidFrameManager_SetSetting then
 		E:StaticPopup_Show("WARNING_BLIZZARD_ADDONS")
 	else
-		if not _G.CompactRaidFrameManager.hookedHide then
-			hooksecurefunc("CompactRaidFrameManager_UpdateShown", HideRaid)
-			_G.CompactRaidFrameManager:HookScript('OnShow', HideRaid)
-			_G.CompactRaidFrameManager.hookedHide = true
-		end
-
-		_G.CompactRaidFrameContainer:UnregisterAllEvents()
-
-		HideRaid()
+		CompactRaidFrameManager_SetSetting("IsShown", "0")
+		_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
+		_G.CompactRaidFrameManager:UnregisterAllEvents()
+		_G.CompactRaidFrameManager:SetParent(hiddenParent)
 	end
 end
-
-local hiddenParent = CreateFrame("Frame", nil, _G.UIParent)
-hiddenParent:SetAllPoints()
-hiddenParent:Hide()
 
 local function insecureOnShow(self)
 	self:Hide()
@@ -1504,12 +1487,6 @@ function UF:Initialize()
 
 	if E.private.unitframe.disabledBlizzardFrames.party and E.private.unitframe.disabledBlizzardFrames.raid then
 		self:DisableBlizzard()
-		--InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
-
-		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
-		_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE') --This may fuck shit up.. we'll see...
-	else
-		_G.CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	end
 
 	if (not E.private.unitframe.disabledBlizzardFrames.party) and (not E.private.unitframe.disabledBlizzardFrames.raid) then

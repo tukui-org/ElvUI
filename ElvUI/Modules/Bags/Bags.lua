@@ -1859,6 +1859,9 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.bagID = bagID
 	slot.slotID = slotID
 
+	slot.icon:SetInside()
+	slot.icon:SetTexCoord(unpack(E.TexCoords))
+
 	slot.itemLevel = slot:CreateFontString(nil, 'OVERLAY')
 	slot.itemLevel:Point('BOTTOMRIGHT', 0, 2)
 	slot.itemLevel:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)

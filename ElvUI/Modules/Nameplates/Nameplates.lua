@@ -301,7 +301,8 @@ function NP:UpdatePlate(nameplate)
 	NP:Update_Highlight(nameplate)
 	NP:Update_RaidTargetIndicator(nameplate)
 	NP:Update_PVPRole(nameplate)
-
+	NP:Update_QuestIcons(nameplate)
+	
 	if (nameplate.VisibilityChanged or nameplate.NameOnlyChanged) or (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
 		NP:DisablePlate(nameplate, nameplate.NameOnlyChanged or (NP.db.units[nameplate.frameType].nameOnly and not nameplate.VisibilityChanged))
 	else
@@ -312,7 +313,7 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_ClassPower(nameplate)
 		NP:Update_Auras(nameplate, true)
 		NP:Update_ClassificationIndicator(nameplate)
-		NP:Update_QuestIcons(nameplate)
+		
 		NP:Update_Portrait(nameplate)
 		NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
 		NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
@@ -346,7 +347,6 @@ function NP:DisablePlate(nameplate, nameOnly)
 	if nameplate:IsElementEnabled("ClassificationIndicator") then nameplate:DisableElement("ClassificationIndicator") end
 	if nameplate:IsElementEnabled("Castbar") then nameplate:DisableElement("Castbar") end
 	if nameplate:IsElementEnabled("Portrait") then nameplate:DisableElement("Portrait") end
-	if nameplate:IsElementEnabled("QuestIcons") then nameplate:DisableElement("QuestIcons") end
 	if nameplate:IsElementEnabled("ThreatIndicator") then nameplate:DisableElement("ThreatIndicator") end
 	if nameplate:IsElementEnabled("ClassPower") then nameplate:DisableElement("ClassPower") end
 	if nameplate:IsElementEnabled("PvPIndicator") then nameplate:DisableElement("PvPIndicator") end
@@ -380,12 +380,16 @@ function NP:DisablePlate(nameplate, nameOnly)
 		nameplate.PVPRole:ClearAllPoints()
 		nameplate.PVPRole:Point("RIGHT", nameplate.Name, "LEFT", -6, 0)
 
+		nameplate.QuestIcons:ClearAllPoints()
+		nameplate.QuestIcons:Point("LEFT", nameplate.Name, "RIGHT", 6, 0)
+
 		if NP.db.units[nameplate.frameType].showTitle then
 			nameplate.Title:Show()
 			nameplate.Title:ClearAllPoints()
 			nameplate.Title:Point("TOP", nameplate.Name, "BOTTOM", 0, -2)
 		end
 	else
+		if nameplate:IsElementEnabled("QuestIcons") then nameplate:DisableElement("QuestIcons") end
 		if nameplate:IsElementEnabled("Highlight") then nameplate:DisableElement("Hightlight") end
 		if nameplate:IsElementEnabled("PVPRole") then nameplate:DisableElement("PVPRole") end
 	end
