@@ -5897,6 +5897,7 @@ E.Options.args.nameplate = {
 									min = 0.1,
 									max = 0.5,
 									step = 0.05,
+									disabled = function() return not E.global.nameplate.rapidHealth end,
 									get = function(info) return E.global.nameplate[info[#info]] end,
 									set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
 								},
@@ -5907,6 +5908,7 @@ E.Options.args.nameplate = {
 									min = 0.1,
 									max = 0.5,
 									step = 0.05,
+									disabled = function() return not E.global.nameplate.rapidAura end,
 									get = function(info) return E.global.nameplate[info[#info]] end,
 									set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
 								},

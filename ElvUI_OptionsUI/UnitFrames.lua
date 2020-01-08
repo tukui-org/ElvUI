@@ -2848,6 +2848,7 @@ E.Options.args.unitframe = {
 									min = 0.1,
 									max = 0.5,
 									step = 0.05,
+									disabled = function() return not E.global.unitframe.rapidHealth end,
 									get = function(info) return E.global.unitframe[info[#info]] end,
 									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
 								},
@@ -2858,6 +2859,7 @@ E.Options.args.unitframe = {
 									min = 0.1,
 									max = 0.5,
 									step = 0.05,
+									disabled = function() return not E.global.unitframe.rapidAura end,
 									get = function(info) return E.global.unitframe[info[#info]] end,
 									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
 								},
