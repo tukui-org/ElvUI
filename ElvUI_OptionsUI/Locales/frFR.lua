@@ -973,7 +973,6 @@ L["Raid-Wide Sorting"] = "Affichage du raid-large"
 L["RaidDebuff Indicator"] = "Indicateur d'affaiblissement en raid"
 L["Range"] = true
 L["Rank"] = true
-L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Mise à jour rapide de la barre de vie, ce qui augmente la charge de la mémoire et du processeur. Recommandé seulement pour les soigneurs."
 L["Rare Elite"] = true
 L["Reaction Castbars"] = "Réaction des barres d'incantation"
 L["Reaction Colors"] = true

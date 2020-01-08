@@ -977,7 +977,6 @@ L["Raid-Wide Sorting"] = true
 L["RaidDebuff Indicator"] = true
 L["Range"] = true
 L["Rank"] = true
-L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = true
 L["Rare Elite"] = true
 L["Reaction Castbars"] = true
 L["Reaction Colors"] = true

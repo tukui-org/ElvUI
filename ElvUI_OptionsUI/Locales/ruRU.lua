@@ -974,7 +974,6 @@ L["Raid40 Frames"] = "Рейд 40"
 L["RaidDebuff Indicator"] = "Индикатор рейдовых дебаффов"
 L["Range"] = "Радиус"
 L["Rank"] = "Уровень" --????
-L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Более частое обновление состояния здоровья, использует больше памяти и ресурсов процессора. Рекомендуется только для целителей."
 L["Rare Elite"] = "Редкий элитный"
 L["Reaction Castbars"] = "Полоса заклинаний по реакции"
 L["Reaction Colors"] = "Цвета отношений"

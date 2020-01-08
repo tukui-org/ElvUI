@@ -973,7 +973,6 @@ L["Raid40 Frames"] = true
 L["RaidDebuff Indicator"] = "Indicador de Perjuicios de Banda"
 L["Range"] = true
 L["Rank"] = true
-L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Actualizar la salud rápidamente, consume más memoria y cpu. Recomendado sólo para sanadores."
 L["Rare Elite"] = true
 L["Reaction Castbars"] = true
 L["Reaction Colors"] = true

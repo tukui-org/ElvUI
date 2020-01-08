@@ -976,7 +976,6 @@ L["Raid40 Frames"] = "40人團隊框架"
 L["RaidDebuff Indicator"] = "團隊副本減益光環標示"
 L["Range"] = "距離"
 L["Rank"] = true
-L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "實時更新生命值會佔用更多的內存的和CPU, 只推薦治療角色開啟."
 L["Rare Elite"] = "稀有精英"
 L["Reaction Castbars"] = "聲望施法條"
 L["Reaction Colors"] = "聲望顏色"

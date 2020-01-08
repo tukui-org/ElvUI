@@ -973,7 +973,6 @@ L["Raid40 Frames"] = "레이드프레임 (40인)"
 L["RaidDebuff Indicator"] = "공격대 주요 약화효과 표시기"
 L["Range"] = true
 L["Rank"] = true
-L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "생명력 수치 업데이트를 평소보다 더 빠르게 하지만 메모리와 CPU점유율이 더 증가하는 기능입니다. 힐러일 경우에만 추천합니다."
 L["Rare Elite"] = "정예 희귀"
 L["Reaction Castbars"] = "관계 시전바"
 L["Reaction Colors"] = "관계 색상"
