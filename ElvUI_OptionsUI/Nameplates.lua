@@ -5876,21 +5876,21 @@ E.Options.args.nameplate = {
 									type = "toggle",
 									name = L["Health"],
 									get = function(info) return E.global.nameplate[info[#info]] end,
-									set = function(info, value) E.global.nameplate[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+									set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
 								},
 								effectivePower = {
 									order = 2,
 									type = "toggle",
 									name = L["Power"],
 									get = function(info) return E.global.nameplate[info[#info]] end,
-									set = function(info, value) E.global.nameplate[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+									set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
 								},
 								effectiveAura = {
 									order = 3,
 									type = "toggle",
 									name = L["Aura"],
 									get = function(info) return E.global.nameplate[info[#info]] end,
-									set = function(info, value) E.global.nameplate[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+									set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
 								},
 								spacer1 = {
 									order = 4,

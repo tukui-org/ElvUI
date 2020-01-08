@@ -2839,21 +2839,21 @@ E.Options.args.unitframe = {
 									type = "toggle",
 									name = L["Health"],
 									get = function(info) return E.global.unitframe[info[#info]] end,
-									set = function(info, value) E.global.unitframe[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
 								},
 								effectivePower = {
 									order = 2,
 									type = "toggle",
 									name = L["Power"],
 									get = function(info) return E.global.unitframe[info[#info]] end,
-									set = function(info, value) E.global.unitframe[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
 								},
 								effectiveAura = {
 									order = 3,
 									type = "toggle",
 									name = L["Auras"],
 									get = function(info) return E.global.unitframe[info[#info]] end,
-									set = function(info, value) E.global.unitframe[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
 								},
 								spacer1 = {
 									order = 4,
