@@ -267,6 +267,7 @@ local blacklistedKeys = {
 			effectiveHealthSpeed = true,
 			effectivePowerSpeed = true,
 			effectiveAuraSpeed = true,
+			filters = true,
 		},
 		unitframe = {
 			effectiveHealth = true,
