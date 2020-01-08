@@ -313,7 +313,6 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_ClassPower(nameplate)
 		NP:Update_Auras(nameplate, true)
 		NP:Update_ClassificationIndicator(nameplate)
-
 		NP:Update_Portrait(nameplate)
 		NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
 		NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
@@ -348,6 +347,7 @@ function NP:DisablePlate(nameplate, nameOnly)
 	if nameplate:IsElementEnabled("Castbar") then nameplate:DisableElement("Castbar") end
 	if nameplate:IsElementEnabled("Portrait") then nameplate:DisableElement("Portrait") end
 	if nameplate:IsElementEnabled("ThreatIndicator") then nameplate:DisableElement("ThreatIndicator") end
+	if nameplate:IsElementEnabled("TargetIndicator") then nameplate:DisableElement("TargetIndicator") end
 	if nameplate:IsElementEnabled("ClassPower") then nameplate:DisableElement("ClassPower") end
 	if nameplate:IsElementEnabled("PvPIndicator") then nameplate:DisableElement("PvPIndicator") end
 	if nameplate:IsElementEnabled("PvPClassificationIndicator") then nameplate:DisableElement("PvPClassificationIndicator") end
