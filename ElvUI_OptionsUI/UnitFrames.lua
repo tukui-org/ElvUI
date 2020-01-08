@@ -2851,7 +2851,7 @@ E.Options.args.unitframe = {
 								effectiveAura = {
 									order = 3,
 									type = "toggle",
-									name = L["Auras"],
+									name = L["Aura"],
 									get = function(info) return E.global.unitframe[info[#info]] end,
 									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
 								},
