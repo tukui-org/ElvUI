@@ -94,7 +94,8 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 	if E:Cooldown_BelowScale(cd) then
 		cd:Hide()
 	elseif cd.enabled then
-		self:Cooldown_ForceUpdate(cd)
+		E:Cooldown_ForceUpdate(cd)
+		cd:Show()
 	end
 end
 
@@ -111,8 +112,8 @@ function E:Cooldown_IsEnabled(cd)
 end
 
 function E:Cooldown_ForceUpdate(cd)
-	cd.nextUpdate = -1
-	cd:Show()
+	cd.nextUpdate = 0
+	E.Cooldown_OnUpdate(cd, 0)
 end
 
 function E:Cooldown_StopTimer(cd)
@@ -195,9 +196,9 @@ function E:CreateCooldownTimer(parent)
 	E:ToggleBlizzardCooldownText(parent, timer)
 
 	-- keep an eye on the size so we can rescale the font if needed
-	self:Cooldown_OnSizeChanged(timer, parent:GetWidth())
+	E:Cooldown_OnSizeChanged(timer, parent:GetWidth())
 	parent:SetScript('OnSizeChanged', function(_, width)
-		self:Cooldown_OnSizeChanged(timer, width)
+		E:Cooldown_OnSizeChanged(timer, width)
 	end)
 
 	-- keep this after Cooldown_OnSizeChanged
@@ -214,7 +215,7 @@ function E:OnSetCooldown(start, duration)
 		timer.duration = duration
 		timer.endTime = start + duration
 		timer.endCooldown = timer.endTime - 0.05
-		timer.nextUpdate = -1
+		E:Cooldown_ForceUpdate(timer)
 		timer:Show()
 	elseif self.timer then
 		E:Cooldown_StopTimer(self.timer)
@@ -283,7 +284,7 @@ function E:UpdateCooldownOverride(module)
 
 			-- update font on cooldowns
 			if timer and cd then -- has a parent, these are timers from RegisterCooldown
-				self:Cooldown_OnSizeChanged(cd, parent:GetWidth(), true)
+				E:Cooldown_OnSizeChanged(cd, parent:GetWidth(), true)
 
 				E:ToggleBlizzardCooldownText(parent, cd)
 				if (not blizzText) and parent.CooldownOverride == 'actionbar' then
@@ -305,7 +306,7 @@ function E:UpdateCooldownOverride(module)
 
 				-- force update top aura cooldowns
 				if parent.CooldownOverride == 'auras' then
-					parent.nextUpdate = -1
+					E:Cooldown_ForceUpdate(parent)
 				end
 			end
 		end

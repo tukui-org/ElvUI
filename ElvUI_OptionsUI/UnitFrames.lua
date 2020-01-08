@@ -2789,8 +2789,14 @@ E.Options.args.unitframe = {
 							desc = L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon Clique you may have to adjust your Clique settings when changing this."],
 							type = "toggle",
 						},
-						auraBlacklistModifier = {
+						targetSound = {
 							order = 6,
+							type = "toggle",
+							name = L["Targeting Sound"],
+							desc = L["Enable a sound if you select a unit."],
+						},
+						auraBlacklistModifier = {
+							order = 7,
 							type = "select",
 							name = L["Blacklist Modifier"],
 							desc = L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."],
@@ -2802,18 +2808,60 @@ E.Options.args.unitframe = {
 							},
 						},
 						resetFilters = {
-							order = 7,
+							order = 8,
 							name = L["Reset Aura Filters"],
 							type = "execute",
 							func = function(info)
 								E:StaticPopup_Show("RESET_UF_AF") --reset unitframe aurafilters
 							end,
 						},
-						targetSound = {
-							order = 8,
-							type = "toggle",
-							name = L["Targeting Sound"],
-							desc = L["Enable a sound if you select a unit."],
+						rapidGroup = {
+							order = 9,
+							type = 'group',
+							guiInline = true,
+							name = L["Rapid Updates"],
+							args = {
+								rapidHealth = {
+									order = 1,
+									type = "toggle",
+									name = L["Health"],
+									get = function(info) return E.global.unitframe[info[#info]] end,
+									set = function(info, value) E.global.unitframe[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+								},
+								rapidAura = {
+									order = 2,
+									type = "toggle",
+									name = L["Auras"],
+									get = function(info) return E.global.unitframe[info[#info]] end,
+									set = function(info, value) E.global.unitframe[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+								},
+								rapidHealthSpeed = {
+									order = 3,
+									name = L["Health Speed"],
+									type = "range",
+									min = 0.1,
+									max = 0.5,
+									step = 0.05,
+									get = function(info) return E.global.unitframe[info[#info]] end,
+									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
+								},
+								rapidAuraSpeed = {
+									order = 4,
+									name = L["Aura Speed"],
+									type = "range",
+									min = 0.1,
+									max = 0.5,
+									step = 0.05,
+									get = function(info) return E.global.unitframe[info[#info]] end,
+									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
+								},
+								warning = {
+									order = 5,
+									type = "description",
+									fontSize = 'medium',
+									name = L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."]
+								},
+							},
 						},
 						barGroup = {
 							order = 20,

@@ -302,7 +302,7 @@ function NP:UpdatePlate(nameplate)
 	NP:Update_RaidTargetIndicator(nameplate)
 	NP:Update_PVPRole(nameplate)
 	NP:Update_QuestIcons(nameplate)
-	
+
 	if (nameplate.VisibilityChanged or nameplate.NameOnlyChanged) or (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
 		NP:DisablePlate(nameplate, nameplate.NameOnlyChanged or (NP.db.units[nameplate.frameType].nameOnly and not nameplate.VisibilityChanged))
 	else
@@ -313,7 +313,7 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_ClassPower(nameplate)
 		NP:Update_Auras(nameplate, true)
 		NP:Update_ClassificationIndicator(nameplate)
-		
+
 		NP:Update_Portrait(nameplate)
 		NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
 		NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty

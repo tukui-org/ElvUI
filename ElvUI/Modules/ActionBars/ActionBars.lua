@@ -1106,8 +1106,9 @@ function AB:UpdateChargeCooldown(button, duration)
 	local oldstate = cd.hideText
 	cd.hideText = (duration and duration > 1.5) or (AB.db.chargeCooldown == false) or nil
 	if cd.timer and (oldstate ~= cd.hideText) then
-		E:Cooldown_ForceUpdate(cd.timer)
 		E:ToggleBlizzardCooldownText(cd, cd.timer)
+		E:Cooldown_ForceUpdate(cd.timer)
+		cd.timer:Show()
 	end
 end
 

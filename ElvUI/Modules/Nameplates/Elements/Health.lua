@@ -26,8 +26,8 @@ function NP:Health_UpdateColor(event, unit)
 		t = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = NP.db.colors.tapped
-	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
-		t =  self.colors.threat[UnitThreatSituation('player', unit)]
+	--[=[elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
+		t =  self.colors.threat[UnitThreatSituation('player', unit)]]=]
 	elseif(element.colorClass and UnitIsPlayer(unit)) or
 		(element.colorClassNPC and not UnitIsPlayer(unit)) or
 		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
@@ -116,6 +116,9 @@ function NP:Update_Health(nameplate)
 		nameplate.Health:Point('CENTER')
 		nameplate.Health:Point('LEFT')
 		nameplate.Health:Point('RIGHT')
+
+		nameplate:SetHealthUpdateMethod(E.global.nameplate.rapidHealth)
+		nameplate:SetHealthUpdateSpeed(E.global.nameplate.rapidHealthSpeed)
 
 		E:SetSmoothing(nameplate.Health, NP.db.smoothbars)
 	else

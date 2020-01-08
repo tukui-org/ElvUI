@@ -5638,8 +5638,19 @@ E.Options.args.nameplate = {
 								SetCVar("nameplateOverlapH", value)
 							end
 						},
-						otherAtBase = {
+						lowHealthThreshold = {
 							order = 9,
+							name = L["Low Health Threshold"],
+							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
+							type = "range",
+							isPercent = true,
+							min = 0,
+							softMax = 0.5,
+							max = 0.8,
+							step = 0.01
+						},
+						otherAtBase = {
+							order = 10,
 							type = "toggle",
 							name = L["Nameplate At Base"],
 							desc = L["Position other Nameplates at the base, rather than overhead."],
@@ -5650,22 +5661,53 @@ E.Options.args.nameplate = {
 								SetCVar("nameplateOtherAtBase", value and 2 or 0)
 							end
 						},
-						lowHealthThreshold = {
-							order = 10,
-							name = L["Low Health Threshold"],
-							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
-							type = "range",
-							isPercent = true,
-							min = 0,
-							softMax = 0.5,
-							max = 0.8,
-							step = 0.01
-						},
-						spacer1 = {
+						rapidGroup = {
 							order = 11,
-							type = "description",
-							name = " ",
-							width = "full"
+							type = 'group',
+							guiInline = true,
+							name = L["Rapid Updates"],
+							args = {
+								rapidHealth = {
+									order = 1,
+									type = "toggle",
+									name = L["Health"],
+									get = function(info) return E.global.nameplate[info[#info]] end,
+									set = function(info, value) E.global.nameplate[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+								},
+								rapidAura = {
+									order = 2,
+									type = "toggle",
+									name = L["Aura"],
+									get = function(info) return E.global.nameplate[info[#info]] end,
+									set = function(info, value) E.global.nameplate[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+								},
+								rapidHealthSpeed = {
+									order = 3,
+									name = L["Health Speed"],
+									type = "range",
+									min = 0.1,
+									max = 0.5,
+									step = 0.05,
+									get = function(info) return E.global.nameplate[info[#info]] end,
+									set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
+								},
+								rapidAuraSpeed = {
+									order = 4,
+									name = L["Aura Speed"],
+									type = "range",
+									min = 0.1,
+									max = 0.5,
+									step = 0.05,
+									get = function(info) return E.global.nameplate[info[#info]] end,
+									set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
+								},
+								warning = {
+									order = 5,
+									type = "description",
+									fontSize = 'medium',
+									name = L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."]
+								},
+							},
 						},
 						highlight = {
 							order = 12,

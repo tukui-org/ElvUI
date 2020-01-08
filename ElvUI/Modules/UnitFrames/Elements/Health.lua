@@ -212,6 +212,8 @@ function UF:Configure_HealthBar(frame)
 	UF:Configure_FrameGlow(frame)
 
 	if frame:IsElementEnabled("Health") then
+		frame:SetHealthUpdateMethod(E.global.unitframe.rapidHealth)
+		frame:SetHealthUpdateSpeed(E.global.unitframe.rapidHealthSpeed)
 	    frame.Health:ForceUpdate()
 	end
 end
