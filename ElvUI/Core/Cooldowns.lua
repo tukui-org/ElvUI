@@ -30,7 +30,10 @@ function E:Cooldown_BelowScale(cd)
 end
 
 function E:Cooldown_OnUpdate(elapsed)
-	if self.nextUpdate > 0 then
+	if not self.nextUpdate then
+		self.nextUpdate = 0.1
+		return
+	elseif self.nextUpdate > 0 then
 		self.nextUpdate = self.nextUpdate - elapsed
 		return
 	end
@@ -41,31 +44,29 @@ function E:Cooldown_OnUpdate(elapsed)
 		local now = GetTime()
 		if self.endCooldown and now >= self.endCooldown then
 			E:Cooldown_StopTimer(self)
-		else
-			if E:Cooldown_BelowScale(self) then
-				self.text:SetText('')
-				self.nextUpdate = 500
-			elseif E:Cooldown_TextThreshold(self, now) then
-				self.text:SetText('')
-				self.nextUpdate = 1
-			elseif self.endTime then
-				local value, id, nextUpdate, remainder = E:GetTimeInfo(self.endTime - now, self.threshold, self.hhmmThreshold, self.mmssThreshold)
-				self.nextUpdate = nextUpdate
+		elseif E:Cooldown_BelowScale(self) then
+			self.text:SetText('')
+			self.nextUpdate = 500
+		elseif E:Cooldown_TextThreshold(self, now) then
+			self.text:SetText('')
+			self.nextUpdate = 1
+		elseif self.endTime then
+			local value, id, nextUpdate, remainder = E:GetTimeInfo(self.endTime - now, self.threshold, self.hhmmThreshold, self.mmssThreshold)
+			self.nextUpdate = nextUpdate
 
-				local style = E.TimeFormats[id]
-				if style then
-					local which = (self.textColors and 2 or 1) + (self.showSeconds and 0 or 2)
-					if self.textColors then
-						self.text:SetFormattedText(style[which], value, self.textColors[id], remainder)
-					else
-						self.text:SetFormattedText(style[which], value, remainder)
-					end
+			local style = E.TimeFormats[id]
+			if style then
+				local which = (self.textColors and 2 or 1) + (self.showSeconds and 0 or 2)
+				if self.textColors then
+					self.text:SetFormattedText(style[which], value, self.textColors[id], remainder)
+				else
+					self.text:SetFormattedText(style[which], value, remainder)
 				end
+			end
 
-				local color = self.timeColors[id]
-				if color then
-					self.text:SetTextColor(color.r, color.g, color.b)
-				end
+			local color = self.timeColors[id]
+			if color then
+				self.text:SetTextColor(color.r, color.g, color.b)
 			end
 		end
 	end
@@ -90,12 +91,6 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 	else -- this should never happen but just incase
 		cd.text:FontTemplate()
 	end
-
-	if E:Cooldown_BelowScale(cd) then
-		cd:Hide()
-	elseif cd.enabled then
-		E:Cooldown_ForceUpdate(cd)
-	end
 end
 
 function E:Cooldown_IsEnabled(cd)
@@ -111,13 +106,11 @@ function E:Cooldown_IsEnabled(cd)
 end
 
 function E:Cooldown_ForceUpdate(cd)
-	cd.nextUpdate = 0
 	E.Cooldown_OnUpdate(cd, 0)
 	cd:Show()
 end
 
 function E:Cooldown_StopTimer(cd)
-	cd.enabled = nil
 	cd:Hide()
 end
 
