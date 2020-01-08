@@ -863,7 +863,7 @@ function AB:DisableBlizzard()
 	self:SecureHook('BlizzardOptionsPanel_OnEvent')
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 
-	for _, frame in pairs({"MainMenuBar", "StanceBarFrame", "PossessBarFrame", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiCastActionBarFrame", "ExtraActionBarFrame"}) do
+	for _, frame in pairs({"MainMenuBar", "StanceBarFrame", "PossessBarFrame", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiCastActionBarFrame"}) do
 		if _G[frame] then
 			_G[frame]:ClearAllPoints();
 			_G[frame].SetPoint = E.noop;
