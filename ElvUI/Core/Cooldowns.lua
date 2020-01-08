@@ -35,7 +35,7 @@ function E:Cooldown_OnUpdate(elapsed)
 		return
 	elseif self.nextUpdate > 0 then
 		self.nextUpdate = self.nextUpdate - elapsed
-		return
+		if elapsed ~= -1 then return end
 	end
 
 	if not E:Cooldown_IsEnabled(self) then
@@ -106,7 +106,7 @@ function E:Cooldown_IsEnabled(cd)
 end
 
 function E:Cooldown_ForceUpdate(cd)
-	E.Cooldown_OnUpdate(cd, 0)
+	E.Cooldown_OnUpdate(cd, -1)
 	cd:Show()
 end
 
