@@ -30,12 +30,12 @@ function E:Cooldown_BelowScale(cd)
 end
 
 function E:Cooldown_OnUpdate(elapsed)
-	if not self.nextUpdate then
-		self.nextUpdate = 0.1
-		return
+	local forced = elapsed == -1
+	if forced then
+		self.nextUpdate = 0
 	elseif self.nextUpdate > 0 then
 		self.nextUpdate = self.nextUpdate - elapsed
-		if elapsed ~= -1 then return end
+		return
 	end
 
 	if not E:Cooldown_IsEnabled(self) then
@@ -46,13 +46,19 @@ function E:Cooldown_OnUpdate(elapsed)
 			E:Cooldown_StopTimer(self)
 		elseif E:Cooldown_BelowScale(self) then
 			self.text:SetText('')
-			self.nextUpdate = 500
+			if not forced then
+				self.nextUpdate = 500
+			end
 		elseif E:Cooldown_TextThreshold(self, now) then
 			self.text:SetText('')
-			self.nextUpdate = 1
+			if not forced then
+				self.nextUpdate = 1
+			end
 		elseif self.endTime then
 			local value, id, nextUpdate, remainder = E:GetTimeInfo(self.endTime - now, self.threshold, self.hhmmThreshold, self.mmssThreshold)
-			self.nextUpdate = nextUpdate
+			if not forced then
+				self.nextUpdate = nextUpdate
+			end
 
 			local style = E.TimeFormats[id]
 			if style then
