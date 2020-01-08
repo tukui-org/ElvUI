@@ -5521,8 +5521,16 @@ E.Options.args.nameplate = {
 				return not E.NamePlates.Initialized
 			end,
 			args = {
-				resetcvars = {
+				resetFilters = {
 					order = 1,
+					name = L["Reset Aura Filters"],
+					type = "execute",
+					func = function()
+						E:StaticPopup_Show("RESET_NP_AF") --reset nameplate aurafilters
+					end
+				},
+				resetcvars = {
+					order = 2,
 					type = "execute",
 					name = L["Reset CVars"],
 					desc = L["Reset Nameplate CVars to the ElvUI recommended defaults."],
@@ -5530,14 +5538,6 @@ E.Options.args.nameplate = {
 						NP:CVarReset()
 					end,
 					confirm = true
-				},
-				resetFilters = {
-					order = 2,
-					name = L["Reset Aura Filters"],
-					type = "execute",
-					func = function()
-						E:StaticPopup_Show("RESET_NP_AF") --reset nameplate aurafilters
-					end
 				},
 				general = {
 					order = 10,
@@ -5661,67 +5661,19 @@ E.Options.args.nameplate = {
 								SetCVar("nameplateOtherAtBase", value and 2 or 0)
 							end
 						},
-						rapidGroup = {
-							order = 11,
-							type = 'group',
-							guiInline = true,
-							name = L["Rapid Updates"],
-							args = {
-								rapidHealth = {
-									order = 1,
-									type = "toggle",
-									name = L["Health"],
-									get = function(info) return E.global.nameplate[info[#info]] end,
-									set = function(info, value) E.global.nameplate[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
-								},
-								rapidAura = {
-									order = 2,
-									type = "toggle",
-									name = L["Aura"],
-									get = function(info) return E.global.nameplate[info[#info]] end,
-									set = function(info, value) E.global.nameplate[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
-								},
-								rapidHealthSpeed = {
-									order = 3,
-									name = L["Health Speed"],
-									type = "range",
-									min = 0.1,
-									max = 0.5,
-									step = 0.05,
-									get = function(info) return E.global.nameplate[info[#info]] end,
-									set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
-								},
-								rapidAuraSpeed = {
-									order = 4,
-									name = L["Aura Speed"],
-									type = "range",
-									min = 0.1,
-									max = 0.5,
-									step = 0.05,
-									get = function(info) return E.global.nameplate[info[#info]] end,
-									set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
-								},
-								warning = {
-									order = 5,
-									type = "description",
-									fontSize = 'medium',
-									name = L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."]
-								},
-							},
-						},
 						highlight = {
-							order = 12,
+							order = 11,
 							type = "toggle",
 							name = L["Hover Highlight"]
 						},
 						fadeIn = {
-							order = 13,
+							order = 12,
 							type = "toggle",
 							name = L["Alpha Fading"]
 						},
 						smoothbars = {
 							type = "toggle",
-							order = 14,
+							order = 13,
 							name = L["Smooth Bars"],
 							desc = L["Bars will transition smoothly."],
 							set = function(info, value)
@@ -5730,7 +5682,7 @@ E.Options.args.nameplate = {
 							end
 						},
 						clampToScreen = {
-							order = 15,
+							order = 14,
 							type = "toggle",
 							name = L["Clamp Nameplates"],
 							desc = L["Clamp nameplates to the top of the screen when outside of view."]
@@ -5906,8 +5858,62 @@ E.Options.args.nameplate = {
 								}
 							}
 						},
-						clickThrough = {
+						rapidGroup = {
 							order = 51,
+							type = "group",
+							childGroups = "tab",
+							name = L["Rapid Updates"],
+							args = {
+								warning = {
+									order = 0,
+									type = "description",
+									fontSize = 'medium',
+									name = L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."]
+								},
+								rapidHealth = {
+									order = 1,
+									type = "toggle",
+									name = L["Health"],
+									get = function(info) return E.global.nameplate[info[#info]] end,
+									set = function(info, value) E.global.nameplate[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+								},
+								rapidAura = {
+									order = 2,
+									type = "toggle",
+									name = L["Aura"],
+									get = function(info) return E.global.nameplate[info[#info]] end,
+									set = function(info, value) E.global.nameplate[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
+								},
+								spacer1 = {
+									order = 3,
+									type = "description",
+									name = " ",
+									width = "full"
+								},
+								rapidHealthSpeed = {
+									order = 4,
+									name = L["Health Speed"],
+									type = "range",
+									min = 0.1,
+									max = 0.5,
+									step = 0.05,
+									get = function(info) return E.global.nameplate[info[#info]] end,
+									set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
+								},
+								rapidAuraSpeed = {
+									order = 5,
+									name = L["Aura Speed"],
+									type = "range",
+									min = 0.1,
+									max = 0.5,
+									step = 0.05,
+									get = function(info) return E.global.nameplate[info[#info]] end,
+									set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
+								},
+							},
+						},
+						clickThrough = {
+							order = 52,
 							type = "group",
 							childGroups = "tab",
 							name = L["Click Through"],
@@ -5945,7 +5951,7 @@ E.Options.args.nameplate = {
 							}
 						},
 						clickableRange = {
-							order = 52,
+							order = 53,
 							type = "group",
 							childGroups = "tab",
 							name = L["Clickable Size"],
@@ -6052,7 +6058,7 @@ E.Options.args.nameplate = {
 							}
 						},
 						cutaway = {
-							order = 53,
+							order = 54,
 							type = 'group',
 							childGroups = "tab",
 							name = L["Cutaway Bars"],
@@ -6158,7 +6164,7 @@ E.Options.args.nameplate = {
 							}
 						},
 						threatGroup = {
-							order = 54,
+							order = 55,
 							type = "group",
 							name = L["Threat"],
 							childGroups = "tabs",

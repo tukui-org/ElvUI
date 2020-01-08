@@ -2752,11 +2752,19 @@ E.Options.args.unitframe = {
 			set = function(info, value) E.private.unitframe.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		generalOptionsGroup = {
-			order = 2,
+			order = 3,
 			type = "group",
 			name = L["General Options"],
 			childGroups = "tab",
 			args = {
+				resetFilters = {
+					order = 0,
+					name = L["Reset Aura Filters"],
+					type = "execute",
+					func = function(info)
+						E:StaticPopup_Show("RESET_UF_AF") --reset unitframe aurafilters
+					end,
+				},
 				generalGroup = {
 					order = 1,
 					type = 'group',
@@ -2768,8 +2776,26 @@ E.Options.args.unitframe = {
 							type = "header",
 							name = L["General"],
 						},
-						thinBorders = {
+						auraBlacklistModifier = {
 							order = 1,
+							type = "select",
+							name = L["Blacklist Modifier"],
+							desc = L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."],
+							values = {
+								['NONE'] = L["NONE"],
+								['SHIFT'] = L["SHIFT_KEY_TEXT"],
+								['ALT'] = L["ALT_KEY_TEXT"],
+								['CTRL'] = L["CTRL_KEY_TEXT"],
+							},
+						},
+						spacer1 = {
+							order = 2,
+							type = "description",
+							name = " ",
+							width = "full"
+						},
+						thinBorders = {
+							order = 3,
 							name = L["Thin Borders"],
 							desc = L["Use thin borders on certain unitframe elements."],
 							type = 'toggle',
@@ -2794,26 +2820,6 @@ E.Options.args.unitframe = {
 							type = "toggle",
 							name = L["Targeting Sound"],
 							desc = L["Enable a sound if you select a unit."],
-						},
-						auraBlacklistModifier = {
-							order = 7,
-							type = "select",
-							name = L["Blacklist Modifier"],
-							desc = L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."],
-							values = {
-								['NONE'] = L["NONE"],
-								['SHIFT'] = L["SHIFT_KEY_TEXT"],
-								['ALT'] = L["ALT_KEY_TEXT"],
-								['CTRL'] = L["CTRL_KEY_TEXT"],
-							},
-						},
-						resetFilters = {
-							order = 8,
-							name = L["Reset Aura Filters"],
-							type = "execute",
-							func = function(info)
-								E:StaticPopup_Show("RESET_UF_AF") --reset unitframe aurafilters
-							end,
 						},
 						rapidGroup = {
 							order = 9,
