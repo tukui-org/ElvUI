@@ -5868,7 +5868,8 @@ E.Options.args.nameplate = {
 									order = 0,
 									type = "description",
 									fontSize = 'medium',
-									name = L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."]
+									name = L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."].."\n"..
+									L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."]
 								},
 								rapidHealth = {
 									order = 1,
