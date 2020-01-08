@@ -546,8 +546,8 @@ local function SetAuraUpdateSpeed(self, state)
 end
 
 local function SetAuraUpdateMethod(self, state, force)
-	if self.rapidAura ~= state or force then
-		self.rapidAura = state
+	if self.effectiveAura ~= state or force then
+		self.effectiveAura = state
 
 		if state then
 			self.updateAurasFrame:SetScript('OnUpdate', onUpdateAuras)
@@ -568,7 +568,7 @@ local function Enable(self)
 	if(self.Buffs or self.Debuffs or self.Auras) then
 		self.SetAuraUpdateSpeed = SetAuraUpdateSpeed
 		self.SetAuraUpdateMethod = SetAuraUpdateMethod
-		SetAuraUpdateMethod(self, self.rapidAura, true)
+		SetAuraUpdateMethod(self, self.effectiveAura, true)
 
 		local buffs = self.Buffs
 		if(buffs) then

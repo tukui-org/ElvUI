@@ -285,8 +285,8 @@ local function SetHealthUpdateSpeed(self, state)
 end
 
 local function SetHealthUpdateMethod(self, state, force)
-	if self.rapidHealth ~= state or force then
-		self.rapidHealth = state
+	if self.effectiveHealth ~= state or force then
+		self.effectiveHealth = state
 
 		if state then
 			self.Health:SetScript('OnUpdate', onUpdateHealth)
@@ -314,7 +314,7 @@ local function Enable(self, unit)
 
 		self.SetHealthUpdateSpeed = SetHealthUpdateSpeed
 		self.SetHealthUpdateMethod = SetHealthUpdateMethod
-		SetHealthUpdateMethod(self, self.rapidHealth, true)
+		SetHealthUpdateMethod(self, self.effectiveHealth, true)
 
 		if(element.colorDisconnected) then
 			self:RegisterEvent('UNIT_CONNECTION', ColorPath)

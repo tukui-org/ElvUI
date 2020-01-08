@@ -2821,11 +2821,11 @@ E.Options.args.unitframe = {
 							name = L["Targeting Sound"],
 							desc = L["Enable a sound if you select a unit."],
 						},
-						rapidGroup = {
+						effectiveGroup = {
 							order = 9,
 							type = 'group',
 							guiInline = true,
-							name = L["Rapid Updates"],
+							name = L["Effective Updates"],
 							args = {
 								warning = {
 									order = 0,
@@ -2834,39 +2834,39 @@ E.Options.args.unitframe = {
 									name = L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."].."\n"..
 									L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."]
 								},
-								rapidHealth = {
+								effectiveHealth = {
 									order = 1,
 									type = "toggle",
 									name = L["Health"],
 									get = function(info) return E.global.unitframe[info[#info]] end,
 									set = function(info, value) E.global.unitframe[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
 								},
-								rapidAura = {
+								effectiveAura = {
 									order = 2,
 									type = "toggle",
 									name = L["Auras"],
 									get = function(info) return E.global.unitframe[info[#info]] end,
 									set = function(info, value) E.global.unitframe[info[#info]] = value; E:StaticPopup_Show("GLOBAL_RL") end
 								},
-								rapidHealthSpeed = {
+								effectiveHealthSpeed = {
 									order = 3,
 									name = L["Health Speed"],
 									type = "range",
 									min = 0.1,
 									max = 0.5,
 									step = 0.05,
-									disabled = function() return not E.global.unitframe.rapidHealth end,
+									disabled = function() return not E.global.unitframe.effectiveHealth end,
 									get = function(info) return E.global.unitframe[info[#info]] end,
 									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
 								},
-								rapidAuraSpeed = {
+								effectiveAuraSpeed = {
 									order = 4,
 									name = L["Aura Speed"],
 									type = "range",
 									min = 0.1,
 									max = 0.5,
 									step = 0.05,
-									disabled = function() return not E.global.unitframe.rapidAura end,
+									disabled = function() return not E.global.unitframe.effectiveAura end,
 									get = function(info) return E.global.unitframe[info[#info]] end,
 									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
 								},

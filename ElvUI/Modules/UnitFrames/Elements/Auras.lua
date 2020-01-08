@@ -104,8 +104,8 @@ end
 
 function UF:EnableDisable_Auras(frame)
 	if frame.db.debuffs.enable or frame.db.buffs.enable then
-		frame:SetAuraUpdateMethod(E.global.unitframe.rapidAura)
-		frame:SetAuraUpdateSpeed(E.global.unitframe.rapidAuraSpeed)
+		frame:SetAuraUpdateMethod(E.global.unitframe.effectiveAura)
+		frame:SetAuraUpdateSpeed(E.global.unitframe.effectiveAuraSpeed)
 
 		if not frame:IsElementEnabled('Auras') then
 			frame:EnableElement('Auras')

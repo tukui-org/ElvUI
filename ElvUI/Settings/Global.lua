@@ -41,19 +41,19 @@ G.datatexts = {
 }
 
 G.nameplate = {
-	rapidHealth = false,
-	rapidAura = false,
-	rapidHealthSpeed = 0.3,
-	rapidAuraSpeed = 0.3,
+	effectiveHealth = false,
+	effectiveAura = false,
+	effectiveHealthSpeed = 0.3,
+	effectiveAuraSpeed = 0.3,
 }
 
 G.unitframe = {
 	aurafilters = {},
 	buffwatch = {},
-	rapidHealth = false,
-	rapidAura = false,
-	rapidHealthSpeed = 0.3,
-	rapidAuraSpeed = 0.3,
+	effectiveHealth = false,
+	effectiveAura = false,
+	effectiveHealthSpeed = 0.3,
+	effectiveAuraSpeed = 0.3,
 	raidDebuffIndicator = {
 		instanceFilter = "RaidDebuffs",
 		otherFilter = "CCDebuffs"
