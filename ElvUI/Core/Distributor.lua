@@ -262,14 +262,18 @@ local blacklistedKeys = {
 		},
 		nameplate = {
 			effectiveHealth = true,
+			effectivePower = true,
 			effectiveAura = true,
 			effectiveHealthSpeed = true,
+			effectivePowerSpeed = true,
 			effectiveAuraSpeed = true,
 		},
 		unitframe = {
 			effectiveHealth = true,
+			effectivePower = true,
 			effectiveAura = true,
 			effectiveHealthSpeed = true,
+			effectivePowerSpeed = true,
 			effectiveAuraSpeed = true,
 			spellRangeCheck = true,
 		},

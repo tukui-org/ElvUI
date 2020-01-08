@@ -145,6 +145,9 @@ function NP:Update_Power(nameplate)
 
 		nameplate.Power:Point('CENTER', nameplate, 'CENTER', db.power.xOffset, db.power.yOffset)
 
+		nameplate:SetPowerUpdateMethod(E.global.nameplate.effectivePower)
+		nameplate:SetPowerUpdateSpeed(E.global.nameplate.effectivePowerSpeed)
+
 		E:SetSmoothing(nameplate.Power, NP.db.smoothbars)
 	else
 		if nameplate:IsElementEnabled('Power') then

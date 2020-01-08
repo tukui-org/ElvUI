@@ -42,8 +42,10 @@ G.datatexts = {
 
 G.nameplate = {
 	effectiveHealth = false,
+	effectivePower = false,
 	effectiveAura = false,
 	effectiveHealthSpeed = 0.3,
+	effectivePowerSpeed = 0.3,
 	effectiveAuraSpeed = 0.3,
 }
 
@@ -51,8 +53,10 @@ G.unitframe = {
 	aurafilters = {},
 	buffwatch = {},
 	effectiveHealth = false,
+	effectivePower = false,
 	effectiveAura = false,
 	effectiveHealthSpeed = 0.3,
+	effectivePowerSpeed = 0.3,
 	effectiveAuraSpeed = 0.3,
 	raidDebuffIndicator = {
 		instanceFilter = "RaidDebuffs",

@@ -80,6 +80,9 @@ function UF:Configure_Power(frame)
 
 		E:SetSmoothing(power, self.db.smoothbars)
 
+		frame:SetPowerUpdateMethod(E.global.unitframe.effectivePower)
+		frame:SetPowerUpdateSpeed(E.global.unitframe.effectivePowerSpeed)
+
 		--Text
 		local attachPoint = self:GetObjectAnchorPoint(frame, db.power.attachTextTo)
 		power.value:ClearAllPoints()
