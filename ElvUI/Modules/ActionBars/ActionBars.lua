@@ -1108,7 +1108,6 @@ function AB:UpdateChargeCooldown(button, duration)
 	if cd.timer and (oldstate ~= cd.hideText) then
 		E:ToggleBlizzardCooldownText(cd, cd.timer)
 		E:Cooldown_ForceUpdate(cd.timer)
-		cd.timer:Show()
 	end
 end
 

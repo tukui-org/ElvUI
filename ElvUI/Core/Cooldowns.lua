@@ -95,7 +95,6 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 		cd:Hide()
 	elseif cd.enabled then
 		E:Cooldown_ForceUpdate(cd)
-		cd:Show()
 	end
 end
 
@@ -114,6 +113,7 @@ end
 function E:Cooldown_ForceUpdate(cd)
 	cd.nextUpdate = 0
 	E.Cooldown_OnUpdate(cd, 0)
+	cd:Show()
 end
 
 function E:Cooldown_StopTimer(cd)
@@ -216,7 +216,6 @@ function E:OnSetCooldown(start, duration)
 		timer.endTime = start + duration
 		timer.endCooldown = timer.endTime - 0.05
 		E:Cooldown_ForceUpdate(timer)
-		timer:Show()
 	elseif self.timer then
 		E:Cooldown_StopTimer(self.timer)
 	end
