@@ -2827,6 +2827,13 @@ E.Options.args.unitframe = {
 							guiInline = true,
 							name = L["Rapid Updates"],
 							args = {
+								warning = {
+									order = 0,
+									type = "description",
+									fontSize = 'medium',
+									name = L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."].."\n"..
+									L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."]
+								},
 								rapidHealth = {
 									order = 1,
 									type = "toggle",
@@ -2862,13 +2869,6 @@ E.Options.args.unitframe = {
 									disabled = function() return not E.global.unitframe.rapidAura end,
 									get = function(info) return E.global.unitframe[info[#info]] end,
 									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
-								},
-								warning = {
-									order = 5,
-									type = "description",
-									fontSize = 'medium',
-									name = L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."].."\n"..
-									L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."]
 								},
 							},
 						},
