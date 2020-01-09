@@ -3,6 +3,7 @@ local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 
 L["# Displayed Auras"] = "显示光环的数量"
 L["%s and then %s"] = "%s 于 %s"
+L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = true
 L["24-Hour Time"] = "24小时制"
 L["2D"] = "2D"
 L["3D"] = "3D"
@@ -103,6 +104,7 @@ L["Attempt to lock the left and right chat frame positions. Disabling this optio
 L["Attempt to support eyefinity/nvidia surround."] = "尝试支持eyefinity/nvidia surround"
 L["Aura Bars"] = "光环条"
 L["Aura Filters"] = "光环过滤器"
+L["Aura Speed"] = true
 L["Auto Add New Spells"] = "自动添加新技能"
 L["Auto Greed/DE"] = "自动贪婪/分解"
 L["Auto Hide"] = "自动隐藏"
@@ -431,6 +433,7 @@ L["Duration Font Size"] = "持续时间字体大小"
 L["Duration Reverse"] = "持续时间反转"
 L["Duration Text"] = "持续时间文字"
 L["Duration"] = "持续时间"
+L["Effective Updates"] = true
 L["Elite Icon"] = "精英标志"
 L["ELVUI_CREDITS"] = "我想透过这个特别方式, 向那些协助测试、编码及透过捐款协助过我的人表达感谢, 请曾提供协助的朋友至论坛传私讯给我, 我会将你的名字添加至此处"
 L["Emotion Icons"] = "表情图标"
@@ -446,6 +449,7 @@ L["Enable/Disable the loot roll frame."] = "开/关掷骰子框架"
 L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = "是否启用小地图. |cffFF0000警告: 关掉后你将看不到小地图周围的信息文字.|r"
 L["Enables the ElvUI Raid Control panel."] = "启用ElvUI团队控制面板"
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = "启用后将可以在整个团队内排序, 但你不再可以区分不同小队"
+L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."] = true
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = "启用后翻转未满团队的队伍顺序(起始方向)"
 L["Enabling this will check your health amount."] = "启用后将检查你的血量"
 L["Enabling this will check your power amount."] = "启用后将检查你的能量"
@@ -651,7 +655,6 @@ L["If enabled, the style filter will only activate when you are in one of the in
 L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."] = "启用后仅在指定ID地图时候激活."
 L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Subzone Name."] = "启用后仅在指定子区域时候激活."
 L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = "启用后仅在指定区域时候激活."
-
 L["If enabled then the filter will only activate when you are not focusing the unit."] = "启用后过滤器仅在单位不为焦点的时候激活."
 L["If enabled then the filter will only activate when you are not in a Vehicle."] = "启用后过滤器仅在你不在载具中的时候激活."
 L["If enabled then the filter will only activate when you are not targeting the unit."] = "启用后过滤器仅对非当前目标激活."
@@ -939,6 +942,7 @@ L["Position"] = "位置"
 L["Power Color"] = "能量颜色"
 L["Power Prediction Color"] = "能量预估颜色"
 L["Power Prediction"] = "能量预估"
+L["Power Speed"] = true
 L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."] = "NPC目标将隐藏能量文字"
 L["Power Threshold"] = "能量阈值"
 L["Power"] = "能量条"
