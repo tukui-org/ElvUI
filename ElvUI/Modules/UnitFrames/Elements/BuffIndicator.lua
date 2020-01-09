@@ -59,9 +59,11 @@ function UF:BuffIndicator_PostUpdateIcon(unit, button)
 		if (settings.style == 'coloredIcon' or settings.style == 'texturedIcon') and not button.icon:IsShown() then
 			button.icon:Show()
 			button.icon.border:Show()
+			button.cd:SetDrawSwipe(true)
 		elseif settings.style == 'timerOnly' and button.icon:IsShown() then
 			button.icon:Hide()
 			button.icon.border:Hide()
+			button.cd:SetDrawSwipe(false)
 		end
 
 		if settings.style == 'coloredIcon' then
