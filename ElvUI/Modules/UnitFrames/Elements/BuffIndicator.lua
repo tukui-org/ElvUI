@@ -30,8 +30,6 @@ function UF:Configure_AuraWatch(frame, isPet)
 		else
 			frame.AuraWatch:SetNewTable(db.profileSpecific and E.db.unitframe.filters.buffwatch or E.global.unitframe.buffwatch[E.myclass])
 		end
-
-		frame.AuraWatch.size = db.size
 	elseif frame:IsElementEnabled('AuraWatch') then
 		frame:DisableElement('AuraWatch')
 	end
@@ -58,22 +56,26 @@ function UF:BuffIndicator_PostUpdateIcon(unit, button)
 	local settings = self.watched[button.spellID]
 	if settings then -- This should never fail.
 
-		button.icon.border:SetVertexColor(0, 0, 0)
+		if (settings.style == 'coloredIcon' or settings.style == 'texturedIcon') and not button.icon:IsShown() then
+			button.icon:Show()
+			button.icon.border:Show()
+		elseif settings.style == 'timerOnly' and button.icon:IsShown() then
+			button.icon:Hide()
+			button.icon.border:Hide()
+		end
 
 		if settings.style == 'coloredIcon' then
 			button.icon:SetTexture(E.media.blankTex)
 			button.icon:SetVertexColor(settings.color.r, settings.color.g, settings.color.b);
-			button.icon:Show()
 		elseif settings.style == 'texturedIcon' then
 			button.icon:SetVertexColor(1, 1, 1)
 			button.icon:SetTexCoord(unpack(E.TexCoords))
-			button.icon:Show()
-		elseif settings.style == 'timerOnly' then
-			button.icon:Hide()
 		end
 
 		if settings.style == 'texturedIcon' and button.filter == "HARMFUL" then
 			button.icon.border:SetVertexColor(1, 0, 0)
+		else
+			button.icon.border:SetVertexColor(0, 0, 0)
 		end
 	end
 end
