@@ -759,22 +759,6 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 				name = L["Enable"],
 				order = 2,
 			},
-			size = {
-				type = 'range',
-				name = L["Size"],
-				desc = L["Size of the indicator icon."],
-				order = 3,
-				min = 4, max = 50, step = 1,
-			},
-			style = {
-				name = L["Style"],
-				order = 4,
-				type = 'select',
-				values = {
-					['coloredIcon'] = L["Colored Icon"],
-					['texturedIcon'] = L["Textured Icon"],
-				},
-			},
 			configureButton = {
 				order = 6,
 				type = 'execute',

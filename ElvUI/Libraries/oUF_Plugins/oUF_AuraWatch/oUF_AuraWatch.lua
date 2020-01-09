@@ -38,8 +38,8 @@ local function createAuraIcon(element, index)
 	overlay:SetTexture([[Interface\Buttons\UI-Debuff-Overlays]])
 	overlay:SetAllPoints()
 	overlay:SetTexCoord(.296875, .5703125, 0, .515625)
-	button.overlay = overlay
 
+	button.overlay = overlay
 	button.icon = icon
 	button.count = count
 	button.cd = cd
@@ -133,9 +133,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			if(button.icon) then button.icon:SetTexture(texture) end
 			if(button.count) then button.count:SetText(count > 1 and count) end
 
-			local size = setting.sizeOverride and setting.sizeOverride > 0 and setting.sizeOverride or element.size or 16
-			button:SetSize(size, size)
-
+			button:SetSize(setting.size, setting.size)
 			button:SetID(index)
 			button:Show()
 			button:ClearAllPoints()
@@ -185,9 +183,8 @@ local function onlyShowMissingIcon(element, unit, offset)
 		if(button.icon) then button.icon:SetTexture(GetSpellTexture(SpellID)) end
 		if(button.overlay) then button.overlay:Hide() end
 
-		local size = setting.sizeOverride and setting.sizeOverride > 0 and setting.sizeOverride or element.size
 		button:SetID(position)
-		button:SetSize(size, size)
+		button:SetSize(setting.size, setting.size)
 		button.spellID = SpellID
 
 		button:Show()
@@ -280,7 +277,6 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		element.watched = element.watched or {}
-		element.size = element.size or 16
 		element.createdIcons = element.createdIcons or 0
 		element.anchoredIcons = 0
 
