@@ -42,8 +42,11 @@ function S:Blizzard_OrderHallUI()
 			if bu and bu.talent then
 				bu.Border:SetAlpha(0)
 				bu.Icon:SetTexCoord(unpack(E.TexCoords))
-				bu:CreateBackdrop()
-				bu.backdrop:SetOutside(bu.Icon)
+
+				if not bu.backdrop then
+					bu:CreateBackdrop()
+					bu.backdrop:SetOutside(bu.Icon)
+				end
 
 				bu.Highlight:SetColorTexture(1, 1, 1, .25)
 
