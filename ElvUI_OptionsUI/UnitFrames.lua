@@ -759,22 +759,6 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 				name = L["Enable"],
 				order = 2,
 			},
-			size = {
-				type = 'range',
-				name = L["Size"],
-				desc = L["Size of the indicator icon."],
-				order = 3,
-				min = 4, max = 50, step = 1,
-			},
-			style = {
-				name = L["Style"],
-				order = 4,
-				type = 'select',
-				values = {
-					['coloredIcon'] = L["Colored Icon"],
-					['texturedIcon'] = L["Textured Icon"],
-				},
-			},
 			configureButton = {
 				order = 6,
 				type = 'execute',
@@ -2752,13 +2736,21 @@ E.Options.args.unitframe = {
 			set = function(info, value) E.private.unitframe.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		generalOptionsGroup = {
-			order = 2,
+			order = 3,
 			type = "group",
 			name = L["General Options"],
 			childGroups = "tab",
 			args = {
-				generalGroup = {
+				resetFilters = {
 					order = 1,
+					name = L["Reset Aura Filters"],
+					type = "execute",
+					func = function(info)
+						E:StaticPopup_Show("RESET_UF_AF") --reset unitframe aurafilters
+					end,
+				},
+				generalGroup = {
+					order = 2,
 					type = 'group',
 					name = L["General"],
 					disabled = function() return not E.UnitFrames.Initialized end,
@@ -2768,8 +2760,26 @@ E.Options.args.unitframe = {
 							type = "header",
 							name = L["General"],
 						},
-						thinBorders = {
+						auraBlacklistModifier = {
 							order = 1,
+							type = "select",
+							name = L["Blacklist Modifier"],
+							desc = L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."],
+							values = {
+								['NONE'] = L["NONE"],
+								['SHIFT'] = L["SHIFT_KEY_TEXT"],
+								['ALT'] = L["ALT_KEY_TEXT"],
+								['CTRL'] = L["CTRL_KEY_TEXT"],
+							},
+						},
+						spacer1 = {
+							order = 2,
+							type = "description",
+							name = " ",
+							width = "full"
+						},
+						thinBorders = {
+							order = 3,
 							name = L["Thin Borders"],
 							desc = L["Use thin borders on certain unitframe elements."],
 							type = 'toggle',
@@ -2789,31 +2799,86 @@ E.Options.args.unitframe = {
 							desc = L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon Clique you may have to adjust your Clique settings when changing this."],
 							type = "toggle",
 						},
-						auraBlacklistModifier = {
-							order = 6,
-							type = "select",
-							name = L["Blacklist Modifier"],
-							desc = L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."],
-							values = {
-								['NONE'] = L["NONE"],
-								['SHIFT'] = L["SHIFT_KEY_TEXT"],
-								['ALT'] = L["ALT_KEY_TEXT"],
-								['CTRL'] = L["CTRL_KEY_TEXT"],
-							},
-						},
-						resetFilters = {
-							order = 7,
-							name = L["Reset Aura Filters"],
-							type = "execute",
-							func = function(info)
-								E:StaticPopup_Show("RESET_UF_AF") --reset unitframe aurafilters
-							end,
-						},
 						targetSound = {
-							order = 8,
+							order = 6,
 							type = "toggle",
 							name = L["Targeting Sound"],
 							desc = L["Enable a sound if you select a unit."],
+						},
+						effectiveGroup = {
+							order = 9,
+							type = 'group',
+							guiInline = true,
+							name = L["Effective Updates"],
+							args = {
+								warning = {
+									order = 0,
+									type = "description",
+									fontSize = 'medium',
+									name = L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."].."\n"..
+									L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."]
+								},
+								effectiveHealth = {
+									order = 1,
+									type = "toggle",
+									name = L["Health"],
+									get = function(info) return E.global.unitframe[info[#info]] end,
+									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
+								},
+								effectivePower = {
+									order = 2,
+									type = "toggle",
+									name = L["Power"],
+									get = function(info) return E.global.unitframe[info[#info]] end,
+									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
+								},
+								effectiveAura = {
+									order = 3,
+									type = "toggle",
+									name = L["Aura"],
+									get = function(info) return E.global.unitframe[info[#info]] end,
+									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
+								},
+								spacer1 = {
+									order = 4,
+									type = "description",
+									name = " ",
+									width = "full"
+								},
+								effectiveHealthSpeed = {
+									order = 5,
+									name = L["Health Speed"],
+									type = "range",
+									min = 0.1,
+									max = 0.5,
+									step = 0.05,
+									disabled = function() return not E.global.unitframe.effectiveHealth end,
+									get = function(info) return E.global.unitframe[info[#info]] end,
+									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
+								},
+								effectivePowerSpeed = {
+									order = 6,
+									name = L["Power Speed"],
+									type = "range",
+									min = 0.1,
+									max = 0.5,
+									step = 0.05,
+									disabled = function() return not E.global.unitframe.effectivePower end,
+									get = function(info) return E.global.unitframe[info[#info]] end,
+									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
+								},
+								effectiveAuraSpeed = {
+									order = 7,
+									name = L["Aura Speed"],
+									type = "range",
+									min = 0.1,
+									max = 0.5,
+									step = 0.05,
+									disabled = function() return not E.global.unitframe.effectiveAura end,
+									get = function(info) return E.global.unitframe[info[#info]] end,
+									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
+								},
+							},
 						},
 						barGroup = {
 							order = 20,
@@ -2873,7 +2938,7 @@ E.Options.args.unitframe = {
 					},
 				},
 				frameGlowGroup = {
-					order = 2,
+					order = 3,
 					type = 'group',
 					childGroups = "tree",
 					name = L["Frame Glow"],
@@ -3042,7 +3107,7 @@ E.Options.args.unitframe = {
 					}
 				},
 				allColorsGroup = {
-					order = 3,
+					order = 4,
 					type = 'group',
 					childGroups = "tree",
 					name = L["COLORS"],
@@ -3893,7 +3958,7 @@ E.Options.args.unitframe = {
 					},
 				},
 				disabledBlizzardFrames = {
-					order = 4,
+					order = 5,
 					type = "group",
 					name = L["Disabled Blizzard Frames"],
 					get = function(info) return E.private.unitframe.disabledBlizzardFrames[info[#info]] end,
@@ -3945,7 +4010,7 @@ E.Options.args.unitframe = {
 					},
 				},
 				raidDebuffIndicator = {
-					order = 5,
+					order = 6,
 					type = "group",
 					name = L["RaidDebuff Indicator"],
 					disabled = function() return not E.UnitFrames.Initialized end,

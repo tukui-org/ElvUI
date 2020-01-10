@@ -347,6 +347,42 @@ local function SetFrequentUpdates(element, state)
 	end
 end
 
+local onUpdateElapsed, onUpdateWait = 0, 0.25
+local function onUpdatePower(self, elapsed)
+	if onUpdateElapsed > onUpdateWait then
+		Path(self.__owner, 'OnUpdate', self.__owner.unit)
+
+		onUpdateElapsed = 0
+	else
+		onUpdateElapsed = onUpdateElapsed + elapsed
+	end
+end
+
+local function SetPowerUpdateSpeed(self, state)
+	onUpdateWait = state
+end
+
+local function SetPowerUpdateMethod(self, state, force)
+	if self.effectivePower ~= state or force then
+		self.effectivePower = state
+
+		if state then
+			self.Power:SetScript('OnUpdate', onUpdatePower)
+			self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
+			self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
+			self:UnregisterEvent('UNIT_MAXPOWER', Path)
+		else
+			self.Power:SetScript('OnUpdate', nil)
+			self:RegisterEvent('UNIT_MAXPOWER', Path)
+			if self.Power.frequentUpdates then
+				self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+			else
+				self:RegisterEvent('UNIT_POWER_UPDATE', Path)
+			end
+		end
+	end
+end
+
 local function Enable(self)
 	local element = self.Power
 	if(element) then
@@ -357,6 +393,10 @@ local function Enable(self)
 		element.SetColorTapping = SetColorTapping
 		element.SetColorThreat = SetColorThreat
 		element.SetFrequentUpdates = SetFrequentUpdates
+
+		self.SetPowerUpdateSpeed = SetPowerUpdateSpeed
+		self.SetPowerUpdateMethod = SetPowerUpdateMethod
+		SetPowerUpdateMethod(self, self.effectivePower, true)
 
 		if(element.colorDisconnected) then
 			self:RegisterEvent('UNIT_CONNECTION', ColorPath)
@@ -374,14 +414,7 @@ local function Enable(self)
 			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 		end
 
-		if(element.frequentUpdates) then
-			self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
-		else
-			self:RegisterEvent('UNIT_POWER_UPDATE', Path)
-		end
-
 		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
-		self:RegisterEvent('UNIT_MAXPOWER', Path)
 		self:RegisterEvent('UNIT_POWER_BAR_HIDE', Path)
 		self:RegisterEvent('UNIT_POWER_BAR_SHOW', Path)
 
@@ -401,6 +434,7 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
+		element:SetScript('OnUpdate', nil)
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 		self:UnregisterEvent('UNIT_POWER_BAR_HIDE', Path)

@@ -863,9 +863,11 @@ function AB:DisableBlizzard()
 	self:SecureHook('BlizzardOptionsPanel_OnEvent')
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 
-	for _, frame in pairs({"MainMenuBar", "StanceBarFrame", "PossessBarFrame", "PETACTIONBAR_YPOS", "MULTICASTACTIONBAR_YPOS", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiCastActionBarFrame", "ExtraActionBarFrame"}) do
-		if _G.UIPARENT_MANAGED_FRAME_POSITIONS[frame] then
-			_G.UIPARENT_MANAGED_FRAME_POSITIONS[frame].ignoreFramePositionManager = true
+	for _, frame in pairs({"MainMenuBar", "StanceBarFrame", "PossessBarFrame", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiCastActionBarFrame"}) do
+		if _G[frame] then
+			_G[frame]:ClearAllPoints();
+			_G[frame].SetPoint = E.noop;
+			_G[frame].ClearAllPoints = E.noop;
 		end
 	end
 
@@ -1104,8 +1106,8 @@ function AB:UpdateChargeCooldown(button, duration)
 	local oldstate = cd.hideText
 	cd.hideText = (duration and duration > 1.5) or (AB.db.chargeCooldown == false) or nil
 	if cd.timer and (oldstate ~= cd.hideText) then
-		E:Cooldown_ForceUpdate(cd.timer)
 		E:ToggleBlizzardCooldownText(cd, cd.timer)
+		E:Cooldown_ForceUpdate(cd.timer)
 	end
 end
 

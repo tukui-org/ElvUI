@@ -572,7 +572,7 @@ local function UpdateFilterGroup()
 							['BOTTOM'] = 'BOTTOM',
 						}
 					},
-					sizeOverride = {
+					size = {
 						order = 2,
 						type = "range",
 						name = L["Size Override"],
@@ -590,12 +590,12 @@ local function UpdateFilterGroup()
 						name = L["Y-Offset"],
 						min = -75, max = 75, step = 1,
 					},
-					styleOverride = {
+					style = {
 						name = L["Style"],
 						order = 5,
 						type = 'select',
 						values = {
-							['Default'] = L["Default"],
+							['timerOnly'] = L["Timer Only"],
 							['coloredIcon'] = L["Colored Icon"],
 							['texturedIcon'] = L["Textured Icon"],
 						},
