@@ -1473,6 +1473,21 @@ function E:DBConversions()
 		E.db.nameplates.units.ENEMY_PLAYER.minions = nil
 		E.db.nameplates.units.ENEMY_NPC.minions = nil
 	end
+
+	if E.global.unitframe.buffwatch then
+		for class, spellTable in pairs(E.global.unitframe.buffwatch) do
+			for spellID in pairs(spellTable) do
+				if E.global.unitframe.buffwatch[class][spellID].sizeOverride then
+					E.global.unitframe.buffwatch[class][spellID].size = E.global.unitframe.buffwatch[E.myclass][spellID].sizeOverride
+					E.global.unitframe.buffwatch[class][spellID].sizeOverride = nil
+				end
+				if E.global.unitframe.buffwatch[class][spellID].styleOverride then
+					E.global.unitframe.buffwatch[class][spellID].style = E.global.unitframe.buffwatch[E.myclass][spellID].styleOverride
+					E.global.unitframe.buffwatch[class][spellID].styleOverride = nil
+				end
+			end
+		end
+	end
 end
 
 function E:RefreshModulesDB()
