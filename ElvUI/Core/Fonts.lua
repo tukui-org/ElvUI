@@ -63,12 +63,14 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.FriendsFont_Normal,					NORMAL, self.db.general.fontSize)
 		SetFont(_G.FriendsFont_Small,					NORMAL, self.db.general.fontSize)
 		SetFont(_G.FriendsFont_UserText,				NORMAL, self.db.general.fontSize)
+		SetFont(_G.Game12Font,							NORMAL, 12)									-- PVP Stuff
 		SetFont(_G.Game13FontShadow,					NORMAL, 14)									-- InspectPvpFrame
 		SetFont(_G.Game15Font_o1,						NORMAL, 15)									-- CharacterStatsPane (ItemLevelFrame)
 		SetFont(_G.Game16Font,							NORMAL, 16)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Game18Font,							NORMAL, 18)									-- MissionUI Bonus Chance
 		SetFont(_G.Game24Font, 							NORMAL, 24)									-- Garrison Mission level (in detail frame)
 		SetFont(_G.Game30Font,							NORMAL, 30)									-- Mission Level
+		SetFont(_G.Game42Font,							NORMAL, 42)									-- PVP Stuff
 		SetFont(_G.Game46Font,							NORMAL, 46)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Game48Font,							NORMAL, 48)
 		SetFont(_G.Game48FontShadow,					NORMAL, 48, nil, SHADOWCOLOR, BIGOFFSET)
