@@ -31,7 +31,7 @@ local function HandleReward(frame)
 	frame:CreateBackdrop()
 	frame.backdrop:SetInside()
 	frame:Size(143, 40)
-	frame:SetFrameLevel(frame:GetFrameLevel() + 2)
+	frame:SetFrameLevel(frame:GetFrameLevel() + 1)
 
 	if frame.Icon then
 		frame.Icon:Size(E.PixelMode and 35 or 32)
@@ -262,11 +262,11 @@ function S:BlizzardQuestFrames()
 		end
 	end)
 
-	local Rewards = { 'MoneyFrame', 'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame' }
-	for _, frame in pairs(Rewards) do
+	for _, frame in pairs({ 'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame' }) do
 		HandleReward(_G.MapQuestInfoRewardsFrame[frame])
 		HandleReward(_G.QuestInfoRewardsFrame[frame])
 	end
+	HandleReward(_G.MapQuestInfoRewardsFrame.MoneyFrame)
 
 	-- Hook for WorldQuestRewards / QuestLogRewards
 	hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
