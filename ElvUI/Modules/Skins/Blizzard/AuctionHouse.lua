@@ -266,6 +266,9 @@ local function LoadSkin()
 	end
 
 	S:HandleButton(ItemBuyFrame.BidFrame.BidButton)
+	ItemBuyFrame.BidFrame.BidButton:ClearAllPoints()
+	ItemBuyFrame.BidFrame.BidButton:SetPoint("LEFT", ItemBuyFrame.BidFrame.BidAmount, "RIGHT", 2, -2)
+	S:HandleButton(ItemBuyFrame.BidFrame.BidButton)
 
 	--[[ Item Sell Frame | TAB 2 ]]--
 	local SellFrame = Frame.ItemSellFrame
@@ -319,7 +322,6 @@ local function LoadSkin()
 	S:HandleEditBox(_G.AuctionHouseFrameAuctionsFrameGold)
 	S:HandleEditBox(_G.AuctionHouseFrameAuctionsFrameSilver)
 	S:HandleButton(AuctionsFrame.BidFrame.BidButton)
-	S:HandleButton(AuctionsFrame.BuyoutFrame.BuyoutButton)
 
 	--[[ ProgressBars ]]--
 
