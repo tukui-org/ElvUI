@@ -382,7 +382,8 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 							local text = friend or enemy or TEXT
 							local SF, localized = E.global.unitframe.specialFilters[text], L[text]
 							local blockText = SF and localized and text:match("^block") and localized:gsub("^%[.-]%s?", "")
-							local filterText = (blockText and format("|cFF999999%s|r %s", _G.BLOCK, blockText)) or localized or text
+							local block = SF and localized and text:match("^block") and localized:match("^%[(.-)]%s?")
+							local filterText = (blockText and format("|cFF999999%s|r %s", block or _G.BLOCK, blockText)) or localized or text
 							return (friend and format("|cFF33FF33%s|r %s", _G.FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", _G.ENEMY, filterText)) or filterText
 						end,
 						stateSwitchOnClick = function(info)

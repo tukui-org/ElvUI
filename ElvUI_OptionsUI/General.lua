@@ -139,7 +139,7 @@ E.Options.args.general = {
 						E:StaticPopup_Show("CONFIG_RL")
 					end,
 					values = {
-						["CHINESE"] = "Chinese (W, Y)",
+						["CHINESE"] = "Chinese (万, 亿)",
 						["ENGLISH"] = "English (K, M, B)",
 						["GERMAN"] = "German (Tsd, Mio, Mrd)",
 						["KOREAN"] = "Korean (천, 만, 억)",
