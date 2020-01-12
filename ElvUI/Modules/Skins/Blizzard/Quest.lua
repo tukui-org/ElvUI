@@ -26,17 +26,10 @@ local PlusButtonIDs = {
 }
 
 local function HandleReward(frame)
-	if (not frame) or (frame and frame.backdrop) then return end
-
-	frame:CreateBackdrop()
-	frame.backdrop:SetInside()
-	frame:Size(143, 40)
-	frame:SetFrameLevel(frame:GetFrameLevel() + 1)
+	if (not frame) then return end
 
 	if frame.Icon then
-		frame.Icon:Size(E.PixelMode and 35 or 32)
 		frame.Icon:SetDrawLayer('ARTWORK')
-		frame.Icon:Point('TOPLEFT', E.PixelMode and 2 or 4, -(E.PixelMode and 2 or 4))
 		S:HandleIcon(frame.Icon, true)
 	end
 
