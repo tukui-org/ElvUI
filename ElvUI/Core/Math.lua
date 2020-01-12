@@ -16,7 +16,7 @@ local C_Timer_After = C_Timer.After
 
 E.ShortPrefixValues = {}
 E.ShortPrefixStyles = {
-	['CHINESE'] = {{1e8,'Y'}, {1e4,'W'}},
+	['CHINESE'] = {{1e8,'亿'}, {1e4,'万'}},
 	['ENGLISH'] = {{1e12,'T'}, {1e9,'B'}, {1e6,'M'}, {1e3,'K'}},
 	['GERMAN'] = {{1e12,'Bio'}, {1e9,'Mrd'}, {1e6,'Mio'}, {1e3,'Tsd'}},
 	['KOREAN'] = {{1e8,'억'}, {1e4,'만'}, {1e3,'천'}},
