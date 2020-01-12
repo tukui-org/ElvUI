@@ -497,7 +497,7 @@ function CH:StyleChat(frame)
 	end
 
 	--Work around broken SetAltArrowKeyMode API. Code from Prat and modified by Simpy
-	local function OnKeyDown(editBox, key)
+	local function OnArrowPressed(editBox, key)
 		if (not editBox.historyLines) or #editBox.historyLines == 0 then
 			return
 		end
@@ -523,13 +523,22 @@ function CH:StyleChat(frame)
 		editBox:SetText(strtrim(editBox.historyLines[#editBox.historyLines - (editBox.historyIndex - 1)]))
 	end
 
+	local function enableArrowKeys(e)
+		e.historyLines = e.historyLines or {}
+		e.historyIndex = e.historyIndex or 0
+		e:HookScript("OnArrowPressed", OnArrowPressed)
+	end
+
 	local LeftChatPanel, LeftChatDataPanel, LeftChatToggleButton = _G.LeftChatPanel, _G.LeftChatDataPanel, _G.LeftChatToggleButton
 	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
 	_G[format(editbox:GetName().."Left", id)]:Kill()
 	_G[format(editbox:GetName().."Mid", id)]:Kill()
 	_G[format(editbox:GetName().."Right", id)]:Kill()
 	editbox:SetTemplate(nil, true)
-	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
+	editbox:SetAltArrowKeyMode(CH.db.useAltKey and 1 or nil)
+	if (not CH.db.useAltKey) then
+		enableArrowKeys(editbox)
+	end
 	editbox:SetAllPoints(LeftChatDataPanel)
 	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
 	editbox:HookScript("OnTextChanged", OnTextChanged)
@@ -537,7 +546,7 @@ function CH:StyleChat(frame)
 	--Work around broken SetAltArrowKeyMode API
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
-	editbox:HookScript("OnKeyDown", OnKeyDown)
+	--editbox:HookScript("OnKeyDown", OnArrowPressed)
 	editbox:Hide()
 
 	editbox:HookScript("OnEditFocusGained", function(editBox)
@@ -630,7 +639,7 @@ function CH:UpdateSettings()
 		local chat = _G[format("ChatFrame%d", i)]
 		local name = chat:GetName()
 		local editbox = _G[name..'EditBox']
-		editbox:SetAltArrowKeyMode(CH.db.useAltKey)
+		editbox:SetAltArrowKeyMode(CH.db.useAltKey and 1 or nil)
 	end
 end
 
