@@ -164,10 +164,10 @@ function S:BlizzardQuestFrames()
 		local numSpellRewards = isQuestLog and GetNumQuestLogRewardSpells() or GetNumRewardSpells()
 		if numSpellRewards > 0 then
 			if E.private.skins.parchmentRemover.enable then
-				for spellHeader, _ in _G.QuestInfoFrame.rewardsFrame.spellHeaderPool:EnumerateActive() do
+				for spellHeader in rewardsFrame.spellHeaderPool:EnumerateActive() do
 					spellHeader:SetVertexColor(1, 1, 1)
 				end
-				for spellIcon, _ in _G.QuestInfoFrame.rewardsFrame.spellRewardPool:EnumerateActive() do
+				for spellIcon in rewardsFrame.spellRewardPool:EnumerateActive() do
 					HandleReward(spellIcon)
 				end
 			end
