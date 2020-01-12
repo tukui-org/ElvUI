@@ -101,9 +101,9 @@ local unitSelectionType = Private.unitSelectionType
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
 local function getDisplayPower(unit)
-	local _, min, _, _, _, _, showOnRaid = UnitAlternatePowerInfo(unit)
-	if(showOnRaid) then
-		return ALTERNATE_POWER_INDEX, min
+	local barInfo = GetUnitPowerBarInfo(unit)
+	if(barInfo.showOnRaid) then
+		return ALTERNATE_POWER_INDEX, barInfo.minPower
 	end
 end
 
