@@ -147,6 +147,8 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Number18Font,						NUMBER, 18)
 		SetFont(_G.Number18FontWhite,					NUMBER, 18)
 		SetFont(_G.FriendsFont_11,						NORMAL, 11)
+		SetFont(_G.SpellFont_Small,						NORMAL, 10)
+		SetFont(_G.SubSpellFont,						NORMAL, 10) -- Spellbook Sub Names
 
 		-- No matter what we do here with the Combat Font, the player Combat Font will always looks like shit, so just dont touch it.
 		--SetFont(_G.CombatTextFont,						COMBAT, 200, 'OUTLINE')						-- number here just increase the font quality.
