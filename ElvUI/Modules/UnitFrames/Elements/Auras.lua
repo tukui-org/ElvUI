@@ -143,78 +143,6 @@ function UF:Configure_Auras(frame, auraType)
 	auraType = auraType:lower()
 	auras.db = db[auraType]
 
-	local rows = auras.db.numrows
-	auras.forceShow = frame.forceShowAuras
-	auras.spacing = auras.db.spacing
-	auras.num = auras.db.perrow * rows
-	auras.size = auras.db.sizeOverride ~= 0 and auras.db.sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
-	auras.disableMouse = auras.db.clickThrough
-
-	if auras.db.sizeOverride and auras.db.sizeOverride > 0 then
-		auras:Width(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
-	else
-		local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
-		if frame.USE_POWERBAR_OFFSET then
-			if not (auras.db.attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
-				local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
-				totalWidth = totalWidth - powerOffset
-			end
-		end
-		auras:Width(totalWidth)
-	end
-
-	local index = 1
-	while auras[index] do
-		local button = auras[index]
-		if button then
-			button.db = auras.db
-			UF:UpdateAuraSettings(auras, button)
-		end
-
-		index = index + 1
-	end
-
-	local attachTo = self:GetAuraAnchorFrame(frame, auras.db.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
-	local x, y = E:GetXYOffset(auras.db.anchorPoint, frame.SPACING) --Use frame.SPACING override since it may be different from E.Spacing due to forced thin borders
-
-	if auras.db.attachTo == "FRAME" then
-		y = 0
-	elseif auras.db.attachTo == "HEALTH" or auras.db.attachTo == "POWER" then
-		local newX = E:GetXYOffset(auras.db.anchorPoint, -frame.BORDER)
-		local _, newY = E:GetXYOffset(auras.db.anchorPoint, (frame.BORDER + frame.SPACING))
-		x = newX
-		y = newY
-	else
-		x = 0
-	end
-
-	if (auraType == "buffs" and frame.Debuffs.attachTo and frame.Debuffs.attachTo == frame.Buffs and auras.db.attachTo == "DEBUFFS") then
-		--Update Debuffs first, as we would otherwise get conflicting anchor points
-		--This is usually only an issue on profile change
-		ReverseUpdate(frame)
-		return
-	end
-
-	auras:ClearAllPoints()
-	auras:Point(E.InversePoints[auras.db.anchorPoint], attachTo, auras.db.anchorPoint, x + auras.db.xOffset, y + auras.db.yOffset)
-	auras:Height(auras.size * rows)
-	auras["growth-y"] = strfind(auras.db.anchorPoint, 'TOP') and 'UP' or 'DOWN'
-	auras["growth-x"] = auras.db.anchorPoint == 'LEFT' and 'LEFT' or  auras.db.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.db.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
-	auras.initialAnchor = E.InversePoints[auras.db.anchorPoint]
-
-	--These are needed for SmartAuraPosition
-	auras.attachTo = attachTo
-	auras.point = E.InversePoints[auras.db.anchorPoint]
-	auras.anchorPoint = auras.db.anchorPoint
-	auras.xOffset = x + auras.db.xOffset
-	auras.yOffset = y + auras.db.yOffset
-
-	if auras.db.enable then
-		auras:Show()
-	else
-		auras:Hide()
-	end
-
 	local position = db.smartAuraPosition
 	if position == "BUFFS_ON_DEBUFFS" then
 		if db.debuffs.attachTo == "BUFFS" then
@@ -259,6 +187,77 @@ function UF:Configure_Auras(frame, auraType)
 	else
 		frame.Buffs.PostUpdate = nil
 		frame.Debuffs.PostUpdate = nil
+	end
+
+	if auraType == "buffs" and frame.Debuffs.attachTo == frame.Buffs and auras.db.attachTo == "DEBUFFS" then
+		--Update Debuffs first, as we would otherwise get conflicting anchor points
+		--This is usually only an issue on profile change
+		ReverseUpdate(frame)
+		return
+	end
+
+	local rows = auras.db.numrows
+	auras.forceShow = frame.forceShowAuras
+	auras.spacing = auras.db.spacing
+	auras.num = auras.db.perrow * rows
+	auras.size = auras.db.sizeOverride ~= 0 and auras.db.sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
+	auras.disableMouse = auras.db.clickThrough
+
+	if auras.db.sizeOverride and auras.db.sizeOverride > 0 then
+		auras:Width(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
+	else
+		local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
+		if frame.USE_POWERBAR_OFFSET then
+			if not (auras.db.attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
+				local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
+				totalWidth = totalWidth - powerOffset
+			end
+		end
+		auras:Width(totalWidth)
+	end
+
+	local index = 1
+	while auras[index] do
+		local button = auras[index]
+		if button then
+			button.db = auras.db
+			UF:UpdateAuraSettings(auras, button)
+		end
+
+		index = index + 1
+	end
+
+	local x, y = E:GetXYOffset(auras.db.anchorPoint, frame.SPACING) --Use frame.SPACING override since it may be different from E.Spacing due to forced thin borders
+	if auras.db.attachTo == "FRAME" then
+		y = 0
+	elseif auras.db.attachTo == "HEALTH" or auras.db.attachTo == "POWER" then
+		local newX = E:GetXYOffset(auras.db.anchorPoint, -frame.BORDER)
+		local _, newY = E:GetXYOffset(auras.db.anchorPoint, (frame.BORDER + frame.SPACING))
+		x = newX
+		y = newY
+	else
+		x = 0
+	end
+
+	local attachTo = self:GetAuraAnchorFrame(frame, auras.db.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
+	auras:ClearAllPoints()
+	auras:Point(E.InversePoints[auras.db.anchorPoint], attachTo, auras.db.anchorPoint, x + auras.db.xOffset, y + auras.db.yOffset)
+	auras:Height(auras.size * rows)
+	auras["growth-y"] = strfind(auras.db.anchorPoint, 'TOP') and 'UP' or 'DOWN'
+	auras["growth-x"] = auras.db.anchorPoint == 'LEFT' and 'LEFT' or  auras.db.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.db.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
+	auras.initialAnchor = E.InversePoints[auras.db.anchorPoint]
+
+	--These are needed for SmartAuraPosition
+	auras.attachTo = attachTo
+	auras.point = E.InversePoints[auras.db.anchorPoint]
+	auras.anchorPoint = auras.db.anchorPoint
+	auras.xOffset = x + auras.db.xOffset
+	auras.yOffset = y + auras.db.yOffset
+
+	if auras.db.enable then
+		auras:Show()
+	else
+		auras:Hide()
 	end
 end
 
