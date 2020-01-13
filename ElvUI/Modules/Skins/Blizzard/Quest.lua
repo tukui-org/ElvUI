@@ -29,23 +29,43 @@ local function HandleReward(frame)
 	if (not frame) then return end
 
 	if frame.Icon then
+		frame.Icon:SetDrawLayer('ARTWORK')
 		S:HandleIcon(frame.Icon, true)
+	end
 
+	if frame.IconBorder then
+		frame.IconBorder:SetAlpha(0)
+	end
+
+	if frame.Count then
+		frame.Count:SetDrawLayer('OVERLAY')
 		frame.Count:ClearAllPoints()
-		frame.Count:Point("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, 0)
+		frame.Count:SetPoint('BOTTOMRIGHT', frame.Icon, 'BOTTOMRIGHT', 0, 0)
 	end
 
 	if frame.NameFrame then
 		frame.NameFrame:SetAlpha(0)
+		frame.NameFrame:Hide()
+	end
+
+	if frame.IconOverlay then
+		frame.IconOverlay:SetAlpha(0)
 	end
 
 	if frame.Name then
-		frame.Name:SetFontObject("GameFontHighlightSmall")
+		frame.Name:FontTemplate()
 	end
 
-	if (frame.CircleBackground) then
+	if frame.CircleBackground then
 		frame.CircleBackground:SetAlpha(0)
 		frame.CircleBackgroundGlow:SetAlpha(0)
+	end
+
+	for i = 1, frame:GetNumRegions() do
+		local Region = select(i, frame:GetRegions())
+		if Region and Region:IsObjectType('Texture') and Region:GetTexture() == [[Interface\Spellbook\Spellbook-Parts]] then
+			Region:SetTexture('')
+		end
 	end
 end
 
@@ -147,6 +167,9 @@ function S:BlizzardQuestFrames()
 				for spellHeader in rewardsFrame.spellHeaderPool:EnumerateActive() do
 					spellHeader:SetVertexColor(1, 1, 1)
 				end
+				for spellIcon in rewardsFrame.spellRewardPool:EnumerateActive() do
+					HandleReward(spellIcon)
+				end
 			end
 
 			for followerReward in rewardsFrame.followerRewardPool:EnumerateActive() do
@@ -232,11 +255,11 @@ function S:BlizzardQuestFrames()
 		end
 	end)
 
-	local Rewards = { 'MoneyFrame', 'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame', 'WarModeBonusFrame' }
-	for _, frame in pairs(Rewards) do
+	for _, frame in pairs({ 'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame' }) do
 		HandleReward(_G.MapQuestInfoRewardsFrame[frame])
 		HandleReward(_G.QuestInfoRewardsFrame[frame])
 	end
+	HandleReward(_G.MapQuestInfoRewardsFrame.MoneyFrame)
 
 	-- Hook for WorldQuestRewards / QuestLogRewards
 	hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
@@ -310,28 +333,6 @@ function S:BlizzardQuestFrames()
 				end
 			end
 		end)
-
-		local QuestInfoRewardsFrame = _G.QuestInfoRewardsFrame
-		if QuestInfoRewardsFrame.spellHeaderPool then
-			for _, pool in ipairs({"followerRewardPool", "spellRewardPool"}) do
-				QuestInfoRewardsFrame[pool]._acquire = QuestInfoRewardsFrame[pool].Acquire
-				QuestInfoRewardsFrame[pool].Acquire = function()
-					local frame = QuestInfoRewardsFrame[pool]:_acquire()
-					if frame then
-						frame.Name:SetTextColor(1, 1, 1)
-					end
-					return frame
-				end
-			end
-			QuestInfoRewardsFrame.spellHeaderPool._acquire = QuestInfoRewardsFrame.spellHeaderPool.Acquire
-			QuestInfoRewardsFrame.spellHeaderPool.Acquire = function(s)
-				local frame = s:_acquire()
-				if frame then
-					frame:SetTextColor(1, 1, 1)
-				end
-				return frame
-			end
-		end
 	else
 		StyleScrollFrame(_G.QuestDetailScrollFrame, 506, 615, true)
 		StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
