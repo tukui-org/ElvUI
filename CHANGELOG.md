@@ -7,7 +7,7 @@
 **Misc. Changes:**  
 
 ___
-### Version 11.28 [ January 14th 2020 ]
+### Version 11.28 for patch 8.3 [ January 14th 2020 ]
 
 **New Additions:**  
 Added an option to let Unitframe and/or Nameplate frames update their Health, Power, and/or Auras at consistent rate (between 0.1 and 0.5 of a second) rather than using Blizzard's event system for when to update. This is an opt-in method that is less recommended but might solve issues where the update isn't received correctly otherwise.  
