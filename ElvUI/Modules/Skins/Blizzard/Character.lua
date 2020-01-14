@@ -323,6 +323,10 @@ function S:CharacterFrame()
 	_G.CharacterStatsPane.ItemLevelFrame.Background:SetAlpha(0)
 	ColorizeStatPane(_G.CharacterStatsPane.ItemLevelFrame)
 
+	--Corruption 8.3
+	_G.CharacterStatsPane.ItemLevelFrame.Corruption:ClearAllPoints()
+	_G.CharacterStatsPane.ItemLevelFrame.Corruption:SetPoint("RIGHT", _G.CharacterStatsPane.ItemLevelFrame, "RIGHT", 22, -8)
+
 	hooksecurefunc("PaperDollFrame_UpdateStats", function()
 		if IsAddOnLoaded("DejaCharacterStats") then return end
 

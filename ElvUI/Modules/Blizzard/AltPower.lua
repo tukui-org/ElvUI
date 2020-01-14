@@ -119,8 +119,9 @@ function B:UpdateAltPowerBar()
 	_G.PlayerPowerBarAlt:UnregisterAllEvents()
 	_G.PlayerPowerBarAlt:Hide()
 
-	local barType, min, _, _, _, _, _, _, _, _, powerName, powerTooltip = UnitAlternatePowerInfo('player')
-	if barType then
+	local barInfo = GetUnitPowerBarInfo('player');
+	local powerName, powerTooltip = GetUnitPowerBarStrings('player');
+	if barInfo then
 		local power = UnitPower('player', _G.ALTERNATE_POWER_INDEX)
 		local maxPower = UnitPowerMax('player', _G.ALTERNATE_POWER_INDEX) or 0
 		local perc = (maxPower > 0 and floor(power / maxPower * 100)) or 0
@@ -132,7 +133,7 @@ function B:UpdateAltPowerBar()
 		self.powerValue = power
 
 		self:Show()
-		self:SetMinMaxValues(min, maxPower)
+		self:SetMinMaxValues(barInfo.minPower, maxPower)
 		self:SetValue(power)
 
 		if E.db.general.altPowerBar.statusBarColorGradient then

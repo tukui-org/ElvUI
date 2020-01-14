@@ -1115,6 +1115,41 @@ function S:WorldMapMixin_AddOverlayFrame(frame, templateName)
 	S[templateName](frame.overlayFrames[#frame.overlayFrames])
 end
 
+-- Override for NineSlice Credits Aurora
+do -- SharedXML\NineSlice.lua
+	local nineSliceSetup = {
+		"TopLeftCorner",
+		"TopRightCorner",
+		"BottomLeftCorner",
+		"BottomRightCorner",
+		"TopEdge",
+		"BottomEdge",
+		"LeftEdge",
+		"RightEdge",
+		"Center",
+	}
+
+	local function GetNineSlicePiece(container, pieceName)
+		if container.GetNineSlicePiece then
+			return container:GetNineSlicePiece(pieceName)
+		end
+
+		return container[pieceName]
+	end
+
+	function NineSliceUtil.ApplyLayout(container, userLayout, textureKit)
+		if not container.IsSkinned then return end
+		container:SetBackdrop(nil)
+		for i = 1, #nineSliceSetup do
+			local piece = GetNineSlicePiece(container, nineSliceSetup[i])
+			if piece then
+				piece:SetTexture("")
+			end
+		end
+	end
+end
+hooksecurefunc(_G.NineSliceUtil, "ApplyLayout", NineSliceUtil.ApplyLayout)
+
 -- UIWidgets
 function S:SkinIconAndTextWidget()
 end

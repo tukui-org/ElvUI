@@ -87,56 +87,20 @@ local function SkinStatusBar(bar)
 	end
 end
 
-local function resultOnEnter(self)
-	self.hl:Show()
-end
+local function SkinSearchButton(self)
+	self:StripTextures()
 
-local function resultOnLeave(self)
-	self.hl:Hide()
-end
-
-local function skinSearchPreview(button)
-	button:GetNormalTexture():SetColorTexture(0.1, 0.1, 0.1, .9)
-	button:GetPushedTexture():SetColorTexture(0.1, 0.1, 0.1, .9)
-end
-
-local function achievementSearchPreviewButton(button)
-	skinSearchPreview(button)
-	button.iconFrame:SetAlpha(0)
-end
-
-local function styleSearchPreview(preview, index)
-	local AchievementFrame = _G.AchievementFrame
-
-	if index == 1 then
-		preview:Point("TOPLEFT", AchievementFrame.searchBox, "BOTTOMLEFT", 0, 1)
-		preview:Point("TOPRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 80, 1)
-	else
-		preview:Point("TOPLEFT", AchievementFrame.searchPreview[index - 1], "BOTTOMLEFT", 0, 1)
-		preview:Point("TOPRIGHT", AchievementFrame.searchPreview[index - 1], "BOTTOMRIGHT", 0, 1)
+	if self.icon then
+		S:HandleIcon(self.icon)
 	end
 
-	preview:SetNormalTexture("")
-	preview:SetPushedTexture("")
-	preview:SetHighlightTexture("")
+	self:CreateBackdrop("Transparent")
+	self:SetHighlightTexture(E.media.normTex)
 
-	local r, g, b = unpack(E.media.bordercolor)
-	local hl = preview:CreateTexture(nil, "BACKGROUND")
-	hl:SetAllPoints()
-	hl:SetTexture(E.media.normTex)
-	hl:SetVertexColor(r, g, b, .2)
-	hl:Hide()
-	preview.hl = hl
-
-	preview:SetTemplate("Transparent")
-
-	for i = 1, #AchievementFrame.searchPreview do
-		achievementSearchPreviewButton(AchievementFrame.searchPreview[i])
-	end
-	skinSearchPreview(AchievementFrame.showAllSearchResults)
-
-	preview:HookScript("OnEnter", resultOnEnter)
-	preview:HookScript("OnLeave", resultOnLeave)
+	local hl = self:GetHighlightTexture()
+	hl:SetVertexColor(1, 1, 1, 0.3)
+	hl:SetPoint("TOPLEFT", E.mult, -E.mult)
+	hl:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
 end
 
 function S:Blizzard_AchievementUI(event)
@@ -301,13 +265,15 @@ function S:Blizzard_AchievementUI(event)
 	-- Search
 	AchievementFrame.searchResults:StripTextures()
 	AchievementFrame.searchResults:SetTemplate("Transparent")
+
 	AchievementFrame.searchPreviewContainer:StripTextures()
+	AchievementFrame.searchPreviewContainer:ClearAllPoints()
+	AchievementFrame.searchPreviewContainer:SetPoint("TOPLEFT", AchievementFrame, "TOPRIGHT", 2, 6)
 
 	for i = 1, 5 do
-		styleSearchPreview(AchievementFrame.searchPreview[i], i)
+		SkinSearchButton(AchievementFrame.searchPreviewContainer["searchPreview"..i])
 	end
-
-	styleSearchPreview(AchievementFrame.showAllSearchResults, 6)
+	SkinSearchButton(AchievementFrame.searchPreviewContainer.showAllSearchResults)
 
 	hooksecurefunc("AchievementFrame_UpdateFullSearchResults", function()
 		local numResults = GetNumFilteredAchievements()

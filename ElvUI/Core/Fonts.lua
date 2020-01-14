@@ -63,13 +63,20 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.FriendsFont_Normal,					NORMAL, self.db.general.fontSize)
 		SetFont(_G.FriendsFont_Small,					NORMAL, self.db.general.fontSize)
 		SetFont(_G.FriendsFont_UserText,				NORMAL, self.db.general.fontSize)
+		SetFont(_G.Game12Font,							NORMAL, 12)									-- PVP Stuff
 		SetFont(_G.Game13FontShadow,					NORMAL, 14)									-- InspectPvpFrame
 		SetFont(_G.Game15Font_o1,						NORMAL, 15)									-- CharacterStatsPane (ItemLevelFrame)
 		SetFont(_G.Game16Font,							NORMAL, 16)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Game18Font,							NORMAL, 18)									-- MissionUI Bonus Chance
 		SetFont(_G.Game24Font, 							NORMAL, 24)									-- Garrison Mission level (in detail frame)
-		SetFont(_G.Game30Font,							NORMAL, 28)									-- Mission Level
+		SetFont(_G.Game30Font,							NORMAL, 30)									-- Mission Level
+		SetFont(_G.Game42Font,							NORMAL, 42)									-- PVP Stuff
 		SetFont(_G.Game46Font,							NORMAL, 46)									-- Added in 7.3.5 used for ?
+		SetFont(_G.Game48Font,							NORMAL, 48)
+		SetFont(_G.Game48FontShadow,					NORMAL, 48, nil, SHADOWCOLOR, BIGOFFSET)
+		SetFont(_G.Game60Font,							NORMAL, 60)
+		SetFont(_G.Game72Font,							NORMAL, 72)
+		SetFont(_G.Game120Font,							NORMAL, 120)
 		SetFont(_G.GameFont_Gigantic,					NORMAL, 32, nil, SHADOWCOLOR, BIGOFFSET)	-- Used at the install steps
 		SetFont(_G.GameFontHighlightMedium,				NORMAL, 15)									-- Fix QuestLog Title mouseover
 		SetFont(_G.GameFontHighlightSmall2,				NORMAL, self.db.general.fontSize)			-- Skill or Recipe description on TradeSkill frame
@@ -89,6 +96,10 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.NumberFont_Shadow_Med,				NORMAL, self.db.general.fontSize)			-- Chat EditBox
 		SetFont(_G.NumberFont_Shadow_Small,				NORMAL, self.db.general.fontSize)
 		SetFont(_G.NumberFontNormalSmall,				NORMAL, 11, 'OUTLINE')						-- Calendar, EncounterJournal
+		SetFont(_G.Number11Font,						NORMAL, 11)
+		SetFont(_G.Number12Font,						NORMAL, 12)
+		SetFont(_G.Number15Font,						NORMAL, 15)
+		SetFont(_G.PriceFont,							NORMAL, 13)
 		SetFont(_G.PVPArenaTextString,					NORMAL, 22, MONOCHROME..'OUTLINE')
 		SetFont(_G.PVPInfoTextString,					NORMAL, 22, MONOCHROME..'OUTLINE')
 		SetFont(_G.QuestFont,							NORMAL, self.db.general.fontSize)
@@ -125,6 +136,21 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Tooltip_Med,							NORMAL, self.db.general.fontSize)
 		SetFont(_G.Tooltip_Small,						NORMAL, self.db.general.fontSize)
 		SetFont(_G.ZoneTextString,						NORMAL, 32, MONOCHROME..'OUTLINE')
+		SetFont(_G.Game10Font_o1,						NORMAL, 10, 'OUTLINE')
+		SetFont(_G.SystemFont_Shadow_Huge4,				NORMAL, 27, nil, nil, nil, nil, nil, 1, -1)
+		SetFont(_G.SystemFont_Shadow_Outline_Huge4,		NORMAL, 27, 'OUTLINE', nil, nil, nil, nil, 1, -1)
+		SetFont(_G.Number11Font,						NUMBER, 11)
+		SetFont(_G.Number12Font_o1,						NUMBER, 12, 'OUTLINE')
+		SetFont(_G.Number13Font,						NUMBER, 13)
+		SetFont(_G.Number13FontGray,						NUMBER, 13)
+		SetFont(_G.Number13FontWhite,					NUMBER, 13)
+		SetFont(_G.Number13FontYellow,					NUMBER, 13)
+		SetFont(_G.Number14FontWhite,					NUMBER, 14)
+		SetFont(_G.Number18Font,						NUMBER, 18)
+		SetFont(_G.Number18FontWhite,					NUMBER, 18)
+		SetFont(_G.FriendsFont_11,						NORMAL, 11)
+		SetFont(_G.SpellFont_Small,						NORMAL, 10)
+		SetFont(_G.SubSpellFont,						NORMAL, 10) -- Spellbook Sub Names
 
 		-- No matter what we do here with the Combat Font, the player Combat Font will always looks like shit, so just dont touch it.
 		--SetFont(_G.CombatTextFont,						COMBAT, 200, 'OUTLINE')						-- number here just increase the font quality.

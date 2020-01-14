@@ -22,13 +22,13 @@ function S:Blizzard_BindingUI()
 		S:HandleButton(KeyBindingFrame[v])
 	end
 
-	KeyBindingFrame.header:StripTextures()
 	_G.KeyBindingFrameScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.KeyBindingFrameScrollFrameScrollBar)
 
 	S:HandleCheckBox(KeyBindingFrame.characterSpecificButton)
-	KeyBindingFrame.header:ClearAllPoints()
-	KeyBindingFrame.header:Point("TOP", KeyBindingFrame, "TOP", 0, -4)
+	KeyBindingFrame.Header:StripTextures()
+	KeyBindingFrame.Header:ClearAllPoints()
+	KeyBindingFrame.Header:SetPoint("TOP", KeyBindingFrame, "TOP", 0, -4)
 	KeyBindingFrame:StripTextures()
 	KeyBindingFrame:SetTemplate("Transparent")
 

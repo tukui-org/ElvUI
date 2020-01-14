@@ -65,14 +65,14 @@ local function Update(self, event, unit, powerType)
 	end
 
 	local cur, max
-	local barType, min, _, _, _, _, _, _, _, _, powerName, powerTooltip = UnitAlternatePowerInfo(unit)
-	element.barType = barType
-	element.powerName = powerName
-	element.powerTooltip = powerTooltip
-	if(barType) then
+	local barInfo = GetUnitPowerBarInfo(unit);
+	element.barType = barInfo.barType
+	element.powerName, element.powerTooltip = GetUnitPowerBarStrings(unit);
+
+	if(barInfo) then
 		cur = UnitPower(unit, ALTERNATE_POWER_INDEX)
 		max = UnitPowerMax(unit, ALTERNATE_POWER_INDEX)
-		element:SetMinMaxValues(min, max)
+		element:SetMinMaxValues(barInfo.minPower, max)
 		element:SetValue(cur)
 	end
 
@@ -86,7 +86,7 @@ local function Update(self, event, unit, powerType)
 	* max  - the maximum value of the unit's alternative power (number)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, cur, min, max)
+		return element:PostUpdate(unit, cur, barInfo.minPower or 0, max)
 	end
 end
 
@@ -106,8 +106,8 @@ local function Visibility(self, event, unit)
 	if(unit ~= self.unit) then return end
 	local element = self.AlternativePower
 
-	local barType, _, _, _, _, hideFromOthers, showOnRaid = UnitAlternatePowerInfo(unit)
-	if(barType and (showOnRaid and (UnitInParty(unit) or UnitInRaid(unit)) or not hideFromOthers
+	local barInfo = GetUnitPowerBarInfo(unit)
+	if(barInfo and (barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit)) or not barInfo.hideFromOthers
 		or UnitIsUnit(unit, 'player') or UnitIsUnit(self.realUnit, 'player'))) then
 		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)

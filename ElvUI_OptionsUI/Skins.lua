@@ -478,7 +478,12 @@ E.Options.args.skins = {
 					type = "toggle",
 					name = L["Tutorials"],
 					desc = L["TOGGLESKIN_DESC"],
-				}
+				},
+				ItemInteraction = {
+					type = "toggle",
+					name = L["Item Interaction"], --Feed me
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},

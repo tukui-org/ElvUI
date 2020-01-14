@@ -142,6 +142,7 @@ V.skins = {
 		GMChat = true,
 		AzeriteEssence = true,
 		Tutorials = true,
+		ItemInteraction = true,
 	},
 }
 

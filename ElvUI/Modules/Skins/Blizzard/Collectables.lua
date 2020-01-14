@@ -522,20 +522,20 @@ function S:Blizzard_Collections()
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
 
-	for i = 1, #WardrobeTransmogFrame.Model.SlotButtons do
-		WardrobeTransmogFrame.Model.SlotButtons[i]:StripTextures()
-		WardrobeTransmogFrame.Model.SlotButtons[i]:SetFrameLevel(WardrobeTransmogFrame.Model.SlotButtons[i]:GetFrameLevel() + 2)
-		WardrobeTransmogFrame.Model.SlotButtons[i]:CreateBackdrop()
-		WardrobeTransmogFrame.Model.SlotButtons[i].backdrop:SetAllPoints()
-		WardrobeTransmogFrame.Model.SlotButtons[i].Border:Kill()
-		WardrobeTransmogFrame.Model.SlotButtons[i].Icon:SetTexCoord(unpack(E.TexCoords))
+	for i = 1, #WardrobeTransmogFrame.ModelScene.SlotButtons do
+		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:StripTextures()
+		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:SetFrameLevel(WardrobeTransmogFrame.ModelScene.SlotButtons[i]:GetFrameLevel() + 2)
+		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:CreateBackdrop()
+		WardrobeTransmogFrame.ModelScene.SlotButtons[i].backdrop:SetAllPoints()
+		WardrobeTransmogFrame.ModelScene.SlotButtons[i].Border:Kill()
+		WardrobeTransmogFrame.ModelScene.SlotButtons[i].Icon:SetTexCoord(unpack(E.TexCoords))
 	end
 
 	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
 	WardrobeTransmogFrame.SpecButton:Point("RIGHT", WardrobeTransmogFrame.ApplyButton, "LEFT", -2, 0)
 	S:HandleButton(WardrobeTransmogFrame.SpecButton)
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
-	S:HandleButton(WardrobeTransmogFrame.Model.ClearAllPendingButton)
+	S:HandleButton(WardrobeTransmogFrame.ModelScene.ClearAllPendingButton)
 
 	--Transmogrify NPC Sets tab
 	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
