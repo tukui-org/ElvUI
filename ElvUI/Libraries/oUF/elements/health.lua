@@ -269,6 +269,7 @@ local function SetColorThreat(element, state)
 	end
 end
 
+-- ElvUI changed block
 local onUpdateElapsed, onUpdateWait = 0, 0.25
 local function onUpdateHealth(self, elapsed)
 	if onUpdateElapsed > onUpdateWait then
@@ -301,6 +302,7 @@ local function SetHealthUpdateMethod(self, state, force)
 		end
 	end
 end
+-- end block
 
 local function Enable(self, unit)
 	local element = self.Health
@@ -312,9 +314,11 @@ local function Enable(self, unit)
 		element.SetColorTapping = SetColorTapping
 		element.SetColorThreat = SetColorThreat
 
+		-- ElvUI changed block
 		self.SetHealthUpdateSpeed = SetHealthUpdateSpeed
 		self.SetHealthUpdateMethod = SetHealthUpdateMethod
 		SetHealthUpdateMethod(self, self.effectiveHealth, true)
+		-- end block
 
 		if(element.colorDisconnected) then
 			self:RegisterEvent('UNIT_CONNECTION', ColorPath)
@@ -347,7 +351,7 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		element:SetScript('OnUpdate', nil)
+		element:SetScript('OnUpdate', nil) -- ElvUI changed
 		self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		self:UnregisterEvent('UNIT_HEALTH', Path)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
