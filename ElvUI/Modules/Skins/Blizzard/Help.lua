@@ -31,10 +31,10 @@ function S:HelpFrame()
 		frames[i]:CreateBackdrop("Transparent")
 	end
 
-	local HelpFrameHeader = _G.HelpFrameHeader
-	HelpFrameHeader:StripTextures(true)
-	HelpFrameHeader:CreateBackdrop(nil, true)
-	HelpFrameHeader:SetFrameLevel(HelpFrameHeader:GetFrameLevel() + 2)
+	local Header = _G.HelpFrame.Header
+	Header:StripTextures(true)
+	Header:CreateBackdrop(nil, true)
+	Header:SetFrameLevel(Header:GetFrameLevel() + 2)
 	_G.HelpFrameKnowledgebaseErrorFrame:SetFrameLevel(_G.HelpFrameKnowledgebaseErrorFrame:GetFrameLevel() + 2)
 
 	local HelpFrameReportBugScrollFrame = _G.HelpFrameReportBugScrollFrame
