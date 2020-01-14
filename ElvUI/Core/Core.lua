@@ -1341,6 +1341,11 @@ function E:DBConversions()
 		E.db.auras.fontSize = nil
 	end
 
+	--Remove stale font settings from Cooldown system for top auras
+	if E.db.auras.cooldown.fonts then
+		E.db.auras.cooldown.fonts = nil
+	end
+
 	--Convert Nameplate Aura Duration to new Cooldown system
 	if E.db.nameplates.durationFont then
 		E.db.nameplates.cooldown.fonts.font = E.db.nameplates.durationFont
@@ -1467,6 +1472,21 @@ function E:DBConversions()
 		E.db.nameplates.visibility.enemy.minions = E.db.nameplates.units.ENEMY_PLAYER.minions or E.db.nameplates.units.ENEMY_NPC.minions
 		E.db.nameplates.units.ENEMY_PLAYER.minions = nil
 		E.db.nameplates.units.ENEMY_NPC.minions = nil
+	end
+
+	if E.global.unitframe.buffwatch then
+		for class, spellTable in pairs(E.global.unitframe.buffwatch) do
+			for spellID in pairs(spellTable) do
+				if E.global.unitframe.buffwatch[class][spellID].sizeOverride then
+					E.global.unitframe.buffwatch[class][spellID].size = E.global.unitframe.buffwatch[class][spellID].sizeOverride
+					E.global.unitframe.buffwatch[class][spellID].sizeOverride = nil
+				end
+				if E.global.unitframe.buffwatch[class][spellID].styleOverride then
+					E.global.unitframe.buffwatch[class][spellID].style = E.global.unitframe.buffwatch[class][spellID].styleOverride
+					E.global.unitframe.buffwatch[class][spellID].styleOverride = nil
+				end
+			end
+		end
 	end
 end
 

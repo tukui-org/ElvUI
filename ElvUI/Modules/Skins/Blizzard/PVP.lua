@@ -26,8 +26,8 @@ local function HandleRoleChecks(button, ...)
 	S:HandleCheckBox(button.checkButton)
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.pvp ~= true then return end
+function S:Blizzard_PVPUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
 	_G.PVPUIFrame:StripTextures()
 
@@ -121,10 +121,8 @@ local function LoadSkin()
 		bu.Icon:Point("TOPLEFT", 5, -3)
 	end
 
-	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(self)
-		if self.bg then
-			self.bg:SetDesaturated(true)
-		end
+	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(s)
+		if s.bg then s.bg:SetDesaturated(true) end
 	end)
 
 	-- New tiny Role icons in Bfa
@@ -157,7 +155,7 @@ local function LoadSkin()
 	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
 
 	-- Item Borders for HonorFrame & ConquestFrame
-	hooksecurefunc('PVPUIFrame_ConfigureRewardFrame', function(rewardFrame, honor, experience, itemRewards, currencyRewards)
+	hooksecurefunc('PVPUIFrame_ConfigureRewardFrame', function(rewardFrame, _, _, itemRewards, currencyRewards)
 		local rewardTexture, rewardQuaility = nil, 1
 
 		if currencyRewards then
@@ -228,10 +226,8 @@ local function LoadSkin()
 	RewardFrame.Icon:SetTexCoord(unpack(E.TexCoords))
 end
 
-S:AddCallbackForAddon('Blizzard_PVPUI', "PvPUI", LoadSkin)
-
-local function LoadSecondarySkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.pvp ~= true then return end
+function S:PVPReadyDialog()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
 	--PVP QUEUE FRAME
 	_G.PVPReadyDialog:StripTextures()
@@ -242,7 +238,7 @@ local function LoadSecondarySkin()
 	_G.PVPReadyDialogRoleIcon.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 	_G.PVPReadyDialogRoleIcon.texture:SetAlpha(0.5)
 
-	hooksecurefunc("PVPReadyDialog_Display", function(self, _, _, _, queueType, _, role)
+	hooksecurefunc("PVPReadyDialog_Display", function(s, _, _, _, queueType, _, role)
 		if role == "DAMAGER" then
 			_G.PVPReadyDialogRoleIcon.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
 		elseif role == "TANK" then
@@ -252,11 +248,12 @@ local function LoadSecondarySkin()
 		end
 
 		if queueType == "ARENA" then
-			self:Height(100)
+			s:Height(100)
 		end
 
-		self.background:Hide()
+		s.background:Hide()
 	end)
 end
 
-S:AddCallback("PVP", LoadSecondarySkin)
+S:AddCallback('PVPReadyDialog')
+S:AddCallbackForAddon('Blizzard_PVPUI')

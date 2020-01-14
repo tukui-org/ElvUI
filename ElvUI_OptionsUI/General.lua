@@ -139,7 +139,7 @@ E.Options.args.general = {
 						E:StaticPopup_Show("CONFIG_RL")
 					end,
 					values = {
-						["CHINESE"] = "Chinese (W, Y)",
+						["CHINESE"] = "Chinese (万, 亿)",
 						["ENGLISH"] = "English (K, M, B)",
 						["GERMAN"] = "German (Tsd, Mio, Mrd)",
 						["KOREAN"] = "Korean (천, 만, 억)",
@@ -775,16 +775,38 @@ E.Options.args.general = {
 					get = function(info) return E.private.general.voiceOverlay end,
 					set = function(info, value) E.private.general.voiceOverlay = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				vehicleSeatIndicatorSize = {
+				disableTutorialButtons = {
 					order = 8,
+					type = 'toggle',
+					name = L["Disable Tutorial Buttons"],
+					desc = L["Disables the tutorial button found on some frames."],
+					get = function(info) return E.global.general.disableTutorialButtons end,
+					set = function(info, value) E.global.general.disableTutorialButtons = value; E:StaticPopup_Show("GLOBAL_RL") end,
+				},
+				resurrectSound = {
+					order = 9,
+					type = 'toggle',
+					name = L["Resurrect Sound"],
+					desc = L["Enable to hear sound if you receive a resurrect."],
+				},
+				vehicleSeatIndicatorSize = {
+					order = 10,
 					type = "range",
 					name = L["Vehicle Seat Indicator Size"],
 					min = 64, max = 128, step = 4,
 					get = function(info) return E.db.general.vehicleSeatIndicatorSize end,
 					set = function(info, value) E.db.general.vehicleSeatIndicatorSize = value; Blizzard:UpdateVehicleFrame() end,
 				},
+				durabilityScale = {
+					order = 11,
+					type = "range",
+					name = L["Durability Scale"],
+					min = 0.5, max = 8, step = 0.5,
+					get = function(info) return E.db.general.durabilityScale end,
+					set = function(info, value) E.db.general.durabilityScale = value; E:StaticPopup_Show("PRIVATE_RL") end,
+				},
 				commandBarSetting = {
-					order = 9,
+					order = 12,
 					type = "select",
 					name = L["Order Hall Command Bar"],
 					get = function(info) return E.global.general.commandBarSetting end,
@@ -796,16 +818,8 @@ E.Options.args.general = {
 						["ENABLED_RESIZEPARENT"] = L["Enable + Adjust Movers"],
 					},
 				},
-				disableTutorialButtons = {
-					order = 10,
-					type = 'toggle',
-					name = L["Disable Tutorial Buttons"],
-					desc = L["Disables the tutorial button found on some frames."],
-					get = function(info) return E.global.general.disableTutorialButtons end,
-					set = function(info, value) E.global.general.disableTutorialButtons = value; E:StaticPopup_Show("GLOBAL_RL") end,
-				},
 				itemLevelInfo = {
-					order = 11,
+					order = 13,
 					name = L["Item Level"],
 					type = 'group',
 					guiInline = true,
@@ -865,22 +879,6 @@ E.Options.args.general = {
 							},
 						},
 					},
-				},
-				DurabilityGroup = {
-					order = 12,
-					type = "group",
-					name = L["Durability"],
-					guiInline = true,
-					get = function(info) return E.db.general.durabilityScale end,
-					set = function(info, value) E.db.general.durabilityScale = value; E:StaticPopup_Show("PRIVATE_RL") end,
-					args = {
-						scale = {
-							order = 1,
-							type = "range",
-							name = L["Scale"],
-							min = 0.5, max = 8, step = 0.5,
-						}
-					}
 				},
 			},
 		},

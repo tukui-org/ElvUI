@@ -8,8 +8,8 @@ local select, unpack = select, unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.gbank ~= true then return end
+function S:Blizzard_GuildBankUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gbank) then return end
 
 	local GuildBankFrame = _G.GuildBankFrame
 	GuildBankFrame:StripTextures()
@@ -57,12 +57,12 @@ local function LoadSkin()
 			button:StyleButton()
 			button:SetTemplate(nil, true)
 
-			hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
-				self:GetParent():SetBackdropBorderColor(r,g,b)
-				self:SetTexture()
+			hooksecurefunc(button.IconBorder, 'SetVertexColor', function(s, r, g, b)
+				s:GetParent():SetBackdropBorderColor(r,g,b)
+				s:SetTexture()
 			end)
-			hooksecurefunc(button.IconBorder, 'Hide', function(self)
-				self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+			hooksecurefunc(button.IconBorder, 'Hide', function(s)
+				s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 
 			icon:SetInside()
@@ -105,4 +105,4 @@ local function LoadSkin()
 	S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, _G.NUM_GUILDBANK_ICONS_SHOWN, "GuildBankPopupButton", "GuildBankPopup")
 end
 
-S:AddCallbackForAddon("Blizzard_GuildBankUI", "GuildBank", LoadSkin)
+S:AddCallbackForAddon('Blizzard_GuildBankUI')

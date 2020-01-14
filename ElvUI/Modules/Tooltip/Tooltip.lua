@@ -8,8 +8,9 @@ local unpack, select, ipairs = unpack, select, ipairs
 local wipe, tinsert, tconcat = wipe, tinsert, table.concat
 local floor, tonumber, strlower = floor, tonumber, strlower
 local strfind, format, strsub = strfind, format, strsub
-local strmatch, gmatch = strmatch, gmatch
+local strmatch, gmatch, gsub = strmatch, gmatch, gsub
 --WoW API / Variables
+local C_ToyBox_GetToyInfo = C_ToyBox.GetToyInfo
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney
@@ -459,13 +460,13 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				tt:AddDoubleLine(format("%s:", _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
 
 				if sourceText and isControlKeyDown then
-					local sourceModified = sourceText:gsub("|n", "\10")
+					local sourceModified = gsub(sourceText, "|n", "\10")
 					for x in gmatch(sourceModified, '[^\10]+\10?') do
 						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
 						if left and right then
 							tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
 						else
-							tt:AddDoubleLine(_G.FROM, sourceText:gsub('|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
+							tt:AddDoubleLine(_G.FROM, gsub(sourceText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
 						end
 					end
 				end
@@ -516,7 +517,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		local guid = UnitGUID(unit) or ""
 		local id = tonumber(strmatch(guid, "%-(%d-)%-%x-$"), 10)
 		if id then
-			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id))
+			tt:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
 		end
 	end
 
@@ -576,21 +577,19 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		local _, link = tt:GetItem()
 		local num = GetItemCount(link)
 		local numall = GetItemCount(link,true)
-		local left = " "
-		local right = " "
-		local bankCount = " "
+		local left, right, bankCount = " ", " ", " "
 
 		if link ~= nil and self.db.spellID then
-			left = strmatch(format("|cFFCA3C3C%s|r %s", _G.ID, link), ":(%w+)")
+			left = format("|cFFCA3C3C%s|r %s", _G.ID, strmatch(link, ":(%w+)"))
 		end
 
 		if self.db.itemCount == "BAGS_ONLY" then
-			right = ("|cFFCA3C3C%s|r %d"):format(L["Count"], num)
+			right = format("|cFFCA3C3C%s|r %d", L["Count"], num)
 		elseif self.db.itemCount == "BANK_ONLY" then
-			bankCount = ("|cFFCA3C3C%s|r %d"):format(L["Bank"],(numall - num))
+			bankCount = format("|cFFCA3C3C%s|r %d", L["Bank"],(numall - num))
 		elseif self.db.itemCount == "BOTH" then
-			right = ("|cFFCA3C3C%s|r %d"):format(L["Count"], num)
-			bankCount = ("|cFFCA3C3C%s|r %d"):format(L["Bank"],(numall - num))
+			right = format("|cFFCA3C3C%s|r %d", L["Count"], num)
+			bankCount = format("|cFFCA3C3C%s|r %d", L["Bank"],(numall - num))
 		end
 
 		if left ~= " " or right ~= " " then
@@ -680,8 +679,7 @@ function TT:SetUnitAura(tt, unit, index, filter)
 
 	if id then
 		if self.MountIDs[id] then
-			local _, descriptionText, sourceText = C_MountJournal_GetMountInfoExtraByID(self.MountIDs[id])
-			--tt:AddLine(descriptionText)
+			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(self.MountIDs[id])
 			tt:AddLine(" ")
 			tt:AddLine(sourceText, 1, 1, 1)
 			tt:AddLine(" ")
@@ -692,9 +690,9 @@ function TT:SetUnitAura(tt, unit, index, filter)
 				local name = UnitName(caster)
 				local _, class = UnitClass(caster)
 				local color = E:ClassColor(class) or PRIEST_COLOR
-				tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id), format("|c%s%s|r", color.colorStr, name))
+				tt:AddDoubleLine(format("|cFFCA3C3C%s|r %d", _G.ID, id), format("|c%s%s|r", color.colorStr, name))
 			else
-				tt:AddLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id))
+				tt:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
 			end
 		end
 
@@ -707,29 +705,33 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 	local id = select(2, tt:GetSpell())
 	if not id or not self.db.spellID then return end
 
-	local displayString = ("|cFFCA3C3C%s|r %d"):format(_G.ID, id)
-	local lines = tt:NumLines()
-	local isFound
-	for i= 1, lines do
-		local line = _G[("GameTooltipTextLeft%d"):format(i)]
-		if line and line:GetText() and strfind(line:GetText(), displayString) then
-			isFound = true;
-			break
+	local displayString = format("|cFFCA3C3C%s|r %d", _G.ID, id)
+
+	for i= 1, tt:NumLines() do
+		local line = _G[format("GameTooltipTextLeft%d", i)]
+		local text = line and line.GetText and line:GetText()
+		if text and strfind(text, displayString) then
+			return
 		end
 	end
 
-	if not isFound then
-		tt:AddLine(displayString)
-		tt:Show()
-	end
+	tt:AddLine(displayString)
+	tt:Show()
 end
 
 function TT:SetItemRef(link)
-	if strfind(link,"^spell:") and self.db.spellID then
-		local id = strsub(link,7)
-		_G.ItemRefTooltip:AddLine(("|cFFCA3C3C%s|r %d"):format(_G.ID, id))
+	if link and strfind(link,"^spell:") and self.db.spellID then
+		_G.ItemRefTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, strsub(link,7)))
 		_G.ItemRefTooltip:Show()
 	end
+end
+
+function TT:SetToyByItemID(tt, id)
+	if tt:IsForbidden() then return end
+	if not id or not self.db.spellID then return end
+
+	tt:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
+	tt:Show()
 end
 
 function TT:RepositionBNET(frame, _, anchor)
@@ -843,6 +845,7 @@ function TT:Initialize()
 
 	self:SecureHook('SetItemRef')
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
+	self:SecureHook(GameTooltip, 'SetToyByItemID')
 	self:SecureHook(GameTooltip, 'SetUnitAura')
 	self:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
 	self:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
@@ -851,7 +854,7 @@ function TT:Initialize()
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	self:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
-	self:RegisterEvent("MODIFIER_STATE_CHANGED")
+	self:RegisterEvent('MODIFIER_STATE_CHANGED')
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars

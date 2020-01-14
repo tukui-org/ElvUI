@@ -16,8 +16,8 @@ local function SkinTab(tab)
 	tab.Right:SetAlpha(0)
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bmah ~= true then return end
+function S:Blizzard_BlackMarketUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bmah) then return end
 
 	local BlackMarketFrame = _G.BlackMarketFrame
 	BlackMarketFrame:StripTextures()
@@ -52,12 +52,12 @@ local function LoadSkin()
 				button.Item.backdrop:SetBackdropBorderColor(cR, cG, cB)
 				button.Item.IconBorder:SetTexture()
 
-				hooksecurefunc(button.Item.IconBorder, 'SetVertexColor', function(self, r, g, b)
-					self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-					self:SetTexture()
+				hooksecurefunc(button.Item.IconBorder, 'SetVertexColor', function(s, r, g, b)
+					s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+					s:SetTexture()
 				end)
-				hooksecurefunc(button.Item.IconBorder, 'Hide', function(self)
-					self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				hooksecurefunc(button.Item.IconBorder, 'Hide', function(s)
+					s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end)
 
 				button.skinned = true
@@ -77,8 +77,8 @@ local function LoadSkin()
 		end
 	end
 
-	hooksecurefunc("BlackMarketFrame_UpdateHotItem", function(self)
-		local hotDeal = self.HotDeal
+	hooksecurefunc("BlackMarketFrame_UpdateHotItem", function(s)
+		local hotDeal = s.HotDeal
 		if hotDeal:IsShown() and hotDeal.itemLink then
 			local _, _, quality = GetItemInfo(hotDeal.itemLink)
 			hotDeal.Name:SetTextColor(GetItemQualityColor(quality))
@@ -86,4 +86,4 @@ local function LoadSkin()
 	end)
 end
 
-S:AddCallbackForAddon("Blizzard_BlackMarketUI", "BlackMarket", LoadSkin)
+S:AddCallbackForAddon('Blizzard_BlackMarketUI')

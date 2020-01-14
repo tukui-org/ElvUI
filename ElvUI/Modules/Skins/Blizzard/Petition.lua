@@ -3,8 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.petition ~= true then return end
+function S:PetitionFrame()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.petition) then return end
 
 	local PetitionFrame = _G.PetitionFrame
 	PetitionFrame:StripTextures(true)
@@ -33,4 +33,4 @@ local function LoadSkin()
 	_G.PetitionFrameRenameButton:Point("RIGHT", _G.PetitionFrameCancelButton, "LEFT", -3, 0)
 end
 
-S:AddCallback("Petition", LoadSkin)
+S:AddCallback('PetitionFrame')

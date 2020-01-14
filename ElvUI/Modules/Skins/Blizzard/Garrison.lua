@@ -9,15 +9,15 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true then return end
+function S:Blizzard_GarrisonUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.garrison) then return end
 
 	--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
-	hooksecurefunc("GarrisonMissionButton_SetRewards", function(self)
+	hooksecurefunc("GarrisonMissionButton_SetRewards", function(s)
 		--Set border color according to rarity of item
 		local firstRegion, r, g, b
 		local index = 0
-		for _, reward in pairs(self.Rewards) do
+		for _, reward in pairs(s.Rewards) do
 			firstRegion = reward.GetRegions and reward:GetRegions()
 			if firstRegion then firstRegion:Hide() end
 
@@ -98,8 +98,8 @@ local function LoadSkin()
 	GarrisonCapacitiveDisplayFrame:SetFrameStrata("MEDIUM")
 	GarrisonCapacitiveDisplayFrame:SetFrameLevel(45)
 
-	hooksecurefunc('GarrisonCapacitiveDisplayFrame_Update', function(self)
-		for _, Reagent in ipairs(self.CapacitiveDisplay.Reagents) do
+	hooksecurefunc('GarrisonCapacitiveDisplayFrame_Update', function(s)
+		for _, Reagent in ipairs(s.CapacitiveDisplay.Reagents) do
 			if not Reagent.backdrop then
 				Reagent.NameFrame:SetTexture()
 				S:HandleIcon(Reagent.Icon, true)
@@ -136,8 +136,8 @@ local function LoadSkin()
 	FollowerList.MaterialFrame:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
-	hooksecurefunc(FollowerList, "ShowFollower", function(self)
-		S:HandleFollowerPage(self, true)
+	hooksecurefunc(FollowerList, "ShowFollower", function(s)
+		S:HandleFollowerPage(s, true)
 	end)
 
 	-- Mission list
@@ -198,14 +198,14 @@ local function LoadSkin()
 			end
 		end
 
-		hooksecurefunc("GarrisonLandingPageReport_SetTab", function(self)
+		hooksecurefunc("GarrisonLandingPageReport_SetTab", function(s)
 			local unselectedTab = Report.unselectedTab
 			unselectedTab:Height(36)
 			unselectedTab:SetNormalTexture("")
 			unselectedTab.selectedTex:Hide()
 
-			self:SetNormalTexture("")
-			self.selectedTex:Show()
+			s:SetNormalTexture("")
+			s.selectedTex:Show()
 		end)
 	end
 
@@ -249,12 +249,12 @@ local function LoadSkin()
 	scrollFrame = FollowerList.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)
 
-	hooksecurefunc(FollowerList, "ShowFollower", function(self)
-		S:HandleFollowerPage(self, nil, true)
+	hooksecurefunc(FollowerList, "ShowFollower", function(s)
+		S:HandleFollowerPage(s, nil, true)
 	end)
 
-	hooksecurefunc("GarrisonFollowerButton_AddAbility", function(self, index)
-		local ability = self.Abilities[index]
+	hooksecurefunc("GarrisonFollowerButton_AddAbility", function(s, index)
+		local ability = s.Abilities[index]
 		if not ability.styled then
 			S:HandleIcon(ability.Icon, ability)
 			ability.styled = true
@@ -338,11 +338,11 @@ local function LoadSkin()
 	-- Threat Counter Tooltips
 	-- The tooltip starts using blue backdrop and white border unless we re-set the template.
 	-- We should check if there is a better way of doing this.
-	S:HookScript(_G.GarrisonMissionMechanicFollowerCounterTooltip, "OnShow", function(self)
-		self:SetTemplate("Transparent")
+	S:HookScript(_G.GarrisonMissionMechanicFollowerCounterTooltip, "OnShow", function(s)
+		s:SetTemplate("Transparent")
 	end)
-	S:HookScript(_G.GarrisonMissionMechanicTooltip, "OnShow", function(self)
-		self:SetTemplate("Transparent")
+	S:HookScript(_G.GarrisonMissionMechanicTooltip, "OnShow", function(s)
+		s:SetTemplate("Transparent")
 	end)
 
 	-- MissionFrame
@@ -381,8 +381,8 @@ local function LoadSkin()
 	FollowerList.MaterialFrame:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(OrderHallMissionFrame.FollowerList.listScroll.scrollBar)
-	hooksecurefunc(FollowerList, "ShowFollower", function(self)
-		S:HandleFollowerPage(self, true, true)
+	hooksecurefunc(FollowerList, "ShowFollower", function(s)
+		S:HandleFollowerPage(s, true, true)
 	end)
 	FollowerTab:StripTextures()
 	FollowerTab.Class:Size(50, 43)
@@ -457,8 +457,8 @@ local function LoadSkin()
 	Follower:StripTextures()
 	Follower:SetTemplate("Transparent")
 	S:HandleEditBox(Follower.SearchBox)
-	hooksecurefunc(Follower, "ShowFollower", function(self)
-		S:HandleFollowerPage(self, true, true)
+	hooksecurefunc(Follower, "ShowFollower", function(s)
+		S:HandleFollowerPage(s, true, true)
 	end)
 	S:HandleScrollBar(_G.BFAMissionFrameFollowersListScrollFrameScrollBar)
 
@@ -492,8 +492,8 @@ local function SkinAbilityTooltip(frame)
 	frame:SetTemplate("Transparent")
 end
 
-local function SkinTooltip()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true or E.private.skins.blizzard.tooltip ~= true then return end
+function S:GarrisonTooltips()
+	if not (E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison and E.private.skins.blizzard.tooltip) then return end
 
 	SkinFollowerTooltip(_G.GarrisonFollowerTooltip)
 	SkinFollowerTooltip(_G.FloatingGarrisonFollowerTooltip)
@@ -576,5 +576,5 @@ local function SkinTooltip()
 	end)
 end
 
-S:AddCallbackForAddon('Blizzard_GarrisonUI', "Garrison", LoadSkin)
-S:AddCallback("GarrisonTooltips", SkinTooltip)
+S:AddCallbackForAddon('Blizzard_GarrisonUI')
+S:AddCallback('GarrisonTooltips')

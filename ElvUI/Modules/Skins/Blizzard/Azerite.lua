@@ -3,8 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AzeriteUI ~= true then return end
+function S:Blizzard_AzeriteUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AzeriteUI) then return end
 
 	_G.AzeriteEmpoweredItemUI:StripTextures()
 	_G.AzeriteEmpoweredItemUIPortrait:Hide()
@@ -13,4 +13,4 @@ local function LoadSkin()
 	S:HandleCloseButton(_G.AzeriteEmpoweredItemUICloseButton)
 end
 
-S:AddCallbackForAddon("Blizzard_AzeriteUI", "AzeriteUI", LoadSkin)
+S:AddCallbackForAddon('Blizzard_AzeriteUI')

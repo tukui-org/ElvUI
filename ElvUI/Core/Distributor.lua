@@ -260,7 +260,22 @@ local blacklistedKeys = {
 		chat = {
 			classColorMentionExcludedNames = true,
 		},
+		nameplate = {
+			effectiveHealth = true,
+			effectivePower = true,
+			effectiveAura = true,
+			effectiveHealthSpeed = true,
+			effectivePowerSpeed = true,
+			effectiveAuraSpeed = true,
+			filters = true,
+		},
 		unitframe = {
+			effectiveHealth = true,
+			effectivePower = true,
+			effectiveAura = true,
+			effectiveHealthSpeed = true,
+			effectivePowerSpeed = true,
+			effectiveAuraSpeed = true,
 			spellRangeCheck = true,
 		},
 	},

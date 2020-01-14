@@ -9,8 +9,8 @@ local strfind = strfind
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.gossip ~= true then return end
+function S:GossipFrame()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
 
 	_G.ItemTextFrame:StripTextures(true)
 	_G.ItemTextFrame:SetTemplate("Transparent")
@@ -84,4 +84,4 @@ local function LoadSkin()
 	E:RegisterStatusBar(NPCFriendshipStatusBar)
 end
 
-S:AddCallback("Gossip", LoadSkin)
+S:AddCallback('GossipFrame')

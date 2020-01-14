@@ -7,8 +7,8 @@ local pairs, unpack = pairs, unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.inspect ~= true then return end
+function S:Blizzard_InspectUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
 	local InspectFrame = _G.InspectFrame
 	S:HandlePortraitFrame(InspectFrame, true)
@@ -109,4 +109,4 @@ local function LoadSkin()
 	_G.InspectTalentFrame:StripTextures()
 end
 
-S:AddCallbackForAddon("Blizzard_InspectUI", "Inspect", LoadSkin)
+S:AddCallbackForAddon('Blizzard_InspectUI')

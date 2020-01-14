@@ -137,15 +137,15 @@ local function SkinBags()
 end
 
 local bagIconCache = {}
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bags ~= true or E.private.bags.enable then return end
+function S:ContainerFrame()
+	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
 
 	_G.BankSlotsFrame:StripTextures()
 	S:HandleTab(_G.BankFrameTab1)
 	S:HandleTab(_G.BankFrameTab2)
 	S:HandleButton(_G.ReagentBankFrame.DespositButton)
-	_G.ReagentBankFrame:HookScript("OnShow", function(self)
-		self:StripTextures()
+	_G.ReagentBankFrame:HookScript("OnShow", function(b)
+		b:StripTextures()
 	end)
 
 	hooksecurefunc('ContainerFrame_Update', function(frame)
@@ -262,4 +262,4 @@ local function LoadSkin()
 	SkinBags()
 end
 
-S:AddCallback("SkinBags", LoadSkin)
+S:AddCallback('ContainerFrame')

@@ -80,6 +80,9 @@ function UF:Configure_Power(frame)
 
 		E:SetSmoothing(power, self.db.smoothbars)
 
+		frame:SetPowerUpdateMethod(E.global.unitframe.effectivePower)
+		frame:SetPowerUpdateSpeed(E.global.unitframe.effectivePowerSpeed)
+
 		--Text
 		local attachPoint = self:GetObjectAnchorPoint(frame, db.power.attachTextTo)
 		power.value:ClearAllPoints()
@@ -119,11 +122,11 @@ function UF:Configure_Power(frame)
 		local heightChanged = false
 		if (not self.thinBorders and not E.PixelMode) and frame.POWERBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
 			frame.POWERBAR_HEIGHT = 7
-			if db.power then db.power.height = 7 end
+			db.power.height = 7
 			heightChanged = true
 		elseif (self.thinBorders or E.PixelMode) and frame.POWERBAR_HEIGHT < 3 then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
 			frame.POWERBAR_HEIGHT = 3
-			if db.power then db.power.height = 3 end
+			db.power.height = 3
 			heightChanged = true
 		end
 		if heightChanged then
@@ -233,7 +236,7 @@ function UF:Configure_Power(frame)
 	frame.Power.custom_backdrop = UF.db.colors.custompowerbackdrop and UF.db.colors.power_backdrop
 
 	--Transparency Settings
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.BG, nil, UF.db.colors.invertPower)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.BG, nil, UF.db.colors.invertPower, db.power.reverseFill)
 
 	--Prediction Texture; keep under ToggleTransparentStatusBar
 	UF:UpdatePredictionStatusBar(frame.PowerPrediction, frame.Power, "Power")

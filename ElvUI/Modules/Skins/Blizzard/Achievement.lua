@@ -12,7 +12,7 @@ local GetNumFilteredAchievements = GetNumFilteredAchievements
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 
-local function SkinAchievement(Achievement, BiggerIcon)
+local function skinAch(Achievement, BiggerIcon)
 	if Achievement.isSkinned then return; end
 
 	Achievement:SetFrameLevel(Achievement:GetFrameLevel() + 2)
@@ -139,8 +139,8 @@ local function styleSearchPreview(preview, index)
 	preview:HookScript("OnLeave", resultOnLeave)
 end
 
-local function LoadSkin(event)
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.achievement ~= true then return end
+function S:Blizzard_AchievementUI(event)
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
 
 	if event == "PLAYER_ENTERING_WORLD" then
 		hooksecurefunc('HybridScrollFrame_CreateButtons', function(frame, template)
@@ -154,14 +154,14 @@ local function LoadSkin(event)
 			end
 			if template == "AchievementTemplate" then
 				for _, Achievement in pairs(frame.buttons) do
-					SkinAchievement(Achievement, true)
+					skinAch(Achievement, true)
 				end
 			end
 			if template == "ComparisonTemplate" then
 				for _, Achievement in pairs(frame.buttons) do
 					if Achievement.isSkinned then return; end
-					SkinAchievement(Achievement.player)
-					SkinAchievement(Achievement.friend)
+					skinAch(Achievement.player)
+					skinAch(Achievement.friend)
 
 					hooksecurefunc(Achievement.player, 'Saturate', function()
 						if Achievement.player.accountWide then
@@ -183,9 +183,7 @@ local function LoadSkin(event)
 		end)
 	end
 
-	if (not IsAddOnLoaded("Blizzard_AchievementUI")) then
-		return;
-	end
+	if not IsAddOnLoaded("Blizzard_AchievementUI") then return end
 
 	_G.AchievementFrameCategories:SetBackdrop(nil)
 	_G.AchievementFrameSummary:SetBackdrop(nil)
@@ -394,7 +392,7 @@ local function LoadSkin(event)
 		for i=1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
 			local frame = _G["AchievementFrameSummaryAchievement"..i]
 			if not frame.isSkinned then
-				SkinAchievement(frame)
+				skinAch(frame)
 				frame.isSkinned = true
 			end
 
@@ -513,8 +511,8 @@ local function LoadSkin(event)
 		local Achievement = _G["AchievementFrameComparisonContainerButton"..i]
 		if not Achievement or (Achievement and Achievement.isSkinned) then return end
 
-		SkinAchievement(Achievement.player)
-		SkinAchievement(Achievement.friend)
+		skinAch(Achievement.player)
+		skinAch(Achievement.friend)
 
 		hooksecurefunc(Achievement.player, 'Saturate', function()
 			if Achievement.player.accountWide then
@@ -534,7 +532,7 @@ local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)
-	LoadSkin(event)
+	S:Blizzard_AchievementUI(event)
 end)
 
-S:AddCallbackForAddon("Blizzard_AchievementUI", "Achievement", LoadSkin)
+S:AddCallbackForAddon('Blizzard_AchievementUI')

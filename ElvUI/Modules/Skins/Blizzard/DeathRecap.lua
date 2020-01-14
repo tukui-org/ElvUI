@@ -7,8 +7,8 @@ local select, unpack = select, unpack
 --WoW API / Variables
 local CLOSE = CLOSE
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.deathRecap ~= true then return end
+function S:Blizzard_DeathRecap()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.deathRecap) then return end
 
 	local DeathRecapFrame = _G.DeathRecapFrame
 	DeathRecapFrame:StripTextures()
@@ -33,4 +33,4 @@ local function LoadSkin()
 	end
 end
 
-S:AddCallbackForAddon("Blizzard_DeathRecap", "DeathRecap", LoadSkin)
+S:AddCallbackForAddon('Blizzard_DeathRecap')

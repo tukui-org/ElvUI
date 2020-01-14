@@ -9,8 +9,8 @@ local CreateFrame = CreateFrame
 local GetProfessionInfo = GetProfessionInfo
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.spellbook ~= true then return end
+function S:SpellBookFrame()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
 
 	local SpellBookFrame = _G.SpellBookFrame
 	S:HandlePortraitFrame(SpellBookFrame, true)
@@ -80,9 +80,9 @@ local function LoadSkin()
 		end
 
 		highlight:SetAllPoints(icon)
-		hooksecurefunc(highlight, "SetTexture", function(self, texture)
+		hooksecurefunc(highlight, "SetTexture", function(s, texture)
 			if texture == "Interface\\Buttons\\ButtonHilight-Square" then
-				self:SetColorTexture(1, 1, 1, 0.3)
+				s:SetColorTexture(1, 1, 1, 0.3)
 			end
 		end)
 	end
@@ -170,9 +170,9 @@ local function LoadSkin()
 			end
 
 			Frame['button'..i].highlightTexture:SetInside()
-			hooksecurefunc(Frame['button'..i].highlightTexture, "SetTexture", function(self, texture)
+			hooksecurefunc(Frame['button'..i].highlightTexture, "SetTexture", function(s, texture)
 				if texture == "Interface\\Buttons\\ButtonHilight-Square" then
-					self:SetColorTexture(1, 1, 1, 0.3)
+					s:SetColorTexture(1, 1, 1, 0.3)
 				end
 			end)
 		end
@@ -195,4 +195,4 @@ local function LoadSkin()
 	end)
 end
 
-S:AddCallback("Spellbook", LoadSkin)
+S:AddCallback('SpellBookFrame')

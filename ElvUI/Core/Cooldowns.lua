@@ -30,7 +30,10 @@ function E:Cooldown_BelowScale(cd)
 end
 
 function E:Cooldown_OnUpdate(elapsed)
-	if self.nextUpdate > 0 then
+	local forced = elapsed == -1
+	if forced then
+		self.nextUpdate = 0
+	elseif self.nextUpdate > 0 then
 		self.nextUpdate = self.nextUpdate - elapsed
 		return
 	end
@@ -41,31 +44,35 @@ function E:Cooldown_OnUpdate(elapsed)
 		local now = GetTime()
 		if self.endCooldown and now >= self.endCooldown then
 			E:Cooldown_StopTimer(self)
-		else
-			if E:Cooldown_BelowScale(self) then
-				self.text:SetText('')
+		elseif E:Cooldown_BelowScale(self) then
+			self.text:SetText('')
+			if not forced then
 				self.nextUpdate = 500
-			elseif E:Cooldown_TextThreshold(self, now) then
-				self.text:SetText('')
+			end
+		elseif E:Cooldown_TextThreshold(self, now) then
+			self.text:SetText('')
+			if not forced then
 				self.nextUpdate = 1
-			elseif self.endTime then
-				local value, id, nextUpdate, remainder = E:GetTimeInfo(self.endTime - now, self.threshold, self.hhmmThreshold, self.mmssThreshold)
+			end
+		elseif self.endTime then
+			local value, id, nextUpdate, remainder = E:GetTimeInfo(self.endTime - now, self.threshold, self.hhmmThreshold, self.mmssThreshold)
+			if not forced then
 				self.nextUpdate = nextUpdate
+			end
 
-				local style = E.TimeFormats[id]
-				if style then
-					local which = (self.textColors and 2 or 1) + (self.showSeconds and 0 or 2)
-					if self.textColors then
-						self.text:SetFormattedText(style[which], value, self.textColors[id], remainder)
-					else
-						self.text:SetFormattedText(style[which], value, remainder)
-					end
+			local style = E.TimeFormats[id]
+			if style then
+				local which = (self.textColors and 2 or 1) + (self.showSeconds and 0 or 2)
+				if self.textColors then
+					self.text:SetFormattedText(style[which], value, self.textColors[id], remainder)
+				else
+					self.text:SetFormattedText(style[which], value, remainder)
 				end
+			end
 
-				local color = self.timeColors[id]
-				if color then
-					self.text:SetTextColor(color.r, color.g, color.b)
-				end
+			local color = self.timeColors[id]
+			if color then
+				self.text:SetTextColor(color.r, color.g, color.b)
 			end
 		end
 	end
@@ -90,12 +97,6 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 	else -- this should never happen but just incase
 		cd.text:FontTemplate()
 	end
-
-	if E:Cooldown_BelowScale(cd) then
-		cd:Hide()
-	elseif cd.enabled then
-		self:Cooldown_ForceUpdate(cd)
-	end
 end
 
 function E:Cooldown_IsEnabled(cd)
@@ -111,12 +112,11 @@ function E:Cooldown_IsEnabled(cd)
 end
 
 function E:Cooldown_ForceUpdate(cd)
-	cd.nextUpdate = -1
+	E.Cooldown_OnUpdate(cd, -1)
 	cd:Show()
 end
 
 function E:Cooldown_StopTimer(cd)
-	cd.enabled = nil
 	cd:Hide()
 end
 
@@ -145,20 +145,22 @@ function E:Cooldown_Options(timer, db, parent)
 		timer.reverseToggle = nil
 	end
 
-	if (db ~= E.db.cooldown) and db.fonts and db.fonts.enable then
-		fonts = db.fonts -- custom fonts override default fonts
-	elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
-		fonts = E.db.cooldown.fonts -- default global font override
-	end
+	if timer.CooldownOverride ~= 'auras' then
+		if (db ~= E.db.cooldown) and db.fonts and db.fonts.enable then
+			fonts = db.fonts -- custom fonts override default fonts
+		elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
+			fonts = E.db.cooldown.fonts -- default global font override
+		end
 
-	if fonts and fonts.enable then
-		timer.customFont = E.Libs.LSM:Fetch('font', fonts.font)
-		timer.customFontSize = fonts.fontSize
-		timer.customFontOutline = fonts.fontOutline
-	else
-		timer.customFont = nil
-		timer.customFontSize = nil
-		timer.customFontOutline = nil
+		if fonts and fonts.enable then
+			timer.customFont = E.Libs.LSM:Fetch('font', fonts.font)
+			timer.customFontSize = fonts.fontSize
+			timer.customFontOutline = fonts.fontOutline
+		else
+			timer.customFont = nil
+			timer.customFontSize = nil
+			timer.customFontOutline = nil
+		end
 	end
 end
 
@@ -193,9 +195,9 @@ function E:CreateCooldownTimer(parent)
 	E:ToggleBlizzardCooldownText(parent, timer)
 
 	-- keep an eye on the size so we can rescale the font if needed
-	self:Cooldown_OnSizeChanged(timer, parent:GetWidth())
+	E:Cooldown_OnSizeChanged(timer, parent:GetWidth())
 	parent:SetScript('OnSizeChanged', function(_, width)
-		self:Cooldown_OnSizeChanged(timer, width)
+		E:Cooldown_OnSizeChanged(timer, width)
 	end)
 
 	-- keep this after Cooldown_OnSizeChanged
@@ -212,8 +214,7 @@ function E:OnSetCooldown(start, duration)
 		timer.duration = duration
 		timer.endTime = start + duration
 		timer.endCooldown = timer.endTime - 0.05
-		timer.nextUpdate = -1
-		timer:Show()
+		E:Cooldown_ForceUpdate(timer)
 	elseif self.timer then
 		E:Cooldown_StopTimer(self.timer)
 	end
@@ -281,7 +282,7 @@ function E:UpdateCooldownOverride(module)
 
 			-- update font on cooldowns
 			if timer and cd then -- has a parent, these are timers from RegisterCooldown
-				self:Cooldown_OnSizeChanged(cd, parent:GetWidth(), true)
+				E:Cooldown_OnSizeChanged(cd, parent:GetWidth(), true)
 
 				E:ToggleBlizzardCooldownText(parent, cd)
 				if (not blizzText) and parent.CooldownOverride == 'actionbar' then
@@ -303,7 +304,7 @@ function E:UpdateCooldownOverride(module)
 
 				-- force update top aura cooldowns
 				if parent.CooldownOverride == 'auras' then
-					parent.nextUpdate = -1
+					E:Cooldown_ForceUpdate(parent)
 				end
 			end
 		end

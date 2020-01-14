@@ -7,8 +7,8 @@ local unpack = unpack
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.merchant ~= true then return end
+function S:MerchantFrame()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.merchant) then return end
 
 	local MerchantFrame = _G.MerchantFrame
 	S:HandlePortraitFrame(MerchantFrame, true)
@@ -56,12 +56,12 @@ local function LoadSkin()
 		icon:Point("BOTTOMRIGHT", -E.mult, E.mult)
 
 		iconBorder:SetAlpha(0)
-		hooksecurefunc(iconBorder, 'SetVertexColor', function(self, r, g, b)
-			self:GetParent():SetBackdropBorderColor(r, g, b)
-			self:SetTexture()
+		hooksecurefunc(iconBorder, 'SetVertexColor', function(s, r, g, b)
+			s:GetParent():SetBackdropBorderColor(r, g, b)
+			s:SetTexture()
 		end)
-		hooksecurefunc(iconBorder, 'Hide', function(self)
-			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+		hooksecurefunc(iconBorder, 'Hide', function(s)
+			s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
 		_G["MerchantItem"..i.."MoneyFrame"]:ClearAllPoints()
@@ -79,12 +79,12 @@ local function LoadSkin()
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point("BOTTOMRIGHT", -E.mult, E.mult)
 
 	_G.MerchantBuyBackItemItemButton.IconBorder:SetAlpha(0)
-	hooksecurefunc(_G.MerchantBuyBackItemItemButton.IconBorder, 'SetVertexColor', function(self, r, g, b)
-		self:GetParent():SetBackdropBorderColor(r, g, b)
-		self:SetTexture()
+	hooksecurefunc(_G.MerchantBuyBackItemItemButton.IconBorder, 'SetVertexColor', function(s, r, g, b)
+		s:GetParent():SetBackdropBorderColor(r, g, b)
+		s:SetTexture()
 	end)
-	hooksecurefunc(_G.MerchantBuyBackItemItemButton.IconBorder, 'Hide', function(self)
-		self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+	hooksecurefunc(_G.MerchantBuyBackItemItemButton.IconBorder, 'Hide', function(s)
+		s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end)
 
 	S:HandleButton(_G.MerchantRepairItemButton)
@@ -106,4 +106,4 @@ local function LoadSkin()
 	S:HandleNextPrevButton(_G.MerchantPrevPageButton, nil, nil, true, true)
 end
 
-S:AddCallback("Merchant", LoadSkin)
+S:AddCallback('MerchantFrame')

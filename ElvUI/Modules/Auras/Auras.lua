@@ -156,39 +156,28 @@ function A:CreateIcon(button)
 	if not button.isRegisteredCooldown then
 		button.CooldownOverride = 'auras'
 		button.isRegisteredCooldown = true
+		button.forceEnabled = true
+		button.showSeconds = true
 
 		if not E.RegisteredCooldowns.auras then E.RegisteredCooldowns.auras = {} end
 		tinsert(E.RegisteredCooldowns.auras, button)
 	end
 
-	if button.customFont then
-		button.text:FontTemplate(button.customFont, button.customFontSize, button.customFontOutline)
-	else
-		button.text:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
-	end
+	button.text:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
 
 	button:SetScript('OnAttributeChanged', A.OnAttributeChanged)
+	A:Update_CooldownOptions(button)
 
-	if auraType == 'HELPFUL' then
-		if MasqueGroupBuffs and E.private.auras.masque.buffs then
-			MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
-			if button.__MSQ_BaseFrame then
-				button.__MSQ_BaseFrame:SetFrameLevel(2) --Lower the framelevel to fix issue with buttons created during combat
-			end
-			MasqueGroupBuffs:ReSkin()
-		else
-			button:SetTemplate()
-		end
-	elseif auraType == 'HARMFUL' then
-		if MasqueGroupDebuffs and E.private.auras.masque.debuffs then
-			MasqueGroupDebuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
-			if button.__MSQ_BaseFrame then
-				button.__MSQ_BaseFrame:SetFrameLevel(2) --Lower the framelevel to fix issue with buttons created during combat
-			end
-			MasqueGroupDebuffs:ReSkin()
-		else
-			button:SetTemplate()
-		end
+	if auraType == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
+		MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
+		if button.__MSQ_BaseFrame then button.__MSQ_BaseFrame:SetFrameLevel(2) end --Lower the framelevel to fix issue with buttons created during combat
+		MasqueGroupBuffs:ReSkin()
+	elseif auraType == 'HARMFUL' and MasqueGroupDebuffs and E.private.auras.masque.debuffs then
+		MasqueGroupDebuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
+		if button.__MSQ_BaseFrame then button.__MSQ_BaseFrame:SetFrameLevel(2) end --Lower the framelevel to fix issue with buttons created during combat
+		MasqueGroupDebuffs:ReSkin()
+	else
+		button:SetTemplate()
 	end
 end
 
@@ -321,9 +310,6 @@ end
 
 function A:Update_CooldownOptions(button)
 	E:Cooldown_Options(button, self.db.cooldown, button)
-
-	button.forceEnabled = true
-	button.showSeconds = true
 end
 
 function A:OnAttributeChanged(attribute, value)
@@ -466,6 +452,14 @@ function A:Initialize()
 	self.DebuffFrame = self:CreateAuraHeader('HARMFUL')
 	self.DebuffFrame:Point('BOTTOMRIGHT', _G.MMHolder, 'BOTTOMLEFT', -(6 + E.Border), E.Border + E.Spacing)
 	E:CreateMover(self.DebuffFrame, 'DebuffsMover', L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
+
+	local colors = self.db.barColor
+	if E:CheckClassColor(colors.r, colors.g, colors.b) then
+		local classColor = E:ClassColor(E.myclass, true)
+		colors.r = classColor.r
+		colors.g = classColor.g
+		colors.b = classColor.b
+	end
 
 	if Masque then
 		if MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end

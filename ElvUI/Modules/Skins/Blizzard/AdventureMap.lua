@@ -18,8 +18,8 @@ local function SkinRewards()
 	end
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.AdventureMap ~= true then return end
+function S:Blizzard_AdventureMap()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AdventureMap) then return end
 
 	--Quest Choise
 	local AdventureMapQuestChoiceDialog = _G.AdventureMapQuestChoiceDialog
@@ -43,4 +43,4 @@ local function LoadSkin()
 	S:HandleButton(AdventureMapQuestChoiceDialog.DeclineButton)
 end
 
-S:AddCallbackForAddon('Blizzard_AdventureMap', "AdventureMap", LoadSkin)
+S:AddCallbackForAddon('Blizzard_AdventureMap')

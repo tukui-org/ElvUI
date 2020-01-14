@@ -24,6 +24,7 @@ P.general = {
 	talkingHeadFrameBackdrop = false,
 	vehicleSeatIndicatorSize = 128,
 	objectiveTracker = true,
+	resurrectSound = false,
 	questRewardMostValueIcon = true,
 	itemLevel = {
 		displayCharacterInfo = true,
@@ -421,7 +422,7 @@ local NP_Castbar = {
 
 local NP_Title = {
 	enable = false,
-	format = '[guild]',
+	format = '[guild:brackets]',
 	position = 'TOPRIGHT',
 	parent = 'Nameplate',
 	xOffset = 0,
@@ -653,6 +654,7 @@ P.nameplates = {
 			showTitle = true,
 			nameOnly = false,
 			markHealers = true,
+			markTanks = true,
 			buffs = CopyTable(NP_Auras),
 			castbar = CopyTable(NP_Castbar),
 			debuffs =  CopyTable(NP_Auras),
@@ -671,6 +673,7 @@ P.nameplates = {
 			showTitle = true,
 			nameOnly = false,
 			markHealers = true,
+			markTanks = true,
 			buffs = CopyTable(NP_Auras),
 			castbar = CopyTable(NP_Castbar),
 			debuffs =  CopyTable(NP_Auras),
@@ -687,7 +690,7 @@ P.nameplates = {
 		FRIENDLY_NPC = {
 			enable = true,
 			showTitle = true,
-			nameOnly = false,
+			nameOnly = true,
 			nazjatarFollowerXP = {
 				enable = true,
 				yOffset = -4,
@@ -768,7 +771,6 @@ P.nameplates.units.FRIENDLY_NPC.debuffs.growthY = 'UP'
 P.nameplates.units.FRIENDLY_NPC.debuffs.yOffset = 35
 P.nameplates.units.FRIENDLY_NPC.debuffs.priority = 'Blacklist,Boss,CCDebuffs,RaidDebuffs,Dispellable'
 P.nameplates.units.FRIENDLY_NPC.level.format = '[difficultycolor][level][shortclassification]'
-P.nameplates.units.FRIENDLY_NPC.title.format = '[npctitle]'
 
 P.nameplates.units.ENEMY_NPC.buffs.priority = 'Blacklist,RaidBuffsElvUI,Dispellable,blockNoDuration,PlayerBuffs,TurtleBuffs,CastByUnit'
 P.nameplates.units.ENEMY_NPC.debuffs.anchorPoint = 'TOPRIGHT'
@@ -1204,6 +1206,8 @@ local UF_PVPIcon = {
 local UF_RaidRoles = {
 	enable = true,
 	position = 'TOPLEFT',
+	xOffset = 0,
+	yOffset = 0,
 }
 
 local UF_Ressurect = {
@@ -1303,6 +1307,7 @@ P.unitframe = {
 	targetOnMouseDown = false,
 	auraBlacklistModifier = 'SHIFT',
 	thinBorders = false,
+	targetSound = false,
 	colors = {
 		borderColor = {r = 0, g = 0, b = 0},
 		healthclass = false,
@@ -1775,7 +1780,7 @@ P.unitframe.units.target.aurabar.maxDuration = 120
 P.unitframe.units.target.aurabar.priority = 'Blacklist,Personal,blockNoDuration,PlayerBuffs,Boss,RaidDebuffs'
 P.unitframe.units.target.buffs.enable = true
 P.unitframe.units.target.buffs.anchorPoint = 'TOPRIGHT'
-P.unitframe.units.target.buffs.priority = 'Blacklist,Personal,PlayerBuffs,Whitelist,blockNoDuration,nonPersonal'
+P.unitframe.units.target.buffs.priority = 'Blacklist,Personal,nonPersonal'
 P.unitframe.units.target.debuffs.enable = true
 P.unitframe.units.target.debuffs.anchorPoint = 'TOPRIGHT'
 P.unitframe.units.target.debuffs.attachTo = 'BUFFS'
@@ -2016,7 +2021,6 @@ P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
 
 --Cooldown
 P.cooldown = {
-	enable = true,
 	threshold = 3,
 	hideBlizzard = false,
 	useIndicatorColor = false,
@@ -2185,31 +2189,34 @@ P.actionbar.bar5.enabled = true
 P.actionbar.bar5.buttons = 6
 P.actionbar.bar5.buttonsPerRow = 6
 
-P.actionbar.cooldown = CopyTable(P.cooldown)
-P.actionbar.expiringColor = { r = 1, g = 0, b = 0 }
-P.actionbar.secondsColor = { r = 1, g = 1, b = 1 }
-P.actionbar.hoursColor = { r = 1, g = 1, b = 1 }
-P.actionbar.daysColor = { r = 1, g = 1, b = 1 }
+do -- cooldown stuff
+	P.actionbar.cooldown = CopyTable(P.cooldown)
+	P.actionbar.cooldown.expiringColor = { r = 1, g = 0, b = 0 }
+	P.actionbar.cooldown.secondsColor = { r = 1, g = 1, b = 1 }
+	P.actionbar.cooldown.hoursColor = { r = 1, g = 1, b = 1 }
+	P.actionbar.cooldown.daysColor = { r = 1, g = 1, b = 1 }
 
-P.auras.cooldown = CopyTable(P.actionbar.cooldown)
-P.bags.cooldown = CopyTable(P.actionbar.cooldown)
-P.nameplates.cooldown = CopyTable(P.actionbar.cooldown)
-P.unitframe.cooldown = CopyTable(P.actionbar.cooldown)
+	P.auras.cooldown = CopyTable(P.actionbar.cooldown)
+	P.bags.cooldown = CopyTable(P.actionbar.cooldown)
+	P.nameplates.cooldown = CopyTable(P.actionbar.cooldown)
+	P.unitframe.cooldown = CopyTable(P.actionbar.cooldown)
 
-P.actionbar.cooldown.enable = nil
-P.auras.cooldown.enable = nil
-P.bags.cooldown.enable = nil
-P.nameplates.cooldown.enable = nil
-P.unitframe.cooldown.enable = nil
+	-- color override
+	P.auras.cooldown.override = false
+	P.bags.cooldown.override = false
+	P.actionbar.cooldown.override = true
+	P.nameplates.cooldown.override = true
+	P.unitframe.cooldown.override = true
 
-P.actionbar.cooldown.override = false
-P.auras.cooldown.override = true
-P.bags.cooldown.override = false
-P.nameplates.cooldown.override = true
-P.unitframe.cooldown.override = true
+	-- auras doesn't have a reverse option
+	P.actionbar.cooldown.reverse = false
+	P.nameplates.cooldown.reverse = false
+	P.unitframe.cooldown.reverse = false
+	P.bags.cooldown.reverse = false
 
-P.actionbar.cooldown.reverse = false
-P.auras.cooldown.reverse = false
-P.bags.cooldown.reverse = false
-P.nameplates.cooldown.reverse = false
-P.unitframe.cooldown.reverse = false
+	-- auras don't have override font settings
+	P.auras.cooldown.fonts = nil
+
+	-- we gonna need this on by default :3
+	P.cooldown.enable = true
+end

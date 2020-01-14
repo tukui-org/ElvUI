@@ -7,8 +7,8 @@ local select = select
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.artifact ~= true then return end
+function S:Blizzard_ArtifactUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.artifact) then return end
 
 	local ArtifactFrame = _G.ArtifactFrame
 	ArtifactFrame:StripTextures()
@@ -28,9 +28,9 @@ local function LoadSkin()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:ClearAllPoints()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:Point("TOPLEFT", ArtifactFrame)
 
-	ArtifactFrame.AppearancesTab:HookScript("OnShow", function(self)
-		for i=1, self:GetNumChildren() do
-			local child = select(i, self:GetChildren())
+	ArtifactFrame.AppearancesTab:HookScript("OnShow", function(s)
+		for i=1, s:GetNumChildren() do
+			local child = select(i, s:GetChildren())
 			if child and child.appearanceID and not child.backdrop then
 				child:CreateBackdrop("Transparent")
 				child.SwatchTexture:SetTexCoord(.20,.80,.20,.80)
@@ -56,4 +56,4 @@ local function LoadSkin()
 	end)
 end
 
-S:AddCallbackForAddon("Blizzard_ArtifactUI", "Artifact", LoadSkin)
+S:AddCallbackForAddon('Blizzard_ArtifactUI')

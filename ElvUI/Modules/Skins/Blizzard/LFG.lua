@@ -111,8 +111,8 @@ local function HandleAffixIcons(self)
 	end
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
+function S:LookingForGroupFrames()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 
 	local PVEFrame = _G.PVEFrame
@@ -702,10 +702,9 @@ local function LoadSkin()
 	-- Tutorial
 	S:HandleCloseButton(_G.PremadeGroupsPvETutorialAlert.CloseButton)
 end
-S:AddCallback("LFG", LoadSkin)
 
-local function LoadSecondarySkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
+function S:Blizzard_ChallengesUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 	local ChallengesFrame = _G.ChallengesFrame
 	ChallengesFrame:DisableDrawLayer("BACKGROUND")
@@ -763,4 +762,5 @@ local function LoadSecondarySkin()
 	S:HandleIcon(affix.Portrait)
 end
 
-S:AddCallbackForAddon("Blizzard_ChallengesUI", "Challenges", LoadSecondarySkin)
+S:AddCallback('LookingForGroupFrames')
+S:AddCallbackForAddon('Blizzard_ChallengesUI')

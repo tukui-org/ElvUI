@@ -35,8 +35,8 @@ local function SkinNavBarButtons(self)
 	end
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
+function S:BlizzardMiscFrames()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
 	_G.QueueStatusFrame:StripTextures()
 
@@ -119,14 +119,14 @@ local function LoadSkin()
 	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly
 	-- we can just hook onto this function so that we can get the correct `self`
 	-- this is called through `CinematicFrame_OnShow` so the result would still happen where we want
-	hooksecurefunc('CinematicFrame_OnDisplaySizeChanged', function(self)
-		if self and self.closeDialog and not self.closeDialog.template then
-			self.closeDialog:StripTextures()
-			self.closeDialog:SetTemplate('Transparent')
-			self:SetScale(_G.UIParent:GetScale())
-			local dialogName = self.closeDialog.GetName and self.closeDialog:GetName()
-			local closeButton = self.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
-			local resumeButton = self.closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
+	hooksecurefunc('CinematicFrame_OnDisplaySizeChanged', function(s)
+		if s and s.closeDialog and not s.closeDialog.template then
+			s.closeDialog:StripTextures()
+			s.closeDialog:SetTemplate('Transparent')
+			s:SetScale(_G.UIParent:GetScale())
+			local dialogName = s.closeDialog.GetName and s.closeDialog:GetName()
+			local closeButton = s.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
+			local resumeButton = s.closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
 			if closeButton then S:HandleButton(closeButton) end
 			if resumeButton then S:HandleButton(resumeButton) end
 		end
@@ -135,13 +135,13 @@ local function LoadSkin()
 	-- same as above except `MovieFrame_OnEvent` and `MovieFrame_OnShow`
 	-- cant be hooked directly so we can just use this
 	-- this is called through `MovieFrame_OnEvent` on the event `PLAY_MOVIE`
-	hooksecurefunc('MovieFrame_PlayMovie', function(self)
-		if self and self.CloseDialog and not self.CloseDialog.template then
-			self:SetScale(_G.UIParent:GetScale())
-			self.CloseDialog:StripTextures()
-			self.CloseDialog:SetTemplate('Transparent')
-			S:HandleButton(self.CloseDialog.ConfirmButton)
-			S:HandleButton(self.CloseDialog.ResumeButton)
+	hooksecurefunc('MovieFrame_PlayMovie', function(s)
+		if s and s.CloseDialog and not s.CloseDialog.template then
+			s:SetScale(_G.UIParent:GetScale())
+			s.CloseDialog:StripTextures()
+			s.CloseDialog:SetTemplate('Transparent')
+			S:HandleButton(s.CloseDialog.ConfirmButton)
+			S:HandleButton(s.CloseDialog.ResumeButton)
 		end
 	end)
 
@@ -154,9 +154,9 @@ local function LoadSkin()
 
 	for i = 1, #ChatMenus do
 		if _G[ChatMenus[i]] == _G.ChatMenu then
-			_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Transparent", true) self:SetBackdropColor(unpack(E.media.backdropfadecolor)) self:ClearAllPoints() self:Point("BOTTOMLEFT", _G.ChatFrame1, "TOPLEFT", 0, 30) end)
+			_G[ChatMenus[i]]:HookScript("OnShow", function(s) s:SetTemplate("Transparent", true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) s:ClearAllPoints() s:Point("BOTTOMLEFT", _G.ChatFrame1, "TOPLEFT", 0, 30) end)
 		else
-			_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Transparent", true) self:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
+			_G[ChatMenus[i]]:HookScript("OnShow", function(s) s:SetTemplate("Transparent", true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
 		end
 	end
 
@@ -220,18 +220,18 @@ local function LoadSkin()
 		local normTex = _G['StaticPopup'..i..'ItemFrame']:GetNormalTexture()
 		if normTex then
 			normTex:SetTexture()
-			hooksecurefunc(normTex, "SetTexture", function(self, tex)
-				if tex ~= nil then self:SetTexture() end
+			hooksecurefunc(normTex, "SetTexture", function(s, tex)
+				if tex ~= nil then s:SetTexture() end
 			end)
 		end
 
 		-- Quality IconBorder
-		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'SetVertexColor', function(self, r, g, b)
-			self:GetParent():SetBackdropBorderColor(r, g, b)
-			self:SetTexture()
+		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'SetVertexColor', function(s, r, g, b)
+			s:GetParent():SetBackdropBorderColor(r, g, b)
+			s:SetTexture()
 		end)
-		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'Hide', function(self)
-			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'Hide', function(s)
+			s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 	end
 
@@ -384,4 +384,4 @@ local function LoadSkin()
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
 end
 
-S:AddCallback("SkinMisc", LoadSkin)
+S:AddCallback('BlizzardMiscFrames')

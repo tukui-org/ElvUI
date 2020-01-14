@@ -20,6 +20,7 @@ function UF:Construct_BossFrames(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
+	frame.Power.displayAltPower = true
 
 	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
 
@@ -35,8 +36,7 @@ function UF:Construct_BossFrames(frame)
 
 	frame.Castbar = self:Construct_Castbar(frame)
 	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
-	frame.AlternativePower = self:Construct_AltPowerBar(frame)
-	frame.ClassBar = "AlternativePower"
+
 	frame.Fader = self:Construct_Fader()
 	frame.Cutaway = self:Construct_Cutaway(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
@@ -63,7 +63,7 @@ function UF:Update_BossFrames(frame, db)
 		frame.POWERBAR_DETACHED = db.power.detachFromFrame
 		frame.USE_INSET_POWERBAR = not frame.POWERBAR_DETACHED and db.power.width == 'inset' and frame.USE_POWERBAR
 		frame.USE_MINI_POWERBAR = (not frame.POWERBAR_DETACHED and db.power.width == 'spaced' and frame.USE_POWERBAR)
-		frame.USE_POWERBAR_OFFSET = db.power.offset ~= 0 and frame.USE_POWERBAR and not frame.POWERBAR_DETACHED
+		frame.USE_POWERBAR_OFFSET = (db.power.width == 'offset' and db.power.offset ~= 0) and frame.USE_POWERBAR and not frame.POWERBAR_DETACHED
 		frame.POWERBAR_OFFSET = frame.USE_POWERBAR_OFFSET and db.power.offset or 0
 
 		frame.POWERBAR_HEIGHT = not frame.USE_POWERBAR and 0 or db.power.height
@@ -72,16 +72,6 @@ function UF:Update_BossFrames(frame, db)
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
-
-		frame.CAN_HAVE_CLASSBAR = true
-		frame.MAX_CLASS_BAR = 0
-		frame.USE_CLASSBAR = true
-		frame.CLASSBAR_SHOWN = frame.AlternativePower:IsShown()
-		frame.CLASSBAR_DETACHED = false
-		frame.USE_MINI_CLASSBAR = false
-		frame.CLASSBAR_HEIGHT = frame.CLASSBAR_SHOWN and db.power.height or 0
-		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET
-		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN) and 0 or (frame.CLASSBAR_HEIGHT + frame.SPACING)
 
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
@@ -121,9 +111,6 @@ function UF:Update_BossFrames(frame, db)
 
 	--Raid Icon
 	UF:Configure_RaidIcon(frame)
-
-	--AlternativePower
-	UF:Configure_AltPower(frame)
 
 	UF:Configure_DebuffHighlight(frame)
 

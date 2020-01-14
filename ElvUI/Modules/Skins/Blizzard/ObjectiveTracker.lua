@@ -139,8 +139,8 @@ local function SkinFindGroupButton(block)
 	end
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.objectiveTracker ~= true then return end
+function S:ObjectiveTrackerFrame()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.objectiveTracker) then return end
 
 	local ObjectiveTrackerFrame = _G.ObjectiveTrackerFrame
 	local minimizeButton = ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
@@ -175,4 +175,4 @@ local function LoadSkin()
 	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,"AddObjective",SkinItemButton)				--[Skin]: World Quest Item Buttons
 end
 
-S:AddCallback("ObjectiveTracker", LoadSkin)
+S:AddCallback('ObjectiveTrackerFrame')

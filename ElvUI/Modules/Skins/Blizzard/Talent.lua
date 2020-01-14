@@ -16,8 +16,8 @@ local UnitSex = UnitSex
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talent ~= true then return end
+function S:Blizzard_TalentUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
 	local PlayerTalentFrame = _G.PlayerTalentFrame
 	S:HandlePortraitFrame(PlayerTalentFrame, true)
@@ -94,22 +94,22 @@ local function LoadSkin()
 	end
 
 	do
-		local onFinished = function(self)
-			local r, g, b = self:GetChange()
+		local onFinished = function(s)
+			local r, g, b = s:GetChange()
 			local defaultR, defaultG, defaultB = unpack(E.media.bordercolor)
 			defaultR = E:Round(defaultR, 2)
 			defaultG = E:Round(defaultG, 2)
 			defaultB = E:Round(defaultB, 2)
 
 			if r == defaultR and g == defaultG and b == defaultB then
-				self:SetChange(unpack(E.media.rgbvaluecolor))
+				s:SetChange(unpack(E.media.rgbvaluecolor))
 			else
-				self:SetChange(defaultR, defaultG, defaultB)
+				s:SetChange(defaultR, defaultG, defaultB)
 			end
 		end
 
-		local onShow = function(self)
-			local parent = self:GetParent()
+		local onShow = function(s)
+			local parent = s:GetParent()
 			if not parent.transition:IsPlaying() then
 				for _, child in pairs(parent.transition.color.children) do
 					child:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -119,8 +119,8 @@ local function LoadSkin()
 			end
 		end
 
-		local onHide = function(self)
-			local parent = self:GetParent()
+		local onHide = function(s)
+			local parent = s:GetParent()
 			if parent.transition:IsPlaying() then
 				parent.transition:Stop()
 
@@ -179,10 +179,10 @@ local function LoadSkin()
 		end
 	end
 
-	hooksecurefunc("TalentFrame_Update", function(self)
+	hooksecurefunc("TalentFrame_Update", function(s)
 		for i = 1, _G.MAX_TALENT_TIERS do
 			for j = 1, _G.NUM_TALENT_COLUMNS do
-				local bu = self['tier'..i]['talent'..j]
+				local bu = s['tier'..i]['talent'..j]
 				if bu.bg and bu.knownSelection then
 					if bu.knownSelection:IsShown() then
 						bu.bg.SelectedTexture:Show()
@@ -198,28 +198,28 @@ local function LoadSkin()
 		end
 	end)
 
-	hooksecurefunc("PlayerTalentFrame_UpdateSpecFrame", function(self, spec)
-		local playerTalentSpec = GetSpecialization(nil, self.isPet, _G.PlayerSpecTab2:GetChecked() and 2 or 1)
+	hooksecurefunc("PlayerTalentFrame_UpdateSpecFrame", function(s, spec)
+		local playerTalentSpec = GetSpecialization(nil, s.isPet, _G.PlayerSpecTab2:GetChecked() and 2 or 1)
 		local shownSpec = spec or playerTalentSpec or 1
-		local numSpecs = GetNumSpecializations(nil, self.isPet)
-		local sex = self.isPet and UnitSex("pet") or UnitSex("player")
-		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, self.isPet, nil, sex)
+		local numSpecs = GetNumSpecializations(nil, s.isPet)
+		local sex = s.isPet and UnitSex("pet") or UnitSex("player")
+		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, s.isPet, nil, sex)
 		if not id then return end
-		local scrollChild = self.spellsScroll.child
+		local scrollChild = s.spellsScroll.child
 		scrollChild.specIcon:SetTexture(icon)
 
 		local index = 1
 		local bonuses
 		local bonusesIncrement = 1
-		if self.isPet then
-			bonuses = {GetSpecializationSpells(shownSpec, nil, self.isPet, true)}
+		if s.isPet then
+			bonuses = {GetSpecializationSpells(shownSpec, nil, s.isPet, true)}
 			bonusesIncrement = 2
 		else
 			bonuses = C_SpecializationInfo_GetSpellsDisplay(id)
 		end
 
 		for i = 1, numSpecs do
-			local bu = self["specButton"..i]
+			local bu = s["specButton"..i]
 			bu.SelectedTexture:SetInside(bu.backdrop)
 			if bu.selected then
 				bu.SelectedTexture:Show()
@@ -251,8 +251,8 @@ local function LoadSkin()
 		end
 
 		-- Hide the default flash anim
-		self.learnButton.Flash:Hide()
-		self.learnButton.FlashAnim:Stop()
+		s.learnButton.Flash:Hide()
+		s.learnButton.FlashAnim:Stop()
 	end)
 
 	local PvpTalentFrame = _G.PlayerTalentFrameTalents.PvpTalentFrame
@@ -265,26 +265,24 @@ local function LoadSkin()
 		button.Arrow:SetAlpha(0)
 		button.Border:Hide()
 
-		hooksecurefunc(button, "Update", function(self)
-			local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(self.slotIndex);
-			if (not slotInfo) then
-				return;
-			end
+		hooksecurefunc(button, "Update", function(s)
+			local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(s.slotIndex);
+			if not slotInfo then return end
 
-			if (slotInfo.enabled) then
-				S:HandleIcon(self.Texture)
-				if (not slotInfo.selectedTalentID) then
-					self.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
-					self.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
+			if slotInfo.enabled then
+				S:HandleIcon(s.Texture)
+				if not slotInfo.selectedTalentID then
+					s.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
+					s.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
 				else
-					self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 			else
-				self.Texture:SetTexture([[Interface\PetBattles\PetBattle-LockIcon]])
-				self.Texture:SetTexCoord(0, 1, 0, 1)
-				self.Texture:SetDesaturated(true)
-				self.Texture:Show()
-				self.backdrop:SetBackdropBorderColor(1, 0, 0, 1)
+				s.Texture:SetTexture([[Interface\PetBattles\PetBattle-LockIcon]])
+				s.Texture:SetTexCoord(0, 1, 0, 1)
+				s.Texture:SetDesaturated(true)
+				s.Texture:Show()
+				s.backdrop:SetBackdropBorderColor(1, 0, 0, 1)
 			end
 		end)
 	end
@@ -348,4 +346,4 @@ local function LoadSkin()
 	S:HandleScrollBar(_G.PlayerTalentFrameTalents.PvpTalentFrame.TalentList.ScrollFrame.ScrollBar)
 end
 
-S:AddCallbackForAddon("Blizzard_TalentUI", "Talent", LoadSkin)
+S:AddCallbackForAddon('Blizzard_TalentUI')

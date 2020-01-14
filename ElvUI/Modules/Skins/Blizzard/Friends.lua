@@ -58,17 +58,15 @@ local function BattleNetFrame_OnLeave(button)
 	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
-local function RAFRewards(self, rewards)
-	local Reward = _G.RecruitAFriendRewardsFrame
-
-	for reward in Reward.rewardPool:EnumerateActive() do
+local function RAFRewards()
+	for reward in _G.RecruitAFriendRewardsFrame.rewardPool:EnumerateActive() do
 		S:HandleIcon(reward.Button.Icon)
 		reward.Button.IconBorder:SetAlpha(0)
 	end
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.friends ~= true then return end
+function S:FriendsFrame()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
 	S:HandleScrollBar(_G.FriendsListFrameScrollFrame.scrollBar, 5)
 	S:HandleScrollBar(_G.WhoListScrollFrame.scrollBar, 5)
@@ -236,14 +234,14 @@ local function LoadSkin()
 
 	-- GameIcons
 	for i = 1, _G.FRIENDS_TO_DISPLAY do
-		local button = _G["FriendsListFrameScrollFrameButton"..i]
+		local btn = _G["FriendsListFrameScrollFrameButton"..i]
 		local icon = _G["FriendsListFrameScrollFrameButton"..i.."GameIcon"]
 
 		icon:Size(22, 22)
 		icon:SetTexCoord(.15, .85, .15, .85)
 
 		icon:ClearAllPoints()
-		icon:Point("RIGHT", button, "RIGHT", -24, 0)
+		icon:Point("RIGHT", btn, "RIGHT", -24, 0)
 		icon.SetPoint = E.noop
 	end
 
@@ -269,13 +267,13 @@ local function LoadSkin()
 		SplashFrame.PictureFrame_Bracket_BottomLeft:Hide()
 	end
 
-	local Reward = RAF.RewardClaiming
-	Reward:StripTextures()
-	Reward:CreateBackdrop("Transparent")
-	S:HandleIcon(Reward.NextRewardButton.Icon)
-	Reward.NextRewardButton.CircleMask:Hide()
-	Reward.NextRewardButton.IconBorder:SetAlpha(0)
-	S:HandleButton(Reward.ClaimOrViewRewardButton)
+	local Claiming = RAF.RewardClaiming
+	Claiming:StripTextures()
+	Claiming:CreateBackdrop("Transparent")
+	S:HandleIcon(Claiming.NextRewardButton.Icon)
+	Claiming.NextRewardButton.CircleMask:Hide()
+	Claiming.NextRewardButton.IconBorder:SetAlpha(0)
+	S:HandleButton(Claiming.ClaimOrViewRewardButton)
 
 	local RecruitList = RAF.RecruitList
 	RecruitList.Header:StripTextures()
@@ -301,4 +299,4 @@ local function LoadSkin()
 	RAFRewards() -- Because it's loaded already. The securehook is for when it updates in game. Thanks for playing.
 end
 
-S:AddCallback("Friends", LoadSkin)
+S:AddCallback('FriendsFrame')

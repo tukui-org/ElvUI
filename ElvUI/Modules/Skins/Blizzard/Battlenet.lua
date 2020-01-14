@@ -5,8 +5,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select = select
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
+function S:BattleNetFrames()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
 	local skins = {
 		_G.BNToastFrame,
@@ -45,4 +45,4 @@ local function LoadSkin()
 	end
 end
 
-S:AddCallback("SkinBNet", LoadSkin)
+S:AddCallback('BattleNetFrames')

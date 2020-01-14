@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local function LoadSkin()
+function S:Blizzard_QuestChoice()
 	if E.private.skins.blizzard.questChoice ~= true then return end
 
 	local QuestChoiceFrame = _G.QuestChoiceFrame
@@ -34,4 +34,4 @@ local function LoadSkin()
 	QuestChoiceFrame.CloseButton:SetFrameLevel(10)
 end
 
-S:AddCallbackForAddon("Blizzard_QuestChoice", "QuestChoice", LoadSkin)
+S:AddCallbackForAddon('Blizzard_QuestChoice')

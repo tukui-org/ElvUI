@@ -173,8 +173,8 @@ local function HandleTopTabs(tab)
 	tab:SetHitRectInsets(0, 0, 0, 0)
 end
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
+function S:Blizzard_EncounterJournal()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.encounterjournal) then return end
 
 	local EJ = _G.EncounterJournal
 	S:HandlePortraitFrame(EJ, true)
@@ -196,11 +196,11 @@ local function LoadSkin()
 
 	EJ.instanceSelect.bg:Kill()
 	S:HandleDropDownBox(InstanceSelect.tierDropDown)
-	EJ.instanceSelect.tierDropDown:HookScript("OnShow", function(self)
-		local text = self.Text
+	EJ.instanceSelect.tierDropDown:HookScript("OnShow", function(s)
+		local text = s.Text
 		local a, b, c, d, e = text:GetPoint()
 		text:Point(a, b, c, d + 10, e - 4)
-		text:Width(self:GetWidth() / 1.4)
+		text:Width(s:GetWidth() / 1.4)
 	end)
 
 	S:HandleScrollBar(InstanceSelect.scroll.ScrollBar, 6)
@@ -356,9 +356,9 @@ local function LoadSkin()
 		item.armorType:ClearAllPoints()
 		item.armorType:Point("RIGHT", item, "RIGHT", -10, 0)
 
-		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
-			self:GetParent().IconBackdrop:SetBackdropBorderColor(r, g, b)
-			self:SetTexture()
+		hooksecurefunc(item.IconBorder, "SetVertexColor", function(s, r, g, b)
+			s:GetParent().IconBackdrop:SetBackdropBorderColor(r, g, b)
+			s:SetTexture()
 		end)
 
 		if E.private.skins.parchmentRemover.enable then
@@ -433,43 +433,44 @@ local function LoadSkin()
 		end
 
 		hooksecurefunc("EJSuggestFrame_RefreshDisplay", function()
-			local self = suggestFrame
-			if #self.suggestions > 0 then
-				local suggestion = self.Suggestion1
-				local data = self.suggestions[1]
-				suggestion.iconRing:Hide()
-				if suggestion and data then
-					suggestion.icon:SetMask("")
-					suggestion.icon:SetTexture(data.iconPath)
-					suggestion.icon:SetTexCoord(unpack(E.TexCoords))
+			local s = suggestFrame
+			if #s.suggestions > 0 then
+				local sugg = s.Suggestion1
+				local data = s.suggestions[1]
+				sugg.iconRing:Hide()
+				if sugg and data then
+					sugg.icon:SetMask("")
+					sugg.icon:SetTexture(data.iconPath)
+					sugg.icon:SetTexCoord(unpack(E.TexCoords))
 				end
 			end
 
-			if #self.suggestions > 1 then
-				for i = 2, #self.suggestions do
-					local suggestion = self["Suggestion"..i]
-					if not suggestion then break end
-					local data = self.suggestions[i]
-					suggestion.iconRing:Hide()
+			if #s.suggestions > 1 then
+				for i = 2, #s.suggestions do
+					local sugg = s["Suggestion"..i]
+					if not sugg then break end
+
+					local data = s.suggestions[i]
+					sugg.iconRing:Hide()
 					if data.iconPath then
-						suggestion.icon:SetMask("")
-						suggestion.icon:SetTexture(data.iconPath)
-						suggestion.icon:SetTexCoord(unpack(E.TexCoords))
+						sugg.icon:SetMask("")
+						sugg.icon:SetTexture(data.iconPath)
+						sugg.icon:SetTexCoord(unpack(E.TexCoords))
 					end
 				end
 			end
 		end)
 
-		hooksecurefunc("EJSuggestFrame_UpdateRewards", function(suggestion)
-			local rewardData = suggestion.reward.data
+		hooksecurefunc("EJSuggestFrame_UpdateRewards", function(sugg)
+			local rewardData = sugg.reward.data
 			if rewardData then
 				local texture = rewardData.itemIcon or rewardData.currencyIcon or [[Interface\Icons\achievement_guildperk_mobilebanking]]
-				suggestion.reward.icon:SetMask("")
-				suggestion.reward.icon:SetTexture(texture)
+				sugg.reward.icon:SetMask("")
+				sugg.reward.icon:SetTexture(texture)
 
-				if not suggestion.reward.icon.backdrop then
-					suggestion.reward.icon:CreateBackdrop()
-					suggestion.reward.icon.backdrop:SetOutside(suggestion.reward.icon)
+				if not sugg.reward.icon.backdrop then
+					sugg.reward.icon:CreateBackdrop()
+					sugg.reward.icon.backdrop:SetOutside(sugg.reward.icon)
 				end
 
 				local r, g, b = unpack(E["media"].bordercolor)
@@ -479,7 +480,7 @@ local function LoadSkin()
 						r, g, b = GetItemQualityColor(quality)
 					end
 				end
-				suggestion.reward.icon.backdrop:SetBackdropBorderColor(r, g, b)
+				sugg.reward.icon.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		end)
 	end
@@ -540,4 +541,4 @@ local function LoadSkin()
 	end
 end
 
-S:AddCallbackForAddon('Blizzard_EncounterJournal', "EncounterJournal", LoadSkin)
+S:AddCallbackForAddon('Blizzard_EncounterJournal')

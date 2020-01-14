@@ -18,6 +18,7 @@ local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local BNGetNumFriendInvites = BNGetNumFriendInvites
 local BNGetNumFriends = BNGetNumFriends
 local Chat_GetChatCategory = Chat_GetChatCategory
+local Chat_ShouldColorChatByClass = Chat_ShouldColorChatByClass
 local ChatEdit_ActivateChat = ChatEdit_ActivateChat
 local ChatEdit_ChooseBoxForSend = ChatEdit_ChooseBoxForSend
 local ChatEdit_ParseText = ChatEdit_ParseText
@@ -25,6 +26,7 @@ local ChatEdit_SetLastTellTarget = ChatEdit_SetLastTellTarget
 local ChatFrame_CanChatGroupPerformExpressionExpansion = ChatFrame_CanChatGroupPerformExpressionExpansion
 local ChatFrame_ConfigEventHandler = ChatFrame_ConfigEventHandler
 local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
+local ChatFrame_ResolvePrefixedChannelName = ChatFrame_ResolvePrefixedChannelName
 local ChatFrame_SendTell = ChatFrame_SendTell
 local ChatFrame_SystemEventHandler = ChatFrame_SystemEventHandler
 local ChatHistory_GetAccessID = ChatHistory_GetAccessID
@@ -42,6 +44,7 @@ local FlashClientIcon = FlashClientIcon
 local FloatingChatFrame_OnEvent = FloatingChatFrame_OnEvent
 local GetAchievementInfo = GetAchievementInfo
 local GetAchievementInfoFromHyperlink = GetAchievementInfoFromHyperlink
+local GetBNPlayerCommunityLink = GetBNPlayerCommunityLink
 local GetBNPlayerLink = GetBNPlayerLink
 local GetChannelName = GetChannelName
 local GetCursorPosition = GetCursorPosition
@@ -51,12 +54,12 @@ local GetInstanceInfo = GetInstanceInfo
 local GetItemInfoFromHyperlink = GetItemInfoFromHyperlink
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
+local GetPlayerCommunityLink = GetPlayerCommunityLink
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local GetPlayerLink = GetPlayerLink
 local GetRaidRosterInfo = GetRaidRosterInfo
-local GetTime = GetTime
+local GetTime, GMError = GetTime, GMError
 local GMChatFrame_IsGM = GMChatFrame_IsGM
-local GMError = GMError
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
@@ -68,10 +71,10 @@ local PlaySoundFile = PlaySoundFile
 local RemoveExtraSpaces = RemoveExtraSpaces
 local RemoveNewlines = RemoveNewlines
 local ScrollFrameTemplate_OnMouseWheel = ScrollFrameTemplate_OnMouseWheel
-local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
 local Social_GetShareAchievementLink = Social_GetShareAchievementLink
 local Social_GetShareItemLink = Social_GetShareItemLink
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
+local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
 local StaticPopup_Visible = StaticPopup_Visible
 local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
@@ -79,8 +82,12 @@ local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitName = UnitName
 local UnitRealmRelationship = UnitRealmRelationship
+local Voice_GetVoiceChannelNotificationColor = Voice_GetVoiceChannelNotificationColor
 
-local BNET_CLIENT_WOW = BNET_CLIENT_WOW
+local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
+local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
+local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
+local C_BattleNet_GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
 local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityChatLine
 local C_LFGList_GetActivityInfo = C_LFGList.GetActivityInfo
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
@@ -90,22 +97,14 @@ local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
 local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
 local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
 local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
-local Chat_ShouldColorChatByClass = Chat_ShouldColorChatByClass
-local ChatFrame_ResolvePrefixedChannelName = ChatFrame_ResolvePrefixedChannelName
-local GetBNPlayerCommunityLink = GetBNPlayerCommunityLink
-local GetPlayerCommunityLink = GetPlayerCommunityLink
+local SOUNDKIT_TELL_MESSAGE = SOUNDKIT.TELL_MESSAGE
+
+local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
 local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
+local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
-local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
-local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
-local SOUNDKIT = SOUNDKIT
 local UNKNOWN = UNKNOWN
-local Voice_GetVoiceChannelNotificationColor = Voice_GetVoiceChannelNotificationColor
-local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
-local C_BattleNet_GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
-local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
-local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
 -- GLOBALS: ElvCharacterDB
 
 local CreatedFrames = 0
@@ -128,16 +127,18 @@ local DEFAULT_STRINGS = {
 }
 
 local hyperlinkTypes = {
-	['item'] = true,
-	['spell'] = true,
-	['unit'] = true,
-	['quest'] = true,
-	['enchant'] = true,
 	['achievement'] = true,
-	['instancelock'] = true,
-	['talent'] = true,
+	['apower'] = true,
+	['currency'] = true,
+	['enchant'] = true,
 	['glyph'] = true,
-	["currency"] = true,
+	['instancelock'] = true,
+	['item'] = true,
+	['keystone'] = true,
+	['quest'] = true,
+	['spell'] = true,
+	['talent'] = true,
+	['unit'] = true
 }
 
 local tabTexs = {
@@ -198,7 +199,7 @@ do --this can save some main file locals
 		--- gradient text, ignoring hyperlinks and keywords
 		local e, f, g = {'|%x+|H.-|h.-|h|r', '|H.-|h.-|h', '|T.-|t', '|c.-|r'}, {}, {}
 		local gradient = function(t) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'), 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82),'\27','%%%%'),'\26','||') end
-		local protect = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\24') end
+		local protect = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\24') end
 		SimpysText = function(t) local u = t
 			for _, w in ipairs(e) do for k in gmatch(t, w) do t = protect(t, u, k) end end
 			t = gradient(t) --Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
@@ -222,7 +223,7 @@ do --this can save some main file locals
 		WARRIOR		= ElvOrange
 	}
 
-	local itsNihilist = function(class)
+	local itsTheFlyestNihilist = function(class)
 		return classNihilist[class]
 	end
 
@@ -255,24 +256,24 @@ do --this can save some main file locals
 		["Mispel-Spirestone"]		= Rainbow,
 		["Misdecay-Spirestone"]		= Rainbow,
 		--NihilisticPandemonium
-		["Perrinna-WyrmrestAccord"]		= itsNihilist("WARLOCK"),
-		["Sagome-WyrmrestAccord"]		= itsNihilist("MONK"),
-		["Onaguda-WyrmrestAccord"]		= itsNihilist("DRUID"),
-		["Haelini-WyrmrestAccord"]		= itsNihilist("PRIEST"),
-		["Nenalia-WyrmrestAccord"]		= itsNihilist("MAGE"),
-		["Alailais-WyrmestAccord"]		= itsNihilist("DEMONHUNTER"),
-		["Muiride-WyrmestAccord"]		= itsNihilist("DEATHKNIGHT"),
-		["Monelia-WyrmrestAccord"]		= itsNihilist("PALADIN"),
-		["Huanyue-WyrmrestAccord"]		= itsNihilist("SHAMAN"),
-		["Galiseda-WyrmestAccord"]		= itsNihilist("ROGUE"),
-		["Naldydi-WyrmrestAccord"]		= itsNihilist("HUNTER"),
-		["Caylasena-WyrmestAccord"]		= itsNihilist("WARRIOR"),
-		["Elaedarel-WyrmrestAccord"]	= itsNihilist("WARLOCK"),
-		["Alydrer-WyrmrestAccord"]		= itsNihilist("WARLOCK"),
-		["Issia-WyrmrestAccord"]		= itsNihilist("PRIEST"),
-		["Leitara-WyrmrestAccord"]		= itsNihilist("WARRIOR"),
-		["Cherlyth-WyrmrestAccord"]		= itsNihilist("DRUID"),
-		["Tokashami-WyrmrestAccord"]	= itsNihilist("SHAMAN"),
+		["Zistraeti-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
+		["Sagome-WyrmrestAccord"]		= itsTheFlyestNihilist("MONK"),
+		["Onaguda-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
+		["Haelini-WyrmrestAccord"]		= itsTheFlyestNihilist("PRIEST"),
+		["Nenalia-WyrmrestAccord"]		= itsTheFlyestNihilist("MAGE"),
+		["Alailais-WyrmestAccord"]		= itsTheFlyestNihilist("DEMONHUNTER"),
+		["Muiride-WyrmestAccord"]		= itsTheFlyestNihilist("DEATHKNIGHT"),
+		["Monelia-WyrmrestAccord"]		= itsTheFlyestNihilist("PALADIN"),
+		["Huanyue-WyrmrestAccord"]		= itsTheFlyestNihilist("SHAMAN"),
+		["Galiseda-WyrmestAccord"]		= itsTheFlyestNihilist("ROGUE"),
+		["Naldydi-WyrmrestAccord"]		= itsTheFlyestNihilist("HUNTER"),
+		["Caylasena-WyrmestAccord"]		= itsTheFlyestNihilist("WARRIOR"),
+		["Elaedarel-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
+		["Alydrer-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
+		["Issia-WyrmrestAccord"]		= itsTheFlyestNihilist("PRIEST"),
+		["Leitara-WyrmrestAccord"]		= itsTheFlyestNihilist("WARRIOR"),
+		["Cherlyth-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
+		["Tokashami-WyrmrestAccord"]		= itsTheFlyestNihilist("SHAMAN"),
 		-- Merathilis
 		["Asragoth-Shattrath"]			= ElvPurple,	-- [Alliance] Warlock
 		["Brítt-Shattrath"] 			= ElvBlue,		-- [Alliance] Warrior
@@ -1077,33 +1078,26 @@ function CH:OnHyperlinkEnter(frame, refString)
 	if InCombatLockdown() then return; end
 	local linkToken = strmatch(refString, "^([^:]+)")
 	if hyperlinkTypes[linkToken] then
-		ShowUIPanel(_G.GameTooltip)
 		_G.GameTooltip:SetOwner(frame, "ANCHOR_CURSOR")
 		_G.GameTooltip:SetHyperlink(refString)
-		hyperLinkEntered = frame
 		_G.GameTooltip:Show()
+		hyperLinkEntered = frame
 	end
 end
 
-function CH:OnHyperlinkLeave() -- frame, refString
-	-- local linkToken = refString:match("^([^:]+)")
-	-- if hyperlinkTypes[linkToken] then
-		-- HideUIPanel(GameTooltip)
-		-- hyperLinkEntered = nil
-	-- end
-
+function CH:OnHyperlinkLeave()
 	if hyperLinkEntered then
-		HideUIPanel(_G.GameTooltip)
 		hyperLinkEntered = nil
+		_G.GameTooltip:Hide()
 	end
 end
 
--- function CH:OnMessageScrollChanged(frame)
-	-- if hyperLinkEntered == frame then
-		-- HideUIPanel(GameTooltip)
-		-- hyperLinkEntered = false
-	-- end
--- end
+function CH:OnMouseWheel(frame)
+	if hyperLinkEntered == frame then
+		hyperLinkEntered = false
+		_G.GameTooltip:Hide()
+	end
+end
 
 function CH:EnableHyperlink()
 	for _, frameName in pairs(_G.CHAT_FRAMES) do
@@ -1111,7 +1105,7 @@ function CH:EnableHyperlink()
 		if (not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnHyperlinkEnter) then
 			self:HookScript(frame, 'OnHyperlinkEnter')
 			self:HookScript(frame, 'OnHyperlinkLeave')
-			-- self:HookScript(frame, 'OnMessageScrollChanged')
+			self:HookScript(frame, 'OnMouseWheel')
 		end
 	end
 end
@@ -1122,7 +1116,7 @@ function CH:DisableHyperlink()
 		if self.hooks and self.hooks[frame] and self.hooks[frame].OnHyperlinkEnter then
 			self:Unhook(frame, 'OnHyperlinkEnter')
 			self:Unhook(frame, 'OnHyperlinkLeave')
-			-- self:Unhook(frame, 'OnMessageScrollChanged')
+			self:Unhook(frame, 'OnMouseWheel')
 		end
 	end
 end
@@ -1610,7 +1604,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			-- Player Flags
 			local pflag, chatIcon, pluginChatIcon = "", specialChatIcons[playerName], CH:GetPluginIcon(playerName)
 			if type(chatIcon) == 'function' then
-				if chatIcon == itsSimpy then
+				if chatIcon == itsSimpy and not CH:MessageIsProtected(message) then
 					message = SimpysText(message)
 				end
 
@@ -1689,7 +1683,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			--BN_WHISPER FIXME
 			ChatEdit_SetLastTellTarget(arg2, chatType)
 			if ( frame.tellTimer and (GetTime() > frame.tellTimer) ) then
-				PlaySound(SOUNDKIT.TELL_MESSAGE)
+				PlaySound(SOUNDKIT_TELL_MESSAGE)
 			end
 			frame.tellTimer = GetTime() + _G.CHAT_TELL_ALERT_TIME
 			--FCF_FlashTab(frame)

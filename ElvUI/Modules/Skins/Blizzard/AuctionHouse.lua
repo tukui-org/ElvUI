@@ -8,8 +8,8 @@ local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
-local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.auctionhouse ~= true then return end
+function S:Blizzard_AuctionUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
 
 	local AuctionFrame = _G.AuctionFrame
 	AuctionFrame:StripTextures(true)
@@ -157,18 +157,18 @@ local function LoadSkin()
 	_G.AuctionsItemButton:SetTemplate(nil, true)
 	_G.AuctionsItemButton.IconBorder:SetAlpha(0)
 
-	hooksecurefunc(_G.AuctionsItemButton.IconBorder, 'SetVertexColor', function(self, r, g, b)
-		self:GetParent():SetBackdropBorderColor(r, g, b)
+	hooksecurefunc(_G.AuctionsItemButton.IconBorder, 'SetVertexColor', function(s, r, g, b)
+		s:GetParent():SetBackdropBorderColor(r, g, b)
 	end)
 
-	hooksecurefunc(_G.AuctionsItemButton.IconBorder, 'Hide', function(self)
-		self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+	hooksecurefunc(_G.AuctionsItemButton.IconBorder, 'Hide', function(s)
+		s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end)
 
-	hooksecurefunc(_G.AuctionsItemButton, "SetNormalTexture", function(self)
-		if self:GetNormalTexture() then
-			self:GetNormalTexture():SetInside()
-			S:HandleIcon(self:GetNormalTexture())
+	hooksecurefunc(_G.AuctionsItemButton, "SetNormalTexture", function(s)
+		if s:GetNormalTexture() then
+			s:GetNormalTexture():SetInside()
+			S:HandleIcon(s:GetNormalTexture())
 		end
 	end)
 
@@ -279,4 +279,4 @@ local function LoadSkin()
 	WowTokenGameTimeTutorial.Inset.Bg:SetAlpha(0)
 end
 
-S:AddCallbackForAddon("Blizzard_AuctionUI", "AuctionHouse", LoadSkin)
+S:AddCallbackForAddon('Blizzard_AuctionUI')

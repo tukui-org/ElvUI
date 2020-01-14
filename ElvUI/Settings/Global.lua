@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 --Global Settings
 G.general = {
 	UIScale = 0.64,
-	version = 11.27,
+	version = 11.28,
 	locale = E:GetLocale(),
 	eyefinity = false,
 	smallerWorldMap = true,
@@ -40,11 +40,24 @@ G.datatexts = {
 	customCurrencies = {}
 }
 
-G.nameplate = {}
+G.nameplate = {
+	effectiveHealth = false,
+	effectivePower = false,
+	effectiveAura = false,
+	effectiveHealthSpeed = 0.3,
+	effectivePowerSpeed = 0.3,
+	effectiveAuraSpeed = 0.3,
+}
 
 G.unitframe = {
 	aurafilters = {},
 	buffwatch = {},
+	effectiveHealth = false,
+	effectivePower = false,
+	effectiveAura = false,
+	effectiveHealthSpeed = 0.3,
+	effectivePowerSpeed = 0.3,
+	effectiveAuraSpeed = 0.3,
 	raidDebuffIndicator = {
 		instanceFilter = "RaidDebuffs",
 		otherFilter = "CCDebuffs"
