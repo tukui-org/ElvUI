@@ -1,13 +1,38 @@
-### Version 11.28 [ ETA: Soon ]
+### Version 11.29 [ ETA: Soon ]
 
 **New Additions:**  
-Added an option to play a sound if you select an unit. Disabled by default. Requested a lot.  
 
 **Bug Fixes:**  
 
-
 **Misc. Changes:**  
 
+___
+### Version 11.28 for patch 8.3 [ January 14th 2020 ]
+
+**New Additions:**  
+Added an option to let Unitframe and/or Nameplate frames update their Health, Power, and/or Auras at consistent rate (between 0.1 and 0.5 of a second) rather than using Blizzard's event system for when to update. This is an opt-in method that is less recommended but might solve issues where the update isn't received correctly otherwise.  
+Added an option to play a sound if you select a unit and/or if you receive a battle resurrect. Both are disabled by default.  
+Quest Icons, Raid Marker, and Healer Icon on nameplates will now be shown in nameonly mode.  
+Added Tank Icon, which is similar to Healer Icon in PVP.  
+
+**Bug Fixes:**  
+Fixed Reverse fill on Power elements on Unitframes.  
+Fixed Hovered Hyperlinks when scrolling in the Chat.  
+Fixed Unitframes (other than Player) which had their Power style set to Offset from being unchangeable.  
+Fixed Target Buff Default Filters.  
+Fixed Cooldown Text Defaults.  
+Fixed an issue where a profile error about 'global' or 'private' not existing would happen from the Skin module.  
+Fixed the Classification indicator on nameplates.  
+Fixed (hopefully) a Smart Aura Position setting issue which would cause the Buffs and Debuffs on Unitframes to cause a SetPoint error.  
+
+**Misc. Changes:**  
+Added more position values for the Elite Icon on Nameplates.  
+Added the ability to show Toy ID when Tooltips have the Spell ID setting enabled.  
+Removed Cooldown Top Aura font override setting as it's not needed, the setting for Buff or Debuffs are in their Aura settings.  
+Reworked the way we attempt to skin other addon’s options which use the Ace3 library.  
+Removed some of the excessive options in Buff Indicator which were overrides which were left over from the old code.  
+Simplified the OrderHall Talent Frame skin (which is also used by the new 8.3 talent frame).  
+Optimized more of the Bag module code.  
 
 ___
 ### Version 11.27 [ December 14th 2019 ]
