@@ -7,10 +7,8 @@ local pairs, select = pairs, select
 local ceil, unpack = ceil, unpack
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 --WoW API / Variables
-local CanExitVehicle = CanExitVehicle
 local ClearOverrideBindings = ClearOverrideBindings
 local CreateFrame = CreateFrame
-local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
 local GetFlyoutID = GetFlyoutID
 local GetMouseFocus = GetMouseFocus
@@ -19,7 +17,6 @@ local GetOverrideBarIndex = GetOverrideBarIndex
 local GetVehicleBarIndex = GetVehicleBarIndex
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
-local MainMenuBarVehicleLeaveButton_OnEnter = MainMenuBarVehicleLeaveButton_OnEnter
 local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
 local SetClampedTextureRotation = SetClampedTextureRotation
@@ -32,7 +29,6 @@ local UnitChannelInfo = UnitChannelInfo
 local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
-local UnitOnTaxi = UnitOnTaxi
 local UnregisterStateDriver = UnregisterStateDriver
 local VehicleExit = VehicleExit
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
@@ -371,46 +367,6 @@ function AB:PLAYER_REGEN_ENABLED()
 		AB.NeedsAdjustMaxStanceButtons = nil
 	end
 	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
-end
-
-local vehicle_CallOnEvent -- so we can call the local function inside of itself
-local function Vehicle_OnEvent(self, event)
-	if event == "PLAYER_REGEN_ENABLED" then
-		self:UnregisterEvent(event)
-	elseif InCombatLockdown() then
-		self:RegisterEvent('PLAYER_REGEN_ENABLED', vehicle_CallOnEvent)
-		return
-	end
-
-	if ( CanExitVehicle() ) and not E.db.general.minimap.icons.vehicleLeave.hide then
-		self:Show()
-		self:GetNormalTexture():SetVertexColor(1, 1, 1)
-		self:EnableMouse(true)
-	else
-		self:Hide()
-	end
-end
-vehicle_CallOnEvent = Vehicle_OnEvent
-
-local function Vehicle_OnClick(self)
-	if UnitOnTaxi("player") then
-		_G.TaxiRequestEarlyLanding()
-		self:GetNormalTexture():SetVertexColor(1, 0, 0)
-		self:EnableMouse(false)
-	else
-		VehicleExit()
-	end
-end
-
-function AB:UpdateVehicleLeave()
-	local button = _G.LeaveVehicleButton
-	if not button then return; end
-
-	local pos = E.db.general.minimap.icons.vehicleLeave.position or "BOTTOMLEFT"
-	local scale = 26 * (E.db.general.minimap.icons.vehicleLeave.scale or 1)
-	button:ClearAllPoints()
-	button:Point(pos, _G.Minimap, pos, E.db.general.minimap.icons.vehicleLeave.xOffset or 2, E.db.general.minimap.icons.vehicleLeave.yOffset or 2)
-	button:Size(scale, scale)
 end
 
 function AB:CreateVehicleLeave()
