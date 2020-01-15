@@ -138,10 +138,9 @@ function B:UpdateAltPowerBar()
 		self:SetValue(power)
 
 		if barInfo.ID == 554 then -- Sanity 8.3: N'Zoth Eye
-			self.texture:SetTexture('Interface\\AddOns\\ElvUI\\Media\\Textures\\N_Eye')
-			self.texture:Show()
+			self.textures:Show()
 		else
-			self.texture:Hide()
+			self.textures:Hide()
 		end
 
 		if E.db.general.altPowerBar.statusBarColorGradient then
@@ -162,7 +161,7 @@ function B:UpdateAltPowerBar()
 		self.powerTooltip = nil
 		self.powerValue = nil
 
-		self.texture:Hide()
+		self.textures:Hide()
 		self:Hide()
 	end
 end
@@ -183,10 +182,24 @@ function B:SkinAltPowerBar()
 	powerbar.text:Point("CENTER", powerbar, "CENTER")
 	powerbar.text:SetJustifyH("CENTER")
 
-	powerbar.texture = powerbar:CreateTexture(nil, "BACKGROUND")
-	powerbar.texture:SetPoint("CENTER", powerbar, "TOP", 0, 16)
-	powerbar.texture:SetSize(256, 64)
-	powerbar.texture:Hide()
+	do -- NZoth textures
+		local texTop = powerbar:CreateTexture(nil, "OVERLAY")
+		local texBotomLeft = powerbar:CreateTexture(nil, "OVERLAY")
+		local texBottomRight = powerbar:CreateTexture(nil, "OVERLAY")
+
+		powerbar.textures = {
+			TOP = texTop, BOTTOMLEFT = texBotomLeft, BOTTOMRIGHT = texBottomRight,
+			Show = function() texTop:Show() texBotomLeft:Show() texBottomRight:Show() end,
+			Hide = function() texTop:Hide() texBotomLeft:Hide() texBottomRight:Hide() end,
+		}
+
+		texTop:SetTexture('Interface\\AddOns\\ElvUI\\Media\\Textures\\NZothTop')
+		texTop:Point("CENTER", powerbar, "TOP", 0, -19)
+		texBotomLeft:SetTexture('Interface\\AddOns\\ElvUI\\Media\\Textures\\NZothBottomLeft')
+		texBotomLeft:Point("BOTTOMLEFT", powerbar, "BOTTOMLEFT", -7, -10)
+		texBottomRight:SetTexture('Interface\\AddOns\\ElvUI\\Media\\Textures\\NZothBottomRight')
+		texBottomRight:Point("BOTTOMRIGHT", powerbar, "BOTTOMRIGHT", 7, -10)
+	end
 
 	B:UpdateAltPowerBarSettings()
 	B:UpdateAltPowerBarColors()
