@@ -107,13 +107,6 @@ P.general = {
 				xOffset = 8,
 				yOffset = -8,
 			},
-			vehicleLeave = {
-				scale = 1,
-				position = 'BOTTOMLEFT',
-				xOffset = 2,
-				yOffset = 2,
-				hide = false,
-			},
 			ticket = {
 				scale = 1,
 				position = 'TOPRIGHT',
