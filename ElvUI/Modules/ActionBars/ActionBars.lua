@@ -414,30 +414,40 @@ function AB:UpdateVehicleLeave()
 end
 
 function AB:CreateVehicleLeave()
-	local vehicle = CreateFrame("Button", 'LeaveVehicleButton', E.UIParent)
-	vehicle:Size(26)
-	vehicle:SetFrameStrata("HIGH")
-	vehicle:Point("BOTTOMLEFT", _G.Minimap, "BOTTOMLEFT", 2, 2)
-	vehicle:SetNormalTexture(E.Media.Textures.ExitVehicle)
-	vehicle:SetPushedTexture(E.Media.Textures.ExitVehicle)
-	vehicle:SetHighlightTexture(E.Media.Textures.ExitVehicle)
-	vehicle:SetTemplate()
-	vehicle:RegisterForClicks("AnyUp")
+	local VehicleLeaveButtonHolder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
+	VehicleLeaveButtonHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
+	VehicleLeaveButtonHolder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
 
-	vehicle:SetScript("OnClick", Vehicle_OnClick)
-	vehicle:SetScript("OnEnter", MainMenuBarVehicleLeaveButton_OnEnter)
-	vehicle:SetScript("OnLeave", GameTooltip_Hide)
-	vehicle:RegisterEvent("PLAYER_ENTERING_WORLD")
-	vehicle:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
-	vehicle:RegisterEvent("UPDATE_MULTI_CAST_ACTIONBAR")
-	vehicle:RegisterEvent("UNIT_ENTERED_VEHICLE")
-	vehicle:RegisterEvent("UNIT_EXITED_VEHICLE")
-	vehicle:RegisterEvent("VEHICLE_UPDATE")
-	vehicle:SetScript("OnEvent", Vehicle_OnEvent)
+	local Button = _G.MainMenuBarVehicleLeaveButton
 
-	self:UpdateVehicleLeave()
+	if (MasqueGroup and E.private.actionbar.masque.actionbars and true) then
+		Button:StyleButton(true, true, true)
+	else
+		Button:CreateBackdrop(nil, true)
+		Button:GetNormalTexture():SetTexCoord(0.140625 + .08, 0.859375 - .06, 0.140625 + .08, 0.859375 - .08)
+		Button:GetPushedTexture():SetTexCoord(0.140625, 0.859375, 0.140625, 0.859375)
+		Button:StyleButton(nil, true, true)
+	end
 
-	vehicle:Hide()
+	Button:ClearAllPoints()
+	Button:SetParent(_G.UIParent)
+	Button:SetPoint('CENTER', VehicleLeaveButtonHolder, 'CENTER')
+
+	E:CreateMover(VehicleLeaveButtonHolder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, nil, nil, 'all,general')
+
+	hooksecurefunc(Button, 'SetPoint', function(_, _, parent)
+		if parent ~= VehicleLeaveButtonHolder then
+			Button:ClearAllPoints()
+			Button:SetParent(_G.UIParent)
+			Button:SetPoint('CENTER', VehicleLeaveButtonHolder, 'CENTER')
+		end
+	end)
+
+	hooksecurefunc(Button, 'SetHighlightTexture', function(_, tex)
+		if tex ~= self.hover then
+			Button:SetHighlightTexture(self.hover)
+		end
+	end)
 end
 
 function AB:ReassignBindings(event)
@@ -992,7 +1002,7 @@ end
 
 AB.FlyoutButtons = 0
 function AB:SetupFlyoutButton()
-	for i=1, AB.FlyoutButtons do
+	for i = 1, AB.FlyoutButtons do
 		--prevent error if you don't have max amount of buttons
 		if _G["SpellFlyoutButton"..i] then
 			AB:StyleButton(_G["SpellFlyoutButton"..i], nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil)
