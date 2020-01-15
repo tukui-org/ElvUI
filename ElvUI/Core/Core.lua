@@ -1277,6 +1277,18 @@ function E:InitializeModules()
 	end
 end
 
+local function buffwatchConvert(spell)
+	if spell.sizeOverride then
+		local newSize = spell.sizeOverride
+		spell.size = (newSize > 0 and newSize) or 8
+		spell.sizeOverride = nil
+	end
+	if spell.styleOverride then
+		spell.style = spell.styleOverride
+		spell.styleOverride = nil
+	end
+end
+
 function E:DBConversions()
 	--Fix issue where UIScale was incorrectly stored as string
 	E.global.general.UIScale = tonumber(E.global.general.UIScale)
@@ -1475,32 +1487,13 @@ function E:DBConversions()
 	end
 
 	-- removed override stuff from aurawatch
-	for index, bw in pairs({E.global.unitframe.buffwatch, E.db.unitframe.filters.buffwatch}) do
-		for _, spellTable in pairs(bw) do
-			if index == 1 then
-				for _, spell in pairs(spellTable) do
-					if spell.sizeOverride then
-						local newSize = spell.sizeOverride
-						spell.size = (newSize > 0 and newSize) or 8
-						spell.sizeOverride = nil
-					end
-					if spell.styleOverride then
-						spell.style = spell.styleOverride
-						spell.styleOverride = nil
-					end
-				end
-			else
-				if spellTable.sizeOverride then
-					local newSize = spellTable.sizeOverride
-					spellTable.size = (newSize > 0 and newSize) or 8
-					spellTable.sizeOverride = nil
-				end
-				if spellTable.styleOverride then
-					spellTable.style = spellTable.styleOverride
-					spellTable.styleOverride = nil
-				end
-			end
+	for _, spells in pairs(E.global.unitframe.buffwatch) do
+		for _, spell in pairs(spells) do
+			buffwatchConvert(spell)
 		end
+	end
+	for _, spell in pairs(E.db.unitframe.filters.buffwatch) do
+		buffwatchConvert(spell)
 	end
 end
 
