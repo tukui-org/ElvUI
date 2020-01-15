@@ -1486,6 +1486,12 @@ function E:DBConversions()
 					E.global.unitframe.buffwatch[class][spellID].style = E.global.unitframe.buffwatch[class][spellID].styleOverride
 					E.global.unitframe.buffwatch[class][spellID].styleOverride = nil
 				end
+				if not E.global.unitframe.buffwatch[class][spellID].size then
+					E.global.unitframe.buffwatch[class][spellID].size = 8
+				end
+				if not E.global.unitframe.filters.buffwatch[class][spellID].style then
+					E.global.unitframe.filters.buffwatch[class][spellID].style = 'coloredIcon'
+				end
 			end
 		end
 	end
@@ -1493,14 +1499,20 @@ function E:DBConversions()
 	if E.db.unitframe.filters.buffwatch then
 		for class, spellTable in pairs(E.db.unitframe.filters.buffwatch) do
 			for spellID in pairs(spellTable) do
-				if E.db.unitframe.filters.buffwatch[class][spellID].sizeOverride then
+				if E.db.unitframe.buffwatch[class][spellID].sizeOverride then
 					local newSize = E.db.unitframe.buffwatch[class][spellID].sizeOverride
 					E.db.unitframe.filters.buffwatch[class][spellID].size = newSize > 0 and newSize or 8
 					E.db.unitframe.filters.buffwatch[class][spellID].sizeOverride = nil
 				end
-				if E.db.unitframe.filters.buffwatch[class][spellID].styleOverride then
-					E.db.unitframe.filters.buffwatch[class][spellID].style = E.db.unitframe.filters.buffwatch[class][spellID].styleOverride
+				if E.db.unitframe.buffwatch[class][spellID].styleOverride then
+					E.db.unitframe.filters.buffwatch[class][spellID].style = E.db.unitframe.filters.buffwatch[class][spellID].styleOverride or 'coloredIcon'
 					E.db.unitframe.filters.buffwatch[class][spellID].styleOverride = nil
+				end
+				if not E.db.unitframe.buffwatch[class][spellID].size then
+					E.db.unitframe.buffwatch[class][spellID].size = 8
+				end
+				if not E.db.unitframe.filters.buffwatch[class][spellID].style then
+					E.db.unitframe.filters.buffwatch[class][spellID].style = 'coloredIcon'
 				end
 			end
 		end
