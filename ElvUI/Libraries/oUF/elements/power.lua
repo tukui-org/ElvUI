@@ -102,7 +102,7 @@ local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
 local function getDisplayPower(unit)
 	local barInfo = GetUnitPowerBarInfo(unit)
-	if(barInfo.showOnRaid) then
+	if(barInfo and barInfo.showOnRaid) then
 		return ALTERNATE_POWER_INDEX, barInfo.minPower
 	end
 end
