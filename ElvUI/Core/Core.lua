@@ -1475,11 +1475,10 @@ function E:DBConversions()
 	end
 
 	-- removed override stuff from aurawatch
-	for _, bw in pairs({E.global.unitframe.buffwatch, E.db.unitframe.filters.buffwatch}) do
-		if bw then
-			for myClass, spellTable in pairs(bw) do
-				for spellID in pairs(spellTable) do
-					local spell = bw[myClass][spellID]
+	for index, bw in pairs({E.global.unitframe.buffwatch, E.db.unitframe.filters.buffwatch}) do
+		for _, spellTable in pairs(bw) do
+			if index == 1 then
+				for _, spell in pairs(spellTable) do
 					if spell.sizeOverride then
 						local newSize = spell.sizeOverride
 						spell.size = (newSize > 0 and newSize) or 8
@@ -1489,6 +1488,16 @@ function E:DBConversions()
 						spell.style = spell.styleOverride
 						spell.styleOverride = nil
 					end
+				end
+			else
+				if spellTable.sizeOverride then
+					local newSize = spellTable.sizeOverride
+					spellTable.size = (newSize > 0 and newSize) or 8
+					spellTable.sizeOverride = nil
+				end
+				if spellTable.styleOverride then
+					spellTable.style = spellTable.styleOverride
+					spellTable.styleOverride = nil
 				end
 			end
 		end
