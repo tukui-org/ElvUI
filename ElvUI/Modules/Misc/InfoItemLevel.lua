@@ -194,7 +194,8 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 			if selected then
 				backdrop:SetBackdropColor(0,0,0,0)
 			else
-				backdrop:SetBackdropColor(unpack(E.media.backdropcolor))
+				local r, g, b = unpack(E.media.backdropcolor)
+				backdrop:SetBackdropColor(r, g, b, 1)
 			end
 
 			essenceStep = essenceStep + 1
