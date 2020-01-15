@@ -285,6 +285,8 @@ function S:CharacterFrame()
 			Slot:StyleButton(Slot)
 			Slot.icon:SetInside()
 
+			Slot.CorruptedHighlightTexture:SetAtlas('Nzoth-charactersheet-item-glow')
+
 			local Cooldown = _G[Slot:GetName().."Cooldown"]
 			E:RegisterCooldown(Cooldown)
 
