@@ -212,22 +212,13 @@ local function LoadSkin()
 		button:StripTextures(true)
 		button:StyleButton()
 
-		button.SelectedTexture:SetAlpha(0)
-
-		button.selected = button:CreateTexture(nil, 'ARTWORK')
-		button.selected:SetInside(button)
-		button.selected:SetColorTexture(0.7, 0.7, 0.7, 0.4)
-		button.selected:SetShown(button.SelectedTexture:IsShown())
+		button.SelectedTexture:SetInside(button)
 	end
 
 	hooksecurefunc("AuctionFrameFilters_UpdateCategories", function(categoriesList, _)
-		for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
-			local button = categoriesList.FilterButtons[i]
-			if button.SelectedTexture:IsShown() then
-				button.selected:SetShown(true)
-			else
-				button.selected:Hide()
-			end
+		for _, button in ipairs(categoriesList.FilterButtons) do
+			button.SelectedTexture:SetAtlas(nil)
+			button.SelectedTexture:SetColorTexture(0.7, 0.7, 0.7, 0.4)
 		end
 	end)
 
