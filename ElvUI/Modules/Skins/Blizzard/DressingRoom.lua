@@ -18,7 +18,7 @@ function S:DressUpFrame()
 	DressUpFrameOutfitDropDown.SaveButton:Point("LEFT", DressUpFrameOutfitDropDown, "RIGHT", -7, 3)
 	DressUpFrameOutfitDropDown.backdrop:Point("TOPLEFT", -25, 3)
 
-	--S:HandleMaxMinFrame(DressUpFrame.MaximizeMinimizeFrame)
+	S:HandleMaxMinFrame(DressUpFrame.MaximizeMinimizeFrame)
 	_G.DressUpFrameResetButton:Point("RIGHT", _G.DressUpFrameCancelButton, "LEFT", -2, 0)
 
 	-- Wardrobe edit frame
