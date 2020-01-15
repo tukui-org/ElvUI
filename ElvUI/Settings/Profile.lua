@@ -1187,6 +1187,7 @@ local UF_Power = {
 	width = 'fill',
 	xOffset = 2,
 	yOffset = 0,
+	displayAltPower = false,
 	strataAndLevel = {
 		frameLevel = 1,
 		frameStrata = 'LOW',

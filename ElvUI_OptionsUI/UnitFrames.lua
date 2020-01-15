@@ -2161,6 +2161,14 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 		}
 	end
 
+	if groupName == 'party' then
+		config.args.displayAltPower = {
+			type = "toggle",
+			order = 8,
+			name = L["Swap to Alt Power"],
+		}
+	end
+
 	return config
 end
 
