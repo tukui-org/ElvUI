@@ -2136,6 +2136,10 @@ P.actionbar = {
 		scale = 1,
 		inheritGlobalFade = false,
 	},
+	vehicleExitButton = {
+		enable = true,
+		size = 32,
+	}
 };
 
 for i = 1, 10 do

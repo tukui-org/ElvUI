@@ -370,6 +370,9 @@ function AB:PLAYER_REGEN_ENABLED()
 end
 
 function AB:CreateVehicleLeave()
+	local db = E.db.actionbar.vehicleExitButton
+	if db.enable ~= true then return end
+
 	local VehicleLeaveButtonHolder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
 	VehicleLeaveButtonHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
 	VehicleLeaveButtonHolder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
@@ -404,6 +407,15 @@ function AB:CreateVehicleLeave()
 			Button:SetHighlightTexture(self.hover)
 		end
 	end)
+
+	AB:UpdateVehicleLeave()
+end
+
+function AB:UpdateVehicleLeave()
+	local db = E.db.actionbar.vehicleExitButton
+	local Button = _G.MainMenuBarVehicleLeaveButton
+
+	Button:SetSize(db.size, db.size)
 end
 
 function AB:ReassignBindings(event)

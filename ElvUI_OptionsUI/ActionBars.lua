@@ -763,6 +763,28 @@ E.Options.args.actionbar = {
 				},
 			},
 		},
+		extraActionButton = {
+			type = "group",
+			name = L["Vehicle Exit"],
+			order = 18,
+			disabled = function() return not E.ActionBars.Initialized; end,
+			get = function(info) return E.db.actionbar.vehicleExitButton[info[#info]] end,
+			args = {
+				enable = {
+					order = 1,
+					type = 'toggle',
+					name = L["Enable"],
+					set = function(info, value) E.db.actionbar.extraActionButton[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end
+				},
+				size = {
+					order = 2,
+					type = 'range',
+					name = L["Size"],
+					min = 16, max = 50, step = 1,
+					set = function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; AB:UpdateVehicleLeave() end,
+				},
+			},
+		},
 	},
 }
 
