@@ -125,6 +125,7 @@ function B:UpdateAltPowerBar()
 		local power = UnitPower('player', _G.ALTERNATE_POWER_INDEX)
 		local maxPower = UnitPowerMax('player', _G.ALTERNATE_POWER_INDEX) or 0
 		local perc = (maxPower > 0 and floor(power / maxPower * 100)) or 0
+		local eyeTex = "Interface\\AddOns\\ElvUI\\Media\\Textures\\N_Eye" -- N'Zoth Eye
 
 		self.powerMaxValue = maxPower
 		self.powerName = powerName
@@ -135,6 +136,11 @@ function B:UpdateAltPowerBar()
 		self:Show()
 		self:SetMinMaxValues(barInfo.minPower, maxPower)
 		self:SetValue(power)
+
+		if barInfo.ID == 554 then -- Sanity 8.3
+			self.texture:SetTexture(eyeTex)
+			self.texture:Show()
+		end
 
 		if E.db.general.altPowerBar.statusBarColorGradient then
 			local value = (maxPower > 0 and power / maxPower) or 0
@@ -173,6 +179,11 @@ function B:SkinAltPowerBar()
 	powerbar.text = powerbar:CreateFontString(nil, "OVERLAY")
 	powerbar.text:Point("CENTER", powerbar, "CENTER")
 	powerbar.text:SetJustifyH("CENTER")
+
+	powerbar.texture = powerbar:CreateTexture(nil, "BACKGROUND")
+	powerbar.texture:SetPoint("CENTER", powerbar, "TOP", 0, 16)
+	powerbar.texture:SetSize(256, 64)
+	powerbar.texture:Hide()
 
 	B:UpdateAltPowerBarSettings()
 	B:UpdateAltPowerBarColors()
