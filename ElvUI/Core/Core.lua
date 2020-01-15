@@ -1474,45 +1474,20 @@ function E:DBConversions()
 		E.db.nameplates.units.ENEMY_NPC.minions = nil
 	end
 
-	if E.global.unitframe.buffwatch then
-		for class, spellTable in pairs(E.global.unitframe.buffwatch) do
-			for spellID in pairs(spellTable) do
-				if E.global.unitframe.buffwatch[class][spellID].sizeOverride then
-					local newSize = E.global.unitframe.buffwatch[class][spellID].sizeOverride
-					E.global.unitframe.buffwatch[class][spellID].size = newSize > 0 and newSize or 8
-					E.global.unitframe.buffwatch[class][spellID].sizeOverride = nil
-				end
-				if E.global.unitframe.buffwatch[class][spellID].styleOverride then
-					E.global.unitframe.buffwatch[class][spellID].style = E.global.unitframe.buffwatch[class][spellID].styleOverride
-					E.global.unitframe.buffwatch[class][spellID].styleOverride = nil
-				end
-				if not E.global.unitframe.buffwatch[class][spellID].size then
-					E.global.unitframe.buffwatch[class][spellID].size = 8
-				end
-				if not E.global.unitframe.buffwatch[class][spellID].style then
-					E.global.unitframe.buffwatch[class][spellID].style = 'coloredIcon'
-				end
-			end
-		end
-	end
-
-	if E.db.unitframe.filters.buffwatch then
-		for class, spellTable in pairs(E.db.unitframe.filters.buffwatch) do
-			for spellID in pairs(spellTable) do
-				if E.db.unitframe.filters.buffwatch[class][spellID].sizeOverride then
-					local newSize = E.db.unitframe.buffwatch[class][spellID].sizeOverride
-					E.db.unitframe.filters.buffwatch[class][spellID].size = newSize > 0 and newSize or 8
-					E.db.unitframe.filters.buffwatch[class][spellID].sizeOverride = nil
-				end
-				if E.db.unitframe.filters.buffwatch[class][spellID].styleOverride then
-					E.db.unitframe.filters.buffwatch[class][spellID].style = E.db.unitframe.filters.buffwatch[class][spellID].styleOverride or 'coloredIcon'
-					E.db.unitframe.filters.buffwatch[class][spellID].styleOverride = nil
-				end
-				if not E.db.unitframe.filters.buffwatch[class][spellID].size then
-					E.db.unitframe.filters.buffwatch[class][spellID].size = 8
-				end
-				if not E.db.unitframe.filters.buffwatch[class][spellID].style then
-					E.db.unitframe.filters.buffwatch[class][spellID].style = 'coloredIcon'
+	for _, bw in pairs({E.global.unitframe.buffwatch, E.db.unitframe.filters.buffwatch}) do
+		if bw then
+			for myClass, spellTable in pairs(bw) do
+				for spellID in pairs(spellTable) do
+					local spell = bw[myClass][spellID]
+					if spell.sizeOverride then
+						local newSize = spell.sizeOverride
+						spell.size = (newSize > 0 and newSize) or 8
+						spell.sizeOverride = nil
+					end
+					if spell.styleOverride then
+						spell.style = spell.styleOverride
+						spell.styleOverride = nil
+					end
 				end
 			end
 		end

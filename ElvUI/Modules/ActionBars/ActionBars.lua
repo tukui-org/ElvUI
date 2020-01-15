@@ -378,7 +378,6 @@ function AB:CreateVehicleLeave()
 	VehicleLeaveButtonHolder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
 
 	local Button = _G.MainMenuBarVehicleLeaveButton
-
 	if MasqueGroup and E.private.actionbar.masque.actionbars then
 		Button:StyleButton(true, true, true)
 	else
@@ -413,9 +412,7 @@ end
 
 function AB:UpdateVehicleLeave()
 	local db = E.db.actionbar.vehicleExitButton
-	local Button = _G.MainMenuBarVehicleLeaveButton
-
-	Button:SetSize(db.size, db.size)
+	_G.MainMenuBarVehicleLeaveButton:Size(db.size)
 end
 
 function AB:ReassignBindings(event)
@@ -1158,7 +1155,8 @@ end
 
 function AB:Initialize()
 	self.db = E.db.actionbar
-	if E.private.actionbar.enable ~= true then return; end
+
+	if not E.private.actionbar.enable then return end
 	self.Initialized = true
 
 	LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
