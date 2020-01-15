@@ -8,7 +8,7 @@ Display an icon in bags for corrupted items.
 **Misc. Changes:**  
 Added an "Eye" texture to the Alternative Power Bar, if its Sanity.  
 Fix backdrops on empty essences in the Character Frame.  
-
+Removed the Vehicle Exit Button from the Minimap and use the Blizzard default one. The options can be found in our ActionBar config.  
 
 ___
 ### Version 11.28 for patch 8.3 [ January 14th 2020 ]
