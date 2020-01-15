@@ -485,6 +485,10 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.Azerite:Hide()
 	end
 
+	if slot.Corrupted then
+		slot.Corrupted:Hide()
+	end
+
 	slot.isJunk = (slot.rarity and slot.rarity == LE_ITEM_QUALITY_POOR) and not noValue
 	slot.junkDesaturate = slot.isJunk and E.db.bags.junkDesaturate
 
@@ -611,16 +615,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 		if slot.Azerite then
 			if C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID(clink) then
 				slot.Azerite:Show()
-			else
-				slot.Azerite:Hide()
 			end
 		end
 
 		if slot.Corrupted then
 			if IsCorruptedItem(clink) then
 				slot.Corrupted:Show()
-			else
-				slot.Corrupted:Hide()
 			end
 		end
 	elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
