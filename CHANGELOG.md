@@ -1,10 +1,14 @@
 ### Version 11.29 [ ETA: Soon ]
 
 **New Additions:**  
+Display an icon in bags for corrupted items.  
 
 **Bug Fixes:**  
 
 **Misc. Changes:**  
+Added an "Eye" texture to the Alternative Power Bar, if its Sanity.  
+Fix backdrops on empty essences in the Character Frame.  
+
 
 ___
 ### Version 11.28 for patch 8.3 [ January 14th 2020 ]
