@@ -774,7 +774,7 @@ E.Options.args.actionbar = {
 					order = 1,
 					type = 'toggle',
 					name = L["Enable"],
-					set = function(info, value) E.db.actionbar.extraActionButton[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end
+					set = function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				size = {
 					order = 2,
