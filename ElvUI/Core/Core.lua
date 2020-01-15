@@ -1488,6 +1488,21 @@ function E:DBConversions()
 			end
 		end
 	end
+
+	if E.db.unitframe.filters.buffwatch then
+		for class, spellTable in pairs(E.db.unitframe.filters.buffwatch) do
+			for spellID in pairs(spellTable) do
+				if E.db.unitframe.filters.buffwatch[class][spellID].sizeOverride then
+					E.db.unitframe.filters.buffwatch[class][spellID].size = E.db.unitframe.filters.buffwatch[class][spellID].sizeOverride
+					E.db.unitframe.filters.buffwatch[class][spellID].sizeOverride = nil
+				end
+				if E.db.unitframe.filters.buffwatch[class][spellID].styleOverride then
+					E.db.unitframe.filters.buffwatch[class][spellID].style = E.db.unitframe.filters.buffwatch[class][spellID].styleOverride
+					E.db.unitframe.filters.buffwatch[class][spellID].styleOverride = nil
+				end
+			end
+		end
+	end
 end
 
 function E:RefreshModulesDB()
