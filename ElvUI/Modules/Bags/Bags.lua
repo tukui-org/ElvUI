@@ -608,8 +608,21 @@ function B:UpdateSlot(frame, bagID, slotID)
 			slot.ignoreBorderColors = nil
 		end
 
-		if slot.Azerite and C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID(clink) then slot.Azerite:Show() end
-		if slot.Corrupted and IsCorruptedItem(clink) then slot.Corrupted:Show() end
+		if slot.Azerite then
+			if C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID(clink) then
+				slot.Azerite:Show()
+			else
+				slot.Azerite:Hide()
+			end
+		end
+
+		if slot.Corrupted then
+			if IsCorruptedItem(clink) then
+				slot.Corrupted:Show()
+			else
+				slot.Corrupted:Hide()
+			end
+		end
 	elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
 		local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 		slot.newItemGlow:SetVertexColor(rr, gg, bb)
