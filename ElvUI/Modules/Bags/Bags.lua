@@ -70,7 +70,6 @@ local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
 local UseContainerItem = UseContainerItem
 
-local C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
@@ -482,14 +481,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.questIcon:Hide()
 	end
 
-	if slot.Azerite then
-		slot.Azerite:Hide()
-	end
-
-	if slot.Corrupted then
-		slot.Corrupted:Hide()
-	end
-
 	slot.isJunk = (slot.rarity and slot.rarity == LE_ITEM_QUALITY_POOR) and not noValue
 	slot.junkDesaturate = slot.isJunk and E.db.bags.junkDesaturate
 
@@ -612,18 +603,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 			slot:SetBackdropBorderColor(rr, gg, bb)
 			slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
 			slot.ignoreBorderColors = nil
-		end
-
-		if slot.Azerite then
-			if C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID(clink) then
-				slot.Azerite:Show()
-			end
-		end
-
-		if slot.Corrupted then
-			if IsCorruptedItem(clink) then
-				slot.Corrupted:Show()
-			end
 		end
 	elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
 		local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
@@ -1862,6 +1841,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 
 	slot.searchOverlay:SetAllPoints()
 	slot.IconBorder:SetAlpha(0)
+	slot.IconOverlay:SetInside()
 
 	slot.cooldown = _G[slot:GetName()..'Cooldown']
 	slot.cooldown.CooldownOverride = 'bags'
