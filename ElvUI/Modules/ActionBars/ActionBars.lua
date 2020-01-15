@@ -240,7 +240,7 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
-		self:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil)
+		self:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars) or nil)
 	end
 
 	if bar.db.enabled or not bar.initialized then
@@ -376,7 +376,7 @@ function AB:CreateVehicleLeave()
 
 	local Button = _G.MainMenuBarVehicleLeaveButton
 
-	if (MasqueGroup and E.private.actionbar.masque.actionbars) then
+	if MasqueGroup and E.private.actionbar.masque.actionbars then
 		Button:StyleButton(true, true, true)
 	else
 		Button:CreateBackdrop(nil, true)
@@ -961,7 +961,7 @@ function AB:SetupFlyoutButton()
 	for i = 1, AB.FlyoutButtons do
 		--prevent error if you don't have max amount of buttons
 		if _G["SpellFlyoutButton"..i] then
-			AB:StyleButton(_G["SpellFlyoutButton"..i], nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil)
+			AB:StyleButton(_G["SpellFlyoutButton"..i], nil, (MasqueGroup and E.private.actionbar.masque.actionbars) or nil)
 			_G["SpellFlyoutButton"..i]:StyleButton()
 			_G["SpellFlyoutButton"..i]:HookScript('OnEnter', function(btn)
 				local parent = btn:GetParent()
