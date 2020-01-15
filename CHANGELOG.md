@@ -1,14 +1,25 @@
-### Version 11.29 [ ETA: Soon ]
+### Version 11.301 [ ETA: Soon ]
 
 **New Additions:**  
-Display an icon in bags for corrupted items.  
+Added an option to Swap to Alt Power on party frames, until we have a widget or something for corruption status of party members.  
+Removed the Vehicle Exit Button from the Minimap. We added a mover and the new settings can be found in the Actionbar configuration.  
 
 **Bug Fixes:**  
+Fixed an issue with Buff Indicators which caused an error because of the setting conversion code.  
 
 **Misc. Changes:**  
 Added an "Eye" texture to the Alternative Power Bar, if its Sanity.  
+When you hover the NZoth eye on Character page it will now show a highlight around the items with corruption stat.  
 Fix backdrops on empty essences in the Character Frame.  
-Removed the Vehicle Exit Button from the Minimap and use the Blizzard default one. The options can be found in our ActionBar config.  
+Set a texture when a submenu is selected in the Auctionhouse skin.  
+Display an icon on Bag icons for corrupted items.  
+
+___
+### Version 11.291 for patch 8.3 [ January 14th 2020 ]
+
+**Bug Fixes:**  
+Fixed barInfo error.  
+Fixed SetAuraUpdateMethod error.  
 
 ___
 ### Version 11.28 for patch 8.3 [ January 14th 2020 ]
