@@ -8,7 +8,7 @@ local Search = E.Libs.ItemSearch
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
 local tinsert, tremove, twipe, tmaxn = tinsert, tremove, wipe, table.maxn
-local floor, ceil, abs = floor, ceil, abs
+local next, floor, ceil, abs = next, floor, ceil, abs
 local format, sub = format, strsub
 --WoW API / Variables
 local GetCVarBool = GetCVarBool

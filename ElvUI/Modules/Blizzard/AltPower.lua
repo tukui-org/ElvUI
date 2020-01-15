@@ -8,9 +8,10 @@ local format = format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local UnitAlternatePowerInfo = UnitAlternatePowerInfo
 local UnitPowerMax = UnitPowerMax
 local UnitPower = UnitPower
+local GetUnitPowerBarInfo = GetUnitPowerBarInfo
+local GetUnitPowerBarStrings = GetUnitPowerBarStrings
 
 local function updateTooltip(self)
 	if _G.GameTooltip:IsForbidden() then return end
@@ -125,7 +126,6 @@ function B:UpdateAltPowerBar()
 		local power = UnitPower('player', _G.ALTERNATE_POWER_INDEX)
 		local maxPower = UnitPowerMax('player', _G.ALTERNATE_POWER_INDEX) or 0
 		local perc = (maxPower > 0 and floor(power / maxPower * 100)) or 0
-		local eyeTex = "Interface\\AddOns\\ElvUI\\Media\\Textures\\N_Eye" -- N'Zoth Eye
 
 		self.powerMaxValue = maxPower
 		self.powerName = powerName
@@ -137,9 +137,11 @@ function B:UpdateAltPowerBar()
 		self:SetMinMaxValues(barInfo.minPower, maxPower)
 		self:SetValue(power)
 
-		if barInfo.ID == 554 then -- Sanity 8.3
-			self.texture:SetTexture(eyeTex)
+		if barInfo.ID == 554 then -- Sanity 8.3: N'Zoth Eye
+			self.texture:SetTexture('Interface\\AddOns\\ElvUI\\Media\\Textures\\N_Eye')
 			self.texture:Show()
+		else
+			self.texture:Hide()
 		end
 
 		if E.db.general.altPowerBar.statusBarColorGradient then
@@ -160,6 +162,7 @@ function B:UpdateAltPowerBar()
 		self.powerTooltip = nil
 		self.powerValue = nil
 
+		self.texture:Hide()
 		self:Hide()
 	end
 end
