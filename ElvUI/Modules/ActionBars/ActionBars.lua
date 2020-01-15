@@ -415,7 +415,7 @@ function AB:UpdateVehicleLeave()
 	local db = E.db.actionbar.vehicleExitButton
 	local Button = _G.MainMenuBarVehicleLeaveButton
 
-	Button:SetSize(db.size, db.size)
+	Button:SetSize(db.size or 32, db.size or 32)
 end
 
 function AB:ReassignBindings(event)
