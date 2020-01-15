@@ -62,6 +62,7 @@ local SetItemButtonCount = SetItemButtonCount
 local SetItemButtonDesaturated = SetItemButtonDesaturated
 local SetItemButtonTexture = SetItemButtonTexture
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
+local SetItemButtonQuality = SetItemButtonQuality
 local SortBags = SortBags
 local SortBankBags = SortBankBags
 local SortReagentBankBags = SortReagentBankBags
@@ -495,6 +496,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
 	SetItemButtonDesaturated(slot, slot.locked or slot.junkDesaturate)
+	SetItemButtonQuality(slot, rarity, itemLink)
 
 	local color = E.db.bags.countFontColor
 	slot.Count:SetTextColor(color.r, color.g, color.b)
@@ -1858,26 +1860,13 @@ function B:ConstructContainerButton(f, slotID, bagID)
 		slot.ScrapIcon:Hide()
 	end
 
-	if not slot.Azerite then
-		slot.Azerite = slot:CreateTexture(nil, 'OVERLAY')
-		slot.Azerite:SetAtlas('AzeriteIconFrame')
-		slot.Azerite:SetTexCoord(0,1,0,1)
-		slot.Azerite:SetInside()
-		slot.Azerite:Hide()
-	end
-
-	if not slot.Corrupted then
-		slot.Corrupted = slot:CreateTexture(nil, 'OVERLAY')
-		slot.Corrupted:SetAtlas('Nzoth-inventory-icon')
-		slot.Corrupted:SetPoint('TOPLEFT', 2, -1)
-		slot.Corrupted:SetSize(34, 32)
-		slot.Corrupted:Hide()
-	end
-
 	slot.searchOverlay:SetAllPoints()
+	slot.IconBorder:SetAlpha(0)
+
 	slot.cooldown = _G[slot:GetName()..'Cooldown']
 	slot.cooldown.CooldownOverride = 'bags'
 	E:RegisterCooldown(slot.cooldown)
+
 	slot.bagID = bagID
 	slot.slotID = slotID
 
