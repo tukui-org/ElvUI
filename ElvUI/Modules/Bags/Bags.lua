@@ -609,6 +609,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 
 		if slot.Azerite and C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID(clink) then slot.Azerite:Show() end
+		if slot.Corrupted and IsCorruptedItem(clink) then slot.Corrupted:Show() end
 	elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
 		local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 		slot.newItemGlow:SetVertexColor(rr, gg, bb)
@@ -1832,15 +1833,15 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	if not slot.JunkIcon then
 		slot.JunkIcon = slot:CreateTexture(nil, 'OVERLAY')
 		slot.JunkIcon:SetAtlas('bags-junkcoin', true)
-		slot.JunkIcon:Point('TOPLEFT', 1, 0)
+		slot.JunkIcon:SetPoint('TOPLEFT', 1, 0)
 		slot.JunkIcon:Hide()
 	end
 
 	if not slot.ScrapIcon then
 		slot.ScrapIcon = slot:CreateTexture(nil, 'OVERLAY')
 		slot.ScrapIcon:SetAtlas('bags-icon-scrappable')
-		slot.ScrapIcon:Size(14, 12)
-		slot.ScrapIcon:Point('TOPRIGHT', -1, -1)
+		slot.ScrapIcon:SetSize(14, 12)
+		slot.ScrapIcon:SetPoint('TOPRIGHT', -1, -1)
 		slot.ScrapIcon:Hide()
 	end
 
@@ -1850,6 +1851,14 @@ function B:ConstructContainerButton(f, slotID, bagID)
 		slot.Azerite:SetTexCoord(0,1,0,1)
 		slot.Azerite:SetInside()
 		slot.Azerite:Hide()
+	end
+
+	if not slot.Corrupted then
+		slot.Corrupted = slot:CreateTexture(nil, 'OVERLAY')
+		slot.Corrupted:SetAtlas('Nzoth-inventory-icon')
+		slot.Corrupted:SetPoint('TOPLEFT', 2, -1)
+		slot.Corrupted:SetSize(34, 32)
+		slot.Corrupted:Hide()
 	end
 
 	slot.searchOverlay:SetAllPoints()
