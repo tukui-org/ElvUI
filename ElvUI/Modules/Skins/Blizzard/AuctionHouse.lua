@@ -213,7 +213,23 @@ local function LoadSkin()
 		button:StyleButton()
 
 		button.SelectedTexture:SetAlpha(0)
+
+		button.selected = button:CreateTexture(nil, 'ARTWORK')
+		button.selected:SetInside(button)
+		button.selected:SetColorTexture(0.7, 0.7, 0.7, 0.4)
+		button.selected:SetShown(button.SelectedTexture:IsShown())
 	end
+
+	hooksecurefunc("AuctionFrameFilters_UpdateCategories", function(categoriesList, _)
+		for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
+			local button = categoriesList.FilterButtons[i]
+			if button.SelectedTexture:IsShown() then
+				button.selected:SetShown(true)
+			else
+				button.selected:Hide()
+			end
+		end
+	end)
 
 	--[[ Browse Frame ]]--
 	local Browse = Frame.BrowseResultsFrame
