@@ -763,7 +763,7 @@ E.Options.args.actionbar = {
 				},
 			},
 		},
-		extraActionButton = {
+		vehicleExitButton = {
 			type = "group",
 			name = L["Vehicle Exit"],
 			order = 18,
