@@ -1474,6 +1474,7 @@ function E:DBConversions()
 		E.db.nameplates.units.ENEMY_NPC.minions = nil
 	end
 
+	-- removed override stuff from aurawatch
 	for _, bw in pairs({E.global.unitframe.buffwatch, E.db.unitframe.filters.buffwatch}) do
 		if bw then
 			for myClass, spellTable in pairs(bw) do
