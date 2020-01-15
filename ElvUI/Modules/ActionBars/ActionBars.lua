@@ -376,7 +376,7 @@ function AB:CreateVehicleLeave()
 
 	local Button = _G.MainMenuBarVehicleLeaveButton
 
-	if (MasqueGroup and E.private.actionbar.masque.actionbars and true) then
+	if (MasqueGroup and E.private.actionbar.masque.actionbars) then
 		Button:StyleButton(true, true, true)
 	else
 		Button:CreateBackdrop(nil, true)
