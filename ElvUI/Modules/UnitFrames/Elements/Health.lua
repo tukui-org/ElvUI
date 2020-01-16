@@ -276,9 +276,7 @@ function UF:PostUpdateHealth(_, cur)
 		self.max = 100
 		self:SetMinMaxValues(0, self.max)
 		self:SetValue(self.cur)
-	else
-		if parent.ResurrectIndicator then
-			parent.ResurrectIndicator:SetAlpha(cur == 0 and 1 or 0)
-		end
+	elseif parent.ResurrectIndicator then
+		parent.ResurrectIndicator:SetAlpha(cur == 0 and 1 or 0)
 	end
 end
