@@ -78,9 +78,9 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 
 	local color = PRIEST_COLOR
 	if guid and guid ~= "" then
-		local _, class = GetPlayerInfoByGUID(guid)
-		if class then
-			local c = E:ClassColor(class)
+		local _, Class = GetPlayerInfoByGUID(guid)
+		if Class then
+			local c = E:ClassColor(Class)
 			if c then color = c end
 		end
 	end
@@ -113,7 +113,7 @@ function M:SkinBubble(frame)
 				bgFile = E.media.blankTex,
 				edgeFile = E.media.blankTex,
 				tile = false, tileSize = 0, edgeSize = E.mult,
-				insets = { left = 0, right = 0, top = 0, bottom = 0}
+				insets = {left = 0, right = 0, top = 0, bottom = 0}
 			})
 
 			frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
@@ -122,8 +122,8 @@ function M:SkinBubble(frame)
 			frame:SetBackdrop(nil)
 		end
 
-		local r, g, b = frame.text:GetTextColor()
 		if not E.PixelMode then
+			local r, g, b = frame.text:GetTextColor()
 			frame.backdrop = frame:CreateTexture(nil, 'ARTWORK')
 			frame.backdrop:SetAllPoints(frame)
 			frame.backdrop:SetColorTexture(unpack(E.media.backdropfadecolor))
