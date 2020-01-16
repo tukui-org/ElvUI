@@ -117,28 +117,23 @@ function UF:Configure_Portrait(frame, dontHide)
 end
 
 function UF:PortraitUpdate(unit, event, shouldUpdate)
-	local db = self:GetParent().db
+	local parent = self:GetParent()
+	local db = parent.db and parent.db.portrait
 	if not db then return end
 
-	local portrait = db.portrait
-	if portrait.enable and self:GetParent().USE_PORTRAIT_OVERLAY then
-		self:SetAlpha(0); -- there was a reason for this. i dont remember
-		self:SetAlpha(db.portrait.overlayAlpha);
+	if db.enable and parent.USE_PORTRAIT_OVERLAY then
+		self:SetAlpha(0) -- there was a reason for this. i dont remember
+		self:SetAlpha(db.overlayAlpha)
 	else
 		self:SetAlpha(1)
 	end
 
-	if (shouldUpdate or (event == "ElvUI_UpdateAllElements" and self:IsObjectType("Model"))) then
-		local rotation = portrait.rotation or 0
-		local camDistanceScale = portrait.camDistanceScale or 1
-		local xOffset, yOffset = (portrait.xOffset or 0), (portrait.yOffset or 0)
-
-		if self:GetFacing() ~= (rotation / 57.29573671972358) then
-			self:SetFacing(rotation / 57.29573671972358) -- because 1 degree is equal 0,0174533 radian. Credit: Hndrxuprt
-		end
-
-		self:SetCamDistanceScale(camDistanceScale)
-		self:SetPosition(0, xOffset, yOffset)
+	if shouldUpdate or (event == "ElvUI_UpdateAllElements" and self:IsObjectType("Model")) then
+		local facing = self:GetCameraFacing()
+		local rotation = db.rotation / 57.29573671972358 -- because 1 degree is equal 0,0174533 radian. Credit: Hndrxuprt
+		self:SetPosition((facing > 0 and -db.xOffset) or db.xOffset, db.xOffset, db.yOffset)
+		self:SetCamDistanceScale(db.camDistanceScale)
+		self:SetFacing(facing - rotation)
 
 		--Refresh model to fix incorrect display issues
 		self:ClearModel()
