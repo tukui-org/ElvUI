@@ -138,7 +138,7 @@ function UF:PortraitUpdate(unit, event, shouldUpdate)
 		end
 
 		self:SetCamDistanceScale(camDistanceScale)
-		self:SetPosition(xOffset, xOffset, yOffset)
+		self:SetPosition(0, xOffset, yOffset)
 
 		--Refresh model to fix incorrect display issues
 		self:ClearModel()
