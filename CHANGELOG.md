@@ -1,4 +1,16 @@
-### Version 11.301 [ ETA: Soon ]
+### Version 11.311 [ ETA: Soon ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 11.301 [ January 15th 2020 ]
 
 **New Additions:**  
 Added an option to Swap to Alt Power on party frames, until we have a widget or something for corruption status of party members.  
@@ -10,10 +22,10 @@ Fixed an issue that caused some unskinned Blizzard frames to get the edges torn 
 Attempted to fix the Portrait offsets and made the settings display an important note.  
 
 **Misc. Changes:**  
-Added an "Eye" texture to the Alternative Power Bar, if its Sanity.  
-When you hover the NZoth eye on Character page it will now show a highlight around the items with corruption stat.  
-Fix backdrops on empty essences in the Character Frame.  
+Added the Nzoth eye texture to the Alternative Power Bar, if its Sanity.  
+When you hover the NZoth eye on Character page, it will now show a highlight around the items with corruption stat.  
 Set a texture when a submenu is selected in the Auctionhouse skin.  
+Fix backdrops on empty essences in the Character Frame.  
 Display an icon on Bag icons for corrupted items.  
 
 ___
