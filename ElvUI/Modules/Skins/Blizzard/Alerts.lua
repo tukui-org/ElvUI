@@ -12,8 +12,8 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local hooksecurefunc = hooksecurefunc
 
 --[[ SKINNING FUNCTIONS ]]--
-local function forceAlpha(self, alpha, isForced)
-	if alpha ~= 1 and isForced ~= true then
+local function forceAlpha(self, alpha, forced)
+	if alpha ~= 1 and forced ~= true then
 		self:SetAlpha(1, true)
 	end
 end

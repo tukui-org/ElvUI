@@ -237,13 +237,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	local newr, newg, newb -- fallback for bg if custom settings arent used
 	if not b then r, g, b = colors.health.r, colors.health.g, colors.health.b end
 	if (((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
-		local cur, max = self.cur or 1, self.max or 100
-		if parent.isForced then
-			cur = parent.forcedHealth or cur
-			max = (cur > max and cur * 2) or max
-		end
-
-		newr, newg, newb = ElvUF:ColorGradient(cur, max, 1, 0, 0, 1, 1, 0, r, g, b)
+		newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
 		self:SetStatusBarColor(newr, newg, newb)
 	end
 
@@ -275,16 +269,14 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	end
 end
 
-function UF:PostUpdateHealth(_, cur, max)
+function UF:PostUpdateHealth(_, cur)
 	local parent = self:GetParent()
 	if parent.isForced then
-		cur = random(1, max or 100)
-		parent.forcedHealth = cur
-		self:SetValue(cur)
+		self.cur = random(1, 100)
+		self.max = 100
+		self:SetMinMaxValues(0, self.max)
+		self:SetValue(self.cur)
 	else
-		if parent.forcedHealth then
-			parent.forcedHealth = nil
-		end
 		if parent.ResurrectIndicator then
 			parent.ResurrectIndicator:SetAlpha(cur == 0 and 1 or 0)
 		end

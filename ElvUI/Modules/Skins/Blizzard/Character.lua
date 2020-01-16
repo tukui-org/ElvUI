@@ -439,8 +439,8 @@ function S:CharacterFrame()
 		object.icon:SetTexCoord(unpack(E.TexCoords))
 		--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
 		object.icon:Point("LEFT", object, "LEFT", 4, 0)
-		hooksecurefunc(object.icon, "SetPoint", function(self, _, _, _, _, _, isForced)
-			if isForced ~= true then
+		hooksecurefunc(object.icon, "SetPoint", function(self, _, _, _, _, _, forced)
+			if forced ~= true then
 				self:Point("LEFT", object, "LEFT", 4, 0, true)
 			end
 		end)
