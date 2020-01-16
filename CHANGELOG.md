@@ -4,7 +4,9 @@
 
 
 **Bug Fixes:**  
-
+Attempted to fix an issue which caused Chat Bubbles to error with Font not set.  
+Stopped the Unitframes from updating when using Display Frames. This was very noticable with effective updates enabled.  
+Fixed the Arena and Boss frames from getting hidden when using Display Frames.  
 
 **Misc. Changes:**  
 
