@@ -255,7 +255,7 @@ function S:BlizzardQuestFrames()
 		end
 	end)
 
-	for _, frame in pairs({ 'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame' }) do
+	for _, frame in pairs({'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame', 'ArtifactXPFrame', 'TitleFrame', 'WarModeBonusFrame'}) do
 		HandleReward(_G.MapQuestInfoRewardsFrame[frame])
 		HandleReward(_G.QuestInfoRewardsFrame[frame])
 	end
