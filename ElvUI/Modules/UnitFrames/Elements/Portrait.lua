@@ -1,8 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---WoW API / Variables
+local unpack, select = unpack, select
+local UnitClass = UnitClass
 local CreateFrame = CreateFrame
+local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 
 function UF:Construct_Portrait(frame, type)
 	local portrait
@@ -136,8 +138,8 @@ function UF:PortraitUpdate(unit, event, shouldUpdate)
 		self:SetFacing(facing - rotation)
 	end
 
-	if portrait.style == 'Class' then
-		self:SetTexture('Interface/WorldStateFrame/Icons-Classes')
+	if db.style == 'Class' then
+		self:SetTexture('Interface\\WorldStateFrame\\Icons-Classes')
 		self:SetTexCoord(unpack(CLASS_ICON_TCOORDS[select(2, UnitClass(unit))]))
 		self:SetAllPoints(self.backdrop)
 	end
