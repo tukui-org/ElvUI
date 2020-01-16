@@ -246,16 +246,12 @@ end
 local tokens = {[0]="MANA","RAGE","FOCUS","ENERGY","RUNIC_POWER"}
 function UF:PostUpdatePowerColor()
 	local parent = self.origParent or self:GetParent()
-	if parent.isForced then
+	if parent.isForced and not self.colorClass then
 		local color = ElvUF.colors.power[tokens[random(0,4)]]
-		self:SetValue(self.cur)
+		self:SetStatusBarColor(color[1], color[2], color[3])
 
-		if not self.colorClass then
-			self:SetStatusBarColor(color[1], color[2], color[3])
-
-			if self.BG then
-				UF:UpdateBackdropTextureColor(self.BG, color[1], color[2], color[3])
-			end
+		if self.BG then
+			UF:UpdateBackdropTextureColor(self.BG, color[1], color[2], color[3])
 		end
 	end
 end
