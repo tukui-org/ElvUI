@@ -119,7 +119,7 @@ function UF:Configure_Portrait(frame, dontHide)
 	end
 end
 
-function UF:PortraitUpdate(unit, event, shouldUpdate)
+function UF:PortraitUpdate(unit, event)
 	local parent = self:GetParent()
 	local db = parent.db and parent.db.portrait
 	if not db then return end
@@ -131,7 +131,7 @@ function UF:PortraitUpdate(unit, event, shouldUpdate)
 		self:SetAlpha(1)
 	end
 
-	if shouldUpdate or (event == "ElvUI_UpdateAllElements" and self:IsObjectType("Model")) then
+	if (self.stateChanged or event == 'ElvUI_UpdateAllElements') and self.playerModel and self.state then
 		local rotation = db.rotation / 57.29573671972358 -- because 1 degree is equal 0,0174533 radian. Credit: Hndrxuprt
 		local scale = db.camDistanceScale
 
