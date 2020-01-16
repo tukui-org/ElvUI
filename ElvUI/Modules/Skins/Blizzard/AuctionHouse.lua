@@ -153,6 +153,35 @@ local function HandleSellFrame(frame)
 	end
 end
 
+local function HandleTokenSellFrame(frame)
+	frame:StripTextures()
+
+	local ItemDisplay = frame.ItemDisplay
+	ItemDisplay:StripTextures()
+	ItemDisplay:CreateBackdrop("Transparent")
+
+	local ItemButton = ItemDisplay.ItemButton
+	if ItemButton.IconMask then ItemButton.IconMask:Hide() end
+	if ItemButton.IconBorder then ItemButton.IconBorder:SetAlpha(0) end
+
+	ItemButton.EmptyBackground:Hide()
+	ItemButton:SetPushedTexture("")
+	ItemButton.Highlight:SetColorTexture(1, 1, 1, .25)
+	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
+
+	S:HandleIcon(ItemButton.Icon, true)
+	hooksecurefunc(ItemButton.IconBorder, "SetVertexColor", function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
+	hooksecurefunc(ItemButton.IconBorder, "Hide", function() ItemButton.Icon.backdrop:SetBackdropBorderColor(0, 0, 0) end)
+
+	S:HandleButton(frame.PostButton)
+	HandleAuctionButtons(frame.DummyRefreshButton)
+
+	frame.DummyItemList:StripTextures()
+	frame.DummyItemList:CreateBackdrop("Transparent")
+	HandleAuctionButtons(frame.DummyRefreshButton)
+	S:HandleScrollBar(frame.DummyItemList.DummyScrollBar)
+end
+
 local function HandleSellList(frame, hasHeader)
 	frame:StripTextures()
 
@@ -289,6 +318,9 @@ local function LoadSkin()
 
 	local ItemList = Frame.CommoditiesSellList
 	HandleSellList(ItemList, true)
+
+	local TokenSellFrame = Frame.WoWTokenSellFrame
+	HandleTokenSellFrame(TokenSellFrame)
 
 	--[[ Auctions Frame | TAB 3 ]]--
 	local AuctionsFrame = _G.AuctionHouseFrameAuctionsFrame
