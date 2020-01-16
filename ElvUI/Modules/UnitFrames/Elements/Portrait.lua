@@ -35,7 +35,8 @@ function UF:Configure_Portrait(frame, dontHide)
 		frame.Portrait:ClearAllPoints()
 		frame.Portrait.backdrop:Hide()
 	end
-	frame.Portrait = db.portrait.style == '3D' and frame.Portrait3D or frame.Portrait2D
+
+	frame.Portrait = (db.portrait.style == '3D' and frame.Portrait3D) or frame.Portrait2D
 
 	local portrait = frame.Portrait
 	if frame.USE_PORTRAIT then
@@ -139,9 +140,12 @@ function UF:PortraitUpdate(unit, event, shouldUpdate)
 	end
 
 	if db.style == 'Class' then
+		if not self.oldTexCoords then self.oldTexCoords = {self:GetTexCoord()} end
+
 		self:SetTexture('Interface\\WorldStateFrame\\Icons-Classes')
 		self:SetTexCoord(unpack(CLASS_ICON_TCOORDS[select(2, UnitClass(unit))]))
-		self:SetAllPoints(self.backdrop)
+	elseif db.style == '2D' and self.oldTexCoords then
+		self:SetTexCoord(unpack(self.oldTexCoords))
+		self.oldTexCoords = nil
 	end
 end
-
