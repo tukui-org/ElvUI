@@ -134,10 +134,6 @@ function UF:PortraitUpdate(unit, event, shouldUpdate)
 		self:SetPosition((facing > 0 and -db.xOffset) or db.xOffset, db.xOffset, db.yOffset)
 		self:SetCamDistanceScale(db.camDistanceScale)
 		self:SetFacing(facing - rotation)
-
-		--Refresh model to fix incorrect display issues
-		self:ClearModel()
-		self:SetUnit(unit)
 	end
 end
 
