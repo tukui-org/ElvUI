@@ -107,13 +107,6 @@ P.general = {
 				xOffset = 8,
 				yOffset = -8,
 			},
-			vehicleLeave = {
-				scale = 1,
-				position = 'BOTTOMLEFT',
-				xOffset = 2,
-				yOffset = 2,
-				hide = false,
-			},
 			ticket = {
 				scale = 1,
 				position = 'TOPRIGHT',
@@ -1187,6 +1180,7 @@ local UF_Power = {
 	width = 'fill',
 	xOffset = 2,
 	yOffset = 0,
+	displayAltPower = false,
 	strataAndLevel = {
 		frameLevel = 1,
 		frameStrata = 'LOW',
@@ -2142,6 +2136,10 @@ P.actionbar = {
 		scale = 1,
 		inheritGlobalFade = false,
 	},
+	vehicleExitButton = {
+		enable = true,
+		size = 32,
+	}
 };
 
 for i = 1, 10 do

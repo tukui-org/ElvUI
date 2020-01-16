@@ -8,9 +8,10 @@ local format = format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local UnitAlternatePowerInfo = UnitAlternatePowerInfo
 local UnitPowerMax = UnitPowerMax
 local UnitPower = UnitPower
+local GetUnitPowerBarInfo = GetUnitPowerBarInfo
+local GetUnitPowerBarStrings = GetUnitPowerBarStrings
 
 local function updateTooltip(self)
 	if _G.GameTooltip:IsForbidden() then return end
@@ -136,6 +137,12 @@ function B:UpdateAltPowerBar()
 		self:SetMinMaxValues(barInfo.minPower, maxPower)
 		self:SetValue(power)
 
+		if barInfo.ID == 554 then -- Sanity 8.3: N'Zoth Eye
+			self.textures:Show()
+		else
+			self.textures:Hide()
+		end
+
 		if E.db.general.altPowerBar.statusBarColorGradient then
 			local value = (maxPower > 0 and power / maxPower) or 0
 			self.colorGradientValue = value
@@ -154,6 +161,7 @@ function B:UpdateAltPowerBar()
 		self.powerTooltip = nil
 		self.powerValue = nil
 
+		self.textures:Hide()
 		self:Hide()
 	end
 end
@@ -173,6 +181,25 @@ function B:SkinAltPowerBar()
 	powerbar.text = powerbar:CreateFontString(nil, "OVERLAY")
 	powerbar.text:Point("CENTER", powerbar, "CENTER")
 	powerbar.text:SetJustifyH("CENTER")
+
+	do -- NZoth textures
+		local texTop = powerbar:CreateTexture(nil, "OVERLAY")
+		local texBotomLeft = powerbar:CreateTexture(nil, "OVERLAY")
+		local texBottomRight = powerbar:CreateTexture(nil, "OVERLAY")
+
+		powerbar.textures = {
+			TOP = texTop, BOTTOMLEFT = texBotomLeft, BOTTOMRIGHT = texBottomRight,
+			Show = function() texTop:Show() texBotomLeft:Show() texBottomRight:Show() end,
+			Hide = function() texTop:Hide() texBotomLeft:Hide() texBottomRight:Hide() end,
+		}
+
+		texTop:SetTexture('Interface\\AddOns\\ElvUI\\Media\\Textures\\NZothTop')
+		texTop:Point("CENTER", powerbar, "TOP", 0, -19)
+		texBotomLeft:SetTexture('Interface\\AddOns\\ElvUI\\Media\\Textures\\NZothBottomLeft')
+		texBotomLeft:Point("BOTTOMLEFT", powerbar, "BOTTOMLEFT", -7, -10)
+		texBottomRight:SetTexture('Interface\\AddOns\\ElvUI\\Media\\Textures\\NZothBottomRight')
+		texBottomRight:Point("BOTTOMRIGHT", powerbar, "BOTTOMRIGHT", 7, -10)
+	end
 
 	B:UpdateAltPowerBarSettings()
 	B:UpdateAltPowerBarColors()

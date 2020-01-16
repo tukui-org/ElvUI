@@ -568,63 +568,6 @@ E.Options.args.maps = {
 								},
 							},
 						},
-						vehicleLeave = {
-							order = 7,
-							type = "group",
-							name = L["Vehicle Exit"],
-							get = function(info) return E.db.general.minimap.icons.vehicleLeave[info[#info]] end,
-							set = function(info, value) E.db.general.minimap.icons.vehicleLeave[info[#info]] = value; AB:UpdateVehicleLeave() end,
-							args = {
-								hide = {
-									order = 1,
-									type = "toggle",
-									name = L["Hide"],
-								},
-								spacer = {
-									order = 2,
-									type = "description",
-									name = "",
-									width = "full"
-								},
-								position = {
-									order = 3,
-									type = "select",
-									name = L["Position"],
-									disabled = function() return E.db.general.minimap.icons.vehicleLeave.hide end,
-									values = {
-										["LEFT"] = L["Left"],
-										["RIGHT"] = L["Right"],
-										["TOP"] = L["Top"],
-										["BOTTOM"] = L["Bottom"],
-										["TOPLEFT"] = L["Top Left"],
-										["TOPRIGHT"] = L["Top Right"],
-										["BOTTOMLEFT"] = L["Bottom Left"],
-										["BOTTOMRIGHT"] = L["Bottom Right"],
-									},
-								},
-								scale = {
-									order = 4,
-									type = "range",
-									name = L["Scale"],
-									min = 0.5, max = 2, step = 0.05,
-									disabled = function() return E.db.general.minimap.icons.vehicleLeave.hide end,
-								},
-								xOffset = {
-									order = 5,
-									type = "range",
-									name = L["xOffset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return E.db.general.minimap.icons.vehicleLeave.hide end,
-								},
-								yOffset = {
-									order = 6,
-									type = "range",
-									name = L["yOffset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return E.db.general.minimap.icons.vehicleLeave.hide end,
-								},
-							},
-						},
 						ticket = {
 							order = 8,
 							type = "group",

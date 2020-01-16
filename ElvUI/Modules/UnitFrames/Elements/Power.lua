@@ -106,6 +106,7 @@ function UF:Configure_Power(frame)
 		power.colorReaction = nil
 		power.colorPower = nil
 		power.colorSelection = nil
+		power.displayAltPower = db.power.displayAltPower
 
 		if self.db.colors.powerselection then
 			power.colorSelection = true

@@ -23,6 +23,7 @@ function UF:Construct_PartyFrames()
 	self.BORDER = E.Border
 	self.SPACING = E.Spacing
 	self.SHADOW_SPACING = 3
+
 	if self.isChild then
 		self.Health = UF:Construct_HealthBar(self, true)
 		self.MouseGlow = UF:Construct_MouseGlow(self)

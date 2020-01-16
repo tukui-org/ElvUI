@@ -7,10 +7,8 @@ local pairs, select = pairs, select
 local ceil, unpack = ceil, unpack
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 --WoW API / Variables
-local CanExitVehicle = CanExitVehicle
 local ClearOverrideBindings = ClearOverrideBindings
 local CreateFrame = CreateFrame
-local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
 local GetFlyoutID = GetFlyoutID
 local GetMouseFocus = GetMouseFocus
@@ -19,7 +17,6 @@ local GetOverrideBarIndex = GetOverrideBarIndex
 local GetVehicleBarIndex = GetVehicleBarIndex
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
-local MainMenuBarVehicleLeaveButton_OnEnter = MainMenuBarVehicleLeaveButton_OnEnter
 local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
 local SetClampedTextureRotation = SetClampedTextureRotation
@@ -32,7 +29,6 @@ local UnitChannelInfo = UnitChannelInfo
 local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
-local UnitOnTaxi = UnitOnTaxi
 local UnregisterStateDriver = UnregisterStateDriver
 local VehicleExit = VehicleExit
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
@@ -244,7 +240,7 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
-		self:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil)
+		self:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars) or nil)
 	end
 
 	if bar.db.enabled or not bar.initialized then
@@ -373,71 +369,50 @@ function AB:PLAYER_REGEN_ENABLED()
 	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
-local vehicle_CallOnEvent -- so we can call the local function inside of itself
-local function Vehicle_OnEvent(self, event)
-	if event == "PLAYER_REGEN_ENABLED" then
-		self:UnregisterEvent(event)
-	elseif InCombatLockdown() then
-		self:RegisterEvent('PLAYER_REGEN_ENABLED', vehicle_CallOnEvent)
-		return
+function AB:CreateVehicleLeave()
+	local db = E.db.actionbar.vehicleExitButton
+	if db.enable ~= true then return end
+
+	local VehicleLeaveButtonHolder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
+	VehicleLeaveButtonHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
+	VehicleLeaveButtonHolder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
+
+	local Button = _G.MainMenuBarVehicleLeaveButton
+	if MasqueGroup and E.private.actionbar.masque.actionbars then
+		Button:StyleButton(true, true, true)
+	else
+		Button:CreateBackdrop(nil, true)
+		Button:GetNormalTexture():SetTexCoord(0.140625 + .08, 0.859375 - .06, 0.140625 + .08, 0.859375 - .08)
+		Button:GetPushedTexture():SetTexCoord(0.140625, 0.859375, 0.140625, 0.859375)
+		Button:StyleButton(nil, true, true)
 	end
 
-	if ( CanExitVehicle() ) and not E.db.general.minimap.icons.vehicleLeave.hide then
-		self:Show()
-		self:GetNormalTexture():SetVertexColor(1, 1, 1)
-		self:EnableMouse(true)
-	else
-		self:Hide()
-	end
-end
-vehicle_CallOnEvent = Vehicle_OnEvent
+	Button:ClearAllPoints()
+	Button:SetParent(_G.UIParent)
+	Button:SetPoint('CENTER', VehicleLeaveButtonHolder, 'CENTER')
 
-local function Vehicle_OnClick(self)
-	if UnitOnTaxi("player") then
-		_G.TaxiRequestEarlyLanding()
-		self:GetNormalTexture():SetVertexColor(1, 0, 0)
-		self:EnableMouse(false)
-	else
-		VehicleExit()
-	end
+	E:CreateMover(VehicleLeaveButtonHolder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, nil, nil, 'all,general')
+
+	hooksecurefunc(Button, 'SetPoint', function(_, _, parent)
+		if parent ~= VehicleLeaveButtonHolder then
+			Button:ClearAllPoints()
+			Button:SetParent(_G.UIParent)
+			Button:SetPoint('CENTER', VehicleLeaveButtonHolder, 'CENTER')
+		end
+	end)
+
+	hooksecurefunc(Button, 'SetHighlightTexture', function(_, tex)
+		if tex ~= self.hover then
+			Button:SetHighlightTexture(self.hover)
+		end
+	end)
+
+	AB:UpdateVehicleLeave()
 end
 
 function AB:UpdateVehicleLeave()
-	local button = _G.LeaveVehicleButton
-	if not button then return; end
-
-	local pos = E.db.general.minimap.icons.vehicleLeave.position or "BOTTOMLEFT"
-	local scale = 26 * (E.db.general.minimap.icons.vehicleLeave.scale or 1)
-	button:ClearAllPoints()
-	button:Point(pos, _G.Minimap, pos, E.db.general.minimap.icons.vehicleLeave.xOffset or 2, E.db.general.minimap.icons.vehicleLeave.yOffset or 2)
-	button:Size(scale, scale)
-end
-
-function AB:CreateVehicleLeave()
-	local vehicle = CreateFrame("Button", 'LeaveVehicleButton', E.UIParent)
-	vehicle:Size(26)
-	vehicle:SetFrameStrata("HIGH")
-	vehicle:Point("BOTTOMLEFT", _G.Minimap, "BOTTOMLEFT", 2, 2)
-	vehicle:SetNormalTexture(E.Media.Textures.ExitVehicle)
-	vehicle:SetPushedTexture(E.Media.Textures.ExitVehicle)
-	vehicle:SetHighlightTexture(E.Media.Textures.ExitVehicle)
-	vehicle:SetTemplate()
-	vehicle:RegisterForClicks("AnyUp")
-
-	vehicle:SetScript("OnClick", Vehicle_OnClick)
-	vehicle:SetScript("OnEnter", MainMenuBarVehicleLeaveButton_OnEnter)
-	vehicle:SetScript("OnLeave", GameTooltip_Hide)
-	vehicle:RegisterEvent("PLAYER_ENTERING_WORLD")
-	vehicle:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
-	vehicle:RegisterEvent("UPDATE_MULTI_CAST_ACTIONBAR")
-	vehicle:RegisterEvent("UNIT_ENTERED_VEHICLE")
-	vehicle:RegisterEvent("UNIT_EXITED_VEHICLE")
-	vehicle:RegisterEvent("VEHICLE_UPDATE")
-	vehicle:SetScript("OnEvent", Vehicle_OnEvent)
-
-	self:UpdateVehicleLeave()
-
-	vehicle:Hide()
+	local db = E.db.actionbar.vehicleExitButton
+	_G.MainMenuBarVehicleLeaveButton:Size(db.size)
 end
 
 function AB:ReassignBindings(event)
@@ -992,10 +967,10 @@ end
 
 AB.FlyoutButtons = 0
 function AB:SetupFlyoutButton()
-	for i=1, AB.FlyoutButtons do
+	for i = 1, AB.FlyoutButtons do
 		--prevent error if you don't have max amount of buttons
 		if _G["SpellFlyoutButton"..i] then
-			AB:StyleButton(_G["SpellFlyoutButton"..i], nil, (MasqueGroup and E.private.actionbar.masque.actionbars and true) or nil)
+			AB:StyleButton(_G["SpellFlyoutButton"..i], nil, (MasqueGroup and E.private.actionbar.masque.actionbars) or nil)
 			_G["SpellFlyoutButton"..i]:StyleButton()
 			_G["SpellFlyoutButton"..i]:HookScript('OnEnter', function(btn)
 				local parent = btn:GetParent()
@@ -1180,7 +1155,8 @@ end
 
 function AB:Initialize()
 	self.db = E.db.actionbar
-	if E.private.actionbar.enable ~= true then return; end
+
+	if not E.private.actionbar.enable then return end
 	self.Initialized = true
 
 	LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)

@@ -212,8 +212,15 @@ local function LoadSkin()
 		button:StripTextures(true)
 		button:StyleButton()
 
-		button.SelectedTexture:SetAlpha(0)
+		button.SelectedTexture:SetInside(button)
 	end
+
+	hooksecurefunc("AuctionFrameFilters_UpdateCategories", function(categoriesList, _)
+		for _, button in ipairs(categoriesList.FilterButtons) do
+			button.SelectedTexture:SetAtlas(nil)
+			button.SelectedTexture:SetColorTexture(0.7, 0.7, 0.7, 0.4)
+		end
+	end)
 
 	--[[ Browse Frame ]]--
 	local Browse = Frame.BrowseResultsFrame

@@ -575,8 +575,8 @@ local function UpdateFilterGroup()
 					size = {
 						order = 2,
 						type = "range",
-						name = L["Size Override"],
-						min = 0, max = 50, step = 1,
+						name = L["Size"],
+						min = 8, max = 50, step = 1,
 					},
 					xOffset = {
 						order = 3,

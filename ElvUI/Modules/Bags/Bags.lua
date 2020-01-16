@@ -8,7 +8,7 @@ local Search = E.Libs.ItemSearch
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
 local tinsert, tremove, twipe, tmaxn = tinsert, tremove, wipe, table.maxn
-local floor, ceil, abs = floor, ceil, abs
+local next, floor, ceil, abs = next, floor, ceil, abs
 local format, sub = format, strsub
 --WoW API / Variables
 local GetCVarBool = GetCVarBool
@@ -62,6 +62,7 @@ local SetItemButtonCount = SetItemButtonCount
 local SetItemButtonDesaturated = SetItemButtonDesaturated
 local SetItemButtonTexture = SetItemButtonTexture
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
+local SetItemButtonQuality = SetItemButtonQuality
 local SortBags = SortBags
 local SortBankBags = SortBankBags
 local SortReagentBankBags = SortReagentBankBags
@@ -69,7 +70,6 @@ local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
 local UseContainerItem = UseContainerItem
 
-local C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
@@ -481,16 +481,13 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.questIcon:Hide()
 	end
 
-	if slot.Azerite then
-		slot.Azerite:Hide()
-	end
-
 	slot.isJunk = (slot.rarity and slot.rarity == LE_ITEM_QUALITY_POOR) and not noValue
 	slot.junkDesaturate = slot.isJunk and E.db.bags.junkDesaturate
 
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
 	SetItemButtonDesaturated(slot, slot.locked or slot.junkDesaturate)
+	SetItemButtonQuality(slot, rarity, itemLink)
 
 	local color = E.db.bags.countFontColor
 	slot.Count:SetTextColor(color.r, color.g, color.b)
@@ -607,8 +604,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 			slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
 			slot.ignoreBorderColors = nil
 		end
-
-		if slot.Azerite and C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID(clink) then slot.Azerite:Show() end
 	elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
 		local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 		slot.newItemGlow:SetVertexColor(rr, gg, bb)
@@ -1832,30 +1827,26 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	if not slot.JunkIcon then
 		slot.JunkIcon = slot:CreateTexture(nil, 'OVERLAY')
 		slot.JunkIcon:SetAtlas('bags-junkcoin', true)
-		slot.JunkIcon:Point('TOPLEFT', 1, 0)
+		slot.JunkIcon:SetPoint('TOPLEFT', 1, 0)
 		slot.JunkIcon:Hide()
 	end
 
 	if not slot.ScrapIcon then
 		slot.ScrapIcon = slot:CreateTexture(nil, 'OVERLAY')
 		slot.ScrapIcon:SetAtlas('bags-icon-scrappable')
-		slot.ScrapIcon:Size(14, 12)
-		slot.ScrapIcon:Point('TOPRIGHT', -1, -1)
+		slot.ScrapIcon:SetSize(14, 12)
+		slot.ScrapIcon:SetPoint('TOPRIGHT', -1, -1)
 		slot.ScrapIcon:Hide()
 	end
 
-	if not slot.Azerite then
-		slot.Azerite = slot:CreateTexture(nil, 'OVERLAY')
-		slot.Azerite:SetAtlas('AzeriteIconFrame')
-		slot.Azerite:SetTexCoord(0,1,0,1)
-		slot.Azerite:SetInside()
-		slot.Azerite:Hide()
-	end
-
 	slot.searchOverlay:SetAllPoints()
+	slot.IconBorder:SetAlpha(0)
+	slot.IconOverlay:SetInside()
+
 	slot.cooldown = _G[slot:GetName()..'Cooldown']
 	slot.cooldown.CooldownOverride = 'bags'
 	E:RegisterCooldown(slot.cooldown)
+
 	slot.bagID = bagID
 	slot.slotID = slotID
 
