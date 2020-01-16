@@ -132,11 +132,20 @@ function UF:PortraitUpdate(unit, event, shouldUpdate)
 	end
 
 	if shouldUpdate or (event == "ElvUI_UpdateAllElements" and self:IsObjectType("Model")) then
-		local facing = self:GetCameraFacing()
 		local rotation = db.rotation / 57.29573671972358 -- because 1 degree is equal 0,0174533 radian. Credit: Hndrxuprt
-		self:SetPosition((facing > 0 and -db.xOffset) or db.xOffset, db.xOffset, db.yOffset)
-		self:SetCamDistanceScale(db.camDistanceScale)
+		local scale = db.camDistanceScale
+
+		local tx, ty, tz = self:GetCameraTarget()
+		local px, py, pz = self:GetCameraPosition()
+
+		self:SetCustomCamera(1)
+		self:SetCameraTarget(tx, ty, tz)
+		self:SetCameraPosition(px + scale, py, pz)
+		self:SetCameraDistance(scale)
+
+		local facing = self:GetCameraFacing()
 		self:SetFacing(facing - rotation)
+		self:SetPosition(0, db.xOffset, db.yOffset)
 	end
 
 	if db.style == 'Class' then

@@ -1151,11 +1151,11 @@ local UF_PhaseIndicator = {
 }
 
 local UF_Portrait = {
-	camDistanceScale = 2,
 	enable = false,
 	fullOverlay = false,
 	overlay = false,
-	overlayAlpha = 0.35,
+	overlayAlpha = 0.6,
+	camDistanceScale = 1,
 	rotation = 0,
 	style = '3D',
 	width = 45,
