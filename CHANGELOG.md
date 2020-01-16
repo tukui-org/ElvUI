@@ -6,6 +6,8 @@ Removed the Vehicle Exit Button from the Minimap. We added a mover and the new s
 
 **Bug Fixes:**  
 Fixed an issue with Buff Indicators which caused an error because of the setting conversion code.  
+Fixed an issue that caused some skins which had skinned disabled, to get the edges torn off.  
+Attempted to fix the Portrait offsets and made the settings display an important note.  
 
 **Misc. Changes:**  
 Added an "Eye" texture to the Alternative Power Bar, if its Sanity.  
