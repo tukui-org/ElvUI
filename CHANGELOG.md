@@ -8,6 +8,7 @@ Added Class Icon style to portraits.
 Attempted to fix an issue which caused Chat Bubbles to error with Font not set.  
 Stopped the Unitframes from updating when using Display Frames. This was very noticable with effective updates enabled.  
 Fixed the Arena and Boss frames from being hidden when changing an option while using Display Frames.  
+Fixed the title tag for FRIENDLY_NPC Nameplates. They are not in a guild >.>  
 
 **Misc. Changes:**  
 
