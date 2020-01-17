@@ -25,6 +25,7 @@ Fixed the title tag for FRIENDLY_NPC Nameplates. They are not in a guild >.>
 **Misc. Changes:**  
 Applied Actionbar transparency option on PetBar and StanceBar.  
 Fixed Vehicle Exit button highlight and added Frame Level and Strata options (found under ActionBars > Vehicle Exit).  
+Update instance ID from Deepwind Gorge. (Thanks AcidWeb)  
 
 ___
 ### Version 11.301 [ January 15th 2020 ]
