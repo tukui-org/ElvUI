@@ -138,7 +138,7 @@ function UF:PortraitUpdate(unit, event)
 		local px, py, pz = self:GetCameraPosition()
 
 		self:SetCustomCamera(1)
-		if self:HasCustomCamera() then
+		if self:HasCustomCamera() then -- if SetModel instead of SetUnit was used: this will say false, even with the above line.
 			local zoom = db.camDistanceScale
 			self:SetCameraTarget(tx, ty, tz)
 			self:SetCameraPosition(px + zoom, py, pz)
