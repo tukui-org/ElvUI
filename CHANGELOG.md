@@ -14,7 +14,7 @@ ___
 
 **New Additions:**  
 Added Coalescing Visions & Corrupted Mementos to the currencies datatext.  
-Added Class Icon style to portraits.  
+Added Class Icon style to portraits, also added Pause and Desaturation setting for 3d portraits.  
 
 **Bug Fixes:**  
 Attempted to fix an issue which caused Chat Bubbles to error with Font not set.  
