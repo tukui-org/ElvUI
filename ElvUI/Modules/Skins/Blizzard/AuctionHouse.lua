@@ -8,6 +8,7 @@ local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
+local FRIENDS_BNET_NAME_COLOR = FRIENDS_BNET_NAME_COLOR
 
 --[[
 TO DO:
@@ -376,21 +377,22 @@ local function LoadSkin()
 
 	local ItemButton = Token.ItemButton
 	S:HandleIcon(ItemButton.Icon, true)
-	local _, _, itemRarity = GetItemInfo(_G.WOW_TOKEN_ITEM_ID)
-	local r, g, b
-	if itemRarity then
-		r, g, b = GetItemQualityColor(itemRarity)
-	end
+	local r, g, b = FRIENDS_BNET_NAME_COLOR.r, FRIENDS_BNET_NAME_COLOR.g, FRIENDS_BNET_NAME_COLOR.b
 	ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 	ItemButton.IconBorder:SetAlpha(0)
 
 	--WoW Token Tutorial Frame
 	local WowTokenGameTimeTutorial = Frame.WoWTokenResults.GameTimeTutorial
+	WowTokenGameTimeTutorial.NineSlice:Hide()
 	WowTokenGameTimeTutorial.TitleBg:SetAlpha(0)
 	WowTokenGameTimeTutorial:CreateBackdrop("Transparent")
 	S:HandleCloseButton(WowTokenGameTimeTutorial.CloseButton)
 	S:HandleButton(WowTokenGameTimeTutorial.RightDisplay.StoreButton)
 	WowTokenGameTimeTutorial.Bg:SetAlpha(0)
+	WowTokenGameTimeTutorial.LeftDisplay.Label:SetTextColor(1, 1, 1)
+	WowTokenGameTimeTutorial.LeftDisplay.Tutorial1:SetTextColor(1, 0, 0)
+	WowTokenGameTimeTutorial.RightDisplay.Label:SetTextColor(1, 1, 1)
+	WowTokenGameTimeTutorial.RightDisplay.Tutorial1:SetTextColor(1, 0, 0)
 
 	--[[ Dialogs ]]--
 	Frame.BuyDialog:StripTextures()
