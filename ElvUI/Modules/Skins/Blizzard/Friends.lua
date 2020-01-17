@@ -191,7 +191,7 @@ function S:FriendsFrame()
 		end
 	end
 
-	S:HandleDropDownBox(_G.WhoFrameDropDown,150)
+	S:HandleDropDownBox(_G.WhoFrameDropDown, 120)
 
 	--Bottom Tabs
 	for i = 1, 4 do

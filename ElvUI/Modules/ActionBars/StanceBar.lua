@@ -347,7 +347,7 @@ function AB:UpdateStanceBindings()
 end
 
 function AB:CreateBarShapeShift()
-	bar:CreateBackdrop()
+	bar:CreateBackdrop(self.db.transparent and 'Transparent')
 	bar.backdrop:SetAllPoints()
 	bar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -4)
 	bar.buttons = {}

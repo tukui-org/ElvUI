@@ -1,8 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---WoW API / Variables
+local rad = rad
+local unpack = unpack
+local select = select
+local UnitClass = UnitClass
 local CreateFrame = CreateFrame
+local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 
 function UF:Construct_Portrait(frame, type)
 	local portrait
@@ -33,7 +37,8 @@ function UF:Configure_Portrait(frame, dontHide)
 		frame.Portrait:ClearAllPoints()
 		frame.Portrait.backdrop:Hide()
 	end
-	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
+
+	frame.Portrait = (db.portrait.style == '3D' and frame.Portrait3D) or frame.Portrait2D
 
 	local portrait = frame.Portrait
 	if frame.USE_PORTRAIT then
@@ -44,10 +49,10 @@ function UF:Configure_Portrait(frame, dontHide)
 		portrait:ClearAllPoints()
 		portrait.backdrop:ClearAllPoints()
 		if frame.USE_PORTRAIT_OVERLAY then
-			if db.portrait.style == '2D' then
-				portrait:SetParent(frame.Health)
-			else
+			if db.portrait.style == '3D' then
 				portrait:SetFrameLevel(frame.Health:GetFrameLevel())
+			else
+				portrait:SetParent(frame.Health)
 			end
 
 			portrait:SetAlpha(db.portrait.overlayAlpha)
@@ -81,10 +86,10 @@ function UF:Configure_Portrait(frame, dontHide)
 			end
 			portrait.backdrop:Show()
 
-			if db.portrait.style == '2D' then
-				portrait:SetParent(frame)
-			else
+			if db.portrait.style == '3D' then
 				portrait:SetFrameLevel(frame.Health:GetFrameLevel())
+			else
+				portrait:SetParent(frame)
 			end
 
 			if frame.ORIENTATION == "LEFT" then
@@ -116,7 +121,7 @@ function UF:Configure_Portrait(frame, dontHide)
 	end
 end
 
-function UF:PortraitUpdate(unit, event, shouldUpdate)
+function UF:PortraitUpdate(unit, event)
 	local parent = self:GetParent()
 	local db = parent.db and parent.db.portrait
 	if not db then return end
@@ -128,12 +133,32 @@ function UF:PortraitUpdate(unit, event, shouldUpdate)
 		self:SetAlpha(1)
 	end
 
-	if shouldUpdate or (event == "ElvUI_UpdateAllElements" and self:IsObjectType("Model")) then
-		local facing = self:GetCameraFacing()
-		local rotation = db.rotation / 57.29573671972358 -- because 1 degree is equal 0,0174533 radian. Credit: Hndrxuprt
-		self:SetPosition((facing > 0 and -db.xOffset) or db.xOffset, db.xOffset, db.yOffset)
-		self:SetCamDistanceScale(db.camDistanceScale)
-		self:SetFacing(facing - rotation)
+	if (self.stateChanged or event == 'ElvUI_UpdateAllElements') and self.playerModel and self.state then
+		local tx, ty, tz = self:GetCameraTarget()
+		local px, py, pz = self:GetCameraPosition()
+
+		self:SetCustomCamera(1)
+		if self:HasCustomCamera() then -- if SetModel instead of SetUnit was used: this will say false, even with the above line.
+			local zoom = db.camDistanceScale
+			self:SetCameraTarget(tx, ty, tz)
+			self:SetCameraPosition(px + zoom, py, pz)
+			self:SetCameraDistance(zoom)
+			self:SetDesaturation(db.desaturation)
+			self:SetPaused(db.paused)
+
+			local facing = self:GetCameraFacing()
+			self:SetRotation(facing - rad(db.rotation))
+			self:SetPosition(0, db.xOffset, db.yOffset)
+		end
+	end
+
+	if db.style == 'Class' then
+		if not self.oldTexCoords then self.oldTexCoords = {self:GetTexCoord()} end
+
+		self:SetTexture('Interface\\WorldStateFrame\\Icons-Classes')
+		self:SetTexCoord(unpack(CLASS_ICON_TCOORDS[select(2, UnitClass(unit))]))
+	elseif db.style == '2D' and self.oldTexCoords then
+		self:SetTexCoord(unpack(self.oldTexCoords))
+		self.oldTexCoords = nil
 	end
 end
-

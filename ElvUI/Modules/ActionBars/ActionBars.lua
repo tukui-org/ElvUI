@@ -401,9 +401,9 @@ function AB:CreateVehicleLeave()
 		end
 	end)
 
-	hooksecurefunc(Button, 'SetHighlightTexture', function(_, tex)
-		if tex ~= self.hover then
-			Button:SetHighlightTexture(self.hover)
+	hooksecurefunc(Button, 'SetHighlightTexture', function(btn, tex)
+		if tex ~= btn.hover then
+			Button:SetHighlightTexture(btn.hover)
 		end
 	end)
 
@@ -413,6 +413,8 @@ end
 function AB:UpdateVehicleLeave()
 	local db = E.db.actionbar.vehicleExitButton
 	_G.MainMenuBarVehicleLeaveButton:Size(db.size)
+	_G.MainMenuBarVehicleLeaveButton:SetFrameStrata(db.strata)
+	_G.MainMenuBarVehicleLeaveButton:SetFrameLevel(db.level)
 end
 
 function AB:ReassignBindings(event)

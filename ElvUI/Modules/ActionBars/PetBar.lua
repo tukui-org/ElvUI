@@ -272,7 +272,7 @@ function AB:UpdatePetBindings()
 end
 
 function AB:CreateBarPet()
-	bar:CreateBackdrop()
+	bar:CreateBackdrop(self.db.transparent and 'Transparent')
 	bar.backdrop:SetAllPoints()
 	if self.db.bar4.enabled then
 		bar:Point('RIGHT', _G.ElvUI_Bar4, 'LEFT', -4, 0)

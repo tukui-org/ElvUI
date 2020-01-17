@@ -764,6 +764,7 @@ P.nameplates.units.FRIENDLY_NPC.debuffs.growthY = 'UP'
 P.nameplates.units.FRIENDLY_NPC.debuffs.yOffset = 35
 P.nameplates.units.FRIENDLY_NPC.debuffs.priority = 'Blacklist,Boss,CCDebuffs,RaidDebuffs,Dispellable'
 P.nameplates.units.FRIENDLY_NPC.level.format = '[difficultycolor][level][shortclassification]'
+P.nameplates.units.FRIENDLY_NPC.title.format = '[npctitle]'
 
 P.nameplates.units.ENEMY_NPC.buffs.priority = 'Blacklist,RaidBuffsElvUI,Dispellable,blockNoDuration,PlayerBuffs,TurtleBuffs,CastByUnit'
 P.nameplates.units.ENEMY_NPC.debuffs.anchorPoint = 'TOPRIGHT'
@@ -1151,11 +1152,13 @@ local UF_PhaseIndicator = {
 }
 
 local UF_Portrait = {
-	camDistanceScale = 2,
 	enable = false,
+	paused = false,
 	fullOverlay = false,
 	overlay = false,
-	overlayAlpha = 0.35,
+	overlayAlpha = 0.6,
+	camDistanceScale = 1,
+	desaturation =  0,
 	rotation = 0,
 	style = '3D',
 	width = 45,
@@ -2139,6 +2142,8 @@ P.actionbar = {
 	vehicleExitButton = {
 		enable = true,
 		size = 32,
+		level = 1,
+		strata = 'MEDIUM'
 	}
 };
 

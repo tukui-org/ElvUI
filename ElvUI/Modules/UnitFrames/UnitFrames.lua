@@ -85,13 +85,13 @@ UF.instanceMapIDs = {
 	[761]  = 10, -- The Battle for Gilneas
 	[968]  = 10, -- Rated Eye of the Storm
 	[998]  = 10, -- Temple of Kotmogu
-	[1105] = 15, -- Deepwind Gorge
 	[1280] = 40, -- Southshore vs Tarren Mill
 	[1681] = 15, -- Arathi Basin Winter
 	[1803] = 10, -- Seething Shore
 	[2106] = 10, -- Warsong Gulch
 	[2107] = 15, -- Arathi Basin
 	[2118] = 40, -- Battle for Wintergrasp
+	[2245] = 15, -- Deepwind Gorge
 	[3358] = 15, -- Arathi Basin (NEW - Only Brawl?)
 }
 
@@ -557,6 +557,10 @@ function UF:Update_AllFrames()
 			self[unit]:Disable()
 			E:DisableMover(self[unit].mover:GetName())
 		end
+
+		if self[unit].isForced then
+			self:ForceShow(self[unit])
+		end
 	end
 
 	UF:UpdateAllHeaders()
@@ -593,9 +597,6 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 
 			frame.Update()
 
-			if frame.isForced then
-				self:ForceShow(frame)
-			end
 			E:EnableMover(frame.mover:GetName())
 		else
 			frame:Disable()
@@ -610,6 +611,10 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			end
 
 			E:DisableMover(frame.mover:GetName())
+		end
+
+		if frame.isForced then
+			self:ForceShow(frame)
 		end
 	end
 end

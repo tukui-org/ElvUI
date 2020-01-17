@@ -502,7 +502,7 @@ local function UpdateAuras(self, event, unit)
 end
 
 local function Update(self, event, unit)
-	if(self.unit ~= unit) then return end
+	if (self.isForced and event ~= 'ElvUI_UpdateAllElements') or (self.unit ~= unit) then return end -- ElvUI changed
 
 	UpdateAuras(self, event, unit)
 
