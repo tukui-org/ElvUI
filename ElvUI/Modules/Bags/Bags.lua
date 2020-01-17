@@ -42,6 +42,7 @@ local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local GetMoney = GetMoney
 local GetNumBankSlots = GetNumBankSlots
+local GetNumWatchedTokens = GetNumWatchedTokens
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local HandleModifiedItemClick = HandleModifiedItemClick
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
@@ -1179,47 +1180,46 @@ end
 
 function B:UpdateTokens()
 	local f = B.BagFrame
-	local numTokens = 0
-	for i = 1, MAX_WATCHED_TOKENS do
+	local numTokens = GetNumWatchedTokens()
+
+	for _, button in ipairs(f.currencyButton) do
+		button:Hide()
+	end
+
+	if numTokens == 0 then
+		if f.bottomOffset > 8 then
+			f.bottomOffset = 8
+			B:Layout()
+		end
+		return
+	end
+
+	for i = 1, numTokens do
 		local name, count, icon, currencyID = GetBackpackCurrencyInfo(i)
 		local button = f.currencyButton[i]
 
 		button:ClearAllPoints()
-		if name then
-			button.icon:SetTexture(icon)
+		button.icon:SetTexture(icon)
 
-			if B.db.currencyFormat == 'ICON_TEXT' then
-				button.text:SetText(name..': '..count)
-			elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
-				button.text:SetText(E:AbbreviateString(name)..': '..count)
-			elseif B.db.currencyFormat == 'ICON' then
-				button.text:SetText(count)
-			end
-
-			button.currencyID = currencyID
-			button:Show()
-			numTokens = numTokens + 1
-		else
-			button:Hide()
+		if B.db.currencyFormat == 'ICON_TEXT' then
+			button.text:SetText(name..': '..count)
+		elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
+			button.text:SetText(E:AbbreviateString(name)..': '..count)
+		elseif B.db.currencyFormat == 'ICON' then
+			button.text:SetText(count)
 		end
+
+		button.currencyID = currencyID
+
+		button:Show()
 	end
 
-	if numTokens == 0 then
-		f.bottomOffset = 8
+	f.currencyButton:Show()
 
-		if f.currencyButton:IsShown() then
-			f.currencyButton:Hide()
-			B:Layout()
-		end
-
-		return
-	elseif not f.currencyButton:IsShown() then
+	if f.bottomOffset < 28 then
 		f.bottomOffset = 28
-		f.currencyButton:Show()
 		B:Layout()
 	end
-
-	f.bottomOffset = 28
 
 	if numTokens == 1 then
 		f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth() / 2), 3)
@@ -1237,6 +1237,8 @@ function B:Token_OnEnter()
 	local GameTooltip = _G.GameTooltip
 	GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
 	GameTooltip:SetBackpackToken(self:GetID())
+	GameTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, self.currencyID))
+	GameTooltip:Show()
 end
 
 function B:Token_OnClick()
@@ -2431,7 +2433,6 @@ function B:Initialize()
 	B:SecureHook('ToggleAllBags', 'ToggleBackpack')
 	B:SecureHook('ToggleBackpack')
 	B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
-	B:Layout()
 
 	B:DisableBlizzard()
 	B:RegisterEvent('PLAYER_ENTERING_WORLD')
