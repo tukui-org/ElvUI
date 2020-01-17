@@ -1280,12 +1280,17 @@ end
 local function buffwatchConvert(spell)
 	if spell.sizeOverride then
 		local newSize = spell.sizeOverride
-		spell.size = (newSize > 0 and newSize) or 8
+		spell.size = (newSize > 8 and newSize) or 8
 		spell.sizeOverride = nil
+	elseif not spell.size or spell.size < 8 then
+		spell.size = 8
 	end
+
 	if spell.styleOverride then
 		spell.style = spell.styleOverride
 		spell.styleOverride = nil
+	elseif not spell.style then
+		spell.style = 'coloredIcon'
 	end
 end
 
