@@ -25,7 +25,7 @@ local Ticker
 local CURRENCY = CURRENCY
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local Profit, Spent = 0, 0
-local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Counters: Hold Shift + Left Click"], '|r')
+local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Counters: Hold Shift + Right Click"], '|r')
 local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Data: Hold Shift + Right Click"], '|r')
 
 local function OnEvent(self)
