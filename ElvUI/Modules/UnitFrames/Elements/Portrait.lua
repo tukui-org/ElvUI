@@ -1,7 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-local unpack, select = unpack, select
+local rad = rad
+local unpack = unpack
+local select = select
 local UnitClass = UnitClass
 local CreateFrame = CreateFrame
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
@@ -132,20 +134,22 @@ function UF:PortraitUpdate(unit, event)
 	end
 
 	if (self.stateChanged or event == 'ElvUI_UpdateAllElements') and self.playerModel and self.state then
-		local rotation = db.rotation / 57.29573671972358 -- because 1 degree is equal 0,0174533 radian. Credit: Hndrxuprt
-		local scale = db.camDistanceScale
-
 		local tx, ty, tz = self:GetCameraTarget()
 		local px, py, pz = self:GetCameraPosition()
 
 		self:SetCustomCamera(1)
-		self:SetCameraTarget(tx, ty, tz)
-		self:SetCameraPosition(px + scale, py, pz)
-		self:SetCameraDistance(scale)
+		if self:HasCustomCamera() then
+			local zoom = db.camDistanceScale
+			self:SetCameraTarget(tx, ty, tz)
+			self:SetCameraPosition(px + zoom, py, pz)
+			self:SetCameraDistance(zoom)
+			self:SetDesaturation(db.desaturation)
+			self:SetPaused(db.paused)
 
-		local facing = self:GetCameraFacing()
-		self:SetFacing(facing - rotation)
-		self:SetPosition(0, db.xOffset, db.yOffset)
+			local facing = self:GetCameraFacing()
+			self:SetRotation(facing - rad(db.rotation))
+			self:SetPosition(0, db.xOffset, db.yOffset)
+		end
 	end
 
 	if db.style == 'Class' then
