@@ -1,4 +1,16 @@
-### Version 11.311 [ ETA: Soon ]
+### Version 11.321 [ ETA: Soon ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 11.311 [ January 17th 2020 ]
 
 **New Additions:**  
 Added Coalescing Visions & Corrupted Mementos to the currencies datatext.  
