@@ -2142,6 +2142,8 @@ P.actionbar = {
 	vehicleExitButton = {
 		enable = true,
 		size = 32,
+		level = 1,
+		strata = 'MEDIUM'
 	}
 };
 

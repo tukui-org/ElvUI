@@ -413,6 +413,8 @@ end
 function AB:UpdateVehicleLeave()
 	local db = E.db.actionbar.vehicleExitButton
 	_G.MainMenuBarVehicleLeaveButton:Size(db.size)
+	_G.MainMenuBarVehicleLeaveButton:SetFrameStrata(db.strata)
+	_G.MainMenuBarVehicleLeaveButton:SetFrameLevel(db.level)
 end
 
 function AB:ReassignBindings(event)
