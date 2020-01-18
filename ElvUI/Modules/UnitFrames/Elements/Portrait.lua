@@ -134,22 +134,12 @@ function UF:PortraitUpdate(unit, event)
 	end
 
 	if (self.stateChanged or event == 'ElvUI_UpdateAllElements') and self.playerModel and self.state then
-		local tx, ty, tz = self:GetCameraTarget()
-		local px, py, pz = self:GetCameraPosition()
-
-		self:SetCustomCamera(1)
-		if self:HasCustomCamera() then -- if SetModel instead of SetUnit was used: this will say false, even with the above line.
-			local zoom = db.camDistanceScale
-			self:SetCameraTarget(tx, ty, tz)
-			self:SetCameraPosition(px + zoom, py, pz)
-			self:SetCameraDistance(zoom)
-			self:SetDesaturation(db.desaturation)
-			self:SetPaused(db.paused)
-
-			local facing = self:GetCameraFacing()
-			self:SetRotation(facing - rad(db.rotation))
-			self:SetPosition(0, db.xOffset, db.yOffset)
-		end
+		local facing = self:GetCameraFacing()
+		self:SetCamDistanceScale(db.camDistanceScale)
+		self:SetPosition((facing > 0 and -db.xOffset) or db.xOffset, db.xOffset, db.yOffset)
+		self:SetRotation(facing - rad(db.rotation))
+		self:SetDesaturation(db.desaturation)
+		self:SetPaused(db.paused)
 	end
 
 	if db.style == 'Class' then
