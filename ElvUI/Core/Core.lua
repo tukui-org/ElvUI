@@ -1282,8 +1282,8 @@ local function buffwatchConvert(spell)
 		local newSize = spell.sizeOverride
 		spell.size = (newSize > 8 and newSize) or 8
 		spell.sizeOverride = nil
-	elseif not spell.size or spell.size < 8 then
-		spell.size = 8
+	elseif not spell.size or spell.size < 6 then
+		spell.size = 6
 	end
 
 	if spell.styleOverride then
