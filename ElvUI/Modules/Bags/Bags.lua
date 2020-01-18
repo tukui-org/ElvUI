@@ -1180,7 +1180,7 @@ end
 
 function B:UpdateTokens()
 	local f = B.BagFrame
-	local numTokens = GetNumWatchedTokens()
+	local numTokens = GetBackpackCurrencyInfo(1) and 1 or 0
 
 	for _, button in ipairs(f.currencyButton) do
 		button:Hide()
@@ -1194,10 +1194,12 @@ function B:UpdateTokens()
 		return
 	end
 
+	numTokens = GetNumWatchedTokens()
+
 	for i = 1, numTokens do
 		local name, count, icon, currencyID = GetBackpackCurrencyInfo(i)
-		local button = f.currencyButton[i]
 
+		local button = f.currencyButton[i]
 		button:ClearAllPoints()
 		button.icon:SetTexture(icon)
 
@@ -1210,7 +1212,6 @@ function B:UpdateTokens()
 		end
 
 		button.currencyID = currencyID
-
 		button:Show()
 	end
 
