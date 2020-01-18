@@ -1139,8 +1139,8 @@ function B:UpdateReagentSlot(slotID)
 end
 
 function B:UpdateAll()
-	if B.BagFrame then B:Layout() end
-	if B.BankFrame then B:Layout(true) end
+	B:Layout()
+	B:Layout(true)
 end
 
 function B:OnEvent(event, ...)
@@ -1180,22 +1180,15 @@ end
 
 function B:UpdateTokens()
 	local f = B.BagFrame
-	local numTokens = GetBackpackCurrencyInfo(1) and GetNumWatchedTokens() or 0
+	local numTokens = 0
 
 	for _, button in ipairs(f.currencyButton) do
 		button:Hide()
 	end
 
-	if numTokens == 0 then
-		if f.bottomOffset > 8 then
-			f.bottomOffset = 8
-			B:Layout()
-		end
-		return
-	end
-
-	for i = 1, numTokens do
+	for i = 1, MAX_WATCHED_TOKENS do
 		local name, count, icon, currencyID = GetBackpackCurrencyInfo(i)
+		if not name then break end
 
 		local button = f.currencyButton[i]
 		button:ClearAllPoints()
@@ -1211,24 +1204,31 @@ function B:UpdateTokens()
 
 		button.currencyID = currencyID
 		button:Show()
+
+		numTokens = numTokens + 1
 	end
 
-	f.currencyButton:Show()
-
-	if f.bottomOffset < 28 then
-		f.bottomOffset = 28
-		B:Layout()
-	end
-
-	if numTokens == 1 then
-		f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth() / 2), 3)
-	elseif numTokens == 2 then
-		f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth()) - (f.currencyButton[1]:GetWidth() / 2), 3)
-		f.currencyButton[2]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOM', f.currencyButton[2]:GetWidth() / 2, 3)
+	if numTokens == 0 then
+		if f.bottomOffset > 8 then
+			f.bottomOffset = 8
+			B:Layout()
+		end
 	else
-		f.currencyButton[1]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOMLEFT', 3, 3)
-		f.currencyButton[2]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[2].text:GetWidth() / 3), 3)
-		f.currencyButton[3]:Point('BOTTOMRIGHT', f.currencyButton, 'BOTTOMRIGHT', -(f.currencyButton[3].text:GetWidth()) - (f.currencyButton[3]:GetWidth() / 2), 3)
+		if f.bottomOffset < 28 then
+			f.bottomOffset = 28
+			B:Layout()
+		end
+
+		if numTokens == 1 then
+			f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth() / 2), 3)
+		elseif numTokens == 2 then
+			f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth()) - (f.currencyButton[1]:GetWidth() / 2), 3)
+			f.currencyButton[2]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOM', f.currencyButton[2]:GetWidth() / 2, 3)
+		else
+			f.currencyButton[1]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOMLEFT', 3, 3)
+			f.currencyButton[2]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[2].text:GetWidth() / 3), 3)
+			f.currencyButton[3]:Point('BOTTOMRIGHT', f.currencyButton, 'BOTTOMRIGHT', -(f.currencyButton[3].text:GetWidth()) - (f.currencyButton[3]:GetWidth() / 2), 3)
+		end
 	end
 end
 
@@ -2040,7 +2040,6 @@ function B:OpenBank()
 	B:Layout(true)
 
 	B:OpenBags()
-	B:UpdateTokens()
 
 	_G.BankFrame:Show()
 	B.BankFrame:Show()
