@@ -1244,8 +1244,11 @@ function B:Token_OnEnter()
 	local GameTooltip = _G.GameTooltip
 	GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
 	GameTooltip:SetBackpackToken(self:GetID())
-	GameTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, self.currencyID))
-	GameTooltip:Show()
+
+	if TT.db.spellID then
+		GameTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, self.currencyID))
+		GameTooltip:Show()
+	end
 end
 
 function B:Token_OnClick()
