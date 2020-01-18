@@ -126,8 +126,7 @@ function UF:PortraitUpdate(unit, event)
 	local db = parent.db and parent.db.portrait
 	if not db then return end
 
-	if db.enable and parent.USE_PORTRAIT_OVERLAY then
-		self:SetAlpha(0) -- there was a reason for this. i dont remember
+	if parent.USE_PORTRAIT_OVERLAY then
 		self:SetAlpha(db.overlayAlpha)
 	else
 		self:SetAlpha(1)
