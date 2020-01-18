@@ -42,7 +42,6 @@ local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local GetMoney = GetMoney
 local GetNumBankSlots = GetNumBankSlots
-local GetNumWatchedTokens = GetNumWatchedTokens
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local HandleModifiedItemClick = HandleModifiedItemClick
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
@@ -936,11 +935,19 @@ function B:Layout(isBank)
 
 	f.totalSlots = 0
 	local lastButton, lastRowButton, newBag
-	local numContainerSlots = isBank and GetNumBankSlots() + 1 or 5
+	local numContainerSlots = isBank and 8 or 5
 
 	f.totalSlots = 0
 	f.holderFrame:Width(holderWidth)
 	f.ContainerHolder:Size(((buttonSize + buttonSpacing) * numContainerSlots) + buttonSpacing, buttonSize + (buttonSpacing * 2))
+
+	if isBank and not f.fullBank then
+		f.fullBank = select(2, GetNumBankSlots())
+		f.purchaseBagButton:SetShown(not f.fullBank)
+		if _G.BankFrame.selectedTab == 1 then
+			f.editBox:Point('RIGHT', f.fullBank and f.bagsButton or f.purchaseBagButton, 'LEFT', -5, 0)
+		end
+	end
 
 	for i, bagID in ipairs(f.BagIDs) do
 		local assignedBag
@@ -956,9 +963,10 @@ function B:Layout(isBank)
 				end
 
 				if (i - 1) > GetNumBankSlots() then
-					SetItemButtonTextureVertexColor(f.ContainerHolder[i], 1.0,0.1,0.1);
+					SetItemButtonTextureVertexColor(f.ContainerHolder[i], 1, .1, .1)
 					f.ContainerHolder[i].tooltipText = _G.BANK_BAG_PURCHASE;
 				else
+					SetItemButtonTextureVertexColor(f.ContainerHolder[i], 1, 1, 1)
 					f.ContainerHolder[i].tooltipText = ''
 				end
 			end
@@ -1423,7 +1431,6 @@ function B:ConstructContainerFrame(name, isBank)
 
 		if isBank then
 			f.ContainerHolder[i]:SetID(bagID - 4)
-			if not f.ContainerHolder[i].tooltipText then f.ContainerHolder[i].tooltipText = '' end
 			f.ContainerHolder[i].icon:SetTexture('Interface/Buttons/Button-Backpack-Up')
 			f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 				if button == 'RightButton' and holder.id then
@@ -1532,6 +1539,8 @@ function B:ConstructContainerFrame(name, isBank)
 	f.editBox.searchIcon:Size(15, 15)
 
 	if isBank then
+		f.fullBank = select(2, GetNumBankSlots())
+
 		for _, event in pairs(f.events) do
 			f:RegisterEvent(event)
 		end
@@ -1659,16 +1668,12 @@ function B:ConstructContainerFrame(name, isBank)
 		--Toggle Bags Button
 		f.bagsButton:Point('RIGHT', f.depositButtonBank, 'LEFT', -5, 0)
 		f.bagsButton:SetScript('OnClick', function()
-			local numSlots = GetNumBankSlots()
+			ToggleFrame(f.ContainerHolder)
 			PlaySound(852) --IG_MAINMENU_OPTION
-			if numSlots >= 1 then
-				ToggleFrame(f.ContainerHolder)
-			else
-				E:StaticPopup_Show('NO_BANK_BAGS')
-			end
 		end)
 
 		f.purchaseBagButton = CreateFrame('Button', nil, f.holderFrame)
+		f.purchaseBagButton:SetShown(not f.fullBank)
 		f.purchaseBagButton:Size(16 + E.Border, 16 + E.Border)
 		f.purchaseBagButton:SetTemplate()
 		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
@@ -1705,7 +1710,6 @@ function B:ConstructContainerFrame(name, isBank)
 
 		--Search
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', (E.Border * 2) + 18, E.Border * 2 + 2)
-		f.editBox:Point('RIGHT', f.purchaseBagButton, 'LEFT', -5, 0)
 	else
 		--Gold Text
 		f.goldText = f:CreateFontString(nil, 'OVERLAY')
@@ -1987,7 +1991,7 @@ function B:ShowBankTab(f, showReagent)
 		_G.BankFrame.selectedTab = 1
 		f.reagentFrame:Hide()
 		f.holderFrame:Show()
-		f.editBox:Point('RIGHT', f.purchaseBagButton, 'LEFT', -5, 0)
+		f.editBox:Point('RIGHT', f.fullBank and f.bagsButton or f.purchaseBagButton, 'LEFT', -5, 0)
 		f.bagText:SetText(L["Bank"])
 	end
 end
