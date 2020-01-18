@@ -15,7 +15,7 @@ ___
 **New Additions:**  
 Show Currency ID on Tracked Currencies on the Bag (if Tooltip settings allow Spell IDs to be shown).  
 
-**Bug Fixes:**  
+**Hotfixed:**  
 Hide Purchase Bags when all slots are bought.  
 Revert Portrait Camera positioning.  
 
