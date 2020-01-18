@@ -119,7 +119,7 @@ local function OnEnter(self)
 	end
 
 	for _, g in ipairs(myGold) do
-		DT.tooltip:AddDoubleLine(g.name == E.myname and g.name..' |TInterface\\COMMON\\Indicator-Green:14|t' or g.name, g.amountText, g.r, g.g, g.b, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(g.name == E.myname and g.name..' |TInterface/COMMON/Indicator-Green:14|t' or g.name, g.amountText, g.r, g.g, g.b, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')
