@@ -1,4 +1,4 @@
-### Version 11.321 [ ETA: Soon ]
+### Version 11.32 [ ETA: Soon ]
 
 **New Additions:**  
 
@@ -8,6 +8,16 @@
 
 **Misc. Changes:**  
 
+
+___
+### Version 11.312 [ January 18th 2020 ]
+
+**New Additions:**  
+Show Currency ID on Tracked Currencies on the Bag (if Tooltip settings allow Spell IDs to be shown).  
+
+**Bug Fixes:**  
+Hide Purchase Bags when all slots are bought.  
+Revert Portrait Camera positioning.  
 
 ___
 ### Version 11.311 [ January 17th 2020 ]
