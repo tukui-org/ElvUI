@@ -13,7 +13,7 @@ ___
 ### Version 11.312 [ January 18th 2020 ]
 
 **New Additions:**  
-Show Currency ID on Tracked Currencies on the Bag (if Tooltip settings allow Spell IDs to be shown).  
+Show Currency ID on Tooltip for Tracked Currencies on the Bag (if Tooltip settings allow Spell IDs to be shown).  
 
 **Hotfixed:**  
 Hide Purchase Bags when all slots are bought.  
