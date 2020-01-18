@@ -935,11 +935,19 @@ function B:Layout(isBank)
 
 	f.totalSlots = 0
 	local lastButton, lastRowButton, newBag
-	local numContainerSlots = isBank and GetNumBankSlots() + 1 or 5
+	local numContainerSlots = isBank and 8 or 5
 
 	f.totalSlots = 0
 	f.holderFrame:Width(holderWidth)
 	f.ContainerHolder:Size(((buttonSize + buttonSpacing) * numContainerSlots) + buttonSpacing, buttonSize + (buttonSpacing * 2))
+
+	if isBank and not f.fullBank then
+		f.fullBank = select(2, GetNumBankSlots())
+		f.purchaseBagButton:SetShown(not f.fullBank)
+		if _G.BankFrame.selectedTab == 1 then
+			f.editBox:Point('RIGHT', f.fullBank and f.bagsButton or f.purchaseBagButton, 'LEFT', -5, 0)
+		end
+	end
 
 	for i, bagID in ipairs(f.BagIDs) do
 		local assignedBag
@@ -955,9 +963,10 @@ function B:Layout(isBank)
 				end
 
 				if (i - 1) > GetNumBankSlots() then
-					SetItemButtonTextureVertexColor(f.ContainerHolder[i], 1.0,0.1,0.1);
+					SetItemButtonTextureVertexColor(f.ContainerHolder[i], 1, .1, .1)
 					f.ContainerHolder[i].tooltipText = _G.BANK_BAG_PURCHASE;
 				else
+					SetItemButtonTextureVertexColor(f.ContainerHolder[i], 1, 1, 1)
 					f.ContainerHolder[i].tooltipText = ''
 				end
 			end
@@ -1138,8 +1147,8 @@ function B:UpdateReagentSlot(slotID)
 end
 
 function B:UpdateAll()
-	if B.BagFrame then B:Layout() end
-	if B.BankFrame then B:Layout(true) end
+	B:Layout()
+	B:Layout(true)
 end
 
 function B:OnEvent(event, ...)
@@ -1180,56 +1189,54 @@ end
 function B:UpdateTokens()
 	local f = B.BagFrame
 	local numTokens = 0
+
+	for _, button in ipairs(f.currencyButton) do
+		button:Hide()
+	end
+
 	for i = 1, MAX_WATCHED_TOKENS do
 		local name, count, icon, currencyID = GetBackpackCurrencyInfo(i)
+		if not name then break end
+
 		local button = f.currencyButton[i]
-
 		button:ClearAllPoints()
-		if name then
-			button.icon:SetTexture(icon)
+		button.icon:SetTexture(icon)
 
-			if B.db.currencyFormat == 'ICON_TEXT' then
-				button.text:SetText(name..': '..count)
-			elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
-				button.text:SetText(E:AbbreviateString(name)..': '..count)
-			elseif B.db.currencyFormat == 'ICON' then
-				button.text:SetText(count)
-			end
-
-			button.currencyID = currencyID
-			button:Show()
-			numTokens = numTokens + 1
-		else
-			button:Hide()
+		if B.db.currencyFormat == 'ICON_TEXT' then
+			button.text:SetText(name..': '..count)
+		elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
+			button.text:SetText(E:AbbreviateString(name)..': '..count)
+		elseif B.db.currencyFormat == 'ICON' then
+			button.text:SetText(count)
 		end
+
+		button.currencyID = currencyID
+		button:Show()
+
+		numTokens = numTokens + 1
 	end
 
 	if numTokens == 0 then
-		f.bottomOffset = 8
-
-		if f.currencyButton:IsShown() then
-			f.currencyButton:Hide()
+		if f.bottomOffset > 8 then
+			f.bottomOffset = 8
+			B:Layout()
+		end
+	else
+		if f.bottomOffset < 28 then
+			f.bottomOffset = 28
 			B:Layout()
 		end
 
-		return
-	elseif not f.currencyButton:IsShown() then
-		f.bottomOffset = 28
-		f.currencyButton:Show()
-		B:Layout()
-	end
-
-	f.bottomOffset = 28
-
-	if numTokens == 1 then
-		f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth() / 2), 3)
-	elseif numTokens == 2 then
-		f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth()) - (f.currencyButton[1]:GetWidth() / 2), 3)
-		f.currencyButton[2]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOM', f.currencyButton[2]:GetWidth() / 2, 3)
-	else
-		f.currencyButton[1]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOMLEFT', 3, 3)
-		f.currencyButton[2]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[2].text:GetWidth() / 3), 3)
-		f.currencyButton[3]:Point('BOTTOMRIGHT', f.currencyButton, 'BOTTOMRIGHT', -(f.currencyButton[3].text:GetWidth()) - (f.currencyButton[3]:GetWidth() / 2), 3)
+		if numTokens == 1 then
+			f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth() / 2), 3)
+		elseif numTokens == 2 then
+			f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth()) - (f.currencyButton[1]:GetWidth() / 2), 3)
+			f.currencyButton[2]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOM', f.currencyButton[2]:GetWidth() / 2, 3)
+		else
+			f.currencyButton[1]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOMLEFT', 3, 3)
+			f.currencyButton[2]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[2].text:GetWidth() / 3), 3)
+			f.currencyButton[3]:Point('BOTTOMRIGHT', f.currencyButton, 'BOTTOMRIGHT', -(f.currencyButton[3].text:GetWidth()) - (f.currencyButton[3]:GetWidth() / 2), 3)
+		end
 	end
 end
 
@@ -1237,6 +1244,11 @@ function B:Token_OnEnter()
 	local GameTooltip = _G.GameTooltip
 	GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
 	GameTooltip:SetBackpackToken(self:GetID())
+
+	if TT.db.spellID then
+		GameTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, self.currencyID))
+		GameTooltip:Show()
+	end
 end
 
 function B:Token_OnClick()
@@ -1422,7 +1434,6 @@ function B:ConstructContainerFrame(name, isBank)
 
 		if isBank then
 			f.ContainerHolder[i]:SetID(bagID - 4)
-			if not f.ContainerHolder[i].tooltipText then f.ContainerHolder[i].tooltipText = '' end
 			f.ContainerHolder[i].icon:SetTexture('Interface/Buttons/Button-Backpack-Up')
 			f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 				if button == 'RightButton' and holder.id then
@@ -1531,6 +1542,8 @@ function B:ConstructContainerFrame(name, isBank)
 	f.editBox.searchIcon:Size(15, 15)
 
 	if isBank then
+		f.fullBank = select(2, GetNumBankSlots())
+
 		for _, event in pairs(f.events) do
 			f:RegisterEvent(event)
 		end
@@ -1658,16 +1671,12 @@ function B:ConstructContainerFrame(name, isBank)
 		--Toggle Bags Button
 		f.bagsButton:Point('RIGHT', f.depositButtonBank, 'LEFT', -5, 0)
 		f.bagsButton:SetScript('OnClick', function()
-			local numSlots = GetNumBankSlots()
+			ToggleFrame(f.ContainerHolder)
 			PlaySound(852) --IG_MAINMENU_OPTION
-			if numSlots >= 1 then
-				ToggleFrame(f.ContainerHolder)
-			else
-				E:StaticPopup_Show('NO_BANK_BAGS')
-			end
 		end)
 
 		f.purchaseBagButton = CreateFrame('Button', nil, f.holderFrame)
+		f.purchaseBagButton:SetShown(not f.fullBank)
 		f.purchaseBagButton:Size(16 + E.Border, 16 + E.Border)
 		f.purchaseBagButton:SetTemplate()
 		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
@@ -1704,7 +1713,6 @@ function B:ConstructContainerFrame(name, isBank)
 
 		--Search
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', (E.Border * 2) + 18, E.Border * 2 + 2)
-		f.editBox:Point('RIGHT', f.purchaseBagButton, 'LEFT', -5, 0)
 	else
 		--Gold Text
 		f.goldText = f:CreateFontString(nil, 'OVERLAY')
@@ -1986,7 +1994,7 @@ function B:ShowBankTab(f, showReagent)
 		_G.BankFrame.selectedTab = 1
 		f.reagentFrame:Hide()
 		f.holderFrame:Show()
-		f.editBox:Point('RIGHT', f.purchaseBagButton, 'LEFT', -5, 0)
+		f.editBox:Point('RIGHT', f.fullBank and f.bagsButton or f.purchaseBagButton, 'LEFT', -5, 0)
 		f.bagText:SetText(L["Bank"])
 	end
 end
@@ -2039,7 +2047,6 @@ function B:OpenBank()
 	B:Layout(true)
 
 	B:OpenBags()
-	B:UpdateTokens()
 
 	_G.BankFrame:Show()
 	B.BankFrame:Show()
@@ -2431,7 +2438,6 @@ function B:Initialize()
 	B:SecureHook('ToggleAllBags', 'ToggleBackpack')
 	B:SecureHook('ToggleBackpack')
 	B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
-	B:Layout()
 
 	B:DisableBlizzard()
 	B:RegisterEvent('PLAYER_ENTERING_WORLD')
