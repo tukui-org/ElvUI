@@ -36,13 +36,14 @@ local function OnEvent(self)
 		Ticker = C_Timer_NewTicker(60, C_WowTokenPublic_UpdateMarketPrice)
 	end
 
+	ElvDB = ElvDB or {}
+
+	ElvDB.gold = ElvDB.gold or {}
+	ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {}
+
 	ElvDB.class = ElvDB.class or {}
 	ElvDB.class[E.myrealm] = ElvDB.class[E.myrealm] or {}
 	ElvDB.class[E.myrealm][E.myname] = E.myclass
-
-	ElvDB = ElvDB or {}
-	ElvDB.gold = ElvDB.gold or {}
-	ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {}
 
 	--prevent an error possibly from really old profiles
 	local oldMoney = ElvDB.gold[E.myrealm][E.myname]
