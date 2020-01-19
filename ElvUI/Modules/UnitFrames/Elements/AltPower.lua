@@ -13,13 +13,12 @@ function UF:Construct_AltPowerBar(frame)
 	altpower:SetStatusBarColor(.7, .7, .6)
 	altpower:GetStatusBarTexture():SetHorizTile(false)
 
-	altpower.PostUpdate = UF.AltPowerBarPostUpdate
 	altpower:CreateBackdrop(nil, true)
 
-	altpower.text = altpower:CreateFontString(nil, 'OVERLAY')
-	altpower.text:Point("CENTER")
-	altpower.text:SetJustifyH("CENTER")
-	UF:Configure_FontString(altpower.text)
+	altpower.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
+	altpower.value:Point("CENTER")
+	altpower.value:SetJustifyH("CENTER")
+	UF:Configure_FontString(altpower.value)
 
 	altpower:SetScript("OnShow", UF.ToggleResourceBar)
 	altpower:SetScript("OnHide", UF.ToggleResourceBar)
@@ -28,28 +27,21 @@ function UF:Construct_AltPowerBar(frame)
 	return altpower
 end
 
-function UF:AltPowerBarPostUpdate(unit, cur, _, max)
-	if not self.barType then return end
-	local perc = (cur and max and max > 0) and floor((cur/max)*100) or 0
-	local parent = self:GetParent()
+function UF:Configure_AltPowerBar(frame)
+	if not frame.VARIABLES_SET then return end
+	local db = frame.db
 
-	if unit == "player" and self.text then
-		if perc > 0 then
-			self.text:SetFormattedText("%s: %d%%", self.powerName, perc)
-		else
-			self.text:SetFormattedText("%s: 0%%", self.powerName)
+	if db.classbar.enable then
+		if not frame:IsElementEnabled('AlternativePower') then
+			frame:EnableElement('AlternativePower')
+			frame.AlternativePower:Show()
 		end
-	elseif unit and unit:find("boss%d") and self.text then
-		self.text:SetTextColor(self:GetStatusBarColor())
-		if not parent.Power.value:GetText() or parent.Power.value:GetText() == "" then
-			self.text:Point("BOTTOMRIGHT", parent.Health, "BOTTOMRIGHT")
-		else
-			self.text:Point("RIGHT", parent.Power.value, "LEFT", 2, E.mult)
-		end
-		if perc > 0 then
-			self.text:SetFormattedText("|cffD7BEA5[|r%d%%|cffD7BEA5]|r", perc)
-		else
-			self.text:SetText('')
+
+		frame:Tag(frame.AlternativePower.value, '[altpower:current-max-percent]')
+	else
+		if frame:IsElementEnabled('AlternativePower') then
+			frame:DisableElement('AlternativePower')
+			frame.AlternativePower:Hide()
 		end
 	end
 end
