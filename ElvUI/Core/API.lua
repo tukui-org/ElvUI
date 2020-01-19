@@ -207,17 +207,31 @@ do
 end
 
 do
-	E.MaxNazjatarBodyguardRank = 30
-	function E:GetNazjatarBodyguardXP(widgetID)
+	function E:GetWidgetInfoBase(widgetID, overrideProc)
 		local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
 		if not widget then return end
 
-		local rank = tonumber(strmatch(widget.overrideBarText, '%d+'))
-		if not rank then return end
+		local extra
+		if ( overrideProc ) then
+			extra =	overrideProc(widget.overrideBarText)
+		end
 
 		local cur = widget.barValue - widget.barMin
 		local toNext = widget.barMax - widget.barMin
 		local total = widget.barValue
+
+		return cur, toNext, total, extra
+	end
+
+	E.MaxNazjatarBodyguardRank = 30
+	local function parseRank(text)
+		return tonumber(strmatch(text, "%d+"))
+	end
+
+	function E:GetNazjatarBodyguardXP(widgetID)
+		local cur, toNext, total, rank =E:GetWidgetInfoBase(widgetID, parseRank)
+		if not rank then return end
+
 		local isMax = rank == E.MaxNazjatarBodyguardRank
 
 		return rank, cur, toNext, total, isMax

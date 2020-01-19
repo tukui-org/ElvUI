@@ -684,7 +684,7 @@ P.nameplates = {
 			enable = true,
 			showTitle = true,
 			nameOnly = true,
-			nazjatarFollowerXP = {
+			widgetXPBar = {
 				enable = true,
 				yOffset = -4,
 				color = {
@@ -711,6 +711,15 @@ P.nameplates = {
 			enable = true,
 			showTitle = true,
 			nameOnly = false,
+			widgetXPBar = {
+				enable = true,
+				yOffset = -4,
+				color = {
+					r = 0.529,
+					g = 0.808,
+					b = 0.922
+				}
+			},
 			buffs = CopyTable(NP_Auras),
 			castbar = CopyTable(NP_Castbar),
 			debuffs = CopyTable(NP_Auras),
