@@ -2770,7 +2770,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 				order = 3,
 				name = L["Height"],
 				min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7),
-				max = (E.db.unitframe.units[groupName].classbar.detachFromFrame and 300 or 30),
+				max = 30,
 				step = 1,
 			},
 			fill = {
@@ -2786,6 +2786,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 	}
 
 	if groupName == 'player' then
+		config.args.height.max = (E.db.unitframe.units[groupName].classbar.detachFromFrame and 300 or 30)
 		config.args.autoHide = {
 			order = 5,
 			type = 'toggle',
