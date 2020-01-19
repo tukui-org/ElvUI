@@ -10,6 +10,7 @@ function UF:Construct_AltPowerBar(frame)
 	local altpower = CreateFrame("StatusBar", nil, frame)
 	altpower:SetStatusBarTexture(E.media.blankTex)
 	UF.statusbars[altpower] = true
+	altpower:SetStatusBarColor(.7, 0.7, 0.6)
 	altpower:GetStatusBarTexture():SetHorizTile(false)
 
 	altpower.PostUpdate = UF.AltPowerBarPostUpdate

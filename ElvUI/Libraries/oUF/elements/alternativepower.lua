@@ -148,6 +148,7 @@ local function Enable(self, unit)
 
 		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+			element:SetStatusBarColor(.7, .7, .6)
 		end
 
 		if(element:IsMouseEnabled()) then
