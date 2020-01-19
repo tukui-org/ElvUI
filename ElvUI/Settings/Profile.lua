@@ -1301,6 +1301,27 @@ local UF_SubGroup = {
 	raidicon = CopyTable(UF_RaidIcon),
 }
 
+local UF_ClassBar = {
+	enable = true,
+	fill = 'fill',
+	height = 10,
+	autoHide = false,
+	sortDirection = 'asc',
+	additionalPowerText = true,
+	detachFromFrame = false,
+	detachedWidth = 250,
+	parent = 'FRAME',
+	verticalOrientation = false,
+	orientation = 'HORIZONTAL',
+	spacing = 5,
+	strataAndLevel = {
+		useCustomStrata = false,
+		frameStrata = 'LOW',
+		useCustomLevel = false,
+		frameLevel = 1,
+	},
+}
+
 --UnitFrame
 P.unitframe = {
 	smoothbars = false,
@@ -1491,26 +1512,7 @@ P.unitframe = {
 				size = 20,
 				texture = 'DEFAULT',
 			},
-			classbar = {
-				enable = true,
-				fill = 'fill',
-				height = 10,
-				autoHide = false,
-				sortDirection = 'asc',
-				additionalPowerText = true,
-				detachFromFrame = false,
-				detachedWidth = 250,
-				parent = 'FRAME',
-				verticalOrientation = false,
-				orientation = 'HORIZONTAL',
-				spacing = 5,
-				strataAndLevel = {
-					useCustomStrata = false,
-					frameStrata = 'LOW',
-					useCustomLevel = false,
-					frameLevel = 1,
-				},
-			},
+			classbar = CopyTable(UF_ClassBar),
 			stagger = {
 				enable = true,
 				width = 10,
@@ -1711,6 +1713,7 @@ P.unitframe = {
 			buffIndicator = CopyTable(UF_AuraWatch),
 			buffs = CopyTable(UF_Auras),
 			castbar = CopyTable(UF_Castbar),
+			classbar = CopyTable(UF_ClassBar),
 			cutaway = CopyTable(UF_Cutaway),
 			debuffs = CopyTable(UF_Auras),
 			fader = CopyTable(UF_Fader),

@@ -31,14 +31,6 @@ function UF:AltPowerBarPostUpdate(unit, cur, _, max)
 	local perc = (cur and max and max > 0) and floor((cur/max)*100) or 0
 	local parent = self:GetParent()
 
-	if perc < 35 then
-		self:SetStatusBarColor(0, 1, 0)
-	elseif perc < 70 then
-		self:SetStatusBarColor(1, 1, 0)
-	else
-		self:SetStatusBarColor(1, 0, 0)
-	end
-
 	if unit == "player" and self.text then
 		if perc > 0 then
 			self.text:SetFormattedText("%s: %d%%", self.powerName, perc)
@@ -57,28 +49,5 @@ function UF:AltPowerBarPostUpdate(unit, cur, _, max)
 		else
 			self.text:SetText('')
 		end
-	end
-end
-
-function UF:Configure_AltPower(frame)
-	if not frame.VARIABLES_SET then return end
-	local altpower = frame.AlternativePower
-
-	if frame.USE_POWERBAR then
-		frame:EnableElement('AlternativePower')
-		altpower.text:SetAlpha(1)
-		altpower:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING+frame.BORDER)
-
-		if not frame.USE_PORTRAIT_OVERLAY then
-			altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.PORTRAIT_WIDTH+frame.BORDER), -frame.BORDER)
-		else
-			altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER, -frame.BORDER)
-		end
-
-		E:SetSmoothing(altpower, UF.db.smoothbars)
-	else
-		frame:DisableElement('AlternativePower')
-		altpower.text:SetAlpha(0)
-		altpower:Hide()
 	end
 end

@@ -63,6 +63,8 @@ function UF:Construct_PartyFrames()
 		self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 		self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
 		self.HealthPrediction = UF:Construct_HealComm(self)
+		self.AlternativePower = UF:Construct_AltPowerBar(self)
+		self.ClassBar = 'AlternativePower'
 		self.customTexts = {}
 
 		self.Sparkle = CreateFrame("Frame", nil, self)
@@ -156,7 +158,16 @@ function UF:Update_PartyFrames(frame, db)
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
-		frame.CLASSBAR_YOFFSET = 0
+
+		frame.CAN_HAVE_CLASSBAR = true
+		frame.MAX_CLASS_BAR = 1
+		frame.USE_CLASSBAR = db.classbar.enable and frame.CAN_HAVE_CLASSBAR
+		frame.CLASSBAR_SHOWN = frame.CAN_HAVE_CLASSBAR and frame[frame.ClassBar] and frame[frame.ClassBar]:IsShown()
+		frame.CLASSBAR_DETACHED = false
+		frame.USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and frame.USE_CLASSBAR
+		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
+		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  -(frame.ORIENTATION == "MIDDLE" and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
+		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
 
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
@@ -252,6 +263,8 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_AuraWatch(frame)
 
 		UF:Configure_ReadyCheckIcon(frame)
+
+		UF:Configure_ClassBar(frame) -- AlternativePower
 
 		UF:Configure_CustomTexts(frame)
 	end
