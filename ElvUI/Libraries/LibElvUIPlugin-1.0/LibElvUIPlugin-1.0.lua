@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 31
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 32
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -201,6 +201,7 @@ function lib:GetPluginOptions()
 			}
 		}
 	}
+	E.Options.args.Plugin_Separate.hidden = nil
 end
 
 do	-- this will handle `8.1.5.0015` into `8.150015` etc

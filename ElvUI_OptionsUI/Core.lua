@@ -122,6 +122,7 @@ E.Options.args = {
 		type = "group",
 		name = "<<< "..L["Plugins"].." >>>",
 		disabled = true,
+		hidden = true,
 		args = {},
 	},
 }
