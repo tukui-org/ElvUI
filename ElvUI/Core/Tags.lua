@@ -232,7 +232,7 @@ end
 
 ElvUF.Tags.Events['health:deficit-percent:nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
 ElvUF.Tags.Methods['health:deficit-percent:nostatus'] = function(unit)
-	local min, max = E:UnitHealthValues(unit)
+	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local deficit = (min / max) - 1
 	if deficit == 0 then
 		return ''
