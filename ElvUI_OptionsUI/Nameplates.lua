@@ -5259,7 +5259,7 @@ local function GetUnitSettings(unit, name)
 			group.args.widgetXPBar = {
 				order = 14,
 				type = "group",
-				name = L["Nazjatar Follower XP"],
+				name = L["Follower XP"],
 				get = function(info)
 					return E.db.nameplates.units[unit].widgetXPBar[info[#info]]
 				end,
