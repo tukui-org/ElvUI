@@ -266,6 +266,11 @@ local function UpdateCurrencySkins()
 	end
 end
 
+local function CorruptionIcon(self)
+	local itemLink = GetInventoryItemLink("player", self:GetID())
+	self.IconOverlay:SetShown(itemLink and IsCorruptedItem(itemLink))
+end
+
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
@@ -284,6 +289,11 @@ function S:CharacterFrame()
 			Slot:SetTemplate()
 			Slot:StyleButton(Slot)
 			Slot.icon:SetInside()
+
+			Slot.IconOverlay:SetAtlas("Nzoth-inventory-icon");
+
+			Slot:HookScript("OnShow", CorruptionIcon)
+			Slot:HookScript("OnEvent", CorruptionIcon)
 
 			Slot.CorruptedHighlightTexture:SetAtlas('Nzoth-charactersheet-item-glow')
 
