@@ -45,6 +45,10 @@ local function OnEvent(self)
 	ElvDB.class[E.myrealm] = ElvDB.class[E.myrealm] or {}
 	ElvDB.class[E.myrealm][E.myname] = E.myclass
 
+	ElvDB.faction = ElvDB.faction or {}
+	ElvDB.faction[E.myrealm] = ElvDB.faction[E.myrealm] or {}
+	ElvDB.faction[E.myrealm][E.myname] = E.myfaction
+
 	--prevent an error possibly from really old profiles
 	local oldMoney = ElvDB.gold[E.myrealm][E.myname]
 	if oldMoney and type(oldMoney) ~= 'number' then
@@ -98,7 +102,7 @@ local function OnEnter(self)
 	end
 	DT.tooltip:AddLine(' ')
 
-	local totalGold = 0
+	local totalGold, totalHorde, totalAlliance = 0, 0, 0
 	DT.tooltip:AddLine(L["Character: "])
 
 	wipe(myGold)
@@ -111,19 +115,37 @@ local function OnEnter(self)
 					name = k,
 					amount = ElvDB.gold[E.myrealm][k],
 					amountText = E:FormatMoney(ElvDB.gold[E.myrealm][k], E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins),
+					faction = ElvDB.faction[E.myrealm][k] or '',
 					r = color.r, g = color.g, b = color.b,
 				}
 			)
 		end
+
+		if ElvDB.faction[E.myrealm][k] == 'Alliance' then
+			totalAlliance = totalAlliance+ElvDB.gold[E.myrealm][k]
+		else
+			totalHorde = totalHorde+ElvDB.gold[E.myrealm][k]
+		end
+
 		totalGold = totalGold+ElvDB.gold[E.myrealm][k]
 	end
 
 	for _, g in ipairs(myGold) do
-		DT.tooltip:AddDoubleLine(g.name == E.myname and g.name..' |TInterface/COMMON/Indicator-Green:14|t' or g.name, g.amountText, g.r, g.g, g.b, 1, 1, 1)
+		local nameLine = ''
+		if g.faction ~= '' and g.faction ~= 'Neutral' then
+			nameLine = format('|TInterface/FriendsFrame/PlusManz-%s:14|t ', g.faction)
+		end
+
+		nameLine = g.name == E.myname and nameLine..g.name..' |TInterface/COMMON/Indicator-Green:14|t' or nameLine..g.name
+
+		DT.tooltip:AddDoubleLine(nameLine, g.amountText, g.r, g.g, g.b, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["Server: "])
+	DT.tooltip:AddDoubleLine(L["Alliance: "], E:FormatMoney(totalAlliance, style, textOnly), 1, 1, 1, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Horde: "], E:FormatMoney(totalHorde, style, textOnly), 1, 1, 1, 1, 1, 1)
+	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddDoubleLine(L["Total: "], E:FormatMoney(totalGold, style, textOnly), 1, 1, 1, 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 1, 1, 1, 1, 1, 1)
