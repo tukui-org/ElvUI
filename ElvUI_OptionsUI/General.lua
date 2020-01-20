@@ -667,7 +667,7 @@ E.Options.args.general = {
 					guiInline = true,
 					set = function(info, value)
 						E.db.general.altPowerBar[info[#info]] = value;
-						Blizzard:UpdateAltPowerBarColors();
+						E:StaticPopup_Show("PRIVATE_RL");
 					end,
 					get = function(info)
 						return E.db.general.altPowerBar[info[#info]]
