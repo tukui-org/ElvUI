@@ -123,7 +123,7 @@ local function OnEnter(self)
 
 		if ElvDB.faction[E.myrealm][k] == 'Alliance' then
 			totalAlliance = totalAlliance+ElvDB.gold[E.myrealm][k]
-		else
+		elseif ElvDB.faction[E.myrealm][k] == 'Horde' then
 			totalHorde = totalHorde+ElvDB.gold[E.myrealm][k]
 		end
 
