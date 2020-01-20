@@ -756,8 +756,7 @@ function B:AssignBagFlagMenu()
 
 					if value then
 						holder.tempflag = i
-						holder.ElvUIFilterIcon.Icon:SetTexture(BAG_FILTER_ICONS[i])
-						holder.ElvUIFilterIcon.Icon:SetTexCoord(unpack(E.TexCoords))
+						holder.ElvUIFilterIcon:SetTexture(BAG_FILTER_ICONS[i])
 						holder.ElvUIFilterIcon:Show()
 					else
 						holder.ElvUIFilterIcon:Hide()
@@ -863,8 +862,7 @@ function B:Container_OnShow()
 				active = GetBagSlotFlag(self.id, i)
 			end
 			if active then
-				self.ElvUIFilterIcon.Icon:SetTexture(BAG_FILTER_ICONS[i])
-				self.ElvUIFilterIcon.Icon:SetTexCoord(unpack(E.TexCoords))
+				self.ElvUIFilterIcon:SetTexture(BAG_FILTER_ICONS[i])
 				self.ElvUIFilterIcon:Show()
 				break
 			end
@@ -873,41 +871,14 @@ function B:Container_OnShow()
 end
 
 function B:CreateFilterIcon(parent)
-	--Create FilterIcon element needed for item type assignment
-	parent.ElvUIFilterIcon = CreateFrame('Button', nil, parent)
+	--Create the texture showing the assignment type
+	parent.ElvUIFilterIcon = parent:CreateTexture(nil, 'OVERLAY')
 	parent.ElvUIFilterIcon:Hide()
-	parent.ElvUIFilterIcon:Size(18, 18)
+	parent.ElvUIFilterIcon:SetTexture('Interface/ICONS/INV_Potion_93')
 	parent.ElvUIFilterIcon:CreateBackdrop('Transparent')
 	parent.ElvUIFilterIcon:Point('TOPLEFT', parent, 'TOPLEFT', E.Border, -E.Border)
-	parent.ElvUIFilterIcon:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
-	parent.ElvUIFilterIcon:SetScript('OnShow', function(efi)
-		efi:SetFrameLevel(efi:GetParent():GetFrameLevel()+1)
-	end)
-
-	--Create the texture showing the assignment type
-	parent.ElvUIFilterIcon.Icon = parent.ElvUIFilterIcon:CreateTexture(nil, 'BORDER')
-	parent.ElvUIFilterIcon.Icon:SetTexture('Interface/ICONS/INV_Potion_93')
-	parent.ElvUIFilterIcon.Icon:SetTexCoord(unpack(E.TexCoords))
-	parent.ElvUIFilterIcon.Icon:Size(18, 18)
-	parent.ElvUIFilterIcon.Icon:Point('CENTER')
-
-	--Re-route various mouse events to the underlying container bag icon
-	parent.ElvUIFilterIcon:SetScript('OnEnter', function(efi)
-		local target = efi:GetParent()
-		target:GetScript('OnEnter')(target)
-	end)
-	parent.ElvUIFilterIcon:SetScript('OnLeave', function(efi)
-		local target = efi:GetParent()
-		target:GetScript('OnLeave')(target)
-	end)
-	parent.ElvUIFilterIcon:SetScript('OnClick', function(efi, btn)
-		local target = efi:GetParent()
-		target:GetScript('OnClick')(target, btn)
-	end)
-	parent.ElvUIFilterIcon:SetScript('OnReceiveDrag', function(efi)
-		local target = efi:GetParent()
-		target:GetScript('OnReceiveDrag')(target)
-	end)
+	parent.ElvUIFilterIcon:SetTexCoord(unpack(E.TexCoords))
+	parent.ElvUIFilterIcon:Size(18, 18)
 
 	--Update FilterIcon texture when container is shown
 	parent:HookScript('OnShow', B.Container_OnShow)
