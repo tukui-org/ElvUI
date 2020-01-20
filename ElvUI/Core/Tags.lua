@@ -63,7 +63,7 @@ local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
 local CreateAtlasMarkup = CreateAtlasMarkup
 
-local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
+local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
