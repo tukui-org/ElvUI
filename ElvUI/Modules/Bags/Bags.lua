@@ -1893,6 +1893,10 @@ function B:ConstructReagentSlot(f, slotID)
 	slot:SetTemplate(E.db.bags.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)
 
+	slot.icon:SetTexCoord(unpack(E.TexCoords))
+	slot.IconBorder:SetAlpha(0)
+	slot.IconOverlay:SetInside()
+
 	slot.Count:ClearAllPoints()
 	slot.Count:Point('BOTTOMRIGHT', 0, 2)
 	slot.Count:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
