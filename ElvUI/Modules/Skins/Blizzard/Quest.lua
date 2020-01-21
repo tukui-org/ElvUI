@@ -40,7 +40,7 @@ local function HandleReward(frame)
 	if frame.Count then
 		frame.Count:SetDrawLayer('OVERLAY')
 		frame.Count:ClearAllPoints()
-		frame.Count:SetPoint('BOTTOMRIGHT', frame.Icon, 'BOTTOMRIGHT', 0, 0)
+		frame.Count:Point('BOTTOMRIGHT', frame.Icon, 'BOTTOMRIGHT', 0, 0)
 	end
 
 	if frame.NameFrame then
@@ -176,12 +176,12 @@ function S:BlizzardQuestFrames()
 				if not followerReward.isSkinned then
 					followerReward:CreateBackdrop()
 					followerReward.backdrop:SetAllPoints(followerReward.BG)
-					followerReward.backdrop:SetPoint("TOPLEFT", 40, -5)
-					followerReward.backdrop:SetPoint("BOTTOMRIGHT", 2, 5)
+					followerReward.backdrop:Point("TOPLEFT", 40, -5)
+					followerReward.backdrop:Point("BOTTOMRIGHT", 2, 5)
 					followerReward.BG:Hide()
 
 					followerReward.PortraitFrame:ClearAllPoints()
-					followerReward.PortraitFrame:SetPoint("RIGHT", followerReward.backdrop, "LEFT", -2, 0)
+					followerReward.PortraitFrame:Point("RIGHT", followerReward.backdrop, "LEFT", -2, 0)
 
 					followerReward.PortraitFrame.PortraitRing:Hide()
 					followerReward.PortraitFrame.PortraitRingQuality:SetTexture()
@@ -190,12 +190,12 @@ function S:BlizzardQuestFrames()
 
 					local level = followerReward.PortraitFrame.Level
 					level:ClearAllPoints()
-					level:SetPoint("BOTTOM", followerReward.PortraitFrame, 0, 3)
+					level:Point("BOTTOM", followerReward.PortraitFrame, 0, 3)
 
 					local squareBG = CreateFrame("Frame", nil, followerReward.PortraitFrame)
 					squareBG:SetFrameLevel(followerReward.PortraitFrame:GetFrameLevel()-1)
-					squareBG:SetPoint("TOPLEFT", 2, -2)
-					squareBG:SetPoint("BOTTOMRIGHT", -2, 2)
+					squareBG:Point("TOPLEFT", 2, -2)
+					squareBG:Point("BOTTOMRIGHT", -2, 2)
 					squareBG:SetTemplate()
 					followerReward.PortraitFrame.squareBG = squareBG
 

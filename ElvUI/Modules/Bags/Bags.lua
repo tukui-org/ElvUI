@@ -1806,7 +1806,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	if not slot.JunkIcon then
 		slot.JunkIcon = slot:CreateTexture(nil, 'OVERLAY', nil, 2)
 		slot.JunkIcon:SetAtlas('bags-junkcoin', true)
-		slot.JunkIcon:SetPoint('TOPRIGHT', -1, -1)
+		slot.JunkIcon:Point('TOPRIGHT', -1, -1)
 		slot.JunkIcon:Hide()
 	end
 
@@ -1814,7 +1814,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 		slot.ScrapIcon = slot:CreateTexture(nil, 'OVERLAY', nil, 2)
 		slot.ScrapIcon:SetAtlas('bags-icon-scrappable')
 		slot.ScrapIcon:SetSize(14, 12)
-		slot.ScrapIcon:SetPoint('TOPRIGHT', -1, -1)
+		slot.ScrapIcon:Point('TOPRIGHT', -1, -1)
 		slot.ScrapIcon:Hide()
 	end
 

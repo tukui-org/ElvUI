@@ -27,8 +27,8 @@ end
 function UF:Construct_AuraBars(statusBar)
 	statusBar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 	statusBar:SetScript('OnMouseDown', UF.AuraBars_OnClick)
-	statusBar:SetPoint("LEFT")
-	statusBar:SetPoint("RIGHT")
+	statusBar:Point("LEFT")
+	statusBar:Point("RIGHT")
 
 	statusBar.icon:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 	UF.statusbars[statusBar] = true
@@ -42,7 +42,7 @@ function UF:Construct_AuraBars(statusBar)
 
 	statusBar.nameText:SetJustifyH('LEFT')
 	statusBar.nameText:SetJustifyV('MIDDLE')
-	statusBar.nameText:SetPoint("RIGHT", statusBar.timeText, "LEFT", -4, 0)
+	statusBar.nameText:Point("RIGHT", statusBar.timeText, "LEFT", -4, 0)
 	statusBar.nameText:SetWordWrap(false)
 
 	statusBar.bg = statusBar:CreateTexture(nil, 'BORDER')

@@ -338,7 +338,7 @@ function S:CharacterFrame()
 
 	--Corruption 8.3
 	_G.CharacterStatsPane.ItemLevelFrame.Corruption:ClearAllPoints()
-	_G.CharacterStatsPane.ItemLevelFrame.Corruption:SetPoint("RIGHT", _G.CharacterStatsPane.ItemLevelFrame, "RIGHT", 22, -8)
+	_G.CharacterStatsPane.ItemLevelFrame.Corruption:Point("RIGHT", _G.CharacterStatsPane.ItemLevelFrame, "RIGHT", 22, -8)
 
 	hooksecurefunc("PaperDollFrame_UpdateStats", function()
 		if IsAddOnLoaded("DejaCharacterStats") then return end

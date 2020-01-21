@@ -267,7 +267,7 @@ do
 			return
 		end
 		local helloKittyLeft = CreateFrame('Frame', 'HelloKittyLeft', _G.UIParent)
-		helloKittyLeft:SetSize(120, 128)
+		helloKittyLeft:Size(120, 128)
 		helloKittyLeft:SetMovable(true)
 		helloKittyLeft:EnableMouse(true)
 		helloKittyLeft:RegisterForDrag('LeftButton')
@@ -284,7 +284,7 @@ do
 		helloKittyLeft:SetScript('OnUpdate', OnUpdate)
 
 		local helloKittyRight = CreateFrame('Frame', 'HelloKittyRight', _G.UIParent)
-		helloKittyRight:SetSize(120, 128)
+		helloKittyRight:Size(120, 128)
 		helloKittyRight:SetMovable(true)
 		helloKittyRight:EnableMouse(true)
 		helloKittyRight:RegisterForDrag('LeftButton')

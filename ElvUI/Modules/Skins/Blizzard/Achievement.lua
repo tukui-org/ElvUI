@@ -215,14 +215,14 @@ function S:Blizzard_AchievementUI(event)
 
 	local AchievementFrame = _G.AchievementFrame
 	AchievementFrame:CreateBackdrop("Transparent")
-	AchievementFrame.backdrop:SetPoint("TOPLEFT", 0, 7)
-	AchievementFrame.backdrop:SetPoint("BOTTOMRIGHT")
+	AchievementFrame.backdrop:Point("TOPLEFT", 0, 7)
+	AchievementFrame.backdrop:Point("BOTTOMRIGHT")
 
 	_G.AchievementFrameHeaderTitle:ClearAllPoints()
-	_G.AchievementFrameHeaderTitle:SetPoint("TOPLEFT", AchievementFrame.backdrop, "TOPLEFT", -45, -8)
+	_G.AchievementFrameHeaderTitle:Point("TOPLEFT", AchievementFrame.backdrop, "TOPLEFT", -45, -8)
 
 	_G.AchievementFrameHeaderPoints:ClearAllPoints()
-	_G.AchievementFrameHeaderPoints:SetPoint("LEFT", _G.AchievementFrameHeaderTitle, "RIGHT", 2, 0)
+	_G.AchievementFrameHeaderPoints:Point("LEFT", _G.AchievementFrameHeaderTitle, "RIGHT", 2, 0)
 
 	--Backdrops
 	_G.AchievementFrameCategoriesContainer:CreateBackdrop("Transparent")
@@ -240,13 +240,13 @@ function S:Blizzard_AchievementUI(event)
 
 	S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
 	_G.AchievementFrameFilterDropDown:ClearAllPoints()
-	_G.AchievementFrameFilterDropDown:SetPoint("TOPLEFT", _G.AchievementFrameAchievements, "TOPLEFT", -18, 24)
+	_G.AchievementFrameFilterDropDown:Point("TOPLEFT", _G.AchievementFrameAchievements, "TOPLEFT", -18, 24)
 
 	S:HandleEditBox(AchievementFrame.searchBox)
-	AchievementFrame.searchBox.backdrop:SetPoint("TOPLEFT", AchievementFrame.searchBox, "TOPLEFT", -3, -3)
-	AchievementFrame.searchBox.backdrop:SetPoint("BOTTOMRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 0, 3)
+	AchievementFrame.searchBox.backdrop:Point("TOPLEFT", AchievementFrame.searchBox, "TOPLEFT", -3, -3)
+	AchievementFrame.searchBox.backdrop:Point("BOTTOMRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 0, 3)
 	AchievementFrame.searchBox:ClearAllPoints()
-	AchievementFrame.searchBox:SetPoint("TOPRIGHT", AchievementFrame, "TOPRIGHT", -50, 2)
+	AchievementFrame.searchBox:Point("TOPRIGHT", AchievementFrame, "TOPRIGHT", -50, 2)
 
 	local scrollBars = {
 		_G.AchievementFrameCategoriesContainerScrollBar,
@@ -268,7 +268,7 @@ function S:Blizzard_AchievementUI(event)
 
 	AchievementFrame.searchPreviewContainer:StripTextures()
 	AchievementFrame.searchPreviewContainer:ClearAllPoints()
-	AchievementFrame.searchPreviewContainer:SetPoint("TOPLEFT", AchievementFrame, "TOPRIGHT", 2, 6)
+	AchievementFrame.searchPreviewContainer:Point("TOPLEFT", AchievementFrame, "TOPRIGHT", 2, 6)
 
 	for i = 1, 5 do
 		SkinSearchButton(AchievementFrame.searchPreviewContainer["searchPreview"..i])

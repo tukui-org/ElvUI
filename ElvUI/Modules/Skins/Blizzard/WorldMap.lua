@@ -26,8 +26,8 @@ function S:WorldMapFrame()
 
 	WorldMapFrame.ScrollContainer:CreateBackdrop()
 	WorldMapFrame:CreateBackdrop("Transparent")
-	WorldMapFrame.backdrop:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", -8, 0)
-	WorldMapFrame.backdrop:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", 0, -9)
+	WorldMapFrame.backdrop:Point("TOPLEFT", WorldMapFrame, "TOPLEFT", -8, 0)
+	WorldMapFrame.backdrop:Point("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", 0, -9)
 
 	S:HandleButton(WorldMapFrame.NavBar.homeButton)
 	WorldMapFrame.NavBar.homeButton.xoffset = 1
@@ -114,8 +114,8 @@ function S:WorldMapFrame()
 	ExecuteSessionCommand:StyleButton()
 
 	local icon = ExecuteSessionCommand:CreateTexture(nil, "ARTWORK")
-	icon:SetPoint("TOPLEFT", 0, 0)
-	icon:SetPoint("BOTTOMRIGHT", 0, 0)
+	icon:Point("TOPLEFT", 0, 0)
+	icon:Point("BOTTOMRIGHT", 0, 0)
 	ExecuteSessionCommand.normalIcon = icon
 
 	local sessionCommandToButtonAtlas = {

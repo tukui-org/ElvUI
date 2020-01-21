@@ -243,13 +243,13 @@ function NP:Construct_Cutaway(nameplate)
 
 	Cutaway.Health = nameplate.Health.ClipFrame:CreateTexture(nameplate:GetDebugName() .. "CutawayHealth")
 	local healthTexture = nameplate.Health:GetStatusBarTexture()
-	Cutaway.Health:SetPoint("TOPLEFT", healthTexture, "TOPRIGHT")
-	Cutaway.Health:SetPoint("BOTTOMLEFT", healthTexture, "BOTTOMRIGHT")
+	Cutaway.Health:Point("TOPLEFT", healthTexture, "TOPRIGHT")
+	Cutaway.Health:Point("BOTTOMLEFT", healthTexture, "BOTTOMRIGHT")
 
 	Cutaway.Power = nameplate.Power.ClipFrame:CreateTexture(nameplate:GetDebugName() .. "CutawayPower")
 	local powerTexture = nameplate.Power:GetStatusBarTexture()
-	Cutaway.Power:SetPoint("TOPLEFT", powerTexture, "TOPRIGHT")
-	Cutaway.Power:SetPoint("BOTTOMLEFT", powerTexture, "BOTTOMRIGHT")
+	Cutaway.Power:Point("TOPLEFT", powerTexture, "TOPRIGHT")
+	Cutaway.Power:Point("BOTTOMLEFT", powerTexture, "BOTTOMRIGHT")
 
 	return Cutaway
 end
@@ -305,14 +305,14 @@ function NP:Update_WidgetXPBar(nameplate)
 			nameplate:EnableElement("WidgetXPBar")
 		end
 
-		nameplate.WidgetXPBar:SetHeight(10)
-		nameplate.WidgetXPBar:SetPoint("TOPLEFT", nameplate.Castbar, "BOTTOMLEFT", 0, db.widgetXPBar.yOffset)
-		nameplate.WidgetXPBar:SetPoint("TOPRIGHT", nameplate.Castbar, "BOTTOMRIGHT", 0, db.widgetXPBar.yOffset)
+		nameplate.WidgetXPBar:Height(10)
+		nameplate.WidgetXPBar:Point("TOPLEFT", nameplate.Castbar, "BOTTOMLEFT", 0, db.widgetXPBar.yOffset)
+		nameplate.WidgetXPBar:Point("TOPRIGHT", nameplate.Castbar, "BOTTOMRIGHT", 0, db.widgetXPBar.yOffset)
 
 		local color = db.widgetXPBar.color
 		nameplate.WidgetXPBar:SetStatusBarColor(color.r, color.g, color.b)
-		nameplate.WidgetXPBar.Rank:SetPoint("RIGHT", nameplate.WidgetXPBar, "LEFT", -4, 0)
-		nameplate.WidgetXPBar.ProgressText:SetPoint("CENTER", nameplate.WidgetXPBar, "CENTER")
+		nameplate.WidgetXPBar.Rank:Point("RIGHT", nameplate.WidgetXPBar, "LEFT", -4, 0)
+		nameplate.WidgetXPBar.ProgressText:Point("CENTER", nameplate.WidgetXPBar, "CENTER")
 		nameplate.WidgetXPBar:ForceUpdate()
 	end
 end
