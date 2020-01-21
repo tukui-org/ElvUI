@@ -264,8 +264,7 @@ function UF:Update_PartyFrames(frame, db)
 
 		UF:Configure_ReadyCheckIcon(frame)
 
-		UF:Configure_ClassBar(frame) -- AlternativePower
-		UF+Constgure_AltPowerBar(frame)
+		UF:Constgure_AltPowerBar(frame)
 		UF:Configure_CustomTexts(frame)
 	end
 
