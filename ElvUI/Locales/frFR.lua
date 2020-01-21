@@ -18,6 +18,7 @@ L["Accepting this will reset your Filter Priority lists for all auras on UnitFra
 L["Additive Blend"] = true
 L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = true
 L["AFK"] = "ABS"
+L["Alliance: "] = true
 L["All keybindings cleared for |cff00ff00%s|r."] = "Tous les raccourcis ont été effacés pour |cff00ff00%s|r."
 L["Alpha Key"] = true
 L["Already Running.. Bailing Out!"] = "Déjà en cours d'exécution, arrêt du processus..."
@@ -142,6 +143,7 @@ L["Home Protocol:"] = "Protocole du Domicile :"
 L["Honor Bar"] = "Barre d'honneur"
 L["Honor Remaining:"] = "Honneur restant :"
 L["Honor XP:"] = "Niveau d'honneur :"
+L["Horde: "] = true
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = true
 L["HP"] = "PV"
 L["HPS"] = "HPS"

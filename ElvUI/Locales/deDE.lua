@@ -18,6 +18,7 @@ L["Accepting this will reset your Filter Priority lists for all auras on UnitFra
 L["Additive Blend"] = "Additive Überblendung"
 L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = "Passt die UI-Skallierung für deine Auflöstung an, drücke den Auto-Skallierung Knopf um die UI-Skallierung automatisch anzupassen."
 L["AFK"] = "AFK"
+L["Alliance: "] = "Allianz: "
 L["All keybindings cleared for |cff00ff00%s|r."] = "Alle Tastaturbelegungen gelöscht für |cff00ff00%s|r."
 L["Alpha Key"] = true --No need to translate
 L["Already Running.. Bailing Out!"] = "Bereits ausgeführt.. Warte ab!"
@@ -142,6 +143,7 @@ L["Home Protocol:"] = "Standort Protokol"
 L["Honor Bar"] = "Ehreleiste"
 L["Honor Remaining:"] = "Ehre verbleibend:"
 L["Honor XP:"] = "Ehre XP:"
+L["Horde: "] = true
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = "Bewege deine Maus über einen Aktionsbutton oder dein Zauberbuch um ihn mit einem Hotkey zu belegen. Drücke Escape um die aktuelle Tastenbelegung des Buttons zu löschen."
 L["HP"] = "HP"
 L["HPS"] = "HPS"
