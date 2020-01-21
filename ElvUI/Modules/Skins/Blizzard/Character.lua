@@ -291,6 +291,7 @@ function S:CharacterFrame()
 			Slot.icon:SetInside()
 
 			Slot.IconOverlay:SetAtlas("Nzoth-inventory-icon");
+			Slot.IconOverlay:SetInside()
 
 			Slot:HookScript("OnShow", CorruptionIcon)
 			Slot:HookScript("OnEvent", CorruptionIcon)
