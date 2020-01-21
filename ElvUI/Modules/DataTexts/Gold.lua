@@ -4,6 +4,7 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local _G = _G
 local type = type
+local format = string.format
 local wipe = wipe
 local pairs = pairs
 local ipairs = ipairs
@@ -148,7 +149,7 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddDoubleLine(L["Total: "], E:FormatMoney(totalGold, style, textOnly), 1, 1, 1, 1, 1, 1)
 	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 1, 1, 1, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
 
 	for i = 1, MAX_WATCHED_TOKENS do
 		local name, count = GetBackpackCurrencyInfo(i)
