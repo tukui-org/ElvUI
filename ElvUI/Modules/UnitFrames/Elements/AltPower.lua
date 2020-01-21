@@ -25,6 +25,7 @@ function UF:Construct_AltPowerBar(frame)
 	altpower.value:Point("CENTER")
 	altpower.value:SetJustifyH("CENTER")
 	UF:Configure_FontString(altpower.value)
+	frame:Tag(frame.AlternativePower.value, '[altpower:current-max-percent]')
 
 	altpower:SetScript("OnShow", UF.ToggleResourceBar)
 	altpower:SetScript("OnHide", UF.ToggleResourceBar)
