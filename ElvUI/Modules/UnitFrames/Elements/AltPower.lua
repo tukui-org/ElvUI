@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Lua functions
-local floor = floor
 --WoW API / Variables
 local CreateFrame = CreateFrame
 

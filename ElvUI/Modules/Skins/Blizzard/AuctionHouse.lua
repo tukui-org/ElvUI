@@ -377,8 +377,7 @@ local function LoadSkin()
 
 	local ItemButton = Token.ItemButton
 	S:HandleIcon(ItemButton.Icon, true)
-	local r, g, b = FRIENDS_BNET_NAME_COLOR.r, FRIENDS_BNET_NAME_COLOR.g, FRIENDS_BNET_NAME_COLOR.b
-	ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+	ItemButton.Icon.backdrop:SetBackdropBorderColor(0, .8, 1)
 	ItemButton.IconBorder:SetAlpha(0)
 
 	--WoW Token Tutorial Frame
