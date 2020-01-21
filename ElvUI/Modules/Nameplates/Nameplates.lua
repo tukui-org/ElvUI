@@ -123,7 +123,6 @@ function NP:SetCVars()
 		SetCVar("nameplateOtherBottomInset", -1)
 	end
 
-	SetCVar("nameplateMaxDistance", NP.db.loadDistance)
 	SetCVar("nameplateMotion", NP.db.motionType == "STACKED" and 1 or 0)
 
 	SetCVar("NameplatePersonalShowAlways", NP.db.units.PLAYER.visibility.showAlways and 1 or 0)
