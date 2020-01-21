@@ -13,6 +13,8 @@ function UF:Construct_AltPowerBar(frame)
 	altpower:SetStatusBarColor(.7, .7, .6)
 	altpower:GetStatusBarTexture():SetHorizTile(false)
 
+	E:SetSmoothing(altpower, UF.db.smoothbars)
+
 	altpower:CreateBackdrop(nil, true)
 
 	altpower.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
