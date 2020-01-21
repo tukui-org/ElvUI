@@ -17,11 +17,10 @@ function UF:Construct_AltPowerBar(frame)
 
 	altpower:CreateBackdrop(nil, true)
 
-	altpower.value = altpower:CreateFontString(nil, 'OVERLAY')
-	altpower.value:SetPoint("CENTER")
+	altpower.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
+	altpower.value:Point("CENTER")
 	altpower.value:SetJustifyH("CENTER")
 	UF:Configure_FontString(altpower.value)
-	frame:Tag(altpower.value, '[altpower:current-max-percent]')
 
 	altpower:SetScript("OnShow", UF.ToggleResourceBar)
 	altpower:SetScript("OnHide", UF.ToggleResourceBar)
@@ -39,6 +38,8 @@ function UF:Configure_AltPowerBar(frame)
 			frame:EnableElement('AlternativePower')
 			frame.AlternativePower:Show()
 		end
+
+		frame:Tag(frame.AlternativePower.value, '[altpower:current-max-percent]')
 	else
 		if frame:IsElementEnabled('AlternativePower') then
 			frame:DisableElement('AlternativePower')
