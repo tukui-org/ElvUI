@@ -41,7 +41,7 @@ function UF:Configure_AltPowerBar(frame)
 			frame.AlternativePower:Show()
 		end
 
-		frame:Tag(frame.AlternativePower.value, '[altpower:current-max-percent]')
+		frame:Tag(frame.AlternativePower.value, '[altpower:current]')
 	else
 		if frame:IsElementEnabled('AlternativePower') then
 			frame:DisableElement('AlternativePower')
