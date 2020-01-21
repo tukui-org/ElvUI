@@ -7,11 +7,9 @@ local CreateFrame = CreateFrame
 function UF:Construct_AltPowerBar(frame)
 	local altpower = CreateFrame("StatusBar", nil, frame)
 	altpower:SetStatusBarTexture(E.media.blankTex)
-	UF.statusbars[altpower] = true
 	altpower:SetStatusBarColor(.7, .7, .6)
 	altpower:GetStatusBarTexture():SetHorizTile(false)
-
-	E:SetSmoothing(altpower, UF.db.smoothbars)
+	UF.statusbars[altpower] = true
 
 	altpower:CreateBackdrop(nil, true)
 
@@ -33,19 +31,19 @@ end
 
 function UF:Configure_AltPowerBar(frame)
 	if not frame.VARIABLES_SET then return end
-	local db = frame.db
+	local db = frame.db.classbar
 
-	if db.classbar.enable then
+	if db.enable then
 		if not frame:IsElementEnabled('AlternativePower') then
 			frame:EnableElement('AlternativePower')
 			frame.AlternativePower:Show()
 		end
 
+		E:SetSmoothing(frame.AlternativePower, UF.db.smoothbars)
+
 		frame:Tag(frame.AlternativePower.value, '[altpower:current]')
-	else
-		if frame:IsElementEnabled('AlternativePower') then
-			frame:DisableElement('AlternativePower')
-			frame.AlternativePower:Hide()
-		end
+	elseif frame:IsElementEnabled('AlternativePower') then
+		frame:DisableElement('AlternativePower')
+		frame.AlternativePower:Hide()
 	end
 end
