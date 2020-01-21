@@ -264,7 +264,7 @@ function UF:Update_PartyFrames(frame, db)
 
 		UF:Configure_ReadyCheckIcon(frame)
 
-		UF:Constgure_AltPowerBar(frame)
+		UF:Configure_AltPowerBar(frame)
 		UF:Configure_CustomTexts(frame)
 	end
 
