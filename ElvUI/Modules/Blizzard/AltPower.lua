@@ -62,7 +62,7 @@ end
 
 function B:PositionAltPowerBar()
 	local holder = CreateFrame('Frame', 'AltPowerBarHolder', E.UIParent)
-	holder:Point('TOP', E.UIParent, 'TOP', 0, -18)
+	holder:Point('TOP', E.UIParent, 'TOP', 0, -175)
 	holder:Size(128, 50)
 
 	_G.PlayerPowerBarAlt:ClearAllPoints()

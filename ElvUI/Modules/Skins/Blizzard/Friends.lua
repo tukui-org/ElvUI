@@ -134,7 +134,7 @@ function S:FriendsFrame()
 	S:HandleDropDownBox(_G.FriendsFrameStatusDropDown, 70)
 
 	_G.FriendsFrameStatusDropDown:ClearAllPoints()
-	_G.FriendsFrameStatusDropDown:SetPoint("TOPLEFT", FriendsFrame, "TOPLEFT", 5, -24)
+	_G.FriendsFrameStatusDropDown:Point("TOPLEFT", FriendsFrame, "TOPLEFT", 5, -24)
 
 	local FriendsFrameBattlenetFrame = _G.FriendsFrameBattlenetFrame
 	FriendsFrameBattlenetFrame:StripTextures()
@@ -143,9 +143,9 @@ function S:FriendsFrame()
 
 	local bnetColor = _G.FRIENDS_BNET_BACKGROUND_COLOR
 	local button = CreateFrame("Button", nil, FriendsFrameBattlenetFrame)
-	button:SetPoint("TOPLEFT", FriendsFrameBattlenetFrame, "TOPLEFT")
-	button:SetPoint("BOTTOMRIGHT", FriendsFrameBattlenetFrame, "BOTTOMRIGHT")
-	button:SetSize(FriendsFrameBattlenetFrame:GetSize())
+	button:Point("TOPLEFT", FriendsFrameBattlenetFrame, "TOPLEFT")
+	button:Point("BOTTOMRIGHT", FriendsFrameBattlenetFrame, "BOTTOMRIGHT")
+	button:Size(FriendsFrameBattlenetFrame:GetSize())
 	button:CreateBackdrop()
 	button.backdrop:SetBackdropColor(bnetColor.r, bnetColor.g, bnetColor.b, bnetColor.a)
 	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -156,13 +156,14 @@ function S:FriendsFrame()
 
 	FriendsFrameBattlenetFrame.BroadcastButton:Kill() -- We use the BattlenetFrame to enter a Status Message
 
-	FriendsFrameBattlenetFrame.UnavailableInfoFrame:SetPoint("TOPLEFT", FriendsFrame, "TOPRIGHT", 1, -18)
+	FriendsFrameBattlenetFrame.UnavailableInfoFrame:ClearAllPoints()
+	FriendsFrameBattlenetFrame.UnavailableInfoFrame:Point("TOPLEFT", FriendsFrame, "TOPRIGHT", 1, -18)
 
 	FriendsFrameBattlenetFrame.BroadcastFrame:StripTextures()
 	FriendsFrameBattlenetFrame.BroadcastFrame:CreateBackdrop("Transparent")
 	FriendsFrameBattlenetFrame.BroadcastFrame.EditBox:StripTextures()
 	FriendsFrameBattlenetFrame.BroadcastFrame:ClearAllPoints()
-	FriendsFrameBattlenetFrame.BroadcastFrame:SetPoint("TOPLEFT", FriendsFrame, "TOPRIGHT", 3, -1)
+	FriendsFrameBattlenetFrame.BroadcastFrame:Point("TOPLEFT", FriendsFrame, "TOPRIGHT", 3, -1)
 	S:HandleEditBox(FriendsFrameBattlenetFrame.BroadcastFrame.EditBox)
 	S:HandleButton(FriendsFrameBattlenetFrame.BroadcastFrame.UpdateButton)
 	S:HandleButton(FriendsFrameBattlenetFrame.BroadcastFrame.CancelButton)

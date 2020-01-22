@@ -266,6 +266,11 @@ local function UpdateCurrencySkins()
 	end
 end
 
+local function CorruptionIcon(self)
+	local itemLink = GetInventoryItemLink("player", self:GetID())
+	self.IconOverlay:SetShown(itemLink and IsCorruptedItem(itemLink))
+end
+
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
@@ -284,6 +289,12 @@ function S:CharacterFrame()
 			Slot:SetTemplate()
 			Slot:StyleButton(Slot)
 			Slot.icon:SetInside()
+
+			Slot.IconOverlay:SetAtlas("Nzoth-inventory-icon");
+			Slot.IconOverlay:SetInside()
+
+			Slot:HookScript("OnShow", CorruptionIcon)
+			Slot:HookScript("OnEvent", CorruptionIcon)
 
 			Slot.CorruptedHighlightTexture:SetAtlas('Nzoth-charactersheet-item-glow')
 
@@ -327,7 +338,7 @@ function S:CharacterFrame()
 
 	--Corruption 8.3
 	_G.CharacterStatsPane.ItemLevelFrame.Corruption:ClearAllPoints()
-	_G.CharacterStatsPane.ItemLevelFrame.Corruption:SetPoint("RIGHT", _G.CharacterStatsPane.ItemLevelFrame, "RIGHT", 22, -8)
+	_G.CharacterStatsPane.ItemLevelFrame.Corruption:Point("RIGHT", _G.CharacterStatsPane.ItemLevelFrame, "RIGHT", 22, -8)
 
 	hooksecurefunc("PaperDollFrame_UpdateStats", function()
 		if IsAddOnLoaded("DejaCharacterStats") then return end

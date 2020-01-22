@@ -655,7 +655,7 @@ E.Options.args.general = {
 							set = function(info, r, g, b)
 								local t = E.db.general.altPowerBar[info[#info]]
 								t.r, t.g, t.b = r, g, b
-								Blizzard:UpdateAltPowerBarColors();
+								Blizzard:UpdateAltPowerBarColors()
 							end,
 						},
 					},
@@ -667,7 +667,7 @@ E.Options.args.general = {
 					guiInline = true,
 					set = function(info, value)
 						E.db.general.altPowerBar[info[#info]] = value;
-						Blizzard:UpdateAltPowerBarColors();
+						Blizzard:UpdateAltPowerBarSettings()
 					end,
 					get = function(info)
 						return E.db.general.altPowerBar[info[#info]]

@@ -28,7 +28,7 @@ function S:Blizzard_BindingUI()
 	S:HandleCheckBox(KeyBindingFrame.characterSpecificButton)
 	KeyBindingFrame.Header:StripTextures()
 	KeyBindingFrame.Header:ClearAllPoints()
-	KeyBindingFrame.Header:SetPoint("TOP", KeyBindingFrame, "TOP", 0, -4)
+	KeyBindingFrame.Header:Point("TOP", KeyBindingFrame, "TOP", 0, -4)
 	KeyBindingFrame:StripTextures()
 	KeyBindingFrame:SetTemplate("Transparent")
 

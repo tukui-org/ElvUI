@@ -56,10 +56,10 @@ function S:BlizzardOptions()
 	_G.ReadyCheckFrameText:Point("TOP", 0, -15)
 
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
-	ReadyCheckFrame:HookScript("OnShow", function(self)
+	ReadyCheckFrame:HookScript("OnShow", function(rcf)
 		-- bug fix, don't show it if player is initiator
-		if self.initiator and UnitIsUnit("player", self.initiator) then
-			self:Hide()
+		if rcf.initiator and UnitIsUnit("player", rcf.initiator) then
+			rcf:Hide()
 		end
 	end)
 
@@ -69,24 +69,24 @@ function S:BlizzardOptions()
 	_G.InterfaceOptionsFrame:SetMovable(true)
 	_G.InterfaceOptionsFrame:EnableMouse(true)
 	_G.InterfaceOptionsFrame:RegisterForDrag("LeftButton", "RightButton")
-	_G.InterfaceOptionsFrame:SetScript("OnDragStart", function(self)
+	_G.InterfaceOptionsFrame:SetScript("OnDragStart", function(iof)
 		if InCombatLockdown() then return end
-		self:StartMoving()
-		self.isMoving = true
+		iof:StartMoving()
+		iof.isMoving = true
 	end)
-	_G.InterfaceOptionsFrame:SetScript("OnDragStop", function(self)
-		self:StopMovingOrSizing()
-		self.isMoving = false
+	_G.InterfaceOptionsFrame:SetScript("OnDragStop", function(iof)
+		iof:StopMovingOrSizing()
+		iof.isMoving = false
 	end)
 
 	--Chat Config
 	local ChatConfigFrame = _G.ChatConfigFrame
 	ChatConfigFrame.Header = ChatConfigFrame.Header
 	ChatConfigFrame.Header:StripTextures()
-	ChatConfigFrame.Header:SetPoint("TOP", ChatConfigFrame, 0, 0)
+	ChatConfigFrame.Header:Point("TOP", ChatConfigFrame, 0, 0)
 
-	hooksecurefunc(_G.ChatConfigFrameChatTabManager, "UpdateWidth", function(self)
-		for tab in self.tabPool:EnumerateActive() do
+	hooksecurefunc(_G.ChatConfigFrameChatTabManager, "UpdateWidth", function(tm)
+		for tab in tm.tabPool:EnumerateActive() do
 			if not tab.IsSkinned then
 				tab:StripTextures()
 
@@ -287,12 +287,12 @@ function S:BlizzardOptions()
 	InterfaceOptionsFrame.Header = InterfaceOptionsFrame.Header
 	InterfaceOptionsFrame.Header:StripTextures()
 	InterfaceOptionsFrame.Header:ClearAllPoints()
-	InterfaceOptionsFrame.Header:SetPoint("TOP", InterfaceOptionsFrame, 0, 0)
+	InterfaceOptionsFrame.Header:Point("TOP", InterfaceOptionsFrame, 0, 0)
 
 	local VideoOptionsFrame = _G.VideoOptionsFrame
 	VideoOptionsFrame.Header:StripTextures()
 	VideoOptionsFrame.Header:ClearAllPoints()
-	VideoOptionsFrame.Header:SetPoint("TOP", VideoOptionsFrame, 0, 0)
+	VideoOptionsFrame.Header:Point("TOP", VideoOptionsFrame, 0, 0)
 
 	for _, Frame in pairs(OptionsFrameBackdrops) do
 		Frame:StripTextures()
@@ -356,7 +356,7 @@ function S:BlizzardOptions()
 	AudioOptionsFrame.Header = AudioOptionsFrame.Header
 	AudioOptionsFrame.Header:SetAlpha(0)
 	AudioOptionsFrame.Header:ClearAllPoints()
-	AudioOptionsFrame.Header:SetPoint("TOP", AudioOptionsFrame, 0, 0)
+	AudioOptionsFrame.Header:Point("TOP", AudioOptionsFrame, 0, 0)
 
 	-- Toggle Test Audio Button - Wow 8.0
 	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)

@@ -684,7 +684,7 @@ P.nameplates = {
 			enable = true,
 			showTitle = true,
 			nameOnly = true,
-			nazjatarFollowerXP = {
+			widgetXPBar = {
 				enable = true,
 				yOffset = -4,
 				color = {
@@ -711,6 +711,15 @@ P.nameplates = {
 			enable = true,
 			showTitle = true,
 			nameOnly = false,
+			widgetXPBar = {
+				enable = true,
+				yOffset = -4,
+				color = {
+					r = 0.529,
+					g = 0.808,
+					b = 0.922
+				}
+			},
 			buffs = CopyTable(NP_Auras),
 			castbar = CopyTable(NP_Castbar),
 			debuffs = CopyTable(NP_Auras),
@@ -1292,6 +1301,29 @@ local UF_SubGroup = {
 	raidicon = CopyTable(UF_RaidIcon),
 }
 
+local UF_ClassBar = {
+	enable = true,
+	fill = 'fill',
+	height = 10,
+	autoHide = false,
+	sortDirection = 'asc',
+	additionalPowerText = false,
+	altPowerColor = { r = 0.2, g = 0.4, b = 0.8 },
+	altPowerTextFormat = '[altpower:current]',
+	detachFromFrame = false,
+	detachedWidth = 250,
+	parent = 'FRAME',
+	verticalOrientation = false,
+	orientation = 'HORIZONTAL',
+	spacing = 5,
+	strataAndLevel = {
+		useCustomStrata = false,
+		frameStrata = 'LOW',
+		useCustomLevel = false,
+		frameLevel = 1,
+	},
+}
+
 --UnitFrame
 P.unitframe = {
 	smoothbars = false,
@@ -1482,26 +1514,7 @@ P.unitframe = {
 				size = 20,
 				texture = 'DEFAULT',
 			},
-			classbar = {
-				enable = true,
-				fill = 'fill',
-				height = 10,
-				autoHide = false,
-				sortDirection = 'asc',
-				additionalPowerText = true,
-				detachFromFrame = false,
-				detachedWidth = 250,
-				parent = 'FRAME',
-				verticalOrientation = false,
-				orientation = 'HORIZONTAL',
-				spacing = 5,
-				strataAndLevel = {
-					useCustomStrata = false,
-					frameStrata = 'LOW',
-					useCustomLevel = false,
-					frameLevel = 1,
-				},
-			},
+			classbar = CopyTable(UF_ClassBar),
 			stagger = {
 				enable = true,
 				width = 10,
@@ -1702,6 +1715,7 @@ P.unitframe = {
 			buffIndicator = CopyTable(UF_AuraWatch),
 			buffs = CopyTable(UF_Auras),
 			castbar = CopyTable(UF_Castbar),
+			classbar = CopyTable(UF_ClassBar),
 			cutaway = CopyTable(UF_Cutaway),
 			debuffs = CopyTable(UF_Auras),
 			fader = CopyTable(UF_Fader),
@@ -1752,6 +1766,7 @@ P.unitframe.units.player.aurabar.maxDuration = 120
 P.unitframe.units.player.aurabar.priority = 'Blacklist,blockNoDuration,Personal,Boss,RaidDebuffs,PlayerBuffs'
 P.unitframe.units.player.buffs.attachTo = 'DEBUFFS'
 P.unitframe.units.player.buffs.priority = 'Blacklist,Personal,PlayerBuffs,Whitelist,blockNoDuration,nonPersonal'
+P.unitframe.units.player.classbar.additionalPowerText = true
 P.unitframe.units.player.debuffs.enable = true
 P.unitframe.units.player.debuffs.priority = 'Blacklist,Personal,nonPersonal'
 P.unitframe.units.player.fader.enable = false

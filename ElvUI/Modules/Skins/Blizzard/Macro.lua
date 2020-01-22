@@ -41,7 +41,7 @@ function S:Blizzard_MacroUI()
 	end
 
 	_G.MacroNewButton:ClearAllPoints()
-	_G.MacroNewButton:SetPoint("RIGHT", _G.MacroExitButton, "LEFT", -2 , 0)
+	_G.MacroNewButton:Point("RIGHT", _G.MacroExitButton, "LEFT", -2 , 0)
 
 	for i = 1, 2 do
 		local tab = _G[format("MacroFrameTab%s", i)]

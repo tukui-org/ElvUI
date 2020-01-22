@@ -1146,7 +1146,7 @@ function E:StaticPopup_CreateSecureButton(popup, button, text, macro)
 	btn:SetAttribute('type', 'macro')
 	btn:SetAttribute('macrotext', macro)
 	btn:SetAllPoints(button)
-	btn:SetSize(button:GetSize())
+	btn:Size(button:GetSize())
 	btn:HookScript('OnEnter', SecureOnEnter)
 	btn:HookScript('OnLeave', SecureOnLeave)
 	Skins:HandleButton(btn)
@@ -1176,7 +1176,7 @@ end
 function E:StaticPopup_PositionSecureButton(popup, popupButton, secureButton)
 	secureButton:SetParent(popup)
 	secureButton:SetAllPoints(popupButton)
-	secureButton:SetSize(popupButton:GetSize())
+	secureButton:Size(popupButton:GetSize())
 end
 
 function E:StaticPopup_SetSecureButton(which, btn)

@@ -15,6 +15,7 @@ local EJ_GetNumTiers = EJ_GetNumTiers
 local EJ_SelectTier = EJ_SelectTier
 local GetDifficultyInfo = GetDifficultyInfo
 local GetGameTime = GetGameTime
+local GetLocale = GetLocale
 local GetNumSavedInstances = GetNumSavedInstances
 local GetNumSavedWorldBosses = GetNumSavedWorldBosses
 local GetNumWorldPVPAreas = GetNumWorldPVPAreas
@@ -99,6 +100,7 @@ local locale = GetLocale()
 if locale == 'deDE' then -- O.O
 	InstanceNameByID[1023] = "Belagerung von Boralus"	-- "Die Belagerung von Boralus"
 	InstanceNameByID[1041] = "Königsruh"				-- "Die Königsruh"
+	InstanceNameByID[1021] = "Kronsteiganwesen"			-- "Das Kronsteiganwesen"
 end
 
 local instanceIconByName = {}

@@ -210,7 +210,7 @@ function S:Blizzard_EncounterJournal()
 	HandleTopTabs(InstanceSelect.LootJournalTab)
 
 	InstanceSelect.suggestTab:ClearAllPoints()
-	InstanceSelect.suggestTab:SetPoint("BOTTOMLEFT", InstanceSelect, "TOPLEFT", 2, -43)
+	InstanceSelect.suggestTab:Point("BOTTOMLEFT", InstanceSelect, "TOPLEFT", 2, -43)
 	InstanceSelect.dungeonsTab:ClearAllPoints()
 	InstanceSelect.dungeonsTab:Point("BOTTOMLEFT", InstanceSelect.suggestTab, "BOTTOMRIGHT", 2, 0)
 	InstanceSelect.raidsTab:ClearAllPoints()
@@ -256,7 +256,7 @@ function S:Blizzard_EncounterJournal()
 
 	--buttons
 	EncounterInfo.difficulty:ClearAllPoints()
-	EncounterInfo.difficulty:SetPoint("BOTTOMRIGHT", _G.EncounterJournalEncounterFrameInfoBG, "TOPRIGHT", -1, 5)
+	EncounterInfo.difficulty:Point("BOTTOMRIGHT", _G.EncounterJournalEncounterFrameInfoBG, "TOPRIGHT", -1, 5)
 	HandleButton(EncounterInfo.reset)
 	HandleButton(EncounterInfo.difficulty)
 	HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, true)
@@ -417,12 +417,12 @@ function S:Blizzard_EncounterJournal()
 			suggestion.bg:Hide()
 			suggestion:CreateBackdrop("Transparent")
 
-			suggestion.icon:SetPoint("TOPLEFT", 10, -10)
+			suggestion.icon:Point("TOPLEFT", 10, -10)
 
 			centerDisplay = suggestion.centerDisplay
 
 			centerDisplay:ClearAllPoints()
-			centerDisplay:SetPoint("TOPLEFT", 85, -10)
+			centerDisplay:Point("TOPLEFT", 85, -10)
 			centerDisplay.title.text:SetTextColor(1, 1, 1)
 			centerDisplay.description.text:SetTextColor(.9, .9, .9)
 

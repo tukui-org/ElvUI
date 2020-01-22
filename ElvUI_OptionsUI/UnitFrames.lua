@@ -2748,6 +2748,201 @@ local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
 	return config
 end
 
+local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
+	local config = {
+		type = 'group',
+		name = L["Classbar"],
+		get = function(info) return E.db.unitframe.units[groupName].classbar[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].classbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+		args = {
+			header = {
+				order = 1,
+				type = "header",
+				name = L["Classbar"],
+			},
+			enable = {
+				type = 'toggle',
+				order = 2,
+				name = L["Enable"],
+			},
+			height = {
+				type = 'range',
+				order = 3,
+				name = L["Height"],
+				min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7),
+				max = 30,
+				step = 1,
+			},
+			fill = {
+				type = 'select',
+				order = 4,
+				name = L["Fill"],
+				values = {
+					['fill'] = L["Filled"],
+					['spaced'] = L["Spaced"],
+				},
+			},
+		},
+	}
+
+	if groupName == 'party' then
+		config.args.altPowerColor = {
+			get = function(info)
+				local t = E.db.unitframe.units[groupName].classbar[info[#info]]
+				local d = P.unitframe.units[groupName].classbar[info[#info]]
+				return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+			end,
+			set = function(info, r, g, b)
+				local t = E.db.unitframe.units[groupName].classbar[info[#info]]
+				t.r, t.g, t.b = r, g, b
+				UF:Update_AllFrames()
+			end,
+			order = 5,
+			name = L["COLOR"],
+			type = 'color',
+		}
+		config.args.altPowerTextFormat = {
+			order = 6,
+			name = L["Text Format"],
+			desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+			type = 'input',
+			width = 'full',
+		}
+	elseif groupName == 'player' then
+		config.args.height.max = (E.db.unitframe.units[groupName].classbar.detachFromFrame and 300 or 30)
+		config.args.autoHide = {
+			order = 5,
+			type = 'toggle',
+			name = L["Auto-Hide"],
+		}
+		config.args.additionalPowerText = {
+			order = 6,
+			type = "toggle",
+			name = L["Additional Power Text"],
+		}
+		config.args.spacer = {
+			order = 10,
+			type = "description",
+			name = "",
+		}
+		config.args.detachGroup = {
+			order = 20,
+			type = "group",
+			name = L["Detach From Frame"],
+			get = function(info) return E.db.unitframe.units.player.classbar[info[#info]] end,
+			set = function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
+			hidden = groupName ~= 'player',
+			guiInline = true,
+			args = {
+				detachFromFrame = {
+					type = 'toggle',
+					order = 1,
+					name = L["Enable"],
+					width = 'full',
+					set = function(info, value)
+						if value == true then
+							E.Options.args.unitframe.args.player.args.classbar.args.height.max = 300
+						else
+							E.Options.args.unitframe.args.player.args.classbar.args.height.max = 30
+						end
+						E.db.unitframe.units.player.classbar[info[#info]] = value;
+						UF:CreateAndUpdateUF('player')
+					end,
+				},
+				detachedWidth = {
+					type = 'range',
+					order = 2,
+					name = L["Detached Width"],
+					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
+					min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 800, step = 1,
+				},
+				orientation = {
+					type = 'select',
+					order = 3,
+					name = L["Frame Orientation"],
+					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
+					values = {
+						['HORIZONTAL'] = L["Horizontal"],
+						['VERTICAL'] = L["Vertical"],
+					},
+				},
+				verticalOrientation = {
+					order = 4,
+					type = "toggle",
+					name = L["Vertical Fill Direction"],
+					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
+				},
+				spacing = {
+					order = 5,
+					type = "range",
+					name = L["Spacing"],
+					min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 20, step = 1,
+					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
+				},
+				parent = {
+					type = 'select',
+					order = 6,
+					name = L["Parent"],
+					desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
+					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
+					values = {
+						["FRAME"] = "FRAME",
+						["UIPARENT"] = "UIPARENT",
+					},
+				},
+				strataAndLevel = {
+					order = 10,
+					type = "group",
+					name = L["Strata and Level"],
+					get = function(info) return E.db.unitframe.units.player.classbar.strataAndLevel[info[#info]] end,
+					set = function(info, value) E.db.unitframe.units.player.classbar.strataAndLevel[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
+					guiInline = true,
+					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
+					hidden = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
+					args = {
+						useCustomStrata = {
+							order = 1,
+							type = "toggle",
+							name = L["Use Custom Strata"],
+						},
+						frameStrata = {
+							order = 2,
+							type = "select",
+							name = L["Frame Strata"],
+							values = {
+								["BACKGROUND"] = "BACKGROUND",
+								["LOW"] = "LOW",
+								["MEDIUM"] = "MEDIUM",
+								["HIGH"] = "HIGH",
+								["DIALOG"] = "DIALOG",
+								["TOOLTIP"] = "TOOLTIP",
+							},
+						},
+						spacer = {
+							order = 3,
+							type = "description",
+							name = "",
+						},
+						useCustomLevel = {
+							order = 4,
+							type = "toggle",
+							name = L["Use Custom Level"],
+						},
+						frameLevel = {
+							order = 5,
+							type = "range",
+							name = L["Frame Level"],
+							min = 2, max = 128, step = 1,
+						},
+					},
+				},
+			},
+		}
+	end
+
+	return config
+end
+
 E.Options.args.unitframe = {
 	type = "group",
 	name = L["UnitFrames"],
@@ -4214,168 +4409,6 @@ E.Options.args.unitframe.args.player = {
 				},
 			},
 		},
-		classbar = {
-			type = 'group',
-			name = L["Classbar"],
-			get = function(info) return E.db.unitframe.units.player.classbar[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
-			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Classbar"],
-				},
-				enable = {
-					type = 'toggle',
-					order = 2,
-					name = L["Enable"],
-				},
-				height = {
-					type = 'range',
-					order = 3,
-					name = L["Height"],
-					min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7),
-					max = (E.db.unitframe.units.player.classbar.detachFromFrame and 300 or 30),
-					step = 1,
-				},
-				fill = {
-					type = 'select',
-					order = 4,
-					name = L["Fill"],
-					values = {
-						['fill'] = L["Filled"],
-						['spaced'] = L["Spaced"],
-					},
-				},
-				autoHide = {
-					order = 5,
-					type = 'toggle',
-					name = L["Auto-Hide"],
-				},
-				additionalPowerText = {
-					order = 6,
-					type = "toggle",
-					name = L["Additional Power Text"],
-				},
-				spacer = {
-					order = 10,
-					type = "description",
-					name = "",
-				},
-				detachGroup = {
-					order = 20,
-					type = "group",
-					name = L["Detach From Frame"],
-					get = function(info) return E.db.unitframe.units.player.classbar[info[#info]] end,
-					set = function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
-					guiInline = true,
-					args = {
-						detachFromFrame = {
-							type = 'toggle',
-							order = 1,
-							name = L["Enable"],
-							width = 'full',
-							set = function(info, value)
-								if value == true then
-									E.Options.args.unitframe.args.player.args.classbar.args.height.max = 300
-								else
-									E.Options.args.unitframe.args.player.args.classbar.args.height.max = 30
-								end
-								E.db.unitframe.units.player.classbar[info[#info]] = value;
-								UF:CreateAndUpdateUF('player')
-							end,
-						},
-						detachedWidth = {
-							type = 'range',
-							order = 2,
-							name = L["Detached Width"],
-							disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-							min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 800, step = 1,
-						},
-						orientation = {
-							type = 'select',
-							order = 3,
-							name = L["Frame Orientation"],
-							disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-							values = {
-								['HORIZONTAL'] = L["Horizontal"],
-								['VERTICAL'] = L["Vertical"],
-							},
-						},
-						verticalOrientation = {
-							order = 4,
-							type = "toggle",
-							name = L["Vertical Fill Direction"],
-							disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-						},
-						spacing = {
-							order = 5,
-							type = "range",
-							name = L["Spacing"],
-							min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 20, step = 1,
-							disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-						},
-						parent = {
-							type = 'select',
-							order = 6,
-							name = L["Parent"],
-							desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
-							disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-							values = {
-								["FRAME"] = "FRAME",
-								["UIPARENT"] = "UIPARENT",
-							},
-						},
-						strataAndLevel = {
-							order = 10,
-							type = "group",
-							name = L["Strata and Level"],
-							get = function(info) return E.db.unitframe.units.player.classbar.strataAndLevel[info[#info]] end,
-							set = function(info, value) E.db.unitframe.units.player.classbar.strataAndLevel[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
-							guiInline = true,
-							disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-							hidden = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-							args = {
-								useCustomStrata = {
-									order = 1,
-									type = "toggle",
-									name = L["Use Custom Strata"],
-								},
-								frameStrata = {
-									order = 2,
-									type = "select",
-									name = L["Frame Strata"],
-									values = {
-										["BACKGROUND"] = "BACKGROUND",
-										["LOW"] = "LOW",
-										["MEDIUM"] = "MEDIUM",
-										["HIGH"] = "HIGH",
-										["DIALOG"] = "DIALOG",
-										["TOOLTIP"] = "TOOLTIP",
-									},
-								},
-								spacer = {
-									order = 3,
-									type = "description",
-									name = "",
-								},
-								useCustomLevel = {
-									order = 4,
-									type = "toggle",
-									name = L["Use Custom Level"],
-								},
-								frameLevel = {
-									order = 5,
-									type = "range",
-									name = L["Frame Level"],
-									min = 2, max = 128, step = 1,
-								},
-							},
-						},
-					},
-				},
-			},
-		},
 		RestIcon = {
 			type = 'group',
 			name = L["Rest Icon"],
@@ -4606,6 +4639,7 @@ E.Options.args.unitframe.args.player = {
 		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'player'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'player'),
 		castbar = GetOptionsTable_Castbar(true, UF.CreateAndUpdateUF, 'player'),
+		classbar = GetOptionsTable_ClassBar(UF.CreateAndUpdateUF, 'player'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player'),
 		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'player'),
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUF, 'player'),
@@ -6285,6 +6319,7 @@ E.Options.args.unitframe.args.party = {
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'party'),
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateHeaderGroup, 'party', 5),
+		classbar = GetOptionsTable_ClassBar(UF.CreateAndUpdateHeaderGroup, 'party'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'party'),
 		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'party'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
@@ -6305,6 +6340,8 @@ E.Options.args.unitframe.args.party = {
 		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 	},
 }
+E.Options.args.unitframe.args.party.args.classbar.name = L["Alternative Power"]
+E.Options.args.unitframe.args.party.args.classbar.args.header.name = L["Alternative Power"]
 
 --Raid Frames
 E.Options.args.unitframe.args.raid = {

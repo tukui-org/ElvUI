@@ -5255,16 +5255,16 @@ local function GetUnitSettings(unit, name)
 			name = L["Show Title"],
 			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."]
 		}
-		if unit == "FRIENDLY_NPC" then
-			group.args.nazjatarFollowerXP = {
+		if unit == "FRIENDLY_NPC" or unit == "ENEMY_NPC" then
+			group.args.widgetXPBar = {
 				order = 14,
 				type = "group",
-				name = L["Nazjatar Follower XP"],
+				name = L["Follower XP"],
 				get = function(info)
-					return E.db.nameplates.units[unit].nazjatarFollowerXP[info[#info]]
+					return E.db.nameplates.units[unit].widgetXPBar[info[#info]]
 				end,
 				set = function(info, value)
-					E.db.nameplates.units[unit].nazjatarFollowerXP[info[#info]] = value
+					E.db.nameplates.units[unit].widgetXPBar[info[#info]] = value
 					NP:ConfigureAll()
 				end,
 				args = {
@@ -5281,7 +5281,7 @@ local function GetUnitSettings(unit, name)
 						max = 100,
 						step = 1,
 						disabled = function()
-							return not E.db.nameplates.units[unit].nazjatarFollowerXP.enable
+							return not E.db.nameplates.units[unit].widgetXPBar.enable
 						end
 					},
 					color = {
@@ -5290,14 +5290,14 @@ local function GetUnitSettings(unit, name)
 						name = L["COLOR"],
 						hasAlpha = false,
 						disabled = function()
-							return not E.db.nameplates.units[unit].nazjatarFollowerXP.enable
+							return not E.db.nameplates.units[unit].widgetXPBar.enable
 						end,
 						get = function(info)
-							local t = E.db.nameplates.units[unit].nazjatarFollowerXP.color
+							local t = E.db.nameplates.units[unit].widgetXPBar.color
 							return t.r, t.g, t.b
 						end,
 						set = function(info, r, g, b)
-							local t = E.db.nameplates.units[unit].nazjatarFollowerXP.color
+							local t = E.db.nameplates.units[unit].widgetXPBar.color
 							t.r, t.g, t.b = r, g, b
 							NP:ConfigureAll()
 						end
@@ -5594,15 +5594,6 @@ E.Options.args.nameplate = {
 							dialogControl = "LSM30_Statusbar",
 							name = L["StatusBar Texture"],
 							values = _G.AceGUIWidgetLSMlists.statusbar
-						},
-						loadDistance = {
-							order = 6,
-							type = "range",
-							name = L["Load Distance"],
-							desc = L["Only load nameplates for units within this range."],
-							min = 10,
-							max = 100,
-							step = 1
 						},
 						overlapV = {
 							order = 7,

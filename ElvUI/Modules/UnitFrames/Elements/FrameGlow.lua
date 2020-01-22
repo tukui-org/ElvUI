@@ -128,7 +128,7 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 
 	if classPower then
 		UF:FrameGlow_ClassGlowPosition(frame, 'ClassPower', mainGlow, offset)
-	elseif altPower and (frame.isForced or (frame.unit and frame.unit:find('boss%d'))) then
+	elseif altPower then
 		UF:FrameGlow_ClassGlowPosition(frame, 'AlternativePower', mainGlow, offset)
 	elseif pvpSpec and pvpSpec:IsShown() then
 		local shownPanel = (infoPanel and infoPanel:IsShown() and infoPanel.backdrop)

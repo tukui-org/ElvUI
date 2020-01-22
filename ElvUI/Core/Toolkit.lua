@@ -41,22 +41,22 @@ function E:SetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft, insetRigh
 	if not (giveBorder or bgFile) then return end
 
 	if insetLeft or insetRight or insetTop or insetBottom then
-		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame, 'TOPLEFT', -insetLeft or 0, insetTop or 0)
-		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', insetRight or 0, -insetBottom or 0)
+		frame.pixelBorders.CENTER:Point('TOPLEFT', frame, 'TOPLEFT', -insetLeft or 0, insetTop or 0)
+		frame.pixelBorders.CENTER:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', insetRight or 0, -insetBottom or 0)
 	else
-		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame)
-		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame)
+		frame.pixelBorders.CENTER:Point('TOPLEFT', frame)
+		frame.pixelBorders.CENTER:Point('BOTTOMRIGHT', frame)
 	end
 
-	frame.pixelBorders.TOPLEFT:SetSize(edgeSize, edgeSize)
-	frame.pixelBorders.TOPRIGHT:SetSize(edgeSize, edgeSize)
-	frame.pixelBorders.BOTTOMLEFT:SetSize(edgeSize, edgeSize)
-	frame.pixelBorders.BOTTOMRIGHT:SetSize(edgeSize, edgeSize)
+	frame.pixelBorders.TOPLEFT:Size(edgeSize)
+	frame.pixelBorders.TOPRIGHT:Size(edgeSize)
+	frame.pixelBorders.BOTTOMLEFT:Size(edgeSize)
+	frame.pixelBorders.BOTTOMRIGHT:Size(edgeSize)
 
-	frame.pixelBorders.TOP:SetHeight(edgeSize)
-	frame.pixelBorders.BOTTOM:SetHeight(edgeSize)
-	frame.pixelBorders.LEFT:SetWidth(edgeSize)
-	frame.pixelBorders.RIGHT:SetWidth(edgeSize)
+	frame.pixelBorders.TOP:Height(edgeSize)
+	frame.pixelBorders.BOTTOM:Height(edgeSize)
+	frame.pixelBorders.LEFT:Width(edgeSize)
+	frame.pixelBorders.RIGHT:Width(edgeSize)
 end
 
 function E:GetBackdropColor(frame)

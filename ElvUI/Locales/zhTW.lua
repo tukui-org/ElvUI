@@ -18,6 +18,7 @@ L["Accepting this will reset your Filter Priority lists for all auras on UnitFra
 L["Additive Blend"] = "覆蓋混合"
 L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = "調節適合你螢幕的介面縮放比例, 按下自動調節按鍵可自動設置介面縮放比例。"
 L["AFK"] = "暫離"
+L["Alliance: "] = true
 L["All keybindings cleared for |cff00ff00%s|r."] = "取消|cff00ff00%s|r 所有綁定的快捷鍵."
 L["Alpha Key"] = "單位元 Alpha 通道混合"
 L["Already Running.. Bailing Out!"] = "正在運行"
@@ -142,6 +143,7 @@ L["Home Protocol:"] = "本機協議:"
 L["Honor Bar"] = "榮譽條"
 L["Honor Remaining:"] = "剩餘:"
 L["Honor XP:"] = "榮譽:"
+L["Horde: "] = true
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = "將你的滑鼠游標放在任意快捷鍵或是法術書上來完成綁定。按下 ESC 可以清除當前快捷鍵的綁定."
 L["HP"] = "生命值"
 L["HPS"] = "治療輸出"

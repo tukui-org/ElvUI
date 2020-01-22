@@ -34,6 +34,7 @@ local CinematicFrame = _G.CinematicFrame
 local MovieFrame = _G.MovieFrame
 local DNDstr = _G.DND
 local AFKstr = _G.AFK
+local C_PetBattles_IsInBattle = _G.C_PetBattles.IsInBattle
 
 local CAMERA_SPEED = 0.035
 local ignoreKeys = {
@@ -132,7 +133,7 @@ function AFK:OnEvent(event, ...)
 		return;
 	end
 
-	if (UnitIsAFK("player")) then
+	if (UnitIsAFK("player") and not C_PetBattles_IsInBattle()) then
 		self:SetAFK(true)
 	else
 		self:SetAFK(false)

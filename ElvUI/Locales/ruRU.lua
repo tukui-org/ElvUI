@@ -18,6 +18,7 @@ L["Accepting this will reset your Filter Priority lists for all auras on UnitFra
 L["Additive Blend"] = "Аддитивное сешивание" --Check back later
 L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = "Измените масштаб интерфейса для вашего экрана. Нажмите автомасштаб, чтобы мы установили его сами."
 L["AFK"] = "АФК"
+L["Alliance: "] = true
 L["All keybindings cleared for |cff00ff00%s|r."] = "Сброшены все назначения для |cff00ff00%s|r."
 L["Alpha Key"] = "По прозрачности" --Check back later
 L["Already Running.. Bailing Out!"] = "Уже выполняется.. Бобер, выдыхай!"
@@ -142,6 +143,7 @@ L["Home Protocol:"] = "Домашний протокол:"
 L["Honor Bar"] = "Полоса Чести"
 L["Honor Remaining:"] = "Осталось Чести"
 L["Honor XP:"] = "Честь: "
+L["Horde: "] = true
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = "Наведите мышку на любую кнопку панели команд или книги заклинаний, чтобы создать назначение. Нажатие ESC убирает текущее назначение."
 L["HP"] = "+ Исцел."
 L["HPS"] = "ИВС"

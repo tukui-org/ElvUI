@@ -133,11 +133,10 @@ function UF:PortraitUpdate(unit, event)
 	end
 
 	if (self.stateChanged or event == 'ElvUI_UpdateAllElements') and self.playerModel and self.state then
-		local facing = self:GetCameraFacing()
 		self:SetCamDistanceScale(db.camDistanceScale)
-		self:SetPosition((facing > 0 and -db.xOffset) or db.xOffset, db.xOffset, db.yOffset)
-		self:SetRotation(facing - rad(db.rotation))
+		self:SetViewTranslation(db.xOffset * 100, db.yOffset * 100)
 		self:SetDesaturation(db.desaturation)
+		self:SetRotation(rad(db.rotation))
 		self:SetPaused(db.paused)
 	end
 

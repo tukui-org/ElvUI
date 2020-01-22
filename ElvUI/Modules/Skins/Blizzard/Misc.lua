@@ -109,7 +109,7 @@ function S:BlizzardMiscFrames()
 		_G.GameMenuFrame:SetTemplate("Transparent")
 		_G.GameMenuFrame.Header:StripTextures()
 		_G.GameMenuFrame.Header:ClearAllPoints()
-		_G.GameMenuFrame.Header:SetPoint("TOP", _G.GameMenuFrame, 0, 7)
+		_G.GameMenuFrame.Header:Point("TOP", _G.GameMenuFrame, 0, 7)
 	end
 
 	if IsAddOnLoaded("OptionHouse") then

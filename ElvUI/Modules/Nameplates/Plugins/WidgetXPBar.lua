@@ -20,7 +20,7 @@ local CampfireNPCIDToWidgetIDMap = {
 	[149803] = 1966, -- Bladesman Inowari
 	[149904] = 1621, -- Neri Sharpfin
 	[149902] = 1622, -- Poen Gillbrack
-	[149906] = 1920 -- Vim Brineheart
+	[149906] = 1920 -- Vim Brineheart,
 }
 
 local NeededQuestIDs = {
@@ -28,15 +28,27 @@ local NeededQuestIDs = {
 	["Alliance"] = 56156
 }
 
+local VoidtouchedEggQuestID = 58802
+
+local VoidtouchedEggNPCIDToWidgetIDMap = {
+	[163541] = 2342 -- Voidtouched Egg
+}
+
 local function Update(self)
-	local element = self.NazjatarFollowerXP
+	local element = self.WidgetXPBar
 	if not element then
 		return
 	end
 
 	local npcID, questID = tonumber(self.npcID), NeededQuestIDs[E.myfaction]
+	if VoidtouchedEggNPCIDToWidgetIDMap[npcID] then
+		questID = VoidtouchedEggQuestID
+	end
 	local hasQuestCompleted = questID and C_QuestLog_IsQuestFlaggedCompleted(questID)
-	local isProperNPC = npcID and (NPCIDToWidgetIDMap[npcID] and self.unit and UnitIsOwnerOrControllerOfUnit("player", self.unit)) or CampfireNPCIDToWidgetIDMap[npcID]
+	local isProperNPC =
+		npcID and (NPCIDToWidgetIDMap[npcID] and self.unit and UnitIsOwnerOrControllerOfUnit("player", self.unit)) or
+		CampfireNPCIDToWidgetIDMap[npcID] or
+		VoidtouchedEggNPCIDToWidgetIDMap[npcID]
 	if (not hasQuestCompleted or not isProperNPC) then
 		element:Hide()
 		if element.Rank then
@@ -53,7 +65,8 @@ local function Update(self)
 		element:PreUpdate()
 	end
 
-	local widgetID = NPCIDToWidgetIDMap[npcID] or CampfireNPCIDToWidgetIDMap[npcID]
+	local widgetID =
+		NPCIDToWidgetIDMap[npcID] or CampfireNPCIDToWidgetIDMap[npcID] or VoidtouchedEggNPCIDToWidgetIDMap[npcID]
 	if not widgetID then
 		element:Hide()
 		if element.Rank then
@@ -65,13 +78,17 @@ local function Update(self)
 		return
 	end
 
-	local rank, cur, toNext, total, isMax = E:GetNazjatarBodyguardXP(widgetID)
-	if not rank then return end
+	local rank, cur, toNext, total, isMax
+	if VoidtouchedEggNPCIDToWidgetIDMap[npcID] then
+		cur, toNext, total = E:GetWidgetInfoBase(widgetID)
+	else
+		rank, cur, toNext, total, isMax = E:GetNazjatarBodyguardXP(widgetID)
+	end
 
 	element:SetMinMaxValues(0, (isMax and 1) or toNext)
 	element:SetValue(isMax and 1 or cur)
 
-	if element.Rank then
+	if rank and element.Rank then
 		element.Rank:SetText(rank)
 		element.Rank:Show()
 	end
@@ -89,7 +106,7 @@ local function Update(self)
 end
 
 local function Path(self, ...)
-	return (self.NazjatarFollowerXP.Override or Update)(self, ...)
+	return (self.WidgetXPBar.Override or Update)(self, ...)
 end
 
 local function ForceUpdate(element)
@@ -97,7 +114,7 @@ local function ForceUpdate(element)
 end
 
 local function Enable(self)
-	local element = self.NazjatarFollowerXP
+	local element = self.WidgetXPBar
 	if (element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
@@ -109,7 +126,7 @@ local function Enable(self)
 end
 
 local function Disable(self)
-	local element = self.NazjatarFollowerXP
+	local element = self.WidgetXPBar
 	if (element) then
 		element:Hide()
 		if element.Rank then
@@ -124,4 +141,4 @@ local function Disable(self)
 	end
 end
 
-oUF:AddElement("NazjatarFollowerXP", Path, Enable, Disable)
+oUF:AddElement("WidgetXPBar", Path, Enable, Disable)

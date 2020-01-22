@@ -48,7 +48,7 @@ function UF:Configure_ClassBar(frame, cur)
 	bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
-		if frame.MAX_CLASS_BAR == 1 or frame.ClassBar == "AdditionalPower" or frame.ClassBar == "Stagger" then
+		if frame.MAX_CLASS_BAR == 1 or frame.ClassBar == "AdditionalPower" or frame.ClassBar == "Stagger" or frame.ClassBar == 'AlternativePower' then
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
 		else
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
@@ -162,7 +162,7 @@ function UF:Configure_ClassBar(frame, cur)
 		else
 			bars.backdrop:Hide()
 		end
-	elseif (frame.ClassBar == "AdditionalPower" or frame.ClassBar == "Stagger") then
+	elseif (frame.ClassBar == "AdditionalPower" or frame.ClassBar == "Stagger" or frame.ClassBar == "AlternativePower") then
 		if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
 			bars:SetOrientation("VERTICAL")
 		else
@@ -243,6 +243,9 @@ function UF:Configure_ClassBar(frame, cur)
 		if frame.Stagger and not frame:IsElementEnabled("Stagger") then
 			frame:EnableElement("Stagger")
 		end
+		if frame.AlternativePower and not frame:IsElementEnabled("AlternativePower") then
+			frame:EnableElement("AlternativePower")
+		end
 	else
 		if frame.ClassPower and frame:IsElementEnabled("ClassPower") then
 			frame:DisableElement("ClassPower")
@@ -255,6 +258,9 @@ function UF:Configure_ClassBar(frame, cur)
 		end
 		if frame.Stagger and frame:IsElementEnabled("Stagger") then
 			frame:DisableElement("Stagger")
+		end
+		if frame.AlternativePower and frame:IsElementEnabled("AlternativePower") then
+			frame:DisableElement("AlternativePower")
 		end
 	end
 end

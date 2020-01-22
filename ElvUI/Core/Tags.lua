@@ -63,7 +63,7 @@ local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
 local CreateAtlasMarkup = CreateAtlasMarkup
 
-local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
+local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
@@ -86,6 +86,7 @@ local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 
 ElvUF.Tags.SharedEvents.PLAYER_TALENT_UPDATE = true
 ElvUF.Tags.SharedEvents.QUEST_LOG_UPDATE = true
+ElvUF.Tags.SharedEvents.INSTANCE_ENCOUNTER_ENGAGE_UNIT = true
 
 ------------------------------------------------------------------------
 --	Tags
@@ -172,7 +173,7 @@ local function GetClassPower(class)
 	return min, max, r, g, b
 end
 
-ElvUF.Tags.Events['altpowercolor'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
+ElvUF.Tags.Events['altpowercolor'] = "UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE"
 ElvUF.Tags.Methods['altpowercolor'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
@@ -219,7 +220,7 @@ ElvUF.Tags.Methods['healthcolor'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['name:abbrev'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Events['name:abbrev'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['name:abbrev'] = function(unit)
 	local name = UnitName(unit)
 
@@ -232,7 +233,7 @@ end
 
 ElvUF.Tags.Events['health:deficit-percent:nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
 ElvUF.Tags.Methods['health:deficit-percent:nostatus'] = function(unit)
-	local min, max = E:UnitHealthValues(unit)
+	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local deficit = (min / max) - 1
 	if deficit == 0 then
 		return ''
@@ -291,7 +292,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end
 
-	ElvUF.Tags.Events[format('altpower:%s', tagTextFormat)] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
+	ElvUF.Tags.Events[format('altpower:%s', tagTextFormat)] = "UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE"
 	ElvUF.Tags.Methods[format('altpower:%s', tagTextFormat)] = function(u)
 		local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 		if cur > 0 then
@@ -317,7 +318,7 @@ for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 
 		end
 	end
 
-	ElvUF.Tags.Events[format('name:abbrev:%s', textFormat)] = 'UNIT_NAME_UPDATE'
+	ElvUF.Tags.Events[format('name:abbrev:%s', textFormat)] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 	ElvUF.Tags.Methods[format('name:abbrev:%s', textFormat)] = function(unit)
 		local name = UnitName(unit)
 
@@ -328,13 +329,13 @@ for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 
 		return name ~= nil and E:ShortenString(name, length) or ''
 	end
 
-	ElvUF.Tags.Events[format('name:%s', textFormat)] = 'UNIT_NAME_UPDATE'
+	ElvUF.Tags.Events[format('name:%s', textFormat)] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 	ElvUF.Tags.Methods[format('name:%s', textFormat)] = function(unit)
 		local name = UnitName(unit)
 		return name ~= nil and E:ShortenString(name, length) or nil
 	end
 
-	ElvUF.Tags.Events[format('name:%s:status', textFormat)] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH_FREQUENT'
+	ElvUF.Tags.Events[format('name:%s:status', textFormat)] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH_FREQUENT INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 	ElvUF.Tags.Methods[format('name:%s:status', textFormat)] = function(unit)
 		local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 		local name = UnitName(unit)
@@ -345,7 +346,7 @@ for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 
 		end
 	end
 
-	ElvUF.Tags.Events[format('name:%s:translit', textFormat)] = 'UNIT_NAME_UPDATE'
+	ElvUF.Tags.Events[format('name:%s:translit', textFormat)] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 	ElvUF.Tags.Methods[format('name:%s:translit', textFormat)] = function(unit)
 		local name = Translit:Transliterate(UnitName(unit), translitMark)
 		return name ~= nil and E:ShortenString(name, length) or nil
@@ -458,7 +459,7 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	return Hex(r, g, b)
 end
 
-ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
+ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['namecolor'] = function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
 	local unitPlayer = UnitIsPlayer(unit)
@@ -964,7 +965,7 @@ ElvUF.Tags.Methods['specialization'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['name:title'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Events['name:title'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['name:title'] = function(unit)
 	if (UnitIsPlayer(unit)) then
 		return UnitPVPName(unit)

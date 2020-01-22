@@ -18,6 +18,7 @@ L["Accepting this will reset your Filter Priority lists for all auras on UnitFra
 L["Additive Blend"] = true
 L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = true
 L["AFK"] = "자리비움"
+L["Alliance: "] = true
 L["All keybindings cleared for |cff00ff00%s|r."] = "|cff00ff00%s|r 버튼에 설정된 모든 단축키 설정이 해제되었습니다."
 L["Alpha Key"] = true
 L["Already Running.. Bailing Out!"] = "이미 실행중입니다. 잠시만 기다려 주세요."
@@ -142,6 +143,7 @@ L["Home Protocol:"] = true
 L["Honor Bar"] = "명예바"
 L["Honor Remaining:"] = "남은 명예"
 L["Honor XP:"] = "명예 경험치"
+L["Horde: "] = true
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."] = true
 L["HP"] = "주문력"
 L["HPS"] = "HPS"
