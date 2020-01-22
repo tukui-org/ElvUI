@@ -406,8 +406,8 @@ function A:UpdateHeader(header)
 		child = select(index, header:GetChildren())
 	end
 
-	if MasqueGroupBuffs and E.private.auras.masque.buffs then MasqueGroupBuffs:ReSkin() end
-	if MasqueGroupDebuffs and E.private.auras.masque.debuffs then MasqueGroupDebuffs:ReSkin() end
+	if MasqueGroupBuffs and E.private.auras.buffsHeader and E.private.auras.masque.buffs then MasqueGroupBuffs:ReSkin() end
+	if MasqueGroupDebuffs and E.private.auras.debuffsHeader and E.private.auras.masque.debuffs then MasqueGroupDebuffs:ReSkin() end
 end
 
 function A:CreateAuraHeader(filter)
@@ -449,12 +449,14 @@ function A:Initialize()
 		A.BuffFrame = A:CreateAuraHeader('HELPFUL')
 		A.BuffFrame:Point('TOPRIGHT', _G.MMHolder, 'TOPLEFT', -(6 + E.Border), -E.Border - E.Spacing)
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
+		if Masque and MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end
 	end
 
 	if E.private.auras.debuffsHeader then
 		A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
 		A.DebuffFrame:Point('BOTTOMRIGHT', _G.MMHolder, 'BOTTOMLEFT', -(6 + E.Border), E.Border + E.Spacing)
 		E:CreateMover(A.DebuffFrame, 'DebuffsMover', L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
+		if Masque and MasqueGroupDebuffs then A.DebuffsMasqueGroup = MasqueGroupDebuffs end
 	end
 
 	local colors = A.db.barColor
@@ -463,11 +465,6 @@ function A:Initialize()
 		colors.r = classColor.r
 		colors.g = classColor.g
 		colors.b = classColor.b
-	end
-
-	if Masque then
-		if MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end
-		if MasqueGroupDebuffs then A.DebuffsMasqueGroup = MasqueGroupDebuffs end
 	end
 end
 
