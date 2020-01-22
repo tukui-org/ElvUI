@@ -172,7 +172,7 @@ local function GetClassPower(class)
 	return min, max, r, g, b
 end
 
-ElvUF.Tags.Events['altpowercolor'] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
+ElvUF.Tags.Events['altpowercolor'] = "UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE"
 ElvUF.Tags.Methods['altpowercolor'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
@@ -291,7 +291,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end
 
-	ElvUF.Tags.Events[format('altpower:%s', tagTextFormat)] = "UNIT_POWER_UPDATE UNIT_MAXPOWER"
+	ElvUF.Tags.Events[format('altpower:%s', tagTextFormat)] = "UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE"
 	ElvUF.Tags.Methods[format('altpower:%s', tagTextFormat)] = function(u)
 		local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 		if cur > 0 then
