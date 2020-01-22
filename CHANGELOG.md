@@ -16,7 +16,7 @@ Removed Nameplate Load Distance Options, until Blizzard decides if they will let
 Reverted portrait facing and used a correct API to handle the X and Y Offsets.  
 Stopped letting AFK Mode activate when in a Pet Battle.  
 Changed the default position for the Alternative Power Bar.  
-Allow size six on the Buff Indicators.  
+Allow icon size six on the Buff Indicators.  
 
 ___
 ### Version 11.312 [ January 18th 2020 ]
