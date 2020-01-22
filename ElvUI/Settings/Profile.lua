@@ -501,6 +501,7 @@ P.nameplates = {
 			PAIN = {r = 225/255, g = 225/255, b = 225/255, atlas = '_DemonHunter-DemonicPainBar'},
 			RAGE = {r = 0.78, g = 0.25, b = 0.25},
 			RUNIC_POWER = {r = 0, g = 0.82, b = 1},
+			ALT_POWER = {r = 0.2, g = 0.4, b = 0.8},
 		},
 		selection = {
 			[ 0] = {r = 254/255, g = 045/255, b = 045/255}, -- HOSTILE
@@ -1393,6 +1394,7 @@ P.unitframe = {
 			LUNAR_POWER = {r = .9, g = .86, b = .12},
 			INSANITY = {r = 0.55, g = 0.14, b = 0.69},
 			MAELSTROM = {r = 0, g = 0.5, b = 1},
+			ALT_POWER = {r = 0.2, g = 0.4, b = 0.8},
 		},
 		reaction = {
 			BAD = { r = 199/255, g = 64/255, b = 64/255 },

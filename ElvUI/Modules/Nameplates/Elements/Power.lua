@@ -8,12 +8,12 @@ local unpack = unpack
 -- WoW API / Variables
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitIsTapDenied = UnitIsTapDenied
-local UnitThreatSituation = UnitThreatSituation
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
+local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
 function NP:Power_UpdateColor(event, unit)
 	if self.unit ~= unit then return end
@@ -35,7 +35,7 @@ function NP:Power_UpdateColor(event, unit)
 	--[=[elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
 		t =  self.colors.threat[UnitThreatSituation('player', unit)]]=]
 	elseif(element.colorPower) then
-		if(element.displayType ~= _G.ALTERNATE_POWER_INDEX) then
+		if(element.displayType ~= ALTERNATE_POWER_INDEX) then
 			t = NP.db.colors.power[ptoken or ptype]
 			if(not t) then
 				if(element.GetAlternativeColor) then
@@ -49,7 +49,7 @@ function NP:Power_UpdateColor(event, unit)
 				end
 			end
 		else
-			t = self.colors.power[_G.ALTERNATE_POWER_INDEX]
+			t = NP.db.colors.power.ALT_POWER
 		end
 
 		if(element.useAtlas and t and t.atlas) then

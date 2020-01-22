@@ -1983,10 +1983,12 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				order = 1,
 				name = L["Enable"],
 			},
-			powerPrediction = {
-				type = 'toggle',
+			attachTextTo = {
+				type = 'select',
 				order = 2,
-				name = L["Power Prediction"],
+				name = L["Attach Text To"],
+				desc = L["The object you want to attach to."],
+				values = attachToValues,
 			},
 			width = {
 				type = 'select',
@@ -2044,37 +2046,35 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 50, step = 1,
 				hidden = function() return E.db.unitframe.units[groupName].power.width == 'offset' end,
 			},
+			powerPrediction = {
+				type = 'toggle',
+				order = 5,
+				name = L["Power Prediction"],
+			},
 			offset = {
 				type = 'range',
 				name = L["Offset"],
 				desc = L["Offset of the powerbar to the healthbar, set to 0 to disable."],
-				order = 5,
+				order = 6,
 				min = 0, max = 20, step = 1,
 				hidden = function() return E.db.unitframe.units[groupName].power.width ~= 'offset' end,
-			},
-			configureButton = {
-				order = 6,
-				name = L["Coloring"],
-				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
-				type = 'execute',
-				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "powerGroup") end,
 			},
 			reverseFill = {
 				type = "toggle",
 				order = 7,
 				name = L["Reverse Fill"],
 			},
-			attachTextTo = {
-				type = 'select',
-				order = 11,
-				name = L["Attach Text To"],
-				desc = L["The object you want to attach to."],
-				values = attachToValues,
-			},
 			autoHide = {
-				order = 12,
+				order = 8,
 				type = 'toggle',
 				name = L["Auto-Hide"],
+			},
+			configureButton = {
+				order = 10,
+				name = L["Coloring"],
+				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
+				type = 'execute',
+				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "powerGroup") end,
 			},
 			textGroup = {
 				type = 'group',
@@ -2116,19 +2116,19 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	if hasDetatchOption then
 			config.args.detachFromFrame = {
 				type = 'toggle',
-				order = 11,
+				order = 90,
 				name = L["Detach From Frame"],
 			}
 			config.args.detachedWidth = {
 				type = 'range',
-				order = 12,
+				order = 91,
 				name = L["Detached Width"],
 				hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
 				min = 15, max = 1000, step = 1,
 			}
 			config.args.parent = {
 				type = 'select',
-				order = 13,
+				order = 92,
 				name = L["Parent"],
 				desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
 				hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
@@ -2141,7 +2141,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 
 	if hasStrataLevel then
 		config.args.strataAndLevel = {
-			order = 101,
+			order = 100,
 			type = "group",
 			name = L["Strata and Level"],
 			get = function(info) return E.db.unitframe.units[groupName].power.strataAndLevel[info[#info]] end,
@@ -2186,10 +2186,10 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 		}
 	end
 
-	if groupName == 'party' then
+	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
 		config.args.displayAltPower = {
 			type = "toggle",
-			order = 8,
+			order = 9,
 			name = L["Swap to Alt Power"],
 		}
 	end
@@ -2785,7 +2785,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		},
 	}
 
-	if groupName == 'party' then
+	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
 		config.args.altPowerColor = {
 			get = function(info)
 				local t = E.db.unitframe.units[groupName].classbar[info[#info]]
@@ -3635,6 +3635,11 @@ E.Options.args.unitframe = {
 								MAELSTROM = {
 									order = 29,
 									name = L["MAELSTROM"],
+									type = 'color'
+								},
+								ALT_POWER = {
+									order = 30,
+									name = L["Swapped Alt Power"],
 									type = 'color'
 								},
 							},
@@ -6606,6 +6611,7 @@ E.Options.args.unitframe.args.raid = {
 		},
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'),
+		classbar = GetOptionsTable_ClassBar(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'),
@@ -6626,6 +6632,8 @@ E.Options.args.unitframe.args.raid = {
 		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 	},
 }
+E.Options.args.unitframe.args.raid.args.classbar.name = L["Alternative Power"]
+E.Options.args.unitframe.args.raid.args.classbar.args.header.name = L["Alternative Power"]
 
 --Raid-40 Frames
 E.Options.args.unitframe.args.raid40 = {
@@ -6813,7 +6821,7 @@ E.Options.args.unitframe.args.raid40 = {
 							confirm = true,
 							func = function()
 								E.db.unitframe.units.raid40.visibility = P.unitframe.units.raid40.visibility
-								UF:CreateAndUpdateHeaderGroup('raid', nil, nil, true)
+								UF:CreateAndUpdateHeaderGroup('raid40', nil, nil, true)
 							end,
 						},
 						visibility = {
@@ -6890,6 +6898,7 @@ E.Options.args.unitframe.args.raid40 = {
 		},
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		buffs = GetOptionsTable_Auras('buffs', true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		classbar = GetOptionsTable_ClassBar(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		debuffs = GetOptionsTable_Auras('debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
@@ -6910,6 +6919,8 @@ E.Options.args.unitframe.args.raid40 = {
 		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 	},
 }
+E.Options.args.unitframe.args.raid40.args.classbar.name = L["Alternative Power"]
+E.Options.args.unitframe.args.raid40.args.classbar.args.header.name = L["Alternative Power"]
 
 --Raid Pet Frames
 E.Options.args.unitframe.args.raidpet = {

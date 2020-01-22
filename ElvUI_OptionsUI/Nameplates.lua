@@ -6638,6 +6638,11 @@ E.Options.args.nameplate = {
 									order = 10,
 									name = L["RUNIC_POWER"],
 									type = "color"
+								},
+								ALT_POWER = {
+									order = 11,
+									name = L["Swapped Alt Power"],
+									type = 'color'
 								}
 							}
 						},

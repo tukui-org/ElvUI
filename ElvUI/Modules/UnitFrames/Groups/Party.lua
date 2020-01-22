@@ -213,66 +213,39 @@ function UF:Update_PartyFrames(frame, db)
 			end
 		end
 
-		--Health
-		UF:Configure_HealthBar(frame)
-
-		UF:Configure_RaidIcon(frame)
-
-		--Name
 		UF:UpdateNameSettings(frame, frame.childType)
 	else
 		if not InCombatLockdown() then
 			frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 		end
 
-		UF:Configure_InfoPanel(frame)
-		UF:Configure_HealthBar(frame)
-
 		UF:UpdateNameSettings(frame)
-
-		UF:Configure_PhaseIcon(frame)
-
-		UF:Configure_Power(frame)
-
-		UF:Configure_Portrait(frame)
-
-		UF:Configure_Threat(frame)
-
 		UF:EnableDisable_Auras(frame)
 		UF:Configure_Auras(frame, 'Buffs')
 		UF:Configure_Auras(frame, 'Debuffs')
-
+		UF:Configure_InfoPanel(frame)
+		UF:Configure_PhaseIcon(frame)
+		UF:Configure_Power(frame)
+		UF:Configure_Portrait(frame)
+		UF:Configure_Threat(frame)
 		UF:Configure_RaidDebuffs(frame)
-
 		UF:Configure_Castbar(frame)
-
-		UF:Configure_RaidIcon(frame)
-
 		UF:Configure_ResurrectionIcon(frame)
-
 		UF:Configure_SummonIcon(frame)
-
 		UF:Configure_DebuffHighlight(frame)
-
 		UF:Configure_RoleIcon(frame)
-
 		UF:Configure_HealComm(frame)
-
 		UF:Configure_RaidRoleIcons(frame)
-
 		UF:Configure_AuraWatch(frame)
-
 		UF:Configure_ReadyCheckIcon(frame)
-
 		UF:Configure_ClassBar(frame)
 		UF:Configure_AltPowerBar(frame)
 		UF:Configure_CustomTexts(frame)
 	end
 
-	--Fader
+	UF:Configure_HealthBar(frame)
+	UF:Configure_RaidIcon(frame)
 	UF:Configure_Fader(frame)
-
-	--Cutaway
 	UF:Configure_Cutaway(frame)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
