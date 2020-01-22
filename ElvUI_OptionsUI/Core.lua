@@ -325,8 +325,7 @@ local function ExportImport_Open(mode)
 		local exportButton = E.Libs.AceGUI:Create("Button")
 		exportButton:SetText(L["Export Now"])
 		exportButton:SetAutoWidth(true)
-		local function OnClick(self)
-			--Clear labels
+		exportButton:SetCallback("OnClick", function()
 			Label1:SetText("")
 			Label2:SetText("")
 
@@ -335,83 +334,60 @@ local function ExportImport_Open(mode)
 			if not profileKey or not profileExport then
 				Label1:SetText(L["Error exporting profile!"])
 			else
-				Label1:SetText(
-					format("%s: %s%s|r", L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType])
-				)
+				Label1:SetText(format("%s: %s%s|r", L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType]))
+
 				if profileType == "profile" then
 					Label2:SetText(format("%s: %s%s|r", L["Profile Name"], E.media.hexvaluecolor, profileKey))
 				end
 			end
+
 			Box:SetText(profileExport)
 			Box.editBox:HighlightText()
 			Box:SetFocus()
 			exportString = profileExport
-		end
-		exportButton:SetCallback("OnClick", OnClick)
+		end)
 		Frame:AddChild(exportButton)
 
 		--Set scripts
-		Box.editBox:SetScript(
-			"OnChar",
-			function()
+		Box.editBox:SetScript("OnChar", function()
+			Box:SetText(exportString)
+			Box.editBox:HighlightText()
+		end)
+		Box.editBox:SetScript("OnTextChanged", function(_, userInput)
+			if userInput then
+				--Prevent user from changing export string
 				Box:SetText(exportString)
 				Box.editBox:HighlightText()
 			end
-		)
-		Box.editBox:SetScript(
-			"OnTextChanged",
-			function(self, userInput)
-				if userInput then
-					--Prevent user from changing export string
-					Box:SetText(exportString)
-					Box.editBox:HighlightText()
-				end
-			end
-		)
+		end)
 	elseif mode == "import" then
 		Frame:SetTitle(L["Import Profile"])
 		local importButton = E.Libs.AceGUI:Create("Button-ElvUI") --This version changes text color on SetDisabled
 		importButton:SetDisabled(true)
 		importButton:SetText(L["Import Now"])
 		importButton:SetAutoWidth(true)
-		importButton:SetCallback(
-			"OnClick",
-			function()
-				--Clear labels
-				Label1:SetText("")
-				Label2:SetText("")
+		importButton:SetCallback("OnClick", function()
+			Label1:SetText("")
+			Label2:SetText("")
 
-				local text
-				local success = D:ImportProfile(Box:GetText())
-				if success then
-					text = L["Profile imported successfully!"]
-				else
-					text = L["Error decoding data. Import string may be corrupted!"]
-				end
-				Label1:SetText(text)
-			end
-		)
+			local success = D:ImportProfile(Box:GetText())
+			Label1:SetText((success and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"])
+		end)
 		Frame:AddChild(importButton)
 
 		local decodeButton = E.Libs.AceGUI:Create("Button-ElvUI")
 		decodeButton:SetDisabled(true)
 		decodeButton:SetText(L["Decode Text"])
 		decodeButton:SetAutoWidth(true)
-		decodeButton:SetCallback(
-			"OnClick",
-			function()
-				--Clear labels
-				Label1:SetText("")
-				Label2:SetText("")
-				local decodedText
-				local profileType, profileKey, profileData = D:Decode(Box:GetText())
-				if profileData then
-					decodedText = E:TableToLuaString(profileData)
-				end
-				local importText = D:CreateProfileExport(decodedText, profileType, profileKey)
-				Box:SetText(importText)
-			end
-		)
+		decodeButton:SetCallback("OnClick", function()
+			Label1:SetText("")
+			Label2:SetText("")
+
+			local profileType, profileKey, profileData = D:Decode(Box:GetText())
+			local decodedText = (profileData and E:TableToLuaString(profileData)) or nil
+			local importText = D:CreateProfileExport(decodedText, profileType, profileKey)
+			Box:SetText(importText)
+		end)
 		Frame:AddChild(decodeButton)
 
 		local oldText = ""
@@ -437,46 +413,40 @@ local function ExportImport_Open(mode)
 					importButton:SetDisabled(true)
 					decodeButton:SetDisabled(true)
 				else
-					Label1:SetText(
-						format("%s: %s%s|r", L["Importing"], E.media.hexvaluecolor, profileTypeItems[profileType] or "")
-					)
+					Label1:SetText(format("%s: %s%s|r", L["Importing"], E.media.hexvaluecolor, profileTypeItems[profileType] or ""))
 					if profileType == "profile" then
 						Label2:SetText(format("%s: %s%s|r", L["Profile Name"], E.media.hexvaluecolor, profileKey))
 					end
 					importButton:SetDisabled(false)
 				end
 
-				--Scroll frame doesn't scroll to the bottom by itself, so let's do that now
-				Box.scrollFrame:UpdateScrollChildRect()
-				Box.scrollFrame:SetVerticalScroll(Box.scrollFrame:GetVerticalScrollRange())
-
 				oldText = text
 			end
 		end
 
 		Box.editBox:SetFocus()
-		--Set scripts
 		Box.editBox:SetScript("OnChar", nil)
 		Box.editBox:SetScript("OnTextChanged", OnTextChanged)
 	end
 
-	Frame:SetCallback(
-		"OnClose",
-		function(widget)
-			--Restore changed scripts
-			Box.editBox:SetScript("OnChar", nil)
-			Box.editBox:SetScript("OnTextChanged", Box.editBox.OnTextChangedOrig)
-			Box.editBox:SetScript("OnCursorChanged", Box.editBox.OnCursorChangedOrig)
-			Box.editBox.OnTextChangedOrig = nil
-			Box.editBox.OnCursorChangedOrig = nil
+	--Scroll frame doesn't scroll to the bottom by itself, so let's do that now
+	Box.scrollFrame:UpdateScrollChildRect()
+	Box.scrollFrame:SetVerticalScroll(Box.scrollFrame:GetVerticalScrollRange())
 
-			--Clear stored export string
-			exportString = ""
+	Frame:SetCallback("OnClose", function(widget)
+		--Restore changed scripts
+		Box.editBox:SetScript("OnChar", nil)
+		Box.editBox:SetScript("OnTextChanged", Box.editBox.OnTextChangedOrig)
+		Box.editBox:SetScript("OnCursorChanged", Box.editBox.OnCursorChangedOrig)
+		Box.editBox.OnTextChangedOrig = nil
+		Box.editBox.OnCursorChangedOrig = nil
 
-			E.Libs.AceGUI:Release(widget)
-			E.Libs.AceConfigDialog:Open("ElvUI")
-		end
-	)
+		--Clear stored export string
+		exportString = ""
+
+		E.Libs.AceGUI:Release(widget)
+		E.Libs.AceConfigDialog:Open("ElvUI")
+	end)
 
 	--Clear default text
 	Label1:SetText("")
