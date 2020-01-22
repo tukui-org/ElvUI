@@ -1,13 +1,22 @@
 ### Version 11.32 [ ETA: Soon ]
 
 **New Additions:**  
-
+Added Faction info to the Gold Datatext and fixed a possible error with new characters on it.  
+Added support for Voidtouched Egg in Uldum onto the nameplates, similar to Nazjatar Follower XP.  
+Added Corrupted Item Icon onto the Character Frame for items with Corruption stat.  
+Added Color and Text Format option to the Party Alternative Power bar settings.  
 
 **Bug Fixes:**  
-
+Attempted to fix Boss Frame (or other Unitframes) name not being updated correctly.  
+Fixed error when using the "[health:deficit-percent:nostatus]" tag.  
+Fixed Reagent Bank Icon borders.  
 
 **Misc. Changes:**  
-
+Removed Nameplate Load Distance Options, until Blizzard decides if they will let us control it again in the future.  
+Reverted portrait facing and used a correct API to handle the X and Y Offsets.  
+Stopped letting AFK Mode activate when in a Pet Battle.  
+Changed the default position for the Alternative Power Bar.  
+Allow size six on the Buff Indicators.  
 
 ___
 ### Version 11.312 [ January 18th 2020 ]
