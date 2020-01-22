@@ -86,6 +86,7 @@ local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 
 ElvUF.Tags.SharedEvents.PLAYER_TALENT_UPDATE = true
 ElvUF.Tags.SharedEvents.QUEST_LOG_UPDATE = true
+ElvUF.Tags.SharedEvents.INSTANCE_ENCOUNTER_ENGAGE_UNIT = true
 
 ------------------------------------------------------------------------
 --	Tags
