@@ -134,6 +134,7 @@ do
 	DisableAddOn("ElvUI_CastBarOverlay")
 	DisableAddOn("ElvUI_EverySecondCounts")
 	DisableAddOn("ElvUI_AuraBarsMovers")
+	DisableAddOn("ElvUI_CustomTweaks")
 end
 
 function AddOn:OnInitialize()
