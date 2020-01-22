@@ -1,4 +1,16 @@
-### Version 11.32 [ ETA: Soon ]
+### Version 11.33 [ ETA: Soon ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 11.32 [ January 21st 2020 ]
 
 **New Additions:**  
 Added Faction info to the Gold Datatext and fixed a possible error with new characters on it.  
