@@ -32,6 +32,7 @@ local QuestTypesLocalized = {
 		["defeat"] = "KILL",
 		["speak"] = "CHAT",
 		["ask"] = "CHAT",
+		["talk"] = "CHAT",
 	},
 	["deDE"] = {
 		["besiegen"] = "KILL",
@@ -43,7 +44,6 @@ local QuestTypesLocalized = {
 		["befragt"] = "CHAT",
 		["sprecht"] = "CHAT",
 		["genährt"] = "KILL",
-
 	},
 	["esMX"] = {
 		["slain"] = "KILL",
