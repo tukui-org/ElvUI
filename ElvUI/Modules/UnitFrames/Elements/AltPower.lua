@@ -39,9 +39,12 @@ function UF:Configure_AltPowerBar(frame)
 			frame.AlternativePower:Show()
 		end
 
-		E:SetSmoothing(frame.AlternativePower, UF.db.smoothbars)
+		local color = db.altPowerColor
+		frame.AlternativePower:SetStatusBarColor(color.r, color.g, color.b)
 
-		frame:Tag(frame.AlternativePower.value, '[altpower:current]')
+		frame:Tag(frame.AlternativePower.value, db.altPowerTextFormat)
+
+		E:SetSmoothing(frame.AlternativePower, UF.db.smoothbars)
 	elseif frame:IsElementEnabled('AlternativePower') then
 		frame:DisableElement('AlternativePower')
 		frame.AlternativePower:Hide()

@@ -1308,6 +1308,8 @@ local UF_ClassBar = {
 	autoHide = false,
 	sortDirection = 'asc',
 	additionalPowerText = false,
+	altPowerColor = { r = 0.2, g = 0.4, b = 0.8 },
+	altPowerTextFormat = '[altpower:current]',
 	detachFromFrame = false,
 	detachedWidth = 250,
 	parent = 'FRAME',

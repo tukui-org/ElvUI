@@ -2785,7 +2785,30 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		},
 	}
 
-	if groupName == 'player' then
+	if groupName == 'party' then
+		config.args.altPowerColor = {
+			get = function(info)
+				local t = E.db.unitframe.units[groupName].classbar[info[#info]]
+				local d = P.unitframe.units[groupName].classbar[info[#info]]
+				return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+			end,
+			set = function(info, r, g, b)
+				local t = E.db.unitframe.units[groupName].classbar[info[#info]]
+				t.r, t.g, t.b = r, g, b
+				UF:Update_AllFrames()
+			end,
+			order = 5,
+			name = L["COLOR"],
+			type = 'color',
+		}
+		config.args.altPowerTextFormat = {
+			order = 6,
+			name = L["Text Format"],
+			desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+			type = 'input',
+			width = 'full',
+		}
+	elseif groupName == 'player' then
 		config.args.height.max = (E.db.unitframe.units[groupName].classbar.detachFromFrame and 300 or 30)
 		config.args.autoHide = {
 			order = 5,
@@ -6318,6 +6341,7 @@ E.Options.args.unitframe.args.party = {
 	},
 }
 E.Options.args.unitframe.args.party.args.classbar.name = L["Alternative Power"]
+E.Options.args.unitframe.args.party.args.classbar.args.header.name = L["Alternative Power"]
 
 --Raid Frames
 E.Options.args.unitframe.args.raid = {
