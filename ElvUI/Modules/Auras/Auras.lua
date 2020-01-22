@@ -104,15 +104,15 @@ function A:UpdateStatusBar(button)
 end
 
 function A:CreateIcon(button)
-	local font = LSM:Fetch('font', self.db.font)
+	local font = LSM:Fetch('font', A.db.font)
 	local header = button:GetParent()
 	local auraType = header:GetAttribute('filter')
 
-	local db = self.db.debuffs
+	local db = A.db.debuffs
 	button.auraType = 'debuffs' -- used to update cooldown text
 	button.filter = auraType
 	if auraType == 'HELPFUL' then
-		db = self.db.buffs
+		db = A.db.buffs
 		button.auraType = 'buffs'
 	end
 
@@ -122,11 +122,11 @@ function A:CreateIcon(button)
 	button.texture:SetTexCoord(unpack(E.TexCoords))
 
 	button.count = button:CreateFontString(nil, 'OVERLAY')
-	button.count:Point('BOTTOMRIGHT', -1 + self.db.countXOffset, 1 + self.db.countYOffset)
-	button.count:FontTemplate(font, db.countFontSize, self.db.fontOutline)
+	button.count:Point('BOTTOMRIGHT', -1 + A.db.countXOffset, 1 + A.db.countYOffset)
+	button.count:FontTemplate(font, db.countFontSize, A.db.fontOutline)
 
 	button.text = button:CreateFontString(nil, 'OVERLAY')
-	button.text:Point('TOP', button, 'BOTTOM', 1 + self.db.timeXOffset, 0 + self.db.timeYOffset)
+	button.text:Point('TOP', button, 'BOTTOM', 1 + A.db.timeXOffset, 0 + A.db.timeYOffset)
 
 	button.highlight = button:CreateTexture(nil, 'HIGHLIGHT')
 	button.highlight:SetColorTexture(1, 1, 1, .45)
@@ -135,18 +135,18 @@ function A:CreateIcon(button)
 	button.statusBar = CreateFrame('StatusBar', nil, button)
 	button.statusBar:SetFrameLevel(button:GetFrameLevel())
 	button.statusBar:SetFrameStrata(button:GetFrameStrata())
-	button.statusBar:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', self.db.barTexture))
+	button.statusBar:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', A.db.barTexture))
 	button.statusBar:CreateBackdrop()
 	E:SetSmoothing(button.statusBar)
 
-	local pos, spacing, iconSize = self.db.barPosition, self.db.barSpacing, db.size - (E.Border * 2)
+	local pos, spacing, iconSize = A.db.barPosition, A.db.barSpacing, db.size - (E.Border * 2)
 	local isOnTop = pos == 'TOP' and true or false
 	local isOnBottom = pos == 'BOTTOM' and true or false
 	local isOnLeft = pos == 'LEFT' and true or false
 	local isOnRight = pos == 'RIGHT' and true or false
 
-	button.statusBar:Width((isOnTop or isOnBottom) and iconSize or (self.db.barWidth + (E.PixelMode and 0 or 2)))
-	button.statusBar:Height((isOnLeft or isOnRight) and iconSize or (self.db.barHeight + (E.PixelMode and 0 or 2)))
+	button.statusBar:Width((isOnTop or isOnBottom) and iconSize or (A.db.barWidth + (E.PixelMode and 0 or 2)))
+	button.statusBar:Height((isOnLeft or isOnRight) and iconSize or (A.db.barHeight + (E.PixelMode and 0 or 2)))
 	button.statusBar:Point(E.InversePoints[pos], button, pos, (isOnTop or isOnBottom) and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), (isOnLeft or isOnRight) and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
 	if isOnLeft or isOnRight then button.statusBar:SetOrientation('VERTICAL') end
 
@@ -163,7 +163,7 @@ function A:CreateIcon(button)
 		tinsert(E.RegisteredCooldowns.auras, button)
 	end
 
-	button.text:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
+	button.text:FontTemplate(font, db.durationFontSize, A.db.fontOutline)
 
 	button:SetScript('OnAttributeChanged', A.OnAttributeChanged)
 	A:Update_CooldownOptions(button)
@@ -225,10 +225,10 @@ function A:UpdateAura(button, index)
 		end
 
 		local r, g, b
-		if button.timeLeft and self.db.barColorGradient then
+		if button.timeLeft and A.db.barColorGradient then
 			r, g, b = E.oUF:ColorGradient(button.timeLeft, duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
 		else
-			r, g, b = self.db.barColor.r, self.db.barColor.g, self.db.barColor.b
+			r, g, b = A.db.barColor.r, A.db.barColor.g, A.db.barColor.b
 		end
 
 		button.statusBar:SetStatusBarColor(r, g, b)
@@ -239,13 +239,13 @@ function A:UpdateAura(button, index)
 			button.count:SetText('')
 		end
 
-		if self.db.showDuration then
+		if A.db.showDuration then
 			button.text:Show()
 		else
 			button.text:Hide()
 		end
 
-		if (self.db.barShow and duration > 0) or (self.db.barShow and self.db.barNoDuration and duration == 0) then
+		if (A.db.barShow and duration > 0) or (A.db.barShow and A.db.barNoDuration and duration == 0) then
 			button.statusBar:Show()
 		else
 			button.statusBar:Hide()
@@ -292,24 +292,24 @@ function A:UpdateTempEnchant(button, index)
 		A:ClearAuraTime(button)
 	end
 
-	if (self.db.barShow and remaining > 0) or (self.db.barShow and self.db.barNoDuration and not expiration) then
+	if (A.db.barShow and remaining > 0) or (A.db.barShow and A.db.barNoDuration and not expiration) then
 		button.statusBar:Show()
 	else
 		button.statusBar:Hide()
 	end
 
 	local r, g, b
-	if expiration and self.db.barColorGradient then
+	if expiration and A.db.barColorGradient then
 		r, g, b = E.oUF:ColorGradient(remaining, duration, .8, 0, 0, .8, .8, 0, 0, .8, 0)
 	else
-		r, g, b = self.db.barColor.r, self.db.barColor.g, self.db.barColor.b
+		r, g, b = A.db.barColor.r, A.db.barColor.g, A.db.barColor.b
 	end
 
 	button.statusBar:SetStatusBarColor(r, g, b)
 end
 
 function A:Update_CooldownOptions(button)
-	E:Cooldown_Options(button, self.db.cooldown, button)
+	E:Cooldown_Options(button, A.db.cooldown, button)
 end
 
 function A:OnAttributeChanged(attribute, value)
@@ -326,10 +326,10 @@ function A:UpdateHeader(header)
 	if not E.private.auras.enable then return end
 
 	local auraType = 'debuffs'
-	local db = self.db.debuffs
+	local db = A.db.debuffs
 	if header:GetAttribute('filter') == 'HELPFUL' then
 		auraType = 'buffs'
-		db = self.db.buffs
+		db = A.db.buffs
 		header:SetAttribute('consolidateTo', 0)
 		header:SetAttribute('weaponTemplate', format('ElvUIAuraTemplate%d',db.size))
 	end
@@ -360,7 +360,7 @@ function A:UpdateHeader(header)
 
 	header:SetAttribute('template', format('ElvUIAuraTemplate%d',db.size))
 
-	local pos, spacing, iconSize = self.db.barPosition, self.db.barSpacing, db.size - (E.Border * 2)
+	local pos, spacing, iconSize = A.db.barPosition, A.db.barSpacing, db.size - (E.Border * 2)
 	local isOnTop = pos == 'TOP' and true or false
 	local isOnBottom = pos == 'BOTTOM' and true or false
 	local isOnLeft = pos == 'LEFT' and true or false
@@ -376,14 +376,14 @@ function A:UpdateHeader(header)
 		child.auraType = auraType -- used to update cooldown text
 
 		if child.text then
-			local font = LSM:Fetch('font', self.db.font)
+			local font = LSM:Fetch('font', A.db.font)
 			child.text:ClearAllPoints()
-			child.text:Point('TOP', child, 'BOTTOM', 1 + self.db.timeXOffset, 0 + self.db.timeYOffset)
-			child.text:FontTemplate(font, db.durationFontSize, self.db.fontOutline)
+			child.text:Point('TOP', child, 'BOTTOM', 1 + A.db.timeXOffset, 0 + A.db.timeYOffset)
+			child.text:FontTemplate(font, db.durationFontSize, A.db.fontOutline)
 
 			child.count:ClearAllPoints()
-			child.count:Point('BOTTOMRIGHT', -1 + self.db.countXOffset, 0 + self.db.countYOffset)
-			child.count:FontTemplate(font, db.countFontSize, self.db.fontOutline)
+			child.count:Point('BOTTOMRIGHT', -1 + A.db.countXOffset, 0 + A.db.countYOffset)
+			child.count:FontTemplate(font, db.countFontSize, A.db.fontOutline)
 		end
 
 		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
@@ -391,11 +391,11 @@ function A:UpdateHeader(header)
 			child:Hide()
 		end
 
-		child.statusBar:Width((isOnTop or isOnBottom) and iconSize or (self.db.barWidth + (E.PixelMode and 0 or 2)))
-		child.statusBar:Height((isOnLeft or isOnRight) and iconSize or (self.db.barHeight + (E.PixelMode and 0 or 2)))
+		child.statusBar:Width((isOnTop or isOnBottom) and iconSize or (A.db.barWidth + (E.PixelMode and 0 or 2)))
+		child.statusBar:Height((isOnLeft or isOnRight) and iconSize or (A.db.barHeight + (E.PixelMode and 0 or 2)))
 		child.statusBar:ClearAllPoints()
 		child.statusBar:Point(E.InversePoints[pos], child, pos, (isOnTop or isOnBottom) and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), (isOnLeft or isOnRight) and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
-		child.statusBar:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', self.db.barTexture))
+		child.statusBar:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', A.db.barTexture))
 		if isOnLeft or isOnRight then
 			child.statusBar:SetOrientation('VERTICAL')
 		else
@@ -442,18 +442,22 @@ function A:Initialize()
 
 	if not E.private.auras.enable then return end
 
-	self.Initialized = true
-	self.db = E.db.auras
+	A.Initialized = true
+	A.db = E.db.auras
 
-	self.BuffFrame = self:CreateAuraHeader('HELPFUL')
-	self.BuffFrame:Point('TOPRIGHT', _G.MMHolder, 'TOPLEFT', -(6 + E.Border), -E.Border - E.Spacing)
-	E:CreateMover(self.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
+	if E.private.auras.buffsHeader then
+		A.BuffFrame = A:CreateAuraHeader('HELPFUL')
+		A.BuffFrame:Point('TOPRIGHT', _G.MMHolder, 'TOPLEFT', -(6 + E.Border), -E.Border - E.Spacing)
+		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
+	end
 
-	self.DebuffFrame = self:CreateAuraHeader('HARMFUL')
-	self.DebuffFrame:Point('BOTTOMRIGHT', _G.MMHolder, 'BOTTOMLEFT', -(6 + E.Border), E.Border + E.Spacing)
-	E:CreateMover(self.DebuffFrame, 'DebuffsMover', L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
+	if E.private.auras.debuffsHeader then
+		A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
+		A.DebuffFrame:Point('BOTTOMRIGHT', _G.MMHolder, 'BOTTOMLEFT', -(6 + E.Border), E.Border + E.Spacing)
+		E:CreateMover(A.DebuffFrame, 'DebuffsMover', L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
+	end
 
-	local colors = self.db.barColor
+	local colors = A.db.barColor
 	if E:CheckClassColor(colors.r, colors.g, colors.b) then
 		local classColor = E:ClassColor(E.myclass, true)
 		colors.r = classColor.r
