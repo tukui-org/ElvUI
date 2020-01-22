@@ -214,6 +214,7 @@ function UF:Update_PartyFrames(frame, db)
 		end
 
 		UF:UpdateNameSettings(frame, frame.childType)
+		UF:Configure_HealthBar(frame)
 	else
 		if not InCombatLockdown() then
 			frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
@@ -223,6 +224,7 @@ function UF:Update_PartyFrames(frame, db)
 		UF:EnableDisable_Auras(frame)
 		UF:Configure_Auras(frame, 'Buffs')
 		UF:Configure_Auras(frame, 'Debuffs')
+		UF:Configure_HealthBar(frame)
 		UF:Configure_InfoPanel(frame)
 		UF:Configure_PhaseIcon(frame)
 		UF:Configure_Power(frame)
@@ -243,7 +245,6 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_CustomTexts(frame)
 	end
 
-	UF:Configure_HealthBar(frame)
 	UF:Configure_RaidIcon(frame)
 	UF:Configure_Fader(frame)
 	UF:Configure_Cutaway(frame)
