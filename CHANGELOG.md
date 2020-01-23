@@ -1,13 +1,24 @@
 ### Version 11.33 [ ETA: Soon ]
 
 **New Additions:**  
-
+Added Swap to Alt Power option to Raid and Raid40.  
+Added Alternative Power bar option to Raid and Raid40.  
+Added color option for Swapped Alt Power to Unitframes and Nameplates.  
+Added an option to disable Buffs or Debuffs specifically for Top Auras.  
+Added click-through option for Actionbars: Bar 1 through 10, Pet, and Stance bar.  
 
 **Bug Fixes:**  
-
+Attempted to fix Quest Icons on Nameplates which caused one quest to be displayed twice.  
+Fixed Raid40 Visibility Restore button not applying instantly.  
+Fixed the background color for Alternative Power bar, sometimes it was not updating to the correct color the first time.  
+Fixed an error when importing a profile, which complaining about priority not existing for auras.  
+Fixed the text info on Import and Export of a profile, it would stack the text at the bottom incorrectly before at first open.  
+Fixed resolution display on /estatus.  
 
 **Misc. Changes:**  
-
+ElvUI_CustomTweaks is now depreciated and forced off.  
+Let Swapped Alt Power work on all Alt Power types not just raid type ones.  
+Lowered Minimap minimum size to 40.  
 
 ___
 ### Version 11.32 [ January 21st 2020 ]
