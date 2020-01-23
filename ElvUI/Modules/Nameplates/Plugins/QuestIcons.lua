@@ -216,7 +216,7 @@ local function Update(self, event, unit)
 		local questType = quest.questType
 		local isPercent = quest.isPercent
 
-		if objectiveCount and (objectiveCount > 0 or isPercent) then
+		if isPercent or objectiveCount > 0 then
 			local icon
 
 			if questType == "KILL" then
