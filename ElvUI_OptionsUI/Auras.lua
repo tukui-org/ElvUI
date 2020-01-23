@@ -152,7 +152,7 @@ E.Options.args.auras = {
 			type = 'group',
 			name = L["General"],
 			get = function(info) return E.db.auras[info[#info]] end,
-			set = function(info, value) E.db.auras[info[#info]] = value; A:UpdateHeader(ElvUIPlayerBuffs); A:UpdateHeader(ElvUIPlayerDebuffs) end,
+			set = function(info, value) E.db.auras[info[#info]] = value; A:UpdateHeader(A.BuffFrame); A:UpdateHeader(A.DebuffFrame) end,
 			args = {
 				header = {
 					order = 0,
@@ -317,7 +317,7 @@ E.Options.args.auras = {
 			type = 'group',
 			name = L["Buffs"],
 			get = function(info) return E.db.auras.buffs[info[#info]] end,
-			set = function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(ElvUIPlayerBuffs) end,
+			set = function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end,
 			disabled = function() return not E.private.auras.buffsHeader end,
 			args = GetAuraOptions(L["Buffs"]),
 		},
@@ -326,7 +326,7 @@ E.Options.args.auras = {
 			type = 'group',
 			name = L["Debuffs"],
 			get = function(info) return E.db.auras.debuffs[info[#info]] end,
-			set = function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(ElvUIPlayerDebuffs) end,
+			set = function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end,
 			disabled = function() return not E.private.auras.debuffsHeader end,
 			args = GetAuraOptions(L["Debuffs"]),
 		},
