@@ -3,7 +3,7 @@ local oUF = E.oUF
 
 --Lua functions
 local _G = _G
-local pairs, floor, tonumber = pairs, floor, tonumber
+local pairs, ceil, floor, tonumber = pairs, ceil, floor, tonumber
 local strmatch, strlower, strfind = strmatch, strlower, strfind
 --WoW API / Variables
 local GetLocale = GetLocale
@@ -112,8 +112,8 @@ local function CheckTextForQuest(text)
 		return floor(y - x)
 	elseif not strmatch(text, ThreatTooltip) then
 		local progress = tonumber(strmatch(text, '([%d%.]+)%%'))
-		if progress then
-			return progress, true
+		if progress and progress <= 100 then
+			return ceil(100 - progress), true
 		end
 	end
 end
