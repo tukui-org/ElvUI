@@ -1100,6 +1100,80 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[301078] = Defaults(), -- Charged Spear
 		[298014] = Defaults(), -- Cold Blast
 		[298018] = Defaults(), -- Frozen
+
+	-- Nyalotha
+		-- Wrathion
+		[313250] = Defaults(), -- Creeping Madness
+		[306163] = Defaults(), -- Incineration
+		[306015] = Defaults(), -- Searing Armor [tank]
+		-- Maut
+		[307805] = Defaults(), -- Devour Magic
+		[314337] = Defaults(), -- Ancient Curse
+		[306301] = Defaults(), -- Forbidden Mana
+		[314992] = Defaults(), -- Darin Essence
+		[307399] = Defaults(), -- Shadow Claws [tank]
+		-- Prophet Skitra
+		[306387] = Defaults(), -- Shadow Shock
+		[313276] = Defaults(), -- Shred Psyche
+		-- Dark Inquisitor
+		[306311] = Defaults(), -- Soul Flay
+		[312406] = Defaults(), -- Void Woken
+		[311551] = Defaults(), -- Abyssal Strike [tank]
+		-- Hivemind
+		[313461] = Defaults(), -- Corrosion
+		[313672] = Defaults(), -- Acid Pool
+		[313460] = Defaults(), -- Nullification
+		-- Shadhar
+		[307471] = Defaults(), -- Crush [tank]
+		[307472] = Defaults(), -- Dissolve [tank]
+		[307358] = Defaults(), -- Debilitating Spit
+		[306928] = Defaults(), -- Umbral Breath
+		[312530] = Defaults(), -- Entropic Breath
+		[306929] = Defaults(), -- Bubbling Breath
+		-- Drest
+		[310406] = Defaults(), -- Void Glare
+		[310277] = Defaults(), -- Volatile Seed [tank]
+		[310309] = Defaults(), -- Volatile Vulnerability
+		[310358] = Defaults(), -- Mutterings of Insanity
+		[310552] = Defaults(), -- Mind Flay
+		[310478] = Defaults(), -- Void Miasma
+		-- Ilgy
+		[309961] = Defaults(), -- Eye of Nzoth [tank]
+		[310322] = Defaults(), -- Morass of Corruption
+		[311401] = Defaults(), -- Touch of the Corruptor
+		[314396] = Defaults(), -- Cursed Blood
+		[275269] = Defaults(), -- Fixate
+		[312486] = Defaults(), -- Recurring Nightmare
+		-- Vexiona
+		[307317] = Defaults(), -- Encroaching Shadows
+		[307359] = Defaults(), -- Despair
+		[315932] = Defaults(), -- Brutal Smash
+		[307218] = Defaults(), -- Twilight Decimator
+		[307284] = Defaults(), -- Terrifying Presence
+		[307421] = Defaults(), -- Annihilation
+		-- Raden
+		[306819] = Defaults(), -- Nullifying Strike [tank]
+		[306279] = Defaults(), -- Insanity Exposure
+		[315258] = Defaults(), -- Dread Inferno
+		[306257] = Defaults(), -- Unstable Vita
+		[313227] = Defaults(), -- Decaying Wound
+		[310019] = Defaults(), -- Charged Bonds
+		[316065] = Defaults(), -- Corrupted Existence
+		-- Carapace
+		[315954] = Defaults(), -- Black Scar [tank]
+		[306973] = Defaults(), -- Madness
+		[316848] = Defaults(), -- Adaptive Membrane
+		[307044] = Defaults(), -- Nightmare Antibody
+		[313364] = Defaults(), -- Mental Decay
+		[317627] = Defaults(), -- Infinite Void
+		-- Nzoth
+		[318442] = Defaults(), -- Paranoia
+		[313400] = Defaults(), -- Corrupted Mind
+		[313793] = Defaults(), -- Flames of Insanity
+		[316771] = Defaults(), -- Mindwrack
+		[314889] = Defaults(), -- Probe Mind
+		[317112] = Defaults(), -- Evoke Anguish
+		[318976] = Defaults(), -- Stupefying Glare
 	},
 }
 
