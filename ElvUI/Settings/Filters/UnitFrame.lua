@@ -32,7 +32,6 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[212337] = Defaults(4), -- Powerful Smash (Pet)
 		[91800]  = Defaults(4), -- Gnaw (Pet)
 		[91797]  = Defaults(4), -- Monstrous Blow (Pet)
-	--	[?????]  = Defaults(),  -- Reanimation (missing data)
 		[210141] = Defaults(3), -- Zombie Explosion
 	-- Demon Hunter
 		[207685] = Defaults(4), -- Sigil of Misery
@@ -670,7 +669,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[274555] = Defaults(), -- Scabrous Bites
 		[258875] = Defaults(), -- Blackout Barrel
 		[256363] = Defaults(), -- Ripper Punch
-
 		-- Shrine of the Storm
 		[264560] = Defaults(), -- Choking Brine
 		[268233] = Defaults(), -- Electrifying Shock
@@ -688,7 +686,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[268317] = Defaults(), -- Rip Mind
 		[268391] = Defaults(), -- Mental Assault
 		[274720] = Defaults(), -- Abyssal Strike
-
 		-- Siege of Boralus
 		[257168] = Defaults(), -- Cursed Slash
 		[272588] = Defaults(), -- Rotting Wounds
@@ -704,7 +701,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[272834] = Defaults(), -- Viscous Slobber
 		[257169] = Defaults(), -- Terrifying Roar
 		[272713] = Defaults(), -- Crushing Slam
-
 		-- Tol Dagor
 		[258128] = Defaults(), -- Debilitating Shout
 		[265889] = Defaults(), -- Torch Strike
@@ -725,7 +721,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[256105] = Defaults(), -- Explosive Burst (mythic+)
 		[256044] = Defaults(), -- Deadeye
 		[256474] = Defaults(), -- Heartstopper Venom
-
 		-- Waycrest Manor
 		[260703] = Defaults(), -- Unstable Runic Mark
 		[263905] = Defaults(), -- Marking Cleave
@@ -749,8 +744,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[268202] = Defaults(), -- Death Lens
 		[278456] = Defaults(), -- Infest
 		[264153] = Defaults(), -- Spit
-
-		-- Atal'Dazar
+		-- AtalDazar
 		[252781] = Defaults(), -- Unstable Hex
 		[250096] = Defaults(), -- Wracking Pain
 		[250371] = Defaults(), -- Lingering Nausea
@@ -764,8 +758,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[255421] = Defaults(), -- Devour
 		[255434] = Defaults(), -- Serrated Teeth
 		[256577] = Defaults(), -- Soulfeast
-
-		-- King's Rest
+		-- Kings Rest
 		[270492] = Defaults(), -- Hex
 		[267763] = Defaults(), -- Wretched Discharge
 		[276031] = Defaults(), -- Pit of Despair
@@ -787,7 +780,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[271640] = Defaults(), -- Dark Revelation
 		[268796] = Defaults(), -- Impaling Spear
 		[268419] = Defaults(), -- Gale Slash
-
 		-- Motherlode
 		[263074] = Defaults(), -- Festering Bite
 		[280605] = Defaults(), -- Brain Freeze
@@ -805,7 +797,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[260829] = Defaults(), -- Homing Missle (travelling)
 		[260838] = Defaults(), -- Homing Missle (exploded)
 		[263637] = Defaults(), -- Clothesline
-
 		-- Temple of Sethraliss
 		[269686] = Defaults(), -- Plague
 		[268013] = Defaults(), -- Flame Shock
@@ -820,7 +811,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[263958] = Defaults(), -- A Knot of Snakes
 		[266923] = Defaults(), -- Galvanize
 		[268007] = Defaults(), -- Heart Attack
-
 		-- Underrot
 		[265468] = Defaults(), -- Withering Curse
 		[278961] = Defaults(), -- Decaying Mind
@@ -835,8 +825,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[260685] = Defaults(), -- Taint of G'huun
 		[266107] = Defaults(), -- Thirst for Blood
 		[260455] = Defaults(), -- Serrated Fangs
-
-		-- Operation: Mechagon
+		-- Operation Mechagon
 		[291928] = Defaults(), -- Giga-Zap
 		[292267] = Defaults(), -- Giga-Zap
 		[302274] = Defaults(), -- Fulminating Zap
@@ -863,7 +852,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[267787] = Defaults(), -- Sundering Scalpel
 		[268198] = Defaults(), -- Clinging Corruption
 		[267821] = Defaults(), -- Defense Grid
-
 		-- Vectis
 		[265127] = Defaults(), -- Lingering Infection
 		[265178] = Defaults(), -- Mutagenic Pathogen
@@ -875,39 +863,31 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[267162] = Defaults(), -- Omega Vector
 		[267163] = Defaults(), -- Omega Vector
 		[267164] = Defaults(), -- Omega Vector
-
 		-- Mythrax
-		--[272146] = Defaults(), -- Annihilation
 		[272536] = Defaults(), -- Imminent Ruin
 		[274693] = Defaults(), -- Essence Shear
 		[272407] = Defaults(), -- Oblivion Sphere
-
 		-- Fetid Devourer
 		[262313] = Defaults(), -- Malodorous Miasma
 		[262292] = Defaults(), -- Rotting Regurgitation
 		[262314] = Defaults(), -- Deadly Disease
-
 		-- Taloc
 		[270290] = Defaults(), -- Blood Storm
 		[275270] = Defaults(), -- Fixate
 		[271224] = Defaults(), -- Plasma Discharge
 		[271225] = Defaults(), -- Plasma Discharge
-
 		-- Zul
 		[273365] = Defaults(), -- Dark Revelation
 		[273434] = Defaults(), -- Pit of Despair
-		--[274195] = Defaults(), -- Corrupted Blood
 		[272018] = Defaults(), -- Absorbed in Darkness
 		[274358] = Defaults(), -- Rupturing Blood
-
-		-- Zek'voz, Herald of N'zoth
+		-- Zekvoz
 		[265237] = Defaults(), -- Shatter
 		[265264] = Defaults(), -- Void Lash
 		[265360] = Defaults(), -- Roiling Deceit
 		[265662] = Defaults(), -- Corruptor's Pact
 		[265646] = Defaults(), -- Will of the Corruptor
-
-		-- G'huun
+		-- Ghuun
 		[263436] = Defaults(), -- Imperfect Physiology
 		[263227] = Defaults(), -- Putrid Blood
 		[263372] = Defaults(), -- Power Matrix
@@ -918,20 +898,17 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[270287] = Defaults(), -- Blighted Ground
 
 	-- Siege of Zuldazar
-		-- Ra'wani Kanae/Frida Ironbellows
+		-- Rawani Kanae / Frida Ironbellows
 		[283573] = Defaults(), -- Sacred Blade
 		[283617] = Defaults(), -- Wave of Light
 		[283651] = Defaults(), -- Blinding Faith
 		[284595] = Defaults(), -- Penance
 		[283582] = Defaults(), -- Consecration
-
 		-- Grong
 		[285998] = Defaults(), -- Ferocious Roar
 		[283069] = Defaults(), -- Megatomic Fire
 		[285671] = Defaults(), -- Crushed
 		[285875] = Defaults(), -- Rending Bite
-		--[282010] = Defaults(), -- Shaken
-
 		-- Jaina
 		[285253] = Defaults(), -- Ice Shard
 		[287993] = Defaults(), -- Chilling Touch
@@ -942,14 +919,12 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[287490] = Defaults(), -- Frozen Solid
 		[287199] = Defaults(), -- Ring of Ice
 		[288392] = Defaults(), -- Vengeful Seas
-
 		-- Stormwall Blockade
 		[284369] = Defaults(), -- Sea Storm
 		[284410] = Defaults(), -- Tempting Song
 		[284405] = Defaults(), -- Tempting Song
 		[284121] = Defaults(), -- Thunderous Boom
 		[286680] = Defaults(), -- Roiling Tides
-
 		-- Opulence
 		[286501] = Defaults(), -- Creeping Blaze
 		[283610] = Defaults(), -- Crush
@@ -957,7 +932,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[285479] = Defaults(), -- Flame Jet
 		[283063] = Defaults(), -- Flames of Punishment
 		[283507] = Defaults(), -- Volatile Charge
-
 		-- King Rastakhan
 		[284995] = Defaults(), -- Zombie Dust
 		[285349] = Defaults(), -- Plague of Fire
@@ -968,7 +942,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[284676] = Defaults(), -- Seal of Purification
 		[285178] = Defaults(), -- Serpent's Breath
 		[285010] = Defaults(), -- Poison Toad Slime
-
 		-- Jadefire Masters
 		[282037] = Defaults(), -- Rising Flames
 		[284374] = Defaults(), -- Magma Trap
@@ -976,7 +949,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[288151] = Defaults(), -- Tested
 		[284089] = Defaults(), -- Successful Defense
 		[286988] = Defaults(), -- Searing Embers
-
 		-- Mekkatorque
 		[288806] = Defaults(), -- Gigavolt Blast
 		[289023] = Defaults(), -- Enormous
@@ -986,7 +958,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[286516] = Defaults(), -- Anti-Tampering Shock
 		[286480] = Defaults(), -- Anti-Tampering Shock
 		[284214] = Defaults(), -- Trample
-
 		-- Conclave of the Chosen
 		[284663] = Defaults(), -- Bwonsamdi's Wrath
 		[282444] = Defaults(), -- Lacerating Claws
@@ -1009,8 +980,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[282432] = Defaults(), -- Crushing Doubt
 		[282589] = Defaults(), -- Mind Scramble
 		[292826] = Defaults(), -- Mind Scramble
-
-		-- Fa'thuul the Feared
+		-- Fathuul the Feared
 		[284851] = Defaults(), -- Touch of the End
 		[286459] = Defaults(), -- Feedback: Void
 		[286457] = Defaults(), -- Feedback: Ocean
@@ -1035,7 +1005,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[296752] = Defaults(), -- Cutting Coral
 		[297333] = Defaults(), -- Briny Bubble
 		[297397] = Defaults(), -- Briny Bubble
-
 		-- Abyssal Commander Sivara
 		[300701] = Defaults(), -- Rimefrost
 		[300705] = Defaults(), -- Septic Taint
@@ -1049,8 +1018,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[295704] = Defaults(), -- Frost Bolt
 		[294711] = Defaults(), -- Frost Mark
 		[294715] = Defaults(), -- Toxic Brand
-
-		-- The Queen’s Court
+		-- The Queens Court
 		[301830] = Defaults(), -- Pashmar's Touch
 		[296851] = Defaults(), -- Fanatical Verdict
 		[297836] = Defaults(), -- Potent Spark
@@ -1059,25 +1027,21 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[299914] = Defaults(), -- Frenetic Charge
 		[303306] = Defaults(), -- Sphere of Influence
 		[300545] = Defaults(), -- Mighty Rupture
-
 		-- Radiance of Azshara
 		[296566] = Defaults(), -- Tide Fist
 		[296737] = Defaults(), -- Arcane Bomb
 		[296746] = Defaults(), -- Arcane Bomb
 		[295920] = Defaults(), -- Ancient Tempest
 		[296462] = Defaults(), -- Squall Trap
-
 		-- Orgozoa
 		[298156] = Defaults(), -- Desensitizing Sting
 		[298306] = Defaults(), -- Incubation Fluid
-
 		-- Blackwater Behemoth
 		[292127] = Defaults(), -- Darkest Depths
 		[292138] = Defaults(), -- Radiant Biomass
 		[292167] = Defaults(), -- Toxic Spine
 		[301494] = Defaults(), -- Piercing Barb
-
-		-- Za’qul
+		-- Zaqul
 		[295495] = Defaults(), -- Mind Tether
 		[295480] = Defaults(), -- Mind Tether
 		[295249] = Defaults(), -- Delirium Realm
@@ -1088,7 +1052,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[298192] = Defaults(), -- Dark Beyond
 		[292963] = Defaults(), -- Dread
 		[300133] = Defaults(), -- Snapped
-
 		-- Queen Azshara
 		[298781] = Defaults(), -- Arcane Orb
 		[297907] = Defaults(), -- Cursed Heart
@@ -1185,7 +1148,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
-		-- Mythic/Mythic+
+		-- Mythic / Mythic+
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
 		[226510] = Defaults(), -- Sanguine
