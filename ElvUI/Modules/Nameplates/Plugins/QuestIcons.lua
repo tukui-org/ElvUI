@@ -134,7 +134,7 @@ local function GetQuests(unitID)
 		if UnitIsPlayer(text) then
 			notMyQuest = text ~= E.myname
 		elseif text and not notMyQuest then
-			local count, percent, type, index, texture, _
+			local type, index, texture, _
 
 			local activeID = ActiveQuests[text]
 			if activeID then
@@ -142,23 +142,20 @@ local function GetQuests(unitID)
 				_, texture = GetQuestLogSpecialItemInfo(index)
 			end
 
+			local count, percent = CheckTextForQuest(text)
 			if texture then
 				type = "QUEST_ITEM"
-			else
-				count, percent = CheckTextForQuest(text)
-
-				if count then
-					local lowerText = strlower(text)
-					for typeString in pairs(QuestTypes) do
-						if strfind(lowerText, typeString, nil, true) then
-							type = QuestTypes[typeString]
-							break
-						end
+			elseif count then
+				local lowerText = strlower(text)
+				for typeString in pairs(QuestTypes) do
+					if strfind(lowerText, typeString, nil, true) then
+						type = QuestTypes[typeString]
+						break
 					end
+				end
 
-					if not type then
-						type = "LOOT"
-					end
+				if not type then
+					type = "LOOT"
 				end
 			end
 
