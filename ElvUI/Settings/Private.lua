@@ -40,7 +40,8 @@ V.nameplates = {
 V.auras = {
 	enable = true,
 	disableBlizzard = true,
-
+	buffsHeader = true,
+	debuffsHeader = true,
 	masque = {
 		buffs = false,
 		debuffs = false,

@@ -507,6 +507,9 @@ function S:Blizzard_Collections()
 		end
 	end)
 
+	_G.WardrobeSetsCollectionVariantSetsButton.Icon:SetTexture(E.Media.Textures.ArrowUp)
+	_G.WardrobeSetsCollectionVariantSetsButton.Icon:SetRotation(S.ArrowRotation['down'])
+
 	-- Transmogrify NPC
 	local WardrobeFrame = _G.WardrobeFrame
 	S:HandlePortraitFrame(WardrobeFrame, true)

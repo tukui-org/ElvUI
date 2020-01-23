@@ -190,6 +190,8 @@ function AB:PositionAndSizeBar(barName)
 		bar:SetParent(E.UIParent)
 	end
 
+	bar:EnableMouse(not bar.db.clickThrough)
+
 	local button, lastButton, lastColumnButton
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		button = bar.buttons[i]
@@ -199,6 +201,7 @@ function AB:PositionAndSizeBar(barName)
 		button:ClearAllPoints()
 		button:SetAttribute("showgrid", 1)
 		button:Size(size)
+		button:EnableMouse(not bar.db.clickThrough)
 
 		if i == 1 then
 			local x, y

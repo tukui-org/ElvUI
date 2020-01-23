@@ -30,7 +30,7 @@ bar:SetFrameStrata("LOW")
 function AB:UpdatePet(event, unit)
 	if(event == "UNIT_AURA" and unit ~= "pet") then return end
 
-	for i=1, NUM_PET_ACTION_SLOTS, 1 do
+	for i = 1, NUM_PET_ACTION_SLOTS, 1 do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 		local buttonName = "PetActionButton"..i
 		local autoCast = _G[buttonName.."AutoCastable"]
@@ -179,9 +179,11 @@ function AB:PositionAndSizeBarPet()
 		bar:SetParent(E.UIParent)
 	end
 
+	bar:EnableMouse(not self.db.barPet.clickThrough)
+
 	local button, lastButton, lastColumnButton, autoCast
 	local firstButtonSpacing = (self.db.barPet.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
-	for i=1, NUM_PET_ACTION_SLOTS do
+	for i = 1, NUM_PET_ACTION_SLOTS do
 		button = _G["PetActionButton"..i]
 		lastButton = _G["PetActionButton"..i-1]
 		autoCast = _G["PetActionButton"..i..'AutoCastable']
@@ -191,7 +193,7 @@ function AB:PositionAndSizeBarPet()
 		button:ClearAllPoints()
 		button:SetAttribute("showgrid", 1)
 		button:Size(size)
-
+		button:EnableMouse(not self.db.barPet.clickThrough)
 		autoCast:SetOutside(button, autoCastSize, autoCastSize)
 
 		if i == 1 then
@@ -250,7 +252,7 @@ function AB:PositionAndSizeBarPet()
 end
 
 function AB:UpdatePetCooldownSettings()
-	for i=1, NUM_PET_ACTION_SLOTS do
+	for i = 1, NUM_PET_ACTION_SLOTS do
 		local button = _G["PetActionButton"..i]
 		if button and button.cooldown then
 			button.cooldown:SetDrawBling(not self.db.hideCooldownBling)
@@ -259,7 +261,7 @@ function AB:UpdatePetCooldownSettings()
 end
 
 function AB:UpdatePetBindings()
-	for i=1, NUM_PET_ACTION_SLOTS do
+	for i = 1, NUM_PET_ACTION_SLOTS do
 		if self.db.hotkeytext then
 			local key = GetBindingKey("BONUSACTIONBUTTON"..i)
 			_G["PetActionButton"..i.."HotKey"]:Show()
@@ -289,7 +291,7 @@ function AB:CreateBarPet()
 	]])
 
 	bar:SetScript("OnHide", function()
-		for i=1, NUM_PET_ACTION_SLOTS, 1 do
+		for i = 1, NUM_PET_ACTION_SLOTS, 1 do
 			local button = _G["PetActionButton"..i]
 			if button.spellDataLoadedCancelFunc then
 				button.spellDataLoadedCancelFunc()

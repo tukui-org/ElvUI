@@ -81,6 +81,7 @@ end
 function E:PixelScaleChanged(event)
 	if event == 'UI_SCALE_CHANGED' then
 		E.screenwidth, E.screenheight = GetPhysicalScreenSize()
+		E.resolution = format('%dx%d', E.screenwidth, E.screenheight)
 	end
 
 	E:UIScale(true) --Repopulate variables

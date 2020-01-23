@@ -4,12 +4,11 @@ local Skins = E:GetModule('Skins')
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetAddOnInfo = GetAddOnInfo
-local GetCurrentResolution = GetCurrentResolution
+local GetPhysicalScreenSize = GetPhysicalScreenSize
 local GetCVar = GetCVar
 local GetLocale = GetLocale
 local GetNumAddOns = GetNumAddOns
 local GetRealZoneText = GetRealZoneText
-local GetScreenResolutions = GetScreenResolutions
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 
@@ -99,10 +98,6 @@ local function GetSpecName()
 	return EnglishSpecName[GetSpecializationInfo(GetSpecialization())]
 end
 
-local function GetResolution()
-	return (({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar('gxWindowedResolution'))
-end
-
 function E:CreateStatusFrame()
 	local function CreateSection(width, height, parent, anchor1, anchorTo, anchor2, yOffset)
 		local section = CreateFrame('Frame', nil, parent)
@@ -118,8 +113,8 @@ function E:CreateStatusFrame()
 		section.Header.Text:Point('BOTTOM')
 		section.Header.Text:SetJustifyH('CENTER')
 		section.Header.Text:SetJustifyV('MIDDLE')
-		local font, height, flags = section.Header.Text:GetFont()
-		section.Header.Text:FontTemplate(font, height*1.3, flags)
+		local font, fontHeight, fontFlags = section.Header.Text:GetFont()
+		section.Header.Text:FontTemplate(font, fontHeight*1.3, fontFlags)
 
 		section.Header.LeftDivider = section.Header:CreateTexture(nil, 'ARTWORK')
 		section.Header.LeftDivider:Height(8)
@@ -208,7 +203,7 @@ function E:CreateStatusFrame()
 	StatusFrame.Section2.Content.Line1.Text:SetFormattedText('Version of WoW: |cff4beb2c%s (build %s)|r', E.wowpatch, E.wowbuild)
 	StatusFrame.Section2.Content.Line2.Text:SetFormattedText('Client Language: |cff4beb2c%s|r', GetLocale())
 	StatusFrame.Section2.Content.Line3.Text:SetFormattedText('Display Mode: |cff4beb2c%s|r', GetDisplayMode())
-	StatusFrame.Section2.Content.Line4.Text:SetFormattedText('Resolution: |cff4beb2c%s|r', GetResolution())
+	StatusFrame.Section2.Content.Line4.Text:SetFormattedText('Resolution: |cff4beb2c%s|r', E.resolution)
 	StatusFrame.Section2.Content.Line5.Text:SetFormattedText('Using Mac Client: |cff4beb2c%s|r', (E.isMacClient == true and 'Yes' or 'No'))
 	StatusFrame.Section3.Content.Line1.Text:SetFormattedText('Faction: |cff4beb2c%s|r', E.myfaction)
 	StatusFrame.Section3.Content.Line2.Text:SetFormattedText('Race: |cff4beb2c%s|r', E.myrace)
@@ -236,7 +231,7 @@ end
 
 local function UpdateDynamicValues()
 	E.StatusFrame.Section2.Content.Line3.Text:SetFormattedText('Display Mode: |cff4beb2c%s|r', GetDisplayMode())
-	E.StatusFrame.Section2.Content.Line4.Text:SetFormattedText('Resolution: |cff4beb2c%s|r', GetResolution())
+	E.StatusFrame.Section2.Content.Line4.Text:SetFormattedText('Resolution: |cff4beb2c%s|r', E.resolution)
 	E.StatusFrame.Section3.Content.Line4.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', GetSpecName())
 	E.StatusFrame.Section3.Content.Line5.Text:SetFormattedText('Level: |cff4beb2c%s|r', E.mylevel)
 	E.StatusFrame.Section3.Content.Line6.Text:SetFormattedText('Zone: |cff4beb2c%s|r', GetRealZoneText())

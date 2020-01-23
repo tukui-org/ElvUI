@@ -27,6 +27,7 @@ function UF:Construct_RaidFrames()
 	self.PowerPrediction = UF:Construct_PowerPrediction(self)
 	self.Portrait3D = UF:Construct_Portrait(self, 'model')
 	self.Portrait2D = UF:Construct_Portrait(self, 'texture')
+	self.InfoPanel = UF:Construct_InfoPanel(self)
 	self.Name = UF:Construct_NameText(self)
 	self.Buffs = UF:Construct_Buffs(self)
 	self.Debuffs = UF:Construct_Debuffs(self)
@@ -46,11 +47,12 @@ function UF:Construct_RaidFrames()
 	self.HealthPrediction = UF:Construct_HealComm(self)
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
-
+	self.AlternativePower = UF:Construct_AltPowerBar(self)
+	self.ClassBar = 'AlternativePower'
 	self.customTexts = {}
-	self.InfoPanel = UF:Construct_InfoPanel(self)
 
 	self.unitframeType = "raid"
+
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()
 
@@ -137,12 +139,11 @@ function UF:Update_RaidFrames(frame, db)
 		frame.SHADOW_SPACING = 3
 
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
-
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.infoPanel.enable and (db.height + db.infoPanel.height) or db.height
 
 		frame.USE_POWERBAR = db.power.enable
-		frame.POWERBAR_DETACHED = db.power.detachFromFrame
+		frame.POWERBAR_DETACHED = false
 		frame.USE_INSET_POWERBAR = not frame.POWERBAR_DETACHED and db.power.width == 'inset' and frame.USE_POWERBAR
 		frame.USE_MINI_POWERBAR = (not frame.POWERBAR_DETACHED and db.power.width == 'spaced' and frame.USE_POWERBAR)
 		frame.USE_POWERBAR_OFFSET = (db.power.width == 'offset' and db.power.offset ~= 0) and frame.USE_POWERBAR and not frame.POWERBAR_DETACHED
@@ -155,7 +156,16 @@ function UF:Update_RaidFrames(frame, db)
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 
-		frame.CLASSBAR_YOFFSET = 0
+		frame.CAN_HAVE_CLASSBAR = not frame.isChild
+		frame.MAX_CLASS_BAR = 1
+		frame.USE_CLASSBAR = db.classbar.enable and frame.CAN_HAVE_CLASSBAR
+		frame.CLASSBAR_SHOWN = frame.CAN_HAVE_CLASSBAR and frame[frame.ClassBar] and frame[frame.ClassBar]:IsShown()
+		frame.CLASSBAR_DETACHED = false
+		frame.USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and frame.USE_CLASSBAR
+		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
+		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  -(frame.ORIENTATION == "MIDDLE" and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
+		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
+
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
 
@@ -168,71 +178,32 @@ function UF:Update_RaidFrames(frame, db)
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
 
-	UF:Configure_InfoPanel(frame)
-	--Health
-	UF:Configure_HealthBar(frame)
-
-	--Name
 	UF:UpdateNameSettings(frame)
-
-	--Power
-	UF:Configure_Power(frame)
-
-	-- Power Predicition
-	UF:Configure_PowerPrediction(frame)
-
-	--Portrait
-	UF:Configure_Portrait(frame)
-
-	--Threat
-	UF:Configure_Threat(frame)
-
-	--Auras
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_Auras(frame, 'Buffs')
 	UF:Configure_Auras(frame, 'Debuffs')
-
-	--RaidDebuffs
+	UF:Configure_InfoPanel(frame)
+	UF:Configure_HealthBar(frame)
+	UF:Configure_Power(frame)
+	UF:Configure_PowerPrediction(frame)
+	UF:Configure_Portrait(frame)
+	UF:Configure_Threat(frame)
 	UF:Configure_RaidDebuffs(frame)
-
-	--Raid Icon
 	UF:Configure_RaidIcon(frame)
-
-	-- Resurrect Icon
 	UF:Configure_ResurrectionIcon(frame)
-
-	-- Summon Icon
 	UF:Configure_SummonIcon(frame)
-
-	--Debuff Highlight
 	UF:Configure_DebuffHighlight(frame)
-
-	--Role Icon
 	UF:Configure_RoleIcon(frame)
-
-	--OverHealing
 	UF:Configure_HealComm(frame)
-
-	--Raid Roles
 	UF:Configure_RaidRoleIcons(frame)
-
-	--Fader
 	UF:Configure_Fader(frame)
-
-	--Buff Indicators
 	UF:Configure_AuraWatch(frame)
-
-	--ReadyCheck
 	UF:Configure_ReadyCheckIcon(frame)
-
-	--CustomTexts
 	UF:Configure_CustomTexts(frame)
-
-	-- PhaseIndicator
 	UF:Configure_PhaseIcon(frame)
-
-	--Cutaway
 	UF:Configure_Cutaway(frame)
+	UF:Configure_ClassBar(frame)
+	UF:Configure_AltPowerBar(frame)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
