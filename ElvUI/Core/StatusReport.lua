@@ -1,15 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local Skins = E:GetModule('Skins')
 
+local format = format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetAddOnInfo = GetAddOnInfo
-local GetCurrentResolution = GetCurrentResolution
+local GetPhysicalScreenSize = GetPhysicalScreenSize
 local GetCVar = GetCVar
 local GetLocale = GetLocale
 local GetNumAddOns = GetNumAddOns
 local GetRealZoneText = GetRealZoneText
-local GetScreenResolutions = GetScreenResolutions
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 
@@ -100,7 +100,7 @@ local function GetSpecName()
 end
 
 local function GetResolution()
-	return (({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar('gxWindowedResolution'))
+	return format('%dx%d', GetPhysicalScreenSize())
 end
 
 function E:CreateStatusFrame()
