@@ -1,4 +1,16 @@
-### Version 11.33 [ ETA: Soon ]
+### Version 11.34 [ ETA: Soon ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 11.33 [ January 23rd 2020 ]
 
 **New Additions:**  
 Added Swap to Alt Power option to Raid and Raid40.  
@@ -89,7 +101,7 @@ Fix backdrops on empty essences in the Character Frame.
 Display an icon on Bag icons for corrupted items.  
 
 ___
-### Version 11.291 for patch 8.3 [ January 14th 2020 ]
+### Version 11.291 [ January 14th 2020 ]
 
 **Bug Fixes:**  
 Fixed barInfo error.  
