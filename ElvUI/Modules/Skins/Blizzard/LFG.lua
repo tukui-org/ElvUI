@@ -746,7 +746,7 @@ function S:Blizzard_ChallengesUI()
 	local NoticeFrame = _G.ChallengesFrame.SeasonChangeNoticeFrame
 	S:HandleButton(NoticeFrame.Leave)
 	NoticeFrame:StripTextures()
-	NoticeFrame:CreateBackdrop("Overlay")
+	NoticeFrame:CreateBackdrop()
 	NoticeFrame:SetFrameLevel(5)
 	NoticeFrame.NewSeason:SetTextColor(1, .8, 0)
 	NoticeFrame.NewSeason:SetShadowOffset(1, -1)
@@ -757,9 +757,16 @@ function S:Blizzard_ChallengesUI()
 	NoticeFrame.SeasonDescription3:SetTextColor(1, .8, 0)
 	NoticeFrame.SeasonDescription3:SetShadowOffset(1, -1)
 
-	local affix = _G.ChallengesFrame.SeasonChangeNoticeFrame.Affix
-	affix:StripTextures()
-	S:HandleIcon(affix.Portrait)
+	local affix = NoticeFrame.Affix
+	affix.AffixBorder:Hide()
+	affix.Portrait:SetTexCoord(unpack(E.TexCoords))
+
+	hooksecurefunc(affix, "SetUp", function(self, affixID)
+		local _, _, texture = C_ChallengeMode.GetAffixInfo(affixID)
+		if texture then
+			affix.Portrait:SetTexture(texture)
+		end
+	end)
 end
 
 S:AddCallback('LookingForGroupFrames')

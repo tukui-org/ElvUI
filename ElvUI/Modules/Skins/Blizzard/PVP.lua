@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local ipairs, pairs, unpack = ipairs, pairs, unpack
+local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
@@ -221,9 +221,10 @@ function S:Blizzard_PVPUI()
 	NewSeasonPopup.SeasonDescription2:SetShadowOffset(1, -1)
 
 	local RewardFrame = NewSeasonPopup.SeasonRewardFrame
-	RewardFrame.CircleMask:SetAlpha(0)
-	RewardFrame.Ring:SetAlpha(0)
-	S:HandleIcon(RewardFrame.Icon)
+	RewardFrame.CircleMask:Hide()
+	RewardFrame.Ring:Hide()
+	RewardFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+	select(3, RewardFrame:GetRegions()):SetTextColor(1, 0, 0)
 end
 
 function S:PVPReadyDialog()
