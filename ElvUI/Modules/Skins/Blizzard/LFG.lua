@@ -762,7 +762,7 @@ function S:Blizzard_ChallengesUI()
 	affix.Portrait:SetTexCoord(unpack(E.TexCoords))
 
 	hooksecurefunc(affix, "SetUp", function(self, affixID)
-		local _, _, texture = C_ChallengeMode.GetAffixInfo(affixID)
+		local _, _, texture = C_ChallengeMode_GetAffixInfo(affixID)
 		if texture then
 			affix.Portrait:SetTexture(texture)
 		end
