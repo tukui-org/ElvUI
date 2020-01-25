@@ -277,7 +277,7 @@ do --this can save some main file locals
 		["Erasaya-WyrmrestAccord"]		= itsTheFlyestNihilist("MAGE"),
 		["Linabla-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
 		["Millop-WyrmrestAccord"]		= itsTheFlyestNihilist("HUNTER"),
-		["Aeondalew-WyrmrestAccord"]		= itsTheFlyestNNihilist("DEATHKNIGHT"),
+		["Aeondalew-WyrmrestAccord"]		= itsTheFlyestNihilist("DEATHKNIGHT"),
 		-- Merathilis
 		["Asragoth-Shattrath"]			= ElvPurple,	-- [Alliance] Warlock
 		["Brítt-Shattrath"] 			= ElvBlue,		-- [Alliance] Warrior
