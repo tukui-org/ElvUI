@@ -6637,7 +6637,7 @@ E.Options.args.unitframe.args.raid.args.classbar.args.header.name = L["Alternati
 
 --Raid-40 Frames
 E.Options.args.unitframe.args.raid40 = {
-	name = L["Raid-40 Frames"],
+	name = L["Raid-40"],
 	type = 'group',
 	order = 11,
 	childGroups = "tab",
@@ -6926,7 +6926,7 @@ E.Options.args.unitframe.args.raid40.args.classbar.args.header.name = L["Alterna
 E.Options.args.unitframe.args.raidpet = {
 	order = 12,
 	type = 'group',
-	name = L["Raid Pet Frames"],
+	name = L["Raid Pet"],
 	childGroups = "tab",
 	get = function(info) return E.db.unitframe.units.raidpet[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.raidpet[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raidpet') end,
@@ -7325,7 +7325,7 @@ E.Options.args.unitframe.args.tank.args.targetsGroup.args.name.set = function(in
 
 --Assist Frames
 E.Options.args.unitframe.args.assist = {
-	name = L["Assist Frames"],
+	name = L["Assist"],
 	type = 'group',
 	order = 14,
 	childGroups = "tab",
