@@ -138,13 +138,15 @@ function UF:Configure_Auras(frame, auraType)
 	auraType = auraType:lower()
 	auras.db = db[auraType]
 
+	frame.Buffs:ClearAllPoints()
+	frame.Debuffs:ClearAllPoints()
+
 	local position = db.smartAuraPosition
 	if position == "BUFFS_ON_DEBUFFS" then
 		if db.debuffs.attachTo == "BUFFS" then
 			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
 			db.debuffs.attachTo = "FRAME"
 			frame.Debuffs.attachTo = frame
-			frame.Debuffs:ClearAllPoints()
 			frame.Debuffs:Point(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
 		end
 		db.buffs.attachTo = "DEBUFFS"
@@ -156,7 +158,6 @@ function UF:Configure_Auras(frame, auraType)
 			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
 			db.buffs.attachTo = "FRAME"
 			frame.Buffs.attachTo = frame
-			frame.Buffs:ClearAllPoints()
 			frame.Buffs:Point(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
 		end
 		db.debuffs.attachTo = "BUFFS"
@@ -168,7 +169,6 @@ function UF:Configure_Auras(frame, auraType)
 			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
 			db.debuffs.attachTo = "FRAME"
 			frame.Debuffs.attachTo = frame
-			frame.Debuffs:ClearAllPoints()
 			frame.Debuffs:Point(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
 		end
 		db.buffs.attachTo = "DEBUFFS"
@@ -180,7 +180,6 @@ function UF:Configure_Auras(frame, auraType)
 			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
 			db.buffs.attachTo = "FRAME"
 			frame.Buffs.attachTo = frame
-			frame.Buffs:ClearAllPoints()
 			frame.Buffs:Point(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
 		end
 		db.debuffs.attachTo = "BUFFS"
