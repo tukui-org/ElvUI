@@ -89,41 +89,12 @@ function UF:Update_PartyHeader(header, db)
 	if not headerHolder.positioned then
 		headerHolder:ClearAllPoints()
 		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
-
 		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Party Frames"], nil, nil, nil, 'ALL,PARTY,ARENA', nil, 'unitframe,party,generalGroup')
+
 		headerHolder.positioned = true;
-
-		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
-		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		headerHolder:SetScript("OnEvent", UF.PartySmartVisibility)
 	end
 
-	UF.PartySmartVisibility(headerHolder)
-end
-
-function UF:PartySmartVisibility(event)
-	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then
-		self.blockVisibilityChanges = false
-		return
-	end
-
-	if event == "PLAYER_REGEN_ENABLED" then
-		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
-	end
-
-	if not InCombatLockdown() then
-		local _, instanceType = GetInstanceInfo()
-		if instanceType == "raid" or instanceType == "pvp" then
-			UnregisterStateDriver(self, "visibility")
-			self.blockVisibilityChanges = true
-			self:Hide()
-		elseif self.db.visibility then
-			RegisterStateDriver(self, "visibility", self.db.visibility)
-			self.blockVisibilityChanges = false
-		end
-	else
-		self:RegisterEvent("PLAYER_REGEN_ENABLED")
-	end
+	RegisterStateDriver(headerHolder, "visibility", headerHolder.db.visibility)
 end
 
 function UF:Update_PartyFrames(frame, db)

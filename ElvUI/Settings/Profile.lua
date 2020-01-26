@@ -1333,7 +1333,6 @@ P.unitframe = {
 	fontSize = 10,
 	fontOutline = 'MONOCHROMEOUTLINE',
 	debuffHighlighting = 'FILL',
-	smartRaidFilter = true,
 	targetOnMouseDown = false,
 	auraBlacklistModifier = 'SHIFT',
 	thinBorders = false,

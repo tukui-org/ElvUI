@@ -3014,13 +3014,6 @@ E.Options.args.unitframe = {
 							disabled = function() return E.private.general.pixelPerfect end,
 							set = function(info, value) E.db.unitframe[info[#info]] = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
-						smartRaidFilter = {
-							order = 4,
-							name = L["Smart Raid Filter"],
-							desc = L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."],
-							type = 'toggle',
-							set = function(info, value) E.db.unitframe[info[#info]] = value; UF:UpdateAllHeaders() end
-						},
 						targetOnMouseDown = {
 							order = 5,
 							name = L["Target On Mouse-Down"],
