@@ -272,7 +272,8 @@ function E:UpdateCooldownOverride(module)
 
 	local blizzText
 	for _, parent in ipairs(cooldowns) do
-		local db = (parent.CooldownOverride and E.db[parent.CooldownOverride]) or E.db
+		local overrideDB = (parent.CooldownOverride and E.db[parent.CooldownOverride])
+		local db = overrideDB or E.db
 		if db and db.cooldown then
 			local timer = parent.isHooked and parent.isRegisteredCooldown and parent.timer
 			local cd = timer or parent
@@ -280,8 +281,8 @@ function E:UpdateCooldownOverride(module)
 			-- cooldown override settings
 			E:Cooldown_Options(cd, db.cooldown, parent)
 
-			if cd.SetDrawSwipe then
-				cd:SetDrawSwipe(db.cooldown.drawSwipe)
+			if cd.SetDrawSwipe and overrideDB then
+				cd:SetDrawSwipe(overrideDB.cooldown.drawSwipe)
 			end
 
 			-- update font on cooldowns

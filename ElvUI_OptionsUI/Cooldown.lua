@@ -318,6 +318,9 @@ local function group(order, db, label)
 
 		-- this is basically creates a second way to change font, we only really need one
 		E.Options.args.cooldown.args[db].args.fontGroup = nil
+
+		-- this is unneeded as it doesn't have a cooldown spiral template.
+		E.Options.args.cooldown.args[db].args.drawSwipe = nil
 	end
 end
 
