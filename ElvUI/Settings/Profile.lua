@@ -2038,6 +2038,7 @@ P.cooldown = {
 	threshold = 3,
 	hideBlizzard = false,
 	useIndicatorColor = false,
+	drawSwipe = true,
 	expiringColor = { r = 1, g = 0, b = 0 },
 	secondsColor = { r = 1, g = 1, b = 0 },
 	minutesColor = { r = 1, g = 1, b = 1 },

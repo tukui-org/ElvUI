@@ -280,6 +280,10 @@ function E:UpdateCooldownOverride(module)
 			-- cooldown override settings
 			E:Cooldown_Options(cd, db.cooldown, parent)
 
+			if cd.SetDrawSwipe then
+				cd:SetDrawSwipe(db.cooldown.drawSwipe)
+			end
+
 			-- update font on cooldowns
 			if timer and cd then -- has a parent, these are timers from RegisterCooldown
 				E:Cooldown_OnSizeChanged(cd, parent:GetWidth(), true)
