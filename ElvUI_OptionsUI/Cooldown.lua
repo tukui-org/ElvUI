@@ -56,13 +56,6 @@ local function group(order, db, label)
 					end
 				end,
 			},
-			drawSwipe = {
-				order = 4,
-				type = "toggle",
-				name = L["Draw Cooldown Swipe"],
-				get = function(info) return (profile(db))[info[#info]] end,
-				set = function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end,
-			},
 			secondsGroup = {
 				order = 5,
 				type = "group",
@@ -291,7 +284,6 @@ local function group(order, db, label)
 	if db == 'global' then
 		-- clean up the main one
 		E.Options.args.cooldown.args[db].args.reverse = nil
-		E.Options.args.cooldown.args[db].args.drawSwipe = nil
 		E.Options.args.cooldown.args[db].args.colorGroup.args.override = nil
 
 		-- remove disables
@@ -318,9 +310,6 @@ local function group(order, db, label)
 
 		-- this is basically creates a second way to change font, we only really need one
 		E.Options.args.cooldown.args[db].args.fontGroup = nil
-
-		-- this is unneeded as it doesn't have a cooldown spiral template.
-		E.Options.args.cooldown.args[db].args.drawSwipe = nil
 	end
 end
 
