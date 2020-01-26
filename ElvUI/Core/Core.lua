@@ -925,6 +925,7 @@ function E:UpdateNamePlates(skipCallback)
 end
 
 function E:UpdateTooltip()
+	Tooltip:SetTooltipFonts()
 	-- for plugins :3
 end
 
@@ -1062,6 +1063,9 @@ do
 			end
 			if E.private.chat.enable then
 				tinsert(staggerTable, 'UpdateChat')
+			end
+			if E.private.tooltip.enable then
+				tinsert(staggerTable, 'UpdateTooltip')
 			end
 			tinsert(staggerTable, 'UpdateDataBars')
 			tinsert(staggerTable, 'UpdateDataTexts')
