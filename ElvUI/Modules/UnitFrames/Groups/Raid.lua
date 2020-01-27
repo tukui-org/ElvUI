@@ -73,7 +73,9 @@ function UF:Update_RaidHeader(header, db)
 		headerHolder.positioned = true;
 	end
 
-	RegisterStateDriver(headerHolder, "visibility", headerHolder.db.visibility)
+	if not header.forceShow then
+		RegisterStateDriver(headerHolder, "visibility", headerHolder.db.visibility)
+	end
 end
 
 function UF:Update_RaidFrames(frame, db)
