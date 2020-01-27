@@ -554,12 +554,12 @@ local function UpdateFilterGroup()
 				args = {
 					enabled = {
 						name = L["Enable"],
-						order = 0,
+						order = 1,
 						type = 'toggle',
 					},
 					point = {
 						name = L["Anchor Point"],
-						order = 1,
+						order = 2,
 						type = 'select',
 						values = {
 							['TOPLEFT'] = 'TOPLEFT',
@@ -572,28 +572,9 @@ local function UpdateFilterGroup()
 							['BOTTOM'] = 'BOTTOM',
 						}
 					},
-					sizeOffset = {
-						order = 2,
-						type = "range",
-						name = L["Size Offset"],
-						desc = L["This changes the size of the Aura Icon by this value."],
-						min = -25, max = 25, step = 1,
-					},
-					xOffset = {
-						order = 3,
-						type = 'range',
-						name = L["X-Offset"],
-						min = -75, max = 75, step = 1,
-					},
-					yOffset = {
-						order = 4,
-						type = 'range',
-						name = L["Y-Offset"],
-						min = -75, max = 75, step = 1,
-					},
 					style = {
 						name = L["Style"],
-						order = 5,
+						order = 3,
 						type = 'select',
 						values = {
 							['timerOnly'] = L["Timer Only"],
@@ -604,7 +585,7 @@ local function UpdateFilterGroup()
 					color = {
 						name = L["COLOR"],
 						type = 'color',
-						order = 6,
+						order = 4,
 						get = function(info)
 							local t = selectedTable[selectedSpell][info[#info]]
 							return t.r, t.g, t.b, t.a
@@ -618,28 +599,47 @@ local function UpdateFilterGroup()
 							UF:CreateAndUpdateHeaderGroup('raidpet')
 						end,
 					},
-					displayText = {
-						name = L["Display Text"],
-						type = 'toggle',
+					sizeOffset = {
+						order = 5,
+						type = "range",
+						name = L["Size Offset"],
+						desc = L["This changes the size of the Aura Icon by this value."],
+						min = -25, max = 25, step = 1,
+					},
+					xOffset = {
+						order = 6,
+						type = 'range',
+						name = L["X-Offset"],
+						min = -75, max = 75, step = 1,
+					},
+					yOffset = {
 						order = 7,
+						type = 'range',
+						name = L["Y-Offset"],
+						min = -75, max = 75, step = 1,
 					},
 					textThreshold = {
 						name = L["Text Threshold"],
 						desc = L["At what point should the text be displayed. Set to -1 to disable."],
 						type = 'range',
-						order = 10,
+						order = 8,
 						min = -1, max = 60, step = 1,
 					},
 					anyUnit = {
 						name = L["Show Aura From Other Players"],
-						order = 11,
-						customWidth = 200,
+						order = 9,
+						customWidth = 205,
 						type = 'toggle',
 					},
 					onlyShowMissing = {
 						name = L["Show When Not Active"],
-						order = 12,
+						order = 10,
 						type = 'toggle',
+					},
+					displayText = {
+						name = L["Display Text"],
+						type = 'toggle',
+						order = 11,
 					},
 				},
 			}
