@@ -133,7 +133,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			if(button.icon) then button.icon:SetTexture(texture) end
 			if(button.count) then button.count:SetText(count > 1 and count) end
 
-			button:SetSize(setting.size, setting.size)
+			button:SetSize(setting.size + element.size, setting.size + element.size)
 			button:SetID(index)
 			button:Show()
 			button:ClearAllPoints()
@@ -279,6 +279,7 @@ local function Enable(self)
 		element.watched = element.watched or {}
 		element.createdIcons = element.createdIcons or 0
 		element.anchoredIcons = 0
+		element.size = 0
 
 		self:RegisterEvent('UNIT_AURA', UpdateAuras)
 		element:Show()
