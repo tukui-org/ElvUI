@@ -576,7 +576,7 @@ local function UpdateFilterGroup()
 						order = 2,
 						type = "range",
 						name = L["Size Offset"],
-						desc = L["This increases the size of the Buff Indicator by X amount"],
+						desc = L["This changes the size of the Aura Icon by this value."],
 						min = -25, max = 25, step = 1,
 					},
 					xOffset = {
