@@ -25,8 +25,6 @@ function UF:Configure_AuraWatch(frame, isPet)
 			frame:EnableElement('AuraWatch')
 		end
 
-		frame.AuraWatch.size = db.sizeOffset
-
 		if frame.unit == 'pet' or isPet then
 			frame.AuraWatch:SetNewTable(E.global.unitframe.buffwatch.PET)
 		else
