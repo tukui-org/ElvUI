@@ -742,6 +742,29 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 	return config
 end
 
+local function BuffIndicator_ApplyToAll(info, value, profileSpecific)
+	if profileSpecific then
+		for _, spell in pairs(E.db.unitframe.filters.buffwatch) do
+			if value ~= nil then
+				spell[info[#info]] = value
+			else
+				return spell[info[#info]]
+			end
+		end
+	else
+		local spells = E.global.unitframe.buffwatch[E.myclass]
+		if spells then
+			for _, spell in pairs(spells) do
+				if value ~= nil then
+					spell[info[#info]] = value
+				else
+					return spell[info[#info]]
+				end
+			end
+		end
+	end
+end
+
 local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 	local config = {
 		type = 'group',
@@ -765,6 +788,49 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 				name = L["Configure Auras"],
 				func = function() E:SetToFilterConfig('Buff Indicator') end,
 			},
+			applyToAll = {
+				name = '',
+				guiInline = true,
+				type = 'group',
+				order = 50,
+				get = function(info) return BuffIndicator_ApplyToAll(info) end,
+				set = function(info, value) BuffIndicator_ApplyToAll(info, value) end,
+				args = {
+					header = {
+						order = 1,
+						type = "description",
+						name = L['|cffFF0000Warning:|r Changing options in this section will apply to all Buff Indicator auras. To change only one Aura, please click "Configure Auras" and change that specific Auras settings.'],
+					},
+					style = {
+						name = L["Style"],
+						order = 2,
+						type = 'select',
+						values = {
+							['timerOnly'] = L["Timer Only"],
+							['coloredIcon'] = L["Colored Icon"],
+							['texturedIcon'] = L["Textured Icon"],
+						},
+					},
+					size = {
+						order = 3,
+						type = "range",
+						name = L["Size"],
+						min = 6, max = 50, step = 1,
+					},
+					textThreshold = {
+						name = L["Text Threshold"],
+						desc = L["At what point should the text be displayed. Set to -1 to disable."],
+						type = 'range',
+						order = 4,
+						min = -1, max = 60, step = 1,
+					},
+					displayText = {
+						name = L["Display Text"],
+						type = 'toggle',
+						order = 5,
+					},
+				}
+			}
 		},
 	}
 
@@ -782,6 +848,11 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 				E:SetToFilterConfig('Buff Indicator')
 			end
 		end
+
+		-- apply to all options
+		config.args.applyToAll.args.header.name = L['|cffFF0000Warning:|r Changing options in this section will apply to all Buff Indicator auras. To change only one Aura, please click "Configure Auras" and change that specific Auras settings. If "Profile Specific" is selected it will apply to that filter set. ']
+		config.args.applyToAll.get = function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end
+		config.args.applyToAll.set = function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end
 	end
 
 	return config
