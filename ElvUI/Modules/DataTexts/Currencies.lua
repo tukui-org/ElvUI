@@ -79,6 +79,8 @@ local function OnEnter(self)
 	end
 	DT.tooltip:AddDoubleLine(Currencies.TITAN_RESIDUUM.NAME, select(2, GetCurrencyInfo(Currencies.TITAN_RESIDUUM.ID)), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(Currencies.PRISMATIC_MANAPEARL.NAME, select(2, GetCurrencyInfo(Currencies.PRISMATIC_MANAPEARL.ID)), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(Currencies.CORRUPTED_MEMENTOS.NAME, select(2, GetCurrencyInfo(Currencies.CORRUPTED_MEMENTOS.ID)), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(Currencies.COALESCING_VISIONS.NAME, select(2, GetCurrencyInfo(Currencies.COALESCING_VISIONS.ID)), 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(OTHER)
