@@ -755,9 +755,16 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 				name = L["Buff Indicator"],
 			},
 			enable = {
+				order = 2,
 				type = 'toggle',
 				name = L["Enable"],
-				order = 2,
+			},
+			sizeOffset = {
+				order = 3,
+				name = L["Size Offset"],
+				desc = L["This increases the size of the Buff Indicator by X amount"],
+				type = 'range',
+				min = 0, max = 10, step = 1,
 			},
 			configureButton = {
 				order = 6,
