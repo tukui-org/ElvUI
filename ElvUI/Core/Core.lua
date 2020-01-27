@@ -926,7 +926,6 @@ end
 
 function E:UpdateTooltip()
 	Tooltip:SetTooltipFonts()
-	-- for plugins :3
 end
 
 function E:UpdateBags(skipCallback)
