@@ -1281,12 +1281,11 @@ function E:InitializeModules()
 end
 
 local function buffwatchConvert(spell)
-	if spell.sizeOverride then
-		local newSize = spell.sizeOverride
-		spell.size = (newSize > 8 and newSize) or 8
-		spell.sizeOverride = nil
-	elseif not spell.size or spell.size < 6 then
-		spell.size = 6
+	if spell.sizeOverride then spell.sizeOverride = nil end
+	if spell.size then spell.size = nil end
+
+	if not spell.sizeOffset then
+		spell.sizeOffset = 0
 	end
 
 	if spell.styleOverride then

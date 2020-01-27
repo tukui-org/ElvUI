@@ -782,31 +782,42 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 				type = 'toggle',
 				name = L["Enable"],
 			},
-			sizeOffset = {
+			size = {
 				order = 3,
-				name = L["Size Offset"],
-				desc = L["This increases the size of the Buff Indicator by X amount"],
-				type = 'range',
-				min = -10, max = 10, step = 1,
+				type = "range",
+				name = L["Size"],
+				min = 6, max = 48, step = 1,
+			},
+			profileSpecific = {
+				type = 'toggle',
+				name = L["Profile Specific"],
+				desc = L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."],
+				order = 4,
 			},
 			configureButton = {
 				order = 6,
 				type = 'execute',
 				name = L["Configure Auras"],
-				func = function() E:SetToFilterConfig('Buff Indicator') end,
+				func = function()
+					if E.db.unitframe.units[groupName].buffIndicator.profileSpecific then
+						E:SetToFilterConfig('Buff Indicator (Profile)')
+					else
+						E:SetToFilterConfig('Buff Indicator')
+					end
+				end,
 			},
 			applyToAll = {
 				name = '',
 				guiInline = true,
 				type = 'group',
 				order = 50,
-				get = function(info) return BuffIndicator_ApplyToAll(info) end,
-				set = function(info, value) BuffIndicator_ApplyToAll(info, value) end,
+				get = function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
+				set = function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
 				args = {
 					header = {
 						order = 1,
 						type = "description",
-						name = L['|cffFF0000Warning:|r Changing options in this section will apply to all Buff Indicator auras. To change only one Aura, please click "Configure Auras" and change that specific Auras settings.'],
+						name = L['|cffFF0000Warning:|r Changing options in this section will apply to all Buff Indicator auras. To change only one Aura, please click "Configure Auras" and change that specific Auras settings. If "Profile Specific" is selected it will apply to that filter set.'],
 					},
 					style = {
 						name = L["Style"],
@@ -817,12 +828,6 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 							['coloredIcon'] = L["Colored Icon"],
 							['texturedIcon'] = L["Textured Icon"],
 						},
-					},
-					size = {
-						order = 3,
-						type = "range",
-						name = L["Size"],
-						min = 6, max = 50, step = 1,
 					},
 					textThreshold = {
 						name = L["Text Threshold"],
@@ -840,27 +845,6 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 			}
 		},
 	}
-
-	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
-		config.args.profileSpecific = {
-			type = 'toggle',
-			name = L["Profile Specific"],
-			desc = L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."],
-			order = 5,
-		}
-		config.args.configureButton.func = function()
-			if E.db.unitframe.units[groupName].buffIndicator.profileSpecific then
-				E:SetToFilterConfig('Buff Indicator (Profile)')
-			else
-				E:SetToFilterConfig('Buff Indicator')
-			end
-		end
-
-		-- apply to all options
-		config.args.applyToAll.args.header.name = L['|cffFF0000Warning:|r Changing options in this section will apply to all Buff Indicator auras. To change only one Aura, please click "Configure Auras" and change that specific Auras settings. If "Profile Specific" is selected it will apply to that filter set. ']
-		config.args.applyToAll.get = function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end
-		config.args.applyToAll.set = function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end
-	end
 
 	return config
 end

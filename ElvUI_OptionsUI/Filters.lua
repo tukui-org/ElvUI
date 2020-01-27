@@ -572,11 +572,12 @@ local function UpdateFilterGroup()
 							['BOTTOM'] = 'BOTTOM',
 						}
 					},
-					size = {
+					sizeOffset = {
 						order = 2,
 						type = "range",
-						name = L["Size"],
-						min = 6, max = 50, step = 1,
+						name = L["Size Offset"],
+						desc = L["This increases the size of the Buff Indicator by X amount"],
+						min = -25, max = 25, step = 1,
 					},
 					xOffset = {
 						order = 3,
@@ -632,6 +633,7 @@ local function UpdateFilterGroup()
 					anyUnit = {
 						name = L["Show Aura From Other Players"],
 						order = 11,
+						customWidth = 200,
 						type = 'toggle',
 					},
 					onlyShowMissing = {

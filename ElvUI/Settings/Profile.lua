@@ -1050,10 +1050,8 @@ local UF_AuraBars = {
 
 local UF_AuraWatch = {
 	enable = true,
-	size = 8,
-	sizeOffset = 0,
-	style = 'texturedIcon',
 	profileSpecific = false,
+	size = 8,
 }
 
 local UF_Castbar = {
