@@ -133,7 +133,12 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			if(button.icon) then button.icon:SetTexture(texture) end
 			if(button.count) then button.count:SetText(count > 1 and count) end
 
-			button:SetSize(setting.sizeOffset + element.size, setting.sizeOffset + element.size)
+			if setting.sizeOffset == 0 then
+				button:SetSize(element.size, element.size)
+			else
+				button:SetSize(setting.sizeOffset + element.size, setting.sizeOffset + element.size)
+			end
+
 			button:SetID(index)
 			button:Show()
 			button:ClearAllPoints()
@@ -183,8 +188,13 @@ local function onlyShowMissingIcon(element, unit, offset)
 		if(button.icon) then button.icon:SetTexture(GetSpellTexture(SpellID)) end
 		if(button.overlay) then button.overlay:Hide() end
 
+		if setting.sizeOffset == 0 then
+			button:SetSize(element.size, element.size)
+		else
+			button:SetSize(setting.sizeOffset + element.size, setting.sizeOffset + element.size)
+		end
+
 		button:SetID(position)
-		button:SetSize(setting.sizeOffset + element.size, setting.sizeOffset + element.size)
 		button.spellID = SpellID
 
 		button:Show()
