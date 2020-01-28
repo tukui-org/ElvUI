@@ -726,11 +726,6 @@ E.Options.args.bags = {
 					name = L["Sort Inverted"],
 					desc = L["Direction the bag sorting will use to allocate the items."],
 				},
-				spacer = {
-					order = 2,
-					type = "description",
-					name = " ",
-				},
 				description = {
 					order = 3,
 					type = "description",
@@ -755,12 +750,6 @@ E.Options.args.bags = {
 								local itemID = strmatch(value, "item:(%d+)")
 								E.db.bags.ignoredItems[(itemID or value)] = value
 							end,
-						},
-						spacer = {
-							order = 2,
-							type = "description",
-							name = " ",
-							width = "normal",
 						},
 						addEntryGlobal = {
 							order = 3,

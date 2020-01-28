@@ -699,11 +699,6 @@ E.Options.args.actionbar = {
 					desc = L["Change the alpha level of the frame."],
 					min = 0, max = 1, step = 0.1,
 				},
-				spacer = {
-					order = 4,
-					type = "description",
-					name = " ",
-				},
 				buttonSize = {
 					order = 5,
 					type = 'range',
@@ -724,11 +719,6 @@ E.Options.args.actionbar = {
 					name = L["Buttons Per Row"],
 					desc = L["The amount of buttons to display per row."],
 					min = 1, max = #MICRO_BUTTONS, step = 1,
-				},
-				spacer2 = {
-					order = 8,
-					type = "description",
-					name = " ",
 				},
 				visibility = {
 					type = 'input',
@@ -842,11 +832,6 @@ for i = 1, 10 do
 				name = L["Restore Bar"],
 				desc = L["Restore the actionbars default settings"],
 				func = function() E:CopyTable(E.db.actionbar['bar'..i], P.actionbar['bar'..i]); E:ResetMovers('Bar '..i); AB:PositionAndSizeBar('bar'..i) end,
-			},
-			spacer = {
-				order = 2,
-				type = "description",
-				name = " ",
 			},
 			backdrop = {
 				order = 3,

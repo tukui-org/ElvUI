@@ -1819,11 +1819,6 @@ local function GetOptionsTable_PhaseIndicator(updateFunc, groupName, numGroup)
 				isPercent = true,
 				min = 0.5, max = 1.5, step = 0.01,
 			},
-			spacer = {
-				order = 4,
-				type = "description",
-				name = " ",
-			},
 			anchorPoint = {
 				order = 5,
 				type = "select",
@@ -2207,11 +2202,6 @@ local function GetOptionsTable_PVPIcon(updateFunc, groupName, numGroup)
 				name = L["Scale"],
 				isPercent = true,
 				min = 0.1, max = 2, step = 0.01,
-			},
-			spacer = {
-				order = 4,
-				type = "description",
-				name = " ",
 			},
 			anchorPoint = {
 				order = 5,
@@ -4378,11 +4368,6 @@ E.Options.args.unitframe.args.player = {
 					name = L["Y-Offset"],
 					min = -100, max = 100, step = 1,
 				},
-				spacer2 = {
-					order = 8,
-					type = "description",
-					name = " ",
-				},
 				anchorPoint = {
 					order = 9,
 					type = "select",
@@ -4470,11 +4455,6 @@ E.Options.args.unitframe.args.player = {
 					type = "range",
 					name = L["Y-Offset"],
 					min = -100, max = 100, step = 1,
-				},
-				spacer2 = {
-					order = 8,
-					type = "description",
-					name = " ",
 				},
 				anchorPoint = {
 					order = 9,

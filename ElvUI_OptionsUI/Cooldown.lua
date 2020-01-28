@@ -112,11 +112,6 @@ local function group(order, db, label)
 						type = "header",
 						name = L["Threshold Colors"]
 					},
-					spacer2 = {
-						order = 4,
-						type = "description",
-						name = " "
-					},
 					expiringColor = {
 						type = 'color',
 						order = 5,
@@ -246,11 +241,6 @@ local function group(order, db, label)
 						name = L["Enable"],
 						desc = L["This will override the global cooldown settings."],
 						disabled = E.noop,
-					},
-					spacer1 = {
-						order = 2,
-						type = "description",
-						name = " "
 					},
 					fontSize = {
 						order = 3,

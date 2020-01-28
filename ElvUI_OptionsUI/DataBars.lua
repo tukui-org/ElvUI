@@ -155,11 +155,6 @@ E.Options.args.databars = {
 					type = "toggle",
 					name = L["Reverse Fill Direction"],
 				},
-				spacer = {
-					order = 6,
-					type = "description",
-					name = " ",
-				},
 				orientation = {
 					order = 7,
 					type = "select",

@@ -102,11 +102,6 @@ E.Options.args.maps = {
 							get = function(info) return E.global.general.WorldMapCoordinates.enable end,
 							set = function(info, value) E.global.general.WorldMapCoordinates.enable = value; E:StaticPopup_Show("GLOBAL_RL") end,
 						},
-						spacer = {
-							order = 2,
-							type = "description",
-							name = " "
-						},
 						position = {
 							order = 3,
 							type = "select",
