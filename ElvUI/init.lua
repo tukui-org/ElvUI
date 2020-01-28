@@ -29,6 +29,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local GameMenuButtonAddons = GameMenuButtonAddons
 local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuFrame = GameMenuFrame
+local GameTooltip = GameTooltip
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
 _G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., 'Title')
@@ -270,7 +271,7 @@ function AddOn:UpdateConfigSize(reset)
 	if not frame then return end
 
 	local maxWidth, maxHeight = self.UIParent:GetSize()
-	frame:SetMinResize(600, 500)
+	frame:SetMinResize(800, 600)
 	frame:SetMaxResize(maxWidth-50, maxHeight-50)
 
 	self.Libs.AceConfigDialog:SetDefaultSize(AddOnName, self:GetConfigDefaultSize())
@@ -306,6 +307,111 @@ function AddOn:ConfigStopMovingOrSizing()
 	if self.obj and self.obj.status then
 		AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft = AddOn:Round(self:GetTop(), 2), AddOn:Round(self:GetLeft(), 2)
 		AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height = AddOn:Round(self:GetWidth(), 2), AddOn:Round(self:GetHeight(), 2)
+	end
+end
+
+local function OptionButton_OnEnter(self)
+	if GameTooltip:IsForbidden() or not self.desc then return end
+
+	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT", 0, 2)
+	--GameTooltip:SetText(self:GetText(), 1, .82, 0, true)
+	GameTooltip:AddLine(self.desc, 1, 1, 1, true)
+	GameTooltip:Show()
+end
+
+local function OptionButton_OnLeave()
+	if GameTooltip:IsForbidden() then return end
+
+	GameTooltip:Hide()
+end
+
+function AddOn:CreateBottomButtons(frame)
+	local L = self.Libs.ACL:GetLocale('ElvUI', self.global.general.locale or 'enUS')
+
+	local holder = CreateFrame('Frame', nil, frame)
+	holder:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", 17, 2)
+	holder:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -17, 2)
+	holder:SetHeight(40)
+	holder:Show()
+	frame.buttonHolder = holder
+
+	local lastButton
+	for _, info in pairs({
+		{
+			var = 'RepositionWindow',
+			name = L["Reposition Window"],
+			desc = L["Reset the size and position of this frame."],
+			func = function()
+				self:UpdateConfigSize(true)
+			end
+		},
+		{
+			var = 'ToggleTutorials',
+			name = L["Toggle Tutorials"],
+			func = function()
+				self:Tutorials(true)
+				self:ToggleOptionsUI()
+			end
+		},
+		{
+			var = 'Install',
+			name = L["Install"],
+			desc = L["Run the installation process."],
+			func = function()
+				self:Install()
+				self:ToggleOptionsUI()
+			end
+		},
+		{
+			var = 'ResetAnchors',
+			name = L["Reset Anchors"],
+			desc = L["Reset all frames to their original positions."],
+			func = function()
+				self:ResetUI()
+			end
+		},
+		{
+			var = 'ToggleAnchors',
+			name = L["Toggle Anchors"],
+			desc = L["Unlock various elements of the UI to be repositioned."],
+			func = function()
+				self:ToggleMoveMode()
+			end
+		},
+		{
+			var = 'NewClose',
+			name = L["Close"],
+			func = function(btn)
+				btn.frame.closebutton:Click()
+			end
+		}
+	}) do
+		local btn = CreateFrame('Button', nil, frame.buttonHolder, 'UIPanelButtonTemplate')
+		btn:SetScript('OnEnter', OptionButton_OnEnter)
+		btn:SetScript('OnLeave', OptionButton_OnLeave)
+		btn:SetScript('OnClick', info.func)
+		btn:SetFrameLevel(3)
+		btn:SetText(info.name)
+		btn:SetWidth(btn:GetTextWidth() + 40)
+
+		if self.private.skins.ace3.enable then
+			AddOn.Skins:HandleButton(btn)
+			frame.buttonHolder:SetTemplate("Transparent")
+		end
+
+		if not lastButton then
+			btn:Point("BOTTOMLEFT", frame.buttonHolder, "BOTTOMLEFT", 8, 8)
+			lastButton = btn
+		elseif info.var == 'NewClose' then
+			btn:Point("BOTTOMRIGHT", frame.buttonHolder, "BOTTOMRIGHT", -8, 8)
+		else
+			btn:Point("LEFT", lastButton, "RIGHT", 4, 0)
+			lastButton = btn
+		end
+
+		btn.frame = frame
+		btn.desc = info.desc
+		frame[info.var] = btn
 	end
 end
 
@@ -404,6 +510,16 @@ function AddOn:ToggleOptionsUI(msg)
 
 				self:UpdateConfigSize()
 				hooksecurefunc(frame, 'StopMovingOrSizing', AddOn.ConfigStopMovingOrSizing)
+
+				for i=1, frame:GetNumChildren() do
+					local child = select(i, frame:GetChildren())
+					if child:IsObjectType('Button') and child:GetText() == _G.CLOSE then
+						frame.closebutton = child
+						child:Hide()
+					end
+				end
+
+				self:CreateBottomButtons(frame)
 			end
 		end
 

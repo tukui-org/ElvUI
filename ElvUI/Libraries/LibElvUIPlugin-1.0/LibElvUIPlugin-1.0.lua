@@ -201,7 +201,6 @@ function lib:GetPluginOptions()
 			}
 		}
 	}
-	E.Options.args.Plugin_Separate.hidden = nil
 end
 
 do	-- this will handle `8.1.5.0015` into `8.150015` etc
