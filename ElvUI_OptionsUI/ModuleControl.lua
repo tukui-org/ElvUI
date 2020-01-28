@@ -512,7 +512,7 @@ E.Options.args.modulecontrol= {
 					type = 'group',
 					name = E.title,
 					desc = L["Core |cfffe7b2cElvUI|r options."],
-					childGroups = "tab",
+					childGroups = "tree",
 					disabled = E.Options.args.profiles.args.copyfrom.disabled,
 					args = {
 						header = {
@@ -538,7 +538,7 @@ E.Options.args.modulecontrol= {
 					type = 'group',
 					name = L["Movers"],
 					desc = L["On screen positions for different elements."],
-					childGroups = "tab",
+					childGroups = "tree",
 					disabled = E.Options.args.profiles.args.copyfrom.disabled,
 					args = MC:CreateMoversConfigGroup(),
 				},
