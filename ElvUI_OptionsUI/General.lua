@@ -174,7 +174,13 @@ E.Options.args.general = {
 						["koKR"] = "한국어",
 						["itIT"] = "Italiano",
 					},
-				}
+				},
+				loginmessage = {
+					order = 14,
+					type = "toggle",
+					name = L["Login Message"],
+					customWidth = 150,
+				},
 			},
 		},
 		media = {
