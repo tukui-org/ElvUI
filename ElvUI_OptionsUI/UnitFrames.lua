@@ -1431,6 +1431,7 @@ end
 local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 	local config = {
 		type = "group",
+		childGroups = 'tab',
 		name = L["Custom Texts"],
 		args = {
 			createCustomText = {
