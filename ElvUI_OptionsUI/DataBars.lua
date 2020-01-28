@@ -5,7 +5,7 @@ local mod = E:GetModule('DataBars')
 E.Options.args.databars = {
 	type = "group",
 	name = L["DataBars"],
-	childGroups = "tree",
+	childGroups = "tab",
 	order = 2,
 	get = function(info) return E.db.databars[info[#info]] end,
 	set = function(info, value) E.db.databars[info[#info]] = value; end,
