@@ -3008,7 +3008,7 @@ end
 E.Options.args.unitframe = {
 	type = "group",
 	name = L["UnitFrames"],
-	childGroups = "tab",
+	childGroups = "select",
 	order = 2,
 	get = function(info) return E.db.unitframe[info[#info]] end,
 	set = function(info, value) E.db.unitframe[info[#info]] = value end,
@@ -5945,7 +5945,7 @@ E.Options.args.unitframe.args.party = {
 	name = L["PARTY"],
 	type = 'group',
 	order = 9,
-	childGroups = "tab",
+	childGroups = "tree",
 	get = function(info) return E.db.unitframe.units.party[info[#info]] end,
 	set = function(info, value) E.db.unitframe.units.party[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 	disabled = function() return not E.UnitFrames.Initialized end,
