@@ -161,11 +161,6 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 		get = function(info) return E.db.unitframe.units[groupName].aurabar[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].aurabar[info[#info]] = value; updateFunc(UF, groupName) end,
 		args = {
-			header = {
-				order = 0,
-				type = "header",
-				name = L["Aura Bars"],
-			},
 			enable = {
 				type = 'toggle',
 				order = 1,
@@ -429,11 +424,6 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 		get = function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			header = {
-				type = "header",
-				order = 1,
-				name = auraType == 'buffs' and L["Buffs"] or L["Debuffs"],
-			},
 			enable = {
 				type = 'toggle',
 				order = 1,
@@ -772,11 +762,6 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 		get = function(info) return E.db.unitframe.units[groupName].buffIndicator[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].buffIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Buff Indicator"],
-			},
 			enable = {
 				order = 2,
 				type = 'toggle',
@@ -856,11 +841,6 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 		get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Castbar"],
-			},
 			enable = {
 				order = 2,
 				type = 'toggle',
@@ -1340,11 +1320,6 @@ local function CreateCustomTextGroup(unit, objectName)
 			end
 		end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = objectName,
-			},
 			delete = {
 				type = 'execute',
 				order = 2,
@@ -1458,11 +1433,6 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 		type = "group",
 		name = L["Custom Texts"],
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Custom Texts"],
-			},
 			createCustomText = {
 				order = 2,
 				type = 'input',
@@ -1515,11 +1485,6 @@ local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
 		get = function(info) return E.db.unitframe.units[groupName].fader[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].fader[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Fader"],
-			},
 			enable = {
 				type = 'toggle',
 				order = 2,
@@ -1634,11 +1599,6 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 		get = function(info) return E.db.unitframe.units[groupName].health[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].health[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			header = {
-				order = 0,
-				type = "header",
-				name = L["Health"],
-			},
 			reverseFill = {
 				type = "toggle",
 				order = 4,
@@ -1734,11 +1694,6 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 		get = function(info) return E.db.unitframe.units[groupName].healPrediction[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].healPrediction[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
 		args = {
-			header = {
-				order = 0,
-				type = "header",
-				name = L["Heal Prediction"],
-			},
 			enable = {
 				order = 1,
 				type = "toggle",
@@ -1776,11 +1731,6 @@ local function GetOptionsTable_InformationPanel(updateFunc, groupName, numUnits)
 		get = function(info) return E.db.unitframe.units[groupName].infoPanel[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].infoPanel[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Information Panel"],
-			},
 			enable = {
 				type = 'toggle',
 				order = 2,
@@ -1810,11 +1760,6 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 		get = function(info) return E.db.unitframe.units[groupName].name[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].name[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Name"],
-			},
 			position = {
 				type = 'select',
 				order = 2,
@@ -1862,11 +1807,6 @@ local function GetOptionsTable_PhaseIndicator(updateFunc, groupName, numGroup)
 		get = function(info) return E.db.unitframe.units[groupName].phaseIndicator[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].phaseIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Phase Indicator"],
-			},
 			enable = {
 				order = 2,
 				type = "toggle",
@@ -1915,11 +1855,6 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 		get = function(info) return E.db.unitframe.units[groupName].portrait[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].portrait[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			header = {
-				order = 0,
-				type = "header",
-				name = L["Portrait"],
-			},
 			warning = {
 				order = 1,
 				type = "description",
@@ -2035,11 +1970,6 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 		get = function(info) return E.db.unitframe.units[groupName].power[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].power[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			header = {
-				order = 0,
-				type = "header",
-				name = L["Power"],
-			},
 			enable = {
 				type = 'toggle',
 				order = 1,
@@ -2266,11 +2196,6 @@ local function GetOptionsTable_PVPIcon(updateFunc, groupName, numGroup)
 		get = function(info) return E.db.unitframe.units[groupName].pvpIcon[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].pvpIcon[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["PvP & Prestige Icon"],
-			},
 			enable = {
 				order = 2,
 				type = "toggle",
@@ -2319,11 +2244,6 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 		get = function(info) return E.db.unitframe.units[groupName].rdebuffs[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].rdebuffs[info[#info]] = value; updateFunc(UF, groupName) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["RaidDebuff Indicator"],
-			},
 			enable = {
 				order = 2,
 				type = 'toggle',
@@ -2483,11 +2403,6 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 		get = function(info) return E.db.unitframe.units[groupName].raidicon[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].raidicon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Raid Icon"],
-			},
 			enable = {
 				type = 'toggle',
 				order = 2,
@@ -2537,11 +2452,6 @@ local function GetOptionsTable_RoleIcons(updateFunc, groupName, numGroup)
 		get = function(info) return E.db.unitframe.units[groupName].roleIcon[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].roleIcon[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Role Icon"],
-			},
 			enable = {
 				type = 'toggle',
 				name = L["Enable"],
@@ -2611,11 +2521,6 @@ local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
 		get = function(info) return E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Leader Indicator"],
-			},
 			enable = {
 				type = 'toggle',
 				name = L["Enable"],
@@ -2655,11 +2560,6 @@ local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
 		get = function(info) return E.db.unitframe.units[groupName].readycheckIcon[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].readycheckIcon[info[#info]] = value; updateFunc(UF, groupName) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Ready Check Icon"],
-			},
 			enable = {
 				order = 2,
 				type = "toggle",
@@ -2709,11 +2609,6 @@ local function GetOptionsTable_ResurrectIcon(updateFunc, groupName, numUnits)
 		get = function(info) return E.db.unitframe.units[groupName].resurrectIcon[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].resurrectIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Resurrect Icon"],
-			},
 			enable = {
 				type = 'toggle',
 				order = 2,
@@ -2763,11 +2658,6 @@ local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
 		get = function(info) return E.db.unitframe.units[groupName].summonIcon[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].summonIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Summon Icon"],
-			},
 			enable = {
 				type = 'toggle',
 				order = 2,
@@ -2817,11 +2707,6 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		get = function(info) return E.db.unitframe.units[groupName].classbar[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].classbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = L["Classbar"],
-			},
 			enable = {
 				type = 'toggle',
 				order = 2,
@@ -3045,11 +2930,6 @@ E.Options.args.unitframe = {
 					name = L["General"],
 					disabled = function() return not E.UnitFrames.Initialized end,
 					args = {
-						header = {
-							order = 0,
-							type = "header",
-							name = L["General"],
-						},
 						auraBlacklistModifier = {
 							order = 1,
 							type = "select",
@@ -3227,11 +3107,6 @@ E.Options.args.unitframe = {
 					name = L["Frame Glow"],
 					disabled = function() return not E.UnitFrames.Initialized end,
 					args = {
-						header = {
-							order = 0,
-							type = "header",
-							name = L["Frame Glow"],
-						},
 						mainGlow = {
 							order = 1,
 							type = 'group',
@@ -3398,11 +3273,6 @@ E.Options.args.unitframe = {
 					set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 					disabled = function() return not E.UnitFrames.Initialized end,
 					args = {
-						header = {
-							order = 0,
-							type = "header",
-							name = L["COLORS"],
-						},
 						borderColor = {
 							order = 1,
 							type = "color",
@@ -4252,11 +4122,6 @@ E.Options.args.unitframe = {
 					get = function(info) return E.private.unitframe.disabledBlizzardFrames[info[#info]] end,
 					set = function(info, value) E.private.unitframe.disabledBlizzardFrames[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 					args = {
-						header = {
-							order = 0,
-							type = "header",
-							name = L["Disabled Blizzard Frames"],
-						},
 						player = {
 							order = 1,
 							type = 'toggle',
@@ -4303,11 +4168,6 @@ E.Options.args.unitframe = {
 					name = L["RaidDebuff Indicator"],
 					disabled = function() return not E.UnitFrames.Initialized end,
 					args = {
-						header = {
-							order = 1,
-							type = "header",
-							name = L["RaidDebuff Indicator"],
-						},
 						instanceFilter = {
 							order = 2,
 							type = "select",
@@ -4402,11 +4262,6 @@ E.Options.args.unitframe.args.player = {
 			type = "group",
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				width = {
 					order = 3,
 					name = L["Width"],
@@ -4475,11 +4330,6 @@ E.Options.args.unitframe.args.player = {
 			get = function(info) return E.db.unitframe.units.player.RestIcon[info[#info]] end,
 			set = function(info, value) E.db.unitframe.units.player.RestIcon[info[#info]] = value; UF:CreateAndUpdateUF('player'); UF:TestingDisplay_RestingIndicator(ElvUF_Player); end,
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Rest Icon"],
-				},
 				enable = {
 					order = 2,
 					type = "toggle",
@@ -4573,11 +4423,6 @@ E.Options.args.unitframe.args.player = {
 			get = function(info) return E.db.unitframe.units.player.CombatIcon[info[#info]] end,
 			set = function(info, value) E.db.unitframe.units.player.CombatIcon[info[#info]] = value; UF:CreateAndUpdateUF('player'); UF:TestingDisplay_CombatIndicator(ElvUF_Player); end,
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Combat Icon"],
-				},
 				enable = {
 					order = 2,
 					type = "toggle",
@@ -4676,11 +4521,6 @@ E.Options.args.unitframe.args.player = {
 			get = function(info) return E.db.unitframe.units.player.pvp[info[#info]] end,
 			set = function(info, value) E.db.unitframe.units.player.pvp[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name =L["PvP Text"],
-				},
 				position = {
 					type = 'select',
 					order = 2,
@@ -4766,11 +4606,6 @@ E.Options.args.unitframe.args.target = {
 			type = "group",
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				width = {
 					order = 3,
 					name = L["Width"],
@@ -4910,11 +4745,6 @@ E.Options.args.unitframe.args.targettarget = {
 			type = "group",
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				width = {
 					order = 3,
 					name = L["Width"],
@@ -5036,11 +4866,6 @@ E.Options.args.unitframe.args.targettargettarget = {
 			type = "group",
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				width = {
 					order = 3,
 					name = L["Width"],
@@ -5158,11 +4983,6 @@ E.Options.args.unitframe.args.focus = {
 			type = "group",
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				width = {
 					order = 3,
 					name = L["Width"],
@@ -5284,11 +5104,6 @@ E.Options.args.unitframe.args.focustarget = {
 			type = "group",
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				width = {
 					order = 3,
 					name = L["Width"],
@@ -5406,11 +5221,6 @@ E.Options.args.unitframe.args.pet = {
 			type = "group",
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				width = {
 					order = 3,
 					name = L["Width"],
@@ -5531,11 +5341,6 @@ E.Options.args.unitframe.args.pettarget = {
 			type = "group",
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				width = {
 					order = 3,
 					name = L["Width"],
@@ -5647,11 +5452,6 @@ E.Options.args.unitframe.args.boss = {
 			type = "group",
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				width = {
 					order = 6,
 					name = L["Width"],
@@ -5790,11 +5590,6 @@ E.Options.args.unitframe.args.arena = {
 			type = "group",
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				width = {
 					order = 6,
 					name = L["Width"],
@@ -5886,11 +5681,6 @@ E.Options.args.unitframe.args.arena = {
 			get = function(info) return E.db.unitframe.units.arena.pvpTrinket[info[#info]] end,
 			set = function(info, value) E.db.unitframe.units.arena.pvpTrinket[info[#info]] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["PVP Trinket"],
-				},
 				enable = {
 					type = 'toggle',
 					order = 2,
@@ -5985,11 +5775,6 @@ E.Options.args.unitframe.args.party = {
 			type = 'group',
 			name = L["General"],
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["General"],
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 1,
@@ -6206,11 +5991,6 @@ E.Options.args.unitframe.args.party = {
 			get = function(info) return E.db.unitframe.units.party.petsGroup[info[#info]] end,
 			set = function(info, value) E.db.unitframe.units.party.petsGroup[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Party Pets"],
-				},
 				enable = {
 					type = 'toggle',
 					name = L["Enable"],
@@ -6294,11 +6074,6 @@ E.Options.args.unitframe.args.party = {
 			get = function(info) return E.db.unitframe.units.party.targetsGroup[info[#info]] end,
 			set = function(info, value) E.db.unitframe.units.party.targetsGroup[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Party Targets"],
-				},
 				enable = {
 					type = 'toggle',
 					name = L["Enable"],
@@ -6401,7 +6176,6 @@ E.Options.args.unitframe.args.party = {
 	},
 }
 E.Options.args.unitframe.args.party.args.classbar.name = L["Alternative Power"]
-E.Options.args.unitframe.args.party.args.classbar.args.header.name = L["Alternative Power"]
 
 --Raid Frames
 E.Options.args.unitframe.args.raid = {
@@ -6448,11 +6222,6 @@ E.Options.args.unitframe.args.raid = {
 			type = 'group',
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 3,
@@ -6688,7 +6457,6 @@ E.Options.args.unitframe.args.raid = {
 	},
 }
 E.Options.args.unitframe.args.raid.args.classbar.name = L["Alternative Power"]
-E.Options.args.unitframe.args.raid.args.classbar.args.header.name = L["Alternative Power"]
 
 --Raid-40 Frames
 E.Options.args.unitframe.args.raid40 = {
@@ -6735,11 +6503,6 @@ E.Options.args.unitframe.args.raid40 = {
 			type = 'group',
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				hideonnpc = {
 					type = 'toggle',
 					order = 3,
@@ -6975,7 +6738,6 @@ E.Options.args.unitframe.args.raid40 = {
 	},
 }
 E.Options.args.unitframe.args.raid40.args.classbar.name = L["Alternative Power"]
-E.Options.args.unitframe.args.raid40.args.classbar.args.header.name = L["Alternative Power"]
 
 --Raid Pet Frames
 E.Options.args.unitframe.args.raidpet = {
@@ -7022,11 +6784,6 @@ E.Options.args.unitframe.args.raidpet = {
 			type = 'group',
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				threatStyle = {
 					type = 'select',
 					order = 5,
@@ -7260,11 +7017,6 @@ E.Options.args.unitframe.args.tank = {
 			type = 'group',
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				width = {
 					order = 3,
 					name = L["Width"],
@@ -7318,11 +7070,6 @@ E.Options.args.unitframe.args.tank = {
 			get = function(info) return E.db.unitframe.units.tank.targetsGroup[info[#info]] end,
 			set = function(info, value) E.db.unitframe.units.tank.targetsGroup[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('tank') end,
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Tank Target"],
-				},
 				enable = {
 					type = 'toggle',
 					name = L["Enable"],
@@ -7404,11 +7151,6 @@ E.Options.args.unitframe.args.assist = {
 			type = 'group',
 			name = L["General"],
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["General"],
-				},
 				width = {
 					order = 3,
 					name = L["Width"],
@@ -7462,11 +7204,6 @@ E.Options.args.unitframe.args.assist = {
 			get = function(info) return E.db.unitframe.units.assist.targetsGroup[info[#info]] end,
 			set = function(info, value) E.db.unitframe.units.assist.targetsGroup[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('assist') end,
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Assist Target"],
-				},
 				enable = {
 					type = 'toggle',
 					name = L["Enable"],

@@ -19,11 +19,6 @@ E.Options.args.maps = {
 			type = "group",
 			name = L["WORLD_MAP"],
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["WORLD_MAP"],
-				},
 				generalGroup = {
 					order = 1,
 					type = "group",
@@ -157,11 +152,6 @@ E.Options.args.maps = {
 			get = function(info) return E.db.general.minimap[info[#info]] end,
 			childGroups = "tab",
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["MINIMAP_LABEL"],
-				},
 				generalGroup = {
 					order = 1,
 					type = "group",

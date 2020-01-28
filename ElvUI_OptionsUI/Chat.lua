@@ -35,11 +35,6 @@ E.Options.args.chat = {
 			name = L["General"],
 			disabled = function() return not E.Chat.Initialized; end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["General"],
-				},
 				url = {
 					order = 1,
 					type = 'toggle',
@@ -298,11 +293,6 @@ E.Options.args.chat = {
 			name = L["Alerts"],
 			disabled = function() return not E.Chat.Initialized; end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Alerts"],
-				},
 				whisperSound = {
 					order = 1,
 					type = 'select', dialogControl = 'LSM30_Sound',
@@ -336,11 +326,6 @@ E.Options.args.chat = {
 			name = L["Panels"],
 			disabled = function() return not E.Chat.Initialized; end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Panels"],
-				},
 				lockPositions = {
 					order = 1,
 					type = 'toggle',
@@ -506,11 +491,6 @@ E.Options.args.chat = {
 			disabled = function() return not E.Chat.Initialized; end,
 			set = function(info, value) E.db.chat[info[#info]] = value; CH:SetupChat() end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Fonts"],
-				},
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
 					order = 1,
@@ -551,11 +531,6 @@ E.Options.args.chat = {
 			name = L["Class Color Mentions"],
 			disabled = function() return not E.Chat.Initialized; end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Class Color Mentions"],
-				},
 				classColorMentionsChat = {
 					order = 1,
 					type = "toggle",

@@ -723,11 +723,6 @@ local function UpdateFilterGroup()
 		E.Options.args.nameplate.args.filters.args.triggers = nil
 	end
 	if selectedNameplateFilter and E.global.nameplate.filters[selectedNameplateFilter] then
-		E.Options.args.nameplate.args.filters.args.header = {
-			order = 4,
-			type = "header",
-			name = selectedNameplateFilter
-		}
 		E.Options.args.nameplate.args.filters.args.triggers = {
 			type = "group",
 			name = L["Triggers"],
@@ -3163,13 +3158,7 @@ local function GetUnitSettings(unit, name)
 					NP:SetCVars()
 					NP:ConfigureAll()
 				end,
-				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["General"]
-					}
-				}
+				args = {}
 			},
 			healthGroup = {
 				order = 2,
@@ -3183,11 +3172,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Health"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -3345,11 +3329,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Power"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -3543,11 +3522,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Cast Bar"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -3792,11 +3766,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Buffs"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -4147,11 +4116,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Debuffs"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -4502,11 +4466,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Portrait"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -4570,11 +4529,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["LEVEL"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -4673,11 +4627,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Name"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -4777,11 +4726,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["PvP Indicator"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -4843,11 +4787,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Raid Icon"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -5084,11 +5023,6 @@ local function GetUnitSettings(unit, name)
 				NP:ConfigureAll()
 			end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Elite Icon"]
-				},
 				enable = {
 					order = 1,
 					name = L["Enable"],
@@ -5147,11 +5081,6 @@ local function GetUnitSettings(unit, name)
 				NP:ConfigureAll()
 			end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Quest Icon"]
-				},
 				enable = {
 					type = "toggle",
 					order = 1,
@@ -5322,11 +5251,6 @@ local function GetUnitSettings(unit, name)
 				NP:ConfigureAll()
 			end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["PvP Classification Indicator"]
-				},
 				enable = {
 					order = 1,
 					name = L["Enable"],
@@ -5386,11 +5310,6 @@ local function GetUnitSettings(unit, name)
 				NP:ConfigureAll()
 			end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Name"]
-				},
 				enable = {
 					order = 1,
 					name = L["Enable"],

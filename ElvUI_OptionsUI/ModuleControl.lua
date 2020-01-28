@@ -481,11 +481,6 @@ E.Options.args.modulecontrol= {
 			childGroups = "select",
 			handler = E.Options.args.profiles.handler,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Module Copy"],
-				},
 				intro = {
 					order = 1,
 					type = "description",

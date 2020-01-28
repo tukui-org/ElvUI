@@ -38,11 +38,6 @@ E.Options.args.general = {
 			type = "group",
 			name = L["General"],
 			args = {
-				generalHeader = {
-					order = 0,
-					type = "header",
-					name = L["General"],
-				},
 				messageRedirect = {
 					order = 1,
 					name = L["Chat Output"],
@@ -189,11 +184,6 @@ E.Options.args.general = {
 			get = function(info) return E.db.general[info[#info]] end,
 			set = function(info, value) E.db.general[info[#info]] = value end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Media"],
-				},
 				fontGroup = {
 					order = 1,
 					name = L["Font"],
@@ -389,11 +379,6 @@ E.Options.args.general = {
 			get = function(info) return E.db.general.totems[info[#info]] end,
 			set = function(info, value) E.db.general.totems[info[#info]] = value; Totems:PositionAndSize() end,
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Class Totems"],
-				},
 				enable = {
 					order = 2,
 					type = "toggle",
@@ -444,11 +429,6 @@ E.Options.args.general = {
 			get = function(info) return E.private.general[info[#info]] end,
 			set = function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			args = {
-				header = {
-					order = 1,
-					type = "header",
-					name = L["Chat Bubbles"],
-				},
 				chatBubbles = {
 					order = 2,
 					type = "select",
@@ -494,11 +474,6 @@ E.Options.args.general = {
 			name = L["Objective Frame"],
 			get = function(info) return E.db.general[info[#info]] end,
 			args = {
-				objectiveFrameHeader = {
-					order = 30,
-					type = "header",
-					name = L["Objective Frame"],
-				},
 				objectiveFrameAutoHide = {
 					order = 31,
 					type = "toggle",
@@ -534,11 +509,6 @@ E.Options.args.general = {
 			name = L["Threat"],
 			get = function(info) return E.db.general.threat[info[#info]] end,
 			args = {
-				threatHeader = {
-					order = 40,
-					type = "header",
-					name = L["Threat"],
-				},
 				enable = {
 					order = 41,
 					type = "toggle",
@@ -582,11 +552,6 @@ E.Options.args.general = {
 				Blizzard:UpdateAltPowerBarSettings();
 			end,
 			args = {
-				alternativePowerHeader = {
-					order = 1,
-					type = "header",
-					name = L["Alternative Power"],
-				},
 				enable = {
 					order = 2,
 					type = "toggle",
@@ -718,11 +683,6 @@ E.Options.args.general = {
 			get = function(info) return E.db.general[info[#info]] end,
 			set = function(info, value) E.db.general[info[#info]] = value end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["BlizzUI Improvements"],
-				},
 				loot = {
 					order = 1,
 					type = "toggle",
@@ -889,11 +849,6 @@ E.Options.args.general = {
 			get = function(info) return E.db.general[info[#info]] end,
 			set = function(info, value) E.db.general[info[#info]] = value end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Miscellaneous"],
-				},
 				interruptAnnounce = {
 					order = 1,
 					name = L["Announce Interrupts"],
