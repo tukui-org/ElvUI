@@ -403,7 +403,7 @@ function AddOn:CreateBottomButtons(frame)
 			btn:Point("BOTTOMLEFT", frame.buttonHolder, "BOTTOMLEFT", 8, 8)
 			lastButton = btn
 		elseif info.var == 'NewClose' then
-			btn:Point("BOTTOMRIGHT", frame.buttonHolder, "BOTTOMRIGHT", -24, 8)
+			btn:Point("BOTTOMRIGHT", frame.buttonHolder, "BOTTOMRIGHT", -26, 8)
 		else
 			btn:Point("LEFT", lastButton, "RIGHT", 4, 0)
 			lastButton = btn
