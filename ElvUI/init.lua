@@ -325,7 +325,7 @@ local function OptionButton_OnLeave()
 	GameTooltip:Hide()
 end
 
-function AddOn:CreateBottomButtons(frame)
+function AddOn:CreateBottomButtons(frame, unskinned)
 	local L = self.Libs.ACL:GetLocale('ElvUI', self.global.general.locale or 'enUS')
 
 	local holder = CreateFrame('Frame', nil, frame)
@@ -394,16 +394,19 @@ function AddOn:CreateBottomButtons(frame)
 		btn:SetText(info.name)
 		btn:SetWidth(btn:GetTextWidth() + 40)
 
-		if self.private.skins.ace3.enable then
+		local offset = 8
+		if unskinned then
+			offset = 14
+		else
 			AddOn.Skins:HandleButton(btn)
 			frame.buttonHolder:SetTemplate("Transparent")
 		end
 
 		if not lastButton then
-			btn:Point("BOTTOMLEFT", frame.buttonHolder, "BOTTOMLEFT", 8, 8)
+			btn:Point("BOTTOMLEFT", frame.buttonHolder, "BOTTOMLEFT", (unskinned and offset + 10) or offset, offset)
 			lastButton = btn
 		elseif info.var == 'NewClose' then
-			btn:Point("BOTTOMRIGHT", frame.buttonHolder, "BOTTOMRIGHT", -26, 8)
+			btn:Point("BOTTOMRIGHT", frame.buttonHolder, "BOTTOMRIGHT", -26, offset)
 		else
 			btn:Point("LEFT", lastButton, "RIGHT", 4, 0)
 			lastButton = btn
@@ -519,7 +522,17 @@ function AddOn:ToggleOptionsUI(msg)
 					end
 				end
 
-				self:CreateBottomButtons(frame)
+				local unskinned = not self.private.skins.ace3.enable
+				if unskinned then
+					for i=1, frame:GetNumRegions() do
+						local region = select(i, frame:GetRegions())
+						if region:IsObjectType('Texture') and region:GetTexture() == 131080 then
+							region:SetAlpha(0)
+						end
+					end
+				end
+
+				self:CreateBottomButtons(frame, unskinned)
 				local holderHeight = frame.buttonHolder:GetHeight()
 
 				frame.obj.titletext:Hide()
