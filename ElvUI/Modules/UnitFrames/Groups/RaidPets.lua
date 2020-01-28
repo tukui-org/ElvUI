@@ -104,9 +104,7 @@ function UF:Update_RaidpetFrames(frame, db)
 		frame.VARIABLES_SET = true
 	end
 
-	if not InCombatLockdown() then
-		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-	end
+	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	--Health
 	UF:Configure_HealthBar(frame)

@@ -130,9 +130,7 @@ function UF:Update_RaidFrames(frame, db)
 		frame.VARIABLES_SET = true
 	end
 
-	if not InCombatLockdown() then
-		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-	end
+	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	UF:UpdateNameSettings(frame)
 	UF:EnableDisable_Auras(frame)

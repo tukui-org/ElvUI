@@ -921,36 +921,39 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		self[group].db = db
 
 		local groupName = E:StringTitle(group)
+
 		if not UF.headerFunctions[group] then UF.headerFunctions[group] = {} end
-		UF.headerFunctions[group].Update = function()
-			local db = UF.db.units[group]
-			if db.enable ~= true then
-				UnregisterAttributeDriver(UF[group], "state-visibility")
-				UF[group]:Hide()
-				if(UF[group].mover) then
-					E:DisableMover(UF[group].mover:GetName())
+		if not UF.headerFunctions[group].Update then
+			UF.headerFunctions[group].Update = function()
+				local db = UF.db.units[group]
+				if db.enable ~= true then
+					UnregisterAttributeDriver(UF[group], "state-visibility")
+					UF[group]:Hide()
+					if(UF[group].mover) then
+						E:DisableMover(UF[group].mover:GetName())
+					end
+					return
 				end
-				return
+				UF["Update_"..groupName.."Header"](UF, UF[group], db)
+
+				for i = 1, UF[group]:GetNumChildren() do
+					local child = select(i, UF[group]:GetChildren())
+					UF["Update_"..groupName.."Frames"](UF, child, UF.db.units[group])
+
+					if _G[child:GetName()..'Target'] then
+						UF["Update_"..groupName.."Frames"](UF, _G[child:GetName()..'Target'], UF.db.units[group])
+					end
+
+					if _G[child:GetName()..'Pet'] then
+						UF["Update_"..groupName.."Frames"](UF, _G[child:GetName()..'Pet'], UF.db.units[group])
+					end
+				end
+
+				E:EnableMover(UF[group].mover:GetName())
 			end
-			UF["Update_"..groupName.."Header"](UF, UF[group], db)
-
-			for i = 1, UF[group]:GetNumChildren() do
-				local child = select(i, UF[group]:GetChildren())
-				UF["Update_"..groupName.."Frames"](UF, child, UF.db.units[group])
-
-				if _G[child:GetName()..'Target'] then
-					UF["Update_"..groupName.."Frames"](UF, _G[child:GetName()..'Target'], UF.db.units[group])
-				end
-
-				if _G[child:GetName()..'Pet'] then
-					UF["Update_"..groupName.."Frames"](UF, _G[child:GetName()..'Pet'], UF.db.units[group])
-				end
-			end
-
-			E:EnableMover(UF[group].mover:GetName())
 		end
 
-		if headerUpdate then
+		if not UF.headerFunctions[group].Update then
 			UF["Update_"..groupName.."Header"](self, self[group], db)
 		else
 			UF.headerFunctions[group]:Update(self[group])
@@ -1035,9 +1038,11 @@ function UF:UpdateAllHeaders(event)
 	self:RegisterRaidDebuffIndicator()
 
 	for group, header in pairs(self.headers) do
-		UF.headerFunctions[group]:Update(header)
-
-		self:CreateAndUpdateHeaderGroup(group, nil, nil, true)
+		if UF.headerFunctions[group].Update then
+			UF.headerFunctions[group]:Update(header)
+		else
+			self:CreateAndUpdateHeaderGroup(group, nil, nil, true)
+		end
 	end
 end
 
@@ -1405,9 +1410,9 @@ function UF:Initialize()
 	if E.private.unitframe.enable ~= true then return end
 	self.Initialized = true
 
-	local ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
-	ElvUF_Parent:SetFrameStrata("LOW")
-	RegisterStateDriver(ElvUF_Parent, "visibility", "[petbattle] hide; show")
+	E.ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
+	E.ElvUF_Parent:SetFrameStrata("LOW")
+	RegisterStateDriver(E.ElvUF_Parent, "visibility", "[petbattle] hide; show")
 
 	self:UpdateColors()
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
