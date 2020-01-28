@@ -29,12 +29,12 @@ E.Options.args.general = {
 	set = function(info, value) E.db.general[info[#info]] = value end,
 	args = {
 		intro = {
-			order = 3,
+			order = 1,
 			type = "description",
 			name = L["ELVUI_DESC"],
 		},
 		general = {
-			order = 4,
+			order = 2,
 			type = "group",
 			name = L["General"],
 			args = {
@@ -178,7 +178,7 @@ E.Options.args.general = {
 			},
 		},
 		media = {
-			order = 5,
+			order = 3,
 			type = "group",
 			name = L["Media"],
 			get = function(info) return E.db.general[info[#info]] end,
@@ -373,7 +373,7 @@ E.Options.args.general = {
 			},
 		},
 		totems = {
-			order = 6,
+			order = 4,
 			type = "group",
 			name = L["Class Totems"],
 			get = function(info) return E.db.general.totems[info[#info]] end,
@@ -423,7 +423,7 @@ E.Options.args.general = {
 			},
 		},
 		chatBubblesGroup = {
-			order = 7,
+			order = 5,
 			type = "group",
 			name = L["Chat Bubbles"],
 			get = function(info) return E.private.general[info[#info]] end,
@@ -469,7 +469,7 @@ E.Options.args.general = {
 			},
 		},
 		objectiveFrameGroup = {
-			order = 8,
+			order = 6,
 			type = "group",
 			name = L["Objective Frame"],
 			get = function(info) return E.db.general[info[#info]] end,
@@ -504,7 +504,7 @@ E.Options.args.general = {
 			},
 		},
 		threatGroup = {
-			order = 9,
+			order = 7,
 			type = "group",
 			name = L["Threat"],
 			get = function(info) return E.db.general.threat[info[#info]] end,
@@ -543,7 +543,7 @@ E.Options.args.general = {
 			},
 		},
 		alternativePowerGroup = {
-			order = 10,
+			order = 8,
 			type = "group",
 			name = L["Alternative Power"],
 			get = function(info) return E.db.general.altPowerBar[info[#info]] end,
@@ -677,7 +677,7 @@ E.Options.args.general = {
 			},
 		},
 		blizzUIImprovements = {
-			order = 11,
+			order = 9,
 			type = "group",
 			name = L["BlizzUI Improvements"],
 			get = function(info) return E.db.general[info[#info]] end,
@@ -904,5 +904,7 @@ E.Options.args.general = {
 				},
 			},
 		},
+		profiles = C:ProfilesTable(-2),
+		credits = C:CreditsTable(-1)
 	},
 }
