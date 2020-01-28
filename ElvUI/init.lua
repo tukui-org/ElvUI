@@ -379,10 +379,10 @@ function AddOn:CreateBottomButtons(frame, unskinned)
 			end
 		},
 		{
-			var = 'NewClose',
+			var = 'Close',
 			name = L["Close"],
 			func = function(btn)
-				btn.frame.closebutton:Click()
+				btn.frame.closeButton:Click()
 			end
 		}
 	}) do
@@ -403,7 +403,7 @@ function AddOn:CreateBottomButtons(frame, unskinned)
 		if not lastButton then
 			btn:Point("BOTTOMLEFT", frame.buttonHolder, "BOTTOMLEFT", (unskinned and 24) or offset, offset)
 			lastButton = btn
-		elseif info.var == 'NewClose' then
+		elseif info.var == 'Close' then
 			btn:Point("BOTTOMRIGHT", frame.buttonHolder, "BOTTOMRIGHT", -26, offset)
 		else
 			btn:Point("LEFT", lastButton, "RIGHT", 4, 0)
@@ -412,7 +412,7 @@ function AddOn:CreateBottomButtons(frame, unskinned)
 
 		btn.frame = frame
 		btn.desc = info.desc
-		frame[info.var] = btn
+		frame.buttonHolder[info.var] = btn
 	end
 end
 
@@ -515,7 +515,7 @@ function AddOn:ToggleOptionsUI(msg)
 				for i=1, frame:GetNumChildren() do
 					local child = select(i, frame:GetChildren())
 					if child:IsObjectType('Button') and child:GetText() == _G.CLOSE then
-						frame.closebutton = child
+						frame.closeButton = child
 						child:Hide()
 					end
 				end
