@@ -420,7 +420,6 @@ local function UpdateFilterGroup()
 			name = selectedFilter,
 			guiInline = true,
 			order = 15,
-			childGroups = "select",
 			args = {
 				addSpellID = {
 					order = 1,
