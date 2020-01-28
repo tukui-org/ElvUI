@@ -5366,7 +5366,7 @@ E.Options.args.nameplate = {
 		generalGroup = {
 			order = 25,
 			type = "group",
-			name = L["General Options"],
+			name = L["General"],
 			childGroups = "tab",
 			disabled = function()
 				return not E.NamePlates.Initialized

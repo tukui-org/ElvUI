@@ -522,7 +522,6 @@ L["FRIENDLY_PLAYER"] = "우호적인 플레이어"
 L["Full Overlay"] = true
 L["Full"] = "전체"
 L["Gems"] = true
-L["General Options"] = "일반 설정"
 L["General"] = "일반"
 L["Global (Account Settings)"] = "전역 (계정 설정)"
 L["Global Fade Transparency"] = "전역 흐려짐 투명도"

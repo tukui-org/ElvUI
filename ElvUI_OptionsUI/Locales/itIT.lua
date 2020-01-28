@@ -524,7 +524,6 @@ L["FRIENDLY_PLAYER"] = "Friendly Player"
 L["Full Overlay"] = true
 L["Full"] = true
 L["Gems"] = true
-L["General Options"] = true
 L["General"] = "Generale"
 L["Global (Account Settings)"] = true
 L["Global Fade Transparency"] = true

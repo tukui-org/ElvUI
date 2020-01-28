@@ -523,7 +523,6 @@ L["FRIENDLY_PLAYER"] = "Joueur allié"
 L["Full Overlay"] = true
 L["Full"] = "Plein"
 L["Gems"] = true
-L["General Options"] = "Options générales"
 L["General"] = "Général"
 L["Global (Account Settings)"] = "Global (Configuration du compte)"
 L["Global Fade Transparency"] = "Option générale de transparence et d'affichage"
