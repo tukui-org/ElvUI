@@ -58,7 +58,6 @@ E.myLocalizedRace, E.myrace = UnitRace('player')
 E.myname = UnitName('player')
 E.myrealm = GetRealmName()
 E.myspec = GetSpecialization()
-E.version = GetAddOnMetadata('ElvUI', 'Version')
 E.wowpatch, E.wowbuild = GetBuildInfo()
 E.wowbuild = tonumber(E.wowbuild)
 E.IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE

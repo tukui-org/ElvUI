@@ -39,9 +39,10 @@ local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
 
 local AddOnName, Engine = ...
 local AddOn = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0')
+AddOn.version = GetAddOnMetadata('ElvUI', 'Version')
 AddOn.callbacks = AddOn.callbacks or CallbackHandler:New(AddOn)
 AddOn.DF = {profile = {}, global = {}}; AddOn.privateVars = {profile = {}} -- Defaults
-AddOn.Options = {type = 'group', name = AddOnName, args = {}, childGroups = "select"}
+AddOn.Options = {type = 'group', name = format("%s: |cff99ff33%s|r", AddOnName, AddOn.version), args = {}, childGroups = 'select'}
 
 Engine[1] = AddOn
 Engine[2] = {}
@@ -314,7 +315,6 @@ local function OptionButton_OnEnter(self)
 	if GameTooltip:IsForbidden() or not self.desc then return end
 
 	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT", 0, 2)
-	--GameTooltip:SetText(self:GetText(), 1, .82, 0, true)
 	GameTooltip:AddLine(self.desc, 1, 1, 1, true)
 	GameTooltip:Show()
 end
@@ -329,9 +329,9 @@ function AddOn:CreateBottomButtons(frame)
 	local L = self.Libs.ACL:GetLocale('ElvUI', self.global.general.locale or 'enUS')
 
 	local holder = CreateFrame('Frame', nil, frame)
-	holder:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", 17, 2)
-	holder:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -17, 2)
-	holder:SetHeight(40)
+	holder:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", 2, 2)
+	holder:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
+	holder:Height(37)
 	holder:Show()
 	frame.buttonHolder = holder
 
@@ -403,7 +403,7 @@ function AddOn:CreateBottomButtons(frame)
 			btn:Point("BOTTOMLEFT", frame.buttonHolder, "BOTTOMLEFT", 8, 8)
 			lastButton = btn
 		elseif info.var == 'NewClose' then
-			btn:Point("BOTTOMRIGHT", frame.buttonHolder, "BOTTOMRIGHT", -8, 8)
+			btn:Point("BOTTOMRIGHT", frame.buttonHolder, "BOTTOMRIGHT", -24, 8)
 		else
 			btn:Point("LEFT", lastButton, "RIGHT", 4, 0)
 			lastButton = btn
@@ -520,6 +520,13 @@ function AddOn:ToggleOptionsUI(msg)
 				end
 
 				self:CreateBottomButtons(frame)
+				local holderHeight = frame.buttonHolder:GetHeight()
+
+				frame.obj.titletext:Hide()
+				frame.obj.titlebg:ClearAllPoints()
+				frame.obj.titlebg:SetAllPoints(frame.obj.content:GetChildren():GetRegions())
+				frame.obj.content:SetPoint("TOPLEFT", frame, "TOPLEFT", 2, -2)
+				frame.obj.content:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, holderHeight)
 			end
 		end
 

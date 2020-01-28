@@ -40,15 +40,6 @@ end
 E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
 E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigDefaultSize())
 
-E.Options.args = {
-	ElvUI_Header = {
-		order = 1,
-		type = "header",
-		name = L["Version"] .. format(": |cff99ff33%s|r", E.version),
-		width = "full"
-	}
-}
-
 local DONATOR_STRING = ""
 local DEVELOPER_STRING = ""
 local TESTER_STRING = ""
