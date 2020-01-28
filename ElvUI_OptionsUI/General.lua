@@ -32,9 +32,11 @@ E.Options.args.general = {
 			order = 1,
 			type = "description",
 			name = L["ELVUI_DESC"],
+			fontSize = "medium",
+			image = function() return "Interface\\AddOns\\ElvUI\\Media\\Textures\\Logo.tga", 160, 80 end,
 		},
 		general = {
-			order = 2,
+			order = 3,
 			type = "group",
 			name = L["General"],
 			args = {
