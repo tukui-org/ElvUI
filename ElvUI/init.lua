@@ -42,7 +42,7 @@ local AddOn = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'Ac
 AddOn.version = GetAddOnMetadata('ElvUI', 'Version')
 AddOn.callbacks = AddOn.callbacks or CallbackHandler:New(AddOn)
 AddOn.DF = {profile = {}, global = {}}; AddOn.privateVars = {profile = {}} -- Defaults
-AddOn.Options = {type = 'group', name = format("%s: |cff99ff33%s|r", AddOnName, AddOn.version), args = {}, childGroups = 'select'}
+AddOn.Options = {type = 'group', name = format("%s: |cff99ff33%s|r", AddOnName, AddOn.version), args = {}}
 
 Engine[1] = AddOn
 Engine[2] = {}
@@ -534,10 +534,10 @@ function AddOn:ToggleOptionsUI(msg)
 				local holderHeight = frame.buttonHolder:GetHeight()
 
 				local offset = (unskinned and 14) or 2
-				frame.obj.titletext:Hide()
-				frame.obj.titlebg:ClearAllPoints()
-				frame.obj.titlebg:SetAllPoints(frame.obj.content:GetChildren():GetRegions())
-				frame.obj.content:SetPoint("TOPLEFT", frame, "TOPLEFT", offset, -((unskinned and 10) or offset))
+				--frame.obj.titletext:Hide()
+				--frame.obj.titlebg:ClearAllPoints()
+				--frame.obj.titlebg:SetAllPoints(frame.obj.content:GetChildren():GetRegions())
+				frame.obj.content:SetPoint("TOPLEFT", frame, "TOPLEFT", offset, -((unskinned and 10) or 15))
 				frame.obj.content:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -offset, holderHeight)
 			end
 		end
