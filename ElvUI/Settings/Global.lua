@@ -18,8 +18,8 @@ G.general = {
 		yOffset = 0
 	},
 	AceGUI = {
-		width = 900,
-		height = 700
+		width = 960,
+		height = 720
 	},
 	disableTutorialButtons = true,
 	showMissingTalentAlert = false,
