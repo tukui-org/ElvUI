@@ -114,7 +114,7 @@ end
 E.Options.args.auras = {
 	type = 'group',
 	name = L["BUFFOPTIONS_LABEL"],
-	childGroups = "tab",
+	childGroups = "tree",
 	order = 2,
 	get = function(info) return E.private.auras[info[#info]] end,
 	set = function(info, value)

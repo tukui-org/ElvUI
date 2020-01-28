@@ -10,7 +10,7 @@ local GameTooltipStatusBar = _G.GameTooltipStatusBar
 E.Options.args.tooltip = {
 	type = "group",
 	name = L["Tooltip"],
-	childGroups = "tab",
+	childGroups = "tree",
 	order = 2,
 	get = function(info) return E.db.tooltip[info[#info]] end,
 	set = function(info, value) E.db.tooltip[info[#info]] = value; end,

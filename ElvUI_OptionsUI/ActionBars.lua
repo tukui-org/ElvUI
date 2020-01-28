@@ -21,7 +21,7 @@ local points = {
 E.Options.args.actionbar = {
 	type = "group",
 	name = L["ActionBars"],
-	childGroups = "tab",
+	childGroups = "tree",
 	order = 2,
 	get = function(info) return E.db.actionbar[info[#info]] end,
 	set = function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end,
