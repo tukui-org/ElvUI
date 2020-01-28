@@ -479,7 +479,7 @@ E.Options.args.modulecontrol= {
 			name = L["Module Copy"],
 			order = 1,
 			childGroups = "tab",
-			handler = E.Options.args.general.args.profiles.handler,
+			handler = E.Options.args.profiles.handler,
 			args = {
 				intro = {
 					order = 1,
@@ -498,9 +498,9 @@ E.Options.args.modulecontrol= {
 					desc = L["Select a profile to copy from/to."],
 					get = function(info) return E.global.profileCopy.selected end,
 					set = function(info, value) E.global.profileCopy.selected = value end,
-					values = E.Options.args.general.args.profiles.args.copyfrom.values,
-					disabled = E.Options.args.general.args.profiles.args.copyfrom.disabled,
-					arg = E.Options.args.general.args.profiles.args.copyfrom.arg,
+					values = E.Options.args.profiles.args.copyfrom.values,
+					disabled = E.Options.args.profiles.args.copyfrom.disabled,
+					arg = E.Options.args.profiles.args.copyfrom.arg,
 				},
 				elvui = {
 					order = 10,
@@ -508,7 +508,7 @@ E.Options.args.modulecontrol= {
 					name = 'ElvUI',
 					desc = L["Core |cfffe7b2cElvUI|r options."],
 					childGroups = "tree",
-					disabled = E.Options.args.general.args.profiles.args.copyfrom.disabled,
+					disabled = E.Options.args.profiles.args.copyfrom.disabled,
 					args = {
 						header = {
 							order = 0,
@@ -534,7 +534,7 @@ E.Options.args.modulecontrol= {
 					name = L["Movers"],
 					desc = L["On screen positions for different elements."],
 					childGroups = "tree",
-					disabled = E.Options.args.general.args.profiles.args.copyfrom.disabled,
+					disabled = E.Options.args.profiles.args.copyfrom.disabled,
 					args = MC:CreateMoversConfigGroup(),
 				},
 			},

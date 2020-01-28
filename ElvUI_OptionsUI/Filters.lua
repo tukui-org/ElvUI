@@ -54,13 +54,13 @@ local FilterResetState = {}
 
 local function UpdateFilterGroup()
 	--Prevent errors when choosing a new filter, by doing a reset of the groups
-	E.Options.args.general.args.filters.args.filterGroup = nil
-	E.Options.args.general.args.filters.args.spellGroup = nil
-	E.Options.args.general.args.filters.args.resetGroup = nil
-	E.Options.args.general.args.filters.childGroups = nil
+	E.Options.args.filters.args.filterGroup = nil
+	E.Options.args.filters.args.spellGroup = nil
+	E.Options.args.filters.args.resetGroup = nil
+	E.Options.args.filters.childGroups = nil
 
 	if selectedFilter == 'Debuff Highlight' then
-		E.Options.args.general.args.filters.args.filterGroup = {
+		E.Options.args.filters.args.filterGroup = {
 			type = 'group',
 			name = selectedFilter,
 			guiInline = true,
@@ -134,7 +134,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
-		E.Options.args.general.args.filters.args.resetGroup = {
+		E.Options.args.filters.args.resetGroup = {
 			type = "group",
 			name = L["Reset Filter"],
 			order = 25,
@@ -147,7 +147,7 @@ local function UpdateFilterGroup()
 					get = function(info) return FilterResetState[selectedFilter] end,
 					set = function(info, value)
 						FilterResetState[selectedFilter] = value
-						E.Options.args.general.args.filters.args.resetGroup.args.resetFilter.disabled = (not value)
+						E.Options.args.filters.args.resetGroup.args.resetFilter.disabled = (not value)
 					end,
 				},
 				resetFilter = {
@@ -171,11 +171,11 @@ local function UpdateFilterGroup()
 		if spellID then spellID = tonumber(spellID) end
 
 		if not selectedSpell or E.global.unitframe.DebuffHighlightColors[(spellID or selectedSpell)] == nil then
-			E.Options.args.general.args.filters.args.spellGroup = nil
+			E.Options.args.filters.args.spellGroup = nil
 			return
 		end
 
-		E.Options.args.general.args.filters.args.spellGroup = {
+		E.Options.args.filters.args.spellGroup = {
 			type = "group",
 			name = selectedSpell,
 			order = 15,
@@ -227,7 +227,7 @@ local function UpdateFilterGroup()
 			},
 		}
 	elseif selectedFilter == 'AuraBar Colors' then
-		E.Options.args.general.args.filters.args.filterGroup = {
+		E.Options.args.filters.args.filterGroup = {
 			type = 'group',
 			name = selectedFilter,
 			guiInline = true,
@@ -315,7 +315,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
-		E.Options.args.general.args.filters.args.resetGroup = {
+		E.Options.args.filters.args.resetGroup = {
 			type = "group",
 			name = L["Reset Filter"],
 			order = 25,
@@ -328,7 +328,7 @@ local function UpdateFilterGroup()
 					get = function(info) return FilterResetState[selectedFilter] end,
 					set = function(info, value)
 						FilterResetState[selectedFilter] = value
-						E.Options.args.general.args.filters.args.resetGroup.args.resetFilter.disabled = (not value)
+						E.Options.args.filters.args.resetGroup.args.resetFilter.disabled = (not value)
 					end,
 				},
 				resetFilter = {
@@ -352,11 +352,11 @@ local function UpdateFilterGroup()
 		if spellID then spellID = tonumber(spellID) end
 
 		if not selectedSpell or E.global.unitframe.AuraBarColors[(spellID or selectedSpell)] == nil then
-			E.Options.args.general.args.filters.args.spellGroup = nil
+			E.Options.args.filters.args.spellGroup = nil
 			return
 		end
 
-		E.Options.args.general.args.filters.args.spellGroup = {
+		E.Options.args.filters.args.spellGroup = {
 			type = "group",
 			name = selectedSpell,
 			order = 15,
@@ -415,7 +415,7 @@ local function UpdateFilterGroup()
 			defaultTable = G.unitframe.buffwatch[E.myclass]
 		end
 
-		E.Options.args.general.args.filters.args.filterGroup = {
+		E.Options.args.filters.args.filterGroup = {
 			type = 'group',
 			name = selectedFilter,
 			guiInline = true,
@@ -502,7 +502,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
-		E.Options.args.general.args.filters.args.resetGroup = {
+		E.Options.args.filters.args.resetGroup = {
 			type = "group",
 			name = L["Reset Filter"],
 			order = 25,
@@ -515,7 +515,7 @@ local function UpdateFilterGroup()
 					get = function(info) return FilterResetState[selectedFilter] end,
 					set = function(info, value)
 						FilterResetState[selectedFilter] = value
-						E.Options.args.general.args.filters.args.resetGroup.args.resetFilter.disabled = (not value)
+						E.Options.args.filters.args.resetGroup.args.resetFilter.disabled = (not value)
 					end,
 				},
 				resetFilter = {
@@ -537,7 +537,7 @@ local function UpdateFilterGroup()
 
 		if selectedSpell then
 			local name = GetSpellInfo(selectedSpell)
-			E.Options.args.general.args.filters.args.filterGroup.args[name] = {
+			E.Options.args.filters.args.filterGroup.args[name] = {
 				name = name..' ('..selectedSpell..')',
 				type = 'group',
 				get = function(info) return selectedTable[selectedSpell][info[#info]] end,
@@ -645,13 +645,13 @@ local function UpdateFilterGroup()
 		end
 	else
 		if not selectedFilter or not E.global.unitframe.aurafilters[selectedFilter] then
-			E.Options.args.general.args.filters.args.filterGroup = nil
-			E.Options.args.general.args.filters.args.spellGroup = nil
-			E.Options.args.general.args.filters.args.resetGroup = nil
+			E.Options.args.filters.args.filterGroup = nil
+			E.Options.args.filters.args.spellGroup = nil
+			E.Options.args.filters.args.resetGroup = nil
 			return
 		end
 
-		E.Options.args.general.args.filters.args.filterGroup = {
+		E.Options.args.filters.args.filterGroup = {
 			type = 'group',
 			name = selectedFilter,
 			guiInline = true,
@@ -757,11 +757,11 @@ local function UpdateFilterGroup()
 
 		if (E.DEFAULT_FILTER[selectedFilter]) then
 			--Disable and hide filter type option for default filters
-			E.Options.args.general.args.filters.args.filterGroup.args.filterType.disabled = true
-			E.Options.args.general.args.filters.args.filterGroup.args.filterType.hidden = true
+			E.Options.args.filters.args.filterGroup.args.filterType.disabled = true
+			E.Options.args.filters.args.filterGroup.args.filterType.hidden = true
 
 			--Add button to reset content of the filter back to default
-			E.Options.args.general.args.filters.args.resetGroup = {
+			E.Options.args.filters.args.resetGroup = {
 				type = "group",
 				name = L["Reset Filter"],
 				order = 25,
@@ -774,7 +774,7 @@ local function UpdateFilterGroup()
 						get = function(info) return FilterResetState[selectedFilter] end,
 						set = function(info, value)
 							FilterResetState[selectedFilter] = value
-							E.Options.args.general.args.filters.args.resetGroup.args.resetFilter.disabled = (not value)
+							E.Options.args.filters.args.resetGroup.args.resetFilter.disabled = (not value)
 						end,
 					},
 					resetFilter = {
@@ -799,11 +799,11 @@ local function UpdateFilterGroup()
 		if spellID then spellID = tonumber(spellID) end
 
 		if not selectedSpell or not E.global.unitframe.aurafilters[selectedFilter].spells[(spellID or selectedSpell)] then
-			E.Options.args.general.args.filters.args.spellGroup = nil
+			E.Options.args.filters.args.spellGroup = nil
 			return
 		end
 
-		E.Options.args.general.args.filters.args.spellGroup = {
+		E.Options.args.filters.args.spellGroup = {
 			type = "group",
 			name = selectedSpell,
 			order = 15,
@@ -867,10 +867,10 @@ local function UpdateFilterGroup()
 	UF:Update_AllFrames();
 end
 
-E.Options.args.general.args.filters = {
+E.Options.args.filters = {
 	type = 'group',
 	name = L["FILTERS"],
-	order = -4,
+	order = 3, --Always Last Hehehe
 	args = {
 		createFilter = {
 			order = 1,
@@ -945,7 +945,7 @@ E.Options.args.general.args.filters = {
 				selectedFilter = nil
 				selectedSpell = nil
 				quickSearchText = ""
-				E.Options.args.general.args.filters.args.filterGroup = nil
+				E.Options.args.filters.args.filterGroup = nil
 			end,
 			disabled = function() return G.unitframe.aurafilters[selectedFilter] end,
 			hidden = function() return selectedFilter == nil end,

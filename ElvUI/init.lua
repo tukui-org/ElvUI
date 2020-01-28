@@ -9,6 +9,7 @@
 
 --Lua functions
 local _G, min, format, pairs, gsub, strsplit, unpack, wipe, type, tcopy = _G, min, format, pairs, gsub, strsplit, unpack, wipe, type, table.copy
+local tinsert, sort, ipairs, select = tinsert, sort, ipairs, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
@@ -42,7 +43,7 @@ local AddOn = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'Ac
 AddOn.version = GetAddOnMetadata('ElvUI', 'Version')
 AddOn.callbacks = AddOn.callbacks or CallbackHandler:New(AddOn)
 AddOn.DF = {profile = {}, global = {}}; AddOn.privateVars = {profile = {}} -- Defaults
-AddOn.Options = {type = 'group', name = format("%s: |cff99ff33%s|r", AddOnName, AddOn.version), args = {}}
+AddOn.Options = {type = 'group', args = {}, childGroups = 'ElvUI_HiddenTree'}
 
 Engine[1] = AddOn
 Engine[2] = {}
@@ -311,7 +312,7 @@ function AddOn:ConfigStopMovingOrSizing()
 	end
 end
 
-local function OptionButton_OnEnter(self)
+local function ConfigButton_OnEnter(self)
 	if GameTooltip:IsForbidden() or not self.desc then return end
 
 	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT", 0, 2)
@@ -319,21 +320,115 @@ local function OptionButton_OnEnter(self)
 	GameTooltip:Show()
 end
 
-local function OptionButton_OnLeave()
+local function ConfigButton_OnLeave()
 	if GameTooltip:IsForbidden() then return end
 
 	GameTooltip:Hide()
 end
 
+function AddOn:CreateSeparatorLine(frame, lastButton)
+	local line = frame.leftHolder:CreateTexture()
+	line:SetTexture(AddOn.Media.Textures.White8x8)
+	line:SetVertexColor(0, 0, 0, 0.75)
+	line:Size(181, 2)
+	line:Point("TOP", lastButton, "BOTTOM", 0, -3)
+	return line
+end
+
+function AddOn:CreateOptionFrame(info, frame, unskinned, ...)
+	local btn = CreateFrame(...)
+	btn:SetScript('OnEnter', ConfigButton_OnEnter)
+	btn:SetScript('OnLeave', ConfigButton_OnLeave)
+	btn:SetScript('OnClick', info.func)
+	btn:SetFrameLevel(3)
+	btn:SetText(info.name)
+	btn:SetWidth(btn:GetTextWidth() + 40)
+	btn.frame = frame
+	btn.desc = info.desc
+	btn.key = info.key
+
+	if btn.key == 'general' then
+		btn:Disable()
+	end
+
+	if not unskinned then
+		AddOn.Skins:HandleButton(btn)
+	end
+
+	return btn
+end
+
+local function SortOptionButtons(a,b)
+	if a[1] and b[1] then
+		if a[1] == b[1] and a[3].name and b[3].name then
+			return a[3].name < b[3].name
+		end
+		return a[1] < b[1]
+	end
+end
+
+function AddOn:UpdateLeftButtons()
+	local frame = AddOn.GUIFrame
+	if not (frame and frame.leftHolder) then return end
+
+	local selected = frame.obj.status.groups.selected
+	for key, btn in pairs(frame.leftHolder) do
+		if type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') then
+			if key == selected then
+				btn:Disable()
+			else
+				btn:Enable()
+			end
+		end
+	end
+end
+
+function AddOn:CreateLeftButtons(frame, unskinned, ACD, options)
+	local opts = {}
+	for key, info in pairs(options) do
+		tinsert(opts, {info.order, key, info})
+	end
+	sort(opts, SortOptionButtons)
+
+	local logo = frame.leftHolder:CreateTexture()
+	logo:SetTexture(AddOn.Media.Textures.Logo)
+	logo:Size(128, 64)
+	logo:Point("TOPLEFT", frame, "TOPLEFT", 29, -2)
+	local lastButton = logo
+
+	local version = frame.obj.titletext
+	version:ClearAllPoints()
+	version:Point("TOP", logo, "BOTTOM", 0, 2)
+
+	for _, opt in ipairs(opts) do
+		local info = opt[3]
+
+		info.key = opt[2]
+		info.func = function()
+			ACD:SelectGroup("ElvUI", info.key)
+		end
+
+		local btn = AddOn:CreateOptionFrame(info, frame, unskinned, 'Button', nil, frame.leftHolder, 'UIPanelButtonTemplate')
+		btn:SetWidth(177)
+
+		if lastButton == logo then
+			btn:Point("TOP", lastButton, "BOTTOM", 0, -14)
+		else
+			btn:Point("TOP", lastButton, "BOTTOM", 0, -4)
+		end
+
+		frame.leftHolder[info.key] = btn
+
+		lastButton = btn
+
+		if info.key == 'unitframe' or (info.key == 'credits' and AddOn.Options.args.plugins) then
+			lastButton = AddOn:CreateSeparatorLine(frame, lastButton)
+		end
+	end
+end
+
 function AddOn:CreateBottomButtons(frame, unskinned)
 	local L = self.Libs.ACL:GetLocale('ElvUI', self.global.general.locale or 'enUS')
-
-	local holder = CreateFrame('Frame', nil, frame)
-	holder:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", 2, 2)
-	holder:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
-	holder:Height(37)
-	holder:Show()
-	frame.buttonHolder = holder
 
 	local lastButton
 	for _, info in pairs({
@@ -386,33 +481,20 @@ function AddOn:CreateBottomButtons(frame, unskinned)
 			end
 		}
 	}) do
-		local btn = CreateFrame('Button', nil, frame.buttonHolder, 'UIPanelButtonTemplate')
-		btn:SetScript('OnEnter', OptionButton_OnEnter)
-		btn:SetScript('OnLeave', OptionButton_OnLeave)
-		btn:SetScript('OnClick', info.func)
-		btn:SetFrameLevel(3)
-		btn:SetText(info.name)
-		btn:SetWidth(btn:GetTextWidth() + 40)
-
+		local btn = AddOn:CreateOptionFrame(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
 		local offset = (unskinned and 14) or 8
-		if not unskinned then
-			AddOn.Skins:HandleButton(btn)
-			frame.buttonHolder:SetTemplate("Transparent")
-		end
 
 		if not lastButton then
-			btn:Point("BOTTOMLEFT", frame.buttonHolder, "BOTTOMLEFT", (unskinned and 24) or offset, offset)
+			btn:Point("BOTTOMLEFT", frame.bottomHolder, "BOTTOMLEFT", (unskinned and 24) or offset, offset)
 			lastButton = btn
 		elseif info.var == 'Close' then
-			btn:Point("BOTTOMRIGHT", frame.buttonHolder, "BOTTOMRIGHT", -26, offset)
+			btn:Point("BOTTOMRIGHT", frame.bottomHolder, "BOTTOMRIGHT", -26, offset)
 		else
 			btn:Point("LEFT", lastButton, "RIGHT", 4, 0)
 			lastButton = btn
 		end
 
-		btn.frame = frame
-		btn.desc = info.desc
-		frame.buttonHolder[info.var] = btn
+		frame.bottomHolder[info.var] = btn
 	end
 end
 
@@ -511,6 +593,7 @@ function AddOn:ToggleOptionsUI(msg)
 
 				self:UpdateConfigSize()
 				hooksecurefunc(frame, 'StopMovingOrSizing', AddOn.ConfigStopMovingOrSizing)
+				hooksecurefunc(AddOn.Libs.AceConfigRegistry, 'NotifyChange', AddOn.UpdateLeftButtons)
 
 				for i=1, frame:GetNumChildren() do
 					local child = select(i, frame:GetChildren())
@@ -530,15 +613,35 @@ function AddOn:ToggleOptionsUI(msg)
 					end
 				end
 
-				self:CreateBottomButtons(frame, unskinned)
-				local holderHeight = frame.buttonHolder:GetHeight()
+				local bottom = CreateFrame('Frame', nil, frame)
+				bottom:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", 2, 2)
+				bottom:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
+				bottom:Height(37)
+				bottom:Show()
+				frame.bottomHolder = bottom
 
-				local offset = (unskinned and 14) or 2
-				--frame.obj.titletext:Hide()
-				--frame.obj.titlebg:ClearAllPoints()
-				--frame.obj.titlebg:SetAllPoints(frame.obj.content:GetChildren():GetRegions())
-				frame.obj.content:SetPoint("TOPLEFT", frame, "TOPLEFT", offset, -((unskinned and 10) or 15))
-				frame.obj.content:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -offset, holderHeight)
+				local left = CreateFrame('Frame', nil, frame)
+				left:Point("TOPLEFT", frame, "TOPLEFT", 2, -2)
+				left:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
+				left:Width(181)
+				left:Show()
+				frame.leftHolder = left
+
+				if not unskinned then
+					bottom:SetTemplate("Transparent")
+					left:SetTemplate("Transparent")
+				end
+
+				self:CreateLeftButtons(frame, unskinned, ACD, AddOn.Options.args)
+				self:CreateBottomButtons(frame, unskinned)
+				local holderHeight = frame.bottomHolder:GetHeight()
+				local offset = (unskinned and 14) or 8
+
+				frame.obj.titlebg:ClearAllPoints()
+				frame.obj.titlebg:SetPoint("TOPLEFT", frame)
+				frame.obj.titlebg:SetPoint("TOPRIGHT", frame)
+				frame.obj.content:Point("TOPLEFT", frame, "TOPLEFT", offset, -((unskinned and 25) or 15))
+				frame.obj.content:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -offset, holderHeight + 3)
 			end
 		end
 

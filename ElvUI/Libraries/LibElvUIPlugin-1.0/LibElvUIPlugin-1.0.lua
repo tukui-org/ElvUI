@@ -128,7 +128,7 @@ function lib:RegisterPlugin(name, callback, isLib, libVersion)
 		lib.CFFrame:RegisterEvent("ADDON_LOADED")
 	elseif loaded then
 		if name ~= MAJOR then
-			E.Options.args.general.args.plugins.args.plugins.name = lib:GeneratePluginList()
+			E.Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
 		end
 
 		if callback then
@@ -178,8 +178,8 @@ function lib:GenerateVersionCheckMessage()
 end
 
 function lib:GetPluginOptions()
-	E.Options.args.general.args.plugins = {
-		order = -3,
+	E.Options.args.plugins = {
+		order = 3,
 		type = "group",
 		name = L["Plugins"],
 		guiInline = false,

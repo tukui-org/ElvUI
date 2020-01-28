@@ -280,6 +280,22 @@ end
 function S:Ace3_RefreshTree(scrollToSelection)
 	self.old_RefreshTree(self, scrollToSelection)
 	if not self.tree then return end
+
+	self.border:ClearAllPoints()
+	if self.userdata and self.userdata.option and self.userdata.option.childGroups == 'ElvUI_HiddenTree' then
+		self.border:Point("TOPLEFT", self.treeframe, "TOPRIGHT", 1, 13)
+		self.border:Point("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", 6, 0)
+		--self.userdata.rootframe.titletext:SetParent(self.border)
+		self.treeframe:Hide()
+		return
+	else
+		self.border:Point("TOPLEFT", self.treeframe, "TOPRIGHT")
+		self.border:Point("BOTTOMRIGHT", self.frame)
+		self.treeframe:Show()
+	end
+
+	if not E.private.skins.ace3.enable then return end
+
 	local status = self.status or self.localstatus
 	local groupstatus = status.groups
 	local lines = self.lines
@@ -334,12 +350,6 @@ function S:Ace3_RegisterAsContainer(widget)
 
 		if widget.treeframe then
 			widget.treeframe:SetTemplate('Transparent')
-			frame:Point('TOPLEFT', widget.treeframe, 'TOPRIGHT', 1, 0)
-
-			if not widget.old_RefreshTree then
-				widget.old_RefreshTree = widget.RefreshTree
-				widget.RefreshTree = S.Ace3_RefreshTree
-			end
 		end
 
 		if TYPE == 'TabGroup' then
@@ -425,17 +435,24 @@ function S:Ace3_MetaIndex(k, v)
 		rawset(self, k, v)
 		S:SecureHookScript(v, 'OnShow', S.Ace3_StylePopup)
 	elseif k == 'RegisterAsContainer' then
-		rawset(self, k, function(...)
+		rawset(self, k, function(s, w, ...)
 			if E.private.skins.ace3.enable then
-				S.Ace3_RegisterAsContainer(...)
+				S.Ace3_RegisterAsContainer(s, w, ...)
 			end
-			return v(...)
+
+			if w.treeframe and not w.old_RefreshTree then
+				w.old_RefreshTree = w.RefreshTree
+				w.RefreshTree = S.Ace3_RefreshTree
+			end
+
+			return v(s, w, ...)
 		end)
 	elseif k == 'RegisterAsWidget' then
 		rawset(self, k, function(...)
 			if E.private.skins.ace3.enable then
 				S.Ace3_RegisterAsWidget(...)
 			end
+
 			return v(...)
 		end)
 	else

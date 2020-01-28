@@ -28,15 +28,8 @@ E.Options.args.general = {
 	get = function(info) return E.db.general[info[#info]] end,
 	set = function(info, value) E.db.general[info[#info]] = value end,
 	args = {
-		intro = {
-			order = 1,
-			type = "description",
-			name = L["ELVUI_DESC"],
-			fontSize = "medium",
-			image = function() return "Interface\\AddOns\\ElvUI\\Media\\Textures\\Logo.tga", 160, 80 end,
-		},
 		general = {
-			order = 3,
+			order = 4,
 			type = "group",
 			name = L["General"],
 			args = {
@@ -186,7 +179,7 @@ E.Options.args.general = {
 			},
 		},
 		media = {
-			order = 3,
+			order = 5,
 			type = "group",
 			name = L["Media"],
 			get = function(info) return E.db.general[info[#info]] end,
@@ -381,7 +374,7 @@ E.Options.args.general = {
 			},
 		},
 		totems = {
-			order = 4,
+			order = 6,
 			type = "group",
 			name = L["Class Totems"],
 			get = function(info) return E.db.general.totems[info[#info]] end,
@@ -431,7 +424,7 @@ E.Options.args.general = {
 			},
 		},
 		chatBubblesGroup = {
-			order = 5,
+			order = 7,
 			type = "group",
 			name = L["Chat Bubbles"],
 			get = function(info) return E.private.general[info[#info]] end,
@@ -477,7 +470,7 @@ E.Options.args.general = {
 			},
 		},
 		objectiveFrameGroup = {
-			order = 6,
+			order = 8,
 			type = "group",
 			name = L["Objective Frame"],
 			get = function(info) return E.db.general[info[#info]] end,
@@ -512,7 +505,7 @@ E.Options.args.general = {
 			},
 		},
 		threatGroup = {
-			order = 7,
+			order = 9,
 			type = "group",
 			name = L["Threat"],
 			get = function(info) return E.db.general.threat[info[#info]] end,
@@ -551,7 +544,7 @@ E.Options.args.general = {
 			},
 		},
 		alternativePowerGroup = {
-			order = 8,
+			order = 10,
 			type = "group",
 			name = L["Alternative Power"],
 			get = function(info) return E.db.general.altPowerBar[info[#info]] end,
@@ -685,7 +678,7 @@ E.Options.args.general = {
 			},
 		},
 		blizzUIImprovements = {
-			order = 9,
+			order = 11,
 			type = "group",
 			name = L["BlizzUI Improvements"],
 			get = function(info) return E.db.general[info[#info]] end,
@@ -912,7 +905,5 @@ E.Options.args.general = {
 				},
 			},
 		},
-		profiles = C:ProfilesTable(-2),
-		credits = C:CreditsTable(-1)
 	},
 }
