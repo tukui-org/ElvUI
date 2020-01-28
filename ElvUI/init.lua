@@ -40,7 +40,7 @@ local AddOnName, Engine = ...
 local AddOn = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0')
 AddOn.callbacks = AddOn.callbacks or CallbackHandler:New(AddOn)
 AddOn.DF = {profile = {}, global = {}}; AddOn.privateVars = {profile = {}} -- Defaults
-AddOn.Options = {type = 'group', name = AddOnName, args = {}}
+AddOn.Options = {type = 'group', name = AddOnName, args = {}, childGroups = "select"}
 
 Engine[1] = AddOn
 Engine[2] = {}
