@@ -394,16 +394,14 @@ function AddOn:CreateBottomButtons(frame, unskinned)
 		btn:SetText(info.name)
 		btn:SetWidth(btn:GetTextWidth() + 40)
 
-		local offset = 8
-		if unskinned then
-			offset = 14
-		else
+		local offset = (unskinned and 14) or 8
+		if not unskinned then
 			AddOn.Skins:HandleButton(btn)
 			frame.buttonHolder:SetTemplate("Transparent")
 		end
 
 		if not lastButton then
-			btn:Point("BOTTOMLEFT", frame.buttonHolder, "BOTTOMLEFT", (unskinned and offset + 10) or offset, offset)
+			btn:Point("BOTTOMLEFT", frame.buttonHolder, "BOTTOMLEFT", (unskinned and 24) or offset, offset)
 			lastButton = btn
 		elseif info.var == 'NewClose' then
 			btn:Point("BOTTOMRIGHT", frame.buttonHolder, "BOTTOMRIGHT", -26, offset)
@@ -535,11 +533,12 @@ function AddOn:ToggleOptionsUI(msg)
 				self:CreateBottomButtons(frame, unskinned)
 				local holderHeight = frame.buttonHolder:GetHeight()
 
+				local offset = (unskinned and 14) or 2
 				frame.obj.titletext:Hide()
 				frame.obj.titlebg:ClearAllPoints()
 				frame.obj.titlebg:SetAllPoints(frame.obj.content:GetChildren():GetRegions())
-				frame.obj.content:SetPoint("TOPLEFT", frame, "TOPLEFT", 2, -2)
-				frame.obj.content:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, holderHeight)
+				frame.obj.content:SetPoint("TOPLEFT", frame, "TOPLEFT", offset, -((unskinned and 10) or offset))
+				frame.obj.content:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -offset, holderHeight)
 			end
 		end
 
