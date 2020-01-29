@@ -401,20 +401,20 @@ end
 
 function E:Config_CreateButton(info, frame, unskinned, ...)
 	local btn = CreateFrame(...)
+	btn.frame = frame
+	btn.desc = info.desc
+	btn.info = info
+
+	E:Config_SetButtonText(btn)
 	btn:SetScript('OnEnter', Config_ButtonOnEnter)
 	btn:SetScript('OnLeave', Config_ButtonOnLeave)
 	btn:SetScript('OnClick', info.func)
 	btn:Width(btn:GetTextWidth() + 40)
 
-	btn.frame = frame
-	btn.desc = info.desc
-	btn.info = info
-
 	if not unskinned then
 		E.Skins:HandleButton(btn)
 	end
 
-	E:Config_SetButtonText(btn)
 	E:Config_SetButtonColor(btn, btn.info.key == 'general')
 	btn.ignoreBorderColors = true
 
