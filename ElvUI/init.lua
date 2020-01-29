@@ -378,7 +378,11 @@ function AddOn:Config_CreateButton(info, frame, unskinned, ...)
 	btn:SetScript('OnEnter', Config_ButtonOnEnter)
 	btn:SetScript('OnLeave', Config_ButtonOnLeave)
 	btn:SetScript('OnClick', info.func)
-	btn:SetText(info.name)
+	if type(info.name) == 'function' then
+		btn:SetText(info.name())
+	else
+		btn:SetText(info.name)
+	end
 	btn:Width(btn:GetTextWidth() + 40)
 	btn.frame = frame
 	btn.desc = info.desc
@@ -433,6 +437,25 @@ function AddOn:Config_UpdateLeftScroller()
 	end
 end
 
+function AddOn:Config_SaveOldPosition(frame)
+	if frame.GetNumPoints and not frame.oldPosition then
+		frame.oldPosition = {}
+		for i = 1, frame:GetNumPoints() do
+			tinsert(frame.oldPosition, i, {frame:GetPoint(i)})
+		end
+	end
+end
+
+function AddOn:Config_RestoreOldPosition(frame)
+	local position = frame.oldPosition
+	if position then
+		frame:ClearAllPoints()
+		for i = 1, #position do
+			frame:Point(unpack(position[i]))
+		end
+	end
+end
+
 function AddOn:Config_CreateLeftButtons(frame, unskinned, ACD, options)
 	local opts = {}
 	for key, info in pairs(options) do
@@ -464,6 +487,18 @@ function AddOn:Config_CreateLeftButtons(frame, unskinned, ACD, options)
 		if info.key == 'unitframe' or (info.key == 'credits' and AddOn.Options.args.plugins) then
 			last = AddOn:Config_CreateSeparatorLine(frame, last)
 		end
+	end
+end
+
+function AddOn:Config_WindowClosed()
+	if self.bottomHolder then
+		self.bottomHolder:Hide()
+		self.leftHolder:Hide()
+		self.leftHolder.slider:Hide()
+		self.closeButton:Show()
+
+		AddOn:Config_RestoreOldPosition(self.leftHolder.version)
+		AddOn:Config_RestoreOldPosition(self.obj.content)
 	end
 end
 
@@ -635,7 +670,12 @@ function AddOn:ToggleOptionsUI(msg)
 				hooksecurefunc(frame, 'StopMovingOrSizing', AddOn.Config_StopMoving)
 				hooksecurefunc(AddOn.Libs.AceConfigRegistry, 'NotifyChange', AddOn.Config_UpdateLeftButtons)
 				frame:HookScript('OnSizeChanged', AddOn.Config_UpdateLeftScroller)
+				frame:HookScript('OnHide', AddOn.Config_WindowClosed)
+			end
 
+			local unskinned = not self.private.skins.ace3.enable
+			local offset = (unskinned and 14) or 8
+			if not frame.bottomHolder then
 				for i=1, frame:GetNumChildren() do
 					local child = select(i, frame:GetChildren())
 					if child:IsObjectType('Button') and child:GetText() == _G.CLOSE then
@@ -644,7 +684,6 @@ function AddOn:ToggleOptionsUI(msg)
 					end
 				end
 
-				local unskinned = not self.private.skins.ace3.enable
 				if unskinned then
 					for i=1, frame:GetNumRegions() do
 						local region = select(i, frame:GetRegions())
@@ -671,11 +710,6 @@ function AddOn:ToggleOptionsUI(msg)
 				logo:Point("TOPLEFT", frame, "TOPLEFT", 30, (unskinned and -6) or -2)
 				logo:Size(126, 64)
 				left.logo = logo
-
-				local version = frame.obj.titletext
-				version:ClearAllPoints()
-				version:Point("TOP", logo, "BOTTOM", 0, (unskinned and 4) or 2)
-				left.version = version
 
 				local buttonsHolder = CreateFrame('Frame', nil, left)
 				buttonsHolder:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
@@ -719,16 +753,13 @@ function AddOn:ToggleOptionsUI(msg)
 
 				self:Config_CreateLeftButtons(frame, unskinned, ACD, AddOn.Options.args)
 				self:Config_CreateBottomButtons(frame, unskinned)
-				local holderHeight = frame.bottomHolder:GetHeight()
-				local offset = (unskinned and 14) or 8
-
-				frame.obj.content:Point("TOPLEFT", frame, "TOPLEFT", offset, -((unskinned and 25) or 15))
-				frame.obj.content:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -offset, holderHeight + 3)
 
 				local titlebg = frame.obj.titlebg
 				titlebg:ClearAllPoints()
 				titlebg:SetPoint("TOPLEFT", frame)
 				titlebg:SetPoint("TOPRIGHT", frame)
+
+				left.version = frame.obj.titletext
 
 				AddOn.Config_UpdateLeftScroller(frame)
 			else
@@ -737,17 +768,23 @@ function AddOn:ToggleOptionsUI(msg)
 				frame.leftHolder.slider:Show()
 				frame.closeButton:Hide()
 			end
+
+			local version = frame.leftHolder.version
+			AddOn:Config_SaveOldPosition(version)
+			version:ClearAllPoints()
+			version:Point("TOP", frame.leftHolder.logo, "BOTTOM", 0, (unskinned and 4) or 2)
+
+			local holderHeight = frame.bottomHolder:GetHeight()
+			local content = frame.obj.content
+			AddOn:Config_SaveOldPosition(content)
+			content:ClearAllPoints()
+			content:Point("TOPLEFT", frame, "TOPLEFT", offset, -((unskinned and 25) or 15))
+			content:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -offset, holderHeight + 3)
 		end
 
 		if ACD and pages then
 			ACD:SelectGroup(AddOnName, unpack(pages))
 		end
-	elseif AddOn.GUIFrame then
-		local frame = AddOn.GUIFrame
-		frame.bottomHolder:Hide()
-		frame.leftHolder:Hide()
-		frame.leftHolder.slider:Hide()
-		frame.closeButton:Show()
 	end
 
 	_G.GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
