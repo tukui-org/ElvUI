@@ -28,6 +28,12 @@ E.Options.args.general = {
 	get = function(info) return E.db.general[info[#info]] end,
 	set = function(info, value) E.db.general[info[#info]] = value end,
 	args = {
+		intro = {
+			order = 0,
+			type = "description",
+			name = L["ELVUI_DESC"],
+			fontSize = "medium",
+		},
 		general = {
 			order = 4,
 			type = "group",
