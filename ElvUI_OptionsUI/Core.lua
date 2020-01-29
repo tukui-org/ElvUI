@@ -42,7 +42,6 @@ E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:Config_GetDefaultSize())
 E.Options.name = format("%s: |cff99ff33%s|r", L["Version"], E.version)
 
 local DONATOR_STRING = ""
-local DEVELOPER_STRING = ""
 local TESTER_STRING = ""
 local LINE_BREAK = "\n"
 local DONATORS = {
@@ -134,7 +133,7 @@ end
 for _, name in pairs(DEVELOPERS) do
 	tinsert(E.CreditsList, name)
 end
-DEVELOPER_STRING = table.concat(DEVELOPERS, ", ")
+local DEVELOPER_STRING = table.concat(DEVELOPERS, ", ")
 for _, name in pairs(TESTERS) do
 	tinsert(E.CreditsList, name)
 	TESTER_STRING = TESTER_STRING .. LINE_BREAK .. name
