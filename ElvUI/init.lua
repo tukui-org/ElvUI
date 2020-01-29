@@ -443,7 +443,7 @@ function AddOn:Config_SaveOldPosition(frame)
 	if frame.GetNumPoints and not frame.oldPosition then
 		frame.oldPosition = {}
 		for i = 1, frame:GetNumPoints() do
-			tinsert(frame.oldPosition, i, {frame:GetPoint(i)})
+			tinsert(frame.oldPosition, {frame:GetPoint(i)})
 		end
 	end
 end
@@ -703,6 +703,7 @@ function AddOn:ToggleOptionsUI(msg)
 				frame.bottomHolder = bottom
 
 				local left = CreateFrame('Frame', nil, frame)
+				left.version = frame.obj.titletext
 				left:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
 				left:Point("TOPLEFT", (unskinned and 10) or 2, (unskinned and -6) or -2)
 				left:Width(181)
@@ -761,8 +762,6 @@ function AddOn:ToggleOptionsUI(msg)
 				titlebg:ClearAllPoints()
 				titlebg:SetPoint("TOPLEFT", frame)
 				titlebg:SetPoint("TOPRIGHT", frame)
-
-				left.version = frame.obj.titletext
 
 				AddOn.Config_UpdateLeftScroller(frame)
 			else
