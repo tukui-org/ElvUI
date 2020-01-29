@@ -423,7 +423,8 @@ function E:Config_UpdateLeftButtons()
 	local frame = E.GUIFrame
 	if not (frame and frame.leftHolder) then return end
 
-	local selected = frame.obj.status.groups.selected
+	local status = frame.obj.status
+	local selected = status and status.groups.selected
 	for key, btn in pairs(frame.leftHolder.buttons) do
 		if type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') then
 			E:Config_SetButtonColor(btn, key == selected)
