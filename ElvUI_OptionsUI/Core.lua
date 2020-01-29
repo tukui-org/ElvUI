@@ -158,14 +158,14 @@ E.Options.args.info = {
 				discord = {
 					order = 3,
 					type = "execute",
-					name = L["Discord Server"],
+					name = L["Discord"],
 					func = function() E:StaticPopup_Show("ELVUI_EDITBOX", nil, nil, "https://discordapp.com/invite/xFWcfgE") end,
 				},
 				development = {
 					order = 4,
 					type = 'execute',
 					name = L["Development Version"],
-					desc = L["Here you can download the latest development version."],
+					desc = L["Link to the latest development version."],
 					func = function() E:StaticPopup_Show("ELVUI_EDITBOX", nil, nil, "https://git.tukui.org/elvui/elvui/-/archive/development/elvui-development.zip") end,
 				},
 			},
