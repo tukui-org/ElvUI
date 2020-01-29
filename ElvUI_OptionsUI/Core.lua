@@ -87,6 +87,20 @@ local DONATORS = {
 	"Ithilyn"
 }
 
+local DEVELOPERS = {
+	"Tukz",
+	"Haste",
+	"Nightcracker",
+	"Omega1970",
+	"Hydrazine",
+	"Blazeflack",
+	"|cffff2020NihilisticPandemonium|r",
+	"|cffff7d0aMerathilis|r",
+	"|cff4fd8d1S|cff50dabfi|cff51ddaem|cff52df9dp|cff53e18cy|cff5ae27b, |cff91de5bb|cffaddb4bu|cffc8d93bt |cffd8c73dm|cffdabc44y |cffdda652n|cffe09e59a|cffe39861m|cffe69268e |cffed8777n|cffef828ae|cfff17d9ce|cfff378aed|cfff573c0s |cffe668d2t|cffd962d5o |cffbe57dcb|cffac62dce |cff8099d7l|cff6ab5d4o|cff54d1d1n|cff4fd8d1g|cff4fd8d1e|cff4fd8d1r|r",
+	"|cff0070DEAzilroka|r",
+	"|cff9482c9Darth Predator|r",
+}
+
 local TESTERS = {
 	"Tukui Community",
 	"|cffF76ADBSarah|r - For Sarahing",
@@ -110,12 +124,17 @@ local function SortList(a, b)
 end
 
 sort(DONATORS, SortList)
+sort(DEVELOPERS, SortList)
 sort(TESTERS, SortList)
 
 for _, name in pairs(DONATORS) do
 	tinsert(E.CreditsList, name)
 	DONATOR_STRING = DONATOR_STRING .. LINE_BREAK .. name
 end
+for _, name in pairs(DEVELOPERS) do
+	tinsert(E.CreditsList, name)
+end
+DEVELOPER_STRING = table.concat(DEVELOPERS, ", ")
 for _, name in pairs(TESTERS) do
 	tinsert(E.CreditsList, name)
 	TESTER_STRING = TESTER_STRING .. LINE_BREAK .. name
@@ -196,7 +215,7 @@ E.Options.args.info = {
 					order = 1,
 					type = "description",
 					fontSize = "medium",
-					name = format("Tukz, Haste, Nightcracker, Omega1970, Hydrazine, Blazeflack, |cffff2020NihilisticPandemonium|r, |cffff7d0aMerathilis|r, |cff4fd8d1S|cff50dabfi|cff51ddaem|cff52df9dp|cff53e18cy|cff5ae27b, |cff91de5bb|cffaddb4bu|cffc8d93bt |cffd8c73dm|cffdabc44y |cffdda652n|cffe09e59a|cffe39861m|cffe69268e |cffed8777n|cffef828ae|cfff17d9ce|cfff378aed|cfff573c0s |cffe668d2t|cffd962d5o |cffbe57dcb|cffac62dce |cff8099d7l|cff6ab5d4o|cff54d1d1n|cff4fd8d1g|cff4fd8d1e|cff4fd8d1r|cff4fd8d1., |cff0070DEAzilroka|r, |cff9482c9Darth Predator|r")
+					name = DEVELOPER_STRING
 				},
 			},
 		},
