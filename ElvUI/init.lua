@@ -328,7 +328,7 @@ end
 
 local function Config_StripNameColor(name)
 	if type(name) == 'function' then name = name() end
-	return name:gsub('|c[fF][fF](.-)|r','%1')
+	return name:gsub('|c[fF][fF]%x%x%x%x%x%x(.-)|r','%1')
 end
 
 local function Config_SortButtons(a,b)
