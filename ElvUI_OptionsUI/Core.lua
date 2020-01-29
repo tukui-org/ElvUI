@@ -38,7 +38,7 @@ function E:RefreshGUI()
 end
 
 E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
-E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:GetConfigDefaultSize())
+E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:Config_GetDefaultSize())
 E.Options.name = format("%s: |cff99ff33%s|r", L["Version"], E.version)
 
 local DONATOR_STRING = ""

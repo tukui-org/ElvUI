@@ -255,20 +255,20 @@ function AddOn:OnProfileReset()
 	self:StaticPopup_Show('RESET_PROFILE_PROMPT')
 end
 
-function AddOn:ResetConfigSettings()
+function AddOn:Config_ResetSettings()
 	AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft = nil, nil
 	AddOn.global.general.AceGUI = AddOn:CopyTable({}, AddOn.DF.global.general.AceGUI)
 end
 
-function AddOn:GetConfigPosition()
+function AddOn:Config_GetPosition()
 	return AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft
 end
 
-function AddOn:GetConfigSize()
+function AddOn:Config_GetSize()
 	return AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height
 end
 
-function AddOn:UpdateConfigSize(reset)
+function AddOn:Config_UpdateSize(reset)
 	local frame = self.GUIFrame
 	if not frame then return end
 
@@ -276,19 +276,19 @@ function AddOn:UpdateConfigSize(reset)
 	frame:SetMinResize(800, 600)
 	frame:SetMaxResize(maxWidth-50, maxHeight-50)
 
-	self.Libs.AceConfigDialog:SetDefaultSize(AddOnName, self:GetConfigDefaultSize())
+	self.Libs.AceConfigDialog:SetDefaultSize(AddOnName, self:Config_GetDefaultSize())
 
 	local status = frame.obj and frame.obj.status
 	if status then
 		if reset then
-			self:ResetConfigSettings()
+			self:Config_ResetSettings()
 
-			status.top, status.left = self:GetConfigPosition()
-			status.width, status.height = self:GetConfigDefaultSize()
+			status.top, status.left = self:Config_GetPosition()
+			status.width, status.height = self:Config_GetDefaultSize()
 
 			frame.obj:ApplyStatus()
 		else
-			local top, left = self:GetConfigPosition()
+			local top, left = self:Config_GetPosition()
 			if top and left then
 				status.top, status.left = top, left
 
@@ -298,21 +298,21 @@ function AddOn:UpdateConfigSize(reset)
 	end
 end
 
-function AddOn:GetConfigDefaultSize()
-	local width, height = AddOn:GetConfigSize()
+function AddOn:Config_GetDefaultSize()
+	local width, height = AddOn:Config_GetSize()
 	local maxWidth, maxHeight = AddOn.UIParent:GetSize()
 	width, height = min(maxWidth-50, width), min(maxHeight-50, height)
 	return width, height
 end
 
-function AddOn:ConfigStopMovingOrSizing()
+function AddOn:Config_StopMoving()
 	if self.obj and self.obj.status then
 		AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft = AddOn:Round(self:GetTop(), 2), AddOn:Round(self:GetLeft(), 2)
 		AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height = AddOn:Round(self:GetWidth(), 2), AddOn:Round(self:GetHeight(), 2)
 	end
 end
 
-local function ConfigButton_OnEnter(self)
+local function Config_ButtonOnEnter(self)
 	if GameTooltip:IsForbidden() or not self.desc then return end
 
 	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT", 0, 2)
@@ -320,55 +320,13 @@ local function ConfigButton_OnEnter(self)
 	GameTooltip:Show()
 end
 
-local function ConfigButton_OnLeave()
+local function Config_ButtonOnLeave()
 	if GameTooltip:IsForbidden() then return end
 
 	GameTooltip:Hide()
 end
 
-function AddOn:CreateSeparatorLine(frame, lastButton)
-	local line = frame.leftHolder.buttons:CreateTexture()
-	line:SetTexture(AddOn.Media.Textures.White8x8)
-	line:SetVertexColor(.9, .8, 0, .7)
-	line:Size(179, 2)
-	line:Point("TOP", lastButton, "BOTTOM", 0, -6)
-	line.separator = true
-	return line
-end
-
-function AddOn:SetConfigButtonColor(btn, disabled)
-	if disabled then
-		btn:Disable()
-		btn:SetBackdropBorderColor(1, 1, 1, .5)
-	else
-		local r, g, b = unpack(AddOn.media.bordercolor)
-		btn:SetBackdropBorderColor(r, g, b, 1)
-		btn:Enable()
-	end
-end
-
-function AddOn:CreateOptionFrame(info, frame, unskinned, ...)
-	local btn = CreateFrame(...)
-	btn:SetScript('OnEnter', ConfigButton_OnEnter)
-	btn:SetScript('OnLeave', ConfigButton_OnLeave)
-	btn:SetScript('OnClick', info.func)
-	btn:SetText(info.name)
-	btn:Width(btn:GetTextWidth() + 40)
-	btn.frame = frame
-	btn.desc = info.desc
-	btn.key = info.key
-
-	if not unskinned then
-		AddOn.Skins:HandleButton(btn)
-	end
-
-	AddOn:SetConfigButtonColor(btn, btn.key == 'general')
-	btn.ignoreBorderColors = true
-
-	return btn
-end
-
-local function SortOptionButtons(a,b)
+local function Config_SortButtons(a,b)
 	if a[1] and b[1] then
 		if a[1] == b[1] and a[3].name and b[3].name then
 			return a[3].name < b[3].name
@@ -394,19 +352,61 @@ local function ConfigSliderOnValueChanged(self, value)
 	self.buttons:Point("TOPLEFT", 0, value * 36)
 end
 
-function AddOn:UpdateLeftButtons()
+function AddOn:Config_CreateSeparatorLine(frame, lastButton)
+	local line = frame.leftHolder.buttons:CreateTexture()
+	line:SetTexture(AddOn.Media.Textures.White8x8)
+	line:SetVertexColor(.9, .8, 0, .7)
+	line:Size(179, 2)
+	line:Point("TOP", lastButton, "BOTTOM", 0, -6)
+	line.separator = true
+	return line
+end
+
+function AddOn:Config_SetButtonColor(btn, disabled)
+	if disabled then
+		btn:Disable()
+		btn:SetBackdropBorderColor(1, 1, 1, .5)
+	else
+		local r, g, b = unpack(AddOn.media.bordercolor)
+		btn:SetBackdropBorderColor(r, g, b, 1)
+		btn:Enable()
+	end
+end
+
+function AddOn:Config_CreateButton(info, frame, unskinned, ...)
+	local btn = CreateFrame(...)
+	btn:SetScript('OnEnter', Config_ButtonOnEnter)
+	btn:SetScript('OnLeave', Config_ButtonOnLeave)
+	btn:SetScript('OnClick', info.func)
+	btn:SetText(info.name)
+	btn:Width(btn:GetTextWidth() + 40)
+	btn.frame = frame
+	btn.desc = info.desc
+	btn.key = info.key
+
+	if not unskinned then
+		AddOn.Skins:HandleButton(btn)
+	end
+
+	AddOn:Config_SetButtonColor(btn, btn.key == 'general')
+	btn.ignoreBorderColors = true
+
+	return btn
+end
+
+function AddOn:Config_UpdateLeftButtons()
 	local frame = AddOn.GUIFrame
 	if not (frame and frame.leftHolder) then return end
 
 	local selected = frame.obj.status.groups.selected
 	for key, btn in pairs(frame.leftHolder.buttons) do
 		if type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') then
-			AddOn:SetConfigButtonColor(btn, key == selected)
+			AddOn:Config_SetButtonColor(btn, key == selected)
 		end
 	end
 end
 
-function AddOn:UpdateLeftScroller()
+function AddOn:Config_UpdateLeftScroller()
 	if not (self and self.leftHolder) then return end
 
 	local left = self.leftHolder
@@ -433,12 +433,12 @@ function AddOn:UpdateLeftScroller()
 	end
 end
 
-function AddOn:CreateLeftButtons(frame, unskinned, ACD, options)
+function AddOn:Config_CreateLeftButtons(frame, unskinned, ACD, options)
 	local opts = {}
 	for key, info in pairs(options) do
 		tinsert(opts, {info.order, key, info})
 	end
-	sort(opts, SortOptionButtons)
+	sort(opts, Config_SortButtons)
 
 	local buttons, last = frame.leftHolder.buttons
 	for _, opt in ipairs(opts) do
@@ -449,7 +449,7 @@ function AddOn:CreateLeftButtons(frame, unskinned, ACD, options)
 			ACD:SelectGroup("ElvUI", info.key)
 		end
 
-		local btn = AddOn:CreateOptionFrame(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate')
+		local btn = AddOn:Config_CreateButton(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate')
 		btn:Width(177)
 
 		if not last then
@@ -462,12 +462,12 @@ function AddOn:CreateLeftButtons(frame, unskinned, ACD, options)
 		last = btn
 
 		if info.key == 'unitframe' or (info.key == 'credits' and AddOn.Options.args.plugins) then
-			last = AddOn:CreateSeparatorLine(frame, last)
+			last = AddOn:Config_CreateSeparatorLine(frame, last)
 		end
 	end
 end
 
-function AddOn:CreateBottomButtons(frame, unskinned)
+function AddOn:Config_CreateBottomButtons(frame, unskinned)
 	local L = self.Libs.ACL:GetLocale('ElvUI', self.global.general.locale or 'enUS')
 
 	local last
@@ -477,7 +477,7 @@ function AddOn:CreateBottomButtons(frame, unskinned)
 			name = L["Reposition Window"],
 			desc = L["Reset the size and position of this frame."],
 			func = function()
-				self:UpdateConfigSize(true)
+				self:Config_UpdateSize(true)
 			end
 		},
 		{
@@ -521,7 +521,7 @@ function AddOn:CreateBottomButtons(frame, unskinned)
 			end
 		}
 	}) do
-		local btn = AddOn:CreateOptionFrame(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
+		local btn = AddOn:Config_CreateButton(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
 		local offset = (unskinned and 14) or 8
 
 		if not last then
@@ -625,16 +625,16 @@ function AddOn:ToggleOptionsUI(msg)
 
 	if mode == 'Open' then
 		ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
-		if ConfigOpen then
+		if ConfigOpen and ConfigOpen.frame then
 			local frame = ConfigOpen.frame
-			if frame and not self.GUIFrame then
+			if not self.GUIFrame then
 				self.GUIFrame = frame
 				_G.ElvUIGUIFrame = self.GUIFrame
 
-				self:UpdateConfigSize()
-				hooksecurefunc(frame, 'StopMovingOrSizing', AddOn.ConfigStopMovingOrSizing)
-				hooksecurefunc(AddOn.Libs.AceConfigRegistry, 'NotifyChange', AddOn.UpdateLeftButtons)
-				frame:HookScript('OnSizeChanged', AddOn.UpdateLeftScroller)
+				self:Config_UpdateSize()
+				hooksecurefunc(frame, 'StopMovingOrSizing', AddOn.Config_StopMoving)
+				hooksecurefunc(AddOn.Libs.AceConfigRegistry, 'NotifyChange', AddOn.Config_UpdateLeftButtons)
+				frame:HookScript('OnSizeChanged', AddOn.Config_UpdateLeftScroller)
 
 				for i=1, frame:GetNumChildren() do
 					local child = select(i, frame:GetChildren())
@@ -717,8 +717,8 @@ function AddOn:ToggleOptionsUI(msg)
 					left:SetTemplate("Transparent")
 				end
 
-				self:CreateLeftButtons(frame, unskinned, ACD, AddOn.Options.args)
-				self:CreateBottomButtons(frame, unskinned)
+				self:Config_CreateLeftButtons(frame, unskinned, ACD, AddOn.Options.args)
+				self:Config_CreateBottomButtons(frame, unskinned)
 				local holderHeight = frame.bottomHolder:GetHeight()
 				local offset = (unskinned and 14) or 8
 
@@ -730,13 +730,24 @@ function AddOn:ToggleOptionsUI(msg)
 				titlebg:SetPoint("TOPLEFT", frame)
 				titlebg:SetPoint("TOPRIGHT", frame)
 
-				AddOn.UpdateLeftScroller(frame)
+				AddOn.Config_UpdateLeftScroller(frame)
+			else
+				frame.bottomHolder:Show()
+				frame.leftHolder:Show()
+				frame.leftHolder.slider:Show()
+				frame.closeButton:Hide()
 			end
 		end
 
 		if ACD and pages then
 			ACD:SelectGroup(AddOnName, unpack(pages))
 		end
+	elseif AddOn.GUIFrame then
+		local frame = AddOn.GUIFrame
+		frame.bottomHolder:Hide()
+		frame.leftHolder:Hide()
+		frame.leftHolder.slider:Hide()
+		frame.closeButton:Show()
 	end
 
 	_G.GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
