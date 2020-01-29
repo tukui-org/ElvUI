@@ -328,8 +328,10 @@ end
 
 local function Config_SortButtons(a,b)
 	if a[1] and b[1] then
-		if a[1] == b[1] and a[3].name and b[3].name then
-			return a[3].name < b[3].name
+		if a[1] == b[1] then
+			local name1 = (type(a[3].name) == 'function' and a[3].name()) or a[3].name
+			local name2 = (type(b[3].name) == 'function' and b[3].name()) or b[3].name
+			return name1 < name2
 		end
 		return a[1] < b[1]
 	end
