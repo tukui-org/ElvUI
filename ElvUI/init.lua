@@ -341,8 +341,9 @@ function AddOn:SetConfigButtonColor(btn, disabled)
 		btn:Disable()
 		btn:SetBackdropBorderColor(1, 1, 1, .5)
 	else
+		local r, g, b = unpack(AddOn.media.bordercolor)
+		btn:SetBackdropBorderColor(r, g, b, 1)
 		btn:Enable()
-		btn:SetBackdropBorderColor(unpack(AddOn.media.bordercolor))
 	end
 end
 
