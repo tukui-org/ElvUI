@@ -41,9 +41,6 @@ E.Libs.AceConfig:RegisterOptionsTable("ElvUI", E.Options)
 E.Libs.AceConfigDialog:SetDefaultSize("ElvUI", E:Config_GetDefaultSize())
 E.Options.name = format("%s: |cff99ff33%s|r", L["Version"], E.version)
 
-local DONATOR_STRING = ""
-local TESTER_STRING = ""
-local LINE_BREAK = "\n"
 local DONATORS = {
 	"Dandruff",
 	"Tobur/Tarilya",
@@ -95,9 +92,9 @@ local DEVELOPERS = {
 	"Blazeflack",
 	"|cffff2020NihilisticPandemonium|r",
 	"|cffff7d0aMerathilis|r",
-	"|cff4fd8d1S|cff50dabfi|cff51ddaem|cff52df9dp|cff53e18cy|cff5ae27b, |cff91de5bb|cffaddb4bu|cffc8d93bt |cffd8c73dm|cffdabc44y |cffdda652n|cffe09e59a|cffe39861m|cffe69268e |cffed8777n|cffef828ae|cfff17d9ce|cfff378aed|cfff573c0s |cffe668d2t|cffd962d5o |cffbe57dcb|cffac62dce |cff8099d7l|cff6ab5d4o|cff54d1d1n|cff4fd8d1g|cff4fd8d1e|cff4fd8d1r|r",
 	"|cff0070DEAzilroka|r",
 	"|cff9482c9Darth Predator|r",
+	E:TextGradient("Simpy but my name needs to be longer", 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82).."|r"
 }
 
 local TESTERS = {
@@ -119,7 +116,9 @@ local TESTERS = {
 }
 
 local function SortList(a, b)
-	return a < b
+	local A = a:gsub('|c[fF][fF]%x%x%x%x%x%x',''):gsub('|r','')
+	local B = b:gsub('|c[fF][fF]%x%x%x%x%x%x',''):gsub('|r','')
+	return A < B
 end
 
 sort(DONATORS, SortList)
@@ -128,16 +127,16 @@ sort(TESTERS, SortList)
 
 for _, name in pairs(DONATORS) do
 	tinsert(E.CreditsList, name)
-	DONATOR_STRING = DONATOR_STRING .. LINE_BREAK .. name
 end
+local DONATOR_STRING = table.concat(DONATORS, "\n")
 for _, name in pairs(DEVELOPERS) do
 	tinsert(E.CreditsList, name)
 end
-local DEVELOPER_STRING = table.concat(DEVELOPERS, ", ")
+local DEVELOPER_STRING = table.concat(DEVELOPERS, "\n")
 for _, name in pairs(TESTERS) do
 	tinsert(E.CreditsList, name)
-	TESTER_STRING = TESTER_STRING .. LINE_BREAK .. name
 end
+local TESTER_STRING = table.concat(TESTERS, "\n")
 
 E.Options.args.info = {
 	order = 4,
@@ -199,18 +198,27 @@ E.Options.args.info = {
 				},
 			},
 		},
-		spacer1 = {
+		credits = {
 			order = 4,
-			type = "description",
-			name = "",
+			type = "group",
+			name = L["Credits"],
+			guiInline = true,
+			args = {
+				string = {
+					order = 1,
+					type = "description",
+					fontSize = "medium",
+					name = L["ELVUI_CREDITS"]
+				},
+			},
 		},
 		coding = {
 			order = 5,
 			type = "group",
-			name = L["Coding"],
+			name = L["Coding:"],
 			guiInline = true,
 			args = {
-				developers = {
+				string = {
 					order = 1,
 					type = "description",
 					fontSize = "medium",
@@ -218,22 +226,34 @@ E.Options.args.info = {
 				},
 			},
 		},
-		credits = {
+		testers = {
 			order = 6,
 			type = "group",
-			name = L["Credits"],
+			name = L["Testing:"],
 			guiInline = true,
 			args = {
-				text = {
+				string = {
 					order = 1,
 					type = "description",
-					name =
-						L["ELVUI_CREDITS"] .. "\n\n" ..
-						L["Testing:"] .. TESTER_STRING .. "\n\n" ..
-						L["Donations:"] .. DONATOR_STRING
-				}
-			}
-		}
+					fontSize = "medium",
+					name = TESTER_STRING
+				},
+			},
+		},
+		donators = {
+			order = 7,
+			type = "group",
+			name = L["Donations:"],
+			guiInline = true,
+			args = {
+				string = {
+					order = 1,
+					type = "description",
+					fontSize = "medium",
+					name = DONATOR_STRING
+				},
+			},
+		},
 	}
 }
 
