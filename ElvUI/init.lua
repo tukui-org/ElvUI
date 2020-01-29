@@ -39,17 +39,17 @@ local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
 
 local AddOnName, Engine = ...
-local AddOn = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0')
-AddOn.version = GetAddOnMetadata('ElvUI', 'Version')
-AddOn.callbacks = AddOn.callbacks or CallbackHandler:New(AddOn)
-AddOn.DF = {profile = {}, global = {}}; AddOn.privateVars = {profile = {}} -- Defaults
-AddOn.Options = {type = 'group', args = {}, childGroups = 'ElvUI_HiddenTree'}
+local E = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0')
+E.version = GetAddOnMetadata('ElvUI', 'Version')
+E.callbacks = E.callbacks or CallbackHandler:New(E)
+E.DF = {profile = {}, global = {}}; E.privateVars = {profile = {}} -- Defaults
+E.Options = {type = 'group', args = {}, childGroups = 'ElvUI_HiddenTree'}
 
-Engine[1] = AddOn
+Engine[1] = E
 Engine[2] = {}
-Engine[3] = AddOn.privateVars.profile
-Engine[4] = AddOn.DF.profile
-Engine[5] = AddOn.DF.global
+Engine[3] = E.privateVars.profile
+Engine[4] = E.DF.profile
+Engine[5] = E.DF.global
 _G.ElvUI = Engine
 
 do
@@ -57,15 +57,15 @@ do
 	local convert = {enGB = 'enUS', esES = 'esMX', itIT = 'enUS'}
 	local gameLocale = convert[locale] or locale or 'enUS'
 
-	function AddOn:GetLocale()
+	function E:GetLocale()
 		return gameLocale
 	end
 end
 
 do
-	AddOn.Libs = {}
-	AddOn.LibsMinor = {}
-	function AddOn:AddLib(name, major, minor)
+	E.Libs = {}
+	E.LibsMinor = {}
+	function E:AddLib(name, major, minor)
 		if not name then return end
 
 		-- in this case: `major` is the lib table and `minor` is the minor version
@@ -76,57 +76,57 @@ do
 		end
 	end
 
-	AddOn:AddLib('AceAddon', AceAddon, AceAddonMinor)
-	AddOn:AddLib('AceDB', 'AceDB-3.0')
-	AddOn:AddLib('EP', 'LibElvUIPlugin-1.0')
-	AddOn:AddLib('LSM', 'LibSharedMedia-3.0')
-	AddOn:AddLib('ACL', 'AceLocale-3.0-ElvUI')
-	AddOn:AddLib('LAB', 'LibActionButton-1.0-ElvUI')
-	AddOn:AddLib('LDB', 'LibDataBroker-1.1')
-	AddOn:AddLib('DualSpec', 'LibDualSpec-1.0')
-	AddOn:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
-	AddOn:AddLib('SpellRange', 'SpellRange-1.0')
-	AddOn:AddLib('ButtonGlow', 'LibButtonGlow-1.0', true)
-	AddOn:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
-	AddOn:AddLib('Compress', 'LibCompress')
-	AddOn:AddLib('Base64', 'LibBase64-1.0-ElvUI')
-	AddOn:AddLib('Masque', 'Masque', true)
-	AddOn:AddLib('Translit', 'LibTranslit-1.0')
+	E:AddLib('AceAddon', AceAddon, AceAddonMinor)
+	E:AddLib('AceDB', 'AceDB-3.0')
+	E:AddLib('EP', 'LibElvUIPlugin-1.0')
+	E:AddLib('LSM', 'LibSharedMedia-3.0')
+	E:AddLib('ACL', 'AceLocale-3.0-ElvUI')
+	E:AddLib('LAB', 'LibActionButton-1.0-ElvUI')
+	E:AddLib('LDB', 'LibDataBroker-1.1')
+	E:AddLib('DualSpec', 'LibDualSpec-1.0')
+	E:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
+	E:AddLib('SpellRange', 'SpellRange-1.0')
+	E:AddLib('ButtonGlow', 'LibButtonGlow-1.0', true)
+	E:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
+	E:AddLib('Compress', 'LibCompress')
+	E:AddLib('Base64', 'LibBase64-1.0-ElvUI')
+	E:AddLib('Masque', 'Masque', true)
+	E:AddLib('Translit', 'LibTranslit-1.0')
 	-- added on ElvUI_OptionsUI load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
 
 	-- backwards compatible for plugins
-	AddOn.LSM = AddOn.Libs.LSM
-	AddOn.Masque = AddOn.Libs.Masque
+	E.LSM = E.Libs.LSM
+	E.Masque = E.Libs.Masque
 end
 
-AddOn.oUF = Engine.oUF
-AddOn.ActionBars = AddOn:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0')
-AddOn.AFK = AddOn:NewModule('AFK','AceEvent-3.0','AceTimer-3.0')
-AddOn.Auras = AddOn:NewModule('Auras','AceHook-3.0','AceEvent-3.0')
-AddOn.Bags = AddOn:NewModule('Bags','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-AddOn.Blizzard = AddOn:NewModule('Blizzard','AceEvent-3.0','AceHook-3.0')
-AddOn.Chat = AddOn:NewModule('Chat','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-AddOn.DataBars = AddOn:NewModule('DataBars','AceEvent-3.0')
-AddOn.DataTexts = AddOn:NewModule('DataTexts','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-AddOn.DebugTools = AddOn:NewModule('DebugTools','AceEvent-3.0','AceHook-3.0')
-AddOn.Distributor = AddOn:NewModule('Distributor','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
-AddOn.Layout = AddOn:NewModule('Layout','AceEvent-3.0')
-AddOn.Minimap = AddOn:NewModule('Minimap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-AddOn.Misc = AddOn:NewModule('Misc','AceEvent-3.0','AceTimer-3.0')
-AddOn.ModuleCopy = AddOn:NewModule('ModuleCopy','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
-AddOn.NamePlates = AddOn:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-AddOn.PluginInstaller = AddOn:NewModule('PluginInstaller')
-AddOn.RaidUtility = AddOn:NewModule('RaidUtility','AceEvent-3.0')
-AddOn.Skins = AddOn:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-AddOn.Threat = AddOn:NewModule('Threat','AceEvent-3.0')
-AddOn.Tooltip = AddOn:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-AddOn.TotemBar = AddOn:NewModule('Totems','AceEvent-3.0')
-AddOn.UnitFrames = AddOn:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
-AddOn.WorldMap = AddOn:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.oUF = Engine.oUF
+E.ActionBars = E:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0')
+E.AFK = E:NewModule('AFK','AceEvent-3.0','AceTimer-3.0')
+E.Auras = E:NewModule('Auras','AceHook-3.0','AceEvent-3.0')
+E.Bags = E:NewModule('Bags','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.Blizzard = E:NewModule('Blizzard','AceEvent-3.0','AceHook-3.0')
+E.Chat = E:NewModule('Chat','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.DataBars = E:NewModule('DataBars','AceEvent-3.0')
+E.DataTexts = E:NewModule('DataTexts','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.DebugTools = E:NewModule('DebugTools','AceEvent-3.0','AceHook-3.0')
+E.Distributor = E:NewModule('Distributor','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
+E.Layout = E:NewModule('Layout','AceEvent-3.0')
+E.Minimap = E:NewModule('Minimap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.Misc = E:NewModule('Misc','AceEvent-3.0','AceTimer-3.0')
+E.ModuleCopy = E:NewModule('ModuleCopy','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
+E.NamePlates = E:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.PluginInstaller = E:NewModule('PluginInstaller')
+E.RaidUtility = E:NewModule('RaidUtility','AceEvent-3.0')
+E.Skins = E:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.Threat = E:NewModule('Threat','AceEvent-3.0')
+E.Tooltip = E:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.TotemBar = E:NewModule('Totems','AceEvent-3.0')
+E.UnitFrames = E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
+E.WorldMap = E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 
 do
 	local arg2,arg3 = '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'
-	function AddOn:EscapeString(str)
+	function E:EscapeString(str)
 		return gsub(str,arg2,arg3)
 	end
 end
@@ -140,7 +140,7 @@ do
 	DisableAddOn("ElvUI_CustomTweaks")
 end
 
-function AddOn:OnInitialize()
+function E:OnInitialize()
 	if not ElvCharacterDB then
 		ElvCharacterDB = {}
 	end
@@ -204,7 +204,7 @@ function AddOn:OnInitialize()
 	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
 	GameMenuButton:SetText(format('|cfffe7b2c%s|r', AddOnName))
 	GameMenuButton:SetScript('OnClick', function()
-		AddOn:ToggleOptionsUI()
+		E:ToggleOptionsUI()
 		HideUIPanel(GameMenuFrame)
 	end)
 	GameMenuFrame[AddOnName] = GameMenuButton
@@ -218,7 +218,7 @@ function AddOn:OnInitialize()
 	self.loadedtime = GetTime()
 end
 
-function AddOn:PositionGameMenuButton()
+function E:PositionGameMenuButton()
 	GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
 	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
 	if relTo ~= GameMenuFrame[AddOnName] then
@@ -232,10 +232,10 @@ end
 local LoadUI=CreateFrame('Frame')
 LoadUI:RegisterEvent('PLAYER_LOGIN')
 LoadUI:SetScript('OnEvent', function()
-	AddOn:Initialize()
+	E:Initialize()
 end)
 
-function AddOn:ResetProfile()
+function E:ResetProfile()
 	local profileKey
 
 	local ElvPrivateDB = ElvPrivateDB
@@ -251,24 +251,24 @@ function AddOn:ResetProfile()
 	ReloadUI()
 end
 
-function AddOn:OnProfileReset()
+function E:OnProfileReset()
 	self:StaticPopup_Show('RESET_PROFILE_PROMPT')
 end
 
-function AddOn:Config_ResetSettings()
-	AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft = nil, nil
-	AddOn.global.general.AceGUI = AddOn:CopyTable({}, AddOn.DF.global.general.AceGUI)
+function E:Config_ResetSettings()
+	E.configSavedPositionTop, E.configSavedPositionLeft = nil, nil
+	E.global.general.AceGUI = E:CopyTable({}, E.DF.global.general.AceGUI)
 end
 
-function AddOn:Config_GetPosition()
-	return AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft
+function E:Config_GetPosition()
+	return E.configSavedPositionTop, E.configSavedPositionLeft
 end
 
-function AddOn:Config_GetSize()
-	return AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height
+function E:Config_GetSize()
+	return E.global.general.AceGUI.width, E.global.general.AceGUI.height
 end
 
-function AddOn:Config_UpdateSize(reset)
+function E:Config_UpdateSize(reset)
 	local frame = self.GUIFrame
 	if not frame then return end
 
@@ -298,17 +298,17 @@ function AddOn:Config_UpdateSize(reset)
 	end
 end
 
-function AddOn:Config_GetDefaultSize()
-	local width, height = AddOn:Config_GetSize()
-	local maxWidth, maxHeight = AddOn.UIParent:GetSize()
+function E:Config_GetDefaultSize()
+	local width, height = E:Config_GetSize()
+	local maxWidth, maxHeight = E.UIParent:GetSize()
 	width, height = min(maxWidth-50, width), min(maxHeight-50, height)
 	return width, height
 end
 
-function AddOn:Config_StopMoving()
+function E:Config_StopMoving()
 	if self.obj and self.obj.status then
-		AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft = AddOn:Round(self:GetTop(), 2), AddOn:Round(self:GetLeft(), 2)
-		AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height = AddOn:Round(self:GetWidth(), 2), AddOn:Round(self:GetHeight(), 2)
+		E.configSavedPositionTop, E.configSavedPositionLeft = E:Round(self:GetTop(), 2), E:Round(self:GetLeft(), 2)
+		E.global.general.AceGUI.width, E.global.general.AceGUI.height = E:Round(self:GetWidth(), 2), E:Round(self:GetHeight(), 2)
 	end
 end
 
@@ -354,9 +354,9 @@ local function ConfigSliderOnValueChanged(self, value)
 	self.buttons:Point("TOPLEFT", 0, value * 36)
 end
 
-function AddOn:Config_CreateSeparatorLine(frame, lastButton)
+function E:Config_CreateSeparatorLine(frame, lastButton)
 	local line = frame.leftHolder.buttons:CreateTexture()
-	line:SetTexture(AddOn.Media.Textures.White8x8)
+	line:SetTexture(E.Media.Textures.White8x8)
 	line:SetVertexColor(.9, .8, 0, .7)
 	line:Size(179, 2)
 	line:Point("TOP", lastButton, "BOTTOM", 0, -6)
@@ -364,14 +364,14 @@ function AddOn:Config_CreateSeparatorLine(frame, lastButton)
 	return line
 end
 
-function AddOn:Config_SetButtonColor(btn, disabled)
+function E:Config_SetButtonColor(btn, disabled)
 	if disabled then
 		btn:Disable()
 		btn:SetBackdropBorderColor(.9, .8, 0, 1)
 		btn:SetBackdropColor(.9, .8, 0, 0.5)
 		btn.Text:SetTextColor(1, 1, 1)
 	else
-		local r, g, b = unpack(AddOn.media.bordercolor)
+		local r, g, b = unpack(E.media.bordercolor)
 		btn:SetBackdropColor(unpack(self.media.backdropcolor))
 		btn:SetBackdropBorderColor(r, g, b, 1)
 		btn.Text:SetTextColor(.9, .8, 0)
@@ -379,7 +379,7 @@ function AddOn:Config_SetButtonColor(btn, disabled)
 	end
 end
 
-function AddOn:Config_CreateButton(info, frame, unskinned, ...)
+function E:Config_CreateButton(info, frame, unskinned, ...)
 	local btn = CreateFrame(...)
 	btn:SetScript('OnEnter', Config_ButtonOnEnter)
 	btn:SetScript('OnLeave', Config_ButtonOnLeave)
@@ -395,28 +395,28 @@ function AddOn:Config_CreateButton(info, frame, unskinned, ...)
 	btn.key = info.key
 
 	if not unskinned then
-		AddOn.Skins:HandleButton(btn)
+		E.Skins:HandleButton(btn)
 	end
 
-	AddOn:Config_SetButtonColor(btn, btn.key == 'general')
+	E:Config_SetButtonColor(btn, btn.key == 'general')
 	btn.ignoreBorderColors = true
 
 	return btn
 end
 
-function AddOn:Config_UpdateLeftButtons()
-	local frame = AddOn.GUIFrame
+function E:Config_UpdateLeftButtons()
+	local frame = E.GUIFrame
 	if not (frame and frame.leftHolder) then return end
 
 	local selected = frame.obj.status.groups.selected
 	for key, btn in pairs(frame.leftHolder.buttons) do
 		if type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') then
-			AddOn:Config_SetButtonColor(btn, key == selected)
+			E:Config_SetButtonColor(btn, key == selected)
 		end
 	end
 end
 
-function AddOn:Config_UpdateLeftScroller()
+function E:Config_UpdateLeftScroller()
 	if not (self and self.leftHolder) then return end
 
 	local left = self.leftHolder
@@ -444,7 +444,7 @@ function AddOn:Config_UpdateLeftScroller()
 	end
 end
 
-function AddOn:Config_SaveOldPosition(frame)
+function E:Config_SaveOldPosition(frame)
 	if frame.GetNumPoints and not frame.oldPosition then
 		frame.oldPosition = {}
 		for i = 1, frame:GetNumPoints() do
@@ -453,7 +453,7 @@ function AddOn:Config_SaveOldPosition(frame)
 	end
 end
 
-function AddOn:Config_RestoreOldPosition(frame)
+function E:Config_RestoreOldPosition(frame)
 	local position = frame.oldPosition
 	if position then
 		frame:ClearAllPoints()
@@ -463,7 +463,7 @@ function AddOn:Config_RestoreOldPosition(frame)
 	end
 end
 
-function AddOn:Config_CreateLeftButtons(frame, unskinned, ACD, options)
+function E:Config_CreateLeftButtons(frame, unskinned, ACD, options)
 	local opts = {}
 	for key, info in pairs(options) do
 		tinsert(opts, {info.order, key, info})
@@ -479,7 +479,7 @@ function AddOn:Config_CreateLeftButtons(frame, unskinned, ACD, options)
 			ACD:SelectGroup("ElvUI", info.key)
 		end
 
-		local btn = AddOn:Config_CreateButton(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate')
+		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate')
 		btn:Width(177)
 
 		if not last then
@@ -491,25 +491,25 @@ function AddOn:Config_CreateLeftButtons(frame, unskinned, ACD, options)
 		buttons[info.key] = btn
 		last = btn
 
-		if info.key == 'unitframe' or (info.key == 'profiles' and AddOn.Options.args.plugins) then
-			last = AddOn:Config_CreateSeparatorLine(frame, last)
+		if info.key == 'unitframe' or (info.key == 'profiles' and E.Options.args.plugins) then
+			last = E:Config_CreateSeparatorLine(frame, last)
 		end
 	end
 end
 
-function AddOn:Config_WindowClosed()
+function E:Config_WindowClosed()
 	if self.bottomHolder then
 		self.bottomHolder:Hide()
 		self.leftHolder:Hide()
 		self.leftHolder.slider:Hide()
 		self.closeButton:Show()
 
-		AddOn:Config_RestoreOldPosition(self.leftHolder.version)
-		AddOn:Config_RestoreOldPosition(self.obj.content)
+		E:Config_RestoreOldPosition(self.leftHolder.version)
+		E:Config_RestoreOldPosition(self.obj.content)
 	end
 end
 
-function AddOn:Config_CreateBottomButtons(frame, unskinned)
+function E:Config_CreateBottomButtons(frame, unskinned)
 	local L = self.Libs.ACL:GetLocale('ElvUI', self.global.general.locale or 'enUS')
 
 	local last
@@ -563,7 +563,7 @@ function AddOn:Config_CreateBottomButtons(frame, unskinned)
 			end
 		}
 	}) do
-		local btn = AddOn:Config_CreateButton(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
+		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
 		local offset = (unskinned and 14) or 8
 
 		if not last then
@@ -581,7 +581,7 @@ function AddOn:Config_CreateBottomButtons(frame, unskinned)
 end
 
 local pageNodes = {}
-function AddOn:ToggleOptionsUI(msg)
+function E:ToggleOptionsUI(msg)
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
 		self.ShowOptionsUI = true
@@ -635,13 +635,13 @@ function AddOn:ToggleOptionsUI(msg)
 					if i == 1 then
 						main = pages[i] and ACD and ACD.Status and ACD.Status.ElvUI
 						mainSel = main and main.status and main.status.groups and main.status.groups.selected
-						mainSelStr = mainSel and ('^'..AddOn:EscapeString(mainSel)..'\001')
+						mainSelStr = mainSel and ('^'..E:EscapeString(mainSel)..'\001')
 						mainNode = main and main.children and main.children[pages[i]]
 						pageNodes[index+1], pageNodes[index+2] = main, mainNode
 					else
 						sub = pages[i] and pageNodes[i] and ((i == pageCount and pageNodes[i]) or pageNodes[i].children[pages[i]])
 						subSel = sub and sub.status and sub.status.groups and sub.status.groups.selected
-						subNode = (mainSelStr and msgStr:match(mainSelStr..AddOn:EscapeString(pages[i])..'$') and (subSel and subSel == pages[i])) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
+						subNode = (mainSelStr and msgStr:match(mainSelStr..E:EscapeString(pages[i])..'$') and (subSel and subSel == pages[i])) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
 						pageNodes[index+1], pageNodes[index+2] = sub, subNode
 					end
 					index = index + 2
@@ -674,15 +674,15 @@ function AddOn:ToggleOptionsUI(msg)
 				_G.ElvUIGUIFrame = self.GUIFrame
 
 				self:Config_UpdateSize()
-				hooksecurefunc(AddOn.Libs.AceConfigRegistry, 'NotifyChange', AddOn.Config_UpdateLeftButtons)
+				hooksecurefunc(E.Libs.AceConfigRegistry, 'NotifyChange', E.Config_UpdateLeftButtons)
 			end
 
 			local unskinned = not self.private.skins.ace3.enable
 			local offset = (unskinned and 14) or 8
 			if not frame.bottomHolder then
-				hooksecurefunc(frame, 'StopMovingOrSizing', AddOn.Config_StopMoving)
-				frame:HookScript('OnSizeChanged', AddOn.Config_UpdateLeftScroller)
-				frame:HookScript('OnHide', AddOn.Config_WindowClosed)
+				hooksecurefunc(frame, 'StopMovingOrSizing', E.Config_StopMoving)
+				frame:HookScript('OnSizeChanged', E.Config_UpdateLeftScroller)
+				frame:HookScript('OnHide', E.Config_WindowClosed)
 
 				for i=1, frame:GetNumChildren() do
 					local child = select(i, frame:GetChildren())
@@ -715,7 +715,7 @@ function AddOn:ToggleOptionsUI(msg)
 				frame.leftHolder = left
 
 				local logo = left:CreateTexture()
-				logo:SetTexture(AddOn.Media.Textures.Logo)
+				logo:SetTexture(E.Media.Textures.Logo)
 				logo:Point("TOPLEFT", frame, "TOPLEFT", 30, (unskinned and -6) or -2)
 				logo:Size(126, 64)
 				left.logo = logo
@@ -735,7 +735,7 @@ function AddOn:ToggleOptionsUI(msg)
 				left.buttons = buttons
 
 				local slider = CreateFrame('Slider', nil, frame)
-				slider:SetThumbTexture(AddOn.Media.Textures.White8x8)
+				slider:SetThumbTexture(E.Media.Textures.White8x8)
 				slider:SetScript('OnMouseWheel', ConfigSliderOnMouseWheel)
 				slider:SetScript('OnValueChanged', ConfigSliderOnValueChanged)
 				slider:SetOrientation("VERTICAL")
@@ -760,7 +760,7 @@ function AddOn:ToggleOptionsUI(msg)
 					left:SetTemplate("Transparent")
 				end
 
-				self:Config_CreateLeftButtons(frame, unskinned, ACD, AddOn.Options.args)
+				self:Config_CreateLeftButtons(frame, unskinned, ACD, E.Options.args)
 				self:Config_CreateBottomButtons(frame, unskinned)
 
 				local titlebg = frame.obj.titlebg
@@ -768,7 +768,7 @@ function AddOn:ToggleOptionsUI(msg)
 				titlebg:SetPoint("TOPLEFT", frame)
 				titlebg:SetPoint("TOPRIGHT", frame)
 
-				AddOn.Config_UpdateLeftScroller(frame)
+				E.Config_UpdateLeftScroller(frame)
 			else
 				frame.bottomHolder:Show()
 				frame.leftHolder:Show()
@@ -777,13 +777,13 @@ function AddOn:ToggleOptionsUI(msg)
 			end
 
 			local version = frame.leftHolder.version
-			AddOn:Config_SaveOldPosition(version)
+			E:Config_SaveOldPosition(version)
 			version:ClearAllPoints()
 			version:Point("TOP", frame.leftHolder.logo, "BOTTOM", 0, (unskinned and 4) or 2)
 
 			local holderHeight = frame.bottomHolder:GetHeight()
 			local content = frame.obj.content
-			AddOn:Config_SaveOldPosition(content)
+			E:Config_SaveOldPosition(content)
 			content:ClearAllPoints()
 			content:Point("TOPLEFT", frame, "TOPLEFT", offset, -((unskinned and 25) or 15))
 			content:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -offset, holderHeight + 3)
