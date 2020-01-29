@@ -361,7 +361,8 @@ local function ConfigSliderOnValueChanged(self, value)
 	self.buttons:Point("TOPLEFT", 0, value * 36)
 end
 
-function E:Config_SetButtonText(btn, name, noColor)
+function E:Config_SetButtonText(btn, noColor)
+	local name = btn.info.name
 	if type(name) == 'function' then name = name() end
 
 	if noColor then
@@ -387,14 +388,14 @@ function E:Config_SetButtonColor(btn, disabled)
 		btn:SetBackdropBorderColor(.9, .8, 0, 1)
 		btn:SetBackdropColor(.9, .8, 0, 0.5)
 		btn.Text:SetTextColor(1, 1, 1)
-		E:Config_SetButtonText(btn, btn.text, true)
+		E:Config_SetButtonText(btn, true)
 	else
 		btn:Enable()
 		btn:SetBackdropColor(unpack(self.media.backdropcolor))
 		local r, g, b = unpack(E.media.bordercolor)
 		btn:SetBackdropBorderColor(r, g, b, 1)
 		btn.Text:SetTextColor(.9, .8, 0)
-		E:Config_SetButtonText(btn, btn.text)
+		E:Config_SetButtonText(btn)
 	end
 end
 
@@ -404,17 +405,17 @@ function E:Config_CreateButton(info, frame, unskinned, ...)
 	btn:SetScript('OnLeave', Config_ButtonOnLeave)
 	btn:SetScript('OnClick', info.func)
 	btn:Width(btn:GetTextWidth() + 40)
+
 	btn.frame = frame
 	btn.desc = info.desc
-	btn.key = info.key
-	btn.text = info.name
+	btn.info = info
 
 	if not unskinned then
 		E.Skins:HandleButton(btn)
 	end
 
-	E:Config_SetButtonText(btn, btn.text)
-	E:Config_SetButtonColor(btn, btn.key == 'general')
+	E:Config_SetButtonText(btn)
+	E:Config_SetButtonColor(btn, btn.info.key == 'general')
 	btn.ignoreBorderColors = true
 
 	return btn
@@ -489,11 +490,9 @@ function E:Config_CreateLeftButtons(frame, unskinned, ACD, options)
 	local buttons, last = frame.leftHolder.buttons
 	for _, opt in ipairs(opts) do
 		local info = opt[3]
+		local key = opt[2]
 
-		info.key = opt[2]
-		info.func = function()
-			ACD:SelectGroup("ElvUI", info.key)
-		end
+		info.func = function() ACD:SelectGroup("ElvUI", key) end
 
 		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate')
 		btn:Width(177)
@@ -504,10 +503,10 @@ function E:Config_CreateLeftButtons(frame, unskinned, ACD, options)
 			btn:Point("TOP", last, "BOTTOM", 0, (last.separator and -6) or -4)
 		end
 
-		buttons[info.key] = btn
+		buttons[key] = btn
 		last = btn
 
-		if info.key == 'unitframe' or (info.key == 'profiles' and E.Options.args.plugins) then
+		if key == 'unitframe' or (key == 'profiles' and E.Options.args.plugins) then
 			last = E:Config_CreateSeparatorLine(frame, last)
 		end
 	end
