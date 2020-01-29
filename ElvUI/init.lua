@@ -336,7 +336,7 @@ local function Config_SortButtons(a,b)
 	if A1 and B1 then
 		if A1 == B1 then
 			local A3, B3 = a[3], b[3]
-			if A3 and B3 then
+			if A3 and B3 and (A3.name and B3.name) then
 				return Config_StripNameColor(A3.name) < Config_StripNameColor(B3.name)
 			end
 		end
