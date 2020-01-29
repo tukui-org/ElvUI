@@ -430,7 +430,7 @@ function E:Config_UpdateLeftScroller()
 	local buttonsBottom = buttons:GetBottom()
 	for _, btn in pairs(buttons) do
 		if type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') then
-			if buttonsBottom > (btn:GetTop() - 4) then
+			if buttonsBottom > btn:GetBottom() then
 				max = max + 1
 				slider:SetMinMaxValues(0, max)
 			end
