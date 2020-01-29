@@ -486,7 +486,7 @@ function AddOn:Config_CreateLeftButtons(frame, unskinned, ACD, options)
 		buttons[info.key] = btn
 		last = btn
 
-		if info.key == 'unitframe' or (info.key == 'credits' and AddOn.Options.args.plugins) then
+		if info.key == 'unitframe' or (info.key == 'profiles' and AddOn.Options.args.plugins) then
 			last = AddOn:Config_CreateSeparatorLine(frame, last)
 		end
 	end

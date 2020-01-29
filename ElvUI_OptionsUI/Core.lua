@@ -87,20 +87,6 @@ local DONATORS = {
 	"Ithilyn"
 }
 
-local DEVELOPERS = {
-	"Tukz",
-	"Haste",
-	"Nightcracker",
-	"Omega1970",
-	"Hydrazine",
-	"Blazeflack",
-	"|cffff2020NihilisticPandemonium|r",
-	"|cffff7d0aMerathilis|r",
-	"|cff4fd8d1S|cff50dabfi|cff51ddaem|cff52df9dp|cff53e18cy|cff5ae27b, |cff91de5bb|cffaddb4bu|cffc8d93bt |cffd8c73dm|cffdabc44y |cffdda652n|cffe09e59a|cffe39861m|cffe69268e |cffed8777n|cffef828ae|cfff17d9ce|cfff378aed|cfff573c0s |cffe668d2t|cffd962d5o |cffbe57dcb|cffac62dce |cff8099d7l|cff6ab5d4o|cff54d1d1n|cff4fd8d1g|cff4fd8d1e|cff4fd8d1r|cff4fd8d1.",
-	"|cff0070DEAzilroka|r",
-	"|cff9482c9Darth Predator|r",
-}
-
 local TESTERS = {
 	"Tukui Community",
 	"|cffF76ADBSarah|r - For Sarahing",
@@ -124,35 +110,100 @@ local function SortList(a, b)
 end
 
 sort(DONATORS, SortList)
-sort(DEVELOPERS, SortList)
 sort(TESTERS, SortList)
 
 for _, name in pairs(DONATORS) do
 	tinsert(E.CreditsList, name)
 	DONATOR_STRING = DONATOR_STRING .. LINE_BREAK .. name
 end
-for _, name in pairs(DEVELOPERS) do
-	tinsert(E.CreditsList, name)
-	DEVELOPER_STRING = DEVELOPER_STRING .. LINE_BREAK .. name
-end
 for _, name in pairs(TESTERS) do
 	tinsert(E.CreditsList, name)
 	TESTER_STRING = TESTER_STRING .. LINE_BREAK .. name
 end
 
-E.Options.args.credits = {
+E.Options.args.info = {
+	order = 4,
 	type = "group",
-	name = L["Credits"],
-	order = 5,
+	name = L["Information"],
 	args = {
-		text = {
+		header = {
 			order = 1,
 			type = "description",
-			name =
-				L["ELVUI_CREDITS"] .. "\n\n" ..
-				L["Coding:"] .. DEVELOPER_STRING .. "\n\n" ..
-				L["Testing:"] .. TESTER_STRING .. "\n\n" ..
-				L["Donations:"] .. DONATOR_STRING
+			name = L["ELVUI_DESC"],
+			fontSize = "medium",
+		},
+		spacer = {
+			order = 2,
+			type = "description",
+			name = "",
+		},
+		support = {
+			order = 3,
+			type = "group",
+			name = L["Support & Download"],
+			guiInline = true,
+			args = {
+				homepage = {
+					order = 1,
+					type = "execute",
+					name = L["Support Forum"],
+					func = function() E:StaticPopup_Show("ELVUI_EDITBOX", nil, nil, "https://www.tukui.org/forum/viewforum.php?f=4") end,
+				},
+				git = {
+					order = 2,
+					type = "execute",
+					name = L["Ticket Tracker"],
+					func = function() E:StaticPopup_Show("ELVUI_EDITBOX", nil, nil, "https://git.tukui.org/elvui/elvui/issues") end,
+				},
+				discord = {
+					order = 3,
+					type = "execute",
+					name = L["Discord Server"],
+					func = function() E:StaticPopup_Show("ELVUI_EDITBOX", nil, nil, "https://discordapp.com/invite/xFWcfgE") end,
+				},
+				development = {
+					order = 4,
+					type = 'execute',
+					name = L["Development Version"],
+					desc = L["Here you can download the latest development version."],
+					func = function() E:StaticPopup_Show("ELVUI_EDITBOX", nil, nil, "https://git.tukui.org/elvui/elvui/-/archive/development/elvui-development.zip") end,
+				},
+			},
+		},
+		spacer1 = {
+			order = 4,
+			type = "description",
+			name = "",
+		},
+		coding = {
+			order = 5,
+			type = "group",
+			name = L["Coding"],
+			guiInline = true,
+			args = {
+				developers = {
+					order = 1,
+					type = "description",
+					fontSize = "medium",
+					name = format("Tukz, Haste, Nightcracker, Omega1970, Hydrazine, Blazeflack, |cffff2020NihilisticPandemonium|r, |cffff7d0aMerathilis|r, |cff4fd8d1S|cff50dabfi|cff51ddaem|cff52df9dp|cff53e18cy|cff5ae27b, |cff91de5bb|cffaddb4bu|cffc8d93bt |cffd8c73dm|cffdabc44y |cffdda652n|cffe09e59a|cffe39861m|cffe69268e |cffed8777n|cffef828ae|cfff17d9ce|cfff378aed|cfff573c0s |cffe668d2t|cffd962d5o |cffbe57dcb|cffac62dce |cff8099d7l|cff6ab5d4o|cff54d1d1n|cff4fd8d1g|cff4fd8d1e|cff4fd8d1r|cff4fd8d1., |cff0070DEAzilroka|r, |cff9482c9Darth Predator|r")
+				},
+			},
+		},
+		credits = {
+			order = 6,
+			type = "group",
+			name = L["Credits"],
+			guiInline = true,
+			args = {
+				text = {
+					order = 1,
+					type = "description",
+					name =
+						L["ELVUI_CREDITS"] .. "\n\n" ..
+						L["Testing:"] .. TESTER_STRING .. "\n\n" ..
+						L["Donations:"] .. DONATOR_STRING
+				}
+			}
 		}
 	}
 }
@@ -381,7 +432,7 @@ end
 --Create Profiles Table
 E.Options.args.profiles = E.Libs.AceDBOptions:GetOptionsTable(E.data)
 E.Libs.AceConfig:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles)
-E.Options.args.profiles.order = 4
+E.Options.args.profiles.order = 5
 
 E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles, E.data)
 
