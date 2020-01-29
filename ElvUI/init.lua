@@ -361,6 +361,16 @@ local function ConfigSliderOnValueChanged(self, value)
 	self.buttons:Point("TOPLEFT", 0, value * 36)
 end
 
+function E:Config_SetButtonText(btn, name, noColor)
+	if type(name) == 'function' then name = name() end
+
+	if noColor then
+		btn:SetText(name:gsub('|c[fF][fF]%x%x%x%x%x%x(.-)|r','%1'))
+	else
+		btn:SetText(name)
+	end
+end
+
 function E:Config_CreateSeparatorLine(frame, lastButton)
 	local line = frame.leftHolder.buttons:CreateTexture()
 	line:SetTexture(E.Media.Textures.White8x8)
@@ -377,12 +387,14 @@ function E:Config_SetButtonColor(btn, disabled)
 		btn:SetBackdropBorderColor(.9, .8, 0, 1)
 		btn:SetBackdropColor(.9, .8, 0, 0.5)
 		btn.Text:SetTextColor(1, 1, 1)
+		E:Config_SetButtonText(btn, btn.text, true)
 	else
-		local r, g, b = unpack(E.media.bordercolor)
+		btn:Enable()
 		btn:SetBackdropColor(unpack(self.media.backdropcolor))
+		local r, g, b = unpack(E.media.bordercolor)
 		btn:SetBackdropBorderColor(r, g, b, 1)
 		btn.Text:SetTextColor(.9, .8, 0)
-		btn:Enable()
+		E:Config_SetButtonText(btn, btn.text)
 	end
 end
 
@@ -391,20 +403,17 @@ function E:Config_CreateButton(info, frame, unskinned, ...)
 	btn:SetScript('OnEnter', Config_ButtonOnEnter)
 	btn:SetScript('OnLeave', Config_ButtonOnLeave)
 	btn:SetScript('OnClick', info.func)
-	if type(info.name) == 'function' then
-		btn:SetText(info.name())
-	else
-		btn:SetText(info.name)
-	end
 	btn:Width(btn:GetTextWidth() + 40)
 	btn.frame = frame
 	btn.desc = info.desc
 	btn.key = info.key
+	btn.text = info.name
 
 	if not unskinned then
 		E.Skins:HandleButton(btn)
 	end
 
+	E:Config_SetButtonText(btn, btn.text)
 	E:Config_SetButtonColor(btn, btn.key == 'general')
 	btn.ignoreBorderColors = true
 
