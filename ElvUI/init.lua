@@ -327,12 +327,23 @@ local function ConfigButton_OnLeave()
 end
 
 function AddOn:CreateSeparatorLine(frame, lastButton)
-	local line = frame.leftHolder:CreateTexture()
+	local line = frame.leftHolder.buttons:CreateTexture()
 	line:SetTexture(AddOn.Media.Textures.White8x8)
-	line:SetVertexColor(0, 0, 0, 0.75)
-	line:Size(181, 2)
-	line:Point("TOP", lastButton, "BOTTOM", 0, -3)
+	line:SetVertexColor(.9, .8, 0, .7)
+	line:Size(179, 2)
+	line:Point("TOP", lastButton, "BOTTOM", 0, -6)
+	line.separator = true
 	return line
+end
+
+function AddOn:SetConfigButtonColor(btn, disabled)
+	if disabled then
+		btn:Disable()
+		btn:SetBackdropBorderColor(1, 1, 1, .5)
+	else
+		btn:Enable()
+		btn:SetBackdropBorderColor(unpack(AddOn.media.bordercolor))
+	end
 end
 
 function AddOn:CreateOptionFrame(info, frame, unskinned, ...)
@@ -340,20 +351,18 @@ function AddOn:CreateOptionFrame(info, frame, unskinned, ...)
 	btn:SetScript('OnEnter', ConfigButton_OnEnter)
 	btn:SetScript('OnLeave', ConfigButton_OnLeave)
 	btn:SetScript('OnClick', info.func)
-	btn:SetFrameLevel(3)
 	btn:SetText(info.name)
-	btn:SetWidth(btn:GetTextWidth() + 40)
+	btn:Width(btn:GetTextWidth() + 40)
 	btn.frame = frame
 	btn.desc = info.desc
 	btn.key = info.key
 
-	if btn.key == 'general' then
-		btn:Disable()
-	end
-
 	if not unskinned then
 		AddOn.Skins:HandleButton(btn)
 	end
+
+	AddOn:SetConfigButtonColor(btn, btn.key == 'general')
+	btn.ignoreBorderColors = true
 
 	return btn
 end
@@ -367,19 +376,59 @@ local function SortOptionButtons(a,b)
 	end
 end
 
+local function ConfigSliderOnMouseWheel(self, offset)
+	local _, maxValue = self:GetMinMaxValues()
+	if maxValue == 0 then return end
+
+	local newValue = self:GetValue() - offset
+	if newValue < 0 then newValue = 0 end
+	if newValue > maxValue then return end
+
+	self:SetValue(newValue)
+	self.buttons:Point("TOPLEFT", 0, newValue * 36)
+end
+
+local function ConfigSliderOnValueChanged(self, value)
+	self:SetValue(value)
+	self.buttons:Point("TOPLEFT", 0, value * 36)
+end
+
 function AddOn:UpdateLeftButtons()
 	local frame = AddOn.GUIFrame
 	if not (frame and frame.leftHolder) then return end
 
 	local selected = frame.obj.status.groups.selected
-	for key, btn in pairs(frame.leftHolder) do
+	for key, btn in pairs(frame.leftHolder.buttons) do
 		if type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') then
-			if key == selected then
-				btn:Disable()
-			else
-				btn:Enable()
+			AddOn:SetConfigButtonColor(btn, key == selected)
+		end
+	end
+end
+
+function AddOn:UpdateLeftScroller()
+	if not (self and self.leftHolder) then return end
+
+	local left = self.leftHolder
+	local buttons = left.buttons
+	local slider = left.slider
+	local max = 0
+	slider:SetMinMaxValues(0, max)
+	slider:SetValue(0)
+	left.buttons:Point("TOPLEFT", 0, 0)
+
+	for _, btn in pairs(buttons) do
+		if type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') then
+			if buttons:GetBottom() > btn:GetTop() then
+				max = max + 1
+				slider:SetMinMaxValues(0, max)
 			end
 		end
+	end
+
+	if max == 0 then
+		slider.thumb:Hide()
+	else
+		slider.thumb:Show()
 	end
 end
 
@@ -390,16 +439,7 @@ function AddOn:CreateLeftButtons(frame, unskinned, ACD, options)
 	end
 	sort(opts, SortOptionButtons)
 
-	local logo = frame.leftHolder:CreateTexture()
-	logo:SetTexture(AddOn.Media.Textures.Logo)
-	logo:Size(128, 64)
-	logo:Point("TOPLEFT", frame, "TOPLEFT", 29, -2)
-	local lastButton = logo
-
-	local version = frame.obj.titletext
-	version:ClearAllPoints()
-	version:Point("TOP", logo, "BOTTOM", 0, 2)
-
+	local buttons, last = frame.leftHolder.buttons
 	for _, opt in ipairs(opts) do
 		local info = opt[3]
 
@@ -408,21 +448,20 @@ function AddOn:CreateLeftButtons(frame, unskinned, ACD, options)
 			ACD:SelectGroup("ElvUI", info.key)
 		end
 
-		local btn = AddOn:CreateOptionFrame(info, frame, unskinned, 'Button', nil, frame.leftHolder, 'UIPanelButtonTemplate')
-		btn:SetWidth(177)
+		local btn = AddOn:CreateOptionFrame(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate')
+		btn:Width(177)
 
-		if lastButton == logo then
-			btn:Point("TOP", lastButton, "BOTTOM", 0, -14)
+		if not last then
+			btn:Point("TOP", buttons, "TOP", 0, 0)
 		else
-			btn:Point("TOP", lastButton, "BOTTOM", 0, -4)
+			btn:Point("TOP", last, "BOTTOM", 0, (last.separator and -6) or -4)
 		end
 
-		frame.leftHolder[info.key] = btn
-
-		lastButton = btn
+		buttons[info.key] = btn
+		last = btn
 
 		if info.key == 'unitframe' or (info.key == 'credits' and AddOn.Options.args.plugins) then
-			lastButton = AddOn:CreateSeparatorLine(frame, lastButton)
+			last = AddOn:CreateSeparatorLine(frame, last)
 		end
 	end
 end
@@ -430,7 +469,7 @@ end
 function AddOn:CreateBottomButtons(frame, unskinned)
 	local L = self.Libs.ACL:GetLocale('ElvUI', self.global.general.locale or 'enUS')
 
-	local lastButton
+	local last
 	for _, info in pairs({
 		{
 			var = 'RepositionWindow',
@@ -484,14 +523,14 @@ function AddOn:CreateBottomButtons(frame, unskinned)
 		local btn = AddOn:CreateOptionFrame(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
 		local offset = (unskinned and 14) or 8
 
-		if not lastButton then
+		if not last then
 			btn:Point("BOTTOMLEFT", frame.bottomHolder, "BOTTOMLEFT", (unskinned and 24) or offset, offset)
-			lastButton = btn
+			last = btn
 		elseif info.var == 'Close' then
 			btn:Point("BOTTOMRIGHT", frame.bottomHolder, "BOTTOMRIGHT", -26, offset)
 		else
-			btn:Point("LEFT", lastButton, "RIGHT", 4, 0)
-			lastButton = btn
+			btn:Point("LEFT", last, "RIGHT", 4, 0)
+			last = btn
 		end
 
 		frame.bottomHolder[info.var] = btn
@@ -594,6 +633,7 @@ function AddOn:ToggleOptionsUI(msg)
 				self:UpdateConfigSize()
 				hooksecurefunc(frame, 'StopMovingOrSizing', AddOn.ConfigStopMovingOrSizing)
 				hooksecurefunc(AddOn.Libs.AceConfigRegistry, 'NotifyChange', AddOn.UpdateLeftButtons)
+				frame:HookScript('OnSizeChanged', AddOn.UpdateLeftScroller)
 
 				for i=1, frame:GetNumChildren() do
 					local child = select(i, frame:GetChildren())
@@ -614,18 +654,62 @@ function AddOn:ToggleOptionsUI(msg)
 				end
 
 				local bottom = CreateFrame('Frame', nil, frame)
-				bottom:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", 2, 2)
-				bottom:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
+				bottom:Point("BOTTOMLEFT", 2, 2)
+				bottom:Point("BOTTOMRIGHT", -2, 2)
 				bottom:Height(37)
-				bottom:Show()
 				frame.bottomHolder = bottom
 
 				local left = CreateFrame('Frame', nil, frame)
-				left:Point("TOPLEFT", frame, "TOPLEFT", 2, -2)
 				left:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
+				left:Point("TOPLEFT", (unskinned and 10) or 2, (unskinned and -6) or -2)
 				left:Width(181)
-				left:Show()
 				frame.leftHolder = left
+
+				local logo = left:CreateTexture()
+				logo:SetTexture(AddOn.Media.Textures.Logo)
+				logo:Point("TOPLEFT", frame, "TOPLEFT", 30, (unskinned and -6) or -2)
+				logo:Size(126, 64)
+				left.logo = logo
+
+				local version = frame.obj.titletext
+				version:ClearAllPoints()
+				version:Point("TOP", logo, "BOTTOM", 0, (unskinned and 4) or 2)
+				left.version = version
+
+				local buttonsHolder = CreateFrame('Frame', nil, left)
+				buttonsHolder:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
+				buttonsHolder:Point("TOPLEFT", left, "TOPLEFT", 0, -80)
+				buttonsHolder:Width(181)
+				buttonsHolder:SetFrameLevel(5)
+				buttonsHolder:SetClipsChildren(true)
+				left.buttonsHolder = buttonsHolder
+
+				local buttons = CreateFrame('Frame', nil, buttonsHolder)
+				buttons:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
+				buttons:Point("TOPLEFT", 0, 0)
+				buttons:Width(181)
+				left.buttons = buttons
+
+				local slider = CreateFrame('Slider', nil, frame)
+				slider:SetThumbTexture(AddOn.Media.Textures.White8x8)
+				slider:SetScript('OnMouseWheel', ConfigSliderOnMouseWheel)
+				slider:SetScript('OnValueChanged', ConfigSliderOnValueChanged)
+				slider:SetOrientation("VERTICAL")
+				slider:SetObeyStepOnDrag(true)
+				slider:SetFrameLevel(4)
+				slider:SetValueStep(1)
+				slider:SetValue(0)
+				slider:Width(192)
+				slider:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
+				slider:Point("TOPLEFT", buttons, "TOPLEFT", 0, 0)
+				slider.buttons = buttons
+				left.slider = slider
+
+				local thumb = slider:GetThumbTexture()
+				thumb:Point("LEFT", left, "RIGHT", 2, 0)
+				thumb:SetVertexColor(1, 1, 1, 0.5)
+				thumb:SetSize(10, 14)
+				left.slider.thumb = thumb
 
 				if not unskinned then
 					bottom:SetTemplate("Transparent")
@@ -637,11 +721,15 @@ function AddOn:ToggleOptionsUI(msg)
 				local holderHeight = frame.bottomHolder:GetHeight()
 				local offset = (unskinned and 14) or 8
 
-				frame.obj.titlebg:ClearAllPoints()
-				frame.obj.titlebg:SetPoint("TOPLEFT", frame)
-				frame.obj.titlebg:SetPoint("TOPRIGHT", frame)
 				frame.obj.content:Point("TOPLEFT", frame, "TOPLEFT", offset, -((unskinned and 25) or 15))
 				frame.obj.content:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -offset, holderHeight + 3)
+
+				local titlebg = frame.obj.titlebg
+				titlebg:ClearAllPoints()
+				titlebg:SetPoint("TOPLEFT", frame)
+				titlebg:SetPoint("TOPRIGHT", frame)
+
+				AddOn.UpdateLeftScroller(frame)
 			end
 		end
 
