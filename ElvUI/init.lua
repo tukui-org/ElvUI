@@ -326,14 +326,21 @@ local function Config_ButtonOnLeave()
 	GameTooltip:Hide()
 end
 
+local function Config_StripNameColor(name)
+	if type(name) == 'function' then name = name() end
+	return name:gsub('|c[fF][fF](.-)|r','%1')
+end
+
 local function Config_SortButtons(a,b)
-	if a[1] and b[1] then
-		if a[1] == b[1] then
-			local name1 = (type(a[3].name) == 'function' and a[3].name()) or a[3].name
-			local name2 = (type(b[3].name) == 'function' and b[3].name()) or b[3].name
-			return name1 < name2
+	local A1, B1 = a[1], b[1]
+	if A1 and B1 then
+		if A1 == B1 then
+			local A3, B3 = a[3], b[3]
+			if A3 and B3 then
+				return Config_StripNameColor(A3.name) < Config_StripNameColor(B3.name)
+			end
 		end
-		return a[1] < b[1]
+		return A1 < B1
 	end
 end
 
@@ -497,12 +504,19 @@ function E:Config_CreateLeftButtons(frame, unskinned, ACD, options)
 	end
 end
 
+function E:Config_CloseClicked()
+	if self.originalClose then
+		self.originalClose:Click()
+	end
+end
+
 function E:Config_WindowClosed()
 	if self.bottomHolder then
 		self.bottomHolder:Hide()
 		self.leftHolder:Hide()
 		self.leftHolder.slider:Hide()
-		self.closeButton:Show()
+		self.closeButton:Hide()
+		self.originalClose:Show()
 
 		E:Config_RestoreOldPosition(self.leftHolder.version)
 		E:Config_RestoreOldPosition(self.obj.content)
@@ -554,13 +568,6 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			func = function()
 				self:ToggleMoveMode()
 			end
-		},
-		{
-			var = 'Close',
-			name = L["Close"],
-			func = function(btn)
-				btn.frame.closeButton:Click()
-			end
 		}
 	}) do
 		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
@@ -569,8 +576,6 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 		if not last then
 			btn:Point("BOTTOMLEFT", frame.bottomHolder, "BOTTOMLEFT", (unskinned and 24) or offset, offset)
 			last = btn
-		elseif info.var == 'Close' then
-			btn:Point("BOTTOMRIGHT", frame.bottomHolder, "BOTTOMRIGHT", -26, offset)
 		else
 			btn:Point("LEFT", last, "RIGHT", 4, 0)
 			last = btn
@@ -687,7 +692,7 @@ function E:ToggleOptionsUI(msg)
 				for i=1, frame:GetNumChildren() do
 					local child = select(i, frame:GetChildren())
 					if child:IsObjectType('Button') and child:GetText() == _G.CLOSE then
-						frame.closeButton = child
+						frame.originalClose = child
 						child:Hide()
 					end
 				end
@@ -706,6 +711,15 @@ function E:ToggleOptionsUI(msg)
 				bottom:Point("BOTTOMRIGHT", -2, 2)
 				bottom:Height(37)
 				frame.bottomHolder = bottom
+
+				local close = CreateFrame('Button', nil, frame)
+				close:SetScript("OnClick", E.Config_CloseClicked)
+				close:SetFrameLevel(1000)
+				close:Point("TOPRIGHT", 1, 2)
+				close:Size(32)
+				close.originalClose = frame.originalClose
+				frame.closeButton = close
+				E.Skins:HandleCloseButton(close)
 
 				local left = CreateFrame('Frame', nil, frame)
 				left.version = frame.obj.titletext
@@ -773,7 +787,8 @@ function E:ToggleOptionsUI(msg)
 				frame.bottomHolder:Show()
 				frame.leftHolder:Show()
 				frame.leftHolder.slider:Show()
-				frame.closeButton:Hide()
+				frame.closeButton:Show()
+				frame.originalClose:Hide()
 			end
 
 			local version = frame.leftHolder.version
