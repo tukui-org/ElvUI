@@ -669,15 +669,16 @@ function AddOn:ToggleOptionsUI(msg)
 				_G.ElvUIGUIFrame = self.GUIFrame
 
 				self:Config_UpdateSize()
-				hooksecurefunc(frame, 'StopMovingOrSizing', AddOn.Config_StopMoving)
 				hooksecurefunc(AddOn.Libs.AceConfigRegistry, 'NotifyChange', AddOn.Config_UpdateLeftButtons)
-				frame:HookScript('OnSizeChanged', AddOn.Config_UpdateLeftScroller)
-				frame:HookScript('OnHide', AddOn.Config_WindowClosed)
 			end
 
 			local unskinned = not self.private.skins.ace3.enable
 			local offset = (unskinned and 14) or 8
 			if not frame.bottomHolder then
+				hooksecurefunc(frame, 'StopMovingOrSizing', AddOn.Config_StopMoving)
+				frame:HookScript('OnSizeChanged', AddOn.Config_UpdateLeftScroller)
+				frame:HookScript('OnHide', AddOn.Config_WindowClosed)
+
 				for i=1, frame:GetNumChildren() do
 					local child = select(i, frame:GetChildren())
 					if child:IsObjectType('Button') and child:GetText() == _G.CLOSE then
