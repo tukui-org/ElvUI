@@ -1232,7 +1232,6 @@ L["The display format of the currency icons that get displayed below the main ba
 L["The display format of the money text that is shown at the top of the main bag."] = true
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true
 L["The first button anchors itself to this point on the bar."] = true
-L["The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."] = true
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true
 L["The font that the core of the UI will use."] = true
@@ -1462,6 +1461,13 @@ L["SKINS_DESC"] = "Adjust Skin settings."
 L["TOGGLESKIN_DESC"] = "Enable/Disable this skin."
 L["TOOLTIP_DESC"] = "Setup options for the Tooltip."
 L["UNITFRAME_DESC"] = "Modify the unitframe settings."
+L["VISIBILITY_DESC"] = [=[The following macro must be true in order for the group to be shown, in addition to any filter that may already be set.
+
+|cffff8000Defaults:|r
+    Party: [@raid6,exists][nogroup] hide;show
+    Raid: [@raid6,noexists][@raid26,exists] hide;show
+    Raid40: [@raid26,noexists] hide;show]
+    Raid Pet: [group:raid] show; hide]=]
 L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 Specific Searching:

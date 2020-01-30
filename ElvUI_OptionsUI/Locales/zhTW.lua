@@ -1231,7 +1231,6 @@ L["The display format of the currency icons that get displayed below the main ba
 L["The display format of the money text that is shown at the top of the main bag."] = "在背包主框架上方的金幣顯示格式"
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "在信息文字中顯示的金錢格式"
 L["The first button anchors itself to this point on the bar."] = "快捷列第一個按鈕的所在位置."
-L["The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."] = "為了顯示設定過的過濾器下面的巨集必須啟用."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家頭頂姓名的字體. |cffFF0000警告: 你需要重新開啟遊戲或重新登錄才能使用此功能.|r"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "戰鬥資訊將使用此字體, |​​cffFF0000警告:需重啟遊戲或重新登入才可使此變更生效.|r"
 L["The font that the core of the UI will use."] = "核心UI 所使用的字體."
@@ -1460,6 +1459,13 @@ L["SKINS_DESC"] = "調整外觀設定."
 L["TOGGLESKIN_DESC"] = "啟用/停用此外觀."
 L["TOOLTIP_DESC"] = "浮動提示資訊設定選項."
 L["UNITFRAME_DESC"] = "修改單位框架設定."
+L["VISIBILITY_DESC"] = [=[為了顯示設定過的過濾器下面的巨集必須啟用.
+
+|cffff8000Defaults:|r
+    Party: [@raid6,exists][nogroup] hide;show
+    Raid: [@raid6,noexists][@raid26,exists] hide;show
+    Raid40: [@raid26,noexists] hide;show]
+    Raid Pet: [group:raid] show; hide]=]
 L["SEARCH_SYNTAX_DESC"] = [=[因為新增加的 LibItemSearch, 你現在可以使用更進階的物品搜尋. 下面是一份搜尋語法的文件. 想要看更完整的解釋請到: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 條件搜尋:

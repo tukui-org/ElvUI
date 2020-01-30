@@ -1229,7 +1229,6 @@ L["The display format of the currency icons that get displayed below the main ba
 L["The display format of the money text that is shown at the top of the main bag."] = "통합가방 상단에 표시되는 보유 골드의 표시 방법을 결정합니다."
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "정보문자와 툴팁에서 표시될 골드의 형식을 결정합니다."
 L["The first button anchors itself to this point on the bar."] = "첫 번째 요소를 기준으로 나머지가 나열됩니다."
-L["The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."] = "체크시 그룹의 표시 설정이 설정됩니다. 필터를 추가해서 수정이 가능합니다."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "화면상에서 캐릭터 위에 표시되는 이름, 길드, 칭호 등의 글꼴을 변경합니다.|n|n|cffff0000주의|r|n이 설정은 리로드가 아닌 캐릭터에 재접속하야 적용됩니다."
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "화면상에서 전투 상황에 관련된 글자에 적용되는 글꼴입니다.|n|n|cffff0000WARNING|r|n이 설정은 리로드가 아닌 캐릭터에 재접속하야 적용됩니다."
 L["The font that the core of the UI will use."] = "ElvUI에서 쓰이는 모든 글자의 글꼴을 결정합니다.|n|n개인적으로 글꼴을 지정할 수 있는 곳은 적용되지 않습니다."
@@ -1458,6 +1457,13 @@ L["SKINS_DESC"] = "다른 애드온이나 게임 내 여러 프레임에 체크 
 L["TOGGLESKIN_DESC"] = "체크 시 해당 프레임에 스킨을 사용합니다."
 L["TOOLTIP_DESC"] = "툴팁에 관련된 옵션들입니다."
 L["UNITFRAME_DESC"] = "유닛프레임 설정을 변경합니다."
+L["VISIBILITY_DESC"] = [=[체크시 그룹의 표시 설정이 설정됩니다. 필터를 추가해서 수정이 가능합니다.
+
+|cffff8000Defaults:|r
+    Party: [@raid6,exists][nogroup] hide;show
+    Raid: [@raid6,noexists][@raid26,exists] hide;show
+    Raid40: [@raid26,noexists] hide;show]
+    Raid Pet: [group:raid] show; hide]=]
 L["SEARCH_SYNTAX_DESC"] = [=[
 
   각종 가방에서 검색기능을 사용할 때, 다음의 명령어들을 활용하면

@@ -1229,7 +1229,6 @@ L["The display format of the currency icons that get displayed below the main ba
 L["The display format of the money text that is shown at the top of the main bag."] = "Le format d'affichage de l'argent que vous avez visible en haut du sac principal."
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "L'affichage du format de l'argent que vous possédez dans le texte d'informations Argent et dans son infobulle."
 L["The first button anchors itself to this point on the bar."] = "Ancrage du premier bouton sur le point de la barre."
-L["The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."] = "La macro suivante doit être cochée pour que le groupe soit affiché, en plus de la configuration des filtres."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Police qui apparait sur le texte au dessus de la tête des joueurs. |cffFF0000ATTENTION: requiert un redémarrage du jeu ou une reconnexion pour que les changements soient pris en compte.|r"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "La police qui sera utilisée pour les textes de combat. |cffFF0000Note : Ce changement nécessite de relancer le jeu ou d'une reconnexion pour prendre effet.|r"
 L["The font that the core of the UI will use."] = "La police que le cœur de l'Interface utilisera"
@@ -1458,6 +1457,13 @@ L["SKINS_DESC"] = "Ajuste les paramètres d'habillage."
 L["TOGGLESKIN_DESC"] = "Active ou désactive l'habillage ElvUI des éléments ci-dessous."
 L["TOOLTIP_DESC"] = "Configuration des infobulles."
 L["UNITFRAME_DESC"] = "Modifier les options des cadres d'unités."
+L["VISIBILITY_DESC"] = [=[La macro suivante doit être cochée pour que le groupe soit affiché, en plus de la configuration des filtres.
+
+|cffff8000Defaults:|r
+    Party: [@raid6,exists][nogroup] hide;show
+    Raid: [@raid6,noexists][@raid26,exists] hide;show
+    Raid40: [@raid26,noexists] hide;show]
+    Raid Pet: [group:raid] show; hide]=]
 L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 Specific Searching:

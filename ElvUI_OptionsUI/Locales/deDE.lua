@@ -1233,7 +1233,6 @@ L["The display format of the currency icons that get displayed below the main ba
 L["The display format of the money text that is shown at the top of the main bag."] = "Das Anzeigeformat für Gold oben an der Haupttasche."
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "Das Anzeigeformat für Gold in den Haupt-Infoleisten und Tooltips."
 L["The first button anchors itself to this point on the bar."] = "Der erste Aktionstaste dockt an diesen Punkt in der Leiste an."
-L["The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."] = "Das folgende Makro muss wahr sein um die Gruppe anzuzeigen. Dies gilt zusätzlich zu jeglichem Filter der möglicherweise bereits eingestellt ist."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Die Schrift, die über den Köpfen der Spieler auftaucht. |cffFF0000WARNUNG: Das benötigt einen Neustart des Spiels oder einen Relog um in Effekt zu treten.|r"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Die Schriftart des Kampftextes. |cffFF0000WARNUNG: Nach der änderung dieser Option muss das Spiel neu gestartet werden.|r"
 L["The font that the core of the UI will use."] = "Die Schriftart, die hauptsächlich vom UI verwendet wird."
@@ -1463,6 +1462,13 @@ L["SKINS_DESC"] = "Passe die Einstellungen für externe Addon Skins/Optionen an.
 L["TOGGLESKIN_DESC"] = "Aktiviere/Deaktiviere diesen Skin."
 L["TOOLTIP_DESC"] = "Konfiguriere die Einstellungen für Tooltips."
 L["UNITFRAME_DESC"] = "Konfiguriere die Einstellungen für die Einheitenfenster."
+L["VISIBILITY_DESC"] = [=[Das folgende Makro muss wahr sein um die Gruppe anzuzeigen. Dies gilt zusätzlich zu jeglichem Filter der möglicherweise bereits eingestellt ist.
+
+|cffff8000Standard:|r
+    Gruppe: [@raid6,exists][nogroup] hide;show
+    Schlachtzug: [@raid6,noexists][@raid26,exists] hide;show
+    40er Schlachtzung: [@raid26,noexists] hide;show
+    Schlachtzugsbegleiter: [group:raid] show; hide]=]
 L["SEARCH_SYNTAX_DESC"] = [=[Mit der Ergänzung von LibItemSearch, kannst du jetzt erweitert nach Gegenständen suchen. Nachfolgend findest du eine Dokumentation des Suchsyntax. Die volle Erklärung findest du hier: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 Spezifische Suche:

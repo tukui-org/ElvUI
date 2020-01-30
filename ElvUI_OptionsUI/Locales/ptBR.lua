@@ -1231,7 +1231,6 @@ L["The display format of the currency icons that get displayed below the main ba
 L["The display format of the money text that is shown at the top of the main bag."] = true
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true
 L["The first button anchors itself to this point on the bar."] = "O primeiro botão fixa-se a este ponto da barra"
-L["The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."] = "A macro seguinte tem de ser verdadeira para que o grupo seja mostrado, em adição a qualquer outro filtro que possa já estar definido."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "A fonte do texto que aparece sobre a cabeça dos jogadores. |cffFF0000ATENÇÃO: Para esta alteração fazer efeito é necessário que o jogo seja reiniciado ou relogado.|r"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Fonte que o texto de combate usará. |cffFF0000AVISO: Para que as mudanças sejam efetuadas é necessário reiniciar ou relogar o jogo."
 L["The font that the core of the UI will use."] = "Fonte que o núcleo da interface usará."
@@ -1461,6 +1460,13 @@ L["SKINS_DESC"] = "Ajustar definições de Aparências."
 L["TOGGLESKIN_DESC"] = "Ativa/Desativa a aparência deste quadro."
 L["TOOLTIP_DESC"] = "Opções de configuração para a Tooltip."
 L["UNITFRAME_DESC"] = "Modify the unitframe settings."
+L["VISIBILITY_DESC"] = [=[A macro seguinte tem de ser verdadeira para que o grupo seja mostrado, em adição a qualquer outro filtro que possa já estar definido.
+
+|cffff8000Defaults:|r
+    Party: [@raid6,exists][nogroup] hide;show
+    Raid: [@raid6,noexists][@raid26,exists] hide;show
+    Raid40: [@raid26,noexists] hide;show]
+    Raid Pet: [group:raid] show; hide]=]
 L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 Specific Searching:
