@@ -625,6 +625,15 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			name = L["Toggle Anchors"],
 			desc = L["Unlock various elements of the UI to be repositioned."],
 			func = function() E:ToggleMoveMode() end
+		},
+		{
+			var = 'ShowStatusReport',
+			name = L["ESTATUS"],
+			desc = L["Shows the ESTATUS Frame"],
+			func = function()
+				E:ShowStatusReport()
+				E:ToggleOptionsUI()
+			end
 		}
 	}) do
 		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
