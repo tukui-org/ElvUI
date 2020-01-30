@@ -60,7 +60,6 @@ function E:ToggleMoveMode(override, configType)
 	if override ~= nil and override ~= '' then E.ConfigurationMode = override end
 
 	if E.ConfigurationMode ~= true then
-		E:ToggleOptionsUI()
 		E:Grid_Show()
 
 		if not ElvUIMoverPopupWindow then
@@ -68,6 +67,16 @@ function E:ToggleMoveMode(override, configType)
 		end
 
 		ElvUIMoverPopupWindow:Show()
+
+		if IsAddOnLoaded('ElvUI_OptionsUI') then
+			if E.Libs.AceConfigDialog then
+				E.Libs.AceConfigDialog:Close('ElvUI')
+			end
+
+			if not _G.GameTooltip:IsForbidden() then
+				_G.GameTooltip:Hide()
+			end
+		end
 
 		E.ConfigurationMode = true
 	else
@@ -282,7 +291,10 @@ function E:CreateMoverPopup()
 
 	lock:SetScript('OnClick', function()
 		E:ToggleMoveMode(true)
-		E:ToggleOptionsUI()
+
+		if IsAddOnLoaded('ElvUI_OptionsUI') and E.Libs.AceConfigDialog then
+			E.Libs.AceConfigDialog:Open('ElvUI')
+		end
 
 		selectedValue = 'ALL'
 		_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue)
