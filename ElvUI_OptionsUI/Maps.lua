@@ -83,11 +83,6 @@ E.Options.args.maps = {
 						},
 					},
 				},
-				spacer = {
-					order = 2,
-					type = "description",
-					name = "\n"
-				},
 				coordinatesGroup = {
 					order = 3,
 					type = "group",

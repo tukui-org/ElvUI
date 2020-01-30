@@ -84,11 +84,6 @@ local function CreateCustomCurrencyOptions(currencyID)
 						DT:LoadDataTexts()
 					end,
 				},
-				spacer = {
-					order = 2,
-					type = "description",
-					name = "\n",
-				},
 				displayStyle = {
 					order = 3,
 					type = "select",
@@ -400,11 +395,6 @@ E.Options.args.datatexts = {
 						Minimap:UpdateSettings()
 					end,
 				},
-				spacer = {
-					order = 11,
-					type = "description",
-					name = "\n",
-				},
 				smallPanels = {
 					type = "group",
 					name = L["Small Panels"],
@@ -548,11 +538,6 @@ E.Options.args.datatexts = {
 						--Reload datatexts in case the currency we just added was already selected on a panel
 						DT:LoadDataTexts()
 					end,
-				},
-				spacer = {
-					order = 4,
-					type = "description",
-					name = "\n",
 				},
 				currencies = {
 					order = 5,
