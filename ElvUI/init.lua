@@ -9,7 +9,7 @@
 
 --Lua functions
 local _G, min, format, pairs, gsub, strsplit, unpack, wipe, type, tcopy = _G, min, format, pairs, gsub, strsplit, unpack, wipe, type, table.copy
-local tinsert, sort, ipairs, select = tinsert, sort, ipairs, select
+local tinsert, sort, ipairs, select, tContains = tinsert, sort, ipairs, select, tContains
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
@@ -275,19 +275,19 @@ function E:Config_UpdateSize(reset)
 	frame:SetMinResize(800, 600)
 	frame:SetMaxResize(maxWidth-50, maxHeight-50)
 
-	self.Libs.AceConfigDialog:SetDefaultSize(AddOnName, self:Config_GetDefaultSize())
+	self.Libs.AceConfigDialog:SetDefaultSize(AddOnName, E:Config_GetDefaultSize())
 
 	local status = frame.obj and frame.obj.status
 	if status then
 		if reset then
-			self:Config_ResetSettings()
+			E:Config_ResetSettings()
 
-			status.top, status.left = self:Config_GetPosition()
-			status.width, status.height = self:Config_GetDefaultSize()
+			status.top, status.left = E:Config_GetPosition()
+			status.width, status.height = E:Config_GetDefaultSize()
 
 			frame.obj:ApplyStatus()
 		else
-			local top, left = self:Config_GetPosition()
+			local top, left = E:Config_GetPosition()
 			if top and left then
 				status.top, status.left = top, left
 
@@ -483,6 +483,9 @@ end
 function E:Config_CreateLeftButtons(frame, unskinned, options)
 	local opts = {}
 	for key, info in pairs(options) do
+		if info.order < 5 and not tContains(E.OriginalOptions, key) then
+			info.order = 5
+		end
 		tinsert(opts, {info.order, key, info})
 	end
 	sort(opts, Config_SortButtons)
@@ -542,6 +545,7 @@ function E:Config_WindowClosed()
 
 		E:Config_RestoreOldPosition(self.topHolder.version)
 		E:Config_RestoreOldPosition(self.obj.content)
+		E:Config_RestoreOldPosition(self.obj.titlebg)
 	end
 end
 
@@ -567,6 +571,12 @@ function E:Config_WindowOpened(frame)
 		content:ClearAllPoints()
 		content:Point("TOPLEFT", frame, "TOPLEFT", offset, -(unskinned and 50 or 40))
 		content:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -offset, holderHeight + 3)
+
+		local titlebg = frame.obj.titlebg
+		E:Config_SaveOldPosition(titlebg)
+		titlebg:ClearAllPoints()
+		titlebg:SetPoint("TOPLEFT", frame)
+		titlebg:SetPoint("TOPRIGHT", frame)
 	end
 end
 
@@ -580,15 +590,15 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			name = L["Reposition Window"],
 			desc = L["Reset the size and position of this frame."],
 			func = function()
-				self:Config_UpdateSize(true)
+				E:Config_UpdateSize(true)
 			end
 		},
 		{
 			var = 'ToggleTutorials',
 			name = L["Toggle Tutorials"],
 			func = function()
-				self:Tutorials(true)
-				self:ToggleOptionsUI()
+				E:Tutorials(true)
+				E:ToggleOptionsUI()
 			end
 		},
 		{
@@ -596,25 +606,21 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			name = L["Install"],
 			desc = L["Run the installation process."],
 			func = function()
-				self:Install()
-				self:ToggleOptionsUI()
+				E:Install()
+				E:ToggleOptionsUI()
 			end
 		},
 		{
 			var = 'ResetAnchors',
 			name = L["Reset Anchors"],
 			desc = L["Reset all frames to their original positions."],
-			func = function()
-				self:ResetUI()
-			end
+			func = function() E:ResetUI() end
 		},
 		{
 			var = 'ToggleAnchors',
 			name = L["Toggle Anchors"],
 			desc = L["Unlock various elements of the UI to be repositioned."],
-			func = function()
-				self:ToggleMoveMode()
-			end
+			func = function() E:ToggleMoveMode() end
 		}
 	}) do
 		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
@@ -727,7 +733,7 @@ function E:ToggleOptionsUI(msg)
 		local ACR = E.Libs.AceConfigRegistry
 		if ACR and not ACR.NotifyHookedElvUI then
 			hooksecurefunc(E.Libs.AceConfigRegistry, 'NotifyChange', E.Config_UpdateLeftButtons)
-			self:Config_UpdateSize()
+			E:Config_UpdateSize()
 			ACR.NotifyHookedElvUI = true
 		end
 
@@ -834,13 +840,8 @@ function E:ToggleOptionsUI(msg)
 				E.Skins:HandleCloseButton(close)
 			end
 
-			self:Config_CreateLeftButtons(frame, unskinned, E.Options.args)
-			self:Config_CreateBottomButtons(frame, unskinned)
-
-			local titlebg = frame.obj.titlebg
-			titlebg:ClearAllPoints()
-			titlebg:SetPoint("TOPLEFT", frame)
-			titlebg:SetPoint("TOPRIGHT", frame)
+			E:Config_CreateLeftButtons(frame, unskinned, E.Options.args)
+			E:Config_CreateBottomButtons(frame, unskinned)
 
 			E.Config_UpdateLeftScroller(frame)
 			E:Config_WindowOpened(frame)

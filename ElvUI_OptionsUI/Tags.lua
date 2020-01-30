@@ -57,3 +57,9 @@ for _, Table in pairs({'Events', 'Methods'}) do
 		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].get = getTag
 	end
 end
+
+--[[ THIS SHOULD BE EXECUTED IN THE LAST LOADED CONFIG FILE, AT THE BOTTOM
+	NOTE: This is used to make sure Plugins use no less than the options order we want. ]]
+E.OriginalOptions = {}
+for key in pairs(E.Options.args) do table.insert(E.OriginalOptions, key) end
+setmetatable(E.OriginalOptions, {__newindex = E.noop})
