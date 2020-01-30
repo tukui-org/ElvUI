@@ -110,6 +110,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI已过期。你可以在www.tukui.org下载到最新的版本。购买会员可以使用Tukui客户端自动更新ElvUI"
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI需要进行数据库优化，请耐性等待。"
 L["ElvUI Plugin Installation"] = "ElvUI插件安装"
+L["ElvUI Status"] = true
 L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = "ElvUI已更新，然而游戏仍在运行. 请重启游戏，以保证文件正确更新."
 L["Empty Slot"] = "空拾取位"
 L["Enable"] = "启用"
@@ -277,6 +278,7 @@ L["Setup Chat"] = "设定聊天框"
 L["Setup CVars"] = "设定参数"
 L["Shoulder"] = "肩"
 L["Show/Hide Reagents"] = "显示/隐藏材料"
+L["Shows a frame with needed info for support."] = true
 L["silverabbrev"] = "|cffc7c7cf银|r"
 L["Skip Process"] = "跳过"
 L["Sort Tab"] = "选项排列"

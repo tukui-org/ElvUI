@@ -110,6 +110,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = true
 L["ElvUI needs to perform database optimizations please be patient."] = true
 L["ElvUI Plugin Installation"] = true
+L["ElvUI Status"] = true
 L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = true
 L["Empty Slot"] = true
 L["Enable"] = true
@@ -277,6 +278,7 @@ L["Setup Chat"] = true
 L["Setup CVars"] = true
 L["Shoulder"] = true
 L["Show/Hide Reagents"] = true
+L["Shows a frame with needed info for support."] = true
 L["silverabbrev"] = "|cffc7c7cfs|r"
 L["Skip Process"] = true
 L["Sort Tab"] = true

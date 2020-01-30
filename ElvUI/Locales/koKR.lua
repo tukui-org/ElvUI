@@ -110,6 +110,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI가 오래된 버전입니다. http://www.tukui.org 에서 새 버전을 다운로드 받으세요. 프리미엄유저가 되어 Tukui Client 프로그램을 쓰면 자동으로 업데이트 해드립니다."
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI의 데이터베이스를 조정할 필요가 있습니다. 잠시 기다려주세요."
 L["ElvUI Plugin Installation"] = "ElvUI 플러그인  설치"
+L["ElvUI Status"] = true
 L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = true
 L["Empty Slot"] = "빈 칸"
 L["Enable"] = "사용"
@@ -277,6 +278,7 @@ L["Setup Chat"] = "대화창 설치"
 L["Setup CVars"] = "인터페이스 설정 적용"
 L["Shoulder"] = "어깨"
 L["Show/Hide Reagents"] = "재료은행 표시"
+L["Shows a frame with needed info for support."] = true
 L["silverabbrev"] = "|TInterface\\MoneyFrame\\UI-MoneyIcons:0:0:1:0:64:16:17:32:1:16|t"
 L["Skip Process"] = "건너뛰기"
 L["Sort Tab"] = "탭 정렬"

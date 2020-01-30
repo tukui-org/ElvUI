@@ -110,6 +110,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI ist nicht aktuell. Du kannst die neuste Version bei www.tukui.org herunterladen. Hol dir die Premium-Mitgliedschaft und ElvUI wird durch den Tukui-Client automatisch aktualisiert!"
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI muss eine Datenbank Optimierung durchführen. Bitte warte eine Moment."
 L["ElvUI Plugin Installation"] = true --No need to translate
+L["ElvUI Status"] = true --No need to translate
 L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = "ElvUI wurde upgedated während das Spiel noch läuft. Bitte starte das Spiel neu, damit alle Dateien richtig geupdated werden."
 L["Empty Slot"] = "Leerer Platz"
 L["Enable"] = "Eingeschaltet"
@@ -278,6 +279,7 @@ L["Setup Chat"] = "Chateinstellungen"
 L["Setup CVars"] = "Installiere CVars"
 L["Shoulder"] = "Schulter"
 L["Show/Hide Reagents"] = "Reagenzien anzeigen/ausblenden"
+L["Shows a frame with needed info for support."] = "Zeigt ein Fenster mit benötigten Informationen für den Support."
 L["silverabbrev"] = "|cffc7c7cfs|r"
 L["Skip Process"] = "Schritt überspringen"
 L["Sort Tab"] = "Tab sortieren"

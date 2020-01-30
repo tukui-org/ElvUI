@@ -628,8 +628,8 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 		},
 		{
 			var = 'ShowStatusReport',
-			name = L["ESTATUS"],
-			desc = L["Shows the ESTATUS Frame"],
+			name = L["ElvUI Status"],
+			desc = L["Shows a frame with needed info for support."],
 			func = function()
 				E:ShowStatusReport()
 				E:ToggleOptionsUI()
