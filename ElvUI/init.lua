@@ -440,9 +440,10 @@ function E:Config_UpdateLeftScroller()
 	local buttons = left.buttons
 	local slider = left.slider
 	local max = 0
+
 	slider:SetMinMaxValues(0, max)
 	slider:SetValue(0)
-	left.buttons:Point("TOPLEFT", 0, 0)
+	buttons:Point("TOPLEFT", 0, 0)
 
 	local buttonsBottom = buttons:GetBottom()
 	for _, btn in pairs(buttons) do
