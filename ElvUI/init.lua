@@ -847,7 +847,9 @@ function E:ToggleOptionsUI(msg)
 		end
 	end
 
-	_G.GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
+	if not _G.GameTooltip:IsForbidden() then
+		_G.GameTooltip:Hide()
+	end
 end
 
 do --taint workarounds by townlong-yak.com (rearranged by Simpy)
