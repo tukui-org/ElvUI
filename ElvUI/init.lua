@@ -483,8 +483,8 @@ end
 function E:Config_CreateLeftButtons(frame, unskinned, options)
 	local opts = {}
 	for key, info in pairs(options) do
-		if info.order < 5 and not tContains(E.OriginalOptions, key) then
-			info.order = 5
+		if info.order < 6 and not tContains(E.OriginalOptions, key) then
+			info.order = 6
 		end
 		tinsert(opts, {info.order, key, info})
 	end
