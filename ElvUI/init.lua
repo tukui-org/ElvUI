@@ -486,7 +486,7 @@ function E:Config_CreateLeftButtons(frame, unskinned, options)
 		if info.order < 6 and not tContains(E.OriginalOptions, key) then
 			info.order = 6
 		end
-		if key == 'plugins' then
+		if key == 'profiles' then
 			info.desc = nil
 		end
 		tinsert(opts, {info.order, key, info})
