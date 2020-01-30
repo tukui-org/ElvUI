@@ -305,9 +305,10 @@ function E:Config_GetDefaultSize()
 end
 
 function E:Config_StopMoving()
-	if self.obj and self.obj.status then
-		E.configSavedPositionTop, E.configSavedPositionLeft = E:Round(self:GetTop(), 2), E:Round(self:GetLeft(), 2)
-		E.global.general.AceGUI.width, E.global.general.AceGUI.height = E:Round(self:GetWidth(), 2), E:Round(self:GetHeight(), 2)
+	local frame = self and self.GetParent and self:GetParent()
+	if frame and frame.obj and frame.obj.status then
+		E.configSavedPositionTop, E.configSavedPositionLeft = E:Round(frame:GetTop(), 2), E:Round(frame:GetLeft(), 2)
+		E.global.general.AceGUI.width, E.global.general.AceGUI.height = E:Round(frame:GetWidth(), 2), E:Round(frame:GetHeight(), 2)
 	end
 end
 
@@ -693,7 +694,6 @@ function E:ToggleOptionsUI(msg)
 		local noConfig
 		local _, _, _, _, reason = GetAddOnInfo('ElvUI_OptionsUI')
 		if reason ~= 'MISSING' and reason ~= 'DISABLED' then
-			self.GUIFrame = false
 			LoadAddOn('ElvUI_OptionsUI')
 
 			--For some reason, GetAddOnInfo reason is 'DEMAND_LOADED' even if the addon is disabled.
@@ -724,17 +724,16 @@ function E:ToggleOptionsUI(msg)
 	end
 
 	if mode == 'Open' and frame then
-		if not E.GUIFrame then
-			E.GUIFrame = frame
-
-			self:Config_UpdateSize()
+		local ACR = E.Libs.AceConfigRegistry
+		if ACR and not ACR.NotifyHookedElvUI then
 			hooksecurefunc(E.Libs.AceConfigRegistry, 'NotifyChange', E.Config_UpdateLeftButtons)
+			self:Config_UpdateSize()
+			ACR.NotifyHookedElvUI = true
 		end
 
 		if frame.bottomHolder then
 			E:Config_WindowOpened(frame)
 		else -- window was released or never opened
-			hooksecurefunc(frame, 'StopMovingOrSizing', E.Config_StopMoving)
 			frame:HookScript('OnSizeChanged', E.Config_UpdateLeftScroller)
 			frame:HookScript('OnHide', E.Config_WindowClosed)
 
@@ -743,6 +742,10 @@ function E:ToggleOptionsUI(msg)
 				if child:IsObjectType('Button') and child:GetText() == _G.CLOSE then
 					frame.originalClose = child
 					child:Hide()
+				elseif child:IsObjectType('Frame') or child:IsObjectType('Button') then
+					if child:HasScript('OnMouseUp') then
+						child:HookScript('OnMouseUp', E.Config_StopMoving)
+					end
 				end
 			end
 
@@ -840,6 +843,7 @@ function E:ToggleOptionsUI(msg)
 			titlebg:SetPoint("TOPRIGHT", frame)
 
 			E.Config_UpdateLeftScroller(frame)
+			E:Config_WindowOpened(frame)
 		end
 
 		if ACD and pages then
