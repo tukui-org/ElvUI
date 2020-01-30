@@ -268,7 +268,7 @@ function E:Config_GetSize()
 end
 
 function E:Config_UpdateSize(reset)
-	local frame = self.GUIFrame
+	local frame = E:Config_GetWindow()
 	if not frame then return end
 
 	local maxWidth, maxHeight = self.UIParent:GetSize()
@@ -390,7 +390,7 @@ function E:Config_SetButtonColor(btn, disabled)
 		E:Config_SetButtonText(btn, true)
 	else
 		btn:Enable()
-		btn:SetBackdropColor(unpack(self.media.backdropcolor))
+		btn:SetBackdropColor(unpack(E.media.backdropcolor))
 		local r, g, b = unpack(E.media.bordercolor)
 		btn:SetBackdropBorderColor(r, g, b, 1)
 		btn.Text:SetTextColor(.9, .8, 0)
@@ -420,7 +420,7 @@ function E:Config_CreateButton(info, frame, unskinned, ...)
 end
 
 function E:Config_UpdateLeftButtons()
-	local frame = E.GUIFrame
+	local frame = E:Config_GetWindow()
 	if not (frame and frame.leftHolder) then return end
 
 	local status = frame.obj.status
@@ -479,7 +479,7 @@ function E:Config_RestoreOldPosition(frame)
 	end
 end
 
-function E:Config_CreateLeftButtons(frame, unskinned, ACD, options)
+function E:Config_CreateLeftButtons(frame, unskinned, options)
 	local opts = {}
 	for key, info in pairs(options) do
 		tinsert(opts, {info.order, key, info})
@@ -492,7 +492,10 @@ function E:Config_CreateLeftButtons(frame, unskinned, ACD, options)
 		local key = opt[2]
 
 		info.key = key
-		info.func = function() ACD:SelectGroup("ElvUI", key) end
+		info.func = function()
+			local ACD = E.Libs.AceConfigDialog
+			if ACD then ACD:SelectGroup("ElvUI", key) end
+		end
 
 		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate')
 		btn:Width(177)
@@ -518,8 +521,15 @@ function E:Config_CloseClicked()
 	end
 end
 
+function E:Config_GetWindow()
+	local ACD = E.Libs.AceConfigDialog
+	local ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
+	return ConfigOpen and ConfigOpen.frame
+end
+
 function E:Config_WindowClosed()
-	if self.bottomHolder then
+	local ElvUIConfig = E:Config_GetWindow()
+	if not ElvUIConfig and self.bottomHolder then
 		self.bottomHolder:Hide()
 		self.leftHolder:Hide()
 		self.topHolder:Hide()
@@ -529,6 +539,31 @@ function E:Config_WindowClosed()
 
 		E:Config_RestoreOldPosition(self.topHolder.version)
 		E:Config_RestoreOldPosition(self.obj.content)
+	end
+end
+
+function E:Config_WindowOpened(frame)
+	if frame and frame.bottomHolder then
+		frame.bottomHolder:Show()
+		frame.leftHolder:Show()
+		frame.topHolder:Show()
+		frame.leftHolder.slider:Show()
+		frame.closeButton:Show()
+		frame.originalClose:Hide()
+
+		local unskinned = not E.private.skins.ace3.enable
+		local offset = unskinned and 14 or 8
+		local version = frame.topHolder.version
+		E:Config_SaveOldPosition(version)
+		version:ClearAllPoints()
+		version:Point("LEFT", frame.topHolder, "LEFT", unskinned and 8 or 6, unskinned and -4 or 0)
+
+		local holderHeight = frame.bottomHolder:GetHeight()
+		local content = frame.obj.content
+		E:Config_SaveOldPosition(content)
+		content:ClearAllPoints()
+		content:Point("TOPLEFT", frame, "TOPLEFT", offset, -(unskinned and 50 or 40))
+		content:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -offset, holderHeight + 3)
 	end
 end
 
@@ -595,6 +630,56 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 end
 
 local pageNodes = {}
+function E:Config_GetToggleMode(frame, msg)
+	local pages, msgStr
+	if msg and msg ~= '' then
+		pages = {strsplit(',', msg)}
+		msgStr = gsub(msg, ',', '\001')
+	end
+
+	local empty = pages ~= nil
+	if not frame or empty then
+		if empty then
+			local ACD = E.Libs.AceConfigDialog
+			local pageCount, index, mainSel = #pages
+			if pageCount > 1 then
+				wipe(pageNodes)
+				index = 0
+
+				local main, mainNode, mainSelStr, sub, subNode, subSel
+				for i = 1, pageCount do
+					if i == 1 then
+						main = pages[i] and ACD and ACD.Status and ACD.Status.ElvUI
+						mainSel = main and main.status and main.status.groups and main.status.groups.selected
+						mainSelStr = mainSel and ('^'..E:EscapeString(mainSel)..'\001')
+						mainNode = main and main.children and main.children[pages[i]]
+						pageNodes[index+1], pageNodes[index+2] = main, mainNode
+					else
+						sub = pages[i] and pageNodes[i] and ((i == pageCount and pageNodes[i]) or pageNodes[i].children[pages[i]])
+						subSel = sub and sub.status and sub.status.groups and sub.status.groups.selected
+						subNode = (mainSelStr and msgStr:match(mainSelStr..E:EscapeString(pages[i])..'$') and (subSel and subSel == pages[i])) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
+						pageNodes[index+1], pageNodes[index+2] = sub, subNode
+					end
+					index = index + 2
+				end
+			else
+				local main = pages[1] and ACD and ACD.Status and ACD.Status.ElvUI
+				mainSel = main and main.status and main.status.groups and main.status.groups.selected
+			end
+
+			if frame and ((not index and mainSel and mainSel == msg) or (index and pageNodes and pageNodes[index])) then
+				return 'Close'
+			else
+				return 'Open', pages
+			end
+		else
+			return 'Open'
+		end
+	else
+		return 'Close'
+	end
+end
+
 function E:ToggleOptionsUI(msg)
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
@@ -627,198 +712,132 @@ function E:ToggleOptionsUI(msg)
 		end
 	end
 
-	local ACD = self.Libs.AceConfigDialog
-	local ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
+	local ACD = E.Libs.AceConfigDialog
+	local frame = E:Config_GetWindow()
+	local mode, pages = E:Config_GetToggleMode(frame, msg)
+	if ACD then ACD[mode](ACD, AddOnName) end
 
-	local pages, msgStr
-	if msg and msg ~= '' then
-		pages = {strsplit(',', msg)}
-		msgStr = gsub(msg, ',', '\001')
+	if not frame then
+		frame = E:Config_GetWindow()
 	end
 
-	local mode = 'Close'
-	if not ConfigOpen or (pages ~= nil) then
-		if pages ~= nil then
-			local pageCount, index, mainSel = #pages
-			if pageCount > 1 then
-				wipe(pageNodes)
-				index = 0
+	if mode == 'Open' and frame then
+		if not E.GUIFrame then
+			E.GUIFrame = frame
 
-				local main, mainNode, mainSelStr, sub, subNode, subSel
-				for i = 1, pageCount do
-					if i == 1 then
-						main = pages[i] and ACD and ACD.Status and ACD.Status.ElvUI
-						mainSel = main and main.status and main.status.groups and main.status.groups.selected
-						mainSelStr = mainSel and ('^'..E:EscapeString(mainSel)..'\001')
-						mainNode = main and main.children and main.children[pages[i]]
-						pageNodes[index+1], pageNodes[index+2] = main, mainNode
-					else
-						sub = pages[i] and pageNodes[i] and ((i == pageCount and pageNodes[i]) or pageNodes[i].children[pages[i]])
-						subSel = sub and sub.status and sub.status.groups and sub.status.groups.selected
-						subNode = (mainSelStr and msgStr:match(mainSelStr..E:EscapeString(pages[i])..'$') and (subSel and subSel == pages[i])) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
-						pageNodes[index+1], pageNodes[index+2] = sub, subNode
-					end
-					index = index + 2
-				end
-			else
-				local main = pages[1] and ACD and ACD.Status and ACD.Status.ElvUI
-				mainSel = main and main.status and main.status.groups and main.status.groups.selected
-			end
-
-			if ConfigOpen and ((not index and mainSel and mainSel == msg) or (index and pageNodes and pageNodes[index])) then
-				mode = 'Close'
-			else
-				mode = 'Open'
-			end
-		else
-			mode = 'Open'
+			self:Config_UpdateSize()
+			hooksecurefunc(E.Libs.AceConfigRegistry, 'NotifyChange', E.Config_UpdateLeftButtons)
 		end
-	end
 
-	if ACD then
-		ACD[mode](ACD, AddOnName)
-	end
+		if frame.bottomHolder then
+			E:Config_WindowOpened(frame)
+		else -- window was released or never opened
+			hooksecurefunc(frame, 'StopMovingOrSizing', E.Config_StopMoving)
+			frame:HookScript('OnSizeChanged', E.Config_UpdateLeftScroller)
+			frame:HookScript('OnHide', E.Config_WindowClosed)
 
-	if mode == 'Open' then
-		ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
-		if ConfigOpen and ConfigOpen.frame then
-			local frame = ConfigOpen.frame
-			if not self.GUIFrame then
-				self.GUIFrame = frame
-				_G.ElvUIGUIFrame = self.GUIFrame
-
-				self:Config_UpdateSize()
-				hooksecurefunc(E.Libs.AceConfigRegistry, 'NotifyChange', E.Config_UpdateLeftButtons)
+			for i=1, frame:GetNumChildren() do
+				local child = select(i, frame:GetChildren())
+				if child:IsObjectType('Button') and child:GetText() == _G.CLOSE then
+					frame.originalClose = child
+					child:Hide()
+				end
 			end
 
-			local unskinned = not self.private.skins.ace3.enable
-			local offset = unskinned and 14 or 8
-			if not frame.bottomHolder then
-				hooksecurefunc(frame, 'StopMovingOrSizing', E.Config_StopMoving)
-				frame:HookScript('OnSizeChanged', E.Config_UpdateLeftScroller)
-				frame:HookScript('OnHide', E.Config_WindowClosed)
-
-				for i=1, frame:GetNumChildren() do
-					local child = select(i, frame:GetChildren())
-					if child:IsObjectType('Button') and child:GetText() == _G.CLOSE then
-						frame.originalClose = child
-						child:Hide()
+			local unskinned = not E.private.skins.ace3.enable
+			if unskinned then
+				for i=1, frame:GetNumRegions() do
+					local region = select(i, frame:GetRegions())
+					if region:IsObjectType('Texture') and region:GetTexture() == 131080 then
+						region:SetAlpha(0)
 					end
 				end
-
-				if unskinned then
-					for i=1, frame:GetNumRegions() do
-						local region = select(i, frame:GetRegions())
-						if region:IsObjectType('Texture') and region:GetTexture() == 131080 then
-							region:SetAlpha(0)
-						end
-					end
-				end
-
-				local bottom = CreateFrame('Frame', nil, frame)
-				bottom:Point("BOTTOMLEFT", 2, 2)
-				bottom:Point("BOTTOMRIGHT", -2, 2)
-				bottom:Height(37)
-				frame.bottomHolder = bottom
-
-				local close = CreateFrame('Button', nil, frame, 'UIPanelCloseButton')
-				close:SetScript("OnClick", E.Config_CloseClicked)
-				close:SetFrameLevel(1000)
-				close:Point("TOPRIGHT", unskinned and -8 or 1, unskinned and -8 or 2)
-				close:Size(32)
-				close.originalClose = frame.originalClose
-				frame.closeButton = close
-
-				local left = CreateFrame('Frame', nil, frame)
-				left:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
-				left:Point("TOPLEFT", unskinned and 10 or 2, unskinned and -6 or -2)
-				left:Width(181)
-				frame.leftHolder = left
-
-				local top = CreateFrame('Frame', nil, frame)
-				top.version = frame.obj.titletext
-				top:Point("TOPRIGHT", frame, -2, 0)
-				top:Point("TOPLEFT", left, "TOPRIGHT", 1, 0)
-				top:Height(24)
-				frame.topHolder = top
-
-				local logo = left:CreateTexture()
-				logo:SetTexture(E.Media.Textures.Logo)
-				logo:Point("TOPLEFT", frame, "TOPLEFT", unskinned and 40 or 30, unskinned and -8 or -2)
-				logo:Size(126, 64)
-				left.logo = logo
-
-				local buttonsHolder = CreateFrame('Frame', nil, left)
-				buttonsHolder:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
-				buttonsHolder:Point("TOPLEFT", left, "TOPLEFT", 0, -70)
-				buttonsHolder:Width(181)
-				buttonsHolder:SetFrameLevel(5)
-				buttonsHolder:SetClipsChildren(true)
-				left.buttonsHolder = buttonsHolder
-
-				local buttons = CreateFrame('Frame', nil, buttonsHolder)
-				buttons:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
-				buttons:Point("TOPLEFT", 0, 0)
-				buttons:Width(181)
-				left.buttons = buttons
-
-				local slider = CreateFrame('Slider', nil, frame)
-				slider:SetThumbTexture(E.Media.Textures.White8x8)
-				slider:SetScript('OnMouseWheel', ConfigSliderOnMouseWheel)
-				slider:SetScript('OnValueChanged', ConfigSliderOnValueChanged)
-				slider:SetOrientation("VERTICAL")
-				slider:SetObeyStepOnDrag(true)
-				slider:SetFrameLevel(4)
-				slider:SetValueStep(1)
-				slider:SetValue(0)
-				slider:Width(192)
-				slider:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
-				slider:Point("TOPLEFT", buttons, "TOPLEFT", 0, 0)
-				slider.buttons = buttons
-				left.slider = slider
-
-				local thumb = slider:GetThumbTexture()
-				thumb:Point("LEFT", left, "RIGHT", 2, 0)
-				thumb:SetVertexColor(1, 1, 1, 0.5)
-				thumb:SetSize(10, 14)
-				left.slider.thumb = thumb
-
-				if not unskinned then
-					bottom:SetTemplate("Transparent")
-					left:SetTemplate("Transparent")
-					top:SetTemplate("Transparent")
-					E.Skins:HandleCloseButton(close)
-				end
-
-				self:Config_CreateLeftButtons(frame, unskinned, ACD, E.Options.args)
-				self:Config_CreateBottomButtons(frame, unskinned)
-
-				local titlebg = frame.obj.titlebg
-				titlebg:ClearAllPoints()
-				titlebg:SetPoint("TOPLEFT", frame)
-				titlebg:SetPoint("TOPRIGHT", frame)
-
-				E.Config_UpdateLeftScroller(frame)
-			else
-				frame.bottomHolder:Show()
-				frame.leftHolder:Show()
-				frame.topHolder:Show()
-				frame.leftHolder.slider:Show()
-				frame.closeButton:Show()
-				frame.originalClose:Hide()
 			end
 
-			local version = frame.topHolder.version
-			E:Config_SaveOldPosition(version)
-			version:ClearAllPoints()
-			version:Point("LEFT", frame.topHolder, "LEFT", unskinned and 8 or 6, unskinned and -4 or 0)
+			local bottom = CreateFrame('Frame', nil, frame)
+			bottom:Point("BOTTOMLEFT", 2, 2)
+			bottom:Point("BOTTOMRIGHT", -2, 2)
+			bottom:Height(37)
+			frame.bottomHolder = bottom
 
-			local holderHeight = frame.bottomHolder:GetHeight()
-			local content = frame.obj.content
-			E:Config_SaveOldPosition(content)
-			content:ClearAllPoints()
-			content:Point("TOPLEFT", frame, "TOPLEFT", offset, -(unskinned and 50 or 40))
-			content:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -offset, holderHeight + 3)
+			local close = CreateFrame('Button', nil, frame, 'UIPanelCloseButton')
+			close:SetScript("OnClick", E.Config_CloseClicked)
+			close:SetFrameLevel(1000)
+			close:Point("TOPRIGHT", unskinned and -8 or 1, unskinned and -8 or 2)
+			close:Size(32)
+			close.originalClose = frame.originalClose
+			frame.closeButton = close
+
+			local left = CreateFrame('Frame', nil, frame)
+			left:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
+			left:Point("TOPLEFT", unskinned and 10 or 2, unskinned and -6 or -2)
+			left:Width(181)
+			frame.leftHolder = left
+
+			local top = CreateFrame('Frame', nil, frame)
+			top.version = frame.obj.titletext
+			top:Point("TOPRIGHT", frame, -2, 0)
+			top:Point("TOPLEFT", left, "TOPRIGHT", 1, 0)
+			top:Height(24)
+			frame.topHolder = top
+
+			local logo = left:CreateTexture()
+			logo:SetTexture(E.Media.Textures.Logo)
+			logo:Point("TOPLEFT", frame, "TOPLEFT", unskinned and 40 or 30, unskinned and -8 or -2)
+			logo:Size(126, 64)
+			left.logo = logo
+
+			local buttonsHolder = CreateFrame('Frame', nil, left)
+			buttonsHolder:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
+			buttonsHolder:Point("TOPLEFT", left, "TOPLEFT", 0, -70)
+			buttonsHolder:Width(181)
+			buttonsHolder:SetFrameLevel(5)
+			buttonsHolder:SetClipsChildren(true)
+			left.buttonsHolder = buttonsHolder
+
+			local buttons = CreateFrame('Frame', nil, buttonsHolder)
+			buttons:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
+			buttons:Point("TOPLEFT", 0, 0)
+			buttons:Width(181)
+			left.buttons = buttons
+
+			local slider = CreateFrame('Slider', nil, frame)
+			slider:SetThumbTexture(E.Media.Textures.White8x8)
+			slider:SetScript('OnMouseWheel', ConfigSliderOnMouseWheel)
+			slider:SetScript('OnValueChanged', ConfigSliderOnValueChanged)
+			slider:SetOrientation("VERTICAL")
+			slider:SetObeyStepOnDrag(true)
+			slider:SetFrameLevel(4)
+			slider:SetValueStep(1)
+			slider:SetValue(0)
+			slider:Width(192)
+			slider:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
+			slider:Point("TOPLEFT", buttons, "TOPLEFT", 0, 0)
+			slider.buttons = buttons
+			left.slider = slider
+
+			local thumb = slider:GetThumbTexture()
+			thumb:Point("LEFT", left, "RIGHT", 2, 0)
+			thumb:SetVertexColor(1, 1, 1, 0.5)
+			thumb:SetSize(10, 14)
+			left.slider.thumb = thumb
+
+			if not unskinned then
+				bottom:SetTemplate("Transparent")
+				left:SetTemplate("Transparent")
+				top:SetTemplate("Transparent")
+				E.Skins:HandleCloseButton(close)
+			end
+
+			self:Config_CreateLeftButtons(frame, unskinned, E.Options.args)
+			self:Config_CreateBottomButtons(frame, unskinned)
+
+			local titlebg = frame.obj.titlebg
+			titlebg:ClearAllPoints()
+			titlebg:SetPoint("TOPLEFT", frame)
+			titlebg:SetPoint("TOPRIGHT", frame)
+
+			E.Config_UpdateLeftScroller(frame)
 		end
 
 		if ACD and pages then

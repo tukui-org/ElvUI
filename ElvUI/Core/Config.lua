@@ -69,9 +69,8 @@ function E:ToggleMoveMode(override, configType)
 		ElvUIMoverPopupWindow:Show()
 
 		if IsAddOnLoaded('ElvUI_OptionsUI') then
-			if E.Libs.AceConfigDialog then
-				E.Libs.AceConfigDialog:Close('ElvUI')
-			end
+			local ACD = E.Libs.AceConfigDialog
+			if ACD then ACD:Close('ElvUI') end
 
 			if not _G.GameTooltip:IsForbidden() then
 				_G.GameTooltip:Hide()
@@ -288,12 +287,17 @@ function E:CreateMoverPopup()
 
 	local lock = CreateFrame('Button', f:GetName()..'CloseButton', f, 'OptionsButtonTemplate')
 	_G[lock:GetName() .. 'Text']:SetText(L["Lock"])
-
 	lock:SetScript('OnClick', function()
 		E:ToggleMoveMode(true)
 
-		if IsAddOnLoaded('ElvUI_OptionsUI') and E.Libs.AceConfigDialog then
-			E.Libs.AceConfigDialog:Open('ElvUI')
+		if IsAddOnLoaded('ElvUI_OptionsUI') then
+			local ACD = E.Libs.AceConfigDialog
+			if ACD then
+				ACD:Open('ElvUI')
+
+				local frame = E:Config_GetWindow()
+				if frame then E:Config_WindowOpened(frame) end
+			end
 		end
 
 		selectedValue = 'ALL'
