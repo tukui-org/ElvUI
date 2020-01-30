@@ -465,7 +465,7 @@ local function ExportImport_Open(mode)
 		exportString = ""
 
 		E.Libs.AceGUI:Release(widget)
-		E.Libs.AceConfigDialog:Open("ElvUI")
+		E:Config_OpenWindow()
 	end)
 
 	--Clear default text

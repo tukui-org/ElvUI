@@ -529,6 +529,18 @@ function E:Config_CloseClicked()
 	end
 end
 
+function E:Config_OpenWindow()
+	local ACD = E.Libs.AceConfigDialog
+	if ACD then
+		ACD:Open('ElvUI')
+
+		local frame = E:Config_GetWindow()
+		if frame then
+			E:Config_WindowOpened(frame)
+		end
+	end
+end
+
 function E:Config_GetWindow()
 	local ACD = E.Libs.AceConfigDialog
 	local ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]

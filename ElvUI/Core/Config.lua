@@ -291,13 +291,7 @@ function E:CreateMoverPopup()
 		E:ToggleMoveMode(true)
 
 		if IsAddOnLoaded('ElvUI_OptionsUI') then
-			local ACD = E.Libs.AceConfigDialog
-			if ACD then
-				ACD:Open('ElvUI')
-
-				local frame = E:Config_GetWindow()
-				if frame then E:Config_WindowOpened(frame) end
-			end
+			E:Config_OpenWindow()
 		end
 
 		selectedValue = 'ALL'
