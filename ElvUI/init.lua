@@ -391,9 +391,10 @@ function E:Config_SetButtonColor(btn, disabled)
 		E:Config_SetButtonText(btn, true)
 	else
 		btn:Enable()
-		btn:SetBackdropColor(unpack(E.media.backdropcolor))
 		local r, g, b = unpack(E.media.bordercolor)
 		btn:SetBackdropBorderColor(r, g, b, 1)
+		r, g, b = unpack(E.media.backdropcolor)
+		btn:SetBackdropColor(r, g, b, 1)
 		btn.Text:SetTextColor(.9, .8, 0)
 		E:Config_SetButtonText(btn)
 	end
