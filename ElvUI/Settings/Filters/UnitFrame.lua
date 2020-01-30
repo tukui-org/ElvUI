@@ -1066,7 +1066,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 
 	-- Nyalotha
 		-- Wrathion
-		[313250] = Defaults(), -- Creeping Madness
+		[313255] = Defaults(), -- Creeping Madness (Slow Effect)
 		[306163] = Defaults(), -- Incineration
 		[306015] = Defaults(), -- Searing Armor [tank]
 		-- Maut
