@@ -528,8 +528,10 @@ function E:Config_GetWindow()
 end
 
 function E:Config_WindowClosed()
-	local ElvUIConfig = E:Config_GetWindow()
-	if not ElvUIConfig and self.bottomHolder then
+	if not self.bottomHolder then return end
+
+	local frame = E:Config_GetWindow()
+	if not frame or frame ~= self then
 		self.bottomHolder:Hide()
 		self.leftHolder:Hide()
 		self.topHolder:Hide()
