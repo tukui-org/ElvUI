@@ -491,6 +491,7 @@ function E:Config_CreateLeftButtons(frame, unskinned, ACD, options)
 		local info = opt[3]
 		local key = opt[2]
 
+		info.key = key
 		info.func = function() ACD:SelectGroup("ElvUI", key) end
 
 		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate')
@@ -521,11 +522,12 @@ function E:Config_WindowClosed()
 	if self.bottomHolder then
 		self.bottomHolder:Hide()
 		self.leftHolder:Hide()
+		self.topHolder:Hide()
 		self.leftHolder.slider:Hide()
 		self.closeButton:Hide()
 		self.originalClose:Show()
 
-		E:Config_RestoreOldPosition(self.leftHolder.version)
+		E:Config_RestoreOldPosition(self.topHolder.version)
 		E:Config_RestoreOldPosition(self.obj.content)
 	end
 end
@@ -578,10 +580,10 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 		}
 	}) do
 		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
-		local offset = (unskinned and 14) or 8
+		local offset = unskinned and 14 or 8
 
 		if not last then
-			btn:Point("BOTTOMLEFT", frame.bottomHolder, "BOTTOMLEFT", (unskinned and 24) or offset, offset)
+			btn:Point("BOTTOMLEFT", frame.bottomHolder, "BOTTOMLEFT", unskinned and 24 or offset, offset)
 			last = btn
 		else
 			btn:Point("LEFT", last, "RIGHT", 4, 0)
@@ -690,7 +692,7 @@ function E:ToggleOptionsUI(msg)
 			end
 
 			local unskinned = not self.private.skins.ace3.enable
-			local offset = (unskinned and 14) or 8
+			local offset = unskinned and 14 or 8
 			if not frame.bottomHolder then
 				hooksecurefunc(frame, 'StopMovingOrSizing', E.Config_StopMoving)
 				frame:HookScript('OnSizeChanged', E.Config_UpdateLeftScroller)
@@ -722,28 +724,34 @@ function E:ToggleOptionsUI(msg)
 				local close = CreateFrame('Button', nil, frame)
 				close:SetScript("OnClick", E.Config_CloseClicked)
 				close:SetFrameLevel(1000)
-				close:Point("TOPRIGHT", 1, 2)
+				close:Point("TOPRIGHT", unskinned and -6 or 1, unskinned and -6 or 2)
 				close:Size(32)
 				close.originalClose = frame.originalClose
 				frame.closeButton = close
 				E.Skins:HandleCloseButton(close)
 
 				local left = CreateFrame('Frame', nil, frame)
-				left.version = frame.obj.titletext
 				left:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
-				left:Point("TOPLEFT", (unskinned and 10) or 2, (unskinned and -6) or -2)
+				left:Point("TOPLEFT", unskinned and 10 or 2, unskinned and -6 or -2)
 				left:Width(181)
 				frame.leftHolder = left
 
+				local top = CreateFrame('Frame', nil, frame)
+				top.version = frame.obj.titletext
+				top:Point("TOPRIGHT", frame, -2, 0)
+				top:Point("TOPLEFT", left, "TOPRIGHT", 1, 0)
+				top:Height(24)
+				frame.topHolder = top
+
 				local logo = left:CreateTexture()
 				logo:SetTexture(E.Media.Textures.Logo)
-				logo:Point("TOPLEFT", frame, "TOPLEFT", 30, (unskinned and -6) or -2)
+				logo:Point("TOPLEFT", frame, "TOPLEFT", unskinned and 40 or 30, unskinned and -8 or -2)
 				logo:Size(126, 64)
 				left.logo = logo
 
 				local buttonsHolder = CreateFrame('Frame', nil, left)
 				buttonsHolder:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
-				buttonsHolder:Point("TOPLEFT", left, "TOPLEFT", 0, -80)
+				buttonsHolder:Point("TOPLEFT", left, "TOPLEFT", 0, -70)
 				buttonsHolder:Width(181)
 				buttonsHolder:SetFrameLevel(5)
 				buttonsHolder:SetClipsChildren(true)
@@ -779,6 +787,7 @@ function E:ToggleOptionsUI(msg)
 				if not unskinned then
 					bottom:SetTemplate("Transparent")
 					left:SetTemplate("Transparent")
+					top:SetTemplate("Transparent")
 				end
 
 				self:Config_CreateLeftButtons(frame, unskinned, ACD, E.Options.args)
@@ -793,21 +802,22 @@ function E:ToggleOptionsUI(msg)
 			else
 				frame.bottomHolder:Show()
 				frame.leftHolder:Show()
+				frame.topHolder:Show()
 				frame.leftHolder.slider:Show()
 				frame.closeButton:Show()
 				frame.originalClose:Hide()
 			end
 
-			local version = frame.leftHolder.version
+			local version = frame.topHolder.version
 			E:Config_SaveOldPosition(version)
 			version:ClearAllPoints()
-			version:Point("TOP", frame.leftHolder.logo, "BOTTOM", 0, (unskinned and 4) or 2)
+			version:Point("LEFT", frame.topHolder, "LEFT", unskinned and 8 or 6, unskinned and -4 or 0)
 
 			local holderHeight = frame.bottomHolder:GetHeight()
 			local content = frame.obj.content
 			E:Config_SaveOldPosition(content)
 			content:ClearAllPoints()
-			content:Point("TOPLEFT", frame, "TOPLEFT", offset, -((unskinned and 25) or 15))
+			content:Point("TOPLEFT", frame, "TOPLEFT", offset, -(unskinned and 50 or 40))
 			content:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -offset, holderHeight + 3)
 		end
 
