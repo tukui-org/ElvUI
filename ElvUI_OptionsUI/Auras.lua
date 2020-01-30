@@ -302,23 +302,33 @@ E.Options.args.auras = {
 				},
 			},
 		},
-		buffs = {
-			order = 15,
-			type = 'group',
-			name = L["Buffs"],
-			get = function(info) return E.db.auras.buffs[info[#info]] end,
-			set = function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end,
-			disabled = function() return not E.private.auras.buffsHeader end,
-			args = GetAuraOptions(),
-		},
-		debuffs = {
-			order = 20,
-			type = 'group',
-			name = L["Debuffs"],
-			get = function(info) return E.db.auras.debuffs[info[#info]] end,
-			set = function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end,
-			disabled = function() return not E.private.auras.debuffsHeader end,
-			args = GetAuraOptions(),
-		},
+		auras = {
+			order = 6,
+			type = "group",
+			name = L["BUFFOPTIONS_LABEL"],
+			args = {
+				buffs = {
+					order = 15,
+					type = 'group',
+					name = L["Buffs"],
+					guiInline = true,
+					get = function(info) return E.db.auras.buffs[info[#info]] end,
+					set = function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end,
+					disabled = function() return not E.private.auras.buffsHeader end,
+					args = GetAuraOptions(),
+				},
+				debuffs = {
+					order = 20,
+					type = 'group',
+					name = L["Debuffs"],
+					guiInline = true,
+					get = function(info) return E.db.auras.debuffs[info[#info]] end,
+					set = function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end,
+					disabled = function() return not E.private.auras.debuffsHeader end,
+					args = GetAuraOptions(),
+				},
+
+			}
+		}
 	},
 }
