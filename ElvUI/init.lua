@@ -721,14 +721,13 @@ function E:ToggleOptionsUI(msg)
 				bottom:Height(37)
 				frame.bottomHolder = bottom
 
-				local close = CreateFrame('Button', nil, frame)
+				local close = CreateFrame('Button', nil, frame, 'UIPanelCloseButton')
 				close:SetScript("OnClick", E.Config_CloseClicked)
 				close:SetFrameLevel(1000)
-				close:Point("TOPRIGHT", unskinned and -6 or 1, unskinned and -6 or 2)
+				close:Point("TOPRIGHT", unskinned and -8 or 1, unskinned and -8 or 2)
 				close:Size(32)
 				close.originalClose = frame.originalClose
 				frame.closeButton = close
-				E.Skins:HandleCloseButton(close)
 
 				local left = CreateFrame('Frame', nil, frame)
 				left:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
@@ -788,6 +787,7 @@ function E:ToggleOptionsUI(msg)
 					bottom:SetTemplate("Transparent")
 					left:SetTemplate("Transparent")
 					top:SetTemplate("Transparent")
+					E.Skins:HandleCloseButton(close)
 				end
 
 				self:Config_CreateLeftButtons(frame, unskinned, ACD, E.Options.args)
