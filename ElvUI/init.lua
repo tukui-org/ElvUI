@@ -796,9 +796,9 @@ function E:ToggleOptionsUI(msg)
 			frame.topHolder = top
 
 			local logo = left:CreateTexture()
-			logo:SetTexture(E.Media.Textures.Logo)
+			logo:SetTexture(E.Media.Textures.LogoSmall)
 			logo:Point("TOPLEFT", frame, "TOPLEFT", unskinned and 40 or 30, unskinned and -8 or -2)
-			logo:Size(126, 64)
+			logo:Size(128, 64)
 			left.logo = logo
 
 			local buttonsHolder = CreateFrame('Frame', nil, left)
