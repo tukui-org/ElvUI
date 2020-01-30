@@ -105,6 +105,7 @@ E.Media = {
 		Highlight = M..[[Textures\Highlight.tga]],
 		Leader = M..[[Textures\Leader.tga]],
 		Logo = M..[[Textures\Logo.tga]],
+		LogoSmall = M..[[Textures\LogoSmall.tga]],
 		Mail = M..[[Textures\Mail.tga]],
 		Melli = M..[[Textures\Melli.tga]],
 		Minimalist = M..[[Textures\Minimalist.tga]],
