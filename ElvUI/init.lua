@@ -495,11 +495,16 @@ function E:Config_CreateLeftButtons(frame, unskinned, options)
 	end
 	sort(opts, Config_SortButtons)
 
-	local buttons, last = frame.leftHolder.buttons
+	local buttons, last, order = frame.leftHolder.buttons
 	for _, opt in ipairs(opts) do
 		local info = opt[3]
 		local key = opt[2]
 
+		if (order == 2 or order == 5) and order < opt[1] then
+			last = E:Config_CreateSeparatorLine(frame, last)
+		end
+
+		order = opt[1]
 		info.key = key
 		info.func = function()
 			local ACD = E.Libs.AceConfigDialog
@@ -517,10 +522,6 @@ function E:Config_CreateLeftButtons(frame, unskinned, options)
 
 		buttons[key] = btn
 		last = btn
-
-		if key == 'unitframe' or (key == 'profiles' and E.Options.args.plugins) then
-			last = E:Config_CreateSeparatorLine(frame, last)
-		end
 	end
 end
 
