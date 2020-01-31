@@ -840,7 +840,7 @@ function E:ToggleOptionsUI(msg)
 			logo:SetTexture(E.Media.Textures.LogoSmall)
 			logo:Point("CENTER", left, "TOP", unskinned and 10 or 0, unskinned and -40 or -36)
 			logo:Size(128, 64)
-			logo:SetAlpha(0.8)
+			logo:SetAlpha(0.9)
 			left.logo = logo
 
 			local buttonsHolder = CreateFrame('Frame', nil, left)
