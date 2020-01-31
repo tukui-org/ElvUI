@@ -808,7 +808,7 @@ E.Options.args.actionbar = {
 			order = 4,
 			name = L["Player Bars"],
 			type = "group",
-			childGroups = "tab",
+			childGroups = "tree",
 			args = {},
 		},
 	},
