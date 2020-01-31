@@ -804,12 +804,19 @@ E.Options.args.actionbar = {
 				},
 			},
 		},
+		playerBars = {
+			order = 4,
+			name = L["Player Bars"],
+			type = "group",
+			childGroups = "tab",
+			args = {},
+		},
 	},
 }
 
 for i = 1, 10 do
 	local name = L["Bar "]..i
-	E.Options.args.actionbar.args['bar'..i] = {
+	E.Options.args.actionbar.args.playerBars.args['bar'..i] = {
 		order = 3 + i,
 		name = name,
 		type = 'group',
@@ -981,7 +988,7 @@ for i = 1, 10 do
 	}
 end
 
-E.Options.args.actionbar.args.bar1.args.pagingReset = {
+E.Options.args.actionbar.args.playerBars.args.bar1.args.pagingReset = {
 	type = 'execute',
 	name = L["Reset Action Paging"],
 	order = 2,
@@ -990,7 +997,7 @@ E.Options.args.actionbar.args.bar1.args.pagingReset = {
 	func = function() E.db.actionbar.bar1.paging[E.myclass] = P.actionbar.bar1.paging[E.myclass] AB:UpdateButtonSettings() end,
 }
 
-E.Options.args.actionbar.args.bar6.args.enabled.set = function(info, value)
+E.Options.args.actionbar.args.playerBars.args.bar6.args.enabled.set = function(info, value)
 	E.db.actionbar.bar6.enabled = value;
 	AB:PositionAndSizeBar("bar6")
 
