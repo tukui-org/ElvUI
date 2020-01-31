@@ -79,12 +79,7 @@ function E:ToggleMoveMode(which)
 		_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, which)
 
 		if IsAddOnLoaded('ElvUI_OptionsUI') then
-			local ACD = E.Libs.AceConfigDialog
-			if ACD then ACD:Close('ElvUI') end
-
-			if not _G.GameTooltip:IsForbidden() then
-				_G.GameTooltip:Hide()
-			end
+			E:Config_CloseWindow()
 		end
 	else
 		E:Grid_Hide()
@@ -284,8 +279,12 @@ function E:CreateMoverPopup()
 	lock:SetScript('OnClick', function()
 		E:ToggleMoveMode()
 
-		if IsAddOnLoaded('ElvUI_OptionsUI') then
-			E:Config_OpenWindow()
+		if E.ConfigurationToggled then
+			E.ConfigurationToggled = nil
+
+			if IsAddOnLoaded('ElvUI_OptionsUI') then
+				E:Config_OpenWindow()
+			end
 		end
 	end)
 

@@ -530,6 +530,17 @@ function E:Config_CloseClicked()
 	end
 end
 
+function E:Config_CloseWindow()
+	local ACD = E.Libs.AceConfigDialog
+	if ACD then
+		ACD:Close('ElvUI')
+	end
+
+	if not GameTooltip:IsForbidden() then
+		GameTooltip:Hide()
+	end
+end
+
 function E:Config_OpenWindow()
 	local ACD = E.Libs.AceConfigDialog
 	if ACD then
@@ -539,6 +550,10 @@ function E:Config_OpenWindow()
 		if frame then
 			E:Config_WindowOpened(frame)
 		end
+	end
+
+	if not GameTooltip:IsForbidden() then
+		GameTooltip:Hide()
 	end
 end
 
@@ -637,7 +652,10 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			var = 'ToggleAnchors',
 			name = L["Toggle Anchors"],
 			desc = L["Unlock various elements of the UI to be repositioned."],
-			func = function() E:ToggleMoveMode() end
+			func = function()
+				E:ToggleMoveMode()
+				E.ConfigurationToggled = true
+			end
 		},
 		{
 			var = 'ShowStatusReport',
@@ -875,10 +893,6 @@ function E:ToggleOptionsUI(msg)
 		if ACD and pages then
 			ACD:SelectGroup(AddOnName, unpack(pages))
 		end
-	end
-
-	if not _G.GameTooltip:IsForbidden() then
-		_G.GameTooltip:Hide()
 	end
 end
 
