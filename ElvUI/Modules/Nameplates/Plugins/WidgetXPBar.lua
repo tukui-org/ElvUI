@@ -33,6 +33,7 @@ local VoidtouchedEggQuestID = 58802
 local VoidtouchedEggNPCIDToWidgetIDMap = {
 	[163541] = 2342, -- Voidtouched Egg
 	[163592] = 2342, -- Yu'gaz
+	[163593] = 2342, -- Bitey McStabface
 	[163595] = 2342, -- Reginald
 	[163596] = 2342, -- Picco
 }
