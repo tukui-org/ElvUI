@@ -481,6 +481,7 @@ end
 --Create Profiles Table
 E.Options.args.profiles = E.Libs.AceDBOptions:GetOptionsTable(E.data)
 E.Libs.AceConfig:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles)
+E.Options.args.profiles.name = L["Profiles"]
 E.Options.args.profiles.order = 5
 
 E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles, E.data)
