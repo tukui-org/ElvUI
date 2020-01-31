@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 --Lua functions
 local _G = _G
 local unpack = unpack
-local type, ipairs, tonumber = type, ipairs, tonumber
+local strupper, ipairs, tonumber = strupper, ipairs, tonumber
 local floor, select = floor, select
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -16,8 +16,7 @@ local EditBox_ClearFocus = EditBox_ClearFocus
 local RESET = RESET
 -- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
 
-local selectedValue, grid = 'ALL'
-
+local grid
 E.ConfigModeLayouts = {
 	'ALL',
 	'GENERAL',
@@ -55,11 +54,21 @@ function E:Grid_Hide()
 	end
 end
 
-function E:ToggleMoveMode(override, configType)
-	if InCombatLockdown() then return; end
-	if override ~= nil and override ~= '' then E.ConfigurationMode = override end
+function E:ToggleMoveMode(which)
+	if InCombatLockdown() then return end
+	local mode = not E.ConfigurationMode
 
-	if E.ConfigurationMode ~= true then
+	if not which or which == '' then
+		E.ConfigurationMode = mode
+		which = 'ALL'
+	else
+		mode = true
+		which = strupper(which)
+	end
+
+	self:ToggleMovers(mode, which)
+
+	if mode then
 		E:Grid_Show()
 
 		if not ElvUIMoverPopupWindow then
@@ -67,6 +76,7 @@ function E:ToggleMoveMode(override, configType)
 		end
 
 		ElvUIMoverPopupWindow:Show()
+		_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, which)
 
 		if IsAddOnLoaded('ElvUI_OptionsUI') then
 			local ACD = E.Libs.AceConfigDialog
@@ -76,23 +86,13 @@ function E:ToggleMoveMode(override, configType)
 				_G.GameTooltip:Hide()
 			end
 		end
-
-		E.ConfigurationMode = true
 	else
 		E:Grid_Hide()
 
 		if ElvUIMoverPopupWindow then
 			ElvUIMoverPopupWindow:Hide()
 		end
-
-		E.ConfigurationMode = false
 	end
-
-	if type(configType) ~= 'string' then
-		configType = nil
-	end
-
-	self:ToggleMovers(E.ConfigurationMode, configType or 'ALL')
 end
 
 function E:Grid_GetRegion()
@@ -178,9 +178,7 @@ function E:Grid_Create()
 end
 
 local function ConfigMode_OnClick(self)
-	selectedValue = self.value
-	E:ToggleMoveMode(false, self.value)
-	_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, self.value)
+	E:ToggleMoveMode(self.value)
 end
 
 local function ConfigMode_Initialize()
@@ -193,7 +191,8 @@ local function ConfigMode_Initialize()
 		_G.UIDropDownMenu_AddButton(info)
 	end
 
-	_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue)
+	local dd = ElvUIMoverPopupWindowDropDown
+	_G.UIDropDownMenu_SetSelectedValue(dd, dd.selectedValue or 'ALL')
 end
 
 function E:NudgeMover(nudgeX, nudgeY)
@@ -241,11 +240,6 @@ function E:CreateMoverPopup()
 	f:Height(190)
 	f:SetTemplate('Transparent')
 	f:Point('BOTTOM', _G.UIParent, 'CENTER', 0, 100)
-	f:SetScript('OnHide', function()
-		if ElvUIMoverPopupWindowDropDown then
-			_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, 'ALL')
-		end
-	end)
 	f:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 	f:CreateShadow(5)
 	f:Hide()
@@ -288,14 +282,11 @@ function E:CreateMoverPopup()
 	local lock = CreateFrame('Button', f:GetName()..'CloseButton', f, 'OptionsButtonTemplate')
 	_G[lock:GetName() .. 'Text']:SetText(L["Lock"])
 	lock:SetScript('OnClick', function()
-		E:ToggleMoveMode(true)
+		E:ToggleMoveMode()
 
 		if IsAddOnLoaded('ElvUI_OptionsUI') then
 			E:Config_OpenWindow()
 		end
-
-		selectedValue = 'ALL'
-		_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue)
 	end)
 
 	local align = CreateFrame('EditBox', f:GetName()..'EditBox', f, 'InputBoxTemplate')
@@ -347,7 +338,7 @@ function E:CreateMoverPopup()
 		if mover:IsShown() then
 			mover:Hide()
 			E:Grid_Hide()
-			E:ToggleMoveMode(true)
+			E:ToggleMoveMode()
 		end
 	end)
 
