@@ -765,8 +765,7 @@ function E:ToggleOptionsUI(msg)
 
 		if frame.bottomHolder then
 			E:Config_WindowOpened(frame)
-			frame.leftHolder.logo.animGroup.animInWidth:Play()
-			frame.leftHolder.logo.animGroup.animInHeight:Play()
+			E:Elasticize(logo)
 		else -- window was released or never opened
 			frame:HookScript('OnSizeChanged', E.Config_UpdateLeftScroller)
 			frame:HookScript('OnHide', E.Config_WindowClosed)
@@ -827,37 +826,8 @@ function E:ToggleOptionsUI(msg)
 			left.logo = logo
 			logo:SetAlpha(0.8)
 
-			logo.animGroup = _G.CreateAnimationGroup(logo)
-			logo.animGroup:SetLooping(false)
-			logo.animGroup.animInWidth = logo.animGroup:CreateAnimation('width')
-			logo.animGroup.animOutWidth = logo.animGroup:CreateAnimation('width')
-			logo.animGroup.animInHeight = logo.animGroup:CreateAnimation('height')
-			logo.animGroup.animOutHeight = logo.animGroup:CreateAnimation('height')
-
-			logo.animGroup.animInWidth:SetDuration(2)
-			logo.animGroup.animInWidth:SetChange(60)
-			logo.animGroup.animInWidth:SetEasing('inout-elastic')
-			logo.animGroup.animInWidth:SetScript('OnFinished', function(self)
-				self:Stop()
-				logo.animGroup.animOutWidth:Play()
-			end)
-
-			logo.animGroup.animOutWidth:SetDuration(2)
-			logo.animGroup.animOutWidth:SetChange(128)
-			logo.animGroup.animOutWidth:SetEasing('inout-elastic')
-
-			logo.animGroup.animInHeight:SetDuration(2)
-			logo.animGroup.animInHeight:SetChange(30)
-			logo.animGroup.animInHeight:SetEasing('inout-elastic')
-			logo.animGroup.animInHeight:SetScript('OnFinished', function(self)
-				self:Stop()
-				logo.animGroup.animOutHeight:Play()
-			end)
-
-			logo.animGroup.animOutHeight:SetDuration(2)
-			logo.animGroup.animOutHeight:SetChange(64)
-			logo.animGroup.animOutHeight:SetEasing('inout-elastic')
-
+			E:SetUpAnimGroup(logo, "Elastic", 128, 64, 2, false)
+			E:Elasticize(logo)
 
 			logo.animGroup.animInWidth:Play()
 			logo.animGroup.animInHeight:Play()

@@ -18,6 +18,11 @@ function E:RandomAnimShake(index)
 	return random(s[1], s[2]), random(s[3], s[4])
 end
 
+function E:Elasticize(obj)
+	obj.animGroup.animInWidth:Play()
+	obj.animGroup.animInHeight:Play()
+end
+
 function E:SetUpAnimGroup(obj, Type, ...)
 	if not Type then Type = 'Flash' end
 
@@ -59,6 +64,49 @@ function E:SetUpAnimGroup(obj, Type, ...)
 				shake.path[i]:SetOffset(E.AnimShakeH[i], 0)
 			end
 		end
+	elseif Type == "Elastic" then
+		local width, height, duration, loop = ...
+		obj.animGroup = _G.CreateAnimationGroup(obj)
+		obj.animGroup.animInWidth = obj.animGroup:CreateAnimation('width')
+		obj.animGroup.animOutWidth = obj.animGroup:CreateAnimation('width')
+		obj.animGroup.animInHeight = obj.animGroup:CreateAnimation('height')
+		obj.animGroup.animOutHeight = obj.animGroup:CreateAnimation('height')
+
+		obj.animGroup.animInWidth:SetDuration(duration)
+		obj.animGroup.animInWidth:SetChange(width*0.45)
+		obj.animGroup.animInWidth:SetEasing('inout-elastic')
+		obj.animGroup.animInWidth:SetScript('OnFinished', function(self)
+			self:Stop()
+			obj.animGroup.animOutWidth:Play()
+		end)
+
+		obj.animGroup.animOutWidth:SetDuration(duration)
+		obj.animGroup.animOutWidth:SetChange(width)
+		obj.animGroup.animOutWidth:SetEasing('inout-elastic')
+		obj.animGroup.animOutWidth:SetScript('OnFinished', function(self)
+			self:Stop()
+			if loop then
+				obj.animGroup.animInWidth:Play()
+			end
+		end)
+
+		obj.animGroup.animInHeight:SetDuration(duration)
+		obj.animGroup.animInHeight:SetChange(height*0.45)
+		obj.animGroup.animInHeight:SetEasing('inout-elastic')
+		obj.animGroup.animInHeight:SetScript('OnFinished', function(self)
+			self:Stop()
+			obj.animGroup.animOutHeight:Play()
+		end)
+
+		obj.animGroup.animOutHeight:SetDuration(duration)
+		obj.animGroup.animOutHeight:SetChange(height)
+		obj.animGroup.animOutHeight:SetEasing('inout-elastic')
+		obj.animGroup.animOutHeight:SetScript('OnFinished', function(self)
+			self:Stop()
+			if loop then
+				obj.animGroup.animInHeight:Play()
+			end
+		end)		
 	else
 		local x, y, duration, customName = ...
 		if not customName then customName = 'anim' end
