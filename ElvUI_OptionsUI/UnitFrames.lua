@@ -1292,16 +1292,28 @@ local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 	return config
 end
 
+local individual = {
+	['player'] = true,
+	['target'] = true,
+	['targettarget'] = true,
+	['targettargettarget'] = true,
+	['focus'] = true,
+	['focustarget'] = true,
+	['pet'] = true,
+	['pettarget'] = true
+}
+
 local function CreateCustomTextGroup(unit, objectName)
-	if not E.Options.args.unitframe.args[unit] then
+	local group = individual[unit] and 'individualUnits' or 'groupUnits'
+	if not E.Options.args.unitframe.args[group].args[unit] then
 		return
-	elseif E.Options.args.unitframe.args[unit].args.customText.args[objectName] then
-		E.Options.args.unitframe.args[unit].args.customText.args[objectName].hidden = false -- Re-show existing custom texts which belong to current profile and were previously hidden
-		tinsert(CUSTOMTEXT_CONFIGS, E.Options.args.unitframe.args[unit].args.customText.args[objectName]) --Register this custom text config to be hidden again on profile change
+	elseif E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName] then
+		E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName].hidden = false -- Re-show existing custom texts which belong to current profile and were previously hidden
+		tinsert(CUSTOMTEXT_CONFIGS, E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName]) --Register this custom text config to be hidden again on profile change
 		return
 	end
 
-	E.Options.args.unitframe.args[unit].args.customText.args[objectName] = {
+	E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName] = {
 		order = -1,
 		type = 'group',
 		name = objectName,
@@ -1325,7 +1337,7 @@ local function CreateCustomTextGroup(unit, objectName)
 				order = 2,
 				name = L["DELETE"],
 				func = function()
-					E.Options.args.unitframe.args[unit].args.customText.args[objectName] = nil;
+					E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName] = nil;
 					E.db.unitframe.units[unit].customTexts[objectName] = nil;
 
 					if unit == 'boss' or unit == 'arena' then
@@ -1425,7 +1437,7 @@ local function CreateCustomTextGroup(unit, objectName)
 		},
 	}
 
-	tinsert(CUSTOMTEXT_CONFIGS, E.Options.args.unitframe.args[unit].args.customText.args[objectName]) --Register this custom text config to be hidden on profile change
+	tinsert(CUSTOMTEXT_CONFIGS, E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName]) --Register this custom text config to be hidden on profile change
 end
 
 local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
@@ -2779,9 +2791,9 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 					width = 'full',
 					set = function(info, value)
 						if value == true then
-							E.Options.args.unitframe.args.individualUnitOptionsGroup.args.player.args.classbar.args.height.max = 300
+							E.Options.args.unitframe.args.individualUnits.args.player.args.classbar.args.height.max = 300
 						else
-							E.Options.args.unitframe.args.individualUnitOptionsGroup.args.player.args.classbar.args.height.max = 30
+							E.Options.args.unitframe.args.individualUnits.args.player.args.classbar.args.height.max = 30
 						end
 						E.db.unitframe.units.player.classbar[info[#info]] = value;
 						UF:CreateAndUpdateUF('player')
@@ -4196,14 +4208,14 @@ E.Options.args.unitframe = {
 				},
 			},
 		},
-		individualUnitOptionsGroup = {
+		individualUnits = {
 			order = 4,
 			type = "group",
 			childGroups = "tab",
 			name = L["Individual Units"],
 			args = {},
 		},
-		groupUnitOptionsGroup = {
+		groupUnits = {
 			order = 5,
 			type = "group",
 			childGroups = "tab",
@@ -4214,7 +4226,7 @@ E.Options.args.unitframe = {
 }
 
 --Player
-E.Options.args.unitframe.args.individualUnitOptionsGroup.args.player = {
+E.Options.args.unitframe.args.individualUnits.args.player = {
 	name = L["Player"],
 	type = 'group',
 	order = 3,
@@ -4551,7 +4563,7 @@ E.Options.args.unitframe.args.individualUnitOptionsGroup.args.player = {
 }
 
 --Target
-E.Options.args.unitframe.args.individualUnitOptionsGroup.args.target = {
+E.Options.args.unitframe.args.individualUnits.args.target = {
 	name = L["TARGET"],
 	type = 'group',
 	order = 4,
@@ -4689,7 +4701,7 @@ E.Options.args.unitframe.args.individualUnitOptionsGroup.args.target = {
 }
 
 --TargetTarget
-E.Options.args.unitframe.args.individualUnitOptionsGroup.args.targettarget = {
+E.Options.args.unitframe.args.individualUnits.args.targettarget = {
 	name = L["TargetTarget"],
 	type = 'group',
 	order = 5,
@@ -4809,7 +4821,7 @@ E.Options.args.unitframe.args.individualUnitOptionsGroup.args.targettarget = {
 }
 
 --TargetTargetTarget
-E.Options.args.unitframe.args.individualUnitOptionsGroup.args.targettargettarget = {
+E.Options.args.unitframe.args.individualUnits.args.targettargettarget = {
 	name = L["TargetTargetTarget"],
 	type = 'group',
 	order = 6,
@@ -4925,7 +4937,7 @@ E.Options.args.unitframe.args.individualUnitOptionsGroup.args.targettargettarget
 }
 
 --Focus
-E.Options.args.unitframe.args.individualUnitOptionsGroup.args.focus = {
+E.Options.args.unitframe.args.individualUnits.args.focus = {
 	name = L["Focus"],
 	type = 'group',
 	order = 7,
@@ -5045,7 +5057,7 @@ E.Options.args.unitframe.args.individualUnitOptionsGroup.args.focus = {
 }
 
 --Focus Target
-E.Options.args.unitframe.args.individualUnitOptionsGroup.args.focustarget = {
+E.Options.args.unitframe.args.individualUnits.args.focustarget = {
 	name = L["FocusTarget"],
 	type = 'group',
 	order = 8,
@@ -5161,7 +5173,7 @@ E.Options.args.unitframe.args.individualUnitOptionsGroup.args.focustarget = {
 }
 
 --Pet
-E.Options.args.unitframe.args.individualUnitOptionsGroup.args.pet = {
+E.Options.args.unitframe.args.individualUnits.args.pet = {
 	name = L["PET"],
 	type = 'group',
 	order = 9,
@@ -5280,7 +5292,7 @@ E.Options.args.unitframe.args.individualUnitOptionsGroup.args.pet = {
 }
 
 --Pet Target
-E.Options.args.unitframe.args.individualUnitOptionsGroup.args.pettarget = {
+E.Options.args.unitframe.args.individualUnits.args.pettarget = {
 	name = L["PetTarget"],
 	type = 'group',
 	order = 10,
@@ -5395,7 +5407,7 @@ E.Options.args.unitframe.args.individualUnitOptionsGroup.args.pettarget = {
 }
 
 --Boss Frames
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.boss = {
+E.Options.args.unitframe.args.groupUnits.args.boss = {
 	name = L["Boss"],
 	type = 'group',
 	order = 1000,
@@ -5532,7 +5544,7 @@ E.Options.args.unitframe.args.groupUnitOptionsGroup.args.boss = {
 }
 
 --Arena Frames
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.arena = {
+E.Options.args.unitframe.args.groupUnits.args.arena = {
 	name = L["Arena"],
 	type = 'group',
 	order = 1000,
@@ -5715,7 +5727,7 @@ E.Options.args.unitframe.args.groupUnitOptionsGroup.args.arena = {
 }
 
 --Party Frames
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.party = {
+E.Options.args.unitframe.args.groupUnits.args.party = {
 	name = L["PARTY"],
 	type = 'group',
 	order = 9,
@@ -6158,10 +6170,10 @@ E.Options.args.unitframe.args.groupUnitOptionsGroup.args.party = {
 		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 	},
 }
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.party.args.classbar.name = L["Alternative Power"]
+E.Options.args.unitframe.args.groupUnits.args.party.args.classbar.name = L["Alternative Power"]
 
 --Raid Frames
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.raid = {
+E.Options.args.unitframe.args.groupUnits.args.raid = {
 	name = L["Raid"],
 	type = 'group',
 	order = 10,
@@ -6438,10 +6450,10 @@ E.Options.args.unitframe.args.groupUnitOptionsGroup.args.raid = {
 		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
 	},
 }
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.raid.args.classbar.name = L["Alternative Power"]
+E.Options.args.unitframe.args.groupUnits.args.raid.args.classbar.name = L["Alternative Power"]
 
 --Raid-40 Frames
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.raid40 = {
+E.Options.args.unitframe.args.groupUnits.args.raid40 = {
 	name = L["Raid-40"],
 	type = 'group',
 	order = 11,
@@ -6718,10 +6730,10 @@ E.Options.args.unitframe.args.groupUnitOptionsGroup.args.raid40 = {
 		summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 	},
 }
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.raid40.args.classbar.name = L["Alternative Power"]
+E.Options.args.unitframe.args.groupUnits.args.raid40.args.classbar.name = L["Alternative Power"]
 
 --Raid Pet Frames
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.raidpet = {
+E.Options.args.unitframe.args.groupUnits.args.raidpet = {
 	order = 12,
 	type = 'group',
 	name = L["Raid Pet"],
@@ -6972,7 +6984,7 @@ E.Options.args.unitframe.args.groupUnitOptionsGroup.args.raidpet = {
 }
 
 --Tank Frames
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.tank = {
+E.Options.args.unitframe.args.groupUnits.args.tank = {
 	name = L["TANK"],
 	type = 'group',
 	order = 13,
@@ -7099,13 +7111,13 @@ E.Options.args.unitframe.args.groupUnitOptionsGroup.args.tank = {
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'tank'),
 	},
 }
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.tank.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.tank.args.targetsGroup.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.tank.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units.tank.targetsGroup.name[info[#info]] end
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.tank.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units.tank.targetsGroup.name[info[#info]] = value; UF.CreateAndUpdateHeaderGroup(UF, 'tank') end
+E.Options.args.unitframe.args.groupUnits.args.tank.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
+E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
+E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units.tank.targetsGroup.name[info[#info]] end
+E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units.tank.targetsGroup.name[info[#info]] = value; UF.CreateAndUpdateHeaderGroup(UF, 'tank') end
 
 --Assist Frames
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.assist = {
+E.Options.args.unitframe.args.groupUnits.args.assist = {
 	name = L["Assist"],
 	type = 'group',
 	order = 14,
@@ -7232,10 +7244,10 @@ E.Options.args.unitframe.args.groupUnitOptionsGroup.args.assist = {
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'assist'),
 	},
 }
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.assist.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.assist.args.targetsGroup.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.assist.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units.assist.targetsGroup.name[info[#info]] end
-E.Options.args.unitframe.args.groupUnitOptionsGroup.args.assist.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units.assist.targetsGroup.name[info[#info]] = value; UF.CreateAndUpdateHeaderGroup(UF, 'assist') end
+E.Options.args.unitframe.args.groupUnits.args.assist.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
+E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
+E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units.assist.targetsGroup.name[info[#info]] end
+E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units.assist.targetsGroup.name[info[#info]] = value; UF.CreateAndUpdateHeaderGroup(UF, 'assist') end
 
 --MORE COLORING STUFF YAY
 E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup = {
@@ -7383,7 +7395,7 @@ if P.unitframe.colors.classResources[E.myclass] then
 end
 
 if E.myclass == 'DEATHKNIGHT' then
-	E.Options.args.unitframe.args.individualUnitOptionsGroup.args.player.args.classbar.args.sortDirection = {
+	E.Options.args.unitframe.args.individualUnits.args.player.args.classbar.args.sortDirection = {
 		name = L["Sort Direction"],
 		desc = L["Defines the sort order of the selected sort method."],
 		type = 'select',
