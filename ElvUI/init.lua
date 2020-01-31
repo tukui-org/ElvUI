@@ -765,7 +765,7 @@ function E:ToggleOptionsUI(msg)
 
 		if frame.bottomHolder then
 			E:Config_WindowOpened(frame)
-			E:Elasticize(logo)
+			E:Elasticize(frame.leftHolder.logo)
 		else -- window was released or never opened
 			frame:HookScript('OnSizeChanged', E.Config_UpdateLeftScroller)
 			frame:HookScript('OnHide', E.Config_WindowClosed)
