@@ -1,15 +1,17 @@
 local E, _, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local next = next
 local gsub = gsub
 local ipairs = ipairs
 local select = select
 local format = format
+local unpack = unpack
 local tinsert = tinsert
 local strmatch = strmatch
---WoW API / Variables
+
+local RaiseFrameLevel = RaiseFrameLevel
+local LowerFrameLevel = LowerFrameLevel
 local hooksecurefunc = hooksecurefunc
 local getmetatable = getmetatable
 local setmetatable = setmetatable
@@ -73,20 +75,39 @@ function S:Ace3_EditBoxSetPoint(a, b, c, d, e)
 	if d == 7 then self:Point(a, b, c, 0, e) end
 end
 
-function S:Ace3_TabSetPoint(a, b, c, d, e, f)
-	if f ~= 'ignore' and a == 'TOPLEFT' then
-		self:SetPoint(a, b, c, d, e+2, 'ignore')
+function S:Ace3_TabSetSelected(selected)
+	local bd = self.backdrop
+	if not bd then return end
+
+	if selected then
+		bd:SetBackdropBorderColor(.9, .8, 0, 1)
+		bd:SetBackdropColor(.9, .8, 0, 0.5)
+
+		if not self.wasRaised then
+			RaiseFrameLevel(self)
+			self.wasRaised = true
+		end
+	else
+		local r, g, b = unpack(E.media.bordercolor)
+		bd:SetBackdropBorderColor(r, g, b, 1)
+		r, g, b = unpack(E.media.backdropcolor)
+		bd:SetBackdropColor(r, g, b, 1)
+
+		if self.wasRaised then
+			LowerFrameLevel(self)
+			self.wasRaised = nil
+		end
 	end
 end
 
 function S:Ace3_SkinTab(tab)
 	tab:StripTextures()
-
-	tab:CreateBackdrop()
+	tab:CreateBackdrop(nil, true, true)
 	tab.backdrop:Point('TOPLEFT', 10, -3)
 	tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
+	tab.text:SetPoint("LEFT", 14, -1)
 
-	hooksecurefunc(tab, 'SetPoint', S.Ace3_TabSetPoint)
+	hooksecurefunc(tab, 'SetSelected', S.Ace3_TabSetSelected)
 end
 
 function S:Ace3_RegisterAsWidget(widget)
