@@ -18,11 +18,6 @@ function E:RandomAnimShake(index)
 	return random(s[1], s[2]), random(s[3], s[4])
 end
 
-function E:Elasticize(obj)
-	obj.animGroup.animInWidth:Play()
-	obj.animGroup.animInHeight:Play()
-end
-
 function E:SetUpAnimGroup(obj, Type, ...)
 	if not Type then Type = 'Flash' end
 
@@ -66,47 +61,20 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		end
 	elseif Type == "Elastic" then
 		local width, height, duration, loop = ...
-		obj.animGroup = _G.CreateAnimationGroup(obj)
-		obj.animGroup.animInWidth = obj.animGroup:CreateAnimation('width')
-		obj.animGroup.animOutWidth = obj.animGroup:CreateAnimation('width')
-		obj.animGroup.animInHeight = obj.animGroup:CreateAnimation('height')
-		obj.animGroup.animOutHeight = obj.animGroup:CreateAnimation('height')
+		obj.elastic = _G.CreateAnimationGroup(obj)
 
-		obj.animGroup.animInWidth:SetDuration(duration)
-		obj.animGroup.animInWidth:SetChange(width*0.45)
-		obj.animGroup.animInWidth:SetEasing('inout-elastic')
-		obj.animGroup.animInWidth:SetScript('OnFinished', function(self)
-			self:Stop()
-			obj.animGroup.animOutWidth:Play()
-		end)
+		for i = 1, 4 do
+			local anim  = obj.elastic:CreateAnimation(i < 3 and 'width' or 'height')
+			anim:SetChange((i==1 and width*0.45) or (i==2 and width) or (i==3 and height*0.45) or height)
+			anim:SetEasing('inout-elastic')
+			anim:SetDuration(duration)
+			obj.elastic[i] = anim
+		end
 
-		obj.animGroup.animOutWidth:SetDuration(duration)
-		obj.animGroup.animOutWidth:SetChange(width)
-		obj.animGroup.animOutWidth:SetEasing('inout-elastic')
-		obj.animGroup.animOutWidth:SetScript('OnFinished', function(self)
-			self:Stop()
-			if loop then
-				obj.animGroup.animInWidth:Play()
-			end
-		end)
-
-		obj.animGroup.animInHeight:SetDuration(duration)
-		obj.animGroup.animInHeight:SetChange(height*0.45)
-		obj.animGroup.animInHeight:SetEasing('inout-elastic')
-		obj.animGroup.animInHeight:SetScript('OnFinished', function(self)
-			self:Stop()
-			obj.animGroup.animOutHeight:Play()
-		end)
-
-		obj.animGroup.animOutHeight:SetDuration(duration)
-		obj.animGroup.animOutHeight:SetChange(height)
-		obj.animGroup.animOutHeight:SetEasing('inout-elastic')
-		obj.animGroup.animOutHeight:SetScript('OnFinished', function(self)
-			self:Stop()
-			if loop then
-				obj.animGroup.animInHeight:Play()
-			end
-		end)		
+		obj.elastic[1]:SetScript('OnFinished', function(anim) anim:Stop() obj.elastic[2]:Play() end)
+		obj.elastic[3]:SetScript('OnFinished', function(anim) anim:Stop() obj.elastic[4]:Play() end)
+		obj.elastic[2]:SetScript('OnFinished', function(anim) anim:Stop() if loop then obj.elastic[1]:Play() end end)
+		obj.elastic[4]:SetScript('OnFinished', function(anim) anim:Stop() if loop then obj.elastic[3]:Play() end end)
 	else
 		local x, y, duration, customName = ...
 		if not customName then customName = 'anim' end
@@ -134,6 +102,15 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		anim.out2:SetSmoothing('IN')
 		anim.out2:SetOffset(E:Scale(x), E:Scale(y))
 	end
+end
+
+function E:Elasticize(obj)
+	if not obj.elastic then
+		E:SetUpAnimGroup(obj, 'Elastic', 128, 64, 2, false)
+	end
+
+	obj.elastic[1]:Play()
+	obj.elastic[3]:Play()
 end
 
 function E:Shake(obj)
