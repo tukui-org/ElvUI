@@ -664,6 +664,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			func = function()
 				E:ShowStatusReport()
 				E:ToggleOptionsUI()
+				E.StatusReportToggled = true
 			end
 		}
 	}) do

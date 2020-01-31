@@ -98,6 +98,36 @@ local function GetSpecName()
 	return EnglishSpecName[GetSpecializationInfo(GetSpecialization())]
 end
 
+local function CreateContentLines(num, parent, anchorTo)
+	local content = CreateFrame('Frame', nil, parent)
+	content:Size(260, (num * 20) + ((num-1)*5)) --20 height and 5 spacing
+	content:Point('TOP', anchorTo, 'BOTTOM',0 , -5)
+	for i = 1, num do
+		local line = CreateFrame('Frame', nil, content)
+		line:Size(260, 20)
+		line.Text = line:CreateFontString(nil, 'ARTWORK', 'SystemFont_Outline')
+		line.Text:SetAllPoints()
+		line.Text:SetJustifyH('LEFT')
+		line.Text:SetJustifyV('MIDDLE')
+		content['Line'..i] = line
+
+		if i == 1 then
+			content['Line'..i]:Point('TOP', content, 'TOP')
+		else
+			content['Line'..i]:Point('TOP', content['Line'..(i-1)], 'BOTTOM', 0, -5)
+		end
+	end
+
+	return content
+end
+
+local function CloseClicked()
+	if E.StatusReportToggled then
+		E.StatusReportToggled = nil
+		E:ToggleOptionsUI()
+	end
+end
+
 function E:CreateStatusFrame()
 	local function CreateSection(width, height, parent, anchor1, anchorTo, anchor2, yOffset)
 		local section = CreateFrame('Frame', nil, parent)
@@ -133,29 +163,6 @@ function E:CreateStatusFrame()
 		return section
 	end
 
-	local function CreateContentLines(num, parent, anchorTo)
-		local content = CreateFrame('Frame', nil, parent)
-		content:Size(260, (num * 20) + ((num-1)*5)) --20 height and 5 spacing
-		content:Point('TOP', anchorTo, 'BOTTOM',0 , -5)
-		for i = 1, num do
-			local line = CreateFrame('Frame', nil, content)
-			line:Size(260, 20)
-			line.Text = line:CreateFontString(nil, 'ARTWORK', 'SystemFont_Outline')
-			line.Text:SetAllPoints()
-			line.Text:SetJustifyH('LEFT')
-			line.Text:SetJustifyV('MIDDLE')
-			content['Line'..i] = line
-
-			if i == 1 then
-				content['Line'..i]:Point('TOP', content, 'TOP')
-			else
-				content['Line'..i]:Point('TOP', content['Line'..(i-1)], 'BOTTOM', 0, -5)
-			end
-		end
-
-		return content
-	end
-
 	--Main frame
 	local StatusFrame = CreateFrame('Frame', 'ElvUIStatusReport', E.UIParent)
 	StatusFrame:Size(320, 555)
@@ -166,6 +173,9 @@ function E:CreateStatusFrame()
 	StatusFrame:SetShown(false)
 	StatusFrame:SetMovable(true)
 	StatusFrame:CreateCloseButton()
+
+	--Script to Retoggle the Config if it was opened from the Config button.
+	StatusFrame.CloseButton:HookScript('OnClick', CloseClicked)
 
 	--Title logo (drag to move frame)
 	StatusFrame.TitleLogoFrame = CreateFrame('Frame', nil, StatusFrame, 'TitleDragAreaTemplate')
