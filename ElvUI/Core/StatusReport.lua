@@ -246,7 +246,6 @@ function E:CreateStatusFrame()
 	StatusFrame.Section4.Content.Button2:Point('RIGHT', StatusFrame.Section4.Content, 'RIGHT')
 	StatusFrame.Section4.Content.Button2:SetText('Ticket')
 	StatusFrame.Section4.Content.Button2:SetButtonState('DISABLED')
-
 	Skins:HandleButton(StatusFrame.Section4.Content.Button1, true)
 	Skins:HandleButton(StatusFrame.Section4.Content.Button2, true)
 
