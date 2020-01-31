@@ -294,6 +294,8 @@ function E:Config_UpdateSize(reset)
 				frame.obj:ApplyStatus()
 			end
 		end
+
+		E:Config_UpdateLeftScroller(frame)
 	end
 end
 
@@ -309,6 +311,7 @@ function E:Config_StopMoving()
 	if frame and frame.obj and frame.obj.status then
 		E.configSavedPositionTop, E.configSavedPositionLeft = E:Round(frame:GetTop(), 2), E:Round(frame:GetLeft(), 2)
 		E.global.general.AceGUI.width, E.global.general.AceGUI.height = E:Round(frame:GetWidth(), 2), E:Round(frame:GetHeight(), 2)
+		E:Config_UpdateLeftScroller(frame)
 	end
 end
 
@@ -434,27 +437,24 @@ function E:Config_UpdateLeftButtons()
 	end
 end
 
-function E:Config_UpdateLeftScroller()
-	if not (self and self.leftHolder) then return end
+function E:Config_UpdateLeftScroller(frame)
+	local left = frame and frame.leftHolder
+	if not left then return end
 
-	local left = self.leftHolder
-	local buttons = left.buttons
-	local slider = left.slider
+	local btns = left.buttons
+	local bottom = btns:GetBottom()
+	if not bottom then return end
+	btns:Point("TOPLEFT", 0, 0)
+
 	local max = 0
+	for _, btn in pairs(btns) do
+		local btm = type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') and btn:GetBottom()
+		if btm and bottom > btm then max = max + 1 end
+	end
 
+	local slider = left.slider
 	slider:SetMinMaxValues(0, max)
 	slider:SetValue(0)
-	buttons:Point("TOPLEFT", 0, 0)
-
-	local buttonsBottom = buttons:GetBottom()
-	for _, btn in pairs(buttons) do
-		if type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') then
-			if buttonsBottom > btn:GetBottom() then
-				max = max + 1
-				slider:SetMinMaxValues(0, max)
-			end
-		end
-	end
 
 	if max == 0 then
 		slider.thumb:Hide()
@@ -575,6 +575,8 @@ function E:Config_WindowOpened(frame)
 		frame.closeButton:Show()
 		frame.originalClose:Hide()
 
+		E:Elasticize(frame.leftHolder.logo)
+
 		local unskinned = not E.private.skins.ace3.enable
 		local offset = unskinned and 14 or 8
 		local version = frame.topHolder.version
@@ -606,9 +608,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			var = 'RepositionWindow',
 			name = L["Reposition Window"],
 			desc = L["Reset the size and position of this frame."],
-			func = function()
-				E:Config_UpdateSize(true)
-			end
+			func = function() E:Config_UpdateSize(true) end
 		},
 		{
 			var = 'ToggleTutorials',
@@ -759,15 +759,13 @@ function E:ToggleOptionsUI(msg)
 		local ACR = E.Libs.AceConfigRegistry
 		if ACR and not ACR.NotifyHookedElvUI then
 			hooksecurefunc(E.Libs.AceConfigRegistry, 'NotifyChange', E.Config_UpdateLeftButtons)
-			E:Config_UpdateSize()
 			ACR.NotifyHookedElvUI = true
+			E:Config_UpdateSize()
 		end
 
 		if frame.bottomHolder then
 			E:Config_WindowOpened(frame)
-			E:Elasticize(frame.leftHolder.logo)
 		else -- window was released or never opened
-			frame:HookScript('OnSizeChanged', E.Config_UpdateLeftScroller)
 			frame:HookScript('OnHide', E.Config_WindowClosed)
 
 			for i=1, frame:GetNumChildren() do
@@ -807,9 +805,9 @@ function E:ToggleOptionsUI(msg)
 			frame.closeButton = close
 
 			local left = CreateFrame('Frame', nil, frame)
-			left:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
+			left:Point("BOTTOMRIGHT", bottom, "BOTTOMLEFT", 181, 0)
+			left:Point("BOTTOMLEFT", bottom, "TOPLEFT", 0, 1)
 			left:Point("TOPLEFT", unskinned and 10 or 2, unskinned and -6 or -2)
-			left:Width(181)
 			frame.leftHolder = left
 
 			local top = CreateFrame('Frame', nil, frame)
@@ -823,27 +821,21 @@ function E:ToggleOptionsUI(msg)
 			logo:SetTexture(E.Media.Textures.LogoSmall)
 			logo:Point("CENTER", left, "TOP", unskinned and 10 or 0, unskinned and -40 or -36)
 			logo:Size(128, 64)
-			left.logo = logo
 			logo:SetAlpha(0.8)
-
-			E:SetUpAnimGroup(logo, "Elastic", 128, 64, 2, false)
-			E:Elasticize(logo)
-
-			logo.animGroup.animInWidth:Play()
-			logo.animGroup.animInHeight:Play()
+			left.logo = logo
 
 			local buttonsHolder = CreateFrame('Frame', nil, left)
-			buttonsHolder:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
+			buttonsHolder:Point("BOTTOMLEFT", bottom, "TOPLEFT", 0, 1)
 			buttonsHolder:Point("TOPLEFT", left, "TOPLEFT", 0, -70)
-			buttonsHolder:Width(181)
+			buttonsHolder:Point("BOTTOMRIGHT")
 			buttonsHolder:SetFrameLevel(5)
 			buttonsHolder:SetClipsChildren(true)
 			left.buttonsHolder = buttonsHolder
 
 			local buttons = CreateFrame('Frame', nil, buttonsHolder)
-			buttons:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
+			buttons:Point("BOTTOMLEFT", bottom, "TOPLEFT", 0, 1)
+			buttons:Point("BOTTOMRIGHT")
 			buttons:Point("TOPLEFT", 0, 0)
-			buttons:Width(181)
 			left.buttons = buttons
 
 			local slider = CreateFrame('Slider', nil, frame)
@@ -856,7 +848,7 @@ function E:ToggleOptionsUI(msg)
 			slider:SetValueStep(1)
 			slider:SetValue(0)
 			slider:Width(192)
-			slider:Point("BOTTOMLEFT", frame.bottomHolder, "TOPLEFT", 0, 1)
+			slider:Point("BOTTOMLEFT", bottom, "TOPLEFT", 0, 1)
 			slider:Point("TOPLEFT", buttons, "TOPLEFT", 0, 0)
 			slider.buttons = buttons
 			left.slider = slider
@@ -876,8 +868,7 @@ function E:ToggleOptionsUI(msg)
 
 			E:Config_CreateLeftButtons(frame, unskinned, E.Options.args)
 			E:Config_CreateBottomButtons(frame, unskinned)
-
-			E.Config_UpdateLeftScroller(frame)
+			E:Config_UpdateLeftScroller(frame)
 			E:Config_WindowOpened(frame)
 		end
 
