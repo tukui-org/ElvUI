@@ -112,6 +112,8 @@ local TESTERS = {
 	"Kurhyus",
 	"Shrom",
 	"BuG",
+	"Rubgrsch",
+	"Luckyone",
 	"Yachanay",
 	"AcidWeb",
 	"|TInterface\\Icons\\INV_Staff_30:15:15:0:0:64:64:5:59:5:59|t Loon - For being right",
