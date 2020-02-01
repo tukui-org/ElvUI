@@ -196,7 +196,7 @@ do --this can save some main file locals
 		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink} --- new icon color every message, in order then reversed back, repeatedly
 		--Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
 		local SimpyGradient = function(t) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'), 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82),'\27','%%%%'),'\26','||') end
-		local ElvGradient = function(t) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'), 0,109/255,176/255, 27/255,110/255,161/255, 57/255,116/255,153/255, 79/255,117/255,140/255, 96/255,117/255,130/255, 103/255,115/255,122/255, 124/255,132/255,138/255, 156/255,156/255,156/255),'\27','%%%%'),'\26','||') end 
+		local ElvGradient = function(t) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'), 0,0.42,0.69, 0.61,0.61,0.61),'\27','%%%%'),'\26','||') end 
 		itsSimpy = function() gradient = SimpyGradient a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a], true end
 		itsElv = function() gradient = ElvGradient return ElvBlue, true end
 
