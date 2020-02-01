@@ -334,16 +334,16 @@ do --this can save some main file locals
 		["Rubee-CenarionCircle"]		= itsSimpy, -- [RP] DH
 		["Wennie-CenarionCircle"]		= itsSimpy, -- [RP] Priest
 		-- Melbelle (Simpys Bestie)
-		["Melbelle-Bladefist"]			= itsMel, -- Hunter
 		["Deathchaser-Bladefist"]		= itsMel, -- DH
-		["Alytotes-Cenarius"]			= itsMel, -- Shaman
+		["Melbelle-Bladefist"]			= itsMel, -- Hunter
 		["Alykins-Cenarius"]			= itsMel, -- DH
-		["Melbelle-Cenarius"]			= itsMel, -- Druid
-		["Spãrkles-Cenarius"]			= itsMel, -- Mage
 		["Alyosha-Cenarius"]			= itsMel, -- Warrior
-		["Chaosfire-Cenarius"]			= itsMel, -- Warlock
+		["Alytotes-Cenarius"]			= itsMel, -- Shaman
 		["Autymnflower-Cenarius"]		= itsMel, -- Shaman
 		["Celesteia-Cenarius"]			= itsMel, -- Paladin
+		["Chaosfire-Cenarius"]			= itsMel, -- Warlock
+		["Melbelle-Cenarius"]			= itsMel, -- Druid
+		["Spãrkles-Cenarius"]			= itsMel, -- Mage
 	}
 end
 
