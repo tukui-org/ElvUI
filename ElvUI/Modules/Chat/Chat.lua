@@ -229,16 +229,16 @@ do --this can save some main file locals
 
 	specialChatIcons = {
 		-- Elv
-		["Elv-Spirestone"]					= ElvPink,		
-		["Elvz-Spirestone"]					= ElvOrange,
-		["Fleshlite-Spirestone"]			= ElvYellow,
-		["Elvidan-Spirestone"]				= ElvPurple,
-		["Elvilas-Spirestone"]				= ElvBlue,
-		["Fraku-Spirestone"]				= ElvGreen,
-		["Jarvix-Spirestone"]				= ElvGreen,
-		["Watermelon-Spirestone"]			= ElvOrange,
-		["Zinxbe-Spirestone"]				= ElvBlue,
-		["Whorlock-Spirestone"]				= ElvPurple,
+		["Elv-Spirestone"]			= ElvPink,
+		["Elvz-Spirestone"]			= ElvOrange,
+		["Fleshlite-Spirestone"]	= ElvYellow,
+		["Elvidan-Spirestone"]		= ElvPurple,
+		["Elvilas-Spirestone"]		= ElvBlue,
+		["Fraku-Spirestone"]		= ElvGreen,
+		["Jarvix-Spirestone"]		= ElvGreen,
+		["Watermelon-Spirestone"]	= ElvOrange,
+		["Zinxbe-Spirestone"]		= ElvBlue,
+		["Whorlock-Spirestone"]		= ElvPurple,
 		-- Blazeflack
 		["Blazii-Silvermoon"]	= ElvBlue, -- Priest
 		["Chazii-Silvermoon"]	= ElvBlue, -- Shaman
@@ -274,17 +274,17 @@ do --this can save some main file locals
 		["Galiseda-WyrmestAccord"]		= itsTheFlyestNihilist("ROGUE"),
 		["Naldydi-WyrmrestAccord"]		= itsTheFlyestNihilist("HUNTER"),
 		["Caylasena-WyrmestAccord"]		= itsTheFlyestNihilist("WARRIOR"),
-		["Elaedarel-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
+		["Elaedarel-WyrmrestAccord"]	= itsTheFlyestNihilist("WARLOCK"),
 		["Alydrer-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
 		["Issia-WyrmrestAccord"]		= itsTheFlyestNihilist("PRIEST"),
 		["Leitara-WyrmrestAccord"]		= itsTheFlyestNihilist("WARRIOR"),
 		["Cherlyth-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
-		["Tokashami-WyrmrestAccord"]		= itsTheFlyestNihilist("SHAMAN"),
-		["Xanikani-WyrmrestAccord"]			= itsTheFlyestNihilist("MAGE"),
+		["Tokashami-WyrmrestAccord"]	= itsTheFlyestNihilist("SHAMAN"),
+		["Xanikani-WyrmrestAccord"]		= itsTheFlyestNihilist("MAGE"),
 		["Erasaya-WyrmrestAccord"]		= itsTheFlyestNihilist("DEATHKNIGHT"),
 		["Linabla-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
 		["Millop-WyrmrestAccord"]		= itsTheFlyestNihilist("HUNTER"),
-		["Aeondalew-WyrmrestAccord"]		= itsTheFlyestNihilist("DEATHKNIGHT"),
+		["Aeondalew-WyrmrestAccord"]	= itsTheFlyestNihilist("DEATHKNIGHT"),
 		-- Merathilis
 		["Asragoth-Shattrath"]			= ElvPurple,	-- [Alliance] Warlock
 		["Brítt-Shattrath"] 			= ElvBlue,		-- [Alliance] Warrior
