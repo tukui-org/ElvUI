@@ -238,7 +238,7 @@ do --this can save some main file locals
 		["Jarvix-Spirestone"]				= ElvGreen,
 		["Watermelon-Spirestone"]			= ElvOrange,
 		["Zinxbe-Spirestone"]				= ElvBlue,
-		["Whorlock-Spirestone"]				= ElvPurple
+		["Whorlock-Spirestone"]				= ElvPurple,
 		-- Blazeflack
 		["Blazii-Silvermoon"]	= ElvBlue, -- Priest
 		["Chazii-Silvermoon"]	= ElvBlue, -- Shaman
