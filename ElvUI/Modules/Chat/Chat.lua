@@ -191,7 +191,7 @@ do --this can save some main file locals
 	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 
-	local itsSimpy, itsElv
+	local itsSimpy, itsElv, itsMis
 	do	--Simpy Chaos
 		--Gradient text, ignoring hyperlinks and keywords
 		local e, f, g = {'|%x+%[?|H.-|h.-|h]?|r', '|H.-|h.-|h', '|[TA].-|[ta]', '|c.-|r'}, {}, {}
@@ -205,11 +205,14 @@ do --this can save some main file locals
 		local SimpyColors = function(t) return specialText(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
 		--Detroit Lions Colors: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
+		--Rainbow
+		local MisColors = function(t) return specialText(t, 1, 0, 0,  1,0.49,0, 1,1,0, 0,1,0, 0,0,1, 0.18,0.16,0.37, 0.54,0,1) end
 
 		---new icon color every message, in order then reversed back, repeatedly
 		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
 		itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a], SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
+		itsMis = function() return Rainbow, MisColors end
 	end
 
 	local classNihilist = {
@@ -256,16 +259,16 @@ do --this can save some main file locals
 		["Tirain-Spirestone"]	= MrHankey,
 		["Sinth-Spirestone"]	= MrHankey,
 		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
-		["Misdîrect-Spirestone"]	= Rainbow,
-		["Misoracle-Spirestone"]	= Rainbow,
-		["MisLight-Spirestone"]		= Rainbow,
-		["MisDivine-Spirestone"]	= Rainbow,
-		["MisLust-Spirestone"]		= Rainbow,
-		["MisMayhem-Spirestone"]	= Rainbow,
-		["Mismonk-Spirestone"]		= Rainbow,
-		["Misillidan-Spirestone"]	= Rainbow,
-		["Mispel-Spirestone"]		= Rainbow,
-		["Misdecay-Spirestone"]		= Rainbow,
+		["Misdîrect-Spirestone"]	= itsMis,
+		["Misoracle-Spirestone"]	= itsMis,
+		["MisLight-Spirestone"]		= itsMis,
+		["MisDivine-Spirestone"]	= itsMis,
+		["MisLust-Spirestone"]		= itsMis,
+		["MisMayhem-Spirestone"]	= itsMis,
+		["Mismonk-Spirestone"]		= itsMis,
+		["Misillidan-Spirestone"]	= itsMis,
+		["Mispel-Spirestone"]		= itsMis,
+		["Misdecay-Spirestone"]		= itsMis,
 		--NihilisticPandemonium
 		["Dirishia-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
 		["Sagome-WyrmrestAccord"]		= itsTheFlyestNihilist("MONK"),
