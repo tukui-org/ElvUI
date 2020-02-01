@@ -94,7 +94,7 @@ local DEVELOPERS = {
 	"|cffff7d0aMerathilis|r",
 	"|cff0070DEAzilroka|r",
 	"|cff9482c9Darth Predator|r",
-	E:TextGradient("Simpy but my name needs to be longer", 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82).."|r"
+	E:TextGradient("Simpy but my name needs to be longer", 0.45,0.45,0.45, 0.98,0.4,0.53, 0.98,0.4,0.53, 0.45,0.98,0.45).."|r"
 }
 
 
