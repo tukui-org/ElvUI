@@ -205,15 +205,15 @@ do --this can save some main file locals
 		local SimpyColors = function(t) return specialText(t, 0.45,0.45,0.45, 0.98,0.4,0.53, 0.98,0.4,0.53, 0.45,0.98,0.45) end
 		--Detroit Lions Colors: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
-		--Rainbow
-		local MisColors = function(t) return specialText(t, 1, 0, 0,  1,0.49,0, 1,1,0, 0,1,0, 0,0,1, 0.18,0.16,0.37, 0.54,0,1) end
+		--Rainbow (8 Colors: 253,62,68, 254,152,73, 255,222,75, 109,253,101, 84,196,252, 163,93,250, 198,121,251, 254,129,193)
+		local MisColors = function(t) return specialText(t, 0.99,0.24,0.26, 0.99,0.59,0.28, 1.00,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.50,0.75) end
 
 		--[[ new icon color every message, in order then reversed back, repeating of course
 			local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
 			(a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a])
 		]]
 
-		itsSimpy = function() return ElvMelon, SimpyColors end
+		itsSimpy = function() return ElvMelon, MisColors end
 		itsElv = function() return ElvBlue, ElvColors end
 		itsMis = function() return Rainbow, MisColors end
 	end
