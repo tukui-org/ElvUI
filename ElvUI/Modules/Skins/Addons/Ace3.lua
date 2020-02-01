@@ -80,8 +80,8 @@ function S:Ace3_TabSetSelected(selected)
 	if not bd then return end
 
 	if selected then
-		bd:SetBackdropBorderColor(.9, .8, 0, 1)
-		bd:SetBackdropColor(.9, .8, 0, 0.5)
+		bd:SetBackdropBorderColor(1, .82, 0, 1)
+		bd:SetBackdropColor(1, .82, 0, 0.4)
 
 		if not self.wasRaised then
 			RaiseFrameLevel(self)

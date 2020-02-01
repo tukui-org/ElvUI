@@ -378,7 +378,7 @@ end
 function E:Config_CreateSeparatorLine(frame, lastButton)
 	local line = frame.leftHolder.buttons:CreateTexture()
 	line:SetTexture(E.Media.Textures.White8x8)
-	line:SetVertexColor(.9, .8, 0, .7)
+	line:SetVertexColor(1, .82, 0, .4)
 	line:Size(179, 2)
 	line:Point("TOP", lastButton, "BOTTOM", 0, -6)
 	line.separator = true
@@ -388,8 +388,8 @@ end
 function E:Config_SetButtonColor(btn, disabled)
 	if disabled then
 		btn:Disable()
-		btn:SetBackdropBorderColor(.9, .8, 0, 1)
-		btn:SetBackdropColor(.9, .8, 0, 0.5)
+		btn:SetBackdropBorderColor(1, .82, 0, 1)
+		btn:SetBackdropColor(1, .82, 0, 0.4)
 		btn.Text:SetTextColor(1, 1, 1)
 		E:Config_SetButtonText(btn, true)
 	else
@@ -398,7 +398,7 @@ function E:Config_SetButtonColor(btn, disabled)
 		btn:SetBackdropBorderColor(r, g, b, 1)
 		r, g, b = unpack(E.media.backdropcolor)
 		btn:SetBackdropColor(r, g, b, 1)
-		btn.Text:SetTextColor(.9, .8, 0)
+		btn.Text:SetTextColor(1, .82, 0)
 		E:Config_SetButtonText(btn)
 	end
 end
