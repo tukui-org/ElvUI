@@ -403,6 +403,13 @@ function E:Config_SetButtonColor(btn, disabled)
 	end
 end
 
+function E:Config_UpdateSliderPosition(btn)
+	local left = btn and btn.frame and btn.frame.leftHolder
+	if left and left.slider then
+		ConfigSliderOnValueChanged(left.slider, btn.sliderValue or 0)
+	end
+end
+
 function E:Config_CreateButton(info, frame, unskinned, ...)
 	local btn = CreateFrame(...)
 	btn.frame = frame
@@ -430,9 +437,14 @@ function E:Config_UpdateLeftButtons()
 
 	local status = frame.obj.status
 	local selected = status and status.groups.selected
-	for key, btn in pairs(frame.leftHolder.buttons) do
+	for _, btn in ipairs(frame.leftHolder.buttons) do
 		if type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') then
-			E:Config_SetButtonColor(btn, key == selected)
+			local enabled = btn.info.key == selected
+			E:Config_SetButtonColor(btn, enabled)
+
+			if enabled then
+				E:Config_UpdateSliderPosition(btn)
+			end
 		end
 	end
 end
@@ -447,9 +459,19 @@ function E:Config_UpdateLeftScroller(frame)
 	btns:Point("TOPLEFT", 0, 0)
 
 	local max = 0
-	for _, btn in pairs(btns) do
-		local btm = type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') and btn:GetBottom()
-		if btm and bottom > btm then max = max + 1 end
+	for _, btn in ipairs(btns) do
+		local button = type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button')
+		if button then
+			btn.sliderValue = nil
+
+			local btm = btn:GetBottom()
+			if btm then
+				if bottom > btm then
+					max = max + 1
+					btn.sliderValue = max
+				end
+			end
+		end
 	end
 
 	local slider = left.slider
@@ -496,7 +518,7 @@ function E:Config_CreateLeftButtons(frame, unskinned, options)
 	sort(opts, Config_SortButtons)
 
 	local buttons, last, order = frame.leftHolder.buttons
-	for _, opt in ipairs(opts) do
+	for index, opt in ipairs(opts) do
 		local info = opt[3]
 		local key = opt[2]
 
@@ -520,7 +542,7 @@ function E:Config_CreateLeftButtons(frame, unskinned, options)
 			btn:Point("TOP", last, "BOTTOM", 0, (last.separator and -6) or -4)
 		end
 
-		buttons[key] = btn
+		buttons[index] = btn
 		last = btn
 	end
 end
