@@ -111,6 +111,7 @@ local TESTERS = {
 	"Kurhyus",
 	"BuG",
 	"Yachanay",
+	"Loon - For being right",
 	"Catok"
 }
 
