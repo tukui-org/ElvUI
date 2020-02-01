@@ -3,7 +3,7 @@ local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileD
 local L = E.Libs.ACL:NewLocale("ElvUI", "frFR")
 
 L[" |cff00ff00bound to |r"] = "|cff00ff00assigné à |r"
-L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = "% du (des) cadre(s) à un point d'ancrage contradictoire(s), merci de changer le point d'ancrage des améliorations ou des affaiblissements de sorte qu'ils ne soient pas attachés les uns aux autres. Forcer les affaiblissements à être attachés au cadre d'unité principale jusqu'à ce qu'ils soient fixés."
+L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = true
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s tente de partager ses filtres avec vous. Voulez-vous accepter la demande ?"
 L["%s is attempting to share the profile %s with you. Would you like to accept the request?"] = "%s tente de partager le profil %s avec vous. Voulez-vous accepter la demande ?"
 L["%s: %s tried to call the protected function '%s'."] = "%s: %s a essayé d'appeler la fonction protégée '%s'."
