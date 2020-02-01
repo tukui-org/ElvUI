@@ -119,9 +119,7 @@ local TESTERS = {
 }
 
 local function SortList(a, b)
-	local A = a:gsub('|c[fF][fF]%x%x%x%x%x%x',''):gsub('|r',''):gsub('|T.-|t%s?','')
-	local B = b:gsub('|c[fF][fF]%x%x%x%x%x%x',''):gsub('|r',''):gsub('|T.-|t%s?','')
-	return A < B
+	return E:StripString(a) < E:StripString(b)
 end
 
 sort(DONATORS, SortList)
