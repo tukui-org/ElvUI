@@ -769,7 +769,7 @@ end
 function E:Config_CreateLeftButtons(frame, unskinned, options)
 	local opts = {}
 	for key, info in pairs(options) do
-		if info.order < 6 and not tContains(E.OriginalOptions, key) then
+		if info.order and info.order < 6 and not tContains(E.OriginalOptions, key) then
 			info.order = 6
 		end
 		if key == 'profiles' then
