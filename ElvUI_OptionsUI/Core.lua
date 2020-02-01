@@ -97,11 +97,12 @@ local DEVELOPERS = {
 	E:TextGradient("Simpy but my name needs to be longer", 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82).."|r"
 }
 
+
 local TESTERS = {
 	"Tukui Community",
 	"Affinity",
 	"Modarch",
-	"Bladesdruid",
+	"|TInterface\\Icons\\INV_Misc_MonsterClaw_04:15:15|t |cffFF7D0ABladesdruid - AKA SUPERBEAR|r",
 	"Tirain",
 	"Phima",
 	"Veiled",
@@ -111,7 +112,7 @@ local TESTERS = {
 	"Kurhyus",
 	"BuG",
 	"Yachanay",
-	"Loon - For being right",
+	"|TInterface\\Icons\\INV_Staff_30:15:15|t Loon - For being right",
 	"Catok"
 }
 
