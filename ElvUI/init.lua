@@ -121,7 +121,7 @@ do
 	local a1,a2,a3 = '','([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'
 	function E:EscapeString(s) return gsub(s,a2,a3) end
 
-	local a4,a5,a6,a7 = '|c[fF][fF]%x%x%x%x%x%x','|r','|T.-|t','^%s*'
+	local a4,a5,a6,a7 = '|c[fF][fF]%x%x%x%x%x%x','|r','|[TA].-|[ta]','^%s*'
 	function E:StripString(s)
 		return gsub(gsub(gsub(gsub(s,a4,a1),a5,a1),a6,a1),a7,a1)
 	end
