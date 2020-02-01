@@ -186,10 +186,9 @@ function UF:Update_PartyFrames(frame, db)
 			end
 		end
 
-		UF:UpdateNameSettings(frame, frame.childType)
 		UF:Configure_HealthBar(frame)
+		UF:UpdateNameSettings(frame, frame.childType)
 	else
-		UF:UpdateNameSettings(frame)
 		UF:EnableDisable_Auras(frame)
 		UF:Configure_Auras(frame, 'Buffs')
 		UF:Configure_Auras(frame, 'Debuffs')
@@ -212,6 +211,7 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_ClassBar(frame)
 		UF:Configure_AltPowerBar(frame)
 		UF:Configure_CustomTexts(frame)
+		UF:UpdateNameSettings(frame)
 	end
 
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)

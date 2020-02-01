@@ -14,7 +14,6 @@ local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
-local InCombatLockdown = InCombatLockdown
 local IsReplacingUnit = IsReplacingUnit
 local IsAddOnLoaded = IsAddOnLoaded
 local RegisterStateDriver = RegisterStateDriver
@@ -258,16 +257,15 @@ function UF:Construct_UF(frame, unit)
 end
 
 function UF:GetObjectAnchorPoint(frame, point)
-	if point == "Frame" then
+	if point == 'Frame' then
 		return frame
 	end
 
-	if not frame[point] then
-		return frame
-	elseif not frame[point]:IsVisible() then
-		return frame.Health or frame
+	local place = frame[point]
+	if place and place:IsShown() then
+		return place
 	else
-		return frame[point]
+		return frame
 	end
 end
 

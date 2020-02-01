@@ -132,7 +132,6 @@ function UF:Update_Raid40Frames(frame, db)
 
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
-	UF:UpdateNameSettings(frame)
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_Auras(frame, 'Buffs')
 	UF:Configure_Auras(frame, 'Debuffs')
@@ -158,6 +157,7 @@ function UF:Update_Raid40Frames(frame, db)
 	UF:Configure_Cutaway(frame)
 	UF:Configure_ClassBar(frame)
 	UF:Configure_AltPowerBar(frame)
+	UF:UpdateNameSettings(frame)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
