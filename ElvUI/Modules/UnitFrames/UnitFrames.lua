@@ -258,10 +258,14 @@ function UF:Construct_UF(frame, unit)
 end
 
 function UF:GetObjectAnchorPoint(frame, point)
-	if not frame[point] or point == "Frame" then
+	if point == "Frame" then
 		return frame
-	elseif frame[point] and not frame[point]:IsShown() then
-		return frame.Health
+	end
+
+	if not frame[point] then
+		return frame
+	elseif not frame[point]:IsVisible() then
+		return frame.Health or frame
 	else
 		return frame[point]
 	end
