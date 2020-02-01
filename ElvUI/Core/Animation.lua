@@ -113,6 +113,13 @@ function E:Elasticize(obj)
 	obj.elastic[3]:Play()
 end
 
+function E:StopElasticize(obj)
+	if obj.elastic then
+		obj.elastic[1]:Stop(true)
+		obj.elastic[3]:Stop(true)
+	end
+end
+
 function E:Shake(obj)
 	if not obj.shake then
 		E:SetUpAnimGroup(obj, 'Shake')
