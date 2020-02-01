@@ -229,9 +229,16 @@ do --this can save some main file locals
 
 	specialChatIcons = {
 		-- Elv
-		["Illidelv-Area52"]		= ElvBlue,
-		["Elvz-Kil'jaeden"]		= ElvBlue,
-		["Elv-Spirestone"]		= ElvBlue,
+		["Elv-Spirestone"]					= ElvPink,		
+		["Elvz-Spirestone"]					= ElvOrange,
+		["Fleshlite-Spirestone"]			= ElvYellow,
+		["Elvidan-Spirestone"]				= ElvPurple,
+		["Elvilas-Spirestone"]				= ElvBlue,
+		["Fraku-Spirestone"]				= ElvGreen,
+		["Jarvix-Spirestone"]				= ElvGreen,
+		["Watermelon-Spirestone"]			= ElvOrange,
+		["Zinxbe-Spirestone"]				= ElvBlue,
+		["Whorlock-Spirestone"]				= ElvPurple
 		-- Blazeflack
 		["Blazii-Silvermoon"]	= ElvBlue, -- Priest
 		["Chazii-Silvermoon"]	= ElvBlue, -- Shaman
