@@ -171,8 +171,7 @@ function UF:Update_ArenaFrames(frame, db)
 
 	--Auras
 	UF:EnableDisable_Auras(frame)
-	UF:Configure_Auras(frame, 'Buffs')
-	UF:Configure_Auras(frame, 'Debuffs')
+	UF:Configure_AllAuras(frame)
 
 	--Castbar
 	UF:Configure_Castbar(frame)

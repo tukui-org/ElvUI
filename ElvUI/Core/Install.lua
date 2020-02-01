@@ -473,8 +473,7 @@ local function SetupAuras(style, noDisplayMsg)
 	E:CopyTable(E.db.unitframe.units.player.debuffs, P.unitframe.units.player.debuffs)
 	E:CopyTable(E.db.unitframe.units.player.aurabar, P.unitframe.units.player.aurabar)
 	if frame then
-		UF:Configure_Auras(frame, 'Buffs')
-		UF:Configure_Auras(frame, 'Debuffs')
+		UF:Configure_AllAuras(frame)
 		UF:Configure_AuraBars(frame)
 	end
 
@@ -483,8 +482,7 @@ local function SetupAuras(style, noDisplayMsg)
 	E:CopyTable(E.db.unitframe.units.target.debuffs, P.unitframe.units.target.debuffs)
 	E:CopyTable(E.db.unitframe.units.target.aurabar, P.unitframe.units.target.aurabar)
 	if frame then
-		UF:Configure_Auras(frame, 'Buffs')
-		UF:Configure_Auras(frame, 'Debuffs')
+		UF:Configure_AllAuras(frame)
 		UF:Configure_AuraBars(frame)
 	end
 
@@ -493,8 +491,7 @@ local function SetupAuras(style, noDisplayMsg)
 	E:CopyTable(E.db.unitframe.units.focus.debuffs, P.unitframe.units.focus.debuffs)
 	E:CopyTable(E.db.unitframe.units.focus.aurabar, P.unitframe.units.focus.aurabar)
 	if frame then
-		UF:Configure_Auras(frame, 'Buffs')
-		UF:Configure_Auras(frame, 'Debuffs')
+		UF:Configure_AllAuras(frame)
 		UF:Configure_AuraBars(frame)
 	end
 

@@ -304,28 +304,20 @@ function UF:GetAuraOffset(p1, p2)
 	return E:Scale(x), E:Scale(y)
 end
 
-function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
-	if isConflict then
-		E:Print(format(L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."], E:StringTitle(frame:GetName())))
-	end
-
-	if isConflict or attachTo == 'FRAME' then
+function UF:GetAuraAnchorFrame(frame, attachTo)
+	if attachTo == 'FRAME' then
 		return frame
-	elseif attachTo == 'TRINKET' then
-		local _, instanceType = GetInstanceInfo()
-		if instanceType == "arena" then
-			return frame.Trinket
-		else
-			return frame.PVPSpecIcon
-		end
-	elseif attachTo == 'BUFFS' then
+	elseif attachTo == 'BUFFS' and frame.Buffs then
 		return frame.Buffs
-	elseif attachTo == 'DEBUFFS' then
+	elseif attachTo == 'DEBUFFS' and frame.Debuffs then
 		return frame.Debuffs
-	elseif attachTo == 'HEALTH' then
+	elseif attachTo == 'HEALTH' and frame.Health then
 		return frame.Health
 	elseif attachTo == 'POWER' and frame.Power then
 		return frame.Power
+	elseif attachTo == 'TRINKET' and (frame.Trinket or frame.PVPSpecIcon) then
+		local _, instanceType = GetInstanceInfo()
+		return (instanceType == 'arena' and frame.Trinket) or frame.PVPSpecIcon
 	else
 		return frame
 	end

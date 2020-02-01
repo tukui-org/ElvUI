@@ -120,8 +120,7 @@ function UF:Update_RaidpetFrames(frame, db)
 
 	--Auras
 	UF:EnableDisable_Auras(frame)
-	UF:Configure_Auras(frame, 'Buffs')
-	UF:Configure_Auras(frame, 'Debuffs')
+	UF:Configure_AllAuras(frame)
 
 	--RaidDebuffs
 	UF:Configure_RaidDebuffs(frame)

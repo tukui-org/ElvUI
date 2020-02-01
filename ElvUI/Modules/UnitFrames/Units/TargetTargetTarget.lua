@@ -87,8 +87,7 @@ function UF:Update_TargetTargetTargetFrame(frame, db)
 
 	--Auras
 	UF:EnableDisable_Auras(frame)
-	UF:Configure_Auras(frame, 'Buffs')
-	UF:Configure_Auras(frame, 'Debuffs')
+	UF:Configure_AllAuras(frame)
 
 	--Fader
 	UF:Configure_Fader(frame)

@@ -131,6 +131,16 @@ function UF:UpdateAuraCooldownPosition(button)
 	button.needsUpdateCooldownPosition = nil
 end
 
+function UF:Configure_AllAuras(frame)
+	if not frame.VARIABLES_SET then return end
+
+	if frame.Buffs then frame.Buffs:ClearAllPoints() end
+	if frame.Debuffs then frame.Debuffs:ClearAllPoints() end
+
+	UF:Configure_Auras(frame, 'Buffs')
+	UF:Configure_Auras(frame, 'Debuffs')
+end
+
 function UF:Configure_Auras(frame, auraType)
 	if not frame.VARIABLES_SET then return end
 
@@ -201,14 +211,14 @@ function UF:Configure_Auras(frame, auraType)
 	auras.disableMouse = auras.db.clickThrough
 	auras.anchorPoint = auras.db.anchorPoint
 	auras.initialAnchor = E.InversePoints[auras.anchorPoint]
-	auras.attachTo = self:GetAuraAnchorFrame(frame, auras.db.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
+	auras.attachTo = self:GetAuraAnchorFrame(frame, auras.db.attachTo)
 	auras["growth-y"] = strfind(auras.anchorPoint, 'TOP') and 'UP' or 'DOWN'
 	auras["growth-x"] = auras.anchorPoint == 'LEFT' and 'LEFT' or  auras.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
 
 	local x, y = E:GetXYOffset(auras.anchorPoint, frame.SPACING) --Use frame.SPACING override since it may be different from E.Spacing due to forced thin borders
-	if auras.db.attachTo == "FRAME" then
+	if auras.attachTo == "FRAME" then
 		y = 0
-	elseif auras.db.attachTo == "HEALTH" or auras.db.attachTo == "POWER" then
+	elseif auras.attachTo == "HEALTH" or auras.attachTo == "POWER" then
 		x = E:GetXYOffset(auras.anchorPoint, -frame.BORDER)
 		y = select(2, E:GetXYOffset(auras.anchorPoint, (frame.BORDER + frame.SPACING)))
 	else
@@ -221,7 +231,7 @@ function UF:Configure_Auras(frame, auraType)
 		auras:Width(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
 	else
 		local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
-		if frame.USE_POWERBAR_OFFSET and not (auras.db.attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
+		if frame.USE_POWERBAR_OFFSET and not (auras.attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
 			local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
 			totalWidth = totalWidth - powerOffset
 		end
