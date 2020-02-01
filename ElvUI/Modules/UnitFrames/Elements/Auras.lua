@@ -150,8 +150,7 @@ function UF:Configure_Auras(frame, which)
 	auras.db = db[auraType]
 
 	if db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS' then
-		local str = L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."]
-		E:Print(format(str, E:StringTitle(frame:GetName())))
+		E:Print(format(L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."], E:StringTitle(frame:GetName())))
 		auras.db.attachTo = 'FRAME'
 	end
 
