@@ -102,7 +102,7 @@ local TESTERS = {
 	"Tukui Community",
 	"Affinity",
 	"Modarch",
-	"|TInterface\\Icons\\INV_Misc_MonsterClaw_04:15:15|t |cffFF7D0ABladesdruid|r - AKA SUPERBEAR|r",
+	"|TInterface\\Icons\\INV_Misc_MonsterClaw_04:15:15:0:0:64:64:5:59:5:59|t |cffFF7D0ABladesdruid|r - AKA SUPERBEAR",
 	"Tirain",
 	"Phima",
 	"Veiled",
@@ -112,13 +112,13 @@ local TESTERS = {
 	"Kurhyus",
 	"BuG",
 	"Yachanay",
-	"|TInterface\\Icons\\INV_Staff_30:15:15|t Loon - For being right",
+	"|TInterface\\Icons\\INV_Staff_30:15:15:0:0:64:64:5:59:5:59|t Loon - For being right",
 	"Catok"
 }
 
 local function SortList(a, b)
-	local A = a:gsub('|c[fF][fF]%x%x%x%x%x%x',''):gsub('|r','')
-	local B = b:gsub('|c[fF][fF]%x%x%x%x%x%x',''):gsub('|r','')
+	local A = a:gsub('|c[fF][fF]%x%x%x%x%x%x',''):gsub('|r',''):gsub('|T.-|t%s?','')
+	local B = b:gsub('|c[fF][fF]%x%x%x%x%x%x',''):gsub('|r',''):gsub('|T.-|t%s?','')
 	return A < B
 end
 
