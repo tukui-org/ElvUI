@@ -261,6 +261,7 @@ do --this can save some main file locals
 		["Tierone-Spirestone"]	= "Dr. ",
 		["Tirain-Spirestone"]	= MrHankey,
 		["Sinth-Spirestone"]	= MrHankey,
+		["Tee-Spirestone"]		= MrHankey,
 		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
 		["Misdîrect-Spirestone"]	= itsMis,
 		["Misoracle-Spirestone"]	= itsMis,
