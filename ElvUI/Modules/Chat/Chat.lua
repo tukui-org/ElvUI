@@ -195,12 +195,9 @@ do --this can save some main file locals
 		-- new icon color every message, in order then reversed back, repeating of course
 		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
 		(a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a])
-
-		-- Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
-		(0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82)
 	]]
 
-	local itsSimpy, itsElv, itsMis
+	local itsSimpy, itsElv, itsMis, itsMel
 	do	--Simpy Chaos
 		--super cute text coloring function that ignores hyperlinks and keywords
 		local e, f, g = {'|%x+%[?|H.-|h.-|h]?|r', '|H.-|h.-|h', '|[TA].-|[ta]', '|c.-|r'}, {}, {}
@@ -216,10 +213,13 @@ do --this can save some main file locals
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
 		--Rainbow (8 Colors: 253,62,68, 254,152,73, 255,222,75, 109,253,101, 84,196,252, 163,93,250, 198,121,251, 254,129,193)
 		local MisColors = function(t) return specialText(t, 0.99,0.24,0.26, 0.99,0.59,0.28, 1.00,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.50,0.75) end
+		--Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
+		local MelColors = function(t) return specialText(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
 
 		itsSimpy = function() return ElvMelon, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
 		itsMis = function() return Rainbow, MisColors end
+		itsMel = function() return Rainbow, MelColors end
 	end
 
 	local classNihilist = {
@@ -333,6 +333,17 @@ do --this can save some main file locals
 		["Loppybunny-CenarionCircle"]	= itsSimpy, -- [RP] Mage
 		["Rubee-CenarionCircle"]		= itsSimpy, -- [RP] DH
 		["Wennie-CenarionCircle"]		= itsSimpy, -- [RP] Priest
+		-- Melbelle (Simpys Bestie)
+		["Melbelle-Bladefist"]			= itsMel, -- Hunter
+		["Deathchaser-Bladefist"]		= itsMel, -- DH
+		["Alytotes-Cenarius"]			= itsMel, -- Shaman
+		["Alykins-Cenarius"]			= itsMel, -- DH
+		["Melbelle-Cenarius"]			= itsMel, -- Druid
+		["Spãrkles-Cenarius"]			= itsMel, -- Mage
+		["Alyosha-Cenarius"]			= itsMel, -- Warrior
+		["Chaosfire-Cenarius"]			= itsMel, -- Warlock
+		["Autymnflower-Cenarius"]		= itsMel, -- Shaman
+		["Celesteia-Cenarius"]			= itsMel, -- Paladin
 	}
 end
 
