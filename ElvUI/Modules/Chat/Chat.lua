@@ -1634,7 +1634,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				if prettify and not CH:MessageIsProtected(message) then
 					message = prettify(message)
 				end
-				chatIcon = icon
+				chatIcon = icon or ''
 			end
 
 			if arg6 ~= "" then -- Blizzard Flags
