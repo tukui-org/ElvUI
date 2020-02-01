@@ -149,11 +149,6 @@ function UF:Configure_Auras(frame, which)
 	local auraType = which:lower()
 	auras.db = db[auraType]
 
-	if db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS' then
-		E:Print(format(L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."], E:StringTitle(frame:GetName())))
-		db.buffs.attachTo = 'FRAME'
-	end
-
 	local position = db.smartAuraPosition
 	if position == "BUFFS_ON_DEBUFFS" then
 		if db.debuffs.attachTo == "BUFFS" then
@@ -206,6 +201,11 @@ function UF:Configure_Auras(frame, which)
 	else
 		frame.Buffs.PostUpdate = nil
 		frame.Debuffs.PostUpdate = nil
+	end
+
+	if db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS' then
+		E:Print(format(L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."], E:StringTitle(frame:GetName())))
+		db.buffs.attachTo = 'FRAME'
 	end
 
 	local rows = auras.db.numrows
