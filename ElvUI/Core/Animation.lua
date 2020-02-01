@@ -18,6 +18,29 @@ function E:RandomAnimShake(index)
 	return random(s[1], s[2]), random(s[3], s[4])
 end
 
+--TEST
+--[[local t = UIParent:CreateFontString("FontString","OVERLAY","GameTooltipText")
+t:SetText(0)
+t:SetPoint("CENTER")
+t:FontTemplate(nil, 20)
+E:SetUpAnimGroup(t, "Number", 10, 5)
+
+
+local b = CreateFrame("BUTTON", nil, UIParent)
+b:SetPoint("CENTER", 0, -100)
+b:SetTemplate()
+b:SetSize(40,30)
+b:EnableMouse(true)
+b:SetScript("OnClick", function()
+	if t:GetText() == 10 then
+		t.NumberAnim:SetChange(0)
+		t.NumberAnimGroup:Play()
+	else
+		t.NumberAnim:SetChange(10)
+		t.NumberAnimGroup:Play()
+	end
+end)]]
+
 function E:SetUpAnimGroup(obj, Type, ...)
 	if not Type then Type = 'Flash' end
 
@@ -75,6 +98,13 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		obj.elastic[3]:SetScript('OnFinished', function(anim) anim:Stop() obj.elastic[4]:Play() end)
 		obj.elastic[2]:SetScript('OnFinished', function(anim) anim:Stop() if loop then obj.elastic[1]:Play() end end)
 		obj.elastic[4]:SetScript('OnFinished', function(anim) anim:Stop() if loop then obj.elastic[3]:Play() end end)
+	elseif Type == "Number" then
+		local endingNumber, duration = ...
+		obj.NumberAnimGroup = _G.CreateAnimationGroup(obj)
+		obj.NumberAnim = obj.NumberAnimGroup:CreateAnimation('number')
+		obj.NumberAnim:SetChange(endingNumber)
+		obj.NumberAnim:SetEasing('in-circular')
+		obj.NumberAnim:SetDuration(duration)
 	else
 		local x, y, duration, customName = ...
 		if not customName then customName = 'anim' end
