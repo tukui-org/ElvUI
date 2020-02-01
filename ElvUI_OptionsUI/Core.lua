@@ -102,7 +102,7 @@ local TESTERS = {
 	"Tukui Community",
 	"Affinity",
 	"Modarch",
-	"|TInterface\\Icons\\INV_Misc_MonsterClaw_04:15:15|t |cffFF7D0ABladesdruid - AKA SUPERBEAR|r",
+	"|TInterface\\Icons\\INV_Misc_MonsterClaw_04:15:15|t |cffFF7D0ABladesdruid|r - AKA SUPERBEAR|r",
 	"Tirain",
 	"Phima",
 	"Veiled",
