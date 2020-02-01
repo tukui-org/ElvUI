@@ -178,8 +178,8 @@ local specialChatIcons
 do --this can save some main file locals
 	local x, y = ':16:16',':13:25'
 
-	--local ElvMelon	= E:TextureString(E.Media.ChatLogos.ElvMelon,y)
 	--local ElvRainbow	= E:TextureString(E.Media.ChatLogos.ElvRainbow,y)
+	local ElvMelon		= E:TextureString(E.Media.ChatLogos.ElvMelon,y)
 	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed,y)
 	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
 	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
@@ -193,7 +193,7 @@ do --this can save some main file locals
 
 	local itsSimpy, itsElv, itsMis
 	do	--Simpy Chaos
-		--Gradient text, ignoring hyperlinks and keywords
+		--super cute text coloring function that ignores hyperlinks and keywords
 		local e, f, g = {'|%x+%[?|H.-|h.-|h]?|r', '|H.-|h.-|h', '|[TA].-|[ta]', '|c.-|r'}, {}, {}
 		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
 		local protectText = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\24') end
@@ -208,9 +208,12 @@ do --this can save some main file locals
 		--Rainbow
 		local MisColors = function(t) return specialText(t, 1, 0, 0,  1,0.49,0, 1,1,0, 0,1,0, 0,0,1, 0.18,0.16,0.37, 0.54,0,1) end
 
-		---new icon color every message, in order then reversed back, repeatedly
-		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
-		itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a], SimpyColors end
+		--[[ new icon color every message, in order then reversed back, repeating of course
+			local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
+			(a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a])
+		]]
+
+		itsSimpy = function() return ElvMelon, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
 		itsMis = function() return Rainbow, MisColors end
 	end
