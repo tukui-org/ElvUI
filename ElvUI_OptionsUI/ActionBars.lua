@@ -769,6 +769,7 @@ E.Options.args.actionbar = {
 			order = 18,
 			disabled = function() return not E.ActionBars.Initialized; end,
 			get = function(info) return E.db.actionbar.vehicleExitButton[info[#info]] end,
+			set = function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; AB:UpdateVehicleLeave() end,
 			args = {
 				enable = {
 					order = 1,
@@ -781,7 +782,6 @@ E.Options.args.actionbar = {
 					type = 'range',
 					name = L["Size"],
 					min = 16, max = 50, step = 1,
-					set = function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; AB:UpdateVehicleLeave() end,
 				},
 				level = {
 					order = 3,
