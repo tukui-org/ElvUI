@@ -174,7 +174,7 @@ local rolePaths = {
 	DAMAGER = E:TextureString(E.Media.Textures.DPS, ":15:15")
 }
 
-local specialChatIcons, itsSimpy, itsElv, GradientText
+local specialChatIcons
 do --this can save some main file locals
 	local x, y = ':16:16',':13:25'
 
@@ -191,24 +191,25 @@ do --this can save some main file locals
 	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 
-	do	-- simpy chaos:
-		local gradient
-		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink} --- new icon color every message, in order then reversed back, repeatedly
-		--Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
-		local SimpyGradient = function(t) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'), 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82),'\27','%%%%'),'\26','||') end
-		local ElvGradient = function(t) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'), 0,0.42,0.69, 0.61,0.61,0.61),'\27','%%%%'),'\26','||') end 
-		itsSimpy = function() gradient = SimpyGradient a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a], true end
-		itsElv = function() gradient = ElvGradient return ElvBlue, true end
-
-		--- gradient text, ignoring hyperlinks and keywords
+	local itsSimpy, itsElv
+	do	--Simpy Chaos
+		--Gradient text, ignoring hyperlinks and keywords
 		local e, f, g = {'|%x+|H.-|h.-|h|r', '|H.-|h.-|h', '|T.-|t', '|c.-|r'}, {}, {}
-		local protect = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\24') end
-		GradientText = function(t) local u = t
-			for _, w in ipairs(e) do for k in gmatch(t, w) do t = protect(t, u, k) end end
-			t = gradient(t) 
-			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end
-			return t
+		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
+		local protectText = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\24') end
+		local specialText = function(t,...) local u = t for _, w in ipairs(e) do for k in gmatch(t, w) do t = protectText(t, u, k) end end t = prettify(t,...)
+			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
+
+		--Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
+		local SimpyColors = function(t) return specialText(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
+		--Detroit Lions Colors: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
+		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
+
+		---new icon color every message, in order then reversed back, repeatedly
+		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
+		itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a], SimpyColors end
+		itsElv = function() return ElvBlue, ElvColors end
 	end
 
 	local classNihilist = {
@@ -1618,11 +1619,11 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			-- Player Flags
 			local pflag, chatIcon, pluginChatIcon = "", specialChatIcons[playerName], CH:GetPluginIcon(playerName)
 			if type(chatIcon) == 'function' then
-				local returnValue, isGradient = chatIcon()
-				if isGradient and not CH:MessageIsProtected(message) then
-					message = GradientText(message)
+				local icon, prettify = chatIcon()
+				if prettify and not CH:MessageIsProtected(message) then
+					message = prettify(message)
 				end
-				chatIcon = type(returnValue) == 'function' and returnValue() or returnValue
+				chatIcon = icon
 			end
 
 			if arg6 ~= "" then -- Blizzard Flags
