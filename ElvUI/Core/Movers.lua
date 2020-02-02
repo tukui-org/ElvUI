@@ -120,13 +120,12 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	local function OnDragStart(self)
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
-
+		if _G.ElvUIGrid then E:UIFrameFadeIn(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 1) end
 		if E.db.general.stickyFrames then
 			Sticky:StartMoving(self, E.snapBars, f.snapOffset, f.snapOffset, f.snapOffset, f.snapOffset)
 		else
 			self:StartMoving()
 		end
-
 		coordFrame.child = self
 		coordFrame:Show()
 		isDragging = true
@@ -134,6 +133,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	local function OnDragStop(self)
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
+		if _G.ElvUIGrid then E:UIFrameFadeOut(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 0.4) end
 		isDragging = false
 		if E.db.general.stickyFrames then
 			Sticky:StopMoving(self)
@@ -195,7 +195,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		if isDragging then return end
 		for name in pairs(E.CreatedMovers) do
 			if _G[name] ~= self then
-				E:UIFrameFadeOut(_G[name], 0.75, _G[name]:GetAlpha(), 1)
+				E:UIFrameFadeIn(_G[name], 0.75, _G[name]:GetAlpha(), 1)
 			end
 		end
 		self.text:SetTextColor(unpack(E.media.rgbvaluecolor))

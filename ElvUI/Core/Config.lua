@@ -78,6 +78,7 @@ function E:ToggleMoveMode(which)
 
 	if mode then
 		E:Grid_Show()
+		_G.ElvUIGrid:SetAlpha(0.4)
 
 		if not ElvUIMoverPopupWindow then
 			E:CreateMoverPopup()
@@ -91,6 +92,7 @@ function E:ToggleMoveMode(which)
 		end
 	else
 		E:Grid_Hide()
+		_G.ElvUIGrid:SetAlpha(1)
 
 		if ElvUIMoverPopupWindow then
 			ElvUIMoverPopupWindow:Hide()
