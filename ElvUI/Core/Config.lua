@@ -10,6 +10,7 @@ local pairs, tinsert, tContains = pairs, tinsert, tContains
 local strsplit = strsplit
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
+local EnableAddOn = EnableAddOn
 local LoadAddOn = LoadAddOn
 local GetAddOnMetadata = GetAddOnMetadata
 local GetAddOnInfo = GetAddOnInfo
@@ -1031,11 +1032,11 @@ function E:ToggleOptionsUI(msg)
 	if not IsAddOnLoaded('ElvUI_OptionsUI') then
 		local noConfig
 		local _, _, _, _, reason = GetAddOnInfo('ElvUI_OptionsUI')
-		if reason ~= 'MISSING' and reason ~= 'DISABLED' then
+
+		if reason ~= 'MISSING' then
+			EnableAddOn('ElvUI_OptionsUI')
 			LoadAddOn('ElvUI_OptionsUI')
 
-			--For some reason, GetAddOnInfo reason is 'DEMAND_LOADED' even if the addon is disabled.
-			--Workaround: Try to load addon and check if it is loaded right after.
 			if not IsAddOnLoaded('ElvUI_OptionsUI') then noConfig = true end
 
 			-- version check elvui options if it's actually enabled
@@ -1047,7 +1048,7 @@ function E:ToggleOptionsUI(msg)
 		end
 
 		if noConfig then
-			self:Print('|cffff0000Error -- Addon "ElvUI_OptionsUI" not found or is disabled.|r')
+			self:Print('|cffff0000Error -- Addon "ElvUI_OptionsUI" not found.|r')
 			return
 		end
 	end
