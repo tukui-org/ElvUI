@@ -361,7 +361,7 @@ function E:SetMoverSnapOffset(name, offset)
 end
 
 function E:SaveMoverDefaultPosition(name)
-	if not _G[name] then return end
+	if not _G[name] or not E.CreatedMovers[name] then return end
 
 	if E.LayoutMoverPositions[E.db.layoutSetting] and E.LayoutMoverPositions[E.db.layoutSetting][name] then
 		E.CreatedMovers[name].point =  E.LayoutMoverPositions[E.db.layoutSetting][name]
@@ -371,7 +371,9 @@ function E:SaveMoverDefaultPosition(name)
 		E.CreatedMovers[name].point = GetPoint(_G[name])
 	end
 
-	E.CreatedMovers[name].postdrag(_G[name], E:GetScreenQuadrant(_G[name]))
+	if E.CreatedMovers[name].postdrag then
+		E.CreatedMovers[name].postdrag(_G[name], E:GetScreenQuadrant(_G[name]))
+	end
 end
 
 function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes, shouldDisable, configString)
@@ -385,6 +387,13 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		E.CreatedMovers[name].postdrag = postdrag
 		E.CreatedMovers[name].snapoffset = snapoffset
 		E.CreatedMovers[name].point = GetPoint(parent)
+		if E.LayoutMoverPositions[E.db.layoutSetting] and E.LayoutMoverPositions[E.db.layoutSetting][name] then
+			E.CreatedMovers[name].point =  E.LayoutMoverPositions[E.db.layoutSetting][name]
+		elseif E.LayoutMoverPositions.ALL[name] then
+			E.CreatedMovers[name].point =  E.LayoutMoverPositions.ALL[name]
+		else
+			E.CreatedMovers[name].point = GetPoint(parent)
+		end
 
 		if E.LayoutMoverPositions[E.db.layoutSetting] and E.LayoutMoverPositions[E.db.layoutSetting][name] then
 			E.CreatedMovers[name].point =  E.LayoutMoverPositions[E.db.layoutSetting][name]
