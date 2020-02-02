@@ -142,7 +142,8 @@ E.Options.args.filters = {
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
-						if not tonumber(value) then E:Print(L["Value must be a number"]) return end
+						value = tonumber(value)
+						if not value then return end
 
 						if selectedFilter == 'Debuff Highlight' and not E.global.unitframe.DebuffHighlightColors[value] then
 							E.global.unitframe.DebuffHighlightColors[value] = { enable = true, style = 'GLOW', color = {r = 0.8, g = 0, b = 0, a = 0.85} }
@@ -166,7 +167,8 @@ E.Options.args.filters = {
 					type = 'execute',
 					func = function()
 						local value = strmatch(selectedSpell, " %((%d+)%)$") or selectedSpell
-						if tonumber(value) then value = tonumber(value) end
+						value = tonumber(value)
+						if not value then return end
 
 						if selectedFilter == 'Debuff Highlight' and not E.global.unitframe.DebuffHighlightColors[value] then
 							E.global.unitframe.DebuffHighlightColors[value] = nil;
@@ -442,7 +444,7 @@ E.Options.args.filters = {
 						local spell = (spellID or selectedSpell)
 
 						if selectedFilter == 'Debuff Highlight' then
-							return E.global.unitframe.DebuffHighlightColors[spell].enable
+							return not spell or E.global.unitframe.DebuffHighlightColors[spell].enable
 						else
 							return not spell or E.global.unitframe.aurafilters[selectedFilter].spells[spell].enable
 						end
