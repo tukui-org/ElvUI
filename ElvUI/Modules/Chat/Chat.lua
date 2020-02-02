@@ -281,6 +281,7 @@ do --this can save some main file locals
 		["Misillidan-Spirestone"]	= itsMis,
 		["Mispel-Spirestone"]		= itsMis,
 		["Misdecay-Spirestone"]		= itsMis,
+		["MisLust-Spirestone"] 		= itsMis,
 		-- Luckyone
 		["Luckyone-Gorgonnash"]		= Clover,
 		["Luckypriest-Gorgonnash"]	= Clover,
