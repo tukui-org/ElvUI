@@ -14,7 +14,7 @@ local GetSpellInfo = GetSpellInfo
 
 -- GLOBALS: MAX_PLAYER_LEVEL
 
-local quickSearchText, selectedSpell, selectedFilter = ""
+local quickSearchText, selectedSpell, selectedFilter, filterList, spellList = '', nil, nil, {}, {}
 
 local function filterMatch(s,v)
 	local m1, m2, m3, m4 = "^"..v.."$", "^"..v..",", ","..v.."$", ","..v..","
@@ -94,23 +94,23 @@ E.Options.args.filters = {
 				end
 			end,
 			values = function()
-				local filters = {
-					[''] = L["NONE"],
-					['Buff Indicator'] = 'Buff Indicator',
-					['Buff Indicator (Pet)'] = 'Buff Indicator (Pet)',
-					['Buff Indicator (Profile)'] = 'Buff Indicator (Profile)',
-					['AuraBar Colors'] = 'AuraBar Colors',
-					['Debuff Highlight'] = 'Debuff Highlight',
-				}
+				wipe(filterList)
+
+				filterList[''] = L["NONE"]
+				filterList['Buff Indicator'] = 'Buff Indicator'
+				filterList['Buff Indicator (Pet)'] = 'Buff Indicator (Pet)'
+				filterList['Buff Indicator (Profile)'] = 'Buff Indicator (Profile)'
+				filterList['AuraBar Colors'] = 'AuraBar Colors'
+				filterList['Debuff Highlight'] = 'Debuff Highlight'
 
 				local list = E.global.unitframe.aurafilters
 				if list then
 					for filter in pairs(list) do
-						filters[filter] = filter
+						filterList[filter] = filter
 					end
 				end
 
-				return filters
+				return filterList
 			end,
 		},
 		deleteFilter = {
@@ -228,7 +228,7 @@ E.Options.args.filters = {
 					get = function(info) return selectedSpell end,
 					set = function(info, value) selectedSpell = value end,
 					values = function()
-						local filters, list = {}
+						local list
 						if selectedFilter == 'Debuff Highlight' then
 							list = E.global.unitframe.DebuffHighlightColors
 						elseif selectedFilter == 'AuraBar Colors' then
@@ -240,23 +240,24 @@ E.Options.args.filters = {
 							list = E.global.unitframe.aurafilters[selectedFilter].spells
 						end
 						if not list then return end
+						wipe(spellList)
 						local searchText = quickSearchText:lower()
 						for filter, spell in pairs(list) do
 							if (selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator') then
 								if spell.id then
 									local name = GetSpellInfo(spell.id)
-									if name and name:lower():find(searchText) then filters[spell.id] = name end
+									if name and name:lower():find(searchText) then spellList[spell.id] = name end
 								end
 							else
 								if tonumber(filter) then
 									local spellName = GetSpellInfo(filter)
 									filter = spellName and format("%s (%s)", spellName, filter) or tostring(filter)
 								end
-								if filter:lower():find(searchText) then filters[filter] = filter end
-								if not next(filters) then filters[''] = L["NONE"] end
+								if filter:lower():find(searchText) then spellList[filter] = filter end
+								if not next(spellList) then spellList[''] = L["NONE"] end
 							end
 						end
-						return filters
+						return spellList
 					end,
 				},
 			},
