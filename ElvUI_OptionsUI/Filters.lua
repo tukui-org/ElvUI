@@ -441,23 +441,23 @@ E.Options.args.filters = {
 					get = function(info)
 						local spellID = selectedSpell and strmatch(selectedSpell, "(%d+)")
 						if spellID then spellID = tonumber(spellID) end
-						local spell = (spellID or selectedSpell)
+						if not spellID then return end
 
 						if selectedFilter == 'Debuff Highlight' then
-							return not spell or E.global.unitframe.DebuffHighlightColors[spell].enable
+							return E.global.unitframe.DebuffHighlightColors[spellID].enable
 						else
-							return not spell or E.global.unitframe.aurafilters[selectedFilter].spells[spell].enable
+							return E.global.unitframe.aurafilters[selectedFilter].spells[spellID].enable
 						end
 					end,
 					set = function(info, value)
 						local spellID = selectedSpell and strmatch(selectedSpell, "(%d+)")
 						if spellID then spellID = tonumber(spellID) end
-						local spell = (spellID or selectedSpell)
+						if not spellID then return end
 
 						if selectedFilter == 'Debuff Highlight' then
-							E.global.unitframe.DebuffHighlightColors[spell].enable = value
+							E.global.unitframe.DebuffHighlightColors[spellID].enable = value
 						else
-							E.global.unitframe.aurafilters[selectedFilter].spells[spell].enable = value
+							E.global.unitframe.aurafilters[selectedFilter].spells[spellID].enable = value
 						end
 
 						UF:Update_AllFrames();
@@ -472,11 +472,14 @@ E.Options.args.filters = {
 					get = function(info)
 						local spellID = selectedSpell and strmatch(selectedSpell, "(%d+)")
 						if spellID then spellID = tonumber(spellID) end
+						if not spellID then return end
+
 						return E.global.unitframe.DebuffHighlightColors[(spellID or selectedSpell)].style
 					end,
 					set = function(info, value)
 						local spellID = selectedSpell and strmatch(selectedSpell, "(%d+)")
 						if spellID then spellID = tonumber(spellID) end
+						if not spellID then return end
 
 						E.global.unitframe.DebuffHighlightColors[(spellID or selectedSpell)].style = value
 						UF:Update_AllFrames()
@@ -487,19 +490,21 @@ E.Options.args.filters = {
 					type = 'color',
 					order = 2,
 					hasAlpha = true,
+					hidden = function() return (selectedFilter ~= 'Debuff Highlight' and selectedFilter ~= 'AuraBar Colors' and selectedFilter ~= 'Buff Indicator (Pet)' and selectedFilter ~= 'Buff Indicator (Profile)' and selectedFilter ~= 'Buff Indicator') end,
 					get = function(info)
 						local spellID = selectedSpell and strmatch(selectedSpell, "(%d+)")
 						if spellID then spellID = tonumber(spellID) end
-						local spell, t = (spellID or selectedSpell)
+						if not spellID then return end
 
+						local t
 						if selectedFilter == 'Debuff Highlight' then
-							t = E.global.unitframe.DebuffHighlightColors[spell].color
+							t = E.global.unitframe.DebuffHighlightColors[spellID].color
 						elseif selectedFilter == 'AuraBar Colors' then
-							if type(E.global.unitframe.AuraBarColors[spell]) ~= 'table' then
-								E.global.unitframe.AuraBarColors[spell] = {}
+							if type(E.global.unitframe.AuraBarColors[spellID]) ~= 'table' then
+								E.global.unitframe.AuraBarColors[spellID] = {}
 							end
 
-							t = E.global.unitframe.AuraBarColors[spell]
+							t = E.global.unitframe.AuraBarColors[spellID]
 						end
 
 						if type(t) == 'boolean' then
@@ -511,16 +516,17 @@ E.Options.args.filters = {
 					set = function(info, r, g, b, a)
 						local spellID = selectedSpell and strmatch(selectedSpell, "(%d+)")
 						if spellID then spellID = tonumber(spellID) end
-						local spell, t = (spellID or selectedSpell)
+						if not spellID then return end
 
+						local t
 						if selectedFilter == 'Debuff Highlight' then
-							t = E.global.unitframe.DebuffHighlightColors[spell].color
+							t = E.global.unitframe.DebuffHighlightColors[spellID].color
 						elseif selectedFilter == 'AuraBar Colors' then
-							if type(E.global.unitframe.AuraBarColors[spell]) ~= 'table' then
-								E.global.unitframe.AuraBarColors[spell] = {}
+							if type(E.global.unitframe.AuraBarColors[spellID]) ~= 'table' then
+								E.global.unitframe.AuraBarColors[spellID] = {}
 							end
 
-							t = E.global.unitframe.AuraBarColors[spell]
+							t = E.global.unitframe.AuraBarColors[spellID]
 						end
 
 						if t then
