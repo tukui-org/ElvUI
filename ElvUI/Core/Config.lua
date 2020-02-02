@@ -1162,7 +1162,7 @@ function E:ToggleOptionsUI(msg)
 			local thumb = slider:GetThumbTexture()
 			thumb:Point("LEFT", left, "RIGHT", 2, 0)
 			thumb:SetVertexColor(1, 1, 1, 0.5)
-			thumb:SetSize(10, 14)
+			thumb:SetSize(8, 12)
 			left.slider.thumb = thumb
 
 			if not unskinned then
