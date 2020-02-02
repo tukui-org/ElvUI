@@ -904,7 +904,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 	local L = self.Libs.ACL:GetLocale('ElvUI', self.global.general.locale or 'enUS')
 
 	local last
-	for _, info in pairs({
+	for _, info in ipairs({
 		{
 			var = 'ToggleAnchors',
 			name = L["Toggle Anchors"],
