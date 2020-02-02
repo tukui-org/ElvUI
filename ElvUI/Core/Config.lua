@@ -915,13 +915,13 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 				E:ToggleMoveMode()
 				E.ConfigurationToggled = true
 			end
-		},	
+		},
 		{
 			var = 'ResetAnchors',
 			name = L["Reset Anchors"],
 			desc = L["Reset all frames to their original positions."],
 			func = function() E:ResetUI() end
-		},			
+		},
 		{
 			var = 'RepositionWindow',
 			name = L["Reposition Window"],
@@ -936,7 +936,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 				E:Install()
 				E:ToggleOptionsUI()
 			end
-		},		
+		},
 		{
 			var = 'ToggleTutorials',
 			name = L["Toggle Tutorials"],
