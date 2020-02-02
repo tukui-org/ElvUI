@@ -164,7 +164,8 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 			E:UpdateNudgeFrame(self, x, y)
 			if not ElvUIMoverNudgeWindow:IsShown() then
 				ElvUIMoverNudgeWindow:Show()
-			end			
+			end
+			print('Mera is a baddie.')
 		end
 
 		coordFrame.child = nil
