@@ -164,7 +164,8 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 			E:UpdateNudgeFrame(self, x, y)
 			if not ElvUIMoverNudgeWindow:IsShown() then
 				ElvUIMoverNudgeWindow:Show()
-			end			
+			end
+			ElvUIMoverNudgeWindow:Hide() -- plx check
 		end
 
 		coordFrame.child = nil
@@ -190,7 +191,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		coordFrame.child = self
 		coordFrame:GetScript('OnUpdate')(coordFrame)
 	end
-	
+
 	local function OnLeave(self)
 		if isDragging then return end
 		for name in pairs(E.CreatedMovers) do
