@@ -76,7 +76,6 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f.snapOffset = snapOffset or -2
 	f.shouldDisable = shouldDisable
 	f.configString = configString
-
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
 	if overlay == true then
 		f:SetFrameStrata('DIALOG')
@@ -163,6 +162,9 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 		if ElvUIMoverNudgeWindow then
 			E:UpdateNudgeFrame(self, x, y)
+			if not ElvUIMoverNudgeWindow:IsShown() then
+				ElvUIMoverNudgeWindow:Show()
+			end			
 		end
 
 		coordFrame.child = nil
@@ -177,10 +179,26 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	local function OnEnter(self)
 		if isDragging then return end
+		for name in pairs(E.CreatedMovers) do
+			if _G[name] ~= self then
+				E:UIFrameFadeOut(_G[name], 0.75, _G[name]:GetAlpha(), 0.5)
+			end
+		end
+
 		self.text:SetTextColor(1, 1, 1)
 		E.AssignFrameToNudge(self)
 		coordFrame.child = self
 		coordFrame:GetScript('OnUpdate')(coordFrame)
+	end
+	
+	local function OnLeave(self)
+		if isDragging then return end
+		for name in pairs(E.CreatedMovers) do
+			if _G[name] ~= self then
+				E:UIFrameFadeOut(_G[name], 0.75, _G[name]:GetAlpha(), 1)
+			end
+		end
+		self.text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	end
 
 	local function OnMouseDown(self, button)
@@ -207,11 +225,6 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 				E:ToggleOptionsUI(self.configString)
 			end
 		end
-	end
-
-	local function OnLeave(self)
-		if isDragging then return end
-		self.text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	end
 
 	local function OnShow(self)
