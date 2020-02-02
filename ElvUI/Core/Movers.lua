@@ -133,7 +133,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	local function OnDragStop(self)
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
-		if _G.ElvUIGrid then E:UIFrameFadeOut(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 0.4) end
+		if _G.ElvUIGrid and E.ConfigurationMode then E:UIFrameFadeOut(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 0.4) end
 		isDragging = false
 		if E.db.general.stickyFrames then
 			Sticky:StopMoving(self)
@@ -162,10 +162,9 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 		if ElvUIMoverNudgeWindow then
 			E:UpdateNudgeFrame(self, x, y)
-			if not ElvUIMoverNudgeWindow:IsShown() then
+			if not ElvUIMoverNudgeWindow:IsShown() and E.ConfigurationMode then
 				ElvUIMoverNudgeWindow:Show()
 			end
-			print('Mera is a baddie.')
 		end
 
 		coordFrame.child = nil

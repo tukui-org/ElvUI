@@ -75,7 +75,6 @@ function E:ToggleMoveMode(which)
 	end
 
 	self:ToggleMovers(mode, which)
-
 	if mode then
 		E:Grid_Show()
 		_G.ElvUIGrid:SetAlpha(0.4)
