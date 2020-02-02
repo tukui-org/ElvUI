@@ -89,7 +89,7 @@ E.Media = {
 		Lion = M..[[ChatLogos\Lion.tga]],
 		Skull = M..[[ChatLogos\Skull.tga]],
 		Unicorn = M..[[ChatLogos\Unicorn.tga]],
-
+		---
 		FoxDeathKnight = M..[[ChatLogos\FoxDeathKnight.tga]],
 		FoxDemonHunter = M..[[ChatLogos\FoxDemonHunter.tga]],
 		FoxDruid = M..[[ChatLogos\FoxDruid.tga]],
