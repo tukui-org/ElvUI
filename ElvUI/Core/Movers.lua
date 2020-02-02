@@ -160,13 +160,6 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 		E:SaveMoverPosition(name)
 
-		if ElvUIMoverNudgeWindow then
-			E:UpdateNudgeFrame(self, x, y)
-			if not ElvUIMoverNudgeWindow:IsShown() and E.ConfigurationMode then
-				ElvUIMoverNudgeWindow:Show()
-			end
-		end
-
 		coordFrame.child = nil
 		coordFrame:Hide()
 
@@ -190,7 +183,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		coordFrame.child = self
 		coordFrame:GetScript('OnUpdate')(coordFrame)
 	end
-	
+
 	local function OnLeave(self)
 		if isDragging then return end
 		for name in pairs(E.CreatedMovers) do
@@ -201,21 +194,18 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		self.text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	end
 
-	local function OnMouseDown(self, button)
+	local function OnMouseUp(self, button)
 		if button == 'LeftButton' and not isDragging then
 			if ElvUIMoverNudgeWindow:IsShown() then
 				ElvUIMoverNudgeWindow:Hide()
 			else
 				ElvUIMoverNudgeWindow:Show()
 			end
-		elseif button == 'RightButton' then
-			isDragging = false
-			if E.db.general.stickyFrames then
-				Sticky:StopMoving(self)
-			else
-				self:StopMovingOrSizing()
-			end
+		end
+	end
 
+	local function OnMouseDown(self, button)
+		if button == 'RightButton' then
 			--Allow resetting of anchor by Ctrl+RightClick
 			if IsControlKeyDown() and self.textString then
 				E:ResetMovers(self.textString)
@@ -243,6 +233,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f:SetScript('OnMouseUp', E.AssignFrameToNudge)
 	f:SetScript('OnDragStop', OnDragStop)
 	f:SetScript('OnEnter', OnEnter)
+	f:SetScript('OnMouseUp', OnMouseUp)
 	f:SetScript('OnMouseDown', OnMouseDown)
 	f:SetScript('OnLeave', OnLeave)
 	f:SetScript('OnShow', OnShow)
@@ -327,12 +318,6 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 	y = y + (nudgeY or 0)
 
 	return x, y, point, nudgePoint, nudgeInversePoint
-end
-
-function E:UpdatePositionOverride(name)
-	local frame = _G[name]
-	local OnDragStop = frame and frame.GetScript and frame:GetScript('OnDragStop')
-	if OnDragStop then OnDragStop(frame) end
 end
 
 function E:HasMoverBeenMoved(name)

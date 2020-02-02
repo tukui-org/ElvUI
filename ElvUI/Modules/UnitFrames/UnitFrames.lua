@@ -724,12 +724,6 @@ function UF.groupPrototype:Configure_Groups(self)
 		self.dirtyHeight = height - db.verticalSpacing -groupSpacing
 	end
 
-	if self.mover then
-		self.mover.positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
-		E:UpdatePositionOverride(self.mover:GetName())
-		self:GetScript("OnSizeChanged")(self) --Mover size is not updated if frame is hidden, so call an update manually
-	end
-
 	self:Size(width - db.horizontalSpacing -groupSpacing, height - db.verticalSpacing -groupSpacing)
 end
 
