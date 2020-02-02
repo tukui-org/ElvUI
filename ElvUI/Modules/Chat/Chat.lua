@@ -226,23 +226,8 @@ do --this can save some main file locals
 		itsMis = function() return Rainbow, MisColors end
 	end
 
-	local classNihilist = {
-		DEATHKNIGHT	= ElvRed,
-		DEMONHUNTER	= ElvPurple,
-		DRUID		= ElvOrange,
-		HUNTER		= ElvGreen,
-		MAGE		= ElvBlue,
-		MONK		= ElvGreen,
-		PALADIN		= ElvPink,
-		PRIEST		= ElvPink,
-		ROGUE		= ElvYellow,
-		SHAMAN		= ElvBlue,
-		WARLOCK		= ElvPurple,
-		WARRIOR		= ElvOrange
-	}
-
 	local itsTheFlyestNihilist = function(class)
-		return classNihilist[class]
+		return E:TextureString(E.Media.ChatLogos["Fox"..class],x)
 	end
 
 	specialChatIcons = {
@@ -275,7 +260,6 @@ do --this can save some main file locals
 		["Misoracle-Spirestone"]	= itsMis,
 		["MisLight-Spirestone"]		= itsMis,
 		["MisDivine-Spirestone"]	= itsMis,
-		["MisLust-Spirestone"]		= itsMis,
 		["MisMayhem-Spirestone"]	= itsMis,
 		["Mismonk-Spirestone"]		= itsMis,
 		["Misillidan-Spirestone"]	= itsMis,
@@ -296,28 +280,29 @@ do --this can save some main file locals
 		["Luckypoggers-Blackrock"]	= Clover,
 		["Luckyclap-Blackrock"]		= Clover,
 		-- NihilisticPandemonium
-		["Dirishia-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
-		["Sagome-WyrmrestAccord"]		= itsTheFlyestNihilist("MONK"),
-		["Onaguda-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
-		["Haelini-WyrmrestAccord"]		= itsTheFlyestNihilist("PRIEST"),
-		["Alailais-WyrmestAccord"]		= itsTheFlyestNihilist("DEMONHUNTER"),
-		["Muiride-WyrmestAccord"]		= itsTheFlyestNihilist("DEATHKNIGHT"),
-		["Monelia-WyrmrestAccord"]		= itsTheFlyestNihilist("PALADIN"),
-		["Huanyue-WyrmrestAccord"]		= itsTheFlyestNihilist("SHAMAN"),
-		["Galiseda-WyrmestAccord"]		= itsTheFlyestNihilist("ROGUE"),
-		["Naldydi-WyrmrestAccord"]		= itsTheFlyestNihilist("HUNTER"),
-		["Caylasena-WyrmestAccord"]		= itsTheFlyestNihilist("WARRIOR"),
-		["Elaedarel-WyrmrestAccord"]	= itsTheFlyestNihilist("WARLOCK"),
-		["Alydrer-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
-		["Issia-WyrmrestAccord"]		= itsTheFlyestNihilist("PRIEST"),
-		["Leitara-WyrmrestAccord"]		= itsTheFlyestNihilist("WARRIOR"),
-		["Cherlyth-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
-		["Tokashami-WyrmrestAccord"]	= itsTheFlyestNihilist("SHAMAN"),
-		["Xanikani-WyrmrestAccord"]		= itsTheFlyestNihilist("MAGE"),
-		["Erasaya-WyrmrestAccord"]		= itsTheFlyestNihilist("DEATHKNIGHT"),
-		["Linabla-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
-		["Millop-WyrmrestAccord"]		= itsTheFlyestNihilist("HUNTER"),
-		["Aeondalew-WyrmrestAccord"]	= itsTheFlyestNihilist("DEATHKNIGHT"),
+		["Dirishia-WyrmrestAccord"]		= itsTheFlyestNihilist("Warlock"),
+		["Xanikani-WyrmrestAccord"]		= itsTheFlyestNihilist("Mage"),
+		["Rikanza-WyrmrestAccord"]		= itsTheFlyestNihilist("Monk"),
+		["Onaguda-WyrmrestAccord"]		= itsTheFlyestNihilist("Druid"),
+		["Cerishia-WyrmrestAccord"]		= itsTheFlyestNihilist("Priest"),
+		["Vellilara-WyrmestAccord"]		= itsTheFlyestNihilist("DemonHunter"),
+		["Sayalia-WyrmestAccord"]		= itsTheFlyestNihilist("DeathKnight"),
+		["Pakasta-WyrmrestAccord"]		= itsTheFlyestNihilist("Paladin"),
+		["Orlyrala-WyrmrestAccord"]		= itsTheFlyestNihilist("Shaman"),
+		["Scerila-WyrmestAccord"]		= itsTheFlyestNihilist("Rogue"),
+		["Ralaniki-WyrmrestAccord"]		= itsTheFlyestNihilist("Hunter"),
+		["Moyanza-WyrmestAccord"]		= itsTheFlyestNihilist("Warrior"),
+		["Erasaya-WyrmrestAccord"]		= itsTheFlyestNihilist("DeathKnight"),
+		["Linabla-WyrmrestAccord"]		= itsTheFlyestNihilist("Druid"),
+		["Dirikoa-WyrmrestAccord"]		= itsTheFlyestNihilist("Hunter"),
+		["Elaedarel-WyrmrestAccord"]	= itsTheFlyestNihilist("Warlock"),
+		["Alydrer-WyrmrestAccord"]		= itsTheFlyestNihilist("Warlock"),
+		["Issia-WyrmrestAccord"]		= itsTheFlyestNihilist("Priest"),
+		["Leitara-WyrmrestAccord"]		= itsTheFlyestNihilist("Warrior"),
+		["Cherlyth-WyrmrestAccord"]		= itsTheFlyestNihilist("Druid"),
+		["Tokashami-WyrmrestAccord"]	= itsTheFlyestNihilist("Shaman"),
+		["Millop-WyrmrestAccord"]		= itsTheFlyestNihilist("Hunter"),
+		["Aeondalew-WyrmrestAccord"]	= itsTheFlyestNihilist("DeathKnight"),
 		-- Merathilis
 		["Asragoth-Shattrath"]			= ElvPurple,	-- [Alliance] Warlock
 		["Brítt-Shattrath"] 			= ElvBlue,		-- [Alliance] Warrior
