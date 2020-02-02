@@ -294,43 +294,13 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		E.db.general.totems.growthDirection = 'HORIZONTAL'
 		E.db.general.totems.size = 50
 		E.db.general.totems.spacing = 8
+
 	--Movers
-		E.db.movers.AlertFrameMover = 'TOP,ElvUIParent,TOP,-1,-18'
-		E.db.movers.AltPowerBarMover = 'TOP,ElvUIParent,TOP,-1,-36'
-		E.db.movers.AzeriteBarMover = 'TOPRIGHT,ElvUIParent,TOPRIGHT,-3,-245'
-		E.db.movers.BelowMinimapContainerMover = 'TOPRIGHT,ElvUIParent,TOPRIGHT,-4,-274'
-		E.db.movers.BNETMover = 'TOPRIGHT,ElvUIParent,TOPRIGHT,-4,-274'
-		E.db.movers.BossButton = 'BOTTOM,ElvUIParent,BOTTOM,-1,293'
-		E.db.movers.ElvAB_1 = 'BOTTOM,ElvUIParent,BOTTOM,-1,191'
-		E.db.movers.ElvAB_2 = 'BOTTOM,ElvUIParent,BOTTOM,0,4'
-		E.db.movers.ElvAB_3 = 'BOTTOM,ElvUIParent,BOTTOM,-1,139'
-		E.db.movers.ElvAB_5 = 'BOTTOM,ElvUIParent,BOTTOM,-92,57'
-		E.db.movers.ElvUF_FocusMover = 'BOTTOM,ElvUIParent,BOTTOM,342,59'
-		E.db.movers.ElvUF_PartyMover = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,248'
-		E.db.movers.ElvUF_PetMover = 'BOTTOM,ElvUIParent,BOTTOM,-342,100'
-		E.db.movers.ElvUF_PlayerCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,-1,95'
-		E.db.movers.ElvUF_PlayerMover = 'BOTTOM,ElvUIParent,BOTTOM,-342,139'
-		E.db.movers.ElvUF_Raid40Mover = 'TOPLEFT,ElvUIParent,BOTTOMLEFT,4,482'
-		E.db.movers.ElvUF_RaidMover = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,248'
-		E.db.movers.ElvUF_RaidpetMover = 'TOPLEFT,ElvUIParent,BOTTOMLEFT,4,737'
-		E.db.movers.ElvUF_TargetCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,-1,243'
-		E.db.movers.ElvUF_TargetMover = 'BOTTOM,ElvUIParent,BOTTOM,342,139'
-		E.db.movers.ElvUF_TargetTargetMover = 'BOTTOM,ElvUIParent,BOTTOM,342,100'
-		E.db.movers.ExperienceBarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,43'
-		E.db.movers.HonorBarMover = 'TOPRIGHT,ElvUIParent,TOPRIGHT,-3,-255'
-		E.db.movers.LevelUpBossBannerMover = 'TOP,ElvUIParent,TOP,-1,-120'
-		E.db.movers.LootFrameMover = 'TOPLEFT,ElvUIParent,TOPLEFT,418,-186'
-		E.db.movers.LossControlMover = 'BOTTOM,ElvUIParent,BOTTOM,-1,507'
-		E.db.movers.MirrorTimer1Mover = 'TOP,ElvUIParent,TOP,-1,-96'
-		E.db.movers.ObjectiveFrameMover = 'TOPRIGHT,ElvUIParent,TOPRIGHT,-163,-325'
-		E.db.movers.ReputationBarMover = 'TOPRIGHT,ElvUIParent,TOPRIGHT,-3,-264'
-		E.db.movers.ShiftAB = 'TOPLEFT,ElvUIParent,BOTTOMLEFT,4,769'
-		E.db.movers.SocialMenuMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-187'
-		E.db.movers.TalkingHeadFrameMover = 'BOTTOM,ElvUIParent,BOTTOM,-1,373'
-		E.db.movers.TotemBarMover = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,490,4'
-		E.db.movers.VehicleSeatMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-4'
-		E.db.movers.VOICECHAT = 'TOPLEFT,ElvUIParent,TOPLEFT,368,-210'
-		E.db.movers.ZoneAbility = 'BOTTOM,ElvUIParent,BOTTOM,-1,293'
+	for mover, position in pairs(E.LayoutMoverPositions["ALL"]) do
+		E.db.movers[mover] = position
+		E:SaveMoverDefaultPosition(mover)
+	end
+
 	--Tooltip
 		E.db.tooltip.fontSize = 10
 		E.db.tooltip.healthBar.fontOutline = 'MONOCHROMEOUTLINE'
@@ -443,23 +413,21 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			Layout Tweaks will be handled below,
 			These are changes that deviate from the shared base layout.
 		]]
+		if E.LayoutMoverPositions[layout] then
+			for mover, position in pairs(E.LayoutMoverPositions[layout]) do
+				E.db.movers[mover] = position
+				E:SaveMoverDefaultPosition(mover)
+			end
+		end
 
-		if layout == 'dpsCaster' then
-			E.db.movers.ElvUF_PlayerCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,243'
-			E.db.movers.ElvUF_TargetCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,97'
-		elseif layout == 'healer' then
-			E.db.movers.ElvUF_PlayerCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,243'
-			E.db.movers.ElvUF_TargetCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,97'
-			E.db.movers.ElvUF_RaidMover = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,202,373'
-			E.db.movers.LootFrameMover = 'TOPLEFT,ElvUIParent,TOPLEFT,250,-104'
-			E.db.movers.ShiftAB = 'TOPLEFT,ElvUIParent,BOTTOMLEFT,4,273'
-			E.db.movers.VOICECHAT = 'TOPLEFT,ElvUIParent,TOPLEFT,250,-82'
+		if layout == 'healer' then
 			E.db.unitframe.units.party.enable = false
 			E.db.unitframe.units.raid.visibility = '[nogroup] hide;show'
 		end
 	end
 
 	E:StaggeredUpdateAll(nil, true)
+	E.db.layoutSetting = layout
 
 	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["Layout Set"]

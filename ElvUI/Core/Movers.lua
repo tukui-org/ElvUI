@@ -363,7 +363,14 @@ end
 function E:SaveMoverDefaultPosition(name)
 	if not _G[name] then return end
 
-	E.CreatedMovers[name].point = GetPoint(_G[name])
+	if E.LayoutMoverPositions[E.db.layoutSetting] and E.LayoutMoverPositions[E.db.layoutSetting][name] then
+		E.CreatedMovers[name].point =  E.LayoutMoverPositions[E.db.layoutSetting][name]
+	elseif E.LayoutMoverPositions.ALL[name] then
+		E.CreatedMovers[name].point =  E.LayoutMoverPositions.ALL[name]
+	else
+		E.CreatedMovers[name].point = GetPoint(_G[name])
+	end
+
 	E.CreatedMovers[name].postdrag(_G[name], E:GetScreenQuadrant(_G[name]))
 end
 
@@ -378,6 +385,15 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		E.CreatedMovers[name].postdrag = postdrag
 		E.CreatedMovers[name].snapoffset = snapoffset
 		E.CreatedMovers[name].point = GetPoint(parent)
+
+		if E.LayoutMoverPositions[E.db.layoutSetting] and E.LayoutMoverPositions[E.db.layoutSetting][name] then
+			E.CreatedMovers[name].point =  E.LayoutMoverPositions[E.db.layoutSetting][name]
+		elseif E.LayoutMoverPositions.ALL[name] then
+			E.CreatedMovers[name].point =  E.LayoutMoverPositions.ALL[name]
+		else
+			E.CreatedMovers[name].point = GetPoint(parent)
+		end
+
 		E.CreatedMovers[name].shouldDisable = shouldDisable
 		E.CreatedMovers[name].configString = configString
 
@@ -455,6 +471,7 @@ function E:ResetMovers(arg)
 		for name in pairs(E.CreatedMovers) do
 			local f = _G[name]
 			local point, anchor, secondaryPoint, x, y = split(',', E.CreatedMovers[name].point)
+
 			f:ClearAllPoints()
 			f:Point(point, anchor, secondaryPoint, x, y)
 
@@ -463,6 +480,7 @@ function E:ResetMovers(arg)
 					value(f, E:GetScreenQuadrant(f))
 				end
 			end
+			E:SaveMoverPosition(name)
 		end
 		self.db.movers = nil
 	else
@@ -482,6 +500,7 @@ function E:ResetMovers(arg)
 						if E.CreatedMovers[name].postdrag ~= nil and type(E.CreatedMovers[name].postdrag) == 'function' then
 							E.CreatedMovers[name].postdrag(f, E:GetScreenQuadrant(f))
 						end
+						E:SaveMoverPosition(name)
 					end
 				end
 			end
