@@ -178,18 +178,21 @@ local specialChatIcons
 do --this can save some main file locals
 	local x, y = ':16:16',':13:25'
 
-	--local ElvRainbow	= E:TextureString(E.Media.ChatLogos.ElvRainbow,y)
-	local ElvMelon		= E:TextureString(E.Media.ChatLogos.ElvMelon,y)
-	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed,y)
-	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
-	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
-	local ElvGreen		= E:TextureString(E.Media.ChatLogos.ElvGreen,y)
 	local ElvBlue		= E:TextureString(E.Media.ChatLogos.ElvBlue,y)
-	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
+	local ElvGreen		= E:TextureString(E.Media.ChatLogos.ElvGreen,y)
+	local ElvMelon		= E:TextureString(E.Media.ChatLogos.ElvMelon,y)
+	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
 	local ElvPink		= E:TextureString(E.Media.ChatLogos.ElvPink,y)
+	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
+	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed,y)
+	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
 	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
 	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
+	local Hibiscus		= E:TextureString(E.Media.ChatLogos.Hibiscus,x)
+	local Clover		= E:TextureString(E.Media.ChatLogos.Clover,x)
+	local Burger		= E:TextureString(E.Media.ChatLogos.Burger,x)
+	local Lion			= E:TextureString(E.Media.ChatLogos.Lion,x)
 
 	--[[ Simpys Things
 		-- new icon color every message, in order then reversed back, repeating of course
@@ -197,7 +200,7 @@ do --this can save some main file locals
 		(a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a])
 	]]
 
-	local itsSimpy, itsElv, itsMis, itsMel
+	local itsElv, itsMis, itsMel, itsSimpyA, itsSimpyH
 	do	--Simpy Chaos
 		--super cute text coloring function that ignores hyperlinks and keywords
 		local e, f, g = {'|%x+%[?|H.-|h.-|h]?|r', '|H.-|h.-|h', '|[TA].-|[ta]', '|c.-|r'}, {}, {}
@@ -216,10 +219,11 @@ do --this can save some main file locals
 		--Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
 		local MelColors = function(t) return specialText(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
 
-		itsSimpy = function() return ElvMelon, SimpyColors end
+		itsSimpyH = function() return Burger..ElvMelon, SimpyColors end
+		itsSimpyA = function() return Lion..ElvMelon, SimpyColors end
+		itsMel = function() return Hibiscus, MelColors end
 		itsElv = function() return ElvBlue, ElvColors end
 		itsMis = function() return Rainbow, MisColors end
-		itsMel = function() return Rainbow, MelColors end
 	end
 
 	local classNihilist = {
@@ -277,7 +281,20 @@ do --this can save some main file locals
 		["Misillidan-Spirestone"]	= itsMis,
 		["Mispel-Spirestone"]		= itsMis,
 		["Misdecay-Spirestone"]		= itsMis,
-		--NihilisticPandemonium
+		-- Luckyone
+		["Luckyone-Gorgonnash"]		= Clover,
+		["Luckypriest-Gorgonnash"]	= Clover,
+		["Luckymonkas-Blackrock"]	= Clover,
+		["Luckysabers-Blackrock"]	= Clover,
+		["Luckydemon-Blackrock"]	= Clover,
+		["Luckymage-Blackrock"]		= Clover,
+		["Luckyshaman-Blackrock"]	= Clover,
+		["Luckylockx-Blackrock"]	= Clover,
+		["Luckybow-Blackrock"]		= Clover,
+		["Luckypepega-Blackrock"]	= Clover,
+		["Luckypoggers-Blackrock"]	= Clover,
+		["Luckyclap-Blackrock"]		= Clover,
+		-- NihilisticPandemonium
 		["Dirishia-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
 		["Sagome-WyrmrestAccord"]		= itsTheFlyestNihilist("MONK"),
 		["Onaguda-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
@@ -312,27 +329,27 @@ do --this can save some main file locals
 		["Merathilis-Shattrath"]		= ElvOrange,	-- [Alliance] Druid
 		["Merathilîs-Shattrath"]		= ElvBlue,		-- [Alliance] Shaman
 		-- Simpy
-		["Arieva-Cenarius"]				= itsSimpy, -- Hunter
-		["Buddercup-Cenarius"]			= itsSimpy, -- Rogue
-		["Cutepally-Cenarius"]			= itsSimpy, -- Paladin
-		["Ezek-Cenarius"]				= itsSimpy, -- DK
-		["Glice-Cenarius"]				= itsSimpy, -- Warrior
-		["Kalline-Cenarius"]			= itsSimpy, -- Shaman
-		["Puttietat-Cenarius"]			= itsSimpy, -- Druid
-		["Simpy-Cenarius"]				= itsSimpy, -- Warlock
-		["Twigly-Cenarius"]				= itsSimpy, -- Monk
-		["Imsobeefy-Cenarius"]			= itsSimpy, -- [Horde] Shaman
-		["Imsocheesy-Cenarius"]			= itsSimpy, -- [Horde] Priest
-		["Imsojelly-Cenarius"]			= itsSimpy, -- [Horde] DK
-		["Imsojuicy-Cenarius"]			= itsSimpy, -- [Horde] Druid
-		["Imsopeachy-Cenarius"]			= itsSimpy, -- [Horde] DH
-		["Imsosalty-Cenarius"]			= itsSimpy, -- [Horde] Paladin
-		["Imsospicy-Cenarius"]			= itsSimpy, -- [Horde] Mage
-		["Bunne-CenarionCircle"]		= itsSimpy, -- [RP] Warrior
-		["Loppie-CenarionCircle"]		= itsSimpy, -- [RP] Hunter
-		["Loppybunny-CenarionCircle"]	= itsSimpy, -- [RP] Mage
-		["Rubee-CenarionCircle"]		= itsSimpy, -- [RP] DH
-		["Wennie-CenarionCircle"]		= itsSimpy, -- [RP] Priest
+		["Arieva-Cenarius"]				= itsSimpyA, -- Hunter
+		["Buddercup-Cenarius"]			= itsSimpyA, -- Rogue
+		["Cutepally-Cenarius"]			= itsSimpyA, -- Paladin
+		["Ezek-Cenarius"]				= itsSimpyA, -- DK
+		["Glice-Cenarius"]				= itsSimpyA, -- Warrior
+		["Kalline-Cenarius"]			= itsSimpyA, -- Shaman
+		["Puttietat-Cenarius"]			= itsSimpyA, -- Druid
+		["Simpy-Cenarius"]				= itsSimpyA, -- Warlock
+		["Twigly-Cenarius"]				= itsSimpyA, -- Monk
+		["Imsobeefy-Cenarius"]			= itsSimpyH, -- Shaman
+		["Imsocheesy-Cenarius"]			= itsSimpyH, -- Priest
+		["Imsojelly-Cenarius"]			= itsSimpyH, -- DK
+		["Imsojuicy-Cenarius"]			= itsSimpyH, -- Druid
+		["Imsopeachy-Cenarius"]			= itsSimpyH, -- DH
+		["Imsosalty-Cenarius"]			= itsSimpyH, -- Paladin
+		["Imsospicy-Cenarius"]			= itsSimpyH, -- Mage
+		["Bunne-CenarionCircle"]		= itsSimpyA, -- [RP] Warrior
+		["Loppie-CenarionCircle"]		= itsSimpyA, -- [RP] Hunter
+		["Loppybunny-CenarionCircle"]	= itsSimpyA, -- [RP] Mage
+		["Rubee-CenarionCircle"]		= itsSimpyA, -- [RP] DH
+		["Wennie-CenarionCircle"]		= itsSimpyA, -- [RP] Priest
 		-- Melbelle (Simpys Bestie)
 		["Deathchaser-Bladefist"]		= itsMel, -- DH
 		["Melbelle-Bladefist"]			= itsMel, -- Hunter

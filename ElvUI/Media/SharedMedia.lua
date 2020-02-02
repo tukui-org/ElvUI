@@ -74,12 +74,21 @@ E.Media = {
 		ElvPurple = M..[[ChatLogos\ElvPurple.tga]],
 		ElvYellow = M..[[ChatLogos\ElvYellow.tga]],
 		ElvRed = M..[[ChatLogos\ElvRed.tga]],
+		---
 		Bathrobe = M..[[ChatLogos\Bathrobe.tga]],
 		HelloKitty = M..[[ChatLogos\HelloKitty.tga]],
 		Illuminati = M..[[ChatLogos\Illuminati.tga]],
 		MrHankey = M..[[ChatLogos\MrHankey.tga]],
 		Rainbow = M..[[ChatLogos\Rainbow.tga]],
-		TyroneBiggums = M..[[ChatLogos\TyroneBiggums.tga]]
+		TyroneBiggums = M..[[ChatLogos\TyroneBiggums.tga]],
+		---
+		Burger = M..[[ChatLogos\Burger.tga]],
+		Clover = M..[[ChatLogos\Clover.tga]],
+		Cupcake = M..[[ChatLogos\Cupcake.tga]],
+		Hibiscus = M..[[ChatLogos\Hibiscus.tga]],
+		Lion = M..[[ChatLogos\Lion.tga]],
+		Skull = M..[[ChatLogos\Skull.tga]],
+		Unicorn = M..[[ChatLogos\Unicorn.tga]],
 	},
 	Textures = {
 		Arrow = M..[[Textures\Arrow.tga]],
