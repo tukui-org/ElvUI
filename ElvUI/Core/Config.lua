@@ -907,18 +907,25 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 	local last
 	for _, info in pairs({
 		{
+			var = 'ToggleAnchors',
+			name = L["Toggle Anchors"],
+			desc = L["Unlock various elements of the UI to be repositioned."],
+			func = function()
+				E:ToggleMoveMode()
+				E.ConfigurationToggled = true
+			end
+		},	
+		{
+			var = 'ResetAnchors',
+			name = L["Reset Anchors"],
+			desc = L["Reset all frames to their original positions."],
+			func = function() E:ResetUI() end
+		},			
+		{
 			var = 'RepositionWindow',
 			name = L["Reposition Window"],
 			desc = L["Reset the size and position of this frame."],
 			func = function() E:Config_UpdateSize(true) end
-		},
-		{
-			var = 'ToggleTutorials',
-			name = L["Toggle Tutorials"],
-			func = function()
-				E:Tutorials(true)
-				E:ToggleOptionsUI()
-			end
 		},
 		{
 			var = 'Install',
@@ -928,20 +935,13 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 				E:Install()
 				E:ToggleOptionsUI()
 			end
-		},
+		},		
 		{
-			var = 'ResetAnchors',
-			name = L["Reset Anchors"],
-			desc = L["Reset all frames to their original positions."],
-			func = function() E:ResetUI() end
-		},
-		{
-			var = 'ToggleAnchors',
-			name = L["Toggle Anchors"],
-			desc = L["Unlock various elements of the UI to be repositioned."],
+			var = 'ToggleTutorials',
+			name = L["Toggle Tutorials"],
 			func = function()
-				E:ToggleMoveMode()
-				E.ConfigurationToggled = true
+				E:Tutorials(true)
+				E:ToggleOptionsUI()
 			end
 		},
 		{
