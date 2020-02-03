@@ -157,7 +157,8 @@ E.Options.args.filters = {
 							E.global.unitframe.aurafilters[selectedFilter].spells[value] = { enable = true, priority = 0, stackThreshold = 0 }
 						end
 
-						selectedSpell = value
+						local spellName = GetSpellInfo(value)
+						selectedSpell = spellName and format("%s (%s)", spellName, value) or tostring(value)
 
 						UF:Update_AllFrames()
 					end,
