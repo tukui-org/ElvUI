@@ -79,6 +79,7 @@ E.Options.args.filters = {
 					return
 				end
 				E.global.unitframe.aurafilters[value] = { spells = {} }
+				selectedFilter = value
 			end,
 		},
 		selectFilter = {
@@ -156,6 +157,8 @@ E.Options.args.filters = {
 							E.global.unitframe.aurafilters[selectedFilter].spells[value] = { enable = true, priority = 0, stackThreshold = 0 }
 						end
 
+						selectedSpell = value
+
 						UF:Update_AllFrames()
 					end,
 				},
@@ -169,6 +172,8 @@ E.Options.args.filters = {
 						local value = strmatch(selectedSpell, " %((%d+)%)$") or selectedSpell
 						value = tonumber(value)
 						if not value then return end
+
+						selectedSpell = nil;
 
 						if selectedFilter == 'Debuff Highlight' and not E.global.unitframe.DebuffHighlightColors[value] then
 							E.global.unitframe.DebuffHighlightColors[value] = nil;
@@ -194,8 +199,6 @@ E.Options.args.filters = {
 								E.global.unitframe.aurafilters[selectedFilter].spells[value] = nil;
 							end
 						end
-
-						selectedSpell = nil;
 
 						UF:Update_AllFrames();
 					end,
@@ -276,9 +279,7 @@ E.Options.args.filters = {
 					type = "toggle",
 					name = L["Enable"],
 					get = function(info) return FilterResetState[selectedFilter] end,
-					set = function(info, value)
-						FilterResetState[selectedFilter] = value
-					end,
+					set = function(info, value) FilterResetState[selectedFilter] = value end,
 				},
 				resetFilter = {
 					order = 2,
