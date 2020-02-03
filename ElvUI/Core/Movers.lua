@@ -173,7 +173,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	local function OnEnter(self)
 		if isDragging then return end
 		for name in pairs(E.CreatedMovers) do
-			if _G[name] ~= self then
+			if _G[name]:IsShown() and _G[name] ~= self then
 				E:UIFrameFadeOut(_G[name], 0.75, _G[name]:GetAlpha(), 0.5)
 			end
 		end
@@ -187,7 +187,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	local function OnLeave(self)
 		if isDragging then return end
 		for name in pairs(E.CreatedMovers) do
-			if _G[name] ~= self then
+			if _G[name]:IsShown() and _G[name] ~= self then
 				E:UIFrameFadeIn(_G[name], 0.75, _G[name]:GetAlpha(), 1)
 			end
 		end
