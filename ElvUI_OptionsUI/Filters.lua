@@ -321,13 +321,16 @@ E.Options.args.filters = {
 			get = function(info)
 				local selectedTable = selectedFilter == 'Buff Indicator (Profile)' and E.db.unitframe.filters.buffwatch or selectedFilter == 'Buff Indicator (Pet)' and E.global.unitframe.buffwatch.PET or E.global.unitframe.buffwatch[E.myclass]
 				local spellID = strmatch(selectedSpell, " %((%d+)%)$") or selectedSpell
+				if not spellID then return end
+
 				return selectedTable[spellID][info[#info]]
 			end,
 			set = function(info, value)
 				local selectedTable = selectedFilter == 'Buff Indicator (Profile)' and E.db.unitframe.filters.buffwatch or selectedFilter == 'Buff Indicator (Pet)' and (E.global.unitframe.buffwatch.PET or {}) or (E.global.unitframe.buffwatch[E.myclass] or {})
 				local spellID = strmatch(selectedSpell, " %((%d+)%)$") or selectedSpell
-				selectedTable[spellID][info[#info]] = value;
+				if not spellID then return end
 
+				selectedTable[spellID][info[#info]] = value;
 				UF:Update_AllFrames()
 			end,
 			order = -10,
@@ -605,6 +608,8 @@ E.Options.args.filters = {
 }
 
 function E:SetToFilterConfig(filter)
-	selectedFilter = filter or 'Buff Indicator'
+	selectedSpell = nil
+	quickSearchText = nil
+	selectedFilter = filter or ''
 	E.Libs.AceConfigDialog:SelectGroup("ElvUI", "filters")
 end
