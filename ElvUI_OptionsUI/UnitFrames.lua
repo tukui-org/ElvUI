@@ -5780,7 +5780,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 				},
 				threatStyle = {
 					type = 'select',
-					order = 6,
+					order = 2,
 					name = L["Threat Display Mode"],
 					values = threatValues,
 				},
