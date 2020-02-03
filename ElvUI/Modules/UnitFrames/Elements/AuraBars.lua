@@ -203,7 +203,7 @@ function UF:PostUpdateBar_AuraBars(unit, statusBar, index, position, duration, e
 	statusBar.db = self.db
 	statusBar.icon:SetTexCoord(unpack(E.TexCoords))
 
-	local colors = E.global.unitframe.AuraBarColors[spellID] or E.global.unitframe.AuraBarColors[tostring(spellID)] or E.global.unitframe.AuraBarColors[spellName]
+	local colors = E.global.unitframe.AuraBarColors[spellID] and E.global.unitframe.AuraBarColors[spellID].enable and E.global.unitframe.AuraBarColors[spellID].color
 
 	if E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName]) and not colors and (spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)) then
 		colors = E.db.unitframe.colors.auraBarTurtleColor

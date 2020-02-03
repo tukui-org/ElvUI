@@ -1502,6 +1502,15 @@ function E:DBConversions()
 	for _, spell in pairs(E.db.unitframe.filters.buffwatch) do
 		buffwatchConvert(spell)
 	end
+
+	-- fix aurabars colors
+	for spell, info in pairs(E.global.unitframe.AuraBarColors) do
+		if type(info) == 'boolean' then
+			E.global.unitframe.AuraBarColors[spell] = { enable = info, color = { r = 1, g = 1, b = 1, a = 1} }
+		elseif type(info) == 'table' and info.r then
+			E.global.unitframe.AuraBarColors[spell] = { enable = true, color = info }
+		end
+	end
 end
 
 function E:RefreshModulesDB()
