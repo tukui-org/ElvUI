@@ -1525,6 +1525,9 @@ function E:Initialize()
 	twipe(self.global)
 	twipe(self.private)
 
+	E.Libs.LSM:SetDefault('font', 'PT Sans Narrow')
+	E.Libs.LSM:SetDefault('statusbar', 'ElvUI Norm')
+
 	self.myguid = UnitGUID('player')
 	self.data = E.Libs.AceDB:New('ElvDB', self.DF)
 	self.data.RegisterCallback(self, 'OnProfileChanged', 'StaggeredUpdateAll')
