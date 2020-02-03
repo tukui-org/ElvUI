@@ -148,7 +148,7 @@ E.Options.args.filters = {
 						if selectedFilter == 'Debuff Highlight' and not E.global.unitframe.DebuffHighlightColors[value] then
 							E.global.unitframe.DebuffHighlightColors[value] = { enable = true, style = 'GLOW', color = {r = 0.8, g = 0, b = 0, a = 0.85} }
 						elseif selectedFilter == 'AuraBar Colors' and not E.global.unitframe.AuraBarColors[value] then
-							E.global.unitframe.AuraBarColors[value] = false
+							E.global.unitframe.AuraBarColors[value] = { enable = true, color = {r = 1, g = 1, b = 1, a = 1} }
 						elseif (selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator') and GetSpellInfo(value) then
 							local selectedTable = selectedFilter == 'Buff Indicator (Profile)' and E.db.unitframe.filters.buffwatch or selectedFilter == 'Buff Indicator (Pet)' and (E.global.unitframe.buffwatch.PET or {}) or (E.global.unitframe.buffwatch[E.myclass] or {})
 							selectedTable[value] = UF:AuraWatch_AddSpell(value, 'TOPRIGHT')
@@ -174,7 +174,7 @@ E.Options.args.filters = {
 							E.global.unitframe.DebuffHighlightColors[value] = nil;
 						elseif selectedFilter == 'AuraBar Colors' then
 							if G.unitframe.AuraBarColors[value] then
-								E.global.unitframe.AuraBarColors[value] = false;
+								E.global.unitframe.AuraBarColors[value].enable = false;
 							else
 								E.global.unitframe.AuraBarColors[value] = nil;
 							end
@@ -500,16 +500,10 @@ E.Options.args.filters = {
 						if selectedFilter == 'Debuff Highlight' then
 							t = E.global.unitframe.DebuffHighlightColors[spellID].color
 						elseif selectedFilter == 'AuraBar Colors' then
-							if type(E.global.unitframe.AuraBarColors[spellID]) ~= 'table' then
-								E.global.unitframe.AuraBarColors[spellID] = {}
-							end
-
-							t = E.global.unitframe.AuraBarColors[spellID]
+							t = E.global.unitframe.AuraBarColors[spellID].color
 						end
 
-						if type(t) == 'boolean' then
-							return 0, 0, 0, 1
-						elseif t then
+						if t then
 							return t.r, t.g, t.b, t.a
 						end
 					end,
@@ -522,11 +516,7 @@ E.Options.args.filters = {
 						if selectedFilter == 'Debuff Highlight' then
 							t = E.global.unitframe.DebuffHighlightColors[spellID].color
 						elseif selectedFilter == 'AuraBar Colors' then
-							if type(E.global.unitframe.AuraBarColors[spellID]) ~= 'table' then
-								E.global.unitframe.AuraBarColors[spellID] = {}
-							end
-
-							t = E.global.unitframe.AuraBarColors[spellID]
+							t = E.global.unitframe.AuraBarColors[spellID].color
 						end
 
 						if t then
