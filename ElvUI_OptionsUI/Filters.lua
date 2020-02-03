@@ -609,7 +609,7 @@ E.Options.args.filters = {
 
 function E:SetToFilterConfig(filter)
 	selectedSpell = nil
-	quickSearchText = nil
+	quickSearchText = ''
 	selectedFilter = filter or ''
 	E.Libs.AceConfigDialog:SelectGroup("ElvUI", "filters")
 end
