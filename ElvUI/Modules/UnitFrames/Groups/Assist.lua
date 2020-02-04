@@ -56,7 +56,7 @@ function UF:Update_AssistHeader(header, db)
 
 	UF:ClearChildPoints(header:GetChildren())
 
-	if not header.forceShow and db.enable then
+	if not header.isForced and db.enable then
 		RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
 	end
 
