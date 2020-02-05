@@ -457,7 +457,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	end
 	if HealthColor then
 		local hc = actions.color.healthColor
-		c.HealthColor = hc
+		c.HealthColor = hc -- used by Health_UpdateColor
 
 		frame.Health:SetStatusBarColor(hc.r, hc.g, hc.b, hc.a)
 		frame.Cutaway.Health:SetVertexColor(hc.r * 1.5, hc.g * 1.5, hc.b * 1.5, hc.a)
