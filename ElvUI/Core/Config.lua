@@ -217,8 +217,8 @@ function E:UpdateNudgeFrame(mover, x, y)
 		x, y = E:CalculateMoverPoints(mover)
 	end
 
-	x = E:Round(x, 0)
-	y = E:Round(y, 0)
+	x = E:Round(x)
+	y = E:Round(y)
 
 	local ElvUIMoverNudgeWindow = ElvUIMoverNudgeWindow
 	ElvUIMoverNudgeWindow.xOffset:SetText(x)
