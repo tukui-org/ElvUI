@@ -456,46 +456,50 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		return -- We hide it. Lets not do other things (no point)
 	end
 	if HealthColor then
-		c.HealthColor = actions.color.healthColor
-		frame.Health:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a)
-		frame.Cutaway.Health:SetVertexColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a)
+		local hc = actions.color.healthColor
+		c.HealthColor = hc
+
+		frame.Health:SetStatusBarColor(hc.r, hc.g, hc.b, hc.a)
+		frame.Cutaway.Health:SetVertexColor(hc.r * 1.5, hc.g * 1.5, hc.b * 1.5, hc.a)
 	end
 	if PowerColor then
+		local pc = actions.color.powerColor
 		c.PowerColor = true
-        frame.Power:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a)
-        frame.Cutaway.Power:SetVertexColor(actions.color.powerColor.r * 1.5, actions.color.powerColor.g * 1.5, actions.color.powerColor.b * 1.5, actions.color.powerColor.a)
+
+        frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b, pc.a)
+        frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, pc.a)
 	end
 	if Borders then
+		local bc = actions.color.borderColor
 		c.Borders = true
+
 		mod:StyleFilterBorderLock(frame.Health.backdrop, true)
-		frame.Health.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+		frame.Health.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
 		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
 			mod:StyleFilterBorderLock(frame.Power.backdrop, true)
-			frame.Power.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+			frame.Power.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
 		end
 	end
 	if HealthFlash then
+		local fc = actions.flash.color
 		c.HealthFlash = true
-		if not HealthTexture then
-			frame.HealthFlashTexture:SetTexture(LSM:Fetch('statusbar', mod.db.statusbar))
-		end
-		frame.HealthFlashTexture:SetVertexColor(actions.flash.color.r, actions.flash.color.g, actions.flash.color.b)
-		if not frame.HealthFlashTexture.anim then
-			mod:StyleFilterSetupFlash(frame.HealthFlashTexture)
-		end
-		frame.HealthFlashTexture.anim.fadein:SetToAlpha(actions.flash.color.a)
-		frame.HealthFlashTexture.anim.fadeout:SetFromAlpha(actions.flash.color.a)
+
+		if not HealthTexture then frame.HealthFlashTexture:SetTexture(LSM:Fetch('statusbar', mod.db.statusbar)) end
+		frame.HealthFlashTexture:SetVertexColor(fc.r, fc.g, fc.b)
+
+		if not frame.HealthFlashTexture.anim then mod:StyleFilterSetupFlash(frame.HealthFlashTexture) end
+		frame.HealthFlashTexture.anim.fadein:SetToAlpha(fc.a)
+		frame.HealthFlashTexture.anim.fadeout:SetFromAlpha(fc.a)
 		frame.HealthFlashTexture:Show()
 		E:Flash(frame.HealthFlashTexture, actions.flash.speed * 0.1, true)
 	end
 	if HealthTexture then
+		local tx = LSM:Fetch('statusbar', actions.texture.texture)
 		c.HealthTexture = true
-		local tex = LSM:Fetch('statusbar', actions.texture.texture)
-		frame.Highlight.texture:SetTexture(tex)
-		frame.Health:SetStatusBarTexture(tex)
-		if HealthFlash then
-			frame.HealthFlashTexture:SetTexture(tex)
-		end
+
+		frame.Highlight.texture:SetTexture(tx)
+		frame.Health:SetStatusBarTexture(tx)
+		if HealthFlash then frame.HealthFlashTexture:SetTexture(tx) end
 	end
 	if Scale then
 		c.Scale = true
@@ -506,9 +510,11 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame:GetAlpha(), actions.alpha / 100)
 	end
 	if NameColor then
+		local nc = actions.color.nameColor
 		c.NameColor = true
+
 		mod.StyleFilterNameChanged(frame.Name)
-		frame.Name:SetTextColor(actions.color.nameColor.r, actions.color.nameColor.g, actions.color.nameColor.b, actions.color.nameColor.a)
+		frame.Name:SetTextColor(nc.r, nc.g, nc.b, nc.a)
 	end
 	if Portrait then
 		c.Portrait = true
