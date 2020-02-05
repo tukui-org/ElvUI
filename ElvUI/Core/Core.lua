@@ -1530,9 +1530,6 @@ function E:Initialize()
 	twipe(self.global)
 	twipe(self.private)
 
-	LSM.DefaultMedia.font = 'Expressway'
-	LSM.DefaultMedia.statusbar = 'ElvUI Norm'
-
 	self.myguid = UnitGUID('player')
 	self.data = E.Libs.AceDB:New('ElvDB', self.DF)
 	self.data.RegisterCallback(self, 'OnProfileChanged', 'StaggeredUpdateAll')
