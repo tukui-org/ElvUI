@@ -315,14 +315,8 @@ function RU:Initialize()
 		texture:SetTexture(E.Media.Textures.RoleIcons) --(337499)
 		local texA, texB, texC, texD = GetTexCoordsForRole(role)
 		texture:SetTexCoord(texA, texB, texC, texD)
-		--[[if E.PixelMode then
-			texture:SetTexCoord(texA+0.0015, texB-0.005, texC-0.005, texD-0.01)
-		else
-			texture:SetTexCoord(texA+0.01, texB-0.01, texC+0.001, texD-0.015)
-		end]]
-		local texturePlace = --[[(E.PixelMode and 4) or]] 2
-		texture:Point("TOPLEFT", frame, "TOPLEFT", -texturePlace, texturePlace)
-		texture:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", texturePlace, -texturePlace)
+		texture:Point("TOPLEFT", frame, "TOPLEFT", -2, 2)
+		texture:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 2, -2)
 		frame.texture = texture
 
 		local Count = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
