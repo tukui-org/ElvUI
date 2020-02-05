@@ -19,7 +19,7 @@ Debuffs inside of *The Sleeping City* [Ny'alotha] will now by shown by Raid Debu
 Buff Indicator now has its options reworked.  
 
 **Bug Fixes:**  
-Hopefully, Maybe, Perhaps, Possibly corrected the error which caused the auras trying to attach to themselves (for real this time).  
+Hopefully, Maybe, Perhaps, Possibly corrected the error which caused the Auras trying to attach to themselves on Unitframes (for real this time).  
 Frame Glow now is now cool with hugging the Alt Power Bar on Unitframes too.  
 Fixed Vehicle Exit options, they were misbehaving unintentionally.  
 
