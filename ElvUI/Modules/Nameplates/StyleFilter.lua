@@ -537,17 +537,16 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 		frame:Point('CENTER')
 	end
 	if HealthColor then
-		if frame.Health.r and frame.Health.g and frame.Health.b then
-			frame.Health:SetStatusBarColor(frame.Health.r, frame.Health.g, frame.Health.b)
-			frame.Cutaway.Health:SetVertexColor(frame.Health.r * 1.5, frame.Health.g * 1.5, frame.Health.b * 1.5, 1)
+		local h = frame.Health
+		if h.r and h.g and h.b then
+			h:SetStatusBarColor(h.r, h.g, h.b)
+			frame.Cutaway.Health:SetVertexColor(h.r * 1.5, h.g * 1.5, h.b * 1.5, 1)
 		end
 	end
 	if PowerColor then
-		local color = E.db.unitframe.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
-		if color then
-            frame.Power:SetStatusBarColor(color.r, color.g, color.b)
-            frame.Cutaway.Power:SetVertexColor(color.r * 1.5, color.g * 1.5, color.b * 1.5, 1)
-		end
+		local pc = E.db.unitframe.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
+		frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b)
+		frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, 1)
 	end
 	if Borders then
 		local r, g, b = unpack(E.media.bordercolor)
@@ -563,9 +562,9 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 		frame.HealthFlashTexture:Hide()
 	end
 	if HealthTexture then
-		local tex = LSM:Fetch('statusbar', mod.db.statusbar)
-		frame.Highlight.texture:SetTexture(tex)
-		frame.Health:SetStatusBarTexture(tex)
+		local tx = LSM:Fetch('statusbar', mod.db.statusbar)
+		frame.Highlight.texture:SetTexture(tx)
+		frame.Health:SetStatusBarTexture(tx)
 	end
 	if Scale then
 		mod:ScalePlate(frame, frame.ThreatScale or 1)
