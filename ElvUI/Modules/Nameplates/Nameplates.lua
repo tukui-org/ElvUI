@@ -302,8 +302,10 @@ function NP:UpdatePlate(nameplate)
 	NP:Update_PVPRole(nameplate)
 	NP:Update_QuestIcons(nameplate)
 
-	if (nameplate.VisibilityChanged or nameplate.NameOnlyChanged) or (not NP.db.units[nameplate.frameType].enable) or NP.db.units[nameplate.frameType].nameOnly then
-		NP:DisablePlate(nameplate, nameplate.NameOnlyChanged or (NP.db.units[nameplate.frameType].nameOnly and not nameplate.VisibilityChanged))
+	local SF_NameOnly = NP:StyleFilterCheckChanges(nameplate, 'NameOnly')
+	local SF_Visibility = NP:StyleFilterCheckChanges(nameplate, 'Visibility')
+	if SF_Visibility or SF_NameOnly or NP.db.units[nameplate.frameType].nameOnly or not NP.db.units[nameplate.frameType].enable then
+		NP:DisablePlate(nameplate, SF_NameOnly or (NP.db.units[nameplate.frameType].nameOnly and not SF_Visibility))
 	else
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
@@ -396,7 +398,7 @@ end
 
 function NP:SetupTarget(nameplate, removed)
 	local TCP = _G.ElvNP_TargetClassPower
-	local nameOnly = nameplate and (nameplate.NameOnlyChanged or NP.db.units[nameplate.frameType].nameOnly)
+	local nameOnly = nameplate and (NP:StyleFilterCheckChanges(nameplate, 'NameOnly') or NP.db.units[nameplate.frameType].nameOnly)
 	TCP.realPlate = (NP.db.units.TARGET.classpower.enable and not (removed or nameOnly) and nameplate) or nil
 
 	local moveToPlate = TCP.realPlate or TCP

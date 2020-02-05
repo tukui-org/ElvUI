@@ -46,22 +46,25 @@ function NP:Health_UpdateColor(event, unit)
 		t = NP.db.colors.health
 	end
 
-	if(t) then
+	if t then
 		r, g, b = t[1] or t.r, t[2] or t.g, t[3] or t.b
 		element.r, element.g, element.b = r, g, b -- save these for the style filter to switch back
 	end
 
-	if self.HealthColorChanged then
-		r, g, b = self.HealthColorChanged.r, self.HealthColorChanged.g, self.HealthColorChanged.b -- use the style filter values
+	local SF_HealthColor = NP:StyleFilterCheckChanges(self, 'HealthColor')
+	if SF_HealthColor then
+		r, g, b = SF_HealthColor.r, SF_HealthColor.g, SF_HealthColor.b
 	end
 
 	if b then
 		element:SetStatusBarColor(r, g, b)
 
-		if element.bg then element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier) end
+		if element.bg then
+			element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier)
+		end
 	end
 
-	if(element.PostUpdateColor) then
+	if element.PostUpdateColor then
 		element:PostUpdateColor(unit, r, g, b)
 	end
 end
@@ -87,11 +90,12 @@ function NP:Construct_Health(nameplate)
 	NP.StatusBars[Health] = true
 
 	local statusBarTexture = Health:GetStatusBarTexture()
-	nameplate.FlashTexture = Health:CreateTexture(nameplate:GetDebugName()..'FlashTexture', "OVERLAY")
-	nameplate.FlashTexture:SetTexture(E.Libs.LSM:Fetch("background", "ElvUI Blank"))
-	nameplate.FlashTexture:Point("BOTTOMLEFT", statusBarTexture, "BOTTOMLEFT")
-	nameplate.FlashTexture:Point("TOPRIGHT", statusBarTexture, "TOPRIGHT")
-	nameplate.FlashTexture:Hide()
+	local healthFlashTexture = Health:CreateTexture(nameplate:GetDebugName()..'FlashTexture', "OVERLAY")
+	healthFlashTexture:SetTexture(E.Libs.LSM:Fetch("background", "ElvUI Blank"))
+	healthFlashTexture:Point("BOTTOMLEFT", statusBarTexture, "BOTTOMLEFT")
+	healthFlashTexture:Point("TOPRIGHT", statusBarTexture, "TOPRIGHT")
+	healthFlashTexture:Hide()
+	nameplate.HealthFlashTexture = healthFlashTexture
 
 	Health.colorTapping = true
 	Health.colorSelection = true

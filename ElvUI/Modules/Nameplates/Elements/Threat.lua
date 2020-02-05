@@ -29,7 +29,8 @@ function NP:ThreatIndicator_PreUpdate(unit)
 end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
-	if not status and not self.__owner.ScaleChanged then
+	local SF_Scale = NP:StyleFilterCheckChanges(self.__owner, 'Scale')
+	if not status and not SF_Scale then
 		self.__owner.ThreatScale = 1
 		NP:ScalePlate(self.__owner, self.__owner.ThreatScale)
 	elseif NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor and not UnitIsTapDenied(unit) and status then
@@ -61,7 +62,8 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 			Scale = self.isTank and NP.db.threat.badScale or NP.db.threat.goodScale
 		end
 
-		if self.__owner.HealthColorChanged then
+		local SF_HealthColor = NP:StyleFilterCheckChanges(self.__owner, 'HealthColor')
+		if SF_HealthColor then
 			self.r, self.g, self.b = Color.r, Color.g, Color.b
 		else
 			self.__owner.Health:SetStatusBarColor(Color.r, Color.g, Color.b)
@@ -70,7 +72,7 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		if Scale then
 			self.__owner.ThreatScale = Scale
 
-			if not self.__owner.ScaleChanged then
+			if not SF_Scale then
 				NP:ScalePlate(self.__owner, Scale)
 			end
 		end

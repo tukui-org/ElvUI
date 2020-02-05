@@ -43,17 +43,18 @@ mod.StyleFilterStackPattern = '([^\n]+)\n?(%d*)$'
 mod.TriggerConditions = {
 	reactions = {'hated', 'hostile', 'unfriendly', 'neutral', 'friendly', 'honored', 'revered', 'exalted'},
 	raidTargets = {'star', 'circle', 'diamond', 'triangle', 'moon', 'square', 'cross', 'skull'},
+	tankThreat = {[0] = 3, 2, 1, 0},
 	frameTypes = {
-		['FRIENDLY_PLAYER'] = 'friendlyPlayer',
-		['FRIENDLY_NPC'] = 'friendlyNPC',
-		['ENEMY_PLAYER'] = 'enemyPlayer',
-		['ENEMY_NPC'] = 'enemyNPC',
-		['PLAYER'] = 'player'
+		FRIENDLY_PLAYER = 'friendlyPlayer',
+		FRIENDLY_NPC = 'friendlyNPC',
+		ENEMY_PLAYER = 'enemyPlayer',
+		ENEMY_NPC = 'enemyNPC',
+		PLAYER = 'player'
 	},
 	roles = {
-		['TANK'] = 'tank',
-		['HEALER'] = 'healer',
-		['DAMAGER'] = 'damager'
+		TANK = 'tank',
+		HEALER = 'healer',
+		DAMAGER = 'damager'
 	},
 	keys = {
 		Modifier = IsModifierKeyDown,
@@ -66,9 +67,6 @@ mod.TriggerConditions = {
 		RightShift = IsRightShiftKeyDown,
 		RightAlt = IsRightAltKeyDown,
 		RightControl = IsRightControlKeyDown,
-	},
-	tankThreat = {
-		[0] = 3, 2, 1, 0
 	},
 	threat = {
 		[-3] = 'offTank',
@@ -381,124 +379,27 @@ function mod:StyleFilterFinishedFlash(requested)
 end
 
 function mod:StyleFilterSetupFlash(FlashTexture)
-	FlashTexture.anim = FlashTexture:CreateAnimationGroup('Flash')
-	FlashTexture.anim.fadein = FlashTexture.anim:CreateAnimation('ALPHA', 'FadeIn')
-	FlashTexture.anim.fadein:SetFromAlpha(0)
-	FlashTexture.anim.fadein:SetToAlpha(1)
-	FlashTexture.anim.fadein:SetOrder(2)
+	local anim = FlashTexture:CreateAnimationGroup('Flash')
+	anim:SetScript('OnFinished', mod.StyleFilterFinishedFlash)
+	FlashTexture.anim = anim
 
-	FlashTexture.anim.fadeout = FlashTexture.anim:CreateAnimation('ALPHA', 'FadeOut')
-	FlashTexture.anim.fadeout:SetFromAlpha(1)
-	FlashTexture.anim.fadeout:SetToAlpha(0)
-	FlashTexture.anim.fadeout:SetOrder(1)
+	local fadein = anim:CreateAnimation('ALPHA', 'FadeIn')
+	fadein:SetFromAlpha(0)
+	fadein:SetToAlpha(1)
+	fadein:SetOrder(2)
+	anim.fadein = fadein
 
-	FlashTexture.anim:SetScript('OnFinished', mod.StyleFilterFinishedFlash)
+	local fadeout = anim:CreateAnimation('ALPHA', 'FadeOut')
+	fadeout:SetFromAlpha(1)
+	fadeout:SetToAlpha(0)
+	fadeout:SetOrder(1)
+	anim.fadeout = fadeout
 end
 
 function mod:StyleFilterPlateStyled(frame)
 	if frame and frame.Name and not frame.Name.__owner then
 		frame.Name.__owner = frame
 		hooksecurefunc(frame.Name, 'SetFormattedText', mod.StyleFilterNameChanged)
-	end
-end
-
-function mod:StyleFilterNameChanged()
-	if not self.__owner or not self.__owner.NameColorChanged then return end
-
-	local nameText = self:GetText()
-	if nameText and nameText ~= "" then
-		local unitName = self.__owner.unitName and E:EscapeString(self.__owner.unitName)
-		if unitName then self:SetText(gsub(nameText,'|c[fF][fF]%x%x%x%x%x%x%s-('..unitName..')','%1')) end
-	end
-end
-
-function mod:StyleFilterBorderLock(backdrop, switch)
-	backdrop.ignoreBorderColors = switch -- but keep the backdrop updated
-end
-
-function mod:StyleFilterSetChanges(frame, actions, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
-	if VisibilityChanged then
-		frame.StyleChanged = true
-		frame.VisibilityChanged = true
-		mod:DisablePlate(frame) -- disable the plate elements
-		frame:ClearAllPoints() -- lets still move the frame out cause its clickable otherwise
-		frame:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
-		return -- We hide it. Lets not do other things (no point)
-	end
-	if HealthColorChanged then
-		frame.StyleChanged = true
-		frame.HealthColorChanged = actions.color.healthColor
-		frame.Health:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a)
-		frame.Cutaway.Health:SetVertexColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a)
-	end
-	if PowerColorChanged then
-		frame.StyleChanged = true
-		frame.PowerColorChanged = true
-        frame.Power:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a)
-        frame.Cutaway.Power:SetVertexColor(actions.color.powerColor.r * 1.5, actions.color.powerColor.g * 1.5, actions.color.powerColor.b * 1.5, actions.color.powerColor.a)
-	end
-	if BorderChanged then
-		frame.StyleChanged = true
-		frame.BorderChanged = true
-		mod:StyleFilterBorderLock(frame.Health.backdrop, true)
-		frame.Health.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
-		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
-			mod:StyleFilterBorderLock(frame.Power.backdrop, true)
-			frame.Power.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
-		end
-	end
-	if FlashingHealth then
-		frame.StyleChanged = true
-		frame.FlashingHealth = true
-		if not TextureChanged then
-			frame.FlashTexture:SetTexture(LSM:Fetch('statusbar', mod.db.statusbar))
-		end
-		frame.FlashTexture:SetVertexColor(actions.flash.color.r, actions.flash.color.g, actions.flash.color.b)
-		if not frame.FlashTexture.anim then
-			mod:StyleFilterSetupFlash(frame.FlashTexture)
-		end
-		frame.FlashTexture.anim.fadein:SetToAlpha(actions.flash.color.a)
-		frame.FlashTexture.anim.fadeout:SetFromAlpha(actions.flash.color.a)
-		frame.FlashTexture:Show()
-		E:Flash(frame.FlashTexture, actions.flash.speed * 0.1, true)
-	end
-	if TextureChanged then
-		frame.StyleChanged = true
-		frame.TextureChanged = true
-		local tex = LSM:Fetch('statusbar', actions.texture.texture)
-		frame.Highlight.texture:SetTexture(tex)
-		frame.Health:SetStatusBarTexture(tex)
-		if FlashingHealth then
-			frame.FlashTexture:SetTexture(tex)
-		end
-	end
-	if ScaleChanged then
-		frame.StyleChanged = true
-		frame.ScaleChanged = true
-		mod:ScalePlate(frame, actions.scale)
-	end
-	if AlphaChanged then
-		frame.StyleChanged = true
-		frame.AlphaChanged = true
-		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame:GetAlpha(), actions.alpha / 100)
-	end
-	if NameColorChanged then
-		frame.StyleChanged = true
-		frame.NameColorChanged = true
-
-		mod.StyleFilterNameChanged(frame.Name)
-		frame.Name:SetTextColor(actions.color.nameColor.r, actions.color.nameColor.g, actions.color.nameColor.b, actions.color.nameColor.a)
-	end
-	if PortraitShown then
-		frame.StyleChanged = true
-		frame.PortraitShown = true
-		mod:Update_Portrait(frame)
-		frame.Portrait:ForceUpdate()
-	end
-	if NameOnlyChanged then
-		frame.StyleChanged = true
-		frame.NameOnlyChanged = true
-		mod:DisablePlate(frame, true)
 	end
 end
 
@@ -523,31 +424,123 @@ function mod:StyleFilterUpdatePlate(frame, nameOnly)
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChanged, BorderChanged, FlashingHealth, TextureChanged, ScaleChanged, AlphaChanged, NameColorChanged, PortraitShown, NameOnlyChanged, VisibilityChanged)
-	frame.StyleChanged = nil
-	if VisibilityChanged then
-		frame.VisibilityChanged = nil
+function mod:StyleFilterNameChanged()
+	local SF_NameColor = mod:StyleFilterCheckChanges(self.__owner, 'NameColor')
+	if not SF_NameColor then return end
+
+	local nameText = self:GetText()
+	if nameText and nameText ~= "" then
+		local unitName = self.__owner.unitName and E:EscapeString(self.__owner.unitName)
+		if unitName then self:SetText(gsub(nameText,'|c[fF][fF]%x%x%x%x%x%x%s-('..unitName..')','%1')) end
+	end
+end
+
+function mod:StyleFilterBorderLock(backdrop, switch)
+	backdrop.ignoreBorderColors = switch -- but keep the backdrop updated
+end
+
+function mod:StyleFilterCheckChanges(frame, which)
+	local c = frame and frame.StyleFilterActionChanges
+	return c and c[which]
+end
+
+function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameColor, Portrait, NameOnly, Visibility)
+	local c = frame.StyleFilterActionChanges
+	if not c then return end
+
+	if Visibility then
+		c.Visibility = true
+		mod:DisablePlate(frame) -- disable the plate elements
+		frame:ClearAllPoints() -- lets still move the frame out cause its clickable otherwise
+		frame:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
+		return -- We hide it. Lets not do other things (no point)
+	end
+	if HealthColor then
+		c.HealthColor = actions.color.healthColor
+		frame.Health:SetStatusBarColor(actions.color.healthColor.r, actions.color.healthColor.g, actions.color.healthColor.b, actions.color.healthColor.a)
+		frame.Cutaway.Health:SetVertexColor(actions.color.healthColor.r * 1.5, actions.color.healthColor.g * 1.5, actions.color.healthColor.b * 1.5, actions.color.healthColor.a)
+	end
+	if PowerColor then
+		c.PowerColor = true
+        frame.Power:SetStatusBarColor(actions.color.powerColor.r, actions.color.powerColor.g, actions.color.powerColor.b, actions.color.powerColor.a)
+        frame.Cutaway.Power:SetVertexColor(actions.color.powerColor.r * 1.5, actions.color.powerColor.g * 1.5, actions.color.powerColor.b * 1.5, actions.color.powerColor.a)
+	end
+	if Borders then
+		c.Borders = true
+		mod:StyleFilterBorderLock(frame.Health.backdrop, true)
+		frame.Health.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
+			mod:StyleFilterBorderLock(frame.Power.backdrop, true)
+			frame.Power.backdrop:SetBackdropBorderColor(actions.color.borderColor.r, actions.color.borderColor.g, actions.color.borderColor.b, actions.color.borderColor.a)
+		end
+	end
+	if HealthFlash then
+		c.HealthFlash = true
+		if not HealthTexture then
+			frame.HealthFlashTexture:SetTexture(LSM:Fetch('statusbar', mod.db.statusbar))
+		end
+		frame.HealthFlashTexture:SetVertexColor(actions.flash.color.r, actions.flash.color.g, actions.flash.color.b)
+		if not frame.HealthFlashTexture.anim then
+			mod:StyleFilterSetupFlash(frame.HealthFlashTexture)
+		end
+		frame.HealthFlashTexture.anim.fadein:SetToAlpha(actions.flash.color.a)
+		frame.HealthFlashTexture.anim.fadeout:SetFromAlpha(actions.flash.color.a)
+		frame.HealthFlashTexture:Show()
+		E:Flash(frame.HealthFlashTexture, actions.flash.speed * 0.1, true)
+	end
+	if HealthTexture then
+		c.HealthTexture = true
+		local tex = LSM:Fetch('statusbar', actions.texture.texture)
+		frame.Highlight.texture:SetTexture(tex)
+		frame.Health:SetStatusBarTexture(tex)
+		if HealthFlash then
+			frame.HealthFlashTexture:SetTexture(tex)
+		end
+	end
+	if Scale then
+		c.Scale = true
+		mod:ScalePlate(frame, actions.scale)
+	end
+	if Alpha then
+		c.Alpha = true
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame:GetAlpha(), actions.alpha / 100)
+	end
+	if NameColor then
+		c.NameColor = true
+		mod.StyleFilterNameChanged(frame.Name)
+		frame.Name:SetTextColor(actions.color.nameColor.r, actions.color.nameColor.g, actions.color.nameColor.b, actions.color.nameColor.a)
+	end
+	if Portrait then
+		c.Portrait = true
+		mod:Update_Portrait(frame)
+		frame.Portrait:ForceUpdate()
+	end
+	if NameOnly then
+		c.NameOnly = true
+		mod:DisablePlate(frame, true)
+	end
+end
+
+function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameColor, Portrait, NameOnly, Visibility)
+	if Visibility then
 		mod:StyleFilterUpdatePlate(frame)
 		frame:ClearAllPoints() -- pull the frame back in
 		frame:Point('CENTER')
 	end
-	if HealthColorChanged then
-		frame.HealthColorChanged = nil
+	if HealthColor then
 		if frame.Health.r and frame.Health.g and frame.Health.b then
 			frame.Health:SetStatusBarColor(frame.Health.r, frame.Health.g, frame.Health.b)
 			frame.Cutaway.Health:SetVertexColor(frame.Health.r * 1.5, frame.Health.g * 1.5, frame.Health.b * 1.5, 1)
 		end
 	end
-	if PowerColorChanged then
-		frame.PowerColorChanged = nil
+	if PowerColor then
 		local color = E.db.unitframe.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
 		if color then
             frame.Power:SetStatusBarColor(color.r, color.g, color.b)
             frame.Cutaway.Power:SetVertexColor(color.r * 1.5, color.g * 1.5, color.b * 1.5, 1)
 		end
 	end
-	if BorderChanged then
-		frame.BorderChanged = nil
+	if Borders then
 		local r, g, b = unpack(E.media.bordercolor)
 		mod:StyleFilterBorderLock(frame.Health.backdrop)
 		frame.Health.backdrop:SetBackdropBorderColor(r, g, b)
@@ -556,39 +549,34 @@ function mod:StyleFilterClearChanges(frame, HealthColorChanged, PowerColorChange
 			frame.Power.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end
-	if FlashingHealth then
-		frame.FlashingHealth = nil
-		E:StopFlash(frame.FlashTexture)
-		frame.FlashTexture:Hide()
+	if HealthFlash then
+		E:StopFlash(frame.HealthFlashTexture)
+		frame.HealthFlashTexture:Hide()
 	end
-	if TextureChanged then
-		frame.TextureChanged = nil
+	if HealthTexture then
 		local tex = LSM:Fetch('statusbar', mod.db.statusbar)
 		frame.Highlight.texture:SetTexture(tex)
 		frame.Health:SetStatusBarTexture(tex)
 	end
-	if ScaleChanged then
-		frame.ScaleChanged = nil
+	if Scale then
 		mod:ScalePlate(frame, frame.ThreatScale or 1)
 	end
-	if AlphaChanged then
-		frame.AlphaChanged = nil
+	if Alpha then
 		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, (frame.FadeObject and frame.FadeObject.endAlpha) or 0.5, 1)
 	end
-	if NameColorChanged then
-		frame.NameColorChanged = nil
+	if NameColor then
 		frame.Name:UpdateTag()
 		frame.Name:SetTextColor(1, 1, 1, 1)
 	end
-	if PortraitShown then
-		frame.PortraitShown = nil
+	if Portrait then
 		mod:Update_Portrait(frame)
 		frame.Portrait:ForceUpdate()
 	end
-	if NameOnlyChanged then
-		frame.NameOnlyChanged = nil
+	if NameOnly then
 		mod:StyleFilterUpdatePlate(frame, true)
 	end
+
+	wipe(frame.StyleFilterActionChanges)
 end
 
 function mod:StyleFilterThreatUpdate(frame, unit)
@@ -945,24 +933,23 @@ function mod:StyleFilterPass(frame, actions)
 	local healthBarShown = healthBarEnabled and frame.Health:IsShown()
 
 	mod:StyleFilterSetChanges(frame, actions,
-		(healthBarShown and actions.color and actions.color.health), --HealthColorChanged
-		(healthBarShown and powerBarEnabled and actions.color and actions.color.power), --PowerColorChanged
-		(healthBarShown and actions.color and actions.color.border and frame.Health.backdrop), --BorderChanged
-		(healthBarShown and actions.flash and actions.flash.enable and frame.FlashTexture), --FlashingHealth
-		(healthBarShown and actions.texture and actions.texture.enable), --TextureChanged
-		(healthBarShown and actions.scale and actions.scale ~= 1), --ScaleChanged
-		(actions.alpha and actions.alpha ~= -1), --AlphaChanged
-		(actions.color and actions.color.name), --NameColorChanged
-		(actions.usePortrait), --PortraitShown
-		(actions.nameOnly), --NameOnlyChanged
-		(actions.hide) --VisibilityChanged
+		(healthBarShown and actions.color and actions.color.health), --HealthColor
+		(healthBarShown and powerBarEnabled and actions.color and actions.color.power), --PowerColor
+		(healthBarShown and actions.color and actions.color.border and frame.Health.backdrop), --Borders
+		(healthBarShown and actions.flash and actions.flash.enable and frame.HealthFlashTexture), --HealthFlash
+		(healthBarShown and actions.texture and actions.texture.enable), --HealthTexture
+		(healthBarShown and actions.scale and actions.scale ~= 1), --Scale
+		(actions.alpha and actions.alpha ~= -1), --Alpha
+		(actions.color and actions.color.name), --NameColor
+		(actions.usePortrait), --Portrait
+		(actions.nameOnly), --NameOnly
+		(actions.hide) --Visibility
 	)
 end
 
 function mod:StyleFilterClear(frame)
-	if frame and frame.StyleChanged then
-		mod:StyleFilterClearChanges(frame, frame.HealthColorChanged, frame.PowerColorChanged, frame.BorderChanged, frame.FlashingHealth, frame.TextureChanged, frame.ScaleChanged, frame.AlphaChanged, frame.NameColorChanged, frame.PortraitShown, frame.NameOnlyChanged, frame.VisibilityChanged)
-	end
+	local c = frame and frame.StyleFilterActionChanges
+	if c and next(c) then mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameColor, c.Portrait, c.NameOnly, c.Visibility) end
 end
 
 function mod:StyleFilterSort(place)
@@ -977,31 +964,39 @@ function mod:StyleFilterVehicleFunction(_, unit)
 end
 
 mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
-	['PLAYER_TARGET_CHANGED'] = function(self)
+	PLAYER_TARGET_CHANGED = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
 	end,
-	['PLAYER_FOCUS_CHANGED'] = function(self)
+	PLAYER_FOCUS_CHANGED = function(self)
 		self.isFocused = self.unit and UnitIsUnit(self.unit, 'focus') or nil
 	end,
-	['RAID_TARGET_UPDATE'] = function(self)
+	RAID_TARGET_UPDATE = function(self)
 		self.RaidTargetIndex = self.unit and GetRaidTargetIndex(self.unit) or nil
 	end,
-	['UNIT_TARGET'] = function(self, _, unit)
+	UNIT_TARGET = function(self, _, unit)
 		unit = unit or self.unit
 		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
 	end,
-	['UNIT_ENTERED_VEHICLE'] = mod.StyleFilterVehicleFunction,
-	['UNIT_EXITED_VEHICLE'] = mod.StyleFilterVehicleFunction,
-	['VEHICLE_UPDATE'] = mod.StyleFilterVehicleFunction
+	UNIT_ENTERED_VEHICLE = mod.StyleFilterVehicleFunction,
+	UNIT_EXITED_VEHICLE = mod.StyleFilterVehicleFunction,
+	VEHICLE_UPDATE = mod.StyleFilterVehicleFunction
 }
 
 function mod:StyleFilterSetVariables(nameplate)
+	if not nameplate.StyleFilterActionChanges then
+		nameplate.StyleFilterActionChanges = {}
+	end
+
 	for _, func in pairs(mod.StyleFilterEventFunctions) do
 		func(nameplate)
 	end
 end
 
 function mod:StyleFilterClearVariables(nameplate)
+	if nameplate.StyleFilterActionChanges then
+		wipe(nameplate.StyleFilterActionChanges)
+	end
+
 	nameplate.isTarget = nil
 	nameplate.isFocused = nil
 	nameplate.inVehicle = nil
@@ -1016,7 +1011,7 @@ end
 mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
 mod.StyleFilterTriggerEvents = {} -- events required by the filter that we need to watch for
 mod.StyleFilterPlateEvents = { -- events watched inside of ouf, which is called on the nameplate itself
-	['NAME_PLATE_UNIT_ADDED'] = 1 -- rest is populated from StyleFilterDefaultEvents as needed
+	NAME_PLATE_UNIT_ADDED = 1 -- rest is populated from StyleFilterDefaultEvents as needed
 }
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
 	-- this is a list of events already on the nameplate
