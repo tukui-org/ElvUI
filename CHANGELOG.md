@@ -10,6 +10,26 @@
 
 
 ___
+### Version 11.34 [ February 4th 2020 ]
+
+**New Additions:**  
+The options window has been upgraded and sections have been reorganized a bit (Repooc does *NOT* like it tho).  
+Debuffs inside of *The Sleeping City* [Ny'alotha] will now by shown by Raid Debuffs filter (Thanks Broccoliz).  
+*Corrupted Mementos* and *Coalescing Visions* are now displayed by the Currency Datatext.  
+Buff Indicator now has its options reworked.  
+
+**Bug Fixes:**  
+Hopefully, Maybe, Perhaps, Possibly corrected the error which caused the auras trying to attach to themselves (for real this time).  
+Frame Glow now is now cool with hugging the Alt Power Bar on Unitframes too.  
+Fixed Vehicle Exit options, they were misbehaving unintentionally.  
+
+**Misc. Changes:**  
+The *Smart Raid Visibility* option gquit the UI.  
+Added more IDs to show *Voidtouched Egg* on nameplates (some were hiding but Mera found them).  
+Debuff Highlight will now not show something when it's added but not enabled (changed so you can blacklist *Grasping Tendrils*).  
+Intenté completar más del archivo de localización para español. Si es malo por favor mensaje Simpy en Discord. >x>  
+
+___
 ### Version 11.33 [ January 23rd 2020 ]
 
 **New Additions:**  
