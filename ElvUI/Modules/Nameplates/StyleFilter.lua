@@ -528,6 +528,8 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 end
 
 function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameColor, Portrait, NameOnly, Visibility)
+	wipe(frame.StyleFilterActionChanges)
+
 	if Visibility then
 		mod:StyleFilterUpdatePlate(frame)
 		frame:ClearAllPoints() -- pull the frame back in
@@ -580,8 +582,6 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	if NameOnly then
 		mod:StyleFilterUpdatePlate(frame, true)
 	end
-
-	wipe(frame.StyleFilterActionChanges)
 end
 
 function mod:StyleFilterThreatUpdate(frame, unit)

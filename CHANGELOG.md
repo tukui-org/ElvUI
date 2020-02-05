@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-
+Portraits were being too clingy on Nameplates.  
 
 **Misc. Changes:**  
 
