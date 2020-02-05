@@ -394,6 +394,8 @@ function mod:StyleFilterSetupFlash(FlashTexture)
 	fadeout:SetToAlpha(0)
 	fadeout:SetOrder(1)
 	anim.fadeout = fadeout
+
+	return anim
 end
 
 function mod:StyleFilterPlateStyled(frame)
