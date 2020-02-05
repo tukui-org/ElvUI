@@ -487,9 +487,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		if not HealthTexture then frame.HealthFlashTexture:SetTexture(LSM:Fetch('statusbar', mod.db.statusbar)) end
 		frame.HealthFlashTexture:SetVertexColor(fc.r, fc.g, fc.b)
 
-		if not frame.HealthFlashTexture.anim then mod:StyleFilterSetupFlash(frame.HealthFlashTexture) end
-		frame.HealthFlashTexture.anim.fadein:SetToAlpha(fc.a)
-		frame.HealthFlashTexture.anim.fadeout:SetFromAlpha(fc.a)
+		local anim = frame.HealthFlashTexture.anim or mod:StyleFilterSetupFlash(frame.HealthFlashTexture)
+		anim.fadein:SetToAlpha(fc.a)
+		anim.fadeout:SetFromAlpha(fc.a)
+
 		frame.HealthFlashTexture:Show()
 		E:Flash(frame.HealthFlashTexture, actions.flash.speed * 0.1, true)
 	end
