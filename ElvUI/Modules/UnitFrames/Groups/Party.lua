@@ -179,7 +179,6 @@ function UF:Update_PartyFrames(frame, db)
 			if childDB.enable then
 				frame:SetParent(frame.originalParent)
 				frame:Size(childDB.width, childDB.height)
-				print(childDB.width, childDB.height)
 				frame:ClearAllPoints()
 				frame:Point(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
 			else
