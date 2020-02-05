@@ -20,7 +20,7 @@ Buff Indicator now has its options reworked.
 
 **Bug Fixes:**  
 Hopefully, Maybe, Perhaps, Possibly corrected the error which caused the Auras trying to attach to themselves on Unitframes (for real this time).  
-Frame Glow now is now cool with hugging the Alt Power Bar on Unitframes too.  
+Frame Glow is now cool with hugging the Alt Power Bar on Unitframes too.  
 Fixed Vehicle Exit options, they were misbehaving unintentionally.  
 
 **Misc. Changes:**  
