@@ -365,6 +365,7 @@ L["Desaturated Icon"] = "图标褪色"
 L["Descending"] = "降序"
 L["Detach From Frame"] = "从框架分离"
 L["Detached Width"] = "分离宽度"
+L["Development Version"] = true
 L["Direction the bag sorting will use to allocate the items."] = "整理背包时物品排序方向"
 L["Direction the bar moves on gains/losses"] = "条增加/减少时的方向"
 L["Direction the health bar moves when gaining/losing health."] = "生命条的增减方向"
@@ -379,6 +380,7 @@ L["Disables the player and pet unitframes."] = "禁用玩家和宠物框架"
 L["Disables the target and target of target unitframes."] = "禁用目标和目标的目标框架"
 L["Disables the tutorial button found on some frames."] = "禁用部分框体上的教程按钮"
 L["Disconnected"] = "离线"
+L["Discord"] = true
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "战场或竞技场中, 为已确认为治疗的玩家标上补职图标"
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "显示跨越屏幕底部的面板,仅仅是用于装饰."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "显示跨越屏幕顶部的面板,仅仅是用于装饰."
@@ -524,7 +526,6 @@ L["FRIENDLY_PLAYER"] = "友方玩家"
 L["Full Overlay"] = "全覆盖"
 L["Full"] = "满"
 L["Gems"] = "珠宝"
-L["General Options"] = "常规选项"
 L["General"] = "一般"
 L["Global (Account Settings)"] = "全局(账号设置)"
 L["Global Fade Transparency"] = "全局透明渐隐"
@@ -539,6 +540,7 @@ L["Good"] = "安全"
 L["Gossip Frame"] = "闲谈"
 L["Group By"] = "队伍排列方式"
 L["Group Spacing"] = "小队间隔"
+L["Group Units"] = true
 L["Grouping & Sorting"] = "分组与排序"
 L["Groups Per Row/Column"] = "每行/列的队伍数"
 L["Growth direction from the first unitframe."] = "增长方向从第一个头像框架开始"
@@ -686,7 +688,9 @@ L["Import Profile"] = "导入配置文件"
 L["Importing"] = "正在导入"
 L["Index"] = "索引"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "将你自身施放的增益从整体增益之前或之后分离出来"
+L["Individual Units"] = true
 L["InfoPanel Border"] = "信息面板边框"
+L["Information"] = true
 L["Information Panel"] = "信息面板"
 L["Inherit Global Fade"] = "继承全局渐隐"
 L["Inherit the global fade, mousing over, targetting, setting focus, losing health, entering combat will set the remove transparency. Otherwise it will use the transparency level in the general actionbar settings for global fade alpha."] = "继承全局渐隐, 鼠标悬浮、目标、焦点、损失血量、进入战斗会减低不透明度.否则会为全局透明度使用一般动作条的设置"
@@ -741,6 +745,7 @@ L["LF Guild Frame"] = "寻求公会"
 L["LFG Icons"] = "随机队列图标"
 L["LFG Queue"] = "随机队列"
 L["Limit the number of rows or columns."] = "最大行数或列数"
+L["Link to the latest development version."] = true
 L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "如果在聊天信息中发现如下文字会自动上色该文字. 如果你需要添加多个词必须用逗号分开. 搜索你的名字可使用 %MYNAME%.\n\n例如:\n%MYNAME%, ElvUI, RBGs, Tank"
 L["Load Distance"] = "读取距离"
 L["Local Time"] = "本地时间"
@@ -920,6 +925,7 @@ L["Pets"] = "宠物"
 L["PetTarget"] = "宠物的目标"
 L["Phase Indicator"] = "位面指示器"
 L["Pin Voice Buttons"] = "固定语音按钮"
+L["Player Bars"] = true
 L["Player Can Attack"] = "玩家可攻击"
 L["Player Can Not Attack"] = "玩家不可攻击"
 L["Player Frame Aura Bars"] = "玩家框架光环条"
@@ -1177,6 +1183,8 @@ L["Style Filter"] = "样式过滤器"
 L["Style"] = "风格"
 L["Subzone Name"] = "子区域名"
 L["Summon Icon"] = "召唤图标"
+L["Support & Download"] = true
+L["Support Forum"] = true
 L["Swap to Alt Power"] = "切换到副能量"
 L["Tab Font Outline"] = "标题栏字体描边"
 L["Tab Font Size"] = "标题栏字体尺寸"
@@ -1228,7 +1236,6 @@ L["The display format of the currency icons that get displayed below the main ba
 L["The display format of the money text that is shown at the top of the main bag."] = "在主背包上方显示的金钱文字的格式"
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "在信息文字中显示的金钱格式"
 L["The first button anchors itself to this point on the bar."] = "第一个按钮对齐动作条的方向"
-L["The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."] = "为了显示设定过的过滤器下面的宏必须启用"
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家头顶姓名的字体. |cffFF0000警告: 你需要重启游戏或重新登录才能使用此功能.|r"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "战斗信息将使用此字体, |cffFF0000警告:需重启游戏或重新登陆才可使此变更生效.|r"
 L["The font that the core of the UI will use."] = "核心UI所使用的字体"
@@ -1450,13 +1457,20 @@ L["BAGS_DESC"] = "调整ElvUI背包设置"
 L["CHAT_DESC"] = "聊天框设置"
 L["COOLDOWN_DESC"] = "调整冷却文字设置"
 L["DATATEXT_DESC"] = "设定屏幕所显示的部分信息文字"
-L["ELVUI_DESC"] = "ElvUI为一套功能完整, 可用来替换WoW原始界面的套件"
+L["ELVUI_DESC"] = "|cffff8000ElvUI|r为一套功能完整, 可用来替换WoW原始界面的套件"
 L["NAMEPLATE_DESC"] = "修改姓名板设定"
 L["PANEL_DESC"] = "调整左、右聊天框的大小, 此设定将会影响聊天与背包框架的大小"
 L["SKINS_DESC"] = "调整外观设定"
 L["TOGGLESKIN_DESC"] = "启用/停用此外观"
 L["TOOLTIP_DESC"] = "鼠标提示信息设定选项"
 L["UNITFRAME_DESC"] = "修改单位框架设定"
+L["VISIBILITY_DESC"] = [=[为了显示设定过的过滤器下面的宏必须启用.
+
+|cffff8000Defaults:|r
+    Party: [@raid6,exists][nogroup] hide;show
+    Raid: [@raid6,noexists][@raid26,exists] hide;show
+    Raid40: [@raid26,noexists] hide;show]
+    Raid Pet: [group:raid] show; hide]=]
 L["SEARCH_SYNTAX_DESC"] = [=[因为新增了LibItemSearch，你现在可以使用更高级的物品检索. 下面是一份检索语法的文档. 查看完整说明: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 特性检索:

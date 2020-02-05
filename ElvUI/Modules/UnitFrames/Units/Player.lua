@@ -154,8 +154,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Auras
 	UF:EnableDisable_Auras(frame)
-	UF:Configure_Auras(frame, 'Buffs')
-	UF:Configure_Auras(frame, 'Debuffs')
+	UF:Configure_AllAuras(frame)
 
 	-- Resurrect
 	UF:Configure_ResurrectionIcon(frame)

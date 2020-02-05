@@ -28,11 +28,6 @@ local function group(order, db, label)
 			E:UpdateCooldownSettings(db);
 		end,
 		args = {
-			header = {
-				order = 1,
-				type = "header",
-				name = label,
-			},
 			reverse = {
 				type = "toggle",
 				order = 2,
@@ -116,11 +111,6 @@ local function group(order, db, label)
 						order = 3,
 						type = "header",
 						name = L["Threshold Colors"]
-					},
-					spacer2 = {
-						order = 4,
-						type = "description",
-						name = " "
 					},
 					expiringColor = {
 						type = 'color',
@@ -251,11 +241,6 @@ local function group(order, db, label)
 						name = L["Enable"],
 						desc = L["This will override the global cooldown settings."],
 						disabled = E.noop,
-					},
-					spacer1 = {
-						order = 2,
-						type = "description",
-						name = " "
 					},
 					fontSize = {
 						order = 3,

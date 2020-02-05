@@ -364,6 +364,7 @@ L["Desaturated Icon"] = "Бесцветная иконка"
 L["Descending"] = "Нисходящее"
 L["Detach From Frame"] = "Открепить от рамки"
 L["Detached Width"] = "Ширина при откреплении"
+L["Development Version"] = true
 L["Direction the bag sorting will use to allocate the items."] = "Направление расположения предметов при сортировке."
 L["Direction the bar moves on gains/losses"] = "направление заполнения полосы"
 L["Direction the health bar moves when gaining/losing health."] = "Направление, в котором заполняется полоса при потере/восполнении здоровья."
@@ -378,6 +379,7 @@ L["Disables the player and pet unitframes."] = "Отключает фреймы 
 L["Disables the target and target of target unitframes."] = "Отключает фреймы цели и цели цели."
 L["Disables the tutorial button found on some frames."] = "Отключает кнопки обучения на некоторых фреймах."
 L["Disconnected"] = "Не в сети"
+L["Discord"] = true
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "Отображать иконки лекаря над известными целителями на полях боя и аренах"
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Отображать панель на нижней границе экрана. Это косметический элемент."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Отображать панель на верхней границе экрана. Это косметический элемент."
@@ -522,7 +524,6 @@ L["FRIENDLY_PLAYER"] = "Дружественный игрок"
 L["Full Overlay"] = "Полное наложение"
 L["Full"] = "Полный"
 L["Gems"] = "Самоцветы"
-L["General Options"] = "Общие"
 L["General"] = "Общие"
 L["Global (Account Settings)"] = "Глобальные (настройки аккаунта)"
 L["Global Fade Transparency"] = "Глобальная прозрачность"
@@ -537,6 +538,7 @@ L["Good"] = "Хорошее"
 L["Gossip Frame"] = "Диалоги"
 L["Group By"] = "Группировать по"
 L["Group Spacing"] = "Отступ групп"
+L["Group Units"] = true
 L["Grouping & Sorting"] = "Группировка и сортировка"
 L["Groups Per Row/Column"] = "Групп на ряд/столбец"
 L["Growth direction from the first unitframe."] = "Направление роста от первого фрейма."
@@ -682,7 +684,9 @@ L["Import Profile"] = "Импорт профиля"
 L["Importing"] = "Импортирую"
 L["Index"] = "Порядок наложения"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "Определяет должны ли Ваши баффы находиться отдельно перед или после остальных."
+L["Individual Units"] = true
 L["InfoPanel Border"] = "Граница инфо панели"
+L["Information"] = true
 L["Information Panel"] = "Информационная панель"
 L["Inherit Global Fade"] = "Использовать глобальную прозрачность"
 L["Inherit the global fade, mousing over, targetting, setting focus, losing health, entering combat will set the remove transparency. Otherwise it will use the transparency level in the general actionbar settings for global fade alpha."] = "Использовать глобальную прозрачность. Наведение мыши, наличие цели, фокуса, потеря здоровья и вступление в бой уберут прозрачность. В остальных случаях будет использоваться уровень прозрачности из общих настроек панелей команд."
@@ -737,6 +741,7 @@ L["LF Guild Frame"] = "Поиск гильдии"
 L["LFG Icons"] = "Иконки роли"
 L["LFG Queue"] = "Очередь"
 L["Limit the number of rows or columns."] = "Определяет максимальное количество рядов/столбцов."
+L["Link to the latest development version."] = true
 L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "Список слов для окрашивания, если они обнаружены в чате. Если Вы хотите добавить несколько слов, то разделяйте их запятыми. Для поиска имени Вашего текущего персонажа используйте %MYNAME%.\n\nПример:\n%MYNAME%, ElvUI, РБГ, Танк"
 L["Load Distance"] = "Дистанция показа"
 L["Local Time"] = "Местное время"
@@ -915,6 +920,7 @@ L["Pets"] = "Питомцы"
 L["PetTarget"] = "Цель питомца"
 L["Phase Indicator"] = "Индикатор фазы"
 L["Pin Voice Buttons"] = "Закрепить голосовой чат"
+L["Player Bars"] = true
 L["Player Can Attack"] = "Игрок может атаковать"
 L["Player Can Not Attack"] = "Игрок не может атаковать"
 L["Player Frame Aura Bars"] = "Полосы аур рамки игрока"
@@ -1173,6 +1179,8 @@ L["Style Filter"] = "Фильтры стиля"
 L["Style"] = "Стиль"
 L["Subzone Name"] = "Название субзоны"
 L["Summon Icon"] = "Иконка призыва"
+L["Support & Download"] = true
+L["Support Forum"] = true
 L["Swap to Alt Power"] = "Заменить на альт. ресурс"
 L["Tab Font Outline"] = "Граница шрифта вкладок"
 L["Tab Font Size"] = "Размер шрифта вкладок"
@@ -1224,7 +1232,6 @@ L["The display format of the currency icons that get displayed below the main ba
 L["The display format of the money text that is shown at the top of the main bag."] = "Формат отображения текста золота в верхней части основной сумки."
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "Формат отображения золота на инфо-тексте золота и его подсказке."
 L["The first button anchors itself to this point on the bar."] = "Первая кнопка прикрепляется к этой точке панели"
-L["The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."] = "Следующий фильтр должен быть верен для отображения группы в дополнение к любому другому уже установленному фильтру."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Шрифт, которым будет написан текст над головами игроков. |cffFF0000ВНИМАНИЕ: Необходим перезапуск игры или релог для начала действия этой настройки.|r"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Шрифт текста боя. |cffFF0000ВНИМАНИЕ: это действие потребует перезапуска игры или повторного входа в мир.|r"
 L["The font that the core of the UI will use."] = "Шрифт для основного интерфейса."
@@ -1439,19 +1446,26 @@ L["notDispellable"] = "Не развеиваемые"
 L["Personal"] = "Личные"
 ----------------------------------
 
-L["ACTIONBARS_DESC"] = "Modify the actionbar settings."
+L["ACTIONBARS_DESC"] = "Изменение настроек панелей команд."
 L["AURAS_DESC"] = "Настройка иконок эффектов, находящихся у миникарты."
 L["BAGS_DESC"] = "Настройки сумок ElvUI"
 L["CHAT_DESC"] = "Настройте отображение чата ElvUI."
-L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
+L["COOLDOWN_DESC"] = "Изменение настроек времени восстановления."
 L["DATATEXT_DESC"] = "Установка отображения информационных текстов."
-L["ELVUI_DESC"] = "ElvUI это аддон для полной замены пользовательского интерфейса World of Warcraft."
+L["ELVUI_DESC"] = "|cffff8000ElvUI|r это аддон для полной замены пользовательского интерфейса World of Warcraft."
 L["NAMEPLATE_DESC"] = "Настройки индикаторов здоровья."
 L["PANEL_DESC"] = "Регулирование размеров левой и правой панелей. Это окажет эффект на чат и сумки."
 L["SKINS_DESC"] = "Установки скинов"
 L["TOGGLESKIN_DESC"] = "Включить/выключить этот скин."
 L["TOOLTIP_DESC"] = "Опций подсказки"
-L["UNITFRAME_DESC"] = "Modify the unitframe settings."
+L["UNITFRAME_DESC"] = "Изменение настроек рамок юнитов."
+L["VISIBILITY_DESC"] = [=[Следующий фильтр должен быть верен для отображения группы в дополнение к любому другому уже установленному фильтру.
+
+|cffff8000Defaults:|r
+    Party: [@raid6,exists][nogroup] hide;show
+    Raid: [@raid6,noexists][@raid26,exists] hide;show
+    Raid40: [@raid26,noexists] hide;show]
+    Raid Pet: [group:raid] show; hide]=]
 L["SEARCH_SYNTAX_DESC"] = [=[С добавлением библиотеки LibItemSearch, у вас появился доступ к большему количеству поисковых запросов. Здесь представлена документация по синтаксису поисковых запросов. Полная инструкция доступна по адресу: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 Специфический поик:

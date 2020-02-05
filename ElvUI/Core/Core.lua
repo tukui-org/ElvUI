@@ -51,6 +51,7 @@ local LSM = E.Libs.LSM
 --Constants
 E.noop = function() end
 E.title = format('|cfffe7b2c%s |r', 'ElvUI')
+E.version = GetAddOnMetadata('ElvUI', 'Version')
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 E.mylevel = UnitLevel('player')
 E.myLocalizedClass, E.myclass, E.myClassID = UnitClass('player')
@@ -58,13 +59,12 @@ E.myLocalizedRace, E.myrace = UnitRace('player')
 E.myname = UnitName('player')
 E.myrealm = GetRealmName()
 E.myspec = GetSpecialization()
-E.version = GetAddOnMetadata('ElvUI', 'Version')
 E.wowpatch, E.wowbuild = GetBuildInfo()
 E.wowbuild = tonumber(E.wowbuild)
+E.isMacClient = IsMacClient()
 E.IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.screenwidth, E.screenheight = GetPhysicalScreenSize()
 E.resolution = format('%dx%d', E.screenwidth, E.screenheight)
-E.isMacClient = IsMacClient()
 E.NewSign = '|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:14:14|t' -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
 E.TexturePath = 'Interface\\AddOns\\ElvUI\\Media\\Textures\\' -- for plugins?
 E.InfoColor = '|cfffe7b2c'
@@ -925,7 +925,7 @@ function E:UpdateNamePlates(skipCallback)
 end
 
 function E:UpdateTooltip()
-	-- for plugins :3
+	Tooltip:SetTooltipFonts()
 end
 
 function E:UpdateBags(skipCallback)
@@ -1062,6 +1062,9 @@ do
 			end
 			if E.private.chat.enable then
 				tinsert(staggerTable, 'UpdateChat')
+			end
+			if E.private.tooltip.enable then
+				tinsert(staggerTable, 'UpdateTooltip')
 			end
 			tinsert(staggerTable, 'UpdateDataBars')
 			tinsert(staggerTable, 'UpdateDataTexts')
@@ -1278,12 +1281,11 @@ function E:InitializeModules()
 end
 
 local function buffwatchConvert(spell)
-	if spell.sizeOverride then
-		local newSize = spell.sizeOverride
-		spell.size = (newSize > 8 and newSize) or 8
-		spell.sizeOverride = nil
-	elseif not spell.size or spell.size < 6 then
-		spell.size = 6
+	if spell.sizeOverride then spell.sizeOverride = nil end
+	if spell.size then spell.size = nil end
+
+	if not spell.sizeOffset then
+		spell.sizeOffset = 0
 	end
 
 	if spell.styleOverride then
@@ -1500,6 +1502,15 @@ function E:DBConversions()
 	for _, spell in pairs(E.db.unitframe.filters.buffwatch) do
 		buffwatchConvert(spell)
 	end
+
+	-- fix aurabars colors
+	for spell, info in pairs(E.global.unitframe.AuraBarColors) do
+		if type(info) == 'boolean' then
+			E.global.unitframe.AuraBarColors[spell] = { enable = info, color = { r = 1, g = 1, b = 1, a = 1} }
+		elseif type(info) == 'table' and info.r then
+			E.global.unitframe.AuraBarColors[spell] = { enable = true, color = info }
+		end
+	end
 end
 
 function E:RefreshModulesDB()
@@ -1513,6 +1524,9 @@ function E:Initialize()
 	twipe(self.db)
 	twipe(self.global)
 	twipe(self.private)
+
+	LSM.DefaultMedia.font = 'PT Sans Narrow'
+	LSM.DefaultMedia.statusbar = 'ElvUI Norm'
 
 	self.myguid = UnitGUID('player')
 	self.data = E.Libs.AceDB:New('ElvDB', self.DF)

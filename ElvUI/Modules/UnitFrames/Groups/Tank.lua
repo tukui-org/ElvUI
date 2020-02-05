@@ -56,7 +56,9 @@ function UF:Update_TankHeader(header, db)
 
 	UF:ClearChildPoints(header:GetChildren())
 
-	RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
+	if not header.isForced and db.enable then
+		RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
+	end
 
 	header:SetAttribute('point', 'BOTTOM')
 	header:SetAttribute('columnAnchorPoint', 'LEFT')
@@ -132,9 +134,9 @@ function UF:Update_TankFrames(frame, db)
 				frame:SetParent(E.HiddenFrame)
 			end
 		end
-	elseif not InCombatLockdown() then
-		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
+
+	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	--Health
 	UF:Configure_HealthBar(frame)
@@ -156,8 +158,7 @@ function UF:Update_TankFrames(frame, db)
 	if not frame.isChild then
 		--Auras
 		UF:EnableDisable_Auras(frame)
-		UF:Configure_Auras(frame, "Buffs")
-		UF:Configure_Auras(frame, "Debuffs")
+		UF:Configure_AllAuras(frame)
 
 		--RaidDebuffs
 		UF:Configure_RaidDebuffs(frame)

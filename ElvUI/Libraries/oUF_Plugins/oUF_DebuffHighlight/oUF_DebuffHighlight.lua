@@ -2,7 +2,7 @@ local _, ns = ...
 local oUF = oUF or ns.oUF
 if not oUF then return end
 
-local playerClass = select(2,UnitClass("player"))
+local playerClass = select(2, UnitClass("player"))
 local CanDispel = {
 	PRIEST = { Magic = true, Disease = true },
 	SHAMAN = { Magic = false, Curse = true },
@@ -13,17 +13,15 @@ local CanDispel = {
 }
 
 local blackList = {
-	[GetSpellInfo(140546)] = true, --Fully Mutated
-	[GetSpellInfo(136184)] = true, --Thick Bones
-	[GetSpellInfo(136186)] = true, --Clear mind
-	[GetSpellInfo(136182)] = true, --Improved Synapses
-	[GetSpellInfo(136180)] = true, --Keen Eyesight
+	[GetSpellInfo(140546)] = true, -- Fully Mutated
+	[GetSpellInfo(136184)] = true, -- Thick Bones
+	[GetSpellInfo(136186)] = true, -- Clear mind
+	[GetSpellInfo(136182)] = true, -- Improved Synapses
+	[GetSpellInfo(136180)] = true, -- Keen Eyesight
 }
 
 local dispellist = CanDispel[playerClass] or {}
 local origColors = {}
-local origBorderColors = {}
-local origPostUpdateAura = {}
 
 local function GetDebuffType(unit, filter, filterTable)
 	if not unit or not UnitCanAssist("player", unit) then return nil end
@@ -34,8 +32,12 @@ local function GetDebuffType(unit, filter, filterTable)
 
 		local filterSpell = filterTable[spellID] or filterTable[name]
 
-		if(filterTable and filterSpell and filterSpell.enable) then
-			return debufftype, texture, true, filterSpell.style, filterSpell.color
+		if (filterTable and filterSpell) then
+			if filterSpell.enable then
+				return debufftype, texture, true, filterSpell.style, filterSpell.color
+			else
+				return
+			end
 		elseif debufftype and (not filter or (filter and dispellist[debufftype])) and not blackList[name] then
 			return debufftype, texture
 		end

@@ -364,6 +364,7 @@ L["Desaturated Icon"] = true
 L["Descending"] = "내림차순"
 L["Detach From Frame"] = "유닛프레임에서 분리"
 L["Detached Width"] = "분리했을 때 가로길이"
+L["Development Version"] = true
 L["Direction the bag sorting will use to allocate the items."] = "정렬기능을 실행할 때 체크 시 아이템이 가방칸의 우측하단을, 체크 해제 시 좌측상단을 기준으로 모아서 정렬됩니다."
 L["Direction the bar moves on gains/losses"] = "바의 증감방향을 결정합니다."
 L["Direction the health bar moves when gaining/losing health."] = "생명력의 증감 방향을 결정합니다. (가로/세로)"
@@ -378,6 +379,7 @@ L["Disables the player and pet unitframes."] = "플레이어, 소환수 프레�
 L["Disables the target and target of target unitframes."] = "대상, 대상의 대상 프레임 비활성"
 L["Disables the tutorial button found on some frames."] = "몇몇 프레임에서 등장하는 튜토리얼 버튼을 비활성화합니다."
 L["Disconnected"] = "오프라인"
+L["Discord"] = true
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "전장이나 투기장에서 유닛이 힐러인 경우 이름표에 힐러 아이콘을 표시합니다."
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "화면 하단에 꾸미기 용도의 바를 생성합니다."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "화면 상단에 꾸미기 용도의 바를 생성합니다."
@@ -522,7 +524,6 @@ L["FRIENDLY_PLAYER"] = "우호적인 플레이어"
 L["Full Overlay"] = true
 L["Full"] = "전체"
 L["Gems"] = true
-L["General Options"] = "일반 설정"
 L["General"] = "일반"
 L["Global (Account Settings)"] = "전역 (계정 설정)"
 L["Global Fade Transparency"] = "전역 흐려짐 투명도"
@@ -536,6 +537,7 @@ L["Good Transition Color"] = "좋음 전환 색상"
 L["Good"] = "좋음"
 L["Gossip Frame"] = "NPC 대화 창"
 L["Group By"] = "그룹짓는 방법"
+L["Group Units"] = true
 L["Group Spacing"] = "그룹 간격"
 L["Grouping & Sorting"] = "그룹/정렬 방법"
 L["Groups Per Row/Column"] = "한 줄 당 그룹 배치수"
@@ -682,7 +684,9 @@ L["Import Profile"] = "프로필 가져오기"
 L["Importing"] = "가져올 것"
 L["Index"] = "종류"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "스스로 시전한 효과를 우선 나열할 것인지 여부를 지정합니다."
+L["Individual Units"] = true
 L["InfoPanel Border"] = "정보패널 경계"
+L["Information"] = true
 L["Information Panel"] = "정보 패널"
 L["Inherit Global Fade"] = "전역 흐려짐 계승"
 L["Inherit the global fade, mousing over, targetting, setting focus, losing health, entering combat will set the remove transparency. Otherwise it will use the transparency level in the general actionbar settings for global fade alpha."] = true
@@ -737,6 +741,7 @@ L["LF Guild Frame"] = "길드 찾기 창"
 L["LFG Icons"] = "역할 아이콘 표시"
 L["LFG Queue"] = "파티찾기 표시기"
 L["Limit the number of rows or columns."] = "표시줄 수를 제한해 최종적으로 보여줄 오라의 총 개수를 제한합니다."
+L["Link to the latest development version."] = true
 L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "이 곳에 키워드를 적으면 모든 대화내용에서 해당 키워드를 발견 시 색깔을 입혀 강조합니다. 쉼표(,) 로 구분해서 작성하세요.|n|n내 이름을 강조하고 싶으면 |cff2eb7e4%MYNAME%|r 을 사용하면 됩니다."
 L["Load Distance"] = "작동 거리"
 L["Local Time"] = "컴퓨터 시계 기준"
@@ -915,6 +920,7 @@ L["Pets"] = true
 L["PetTarget"] = true
 L["Phase Indicator"] = "단계 표시기"
 L["Pin Voice Buttons"] = true
+L["Player Bars"] = true
 L["Player Can Attack"] = true
 L["Player Can Not Attack"] = true
 L["Player Frame Aura Bars"] = true
@@ -1173,6 +1179,8 @@ L["Style Filter"] = "스타일 필터"
 L["Style"] = "디자인"
 L["Subzone Name"] = true
 L["Summon Icon"] = true
+L["Support & Download"] = true
+L["Support Forum"] = true
 L["Swap to Alt Power"] = true
 L["Tab Font Outline"] = "채팅탭 글꼴 외곽선"
 L["Tab Font Size"] = "채팅탭 글꼴 크기"
@@ -1224,7 +1232,6 @@ L["The display format of the currency icons that get displayed below the main ba
 L["The display format of the money text that is shown at the top of the main bag."] = "통합가방 상단에 표시되는 보유 골드의 표시 방법을 결정합니다."
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "정보문자와 툴팁에서 표시될 골드의 형식을 결정합니다."
 L["The first button anchors itself to this point on the bar."] = "첫 번째 요소를 기준으로 나머지가 나열됩니다."
-L["The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."] = "체크시 그룹의 표시 설정이 설정됩니다. 필터를 추가해서 수정이 가능합니다."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "화면상에서 캐릭터 위에 표시되는 이름, 길드, 칭호 등의 글꼴을 변경합니다.|n|n|cffff0000주의|r|n이 설정은 리로드가 아닌 캐릭터에 재접속하야 적용됩니다."
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "화면상에서 전투 상황에 관련된 글자에 적용되는 글꼴입니다.|n|n|cffff0000WARNING|r|n이 설정은 리로드가 아닌 캐릭터에 재접속하야 적용됩니다."
 L["The font that the core of the UI will use."] = "ElvUI에서 쓰이는 모든 글자의 글꼴을 결정합니다.|n|n개인적으로 글꼴을 지정할 수 있는 곳은 적용되지 않습니다."
@@ -1446,13 +1453,20 @@ L["BAGS_DESC"] = "통합가방과 가방바에 관련된 옵션들입니다."
 L["CHAT_DESC"] = "채팅과 패널에 관련된 옵션들입니다."
 L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
 L["DATATEXT_DESC"] = "정보문자에 관련된 옵션들입니다."
-L["ELVUI_DESC"] = "ElvUI는 WoW에서 지원하는 대부분의 기능을 대체하는 통합 애드온입니다."
+L["ELVUI_DESC"] = "|cffff8000ElvUI|r는 WoW에서 지원하는 대부분의 기능을 대체하는 통합 애드온입니다."
 L["NAMEPLATE_DESC"] = "이름표에 관련된 옵션들입니다."
 L["PANEL_DESC"] = "좌우 패널의 크기를 조절합니다. 이 값에 따라 고정되어 있는 채팅창과 통합가방/은행 프레임의 크기도 변경됩니다."
 L["SKINS_DESC"] = "다른 애드온이나 게임 내 여러 프레임에 체크 시 스킨을 적용합니다."
 L["TOGGLESKIN_DESC"] = "체크 시 해당 프레임에 스킨을 사용합니다."
 L["TOOLTIP_DESC"] = "툴팁에 관련된 옵션들입니다."
 L["UNITFRAME_DESC"] = "유닛프레임 설정을 변경합니다."
+L["VISIBILITY_DESC"] = [=[체크시 그룹의 표시 설정이 설정됩니다. 필터를 추가해서 수정이 가능합니다.
+
+|cffff8000Defaults:|r
+    Party: [@raid6,exists][nogroup] hide;show
+    Raid: [@raid6,noexists][@raid26,exists] hide;show
+    Raid40: [@raid26,noexists] hide;show]
+    Raid Pet: [group:raid] show; hide]=]
 L["SEARCH_SYNTAX_DESC"] = [=[
 
   각종 가방에서 검색기능을 사용할 때, 다음의 명령어들을 활용하면

@@ -6,8 +6,8 @@ local CreateFrame = CreateFrame
 
 function UF:Construct_InfoPanel(frame)
 	local infoPanel = CreateFrame("Frame", nil, frame)
-
 	infoPanel:SetFrameLevel(7) --Health is 10 and filled power is 5 by default
+
 	local thinBorders = self.thinBorders
 	infoPanel:CreateBackdrop(nil, true, nil, thinBorders, true)
 

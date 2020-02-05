@@ -4,7 +4,6 @@ local Skins = E:GetModule('Skins')
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetAddOnInfo = GetAddOnInfo
-local GetPhysicalScreenSize = GetPhysicalScreenSize
 local GetCVar = GetCVar
 local GetLocale = GetLocale
 local GetNumAddOns = GetNumAddOns
@@ -98,62 +97,79 @@ local function GetSpecName()
 	return EnglishSpecName[GetSpecializationInfo(GetSpecialization())]
 end
 
+local function CreateContentLines(num, parent, anchorTo)
+	local content = CreateFrame('Frame', nil, parent)
+	content:Size(260, (num * 20) + ((num-1)*5)) --20 height and 5 spacing
+	content:Point('TOP', anchorTo, 'BOTTOM',0 , -5)
+
+	for i = 1, num do
+		local line = CreateFrame('Frame', nil, content)
+		line:Size(260, 20)
+
+		local text = line:CreateFontString(nil, 'ARTWORK', 'SystemFont_Outline')
+		text:SetAllPoints()
+		text:SetJustifyH('LEFT')
+		text:SetJustifyV('MIDDLE')
+		line.Text = text
+
+		local numLine = line
+		if i == 1 then
+			numLine:Point('TOP', content, 'TOP')
+		else
+			numLine:Point('TOP', content['Line'..(i-1)], 'BOTTOM', 0, -5)
+		end
+
+		content['Line'..i] = numLine
+	end
+
+	return content
+end
+
+local function CloseClicked()
+	if E.StatusReportToggled then
+		E.StatusReportToggled = nil
+		E:ToggleOptionsUI()
+	end
+end
+
 function E:CreateStatusFrame()
 	local function CreateSection(width, height, parent, anchor1, anchorTo, anchor2, yOffset)
 		local section = CreateFrame('Frame', nil, parent)
 		section:Size(width, height)
 		section:Point(anchor1, anchorTo, anchor2, 0, yOffset)
 
-		section.Header = CreateFrame('Frame', nil, section)
-		section.Header:Size(300, 30)
-		section.Header:Point('TOP', section)
+		local header = CreateFrame('Frame', nil, section)
+		header:Size(300, 30)
+		header:Point('TOP', section)
+		section.Header = header
 
-		section.Header.Text = section.Header:CreateFontString(nil, 'ARTWORK', 'SystemFont_Outline')
-		section.Header.Text:Point('TOP')
-		section.Header.Text:Point('BOTTOM')
-		section.Header.Text:SetJustifyH('CENTER')
-		section.Header.Text:SetJustifyV('MIDDLE')
-		local font, fontHeight, fontFlags = section.Header.Text:GetFont()
-		section.Header.Text:FontTemplate(font, fontHeight*1.3, fontFlags)
+		local text = section.Header:CreateFontString(nil, 'ARTWORK', 'SystemFont_Outline')
+		text:Point('TOP')
+		text:Point('BOTTOM')
+		text:SetJustifyH('CENTER')
+		text:SetJustifyV('MIDDLE')
 
-		section.Header.LeftDivider = section.Header:CreateTexture(nil, 'ARTWORK')
-		section.Header.LeftDivider:Height(8)
-		section.Header.LeftDivider:Point('LEFT', section.Header, 'LEFT', 5, 0)
-		section.Header.LeftDivider:Point('RIGHT', section.Header.Text, 'LEFT', -5, 0)
-		section.Header.LeftDivider:SetTexture('Interface\\Tooltips\\UI-Tooltip-Border')
-		section.Header.LeftDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
+		local font, fontHeight, fontFlags = text:GetFont()
+		text:FontTemplate(font, fontHeight*1.3, fontFlags)
+		section.Header.Text = text
 
-		section.Header.RightDivider = section.Header:CreateTexture(nil, 'ARTWORK')
-		section.Header.RightDivider:Height(8)
-		section.Header.RightDivider:Point('RIGHT', section.Header, 'RIGHT', -5, 0)
-		section.Header.RightDivider:Point('LEFT', section.Header.Text, 'RIGHT', 5, 0)
-		section.Header.RightDivider:SetTexture('Interface\\Tooltips\\UI-Tooltip-Border')
-		section.Header.RightDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
+		local leftDivider = section.Header:CreateTexture(nil, 'ARTWORK')
+		leftDivider:Height(8)
+		leftDivider:Point('LEFT', section.Header, 'LEFT', 5, 0)
+		leftDivider:Point('RIGHT', section.Header.Text, 'LEFT', -5, 0)
+		leftDivider:SetTexture('Interface\\Tooltips\\UI-Tooltip-Border')
+		leftDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
+		section.Header.LeftDivider = leftDivider
+
+		local rightDivider = section.Header:CreateTexture(nil, 'ARTWORK')
+		rightDivider:Height(8)
+		rightDivider:Point('RIGHT', section.Header, 'RIGHT', -5, 0)
+		rightDivider:Point('LEFT', section.Header.Text, 'RIGHT', 5, 0)
+		rightDivider:SetTexture('Interface\\Tooltips\\UI-Tooltip-Border')
+		rightDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
+		section.Header.RightDivider = rightDivider
 
 		return section
-	end
-
-	local function CreateContentLines(num, parent, anchorTo)
-		local content = CreateFrame('Frame', nil, parent)
-		content:Size(260, (num * 20) + ((num-1)*5)) --20 height and 5 spacing
-		content:Point('TOP', anchorTo, 'BOTTOM',0 , -5)
-		for i = 1, num do
-			local line = CreateFrame('Frame', nil, content)
-			line:Size(260, 20)
-			line.Text = line:CreateFontString(nil, 'ARTWORK', 'SystemFont_Outline')
-			line.Text:SetAllPoints()
-			line.Text:SetJustifyH('LEFT')
-			line.Text:SetJustifyV('MIDDLE')
-			content['Line'..i] = line
-
-			if i == 1 then
-				content['Line'..i]:Point('TOP', content, 'TOP')
-			else
-				content['Line'..i]:Point('TOP', content['Line'..(i-1)], 'BOTTOM', 0, -5)
-			end
-		end
-
-		return content
 	end
 
 	--Main frame
@@ -163,17 +179,24 @@ function E:CreateStatusFrame()
 	StatusFrame:SetFrameStrata('HIGH')
 	StatusFrame:CreateBackdrop('Transparent', nil, true)
 	StatusFrame.backdrop:SetBackdropColor(0, 0, 0, 0.6)
-	StatusFrame:SetShown(false)
 	StatusFrame:SetMovable(true)
+	StatusFrame:Hide()
+
+	--Close button and script to retoggle the options.
 	StatusFrame:CreateCloseButton()
+	StatusFrame.CloseButton:HookScript('OnClick', CloseClicked)
 
 	--Title logo (drag to move frame)
-	StatusFrame.TitleLogoFrame = CreateFrame('Frame', nil, StatusFrame, 'TitleDragAreaTemplate')
-	StatusFrame.TitleLogoFrame:Size(128, 64)
-	StatusFrame.TitleLogoFrame:Point('CENTER', StatusFrame, 'TOP', 0, 0)
-	StatusFrame.TitleLogoFrame.Texture = StatusFrame.TitleLogoFrame:CreateTexture(nil, 'ARTWORK')
-	StatusFrame.TitleLogoFrame.Texture:SetTexture(E.Media.Textures.Logo)
-	StatusFrame.TitleLogoFrame.Texture:SetAllPoints()
+	local titleLogoFrame = CreateFrame('Frame', nil, StatusFrame, 'TitleDragAreaTemplate')
+	titleLogoFrame:Point('CENTER', StatusFrame, 'TOP')
+	titleLogoFrame:Size(240, 80)
+	StatusFrame.TitleLogoFrame = titleLogoFrame
+
+	local titleTexture = StatusFrame.TitleLogoFrame:CreateTexture(nil, 'ARTWORK')
+	titleTexture:Point('CENTER', titleLogoFrame, 'TOP', 0, -36)
+	titleTexture:SetTexture(E.Media.Textures.LogoSmall)
+	titleTexture:Size(128, 64)
+	titleLogoFrame.Texture = titleTexture
 
 	--Sections
 	StatusFrame.Section1 = CreateSection(300, 125, StatusFrame, 'TOP', StatusFrame, 'TOP', -30)
@@ -218,35 +241,40 @@ function E:CreateStatusFrame()
 	StatusFrame.Section4.Content.Button1:Point('LEFT', StatusFrame.Section4.Content, 'LEFT')
 	StatusFrame.Section4.Content.Button1:SetText('Forum')
 	StatusFrame.Section4.Content.Button1:SetButtonState('DISABLED')
-	Skins:HandleButton(StatusFrame.Section4.Content.Button1, true)
 	StatusFrame.Section4.Content.Button2 = CreateFrame('Button', nil, StatusFrame.Section4.Content, 'UIPanelButtonTemplate')
 	StatusFrame.Section4.Content.Button2:Size(100, 25)
 	StatusFrame.Section4.Content.Button2:Point('RIGHT', StatusFrame.Section4.Content, 'RIGHT')
 	StatusFrame.Section4.Content.Button2:SetText('Ticket')
 	StatusFrame.Section4.Content.Button2:SetButtonState('DISABLED')
+	Skins:HandleButton(StatusFrame.Section4.Content.Button1, true)
 	Skins:HandleButton(StatusFrame.Section4.Content.Button2, true)
 
-	E.StatusFrame = StatusFrame
+	return StatusFrame
 end
 
 local function UpdateDynamicValues()
-	E.StatusFrame.Section2.Content.Line3.Text:SetFormattedText('Display Mode: |cff4beb2c%s|r', GetDisplayMode())
-	E.StatusFrame.Section2.Content.Line4.Text:SetFormattedText('Resolution: |cff4beb2c%s|r', E.resolution)
-	E.StatusFrame.Section3.Content.Line4.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', GetSpecName())
-	E.StatusFrame.Section3.Content.Line5.Text:SetFormattedText('Level: |cff4beb2c%s|r', E.mylevel)
-	E.StatusFrame.Section3.Content.Line6.Text:SetFormattedText('Zone: |cff4beb2c%s|r', GetRealZoneText())
+	local StatusFrame = E.StatusFrame
+
+	local Section2 = StatusFrame.Section2
+	Section2.Content.Line3.Text:SetFormattedText('Display Mode: |cff4beb2c%s|r', GetDisplayMode())
+	Section2.Content.Line4.Text:SetFormattedText('Resolution: |cff4beb2c%s|r', E.resolution)
+
+	local Section3 = StatusFrame.Section3
+	Section3.Content.Line4.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', GetSpecName())
+	Section3.Content.Line5.Text:SetFormattedText('Level: |cff4beb2c%s|r', E.mylevel)
+	Section3.Content.Line6.Text:SetFormattedText('Zone: |cff4beb2c%s|r', GetRealZoneText())
 end
 
 function E:ShowStatusReport()
-	if not self.StatusFrame then
-		self:CreateStatusFrame()
+	if not E.StatusFrame then
+		E.StatusFrame = E:CreateStatusFrame()
 	end
 
-	if not self.StatusFrame:IsShown() then
+	if not E.StatusFrame:IsShown() then
 		UpdateDynamicValues()
-		self.StatusFrame:Raise() --Set framelevel above everything else
-		self.StatusFrame:SetShown(true)
+		E.StatusFrame:Raise() --Set framelevel above everything else
+		E.StatusFrame:Show()
 	else
-		self.StatusFrame:SetShown(false)
+		E.StatusFrame:Hide()
 	end
 end

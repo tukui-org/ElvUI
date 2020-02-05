@@ -64,6 +64,7 @@ function UF:Construct_AuraIcon(button)
 	button:SetTemplate(nil, nil, nil, UF.thinBorders, true)
 
 	button.cd:SetReverse(true)
+	button.cd:SetDrawEdge(false)
 	button.cd:SetInside(button, offset, offset)
 
 	button.icon:SetInside(button, offset, offset)
@@ -130,12 +131,22 @@ function UF:UpdateAuraCooldownPosition(button)
 	button.needsUpdateCooldownPosition = nil
 end
 
-function UF:Configure_Auras(frame, auraType)
+function UF:Configure_AllAuras(frame)
+	if not frame.VARIABLES_SET then return end
+
+	if frame.Buffs then frame.Buffs:ClearAllPoints() end
+	if frame.Debuffs then frame.Debuffs:ClearAllPoints() end
+
+	UF:Configure_Auras(frame, 'Buffs')
+	UF:Configure_Auras(frame, 'Debuffs')
+end
+
+function UF:Configure_Auras(frame, which)
 	if not frame.VARIABLES_SET then return end
 
 	local db = frame.db
-	local auras = frame[auraType]
-	auraType = auraType:lower()
+	local auras = frame[which]
+	local auraType = which:lower()
 	auras.db = db[auraType]
 
 	local position = db.smartAuraPosition
@@ -192,6 +203,11 @@ function UF:Configure_Auras(frame, auraType)
 		frame.Debuffs.PostUpdate = nil
 	end
 
+	if db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS' then
+		E:Print(format(L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."], E:StringTitle(frame:GetName())))
+		db.buffs.attachTo = 'FRAME'
+	end
+
 	local rows = auras.db.numrows
 	auras.spacing = auras.db.spacing
 	auras.num = auras.db.perrow * rows
@@ -200,14 +216,14 @@ function UF:Configure_Auras(frame, auraType)
 	auras.disableMouse = auras.db.clickThrough
 	auras.anchorPoint = auras.db.anchorPoint
 	auras.initialAnchor = E.InversePoints[auras.anchorPoint]
-	auras.attachTo = self:GetAuraAnchorFrame(frame, auras.db.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
+	auras.attachTo = self:GetAuraAnchorFrame(frame, auras.db.attachTo)
 	auras["growth-y"] = strfind(auras.anchorPoint, 'TOP') and 'UP' or 'DOWN'
 	auras["growth-x"] = auras.anchorPoint == 'LEFT' and 'LEFT' or  auras.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
 
 	local x, y = E:GetXYOffset(auras.anchorPoint, frame.SPACING) --Use frame.SPACING override since it may be different from E.Spacing due to forced thin borders
-	if auras.db.attachTo == "FRAME" then
+	if auras.attachTo == "FRAME" then
 		y = 0
-	elseif auras.db.attachTo == "HEALTH" or auras.db.attachTo == "POWER" then
+	elseif auras.attachTo == "HEALTH" or auras.attachTo == "POWER" then
 		x = E:GetXYOffset(auras.anchorPoint, -frame.BORDER)
 		y = select(2, E:GetXYOffset(auras.anchorPoint, (frame.BORDER + frame.SPACING)))
 	else
@@ -220,7 +236,7 @@ function UF:Configure_Auras(frame, auraType)
 		auras:Width(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
 	else
 		local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
-		if frame.USE_POWERBAR_OFFSET and not (auras.db.attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
+		if frame.USE_POWERBAR_OFFSET and not (auras.attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
 			local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
 			totalWidth = totalWidth - powerOffset
 		end
@@ -444,7 +460,7 @@ function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expir
 	button.priority = 0
 
 	local noDuration = (not duration or duration == 0)
-	local allowDuration = noDuration or (duration and (duration > 0) and (db.maxDuration == 0 or duration <= db.maxDuration) and (db.minDuration == 0 or duration >= db.minDuration))
+	local allowDuration = noDuration or (duration and duration > 0 and (not db.maxDuration or db.maxDuration == 0 or duration <= db.maxDuration) and (not db.minDuration or db.minDuration == 0 or duration >= db.minDuration))
 	local filterCheck, spellPriority
 
 	if db.priority and db.priority ~= '' then

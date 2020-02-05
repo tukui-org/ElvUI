@@ -365,6 +365,7 @@ L["Desaturated Icon"] = true
 L["Descending"] = true
 L["Detach From Frame"] = true
 L["Detached Width"] = true
+L["Development Version"] = "Dev. Version"
 L["Direction the bag sorting will use to allocate the items."] = true
 L["Direction the bar moves on gains/losses"] = true
 L["Direction the health bar moves when gaining/losing health."] = true
@@ -379,6 +380,7 @@ L["Disables the player and pet unitframes."] = true
 L["Disables the target and target of target unitframes."] = true
 L["Disables the tutorial button found on some frames."] = true
 L["Disconnected"] = true
+L["Discord"] = true
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = true
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = true
 L["Display a panel across the top of the screen. This is for cosmetic only."] = true
@@ -524,7 +526,6 @@ L["FRIENDLY_PLAYER"] = "Friendly Player"
 L["Full Overlay"] = true
 L["Full"] = true
 L["Gems"] = true
-L["General Options"] = true
 L["General"] = true
 L["Global (Account Settings)"] = true
 L["Global Fade Transparency"] = true
@@ -539,6 +540,7 @@ L["Good"] = true
 L["Gossip Frame"] = true
 L["Group By"] = true
 L["Group Spacing"] = true
+L["Group Units"] = true
 L["Grouping & Sorting"] = true
 L["Groups Per Row/Column"] = true
 L["Growth direction from the first unitframe."] = true
@@ -685,7 +687,9 @@ L["Import Profile"] = true
 L["Importing"] = true
 L["Index"] = true
 L["Indicate whether buffs you cast yourself should be separated before or after."] = true
+L["Individual Units"] = true
 L["InfoPanel Border"] = true
+L["Information"] = true
 L["Information Panel"] = true
 L["Inherit Global Fade"] = true
 L["Inherit the global fade, mousing over, targetting, setting focus, losing health, entering combat will set the remove transparency. Otherwise it will use the transparency level in the general actionbar settings for global fade alpha."] = true
@@ -740,6 +744,7 @@ L["LF Guild Frame"] = true
 L["LFG Icons"] = true
 L["LFG Queue"] = true
 L["Limit the number of rows or columns."] = true
+L["Link to the latest development version."] = true
 L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = true
 L["Load Distance"] = true
 L["Local Time"] = true
@@ -919,6 +924,7 @@ L["Pets"] = true
 L["PetTarget"] = true
 L["Phase Indicator"] = true
 L["Pin Voice Buttons"] = true
+L["Player Bars"] = true
 L["Player Can Attack"] = true
 L["Player Can Not Attack"] = true
 L["Player Frame Aura Bars"] = true
@@ -1176,6 +1182,8 @@ L["Style Filter"] = true
 L["Style"] = true
 L["Subzone Name"] = true
 L["Summon Icon"] = true
+L["Support & Download"] = true
+L["Support Forum"] = true
 L["Swap to Alt Power"] = true
 L["Tab Font Outline"] = true
 L["Tab Font Size"] = true
@@ -1227,7 +1235,6 @@ L["The display format of the currency icons that get displayed below the main ba
 L["The display format of the money text that is shown at the top of the main bag."] = true
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true
 L["The first button anchors itself to this point on the bar."] = true
-L["The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."] = true
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true
 L["The font that the core of the UI will use."] = true
@@ -1450,13 +1457,20 @@ L["BAGS_DESC"] = "Adjust bag settings for ElvUI."
 L["CHAT_DESC"] = "Adjust chat settings for ElvUI."
 L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
 L["DATATEXT_DESC"] = "Setup the on-screen display of info-texts."
-L["ELVUI_DESC"] = "ElvUI is a complete User Interface replacement addon for World of Warcraft."
+L["ELVUI_DESC"] = "|cffff8000ElvUI|r is a complete User Interface replacement addon for World of Warcraft."
 L["NAMEPLATE_DESC"] = "Modify the nameplate settings."
 L["PANEL_DESC"] = "Adjust the size of your left and right panels, this will effect your chat and bags."
 L["SKINS_DESC"] = "Adjust Skin settings."
 L["TOGGLESKIN_DESC"] = "Enable/Disable this skin."
 L["TOOLTIP_DESC"] = "Setup options for the Tooltip."
 L["UNITFRAME_DESC"] = "Modify the unitframe settings."
+L["VISIBILITY_DESC"] = [=[The following macro must be true in order for the group to be shown, in addition to any filter that may already be set.
+
+|cffff8000Defaults:|r
+    Party: [@raid6,exists][nogroup] hide;show
+    Raid: [@raid6,noexists][@raid26,exists] hide;show
+    Raid40: [@raid26,noexists] hide;show]
+    Raid Pet: [group:raid] show; hide]=]
 L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 Specific Searching:

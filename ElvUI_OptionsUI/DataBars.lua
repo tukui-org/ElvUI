@@ -27,11 +27,6 @@ E.Options.args.databars = {
 			type = "group",
 			name = L["XPBAR_LABEL"],
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["XPBAR_LABEL"],
-				},
 				enable = {
 					order = 1,
 					type = "toggle",
@@ -132,11 +127,6 @@ E.Options.args.databars = {
 			type = "group",
 			name = L["REPUTATION"],
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["REPUTATION"],
-				},
 				enable = {
 					order = 1,
 					type = "toggle",
@@ -164,11 +154,6 @@ E.Options.args.databars = {
 					order = 5,
 					type = "toggle",
 					name = L["Reverse Fill Direction"],
-				},
-				spacer = {
-					order = 6,
-					type = "description",
-					name = " ",
 				},
 				orientation = {
 					order = 7,
@@ -236,11 +221,6 @@ E.Options.args.databars = {
 			type = "group",
 			name = L["HONOR"],
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["HONOR"],
-				},
 				enable = {
 					order = 1,
 					type = "toggle",
@@ -347,11 +327,6 @@ E.Options.args.databars = {
 			type = "group",
 			name = L["Azerite Bar"],
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Azerite Bar"],
-				},
 				enable = {
 					order = 1,
 					type = "toggle",

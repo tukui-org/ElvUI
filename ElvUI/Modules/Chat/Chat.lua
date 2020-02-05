@@ -174,64 +174,74 @@ local rolePaths = {
 	DAMAGER = E:TextureString(E.Media.Textures.DPS, ":15:15")
 }
 
-local specialChatIcons, itsSimpy, SimpysText
+local specialChatIcons
 do --this can save some main file locals
 	local x, y = ':16:16',':13:25'
 
-	--local ElvMelon	= E:TextureString(E.Media.ChatLogos.ElvMelon,y)
-	--local ElvRainbow	= E:TextureString(E.Media.ChatLogos.ElvRainbow,y)
-	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed,y)
-	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
-	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
-	local ElvGreen		= E:TextureString(E.Media.ChatLogos.ElvGreen,y)
 	local ElvBlue		= E:TextureString(E.Media.ChatLogos.ElvBlue,y)
-	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
+	local ElvGreen		= E:TextureString(E.Media.ChatLogos.ElvGreen,y)
+	local ElvMelon		= E:TextureString(E.Media.ChatLogos.ElvMelon,y)
+	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
 	local ElvPink		= E:TextureString(E.Media.ChatLogos.ElvPink,y)
+	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
+	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed,y)
+	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
 	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
 	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
+	local Hibiscus		= E:TextureString(E.Media.ChatLogos.Hibiscus,x)
+	local Clover		= E:TextureString(E.Media.ChatLogos.Clover,x)
+	local Burger		= E:TextureString(E.Media.ChatLogos.Burger,x)
+	local Lion			= E:TextureString(E.Media.ChatLogos.Lion,x)
 
-	do	-- simpy chaos:
-		--- new icon color every message, in order then reversed back, repeatedly
+	--[[ Simpys Things
+		-- new icon color every message, in order then reversed back, repeating of course
 		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
-		itsSimpy = function() a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a] end
+		(a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a])
+	]]
 
-		--- gradient text, ignoring hyperlinks and keywords
-		local e, f, g = {'|%x+|H.-|h.-|h|r', '|H.-|h.-|h', '|T.-|t', '|c.-|r'}, {}, {}
-		local gradient = function(t) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'), 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82),'\27','%%%%'),'\26','||') end
-		local protect = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\24') end
-		SimpysText = function(t) local u = t
-			for _, w in ipairs(e) do for k in gmatch(t, w) do t = protect(t, u, k) end end
-			t = gradient(t) --Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
-			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end
-			return t
+	local itsElv, itsMis, itsMel, itsSimpyA, itsSimpyH
+	do	--Simpy Chaos
+		--super cute text coloring function that ignores hyperlinks and keywords
+		local e, f, g = {'|%x+%[?|H.-|h.-|h]?|r', '|H.-|h.-|h', '|[TA].-|[ta]', '|c.-|r'}, {}, {}
+		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
+		local protectText = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\24') end
+		local specialText = function(t,...) local u = t for _, w in ipairs(e) do for k in gmatch(t, w) do t = protectText(t, u, k) end end t = prettify(t,...)
+			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
+
+		--Watermelon: 909090 (Light Slate Grey), FA6687 (Light Coral) x2, 73FA9B (Pale Green)
+		local SimpyColors = function(t) return specialText(t, 0.45,0.45,0.45, 0.98,0.4,0.53, 0.98,0.4,0.53, 0.45,0.98,0.45) end
+		--Detroit Lions Colors: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
+		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
+		--Rainbow (8 Colors: 253,62,68, 254,152,73, 255,222,75, 109,253,101, 84,196,252, 163,93,250, 198,121,251, 254,129,193)
+		local MisColors = function(t) return specialText(t, 0.99,0.24,0.26, 0.99,0.59,0.28, 1.00,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.50,0.75) end
+		--Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
+		local MelColors = function(t) return specialText(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
+
+		itsSimpyH = function() return Burger..ElvMelon, SimpyColors end
+		itsSimpyA = function() return Lion..ElvMelon, SimpyColors end
+		itsMel = function() return Hibiscus, MelColors end
+		itsElv = function() return ElvBlue, ElvColors end
+		itsMis = function() return Rainbow, MisColors end
 	end
 
-	local classNihilist = {
-		DEATHKNIGHT	= ElvRed,
-		DEMONHUNTER	= ElvPurple,
-		DRUID		= ElvOrange,
-		HUNTER		= ElvGreen,
-		MAGE		= ElvBlue,
-		MONK		= ElvGreen,
-		PALADIN		= ElvPink,
-		PRIEST		= ElvPink,
-		ROGUE		= ElvYellow,
-		SHAMAN		= ElvBlue,
-		WARLOCK		= ElvPurple,
-		WARRIOR		= ElvOrange
-	}
-
 	local itsTheFlyestNihilist = function(class)
-		return classNihilist[class]
+		return E:TextureString(E.Media.ChatLogos["Fox"..class],x)
 	end
 
 	specialChatIcons = {
 		-- Elv
-		["Illidelv-Area52"]		= ElvBlue,
-		["Elvz-Kil'jaeden"]		= ElvBlue,
-		["Elv-Spirestone"]		= ElvBlue,
+		["Elv-Spirestone"]			= itsElv,
+		["Elvz-Spirestone"]			= itsElv,
+		["Fleshlite-Spirestone"]	= itsElv,
+		["Elvidan-Spirestone"]		= itsElv,
+		["Elvilas-Spirestone"]		= itsElv,
+		["Fraku-Spirestone"]		= itsElv,
+		["Jarvix-Spirestone"]		= itsElv,
+		["Watermelon-Spirestone"]	= itsElv,
+		["Zinxbe-Spirestone"]		= itsElv,
+		["Whorlock-Spirestone"]		= itsElv,
 		-- Blazeflack
 		["Blazii-Silvermoon"]	= ElvBlue, -- Priest
 		["Chazii-Silvermoon"]	= ElvBlue, -- Shaman
@@ -244,36 +254,55 @@ do --this can save some main file locals
 		["Tierone-Spirestone"]	= "Dr. ",
 		["Tirain-Spirestone"]	= MrHankey,
 		["Sinth-Spirestone"]	= MrHankey,
+		["Tee-Spirestone"]		= MrHankey,
 		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
-		["Misdîrect-Spirestone"]	= Rainbow,
-		["Misoracle-Spirestone"]	= Rainbow,
-		["MisLight-Spirestone"]		= Rainbow,
-		["MisDivine-Spirestone"]	= Rainbow,
-		["MisLust-Spirestone"]		= Rainbow,
-		["MisMayhem-Spirestone"]	= Rainbow,
-		["Mismonk-Spirestone"]		= Rainbow,
-		["Misillidan-Spirestone"]	= Rainbow,
-		["Mispel-Spirestone"]		= Rainbow,
-		["Misdecay-Spirestone"]		= Rainbow,
-		--NihilisticPandemonium
-		["Zistraeti-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
-		["Sagome-WyrmrestAccord"]		= itsTheFlyestNihilist("MONK"),
-		["Onaguda-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
-		["Haelini-WyrmrestAccord"]		= itsTheFlyestNihilist("PRIEST"),
-		["Nenalia-WyrmrestAccord"]		= itsTheFlyestNihilist("MAGE"),
-		["Alailais-WyrmestAccord"]		= itsTheFlyestNihilist("DEMONHUNTER"),
-		["Muiride-WyrmestAccord"]		= itsTheFlyestNihilist("DEATHKNIGHT"),
-		["Monelia-WyrmrestAccord"]		= itsTheFlyestNihilist("PALADIN"),
-		["Huanyue-WyrmrestAccord"]		= itsTheFlyestNihilist("SHAMAN"),
-		["Galiseda-WyrmestAccord"]		= itsTheFlyestNihilist("ROGUE"),
-		["Naldydi-WyrmrestAccord"]		= itsTheFlyestNihilist("HUNTER"),
-		["Caylasena-WyrmestAccord"]		= itsTheFlyestNihilist("WARRIOR"),
-		["Elaedarel-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
-		["Alydrer-WyrmrestAccord"]		= itsTheFlyestNihilist("WARLOCK"),
-		["Issia-WyrmrestAccord"]		= itsTheFlyestNihilist("PRIEST"),
-		["Leitara-WyrmrestAccord"]		= itsTheFlyestNihilist("WARRIOR"),
-		["Cherlyth-WyrmrestAccord"]		= itsTheFlyestNihilist("DRUID"),
-		["Tokashami-WyrmrestAccord"]		= itsTheFlyestNihilist("SHAMAN"),
+		["Misdîrect-Spirestone"]	= itsMis,
+		["Misoracle-Spirestone"]	= itsMis,
+		["MisLight-Spirestone"]		= itsMis,
+		["MisDivine-Spirestone"]	= itsMis,
+		["MisMayhem-Spirestone"]	= itsMis,
+		["Mismonk-Spirestone"]		= itsMis,
+		["Misillidan-Spirestone"]	= itsMis,
+		["Mispel-Spirestone"]		= itsMis,
+		["Misdecay-Spirestone"]		= itsMis,
+		["Mislust-Spirestone"] 		= itsMis,
+		-- Luckyone
+		["Luckyone-Gorgonnash"]		= Clover,
+		["Luckypriest-Gorgonnash"]	= Clover,
+		["Luckymonkas-Blackrock"]	= Clover,
+		["Luckysabers-Blackrock"]	= Clover,
+		["Luckydemon-Blackrock"]	= Clover,
+		["Luckymage-Blackrock"]		= Clover,
+		["Luckyshaman-Blackrock"]	= Clover,
+		["Luckylockx-Blackrock"]	= Clover,
+		["Luckybow-Blackrock"]		= Clover,
+		["Luckypepega-Blackrock"]	= Clover,
+		["Luckypoggers-Blackrock"]	= Clover,
+		["Luckyclap-Blackrock"]		= Clover,
+		-- NihilisticPandemonium
+		["Dirishia-WyrmrestAccord"]		= itsTheFlyestNihilist("Warlock"),
+		["Xanikani-WyrmrestAccord"]		= itsTheFlyestNihilist("Mage"),
+		["Rikanza-WyrmrestAccord"]		= itsTheFlyestNihilist("Monk"),
+		["Onaguda-WyrmrestAccord"]		= itsTheFlyestNihilist("Druid"),
+		["Cerishia-WyrmrestAccord"]		= itsTheFlyestNihilist("Priest"),
+		["Vellilara-WyrmestAccord"]		= itsTheFlyestNihilist("DemonHunter"),
+		["Sayalia-WyrmestAccord"]		= itsTheFlyestNihilist("DeathKnight"),
+		["Pakasta-WyrmrestAccord"]		= itsTheFlyestNihilist("Paladin"),
+		["Orlyrala-WyrmrestAccord"]		= itsTheFlyestNihilist("Shaman"),
+		["Scerila-WyrmestAccord"]		= itsTheFlyestNihilist("Rogue"),
+		["Ralaniki-WyrmrestAccord"]		= itsTheFlyestNihilist("Hunter"),
+		["Moyanza-WyrmestAccord"]		= itsTheFlyestNihilist("Warrior"),
+		["Erasaya-WyrmrestAccord"]		= itsTheFlyestNihilist("DeathKnight"),
+		["Linabla-WyrmrestAccord"]		= itsTheFlyestNihilist("Druid"),
+		["Dirikoa-WyrmrestAccord"]		= itsTheFlyestNihilist("Hunter"),
+		["Elaedarel-WyrmrestAccord"]	= itsTheFlyestNihilist("Warlock"),
+		["Alydrer-WyrmrestAccord"]		= itsTheFlyestNihilist("Warlock"),
+		["Issia-WyrmrestAccord"]		= itsTheFlyestNihilist("Priest"),
+		["Leitara-WyrmrestAccord"]		= itsTheFlyestNihilist("Warrior"),
+		["Cherlyth-WyrmrestAccord"]		= itsTheFlyestNihilist("Druid"),
+		["Tokashami-WyrmrestAccord"]	= itsTheFlyestNihilist("Shaman"),
+		["Millop-WyrmrestAccord"]		= itsTheFlyestNihilist("Hunter"),
+		["Aeondalew-WyrmrestAccord"]	= itsTheFlyestNihilist("DeathKnight"),
 		-- Merathilis
 		["Asragoth-Shattrath"]			= ElvPurple,	-- [Alliance] Warlock
 		["Brítt-Shattrath"] 			= ElvBlue,		-- [Alliance] Warrior
@@ -286,27 +315,38 @@ do --this can save some main file locals
 		["Merathilis-Shattrath"]		= ElvOrange,	-- [Alliance] Druid
 		["Merathilîs-Shattrath"]		= ElvBlue,		-- [Alliance] Shaman
 		-- Simpy
-		["Arieva-Cenarius"]				= itsSimpy, -- Hunter
-		["Buddercup-Cenarius"]			= itsSimpy, -- Rogue
-		["Cutepally-Cenarius"]			= itsSimpy, -- Paladin
-		["Ezek-Cenarius"]				= itsSimpy, -- DK
-		["Glice-Cenarius"]				= itsSimpy, -- Warrior
-		["Kalline-Cenarius"]			= itsSimpy, -- Shaman
-		["Puttietat-Cenarius"]			= itsSimpy, -- Druid
-		["Simpy-Cenarius"]				= itsSimpy, -- Warlock
-		["Twigly-Cenarius"]				= itsSimpy, -- Monk
-		["Imsobeefy-Cenarius"]			= itsSimpy, -- [Horde] Shaman
-		["Imsocheesy-Cenarius"]			= itsSimpy, -- [Horde] Priest
-		["Imsojelly-Cenarius"]			= itsSimpy, -- [Horde] DK
-		["Imsojuicy-Cenarius"]			= itsSimpy, -- [Horde] Druid
-		["Imsopeachy-Cenarius"]			= itsSimpy, -- [Horde] DH
-		["Imsosalty-Cenarius"]			= itsSimpy, -- [Horde] Paladin
-		["Imsospicy-Cenarius"]			= itsSimpy, -- [Horde] Mage
-		["Bunne-CenarionCircle"]		= itsSimpy, -- [RP] Warrior
-		["Loppie-CenarionCircle"]		= itsSimpy, -- [RP] Hunter
-		["Loppybunny-CenarionCircle"]	= itsSimpy, -- [RP] Mage
-		["Rubee-CenarionCircle"]		= itsSimpy, -- [RP] DH
-		["Wennie-CenarionCircle"]		= itsSimpy, -- [RP] Priest
+		["Arieva-Cenarius"]				= itsSimpyA, -- Hunter
+		["Buddercup-Cenarius"]			= itsSimpyA, -- Rogue
+		["Cutepally-Cenarius"]			= itsSimpyA, -- Paladin
+		["Ezek-Cenarius"]				= itsSimpyA, -- DK
+		["Glice-Cenarius"]				= itsSimpyA, -- Warrior
+		["Kalline-Cenarius"]			= itsSimpyA, -- Shaman
+		["Puttietat-Cenarius"]			= itsSimpyA, -- Druid
+		["Simpy-Cenarius"]				= itsSimpyA, -- Warlock
+		["Twigly-Cenarius"]				= itsSimpyA, -- Monk
+		["Imsobeefy-Cenarius"]			= itsSimpyH, -- [Horde] Shaman
+		["Imsocheesy-Cenarius"]			= itsSimpyH, -- [Horde] Priest
+		["Imsojelly-Cenarius"]			= itsSimpyH, -- [Horde] DK
+		["Imsojuicy-Cenarius"]			= itsSimpyH, -- [Horde] Druid
+		["Imsopeachy-Cenarius"]			= itsSimpyH, -- [Horde] DH
+		["Imsosalty-Cenarius"]			= itsSimpyH, -- [Horde] Paladin
+		["Imsospicy-Cenarius"]			= itsSimpyH, -- [Horde] Mage
+		["Bunne-CenarionCircle"]		= itsSimpyA, -- [RP] Warrior
+		["Loppie-CenarionCircle"]		= itsSimpyA, -- [RP] Hunter
+		["Loppybunny-CenarionCircle"]	= itsSimpyA, -- [RP] Mage
+		["Rubee-CenarionCircle"]		= itsSimpyA, -- [RP] DH
+		["Wennie-CenarionCircle"]		= itsSimpyA, -- [RP] Priest
+		-- Melbelle (Simpys Bestie)
+		["Deathchaser-Bladefist"]		= itsMel, -- DH
+		["Melbelle-Bladefist"]			= itsMel, -- Hunter
+		["Alykins-Cenarius"]			= itsMel, -- DH
+		["Alyosha-Cenarius"]			= itsMel, -- Warrior
+		["Alytotes-Cenarius"]			= itsMel, -- Shaman
+		["Autymnflower-Cenarius"]		= itsMel, -- Shaman
+		["Celesteia-Cenarius"]			= itsMel, -- Paladin
+		["Chaosfire-Cenarius"]			= itsMel, -- Warlock
+		["Melbelle-Cenarius"]			= itsMel, -- Druid
+		["Spãrkles-Cenarius"]			= itsMel, -- Mage
 	}
 end
 
@@ -644,7 +684,7 @@ do
 	end
 	removeIconFromLine = function(text)
 		text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", raidIconFunc) --converts raid icons into {star} etc, if possible.
-		text = gsub(text, "(%s?)(|?)|T.-|t(%s?)", stripTextureFunc) --strip any other texture out but keep a single space from the side(s).
+		text = gsub(text, "(%s?)(|?)|[TA].-|[ta](%s?)", stripTextureFunc) --strip any other texture out but keep a single space from the side(s).
 		text = gsub(text, "(|?)|H(.-)|h(.-)|h", hyperLinkFunc) --strip hyperlink data only keeping the actual text.
 		return text
 	end
@@ -1604,11 +1644,11 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			-- Player Flags
 			local pflag, chatIcon, pluginChatIcon = "", specialChatIcons[playerName], CH:GetPluginIcon(playerName)
 			if type(chatIcon) == 'function' then
-				if chatIcon == itsSimpy and not CH:MessageIsProtected(message) then
-					message = SimpysText(message)
+				local icon, prettify = chatIcon()
+				if prettify and not CH:MessageIsProtected(message) then
+					message = prettify(message)
 				end
-
-				chatIcon = chatIcon()
+				chatIcon = icon or ''
 			end
 
 			if arg6 ~= "" then -- Blizzard Flags

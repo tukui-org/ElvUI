@@ -7,7 +7,7 @@ local strfind = strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local SetUIPanelAttribute = SetUIPanelAttribute
-local MOUSE_LABEL = MOUSE_LABEL:gsub("|T.-|t","")
+local MOUSE_LABEL = MOUSE_LABEL:gsub("|[TA].-|[ta]","")
 local PLAYER = PLAYER
 local hooksecurefunc = hooksecurefunc
 local IsPlayerMoving = IsPlayerMoving

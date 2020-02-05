@@ -35,11 +35,6 @@ E.Options.args.chat = {
 			name = L["General"],
 			disabled = function() return not E.Chat.Initialized; end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["General"],
-				},
 				url = {
 					order = 1,
 					type = 'toggle',
@@ -206,11 +201,84 @@ E.Options.args.chat = {
 					desc = L["Number of messages you scroll for each step."],
 					min = 1, max = 10, step = 1,
 				},
-				voicechatGroup = {
+				fontGroup = {
+					order = 20,
+					type = 'group',
+					name = L["Fonts"],
+					disabled = function() return not E.Chat.Initialized; end,
+					set = function(info, value) E.db.chat[info[#info]] = value; CH:SetupChat() end,
+					args = {
+						font = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 1,
+							name = L["Font"],
+							values = AceGUIWidgetLSMlists.font,
+						},
+						fontOutline = {
+							order = 2,
+							name = L["Font Outline"],
+							desc = L["Set the font outline."],
+							type = "select",
+							values = C.Values.FontFlags,
+						},
+						tabFont = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 4,
+							name = L["Tab Font"],
+							values = AceGUIWidgetLSMlists.font,
+						},
+						tabFontSize = {
+							order = 5,
+							name = L["Tab Font Size"],
+							type = "range",
+							min = 4, max = 212, step = 1,
+						},
+						tabFontOutline = {
+							order = 6,
+							name = L["Tab Font Outline"],
+							desc = L["Set the font outline."],
+							type = "select",
+							values = C.Values.FontFlags,
+						},
+					},
+				},
+				alerts = {
 					order = 21,
 					type = 'group',
+					name = L["Alerts"],
+					disabled = function() return not E.Chat.Initialized; end,
+					args = {
+						whisperSound = {
+							order = 1,
+							type = 'select', dialogControl = 'LSM30_Sound',
+							name = L["Whisper Alert"],
+							values = AceGUIWidgetLSMlists.sound,
+						},
+						keywordSound = {
+							order = 2,
+							type = 'select', dialogControl = 'LSM30_Sound',
+							name = L["Keyword Alert"],
+							values = AceGUIWidgetLSMlists.sound,
+						},
+						noAlertInCombat = {
+							order = 3,
+							type = "toggle",
+							name = L["No Alert In Combat"],
+						},
+						keywords = {
+							order = 4,
+							name = L["Keywords"],
+							desc = L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"],
+							type = 'input',
+							width = 'full',
+							set = function(info, value) E.db.chat[info[#info]] = value; CH:UpdateChatKeywords() end,
+						},
+					},
+				},
+				voicechatGroup = {
+					order = 22,
+					type = 'group',
 					name = L["BINDING_HEADER_VOICE_CHAT"],
-					guiInline = true,
 					args = {
 						hideVoiceButtons = {
 							order = 1,
@@ -246,10 +314,9 @@ E.Options.args.chat = {
 					},
 				},
 				timestampGroup = {
-					order = 22,
+					order = 23,
 					type = 'group',
 					name = L["TIMESTAMPS_LABEL"],
-					guiInline = true,
 					args = {
 						useCustomTimeColor = {
 							order = 1,
@@ -290,43 +357,53 @@ E.Options.args.chat = {
 						},
 					},
 				},
-			},
-		},
-		alerts = {
-			order = 4,
-			type = 'group',
-			name = L["Alerts"],
-			disabled = function() return not E.Chat.Initialized; end,
-			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Alerts"],
-				},
-				whisperSound = {
-					order = 1,
-					type = 'select', dialogControl = 'LSM30_Sound',
-					name = L["Whisper Alert"],
-					values = AceGUIWidgetLSMlists.sound,
-				},
-				keywordSound = {
-					order = 2,
-					type = 'select', dialogControl = 'LSM30_Sound',
-					name = L["Keyword Alert"],
-					values = AceGUIWidgetLSMlists.sound,
-				},
-				noAlertInCombat = {
-					order = 3,
-					type = "toggle",
-					name = L["No Alert In Combat"],
-				},
-				keywords = {
-					order = 4,
-					name = L["Keywords"],
-					desc = L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"],
-					type = 'input',
-					width = 'full',
-					set = function(info, value) E.db.chat[info[#info]] = value; CH:UpdateChatKeywords() end,
+				classColorMentionGroup = {
+					order = 24,
+					type = "group",
+					name = L["Class Color Mentions"],
+					disabled = function() return not E.Chat.Initialized; end,
+					args = {
+						classColorMentionsChat = {
+							order = 1,
+							type = "toggle",
+							name = L["Chat"],
+							desc = L["Use class color for the names of players when they are mentioned."],
+							get = function(info) return E.db.chat.classColorMentionsChat end,
+							set = function(info, value) E.db.chat.classColorMentionsChat = value end,
+							disabled = function() return not E.private.chat.enable end,
+						},
+						classColorMentionsSpeech = {
+							order = 2,
+							type = "toggle",
+							name = L["Chat Bubbles"],
+							desc = L["Use class color for the names of players when they are mentioned."],
+							get = function(info) return E.private.general.classColorMentionsSpeech end,
+							set = function(info, value) E.private.general.classColorMentionsSpeech = value; E:StaticPopup_Show("PRIVATE_RL") end,
+							disabled = function() return (E.private.general.chatBubbles == "disabled" or not E.private.chat.enable) end,
+						},
+						classColorMentionExcludeName = {
+							order = 21,
+							name = L["Exclude Name"],
+							desc = L["Excluded names will not be class colored."],
+							type = 'input',
+							get = function(info) return "" end,
+							set = function(info, value)
+								if value == "" or gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
+								E.global.chat.classColorMentionExcludedNames[strlower(value)] = value
+							end,
+						},
+						classColorMentionExcludedNames = {
+							order = 22,
+							type = "multiselect",
+							name = L["Excluded Names"],
+							values = function() return E.global.chat.classColorMentionExcludedNames end,
+							get = function(info, value)	return E.global.chat.classColorMentionExcludedNames[value] end,
+							set = function(info, value)
+								E.global.chat.classColorMentionExcludedNames[value] = nil
+								GameTooltip:Hide()--Make sure tooltip is properly hidden
+							end,
+						},
+					},
 				},
 			},
 		},
@@ -336,11 +413,6 @@ E.Options.args.chat = {
 			name = L["Panels"],
 			disabled = function() return not E.Chat.Initialized; end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Panels"],
-				},
 				lockPositions = {
 					order = 1,
 					type = 'toggle',
@@ -495,105 +567,6 @@ E.Options.args.chat = {
 					set = function(info, value)
 						E.db.chat[info[#info]] = value
 						E:UpdateMedia()
-					end,
-				},
-			},
-		},
-		fontGroup = {
-			order = 120,
-			type = 'group',
-			name = L["Fonts"],
-			disabled = function() return not E.Chat.Initialized; end,
-			set = function(info, value) E.db.chat[info[#info]] = value; CH:SetupChat() end,
-			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Fonts"],
-				},
-				font = {
-					type = "select", dialogControl = 'LSM30_Font',
-					order = 1,
-					name = L["Font"],
-					values = AceGUIWidgetLSMlists.font,
-				},
-				fontOutline = {
-					order = 2,
-					name = L["Font Outline"],
-					desc = L["Set the font outline."],
-					type = "select",
-					values = C.Values.FontFlags,
-				},
-				tabFont = {
-					type = "select", dialogControl = 'LSM30_Font',
-					order = 4,
-					name = L["Tab Font"],
-					values = AceGUIWidgetLSMlists.font,
-				},
-				tabFontSize = {
-					order = 5,
-					name = L["Tab Font Size"],
-					type = "range",
-					min = 4, max = 212, step = 1,
-				},
-				tabFontOutline = {
-					order = 6,
-					name = L["Tab Font Outline"],
-					desc = L["Set the font outline."],
-					type = "select",
-					values = C.Values.FontFlags,
-				},
-			},
-		},
-		classColorMentionGroup = {
-			order = 130,
-			type = "group",
-			name = L["Class Color Mentions"],
-			disabled = function() return not E.Chat.Initialized; end,
-			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Class Color Mentions"],
-				},
-				classColorMentionsChat = {
-					order = 1,
-					type = "toggle",
-					name = L["Chat"],
-					desc = L["Use class color for the names of players when they are mentioned."],
-					get = function(info) return E.db.chat.classColorMentionsChat end,
-					set = function(info, value) E.db.chat.classColorMentionsChat = value end,
-					disabled = function() return not E.private.chat.enable end,
-				},
-				classColorMentionsSpeech = {
-					order = 2,
-					type = "toggle",
-					name = L["Chat Bubbles"],
-					desc = L["Use class color for the names of players when they are mentioned."],
-					get = function(info) return E.private.general.classColorMentionsSpeech end,
-					set = function(info, value) E.private.general.classColorMentionsSpeech = value; E:StaticPopup_Show("PRIVATE_RL") end,
-					disabled = function() return (E.private.general.chatBubbles == "disabled" or not E.private.chat.enable) end,
-				},
-				classColorMentionExcludeName = {
-					order = 21,
-					name = L["Exclude Name"],
-					desc = L["Excluded names will not be class colored."],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value)
-						if value == "" or gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
-						E.global.chat.classColorMentionExcludedNames[strlower(value)] = value
-					end,
-				},
-				classColorMentionExcludedNames = {
-					order = 22,
-					type = "multiselect",
-					name = L["Excluded Names"],
-					values = function() return E.global.chat.classColorMentionExcludedNames end,
-					get = function(info, value)	return E.global.chat.classColorMentionExcludedNames[value] end,
-					set = function(info, value)
-						E.global.chat.classColorMentionExcludedNames[value] = nil
-						GameTooltip:Hide()--Make sure tooltip is properly hidden
 					end,
 				},
 			},

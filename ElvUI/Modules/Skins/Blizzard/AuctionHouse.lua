@@ -67,6 +67,10 @@ local function HandleSummaryIcons(frame)
 			if not child.IsSkinned then
 				S:HandleIcon(child.Icon)
 
+				if child.IconBorder then
+					child.IconBorder:SetAlpha(0)
+				end
+
 				child.IsSkinned = true
 			end
 		end

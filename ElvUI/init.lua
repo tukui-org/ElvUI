@@ -8,24 +8,20 @@
 ]]
 
 --Lua functions
-local _G, min, format, pairs, gsub, strsplit, unpack, wipe, type, tcopy = _G, min, format, pairs, gsub, strsplit, unpack, wipe, type, table.copy
+local _G = _G
+local format, gsub, type, tcopy = format, gsub, type, table.copy
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
-local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMetadata = GetAddOnMetadata
 local GetLocale = GetLocale
 local GetTime = GetTime
 local HideUIPanel = HideUIPanel
 local hooksecurefunc = hooksecurefunc
-local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
-local issecurevariable = issecurevariable
-local LoadAddOn = LoadAddOn
 local DisableAddOn = DisableAddOn
 local ReloadUI = ReloadUI
 
-local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local GameMenuButtonAddons = GameMenuButtonAddons
 local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuFrame = GameMenuFrame
@@ -37,16 +33,16 @@ local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
 
 local AddOnName, Engine = ...
-local AddOn = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0')
-AddOn.callbacks = AddOn.callbacks or CallbackHandler:New(AddOn)
-AddOn.DF = {profile = {}, global = {}}; AddOn.privateVars = {profile = {}} -- Defaults
-AddOn.Options = {type = 'group', name = AddOnName, args = {}}
+local E = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0')
+E.DF = {profile = {}, global = {}}; E.privateVars = {profile = {}} -- Defaults
+E.Options = {type = 'group', args = {}, childGroups = 'ElvUI_HiddenTree'}
+E.callbacks = E.callbacks or CallbackHandler:New(E)
 
-Engine[1] = AddOn
+Engine[1] = E
 Engine[2] = {}
-Engine[3] = AddOn.privateVars.profile
-Engine[4] = AddOn.DF.profile
-Engine[5] = AddOn.DF.global
+Engine[3] = E.privateVars.profile
+Engine[4] = E.DF.profile
+Engine[5] = E.DF.global
 _G.ElvUI = Engine
 
 do
@@ -54,15 +50,15 @@ do
 	local convert = {enGB = 'enUS', esES = 'esMX', itIT = 'enUS'}
 	local gameLocale = convert[locale] or locale or 'enUS'
 
-	function AddOn:GetLocale()
+	function E:GetLocale()
 		return gameLocale
 	end
 end
 
 do
-	AddOn.Libs = {}
-	AddOn.LibsMinor = {}
-	function AddOn:AddLib(name, major, minor)
+	E.Libs = {}
+	E.LibsMinor = {}
+	function E:AddLib(name, major, minor)
 		if not name then return end
 
 		-- in this case: `major` is the lib table and `minor` is the minor version
@@ -73,58 +69,61 @@ do
 		end
 	end
 
-	AddOn:AddLib('AceAddon', AceAddon, AceAddonMinor)
-	AddOn:AddLib('AceDB', 'AceDB-3.0')
-	AddOn:AddLib('EP', 'LibElvUIPlugin-1.0')
-	AddOn:AddLib('LSM', 'LibSharedMedia-3.0')
-	AddOn:AddLib('ACL', 'AceLocale-3.0-ElvUI')
-	AddOn:AddLib('LAB', 'LibActionButton-1.0-ElvUI')
-	AddOn:AddLib('LDB', 'LibDataBroker-1.1')
-	AddOn:AddLib('DualSpec', 'LibDualSpec-1.0')
-	AddOn:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
-	AddOn:AddLib('SpellRange', 'SpellRange-1.0')
-	AddOn:AddLib('ButtonGlow', 'LibButtonGlow-1.0', true)
-	AddOn:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
-	AddOn:AddLib('Compress', 'LibCompress')
-	AddOn:AddLib('Base64', 'LibBase64-1.0-ElvUI')
-	AddOn:AddLib('Masque', 'Masque', true)
-	AddOn:AddLib('Translit', 'LibTranslit-1.0')
+	E:AddLib('AceAddon', AceAddon, AceAddonMinor)
+	E:AddLib('AceDB', 'AceDB-3.0')
+	E:AddLib('EP', 'LibElvUIPlugin-1.0')
+	E:AddLib('LSM', 'LibSharedMedia-3.0')
+	E:AddLib('ACL', 'AceLocale-3.0-ElvUI')
+	E:AddLib('LAB', 'LibActionButton-1.0-ElvUI')
+	E:AddLib('LDB', 'LibDataBroker-1.1')
+	E:AddLib('DualSpec', 'LibDualSpec-1.0')
+	E:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
+	E:AddLib('SpellRange', 'SpellRange-1.0')
+	E:AddLib('ButtonGlow', 'LibButtonGlow-1.0', true)
+	E:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
+	E:AddLib('Compress', 'LibCompress')
+	E:AddLib('Base64', 'LibBase64-1.0-ElvUI')
+	E:AddLib('Masque', 'Masque', true)
+	E:AddLib('Translit', 'LibTranslit-1.0')
 	-- added on ElvUI_OptionsUI load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
 
 	-- backwards compatible for plugins
-	AddOn.LSM = AddOn.Libs.LSM
-	AddOn.Masque = AddOn.Libs.Masque
+	E.LSM = E.Libs.LSM
+	E.Masque = E.Libs.Masque
 end
 
-AddOn.oUF = Engine.oUF
-AddOn.ActionBars = AddOn:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0')
-AddOn.AFK = AddOn:NewModule('AFK','AceEvent-3.0','AceTimer-3.0')
-AddOn.Auras = AddOn:NewModule('Auras','AceHook-3.0','AceEvent-3.0')
-AddOn.Bags = AddOn:NewModule('Bags','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-AddOn.Blizzard = AddOn:NewModule('Blizzard','AceEvent-3.0','AceHook-3.0')
-AddOn.Chat = AddOn:NewModule('Chat','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-AddOn.DataBars = AddOn:NewModule('DataBars','AceEvent-3.0')
-AddOn.DataTexts = AddOn:NewModule('DataTexts','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-AddOn.DebugTools = AddOn:NewModule('DebugTools','AceEvent-3.0','AceHook-3.0')
-AddOn.Distributor = AddOn:NewModule('Distributor','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
-AddOn.Layout = AddOn:NewModule('Layout','AceEvent-3.0')
-AddOn.Minimap = AddOn:NewModule('Minimap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-AddOn.Misc = AddOn:NewModule('Misc','AceEvent-3.0','AceTimer-3.0')
-AddOn.ModuleCopy = AddOn:NewModule('ModuleCopy','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
-AddOn.NamePlates = AddOn:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-AddOn.PluginInstaller = AddOn:NewModule('PluginInstaller')
-AddOn.RaidUtility = AddOn:NewModule('RaidUtility','AceEvent-3.0')
-AddOn.Skins = AddOn:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-AddOn.Threat = AddOn:NewModule('Threat','AceEvent-3.0')
-AddOn.Tooltip = AddOn:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-AddOn.TotemBar = AddOn:NewModule('Totems','AceEvent-3.0')
-AddOn.UnitFrames = AddOn:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
-AddOn.WorldMap = AddOn:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.oUF = Engine.oUF
+E.ActionBars = E:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0')
+E.AFK = E:NewModule('AFK','AceEvent-3.0','AceTimer-3.0')
+E.Auras = E:NewModule('Auras','AceHook-3.0','AceEvent-3.0')
+E.Bags = E:NewModule('Bags','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.Blizzard = E:NewModule('Blizzard','AceEvent-3.0','AceHook-3.0')
+E.Chat = E:NewModule('Chat','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.DataBars = E:NewModule('DataBars','AceEvent-3.0')
+E.DataTexts = E:NewModule('DataTexts','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.DebugTools = E:NewModule('DebugTools','AceEvent-3.0','AceHook-3.0')
+E.Distributor = E:NewModule('Distributor','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
+E.Layout = E:NewModule('Layout','AceEvent-3.0')
+E.Minimap = E:NewModule('Minimap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.Misc = E:NewModule('Misc','AceEvent-3.0','AceTimer-3.0')
+E.ModuleCopy = E:NewModule('ModuleCopy','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
+E.NamePlates = E:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.PluginInstaller = E:NewModule('PluginInstaller')
+E.RaidUtility = E:NewModule('RaidUtility','AceEvent-3.0')
+E.Skins = E:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.Threat = E:NewModule('Threat','AceEvent-3.0')
+E.Tooltip = E:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.TotemBar = E:NewModule('Totems','AceEvent-3.0')
+E.UnitFrames = E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
+E.WorldMap = E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 
 do
-	local arg2,arg3 = '([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'
-	function AddOn:EscapeString(str)
-		return gsub(str,arg2,arg3)
+	local a1,a2,a3 = '','([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'
+	function E:EscapeString(s) return gsub(s,a2,a3) end
+
+	local a4,a5,a6,a7 = '|c[fF][fF]%x%x%x%x%x%x','|r','|[TA].-|[ta]','^%s*'
+	function E:StripString(s)
+		return gsub(gsub(gsub(gsub(s,a4,a1),a5,a1),a6,a1),a7,a1)
 	end
 end
 
@@ -137,7 +136,7 @@ do
 	DisableAddOn("ElvUI_CustomTweaks")
 end
 
-function AddOn:OnInitialize()
+function E:OnInitialize()
 	if not ElvCharacterDB then
 		ElvCharacterDB = {}
 	end
@@ -199,12 +198,9 @@ function AddOn:OnInitialize()
 	end
 
 	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
-	GameMenuButton:SetText(format('|cfffe7b2c%s|r', AddOnName))
-	GameMenuButton:SetScript('OnClick', function()
-		AddOn:ToggleOptionsUI()
-		HideUIPanel(GameMenuFrame)
-	end)
-	GameMenuFrame[AddOnName] = GameMenuButton
+	GameMenuButton:SetText(format('|cfffe7b2c%s|r', E.name))
+	GameMenuButton:SetScript('OnClick', function() E:ToggleOptionsUI() HideUIPanel(GameMenuFrame) end)
+	GameMenuFrame[E.name] = GameMenuButton
 
 	if not IsAddOnLoaded('ConsolePortUI_Menu') then -- #390
 		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
@@ -215,24 +211,24 @@ function AddOn:OnInitialize()
 	self.loadedtime = GetTime()
 end
 
-function AddOn:PositionGameMenuButton()
+function E:PositionGameMenuButton()
 	GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
 	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
-	if relTo ~= GameMenuFrame[AddOnName] then
-		GameMenuFrame[AddOnName]:ClearAllPoints()
-		GameMenuFrame[AddOnName]:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
+	if relTo ~= GameMenuFrame[E.name] then
+		GameMenuFrame[E.name]:ClearAllPoints()
+		GameMenuFrame[E.name]:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
 		GameMenuButtonLogout:ClearAllPoints()
-		GameMenuButtonLogout:Point('TOPLEFT', GameMenuFrame[AddOnName], 'BOTTOMLEFT', 0, offY)
+		GameMenuButtonLogout:Point('TOPLEFT', GameMenuFrame[E.name], 'BOTTOMLEFT', 0, offY)
 	end
 end
 
 local LoadUI=CreateFrame('Frame')
 LoadUI:RegisterEvent('PLAYER_LOGIN')
 LoadUI:SetScript('OnEvent', function()
-	AddOn:Initialize()
+	E:Initialize()
 end)
 
-function AddOn:ResetProfile()
+function E:ResetProfile()
 	local profileKey
 
 	local ElvPrivateDB = ElvPrivateDB
@@ -248,251 +244,6 @@ function AddOn:ResetProfile()
 	ReloadUI()
 end
 
-function AddOn:OnProfileReset()
+function E:OnProfileReset()
 	self:StaticPopup_Show('RESET_PROFILE_PROMPT')
-end
-
-function AddOn:ResetConfigSettings()
-	AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft = nil, nil
-	AddOn.global.general.AceGUI = AddOn:CopyTable({}, AddOn.DF.global.general.AceGUI)
-end
-
-function AddOn:GetConfigPosition()
-	return AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft
-end
-
-function AddOn:GetConfigSize()
-	return AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height
-end
-
-function AddOn:UpdateConfigSize(reset)
-	local frame = self.GUIFrame
-	if not frame then return end
-
-	local maxWidth, maxHeight = self.UIParent:GetSize()
-	frame:SetMinResize(600, 500)
-	frame:SetMaxResize(maxWidth-50, maxHeight-50)
-
-	self.Libs.AceConfigDialog:SetDefaultSize(AddOnName, self:GetConfigDefaultSize())
-
-	local status = frame.obj and frame.obj.status
-	if status then
-		if reset then
-			self:ResetConfigSettings()
-
-			status.top, status.left = self:GetConfigPosition()
-			status.width, status.height = self:GetConfigDefaultSize()
-
-			frame.obj:ApplyStatus()
-		else
-			local top, left = self:GetConfigPosition()
-			if top and left then
-				status.top, status.left = top, left
-
-				frame.obj:ApplyStatus()
-			end
-		end
-	end
-end
-
-function AddOn:GetConfigDefaultSize()
-	local width, height = AddOn:GetConfigSize()
-	local maxWidth, maxHeight = AddOn.UIParent:GetSize()
-	width, height = min(maxWidth-50, width), min(maxHeight-50, height)
-	return width, height
-end
-
-function AddOn:ConfigStopMovingOrSizing()
-	if self.obj and self.obj.status then
-		AddOn.configSavedPositionTop, AddOn.configSavedPositionLeft = AddOn:Round(self:GetTop(), 2), AddOn:Round(self:GetLeft(), 2)
-		AddOn.global.general.AceGUI.width, AddOn.global.general.AceGUI.height = AddOn:Round(self:GetWidth(), 2), AddOn:Round(self:GetHeight(), 2)
-	end
-end
-
-local pageNodes = {}
-function AddOn:ToggleOptionsUI(msg)
-	if InCombatLockdown() then
-		self:Print(ERR_NOT_IN_COMBAT)
-		self.ShowOptionsUI = true
-		return
-	end
-
-	if not IsAddOnLoaded('ElvUI_OptionsUI') then
-		local noConfig
-		local _, _, _, _, reason = GetAddOnInfo('ElvUI_OptionsUI')
-		if reason ~= 'MISSING' and reason ~= 'DISABLED' then
-			self.GUIFrame = false
-			LoadAddOn('ElvUI_OptionsUI')
-
-			--For some reason, GetAddOnInfo reason is 'DEMAND_LOADED' even if the addon is disabled.
-			--Workaround: Try to load addon and check if it is loaded right after.
-			if not IsAddOnLoaded('ElvUI_OptionsUI') then noConfig = true end
-
-			-- version check elvui options if it's actually enabled
-			if (not noConfig) and GetAddOnMetadata('ElvUI_OptionsUI', 'Version') ~= '1.07' then
-				self:StaticPopup_Show('CLIENT_UPDATE_REQUEST')
-			end
-		else
-			noConfig = true
-		end
-
-		if noConfig then
-			self:Print('|cffff0000Error -- Addon "ElvUI_OptionsUI" not found or is disabled.|r')
-			return
-		end
-	end
-
-	local ACD = self.Libs.AceConfigDialog
-	local ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
-
-	local pages, msgStr
-	if msg and msg ~= '' then
-		pages = {strsplit(',', msg)}
-		msgStr = gsub(msg, ',', '\001')
-	end
-
-	local mode = 'Close'
-	if not ConfigOpen or (pages ~= nil) then
-		if pages ~= nil then
-			local pageCount, index, mainSel = #pages
-			if pageCount > 1 then
-				wipe(pageNodes)
-				index = 0
-
-				local main, mainNode, mainSelStr, sub, subNode, subSel
-				for i = 1, pageCount do
-					if i == 1 then
-						main = pages[i] and ACD and ACD.Status and ACD.Status.ElvUI
-						mainSel = main and main.status and main.status.groups and main.status.groups.selected
-						mainSelStr = mainSel and ('^'..AddOn:EscapeString(mainSel)..'\001')
-						mainNode = main and main.children and main.children[pages[i]]
-						pageNodes[index+1], pageNodes[index+2] = main, mainNode
-					else
-						sub = pages[i] and pageNodes[i] and ((i == pageCount and pageNodes[i]) or pageNodes[i].children[pages[i]])
-						subSel = sub and sub.status and sub.status.groups and sub.status.groups.selected
-						subNode = (mainSelStr and msgStr:match(mainSelStr..AddOn:EscapeString(pages[i])..'$') and (subSel and subSel == pages[i])) or ((i == pageCount and not subSel) and mainSel and mainSel == msgStr)
-						pageNodes[index+1], pageNodes[index+2] = sub, subNode
-					end
-					index = index + 2
-				end
-			else
-				local main = pages[1] and ACD and ACD.Status and ACD.Status.ElvUI
-				mainSel = main and main.status and main.status.groups and main.status.groups.selected
-			end
-
-			if ConfigOpen and ((not index and mainSel and mainSel == msg) or (index and pageNodes and pageNodes[index])) then
-				mode = 'Close'
-			else
-				mode = 'Open'
-			end
-		else
-			mode = 'Open'
-		end
-	end
-
-	if ACD then
-		ACD[mode](ACD, AddOnName)
-	end
-
-	if mode == 'Open' then
-		ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames[AddOnName]
-		if ConfigOpen then
-			local frame = ConfigOpen.frame
-			if frame and not self.GUIFrame then
-				self.GUIFrame = frame
-				_G.ElvUIGUIFrame = self.GUIFrame
-
-				self:UpdateConfigSize()
-				hooksecurefunc(frame, 'StopMovingOrSizing', AddOn.ConfigStopMovingOrSizing)
-			end
-		end
-
-		if ACD and pages then
-			ACD:SelectGroup(AddOnName, unpack(pages))
-		end
-	end
-
-	_G.GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
-end
-
-do --taint workarounds by townlong-yak.com (rearranged by Simpy)
-	--CommunitiesUI			- https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
-	if (_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1 end
-	--CommunitiesUI #2		- https://www.townlong-yak.com/bugs/YhgQma-SetValueRefreshTaint
-	if (_G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION or 0) < 1 then _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION = 1 end
-
-	--	*NOTE* Simpy: these two were updated to fix an issue which was caused on the dropdowns with submenus
-	--HonorFrameLoadTaint	- https://www.townlong-yak.com/bugs/afKy4k-HonorFrameLoadTaint
-	if (_G.ELVUI_UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 1 then _G.ELVUI_UIDROPDOWNMENU_VALUE_PATCH_VERSION = 1 end
-	--RefreshOverread		- https://www.townlong-yak.com/bugs/Mx7CWN-RefreshOverread
-	if (_G.ELVUI_UIDD_REFRESH_OVERREAD_PATCH_VERSION or 0) < 1 then _G.ELVUI_UIDD_REFRESH_OVERREAD_PATCH_VERSION = 1 end
-
-	if _G.ELVUI_UIDROPDOWNMENU_VALUE_PATCH_VERSION == 1 or _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION == 1 or _G.ELVUI_UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
-		local function drop(t, k)
-			local c = 42
-			t[k] = nil
-			while not issecurevariable(t, k) do
-				if t[c] == nil then
-					t[c] = nil
-				end
-				c = c + 1
-			end
-		end
-
-		hooksecurefunc('UIDropDownMenu_InitializeHelper', function(frame)
-			if _G.ELVUI_UIDROPDOWNMENU_VALUE_PATCH_VERSION == 1 or _G.ELVUI_UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
-				for i=1, _G.UIDROPDOWNMENU_MAXLEVELS do
-					local d = _G['DropDownList' .. i]
-					if d and d.numButtons then
-						for j = d.numButtons+1, _G.UIDROPDOWNMENU_MAXBUTTONS do
-							local b, _ = _G['DropDownList' .. i .. 'Button' .. j]
-							if _G.ELVUI_UIDROPDOWNMENU_VALUE_PATCH_VERSION == 1 and not (issecurevariable(b, 'value') or b:IsShown()) then
-								b.value = nil
-								repeat j, b['fx' .. j] = j+1, nil
-								until issecurevariable(b, 'value')
-							end
-							if _G.ELVUI_UIDD_REFRESH_OVERREAD_PATCH_VERSION == 1 then
-								_ = issecurevariable(b, 'checked')      or drop(b, 'checked')
-								_ = issecurevariable(b, 'notCheckable') or drop(b, 'notCheckable')
-							end
-						end
-					end
-				end
-			end
-
-			if _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION == 1 then
-				if _G.UIDROPDOWNMENU_OPEN_MENU and _G.UIDROPDOWNMENU_OPEN_MENU ~= frame and not issecurevariable(_G.UIDROPDOWNMENU_OPEN_MENU, 'displayMode') then
-					_G.UIDROPDOWNMENU_OPEN_MENU = nil
-					local prefix, i = ' \0', 1
-					repeat i, _G[prefix .. i] = i + 1, nil
-					until issecurevariable(_G.UIDROPDOWNMENU_OPEN_MENU)
-				end
-			end
-		end)
-	end
-
-	if _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION == 1 then
-		local function CleanDropdowns()
-			if _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION == 1 then
-				local f, f2 = _G.FriendsFrame, _G.FriendsTabHeader
-				local s = f:IsShown()
-				f:Hide()
-				f:Show()
-				if not f2:IsShown() then
-					f2:Show()
-					f2:Hide()
-				end
-				if not s then
-					f:Hide()
-				end
-			end
-		end
-
-		hooksecurefunc('Communities_LoadUI', CleanDropdowns)
-		hooksecurefunc('SetCVar', function(n)
-			if n == 'lastSelectedClubId' then
-				CleanDropdowns()
-			end
-		end)
-	end
 end

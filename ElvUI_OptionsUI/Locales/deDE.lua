@@ -365,6 +365,7 @@ L["Desaturated Icon"] = "Entsättigtes Symbol"
 L["Descending"] = "Absteigend"
 L["Detach From Frame"] = "Vom Fenster lösen"
 L["Detached Width"] = "Freistehendes Breite"
+L["Development Version"] = "Entwicklungsversion"
 L["Direction the bag sorting will use to allocate the items."] = "Die Richtung, in welche die Gegenstände in den Taschen sortiert werden."
 L["Direction the bar moves on gains/losses"] = "Richtung in die der Balken wächst/sinkt"
 L["Direction the health bar moves when gaining/losing health."] = "Richtung in die sich die Lebensleiste aufbaut, wenn man Leben gewinnt oder verliert."
@@ -379,6 +380,7 @@ L["Disables the player and pet unitframes."] = "Deaktiviert das Spieler und Begl
 L["Disables the target and target of target unitframes."] = "Deaktiviert das Ziel und Ziel des Ziels Einheitenfenster."
 L["Disables the tutorial button found on some frames."] = "Deaktiviert die Tutorial Taste auf einigen Fenstern."
 L["Disconnected"] = "Nicht Verbunden"
+L["Discord"] = true --No need to translate
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "Zeige auf Schlachtfeldern oder in Arenen ein Heilersymbol über Heilern an."
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Zeige eine Leiste am unterem Bildschirmrand. Das ist rein kosmetisch."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Zeige eine Leiste am oberen Bildschirmrand. Das ist rein kosmetisch."
@@ -525,7 +527,6 @@ L["FRIENDLY_PLAYER"] = "Freundlicher Spieler"
 L["Full Overlay"] = "Volles Überblenden"
 L["Full"] = "Voll"
 L["Gems"] = "Edelsteine"
-L["General Options"] = "Allgemeine Optionen"
 L["General"] = "Allgemein"
 L["Global (Account Settings)"] = "Globale (Account Einstellungen)"
 L["Global Fade Transparency"] = "Globales Transparenz verblassen"
@@ -540,6 +541,7 @@ L["Good"] = "Gut"
 L["Gossip Frame"] = "Begrüßungsfenster"
 L["Group By"] = "Gruppiert durch"
 L["Group Spacing"] = "Gruppen Abstand"
+L["Group Units"] = "Gruppen Einheiten"
 L["Grouping & Sorting"] = "Gruppierung und Sortierung"
 L["Groups Per Row/Column"] = "Gruppen per Reihe/Spalte"
 L["Growth direction from the first unitframe."] = "Wachstumsrichtung von dem ersten Einheitenfenster."
@@ -685,7 +687,9 @@ L["Import Profile"] = "Importiere Profil"
 L["Importing"] = "Importiere"
 L["Index"] = "Index"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "Wenn du einen Stärkungszauber auf dich selber wirkst, zeige diesen zuerst in der Leiste."
+L["Individual Units"] = "Individuelle Einheiten"
 L["InfoPanel Border"] = "InfoPanel Rand"
+L["Information"] = true --No need to translate
 L["Information Panel"] = true --No need to translate. Probably
 L["Inherit Global Fade"] = "Globales verblassen vererben"
 L["Inherit the global fade, mousing over, targetting, setting focus, losing health, entering combat will set the remove transparency. Otherwise it will use the transparency level in the general actionbar settings for global fade alpha."] = "Vererbt das globale Verblassen, mouseover, anvisieren, Focus setzen, Gesundheit verlieren, Kampf betreten wird die Transparenz entfernen. Andernfalls wird das Transparenzlevel, in den allgemeinen Einstellungen der Aktionsleisten, globales verblassen Alpha verwendet."
@@ -740,6 +744,7 @@ L["LF Guild Frame"] = "LF Gilde Fenster"
 L["LFG Icons"] = "LFG Symbole"
 L["LFG Queue"] = "LFG Warteschlange"
 L["Limit the number of rows or columns."] = "Beschränkung für die Anzahl an Leisten oder Spalten."
+L["Link to the latest development version."] = "Link zur neusten Entwicklungsversion."
 L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "Liste der Wörter die farblich im Chat erscheinen, wenn sie in einer Nachricht gefunden werden. Wenn du möchtest, kannst du mehrere Wörter hinzufügen. Diese müssen durch ein Komma getrennt werden. Um deinen momentanen Namen zu suchen, benutze %MYNAME%.\n\nBeispiel:\n%MYNAME%, ElvUI, RBGs, Tank"
 L["Load Distance"] = "Anzeige Distanz"
 L["Local Time"] = "Lokale Zeit"
@@ -918,6 +923,7 @@ L["Pets"] = "Begleiter"
 L["PetTarget"] = "Begleiter Ziel"
 L["Phase Indicator"] = "Phasen Indikator"
 L["Pin Voice Buttons"] = "Pin Sprachtasten"
+L["Player Bars"] = "Speiler Leisten"
 L["Player Can Attack"] = "Spieler kann angreifen"
 L["Player Can Not Attack"] = "Spieler kann nicht angreifen"
 L["Player Frame Aura Bars"] = "Spielerfenster Aurenleiste"
@@ -1177,6 +1183,8 @@ L["Style Filter"] = "Stil Filter"
 L["Style"] = "Stil"
 L["Subzone Name"] = "Unterzonen Name"
 L["Summon Icon"] = "Beschwörungssymbol"
+L["Support & Download"] = true --No need to translate
+L["Support Forum"] = true --No need to translate
 L["Swap to Alt Power"] = "Wechsle auf Alternative Energie"
 L["Tab Font Outline"] = "Tab Schriftkontur"
 L["Tab Font Size"] = "Tab Schriftgröße"
@@ -1228,7 +1236,6 @@ L["The display format of the currency icons that get displayed below the main ba
 L["The display format of the money text that is shown at the top of the main bag."] = "Das Anzeigeformat für Gold oben an der Haupttasche."
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "Das Anzeigeformat für Gold in den Haupt-Infoleisten und Tooltips."
 L["The first button anchors itself to this point on the bar."] = "Der erste Aktionstaste dockt an diesen Punkt in der Leiste an."
-L["The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."] = "Das folgende Makro muss wahr sein um die Gruppe anzuzeigen. Dies gilt zusätzlich zu jeglichem Filter der möglicherweise bereits eingestellt ist."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Die Schrift, die über den Köpfen der Spieler auftaucht. |cffFF0000WARNUNG: Das benötigt einen Neustart des Spiels oder einen Relog um in Effekt zu treten.|r"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Die Schriftart des Kampftextes. |cffFF0000WARNUNG: Nach der änderung dieser Option muss das Spiel neu gestartet werden.|r"
 L["The font that the core of the UI will use."] = "Die Schriftart, die hauptsächlich vom UI verwendet wird."
@@ -1451,13 +1458,20 @@ L["BAGS_DESC"] = "Konfiguriere die Einstellungen für die Taschen."
 L["CHAT_DESC"] = "Anpassen der Chateinstellungen für ElvUI."
 L["COOLDOWN_DESC"] = "Passe Cooldown Einstellungen an."
 L["DATATEXT_DESC"] = "Bearbeite die Anzeige der Infotexte."
-L["ELVUI_DESC"] = "ElvUI ist ein komplettes Benutzerinterface für World of Warcraft."
+L["ELVUI_DESC"] = "|cffff8000ElvUI|r ist ein komplettes Benutzerinterface für World of Warcraft."
 L["NAMEPLATE_DESC"] = "Konfiguriere die Einstellungen für die Namensplaketten."
 L["PANEL_DESC"] = "Stellt die Größe der linken und rechten Leisten ein, dies hat auch Einfluss auf den Chat und die Taschen."
 L["SKINS_DESC"] = "Passe die Einstellungen für externe Addon Skins/Optionen an."
 L["TOGGLESKIN_DESC"] = "Aktiviere/Deaktiviere diesen Skin."
 L["TOOLTIP_DESC"] = "Konfiguriere die Einstellungen für Tooltips."
 L["UNITFRAME_DESC"] = "Konfiguriere die Einstellungen für die Einheitenfenster."
+L["VISIBILITY_DESC"] = [=[Das folgende Makro muss wahr sein um die Gruppe anzuzeigen. Dies gilt zusätzlich zu jeglichem Filter der möglicherweise bereits eingestellt ist.
+
+|cffff8000Standard:|r
+    Gruppe: [@raid6,exists][nogroup] hide;show
+    Schlachtzug: [@raid6,noexists][@raid26,exists] hide;show
+    40er Schlachtzung: [@raid26,noexists] hide;show
+    Schlachtzugsbegleiter: [group:raid] show; hide]=]
 L["SEARCH_SYNTAX_DESC"] = [=[Mit der Ergänzung von LibItemSearch, kannst du jetzt erweitert nach Gegenständen suchen. Nachfolgend findest du eine Dokumentation des Suchsyntax. Die volle Erklärung findest du hier: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 Spezifische Suche:
@@ -1535,7 +1549,7 @@ L["BINDING_HEADER_RAID_TARGET"] = "Zielmarkierungen";
 L["BINDING_HEADER_VOICE_CHAT"] = "Voicechat";
 L["BLACK_MARKET_AUCTION_HOUSE"] = "Schwarzmarkt-Auktionshaus";
 L["BLOCK"] = "Blocken";
-L["BUFFOPTIONS_LABEL"] = "Stärkungs- und Schwächungszauber";
+L["BUFFOPTIONS_LABEL"] = "Stärkungs-/Schwächungszauber"; --edited, cause fucking too long
 L["CHALLENGE_MODE"] = "Herausforderungsmodus";
 L["CHANNELS"] = "Channels";
 L["CHAT_MSG_EMOTE"] = "Emote";

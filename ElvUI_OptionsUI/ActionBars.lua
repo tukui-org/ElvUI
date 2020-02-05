@@ -41,7 +41,7 @@ E.Options.args.actionbar = {
 		general = {
 			order = 3,
 			type = "group",
-			name = L["General Options"],
+			name = L["General"],
 			disabled = function() return not E.ActionBars.Initialized; end,
 			args = {
 				toggleKeybind = {
@@ -699,11 +699,6 @@ E.Options.args.actionbar = {
 					desc = L["Change the alpha level of the frame."],
 					min = 0, max = 1, step = 0.1,
 				},
-				spacer = {
-					order = 4,
-					type = "description",
-					name = " ",
-				},
 				buttonSize = {
 					order = 5,
 					type = 'range',
@@ -724,11 +719,6 @@ E.Options.args.actionbar = {
 					name = L["Buttons Per Row"],
 					desc = L["The amount of buttons to display per row."],
 					min = 1, max = #MICRO_BUTTONS, step = 1,
-				},
-				spacer2 = {
-					order = 8,
-					type = "description",
-					name = " ",
 				},
 				visibility = {
 					type = 'input',
@@ -779,6 +769,7 @@ E.Options.args.actionbar = {
 			order = 18,
 			disabled = function() return not E.ActionBars.Initialized; end,
 			get = function(info) return E.db.actionbar.vehicleExitButton[info[#info]] end,
+			set = function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; AB:UpdateVehicleLeave() end,
 			args = {
 				enable = {
 					order = 1,
@@ -791,7 +782,6 @@ E.Options.args.actionbar = {
 					type = 'range',
 					name = L["Size"],
 					min = 16, max = 50, step = 1,
-					set = function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; AB:UpdateVehicleLeave() end,
 				},
 				level = {
 					order = 3,
@@ -814,12 +804,19 @@ E.Options.args.actionbar = {
 				},
 			},
 		},
+		playerBars = {
+			order = 4,
+			name = L["Player Bars"],
+			type = "group",
+			childGroups = "tree",
+			args = {},
+		},
 	},
 }
 
 for i = 1, 10 do
 	local name = L["Bar "]..i
-	E.Options.args.actionbar.args['bar'..i] = {
+	E.Options.args.actionbar.args.playerBars.args['bar'..i] = {
 		order = 3 + i,
 		name = name,
 		type = 'group',
@@ -842,11 +839,6 @@ for i = 1, 10 do
 				name = L["Restore Bar"],
 				desc = L["Restore the actionbars default settings"],
 				func = function() E:CopyTable(E.db.actionbar['bar'..i], P.actionbar['bar'..i]); E:ResetMovers('Bar '..i); AB:PositionAndSizeBar('bar'..i) end,
-			},
-			spacer = {
-				order = 2,
-				type = "description",
-				name = " ",
 			},
 			backdrop = {
 				order = 3,
@@ -996,7 +988,7 @@ for i = 1, 10 do
 	}
 end
 
-E.Options.args.actionbar.args.bar1.args.pagingReset = {
+E.Options.args.actionbar.args.playerBars.args.bar1.args.pagingReset = {
 	type = 'execute',
 	name = L["Reset Action Paging"],
 	order = 2,
@@ -1005,7 +997,7 @@ E.Options.args.actionbar.args.bar1.args.pagingReset = {
 	func = function() E.db.actionbar.bar1.paging[E.myclass] = P.actionbar.bar1.paging[E.myclass] AB:UpdateButtonSettings() end,
 }
 
-E.Options.args.actionbar.args.bar6.args.enabled.set = function(info, value)
+E.Options.args.actionbar.args.playerBars.args.bar6.args.enabled.set = function(info, value)
 	E.db.actionbar.bar6.enabled = value;
 	AB:PositionAndSizeBar("bar6")
 

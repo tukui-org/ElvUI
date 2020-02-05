@@ -368,11 +368,7 @@ local function UpdateTalentSection()
 				}
 				order = order + 1
 			end
-			E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers.args["spacer" .. i] = {
-				order = order,
-				type = "description",
-				name = " "
-			}
+
 			order = order + 1
 		end
 	end
@@ -723,11 +719,6 @@ local function UpdateFilterGroup()
 		E.Options.args.nameplate.args.filters.args.triggers = nil
 	end
 	if selectedNameplateFilter and E.global.nameplate.filters[selectedNameplateFilter] then
-		E.Options.args.nameplate.args.filters.args.header = {
-			order = 4,
-			type = "header",
-			name = selectedNameplateFilter
-		}
 		E.Options.args.nameplate.args.filters.args.triggers = {
 			type = "group",
 			name = L["Triggers"],
@@ -799,11 +790,6 @@ local function UpdateFilterGroup()
 						UpdateInstanceDifficulty()
 						NP:ConfigureAll()
 					end
-				},
-				spacer1 = {
-					order = 3,
-					type = "description",
-					name = " "
 				},
 				names = {
 					name = L["Name"],
@@ -1392,11 +1378,6 @@ local function UpdateFilterGroup()
 								return not E.global.nameplate.filters[selectedNameplateFilter].triggers.healthThreshold
 							end
 						},
-						spacer1 = {
-							order = 3,
-							type = "description",
-							name = " "
-						},
 						underHealthThreshold = {
 							order = 4,
 							type = "range",
@@ -1461,11 +1442,6 @@ local function UpdateFilterGroup()
 							disabled = function()
 								return not E.global.nameplate.filters[selectedNameplateFilter].triggers.powerThreshold
 							end
-						},
-						spacer1 = {
-							order = 3,
-							type = "description",
-							name = " "
 						},
 						underPowerThreshold = {
 							order = 4,
@@ -1563,11 +1539,6 @@ local function UpdateFilterGroup()
 									order = 4,
 									type = "toggle"
 								},
-								spacer1 = {
-									order = 5,
-									type = "description",
-									name = " "
-								},
 								LeftShift = {
 									name = L["Left Shift"],
 									order = 6,
@@ -1582,11 +1553,6 @@ local function UpdateFilterGroup()
 									name = L["Left Control"],
 									order = 8,
 									type = "toggle"
-								},
-								spacer2 = {
-									order = 9,
-									type = "description",
-									name = " "
 								},
 								RightShift = {
 									name = L["Right Shift"],
@@ -2628,11 +2594,6 @@ local function UpdateFilterGroup()
 										E:Print(format(L["Added Instance ID: %s"], instanceName.." ("..instanceID..")"))
 									end
 								},
-								spacer1 = {
-									order = 5,
-									type = "description",
-									name = " "
-								},
 								zoneName = {
 									order = 6,
 									type = "execute",
@@ -2784,11 +2745,6 @@ local function UpdateFilterGroup()
 						return E.global.nameplate.filters[selectedNameplateFilter].actions.hide
 					end
 				},
-				spacer1 = {
-					order = 4,
-					type = "description",
-					name = " "
-				},
 				scale = {
 					order = 5,
 					type = "range",
@@ -2859,11 +2815,6 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end
 						},
-						spacer1 = {
-							order = 3,
-							type = "description",
-							name = " "
-						},
 						power = {
 							name = L["Power"],
 							order = 4,
@@ -2887,11 +2838,6 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end
 						},
-						spacer2 = {
-							order = 6,
-							type = "description",
-							name = " "
-						},
 						border = {
 							name = L["Border"],
 							order = 7,
@@ -2914,11 +2860,6 @@ local function UpdateFilterGroup()
 								t.r, t.g, t.b, t.a = r, g, b, a
 								NP:ConfigureAll()
 							end
-						},
-						spacer3 = {
-							order = 9,
-							type = "description",
-							name = " "
 						},
 						name = {
 							name = L["Name"],
@@ -3094,7 +3035,7 @@ local function GetUnitSettings(unit, name)
 		type = "group",
 		order = ORDER,
 		name = name,
-		childGroups = "tab",
+		childGroups = "tree",
 		get = function(info)
 			return E.db.nameplates.units[unit][info[#info]]
 		end,
@@ -3163,13 +3104,7 @@ local function GetUnitSettings(unit, name)
 					NP:SetCVars()
 					NP:ConfigureAll()
 				end,
-				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["General"]
-					}
-				}
+				args = {}
 			},
 			healthGroup = {
 				order = 2,
@@ -3183,11 +3118,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Health"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -3345,11 +3275,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Power"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -3543,11 +3468,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Cast Bar"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -3792,11 +3712,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Buffs"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -4023,11 +3938,6 @@ local function GetUnitSettings(unit, name)
 									ACD:SelectGroup("ElvUI", "filters")
 								end
 							},
-							spacer1 = {
-								order = 4,
-								type = "description",
-								name = " "
-							},
 							specialFilters = {
 								order = 5,
 								type = "select",
@@ -4147,11 +4057,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Debuffs"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -4378,11 +4283,6 @@ local function GetUnitSettings(unit, name)
 									ACD:SelectGroup("ElvUI", "filters")
 								end
 							},
-							spacer1 = {
-								order = 4,
-								type = "description",
-								name = " "
-							},
 							specialFilters = {
 								order = 5,
 								type = "select",
@@ -4502,11 +4402,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Portrait"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -4570,11 +4465,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["LEVEL"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -4673,11 +4563,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Name"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -4777,11 +4662,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["PvP Indicator"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -4843,11 +4723,6 @@ local function GetUnitSettings(unit, name)
 					NP:ConfigureAll()
 				end,
 				args = {
-					header = {
-						order = 0,
-						type = "header",
-						name = L["Raid Icon"]
-					},
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -5084,11 +4959,6 @@ local function GetUnitSettings(unit, name)
 				NP:ConfigureAll()
 			end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Elite Icon"]
-				},
 				enable = {
 					order = 1,
 					name = L["Enable"],
@@ -5147,11 +5017,6 @@ local function GetUnitSettings(unit, name)
 				NP:ConfigureAll()
 			end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Quest Icon"]
-				},
 				enable = {
 					type = "toggle",
 					order = 1,
@@ -5322,11 +5187,6 @@ local function GetUnitSettings(unit, name)
 				NP:ConfigureAll()
 			end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["PvP Classification Indicator"]
-				},
 				enable = {
 					order = 1,
 					name = L["Enable"],
@@ -5386,11 +5246,6 @@ local function GetUnitSettings(unit, name)
 				NP:ConfigureAll()
 			end,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Name"]
-				},
 				enable = {
 					order = 1,
 					name = L["Enable"],
@@ -5511,7 +5366,7 @@ E.Options.args.nameplate = {
 		generalGroup = {
 			order = 25,
 			type = "group",
-			name = L["General Options"],
+			name = L["General"],
 			childGroups = "tab",
 			disabled = function()
 				return not E.NamePlates.Initialized
@@ -6682,16 +6537,6 @@ E.Options.args.nameplate = {
 									order = 4,
 									name = L["RUNES"]
 								},
-								spacer1 = {
-									order = 5,
-									type = "description",
-									name = " "
-								},
-								spacer2 = {
-									order = 20,
-									type = "description",
-									name = " "
-								}
 							}
 						}
 					}

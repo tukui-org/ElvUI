@@ -90,7 +90,7 @@ end
 
 local function Health_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Health
-	local maxV = UnitHealthMax(unit)
+	local maxV = (element.GetHealthMax or UnitHealthMax)(unit)
 	if Shared_UpdateCheckReturn(self, element, PRE, maxV) or UnitIsTapDenied(unit) then
 		return
 	end
@@ -127,7 +127,7 @@ end
 
 local function Power_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Power
-	local maxV = UnitPowerMax(unit)
+	local maxV = (element.GetPowerMax or UnitPowerMax)(unit)
 	if Shared_UpdateCheckReturn(self, element, PRE, maxV) then
 		return
 	end

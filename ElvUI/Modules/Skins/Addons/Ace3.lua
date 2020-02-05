@@ -1,15 +1,17 @@
 local E, _, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local next = next
 local gsub = gsub
 local ipairs = ipairs
 local select = select
 local format = format
+local unpack = unpack
 local tinsert = tinsert
 local strmatch = strmatch
---WoW API / Variables
+
+local RaiseFrameLevel = RaiseFrameLevel
+local LowerFrameLevel = LowerFrameLevel
 local hooksecurefunc = hooksecurefunc
 local getmetatable = getmetatable
 local setmetatable = setmetatable
@@ -73,20 +75,39 @@ function S:Ace3_EditBoxSetPoint(a, b, c, d, e)
 	if d == 7 then self:Point(a, b, c, 0, e) end
 end
 
-function S:Ace3_TabSetPoint(a, b, c, d, e, f)
-	if f ~= 'ignore' and a == 'TOPLEFT' then
-		self:SetPoint(a, b, c, d, e+2, 'ignore')
+function S:Ace3_TabSetSelected(selected)
+	local bd = self.backdrop
+	if not bd then return end
+
+	if selected then
+		bd:SetBackdropBorderColor(1, .82, 0, 1)
+		bd:SetBackdropColor(1, .82, 0, 0.4)
+
+		if not self.wasRaised then
+			RaiseFrameLevel(self)
+			self.wasRaised = true
+		end
+	else
+		local r, g, b = unpack(E.media.bordercolor)
+		bd:SetBackdropBorderColor(r, g, b, 1)
+		r, g, b = unpack(E.media.backdropcolor)
+		bd:SetBackdropColor(r, g, b, 1)
+
+		if self.wasRaised then
+			LowerFrameLevel(self)
+			self.wasRaised = nil
+		end
 	end
 end
 
 function S:Ace3_SkinTab(tab)
 	tab:StripTextures()
-
-	tab:CreateBackdrop()
+	tab:CreateBackdrop(nil, true, true)
 	tab.backdrop:Point('TOPLEFT', 10, -3)
 	tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
+	tab.text:SetPoint("LEFT", 14, -1)
 
-	hooksecurefunc(tab, 'SetPoint', S.Ace3_TabSetPoint)
+	hooksecurefunc(tab, 'SetSelected', S.Ace3_TabSetSelected)
 end
 
 function S:Ace3_RegisterAsWidget(widget)
@@ -280,6 +301,22 @@ end
 function S:Ace3_RefreshTree(scrollToSelection)
 	self.old_RefreshTree(self, scrollToSelection)
 	if not self.tree then return end
+
+	self.border:ClearAllPoints()
+	if self.userdata and self.userdata.option and self.userdata.option.childGroups == 'ElvUI_HiddenTree' then
+		self.border:Point("TOPLEFT", self.treeframe, "TOPRIGHT", 1, 13)
+		self.border:Point("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", 6, 0)
+		--self.userdata.rootframe.titletext:SetParent(self.border)
+		self.treeframe:Hide()
+		return
+	else
+		self.border:Point("TOPLEFT", self.treeframe, "TOPRIGHT")
+		self.border:Point("BOTTOMRIGHT", self.frame)
+		self.treeframe:Show()
+	end
+
+	if not E.private.skins.ace3.enable then return end
+
 	local status = self.status or self.localstatus
 	local groupstatus = status.groups
 	local lines = self.lines
@@ -334,12 +371,6 @@ function S:Ace3_RegisterAsContainer(widget)
 
 		if widget.treeframe then
 			widget.treeframe:SetTemplate('Transparent')
-			frame:Point('TOPLEFT', widget.treeframe, 'TOPRIGHT', 1, 0)
-
-			if not widget.old_RefreshTree then
-				widget.old_RefreshTree = widget.RefreshTree
-				widget.RefreshTree = S.Ace3_RefreshTree
-			end
 		end
 
 		if TYPE == 'TabGroup' then
@@ -425,17 +456,24 @@ function S:Ace3_MetaIndex(k, v)
 		rawset(self, k, v)
 		S:SecureHookScript(v, 'OnShow', S.Ace3_StylePopup)
 	elseif k == 'RegisterAsContainer' then
-		rawset(self, k, function(...)
+		rawset(self, k, function(s, w, ...)
 			if E.private.skins.ace3.enable then
-				S.Ace3_RegisterAsContainer(...)
+				S.Ace3_RegisterAsContainer(s, w, ...)
 			end
-			return v(...)
+
+			if w.treeframe and not w.old_RefreshTree then
+				w.old_RefreshTree = w.RefreshTree
+				w.RefreshTree = S.Ace3_RefreshTree
+			end
+
+			return v(s, w, ...)
 		end)
 	elseif k == 'RegisterAsWidget' then
 		rawset(self, k, function(...)
 			if E.private.skins.ace3.enable then
 				S.Ace3_RegisterAsWidget(...)
 			end
+
 			return v(...)
 		end)
 	else

@@ -19,11 +19,6 @@ E.Options.args.maps = {
 			type = "group",
 			name = L["WORLD_MAP"],
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["WORLD_MAP"],
-				},
 				generalGroup = {
 					order = 1,
 					type = "group",
@@ -88,11 +83,6 @@ E.Options.args.maps = {
 						},
 					},
 				},
-				spacer = {
-					order = 2,
-					type = "description",
-					name = "\n"
-				},
 				coordinatesGroup = {
 					order = 3,
 					type = "group",
@@ -106,11 +96,6 @@ E.Options.args.maps = {
 							desc = L["Puts coordinates on the world map."],
 							get = function(info) return E.global.general.WorldMapCoordinates.enable end,
 							set = function(info, value) E.global.general.WorldMapCoordinates.enable = value; E:StaticPopup_Show("GLOBAL_RL") end,
-						},
-						spacer = {
-							order = 2,
-							type = "description",
-							name = " "
 						},
 						position = {
 							order = 3,
@@ -157,11 +142,6 @@ E.Options.args.maps = {
 			get = function(info) return E.db.general.minimap[info[#info]] end,
 			childGroups = "tab",
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["MINIMAP_LABEL"],
-				},
 				generalGroup = {
 					order = 1,
 					type = "group",

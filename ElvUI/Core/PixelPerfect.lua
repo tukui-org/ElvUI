@@ -87,7 +87,7 @@ function E:PixelScaleChanged(event)
 	E:UIScale(true) --Repopulate variables
 	E:UIScale() --Setup the scale
 
-	E:UpdateConfigSize(true) --Reposition config
+	E:Config_UpdateSize(true) --Reposition config
 end
 
 function E:Scale(x)

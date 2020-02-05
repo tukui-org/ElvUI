@@ -18,7 +18,7 @@ function NP:Portrait_PostUpdate(unit)
 		self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
 		self:SetTexCoord(unpack(_G.CLASS_ICON_TCOORDS[class]))
 		self.backdrop:Hide()
-	elseif self.__owner.PortraitShown or (db.portrait and db.portrait.enable) then
+	elseif NP:StyleFilterCheckChanges(self.__owner, 'Portrait') or (db.portrait and db.portrait.enable) then
 		self:SetTexCoord(.18, .82, .18, .82)
 		self.backdrop:Show()
 	else
@@ -40,7 +40,7 @@ end
 function NP:Update_Portrait(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if nameplate.PortraitShown or (db.portrait and db.portrait.enable) then
+	if NP:StyleFilterCheckChanges(nameplate, 'Portrait') or (db.portrait and db.portrait.enable) then
 		if not nameplate:IsElementEnabled('Portrait') then
 			nameplate:EnableElement('Portrait')
 			nameplate.Portrait.backdrop:Show()

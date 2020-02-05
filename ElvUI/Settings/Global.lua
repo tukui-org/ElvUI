@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 --Global Settings
 G.general = {
 	UIScale = 0.64,
-	version = 11.33,
+	version = 11.34,
 	locale = E:GetLocale(),
 	eyefinity = false,
 	smallerWorldMap = true,
@@ -18,7 +18,7 @@ G.general = {
 		yOffset = 0
 	},
 	AceGUI = {
-		width = 1000,
+		width = 960,
 		height = 720
 	},
 	disableTutorialButtons = true,
