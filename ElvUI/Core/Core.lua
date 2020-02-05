@@ -1530,7 +1530,7 @@ function E:Initialize()
 	twipe(self.global)
 	twipe(self.private)
 
-	LSM.DefaultMedia.font = 'PT Sans Narrow'
+	LSM.DefaultMedia.font = 'Expressway'
 	LSM.DefaultMedia.statusbar = 'ElvUI Norm'
 
 	self.myguid = UnitGUID('player')
