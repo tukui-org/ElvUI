@@ -348,8 +348,8 @@ function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, min
 end
 
 function mod:StyleFilterCooldownCheck(names, mustHaveAll)
-	local total, count = 0, 0
 	local _, gcd = GetSpellCooldown(61304)
+	local total, count = 0, 0
 
 	for name, value in pairs(names) do
 		if GetSpellInfo(name) then -- check spell name valid, GetSpellCharges/GetSpellCooldown will return nil if not known by your class
@@ -409,12 +409,9 @@ function mod:StyleFilterUpdatePlate(frame, nameOnly)
 	mod:UpdatePlate(frame) -- enable elements back
 
 	if frame.frameType then
-		if mod.db.units[frame.frameType].health.enable then
-			frame.Health:ForceUpdate()
-		end
-		if mod.db.units[frame.frameType].power.enable then
-			frame.Power:ForceUpdate()
-		end
+		local db = mod.db.units[frame.frameType]
+		if db.health.enable then frame.Health:ForceUpdate() end
+		if db.power.enable then frame.Power:ForceUpdate() end
 	end
 
 	if mod.db.threat.enable and mod.db.threat.useThreatColor and not UnitIsTapDenied(frame.unit) then
