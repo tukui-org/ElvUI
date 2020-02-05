@@ -4,10 +4,12 @@
 
 
 **Bug Fixes:**  
-Portraits were being too clingy on Nameplates.  
+Party Pets, Party/Assist/Tank Target frames now remember their size setting.  
+Style Filters convinced Portraits into being too clingy on Nameplates.  
+Reversed Font Explosion Feature on CN, TW, and KR users (Azil says he is a badboi and very sorry <3).  
 
 **Misc. Changes:**  
-
+Organized more of the Unitrame section in options.  
 
 ___
 ### Version 11.341 [ February 4th 2020 ]

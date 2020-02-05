@@ -135,9 +135,9 @@ function UF:Update_AssistFrames(frame, db)
 				frame:SetParent(E.HiddenFrame)
 			end
 		end
+	else
+		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
-
-	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	--Health
 	UF:Configure_HealthBar(frame)
