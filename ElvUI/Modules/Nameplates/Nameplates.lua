@@ -440,9 +440,9 @@ function NP:SetNamePlateEnemyClickThrough()
 end
 
 function NP:Update_StatusBars()
-	for StatusBar in pairs(NP.StatusBars) do
-		local SF_HealthTexture = NP:StyleFilterCheckChanges(StatusBar:GetParent(), 'HealthTexture')
-		if not SF_HealthTexture then StatusBar:SetStatusBarTexture(E.LSM:Fetch("statusbar", NP.db.statusbar) or E.media.normTex) end
+	for bar in pairs(NP.StatusBars) do
+		local SF_HealthTexture = NP:StyleFilterCheckChanges(bar:GetParent(), 'HealthTexture')
+		if not SF_HealthTexture then bar:SetStatusBarTexture(E.LSM:Fetch("statusbar", NP.db.statusbar) or E.media.normTex) end
 	end
 end
 
