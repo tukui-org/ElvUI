@@ -7,6 +7,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local gsub = gsub
 local format = format
+local pairs = pairs
 local ipairs = ipairs
 local tinsert = tinsert
 --WoW API / Variables

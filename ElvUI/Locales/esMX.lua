@@ -49,7 +49,7 @@ L["Bank Mover (Grow Up)"] = "Fijador de Banco (Crecer hacia arriba)"
 L["Bank"] = "Banco"
 L["Bar "] = "Barra "
 L["Bars"] = "Barras"
-L["Battleground datatexts temporarily hidden, to show type /bgstats or right click the 'C' icon near the minimap."] = "Textos de datos de los campos de batalla temporalmente ocultos, para mostrarlos escribe /bgstats o click derecho en 'C' donde el minimapa."
+L["Battleground datatexts temporarily hidden, to show type /bgstats or right click the 'C' icon near the minimap."] = "Textos de datos de los campos de batalla temporalmente ocultos, para mostrarlos escribe /bgstats o clic derecho en 'C' donde el minimapa."
 L["Battleground datatexts will now show again if you are inside a battleground."] = "Los textos de datos de los campos de batalla serán visibles de nuevo si estás en un campo de batalla."
 L["BfA Missions"] = "Misiones BFA"
 L["Binding"] = "Controles"
@@ -185,7 +185,7 @@ L["KEY_SPACE"] = "SpB"
 L["Layout Set"] = "Distribución Establecida"
 L["Layout"] = "Distribución"
 L["Left Chat"] = "Chat Izquierdo"
-L["Left Click:"] = "Click Izquierdo"
+L["Left Click:"] = "Clic Izquierdo"
 L["Legs"] = "Piernas"
 L["Level Up Display / Boss Banner"] = "Subiste de nivel / Jefe Banner"
 L["List of installations in queue:"] = "Lista de Instalaciones en cola:"
@@ -346,7 +346,7 @@ L["yells"] = "grita"
 L["Yes, Keep Changes!"] = "¡Sí, Mantén los cambios!"
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = "Ya has terminado con el proceso de instalación. Si necesitas ayuda o soporte técnico por favor visítanos en http://www.tukui.org."
 L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = "Está utilizando el perfil de CPU CVar. Esto provoca una disminución del rendimiento. ¿Desea deshabilitarlo o continuar?"
-L["You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear."] = "Puedes acceder a copiar y a las opciones del chat pasando el ratón sobre la esquina superior derecha del panel del chat y haciendo click en el botón que aparece."
+L["You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear."] = "Puedes acceder a copiar y a las opciones del chat pasando el ratón sobre la esquina superior derecha del panel del chat y haciendo clic en el botón que aparece."
 L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."] = "Siempre puedes cambiar las fuentes y colores de cualquier elemento de ElvUI desde la configuración."
 L["You can now choose what layout you wish to use based on your combat role."] = "Ahora puedes elegir qué distribución quieres basándote en tu rol de combate."
 L["You can see someones average item level of their gear by holding shift and mousing over them. It should appear inside the tooltip."] = "Puedes ver la media de nivel de objeto de un objetivo manteniendo pulsado shift mientras pasas el ratón por encima de él. El iNvl aparecerá en la descripción emergente."
@@ -363,9 +363,9 @@ L["Your items have been repaired using guild bank funds for: "] = "Tus objetos h
 L["Your profile was successfully recieved by the player."] = "Tu perfil ha sido recibido exitosamente por el jugador."
 L["Zone Ability"] = "Habilidad de Zona"
 L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."] = "|cFFE30000Error de Lua recibido. Podrás ver el error cuando salgas de combate."
-L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFFClick Izquierdo:|r Cambiar Especialización de Talentos"
-L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFClick Derecho:|r Cambiar Especialización de Botín"
-L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + Click Izquierdo:|r Mostrar Interfaz de Especialización de Talentos"
+L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFFClic Izquierdo:|r Cambiar Especialización de Talentos"
+L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFClic Derecho:|r Cambiar Especialización de Botín"
+L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + Clic Izquierdo:|r Mostrar Interfaz de Especialización de Talentos"
 L["Farseer Ori"] = "Clarividente Ori"
 L["Hunter Akana"] = "Cazador Akana"
 L["Bladesman Inowari"] = "Esgrimidor Inowari"
@@ -374,10 +374,10 @@ L["Poen Gillbrack"] = "Poen Branquiano"
 L["Vim Brineheart"] = "Vim Almasalmuera"
 
 ----------------------------------
-L["DESC_MOVERCONFIG"] = [=[Fijadores desbloqueados. Muévelos ahora y haz click en Bloquear cuando termines.
+L["DESC_MOVERCONFIG"] = [=[Fijadores desbloqueados. Muévelos ahora y haz clic en Bloquear cuando termines.
 Opciones:
    Clic Izquierdo - Alternar empujar marco.
    Clic Derecho - Abrir la sección de configuración.
-   Mayús + Clic Derecho - Ocultar los fijadores temporalmente.
+   Shift + Clic Derecho - Ocultar los fijadores temporalmente.
    Ctrl + Clic Derecho - Restablece la posición de los fijadores a los valores por defecto.
 ]=]
