@@ -10,6 +10,12 @@
 
 
 ___
+### Version 11.341 [ February 4th 2020 ]
+
+**Hotfixed:** 
+Aura Bar Colors setting was getting spammed into the settings file.  
+
+___
 ### Version 11.34 [ February 4th 2020 ]
 
 **New Additions:**  
