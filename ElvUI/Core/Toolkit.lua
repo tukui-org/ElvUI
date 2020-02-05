@@ -426,7 +426,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 
 	fs.font, fs.fontSize, fs.fontStyle = font, fontSize, fontStyle
 
-	font = font or LSM:Fetch('font', E.db.general.font) or LSM.DefaultMedia.font
+	font = font or LSM:Fetch('font', E.db.general.font)
 	fontStyle = fontStyle or E.db.general.fontStyle
 
 	if fontSize and fontSize > 0 then
