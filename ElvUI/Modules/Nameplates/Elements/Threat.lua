@@ -33,7 +33,7 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 	if not status and not SF_Scale then
 		self.__owner.ThreatScale = 1
 		NP:ScalePlate(self.__owner, self.__owner.ThreatScale)
-	elseif NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor and not UnitIsTapDenied(unit) and status then
+	elseif status and NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor and not UnitIsTapDenied(unit) then
 		self.__owner.Health.colorTapping = false
 		self.__owner.Health.colorDisconnected = false
 		self.__owner.Health.colorClass = false
@@ -48,13 +48,13 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		self.__owner.ThreatStatus = status
 
 		local Color, Scale
-		if (status == 3) then -- securely tanking
+		if status == 3 then -- securely tanking
 			Color = self.offTank and NP.db.colors.threat.offTankColor or self.isTank and NP.db.colors.threat.goodColor or NP.db.colors.threat.badColor
 			Scale = self.isTank and NP.db.threat.goodScale or NP.db.threat.badScale
-		elseif (status == 2) then -- insecurely tanking
+		elseif status == 2 then -- insecurely tanking
 			Color = self.offTank and NP.db.colors.threat.offTankColorBadTransition or self.isTank and NP.db.colors.threat.badTransition or NP.db.colors.threat.goodTransition
 			Scale = 1
-		elseif (status == 1) then -- not tanking but threat higher than tank
+		elseif status == 1 then -- not tanking but threat higher than tank
 			Color = self.offTank and NP.db.colors.threat.offTankColorGoodTransition or self.isTank and NP.db.colors.threat.goodTransition or NP.db.colors.threat.badTransition
 			Scale = 1
 		else -- not tanking at all
