@@ -99,11 +99,12 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	E.CreatedMovers[name].mover = f
 	E.snapBars[#E.snapBars+1] = f
 
-	local point, anchor, secondaryPoint, x, y = GetSettingPoints(name)
-	if not point then point, anchor, secondaryPoint, x, y = split(',', GetPoint(parent)) end
+	local point, anchor, secondaryPoint, x, y = parent:GetPoint()
+	local point1, anchor1, secondaryPoint1, x1, y1 = GetSettingPoints(name)
+	if not point1 then point1, anchor1, secondaryPoint1, x1, y1 = point, anchor, secondaryPoint, x, y end
 
 	f:ClearAllPoints()
-	f:Point(point, anchor, secondaryPoint, x, y)
+	f:Point(point1, anchor1, secondaryPoint1, x1, y1)
 
 	parent:SetScript('OnSizeChanged', SizeChanged)
 	parent:ClearAllPoints()
