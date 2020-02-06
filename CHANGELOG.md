@@ -10,6 +10,12 @@
 
 
 ___
+### Version 11.352 [ February 5th 2020 ]
+
+**Hotfixed:** 
+Boss and Arena frames were casting Stealth on some profiles.  
+
+___
 ### Version 11.351 [ February 5th 2020 ]
 
 **Hotfixed:** 
