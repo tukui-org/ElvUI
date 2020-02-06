@@ -461,7 +461,11 @@ E.Options.args.filters = {
 		},
 		spellGroup = {
 			type = "group",
-			name = function() return selectedSpell end,
+			name = function()
+				local spell = GetSelectedSpell()
+				local spellName = spell and GetSpellInfo(spell)
+				return (spellName and spellName..' |cFF888888('..spell..')|r') or spell or ' '
+			end,
 			hidden = function() return not selectedSpell or (selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator') end,
 			order = -15,
 			guiInline = true,
