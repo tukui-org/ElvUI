@@ -231,8 +231,10 @@ E.Options.args.filters = {
 					type = 'select',
 					order = 10,
 					width = "double",
-					get = function(info) return selectedSpell end,
-					set = function(info, value) selectedSpell = value end,
+					get = function(info) return selectedSpell or '' end,
+					set = function(info, value)
+						selectedSpell = value ~= '' and value or nil
+					end,
 					values = function()
 						local list
 						if selectedFilter == 'Debuff Highlight' then
@@ -260,9 +262,9 @@ E.Options.args.filters = {
 									filter = spellName and format("%s (%s)", spellName, filter) or tostring(filter)
 								end
 								if filter:lower():find(searchText) then spellList[filter] = filter end
-								if not next(spellList) then spellList[''] = L["NONE"] end
 							end
 						end
+						spellList[''] = L["NONE"]
 						return spellList
 					end,
 				},
