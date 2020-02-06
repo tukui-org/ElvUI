@@ -1,18 +1,18 @@
-### Version 11.35 [ ETA: Soon ]
+### Version 11.35 [ February 5th 2020 ]
 
 **New Additions:**  
 
 
 **Bug Fixes:**  
-Style Filters convinced Portraits into being too clingy on Nameplates.  
-Party Pets, Party/Assist/Tank Target frames now remember their size setting and don't do updates while they hide anymore.  
+For some reason Style Filters had convinced Portraits into being too clingy on Nameplates.  
 Reversed Font Explosion Feature on CN, TW, and KR users (Azil says he is a badboi and very sorry <3).  
-Convinced the Filters section to Reset Filters when you SMASH BUTTON, and you can once again delete old spells from lists.  
+Party Pets, Party/Assist/Tank Target frames now remember their size setting and don't do updates while they hide anymore.  
+Convinced the Filters section to Reset Filters when you *SMASH BUTTON*, and you can once again delete old spells from lists.  
 
 **Misc. Changes:**  
 General section of Units in Unitframe settings are less of a mess.  
 Vehicle Exit Button anchor size is now hugging the button like a good boi.  
-Anchors decided to start using the correct font after about a year or so.  
+Anchors and Raid Control decided to start using the correct font after about a year or so.  
 
 ___
 ### Version 11.341 [ February 4th 2020 ]
