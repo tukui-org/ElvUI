@@ -5,8 +5,9 @@
 
 **Bug Fixes:**  
 Style Filters convinced Portraits into being too clingy on Nameplates.  
-Party Pets, Party/Assist/Tank Target frames now remember their size setting.  
+Party Pets, Party/Assist/Tank Target frames now remember their size setting and don't do updates while they hide anymore.  
 Reversed Font Explosion Feature on CN, TW, and KR users (Azil says he is a badboi and very sorry <3).  
+Convinced the Filters section to Reset Filters when you SMASH BUTTON, and you can once again delete old spells from lists.  
 
 **Misc. Changes:**  
 General section of Units in Unitframe settings are less of a mess.  
