@@ -7,11 +7,10 @@ local type, unpack, pairs, error = type, unpack, pairs, error
 local format, split, find = format, strsplit, strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local IsShiftKeyDown = IsShiftKeyDown
 local InCombatLockdown = InCombatLockdown
 local IsControlKeyDown = IsControlKeyDown
-local IsShiftKeyDown = IsShiftKeyDown
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
--- GLOBALS: ElvUIMoverNudgeWindow
 
 E.CreatedMovers = {}
 E.DisabledMovers = {}
@@ -44,10 +43,11 @@ end
 local function UpdateCoords(self)
 	local mover = self.child
 	local x, y, _, nudgePoint, nudgeInversePoint = E:CalculateMoverPoints(mover)
-
 	local coordX, coordY = E:GetXYOffset(nudgeInversePoint, 1)
-	ElvUIMoverNudgeWindow:ClearAllPoints()
-	ElvUIMoverNudgeWindow:Point(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
+	local nudgeFrame = _G.ElvUIMoverNudgeWindow
+
+	nudgeFrame:ClearAllPoints()
+	nudgeFrame:Point(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
 	E:UpdateNudgeFrame(mover, x, y)
 end
 
@@ -85,12 +85,12 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
 	f:SetFontString(fs)
 
-	f.parent = parent
 	f.text = fs
 	f.name = name
-	f.textString = text or name
-	f.postdrag = postdrag
+	f.parent = parent
 	f.overlay = overlay
+	f.postdrag = postdrag
+	f.textString = text or name
 	f.snapOffset = snapOffset or -2
 	f.shouldDisable = shouldDisable
 	f.configString = configString
@@ -203,11 +203,8 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	local function OnMouseUp(_, button)
 		if button == 'LeftButton' and not isDragging then
-			if ElvUIMoverNudgeWindow:IsShown() then
-				ElvUIMoverNudgeWindow:Hide()
-			else
-				ElvUIMoverNudgeWindow:Show()
-			end
+			local nudgeFrame = _G.ElvUIMoverNudgeWindow
+			nudgeFrame:SetShown(not nudgeFrame:IsShown())
 		end
 	end
 
