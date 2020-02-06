@@ -110,7 +110,7 @@ function UF:Construct_ArenaFrames(frame)
 	frame.Cutaway = self:Construct_Cutaway(frame)
 
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
-	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', L["Arena Frames"], nil, nil, nil, 'ALL,ARENA', nil, 'unitframe,arena,generalGroup')
+	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', L["Arena Frames"], nil, nil, nil, 'ALL,ARENA', nil, 'unitframe,groupUnits,arena,generalGroup')
 	frame.mover = ArenaHeader.mover
 end
 

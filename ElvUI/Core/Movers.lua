@@ -33,6 +33,14 @@ local function GetPoint(obj)
 	return format('%s,%s,%s,%d,%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
 end
 
+local function GetSettingPoints(name)
+	local db = E.db.movers and E.db.movers[name]
+	if db then
+		local delim = (find(db, '\031') and '\031') or ','
+		return split(delim, db)
+	end
+end
+
 local function UpdateCoords(self)
 	local mover = self.child
 	local x, y, _, nudgePoint, nudgeInversePoint = E:CalculateMoverPoints(mover)
@@ -53,7 +61,6 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	if E.CreatedMovers[name].Created then return end
 
 	if overlay == nil then overlay = true end
-	local point, anchor, secondaryPoint, x, y = split(',', GetPoint(parent))
 
 	--Use dirtyWidth / dirtyHeight to set initial size if possible
 	local width = parent.dirtyWidth or parent:GetWidth()
@@ -92,28 +99,16 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	E.CreatedMovers[name].mover = f
 	E.snapBars[#E.snapBars+1] = f
 
-	if E.db.movers and E.db.movers[name] then
-		if type(E.db.movers[name]) == 'table' then
-			f:Point(E.db.movers[name].p, E.UIParent, E.db.movers[name].p2, E.db.movers[name].p3, E.db.movers[name].p4)
-			E.db.movers[name] = GetPoint(f)
-			f:ClearAllPoints()
-		end
+	local point, anchor, secondaryPoint, x, y = GetSettingPoints(name)
+	if not point then point, anchor, secondaryPoint, x, y = split(',', GetPoint(parent)) end
 
-		--Backward compatibility
-		local delim
-		local anchorString = E.db.movers[name]
-		if find(anchorString, '\031') then
-			delim = '\031'
-		elseif find(anchorString, ',') then
-			delim = ','
-		end
+	f:ClearAllPoints()
+	f:Point(point, anchor, secondaryPoint, x, y)
 
-		local point1, anchor1, secondaryPoint1, x1, y1 = split(delim, anchorString)
-		f:Point(point1, anchor1, secondaryPoint1, x1, y1)
-		f.anchor = anchor
-	else
-		f:Point(point, anchor, secondaryPoint, x, y)
-	end
+	parent:SetScript('OnSizeChanged', SizeChanged)
+	parent:ClearAllPoints()
+	parent:Point(point, f, 0, 0)
+	parent.mover = f
 
 	local function OnDragStart(self)
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
@@ -250,11 +245,6 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f:SetScript('OnShow', OnShow)
 	f:SetScript('OnMouseWheel', OnMouseWheel)
 
-	parent:SetScript('OnSizeChanged', SizeChanged)
-	parent:ClearAllPoints()
-	parent:Point(point, f, 0, 0)
-	parent.mover = f
-
 	if postdrag ~= nil and type(postdrag) == 'function' then
 		f:RegisterEvent('PLAYER_ENTERING_WORLD')
 		f:SetScript('OnEvent', function(self)
@@ -337,12 +327,7 @@ end
 function E:SaveMoverPosition(name)
 	if not _G[name] then return end
 	if not E.db.movers then E.db.movers = {} end
-
-	local mover = _G[name]
-	local _, anchor = mover:GetPoint()
-	mover.anchor = anchor:GetName()
-
-	E.db.movers[name] = GetPoint(mover)
+	E.db.movers[name] = GetPoint(_G[name])
 end
 
 function E:SetMoverSnapOffset(name, offset)
@@ -352,17 +337,16 @@ function E:SetMoverSnapOffset(name, offset)
 	mover.snapoffset = offset or -2
 end
 
+function E:SetMoverLayoutPositionPoint(mover, name, frame)
+	local layout = E.LayoutMoverPositions[E.db.layoutSetting]
+	mover.point = (layout and layout[name]) or E.LayoutMoverPositions.ALL[name] or GetPoint(frame)
+end
+
 function E:SaveMoverDefaultPosition(name)
 	local mover = _G[name] and E.CreatedMovers[name]
 	if not mover then return end
 
-	if E.LayoutMoverPositions[E.db.layoutSetting] and E.LayoutMoverPositions[E.db.layoutSetting][name] then
-		mover.point =  E.LayoutMoverPositions[E.db.layoutSetting][name]
-	elseif E.LayoutMoverPositions.ALL[name] then
-		mover.point =  E.LayoutMoverPositions.ALL[name]
-	else
-		mover.point = GetPoint(_G[name])
-	end
+	E:SetMoverLayoutPositionPoint(mover, name, _G[name])
 
 	if mover.postdrag then
 		mover.postdrag(_G[name], E:GetScreenQuadrant(_G[name]))
@@ -377,13 +361,7 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		mover = {}
 		mover.type = {}
 
-		if E.LayoutMoverPositions[E.db.layoutSetting] and E.LayoutMoverPositions[E.db.layoutSetting][name] then
-			mover.point =  E.LayoutMoverPositions[E.db.layoutSetting][name]
-		elseif E.LayoutMoverPositions.ALL[name] then
-			mover.point =  E.LayoutMoverPositions.ALL[name]
-		else
-			mover.point = GetPoint(parent)
-		end
+		E:SetMoverLayoutPositionPoint(mover, name, parent)
 
 		local types = {split(',', moverTypes)}
 		for i = 1, #types do
@@ -400,8 +378,8 @@ end
 function E:ToggleMovers(show, moverType)
 	self.configMode = show
 
-	for name in pairs(E.CreatedMovers) do
-		if show and E.CreatedMovers[name].type[moverType] then
+	for name, holder in pairs(E.CreatedMovers) do
+		if show and holder.type[moverType] then
 			_G[name]:Show()
 		else
 			_G[name]:Hide()
@@ -446,49 +424,32 @@ function E:EnableMover(name)
 end
 
 function E:ResetMovers(arg)
-	if arg == "" or arg == nil then
-		for name in pairs(E.CreatedMovers) do
-			local frame = _G[name]
-			local point, anchor, secondaryPoint, x, y = split(',', E.CreatedMovers[name].point)
+	local all = not arg or arg == ""
+	if all then self.db.movers = nil end
 
+	for name, holder in pairs(E.CreatedMovers) do
+		if all or (holder.mover and holder.mover.textString == arg) then
+			local point, anchor, secondaryPoint, x, y = split(',', holder.point)
+
+			local frame = _G[name]
 			if point then
 				frame:ClearAllPoints()
 				frame:Point(point, anchor, secondaryPoint, x, y)
 			end
 
-			for key, value in pairs(E.CreatedMovers[name]) do
-				if key == 'postdrag' and type(value) == 'function' then
-					value(frame, E:GetScreenQuadrant(frame))
-				end
+			if holder.postdrag ~= nil and type(holder.postdrag) == 'function' then
+				holder.postdrag(frame, E:GetScreenQuadrant(frame))
 			end
 
-			E:SaveMoverPosition(name)
-		end
-
-		self.db.movers = nil
-	else
-		for name in pairs(E.CreatedMovers) do
-			for key, value in pairs(E.CreatedMovers[name]) do
-				if key == 'text' then
-					if arg == value then
-						local frame = _G[name]
-						local point, anchor, secondaryPoint, x, y = split(',', E.CreatedMovers[name].point)
-						frame:ClearAllPoints()
-						frame:Point(point, anchor, secondaryPoint, x, y)
-
-						if self.db.movers then
-							self.db.movers[name] = nil
-						end
-
-						if E.CreatedMovers[name].postdrag ~= nil and type(E.CreatedMovers[name].postdrag) == 'function' then
-							E.CreatedMovers[name].postdrag(frame, E:GetScreenQuadrant(frame))
-						end
-
-						E:SaveMoverPosition(name)
-					end
+			if not all then
+				if self.db.movers then
+					self.db.movers[name] = nil
 				end
+				break
 			end
 		end
+
+		E:SaveMoverPosition(name)
 	end
 end
 
@@ -498,30 +459,17 @@ function E:SetMoversPositions()
 	--Because of that, we can allow ourselves to re-enable all disabled movers here,
 	--as the subsequent updates to these elements will disable them again if needed.
 	for name in pairs(E.DisabledMovers) do
-		local shouldDisable = ((E.DisabledMovers[name].shouldDisable and E.DisabledMovers[name].shouldDisable()) or false)
-		if not shouldDisable then
-			E:EnableMover(name)
-		end
+		local disable = E.DisabledMovers[name].shouldDisable
+		local shouldDisable = (disable and disable()) or false
+		if not shouldDisable then E:EnableMover(name) end
 	end
 
-	for name in pairs(E.CreatedMovers) do
-		local frame, point, anchor, secondaryPoint, x, y = _G[name]
-		if E.db.movers and E.db.movers[name] and type(E.db.movers[name]) == 'string' then
-			--Backward compatibility
-			local delim
-			local anchorString = E.db.movers[name]
-			if find(anchorString, '\031') then
-				delim = '\031'
-			elseif find(anchorString, ',') then
-				delim = ','
-			end
-
-			point, anchor, secondaryPoint, x, y = split(delim, anchorString)
-		elseif frame then
-			point, anchor, secondaryPoint, x, y = split(',', E.CreatedMovers[name].point)
-		end
+	for name, holder in pairs(E.CreatedMovers) do
+		local point, anchor, secondaryPoint, x, y = GetSettingPoints(name)
+		if not point then point, anchor, secondaryPoint, x, y = split(',', holder.point) end
 
 		if point then
+			local frame = _G[name]
 			frame:ClearAllPoints()
 			frame:Point(point, anchor, secondaryPoint, x, y)
 		end
