@@ -226,7 +226,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 
 		--Shared base layout, tweaks to individual layouts will be below
-		E:ResetMovers('')
+		E:ResetMovers()
 		if not E.db.movers then
 			E.db.movers = {}
 		end
@@ -297,7 +297,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		E.db.general.totems.spacing = 8
 
 	--Movers
-	for mover, position in pairs(E.LayoutMoverPositions["ALL"]) do
+	for mover, position in pairs(E.LayoutMoverPositions.ALL) do
 		E.db.movers[mover] = position
 		E:SaveMoverDefaultPosition(mover)
 	end
