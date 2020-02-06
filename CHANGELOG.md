@@ -12,9 +12,6 @@
 ___
 ### Version 11.35 [ February 5th 2020 ]
 
-**New Additions:**  
-
-
 **Bug Fixes:**  
 For some reason Style Filters had convinced Portraits into being too clingy on Nameplates.  
 Reversed Font Explosion Feature on CN, TW, and KR users (Azil says he is a badboi and very sorry <3).  
