@@ -7,11 +7,10 @@ local type, unpack, pairs, error = type, unpack, pairs, error
 local format, split, find = format, strsplit, strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local IsShiftKeyDown = IsShiftKeyDown
 local InCombatLockdown = InCombatLockdown
 local IsControlKeyDown = IsControlKeyDown
-local IsShiftKeyDown = IsShiftKeyDown
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
--- GLOBALS: ElvUIMoverNudgeWindow
 
 E.CreatedMovers = {}
 E.DisabledMovers = {}
@@ -44,10 +43,11 @@ end
 local function UpdateCoords(self)
 	local mover = self.child
 	local x, y, _, nudgePoint, nudgeInversePoint = E:CalculateMoverPoints(mover)
-
 	local coordX, coordY = E:GetXYOffset(nudgeInversePoint, 1)
-	ElvUIMoverNudgeWindow:ClearAllPoints()
-	ElvUIMoverNudgeWindow:Point(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
+	local nudgeFrame = _G.ElvUIMoverNudgeWindow
+
+	nudgeFrame:ClearAllPoints()
+	nudgeFrame:Point(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
 	E:UpdateNudgeFrame(mover, x, y)
 end
 
@@ -74,8 +74,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f:EnableMouseWheel(true)
 	f:SetMovable(true)
 	f:SetTemplate('Transparent', nil, nil, true)
-	f:Height(height)
-	f:Width(width)
+	f:Size(width, height)
 	f:Hide()
 
 	local fs = f:CreateFontString(nil, 'OVERLAY')
@@ -86,12 +85,12 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
 	f:SetFontString(fs)
 
-	f.parent = parent
 	f.text = fs
 	f.name = name
-	f.textString = text or name
-	f.postdrag = postdrag
+	f.parent = parent
 	f.overlay = overlay
+	f.postdrag = postdrag
+	f.textString = text or name
 	f.snapOffset = snapOffset or -2
 	f.shouldDisable = shouldDisable
 	f.configString = configString
@@ -99,15 +98,18 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	E.CreatedMovers[name].mover = f
 	E.snapBars[#E.snapBars+1] = f
 
-	local point, anchor, secondaryPoint, x, y = GetSettingPoints(name)
-	if not point then point, anchor, secondaryPoint, x, y = split(',', GetPoint(parent)) end
+	local point1, relativeTo1, relativePoint1, xOffset1, yOffset1 = parent:GetPoint()
+	local point2, relativeTo2, relativePoint2, xOffset2, yOffset2 = GetSettingPoints(name)
+	if not point2 then -- fallback to the parents point if the setting doesn't exist
+		point2, relativeTo2, relativePoint2, xOffset2, yOffset2 = point1, relativeTo1, relativePoint1, xOffset1, yOffset1
+	end
 
 	f:ClearAllPoints()
-	f:Point(point, anchor, secondaryPoint, x, y)
+	f:Point(point2, relativeTo2, relativePoint2, xOffset2, yOffset2)
 
 	parent:SetScript('OnSizeChanged', SizeChanged)
 	parent:ClearAllPoints()
-	parent:Point(point, f, 0, 0)
+	parent:Point(point1, f, 0, 0)
 	parent.mover = f
 
 	local function OnDragStart(self)
@@ -143,7 +145,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 			self:StopMovingOrSizing()
 		end
 
-		local x2, y2, point2 = E:CalculateMoverPoints(self)
+		local x2, y2, p2 = E:CalculateMoverPoints(self)
 		self:ClearAllPoints()
 		local overridePoint
 		if self.positionOverride then
@@ -154,7 +156,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 			end
 		end
 
-		self:Point(self.positionOverride or point2, E.UIParent, overridePoint and overridePoint or point2, x2, y2)
+		self:Point(self.positionOverride or p2, E.UIParent, overridePoint and overridePoint or p2, x2, y2)
 		if self.positionOverride then
 			self.parent:ClearAllPoints()
 			self.parent:Point(self.positionOverride, self, self.positionOverride)
@@ -201,11 +203,8 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	local function OnMouseUp(_, button)
 		if button == 'LeftButton' and not isDragging then
-			if ElvUIMoverNudgeWindow:IsShown() then
-				ElvUIMoverNudgeWindow:Hide()
-			else
-				ElvUIMoverNudgeWindow:Show()
-			end
+			local nudgeFrame = _G.ElvUIMoverNudgeWindow
+			nudgeFrame:SetShown(not nudgeFrame:IsShown())
 		end
 	end
 

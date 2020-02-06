@@ -1,6 +1,6 @@
 ## Interface: 80300
 ## Author: Elv, Simpy
-## Version: 11.351
+## Version: 11.352
 ## Title: |cfffe7b2cElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB
