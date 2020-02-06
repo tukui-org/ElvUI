@@ -10,6 +10,12 @@
 
 
 ___
+### Version 11.351 [ February 5th 2020 ]
+
+**Hotfixed:** 
+We had to retrain *Reset Anchors* and *Nudge Reset* because they forgot how to do the thing.  
+
+___
 ### Version 11.35 [ February 5th 2020 ]
 
 **Bug Fixes:**  
