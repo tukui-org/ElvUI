@@ -14,7 +14,7 @@ ___
 
 **Bug Fixes:**  
 For some reason Style Filters had convinced Portraits into being too clingy on Nameplates.  
-Reversed Font Explosion Feature on CN, TW, and KR users (Azil says he is a badboi and very sorry <3).  
+Reversed Font Explosion Feature on CN, TW, and KR clients (Azil says he is a badboi and very sorry <3).  
 Party Pets, Party/Assist/Tank Target frames now remember their size setting and don't do updates while they hide anymore.  
 Convinced the Filters section to Reset Filters when you *SMASH BUTTON*, and you can once again delete old spells from lists.  
 
