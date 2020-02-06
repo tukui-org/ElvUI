@@ -54,13 +54,12 @@ function UF:BuffIndicator_PostCreateIcon(button)
 	UF:Update_FontString(button.count)
 end
 
-function UF:BuffIndicator_PostUpdateIcon(unit, button)
+function UF:BuffIndicator_PostUpdateIcon(_, button)
 	local settings = self.watched[button.spellID]
 	if settings then -- This should never fail.
-		local cd = button.cd
-		cd.textThreshold = settings.textThreshold ~= -1 and settings.textThreshold
+		button.cd.textThreshold = settings.textThreshold ~= -1 and settings.textThreshold
 
-		local timer = cd.timer
+		local timer = button.cd.timer
 		if (settings.style == 'coloredIcon' or settings.style == 'texturedIcon') and not button.icon:IsShown() then
 			button.icon:Show()
 			button.icon.border:Show()
@@ -72,7 +71,7 @@ function UF:BuffIndicator_PostUpdateIcon(unit, button)
 		end
 
 		if settings.style == 'timerOnly' then
-			cd.hideText = nil
+			button.cd.hideText = nil
 			if timer then
 				timer.skipTextColor = true
 
@@ -81,7 +80,7 @@ function UF:BuffIndicator_PostUpdateIcon(unit, button)
 				end
 			end
 		else
-			cd.hideText = not settings.displayText
+			button.cd.hideText = not settings.displayText
 			if timer then timer.skipTextColor = nil end
 
 			if settings.style == 'coloredIcon' then
