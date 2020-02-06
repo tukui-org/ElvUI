@@ -16,6 +16,10 @@ local GetSpellInfo = GetSpellInfo
 
 local quickSearchText, selectedSpell, selectedFilter, filterList, spellList = '', nil, nil, {}, {}
 
+local function IsStockFilter()
+	return selectedFilter and (selectedFilter == 'Debuff Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' or E.DEFAULT_FILTER[selectedFilter])
+end
+
 local function GetSelectedFilters()
 	local biPet = selectedFilter == 'Buff Indicator (Pet)'
 	local biProfile = selectedFilter == 'Buff Indicator (Profile)'
@@ -68,7 +72,6 @@ local function removePriority(value)
 end
 
 local FilterResetState = {}
-
 E.Options.args.filters = {
 	type = 'group',
 	name = L["FILTERS"],
@@ -283,10 +286,10 @@ E.Options.args.filters = {
 							if name:lower():find(searchText) then
 								spellList[filter] = name
 							end
+						end
 
-							if not next(spellList) then
-								spellList[''] = L["NONE"]
-							end
+						if not next(spellList) then
+							spellList[''] = L["NONE"]
 						end
 
 						return spellList
@@ -299,7 +302,7 @@ E.Options.args.filters = {
 			name = L["Reset Filter"],
 			order = 25,
 			guiInline = true,
-			hidden = function() return not selectedFilter end,
+			hidden = function() return not IsStockFilter() end,
 			args = {
 				enableReset = {
 					order = 1,
@@ -315,7 +318,6 @@ E.Options.args.filters = {
 					name = L["Reset Filter"],
 					desc = L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."],
 					disabled = function() return not FilterResetState[selectedFilter] end,
-					hidden = function() return (selectedFilter ~= 'Debuff Highlight' and selectedFilter ~= 'AuraBar Colors' and selectedFilter ~= 'Buff Indicator (Pet)' and selectedFilter ~= 'Buff Indicator (Profile)' and selectedFilter ~= 'Buff Indicator' and not E.DEFAULT_FILTER[selectedFilter]) end,
 					func = function(info)
 						if selectedFilter == 'Debuff Highlight' then
 							E.global.unitframe.DebuffHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
