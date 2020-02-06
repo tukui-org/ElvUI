@@ -57,27 +57,40 @@ end
 function UF:BuffIndicator_PostUpdateIcon(unit, button)
 	local settings = self.watched[button.spellID]
 	if settings then -- This should never fail.
-		local timer = button.cd.timer
+		local cd = button.cd
+		cd.textThreshold = settings.textThreshold ~= -1 and settings.textThreshold
+
+		local timer = cd.timer
 		if (settings.style == 'coloredIcon' or settings.style == 'texturedIcon') and not button.icon:IsShown() then
 			button.icon:Show()
 			button.icon.border:Show()
 			button.cd:SetDrawSwipe(true)
-			if timer then timer.skipTextColor = nil end
 		elseif settings.style == 'timerOnly' and button.icon:IsShown() then
 			button.icon:Hide()
 			button.icon.border:Hide()
 			button.cd:SetDrawSwipe(false)
-			if timer then timer.skipTextColor = true end
 		end
 
-		if settings.style == 'coloredIcon' then
-			button.icon:SetTexture(E.media.blankTex)
-			button.icon:SetVertexColor(settings.color.r, settings.color.g, settings.color.b)
-		elseif settings.style == 'texturedIcon' then
-			button.icon:SetVertexColor(1, 1, 1)
-			button.icon:SetTexCoord(unpack(E.TexCoords))
-		elseif settings.style == 'timerOnly' and timer and timer.text then
-			timer.text:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
+		if settings.style == 'timerOnly' then
+			cd.hideText = nil
+			if timer then
+				timer.skipTextColor = true
+
+				if timer.text then
+					timer.text:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
+				end
+			end
+		else
+			cd.hideText = not settings.displayText
+			if timer then timer.skipTextColor = nil end
+
+			if settings.style == 'coloredIcon' then
+				button.icon:SetTexture(E.media.blankTex)
+				button.icon:SetVertexColor(settings.color.r, settings.color.g, settings.color.b)
+			elseif settings.style == 'texturedIcon' then
+				button.icon:SetVertexColor(1, 1, 1)
+				button.icon:SetTexCoord(unpack(E.TexCoords))
+			end
 		end
 
 		if settings.style == 'texturedIcon' and button.filter == "HARMFUL" then

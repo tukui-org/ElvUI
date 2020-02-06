@@ -7,7 +7,7 @@
 
 
 **Misc. Changes:**  
-
+Buff Indicator Style *Timer Only* will now use the selected color for the timer.  
 
 ___
 ### Version 11.352 [ February 5th 2020 ]

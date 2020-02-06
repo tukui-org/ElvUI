@@ -266,7 +266,7 @@ E.Options.args.filters = {
 						elseif selectedFilter == 'AuraBar Colors' then
 							list = E.global.unitframe.AuraBarColors
 						elseif selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' then
-							list = selectedFilter == 'Buff Indicator (Profile)' and E.db.unitframe.filters.buffwatch or selectedFilter == 'Buff Indicator (Pet)' and E.global.unitframe.buffwatch.PET or E.global.unitframe.buffwatch[E.myclass]
+							list = GetSelectedFilters()
 						else
 							list = E.global.unitframe.aurafilters[selectedFilter].spells
 						end
@@ -350,7 +350,7 @@ E.Options.args.filters = {
 				local spell = GetSelectedSpell()
 				if not spell then return end
 
-				local selectedTable = selectedFilter == 'Buff Indicator (Profile)' and E.db.unitframe.filters.buffwatch or selectedFilter == 'Buff Indicator (Pet)' and E.global.unitframe.buffwatch.PET or E.global.unitframe.buffwatch[E.myclass]
+				local selectedTable = GetSelectedFilters()
 				return selectedTable[spell][info[#info]]
 			end,
 			set = function(info, value)
@@ -456,6 +456,19 @@ E.Options.args.filters = {
 					name = L["Display Text"],
 					type = 'toggle',
 					order = 11,
+					get = function(info)
+						local spell = GetSelectedSpell()
+						if not spell then return end
+
+						local selectedTable = GetSelectedFilters()
+						return (selectedTable[spell].style == 'timerOnly') or selectedTable[spell][info[#info]]
+					end,
+					disabled = function()
+						local spell = GetSelectedSpell()
+						if not spell then return end
+						local selectedTable = GetSelectedFilters()
+						return selectedTable[spell].style == 'timerOnly'
+					end
 				},
 			},
 		},
