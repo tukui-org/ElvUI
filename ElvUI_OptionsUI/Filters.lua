@@ -200,7 +200,7 @@ E.Options.args.filters = {
 							else
 								E.global.unitframe.AuraBarColors[value] = nil;
 							end
-						elseif (selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator') then
+						elseif selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' then
 							local selectedTable, defaultTable = GetSelectedFilters()
 
 							if defaultTable[value] then
@@ -262,7 +262,7 @@ E.Options.args.filters = {
 							list = E.global.unitframe.DebuffHighlightColors
 						elseif selectedFilter == 'AuraBar Colors' then
 							list = E.global.unitframe.AuraBarColors
-						elseif (selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator') then
+						elseif selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' then
 							list = selectedFilter == 'Buff Indicator (Profile)' and E.db.unitframe.filters.buffwatch or selectedFilter == 'Buff Indicator (Pet)' and E.global.unitframe.buffwatch.PET or E.global.unitframe.buffwatch[E.myclass]
 						else
 							list = E.global.unitframe.aurafilters[selectedFilter].spells
@@ -321,7 +321,7 @@ E.Options.args.filters = {
 							E.global.unitframe.DebuffHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
 						elseif selectedFilter == 'AuraBar Colors' then
 							E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
-						elseif (selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator') then
+						elseif selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' then
 							local selectedTable, defaultTable = GetSelectedFilters()
 							wipe(selectedTable)
 							E:CopyTable(selectedTable, defaultTable)
