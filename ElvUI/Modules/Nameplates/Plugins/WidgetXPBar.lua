@@ -31,11 +31,15 @@ local NeededQuestIDs = {
 local VoidtouchedEggQuestID = 58802
 
 local VoidtouchedEggNPCIDToWidgetIDMap = {
+	-- Phase 1
 	[163541] = 2342, -- Voidtouched Egg
+	-- Phase 2
 	[163592] = 2342, -- Yu'gaz
 	[163593] = 2342, -- Bitey McStabface
 	[163595] = 2342, -- Reginald
 	[163596] = 2342, -- Picco
+	-- Phase 3
+	[163648] = 2342, -- Bitey McStabface
 }
 
 local function Update(self)
