@@ -170,25 +170,23 @@ function UF:Update_PartyFrames(frame, db)
 			childDB = db.targetsGroup
 		end
 
-		if not frame.originalParent.childList then
-			frame.originalParent.childList = {}
-		end
-		frame.originalParent.childList[frame] = true;
+		frame:Size(childDB.width, childDB.height)
 
 		if not InCombatLockdown() then
 			if childDB.enable then
-				frame:SetParent(frame.originalParent)
-				frame:Size(childDB.width, childDB.height)
+				frame:Enable()
 				frame:ClearAllPoints()
 				frame:Point(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
 			else
-				frame:SetParent(E.HiddenFrame)
+				frame:Disable()
 			end
 		end
 
 		UF:Configure_HealthBar(frame)
 		UF:UpdateNameSettings(frame, frame.childType)
 	else
+		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+
 		UF:EnableDisable_Auras(frame)
 		UF:Configure_AllAuras(frame)
 		UF:Configure_HealthBar(frame)
@@ -212,8 +210,6 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_CustomTexts(frame)
 		UF:UpdateNameSettings(frame)
 	end
-
-	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	UF:Configure_RaidIcon(frame)
 	UF:Configure_Fader(frame)

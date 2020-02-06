@@ -376,11 +376,16 @@ function AB:CreateVehicleLeave()
 	local db = E.db.actionbar.vehicleExitButton
 	if db.enable ~= true then return end
 
-	local VehicleLeaveButtonHolder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
-	VehicleLeaveButtonHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
-	VehicleLeaveButtonHolder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
+	local holder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
+	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
+	holder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
+	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, nil, nil, 'all,general')
 
 	local Button = _G.MainMenuBarVehicleLeaveButton
+	Button:ClearAllPoints()
+	Button:SetParent(_G.UIParent)
+	Button:SetPoint('CENTER', holder, 'CENTER')
+
 	if MasqueGroup and E.private.actionbar.masque.actionbars then
 		Button:StyleButton(true, true, true)
 	else
@@ -390,17 +395,11 @@ function AB:CreateVehicleLeave()
 		Button:StyleButton(nil, true, true)
 	end
 
-	Button:ClearAllPoints()
-	Button:SetParent(_G.UIParent)
-	Button:SetPoint('CENTER', VehicleLeaveButtonHolder, 'CENTER')
-
-	E:CreateMover(VehicleLeaveButtonHolder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, nil, nil, 'all,general')
-
 	hooksecurefunc(Button, 'SetPoint', function(_, _, parent)
-		if parent ~= VehicleLeaveButtonHolder then
+		if parent ~= holder then
 			Button:ClearAllPoints()
 			Button:SetParent(_G.UIParent)
-			Button:SetPoint('CENTER', VehicleLeaveButtonHolder, 'CENTER')
+			Button:SetPoint('CENTER', holder, 'CENTER')
 		end
 	end)
 
@@ -418,6 +417,7 @@ function AB:UpdateVehicleLeave()
 	_G.MainMenuBarVehicleLeaveButton:Size(db.size)
 	_G.MainMenuBarVehicleLeaveButton:SetFrameStrata(db.strata)
 	_G.MainMenuBarVehicleLeaveButton:SetFrameLevel(db.level)
+	_G.VehicleLeaveButtonHolder:Size(db.size)
 end
 
 function AB:ReassignBindings(event)

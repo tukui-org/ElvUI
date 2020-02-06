@@ -48,7 +48,7 @@ local coordFrame = CreateFrame('Frame')
 coordFrame:SetScript('OnUpdate', UpdateCoords)
 coordFrame:Hide()
 
-local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, shouldDisable, configString)
+local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, shouldDisable, configString)
 	if not parent then return end --If for some reason the parent isnt loaded yet
 	if E.CreatedMovers[name].Created then return end
 
@@ -71,9 +71,18 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f:Width(width)
 	f:Hide()
 
+	local fs = f:CreateFontString(nil, 'OVERLAY')
+	fs:FontTemplate()
+	fs:SetJustifyH('CENTER')
+	fs:Point('CENTER')
+	fs:SetText(text or name)
+	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
+	f:SetFontString(fs)
+
 	f.parent = parent
+	f.text = fs
 	f.name = name
-	f.textString = text
+	f.textString = text or name
 	f.postdrag = postdrag
 	f.overlay = overlay
 	f.snapOffset = snapOffset or -2
@@ -82,15 +91,6 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	E.CreatedMovers[name].mover = f
 	E.snapBars[#E.snapBars+1] = f
-
-	local fs = f:CreateFontString(nil, 'OVERLAY')
-	fs:FontTemplate()
-	fs:SetJustifyH('CENTER')
-	fs:Point('CENTER')
-	fs:SetText(text or name)
-	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
-	f:SetFontString(fs)
-	f.text = fs
 
 	if E.db.movers and E.db.movers[name] then
 		if type(E.db.movers[name]) == 'table' then
@@ -229,6 +229,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	local function OnShow(self)
 		self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+		self.text:FontTemplate()
 	end
 
 	local function OnMouseWheel(_, delta)
@@ -374,11 +375,7 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 	local mover = E.CreatedMovers[name]
 	if mover == nil then
 		mover = {}
-		mover.parent = parent
-		mover.text = text
-		mover.overlay = overlay
-		mover.postdrag = postdrag
-		mover.snapoffset = snapoffset
+		mover.type = {}
 
 		if E.LayoutMoverPositions[E.db.layoutSetting] and E.LayoutMoverPositions[E.db.layoutSetting][name] then
 			mover.point =  E.LayoutMoverPositions[E.db.layoutSetting][name]
@@ -387,10 +384,6 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		else
 			mover.point = GetPoint(parent)
 		end
-
-		mover.shouldDisable = shouldDisable
-		mover.configString = configString
-		mover.type = {}
 
 		local types = {split(',', moverTypes)}
 		for i = 1, #types do
@@ -401,7 +394,7 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		E.CreatedMovers[name] = mover
 	end
 
-	CreateMover(parent, name, text, overlay, snapoffset, postdrag, shouldDisable, configString)
+	UpdateMover(parent, name, text, overlay, snapoffset, postdrag, shouldDisable, configString)
 end
 
 function E:ToggleMovers(show, moverType)
@@ -543,6 +536,6 @@ end
 
 function E:LoadMovers()
 	for n, t in pairs(E.CreatedMovers) do
-		CreateMover(t.parent, n, t.overlay, t.snapoffset, t.postdrag, t.shouldDisable, t.configString)
+		UpdateMover(t.parent, n, t.overlay, t.snapoffset, t.postdrag, t.shouldDisable, t.configString)
 	end
 end

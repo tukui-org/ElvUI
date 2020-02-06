@@ -116,27 +116,24 @@ function UF:Update_TankFrames(frame, db)
 		frame.VARIABLES_SET = true
 	end
 
-	if frame.isChild and frame.originalParent then
+	if frame.isChild then
 		local childDB = db.targetsGroup
 		frame.db = db.targetsGroup
-		if not frame.originalParent.childList then
-			frame.originalParent.childList = {}
-		end
-		frame.originalParent.childList[frame] = true;
+
+		frame:Size(childDB.width, childDB.height)
 
 		if not InCombatLockdown() then
 			if childDB.enable then
-				frame:SetParent(frame.originalParent)
-				frame:Size(childDB.width, childDB.height)
+				frame:Enable()
 				frame:ClearAllPoints()
 				frame:Point(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
 			else
-				frame:SetParent(E.HiddenFrame)
+				frame:Disable()
 			end
 		end
+	else
+		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
-
-	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	--Health
 	UF:Configure_HealthBar(frame)
