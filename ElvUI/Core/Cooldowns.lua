@@ -70,10 +70,8 @@ function E:Cooldown_OnUpdate(elapsed)
 				end
 			end
 
-			local color = self.timeColors[id]
-			if color then
-				self.text:SetTextColor(color.r, color.g, color.b)
-			end
+			local color = not self.skipTextColor and self.timeColors[id]
+			if color then self.text:SetTextColor(color.r, color.g, color.b) end
 		end
 	end
 end
