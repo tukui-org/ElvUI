@@ -146,7 +146,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 			self:StopMovingOrSizing()
 		end
 
-		local x2, y2, point2 = E:CalculateMoverPoints(self)
+		local x2, y2, p2 = E:CalculateMoverPoints(self)
 		self:ClearAllPoints()
 		local overridePoint
 		if self.positionOverride then
@@ -157,7 +157,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 			end
 		end
 
-		self:Point(self.positionOverride or point2, E.UIParent, overridePoint and overridePoint or point2, x2, y2)
+		self:Point(self.positionOverride or p2, E.UIParent, overridePoint and overridePoint or p2, x2, y2)
 		if self.positionOverride then
 			self.parent:ClearAllPoints()
 			self.parent:Point(self.positionOverride, self, self.positionOverride)
