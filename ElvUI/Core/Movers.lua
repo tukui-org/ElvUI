@@ -435,10 +435,6 @@ function E:ResetMovers(arg)
 		if all or (holder.mover and holder.mover.textString == arg) then
 			local point, anchor, secondaryPoint, x, y = split(',', holder.point)
 
-			if name:match('Castbar') then
-				print(name, point, anchor, secondaryPoint, x, y)
-			end
-
 			local frame = _G[name]
 			if point then
 				frame:ClearAllPoints()
