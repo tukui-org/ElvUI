@@ -106,6 +106,8 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f:Point(point, anchor, secondaryPoint, x, y)
 
 	parent:SetScript('OnSizeChanged', SizeChanged)
+	parent:ClearAllPoints()
+	parent:Point(point, f, 0, 0)
 	parent.mover = f
 
 	local function OnDragStart(self)
