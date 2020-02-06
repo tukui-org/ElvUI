@@ -414,6 +414,12 @@ E.Options.args.filters = {
 
 						UF:Update_AllFrames()
 					end,
+					disabled = function()
+						local spell = GetSelectedSpell()
+						if not spell then return end
+						local selectedTable = GetSelectedFilters()
+						return selectedTable[spell].style == 'texturedIcon'
+					end,
 				},
 				sizeOffset = {
 					order = 5,
