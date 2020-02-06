@@ -463,7 +463,7 @@ E.Options.args.filters = {
 			type = "group",
 			name = function() return selectedSpell end,
 			hidden = function() return not selectedSpell or (selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator') end,
-			order = 15,
+			order = -15,
 			guiInline = true,
 			args = {
 				enabled = {
