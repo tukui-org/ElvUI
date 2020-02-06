@@ -74,8 +74,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f:EnableMouseWheel(true)
 	f:SetMovable(true)
 	f:SetTemplate('Transparent', nil, nil, true)
-	f:Height(height)
-	f:Width(width)
+	f:Size(width, height)
 	f:Hide()
 
 	local fs = f:CreateFontString(nil, 'OVERLAY')
