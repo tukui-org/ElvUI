@@ -57,17 +57,17 @@ end
 function UF:BuffIndicator_PostUpdateIcon(unit, button)
 	local settings = self.watched[button.spellID]
 	if settings then -- This should never fail.
-
+		local timer = button.cd.timer
 		if (settings.style == 'coloredIcon' or settings.style == 'texturedIcon') and not button.icon:IsShown() then
 			button.icon:Show()
 			button.icon.border:Show()
 			button.cd:SetDrawSwipe(true)
-			if button.cd.timer then button.cd.timer.skipTextColor = nil end
+			if timer then timer.skipTextColor = nil end
 		elseif settings.style == 'timerOnly' and button.icon:IsShown() then
 			button.icon:Hide()
 			button.icon.border:Hide()
 			button.cd:SetDrawSwipe(false)
-			if button.cd.timer then button.cd.timer.skipTextColor = true end
+			if timer then timer.skipTextColor = true end
 		end
 
 		if settings.style == 'coloredIcon' then
@@ -76,8 +76,8 @@ function UF:BuffIndicator_PostUpdateIcon(unit, button)
 		elseif settings.style == 'texturedIcon' then
 			button.icon:SetVertexColor(1, 1, 1)
 			button.icon:SetTexCoord(unpack(E.TexCoords))
-		elseif settings.style == 'timerOnly' and button.cd.timer and button.cd.timer.text then
-			button.cd.timer.text:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
+		elseif settings.style == 'timerOnly' and timer and timer.text then
+			timer.text:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
 		end
 
 		if settings.style == 'texturedIcon' and button.filter == "HARMFUL" then
