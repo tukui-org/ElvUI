@@ -17,8 +17,10 @@ local GetSpellInfo = GetSpellInfo
 local quickSearchText, selectedSpell, selectedFilter, filterList, spellList = '', nil, nil, {}, {}
 
 local function GetSelectedFilters()
-	local selected = selectedFilter == 'Buff Indicator (Profile)' and E.db.unitframe.filters.buffwatch or selectedFilter == 'Buff Indicator (Pet)' and (E.global.unitframe.buffwatch.PET or {}) or (E.global.unitframe.buffwatch[E.myclass] or {})
-	local default = selectedFilter == 'Buff Indicator (Profile)' and P.unitframe.filters.buffwatch or selectedFilter == 'Buff Indicator (Pet)' and G.unitframe.buffwatch.PET or G.unitframe.buffwatch[E.myclass]
+	local biPet = selectedFilter == 'Buff Indicator (Pet)'
+	local biProfile = selectedFilter == 'Buff Indicator (Profile)'
+	local selected = (biProfile and E.db.unitframe.filters.buffwatch) or (biPet and (E.global.unitframe.buffwatch.PET or {})) or (E.global.unitframe.buffwatch[E.myclass] or {})
+	local default = (biProfile and P.unitframe.filters.buffwatch) or (biPet and G.unitframe.buffwatch.PET) or G.unitframe.buffwatch[E.myclass]
 	return selected, default
 end
 
@@ -321,7 +323,8 @@ E.Options.args.filters = {
 							E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
 						elseif (selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator') then
 							local selectedTable, defaultTable = GetSelectedFilters()
-							selectedTable = E:CopyTable({}, defaultTable)
+							wipe(selectedTable)
+							E:CopyTable(selectedTable, defaultTable)
 						else
 							E.global.unitframe.aurafilters[selectedFilter].spells = E:CopyTable({}, G.unitframe.aurafilters[selectedFilter].spells)
 						end
