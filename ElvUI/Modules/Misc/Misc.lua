@@ -64,11 +64,13 @@ function M:ErrorFrameToggle(event)
 end
 
 function M:COMBAT_LOG_EVENT_UNFILTERED()
-	local inGroup, inRaid, inPartyLFG = IsInGroup(), IsInRaid(), IsPartyLFG()
-	if not inGroup then return end -- not in group, exit.
+	local inGroup = IsInGroup()
+	if not inGroup then return end
 
-	local _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo()
-	if not (event == "SPELL_INTERRUPT" and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet'))) then return end -- No announce-able interrupt from player or pet, exit.
+	local _, event, _, sourceGUID, _, _, _, destGUID, destName, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo()
+	local announce = event == "SPELL_INTERRUPT" and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet')) and destGUID ~= E.myguid
+	if not announce then return end -- No announce-able interrupt from player or pet, exit.
+	local inRaid, inPartyLFG = IsInRaid(), IsPartyLFG()
 
 	--Skirmish/non-rated arenas need to use INSTANCE_CHAT but IsPartyLFG() returns "false"
 	local _, instanceType = GetInstanceInfo()
@@ -81,18 +83,18 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 		inRaid = false --IsInRaid() returns true for arenas and they should not be considered a raid
 	end
 
-	local interruptAnnounce, msg = E.db.general.interruptAnnounce, format(INTERRUPT_MSG, destName, spellID, spellName)
-	if interruptAnnounce == "PARTY" then
+	local channel, msg = E.db.general.interruptAnnounce, format(INTERRUPT_MSG, destName, spellID, spellName)
+	if channel == "PARTY" then
 		SendChatMessage(msg, inPartyLFG and "INSTANCE_CHAT" or "PARTY")
-	elseif interruptAnnounce == "RAID" then
+	elseif channel == "RAID" then
 		SendChatMessage(msg, inPartyLFG and "INSTANCE_CHAT" or (inRaid and "RAID" or "PARTY"))
-	elseif interruptAnnounce == "RAID_ONLY" and inRaid then
+	elseif channel == "RAID_ONLY" and inRaid then
 		SendChatMessage(msg, inPartyLFG and "INSTANCE_CHAT" or "RAID")
-	elseif interruptAnnounce == "SAY" and instanceType ~= 'none' then
+	elseif channel == "SAY" and instanceType ~= 'none' then
 		SendChatMessage(msg, "SAY")
-	elseif interruptAnnounce == "YELL" and instanceType ~= 'none' then
+	elseif channel == "YELL" and instanceType ~= 'none' then
 		SendChatMessage(msg, "YELL")
-	elseif interruptAnnounce == "EMOTE" then
+	elseif channel == "EMOTE" then
 		SendChatMessage(msg, "EMOTE")
 	end
 end
