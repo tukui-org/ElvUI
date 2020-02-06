@@ -33,6 +33,14 @@ local function GetPoint(obj)
 	return format('%s,%s,%s,%d,%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
 end
 
+local function GetSettingPoints(name)
+	local db = E.db.movers and E.db.movers[name]
+	if db then
+		local delim = (find(db, '\031') and '\031') or ','
+		return split(delim, db)
+	end
+end
+
 local function UpdateCoords(self)
 	local mover = self.child
 	local x, y, _, nudgePoint, nudgeInversePoint = E:CalculateMoverPoints(mover)
@@ -53,7 +61,6 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	if E.CreatedMovers[name].Created then return end
 
 	if overlay == nil then overlay = true end
-	local point, anchor, secondaryPoint, x, y = split(',', GetPoint(parent))
 
 	--Use dirtyWidth / dirtyHeight to set initial size if possible
 	local width = parent.dirtyWidth or parent:GetWidth()
@@ -92,22 +99,16 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	E.CreatedMovers[name].mover = f
 	E.snapBars[#E.snapBars+1] = f
 
-	local db = E.db.movers and E.db.movers[name]
-	if db then
-		if type(db) == 'table' then
-			f:Point(db.p, E.UIParent, db.p2, db.p3, db.p4)
-			E.db.movers[name] = GetPoint(f)
-		end
+	local point, anchor, secondaryPoint, x, y = GetSettingPoints(name)
+	if not point then point, anchor, secondaryPoint, x, y = split(',', GetPoint(parent)) end
 
-		local delim = (find(db, '\031') and '\031') or ','
-		local point1, anchor1, secondaryPoint1, x1, y1 = split(delim, db)
+	f:ClearAllPoints()
+	f:Point(point, anchor, secondaryPoint, x, y)
 
-		f:ClearAllPoints()
-		f:Point(point1, anchor1, secondaryPoint1, x1, y1)
-	else
-		f:ClearAllPoints()
-		f:Point(point, anchor, secondaryPoint, x, y)
-	end
+	parent:SetScript('OnSizeChanged', SizeChanged)
+	parent:ClearAllPoints()
+	parent:Point(point, f, 0, 0)
+	parent.mover = f
 
 	local function OnDragStart(self)
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
@@ -243,11 +244,6 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f:SetScript('OnLeave', OnLeave)
 	f:SetScript('OnShow', OnShow)
 	f:SetScript('OnMouseWheel', OnMouseWheel)
-
-	parent:SetScript('OnSizeChanged', SizeChanged)
-	parent:ClearAllPoints()
-	parent:Point(point, f, 0, 0)
-	parent.mover = f
 
 	if postdrag ~= nil and type(postdrag) == 'function' then
 		f:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -469,17 +465,11 @@ function E:SetMoversPositions()
 	end
 
 	for name, holder in pairs(E.CreatedMovers) do
-		local frame, point, anchor, secondaryPoint, x, y = _G[name]
-		local db = E.db.movers and E.db.movers[name]
-		if db and type(db) == 'string' then
-			local delim = (find(db, '\031') and '\031') or ','
-
-			point, anchor, secondaryPoint, x, y = split(delim, db)
-		else
-			point, anchor, secondaryPoint, x, y = split(',', holder.point)
-		end
+		local point, anchor, secondaryPoint, x, y = GetSettingPoints(name)
+		if not point then point, anchor, secondaryPoint, x, y = split(',', holder.point) end
 
 		if point then
+			local frame = _G[name]
 			frame:ClearAllPoints()
 			frame:Point(point, anchor, secondaryPoint, x, y)
 		end
