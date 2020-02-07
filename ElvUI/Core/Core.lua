@@ -1509,7 +1509,7 @@ function E:DBConversions()
 			E.global.unitframe.AuraBarColors[spell] = { color = { r = 1, g = 1, b = 1, a = 1}, enable = info }
 		elseif type(info) == 'table' then
 			if info.r or info.g or info.b then
-				E.global.unitframe.AuraBarColors[spell] = { color = { r = info.r or 1, g = info.g or 1, b = info.b or 1}, enable = true }
+				E.global.unitframe.AuraBarColors[spell] = { color = { r = info.r or 1, g = info.g or 1, b = info.b or 1, a = 1 }, enable = true }
 			elseif info.color then -- azil created a void hole, delete it -x-
 				if info.color.color then info.color.color = nil end
 				if info.color.enable then info.color.enable = nil end
