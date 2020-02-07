@@ -12,6 +12,7 @@ local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, ne
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool
+local GetSpellInfo = GetSpellInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetSpecialization = GetSpecialization
 local hooksecurefunc = hooksecurefunc
@@ -1504,12 +1505,22 @@ function E:DBConversions()
 	end
 
 	-- fix aurabars colors
-	for spell, info in pairs(E.global.unitframe.AuraBarColors) do
+	local auraBarColors = E.global.unitframe.AuraBarColors
+	for spell, info in pairs(auraBarColors) do
+		if type(spell) == 'string' then
+			local spellID = select(7, GetSpellInfo(spell))
+			if spellID and not auraBarColors[spellID] then
+				auraBarColors[spellID] = info
+				auraBarColors[spell] = nil
+				spell = spellID
+			end
+		end
+
 		if type(info) == 'boolean' then
-			E.global.unitframe.AuraBarColors[spell] = { color = { r = 1, g = 1, b = 1 }, enable = info }
+			auraBarColors[spell] = { color = { r = 1, g = 1, b = 1 }, enable = info }
 		elseif type(info) == 'table' then
 			if info.r or info.g or info.b then
-				E.global.unitframe.AuraBarColors[spell] = { color = { r = info.r or 1, g = info.g or 1, b = info.b or 1 }, enable = true }
+				auraBarColors[spell] = { color = { r = info.r or 1, g = info.g or 1, b = info.b or 1 }, enable = true }
 			elseif info.color then -- azil created a void hole, delete it -x-
 				if info.color.color then info.color.color = nil end
 				if info.color.enable then info.color.enable = nil end
