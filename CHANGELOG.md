@@ -1,4 +1,15 @@
-### Version 11.36 [ ETA: 🍨 ]
+### Version 11.37 [ ETA: 🍨 ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+___
+### Version 11.36 [ February 7th 2020 ]
 
 **Bug Fixes:**  
 Quite sure the *Quick Join Datatext* was being super noisy in the background, so we calmed it's rage with cuddles. This might have caused *Stuttering Issues* for people on high population realms. (#1702)  
