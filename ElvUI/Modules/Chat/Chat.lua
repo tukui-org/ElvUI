@@ -2268,10 +2268,10 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 	local isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
 
 	if isLFGList and firstQueue and firstQueue.eligible then
-		local searchResultInfo, activityID, name, leaderName, fullName, isLeader
+		local activityID, name, leaderName, fullName, isLeader
 
 		if firstQueue.queueData.lfgListID then
-			searchResultInfo = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
+			local searchResultInfo = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
 			if searchResultInfo then
 				activityID, name, leaderName = searchResultInfo.activityID, searchResultInfo.name, searchResultInfo.leaderName
 				isLeader = self:SocialQueueIsLeader(playerName, leaderName)
@@ -2288,10 +2288,10 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 			self:SocialQueueMessage(guid, format('%s %s: |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], fullName or UNKNOWN))
 		end
 	elseif firstQueue then
-		local output, outputCount, queueCount, queueName = '', '', 0
+		local output, outputCount, queueCount = '', '', 0
 		for _, queue in pairs(queues) do
 			if type(queue) == 'table' and queue.eligible then
-				queueName = (queue.queueData and SocialQueueUtil_GetQueueName(queue.queueData)) or ''
+				local queueName = (queue.queueData and SocialQueueUtil_GetQueueName(queue.queueData)) or ''
 				if queueName ~= '' then
 					if output == '' then
 						output = gsub(queueName, '\n.+','') -- grab only the first queue name
@@ -2303,9 +2303,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 			end
 		end
 		if output ~= '' then
-			if queueCount > 0 then
-				outputCount = format(LFG_LIST_AND_MORE, queueCount)
-			end
+			if queueCount > 0 then outputCount = format(LFG_LIST_AND_MORE, queueCount) end
 			self:SocialQueueMessage(guid, format('%s %s: |cff00CCFF%s|r %s', coloredName, SOCIAL_QUEUE_QUEUED_FOR, output, outputCount))
 		end
 	end
