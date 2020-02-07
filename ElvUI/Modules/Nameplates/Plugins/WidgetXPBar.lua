@@ -44,7 +44,7 @@ local function Update(self)
 	end
 
 	if element.PostUpdate then
-		element:PostUpdate(rank, cur, toNext, total)
+		element:PostUpdate(cur, toNext, total, rank, maxRank)
 	end
 end
 
