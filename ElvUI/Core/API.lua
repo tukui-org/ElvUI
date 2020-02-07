@@ -217,7 +217,7 @@ do
 		end
 	end
 
-	E.MaxNazjatarBodyguardRank = 30
+	E.MaxWidgetInfoRank = 30
 	function E:GetWidgetInfoBase(widgetID)
 		local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
 		if not widget then return end
@@ -229,7 +229,7 @@ do
 		local rank, maxRank
 		if widget.overrideBarText then
 			rank = tonumber(strmatch(widget.overrideBarText, "%d+"))
-			maxRank = rank == E.MaxNazjatarBodyguardRank
+			maxRank = rank == E.MaxWidgetInfoRank
 		end
 
 		return cur, toNext, total, rank, maxRank
