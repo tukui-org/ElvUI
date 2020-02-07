@@ -108,6 +108,8 @@ end
 local function OnEvent(self)
 	if panel ~= self then panel = self end
 	if delayed then return end
+
+	-- use a nonarg passing function, so that it goes through c_timer instead of the waitframe
 	delayed = E:Delay(1, throttle)
 end
 
