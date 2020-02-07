@@ -283,11 +283,13 @@ end
 
 function NP:Construct_WidgetXPBar(nameplate)
 	local WidgetXPBar = CreateFrame("StatusBar", nameplate:GetDebugName() .. "WidgetXPBar", nameplate)
-
 	WidgetXPBar:SetFrameStrata(nameplate:GetFrameStrata())
 	WidgetXPBar:SetFrameLevel(5)
-	WidgetXPBar:CreateBackdrop("Transparent")
 	WidgetXPBar:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
+	WidgetXPBar:CreateBackdrop("Transparent")
+
+	WidgetXPBar.Rank = NP:Construct_TagText(nameplate.RaisedElement)
+	WidgetXPBar.ProgressText = NP:Construct_TagText(nameplate.RaisedElement)
 
 	NP.StatusBars[WidgetXPBar] = true
 
@@ -305,14 +307,20 @@ function NP:Update_WidgetXPBar(nameplate)
 			nameplate:EnableElement("WidgetXPBar")
 		end
 
-		nameplate.WidgetXPBar:Height(10)
-		nameplate.WidgetXPBar:Point("TOPLEFT", nameplate.Castbar, "BOTTOMLEFT", 0, db.widgetXPBar.yOffset)
-		nameplate.WidgetXPBar:Point("TOPRIGHT", nameplate.Castbar, "BOTTOMRIGHT", 0, db.widgetXPBar.yOffset)
+		local bar = nameplate.WidgetXPBar
+		bar:ClearAllPoints()
+		bar:Point("TOPLEFT", nameplate, "BOTTOMLEFT", 0, db.widgetXPBar.yOffset)
+		bar:Point("TOPRIGHT", nameplate, "BOTTOMRIGHT", 0, db.widgetXPBar.yOffset)
+		bar:Height(10)
+
+		bar.Rank:ClearAllPoints()
+		bar.Rank:Point("RIGHT", bar, "LEFT", -4, 0)
+		bar.ProgressText:ClearAllPoints()
+		bar.ProgressText:Point("CENTER", bar, "CENTER")
 
 		local color = db.widgetXPBar.color
-		nameplate.WidgetXPBar:SetStatusBarColor(color.r, color.g, color.b)
-		nameplate.WidgetXPBar.Rank:Point("RIGHT", nameplate.WidgetXPBar, "LEFT", -4, 0)
-		nameplate.WidgetXPBar.ProgressText:Point("CENTER", nameplate.WidgetXPBar, "CENTER")
-		nameplate.WidgetXPBar:ForceUpdate()
+		bar:SetStatusBarColor(color.r, color.g, color.b)
+
+		bar:ForceUpdate()
 	end
 end

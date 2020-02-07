@@ -573,6 +573,7 @@ function S:Blizzard_Communities()
 	S:HandleEditBox(RecruitmentDialog.MinIlvlOnly.EditBox)
 	S:HandleButton(RecruitmentDialog.Accept)
 	S:HandleButton(RecruitmentDialog.Cancel)
+	S:HandleScrollBar(RecruitmentDialog.RecruitmentMessageFrame.RecruitmentMessageInput.ScrollBar)
 
 	-- CheckBoxes
 	local CommunitiesGuildRecruitmentFrameRecruitment = _G.CommunitiesGuildRecruitmentFrameRecruitment

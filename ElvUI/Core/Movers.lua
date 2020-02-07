@@ -51,6 +51,24 @@ local function UpdateCoords(self)
 	E:UpdateNudgeFrame(mover, x, y)
 end
 
+local function SetPoints(name, holder, parent)
+	local point1, relativeTo1, relativePoint1, xOffset1, yOffset1 = unpack(holder.parentPoint)
+	local point2, relativeTo2, relativePoint2, xOffset2, yOffset2 = GetSettingPoints(name)
+	if not point2 then -- fallback to the parents original point (on create) if the setting doesn't exist
+		point2, relativeTo2, relativePoint2, xOffset2, yOffset2 = point1, relativeTo1, relativePoint1, xOffset1, yOffset1
+	end
+
+	if point2 then
+		_G[name]:ClearAllPoints()
+		_G[name]:Point(point2, relativeTo2, relativePoint2, xOffset2, yOffset2)
+	end
+
+	if parent then
+		parent:ClearAllPoints()
+		parent:Point(point1, parent.mover, 0, 0)
+	end
+end
+
 local isDragging = false
 local coordFrame = CreateFrame('Frame')
 coordFrame:SetScript('OnUpdate', UpdateCoords)
@@ -58,7 +76,10 @@ coordFrame:Hide()
 
 local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, shouldDisable, configString)
 	if not parent then return end --If for some reason the parent isnt loaded yet
-	if E.CreatedMovers[name].Created then return end
+
+	local holder = E.CreatedMovers[name]
+	if holder.Created then return end
+	holder.Created = true
 
 	if overlay == nil then overlay = true end
 
@@ -79,10 +100,10 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	local fs = f:CreateFontString(nil, 'OVERLAY')
 	fs:FontTemplate()
-	fs:SetJustifyH('CENTER')
 	fs:Point('CENTER')
 	fs:SetText(text or name)
 	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
+	fs:SetJustifyH('CENTER')
 	f:SetFontString(fs)
 
 	f.text = fs
@@ -95,22 +116,12 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f.shouldDisable = shouldDisable
 	f.configString = configString
 
-	E.CreatedMovers[name].mover = f
+	holder.mover = f
+	parent.mover = f
 	E.snapBars[#E.snapBars+1] = f
 
-	local point1, relativeTo1, relativePoint1, xOffset1, yOffset1 = parent:GetPoint()
-	local point2, relativeTo2, relativePoint2, xOffset2, yOffset2 = GetSettingPoints(name)
-	if not point2 then -- fallback to the parents point if the setting doesn't exist
-		point2, relativeTo2, relativePoint2, xOffset2, yOffset2 = point1, relativeTo1, relativePoint1, xOffset1, yOffset1
-	end
-
-	f:ClearAllPoints()
-	f:Point(point2, relativeTo2, relativePoint2, xOffset2, yOffset2)
-
 	parent:SetScript('OnSizeChanged', SizeChanged)
-	parent:ClearAllPoints()
-	parent:Point(point1, f, 0, 0)
-	parent.mover = f
+	SetPoints(name, holder, parent)
 
 	local function OnDragStart(self)
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
@@ -146,17 +157,10 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		end
 
 		local x2, y2, p2 = E:CalculateMoverPoints(self)
+		local p1 = self.positionOverride and ((self.positionOverride == 'BOTTOM' or self.positionOverride == 'TOP') and 'BOTTOM' or 'BOTTOMLEFT')
 		self:ClearAllPoints()
-		local overridePoint
-		if self.positionOverride then
-			if self.positionOverride == 'BOTTOM' or self.positionOverride == 'TOP' then
-				overridePoint = 'BOTTOM'
-			else
-				overridePoint = 'BOTTOMLEFT'
-			end
-		end
+		self:Point(self.positionOverride or p2, E.UIParent, p1 or p2, x2, y2)
 
-		self:Point(self.positionOverride or p2, E.UIParent, overridePoint and overridePoint or p2, x2, y2)
 		if self.positionOverride then
 			self.parent:ClearAllPoints()
 			self.parent:Point(self.positionOverride, self, self.positionOverride)
@@ -167,7 +171,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		coordFrame.child = nil
 		coordFrame:Hide()
 
-		if postdrag ~= nil and (type(postdrag) == 'function') then
+		if postdrag and type(postdrag) == 'function' then
 			postdrag(self, E:GetScreenQuadrant(self))
 		end
 
@@ -244,15 +248,13 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f:SetScript('OnShow', OnShow)
 	f:SetScript('OnMouseWheel', OnMouseWheel)
 
-	if postdrag ~= nil and type(postdrag) == 'function' then
+	if postdrag and type(postdrag) == 'function' then
 		f:RegisterEvent('PLAYER_ENTERING_WORLD')
 		f:SetScript('OnEvent', function(self)
 			postdrag(f, E:GetScreenQuadrant(f))
 			self:UnregisterAllEvents()
 		end)
 	end
-
-	E.CreatedMovers[name].Created = true
 end
 
 function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
@@ -330,45 +332,47 @@ function E:SaveMoverPosition(name)
 end
 
 function E:SetMoverSnapOffset(name, offset)
-	local mover = _G[name] and E.CreatedMovers[name]
-	if not mover then return end
-	mover.mover.snapOffset = offset or -2
-	mover.snapoffset = offset or -2
+	local holder = _G[name] and E.CreatedMovers[name]
+	if not holder then return end
+	holder.mover.snapOffset = offset or -2
+	holder.snapoffset = offset or -2
 end
 
-function E:SetMoverLayoutPositionPoint(mover, name, frame)
+function E:SetMoverLayoutPositionPoint(holder, name, parent)
 	local layout = E.LayoutMoverPositions[E.db.layoutSetting]
-	mover.point = (layout and layout[name]) or E.LayoutMoverPositions.ALL[name] or GetPoint(frame)
+	holder.point = (layout and layout[name]) or E.LayoutMoverPositions.ALL[name] or GetPoint(parent or _G[name])
+
+	if parent then -- CreateMover call
+		holder.parentPoint = {parent:GetPoint()}
+	end
 end
 
 function E:SaveMoverDefaultPosition(name)
-	local mover = _G[name] and E.CreatedMovers[name]
-	if not mover then return end
+	local frame = _G[name]
+	local holder = frame and E.CreatedMovers[name]
+	if not holder then return end
 
-	E:SetMoverLayoutPositionPoint(mover, name, _G[name])
+	E:SetMoverLayoutPositionPoint(holder, name)
 
-	if mover.postdrag then
-		mover.postdrag(_G[name], E:GetScreenQuadrant(_G[name]))
+	if holder.postdrag and type(holder.postdrag) == 'function' then
+		holder.postdrag(frame, E:GetScreenQuadrant(frame))
 	end
 end
 
 function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes, shouldDisable, configString)
 	if not moverTypes then moverTypes = 'ALL,GENERAL' end
 
-	local mover = E.CreatedMovers[name]
-	if mover == nil then
-		mover = {}
-		mover.type = {}
+	local holder = E.CreatedMovers[name]
+	if holder == nil then
+		holder = {}
+		holder.type = {}
 
-		E:SetMoverLayoutPositionPoint(mover, name, parent)
-
-		local types = {split(',', moverTypes)}
-		for i = 1, #types do
-			local moverType = types[i]
-			mover.type[moverType] = true
+		for _, moverType in ipairs({split(',', moverTypes)}) do
+			holder.type[moverType] = true
 		end
 
-		E.CreatedMovers[name] = mover
+		E:SetMoverLayoutPositionPoint(holder, name, parent)
+		E.CreatedMovers[name] = holder
 	end
 
 	UpdateMover(parent, name, text, overlay, snapoffset, postdrag, shouldDisable, configString)
@@ -436,7 +440,7 @@ function E:ResetMovers(arg)
 				frame:Point(point, anchor, secondaryPoint, x, y)
 			end
 
-			if holder.postdrag ~= nil and type(holder.postdrag) == 'function' then
+			if holder.postdrag and type(holder.postdrag) == 'function' then
 				holder.postdrag(frame, E:GetScreenQuadrant(frame))
 			end
 
@@ -464,14 +468,7 @@ function E:SetMoversPositions()
 	end
 
 	for name, holder in pairs(E.CreatedMovers) do
-		local point, anchor, secondaryPoint, x, y = GetSettingPoints(name)
-		if not point then point, anchor, secondaryPoint, x, y = split(',', holder.point) end
-
-		if point then
-			local frame = _G[name]
-			frame:ClearAllPoints()
-			frame:Point(point, anchor, secondaryPoint, x, y)
-		end
+		SetPoints(name, holder)
 	end
 end
 

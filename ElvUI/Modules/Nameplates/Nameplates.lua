@@ -279,8 +279,6 @@ function NP:StylePlate(nameplate)
 	nameplate.PVPRole = NP:Construct_PVPRole(nameplate.RaisedElement)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
 	nameplate.WidgetXPBar = NP:Construct_WidgetXPBar(nameplate)
-	nameplate.WidgetXPBar.Rank = NP:Construct_TagText(nameplate.RaisedElement)
-	nameplate.WidgetXPBar.ProgressText = NP:Construct_TagText(nameplate.RaisedElement)
 
 	NP:Construct_Auras(nameplate)
 
@@ -301,6 +299,7 @@ function NP:UpdatePlate(nameplate)
 	NP:Update_RaidTargetIndicator(nameplate)
 	NP:Update_PVPRole(nameplate)
 	NP:Update_QuestIcons(nameplate)
+	NP:Update_WidgetXPBar(nameplate)
 
 	local SF_NameOnly = NP:StyleFilterCheckChanges(nameplate, 'NameOnly')
 	local SF_Visibility = NP:StyleFilterCheckChanges(nameplate, 'Visibility')
@@ -320,7 +319,6 @@ function NP:UpdatePlate(nameplate)
 		NP:Update_TargetIndicator(nameplate)
 		NP:Update_ThreatIndicator(nameplate)
 		NP:Update_Cutaway(nameplate)
-		NP:Update_WidgetXPBar(nameplate)
 
 		if E.myclass == "DEATHKNIGHT" then
 			NP:Update_Runes(nameplate)
@@ -565,7 +563,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		unit = unit or nameplate.unit
 
-		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
+		local blizzPlate = nameplate:GetParent().UnitFrame
+		nameplate.blizzPlate = blizzPlate
+		nameplate.widget = blizzPlate.WidgetContainer
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.classification = UnitClassification(unit)
 		nameplate.creatureType = UnitCreatureType(unit)

@@ -207,34 +207,32 @@ do
 end
 
 do
-	function E:GetWidgetInfoBase(widgetID, overrideProc)
+	function E:GetWidgetInfoID(guid)
+		return E.global.nameplate.widgetMap[guid]
+	end
+
+	function E:SetWidgetInfoID(guid, widgetID)
+		if widgetID then
+			E.global.nameplate.widgetMap[guid] = widgetID
+		end
+	end
+
+	E.MaxWidgetInfoRank = 30
+	function E:GetWidgetInfoBase(widgetID)
 		local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
 		if not widget then return end
-
-		local extra
-		if ( overrideProc ) then
-			extra =	overrideProc(widget.overrideBarText)
-		end
 
 		local cur = widget.barValue - widget.barMin
 		local toNext = widget.barMax - widget.barMin
 		local total = widget.barValue
 
-		return cur, toNext, total, extra
-	end
+		local rank, maxRank
+		if widget.overrideBarText then
+			rank = tonumber(strmatch(widget.overrideBarText, "%d+"))
+			maxRank = rank == E.MaxWidgetInfoRank
+		end
 
-	E.MaxNazjatarBodyguardRank = 30
-	local function parseRank(text)
-		return tonumber(strmatch(text, "%d+"))
-	end
-
-	function E:GetNazjatarBodyguardXP(widgetID)
-		local cur, toNext, total, rank =E:GetWidgetInfoBase(widgetID, parseRank)
-		if not rank then return end
-
-		local isMax = rank == E.MaxNazjatarBodyguardRank
-
-		return rank, cur, toNext, total, isMax
+		return cur, toNext, total, rank, maxRank
 	end
 end
 

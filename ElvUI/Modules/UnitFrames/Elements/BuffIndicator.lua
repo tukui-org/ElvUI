@@ -54,10 +54,12 @@ function UF:BuffIndicator_PostCreateIcon(button)
 	UF:Update_FontString(button.count)
 end
 
-function UF:BuffIndicator_PostUpdateIcon(unit, button)
+function UF:BuffIndicator_PostUpdateIcon(_, button)
 	local settings = self.watched[button.spellID]
 	if settings then -- This should never fail.
+		button.cd.textThreshold = settings.textThreshold ~= -1 and settings.textThreshold
 
+		local timer = button.cd.timer
 		if (settings.style == 'coloredIcon' or settings.style == 'texturedIcon') and not button.icon:IsShown() then
 			button.icon:Show()
 			button.icon.border:Show()
@@ -68,12 +70,26 @@ function UF:BuffIndicator_PostUpdateIcon(unit, button)
 			button.cd:SetDrawSwipe(false)
 		end
 
-		if settings.style == 'coloredIcon' then
-			button.icon:SetTexture(E.media.blankTex)
-			button.icon:SetVertexColor(settings.color.r, settings.color.g, settings.color.b);
-		elseif settings.style == 'texturedIcon' then
-			button.icon:SetVertexColor(1, 1, 1)
-			button.icon:SetTexCoord(unpack(E.TexCoords))
+		if settings.style == 'timerOnly' then
+			button.cd.hideText = nil
+			if timer then
+				timer.skipTextColor = true
+
+				if timer.text then
+					timer.text:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
+				end
+			end
+		else
+			button.cd.hideText = not settings.displayText
+			if timer then timer.skipTextColor = nil end
+
+			if settings.style == 'coloredIcon' then
+				button.icon:SetTexture(E.media.blankTex)
+				button.icon:SetVertexColor(settings.color.r, settings.color.g, settings.color.b)
+			elseif settings.style == 'texturedIcon' then
+				button.icon:SetVertexColor(1, 1, 1)
+				button.icon:SetTexCoord(unpack(E.TexCoords))
+			end
 		end
 
 		if settings.style == 'texturedIcon' and button.filter == "HARMFUL" then
