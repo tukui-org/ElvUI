@@ -1,7 +1,7 @@
 ### Version 11.36 [ ETA: 🍨 ]
 
 **Bug Fixes:**  
-Quite sure the *Quick Join Datatext* was being super noisy in the background, so we calmed it's rage with cuddles. (#1702)  
+Quite sure the *Quick Join Datatext* was being super noisy in the background, so we calmed it's rage with cuddles. This might have caused *Stuttering Issues* for people on high population realms. (#1702)  
 Profile *Spec Switch* doesn't lawl around your anchors anymore, it should place them nice and neat where they belong.  
 
 **Misc. Changes:**  
