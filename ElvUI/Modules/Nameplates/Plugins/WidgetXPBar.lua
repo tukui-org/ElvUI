@@ -40,6 +40,7 @@ local VoidtouchedEggNPCIDToWidgetIDMap = {
 	[163596] = 2342, -- Picco
 	-- Phase 3
 	[163648] = 2342, -- Bitey McStabface
+	[163651] = 2342, -- Yu'gaz
 }
 
 local function Update(self)
