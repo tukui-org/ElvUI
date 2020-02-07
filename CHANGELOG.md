@@ -3,6 +3,7 @@
 **Bug Fixes:**  
 Quite sure the *Quick Join Datatext* was being super noisy in the background, so we calmed it's rage with cuddles. This might have caused *Stuttering Issues* for people on high population realms. (#1702)  
 Profile *Spec Switch* doesn't lawl around your anchors anymore, it should place them nice and neat where they belong.  
+If you had *AuraBar Colors* that weren't being colorize correctly, recheck the filter and enable it. It was 100% nargles, I just know it.  
 
 **Misc. Changes:**  
 Nameplate *Follower XP* has now been properly trained on how to collect IDs all by itself.  
