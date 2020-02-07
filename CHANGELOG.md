@@ -5,6 +5,7 @@ Quite sure the *Quick Join Datatext* was being super noisy in the background, so
 Profile *Spec Switch* doesn't lawl around your anchors anymore, it should place them nice and neat where they belong.  
 
 **Misc. Changes:**  
+Nameplate *Follower XP* has now been properly trained on how to collect IDs all by itself.  
 Buff Indicator Style *Timer Only* will now use the selected color for the timer.  
 If you were a bad boi and interrupt yourself with the *Interrupt Announce* on it will now no longer embarrass you.  
 
