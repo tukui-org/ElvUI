@@ -1,13 +1,12 @@
-### Version 11.36 [ ETA: Soon ]
-
-**New Additions:**  
-
+### Version 11.36 [ ETA: 🍨 ]
 
 **Bug Fixes:**  
-
+Quite sure the *Quick Join Datatext* was being super noisy in the background, so we calmed it's rage with cuddles. (#1702)  
+Profile *Spec Switch* doesn't lawl around your anchors anymore, it should place them nice and neat where they belong.  
 
 **Misc. Changes:**  
 Buff Indicator Style *Timer Only* will now use the selected color for the timer.  
+If you were a bad boi and interrupt yourself with the *Interrupt Announce* on it will now no longer embarrass you.  
 
 ___
 ### Version 11.352 [ February 5th 2020 ]
