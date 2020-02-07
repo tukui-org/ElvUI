@@ -893,7 +893,7 @@ function E:Config_WindowOpened(frame)
 		frame.closeButton:Show()
 		frame.originalClose:Hide()
 
-		E:Elasticize(frame.leftHolder.logo)
+		E:Elasticize(frame.leftHolder.logo, 128, 64)
 
 		local unskinned = not E.private.skins.ace3.enable
 		local offset = unskinned and 14 or 8
@@ -1139,7 +1139,6 @@ function E:ToggleOptionsUI(msg)
 			logo:SetTexture(E.Media.Textures.LogoSmall)
 			logo:Point("CENTER", left, "TOP", unskinned and 10 or 0, unskinned and -40 or -36)
 			logo:Size(128, 64)
-			logo:SetAlpha(0.9)
 			left.logo = logo
 
 			local buttonsHolder = CreateFrame('Frame', nil, left)

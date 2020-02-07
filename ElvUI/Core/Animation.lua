@@ -134,9 +134,11 @@ function E:SetUpAnimGroup(obj, Type, ...)
 	end
 end
 
-function E:Elasticize(obj)
+function E:Elasticize(obj, width, height)
 	if not obj.elastic then
-		E:SetUpAnimGroup(obj, 'Elastic', 128, 64, 2, false)
+		if not width then width = obj:GetWidth() end
+		if not height then height = obj:GetHeight() end
+		E:SetUpAnimGroup(obj, 'Elastic', width, height, 2, false)
 	end
 
 	obj.elastic[1]:Play()
