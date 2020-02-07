@@ -211,7 +211,11 @@ do
 		local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
 		if not widget then return end
 
-		local extra = overrideProc and overrideProc(widget.overrideBarText)
+		local extra
+		if ( overrideProc ) then
+			extra =	overrideProc(widget.overrideBarText)
+		end
+
 		local cur = widget.barValue - widget.barMin
 		local toNext = widget.barMax - widget.barMin
 		local total = widget.barValue
@@ -225,10 +229,11 @@ do
 	end
 
 	function E:GetNazjatarBodyguardXP(widgetID)
-		local cur, toNext, total, rank = E:GetWidgetInfoBase(widgetID, parseRank)
+		local cur, toNext, total, rank =E:GetWidgetInfoBase(widgetID, parseRank)
 		if not rank then return end
 
 		local isMax = rank == E.MaxNazjatarBodyguardRank
+
 		return rank, cur, toNext, total, isMax
 	end
 end
