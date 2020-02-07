@@ -15,7 +15,7 @@ local GetSpellInfo = GetSpellInfo
 -- GLOBALS: MAX_PLAYER_LEVEL
 
 local quickSearchText, selectedSpell, selectedFilter, filterList, spellList = '', nil, nil, {}, {}
-local auraBarDefaults = { enable = true, color = {r = 1, g = 1, b = 1, a = 1} }
+local auraBarDefaults = { enable = true, color = { r = 1, g = 1, b = 1 } }
 
 local function IsStockFilter()
 	return selectedFilter and (selectedFilter == 'Debuff Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' or E.DEFAULT_FILTER[selectedFilter])
@@ -546,7 +546,7 @@ E.Options.args.filters = {
 					name = L["COLOR"],
 					type = 'color',
 					order = 2,
-					hasAlpha = true,
+					hasAlpha = function() return selectedFilter ~= 'AuraBar Colors' end,
 					hidden = function() return (selectedFilter ~= 'Debuff Highlight' and selectedFilter ~= 'AuraBar Colors' and selectedFilter ~= 'Buff Indicator (Pet)' and selectedFilter ~= 'Buff Indicator (Profile)' and selectedFilter ~= 'Buff Indicator') end,
 					get = function(info)
 						local spell = GetSelectedSpell()
