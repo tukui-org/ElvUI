@@ -21,7 +21,7 @@ local function Update(self)
 	local npcID = self.npcID and tonumber(self.npcID)
 	local widgetID = E:GetWidgetInfoID(npcID)
 	local realID = widget.widgetFrames and next(widget.widgetFrames)
-	if realID and realID ~= realID then -- auto save new npc ids to their widget id
+	if realID and realID ~= widgetID then -- auto save new npc ids to their widget id
 		E:SetWidgetInfoID(npcID, realID)
 		widgetID = realID
 	end
