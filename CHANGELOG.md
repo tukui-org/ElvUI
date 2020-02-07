@@ -9,6 +9,7 @@ If you had *AuraBar Colors* that weren't being colorize correctly, recheck the f
 Nameplate *Follower XP* has now been properly trained on how to collect IDs all by itself.  
 Buff Indicator Style *Timer Only* will now use the selected color for the timer.  
 If you were a bad boi and interrupt yourself with the *Interrupt Announce* on it will now no longer embarrass you.  
+Spells inside of the *AuraBar Colors* filter which were using *Name* instead of *Spell ID* will be converted to *Spell ID*, if possible.  
 
 ___
 ### Version 11.352 [ February 5th 2020 ]
