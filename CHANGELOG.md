@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-
+The Unitframe *Portrait Style Class* wasn't playing nicely with the *Overlay* option but they are now friends.  
 
 **Misc. Changes:**  
 
