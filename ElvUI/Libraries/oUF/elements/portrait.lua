@@ -46,14 +46,14 @@ local SetPortraitTexture = SetPortraitTexture
 local function Update(self, event, unit)
 	if(not unit or not UnitIsUnit(self.unit, unit)) then return end
 
-	local element = self.Portrait
-
 	--[[ Callback: Portrait:PreUpdate(unit)
 	Called before the element has been updated.
 
 	* self - the Portrait element
 	* unit - the unit for which the update has been triggered (string)
 	--]]
+
+	local element = self.Portrait
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
 	local guid = UnitGUID(unit)
@@ -78,7 +78,7 @@ local function Update(self, event, unit)
 				element:ClearModel()
 				element:SetUnit(unit)
 			end
-		else
+		elseif not element.customTexture then -- ElvUI changed
 			SetPortraitTexture(element, unit)
 		end
 	end
