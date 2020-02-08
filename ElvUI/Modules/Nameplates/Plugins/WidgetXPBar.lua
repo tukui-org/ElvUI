@@ -15,7 +15,7 @@ local function Update(self)
 
 	local widget = self.widget
 	local unit = self.unit and UnitIsOwnerOrControllerOfUnit("player", self.unit)
-	if unit and not widget then Hide(element) return end
+	if not (widget and unit) then Hide(element) return end
 
 	if element.PreUpdate then
 		element:PreUpdate()
