@@ -4,8 +4,8 @@
 
 
 **Bug Fixes:**  
-The Unitframe *Portrait Style Class* wasn't playing nicely with the *Overlay* option but they are now friends.  
-Nameplate *Follower XP* was showing on uncontrolled NPCs, everything is under control now.  
+Unitframe *Portrait Style Class* wasn't playing nicely with the *Overlay* option but they are now friends.  
+Nameplate *Follower XP* was showing on other players followers, it won't do that anymore.  
 
 **Misc. Changes:**  
 
