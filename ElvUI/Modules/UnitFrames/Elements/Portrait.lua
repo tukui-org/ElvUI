@@ -7,6 +7,7 @@ local select = select
 local UnitClass = UnitClass
 local CreateFrame = CreateFrame
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
+local classIcon = 'Interface\\WorldStateFrame\\Icons-Classes'
 
 function UF:Construct_Portrait(frame, type)
 	local portrait
@@ -44,9 +45,8 @@ function UF:Configure_Portrait(frame)
 	frame.Portrait = portrait
 
 	if portrait.db.style == 'Class' then
-		local customTexture = 'Interface\\WorldStateFrame\\Icons-Classes'
-		portrait:SetTexture(customTexture)
-		portrait.customTexture = customTexture
+		portrait:SetTexture(classIcon)
+		portrait.customTexture = classIcon
 	elseif portrait.db.style == '2D' then
 		portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
 		portrait.customTexture = nil
