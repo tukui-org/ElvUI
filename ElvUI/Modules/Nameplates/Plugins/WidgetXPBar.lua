@@ -14,10 +14,11 @@ local function Update(self)
 	local element = self.WidgetXPBar
 	if not element then return end
 
-	local unit = self.unit
 	local widget = self.widget
-	local isMine = unit and UnitPlayerControlled(unit) and UnitIsOwnerOrControllerOfUnit('player', unit)
-	if not widget or not isMine then Hide(element) return end
+	if not widget then Hide(element) return end
+
+	local unit = self.unit
+	if unit and UnitPlayerControlled(unit) and not UnitIsOwnerOrControllerOfUnit('player', unit) then Hide(element) return end
 
 	if element.PreUpdate then
 		element:PreUpdate()
