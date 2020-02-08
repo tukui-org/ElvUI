@@ -119,15 +119,18 @@ function UF:Configure_Portrait(frame)
 end
 
 function UF:PortraitUpdate(unit, event)
-	local db = self.db
-	if not db then return end
+	if self.stateChanged or event == 'ElvUI_UpdateAllElements' then
+		local db = self.db
+		if not db then return end
 
-	if self.state and (self.stateChanged or event == 'ElvUI_UpdateAllElements') then
 		if self.playerModel then
-			self:SetCamDistanceScale(db.camDistanceScale)
-			self:SetViewTranslation(db.xOffset * 100, db.yOffset * 100)
+			if self.state then
+				self:SetCamDistanceScale(db.camDistanceScale)
+				self:SetViewTranslation(db.xOffset * 100, db.yOffset * 100)
+				self:SetRotation(rad(db.rotation))
+			end
+
 			self:SetDesaturation(db.desaturation)
-			self:SetRotation(rad(db.rotation))
 			self:SetPaused(db.paused)
 		elseif db.style == 'Class' then
 			local Class = select(2, UnitClass(unit))
