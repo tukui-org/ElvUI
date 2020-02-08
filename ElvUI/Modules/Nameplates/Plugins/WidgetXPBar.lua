@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
+local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
+
 local function Hide(element)
 	if element.Rank then element.Rank:Hide() end
 	if element.ProgressText then element.ProgressText:Hide() end
@@ -12,7 +14,8 @@ local function Update(self)
 	if not element then return end
 
 	local widget = self.widget
-	if not widget then Hide(element) return end
+	local unit = self.unit and UnitIsOwnerOrControllerOfUnit("player", self.unit)
+	if unit and not widget then Hide(element) return end
 
 	if element.PreUpdate then
 		element:PreUpdate()
