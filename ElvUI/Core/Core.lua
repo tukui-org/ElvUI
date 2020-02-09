@@ -52,7 +52,7 @@ local LSM = E.Libs.LSM
 --Constants
 E.noop = function() end
 E.title = format('|cfffe7b2c%s |r', 'ElvUI')
-E.version = GetAddOnMetadata('ElvUI', 'Version')
+E.version = tonumber(GetAddOnMetadata('ElvUI', 'Version'))
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 E.mylevel = UnitLevel('player')
 E.myLocalizedClass, E.myclass, E.myClassID = UnitClass('player')
