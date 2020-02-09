@@ -280,9 +280,9 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 			realm = gsub(E.myrealm,'[%s%-]','')
 		end
 
-		local nameRealm = (realm and format("%s-%s", name, realm)) or name
 		if E.db.tooltip.showElvUIUsers then
-			if E.UserList[nameRealm] then
+			local nameRealm = (realm and format("%s-%s", name, realm)) or name
+			if nameRealm and E.UserList[nameRealm] then
 				local r, g = 1, 0
 				local rr, gg, bb = unpack(E.media.rgbvaluecolor)
 				if E.UserList[nameRealm] == E.version then
