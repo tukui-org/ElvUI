@@ -30,9 +30,9 @@ local function GetDebuffType(unit, filter, filterTable)
 		local name, texture, _, debufftype, _,_,_,_,_, spellID = UnitAura(unit, i, "HARMFUL")
 		if not texture then break end
 
-		local filterSpell = filterTable[spellID] or filterTable[name]
+		local filterSpell = filterTable[spellID]
 
-		if (filterTable and filterSpell) then
+		if (filterTable and filterSpell and dispellist[debufftype]) then
 			if filterSpell.enable then
 				return debufftype, texture, true, filterSpell.style, filterSpell.color
 			else

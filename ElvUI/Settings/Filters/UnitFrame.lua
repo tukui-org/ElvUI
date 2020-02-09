@@ -1290,9 +1290,7 @@ G.unitframe.AuraBarColors = {
 	[90355] = { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Ancient Hysteria
 }
 
-G.unitframe.DebuffHighlightColors = {
-	[25771] = {enable = false, style = "FILL", color = {r = 0.85, g = 0, b = 0, a = 0.85}},
-}
+G.unitframe.DebuffHighlightColors = {}
 
 G.unitframe.specialFilters = {
 	-- Whitelists
