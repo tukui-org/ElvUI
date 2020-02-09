@@ -207,11 +207,6 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
 		local pvpName = UnitPVPName(unit)
 		local relationship = UnitRealmRelationship(unit)
-		local name2 = name
-		local realm2 = realm
-		if not realm or realm == "" then
-			realm2 = gsub(E.myrealm,'[%s%-]','')
-		end
 
 		color = E:ClassColor(class) or PRIEST_COLOR
 
@@ -276,20 +271,12 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 			end
 		end
 
-		if not realm or realm == "" then
-			realm = gsub(E.myrealm,'[%s%-]','')
-		end
-
 		if E.db.tooltip.showElvUIUsers then
-			local nameRealm = (realm and format("%s-%s", name, realm)) or name
-			if nameRealm and E.UserList[nameRealm] then
-				local r, g = 1, 0
-				local rr, gg, bb = unpack(E.media.rgbvaluecolor)
-				if E.UserList[nameRealm] == E.version then
-					r, g = 0, 1
-				end
-
-				GameTooltip:AddDoubleLine(L["ElvUI Version:"], E.UserList[name2.."-"..realm2], rr,gg,bb, r,g,0)
+			local nameRealm = (realm and realm ~= "" and format("%s-%s", name, realm)) or name
+			local addonUser = E.UserList[nameRealm]
+			if addonUser then
+				local v,r,g,b = addonUser == E.version, unpack(E.media.rgbvaluecolor)
+				GameTooltip:AddDoubleLine(L["ElvUI Version:"], addonUser, r,g,b, v and 0 or 1, v and 1 or 0, 0)
 			end
 		end
 	else
