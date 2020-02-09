@@ -784,7 +784,7 @@ do
 				local msg, ver = tonumber(message), tonumber(E.version)
 				local inCombat = InCombatLockdown()
 
-				E.UserList[sender] = ver
+				E.UserList[sender] = msg
 				if ver ~= G.general.version then
 					if not E.shownUpdatedWhileRunningPopup and not inCombat then
 						E:StaticPopup_Show('ELVUI_UPDATED_WHILE_RUNNING', nil, nil, {mismatch = ver > G.general.version})
