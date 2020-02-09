@@ -781,7 +781,7 @@ do
 		if event == 'CHAT_MSG_ADDON' then
 			if sender == myName then return end
 			if prefix == 'ELVUI_VERSIONCHK' then
-				local msg, ver = tonumber(message), tonumber(E.version)
+				local msg, ver = tonumber(message), E.version
 				local inCombat = InCombatLockdown()
 
 				E.UserList[gsub(sender, '%-'..myRealm,'')] = msg
