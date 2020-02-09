@@ -270,6 +270,18 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 				GameTooltip:AddDoubleLine(format("%s:", _G.ROLE), role, nil, nil, nil, r, g, b)
 			end
 		end
+
+		if self.db.showElvUIUsers and realm and realm ~= "" then
+			if E.UserList[name.."-"..realm] then
+				local r, g = 1, 0
+				local rr, gg, bb = unpack(E.media.rgbvaluecolor)
+				if E.UserList[name.."-"..realm] == E.version then
+					r, g = 0, 1
+				end
+
+				GameTooltip:AddDoubleLine(L["ElvUI Version:"], E.UserList[name.."-"..realm], rr,gg,bb, r,g,0)
+			end
+		end
 	else
 		if UnitIsTapDenied(unit) then
 			color = TAPPED_COLOR
@@ -449,7 +461,6 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	self:RemoveTrashLines(tt) --keep an eye on this may be buggy
 
 	local color = self:SetUnitText(tt, unit, UnitLevel(unit), isShiftKeyDown)
-
 	if self.db.showMount and not isShiftKeyDown and unit ~= "player" and isPlayerUnit then
 		for i = 1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)

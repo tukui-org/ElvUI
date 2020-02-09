@@ -69,6 +69,7 @@ E.resolution = format('%dx%d', E.screenwidth, E.screenheight)
 E.NewSign = '|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:14:14|t' -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
 E.TexturePath = 'Interface\\AddOns\\ElvUI\\Media\\Textures\\' -- for plugins?
 E.InfoColor = '|cfffe7b2c'
+E.UserList = {}
 
 -- oUF Defines
 E.oUF.Tags.Vars.E = E
@@ -762,6 +763,7 @@ end
 do
 	local SendMessageWaiting -- only allow 1 delay at a time regardless of eventing
 	function E:SendMessage()
+		if not E.private.general.broadcastElvUIUser then return end
 		if IsInRaid() then
 			C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID')
 		elseif IsInGroup() then
@@ -783,6 +785,7 @@ do
 				local msg, ver = tonumber(message), tonumber(E.version)
 				local inCombat = InCombatLockdown()
 
+				E.UserList[sender] = ver
 				if ver ~= G.general.version then
 					if not E.shownUpdatedWhileRunningPopup and not inCombat then
 						E:StaticPopup_Show('ELVUI_UPDATED_WHILE_RUNNING', nil, nil, {mismatch = ver > G.general.version})

@@ -228,6 +228,17 @@ E.Options.args.general = {
 						['PLAYER'] = L["PLAYER"],
 					},
 				},
+				broadcastElvUIUser = {
+					order = 20,
+					name = L["Broadcast ElvUI Status"],
+					desc = L["Broadcast your version of ElvUI."],
+					type = "toggle",
+					get = function(info) return E.private.general.broadcastElvUIUser end,
+					set = function(info, value)
+						E.private.general.broadcastElvUIUser = value
+						E:StaticPopup_Show("CONFIG_RL")
+					end,					
+				},
 				threatGroup = {
 					order = 50,
 					type = "group",

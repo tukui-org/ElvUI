@@ -962,6 +962,7 @@ P.datatexts = {
 
 --Tooltip
 P.tooltip = {
+	showElvUIUsers = false,
 	cursorAnchor = false,
 	cursorAnchorType = 'ANCHOR_CURSOR',
 	cursorAnchorX = 0,

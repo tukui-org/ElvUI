@@ -4,6 +4,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 V.general = {
+	broadcastElvUIUser = true,
 	loot = true,
 	lootRoll = true,
 	normTex = 'ElvUI Norm',
