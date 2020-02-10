@@ -327,7 +327,6 @@ L["Type /hellokitty to revert to old settings."] = "输入/hellokitty以撤销�
 L["UIWidgetBelowMinimapContainer"] = "小地图下方部件容器"
 L["UIWidgetTopContainer"] = "顶部部件容器"
 L["Unhittable:"] = "未命中:"
-L["Use CVar Value"] = "使用CVar数值"
 L["Vehicle Seat Frame"] = "载具座位框"
 L["Vendor / Delete Grays"] = "出售/删除灰色物品"
 L["Vendor Grays"] = "出售灰色物品"

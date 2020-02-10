@@ -10,7 +10,6 @@ local floor, tonumber, strlower = floor, tonumber, strlower
 local strfind, format, strsub = strfind, format, strsub
 local strmatch, gmatch, gsub = strmatch, gmatch, gsub
 --WoW API / Variables
-local C_ToyBox_GetToyInfo = C_ToyBox.GetToyInfo
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney

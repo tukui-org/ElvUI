@@ -326,7 +326,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 					priority = {
 						order = 5,
 						name = L["Add Regular Filter"],
-						desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
+						desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."],
 						type = 'select',
 						values = function()
 							local filters = {}
@@ -627,7 +627,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 					priority = {
 						order = 5,
 						name = L["Add Regular Filter"],
-						desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the 'Filters' section of the config."],
+						desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."],
 						type = 'select',
 						values = function()
 							local filters = {}
@@ -775,7 +775,7 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 			profileSpecific = {
 				type = 'toggle',
 				name = L["Profile Specific"],
-				desc = L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."],
+				desc = L["Use the profile specific filter Buff Indicator (Profile) instead of the global filter Buff Indicator."],
 				order = 4,
 			},
 			configureButton = {

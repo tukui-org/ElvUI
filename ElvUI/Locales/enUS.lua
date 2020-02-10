@@ -327,7 +327,6 @@ L["Type /hellokitty to revert to old settings."] = true
 L["UIWidgetBelowMinimapContainer"] = true
 L["UIWidgetTopContainer"] = true
 L["Unhittable:"] = true
-L["Use CVar Value"] = true
 L["Vehicle Seat Frame"] = true
 L["Vendor / Delete Grays"] = true
 L["Vendor Grays"] = true

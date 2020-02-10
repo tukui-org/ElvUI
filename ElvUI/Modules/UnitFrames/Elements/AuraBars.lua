@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames');
 
 --Lua functions
 local _G = _G
-local tostring = tostring
 local format = format
 local unpack = unpack
 --WoW API / Variables
