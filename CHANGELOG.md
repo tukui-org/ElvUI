@@ -1,13 +1,16 @@
 ### Version 11.37 [ ETA: 🍨 ]
 
 **New Additions:**  
-
+Added option to display *ElvUI Version* of other *ElvUI users* into Tooltip.  
 
 **Bug Fixes:**  
+The *Top Auras* were having some trouble deciding what border color to wear, it's now selected for them (once again).  
 Unitframe *Portrait Style Class* wasn't playing nicely with the *Overlay* option but they are now friends.  
 Nameplate *Follower XP* was showing on other players followers, it won't do that anymore.  
+When selecting a *Custom Filter*, there was a *0.3333~%* chance to get an error. That *should* no longer be the case.  
 
 **Misc. Changes:**  
+Added 8.3 Affixs into the *Raid Debuffs* filter.  
 
 ___
 ### Version 11.36 [ February 7th 2020 ]
