@@ -177,7 +177,9 @@ E.Options.args.filters = {
 							E.global.unitframe.AuraBarColors[value] = E:CopyTable({}, auraBarDefaults)
 						elseif selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' then
 							local selectedTable = GetSelectedFilters()
-							selectedTable[value] = UF:AuraWatch_AddSpell(value, 'TOPRIGHT')
+							if not selectedTable[value] then
+								selectedTable[value] = UF:AuraWatch_AddSpell(value, 'TOPRIGHT')
+							end
 						else
 							local filters = E.global.unitframe.aurafilters
 
