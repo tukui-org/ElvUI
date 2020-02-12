@@ -907,7 +907,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 
 		if headerUpdate or not self[group].mover then
 			UF.headerFunctions[group]:Configure_Groups(self[group])
-			if not self[group].isForced and not self[group].blockVisibilityChanges then
+			if not self[group].isForced then
 				RegisterStateDriver(self[group], "visibility", db.visibility)
 			end
 		else

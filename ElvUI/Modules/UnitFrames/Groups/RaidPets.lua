@@ -55,10 +55,6 @@ function UF:Update_RaidpetHeader(header, db)
 
 		headerHolder.positioned = true;
 	end
-
-	if not headerHolder.isForced and db.enable then
-		RegisterStateDriver(headerHolder, "visibility", db.visibility)
-	end
 end
 
 function UF:Update_RaidpetFrames(frame, db)

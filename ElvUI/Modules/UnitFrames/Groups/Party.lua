@@ -91,10 +91,6 @@ function UF:Update_PartyHeader(header, db)
 
 		headerHolder.positioned = true;
 	end
-
-	if not headerHolder.isForced and db.enable then
-		RegisterStateDriver(headerHolder, "visibility", db.visibility)
-	end
 end
 
 function UF:Update_PartyFrames(frame, db)
