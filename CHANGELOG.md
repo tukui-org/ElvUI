@@ -1,4 +1,16 @@
-### Version 11.37 [ ETA: 🍨 ]
+### Version 11.38 [ ETA: 🍨 ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 11.37 [ February 11th 2020 ]
 
 **New Additions:**  
 Added option to display *ElvUI Version* of other *ElvUI users* into Tooltip.  
