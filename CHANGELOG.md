@@ -10,6 +10,12 @@
 
 
 ___
+### Version 11.371 [ February 11th 2020 ]
+
+**Hotfixed:**  
+Minor explosion on load with the release, damage has been absorbed by a fancy hotfix shielding mechanism.  
+
+___
 ### Version 11.37 [ February 11th 2020 ]
 
 **New Additions:**  
@@ -43,13 +49,13 @@ Spells inside of the *AuraBar Colors* filter which were using *Name* instead of 
 ___
 ### Version 11.352 [ February 5th 2020 ]
 
-**Hotfixed:** 
+**Hotfixed:**  
 Boss and Arena frames were casting Stealth on some profiles.  
 
 ___
 ### Version 11.351 [ February 5th 2020 ]
 
-**Hotfixed:** 
+**Hotfixed:**  
 We had to retrain *Reset Anchors* and *Nudge Reset* because they forgot how to do the thing.  
 
 ___
