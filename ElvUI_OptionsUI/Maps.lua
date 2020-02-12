@@ -2,9 +2,6 @@ local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local C, L = unpack(select(2, ...))
 local WM = E:GetModule('WorldMap')
 local MM = E:GetModule('Minimap')
-local AB = E:GetModule('ActionBars')
-
-local SetCVar = SetCVar
 
 -- GLOBALS: WORLD_MAP_MIN_ALPHA
 

@@ -103,7 +103,7 @@ local function UpdateColor(self, event, unit, powertype)
 	local element = self.AdditionalPower
 
 	local r, g, b, t
-	if(element.colorDisconnected and element.disconnected) then
+	if(element.colorDisconnected and not UnitIsConnected(unit)) then
 		t = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = self.colors.tapped
@@ -171,11 +171,10 @@ local function Update(self, event, unit, powertype)
 
 	local cur = UnitPower('player', ADDITIONAL_POWER_BAR_INDEX)
 	local max = UnitPowerMax('player', ADDITIONAL_POWER_BAR_INDEX)
-	local disconnected = not UnitIsConnected(unit)
 
 	element:SetMinMaxValues(0, max)
 
-	if(disconnected) then
+	if not UnitIsConnected(unit) then
 		element:SetValue(max)
 	else
 		element:SetValue(cur)
@@ -183,7 +182,6 @@ local function Update(self, event, unit, powertype)
 
 	element.cur = cur
 	element.max = max
-	element.disconnected = disconnected
 
 	--[[ Callback: AdditionalPower:PostUpdate(unit, cur, max)
 	Called after the element has been updated.

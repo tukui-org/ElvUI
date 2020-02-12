@@ -47,10 +47,6 @@ The following options are listed by priority. The first check that returns true 
 
 .multiplier - Used to tint the background based on the main widgets R, G and B values. Defaults to 1 (number)[0-1]
 
-## Attributes
-
-.disconnected - Indicates whether the unit is disconnected (boolean)
-
 ## Examples
 
     -- Position and size
@@ -91,7 +87,7 @@ local function UpdateColor(self, event, unit)
 	local element = self.Health
 
 	local r, g, b, t
-	if(element.colorDisconnected and element.disconnected) then
+	if(element.colorDisconnected and not UnitIsConnected(unit)) then
 		t = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = self.colors.tapped
@@ -169,7 +165,6 @@ local function Update(self, event, unit)
 
 	element.cur = cur
 	element.max = max
-	element.disconnected = disconnected
 
 	--[[ Callback: Health:PostUpdate(unit, cur, max)
 	Called after the element has been updated.
@@ -214,8 +209,12 @@ local function SetColorDisconnected(element, state)
 		element.colorDisconnected = state
 		if(element.colorDisconnected) then
 			element.__owner:RegisterEvent('UNIT_CONNECTION', ColorPath)
+			element.__owner:RegisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
+			element.__owner:RegisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
 		else
 			element.__owner:UnregisterEvent('UNIT_CONNECTION', ColorPath)
+			element.__owner:UnregisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
+			element.__owner:UnregisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
 		end
 	end
 end
@@ -324,6 +323,8 @@ local function Enable(self, unit)
 
 		if(element.colorDisconnected) then
 			self:RegisterEvent('UNIT_CONNECTION', ColorPath)
+			self:RegisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
+			self:RegisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
 		end
 
 		if(element.colorSelection) then
@@ -361,6 +362,8 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_CONNECTION', ColorPath)
 		self:UnregisterEvent('UNIT_FACTION', ColorPath)
 		self:UnregisterEvent('UNIT_FLAGS', ColorPath)
+		self:UnregisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
+		self:UnregisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
 		self:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 	end
 end

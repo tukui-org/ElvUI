@@ -10,7 +10,6 @@ local floor, tonumber, strlower = floor, tonumber, strlower
 local strfind, format, strsub = strfind, format, strsub
 local strmatch, gmatch, gsub = strmatch, gmatch, gsub
 --WoW API / Variables
-local C_ToyBox_GetToyInfo = C_ToyBox.GetToyInfo
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney
@@ -204,6 +203,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		if not localeClass or not class then return end
 
 		local name, realm = UnitName(unit)
+		local nameRealm = (realm and realm ~= "" and format("%s-%s", name, realm)) or name
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
 		local pvpName = UnitPVPName(unit)
 		local relationship = UnitRealmRelationship(unit)
@@ -268,6 +268,14 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 				end
 
 				GameTooltip:AddDoubleLine(format("%s:", _G.ROLE), role, nil, nil, nil, r, g, b)
+			end
+		end
+
+		if E.db.tooltip.showElvUIUsers then
+			local addonUser = E.UserList[nameRealm]
+			if addonUser then
+				local v,r,g,b = addonUser == E.version, unpack(E.media.rgbvaluecolor)
+				GameTooltip:AddDoubleLine(L["ElvUI Version:"], addonUser, r,g,b, v and 0 or 1, v and 1 or 0, 0)
 			end
 		end
 	else
@@ -449,7 +457,6 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	self:RemoveTrashLines(tt) --keep an eye on this may be buggy
 
 	local color = self:SetUnitText(tt, unit, UnitLevel(unit), isShiftKeyDown)
-
 	if self.db.showMount and not isShiftKeyDown and unit ~= "player" and isPlayerUnit then
 		for i = 1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)

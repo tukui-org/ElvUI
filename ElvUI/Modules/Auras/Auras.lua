@@ -121,18 +121,6 @@ function A:CreateIcon(button)
 	button.texture:SetInside()
 	button.texture:SetTexCoord(unpack(E.TexCoords))
 
-	button:HookScript("OnShow", function(btn)
-		if btn.filter == 'HARMFUL' then
-			local color = _G.DebuffTypeColor[btn.dtype or 'none']
-			btn:SetBackdropBorderColor(color.r, color.g, color.b)
-			btn.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		else
-			local cr, cg, cb = unpack(E.media.bordercolor)
-			btn:SetBackdropBorderColor(cr, cg, cb)
-			btn.statusBar.backdrop:SetBackdropBorderColor(cr, cg, cb)
-		end
-	end)
-
 	button.count = button:CreateFontString(nil, 'OVERLAY')
 	button.count:Point('BOTTOMRIGHT', -1 + A.db.countXOffset, 1 + A.db.countYOffset)
 	button.count:FontTemplate(font, db.countFontSize, A.db.fontOutline)
@@ -229,14 +217,13 @@ function A:UpdateAura(button, index)
 	local unit = button:GetParent():GetAttribute('unit')
 	local name, texture, count, dtype, duration, expiration = UnitAura(unit, index, button.filter)
 
+	local DebuffType = dtype or 'none'
 	if name then
 		if duration > 0 and expiration then
 			A:SetAuraTime(button, expiration, duration)
 		else
 			A:ClearAuraTime(button)
 		end
-
-		button.dtype = dtype
 
 		local r, g, b
 		if button.timeLeft and A.db.barColorGradient then
@@ -265,8 +252,22 @@ function A:UpdateAura(button, index)
 			button.statusBar:Hide()
 		end
 
+		if button.debuffType ~= DebuffType then
+			if button.filter == 'HARMFUL' then
+				local color = _G.DebuffTypeColor[DebuffType]
+				button:SetBackdropBorderColor(color.r, color.g, color.b)
+				button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+			else
+				local cr, cg, cb = unpack(E.media.bordercolor)
+				button:SetBackdropBorderColor(cr, cg, cb)
+				button.statusBar.backdrop:SetBackdropBorderColor(cr, cg, cb)
+			end
+		end
+
 		button.texture:SetTexture(texture)
 	end
+
+	button.debuffType = DebuffType
 end
 
 function A:UpdateTempEnchant(button, index)

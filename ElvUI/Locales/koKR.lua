@@ -327,7 +327,6 @@ L["Type /hellokitty to revert to old settings."] = "/hellokitty 를 입력해서
 L["UIWidgetBelowMinimapContainer"] = true
 L["UIWidgetTopContainer"] = true
 L["Unhittable:"] = "100% 방어행동까지"
-L["Use CVar Value"] = true
 L["Vehicle Seat Frame"] = "차량 좌석 프레임"
 L["Vendor / Delete Grays"] = "잡템 자동판매/삭제"
 L["Vendor Grays"] = "잡동사니 자동판매"

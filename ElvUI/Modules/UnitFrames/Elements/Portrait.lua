@@ -7,6 +7,7 @@ local select = select
 local UnitClass = UnitClass
 local CreateFrame = CreateFrame
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
+local classIcon = 'Interface\\WorldStateFrame\\Icons-Classes'
 
 function UF:Construct_Portrait(frame, type)
 	local portrait
@@ -29,40 +30,48 @@ function UF:Construct_Portrait(frame, type)
 	return portrait
 end
 
-function UF:Configure_Portrait(frame, dontHide)
+function UF:Configure_Portrait(frame)
 	if not frame.VARIABLES_SET then return end
-	local db = frame.db
-	if frame.Portrait and not dontHide then
-		frame.Portrait:Hide()
-		frame.Portrait:ClearAllPoints()
-		frame.Portrait.backdrop:Hide()
+
+	local last = frame.Portrait
+	if last then
+		last:Hide()
+		last.backdrop:Hide()
 	end
 
-	frame.Portrait = (db.portrait.style == '3D' and frame.Portrait3D) or frame.Portrait2D
+	local db = frame.db
+	local portrait = (db.portrait.style == '3D' and frame.Portrait3D) or frame.Portrait2D
+	portrait.db = db.portrait
+	frame.Portrait = portrait
 
-	local portrait = frame.Portrait
+	if portrait.db.style == 'Class' then
+		portrait:SetTexture(classIcon)
+		portrait.customTexture = classIcon
+	elseif portrait.db.style == '2D' then
+		portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+		portrait.customTexture = nil
+	end
+
 	if frame.USE_PORTRAIT then
 		if not frame:IsElementEnabled('Portrait') then
 			frame:EnableElement('Portrait')
 		end
 
+		portrait:Show()
 		portrait:ClearAllPoints()
 		portrait.backdrop:ClearAllPoints()
-		if frame.USE_PORTRAIT_OVERLAY then
-			if db.portrait.style == '3D' then
-				portrait:SetFrameLevel(frame.Health:GetFrameLevel())
-			else
-				portrait:SetParent(frame.Health)
-			end
 
-			portrait:SetAlpha(db.portrait.overlayAlpha)
-			if not dontHide then
-				portrait:Show()
-			end
+		if portrait.db.style == '3D' then
+			portrait:SetFrameLevel(frame.Health:GetFrameLevel())
+		else
+			portrait:SetParent(frame.USE_PORTRAIT_OVERLAY and frame.Health or frame)
+		end
+
+		if frame.USE_PORTRAIT_OVERLAY then
+			portrait:SetAlpha(portrait.db.overlayAlpha)
 			portrait.backdrop:Hide()
 
-			portrait:ClearAllPoints()
-			if db.portrait.fullOverlay then
+			if portrait.db.fullOverlay then
 				portrait:SetAllPoints(frame.Health)
 			else
 				local healthTex = frame.Health:GetStatusBarTexture()
@@ -77,20 +86,9 @@ function UF:Configure_Portrait(frame, dontHide)
 				end
 			end
 		else
-			portrait:ClearAllPoints()
-			portrait:SetAllPoints()
-
 			portrait:SetAlpha(1)
-			if not dontHide then
-				portrait:Show()
-			end
 			portrait.backdrop:Show()
-
-			if db.portrait.style == '3D' then
-				portrait:SetFrameLevel(frame.Health:GetFrameLevel())
-			else
-				portrait:SetParent(frame)
-			end
+			portrait:SetInside(portrait.backdrop, frame.BORDER)
 
 			if frame.ORIENTATION == "LEFT" then
 				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", frame.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+frame.SPACING) or -frame.SPACING)
@@ -109,44 +107,34 @@ function UF:Configure_Portrait(frame, dontHide)
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", -frame.BORDER + frame.SPACING*3, 0)
 				end
 			end
-
-			portrait:SetInside(portrait.backdrop, frame.BORDER)
 		end
 	else
 		if frame:IsElementEnabled('Portrait') then
 			frame:DisableElement('Portrait')
-			portrait:Hide()
-			portrait.backdrop:Hide()
 		end
+
+		portrait.backdrop:Hide()
+		portrait:Hide()
 	end
 end
 
 function UF:PortraitUpdate(unit, event)
-	local parent = self:GetParent()
-	local db = parent.db and parent.db.portrait
-	if not db then return end
+	if self.stateChanged or event == 'ElvUI_UpdateAllElements' then
+		local db = self.db
+		if not db then return end
 
-	if parent.USE_PORTRAIT_OVERLAY then
-		self:SetAlpha(db.overlayAlpha)
-	else
-		self:SetAlpha(1)
-	end
+		if self.playerModel then
+			if self.state then
+				self:SetCamDistanceScale(db.camDistanceScale)
+				self:SetViewTranslation(db.xOffset * 100, db.yOffset * 100)
+				self:SetRotation(rad(db.rotation))
+			end
 
-	if (self.stateChanged or event == 'ElvUI_UpdateAllElements') and self.playerModel and self.state then
-		self:SetCamDistanceScale(db.camDistanceScale)
-		self:SetViewTranslation(db.xOffset * 100, db.yOffset * 100)
-		self:SetDesaturation(db.desaturation)
-		self:SetRotation(rad(db.rotation))
-		self:SetPaused(db.paused)
-	end
-
-	if db.style == 'Class' then
-		if not self.oldTexCoords then self.oldTexCoords = {self:GetTexCoord()} end
-
-		self:SetTexture('Interface\\WorldStateFrame\\Icons-Classes')
-		self:SetTexCoord(unpack(CLASS_ICON_TCOORDS[select(2, UnitClass(unit))]))
-	elseif db.style == '2D' and self.oldTexCoords then
-		self:SetTexCoord(unpack(self.oldTexCoords))
-		self.oldTexCoords = nil
+			self:SetDesaturation(db.desaturation)
+			self:SetPaused(db.paused)
+		elseif db.style == 'Class' then
+			local Class = select(2, UnitClass(unit))
+			self:SetTexCoord(unpack(CLASS_ICON_TCOORDS[Class]))
+		end
 	end
 end

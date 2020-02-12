@@ -1220,7 +1220,6 @@ E.TagInfo = {
 	['speed:percent'] = { category = 'Speed', description = "" },
 	['speed:percent-raw'] = { category = 'Speed', description = "" },
 	['speed:yardspersec'] = { category = 'Speed', description = "" },
-	['speed:percent'] = { category = 'Speed', description = "" },
 	['speed:percent-moving'] = { category = 'Speed', description = "" },
 	['speed:yardspersec-moving'] = { category = 'Speed', description = "" },
 	['speed:percent-moving-raw'] = { category = 'Speed', description = "" },

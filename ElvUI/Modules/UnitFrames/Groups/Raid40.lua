@@ -8,10 +8,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local GetInstanceInfo = GetInstanceInfo
-local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
-local UnregisterStateDriver = UnregisterStateDriver
 -- GLOBALS: ElvUF_Raid40
 
 function UF:Construct_Raid40Frames()

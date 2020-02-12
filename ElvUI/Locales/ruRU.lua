@@ -327,7 +327,6 @@ L["Type /hellokitty to revert to old settings."] = "Напишите /hellokitty
 L["UIWidgetBelowMinimapContainer"] = "Виджет миникарты"
 L["UIWidgetTopContainer"] = "Верхний виджет"
 L["Unhittable:"] = "Полная защита от ударов"
-L["Use CVar Value"] = "Использовать значение CVar"
 L["Vehicle Seat Frame"] = "Техника"
 L["Vendor / Delete Grays"] = "Продать/удалить серые предметы"
 L["Vendor Grays"] = "Продавать серые предметы"

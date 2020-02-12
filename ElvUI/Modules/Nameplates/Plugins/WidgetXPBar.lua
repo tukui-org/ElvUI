@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
+
 local function Hide(element)
 	if element.Rank then element.Rank:Hide() end
 	if element.ProgressText then element.ProgressText:Hide() end
@@ -13,6 +16,9 @@ local function Update(self)
 
 	local widget = self.widget
 	if not widget then Hide(element) return end
+
+	local unit = self.unit
+	if unit and UnitPlayerControlled(unit) and not UnitIsOwnerOrControllerOfUnit('player', unit) then Hide(element) return end
 
 	if element.PreUpdate then
 		element:PreUpdate()
@@ -39,7 +45,7 @@ local function Update(self)
 	end
 
 	if element.ProgressText then
-		element.ProgressText:SetText((maxRank and L["Max Rank"]) or ("%d / %d"):format(cur, toNext))
+		element.ProgressText:SetFormattedText(maxRank and L["Max Rank"] or "%d / %d", cur, toNext)
 		element.ProgressText:Show()
 	end
 

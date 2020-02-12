@@ -177,9 +177,19 @@ E.Options.args.filters = {
 							E.global.unitframe.AuraBarColors[value] = E:CopyTable({}, auraBarDefaults)
 						elseif selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' then
 							local selectedTable = GetSelectedFilters()
-							selectedTable[value] = UF:AuraWatch_AddSpell(value, 'TOPRIGHT')
-						elseif not E.global.unitframe.aurafilters[selectedFilter].spells[value] then
-							E.global.unitframe.aurafilters[selectedFilter].spells[value] = { enable = true, priority = 0, stackThreshold = 0 }
+							if not selectedTable[value] then
+								selectedTable[value] = UF:AuraWatch_AddSpell(value, 'TOPRIGHT')
+							end
+						else
+							local filters = E.global.unitframe.aurafilters
+
+							-- protect bad profiles with these two lines
+							if not filters[selectedFilter] then filters[selectedFilter] = { spells = {} } end
+							if not filters[selectedFilter].spells then filters[selectedFilter].spells = {} end
+
+							if not filters[selectedFilter].spells[value] then
+								filters[selectedFilter].spells[value] = { enable = true, priority = 0, stackThreshold = 0 }
+							end
 						end
 
 						UF:Update_AllFrames()

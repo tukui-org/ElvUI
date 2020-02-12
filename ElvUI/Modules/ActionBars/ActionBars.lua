@@ -351,7 +351,7 @@ function AB:CreateBar(id)
 	]])
 
 	self.handledBars['bar'..id] = bar
-	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS',nil,'actionbar,bar'..id)
+	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS',nil,'actionbar,playerBars,bar'..id)
 	self:PositionAndSizeBar('bar'..id)
 	return bar
 end
@@ -379,7 +379,7 @@ function AB:CreateVehicleLeave()
 	local holder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
 	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
 	holder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
-	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, nil, nil, 'all,general')
+	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,vehicleExitButton')
 
 	local Button = _G.MainMenuBarVehicleLeaveButton
 	Button:ClearAllPoints()

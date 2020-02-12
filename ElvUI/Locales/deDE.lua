@@ -329,7 +329,6 @@ L["Type /hellokitty to revert to old settings."] = "Tippe /hellokitty um die alt
 L["UIWidgetBelowMinimapContainer"] = true --No need to translate
 L["UIWidgetTopContainer"] = true --No need to translate
 L["Unhittable:"] = "Unschlagbar:"
-L["Use CVar Value"] = "Benutze CVar Wert"
 L["Vehicle Seat Frame"] = "Fahrzeugfenster"
 L["Vendor / Delete Grays"] = "Verkaufe / Lösche graue Gegenstände"
 L["Vendor Grays"] = "Graue Gegenstände verkaufen"
