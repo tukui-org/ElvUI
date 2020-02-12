@@ -6,11 +6,15 @@ local _G = _G
 local unpack, select = unpack, select
 local pairs, ipairs, type = pairs, ipairs, type
 --WoW API / Variables
+local EquipmentManager_UnpackLocation = EquipmentManager_UnpackLocation
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+local GetContainerItemLink = GetContainerItemLink
+local GetInventoryItemLink = GetInventoryItemLink
 local GetFactionInfo = GetFactionInfo
 local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
+local IsCorruptedItem = IsCorruptedItem
 
 local PLACEINBAGS_LOCATION = 0xFFFFFFFF
 local IGNORESLOT_LOCATION = 0xFFFFFFFE
@@ -271,6 +275,22 @@ local function CorruptionIcon(self)
 	self.IconOverlay:SetShown(itemLink and IsCorruptedItem(itemLink))
 end
 
+local function UpdateCorruption(button, location)
+	local _, _, bags, voidStorage, slot, bag = EquipmentManager_UnpackLocation(location)
+	if voidStorage then
+		button.Eye:Hide()
+		return
+	end
+
+	local itemLink
+	if bags then
+		itemLink = GetContainerItemLink(bag, slot)
+	else
+		itemLink = GetInventoryItemLink("player", slot)
+	end
+	button.Eye:SetShown(itemLink and IsCorruptedItem(itemLink))
+end
+
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
@@ -395,6 +415,30 @@ function S:CharacterFrame()
 
 	--Swap item flyout frame (shown when holding alt over a slot)
 	hooksecurefunc("EquipmentFlyout_UpdateItems", SkinItemFlyouts)
+
+	hooksecurefunc("EquipmentFlyout_CreateButton", function()
+		local button = _G.EquipmentFlyoutFrame.buttons[#_G.EquipmentFlyoutFrame.buttons]
+
+		if not button.Eye then
+			button.Eye = button:CreateTexture()
+			button.Eye:SetAtlas("Nzoth-inventory-icon")
+			button.Eye:SetInside()
+		end
+	end)
+
+	hooksecurefunc("EquipmentFlyout_DisplayButton", function(button)
+		local location = button.location
+		local border = button.IconBorder
+		if not location or not border then return end
+
+		if location >= _G.EQUIPMENTFLYOUT_FIRST_SPECIAL_LOCATION then
+			border:Hide()
+		else
+			border:Show()
+		end
+
+		UpdateCorruption(button, location)
+	end)
 
 	--Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()
