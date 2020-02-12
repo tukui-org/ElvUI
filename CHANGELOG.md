@@ -8,9 +8,11 @@ The *Top Auras* were having some trouble deciding what border color to wear, it'
 Unitframe *Portrait Style Class* wasn't playing nicely with the *Overlay* option but they are now friends.  
 Nameplate *Follower XP* was showing on other players followers, it won't do that anymore.  
 When selecting a *Custom Filter*, there was a *0.3333~%* chance to get an error. That *should* no longer be the case.  
+It seems unitframes were confused as to whether or not the unit was *disconnected* and can now display the connection color correctly.  
 
 **Misc. Changes:**  
 Added 8.3 Affixs into the *Raid Debuffs* filter.  
+Debuff Highlighting *Blend Mode* MOD was removed, as it's use was very specific and misunderstood.  
 
 ___
 ### Version 11.36 [ February 7th 2020 ]
