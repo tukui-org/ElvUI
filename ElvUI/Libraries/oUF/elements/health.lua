@@ -214,8 +214,12 @@ local function SetColorDisconnected(element, state)
 		element.colorDisconnected = state
 		if(element.colorDisconnected) then
 			element.__owner:RegisterEvent('UNIT_CONNECTION', ColorPath)
+			element.__owner:RegisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
+			element.__owner:RegisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
 		else
 			element.__owner:UnregisterEvent('UNIT_CONNECTION', ColorPath)
+			element.__owner:UnregisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
+			element.__owner:UnregisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
 		end
 	end
 end
@@ -324,6 +328,8 @@ local function Enable(self, unit)
 
 		if(element.colorDisconnected) then
 			self:RegisterEvent('UNIT_CONNECTION', ColorPath)
+			self:RegisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
+			self:RegisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
 		end
 
 		if(element.colorSelection) then
@@ -361,6 +367,8 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_CONNECTION', ColorPath)
 		self:UnregisterEvent('UNIT_FACTION', ColorPath)
 		self:UnregisterEvent('UNIT_FLAGS', ColorPath)
+		self:UnregisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
+		self:UnregisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
 		self:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 	end
 end
