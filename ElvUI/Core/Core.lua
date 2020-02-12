@@ -1532,7 +1532,9 @@ function E:DBConversions()
 		end
 	end
 
-	if E.db.unitframe.debuffHighlight.blendMode == 'MOD' then E.db.unitframe.debuffHighlight.blendMode = P.unitframe.debuffHighlight.blendMode end
+	if E.db.unitframe.colors.debuffHighlight.blendMode == 'MOD' then
+		E.db.unitframe.colors.debuffHighlight.blendMode = P.unitframe.colors.debuffHighlight.blendMode
+	end
 end
 
 function E:RefreshModulesDB()
