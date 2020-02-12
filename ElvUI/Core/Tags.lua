@@ -1064,7 +1064,7 @@ ElvUF.Tags.Methods['ElvUI-Users'] = function(unit)
                 if highestVersion < userVersion then
                     highestVersion = userVersion
                 end
-                return (userVersion < highestVersion) and "|cffFF3333E|r" or "|cffFF3333E|r"
+                return (userVersion < highestVersion) and "|cffFF3333E|r" or "|cff3366ffE|r"
             end
         end
     end
