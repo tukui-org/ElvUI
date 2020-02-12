@@ -20,9 +20,7 @@ function NP:Health_UpdateColor(event, unit)
 	local Selection = element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
 
 	local r, g, b, t
-	if(element.colorDead and element.dead) then
-		t = self.colors.dead
-	elseif(element.colorDisconnected and not UnitIsConnected(unit)) then
+	if(element.colorDisconnected and not UnitIsConnected(unit)) then
 		t = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = NP.db.colors.tapped
