@@ -57,10 +57,6 @@ The following options are listed by priority. The first check that returns true 
 .multiplier - A multiplier used to tint the background based on the main widgets R, G and B values. Defaults to 1
               (number)[0-1]
 
-## Attributes
-
-.disconnected - Indicates whether the unit is disconnected (boolean)
-
 ## Examples
 
     -- Position and size
@@ -114,7 +110,7 @@ local function UpdateColor(self, event, unit)
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 
 	local r, g, b, t, atlas
-	if(element.colorDisconnected and element.disconnected) then
+	if(element.colorDisconnected and not UnitIsConnected(unit)) then
 		t = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = self.colors.tapped
@@ -212,11 +208,10 @@ local function Update(self, event, unit)
 	end
 
 	local cur, max = UnitPower(unit, displayType), UnitPowerMax(unit, displayType)
-	local disconnected = not UnitIsConnected(unit)
 
 	element:SetMinMaxValues(min or 0, max)
 
-	if(disconnected) then
+	if not UnitIsConnected(unit) then
 		element:SetValue(max)
 	else
 		element:SetValue(cur)
@@ -226,7 +221,6 @@ local function Update(self, event, unit)
 	element.min = min
 	element.max = max
 	element.displayType = displayType
-	element.disconnected = disconnected
 
 	--[[ Callback: Power:PostUpdate(unit, cur, min, max)
 	Called after the element has been updated.

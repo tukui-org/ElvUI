@@ -28,7 +28,7 @@ function NP:Power_UpdateColor(event, unit)
 	local r, g, b, t, atlas
 	if(element.colorDead and element.dead) then
 		t = self.colors.dead
-	elseif(element.colorDisconnected and element.disconnected) then
+	elseif(element.colorDisconnected and not UnitIsConnected(unit)) then
 		t = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = self.colors.tapped
