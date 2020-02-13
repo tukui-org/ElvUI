@@ -74,8 +74,7 @@ function E:UIScale(init)
 end
 
 function E:PixelBestSize()
-	local scale = E:Round(768 / E.screenheight, 5)
-	return max(0.4, min(1.15, scale))
+	return max(0.4, min(1.15, 768 / E.screenheight))
 end
 
 function E:PixelScaleChanged(event)
