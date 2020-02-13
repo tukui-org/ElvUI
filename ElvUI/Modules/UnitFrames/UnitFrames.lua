@@ -861,7 +861,7 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	return header
 end
 
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate, headerTemplate)
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate)
 	local db = self.db.units[group]
 	local numGroups = db.numGroups
 
@@ -1008,7 +1008,7 @@ function UF:LoadUnits()
 			groupFilter, template, headerTemplate = unpack(groupOptions)
 		end
 
-		self:CreateAndUpdateHeaderGroup(group, groupFilter, template, nil, headerTemplate)
+		self:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate)
 	end
 	self.headerstoload = nil
 end
@@ -1039,7 +1039,7 @@ function UF:UpdateAllHeaders()
 	self:RegisterRaidDebuffIndicator()
 
 	for group in pairs(self.headers) do
-		self:CreateAndUpdateHeaderGroup(group, nil, nil, true)
+		self:CreateAndUpdateHeaderGroup(group)
 	end
 end
 
