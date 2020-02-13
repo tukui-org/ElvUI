@@ -899,7 +899,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		else
 			while numGroups > #self[group].groups do
 				local index = tostring(#self[group].groups + 1)
-				tinsert(self[group].groups, self:CreateHeader(self[group], index, "ElvUF_"..groupName..'Group'..index, template or self[group].template, nil, headerTemplate or self[group].headerTemplate))
+				 tinsert(self[group].groups, self:CreateHeader(self[group], index, "ElvUF_"..groupName..'Group'..index, template or self[group].template, nil, headerTemplate or self[group].headerTemplate))
 			end
 		end
 
@@ -907,7 +907,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 
 		if headerUpdate or not self[group].mover then
 			UF.headerFunctions[group]:Configure_Groups(self[group])
-			if not self[group].isForced and not self[group].blockVisibilityChanges then
+			if not self[group].isForced then
 				RegisterStateDriver(self[group], "visibility", db.visibility)
 			end
 		else
@@ -925,6 +925,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			if self[group].mover then
 				E:DisableMover(self[group].mover:GetName())
 			end
+			return
 		end
 	else
 		self[group].db = db
@@ -1046,8 +1047,12 @@ function UF:UpdateAllHeaders()
 
 	self:RegisterRaidDebuffIndicator()
 
-	for group in pairs(self.headers) do
-		self:CreateAndUpdateHeaderGroup(group, nil, nil, true)
+	for group, header in pairs(self.headers) do
+		if UF.headerFunctions[group].Update then
+			UF.headerFunctions[group]:Update(header)
+		else
+			self:CreateAndUpdateHeaderGroup(group, nil, nil, true)
+		end
 	end
 end
 
