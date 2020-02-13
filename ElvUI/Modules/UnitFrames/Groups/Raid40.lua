@@ -123,12 +123,6 @@ function UF:Update_Raid40Frames(frame, db)
 		frame.VARIABLES_SET = true
 	end
 
-	if db.enable and not frame:IsEnabled() then
-		frame:Enable()
-	elseif not db.enable and frame:IsEnabled() then
-		frame:Disable()
-	end
-
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	UF:EnableDisable_Auras(frame)
