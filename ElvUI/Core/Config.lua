@@ -918,6 +918,8 @@ function E:Config_WindowOpened(frame)
 end
 
 function E:Config_CreateBottomButtons(frame, unskinned)
+	local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
+
 	local last
 	for _, info in ipairs({
 		{
