@@ -53,7 +53,7 @@ function S:Blizzard_Collections()
 	S:HandleCheckBox(MountJournal.MountDisplay.ModelScene.TogglePlayer)
 	MountJournal.MountDisplay.ModelScene.TogglePlayer:Size(22)
 
-	S:HandleButton(_G.MountJournalMountButton, true)
+	S:HandleButton(_G.MountJournalMountButton)
 	S:HandleEditBox(_G.MountJournalSearchBox)
 	S:HandleScrollBar(_G.MountJournalListScrollFrameScrollBar)
 	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateLeftButton)
