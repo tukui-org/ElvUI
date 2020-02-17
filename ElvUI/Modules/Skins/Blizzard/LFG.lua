@@ -334,7 +334,7 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab1:Point('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
 
 	-- Raid finder
-	S:HandleButton(_G.LFDQueueFrameFindGroupButton, true)
+	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
 
 	_G.LFDParentFrame:StripTextures()
 	_G.LFDParentFrameInset:StripTextures()
@@ -500,16 +500,16 @@ function S:LookingForGroupFrames()
 	--LFGListFrame
 	local LFGListFrame = _G.LFGListFrame
 	LFGListFrame.CategorySelection.Inset:StripTextures()
-	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton, true)
-	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton, true)
+	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton)
+	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton)
 	LFGListFrame.CategorySelection.StartGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.StartGroupButton:Point("BOTTOMLEFT", -1, 3)
 	LFGListFrame.CategorySelection.FindGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.FindGroupButton:Point("BOTTOMRIGHT", -6, 3)
 
 	LFGListFrame.EntryCreation.Inset:StripTextures()
-	S:HandleButton(LFGListFrame.EntryCreation.CancelButton, true)
-	S:HandleButton(LFGListFrame.EntryCreation.ListGroupButton, true)
+	S:HandleButton(LFGListFrame.EntryCreation.CancelButton)
+	S:HandleButton(LFGListFrame.EntryCreation.ListGroupButton)
 	LFGListFrame.EntryCreation.CancelButton:ClearAllPoints()
 	LFGListFrame.EntryCreation.CancelButton:Point("BOTTOMLEFT", -1, 3)
 	LFGListFrame.EntryCreation.ListGroupButton:ClearAllPoints()
@@ -570,9 +570,9 @@ function S:LookingForGroupFrames()
 		LFGListFrame.SearchPanel[x.."ColumnHeader"].Right:Hide()
 	end]]
 
-	S:HandleButton(LFGListFrame.SearchPanel.BackButton, true)
-	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton, true)
-	S:HandleButton(_G.LFGListSearchPanelScrollFrame.StartGroupButton,  true)
+	S:HandleButton(LFGListFrame.SearchPanel.BackButton)
+	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
+	S:HandleButton(_G.LFGListSearchPanelScrollFrame.StartGroupButton)
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.BackButton:Point("BOTTOMLEFT", -1, 3)
 	LFGListFrame.SearchPanel.SignUpButton:ClearAllPoints()
@@ -656,7 +656,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.ApplicationViewer.PrivateGroup:FontTemplate()
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
-	LFGListFrame.ApplicationViewer.RefreshButton:Size(24,24)
+	LFGListFrame.ApplicationViewer.RefreshButton:Size(24, 24)
 	LFGListFrame.ApplicationViewer.RefreshButton:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.RefreshButton:Point("BOTTOMRIGHT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 16, 4)
 
@@ -714,7 +714,7 @@ function S:Blizzard_ChallengesUI()
 	local KeyStoneFrame = _G.ChallengesKeystoneFrame
 	KeyStoneFrame:CreateBackdrop("Transparent")
 	S:HandleCloseButton(KeyStoneFrame.CloseButton)
-	S:HandleButton(KeyStoneFrame.StartButton, true)
+	S:HandleButton(KeyStoneFrame.StartButton)
 
 	hooksecurefunc("ChallengesFrame_Update", function(self)
 		for _, frame in ipairs(self.DungeonIcons) do
