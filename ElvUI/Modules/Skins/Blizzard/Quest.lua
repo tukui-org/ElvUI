@@ -343,7 +343,7 @@ function S:BlizzardQuestFrames()
 	end
 
 	_G.QuestFrameGreetingPanel:StripTextures(true)
-	S:HandleButton(_G.QuestFrameGreetingGoodbyeButton, true)
+	S:HandleButton(_G.QuestFrameGreetingGoodbyeButton)
 	_G.QuestGreetingFrameHorizontalBreak:Kill()
 
 	_G.QuestDetailScrollChildFrame:StripTextures(true)
@@ -351,11 +351,11 @@ function S:BlizzardQuestFrames()
 	_G.QuestRewardScrollChildFrame:StripTextures(true)
 	_G.QuestFrameProgressPanel:StripTextures(true)
 	_G.QuestFrameRewardPanel:StripTextures(true)
-	S:HandleButton(_G.QuestFrameAcceptButton, true)
-	S:HandleButton(_G.QuestFrameDeclineButton, true)
-	S:HandleButton(_G.QuestFrameCompleteButton, true)
-	S:HandleButton(_G.QuestFrameGoodbyeButton, true)
-	S:HandleButton(_G.QuestFrameCompleteQuestButton, true)
+	S:HandleButton(_G.QuestFrameAcceptButton)
+	S:HandleButton(_G.QuestFrameDeclineButton)
+	S:HandleButton(_G.QuestFrameCompleteButton)
+	S:HandleButton(_G.QuestFrameGoodbyeButton)
+	S:HandleButton(_G.QuestFrameCompleteQuestButton)
 
 	for i = 1, 6 do
 		local button = _G["QuestProgressItem"..i]
