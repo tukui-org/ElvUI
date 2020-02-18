@@ -980,7 +980,6 @@ P.tooltip = {
 	npcID = true,
 	role = true,
 	font = 'PT Sans Narrow',
-	fontSize = 12,
 	fontOutline = 'NONE',
 	headerFontSize = 12,
 	textFontSize = 12,
