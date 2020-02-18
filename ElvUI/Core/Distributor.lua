@@ -314,9 +314,7 @@ local function GetProfileData(profileType)
 	local profileData = {}
 
 	if profileType == 'profile' then
-		if ElvDB.profileKeys then
-			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
-		end
+		profileKey = ElvDB.profileKeys and ElvDB.profileKeys[E.myname..' - '..E.myrealm]
 
 		local data = ElvDB.profiles[profileKey]
 		local vars = SetCustomVars(data, D.GeneratedKeys.profile)
@@ -330,10 +328,10 @@ local function GetProfileData(profileType)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.profile)
 
 	elseif profileType == 'private' then
-		local privateProfileKey = E.myname..' - '..E.myrealm
 		profileKey = 'private'
 
-		local data = ElvPrivateDB.profiles[privateProfileKey]
+		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
+		local data = ElvPrivateDB.profiles[privateKey]
 		local vars = SetCustomVars(data, D.GeneratedKeys.private)
 
 		profileData = E:CopyTable(profileData, data)
@@ -496,7 +494,9 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 				local tempKey = profileKey..'_Temp'
 				E.data.keys.profile = tempKey
 			end
+
 			ElvDB.profiles[profileKey] = profileData
+
 			--Calling SetProfile will now update all settings correctly
 			E.data:SetProfile(profileKey)
 		else
@@ -508,16 +508,17 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 			return
 		end
 	elseif profileType == 'private' then
-		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private) --Remove unwanted options from import
-		local pfKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
-		ElvPrivateDB.profiles[pfKey] = profileData
-		E:StaticPopup_Show('IMPORT_RL')
+		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
+		if privateKey then
+			profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private) --Remove unwanted options from import
+			ElvPrivateDB.profiles[privateKey] = profileData
+		end
 
+		E:StaticPopup_Show('IMPORT_RL')
 	elseif profileType == 'global' then
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global) --Remove unwanted options from import
 		E:CopyTable(ElvDB.global, profileData)
 		E:StaticPopup_Show('IMPORT_RL')
-
 	elseif profileType == 'filters' then
 		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
 	elseif profileType == 'styleFilters' then
