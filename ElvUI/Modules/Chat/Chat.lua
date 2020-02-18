@@ -1242,6 +1242,11 @@ function CH:GetPluginIcon(sender)
 	return icon
 end
 
+local PluginMessageFilters = {}
+function CH:AddPluginMessageFilter(func)
+	tinsert(PluginMessageFilters, func)
+end
+
 --Copied from FrameXML ChatFrame.lua and modified to add CUSTOM_CLASS_COLORS
 function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 	local chatType = strsub(event, 10)
@@ -1712,6 +1717,10 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			if CH.db.shortChannels and (chatType ~= "EMOTE" and chatType ~= "TEXT_EMOTE") then
 				body = CH:HandleShortChannels(body)
+			end
+
+			for _, filter in ipairs(PluginMessageFilters) do
+				body = filter(body)
 			end
 
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget)
