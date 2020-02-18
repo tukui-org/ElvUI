@@ -291,6 +291,19 @@ D.GeneratedKeys = {
 	global = {}
 }
 
+local function SetCustomVars(data, keys)
+	if not data then return end
+
+	local vars = E:CopyTable({}, keys)
+	for key in pairs(data) do
+		if type(key) ~= 'table' then
+			vars[key] = true
+		end
+	end
+
+	return vars
+end
+
 local function GetProfileData(profileType)
 	if not profileType or type(profileType) ~= 'string' then
 		E:Print('Bad argument #1 to "GetProfileData" (string expected)')
@@ -305,51 +318,36 @@ local function GetProfileData(profileType)
 			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
 
-		local defaultData = ElvDB.profiles[profileKey]
-		local defaultVars = E:CopyTable({}, D.GeneratedKeys.profile)
-		for key in pairs(defaultData) do
-			if type(key) ~= 'table' then
-				defaultVars[key] = true
-			end
-		end
+		local data = ElvDB.profiles[profileKey]
+		local vars = SetCustomVars(data, D.GeneratedKeys.profile)
 
 		--Copy current profile data
-		profileData = E:CopyTable(profileData, defaultData)
+		profileData = E:CopyTable(profileData, data)
 		--This table will also hold all default values, not just the changed settings.
 		--This makes the table huge, and will cause the WoW client to lock up for several seconds.
 		--We compare against the default table and remove all duplicates from our table. The table is now much smaller.
-		profileData = E:RemoveTableDuplicates(profileData, P, defaultVars)
+		profileData = E:RemoveTableDuplicates(profileData, P, vars)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.profile)
 
 	elseif profileType == 'private' then
 		local privateProfileKey = E.myname..' - '..E.myrealm
 		profileKey = 'private'
 
-		local defaultData = ElvPrivateDB.profiles[privateProfileKey]
-		local defaultVars = E:CopyTable({}, D.GeneratedKeys.private)
-		for key in pairs(defaultData) do
-			if type(key) ~= 'table' then
-				defaultVars[key] = true
-			end
-		end
+		local data = ElvPrivateDB.profiles[privateProfileKey]
+		local vars = SetCustomVars(data, D.GeneratedKeys.private)
 
-		profileData = E:CopyTable(profileData, defaultData)
-		profileData = E:RemoveTableDuplicates(profileData, V, defaultVars)
+		profileData = E:CopyTable(profileData, data)
+		profileData = E:RemoveTableDuplicates(profileData, V, vars)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private)
 
 	elseif profileType == 'global' then
 		profileKey = 'global'
 
-		local defaultData = ElvDB.global
-		local defaultVars = E:CopyTable({}, D.GeneratedKeys.global)
-		for key in pairs(defaultData) do
-			if type(key) ~= 'table' then
-				defaultVars[key] = true
-			end
-		end
+		local data = ElvDB.global
+		local vars = SetCustomVars(data, D.GeneratedKeys.global)
 
-		profileData = E:CopyTable(profileData, defaultData)
-		profileData = E:RemoveTableDuplicates(profileData, G, defaultVars)
+		profileData = E:CopyTable(profileData, data)
+		profileData = E:RemoveTableDuplicates(profileData, G, vars)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global)
 
 	elseif profileType == 'filters' then
