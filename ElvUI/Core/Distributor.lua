@@ -245,7 +245,6 @@ local blacklistedKeys = {
 		},
 		chat = {
 			hideVoiceButtons = true,
-			panelColorConverted = true,
 		},
 	},
 	private = {},

@@ -1413,12 +1413,6 @@ function E:DBConversions()
 		E.db.nameplates.units.TARGET.scale = nil
 	end
 
-	if not E.db.chat.panelColorConverted then
-		local color = E.db.general.backdropfadecolor
-		E.db.chat.panelColor = {r = color.r, g = color.g, b = color.b, a = color.a}
-		E.db.chat.panelColorConverted = true
-	end
-
 	--Convert cropIcon to tristate
 	local cropIcon = E.db.general.cropIcon
 	if type(cropIcon) == 'boolean' then
