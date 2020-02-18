@@ -15,6 +15,7 @@ P.general = {
 	autoRepair = 'NONE',
 	autoRoll = false,
 	autoAcceptInvite = false,
+	topPanel = false,
 	bottomPanel = true,
 	hideErrorFrame = true,
 	enhancedPvpMessages = true,
@@ -938,6 +939,7 @@ P.datatexts = {
 		--clients
 		hideWoW = false,
 		hideD3 = false,
+		hideVIPR = false,
 		hideWTCG = false, --Hearthstone
 		hideHero = false, --Heros of the Storm
 		hidePro = false, --Overwatch
