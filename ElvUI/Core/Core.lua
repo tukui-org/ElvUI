@@ -565,7 +565,7 @@ function E:RemoveTableDuplicates(cleanTable, checkTable)
 
 	local rtdCleaned = {}
 	for option, value in pairs(cleanTable) do
-		if checkTable[option] then
+		if checkTable[option] ~= nil then
 			-- we only want to add settings which are existing in the default table
 			if type(value) == 'table' and type(checkTable[option]) == 'table' then
 				rtdCleaned[option] = self:RemoveTableDuplicates(value, checkTable[option])
