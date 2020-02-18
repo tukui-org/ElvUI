@@ -77,9 +77,9 @@ function S:Blizzard_TradeSkillUI()
 	S:HandleEditBox(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox)
 	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox:DisableDrawLayer("BACKGROUND")
 
-	S:HandleButton(TradeSkillFrame.DetailsFrame.CreateAllButton, true)
-	S:HandleButton(TradeSkillFrame.DetailsFrame.CreateButton, true)
-	S:HandleButton(TradeSkillFrame.DetailsFrame.ExitButton, true)
+	S:HandleButton(TradeSkillFrame.DetailsFrame.CreateAllButton)
+	S:HandleButton(TradeSkillFrame.DetailsFrame.CreateButton)
+	S:HandleButton(TradeSkillFrame.DetailsFrame.ExitButton)
 
 	S:HandleScrollBar(TradeSkillFrame.DetailsFrame.ScrollBar)
 
