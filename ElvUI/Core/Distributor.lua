@@ -281,6 +281,7 @@ local blacklistedKeys = {
 	},
 }
 
+--Keys that auto or user generated tables.
 D.GeneratedKeys = {
 	profile = {
 		customTexts = true,
