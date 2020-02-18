@@ -296,7 +296,11 @@ local function GetProfileData(profileType)
 		end
 
 		local defaultData = ElvDB.profiles[profileKey]
-		local defaultVars = {movers = true}
+		local defaultVars = {
+			movers = true,
+			customTexts = true,
+		}
+
 		for key in pairs(defaultData) do
 			if type(key) ~= 'table' then
 				defaultVars[key] = true
