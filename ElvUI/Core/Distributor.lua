@@ -281,6 +281,15 @@ local blacklistedKeys = {
 	},
 }
 
+D.GeneratedKeys = {
+	profile = {
+		customTexts = true,
+		movers = true
+	},
+	private = {},
+	global = {}
+}
+
 local function GetProfileData(profileType)
 	if not profileType or type(profileType) ~= 'string' then
 		E:Print('Bad argument #1 to "GetProfileData" (string expected)')
@@ -296,11 +305,7 @@ local function GetProfileData(profileType)
 		end
 
 		local defaultData = ElvDB.profiles[profileKey]
-		local defaultVars = {
-			movers = true,
-			customTexts = true,
-		}
-
+		local defaultVars = E:CopyTable({}, D.GeneratedKeys.profile)
 		for key in pairs(defaultData) do
 			if type(key) ~= 'table' then
 				defaultVars[key] = true
@@ -320,7 +325,7 @@ local function GetProfileData(profileType)
 		profileKey = 'private'
 
 		local defaultData = ElvPrivateDB.profiles[privateProfileKey]
-		local defaultVars = {}
+		local defaultVars = E:CopyTable({}, D.GeneratedKeys.private)
 		for key in pairs(defaultData) do
 			if type(key) ~= 'table' then
 				defaultVars[key] = true
@@ -335,7 +340,7 @@ local function GetProfileData(profileType)
 		profileKey = 'global'
 
 		local defaultData = ElvDB.global
-		local defaultVars = {}
+		local defaultVars = E:CopyTable({}, D.GeneratedKeys.global)
 		for key in pairs(defaultData) do
 			if type(key) ~= 'table' then
 				defaultVars[key] = true
