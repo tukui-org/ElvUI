@@ -205,6 +205,10 @@ function UF:Configure_Auras(frame, which)
 		db.buffs.attachTo = 'FRAME'
 	end
 
+	local rows = auras.db.numrows
+	auras.spacing = auras.db.spacing
+	auras.attachTo = self:GetAuraAnchorFrame(frame, auras.db.attachTo)
+
 	if auras.db.sizeOverride and auras.db.sizeOverride > 0 then
 		auras:Width(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
 	else
@@ -216,15 +220,12 @@ function UF:Configure_Auras(frame, which)
 		auras:Width(totalWidth)
 	end
 
-	local rows = auras.db.numrows
-	auras.spacing = auras.db.spacing
 	auras.num = auras.db.perrow * rows
 	auras.size = auras.db.sizeOverride ~= 0 and auras.db.sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
 	auras.forceShow = frame.forceShowAuras
 	auras.disableMouse = auras.db.clickThrough
 	auras.anchorPoint = auras.db.anchorPoint
 	auras.initialAnchor = E.InversePoints[auras.anchorPoint]
-	auras.attachTo = self:GetAuraAnchorFrame(frame, auras.db.attachTo)
 	auras["growth-y"] = strfind(auras.anchorPoint, 'TOP') and 'UP' or 'DOWN'
 	auras["growth-x"] = auras.anchorPoint == 'LEFT' and 'LEFT' or  auras.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
 
