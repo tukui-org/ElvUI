@@ -94,9 +94,6 @@ function UF:UpdateAuraSettings(auras, button)
 	if button.db then
 		button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
 	end
-	if button.icon then
-		button.icon:SetTexCoord(unpack(E.TexCoords))
-	end
 
 	button:Size((auras and auras.size) or 30)
 
@@ -208,6 +205,17 @@ function UF:Configure_Auras(frame, which)
 		db.buffs.attachTo = 'FRAME'
 	end
 
+	if auras.db.sizeOverride and auras.db.sizeOverride > 0 then
+		auras:Width(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
+	else
+		local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
+		if frame.USE_POWERBAR_OFFSET and not (auras.attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
+			local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
+			totalWidth = totalWidth - powerOffset
+		end
+		auras:Width(totalWidth)
+	end
+
 	local rows = auras.db.numrows
 	auras.spacing = auras.db.spacing
 	auras.num = auras.db.perrow * rows
@@ -231,17 +239,6 @@ function UF:Configure_Auras(frame, which)
 	end
 	auras.xOffset = x + auras.db.xOffset
 	auras.yOffset = y + auras.db.yOffset
-
-	if auras.db.sizeOverride and auras.db.sizeOverride > 0 then
-		auras:Width(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
-	else
-		local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
-		if frame.USE_POWERBAR_OFFSET and not (auras.attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
-			local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
-			totalWidth = totalWidth - powerOffset
-		end
-		auras:Width(totalWidth)
-	end
 
 	local index = 1
 	while auras[index] do
@@ -379,6 +376,8 @@ function UF:PostUpdateAura(unit, button)
 			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
 		end
 	end
+
+	button.icon:SetTexCoord(unpack(E.TexCoords))
 
 	if button.needsUpdateCooldownPosition and (button.cd and button.cd.timer and button.cd.timer.text) then
 		UF:UpdateAuraCooldownPosition(button)
