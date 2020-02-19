@@ -2877,22 +2877,22 @@ local function UpdateFilterGroup()
 					end,
 					args = {
 						nameTag = {
-							order = 100,
+							order = 1,
 							name = L["Name Tag"],
 							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
 							type = 'input',
 							width = 'full',
 						},
-						powerTag = {
-							order = 100,
-							name = L["Power Tag"],
+						healthTag = {
+							order = 2,
+							name = L["Health Tag"],
 							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
 							type = 'input',
 							width = 'full',
 						},
-						healthTag = {
-							order = 100,
-							name = L["Health Tag"],
+						powerTag = {
+							order = 3,
+							name = L["Power Tag"],
 							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
 							type = 'input',
 							width = 'full',
