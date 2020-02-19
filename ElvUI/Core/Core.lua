@@ -1537,6 +1537,7 @@ function E:RefreshModulesDB()
 	-- onto the unitframe module, its useful dont delete! D:
 	twipe(UnitFrames.db) --old ref, dont need so clear it
 	UnitFrames.db = self.db.unitframe --new ref
+	E:UpdateUnitFrames()
 end
 
 function E:Initialize()

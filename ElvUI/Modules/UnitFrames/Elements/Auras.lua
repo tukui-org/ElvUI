@@ -94,6 +94,9 @@ function UF:UpdateAuraSettings(auras, button)
 	if button.db then
 		button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
 	end
+	if button.icon then
+		button.icon:SetTexCoord(unpack(E.TexCoords))
+	end
 
 	button:Size((auras and auras.size) or 30)
 
@@ -377,8 +380,6 @@ function UF:PostUpdateAura(unit, button)
 			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
 		end
 	end
-
-	button.icon:SetTexCoord(unpack(E.TexCoords))
 
 	if button.needsUpdateCooldownPosition and (button.cd and button.cd.timer and button.cd.timer.text) then
 		UF:UpdateAuraCooldownPosition(button)
