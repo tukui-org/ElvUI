@@ -1418,7 +1418,6 @@ function UF:Initialize()
 	ElvUF:SetActiveStyle("ElvUF")
 	UF:LoadUnits()
 
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_AllFrames')
 	self:RegisterEvent('PLAYER_TARGET_CHANGED')
 	self:RegisterEvent('PLAYER_FOCUS_CHANGED')
 
