@@ -1234,17 +1234,21 @@ function CH:AddPluginIcons(func)
 end
 
 function CH:GetPluginIcon(sender)
-	local icon
-	for _,func in ipairs(PluginIconsCalls) do
-		icon = func(sender)
-		if icon and icon ~= "" then break end
+	for _, func in ipairs(PluginIconsCalls) do
+		local icon = func(sender)
+		if icon and icon ~= "" then
+			return icon
+		end
 	end
-	return icon
 end
 
-local PluginMessageFilters = {}
-function CH:AddPluginMessageFilter(func)
-	tinsert(PluginMessageFilters, func)
+CH.PluginMessageFilters = {}
+function CH:AddPluginMessageFilter(func, position)
+	if position then
+		tinsert(CH.PluginMessageFilters, position, func)
+	else
+		tinsert(CH.PluginMessageFilters, func)
+	end
 end
 
 --Copied from FrameXML ChatFrame.lua and modified to add CUSTOM_CLASS_COLORS
@@ -1719,7 +1723,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				body = CH:HandleShortChannels(body)
 			end
 
-			for _, filter in ipairs(PluginMessageFilters) do
+			for _, filter in ipairs(CH.PluginMessageFilters) do
 				body = filter(body)
 			end
 
