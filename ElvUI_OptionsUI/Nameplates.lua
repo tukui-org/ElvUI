@@ -2860,30 +2860,43 @@ local function UpdateFilterGroup()
 								t.r, t.g, t.b, t.a = r, g, b, a
 								NP:ConfigureAll()
 							end
-						},
-						name = {
-							name = L["Name"],
-							order = 10,
-							type = "toggle"
-						},
-						nameColor = {
-							name = L["Name Color"],
-							type = "color",
-							order = 11,
-							hasAlpha = true,
-							disabled = function()
-								return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.name
-							end,
-							get = function(info)
-								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.nameColor
-								return t.r, t.g, t.b, t.a, 200 / 255, 200 / 255, 200 / 255, 1
-							end,
-							set = function(info, r, g, b, a)
-								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.nameColor
-								t.r, t.g, t.b, t.a = r, g, b, a
-								NP:ConfigureAll()
-							end
 						}
+					}
+				},
+				text_format = {
+					order = 15,
+					type = "group",
+					guiInline = true,
+					name = L["Text Format"],
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].actions.tags[info[#info]]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].actions.tags[info[#info]] = value
+						NP:ConfigureAll()
+					end,
+					args = {
+						nameTag = {
+							order = 100,
+							name = L["Name Tag"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
+						powerTag = {
+							order = 100,
+							name = L["Power Tag"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
+						healthTag = {
+							order = 100,
+							name = L["Health Tag"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
 					}
 				},
 				texture = {

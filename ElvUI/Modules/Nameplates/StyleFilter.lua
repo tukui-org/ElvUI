@@ -398,13 +398,6 @@ function mod:StyleFilterSetupFlash(FlashTexture)
 	return anim
 end
 
-function mod:StyleFilterPlateStyled(frame)
-	if frame and frame.Name and not frame.Name.__owner then
-		frame.Name.__owner = frame
-		hooksecurefunc(frame.Name, 'SetFormattedText', mod.StyleFilterNameChanged)
-	end
-end
-
 function mod:StyleFilterUpdatePlate(frame, nameOnly)
 	mod:UpdatePlate(frame) -- enable elements back
 
@@ -423,17 +416,6 @@ function mod:StyleFilterUpdatePlate(frame, nameOnly)
 	end
 end
 
-function mod:StyleFilterNameChanged()
-	local SF_NameColor = mod:StyleFilterCheckChanges(self.__owner, 'NameColor')
-	if not SF_NameColor then return end
-
-	local nameText = self:GetText()
-	if nameText and nameText ~= "" then
-		local unitName = self.__owner.unitName and E:EscapeString(self.__owner.unitName)
-		if unitName then self:SetText(gsub(nameText,'|c[fF][fF]%x%x%x%x%x%x%s-('..unitName..')','%1')) end
-	end
-end
-
 function mod:StyleFilterBorderLock(backdrop, switch)
 	backdrop.ignoreBorderColors = switch -- but keep the backdrop updated
 end
@@ -443,7 +425,7 @@ function mod:StyleFilterCheckChanges(frame, which)
 	return c and c[which]
 end
 
-function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameColor, Portrait, NameOnly, Visibility)
+function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, Portrait, NameOnly, Visibility)
 	local c = frame.StyleFilterActionChanges
 	if not c then return end
 
@@ -509,12 +491,20 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		c.Alpha = true
 		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame:GetAlpha(), actions.alpha / 100)
 	end
-	if NameColor then
-		local nc = actions.color.nameColor
-		c.NameColor = true
-
-		mod.StyleFilterNameChanged(frame.Name)
-		frame.Name:SetTextColor(nc.r, nc.g, nc.b, nc.a)
+	if NameTag then
+		c.NameTag = true
+		frame:Tag(frame.Name, actions.tags.nameTag)
+		frame.Name:UpdateTag()
+	end
+	if PowerTag then
+		c.PowerTag = true
+		frame:Tag(frame.Power.Text, actions.tags.powerTag)
+		frame.Power.Text:UpdateTag()
+	end
+	if HealthTag then
+		c.HealthTag = true
+		frame:Tag(frame.Health.Text, actions.tags.healthTag)
+		frame.Health.Text:UpdateTag()
 	end
 	if Portrait then
 		c.Portrait = true
@@ -527,7 +517,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameColor, Portrait, NameOnly, Visibility)
+function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, Portrait, NameOnly, Visibility)
 	wipe(frame.StyleFilterActionChanges)
 
 	if Visibility then
@@ -571,9 +561,17 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	if Alpha then
 		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, (frame.FadeObject and frame.FadeObject.endAlpha) or 0.5, 1)
 	end
-	if NameColor then
+	if NameTag then
+		frame:Tag(frame.Name, mod.db.units[frame.frameType].name.format)
 		frame.Name:UpdateTag()
-		frame.Name:SetTextColor(1, 1, 1, 1)
+	end
+	if PowerTag then
+		frame:Tag(frame.Power.Text, mod.db.units[frame.frameType].power.text.format)
+		frame.Power.Text:UpdateTag()
+	end
+	if HealthTag then
+		frame:Tag(frame.Health.Text, mod.db.units[frame.frameType].health.text.format)
+		frame.Health.Text:UpdateTag()
 	end
 	if Portrait then
 		mod:Update_Portrait(frame)
@@ -945,7 +943,9 @@ function mod:StyleFilterPass(frame, actions)
 		(healthBarShown and actions.texture and actions.texture.enable), --HealthTexture
 		(healthBarShown and actions.scale and actions.scale ~= 1), --Scale
 		(actions.alpha and actions.alpha ~= -1), --Alpha
-		(actions.color and actions.color.name), --NameColor
+		(actions.tags and actions.tags.nameTag and actions.tags.nameTag ~= ''), --NameTag
+		(actions.tags and actions.tags.powerTag and actions.tags.powerTag ~= ''), --PowerTag
+		(actions.tags and actions.tags.healthTag and actions.tags.healthTag ~= ''), --HealthTag
 		(actions.usePortrait), --Portrait
 		(actions.nameOnly), --NameOnly
 		(actions.hide) --Visibility
@@ -954,7 +954,7 @@ end
 
 function mod:StyleFilterClear(frame)
 	local c = frame and frame.StyleFilterActionChanges
-	if c and next(c) then mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameColor, c.Portrait, c.NameOnly, c.Visibility) end
+	if c and next(c) then mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.Portrait, c.NameOnly, c.Visibility) end
 end
 
 function mod:StyleFilterSort(place)
