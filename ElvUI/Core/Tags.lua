@@ -257,7 +257,7 @@ do
 
 		local min, max, base, fill = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
 
-		local fillTo = utf8len(name) * (min / max)
+		local fillTo = floor(utf8len(name) * (min / max))
 		local fillColor = NameHealthColor(_TAGS, fill, unit, '|cFFff3333')
 		local baseColor = NameHealthColor(_TAGS, base, unit, '|cFFffffff')
 
