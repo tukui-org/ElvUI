@@ -241,7 +241,7 @@ do
 	local function NameHealthColor(tags,hex,unit,default)
 		if hex == 'class' or hex == 'reaction' then
 			return tags.namecolor(unit)
-		elseif hex and strmatch(hex, '%x%x%x%x%x%x') then
+		elseif hex and strmatch(hex, '^%x%x%x%x%x%x$') then
 			return '|cFF'..hex
 		end
 
@@ -256,7 +256,7 @@ do
 		if not name then return '' end
 
 		local min, max, bco, fco = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
-		local to = ceil(utf8len(name) * (min / max))
+		local to = (min == 0 and 0) or ceil(utf8len(name) * (min / max))
 
 		local fill = NameHealthColor(_TAGS, fco, unit, '|cFFff3333')
 		local base = NameHealthColor(_TAGS, bco, unit, '|cFFffffff')
