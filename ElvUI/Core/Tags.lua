@@ -242,12 +242,14 @@ do
 	local function NameHealthSetVars(arg1, arg2, arg3, arg4)
 		fillCount, fillTo, fillColor, baseColor = arg1, arg2, arg3, arg4
 	end
+	E.TagFunctions.NameHealthSetVars = NameHealthSetVars
 
 	local function NameHealthFill(letter)
 		local colorized = (fillCount > fillTo and fillColor or baseColor) .. letter
 		fillCount = fillCount + 1
 		return colorized
 	end
+	E.TagFunctions.NameHealthFill = NameHealthFill
 
 	local function NameHealthColor(tags,hex,unit,default)
 		if hex == 'class' or hex == 'reaction' then
@@ -258,8 +260,7 @@ do
 
 		return default
 	end
-
-	E.TagFunctions.NameHealth = {Fill = NameHealthFill, Color = NameHealthColor, SetVars = NameHealthSetVars}
+	E.TagFunctions.NameHealthColor = NameHealthColor
 
 	-- the third arg here is added from the user as like [name:health{ff00ff:00ff00}] or [name:health{class:00ff00}]
 	ElvUF.Tags.Events['name:health'] = 'UNIT_NAME_UPDATE UNIT_FACTION UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
