@@ -240,13 +240,15 @@ do
 	end
 
 	local function nameColor(tags,hex,unit,default)
-		if hex and (hex == 'class' or hex == 'reaction') then
-			return tags.namecolor(unit)
-		elseif hex and strmatch(hex, '%x%x%x%x%x%x') then
-			return '|cFF'..hex
-		else
-			return default
+		if hex then
+			if hex == 'class' or hex == 'reaction' then
+				return tags.namecolor(unit)
+			elseif strmatch(hex, '%x%x%x%x%x%x') then
+				return '|cFF'..hex
+			end
 		end
+
+		return default
 	end
 
 	ElvUF.Tags.Events['name:health'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
