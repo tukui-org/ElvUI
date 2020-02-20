@@ -238,12 +238,6 @@ ElvUF.Tags.Methods['name:abbrev'] = function(unit)
 end
 
 do
-	local fillTo, fillColor, baseColor = 0, '|cFFff3333', '|cFFffffff'
-	local function NameHealthSetVars(arg1, arg2, arg3)
-		fillTo, fillColor, baseColor = floor(arg1), arg2, arg3
-	end
-	E.TagFunctions.NameHealthSetVars = NameHealthSetVars
-
 	local function NameHealthColor(tags,hex,unit,default)
 		if hex == 'class' or hex == 'reaction' then
 			return tags.namecolor(unit)
@@ -262,7 +256,10 @@ do
 		if not name then return '' end
 
 		local min, max, base, fill = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
-		NameHealthSetVars(utf8len(name) * (min / max), NameHealthColor(_TAGS, fill, unit, '|cFFff3333'), NameHealthColor(_TAGS, base, unit, '|cFFffffff'))
+
+		local fillTo = utf8len(name) * (min / max)
+		local fillColor = NameHealthColor(_TAGS, fill, unit, '|cFFff3333')
+		local baseColor = NameHealthColor(_TAGS, base, unit, '|cFFffffff')
 
 		return baseColor .. utf8sub(name, 0, fillTo) .. fillColor .. utf8sub(name, fillTo+1, -1)
 	end
