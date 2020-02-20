@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local ElvUF = E.oUF
 
-E.TagFunctions = {}
-
 local Translit = E.Libs.Translit
 local translitMark = "!"
 
@@ -81,6 +79,9 @@ local SPELL_POWER_MANA = Enum.PowerType.Mana
 local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 
 -- GLOBALS: Hex, _TAGS, ElvUF
+
+--Expose local functions for plugins onto this table
+E.TagFunctions = {}
 
 ------------------------------------------------------------------------
 --	Tag Extra Events
