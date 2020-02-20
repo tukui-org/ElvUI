@@ -802,6 +802,8 @@ local function Tag(self, fs, tagstr, ...)
 	if customArgs then
 		self.__customargs[fs] = customArgs
 		tagstr = tagstr:gsub('{.-}%]', ']')
+	else
+		self.__customargs[fs] = nil
 	end
 
 	if tagstr:find('%[mouseover%]') then
