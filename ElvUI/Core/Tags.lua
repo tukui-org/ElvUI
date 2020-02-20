@@ -250,7 +250,7 @@ do
 	end
 
 	-- we need to match each char, so any utf8 chars can be matched, mostly ghetto but lets try x-x
-	local chars = '[%w';for l, u in pairs(_G.utf8_lc_uc) do chars = chars .. l .. u end;chars = chars .. ']'
+	local chars = '[%w%p';for l, u in pairs(_G.utf8_lc_uc) do chars = chars .. l .. u end;chars = chars .. ']'
 
 	-- the third arg here is added from the user as like [name:health{ff00ff:00ff00}] or [name:health{class:00ff00}]
 	ElvUF.Tags.Events['name:health'] = 'UNIT_NAME_UPDATE UNIT_FACTION UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
