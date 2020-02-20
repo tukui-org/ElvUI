@@ -240,12 +240,10 @@ do
 	end
 
 	local function nameColor(tags,hex,unit,default)
-		if hex then
-			if hex == 'class' or hex == 'reaction' then
-				return tags.namecolor(unit)
-			elseif strmatch(hex, '%x%x%x%x%x%x') then
-				return '|cFF'..hex
-			end
+		if hex == 'class' or hex == 'reaction' then
+			return tags.namecolor(unit)
+		elseif hex and strmatch(hex, '%x%x%x%x%x%x') then
+			return '|cFF'..hex
 		end
 
 		return default
