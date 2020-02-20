@@ -264,12 +264,7 @@ do
 		local min, max, base, fill = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
 		NameHealthSetVars(utf8len(name) * (min / max), NameHealthColor(_TAGS, fill, unit, '|cFFff3333'), NameHealthColor(_TAGS, base, unit, '|cFFffffff'))
 
-		local text = ''
-		for i=1, 2 do
-			text = text .. (i == 1 and baseColor or fillColor) .. (i == 1 and utf8sub(name, 0, fillTo) or utf8sub(name, fillTo+1, -1))
-		end
-
-		return text
+		return baseColor .. utf8sub(name, 0, fillTo) .. fillColor .. utf8sub(name, fillTo+1, -1)
 	end
 end
 
