@@ -425,7 +425,7 @@ function mod:StyleFilterCheckChanges(frame, which)
 	return c and c[which]
 end
 
-function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, Portrait, NameOnly, Visibility)
+function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	local c = frame.StyleFilterActionChanges
 	if not c then return end
 
@@ -493,18 +493,28 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	end
 	if NameTag then
 		c.NameTag = true
-		frame:Tag(frame.Name, actions.tags.nameTag)
+		frame:Tag(frame.Name, actions.tags.name)
 		frame.Name:UpdateTag()
 	end
 	if PowerTag then
 		c.PowerTag = true
-		frame:Tag(frame.Power.Text, actions.tags.powerTag)
+		frame:Tag(frame.Power.Text, actions.tags.power)
 		frame.Power.Text:UpdateTag()
 	end
 	if HealthTag then
 		c.HealthTag = true
-		frame:Tag(frame.Health.Text, actions.tags.healthTag)
+		frame:Tag(frame.Health.Text, actions.tags.health)
 		frame.Health.Text:UpdateTag()
+	end
+	if TitleTag then
+		c.TitleTag = true
+		frame:Tag(frame.Title, actions.tags.title)
+		frame.Title:UpdateTag()
+	end
+	if LevelTag then
+		c.LevelTag = true
+		frame:Tag(frame.Level, actions.tags.level)
+		frame.Level:UpdateTag()
 	end
 	if Portrait then
 		c.Portrait = true
@@ -517,7 +527,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, Portrait, NameOnly, Visibility)
+function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	wipe(frame.StyleFilterActionChanges)
 
 	if Visibility then
@@ -572,6 +582,14 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	if HealthTag then
 		frame:Tag(frame.Health.Text, mod.db.units[frame.frameType].health.text.format)
 		frame.Health.Text:UpdateTag()
+	end
+	if TitleTag then
+		frame:Tag(frame.Title, mod.db.units[frame.frameType].title.format)
+		frame.Title:UpdateTag()
+	end
+	if LevelTag then
+		frame:Tag(frame.Level, mod.db.units[frame.frameType].level.format)
+		frame.Level:UpdateTag()
 	end
 	if Portrait then
 		mod:Update_Portrait(frame)
@@ -943,9 +961,11 @@ function mod:StyleFilterPass(frame, actions)
 		(healthBarShown and actions.texture and actions.texture.enable), --HealthTexture
 		(healthBarShown and actions.scale and actions.scale ~= 1), --Scale
 		(actions.alpha and actions.alpha ~= -1), --Alpha
-		(actions.tags and actions.tags.nameTag and actions.tags.nameTag ~= ''), --NameTag
-		(actions.tags and actions.tags.powerTag and actions.tags.powerTag ~= ''), --PowerTag
-		(actions.tags and actions.tags.healthTag and actions.tags.healthTag ~= ''), --HealthTag
+		(actions.tags and actions.tags.name and actions.tags.name ~= ''), --NameTag
+		(actions.tags and actions.tags.power and actions.tags.power ~= ''), --PowerTag
+		(actions.tags and actions.tags.health and actions.tags.health ~= ''), --HealthTag
+		(actions.tags and actions.tags.title and actions.tags.title ~= ''), --TitleTag
+		(actions.tags and actions.tags.level and actions.tags.level ~= ''), --LevelTag
 		(actions.usePortrait), --Portrait
 		(actions.nameOnly), --NameOnly
 		(actions.hide) --Visibility
@@ -954,7 +974,7 @@ end
 
 function mod:StyleFilterClear(frame)
 	local c = frame and frame.StyleFilterActionChanges
-	if c and next(c) then mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.Portrait, c.NameOnly, c.Visibility) end
+	if c and next(c) then mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility) end
 end
 
 function mod:StyleFilterSort(place)

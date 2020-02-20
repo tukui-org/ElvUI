@@ -297,9 +297,11 @@ E.StyleFilterDefaults = {
 			speed = 4
 		},
 		tags = {
+			name = '',
+			level = '',
+			title = '',
 			health = '',
-			power = '',
-			name = ''
+			power = ''
 		},
 		hide = false,
 		usePortrait = false,

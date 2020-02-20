@@ -2876,23 +2876,37 @@ local function UpdateFilterGroup()
 						NP:ConfigureAll()
 					end,
 					args = {
-						nameTag = {
+						name = {
 							order = 1,
-							name = L["Name Tag"],
+							name = L["Name"],
 							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
 							type = 'input',
 							width = 'full',
 						},
-						healthTag = {
+						level = {
 							order = 2,
-							name = L["Health Tag"],
+							name = L["Level"],
 							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
 							type = 'input',
 							width = 'full',
 						},
-						powerTag = {
+						title = {
 							order = 3,
-							name = L["Power Tag"],
+							name = L["Title"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
+						health = {
+							order = 4,
+							name = L["Health"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
+						power = {
+							order = 5,
+							name = L["Power"],
 							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
 							type = 'input',
 							width = 'full',
