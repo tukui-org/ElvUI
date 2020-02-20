@@ -255,13 +255,13 @@ do
 		local name = UnitName(unit)
 		if not name then return '' end
 
-		local min, max, base, fill = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
+		local min, max, bco, fco = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
+		local to = floor(utf8len(name) * (min / max))
 
-		local fillTo = floor(utf8len(name) * (min / max))
-		local fillColor = NameHealthColor(_TAGS, fill, unit, '|cFFff3333')
-		local baseColor = NameHealthColor(_TAGS, base, unit, '|cFFffffff')
+		local fill = NameHealthColor(_TAGS, fco, unit, '|cFFff3333')
+		local base = NameHealthColor(_TAGS, bco, unit, '|cFFffffff')
 
-		return baseColor .. utf8sub(name, 0, fillTo) .. fillColor .. utf8sub(name, fillTo+1, -1)
+		return base .. utf8sub(name, 0, to) .. fill .. utf8sub(name, to+1, -1)
 	end
 end
 
