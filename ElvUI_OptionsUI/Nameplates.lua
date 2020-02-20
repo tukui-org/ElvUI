@@ -2863,56 +2863,6 @@ local function UpdateFilterGroup()
 						}
 					}
 				},
-				text_format = {
-					order = 15,
-					type = "group",
-					guiInline = true,
-					name = L["Text Format"],
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].actions.tags[info[#info]]
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].actions.tags[info[#info]] = value
-						NP:ConfigureAll()
-					end,
-					args = {
-						name = {
-							order = 1,
-							name = L["Name"],
-							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
-							type = 'input',
-							width = 'full',
-						},
-						level = {
-							order = 2,
-							name = L["Level"],
-							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
-							type = 'input',
-							width = 'full',
-						},
-						title = {
-							order = 3,
-							name = L["Title"],
-							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
-							type = 'input',
-							width = 'full',
-						},
-						health = {
-							order = 4,
-							name = L["Health"],
-							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
-							type = 'input',
-							width = 'full',
-						},
-						power = {
-							order = 5,
-							name = L["Power"],
-							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
-							type = 'input',
-							width = 'full',
-						},
-					}
-				},
 				texture = {
 					order = 20,
 					type = "group",
@@ -3003,6 +2953,56 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end
 						}
+					}
+				},
+				text_format = {
+					order = 40,
+					type = "group",
+					guiInline = true,
+					name = L["Text Format"],
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].actions.tags[info[#info]]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].actions.tags[info[#info]] = value
+						NP:ConfigureAll()
+					end,
+					args = {
+						name = {
+							order = 1,
+							name = L["Name"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
+						level = {
+							order = 2,
+							name = L["Level"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
+						title = {
+							order = 3,
+							name = L["Title"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
+						health = {
+							order = 4,
+							name = L["Health"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
+						power = {
+							order = 5,
+							name = L["Power"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
 					}
 				}
 			}
