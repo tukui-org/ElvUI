@@ -266,8 +266,7 @@ do
 
 		local text = ''
 		for i=1, 2 do
-			local split = (i == 1 and utf8sub(name, 0, fillTo)) or utf8sub(name, fillTo+1, -1)
-			text = text .. (i == 1 and baseColor or fillColor) .. split
+			text = text .. (i == 1 and baseColor or fillColor) .. (i == 1 and utf8sub(name, 0, fillTo) or utf8sub(name, fillTo+1, -1))
 		end
 
 		return text
