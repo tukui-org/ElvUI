@@ -238,13 +238,16 @@ ElvUF.Tags.Methods['name:abbrev'] = function(unit)
 end
 
 do
-	local count, fillTo, fillColor, baseColor = 0, 0, '|cFFff3333', '|cFFffffff'
+	local fillCount, fillTo, fillColor, baseColor = 0, 0, '|cFFff3333', '|cFFffffff'
+	local function NameHealthSetVars(arg1, arg2, arg3, arg4)
+		fillCount, fillTo, fillColor, baseColor = arg1, arg2, arg3, arg4
+	end
+
 	local function NameHealthFill(letter)
-		local colorized = (count > fillTo and fillColor or baseColor) .. letter
-		count = count + 1
+		local colorized = (fillCount > fillTo and fillColor or baseColor) .. letter
+		fillCount = fillCount + 1
 		return colorized
 	end
-	E.TagFunctions.NameHealthFill = NameHealthFill
 
 	local function NameHealthColor(tags,hex,unit,default)
 		if hex == 'class' or hex == 'reaction' then
@@ -255,7 +258,8 @@ do
 
 		return default
 	end
-	E.TagFunctions.NameHealthColor = NameHealthColor
+
+	E.TagFunctions.NameHealth = {Fill = NameHealthFill, Color = NameHealthColor, SetVars = NameHealthSetVars}
 
 	-- the third arg here is added from the user as like [name:health{ff00ff:00ff00}] or [name:health{class:00ff00}]
 	ElvUF.Tags.Events['name:health'] = 'UNIT_NAME_UPDATE UNIT_FACTION UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
@@ -263,16 +267,8 @@ do
 		local name = UnitName(unit)
 		if not name then return '' end
 
-		local min, max = UnitHealth(unit), UnitHealthMax(unit)
-		count, fillTo = 0, strlen(name) * (min / max)
-
-		if args then
-			local base, fill = strsplit(':', args)
-			fillColor = NameHealthColor(_TAGS, fill, unit, '|cFFff3333')
-			baseColor = NameHealthColor(_TAGS, base, unit, '|cFFffffff')
-		else
-			fillColor, baseColor = '|cFFff3333', '|cFFffffff'
-		end
+		local min, max, base, fill = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
+		NameHealthSetVars(0, strlen(name) * (min / max), NameHealthColor(_TAGS, fill, unit, '|cFFff3333'), NameHealthColor(_TAGS, base, unit, '|cFFffffff'))
 
 		local text, len = '', utf8len(name)
 		for i=1, len do text = text .. NameHealthFill(utf8sub(name, i, i)) end
