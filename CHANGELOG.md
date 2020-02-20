@@ -1,13 +1,17 @@
 ### Version 11.38 [ ETA: 🍨 ]
 
 **New Additions:**  
-
+Added *[name:health]* tag which displays health lost using colors on the name, neato.  
+Added *[ElvUI-Users]* tag which displays other cool people than yourself.  
 
 **Bug Fixes:**  
-
+The options bottom buttons now use the language selected in the config, nice.  
+Fixed an oops in Missions Datatext related to Nazjatar Followers.  
 
 **Misc. Changes:**  
-
+Style Filters now support changing the Nameplate Tags for Health, Power, Name, Title, and Level because of this Name Color action was removed, you can tag a color onto it and make it do other neat stuff, if you want.  
+Someone decided to show Corrupted Icon on Equipment Manager Flyout buttons, cool.  
+AuraBars using Debuffs type can once again, switch to Class Color.  
 
 ___
 ### Version 11.371 [ February 11th 2020 ]
