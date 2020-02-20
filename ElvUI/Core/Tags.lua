@@ -233,13 +233,13 @@ end
 
 do
 	local count, fillTo, fillColor, baseColor = 0, 0, '|cFFff3333', '|cFFffffff'
-	local function fillName(s)
-		local letter = (count > fillTo and fillColor or baseColor) .. s
+	local function fillName(letter)
+		local colorized = (count > fillTo and fillColor or baseColor) .. letter
 		count = count + 1
-		return letter
+		return colorized
 	end
 
-	local function nameColor(tags,hex,unit,default)
+	local function textColor(tags,hex,unit,default)
 		if hex == 'class' or hex == 'reaction' then
 			return tags.namecolor(unit)
 		elseif hex and strmatch(hex, '%x%x%x%x%x%x') then
@@ -259,8 +259,8 @@ do
 
 		if args then
 			local base, fill = strsplit(':', args)
-			fillColor = nameColor(_TAGS, fill, unit, '|cFFff3333')
-			baseColor = nameColor(_TAGS, base, unit, '|cFFffffff')
+			fillColor = textColor(_TAGS, fill, unit, '|cFFff3333')
+			baseColor = textColor(_TAGS, base, unit, '|cFFffffff')
 		else
 			fillColor, baseColor = '|cFFff3333', '|cFFffffff'
 		end
