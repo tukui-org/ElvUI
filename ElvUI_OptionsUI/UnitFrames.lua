@@ -2951,6 +2951,13 @@ E.Options.args.unitframe = {
 							disabled = function() return E.private.general.pixelPerfect end,
 							set = function(info, value) E.db.unitframe[info[#info]] = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
+						smartRaidFilter = {
+							order = 4,
+							name = L["Smart Raid Filter"],
+							desc = L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."],
+							type = 'toggle',
+							set = function(info, value) E.db.unitframe[info[#info]] = value; UF:UpdateAllHeaders() end
+						},
 						targetOnMouseDown = {
 							order = 5,
 							name = L["Target On Mouse-Down"],
@@ -6172,6 +6179,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid = {
 			type = 'toggle',
 			order = 1,
 			name = L["Enable"],
+			disabled = function() return E.db.unitframe.smartRaidFilter end,
 		},
 		configureToggle = {
 			order = 2,
@@ -6347,6 +6355,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid = {
 							type = 'input',
 							name = L["Visibility"],
 							desc = L["VISIBILITY_DESC"],
+							disabled = function() return E.db.unitframe.smartRaidFilter end,
 							width = 'full',
 						},
 					},
@@ -6452,6 +6461,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid40 = {
 			type = 'toggle',
 			order = 1,
 			name = L["Enable"],
+			disabled = function() return E.db.unitframe.smartRaidFilter end,
 		},
 		configureToggle = {
 			order = 2,
@@ -6628,6 +6638,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid40 = {
 							name = L["Visibility"],
 							desc = L["VISIBILITY_DESC"],
 							width = 'full',
+							disabled = function() return E.db.unitframe.smartRaidFilter end,
 						},
 					},
 				},
@@ -6732,6 +6743,7 @@ E.Options.args.unitframe.args.groupUnits.args.raidpet = {
 			type = 'toggle',
 			order = 1,
 			name = L["Enable"],
+			disabled = function() return E.db.unitframe.smartRaidFilter end,
 		},
 		configureToggle = {
 			order = 2,
@@ -6894,6 +6906,7 @@ E.Options.args.unitframe.args.groupUnits.args.raidpet = {
 							name = L["Visibility"],
 							desc = L["VISIBILITY_DESC"],
 							width = 'full',
+							disabled = function() return E.db.unitframe.smartRaidFilter end,
 						},
 					},
 				},
