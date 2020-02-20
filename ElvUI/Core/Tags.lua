@@ -256,7 +256,7 @@ do
 		if not name then return '' end
 
 		local min, max, bco, fco = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
-		local to = (min == 0 and 0) or ceil(utf8len(name) * (min / max))
+		local to = ceil(utf8len(name) * (min / max))
 
 		local fill = NameHealthColor(_TAGS, fco, unit, '|cFFff3333')
 		local base = NameHealthColor(_TAGS, bco, unit, '|cFFffffff')
