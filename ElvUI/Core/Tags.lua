@@ -261,7 +261,7 @@ do
 		local fill = NameHealthColor(_TAGS, fco, unit, '|cFFff3333')
 		local base = NameHealthColor(_TAGS, bco, unit, '|cFFffffff')
 
-		return base .. utf8sub(name, 0, to) .. fill .. utf8sub(name, to+1, -1)
+		return to > 0 and (base..utf8sub(name, 0, to)..fill..utf8sub(name, to+1, -1)) or fill..name
 	end
 end
 
