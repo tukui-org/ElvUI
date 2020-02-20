@@ -238,18 +238,11 @@ ElvUF.Tags.Methods['name:abbrev'] = function(unit)
 end
 
 do
-	local fillCount, fillTo, fillColor, baseColor = 0, 0, '|cFFff3333', '|cFFffffff'
-	local function NameHealthSetVars(arg1, arg2, arg3, arg4)
-		fillCount, fillTo, fillColor, baseColor = arg1, arg2, arg3, arg4
+	local fillTo, fillColor, baseColor = 0, '|cFFff3333', '|cFFffffff'
+	local function NameHealthSetVars(arg1, arg2, arg3)
+		fillTo, fillColor, baseColor = floor(arg1), arg2, arg3
 	end
 	E.TagFunctions.NameHealthSetVars = NameHealthSetVars
-
-	local function NameHealthFill(letter)
-		local colorized = (fillCount > fillTo and fillColor or baseColor) .. letter
-		fillCount = fillCount + 1
-		return colorized
-	end
-	E.TagFunctions.NameHealthFill = NameHealthFill
 
 	local function NameHealthColor(tags,hex,unit,default)
 		if hex == 'class' or hex == 'reaction' then
@@ -269,10 +262,13 @@ do
 		if not name then return '' end
 
 		local min, max, base, fill = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
-		NameHealthSetVars(0, strlen(name) * (min / max), NameHealthColor(_TAGS, fill, unit, '|cFFff3333'), NameHealthColor(_TAGS, base, unit, '|cFFffffff'))
+		NameHealthSetVars(utf8len(name) * (min / max), NameHealthColor(_TAGS, fill, unit, '|cFFff3333'), NameHealthColor(_TAGS, base, unit, '|cFFffffff'))
 
-		local text, len = '', utf8len(name)
-		for i=1, len do text = text .. NameHealthFill(utf8sub(name, i, i)) end
+		local text = ''
+		for i=1, 2 do
+			local split = (i == 1 and utf8sub(name, 0, fillTo)) or utf8sub(name, fillTo+1, -1)
+			text = text .. (i == 1 and baseColor or fillColor) .. split
+		end
 
 		return text
 	end
