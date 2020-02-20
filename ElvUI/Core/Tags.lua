@@ -248,8 +248,8 @@ do
 		count, fillTo = 0, strlen(name) * (min / max)
 
 		local base, fill = strmatch(args or '', '(%x%x%x%x%x%x):?(%x?%x?%x?%x?%x?%x?)')
-		baseColor = (base and base ~= '' and '|cFF'..base) or '|cFFffffff'
-		fillColor = (fill and '|cFF'..fill) or '|cFFff3333'
+		baseColor = (base and '|cFF'..base) or '|cFFffffff'
+		fillColor = (fill and fill ~= '' and '|cFF'..fill) or '|cFFff3333'
 
 		return gsub(name, '%S', fillName)
 	end
