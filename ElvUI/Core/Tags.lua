@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local ElvUF = E.oUF
 
+E.TagFunctions = {}
+
 local Translit = E.Libs.Translit
 local translitMark = "!"
 
@@ -105,8 +107,9 @@ local function UnitName(unit)
 		return name
 	end
 end
+E.TagFunctions.UnitName = UnitName
 
-local function abbrev(name)
+local function Abbrev(name)
 	local letters, lastWord = '', strmatch(name, '.+%s(.+)$')
 	if lastWord then
 		for word in gmatch(name, '.-%s') do
@@ -119,6 +122,7 @@ local function abbrev(name)
 	end
 	return name
 end
+E.TagFunctions.Abbrev = Abbrev
 
 local Harmony = {
 	[0] = {1, 1, 1},
@@ -172,6 +176,7 @@ local function GetClassPower(class)
 
 	return min, max, r, g, b
 end
+E.TagFunctions.GetClassPower = GetClassPower
 
 ElvUF.Tags.Events['altpowercolor'] = "UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE"
 ElvUF.Tags.Methods['altpowercolor'] = function(u)
@@ -225,7 +230,7 @@ ElvUF.Tags.Methods['name:abbrev'] = function(unit)
 	local name = UnitName(unit)
 
 	if name and strfind(name, '%s') then
-		name = abbrev(name)
+		name = Abbrev(name)
 	end
 
 	return name ~= nil and name or ''
@@ -233,13 +238,14 @@ end
 
 do
 	local count, fillTo, fillColor, baseColor = 0, 0, '|cFFff3333', '|cFFffffff'
-	local function fillName(letter)
+	local function NameHealthFill(letter)
 		local colorized = (count > fillTo and fillColor or baseColor) .. letter
 		count = count + 1
 		return colorized
 	end
+	E.TagFunctions.NameHealthFill = NameHealthFill
 
-	local function textColor(tags,hex,unit,default)
+	local function NameHealthColor(tags,hex,unit,default)
 		if hex == 'class' or hex == 'reaction' then
 			return tags.namecolor(unit)
 		elseif hex and strmatch(hex, '%x%x%x%x%x%x') then
@@ -248,6 +254,7 @@ do
 
 		return default
 	end
+	E.TagFunctions.NameHealthColor = NameHealthColor
 
 	-- the third arg here is added from the user as like [name:health{ff00ff:00ff00}] or [name:health{class:00ff00}]
 	ElvUF.Tags.Events['name:health'] = 'UNIT_NAME_UPDATE UNIT_FACTION UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
@@ -260,14 +267,14 @@ do
 
 		if args then
 			local base, fill = strsplit(':', args)
-			fillColor = textColor(_TAGS, fill, unit, '|cFFff3333')
-			baseColor = textColor(_TAGS, base, unit, '|cFFffffff')
+			fillColor = NameHealthColor(_TAGS, fill, unit, '|cFFff3333')
+			baseColor = NameHealthColor(_TAGS, base, unit, '|cFFffffff')
 		else
 			fillColor, baseColor = '|cFFff3333', '|cFFffffff'
 		end
 
 		local text, len = '', utf8len(name)
-		for i=1, len do text = text .. fillName(utf8sub(name, i, i)) end
+		for i=1, len do text = text .. NameHealthFill(utf8sub(name, i, i)) end
 
 		return text
 	end
@@ -365,7 +372,7 @@ for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 
 		local name = UnitName(unit)
 
 		if name and strfind(name, '%s') then
-			name = abbrev(name)
+			name = Abbrev(name)
 		end
 
 		return name ~= nil and E:ShortenString(name, length) or ''
