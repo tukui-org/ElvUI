@@ -704,69 +704,18 @@ local function getTagFunc(tagstr)
 			-- end block
 		end
 
-		if(numTags == 1) then
-			func = function(self)
-				local parent = self.parent
-				local realUnit
-				if(self.overrideUnit) then
-					realUnit = parent.realUnit
-				end
-
-				_ENV._COLORS = parent.colors
-				_ENV._FRAME = parent
-				return self:SetFormattedText(
-					format,
-					args[1](parent.unit, realUnit) or ''
-				)
-			end
-		elseif(numTags == 2) then
+		if numTags ~= -1 then -- ElvUI replaced
 			func = function(self)
 				local parent = self.parent
 				local unit = parent.unit
-				local realUnit
-				if(self.overrideUnit) then
-					realUnit = parent.realUnit
-				end
+
+				local customArgs = parent.__customargs
+				local realUnit = self.overrideUnit and parent.realUnit
 
 				_ENV._COLORS = parent.colors
 				_ENV._FRAME = parent
-				return self:SetFormattedText(
-					format,
-					args[1](unit, realUnit) or '',
-					args[2](unit, realUnit) or ''
-				)
-			end
-		elseif(numTags == 3) then
-			func = function(self)
-				local parent = self.parent
-				local unit = parent.unit
-				local realUnit
-				if(self.overrideUnit) then
-					realUnit = parent.realUnit
-				end
-
-				_ENV._COLORS = parent.colors
-				_ENV._FRAME = parent
-				return self:SetFormattedText(
-					format,
-					args[1](unit, realUnit) or '',
-					args[2](unit, realUnit) or '',
-					args[3](unit, realUnit) or ''
-				)
-			end
-		elseif numTags ~= -1 then -- ElvUI changed (from else)
-			func = function(self)
-				local parent = self.parent
-				local unit = parent.unit
-				local realUnit
-				if(self.overrideUnit) then
-					realUnit = parent.realUnit
-				end
-
-				_ENV._COLORS = parent.colors
-				_ENV._FRAME = parent
-				for i, func in next, args do
-					tmp[i] = func(unit, realUnit) or ''
+				for i, fnc in next, args do
+					tmp[i] = fnc(unit, realUnit, customArgs[self]) or ''
 				end
 
 				-- We do 1, numTags because tmp can hold several unneeded variables.
@@ -833,6 +782,7 @@ local function Tag(self, fs, tagstr, ...)
 	if(not self.__tags) then
 		self.__tags = {}
 		self.__mousetags = {} -- ElvUI
+		self.__customargs = {} -- ElvUI
 
 		tinsert(self.__elements, Update)
 	elseif(self.__tags[fs]) then
@@ -846,6 +796,12 @@ local function Tag(self, fs, tagstr, ...)
 		while tagstr:find(escapeSequence) do
 			tagstr = tagstr:gsub(escapeSequence, replacement)
 		end
+	end
+
+	local customArgs = tagstr:match('{(.-)}%]')
+	if customArgs then
+		self.__customargs[fs] = customArgs
+		tagstr = tagstr:gsub('{.-}%]', ']')
 	end
 
 	if tagstr:find('%[mouseover%]') then

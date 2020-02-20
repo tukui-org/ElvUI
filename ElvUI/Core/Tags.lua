@@ -6,7 +6,7 @@ local translitMark = "!"
 
 --Lua functions
 local _G = _G
-local tonumber = tonumber
+local tonumber, strlen, next = tonumber, strlen, next
 local unpack, pairs, wipe, floor = unpack, pairs, wipe, floor
 local gmatch, gsub, format, select = gmatch, gsub, format, select
 local strfind, strmatch, strlower, utf8lower, utf8sub = strfind, strmatch, strlower, string.utf8lower, string.utf8sub
@@ -229,6 +229,30 @@ ElvUF.Tags.Methods['name:abbrev'] = function(unit)
 	end
 
 	return name ~= nil and name or ''
+end
+
+do
+	local count, fillTo, fillColor, baseColor = 0, 0, '|cFFff3333', '|cFFffffff'
+	local function fillName(s)
+		local letter = (count > fillTo and fillColor or baseColor) .. s
+		count = count + 1
+		return letter
+	end
+
+	ElvUF.Tags.Events['name:health'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+	ElvUF.Tags.Methods['name:health'] = function(unit, _, args)
+		local name = UnitName(unit)
+		if not name then return '' end
+
+		local min, max = UnitHealth(unit), UnitHealthMax(unit)
+		count, fillTo = 0, strlen(name) * (min / max)
+
+		local base, fill = strmatch(args or '', '(%x%x%x%x%x%x):?(%x?%x?%x?%x?%x?%x?)')
+		baseColor = (base and base ~= '' and '|cFF'..base) or '|cFFffffff'
+		fillColor = (fill and '|cFF'..fill) or '|cFFff3333'
+
+		return gsub(name, '%S', fillName)
+	end
 end
 
 ElvUF.Tags.Events['health:deficit-percent:nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
