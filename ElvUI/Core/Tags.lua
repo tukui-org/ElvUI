@@ -8,7 +8,7 @@ local translitMark = "!"
 local _G = _G
 local tonumber, strlen, next = tonumber, strlen, next
 local unpack, pairs, wipe, floor = unpack, pairs, wipe, floor
-local gmatch, gsub, format, select = gmatch, gsub, format, select
+local gmatch, gsub, format, select, strsplit = gmatch, gsub, format, select, strsplit
 local strfind, strmatch, strlower, utf8lower, utf8sub = strfind, strmatch, strlower, string.utf8lower, string.utf8sub
 --WoW API / Variables
 local CreateTextureMarkup = CreateTextureMarkup
@@ -239,6 +239,16 @@ do
 		return letter
 	end
 
+	local function nameColor(tags,hex,unit,default)
+		if hex and (hex == 'class' or hex == 'reaction') then
+			return tags.namecolor(unit)
+		elseif hex and strmatch(hex, '%x%x%x%x%x%x') then
+			return '|cFF'..hex
+		else
+			return default
+		end
+	end
+
 	ElvUF.Tags.Events['name:health'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
 	ElvUF.Tags.Methods['name:health'] = function(unit, _, args)
 		local name = UnitName(unit)
@@ -247,9 +257,13 @@ do
 		local min, max = UnitHealth(unit), UnitHealthMax(unit)
 		count, fillTo = 0, strlen(name) * (min / max)
 
-		local base, fill = strmatch(args or '', '(%x%x%x%x%x%x):?(%x?%x?%x?%x?%x?%x?)')
-		baseColor = (base and '|cFF'..base) or '|cFFffffff'
-		fillColor = (fill and fill ~= '' and '|cFF'..fill) or '|cFFff3333'
+		if args then
+			local base, fill = strsplit(':', args)
+			fillColor = nameColor(_TAGS, fill, unit, '|cFFff3333')
+			baseColor = nameColor(_TAGS, base, unit, '|cFFffffff')
+		else
+			fillColor, baseColor = '|cFFff3333', '|cFFffffff'
+		end
 
 		return gsub(name, '%S', fillName)
 	end
