@@ -9,7 +9,7 @@ local _G = _G
 local tonumber, strlen, next = tonumber, strlen, next
 local unpack, pairs, wipe, floor = unpack, pairs, wipe, floor
 local gmatch, gsub, format, select, strsplit = gmatch, gsub, format, select, strsplit
-local strfind, strmatch, strlower, utf8lower, utf8sub = strfind, strmatch, strlower, string.utf8lower, string.utf8sub
+local strfind, strmatch, strlower, utf8lower, utf8sub, utf8len = strfind, strmatch, strlower, string.utf8lower, string.utf8sub, string.utf8len
 --WoW API / Variables
 local CreateTextureMarkup = CreateTextureMarkup
 local UnitFactionGroup = UnitFactionGroup
@@ -266,7 +266,10 @@ do
 			fillColor, baseColor = '|cFFff3333', '|cFFffffff'
 		end
 
-		return gsub(name, '[%w%p]', fillName)
+		local text, len = '', utf8len(name)
+		for i=1, len do text = text .. fillName(utf8sub(name, i, i)) end
+
+		return text
 	end
 end
 
