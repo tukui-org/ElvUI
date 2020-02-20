@@ -7,7 +7,7 @@ local translitMark = "!"
 --Lua functions
 local _G = _G
 local tonumber, strlen, next = tonumber, strlen, next
-local unpack, pairs, wipe, floor = unpack, pairs, wipe, floor
+local unpack, pairs, wipe, floor, ceil = unpack, pairs, wipe, floor, ceil
 local gmatch, gsub, format, select, strsplit = gmatch, gsub, format, select, strsplit
 local strfind, strmatch, strlower, utf8lower, utf8sub, utf8len = strfind, strmatch, strlower, string.utf8lower, string.utf8sub, string.utf8len
 --WoW API / Variables
@@ -256,7 +256,7 @@ do
 		if not name then return '' end
 
 		local min, max, bco, fco = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
-		local to = floor(utf8len(name) * (min / max))
+		local to = ceil(utf8len(name) * (min / max))
 
 		local fill = NameHealthColor(_TAGS, fco, unit, '|cFFff3333')
 		local base = NameHealthColor(_TAGS, bco, unit, '|cFFffffff')
