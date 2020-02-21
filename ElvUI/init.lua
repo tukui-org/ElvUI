@@ -136,6 +136,10 @@ do
 	DisableAddOn("ElvUI_CustomTweaks")
 end
 
+function E:OnEnable()
+	E:Initialize()
+end
+
 function E:OnInitialize()
 	if not ElvCharacterDB then
 		ElvCharacterDB = {}
@@ -221,12 +225,6 @@ function E:PositionGameMenuButton()
 		GameMenuButtonLogout:Point('TOPLEFT', GameMenuFrame[E.name], 'BOTTOMLEFT', 0, offY)
 	end
 end
-
-local LoadUI=CreateFrame('Frame')
-LoadUI:RegisterEvent('PLAYER_LOGIN')
-LoadUI:SetScript('OnEvent', function()
-	E:Initialize()
-end)
 
 function E:ResetProfile()
 	local profileKey

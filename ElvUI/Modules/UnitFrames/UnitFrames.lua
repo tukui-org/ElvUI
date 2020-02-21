@@ -968,7 +968,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			end
 		end
 
-	--	UF.headerFunctions[group]:AdjustVisibility(self[group])
+		UF.headerFunctions[group]:AdjustVisibility(self[group])
 		UF.headerFunctions[group]:Configure_Groups(self[group])
 		UF.headerFunctions[group]:Update(self[group])
 
