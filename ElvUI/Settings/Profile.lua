@@ -817,7 +817,7 @@ P.auras = {
 		sortDir = '-',
 		seperateOwn = 1,
 		size = 32,
-		countFontsize = 10,
+		countFontSize = 10,
 		durationFontSize = 10,
 	},
 	debuffs = {
@@ -830,7 +830,7 @@ P.auras = {
 		sortDir = '-',
 		seperateOwn = 1,
 		size = 32,
-		countFontsize = 10,
+		countFontSize = 10,
 		durationFontSize = 10,
 	},
 }
