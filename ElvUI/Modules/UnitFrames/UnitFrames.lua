@@ -840,33 +840,35 @@ function UF.headerPrototype:Reset()
 end
 
 function UF:HandleSmartVisibility()
-	if (UF.db.smartRaidFilter) then
+	local smartRaidOn = UF.db.smartRaidFilter
+	UF.raid.blockVisibilityChanges = smartRaidOn
+	UF.raid40.blockVisibilityChanges = smartRaidOn
+
+	if smartRaidOn then
 		local _, instanceType, _, _, maxPlayers, _, _, instanceID = GetInstanceInfo()
-
-		UF.raid.blockVisibilityChanges = true
-		UF.raid40.blockVisibilityChanges = true
-
 		if instanceType == 'raid' or instanceType == 'pvp' then
 			if UF.instanceMapIDs[instanceID] then
 				maxPlayers = UF.instanceMapIDs[instanceID]
 			end
 
-			E.db.unitframe.units.raid.enable = maxPlayers < 40
-			E.db.unitframe.units.raid40.enable = maxPlayers == 40
+			local less40 = maxPlayers < 40
+			local raid40 = maxPlayers == 40
+			E.db.unitframe.units.raid.enable = less40
+			E.db.unitframe.units.raid40.enable = raid40
 			E.db.unitframe.units.raidpet.enable = false
 
 			UnregisterStateDriver(UF.raid, 'visibility')
 			UnregisterStateDriver(UF.raid40, 'visibility')
 			UnregisterStateDriver(UF.raidpet, 'visibility')
 
-			UF.raid:SetShown(maxPlayers < 40)
-			UF.raid40:SetShown(maxPlayers == 40)
+			UF.raid:SetShown(less40)
+			UF.raid40:SetShown(raid40)
 			UF.raidpet:SetShown(false)
 
-			if(maxPlayers < 40) then
+			if less40 then
 				E.db.unitframe.units.raid.numGroups = E:Round(maxPlayers/5)
 				UF:CreateAndUpdateHeaderGroup('raid')
-			elseif (maxPlayers == 40) then
+			elseif raid40 then
 				E.db.unitframe.units.raid40.numGroups = 8
 				UF:CreateAndUpdateHeaderGroup('raid40')
 			end
@@ -881,16 +883,20 @@ function UF:HandleSmartVisibility()
 	end
 end
 
-function UF:PLAYER_ENTERING_WORLD()
-	if (UF.db.smartRaidFilter) then
+function UF:PLAYER_ENTERING_WORLD(_, _, initLogin, isReload)
+	if initLogin or isReload then
+		UF:Update_AllFrames()
+	end
+
+	if UF.db.smartRaidFilter then
+		UF:HandleSmartVisibility()
+
 		local _, instanceType = GetInstanceInfo()
 		if instanceType == 'raid' or instanceType == 'pvp' then
-			UF:HandleSmartVisibility()
 			UF:UnregisterEvent('GROUP_ROSTER_UPDATE')
 		else
 			RegisterStateDriver(_G.ElvUF_Raid, 'visibility', '[@raid6,noexists][@raid21,exists] hide;show')
 			RegisterStateDriver(_G.ElvUF_Raid40, 'visibility', '[@raid21,noexists] hide;show')
-			UF:HandleSmartVisibility()
 			UF:RegisterEvent('GROUP_ROSTER_UPDATE', 'HandleSmartVisibility')
 		end
 	end
@@ -962,7 +968,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			end
 		end
 
-		UF.headerFunctions[group]:AdjustVisibility(self[group])
+	--	UF.headerFunctions[group]:AdjustVisibility(self[group])
 		UF.headerFunctions[group]:Configure_Groups(self[group])
 		UF.headerFunctions[group]:Update(self[group])
 
