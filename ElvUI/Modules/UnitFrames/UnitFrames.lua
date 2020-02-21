@@ -23,8 +23,8 @@ local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
 local UnitFrame_OnEnter = UnitFrame_OnEnter
 local UnitFrame_OnLeave = UnitFrame_OnLeave
-local UnregisterAttributeDriver = UnregisterAttributeDriver
 local UnregisterStateDriver = UnregisterStateDriver
+local GetNumGroupMembers = GetNumGroupMembers
 local PlaySound = PlaySound
 
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
