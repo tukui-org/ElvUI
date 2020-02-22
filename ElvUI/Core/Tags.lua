@@ -1105,7 +1105,7 @@ ElvUF.Tags.Methods['ElvUI-Users'] = function(unit)
 	return ""
 end
 
-ElvUF.Tags.Events['classification'] = 'UNIT_CLASSIFICATION_CHANGED'
+ElvUF.Tags.Events['creature'] = ''
 
 E.TagInfo = {
 	--Colors
