@@ -893,8 +893,8 @@ function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 			E.db.unitframe.units.raid40.enable = true
 			E.db.unitframe.units.raid.numGroups = 6
 
-			RegisterStateDriver(_G.ElvUF_Raid, 'visibility', '[@raid6,noexists][@raid31,exists] hide;show')
-			RegisterStateDriver(_G.ElvUF_Raid40, 'visibility', '[@raid31,noexists] hide;show')
+			RegisterStateDriver(UF.raid, 'visibility', '[@raid6,noexists][@raid31,exists] hide;show')
+			RegisterStateDriver(UF.raid40, 'visibility', '[@raid31,noexists] hide;show')
 
 			if E.db.unitframe.units.raid.enable then UF:CreateAndUpdateHeaderGroup('raid') end
 			if E.db.unitframe.units.raid40.enable then UF:CreateAndUpdateHeaderGroup('raid40') end
