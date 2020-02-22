@@ -112,7 +112,7 @@ end
 
 function S:Ace3_RegisterAsWidget(widget)
 	local TYPE = widget.type
-	if TYPE == 'MultiLineEditBox' then
+	if TYPE == 'MultiLineEditBox' or TYPE == 'MultiLineEditBox-ElvUI' then
 		local frame = widget.frame
 		S:HandleButton(widget.button)
 		S:HandleScrollBar(widget.scrollBar)
@@ -219,7 +219,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		button:SetParent(frame.backdrop)
 		text:SetParent(frame.backdrop)
 		button:HookScript('OnClick', S.Ace3_SkinDropdown)
-	elseif TYPE == 'EditBox' then
+	elseif TYPE == 'EditBox' or TYPE == 'EditBox-ElvUI' then
 		local frame = widget.editbox
 		local button = widget.button
 		S:HandleEditBox(frame)

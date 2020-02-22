@@ -1,4 +1,4 @@
-local Type, Version = "MultiLineEditBox", 28
+local Type, Version = "MultiLineEditBox-ElvUI", 28
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -9,6 +9,9 @@ local pairs = pairs
 local GetCursorInfo, GetSpellInfo, ClearCursor = GetCursorInfo, GetSpellInfo, ClearCursor
 local CreateFrame, UIParent = CreateFrame, UIParent
 local _G = _G
+-- ElvUI block
+local indent = _G.ElvUI[1].Libs.indent
+-- End ElvUI block
 
 -- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
 -- List them here for Mikk's FindGlobals script
@@ -258,7 +261,15 @@ local methods = {
 		return self.editBox:SetCursorPosition(...)
 	end,
 
-
+	-- ElvUI block
+	["SetSyntaxHighlightingEnabled"] = function(self, enabled)
+		if enabled then
+			indent.enable(self.editBox, nil, 4)
+		else
+			indent.disable(self.editBox)
+		end
+	end
+	-- End ElvUI block
 }
 
 --[[-----------------------------------------------------------------------------

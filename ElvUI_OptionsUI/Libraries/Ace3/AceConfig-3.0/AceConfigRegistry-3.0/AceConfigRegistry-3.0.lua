@@ -151,6 +151,7 @@ local typedkeys={
 		dialogControl=optstring,
 		dropdownControl=optstring,
 		multiline=optboolnumber,
+		luaHighlighting=optbool, -- ElvUI
 	},
 	toggle={
 		tristate=optbool,
