@@ -61,7 +61,7 @@ Scripts
 local function OnClick(self)                                                     -- Button
 	self = self.obj
 	self.editBox:ClearFocus()
-	if not self:Fire("OnEnterPressed", self.editBox:GetText()) then
+	if not self:Fire("OnEnterPressed", self.editBox:GetText(true)) then -- ElvUI changed
 		self.button:Disable()
 	end
 end
