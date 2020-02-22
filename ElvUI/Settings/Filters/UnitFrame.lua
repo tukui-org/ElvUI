@@ -852,6 +852,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[291914] = Defaults(), -- Cutting Beam
 		[302384] = Defaults(), -- Static Discharge
 		[294195] = Defaults(), -- Arcing Zap
+		[299572] = Defaults(), -- Shrink
+		[300659] = Defaults(), -- Consuming Slime
+		[300650] = Defaults(), -- Suffocating Smog
 
 	-- Uldir
 		-- MOTHER
