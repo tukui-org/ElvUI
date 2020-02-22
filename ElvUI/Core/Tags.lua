@@ -1105,6 +1105,8 @@ ElvUF.Tags.Methods['ElvUI-Users'] = function(unit)
 	return ""
 end
 
+ElvUF.Tags.Events['classification'] = 'UNIT_CLASSIFICATION_CHANGED'
+
 E.TagInfo = {
 	--Colors
 	['namecolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction" },
