@@ -194,15 +194,13 @@ do --this can save some main file locals
 	local Burger		= E:TextureString(E.Media.ChatLogos.Burger,x)
 	local Lion			= E:TextureString(E.Media.ChatLogos.Lion,x)
 
-	--[[ Simpys Things
-		-- new icon color every message, in order then reversed back, repeating of course
+	--[[ Simpys Thing: new icon color every message, in order then reversed back, repeating of course
 		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
 		(a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a])
 	]]
 
 	local itsElv, itsMis, itsMel, itsSimpyA, itsSimpyH, itsTheFlyestNihilist
-	do	--Simpy Chaos
-		--super cute text coloring function that ignores hyperlinks and keywords
+	do	--Simpy Chaos: super cute text coloring function that ignores hyperlinks and keywords
 		local e, f, g = {'|?c?%x-%[?|H.-|h.-|h]?|?r?', '|[TA].-|[ta]', '|c.-|r'}, {}, {}
 		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
 		local protectText = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\24') end
