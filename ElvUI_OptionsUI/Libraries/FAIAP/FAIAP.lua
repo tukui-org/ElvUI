@@ -1212,7 +1212,7 @@ end
 -- ElvUI modified default color table: based on Monokai
 defaultColorTable = {}
 lib.defaultColorTable = defaultColorTable
-defaultColorTable[tokens.TOKEN_SPECIAL] = "|c00a6e22e"
+defaultColorTable[tokens.TOKEN_SPECIAL] = "|c00f92672"
 defaultColorTable[tokens.TOKEN_KEYWORD] = "|c00f92672"
 defaultColorTable[tokens.TOKEN_COMMENT_SHORT] = "|c0075715e"
 defaultColorTable[tokens.TOKEN_COMMENT_LONG] = "|c0075715e"
@@ -1223,6 +1223,8 @@ defaultColorTable[".."] = stringColor
 
 local tableColor = "|c00e6db74"
 defaultColorTable["..."] = tableColor
+defaultColorTable["("] = tableColor
+defaultColorTable[")"] = tableColor
 defaultColorTable["{"] = tableColor
 defaultColorTable["}"] = tableColor
 defaultColorTable["["] = tableColor
