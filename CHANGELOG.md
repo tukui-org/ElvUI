@@ -1,17 +1,21 @@
 ### Version 11.38 [ ETA: 🍨 ]
 
 **New Additions:**  
+*Smart Raid Visibility* has rejoined the UI (it's actually reformed now).  
 Added *[name:health]* tag which displays health lost using colors on the name, neato.  
 Added *[ElvUI-Users]* tag which displays other cool people than yourself.  
+Some ultra rare super high tech Mechagon debuffs were added (jk, they are normal).  
 
 **Bug Fixes:**  
 The options bottom buttons now use the language selected in the config, nice.  
-Fixed an oops in Missions Datatext related to Nazjatar Followers.  
+Nazjatar Followers Missions Datatext was doing a goof, which has been ungoofed by a professional ungoofer.  
+Some Datatexts refused to show information on login, now they are willing to share.  
+Some kind of Alternative Power oops, something about UnitIsUnit; rare bug, big time squashed.  
 
 **Misc. Changes:**  
 Style Filters now support changing the Nameplate Tags for Health, Power, Name, Title, and Level because of this Name Color action was removed, you can tag a color onto it and make it do other neat stuff, if you want.  
 Someone decided to show Corrupted Icon on Equipment Manager Flyout buttons, cool.  
-AuraBars using Debuffs type can once again, switch to Class Color.  
+AuraBars using Debuffs type can once again, switch to Class Color, just like magic.  
 
 ___
 ### Version 11.371 [ February 11th 2020 ]
