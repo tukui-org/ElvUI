@@ -1209,32 +1209,33 @@ function lib.disable(editbox)
 	editboxNumLinesCache[editbox] = nil
 end
 
+-- ElvUI modified default color table: based on Monokai
 defaultColorTable = {}
 lib.defaultColorTable = defaultColorTable
-defaultColorTable[tokens.TOKEN_SPECIAL] = "|c00ff99ff"
-defaultColorTable[tokens.TOKEN_KEYWORD] = "|c006666ff"
-defaultColorTable[tokens.TOKEN_COMMENT_SHORT] = "|c00999999"
-defaultColorTable[tokens.TOKEN_COMMENT_LONG] = "|c00999999"
+defaultColorTable[tokens.TOKEN_SPECIAL] = "|c00a6e22e"
+defaultColorTable[tokens.TOKEN_KEYWORD] = "|c00f92672"
+defaultColorTable[tokens.TOKEN_COMMENT_SHORT] = "|c0075715e"
+defaultColorTable[tokens.TOKEN_COMMENT_LONG] = "|c0075715e"
 
-local stringColor = "|c00ffff77"
+local stringColor = "|c00e6db74"
 defaultColorTable[tokens.TOKEN_STRING] = stringColor
 defaultColorTable[".."] = stringColor
 
-local tableColor = "|c00ff9900"
+local tableColor = "|c00e6db74"
 defaultColorTable["..."] = tableColor
 defaultColorTable["{"] = tableColor
 defaultColorTable["}"] = tableColor
 defaultColorTable["["] = tableColor
 defaultColorTable["]"] = tableColor
 
-local arithmeticColor = "|c0033ff55"
+local arithmeticColor = "|c00ae81ff"
 defaultColorTable[tokens.TOKEN_NUMBER] = arithmeticColor
 defaultColorTable["+"] = arithmeticColor
 defaultColorTable["-"] = arithmeticColor
 defaultColorTable["/"] = arithmeticColor
 defaultColorTable["*"] = arithmeticColor
 
-local logicColor1 = "|c0055ff88"
+local logicColor1 = "|c00f92672"
 defaultColorTable["=="] = logicColor1
 defaultColorTable["<"] = logicColor1
 defaultColorTable["<="] = logicColor1
@@ -1242,7 +1243,7 @@ defaultColorTable[">"] = logicColor1
 defaultColorTable[">="] = logicColor1
 defaultColorTable["~="] = logicColor1
 
-local logicColor2 = "|c0088ffbb"
+local logicColor2 = "|c00f92672"
 defaultColorTable["and"] = logicColor2
 defaultColorTable["or"] = logicColor2
 defaultColorTable["not"] = logicColor2
