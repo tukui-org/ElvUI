@@ -42,9 +42,6 @@ local DispellPriority = { Magic = 4, Curse = 3, Disease = 2, Poison = 1 }
 local FilterList = {}
 
 local function GetAuraType(unit, filter, filterTable)
---	local isCharmed = UnitIsCharmed(unit)
---	local canAttack = UnitCanAttack("player", unit)
-
 	if not unit or not UnitCanAssist('player', unit) then return nil end
 
 	local i = 1
@@ -126,43 +123,43 @@ local function CheckSpec(self, event, levels)
 	end
 end
 
-local function Update(object, event, unit)
-	if unit ~= object.unit then return; end
+local function Update(self, event, unit)
+	if unit ~= self.unit then return; end
 
-	local debuffType, texture, wasFiltered, style, color = GetAuraType(unit, object.AuraHighlightFilter, object.AuraHighlightFilterTable)
+	local debuffType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
 
 	if(wasFiltered) then
-		if style == 'GLOW' and object.AuraHightlightGlow then
-			object.AuraHightlightGlow:Show()
-			object.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b)
-		elseif object.AuraHightlightGlow then
-			object.AuraHightlightGlow:Hide()
-			object.AuraHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
+		if style == 'GLOW' and self.AuraHightlightGlow then
+			self.AuraHightlightGlow:Show()
+			self.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b)
+		elseif self.AuraHightlightGlow then
+			self.AuraHightlightGlow:Hide()
+			self.AuraHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
 		end
 	elseif debuffType then
 		color = DebuffTypeColor[debuffType or 'none']
-		if object.AuraHighlightBackdrop and object.AuraHightlightGlow then
-			object.AuraHightlightGlow:Show()
-			object.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b)
-		elseif object.AuraHighlightUseTexture then
-			object.AuraHighlight:SetTexture(texture)
+		if self.AuraHighlightBackdrop and self.AuraHightlightGlow then
+			self.AuraHightlightGlow:Show()
+			self.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b)
+		elseif self.AuraHighlightUseTexture then
+			self.AuraHighlight:SetTexture(texture)
 		else
-			object.AuraHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
+			self.AuraHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
 		end
 	else
-		if object.AuraHightlightGlow then
-			object.AuraHightlightGlow:Hide()
+		if self.AuraHightlightGlow then
+			self.AuraHightlightGlow:Hide()
 		end
 
-		if object.AuraHighlightUseTexture then
-			object.AuraHighlight:SetTexture(nil)
+		if self.AuraHighlightUseTexture then
+			self.AuraHighlight:SetTexture(nil)
 		else
-			object.AuraHighlight:SetVertexColor(0, 0, 0, 0)
+			self.AuraHighlight:SetVertexColor(0, 0, 0, 0)
 		end
 	end
 
-	if object.AuraHighlight.PostUpdate then
-		object.AuraHighlight:PostUpdate(object, debuffType, texture, wasFiltered, style, color)
+	if self.AuraHighlight.PostUpdate then
+		self.AuraHighlight:PostUpdate(self, debuffType, texture, wasFiltered, style, color)
 	end
 end
 
