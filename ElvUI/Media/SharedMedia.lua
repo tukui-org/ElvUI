@@ -102,6 +102,9 @@ E.Media = {
 		FoxShaman = M..[[ChatLogos\FoxShaman.tga]],
 		FoxWarlock = M..[[ChatLogos\FoxWarlock.tga]],
 		FoxWarrior = M..[[ChatLogos\FoxWarrior.tga]],
+		--
+		DeathlyHallows = M..[[ChatLogos\DeathlyHallows.tga]],
+		GoldShield = M..[[ChatLogos\GoldShield.tga]],
 	},
 	Textures = {
 		Arrow = M..[[Textures\Arrow.tga]],
