@@ -1,5 +1,5 @@
 --[[-----------------------------------------------------------------------------
-EditBox Widget (Modified to add Syntax highlighting from FAIAP)
+EditBox Widget
 -------------------------------------------------------------------------------]]
 local Type, Version = "EditBox", 28
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
