@@ -100,7 +100,7 @@ function DT:SetupObjectLDB(name, obj, elvui) --self will now be the event
 		DT:PanelLayoutOptions()
 	end
 
-	if not elvui then
+	if elvui ~= 'ElvUI' then
 		DT:LoadDataTexts()
 	end
 end
