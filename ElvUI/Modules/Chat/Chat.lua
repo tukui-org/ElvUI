@@ -193,6 +193,8 @@ do --this can save some main file locals
 	local Clover		= E:TextureString(E.Media.ChatLogos.Clover,x)
 	local Burger		= E:TextureString(E.Media.ChatLogos.Burger,x)
 	local Lion			= E:TextureString(E.Media.ChatLogos.Lion,x)
+	local GoldShield	= E:TextureString(E.Media.ChatLogos.GoldShield,x)
+	local DeathlyH		= E:TextureString(E.Media.ChatLogos.DeathlyHallows,x)
 
 	--[[ Simpys Thing: new icon color every message, in order then reversed back, repeating of course
 		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
@@ -283,13 +285,13 @@ do --this can save some main file locals
 		["Rikanza-WyrmrestAccord"]		= itsTheFlyestNihilist("Monk"),
 		["Onaguda-WyrmrestAccord"]		= itsTheFlyestNihilist("Druid"),
 		["Cerishia-WyrmrestAccord"]		= itsTheFlyestNihilist("Priest"),
-		["Vellilara-WyrmestAccord"]		= itsTheFlyestNihilist("DemonHunter"),
-		["Sayalia-WyrmestAccord"]		= itsTheFlyestNihilist("DeathKnight"),
+		["Vellilara-WyrmrestAccord"]		= itsTheFlyestNihilist("DemonHunter"),
+		["Sayalia-WyrmrestAccord"]		= itsTheFlyestNihilist("DeathKnight"),
 		["Pakasta-WyrmrestAccord"]		= itsTheFlyestNihilist("Paladin"),
 		["Orlyrala-WyrmrestAccord"]		= itsTheFlyestNihilist("Shaman"),
-		["Scerila-WyrmestAccord"]		= itsTheFlyestNihilist("Rogue"),
+		["Scerila-WyrmrestAccord"]		= itsTheFlyestNihilist("Rogue"),
 		["Ralaniki-WyrmrestAccord"]		= itsTheFlyestNihilist("Hunter"),
-		["Moyanza-WyrmestAccord"]		= itsTheFlyestNihilist("Warrior"),
+		["Moyanza-WyrmrestAccord"]		= itsTheFlyestNihilist("Warrior"),
 		["Erasaya-WyrmrestAccord"]		= itsTheFlyestNihilist("DeathKnight"),
 		["Linabla-WyrmrestAccord"]		= itsTheFlyestNihilist("Druid"),
 		["Dirikoa-WyrmrestAccord"]		= itsTheFlyestNihilist("Hunter"),
@@ -345,6 +347,25 @@ do --this can save some main file locals
 		["Chaosfire-Cenarius"]			= itsMel, -- Warlock
 		["Melbelle-Cenarius"]			= itsMel, -- Druid
 		["Spãrkles-Cenarius"]			= itsMel, -- Mage
+		-- Lulupeep (Nihilist's wife)
+		["Arïä-WyrmrestAccord"] 		= DeathlyH,
+		["Belladonnä-WyrmrestAccord"] 	= DeathlyH,
+		["Cadense-WyrmrestAccord"]		= DeathlyH,
+		["Cäydence-WyrmrestAccord"] 	= DeathlyH,
+		["Esmæ-WyrmrestAccord"]			= DeathlyH,
+		["Falorya-WyrmrestAccord"]		= DeathlyH,
+		["Fufus-WyrmrestAccord"]		= DeathlyH,
+		["Gemmä-WyrmrestAccord"]		= DeathlyH,
+		["Lilliës-WyrmrestAccord"]		= DeathlyH,
+		["Louisianagrl-WyrmrestAccord"]	= DeathlyH,
+		["Lulupeep-WyrmrestAccord"]		= DeathlyH,
+		["Nolalove-WyrmrestAccord"]		= DeathlyH,
+		["Onyxnovä-WyrmrestAccord"]		= DeathlyH,
+		["Rukíá-WyrmrestAccord"]		= DeathlyH,
+		["Songbïrd-WyrmrestAccord"]		= DeathlyH,
+		["Vidiä-WyrmrestAccord"]		= DeathlyH,
+		-- Quickhanz (Nihilist's absolute bestie)
+		["Ironhanz-WyrmrestAccord"]		= GoldShield,
 	}
 end
 
