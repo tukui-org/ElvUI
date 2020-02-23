@@ -1219,13 +1219,15 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 					control:SetCallback("OnClick",ActivateControl)
 
 				elseif v.type == "input" then
-					control = CreateControl(v.dialogControl or v.control, v.multiline and "MultiLineEditBox-ElvUI" or "EditBox-ElvUI")
+					control = CreateControl(v.dialogControl or v.control, v.multiline and "MultiLineEditBox-ElvUI" or "EditBox")
 
 					if v.multiline and control.SetNumLines then
 						control:SetNumLines(tonumber(v.multiline) or 4)
 					end
 					-- ElvUI block
-					control:SetSyntaxHighlightingEnabled(v.luaHighlighting or false)
+					if control.SetSyntaxHighlightingEnabled then
+						control:SetSyntaxHighlightingEnabled(v.luaHighlighting or false)
+					end
 					-- End ElvUI block
 					control:SetLabel(name)
 					control:SetCallback("OnEnterPressed",ActivateControl)

@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 EditBox Widget (Modified to add Syntax highlighting from FAIAP)
 -------------------------------------------------------------------------------]]
-local Type, Version = "EditBox-ElvUI", 1
+local Type, Version = "EditBox", 28
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -13,9 +13,6 @@ local PlaySound = PlaySound
 local GetCursorInfo, ClearCursor, GetSpellInfo = GetCursorInfo, ClearCursor, GetSpellInfo
 local CreateFrame, UIParent = CreateFrame, UIParent
 local _G = _G
--- ElvUI block
-local indent = _G.ElvUI[1].Libs.indent
--- End ElvUI block
 
 -- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
 -- List them here for Mikk's FindGlobals script
@@ -205,17 +202,7 @@ local methods = {
 
 	["HighlightText"] = function(self, from, to)
 		self.editbox:HighlightText(from, to)
-	end,
-
-	-- ElvUI block
-	["SetSyntaxHighlightingEnabled"] = function(self, enabled)
-		if enabled then
-			indent.enable(self.editbox, nil, 4)
-		else
-			indent.disable(self.editbox)
-		end
 	end
-	-- End ElvUI block
 }
 
 --[[-----------------------------------------------------------------------------
@@ -226,7 +213,7 @@ local function Constructor()
 	local frame = CreateFrame("Frame", nil, UIParent)
 	frame:Hide()
 
-	local editbox = CreateFrame("EditBox", "AceGUI-3.0EditBoxElvUI"..num, frame, "InputBoxTemplate")
+	local editbox = CreateFrame("EditBox", "AceGUI-3.0EditBox"..num, frame, "InputBoxTemplate")
 	editbox:SetAutoFocus(false)
 	editbox:SetFontObject(ChatFontNormal)
 	editbox:SetScript("OnEnter", Control_OnEnter)
