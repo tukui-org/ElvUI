@@ -1,5 +1,5 @@
 --[[-----------------------------------------------------------------------------
-Slider Widget
+Slider Widget (Modified to support min and max fuctions on SetSliderValues)
 Graphical Slider, like, for Range values.
 -------------------------------------------------------------------------------]]
 local Type, Version = "Slider-ElvUI", 1

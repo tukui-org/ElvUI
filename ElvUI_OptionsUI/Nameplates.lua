@@ -2566,7 +2566,6 @@ local function UpdateFilterGroup()
 									order = 3,
 									type = "execute",
 									name = L["Map ID"],
-									buttonElvUI = true,
 									func = function()
 										local mapID = E.MapInfo.mapID
 										if not mapID then return end
@@ -2582,7 +2581,6 @@ local function UpdateFilterGroup()
 									order = 4,
 									type = "execute",
 									name = L["Instance ID"],
-									buttonElvUI = true,
 									func = function()
 										local instanceName, _, _, _, _, _, _, instanceID = GetInstanceInfo()
 										if not instanceID then return end
@@ -2598,7 +2596,6 @@ local function UpdateFilterGroup()
 									order = 6,
 									type = "execute",
 									name = L["Zone Name"],
-									buttonElvUI = true,
 									func = function()
 										local zone = E.MapInfo.realZoneText
 										if not zone then return end
@@ -2613,7 +2610,6 @@ local function UpdateFilterGroup()
 									order = 7,
 									type = "execute",
 									name = L["Subzone Name"],
-									buttonElvUI = true,
 									func = function()
 										local subZone = E.MapInfo.subZoneText
 										if not subZone then return end
@@ -3160,7 +3156,6 @@ local function GetUnitSettings(unit, name)
 						order = 3,
 						name = L["Height"],
 						type = "range",
-						sliderElvUI = true,
 						min = 4,
 						max = function()
 							if unit == "PLAYER" then
@@ -3179,7 +3174,6 @@ local function GetUnitSettings(unit, name)
 						order = 4,
 						type = "execute",
 						name = L["Width"],
-						buttonElvUI = true,
 						func = function()
 							ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general", "clickableRange")
 						end
@@ -3316,7 +3310,6 @@ local function GetUnitSettings(unit, name)
 						order = 3,
 						name = L["Width"],
 						type = "range",
-						sliderElvUI = true,
 						min = 50,
 						max = function()
 							if unit == "PLAYER" then
@@ -3335,7 +3328,6 @@ local function GetUnitSettings(unit, name)
 						order = 4,
 						name = L["Height"],
 						type = "range",
-						sliderElvUI = true,
 						min = 4,
 						max = function()
 							if unit == "PLAYER" then
@@ -3528,7 +3520,6 @@ local function GetUnitSettings(unit, name)
 						order = 7,
 						name = L["Width"],
 						type = "range",
-						sliderElvUI = true,
 						min = 50,
 						max = function()
 							if unit == "PLAYER" then
@@ -3547,7 +3538,6 @@ local function GetUnitSettings(unit, name)
 						order = 8,
 						name = L["Height"],
 						type = "range",
-						sliderElvUI = true,
 						min = 4,
 						max = function()
 							if unit == "PLAYER" then
@@ -3902,7 +3892,6 @@ local function GetUnitSettings(unit, name)
 								order = 1,
 								type = "execute",
 								name = L["Cooldowns"],
-								buttonElvUI = true,
 								func = function()
 									ACD:SelectGroup("ElvUI", "cooldown", "nameplates")
 								end
@@ -4247,7 +4236,6 @@ local function GetUnitSettings(unit, name)
 								order = 1,
 								type = "execute",
 								name = L["Cooldowns"],
-								buttonElvUI = true,
 								func = function()
 									ACD:SelectGroup("ElvUI", "cooldown", "nameplates")
 								end
@@ -4819,7 +4807,6 @@ local function GetUnitSettings(unit, name)
 					order = 2,
 					name = L["Width"],
 					type = "range",
-					sliderElvUI = true,
 					min = 50,
 					max = function()
 						if unit == "PLAYER" then
@@ -4842,7 +4829,6 @@ local function GetUnitSettings(unit, name)
 					order = 3,
 					name = L["Height"],
 					type = "range",
-					sliderElvUI = true,
 					min = 4,
 					max = function()
 						if unit == "PLAYER" then
@@ -4898,7 +4884,6 @@ local function GetUnitSettings(unit, name)
 			order = 100,
 			type = "execute",
 			name = L["Visibility"],
-			buttonElvUI = true,
 			func = function()
 				ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general", "plateVisibility")
 			end
@@ -4940,7 +4925,6 @@ local function GetUnitSettings(unit, name)
 			order = 100,
 			type = "execute",
 			name = L["Visibility"],
-			buttonElvUI = true,
 			func = function()
 				ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general", "plateVisibility")
 			end
@@ -5131,7 +5115,6 @@ local function GetUnitSettings(unit, name)
 			order = 100,
 			type = "execute",
 			name = L["Visibility"],
-			buttonElvUI = true,
 			func = function()
 				ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general", "plateVisibility")
 			end
@@ -6638,7 +6621,6 @@ E.Options.args.nameplate = {
 					type = "execute",
 					confirm = true,
 					confirmText = L["Delete Filter"],
-					buttonElvUI = true,
 					func = function()
 						for profile in pairs(E.data.profiles) do
 							if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters
@@ -6702,7 +6684,6 @@ E.Options.args.nameplate = {
 					order = 2,
 					type = "execute",
 					name = L["Non-Target Alpha"],
-					buttonElvUI = true,
 					func = function()
 						ACD:SelectGroup("ElvUI", "nameplate", "filters", "actions")
 						selectedNameplateFilter = "ElvUI_NonTarget"
@@ -6713,7 +6694,6 @@ E.Options.args.nameplate = {
 					order = 3,
 					type = "execute",
 					name = L["Scale"],
-					buttonElvUI = true,
 					func = function()
 						ACD:SelectGroup("ElvUI", "nameplate", "filters", "actions")
 						selectedNameplateFilter = "ElvUI_Target"
