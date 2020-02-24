@@ -878,8 +878,10 @@ function UF:HandleSmartVisibility()
 	end
 end
 
-function UF:PLAYER_ENTERING_WORLD()
-	UF:Update_AllFrames()
+function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
+	if initLogin or isReload then
+		UF:Update_AllFrames()
+	end
 
 	if UF.db.smartRaidFilter then
 		E.db.unitframe.units.raid40.numGroups = 8
