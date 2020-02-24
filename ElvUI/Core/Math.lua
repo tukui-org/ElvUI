@@ -124,10 +124,15 @@ end
 
 --Return rounded number
 function E:Round(num, idp)
-	if(idp and idp > 0) then
+	if type(num) ~= 'number' then
+		return num, idp
+	end
+
+	if idp and idp > 0 then
 		local mult = 10 ^ idp
 		return floor(num * mult + 0.5) / mult
 	end
+
 	return floor(num + 0.5)
 end
 
