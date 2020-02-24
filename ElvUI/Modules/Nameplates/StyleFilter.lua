@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
-local strmatch, gsub, tinsert, tremove, sort, wipe = strmatch, gsub, tinsert, tremove, sort, wipe
+local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
 local GetLocale = GetLocale
@@ -33,7 +33,6 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitThreatSituation = UnitThreatSituation
 
-local hooksecurefunc = hooksecurefunc
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 
