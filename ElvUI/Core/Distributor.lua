@@ -471,7 +471,7 @@ function D:Decode(dataString)
 		local profileToTable = loadstring(format('%s %s', 'return', profileDataAsString))
 		if profileToTable then profileMessage, profileData = pcall(profileToTable) end
 
-		if not profileData or type(profileData) ~= 'table' then
+		if profileMessage and (not profileData or type(profileData) ~= 'table') then
 			E:Print('Error converting lua string to table:', profileMessage)
 			return
 		end
