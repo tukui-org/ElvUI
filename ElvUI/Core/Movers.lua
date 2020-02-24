@@ -157,14 +157,8 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		end
 
 		local x2, y2, p2 = E:CalculateMoverPoints(self)
-		local p1 = self.positionOverride and ((self.positionOverride == 'BOTTOM' or self.positionOverride == 'TOP') and 'BOTTOM' or 'BOTTOMLEFT')
 		self:ClearAllPoints()
-		self:Point(self.positionOverride or p2, E.UIParent, p1 or p2, x2, y2)
-
-		if self.positionOverride then
-			self.parent:ClearAllPoints()
-			self.parent:Point(self.positionOverride, self, self.positionOverride)
-		end
+		self:Point(p2, E.UIParent, p2, x2, y2)
 
 		E:SaveMoverPosition(name)
 
@@ -290,28 +284,6 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 		x = mover:GetLeft()
 	else
 		x = x - screenCenter
-	end
-
-	if mover.positionOverride and (E.diffGetLeft and E.diffGetRight and E.diffGetTop and E.diffGetBottom) then
-		if mover.positionOverride == 'TOPLEFT' then
-			x = mover:GetLeft() - E.diffGetLeft
-			y = mover:GetTop() - E.diffGetTop
-		elseif mover.positionOverride == 'TOPRIGHT' then
-			x = mover:GetRight() - E.diffGetRight
-			y = mover:GetTop() - E.diffGetTop
-		elseif mover.positionOverride == 'BOTTOMLEFT' then
-			x = mover:GetLeft() - E.diffGetLeft
-			y = mover:GetBottom() - E.diffGetBottom
-		elseif mover.positionOverride == 'BOTTOMRIGHT' then
-			x = mover:GetRight() - E.diffGetRight
-			y = mover:GetBottom() - E.diffGetBottom
-		elseif mover.positionOverride == 'BOTTOM' then
-			x = mover:GetCenter() - screenCenter
-			y = mover:GetBottom() - E.diffGetBottom
-		elseif mover.positionOverride == 'TOP' then
-			x = mover:GetCenter() - screenCenter
-			y = mover:GetTop() - E.diffGetTop
-		end
 	end
 
 	--Update coordinates if nudged

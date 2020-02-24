@@ -61,12 +61,6 @@ function E:UIScale(init)
 		E.UIParent:SetSize(width, height)
 		E.UIParent.origHeight = E.UIParent:GetHeight()
 
-		--Calculate potential coordinate differences
-		E.diffGetLeft = E:Round(abs(UIParent:GetLeft() - E.UIParent:GetLeft()))
-		E.diffGetRight = E:Round(abs(UIParent:GetRight() - E.UIParent:GetRight()))
-		E.diffGetBottom = E:Round(abs(UIParent:GetBottom() - E.UIParent:GetBottom()))
-		E.diffGetTop = E:Round(abs(UIParent:GetTop() - E.UIParent:GetTop()))
-
 		if E:IsEventRegisteredForObject('PLAYER_REGEN_ENABLED', E.UIScale) then
 			E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)
 		end
