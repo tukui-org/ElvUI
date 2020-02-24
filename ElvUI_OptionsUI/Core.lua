@@ -294,7 +294,7 @@ local function ExportImport_Open(mode)
 	Frame.frame:SetFrameStrata("FULLSCREEN_DIALOG")
 	Frame:SetLayout("flow")
 
-	local Box = E.Libs.AceGUI:Create("MultiLineEditBox")
+	local Box = E.Libs.AceGUI:Create("MultiLineEditBox-ElvUI")
 	Box:SetNumLines(30)
 	Box:DisableButton(true)
 	Box:SetWidth(800)
