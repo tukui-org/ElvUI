@@ -29,37 +29,35 @@ function UF:Construct_RaidDebuffs(frame)
 end
 
 function UF:Configure_RaidDebuffs(frame)
-	if not frame.VARIABLES_SET then return end
-	local db = frame.db
-	local rdebuffs = frame.RaidDebuffs
-	local stackColor = db.rdebuffs.stack.color
-	local durationColor = db.rdebuffs.duration.color
+	local debuffs = frame.RaidDebuffs
+	local db = frame.db.rdebuffs
 
-	if db.rdebuffs.enable then
-		local rdebuffsFont = UF.LSM:Fetch("font", db.rdebuffs.font)
+	if db.enable then
 		if not frame:IsElementEnabled('RaidDebuffs') then
 			frame:EnableElement('RaidDebuffs')
 		end
 
-		rdebuffs.showDispellableDebuff = db.rdebuffs.showDispellableDebuff
-		rdebuffs.onlyMatchSpellID = db.rdebuffs.onlyMatchSpellID
-		rdebuffs.forceShow = frame.forceShowAuras
-		rdebuffs:Size(db.rdebuffs.size)
-		rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset + frame.SPACING)
+		debuffs.showDispellableDebuff = db.showDispellableDebuff
+		debuffs.onlyMatchSpellID = db.onlyMatchSpellID
+		debuffs.forceShow = frame.forceShowAuras
+		debuffs.icon:SetTexCoord(unpack(E.TexCoords))
+		debuffs:Point('BOTTOM', frame, 'BOTTOM', db.xOffset, db.yOffset + frame.SPACING)
+		debuffs:Size(db.size)
 
-		rdebuffs.icon:SetTexCoord(unpack(E.TexCoords))
+		local font = UF.LSM:Fetch("font", db.font)
+		local stackColor = db.stack.color
+		debuffs.count:FontTemplate(font, db.fontSize, db.fontOutline)
+		debuffs.count:ClearAllPoints()
+		debuffs.count:Point(db.stack.position, db.stack.xOffset, db.stack.yOffset)
+		debuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b, stackColor.a)
 
-		rdebuffs.count:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
-		rdebuffs.count:ClearAllPoints()
-		rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
-		rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b, stackColor.a)
-
-		rdebuffs.time:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
-		rdebuffs.time:ClearAllPoints()
-		rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
-		rdebuffs.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b, durationColor.a)
+		local durationColor = db.duration.color
+		debuffs.time:FontTemplate(font, db.fontSize, db.fontOutline)
+		debuffs.time:ClearAllPoints()
+		debuffs.time:Point(db.duration.position, db.duration.xOffset, db.duration.yOffset)
+		debuffs.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b, durationColor.a)
 	elseif frame:IsElementEnabled('RaidDebuffs') then
 		frame:DisableElement('RaidDebuffs')
-		rdebuffs:Hide()
+		debuffs:Hide()
 	end
 end
