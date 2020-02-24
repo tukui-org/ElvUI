@@ -43,7 +43,6 @@ function UF:TestingDisplay_RestingIndicator(frame)
 end
 
 function UF:Configure_RestingIndicator(frame)
-	if not frame.VARIABLES_SET then return end
 	local Icon = frame.RestingIndicator
 	local db = frame.db.RestIcon
 

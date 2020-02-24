@@ -15,10 +15,9 @@ function UF:Construct_InfoPanel(frame)
 end
 
 function UF:Configure_InfoPanel(frame, noTemplateChange)
-	if not frame.VARIABLES_SET then return end
 	local db = frame.db
 
-	if(frame.USE_INFO_PANEL) then
+	if frame.USE_INFO_PANEL then
 		frame.InfoPanel:Show()
 		frame.InfoPanel:ClearAllPoints()
 

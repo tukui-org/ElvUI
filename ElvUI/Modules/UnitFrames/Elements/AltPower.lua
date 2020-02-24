@@ -33,7 +33,6 @@ function UF:Construct_AltPowerBar(frame)
 end
 
 function UF:Configure_AltPowerBar(frame)
-	if not frame.VARIABLES_SET then return end
 	local db = frame.db.classbar
 
 	if db.enable then

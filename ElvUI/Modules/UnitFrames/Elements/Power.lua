@@ -67,7 +67,6 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 end
 
 function UF:Configure_Power(frame)
-	if not frame.VARIABLES_SET then return end
 	local db = frame.db
 	local power = frame.Power
 	power.origParent = frame

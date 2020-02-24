@@ -34,7 +34,7 @@ function UF:Construct_Threat(frame)
 end
 
 function UF:Configure_Threat(frame)
-	if not (frame.VARIABLES_SET and frame.ThreatIndicator) then return end
+	if not frame.ThreatIndicator then return end
 
 	local threat = frame.ThreatIndicator
 	if not threat then return end

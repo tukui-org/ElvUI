@@ -94,10 +94,8 @@ function UF:Update_AssistFrames(frame, db)
 			frame.SPACING = E.Spacing
 		end
 		frame.SHADOW_SPACING = 3
-
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
-
 		frame.USE_POWERBAR = false
 		frame.POWERBAR_DETACHED = false
 		frame.USE_INSET_POWERBAR = false
@@ -106,15 +104,11 @@ function UF:Update_AssistFrames(frame, db)
 		frame.POWERBAR_OFFSET = 0
 		frame.POWERBAR_HEIGHT = 0
 		frame.POWERBAR_WIDTH = 0
-
 		frame.USE_PORTRAIT = false
 		frame.USE_PORTRAIT_OVERLAY = false
 		frame.PORTRAIT_WIDTH = 0
-
 		frame.CLASSBAR_YOFFSET = 0
 		frame.BOTTOM_OFFSET = 0
-
-		frame.VARIABLES_SET = true
 	end
 
 	if frame.isChild then

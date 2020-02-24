@@ -83,8 +83,6 @@ function UF:Update_TankFrames(frame, db)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
-		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
-
 		if(self.thinBorders) then
 			frame.SPACING = 0
 			frame.BORDER = E.mult
@@ -92,11 +90,11 @@ function UF:Update_TankFrames(frame, db)
 			frame.BORDER = E.Border
 			frame.SPACING = E.Spacing
 		end
-		frame.SHADOW_SPACING = 3
 
+		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
+		frame.SHADOW_SPACING = 3
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
-
 		frame.USE_POWERBAR = false
 		frame.POWERBAR_DETACHED = false
 		frame.USE_INSET_POWERBAR = false
@@ -105,15 +103,11 @@ function UF:Update_TankFrames(frame, db)
 		frame.POWERBAR_OFFSET = 0
 		frame.POWERBAR_HEIGHT = 0
 		frame.POWERBAR_WIDTH = 0
-
 		frame.USE_PORTRAIT = false
 		frame.USE_PORTRAIT_OVERLAY = false
 		frame.PORTRAIT_WIDTH = 0
-
 		frame.CLASSBAR_YOFFSET = 0
 		frame.BOTTOM_OFFSET = 0
-
-		frame.VARIABLES_SET = true
 	end
 
 	if frame.isChild then

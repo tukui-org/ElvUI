@@ -94,7 +94,7 @@ function UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, fromScri
 end
 
 function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
-	if not (frame and frame.VARIABLES_SET) then return end
+	if not frame then return end
 
 	local infoPanel = frame.InfoPanel
 	local classPower = frame.ClassPower
