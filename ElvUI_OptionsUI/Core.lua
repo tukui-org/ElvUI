@@ -339,7 +339,7 @@ local function ExportImport_Open(mode)
 		ExportFormatDropdown:SetWidth(150)
 		Frame:AddChild(ExportFormatDropdown)
 
-		local exportButton = E.Libs.AceGUI:Create("Button")
+		local exportButton = E.Libs.AceGUI:Create("Button-ElvUI")
 		exportButton:SetText(L["Export Now"])
 		exportButton:SetAutoWidth(true)
 		exportButton:SetCallback("OnClick", function()
