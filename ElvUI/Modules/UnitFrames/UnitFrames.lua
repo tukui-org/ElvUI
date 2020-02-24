@@ -883,6 +883,8 @@ function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 		UF:Update_AllFrames()
 	end
 
+	UF:RegisterRaidDebuffIndicator()
+
 	if UF.db.smartRaidFilter then
 		E.db.unitframe.units.raid40.numGroups = 8
 		UF:HandleSmartVisibility()
@@ -1103,8 +1105,6 @@ function UF:UpdateAllHeaders()
 	if E.private.unitframe.disabledBlizzardFrames.party then
 		ElvUF:DisableBlizzard('party')
 	end
-
-	self:RegisterRaidDebuffIndicator()
 
 	for group in pairs(self.headers) do
 		self:CreateAndUpdateHeaderGroup(group)
