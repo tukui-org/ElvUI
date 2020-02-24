@@ -11,7 +11,8 @@ local function Hide(element)
 end
 
 local function Update(self)
-	local element = self.WidgetXPBar
+	local npShown = self:IsShown()
+	local element = npShown and self.WidgetXPBar
 	if not element then return end
 
 	local widget = self.widget
@@ -26,7 +27,7 @@ local function Update(self)
 
 	local npcID = self.npcID and tonumber(self.npcID)
 	local widgetID = E:GetWidgetInfoID(npcID)
-	local realID = widget.widgetFrames and next(widget.widgetFrames)
+	local realID = npcID and widget.widgetFrames and next(widget.widgetFrames)
 	if realID and realID ~= widgetID then -- auto save new npc ids to their widget id
 		E:SetWidgetInfoID(npcID, realID)
 		widgetID = realID
