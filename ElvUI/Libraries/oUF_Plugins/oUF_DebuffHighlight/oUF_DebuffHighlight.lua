@@ -35,8 +35,6 @@ local function GetDebuffType(unit, filter, filterTable)
 		if (filterTable and filterSpell) then
 			if filterSpell.enable then
 				return debufftype, texture, true, filterSpell.style, filterSpell.color
-			else
-				return
 			end
 		elseif debufftype and (not filter or (filter and dispellist[debufftype])) and not blackList[name] then
 			return debufftype, texture
