@@ -6,10 +6,12 @@ local translitMark = "!"
 
 --Lua functions
 local _G = _G
-local tonumber, strlen, next = tonumber, strlen, next
+local tonumber, next = tonumber, next
+local gmatch, gsub, format, select = gmatch, gsub, format, select
 local unpack, pairs, wipe, floor, ceil = unpack, pairs, wipe, floor, ceil
-local gmatch, gsub, format, select, strsplit = gmatch, gsub, format, select, strsplit
-local strfind, strmatch, strlower, utf8lower, utf8sub, utf8len = strfind, strmatch, strlower, string.utf8lower, string.utf8sub, string.utf8len
+local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
+local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf8len
+
 --WoW API / Variables
 local CreateTextureMarkup = CreateTextureMarkup
 local UnitFactionGroup = UnitFactionGroup
@@ -81,7 +83,7 @@ local SPELL_POWER_HOLY_POWER = Enum.PowerType.HolyPower
 local SPELL_POWER_MANA = Enum.PowerType.Mana
 local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 
--- GLOBALS: Hex, _TAGS, ElvUF
+-- GLOBALS: ElvUF, Hex, _TAGS, _COLORS
 
 --Expose local functions for plugins onto this table
 E.TagFunctions = {}
