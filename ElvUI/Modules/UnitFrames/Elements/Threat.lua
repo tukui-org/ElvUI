@@ -1,9 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Lua functions
 local unpack = unpack
---WoW API / Variables
 local CreateFrame = CreateFrame
 
 function UF:Construct_Threat(frame)
@@ -40,6 +38,8 @@ function UF:Configure_Threat(frame)
 		if not frame:IsElementEnabled('ThreatIndicator') then
 			frame:EnableElement('ThreatIndicator')
 		end
+
+		threat.feedbackUnit = frame.unit
 
 		if db.threatStyle == "GLOW" then
 			threat:SetFrameStrata('BACKGROUND')
