@@ -7,23 +7,20 @@ function UF:Construct_DebuffHighlight(frame)
 	dbh:SetTexture(E.media.blankTex)
 	dbh:SetVertexColor(0, 0, 0, 0)
 	dbh:SetBlendMode("ADD")
+	dbh.PostUpdate = UF.PostUpdate_DebuffHighlight
+
+	local glow = frame:CreateShadow(nil, true)
+	glow:Hide()
+
+	frame.DBHGlow = glow
 	frame.DebuffHighlightFilter = true
 	frame.DebuffHighlightAlpha = 0.45
 	frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
 
-	frame:CreateShadow()
-	local x = frame.shadow
-	frame.shadow = nil
-	x:Hide();
-
-	frame.DBHGlow = x
-
 	if frame.Health then
 		dbh:SetParent(frame.Health)
-		frame.DBHGlow:SetParent(frame.Health)
+		glow:SetParent(frame.Health)
 	end
-
-	dbh.PostUpdate = UF.PostUpdate_DebuffHighlight
 
 	return dbh
 end
