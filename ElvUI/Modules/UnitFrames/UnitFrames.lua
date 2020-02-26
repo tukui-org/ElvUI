@@ -526,7 +526,7 @@ function UF:Configure_FontString(obj)
 end
 
 function UF:Update_AllFrames()
-	if E.private.unitframe.enable ~= true then return; end
+	if not E.private.unitframe.enable then return end
 	self:UpdateColors()
 	self:Update_FontStrings()
 	self:Update_StatusBars()

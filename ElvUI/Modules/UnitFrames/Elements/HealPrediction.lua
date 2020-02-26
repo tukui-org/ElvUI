@@ -62,13 +62,12 @@ function UF:Construct_HealComm(frame)
 	UF.statusbars[overAbsorb] = true
 	UF.statusbars[overHealAbsorb] = true
 
-	local texture = (not health.isTransparent and health:GetStatusBarTexture()) or E.media.blankTex
-	UF:Update_StatusBar(myBar, texture)
-	UF:Update_StatusBar(otherBar, texture)
-	UF:Update_StatusBar(absorbBar, texture)
-	UF:Update_StatusBar(healAbsorbBar, texture)
-	UF:Update_StatusBar(overAbsorb, texture)
-	UF:Update_StatusBar(overHealAbsorb, texture)
+	UF:Update_StatusBar(myBar, E.media.blankTex)
+	UF:Update_StatusBar(otherBar, E.media.blankTex)
+	UF:Update_StatusBar(absorbBar, E.media.blankTex)
+	UF:Update_StatusBar(healAbsorbBar, E.media.blankTex)
+	UF:Update_StatusBar(overAbsorb, E.media.blankTex)
+	UF:Update_StatusBar(overHealAbsorb, E.media.blankTex)
 
 	local healPrediction = {
 		myBar = myBar,

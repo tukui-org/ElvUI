@@ -14,8 +14,7 @@ function UF:Construct_PowerPrediction(frame)
 	mainBar:Hide()
 
 	local PowerPrediction = { mainBar = mainBar, parent = frame }
-	local texture = (not power.isTransparent and power:GetStatusBarTexture()) or E.media.blankTex
-	UF:Update_StatusBar(mainBar, texture)
+	UF:Update_StatusBar(mainBar, E.media.blankTex)
 
 	local altPower = frame.AdditionalPower
 	if altPower then
