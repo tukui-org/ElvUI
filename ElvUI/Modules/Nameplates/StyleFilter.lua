@@ -600,14 +600,12 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 end
 
 function mod:StyleFilterThreatUpdate(frame, unit)
-	mod.ThreatIndicator_PreUpdate(frame.ThreatIndicator, frame.unit)
-
 	if mod:UnitExists(unit) then
-		local feedbackUnit = frame.ThreatIndicator.feedbackUnit
+		local isTank, offTank, feedbackUnit = mod.ThreatIndicator_PreUpdate(frame.ThreatIndicator, unit, true)
 		if feedbackUnit and (feedbackUnit ~= unit) and mod:UnitExists(feedbackUnit) then
-			frame.ThreatStatus = UnitThreatSituation(feedbackUnit, unit)
+			return isTank, offTank, UnitThreatSituation(feedbackUnit, unit)
 		else
-			frame.ThreatStatus = UnitThreatSituation(unit)
+			return isTank, offTank, UnitThreatSituation(unit)
 		end
 	end
 end
@@ -772,12 +770,9 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Threat
 	if trigger.threat and trigger.threat.enable then
 		if trigger.threat.good or trigger.threat.goodTransition or trigger.threat.badTransition or trigger.threat.bad or trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition then
-			if not mod.db.threat.enable then -- force grab the values we need :3
-				mod:StyleFilterThreatUpdate(frame, frame.unit)
-			end
-
+			local isTank, offTank, threat = mod:StyleFilterThreatUpdate(frame, frame.unit)
 			local checkOffTank = trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition
-			local status = (checkOffTank and frame.ThreatOffTank and frame.ThreatStatus and -frame.ThreatStatus) or (not checkOffTank and ((frame.ThreatIsTank and mod.TriggerConditions.tankThreat[frame.ThreatStatus]) or frame.ThreatStatus)) or nil
+			local status = (checkOffTank and offTank and threat and -threat) or (not checkOffTank and ((isTank and mod.TriggerConditions.tankThreat[threat]) or threat)) or nil
 			if trigger.threat[mod.TriggerConditions.threat[status]] then passed = true else return end
 		end
 	end
@@ -1027,9 +1022,6 @@ function mod:StyleFilterClearVariables(nameplate)
 	nameplate.isTargetingMe = nil
 	nameplate.RaidTargetIndex = nil
 	nameplate.ThreatScale = nil
-	nameplate.ThreatStatus = nil
-	nameplate.ThreatOffTank = nil
-	nameplate.ThreatIsTank = nil
 end
 
 mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
@@ -1083,7 +1075,7 @@ function mod:StyleFilterConfigure()
 			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
 				tinsert(list, {filterName, t.priority or 1})
 
-				-- NOTE: 0 for fake events, 1 to override StyleFilterWaitTime
+				-- NOTE: 0 for fake events
 				events.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
 				events.NAME_PLATE_UNIT_ADDED = 1
 				events.PLAYER_TARGET_CHANGED = 1
@@ -1102,7 +1094,7 @@ function mod:StyleFilterConfigure()
 					end
 				end
 
-				if t.isTapDenied or t.isNotTapDenied then			events.UNIT_FLAGS = true end
+				if t.isTapDenied or t.isNotTapDenied then			events.UNIT_FLAGS = 1 end
 				if t.reactionType and t.reactionType.enable then	events.UNIT_FACTION = 1 end
 				if t.keyMod and t.keyMod.enable then				events.MODIFIER_STATE_CHANGED = 1 end
 				if t.targetMe or t.notTargetMe then					events.UNIT_TARGET = 1 end
@@ -1121,25 +1113,25 @@ function mod:StyleFilterConfigure()
 				end
 
 				if t.healthThreshold then
-					events.UNIT_HEALTH = true
-					events.UNIT_MAXHEALTH = true
-					events.UNIT_HEALTH_FREQUENT = true
+					events.UNIT_HEALTH = 1
+					events.UNIT_MAXHEALTH = 1
+					events.UNIT_HEALTH_FREQUENT = 1
 				end
 
 				if t.powerThreshold then
-					events.UNIT_POWER_UPDATE = true
-					events.UNIT_POWER_FREQUENT = true
-					events.UNIT_DISPLAYPOWER = true
+					events.UNIT_POWER_UPDATE = 1
+					events.UNIT_POWER_FREQUENT = 1
+					events.UNIT_DISPLAYPOWER = 1
 				end
 
 				if t.threat and t.threat.enable then
-					events.UNIT_THREAT_SITUATION_UPDATE = true
-					events.UNIT_THREAT_LIST_UPDATE = true
+					events.UNIT_THREAT_SITUATION_UPDATE = 1
+					events.UNIT_THREAT_LIST_UPDATE = 1
 				end
 
 				if t.inCombat or t.outOfCombat or t.inCombatUnit or t.outOfCombatUnit then
-					events.UNIT_THREAT_LIST_UPDATE = true
-					events.UNIT_FLAGS = true
+					events.UNIT_THREAT_LIST_UPDATE = 1
+					events.UNIT_FLAGS = 1
 				end
 
 				if t.location then
@@ -1171,14 +1163,14 @@ function mod:StyleFilterConfigure()
 				if t.buffs and t.buffs.names and next(t.buffs.names) then
 					for _, value in pairs(t.buffs.names) do
 						if value then
-							events.UNIT_AURA = true
+							events.UNIT_AURA = 1
 							break
 				end end end
 
 				if t.debuffs and t.debuffs.names and next(t.debuffs.names) then
 					for _, value in pairs(t.debuffs.names) do
 						if value then
-							events.UNIT_AURA = true
+							events.UNIT_AURA = 1
 							break
 				end end end
 	end end end
@@ -1195,18 +1187,7 @@ function mod:StyleFilterConfigure()
 end
 
 function mod:StyleFilterUpdate(frame, event)
-	local hasEvent = frame and mod.StyleFilterTriggerEvents[event]
-
-	if not hasEvent then return
-	elseif hasEvent == true then -- skip on 1 or 0
-		if not frame.StyleFilterWaitTime then
-			frame.StyleFilterWaitTime = GetTime()
-		elseif GetTime() > (frame.StyleFilterWaitTime + 0.1) then
-			frame.StyleFilterWaitTime = nil
-		else
-			return -- block calls faster than 0.1 second
-		end
-	end
+	if not mod.StyleFilterTriggerEvents[event] then return end
 
 	mod:StyleFilterClear(frame)
 
