@@ -855,6 +855,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[299572] = Defaults(), -- Shrink
 		[300659] = Defaults(), -- Consuming Slime
 		[300650] = Defaults(), -- Suffocating Smog
+		[301712] = Defaults(), -- Pounce
+		[299475] = Defaults(), -- B.O.R.K
+		[293670] = Defaults(), -- Chain Blade
 
 	-- Uldir
 		-- MOTHER
