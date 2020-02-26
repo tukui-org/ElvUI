@@ -39,8 +39,6 @@ function UF:Configure_Threat(frame)
 			frame:EnableElement('ThreatIndicator')
 		end
 
-		threat.feedbackUnit = frame.unit
-
 		if db.threatStyle == "GLOW" then
 			threat:SetFrameStrata('BACKGROUND')
 			threat.glow:SetFrameStrata('BACKGROUND')
