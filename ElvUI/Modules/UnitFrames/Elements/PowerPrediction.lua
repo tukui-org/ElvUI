@@ -9,16 +9,17 @@ function UF:Construct_PowerPrediction(frame)
 	local power = frame.Power
 
 	local mainBar = CreateFrame('StatusBar', nil, power)
+	mainBar:SetStatusBarTexture(E.media.blankTex)
 	mainBar.parent = power
-	UF.statusbars[mainBar] = true
 	mainBar:Hide()
 
 	local PowerPrediction = { mainBar = mainBar, parent = frame }
-	UF:Update_StatusBar(mainBar, E.media.blankTex)
+	UF.statusbars[mainBar] = true
 
 	local altPower = frame.AdditionalPower
 	if altPower then
 		local altBar = CreateFrame('StatusBar', nil, altPower)
+		altBar:SetStatusBarTexture(E.media.blankTex)
 		UF.statusbars[altBar] = true
 		altBar:Hide()
 

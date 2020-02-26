@@ -50,6 +50,13 @@ function UF:Construct_HealComm(frame)
 	local overAbsorb = parent:CreateTexture(nil, "ARTWORK")
 	local overHealAbsorb = parent:CreateTexture(nil, "ARTWORK")
 
+	myBar:SetStatusBarTexture(E.media.blankTex)
+	otherBar:SetStatusBarTexture(E.media.blankTex)
+	absorbBar:SetStatusBarTexture(E.media.blankTex)
+	healAbsorbBar:SetStatusBarTexture(E.media.blankTex)
+	overAbsorb:SetTexture(E.media.blankTex)
+	overHealAbsorb:SetTexture(E.media.blankTex)
+
 	myBar:SetFrameLevel(11)
 	otherBar:SetFrameLevel(11)
 	absorbBar:SetFrameLevel(11)
@@ -61,13 +68,6 @@ function UF:Construct_HealComm(frame)
 	UF.statusbars[healAbsorbBar] = true
 	UF.statusbars[overAbsorb] = true
 	UF.statusbars[overHealAbsorb] = true
-
-	UF:Update_StatusBar(myBar, E.media.blankTex)
-	UF:Update_StatusBar(otherBar, E.media.blankTex)
-	UF:Update_StatusBar(absorbBar, E.media.blankTex)
-	UF:Update_StatusBar(healAbsorbBar, E.media.blankTex)
-	UF:Update_StatusBar(overAbsorb, E.media.blankTex)
-	UF:Update_StatusBar(overHealAbsorb, E.media.blankTex)
 
 	local healPrediction = {
 		myBar = myBar,
