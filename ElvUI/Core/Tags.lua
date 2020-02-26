@@ -63,6 +63,9 @@ local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
 local CreateAtlasMarkup = CreateAtlasMarkup
 
+local CHAT_FLAG_AFK = CHAT_FLAG_AFK:gsub('<(.-)>', '|r<|cffFF0000%1|r>')
+local CHAT_FLAG_DND = CHAT_FLAG_DND:gsub('<(.-)>', '|r<|cffFFFF00%1|r>')
+
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION
@@ -224,6 +227,28 @@ ElvUF.Tags.Methods['healthcolor'] = function(unit)
 		local r, g, b = ElvUF:ColorGradient(UnitHealth(unit), UnitHealthMax(unit), 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
 		return Hex(r, g, b)
 	end
+end
+
+ElvUF.Tags.Events['status:text'] = 'PLAYER_FLAGS_CHANGED'
+ElvUF.Tags.Methods['status:text'] = function(unit)
+	if UnitIsAFK(unit) then
+		return CHAT_FLAG_AFK
+	elseif UnitIsDND(unit) then
+		return CHAT_FLAG_DND
+	end
+
+	return nil
+end
+
+ElvUF.Tags.Events['status:icon'] = 'PLAYER_FLAGS_CHANGED'
+ElvUF.Tags.Methods['status:icon'] = function(unit)
+	if UnitIsAFK(unit) then
+		return CreateTextureMarkup('Interface\\FriendsFrame\\StatusIcon-Away', 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
+	elseif UnitIsDND(unit) then
+		return CreateTextureMarkup('Interface\\FriendsFrame\\StatusIcon-DnD', 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
+	end
+
+	return nil
 end
 
 ElvUF.Tags.Events['name:abbrev'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
