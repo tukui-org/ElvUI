@@ -574,12 +574,6 @@ E.Options.args.actionbar = {
 					name = L["Click Through"],
 					type = "toggle",
 				},
-				usePositionOverride = {
-					order = 6,
-					type = "toggle",
-					name = L["Use Position Override"],
-					desc = L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."],
-				},
 				inheritGlobalFade = {
 					order = 7,
 					type = 'toggle',
