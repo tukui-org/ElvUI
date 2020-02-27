@@ -322,7 +322,7 @@ E.Options.args.general = {
 			},
 		},
 		media = {
-			order = 5,
+			order = 10,
 			type = "group",
 			name = L["Media"],
 			get = function(info) return E.db.general[info[#info]] end,
