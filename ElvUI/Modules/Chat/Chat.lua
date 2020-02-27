@@ -314,6 +314,7 @@ do --this can save some main file locals
 		["Melisendra-Shattrath"]		= ElvBlue,		-- [Alliance] Mage
 		["Merathilis-Shattrath"]		= ElvOrange,	-- [Alliance] Druid
 		["Merathilîs-Shattrath"]		= ElvBlue,		-- [Alliance] Shaman
+		["Róhal-Shattrath"]				= ElvGreen,		-- [Alliance] Hunter
 		-- Simpy
 		["Arieva-Cenarius"]				= itsSimpyA, -- Hunter
 		["Buddercup-Cenarius"]			= itsSimpyA, -- Rogue
