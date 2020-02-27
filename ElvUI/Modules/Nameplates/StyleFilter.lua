@@ -490,6 +490,16 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		c.Alpha = true
 		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame:GetAlpha(), actions.alpha / 100)
 	end
+	if Portrait then
+		c.Portrait = true
+		mod:Update_Portrait(frame)
+		frame.Portrait:ForceUpdate()
+	end
+	if NameOnly then
+		c.NameOnly = true
+		mod:DisablePlate(frame, true)
+	end
+	-- Keeps Tag changes after NameOnly
 	if NameTag then
 		c.NameTag = true
 		frame:Tag(frame.Name, actions.tags.name)
@@ -514,15 +524,6 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		c.LevelTag = true
 		frame:Tag(frame.Level, actions.tags.level)
 		frame.Level:UpdateTag()
-	end
-	if Portrait then
-		c.Portrait = true
-		mod:Update_Portrait(frame)
-		frame.Portrait:ForceUpdate()
-	end
-	if NameOnly then
-		c.NameOnly = true
-		mod:DisablePlate(frame, true)
 	end
 end
 
@@ -570,33 +571,25 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	if Alpha then
 		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, (frame.FadeObject and frame.FadeObject.endAlpha) or 0.5, 1)
 	end
-	if NameTag then
-		frame:Tag(frame.Name, mod.db.units[frame.frameType].name.format)
-		frame.Name:UpdateTag()
-	end
-	if PowerTag then
-		frame:Tag(frame.Power.Text, mod.db.units[frame.frameType].power.text.format)
-		frame.Power.Text:UpdateTag()
-	end
-	if HealthTag then
-		frame:Tag(frame.Health.Text, mod.db.units[frame.frameType].health.text.format)
-		frame.Health.Text:UpdateTag()
-	end
-	if TitleTag then
-		frame:Tag(frame.Title, mod.db.units[frame.frameType].title.format)
-		frame.Title:UpdateTag()
-	end
-	if LevelTag then
-		frame:Tag(frame.Level, mod.db.units[frame.frameType].level.format)
-		frame.Level:UpdateTag()
-	end
 	if Portrait then
 		mod:Update_Portrait(frame)
 		frame.Portrait:ForceUpdate()
 	end
 	if NameOnly then
 		mod:StyleFilterUpdatePlate(frame, true)
+	else -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
+		if NameTag then frame:Tag(frame.Name, mod.db.units[frame.frameType].name.format) end
+		if PowerTag then frame:Tag(frame.Power.Text, mod.db.units[frame.frameType].power.text.format) end
+		if HealthTag then frame:Tag(frame.Health.Text, mod.db.units[frame.frameType].health.text.format) end
+		if TitleTag then frame:Tag(frame.Title, mod.db.units[frame.frameType].title.format) end
+		if LevelTag then frame:Tag(frame.Level, mod.db.units[frame.frameType].level.format) end
 	end
+	-- Update Tags in both cases because `Update_Tags` doesn't actually call `UpdateTag`.
+	if NameTag then frame.Name:UpdateTag() end
+	if PowerTag then frame.Power.Text:UpdateTag() end
+	if HealthTag then frame.Health.Text:UpdateTag() end
+	if TitleTag then frame.Title:UpdateTag() end
+	if LevelTag then frame.Level:UpdateTag() end
 end
 
 function mod:StyleFilterThreatUpdate(frame, unit)
