@@ -392,12 +392,19 @@ function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlay
 			end
 			local filter = E.global.unitframe.aurafilters[name]
 			if filter then
-				local spellList = filter.spells
-				local spell = spellList and spellList[spellID] or spellList[spellName]
+				local which = filter.type
+				if which then
+					local list = filter.spells
+					local spell = list and list[spellID] or list[spellName]
 
-				-- Custom Filters
-				if spell and spell.enable then
-					return allowDuration and filter.type == 'Whitelist', spell.priority
+					-- Custom Filters
+					if spell and spell.enable then
+						if which == 'Blacklist' then
+							return false
+						elseif allowDuration then
+							return true, spell.priority
+						end
+					end
 				end
 			else
 				-- Whitelists
