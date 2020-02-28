@@ -397,11 +397,11 @@ function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlay
 
 				-- Custom Filters
 				if spell then
-					return spell.enable and (filter.type == 'Whitelist' and allowDuration), spell.priority
+					return allowDuration and spell.enable and filter.type == 'Whitelist', spell.priority
 				end
 			else
 				-- Whitelists
-				return (allowDuration and (name == 'Personal' and isPlayer)
+				local found = (allowDuration and ((name == 'Personal' and isPlayer)
 					or (name == 'nonPersonal' and not isPlayer)
 					or (name == 'Boss' and isBossDebuff)
 					or (name == 'MyPet' and myPet)
@@ -411,13 +411,17 @@ function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlay
 					or (name == 'Dispellable' and canDispell)
 					or (name == 'notDispellable' and not canDispell)
 					or (name == 'CastByNPC' and not casterIsPlayer)
-					or (name == 'CastByPlayers' and casterIsPlayer))
+					or (name == 'CastByPlayers' and casterIsPlayer)))
 				-- Blacklists
-				or not ((name == 'blockCastByPlayers' and casterIsPlayer)
-					or (name == 'blockNoDuration' and noDuration)
-					or (name == 'blockNonPersonal' and not isPlayer)
-					or (name == 'blockDispellable' and canDispell)
-					or (name == 'blockNotDispellable' and not canDispell))
+				or ((name == 'blockCastByPlayers' and casterIsPlayer)
+				or (name == 'blockNoDuration' and noDuration)
+				or (name == 'blockNonPersonal' and not isPlayer)
+				or (name == 'blockDispellable' and canDispell)
+				or (name == 'blockNotDispellable' and not canDispell)) and 0
+
+				if found then
+					return found ~= 0
+				end
 			end
 		end
 	end
