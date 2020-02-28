@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local sort, ceil, huge = sort, ceil, math.huge
-local select, unpack, format = select, unpack, format
+local select, unpack, next, format = select, unpack, next, format
 local strfind, strsplit, strmatch = strfind, strsplit, strmatch
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -390,14 +390,13 @@ function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlay
 			if check ~= nil and (G.unitframe.specialFilters[check] or E.global.unitframe.aurafilters[check]) then
 				name = check -- this is for our filters to handle Friendly and Enemy
 			end
+
+			-- Custom Filters
 			local filter = E.global.unitframe.aurafilters[name]
 			if filter then
-				local which = filter.type
-				if which then
-					local list = filter.spells
-					local spell = list and list[spellID] or list[spellName]
-
-					-- Custom Filters
+				local which, list = filter.type, filter.spells
+				if which and list and next(list) then
+					local spell = list[spellID] or list[spellName]
 					if spell and spell.enable then
 						if which == 'Blacklist' then
 							return false
@@ -406,6 +405,7 @@ function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlay
 						end
 					end
 				end
+			-- Special Filters
 			else
 				-- Whitelists
 				local found = (allowDuration and ((name == 'Personal' and isPlayer)
