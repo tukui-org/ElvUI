@@ -383,16 +383,18 @@ function UF:PostUpdateAura(unit, button)
 end
 
 function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, allowDuration, noDuration, casterIsPlayer, ...)
+	local special, filters = G.unitframe.specialFilters, E.global.unitframe.aurafilters
+
 	for i=1, select('#', ...) do
 		local name = select(i, ...)
 		local check = (isFriend and strmatch(name, "^Friendly:([^,]*)")) or (not isFriend and strmatch(name, "^Enemy:([^,]*)")) or nil
 		if check ~= false then
-			if check ~= nil and (G.unitframe.specialFilters[check] or E.global.unitframe.aurafilters[check]) then
+			if check ~= nil and (special[check] or filters[check]) then
 				name = check -- this is for our filters to handle Friendly and Enemy
 			end
 
 			-- Custom Filters
-			local filter = E.global.unitframe.aurafilters[name]
+			local filter = filters[name]
 			if filter then
 				local which, list = filter.type, filter.spells
 				if which and list and next(list) then
