@@ -396,8 +396,8 @@ function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlay
 				local spell = spellList and spellList[spellID] or spellList[spellName]
 
 				-- Custom Filters
-				if spell then
-					return allowDuration and spell.enable and filter.type == 'Whitelist', spell.priority
+				if spell and spell.enable then
+					return allowDuration and filter.type == 'Whitelist', spell.priority
 				end
 			else
 				-- Whitelists
