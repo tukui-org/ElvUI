@@ -382,57 +382,40 @@ function UF:PostUpdateAura(unit, button)
 	end
 end
 
-function UF:CheckFilter(name, caster, spellID, canDispell, isFriend, isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, allowDuration, noDuration, casterIsPlayer, ...)
+function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, allowDuration, noDuration, casterIsPlayer, ...)
 	for i=1, select('#', ...) do
-		local filterName = select(i, ...)
-		local friendCheck = (isFriend and strmatch(filterName, "^Friendly:([^,]*)")) or (not isFriend and strmatch(filterName, "^Enemy:([^,]*)")) or nil
-		if friendCheck ~= false then
-			if friendCheck ~= nil and (G.unitframe.specialFilters[friendCheck] or E.global.unitframe.aurafilters[friendCheck]) then
-				filterName = friendCheck -- this is for our filters to handle Friendly and Enemy
+		local name = select(i, ...)
+		local check = (isFriend and strmatch(name, "^Friendly:([^,]*)")) or (not isFriend and strmatch(name, "^Enemy:([^,]*)")) or nil
+		if check ~= false then
+			if check ~= nil and (G.unitframe.specialFilters[check] or E.global.unitframe.aurafilters[check]) then
+				name = check -- this is for our filters to handle Friendly and Enemy
 			end
-			local filter = E.global.unitframe.aurafilters[filterName]
+			local filter = E.global.unitframe.aurafilters[name]
 			if filter then
-				local filterType = filter.type
 				local spellList = filter.spells
-				local spell = spellList and (spellList[spellID] or spellList[name])
+				local spell = spellList and spellList[spellID] or spellList[spellName]
 
-				if filterType and (filterType == 'Whitelist') and (spell and spell.enable) and allowDuration then
-					return true, spell.priority -- this is the only difference from auarbars code
-				elseif filterType and (filterType == 'Blacklist') and (spell and spell.enable) then
-					return false
-				end
-			elseif filterName == 'Personal' and isPlayer and allowDuration then
-				return true
-			elseif filterName == 'nonPersonal' and (not isPlayer) and allowDuration then
-				return true
-			elseif filterName == 'Boss' and isBossDebuff and allowDuration then
-				return true
-			elseif filterName == 'MyPet' and myPet and allowDuration then
-				return true
-			elseif filterName == 'OtherPet' and otherPet and allowDuration then
-				return true
-			elseif filterName == 'CastByUnit' and (caster and unitIsCaster) and allowDuration then
-				return true
-			elseif filterName == 'notCastByUnit' and (caster and not unitIsCaster) and allowDuration then
-				return true
-			elseif filterName == 'Dispellable' and canDispell and allowDuration then
-				return true
-			elseif filterName == 'notDispellable' and (not canDispell) and allowDuration then
-				return true
-			elseif filterName == 'CastByNPC' and (not casterIsPlayer) and allowDuration then
-				return true
-			elseif filterName == 'CastByPlayers' and casterIsPlayer and allowDuration then
-				return true
-			elseif filterName == 'blockCastByPlayers' and casterIsPlayer then
-				return false
-			elseif filterName == 'blockNoDuration' and noDuration then
-				return false
-			elseif filterName == 'blockNonPersonal' and (not isPlayer) then
-				return false
-			elseif filterName == 'blockDispellable' and canDispell then
-				return false
-			elseif filterName == 'blockNotDispellable' and (not canDispell) then
-				return false
+				-- Custom Filters
+				return spell and spell.enable and (filter.type == 'Whitelist' and allowDuration), spell.priority
+			else
+				-- Whitelists
+				return (allowDuration and (name == 'Personal' and isPlayer)
+					or (name == 'nonPersonal' and not isPlayer)
+					or (name == 'Boss' and isBossDebuff)
+					or (name == 'MyPet' and myPet)
+					or (name == 'OtherPet' and otherPet)
+					or (name == 'CastByUnit' and caster and unitIsCaster)
+					or (name == 'notCastByUnit' and caster and not unitIsCaster)
+					or (name == 'Dispellable' and canDispell)
+					or (name == 'notDispellable' and not canDispell)
+					or (name == 'CastByNPC' and not casterIsPlayer)
+					or (name == 'CastByPlayers' and casterIsPlayer))
+				-- Blacklists
+				or not ((name == 'blockCastByPlayers' and casterIsPlayer)
+					or (name == 'blockNoDuration' and noDuration)
+					or (name == 'blockNonPersonal' and not isPlayer)
+					or (name == 'blockDispellable' and canDispell)
+					or (name == 'blockNotDispellable' and not canDispell))
 			end
 		end
 	end
@@ -463,16 +446,14 @@ function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expir
 
 	local noDuration = (not duration or duration == 0)
 	local allowDuration = noDuration or (duration and duration > 0 and (not db.maxDuration or db.maxDuration == 0 or duration <= db.maxDuration) and (not db.minDuration or db.minDuration == 0 or duration >= db.minDuration))
-	local filterCheck, spellPriority
 
 	if db.priority and db.priority ~= '' then
-		filterCheck, spellPriority = UF:CheckFilter(name, caster, spellID, button.canDispell, button.isFriend, button.isPlayer, button.unitIsCaster, button.myPet, button.otherPet, isBossDebuff, allowDuration, noDuration, casterIsPlayer, strsplit(',', db.priority))
+		local filterCheck, spellPriority = UF:CheckFilter(caster, name, spellID, button.canDispell, button.isFriend, button.isPlayer, button.unitIsCaster, button.myPet, button.otherPet, isBossDebuff, allowDuration, noDuration, casterIsPlayer, strsplit(',', db.priority))
 		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
+		return filterCheck
 	else
-		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
+		return allowDuration -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
 	end
-
-	return filterCheck
 end
 
 function UF:UpdateBuffsHeaderPosition()
