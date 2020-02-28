@@ -382,7 +382,7 @@ function UF:PostUpdateAura(unit, button)
 	end
 end
 
-function UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, ...)
+function UF:CheckFilter(name, caster, spellID, canDispell, isFriend, isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, allowDuration, noDuration, casterIsPlayer, ...)
 	for i=1, select('#', ...) do
 		local filterName = select(i, ...)
 		local friendCheck = (isFriend and strmatch(filterName, "^Friendly:([^,]*)")) or (not isFriend and strmatch(filterName, "^Enemy:([^,]*)")) or nil
@@ -407,9 +407,13 @@ function UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBos
 				return true
 			elseif filterName == 'Boss' and isBossDebuff and allowDuration then
 				return true
-			elseif filterName == 'CastByUnit' and (caster and isUnit) and allowDuration then
+			elseif filterName == 'MyPet' and myPet and allowDuration then
 				return true
-			elseif filterName == 'notCastByUnit' and (caster and not isUnit) and allowDuration then
+			elseif filterName == 'OtherPet' and otherPet and allowDuration then
+				return true
+			elseif filterName == 'CastByUnit' and (caster and unitIsCaster) and allowDuration then
+				return true
+			elseif filterName == 'notCastByUnit' and (caster and not unitIsCaster) and allowDuration then
 				return true
 			elseif filterName == 'Dispellable' and canDispell and allowDuration then
 				return true
@@ -440,11 +444,12 @@ function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expir
 	local db = button.db or self.db
 	if not db then return true end
 
-	local isPlayer = (caster == 'player' or caster == 'vehicle')
-	local isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
-
-	button.isPlayer = isPlayer
-	button.isFriend = isFriend
+	button.myPet = caster == 'pet'
+	button.isPlayer = caster == 'player' or caster == 'vehicle'
+	button.otherPet = caster and strmatch(caster, 'pet%d+') and not UnitIsUnit('pet', caster)
+	button.isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
+	button.unitIsCaster = unit and caster and UnitIsUnit(unit, caster)
+	button.canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType))
 	button.isStealable = isStealable
 	button.dtype = debuffType
 	button.duration = duration
@@ -461,9 +466,7 @@ function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expir
 	local filterCheck, spellPriority
 
 	if db.priority and db.priority ~= '' then
-		local isUnit = unit and caster and UnitIsUnit(unit, caster)
-		local canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType))
-		filterCheck, spellPriority = UF:CheckFilter(name, caster, spellID, isFriend, isPlayer, isUnit, isBossDebuff, allowDuration, noDuration, canDispell, casterIsPlayer, strsplit(',', db.priority))
+		filterCheck, spellPriority = UF:CheckFilter(name, caster, spellID, button.canDispell, button.isFriend, button.isPlayer, button.unitIsCaster, button.myPet, button.otherPet, isBossDebuff, allowDuration, noDuration, casterIsPlayer, strsplit(',', db.priority))
 		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
 	else
 		filterCheck = allowDuration and true -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders

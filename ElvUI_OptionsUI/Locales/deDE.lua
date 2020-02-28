@@ -1447,6 +1447,8 @@ L["nonPersonal"] = "Nicht Persönlich"
 L["notCastByUnit"] = "Nicht gezaubert von der Einheit"
 L["notDispellable"] = "Nicht Bannbar"
 L["Personal"] = "Persönlich"
+L["MyPet"] = true
+L["OtherPet"] = true
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Konfiguriere die Einstellungen für die Aktionsleisten."

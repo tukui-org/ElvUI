@@ -1442,6 +1442,8 @@ L["nonPersonal"] = "Non Personal"
 L["notCastByUnit"] = "Not Cast By Unit"
 L["notDispellable"] = "Not Dispellable"
 L["Personal"] = true
+L["MyPet"] = true
+L["OtherPet"] = true
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Modifier les options des barres d'actions."

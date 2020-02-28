@@ -1441,6 +1441,8 @@ L["nonPersonal"] = "Чужие"
 L["notCastByUnit"] = "Не принадлежит юниту"
 L["notDispellable"] = "Не развеиваемые"
 L["Personal"] = "Личные"
+L["MyPet"] = true
+L["OtherPet"] = true
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Изменение настроек панелей команд."

@@ -1442,6 +1442,8 @@ L["nonPersonal"] = "Non Personal"
 L["notCastByUnit"] = "Not Cast By Unit"
 L["notDispellable"] = "해제 불가능"
 L["Personal"] = true
+L["MyPet"] = true
+L["OtherPet"] = true
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "행동단축바의 설정을 변경합니다."

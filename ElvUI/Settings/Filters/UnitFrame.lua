@@ -1310,6 +1310,8 @@ G.unitframe.DebuffHighlightColors = {}
 G.unitframe.specialFilters = {
 	-- Whitelists
 	Boss = true,
+	MyPet = true,
+	OtherPet = true,
 	Personal = true,
 	nonPersonal = true,
 	CastByUnit = true,

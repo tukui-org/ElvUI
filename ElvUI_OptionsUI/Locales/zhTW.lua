@@ -1444,6 +1444,8 @@ L["nonPersonal"] = "他人的"
 L["notCastByUnit"] = "非該單位的"
 L["notDispellable"] = "不可驅散的"
 L["Personal"] = "自己的"
+L["MyPet"] = true
+L["OtherPet"] = true
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "修改動作條設定."
