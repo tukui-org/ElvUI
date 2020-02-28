@@ -1061,26 +1061,26 @@ function UF:CreateAndUpdateUF(unit)
 end
 
 function UF:LoadUnits()
-	for _, unit in pairs(self.unitstoload) do
-		self:CreateAndUpdateUF(unit)
+	for _, unit in pairs(UF.unitstoload) do
+		UF:CreateAndUpdateUF(unit)
 	end
-	self.unitstoload = nil
+	UF.unitstoload = nil
 
-	for group, groupOptions in pairs(self.unitgroupstoload) do
+	for group, groupOptions in pairs(UF.unitgroupstoload) do
 		local numGroup, template = unpack(groupOptions)
-		self:CreateAndUpdateUFGroup(group, numGroup, template)
+		UF:CreateAndUpdateUFGroup(group, numGroup, template)
 	end
-	self.unitgroupstoload = nil
+	UF.unitgroupstoload = nil
 
-	for group, groupOptions in pairs(self.headerstoload) do
+	for group, groupOptions in pairs(UF.headerstoload) do
 		local groupFilter, template, headerTemplate
 		if type(groupOptions) == 'table' then
 			groupFilter, template, headerTemplate = unpack(groupOptions)
 		end
 
-		self:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate)
+		UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate)
 	end
-	self.headerstoload = nil
+	UF.headerstoload = nil
 end
 
 function UF:RegisterRaidDebuffIndicator()
