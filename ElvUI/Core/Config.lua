@@ -876,8 +876,6 @@ function E:Config_WindowClosed()
 		self.closeButton:Hide()
 		self.originalClose:Show()
 
-		E:StopElasticize(self.leftHolder.logo)
-
 		E:Config_RestoreOldPosition(self.topHolder.version)
 		E:Config_RestoreOldPosition(self.obj.content)
 		E:Config_RestoreOldPosition(self.obj.titlebg)
@@ -892,8 +890,6 @@ function E:Config_WindowOpened(frame)
 		frame.leftHolder.slider:Show()
 		frame.closeButton:Show()
 		frame.originalClose:Hide()
-
-		E:Elasticize(frame.leftHolder.logo, 128, 64)
 
 		local unskinned = not E.private.skins.ace3.enable
 		local offset = unskinned and 14 or 8
