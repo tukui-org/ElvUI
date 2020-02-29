@@ -106,127 +106,125 @@ function UF:Configure_HealComm(frame)
 			frame:EnableElement('HealthPrediction')
 		end
 
-		if frame.db.health then
-			local health = frame.Health
-			local orientation = frame.db.health.orientation or health:GetOrientation()
-			local reverseFill = not not frame.db.health.reverseFill
-			local showAbsorbAmount = frame.db.healPrediction.showAbsorbAmount
+		local health = frame.Health
+		local orientation = frame.db.health and frame.db.health.orientation or health:GetOrientation()
+		local reverseFill = frame.db.health and frame.db.health.reverseFill or false
+		local showAbsorbAmount = frame.db.healPrediction.showAbsorbAmount
 
-			myBar:SetOrientation(orientation)
-			otherBar:SetOrientation(orientation)
-			absorbBar:SetOrientation(orientation)
-			healAbsorbBar:SetOrientation(orientation)
+		myBar:SetOrientation(orientation)
+		otherBar:SetOrientation(orientation)
+		absorbBar:SetOrientation(orientation)
+		healAbsorbBar:SetOrientation(orientation)
 
-			if frame.db.healPrediction.showOverAbsorbs and not showAbsorbAmount then
-				healPrediction.overAbsorb = healPrediction.overAbsorb_
-				healPrediction.overHealAbsorb = healPrediction.overHealAbsorb_
-			elseif healPrediction.overAbsorb then
-				healPrediction.overAbsorb:Hide()
-				healPrediction.overAbsorb = nil
-				healPrediction.overHealAbsorb:Hide()
-				healPrediction.overHealAbsorb = nil
+		if frame.db.healPrediction.showOverAbsorbs and not showAbsorbAmount then
+			healPrediction.overAbsorb = healPrediction.overAbsorb_
+			healPrediction.overHealAbsorb = healPrediction.overHealAbsorb_
+		elseif healPrediction.overAbsorb then
+			healPrediction.overAbsorb:Hide()
+			healPrediction.overAbsorb = nil
+			healPrediction.overHealAbsorb:Hide()
+			healPrediction.overHealAbsorb = nil
+		end
+
+		if orientation == "HORIZONTAL" then
+			local width = health:GetWidth()
+			width = (width > 0 and width) or health.WIDTH
+			local p1 = reverseFill and "RIGHT" or "LEFT"
+			local p2 = reverseFill and "LEFT" or "RIGHT"
+			local healthTexture = health:GetStatusBarTexture()
+
+			myBar:Size(width, 0)
+			myBar:ClearAllPoints()
+			myBar:Point("TOP", health, "TOP")
+			myBar:Point("BOTTOM", health, "BOTTOM")
+			myBar:Point(p1, healthTexture, p2)
+
+			otherBar:Size(width, 0)
+			otherBar:ClearAllPoints()
+			otherBar:Point("TOP", health, "TOP")
+			otherBar:Point("BOTTOM", health, "BOTTOM")
+			otherBar:Point(p1, myBar:GetStatusBarTexture(), p2)
+
+			absorbBar:Size(width, 0)
+			absorbBar:ClearAllPoints()
+			absorbBar:Point("TOP", health, "TOP")
+			absorbBar:Point("BOTTOM", health, "BOTTOM")
+			if showAbsorbAmount then
+				absorbBar:Point(p2, health, p2)
+			else
+				absorbBar:Point(p1, otherBar:GetStatusBarTexture(), p2)
 			end
 
-			if orientation == "HORIZONTAL" then
-				local width = health:GetWidth()
-				width = (width > 0 and width) or health.WIDTH
-				local p1 = reverseFill and "RIGHT" or "LEFT"
-				local p2 = reverseFill and "LEFT" or "RIGHT"
-				local healthTexture = health:GetStatusBarTexture()
+			healAbsorbBar:Size(width, 0)
+			healAbsorbBar:ClearAllPoints()
+			healAbsorbBar:Point("TOP", health, "TOP")
+			healAbsorbBar:Point("BOTTOM", health, "BOTTOM")
+			healAbsorbBar:Point(p2, healthTexture, p2)
 
-				myBar:Size(width, 0)
-				myBar:ClearAllPoints()
-				myBar:Point("TOP", health, "TOP")
-				myBar:Point("BOTTOM", health, "BOTTOM")
-				myBar:Point(p1, healthTexture, p2)
+			if healPrediction.overAbsorb then
+				healPrediction.overAbsorb:Size(1, 0)
+				healPrediction.overAbsorb:ClearAllPoints()
+				healPrediction.overAbsorb:Point("TOP", health, "TOP")
+				healPrediction.overAbsorb:Point("BOTTOM", health, "BOTTOM")
+				healPrediction.overAbsorb:Point(p1, health, p2)
+			end
 
-				otherBar:Size(width, 0)
-				otherBar:ClearAllPoints()
-				otherBar:Point("TOP", health, "TOP")
-				otherBar:Point("BOTTOM", health, "BOTTOM")
-				otherBar:Point(p1, myBar:GetStatusBarTexture(), p2)
+			if healPrediction.overHealAbsorb then
+				healPrediction.overHealAbsorb:Size(1, 0)
+				healPrediction.overHealAbsorb:ClearAllPoints()
+				healPrediction.overHealAbsorb:Point("TOP", health, "TOP")
+				healPrediction.overHealAbsorb:Point("BOTTOM", health, "BOTTOM")
+				healPrediction.overHealAbsorb:Point(p2, health, p1)
+			end
+		else
+			local height = health:GetHeight()
+			height = (height > 0 and height) or health.HEIGHT
+			local p1 = reverseFill and "TOP" or "BOTTOM"
+			local p2 = reverseFill and "BOTTOM" or "TOP"
+			local healthTexture = health:GetStatusBarTexture()
 
-				absorbBar:Size(width, 0)
-				absorbBar:ClearAllPoints()
-				absorbBar:Point("TOP", health, "TOP")
-				absorbBar:Point("BOTTOM", health, "BOTTOM")
-				if showAbsorbAmount then
-					absorbBar:Point(p2, health, p2)
-				else
-					absorbBar:Point(p1, otherBar:GetStatusBarTexture(), p2)
-				end
+			myBar:Size(0, height)
+			myBar:ClearAllPoints()
+			myBar:Point("LEFT", health, "LEFT")
+			myBar:Point("RIGHT", health, "RIGHT")
+			myBar:Point(p1, healthTexture, p2)
 
-				healAbsorbBar:Size(width, 0)
-				healAbsorbBar:ClearAllPoints()
-				healAbsorbBar:Point("TOP", health, "TOP")
-				healAbsorbBar:Point("BOTTOM", health, "BOTTOM")
-				healAbsorbBar:Point(p2, healthTexture, p2)
+			otherBar:Size(0, height)
+			otherBar:ClearAllPoints()
+			otherBar:Point("LEFT", health, "LEFT")
+			otherBar:Point("RIGHT", health, "RIGHT")
+			otherBar:Point(p1, myBar:GetStatusBarTexture(), p2)
 
-				if healPrediction.overAbsorb then
-					healPrediction.overAbsorb:Size(1, 0)
-					healPrediction.overAbsorb:ClearAllPoints()
-					healPrediction.overAbsorb:Point("TOP", health, "TOP")
-					healPrediction.overAbsorb:Point("BOTTOM", health, "BOTTOM")
-					healPrediction.overAbsorb:Point(p1, health, p2)
-				end
-
-				if healPrediction.overHealAbsorb then
-					healPrediction.overHealAbsorb:Size(1, 0)
-					healPrediction.overHealAbsorb:ClearAllPoints()
-					healPrediction.overHealAbsorb:Point("TOP", health, "TOP")
-					healPrediction.overHealAbsorb:Point("BOTTOM", health, "BOTTOM")
-					healPrediction.overHealAbsorb:Point(p2, health, p1)
-				end
+			absorbBar:Size(0, height)
+			absorbBar:ClearAllPoints()
+			absorbBar:Point("LEFT", health, "LEFT")
+			absorbBar:Point("RIGHT", health, "RIGHT")
+			if showAbsorbAmount then
+				absorbBar:Point(p2, health, p2)
 			else
-				local height = health:GetHeight()
-				height = (height > 0 and height) or health.HEIGHT
-				local p1 = reverseFill and "TOP" or "BOTTOM"
-				local p2 = reverseFill and "BOTTOM" or "TOP"
-				local healthTexture = health:GetStatusBarTexture()
+				absorbBar:Point(p1, otherBar:GetStatusBarTexture(), p2)
+			end
 
-				myBar:Size(0, height)
-				myBar:ClearAllPoints()
-				myBar:Point("LEFT", health, "LEFT")
-				myBar:Point("RIGHT", health, "RIGHT")
-				myBar:Point(p1, healthTexture, p2)
+			healAbsorbBar:Size(0, height)
+			healAbsorbBar:ClearAllPoints()
+			healAbsorbBar:Point("LEFT", health, "LEFT")
+			healAbsorbBar:Point("RIGHT", health, "RIGHT")
+			healAbsorbBar:Point(p2, healthTexture, p2)
 
-				otherBar:Size(0, height)
-				otherBar:ClearAllPoints()
-				otherBar:Point("LEFT", health, "LEFT")
-				otherBar:Point("RIGHT", health, "RIGHT")
-				otherBar:Point(p1, myBar:GetStatusBarTexture(), p2)
+			if healPrediction.overAbsorb then
+				healPrediction.overAbsorb:Size(0, 1)
+				healPrediction.overAbsorb:ClearAllPoints()
+				healPrediction.overAbsorb:Point("LEFT", health, "LEFT")
+				healPrediction.overAbsorb:Point("RIGHT", health, "RIGHT")
+				healPrediction.overAbsorb:Point(p1, health, p2)
+			end
 
-				absorbBar:Size(0, height)
-				absorbBar:ClearAllPoints()
-				absorbBar:Point("LEFT", health, "LEFT")
-				absorbBar:Point("RIGHT", health, "RIGHT")
-				if showAbsorbAmount then
-					absorbBar:Point(p2, health, p2)
-				else
-					absorbBar:Point(p1, otherBar:GetStatusBarTexture(), p2)
-				end
-
-				healAbsorbBar:Size(0, height)
-				healAbsorbBar:ClearAllPoints()
-				healAbsorbBar:Point("LEFT", health, "LEFT")
-				healAbsorbBar:Point("RIGHT", health, "RIGHT")
-				healAbsorbBar:Point(p2, healthTexture, p2)
-
-				if healPrediction.overAbsorb then
-					healPrediction.overAbsorb:Size(0, 1)
-					healPrediction.overAbsorb:ClearAllPoints()
-					healPrediction.overAbsorb:Point("LEFT", health, "LEFT")
-					healPrediction.overAbsorb:Point("RIGHT", health, "RIGHT")
-					healPrediction.overAbsorb:Point(p1, health, p2)
-				end
-
-				if healPrediction.overHealAbsorb then
-					healPrediction.overHealAbsorb:Size(0, 1)
-					healPrediction.overHealAbsorb:ClearAllPoints()
-					healPrediction.overHealAbsorb:Point("LEFT", health, "LEFT")
-					healPrediction.overHealAbsorb:Point("RIGHT", health, "RIGHT")
-					healPrediction.overHealAbsorb:Point(p2, health, p1)
-				end
+			if healPrediction.overHealAbsorb then
+				healPrediction.overHealAbsorb:Size(0, 1)
+				healPrediction.overHealAbsorb:ClearAllPoints()
+				healPrediction.overHealAbsorb:Point("LEFT", health, "LEFT")
+				healPrediction.overHealAbsorb:Point("RIGHT", health, "RIGHT")
+				healPrediction.overHealAbsorb:Point(p2, health, p1)
 			end
 
 			myBar:SetReverseFill(reverseFill)
