@@ -506,14 +506,14 @@ E.Options.args.modulecontrol= {
 					order = 10,
 					type = 'group',
 					name = 'ElvUI',
-					desc = L["Core |cfffe7b2cElvUI|r options."],
+					desc = L["Core |cff1784d1ElvUI|r options."],
 					childGroups = "tree",
 					disabled = E.Options.args.profiles.args.copyfrom.disabled,
 					args = {
 						header = {
 							order = 0,
 							type = "header",
-							name = L["Core |cfffe7b2cElvUI|r options."],
+							name = L["Core |cff1784d1ElvUI|r options."],
 						},
 						actionbar = CreateActionbarsConfig(),
 						auras = CreateAurasConfig(),

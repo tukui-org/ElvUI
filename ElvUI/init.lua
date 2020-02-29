@@ -202,7 +202,7 @@ function E:OnInitialize()
 	end
 
 	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
-	GameMenuButton:SetText(format('|cfffe7b2c%s|r', E.name))
+	GameMenuButton:SetText(format('|cff1784d1%s|r', E.name))
 	GameMenuButton:SetScript('OnClick', function() E:ToggleOptionsUI() HideUIPanel(GameMenuFrame) end)
 	GameMenuFrame[E.name] = GameMenuButton
 
