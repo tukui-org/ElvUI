@@ -12,10 +12,9 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 
 local function AreOtherAddOnsEnabled()
-	local name
 	for i = 1, GetNumAddOns() do
-		name = GetAddOnInfo(i)
-		if ((name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI') and E:IsAddOnEnabled(name)) then --Loaded or load on demand
+		local name = GetAddOnInfo(i)
+		if name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI' and E:IsAddOnEnabled(name) then --Loaded or load on demand
 			return 'Yes'
 		end
 	end
@@ -23,20 +22,8 @@ local function AreOtherAddOnsEnabled()
 end
 
 local function GetDisplayMode()
-	local window, maximize = GetCVar('gxWindow'), GetCVar('gxMaximize')
-	local displayMode
-
-	if window == '1' then
-		if maximize == '1' then
-			displayMode = 'Windowed (Fullscreen)'
-		else
-			displayMode = 'Windowed'
-		end
-	else
-		displayMode = 'Fullscreen'
-	end
-
-	return displayMode
+	local window, maximize = GetCVar('gxWindow') == '1', GetCVar('gxMaximize') == '1'
+	return (window and maximize and 'Windowed (Fullscreen)') or (window and 'Windowed') or 'Fullscreen'
 end
 
 local EnglishClassName = {
