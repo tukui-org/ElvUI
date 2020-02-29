@@ -108,7 +108,7 @@ function UF:Configure_HealComm(frame)
 
 		local health = frame.Health
 		local orientation = frame.db.health and frame.db.health.orientation or health:GetOrientation()
-		local reverseFill = frame.db.health and frame.db.health.reverseFill or false
+		local reverseFill = frame.db.health and frame.db.health.reverseFill
 		local showAbsorbAmount = frame.db.healPrediction.showAbsorbAmount
 
 		myBar:SetOrientation(orientation)
@@ -229,7 +229,7 @@ function UF:Configure_HealComm(frame)
 
 			myBar:SetReverseFill(reverseFill)
 			otherBar:SetReverseFill(reverseFill)
-			absorbBar:SetReverseFill(showAbsorbAmount and not reverseFill or reverseFill)
+			absorbBar:SetReverseFill(showAbsorbAmount and not reverseFill)
 			healAbsorbBar:SetReverseFill(not reverseFill)
 		end
 
