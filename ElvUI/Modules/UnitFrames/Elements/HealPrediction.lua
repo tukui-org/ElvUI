@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 
@@ -20,6 +19,15 @@ function UF:SetAlpha_HealComm(obj, show)
 	obj.healAbsorbBar:SetAlpha(show and 1 or 0)
 	obj.overAbsorb_:SetAlpha(show and 1 or 0)
 	obj.overHealAbsorb_:SetAlpha(show and 1 or 0)
+end
+
+function UF:SetTexture_HealComm(obj, texture)
+	obj.myBar:SetStatusBarTexture(texture)
+	obj.otherBar:SetStatusBarTexture(texture)
+	obj.absorbBar:SetStatusBarTexture(texture)
+	obj.healAbsorbBar:SetStatusBarTexture(texture)
+	obj.overAbsorb_:SetTexture(texture)
+	obj.overHealAbsorb_:SetTexture(texture)
 end
 
 function UF:SetVisibility_HealComm(obj)
@@ -50,26 +58,12 @@ function UF:Construct_HealComm(frame)
 	local overAbsorb = parent:CreateTexture(nil, "ARTWORK")
 	local overHealAbsorb = parent:CreateTexture(nil, "ARTWORK")
 
-	myBar:SetStatusBarTexture(E.media.blankTex)
-	otherBar:SetStatusBarTexture(E.media.blankTex)
-	absorbBar:SetStatusBarTexture(E.media.blankTex)
-	healAbsorbBar:SetStatusBarTexture(E.media.blankTex)
-	overAbsorb:SetTexture(E.media.blankTex)
-	overHealAbsorb:SetTexture(E.media.blankTex)
-
 	myBar:SetFrameLevel(11)
 	otherBar:SetFrameLevel(11)
 	absorbBar:SetFrameLevel(11)
 	healAbsorbBar:SetFrameLevel(11)
 
-	UF.statusbars[myBar] = true
-	UF.statusbars[otherBar] = true
-	UF.statusbars[absorbBar] = true
-	UF.statusbars[healAbsorbBar] = true
-	UF.statusbars[overAbsorb] = true
-	UF.statusbars[overHealAbsorb] = true
-
-	local healPrediction = {
+	local prediction = {
 		myBar = myBar,
 		otherBar = otherBar,
 		absorbBar = absorbBar,
@@ -83,9 +77,10 @@ function UF:Construct_HealComm(frame)
 		frame = frame
 	}
 
-	UF:SetAlpha_HealComm(healPrediction)
+	UF:SetAlpha_HealComm(prediction)
+	UF:SetTexture_HealComm(prediction, E.media.blankTex)
 
-	return healPrediction
+	return prediction
 end
 
 function UF:Configure_HealComm(frame)
@@ -126,18 +121,20 @@ function UF:Configure_HealComm(frame)
 			healPrediction.overHealAbsorb = nil
 		end
 
+		local healthBarTexture = health:GetStatusBarTexture()
+		UF:SetTexture_HealComm(healPrediction, UF.db.colors.transparentHealth and E.media.blankTex or healthBarTexture:GetTexture())
+
 		if orientation == "HORIZONTAL" then
 			local width = health:GetWidth()
 			width = (width > 0 and width) or health.WIDTH
 			local p1 = reverseFill and "RIGHT" or "LEFT"
 			local p2 = reverseFill and "LEFT" or "RIGHT"
-			local healthTexture = health:GetStatusBarTexture()
 
 			myBar:Size(width, 0)
 			myBar:ClearAllPoints()
 			myBar:Point("TOP", health, "TOP")
 			myBar:Point("BOTTOM", health, "BOTTOM")
-			myBar:Point(p1, healthTexture, p2)
+			myBar:Point(p1, healthBarTexture, p2)
 
 			otherBar:Size(width, 0)
 			otherBar:ClearAllPoints()
@@ -159,7 +156,7 @@ function UF:Configure_HealComm(frame)
 			healAbsorbBar:ClearAllPoints()
 			healAbsorbBar:Point("TOP", health, "TOP")
 			healAbsorbBar:Point("BOTTOM", health, "BOTTOM")
-			healAbsorbBar:Point(p2, healthTexture, p2)
+			healAbsorbBar:Point(p2, healthBarTexture, p2)
 
 			if healPrediction.overAbsorb then
 				healPrediction.overAbsorb:Size(1, 0)
@@ -181,13 +178,12 @@ function UF:Configure_HealComm(frame)
 			height = (height > 0 and height) or health.HEIGHT
 			local p1 = reverseFill and "TOP" or "BOTTOM"
 			local p2 = reverseFill and "BOTTOM" or "TOP"
-			local healthTexture = health:GetStatusBarTexture()
 
 			myBar:Size(0, height)
 			myBar:ClearAllPoints()
 			myBar:Point("LEFT", health, "LEFT")
 			myBar:Point("RIGHT", health, "RIGHT")
-			myBar:Point(p1, healthTexture, p2)
+			myBar:Point(p1, healthBarTexture, p2)
 
 			otherBar:Size(0, height)
 			otherBar:ClearAllPoints()
@@ -209,7 +205,7 @@ function UF:Configure_HealComm(frame)
 			healAbsorbBar:ClearAllPoints()
 			healAbsorbBar:Point("LEFT", health, "LEFT")
 			healAbsorbBar:Point("RIGHT", health, "RIGHT")
-			healAbsorbBar:Point(p2, healthTexture, p2)
+			healAbsorbBar:Point(p2, healthBarTexture, p2)
 
 			if healPrediction.overAbsorb then
 				healPrediction.overAbsorb:Size(0, 1)

@@ -446,7 +446,9 @@ function UF:Update_StatusBars()
 	for statusbar in pairs(UF.statusbars) do
 		if statusbar then
 			local useBlank = statusbar.isTransparent
-			if statusbar.parent then useBlank = statusbar.parent.isTransparent end
+			if statusbar.parent then
+				useBlank = statusbar.parent.isTransparent
+			end
 			if statusbar:IsObjectType('StatusBar') then
 				if not useBlank then
 					statusbar:SetStatusBarTexture(statusBarTexture)
@@ -1361,21 +1363,6 @@ function UF:UpdateBackdropTextureColor(r, g, b)
 		else
 			bg:SetVertexColor(r * m, g * m, b * m)
 		end
-	end
-end
-
-function UF:UpdatePredictionStatusBar(prediction, parent, name)
-	if not (prediction and parent) then return end
-	local texture = (not parent.isTransparent and parent:GetStatusBarTexture():GetTexture()) or E.media.blankTex
-	if name == "Health" then
-		UF:Update_StatusBar(prediction.myBar, texture)
-		UF:Update_StatusBar(prediction.otherBar, texture)
-		UF:Update_StatusBar(prediction.absorbBar, texture)
-		UF:Update_StatusBar(prediction.healAbsorbBar, texture)
-		UF:Update_StatusBar(prediction.overAbsorb, texture)
-		UF:Update_StatusBar(prediction.overHealAbsorb, texture)
-	elseif name == "Power" then
-		UF:Update_StatusBar(prediction.mainBar, texture)
 	end
 end
 
