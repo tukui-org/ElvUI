@@ -599,7 +599,7 @@ ElvUF.Tags.Methods['realm:dash:translit'] = function(unit)
 	return realm
 end
 
-ElvUF.Tags.Events['threat:percent'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
+ElvUF.Tags.Events['threat:percent'] = 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE '
 ElvUF.Tags.Methods['threat:percent'] = function(unit)
 	local _, _, percent = UnitDetailedThreatSituation('player', unit)
 	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
@@ -609,7 +609,7 @@ ElvUF.Tags.Methods['threat:percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['threat:current'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
+ElvUF.Tags.Events['threat:current'] = 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE '
 ElvUF.Tags.Methods['threat:current'] = function(unit)
 	local _, _, percent, _, threatvalue = UnitDetailedThreatSituation('player', unit)
 	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
@@ -619,7 +619,7 @@ ElvUF.Tags.Methods['threat:current'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['threatcolor'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
+ElvUF.Tags.Events['threatcolor'] = 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE '
 ElvUF.Tags.Methods['threatcolor'] = function(unit)
 	local _, status = UnitDetailedThreatSituation('player', unit)
 	if (status) and (IsInGroup() or UnitExists('pet')) then
