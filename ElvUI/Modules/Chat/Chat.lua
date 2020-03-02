@@ -366,7 +366,7 @@ do --this can save some main file locals
 		["Songbïrd-WyrmrestAccord"]		= DeathlyH,
 		["Vidiä-WyrmrestAccord"]		= DeathlyH,
 		-- Quickhanz (Nihilist's absolute bestie)
-		["Ironhanz-WyrmrestAccord"]		= GoldShield,
+		["Zandahanz-Area52"]			= GoldShield,
 	}
 end
 
