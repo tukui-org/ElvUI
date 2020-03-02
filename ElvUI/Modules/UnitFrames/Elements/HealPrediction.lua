@@ -102,8 +102,9 @@ function UF:Configure_HealComm(frame)
 		end
 
 		local health = frame.Health
-		local orientation = frame.db.health and frame.db.health.orientation or health:GetOrientation()
-		local reverseFill = frame.db.health and frame.db.health.reverseFill
+		local orientation = health:GetOrientation()
+		local reverseFill = health:GetReverseFill()
+		local healthBarTexture = health:GetStatusBarTexture()
 		local showAbsorbAmount = frame.db.healPrediction.showAbsorbAmount
 
 		myBar:SetOrientation(orientation)
@@ -121,7 +122,6 @@ function UF:Configure_HealComm(frame)
 			healPrediction.overHealAbsorb = nil
 		end
 
-		local healthBarTexture = health:GetStatusBarTexture()
 		UF:SetTexture_HealComm(healPrediction, UF.db.colors.transparentHealth and E.media.blankTex or healthBarTexture:GetTexture())
 
 		if orientation == "HORIZONTAL" then

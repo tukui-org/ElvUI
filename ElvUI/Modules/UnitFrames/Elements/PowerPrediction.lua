@@ -43,8 +43,8 @@ function UF:Configure_PowerPrediction(frame)
 		local power = frame.Power
 		local powerBarTexture = power:GetStatusBarTexture()
 		local mainBar, altBar = powerPrediction.mainBar, powerPrediction.altBar
-		local orientation = frame.db.power.orientation or power:GetOrientation()
-		local reverseFill = not not frame.db.power.reverseFill
+		local orientation = power:GetOrientation()
+		local reverseFill = power:GetReverseFill()
 
 		mainBar:ClearAllPoints()
 		mainBar:SetReverseFill(not reverseFill)
