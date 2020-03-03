@@ -82,6 +82,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.GameFontHighlightSmall2,				NORMAL, self.db.general.fontSize)			-- Skill or Recipe description on TradeSkill frame
 		SetFont(_G.GameFontNormalHuge2,					NORMAL, 24)									-- Mythic weekly best dungeon name
 		SetFont(_G.GameFontNormalLarge2,				NORMAL, 15) 								-- Garrison Follower Names
+		SetFont(_G.GameFontNormalMed1,					NORMAL, 14)									-- WoW Token Info
 		SetFont(_G.GameFontNormalMed2,					NORMAL, self.db.general.fontSize*1.1)		-- Quest tracker
 		SetFont(_G.GameFontNormalMed3,					NORMAL, 15)
 		SetFont(_G.GameFontNormalSmall2,				NORMAL, 12)									-- MissionUI Followers names
@@ -121,6 +122,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SystemFont_Outline_Small,			NUMBER, self.db.general.fontSize, 'OUTLINE')
 		SetFont(_G.SystemFont_OutlineThick_Huge2,		NORMAL, 20, MONOCHROME..'THICKOUTLINE')
 		SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, 32, MONOCHROME..'OUTLINE')			-- World Map
+		SetFont(_G.SystemFont_Shadow_Large2,			NORMAL, 18)									-- Auction House ItemDisplay
 		SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, 20, MONOCHROME..'OUTLINE')			-- Raid Warning, Boss emote frame too
 		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 22, nil, SHADOWCOLOR, BIGOFFSET)	-- FlightMap
 		SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 15)
