@@ -122,10 +122,10 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SystemFont_Outline_Small,			NUMBER, self.db.general.fontSize, 'OUTLINE')
 		SetFont(_G.SystemFont_OutlineThick_Huge2,		NORMAL, 20, MONOCHROME..'THICKOUTLINE')
 		SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, 32, MONOCHROME..'OUTLINE')			-- World Map
-		SetFont(_G.SystemFont_Shadow_Large2,			NORMAL, 18)									-- Auction House ItemDisplay
 		SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, 20, MONOCHROME..'OUTLINE')			-- Raid Warning, Boss emote frame too
 		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 22, nil, SHADOWCOLOR, BIGOFFSET)	-- FlightMap
 		SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 15)
+		SetFont(_G.SystemFont_Shadow_Large2,			NORMAL, 18)									-- Auction House ItemDisplay
 		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 20, 'OUTLINE')
 		SetFont(_G.SystemFont_Shadow_Med1,				NORMAL, self.db.general.fontSize)
 		SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, 13 * 1.1)							-- Shows Order resourses on OrderHallTalentFrame
