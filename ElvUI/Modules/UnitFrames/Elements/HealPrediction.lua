@@ -222,12 +222,12 @@ function UF:Configure_HealComm(frame)
 				healPrediction.overHealAbsorb:Point("RIGHT", health, "RIGHT")
 				healPrediction.overHealAbsorb:Point(p2, health, p1)
 			end
-
-			myBar:SetReverseFill(reverseFill)
-			otherBar:SetReverseFill(reverseFill)
-			absorbBar:SetReverseFill(showAbsorbAmount and not reverseFill)
-			healAbsorbBar:SetReverseFill(not reverseFill)
 		end
+
+		myBar:SetReverseFill(reverseFill)
+		otherBar:SetReverseFill(reverseFill)
+		absorbBar:SetReverseFill(showAbsorbAmount and not reverseFill)
+		healAbsorbBar:SetReverseFill(not reverseFill)
 
 		myBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
 		otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
