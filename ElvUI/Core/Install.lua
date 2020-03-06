@@ -301,7 +301,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 				E:SaveMoverDefaultPosition(mover)
 			end
 		--Tooltip
-			E.db.tooltip.textFontSize = 10
 			E.db.tooltip.healthBar.fontOutline = 'MONOCHROMEOUTLINE'
 			E.db.tooltip.healthBar.height = 12
 		--UnitFrames
