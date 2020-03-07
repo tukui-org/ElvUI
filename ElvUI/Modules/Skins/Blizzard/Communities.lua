@@ -693,6 +693,25 @@ function S:Blizzard_Communities()
 
 	S:HandleScrollBar(TicketManager.InviteManager.ListScrollFrame.scrollBar)
 	S:HandleButton(TicketManager.MaximizeButton)
+
+	-- InvitationsFrames
+	local ClubFinderInvitationFrame = CommunitiesFrame.ClubFinderInvitationFrame
+	ClubFinderInvitationFrame.InsetFrame:StripTextures()
+	ClubFinderInvitationFrame:SetTemplate()
+	S:HandleButton(ClubFinderInvitationFrame.AcceptButton)
+	S:HandleButton(ClubFinderInvitationFrame.DeclineButton)
+	S:HandleButton(ClubFinderInvitationFrame.ApplyButton)
+
+	ClubFinderInvitationFrame.WarningDialog:StripTextures()
+	ClubFinderInvitationFrame.WarningDialog:SetTemplate("Transparent")
+	S:HandleButton(ClubFinderInvitationFrame.WarningDialog.Accept)
+	S:HandleButton(ClubFinderInvitationFrame.WarningDialog.Cancel)
+
+	local InvitationFrame = CommunitiesFrame.InvitationFrame
+	InvitationFrame.InsetFrame:StripTextures()
+	InvitationFrame:SetTemplate()
+	S:HandleButton(InvitationFrame.AcceptButton)
+	S:HandleButton(InvitationFrame.DeclineButton)
 end
 
 S:AddCallbackForAddon('Blizzard_Communities')
