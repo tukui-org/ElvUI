@@ -65,7 +65,7 @@ function mod:UpdateAzerite(event, unit)
 		elseif textFormat == 'CURPERCREM' then
 			bar.text:SetFormattedText('%s - %s%% (%s) [%s]', E:ShortValue(cur), floor(cur / max * 100), E:ShortValue(max - cur), currentLevel)
 		else
-			bar.text:SetFormattedText('[%s]', currentLevel)
+			bar.text:SetText('')
 		end
 	end
 end
