@@ -149,8 +149,7 @@ function B:LoadBagBar()
 	end
 
 	--Item assignment
-	for i = 1, #B.BagBar.buttons do
-		local bagButton = B.BagBar.buttons[i]
+	for i, bagButton in ipairs(B.BagBar.buttons) do
 		if i == 1 then --Backpack
 			B:CreateFilterIcon(bagButton)
 			bagButton:SetScript("OnClick", function(holder, button)
