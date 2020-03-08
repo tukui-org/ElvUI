@@ -150,29 +150,21 @@ function B:LoadBagBar()
 
 	--Item assignment
 	for i, bagButton in ipairs(B.BagBar.buttons) do
-		if i == 1 then --Backpack
-			B:CreateFilterIcon(bagButton)
-			bagButton:SetScript("OnClick", function(holder, button)
-				if button == "RightButton" and holder.id then
-					B.AssignBagDropdown.holder = holder
-					_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, "cursor")
-				else
+		B:CreateFilterIcon(bagButton)
+		bagButton.id = (i - 1)
+
+		bagButton:SetScript("OnClick", function(holder, button)
+			if button == "RightButton" then
+				B.AssignBagDropdown.holder = holder
+				_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, "cursor")
+			else
+				if holder.id == 0 then
 					_G.MainMenuBarBackpackButton_OnClick(holder)
-				end
-			end)
-		else
-			B:CreateFilterIcon(bagButton)
-			bagButton:SetScript("OnClick", function(holder, button)
-				if button == "RightButton" and holder.id then
-					B.AssignBagDropdown.holder = holder
-					_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, "cursor")
 				else
 					_G.BagSlotButton_OnClick(holder)
 				end
-			end)
-		end
-
-		bagButton.id = (i - 1)
+			end
+		end)
 	end
 
 	B:SizeAndPositionBagBar()
