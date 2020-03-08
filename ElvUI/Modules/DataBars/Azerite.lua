@@ -50,7 +50,9 @@ function mod:UpdateAzerite(event, unit)
 		bar.statusBar:SetValue(cur)
 
 		local textFormat = mod.db.azerite.textFormat
-		if textFormat == 'PERCENT' then
+		if textFormat == 'NONE' then
+			bar.text:SetText('')
+		elseif textFormat == 'PERCENT' then
 			bar.text:SetFormattedText('%s%% [%s]', floor(cur / max * 100), currentLevel)
 		elseif textFormat == 'CURMAX' then
 			bar.text:SetFormattedText('%s - %s [%s]', E:ShortValue(cur), E:ShortValue(max), currentLevel)
@@ -65,7 +67,7 @@ function mod:UpdateAzerite(event, unit)
 		elseif textFormat == 'CURPERCREM' then
 			bar.text:SetFormattedText('%s - %s%% (%s) [%s]', E:ShortValue(cur), floor(cur / max * 100), E:ShortValue(max - cur), currentLevel)
 		else
-			bar.text:SetText('')
+			bar.text:SetFormattedText('[%s]', currentLevel)
 		end
 	end
 end
