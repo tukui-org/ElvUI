@@ -355,11 +355,11 @@ function UF:SortAuras()
 	return 1, #self --from/to range needed for the :SetPosition call in oUF aura element. Without this aura icon position gets all whacky when not sorted by index
 end
 
-function UF:PostUpdateAura(unit, button)
+function UF:PostUpdateAura(_, button)
 	if button.isDebuff then
 		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
-			button.icon:SetDesaturated((unit and not strfind(unit, 'arena%d')) and true or false)
+			button.icon:SetDesaturated(button.canDesaturate)
 		else
 			if E.BadDispels[button.spellID] and button.dtype and E:IsDispellableByMe(button.dtype) then
 				button:SetBackdropBorderColor(0.05, 0.85, 0.94)
@@ -442,6 +442,7 @@ function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expir
 	local db = button.db or self.db
 	if not db then return true end
 
+	button.canDesaturate = db.desaturate
 	button.myPet = caster == 'pet'
 	button.isPlayer = caster == 'player' or caster == 'vehicle'
 	button.otherPet = caster and not UnitIsUnit('pet', caster) and strmatch(caster, 'pet%d+')
