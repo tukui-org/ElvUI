@@ -117,33 +117,39 @@ E.Options.args.bags = {
 					desc = L["Colors the border according to the type of items assigned to the bag."],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
 				},
-				qualityColors = {
+				showAssignedIcon = {
 					order = 11,
+					type = 'toggle',
+					name = L["Show Assigned Icon"],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:Layout(); B:SizeAndPositionBagBar() end,
+				},
+				qualityColors = {
+					order = 12,
 					type = 'toggle',
 					name = L["Show Quality Color"],
 					desc = L["Colors the border according to the Quality of the Item."],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
 				},
 				specialtyColors = {
-					order = 12,
+					order = 13,
 					type = 'toggle',
 					name = L["Show Special Bags Color"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
 				},
 				showBindType = {
-					order = 13,
+					order = 14,
 					type = 'toggle',
 					name = L["Show Bind on Equip/Use Text"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
 				},
 				clearSearchOnClose = {
-					order = 14,
+					order = 15,
 					type = 'toggle',
 					name = L["Clear Search On Close"],
 					set = function(info, value) E.db.bags[info[#info]] = value; end
 				},
 				reverseLoot = {
-					order = 15,
+					order = 16,
 					type = "toggle",
 					name = L["REVERSE_NEW_LOOT_TEXT"],
 					set = function(info, value)
@@ -152,32 +158,32 @@ E.Options.args.bags = {
 					end,
 				},
 				reverseSlots = {
-					order = 16,
+					order = 17,
 					type = "toggle",
 					name = L["Reverse Bag Slots"],
 					set = function(info, value) E.db.bags[info[#info]] = value B:UpdateAll() end,
 				},
 				disableBagSort = {
-					order = 17,
+					order = 18,
 					type = "toggle",
 					name = L["Disable Bag Sort"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(false); end
 				},
 				disableBankSort = {
-					order = 18,
+					order = 19,
 					type = "toggle",
 					name = L["Disable Bank Sort"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(true); end
 				},
 				useBlizzardCleanup = {
-					order = 19,
+					order = 20,
 					type = "toggle",
 					name = L["Use Blizzard Cleanup"],
 					desc = L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."],
 					set = function(info, value) E.db.bags[info[#info]] = value; end
 				},
 				strata = {
-					order = 20,
+					order = 21,
 					type = "select",
 					name = L["Frame Strata"],
 					set = function(info, value) E.db.bags[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,

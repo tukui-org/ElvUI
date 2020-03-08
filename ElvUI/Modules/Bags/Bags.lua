@@ -105,9 +105,8 @@ local SEARCH = SEARCH
 local NUM_BAG_FRAMES = 4
 local MAX_CONTAINER_ITEMS = 36
 
-local ElvUIAssignBagDropdown
 local SEARCH_STRING = ''
-local BAG_FILTER_ICONS = {
+B.BAG_FILTER_ICONS = {
 	[_G.LE_BAG_FILTER_FLAG_EQUIPMENT] = 'Interface/ICONS/INV_Chest_Plate10',
 	[_G.LE_BAG_FILTER_FLAG_CONSUMABLES] = 'Interface/ICONS/INV_Potion_93',
 	[_G.LE_BAG_FILTER_FLAG_TRADE_GOODS] = 'Interface/ICONS/INV_Fabric_Silk_02',
@@ -725,8 +724,8 @@ end
 
 --Look at ContainerFrameFilterDropDown_Initialize in FrameXML/ContainerFrame.lua
 function B:AssignBagFlagMenu()
-	local holder = ElvUIAssignBagDropdown.holder
-	ElvUIAssignBagDropdown.holder = nil
+	local holder = B.AssignBagDropdown.holder
+	B.AssignBagDropdown.holder = nil
 
 	if not (holder and holder.id) then return end
 
@@ -837,6 +836,8 @@ function B:GetBagAssignedInfo(holder)
 			if active then
 				color = B.AssignmentColors[i]
 				active = (color and i) or 0
+				holder.ElvUIFilterIcon:SetTexture(B.BAG_FILTER_ICONS[i])
+				holder.ElvUIFilterIcon:SetShown(E.db.bags.showAssignedIcon)
 				break
 			end
 		end
@@ -852,24 +853,6 @@ function B:GetBagAssignedInfo(holder)
 	end
 end
 
-function B:Container_OnShow()
-	if (self.id and self.id > 0) and not IsInventoryItemProfessionBag('player', ContainerIDToInventoryID(self.id)) then
-		for i = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
-			local active
-			if self.id > NUM_BAG_SLOTS then
-				active = GetBankBagSlotFlag(self.id - NUM_BAG_SLOTS, i)
-			else
-				active = GetBagSlotFlag(self.id, i)
-			end
-			if active then
-				self.ElvUIFilterIcon:SetTexture(BAG_FILTER_ICONS[i])
-				self.ElvUIFilterIcon:Show()
-				break
-			end
-		end
-	end
-end
-
 function B:CreateFilterIcon(parent)
 	--Create the texture showing the assignment type
 	parent.ElvUIFilterIcon = parent:CreateTexture(nil, 'OVERLAY')
@@ -879,9 +862,6 @@ function B:CreateFilterIcon(parent)
 	parent.ElvUIFilterIcon:Point('TOPLEFT', parent, 'TOPLEFT', E.Border, -E.Border)
 	parent.ElvUIFilterIcon:SetTexCoord(unpack(E.TexCoords))
 	parent.ElvUIFilterIcon:Size(18, 18)
-
-	--Update FilterIcon texture when container is shown
-	parent:HookScript('OnShow', B.Container_OnShow)
 end
 
 function B:Layout(isBank)
@@ -1408,8 +1388,8 @@ function B:ConstructContainerFrame(name, isBank)
 			f.ContainerHolder[i].icon:SetTexture('Interface/Buttons/Button-Backpack-Up')
 			f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 				if button == 'RightButton' and holder.id then
-					ElvUIAssignBagDropdown.holder = holder
-					_G.ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, 'cursor')
+					B.AssignBagDropdown.holder = holder
+					_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 				else
 					local inventoryID = holder:GetInventorySlot()
 					PutItemInBag(inventoryID);--Put bag on empty slot, or drop item in this bag
@@ -1420,8 +1400,8 @@ function B:ConstructContainerFrame(name, isBank)
 				f.ContainerHolder[i]:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
 				f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 					if button == 'RightButton' and holder.id then
-						ElvUIAssignBagDropdown.holder = holder
-						_G.ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, 'cursor')
+						B.AssignBagDropdown.holder = holder
+						_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 					else
 						PutItemInBackpack()
 					end
@@ -1431,8 +1411,8 @@ function B:ConstructContainerFrame(name, isBank)
 			else
 				f.ContainerHolder[i]:SetScript('OnClick', function(holder, button)
 					if button == 'RightButton' and holder.id then
-						ElvUIAssignBagDropdown.holder = holder
-						_G.ToggleDropDownMenu(1, nil, ElvUIAssignBagDropdown, 'cursor')
+						B.AssignBagDropdown.holder = holder
+						_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 					else
 						local id = holder:GetID()
 						PutItemInBag(id)
@@ -2327,6 +2307,22 @@ function B:UpdateQuestColors(table, indice, r, g, b)
 end
 
 function B:Initialize()
+	B.db = E.db.bags
+
+	--Bag Assignment Dropdown Menu (also used by BagBar)
+	B.AssignBagDropdown = CreateFrame('Frame', 'ElvUIAssignBagDropdown', E.UIParent, 'UIDropDownMenuTemplate')
+	B.AssignBagDropdown:SetID(1)
+	B.AssignBagDropdown:SetClampedToScreen(true)
+	B.AssignBagDropdown:Hide()
+
+	_G.UIDropDownMenu_Initialize(B.AssignBagDropdown, B.AssignBagFlagMenu, 'MENU')
+		B.AssignmentColors = {
+		[0] = { .99, .23, .21 },   -- fallback
+		[2] = { B.db.colors.assignment.equipment.r , B.db.colors.assignment.equipment.g, B.db.colors.assignment.equipment.b },
+		[3] = { B.db.colors.assignment.consumables.r , B.db.colors.assignment.consumables.g, B.db.colors.assignment.consumables.b },
+		[4] = { B.db.colors.assignment.tradegoods.r , B.db.colors.assignment.tradegoods.g, B.db.colors.assignment.tradegoods.b },
+	}
+
 	B:LoadBagBar()
 
 	--Creating vendor grays frame
@@ -2338,13 +2334,6 @@ function B:Initialize()
 	BagFrameHolder:Width(200)
 	BagFrameHolder:Height(22)
 	BagFrameHolder:SetFrameLevel(BagFrameHolder:GetFrameLevel() + 400)
-
-	--Bag Assignment Dropdown Menu (also used by BagBar)
-	ElvUIAssignBagDropdown = CreateFrame('Frame', 'ElvUIAssignBagDropdown', E.UIParent, 'UIDropDownMenuTemplate')
-	ElvUIAssignBagDropdown:SetID(1)
-	ElvUIAssignBagDropdown:SetClampedToScreen(true)
-	ElvUIAssignBagDropdown:Hide()
-	_G.UIDropDownMenu_Initialize(ElvUIAssignBagDropdown, B.AssignBagFlagMenu, 'MENU')
 
 	if not E.private.bags.enable then
 		-- Set a different default anchor
@@ -2368,13 +2357,6 @@ function B:Initialize()
 		[0x0400]   = { B.db.colors.profession.mining.r, B.db.colors.profession.mining.g, B.db.colors.profession.mining.b },
 		[0x8000]   = { B.db.colors.profession.fishing.r, B.db.colors.profession.fishing.g, B.db.colors.profession.fishing.b },
 		[0x010000] = { B.db.colors.profession.cooking.r, B.db.colors.profession.cooking.g, B.db.colors.profession.cooking.b },
-	}
-
-	B.AssignmentColors = {
-		[0] = { .99, .23, .21 },   -- fallback
-		[2] = { B.db.colors.assignment.equipment.r , B.db.colors.assignment.equipment.g, B.db.colors.assignment.equipment.b },
-		[3] = { B.db.colors.assignment.consumables.r , B.db.colors.assignment.consumables.g, B.db.colors.assignment.consumables.b },
-		[4] = { B.db.colors.assignment.tradegoods.r , B.db.colors.assignment.tradegoods.g, B.db.colors.assignment.tradegoods.b },
 	}
 
 	B.QuestColors = {

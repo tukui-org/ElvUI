@@ -206,6 +206,7 @@ P.bags = {
 	specialtyColors = true,
 	showBindType = false,
 	transparent = false,
+	showAssignedIcon = true,
 	colors = {
 		profession = {
 			leatherworking = { r = .88, g = .73, b = .29 },
