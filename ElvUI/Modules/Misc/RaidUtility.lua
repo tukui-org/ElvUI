@@ -112,7 +112,7 @@ function RU:ToggleRaidUtil(event)
 
 	if event == "PLAYER_REGEN_ENABLED" then
 		self:UnregisterEvent("PLAYER_REGEN_ENABLED", 'ToggleRaidUtil')
-	elseif self.updateMedia and event == "PLAYER_ENTERING_WORLD"then
+	elseif self.updateMedia and event == "PLAYER_ENTERING_WORLD" then
 		self:UpdateMedia()
 		self.updateMedia = nil
 	end
