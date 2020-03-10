@@ -7,6 +7,7 @@ local _G = _G
 local floor = floor
 local format = format
 --WoW API / Variables
+local C_ArtifactUI_IsEquippedArtifactDisabled = C_ArtifactUI.IsEquippedArtifactDisabled
 local C_AzeriteItem_FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
 local C_AzeriteItem_GetPowerLevel = C_AzeriteItem.GetPowerLevel
@@ -15,6 +16,10 @@ local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
 local ARTIFACT_POWER = ARTIFACT_POWER
 local Item = Item
+local HasArtifactEquipped = HasArtifactEquipped
+local SocketInventoryItem = SocketInventoryItem
+local UIParentLoadAddOn = UIParentLoadAddOn
+local ToggleFrame = ToggleFrame
 
 function mod:UpdateAzerite(event, unit)
 	if not mod.db.azerite.enable then return end
@@ -105,7 +110,17 @@ do
 	end
 end
 
-function mod:AzeriteBar_OnClick() end
+function mod:AzeriteBar_OnClick()
+	if InCombatLockdown() then return end
+
+	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
+	if (HasArtifactEquipped() and not C_ArtifactUI_IsEquippedArtifactDisabled()) then
+		SocketInventoryItem(_G.INVSLOT_MAINHAND)
+	elseif (azeriteItemLocation) then
+		UIParentLoadAddOn("Blizzard_AzeriteEssenceUI")
+		ToggleFrame(_G.AzeriteEssenceUI)
+	end
+end
 
 function mod:UpdateAzeriteDimensions()
 	self.azeriteBar:Width(self.db.azerite.width)
