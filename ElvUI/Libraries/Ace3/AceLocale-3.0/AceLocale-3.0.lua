@@ -133,12 +133,8 @@ function AceLocale:NewLocale(application, locale, isDefault, silent)
 	registering = app[locale] -- remember globally for writeproxy and writedefaultproxy
 	-- end block
 
-	if isDefault then
-		 -- ElvUI
-		if isDefault and (not app.defaultLocale or app.defaultLocale == 'defaultLocale') then
-			app.defaultLocale = locale
-		end
-		-- end block
+	if isDefault and (not app.defaultLocale or app.defaultLocale == 'defaultLocale') then -- ElvUI
+		app.defaultLocale = locale
 		return writedefaultproxy
 	end
 
