@@ -5,7 +5,15 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, unpack = pairs, unpack
 --WoW API / Variables
+local GetInventoryItemLink = GetInventoryItemLink
 local hooksecurefunc = hooksecurefunc
+local IsCorruptedItem = IsCorruptedItem
+
+local function UpdateCorruption(self)
+	local unit = _G.InspectFrame.unit
+	local itemLink = unit and GetInventoryItemLink(unit, self:GetID())
+	self.Eye:SetShown(itemLink and IsCorruptedItem(itemLink))
+end
 
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
@@ -98,6 +106,12 @@ function S:Blizzard_InspectUI()
 			Slot:StyleButton()
 			Slot.icon:SetInside()
 
+			if not Slot.Eye then
+				Slot.Eye = Slot:CreateTexture()
+				Slot.Eye:SetAtlas("Nzoth-inventory-icon")
+				Slot.Eye:SetInside()
+			end
+
 			Slot.IconBorder:SetAlpha(0)
 			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(_, r, g, b) Slot:SetBackdropBorderColor(r, g, b) end)
 			hooksecurefunc(Slot.IconBorder, 'Hide', function() Slot:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
@@ -107,6 +121,10 @@ function S:Blizzard_InspectUI()
 	InspectPVPFrame.BG:Kill()
 	_G.InspectGuildFrameBG:Kill()
 	_G.InspectTalentFrame:StripTextures()
+
+	hooksecurefunc("InspectPaperDollItemSlotButton_Update", function(button)
+		UpdateCorruption(button)
+	end)
 end
 
 S:AddCallbackForAddon('Blizzard_InspectUI')
