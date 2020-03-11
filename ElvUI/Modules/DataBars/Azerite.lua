@@ -113,10 +113,9 @@ end
 function mod:AzeriteBar_OnClick()
 	if InCombatLockdown() then return end
 
-	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
-	if (HasArtifactEquipped() and not C_ArtifactUI_IsEquippedArtifactDisabled()) then
+	if HasArtifactEquipped() and not C_ArtifactUI_IsEquippedArtifactDisabled() then
 		SocketInventoryItem(_G.INVSLOT_MAINHAND)
-	elseif (azeriteItemLocation) then
+	elseif C_AzeriteItem_FindActiveAzeriteItem() then
 		UIParentLoadAddOn("Blizzard_AzeriteEssenceUI")
 		ToggleFrame(_G.AzeriteEssenceUI)
 	end
