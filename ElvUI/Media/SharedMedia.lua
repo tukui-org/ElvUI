@@ -14,7 +14,8 @@ E.Media = {
 		Expressway = M..[[Fonts\Expressway.ttf]],
 		Homespun = M..[[Fonts\Homespun.ttf]],
 		Invisible = M..[[Fonts\Invisible.ttf]],
-		PTSansNarrow = M..[[Fonts\PTSansNarrow.ttf]]
+		PTSansNarrow = M..[[Fonts\PTSansNarrow.ttf]],
+		IBMPlexMonoRegular = M..[[Fonts\IBMPlexMonoRegular.ttf]]
 	},
 	Sounds = {
 		AwwCrap = M..[[Sounds\AwwCrap.ogg]],
@@ -163,6 +164,7 @@ LSM:Register('font','Action Man',E.Media.Fonts.ActionMan)
 LSM:Register('font','Expressway',E.Media.Fonts.Expressway,LSM.LOCALE_BIT_ruRU+LSM.LOCALE_BIT_western)
 LSM:Register('font','PT Sans Narrow',E.Media.Fonts.PTSansNarrow,LSM.LOCALE_BIT_ruRU+LSM.LOCALE_BIT_western)
 LSM:Register('font','Homespun',E.Media.Fonts.Homespun,LSM.LOCALE_BIT_ruRU+LSM.LOCALE_BIT_western)
+LSM:Register('font','IBM Plex Mono',E.Media.Fonts.Homespun,LSM.LOCALE_BIT_ruRU+LSM.LOCALE_BIT_western)
 LSM:Register('sound','Awww Crap',E.Media.Sounds.AwwCrap)
 LSM:Register('sound','BBQ Ass',E.Media.Sounds.BbqAss)
 LSM:Register('sound','Big Yankie Devil',E.Media.Sounds.YankieBangBang)
