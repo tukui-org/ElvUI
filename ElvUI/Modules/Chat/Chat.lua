@@ -2752,33 +2752,6 @@ function CH:Initialize()
 		end
 	end)
 
-	-- Combat Log Skinning (credit: Aftermathh)
-	local CombatLogButton = _G.CombatLogQuickButtonFrame_Custom
-	if CombatLogButton then
-		local CombatLogFontContainer = _G.ChatFrame2 and _G.ChatFrame2.FontStringContainer
-		CombatLogButton:StripTextures()
-		CombatLogButton:SetTemplate("Transparent")
-		if CombatLogFontContainer then
-			CombatLogButton:ClearAllPoints()
-			CombatLogButton:Point("BOTTOMLEFT", CombatLogFontContainer, "TOPLEFT", -1, 1)
-			CombatLogButton:Point("BOTTOMRIGHT", CombatLogFontContainer, "TOPRIGHT", E.PixelMode and 4 or 0, 1)
-		end
-		for i = 1, 2 do
-			local CombatLogQuickButton = _G["CombatLogQuickButtonFrameButton"..i]
-			if CombatLogQuickButton then
-				local CombatLogText = CombatLogQuickButton:GetFontString()
-				CombatLogText:FontTemplate(nil, nil, 'OUTLINE')
-			end
-		end
-		local CombatLogProgressBar = _G.CombatLogQuickButtonFrame_CustomProgressBar
-		CombatLogProgressBar:SetStatusBarTexture(E.media.normTex)
-		CombatLogProgressBar:SetInside(CombatLogButton)
-		Skins:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
-		_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
-		_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogButton, "TOPRIGHT", 0, -1)
-		_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
-	end
-
 	--Chat Heads Frame
 	self.ChatHeadFrame = CreateFrame("Frame", "ElvUIChatHeadFrame", E.UIParent)
 	self.ChatHeadFrame:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -80)
