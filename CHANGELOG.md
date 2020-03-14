@@ -11,6 +11,7 @@ The options bottom buttons now use the language selected in the config, nice.
 Nazjatar Followers Missions Datatext was doing a goof, which has been ungoofed by a professional ungoofer.  
 Some Datatexts refused to show information on login, now they are willing to share.  
 Some kind of Alternative Power oops, something about UnitIsUnit; rare bug, big time squashed.  
+The bottom of letters on the bottom line of the chat will now be visibile to all earthlings.  
 
 **Misc. Changes:**  
 Style Filters now support changing the Nameplate Tags for Health, Power, Name, Title, and Level because of this Name Color action was removed, you can tag a color onto it and make it do other neat stuff, if you want.  
