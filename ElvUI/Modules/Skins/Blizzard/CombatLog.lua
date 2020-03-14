@@ -33,4 +33,4 @@ function S:Blizzard_CombatLog()
 	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
 end
 
-E.Skins:AddCallbackForAddon('Blizzard_CombatLog')
+S:AddCallbackForAddon('Blizzard_CombatLog')
