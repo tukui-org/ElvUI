@@ -904,18 +904,18 @@ function CH:PositionChat(override)
 
 		local chat = _G[format("ChatFrame%d", i)]
 		local chatbg = format("ChatFrame%dBackground", i)
-		local id = chat:GetID()
 		local tab = _G[format("ChatFrame%sTab", i)]
 		local isDocked = chat.isDocked
+		local id = chat:GetID()
 		tab.isDocked = isDocked
 		tab.owner = chat
 
 		if id > NUM_CHAT_WINDOWS then
-			if select(2, tab:GetPoint()):GetName() ~= chatbg then
-				isDocked = true
-			else
-				isDocked = false
-			end
+			isDocked = select(2, tab:GetPoint()):GetName() ~= chatbg
+		end
+
+		if chat.FontStringContainer then
+			chat.FontStringContainer:SetOutside(chat)
 		end
 
 		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
