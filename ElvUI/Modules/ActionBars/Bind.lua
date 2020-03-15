@@ -2,13 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local select, tonumber, pairs = select, tonumber, pairs
 local floor = floor
 local format = format
---WoW API / Variables
-local hooksecurefunc = hooksecurefunc
+
 local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
 local IsAddOnLoaded = IsAddOnLoaded
@@ -314,14 +312,12 @@ function AB:UpdateFlyouts()
 	for i=1, GetNumFlyouts() do
 		local x = GetFlyoutID(i)
 		local _, _, numSlots, isKnown = GetFlyoutInfo(x)
-		if (isKnown) then
+		if isKnown then
 			for k=1, numSlots do
-				local b = _G["SpellFlyoutButton"..k]
-				if _G.SpellFlyout:IsShown() and b and b:IsShown() then
-					if not b.hookedFlyout then
-						b:HookScript("OnEnter", function(b) AB:BindUpdate(b, "FLYOUT"); end)
-						b.hookedFlyout = true
-					end
+				local b = _G.SpellFlyout:IsShown() and _G["SpellFlyoutButton"..k]
+				if b and b:IsShown() and not b.hookedFlyout then
+					b:HookScript("OnEnter", function(btn) AB:BindUpdate(btn, "FLYOUT") end)
+					b.hookedFlyout = true
 				end
 			end
 		end
@@ -331,8 +327,7 @@ end
 function AB:RegisterMacro(addon)
 	if addon == "Blizzard_MacroUI" then
 		for i=1, MAX_ACCOUNT_MACROS do
-			local b = _G["MacroButton"..i]
-			b:HookScript("OnEnter", function(b) AB:BindUpdate(b, "MACRO"); end)
+			_G["MacroButton"..i]:HookScript("OnEnter", function(btn) AB:BindUpdate(btn, "MACRO") end)
 		end
 	end
 end
@@ -423,24 +418,23 @@ function AB:LoadKeyBinder()
 	local perCharCheck = CreateFrame("CheckButton", f:GetName()..'CheckButton', f, "OptionsCheckButtonTemplate")
 	_G[perCharCheck:GetName() .. "Text"]:SetText(CHARACTER_SPECIFIC_KEYBINDINGS)
 
-	perCharCheck:SetScript("OnShow", function(self)
-		self:SetChecked(GetCurrentBindingSet() == 2)
+	perCharCheck:SetScript("OnShow", function(checkBtn)
+		checkBtn:SetChecked(GetCurrentBindingSet() == 2)
 	end)
 
 	perCharCheck:SetScript("OnClick", function()
-		if ( AB.bindingsChanged ) then
+		if AB.bindingsChanged then
 			E:StaticPopup_Show("CONFIRM_LOSE_BINDING_CHANGES")
 		else
 			AB:ChangeBindingProfile()
 		end
 	end)
 
-	perCharCheck:SetScript("OnEnter", function(self)
-		_G.GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+	perCharCheck:SetScript("OnLeave", GameTooltip_Hide)
+	perCharCheck:SetScript("OnEnter", function(checkBtn)
+		_G.GameTooltip:SetOwner(checkBtn, "ANCHOR_RIGHT")
 		_G.GameTooltip:SetText(CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP, nil, nil, nil, nil, 1)
 	end)
-
-	perCharCheck:SetScript("OnLeave", GameTooltip_Hide)
 
 	local save = CreateFrame("Button", f:GetName()..'SaveButton', f, "OptionsButtonTemplate")
 	_G[save:GetName() .. "Text"]:SetText(L["Save"])
