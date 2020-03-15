@@ -752,12 +752,13 @@ function TT:SetTooltipFonts()
 	local font = E.Libs.LSM:Fetch("font", E.db.tooltip.font)
 	local fontOutline = E.db.tooltip.fontOutline
 	local headerSize = E.db.tooltip.headerFontSize
-	local textSize = E.db.tooltip.textFontSize
 	local smallTextSize = E.db.tooltip.smallTextFontSize
+	local textSize = E.db.tooltip.textFontSize
 
 	_G.GameTooltipHeaderText:FontTemplate(font, headerSize, fontOutline)
-	_G.GameTooltipText:FontTemplate(font, textSize, fontOutline)
 	_G.GameTooltipTextSmall:FontTemplate(font, smallTextSize, fontOutline)
+	_G.GameTooltipText:FontTemplate(font, textSize, fontOutline)
+
 	if GameTooltip.hasMoney then
 		for i = 1, GameTooltip.numMoneyFrames do
 			_G["GameTooltipMoneyFrame"..i.."PrefixText"]:FontTemplate(font, textSize, fontOutline)
@@ -774,24 +775,15 @@ function TT:SetTooltipFonts()
 		_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
 	end
 
-	--These show when you compare items ("Currently Equipped", name of item, item level)
-	--Since they appear at the top of the tooltip, we set it to use the header font size.
-	_G.ShoppingTooltip1TextLeft1:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextLeft2:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextLeft3:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextLeft4:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextRight1:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextRight2:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextRight3:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip1TextRight4:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextLeft1:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextLeft2:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextLeft3:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextLeft4:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextRight1:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextRight2:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextRight3:FontTemplate(font, headerSize, fontOutline)
-	_G.ShoppingTooltip2TextRight4:FontTemplate(font, headerSize, fontOutline)
+	-- Comparison Tooltips should use smallTextSize
+	for _, tt in ipairs(GameTooltip.shoppingTooltips) do
+		for i=1, tt:GetNumRegions() do
+			local region = select(i, tt:GetRegions())
+			if region:IsObjectType('FontString') then
+				region:FontTemplate(font, smallTextSize, fontOutline)
+			end
+		end
+	end
 end
 
 --This changes the growth direction of the toast frame depending on position of the mover
