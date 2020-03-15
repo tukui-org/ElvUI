@@ -334,7 +334,7 @@ function S:CharacterFrame()
 		local highlight = slot:GetHighlightTexture()
 		highlight:SetTexture(E.Media.Textures.White8x8)
 		highlight:SetVertexColor(1, 1, 1, .25)
-		highlight:SetAllPoints()
+		highlight:SetInside()
 	end)
 
 	--Give character frame model backdrop it's color back
