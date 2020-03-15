@@ -359,11 +359,6 @@ function AB:LoadKeyBinder()
 	bind:Hide()
 
 	self:SecureHookScript(_G.GameTooltip, "OnUpdate", "Tooltip_OnUpdate")
-	hooksecurefunc(_G.GameTooltip, "Hide", function(tooltip)
-		if not tooltip:IsForbidden() then
-			for _, tt in pairs(tooltip.shoppingTooltips) do tt:Hide() end
-		end
-	end)
 
 	bind:SetScript('OnEnter', function(b) local db = b.button:GetParent().db if db and db.mouseover then AB:Button_OnEnter(b.button) end end)
 	bind:SetScript("OnLeave", function(b) AB:BindHide(); local db = b.button:GetParent().db if db and db.mouseover then AB:Button_OnLeave(b.button) end end)
