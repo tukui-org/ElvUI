@@ -12,8 +12,11 @@ E.Media = {
 local format = format
 local westAndRU = LSM.LOCALE_BIT_ruRU + LSM.LOCALE_BIT_western
 
-function E:TextureString(texture, data)
-	return format('|T%s%s|t', texture, data or '')
+do
+	local t, d = '|T%s%s|t', ''
+	function E:TextureString(texture, data)
+		return format(t, texture, data or d)
+	end
 end
 
 local MediaKey = {
