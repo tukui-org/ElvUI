@@ -1130,6 +1130,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[307218] = Defaults(), -- Twilight Decimator
 		[307284] = Defaults(), -- Terrifying Presence
 		[307421] = Defaults(), -- Annihilation
+		[307019] = Defaults(), -- Void Corruption [tank]
 		-- Raden
 		[306819] = Defaults(), -- Nullifying Strike [tank]
 		[306279] = Defaults(), -- Insanity Exposure
