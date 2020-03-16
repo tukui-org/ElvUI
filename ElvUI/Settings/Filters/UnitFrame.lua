@@ -1273,7 +1273,7 @@ P.unitframe.filters = {
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	-- Warlock
-	[198590] = 6, -- Drain Soul
+	[198590] = 5, -- Drain Soul
 	[755]    = 6, -- Health Funnel
 	[234153] = 6, -- Drain Life
 	-- Priest
