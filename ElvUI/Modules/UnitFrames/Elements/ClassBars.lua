@@ -384,6 +384,16 @@ local function PostUpdateRunes(self)
 	else
 		self:Hide()
 	end
+
+	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
+	for i=1, #self do
+		if custom_backdrop then
+			self[i].bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+		else
+			local r, g, b = self[i]:GetStatusBarColor()
+			self[i].bg:SetVertexColor(r * .35, g * .35, b * .35)
+		end
+	end
 end
 
 function UF:Construct_DeathKnightResourceBar(frame)
