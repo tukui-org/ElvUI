@@ -225,7 +225,7 @@ L["One or more of the changes you have made will effect all characters using thi
 L["P"] = "P"
 L["Party Frames"] = "Gruppenfenster"
 L["Pending"] = "Ausstehend"
-L["Pet Bar"] = "Begleisterleiste"
+L["Pet Bar"] = "Begleiterleiste"
 L["Pet Castbar"] = "Begleiter Zauberleiste"
 L["Pet Frame"] = "Begleiterfenster"
 L["PetTarget Frame"] = "Begleiter-Ziel Fenster"
