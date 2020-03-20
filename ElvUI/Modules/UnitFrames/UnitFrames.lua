@@ -871,11 +871,10 @@ function UF:HandleSmartVisibility()
 				local maxGroups = E:Round(maxPlayers/5)
 				if E.db.unitframe.units.raid.numGroups ~= maxGroups and maxGroups > 0 then
 					E.db.unitframe.units.raid.numGroups = maxGroups
-					UF:CreateAndUpdateHeaderGroup('raid')
 				end
-			elseif raid40 then
-				UF:CreateAndUpdateHeaderGroup('raid40')
 			end
+
+			UF:UpdateAllHeaders()
 		end
 	end
 end
