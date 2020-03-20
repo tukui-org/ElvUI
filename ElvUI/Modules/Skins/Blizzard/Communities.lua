@@ -219,6 +219,7 @@ function S:Blizzard_Communities()
 		end
 	end
 
+	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubFilterDropdown)
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown)
 
 	ClubFinderGuildFinderFrame.OptionsList.SearchBox:Size(118, 20)
@@ -251,6 +252,7 @@ function S:Blizzard_Communities()
 		end
 	end
 
+	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.ClubFilterDropdown)
 	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SortByDropdown)
 
 	S:HandleButton(ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search)
