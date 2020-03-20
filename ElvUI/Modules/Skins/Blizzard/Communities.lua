@@ -219,7 +219,7 @@ function S:Blizzard_Communities()
 		end
 	end
 
-	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubFocusDropdown)
+	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubFilterDropdown)
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown)
 
 	ClubFinderGuildFinderFrame.OptionsList.SearchBox:Size(118, 20)
@@ -252,7 +252,7 @@ function S:Blizzard_Communities()
 		end
 	end
 
-	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.ClubFocusDropdown)
+	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.ClubFilterDropdown)
 	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SortByDropdown)
 
 	S:HandleButton(ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search)
@@ -566,6 +566,7 @@ function S:Blizzard_Communities()
 	S:HandleCheckBox(RecruitmentDialog.ShouldListClub.Button)
 	S:HandleDropDownBox(RecruitmentDialog.ClubFocusDropdown, 220)
 	S:HandleDropDownBox(RecruitmentDialog.LookingForDropdown, 220)
+	S:HandleDropDownBox(RecruitmentDialog.LanguageDropdown, 190)
 	RecruitmentDialog.RecruitmentMessageFrame:StripTextures()
 	S:HandleEditBox(RecruitmentDialog.RecruitmentMessageFrame.RecruitmentMessageInput)
 	S:HandleCheckBox(RecruitmentDialog.MaxLevelOnly.Button)
