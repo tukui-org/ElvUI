@@ -7,9 +7,11 @@ local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 --WoW API / Variables
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
 local C_GuildInfo_GetGuildNewsInfo = C_GuildInfo.GetGuildNewsInfo
+local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local BATTLENET_FONT_COLOR = BATTLENET_FONT_COLOR
 local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
 local FRIENDS_WOW_BACKGROUND_COLOR = FRIENDS_WOW_BACKGROUND_COLOR
+local GetClassInfo = GetClassInfo
 local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -80,6 +82,17 @@ local function HandleCommunitiesButtons(self, color)
 	local highlight = self:GetHighlightTexture()
 	highlight:SetColorTexture(1, 1, 1, 0.3)
 	highlight:SetInside(self.bg)
+end
+
+local function ColorMemberName(self, info)
+	if not info then return end
+
+	local class = self.Class
+	local classInfo = select(2, GetClassInfo(info.classID))
+	if classInfo then
+		local tcoords = CLASS_ICON_TCOORDS[classInfo]
+		class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
+	end
 end
 
 function S:Blizzard_Communities()
@@ -713,6 +726,58 @@ function S:Blizzard_Communities()
 	InvitationFrame:SetTemplate()
 	S:HandleButton(InvitationFrame.AcceptButton)
 	S:HandleButton(InvitationFrame.DeclineButton)
+
+	-- ApplicationList
+	local ApplicantList = CommunitiesFrame.ApplicantList
+	ApplicantList:StripTextures()
+	ApplicantList.ColumnDisplay:StripTextures()
+	S:HandleScrollBar(ApplicantList.ListScrollFrame.scrollBar)
+
+	ApplicantList:CreateBackdrop()
+	ApplicantList.backdrop:Point("TOPLEFT", 0, 0)
+	ApplicantList.backdrop:Point("BOTTOMRIGHT", -15, 0)
+
+	hooksecurefunc(ApplicantList, "BuildList", function(self)
+		local columnDisplay = self.ColumnDisplay
+		for i = 1, columnDisplay:GetNumChildren() do
+			local child = select(i, columnDisplay:GetChildren())
+			if not child.IsSkinned then
+				child:StripTextures()
+
+				child:CreateBackdrop()
+				child.backdrop:Point("TOPLEFT", 4, -2)
+				child.backdrop:Point("BOTTOMRIGHT", 0, 2)
+
+				child:SetHighlightTexture(E.media.glossTex)
+				local hl = child:GetHighlightTexture()
+				hl:SetVertexColor(1, 1, 1, .25)
+				hl:SetInside(child.backdrop)
+
+				child.IsSkinned = true
+			end
+		end
+
+		local buttons = self.ListScrollFrame.buttons
+		for i = 1, #buttons do
+			local button = buttons[i]
+			if not button.IsSkinned then
+				button:SetPoint("LEFT", ApplicantList.backdrop, E.mult, 0)
+				button:SetPoint("RIGHT", ApplicantList.backdrop, -E.mult, 0)
+
+				button:SetHighlightTexture(E.media.glossTex)
+				button:GetHighlightTexture():SetVertexColor(1, 1, 1, .25)
+
+				button.InviteButton:SetSize(66, 18)
+				button.CancelInvitationButton:SetSize(20, 18)
+				S:HandleButton(button.InviteButton)
+				S:HandleButton(button.CancelInvitationButton)
+
+				hooksecurefunc(button, "UpdateMemberInfo", ColorMemberName)
+
+				button.IsSkinned = true
+			end
+		end
+	end)
 end
 
 S:AddCallbackForAddon('Blizzard_Communities')
