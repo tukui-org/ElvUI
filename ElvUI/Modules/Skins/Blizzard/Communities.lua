@@ -748,7 +748,7 @@ function S:Blizzard_Communities()
 				child.backdrop:Point("TOPLEFT", 4, -2)
 				child.backdrop:Point("BOTTOMRIGHT", 0, 2)
 
-				child:SetHighlightTexture(E.media.glossTex)
+				child:SetHighlightTexture(E.media.normTex)
 				local hl = child:GetHighlightTexture()
 				hl:SetVertexColor(1, 1, 1, .25)
 				hl:SetInside(child.backdrop)
@@ -764,7 +764,7 @@ function S:Blizzard_Communities()
 				button:SetPoint("LEFT", ApplicantList.backdrop, E.mult, 0)
 				button:SetPoint("RIGHT", ApplicantList.backdrop, -E.mult, 0)
 
-				button:SetHighlightTexture(E.media.glossTex)
+				button:SetHighlightTexture(E.media.normTex)
 				button:GetHighlightTexture():SetVertexColor(1, 1, 1, .25)
 
 				button.InviteButton:SetSize(66, 18)
