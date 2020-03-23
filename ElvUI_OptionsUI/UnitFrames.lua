@@ -2928,16 +2928,19 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 				name = L["Block Target Glow"],
 				desc = L["Forces Target Glow to be disabled for these frames"],
 			},
-			hideonnpc = {
-				type = 'toggle',
-				order = 15,
-				name = L["Text Toggle On NPC"],
-				desc = L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."],
-				get = function(info) return E.db.unitframe.units[groupName].power.hideonnpc end,
-				set = function(info, value) E.db.unitframe.units[groupName].power.hideonnpc = value; updateFunc(UF, groupName, numUnits) end,
-			},
 		},
 	}
+
+	if groupName ~= 'tank' and groupName ~= 'assist' then
+		config.args.hideonnpc = {
+			type = 'toggle',
+			order = 15,
+			name = L["Text Toggle On NPC"],
+			desc = L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."],
+			get = function(info) return E.db.unitframe.units[groupName].power.hideonnpc end,
+			set = function(info, value) E.db.unitframe.units[groupName].power.hideonnpc = value; updateFunc(UF, groupName, numUnits) end,
+		}
+	end
 
 	if groupName ~= 'party' and groupName ~= 'raid' and groupName ~= 'raid40' and groupName ~= 'raidpet' and groupName ~= 'assist' and groupName ~= 'tank' then
 		config.args.smartAuraPosition = {
