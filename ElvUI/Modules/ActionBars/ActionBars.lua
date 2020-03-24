@@ -243,7 +243,9 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
-		self:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars) or nil)
+		if not E.private.actionbar.masque.actionbars then
+			AB:StyleButton(button)
+		end
 	end
 
 	if bar.db.enabled or not bar.initialized then
@@ -251,7 +253,7 @@ function AB:PositionAndSizeBar(barName)
 			bar:SetAlpha(bar.db.alpha)
 		end
 
-		local page = self:GetPage(barName, self.barDefaults[barName].page, self.barDefaults[barName].conditions)
+		local page = AB:GetPage(barName, AB.barDefaults[barName].page, AB.barDefaults[barName].conditions)
 		if AB.barDefaults['bar'..bar.id].conditions:find("[form,noform]") then
 			bar:SetAttribute("hasTempBar", true)
 
