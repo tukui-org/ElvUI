@@ -243,9 +243,7 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
-		if not E.private.actionbar.masque.actionbars then
-			AB:StyleButton(button)
-		end
+		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
 
 	if bar.db.enabled or not bar.initialized then
