@@ -877,6 +877,7 @@ function E:Config_WindowClosed()
 		self.originalClose:Show()
 
 		E:StopElasticize(self.leftHolder.logo)
+		E:StopElasticize(self.leftHolder.topLogo)
 
 		E:Config_RestoreOldPosition(self.topHolder.version)
 		E:Config_RestoreOldPosition(self.obj.content)
