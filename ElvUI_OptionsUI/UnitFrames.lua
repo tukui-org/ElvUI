@@ -2054,13 +2054,6 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				order = 7,
 				name = L["Reverse Fill"],
 			},
-			autoHide = {
-				order = 8,
-				type = 'toggle',
-				name = L["Auto-Hide"],
-				desc = L["Requires the bar to be detached."],
-				hidden = function() return not hasDetatchOption end
-			},
 			configureButton = {
 				order = 10,
 				name = L["Coloring"],
@@ -2111,16 +2104,22 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				order = 90,
 				name = L["Detach From Frame"],
 			}
+			config.args.autoHide = {
+				order = 91,
+				type = 'toggle',
+				name = L["Auto-Hide"],
+				hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
+			}
 			config.args.detachedWidth = {
 				type = 'range',
-				order = 91,
+				order = 92,
 				name = L["Detached Width"],
 				hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
 				min = 15, max = 1000, step = 1,
 			}
 			config.args.parent = {
 				type = 'select',
-				order = 92,
+				order = 93,
 				name = L["Parent"],
 				desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
 				hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
