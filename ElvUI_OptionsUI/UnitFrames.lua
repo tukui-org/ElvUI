@@ -2058,6 +2058,8 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				order = 8,
 				type = 'toggle',
 				name = L["Auto-Hide"],
+				desc = L["Requires the bar to be detached."],
+				hidden = function() return not hasDetatchOption end
 			},
 			configureButton = {
 				order = 10,
