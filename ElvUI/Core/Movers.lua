@@ -74,7 +74,7 @@ local coordFrame = CreateFrame('Frame')
 coordFrame:SetScript('OnUpdate', UpdateCoords)
 coordFrame:Hide()
 
-local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, shouldDisable, configString)
+local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, shouldDisable, configString, perferCorners)
 	if not parent then return end --If for some reason the parent isnt loaded yet
 
 	local holder = E.CreatedMovers[name]
@@ -115,6 +115,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f.snapOffset = snapOffset or -2
 	f.shouldDisable = shouldDisable
 	f.configString = configString
+	f.perferCorners = perferCorners
 
 	holder.mover = f
 	parent.mover = f
@@ -252,15 +253,12 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 end
 
 function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
-	local screenWidth, screenHeight, screenCenter = E.UIParent:GetRight(), E.UIParent:GetTop(), E.UIParent:GetCenter()
+	local screenWidth, screenHeight = E.UIParent:GetRight(), E.UIParent:GetTop()
+	local screenCenterX, screenCenterY = E.UIParent:GetCenter()
 	local x, y = mover:GetCenter()
 
-	local LEFT = screenWidth / 3
-	local RIGHT = screenWidth * 2 / 3
-	local TOP = screenHeight / 2
 	local point, nudgePoint, nudgeInversePoint
-
-	if y >= TOP then
+	if y >= screenCenterY then -- TOP: 1080p = 540
 		point = 'TOP'
 		nudgePoint = 'TOP'
 		nudgeInversePoint = 'BOTTOM'
@@ -272,18 +270,18 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 		y = mover:GetBottom()
 	end
 
-	if x >= RIGHT then
+	if x >= (screenWidth * 2 / 3) then -- RIGHT: 1080p = 1280
 		point = point..'RIGHT'
 		nudgePoint = 'RIGHT'
 		nudgeInversePoint = 'LEFT'
 		x = mover:GetRight() - screenWidth
-	elseif x <= LEFT then
+	elseif x <= (screenWidth / 3) or mover.perferCorners then -- LEFT: 1080p = 640
 		point = point..'LEFT'
 		nudgePoint = 'LEFT'
 		nudgeInversePoint = 'RIGHT'
 		x = mover:GetLeft()
 	else
-		x = x - screenCenter
+		x = x - screenCenterX
 	end
 
 	--Update coordinates if nudged
@@ -331,7 +329,7 @@ function E:SaveMoverDefaultPosition(name)
 	end
 end
 
-function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes, shouldDisable, configString)
+function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes, shouldDisable, configString, perferCorners)
 	if not moverTypes then moverTypes = 'ALL,GENERAL' end
 
 	local holder = E.CreatedMovers[name]
@@ -347,7 +345,7 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		E.CreatedMovers[name] = holder
 	end
 
-	UpdateMover(parent, name, text, overlay, snapoffset, postdrag, shouldDisable, configString)
+	UpdateMover(parent, name, text, overlay, snapoffset, postdrag, shouldDisable, configString, perferCorners)
 end
 
 function E:ToggleMovers(show, moverType)
@@ -452,6 +450,6 @@ end
 
 function E:LoadMovers()
 	for n, t in pairs(E.CreatedMovers) do
-		UpdateMover(t.parent, n, t.overlay, t.snapoffset, t.postdrag, t.shouldDisable, t.configString)
+		UpdateMover(t.parent, n, t.overlay, t.snapoffset, t.postdrag, t.shouldDisable, t.configString, t.perferCorners)
 	end
 end
