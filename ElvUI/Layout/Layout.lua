@@ -61,19 +61,17 @@ function LO:TopPanelVisibility()
 	end
 end
 
-local function ChatPanelLeft_OnFade()
-	_G.LeftChatPanel:Hide()
-end
-
-local function ChatPanelRight_OnFade()
-	_G.RightChatPanel:Hide()
+local function finishFade(self)
+	if self:GetAlpha() == 0 then
+		self:Hide()
+	end
 end
 
 local function ChatButton_OnEnter(self)
 	if E.db[self.parent:GetName()..'Faded'] then
 		self.parent:Show()
-		UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1)
-		UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+		E:UIFrameFadeIn(self.parent, 0.25, self.parent:GetAlpha(), 1)
+		E:UIFrameFadeIn(self, 0.25, self:GetAlpha(), 1)
 	end
 
 	if not self.parent.editboxforced then
@@ -87,25 +85,25 @@ end
 
 local function ChatButton_OnLeave(self)
 	if E.db[self.parent:GetName()..'Faded'] then
-		UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0)
-		UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
-		self.parent.fadeInfo.finishedFunc = self.parent.fadeFunc
+		E:UIFrameFadeOut(self.parent, 0.25, self.parent:GetAlpha(), 0)
+		E:UIFrameFadeOut(self, 0.25, self:GetAlpha(), 0)
 	end
+
 	_G.GameTooltip:Hide()
 end
 
 local function ChatButton_OnClick(self)
 	_G.GameTooltip:Hide()
 
-	if E.db[self.parent:GetName()..'Faded'] then
-		E.db[self.parent:GetName()..'Faded'] = nil
-		UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1)
-		UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+	local name = self.parent:GetName()..'Faded'
+	if E.db[name] then
+		E.db[name] = nil
+		E:UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1)
+		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 	else
-		E.db[self.parent:GetName()..'Faded'] = true
-		UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0)
-		UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
-		self.parent.fadeInfo.finishedFunc = self.parent.fadeFunc
+		E.db[name] = true
+		E:UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0)
+		E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
 	end
 end
 
@@ -313,8 +311,8 @@ function LO:CreateChatPanels()
 	lchat:CreateBackdrop('Transparent')
 	lchat.backdrop.ignoreBackdropColors = true
 	lchat.backdrop:SetAllPoints()
+	lchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = lchat, finishedFuncKeep = true}
 	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, nil, nil, nil, 'chat,general')
-	local LeftChatPanel = _G.LeftChatPanel
 
 	--Background Texture
 	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
@@ -323,7 +321,7 @@ function LO:CreateChatPanels()
 	lchat.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)
 
 	--Left Chat Tab
-	local lchattab = CreateFrame('Frame', 'LeftChatTab', LeftChatPanel)
+	local lchattab = CreateFrame('Frame', 'LeftChatTab', lchat)
 	lchattab:Point('TOPLEFT', lchat, 'TOPLEFT', SPACING, -SPACING)
 	lchattab:Point('TOPRIGHT', lchat, 'TOPRIGHT', -SPACING, -SPACING)
 	lchattab:Point('BOTTOMRIGHT', lchat, 'TOPRIGHT', -SPACING, -(SPACING + PANEL_HEIGHT))
@@ -331,7 +329,7 @@ function LO:CreateChatPanels()
 	lchattab:SetTemplate(E.db.chat.panelTabTransparency == true and 'Transparent' or 'Default', true)
 
 	--Left Chat Data Panel
-	local lchatdp = CreateFrame('Frame', 'LeftChatDataPanel', LeftChatPanel)
+	local lchatdp = CreateFrame('Frame', 'LeftChatDataPanel', lchat)
 	lchatdp:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING + SIDE_BUTTON_WIDTH, SPACING)
 	lchatdp:Point('BOTTOMRIGHT', lchat, 'BOTTOMRIGHT', -SPACING, SPACING)
 	lchatdp:Point('TOPRIGHT', lchat, 'BOTTOMRIGHT', -SPACING, (SPACING + PANEL_HEIGHT))
@@ -342,8 +340,9 @@ function LO:CreateChatPanels()
 
 	--Left Chat Toggle Button
 	local lchattb = CreateFrame('Button', 'LeftChatToggleButton', E.UIParent)
-	lchattb.parent = LeftChatPanel
-	LeftChatPanel.fadeFunc = ChatPanelLeft_OnFade
+	lchattb.parent = lchat
+	lchattb.OnEnter = ChatButton_OnEnter
+	lchattb.OnLeave = ChatButton_OnLeave
 	lchattb:Point('TOPRIGHT', lchatdp, 'TOPLEFT', E.Border - E.Spacing*3, 0)
 	lchattb:Point('TOPLEFT', lchatdp, 'TOPLEFT', -E.Border - E.Spacing*3 - SIDE_BUTTON_WIDTH, 0)
 	lchattb:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING, SPACING)
@@ -373,8 +372,8 @@ function LO:CreateChatPanels()
 	rchat:CreateBackdrop('Transparent')
 	rchat.backdrop.ignoreBackdropColors = true
 	rchat.backdrop:SetAllPoints()
+	rchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = rchat, finishedFuncKeep = true}
 	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, nil, nil, nil, 'chat,general')
-	local RightChatPanel = _G.RightChatPanel
 
 	--Background Texture
 	rchat.tex = rchat:CreateTexture(nil, 'OVERLAY')
@@ -383,7 +382,7 @@ function LO:CreateChatPanels()
 	rchat.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)
 
 	--Right Chat Tab
-	local rchattab = CreateFrame('Frame', 'RightChatTab', RightChatPanel)
+	local rchattab = CreateFrame('Frame', 'RightChatTab', rchat)
 	rchattab:Point('TOPRIGHT', rchat, 'TOPRIGHT', -SPACING, -SPACING)
 	rchattab:Point('TOPLEFT', rchat, 'TOPLEFT', SPACING, -SPACING)
 	rchattab:Point('BOTTOMLEFT', rchat, 'TOPLEFT', SPACING, -(SPACING + PANEL_HEIGHT))
@@ -391,7 +390,7 @@ function LO:CreateChatPanels()
 	rchattab:SetTemplate(E.db.chat.panelTabTransparency == true and 'Transparent' or 'Default', true)
 
 	--Right Chat Data Panel
-	local rchatdp = CreateFrame('Frame', 'RightChatDataPanel', RightChatPanel)
+	local rchatdp = CreateFrame('Frame', 'RightChatDataPanel', rchat)
 	rchatdp:Point('BOTTOMLEFT', rchat, 'BOTTOMLEFT', SPACING, SPACING)
 	rchatdp:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -SPACING-SIDE_BUTTON_WIDTH, SPACING)
 	rchatdp:Point('TOPRIGHT', rchat, 'BOTTOMRIGHT', -(SIDE_BUTTON_SPACING + SIDE_BUTTON_WIDTH), SPACING + PANEL_HEIGHT)
@@ -401,8 +400,7 @@ function LO:CreateChatPanels()
 
 	--Right Chat Toggle Button
 	local rchattb = CreateFrame('Button', 'RightChatToggleButton', E.UIParent)
-	rchattb.parent = RightChatPanel
-	RightChatPanel.fadeFunc = ChatPanelRight_OnFade
+	rchattb.parent = rchat
 	rchattb:Point('TOPLEFT', rchatdp, 'TOPRIGHT', -E.Border + E.Spacing*3, 0)
 	rchattb:Point('TOPRIGHT', rchatdp, 'TOPRIGHT', E.Border + E.Spacing*3 + SIDE_BUTTON_WIDTH, 0)
 	rchattb:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -SPACING, SPACING)
@@ -426,12 +424,12 @@ function LO:CreateChatPanels()
 	--Load Settings
 	if E.db.LeftChatPanelFaded then
 		_G.LeftChatToggleButton:SetAlpha(0)
-		LeftChatPanel:Hide()
+		lchat:Hide()
 	end
 
 	if E.db.RightChatPanelFaded then
 		_G.RightChatToggleButton:SetAlpha(0)
-		RightChatPanel:Hide()
+		rchat:Hide()
 	end
 
 	self:ToggleChatPanels()

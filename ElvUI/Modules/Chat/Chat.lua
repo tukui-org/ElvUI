@@ -602,22 +602,24 @@ function CH:StyleChat(frame)
 	editbox:Hide()
 
 	editbox:HookScript("OnEditFocusGained", function(editBox)
-		editBox:Show()
 		if not LeftChatPanel:IsShown() then
 			LeftChatPanel.editboxforced = true
-			LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton)
+			LeftChatToggleButton:OnEnter()
+			editBox:Show()
 		end
 	end)
+
 	editbox:HookScript("OnEditFocusLost", function(editBox)
 		if LeftChatPanel.editboxforced then
 			LeftChatPanel.editboxforced = nil
+
 			if LeftChatPanel:IsShown() then
-				LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton)
+				LeftChatToggleButton:OnLeave()
+				editBox:Hide()
 			end
 		end
 
 		editBox.historyIndex = 0
-		editBox:Hide()
 	end)
 
 	for _, text in pairs(ElvCharacterDB.ChatEditHistory) do
