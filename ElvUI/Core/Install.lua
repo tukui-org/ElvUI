@@ -339,7 +339,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 				E.db.unitframe.units.target.height = 82
 				E.db.unitframe.units.target.infoPanel.enable = true
 				E.db.unitframe.units.target.name.attachTextTo = 'InfoPanel'
-				E.db.unitframe.units.target.name.text_format = '[namecolor][name]'
 				E.db.unitframe.units.target.orientation = 'LEFT'
 				E.db.unitframe.units.target.power.attachTextTo = 'InfoPanel'
 				E.db.unitframe.units.target.power.height = 22
