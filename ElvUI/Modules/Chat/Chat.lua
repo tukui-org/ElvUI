@@ -542,7 +542,7 @@ function CH:StyleChat(frame)
 			end
 		end
 
-		if strlen(text) == 4 then
+		if len == 4 then
 			if text == "/tt " then
 				local unitname, realm = UnitName("target")
 				if unitname then unitname = gsub(unitname, " ", "") end
