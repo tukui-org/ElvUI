@@ -224,9 +224,8 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 			end
 		end
 
-		name = name .. ((UnitIsAFK(unit) and AFK_LABEL) or (UnitIsDND(unit) and DND_LABEL) or '')
-
-		_G.GameTooltipTextLeft1:SetFormattedText("|c%s%s|r", nameColor.colorStr, name or UNKNOWN)
+		local awayText = UnitIsAFK(unit) and AFK_LABEL or UnitIsDND(unit) and DND_LABEL or ''
+		_G.GameTooltipTextLeft1:SetFormattedText("|c%s%s%s|r", nameColor.colorStr, name or UNKNOWN, awayText)
 
 		local lineOffset = 2
 		if guildName then

@@ -520,17 +520,19 @@ function CH:StyleChat(frame)
 
 	local function OnTextChanged(editBox)
 		local text = editBox:GetText()
+		local len = strlen(text)
 
 		if InCombatLockdown() then
 			local MIN_REPEAT_CHARACTERS = E.db.chat.numAllowedCombatRepeat
-			if strlen(text) > MIN_REPEAT_CHARACTERS then
-			local repeatChar = true
-			for i=1, MIN_REPEAT_CHARACTERS, 1 do
-				if strsub(text,(0-i), (0-i)) ~= strsub(text,(-1-i),(-1-i)) then
-					repeatChar = false
-					break
+			if len > MIN_REPEAT_CHARACTERS then
+				local repeatChar = true
+				for i=1, MIN_REPEAT_CHARACTERS, 1 do
+					local first = -1 - i
+					if strsub(text,i,i) ~= strsub(text,first,first) then
+						repeatChar = false
+						break
+					end
 				end
-			end
 				if repeatChar then
 					editBox:Hide()
 					return
@@ -538,23 +540,22 @@ function CH:StyleChat(frame)
 			end
 		end
 
-		if strlen(text) < 5 then
-			if strsub(text, 1, 4) == "/tt " then
+		if len < 5 then
+			local cmd = strsub(text, 1, 4)
+			if cmd == "/tt " then
 				local unitname, realm = UnitName("target")
 				if unitname then unitname = gsub(unitname, " ", "") end
 				if unitname and UnitRealmRelationship("target") ~= LE_REALM_RELATION_SAME then
 					unitname = format("%s-%s", unitname, gsub(realm, " ", ""))
 				end
 				ChatFrame_SendTell((unitname or L["Invalid Target"]), _G.ChatFrame1)
-			end
-
-			if strsub(text, 1, 4) == "/gr " then
+			elseif cmd == "/gr " then
 				editBox:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
 				ChatEdit_ParseText(editBox, 0)
 			end
 		end
 
-		editbox.characterCount:SetText((255 - strlen(text)))
+		editbox.characterCount:SetText(len > 0 and (255 - len) or '')
 	end
 
 	--Work around broken SetAltArrowKeyMode API. Code from Prat and modified by Simpy
@@ -622,7 +623,7 @@ function CH:StyleChat(frame)
 		editBox.historyIndex = 0
 	end)
 
-	for _, text in pairs(ElvCharacterDB.ChatEditHistory) do
+	for _, text in pairs(editbox.historyLines) do
 		editbox:AddHistoryLine(text)
 	end
 

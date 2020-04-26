@@ -2,11 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local LO = E:GetModule('Layout')
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
 local pairs = pairs
---WoW API / Variables
-local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
 local CreateFrame = CreateFrame
 -- GLOBALS: HideLeftChat, HideRightChat, HideBothChat
 
