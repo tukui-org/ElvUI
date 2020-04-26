@@ -518,11 +518,12 @@ function CH:StyleChat(frame)
 	frame:StripTextures(true)
 	_G[name..'ButtonFrame']:Kill()
 
+	local repeatedText
 	local function OnTextChanged(editBox)
 		local text = editBox:GetText()
 		local len = strlen(text)
 
-		if InCombatLockdown() then
+		if (not repeatedText or not strfind(text, repeatedText, 1, true)) and InCombatLockdown() then
 			local MIN_REPEAT_CHARACTERS = E.db.chat.numAllowedCombatRepeat
 			if len > MIN_REPEAT_CHARACTERS then
 				local repeatChar = true
@@ -534,6 +535,7 @@ function CH:StyleChat(frame)
 					end
 				end
 				if repeatChar then
+					repeatedText = text
 					editBox:Hide()
 					return
 				end
@@ -556,6 +558,10 @@ function CH:StyleChat(frame)
 		end
 
 		editbox.characterCount:SetText(len > 0 and (255 - len) or '')
+
+		if repeatedText then
+			repeatedText = nil
+		end
 	end
 
 	--Work around broken SetAltArrowKeyMode API. Code from Prat and modified by Simpy
