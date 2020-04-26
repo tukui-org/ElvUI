@@ -528,7 +528,7 @@ function CH:StyleChat(frame)
 				local repeatChar = true
 				for i=1, MIN_REPEAT_CHARACTERS, 1 do
 					local first = -1 - i
-					if strsub(text,i,i) ~= strsub(text,first,first) then
+					if strsub(text,-i,-i) ~= strsub(text,first,first) then
 						repeatChar = false
 						break
 					end
