@@ -546,7 +546,7 @@ function CH:StyleChat(frame)
 			if text == '/tt ' then
 				local Name, Realm = UnitName('target')
 				if Name then
-					Name = gsub(Name, '%s', '')
+					Name = gsub(Name,'%s','')
 
 					if Realm and Realm ~= '' then
 						Name = format('%s-%s', Name, gsub(Realm,'[%s%-]',''))
