@@ -542,16 +542,15 @@ function CH:StyleChat(frame)
 			end
 		end
 
-		if len < 5 then
-			local cmd = strsub(text, 1, 4)
-			if cmd == "/tt " then
+		if strlen(text) == 4 then
+			if text == "/tt " then
 				local unitname, realm = UnitName("target")
 				if unitname then unitname = gsub(unitname, " ", "") end
 				if unitname and UnitRealmRelationship("target") ~= LE_REALM_RELATION_SAME then
 					unitname = format("%s-%s", unitname, gsub(realm, " ", ""))
 				end
 				ChatFrame_SendTell((unitname or L["Invalid Target"]), _G.ChatFrame1)
-			elseif cmd == "/gr " then
+			elseif text == "/gr " then
 				editBox:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
 				ChatEdit_ParseText(editBox, 0)
 			end
