@@ -543,14 +543,18 @@ function CH:StyleChat(frame)
 		end
 
 		if len == 4 then
-			if text == "/tt " then
-				local unitname, realm = UnitName("target")
-				if unitname then unitname = gsub(unitname, " ", "") end
-				if unitname and UnitRealmRelationship("target") ~= LE_REALM_RELATION_SAME then
-					unitname = format("%s-%s", unitname, gsub(realm, " ", ""))
+			if text == '/tt ' then
+				local Name, Realm = UnitName('target')
+				if Name then
+					Name = gsub(Name, '%s', '')
+
+					if Realm and Realm ~= '' then
+						Name = format('%s-%s', Name, gsub(Realm,'[%s%-]',''))
+					end
 				end
-				ChatFrame_SendTell((unitname or L["Invalid Target"]), _G.ChatFrame1)
-			elseif text == "/gr " then
+
+				ChatFrame_SendTell(Name or L["Invalid Target"], _G.ChatFrame1)
+			elseif text == '/gr ' then
 				editBox:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
 				ChatEdit_ParseText(editBox, 0)
 			end
