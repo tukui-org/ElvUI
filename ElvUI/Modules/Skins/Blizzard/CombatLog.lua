@@ -21,9 +21,10 @@ function S:Blizzard_CombatLog()
 	end
 
 	hooksecurefunc('Blizzard_CombatLog_Update_QuickButtons', function()
-		local index = #_G.Blizzard_CombatLog_Filters.filters
-		local buttonText = _G["CombatLogQuickButtonFrameButton"..index]:GetFontString()
-		buttonText:FontTemplate(nil, nil, 'OUTLINE')
+		for index in ipairs(_G.Blizzard_CombatLog_Filters.filters) do
+			local buttonText = _G["CombatLogQuickButtonFrameButton"..index]:GetFontString()
+			buttonText:FontTemplate(nil, nil, 'OUTLINE')
+		end
 	end)
 
 	local ProgressBar = _G.CombatLogQuickButtonFrame_CustomProgressBar
