@@ -18,7 +18,7 @@ E.DisabledMovers = {}
 local function SizeChanged(frame)
 	if InCombatLockdown() then return end
 
-	-- this solves the group one issue without a delay, patch: 8.3.0 ~Simpy
+	-- this solves the group one issue on unitframes, patch: 8.3.0 ~Simpy
 	E:Delay(0, frame.mover.Size, frame.mover, frame.dirtyWidth or frame:GetWidth(), frame.dirtyHeight or frame:GetHeight())
 	--frame.mover:Size(frame.dirtyWidth or frame:GetWidth(), frame.dirtyHeight or frame:GetHeight())
 end
