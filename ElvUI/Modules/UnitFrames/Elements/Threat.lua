@@ -8,20 +8,20 @@ function UF:Construct_Threat(frame)
 	local threat = CreateFrame("Frame", nil, frame)
 
 	--Main ThreatGlow
-	threat.glow = frame:CreateShadow(nil, true)
-	threat.glow:SetParent(frame)
-	threat.glow:Hide()
+	threat.MainGlow = frame:CreateShadow(nil, true)
+	threat.MainGlow:SetParent(frame)
+	threat.MainGlow:Hide()
 
 	--Secondary ThreatGlow, for power frame when using power offset
-	threat.powerGlow = frame:CreateShadow(nil, true)
-	threat.powerGlow:SetParent(frame)
-	threat.powerGlow:SetFrameStrata('BACKGROUND')
-	threat.powerGlow:Hide()
+	threat.PowerGlow = frame:CreateShadow(nil, true)
+	threat.PowerGlow:SetParent(frame)
+	threat.PowerGlow:SetFrameStrata('BACKGROUND')
+	threat.PowerGlow:Hide()
 
-	threat.texIcon = threat:CreateTexture(nil, 'OVERLAY')
-	threat.texIcon:Size(8)
-	threat.texIcon:SetTexture(E.media.blankTex)
-	threat.texIcon:Hide()
+	threat.TextureIcon = threat:CreateTexture(nil, 'OVERLAY')
+	threat.TextureIcon:Size(8)
+	threat.TextureIcon:SetTexture(E.media.blankTex)
+	threat.TextureIcon:Hide()
 
 	threat.PostUpdate = self.UpdateThreat
 	return threat
@@ -41,29 +41,24 @@ function UF:Configure_Threat(frame)
 
 		if db.threatStyle == "GLOW" then
 			threat:SetFrameStrata('BACKGROUND')
-			threat.glow:SetFrameStrata('BACKGROUND')
-			threat.glow:ClearAllPoints()
+			threat.MainGlow:SetFrameStrata('BACKGROUND')
+			threat.MainGlow:ClearAllPoints()
 			if frame.USE_POWERBAR_OFFSET then
-				if frame.ORIENTATION == "RIGHT" then
-					threat.glow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -frame.SHADOW_SPACING - frame.SPACING, frame.SHADOW_SPACING + frame.SPACING + (frame.USE_CLASSBAR and (frame.USE_MINI_CLASSBAR and 0 or frame.CLASSBAR_HEIGHT) or 0))
-					threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.SPACING, -frame.SHADOW_SPACING - frame.SPACING)
-				else
-					threat.glow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -frame.SHADOW_SPACING - frame.SPACING, frame.SHADOW_SPACING + frame.SPACING + (frame.USE_CLASSBAR and (frame.USE_MINI_CLASSBAR and 0 or frame.CLASSBAR_HEIGHT) or 0))
-					threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.SPACING, -frame.SHADOW_SPACING - frame.SPACING)
-				end
+				threat.MainGlow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -frame.SHADOW_SPACING - frame.SPACING, frame.SHADOW_SPACING + frame.SPACING + (frame.USE_CLASSBAR and (frame.USE_MINI_CLASSBAR and 0 or frame.CLASSBAR_HEIGHT) or 0))
+				threat.MainGlow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.SPACING, -frame.SHADOW_SPACING - frame.SPACING)
 
-				threat.powerGlow:ClearAllPoints()
-				threat.powerGlow:Point("TOPLEFT", frame.Power.backdrop, "TOPLEFT", -frame.SHADOW_SPACING - frame.SPACING, frame.SHADOW_SPACING + frame.SPACING)
-				threat.powerGlow:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.SPACING, -frame.SHADOW_SPACING - frame.SPACING)
+				threat.PowerGlow:ClearAllPoints()
+				threat.PowerGlow:Point("TOPLEFT", frame.Power.backdrop, "TOPLEFT", -frame.SHADOW_SPACING - frame.SPACING, frame.SHADOW_SPACING + frame.SPACING)
+				threat.PowerGlow:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.SPACING, -frame.SHADOW_SPACING - frame.SPACING)
 			else
-				threat.glow:Point("TOPLEFT", -frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
+				threat.MainGlow:Point("TOPLEFT", -frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
 
 				if frame.USE_MINI_POWERBAR then
-					threat.glow:Point("BOTTOMLEFT", -frame.SHADOW_SPACING, -frame.SHADOW_SPACING + (frame.POWERBAR_HEIGHT/2))
-					threat.glow:Point("BOTTOMRIGHT", frame.SHADOW_SPACING, -frame.SHADOW_SPACING + (frame.POWERBAR_HEIGHT/2))
+					threat.MainGlow:Point("BOTTOMLEFT", -frame.SHADOW_SPACING, -frame.SHADOW_SPACING + (frame.POWERBAR_HEIGHT/2))
+					threat.MainGlow:Point("BOTTOMRIGHT", frame.SHADOW_SPACING, -frame.SHADOW_SPACING + (frame.POWERBAR_HEIGHT/2))
 				else
-					threat.glow:Point("BOTTOMLEFT", -frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
-					threat.glow:Point("BOTTOMRIGHT", frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
+					threat.MainGlow:Point("BOTTOMLEFT", -frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
+					threat.MainGlow:Point("BOTTOMRIGHT", frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
 				end
 			end
 		elseif db.threatStyle:match('^ICON') then
@@ -71,8 +66,8 @@ function UF:Configure_Threat(frame)
 			threat:SetFrameLevel(75) --Inset power uses 50, we want it to appear above that
 
 			local point = db.threatStyle:gsub("ICON", "")
-			threat.texIcon:ClearAllPoints()
-			threat.texIcon:Point(point, frame.Health, point)
+			threat.TextureIcon:ClearAllPoints()
+			threat.TextureIcon:Point(point, frame.Health, point)
 		elseif db.threatStyle == "HEALTHBORDER" then
 			if frame.InfoPanel then
 				frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() - 3)
@@ -96,12 +91,12 @@ function UF:UpdateThreat(unit, status, r, g, b)
 
 	if status and status > 1 then
 		if db.threatStyle == 'GLOW' then
-			self.glow:Show()
-			self.glow:SetBackdropBorderColor(r, g, b)
+			self.MainGlow:Show()
+			self.MainGlow:SetBackdropBorderColor(r, g, b)
 
 			if parent.USE_POWERBAR_OFFSET then
-				self.powerGlow:Show()
-				self.powerGlow:SetBackdropBorderColor(r, g, b)
+				self.PowerGlow:Show()
+				self.PowerGlow:SetBackdropBorderColor(r, g, b)
 			end
 		elseif db.threatStyle == 'BORDERS' then
 			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
@@ -122,15 +117,15 @@ function UF:UpdateThreat(unit, status, r, g, b)
 			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 		elseif db.threatStyle == 'INFOPANELBORDER' then
 			parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
-		elseif db.threatStyle ~= 'NONE' and self.texIcon then
-			self.texIcon:Show()
-			self.texIcon:SetVertexColor(r, g, b)
+		elseif db.threatStyle ~= 'NONE' and self.TextureIcon then
+			self.TextureIcon:Show()
+			self.TextureIcon:SetVertexColor(r, g, b)
 		end
 	else
 		r, g, b = unpack(E.media.unitframeBorderColor)
 		if db.threatStyle == 'GLOW' then
-			self.glow:Hide()
-			self.powerGlow:Hide()
+			self.MainGlow:Hide()
+			self.PowerGlow:Hide()
 		elseif db.threatStyle == 'BORDERS' then
 			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 
@@ -150,8 +145,8 @@ function UF:UpdateThreat(unit, status, r, g, b)
 			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 		elseif db.threatStyle == 'INFOPANELBORDER' then
 			parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
-		elseif db.threatStyle ~= 'NONE' and self.texIcon then
-			self.texIcon:Hide()
+		elseif db.threatStyle ~= 'NONE' and self.TextureIcon then
+			self.TextureIcon:Hide()
 		end
 	end
 end
