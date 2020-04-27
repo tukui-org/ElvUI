@@ -142,7 +142,7 @@ E.Options.args.general = {
 					end,
 					values = {
 						["TCHINESE"] = "Traditional Chinese (萬, 億)",
-						["SCHINESE"] = "Simplified Chinese (万, 亿)",
+						["CHINESE"] = "Simplified Chinese (万, 亿)",
 						["ENGLISH"] = "English (K, M, B)",
 						["GERMAN"] = "German (Tsd, Mio, Mrd)",
 						["KOREAN"] = "Korean (천, 만, 억)",
