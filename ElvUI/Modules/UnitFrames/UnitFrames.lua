@@ -6,8 +6,7 @@ UF.LSM = E.Libs.LSM
 --Lua functions
 local _G = _G
 local select, pairs, type, unpack, assert, tostring = select, pairs, type, unpack, assert, tostring
-local min = min
-local tinsert = tinsert
+local min, tinsert, strsub = min, tinsert, strsub
 local strfind, gsub, format = strfind, gsub, format
 --WoW API / Variables
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
@@ -24,7 +23,6 @@ local UnitIsFriend = UnitIsFriend
 local UnitFrame_OnEnter = UnitFrame_OnEnter
 local UnitFrame_OnLeave = UnitFrame_OnLeave
 local UnregisterStateDriver = UnregisterStateDriver
-local GetNumGroupMembers = GetNumGroupMembers
 local PlaySound = PlaySound
 
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
@@ -638,7 +636,17 @@ function UF.groupPrototype:Configure_Groups(self)
 	local direction = db.growthDirection
 	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
 	local UNIT_HEIGHT = db.height + (db.infoPanel and db.infoPanel.enable and db.infoPanel.height or 0)
+
+	local groupBy = db.groupBy
 	local groupSpacing = db.groupSpacing
+	local groupsPerRowCol = db.groupsPerRowCol
+	local horizontalSpacing = db.horizontalSpacing
+	local invertGroupingOrder = db.invertGroupingOrder
+	local raidWideSorting = db.raidWideSorting
+	local showPlayer = db.showPlayer
+	local sortDir = db.sortDir
+	local startFromCenter = db.startFromCenter
+	local verticalSpacing = db.verticalSpacing
 
 	local numGroups = self.numGroups
 	for i=1, numGroups do
@@ -653,85 +661,82 @@ function UF.groupPrototype:Configure_Groups(self)
 			group:SetAttribute("point", point)
 
 			if point == "LEFT" or point == "RIGHT" then
-				group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
+				group:SetAttribute("xOffset", horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
 				group:SetAttribute("yOffset", 0)
-				group:SetAttribute("columnSpacing", db.verticalSpacing)
+				group:SetAttribute("columnSpacing", verticalSpacing)
 			else
 				group:SetAttribute("xOffset", 0)
-				group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
-				group:SetAttribute("columnSpacing", db.horizontalSpacing)
+				group:SetAttribute("yOffset", verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
+				group:SetAttribute("columnSpacing", horizontalSpacing)
 			end
 
 			if not group.isForced then
 				if not group.initialized then
-					group:SetAttribute("startingIndex", db.raidWideSorting and (-min(numGroups * (db.groupsPerRowCol * 5), _G.MAX_RAID_MEMBERS) + 1) or -4)
+					group:SetAttribute("startingIndex", raidWideSorting and (-min(numGroups * (groupsPerRowCol * 5), _G.MAX_RAID_MEMBERS) + 1) or -4)
 					group:Show()
 					group.initialized = true
 				end
 				group:SetAttribute('startingIndex', 1)
 			end
 
-			if db.raidWideSorting and db.invertGroupingOrder then
+			if raidWideSorting and invertGroupingOrder then
 				group:SetAttribute("columnAnchorPoint", INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
 			else
 				group:SetAttribute("columnAnchorPoint", DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
 			end
 
 			if not group.isForced then
-				group:SetAttribute("maxColumns", db.raidWideSorting and numGroups or 1)
-				group:SetAttribute("unitsPerColumn", db.raidWideSorting and (db.groupsPerRowCol * 5) or 5)
-				group:SetAttribute("sortDir", db.sortDir)
-				group:SetAttribute("showPlayer", db.showPlayer)
-				UF.headerGroupBy[db.groupBy](group)
+				group:SetAttribute("maxColumns", raidWideSorting and numGroups or 1)
+				group:SetAttribute("unitsPerColumn", raidWideSorting and (groupsPerRowCol * 5) or 5)
+				group:SetAttribute("sortDir", sortDir)
+				group:SetAttribute("showPlayer", showPlayer)
+				UF.headerGroupBy[groupBy](group)
 			end
 
-			if i == 1 and db.raidWideSorting then
-				group:SetAttribute("groupFilter", "1,2,3,4,5,6,7,8")
-			else
-				group:SetAttribute("groupFilter", tostring(i))
-			end
+			local groupWide = i == 1 and raidWideSorting and strsub("1,2,3,4,5,6,7,8", 1, numGroups + numGroups-1)
+			group:SetAttribute("groupFilter", groupWide or tostring(i))
 		end
 
 		--MATH!! WOOT
 		local point = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
-		if db.raidWideSorting and db.startFromCenter then
+		if raidWideSorting and startFromCenter then
 			point = DIRECTION_TO_GROUP_ANCHOR_POINT["OUT_"..direction]
 		end
 
-		if (i - 1) % db.groupsPerRowCol == 0 then
+		if (i - 1) % groupsPerRowCol == 0 then
 			if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
 				if group then group:Point(point, self, point, 0, height * yMult) end
-				height = height + UNIT_HEIGHT + db.verticalSpacing + groupSpacing
+				height = height + UNIT_HEIGHT + verticalSpacing + groupSpacing
 				newRows = newRows + 1
 			else
 				if group then group:Point(point, self, point, width * xMult, 0) end
-				width = width + db.width + db.horizontalSpacing + groupSpacing
+				width = width + width + horizontalSpacing + groupSpacing
 				newCols = newCols + 1
 			end
 		else
 			if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
 				if newRows == 1 then
 					if group then group:Point(point, self, point, width * xMult, 0) end
-					width = width + ((db.width + db.horizontalSpacing) * 5) + groupSpacing
+					width = width + ((width + horizontalSpacing) * 5) + groupSpacing
 					newCols = newCols + 1
 				elseif group then
-					group:Point(point, self, point, ((((db.width + db.horizontalSpacing) * 5) * ((i-1) % db.groupsPerRowCol))+((i-1) % db.groupsPerRowCol)*groupSpacing) * xMult, (((UNIT_HEIGHT + db.verticalSpacing+groupSpacing) * (newRows - 1))) * yMult)
+					group:Point(point, self, point, ((((width + horizontalSpacing) * 5) * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * xMult, (((UNIT_HEIGHT + verticalSpacing+groupSpacing) * (newRows - 1))) * yMult)
 				end
 			else
 				if newCols == 1 then
 					if group then group:Point(point, self, point, 0, height * yMult) end
-					height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5) + groupSpacing
+					height = height + ((UNIT_HEIGHT + verticalSpacing) * 5) + groupSpacing
 					newRows = newRows + 1
 				elseif group then
-					group:Point(point, self, point, (((db.width + db.horizontalSpacing +groupSpacing) * (newCols - 1))) * xMult, ((((UNIT_HEIGHT + db.verticalSpacing) * 5) * ((i-1) % db.groupsPerRowCol))+((i-1) % db.groupsPerRowCol)*groupSpacing) * yMult)
+					group:Point(point, self, point, (((width + horizontalSpacing +groupSpacing) * (newCols - 1))) * xMult, ((((UNIT_HEIGHT + verticalSpacing) * 5) * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * yMult)
 				end
 			end
 		end
 
 		if height == 0 then
-			height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5) +groupSpacing
+			height = height + ((UNIT_HEIGHT + verticalSpacing) * 5) +groupSpacing
 		elseif width == 0 then
-			width = width + ((db.width + db.horizontalSpacing) * 5) +groupSpacing
+			width = width + ((width + horizontalSpacing) * 5) +groupSpacing
 		end
 	end
 
