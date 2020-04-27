@@ -4,7 +4,7 @@ local Sticky = E.Libs.SimpleSticky
 --Lua functions
 local _G = _G
 local type, unpack, pairs, error = type, unpack, pairs, error
-local format, split, find = format, strsplit, strfind
+local format, split, find, ipairs = format, strsplit, strfind, ipairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
@@ -18,11 +18,9 @@ E.DisabledMovers = {}
 local function SizeChanged(frame)
 	if InCombatLockdown() then return end
 
-	if frame.dirtyWidth and frame.dirtyHeight then
-		frame.mover:Size(frame.dirtyWidth, frame.dirtyHeight)
-	else
-		frame.mover:Size(frame:GetSize())
-	end
+	-- this solves the group one issue without a delay, patch: 8.3.0 ~Simpy
+	E:Delay(0, frame.mover.Size, frame.mover, frame.dirtyWidth or frame:GetWidth(), frame.dirtyHeight or frame:GetHeight())
+	--frame.mover:Size(frame.dirtyWidth or frame:GetWidth(), frame.dirtyHeight or frame:GetHeight())
 end
 
 local function GetPoint(obj)
@@ -310,7 +308,9 @@ end
 
 function E:SetMoverLayoutPositionPoint(holder, name, parent)
 	local layout = E.LayoutMoverPositions[E.db.layoutSetting]
-	holder.point = (layout and layout[name]) or E.LayoutMoverPositions.ALL[name] or GetPoint(parent or _G[name])
+	local layoutPoint = (layout and layout[name]) or E.LayoutMoverPositions.ALL[name]
+	holder.layoutPoint = layoutPoint
+	holder.point = layoutPoint or GetPoint(parent or _G[name])
 
 	if parent then -- CreateMover call
 		holder.parentPoint = {parent:GetPoint()}
@@ -414,15 +414,17 @@ function E:ResetMovers(arg)
 				holder.postdrag(frame, E:GetScreenQuadrant(frame))
 			end
 
-			if not all then
-				if self.db.movers then
+			if all then
+				E:SaveMoverPosition(name)
+			else
+				if holder.layoutPoint then
+					E:SaveMoverPosition(name)
+				elseif self.db.movers then
 					self.db.movers[name] = nil
 				end
 				break
 			end
 		end
-
-		E:SaveMoverPosition(name)
 	end
 end
 

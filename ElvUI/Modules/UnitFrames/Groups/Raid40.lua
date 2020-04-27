@@ -57,17 +57,14 @@ function UF:Construct_Raid40Frames()
 end
 
 function UF:Update_Raid40Header(header, db)
-	header:GetParent().db = db
+	local parent = header:GetParent()
+	parent.db = db
 
-	local headerHolder = header:GetParent()
-	headerHolder.db = db
-
-	if not headerHolder.positioned then
-		headerHolder:ClearAllPoints()
-		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
-		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Raid-40 Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,raid40,generalGroup')
-
-		headerHolder.positioned = true;
+	if not parent.positioned then
+		parent:ClearAllPoints()
+		parent:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
+		E:CreateMover(parent, parent:GetName()..'Mover', L["Raid-40 Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,raid40,generalGroup')
+		parent.positioned = true
 	end
 end
 

@@ -57,17 +57,14 @@ function UF:Construct_RaidFrames()
 end
 
 function UF:Update_RaidHeader(header, db)
-	header:GetParent().db = db
+	local parent = header:GetParent()
+	parent.db = db
 
-	local headerHolder = header:GetParent()
-	headerHolder.db = db
-
-	if not headerHolder.positioned then
-		headerHolder:ClearAllPoints()
-		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
-		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Raid Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,raid,generalGroup')
-
-		headerHolder.positioned = true;
+	if not parent.positioned then
+		parent:ClearAllPoints()
+		parent:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
+		E:CreateMover(parent, parent:GetName()..'Mover', L["Raid Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,raid,generalGroup')
+		parent.positioned = true
 	end
 end
 
