@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+local _G = _G
+local hooksecurefunc = hooksecurefunc
+
 -- credit: Aftermathh
 function S:Blizzard_CombatLog()
 	if E.private.chat.enable ~= true then return end
@@ -17,10 +20,11 @@ function S:Blizzard_CombatLog()
 		Button:Point("BOTTOMRIGHT", FontContainer, "TOPRIGHT", E.PixelMode and 4 or 0, 1)
 	end
 
-	for i = 1, 2 do
-		local TabText = _G["CombatLogQuickButtonFrameButton"..i]:GetFontString()
-		TabText:FontTemplate(nil, nil, 'OUTLINE')
-	end
+	hooksecurefunc('Blizzard_CombatLog_Update_QuickButtons', function()
+		local index = #_G.Blizzard_CombatLog_Filters.filters
+		local buttonText = _G["CombatLogQuickButtonFrameButton"..index]:GetFontString()
+		buttonText:FontTemplate(nil, nil, 'OUTLINE')
+	end)
 
 	local ProgressBar = _G.CombatLogQuickButtonFrame_CustomProgressBar
 	ProgressBar:SetStatusBarTexture(E.media.normTex)
