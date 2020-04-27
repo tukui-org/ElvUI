@@ -269,7 +269,12 @@ do --this can save some main file locals
 		-- Luckyone
 		["Luckyone-LaughingSkull"]      = Clover,
 		["Luckypriest-LaughingSkull"]	= Clover,
-		["Luckymonkas-Blackrock"]   	= Clover,
+		["Luckymonkas-LaughingSkull"]   = Clover,
+		["Luckydk-LaughingSkull"]       = Clover,
+		["Dracojr-LaughingSkull"]       = Clover,
+		["Unluckyone-LaughingSkull"]    = Clover,
+		["Notlucky-LaughingSkull"]      = Clover,
+		["Luckymage-LaughingSkull"]     = Clover,
 		["Luckysabers-Blackrock"]   	= Clover,
 		["Luckydemon-Blackrock"]    	= Clover,
 		["Luckymage-Blackrock"]	    	= Clover,
