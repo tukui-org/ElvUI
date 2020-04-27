@@ -898,6 +898,11 @@ function CH:UpdateChatTabs()
 	end
 end
 
+function CH:RefreshToggleButtons()
+	_G.LeftChatToggleButton:SetAlpha(E.db.LeftChatPanelFaded and E.db.chat.fadeChatToggles and 0 or 1)
+	_G.RightChatToggleButton:SetAlpha(E.db.RightChatPanelFaded and E.db.chat.fadeChatToggles and 0 or 1)
+end
+
 function CH:PositionChat(override)
 	if ((InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override)) then return end
 

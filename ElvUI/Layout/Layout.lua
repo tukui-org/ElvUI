@@ -68,7 +68,9 @@ local function ChatButton_OnEnter(self)
 	if E.db[self.parent:GetName()..'Faded'] then
 		self.parent:Show()
 		E:UIFrameFadeIn(self.parent, 0.25, self.parent:GetAlpha(), 1)
-		E:UIFrameFadeIn(self, 0.25, self:GetAlpha(), 1)
+		if E.db.chat.fadeChatToggles then
+			E:UIFrameFadeIn(self, 0.25, self:GetAlpha(), 1)
+		end
 	end
 
 	if not self.parent.editboxforced then
@@ -83,7 +85,9 @@ end
 local function ChatButton_OnLeave(self)
 	if E.db[self.parent:GetName()..'Faded'] then
 		E:UIFrameFadeOut(self.parent, 0.25, self.parent:GetAlpha(), 0)
-		E:UIFrameFadeOut(self, 0.25, self:GetAlpha(), 0)
+		if E.db.chat.fadeChatToggles then
+			E:UIFrameFadeOut(self, 0.25, self:GetAlpha(), 0)
+		end
 	end
 
 	_G.GameTooltip:Hide()
@@ -92,15 +96,20 @@ end
 local function ChatButton_OnClick(self)
 	_G.GameTooltip:Hide()
 
+	local fadeToggle = E.db.chat.fadeChatToggles
 	local name = self.parent:GetName()..'Faded'
 	if E.db[name] then
 		E.db[name] = nil
 		E:UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1)
-		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+		if fadeToggle then
+			E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+		end
 	else
 		E.db[name] = true
 		E:UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0)
-		E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
+		if fadeToggle then
+			E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
+		end
 	end
 end
 
@@ -419,13 +428,20 @@ function LO:CreateChatPanels()
 	rchattb.text:SetText('>')
 
 	--Load Settings
+	local fadeToggle = E.db.chat.fadeChatToggles
 	if E.db.LeftChatPanelFaded then
-		_G.LeftChatToggleButton:SetAlpha(0)
+		if fadeToggle then
+			_G.LeftChatToggleButton:SetAlpha(0)
+		end
+
 		lchat:Hide()
 	end
 
 	if E.db.RightChatPanelFaded then
-		_G.RightChatToggleButton:SetAlpha(0)
+		if fadeToggle then
+			_G.RightChatToggleButton:SetAlpha(0)
+		end
+
 		rchat:Hide()
 	end
 
