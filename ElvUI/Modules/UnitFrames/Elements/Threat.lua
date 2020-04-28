@@ -82,6 +82,24 @@ function UF:ThreatColorBackdrop(backdrop, lock, r, g, b)
 	backdrop.ignoreBorderColors = lock
 end
 
+do
+	local classPowers = {
+		['MONK'] = 'Stagger',
+		['DRUID'] = 'AdditionalPower',
+		['PRIEST'] = 'AdditionalPower',
+		['SHAMAN'] = 'AdditionalPower',
+		['DEATHKNIGHT'] = 'Runes'
+	}
+
+	local myClassPower = classPowers[E.myclass]
+	function UF:ThreatColorClassBars(parent, status, r, g, b)
+		local classPower = myClassPower and parent[myClassPower]
+		if classPower then UF:ThreatColorBackdrop(classPower.backdrop, status, r, g, b) end
+		if parent.ClassBar then UF:ThreatColorBackdrop(parent.ClassBar.backdrop, status, r, g, b) end
+		if parent.AlternativePower then UF:ThreatColorBackdrop(parent.AlternativePower.backdrop, status, r, g, b) end
+	end
+end
+
 function UF:ThreatHandler(threat, parent, threatStyle, status, r, g, b)
 	if threatStyle == 'GLOW' then
 		if status then
@@ -97,11 +115,10 @@ function UF:ThreatHandler(threat, parent, threatStyle, status, r, g, b)
 			threat.PowerGlow:Hide()
 		end
 	elseif threatStyle == 'BORDERS' then
-		local classBar = parent.ClassBar and parent[parent.ClassBar]
-		if classBar then UF:ThreatColorBackdrop(classBar.backdrop, status, r, g, b) end
 		if parent.InfoPanel then UF:ThreatColorBackdrop(parent.InfoPanel.backdrop, status, r, g, b) end
 		if parent.Power then UF:ThreatColorBackdrop(parent.Power.backdrop, status, r, g, b) end
 		UF:ThreatColorBackdrop(parent.Health.backdrop, status, r, g, b)
+		UF:ThreatColorClassBars(parent, status, r, g, b)
 	elseif threatStyle == 'HEALTHBORDER' then
 		UF:ThreatColorBackdrop(parent.Health.backdrop, status, r, g, b)
 	elseif threatStyle == 'INFOPANELBORDER' then
