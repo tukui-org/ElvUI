@@ -29,6 +29,47 @@ E.Options.args.tagGroup = {
 				}
 			}
 		},
+		Names = {
+			type = "group",
+			name = "Names",
+			args = {
+				nameHealthInfo1 = {
+					order = 1,
+					type = "input",
+					width = 'full',
+					name = '|cFF666666[1/5]|r White name text, missing hp red',
+					get = function() return '[name:health]' end,
+				},
+				nameHealthInfo2 = {
+					order = 2,
+					type = "input",
+					width = 'full',
+					name = '|cFF666666[2/5]|r Class color name text, missing hp red',
+					get = function() return '[name:health{class}]' end,
+				},
+				nameHealthInfo3 = {
+					order = 3,
+					type = "input",
+					width = 'full',
+					name = '|cFF666666[3/5]|r Class color name text, missing hp based on hex code',
+					get = function() return '[name:health{class:00ff00}]' end,
+				},
+				nameHealthInfo4 = {
+					order = 4,
+					type = "input",
+					width = 'full',
+					name = '|cFF666666[4/5]|r Name text based on hex code, missing hp red',
+					get = function() return '[name:health{00ff00}]' end,
+				},
+				nameHealthInfo5 = {
+					order = 5,
+					type = "input",
+					width = 'full',
+					name = '|cFF666666[5/5]|r Name text based on hex code, missing hp class color',
+					get = function() return '[name:health{00ff00:class}]' end,
+				},
+			},
+		},
 	},
 }
 
