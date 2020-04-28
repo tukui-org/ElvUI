@@ -44,7 +44,9 @@ function UF:Configure_ClassBar(frame, cur)
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
 
 	local color = E.db.unitframe.colors.borderColor
-	bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	if not bars.backdrop.ignoreBorderColors then
+		bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	end
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		if frame.MAX_CLASS_BAR == 1 or frame.ClassBar == "AdditionalPower" or frame.ClassBar == "Stagger" or frame.ClassBar == 'AlternativePower' then
@@ -292,7 +294,6 @@ local function ToggleResourceBar(bars, overrideVisibility)
 	if not frame.CLASSBAR_DETACHED then --Only update when necessary
 		UF:Configure_HealthBar(frame)
 		UF:Configure_Portrait(frame)
-		UF:Configure_Threat(frame)
 	end
 end
 UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar

@@ -101,23 +101,15 @@ function UF:ThreatHandler(threat, parent, threatStyle, status, r, g, b)
 			threat.PowerGlow:Hide()
 		end
 	elseif threatStyle == 'BORDERS' then
-		UF:ThreatColorBackdrop(parent.Health.backdrop, status, r, g, b)
-		UF:ThreatColorBackdrop(parent.Power.backdrop, status, r, g, b)
-
-		if parent.InfoPanel then
-			UF:ThreatColorBackdrop(parent.InfoPanel.backdrop, status, r, g, b)
-		end
-
 		local classBar = parent.ClassBar and parent[parent.ClassBar]
-		if classBar and classBar.backdrop then
-			UF:ThreatColorBackdrop(classBar.backdrop, status, r, g, b)
-		end
+		if classBar then UF:ThreatColorBackdrop(classBar.backdrop, status, r, g, b) end
+		if parent.InfoPanel then UF:ThreatColorBackdrop(parent.InfoPanel.backdrop, status, r, g, b) end
+		if parent.Power then UF:ThreatColorBackdrop(parent.Power.backdrop, status, r, g, b) end
+		UF:ThreatColorBackdrop(parent.Health.backdrop, status, r, g, b)
 	elseif threatStyle == 'HEALTHBORDER' then
 		UF:ThreatColorBackdrop(parent.Health.backdrop, status, r, g, b)
 	elseif threatStyle == 'INFOPANELBORDER' then
-		if parent.InfoPanel then
-			UF:ThreatColorBackdrop(parent.InfoPanel.backdrop, status, r, g, b)
-		end
+		if parent.InfoPanel then UF:ThreatColorBackdrop(parent.InfoPanel.backdrop, status, r, g, b) end
 	elseif threatStyle ~= 'NONE' and threat.TextureIcon then
 		if status then
 			threat.TextureIcon:Show()
