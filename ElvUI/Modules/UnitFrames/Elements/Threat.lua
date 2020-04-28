@@ -95,7 +95,7 @@ do
 	function UF:ThreatClassBarBorderColor(parent, status, r, g, b)
 		local classPower = myClassPower and parent[myClassPower]
 		if classPower then UF:ThreatBorderColor(classPower.backdrop, status, r, g, b) end
-		if parent.ClassBar then UF:ThreatBorderColor(parent.ClassBar.backdrop, status, r, g, b) end
+		if parent.ClassPower then UF:ThreatBorderColor(parent.ClassPower.backdrop, status, r, g, b) end
 		if parent.AlternativePower then UF:ThreatBorderColor(parent.AlternativePower.backdrop, status, r, g, b) end
 	end
 end
