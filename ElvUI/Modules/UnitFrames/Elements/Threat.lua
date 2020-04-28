@@ -41,6 +41,7 @@ function UF:Configure_Threat(frame)
 			threat:SetFrameStrata('BACKGROUND')
 			threat.MainGlow:SetFrameStrata('BACKGROUND')
 			threat.MainGlow:ClearAllPoints()
+
 			if frame.USE_POWERBAR_OFFSET then
 				threat.MainGlow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -frame.SHADOW_SPACING - frame.SPACING, frame.SHADOW_SPACING + frame.SPACING + (frame.USE_CLASSBAR and (frame.USE_MINI_CLASSBAR and 0 or frame.CLASSBAR_HEIGHT) or 0))
 				threat.MainGlow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.SPACING, -frame.SHADOW_SPACING - frame.SPACING)
@@ -96,23 +97,22 @@ function UF:ColorThreat(threat, parent, threatStyle, status, r, g, b)
 		end
 	elseif threatStyle == 'BORDERS' then
 		parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
+		parent.Power.backdrop:SetBackdropBorderColor(r, g, b)
 
-		if parent.Power and parent.Power.backdrop then
-			parent.Power.backdrop:SetBackdropBorderColor(r, g, b)
+		if parent.InfoPanel then
+			parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 
 		local classBar = parent.ClassBar and parent[parent.ClassBar]
 		if classBar and classBar.backdrop then
 			classBar.backdrop:SetBackdropBorderColor(r, g, b)
 		end
-
-		if parent.InfoPanel and parent.InfoPanel.backdrop then
-			parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
-		end
 	elseif threatStyle == 'HEALTHBORDER' then
 		parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 	elseif threatStyle == 'INFOPANELBORDER' then
-		parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
+		if parent.InfoPanel then
+			parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
+		end
 	elseif threatStyle ~= 'NONE' and threat.TextureIcon then
 		if status then
 			threat.TextureIcon:Show()
