@@ -9,6 +9,7 @@
 
 --Lua functions
 local _G = _G
+local unpack = unpack
 local format, gsub, type, tcopy = format, gsub, type, table.copy
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -216,6 +217,7 @@ function E:OnInitialize()
 end
 
 function E:PositionGameMenuButton()
+	GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
 	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
 	if relTo ~= GameMenuFrame[E.name] then
