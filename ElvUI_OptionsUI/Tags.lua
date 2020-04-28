@@ -97,8 +97,8 @@ local getTag = function(info) return format('[%s]', info[#info]) end
 for _, Table in pairs({'Events', 'Methods'}) do
 	for Tag in next, E.oUF.Tags[Table] do
 		if not E.TagInfo[Tag] then
-			E:AddTagInfo(Tag, 'Miscellanous')
-			--E:Print("['"..Tag.."'] = { category = 'Miscellanous', description = '' }")
+			E:AddTagInfo(Tag, 'Miscellaneous')
+			--E:Print("['"..Tag.."'] = { category = 'Miscellaneous', description = '' }")
 		end
 
 		if not E.Options.args.tagGroup.args[E.TagInfo[Tag].category] then
