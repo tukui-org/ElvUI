@@ -9,12 +9,31 @@ E.Options.args.tagGroup = {
 	name = L["Available Tags"],
 	childGroups = 'tab',
 	args = {
-		link = {
+		GuideLink = {
 			order = 1,
 			type = "input",
-			width = "full",
+			customWidth = 310,
 			name = L["Guide:"],
 			get = function() return "https://www.tukui.org/forum/viewtopic.php?f=9&t=6" end,
+		},
+		WikiLink = {
+			order = 2,
+			type = "input",
+			customWidth = 290,
+			name = L["Wiki:"],
+			get = function() return "https://git.tukui.org/elvui/elvui/-/wikis/home" end,
+		},
+		ColorWheel = {
+			order = 3,
+			type = 'execute',
+			customWidth = 120,
+			name = L["Color Picker"],
+			func = function()
+				ColorPickerFrame:Show()
+				ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
+				ColorPickerFrame:SetClampedToScreen(true)
+				ColorPickerFrame:Raise()
+			end,
 		},
 		Colors = {
 			type = "group",
