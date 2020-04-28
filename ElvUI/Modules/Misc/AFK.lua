@@ -69,6 +69,7 @@ function AFK:SetAFK(status)
 			self.AFKMode.bottom.guild:SetText(L["No Guild"])
 		end
 
+		self.AFKMode.bottom.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))
 		self.AFKMode.bottom.model.curAnimation = "wave"
 		self.AFKMode.bottom.model.startTime = GetTime()
 		self.AFKMode.bottom.model.duration = 2.3
@@ -282,10 +283,15 @@ function AFK:Initialize()
 	self.AFKMode.bottom:Width(GetScreenWidth() + (E.Border*2))
 	self.AFKMode.bottom:Height(GetScreenHeight() * (1 / 10))
 
-	self.AFKMode.bottom.logo = self.AFKMode:CreateTexture(nil, 'OVERLAY')
-	self.AFKMode.bottom.logo:Size(320, 150)
-	self.AFKMode.bottom.logo:Point("CENTER", self.AFKMode.bottom, "CENTER", 0, 50)
-	self.AFKMode.bottom.logo:SetTexture(E.Media.Textures.Logo)
+	self.AFKMode.bottom.LogoTop = self.AFKMode:CreateTexture(nil, 'OVERLAY')
+	self.AFKMode.bottom.LogoTop:Size(320, 150)
+	self.AFKMode.bottom.LogoTop:Point("CENTER", self.AFKMode.bottom, "CENTER", 0, 50)
+	self.AFKMode.bottom.LogoTop:SetTexture(E.Media.Textures.LogoTop)
+
+	self.AFKMode.bottom.LogoBottom = self.AFKMode:CreateTexture(nil, 'OVERLAY')
+	self.AFKMode.bottom.LogoBottom:Size(320, 150)
+	self.AFKMode.bottom.LogoBottom:Point("CENTER", self.AFKMode.bottom, "CENTER", 0, 50)
+	self.AFKMode.bottom.LogoBottom:SetTexture(E.Media.Textures.LogoBottom)
 
 	local factionGroup, size, offsetX, offsetY, nameOffsetX, nameOffsetY = E.myfaction, 140, -20, -16, -10, -28;
 	if factionGroup == "Neutral" then

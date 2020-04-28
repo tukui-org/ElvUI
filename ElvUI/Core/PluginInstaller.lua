@@ -344,6 +344,7 @@ function PI:CreateFrame()
 	end)
 
 	f.tutorialImage = f:CreateTexture('PluginInstallTutorialImage', 'OVERLAY')
+	f.tutorialImage2 = f:CreateTexture('PluginInstallTutorialImage2', 'OVERLAY')
 
 	f.side = CreateFrame('Frame', 'PluginInstallTitleFrame', f)
 	f.side:SetTemplate('Transparent')
@@ -418,17 +419,43 @@ function PI:RunInstall()
 		f.Title:SetText(db.Title or L["ElvUI Plugin Installation"])
 		f.Status:SetMinMaxValues(0, f.MaxPage)
 		f.Status.text:SetText(f.CurrentPage..' / '..f.MaxPage)
-		f.tutorialImage:SetTexture(db.tutorialImage or E.Media.Textures.Logo)
+
+		-- Logo
+		f.tutorialImage:SetTexture(db.tutorialImage or E.Media.Textures.LogoTop)
+		f.tutorialImage:ClearAllPoints()
 		if db.tutorialImageSize then
 			f.tutorialImage:Size(db.tutorialImageSize[1], db.tutorialImageSize[2])
 		else
 			f.tutorialImage:Size(256, 128)
 		end
-		f.tutorialImage:ClearAllPoints()
 		if db.tutorialImagePoint then
 			f.tutorialImage:Point('BOTTOM', 0 + db.tutorialImagePoint[1], 70 + db.tutorialImagePoint[2])
 		else
 			f.tutorialImage:Point('BOTTOM', 0, 70)
+		end
+		if db.tutorialImageVertexColor then
+			f.tutorialImage:SetVertexColor(unpack(db.tutorialImageVertexColor))
+		else
+			f.tutorialImage:SetVertexColor(1, 1, 1)
+		end
+
+		--Alt Logo
+		f.tutorialImage2:SetTexture(db.tutorialImage2 or E.Media.Textures.LogoBottom)
+		f.tutorialImage2:ClearAllPoints()
+		if db.tutorialImage2Size then
+			f.tutorialImage:Size(db.tutorialImage2Size[1], db.tutorialImage2Size[2])
+		else
+			f.tutorialImage:Size(256, 128)
+		end
+		if db.tutorialImage2Point then
+			f.tutorialImage:Point('BOTTOM', 0 + db.tutorialImage2Point[1], 70 + db.tutorialImage2Point[2])
+		else
+			f.tutorialImage:Point('BOTTOM', 0, 70)
+		end
+		if db.tutorialImage2VertexColor then
+			f.tutorialImage:SetVertexColor(unpack(db.tutorialImage2VertexColor))
+		else
+			f.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
 		end
 
 		f.Pages = db.Pages

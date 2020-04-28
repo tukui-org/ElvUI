@@ -876,8 +876,8 @@ function E:Config_WindowClosed()
 		self.closeButton:Hide()
 		self.originalClose:Show()
 
-		E:StopElasticize(self.leftHolder.logo)
-		E:StopElasticize(self.leftHolder.topLogo)
+		E:StopElasticize(self.leftHolder.LogoTop)
+		E:StopElasticize(self.leftHolder.LogoBottom)
 
 		E:Config_RestoreOldPosition(self.topHolder.version)
 		E:Config_RestoreOldPosition(self.obj.content)
@@ -894,11 +894,9 @@ function E:Config_WindowOpened(frame)
 		frame.closeButton:Show()
 		frame.originalClose:Hide()
 
-		E:Elasticize(frame.leftHolder.logo, 128, 64)
-		E:Elasticize(frame.leftHolder.topLogo, 128, 64)
-
-		local color = E.db.general.valuecolor
-		frame.leftHolder.topLogo:SetVertexColor(color.r, color.g, color.b)
+		E:Elasticize(frame.leftHolder.LogoTop, 128, 64)
+		E:Elasticize(frame.leftHolder.LogoBottom, 128, 64)
+		frame.leftHolder.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))
 
 		local unskinned = not E.private.skins.ace3.enable
 		local offset = unskinned and 14 or 8
@@ -1142,17 +1140,17 @@ function E:ToggleOptionsUI(msg)
 			top:Height(24)
 			frame.topHolder = top
 
-			local logo = left:CreateTexture()
-			logo:SetTexture(E.Media.Textures.LogoSmallBottom)
-			logo:Point("CENTER", left, "TOP", unskinned and 10 or 0, unskinned and -40 or -36)
-			logo:Size(128, 64)
-			left.logo = logo
+			local LogoBottom = left:CreateTexture()
+			LogoBottom:SetTexture(E.Media.Textures.LogoBottomSmall)
+			LogoBottom:Point("CENTER", left, "TOP", unskinned and 10 or 0, unskinned and -40 or -36)
+			LogoBottom:Size(128, 64)
+			left.LogoBottom = LogoBottom
 
-			local topLogo = left:CreateTexture()
-			topLogo:SetTexture(E.Media.Textures.LogoSmallTop)
-			topLogo:Point("CENTER", left, "TOP", unskinned and 10 or 0, unskinned and -40 or -36)
-			topLogo:Size(128, 64)
-			left.topLogo = topLogo
+			local LogoTop = left:CreateTexture()
+			LogoTop:SetTexture(E.Media.Textures.LogoTopSmall)
+			LogoTop:Point("CENTER", left, "TOP", unskinned and 10 or 0, unskinned and -40 or -36)
+			LogoTop:Size(128, 64)
+			left.LogoTop = LogoTop
 
 			local buttonsHolder = CreateFrame('Frame', nil, left)
 			buttonsHolder:Point("BOTTOMLEFT", bottom, "TOPLEFT", 0, 1)

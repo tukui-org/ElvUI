@@ -859,12 +859,20 @@ function E:Install()
 		close:SetScript('OnClick', function() f:Hide() end)
 		S:HandleCloseButton(close)
 
-		f.tutorialImage = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
-		f.tutorialImage:Size(256, 128)
-		f.tutorialImage:SetTexture(E.Media.Textures.Logo)
-		f.tutorialImage:Point('BOTTOM', 0, 70)
+		local logo = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
+		logo:Size(256, 128)
+		logo:SetTexture(E.Media.Textures.LogoTop)
+		logo:Point('BOTTOM', 0, 70)
+		f.tutorialImage = logo
+
+		local logo2 = f:CreateTexture('InstallTutorialImage2', 'OVERLAY')
+		logo2:Size(256, 128)
+		logo2:SetTexture(E.Media.Textures.LogoBottom)
+		logo2:Point('BOTTOM', 0, 70)
+		f.tutorialImage2 = logo2
 	end
 
+	ElvUIInstallFrame.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
 	ElvUIInstallFrame:Show()
 	NextPage()
 end
