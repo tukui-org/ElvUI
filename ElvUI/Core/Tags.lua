@@ -1139,7 +1139,7 @@ E.TagInfo = {
 	['altpower:current'] = { category = 'Altpower', description = "Displays altpower text on a unit in current format" },
 	['altpower:current-max'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max format" },
 	['altpower:current-max-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max-percent format" },
-	['altpower:current-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max format" },
+	['altpower:current-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-percent format" },
 	['altpower:deficit'] = { category = 'Altpower', description = "Displays altpower text on a unit in deficit format" },
 	['altpower:percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in percent format" },
 	--Classification
