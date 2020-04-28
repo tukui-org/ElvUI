@@ -273,21 +273,9 @@ local function ToggleResourceBar(bars, overrideVisibility)
 
 	frame.CLASSBAR_SHOWN = (not not overrideVisibility) or frame[frame.ClassBar]:IsShown()
 
-	local height
-	if db.classbar then
-		height = db.classbar.height
-	elseif frame.AlternativePower then
-		height = db.power.height
-	end
+	if bars.text then bars.text:SetAlpha(frame.CLASSBAR_SHOWN and 1 or 0) end
 
-	if bars.text then
-		if frame.CLASSBAR_SHOWN then
-			bars.text:SetAlpha(1)
-		else
-			bars.text:SetAlpha(0)
-		end
-	end
-
+	local height = (db.classbar and db.classbar.height) or (frame.AlternativePower and db.power.height)
 	frame.CLASSBAR_HEIGHT = (frame.USE_CLASSBAR and (frame.CLASSBAR_SHOWN and height) or 0)
 	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
 
