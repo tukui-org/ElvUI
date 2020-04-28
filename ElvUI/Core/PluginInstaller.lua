@@ -436,7 +436,7 @@ function PI:RunInstall()
 		if db.tutorialImageVertexColor then
 			f.tutorialImage:SetVertexColor(unpack(db.tutorialImageVertexColor))
 		else
-			f.tutorialImage:SetVertexColor(1, 1, 1)
+			f.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
 		end
 
 		--Alt Logo
@@ -455,7 +455,7 @@ function PI:RunInstall()
 		if db.tutorialImage2VertexColor then
 			f.tutorialImage2:SetVertexColor(unpack(db.tutorialImage2VertexColor))
 		else
-			f.tutorialImage2:SetVertexColor(unpack(E.media.rgbvaluecolor))
+			f.tutorialImage2:SetVertexColor(1, 1, 1)
 		end
 
 		f.Pages = db.Pages
