@@ -80,19 +80,19 @@ function UF:Configure_Threat(frame)
 	end
 end
 
-function UF:ColorThreat(parent, threatStyle, status, r, g, b)
+function UF:ColorThreat(threat, parent, threatStyle, status, r, g, b)
 	if threatStyle == 'GLOW' then
 		if status then
-			self.MainGlow:Show()
-			self.MainGlow:SetBackdropBorderColor(r, g, b)
+			threat.MainGlow:Show()
+			threat.MainGlow:SetBackdropBorderColor(r, g, b)
 
 			if parent.USE_POWERBAR_OFFSET then
-				self.PowerGlow:Show()
-				self.PowerGlow:SetBackdropBorderColor(r, g, b)
+				threat.PowerGlow:Show()
+				threat.PowerGlow:SetBackdropBorderColor(r, g, b)
 			end
 		else
-			self.MainGlow:Hide()
-			self.PowerGlow:Hide()
+			threat.MainGlow:Hide()
+			threat.PowerGlow:Hide()
 		end
 	elseif threatStyle == 'BORDERS' then
 		parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
@@ -113,12 +113,12 @@ function UF:ColorThreat(parent, threatStyle, status, r, g, b)
 		parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 	elseif threatStyle == 'INFOPANELBORDER' then
 		parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
-	elseif threatStyle ~= 'NONE' and self.TextureIcon then
+	elseif threatStyle ~= 'NONE' and threat.TextureIcon then
 		if status then
-			self.TextureIcon:Show()
-			self.TextureIcon:SetVertexColor(r, g, b)
+			threat.TextureIcon:Show()
+			threat.TextureIcon:SetVertexColor(r, g, b)
 		else
-			self.TextureIcon:Hide()
+			threat.TextureIcon:Hide()
 		end
 	end
 end
@@ -129,8 +129,8 @@ function UF:UpdateThreat(unit, status, r, g, b)
 	local db = not badunit and (parent.db and parent.db.threatStyle ~= 'NONE') and parent.db.threatStyle
 
 	if db and status and status > 1 then
-		UF:ColorThreat(parent, db, status, r, g, b)
+		UF:ColorThreat(self, parent, db, status, r, g, b)
 	else
-		UF:ColorThreat(parent, db, nil, unpack(E.media.unitframeBorderColor))
+		UF:ColorThreat(self, parent, db, nil, unpack(E.media.unitframeBorderColor))
 	end
 end
