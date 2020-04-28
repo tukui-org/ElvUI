@@ -1,8 +1,20 @@
-### Version 11.38 [ ETA: 🍨 ]
+### Version 11.39 [ ETA: 🍨 ]
 
 **New Additions:**  
-*Smart Raid Visibility* has rejoined the UI (it's actually reformed now).  
-Added *[name:health]* tag which displays health lost using colors on the name, neato.  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+### Version 11.38 [ April 28th 2020 ]
+
+**New Additions:**  
+*Smart Raid Visibility* has rejoined the UI *(it's actually reformed now)*.  
+Added *[name:health]* tag which displays health lost using colors on the name text, neato.  
 Added *[ElvUI-Users]* tag which displays other cool people than yourself.  
 Some ultra rare super high tech Mechagon debuffs were added (jk, they are normal).  
 Added *My Pet* and *Other Pets* to Aura Filtering system.  
@@ -14,12 +26,12 @@ Tooltip NPC names now adapt to the custom faction colors in tooltip settings.
 **Bug Fixes:**  
 The options bottom buttons now use the language selected in the config, nice.  
 Nazjatar Followers Missions Datatext was doing a goof, which has been ungoofed by a professional ungoofer.  
-Health and Power prediction has learned new tricks which actually doesn't do anything new but we promise they are ten times cooler now.  
+Health and Power prediction has learned new tricks *(which actually doesn't do anything new but we promise they are ten times cooler now)*.  
 Some Datatexts refused to show information on login, now they are willing to share said info.  
 Some kind of Alternative Power oops, something about UnitIsUnit; rare bug, big time squashed.  
-The bottom of letters on the bottom line of the chat will now be visibile to all earthlings.  
+The bottom of letters on the bottom line of the chat will now be visible to all earthlings.  
 Chat editbox will stay open when you move if it has text in it again and character count will only show if there is text in the editbox.  
-Add or Remove spell from filter should now work how it was always meant to.  
+Add or Remove spell from a filter should now work how it was always meant to.  
 Threat tags have now leveled up there tag game.  
 Cutaway colors react instantly now, ninja status achieved.  
 Highlight texture for Items on the Character page are now the old style instead of the blizzard style.  
@@ -38,8 +50,7 @@ Faction gold will hide if its zero on the gold datatext.
 Added Traditional Chinese number prefix. (Thanks @mcc)  
 Added Fade Chat Toggles option which can prevent the toggle buttons from disappearing with the chat. (Thanks @Sirenfal)  
 Raid-wide-sorting has now evolved, the new way will sort the *Number of Groups* and ignore the ending groups so you can hide benched players. (Thanks @BeeVa)  
-N'zoth eyes on the inspect frame items.  
-Lucky is bad and owes Simpy at least 1m.  
+More N'zoth eyes on the Inspect frame items.  
 Drain Soul has 5 ticks (not 6 ticks btw).  
 
 ___
