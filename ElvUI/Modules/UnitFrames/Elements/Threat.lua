@@ -67,14 +67,10 @@ function UF:Configure_Threat(frame)
 			local point = threatStyle:gsub("ICON", "")
 			threat.TextureIcon:ClearAllPoints()
 			threat.TextureIcon:Point(point, frame.Health, point)
-		elseif threatStyle == "HEALTHBORDER" then
-			if frame.InfoPanel then
-				frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() - 3)
-			end
-		elseif threatStyle == "INFOPANELBORDER" then
-			if frame.InfoPanel then
-				frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() + 3)
-			end
+		elseif threatStyle == "HEALTHBORDER" and frame.InfoPanel then
+			frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() - 3)
+		elseif threatStyle == "INFOPANELBORDER" and frame.InfoPanel then
+			frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() + 3)
 		end
 	elseif frame:IsElementEnabled('ThreatIndicator') then
 		frame:DisableElement('ThreatIndicator')
