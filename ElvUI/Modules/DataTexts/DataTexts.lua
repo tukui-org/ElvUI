@@ -17,10 +17,6 @@ function DT:Initialize()
 	--if E.db.datatexts.enable ~= true then return end
 	self.Initialized = true
 	self.db = E.db.datatexts
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-
-	self:RegisterLDB()
-	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
 
 	self.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
 	TT:HookScript(self.tooltip, 'OnShow', 'SetStyle')
@@ -32,8 +28,11 @@ function DT:Initialize()
 	_G.DatatextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
 	_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
 
-	-- Register all the user created currency datatexts from the "CustomCurrency" DT.
-	self:RegisterCustomCurrencyDT()
+	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
+	self:RegisterLDB('ElvUI') -- LibDataBroker
+	self:LoadDataTexts() -- Fire it up!
+	self:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the "CustomCurrency" DT.
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 end
 
 DT.RegisteredPanels = {}
@@ -44,14 +43,15 @@ DT.PointLocation = {
 	[3] = 'right',
 }
 
-local hasEnteredWorld = false
-function DT:PLAYER_ENTERING_WORLD()
-	E:Delay(0.5, DT.LoadDataTexts, DT)
-	hasEnteredWorld = true
+function DT:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
+	-- update on zone changed for BG Stats
+	if not initLogin and not isReload then
+		DT:LoadDataTexts()
+	end
 end
 
 local LDBHex = '|cffFFFFFF'
-function DT:SetupObjectLDB(name, obj) --self will now be the event
+function DT:SetupObjectLDB(name, obj, elvui) --self will now be the event
 	local curFrame = nil
 
 	local function OnEnter(dt)
@@ -100,16 +100,14 @@ function DT:SetupObjectLDB(name, obj) --self will now be the event
 		DT:PanelLayoutOptions()
 	end
 
-	-- Force an update for objects that are created after we log in.
-	if hasEnteredWorld then
-		-- Has to be delayed in order to properly pick up initial text
-		E:Delay(0.5, DT.LoadDataTexts, DT)
+	if elvui ~= 'ElvUI' then
+		DT:LoadDataTexts()
 	end
 end
 
-function DT:RegisterLDB()
+function DT:RegisterLDB(elvui)
 	for name, obj in LDB:DataObjectIterator() do
-		self:SetupObjectLDB(name, obj)
+		self:SetupObjectLDB(name, obj, elvui)
 	end
 end
 
@@ -159,10 +157,10 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
 	DT.RegisteredPanels[panel:GetName()] = panel
 	panel.dataPanels = {}
 	panel.numPoints = numPoints
-
 	panel.xOff = xOff
 	panel.yOff = yOff
 	panel.anchor = anchor
+
 	for i=1, numPoints do
 		local pointIndex = DT.PointLocation[i]
 		local dt = panel.dataPanels[pointIndex]

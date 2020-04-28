@@ -281,6 +281,29 @@ local blacklistedKeys = {
 	},
 }
 
+--Keys that auto or user generated tables.
+D.GeneratedKeys = {
+	profile = {
+		customTexts = true,
+		movers = true
+	},
+	private = {},
+	global = {}
+}
+
+local function SetCustomVars(data, keys)
+	if not data then return end
+
+	local vars = E:CopyTable({}, keys)
+	for key in pairs(data) do
+		if type(key) ~= 'table' then
+			vars[key] = true
+		end
+	end
+
+	return vars
+end
+
 local function GetProfileData(profileType)
 	if not profileType or type(profileType) ~= 'string' then
 		E:Print('Bad argument #1 to "GetProfileData" (string expected)')
@@ -291,31 +314,38 @@ local function GetProfileData(profileType)
 	local profileData = {}
 
 	if profileType == 'profile' then
-		if ElvDB.profileKeys then
-			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
-		end
+		profileKey = ElvDB.profileKeys and ElvDB.profileKeys[E.myname..' - '..E.myrealm]
+
+		local data = ElvDB.profiles[profileKey]
+		local vars = SetCustomVars(data, D.GeneratedKeys.profile)
 
 		--Copy current profile data
-		profileData = E:CopyTable(profileData , ElvDB.profiles[profileKey])
+		profileData = E:CopyTable(profileData, data)
 		--This table will also hold all default values, not just the changed settings.
 		--This makes the table huge, and will cause the WoW client to lock up for several seconds.
 		--We compare against the default table and remove all duplicates from our table. The table is now much smaller.
-		profileData = E:RemoveTableDuplicates(profileData, P)
+		profileData = E:RemoveTableDuplicates(profileData, P, vars)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.profile)
 
 	elseif profileType == 'private' then
-		local privateProfileKey = E.myname..' - '..E.myrealm
 		profileKey = 'private'
 
-		profileData = E:CopyTable(profileData, ElvPrivateDB.profiles[privateProfileKey])
-		profileData = E:RemoveTableDuplicates(profileData, V)
+		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
+		local data = ElvPrivateDB.profiles[privateKey]
+		local vars = SetCustomVars(data, D.GeneratedKeys.private)
+
+		profileData = E:CopyTable(profileData, data)
+		profileData = E:RemoveTableDuplicates(profileData, V, vars)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private)
 
 	elseif profileType == 'global' then
 		profileKey = 'global'
 
-		profileData = E:CopyTable(profileData, ElvDB.global)
-		profileData = E:RemoveTableDuplicates(profileData, G)
+		local data = ElvDB.global
+		local vars = SetCustomVars(data, D.GeneratedKeys.global)
+
+		profileData = E:CopyTable(profileData, data)
+		profileData = E:RemoveTableDuplicates(profileData, G, vars)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global)
 
 	elseif profileType == 'filters' then
@@ -441,7 +471,7 @@ function D:Decode(dataString)
 		local profileToTable = loadstring(format('%s %s', 'return', profileDataAsString))
 		if profileToTable then profileMessage, profileData = pcall(profileToTable) end
 
-		if not profileData or type(profileData) ~= 'table' then
+		if profileMessage and (not profileData or type(profileData) ~= 'table') then
 			E:Print('Error converting lua string to table:', profileMessage)
 			return
 		end
@@ -464,7 +494,9 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 				local tempKey = profileKey..'_Temp'
 				E.data.keys.profile = tempKey
 			end
+
 			ElvDB.profiles[profileKey] = profileData
+
 			--Calling SetProfile will now update all settings correctly
 			E.data:SetProfile(profileKey)
 		else
@@ -476,16 +508,17 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 			return
 		end
 	elseif profileType == 'private' then
-		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private) --Remove unwanted options from import
-		local pfKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
-		ElvPrivateDB.profiles[pfKey] = profileData
-		E:StaticPopup_Show('IMPORT_RL')
+		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
+		if privateKey then
+			profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private) --Remove unwanted options from import
+			ElvPrivateDB.profiles[privateKey] = profileData
+		end
 
+		E:StaticPopup_Show('IMPORT_RL')
 	elseif profileType == 'global' then
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global) --Remove unwanted options from import
 		E:CopyTable(ElvDB.global, profileData)
 		E:StaticPopup_Show('IMPORT_RL')
-
 	elseif profileType == 'filters' then
 		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
 	elseif profileType == 'styleFilters' then

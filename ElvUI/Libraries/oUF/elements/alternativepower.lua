@@ -106,8 +106,10 @@ local function Visibility(self, event, unit)
 	local element = self.AlternativePower
 
 	local barInfo = GetUnitPowerBarInfo(unit)
-	if(barInfo and (barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit)) or not barInfo.hideFromOthers
-		or UnitIsUnit(unit, 'player') or UnitIsUnit(self.realUnit, 'player'))) then
+	if barInfo and barInfo.showOnRaid and (not barInfo.hideFromOthers
+		or UnitIsUnit(unit, 'player') or (UnitInParty(unit) or UnitInRaid(unit))
+		or (self.realUnit and UnitIsUnit(self.realUnit, 'player'))) then
+
 		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 

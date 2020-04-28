@@ -69,7 +69,7 @@ function S:Blizzard_PVPUI()
 	HonorFrame:StripTextures()
 
 	S:HandleScrollBar(_G.HonorFrameSpecificFrameScrollBar)
-	S:HandleButton(_G.HonorFrameQueueButton, true)
+	S:HandleButton(_G.HonorFrameQueueButton)
 	S:HandleDropDownBox(_G.HonorFrameTypeDropDown)
 
 	local BonusFrame = HonorFrame.BonusFrame
@@ -135,7 +135,7 @@ function S:Blizzard_PVPUI()
 	ConquestFrame:StripTextures()
 	ConquestFrame.ShadowOverlay:Hide()
 
-	S:HandleButton(_G.ConquestJoinButton, true)
+	S:HandleButton(_G.ConquestJoinButton)
 
 	HandleRoleChecks(ConquestFrame.TankIcon, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
 	HandleRoleChecks(ConquestFrame.HealerIcon, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())

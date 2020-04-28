@@ -300,7 +300,7 @@ L["Copy Chat Lines"] = true
 L["Copy From"] = "Copiar de"
 L["Copy settings from another unit."] = true
 L["Copy Settings From"] = true
-L["Core |cfffe7b2cElvUI|r options."] = true
+L["Core |cff1784d1ElvUI|r options."] = true
 L["Count Font Size"] = "Tamanho da Fonte do Contador"
 L["Count xOffset"] = true
 L["Count yOffset"] = true
@@ -1445,6 +1445,8 @@ L["nonPersonal"] = "Non Personal"
 L["notCastByUnit"] = "Not Cast By Unit"
 L["notDispellable"] = "Not Dispellable"
 L["Personal"] = true
+L["MyPet"] = true
+L["OtherPet"] = true
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Modify the actionbar settings."

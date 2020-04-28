@@ -114,24 +114,13 @@ function AB:PositionAndSizeBarShapeShift()
 	local widthMult = self.db.stanceBar.widthMult
 	local heightMult = self.db.stanceBar.heightMult
 
-	--Now that we have set positionOverride for mover, convert "TOP" or "BOTTOM" to anchor points we can use
+	--Convert "TOP" or "BOTTOM" to anchor points we can use
 	local position = E:GetScreenQuadrant(bar)
 	if strfind(position, "LEFT") or position == "TOP" or position == "BOTTOM" then
-		if point == "TOP" then
-			point = "TOPLEFT"
-		elseif point == "BOTTOM" then
-			point = "BOTTOMLEFT"
-		end
-	else
-		if point == "TOP" then
-			point = "TOPRIGHT"
-		elseif point == "BOTTOM" then
-			point = "BOTTOMRIGHT"
-		end
-	end
+		if point == "TOP" then point = "TOPLEFT" elseif point == "BOTTOM" then point = "BOTTOMLEFT" end
+	elseif point == "TOP" then point = "TOPRIGHT" elseif point == "BOTTOM" then point = "BOTTOMRIGHT" end
 
 	bar.db = self.db.stanceBar
-	bar.db.position = nil; --Depreciated
 	bar.mouseover = self.db.stanceBar.mouseover
 
 	if bar.LastButton and numButtons > bar.LastButton then
@@ -356,7 +345,7 @@ function AB:CreateBarShapeShift()
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift')
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift')
 
-	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar')
+	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar', true)
 	self:AdjustMaxStanceButtons()
 	self:StyleShapeShift()
 	self:UpdateStanceBindings()

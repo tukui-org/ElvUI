@@ -2566,7 +2566,6 @@ local function UpdateFilterGroup()
 									order = 3,
 									type = "execute",
 									name = L["Map ID"],
-									buttonElvUI = true,
 									func = function()
 										local mapID = E.MapInfo.mapID
 										if not mapID then return end
@@ -2582,7 +2581,6 @@ local function UpdateFilterGroup()
 									order = 4,
 									type = "execute",
 									name = L["Instance ID"],
-									buttonElvUI = true,
 									func = function()
 										local instanceName, _, _, _, _, _, _, instanceID = GetInstanceInfo()
 										if not instanceID then return end
@@ -2598,7 +2596,6 @@ local function UpdateFilterGroup()
 									order = 6,
 									type = "execute",
 									name = L["Zone Name"],
-									buttonElvUI = true,
 									func = function()
 										local zone = E.MapInfo.realZoneText
 										if not zone then return end
@@ -2613,7 +2610,6 @@ local function UpdateFilterGroup()
 									order = 7,
 									type = "execute",
 									name = L["Subzone Name"],
-									buttonElvUI = true,
 									func = function()
 										local subZone = E.MapInfo.subZoneText
 										if not subZone then return end
@@ -2860,29 +2856,6 @@ local function UpdateFilterGroup()
 								t.r, t.g, t.b, t.a = r, g, b, a
 								NP:ConfigureAll()
 							end
-						},
-						name = {
-							name = L["Name"],
-							order = 10,
-							type = "toggle"
-						},
-						nameColor = {
-							name = L["Name Color"],
-							type = "color",
-							order = 11,
-							hasAlpha = true,
-							disabled = function()
-								return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.name
-							end,
-							get = function(info)
-								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.nameColor
-								return t.r, t.g, t.b, t.a, 200 / 255, 200 / 255, 200 / 255, 1
-							end,
-							set = function(info, r, g, b, a)
-								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.color.nameColor
-								t.r, t.g, t.b, t.a = r, g, b, a
-								NP:ConfigureAll()
-							end
 						}
 					}
 				},
@@ -2976,6 +2949,56 @@ local function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end
 						}
+					}
+				},
+				text_format = {
+					order = 40,
+					type = "group",
+					guiInline = true,
+					name = L["Text Format"],
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].actions.tags[info[#info]]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].actions.tags[info[#info]] = value
+						NP:ConfigureAll()
+					end,
+					args = {
+						name = {
+							order = 1,
+							name = L["Name"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
+						level = {
+							order = 2,
+							name = L["Level"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
+						title = {
+							order = 3,
+							name = L["Title"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
+						health = {
+							order = 4,
+							name = L["Health"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
+						power = {
+							order = 5,
+							name = L["Power"],
+							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							type = 'input',
+							width = 'full',
+						},
 					}
 				}
 			}
@@ -3133,7 +3156,6 @@ local function GetUnitSettings(unit, name)
 						order = 3,
 						name = L["Height"],
 						type = "range",
-						sliderElvUI = true,
 						min = 4,
 						max = function()
 							if unit == "PLAYER" then
@@ -3152,7 +3174,6 @@ local function GetUnitSettings(unit, name)
 						order = 4,
 						type = "execute",
 						name = L["Width"],
-						buttonElvUI = true,
 						func = function()
 							ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general", "clickableRange")
 						end
@@ -3289,7 +3310,6 @@ local function GetUnitSettings(unit, name)
 						order = 3,
 						name = L["Width"],
 						type = "range",
-						sliderElvUI = true,
 						min = 50,
 						max = function()
 							if unit == "PLAYER" then
@@ -3308,7 +3328,6 @@ local function GetUnitSettings(unit, name)
 						order = 4,
 						name = L["Height"],
 						type = "range",
-						sliderElvUI = true,
 						min = 4,
 						max = function()
 							if unit == "PLAYER" then
@@ -3501,7 +3520,6 @@ local function GetUnitSettings(unit, name)
 						order = 7,
 						name = L["Width"],
 						type = "range",
-						sliderElvUI = true,
 						min = 50,
 						max = function()
 							if unit == "PLAYER" then
@@ -3520,7 +3538,6 @@ local function GetUnitSettings(unit, name)
 						order = 8,
 						name = L["Height"],
 						type = "range",
-						sliderElvUI = true,
 						min = 4,
 						max = function()
 							if unit == "PLAYER" then
@@ -3875,7 +3892,6 @@ local function GetUnitSettings(unit, name)
 								order = 1,
 								type = "execute",
 								name = L["Cooldowns"],
-								buttonElvUI = true,
 								func = function()
 									ACD:SelectGroup("ElvUI", "cooldown", "nameplates")
 								end
@@ -4220,7 +4236,6 @@ local function GetUnitSettings(unit, name)
 								order = 1,
 								type = "execute",
 								name = L["Cooldowns"],
-								buttonElvUI = true,
 								func = function()
 									ACD:SelectGroup("ElvUI", "cooldown", "nameplates")
 								end
@@ -4792,7 +4807,6 @@ local function GetUnitSettings(unit, name)
 					order = 2,
 					name = L["Width"],
 					type = "range",
-					sliderElvUI = true,
 					min = 50,
 					max = function()
 						if unit == "PLAYER" then
@@ -4815,7 +4829,6 @@ local function GetUnitSettings(unit, name)
 					order = 3,
 					name = L["Height"],
 					type = "range",
-					sliderElvUI = true,
 					min = 4,
 					max = function()
 						if unit == "PLAYER" then
@@ -4871,7 +4884,6 @@ local function GetUnitSettings(unit, name)
 			order = 100,
 			type = "execute",
 			name = L["Visibility"],
-			buttonElvUI = true,
 			func = function()
 				ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general", "plateVisibility")
 			end
@@ -4913,7 +4925,6 @@ local function GetUnitSettings(unit, name)
 			order = 100,
 			type = "execute",
 			name = L["Visibility"],
-			buttonElvUI = true,
 			func = function()
 				ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general", "plateVisibility")
 			end
@@ -5104,7 +5115,6 @@ local function GetUnitSettings(unit, name)
 			order = 100,
 			type = "execute",
 			name = L["Visibility"],
-			buttonElvUI = true,
 			func = function()
 				ACD:SelectGroup("ElvUI", "nameplate", "generalGroup", "general", "plateVisibility")
 			end
@@ -6611,7 +6621,6 @@ E.Options.args.nameplate = {
 					type = "execute",
 					confirm = true,
 					confirmText = L["Delete Filter"],
-					buttonElvUI = true,
 					func = function()
 						for profile in pairs(E.data.profiles) do
 							if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters
@@ -6675,7 +6684,6 @@ E.Options.args.nameplate = {
 					order = 2,
 					type = "execute",
 					name = L["Non-Target Alpha"],
-					buttonElvUI = true,
 					func = function()
 						ACD:SelectGroup("ElvUI", "nameplate", "filters", "actions")
 						selectedNameplateFilter = "ElvUI_NonTarget"
@@ -6686,7 +6694,6 @@ E.Options.args.nameplate = {
 					order = 3,
 					type = "execute",
 					name = L["Scale"],
-					buttonElvUI = true,
 					func = function()
 						ACD:SelectGroup("ElvUI", "nameplate", "filters", "actions")
 						selectedNameplateFilter = "ElvUI_Target"

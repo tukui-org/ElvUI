@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 --Global Settings
 G.general = {
 	UIScale = 0.64,
-	version = 11.372,
+	version = 11.38,
 	locale = E:GetLocale(),
 	eyefinity = false,
 	smallerWorldMap = true,
@@ -264,7 +264,7 @@ G.unitframe = {
 
 G.profileCopy = {
 	--Specific values
-	selected = "Minimalistic",
+	selected = "Default",
 	movers = {},
 	--Modules
 	actionbar = {

@@ -1,21 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
--- Cache global variables
--- Lua functions
-local _G = _G
 local unpack = unpack
--- WoW API / Variables
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
+local UnitIsConnected = UnitIsConnected
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
-function NP:Power_UpdateColor(event, unit)
+function NP:Power_UpdateColor(_, unit)
 	if self.unit ~= unit then return end
 
 	local element = self.Power

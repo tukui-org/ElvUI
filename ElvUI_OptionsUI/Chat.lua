@@ -119,14 +119,24 @@ E.Options.args.chat = {
 						CH:UpdateChatTabs()
 					end,
 				},
-				chatHistory = {
+				fadeChatToggles = {
 					order = 9,
+					type = 'toggle',
+					name = L["Fade Chat Toggles"],
+					desc = L["Fades the buttons that toggle chat windows when that window has been toggled off."],
+					set = function(self, value)
+						E.db.chat.fadeChatToggles = value;
+						CH:RefreshToggleButtons()
+					end,
+				},
+				chatHistory = {
+					order = 10,
 					type = 'toggle',
 					name = L["Chat History"],
 					desc = L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."],
 				},
 				useAltKey = {
-					order = 10,
+					order = 11,
 					type = "toggle",
 					name = L["Use Alt Key"],
 					desc = L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."],

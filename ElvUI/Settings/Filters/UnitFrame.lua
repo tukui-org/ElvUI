@@ -788,6 +788,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[271640] = Defaults(), -- Dark Revelation
 		[268796] = Defaults(), -- Impaling Spear
 		[268419] = Defaults(), -- Gale Slash
+		[269932] = Defaults(), -- Gust Slash
 		-- Motherlode
 		[263074] = Defaults(), -- Festering Bite
 		[280605] = Defaults(), -- Brain Freeze
@@ -852,6 +853,12 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[291914] = Defaults(), -- Cutting Beam
 		[302384] = Defaults(), -- Static Discharge
 		[294195] = Defaults(), -- Arcing Zap
+		[299572] = Defaults(), -- Shrink
+		[300659] = Defaults(), -- Consuming Slime
+		[300650] = Defaults(), -- Suffocating Smog
+		[301712] = Defaults(), -- Pounce
+		[299475] = Defaults(), -- B.O.R.K
+		[293670] = Defaults(), -- Chain Blade
 
 	-- Uldir
 		-- MOTHER
@@ -1123,6 +1130,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[307218] = Defaults(), -- Twilight Decimator
 		[307284] = Defaults(), -- Terrifying Presence
 		[307421] = Defaults(), -- Annihilation
+		[307019] = Defaults(), -- Void Corruption [tank]
 		-- Raden
 		[306819] = Defaults(), -- Nullifying Strike [tank]
 		[306279] = Defaults(), -- Insanity Exposure
@@ -1265,7 +1273,7 @@ P.unitframe.filters = {
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	-- Warlock
-	[198590] = 6, -- Drain Soul
+	[198590] = 5, -- Drain Soul
 	[755]    = 6, -- Health Funnel
 	[234153] = 6, -- Drain Life
 	-- Priest
@@ -1304,6 +1312,8 @@ G.unitframe.DebuffHighlightColors = {}
 G.unitframe.specialFilters = {
 	-- Whitelists
 	Boss = true,
+	MyPet = true,
+	OtherPet = true,
 	Personal = true,
 	nonPersonal = true,
 	CastByUnit = true,

@@ -21,8 +21,9 @@
 	<Script file='Channels.lua'/>
 	<Script file='Character.lua'/>
 	<Script file='Collectables.lua'/>
-	<Script file='Contribution.lua'/>
+	<Script file='CombatLog.lua' />
 	<Script file='Communities.lua'/>
+	<Script file='Contribution.lua'/>
 	<Script file='DeathRecap.lua'/>
 	<Script file='Debug.lua'/>
 	<Script file='DressingRoom.lua'/>

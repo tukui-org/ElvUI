@@ -43,21 +43,14 @@ function UF:Construct_RaidpetFrames()
 end
 
 function UF:Update_RaidpetHeader(header, db)
-	header.db = db
+	local parent = header:GetParent()
+	parent.db = db
 
-	local headerHolder = header:GetParent()
-	headerHolder.db = db
-
-	if not headerHolder.positioned then
-		headerHolder:ClearAllPoints()
-		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 574)
-		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Raid Pet Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,raidpet,generalGroup')
-
-		headerHolder.positioned = true;
-	end
-
-	if not headerHolder.isForced and db.enable then
-		RegisterStateDriver(headerHolder, "visibility", db.visibility)
+	if not parent.positioned then
+		parent:ClearAllPoints()
+		parent:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 574)
+		E:CreateMover(parent, parent:GetName()..'Mover', L["Raid Pet Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,raidpet,generalGroup')
+		parent.positioned = true
 	end
 end
 
@@ -75,13 +68,11 @@ function UF:Update_RaidpetFrames(frame, db)
 			frame.BORDER = E.Border
 			frame.SPACING = E.Spacing
 		end
+
 		frame.SHADOW_SPACING = 3
-
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
-
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
-
 		frame.USE_POWERBAR = false
 		frame.POWERBAR_DETACHED = false
 		frame.USE_INSET_POWERBAR = false
@@ -90,15 +81,11 @@ function UF:Update_RaidpetFrames(frame, db)
 		frame.POWERBAR_OFFSET = 0
 		frame.POWERBAR_HEIGHT = 0
 		frame.POWERBAR_WIDTH = 0
-
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
-
 		frame.CLASSBAR_YOFFSET = 0
 		frame.BOTTOM_OFFSET = 0
-
-		frame.VARIABLES_SET = true
 	end
 
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)

@@ -112,7 +112,7 @@ end
 
 function S:Ace3_RegisterAsWidget(widget)
 	local TYPE = widget.type
-	if TYPE == 'MultiLineEditBox' then
+	if TYPE == 'MultiLineEditBox' or TYPE == 'MultiLineEditBox-ElvUI' then
 		local frame = widget.frame
 		S:HandleButton(widget.button)
 		S:HandleScrollBar(widget.scrollBar)

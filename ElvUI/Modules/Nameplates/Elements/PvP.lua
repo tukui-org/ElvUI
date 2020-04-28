@@ -1,12 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
--- Cache global variables
--- Lua functions
 local strlower = strlower
--- WoW API / Variables
 
-function NP:PvPIndicator_PostUpdate(unit, status)
+function NP:PvPIndicator_PostUpdate(_, status)
 	if not status then return end
 
 	if (not self.Badge) or (self.Badge and not self.Badge:IsShown()) then

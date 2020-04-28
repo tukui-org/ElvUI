@@ -1,34 +1,25 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 function UF:Construct_PowerPrediction(frame)
-	local power = frame.Power
-
-	local mainBar = CreateFrame('StatusBar', nil, power)
-	mainBar.parent = power
-	UF.statusbars[mainBar] = true
+	local mainBar = CreateFrame('StatusBar', nil, frame.Power)
+	local prediction = { mainBar = mainBar, parent = frame }
+	mainBar:SetStatusBarTexture(E.media.blankTex)
+	mainBar.parent = frame.Power
 	mainBar:Hide()
 
-	local PowerPrediction = { mainBar = mainBar, parent = frame }
-	local texture = (not power.isTransparent and power:GetStatusBarTexture()) or E.media.blankTex
-	UF:Update_StatusBar(mainBar, texture)
+	if frame.AdditionalPower then
+		prediction.altBar = CreateFrame('StatusBar', nil, frame.AdditionalPower)
+		prediction.altBar:SetStatusBarTexture(E.media.blankTex)
+		prediction.altBar:Hide()
 
-	local altPower = frame.AdditionalPower
-	if altPower then
-		local altBar = CreateFrame('StatusBar', nil, altPower)
-		UF.statusbars[altBar] = true
-		altBar:Hide()
-
-		PowerPrediction.altBar = altBar
-
-		hooksecurefunc(altPower, 'SetStatusBarColor', function(_, r, g, b)
+		hooksecurefunc(frame.AdditionalPower, 'SetStatusBarColor', function(_, r, g, b)
 			local bar = frame and frame.PowerPrediction and frame.PowerPrediction.altBar
 			if bar then
-				local pred = UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction
+				local pred = UF.db.colors and UF.db.colors.powerPrediction
 				if pred and pred.enable then
 					local color = pred.additional
 					bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
@@ -39,7 +30,7 @@ function UF:Construct_PowerPrediction(frame)
 		end)
 	end
 
-	return PowerPrediction
+	return prediction
 end
 
 function UF:Configure_PowerPrediction(frame)
@@ -50,58 +41,48 @@ function UF:Configure_PowerPrediction(frame)
 		end
 
 		local power = frame.Power
-		local powerTexture = power:GetStatusBarTexture()
+		local powerBarTexture = power:GetStatusBarTexture()
 		local mainBar, altBar = powerPrediction.mainBar, powerPrediction.altBar
-		local orientation = frame.db.power.orientation or power:GetOrientation()
-		local reverseFill = not not frame.db.power.reverseFill
+		local orientation = power:GetOrientation()
+		local reverseFill = power:GetReverseFill()
 
+		mainBar:ClearAllPoints()
 		mainBar:SetReverseFill(not reverseFill)
-
-		if altBar then
-			altBar:SetReverseFill(true)
-		end
+		mainBar:SetStatusBarTexture(UF.db.colors.transparentPower and E.media.blankTex or powerBarTexture:GetTexture())
 
 		if orientation == "HORIZONTAL" then
-			local width = power:GetWidth()
 			local point = reverseFill and "LEFT" or "RIGHT"
-
-			mainBar:ClearAllPoints()
 			mainBar:Point("TOP", power, "TOP")
 			mainBar:Point("BOTTOM", power, "BOTTOM")
-			mainBar:Point(point, powerTexture, point)
-			mainBar:Size(width, 0)
+			mainBar:Point(point, powerBarTexture, point)
+			mainBar:Size(power:GetWidth(), 0)
 		else
-			local height = power:GetHeight()
 			local point = reverseFill and "BOTTOM" or "TOP"
-
-			mainBar:ClearAllPoints()
 			mainBar:Point("LEFT", power, "LEFT")
 			mainBar:Point("RIGHT", power, "RIGHT")
-			mainBar:Point(point, powerTexture, point)
-			mainBar:Size(0, height)
+			mainBar:Point(point, powerBarTexture, point)
+			mainBar:Size(0, power:GetHeight())
 		end
 
 		if altBar then
 			local altPower = frame.AdditionalPower
-			local altPowerTexture = altPower:GetStatusBarTexture()
+			local altPowerBarTexture = altPower:GetStatusBarTexture()
 
-			orientation = (frame.db.classbar.verticalOrientation and 'VERTICAL') or 'HORIZONTAL'
-			altBar:SetOrientation(orientation)
+			altBar:ClearAllPoints()
+			altBar:SetReverseFill(true)
+			altBar:SetStatusBarTexture(UF.db.colors.transparentPower and E.media.blankTex or altPowerBarTexture:GetTexture())
+			altBar:SetOrientation((frame.db.classbar.verticalOrientation and 'VERTICAL') or 'HORIZONTAL')
 
 			if orientation == "HORIZONTAL" then
-				local width = altPower:GetWidth()
-				altBar:ClearAllPoints()
 				altBar:Point("TOP", altPower, "TOP")
 				altBar:Point("BOTTOM", altPower, "BOTTOM")
-				altBar:Point("RIGHT", altPowerTexture, "RIGHT")
-				altBar:Size(width, 0)
+				altBar:Point("RIGHT", altPowerBarTexture, "RIGHT")
+				altBar:Size(altPower:GetWidth(), 0)
 			else
-				local height = altPower:GetHeight()
-				altBar:ClearAllPoints()
 				altBar:Point("LEFT", altPower, "LEFT")
 				altBar:Point("RIGHT", altPower, "RIGHT")
-				altBar:Point("TOP", altPowerTexture, "TOP")
-				altBar:Size(0, height)
+				altBar:Point("TOP", altPowerBarTexture, "TOP")
+				altBar:Size(0, altPower:GetHeight())
 			end
 		end
 	elseif frame:IsElementEnabled('PowerPrediction') then

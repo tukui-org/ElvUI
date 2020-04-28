@@ -15,7 +15,6 @@ function UF:Construct_PVPSpecIcon(frame)
 end
 
 function UF:Configure_PVPSpecIcon(frame)
-	if not frame.VARIABLES_SET then return end
 	local specIcon = frame.PVPSpecIcon
 
 	specIcon.bg:ClearAllPoints()

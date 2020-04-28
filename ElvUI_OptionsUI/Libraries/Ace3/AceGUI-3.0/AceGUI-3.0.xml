@@ -12,7 +12,6 @@
 	<Script file="widgets\AceGUIContainer-TreeGroup.lua"/>
 	<Script file="widgets\AceGUIContainer-Window.lua"/>
 	<!-- Widgets -->
-	<Script file="widgets\AceGUIWidget-Button.lua"/>
 	<Script file="widgets\AceGUIWidget-Button-ElvUI.lua"/>
 	<Script file="widgets\AceGUIWidget-CheckBox.lua"/>
 	<Script file="widgets\AceGUIWidget-ColorPicker.lua"/>
@@ -24,7 +23,6 @@
 	<Script file="widgets\AceGUIWidget-InteractiveLabel.lua"/>
 	<Script file="widgets\AceGUIWidget-Keybinding.lua"/>
 	<Script file="widgets\AceGUIWidget-Label.lua"/>
-	<Script file="widgets\AceGUIWidget-MultiLineEditBox.lua"/>
-	<Script file="widgets\AceGUIWidget-Slider.lua"/>
+	<Script file="widgets\AceGUIWidget-MultiLineEditBox-ElvUI.lua"/>
 	<Script file="widgets\AceGUIWidget-Slider-ElvUI.lua"/>
 </Ui>

@@ -16,7 +16,6 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 function UF:Configure_ClassBar(frame, cur)
-	if not frame.VARIABLES_SET then return end
 	local bars = frame[frame.ClassBar]
 	if not bars then return end
 
@@ -45,7 +44,9 @@ function UF:Configure_ClassBar(frame, cur)
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
 
 	local color = E.db.unitframe.colors.borderColor
-	bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	if not bars.backdrop.ignoreBorderColors then
+		bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	end
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		if frame.MAX_CLASS_BAR == 1 or frame.ClassBar == "AdditionalPower" or frame.ClassBar == "Stagger" or frame.ClassBar == 'AlternativePower' then
@@ -272,28 +273,15 @@ local function ToggleResourceBar(bars, overrideVisibility)
 
 	frame.CLASSBAR_SHOWN = (not not overrideVisibility) or frame[frame.ClassBar]:IsShown()
 
-	local height
-	if db.classbar then
-		height = db.classbar.height
-	elseif frame.AlternativePower then
-		height = db.power.height
-	end
+	if bars.text then bars.text:SetAlpha(frame.CLASSBAR_SHOWN and 1 or 0) end
 
-	if bars.text then
-		if frame.CLASSBAR_SHOWN then
-			bars.text:SetAlpha(1)
-		else
-			bars.text:SetAlpha(0)
-		end
-	end
-
+	local height = (db.classbar and db.classbar.height) or (frame.AlternativePower and db.power.height)
 	frame.CLASSBAR_HEIGHT = (frame.USE_CLASSBAR and (frame.CLASSBAR_SHOWN and height) or 0)
 	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
 
 	if not frame.CLASSBAR_DETACHED then --Only update when necessary
 		UF:Configure_HealthBar(frame)
 		UF:Configure_Portrait(frame)
-		UF:Configure_Threat(frame)
 	end
 end
 UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
@@ -384,6 +372,16 @@ local function PostUpdateRunes(self)
 		self:Show()
 	else
 		self:Hide()
+	end
+
+	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
+	for i=1, #self do
+		if custom_backdrop then
+			self[i].bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+		else
+			local r, g, b = self[i]:GetStatusBarColor()
+			self[i].bg:SetVertexColor(r * .35, g * .35, b * .35)
+		end
 	end
 end
 
@@ -546,7 +544,7 @@ function UF:PostVisibilityAdditionalPower(enabled, stateChanged)
 		UF:Configure_ClassBar(frame)
 		UF:Configure_HealthBar(frame)
 		UF:Configure_Power(frame)
-		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
+		UF:Configure_InfoPanel(frame)
 	end
 end
 
@@ -578,20 +576,14 @@ function UF:PostUpdateStagger(stagger)
 end
 
 function UF:PostUpdateVisibilityStagger(_, _, isShown, stateChanged)
-	local frame = self
-
-	if(isShown) then
-		frame.ClassBar = 'Stagger'
-	else
-		frame.ClassBar = 'ClassPower'
-	end
+	self.ClassBar = (isShown and 'Stagger') or 'ClassPower'
 
 	--Only update when necessary
-	if(stateChanged) then
-		ToggleResourceBar(frame[frame.ClassBar])
-		UF:Configure_ClassBar(frame)
-		UF:Configure_HealthBar(frame)
-		UF:Configure_Power(frame)
-		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
+	if stateChanged then
+		ToggleResourceBar(self[self.ClassBar])
+		UF:Configure_ClassBar(self)
+		UF:Configure_HealthBar(self)
+		UF:Configure_Power(self)
+		UF:Configure_InfoPanel(self)
 	end
 end

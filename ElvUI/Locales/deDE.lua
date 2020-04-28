@@ -149,7 +149,7 @@ L["Hover your mouse over any actionbutton or spellbook button to bind it. Press 
 L["HP"] = "HP"
 L["HPS"] = "HPS"
 L["I Swear"] = "Ich schwöre"
-L["I"] = "I"
+L["I"] = true
 L["Icons Only"] = "Nur Symbole"
 L["If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them."] = "Wenn du ausversehen das Chatfenster entfernen solltest, kannst du ganz einfach in die Ingame-Konfiguration gehen und den Installationsprozess erneut aufrufen. Drücke Installieren und gehe zu den Chateinstellungen und setze diese zurück."
 L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing."] = "Wenn du Probleme mit ElvUI hast, deaktiviere alle Addons außer ElvUI. Denke auch daran, dass ElvUI die komplette Benutzeroberfläche ersetzt, d.h. du kannst kein Addon verwenden, welches die gleichen Funktionen wie ElvUI nutzt."
@@ -225,7 +225,7 @@ L["One or more of the changes you have made will effect all characters using thi
 L["P"] = "P"
 L["Party Frames"] = "Gruppenfenster"
 L["Pending"] = "Ausstehend"
-L["Pet Bar"] = "Begleisterleiste"
+L["Pet Bar"] = "Begleiterleiste"
 L["Pet Castbar"] = "Begleiter Zauberleiste"
 L["Pet Frame"] = "Begleiterfenster"
 L["PetTarget Frame"] = "Begleiter-Ziel Fenster"

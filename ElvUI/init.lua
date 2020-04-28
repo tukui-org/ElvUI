@@ -9,6 +9,7 @@
 
 --Lua functions
 local _G = _G
+local unpack = unpack
 local format, gsub, type, tcopy = format, gsub, type, table.copy
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -136,6 +137,10 @@ do
 	DisableAddOn("ElvUI_CustomTweaks")
 end
 
+function E:OnEnable()
+	E:Initialize()
+end
+
 function E:OnInitialize()
 	if not ElvCharacterDB then
 		ElvCharacterDB = {}
@@ -198,7 +203,7 @@ function E:OnInitialize()
 	end
 
 	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
-	GameMenuButton:SetText(format('|cfffe7b2c%s|r', E.name))
+	GameMenuButton:SetText(format('%s%s|r', self.media.hexvaluecolor, E.name))
 	GameMenuButton:SetScript('OnClick', function() E:ToggleOptionsUI() HideUIPanel(GameMenuFrame) end)
 	GameMenuFrame[E.name] = GameMenuButton
 
@@ -212,6 +217,7 @@ function E:OnInitialize()
 end
 
 function E:PositionGameMenuButton()
+	GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
 	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
 	if relTo ~= GameMenuFrame[E.name] then
@@ -221,12 +227,6 @@ function E:PositionGameMenuButton()
 		GameMenuButtonLogout:Point('TOPLEFT', GameMenuFrame[E.name], 'BOTTOMLEFT', 0, offY)
 	end
 end
-
-local LoadUI=CreateFrame('Frame')
-LoadUI:RegisterEvent('PLAYER_LOGIN')
-LoadUI:SetScript('OnEvent', function()
-	E:Initialize()
-end)
 
 function E:ResetProfile()
 	local profileKey

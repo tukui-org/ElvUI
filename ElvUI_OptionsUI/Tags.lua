@@ -9,12 +9,31 @@ E.Options.args.tagGroup = {
 	name = L["Available Tags"],
 	childGroups = 'tab',
 	args = {
-		link = {
+		GuideLink = {
 			order = 1,
 			type = "input",
-			width = "full",
+			customWidth = 310,
 			name = L["Guide:"],
 			get = function() return "https://www.tukui.org/forum/viewtopic.php?f=9&t=6" end,
+		},
+		WikiLink = {
+			order = 2,
+			type = "input",
+			customWidth = 290,
+			name = L["Wiki:"],
+			get = function() return "https://git.tukui.org/elvui/elvui/-/wikis/home" end,
+		},
+		ColorWheel = {
+			order = 3,
+			type = 'execute',
+			customWidth = 120,
+			name = L["Color Picker"],
+			func = function()
+				ColorPickerFrame:Show()
+				ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
+				ColorPickerFrame:SetClampedToScreen(true)
+				ColorPickerFrame:Raise()
+			end,
 		},
 		Colors = {
 			type = "group",
@@ -29,6 +48,47 @@ E.Options.args.tagGroup = {
 				}
 			}
 		},
+		Names = {
+			type = "group",
+			name = "Names",
+			args = {
+				nameHealthInfo1 = {
+					order = 1,
+					type = "input",
+					width = 'full',
+					name = '|cFF666666[1/5]|r White name text, missing hp red',
+					get = function() return '[name:health]' end,
+				},
+				nameHealthInfo2 = {
+					order = 2,
+					type = "input",
+					width = 'full',
+					name = '|cFF666666[2/5]|r Class color name text, missing hp red',
+					get = function() return '[name:health{class}]' end,
+				},
+				nameHealthInfo3 = {
+					order = 3,
+					type = "input",
+					width = 'full',
+					name = '|cFF666666[3/5]|r Class color name text, missing hp based on hex code',
+					get = function() return '[name:health{class:00ff00}]' end,
+				},
+				nameHealthInfo4 = {
+					order = 4,
+					type = "input",
+					width = 'full',
+					name = '|cFF666666[4/5]|r Name text based on hex code, missing hp red',
+					get = function() return '[name:health{00ff00}]' end,
+				},
+				nameHealthInfo5 = {
+					order = 5,
+					type = "input",
+					width = 'full',
+					name = '|cFF666666[5/5]|r Name text based on hex code, missing hp class color',
+					get = function() return '[name:health{00ff00:class}]' end,
+				},
+			},
+		},
 	},
 }
 
@@ -37,8 +97,8 @@ local getTag = function(info) return format('[%s]', info[#info]) end
 for _, Table in pairs({'Events', 'Methods'}) do
 	for Tag in next, E.oUF.Tags[Table] do
 		if not E.TagInfo[Tag] then
-			E:AddTagInfo(Tag, 'Miscellanous')
-			--E:Print("['"..Tag.."'] = { category = 'Miscellanous', description = '' }")
+			E:AddTagInfo(Tag, 'Miscellaneous')
+			--E:Print("['"..Tag.."'] = { category = 'Miscellaneous', description = '' }")
 		end
 
 		if not E.Options.args.tagGroup.args[E.TagInfo[Tag].category] then

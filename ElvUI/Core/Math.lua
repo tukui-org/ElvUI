@@ -4,8 +4,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
 local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
 local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, abs, sqrt, mod
-local format, strsub, strupper, gsub, gmatch, utf8sub = format, strsub, strupper, gsub, gmatch, string.utf8sub
-local tostring, strlen, pairs = tostring, strlen, pairs
+local format, strsub, strupper, gsub, gmatch = format, strsub, strupper, gsub, gmatch
+local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
@@ -16,6 +16,7 @@ local C_Timer_After = C_Timer.After
 
 E.ShortPrefixValues = {}
 E.ShortPrefixStyles = {
+	['TCHINESE'] = {{1e8,'億'}, {1e4,'萬'}},
 	['CHINESE'] = {{1e8,'亿'}, {1e4,'万'}},
 	['ENGLISH'] = {{1e12,'T'}, {1e9,'B'}, {1e6,'M'}, {1e3,'K'}},
 	['GERMAN'] = {{1e12,'Bio'}, {1e9,'Mrd'}, {1e6,'Mio'}, {1e3,'Tsd'}},
@@ -87,8 +88,10 @@ end
 
 -- Text Gradient by Simpy
 function E:TextGradient(text, ...)
-	local msg, len, idx = '', strlen(text), 0
-	for x in gmatch(text, '.') do
+	local msg, len, idx = '', utf8len(text), 0
+
+	for i=1, len do
+		local x = utf8sub(text, i, i)
 		if strmatch(x, '%s') then
 			msg = msg .. x
 			idx = idx + 1
@@ -122,10 +125,15 @@ end
 
 --Return rounded number
 function E:Round(num, idp)
-	if(idp and idp > 0) then
+	if type(num) ~= 'number' then
+		return num, idp
+	end
+
+	if idp and idp > 0 then
 		local mult = 10 ^ idp
 		return floor(num * mult + 0.5) / mult
 	end
+
 	return floor(num + 0.5)
 end
 

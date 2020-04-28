@@ -300,7 +300,7 @@ L["Copy Chat Lines"] = true
 L["Copy From"] = "Copier depuis"
 L["Copy settings from another unit."] = "Copier les options d'une autre unité"
 L["Copy Settings From"] = "Copier les options de"
-L["Core |cfffe7b2cElvUI|r options."] = true
+L["Core |cff1784d1ElvUI|r options."] = true
 L["Count Font Size"] = "Taille du texte du décompte"
 L["Count xOffset"] = "Décalage X de la pile"
 L["Count yOffset"] = "Décalage Y de la pile"
@@ -1442,6 +1442,8 @@ L["nonPersonal"] = "Non Personal"
 L["notCastByUnit"] = "Not Cast By Unit"
 L["notDispellable"] = "Not Dispellable"
 L["Personal"] = true
+L["MyPet"] = true
+L["OtherPet"] = true
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Modifier les options des barres d'actions."

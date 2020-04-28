@@ -6,10 +6,12 @@ local translitMark = "!"
 
 --Lua functions
 local _G = _G
-local tonumber = tonumber
-local unpack, pairs, wipe, floor = unpack, pairs, wipe, floor
+local tonumber, next = tonumber, next
 local gmatch, gsub, format, select = gmatch, gsub, format, select
-local strfind, strmatch, strlower, utf8lower, utf8sub = strfind, strmatch, strlower, string.utf8lower, string.utf8sub
+local unpack, pairs, wipe, floor, ceil = unpack, pairs, wipe, floor, ceil
+local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
+local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf8len
+
 --WoW API / Variables
 local CreateTextureMarkup = CreateTextureMarkup
 local UnitFactionGroup = UnitFactionGroup
@@ -63,6 +65,9 @@ local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
 local CreateAtlasMarkup = CreateAtlasMarkup
 
+local CHAT_FLAG_AFK = CHAT_FLAG_AFK:gsub('<(.-)>', '|r<|cffFF3333%1|r>')
+local CHAT_FLAG_DND = CHAT_FLAG_DND:gsub('<(.-)>', '|r<|cffFFFF33%1|r>')
+
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION
@@ -78,7 +83,10 @@ local SPELL_POWER_HOLY_POWER = Enum.PowerType.HolyPower
 local SPELL_POWER_MANA = Enum.PowerType.Mana
 local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 
--- GLOBALS: Hex, _TAGS, ElvUF
+-- GLOBALS: ElvUF, Hex, _TAGS, _COLORS
+
+--Expose local functions for plugins onto this table
+E.TagFunctions = {}
 
 ------------------------------------------------------------------------
 --	Tag Extra Events
@@ -105,8 +113,9 @@ local function UnitName(unit)
 		return name
 	end
 end
+E.TagFunctions.UnitName = UnitName
 
-local function abbrev(name)
+local function Abbrev(name)
 	local letters, lastWord = '', strmatch(name, '.+%s(.+)$')
 	if lastWord then
 		for word in gmatch(name, '.-%s') do
@@ -119,6 +128,7 @@ local function abbrev(name)
 	end
 	return name
 end
+E.TagFunctions.Abbrev = Abbrev
 
 local Harmony = {
 	[0] = {1, 1, 1},
@@ -172,6 +182,7 @@ local function GetClassPower(class)
 
 	return min, max, r, g, b
 end
+E.TagFunctions.GetClassPower = GetClassPower
 
 ElvUF.Tags.Events['altpowercolor'] = "UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE"
 ElvUF.Tags.Methods['altpowercolor'] = function(u)
@@ -220,15 +231,65 @@ ElvUF.Tags.Methods['healthcolor'] = function(unit)
 	end
 end
 
+ElvUF.Tags.Events['status:text'] = 'PLAYER_FLAGS_CHANGED'
+ElvUF.Tags.Methods['status:text'] = function(unit)
+	if UnitIsAFK(unit) then
+		return CHAT_FLAG_AFK
+	elseif UnitIsDND(unit) then
+		return CHAT_FLAG_DND
+	end
+
+	return nil
+end
+
+ElvUF.Tags.Events['status:icon'] = 'PLAYER_FLAGS_CHANGED'
+ElvUF.Tags.Methods['status:icon'] = function(unit)
+	if UnitIsAFK(unit) then
+		return CreateTextureMarkup('Interface\\FriendsFrame\\StatusIcon-Away', 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
+	elseif UnitIsDND(unit) then
+		return CreateTextureMarkup('Interface\\FriendsFrame\\StatusIcon-DnD', 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
+	end
+
+	return nil
+end
+
 ElvUF.Tags.Events['name:abbrev'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['name:abbrev'] = function(unit)
 	local name = UnitName(unit)
 
 	if name and strfind(name, '%s') then
-		name = abbrev(name)
+		name = Abbrev(name)
 	end
 
 	return name ~= nil and name or ''
+end
+
+do
+	local function NameHealthColor(tags,hex,unit,default)
+		if hex == 'class' or hex == 'reaction' then
+			return tags.namecolor(unit)
+		elseif hex and strmatch(hex, '^%x%x%x%x%x%x$') then
+			return '|cFF'..hex
+		end
+
+		return default
+	end
+	E.TagFunctions.NameHealthColor = NameHealthColor
+
+	-- the third arg here is added from the user as like [name:health{ff00ff:00ff00}] or [name:health{class:00ff00}]
+	ElvUF.Tags.Events['name:health'] = 'UNIT_NAME_UPDATE UNIT_FACTION UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+	ElvUF.Tags.Methods['name:health'] = function(unit, _, args)
+		local name = UnitName(unit)
+		if not name then return '' end
+
+		local min, max, bco, fco = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
+		local to = ceil(utf8len(name) * (min / max))
+
+		local fill = NameHealthColor(_TAGS, fco, unit, '|cFFff3333')
+		local base = NameHealthColor(_TAGS, bco, unit, '|cFFffffff')
+
+		return to > 0 and (base..utf8sub(name, 0, to)..fill..utf8sub(name, to+1, -1)) or fill..name
+	end
 end
 
 ElvUF.Tags.Events['health:deficit-percent:nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
@@ -323,7 +384,7 @@ for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 
 		local name = UnitName(unit)
 
 		if name and strfind(name, '%s') then
-			name = abbrev(name)
+			name = Abbrev(name)
 		end
 
 		return name ~= nil and E:ShortenString(name, length) or ''
@@ -538,7 +599,7 @@ ElvUF.Tags.Methods['realm:dash:translit'] = function(unit)
 	return realm
 end
 
-ElvUF.Tags.Events['threat:percent'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
+ElvUF.Tags.Events['threat:percent'] = 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threat:percent'] = function(unit)
 	local _, _, percent = UnitDetailedThreatSituation('player', unit)
 	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
@@ -548,7 +609,7 @@ ElvUF.Tags.Methods['threat:percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['threat:current'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
+ElvUF.Tags.Events['threat:current'] = 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threat:current'] = function(unit)
 	local _, _, percent, _, threatvalue = UnitDetailedThreatSituation('player', unit)
 	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
@@ -558,7 +619,7 @@ ElvUF.Tags.Methods['threat:current'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['threatcolor'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
+ElvUF.Tags.Events['threatcolor'] = 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threatcolor'] = function(unit)
 	local _, status = UnitDetailedThreatSituation('player', unit)
 	if (status) and (IsInGroup() or UnitExists('pet')) then
@@ -1052,9 +1113,57 @@ ElvUF.Tags.Methods['quest:info'] = function(unit)
 	end
 end
 
+local highestVersion = E.version
+ElvUF.Tags.OnUpdateThrottle['ElvUI-Users'] = 20
+ElvUF.Tags.Methods['ElvUI-Users'] = function(unit)
+	if E.UserList and next(E.UserList) then
+		local name, realm = UnitName(unit)
+		if name then
+			local nameRealm = (realm and realm ~= "" and format("%s-%s", name, realm)) or name
+			local userVersion = nameRealm and E.UserList[nameRealm]
+			if userVersion then
+				if highestVersion < userVersion then
+					highestVersion = userVersion
+				end
+				return (userVersion < highestVersion) and "|cffFF3333E|r" or "|cff3366ffE|r"
+			end
+		end
+	end
+	return ""
+end
+
+ElvUF.Tags.Events['creature'] = ''
+
 E.TagInfo = {
+	--Altpower
+	['altpower:current'] = { category = 'Altpower', description = "Displays altpower text on a unit in current format" },
+	['altpower:current-max'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max format" },
+	['altpower:current-max-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max-percent format" },
+	['altpower:current-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-percent format" },
+	['altpower:deficit'] = { category = 'Altpower', description = "Displays altpower text on a unit in deficit format" },
+	['altpower:percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in percent format" },
+	--Classification
+	['classification'] = { category = 'Classification', description = "Displays the unit's classification (e.g. 'ELITE' and 'RARE')" },
+	['creature'] = { category = 'Classification', description = "Displays the creature type of the unit" },
+	['shortclassification'] = { category = 'Classification', description = "Displays the unit's classification in short form (e.g. '+' for ELITE and 'R' for RARE)" },
+	['classification:icon'] = { category = 'Classification', description = "Displays the unit's classification in icon form (golden icon for 'ELITE' silver icon for 'RARE')" },
+	['rare'] = { category = 'Classification', description = "Displays 'Rare' when the unit is a rare or rareelite" },
+	['plus'] = { category = 'Classification', description = "Displays the character '+' if the unit is an elite or rare-elite" },
+	--Classpower
+	['arcanecharges'] = { category = 'Classpower', description = "Displays the arcane charges (Mage)" },
+	['chi'] = { category = 'Classpower', description = "Displays the chi points (Monk)" },
+	['runes'] = { category = 'Classpower', description = "Displays the runes (Death Knight)" },
+	['soulshards'] = { category = 'Classpower', description = "Displays the soulshards (Warlock)" },
+	['holypower'] = { category = 'Classpower', description = "Displays the holy power (Paladin)" },
+	['cpoints'] = { category = 'Classpower', description = "Displays amount of combo points the player has (only for player, shows nothing on 0)" },
+	['classpower:current'] = { category = 'Classpower', description = "Displays the unit's current amount of special power" },
+	['classpower:current-max'] = { category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash" },
+	['classpower:current-max-percent'] = { category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash (% when not full power)" },
+	['classpower:current-percent'] = { category = 'Classpower', description = "Displays the unit's current and percentage amount of special power, separated by a dash" },
+	['classpower:deficit'] = { category = 'Classpower', description = "Displays the unit's special power as a deficit (Total Special Power - Current Special Power = -Deficit)" },
+	['classpower:percent'] = { category = 'Classpower', description = "Displays the unit's current amount of special power as a percentage" },
 	--Colors
-	['namecolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction" },
+	['namecolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction (Ex: ['namecolor']['name'])" },
 	['reactioncolor'] = { category = 'Colors', description = "Colors names by NPC reaction (Bad/Neutral/Good)" },
 	['powercolor'] = { category = 'Colors', description = "Colors the power text based upon its type" },
 	['difficultycolor'] = { category = 'Colors', description = "Colors the following tags by difficulty, red for impossible, orange for hard, green for easy" },
@@ -1065,12 +1174,6 @@ E.TagInfo = {
 	['classificationcolor'] = { category = 'Colors', description = "Changes color of health, depending on the unit's classification" },
 	['manacolor'] = { category = 'Colors', description = "Changes the text color to a light-blue mana color" },
 	['difficulty'] = { category = 'Colors', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
-	--Classification
-	['classification'] = { category = 'Classification', description = "Displays the unit's classification (e.g. 'ELITE' and 'RARE')" },
-	['shortclassification'] = { category = 'Classification', description = "Displays the unit's classification in short form (e.g. '+' for ELITE and 'R' for RARE)" },
-	['classification:icon'] = { category = 'Classification', description = "Displays the unit's classification in icon form (golden icon for 'ELITE' silver icon for 'RARE')" },
-	['rare'] = { category = 'Classification', description = "Displays 'Rare' when the unit is a rare or rareelite" },
-	['plus'] = { category = 'Classification', description = "Displays the character '+' if the unit is an elite or rare-elite" },
 	--Guild
 	['guild'] = { category = 'Guild', description = "Displays the guild name" },
 	['guild:brackets'] = { category = 'Guild', description = "Displays the guild name with < > brackets (e.g. <GUILD>)" },
@@ -1137,6 +1240,12 @@ E.TagInfo = {
 	['mana:deficit:shortvalue'] = { category = 'Mana', description = "Shortvalue of the mana deficit (Total Mana - Current Mana = -Deficit)" },
 	['curmana'] = { category = 'Mana', description = "Displays the current mana without decimals" },
 	['maxmana'] = { category = 'Mana', description = "Displays the max amount of mana the unit can have" },
+	--Miscellaneous
+	['affix'] = { category = 'Miscellaneous', description = "Displays low level critter mobs" },
+	['class'] = { category = 'Miscellaneous', description = "Displays the class of the unit, if that unit is a player" },
+	['race'] = { category = 'Miscellaneous', description = "Displays the race" },
+	['smartclass'] = { category = 'Miscellaneous', description = "Displays the player's class or creature's type" },
+	['specialization'] = { category = 'Miscellaneous', description = "Displays your current specialization as text" },
 	--Names
 	['name'] = { category = 'Names', description = "Displays the full name of the unit without any letter limitation" },
 	['name:veryshort'] = { category = 'Names', description = "Displays the name of the unit (limited to 5 letters)" },
@@ -1188,29 +1297,14 @@ E.TagInfo = {
 	['arena:number'] = { category = 'PvP', description = "Displays the arena number 1-5" },
 	['faction'] = { category = 'PvP', description = "Displays 'Aliance' or 'Horde'" },
 	['faction:icon'] = { category = 'PvP', description = "Displays 'Alliance' or 'Horde' Texture" },
-	--Classpower
-	['arcanecharges'] = { category = 'Classpower', description = "Displays the arcane charges (Mage)" },
-	['chi'] = { category = 'Classpower', description = "Displays the chi points (Monk)" },
-	['runes'] = { category = 'Classpower', description = "Displays the runes (Death Knight)" },
-	['soulshards'] = { category = 'Classpower', description = "Displays the soulshards (Warlock)" },
-	['holypower'] = { category = 'Classpower', description = "Displays the holy power (Paladin)" },
-	['cpoints'] = { category = 'Classpower', description = "Displays amount of combo points the player has (only for player, shows nothing on 0)" },
-	['classpower:current'] = { category = 'Classpower', description = "Displays the unit's current amount of special power" },
-	['classpower:current-max'] = { category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash" },
-	['classpower:current-max-percent'] = { category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash (% when not full power)" },
-	['classpower:current-percent'] = { category = 'Classpower', description = "Displays the unit's current and percentage amount of special power, separated by a dash" },
-	['classpower:deficit'] = { category = 'Classpower', description = "Displays the unit's special power as a deficit (Total Special Power - Current Special Power = -Deficit)" },
-	['classpower:percent'] = { category = 'Classpower', description = "Displays the unit's current amount of special power as a percentage" },
-	--Altpower
-	['altpower:current'] = { category = 'Altpower', description = "Displays altpower text on a unit in current format" },
-	['altpower:current-max'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max format" },
-	['altpower:current-max-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max-percent format" },
-	['altpower:current-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max format" },
-	['altpower:deficit'] = { category = 'Altpower', description = "Displays altpower text on a unit in deficit format" },
-	['altpower:percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in percent format" },
 	--Quest
 	['quest:info'] = { category = 'Quest', description = "Displays the quest objectives" },
 	['quest:title'] = { category = 'Quest', description = "Displays the quest title" },
+	--Range
+	['nearbyplayers:8'] = { category = 'Range', description = "Displays all players within 8 yards" },
+	['nearbyplayers:10'] = { category = 'Range', description = "Displays all players within 10 yards" },
+	['nearbyplayers:30'] = { category = 'Range', description = "Displays all players within 30 yards" },
+	['distance'] = { category = 'Range', description = "Displays the distance" },
 	--Realm
 	['realm'] = { category = 'Realm', description = "Displays the server name" },
 	['realm:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters" },
@@ -1234,6 +1328,7 @@ E.TagInfo = {
 	['dead'] = { category = 'Status', description = "Displays <DEAD> if the unit is dead" },
 	['resting'] = { category = 'Status', description = "Displays 'zzz' if the unit is resting" },
 	['offline'] = { category = 'Status', description = "Displays 'OFFLINE' if the unit is disconnected" },
+	['ElvUI-Users'] = { category = 'Status', description = "Displays current ElvUI users." },
 	--Target
 	['target'] = { category = 'Target', description = "Displays the current target of the unit" },
 	['target:veryshort'] = { category = 'Target', description = "Displays the current target of the unit (limited to 5 letters)" },
@@ -1249,24 +1344,13 @@ E.TagInfo = {
 	['threat'] = { category = 'Threat', description = "Displays the current threat" },
 	['threat:percent'] = { category = 'Threat', description = "Displays the current threat as a percent" },
 	['threat:current'] = { category = 'Threat', description = "Displays the current threat as a value" },
-	--Miscellanous
-	['affix'] = { category = 'Miscellanous', description = "Displays low level critter mobs" },
-	['class'] = { category = 'Miscellanous', description = "Displays the class of the unit, if that unit is a player" },
-	['race'] = { category = 'Miscellanous', description = "Displays the race" },
-	['smartclass'] = { category = 'Miscellanous', description = "Displays the player's class or creature's type" },
-	['specialization'] = { category = 'Miscellanous', description = "Displays your current specialization as text" },
-	--Range
-	['nearbyplayers:8'] = { category = 'Range', description = "Displays all players within 8 yards" },
-	['nearbyplayers:10'] = { category = 'Range', description = "Displays all players within 10 yards" },
-	['nearbyplayers:30'] = { category = 'Range', description = "Displays all players within 30 yards" },
-	['distance'] = { category = 'Range', description = "Displays the distance" },
 }
 
 function E:AddTagInfo(tagName, category, description, order)
 	if order then order = tonumber(order) + 10 end
 
 	E.TagInfo[tagName] = E.TagInfo[tagName] or {}
-	E.TagInfo[tagName].category = category or 'Miscellanous'
+	E.TagInfo[tagName].category = category or 'Miscellaneous'
 	E.TagInfo[tagName].description = description or ''
 	E.TagInfo[tagName].order = order or nil
 end

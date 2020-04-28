@@ -82,6 +82,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.GameFontHighlightSmall2,				NORMAL, self.db.general.fontSize)			-- Skill or Recipe description on TradeSkill frame
 		SetFont(_G.GameFontNormalHuge2,					NORMAL, 24)									-- Mythic weekly best dungeon name
 		SetFont(_G.GameFontNormalLarge2,				NORMAL, 15) 								-- Garrison Follower Names
+		SetFont(_G.GameFontNormalMed1,					NORMAL, 14)									-- WoW Token Info
 		SetFont(_G.GameFontNormalMed2,					NORMAL, self.db.general.fontSize*1.1)		-- Quest tracker
 		SetFont(_G.GameFontNormalMed3,					NORMAL, 15)
 		SetFont(_G.GameFontNormalSmall2,				NORMAL, 12)									-- MissionUI Followers names
@@ -124,6 +125,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, 20, MONOCHROME..'OUTLINE')			-- Raid Warning, Boss emote frame too
 		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 22, nil, SHADOWCOLOR, BIGOFFSET)	-- FlightMap
 		SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 15)
+		SetFont(_G.SystemFont_Shadow_Large2,			NORMAL, 18)									-- Auction House ItemDisplay
 		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 20, 'OUTLINE')
 		SetFont(_G.SystemFont_Shadow_Med1,				NORMAL, self.db.general.fontSize)
 		SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, 13 * 1.1)							-- Shows Order resourses on OrderHallTalentFrame
@@ -142,9 +144,10 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Number11Font,						NUMBER, 11)
 		SetFont(_G.Number12Font_o1,						NUMBER, 12, 'OUTLINE')
 		SetFont(_G.Number13Font,						NUMBER, 13)
-		SetFont(_G.Number13FontGray,						NUMBER, 13)
+		SetFont(_G.Number13FontGray,					NUMBER, 13)
 		SetFont(_G.Number13FontWhite,					NUMBER, 13)
 		SetFont(_G.Number13FontYellow,					NUMBER, 13)
+		SetFont(_G.Number14FontGray,					NUMBER, 14)
 		SetFont(_G.Number14FontWhite,					NUMBER, 14)
 		SetFont(_G.Number18Font,						NUMBER, 18)
 		SetFont(_G.Number18FontWhite,					NUMBER, 18)

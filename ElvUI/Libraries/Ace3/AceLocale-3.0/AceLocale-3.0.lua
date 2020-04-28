@@ -2,7 +2,7 @@
 -- @class file
 -- @name AceLocale-3.0
 -- @release $Id$
-local MAJOR,MINOR = "AceLocale-3.0-ElvUI", 7
+local MAJOR,MINOR = "AceLocale-3.0-ElvUI", 8
 
 local AceLocale, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
@@ -133,8 +133,8 @@ function AceLocale:NewLocale(application, locale, isDefault, silent)
 	registering = app[locale] -- remember globally for writeproxy and writedefaultproxy
 	-- end block
 
-	if isDefault then
-		app.defaultLocale = locale -- ElvUI
+	if isDefault and (not app.defaultLocale or app.defaultLocale == 'defaultLocale') then -- ElvUI
+		app.defaultLocale = locale
 		return writedefaultproxy
 	end
 

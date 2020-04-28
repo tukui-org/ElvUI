@@ -1,9 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Lua functions
 local random = random
---WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitReaction = UnitReaction
@@ -64,7 +62,6 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 end
 
 function UF:Configure_HealthBar(frame)
-	if not frame.VARIABLES_SET then return end
 	local db = frame.db
 	local health = frame.Health
 
@@ -202,13 +199,8 @@ function UF:Configure_HealthBar(frame)
 		health:SetReverseFill(db.health.reverseFill)
 	end
 
-	--Transparency Settings
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true, nil, db.health and db.health.reverseFill)
 
-	--Prediction Texture; keep under ToggleTransparentStatusBar
-	UF:UpdatePredictionStatusBar(frame.HealthPrediction, frame.Health, "Health")
-
-	--Frame Glow
 	UF:Configure_FrameGlow(frame)
 
 	if frame:IsElementEnabled("Health") then

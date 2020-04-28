@@ -289,8 +289,6 @@ function NP:StylePlate(nameplate)
 	end
 
 	NP.Plates[nameplate] = nameplate:GetName()
-
-	NP:StyleFilterPlateStyled(nameplate)
 end
 
 function NP:UpdatePlate(nameplate)
@@ -639,11 +637,14 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlateGUID(nameplate)
 		end
 
-		-- cutaway needs this
+		-- Vars that we need to keep in a nonstale state
+		--- Cutaway
 		nameplate.Health.cur = nil
 		nameplate.Power.cur = nil
+		--- WidgetXPBar
+		nameplate.npcID = nil
 
-		NP:StyleFilterClearVariables(nameplate)
+		NP:StyleFilterClearVariables(nameplate) -- keep this at the end
 	elseif event == "PLAYER_TARGET_CHANGED" then -- we need to check if nameplate exists in here
 		NP:SetupTarget(nameplate) -- pass it, even as nil here
 	end

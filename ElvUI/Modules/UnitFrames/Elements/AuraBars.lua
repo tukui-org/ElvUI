@@ -88,7 +88,6 @@ function UF:Construct_AuraBarHeader(frame)
 end
 
 function UF:Configure_AuraBars(frame)
-	if not frame.VARIABLES_SET then return end
 	local auraBars = frame.AuraBars
 	local db = frame.db
 	auraBars.db = db.aurabar
@@ -124,9 +123,13 @@ function UF:Configure_AuraBars(frame)
 		local colors = UF.db.colors.auraBarBuff
 		if E:CheckClassColor(colors.r, colors.g, colors.b) then
 			local classColor = E:ClassColor(E.myclass, true)
-			colors.r = classColor.r
-			colors.g = classColor.g
-			colors.b = classColor.b
+			colors.r, colors.g, colors.b = classColor.r, classColor.g, classColor.b
+		end
+
+		colors = UF.db.colors.auraBarDebuff
+		if E:CheckClassColor(colors.r, colors.g, colors.b) then
+			local classColor = E:ClassColor(E.myclass, true)
+			colors.r, colors.g, colors.b = classColor.r, classColor.g, classColor.b
 		end
 
 		if not auraBars.Holder then

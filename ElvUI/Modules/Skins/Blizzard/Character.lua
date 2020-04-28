@@ -6,11 +6,15 @@ local _G = _G
 local unpack, select = unpack, select
 local pairs, ipairs, type = pairs, ipairs, type
 --WoW API / Variables
+local EquipmentManager_UnpackLocation = EquipmentManager_UnpackLocation
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+local GetContainerItemLink = GetContainerItemLink
+local GetInventoryItemLink = GetInventoryItemLink
 local GetFactionInfo = GetFactionInfo
 local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
+local IsCorruptedItem = IsCorruptedItem
 
 local PLACEINBAGS_LOCATION = 0xFFFFFFFF
 local IGNORESLOT_LOCATION = 0xFFFFFFFE
@@ -18,14 +22,12 @@ local UNIGNORESLOT_LOCATION = 0xFFFFFFFD
 
 local function UpdateAzeriteItem(self)
 	if not self.styled then
+		self.styled = true
+
 		self.AzeriteTexture:SetAlpha(0)
 		self.RankFrame.Texture:SetTexture()
 		self.RankFrame.Label:FontTemplate(nil, nil, "OUTLINE")
-
-		self.styled = true
 	end
-	self:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
-	self:GetHighlightTexture():SetAllPoints()
 end
 
 local function UpdateAzeriteEmpoweredItem(self)
@@ -271,6 +273,22 @@ local function CorruptionIcon(self)
 	self.IconOverlay:SetShown(itemLink and IsCorruptedItem(itemLink))
 end
 
+local function UpdateCorruption(button, location)
+	local _, _, bags, voidStorage, slot, bag = EquipmentManager_UnpackLocation(location)
+	if voidStorage then
+		button.Eye:Hide()
+		return
+	end
+
+	local itemLink
+	if bags then
+		itemLink = GetContainerItemLink(bag, slot)
+	else
+		itemLink = GetInventoryItemLink("player", slot)
+	end
+	button.Eye:SetShown(itemLink and IsCorruptedItem(itemLink))
+end
+
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
@@ -283,39 +301,41 @@ function S:CharacterFrame()
 	S:HandleScrollBar(_G.GearManagerDialogPopupScrollFrameScrollBar)
 
 	for _, Slot in pairs({_G.PaperDollItemsFrame:GetChildren()}) do
-		if Slot:IsObjectType("Button") or Slot:IsObjectType("ItemButton") then
+		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
 			S:HandleIcon(Slot.icon)
 			Slot:StripTextures()
 			Slot:SetTemplate()
 			Slot:StyleButton(Slot)
 			Slot.icon:SetInside()
-
-			Slot.IconOverlay:SetAtlas("Nzoth-inventory-icon");
-			Slot.IconOverlay:SetInside()
-
-			Slot:HookScript("OnShow", CorruptionIcon)
-			Slot:HookScript("OnEvent", CorruptionIcon)
-
+			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
 			Slot.CorruptedHighlightTexture:SetAtlas('Nzoth-charactersheet-item-glow')
-
-			local Cooldown = _G[Slot:GetName().."Cooldown"]
-			E:RegisterCooldown(Cooldown)
-
-			hooksecurefunc(Slot, "DisplayAsAzeriteItem", UpdateAzeriteItem)
-			hooksecurefunc(Slot, "DisplayAsAzeriteEmpoweredItem", UpdateAzeriteEmpoweredItem)
+			Slot.IconOverlay:SetAtlas('Nzoth-inventory-icon')
+			Slot.IconOverlay:SetInside()
+			Slot.IconBorder:SetAlpha(0)
 
 			if Slot.popoutButton:GetPoint() == 'TOP' then
-				Slot.popoutButton:Point("TOP", Slot, "BOTTOM", 0, 2)
+				Slot.popoutButton:Point('TOP', Slot, 'BOTTOM', 0, 2)
 			else
-				Slot.popoutButton:Point("LEFT", Slot, "RIGHT", -2, 0)
+				Slot.popoutButton:Point('LEFT', Slot, 'RIGHT', -2, 0)
 			end
 
-			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
-			Slot.IconBorder:SetAlpha(0)
+			E:RegisterCooldown(_G[Slot:GetName()..'Cooldown'])
+			hooksecurefunc(Slot, 'DisplayAsAzeriteItem', UpdateAzeriteItem)
+			hooksecurefunc(Slot, 'DisplayAsAzeriteEmpoweredItem', UpdateAzeriteEmpoweredItem)
 			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(_, r, g, b) Slot:SetBackdropBorderColor(r, g, b) end)
 			hooksecurefunc(Slot.IconBorder, 'Hide', function() Slot:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+
+			Slot:HookScript('OnShow', CorruptionIcon)
+			Slot:HookScript('OnEvent', CorruptionIcon)
 		end
 	end
+
+	hooksecurefunc('PaperDollItemSlotButton_Update', function(slot)
+		local highlight = slot:GetHighlightTexture()
+		highlight:SetTexture(E.Media.Textures.White8x8)
+		highlight:SetVertexColor(1, 1, 1, .25)
+		highlight:SetInside()
+	end)
 
 	--Give character frame model backdrop it's color back
 	for _, corner in pairs({"TopLeft","TopRight","BotLeft","BotRight"}) do
@@ -395,6 +415,29 @@ function S:CharacterFrame()
 
 	--Swap item flyout frame (shown when holding alt over a slot)
 	hooksecurefunc("EquipmentFlyout_UpdateItems", SkinItemFlyouts)
+	hooksecurefunc("EquipmentFlyout_CreateButton", function()
+		local button = _G.EquipmentFlyoutFrame.buttons[#_G.EquipmentFlyoutFrame.buttons]
+
+		if not button.Eye then
+			button.Eye = button:CreateTexture()
+			button.Eye:SetAtlas("Nzoth-inventory-icon")
+			button.Eye:SetInside()
+		end
+	end)
+
+	hooksecurefunc("EquipmentFlyout_DisplayButton", function(button)
+		local location = button.location
+		local border = button.IconBorder
+		if not location or not border then return end
+
+		if location >= _G.EQUIPMENTFLYOUT_FIRST_SPECIAL_LOCATION then
+			border:Hide()
+		else
+			border:Show()
+		end
+
+		UpdateCorruption(button, location)
+	end)
 
 	--Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()
@@ -425,11 +468,16 @@ function S:CharacterFrame()
 			object.BgBottom:SetTexture()
 			object.BgMiddle:SetTexture()
 			object.text:FontTemplate()
-			hooksecurefunc(object.text, "SetFont", function(self, font)
-				if font ~= E.media.normFont then
-					self:FontTemplate()
-				end
-			end)
+
+			if not object.text.hooked then
+				object.text.hooked = true
+
+				hooksecurefunc(object.text, "SetFont", function(txt, font)
+					if font ~= E.media.normFont then
+						txt:FontTemplate()
+					end
+				end)
+			end
 		end
 	end)
 
@@ -448,16 +496,17 @@ function S:CharacterFrame()
 		object.BgMiddle:SetTexture()
 		object.icon:Size(36, 36)
 		object.icon:SetTexCoord(unpack(E.TexCoords))
+
 		--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
 		object.icon:Point("LEFT", object, "LEFT", 4, 0)
-		hooksecurefunc(object.icon, "SetPoint", function(self, _, _, _, _, _, forced)
+		hooksecurefunc(object.icon, "SetPoint", function(icn, _, _, _, _, _, forced)
 			if forced ~= true then
-				self:Point("LEFT", object, "LEFT", 4, 0, true)
+				icn:Point("LEFT", object, "LEFT", 4, 0, true)
 			end
 		end)
-		hooksecurefunc(object.icon, "SetSize", function(self, width, height)
+		hooksecurefunc(object.icon, "SetSize", function(icn, width, height)
 			if width == 30 or height == 30 then
-				self:Size(36, 36)
+				icn:Size(36, 36)
 			end
 		end)
 	end
@@ -488,16 +537,16 @@ function S:CharacterFrame()
 		tooltip:SetTemplate("Transparent")
 		if icon then
 			S:HandleIcon(icon, true)
-			hooksecurefunc(reward.IconBorder, "SetVertexColor", function(self, r, g, b)
-				self:GetParent().Icon.backdrop:SetBackdropBorderColor(r, g, b)
-				self:SetTexture()
+			hooksecurefunc(reward.IconBorder, "SetVertexColor", function(icnBdr, r, g, b)
+				icnBdr:GetParent().Icon.backdrop:SetBackdropBorderColor(r, g, b)
+				icnBdr:SetTexture()
 			end)
-			hooksecurefunc(reward.IconBorder, "Hide", function(self)
-				self:GetParent().Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			hooksecurefunc(reward.IconBorder, "Hide", function(icnBdr)
+				icnBdr:GetParent().Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 		end
-		tooltip:HookScript("OnShow", function(self)
-			self:SetTemplate("Transparent")
+		tooltip:HookScript("OnShow", function(tt)
+			tt:SetTemplate("Transparent")
 		end)
 	end
 

@@ -300,7 +300,7 @@ L["Copy Chat Lines"] = "대화 행별 복사 기능"
 L["Copy From"] = "복사해오기"
 L["Copy settings from another unit."] = "다른 부분에서 설정을 복사하여 가져옵니다."
 L["Copy Settings From"] = "설정 복사해서 가져오기"
-L["Core |cfffe7b2cElvUI|r options."] = true
+L["Core |cff1784d1ElvUI|r options."] = true
 L["Count Font Size"] = "중첩수 글꼴 크기"
 L["Count xOffset"] = "중첩수 x 좌표"
 L["Count yOffset"] = "중첩수 y 좌표"
@@ -1442,6 +1442,8 @@ L["nonPersonal"] = "Non Personal"
 L["notCastByUnit"] = "Not Cast By Unit"
 L["notDispellable"] = "해제 불가능"
 L["Personal"] = true
+L["MyPet"] = true
+L["OtherPet"] = true
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "행동단축바의 설정을 변경합니다."

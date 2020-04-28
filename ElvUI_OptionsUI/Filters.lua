@@ -138,7 +138,6 @@ E.Options.args.filters = {
 		deleteFilter = {
 			type = 'execute',
 			order = 3,
-			buttonElvUI = true,
 			name = L["Delete Filter"],
 			desc = L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."],
 			func = function()
@@ -171,25 +170,21 @@ E.Options.args.filters = {
 						selectedSpell = (spellName and value) or nil
 						if not selectedSpell then return end
 
-						if selectedFilter == 'Debuff Highlight' and not E.global.unitframe.DebuffHighlightColors[value] then
-							E.global.unitframe.DebuffHighlightColors[value] = { enable = true, style = 'GLOW', color = {r = 0.8, g = 0, b = 0, a = 0.85} }
-						elseif selectedFilter == 'AuraBar Colors' and not E.global.unitframe.AuraBarColors[value] then
-							E.global.unitframe.AuraBarColors[value] = E:CopyTable({}, auraBarDefaults)
+						if selectedFilter == 'Debuff Highlight' then
+							if not E.global.unitframe.DebuffHighlightColors[value] then
+								E.global.unitframe.DebuffHighlightColors[value] = { enable = true, style = 'GLOW', color = {r = 0.8, g = 0, b = 0, a = 0.85} }
+							end
+						elseif selectedFilter == 'AuraBar Colors' then
+							if not E.global.unitframe.AuraBarColors[value] then
+								E.global.unitframe.AuraBarColors[value] = E:CopyTable({}, auraBarDefaults)
+							end
 						elseif selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' then
 							local selectedTable = GetSelectedFilters()
 							if not selectedTable[value] then
 								selectedTable[value] = UF:AuraWatch_AddSpell(value, 'TOPRIGHT')
 							end
-						else
-							local filters = E.global.unitframe.aurafilters
-
-							-- protect bad profiles with these two lines
-							if not filters[selectedFilter] then filters[selectedFilter] = { spells = {} } end
-							if not filters[selectedFilter].spells then filters[selectedFilter].spells = {} end
-
-							if not filters[selectedFilter].spells[value] then
-								filters[selectedFilter].spells[value] = { enable = true, priority = 0, stackThreshold = 0 }
-							end
+						elseif not E.global.unitframe.aurafilters[selectedFilter].spells[value] then
+							E.global.unitframe.aurafilters[selectedFilter].spells[value] = { enable = true, priority = 0, stackThreshold = 0 }
 						end
 
 						UF:Update_AllFrames()
@@ -199,14 +194,13 @@ E.Options.args.filters = {
 					order = 2,
 					name = L["Remove Spell"],
 					desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
-					buttonElvUI = true,
 					type = 'execute',
 					func = function()
 						local value = GetSelectedSpell()
 						if not value then return end
 						selectedSpell = nil
 
-						if selectedFilter == 'Debuff Highlight' and not E.global.unitframe.DebuffHighlightColors[value] then
+						if selectedFilter == 'Debuff Highlight' then
 							E.global.unitframe.DebuffHighlightColors[value] = nil;
 						elseif selectedFilter == 'AuraBar Colors' then
 							if G.unitframe.AuraBarColors[value] then
@@ -222,12 +216,10 @@ E.Options.args.filters = {
 							else
 								selectedTable[value] = nil
 							end
+						elseif G.unitframe.aurafilters[selectedFilter] and G.unitframe.aurafilters[selectedFilter].spells[value] then
+							E.global.unitframe.aurafilters[selectedFilter].spells[value].enable = false;
 						else
-							if G.unitframe.aurafilters[selectedFilter] and G.unitframe.aurafilters[selectedFilter].spells[value] then
-								E.global.unitframe.aurafilters[selectedFilter].spells[value].enable = false;
-							else
-								E.global.unitframe.aurafilters[selectedFilter].spells[value] = nil;
-							end
+							E.global.unitframe.aurafilters[selectedFilter].spells[value] = nil;
 						end
 
 						UF:Update_AllFrames();
@@ -325,7 +317,6 @@ E.Options.args.filters = {
 				resetFilter = {
 					order = 2,
 					type = "execute",
-					buttonElvUI = true,
 					name = L["Reset Filter"],
 					desc = L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."],
 					disabled = function() return not FilterResetState[selectedFilter] end,

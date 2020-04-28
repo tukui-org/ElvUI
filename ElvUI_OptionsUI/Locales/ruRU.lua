@@ -300,7 +300,7 @@ L["Copy Chat Lines"] = "Копирование строк чата"
 L["Copy From"] = "Скопировать из"
 L["Copy settings from another unit."] = "Скопировать настройки с другого юнита."
 L["Copy Settings From"] = "Скопировать из"
-L["Core |cfffe7b2cElvUI|r options."] = "Основные опции |cfffe7b2cElvUI|r"
+L["Core |cff1784d1ElvUI|r options."] = "Основные опции |cff1784d1ElvUI|r"
 L["Count Font Size"] = "Размер шрифта стаков"
 L["Count xOffset"] = "Отступ стаков по X"
 L["Count yOffset"] = "Отступ стаков по Y"
@@ -1441,6 +1441,8 @@ L["nonPersonal"] = "Чужие"
 L["notCastByUnit"] = "Не принадлежит юниту"
 L["notDispellable"] = "Не развеиваемые"
 L["Personal"] = "Личные"
+L["MyPet"] = true
+L["OtherPet"] = true
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Изменение настроек панелей команд."

@@ -149,7 +149,7 @@ L["Hover your mouse over any actionbutton or spellbook button to bind it. Press 
 L["HP"] = "Salud"
 L["HPS"] = "VPS"
 L["I Swear"] = "Lo Juro"
-L["I"] = "Yo"
+L["I"] = true
 L["Icons Only"] = "Sólo Iconos"
 L["If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them."] = "Si eliminas un marco de chat accidentalmente, siempre puedes ir a la configuración, pulsar instalar, ir a la parte del chat, y restaurarlo."
 L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing."] = "Si has experimentado errores con ElvUI prueba a desactivar todos tus addons excepto ElvUI, recuerda que ElvUI remplaza por completo la interfaz, no puede haber addons que hagan lo mismo."

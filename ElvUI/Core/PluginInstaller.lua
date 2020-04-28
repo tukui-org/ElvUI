@@ -224,7 +224,7 @@ function PI:CreateFrame()
 	f.Next:SetText(CONTINUE)
 	f.Next:Disable()
 	f.Next:SetScript('OnClick', NextPage)
-	S:HandleButton(f.Next, true)
+	S:HandleButton(f.Next)
 
 	f.Prev = CreateFrame('Button', 'PluginInstallPrevButton', f, 'UIPanelButtonTemplate')
 	f.Prev:Size(110, 25)
@@ -232,7 +232,7 @@ function PI:CreateFrame()
 	f.Prev:SetText(PREVIOUS)
 	f.Prev:Disable()
 	f.Prev:SetScript('OnClick', PreviousPage)
-	S:HandleButton(f.Prev, true)
+	S:HandleButton(f.Prev)
 
 	f.Status = CreateFrame('StatusBar', 'PluginInstallStatus', f)
 	f.Status:SetFrameLevel(f.Status:GetFrameLevel() + 2)
@@ -256,7 +256,7 @@ function PI:CreateFrame()
 	f.Option1:Point('BOTTOM', 0, 45)
 	f.Option1:SetText('')
 	f.Option1:Hide()
-	S:HandleButton(f.Option1, true)
+	S:HandleButton(f.Option1)
 
 	f.Option2 = CreateFrame('Button', 'PluginInstallOption2Button', f, 'UIPanelButtonTemplate')
 	f.Option2:Size(110, 30)
@@ -265,7 +265,7 @@ function PI:CreateFrame()
 	f.Option2:Hide()
 	f.Option2:SetScript('OnShow', function() f.Option1:SetWidth(110); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45) end)
 	f.Option2:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45) end)
-	S:HandleButton(f.Option2, true)
+	S:HandleButton(f.Option2)
 
 	f.Option3 = CreateFrame('Button', 'PluginInstallOption3Button', f, 'UIPanelButtonTemplate')
 	f.Option3:Size(100, 30)
@@ -274,7 +274,7 @@ function PI:CreateFrame()
 	f.Option3:Hide()
 	f.Option3:SetScript('OnShow', function() f.Option1:SetWidth(100); f.Option1:ClearAllPoints(); f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0); f.Option2:SetWidth(100); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOM', f, 'BOTTOM', 0, 45)  end)
 	f.Option3:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45); f.Option2:SetWidth(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
-	S:HandleButton(f.Option3, true)
+	S:HandleButton(f.Option3)
 
 	f.Option4 = CreateFrame('Button', 'PluginInstallOption4Button', f, 'UIPanelButtonTemplate')
 	f.Option4:Size(100, 30)
@@ -291,7 +291,7 @@ function PI:CreateFrame()
 		f.Option2:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45)
 	end)
 	f.Option4:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45); f.Option2:SetWidth(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
-	S:HandleButton(f.Option4, true)
+	S:HandleButton(f.Option4)
 
 	f.SubTitle = f:CreateFontString(nil, 'OVERLAY')
 	f.SubTitle:FontTemplate(nil, 15, nil)
@@ -344,6 +344,7 @@ function PI:CreateFrame()
 	end)
 
 	f.tutorialImage = f:CreateTexture('PluginInstallTutorialImage', 'OVERLAY')
+	f.tutorialImage2 = f:CreateTexture('PluginInstallTutorialImage2', 'OVERLAY')
 
 	f.side = CreateFrame('Frame', 'PluginInstallTitleFrame', f)
 	f.side:SetTemplate('Transparent')
@@ -418,17 +419,43 @@ function PI:RunInstall()
 		f.Title:SetText(db.Title or L["ElvUI Plugin Installation"])
 		f.Status:SetMinMaxValues(0, f.MaxPage)
 		f.Status.text:SetText(f.CurrentPage..' / '..f.MaxPage)
-		f.tutorialImage:SetTexture(db.tutorialImage or E.Media.Textures.Logo)
+
+		-- Logo
+		f.tutorialImage:SetTexture(db.tutorialImage or E.Media.Textures.LogoTop)
+		f.tutorialImage:ClearAllPoints()
 		if db.tutorialImageSize then
 			f.tutorialImage:Size(db.tutorialImageSize[1], db.tutorialImageSize[2])
 		else
 			f.tutorialImage:Size(256, 128)
 		end
-		f.tutorialImage:ClearAllPoints()
 		if db.tutorialImagePoint then
 			f.tutorialImage:Point('BOTTOM', 0 + db.tutorialImagePoint[1], 70 + db.tutorialImagePoint[2])
 		else
 			f.tutorialImage:Point('BOTTOM', 0, 70)
+		end
+		if db.tutorialImageVertexColor then
+			f.tutorialImage:SetVertexColor(unpack(db.tutorialImageVertexColor))
+		else
+			f.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
+		end
+
+		--Alt Logo
+		f.tutorialImage2:SetTexture(db.tutorialImage2 or E.Media.Textures.LogoBottom)
+		f.tutorialImage2:ClearAllPoints()
+		if db.tutorialImage2Size then
+			f.tutorialImage2:Size(db.tutorialImage2Size[1], db.tutorialImage2Size[2])
+		else
+			f.tutorialImage2:Size(256, 128)
+		end
+		if db.tutorialImage2Point then
+			f.tutorialImage2:Point('BOTTOM', 0 + db.tutorialImage2Point[1], 70 + db.tutorialImage2Point[2])
+		else
+			f.tutorialImage2:Point('BOTTOM', 0, 70)
+		end
+		if db.tutorialImage2VertexColor then
+			f.tutorialImage2:SetVertexColor(unpack(db.tutorialImage2VertexColor))
+		else
+			f.tutorialImage2:SetVertexColor(1, 1, 1)
 		end
 
 		f.Pages = db.Pages

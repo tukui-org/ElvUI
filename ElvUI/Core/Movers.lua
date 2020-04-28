@@ -4,7 +4,7 @@ local Sticky = E.Libs.SimpleSticky
 --Lua functions
 local _G = _G
 local type, unpack, pairs, error = type, unpack, pairs, error
-local format, split, find = format, strsplit, strfind
+local format, split, find, ipairs = format, strsplit, strfind, ipairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
@@ -18,18 +18,16 @@ E.DisabledMovers = {}
 local function SizeChanged(frame)
 	if InCombatLockdown() then return end
 
-	if frame.dirtyWidth and frame.dirtyHeight then
-		frame.mover:Size(frame.dirtyWidth, frame.dirtyHeight)
-	else
-		frame.mover:Size(frame:GetSize())
-	end
+	-- this solves the group one issue on unitframes, patch: 8.3.0 ~Simpy
+	E:Delay(0, frame.mover.Size, frame.mover, frame.dirtyWidth or frame:GetWidth(), frame.dirtyHeight or frame:GetHeight())
+	--frame.mover:Size(frame.dirtyWidth or frame:GetWidth(), frame.dirtyHeight or frame:GetHeight())
 end
 
 local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
 	if not anchor then anchor = E.UIParent end
 
-	return format('%s,%s,%s,%d,%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
+	return format('%s,%s,%s,%d,%d', point, anchor:GetName(), secondaryPoint, x and E:Round(x) or 0, y and E:Round(y) or 0)
 end
 
 local function GetSettingPoints(name)
@@ -74,7 +72,7 @@ local coordFrame = CreateFrame('Frame')
 coordFrame:SetScript('OnUpdate', UpdateCoords)
 coordFrame:Hide()
 
-local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, shouldDisable, configString)
+local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, shouldDisable, configString, perferCorners)
 	if not parent then return end --If for some reason the parent isnt loaded yet
 
 	local holder = E.CreatedMovers[name]
@@ -115,6 +113,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f.snapOffset = snapOffset or -2
 	f.shouldDisable = shouldDisable
 	f.configString = configString
+	f.perferCorners = perferCorners
 
 	holder.mover = f
 	parent.mover = f
@@ -157,14 +156,8 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 		end
 
 		local x2, y2, p2 = E:CalculateMoverPoints(self)
-		local p1 = self.positionOverride and ((self.positionOverride == 'BOTTOM' or self.positionOverride == 'TOP') and 'BOTTOM' or 'BOTTOMLEFT')
 		self:ClearAllPoints()
-		self:Point(self.positionOverride or p2, E.UIParent, p1 or p2, x2, y2)
-
-		if self.positionOverride then
-			self.parent:ClearAllPoints()
-			self.parent:Point(self.positionOverride, self, self.positionOverride)
-		end
+		self:Point(p2, E.UIParent, p2, x2, y2)
 
 		E:SaveMoverPosition(name)
 
@@ -258,15 +251,12 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 end
 
 function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
-	local screenWidth, screenHeight, screenCenter = E.UIParent:GetRight(), E.UIParent:GetTop(), E.UIParent:GetCenter()
+	local screenWidth, screenHeight = E.UIParent:GetRight(), E.UIParent:GetTop()
+	local screenCenterX, screenCenterY = E.UIParent:GetCenter()
 	local x, y = mover:GetCenter()
 
-	local LEFT = screenWidth / 3
-	local RIGHT = screenWidth * 2 / 3
-	local TOP = screenHeight / 2
 	local point, nudgePoint, nudgeInversePoint
-
-	if y >= TOP then
+	if y >= screenCenterY then -- TOP: 1080p = 540
 		point = 'TOP'
 		nudgePoint = 'TOP'
 		nudgeInversePoint = 'BOTTOM'
@@ -278,40 +268,18 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 		y = mover:GetBottom()
 	end
 
-	if x >= RIGHT then
+	if x >= (screenWidth * 2 / 3) then -- RIGHT: 1080p = 1280
 		point = point..'RIGHT'
 		nudgePoint = 'RIGHT'
 		nudgeInversePoint = 'LEFT'
 		x = mover:GetRight() - screenWidth
-	elseif x <= LEFT then
+	elseif x <= (screenWidth / 3) or mover.perferCorners then -- LEFT: 1080p = 640
 		point = point..'LEFT'
 		nudgePoint = 'LEFT'
 		nudgeInversePoint = 'RIGHT'
 		x = mover:GetLeft()
 	else
-		x = x - screenCenter
-	end
-
-	if mover.positionOverride and (E.diffGetLeft and E.diffGetRight and E.diffGetTop and E.diffGetBottom) then
-		if mover.positionOverride == 'TOPLEFT' then
-			x = mover:GetLeft() - E.diffGetLeft
-			y = mover:GetTop() - E.diffGetTop
-		elseif mover.positionOverride == 'TOPRIGHT' then
-			x = mover:GetRight() - E.diffGetRight
-			y = mover:GetTop() - E.diffGetTop
-		elseif mover.positionOverride == 'BOTTOMLEFT' then
-			x = mover:GetLeft() - E.diffGetLeft
-			y = mover:GetBottom() - E.diffGetBottom
-		elseif mover.positionOverride == 'BOTTOMRIGHT' then
-			x = mover:GetRight() - E.diffGetRight
-			y = mover:GetBottom() - E.diffGetBottom
-		elseif mover.positionOverride == 'BOTTOM' then
-			x = mover:GetCenter() - screenCenter
-			y = mover:GetBottom() - E.diffGetBottom
-		elseif mover.positionOverride == 'TOP' then
-			x = mover:GetCenter() - screenCenter
-			y = mover:GetTop() - E.diffGetTop
-		end
+		x = x - screenCenterX
 	end
 
 	--Update coordinates if nudged
@@ -340,7 +308,9 @@ end
 
 function E:SetMoverLayoutPositionPoint(holder, name, parent)
 	local layout = E.LayoutMoverPositions[E.db.layoutSetting]
-	holder.point = (layout and layout[name]) or E.LayoutMoverPositions.ALL[name] or GetPoint(parent or _G[name])
+	local layoutPoint = (layout and layout[name]) or E.LayoutMoverPositions.ALL[name]
+	holder.layoutPoint = layoutPoint
+	holder.point = layoutPoint or GetPoint(parent or _G[name])
 
 	if parent then -- CreateMover call
 		holder.parentPoint = {parent:GetPoint()}
@@ -359,7 +329,7 @@ function E:SaveMoverDefaultPosition(name)
 	end
 end
 
-function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes, shouldDisable, configString)
+function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes, shouldDisable, configString, perferCorners)
 	if not moverTypes then moverTypes = 'ALL,GENERAL' end
 
 	local holder = E.CreatedMovers[name]
@@ -375,7 +345,7 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		E.CreatedMovers[name] = holder
 	end
 
-	UpdateMover(parent, name, text, overlay, snapoffset, postdrag, shouldDisable, configString)
+	UpdateMover(parent, name, text, overlay, snapoffset, postdrag, shouldDisable, configString, perferCorners)
 end
 
 function E:ToggleMovers(show, moverType)
@@ -444,15 +414,17 @@ function E:ResetMovers(arg)
 				holder.postdrag(frame, E:GetScreenQuadrant(frame))
 			end
 
-			if not all then
-				if self.db.movers then
+			if all then
+				E:SaveMoverPosition(name)
+			else
+				if holder.layoutPoint then
+					E:SaveMoverPosition(name)
+				elseif self.db.movers then
 					self.db.movers[name] = nil
 				end
 				break
 			end
 		end
-
-		E:SaveMoverPosition(name)
 	end
 end
 
@@ -480,6 +452,6 @@ end
 
 function E:LoadMovers()
 	for n, t in pairs(E.CreatedMovers) do
-		UpdateMover(t.parent, n, t.overlay, t.snapoffset, t.postdrag, t.shouldDisable, t.configString)
+		UpdateMover(t.parent, n, t.overlay, t.snapoffset, t.postdrag, t.shouldDisable, t.configString, t.perferCorners)
 	end
 end

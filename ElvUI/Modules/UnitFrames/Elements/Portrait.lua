@@ -31,8 +31,6 @@ function UF:Construct_Portrait(frame, type)
 end
 
 function UF:Configure_Portrait(frame)
-	if not frame.VARIABLES_SET then return end
-
 	local last = frame.Portrait
 	if last then
 		last:Hide()

@@ -1,11 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
--- Cache global variables
--- Lua functions
 local _G = _G
 local unpack = unpack
--- WoW API / Variables
 local UnitClass = UnitClass
 local UnitIsPlayer = UnitIsPlayer
 

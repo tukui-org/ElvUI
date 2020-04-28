@@ -1,38 +1,33 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
--- Cache global variables
--- Lua functions
--- WoW API / Variables
 local UnitName = UnitName
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
 
-function NP:ThreatIndicator_PreUpdate(unit)
+function NP:ThreatIndicator_PreUpdate(unit, pass)
 	local ROLE = NP.IsInGroup and (UnitExists(unit..'target') and not UnitIsUnit(unit..'target', 'player')) and NP.GroupRoles[UnitName(unit..'target')] or 'NONE'
 
-	if ROLE == 'TANK' then
-		self.feedbackUnit = unit..'target'
-		self.offTank = E.myrole == 'TANK'
-		self.isTank = true
-	else
-		self.feedbackUnit = 'player'
-		self.offTank = false
-		self.isTank = E.myrole == 'TANK'
-	end
+	local unitTank, imTank = ROLE == 'TANK', E.myrole == 'TANK'
+	local isTank, offTank, feedbackUnit = unitTank or imTank, (unitTank and imTank) or false, (unitTank and unit..'target') or 'player'
 
 	self.__owner.ThreatScale = nil
-	self.__owner.ThreatStatus = nil
-	self.__owner.ThreatOffTank = self.offTank
-	self.__owner.ThreatIsTank = self.isTank
+
+	if pass then
+		return isTank, offTank, feedbackUnit, ROLE
+	else
+		self.feedbackUnit = feedbackUnit
+		self.offTank = offTank
+		self.isTank = isTank
+	end
 end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
 	local SF_Scale = NP:StyleFilterCheckChanges(self.__owner, 'Scale')
 	if not status and not SF_Scale then
 		self.__owner.ThreatScale = 1
-		NP:ScalePlate(self.__owner, self.__owner.ThreatScale)
+		NP:ScalePlate(self.__owner, 1)
 	elseif status and NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor and not UnitIsTapDenied(unit) then
 		self.__owner.Health.colorTapping = false
 		self.__owner.Health.colorDisconnected = false

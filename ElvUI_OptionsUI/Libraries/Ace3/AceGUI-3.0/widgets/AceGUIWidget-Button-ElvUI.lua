@@ -1,5 +1,5 @@
 --[[-----------------------------------------------------------------------------
-Button Widget (Modified to change text color on SetDisabled method)
+Button Widget (Modified to change text color on SetDisabled method and add Drag and Drop support for Filter lists)
 Graphical Button.
 -------------------------------------------------------------------------------]]
 local Type, Version = "Button-ElvUI", 3
@@ -10,10 +10,8 @@ if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 local pairs = pairs
 
 -- WoW APIs
-local _G = _G
 local PlaySound, CreateFrame, UIParent = PlaySound, CreateFrame, UIParent
 local IsShiftKeyDown = IsShiftKeyDown
-local PlaySoundKitID = PlaySoundKitID
 -- GLOBALS: GameTooltip, ElvUI
 
 --[[-----------------------------------------------------------------------------
@@ -80,7 +78,7 @@ end
 
 local function Button_OnClick(frame, ...)
 	AceGUI:ClearFocus()
-	PlaySound(PlaySoundKitID and "igMainMenuOption" or 852) -- SOUNDKIT.IG_MAINMENU_OPTION
+	PlaySound(852) -- SOUNDKIT.IG_MAINMENU_OPTION
 	frame.obj:Fire("OnClick", ...)
 end
 

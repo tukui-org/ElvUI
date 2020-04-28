@@ -100,7 +100,6 @@ function UF:Construct_Castbar(frame, moverName)
 end
 
 function UF:Configure_Castbar(frame)
-	if not frame.VARIABLES_SET then return end
 	local castbar = frame.Castbar
 	local db = frame.db.castbar
 

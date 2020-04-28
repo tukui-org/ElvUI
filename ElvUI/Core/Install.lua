@@ -206,7 +206,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 	if theme == 'class' then
 		E.db.general.valuecolor = E:GetColor(classColor.r, classColor.g, classColor.b)
 	else
-		E.db.general.valuecolor = E:GetColor(254/255, 123/255, 44/255)
+		E.db.general.valuecolor = E:GetColor(23/255, 132/255, 209/255)
 	end
 
 	E:UpdateStart(true, true)
@@ -233,7 +233,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		end
 
 		--ActionBars
-			E.db.actionbar.backdropSpacingConverted = true
 			E.db.actionbar.bar1.buttons = 8
 			E.db.actionbar.bar1.buttonsize = 50
 			E.db.actionbar.bar1.buttonspacing = 1
@@ -266,11 +265,10 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.bags.scrapIcon = true
 		--Chat
 			E.db.chat.fontSize = 10
-			E.db.chat.panelColorConverted = true
 			E.db.chat.separateSizes = false
 			E.db.chat.panelHeight = 236
 			E.db.chat.panelWidth = 472
-			E.db.chat.tapFontSize = 10
+			E.db.chat.tabFontSize = 10
 		--DataBars
 			E.db.databars.azerite.height = 10
 			E.db.databars.azerite.orientation = 'HORIZONTAL'
@@ -303,7 +301,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 				E:SaveMoverDefaultPosition(mover)
 			end
 		--Tooltip
-			E.db.tooltip.fontSize = 10
 			E.db.tooltip.healthBar.fontOutline = 'MONOCHROMEOUTLINE'
 			E.db.tooltip.healthBar.height = 12
 		--UnitFrames
@@ -342,7 +339,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 				E.db.unitframe.units.target.height = 82
 				E.db.unitframe.units.target.infoPanel.enable = true
 				E.db.unitframe.units.target.name.attachTextTo = 'InfoPanel'
-				E.db.unitframe.units.target.name.text_format = '[namecolor][name]'
 				E.db.unitframe.units.target.orientation = 'LEFT'
 				E.db.unitframe.units.target.power.attachTextTo = 'InfoPanel'
 				E.db.unitframe.units.target.power.height = 22
@@ -863,12 +859,20 @@ function E:Install()
 		close:SetScript('OnClick', function() f:Hide() end)
 		S:HandleCloseButton(close)
 
-		f.tutorialImage = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
-		f.tutorialImage:Size(256, 128)
-		f.tutorialImage:SetTexture(E.Media.Textures.Logo)
-		f.tutorialImage:Point('BOTTOM', 0, 70)
+		local logo = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
+		logo:Size(256, 128)
+		logo:SetTexture(E.Media.Textures.LogoTop)
+		logo:Point('BOTTOM', 0, 70)
+		f.tutorialImage = logo
+
+		local logo2 = f:CreateTexture('InstallTutorialImage2', 'OVERLAY')
+		logo2:Size(256, 128)
+		logo2:SetTexture(E.Media.Textures.LogoBottom)
+		logo2:Point('BOTTOM', 0, 70)
+		f.tutorialImage2 = logo2
 	end
 
+	ElvUIInstallFrame.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
 	ElvUIInstallFrame:Show()
 	NextPage()
 end

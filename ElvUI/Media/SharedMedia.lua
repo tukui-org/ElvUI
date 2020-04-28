@@ -1,177 +1,199 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = E.Libs.LSM
-local M = [[Interface\AddOns\ElvUI\Media\]]
-
-function E:TextureString(texString, dataString)
-	return '|T'..texString..(dataString or '')..'|t'
-end
 
 E.Media = {
-	Fonts = {
-		ActionMan = M..[[Fonts\ActionMan.ttf]],
-		ContinuumMedium = M..[[Fonts\ContinuumMedium.ttf]],
-		DieDieDie = M..[[Fonts\DieDieDie.ttf]],
-		Expressway = M..[[Fonts\Expressway.ttf]],
-		Homespun = M..[[Fonts\Homespun.ttf]],
-		Invisible = M..[[Fonts\Invisible.ttf]],
-		PTSansNarrow = M..[[Fonts\PTSansNarrow.ttf]]
-	},
-	Sounds = {
-		AwwCrap = M..[[Sounds\AwwCrap.ogg]],
-		BbqAss = M..[[Sounds\BbqAss.ogg]],
-		DumbShit = M..[[Sounds\DumbShit.ogg]],
-		HarlemShake = M..[[Sounds\HarlemShake.ogg]],
-		HelloKitty = M..[[Sounds\HelloKitty.ogg]],
-		MamaWeekends = M..[[Sounds\MamaWeekends.ogg]],
-		RunFast = M..[[Sounds\RunFast.ogg]],
-		StopRunningSlimeBall = M..[[Sounds\StopRunningSlimeBall.ogg]],
-		Warning = M..[[Sounds\Warning.ogg]],
-		Whisper = M..[[Sounds\Whisper.ogg]],
-		YankieBangBang = M..[[Sounds\YankieBangBang.ogg]]
-	},
-	ChatEmojis = {
-		Angry = M..[[ChatEmojis\Angry.tga]],
-		Blush = M..[[ChatEmojis\Blush.tga]],
-		BrokenHeart = M..[[ChatEmojis\BrokenHeart.tga]],
-		CallMe = M..[[ChatEmojis\CallMe.tga]],
-		Cry = M..[[ChatEmojis\Cry.tga]],
-		Facepalm = M..[[ChatEmojis\Facepalm.tga]],
-		Grin = M..[[ChatEmojis\Grin.tga]],
-		Heart = M..[[ChatEmojis\Heart.tga]],
-		HeartEyes = M..[[ChatEmojis\HeartEyes.tga]],
-		Joy = M..[[ChatEmojis\Joy.tga]],
-		Kappa = M..[[ChatEmojis\Kappa.tga]],
-		Meaw = M..[[ChatEmojis\Meaw.tga]],
-		MiddleFinger = M..[[ChatEmojis\MiddleFinger.tga]],
-		Murloc = M..[[ChatEmojis\Murloc.tga]],
-		OkHand = M..[[ChatEmojis\OkHand.tga]],
-		OpenMouth = M..[[ChatEmojis\OpenMouth.tga]],
-		Poop = M..[[ChatEmojis\Poop.tga]],
-		Rage = M..[[ChatEmojis\Rage.tga]],
-		SadKitty = M..[[ChatEmojis\SadKitty.tga]],
-		Scream = M..[[ChatEmojis\Scream.tga]],
-		ScreamCat = M..[[ChatEmojis\ScreamCat.tga]],
-		SemiColon = M..[[ChatEmojis\SemiColon.tga]],
-		SlightFrown = M..[[ChatEmojis\SlightFrown.tga]],
-		Smile = M..[[ChatEmojis\Smile.tga]],
-		Smirk = M..[[ChatEmojis\Smirk.tga]],
-		Sob = M..[[ChatEmojis\Sob.tga]],
-		StuckOutTongue = M..[[ChatEmojis\StuckOutTongue.tga]],
-		StuckOutTongueClosedEyes = M..[[ChatEmojis\StuckOutTongueClosedEyes.tga]],
-		Sunglasses = M..[[ChatEmojis\Sunglasses.tga]],
-		Thinking = M..[[ChatEmojis\Thinking.tga]],
-		ThumbsUp = M..[[ChatEmojis\ThumbsUp.tga]],
-		Wink = M..[[ChatEmojis\Wink.tga]],
-		ZZZ = M..[[ChatEmojis\ZZZ.tga]]
-	},
-	ChatLogos = {
-		ElvRainbow = M..[[ChatLogos\ElvRainbow.tga]],
-		ElvMelon = M..[[ChatLogos\ElvMelon.tga]],
-		ElvBlue = M..[[ChatLogos\ElvBlue.tga]],
-		ElvGreen = M..[[ChatLogos\ElvGreen.tga]],
-		ElvOrange = M..[[ChatLogos\ElvOrange.tga]],
-		ElvPink = M..[[ChatLogos\ElvPink.tga]],
-		ElvPurple = M..[[ChatLogos\ElvPurple.tga]],
-		ElvYellow = M..[[ChatLogos\ElvYellow.tga]],
-		ElvRed = M..[[ChatLogos\ElvRed.tga]],
-		---
-		Bathrobe = M..[[ChatLogos\Bathrobe.tga]],
-		HelloKitty = M..[[ChatLogos\HelloKitty.tga]],
-		Illuminati = M..[[ChatLogos\Illuminati.tga]],
-		MrHankey = M..[[ChatLogos\MrHankey.tga]],
-		Rainbow = M..[[ChatLogos\Rainbow.tga]],
-		TyroneBiggums = M..[[ChatLogos\TyroneBiggums.tga]],
-		---
-		Burger = M..[[ChatLogos\Burger.tga]],
-		Clover = M..[[ChatLogos\Clover.tga]],
-		Cupcake = M..[[ChatLogos\Cupcake.tga]],
-		Hibiscus = M..[[ChatLogos\Hibiscus.tga]],
-		Lion = M..[[ChatLogos\Lion.tga]],
-		Skull = M..[[ChatLogos\Skull.tga]],
-		Unicorn = M..[[ChatLogos\Unicorn.tga]],
-		---
-		FoxDeathKnight = M..[[ChatLogos\FoxDeathKnight.tga]],
-		FoxDemonHunter = M..[[ChatLogos\FoxDemonHunter.tga]],
-		FoxDruid = M..[[ChatLogos\FoxDruid.tga]],
-		FoxHunter = M..[[ChatLogos\FoxHunter.tga]],
-		FoxMage = M..[[ChatLogos\FoxMage.tga]],
-		FoxMonk = M..[[ChatLogos\FoxMonk.tga]],
-		FoxPaladin = M..[[ChatLogos\FoxPaladin.tga]],
-		FoxPriest = M..[[ChatLogos\FoxPriest.tga]],
-		FoxRogue = M..[[ChatLogos\FoxRogue.tga]],
-		FoxShaman = M..[[ChatLogos\FoxShaman.tga]],
-		FoxWarlock = M..[[ChatLogos\FoxWarlock.tga]],
-		FoxWarrior = M..[[ChatLogos\FoxWarrior.tga]],
-	},
-	Textures = {
-		Arrow = M..[[Textures\Arrow.tga]],
-		ArrowRight = M..[[Textures\ArrowRight.tga]],
-		ArrowUp = M..[[Textures\ArrowUp.tga]],
-		BagNewItemGlow = M..[[Textures\BagNewItemGlow.tga]],
-		BagQuestIcon = M..[[Textures\BagQuestIcon.tga]],
-		Black8x8 = M..[[Textures\Black8x8.tga]],
-		White8x8 = M..[[Textures\White8x8.tga]],
-		BagUpgradeIcon = M..[[Textures\BagUpgradeIcon.tga]],
-		BubbleTex = M..[[Textures\BubbleTex.tga]],
-		ChatEmojis = M..[[Textures\ChatEmojis]],
-		ChatLogos = M..[[Textures\ChatLogos]],
-		Close = M..[[Textures\Close.tga]],
-		Combat = M..[[Textures\Combat.tga]],
-		Copy = M..[[Textures\Copy.tga]],
-		Cross = M..[[Textures\Cross.tga]],
-		DPS = M..[[Textures\DPS.tga]],
-		GlowTex = M..[[Textures\GlowTex.tga]],
-		Healer = M..[[Textures\Healer.tga]],
-		HelloKitty = M..[[Textures\HelloKitty.tga]],
-		HelloKittyChat = M..[[Textures\HelloKittyChat.tga]],
-		Highlight = M..[[Textures\Highlight.tga]],
-		Leader = M..[[Textures\Leader.tga]],
-		Logo = M..[[Textures\Logo.tga]],
-		LogoSmall = M..[[Textures\LogoSmall.tga]],
-		Mail = M..[[Textures\Mail.tga]],
-		Melli = M..[[Textures\Melli.tga]],
-		Minimalist = M..[[Textures\Minimalist.tga]],
-		Minus = M..[[Textures\Minus.tga]],
-		MinusButton = M..[[Textures\MinusButton.tga]],
-		NormTex = M..[[Textures\NormTex.tga]],
-		NormTex2 = M..[[Textures\NormTex2.tga]],
-		Pause = M..[[Textures\Pause.tga]],
-		PhaseIcons = M..[[Textures\PhaseIcons.tga]],
-		Play = M..[[Textures\Play.tga]],
-		Plus = M..[[Textures\Plus.tga]],
-		PlusButton = M..[[Textures\PlusButton.tga]],
-		Reset = M..[[Textures\Reset.tga]],
-		Resting = M..[[Textures\Resting.tga]],
-		Resting1 = M..[[Textures\Resting1.tga]],
-		RoleIcons = M..[[Textures\RoleIcons.tga]],
-		SkullIcon = M..[[Textures\SkullIcon.tga]],
-		Smooth = M..[[Textures\Smooth.tga]],
-		Spark = M..[[Textures\Spark.tga]],
-		Tank = M..[[Textures\Tank.tga]],
-		TukuiLogo = M..[[Textures\TukuiLogo.tga]],
-		ExitVehicle = M..[[Textures\ExitVehicle.tga]]
-	}
+	Fonts = {},
+	Sounds = {},
+	ChatEmojis = {},
+	ChatLogos = {},
+	Textures = {}
 }
 
-LSM:Register('border','ElvUI GlowBorder',E.Media.Textures.GlowTex)
-LSM:Register('font','Continuum Medium',E.Media.Fonts.ContinuumMedium)
-LSM:Register('font','Die Die Die!',E.Media.Fonts.DieDieDie)
-LSM:Register('font','Action Man',E.Media.Fonts.ActionMan)
-LSM:Register('font','Expressway',E.Media.Fonts.Expressway,LSM.LOCALE_BIT_ruRU+LSM.LOCALE_BIT_western)
-LSM:Register('font','PT Sans Narrow',E.Media.Fonts.PTSansNarrow,LSM.LOCALE_BIT_ruRU+LSM.LOCALE_BIT_western)
-LSM:Register('font','Homespun',E.Media.Fonts.Homespun,LSM.LOCALE_BIT_ruRU+LSM.LOCALE_BIT_western)
-LSM:Register('sound','Awww Crap',E.Media.Sounds.AwwCrap)
-LSM:Register('sound','BBQ Ass',E.Media.Sounds.BbqAss)
-LSM:Register('sound','Big Yankie Devil',E.Media.Sounds.YankieBangBang)
-LSM:Register('sound','Dumb Shit',E.Media.Sounds.DumbShit)
-LSM:Register('sound','Mama Weekends',E.Media.Sounds.MamaWeekends)
-LSM:Register('sound','Runaway Fast',E.Media.Sounds.RunFast)
-LSM:Register('sound','Stop Running',E.Media.Sounds.StopRunningSlimeBall)
-LSM:Register('sound','Warning',E.Media.Sounds.Warning)
-LSM:Register('sound','Whisper Alert',E.Media.Sounds.Whisper)
-LSM:Register('statusbar','Melli',E.Media.Textures.Melli)
-LSM:Register('statusbar','ElvUI Gloss',E.Media.Textures.NormTex)
-LSM:Register('statusbar','ElvUI Norm',E.Media.Textures.NormTex2)
-LSM:Register('statusbar','Minimalist',E.Media.Textures.Minimalist)
-LSM:Register('statusbar','ElvUI Blank',E.Media.Textures.White8x8)
-LSM:Register('background','ElvUI Blank',E.Media.Textures.White8x8)
+local format = format
+local westAndRU = LSM.LOCALE_BIT_ruRU + LSM.LOCALE_BIT_western
+
+do
+	local t, d = '|T%s%s|t', ''
+	function E:TextureString(texture, data)
+		return format(t, texture, data or d)
+	end
+end
+
+local MediaKey = {
+	font	= 'Fonts',
+	sound	= 'Sounds',
+	emoji	= 'ChatEmojis',
+	logo	= 'ChatLogos',
+	texture	= 'Textures'
+}
+
+local MediaPath = {
+	font	= [[Interface\AddOns\ElvUI\Media\Fonts\]],
+	sound	= [[Interface\AddOns\ElvUI\Media\Sounds\]],
+	emoji	= [[Interface\AddOns\ElvUI\Media\ChatEmojis\]],
+	logo	= [[Interface\AddOns\ElvUI\Media\ChatLogos\]],
+	texture	= [[Interface\AddOns\ElvUI\Media\Textures\]]
+}
+
+local function AddMedia(Type, File, Name, CustomType, Mask)
+	local path = MediaPath[Type]
+	if path then
+		local key = File:gsub('%.%w-$','')
+		local file = path .. File
+
+		local pathKey = MediaKey[Type]
+		if pathKey then E.Media[pathKey][key] = file end
+
+		if Name then -- Register to LSM
+			local nameKey = (Name == true and key) or Name
+			if type(CustomType) == 'table' then
+				for _, name in ipairs(CustomType) do
+					LSM:Register(name, nameKey, file, Mask)
+				end
+			else
+				LSM:Register(CustomType or Type, nameKey, file, Mask)
+			end
+		end
+	end
+end
+
+-- Name as true will add the Key as it's name
+AddMedia('font','ActionMan.ttf',			'Action Man')
+AddMedia('font','ContinuumMedium.ttf',		'Continuum Medium')
+AddMedia('font','DieDieDie.ttf',			'Die Die Die!')
+AddMedia('font','PTSansNarrow.ttf',			'PT Sans Narrow', nil, westAndRU)
+AddMedia('font','Expressway.ttf',			true, nil, westAndRU)
+AddMedia('font','Homespun.ttf',				true, nil, westAndRU)
+AddMedia('font','Invisible.ttf')
+
+AddMedia('sound','AwwCrap.ogg',					'Awww Crap')
+AddMedia('sound','BbqAss.ogg',					'BBQ Ass')
+AddMedia('sound','DumbShit.ogg',				'Dumb Shit')
+AddMedia('sound','MamaWeekends.ogg',			'Mama Weekends')
+AddMedia('sound','RunFast.ogg',					'Runaway Fast')
+AddMedia('sound','StopRunningSlimeBall.ogg',	'Stop Running')
+AddMedia('sound','Whisper.ogg',					'Whisper Alert')
+AddMedia('sound','YankieBangBang.ogg',			'Big Yankie Devil')
+AddMedia('sound','HelloKitty.ogg')
+AddMedia('sound','HarlemShake.ogg')
+
+AddMedia('texture','GlowTex',		'ElvUI GlowBorder', 'border')
+AddMedia('texture','NormTex',		'ElvUI Gloss',	'statusbar')
+AddMedia('texture','NormTex2',		'ElvUI Norm',	'statusbar')
+AddMedia('texture','White8x8',		'ElvUI Blank', {'statusbar','background'})
+AddMedia('texture','Minimalist',	true, 'statusbar')
+AddMedia('texture','Melli',			true, 'statusbar')
+
+AddMedia('texture','Arrow')
+AddMedia('texture','ArrowRight')
+AddMedia('texture','ArrowUp')
+AddMedia('texture','BagNewItemGlow')
+AddMedia('texture','BagQuestIcon')
+AddMedia('texture','BagUpgradeIcon')
+AddMedia('texture','Black8x8')
+AddMedia('texture','BubbleTex')
+AddMedia('texture','ChatEmojis')
+AddMedia('texture','ChatLogos')
+AddMedia('texture','Close')
+AddMedia('texture','Combat')
+AddMedia('texture','Copy')
+AddMedia('texture','Cross')
+AddMedia('texture','DPS')
+AddMedia('texture','ExitVehicle')
+AddMedia('texture','Healer')
+AddMedia('texture','HelloKitty')
+AddMedia('texture','HelloKittyChat')
+AddMedia('texture','Highlight')
+AddMedia('texture','Leader')
+AddMedia('texture','LogoTop')
+AddMedia('texture','LogoTopSmall')
+AddMedia('texture','LogoBottom')
+AddMedia('texture','LogoBottomSmall')
+AddMedia('texture','Mail')
+AddMedia('texture','Minus')
+AddMedia('texture','MinusButton')
+AddMedia('texture','Pause')
+AddMedia('texture','PhaseIcons')
+AddMedia('texture','Play')
+AddMedia('texture','Plus')
+AddMedia('texture','PlusButton')
+AddMedia('texture','Reset')
+AddMedia('texture','Resting')
+AddMedia('texture','Resting1')
+AddMedia('texture','RoleIcons')
+AddMedia('texture','SkullIcon')
+AddMedia('texture','Smooth')
+AddMedia('texture','Spark')
+AddMedia('texture','Tank')
+AddMedia('texture','TukuiLogo')
+
+AddMedia('emoji','Angry')
+AddMedia('emoji','Blush')
+AddMedia('emoji','BrokenHeart')
+AddMedia('emoji','CallMe')
+AddMedia('emoji','Cry')
+AddMedia('emoji','Facepalm')
+AddMedia('emoji','Grin')
+AddMedia('emoji','Heart')
+AddMedia('emoji','HeartEyes')
+AddMedia('emoji','Joy')
+AddMedia('emoji','Kappa')
+AddMedia('emoji','Meaw')
+AddMedia('emoji','MiddleFinger')
+AddMedia('emoji','Murloc')
+AddMedia('emoji','OkHand')
+AddMedia('emoji','OpenMouth')
+AddMedia('emoji','Poop')
+AddMedia('emoji','Rage')
+AddMedia('emoji','SadKitty')
+AddMedia('emoji','Scream')
+AddMedia('emoji','ScreamCat')
+AddMedia('emoji','SemiColon')
+AddMedia('emoji','SlightFrown')
+AddMedia('emoji','Smile')
+AddMedia('emoji','Smirk')
+AddMedia('emoji','Sob')
+AddMedia('emoji','StuckOutTongue')
+AddMedia('emoji','StuckOutTongueClosedEyes')
+AddMedia('emoji','Sunglasses')
+AddMedia('emoji','Thinking')
+AddMedia('emoji','ThumbsUp')
+AddMedia('emoji','Wink')
+AddMedia('emoji','ZZZ')
+
+AddMedia('logo','ElvRainbow')
+AddMedia('logo','ElvMelon')
+AddMedia('logo','ElvBlue')
+AddMedia('logo','ElvGreen')
+AddMedia('logo','ElvOrange')
+AddMedia('logo','ElvPink')
+AddMedia('logo','ElvPurple')
+AddMedia('logo','ElvYellow')
+AddMedia('logo','ElvRed')
+AddMedia('logo','Bathrobe')
+AddMedia('logo','HelloKitty')
+AddMedia('logo','Illuminati')
+AddMedia('logo','MrHankey')
+AddMedia('logo','Rainbow')
+AddMedia('logo','TyroneBiggums')
+AddMedia('logo','Burger')
+AddMedia('logo','Clover')
+AddMedia('logo','Cupcake')
+AddMedia('logo','Hibiscus')
+AddMedia('logo','Lion')
+AddMedia('logo','Skull')
+AddMedia('logo','Unicorn')
+AddMedia('logo','FoxDeathKnight')
+AddMedia('logo','FoxDemonHunter')
+AddMedia('logo','FoxDruid')
+AddMedia('logo','FoxHunter')
+AddMedia('logo','FoxMage')
+AddMedia('logo','FoxMonk')
+AddMedia('logo','FoxPaladin')
+AddMedia('logo','FoxPriest')
+AddMedia('logo','FoxRogue')
+AddMedia('logo','FoxShaman')
+AddMedia('logo','FoxWarlock')
+AddMedia('logo','FoxWarrior')
+AddMedia('logo','DeathlyHallows')
+AddMedia('logo','GoldShield')

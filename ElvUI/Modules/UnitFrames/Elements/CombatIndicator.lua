@@ -49,7 +49,6 @@ function UF:TestingDisplay_CombatIndicator(frame)
 end
 
 function UF:Configure_CombatIndicator(frame)
-	if not frame.VARIABLES_SET then return end
 	local Icon = frame.CombatIndicator
 	local db = frame.db.CombatIcon
 

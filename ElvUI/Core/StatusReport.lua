@@ -12,10 +12,9 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 
 local function AreOtherAddOnsEnabled()
-	local name
 	for i = 1, GetNumAddOns() do
-		name = GetAddOnInfo(i)
-		if ((name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI') and E:IsAddOnEnabled(name)) then --Loaded or load on demand
+		local name = GetAddOnInfo(i)
+		if name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI' and E:IsAddOnEnabled(name) then --Loaded or load on demand
 			return 'Yes'
 		end
 	end
@@ -23,20 +22,8 @@ local function AreOtherAddOnsEnabled()
 end
 
 local function GetDisplayMode()
-	local window, maximize = GetCVar('gxWindow'), GetCVar('gxMaximize')
-	local displayMode
-
-	if window == '1' then
-		if maximize == '1' then
-			displayMode = 'Windowed (Fullscreen)'
-		else
-			displayMode = 'Windowed'
-		end
-	else
-		displayMode = 'Fullscreen'
-	end
-
-	return displayMode
+	local window, maximize = GetCVar('gxWindow') == '1', GetCVar('gxMaximize') == '1'
+	return (window and maximize and 'Windowed (Fullscreen)') or (window and 'Windowed') or 'Fullscreen'
 end
 
 local EnglishClassName = {
@@ -192,11 +179,17 @@ function E:CreateStatusFrame()
 	titleLogoFrame:Size(240, 80)
 	StatusFrame.TitleLogoFrame = titleLogoFrame
 
-	local titleTexture = StatusFrame.TitleLogoFrame:CreateTexture(nil, 'ARTWORK')
-	titleTexture:Point('CENTER', titleLogoFrame, 'TOP', 0, -36)
-	titleTexture:SetTexture(E.Media.Textures.LogoSmall)
-	titleTexture:Size(128, 64)
-	titleLogoFrame.Texture = titleTexture
+	local LogoTop = StatusFrame.TitleLogoFrame:CreateTexture(nil, 'ARTWORK')
+	LogoTop:Point('CENTER', titleLogoFrame, 'TOP', 0, -36)
+	LogoTop:SetTexture(E.Media.Textures.LogoTopSmall)
+	LogoTop:Size(128, 64)
+	titleLogoFrame.LogoTop = LogoTop
+
+	local LogoBottom = StatusFrame.TitleLogoFrame:CreateTexture(nil, 'ARTWORK')
+	LogoBottom:Point('CENTER', titleLogoFrame, 'TOP', 0, -36)
+	LogoBottom:SetTexture(E.Media.Textures.LogoBottomSmall)
+	LogoBottom:Size(128, 64)
+	titleLogoFrame.LogoBottom = LogoBottom
 
 	--Sections
 	StatusFrame.Section1 = CreateSection(300, 125, StatusFrame, 'TOP', StatusFrame, 'TOP', -30)
@@ -205,10 +198,10 @@ function E:CreateStatusFrame()
 	StatusFrame.Section4 = CreateSection(300, 60, StatusFrame, 'TOP', StatusFrame.Section3, 'BOTTOM', 0)
 
 	--Section headers
-	StatusFrame.Section1.Header.Text:SetText('|cfffe7b2cAddOn Info|r')
-	StatusFrame.Section2.Header.Text:SetText('|cfffe7b2cWoW Info|r')
-	StatusFrame.Section3.Header.Text:SetText('|cfffe7b2cCharacter Info|r')
-	StatusFrame.Section4.Header.Text:SetText('|cfffe7b2cExport To|r')
+	StatusFrame.Section1.Header.Text:SetText('|cff1784d1AddOn Info|r')
+	StatusFrame.Section2.Header.Text:SetText('|cff1784d1WoW Info|r')
+	StatusFrame.Section3.Header.Text:SetText('|cff1784d1Character Info|r')
+	StatusFrame.Section4.Header.Text:SetText('|cff1784d1Export To|r')
 
 	--Section content
 	StatusFrame.Section1.Content = CreateContentLines(4, StatusFrame.Section1, StatusFrame.Section1.Header)
@@ -263,6 +256,8 @@ local function UpdateDynamicValues()
 	Section3.Content.Line4.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', GetSpecName())
 	Section3.Content.Line5.Text:SetFormattedText('Level: |cff4beb2c%s|r', E.mylevel)
 	Section3.Content.Line6.Text:SetFormattedText('Zone: |cff4beb2c%s|r', GetRealZoneText())
+
+	StatusFrame.TitleLogoFrame.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))
 end
 
 function E:ShowStatusReport()

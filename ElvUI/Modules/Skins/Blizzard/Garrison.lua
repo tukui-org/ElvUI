@@ -84,8 +84,8 @@ function S:Blizzard_GarrisonUI()
 	-- Capacitive display frame
 	local GarrisonCapacitiveDisplayFrame = _G.GarrisonCapacitiveDisplayFrame
 	S:HandlePortraitFrame(GarrisonCapacitiveDisplayFrame, true)
-	S:HandleButton(GarrisonCapacitiveDisplayFrame.StartWorkOrderButton, true)
-	S:HandleButton(GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton, true)
+	S:HandleButton(GarrisonCapacitiveDisplayFrame.StartWorkOrderButton)
+	S:HandleButton(GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton)
 	GarrisonCapacitiveDisplayFrame.Count:StripTextures()
 	S:HandleEditBox(GarrisonCapacitiveDisplayFrame.Count)
 	S:HandleNextPrevButton(GarrisonCapacitiveDisplayFrame.DecrementButton)

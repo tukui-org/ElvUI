@@ -1,14 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
--- Cache global variables
--- Lua functions
--- WoW API / Variables
 local UnitIsUnit = UnitIsUnit
 local GetRaidTargetIndex = GetRaidTargetIndex
 local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 
-function NP:RaidTargetIndicator_Override(event)
+function NP:RaidTargetIndicator_Override()
 	local element = self.RaidTargetIndicator
 
 	if self.unit then
