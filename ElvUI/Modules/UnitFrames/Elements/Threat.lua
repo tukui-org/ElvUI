@@ -77,7 +77,7 @@ function UF:Configure_Threat(frame)
 	end
 end
 
-function UF:ThreatColorBackdrop(backdrop, lock, r, g, b)
+function UF:ThreatBorderColor(backdrop, lock, r, g, b)
 	backdrop:SetBackdropBorderColor(r, g, b)
 	backdrop.ignoreBorderColors = lock
 end
@@ -92,11 +92,11 @@ do
 	}
 
 	local myClassPower = classPowers[E.myclass]
-	function UF:ThreatColorClassBars(parent, status, r, g, b)
+	function UF:ThreatClassBarBorderColor(parent, status, r, g, b)
 		local classPower = myClassPower and parent[myClassPower]
-		if classPower then UF:ThreatColorBackdrop(classPower.backdrop, status, r, g, b) end
-		if parent.ClassBar then UF:ThreatColorBackdrop(parent.ClassBar.backdrop, status, r, g, b) end
-		if parent.AlternativePower then UF:ThreatColorBackdrop(parent.AlternativePower.backdrop, status, r, g, b) end
+		if classPower then UF:ThreatBorderColor(classPower.backdrop, status, r, g, b) end
+		if parent.ClassBar then UF:ThreatBorderColor(parent.ClassBar.backdrop, status, r, g, b) end
+		if parent.AlternativePower then UF:ThreatBorderColor(parent.AlternativePower.backdrop, status, r, g, b) end
 	end
 end
 
@@ -115,14 +115,14 @@ function UF:ThreatHandler(threat, parent, threatStyle, status, r, g, b)
 			threat.PowerGlow:Hide()
 		end
 	elseif threatStyle == 'BORDERS' then
-		if parent.InfoPanel then UF:ThreatColorBackdrop(parent.InfoPanel.backdrop, status, r, g, b) end
-		if parent.Power then UF:ThreatColorBackdrop(parent.Power.backdrop, status, r, g, b) end
-		UF:ThreatColorBackdrop(parent.Health.backdrop, status, r, g, b)
-		UF:ThreatColorClassBars(parent, status, r, g, b)
+		if parent.InfoPanel then UF:ThreatBorderColor(parent.InfoPanel.backdrop, status, r, g, b) end
+		if parent.Power then UF:ThreatBorderColor(parent.Power.backdrop, status, r, g, b) end
+		UF:ThreatBorderColor(parent.Health.backdrop, status, r, g, b)
+		UF:ThreatClassBarBorderColor(parent, status, r, g, b)
 	elseif threatStyle == 'HEALTHBORDER' then
-		UF:ThreatColorBackdrop(parent.Health.backdrop, status, r, g, b)
+		UF:ThreatBorderColor(parent.Health.backdrop, status, r, g, b)
 	elseif threatStyle == 'INFOPANELBORDER' then
-		if parent.InfoPanel then UF:ThreatColorBackdrop(parent.InfoPanel.backdrop, status, r, g, b) end
+		if parent.InfoPanel then UF:ThreatBorderColor(parent.InfoPanel.backdrop, status, r, g, b) end
 	elseif threatStyle ~= 'NONE' and threat.TextureIcon then
 		if status then
 			threat.TextureIcon:Show()
