@@ -28,18 +28,16 @@ function UF:Construct_Threat(frame)
 end
 
 function UF:Configure_Threat(frame)
-	if not frame.ThreatIndicator then return end
-
 	local threat = frame.ThreatIndicator
 	if not threat then return end
 
-	local db = frame.db
-	if db.threatStyle and db.threatStyle ~= 'NONE' then
+	local threatStyle = frame.db and frame.db.threatStyle
+	if threatStyle and threatStyle ~= 'NONE' then
 		if not frame:IsElementEnabled('ThreatIndicator') then
 			frame:EnableElement('ThreatIndicator')
 		end
 
-		if db.threatStyle == "GLOW" then
+		if threatStyle == "GLOW" then
 			threat:SetFrameStrata('BACKGROUND')
 			threat.MainGlow:SetFrameStrata('BACKGROUND')
 			threat.MainGlow:ClearAllPoints()
@@ -61,18 +59,18 @@ function UF:Configure_Threat(frame)
 					threat.MainGlow:Point("BOTTOMRIGHT", frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
 				end
 			end
-		elseif db.threatStyle:match('^ICON') then
+		elseif threatStyle:match('^ICON') then
 			threat:SetFrameStrata('LOW')
 			threat:SetFrameLevel(75) --Inset power uses 50, we want it to appear above that
 
-			local point = db.threatStyle:gsub("ICON", "")
+			local point = threatStyle:gsub("ICON", "")
 			threat.TextureIcon:ClearAllPoints()
 			threat.TextureIcon:Point(point, frame.Health, point)
-		elseif db.threatStyle == "HEALTHBORDER" then
+		elseif threatStyle == "HEALTHBORDER" then
 			if frame.InfoPanel then
 				frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() - 3)
 			end
-		elseif db.threatStyle == "INFOPANELBORDER" then
+		elseif threatStyle == "INFOPANELBORDER" then
 			if frame.InfoPanel then
 				frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() + 3)
 			end
@@ -82,15 +80,9 @@ function UF:Configure_Threat(frame)
 	end
 end
 
-function UF:UpdateThreat(unit, status, r, g, b)
-	local parent = self:GetParent()
-	if not unit or parent.unit ~= unit then return end
-
-	local db = parent.db
-	if not db or (not db.threatStyle or db.threatStyle == 'NONE') then return end
-
-	if status and status > 1 then
-		if db.threatStyle == 'GLOW' then
+function UF:ColorThreat(parent, threatStyle, status, r, g, b)
+	if threatStyle == 'GLOW' then
+		if status then
 			self.MainGlow:Show()
 			self.MainGlow:SetBackdropBorderColor(r, g, b)
 
@@ -98,55 +90,47 @@ function UF:UpdateThreat(unit, status, r, g, b)
 				self.PowerGlow:Show()
 				self.PowerGlow:SetBackdropBorderColor(r, g, b)
 			end
-		elseif db.threatStyle == 'BORDERS' then
-			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
-
-			if parent.Power and parent.Power.backdrop then
-				parent.Power.backdrop:SetBackdropBorderColor(r, g, b)
-			end
-
-			local classBar = parent.ClassBar and parent[parent.ClassBar]
-			if classBar and classBar.backdrop then
-				classBar.backdrop:SetBackdropBorderColor(r, g, b)
-			end
-
-			if parent.InfoPanel and parent.InfoPanel.backdrop then
-				parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
-			end
-		elseif db.threatStyle == 'HEALTHBORDER' then
-			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
-		elseif db.threatStyle == 'INFOPANELBORDER' then
-			parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
-		elseif db.threatStyle ~= 'NONE' and self.TextureIcon then
-			self.TextureIcon:Show()
-			self.TextureIcon:SetVertexColor(r, g, b)
-		end
-	else
-		r, g, b = unpack(E.media.unitframeBorderColor)
-		if db.threatStyle == 'GLOW' then
+		else
 			self.MainGlow:Hide()
 			self.PowerGlow:Hide()
-		elseif db.threatStyle == 'BORDERS' then
-			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
+		end
+	elseif threatStyle == 'BORDERS' then
+		parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 
-			if parent.Power and parent.Power.backdrop then
-				parent.Power.backdrop:SetBackdropBorderColor(r, g, b)
-			end
+		if parent.Power and parent.Power.backdrop then
+			parent.Power.backdrop:SetBackdropBorderColor(r, g, b)
+		end
 
-			local classBar = parent.ClassBar and parent[parent.ClassBar]
-			if classBar and classBar.backdrop then
-				classBar.backdrop:SetBackdropBorderColor(r, g, b)
-			end
+		local classBar = parent.ClassBar and parent[parent.ClassBar]
+		if classBar and classBar.backdrop then
+			classBar.backdrop:SetBackdropBorderColor(r, g, b)
+		end
 
-			if parent.InfoPanel and parent.InfoPanel.backdrop then
-				parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
-			end
-		elseif db.threatStyle == 'HEALTHBORDER' then
-			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
-		elseif db.threatStyle == 'INFOPANELBORDER' then
+		if parent.InfoPanel and parent.InfoPanel.backdrop then
 			parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
-		elseif db.threatStyle ~= 'NONE' and self.TextureIcon then
+		end
+	elseif threatStyle == 'HEALTHBORDER' then
+		parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
+	elseif threatStyle == 'INFOPANELBORDER' then
+		parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
+	elseif threatStyle ~= 'NONE' and self.TextureIcon then
+		if status then
+			self.TextureIcon:Show()
+			self.TextureIcon:SetVertexColor(r, g, b)
+		else
 			self.TextureIcon:Hide()
 		end
+	end
+end
+
+function UF:UpdateThreat(unit, status, r, g, b)
+	local parent = self:GetParent()
+	local badunit = not unit or parent.unit ~= unit
+	local db = not badunit and (parent.db and parent.db.threatStyle ~= 'NONE') and parent.db.threatStyle
+
+	if db and status and status > 1 then
+		UF:ColorThreat(parent, db, status, r, g, b)
+	else
+		UF:ColorThreat(parent, db, nil, unpack(E.media.unitframeBorderColor))
 	end
 end
