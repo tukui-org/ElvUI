@@ -81,7 +81,12 @@ function UF:Configure_Threat(frame)
 	end
 end
 
-function UF:ColorThreat(threat, parent, threatStyle, status, r, g, b)
+function UF:ThreatColorBackdrop(backdrop, lock, r, g, b)
+	backdrop:SetBackdropBorderColor(r, g, b)
+	backdrop.ignoreBorderColors = lock
+end
+
+function UF:ThreatHandler(threat, parent, threatStyle, status, r, g, b)
 	if threatStyle == 'GLOW' then
 		if status then
 			threat.MainGlow:Show()
@@ -96,22 +101,22 @@ function UF:ColorThreat(threat, parent, threatStyle, status, r, g, b)
 			threat.PowerGlow:Hide()
 		end
 	elseif threatStyle == 'BORDERS' then
-		parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
-		parent.Power.backdrop:SetBackdropBorderColor(r, g, b)
+		UF:ThreatColorBackdrop(parent.Health.backdrop, status, r, g, b)
+		UF:ThreatColorBackdrop(parent.Power.backdrop, status, r, g, b)
 
 		if parent.InfoPanel then
-			parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
+			UF:ThreatColorBackdrop(parent.InfoPanel.backdrop, status, r, g, b)
 		end
 
 		local classBar = parent.ClassBar and parent[parent.ClassBar]
 		if classBar and classBar.backdrop then
-			classBar.backdrop:SetBackdropBorderColor(r, g, b)
+			UF:ThreatColorBackdrop(classBar.backdrop, status, r, g, b)
 		end
 	elseif threatStyle == 'HEALTHBORDER' then
-		parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
+		UF:ThreatColorBackdrop(parent.Health.backdrop, status, r, g, b)
 	elseif threatStyle == 'INFOPANELBORDER' then
 		if parent.InfoPanel then
-			parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
+			UF:ThreatColorBackdrop(parent.InfoPanel.backdrop, status, r, g, b)
 		end
 	elseif threatStyle ~= 'NONE' and threat.TextureIcon then
 		if status then
@@ -129,8 +134,8 @@ function UF:UpdateThreat(unit, status, r, g, b)
 	local badunit = not unit or parent.unit ~= unit
 
 	if not badunit and status and status > 1 then
-		UF:ColorThreat(self, parent, db, status, r, g, b)
+		UF:ThreatHandler(self, parent, db, status, r, g, b)
 	else
-		UF:ColorThreat(self, parent, db, nil, unpack(E.media.unitframeBorderColor))
+		UF:ThreatHandler(self, parent, db, nil, unpack(E.media.unitframeBorderColor))
 	end
 end

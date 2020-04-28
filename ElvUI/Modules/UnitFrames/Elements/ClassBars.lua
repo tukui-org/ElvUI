@@ -555,7 +555,7 @@ function UF:PostVisibilityAdditionalPower(enabled, stateChanged)
 		UF:Configure_ClassBar(frame)
 		UF:Configure_HealthBar(frame)
 		UF:Configure_Power(frame)
-		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
+		UF:Configure_InfoPanel(frame)
 	end
 end
 
@@ -587,20 +587,14 @@ function UF:PostUpdateStagger(stagger)
 end
 
 function UF:PostUpdateVisibilityStagger(_, _, isShown, stateChanged)
-	local frame = self
-
-	if(isShown) then
-		frame.ClassBar = 'Stagger'
-	else
-		frame.ClassBar = 'ClassPower'
-	end
+	self.ClassBar = (isShown and 'Stagger') or 'ClassPower'
 
 	--Only update when necessary
-	if(stateChanged) then
-		ToggleResourceBar(frame[frame.ClassBar])
-		UF:Configure_ClassBar(frame)
-		UF:Configure_HealthBar(frame)
-		UF:Configure_Power(frame)
-		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
+	if stateChanged then
+		ToggleResourceBar(self[self.ClassBar])
+		UF:Configure_ClassBar(self)
+		UF:Configure_HealthBar(self)
+		UF:Configure_Power(self)
+		UF:Configure_InfoPanel(self)
 	end
 end
