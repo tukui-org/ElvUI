@@ -126,9 +126,9 @@ end
 function UF:UpdateThreat(unit, status, r, g, b)
 	local parent = self:GetParent()
 	local badunit = not unit or parent.unit ~= unit
-	local db = not badunit and (parent.db and parent.db.threatStyle ~= 'NONE') and parent.db.threatStyle
+	local db = not badunit and parent.db and parent.db.threatStyle
 
-	if db and status and status > 1 then
+	if status and status > 1 then
 		UF:ColorThreat(self, parent, db, status, r, g, b)
 	else
 		UF:ColorThreat(self, parent, db, nil, unpack(E.media.unitframeBorderColor))
