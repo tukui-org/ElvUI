@@ -443,19 +443,19 @@ function PI:RunInstall()
 		f.tutorialImage2:SetTexture(db.tutorialImage2 or E.Media.Textures.LogoBottom)
 		f.tutorialImage2:ClearAllPoints()
 		if db.tutorialImage2Size then
-			f.tutorialImage:Size(db.tutorialImage2Size[1], db.tutorialImage2Size[2])
+			f.tutorialImage2:Size(db.tutorialImage2Size[1], db.tutorialImage2Size[2])
 		else
-			f.tutorialImage:Size(256, 128)
+			f.tutorialImage2:Size(256, 128)
 		end
 		if db.tutorialImage2Point then
-			f.tutorialImage:Point('BOTTOM', 0 + db.tutorialImage2Point[1], 70 + db.tutorialImage2Point[2])
+			f.tutorialImage2:Point('BOTTOM', 0 + db.tutorialImage2Point[1], 70 + db.tutorialImage2Point[2])
 		else
-			f.tutorialImage:Point('BOTTOM', 0, 70)
+			f.tutorialImage2:Point('BOTTOM', 0, 70)
 		end
 		if db.tutorialImage2VertexColor then
-			f.tutorialImage:SetVertexColor(unpack(db.tutorialImage2VertexColor))
+			f.tutorialImage2:SetVertexColor(unpack(db.tutorialImage2VertexColor))
 		else
-			f.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
+			f.tutorialImage2:SetVertexColor(unpack(E.media.rgbvaluecolor))
 		end
 
 		f.Pages = db.Pages
