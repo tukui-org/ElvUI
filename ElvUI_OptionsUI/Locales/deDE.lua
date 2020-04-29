@@ -292,7 +292,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "Legt fest wieviele Auren angezeigt werden. Dieses beeinflusst auch die Größe der Auren."
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "Kontrolliert die Anzahl der Dezimalstellen in den Werten auf den Namensplaketten und Einheitenfenstern."
 L["Controls the speed at which smoothed bars will be updated."] = "Kontrolliert die Geschwindigkeit wie die Sanften Leistenübergange updaten."
-L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = "Kontrolliert den angezeigten Text. Verfügbare Tags findest du unter Info/Kontrolle."
+L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = "Ändert die Breite und legt die Größe des Bereichs auf dem Bildschirm fest, welche die klicks durch die feindlichen Einheiten erlaubt."
 L["Controls which nameplates will be displayed."] = "Legt fest welche Namensplaketten angezeigt werden."
 L["Cooldown Text"] = "Abklingzeittext"

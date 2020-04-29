@@ -292,7 +292,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "控制显示多少光环, 这也会影响光环大小"
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "控制像姓名板和团队框架中各数值的小数位数"
 L["Controls the speed at which smoothed bars will be updated."] = "控制状态条平滑增减的速度."
-L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = "控制显示的文字, 可用的文字格式在左侧 信息/控制 中列出"
+L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = "控制姓名板宽度和姓名板可点击区域的宽度."
 L["Controls which nameplates will be displayed."] = "控制何种姓名板被显示"
 L["Cooldown Text"] = "冷却文字"
