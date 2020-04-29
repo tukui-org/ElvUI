@@ -36,7 +36,7 @@ Threat tags have now leveled up there tag game.
 Cutaway colors react instantly now, ninja status achieved.  
 Highlight texture for Items on the Character page are now the old style instead of the blizzard style.  
 Stance Bar will now get placed in the correct place, it was rolling a placement dice, we took it away.  
-Deathknight Ruins can use the custom backdrop color now, epic.  
+Deathknight Runes can use the custom backdrop color now, epic.  
 Raid Debuffs has unlearned never-appear-unintentionally!  
 
 **Misc. Changes:**  
