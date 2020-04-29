@@ -824,7 +824,7 @@ E.Options.args.general = {
 							order = 31,
 							type = "toggle",
 							name = L["Auto Hide"],
-							desc = L["Automatically hide the objetive frame during boss or arena fights."],
+							desc = L["Automatically hide the objective frame during boss or arena fights."],
 							disabled = function() return IsAddOnLoaded("!KalielsTracker") end,
 							set = function(info, value) E.db.general.objectiveFrameAutoHide = value; Blizzard:SetObjectiveFrameAutoHide(); end,
 						},
