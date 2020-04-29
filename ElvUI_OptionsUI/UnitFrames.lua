@@ -1427,7 +1427,7 @@ local function CreateCustomTextGroup(unit, objectName)
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
-				desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+				desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 				type = 'input',
 				width = 'full',
 			},
@@ -1665,7 +1665,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 					text_format = {
 						order = 4,
 						name = L["Text Format"],
-						desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+						desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 						type = 'input',
 						width = 'full',
 					},
@@ -1793,7 +1793,7 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
-				desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+				desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 				type = 'input',
 				width = 'full',
 			},
@@ -2089,7 +2089,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 					text_format = {
 						order = 4,
 						name = L["Text Format"],
-						desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+						desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 						type = 'input',
 						width = 'full',
 					},
@@ -2745,7 +2745,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		config.args.altPowerTextFormat = {
 			order = 6,
 			name = L["Text Format"],
-			desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+			desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 			type = 'input',
 			width = 'full',
 		}
@@ -4765,7 +4765,7 @@ E.Options.args.unitframe.args.individualUnits.args.player = {
 				text_format = {
 					order = 100,
 					name = L["Text Format"],
-					desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+					desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 					type = 'input',
 					width = 'full',
 				},
@@ -5467,7 +5467,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 						text_format = {
 							order = 100,
 							name = L["Text Format"],
-							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 							type = 'input',
 							width = 'full',
 						},
@@ -5550,7 +5550,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 						text_format = {
 							order = 100,
 							name = L["Text Format"],
-							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 							type = 'input',
 							width = 'full',
 						},

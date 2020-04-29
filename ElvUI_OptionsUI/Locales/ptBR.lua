@@ -291,7 +291,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = true
 L["Controls the speed at which smoothed bars will be updated."] = true
-L["Controls the text displayed. Available Tags are listed under Info/Controls"] = true
+L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = true
 L["Controls which nameplates will be displayed."] = true
 L["Cooldown Text"] = "Texto do Tempo de Recarga"

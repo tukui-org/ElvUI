@@ -291,7 +291,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "표시될 오라의 수를 조절하며, 이는 크기에도 영향을 미칩니다."
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "이름표와 유닛프레임 등에 구성요소로 표시되는 수치들이 소숫점 몇 자리까지 나타낼지 조정합니다."
 L["Controls the speed at which smoothed bars will be updated."] = true
-L["Controls the text displayed. Available Tags are listed under Info/Controls"] = true
+L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = true
 L["Controls which nameplates will be displayed."] = "표시할 이름표를 조절합니다."
 L["Cooldown Text"] = "재사용 대기시간 설정"
