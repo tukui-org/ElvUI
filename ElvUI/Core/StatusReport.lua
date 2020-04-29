@@ -202,15 +202,15 @@ function E:CreateStatusFrame()
 	StatusFrame.Section1 = E:CreateStatusSection(300, 125, StatusFrame, 'TOP', StatusFrame, 'TOP', -30)
 	StatusFrame.Section2 = E:CreateStatusSection(300, 150, StatusFrame, 'TOP', StatusFrame.Section1, 'BOTTOM', 0)
 	StatusFrame.Section3 = E:CreateStatusSection(300, 185, StatusFrame, 'TOP', StatusFrame.Section2, 'BOTTOM', 0)
-	StatusFrame.Section4 = E:CreateStatusSection(300, 60, StatusFrame, 'TOP', StatusFrame.Section3, 'BOTTOM', 0)
+	--StatusFrame.Section4 = E:CreateStatusSection(300, 60, StatusFrame, 'TOP', StatusFrame.Section3, 'BOTTOM', 0)
 
 	--Section content
 	StatusFrame.Section1.Content = E:CreateStatusContent(4, StatusFrame.Section1, StatusFrame.Section1.Header)
 	StatusFrame.Section2.Content = E:CreateStatusContent(5, StatusFrame.Section2, StatusFrame.Section2.Header)
 	StatusFrame.Section3.Content = E:CreateStatusContent(6, StatusFrame.Section3, StatusFrame.Section3.Header)
-	StatusFrame.Section4.Content = CreateFrame('Frame', nil, StatusFrame.Section4)
-	StatusFrame.Section4.Content:Size(240, 25)
-	StatusFrame.Section4.Content:Point('TOP', StatusFrame.Section4.Header, 'BOTTOM', 0, 0)
+	--StatusFrame.Section4.Content = CreateFrame('Frame', nil, StatusFrame.Section4)
+	--StatusFrame.Section4.Content:Size(240, 25)
+	--StatusFrame.Section4.Content:Point('TOP', StatusFrame.Section4.Header, 'BOTTOM', 0, 0)
 
 	--Content lines
 	StatusFrame.Section1.Content.Line3.Text:SetFormattedText('Recommended Scale: |cff4beb2c%s|r', E:PixelBestSize())
@@ -222,7 +222,7 @@ function E:CreateStatusFrame()
 	StatusFrame.Section3.Content.Line2.Text:SetFormattedText('Race: |cff4beb2c%s|r', E.myrace)
 	StatusFrame.Section3.Content.Line3.Text:SetFormattedText('Class: |cff4beb2c%s|r', EnglishClassName[E.myclass])
 
-	--Export buttons
+	--[[Export buttons
 	StatusFrame.Section4.Content.Button1 = CreateFrame('Button', nil, StatusFrame.Section4.Content, 'UIPanelButtonTemplate')
 	StatusFrame.Section4.Content.Button1:Size(100, 25)
 	StatusFrame.Section4.Content.Button1:Point('LEFT', StatusFrame.Section4.Content, 'LEFT')
@@ -234,7 +234,7 @@ function E:CreateStatusFrame()
 	StatusFrame.Section4.Content.Button2:SetText('Ticket')
 	StatusFrame.Section4.Content.Button2:SetButtonState('DISABLED')
 	Skins:HandleButton(StatusFrame.Section4.Content.Button1, true)
-	Skins:HandleButton(StatusFrame.Section4.Content.Button2, true)
+	Skins:HandleButton(StatusFrame.Section4.Content.Button2, true)]]
 
 	return StatusFrame
 end
@@ -247,7 +247,7 @@ function E:UpdateStatusFrame()
 	StatusFrame.Section1.Header.Text:SetFormattedText('%sAddOn Info|r', valueColor)
 	StatusFrame.Section2.Header.Text:SetFormattedText('%sWoW Info|r', valueColor)
 	StatusFrame.Section3.Header.Text:SetFormattedText('%sCharacter Info|r', valueColor)
-	StatusFrame.Section4.Header.Text:SetFormattedText('%sExport To|r', valueColor)
+	--StatusFrame.Section4.Header.Text:SetFormattedText('%sExport To|r', valueColor)
 
 	local verWarning = E.recievedOutOfDateMessage and 'ff3333' or E.shownUpdatedWhileRunningPopup and 'ff9933'
 	StatusFrame.Section1.Content.Line1.Text:SetFormattedText('Version of ElvUI: |cff%s%s|r', verWarning or '33ff33', E.version)
