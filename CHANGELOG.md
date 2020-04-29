@@ -33,6 +33,7 @@ The bottom of letters on the bottom line of the chat will now be visible to all 
 Chat editbox will stay open when you move if it has text in it again and character count will only show if there is text in the editbox.  
 Add or Remove spell from a filter should now work how it was always meant to.  
 Threat tags have now leveled up there tag game.  
+Threat on Unitframes in Border mode would sometimes not update the borders correctly, they behave like good bois now.  
 Cutaway colors react instantly now, ninja status achieved.  
 Highlight texture for Items on the Character page are now the old style instead of the blizzard style.  
 Stance Bar will now get placed in the correct place, it was rolling a placement dice, we took it away.  
