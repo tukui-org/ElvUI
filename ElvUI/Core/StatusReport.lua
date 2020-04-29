@@ -90,7 +90,7 @@ end
 function E:CreateStatusContent(num, parent, anchorTo)
 	local content = CreateFrame('Frame', nil, parent)
 	content:Size(260, (num * 20) + ((num-1)*5)) --20 height and 5 spacing
-	content:Point('TOP', anchorTo, 'BOTTOM',0 , -5)
+	content:Point('TOP', anchorTo, 'BOTTOM')
 
 	for i = 1, num do
 		local line = CreateFrame('Frame', nil, content)
