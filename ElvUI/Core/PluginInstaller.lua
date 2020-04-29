@@ -412,6 +412,7 @@ function PI:RunInstall()
 		f.StepTitles = nil
 		f.StepTitlesColor = nil
 		f.StepTitlesColorSelected = nil
+
 		local db = self.Installs[1]
 		f.CurrentPage = 0
 		f.MaxPage = #(db.Pages)
@@ -421,7 +422,8 @@ function PI:RunInstall()
 		f.Status.text:SetText(f.CurrentPage..' / '..f.MaxPage)
 
 		-- Logo
-		f.tutorialImage:SetTexture(db.tutorialImage or E.Media.Textures.LogoTop)
+		local LogoTop = db.tutorialImage or E.Media.Textures.LogoTop
+		f.tutorialImage:SetTexture(LogoTop)
 		f.tutorialImage:ClearAllPoints()
 		if db.tutorialImageSize then
 			f.tutorialImage:Size(db.tutorialImageSize[1], db.tutorialImageSize[2])
@@ -440,27 +442,30 @@ function PI:RunInstall()
 		end
 
 		--Alt Logo
-		f.tutorialImage2:SetTexture(db.tutorialImage2 or E.Media.Textures.LogoBottom)
-		f.tutorialImage2:ClearAllPoints()
-		if db.tutorialImage2Size then
-			f.tutorialImage2:Size(db.tutorialImage2Size[1], db.tutorialImage2Size[2])
-		else
-			f.tutorialImage2:Size(256, 128)
-		end
-		if db.tutorialImage2Point then
-			f.tutorialImage2:Point('BOTTOM', 0 + db.tutorialImage2Point[1], 70 + db.tutorialImage2Point[2])
-		else
-			f.tutorialImage2:Point('BOTTOM', 0, 70)
-		end
-		if db.tutorialImage2VertexColor then
-			f.tutorialImage2:SetVertexColor(unpack(db.tutorialImage2VertexColor))
-		else
-			f.tutorialImage2:SetVertexColor(1, 1, 1)
+		if LogoTop == E.Media.Textures.LogoTop or db.tutorialImage2 then
+			f.tutorialImage2:SetTexture(db.tutorialImage2 or E.Media.Textures.LogoBottom)
+			f.tutorialImage2:ClearAllPoints()
+			if db.tutorialImage2Size then
+				f.tutorialImage2:Size(db.tutorialImage2Size[1], db.tutorialImage2Size[2])
+			else
+				f.tutorialImage2:Size(256, 128)
+			end
+			if db.tutorialImage2Point then
+				f.tutorialImage2:Point('BOTTOM', 0 + db.tutorialImage2Point[1], 70 + db.tutorialImage2Point[2])
+			else
+				f.tutorialImage2:Point('BOTTOM', 0, 70)
+			end
+			if db.tutorialImage2VertexColor then
+				f.tutorialImage2:SetVertexColor(unpack(db.tutorialImage2VertexColor))
+			else
+				f.tutorialImage2:SetVertexColor(1, 1, 1)
+			end
 		end
 
 		f.Pages = db.Pages
 
 		PluginInstallFrame:Show()
+
 		f:Point('CENTER')
 		if db.StepTitles and #db.StepTitles == f.MaxPage then
 			f:Point('CENTER', E.UIParent, 'CENTER', -((db.StepTitleWidth or 140)/2), 0)
@@ -479,8 +484,10 @@ function PI:RunInstall()
 			f.StepTitlesColor = db.StepTitlesColor
 			f.StepTitlesColorSelected = db.StepTitlesColorSelected
 		end
+
 		NextPage()
 	end
+
 	if #(self.Installs) > 1 then
 		f.pending:Show()
 		E:Flash(f.pending, 0.53, true)
