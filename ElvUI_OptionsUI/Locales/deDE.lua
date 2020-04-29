@@ -1,7 +1,7 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
-L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."] = true
+L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."] = "|cffFF0000Warnung:|r Eingeschaltet ist ausgegraut durch den intelligenten Raid-Filter. Schalte Intelligenter Raid-Filter in (Einheitenfenster - Allgemein) aus, um diese Einstellung zu ändern."
 L["# Displayed Auras"] = "# angezeigte Auren"
 L["%s and then %s"] = "%s und dann %s"
 L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = "|cffFF0000Warnung:|r Dieses verursacht, dass die Updates in einem Bruchteil einer Sekunde passieren."
@@ -293,7 +293,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "Legt fest wieviele Auren angezeigt werden. Dieses beeinflusst auch die Größe der Auren."
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "Kontrolliert die Anzahl der Dezimalstellen in den Werten auf den Namensplaketten und Einheitenfenstern."
 L["Controls the speed at which smoothed bars will be updated."] = "Kontrolliert die Geschwindigkeit wie die Sanften Leistenübergange updaten."
-L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = true
+L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = "Kontrolliert den angezeigten Text. Alle Tags findest du im menü unter Verfügbare Tags."
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = "Ändert die Breite und legt die Größe des Bereichs auf dem Bildschirm fest, welche die klicks durch die feindlichen Einheiten erlaubt."
 L["Controls which nameplates will be displayed."] = "Legt fest welche Namensplaketten angezeigt werden."
 L["Cooldown Text"] = "Abklingzeittext"
