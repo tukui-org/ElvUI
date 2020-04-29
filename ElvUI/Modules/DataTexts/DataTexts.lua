@@ -29,10 +29,9 @@ function DT:Initialize()
 	_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
 
 	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
-	self:RegisterLDB('ElvUI') -- LibDataBroker
-	self:LoadDataTexts() -- Fire it up!
+	self:RegisterLDB() -- LibDataBroker
 	self:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the "CustomCurrency" DT.
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
 end
 
 DT.RegisteredPanels = {}
@@ -43,15 +42,8 @@ DT.PointLocation = {
 	[3] = 'right',
 }
 
-function DT:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	-- update on zone changed for BG Stats
-	if not initLogin and not isReload then
-		DT:LoadDataTexts()
-	end
-end
-
 local LDBHex = '|cffFFFFFF'
-function DT:SetupObjectLDB(name, obj, elvui) --self will now be the event
+function DT:SetupObjectLDB(name, obj, from) --self will now be the event
 	local curFrame = nil
 
 	local function OnEnter(dt)
@@ -100,14 +92,14 @@ function DT:SetupObjectLDB(name, obj, elvui) --self will now be the event
 		DT:PanelLayoutOptions()
 	end
 
-	if elvui ~= 'ElvUI' then
+	if from ~= 'ElvUI' then
 		DT:LoadDataTexts()
 	end
 end
 
-function DT:RegisterLDB(elvui)
+function DT:RegisterLDB()
 	for name, obj in LDB:DataObjectIterator() do
-		self:SetupObjectLDB(name, obj, elvui)
+		self:SetupObjectLDB(name, obj, 'ElvUI')
 	end
 end
 
