@@ -885,6 +885,13 @@ function E:Config_WindowClosed()
 	end
 end
 
+local ConfigLogoTop
+E.valueColorUpdateFuncs[function(_, r, b, g)
+	if ConfigLogoTop then
+		ConfigLogoTop:SetVertexColor(r, b, g)
+	end
+end] = true
+
 function E:Config_WindowOpened(frame)
 	if frame and frame.bottomHolder then
 		frame.bottomHolder:Show()
@@ -896,7 +903,9 @@ function E:Config_WindowOpened(frame)
 
 		E:Elasticize(frame.leftHolder.LogoTop, 128, 64)
 		E:Elasticize(frame.leftHolder.LogoBottom, 128, 64)
+
 		frame.leftHolder.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))
+		ConfigLogoTop = frame.leftHolder.LogoTop
 
 		local unskinned = not E.private.skins.ace3.enable
 		local offset = unskinned and 14 or 8
