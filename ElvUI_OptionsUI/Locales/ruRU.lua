@@ -1,7 +1,7 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 
-L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."] = true
+L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."] = "|cffFF0000Внимание:|r Включение контролируется умным фильтром рейда. Отключите его в \"Рамки юнитов - Общие\", чтобы получить возможность включать/отключать эти рамки."
 L["# Displayed Auras"] = "Кол-во аур"
 L["%s and then %s"] = "%s, а затем %s"
 L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = "|cffFF0000АХТУНГ: Это принудительно вызывает обновления много раз в секунду.|r"
@@ -292,7 +292,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "Контролирует кол-во отображаемых эффектов. Также влияет на размер иконок."
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "Задает количество десятичных долей, используемых на индикаторах здоровья и рамках юнитов."
 L["Controls the speed at which smoothed bars will be updated."] = "Задает скорость обновления плавных полос."
-L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = true
+L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = "Задает отображаемый текст. Доступные тэги можно увидеть в разделе \"Доступные тэги\"."
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = "Контролирует ширину и размер области, на которую можно будет кликнуть для выбора юнита."
 L["Controls which nameplates will be displayed."] = "Определяет, какие индикаторы быдут отображаться."
 L["Cooldown Text"] = "Текст восстановления"
@@ -1442,8 +1442,8 @@ L["nonPersonal"] = "Чужие"
 L["notCastByUnit"] = "Не принадлежит юниту"
 L["notDispellable"] = "Не развеиваемые"
 L["Personal"] = "Личные"
-L["MyPet"] = true
-L["OtherPet"] = true
+L["MyPet"] = "Мой питомец"
+L["OtherPet"] = "Чужой питомец"
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Изменение настроек панелей команд."
