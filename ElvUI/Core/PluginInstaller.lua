@@ -437,8 +437,10 @@ function PI:RunInstall()
 		end
 		if db.tutorialImageVertexColor then
 			f.tutorialImage:SetVertexColor(unpack(db.tutorialImageVertexColor))
-		else
+		elseif LogoTop == E.Media.Textures.LogoTop then
 			f.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
+		else
+			f.tutorialImage:SetVertexColor(1, 1, 1)
 		end
 
 		--Alt Logo
