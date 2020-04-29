@@ -1,13 +1,13 @@
 ### Version 11.39 [ ETA: 🍨 ]
 
 **New Additions:**  
-
+Added a note above Raid / Raid40 / RaidPet which states you can't toggle these when Smart Raid Filter is enabled (UnitFrames - General).  
 
 **Bug Fixes:**  
-
+Some Datatexts refused to show information on login, now they are willing to share said info. (Take 2)  
 
 **Misc. Changes:**  
-
+Upgraded */estatus* because we love colours.  
 
 ___
 ### Version 11.38 [ April 28th 2020 ]
