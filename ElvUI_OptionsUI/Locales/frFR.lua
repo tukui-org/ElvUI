@@ -1,6 +1,7 @@
 -- French localization file for frFR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "frFR")
 
+L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."] = true
 L["# Displayed Auras"] = "Auras affichées"
 L["%s and then %s"] = "%s et alors %s"
 L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = true

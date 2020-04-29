@@ -1,6 +1,7 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
+L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."] = true
 L["# Displayed Auras"] = "# angezeigte Auren"
 L["%s and then %s"] = "%s und dann %s"
 L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = "|cffFF0000Warnung:|r Dieses verursacht, dass die Updates in einem Bruchteil einer Sekunde passieren."

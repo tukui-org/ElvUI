@@ -5597,7 +5597,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid = {
 		header = {
 			order = 0,
 			type = "description",
-			name = L['|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames.'],
+			name = L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."],
 			hidden = function() return not E.db.unitframe.smartRaidFilter end,
 		},
 		enable = {
@@ -5669,7 +5669,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid40 = {
 		header = {
 			order = 0,
 			type = "description",
-			name = L['|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames.'],
+			name = L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."],
 			hidden = function() return not E.db.unitframe.smartRaidFilter end,
 		},
 		enable = {
@@ -5741,7 +5741,7 @@ E.Options.args.unitframe.args.groupUnits.args.raidpet = {
 		header = {
 			order = 0,
 			type = "description",
-			name = L['|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames.'],
+			name = L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."],
 			hidden = function() return not E.db.unitframe.smartRaidFilter end,
 		},
 		enable = {
