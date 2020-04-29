@@ -133,7 +133,7 @@ local eventHandlers = {
 	end,
 	-- when we enter the world and guildframe is not available then
 	-- load guild frame, update guild message and guild xp
-	["PLAYER_ENTERING_WORLD"] = function()
+	["ELVUI_FORCE_RUN"] = function()
 		if not _G.GuildFrame and IsInGuild() then
 			LoadAddOn("Blizzard_GuildUI")
 			C_GuildInfo_GuildRoster()
@@ -157,7 +157,6 @@ local eventHandlers = {
 	["GUILD_MOTD"] = function (self, arg1)
 		guildMotD = arg1
 	end,
-	["ELVUI_FORCE_RUN"] = E.noop,
 	["ELVUI_COLOR_UPDATE"] = E.noop,
 }
 
@@ -310,4 +309,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Guild', {'PLAYER_ENTERING_WORLD', 'CHAT_MSG_SYSTEM', "GUILD_ROSTER_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD"}, OnEvent, nil, Click, OnEnter, nil, GUILD)
+DT:RegisterDatatext('Guild', {"CHAT_MSG_SYSTEM", "GUILD_ROSTER_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD"}, OnEvent, nil, Click, OnEnter, nil, GUILD)

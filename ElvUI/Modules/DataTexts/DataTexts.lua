@@ -84,7 +84,7 @@ function DT:SetupObjectLDB(name, obj, from) --self will now be the event
 		OnCallback(LDBHex)
 	end
 
-	DT:RegisterDatatext(name, {'PLAYER_ENTERING_WORLD'}, OnEvent, nil, OnClick, OnEnter, OnLeave)
+	DT:RegisterDatatext(name, nil, OnEvent, nil, OnClick, OnEnter, OnLeave)
 	E.valueColorUpdateFuncs[OnCallback] = true
 
 	-- Update config if it has been loaded

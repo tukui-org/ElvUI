@@ -35,4 +35,4 @@ end
 	localizedName - localized name of the datetext
 ]]
 
-DT:RegisterDatatext('DTName', {'PLAYER_ENTERING_WORLD'}, OnEvent, Update, Click, OnEnter)
+DT:RegisterDatatext('DTName', {events}, OnEvent, Update, Click, OnEnter)
