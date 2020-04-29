@@ -1,7 +1,7 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
-L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."] = "|cffFF0000Advertencia:|r La habilitar es controlado por Smart Raid Filter. Deshabilite el Filtro de Banda Inteligente en (UnitFrames - General) para alternar estos marcos."
+L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."] = "|cffFF0000Advertencia:|r La habilitar es controlado por Smart Raid Filter. Deshabilite el Filtro de Banda Inteligente en (Marco de Unidad - General) para alternar estos marcos."
 L["# Displayed Auras"] = "# Auras mostradas"
 L["%s and then %s"] = "%s y entonces %s"
 L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = "|cffFF0000Advertencia:|r Esto hace que las actualizaciones suceden en una fracción de segundo."
@@ -525,7 +525,7 @@ L["FRIENDLY_PLAYER"] = "Friendly Player"
 L["Full Overlay"] = true
 L["Full"] = true
 L["Gems"] = true
-L["General"] = "General"
+L["General"] = true
 L["Global (Account Settings)"] = true
 L["Global Fade Transparency"] = true
 L["Global"] = true
