@@ -8,7 +8,7 @@ local UnitGUID = UnitGUID
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 
 local timeStamp, combatTime, healTotal = 0, 0, 0
-local lastSegment = 0
+local lastSegment, petGUID = 0
 local displayString, lastPanel = ''
 local events = {
 	SPELL_HEAL = true,
@@ -32,7 +32,9 @@ end
 local function OnEvent(self, event)
 	lastPanel = self
 
-	if event == 'PLAYER_REGEN_DISABLED' or event == "PLAYER_LEAVE_COMBAT" then
+	if event == 'UNIT_PET' then
+		petGUID = UnitGUID("pet")
+	elseif event == 'PLAYER_REGEN_DISABLED' or event == "PLAYER_LEAVE_COMBAT" then
 		local now = time()
 		if now - lastSegment > 20 then
 			Reset()
@@ -42,7 +44,7 @@ local function OnEvent(self, event)
 		local timestamp, Event, _, sourceGUID, _, _, _, _, _, _, _, _, _, _, lastHealAmount, overHeal = CombatLogGetCurrentEventInfo()
 		if not events[Event] then return end
 
-		if sourceGUID == E.myguid or sourceGUID == UnitGUID("pet") then
+		if sourceGUID == E.myguid or sourceGUID == petGUID then
 			if timeStamp == 0 then timeStamp = timestamp end
 			lastSegment = timeStamp
 			combatTime = timestamp - timeStamp
@@ -67,4 +69,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('HPS', {"COMBAT_LOG_EVENT_UNFILTERED", "PLAYER_LEAVE_COMBAT", "PLAYER_REGEN_DISABLED"}, OnEvent, nil, OnClick, nil, nil, L["HPS"])
+DT:RegisterDatatext('HPS', {"UNIT_PET", "COMBAT_LOG_EVENT_UNFILTERED", "PLAYER_LEAVE_COMBAT", "PLAYER_REGEN_DISABLED"}, OnEvent, nil, OnClick, nil, nil, L["HPS"])

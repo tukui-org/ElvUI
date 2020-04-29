@@ -7,7 +7,7 @@ local time, max, strjoin = time, max, strjoin
 local UnitGUID = UnitGUID
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 
-local lastSegment = 0
+local lastSegment, petGUID = 0
 local timeStamp, combatTime, DMGTotal, lastDMGAmount = 0, 0, 0, 0
 local displayString, lastPanel = ''
 local events = {
@@ -37,7 +37,9 @@ end
 local function OnEvent(self, event)
 	lastPanel = self
 
-	if event == 'PLAYER_REGEN_DISABLED' or event == "PLAYER_LEAVE_COMBAT" then
+	if event == 'UNIT_PET' then
+		petGUID = UnitGUID("pet")
+	elseif event == 'PLAYER_REGEN_DISABLED' or event == "PLAYER_LEAVE_COMBAT" then
 		local now = time()
 		if now - lastSegment > 20 then --time since the last segment
 			Reset()
@@ -50,7 +52,7 @@ local function OnEvent(self, event)
 		-- only use events from the player
 		local overKill
 
-		if sourceGUID == E.myguid or sourceGUID == UnitGUID("pet") then
+		if sourceGUID == E.myguid or sourceGUID == petGUID then
 			if timeStamp == 0 then timeStamp = timestamp end
 			lastSegment = timeStamp
 			combatTime = timestamp - timeStamp
@@ -81,4 +83,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('DPS', {"COMBAT_LOG_EVENT_UNFILTERED", "PLAYER_LEAVE_COMBAT", "PLAYER_REGEN_DISABLED"}, OnEvent, nil, OnClick, nil, nil, STAT_DPS_SHORT)
+DT:RegisterDatatext('DPS', {"UNIT_PET", "COMBAT_LOG_EVENT_UNFILTERED", "PLAYER_LEAVE_COMBAT", "PLAYER_REGEN_DISABLED"}, OnEvent, nil, OnClick, nil, nil, STAT_DPS_SHORT)
