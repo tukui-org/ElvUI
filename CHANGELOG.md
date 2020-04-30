@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-
+The font used in */estatus* and *Addon Manager* on CN/TW/KR should fallback to a font that works instead of trying to use Expressway, which isn't supported.  
 
 **Misc. Changes:**  
 
