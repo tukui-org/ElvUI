@@ -29,6 +29,7 @@ function DT:Initialize()
 	_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
 
 	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
+	self:RegisterLDB() -- LibDataBroker
 	self:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the "CustomCurrency" DT.
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
 end
@@ -92,8 +93,12 @@ function DT:SetupObjectLDB(name, obj)
 	if DT.PanelLayoutOptions then
 		DT:PanelLayoutOptions()
 	end
+end
 
-	DT:LoadDataTexts('LibDataBroker')
+function DT:RegisterLDB()
+	for name, obj in LDB:DataObjectIterator() do
+		DT:SetupObjectLDB(name, obj)
+	end
 end
 
 function DT:GetDataPanelPoint(panel, i, numPoints)
@@ -167,7 +172,7 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
 	DT.UpdateAllDimensions(panel)
 end
 
-function DT:AssignPanelToDataText(panel, data, from)
+function DT:AssignPanelToDataText(panel, data, event, ...)
 	data.panel = panel
 	panel.name = ""
 
@@ -193,15 +198,13 @@ function DT:AssignPanelToDataText(panel, data, from)
 		end
 	end
 
-	local fromLDB = from == 'LibDataBroker'
-	local event = (fromLDB and data.isLibDataBroker and 'ELVUI_LDB_UPDATE') or (not fromLDB and 'PLAYER_ENTERING_WORLD')
-	if event then
-		if data.objectEvent then
-			data.objectEventFunc(data.objectEvent, event)
-		elseif data.eventFunc then
-			panel:SetScript('OnEvent', data.eventFunc)
-			data.eventFunc(panel, event)
-		end
+	local ev = event or 'ELVUI_FORCE_UPDATE'
+	if data.objectEvent then
+		data.objectEventFunc(data.objectEvent, ev, ...)
+	elseif data.eventFunc then
+		panel:SetScript('OnEvent', data.eventFunc)
+		data.eventFunc(panel, ev, ...)
+		print(data.name, ev, ...)
 	end
 
 	if data.onUpdate then
@@ -230,7 +233,7 @@ function DT:AssignPanelToDataText(panel, data, from)
 	end
 end
 
-function DT:LoadDataTexts(from)
+function DT:LoadDataTexts(...)
 	local fontTemplate = LSM:Fetch("font", self.db.font)
 	local inInstance, instanceType = IsInInstance()
 	local isInPVP = inInstance and instanceType == "pvp"
@@ -272,11 +275,11 @@ function DT:LoadDataTexts(from)
 					for option, value in pairs(self.db.panels) do
 						if value and type(value) == 'table' then
 							if option == panelName and self.db.panels[option][pointIndex] and self.db.panels[option][pointIndex] == name then
-								DT:AssignPanelToDataText(dt, data, from)
+								DT:AssignPanelToDataText(dt, data, ...)
 							end
 						elseif value and type(value) == 'string' and value == name then
 							if self.db.panels[option] == name and option == panelName then
-								DT:AssignPanelToDataText(dt, data, from)
+								DT:AssignPanelToDataText(dt, data, ...)
 							end
 						end
 					end
