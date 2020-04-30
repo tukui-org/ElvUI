@@ -2991,7 +2991,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		end
 	end
 
-	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet'  then
+	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
 		config.args.positionsGroup = {
 			order = 100,
 			name = L["Size and Positions"],
@@ -3169,6 +3169,12 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 				},
 			},
 		}
+	end
+
+	if groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
+		config.args.positionsGroup.args.numGroups.disabled = function()
+			return E.db.unitframe.smartRaidFilter
+		end
 	end
 
 	if groupName == 'target' and not IsAddOnLoaded("Clique") then
@@ -5597,7 +5603,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid = {
 		header = {
 			order = 0,
 			type = "description",
-			name = L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."],
+			name = L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."],
 			hidden = function() return not E.db.unitframe.smartRaidFilter end,
 		},
 		enable = {
@@ -5669,7 +5675,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid40 = {
 		header = {
 			order = 0,
 			type = "description",
-			name = L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."],
+			name = L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."],
 			hidden = function() return not E.db.unitframe.smartRaidFilter end,
 		},
 		enable = {
@@ -5741,7 +5747,7 @@ E.Options.args.unitframe.args.groupUnits.args.raidpet = {
 		header = {
 			order = 0,
 			type = "description",
-			name = L["|cffFF0000Warning:|r Enable is managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to toggle these frames."],
+			name = L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."],
 			hidden = function() return not E.db.unitframe.smartRaidFilter end,
 		},
 		enable = {
