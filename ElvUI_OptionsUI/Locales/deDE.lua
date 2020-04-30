@@ -1,7 +1,7 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
-L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = true
+L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = "|cffFF0000Warnung:|r Die Optionen 'Eingeschaltet' und 'Anzahl der Gruppen' sind ausgegraut durch den intelligenten Raid-Filter. Schalte Intelligenter Raid-Filter in (Einheitenfenster - Allgemein) aus, um diese Einstellungen zu ändern."
 L["# Displayed Auras"] = "# angezeigte Auren"
 L["%s and then %s"] = "%s und dann %s"
 L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = "|cffFF0000Warnung:|r Dieses verursacht, dass die Updates in einem Bruchteil einer Sekunde passieren."
