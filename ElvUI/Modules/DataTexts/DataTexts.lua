@@ -4,22 +4,18 @@ local TT = E:GetModule('Tooltip')
 local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
-local pairs, type, error, strlen = pairs, type, error, strlen
-local pcall = pcall
---WoW API / Variables
+local pairs, type, error, pcall, strlen = pairs, type, error, pcall, strlen
 local CreateFrame = CreateFrame
 local IsInInstance = IsInInstance
 local InCombatLockdown = InCombatLockdown
 
 function DT:Initialize()
-	--if E.db.datatexts.enable ~= true then return end
-	self.Initialized = true
-	self.db = E.db.datatexts
+	DT.Initialized = true
+	DT.db = E.db.datatexts
 
-	self.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
-	TT:HookScript(self.tooltip, 'OnShow', 'SetStyle')
+	DT.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
+	TT:HookScript(DT.tooltip, 'OnShow', 'SetStyle')
 
 	-- Ignore header font size on DatatextTooltip
 	local font = E.Libs.LSM:Fetch("font", E.db.tooltip.font)
@@ -29,22 +25,27 @@ function DT:Initialize()
 	_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
 
 	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
-	self:RegisterLDB() -- LibDataBroker
-	self:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the "CustomCurrency" DT.
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
+	DT:RegisterLDB() -- LibDataBroker
+	DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the "CustomCurrency" DT.
+	DT:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
 end
 
 DT.RegisteredPanels = {}
 DT.RegisteredDataTexts = {}
-DT.PointLocation = {
-	[1] = 'middle',
-	[2] = 'left',
-	[3] = 'right',
+DT.PointLocation = {'middle', 'left', 'right'}
+DT.UnitEvents = {
+	UNIT_AURA = true,
+	UNIT_RESISTANCES = true,
+	UNIT_STATS = true,
+	UNIT_ATTACK_POWER = true,
+	UNIT_RANGED_ATTACK_POWER = true,
+	UNIT_TARGET = true,
+	UNIT_SPELL_HASTE = true
 }
 
 local LDBHex = '|cffFFFFFF'
-function DT:SetupObjectLDB(name, obj)
-	local curFrame = nil
+function DT:BuildPanelFunctions(name, obj)
+	local panel = nil
 
 	local function OnEnter(dt)
 		DT:SetupTooltip(dt)
@@ -62,11 +63,11 @@ function DT:SetupObjectLDB(name, obj)
 		if obj.OnClick then obj.OnClick(dt, button) end
 	end
 
-	local function textUpdate(_, Name, _, Value)
+	local function UpdateText(_, Name, _, Value)
 		if Value == nil or (strlen(Value) >= 3) or Value == 'n/a' or Name == Value then
-			curFrame.text:SetText(Value ~= 'n/a' and Value or Name)
+			panel.text:SetText(Value ~= 'n/a' and Value or Name)
 		else
-			curFrame.text:SetFormattedText("%s: %s%s|r", Name, LDBHex, Value)
+			panel.text:SetFormattedText("%s: %s%s|r", Name, LDBHex, Value)
 		end
 	end
 
@@ -78,16 +79,20 @@ function DT:SetupObjectLDB(name, obj)
 	end
 
 	local function OnEvent(dt)
-		curFrame = dt
-		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_text", textUpdate)
-		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_value", textUpdate)
+		panel = dt
+		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_text", UpdateText)
+		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_value", UpdateText)
 		OnCallback(LDBHex)
 	end
 
-	local data = DT:RegisterDatatext(name, nil, OnEvent, nil, OnClick, OnEnter, OnLeave)
-	data.isLibDataBroker = true
+	return OnEnter, OnLeave, OnClick, OnCallback, OnEvent, UpdateText
+end
 
-	E.valueColorUpdateFuncs[OnCallback] = true
+function DT:SetupObjectLDB(name, obj)
+	local onEnter, onLeave, onClick, onCallback, onEvent = DT:BuildPanelFunctions(name, obj)
+	local data = DT:RegisterDatatext(name, nil, onEvent, nil, onClick, onEnter, onLeave)
+	E.valueColorUpdateFuncs[onCallback] = true
+	data.isLibDataBroker = true
 
 	-- Update config if it has been loaded
 	if DT.PanelLayoutOptions then
@@ -135,9 +140,9 @@ end
 
 function DT:SetupTooltip(panel)
 	local parent = panel:GetParent()
-	self.tooltip:Hide()
-	self.tooltip:SetOwner(parent, parent.anchor, parent.xOff, parent.yOff)
-	self.tooltip:ClearLines()
+	DT.tooltip:Hide()
+	DT.tooltip:SetOwner(parent, parent.anchor, parent.xOff, parent.yOff)
+	DT.tooltip:ClearLines()
 	if not _G.GameTooltip:IsForbidden() then
 		_G.GameTooltip:Hide() -- WHY??? BECAUSE FUCK GAMETOOLTIP, THATS WHY!!
 	end
@@ -187,9 +192,7 @@ function DT:AssignPanelToDataText(panel, data, event, ...)
 					E:RegisterEventForObject(ev, data.objectEvent, data.objectEventFunc)
 				end
 			elseif data.eventFunc then
-				-- use new filtered event registration for appropriate events
-				if ev == "UNIT_AURA" or ev == "UNIT_RESISTANCES"  or ev == "UNIT_STATS" or ev == "UNIT_ATTACK_POWER"
-				or ev == "UNIT_RANGED_ATTACK_POWER" or ev == "UNIT_TARGET" or ev == "UNIT_SPELL_HASTE" then
+				if DT.UnitEvents[ev] then
 					pcall(panel.RegisterUnitEvent, panel, ev, 'player')
 				else
 					pcall(panel.RegisterEvent, panel, ev)
@@ -233,7 +236,7 @@ function DT:AssignPanelToDataText(panel, data, event, ...)
 end
 
 function DT:LoadDataTexts(...)
-	local fontTemplate = LSM:Fetch("font", self.db.font)
+	local fontTemplate = LSM:Fetch("font", DT.db.font)
 	local inInstance, instanceType = IsInInstance()
 	local isInPVP = inInstance and instanceType == "pvp"
 	local pointIndex, isBGPanel, enableBGPanel
@@ -250,8 +253,8 @@ function DT:LoadDataTexts(...)
 			dt:SetScript('OnEnter', nil)
 			dt:SetScript('OnLeave', nil)
 			dt:SetScript('OnClick', nil)
-			dt.text:FontTemplate(fontTemplate, self.db.fontSize, self.db.fontOutline)
-			dt.text:SetWordWrap(self.db.wordWrap)
+			dt.text:FontTemplate(fontTemplate, DT.db.fontSize, DT.db.fontOutline)
+			dt.text:SetWordWrap(DT.db.wordWrap)
 			dt.text:SetText('')
 			dt.pointIndex = pointIndex
 
@@ -271,13 +274,13 @@ function DT:LoadDataTexts(...)
 
 				--Register Panel to Datatext
 				for name, data in pairs(DT.RegisteredDataTexts) do
-					for option, value in pairs(self.db.panels) do
+					for option, value in pairs(DT.db.panels) do
 						if value and type(value) == 'table' then
-							if option == panelName and self.db.panels[option][pointIndex] and self.db.panels[option][pointIndex] == name then
+							if option == panelName and DT.db.panels[option][pointIndex] and DT.db.panels[option][pointIndex] == name then
 								DT:AssignPanelToDataText(dt, data, ...)
 							end
 						elseif value and type(value) == 'string' and value == name then
-							if self.db.panels[option] == name and option == panelName then
+							if DT.db.panels[option] == name and option == panelName then
 								DT:AssignPanelToDataText(dt, data, ...)
 							end
 						end
