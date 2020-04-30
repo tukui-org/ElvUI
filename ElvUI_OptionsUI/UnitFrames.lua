@@ -3039,7 +3039,6 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 							UF:HeaderConfig(UF[groupName], true)
 						end
 					end,
-					disabled = function() return groupName ~= 'party' and E.db.unitframe.smartRaidFilter end,
 				},
 				groupsPerRowCol = {
 					order = 8,
