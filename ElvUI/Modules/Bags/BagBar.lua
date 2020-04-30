@@ -86,7 +86,7 @@ function B:SizeAndPositionBagBar()
 			end
 		end
 		for j = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
-			local active = GetBagSlotFlag(i, j)
+			local active = GetBagSlotFlag(i - 1, j)
 			if active then
 				button.ElvUIFilterIcon:SetTexture(B.BAG_FILTER_ICONS[j])
 				button.ElvUIFilterIcon:SetShown(E.db.bags.showAssignedIcon)
@@ -94,6 +94,7 @@ function B:SizeAndPositionBagBar()
 				button.ignoreBorderColors = true --dont allow these border colors to update for now
 				break -- this loop
 			else
+				button.ElvUIFilterIcon:SetShown(false)
 				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				button.ignoreBorderColors = nil --restore these borders to be updated
 			end
@@ -169,4 +170,5 @@ function B:LoadBagBar()
 
 	B:SizeAndPositionBagBar()
 	E:CreateMover(B.BagBar, 'BagsMover', L["Bags"], nil, nil, nil, nil, nil, 'bags,general')
+	B:RegisterEvent('BAG_SLOT_FLAGS_UPDATED', 'SizeAndPositionBagBar')
 end
