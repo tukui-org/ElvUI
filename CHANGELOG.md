@@ -1,4 +1,4 @@
-### Version 11.40 [ ETA: 🍨 ]
+### Version 11.41 [ ETA: 🍨 ]
 
 **New Additions:**  
 
@@ -8,6 +8,12 @@
 
 **Misc. Changes:**  
 
+
+___
+### Version 11.40 [ April 30th 2020 ]
+
+**Changes:**  
+Tiny Update.  
 
 ___
 ### Version 11.39 [ April 30th 2020 ]

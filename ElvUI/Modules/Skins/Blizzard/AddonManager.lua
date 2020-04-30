@@ -44,18 +44,18 @@ function S:AddonList()
 			local name, title, _, loadable, reason = GetAddOnInfo(index)
 
 			-- Get the character from the current list (nil is all characters)
-			local checkboxStateAll
+			local checkall
 			local character = UIDropDownMenu_GetSelectedValue(AddonCharacterDropDown)
 			if character == true then
 				character = nil
 			else
-				checkboxStateAll = GetAddOnEnableState(nil, index)
+				checkall = GetAddOnEnableState(nil, index)
 			end
 
-			local checkboxState = GetAddOnEnableState(character, index)
+			local checkstate = GetAddOnEnableState(character, index)
 			local checkbox = _G["AddonListEntry"..i.."Enabled"]
 			local checktex = checkbox:GetCheckedTexture()
-			local enabled = checkboxState > 0
+			local enabled = checkstate > 0
 
 			string:FontTemplate(font, 13, 'NONE')
 			entry.Status:FontTemplate(font, 11, 'NONE')
@@ -72,11 +72,11 @@ function S:AddonList()
 				string:SetTextColor(0.3, 0.3, 0.3)
 			end
 
-			if not enabled and checkboxStateAll == 1 then
+			if not enabled and checkall == 1 then
 				checktex:SetVertexColor(0.3, 0.3, 0.3)
 				checktex:SetDesaturated(false)
 				checktex:Show()
-			elseif checkboxState == 0 then
+			elseif checkstate == 0 then
 				checktex:Hide()
 			end
 
