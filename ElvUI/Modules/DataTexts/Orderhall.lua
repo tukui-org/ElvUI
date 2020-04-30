@@ -180,4 +180,4 @@ local function OnEvent(self, event)
 	self.text:SetFormattedText("%s %s", GARRISON_ICON, numGarrisonResources)
 end
 
-DT:RegisterDatatext('Orderhall', {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS", "GARRISON_TALENT_UPDATE", "GARRISON_TALENT_COMPLETE"}, OnEvent, nil, OnClick, OnEnter)
+DT:RegisterDatatext('Orderhall', {"CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS", "GARRISON_TALENT_UPDATE", "GARRISON_TALENT_COMPLETE"}, OnEvent, nil, OnClick, OnEnter)

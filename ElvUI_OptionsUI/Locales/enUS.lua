@@ -1,6 +1,7 @@
 -- English localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
 
+L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = true
 L["# Displayed Auras"] = true
 L["%s and then %s"] = true
 L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = true
@@ -111,7 +112,7 @@ L["Auto-Close Pet Battle Log"] = true
 L["Auto-Hide"] = true
 L["Automatic"] = true
 L["Automatically accept invites from guild/friends."] = true
-L["Automatically hide the objetive frame during boss or arena fights."] = true
+L["Automatically hide the objective frame during boss or arena fights."] = true
 L["Automatically repair using the following method when visiting a merchant."] = true
 L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = true
 L["Automatically vendor gray items when visiting a vendor."] = true
@@ -290,7 +291,7 @@ L["Control enemy nameplates toggling on or off when in combat."] = true
 L["Control friendly nameplates toggling on or off when in combat."] = true
 L["Controls how big of an area on the screen will accept clicks to target unit."] = true
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = true
-L["Controls the text displayed. Available Tags are listed under Info/Controls"] = true
+L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = true
 L["Controls the speed at which smoothed bars will be updated."] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = true

@@ -34,7 +34,7 @@ local function OnEvent(self, event, _, timeSeconds)
 		timerText = L["Arena"]
 		self.text:SetFormattedText(displayString, timerText, "00:00:00")
 		self:SetScript("OnUpdate", DelayOnUpdate)
-	elseif(event == "PLAYER_ENTERING_WORLD" or (event == "PLAYER_REGEN_ENABLED" and instanceType ~= "arena")) then
+	elseif(event == "PLAYER_REGEN_ENABLED" and instanceType ~= "arena") then
 		self:SetScript("OnUpdate", nil)
 	elseif(event == "PLAYER_REGEN_DISABLED" and instanceType ~= "arena") then
 		startTime = GetTime()
@@ -57,4 +57,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Combat/Arena Time', {"START_TIMER", "PLAYER_ENTERING_WORLD", "PLAYER_REGEN_DISABLED", "PLAYER_REGEN_ENABLED"}, OnEvent, nil, nil, nil, nil, L["Combat/Arena Time"])
+DT:RegisterDatatext('Combat/Arena Time', {"START_TIMER", "PLAYER_REGEN_DISABLED", "PLAYER_REGEN_ENABLED"}, OnEvent, nil, nil, nil, nil, L["Combat/Arena Time"])

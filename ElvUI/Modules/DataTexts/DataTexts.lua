@@ -4,22 +4,18 @@ local TT = E:GetModule('Tooltip')
 local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
-local pairs, type, error, strlen = pairs, type, error, strlen
-local pcall = pcall
---WoW API / Variables
+local pairs, type, error, pcall, strlen = pairs, type, error, pcall, strlen
 local CreateFrame = CreateFrame
 local IsInInstance = IsInInstance
 local InCombatLockdown = InCombatLockdown
 
 function DT:Initialize()
-	--if E.db.datatexts.enable ~= true then return end
-	self.Initialized = true
-	self.db = E.db.datatexts
+	DT.Initialized = true
+	DT.db = E.db.datatexts
 
-	self.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
-	TT:HookScript(self.tooltip, 'OnShow', 'SetStyle')
+	DT.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
+	TT:HookScript(DT.tooltip, 'OnShow', 'SetStyle')
 
 	-- Ignore header font size on DatatextTooltip
 	local font = E.Libs.LSM:Fetch("font", E.db.tooltip.font)
@@ -29,30 +25,27 @@ function DT:Initialize()
 	_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
 
 	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
-	self:RegisterLDB('ElvUI') -- LibDataBroker
-	self:LoadDataTexts() -- Fire it up!
-	self:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the "CustomCurrency" DT.
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	DT:RegisterLDB() -- LibDataBroker
+	DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the "CustomCurrency" DT.
+	DT:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
 end
 
 DT.RegisteredPanels = {}
 DT.RegisteredDataTexts = {}
-DT.PointLocation = {
-	[1] = 'middle',
-	[2] = 'left',
-	[3] = 'right',
+DT.PointLocation = {'middle', 'left', 'right'}
+DT.UnitEvents = {
+	UNIT_AURA = true,
+	UNIT_RESISTANCES = true,
+	UNIT_STATS = true,
+	UNIT_ATTACK_POWER = true,
+	UNIT_RANGED_ATTACK_POWER = true,
+	UNIT_TARGET = true,
+	UNIT_SPELL_HASTE = true
 }
 
-function DT:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	-- update on zone changed for BG Stats
-	if not initLogin and not isReload then
-		DT:LoadDataTexts()
-	end
-end
-
 local LDBHex = '|cffFFFFFF'
-function DT:SetupObjectLDB(name, obj, elvui) --self will now be the event
-	local curFrame = nil
+function DT:BuildPanelFunctions(name, obj)
+	local panel = nil
 
 	local function OnEnter(dt)
 		DT:SetupTooltip(dt)
@@ -70,11 +63,11 @@ function DT:SetupObjectLDB(name, obj, elvui) --self will now be the event
 		if obj.OnClick then obj.OnClick(dt, button) end
 	end
 
-	local function textUpdate(_, Name, _, Value)
+	local function UpdateText(_, Name, _, Value)
 		if Value == nil or (strlen(Value) >= 3) or Value == 'n/a' or Name == Value then
-			curFrame.text:SetText(Value ~= 'n/a' and Value or Name)
+			panel.text:SetText(Value ~= 'n/a' and Value or Name)
 		else
-			curFrame.text:SetFormattedText("%s: %s%s|r", Name, LDBHex, Value)
+			panel.text:SetFormattedText("%s: %s%s|r", Name, LDBHex, Value)
 		end
 	end
 
@@ -86,28 +79,30 @@ function DT:SetupObjectLDB(name, obj, elvui) --self will now be the event
 	end
 
 	local function OnEvent(dt)
-		curFrame = dt
-		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_text", textUpdate)
-		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_value", textUpdate)
+		panel = dt
+		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_text", UpdateText)
+		LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_value", UpdateText)
 		OnCallback(LDBHex)
 	end
 
-	DT:RegisterDatatext(name, {'PLAYER_ENTERING_WORLD'}, OnEvent, nil, OnClick, OnEnter, OnLeave)
-	E.valueColorUpdateFuncs[OnCallback] = true
+	return OnEnter, OnLeave, OnClick, OnCallback, OnEvent, UpdateText
+end
+
+function DT:SetupObjectLDB(name, obj)
+	local onEnter, onLeave, onClick, onCallback, onEvent = DT:BuildPanelFunctions(name, obj)
+	local data = DT:RegisterDatatext(name, nil, onEvent, nil, onClick, onEnter, onLeave)
+	E.valueColorUpdateFuncs[onCallback] = true
+	data.isLibDataBroker = true
 
 	-- Update config if it has been loaded
 	if DT.PanelLayoutOptions then
 		DT:PanelLayoutOptions()
 	end
-
-	if elvui ~= 'ElvUI' then
-		DT:LoadDataTexts()
-	end
 end
 
-function DT:RegisterLDB(elvui)
+function DT:RegisterLDB()
 	for name, obj in LDB:DataObjectIterator() do
-		self:SetupObjectLDB(name, obj, elvui)
+		DT:SetupObjectLDB(name, obj)
 	end
 end
 
@@ -127,15 +122,19 @@ end
 
 function DT:UpdateAllDimensions()
 	for _, panel in pairs(DT.RegisteredPanels) do
-		local width = (panel:GetWidth() / panel.numPoints) - 4
-		local height = panel:GetHeight() - 4
-		for i=1, panel.numPoints do
-			local pointIndex = DT.PointLocation[i]
-			local dt = panel.dataPanels[pointIndex]
-			dt:Width(width)
-			dt:Height(height)
-			dt:Point(DT:GetDataPanelPoint(panel, i, panel.numPoints))
-		end
+		DT.UpdateDimensions(panel)
+	end
+end
+
+function DT:UpdatePanelDimensions()
+	local panelWidth, panelHeight = self:GetSize()
+	local width = (panelWidth / self.numPoints) - 4
+	local height = panelHeight - 4
+	for i=1, self.numPoints do
+		local dt = self.dataPanels[DT.PointLocation[i]]
+		dt:Size(width, height)
+		dt:ClearAllPoints()
+		dt:Point(DT:GetDataPanelPoint(self, i, self.numPoints))
 	end
 end
 
@@ -145,9 +144,10 @@ end
 
 function DT:SetupTooltip(panel)
 	local parent = panel:GetParent()
-	self.tooltip:Hide()
-	self.tooltip:SetOwner(parent, parent.anchor, parent.xOff, parent.yOff)
-	self.tooltip:ClearLines()
+	DT.tooltip:Hide()
+	DT.tooltip:SetOwner(parent, parent.anchor, parent.xOff, parent.yOff)
+	DT.tooltip:ClearLines()
+
 	if not _G.GameTooltip:IsForbidden() then
 		_G.GameTooltip:Hide() -- WHY??? BECAUSE FUCK GAMETOOLTIP, THATS WHY!!
 	end
@@ -169,50 +169,45 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
 			dt:RegisterForClicks("AnyUp")
 			dt.text = dt:CreateFontString(nil, 'OVERLAY')
 			dt.text:SetAllPoints()
-			dt.text:FontTemplate()
 			dt.text:SetJustifyH("CENTER")
 			dt.text:SetJustifyV("MIDDLE")
 			panel.dataPanels[pointIndex] = dt
 		end
 
+		dt:ClearAllPoints()
 		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints))
 	end
 
-	panel:SetScript('OnSizeChanged', DT.UpdateAllDimensions)
-	DT.UpdateAllDimensions(panel)
+	panel:SetScript('OnSizeChanged', DT.UpdatePanelDimensions)
+	DT.UpdatePanelDimensions(panel)
 end
 
-function DT:AssignPanelToDataText(panel, data)
+function DT:AssignPanelToDataText(panel, data, event, ...)
 	data.panel = panel
-	panel.name = ""
-
-	if data.name then
-		panel.name = data.name
-	end
+	panel.name = data.name or ""
 
 	if data.events then
-		for _, event in pairs(data.events) do
+		for _, ev in pairs(data.events) do
 			if data.objectEvent then
-				if not E:HasFunctionForObject(event, data.objectEvent, data.objectEventFunc) then
-					E:RegisterEventForObject(event, data.objectEvent, data.objectEventFunc)
+				if not E:HasFunctionForObject(ev, data.objectEvent, data.objectEventFunc) then
+					E:RegisterEventForObject(ev, data.objectEvent, data.objectEventFunc)
 				end
 			elseif data.eventFunc then
-				-- use new filtered event registration for appropriate events
-				if event == "UNIT_AURA" or event == "UNIT_RESISTANCES"  or event == "UNIT_STATS" or event == "UNIT_ATTACK_POWER"
-				or event == "UNIT_RANGED_ATTACK_POWER" or event == "UNIT_TARGET" or event == "UNIT_SPELL_HASTE" then
-					pcall(panel.RegisterUnitEvent, panel, event, 'player')
+				if DT.UnitEvents[ev] then
+					pcall(panel.RegisterUnitEvent, panel, ev, 'player')
 				else
-					pcall(panel.RegisterEvent, panel, event)
+					pcall(panel.RegisterEvent, panel, ev)
 				end
 			end
 		end
 	end
 
+	local ev = event or 'ELVUI_FORCE_UPDATE'
 	if data.objectEvent then
-		data.objectEventFunc(data.objectEvent, 'ELVUI_FORCE_RUN')
+		data.objectEventFunc(data.objectEvent, ev, ...)
 	elseif data.eventFunc then
 		panel:SetScript('OnEvent', data.eventFunc)
-		data.eventFunc(panel, 'ELVUI_FORCE_RUN')
+		data.eventFunc(panel, ev, ...)
 	end
 
 	if data.onUpdate then
@@ -234,19 +229,11 @@ function DT:AssignPanelToDataText(panel, data)
 		end)
 	end
 
-	if data.onLeave then
-		panel:SetScript('OnLeave', data.onLeave)
-	else
-		panel:SetScript('OnLeave', DT.Data_OnLeave)
-	end
+	panel:SetScript('OnLeave', data.onLeave or DT.Data_OnLeave)
 end
 
-function DT:LoadDataTexts()
-	for _, _ in LDB:DataObjectIterator() do
-		LDB:UnregisterAllCallbacks(self)
-	end
-
-	local fontTemplate = LSM:Fetch("font", self.db.font)
+function DT:LoadDataTexts(...)
+	local font, fontSize, fontOutline = LSM:Fetch("font", DT.db.font), DT.db.fontSize, DT.db.fontOutline
 	local inInstance, instanceType = IsInInstance()
 	local isInPVP = inInstance and instanceType == "pvp"
 	local pointIndex, isBGPanel, enableBGPanel
@@ -263,9 +250,9 @@ function DT:LoadDataTexts()
 			dt:SetScript('OnEnter', nil)
 			dt:SetScript('OnLeave', nil)
 			dt:SetScript('OnClick', nil)
-			dt.text:FontTemplate(fontTemplate, self.db.fontSize, self.db.fontOutline)
-			dt.text:SetWordWrap(self.db.wordWrap)
-			dt.text:SetText('')
+			dt.text:FontTemplate(font, fontSize, fontOutline)
+			dt.text:SetWordWrap(DT.db.wordWrap)
+			dt.text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
 			dt.pointIndex = pointIndex
 
 			if enableBGPanel then
@@ -284,14 +271,14 @@ function DT:LoadDataTexts()
 
 				--Register Panel to Datatext
 				for name, data in pairs(DT.RegisteredDataTexts) do
-					for option, value in pairs(self.db.panels) do
+					for option, value in pairs(DT.db.panels) do
 						if value and type(value) == 'table' then
-							if option == panelName and self.db.panels[option][pointIndex] and self.db.panels[option][pointIndex] == name then
-								DT:AssignPanelToDataText(dt, data)
+							if option == panelName and DT.db.panels[option][pointIndex] and DT.db.panels[option][pointIndex] == name then
+								DT:AssignPanelToDataText(dt, data, ...)
 							end
 						elseif value and type(value) == 'string' and value == name then
-							if self.db.panels[option] == name and option == panelName then
-								DT:AssignPanelToDataText(dt, data)
+							if DT.db.panels[option] == name and option == panelName then
+								DT:AssignPanelToDataText(dt, data, ...)
 							end
 						end
 					end
@@ -356,6 +343,8 @@ function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onE
 	end
 
 	DT.RegisteredDataTexts[name] = data
+
+	return data
 end
 
 E:RegisterModule(DT:GetName())

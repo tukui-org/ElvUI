@@ -17,17 +17,15 @@ local configText = "ElvUI"
 local reloadText = RELOADUI
 local plugins, lastPanel
 
-local function OnEvent(self, event)
+local function OnEvent(self)
 	lastPanel = self
 
-	if event == "PLAYER_ENTERING_WORLD" then
-		for i = 1, GetNumAddOns() do
-			local name, _, _, enabled = GetAddOnInfo(i)
-			if enabled and strfind(name, "ElvUI") and not (name == "ElvUI") then
-				plugins = plugins or {}
-				local version = GetAddOnMetadata(i, "version")
-				plugins[name] = version
-			end
+	for i = 1, GetNumAddOns() do
+		local name, _, _, enabled = GetAddOnInfo(i)
+		if enabled and strfind(name, "ElvUI") and not (name == "ElvUI") then
+			plugins = plugins or {}
+			local version = GetAddOnMetadata(i, "version")
+			plugins[name] = version
 		end
 	end
 
@@ -68,4 +66,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('ElvUI Config', {'PLAYER_ENTERING_WORLD'}, OnEvent, nil, Click, OnEnter)
+DT:RegisterDatatext('ElvUI Config', nil, OnEvent, nil, Click, OnEnter)

@@ -1427,7 +1427,7 @@ local function CreateCustomTextGroup(unit, objectName)
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
-				desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+				desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 				type = 'input',
 				width = 'full',
 			},
@@ -1665,7 +1665,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 					text_format = {
 						order = 4,
 						name = L["Text Format"],
-						desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+						desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 						type = 'input',
 						width = 'full',
 					},
@@ -1793,7 +1793,7 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
-				desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+				desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 				type = 'input',
 				width = 'full',
 			},
@@ -2089,7 +2089,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 					text_format = {
 						order = 4,
 						name = L["Text Format"],
-						desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+						desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 						type = 'input',
 						width = 'full',
 					},
@@ -2745,7 +2745,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		config.args.altPowerTextFormat = {
 			order = 6,
 			name = L["Text Format"],
-			desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+			desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 			type = 'input',
 			width = 'full',
 		}
@@ -2991,7 +2991,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		end
 	end
 
-	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet'  then
+	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
 		config.args.positionsGroup = {
 			order = 100,
 			name = L["Size and Positions"],
@@ -3169,6 +3169,12 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 				},
 			},
 		}
+	end
+
+	if groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
+		config.args.positionsGroup.args.numGroups.disabled = function()
+			return E.db.unitframe.smartRaidFilter
+		end
 	end
 
 	if groupName == 'target' and not IsAddOnLoaded("Clique") then
@@ -4765,7 +4771,7 @@ E.Options.args.unitframe.args.individualUnits.args.player = {
 				text_format = {
 					order = 100,
 					name = L["Text Format"],
-					desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+					desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 					type = 'input',
 					width = 'full',
 				},
@@ -5467,7 +5473,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 						text_format = {
 							order = 100,
 							name = L["Text Format"],
-							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 							type = 'input',
 							width = 'full',
 						},
@@ -5550,7 +5556,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 						text_format = {
 							order = 100,
 							name = L["Text Format"],
-							desc = L["Controls the text displayed. Available Tags are listed under Info/Controls"],
+							desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
 							type = 'input',
 							width = 'full',
 						},
@@ -5594,6 +5600,12 @@ E.Options.args.unitframe.args.groupUnits.args.raid = {
 	set = function(info, value) E.db.unitframe.units.raid[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
 	disabled = function() return not E.UnitFrames.Initialized end,
 	args = {
+		header = {
+			order = 0,
+			type = "description",
+			name = L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."],
+			hidden = function() return not E.db.unitframe.smartRaidFilter end,
+		},
 		enable = {
 			type = 'toggle',
 			order = 1,
@@ -5660,6 +5672,12 @@ E.Options.args.unitframe.args.groupUnits.args.raid40 = {
 	set = function(info, value) E.db.unitframe.units.raid40[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raid40') end,
 	disabled = function() return not E.UnitFrames.Initialized end,
 	args = {
+		header = {
+			order = 0,
+			type = "description",
+			name = L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."],
+			hidden = function() return not E.db.unitframe.smartRaidFilter end,
+		},
 		enable = {
 			type = 'toggle',
 			order = 1,
@@ -5726,6 +5744,12 @@ E.Options.args.unitframe.args.groupUnits.args.raidpet = {
 	set = function(info, value) E.db.unitframe.units.raidpet[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raidpet') end,
 	disabled = function() return not E.UnitFrames.Initialized end,
 	args = {
+		header = {
+			order = 0,
+			type = "description",
+			name = L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."],
+			hidden = function() return not E.db.unitframe.smartRaidFilter end,
+		},
 		enable = {
 			type = 'toggle',
 			order = 1,

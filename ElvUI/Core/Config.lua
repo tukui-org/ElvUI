@@ -864,6 +864,13 @@ function E:Config_GetWindow()
 	return ConfigOpen and ConfigOpen.frame
 end
 
+local ConfigLogoTop
+E.valueColorUpdateFuncs[function(_, r, b, g)
+	if ConfigLogoTop then
+		ConfigLogoTop:SetVertexColor(r, b, g)
+	end
+end] = true
+
 function E:Config_WindowClosed()
 	if not self.bottomHolder then return end
 
@@ -875,6 +882,8 @@ function E:Config_WindowClosed()
 		self.leftHolder.slider:Hide()
 		self.closeButton:Hide()
 		self.originalClose:Show()
+
+		ConfigLogoTop = nil
 
 		E:StopElasticize(self.leftHolder.LogoTop)
 		E:StopElasticize(self.leftHolder.LogoBottom)
@@ -894,9 +903,11 @@ function E:Config_WindowOpened(frame)
 		frame.closeButton:Show()
 		frame.originalClose:Hide()
 
+		frame.leftHolder.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))
+		ConfigLogoTop = frame.leftHolder.LogoTop
+
 		E:Elasticize(frame.leftHolder.LogoTop, 128, 64)
 		E:Elasticize(frame.leftHolder.LogoBottom, 128, 64)
-		frame.leftHolder.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))
 
 		local unskinned = not E.private.skins.ace3.enable
 		local offset = unskinned and 14 or 8

@@ -1,6 +1,7 @@
 -- Simplified Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 
+L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = true
 L["# Displayed Auras"] = "显示光环的数量"
 L["%s and then %s"] = "%s 于 %s"
 L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = "|cffFF0000警告:|r 这将会在几分之一秒就更新一次"
@@ -113,7 +114,7 @@ L["Auto-Close Pet Battle Log"] = "自动关闭宠物对战日志"
 L["Auto-Hide"] = "自动隐藏"
 L["Automatic"] = "自动"
 L["Automatically accept invites from guild/friends."] = "自动接受工会或好友的邀请"
-L["Automatically hide the objetive frame during boss or arena fights."] = "在首领战/竞技场中自动隐藏任务框体"
+L["Automatically hide the objective frame during boss or arena fights."] = "在首领战/竞技场中自动隐藏任务框体"
 L["Automatically repair using the following method when visiting a merchant."] = "使用以下方式来自动修理装备"
 L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = "当你满级时, 自动选择贪婪或分解绿色物品"
 L["Automatically vendor gray items when visiting a vendor."] = "当访问商人时自动出售灰色物品"
@@ -292,7 +293,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "控制显示多少光环, 这也会影响光环大小"
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "控制像姓名板和团队框架中各数值的小数位数"
 L["Controls the speed at which smoothed bars will be updated."] = "控制状态条平滑增减的速度."
-L["Controls the text displayed. Available Tags are listed under Info/Controls"] = "控制显示的文字, 可用的文字格式在左侧 信息/控制 中列出"
+L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = "控制姓名板宽度和姓名板可点击区域的宽度."
 L["Controls which nameplates will be displayed."] = "控制何种姓名板被显示"
 L["Cooldown Text"] = "冷却文字"

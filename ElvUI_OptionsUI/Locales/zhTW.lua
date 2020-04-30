@@ -1,6 +1,7 @@
 -- Traditional Chinese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
 
+L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = true
 L["# Displayed Auras"] = "顯示光環的數量"
 L["%s and then %s"] = "%s 與 %s"
 L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = "|cffFF0000警告:|r 這將導致一秒中更新多次。"
@@ -112,7 +113,7 @@ L["Auto-Close Pet Battle Log"] = "自動關閉寵物對戰日誌"
 L["Auto-Hide"] = "自動隱藏"
 L["Automatic"] = "自動"
 L["Automatically accept invites from guild/friends."] = "自動接受公會成員/朋友的組隊邀請."
-L["Automatically hide the objetive frame during boss or arena fights."] = "在首領戰鬥或是競技場時自動隱藏目標追蹤框架."
+L["Automatically hide the objective frame during boss or arena fights."] = "在首領戰鬥或是競技場時自動隱藏目標追蹤框架."
 L["Automatically repair using the following method when visiting a merchant."] = "與商人對話時, 透過下列方式自動修復裝備."
 L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = "當你的等級達到滿級時, 自動選擇貪婪或分解綠色物品."
 L["Automatically vendor gray items when visiting a vendor."] = "當訪問商人時自動出售灰色物品."
@@ -292,7 +293,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "控制顯示多少光環, 這也會影響光環大小"
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "控制在血條和單位框架等元件的小數位數"
 L["Controls the speed at which smoothed bars will be updated."] = "控制平滑條更新的速度."
-L["Controls the text displayed. Available Tags are listed under Info/Controls"] = "控制顯示的文字, 可用的文字格式在左側 信息/控制 中列出"
+L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = "控制選擇目標操作的接受點擊寬度和大小."
 L["Controls which nameplates will be displayed."] = "控制何種姓名板被顯示"
 L["Cooldown Text"] = "冷卻文字"

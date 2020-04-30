@@ -126,8 +126,9 @@ end
 local FRIEND_ONLINE = select(2, strsplit(" ", _G.ERR_FRIEND_ONLINE_SS, 2))
 local resendRequest = false
 local eventHandlers = {
-	['CHAT_MSG_SYSTEM'] = function(self, arg1)
-		if(FRIEND_ONLINE ~= nil and arg1 and strfind(arg1, FRIEND_ONLINE)) then
+	["PLAYER_GUILD_UPDATE"] = C_GuildInfo_GuildRoster,
+	["CHAT_MSG_SYSTEM"] = function(_, arg1)
+		if FRIEND_ONLINE ~= nil and arg1 and strfind(arg1, FRIEND_ONLINE) then
 			resendRequest = true
 		end
 	end,
@@ -152,20 +153,18 @@ local eventHandlers = {
 			end
 		end
 	end,
-	["PLAYER_GUILD_UPDATE"] = C_GuildInfo_GuildRoster,
 	-- our guild message of the day changed
 	["GUILD_MOTD"] = function (self, arg1)
 		guildMotD = arg1
-	end,
-	["ELVUI_FORCE_RUN"] = E.noop,
-	["ELVUI_COLOR_UPDATE"] = E.noop,
+	end
 }
 
 local function OnEvent(self, event, ...)
 	lastPanel = self
 
 	if IsInGuild() then
-		eventHandlers[event](self, ...)
+		local func = eventHandlers[event]
+		if func then func(self, ...) end
 
 		self.text:SetFormattedText(displayString, #guildTable)
 	else
@@ -310,4 +309,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Guild', {'PLAYER_ENTERING_WORLD', 'CHAT_MSG_SYSTEM', "GUILD_ROSTER_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD"}, OnEvent, nil, Click, OnEnter, nil, GUILD)
+DT:RegisterDatatext('Guild', {"CHAT_MSG_SYSTEM", "GUILD_ROSTER_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD"}, OnEvent, nil, Click, OnEnter, nil, GUILD)

@@ -105,12 +105,12 @@ local function throttle()
 	delayed = nil
 end
 
-local function OnEvent(self)
+local function OnEvent(self, event)
 	if panel ~= self then panel = self end
 	if delayed then return end
 
 	-- use a nonarg passing function, so that it goes through c_timer instead of the waitframe
-	delayed = E:Delay(1, throttle)
+	delayed = E:Delay(event == 'ELVUI_FORCE_UPDATE' and 0 or 1, throttle)
 end
 
 local function ValueColorUpdate(hex)
@@ -119,4 +119,4 @@ local function ValueColorUpdate(hex)
 end
 
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
-DT:RegisterDatatext('Quick Join', {"SOCIAL_QUEUE_UPDATE", "PLAYER_ENTERING_WORLD"}, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN)
+DT:RegisterDatatext('Quick Join', {"SOCIAL_QUEUE_UPDATE"}, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN)

@@ -1,6 +1,7 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 
+L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = true
 L["# Displayed Auras"] = "Кол-во аур"
 L["%s and then %s"] = "%s, а затем %s"
 L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = "|cffFF0000АХТУНГ: Это принудительно вызывает обновления много раз в секунду.|r"
@@ -112,7 +113,7 @@ L["Auto-Close Pet Battle Log"] = "Автоматически закрывать 
 L["Auto-Hide"] = "Автоматически скрывать"
 L["Automatic"] = "Автоматически"
 L["Automatically accept invites from guild/friends."] = "Автоматически принимать приглашения в группу от друзей и гильдии."
-L["Automatically hide the objetive frame during boss or arena fights."] = "Автоматически скрывать список заданий во время сражений с боссами или на арене."
+L["Automatically hide the objective frame during boss or arena fights."] = "Автоматически скрывать список заданий во время сражений с боссами или на арене."
 L["Automatically repair using the following method when visiting a merchant."] = "Автоматически чинить экипировку за счет выбранного источника при посещении торговца."
 L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = "Автоматически выбирать \"не откажусь\" или \"распылить\" (когда доступно) при розыгрыше предметов зеленого качества. Эта опция работает, только если вы максимального уровня."
 L["Automatically vendor gray items when visiting a vendor."] = "Автоматически продавать предметы серого качества при посещении торговца."
@@ -291,7 +292,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "Контролирует кол-во отображаемых эффектов. Также влияет на размер иконок."
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "Задает количество десятичных долей, используемых на индикаторах здоровья и рамках юнитов."
 L["Controls the speed at which smoothed bars will be updated."] = "Задает скорость обновления плавных полос."
-L["Controls the text displayed. Available Tags are listed under Info/Controls"] = "Задает отображаемый текст. Доступные тэги можно увидеть в разделе \"Инфо/Контроль\"."
+L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = "Задает отображаемый текст. Доступные тэги можно увидеть в разделе \"Доступные тэги\"."
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = "Контролирует ширину и размер области, на которую можно будет кликнуть для выбора юнита."
 L["Controls which nameplates will be displayed."] = "Определяет, какие индикаторы быдут отображаться."
 L["Cooldown Text"] = "Текст восстановления"
@@ -1441,8 +1442,8 @@ L["nonPersonal"] = "Чужие"
 L["notCastByUnit"] = "Не принадлежит юниту"
 L["notDispellable"] = "Не развеиваемые"
 L["Personal"] = "Личные"
-L["MyPet"] = true
-L["OtherPet"] = true
+L["MyPet"] = "Мой питомец"
+L["OtherPet"] = "Чужой питомец"
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Изменение настроек панелей команд."

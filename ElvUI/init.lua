@@ -203,7 +203,6 @@ function E:OnInitialize()
 	end
 
 	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
-	GameMenuButton:SetText(format('%s%s|r', self.media.hexvaluecolor, E.name))
 	GameMenuButton:SetScript('OnClick', function() E:ToggleOptionsUI() HideUIPanel(GameMenuFrame) end)
 	GameMenuFrame[E.name] = GameMenuButton
 
@@ -219,12 +218,16 @@ end
 function E:PositionGameMenuButton()
 	GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
+
+	local button = GameMenuFrame[E.name]
+	button:SetText(format('%s%s|r', E.media.hexvaluecolor, E.name))
+
 	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
-	if relTo ~= GameMenuFrame[E.name] then
-		GameMenuFrame[E.name]:ClearAllPoints()
-		GameMenuFrame[E.name]:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
+	if relTo ~= button then
+		button:ClearAllPoints()
+		button:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
 		GameMenuButtonLogout:ClearAllPoints()
-		GameMenuButtonLogout:Point('TOPLEFT', GameMenuFrame[E.name], 'BOTTOMLEFT', 0, offY)
+		GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
 	end
 end
 
