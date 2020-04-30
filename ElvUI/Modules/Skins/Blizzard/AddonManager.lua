@@ -35,7 +35,7 @@ function S:AddonList()
 		S:HandleButton(_G["AddonListEntry"..i].LoadAddonButton)
 	end
 
-	local font = E.Media.Fonts.Expressway
+	local font = E.Libs.LSM:Fetch('font', 'Expressway')
 	hooksecurefunc('AddonList_Update', function()
 		for i = 1, maxShown do
 			local index = AddonList.offset + i

@@ -92,6 +92,7 @@ function E:CreateStatusContent(num, parent, anchorTo)
 	content:Size(260, (num * 20) + ((num-1)*5)) --20 height and 5 spacing
 	content:Point('TOP', anchorTo, 'BOTTOM')
 
+	local font = E.Libs.LSM:Fetch('font', 'Expressway')
 	for i = 1, num do
 		local line = CreateFrame('Frame', nil, content)
 		line:Size(260, 20)
@@ -100,7 +101,7 @@ function E:CreateStatusContent(num, parent, anchorTo)
 		text:SetAllPoints()
 		text:SetJustifyH('LEFT')
 		text:SetJustifyV('MIDDLE')
-		text:FontTemplate(E.Media.Fonts.Expressway, 14, 'OUTLINE')
+		text:FontTemplate(font, 14, 'OUTLINE')
 		line.Text = text
 
 		local numLine = line
@@ -138,12 +139,13 @@ function E:CreateStatusSection(width, height, parent, anchor1, anchorTo, anchor2
 	header:Point('TOP', section)
 	section.Header = header
 
+	local font = E.Libs.LSM:Fetch('font', 'Expressway')
 	local text = section.Header:CreateFontString(nil, 'ARTWORK')
 	text:Point('TOP')
 	text:Point('BOTTOM')
 	text:SetJustifyH('CENTER')
 	text:SetJustifyV('MIDDLE')
-	text:FontTemplate(E.Media.Fonts.Expressway, 18, 'OUTLINE')
+	text:FontTemplate(font, 18, 'OUTLINE')
 	section.Header.Text = text
 
 	local leftDivider = section.Header:CreateTexture(nil, 'ARTWORK')
