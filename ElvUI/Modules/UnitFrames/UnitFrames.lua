@@ -913,7 +913,7 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	return header
 end
 
-function UF:GetSmartVisibilitySetting(group, setting, smart, db)
+function UF:GetSmartVisibilitySetting(setting, group, smart, db)
 	if smart and smart[group] and smart[group][setting] ~= nil then
 		return smart[group][setting]
 	end
@@ -925,9 +925,9 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	local db = self.db.units[group]
 	local Header = self[group]
 
-	local numGroups = UF:GetSmartVisibilitySetting(group, 'numGroups', smartSettings, db)
-	local visibility = UF:GetSmartVisibilitySetting(group, 'visibility', smartSettings, db)
-	local enable = UF:GetSmartVisibilitySetting(group, 'enable', smartSettings, db)
+	local numGroups = UF:GetSmartVisibilitySetting('numGroups', group, smartSettings, db)
+	local visibility = UF:GetSmartVisibilitySetting('visibility', group, smartSettings, db)
+	local enable = UF:GetSmartVisibilitySetting('enable', group, smartSettings, db)
 
 	if not Header then
 		local groupName = E:StringTitle(group)
