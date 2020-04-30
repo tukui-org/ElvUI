@@ -120,12 +120,6 @@ function DT:GetDataPanelPoint(panel, i, numPoints)
 	end
 end
 
-function DT:UpdateAllDimensions()
-	for _, panel in pairs(DT.RegisteredPanels) do
-		DT.UpdatePanelDimensions(panel)
-	end
-end
-
 function DT:UpdatePanelDimensions()
 	local panelWidth, panelHeight = self:GetSize()
 	local width = (panelWidth / self.numPoints) - 4
