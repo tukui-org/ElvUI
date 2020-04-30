@@ -1413,7 +1413,7 @@ function S:Initialize()
 				tex:SetDesaturated(false)
 				tex:SetVertexColor(unpack(E.media.rgbvaluecolor))
 			elseif checkButton.state == 1 then
-				tex:SetVertexColor(1, .82, 0, 0.8)
+				tex:SetVertexColor(0.6, 0.6, 0.6)
 			end
 		end
 	end)
