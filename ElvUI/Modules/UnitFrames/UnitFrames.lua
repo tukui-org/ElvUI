@@ -862,7 +862,6 @@ function UF:HandleSmartVisibility()
 
 			sv.raid.enable = maxPlayers < 40
 			sv.raid40.enable = maxPlayers == 40
-			sv.raidpet.enable = false
 
 			if sv.raid.enable then
 				local maxGroups = E:Round(maxPlayers/5)
