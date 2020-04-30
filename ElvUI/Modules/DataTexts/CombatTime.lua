@@ -1,48 +1,44 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local floor, format, strjoin = floor, format, strjoin
---WoW API / Variables
-local GetTime = GetTime
 local GetInstanceInfo = GetInstanceInfo
+local GetTime = GetTime
 
 local displayString, lastPanel = ''
 local timerText, timer, startTime = L["Combat"], 0, 0
 
+local function UpdateText()
+	return format("%02d:%02d:%02d", floor(timer/60), timer % 60, (timer - floor(timer)) * 100)
+end
+
 local function OnUpdate(self)
 	timer = GetTime() - startTime
-
-	self.text:SetFormattedText(displayString, timerText, format("%02d:%02d.%02d", floor(timer/60), timer % 60, (timer - floor(timer)) * 100))
+	self.text:SetFormattedText(displayString, timerText, UpdateText())
 end
 
 local function DelayOnUpdate(self, elapsed)
 	startTime = startTime - elapsed
-
-	if(startTime <= 0) then
-		startTime = GetTime()
-		timer = 0
+	if startTime <= 0 then
+		timer, startTime = 0, GetTime()
 		self:SetScript("OnUpdate", OnUpdate)
 	end
 end
 
 local function OnEvent(self, event, _, timeSeconds)
 	local _, instanceType = GetInstanceInfo()
-	if(event == "START_TIMER" and instanceType == "arena") then
-		startTime = timeSeconds
-		timer = 0
-		timerText = L["Arena"]
+	local isInArena = instanceType == "arena"
+	if event == "START_TIMER" and isInArena then
+		timerText, timer, startTime = L["Arena"], 0, timeSeconds
 		self.text:SetFormattedText(displayString, timerText, "00:00:00")
 		self:SetScript("OnUpdate", DelayOnUpdate)
-	elseif(event == "PLAYER_REGEN_ENABLED" and instanceType ~= "arena") then
+	elseif event == "PLAYER_REGEN_ENABLED" and not isInArena then
 		self:SetScript("OnUpdate", nil)
-	elseif(event == "PLAYER_REGEN_DISABLED" and instanceType ~= "arena") then
-		startTime = GetTime()
-		timer = 0
-		timerText = L["Combat"]
+	elseif event == "PLAYER_REGEN_DISABLED" and not isInArena then
+		timerText, timer, startTime = L["Combat"], 0, GetTime()
 		self:SetScript("OnUpdate", OnUpdate)
-	elseif(not self.text:GetText()) or self.text:GetText() == " " then
-		self.text:SetFormattedText(displayString, timerText, format("%02d:%02d:%02d", floor(timer/60), timer % 60, (timer - floor(timer)) * 100))
+	elseif event == "PLAYER_ENTERING_WORLD" then
+		self.text:SetFormattedText(displayString, timerText, UpdateText())
 	end
 
 	lastPanel = self
