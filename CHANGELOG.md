@@ -1,13 +1,26 @@
-### Version 11.39 [ ETA: 🍨 ]
+### Version 11.40 [ ETA: 🍨 ]
 
 **New Additions:**  
-Added a note above Raid / Raid40 / RaidPet which states you can't toggle these when Smart Raid Filter is enabled (UnitFrames - General).  
+
 
 **Bug Fixes:**  
-Some Datatexts refused to show information on login, now they are willing to share said info. (Take 2)  
+
 
 **Misc. Changes:**  
-Upgraded */estatus* because we love colours.  
+
+
+___
+### Version 11.39 [ April 30th 2020 ]
+
+**New Additions:**  
+Added a note above Raid / Raid40 / RaidPet which states you can't toggle them or change their number of groups when *Smart Raid Filter* is enabled (under UnitFrames > General).  
+
+**Bug Fixes:**  
+Datatexts do their thing even better than before, for real this time, hopefully. *(X doubt)*  
+
+**Misc. Changes:**  
+Upgraded */estatus* with shiny new beautiful colours.  
+Fresh coat of paint on the Addon Manager too.  
 
 ___
 ### Version 11.38 [ April 28th 2020 ]
