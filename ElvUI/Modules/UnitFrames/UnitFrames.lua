@@ -558,8 +558,8 @@ function UF:Update_AllFrames()
 		end
 	end
 
-	UF:UpdateAllHeaders()
-	UF:HandleSmartVisibility()
+	local UpdatedHeaders = UF:HandleSmartVisibility()
+	if not UpdatedHeaders then UF:UpdateAllHeaders() end
 end
 
 function UF:CreateAndUpdateUFGroup(group, numGroup)
@@ -844,11 +844,7 @@ function UF.headerPrototype:Reset()
 end
 
 function UF:HandleSmartVisibility()
-	local smartRaidOn = UF.db.smartRaidFilter
-	UF.raid.blockVisibilityChanges = smartRaidOn
-	UF.raid40.blockVisibilityChanges = smartRaidOn
-
-	if smartRaidOn then
+	if UF.db.smartRaidFilter then
 		local _, instanceType, _, _, maxPlayers, _, _, instanceID = GetInstanceInfo()
 		if instanceType == 'raid' or instanceType == 'pvp' then
 			if UF.instanceMapIDs[instanceID] then
@@ -858,16 +854,11 @@ function UF:HandleSmartVisibility()
 			local less40 = maxPlayers < 40
 			local raid40 = maxPlayers == 40
 			E.db.unitframe.units.raid.enable = less40
+			E.db.unitframe.units.raid.visibility = '[@raid6,noexists][@raid31,exists] hide;show'
+			E.db.unitframe.units.raid40.numGroups = 8
 			E.db.unitframe.units.raid40.enable = raid40
+			E.db.unitframe.units.raid40.visibility = '[@raid31,noexists] hide;show'
 			E.db.unitframe.units.raidpet.enable = false
-
-			UnregisterStateDriver(UF.raid, 'visibility')
-			UnregisterStateDriver(UF.raid40, 'visibility')
-			UnregisterStateDriver(UF.raidpet, 'visibility')
-
-			UF.raid:SetShown(less40)
-			UF.raid40:SetShown(raid40)
-			UF.raidpet:SetShown(false)
 
 			if less40 then
 				local maxGroups = E:Round(maxPlayers/5)
@@ -877,33 +868,18 @@ function UF:HandleSmartVisibility()
 			end
 
 			UF:UpdateAllHeaders()
+			return true
 		end
 	end
 end
 
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	if initLogin or isReload then
-		UF:Update_AllFrames()
-	end
-
 	UF:RegisterRaidDebuffIndicator()
 
-	if UF.db.smartRaidFilter then
-		E.db.unitframe.units.raid40.numGroups = 8
+	if initLogin or isReload then
+		UF:Update_AllFrames()
+	elseif UF.db.smartRaidFilter then
 		UF:HandleSmartVisibility()
-
-		local _, instanceType = GetInstanceInfo()
-		if instanceType ~= 'raid' and instanceType ~= 'pvp' then
-			E.db.unitframe.units.raid.enable = true
-			E.db.unitframe.units.raid40.enable = true
-			E.db.unitframe.units.raid.numGroups = 6
-
-			RegisterStateDriver(UF.raid, 'visibility', '[@raid6,noexists][@raid31,exists] hide;show')
-			RegisterStateDriver(UF.raid40, 'visibility', '[@raid31,noexists] hide;show')
-
-			if E.db.unitframe.units.raid.enable then UF:CreateAndUpdateHeaderGroup('raid') end
-			if E.db.unitframe.units.raid40.enable then UF:CreateAndUpdateHeaderGroup('raid40') end
-		end
 	end
 end
 
@@ -981,7 +957,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		UF.headerFunctions[group]:Update(Header)
 
 		if db.enable then
-			if not Header.isForced and not Header.blockVisibilityChanges then
+			if not Header.isForced then
 				RegisterStateDriver(Header, "visibility", db.visibility)
 			end
 			if Header.mover then
