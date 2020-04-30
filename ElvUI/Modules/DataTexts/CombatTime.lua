@@ -41,7 +41,7 @@ local function OnEvent(self, event, _, timeSeconds)
 		timer = 0
 		timerText = L["Combat"]
 		self:SetScript("OnUpdate", OnUpdate)
-	elseif(not self.text:GetText()) then
+	elseif(not self.text:GetText()) or self.text:GetText() == " " then
 		self.text:SetFormattedText(displayString, timerText, format("%02d:%02d:%02d", floor(timer/60), timer % 60, (timer - floor(timer)) * 100))
 	end
 
