@@ -65,7 +65,7 @@ function S:AddonList()
 			end
 
 			if not enabled then
-				string:SetText(gsub(title or name, '|c%x%x%x%x%x%x%x%x(.-)|r','%1'))
+				string:SetText(gsub(title or name, '|c%x%x%x%x%x%x%x%x(.-)|?r?','%1'))
 				entry.Status:SetTextColor(1.0, 0.2, 0.2)
 			else
 				entry.Status:SetTextColor(1.0, 1.0, 0.2)
