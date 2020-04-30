@@ -122,15 +122,19 @@ end
 
 function DT:UpdateAllDimensions()
 	for _, panel in pairs(DT.RegisteredPanels) do
-		local width = (panel:GetWidth() / panel.numPoints) - 4
-		local height = panel:GetHeight() - 4
-		for i=1, panel.numPoints do
-			local pointIndex = DT.PointLocation[i]
-			local dt = panel.dataPanels[pointIndex]
-			dt:Width(width)
-			dt:Height(height)
-			dt:Point(DT:GetDataPanelPoint(panel, i, panel.numPoints))
-		end
+		DT.UpdateDimensions(panel)
+	end
+end
+
+function DT:UpdatePanelDimensions()
+	local panelWidth, panelHeight = self:GetSize()
+	local width = (panelWidth / self.numPoints) - 4
+	local height = panelHeight - 4
+	for i=1, self.numPoints do
+		local dt = self.dataPanels[DT.PointLocation[i]]
+		dt:Size(width, height)
+		dt:ClearAllPoints()
+		dt:Point(DT:GetDataPanelPoint(self, i, self.numPoints))
 	end
 end
 
@@ -143,6 +147,7 @@ function DT:SetupTooltip(panel)
 	DT.tooltip:Hide()
 	DT.tooltip:SetOwner(parent, parent.anchor, parent.xOff, parent.yOff)
 	DT.tooltip:ClearLines()
+
 	if not _G.GameTooltip:IsForbidden() then
 		_G.GameTooltip:Hide() -- WHY??? BECAUSE FUCK GAMETOOLTIP, THATS WHY!!
 	end
@@ -170,20 +175,17 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
 			panel.dataPanels[pointIndex] = dt
 		end
 
+		dt:ClearAllPoints()
 		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints))
 	end
 
-	panel:SetScript('OnSizeChanged', DT.UpdateAllDimensions)
-	DT.UpdateAllDimensions(panel)
+	panel:SetScript('OnSizeChanged', DT.UpdatePanelDimensions)
+	DT.UpdatePanelDimensions(panel)
 end
 
 function DT:AssignPanelToDataText(panel, data, event, ...)
 	data.panel = panel
-	panel.name = ""
-
-	if data.name then
-		panel.name = data.name
-	end
+	panel.name = data.name or ""
 
 	if data.events then
 		for _, ev in pairs(data.events) do
@@ -228,11 +230,7 @@ function DT:AssignPanelToDataText(panel, data, event, ...)
 		end)
 	end
 
-	if data.onLeave then
-		panel:SetScript('OnLeave', data.onLeave)
-	else
-		panel:SetScript('OnLeave', DT.Data_OnLeave)
-	end
+	panel:SetScript('OnLeave', data.onLeave or DT.Data_OnLeave)
 end
 
 function DT:LoadDataTexts(...)
