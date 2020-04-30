@@ -169,7 +169,6 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
 			dt:RegisterForClicks("AnyUp")
 			dt.text = dt:CreateFontString(nil, 'OVERLAY')
 			dt.text:SetAllPoints()
-			dt.text:FontTemplate()
 			dt.text:SetJustifyH("CENTER")
 			dt.text:SetJustifyV("MIDDLE")
 			panel.dataPanels[pointIndex] = dt
@@ -234,7 +233,7 @@ function DT:AssignPanelToDataText(panel, data, event, ...)
 end
 
 function DT:LoadDataTexts(...)
-	local fontTemplate = LSM:Fetch("font", DT.db.font)
+	local font, fontSize, fontOutline = LSM:Fetch("font", DT.db.font), DT.db.fontSize, DT.db.fontOutline
 	local inInstance, instanceType = IsInInstance()
 	local isInPVP = inInstance and instanceType == "pvp"
 	local pointIndex, isBGPanel, enableBGPanel
@@ -251,9 +250,9 @@ function DT:LoadDataTexts(...)
 			dt:SetScript('OnEnter', nil)
 			dt:SetScript('OnLeave', nil)
 			dt:SetScript('OnClick', nil)
-			dt.text:FontTemplate(fontTemplate, DT.db.fontSize, DT.db.fontOutline)
+			dt.text:FontTemplate(font, fontSize, fontOutline)
 			dt.text:SetWordWrap(DT.db.wordWrap)
-			dt.text:SetText('')
+			dt.text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
 			dt.pointIndex = pointIndex
 
 			if enableBGPanel then
