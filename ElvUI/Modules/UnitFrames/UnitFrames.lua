@@ -866,10 +866,18 @@ function UF:HandleSmartVisibility()
 					E.db.unitframe.units.raid.numGroups = maxGroups
 				end
 			end
-
-			UF:UpdateAllHeaders()
-			return true
+		else
+			E.db.unitframe.units.raid.numGroups = 6
+			E.db.unitframe.units.raid.enable = true
+			E.db.unitframe.units.raid.visibility = '[@raid6,noexists][@raid31,exists] hide;show'
+			E.db.unitframe.units.raid40.numGroups = 8
+			E.db.unitframe.units.raid40.enable = true
+			E.db.unitframe.units.raid40.visibility = '[@raid31,noexists] hide;show'
+			E.db.unitframe.units.raidpet.enable = false
 		end
+
+		UF:UpdateAllHeaders()
+		return true
 	end
 end
 
