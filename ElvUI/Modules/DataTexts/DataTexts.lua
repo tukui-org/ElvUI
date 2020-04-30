@@ -204,7 +204,6 @@ function DT:AssignPanelToDataText(panel, data, event, ...)
 	elseif data.eventFunc then
 		panel:SetScript('OnEvent', data.eventFunc)
 		data.eventFunc(panel, ev, ...)
-		print(data.name, ev, ...)
 	end
 
 	if data.onUpdate then
