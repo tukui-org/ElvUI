@@ -847,9 +847,16 @@ function UF.headerPrototype:Reset()
 end
 
 UF.SmartSettings = {
-	raid = { visibility = '[@raid6,noexists][@raid31,exists] hide;show' },
-	raid40 = { visibility = '[@raid31,noexists] hide;show', numGroups = 8 },
-	raidpet = { enable = false }
+	raid = {
+		visibility = '[@raid6,noexists][@raid31,exists] hide;show'
+	},
+	raid40 = {
+		visibility = '[@raid31,noexists] hide;show',
+		numGroups = 8
+	},
+	raidpet = {
+		enable = false
+	}
 }
 
 function UF:HandleSmartVisibility()
