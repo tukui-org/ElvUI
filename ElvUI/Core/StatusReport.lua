@@ -282,20 +282,18 @@ function E:UpdateStatusFrame()
 	StatusFrame.Section1.Content.Line2.Text:SetFormattedText('Other AddOns Enabled: |cff%s|r', (not addons and plugins and 'ff9933Plugins') or (addons and 'ff3333Yes') or '33ff33No')
 
 	if plugins then
-		local EP = E.Libs.EP.plugins
-		local width = PluginSection:GetWidth()
-
 		wipe(pluginData)
-		for _, data in pairs(EP) do
+		for _, data in pairs(E.Libs.EP.plugins) do
 			if data and not data.isLib then
 				tinsert(pluginData, data)
 			end
 		end
 
-		sort(pluginData, pluginSort)
-
 		if next(pluginData) then
+			sort(pluginData, pluginSort)
+
 			local count = #pluginData
+			local width = PluginSection:GetWidth()
 			PluginSection.Content = E:CreateStatusContent(count, width, PluginSection, PluginSection.Header, PluginSection.Content)
 
 			for i=1, count do
@@ -307,6 +305,8 @@ function E:UpdateStatusFrame()
 			PluginFrame.SectionP:Height(count * 20)
 			PluginFrame:SetHeight(PluginSection.Content:GetHeight() + 50)
 			PluginFrame:Show()
+		else
+			PluginFrame:Hide()
 		end
 	else
 		PluginFrame:Hide()
