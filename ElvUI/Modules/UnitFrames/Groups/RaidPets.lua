@@ -8,7 +8,6 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local RegisterStateDriver = RegisterStateDriver
 
 function UF:Construct_RaidpetFrames()
 	self:SetScript('OnEnter', _G.UnitFrame_OnEnter)

@@ -81,7 +81,6 @@ local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitName = UnitName
-local UnitRealmRelationship = UnitRealmRelationship
 local Voice_GetVoiceChannelNotificationColor = Voice_GetVoiceChannelNotificationColor
 
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
@@ -100,7 +99,6 @@ local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
 local SOUNDKIT_TELL_MESSAGE = SOUNDKIT.TELL_MESSAGE
 
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
-local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS

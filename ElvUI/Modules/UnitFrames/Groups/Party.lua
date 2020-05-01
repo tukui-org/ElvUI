@@ -9,7 +9,6 @@ local _G = _G
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
-local RegisterStateDriver = RegisterStateDriver
 
 function UF:Construct_PartyFrames()
 	self:SetScript('OnEnter', _G.UnitFrame_OnEnter)
