@@ -5,6 +5,8 @@
 
 **Bug Fixes:**  
 The font used in */estatus* and *Addon Manager* on CN/TW/KR should fallback to a font that works instead of trying to use Expressway, which isn't supported.  
+*Combat Log Skin* and *Combat Time DataText* were misbehaving.  
+Worked out a couple more weird things with *Smart Raid Filter*.  
 
 **Misc. Changes:**  
 
