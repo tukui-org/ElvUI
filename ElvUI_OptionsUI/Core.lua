@@ -110,7 +110,7 @@ local TESTERS = {
 	"Kurhyus",
 	"Shrom",
 	"BuG",
-	"Rubgrsch",
+	"|T136012:15:15:0:0:64:64:5:59:5:59|t|cff006fdcRubgrsch|r|T656558:15:15:0:0:64:64:5:59:5:59|t",
 	"Luckyone",
 	"Yachanay",
 	"AcidWeb",
