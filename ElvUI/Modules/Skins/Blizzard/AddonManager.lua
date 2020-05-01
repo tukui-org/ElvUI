@@ -59,12 +59,23 @@ function S:AddonList()
 
 			string:FontTemplate(font, 13, 'NONE')
 			entry.Status:FontTemplate(font, 11, 'NONE')
-			entry.Status:SetTextColor(1.0, not enabled and 0.2 or 1.0, 0.2)
 			entry.Reload:FontTemplate(font, 11, 'NONE')
 			entry.Reload:SetTextColor(1.0, 0.6, 0.2)
 			entry.LoadAddonButton.Text:FontTemplate(font, 11, 'NONE')
 
-			if enabled and (loadable or reason == "DEP_DEMAND_LOADED" or reason == "DEMAND_LOADED") then
+			local missingDep = reason == "DEP_DISABLED"
+			local enabledForSome = not character and checkstate == 1
+			local disabled = not enabled or enabledForSome
+
+			entry.Status:SetTextColor(1.0, disabled and 0.2 or missingDep and 0.6 or 1.0, 0.2)
+
+			if disabled or missingDep then
+				string:SetText(gsub(title or name, '|c%x%x%x%x%x%x%x%x(.-)|?r?','%1'))
+			end
+
+			if enabledForSome then
+				string:SetTextColor(0.5, 0.5, 0.5)
+			elseif enabled and (loadable or reason == "DEP_DEMAND_LOADED" or reason == "DEMAND_LOADED") then
 				string:SetTextColor(0.9, 0.9, 0.9)
 			elseif enabled and reason ~= "DEP_DISABLED" then
 				string:SetTextColor(1.0, 0.2, 0.2)
@@ -78,10 +89,6 @@ function S:AddonList()
 				checktex:Show()
 			elseif checkstate == 0 then
 				checktex:Hide()
-			end
-
-			if not enabled or reason == "DEP_DISABLED" then
-				string:SetText(gsub(title or name, '|c%x%x%x%x%x%x%x%x(.-)|?r?','%1'))
 			end
 		end
 	end)
