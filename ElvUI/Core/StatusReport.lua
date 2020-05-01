@@ -1,7 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local Skins = E:GetModule('Skins')
 
---WoW API / Variables
+local wipe, unpack = wipe, unpack
+local next, pairs, tinsert = next, pairs, tinsert
 local CreateFrame = CreateFrame
 local GetAddOnInfo = GetAddOnInfo
 local GetCVar = GetCVar
@@ -105,14 +106,13 @@ function E:CreateStatusContent(num, width, parent, anchorTo, content)
 			text:FontTemplate(font, 14, 'OUTLINE')
 			line.Text = text
 
-			local numLine = line
 			if i == 1 then
-				numLine:Point('TOP', content, 'TOP')
+				line:Point('TOP', content, 'TOP')
 			else
-				numLine:Point('TOP', content['Line'..(i-1)], 'BOTTOM', 0, -5)
+				line:Point('TOP', content['Line'..(i-1)], 'BOTTOM', 0, -5)
 			end
 
-			content['Line'..i] = numLine
+			content['Line'..i] = line
 		end
 	end
 
@@ -185,7 +185,7 @@ function E:CreateStatusFrame()
 	PluginFrame:SetPoint('TOPLEFT', StatusFrame, 'TOPRIGHT', E.mult + 2*E.Border, 0)
 	PluginFrame:SetFrameStrata('HIGH')
 	PluginFrame:CreateBackdrop('Transparent', nil, true)
-	PluginFrame.backdrop:SetBackdropColor(0, 0, 0, 0.4)
+	PluginFrame.backdrop:SetBackdropColor(0, 0, 0, 0.6)
 	PluginFrame:SetSize(0, 25)
 	StatusFrame.PluginFrame = PluginFrame
 
@@ -253,6 +253,11 @@ function E:CreateStatusFrame()
 	return StatusFrame
 end
 
+local function pluginSort(a, b)
+	local A, B = a.title or a.name, b.title or b.name
+	if A and B then return A < B end
+end
+
 local pluginData = {}
 function E:UpdateStatusFrame()
 	local StatusFrame = E.StatusFrame
@@ -275,25 +280,31 @@ function E:UpdateStatusFrame()
 	StatusFrame.Section1.Content.Line2.Text:SetFormattedText('Other AddOns Enabled: |cff%s|r', (not addons and plugins and 'ff9933Plugins') or (addons and 'ff3333Yes') or '33ff33No')
 
 	if plugins then
-		local EP, count = E.Libs.EP.plugins, 0
+		local EP = E.Libs.EP.plugins
 		local width = PluginSection:GetWidth()
 
+		wipe(pluginData)
 		for _, data in pairs(EP) do
-			count = count + 1
-			pluginData[count] = data
+			if data and not data.isLib then
+				tinsert(pluginData, data)
+			end
 		end
 
-		PluginSection.Content = E:CreateStatusContent(count, width, PluginSection, PluginSection.Header, PluginSection.Content)
+		sort(pluginData, pluginSort)
 
-		for i=1, count do
-			local data = pluginData[i]
-			PluginSection.Content['Line'..i].Text:SetFormattedText('%s: |cff4beb2c%s|r', data.title or data.name, data.version)
+		if next(pluginData) then
+			local count = #pluginData
+			PluginSection.Content = E:CreateStatusContent(count, width, PluginSection, PluginSection.Header, PluginSection.Content)
+
+			for i=1, count do
+				local data = pluginData[i]
+				PluginSection.Content['Line'..i].Text:SetFormattedText('%s: |cff4beb2c%s|r', data.title or data.name, data.version)
+			end
+
+			PluginFrame.SectionP:Height(count * 20)
+			PluginFrame:SetHeight(PluginSection.Content:GetHeight() + 50)
+			PluginFrame:Show()
 		end
-
-		local height = count * 35
-		PluginFrame:Height(height + 25)
-		PluginFrame.SectionP:Height(height)
-		PluginFrame:Show()
 	else
 		PluginFrame:Hide()
 	end
