@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local Skins = E:GetModule('Skins')
 
-local wipe, unpack = wipe, unpack
+local wipe, sort, unpack = wipe, sort, unpack
 local next, pairs, tinsert = next, pairs, tinsert
 local CreateFrame = CreateFrame
 local GetAddOnInfo = GetAddOnInfo
@@ -255,7 +255,9 @@ end
 
 local function pluginSort(a, b)
 	local A, B = a.title or a.name, b.title or b.name
-	if A and B then return A < B end
+	if A and B then
+		return E:StripString(A) < E:StripString(B)
+	end
 end
 
 local pluginData = {}
