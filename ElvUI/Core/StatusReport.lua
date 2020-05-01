@@ -87,31 +87,33 @@ local function GetSpecName()
 	return EnglishSpecName[GetSpecializationInfo(GetSpecialization())]
 end
 
-function E:CreateStatusContent(num, parent, anchorTo)
+function E:CreateStatusContent(num, width, parent, anchorTo)
 	local content = CreateFrame('Frame', nil, parent)
-	content:Size(260, (num * 20) + ((num-1)*5)) --20 height and 5 spacing
+	content:Size(width, (num * 20) + ((num-1)*5)) --20 height and 5 spacing
 	content:Point('TOP', anchorTo, 'BOTTOM')
 
 	local font = E.Libs.LSM:Fetch('font', 'Expressway')
 	for i = 1, num do
-		local line = CreateFrame('Frame', nil, content)
-		line:Size(260, 20)
+		if not content['Line'..i] then
+			local line = CreateFrame('Frame', nil, content)
+			line:Size(width, 20)
 
-		local text = line:CreateFontString(nil, 'ARTWORK')
-		text:SetAllPoints()
-		text:SetJustifyH('LEFT')
-		text:SetJustifyV('MIDDLE')
-		text:FontTemplate(font, 14, 'OUTLINE')
-		line.Text = text
+			local text = line:CreateFontString(nil, 'ARTWORK')
+			text:SetAllPoints()
+			text:SetJustifyH('LEFT')
+			text:SetJustifyV('MIDDLE')
+			text:FontTemplate(font, 14, 'OUTLINE')
+			line.Text = text
 
-		local numLine = line
-		if i == 1 then
-			numLine:Point('TOP', content, 'TOP')
-		else
-			numLine:Point('TOP', content['Line'..(i-1)], 'BOTTOM', 0, -5)
+			local numLine = line
+			if i == 1 then
+				numLine:Point('TOP', content, 'TOP')
+			else
+				numLine:Point('TOP', content['Line'..(i-1)], 'BOTTOM', 0, -5)
+			end
+
+			content['Line'..i] = numLine
 		end
-
-		content['Line'..i] = numLine
 	end
 
 	return content
@@ -124,18 +126,18 @@ local function CloseClicked()
 	end
 end
 
-function E:CreateStatusSection(width, height, parent, anchor1, anchorTo, anchor2, yOffset)
+function E:CreateStatusSection(width, height, headerWidth, headerHeight, parent, anchor1, anchorTo, anchor2, yOffset)
 	local parentWidth, parentHeight = parent:GetSize()
 
 	if width > parentWidth then parent:SetWidth(width + 25) end
 	if height then parent:SetHeight(parentHeight + height) end
 
 	local section = CreateFrame('Frame', nil, parent)
-	section:Size(width, height)
+	section:Size(width, height or 0)
 	section:Point(anchor1, anchorTo, anchor2, 0, yOffset)
 
 	local header = CreateFrame('Frame', nil, section)
-	header:Size(300, 30)
+	header:Size(headerWidth or width, headerHeight)
 	header:Point('TOP', section)
 	section.Header = header
 
@@ -178,6 +180,15 @@ function E:CreateStatusFrame()
 	StatusFrame:SetSize(0, 35)
 	StatusFrame:Hide()
 
+	--Plugin frame
+	local PluginFrame = CreateFrame('Frame', 'ElvUIStatusPlugins', StatusFrame)
+	PluginFrame:SetPoint('TOPLEFT', StatusFrame, 'TOPRIGHT', E.mult + 2*E.Border, 0)
+	PluginFrame:SetFrameStrata('HIGH')
+	PluginFrame:CreateBackdrop('Transparent', nil, true)
+	PluginFrame.backdrop:SetBackdropColor(0, 0, 0, 0.4)
+	PluginFrame:SetSize(0, 35)
+	StatusFrame.PluginFrame = PluginFrame
+
 	--Close button and script to retoggle the options.
 	StatusFrame:CreateCloseButton()
 	StatusFrame.CloseButton:HookScript('OnClick', CloseClicked)
@@ -201,15 +212,16 @@ function E:CreateStatusFrame()
 	titleLogoFrame.LogoBottom = LogoBottom
 
 	--Sections
-	StatusFrame.Section1 = E:CreateStatusSection(300, 125, StatusFrame, 'TOP', StatusFrame, 'TOP', -30)
-	StatusFrame.Section2 = E:CreateStatusSection(300, 150, StatusFrame, 'TOP', StatusFrame.Section1, 'BOTTOM', 0)
-	StatusFrame.Section3 = E:CreateStatusSection(300, 185, StatusFrame, 'TOP', StatusFrame.Section2, 'BOTTOM', 0)
-	--StatusFrame.Section4 = E:CreateStatusSection(300, 60, StatusFrame, 'TOP', StatusFrame.Section3, 'BOTTOM', 0)
+	StatusFrame.Section1 = E:CreateStatusSection(300, 125, nil, 30, StatusFrame, 'TOP', StatusFrame, 'TOP', -30)
+	StatusFrame.Section2 = E:CreateStatusSection(300, 150, nil, 30, StatusFrame, 'TOP', StatusFrame.Section1, 'BOTTOM', 0)
+	StatusFrame.Section3 = E:CreateStatusSection(300, 185, nil, 30, StatusFrame, 'TOP', StatusFrame.Section2, 'BOTTOM', 0)
+	--StatusFrame.Section4 = E:CreateStatusSection(300, 60, nil, 30, StatusFrame, 'TOP', StatusFrame.Section3, 'BOTTOM', 0)
+	PluginFrame.SectionP = E:CreateStatusSection(200, nil, nil, 30, PluginFrame, 'TOP', PluginFrame, 'TOP', -10)
 
 	--Section content
-	StatusFrame.Section1.Content = E:CreateStatusContent(4, StatusFrame.Section1, StatusFrame.Section1.Header)
-	StatusFrame.Section2.Content = E:CreateStatusContent(5, StatusFrame.Section2, StatusFrame.Section2.Header)
-	StatusFrame.Section3.Content = E:CreateStatusContent(6, StatusFrame.Section3, StatusFrame.Section3.Header)
+	StatusFrame.Section1.Content = E:CreateStatusContent(4, 260, StatusFrame.Section1, StatusFrame.Section1.Header)
+	StatusFrame.Section2.Content = E:CreateStatusContent(5, 260, StatusFrame.Section2, StatusFrame.Section2.Header)
+	StatusFrame.Section3.Content = E:CreateStatusContent(6, 260, StatusFrame.Section3, StatusFrame.Section3.Header)
 	--StatusFrame.Section4.Content = CreateFrame('Frame', nil, StatusFrame.Section4)
 	--StatusFrame.Section4.Content:Size(240, 25)
 	--StatusFrame.Section4.Content:Point('TOP', StatusFrame.Section4.Header, 'BOTTOM', 0, 0)
@@ -243,6 +255,7 @@ end
 
 function E:UpdateStatusFrame()
 	local StatusFrame = E.StatusFrame
+	local PluginFrame = StatusFrame.PluginFrame
 
 	--Section headers
 	local valueColor = E.media.hexvaluecolor
@@ -250,12 +263,28 @@ function E:UpdateStatusFrame()
 	StatusFrame.Section2.Header.Text:SetFormattedText('%sWoW Info|r', valueColor)
 	StatusFrame.Section3.Header.Text:SetFormattedText('%sCharacter Info|r', valueColor)
 	--StatusFrame.Section4.Header.Text:SetFormattedText('%sExport To|r', valueColor)
+	PluginFrame.SectionP.Header.Text:SetFormattedText('%sPlugins|r', valueColor)
 
 	local verWarning = E.recievedOutOfDateMessage and 'ff3333' or E.shownUpdatedWhileRunningPopup and 'ff9933'
 	StatusFrame.Section1.Content.Line1.Text:SetFormattedText('Version of ElvUI: |cff%s%s|r', verWarning or '33ff33', E.version)
 
 	local addons, plugins = E:AreOtherAddOnsEnabled()
 	StatusFrame.Section1.Content.Line2.Text:SetFormattedText('Other AddOns Enabled: |cff%s|r', (not addons and plugins and 'ff9933Plugins') or (addons and 'ff3333Yes') or '33ff33No')
+
+	if plugins then
+		local EP, count = E.Libs.EP.plugins, 1
+		for name, data in pairs(EP) do
+			PluginFrame.SectionP.Content = E:CreateStatusContent(count, 200, PluginFrame.SectionP, PluginFrame.SectionP.Header)
+			PluginFrame.SectionP.Content['Line'..count].Text:SetFormattedText('%s: |cff4beb2c%s|r', name, data.version or UNKNOWN)
+		end
+
+		local height = count * 35
+		PluginFrame:Height(height + 35)
+		PluginFrame.SectionP:Height(height)
+		PluginFrame:Show()
+	else
+		PluginFrame:Hide()
+	end
 
 	local Section2 = StatusFrame.Section2
 	Section2.Content.Line3.Text:SetFormattedText('Display Mode: |cff4beb2c%s|r', E:GetDisplayMode())
