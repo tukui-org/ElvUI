@@ -183,7 +183,7 @@ do --this can save some main file locals
 	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
 	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed,y)
 	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
-	local ElvSherbet	= E:TextureString(E.Media.ChatLogos.ElvSherbet,y)
+	local ElvSorbet		= E:TextureString(E.Media.ChatLogos.ElvSorbet,y)
 	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
 	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
@@ -206,7 +206,7 @@ do --this can save some main file locals
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
 
-		--Rainbow Sherbet: ff9966 (Light Salmon), ff6699 (Hot Pink), 9966ff (Light Violet), 6699ff (Cornflower Blue), 66ff99 (Pale Green)
+		--Rainbow Sorbet: ff9966 (Light Salmon), ff6699 (Hot Pink), 9966ff (Light Violet), 6699ff (Cornflower Blue), 66ff99 (Pale Green)
 		local SimpyColors = function(t) return specialText(t, 1.0,0.6,0.4, 1.0,0.4,0.6, 0.6,0.4,1.0, 0.4,0.6,1.0, 0.4,1.0,0.6) end
 		--Detroit Lions Colors: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
@@ -218,7 +218,7 @@ do --this can save some main file locals
 		local nm = function(c) return math.max(1-c,0.15) end
 		local NihiColors = function(class) local c = _G.RAID_CLASS_COLORS[class] local c1,c2,c3, n1,n2,n3 = c.r,c.g,c.b, nm(c.r), nm(c.g), nm(c.b) return function(t) return specialText(t, c1,c2,c3, n1,n2,n3, c1,c2,c3, n1,n2,n3) end end
 
-		itsSimpy = function() return ElvSherbet, SimpyColors end
+		itsSimpy = function() return ElvSorbet, SimpyColors end
 		itsMel = function() return Hibiscus, MelColors end
 		itsElv = function() return ElvBlue, ElvColors end
 		itsMis = function() return Rainbow, MisColors end
