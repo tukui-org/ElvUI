@@ -300,7 +300,8 @@ function E:UpdateStatusFrame()
 
 			for i=1, count do
 				local data = pluginData[i]
-				PluginSection.Content['Line'..i].Text:SetFormattedText('%s: |cff4beb2c%s|r', data.title or data.name, data.version)
+				local color = data.old and 'ff3333' or '33ff33'
+				PluginSection.Content['Line'..i].Text:SetFormattedText('%s: |cff%s%s|r', data.title or data.name, color, data.version)
 			end
 
 			PluginFrame.SectionP:Height(count * 20)
