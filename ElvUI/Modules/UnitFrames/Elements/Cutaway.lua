@@ -37,9 +37,13 @@ local cutawayPoints = {
 
 local DEFAULT_INDEX, VERT_INDEX = 1, 3
 function UF:GetPoints_Cutaway(db)
-	local index = (db and db.orientation == "VERTICAL" and VERT_INDEX) or DEFAULT_INDEX
-	local p1 = (db and db.reverseFill and -index) or index
-	local p2 = p1 + (db and db.reverseFill and -1) or 1
+	local vertical = db and db.orientation == "VERTICAL"
+	local reversed = db and db.reverseFill
+
+	local index = (vertical and VERT_INDEX) or DEFAULT_INDEX
+	local p1 = (reversed and -index) or index
+	local p2 = p1 + (reversed and -1) or 1
+
 	return cutawayPoints[p1], cutawayPoints[p2]
 end
 
