@@ -41,7 +41,7 @@ function S:AddonList()
 		local numEntrys = GetNumAddOns()
 		for i = 1, maxShown do
 			local index = AddonList.offset + i
-			if index < numEntrys then
+			if index <= numEntrys then
 				local entry = _G["AddonListEntry"..i]
 				local string = _G["AddonListEntry"..i.."Title"]
 				local name, title, _, loadable, reason = GetAddOnInfo(index)
