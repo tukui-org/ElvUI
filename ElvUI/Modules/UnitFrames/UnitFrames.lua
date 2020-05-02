@@ -1370,9 +1370,15 @@ end
 function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
 	backdropTex:ClearAllPoints()
 	if statusBarOrientation == 'VERTICAL' then
-		backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
-		backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
-		backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
+		if reverseFill then
+			backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+			backdropTex:Point("TOPRIGHT", statusBarTex, "BOTTOMRIGHT")
+			backdropTex:Point("TOPLEFT", statusBarTex, "BOTTOMLEFT")
+		else
+			backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
+			backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
+			backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
+		end
 	else
 		if reverseFill then
 			backdropTex:Point("TOPRIGHT", statusBarTex, "TOPLEFT")
