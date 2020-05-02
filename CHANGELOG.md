@@ -1,15 +1,29 @@
-### Version 11.41 [ ETA: 🍨 ]
+### Version 11.42 [ ETA: 🍨 ]
 
 **New Additions:**  
 
 
 **Bug Fixes:**  
-The font used in */estatus* and *Addon Manager* on CN/TW/KR should fallback to a font that works instead of trying to use Expressway, which isn't supported.  
-*Combat Log Skin* and *Combat Time DataText* were misbehaving.  
-Worked out a couple more weird things with *Smart Raid Filter*.  
+
 
 **Misc. Changes:**  
 
+
+___
+### Version 11.41 [ May 1st 2020 ]
+
+**Bug Fixes:**  
+The font used in */estatus* and *Addon Manager* on CN/TW/KR should fallback to a font that works instead of trying to use Expressway, which isn't supported.  
+*Combat Log Skin* and *Combat Time DataText* were misbehaving.  
+Worked out a couple more weird things with *Smart Raid Filter*.  
+Cutaway works correctly on Vertical Orientation Health Unitframes. (#1776)  
+Fixed issue which caused Transparency setting to mess up the health on Unitframes with Vertical and/or Reverse Fill enabled. 
+Fixed Absorbs display on Unitframes with Reverse fill on (in Vertical or not) when Show Absorbs Amount was off.  
+Fixed a bug in the new Addon Manager skin (AddOn index must be in the range of 1 to 4).  
+
+**Misc. Changes:**  
+Lowered the min value on some Unitframes elements, mainly health. (#1798)  
+Display Plugins in */estatus*.  
 
 ___
 ### Version 11.40 [ April 30th 2020 ]
