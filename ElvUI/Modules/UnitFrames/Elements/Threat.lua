@@ -8,15 +8,19 @@ function UF:Construct_Threat(frame)
 	local threat = CreateFrame("Frame", nil, frame)
 
 	--Main ThreatGlow
-	threat.MainGlow = frame:CreateShadow(nil, true)
+	frame:CreateShadow()
+	threat.MainGlow = frame.shadow
 	threat.MainGlow:SetParent(frame)
 	threat.MainGlow:Hide()
+	frame.shadow = nil
 
 	--Secondary ThreatGlow, for power frame when using power offset
-	threat.PowerGlow = frame:CreateShadow(nil, true)
+	frame:CreateShadow()
+	threat.PowerGlow = frame.shadow
 	threat.PowerGlow:SetParent(frame)
 	threat.PowerGlow:SetFrameStrata('BACKGROUND')
 	threat.PowerGlow:Hide()
+	frame.shadow = nil
 
 	threat.TextureIcon = threat:CreateTexture(nil, 'OVERLAY')
 	threat.TextureIcon:Size(8)
