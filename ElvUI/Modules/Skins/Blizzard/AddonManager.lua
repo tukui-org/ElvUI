@@ -44,6 +44,7 @@ function S:AddonList()
 			if index <= numEntrys then
 				local entry = _G["AddonListEntry"..i]
 				local string = _G["AddonListEntry"..i.."Title"]
+				local checkbox = _G["AddonListEntry"..i.."Enabled"]
 				local name, title, _, loadable, reason = GetAddOnInfo(index)
 
 				-- Get the character from the current list (nil is all characters)
@@ -56,8 +57,6 @@ function S:AddonList()
 				end
 
 				local checkstate = GetAddOnEnableState(character, index)
-				local checkbox = _G["AddonListEntry"..i.."Enabled"]
-				local checktex = checkbox:GetCheckedTexture()
 				local enabled = checkstate > 0
 
 				string:FontTemplate(font, 13, 'NONE')
@@ -89,6 +88,7 @@ function S:AddonList()
 					string:SetTextColor(0.3, 0.3, 0.3)
 				end
 
+				local checktex = checkbox:GetCheckedTexture()
 				if not enabled and checkall == 1 then
 					checktex:SetVertexColor(0.3, 0.3, 0.3)
 					checktex:SetDesaturated(false)
