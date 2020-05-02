@@ -81,7 +81,6 @@ local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitName = UnitName
-local UnitRealmRelationship = UnitRealmRelationship
 local Voice_GetVoiceChannelNotificationColor = Voice_GetVoiceChannelNotificationColor
 
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
@@ -100,7 +99,6 @@ local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
 local SOUNDKIT_TELL_MESSAGE = SOUNDKIT.TELL_MESSAGE
 
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
-local LE_REALM_RELATION_SAME = LE_REALM_RELATION_SAME
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
@@ -180,19 +178,17 @@ do --this can save some main file locals
 
 	local ElvBlue		= E:TextureString(E.Media.ChatLogos.ElvBlue,y)
 	local ElvGreen		= E:TextureString(E.Media.ChatLogos.ElvGreen,y)
-	local ElvMelon		= E:TextureString(E.Media.ChatLogos.ElvMelon,y)
 	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
-	local ElvPink		= E:TextureString(E.Media.ChatLogos.ElvPink,y)
+	--local ElvPink		= E:TextureString(E.Media.ChatLogos.ElvPink,y)
 	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
 	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed,y)
 	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
+	local ElvSorbet		= E:TextureString(E.Media.ChatLogos.ElvSorbet,y)
 	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
 	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 	local Hibiscus		= E:TextureString(E.Media.ChatLogos.Hibiscus,x)
 	local Clover		= E:TextureString(E.Media.ChatLogos.Clover,x)
-	local Burger		= E:TextureString(E.Media.ChatLogos.Burger,x)
-	local Lion			= E:TextureString(E.Media.ChatLogos.Lion,x)
 	local GoldShield	= E:TextureString(E.Media.ChatLogos.GoldShield,x)
 	local DeathlyH		= E:TextureString(E.Media.ChatLogos.DeathlyHallows,x)
 
@@ -201,7 +197,7 @@ do --this can save some main file locals
 		(a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a])
 	]]
 
-	local itsElv, itsMis, itsMel, itsSimpyA, itsSimpyH, itsTheFlyestNihilist
+	local itsElv, itsMis, itsMel, itsSimpy, itsTheFlyestNihilist
 	do	--Simpy Chaos: super cute text coloring function that ignores hyperlinks and keywords
 		local e, f, g = {'|[TA].-|[ta]', '|?c?%x-%[?|H.-|h.-|h]?|?r?', '|c.-|r'}, {}, {}
 		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
@@ -210,8 +206,8 @@ do --this can save some main file locals
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
 
-		--Watermelon: 909090 (Light Slate Grey), FA6687 (Light Coral) x2, 73FA9B (Pale Green)
-		local SimpyColors = function(t) return specialText(t, 0.45,0.45,0.45, 0.98,0.4,0.53, 0.98,0.4,0.53, 0.45,0.98,0.45) end
+		--Rainbow Sorbet: ff9966 (Light Salmon), ff6699 (Hot Pink), 9966ff (Light Violet), 6699ff (Cornflower Blue), 66ff99 (Pale Green)
+		local SimpyColors = function(t) return specialText(t, 1.0,0.6,0.4, 1.0,0.4,0.6, 0.6,0.4,1.0, 0.4,0.6,1.0, 0.4,1.0,0.6) end
 		--Detroit Lions Colors: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
 		--Rainbow (8 Colors: 253,62,68, 254,152,73, 255,222,75, 109,253,101, 84,196,252, 163,93,250, 198,121,251, 254,129,193)
@@ -222,10 +218,9 @@ do --this can save some main file locals
 		local nm = function(c) return math.max(1-c,0.15) end
 		local NihiColors = function(class) local c = _G.RAID_CLASS_COLORS[class] local c1,c2,c3, n1,n2,n3 = c.r,c.g,c.b, nm(c.r), nm(c.g), nm(c.b) return function(t) return specialText(t, c1,c2,c3, n1,n2,n3, c1,c2,c3, n1,n2,n3) end end
 
-		itsSimpyH = function() return Burger..ElvMelon, SimpyColors end
-		itsSimpyA = function() return Lion..ElvMelon, SimpyColors end
-		itsMel = function() return Hibiscus, MelColors end
+		itsSimpy = function() return ElvSorbet, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
+		itsMel = function() return Hibiscus, MelColors end
 		itsMis = function() return Rainbow, MisColors end
 		itsTheFlyestNihilist = function(class) local icon, prettyText = E:TextureString(E.Media.ChatLogos["Fox"..class],x), NihiColors(strupper(class)) return function() return icon, prettyText end end
 	end
@@ -290,7 +285,7 @@ do --this can save some main file locals
 		["Rikanza-WyrmrestAccord"]		= itsTheFlyestNihilist("Monk"),
 		["Onaguda-WyrmrestAccord"]		= itsTheFlyestNihilist("Druid"),
 		["Cerishia-WyrmrestAccord"]		= itsTheFlyestNihilist("Priest"),
-		["Vellilara-WyrmrestAccord"]		= itsTheFlyestNihilist("DemonHunter"),
+		["Vellilara-WyrmrestAccord"]	= itsTheFlyestNihilist("DemonHunter"),
 		["Sayalia-WyrmrestAccord"]		= itsTheFlyestNihilist("DeathKnight"),
 		["Pakasta-WyrmrestAccord"]		= itsTheFlyestNihilist("Paladin"),
 		["Orlyrala-WyrmrestAccord"]		= itsTheFlyestNihilist("Shaman"),
@@ -321,27 +316,27 @@ do --this can save some main file locals
 		["Merathilîs-Shattrath"]		= ElvBlue,		-- [Alliance] Shaman
 		["Róhal-Shattrath"]				= ElvGreen,		-- [Alliance] Hunter
 		-- Simpy
-		["Arieva-Cenarius"]				= itsSimpyA, -- Hunter
-		["Buddercup-Cenarius"]			= itsSimpyA, -- Rogue
-		["Cutepally-Cenarius"]			= itsSimpyA, -- Paladin
-		["Ezek-Cenarius"]				= itsSimpyA, -- DK
-		["Glice-Cenarius"]				= itsSimpyA, -- Warrior
-		["Kalline-Cenarius"]			= itsSimpyA, -- Shaman
-		["Puttietat-Cenarius"]			= itsSimpyA, -- Druid
-		["Simpy-Cenarius"]				= itsSimpyA, -- Warlock
-		["Twigly-Cenarius"]				= itsSimpyA, -- Monk
-		["Imsobeefy-Cenarius"]			= itsSimpyH, -- [Horde] Shaman
-		["Imsocheesy-Cenarius"]			= itsSimpyH, -- [Horde] Priest
-		["Imsojelly-Cenarius"]			= itsSimpyH, -- [Horde] DK
-		["Imsojuicy-Cenarius"]			= itsSimpyH, -- [Horde] Druid
-		["Imsopeachy-Cenarius"]			= itsSimpyH, -- [Horde] DH
-		["Imsosalty-Cenarius"]			= itsSimpyH, -- [Horde] Paladin
-		["Imsospicy-Cenarius"]			= itsSimpyH, -- [Horde] Mage
-		["Bunne-CenarionCircle"]		= itsSimpyA, -- [RP] Warrior
-		["Loppie-CenarionCircle"]		= itsSimpyA, -- [RP] Hunter
-		["Loppybunny-CenarionCircle"]	= itsSimpyA, -- [RP] Mage
-		["Rubee-CenarionCircle"]		= itsSimpyA, -- [RP] DH
-		["Wennie-CenarionCircle"]		= itsSimpyA, -- [RP] Priest
+		["Arieva-Cenarius"]				= itsSimpy, -- Hunter
+		["Buddercup-Cenarius"]			= itsSimpy, -- Rogue
+		["Cutepally-Cenarius"]			= itsSimpy, -- Paladin
+		["Ezek-Cenarius"]				= itsSimpy, -- DK
+		["Glice-Cenarius"]				= itsSimpy, -- Warrior
+		["Kalline-Cenarius"]			= itsSimpy, -- Shaman
+		["Puttietat-Cenarius"]			= itsSimpy, -- Druid
+		["Simpy-Cenarius"]				= itsSimpy, -- Warlock
+		["Twigly-Cenarius"]				= itsSimpy, -- Monk
+		["Imsobeefy-Cenarius"]			= itsSimpy, -- [Horde] Shaman
+		["Imsocheesy-Cenarius"]			= itsSimpy, -- [Horde] Priest
+		["Imsojelly-Cenarius"]			= itsSimpy, -- [Horde] DK
+		["Imsojuicy-Cenarius"]			= itsSimpy, -- [Horde] Druid
+		["Imsopeachy-Cenarius"]			= itsSimpy, -- [Horde] DH
+		["Imsosalty-Cenarius"]			= itsSimpy, -- [Horde] Paladin
+		["Imsospicy-Cenarius"]			= itsSimpy, -- [Horde] Mage
+		["Bunne-CenarionCircle"]		= itsSimpy, -- [RP] Warrior
+		["Loppie-CenarionCircle"]		= itsSimpy, -- [RP] Hunter
+		["Loppybunny-CenarionCircle"]	= itsSimpy, -- [RP] Mage
+		["Rubee-CenarionCircle"]		= itsSimpy, -- [RP] DH
+		["Wennie-CenarionCircle"]		= itsSimpy, -- [RP] Priest
 		-- Melbelle (Simpys Bestie)
 		["Deathchaser-Bladefist"]		= itsMel, -- DH
 		["Melbelle-Bladefist"]			= itsMel, -- Hunter

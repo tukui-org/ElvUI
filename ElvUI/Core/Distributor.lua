@@ -77,7 +77,7 @@ function D:Distribute(target, otherServer, isGlobal)
 		elseif IsInGroup() and UnitInParty('target') then
 			self:SendCommMessage(REQUEST_PREFIX, message, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY')
 		else
-			E:Print(L["Must be in group with the player if he isn\'t on the same server as you."])
+			E:Print(L["Must be in group with the player if he isn't on the same server as you."])
 			return
 		end
 	else

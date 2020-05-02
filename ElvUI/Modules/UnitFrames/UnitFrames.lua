@@ -558,8 +558,11 @@ function UF:Update_AllFrames()
 		end
 	end
 
-	UF:UpdateAllHeaders()
-	UF:HandleSmartVisibility()
+	if UF.db.smartRaidFilter then
+		UF:HandleSmartVisibility()
+	else
+		UF:UpdateAllHeaders()
+	end
 end
 
 function UF:CreateAndUpdateUFGroup(group, numGroup)
@@ -843,67 +846,59 @@ function UF.headerPrototype:Reset()
 	self:SetAttribute("yOffset", nil)
 end
 
+UF.SmartSettings = {
+	raid = {
+		visibility = '[@raid6,noexists][@raid31,exists] hide;show'
+	},
+	raid40 = {
+		visibility = '[@raid31,noexists] hide;show',
+		numGroups = 8
+	},
+	raidpet = {
+		enable = false
+	}
+}
+
 function UF:HandleSmartVisibility()
-	local smartRaidOn = UF.db.smartRaidFilter
-	UF.raid.blockVisibilityChanges = smartRaidOn
-	UF.raid40.blockVisibilityChanges = smartRaidOn
+	local sv = UF.SmartSettings
+	sv.raid.numGroups = 6
 
-	if smartRaidOn then
-		local _, instanceType, _, _, maxPlayers, _, _, instanceID = GetInstanceInfo()
-		if instanceType == 'raid' or instanceType == 'pvp' then
-			if UF.instanceMapIDs[instanceID] then
-				maxPlayers = UF.instanceMapIDs[instanceID]
-			end
-
-			local less40 = maxPlayers < 40
-			local raid40 = maxPlayers == 40
-			E.db.unitframe.units.raid.enable = less40
-			E.db.unitframe.units.raid40.enable = raid40
-			E.db.unitframe.units.raidpet.enable = false
-
-			UnregisterStateDriver(UF.raid, 'visibility')
-			UnregisterStateDriver(UF.raid40, 'visibility')
-			UnregisterStateDriver(UF.raidpet, 'visibility')
-
-			UF.raid:SetShown(less40)
-			UF.raid40:SetShown(raid40)
-			UF.raidpet:SetShown(false)
-
-			if less40 then
-				local maxGroups = E:Round(maxPlayers/5)
-				if E.db.unitframe.units.raid.numGroups ~= maxGroups and maxGroups > 0 then
-					E.db.unitframe.units.raid.numGroups = maxGroups
-				end
-			end
-
-			UF:UpdateAllHeaders()
+	local _, instanceType, _, _, maxPlayers, _, _, instanceID = GetInstanceInfo()
+	if instanceType == 'raid' or instanceType == 'pvp' then
+		if UF.instanceMapIDs[instanceID] then
+			maxPlayers = UF.instanceMapIDs[instanceID]
 		end
+
+		sv.raid.enable = maxPlayers < 40
+		sv.raid40.enable = maxPlayers == 40
+
+		if sv.raid.enable then
+			local maxGroups = E:Round(maxPlayers/5)
+			if sv.raid.numGroups ~= maxGroups and maxGroups > 0 then
+				sv.raid.numGroups = maxGroups
+			end
+		end
+	else
+		sv.raid.enable = true
+		sv.raid40.enable = true
+	end
+
+	UF:UpdateAllHeaders(sv)
+end
+
+function UF:ZONE_CHANGED_NEW_AREA()
+	if UF.db.smartRaidFilter then
+		UF:HandleSmartVisibility()
 	end
 end
 
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	if initLogin or isReload then
-		UF:Update_AllFrames()
-	end
-
 	UF:RegisterRaidDebuffIndicator()
 
-	if UF.db.smartRaidFilter then
-		E.db.unitframe.units.raid40.numGroups = 8
+	if initLogin or isReload then
+		UF:Update_AllFrames()
+	elseif UF.db.smartRaidFilter then
 		UF:HandleSmartVisibility()
-
-		local _, instanceType = GetInstanceInfo()
-		if instanceType ~= 'raid' and instanceType ~= 'pvp' then
-			E.db.unitframe.units.raid.enable = true
-			E.db.unitframe.units.raid40.enable = true
-			E.db.unitframe.units.raid.numGroups = 6
-
-			RegisterStateDriver(UF.raid, 'visibility', '[@raid6,noexists][@raid31,exists] hide;show')
-			RegisterStateDriver(UF.raid40, 'visibility', '[@raid31,noexists] hide;show')
-
-			if E.db.unitframe.units.raid.enable then UF:CreateAndUpdateHeaderGroup('raid') end
-			if E.db.unitframe.units.raid40.enable then UF:CreateAndUpdateHeaderGroup('raid40') end
-		end
 	end
 end
 
@@ -930,17 +925,28 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	return header
 end
 
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate)
+function UF:GetSmartVisibilitySetting(setting, group, smart, db)
+	if smart and smart[group] and smart[group][setting] ~= nil then
+		return smart[group][setting]
+	end
+
+	return db[setting]
+end
+
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate, smartSettings)
 	local db = self.db.units[group]
-	local numGroups = db.numGroups
 	local Header = self[group]
+
+	local numGroups = UF:GetSmartVisibilitySetting('numGroups', group, smartSettings, db)
+	local visibility = UF:GetSmartVisibilitySetting('visibility', group, smartSettings, db)
+	local enable = UF:GetSmartVisibilitySetting('enable', group, smartSettings, db)
 
 	if not Header then
 		local groupName = E:StringTitle(group)
 		ElvUF:RegisterStyle("ElvUF_"..groupName, UF["Construct_"..groupName.."Frames"])
 		ElvUF:SetActiveStyle("ElvUF_"..groupName)
 
-		if db.numGroups then
+		if numGroups then
 			Header = CreateFrame('Frame', 'ElvUF_'..groupName, ElvUF_Parent, 'SecureHandlerStateTemplate');
 			Header.groups = {}
 			Header.groupName = group
@@ -980,9 +986,9 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		UF.headerFunctions[group]:Configure_Groups(Header)
 		UF.headerFunctions[group]:Update(Header)
 
-		if db.enable then
-			if not Header.isForced and not Header.blockVisibilityChanges then
-				RegisterStateDriver(Header, "visibility", db.visibility)
+		if enable then
+			if not Header.isForced then
+				RegisterStateDriver(Header, "visibility", visibility)
 			end
 			if Header.mover then
 				E:EnableMover(Header.mover:GetName())
@@ -1012,9 +1018,9 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 
 		UF.headerFunctions[group]:Update(Header)
 
-		if db.enable then
+		if enable then
 			if not Header.isForced then
-				RegisterStateDriver(Header, "visibility", db.visibility)
+				RegisterStateDriver(Header, "visibility", visibility)
 			end
 			if Header.mover then
 				E:EnableMover(Header.mover:GetName())
@@ -1098,13 +1104,13 @@ function UF:RegisterRaidDebuffIndicator()
 	end
 end
 
-function UF:UpdateAllHeaders()
+function UF:UpdateAllHeaders(smartSettings)
 	if E.private.unitframe.disabledBlizzardFrames.party then
 		ElvUF:DisableBlizzard('party')
 	end
 
 	for group in pairs(self.headers) do
-		self:CreateAndUpdateHeaderGroup(group)
+		self:CreateAndUpdateHeaderGroup(group, nil, nil, nil, smartSettings)
 	end
 end
 
@@ -1364,9 +1370,15 @@ end
 function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
 	backdropTex:ClearAllPoints()
 	if statusBarOrientation == 'VERTICAL' then
-		backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
-		backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
-		backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
+		if reverseFill then
+			backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+			backdropTex:Point("TOPRIGHT", statusBarTex, "BOTTOMRIGHT")
+			backdropTex:Point("TOPLEFT", statusBarTex, "BOTTOMLEFT")
+		else
+			backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
+			backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
+			backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
+		end
 	else
 		if reverseFill then
 			backdropTex:Point("TOPRIGHT", statusBarTex, "TOPLEFT")
@@ -1469,19 +1481,9 @@ function UF:Initialize()
 	UF:LoadUnits()
 
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
-	UF:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'HandleSmartVisibility')
+	UF:RegisterEvent('ZONE_CHANGED_NEW_AREA')
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
-
-	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
-	--[[if E.private.unitframe.disabledBlizzardFrames.arena and E.private.unitframe.disabledBlizzardFrames.focus and E.private.unitframe.disabledBlizzardFrames.party then
-		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
-	end
-
-	if E.private.unitframe.disabledBlizzardFrames.target then
-		InterfaceOptionsCombatPanelTargetOfTarget:SetScale(0.0001)
-		InterfaceOptionsCombatPanelTargetOfTarget:SetAlpha(0)
-	end]]
 
 	if E.private.unitframe.disabledBlizzardFrames.party and E.private.unitframe.disabledBlizzardFrames.raid then
 		UF:DisableBlizzard()

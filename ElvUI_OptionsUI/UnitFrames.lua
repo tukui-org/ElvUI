@@ -204,7 +204,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				type = 'range',
 				order = 6,
 				name = L["Height"],
-				min = 6, max = 40, step = 1,
+				min = 5, max = 40, step = 1,
 			},
 			detachedWidth = {
 				type = 'range',
@@ -854,7 +854,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				order = 4,
 				name = L["Height"],
 				type = 'range',
-				min = 10, max = 85, step = 1,
+				min = 5, max = 85, step = 1,
 			},
 			matchsize = {
 				order = 5,
@@ -961,7 +961,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 					["Health"] = L["Health"],
 					["Power"] = L["Power"],
 					["InfoPanel"] = L["Information Panel"],
-					["None"] = L["None"],
+					["None"] = L["NONE"],
 				},
 			},
 			textGroup = {
@@ -1748,7 +1748,7 @@ local function GetOptionsTable_InformationPanel(updateFunc, groupName, numUnits)
 				type = 'range',
 				order = 4,
 				name = L["Height"],
-				min = 4, max = 30, step = 1,
+				min = 2, max = 30, step = 1,
 			},
 		}
 	}
@@ -2033,7 +2033,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				type = 'range',
 				name = L["Height"],
 				order = 4,
-				min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 50, step = 1,
+				min = 2, max = 50, step = 1,
 				hidden = function() return E.db.unitframe.units[groupName].power.width == 'offset' end,
 			},
 			powerPrediction = {
@@ -2467,13 +2467,13 @@ local function GetOptionsTable_RoleIcons(updateFunc, groupName, numGroup)
 			xOffset = {
 				order = 5,
 				type = 'range',
-				name = L["xOffset"],
+				name = L["X-Offset"],
 				min = -300, max = 300, step = 1,
 			},
 			yOffset = {
 				order = 6,
 				type = 'range',
-				name = L["yOffset"],
+				name = L["Y-Offset"],
 				min = -300, max = 300, step = 1,
 			},
 			size = {
@@ -2532,13 +2532,13 @@ local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
 			xOffset = {
 				order = 4,
 				type = 'range',
-				name = L["xOffset"],
+				name = L["X-Offset"],
 				min = -300, max = 300, step = 1,
 			},
 			yOffset = {
 				order = 5,
 				type = 'range',
-				name = L["yOffset"],
+				name = L["Y-Offset"],
 				min = -300, max = 300, step = 1,
 			},
 		},
@@ -2710,7 +2710,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 				type = 'range',
 				order = 3,
 				name = L["Height"],
-				min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7),
+				min = 2,
 				max = 30,
 				step = 1,
 			},
@@ -2781,11 +2781,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 					name = L["Enable"],
 					width = 'full',
 					set = function(info, value)
-						if value == true then
-							E.Options.args.unitframe.args.individualUnits.args.player.args.classbar.args.height.max = 300
-						else
-							E.Options.args.unitframe.args.individualUnits.args.player.args.classbar.args.height.max = 30
-						end
+						E.Options.args.unitframe.args.individualUnits.args.player.args.classbar.args.height.max = (value and 300) or 30
 						E.db.unitframe.units.player.classbar[info[#info]] = value;
 						UF:CreateAndUpdateUF('player')
 					end,
@@ -2908,7 +2904,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 				order = 4,
 				name = L["Height"],
 				type = 'range',
-				min = 10, max = 500, step = 1,
+				min = 5, max = 500, step = 1,
 			},
 			orientation = {
 				order = 9,
@@ -3010,7 +3006,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 					order = 2,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 500, step = 1,
+					min = 5, max = 500, step = 1,
 					set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 				},
 				spacer = {
@@ -3104,7 +3100,6 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 					name = L["Visibility"],
 					desc = L["VISIBILITY_DESC"],
 					width = 'full',
-					disabled = function() return E.db.unitframe.smartRaidFilter end,
 				},
 			},
 		}
@@ -3173,6 +3168,9 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 
 	if groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
 		config.args.positionsGroup.args.numGroups.disabled = function()
+			return E.db.unitframe.smartRaidFilter
+		end
+		config.args.visibilityGroup.args.visibility.disabled = function()
 			return E.db.unitframe.smartRaidFilter
 		end
 	end
@@ -5332,13 +5330,13 @@ E.Options.args.unitframe.args.groupUnits.args.arena = {
 				xOffset = {
 					order = 5,
 					type = 'range',
-					name = L["xOffset"],
+					name = L["X-Offset"],
 					min = -60, max = 60, step = 1,
 				},
 				yOffset = {
 					order = 6,
 					type = 'range',
-					name = L["yOffset"],
+					name = L["Y-Offset"],
 					min = -60, max = 60, step = 1,
 				},
 			},
@@ -5419,7 +5417,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 					order = 4,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 500, step = 1,
+					min = 5, max = 500, step = 1,
 				},
 				anchorPoint = {
 					type = 'select',
@@ -5502,7 +5500,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 					order = 4,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 500, step = 1,
+					min = 5, max = 500, step = 1,
 				},
 				anchorPoint = {
 					type = 'select',
@@ -5839,7 +5837,7 @@ E.Options.args.unitframe.args.groupUnits.args.tank = {
 					order = 4,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 500, step = 1,
+					min = 5, max = 500, step = 1,
 				},
 				anchorPoint = {
 					type = 'select',
@@ -5923,7 +5921,7 @@ E.Options.args.unitframe.args.groupUnits.args.assist = {
 					order = 4,
 					name = L["Height"],
 					type = 'range',
-					min = 10, max = 500, step = 1,
+					min = 5, max = 500, step = 1,
 				},
 				anchorPoint = {
 					type = 'select',

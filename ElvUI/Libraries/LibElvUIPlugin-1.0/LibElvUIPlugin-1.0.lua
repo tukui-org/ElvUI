@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 33
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 34
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -103,7 +103,9 @@ function lib:RegisterPlugin(name, callback, isLib, libVersion)
 
 	local plugin = {
 		name = name,
-		callback = callback
+		callback = callback,
+		title = GetAddOnMetadata(name, "Title"),
+		author = GetAddOnMetadata(name, "Author")
 	}
 
 	if isLib then
@@ -222,8 +224,7 @@ function lib:VersionCheck(event, prefix, message, _, sender)
 					local Pver, ver = lib:StripVersion(plugin.version), lib:StripVersion(version)
 					if (ver and Pver) and (ver > Pver) then
 						plugin.old, plugin.newversion = true, version
-						local title = GetAddOnMetadata(plugin.name, "Title") or plugin.name
-						E:Print(format(MSG_OUTDATED, title, plugin.version, plugin.newversion))
+						E:Print(format(MSG_OUTDATED, plugin.title or plugin.name, plugin.version, plugin.newversion))
 						E.pluginRecievedOutOfDateMessage = true
 					end
 				end
@@ -246,11 +247,9 @@ function lib:GeneratePluginList()
 	local list = ""
 	for _, plugin in pairs(lib.plugins) do
 		if plugin.name ~= MAJOR then
-			local author = GetAddOnMetadata(plugin.name, "Author")
-			local title = GetAddOnMetadata(plugin.name, "Title") or plugin.name
 			local color = (plugin.old and E:RGBToHex(1, 0, 0)) or E:RGBToHex(0, 1, 0)
-			list = list .. title
-			if author then list = list .. " " .. INFO_BY .. " " .. author end
+			list = list .. (plugin.title or plugin.name)
+			if plugin.author then list = list .. " " .. INFO_BY .. " " .. plugin.author end
 			list = list .. color .. (plugin.isLib and " " .. LIBRARY or " - " .. INFO_VERSION .. " " .. plugin.version)
 			if plugin.old then list = list .. " (" .. INFO_NEW .. plugin.newversion .. ")" end
 			list = list .. "|r\n"
