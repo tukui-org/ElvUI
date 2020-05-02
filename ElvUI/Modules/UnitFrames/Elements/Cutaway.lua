@@ -44,10 +44,9 @@ function UF:GetPoints_Cutaway(db)
 end
 
 function UF:Configure_Cutaway(frame)
-	local db = frame.db and frame.db.cutaway
-	local healthDB, powerDB = db and db.health, db and db.power
-	local healthEnabled = healthDB and healthDB.enabled
-	local powerEnabled = powerDB and powerDB.enabled
+	local db = frame.db.cutaway
+	local healthEnabled = db and db.health and db.health.enabled
+	local powerEnabled = db and db.power and db.power.enabled
 	if healthEnabled or powerEnabled then
 		if not frame:IsElementEnabled("Cutaway") then
 			frame:EnableElement("Cutaway")
@@ -56,7 +55,7 @@ function UF:Configure_Cutaway(frame)
 		frame.Cutaway:UpdateConfigurationValues(db)
 		local health = frame.Cutaway.Health
 		if health and healthEnabled then
-			local point1, point2 = UF:GetPoints_Cutaway(healthDB)
+			local point1, point2 = UF:GetPoints_Cutaway(frame.db.health)
 			local barTexture = frame.Health:GetStatusBarTexture()
 
 			health:ClearAllPoints()
@@ -69,7 +68,7 @@ function UF:Configure_Cutaway(frame)
 		local power = frame.Cutaway.Power
 		local powerUsable = powerEnabled and frame.USE_POWERBAR
 		if power and powerUsable then
-			local point1, point2 = UF:GetPoints_Cutaway(powerDB)
+			local point1, point2 = UF:GetPoints_Cutaway(frame.db.power)
 			local barTexture = frame.Power:GetStatusBarTexture()
 
 			power:ClearAllPoints()
