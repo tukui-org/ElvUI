@@ -323,8 +323,8 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 	end
 end
 
-local function CreateShadow(frame, size)
-	if frame.shadow then return end
+local function CreateShadow(frame, size, pass)
+	if not pass and frame.shadow then return end
 
 	backdropr, backdropg, backdropb, borderr, borderg, borderb = 0, 0, 0, 0, 0, 0
 
@@ -335,7 +335,12 @@ local function CreateShadow(frame, size)
 	shadow:SetBackdrop({edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(size or 3)})
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
-	frame.shadow = shadow
+
+	if pass then
+		return shadow
+	else
+		frame.shadow = shadow
+	end
 end
 
 local function Kill(object)

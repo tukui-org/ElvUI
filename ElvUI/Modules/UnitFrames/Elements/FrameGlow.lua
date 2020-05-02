@@ -139,18 +139,14 @@ end
 
 function UF:FrameGlow_CreateGlow(frame, mouse)
 	-- Main Glow to wrap the health frame to it's best ability
-	frame:CreateShadow()
-	local mainGlow = frame.shadow
+	local mainGlow = frame:CreateShadow(nil, true)
 	mainGlow:SetFrameStrata('BACKGROUND')
 	mainGlow:Hide()
-	frame.shadow = nil
 
 	-- Secondary Glow for power frame when using power offset or mini power
-	frame:CreateShadow()
-	local powerGlow = frame.shadow
+	local powerGlow = frame:CreateShadow(nil, true)
 	powerGlow:SetFrameStrata('BACKGROUND')
 	powerGlow:Hide()
-	frame.shadow = nil
 
 	if mouse then
 		mainGlow:SetFrameLevel(4)
