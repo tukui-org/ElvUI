@@ -119,8 +119,12 @@ function UF:Configure_HealComm(frame)
 
 		myBar:SetReverseFill(reverseFill)
 		otherBar:SetReverseFill(reverseFill)
-		absorbBar:SetReverseFill(showAbsorbAmount and not reverseFill)
 		healAbsorbBar:SetReverseFill(not reverseFill)
+		if showAbsorbAmount then
+			absorbBar:SetReverseFill(not reverseFill)
+		else
+			absorbBar:SetReverseFill(reverseFill)
+		end
 
 		myBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
 		otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
