@@ -219,8 +219,8 @@ do --this can save some main file locals
 		local NihiColors = function(class) local c = _G.RAID_CLASS_COLORS[class] local c1,c2,c3, n1,n2,n3 = c.r,c.g,c.b, nm(c.r), nm(c.g), nm(c.b) return function(t) return specialText(t, c1,c2,c3, n1,n2,n3, c1,c2,c3, n1,n2,n3) end end
 
 		itsSimpy = function() return ElvSorbet, SimpyColors end
-		itsMel = function() return Hibiscus, MelColors end
 		itsElv = function() return ElvBlue, ElvColors end
+		itsMel = function() return Hibiscus, MelColors end
 		itsMis = function() return Rainbow, MisColors end
 		itsTheFlyestNihilist = function(class) local icon, prettyText = E:TextureString(E.Media.ChatLogos["Fox"..class],x), NihiColors(strupper(class)) return function() return icon, prettyText end end
 	end
