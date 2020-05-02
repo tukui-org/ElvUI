@@ -1168,10 +1168,10 @@ E.TagInfo = {
 	['powercolor'] = { category = 'Colors', description = "Colors the power text based upon its type" },
 	['difficultycolor'] = { category = 'Colors', description = "Colors the following tags by difficulty, red for impossible, orange for hard, green for easy" },
 	['altpowercolor'] = { category = 'Colors', description = "Changes the text color to the current alternative power color (Blizzard defined)" },
-	['healthcolor'] = { category = 'Colors', description = "Changes color of health text, depending on the unit's current health" },
-	['threatcolor'] = { category = 'Colors', description = "Changes color of health, depending on the unit's threat situation" },
+	['healthcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's current health" },
+	['threatcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's threat situation" },
 	['classpowercolor'] = { category = 'Colors', description = "Changes the color of the special power based upon its type" },
-	['classificationcolor'] = { category = 'Colors', description = "Changes color of health, depending on the unit's classification" },
+	['classificationcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's classification" },
 	['manacolor'] = { category = 'Colors', description = "Changes the text color to a light-blue mana color" },
 	['difficulty'] = { category = 'Colors', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 	--Guild
