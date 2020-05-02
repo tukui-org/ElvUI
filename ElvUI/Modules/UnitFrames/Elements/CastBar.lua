@@ -369,7 +369,7 @@ function UF:PostCastStart(unit)
 	if unit == "vehicle" then unit = "player" end
 
 	if db.castbar.displayTarget and self.curTarget then
-		self.Text:SetText(GetSpellInfo(self.spellID)..' > '..self.curTarget)
+		self.Text:SetText(self.spellName..' > '..self.curTarget)
 	end
 
 	-- Get length of Time, then calculate available length for Text

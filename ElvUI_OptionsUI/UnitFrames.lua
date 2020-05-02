@@ -952,6 +952,12 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				type = "range",
 				min = 0, max = 10, step = .1,
 			},
+			displayTarget = {
+				order = 13,
+				type = 'toggle',
+				name = L["Display Target"],
+				desc = L["Display the target of current cast."],
+			},
 			overlayOnFrame = {
 				order = 3,
 				type = 'select',
@@ -1150,12 +1156,6 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 
 
 	if hasTicks then
-		config.args.displayTarget = {
-			order = 13, -- Always control the order
-			type = 'toggle',
-			name = L["Display Target"],
-			desc = L["Display the target of your current cast. Useful for mouseover casts."],
-		}
 		config.args.ticks = {
 			order = 20,
 			type = "group",
