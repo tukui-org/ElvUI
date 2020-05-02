@@ -35,7 +35,7 @@ function UF:Configure_DebuffHighlight(frame)
 		if E.db.unitframe.debuffHighlighting == 'GLOW' then
 			frame.DebuffHighlightBackdrop = true
 			if frame.ThreatIndicator then
-				frame.DBHGlow:SetAllPoints(frame.ThreatIndicator.glow)
+				frame.DBHGlow:SetAllPoints(frame.ThreatIndicator.MainGlow)
 			elseif frame.TargetGlow then
 				frame.DBHGlow:SetAllPoints(frame.TargetGlow)
 			end
