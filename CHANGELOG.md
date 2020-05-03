@@ -4,10 +4,12 @@
 
 
 **Bug Fixes:**  
-
+Debuff Highlight in Glow mode was glowing around the edges of the screen instead of the unitframe.  
+Cutaway errored on initial login or profile change sometimes.  
 
 **Misc. Changes:**  
-
+Blacklisted the Experience Eliminated debuff.  
+Castbar 'Display Target' allowed on all Unitframes.  
 
 ___
 ### Version 11.41 [ May 1st 2020 ]
