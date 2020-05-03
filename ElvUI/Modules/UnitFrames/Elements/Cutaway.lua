@@ -42,7 +42,7 @@ function UF:GetPoints_Cutaway(db)
 
 	local index = (vertical and VERT_INDEX) or DEFAULT_INDEX
 	local p1 = (reversed and -index) or index
-	local p2 = p1 + (reversed and -1) or 1
+	local p2 = p1 + ((reversed and -1) or 1)
 
 	return cutawayPoints[p1], cutawayPoints[p2]
 end
