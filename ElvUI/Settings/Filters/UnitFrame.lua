@@ -624,6 +624,8 @@ G.unitframe.aurafilters.Blacklist = {
 		[113942] = Defaults(), -- Demonic: Gateway
 		[89140]  = Defaults(), -- Demonic Rebirth: Cooldown
 		[287825] = Defaults(), -- Lethargy debuff (fight or flight)
+		[206662] = Defaults(), -- Experience Eliminated (in range)
+		[306600] = Defaults(), -- Experience Eliminated (oor - 5m)
 	},
 }
 
