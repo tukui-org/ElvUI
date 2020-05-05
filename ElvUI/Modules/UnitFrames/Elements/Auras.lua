@@ -46,14 +46,19 @@ function UF:Construct_Debuffs(frame)
 	return debuffs
 end
 
-local function OnClick(btn)
+function UF:Aura_OnClick()
 	local mod = E.db.unitframe.auraBlacklistModifier
+
 	if mod == "NONE" or not ((mod == "SHIFT" and IsShiftKeyDown()) or (mod == "ALT" and IsAltKeyDown()) or (mod == "CTRL" and IsControlKeyDown())) then return end
-	local auraName = btn.name
+	local auraName = self.name
 
 	if auraName then
-		E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
-		E.global.unitframe.aurafilters.Blacklist.spells[btn.spellID] = { enable = true, priority = 0 }
+		if not E.global.unitframe.aurafilters.Blacklist.spells[self.spellID] then
+			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
+			E.global.unitframe.aurafilters.Blacklist.spells[self.spellID] = { enable = true, priority = 0 }
+		end
+
+		E.global.unitframe.aurafilters.Blacklist.spells[self.spellID].enable = true
 
 		UF:Update_AllFrames()
 	end
@@ -78,7 +83,7 @@ function UF:Construct_AuraIcon(button)
 	button.stealable:SetTexture()
 
 	button:RegisterForClicks('RightButtonUp')
-	button:SetScript('OnClick', OnClick)
+	button:SetScript('OnClick', UF.Aura_OnClick)
 
 	button.cd.CooldownOverride = 'unitframe'
 	E:RegisterCooldown(button.cd)

@@ -3,29 +3,13 @@ local UF = E:GetModule('UnitFrames');
 
 --Lua functions
 local _G = _G
-local format = format
 local unpack = unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local IsShiftKeyDown = IsShiftKeyDown
-local IsAltKeyDown = IsAltKeyDown
-local IsControlKeyDown = IsControlKeyDown
-
-function UF:AuraBars_OnClick()
-	local mod = E.db.unitframe.auraBlacklistModifier
-	if mod == "NONE" or not ((mod == "SHIFT" and IsShiftKeyDown()) or (mod == "ALT" and IsAltKeyDown()) or (mod == "CTRL" and IsControlKeyDown())) then return end
-	local auraName = self.name
-
-	if auraName then
-		E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
-		E.global.unitframe.aurafilters.Blacklist.spells[self.spellID or self.name] = { enable = true, priority = 0 }
-		UF:Update_AllFrames()
-	end
-end
 
 function UF:Construct_AuraBars(statusBar)
 	statusBar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
-	statusBar:SetScript('OnMouseDown', UF.AuraBars_OnClick)
+	statusBar:SetScript('OnMouseDown', UF.Aura_OnClick)
 	statusBar:Point("LEFT")
 	statusBar:Point("RIGHT")
 
