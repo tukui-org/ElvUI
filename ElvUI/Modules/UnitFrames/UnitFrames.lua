@@ -869,6 +869,10 @@ function UF:HandleSmartVisibility()
 			maxPlayers = UF.instanceMapIDs[instanceID]
 		end
 
+		if instanceType == 'pvp' and (not maxPlayers or maxPlayers == 0) then
+			maxPlayers = 40
+		end
+
 		sv.raid.enable = maxPlayers < 40
 		sv.raid40.enable = maxPlayers == 40
 
