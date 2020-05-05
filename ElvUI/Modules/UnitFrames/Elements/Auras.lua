@@ -48,17 +48,16 @@ end
 
 function UF:Aura_OnClick()
 	local mod = E.db.unitframe.auraBlacklistModifier
-
 	if mod == "NONE" or not ((mod == "SHIFT" and IsShiftKeyDown()) or (mod == "ALT" and IsAltKeyDown()) or (mod == "CTRL" and IsControlKeyDown())) then return end
-	local auraName = self.name
 
-	if auraName then
-		if not E.global.unitframe.aurafilters.Blacklist.spells[self.spellID] then
-			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
-			E.global.unitframe.aurafilters.Blacklist.spells[self.spellID] = { priority = 0 }
+	local spellName, spellID = self.name, self.spellID
+	if spellName and spellID then
+		if not E.global.unitframe.aurafilters.Blacklist.spells[spellID] then
+			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], spellName))
+			E.global.unitframe.aurafilters.Blacklist.spells[spellID] = { enable = true, priority = 0 }
+		else
+			E.global.unitframe.aurafilters.Blacklist.spells[spellID].enable = true
 		end
-
-		E.global.unitframe.aurafilters.Blacklist.spells[self.spellID].enable = true
 
 		UF:Update_AllFrames()
 	end
