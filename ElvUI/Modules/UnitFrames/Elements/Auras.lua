@@ -55,7 +55,7 @@ function UF:Aura_OnClick()
 	if auraName then
 		if not E.global.unitframe.aurafilters.Blacklist.spells[self.spellID] then
 			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
-			E.global.unitframe.aurafilters.Blacklist.spells[self.spellID] = { enable = true, priority = 0 }
+			E.global.unitframe.aurafilters.Blacklist.spells[self.spellID] = { priority = 0 }
 		end
 
 		E.global.unitframe.aurafilters.Blacklist.spells[self.spellID].enable = true
